@@ -4,138 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A723FED3FC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 19:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E19C5FED3FC
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 20:00:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C9586B00A0; Fri, 24 Apr 2026 15:59:51 -0400 (EDT)
+	id 582406B00A1; Fri, 24 Apr 2026 16:00:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09E246B00A1; Fri, 24 Apr 2026 15:59:51 -0400 (EDT)
+	id 558FB6B00A6; Fri, 24 Apr 2026 16:00:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF6AE6B00A2; Fri, 24 Apr 2026 15:59:50 -0400 (EDT)
+	id 46FAE6B00A8; Fri, 24 Apr 2026 16:00:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DDDDB6B00A0
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:59:50 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78AE21202E0
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:59:50 +0000 (UTC)
-X-FDA: 84694514940.05.6EB76C2
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7C4FE20011
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:59:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Qxu2FhDl;
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777060788;
+	by kanga.kvack.org (Postfix) with ESMTP id 347456B00A1
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:00:12 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ED84E8AB0E
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 20:00:11 +0000 (UTC)
+X-FDA: 84694515822.13.B9096AD
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BD961180012
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 20:00:09 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=lATYIi50;
+	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777060810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5f8KT4elycAtFJ0kXecV1QCZWUTmhOqicbo482jUwJc=;
-	b=gA252oK8D+CdDg5enktiGjZRi44sbDTMQpuxDHt+42HbVPxff7cFV6SVgJ8uBHqGDZFxSr
-	rmOvEFsu9QnDPKRT46+7khnOt8hrr/y5vO2hiCoohKYs26LBYSgsbKmuLTZzwoHeXU4L6r
-	GbB4/pbGUYzeMsKUv6fB8wFyEO5OBa4=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Qxu2FhDl;
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777060788; a=rsa-sha256;
-	cv=pass;
-	b=XiEx9kIrJuK8wniKbj+RS+TJjPP7YoadP/mTyzknpSPnoKGaPDz5t3ZJu0JtfHa9Z0VRyS
-	+OYGXYqQNp5llwo/c9AWKfnEyvW2pJWUVF4JikkOKbyrZKp32FkZYsvylEMBu1IvqIN8Rk
-	yZIaFr0cZJuVmBMOdZItVzrWlzh6ZTU=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50d836552daso4694611cf.0
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:59:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777060787; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MWC9Zb9hXZDmrCBqVWwB0Ql4RdjvY81z79sWu/hLsEj8oKJb68gsgABWT2mD7mcGMn
-         aI3NZAE2Ez+ViBwrKkZDcaHNo3jMVLet8UXNs+k22+KPEFzXpj4rwULj/Z6z25SfihJ+
-         AL4yAU4lewFoUExQBp3PhE0zDqO3m4EPbCxCnt4NZ4Fn52L9zsrzZvfVN07ltjXwsna7
-         U4uECE9om/kjqz8BDzt+Uj/6p3WCaruwEu/P1nDOcyZVJW8GKL7z2sAk5xhp40cWnUQ0
-         +BgCxTrTFKMEB/X5TihCZ2cBlMgdqdL2CdeFIGY/96g2nOZxYud2PjnH6kk2GsFd4ErL
-         Ulig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5f8KT4elycAtFJ0kXecV1QCZWUTmhOqicbo482jUwJc=;
-        fh=LlHMgw0S0sbYs/yyg+g8DFvK1HMbCgUoGvfvc5tp7+U=;
-        b=dfTvSp30vQMZl1SZ1nnrYyxp5Rr+yjE/JWmMW4EbStyAQ96mbMzveXecwPTauejfQW
-         MOM6tBHojmHp30Jf+i+iTrnmPc03OqTdWwflqgNAfYNtf72VMKoOY2WSop1JVQRuOsJ4
-         VVoYT4+SqmiIyPGdipSjE3o6JS3S2CGdh0nFtza9SZ+M5usPqfZUg3+9DcwUqzMF4vZl
-         HCEjq6X8adaI6YQClUqNJOf31WQY/n/GeFYFAf2oJdfoCIkKv+2kGE3yaS7BbNWVkZvk
-         wcgn+ebpS0vPUCn6M+lPm8mWjadbB7LkWcYFykDNnODBW/sMYcy9CC25+alY4644eUHS
-         kT/A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=vKqBvQFy0haKdUtjK97pLXW69B86nqbjxH3fSUsXZ54=;
+	b=cWIGKJMJyu+SunGhx48K+knMktYaLEm3+uxylz1p00DBX913wuARFiZ7rckBKXiq/MSviU
+	i3H2X8jEVs9i6Cr6mLqlDUpUneTtccMkfzL6XPdua9rq84hpJs/ZLzlkbb4c72OwB0OIf8
+	iDWLIefQVBwtEn0Uj/fZRwErPNwZsUw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=lATYIi50;
+	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777060810; a=rsa-sha256;
+	cv=none;
+	b=syDy9L8jJ+kg7OuSCSvymSoabb0gu7ZtUQuu8N44zVuFKiq37HVdc8Hg0Qbel5rIJguDVr
+	QGUJc4hm4AWG5GulHisp1shOJZGXyWargBNw9+0I9dSv+1qyDopMoyX26WdCeXV+2Koh/3
+	6Ho8SoitQ4pkQDpFud7zJ1ThYZBK/4A=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50e63771d91so66428061cf.0
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:00:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777060787; x=1777665587; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5f8KT4elycAtFJ0kXecV1QCZWUTmhOqicbo482jUwJc=;
-        b=Qxu2FhDlemK4oB4L4aeZrrJWfTPnjJNmSfuGuBy5dWi7kVt9Fb98Z3CGCAUlGzIi+R
-         D1XKl1RLG2GGLtkcdLjH8lCWYM/xzytFNh4i5Hjy7YCf/DP95ImNVPPyAjWgSzcbqsGg
-         QK3GjUQYuDmYSbZNuQ5bEv/qLkp3tZX0J1dx8NzJyq7P0gjbiT3akp6kvrzfbraYuGCN
-         3YBnCk1Q4iuiVTRrNjnl2/epUMUxrtJw3lZQ0hzQFJ3+AikviFxrBwvteOiMMUpF+24y
-         LlaQ/SfLSEs9H3Ydn4GQFo2tuwPckZpKBTjjwV/ZGR0buJwE54QEimi3ka1UFtw4KVEG
-         zC8Q==
+        d=cmpxchg.org; s=google; t=1777060809; x=1777665609; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vKqBvQFy0haKdUtjK97pLXW69B86nqbjxH3fSUsXZ54=;
+        b=lATYIi50bdjvwVTjvncy1GSOWSkAemHm9AITYrqxgkdMZ8jN/zYnak+Gd7kF01zgj8
+         oLn9Ue2E16EEgWXPI75zQ+BerYN3hIuwP2RIzbqOyRkuVfMY9MemFkwgg6to0dR6WY93
+         XO0sh9C34W5PmmgqKpPalLcG0At/vy+nJr26KSDXsPN0Ntw6c27ZQPTXqKS5ObiY3xRl
+         b1Wpa2Tvs7vNEUS/ODWLhZ04/3UR7VPXD5QRem8i0KtCP+bQAq6egNeU0cmLp7r7/VxH
+         5jvdRjo9qAeHGpE2Rv1RtpyUDW+xfaAG4XiKo7p4Y9Tqcz2M2Kf/q6IfYWH9kjnnySZg
+         3zhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777060787; x=1777665587;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5f8KT4elycAtFJ0kXecV1QCZWUTmhOqicbo482jUwJc=;
-        b=NdjSjUkQOe59azQfq7mTWiXV8hcXhU96CK9GiNmzCmM5vE2UJMJeOI3iThv3EE/SuC
-         MU1wUhQsO4FtWqWoVVvWG4HcREk+B6do7/3gZYKwVjWlVgXFBkCe76LNH6gR57mY4+uY
-         Xhvu/+K5+9vr8TEz0t9rvxUvRjonWUl24fGAdsxcdDthTc88jkdlY7H1g7je+V6NUROL
-         YeAKE9Ss47yz5cxVlWR6Ru8D34cWVu5pFa0rEj6kDNVeRJ9mo28ZCTTaI9gGWRAy6mO2
-         QT7zHXa7tv0XGXoSyH+pxmBxfz84GzlIPlwHA+pfEenYaxKOr9OMxRRjZGTLhFaWfQu8
-         335Q==
-X-Forwarded-Encrypted: i=1; AFNElJ86WxK0k6WX2TIITQkWX+TtZz+LNB/wqYHkORrRYxWEgxzBihA/yGdxJPewHa63EDaRzLf8S7C0ng==@kvack.org
-X-Gm-Message-State: AOJu0YwfEcobLPV9g0SJdD7jCFjUh98vNn8Yct2JoNU39I8L/oJbZ9EK
-	tuncfePRxRf6MFtSFXryCtdPdhz1NcpOXPYIHGxMRKpWwZOM49Vr/h6FOnRsOVfMVxHzDkVwFb1
-	w1lA8oLpEg/T9AoBaX+aA8+NsykeTzfMJT8dmzIDX
-X-Gm-Gg: AeBDieuLeWRHVaaDWxx3kRVzq7S99tf7JtoRTXXf3v20Bw7pAQEIYK70pR2iZO4Hbc5
-	utVZcq96yr8T25rDEJBG2vuUgGbxKs7FyYJY9AJ5hMqEmMhOx5WWKkRa3NRHxQDDyg5X7c/n6GS
-	ayj2il+BqO2yxPV/YjL11RspLx6je7DuDQ2Qkp/RjJ2uYZePQNX8yClqx4euGwzUDxFd3yPGzVa
-	ayGJ+JtMwYov38nl876plmQQwZZJmCQRH0E+SR7QH7fa1ivDVkniG3IfDNy+w76EdHClYiQcy7e
-	QD/fTlGLM6SGRcao+eaYudH5Gbc=
-X-Received: by 2002:a05:622a:8d0c:b0:50b:8d3c:5bd7 with SMTP id
- d75a77b69052e-50e441a9a18mr45045201cf.9.1777060787000; Fri, 24 Apr 2026
- 12:59:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260424070234.190145-1-surenb@google.com> <20260424070234.190145-4-surenb@google.com>
- <qxxhshfoe5tph4z324fzl74r532bxdrdvll2xvhaeken6bsdwb@q2wk2nbvxr3p>
-In-Reply-To: <qxxhshfoe5tph4z324fzl74r532bxdrdvll2xvhaeken6bsdwb@q2wk2nbvxr3p>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 24 Apr 2026 12:59:35 -0700
-X-Gm-Features: AQROBzD5xA_3c0_hTUm6u9T-bbzWrkTL-rrbMD7rk0vNpvDqT-w5J6qxPpAkp5U
-Message-ID: <CAJuCfpE5C9UpkrAEvm6amw7=JYRoXeiSJuPFJnb+LRrVwn4ntA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] selftests/proc: add /proc/pid/smaps tearing tests
+        d=1e100.net; s=20251104; t=1777060809; x=1777665609;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vKqBvQFy0haKdUtjK97pLXW69B86nqbjxH3fSUsXZ54=;
+        b=htULIOL+a5C3Y+MzWPoa4NH59DMsOUoAbHvLdq7Bz6LWTVlkjYjvK+b8blj4jEAXaw
+         KN/2zW2Au6lQr8xpU6dZbfyax9H5WPGzY51w8QT/N/3zRlWGw85/A6XM3kMvRpv50dKr
+         wMGVg/nr9/WIcXTBnW+LSkFTyvFrnKSmULTByrbzIqOqSGWnYJsh+jbzGmEQhn3474F1
+         m4dUxRiwpoIrIRb90bElE6Ij0gEKDvbLEqLzWg3Zu4uysBGl8yGnBmcWti7AL7OIsCAs
+         kAaf44tHIge45GJRyvOa4yrl2/tslS9QQ8Sjd8KkuHgQVcWcgzzCyTBdswWSqOjYPV47
+         bR/g==
+X-Forwarded-Encrypted: i=1; AFNElJ8/Ve+lmdAi88jlNTWbOX3w4sffmtiA1fjWUqoiIUBwh3bWSirFNOx/Atz5RyGAHQYtx8J7Q7HQag==@kvack.org
+X-Gm-Message-State: AOJu0YyNJl0sRMrz8RVRwmQQppcmO+2+ztaVMisNn5PvaumL+DNu4th0
+	TscZKE2hZiY77CUJe9f960tP+IehyIzCH7e6t/SnYoeND3YC5aOIvHyim2yVk4rOFi8=
+X-Gm-Gg: AeBDieukMvI7YSXPqPh1B69edX4r2tRcR4odLnmkE6js9SXuu+1LgXcin2Siu/ob0uX
+	6b/2uyIIpUg1UOG1gq1IzP0phUeaBPK2DXZTnuYn9d79E9QyFhoUiX7WQQIw1y5yW0BnP5lGwMg
+	gvLA0vLoDdh0xxpfghSb47+g2wvx0p67KwzTratHwrHyB/3w8vUV5z0pv+qpPmFTj6GqZgngZUm
+	PgG/iyHsmqTTs4D06wdbqdkL3yQ2g3lEl7rK8ULIh5jf4h0dfXOqIopa037yIrLa3cVC3Fftys2
+	Vj90e+errNIP8KvHNhVs0P5GpTbZoUeoiwNz1AKjp+x6gUgD0fCpjrfSdHvuLwyT+x3dvPfB1GP
+	ZK8i/r/zB9SBnaNNb66Bg8t/Hfk5DcKWq6YFOTfMeYzqn9a7dDvjmxBxGblH9mtsVUdtkyFWmEy
+	Mgbtrawwfvppa8v6cMICDMV49qiaIbJNzq
+X-Received: by 2002:a05:622a:848e:b0:50e:5cc3:6f42 with SMTP id d75a77b69052e-50e5cc37bedmr276335431cf.59.1777060808338;
+        Fri, 24 Apr 2026 13:00:08 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50f13ba2509sm129707921cf.8.2026.04.24.13.00.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 13:00:07 -0700 (PDT)
+Date: Fri, 24 Apr 2026 16:00:03 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
 To: "Liam R. Howlett" <liam@infradead.org>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, vbabka@kernel.org, 
-	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, shuah@kernel.org, hsukrut3@gmail.com, 
-	richard.weiyang@gmail.com, reddybalavignesh9979@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: Matthew Wilcox <willy@infradead.org>, lsf-pc@lists.linux-foundation.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [LSF/MM/BPF TOPIC] Page cache tracking with the Maple Tree
+Message-ID: <aevLw0DsPOEeRd-J@cmpxchg.org>
+References: <biynsvpcamct5fva5nxxdvc3q43dqi72jotpyasvrk3pumdz2w@7okprmuwznlo>
+ <aeKO6bKupHa2bgWt@casper.infradead.org>
+ <aeaKAxrAUtfwM9ns@cmpxchg.org>
+ <oi2kit3a2qulr53c7j3h4g3cjjgbss4kd2djdqota2sriiaaov@7uewnraaq4gk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <oi2kit3a2qulr53c7j3h4g3cjjgbss4kd2djdqota2sriiaaov@7uewnraaq4gk>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7C4FE20011
-X-Stat-Signature: umrk57j5o5386nuqakux5a6xdpm88xwf
-X-HE-Tag: 1777060788-371952
-X-HE-Meta: U2FsdGVkX18Nwjz/a5IRXoG1IegARtWGJxcxpntCNZOz5t2rL0HRPQ30l0JFg6gG4eI+If0KSZcDAb6QI6lmuuH74yzUv85EcqnqylPcAYlR0kh4W/lW+Mtki9oJqJEdmZho6Zwss3yv6OymYYyXjt1PfhncUjcP8MnPEyXiBmA5Eg8+LcvpLQ4a9hRD4Jf3keKmmiRtxEcgIJe6d4jraeOfsA9DkDqI09hIphYkR4YW4sNQHEuOPzzCtU3g2EK1VnWBux3uEfYNX67EVQ91/0TG1pBtNB4Bf4NY1snfgaV/CfpBHySFliWzkvwIw9RwY4z8BePT7jLOnJmPvncNYiVEzNhujExtgWTZxZFM3B4NlBPNme9biAs6cyQhOZBdIJtQG4KsULkrZqu5mHTtpy/UEAZzs5xo51NCUGU+slkODGO7+SajAueVrWOFDuah+VMvYSbDV+J4z45yzy8uVMbXz0Y5UEvn2+WGUJAOOUvgpflSmcNQdmnvNwHhbX0wzKLBt1xejIM3v5CgUihrhHsOge1yr7evdIrouZBeByb9tSuCC/2PDdUQVQT/88AlPQoavYEqhCXeNo6uHcaKkiFO4Xw1NQEH1wqdK6/LyD2rTzXWJwGhFD1kNGaUiTASiZnrmIDTgW0gooStcQ+f6iBvTeP+astIVJu4MtG+gUDnylMHayHzx3rY/agtjkXUXemRI6c61P6/b3cFzhUoioG2vwdMB6o7tT5ChZdG3cdMnSP9Y+qYU+PVuvFItEUpo6pVHM26yBVsIUk3rZwQxKDU1yhzHQp/LJSHutV+VkbhL8UU8+zx7c3xvtDZf8X+aJ+qBTWE50NQo/0hYhZC6sAsGDLEdFtgVV9PGMmbVwT9KvnDHY+B/zWt7EqPiIVtmmiK/BOON1O/ihJml1mFXJMZv2capFUZ38wa8wLSQJnI1W5OKSXNNDT7b9/XxBRcHrsJSvzZBieTghM6sW6
- qb5t8jug
- qkgmC6roGax9Kgc55G248fq7vpnzA3jMowmzmDut/gia5Q4cYtNPzpCheoRj9qnAzra20b6d8WJOOFBHHeFoQzdVTyzwdXg8BUUeaqIqNdWHwp7ZcomkVigH9egcPk3/n5GtbyN8/Oqjf6HYouokDydHcbGKNl7NKyfTj65YeStmpbpIaIrtDhUXCuZF6Oj8NK9U05Nl7rCw18mLxuPN839vnx07G3P8A+O96k3g4e+MUwExsGj1MXlKEWB3bxoHOwjGmS2hXDEyZ1WnLfW6M+WLIojwmaZxciZyROX+HT56UHv9UKc2bEtEfDJP6fHBYTsmPopL+d7txzphtg70YHJOUMkU1wJjZSAWKjYtapJ7by6Ry+iNRTIAxMcWpNIYnQ5MMqboG5Dib79c=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BD961180012
+X-Stat-Signature: rza38k9gctno4dqdrhmte7jt7bd7p4cc
+X-HE-Tag: 1777060809-95740
+X-HE-Meta: U2FsdGVkX19LPPvxeucSNhxUHItMSisk2pHXrdX6ui9KNLPcFLXCKzKK7xp7pAWC14YD5/g4H1V3K0i4bi5nMD0nkb9snu5Qua+UQ/O2xfz3nl0H4Chx7BGa7tCfSNQXjGH8TTKPxQ4lCWJd9GtLjKBmZwBSm6S0gs3bzd1k9OZPLpfyVlcWgXr4fUOxUlwUmViAbHUmuMMf1uKY51OGJPJjCbEmtu7LRclZw0hdMx0DHrc/lD+9fP6x+ZWzKinzhkuODK54s97Rmo2cYagYWliugMSfYY8SPooIdGLkLXJRXAquTpCqs7LjfZJaYGaaVtlj7zfhDjeUev4ZyMlqJFCq9LQ6pEEKzB0dvfltAIhXxdiAwayEhol6L7AzOcMNMnnQoPu3JogPah3DAtVbqDJhWw9r8ADoltM4W7c1fNduez1gfiWmscxWyeg4sEIYrw4nTeODDrNvN/Iahqua9i/mBWVcrFo4FfA+Fsy5G00XP25+lPYEdIObgquB8qH5j37BGf3WLe+oAQ0jjlqEXlJmcNZhC2dCY/2T9ajsAGyhxDr4CBrdCztKAzcX7k0KSTSL8hIakcULb7sadlm7mM5xyMBRwl99J9OHEfFwyxWVjpYit1G6ZoD7zPpA/eRzUPdm8qLcoE23EnYabmjsAhxESpLgt6YAt2tdMcs/hKRZj9UeP60JkMH6c4AdkoaQ5jXxzSlPXjUex89RiF5uiWrayrRdwZsbK3WN1m9q/fDtRE7Fy1ONc1WwVOFOQzycgfM+lJhxV9OQX4ZOali9zQpWJK7VGBC9AokVgNOhUdgqMqGRHTyNYRQDLzCnBMciNlbh74RIdyUl8oDk4FXgGkRxCelguRA/jatQO0y3N/2vZXfCn/oP5kaalmKDsS34TpnSCwHMXbGn/IbrsmgyjCvg1f61v+nujb6beHQZGJQQcJex9BNcGCGPQEz7mQgVz6FfBV89cud2YVcRobK
+ 4GdupGvS
+ qE2OrJHIADx+KH1wt7gmGLUkurF4uhT+GeG3VRt79gzQsCn12MFcLt4SfOx+1cAUvosXnranrH2A5cilaIG4lBIoFwGVS+C0sSpbNO3nVQzqECfKroah79tGuFPe7T72K4G7eHThWvglHI95vZI59Y0SDcYN4wK+JOSHS6tebePeq/GgKKk9hsQdR4VOZFBy4rQK7TklWxhofHB/12gi5QP7PgNqk0bjaGVpKsK1mzD2CUTpSmljkk7Zvn3VolfwjoLX1WmeBTdzUnVCvs05D2qdbxX8lMLNI3Y6ZdZTrGZfmG+Cf6al35RMDXNzxuzVhhUnE37/0Ihv3bmAEEeQVZ36EIfXQusaKpvJNgq+V8m7Dxnb/mt2JnPa69eUizDwEmE+YzoIfswUIM56+suEI+7bHXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,361 +122,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 11:23=E2=80=AFAM Liam R. Howlett <liam@infradead.or=
-g> wrote:
->
-> On 26/04/24 12:02AM, Suren Baghdasaryan wrote:
-> > Add MAPS_FILE environment variable to select whether the tests to be ru=
-n
-> > for /proc/pid/maps or /proc/pid/smaps. Add support for testing smaps fi=
-le
-> > by reusing the same logic as with maps file but skipping all the data
-> > except for the VMA addresses, which are the only part relevant for the
-> > tearing tests. Skip PROCMAP_QUERY parts of the tests because smaps does
-> > not implement that ioctl.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
->
-> One comment question, otherwise..
->
-> Reviewed-by: Liam R. Howlett <liam@infradead.org>
->
-> > ---
-> >  tools/testing/selftests/proc/proc-maps-race.c | 176 +++++++++++++-----
-> >  1 file changed, 132 insertions(+), 44 deletions(-)
-> >
-> > diff --git a/tools/testing/selftests/proc/proc-maps-race.c b/tools/test=
-ing/selftests/proc/proc-maps-race.c
-> > index c5031b0593b7..b677bc23cab9 100644
-> > --- a/tools/testing/selftests/proc/proc-maps-race.c
-> > +++ b/tools/testing/selftests/proc/proc-maps-race.c
-> > @@ -17,8 +17,8 @@
-> >   */
-> >  /*
-> >   * Fork a child that concurrently modifies address space while the mai=
-n
-> > - * process is reading /proc/$PID/maps and verifying the results. Addre=
-ss
-> > - * space modifications include:
-> > + * process is reading /proc/$PID/maps and /proc/$PID/smaps, verifying =
-the
->                                          ^^^ and? Should this be or?  It
->                                          doesn't match your commit
->                                          message.
+On Fri, Apr 24, 2026 at 12:45:32PM -0400, Liam R. Howlett wrote:
+> On 26/04/20 04:18PM, Johannes Weiner wrote:
+> > On Fri, Apr 17, 2026 at 08:50:01PM +0100, Matthew Wilcox wrote:
+> > > On Tue, Feb 24, 2026 at 12:10:26PM -0500, Liam R. Howlett wrote:
+> > > > The Maple Tree needs some enhancements:
+> > > >  - Support for purging shadow entries from the page cache
+> > > 
+> > > Liam and I hd some preliminary discussions yesterday around this
+> > > and we'd like some feedback if anyone has time before LSFMM.
+> > > 
+> > > For those who aren't aware, when a folio falls off the end of the
+> > > LRU list, we store a shadow entry in the page cache in its place
+> > > so that if we access that page again, we know where to put its folio in
+> > > the LRU list.
+> > > 
+> > > But this creates a problem (documented in mm/workingset.c) where
+> > > we can fill up memory with shadow entries.  Currently, we embed a
+> > > list_head in xa_node and add nodes which contain only shadow entries
+> > > to a list which can be walked by a shrinker when we're low on memory.
+> > > Ideally we wouldn't do that with the maple tree.  There are a few
+> > > options.
+> > > 
+> > > The first question we have is whether it's best to keep nodes around to
+> > > wait for a shrinker to kick in.  Was any experimentation done to
+> > > see whether eagerly freeing a node that contains only shadow entries
+> > > has a bad effect on performance?
+> > 
+> > Hm, I'm not sure how that could work.
+> > 
+> > The LRU order created by readahead makes it highly likely that all the
+> > folios in a cache node are reclaimed/made non-resident at once. Going
+> > this route would destroy a large part of the non-resident cache the
+> > moment it is created.
+> 
+> Not the moment it is created, but the moment the entire node only has
+> NULLs or shadow entries.  Meaning it's removed the moment the last
+> entry becomes a shadow entry.
 
-Quite right. I'll fix it. Need to post a new version anyway since
-Sashiko found a couple of issues.
+I'm saying they can be often the same event. Readahead means LRU order
+matches file index / node range order. So there is a good chance that
+reclaim batches will create all shadow entries in a node in one go.
 
->
->
-> > + * results. Address space modifications include:
-> >   *     VMA splitting and merging
-> >   *
-> >   */
-> > @@ -73,6 +73,11 @@ enum test_state {
-> >       TEST_DONE,
-> >  };
-> >
-> > +enum maps_file {
-> > +     MAPS,
-> > +     SMAPS,
-> > +};
-> > +
-> >  struct vma_modifier_info;
-> >
-> >  FIXTURE(proc_maps_race)
-> > @@ -83,6 +88,7 @@ FIXTURE(proc_maps_race)
-> >       struct line_content last_line;
-> >       struct line_content first_line;
-> >       unsigned long duration_sec;
-> > +     enum maps_file maps_file;
-> >       int shared_mem_size;
-> >       int skip_pages;
-> >       int page_size;
-> > @@ -199,6 +205,57 @@ static void copy_last_line(struct page_content *pa=
-ge, char *last_line)
-> >       last_line[end - pos] =3D '\0';
-> >  }
-> >
-> > +static bool copy_first_entry(struct page_content *page, char *first_li=
-ne)
-> > +{
-> > +     const char *start_pos =3D page->data;
-> > +
-> > +     while (start_pos < page->data + page->size) {
-> > +             unsigned long start_addr;
-> > +             unsigned long end_addr;
-> > +             char *end_pos;
-> > +
-> > +             end_pos =3D strchr(start_pos, '\n');
-> > +             if (!end_pos)
-> > +                     break;
-> > +
-> > +             if (sscanf(start_pos, "%lx-%lx", &start_addr, &end_addr) =
-=3D=3D 2) {
-> > +                     strncpy(first_line, start_pos, end_pos - start_po=
-s);
-> > +                     first_line[end_pos - start_pos] =3D '\0';
-> > +                     return true;
-> > +             }
-> > +
-> > +             start_pos =3D end_pos + 1;
-> > +     }
-> > +
-> > +     return false;
-> > +}
-> > +
-> > +static bool copy_last_entry(struct page_content *page, char *last_line=
-)
-> > +{
-> > +     const char *end_pos =3D page->data + page->size - 1;
-> > +     const char *start_pos;
-> > +
-> > +     while (end_pos > page->data) {
-> > +             unsigned long start_addr;
-> > +             unsigned long end_addr;
-> > +
-> > +             /* skip last newline */
-> > +             start_pos =3D end_pos - 1;
-> > +             /* search previous newline */
-> > +             while (start_pos > page->data && start_pos[-1] !=3D '\n')
-> > +                     start_pos--;
-> > +             if (sscanf(start_pos, "%lx-%lx", &start_addr, &end_addr) =
-=3D=3D 2) {
-> > +                     strncpy(last_line, start_pos, end_pos - start_pos=
-);
-> > +                     last_line[end_pos - start_pos] =3D '\0';
-> > +                     return true;
-> > +             }
-> > +
-> > +             end_pos =3D start_pos - 1;
-> > +     }
-> > +
-> > +     return false;
-> > +}
-> > +
-> >  /* Read the last line of the first page and the first line of the seco=
-nd page */
-> >  static bool read_boundary_lines(FIXTURE_DATA(proc_maps_race) *self,
-> >                               struct line_content *last_line,
-> > @@ -207,8 +264,16 @@ static bool read_boundary_lines(FIXTURE_DATA(proc_=
-maps_race) *self,
-> >       if (!read_two_pages(self))
-> >               return false;
-> >
-> > -     copy_last_line(&self->page1, last_line->text);
-> > -     copy_first_line(&self->page2, first_line->text);
-> > +     if (self->maps_file =3D=3D MAPS) {
-> > +             copy_last_line(&self->page1, last_line->text);
-> > +             copy_first_line(&self->page2, first_line->text);
-> > +     } else if (self->maps_file =3D=3D SMAPS) {
-> > +             if (!copy_last_entry(&self->page1, last_line->text) ||
-> > +                 !copy_first_entry(&self->page2, first_line->text))
-> > +                     return false;
-> > +     } else {
-> > +             return false;
-> > +     }
-> >
-> >       return sscanf(last_line->text, "%lx-%lx", &last_line->start_addr,
-> >                     &last_line->end_addr) =3D=3D 2 &&
-> > @@ -464,6 +529,7 @@ FIXTURE_SETUP(proc_maps_race)
-> >  {
-> >       const char *verbose =3D getenv("VERBOSE");
-> >       const char *duration =3D getenv("DURATION");
-> > +     const char *maps_file =3D getenv("MAPS_FILE");
-> >       struct vma_modifier_info *mod_info;
-> >       pthread_mutexattr_t mutex_attr;
-> >       pthread_condattr_t cond_attr;
-> > @@ -474,6 +540,18 @@ FIXTURE_SETUP(proc_maps_race)
-> >
-> >       self->page_size =3D (unsigned long)sysconf(_SC_PAGESIZE);
-> >       self->verbose =3D verbose && !strncmp(verbose, "1", 1);
-> > +     if (maps_file) {
-> > +             if (!strcmp(maps_file, "maps")) {
-> > +                     self->maps_file =3D MAPS;
-> > +             } else if (!strcmp(maps_file, "smaps")) {
-> > +                     self->maps_file =3D SMAPS;
-> > +             } else {
-> > +                     ksft_print_msg("Unknown maps file %s\n", maps_fil=
-e);
-> > +                     ksft_exit_fail();
-> > +             }
-> > +     } else {
-> > +             self->maps_file =3D MAPS;
-> > +     }
-> >       duration_sec =3D duration ? atol(duration) : 0;
-> >       self->duration_sec =3D duration_sec ? duration_sec : 5UL;
-> >
-> > @@ -540,7 +618,16 @@ FIXTURE_SETUP(proc_maps_race)
-> >               exit(0);
-> >       }
-> >
-> > -     sprintf(fname, "/proc/%d/maps", self->pid);
-> > +     switch (self->maps_file) {
-> > +     case MAPS:
-> > +             sprintf(fname, "/proc/%d/maps", self->pid);
-> > +             break;
-> > +     case SMAPS:
-> > +             sprintf(fname, "/proc/%d/smaps", self->pid);
-> > +             break;
-> > +     default:
-> > +             ksft_exit_fail();
-> > +     }
-> >       self->maps_fd =3D open(fname, O_RDONLY);
-> >       ASSERT_NE(self->maps_fd, -1);
-> >
-> > @@ -675,20 +762,20 @@ TEST_F(proc_maps_race, test_maps_tearing_from_spl=
-it)
-> >               last_line_changed =3D strcmp(new_last_line.text, self->la=
-st_line.text) !=3D 0;
-> >               first_line_changed =3D strcmp(new_first_line.text, self->=
-first_line.text) !=3D 0;
-> >               ASSERT_EQ(last_line_changed, first_line_changed);
-> > -
-> > -             /* Check if PROCMAP_QUERY ioclt() finds the right VMA */
-> > -             ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr +=
- self->page_size,
-> > -                                       &vma_start, &vma_end));
-> > -             /*
-> > -              * The vma at the split address can be either the same as
-> > -              * original one (if read before the split) or the same as=
- the
-> > -              * first line in the second page (if read after the split=
-).
-> > -              */
-> > -             ASSERT_TRUE((vma_start =3D=3D self->last_line.start_addr =
-&&
-> > -                          vma_end =3D=3D self->last_line.end_addr) ||
-> > -                         (vma_start =3D=3D split_first_line.start_addr=
- &&
-> > -                          vma_end =3D=3D split_first_line.end_addr));
-> > -
-> > +             if (self->maps_file =3D=3D MAPS) {
-> > +                     /* Check if PROCMAP_QUERY ioclt() finds the right=
- VMA */
-> > +                     ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info=
-->addr + self->page_size,
-> > +                                               &vma_start, &vma_end));
-> > +                     /*
-> > +                      * The vma at the split address can be either the=
- same as
-> > +                      * original one (if read before the split) or the=
- same as the
-> > +                      * first line in the second page (if read after t=
-he split).
-> > +                      */
-> > +                     ASSERT_TRUE((vma_start =3D=3D self->last_line.sta=
-rt_addr &&
-> > +                                  vma_end =3D=3D self->last_line.end_a=
-ddr) ||
-> > +                                 (vma_start =3D=3D split_first_line.st=
-art_addr &&
-> > +                                  vma_end =3D=3D split_first_line.end_=
-addr));
-> > +             }
-> >               clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
-> >               end_test_iteration(&end_ts, self->verbose);
-> >       } while (end_ts.tv_sec - start_ts.tv_sec < self->duration_sec);
-> > @@ -758,17 +845,18 @@ TEST_F(proc_maps_race, test_maps_tearing_from_res=
-ize)
-> >                                       strcmp(new_first_line.text, resto=
-red_first_line.text),
-> >                                       "Expand result invalid", self));
-> >               }
-> > -
-> > -             /* Check if PROCMAP_QUERY ioclt() finds the right VMA */
-> > -             ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr, =
-&vma_start, &vma_end));
-> > -             /*
-> > -              * The vma should stay at the same address and have eithe=
-r the
-> > -              * original size of 3 pages or 1 page if read after shrin=
-king.
-> > -              */
-> > -             ASSERT_TRUE(vma_start =3D=3D self->last_line.start_addr &=
-&
-> > -                         (vma_end - vma_start =3D=3D self->page_size *=
- 3 ||
-> > -                          vma_end - vma_start =3D=3D self->page_size))=
-;
-> > -
-> > +             if (self->maps_file =3D=3D MAPS) {
-> > +                     /* Check if PROCMAP_QUERY ioclt() finds the right=
- VMA */
-> > +                     ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info=
-->addr,
-> > +                                               &vma_start, &vma_end));
-> > +                     /*
-> > +                      * The vma should stay at the same address and ha=
-ve either the
-> > +                      * original size of 3 pages or 1 page if read aft=
-er shrinking.
-> > +                      */
-> > +                     ASSERT_TRUE(vma_start =3D=3D self->last_line.star=
-t_addr &&
-> > +                                 (vma_end - vma_start =3D=3D self->pag=
-e_size * 3 ||
-> > +                                  vma_end - vma_start =3D=3D self->pag=
-e_size));
-> > +             }
-> >               clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
-> >               end_test_iteration(&end_ts, self->verbose);
-> >       } while (end_ts.tv_sec - start_ts.tv_sec < self->duration_sec);
-> > @@ -838,20 +926,20 @@ TEST_F(proc_maps_race, test_maps_tearing_from_rem=
-ap)
-> >                                       strcmp(new_first_line.text, resto=
-red_first_line.text),
-> >                                       "Remap restore result invalid", s=
-elf));
-> >               }
-> > -
-> > -             /* Check if PROCMAP_QUERY ioclt() finds the right VMA */
-> > -             ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr +=
- self->page_size,
-> > -                                       &vma_start, &vma_end));
-> > -             /*
-> > -              * The vma should either stay at the same address and hav=
-e the
-> > -              * original size of 3 pages or we should find the remappe=
-d vma
-> > -              * at the remap destination address with size of 1 page.
-> > -              */
-> > -             ASSERT_TRUE((vma_start =3D=3D self->last_line.start_addr =
-&&
-> > -                          vma_end - vma_start =3D=3D self->page_size *=
- 3) ||
-> > -                         (vma_start =3D=3D self->last_line.start_addr =
-+ self->page_size &&
-> > -                          vma_end - vma_start =3D=3D self->page_size))=
-;
-> > -
-> > +             if (self->maps_file =3D=3D MAPS) {
-> > +                     /* Check if PROCMAP_QUERY ioclt() finds the right=
- VMA */
-> > +                     ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info=
-->addr + self->page_size,
-> > +                                               &vma_start, &vma_end));
-> > +                     /*
-> > +                      * The vma should either stay at the same address=
- and have the
-> > +                      * original size of 3 pages or we should find the=
- remapped vma
-> > +                      * at the remap destination address with size of =
-1 page.
-> > +                      */
-> > +                     ASSERT_TRUE((vma_start =3D=3D self->last_line.sta=
-rt_addr &&
-> > +                                  vma_end - vma_start =3D=3D self->pag=
-e_size * 3) ||
-> > +                                 (vma_start =3D=3D self->last_line.sta=
-rt_addr + self->page_size &&
-> > +                                  vma_end - vma_start =3D=3D self->pag=
-e_size));
-> > +             }
-> >               clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
-> >               end_test_iteration(&end_ts, self->verbose);
-> >       } while (end_ts.tv_sec - start_ts.tv_sec < self->duration_sec);
-> > --
-> > 2.54.0.545.g6539524ca2-goog
-> >
+> Still much sooner, but not as extreme as just dropping them immediately.
+> 
+> > 
+> > The goal is to garbage-collect the oldest shadow entries whose
+> > distances are too long to be actionable at this point. Specifically,
+> > their distance to lruvec->nonresident_age (per-cgroup, per-node).
+> > 
+> > In the current scheme, we just go in the order in which nodes became
+> > all-shadow - oldest first. And we only do so lazily when the
+> > non-resident cache is far into that territory (cache set vastly larger
+> > than available memory). That gives us confidence that we're mostly
+> > dropping very old entries without having to look at them one by one.
+> > 
+> > We don't have to stick with that design, but whatever replaces it
+> > should meet the goal, or approximate it well enough.
+> 
+> The goal of garbage collecting the oldest shadow entries based on the
+> nonresident_age.  That's a broad target, which I think is made more
+> specific within the implementation to 'groupings of 64 shadow entries',
+> which I bring up later.
+> 
+> Besides the locking improvements that we can bring, is there anything
+> that you have found doesn't work optimal in the current solution that
+> may be nice to fix?
+> 
+> > 
+> > > The second idea we talked about is that the maple tree is much more
+> > > flexible than the radix tree.  Having even a single folio in a node pins
+> > > the entire node, so it's "free" to keep the shadow entries in that node
+> > > around.  But with the maple tree, we can be much more granular and
+> > > delete shadow entries in arbitrary positions.  So we could (for example)
+> > > keep track of inodes which contain shadow entries and purge shadow
+> > > entries when they reach, say, 10% of the number of pages.  Or 1000
+> > > entries, or some other threshold.
+> > 
+> > It's not the volume or the concentration of shadows, it's their age
+> > that makes them good candidates for garbage collection.
+> 
+> Maybe I'm reading this wrong but it seems workingset_update_node() adds
+> nodes to the list that is composed of all shadow entries (or removes it
+> if we have changed one to resident).
+> 
+> Doesn't that mean there is a concentration of shadow entries since the
+> entries in the tree are in order?
+> 
+> That is, reclaim is at node level granularity, and the nodes are sorted
+> sets.  I think, sibling entries aside, it's fair to call that a grouping
+> of 64 shadow entries?
+> 
+> This also means that with today's code we are keeping older entries over
+> newer entries because the node has at least one resident entry.  But
+> that's fine, because we can't gain anything by removing them today.
+
+Yes that's a great catch.
+
+It's the last eviction, i.e. the very youngest shadow entry at this
+point, that suddenly demotes the whole node to the "old" set. And
+there could be much older entries in circulation that just happen to
+still be next to a resident entry.
+
+But I think this would require a pretty spectacular breakdown in
+access locality. More likely you get mixed nodes when individual
+entries refault. And yes, not much we can or need to do about it,
+since the resident entries pin the whole node anyway.
+
+So the question, I think, is still: in what order do you reclaim a
+gazillion all-shadow nodes when the time comes. And the answer to
+that, IMO, is still best approximated by going in the order in which
+they became all-shadow.
 
