@@ -4,142 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88F35FE5209
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 11:35:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FD8CFE520D
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 11:37:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9F476B008A; Fri, 24 Apr 2026 07:35:27 -0400 (EDT)
+	id 947006B0005; Fri, 24 Apr 2026 07:37:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C504F6B0093; Fri, 24 Apr 2026 07:35:27 -0400 (EDT)
+	id 8F7FA6B0093; Fri, 24 Apr 2026 07:37:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3E546B0095; Fri, 24 Apr 2026 07:35:27 -0400 (EDT)
+	id 7E6696B0095; Fri, 24 Apr 2026 07:37:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A01696B008A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:35:27 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A27E1C0704
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:35:27 +0000 (UTC)
-X-FDA: 84693243894.30.CBA2F05
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1785140007
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:35:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=c7TxfKjg;
-	spf=pass (imf07.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C9676B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:37:42 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 27BD38C3C5
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:37:42 +0000 (UTC)
+X-FDA: 84693249564.06.388D485
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E6024180005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:37:39 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nzBIP5ab;
+	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777030525;
+	s=arc-20220608; t=1777030660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kaUHNWPSayIAoxwlfIlVDCNfQb1tmYIwvhyzCBu0cHA=;
-	b=cRWLsR2608ebl3D3UJPNESD9/Q4mXDtegaEVLpMR0stxTuaiRV6vrHdsR85DRtm8t1qUz6
-	wEFaUCCbfIwS7QAHIIDleYkzwfhY+iEbFPpHlpmK37kRBYGA8nbwtAXbBOlq9jWtFNqPd3
-	xKRk+vL3KMvBfd57ZfNa2PhOw7/I7xs=
+	bh=C3c7Qw71SSXRyALDezXiZAQQzDzvW3kcDvUpY+1eQPs=;
+	b=oEvnmq7/eQENmzjhaUXaJ0rGcK4b8jhq1rJL12waMz8rLgY4CnK+hDVM49z4pNaHOtWR6M
+	qhCx1RUxfNQOzVvH58xUEvnlvcn+x/0v1XwZVxMXFG8cxvdulIgv3nYl1ZSlMwgcAE76Sh
+	Hz3sGKeKA5Q3DR283Le5v+qZ/Y3FfZg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=c7TxfKjg;
-	spf=pass (imf07.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777030525; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nzBIP5ab;
+	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777030660; a=rsa-sha256;
 	cv=none;
-	b=VcdknPByRAgws/b6RxSRt/UG3VUyl4CamshpTK4mg8DUINKTc9qYqoRAKeFlLgzNvBUufy
-	UiCn50+3hAN7YJnx1OWmAMZsu0a/WW+HsV17VuhMO8mWry8OygYy6T0GEvdE9Zdvqr/Sgr
-	k3HKJJW0tg1JmPdhxXumo0QZGo9fbGM=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63NJmmFL3944257;
-	Fri, 24 Apr 2026 11:35:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=kaUHNW
-	PSayIAoxwlfIlVDCNfQb1tmYIwvhyzCBu0cHA=; b=c7TxfKjgaWAbt13HX4LJ/M
-	hunw8CSlRcWLqYz1JrEQyGFNZwTKprI6bhikDwLyn5/qU4IeAiJe6XX7Sz3QcWHU
-	AQjNjQLawH5xpNcbtGzA0e8wcRmoW2MzI4Y0Otq0SVHaIOpBnj9aGNEUl+45yQVV
-	AR66nxMNq4gszcaMc9EiEEOxZ4Qvo4ueYJounGTXZRx0zNOAczvrEw5XI4EOP3QV
-	MXS6gtO/5LyRHXqY5ttKvrJDa8eMDdhDm0IGk5nz6aUAzposw3sYfcIudaNzaAfD
-	9bAXDAlXaw7+ZAm/ftIRedg5jykUpwp8ut3CdBclsAkyCFhHQfL3dzs17l8K6B8w
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu3vnxq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 11:35:21 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63OBKSVC031531;
-	Fri, 24 Apr 2026 11:35:21 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dpjky2kfb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Apr 2026 11:35:21 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63OBZHGE27263346
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Apr 2026 11:35:17 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9AF922004D;
-	Fri, 24 Apr 2026 11:35:17 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CE4A20043;
-	Fri, 24 Apr 2026 11:35:17 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.52.215.75])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 24 Apr 2026 11:35:17 +0000 (GMT)
-Date: Fri, 24 Apr 2026 13:35:16 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/6] s390/mm: Make PTC and UV call order consistent
-Message-ID: <d0a495bf-c463-4aba-9192-c32b3d24fd87-agordeev@linux.ibm.com>
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <7b0e73e3c6f4000f9bf7cb161d8ca9a9f2312d70.1776264097.git.agordeev@linux.ibm.com>
- <20260423105409.10371Da2-hca@linux.ibm.com>
+	b=b+hAu4yAfU8KXYJVysLXMM7ddp8VQTegHkM3IrUhnxERfvZIr9nGzClbeyUY5RZp9Q0YSi
+	0+/3JFVqkS9tGMqWV6V55Yo66JLWatOT+nh7DdfjdF8Ij7sFFZS1bdi+Lrmg4W9CaiNyo7
+	95acTyCFdg7Z3abu6BkQTYKHryxRMn4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CFDB54419B;
+	Fri, 24 Apr 2026 11:37:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41103C2BCB2;
+	Fri, 24 Apr 2026 11:37:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777030658;
+	bh=pQAkkgwBTm0wMFjEsUuolfLk3Se7Aw+kEEZDfgUAj2I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nzBIP5abjjPiZZKk8KmpEKOCx55UR2CcQo4kIqsUQXfA5UyKUBcFG6fL+eKBcY8h+
+	 Z/IfrfmDAAZ1oTeJyQgyK7Tne3nUUZDa89ct2P6caB9rXKFqCCe4EcsScpHzDGFzeY
+	 ZOr9zDzVzse/BEdiDRVjawbGvPPmtHFoHnJfkatWPHbyZr0JPu6QKpCbMJTeGj3Feh
+	 ZyVyaI03ezjru7DS4fm2FbV7yfpGkqG79XotEA98ZaMGW//j2ekaeioZXvojXXT9g9
+	 MVCJK/66fQqSt2ToUupcd7+2VDC/LsTQhO8gEr6GA/W3ei3jI14fr6IZXuhXPmP0Tg
+	 G9IeHmtC0ynOQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 45D00F40068;
+	Fri, 24 Apr 2026 07:37:37 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Fri, 24 Apr 2026 07:37:37 -0400
+X-ME-Sender: <xms:AVbraWr5w8IN3pcVGoXPYYrMPDysCLNSoP-_ZN9t0HOo2Qko1JiDbg>
+    <xme:AVbraT4POzjwfmz4bT4yoZElgbWGQUHeFUgunMRWU2Ng-pHHGGDRmMhmkiPRm26SJ
+    sVpYz2SFbvKgtSkjzeY7zEIW244lEasDLHm0ADNoc4lJACEkWDdwWU>
+X-ME-Received: <xmr:AVbraXbGXxDYOWhmrT7HaBaIytopftSXGzadskJ8-cynWYp8WJVqyh8cEZsWkA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeileelfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekrodttddtjeenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhephfffieehtdegkeelkeegkeeijefhieeitdevledujeeuteekgfetveejjeeiteek
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkh
+    gvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeef
+    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrth
+    drtghomhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplh
+    hjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvh
+    gsrggskhgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvght
+    thesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:AVbraQq9zuliAnRVDPxVtBQJGJxFL_QUAhEOzsJ1QnuDy8699f1iyw>
+    <xmx:AVbraY4lWjncW9FwD2xl5yl8EK0PYAnkDSbFag9Yr96vAKFnGgQudA>
+    <xmx:AVbraVSwRkroFnFwWJ0ASMKYBKsCFLz4T3EDzFpRp6go0R1lLWqdLA>
+    <xmx:AVbraQ2SpbTiy1zowaVMJ8EHvAfhpIeWkeiS40LSPhc1Gdn3NRXYIA>
+    <xmx:AVbraU4lHgmjedtxDgLxYgfTvjFaJxZKG-9HWwH7MyOScA--VfxBgiGu>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 Apr 2026 07:37:36 -0400 (EDT)
+Date: Fri, 24 Apr 2026 12:37:35 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Peter Xu <peterx@redhat.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
+ guest memory
+Message-ID: <aetHWMZyEEIEzsJZ@thinkstation>
+References: <aeTnlQUOOh-dHG8z@thinkstation>
+ <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
+ <aed6fHLrIdahbdY3@thinkstation>
+ <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
+ <aeorZMvKwu8zKX5i@thinkstation>
+ <aeoxnuGKO3uqS2kG@x1.local>
+ <aeo5IPpQi7onyjTF@thinkstation>
+ <aeprnnccJeyHB2rt@x1.local>
+ <17b0dc02-eee3-46d6-9afb-5f81a3a20216@kernel.org>
+ <aep8tsYFfr_Xe54q@x1.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260423105409.10371Da2-hca@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: t3s94L5-K4QOEY_wKDbbGdt5D2BGdSrz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDEwNyBTYWx0ZWRfX1bdyTOTi7Fv3
- JJjvP5hGxQdlvY8bFZaOTDDSfBkYqpkUCiA3+UimJXHXSNf1IdU1pYAme/vFzM9SrWuY12r4WJK
- I+dUiXRWkcTCUpCdVo+/XEDji39fGBoe6Iqvcf6eBpyQEtGrmRdC6rTXcW/qBOwXK6LT3pjdzeq
- a5/dduev5U2VEFaUnf6LlbM1/RRyAlnVVH0eVYJOiSdxmfXjztqt3nawH/ngXktzw+NEo1e6Z+9
- 9MZT9R2SXVmkzKKZbVXf5e1xMYrXZJxiUmlynTKpr+bhEFvRyY4l2qN8v0bYyuSrShQ7zAl3gte
- IaIDKcvxxoG0krjfYtj9rkfZydFCZ4VMoRcJujdVFZv2Mbu1kyTzx7aWAPsqj/V/yie6rRr5XOY
- vrnAKqUnpRk0h9//ke5ySVipZJdPX1n7yhP/LMF987tyOis0eQmfhyDISo0ojUzUytLV3+Z5ORm
- L1oaYM4mQq8oWCGi00g==
-X-Authority-Analysis: v=2.4 cv=a6kAM0SF c=1 sm=1 tr=0 ts=69eb557a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=hBe9qfS21CEMvM0OSTcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: t3s94L5-K4QOEY_wKDbbGdt5D2BGdSrz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 bulkscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604240107
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1785140007
-X-Stat-Signature: n481boitbqd6asdargm795dp7bsqqxit
+In-Reply-To: <aep8tsYFfr_Xe54q@x1.local>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E6024180005
+X-Stat-Signature: qrexgojibeqi4ftoghhhi3fzq1mu1mwk
 X-Rspam-User: 
-X-HE-Tag: 1777030524-304141
-X-HE-Meta: U2FsdGVkX19xFJP+goh1TNUP6K92oOVoqvuOCKA4uTm/KK56BgG6IUd3YlUfs/6s/0MAKLAkmbtMFjG2BBcYv6FD2aLBscvbShK04xYSparDy2Q2a8LkNvhvdNOtsVks9FzIqb0yWPM5dusdO2EyZSrwVTPXY9oQ2BBpNdl7C/01LS1/AReo5Pf/u1nw7sLbaYaj987S5RByFpF893NOVxBVuBHSNQF6YV4DEdprtS6wZa5qsgn0w95rvBaap/UAM2iQGa27qFtc+mEveNthQ7db+n5lIheqdy6hccaoiPAkm/Xi+HHJs6NNuIpqH8ZQEBDN3melAL5YXFgBf9sc1uFQ/YdQ+HacuM1Q0uj2uTNa0pYm2YUbTweH5+eG/HxDVAk+dEEAEIPEeVZJKawMywqqwNfQdfSOBRdegX1Q/bd7ZEc9QQZLdPW7EsP5uIg7TUwGoDs6REsAB3xe9mj35V9uMhqFJV+zG9lhcV1MF+ZPUVjuGvHnKVTOKWPaVOiMxgqymZyOnwAOT+9Ui7f2d2DEMNO8Cex7OWq6Jtl3x7LHhbWqGYZzaESIm8VrSM77a+gmfyA3uzP+7ENgYYcDL1KjJI60mb+sLhN15vW+dWHzO9GeHxSfF4nGfDn17vycPyo6cTGP93dSfQshaJiM+m/iDU7GtrHJgo1FbNG0S3gvUnVTNb8w9q9pB3vW7VQbK1vUxKXNRJ4jXGzdEyUrunoZIITIVsDhs1WAvdH7II32VAoVX0zn9LJSxDsWoi3gHy/nsZ42JZ/WbW1bZuX8RrpfcjspD7c18PWKlN3AdP3GucYZupqcPwF44OovlDhYiQt4O+tRVoBBO7YFhX3yGNWgKIfnDIagNODVeEs6tq9HISpIfMlloNctfDlN+i5mNhTCBdfvVCuLVbW7xDuFr/1Wz8fR5G/7PCH1wFtJ48bARUg1HIJUhEOTi0V/HQmOKGUprnLPNxLz+Haxr9Y
- +lb7rSk/
- uSYUt98le6jgGZKfPzYF2HZcPaSeaXnO7dY5LBz/4C84bn5VLz4tY6bv4l39x6ga8P7hRnIzbpOiPF3GwY/HyTpAiy/x8574M0N2jSMY7exiD0O9FG9/II3iRIpocQ/I+6GQrLF108GVGfX1LBLKJOvdMbXXOL2JA1KUss2Ue+J1LDxNls49mmtwds/AyS8zfGrMIK3tOewt8AXbLHmymgXYzpLVpPNcSIOgzb+mZzK1LP9nthYMWEgZfWjhVcujvQIDkX3d+mmcsCdUR9iQh5yeUhlmfrSnVXZ3z9fYzefmeUetjZHGjWtg25kUlrgjIXhV/iOvPOmUw18JRSiYqM4jHnt2Yw2sM0ZSOy/0cxeN7R4M=
+X-HE-Tag: 1777030659-229124
+X-HE-Meta: U2FsdGVkX1/QZpOMTEdyS0C/6RpeDbnui7sx60uqJDjW4pRfrIOaWpD+RwPVHXhWKn2KO3w6BLw7llUOAHfwED56hqYcyon24nw/Gorb21ns3K0sFOTRIXdRsXe/q+ElcfK1v5Bwp9N/UPeytdZ7zc/AADgd4swttMPo7cPl/JDIzUQuCMRx69fRTfI9OoJv+nPyUbEJxPciUHa69Fye4L8FDkfxcxQ77jkIPI8XS6md60kXyasCHOdLjOc0vMEk0ZSgLjO1K4V6r4UYyxytm3tOnVuKnUWsSa+OHKTG5J7OzjeFFvxDDQPZNT0JoF3hwVGo2e3xfkvmTivmf682s/uZxllP/D6d4qOC3Z3Z7DfyQcgAsGYE75Nlbf1JcvWmjM4MbSBwfjYGtv53PQi1VnEdMLhWtHAIF9IvsAp6GnM+clX7zNQWCAMLk2g0ivpM7P80BTusBPsBDjO6bhyChTc037iOFtqJfzTQ7JFOBX2G1QuXhwp7q4saYRhHHqi3bbboDI6IJMJdU8SpEfdQUdCiGrQ/6kYGYiBIxZ2H3CDbvmBnNTJteT80p6ETwuYvPPAa2kE0C0aPkRMXgH6Asp8lBc4WI9rVS89zE+z+BN7HPORuXwJFTHPfOAba+WljVnWs4MeHTtPT48tfu7olTHpxm5VpmcKPYlVyoj62CEtzEcgIOQ0jUCLkjMcxm4L750lNNQ/vDFQotV1c3XH2s2jfkbq6/HysLC1KU7f0EOar9egcJ7Z/miFNIijFW5RLGIAvdNg6yssVfu+6k8nUR3UOYHdkFCnkMNoct9IYOl6qN4W69VB35RKDowSpwWrzzEpWEkb/3pr8h9zXlKTt5FFVvZPTlVolM40j+bQ4VW0WZnY+EQFcgvSqb3nr3Cb7B3IbrA8puc/BacXwn9uQ53euRTSd1mDgAi733l3W4f8gDqOgAH60cHURAjuMnRHU+qtmInFfJWUUI3A5V0J
+ dww5f4t3
+ 3Zb6I8Eus75BW07yU5aZGErGnkEuyaaw2hXhCPWGFBsKUGnnMwnVTvB6z/+oQ4wdw4pyAf3RaIICdJxJfbi64Us4OkgUGM2K0r7TKX3qDudvPtvi+4VbSoHDoekP2eAl/sWfwhfL2R/j63hRrBeueeEzOnBj8XMdipRTxNrO32WcbSKa3BLQ2malNOYZwuV2qEwCUWSkgGfVCq5qXTX7jwPVI5Ah1plZG/UGRcGYKLP6vxw538XVtnCjVyxejbTlEzsGLHwC0IRxFgAvZaCjSSb0X1FMNfTEfxFvxEH11e4rEKMtTfYjcxvnBxhw1CX7rjJN8BQKTxYNgrak=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,30 +142,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 12:54:09PM +0200, Heiko Carstens wrote:
-> On Wed, Apr 15, 2026 at 05:01:22PM +0200, Alexander Gordeev wrote:
-> > In various code paths, page_table_check_pte_clear() is called
-> > before converting a secure page, while in others it is called
-> > after. Make this consistent and always perform the conversion
-> > after the PTC hook has been called. Also make all conversion‑
-> > eligibility condition checks look the same, and rework the one
-> > in ptep_get_and_clear_full() slightly.
-> > 
-> > Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> > Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> > ---
-> >  arch/s390/include/asm/pgtable.h | 39 +++++++++++++++------------------
-> >  1 file changed, 18 insertions(+), 21 deletions(-)
+On Thu, Apr 23, 2026 at 04:10:30PM -0400, Peter Xu wrote:
+> On Thu, Apr 23, 2026 at 09:25:30PM +0200, David Hildenbrand (Arm) wrote:
+> > > 
+> > > The other thing is, as I mentioned in the other email, I still don't know
+> > > how the current RW protection would work for anonymous.  I don't yet think
+> > > the user swapper can read the anon page with RW-protected pgtables.  So far
+> > > my understanding is maybe you only care about shmem so it's fine, but it'll
+> > > always be great to confirm with you.
+
+
+That's true. We use vhost and therefore shmem in our setup.
+
+One idea I had about how to make atomic eviction for anon is extending
+process_vm_read() and process_madvise():
+
+- Add a flag to process_vm_read() to bypass the protnone check on
+  accessible (or only RWP?) VMAs.
+
+- Allow process_madvise(MADV_DONTNEED) when the caller already has
+  ptrace write access to the target.
+
+The standing objection to remote DONTNEED has been "destructive", but
+process_vm_writev() already lets a ptrace-capable caller overwrite
+arbitrary anon with attacker-chosen content. DONTNEED is strictly
+weaker — it zeroes, it does not inject — so the trust model is already
+established.
+
+> > I wonder if uffdio_move could be used for a swapper implementation instead?
+
+I considered it. UFFDIO_MOVE can in principle relocate the cold folio
+into a staging VMA inside the VMM, which then reads it and drops it.
+The downside is the VMM has to maintain a second address range and
+serialise eviction through it. A purpose-built primitive — something
+like UFFDIO_EVICT that zaps the PTE and returns the folio contents
+(optionally to an fd for io_uring) — seems cleaner.
+
+
+> If RW is justified to be useful first, maybe.
 > 
-> Why is this required for this series? It is anything but obvious to
-> me. If it is required please add some reasoning e.g. in the cover
-> letter or to the above changelog.
+> I had a gut feeling Kirill's use case doesn't use anon at all, then if
+> nobody needs it we can still decide to not support anon.
+> 
+> > 
+> > If we ever have to read from a protnone page, maybe we could teach ptrace access
+> > to do it, or have something that can read from prot_none areas -- like
+> > uffdio_copy, which can write to prot-none areas.
+> 
+> Somethinig like swap_access() in my proposal can also partly achieve that.
+> 
+> https://lore.kernel.org/all/aYuad2k75iD9bnBE@x1.local/
 
-This is because changes to ptep_get_and_clear() and ptep_clear_flush()
-look much more clean with this patch. Otherwise, I would have to move
-page_table_check_pte_clear() before the UV check, which is strictly
-speaking worth a separate patch - this patch.
+A maccess()-style primitive that reads through PROT_NONE is a reasonable
+building block and overlaps with part of what UFFDIO_EVICT would need.
 
-It also makes sense as a cleanup. I would prefer to see it as part of
-the PTC series, but at the time I did not realize it was worthwhile.
+> There, it was only about reading from swap so far, though.  But that one
+> might be easier to be extended to read PROT_NONE and directly put data into
+> buffer user specified (ps: in my local tree impl I named it maccess() to
+> pair with mincore(), but it doesn't really matter; it doesn't even need to
+> be a syscall..).
+> 
+> To me, the interfacing is not a major issue.  The major question I have is
+> why RW protection can help in swap system impl when we already have uffd-wp.
+> 
+> So I want to make sure the use case can't be implemented by uffd-wp already.
+> Because that's really what we might do for QEMU.
+
+Race-free eviction can definitely be implemented with uffd-wp already.
+But not proper working set discovery.
+
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
