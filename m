@@ -4,147 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 710E0FB44B2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:34:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A6D0FED3C1
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:37:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D95BE6B009F; Fri, 24 Apr 2026 08:34:30 -0400 (EDT)
+	id 869336B00A5; Fri, 24 Apr 2026 08:37:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1FE56B00A0; Fri, 24 Apr 2026 08:34:30 -0400 (EDT)
+	id 81A196B00A6; Fri, 24 Apr 2026 08:37:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0D7B6B00A1; Fri, 24 Apr 2026 08:34:30 -0400 (EDT)
+	id 72FCD6B00A7; Fri, 24 Apr 2026 08:37:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A93036B009F
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:34:30 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74971A0117
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:34:30 +0000 (UTC)
-X-FDA: 84693392700.03.95A5468
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C7F02A0013
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:34:28 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ShC8yNEb;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CD1E6B00A5
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:37:39 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 04DBB1B6AD5
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:37:38 +0000 (UTC)
+X-FDA: 84693400638.16.76305F5
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 40D8740007
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:37:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d8Q4MA/b";
+	spf=pass (imf17.hostedemail.com: domain of huangzjsmile@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=huangzjsmile@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777034068;
+	s=arc-20220608; t=1777034257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cAWNUOXPwh3V/JtwO/fiz2Bu8Y5mxhyrvgsra8QXoFU=;
-	b=h50HNFqe1dYpOF4FwGU1Dt+Nq6IsuYReiuvaMn0ooHYUAZHsSTLYfZurKdt7b4oGzznYoe
-	5GHjkrC+1qi9qQBx43hM1L647eHxzuVaBk27oMiEaQqgHVapsWerSEjBnUPR+i4e+o4HOl
-	HbI4Oxm7cueSK5sany4gb1RqSpIIGwo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777034068; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=30CzM4Cyi3aFwkoMrw9gUsQCscXsMUPR4XUS+ZTxUOU=;
+	b=45mK+FDYjzGERbM4w3z1sVy5siXPqCSb8tT53Ga2MWAZhuikUH1samIpkJtKDzWg2VA9d1
+	k3XkdWj/IzwBYAzlfHcE1cpHiCMX6eVDd09O88ky7SJ+vSkRCAM3fFDiAbXIs/owihoS5Q
+	j3A3FAhgEopb8Z97QVvbhu1B7d3piHs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777034257; a=rsa-sha256;
 	cv=none;
-	b=v9fCTzZrO03agkoNnexo84m+oQPiZrAZIYGSU16rK8zJRUFR9uz8oKp7sBhyDTLPlkapV+
-	QLyb/kOaxEx5GF7zE/Q1dy5sUfuTv5sqk2f82x1Olf83LddaAXeChh5EyUcY8FQ+5vM1Vs
-	217IdXRqjY0qKOskf3rtKXM80YpXb0E=
+	b=xiaG5XOHJdm6XDGuGvMs5cnJXczchk+CJ+xCy5NPxVzf6wnnGSpKvdSHABovpVhYuRvneJ
+	HgrfzhGj2/9SBL5kIP9KnCOzsSQ+FbBnv+KG1XuCYgNJWlJopYmURE1HrQ8ihzssMXVC4u
+	2OjeS86TQk716iSkqMsVabua1G0eiXM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ShC8yNEb;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3E6D560132;
-	Fri, 24 Apr 2026 12:34:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1A2C19425;
-	Fri, 24 Apr 2026 12:34:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777034068;
-	bh=pg3/saucyxrs3hRhxEU1mCMtPQYXPKzf8hqS6rUeCH0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ShC8yNEbSqbNNaZN4bY4pN+MALe6bPdUrpfqj63TY8KSDuLwlRU72grzAyEdQwtA4
-	 XIa9hwHjJI8s1ctritRWrhVVOnir2N2X6pdbXj97aCK9S6tYpPAkn+28kOdk1qjNZI
-	 /KA0xRfdsnp2CNIeNJVj52x9O4ehsUDpMjpAQf1vk/+5J/wV2mom8SJrmSnjR5829T
-	 dWUz1pFXBKPZ73j2COktPBXOD+cwzOyEZmRF7G5R2ISKepVeQJP8QHbUhcnrERIg6u
-	 wqJnZ8Ph+77i3/yjWQ+kMorsB1ZrPAHPZZdOfBfZhkT6GPk+KQOXF2qugmgeBImSfv
-	 j5ZSsrHrISQ5Q==
-Message-ID: <60cd723d-82f0-410a-9a7b-c4d75a5c94e4@kernel.org>
-Date: Fri, 24 Apr 2026 14:34:22 +0200
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d8Q4MA/b";
+	spf=pass (imf17.hostedemail.com: domain of huangzjsmile@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=huangzjsmile@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35f9ab079bdso5182770a91.2
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 05:37:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777034256; x=1777639056; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=30CzM4Cyi3aFwkoMrw9gUsQCscXsMUPR4XUS+ZTxUOU=;
+        b=d8Q4MA/bjJSQahKnV6Ul1GaVwIgzWkoYXi7ow8iG1sha6MeWTTzaIh1WED4MSgdERl
+         HtX8M5CJXxvUE0lxOR1trobtBp/7SUTohMZVuz8+9CKNQzSrC8VpEQrzeP2qBGI6JPh0
+         s8S83TwUcITsTDisabgVEVfBE4s23AxnElE5NAaDRbmdaap0C17i9SOP2ViQrxtalBVd
+         rMUfNjzsl1sNRwPXwEuoDErd+iqYDNXaMLI+8J0jxhtrqdR5ML4jlpbysMCQ3s5WfD5V
+         MP6G9t6VUDbgEuQdA/RMNNCLK1SJTm3DGmeX+vxuE68c9q5cwDH9/OI+TJvlmJC7sRIM
+         OOHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777034256; x=1777639056;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=30CzM4Cyi3aFwkoMrw9gUsQCscXsMUPR4XUS+ZTxUOU=;
+        b=KXUGEkBylDvjmf3AqnElT1cUN/YZXQ+3K40Sa5MQXbeLHUnFTz+t/Xljaw8exmY+J8
+         tQKzH3fiCuElzcbO/3lyObpvTn3LCya8J1Q2htEsSEaVA60r1ZVUkuQgKuT4+il935Oa
+         vYNCijHG9ojcfs8V6wShbzbnIWBlG/ry1MC51lbW+KKkA73wrjJVr8UmXHAzCNMIISdc
+         fmCZBoxuR8kyJyBv8SuxRHVEVSa67mA1sWwHyfb70CYzkTBGmRSX/GPf4X9YT2PKBhAp
+         TXq9VQmtmQ8px+22JCbTm+QnMjdbG87CXbwvM1fRrCAau/QQNrmrVQyeg+dUkB6rCRi2
+         kcOg==
+X-Gm-Message-State: AOJu0YwwAFkEbHk/pTzQlQyZ5ZgjNbxUcWvdQQMci2SKY2Dag2JGmOev
+	k3BId+ISVcJoJQrYZ8xR9bZ+Q6/X+RUtdRCceCRwqoy5/Cz+KlL7o0+s
+X-Gm-Gg: AeBDieuee2QSLDOB66VoR/WRSimPd9wnyxHibJXmPpLHtVxLpdq6ECgi7crxk4+6cTv
+	U1PsMFy41ywY6kKUnmrpsiyOaAcIQMZL7ggjLHI6Ob5npRKGHl3hkp8bQJPZVOP/WPxc46kTNEk
+	iP3x46tC8X+iVwCI3lXzcWq0AJH+rxdYHWOBuJmynMOrjmhVJH4eRayuNC11+dujogSfC4kjP1p
+	grcSYMIG0uHlNXqMr2Ln0gKxksq8PsBmDlaWkh4tfk0fwfbYV/S6xtjH3cE6BEEGgVMMbejrZeN
+	c4dmpP3csGVzDIdzCUGl9xSur/Kas7srCvzQDdNhuMt9uPJ9f8iba3pCJlE9yq56EZ5bVoxvaj3
+	iISX6GVLsU0XOhTILa3XSLelIXsRzdn8tLJ6kmRjCugS0PrRrTQX8kQfWFfAS+gXc0V2mA4Jc1h
+	V8FyFwVNP3l78BX7vFhwG5ZFbaA48pOOhfa8idmAGR5VOfXFT/1TMP0iHGza0zwLFS1TlRxqw=
+X-Received: by 2002:a17:903:110c:b0:2b4:5e7e:34ce with SMTP id d9443c01a7336-2b5f9fb90efmr324443535ad.39.1777034255986;
+        Fri, 24 Apr 2026 05:37:35 -0700 (PDT)
+Received: from localhost.localdomain ([14.116.239.35])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab0cf67sm219017155ad.51.2026.04.24.05.37.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 05:37:35 -0700 (PDT)
+From: kerayhuang <huangzjsmile@gmail.com>
+X-Google-Original-From: kerayhuang <kerayhuang@tencent.com>
+To: kasong@tencent.com,
+	bhe@redhat.com
+Cc: linux-mm@kvack.org,
+	kerayhuang <kerayhuang@tencent.com>,
+	Hao Peng <flyingpeng@tencent.com>
+Subject: [PATCH] mm/swap: Add cond_resched() in swap_reclaim_full_clusters to prevent softlockup
+Date: Fri, 24 Apr 2026 20:37:23 +0800
+Message-ID: <20260424123723.1820591-1-kerayhuang@tencent.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Discussion: Targeted memory allocation via
- debugfs
-To: Juan Yescas <jyescas@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
- Kalesh Singh <kaleshsingh@google.com>, "T.J. Mercier"
- <tjmercier@google.com>, Isaac Manjarres <isaacmanjarres@google.com>,
- android-mm <android-mm@google.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- lsf-pc@lists.linux-foundation.org
-References: <CAJDx_rj-fTpKjtsw1jJ0aAaC3a2Rt+zrizqY23ZHvq0Mm56uTA@mail.gmail.com>
- <00ec73d6-11d9-43ab-b1e2-d543425d19c7@kernel.org>
- <CAJDx_rj4DVG2D8ab9O8RWDEF81a5J-fiwtDedubEnsmL-1q+sQ@mail.gmail.com>
- <5c6e3c1a-bae3-4997-b02e-135374d1d6f8@kernel.org>
- <CAJDx_rgYXWNC=0_QZDmMpuZU8aZqRU8OeMBqXT1jjzrpK=BWeQ@mail.gmail.com>
- <e63e0ab9-75bd-4a7f-9400-a8f87c80d1f0@kernel.org>
- <CAJDx_rjk-5pp5Z884bnTBss19Xk0msEayR=GAMG2wWCk+WOZ=A@mail.gmail.com>
- <aa8e148f-252f-4d81-89db-b1702d9b6888@kernel.org>
- <CAJDx_rjgyi-L-1j2kpi1NeKj+Huynd6ZFqJDmYqN8i8L3KyBfw@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAJDx_rjgyi-L-1j2kpi1NeKj+Huynd6ZFqJDmYqN8i8L3KyBfw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C7F02A0013
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nxxaes6gpqyycj4zytaxfo8hyz3ynkoh
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ozjzyantfkkit74oigom7s13n51sst83
 X-Rspam-User: 
-X-HE-Tag: 1777034068-656676
-X-HE-Meta: U2FsdGVkX18VuOJw2chVPdA+5NYKGVz63A5a3dRtNsceRMcVI+yHjChzStAw+ZDad7InK2Noh2C9hTzfWllHh90ECZfy7IPL/3h3XwEmh2xAbsiOpIVKJjD6esgjvahv3AdeDIiSp8hNRudNcmP5v1CtqBDZfYJwo+OwinwtYSPoNeoZ/duzRCYyBrjOMXAhWfllGw5Ezv+39AtT1CO7DJJbK1PnIP7oymIi2nsWNfF32xv8jYIKBNcUS455jFawLUmMuzLTlZXeF8CnbceH0Hl3IsX0l/8pXjlto5jqCmmQaq83SvpUpDR2tcMG671+Hzddf7fH//5GlBsPjn3D9BqnPyMxkzlJWW3Yg5Xldohyo+WJRVnUwSUNRrqmysB3yuPd/cEZ7/MojUWNgjfuthOXAIo6qfYZTsFVtBk2gFrOBTSmbuwtDg/P8zmEJp0r8a7OyGuTX451Kdv0SRi0/9ZZQniUwjiSfROfhF4aKIw1I53uLPypaIQnV8VeEw0A2D1DML7OWUZJMis4ZLK64d49fVtcrglmauPwxNeqK8q/R4RwnHwKiJpxa9091+USpeVapSkvkhw6jK+I/lth/298JBLLWMFOT+Yb/Xtr4qlnA3iH+3FY+XAeuBWHBFAanKokna8K9P7/t2TBDGGVqMPzCogXnytEdcG6IoGlOk6okbVTiTn5MV/dIRAEOC2aC0L7Zj2VwnrEzious0KXMPWgy5tPepPwtrEYId8RDvCJ7Uqhs6OAe/ekIQYPe2zrPgIzFgzL5L560a4WLE0IrzRbIrTpyL4+EVvBdKp71lcGGDK0p0V+mNT+ILFGcPTXuSFqAZiGEdT3odamxzKtRkLMIy4HACI3NN1ZijHTWM2BqpxTUCSDAj74C/aRf4hTaYqfYExcL6Rb1K0/5KKBgHEpm+7vPw6HaXUx7siWg7SJme0HtUCthCAwLbMJsVb7U7Rk2MNWR9poDRxQh4+
- 4oq54qz1
- M7J9GBLgkGa06HeHCGCbCwfsQgasR2m9/17GPu3BMxfimTK/lVLyqJ2tLi4wVOJNP4lhO1jr/zfQdZ/pfV7gZz3J33i5lOeZsfuUYizOhriCo+GfoE8crV+uILJvMmKMrQRc/S7tRzCf7A27ZLNnQcYRc2VXcllttfo8tv05eerrTjn5VWO29rC/nY3h0lLtypECQTEHciIzutCVoQFtcN45Rp9gXcf/2KkfeYPkvF0vIyt8+vmj6D+rq2tPkYbMQ4GmT
+X-Rspamd-Queue-Id: 40D8740007
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1777034257-328177
+X-HE-Meta: U2FsdGVkX19azUEACp1VhmuQl6pKP5QMS5Lv1ElZCHxIL/DDxv5yMQKv1BI5W49o9uCWNDOrkQA71C4+tCt+X4h6mdVCSxrKwV8x9ifTpDrOTGMhkkz1yFas690yB79OHxxDQlyIZmIcfHHnsBxOUK+Vd80Jel193jURMFl6PcWLnaxZSnW88ECzETTYgkmJ7+lb9oNItOlDd8q5+6ryYIIvQRgPbpPKl9QSuNRdOBJBro1HZHGQYtTgMy/Ve6NVs0q1FUXnuRep57zb4Ffa7zaAuSk/pMq+dN6spEDPWB7hAfcTii5CDI1qMWf+tUKkx7aWDZcQaKql2Occ9zP4ECuNWwu1jMjlkzk3VfYSm0i/meppOJ/4o/nrlgfIYUspfu5Blhcq0UJmgv78tmIvNEX4xZVTg6qFKgMxROaqdJjUgxWJXkscrGNh45sP5M5AY/Ypxkb0wshSnuJPGDxe24PPKsrWt3w96/m9aawQV8MvReCFnMhASzVVcx3kjANnGTTAyHuplvZX4hmCHBJ9vWLijHBLDD2hr/27knDnrmAS5bSr26Jirw31qYZ3R63GQ2r3OXGj6ozNdE0jusBOBv5NwZ4TPQb1+NKF69zq9Y8ktXK/GPJlsPQeGWpdEGlYXCnWvcxBuWLf3s2bzsy5O77MBRiTT65pe7hQ+E201jSqobfm5LIaxyEtq4SG6vRP/wJLV7NrIw0ftIuP14eqixbDM7eRj+kbOw0Ub1zVU64+VrsTl0qIPJs5NjcSHr7Kwh+9H9c1DhgOToWjBDgivBnrPRFj9yZ6fFwvcbv1nZ31iXC11AdpA4nucTUnjlK4yILakTRDNA0zLOPu0hq3DSXd8+J1vi1c1ma2QghnNZYGRwIqmGXR67iv3CvMA4y9Ta+VVBk2/Gq4zrTA/JSVmslkUTO01p51yFlNkhRPP3NxKTJsHRlFpCQDqhqxj5IAQSfZbp0ClvjcTSwlJts
+ 8jMK4IeS
+ ywYP3JbphNd1JAaUd5OVNUIfqw0oiVQJvXEOBLF7VFo+tQ4aGBjm9GCqmNJjHUrzuYNuuTAt2+Z5KHHbznoFCz2pfugRa8iujESSg5CDr2andQx5sxSN+BUmjASnpfKrIvT7OcFCDHjXZZ3zcvSCcGm17anWLjgDQ53/SMYljXv90VXpyvlbVtsygZTdtrzuggT6Mtsscrf+hSh3/3Ou7cloetUzglf8x5DejCH2WdK+cHLnijF/T1V+x/wI4Hk0wXKIIvBG6PzJlaXx8UHiCs7p91rVCFCZC9aP3MFITRTYXroGC44YQVtMeHE9r8DTPNI72hYA61S9y28046AubQj7ClCt+WW1CIaqA/4cXz2+GZifNMVKPr25ShELFNR2olSnaYeHmwOCA0to1uS0eIIzVLlZqSgWfZGiOlkgk3atjdkQxU6w+VBdhkJFc3mrvjc2x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,31 +116,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> So maybe you really want a debug mechanism to migrate a (movable) user
->> space page into a CMA area?
->>
-> One intent of this driver is to debug CMA issues (pinned MOVABLE pages). This
-> The driver will allow easy reproduction of the case you just
-> mentioned. For example,
-> I will allocate most of the MOVABLE pages and then trigger a CMA
-> allocation, that might trigger a migration.
-> 
-> However, the driver's main goal is to put the system into low-memory conditions.
-> so we can reproduce OOO, kswad, lmkd issues seeing in the devices.
+Add periodic cond_resched() calls during large full_clusters
+reclaim operations to prevent softlockup issues.
 
-(Late reply ...)
+Signed-off-by: kerayhuang <kerayhuang@tencent.com>
+Reviewed-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Hao Peng <flyingpeng@tencent.com>
+---
+ mm/swapfile.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-But there are other ways to trigger low-memory conditions, no?
-
-So I think the real missing piece you are looking for is getting a movable
-userspace page allocated on CMA memory, to then try allocating from CMA to see
-if migration works.
-
-And you can do a bunch of things to make CMA's life has hard as possible.
-O_DIRECT the userspace page, trigger low-memory conditions etc.
-
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 9174f1eeffb0..74a1e324449d 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1054,6 +1054,7 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+ 		swap_cluster_unlock(ci);
+ 		if (to_scan <= 0)
+ 			break;
++		cond_resched();
+ 	}
+ }
+ 
 -- 
-Cheers,
+2.43.5
 
-David
 
