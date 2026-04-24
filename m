@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AAB2FED3C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 13:53:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2CA5FED3C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 13:56:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A15306B009E; Fri, 24 Apr 2026 09:53:29 -0400 (EDT)
+	id 314006B00A0; Fri, 24 Apr 2026 09:56:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C8396B00A0; Fri, 24 Apr 2026 09:53:29 -0400 (EDT)
+	id 2C5746B00A2; Fri, 24 Apr 2026 09:56:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DD926B00A2; Fri, 24 Apr 2026 09:53:29 -0400 (EDT)
+	id 1DC116B00A4; Fri, 24 Apr 2026 09:56:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B7016B009E
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:53:29 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2AFFB14015F
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:53:29 +0000 (UTC)
-X-FDA: 84693591738.15.EE631C5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7575F140002
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:53:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BVr1vvQf;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777038807; a=rsa-sha256;
-	cv=none;
-	b=JvV587s0M428reqD2RfI52nBUNp8RI9Zn1L3+DBr2Ja90v7gSYBPjsYG5KVt0iGchQqMBm
-	7dE76XUa66/SjKVPyXCAdWhp3ykQt07rWePINIn3bPLGySgNXqIhSyrAqu55rDLV35xlQt
-	7UV95Y4k31urMKPP09hvDFW5dO7Fy/s=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BVr1vvQf;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B74D6B00A0
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:56:22 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 94B9E1C0054
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:56:21 +0000 (UTC)
+X-FDA: 84693598962.18.CEA3C8C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DE6C01A000C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:56:19 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tWKIRAk3;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777038807;
+	s=arc-20220608; t=1777038980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oXyLa7EtcjXa4QtGj8bL7aVeJHcW+Ut25/6nEAEOz80=;
-	b=oeBLCzmP+NZ0SdBRVSAJuiUtvohOJm539NPkkul6zFUD22ZZfWSj+QXkDSZU23D5Ssus8t
-	tgY+i8jdGRgJWz2dfHXaYbDlKr4i7XVEtTEEsWoUd8cJJoz/pP7p2WUMtNZ9wE2jntw+wG
-	iV6vNDBPZJ8kwMtAmYH7jCo/ZjcQpCs=
+	bh=3vroCxHDFErsYYm4AmTQKjBCHv6XEi/bI3pYwGTqPUc=;
+	b=NM9jkiucf2Bxtyg4dNSBvDCr4mFoPNax39z7FavwUQgcQ6t+i8XxXwG3/o02qLmD4borAU
+	6RS6Od7yRaG8UheL1+SNO6rQujDcCFu1DXL+/1g9DDahsVxcvkMcwEUzR4gsgEt6VqDhKm
+	Ywz6h8c7++FPQSMsM61sktZAGEu+uJI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tWKIRAk3;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777038980; a=rsa-sha256;
+	cv=none;
+	b=3p+fY/s2SB3ckU+NSCCGt0YAnHi/ttZBnNDKmGXIeq72IiX8e5ijm7nJDiqwIO3PY9IIpN
+	U5xCJKIV7sRUqnj9YDQoCwFKoJBgXV1p6FZJQ6V+msPk7juBFob3jC/x0kaCFdwPgF4ZlA
+	N2Yc1/7GwJ3eSJD60twPm4r2FETmJyM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 737FE6001A;
-	Fri, 24 Apr 2026 13:53:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F99C19425;
-	Fri, 24 Apr 2026 13:53:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C635840664;
+	Fri, 24 Apr 2026 13:56:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BB7C19425;
+	Fri, 24 Apr 2026 13:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777038806;
-	bh=SmelVMfR0lIT8feBbjzKlmYGOWieazPUWxP+anpPpOE=;
+	s=korg; t=1777038978;
+	bh=ChyUBkH34s7FeI8qgas9yFITZwgMiabL3SZHFnWYILE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BVr1vvQfL1f9TtXGB75geSK6oFBdMswSbOe57cvHGXKeu50nA18hCinr25LHx9ZLn
-	 T9MtaGzQAzj1CwQ76SxHhuOzj6gVlKHFePd5nUP+t5UKZRdLKxi6sY/lzJV4GBd6sH
-	 lsgYTCTZBOgxRYvieyx+yth0vF1iVR/Hp2KI/rVA=
-Date: Fri, 24 Apr 2026 06:53:25 -0700
+	b=tWKIRAk3owCEWZorPHdqK5zTy/FQwaqxjq365RJkDdcfwpcqabpAt1Yr4kLsXU8FT
+	 uYkiYJmlFLcMNFfsFmd4atsqFvS9zXPNphZ7uPYp8G6wcqaXe1DuKnkv9QI87dU0BC
+	 kzoFM3cOse3Rrw5vfor2ChWhUhzkUWqyVa3CGVuU=
+Date: Fri, 24 Apr 2026 06:56:17 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan
- <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 0/2] mm/kmemleak: dedupe verbose scan output
-Message-Id: <20260424065325.d9643671feedb0f27297cc94@linux-foundation.org>
-In-Reply-To: <20260421-kmemleak_dedup-v1-0-65e31c6cdf0c@debian.org>
-References: <20260421-kmemleak_dedup-v1-0-65e31c6cdf0c@debian.org>
+To: Marco Elver <elver@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Uladzislau Rezki
+ <urezki@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, Vitaly Wool <vitaly.wool@konsulko.se>,
+ stable@vger.kernel.org, "Harry Yoo (Oracle)" <harry@kernel.org>
+Subject: Re: [PATCH] vmalloc: fix buffer overflow in vrealloc_node_align()
+Message-Id: <20260424065617.5de5751ec5a5c91910d45a28@linux-foundation.org>
+In-Reply-To: <20260420114805.3572606-2-elver@google.com>
+References: <20260420114805.3572606-2-elver@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7575F140002
-X-Stat-Signature: usu5zihyok4esy1d3hu3d6k56owpb5rf
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DE6C01A000C
+X-Stat-Signature: kjnw5h5pkqhbc4zk99jn5j7xerz3y6cs
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1777038807-987520
-X-HE-Meta: U2FsdGVkX1+3TQ/u6+JLpqZYUonIC1VrPkng6eGtf6mqmgkFG0NqHdKMc9zVsxd5H5t7eUTzny/P/OyPx9WceGbsiB0NAXLq/vrH1E5dszlGvmVuNltTxNcfb7sn5xOAaXWdEeco/JpJkKCQdXvJoVjQVNP9NJxwSyWsPW1jzj4yyFgJ28+3/UUwHVhiJh0qR85kt584wt7nLUhWVEmaIPJUaxe2Ib9T4yMX0yMOfNfirL5c6OA211IU5snZaJNLZu9sixNfaW6qpVy3HrnH/AYoztkpMrKSCzId2kfJjNA6176IJOeWtkyR+2uHGFLM89keJuA6CK6xLkF1C7SEIPvjdR3v4/Z37E39OzjF97GN2uemwR3nQn87XS8RLCqA478k9BoPUMP/Qy79sgpt8dgKZskV9uQpQsFa9FYMdZY1KtEZPz5PSyKg4wxFrjG62kOaCin+eTzHZGMsvVvfYXVh1AfD3bB9uuwLPJUiPCEXieeM0o5/5IwaOI3VREj6lPRW2StU8hpEujVJEj/9F/tAI20lO5pTpaaWrMXGESvYjhLPbdVxyWVR0i8O2B4qZIACnKEwMUOSowZmEwRYNOZcs47fsajNGHT1GhS86hTdhkOubx34e5pZrDnFrOX/Iaq1UquCzpB+2UQVt/58qabvN3/MOgHK8iviouSvC054olFWbDTFj34hoFCZqFdy1Bza3EtpNDKQOEILeIBkTWiD3A8ul4m3paTt4UDOXDSUTHEykukEXWzLzlKMl5Lve6pnENVC1MyN2RyUq7lISCR0M9KG8YtwV8+Cn145UQgw0sd6h0mJOIi41NwKlRtGxBI5pe+SUQ9NeMXKafIA0duhTjZ6BZFN/qlxerxSBZzDUnrTSyRcJUJAD+E4vL9iA6t3/GVA5Yb576ajRKX2p7TpuSiLC+S2Oh6aYo2NKN5YuVTm/w6RJf6YJA3/GKTFodC50AGsX30xCup5jmO
- DQRFfK7R
- 0p2nP4YqipGC51+axCJAfjSuaytr2ZdkqBbXbQOzra0siT5pJeWJxaz1lo88Bgj7L9rvvvgrnoU/4d84q9gtRjTjoHvJQCabQLRBqJU4IP1OxtWAmr5EokNduplm5bRqeydgfm+OZ/KbYvfBiZZnYJmj4NkPMTuuybCCF6BQzZMsy6l2GvLNk0Wg5XrktY9wZ/vZkaDw0LizdWk8RT9mcioTL7lWjyzcXJRCYSoef2fk+RaytAc27ruoV/pRLoaQGJ0/1q670YVRB5JGGO0tOGuyBl8wcd/jlQBlEdcQRS2Q4MH7g4pj5PyJU5tW+w0LF0rP0IuWfR8iYBQs=
+X-HE-Tag: 1777038979-288180
+X-HE-Meta: U2FsdGVkX188+w5alGQFZJJYjBmcokzxAnahYsCn2ZKiSoxNhd5uO8URLr4OMQHU3s+DMyPbSt3vpBysvf7cCTYYRofq5O21a/qgnndAbEycArjEGi6w1zz19sybjlnZrc00DcII+pDsWv/gnDiGuEQ4H85zbIhSXx1memh9oQy8bEG+d787e2jf614kjh3VMSYwrK8XU912QKxMppZqKGaMa9e+D2ZKXVa3C11/20qqUgAnQoAZu/iLSdQi5AK2kgbDSVeXbza4nQOTb2+o5BdhghvJ+Gc4RC26ms5FT2a852mr0duZT59XdXb0hanfxQMgVfKIaffVP3yic5q+4cGaUx4REiYkelf9s2wxAKTiFVTUVawXGlbfdVaAY8DRdjQTYL8f6ZkfxO7e489YwdiDM8/D4bRJ8s8TbFbXyeVc6J52KK4R0Z3jyuM8ogszXnrpsHmaCmaSsaBEs1aqENxV48ne/Lpgy2rmyanb25OUB+BRjPeQ4ybCIGu0GvAz4KcAenD+Q7HOefHQwErMWsDO2KXxE2mTmR4Kj4/hEGYmxYeSs47ThwqSfWBI+OXCr21GBTwYZUA9HomnLyX+EsleHzQRi7ykncrDKpNznXEpI9/RpyOGMkL0iE4oi2/r9S9BvTT11hurcFUAqXV+tRIjhbqH4X38ml9eVBnlVDqMVScwsqeO8G4VE4Yhsv9S1xlUsZmtBqXuoBncT9ilpEDXt4djGWpxgA87o2B01jIx74WGHmRI5PR6lvrw1iNnRAMRdhSXsZdLjbcc7rEZ15ZVHku6nJY2Q2fReBaG+3FYCKffUDFfJBRsswCWppZKR6cC0VAcWMasouA8EzwB5cEnUo1g2OJy2urW4FLg69iJMWtQyUKz1T2eA8UyBqP2kKG3HSB9lSmIaWI9ys0mF5uyWmBP3pmQUYbF3XvxXhdWj/dsqmA3Tj/nzK02zLraQL3m2pXO/Uxl9dc9eg5
+ 5O3OT1Bf
+ iF/oxRin+LmQzDB3tB1N19SZxoJ9DtUlcopElteWSOxrniT4RG2DgG8jLcQOFL6OYaAwUnElFlIkoTgrcXpG+kifhSOCp0TQCuqlaNQS3B6AyrKyRQ37LfXpe0KTbStzhskWblpyVPXpU3+LdiESMFv+bAqQZzEMgI4e5mVlC1gXbj20XrM0dQHuVdX91BkRcLTatQBJ4RjP5PePEZ3wNyDY2I/ZRuNVUQ9hRcHK3jMh+1f4FVROEi5U/JEeqCwYijgFRACH2fPWiUh9EDBvKKNzkfyQR4//eTWiWUbswtmvnlXZewdsvYpEo3OC2FvYoTSenjjaZ+u9RUSjOlte0PiPhb/p5nQHYISUfDe0P+892goWFurno21XaOUmA7eVoBobl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,22 +91,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Apr 2026 06:45:03 -0700 Breno Leitao <leitao@debian.org> wrote:
+On Mon, 20 Apr 2026 13:47:26 +0200 Marco Elver <elver@google.com> wrote:
 
-> I am starting to run with kmemleak in verbose enabled in some "probe
-> points" across the my employers fleet so that suspected leaks land in
-> dmesg without needing a separate read of /sys/kernel/debug/kmemleak.
+> Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
+> vrealloc") added the ability to force a new allocation if the current
+> pointer is on the wrong NUMA node, or if an alignment constraint is not
+> met, even if the user is shrinking the allocation.
 > 
-> The downside is that workloads which leak many objects from a single
-> allocation site flood the console with byte-for-byte identical
-> backtraces. Hundreds of duplicates per scan are common, drowning out
-> distinct leaks and unrelated kernel messages, while adding no signal
-> beyond the first occurrence.
+> On this path (need_realloc), the code allocates a new object of 'size'
+> bytes and then memcpy()s 'old_size' bytes into it. If the request is to
+> shrink the object (size < old_size), this results in an out-of-bounds
+> write on the new buffer.
 > 
-> This series collapses those duplicates inside kmemleak itself. Each
-> unique stackdepot trace_handle prints once per scan, followed by a
-> short summary line when more than one object shares it:
+> Fix this by bounding the copy length by the new allocation size.
 
-AI review:
-	https://sashiko.dev/#/patchset/20260421-kmemleak_dedup-v1-0-65e31c6cdf0c@debian.org
+AI review is asking questions about the nearby code:
+	https://sashiko.dev/#/patchset/20260420114805.3572606-2-elver@google.com
 
