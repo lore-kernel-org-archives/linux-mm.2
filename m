@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 863E3FED3F2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 19:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2211AFED3F2
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 19:17:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B3936B009D; Fri, 24 Apr 2026 15:17:01 -0400 (EDT)
+	id 5DECB6B009E; Fri, 24 Apr 2026 15:17:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00FDB6B009E; Fri, 24 Apr 2026 15:17:00 -0400 (EDT)
+	id 4F22D6B009F; Fri, 24 Apr 2026 15:17:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1BBF6B009F; Fri, 24 Apr 2026 15:17:00 -0400 (EDT)
+	id 346396B00A0; Fri, 24 Apr 2026 15:17:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CEEDF6B009D
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:17:00 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 994FD160181
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 139C76B009E
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:17:03 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D12141402A4
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:17:02 +0000 (UTC)
+X-FDA: 84694407084.12.7205B79
+Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0A20F80002
 	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:17:00 +0000 (UTC)
-X-FDA: 84694407000.10.BACBDFA
-Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D843D40007
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:16:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m0y7YVqt;
-	spf=pass (imf17.hostedemail.com: domain of 3qcHraQgKCDIghSjSbgRUccUZS.QcaZWbil-aaYjOQY.cfU@flex--stevensd.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3qcHraQgKCDIghSjSbgRUccUZS.QcaZWbil-aaYjOQY.cfU@flex--stevensd.bounces.google.com;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mwaIodzg;
+	spf=pass (imf02.hostedemail.com: domain of 3q8HraQgKCDQijUlUdiTWeeWbU.SecbYdkn-ccalQSa.ehW@flex--stevensd.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3q8HraQgKCDQijUlUdiTWeeWbU.SecbYdkn-ccalQSa.ehW@flex--stevensd.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777058218;
+	s=arc-20220608; t=1777058221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oo/pdV2AAzpZoUJTB8KwJow4oYxSpXiK/Ch5kfUiDOU=;
-	b=vL1XpXMzbel5BqM6UvZFXG4YYv1DOyiAK8M6k4JgXILCz+/iPEt/qeedAsrEkfc+GSsYhy
-	8s8Zx+xVOMra8o7NLvD+ekhcZcbNOgLdhLXvlv96hL5OLBPQDORdCWEB23KZnjbjLwRs3Z
-	p4gWeHTx+lMcV05lAK8soYPnxiXkGxw=
+	bh=/N+N4eCtpYxHixfaIFLv9JBOjdUyGT3kJeE3HTW8Oq0=;
+	b=zdISV6Kc9mJL2F5wxE+SNV1lR8SkVqnKb83ylSDLZv9TdEbH4A7c7Y/yxvEiRbadFVfmKh
+	G17VP8XcArt+UVipHC76EMaLM7wL3B/ZzP/Mkdej+Vn1GV66ELVCBZjwN+MID2ZQBuSqag
+	JOJeGcjPOPX9SebHSaJ8Gs088cWUyCE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m0y7YVqt;
-	spf=pass (imf17.hostedemail.com: domain of 3qcHraQgKCDIghSjSbgRUccUZS.QcaZWbil-aaYjOQY.cfU@flex--stevensd.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3qcHraQgKCDIghSjSbgRUccUZS.QcaZWbil-aaYjOQY.cfU@flex--stevensd.bounces.google.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mwaIodzg;
+	spf=pass (imf02.hostedemail.com: domain of 3q8HraQgKCDQijUlUdiTWeeWbU.SecbYdkn-ccalQSa.ehW@flex--stevensd.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3q8HraQgKCDQijUlUdiTWeeWbU.SecbYdkn-ccalQSa.ehW@flex--stevensd.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777058218; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777058221; a=rsa-sha256;
 	cv=none;
-	b=fjSU/EG/1vIU9h8jHeFQTi4y+2sy+cAvIzfj3NtdJHnwKneRlIilmKAEQv4qbeC4lOh9DP
-	0XAVm+EYaszsXVIkCEE8bxa3Mse4aHhsMlek679zNnlaMZ80wydBqYNVvAUPbE24uvblZP
-	hTMiGIoDqAm/lc73Qh4uYHGWtRfP5/w=
-Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-12db37213daso12313052c88.1
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:16:58 -0700 (PDT)
+	b=vJa1WXb6DUds7R17ZC+sY7CtQnI9OkdB9RMGAUY3bE1x59DQAzU1Qct78UmS2bKzBaAfQQ
+	T2kxJHg7B0FCFRAMpRGCBYFfF0BlDzGWboxrBzExiSzXWIJNoTen9Eu78JiYOpFQlVOmmA
+	ej2ffRXs34BFjBOZAHh+F3Grfemp92k=
+Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2bdf6fe90a9so11988006eec.1
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:17:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777058218; x=1777663018; darn=kvack.org;
+        d=google.com; s=20251104; t=1777058220; x=1777663020; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oo/pdV2AAzpZoUJTB8KwJow4oYxSpXiK/Ch5kfUiDOU=;
-        b=m0y7YVqt7NzeTmQf+ASpGu5xjPzU1FdwM+WbtYA/u0o25D4dodREckkTx5jvaN8UXZ
-         JgeFEIRpb4fKYiHrzIUXuCpSBOfZKqjDWffCM0/UQLfkvN8H7nICV3OOVi7SdrYexYtg
-         IKguix9XVFi28hhFbZUG0VUdxAMZU+VssDp/UCAQ4trWcbnOnAEXHkRfTE/soKo2cznH
-         3USx7mEqHTvQQebDovb3eBB6EXPJv0xaqhl2ilV5pEC2AsuVJ8o+Rv4G0XIBYbUP/hT2
-         2GvGF5QWLOZVCTdvF6kZR5uOC2dgRghBOnBj9wR1JhdyC8HV8VE+N3N0gPuoxCB824Xv
-         5aDQ==
+        bh=/N+N4eCtpYxHixfaIFLv9JBOjdUyGT3kJeE3HTW8Oq0=;
+        b=mwaIodzgD8AL7wVIbsRoQXgpRHgpu4wMmBHs0AI8haUuY+gS3+i7PYn2yTfxutjUg4
+         UvColAB+MzpP7QxJ29YmdY98Bb3Ys/I0xu5hGCu4xbMGR+fm1EkPZfHcHhK23OOE5MjC
+         OBUXfXkQscIQb5IZnfafDefFVh/b3IDtnSeDrU7k46B2gF3R5Hlwvh41KTTau0zaXW8C
+         ZnEuzYCFUkNPZcXlMG7jk7zYQihv35aP5RGPD6LlEXVpeRl3EKEVKXbWm0ISW5N2DuVu
+         yISYU+mEV4HT7ZVJxu7A1EPl75NfuKqfmOtfPE6Vckiwy0Pp8b63AlDQR1W5yTheEmhD
+         LBgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777058218; x=1777663018;
+        d=1e100.net; s=20251104; t=1777058220; x=1777663020;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oo/pdV2AAzpZoUJTB8KwJow4oYxSpXiK/Ch5kfUiDOU=;
-        b=W5pySREHZOwYqQlO9t/xpBLGs080gYkIaHxenIPJD9+OSxvPaSVpdbMSZA2XX8/4Dm
-         H5Irk9O37W28w9QDpb5WrScgk5/CpvJ9uTrv0RZWYQyrkIzkOz3FzY6g59OL22S3FtY2
-         7OCXi3AfAOue/6ltxk4ny8F0QDrMHlPYbsIgCmYQ5wOVXzd68hVdCUaWfpvARlc0yWIj
-         EAA3nwaHWmoa+0ciNQ1Rme7Cyc3B4DmN4QrGNN74YQNYCnOVXKoOhnI/qg6h2coP7ofX
-         mgt3JtefXXrLOSIX2xY6YkE1Zj9LjjvOCK8CpoV7hfdZprgJBLocRM6f5oUIggOiwAUj
-         pZ4g==
-X-Forwarded-Encrypted: i=1; AFNElJ8AmstBjQV4AKo+gzm42eXZm1idXLWCrntnvEwDqDtlf9zNvf7QxFByuSAin1S5OUmtA638GraR+w==@kvack.org
-X-Gm-Message-State: AOJu0YwpJkSnwi7KdiO1xGyI/hXuratXZtx7iicymPsCK+mQf9/A+p18
-	wv8U05R0K+685LAvI7gGdVu105E6F+LNjT9FQg/i8mfeVCtPGTt8dOWH4sUpCFEpjHeT7kZhtdD
-	MaGoeWwNFIvXwUw==
-X-Received: from dlbcf24.prod.google.com ([2002:a05:7022:4598:b0:12d:b2ba:b551])
+        bh=/N+N4eCtpYxHixfaIFLv9JBOjdUyGT3kJeE3HTW8Oq0=;
+        b=qb7/LPFK3Zlp2ujwS7KlP1pteIBc1QTd9TGWd9ujcrOhwCIoRow0NklZa38AqofsDK
+         QCE/YWReLbA9JIWc2FtRh4MJhZG0Wf1mDXkw3cn3LMVvAzxHROCHSE8rSZhjoDf/g1iA
+         cnl0YTLie8Ww7DJnjfclcUtwQoSXqkv7V59xQniQ6aEFRa+cXlxLWvqGheH5beiQjjNP
+         3t/XZMcbp3XmGYABypqiAO218QE+3/zYHqUa67KsWWrU9djCqFUuxYwhbXbX+SycqrLP
+         eLOrt2tR5+XBM3cZ0bagNo3ljcT1dIKu0Fpn381CYR1HZAnbT5cie8gIn1UCtgx2tI9i
+         fjfg==
+X-Forwarded-Encrypted: i=1; AFNElJ9a/dPJ9G2w26dTNxxh8yMW0YXZuJO2Gm4IBkRmUXT6I0zo63Hfxp9UOoTySb0pCnMgXU7+Wp054Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx/0WtlrVfTszoji+X9gziX0wA4HA3k8j0POyuMHrD1MG7yyHrC
+	3nzw0kade24Py5FvBal5w4D7+0AAbrXUpzXDPTqJ4PI2pC8h/5+svKQ0Tk1+QD3KaWWeYmodcsT
+	5muZpC2BD4npw3A==
+X-Received: from dly15-n1.prod.google.com ([2002:a05:701b:204f:10b0:12a:83c5:a16f])
  (user=stevensd job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:701b:270f:b0:12d:b993:c68f with SMTP id a92af1059eb24-12db993c9b2mr4770751c88.4.1777058217479;
- Fri, 24 Apr 2026 12:16:57 -0700 (PDT)
-Date: Fri, 24 Apr 2026 12:14:48 -0700
+ 2002:a05:7022:50d:b0:12a:747e:5b5c with SMTP id a92af1059eb24-12c73fa3af3mr17422533c88.24.1777058219493;
+ Fri, 24 Apr 2026 12:16:59 -0700 (PDT)
+Date: Fri, 24 Apr 2026 12:14:49 -0700
 In-Reply-To: <20260424191456.2679717-1-stevensd@google.com>
 Mime-Version: 1.0
 References: <20260424191456.2679717-1-stevensd@google.com>
 X-Mailer: git-send-email 2.54.0.rc2.544.gc7ae2d5bb8-goog
-Message-ID: <20260424191456.2679717-6-stevensd@google.com>
-Subject: [PATCH v2 05/13] mm/vmalloc: Add a get_vm_area_node() and
- vmap_pages_range() public functions
+Message-ID: <20260424191456.2679717-7-stevensd@google.com>
+Subject: [PATCH v2 06/13] fork: Move vmap stack freeing to work queue
 From: David Stevens <stevensd@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@linaro.org>, 
 	Will Deacon <willdeacon@google.com>, Quentin Perret <qperret@google.com>, 
@@ -102,13 +101,13 @@ To: Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@lin
 Cc: David Stevens <stevensd@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D843D40007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: yx8e5iju6cyepzsd6ugsum5k8sjahddf
-X-HE-Tag: 1777058218-487116
-X-HE-Meta: U2FsdGVkX1+PYgQXUZxSlN5z0id3kcyu20dNUQb/3b0C36crikQlUTN31FlwZ5V9ydg4/e0Vso1JaGUxytY93IAtY1TQad9j6OmfGlWxpRNxR9lR9Jaeg0o0eLQ6X3sd+zQMRu84R3J61VTfNVmwZ1FLnM1o7+htI1sHqB2Io4h1mQ0PIylIEDRExBwnE3RNuylf0J1WdKE/wWHiTA1DfyANsecpeX4wo1dH9UuUfWCO+zdwvDFUzRHtVrcMhvVaSNljOY7zYYmnKSolgqNU7m9qfqn2kR5sbRaMrtwLKnk1EdV1Vx9X1N8gwwxTp03uWbt/aHP7pj0pso+ULS9Jp8bNrKrksEXS3jL4/4WYccNek6ogB5A//x7h5zLbKVVnFmR2vxZmDPeWP1mf5egulnXogDiShg+adTtm7xn7CAOAh2m5FEeIk5+dK559J+stLEdDlQI7gX/TQ18qeRK0w/PMuYLmzcBE+TSvW/GMYurwznkkP/J5xSKNBxkwr0uFbQnBwfOtwyEvSyqbyb1DuKUxjWH97zDQ0JTqsra4kwg51J0olqr8snHAHPTeykzShKdaDGXEb4qb7nQS7F8Z0hRRKmZKFOKnz4VEUB+FcUsUAtUE4sP319ZqqKEu2i7LblvvDoNCHVQozjs+yvmRiheyqtw10wW4RS536sXonOtZI16ynkY27V0WudCIVFgNU5FSXcdPzgtP66icZOwL9eiJmuXgTKNeomR5RFsuQMPcmFJNFYHHWKCK4ejKdJwmrOp9BNUx4UajGQQKTXaHu81LCrfrbNRMOCY7mJ/7pnpa3B6tQbKtdrpCnK/bMOBNVV7o4ST3faKth6O/JJzxfKmwT0YtAdaDNrGRo54fxxm5Zf5uxpBeRfijpw9RKZmHs5kO46oPXcyPI0Rc6kI2JO97TAjlabN4eG/m86HNSbmKi8YlqASrbkZa2fdCl4plrh2QT7VPpHZyYkNG/fv
- Lcrd3mY3
- 8AwOuZB9QDBMQHXPbe/GgGIkLjTSvjV2Shsc/qmgsNGzAr3bvWid1S/VjY4fJfUXbBos5ZT49pgRC3tvEbTdyGUbt9+LarJhmvfiD9/5/GSPE4IzxkgwYOfmwYtf9CVu0E8prE1hw3ClBWIcbs5G9MrA9BGyRMSYQ+qJ5PMOw0layGqhBk8Nxfg2HhouHrsK9El/cQbxyASqXr+zOYIySbTxCwCXkLwJxcvxJbWByfSQjR4pBHpJD0MhqGygDnnCwD1UkxAtAkmrLTgs4EtUgeyqJUoTHgJXyc5lxr6cv603svydtoRi7Djrrj0cnQXHcJ9m3TJcZZMNzj8LJRdTETdxxBIUl2F2pk83ksfFh0BKgjd5fpPSjkJCGZvrkuDRm7jzdMQShfx7paY/gLP2k0FcOPJr3CAs2csfPf+MOcj2m05NG01AWMG/dKEeRoavRC0YikXq3iUh+ASQlNiDysMbJpyT0SmGMI+6tfGeIEv6AZPQwbqrI6PkDc7yTgc2Cnxozm/eTjaZ2D8KQkcYlQJarK3miJ7VSCk8B1B71LxAsDLi4/ZoyRsSwCVR4Bikbe3Y47kxY83Rvm/O+lWrskE5iXQ0Gf+2ORQGhpvJykAU2D5UtyUhVYOIx3cvRWPEYcE7+TAGK6ClyoEV7xBR68z4cLPQVY3phLSSnHnC1RmnpPHLEpDG/uPyEaiFN+uScofmOMI+x8TXm+9BN3QEBG52TrsNQhMttLcKSrs3g4VKu38cDdlYyjLktCEWgVnGrLUx+eXfJwZyC3zEvQKC2aIV8Aocu4jKPrOUYKrlBKabacBA=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0A20F80002
+X-Stat-Signature: yddp3z7g4ay7e9s7inexaina31hmjk4f
+X-HE-Tag: 1777058220-221822
+X-HE-Meta: U2FsdGVkX1+1SlJrXo/DD4apKYtrvo6Ou/lfIPyvxOYSMbIx34zoRY3hRWbkKDbNv45ihnhSBZo2HzDPrWOqY52BhOOwLJjH8SZd6Znbjjnavnlq/wz2kQTBgU6eCtXCz6xZju4ycb99ZKBwA6k3cC3RREb2rEGqpVPW/N6U5lBsAvroexzx8yF5DoopXikzs79fKWrATWESAiP28YYis75IIG12WsHJpv4y2x98BUGX1CjRxd1sLYlZ6dt0GDpirTbZUx9eXHj8D64galkKW309+ig4FcCgDoR7CkEIOWNRqjWiK3fKtOr+BGkI4Y9JK7sJDin6f559TQaX9Cq+2L490rJOV8UnPdLgqHVtgUYSZh+dX+8KH5OYiJ7mIlNW6UQEbw+5oNmU3Cf/5lmqAYU2IwWSOcM6YKdF9guWj9hoEWTn1LBIMJrfhdP/5JPoolf0bfYC76P9SGT57WGLhkN06WWrSo/l03tuZNvquxMsKuvfpuRz9O9j8iDWzs1wI0AW7MlEa67OWEd5BOK6udOgW8cikO3CcM43C1Ona1LK/6xJaWN5BoYyew6WF4Nwrl9M7ggIcxPVSNVc5ymzxJx2A5pn5Plj6SFsMmhKbO17iLgLw7qQvLmHveGWrKOQ5FzjhzIDpI+PuSDCX+ma8/xc2eNHwCy04Vaw98B5iAwMx8o4seDrHISYEWnyIsmLN4T0J2ctGrBqWZEa0qOw7kKrNlEYVewzbPIVJcOcCGl0NB7L9Qmw0DPKKzMpIDBJlI2EFU7Te6hVZU0TRyQ/90IfC/Ta+FLQpVHQpEwSOOisjX1nwzbGAtjYS/gTaOVnE6rYWIFo6Qxws5ex2HvudBnhvHDSgwhICO4nGhTk6+77MBoleQvcP3toWuiH/xMShHSCJS4Dss0OmIBfrQeagevOd03RmhpmvJhgayX34nevjvk//eyqbrFeb8Z0XViTVrlVcOsgAEn625TjN3F
+ xQhZe9dI
+ yRHo6mOvMhPuLm6GfETV8V0zmqrSIML92MaNjXHYoUf/WTS3CLInCYcn614CDjLT+XbCrXG/petxOVzhvKM8nIDsFyS5jx3LUjRcFCNvp++oRvQleqHvnAaROqR6oce62qDoOm3xsUfHUwkWLIR2YKG/nxa+tNPL/g9LtP1GLcQ/1YdOU6SYkOC8/ZLTSYeHQUc2Ryq3sX7xrciPYQ5bs70gAyZCGbe1Rh7CXGsq0XWUO6gg07SGseXND7kSDsEhuBZ0YctHemDPURcndDRi7xlGh9DSjsNiudcD0LkivMguwwJ/DQdw+FlHjr8TtRL2gRvIV3tG1OWUaXGpM3tep7nZ/zJBzhERWd1plQvDevPHxjBh+Owc+zDZcgMHtI/xAtktx4mB0hLQarQ27PjrZahQuSgLpGoM3X7pyLwrcrO2Ipq16QihKYjgA9whOPObKo6vIUxyNCxr0B7ynvAa7D3nt3zkjBbWby4b741vFFmo/X8jpgY3F6QUaJaSAcQsh7jCG0vVp/qOsetgM6vpIJimU9edE04CdtWSfes85uF3uTSHShZYR4mKyU5YqBJ2DKY6MExTF17kTDHZOXa4TpO8tIJrSRRjtTBY0Td/Vz2sVYILvoQybbmHrVGk6szK+zt1OcTPoE1N6yL8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,112 +115,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
+For vmap stacks not immediately released into the stack cache, free them
+in a workqueue instead of via call_rcu(). In an RCU context, vfree
+already schedules the actual freeing on the per-cpu system workqueue, so
+this change only affects when exactly the second attempt to put the
+stack into the stack cache occurs.
 
-get_vm_area_node()
-Unlike the other public get_vm_area_* variants, this one accepts node
-from which to allocate data structure, and also the align, which allows
-to create vm area with a specific alignment.
+Moving freeing to a workqueue will allow for freeing dynamic stacks in a
+sleepable context (for remove_vm_area), rather than relying on vfree
+dispatching to a workqueue via vfree_atomic.
 
-This call is going to be used by dynamic stacks in order to ensure that
-the stack VM area of a specific alignment, and that even if there is
-only one page mapped, no page table allocations are going to be needed
-to map the other stack pages.
-
-vmap_pages_range()
-We will need it from kernel/fork.c in order to map the initial stack
-pages, so export the function and add a forward declaration of this
-function to the linux/vmalloc.h header.
-
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-[Switched to vmap_pages_range instead of noflush variant, fix typos]
 Signed-off-by: David Stevens <stevensd@google.com>
 ---
- include/linux/vmalloc.h | 14 ++++++++++++++
- mm/vmalloc.c            | 25 +++++++++++++++++++++++++
- 2 files changed, 39 insertions(+)
+ kernel/fork.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index e8e94f90d686..7b56a0b998ab 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -250,6 +250,9 @@ extern struct vm_struct *__get_vm_area_caller(unsigned long size,
- 					unsigned long flags,
- 					unsigned long start, unsigned long end,
- 					const void *caller);
-+struct vm_struct *get_vm_area_node(unsigned long size, unsigned long align,
-+				   unsigned long flags, int node, gfp_t gfp,
-+				   const void *caller);
- void free_vm_area(struct vm_struct *area);
- extern struct vm_struct *remove_vm_area(const void *addr);
- extern struct vm_struct *find_vm_area(const void *addr);
-@@ -301,11 +304,22 @@ static inline void set_vm_flush_reset_perms(void *addr)
- 	if (vm)
- 		vm->flags |= VM_FLUSH_RESET_PERMS;
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 8bf32815f422..01e0bf4f4b02 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -205,7 +205,7 @@ static DEFINE_PER_CPU(struct vm_struct *, cached_stacks[NR_CACHED_STACKS]);
+ #define GFP_VMAP_STACK (GFP_KERNEL | __GFP_ZERO)
+ 
+ struct vm_stack {
+-	struct rcu_head rcu;
++	struct rcu_work work;
+ 	struct vm_struct *stack_vm_area;
+ };
+ 
+@@ -284,9 +284,9 @@ static inline void free_vmap_stack(struct vm_struct *vm_area)
+ 	vfree(vm_area->addr);
  }
-+
-+int __must_check vmap_pages_range(unsigned long addr, unsigned long end,
-+				  pgprot_t prot, struct page **pages, unsigned int page_shift);
-+
- #else  /* !CONFIG_MMU */
- #define VMALLOC_TOTAL 0UL
  
- static inline unsigned long vmalloc_nr_pages(void) { return 0; }
- static inline void set_vm_flush_reset_perms(void *addr) {}
-+static inline
-+int __must_check vmap_pages_range(unsigned long addr, unsigned long end,
-+				  pgprot_t prot, struct page **pages, unsigned int page_shift)
-+{
-+	return -EINVAL;
-+}
-+
- #endif /* CONFIG_MMU */
- 
- #if defined(CONFIG_MMU) && defined(CONFIG_SMP)
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 61caa55a4402..39b7e118cbce 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -722,6 +722,7 @@ int vmap_pages_range(unsigned long addr, unsigned long end,
+-static void thread_stack_free_rcu(struct rcu_head *rh)
++static void thread_stack_free_work(struct work_struct *work)
  {
- 	return __vmap_pages_range(addr, end, prot, pages, page_shift, GFP_KERNEL);
- }
-+EXPORT_SYMBOL_GPL(vmap_pages_range);
+-	struct vm_stack *vm_stack = container_of(rh, struct vm_stack, rcu);
++	struct vm_stack *vm_stack = container_of(to_rcu_work(work), struct vm_stack, work);
+ 	struct vm_struct *vm_area = vm_stack->stack_vm_area;
  
- static int check_sparse_vm_area(struct vm_struct *area, unsigned long start,
- 				unsigned long end)
-@@ -3285,6 +3286,30 @@ struct vm_struct *get_vm_area_caller(unsigned long size, unsigned long flags,
- 				  NUMA_NO_NODE, GFP_KERNEL, caller);
+ 	if (try_release_thread_stack_to_cache(vm_stack->stack_vm_area))
+@@ -305,7 +305,8 @@ static void thread_stack_delayed_free(struct task_struct *tsk)
+ 		vm_stack = tsk->stack + THREAD_SIZE - sizeof(*vm_stack);
+ 
+ 	vm_stack->stack_vm_area = tsk->stack_vm_area;
+-	call_rcu(&vm_stack->rcu, thread_stack_free_rcu);
++	INIT_RCU_WORK(&vm_stack->work, thread_stack_free_work);
++	queue_rcu_work(system_wq, &vm_stack->work);
  }
  
-+/**
-+ * get_vm_area_node - reserve a contiguous and aligned kernel virtual area
-+ * @size:	 size of the area
-+ * @align:	 alignment of the start address of the area
-+ * @flags:	 %VM_IOREMAP for I/O mappings
-+ * @node:	 NUMA node from which to allocate the area data structure
-+ * @gfp:	 Flags to pass to the allocator
-+ * @caller:	 Caller to be stored in the vm area data structure
-+ *
-+ * Search for an area of @size/align in the kernel virtual mapping area and
-+ * reserve it for our purposes. Returns the area descriptor on success or %NULL
-+ * on failure.
-+ *
-+ * Return: the area descriptor on success or %NULL on failure.
-+ */
-+struct vm_struct *get_vm_area_node(unsigned long size, unsigned long align,
-+				   unsigned long flags, int node, gfp_t gfp,
-+				   const void *caller)
-+{
-+	return __get_vm_area_node(size, align, PAGE_SHIFT, flags,
-+				  VMALLOC_START, VMALLOC_END,
-+				  node, gfp, caller);
-+}
-+
- /**
-  * find_vm_area - find a continuous kernel virtual area
-  * @addr:	  base address
+ static int free_vm_stack_cache(unsigned int cpu)
 -- 
 2.54.0.rc2.544.gc7ae2d5bb8-goog
 
