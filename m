@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5075CFAD41C
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 04:01:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12DF1FAD3F3
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 04:01:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6B106B008C; Fri, 24 Apr 2026 00:01:39 -0400 (EDT)
+	id 7AC7F6B0092; Fri, 24 Apr 2026 00:01:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1BE26B0092; Fri, 24 Apr 2026 00:01:39 -0400 (EDT)
+	id 7841D6B0093; Fri, 24 Apr 2026 00:01:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 932A06B0093; Fri, 24 Apr 2026 00:01:39 -0400 (EDT)
+	id 69A626B0095; Fri, 24 Apr 2026 00:01:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 82A316B008C
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:01:39 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 16BA48A6E8
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 04:01:39 +0000 (UTC)
-X-FDA: 84692100318.06.55FE1D1
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 451761C000E
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 04:01:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q0CEzSKD;
-	spf=pass (imf21.hostedemail.com: domain of li.wang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777003297; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 59B226B0092
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:01:54 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF5C41B897D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 04:01:53 +0000 (UTC)
+X-FDA: 84692100906.30.677B31E
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 361661A0014
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 04:01:51 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GhFXBDVc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of li.wang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=li.wang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777003312; a=rsa-sha256;
 	cv=none;
-	b=c6YEbR7L4JY4T8zmKs31ebx05VYB9rTsiToi48t08EYuK3se3+TPqIbo82FO0gm6IhIv3P
-	NhLcuwi65oUvhsjoe2E3vWq8xVJr4dTOO9LY9xk5mDJYOo2SyRMWzBFRYTxrc/xyDI3NlX
-	0SALDveqdnEUuJrE2MDp7GtdxXacf00=
+	b=tX7b4G+ZL3EJHV0vGY1PE3XTNs2mUeRfY0DGbw+Ssw9GaooUK9qv9f7XslunI0sMOWdMxk
+	Ia4i/yTEx9vsJB1gmlV7jRJfLILdwxHOqEDhC/83YkqJY0YRxHKLpfiuZ/OrSgsyi90tA3
+	apy3roz6/mbSi2XmmR/1hhDJ2RNJxSE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q0CEzSKD;
-	spf=pass (imf21.hostedemail.com: domain of li.wang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GhFXBDVc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of li.wang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=li.wang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777003297;
+	s=arc-20220608; t=1777003312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zo6kGfk/xM7DSaD4ymtNFmjwZMlQQ2mCHqeTEgtluNI=;
-	b=bynld/Eyjds+MAUJ2bKQn00Zn7absa3YeSXgb4b0Ed1Zau23MtsRbQExKVukEqUKKWRCy+
-	+CxWjdFsY+FYaw1SWSvosCJmfGRut7ULZki5Is+w3WnWfU58LmyxzA9bu0j4zmalozu+gd
-	Hivpwwv4iL3qLiLK7SedTpDDEl+dU2c=
+	bh=NtcN3Op0ieChDzZc8VELPGrZGUZ27l8eeX+TShLLBmA=;
+	b=tma0DBJc6LyHFhWzdLlZ/r2M9Eu5gRszKX3+CSf287XDkf2bwWBVUOKp/WkGq9M0iNh01q
+	NEEjMGqBUdesnYjbWn9YhukpdYfUqXHWLtixT0XJhA6nz955iYpmttqlyvwW5qECQ4xgRY
+	5rM1fKB4oKqPPkhT9qvpTFoQsQvTWzs=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777003295;
+	t=1777003310;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Zo6kGfk/xM7DSaD4ymtNFmjwZMlQQ2mCHqeTEgtluNI=;
-	b=q0CEzSKDXtzJ+NN/eB54JePXjXFiUxjo5CUbGCNwo7x2vx+fZA6OQor6AGPHWgmbp3WDpM
-	bwZRvN7QGv/URDbOFDQAoJC3+Wcrx7bIkFp/Tcv3rNHqvwBK73BvhauXX8RMxCXnieELXz
-	XsykdlZ2L6gcyo80CmMnESDt2xfM4E0=
+	bh=NtcN3Op0ieChDzZc8VELPGrZGUZ27l8eeX+TShLLBmA=;
+	b=GhFXBDVc38OATu0fbD+/9vkf7VvLtY6ejQzjmVAiWIK3txPn+1XYiQUn40RSMddglsjA/5
+	RNJka4bkNve6DrZ/lCG5g5COj2zsxcDHxow+sW+vK27olu8Wi9x0ja6ZYguoSvFq1IiNkm
+	zafc0JbOAGCFwLVyOg7t58njxyxgjS0=
 From: Li Wang <li.wang@linux.dev>
 To: akpm@linux-foundation.org,
 	tj@kernel.org,
@@ -79,23 +79,23 @@ Cc: linux-mm@kvack.org,
 	Michal Hocko <mhocko@kernel.org>,
 	Muchun Song <muchun.song@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: [PATCH v7 2/8] selftests/cgroup: avoid OOM in test_swapin_nozswap
-Date: Fri, 24 Apr 2026 12:00:53 +0800
-Message-ID: <20260424040059.12940-3-li.wang@linux.dev>
+Subject: [PATCH v7 3/8] selftests/cgroup: use runtime page size for zswpin check
+Date: Fri, 24 Apr 2026 12:00:54 +0800
+Message-ID: <20260424040059.12940-4-li.wang@linux.dev>
 In-Reply-To: <20260424040059.12940-1-li.wang@linux.dev>
 References: <20260424040059.12940-1-li.wang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 451761C000E
-X-Stat-Signature: yuo5jdzs37nn7afqgt8s4cfwe1zbhfou
+X-Rspamd-Server: rspam10
+X-Stat-Signature: tqkwnzdkk64f79k319gcpk5w1rffi3j7
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1777003297-899385
-X-HE-Meta: U2FsdGVkX1/CLF6M1PRqiQjqCq8GrQfLLBV4QqJfp/qYwRm1cNOjY1HoEMrFgYJX3HqVSAd30kOQewKrRTFnW2uX3yGvMMZY+r4ydy9w6hFPgrs+6dDv3ij1fqIUTj4WBgGJW9Xw8mvCV8djRC2Xbe9rwfia/A6MCb0VkwC3fcc+xmA9xoE6VzZFN1BvGtvxdd7scfQxHwMHBIeOQC3jr2UHyX6STa5+I0FujFw5ZlSbLEBtAzZ63WYnVNB2C+81t+4j8SNAH6Ti95UpbANwugmQSqbvIFWDr0/BXF3j+W662HATBcmFNLW6hwwb6uifofZrLS82xnzMTQITUNUZOFFy+NSHvwNND7lFVWu3MnABNYIl8M2xuiUDq7VM6pCLK/U2jTOtbMKXBFU2vAg+r2swU3Y8IMoIOR0aPFjFHA0csMiLfPpYQgSnBF1lym+vds1Gb0ejt3hChFcdG5jTfVlMWUd+K8tn2povdS+fyCTK6p0SqH1Ae8B0ojIdCaCdXf5IdAGM55DabhITjCJtJny9hHS2FhVA+2Pp2jhofbz4YoxLzHyuXEceYDVw25q3ubuXPrtmv7UY4XIUT+fG0KsRlFUsHkpcLGoX3r9TLjDrHomqatv+YpZWH6ezkLXSYCUrgKt0/EupZUUqSe298NazX58uh6eU1Fzzfp+JlMwJWa0vc/0PUQCgUjEOHZLuWgdJ2zh2TwPR8rsyk5u64mGVQtO/uJaXSkv5ZitvTloo8ywa/sDhjtP4SahH7HOMTdLoPlqSotIvP3tp+fkFusAWpI5TLApOHdK6ZUo2N9t/1ENVTLay0xuoBomJu8RpzqYhZXIlKeTSYEP+LvwNHYuTg1P5Ro0SBzd5xtZyhrjxFT6cD+aYOVKySZP/vphj/yz2jDBTBvTTik/aSaZPUFIoIbn+P8Bi/rEQ+1CcIqRN9yjSMdX58zJ79vBWSa2NIMQEgQ9drYP6XZ8ppcI
- /XZz5SPB
- 2zncVxBZOaWRSxn3qDk2SaF29LZL/ATpAVzje6VNs6RjmoC61pUqGvUmO93ccd3cxr64MY2m7kLHtCptHV3oXSVbGM0mSTVPD8Sdm8xfFKDnxK8/cXXG52OmagtNWP4w9mIfzdD8bbOE8dHCOi8wzCoSSqfH2SS7dehniX8gnkC7QSmV34MguE+F/K9luzOZBGZh/7IOpfw/WEVAGJIXp+5cHAGu5v6liMa+WnYmI5X4SmklPTmsQ3Apztnp4/tx+6pL6iVAYfqwuF39WFGeGIsJsSG3vJQ/a2lt6WIvOvdjxEsfFpdietW5EuB7hChOO9oCStsJ3NYMym51szDWI6umYHfUWcf7aWPFDJya3ACKe3boifzlemJSThpDOmxGH26ocv8Q0wp4NWSLQhdHn+37k9Ut24oJYjrPgxX7PvvaSH1xQlieIMFitCm7Nj5gEBGg9
+X-Rspamd-Queue-Id: 361661A0014
+X-HE-Tag: 1777003311-948330
+X-HE-Meta: U2FsdGVkX1/TrMTK5YGyBeWiem3huP+WiYCO8JIEUaJK6MPT4df+6wRqMpN/g3xCKCm1iKY9XRi15ltk8NVk2BceyWlPxzqtoiSfPMHh+xegNJnF+03v1xCjjaZWBg8wXBvlWJwXmRU6q1yxUR1Mh5IkeJmDf8e2CtpWqG6VICTW9uN5NH+hZNZOn2UtNi/0qf5q+M/ppMEGEdzZR4aosRP3dgEahD0JS1eFjiwn1TXWrRqc3zqn5YYLFUKRi119tv055+PAPelizS0Jhod/qNRGdjtvOZAmaMSAwp889X2DZ3sYlUKfK995oouLsTxfuD+OY/IB8ZH0oMCobTsuNodesTqN4okH5NYT/GCJbo4WHrkMcd+76gvAOOoqYWByjCB02f1AFrc7Lc+TbmbKnL7aN7Sm2nXYtDTiDFFgxNkyGFqb6ARdzqIVBdgjT3GCgJgPEyA8LRzKrvnZEVHx96BI8bC6M1dYtGzfuhAgro2YrjE11oV03gEks+essGW7r1rg9UqRCD+wq0CN261Ho/hiGGUy/L/Z0PROVea2ubBJ2lWgept8GIhtsxnKCHUMAiUn7L9aFQdlMl5JrpsZgO9ehmXhZ9uIrPY1udh5QJO5nJ8Zol5x8vpua9CNYrZ7vHxCUBzB8Eed2SOVsvUqqJCk67gEEm9yDDRr9pytxAvAmUAm/k7u9BtPC7es324wmsgW5mX18YjSwbzVPbuYiczgf+mjSLoRuoRSfZwhNRl7PUqNyFTKn8WL7rQH35D7/FP8s7XIVKFtvZbpCZXEjIZ0iOz1/J6YAQ8biSFEPAgkXjVx06MUJMOTFH+osZI/syBPjv9Fqr6gKrmmmMKkw2r3NNIWKbusBTHyH8xx8tSR8KyXTLPmZelx7QdZrgF2Fp1bcFgr1E2ftmOtmYE9JwKliD15l80yq1mgFDlO1v5CW6JIGtd9bmgRo4yDOLitgwXYMtqgwYr3Hca+4OD
+ 6nRa0kO4
+ 0a5hYab3ANGxB0boGXO0B+lswjLcwMvBJHIBS/JmrKLdcbbh9QPTDYQNzNMRc/B8JF7NrGrPnuynISNMYFpiPCQw0aoKrSjrCK31E/FE5/OrrvEcniTichbOx7JGZSO9tYnEfdDutnN3LZ5EL4T4zlQrJrTeUeAjEBPPjqxMKXyHIYfZHn062HMfURNILX1tgMDsOeEwIw4bLotXcOmm9Nd6HfMVkjCgrKB0axtC4n+8en5Gkmau2b5whRKzXsnu5W6b5GgStji7CepR7/5k5ff9MNAfD8Anwh355UoeJrBCs0Awpf4gtCj0H5vszfjNIAHKgCUCfplLPaz2PSHhGgrLJ/KFPcjuXKj829X5Ec9Crf0LO2mlCNl09BZPMMj483b895gMlevgm1SYrbGTTszmQMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,58 +103,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_swapin_nozswap can hit OOM before reaching its assertions on some
-setups. The test currently sets memory.max=8M and then allocates/reads
-32M with memory.zswap.max=0, which may over-constrain reclaim and kill
-the workload process.
+test_zswapin compares memory.stat:zswpin (counted in pages) against a
+byte threshold converted with PAGE_SIZE. In cgroup selftests, PAGE_SIZE
+is hardcoded to 4096, which makes the conversion wrong on systems with
+non-4K base pages (e.g. 64K).
 
-Replace hardcoded sizes with PAGE_SIZE-based values:
-  - control_allocation_size = PAGE_SIZE * 512
-  - memory.max = control_allocation_size * 3 / 4
-  - minimum expected swap = control_allocation_size / 4
+As a result, the test requires too many pages to pass and fails
+spuriously even when zswap is working.
 
-This keeps the test pressure model intact (allocate/read beyond memory.max to
-force swap-in/out) while making it more robust across different environments.
-
-The test intent is unchanged: confirm that swapping occurs while zswap remains
-unused when memory.zswap.max=0.
-
-=== Error Logs ===
-
-  # ./test_zswap
-  TAP version 13
-  1..7
-  ok 1 test_zswap_usage
-  not ok 2 test_swapin_nozswap
-  ...
-
-  # dmesg
-  [271641.879153] test_zswap invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
-  [271641.879168] CPU: 1 UID: 0 PID: 177372 Comm: test_zswap Kdump: loaded Not tainted 6.12.0-211.el10.ppc64le #1 VOLUNTARY
-  [271641.879171] Hardware name: IBM,9009-41A POWER9 (architected) 0x4e0202 0xf000005 of:IBM,FW940.02 (UL940_041) hv:phyp pSeries
-  [271641.879173] Call Trace:
-  [271641.879174] [c00000037540f730] [c00000000127ec44] dump_stack_lvl+0x88/0xc4 (unreliable)
-  [271641.879184] [c00000037540f760] [c0000000005cc594] dump_header+0x5c/0x1e4
-  [271641.879188] [c00000037540f7e0] [c0000000005cb464] oom_kill_process+0x324/0x3b0
-  [271641.879192] [c00000037540f860] [c0000000005cbe48] out_of_memory+0x118/0x420
-  [271641.879196] [c00000037540f8f0] [c00000000070d8ec] mem_cgroup_out_of_memory+0x18c/0x1b0
-  [271641.879200] [c00000037540f990] [c000000000713888] try_charge_memcg+0x598/0x890
-  [271641.879204] [c00000037540fa70] [c000000000713dbc] charge_memcg+0x5c/0x110
-  [271641.879207] [c00000037540faa0] [c0000000007159f8] __mem_cgroup_charge+0x48/0x120
-  [271641.879211] [c00000037540fae0] [c000000000641914] alloc_anon_folio+0x2b4/0x5a0
-  [271641.879215] [c00000037540fb60] [c000000000641d58] do_anonymous_page+0x158/0x6b0
-  [271641.879218] [c00000037540fbd0] [c000000000642f8c] __handle_mm_fault+0x4bc/0x910
-  [271641.879221] [c00000037540fcf0] [c000000000643500] handle_mm_fault+0x120/0x3c0
-  [271641.879224] [c00000037540fd40] [c00000000014bba0] ___do_page_fault+0x1c0/0x980
-  [271641.879228] [c00000037540fdf0] [c00000000014c44c] hash__do_page_fault+0x2c/0xc0
-  [271641.879232] [c00000037540fe20] [c0000000001565d8] do_hash_fault+0x128/0x1d0
-  [271641.879236] [c00000037540fe50] [c000000000008be0] data_access_common_virt+0x210/0x220
-  [271641.879548] Tasks state (memory values in pages):
-  ...
-  [271641.879550] [  pid  ]   uid  tgid total_vm      rss rss_anon rss_file rss_shmem pgtables_bytes swapents oom_score_adj name
-  [271641.879555] [ 177372]     0 177372      571        0        0        0         0    51200       96             0 test_zswap
-  [271641.879562] oom-kill:constraint=CONSTRAINT_MEMCG,nodemask=(null),cpuset=/,mems_allowed=0,oom_memcg=/no_zswap_test,task_memcg=/no_zswap_test,task=test_zswap,pid=177372,uid=0
-  [271641.879578] Memory cgroup out of memory: Killed process 177372 (test_zswap) total-vm:36544kB, anon-rss:0kB, file-rss:0kB, shmem-rss:0kB, UID:0 pgtables:50kB oom_score_adj:0
+Use sysconf(_SC_PAGESIZE) for the zswpin threshold conversion so the
+check matches the actual system page size.
 
 Signed-off-by: Li Wang <li.wang@linux.dev>
 Cc: Johannes Weiner <hannes@cmpxchg.org>
@@ -165,58 +123,25 @@ Cc: Nhat Pham <nphamcs@gmail.com>
 Cc: Tejun Heo <tj@kernel.org>
 Cc: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
 Acked-by: Nhat Pham <nphamcs@gmail.com>
 ---
- tools/testing/selftests/cgroup/test_zswap.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ tools/testing/selftests/cgroup/test_zswap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index a94238a2e04..47709cbdcdf 100644
+index 47709cbdcdf..37aa83c2f1b 100644
 --- a/tools/testing/selftests/cgroup/test_zswap.c
 +++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -165,21 +165,25 @@ static int test_zswap_usage(const char *root)
- static int test_swapin_nozswap(const char *root)
- {
- 	int ret = KSFT_FAIL;
--	char *test_group;
--	long swap_peak, zswpout;
-+	char *test_group, mem_max_buf[32];
-+	long swap_peak, zswpout, min_swap;
-+	size_t allocation_size = sysconf(_SC_PAGESIZE) * 512;
-+
-+	min_swap = allocation_size / 4;
-+	snprintf(mem_max_buf, sizeof(mem_max_buf), "%zu", allocation_size * 3/4);
- 
- 	test_group = cg_name(root, "no_zswap_test");
- 	if (!test_group)
- 		goto out;
- 	if (cg_create(test_group))
- 		goto out;
--	if (cg_write(test_group, "memory.max", "8M"))
-+	if (cg_write(test_group, "memory.max", mem_max_buf))
- 		goto out;
- 	if (cg_write(test_group, "memory.zswap.max", "0"))
- 		goto out;
- 
- 	/* Allocate and read more than memory.max to trigger swapin */
--	if (cg_run(test_group, allocate_and_read_bytes, (void *)MB(32)))
-+	if (cg_run(test_group, allocate_and_read_bytes, (void *)allocation_size))
- 		goto out;
- 
- 	/* Verify that pages are swapped out, but no zswap happened */
-@@ -189,8 +193,9 @@ static int test_swapin_nozswap(const char *root)
+@@ -245,7 +245,7 @@ static int test_zswapin(const char *root)
  		goto out;
  	}
  
--	if (swap_peak < MB(24)) {
--		ksft_print_msg("at least 24MB of memory should be swapped out\n");
-+	if (swap_peak < min_swap) {
-+		ksft_print_msg("at least %ldKB of memory should be swapped out\n",
-+				min_swap / 1024);
+-	if (zswpin < MB(24) / PAGE_SIZE) {
++	if (zswpin < MB(24) / sysconf(_SC_PAGESIZE)) {
+ 		ksft_print_msg("at least 24MB should be brought back from zswap\n");
  		goto out;
  	}
- 
 -- 
 2.53.0
 
