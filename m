@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6984FE51FE
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 11:39:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19885FE51FE
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 11:42:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 182A06B008C; Fri, 24 Apr 2026 07:39:53 -0400 (EDT)
+	id 55D9B6B008A; Fri, 24 Apr 2026 07:42:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 133096B0092; Fri, 24 Apr 2026 07:39:53 -0400 (EDT)
+	id 5084F6B0092; Fri, 24 Apr 2026 07:42:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0490D6B0093; Fri, 24 Apr 2026 07:39:52 -0400 (EDT)
+	id 3F6D06B0093; Fri, 24 Apr 2026 07:42:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E28456B008C
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:39:52 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A1FFA08AD
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:39:52 +0000 (UTC)
-X-FDA: 84693255024.16.462A003
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D0966B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:42:22 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE3991C001A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:42:21 +0000 (UTC)
+X-FDA: 84693261282.12.C1A7E2E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BEBCB40003
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:39:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="kwF/5h4g";
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4BE871C0002
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:42:20 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kgu550Dk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777030790;
+	s=arc-20220608; t=1777030940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uT2NGwkRaNy7QEjBH6R0P5hT/mlXqOeQgAMYtSLoIpw=;
-	b=cKFaywuFVZ7WJCg/UMY4ZwQe7cI84CLTJSgKMhD4+aVj6Xvf1dugmMPoo9MeLau2SzfHB9
-	du5+M8qmS1cVVtMtLcJyitFR6zL4cW1V0tjJVejDRhbge1wU03UKoMq+U46YFAQJcrtOuI
-	TW/YwbIRJ3dqf2cjgs8fd1TVTRd740w=
+	bh=tZKPR//23lfAsoiQUaKgV+4UP22jeYkcw+uzX5CkTWY=;
+	b=gp4U+ykF/oWR6aMuNIQGZHuXbNP3mDk7emfbl5gfcBGalxv8dTvBNHQHG7XT9jUBFyg4SD
+	cs7nrgxkOP1Iap3JxOq+reNoiRMk94HZ1QNi2pxnidcSlg/s61tXyvegwknRrmebWwroWn
+	enTrjePHCrUbrpGCXmaivTHjaeO9EOk=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="kwF/5h4g";
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777030790; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kgu550Dk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777030940; a=rsa-sha256;
 	cv=none;
-	b=SDJ0TxpGcrr9kdmK1td6YOxzFm/XpH9vt53P6PbMFYdAxnoUA/fBwYz5QCMtKgHyLLPHZy
-	NoS6nfVXNI8bLPzdLTYkuEmyWBGzlgpgb9iUThlCOehzTbnA70hrqyoHADCTpxk+wXBTkQ
-	14HPNXTfRYX/Van5sG457LfH5uNjNp4=
+	b=ANxlqqHDTGDQGQThNTApjYDsFVZ8NHatXLS2jvSf1AmvOxSdkjI+w+O3SPyup1Ju7pMe0A
+	gUXsTWdEOp9goBGIzG6RHubqcxm5kX3Cjzss/5aCrlUaDVdy6Ar9/+DX9Hp2wkVIS2JIE9
+	mCqv8uX/REBA1KoViQ+T513r6zKojdo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BDDD5440D7;
-	Fri, 24 Apr 2026 11:39:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6775FC19425;
-	Fri, 24 Apr 2026 11:39:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777030789;
-	bh=eyNaJXFjJl8guznsbPc2WyW1JisAMAbK/hgLHo9QuAg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kwF/5h4giSsJl3rn1dcWli10j7U7yuKlJUwOCJdbQBkpx272Mn9Kip0y2dzgVG6hJ
-	 rp4XbHLqaSSEJJfkK/PxBziuGuMAfch1P3Nrvn3EKJTlKe6kLjwcsIC4fXkgMouQ5/
-	 f2VIu6zlYKawY66cNGGkulu3rrd2jJYNQUF25KvU=
-Date: Fri, 24 Apr 2026 04:39:48 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
- <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v2] mm/gup: honour FOLL_PIN in NOMMU
- __get_user_pages_locked()
-Message-Id: <20260424043948.a1b0ef6218e3dc13e5f7a97d@linux-foundation.org>
-In-Reply-To: <2026042431-charter-ranging-597c@gregkh>
-References: <2026042303-vendor-outright-b9d2@gregkh>
-	<a20913f0-476c-4f56-a044-9802bb1c7f1a@kernel.org>
-	<2026042431-charter-ranging-597c@gregkh>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ohwq6krsxnsazgz7mhhuhse9hbmgjj8f
-X-Rspamd-Queue-Id: BEBCB40003
+	by sea.source.kernel.org (Postfix) with ESMTP id 59C964391B;
+	Fri, 24 Apr 2026 11:42:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEA8C2BCB2;
+	Fri, 24 Apr 2026 11:42:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777030939;
+	bh=tZKPR//23lfAsoiQUaKgV+4UP22jeYkcw+uzX5CkTWY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Kgu550DkK0b83LfyXC1QrLfhE2FbAOqLtlQMYk3DkK7gO4khSFcFbSKOeiSYgAmIo
+	 rDFH4Ls19dcBs1eG2h/hrd9hynMntVd8izHKIfT0EXeFBbiWxu8O+8AbrI/jMPRuT2
+	 BVxVj2ymMo/J41SYAs3dMAQ/mm5tVWWscicTSrqj7nKvaIK3+uDglaFvPYRihrQYXv
+	 Jiu73jNOhtiBzJHZAfMy6DiwyNMhpMXZp2Q6aRn9kmk2tMV/cxG1/u9izW4Z4jVbCm
+	 wHE+UmhoxAVxDmyevAUgG/O/hM34WLG2+RpUgvg82f9rQwYaAmagEyRAje11JSmEkH
+	 QV21uAC/FU4dw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Tamir Duberstein <tamird@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>, Alvin
+ Sun
+ <alvin.sun@linux.dev>
+Subject: Re: [PATCH 4/4] rust: xarray: Add Guard::find() helper
+In-Reply-To: <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
+References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
+ <1TcoEoC6DnctfKo9mZsuxSJtZ02ujRRd7O0Jxu62xR0JPeJcq2hB7XD1qBbjleyTBRMWf-uy0HLh7lWkYXbaMw==@protonmail.internalid>
+ <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
+Date: Fri, 24 Apr 2026 13:42:06 +0200
+Message-ID: <87se8kh9f5.fsf@t14s.mail-host-address-is-not-set>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1777030790-714800
-X-HE-Meta: U2FsdGVkX1/y2vTv3zlWZNqKgXO/tvo/biTcO4ieLOY/EeUdjCMFYwRCIMvT6G+prxUXDlWW7Nu2BQUhFkG0qWhTvhOZjqsLhhKRCtIXx63izMOXGCMdGa/yBLPdCztlw9bTUrNtraz+LgQSnZT7rlgCfC2HndBoRNzaJ5Y5jE9hxVVUf9v6GbVh7HDLg2hxu0RadzcZKeF+KHYAPo9teGul0aAu0DvHINEAu305RtyRLaH/PlFEkoPWftY513feS3xvwoo5Loq5YtOLyEI1jctfCf1mEXRr8z4HX+zT6MOfP8kMPm0D+aL0UAquLqkKbZLg418h+kL8QE5Yw2wqXKSMBqZacp1Xn7/qHiuOosiW+jMa4jeSqQ3nm/WZUP8T2rs91IVvMTfUB5/3DMqct3JwPXd2fpAhtXGDOI68wNXxnHFTz4BL2xvL2V6cgpGD+u5p/k6Z/g3viMvTuVCgS+p/0fJog7TlVZYHgWXY8AbgcsXJYiiUc0qzmoJwz6FYWXzd6Jcr/o+BeLgBPcczorrzcCBNbuCSwSa9hA9YWRK8FUc0G2iijTKaKzA3kiQmHCCu++LUzloRMl0U73GBGoEkOZhyaRLC2Qmv1gjnTji4ga5HIVoilldU/MFZQyoiP9sItacN3jBl2BU/v/aGbZMaXxSaFwWc2VuC1CRAcnt9kYs7kWlgR41Pp7siDEV/wEyoRIB99Alq9jC9K4c2xxtprfaPsOMU3TMqeisMvE7UAKXlEWjKGiGiIkntjT39SMTW5TZxEIJVhpNv+f+5T1+WsLfujBf7o7w1UsTu3bUHd7iLny8Wae0ilPTqz5q7g+pxSqRctNOWw2cpRwniU2M0EiqGegFOOmE8dU4prjsUxkv5Q8u7MKbKNrHNHN7Q4+/HPouw5DdGAuMERyigWkOf/rMw/S/rBnWY1nmzepLkLtkkQJJxNupHg6SYaz5Y0pOEukB1OkGJ7AVIzSh
- DIDY6Idm
- g4gheE3hQnZ5UKBR829zj3HNUWSf6ANjPmaAhYd6yfoOP4iRmG8nVRYEIrFiE4+mxyZyHf2GQBE9k1P/tOdCDNuVBG1L6sYuFt/E0/HkSXYtL/TRosRpxYk9CP+RMPYh7Xt4sEOx9k6EGo1PNMquduO40oYKh18isdjJJiJ9Cezl7zSmoBVAZfv9/1R7usVfUs4Pbu2vfNrPY7Hqr+TpHhOPVzvm6b1zDHoE+wJcL4I+OmPDCLOPfkPuTPt97u4dBarEszY3SGoUa/VprDmpMv3i0Tb2vXqybc2wmqQHVsPW3DIDZDXmnEeryY6BRn+rCwgyu0wuhetzvw6wHFqjR705BkoG5mJsUiNff
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4BE871C0002
+X-Stat-Signature: 71qjhimsf88ak6wnk13rsegxx7igoox9
+X-HE-Tag: 1777030940-492918
+X-HE-Meta: U2FsdGVkX18YarSxCFWG43yFO91AVvYeqV6QRSSkP/Sh/7GpVMKgTC7JhboiB7yeBjpq4wFmo2OkFl+OPLNrVxI3PXRzD1dtKSAZTplO3FpDLdaJGES0L1C8iBxeJcDWc4O2W5YSmCm995Mlnq8WR5FpTpJrM6u8hz0RkNfUDzPFba1zB4os7PNpf2/jaxn6yD2MWqwrKEulO6lwgYYn6OzlIU2F/BG+BUWCi65tSmO9pHQ98TetgGJJq3ISwNnBXI+aYOYuQh7Qc1tku9xYeAJWMKahJM0rJXzg7eBaTIs9E9wUSNqwcYzGkXHS13WsRYxACTsJQVnrU/c6wyCM6V1ffCoaoeQf50JLEiiJR/tHlSVyJXRt0HihHoD8GdIKU6eYC1ra791wE49RNca8JOy7ORpcbFSOgYNZU9JMUyoRaSFNKbeW9nz+iDV8CaO42d5LqGO4lKb5rB9Dei7OUzotDXaaj3ziL+Sp+ZpD/4LFhek8E/t6ZOIHzC7dNGLJh6i9xqJcqRIheoAcytVSur1cvQNAtwKkelqFwvl5/2/+kQmFPUcMoYU0OsvMgNnAyiJbyQrs8Ha81W0oHFI+4hsP/GeUBYaRZhnKP+2ebYdTRVjEgfZivePNCtP4Kg5g76XV1nJRQFO2VWdiVEM82xZFVtjGy+GQQRxWsDPGcmM4jFyzkWbKSizdzBvxiD0t9/9v5rWNAjxsdCsPTdrUagHGo6p7AELdYVQIG9nHbasCJyRua75lGz+6azDkO2Dx9wJgqaT1T21aTV61vPM0i3D6f3GSV79vzl++uYM/vGWbF+5qK4VU3PMCjxcW36gVMMYe4QiTYmhYXNW+LDtlbT2HjS1kvKGb72cPF4htYipSh5FE9p4SWjsLamDP2ADK/Ou0fqLKS7QcUU5PgDiPaNUZ6Zj6l2GdOhZM5O3oMTNVr/LlPgQKp8Uo6DwHQDjk4BHRYpCfwra7zs854rY
+ RD+HHBuG
+ 2vFY75qz8X6jEhFQATifl5oheEpKjvoppDbbQx0Lg0w/dR3E/hUUwBJ/hoJZnC66E8dmquIVrOOwQTD88VD80fzjGrLhiaTRNFb1o/DT/ouZmNmwbwL5KYtT62msEUfcQYLaoNsf+hAT3GM2ZQXLOjuPP5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,24 +99,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 24 Apr 2026 13:31:34 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+"Alvin Sun" <alvin.sun@linux.dev> writes:
 
-> > > @@ -2019,8 +2020,14 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
-> > >  
-> > >  		if (pages) {
-> > >  			pages[i] = virt_to_page((void *)start);
-> > > -			if (pages[i])
-> > > -				get_page(pages[i]);
-> > > +			if (!pages[i])
-> > > +				break;
-> > 
-> > Best to mention that change in the patch description. I really think this is the
-> > right thing to do (returning NULL in the page array is just very dubious).
-> 
-> Ick, I see Andrew already grabbed this so I'll just leave it for now,
-> thanks for the help and review!
+> Add a helper to find the first present entry in the XArray.
+>
+> Returns the index of the first present entry, or None if the array
+> is empty.
+>
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 
-Andrew does copy-n-paste ;)
+I submitted a similar patch a while back as part of the dependencies for
+rust null block [1]. Could you check if you could use this patch for
+your use case?
 
+Best regards,
+Andreas Hindborg
+
+
+[1] https://lore.kernel.org/all/20260209-xarray-entry-send-v3-7-f777c65b8ae2@kernel.org/
 
 
