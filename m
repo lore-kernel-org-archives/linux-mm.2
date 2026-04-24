@@ -4,110 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7141FFB44C2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:05:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 612FAFB44BB
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D320C6B0005; Fri, 24 Apr 2026 03:05:27 -0400 (EDT)
+	id C60296B0005; Fri, 24 Apr 2026 03:17:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE2036B0098; Fri, 24 Apr 2026 03:05:27 -0400 (EDT)
+	id BE3166B008A; Fri, 24 Apr 2026 03:17:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD0C56B0099; Fri, 24 Apr 2026 03:05:27 -0400 (EDT)
+	id A841B6B008C; Fri, 24 Apr 2026 03:17:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A5CAF6B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:05:27 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 52D921C0AF6
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:05:27 +0000 (UTC)
-X-FDA: 84692563494.29.5FCB9EB
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5CFD1180003
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:05:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=G1aAAIGz;
-	spf=pass (imf06.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777014325;
+	by kanga.kvack.org (Postfix) with ESMTP id 8F2FC6B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:17:00 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B864C337A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:17:00 +0000 (UTC)
+X-FDA: 84692592600.04.A602DBC
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 277D040010
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:16:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fiTHbBck;
+	spf=pass (imf11.hostedemail.com: domain of linmag7@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=linmag7@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777015018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lv8en6ROVToGVO6NQlpsZwsbrBP5PFlYZ+7SkBfTmCs=;
-	b=o2f//aA+y6tocBVi/uIEKlCnZ0Tw35P3Jcmk9s7SvS1Q7BkgZPKazqK+t9GGyV/NbEX99z
-	7GGtZjzIPtIvImfXiBT7bpUBs4uhJ9kTXF/1paPQvziEmHPnuLWE4G/kFmiaRx04saGaa0
-	6zNOMyL5tXFtL7HYzW0oXT0wAaDEaFc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777014325; a=rsa-sha256;
-	cv=none;
-	b=hNE1jSZRthtxsqTxZfuizVMbsrkeu4FIjYqKulKZaYopm/yijAqVUI/qEntS5Mwc4C0nzV
-	RHhy1GPlNX6T07ixC5JHyPO5SVkiBumiNfOi33K7jO26AxuwgUqZpmE1Uz2VXEAMj0TsYj
-	818r4kwcdANbid3Z0POf8CTFFf2aS88=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=G1aAAIGz;
-	spf=pass (imf06.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777014324; x=1808550324;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=wKkQjksF58KOBShBOIr4QCuWLnUJX6G0srOO77XVonw=;
-  b=G1aAAIGzL9m0QZtHGKsGnt2yMJnrC2ug+nSfoulAHRja7K55j4Edkzt2
-   28iDv/wFu1HfLzHeOy2sHn33AXC8ld8mMAWI9E00p4WktLJNKpwWeVp1z
-   pNw6+sG4Dkuf/4APZcBs1cgd3r5VgQOqp22o5NhMLFoFbcU3ut73Pzkf4
-   jQV9jTi4zKf6H1AfLlVvvrAznzSQMXZ4GOkqQagamCxF6THtA1uFQUvV5
-   hYz18VF7eUuobMmpzWOlC039Exga0ZAC0iGS2nC1wN4N464F1SRYAnMQB
-   tDfAmiH8jeZiPlRGKQAg4vh8GZBHhKjMQpDM4CDAPyEGkIHlFJd0T9XKR
-   Q==;
-X-CSE-ConnectionGUID: DSa8mfpmSCO96r40u0Neiw==
-X-CSE-MsgGUID: nG0nmA/5STeKkHdvxK70Hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="81852600"
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="81852600"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 00:05:22 -0700
-X-CSE-ConnectionGUID: jALR2HnjQy2FSh+IwLvczw==
-X-CSE-MsgGUID: AFI2FRyNTSWr9Z8LdXAzDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="228315564"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.245.58]) ([10.245.245.58])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 00:05:19 -0700
-Message-ID: <291406b26b8badf2e565996515931d9ebe50208f.camel@linux.intel.com>
-Subject: Re: [PATCH v2 1/5] mm: Introduce zone_appears_fragmented()
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, Andrew
- Morton	 <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>
-Date: Fri, 24 Apr 2026 09:05:16 +0200
-In-Reply-To: <aeqbe/9YRKNyYuWY@gsse-cloud1.jf.intel.com>
-References: <20260423055656.1696379-1-matthew.brost@intel.com>
-	 <20260423055656.1696379-2-matthew.brost@intel.com>
-	 <76191a17-18bf-4e9b-9ab5-dc9a48abfabb@kernel.org>
-	 <be42059924cde9bb16a087ee2a5abb0b9d850d68.camel@linux.intel.com>
-	 <aepuNL2fwp47P1Wi@gsse-cloud1.jf.intel.com>
-	 <aeqbe/9YRKNyYuWY@gsse-cloud1.jf.intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
+	bh=8uv1ap7wfpWSK/rjkumTWgHiVOSnLQXCSFDMADgPR1Y=;
+	b=45N+7XNAYlwH4YomNP360/FKD6z2/q+KfIFj5FyZDgzQdxRf6Ensesh5LdrY3kLx+Vrv4Q
+	LYa0OIeCm3fpnloFYZ90D3t71UT21VK27p+po8lWviI4dfkSOGpojOLzJHwF3Xf03OBXIN
+	ZT7uz2tVNmAm20JErzpk5mHTUmwRaFQ=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fiTHbBck;
+	spf=pass (imf11.hostedemail.com: domain of linmag7@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=linmag7@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777015018; a=rsa-sha256;
+	cv=pass;
+	b=eWoCXgKqodfYb2F1JnMocVylTC9ikzAy8lIlBMBobjG5vCJkBSTxrRWlSlFWziPX/6loJh
+	BQGd0SXhzOFyhx2VQB09EcrczMG7rTQfOYPpggcDMUYEUA4Bs+B/QGu/uLs7cWYi6/b/xO
+	IFbLkkemUjMRkB3SzUZMsbz4vnv3arY=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67893fba9c3so2357675a12.2
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:16:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777015016; cv=none;
+        d=google.com; s=arc-20240605;
+        b=M6eP5FHuvx3bdxu/ctWr78PNTCEmokLpyxe6o16NPAwzxHiBN1RcqtbNt/bJYscx3m
+         Ge3ZCrmZC/x66TpdWlQRmOaSoXEFkm67yFAjB2QHJMJyUNdmFTICG81d54BjspFDEU6K
+         X1H3LEc5cBmgXZbYl/rh1rNh9CAWo1AxbHBUyuahHQdfdmwKv0xij9McNY2VPEKDR+KE
+         IUuf9zEFIVBGwyolJa88qgpSVV5RlgRBleCrhwprUKf1W2dw49z7KkkuSw8NyJhS0hOG
+         l4M06PpXHEFgbMwTzHGe6ouivmMroqhp/GbHIcfKFASlln75LHiNRgpmxZYwlE5UJ1Oe
+         kIeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8uv1ap7wfpWSK/rjkumTWgHiVOSnLQXCSFDMADgPR1Y=;
+        fh=k3qoXzU77fxnhtfnELQh2Qnhvn4pv/McHxJSjsQ8hpM=;
+        b=ZXkoK6OSwiw8BMtdq7V0qDXwY/d3HH+DzMk65zERe7UDc4LyB2dl0ad2BDEoGkbH1u
+         QtmO/wgF3T+LOggj8Q8baswzR8Swf0eoqoYTCe7xwHakogzuhkvXtO48gTtORzg3lR2o
+         gvxbA+8RiB1B56mANdZdA6rdqXhy1QZCqkStvT8iJqt9PHxW6G8bVSQNZcuybCFzFbCT
+         5Qvj41K4h/1kNwMCWTgulrxRPbhqg21YsSndnfjgofb5uieHSo9Ttl94B84SRGCjWDSy
+         bfYBVtXFuwy7bEZeRtmT8kCPyz4IFAMUh7xqRNBiR+7m8K+q8G6Y0koFN1x6V9fmRilS
+         Wo8A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777015016; x=1777619816; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8uv1ap7wfpWSK/rjkumTWgHiVOSnLQXCSFDMADgPR1Y=;
+        b=fiTHbBckyO9XiQABbLXPsOLhKqRWsnKiKm7Q5hRGdDkOLzQD/f6dhujWo2J+dBeG+A
+         J/oaGS+mu2A9NtrRpIY3nn6H+MZRQrRkzziZeDm1as8CARnXdQMRmXpSmu0BnPKr6yAs
+         fuaPf9V4As3BFQrLKJ47oda8sKRRhi5+GMVS0rM/ProVx6oY0+HG8dQdI/AjLSc6YoFR
+         6hF6oVvTobXzoyzI2+sHpjtWqGPey4+xTBcGCHLz0/l2CJ6M4CUJC5UzyNivZUxpkAwy
+         s4XRjAsZj7AWbuTi3xJaTOYM6FprSB3dDZ54rLFXlllyyjFzSsiJF65xAlC3MLDlarXg
+         97dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777015016; x=1777619816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8uv1ap7wfpWSK/rjkumTWgHiVOSnLQXCSFDMADgPR1Y=;
+        b=hi4Tl0+ez6690SmKq/4NRJrCRnQJhmYLNEh+446aA3w9ZjWR4GJmPua/+TE7fkeZ/D
+         yhYtHuVCm0eErznNxlUzjLrUMfENdvE5n+BgPnOFuIVEE9LotR4fSBp1KPzMG4lsjkGp
+         0X4HEWwOfRwWSx0MpvtQdGifvmqju61umup6cuAKbj8L7g23BdPQmt2bC+OgC82E2Iln
+         LJ6rDiTx0z0Kwbe3elB0snoqwBwdg9IATcR6wlpHyyFcLv1MENcZVl3V4rKML4a0iLH3
+         B78yzFt2X+cJEOIXYH3XzoaitVOsrSTGbhhVzLB9lFBHnwVhoz46K3kreJ9rN42r3U9w
+         EmSw==
+X-Forwarded-Encrypted: i=1; AFNElJ+h0w2HfGgQLF/DsIvysc13o0wDa3pMpkRYAX4ZcdczelyiVFGzlzEAppvMWuwcUmUoe0pQmFcl7A==@kvack.org
+X-Gm-Message-State: AOJu0YwbdKr2P0sfDE1gMat4sAMedCYekKhRc/K09I2fjzTBIKepHLNy
+	rTN/WvieH4scS8KLykBJyZ5FnpeQD+08k6Sx4Tjp0rBeI+nl5iY3RLBy/olptMNLRc3Bt7RfNxM
+	AXPYN6EZzbLoLLswvxEtexKsnyubkR0U=
+X-Gm-Gg: AeBDietgNCF7wiLY3UGba0BhCz/wa3Au2jEST8tuf7whM71M4rdpda3Xs7la7Ssg0Pk
+	CJQdVHGX4rjVWGfPqZtfamYc9q8lSCw9K/13ea6M+bQpC+QjDctJ/B6MxaOo/+j8ECYBDYbJJ0l
+	Z98hkQ9yyaHyDAMvE3Y2mOMaTK9F5bIPXZICrDpraRS7nO9xpVrZjIH6FCrgb6aWn7FWBoPqpyq
+	cI/9+yXbwkSB6rtkWk7xBNKa6udFYZE+Wp5Pd0Q3H/b8ZZgSjZjMSKaVCF0wMRTExbVK9pZo1qb
+	Mum07R7pfEGwF83oGye7JxpeuyZ8e3H5nCXFjALu5gwhyZubfxA=
+X-Received: by 2002:a17:907:1ca1:b0:bad:dfe1:6a56 with SMTP id
+ a640c23a62f3a-baddfe16c2dmr60367766b.30.1777015016077; Fri, 24 Apr 2026
+ 00:16:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1776808209.git.mst@redhat.com> <006f9142e591ba8c340c3b354aee76aec5c285b9.1776808210.git.mst@redhat.com>
+In-Reply-To: <006f9142e591ba8c340c3b354aee76aec5c285b9.1776808210.git.mst@redhat.com>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Fri, 24 Apr 2026 09:16:43 +0200
+X-Gm-Features: AQROBzARFJV36R4zYM7xbfHPyy5Ua1V3EjGjDIipUn9qIBzgKGxem5ahIafz8os
+Message-ID: <CA+=Fv5T83qH-c0U4eXO84HQmG=225SepaxVYzrpQh_CWMhG5hg@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 10/19] mm: remove arch vma_alloc_zeroed_movable_folio
+ overrides
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Brendan Jackman <jackmanb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Jason Wang <jasowang@redhat.com>, 
+	Andrea Arcangeli <aarcange@redhat.com>, Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, 
+	virtualization@lists.linux.dev, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Greg Ungerer <gerg@linux-m68k.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-alpha@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-MIME-Version: 1.0
-X-Stat-Signature: zy844mjhodjymztgw3ncom4npoth8fbk
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5CFD1180003
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 277D040010
+X-Stat-Signature: eix618bn3yfajr1dkq5nepi1hxwtcom7
 X-Rspam-User: 
-X-HE-Tag: 1777014324-744467
-X-HE-Meta: U2FsdGVkX1/ho047BE6inZfR8J39iDV8ExAuQg8/h5JJEvk/e0RU6veBXLe9yn5ZoCY7LjANQV8xhmwHXucZvDo/pkPMpJHH74uMf5XK9OnGhG5/1Y3qzLgvlNVSV8tBEtEf/JPoVo+osFK0lzVhJEGF7fuhwujka4WTPJ8DyebArNAzVCJPVu0dq5WavwQ0XAqpfoFaFdi+PUyGa96L5jDz25uWOBzfP7n/w7HSs6EEoV9DF1C12f1+oCQd1+8v0zAMkb2TD3JjX+wra1zmd0lo+CecaQUGMlBBCZevu/CQpNon4+SmFv1lC4WPVgPAyW305lsnuRvINTAQUvwE9ZXigqIP1NkW3I3uW0/xAlnQCCKfe4Vlime1HYVbLtxPKleIhNe5h7s9HU6fEzltTz7x8NILVVntM6s/cwc3/ecvdA+sRPBPWMCouSz1maRKzKOUyC7EvrgsFKfn2S4NdSlBojyhAQj0tuH30TL32gk8dNY9YHqNZEezdJRnqknTXZLg/nV65YH2oqRrgZ40RiiRU0OBmpVnLuUsDFL9HpvTAYEkgU0XVwHHHKTXX0VjlCLrHgxHbaG+7ishF/eyNgLYsjJ1LxC5A9QYkjMZf/7UJZNADBCUhKZ7tUE9JhAFdHn6pVtKSNJSd9rEo8vo9L6nYxSWRTue5ln2jDlUsYXY8YjgPky6ZFCJoN+MEQwZ2mm82vB9F8gX00vpyvouP/kbutm98ogBHJoWQwm/VCjfaDMAJZOefWEWEc1ZNLSg6A4Z/hP0SQ/l8+JeIm7+k2Aw/C5s0g9uE6Fzln2mM+w1OvcMTrchpO2ufZ/rd8MEC62Z1OWGOyYqDm0dUhgb/Q1kNwzD1Hx9/zksxNRKjNm7hx2czrWKuHWENhG8nmyyzmq766iggdrGPO41EQ8lcscTYOZETuhlxuyXpd1LR8Akm0cDajk0iPpbIEXber1TDt5hzLjo49eQ9C92yFT
- Izie0COr
- yqO5mhtSqU18KgJe/tjrBTkXqifCDAzubgANn5TkQzh3LBnE3Xt8L7y+8sNkvJ0uAc0wWUA2djXLk3QXqLj0DDaidzs/RdHQ6J7KhWh4RFBMddtJo3/wYrZtDkNYJWZ64WB98LS2rDP+mtEVkvzuFErsSflhT4U+2E3MzUBGBZxHonH/HkRlCheWC14ICkZuMaaJEJMKsWJX6YzmTqmoDRbcjjdtDeELJ792sSvQMxklwpV7mc/Ze324LWxtUJC/FlzqRLjNc7Xguv95sDYWUuz1h8yzV6OdOcsumVAmXAeAtVXLw6OzL7WBCFCNYyNDlPyezOy8pNwuRHe+QrlCeCRMDYgyl4fDUu5/CnpuK4cjgDPsaNY59O3WJIau8nzIwxMLLxcwaJsTMSAfQIyRPDfyInUxOQH3nLS85qV6UT/Y81zjPh/RkU/NLHUNqT8DkHELWV7D+csmMYy6MjiV/W23xm5/yiYaNymPIuGVWqBUxyqq9l0eZdW+ItKVC9k57eX3lfNdarDBD4MsLPEM3iWYWTElgxiGDzwIAHsI5XUXGFoW+s4yYz7LVuxoBfzHJfYe0Toz0QGvdvCfzvghtxs1vX19cRiUtw682EeQZSfaqC5okPLX8dKeFPA==
+X-HE-Tag: 1777015017-373699
+X-HE-Meta: U2FsdGVkX18Y5en8Soir3Vea0E6fUxA9hsBLK1OYhf8VH43NL3annuWDv0HQRz7aoTtGsUejS/d0bm+2BCzVSIKfrcA2RhxQe57UUevA6+NpGZJzzSyu5nGQjbbY4rfFTct5hOS3WxYf5JlJLZgKBAH0FLKtND4TR87KHXR3Hc1ZpUlOALuZ20o02e9okhF7sOrkcposRR1tco3aUtNSjttqZ+rH9DBakYFr4fEPjd+gS+r17vD9jGXLJOsM/dx5asccLQ3O4KaYo2yl6MJRn3HE5YYWMuqukcyOW3vXyTWs1PSMVo6j64TOZcmWvgWe4UyVNbvKHGFTH9e5K6ZttkJwSZvBv+JnLW+ss/4NDeDR+CHSF+nQxFrb4hyda8D8H4lNGZKv3rNB+wSmNoRm0gwl5Wos5FmNwUDjxvt4+ewOdrhxFJHvXbp4wJxkt3oghl6jJzYOLEeybJ1SJPJ2484jGfpmewi6RyRzCESkms2ps6PbQRrBqocIPpLyUqEF4YGLix9wikSL4o1XPEXHyPqcM1mhzgPnxO96GOo6GlT6gwgnvi74kgl2i4y5wTiuEmJe40NGQNdgZdFiEhCh6/7kzoOriLdPW37FJUoF3ZcTstiJywFTJLDQAlOpqNxXiWV9UxW7KXMVPoUkwc1aMPjbt6ZFYrFZCLOlZKEFLMBTJHCms/DgSE/o94n4EyranwzNN9eaFlH3xCXYZzHavN+ZsLBg8aH/zhQpP77MSBQ+9MZb4v/lYfgLh2yh+KZn/V+6NatgRUrZzi0P4eYGmZg4bavS9rELvEB0VaLrncGVKs7BW0onPMJ1N7lTBVc2aLopgsnVkR0QPdsmQxH/O2LMvsuxco3ex0DSl9w9A1gdAnelU5dVnelUFQNh5en1MJumY8Ed9pUSbYEPPrEzK2Vh09QdreGcs25oI7d2tdMs1rWz5MXHjeQgw/klRB8Qq5viQWrWxzo1lryYZyO
+ v31iZJy1
+ 2vYS2DDcyKeUOx4y+I33vB7dM6PowGvbLpkS7dXihrEoaabyUgASO3EZ4kbyilydm6m/L6YwqjooN33Mc+ZNz41ca/qM9+NI9Ec8wwuRLQgdTqpNxCVwqqHIW7wvTNxWKLLktHiB6G3+hn4F5HHawGY2DGC/GkGF/b6ZW/UffI3Swfw7fgYduhUtp15GGGkdfhcMA4o2GEoMBmql7ixfPeaktvO6oD64CVV20br7516ePrci0VEHtTxK36O4RTdlbZohgEOZvctTih5cWaKC698mhvGIRSB5lz1/cCGn4lKusY9RNDcQao38H5PoEgX6UDHf58wGuSjLPovpVVEt4mP6toefCUWt97zBVw2PY0TnHwRgzwYl7NLxH3PxBTkXU5V5szFjMxDXxVfKtBfBCiYPwkEA4GycVa55EaVT7Hh5r3XjFprjhUhwVcB5Ji6p+wDv0p94DSvc1cbd1VrVABZwFkvgTY1LuMVOspIamnFO1vdOEU2dSeQHojL/oJzzavQF88WZWF/qFJg3LbR48vPGZQgrCpJjZqbHklXOFu0ph45b6o/blkdpDVM4WeWjr4Dlb7dBt8Z157yHsquKtrkMYLgt/QKDOCsBe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,195 +151,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-04-23 at 15:21 -0700, Matthew Brost wrote:
-> On Thu, Apr 23, 2026 at 12:08:36PM -0700, Matthew Brost wrote:
-> > On Thu, Apr 23, 2026 at 01:27:11PM +0200, Thomas Hellstr=C3=B6m wrote:
-> > > On Thu, 2026-04-23 at 12:27 +0200, David Hildenbrand (Arm) wrote:
-> > > > On 4/23/26 07:56, Matthew Brost wrote:
-> > > > > Introduce zone_appears_fragmented() as a lightweight helper
-> > > > > to
-> > > > > allow
-> > > > > subsystems to make coarse decisions about reclaim behavior in
-> > > > > the
-> > > > > presence of likely fragmentation.
-> > > > >=20
-> > > > > The helper implements a simple heuristic: if the number of
-> > > > > free
-> > > > > pages
-> > > > > in a zone exceeds twice the high watermark, the zone is
-> > > > > considered
-> > > > > to
-> > > > > have ample free memory and allocation failures are more
-> > > > > likely due
-> > > > > to
-> > > > > fragmentation than overall memory pressure.
-> > > > >=20
-> > > > > This is intentionally imprecise and is not meant to replace
-> > > > > the
-> > > > > core
-> > > > > MM compaction or fragmentation accounting logic. Instead, it
-> > > > > provides
-> > > > > a cheap signal for callers (e.g., shrinkers) that wish to
-> > > > > avoid
-> > > > > overly aggressive reclaim when sufficient free memory exists
-> > > > > but
-> > > > > high-order allocations may still fail.
-> > > > >=20
-> > > > > No functional changes; this is a preparatory helper for
-> > > > > future
-> > > > > users.
-> > > > >=20
-> > > > > Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> > > > > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > > > > Cc: David Hildenbrand <david@kernel.org>
-> > > > > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > > > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > > > > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > > > > Cc: Mike Rapoport <rppt@kernel.org>
-> > > > > Cc: Suren Baghdasaryan <surenb@google.com>
-> > > > > Cc: Michal Hocko <mhocko@suse.com>
-> > > > > Cc: linux-mm@kvack.org
-> > > > > Cc: linux-kernel@vger.kernel.org
-> > > > > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> > > > > ---
-> > > > > =C2=A0include/linux/vmstat.h | 13 +++++++++++++
-> > > > > =C2=A01 file changed, 13 insertions(+)
-> > > > >=20
-> > > > > diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-> > > > > index 3c9c266cf782..568d9f4f1a1f 100644
-> > > > > --- a/include/linux/vmstat.h
-> > > > > +++ b/include/linux/vmstat.h
-> > > > > @@ -483,6 +483,19 @@ static inline const char
-> > > > > *zone_stat_name(enum
-> > > > > zone_stat_item item)
-> > > > > =C2=A0	return vmstat_text[item];
-> > > > > =C2=A0}
-> > > > > =C2=A0
-> > > > > +static inline bool zone_appears_fragmented(struct zone
-> > > > > *zone)
-> > > > > +{
-> > > >=20
-> > > > "zone_likely_fragmented" or "zone_maybe_fragmented" might be
-> > > > clearer,
-> > > > depending
-> > > > on the actual semantics.
-> > > >=20
-> > > > > +	/*
-> > > > > +	 * Simple heuristic: if the number of free pages is
-> > > > > more
-> > > > > than twice the
-> > > > > +	 * high watermark, this strongly suggests that the
-> > > > > zone is
-> > > > > heavily
-> > > > > +	 * fragmented when called from a shrinker.
-> > > > > +	 */
-> > > >=20
-> > > > I'll cc some more people. But the "when called from a shrinker"
-> > > > bit
-> > > > is
-> > > > concerning. Are there additional semantics that should be
-> > > > expressed
-> > > > in the
-> > > > function name, for example?
-> > > >=20
-> > > > Something that implies that this function only gives you a
-> > > > reasonable
-> > > > answer in
-> > > > a certain context.
-> > >=20
-> > > I think that test would not be relevant for cgroup-aware
-> > > shrinking.
-> > >=20
-> > > What about trying to pass something in the struct shrink_control?
-> > > Like
-> > > if we pass the struct scan_control's order field also in struct
-> >=20
-> > If the order were included in shrink_control, there is about a 95%
-> > certain that this change would allow TTM / Xe to break the
-> > problematic
-> > kswapd feedback loop. This may also better express the intent of
-> > the
-> > problem we are trying to fix here.
-> >=20
-> > For reference, the cover letter [1] details the problem.
-> >=20
-> > Any guidance from the core MM folks would be appreciated=E2=80=94would
-> > adding
-> > the order to shrink_control be an acceptable solution?
-> >=20
-> > Matt
-> >=20
-> > [1] https://patchwork.freedesktop.org/series/165330/
-> >=20
-> > > shrink_control, really expensive shrinkers could duck reclaim
-> > > attempts
-> > > from higher-order allocations that may fail anyway:
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (sc->order > PAGE_ALLOC_COSTLY_ORDE=
-R &&
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (sc->gfp=
-_mask & (__GFP_NORETRY | __GFP_RETRY_MAYFAIL))
-> > > &&
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !(sc->gf=
-p_mask & __GFP_NOFAIL))
->=20
-> It doesn't look like __GFP_NORETRY, __GFP_RETRY_MAYFAIL, __GFP_NOFAIL
-> make it to the sc->gfp_mask flags from the caller and get into kswapd
-> loop...
+On Wed, Apr 22, 2026 at 12:01=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com=
+> wrote:
+>
+> Now that the generic vma_alloc_zeroed_movable_folio() uses
+> __GFP_ZERO, the arch-specific macros on alpha, m68k, s390, and
+> x86 that did the same thing are redundant.  Remove them.
+>
+> arm64 is not affected: it has a real function override that
+> handles MTE tag zeroing, not just __GFP_ZERO.
+>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+>  arch/alpha/include/asm/page.h   | 3 ---
+>  arch/m68k/include/asm/page_no.h | 3 ---
+>  arch/s390/include/asm/page.h    | 3 ---
+>  arch/x86/include/asm/page.h     | 3 ---
+>  4 files changed, 12 deletions(-)
+>
+> diff --git a/arch/alpha/include/asm/page.h b/arch/alpha/include/asm/page.=
+h
+> index 59d01f9b77f6..4327029cd660 100644
+> --- a/arch/alpha/include/asm/page.h
+> +++ b/arch/alpha/include/asm/page.h
+> @@ -12,9 +12,6 @@
+>
+>  extern void clear_page(void *page);
+>
+> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+> -       vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+> -
+>  extern void copy_page(void * _to, void * _from);
+>  #define copy_user_page(to, from, vaddr, pg)    copy_page(to, from)
+>
 
-Perhaps that's because they mostly (only?) make sense from direct
-reclaim? Looks like the trace is from kswapd.
+From an alpha perspective, this looks good to me.
 
-Another metric to weigh in is perhaps the scan_control::priority field.
-From my understanding it is progressively decreased towards 0 with 0
-indicating most urgent shrinking.=20
-
-Thanks,
-Thomas
-
->=20
-> =C2=A01182 [=C2=A0 394.049058] xe_shrinker_scan: no skip order=3D9,
-> gfp=3D0x0000000000000cc0
-> =C2=A01183 [=C2=A0 394.049061] CPU: 2 UID: 0 PID: 110 Comm: kswapd0 Not t=
-ainted
-> 7.0.0-xe+ #355 PREEMPT(full)
-> =C2=A01184 [=C2=A0 394.049062] Hardware name: Intel Corporation Panther L=
-ake
-> Client Platform/PTL-UH LP5 T3 RVP1, BIOS
-> PTLPFWI1.R00.3332.D05.2509011438 09/01/2025
-> =C2=A01185 [=C2=A0 394.049063] Call Trace:
-> =C2=A01186 [=C2=A0 394.049065]=C2=A0 <TASK>
-> =C2=A01187 [=C2=A0 394.049066]=C2=A0 dump_stack_lvl+0x55/0x70
-> =C2=A01188 [=C2=A0 394.049073]=C2=A0 xe_shrinker_scan+0x274/0x280 [xe]
-> =C2=A01189 [=C2=A0 394.049181]=C2=A0 do_shrink_slab+0x132/0x360
-> =C2=A01190 [=C2=A0 394.049184]=C2=A0 shrink_slab+0xf0/0x3e0
-> =C2=A01191 [=C2=A0 394.049186]=C2=A0 shrink_node+0x2bd/0x800
-> =C2=A01192 [=C2=A0 394.049188]=C2=A0 balance_pgdat+0x323/0x760
-> =C2=A01193 [=C2=A0 394.049189]=C2=A0 kswapd+0x1c3/0x340
-> =C2=A01194 [=C2=A0 394.049190]=C2=A0 ? __pfx_autoremove_wake_function+0x1=
-0/0x10
-> =C2=A01195 [=C2=A0 394.049193]=C2=A0 ? __pfx_kswapd+0x10/0x10
-> =C2=A01196 [=C2=A0 394.049194]=C2=A0 kthread+0xdf/0x120
-> =C2=A01197 [=C2=A0 394.049196]=C2=A0 ? __pfx_kthread+0x10/0x10
-> =C2=A01198 [=C2=A0 394.049197]=C2=A0 ret_from_fork+0x1d0/0x220
-> =C2=A01199 [=C2=A0 394.049200]=C2=A0 ? __pfx_kthread+0x10/0x10
-> =C2=A01200 [=C2=A0 394.049200]=C2=A0 ret_from_fork_asm+0x1a/0x30
-> =C2=A01201 [=C2=A0 394.049202]=C2=A0 </TASK>
->=20
-> Will look into if this is fixable, but again any core MM guidance
-> would
-> helpful.
->=20
-> Matt
->=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return S=
-HRINK_STOP;
-> > >=20
-> > > Possibly exposed as an inline helper in the shrinker interface?
-> > >=20
-> > > /Thomas
-> > >=20
-> > >=20
-> > >=20
-> > >=20
+Acked-by: Magnus Lindholm <linmag7@gmail.com>
 
