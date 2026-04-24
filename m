@@ -4,75 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C7BEFED3D9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 15:06:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F92EFED3D9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 15:06:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 442226B00A0; Fri, 24 Apr 2026 11:06:18 -0400 (EDT)
+	id 04AF36B00A8; Fri, 24 Apr 2026 11:06:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F3776B00A8; Fri, 24 Apr 2026 11:06:18 -0400 (EDT)
+	id 022906B00A9; Fri, 24 Apr 2026 11:06:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B8326B00A0; Fri, 24 Apr 2026 11:06:18 -0400 (EDT)
+	id EA1F06B00AA; Fri, 24 Apr 2026 11:06:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F40C46B00A0
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:06:17 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B72F2C0632
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:06:17 +0000 (UTC)
-X-FDA: 84693775194.15.0F24752
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D888D6B00A8
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:06:23 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A25461C0166
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:06:23 +0000 (UTC)
+X-FDA: 84693775446.18.21FCF22
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B937B80009
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:06:15 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="lRXYF/m0";
+	by imf29.hostedemail.com (Postfix) with ESMTP id D3CB012000B
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:06:21 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PI5OVsN4;
 	dmarc=pass (policy=none) header.from=debian.org;
-	spf=none (imf02.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+	spf=none (imf29.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777043182; a=rsa-sha256;
+	cv=none;
+	b=Q8tXnV+z488mth9+Lt+wP3lvTLtvHSqsaopxwwlCi01o+2JrEp+nWgUoLbEJbzdvS5/3So
+	LULm6BKPK6KobvyEaUQI8nlF7jFk/1tXJM0VGf1zKlhuzK07vpu0amgfvQt0QLoX5fqvJb
+	VABslsemt9V2dZ7GYU/qTwBmm0zXjvg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PI5OVsN4;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=none (imf29.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777043176;
+	s=arc-20220608; t=1777043181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZGEE99cwULXbVYrMEkHn/4LIcan0Fk2kMQBVTvLPAo=;
-	b=Wy7NvCnQEowwdXOwjsSROgEzvVldM5Giufh8loXmflRvEYwtMsWx0AHpSQprpG1VsoxwMz
-	N4ESitYUvPUdWXdk/EFAsvt5vK0VSf4lfw7aJbKD8Qe/6veWDpq+5aCe33fcZzNjFwWaU4
-	WbfFJ6dbEAdM/tv8XTKpPsDhv0y8xOk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="lRXYF/m0";
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=none (imf02.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777043176; a=rsa-sha256;
-	cv=none;
-	b=4sQFAYJUncAfUDXEBTdena3tc5+BvKNbIGUHfvn4oPzyD+rbnAl/ahy3gkCWa70+pk8UAV
-	CA05ezhyfaL997hxmaZsLosBmx4fwPWcPIJW1w/kPocxtVDTxUYeVin5KOedvX0n4SUfuV
-	yvo2IKK5CHjnWEXHBo/8buMrdq2643o=
+	bh=9dMHvY64E/0Eq0UOACVelGjv1g6r0jBYKkjfUoG9zeY=;
+	b=Isq7nOVJ1o1pWY8lAZBZD42ANBo1FHOKHkoqqYzH0mSBvdPVNOv5O2AUyL3HRvisvmINYf
+	IwCQw/5rtkYVquAx4QhktMW/OPIuv+q5pQHS9oMBhEbvaSs8PIJAERztQtxjaj50SRUP5D
+	aWdxhehu4PqrYNwz2w3FLyXxqFGJ0RM=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=mZGEE99cwULXbVYrMEkHn/4LIcan0Fk2kMQBVTvLPAo=; b=lRXYF/m0o9eqzuHhMqAFj1LMrp
-	3DiuZJvJCZkPCdeNMZi3pIJ3mK6xtu2lOHuzK4MpHxv9dY2ukVO2yP1FLKfEGD8Lj40xPsbPf8qeF
-	II5Q7HkiHkS679xCR22gjjWiSRS0MDAPpP6PIm/u9yt7n6osHjLI65PeOhvfXEGh/a1c6LNehWrte
-	zD1fsInUn8d1GEZlGpgS1v+FLdGe0XCP3o8eY6A1CEfsp+ChrEvNwYaJ+t/GrFbxTblyBz/F7nFT4
-	5ZDFpk86/GknlXTwUPjS3OmUa/0tvLU5rsMgQuYfiOxQuOWVYtUF6k32EGjEG5zIPiykR34dD1/Na
-	9XJrreGg==;
+	bh=9dMHvY64E/0Eq0UOACVelGjv1g6r0jBYKkjfUoG9zeY=; b=PI5OVsN4Z6FnbV8R064sujFqJl
+	XDFvbKTV/B2aAsEH9Yhng24qnIyrxQSm0AiayKPUen2OpANSsLqGgl3DbJr/wUzdgIPLBOx35qM79
+	P7fOn/9Qdwu2VMtTDPxeQ27YxrXIM73czvuSSqjS5vVDlAlTStmft9+T8v2ebQhHqOaOMB4Ys5U60
+	xlaydWz54n/CUFmd0nQxcyI8EueR1oRAlXrK4v8ogIl5BogD22nupTtm1FxnYrFvxYjgwrymQtz+t
+	MP51QEgqRcuKRp4DgyAf6/18G9riJRh31d4NNoK7pOTDJv2aNS1vb48T1SkUenv2aLUV7aSzmNodW
+	YUV5dyWg==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wGI6a-003FtH-0t;
-	Fri, 24 Apr 2026 15:06:08 +0000
+	id 1wGI6f-003FtN-2S;
+	Fri, 24 Apr 2026 15:06:14 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 24 Apr 2026 08:03:36 -0700
-Subject: [PATCH v2 1/2] mm/kmemleak: dedupe verbose scan output by
- allocation backtrace
+Date: Fri, 24 Apr 2026 08:03:37 -0700
+Subject: [PATCH v2 2/2] selftests/mm: add kmemleak verbose dedup test
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-kmemleak_dedup-v2-1-8bea649b2a92@debian.org>
+Message-Id: <20260424-kmemleak_dedup-v2-2-8bea649b2a92@debian.org>
 References: <20260424-kmemleak_dedup-v2-0-8bea649b2a92@debian.org>
 In-Reply-To: <20260424-kmemleak_dedup-v2-0-8bea649b2a92@debian.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -85,31 +84,31 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org, kernel-team@meta.com, 
  Breno Leitao <leitao@debian.org>
 X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10687; i=leitao@debian.org;
- h=from:subject:message-id; bh=akHXePfPebMzUdTcryE7KkaXUo55nftRQsGBt9wfwYI=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp64bVTXI0Q51jMB/WSB+QfdXgIS0mvpZ+YHPR9
- qN39q/RI3qJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaeuG1QAKCRA1o5Of/Hh3
- bTZcD/9+/8vy5o/zhC1gZzQCAsM7zewGRNcYIKl8JeyMhvi8uaBDVMWqypEct4wENsm+L4WIunS
- iFAYz7+NaFrNIc9JLzQm6vA2EK0rfxybKqHh7hQ3V/h5B22vOSa92DKf+LuoGmrT8KFyDXk10lP
- w0nvzBzJlZECrbn7p8Hq46gh/779WYf0qgRh0GgG5eVb4Ql62+Tp5EQYgFa9TffAlx4FWXMqAf+
- vB31D+bL9zkiKp3w9GahKngBGbPRJ110w31stSeHDtUzzmnuXfsMTuL51DwqDI6xK3N/lzD5DA3
- ok8Bv/nvviHtlq/YhRL3ba+PBDqea1u95BFeHt0QZoPk/SrFsCtnJf8qStAzx4i7+X/+4rAph4B
- KZ+G47hB9ulMd02yX7Gk+Ac7taPWWJV4dw6r9KTHOk5XP+ai/KSWPcULl/9sVs7ZN2j1cL/OgOZ
- at/6YQ2V0rNpO9CCc9nAzON0J38psfhhRZUTvXlPYVr+CObmAUYJdKlmkONMbTkzhdOxtWS//W2
- cfYLmvGuiJbUcXpOq9643YRxu95qe33N77xt9Nsqke8wlTQf6LuK8Dxt7/6quob2Mxhq6F1AsFl
- qIQLi1j3FAb4JH4LBlYYZqTab3yT0lhXlu9miwE2w/HLbdwCG4xHwAY3n2UW+ipYoRBZJLit8kw
- UXAbb89jr4CHtAg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4637; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Mx+xKsW705Bvtu1gt8242kE4k6qFTx9knH17MmM+aWY=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp64bVkIXMqiaoxF7/YW4ndSiQGKZ4M5JvO3WQi
+ jiQ4M/AdmmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaeuG1QAKCRA1o5Of/Hh3
+ bWNGD/9iZuj9NLm2IOIKDhoKk9IMdZkgszMRFOP0qTV5nwgrdiwdAvUt1C7/jIRI/5PKG5+qTXf
+ Z4J0dOuKdWWiSz+MK4m5cAQl9FQ3GsrBNS3+5DXGhjlGGEqAIyXj50yqtHoYx3g4Exfu9cUWw8i
+ KDhkRaFE3oEppROX+1w4pyvJNRG5a/4Lb2kA7oKGt9UWVduGgplYoqsxSs4fEEiRNB38OPvJRW0
+ j+MLOuVQrs3dOi8qwhWSHPsotDXcL4pME4OOSroW/BZeM5zidMtTSCmKEHzQxGp+bzDJkmbkCwi
+ HIBKvBkGuEC5ntP8yQbGFzxTKTY2nfgxNxFbkqLDcy12L8q2AUdvcsH7J+5HQBgHEHCW6tzfCFV
+ 6RA3wZMVGy3s4u5J31PnaPn1EEL6u23gdtimMbAabWwS+PREkAjl5Qrepfe2xmarbbgdH7QfeGp
+ 0EHXp5ii4nh4BxQ5BdeA96gQWSHb24GmKRdOc7RzYb7hSLeRj/OfFUnxyPoN4AYgh3O0Qp+uQpS
+ bDH8iZbEKaYjhkpH14t8aaibg9DD4TLuTPY30QNvYc8mxdI0wG8G7e2hSEDUdZMQ+PAH0zrYbtn
+ XHPOrGMs9EesA28xLmPrk6Z1Gg086xjeQXVSXY0PKGQVuf3kJA+8YFjHu6WDpS56enRf4+09IIi
+ Zd3h+k1wT5ogScA==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
+X-Rspamd-Server: rspam10
+X-Stat-Signature: oq9913hemtwhfm5sjo7i13gpkznaorob
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B937B80009
-X-Stat-Signature: secdbgwiedj681yf7hmbat5y7me5crfr
-X-HE-Tag: 1777043175-931637
-X-HE-Meta: U2FsdGVkX1/w6n8pr8EH6iujU/ZGJKQUjuATFDzHOZY0otykbAXgzMJ5rENrmTru02tooJUa1HtUC8pPiASzWbFEaXN5C6jBzqor6IwmE+uFwi6yXHjhkPBoo1R+jESYHnpjrezMjsjdDy0A7oOV5U7JR/Kpl0k/hUzbr4wdqJyC7CNaBphe6G1j2Ve2xoQ2EKxHb0kAMqyE2rMeIiaPrjp/HpUyuX7sTw/R44wPwbUS26O2vpJEsCb/v2r8PWF4uumWOHGpCVBNcqeAOzDkRgkLC9gdN6eq2CXTEX5SgJFwekKC487Wuwf0LgifbmgOMJ+QZAPdPgBvGcFt8c6tsTjLpIF3M9/E0LmBjQcf/1wRhFV3MLXPeIHQ7zSfKfPtNHDfEK8Ri65U+PCCYIGKv3l0cBaWd68DGWJ8qpdJygaNWP3a2tUhxaNQBvzz/fcxMKTobyMOjUi5zZu5zrRPTSpM7EHiFK6KnsIJyEEadhYHKbyTzcQrmgQgfjQDl/TF8NdVA24CkAkXFoZqx8sk/8mnXVyLnUpyAvWaQuS/xcKaYBMI7xWYmmB6Mcn5UqEkS/U4IZODF0rZZ4/9xZfRobZWbpkGqx6Ch+yZRYLuAnPqHRW3VncRAbugkyLTE/+rj7XShmw/EDTahyF5AIrUASZsUXbf8/ZdxSZ2k5AsB9WzDi2yOVcxT/sGCWLVE3uDe4qSZbPqmkEcgJ7f0VLBQWcHCr+bo13nQ5qMZ3PdYT/SuOrLQXlN2BxYPerBYbOcuHR7IoXVsNMS6p6YjHubzp4YuTTbm9vY2OwhwZYPGypYXSambjWo58lnGe6p4VT3ywlraKaJhy1qVS44EEJnlu5nxnjdOmPYLmI1MHO7+tuGkSs148411W+u2a8bUagmEuwqtS3n5M+DPn3XTLMI9AE6Tdq50WDPnVD1PZ1LgbIKMnDknWwzQAnIC3R/fe/29cSrW5Jlja85iD4cFGK
- LV2ST06V
- 5vb5iet9FTnXEWhSnDcwfPtCACyBdloTwECnMIlMWSfrtj8kw4vxKF1K9pUC5eDlua6KJ6xu0AVgzqooslyHOIlwjU8N1HxJ/bC/hu9WdNe1JQmua7hZxQr/wZzxZUcxuYJky/utVCQo52l3+cgUpMXP93TEChANYLpL1yepsrv4xmSy2Ch9X05hCyhABqHGt5/0+Zy6JFmYclzSbHIhSb2HZI4Bby2kNHX6w
+X-Rspamd-Queue-Id: D3CB012000B
+X-HE-Tag: 1777043181-438143
+X-HE-Meta: U2FsdGVkX1/fJeD70aiSDeg0cpK4iM4dk+/vTXBUlfgvHvas+eHDB6qFvNYpuT+p279MdfPCzzoGynPBO+tX0Fp05LFTfftWay4OU3a17jtbsrOoW4itPQQ1WKX0Ta9GVBecOaBitGmurXxyoMQwKl7c1NNpbY66QbPQw/nNXnMQrIk+6+HEc4nCLO9p7hT/u0d8BfQ+dy9TKW1DJOCk/i1sdGiSwCS45hW9MtqeSP6TmV+IKSIVQ9p31uuhR+WUB3bUOmtGB7DrEhlf2rw4Z5Ma3iGi59KbKpNQWX4IObzQusTDUZI5RwTbmeL2Ev82bwkWcCHZLokaXjPi0IrALuCmDchJDgb07YIUdU44tol3I9MQ3/ssm8DdckXXf3FLr8jI2+aFflzq4QbbBCQNTwC+pPExi9s01yXLL72HDZJE/xLdr0A4jnEI7sXM51NNZ2K9Pk79oE4PDNcW7DKG8KWMiR9pa/TXond0UgHrzkQJghnDld28oOuM9mUCeTRTmsxEcMcMhuRU/7IwT9RycUm+4zNMkHIa9eJfS6tJlM63IB+p2PdksAfqqfHGHuHTj/zwb9oNiGSAUVtYzzMYG+L/RsvXdxkIHbcRx2HYulmqy8EnL7UFbC8iJVBCRoa2SZBLAgNsT0MCa2RNqDkk1mCv43OCPItrAsaN7sVX+qwUkMnbHQLk80Q/VQIEQIEw02qy0lIfal+ooeugsSooDpRFfb04vYsy5eA/g67tBxYqVqFhGxxcHrXw0dZHLzh2iQpSwRgJnAf+JDI3SlD/V1Qt9SwnfYI6I69tEj5+fWXylv06FSKpbVJwDo6lLBvG7J9tXtFWHdKgmGbW1iGqjxyjI5gCfbyWwax5iwT2MUcXl35/3zcEi+Q0VUnnD82uyivaHJ8SP0G1JQdrlBMFydO4nSj2Qfj95lMteTCTwsHu7WkfCxH6hDVQ82aVycVLEM1X/rX0Xi+m+U3cRBg
+ UedMaG5x
+ F6NERLT2mnQJYKIzBqZWURMn0NvHRCLh7c49+HYslia8rc4620xszWBjJ9liaf1bIt5gERNjrDE/jxsOY4glpM24acBLNZSEGYHovxzMnWa8PP8TRaG0ZZpfjUgpiAHeETIqVQj6wEHbmNC5X3JpXTESrkWEPDKPQlcSPxdOb9zKfPtgUUQSpy4eOhdhV3AmE6yB/QXtzXSbXsylNhYGFbhTf6dOevdTIwguln7legYt83YM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,296 +116,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In kmemleak's verbose mode, every unreferenced object found during a
-scan is logged with its full header, hex dump and 16-frame backtrace.
-Workloads that leak many objects from a single allocation site flood
-dmesg with byte-for-byte identical backtraces, drowning out distinct
-leaks and other kernel messages.
-
-Dedupe within each scan using stackdepot's trace_handle as the key: for
-every leaked object with a recorded stack trace, look up the
-representative kmemleak_object in a per-scan xarray keyed by
-trace_handle. The first sighting stores the object pointer (with a
-get_object() reference) and sets object->dup_count to 1; later
-sightings just bump dup_count on the representative. After the scan,
-walk the xarray once and emit each unique backtrace, followed by a
-single summary line when more than one object shares it.
-
-Leaks whose trace_handle is 0 (early-boot allocations tracked before
-kmemleak_init() set up object_cache, or stack_depot_save() failures
-under memory pressure) cannot be deduped, so they are still printed
-inline via the same locked OBJECT_ALLOCATED-checked helper. The
-contents of /sys/kernel/debug/kmemleak are unchanged - only the
-verbose console output is collapsed.
-
-Safety notes:
-
- - The xarray store happens outside object->lock: object->lock is a
-   raw spinlock, while xa_store() may grab xa_node slab locks at a
-   higher wait-context level which lockdep flags as invalid.
-   trace_handle is captured under object->lock (which serialises with
-   kmemleak_update_trace()'s writer), so it is safe to use after
-   dropping the lock.
-
- - get_object() pins the kmemleak_object metadata across
-   rcu_read_unlock(), but the underlying tracked allocation can still
-   be freed concurrently. The deferred print path therefore re-acquires
-   object->lock and re-checks OBJECT_ALLOCATED via print_leak_locked()
-   before touching object->pointer; __delete_object() clears that flag
-   under the same lock before the user memory goes away. The same
-   helper is used by the trace_handle == 0 and xa_store() failure
-   fallbacks, so every printer in the new path has identical safety
-   guarantees.
-
- - If get_object() fails after we set OBJECT_REPORTED, the object is
-   already being torn down (use_count hit zero); the leak count is
-   still accurate but the verbose line is dropped, which is correct
-   - the memory was freed concurrently and is no longer a leak.
-
- - If xa_store() fails to allocate an xa_node under memory pressure,
-   we fall back to printing inline via print_leak_locked() instead of
-   silently dropping the leak.
-
- - The hex dump is skipped for coalesced entries (dup_count > 1):
-   bytes would differ across objects sharing a backtrace anyway, and
-   skipping it removes the only remaining read of object->pointer's
-   contents in the deferred path. The representative's reported size
-   may also differ from the coalesced objects' sizes; the printed
-   trace_handle reflects the representative's current value rather
-   than the value used as the dedup key, which is normally - but not
-   strictly - identical.
+Exercise the per-scan dedup of kmemleak's verbose leak output added in
+the previous commit. The test depends on the kmemleak-test sample
+module (CONFIG_SAMPLE_KMEMLEAK=m); load it and unload it to orphan ten
+list entries from a single kzalloc() call site that all share one
+stackdepot trace_handle, trigger two scans, and assert that the number
+of "unreferenced object" lines printed in dmesg is strictly less than
+the number of leaks reported. Skip cleanly when kmemleak is absent,
+disabled at runtime, or CONFIG_SAMPLE_KMEMLEAK is not built in.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- mm/kmemleak.c | 148 ++++++++++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 140 insertions(+), 8 deletions(-)
+ tools/testing/selftests/mm/Makefile               |  1 +
+ tools/testing/selftests/mm/ksft_kmemleak_dedup.sh | 86 +++++++++++++++++++++++
+ 2 files changed, 87 insertions(+)
 
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 2eff0d6b622b6..7c7ba17ce7af0 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -92,6 +92,7 @@
- #include <linux/nodemask.h>
- #include <linux/mm.h>
- #include <linux/workqueue.h>
-+#include <linux/xarray.h>
- #include <linux/crc32.h>
- 
- #include <asm/sections.h>
-@@ -157,6 +158,8 @@ struct kmemleak_object {
- 	struct hlist_head area_list;
- 	unsigned long jiffies;		/* creation timestamp */
- 	pid_t pid;			/* pid of the current task */
-+	/* per-scan dedup count, valid only while in scan-local dedup xarray */
-+	unsigned int dup_count;
- 	char comm[TASK_COMM_LEN];	/* executable name */
- };
- 
-@@ -360,8 +363,9 @@ static const char *__object_type_str(struct kmemleak_object *object)
-  * Printing of the unreferenced objects information to the seq file. The
-  * print_unreferenced function must be called with the object->lock held.
-  */
--static void print_unreferenced(struct seq_file *seq,
--			       struct kmemleak_object *object)
-+static void __print_unreferenced(struct seq_file *seq,
-+				 struct kmemleak_object *object,
-+				 bool hex_dump)
- {
- 	int i;
- 	unsigned long *entries;
-@@ -373,7 +377,8 @@ static void print_unreferenced(struct seq_file *seq,
- 			   object->pointer, object->size);
- 	warn_or_seq_printf(seq, "  comm \"%s\", pid %d, jiffies %lu\n",
- 			   object->comm, object->pid, object->jiffies);
--	hex_dump_object(seq, object);
-+	if (hex_dump)
-+		hex_dump_object(seq, object);
- 	warn_or_seq_printf(seq, "  backtrace (crc %x):\n", object->checksum);
- 
- 	for (i = 0; i < nr_entries; i++) {
-@@ -382,6 +387,12 @@ static void print_unreferenced(struct seq_file *seq,
- 	}
- }
- 
-+static void print_unreferenced(struct seq_file *seq,
-+			       struct kmemleak_object *object)
-+{
-+	__print_unreferenced(seq, object, true);
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index cd24596cdd27e..65ceefb931c3b 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -151,6 +151,7 @@ TEST_PROGS += ksft_gup_test.sh
+ TEST_PROGS += ksft_hmm.sh
+ TEST_PROGS += ksft_hugetlb.sh
+ TEST_PROGS += ksft_hugevm.sh
++TEST_PROGS += ksft_kmemleak_dedup.sh
+ TEST_PROGS += ksft_ksm.sh
+ TEST_PROGS += ksft_ksm_numa.sh
+ TEST_PROGS += ksft_madv_guard.sh
+diff --git a/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh b/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh
+new file mode 100755
+index 0000000000000..1a1b6efd6470a
+--- /dev/null
++++ b/tools/testing/selftests/mm/ksft_kmemleak_dedup.sh
+@@ -0,0 +1,86 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Verify that kmemleak's verbose scan output deduplicates leaks that share
++# the same allocation backtrace. The kmemleak-test module leaks 10 list
++# entries from a single kzalloc() call site, so they share one stackdepot
++# trace_handle. With dedup, only one "unreferenced object" line should be
++# printed for that backtrace per scan, while the per-scan leak counter
++# still accounts for every object.
++#
++# The expected output is something like:
++#   PASS: kmemleak verbose output deduplicated (11 printed for 61 leaks)
++#
++# Author: Breno Leitao <leitao@debian.org>
++
++ksft_skip=4
++KMEMLEAK=/sys/kernel/debug/kmemleak
++VERBOSE_PARAM=/sys/module/kmemleak/parameters/verbose
++MODULE=kmemleak-test
++
++skip() {
++	echo "SKIP: $*"
++	exit $ksft_skip
 +}
 +
- /*
-  * Print the kmemleak_object information. This function is used mainly for
-  * debugging special cases when kmemleak operations. It must be called with
-@@ -1684,6 +1695,103 @@ static void kmemleak_cond_resched(struct kmemleak_object *object)
- 	put_object(object);
- }
- 
-+/*
-+ * Print one leak inline. The hex dump is gated on OBJECT_ALLOCATED so it
-+ * does not touch user memory that was freed concurrently; the rest of the
-+ * report (backtrace, comm, pid) is always emitted since the kmemleak_object
-+ * metadata is pinned by the caller.
-+ */
-+static void print_leak_locked(struct kmemleak_object *object, bool hex_dump)
-+{
-+	raw_spin_lock_irq(&object->lock);
-+	__print_unreferenced(NULL, object,
-+			     hex_dump && (object->flags & OBJECT_ALLOCATED));
-+	raw_spin_unlock_irq(&object->lock);
++fail() {
++	echo "FAIL: $*"
++	exit 1
 +}
 +
-+/*
-+ * Per-scan dedup table for verbose leak printing. The xarray is keyed by
-+ * stackdepot trace_handle and stores a pointer to the representative
-+ * kmemleak_object. The per-scan repeat count lives in object->dup_count.
-+ *
-+ * dedup_record() must run outside object->lock: xa_store() may take
-+ * mutexes (xa_node slab allocation) which lockdep would flag against the
-+ * raw spinlock object->lock.
-+ */
-+static void dedup_record(struct xarray *dedup, struct kmemleak_object *object,
-+			 depot_stack_handle_t trace_handle)
-+{
-+	struct kmemleak_object *rep;
-+	void *old;
++[ "$(id -u)" -eq 0 ] || skip "must run as root"
++[ -r "$KMEMLEAK" ] || skip "no kmemleak debugfs (CONFIG_DEBUG_KMEMLEAK)"
++[ -w "$VERBOSE_PARAM" ] || skip "kmemleak verbose param missing"
++modinfo "$MODULE" >/dev/null 2>&1 ||
++	skip "$MODULE not built (CONFIG_SAMPLE_KMEMLEAK)"
 +
-+	/*
-+	 * No stack trace to dedup against: early-boot allocation tracked
-+	 * before kmemleak_init() set up object_cache, or stack_depot_save()
-+	 * failure under memory pressure.
-+	 */
-+	if (!trace_handle) {
-+		print_leak_locked(object, true);
-+		return;
-+	}
++# kmemleak can be present but disabled at runtime (boot arg kmemleak=off,
++# or it self-disabled after an internal error). In that state writes other
++# than "clear" return EPERM, so probe once and skip if so.
++if ! echo scan > "$KMEMLEAK" 2>/dev/null; then
++	skip "kmemleak is disabled (check dmesg or kmemleak= boot arg)"
++fi
 +
-+	/* stack is available, now we can de-dup */
-+	rep = xa_load(dedup, trace_handle);
-+	if (rep) {
-+		rep->dup_count++;
-+		return;
-+	}
-+
-+	/*
-+	 * Object is being torn down (use_count already hit zero); the
-+	 * tracked memory at object->pointer is unsafe to read, so skip.
-+	 */
-+	if (!get_object(object))
-+		return;
-+
-+	object->dup_count = 1;
-+	old = xa_store(dedup, trace_handle, object, GFP_ATOMIC);
-+	if (xa_is_err(old)) {
-+		/* xa_node allocation failed; fall back to inline print. */
-+		print_leak_locked(object, true);
-+		put_object(object);
-+		return;
-+	}
-+	/*
-+	 * scan_mutex serialises all writers to the dedup xarray, so xa_store()
-+	 * after a NULL xa_load() must always overwrite an empty slot.
-+	 */
-+	WARN_ON_ONCE(old);
++prev_verbose=$(cat "$VERBOSE_PARAM")
++cleanup() {
++	echo "$prev_verbose" > "$VERBOSE_PARAM" 2>/dev/null
++	rmmod "$MODULE" 2>/dev/null
 +}
++trap cleanup EXIT
 +
-+/*
-+ * Drain the dedup table. Re-acquires object->lock and re-checks
-+ * OBJECT_ALLOCATED before printing: while get_object() pins the
-+ * kmemleak_object metadata, the underlying tracked allocation may have
-+ * been freed since the scan walked it (kmemleak_free clears
-+ * OBJECT_ALLOCATED under object->lock before the user memory goes away).
-+ * The hex dump is skipped for coalesced entries since the bytes would
-+ * differ across objects anyway.
-+ */
-+static void dedup_flush(struct xarray *dedup)
-+{
-+	struct kmemleak_object *object;
-+	unsigned long idx;
-+	unsigned int dup;
-+	bool coalesced;
++echo 1 > "$VERBOSE_PARAM"
 +
-+	xa_for_each(dedup, idx, object) {
-+		dup = object->dup_count;
-+		coalesced = dup > 1;
++# Drain the existing leak set so the next scan only reports our objects.
++echo clear > "$KMEMLEAK"
 +
-+		print_leak_locked(object, !coalesced);
-+		if (coalesced)
-+			pr_warn("  ... and %u more object(s) with the same backtrace\n",
-+				dup - 1);
-+		put_object(object);
-+		xa_erase(dedup, idx);
-+	}
-+}
++modprobe "$MODULE" || fail "failed to load $MODULE"
++# Removing the module orphans the list elements without freeing them.
++rmmod "$MODULE"    || fail "failed to unload $MODULE"
 +
- /*
-  * Scan data sections and all the referenced memory blocks allocated via the
-  * kernel's standard allocators. This function must be called with the
-@@ -1694,6 +1802,7 @@ static void kmemleak_scan(void)
- 	struct kmemleak_object *object;
- 	struct zone *zone;
- 	int __maybe_unused i;
-+	struct xarray dedup;
- 	int new_leaks = 0;
- 
- 	jiffies_last_scan = jiffies;
-@@ -1834,10 +1943,18 @@ static void kmemleak_scan(void)
- 		return;
- 
- 	/*
--	 * Scanning result reporting.
-+	 * Scanning result reporting. When verbose printing is enabled, dedupe
-+	 * by stackdepot trace_handle so each unique backtrace is logged once
-+	 * per scan, annotated with the number of objects that share it. The
-+	 * per-leak count below still reflects every object, and
-+	 * /sys/kernel/debug/kmemleak still lists them individually.
- 	 */
-+	xa_init(&dedup);
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(object, &object_list, object_list) {
-+		depot_stack_handle_t trace_handle;
-+		bool dedup_print;
++# Two scans: kmemleak requires the object to survive a full scan cycle
++# before it is reported as unreferenced.
++dmesg -C >/dev/null
++echo scan > "$KMEMLEAK"; sleep 6
++echo scan > "$KMEMLEAK"; sleep 6
 +
- 		if (need_resched())
- 			kmemleak_cond_resched(object);
- 
-@@ -1849,18 +1966,33 @@ static void kmemleak_scan(void)
- 		if (!color_white(object))
- 			continue;
- 		raw_spin_lock_irq(&object->lock);
-+		trace_handle = 0;
-+		dedup_print = false;
- 		if (unreferenced_object(object) &&
- 		    !(object->flags & OBJECT_REPORTED)) {
- 			object->flags |= OBJECT_REPORTED;
--
--			if (kmemleak_verbose)
--				print_unreferenced(NULL, object);
--
-+			if (kmemleak_verbose) {
-+				trace_handle = object->trace_handle;
-+				dedup_print = true;
-+			}
- 			new_leaks++;
- 		}
- 		raw_spin_unlock_irq(&object->lock);
++log=$(dmesg)
 +
-+		/*
-+		 * Defer the verbose print outside object->lock: xa_store()
-+		 * may take xa_node slab locks at a higher wait-context level
-+		 * which lockdep would flag against the raw_spinlock_t
-+		 * object->lock. rcu_read_lock() keeps the kmemleak_object
-+		 * alive across the call.
-+		 */
-+		if (dedup_print)
-+			dedup_record(&dedup, object, trace_handle);
- 	}
- 	rcu_read_unlock();
-+	/* Flush'em all */
-+	dedup_flush(&dedup);
-+	xa_destroy(&dedup);
- 
- 	if (new_leaks) {
- 		kmemleak_found_leaks = true;
++new_leaks=$(echo "$log" |
++	sed -n 's/.*kmemleak: \([0-9]\+\) new suspected.*/\1/p' | tail -1)
++[ -n "$new_leaks" ] || fail "no 'new suspected memory leaks' line found"
++
++# Count "unreferenced object" lines emitted in verbose output.
++printed=$(echo "$log" | grep -c 'kmemleak: unreferenced object')
++
++echo "new_leaks=$new_leaks printed=$printed"
++
++# The kzalloc(sizeof(*elem)) loop alone contributes 10 leaks sharing one
++# backtrace, so without dedup printed >= 10. With dedup the printed count
++# must be strictly less than the reported leak total.
++[ "$new_leaks" -ge 10 ] || fail "expected >=10 new leaks, got $new_leaks"
++[ "$printed"   -lt "$new_leaks" ] || \
++	fail "no dedup: printed=$printed new_leaks=$new_leaks"
++
++echo "PASS: kmemleak verbose output deduplicated" \
++	"($printed printed for $new_leaks leaks)"
++exit 0
 
 -- 
 2.52.0
