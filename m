@@ -4,115 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14478FF885A
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 22:11:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54A6FFF8850
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 22:14:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 452136B0005; Fri, 24 Apr 2026 18:11:43 -0400 (EDT)
+	id 8C3BA6B0005; Fri, 24 Apr 2026 18:14:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DB9C6B008A; Fri, 24 Apr 2026 18:11:43 -0400 (EDT)
+	id 89A636B008A; Fri, 24 Apr 2026 18:14:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A31E6B008C; Fri, 24 Apr 2026 18:11:43 -0400 (EDT)
+	id 7894F6B008C; Fri, 24 Apr 2026 18:14:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 105596B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:11:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B8A75A014E
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:11:42 +0000 (UTC)
-X-FDA: 84694847244.11.4725CE7
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DDA06A000A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:11:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dlGVxKWn;
-	spf=pass (imf25.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 66F356B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:14:38 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF2C94010A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:14:37 +0000 (UTC)
+X-FDA: 84694854594.27.A57FF82
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id F2A9C140009
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:14:35 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ebeeNruC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777068701;
+	s=arc-20220608; t=1777068876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f4MGhHC+NydhWG8P1j8ird1HDHK/LUJ2nl+eW8auQlY=;
-	b=VKQ7orhQyJcMlR3KGmxMPKhXIOBrtt6srNrUD+zT1JAP+QbTbklw1OvipdHy0P8gaJuka8
-	z6BWSL0H6Xp93FxO2f58ZE4aWzVM/0EwSjmShf00Nuz8FHBgbLcvwCvSfDP/J16lf3Xeyu
-	7cEg+RMN8DOI5lXjV/lrX3KV/9EGQ9I=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dlGVxKWn;
-	spf=pass (imf25.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777068701; a=rsa-sha256;
+	bh=KYXVqpKqsqqiZGebrYCLhyMG3YQpdcTmeTVKeiiu+QA=;
+	b=HqqRcYBCX+ocnY6yGNN+NUMrgmNLfG7KtbVYysFhJxCQF96nCeOs5YcgOc8Y220/cB1cqV
+	gVKl2YiWouXiWOF6aTsGq24HX0HxtBABn93vz4aMickf1qv292OOYL9Yg5l4Qvtyitq9Rc
+	kWmd/qi2la1J6dfwPrnXtC+WXDXHLiM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777068876; a=rsa-sha256;
 	cv=none;
-	b=s1/bRqvJknRiZKdPCkjC0VTkTMnhm0EebDwE80kf4jlQdRBJh2pZrcVzZker/0yt1YhSVS
-	fqeeymdLBLTDwW5iprmBPWR4fhBGizKI7BOLiY5bADNHps2g2D5rqshNWzxWy2PP70hXF9
-	YTj8KG9radbIN5k+afH0Hex+hD5QPXU=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4893940bb5eso40421175e9.3
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777068699; x=1777673499; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f4MGhHC+NydhWG8P1j8ird1HDHK/LUJ2nl+eW8auQlY=;
-        b=dlGVxKWnGkRjMDoYC5LTu0U2HR28zIthZweo0D3yluPLLhuzRXILT+y4H3KVNbZO2w
-         o0n0IZfJL3PB6KhlBlAtoeh/vNVh0vLQQ8bVL8BUrWUC4GgJFs9ALwEoP69Qjm+w2h4h
-         /GTsZzeOWYbRODZFV0GtOjRCioW+r4KpcaOvMv7zYS35NXG/GQI05RdVVWu259Tdgc18
-         Zgw+8vJrsR8NB9ikkhlqVKWDWnBmLJoHPXk+na3vPf8QwsNWd3XHrNX8eXYd3LKJT7ia
-         6EwdhUZwCWHopssOlBigobs1qi+MU8wZQRxZz2/3uOfoa+lFEDcF2mgiu0DadsTEHBfi
-         uExQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777068699; x=1777673499;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=f4MGhHC+NydhWG8P1j8ird1HDHK/LUJ2nl+eW8auQlY=;
-        b=bqtSc0wujVmE5YN4fzAZv961zPyzMpCsKYfIU3ED1S5vmxbTjoUOb6wHtJZ6Upap25
-         30yByem75WAW8MO52QqrTx6b4dIxOflpDzGYNlGsjKaRznpAtKIiFXGn27+4qDLcANRR
-         MJTHtBb+rzSW5de++cPPBXN2bLJexnsGy/66OvX0x0TFOj7hNIWn5OUMSTXbe/vleg5y
-         KhCkuMLwEOJjcytpeq+ovtHp1t53H3D1+RTc7/bUPp1Nc/+73KAJ6CFQbJih+D3KOrvy
-         UFDQbxpAaRWww9EU6Zk50eNo6uZfVQSNXL5413HiQM6fT5ahb2uSabIVdQhYW1lVQsfw
-         Ywvw==
-X-Forwarded-Encrypted: i=1; AFNElJ+39wUIlXwpk1HCiV6N7UMWba5HoR/jtLL68z/u5+eJiGKSAOqxlEThSz2HR5tsTtMjMu8UQ/hpLA==@kvack.org
-X-Gm-Message-State: AOJu0YwORQThPiyxjHwn8Ne6DfznIGUaXkQgY0UPs1Ee5+2dshCBa9Ft
-	24Y6wEN4LsEeiXkZXY3rBL6dppRIVMMAsfNwEvwlB4jDn2sYR2kiWYZH
-X-Gm-Gg: AeBDieun0aklmv60tJbomNXW2iVpVc7P294B4WoF+tIFxAdXxiQFPMfUYvfmU2zpUcw
-	fuWoNfrx4q5VhSjbdCyj0jWLXGo+yoBP8MlxgfxS/oUeCOkMS/BLaiXWrYE4DCxv+HUeN3hEeN1
-	+G5BZcmlMnZ47sxlhmm3Q/gBJREAyDTnsl8rjZAj56rJlF3vPEHmlI7ekIzfJWDfM6UwyEr3tte
-	/1942Hr03OI4pXWemuabcVsN+7/W+QE/DgS3teOIKlfLHw2qmeNrX3As/kAGDhkk4pkNSSUyxNt
-	mbYPi/uvY3zpEie2OwK/TwVhCDi13HisL3aDS79N8z2i1KUb5GZryySagjG0MJbK7JEIsu821RS
-	ER1tIac3mPierqQvI8FYyJtzMw/P7eaUSdemQzgVkS1M8ol2oL3n4x4UCVuX+Ib8nV5crv6eOp8
-	Q7MfGHp/j0HqlgI3uDae0Ra6jrkV/OPUNWyc51xua3
-X-Received: by 2002:a05:600c:a31a:b0:488:b239:77ec with SMTP id 5b1f17b1804b1-488fb778db4mr371652795e9.17.1777068699319;
-        Fri, 24 Apr 2026 15:11:39 -0700 (PDT)
-Received: from fedora ([156.207.128.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb75a913sm188157105e9.12.2026.04.24.15.11.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 15:11:38 -0700 (PDT)
-From: Ahmed Elaidy <elaidya225@gmail.com>
-To: stable@vger.kernel.org
-Cc: avagin@gmail.com,
-	lorenzo.stoakes@oracle.com,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	Ahmed Elaidy <elaidya225@gmail.com>
-Subject: [PATCH v2] mm: fix VM_SOFTDIRTY propagation on VMA merge
-Date: Sat, 25 Apr 2026 01:11:26 +0300
-Message-ID: <20260424221126.1238744-1-elaidya225@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CANaxB-y=SD7V7dcBXuAqq8=p2R46SAr1uKZtMACynvk1=Cftqg@mail.gmail.com>
-References: <CANaxB-y=SD7V7dcBXuAqq8=p2R46SAr1uKZtMACynvk1=Cftqg@mail.gmail.com>
+	b=dACi7bD6m8ASzMDs9FtEvKIkH5qncqu1YQm8rAkq0MeH76gDs/tM2PTWNbweBzWfCkBviH
+	r3KZ5fFSXKpXIGO3NH8+E76AbCmf5qHDUJ66+5BcSvVFCRvXx6sYl1KyBBtGON3zBQ57FP
+	sd5OyBl3pq3hGDu4kz1S4KnDnvW17pc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ebeeNruC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3007E600CB
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:14:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC15CC2BCB4
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777068874;
+	bh=7JdhL4gOCZvGQazx56hjZGljg1fb9Dkq9mfDphKamYo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ebeeNruCHqbX6nkD2pzr4XPt8IKb4UipG0lOuJ+Va9eDLvdvYhL0cATWWVDPQAXLR
+	 jsvAClpYPJlDsXIbBPtvUJSw7CW29GtICGU7irDb0NxHqS9YACVoWmCnCMKCGeygXe
+	 yC+PkBfIce90uJ5+uLElNlsDY+lKpRlyC0QpD81zd2XxRilVh1xdmMSW0Nq+FpaqKw
+	 SphJabamLzvqsfXdbObbhlOXx6J9gWdwImvC7sKhDdshg4TiciNe5lgNcXhwiMx6UD
+	 oBCke1OIzIToK/SmTvC4dv4SzASOkNyCBTGT2WeCI06o94cQ3txqgqWZGgz0iK7Omr
+	 rmBfZIViHcvlw==
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6501d242e3fso8130664d50.0
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:14:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+MderAePmbK6mwvX/0+/mSvy6sciCTY8MizWn4CHMQSoD6kG+Gxt2DhVjbWDphMKN7upV6bkTauw==@kvack.org
+X-Gm-Message-State: AOJu0YyokCeOp/c8vLzxCgFhMCJhxifipI9/lvzzutQ44sW3nwNWv9zr
+	ncQNpuTEARctcdV6O4wIUDKF+BThucTzp5bNBZOgjuamc5lhlK8GKBFYJJ8upjzFDeM2+oYKSSc
+	EuEimuhFu7p5tnEwdK/0y3rh9iXCmf0gsssKjTOxbrQ==
+X-Received: by 2002:a53:e1fb:0:b0:651:bc7e:4687 with SMTP id
+ 956f58d0204a3-653109adab4mr19721533d50.42.1777068874149; Fri, 24 Apr 2026
+ 15:14:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cqgrshphr8xm5ew8go3aetrggwhepg9d
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DDA06A000A
+References: <20260417033951.1111038-1-baoquan.he@linux.dev>
+ <20260417033951.1111038-3-baoquan.he@linux.dev> <CACePvbWZO-=Nwho9Hfk-2HpuggZyb+Yt306MdA4X_icAt6+Z9w@mail.gmail.com>
+ <aego1T9d6PVudYqj@MiWiFi-R3L-srv> <CACePvbVHgry4oeXeouML1YNscpuMNSXSnBY9wd-McDUar4tG1Q@mail.gmail.com>
+ <aemF6D3Do9FQYUOF@MiWiFi-R3L-srv> <CACePvbUih1E7cypNwPE13Xf8tMzYG5sjLoPO0+Yt7V0uL4qt+A@mail.gmail.com>
+ <aer14NAJwkJ_ZCP5@MiWiFi-R3L-srv>
+In-Reply-To: <aer14NAJwkJ_ZCP5@MiWiFi-R3L-srv>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 24 Apr 2026 15:14:23 -0700
+X-Gmail-Original-Message-ID: <CACePvbUbAY7R=ZLqMVT7KkVcbt_McRviMepg0TpdKkW1o9QUWg@mail.gmail.com>
+X-Gm-Features: AQROBzA5QECQEUQIvZcsY84gek3BRuUn15PL2zCQ3g19bL4tvUaTYDPSs_Ny0lU
+Message-ID: <CACePvbUbAY7R=ZLqMVT7KkVcbt_McRviMepg0TpdKkW1o9QUWg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] mm/swap: use swap_ops to register swap device's methods
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, usama.arif@linux.dev, 
+	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
+	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: F2A9C140009
+X-Stat-Signature: s8iwf37pepfs8wy6nm1m6hzxq6z6ojoe
 X-Rspam-User: 
-X-HE-Tag: 1777068700-377678
-X-HE-Meta: U2FsdGVkX1+rRCS4r6UlA1c1IQg5GNAk3IYFL0PzFWwrk+gP2ZORuva2wCiAv/+dUvev5OcUR82TS0K8iBPo6rSKqJj5MI65Dz0ktpX+neAjwRVY9GNCGwYJQSI2ObHM5d9OmLVk7dI8QaG8PzjOiI9oRk1zMI5p1QF0Fz3LcJhpBGRohRgL4p/X2Sh6q4j0pAmLQoEv6IbU1nGihRC6/qAQpyL5CCQgW8bUbM7OyXUzYXdOBHpiunpMdgFlwHUA3lqiI2gdGj1AdBh+pEUEY7dPRzkLDC9awHqhtuoC6v65AXVPF1fvxrSmQLxBAMXkj4N+F0EMH2TCeRio6hg8+B0QP1jQI+OEFqEuDeZH59+sAy4pd7PDFSEqIk5bZZoABGDzCWAeHmPCm6FIgXFDgetnRQ80U6uGrYKGv4iTLW3zyCOC+N9eu0K6Z2HWcici23KgDacSDPgLTZU+Iiy+jnNyFLs/Rt9lRy5aNz+BEwiuYtGCXEWD99rXfl9xoGIkpyqhFkhGkasn4EsLETR8BABbkHwM3SIh16UsN6KZ/5wPNxnbinFE/xiKpdZ7Yn5p86EkIhVi3zOpq5VPiZaIDBqxAKEfaW8HCs+JzXXqLweqGKBl5Vje2clkSGfsR5v+CNUxjXz2VrNnNahw8Utj/vEqoIimiOrzYBM4RRWizDjNPX1Z4PBfAWw5g5CQ0LnoFLPZ9rJQoO9aRxykfNUHJSFADIi14pgR0HTPU7PnjccdRJhIT6OfNfyXfONfZZcPsHvAheTy2wSj7Vdn+xXpbEF2p/vxLi/k60jkZZ0xLfgD/4iYchf2qnGLWi8GNS9DYQVFRs7viDRB6cWvkuofQQS/q6R3StIuYfJzPztm3PCBUaTrXntaNDf1uMnv1YlVlx2l9gGzz6RwYyHoyVzWguiRPMptHg+fZ+VlqivUWx2VvKGrxagag6wcL3XKNFg0VED11LyhgheH1Ees+Pi
- GiAKe5QP
- NPRNaT8nvl4TBOPQK5ZpACxg0ZWjvbQbG/aMkuxi068r1t98JqmQCtWJUTad3qmZR0hRp9zK1zu17I5W0aRNH8RLXFi+qOAdVP0hzCk7vJjv2hKjjiS69cOJlt0WNopHu2Ftv3FF2o+wX0qcKQh9mVxcnE3Rvwa9bQoloy6pBb4VWFLKiKQWirupt89aqy0322Lulh2CcYTppPjEbtiOixjq78m1VZbJ+d9oxZAXiVb00HTu4l4GF4ZF+HBu5VH5Hi6osqZrl6+LMIt5yTovMkJWIIRR9Ek0fLO15AfLsIQlkQTIfiMyI0V+OwI64gJY31Bl+mve4q0wv0/uaIY5cfo6tCsqZSK/FoPVVKREBcUZkWDAUXihvLC6lOANuLNfm/kszKxu7Avs5/B3WE0+7bKXaU2p9r/VTB6oWI4sLFYrkY5UH5iXRddl2rQI5kAnre71/9Ciyk2szVtjMu+dWpt0RIfS5CfBZpSRBsxZkas4e6way1vN96Eb9TXIxBat2iBNmmvCo32yScjvXW8z8yLlC4gbEP/BqgcEy+2FBCymE0/7yDyrRpn7dZaBhO6n/aaSgP6CAcGPaY54c077bvReVLg==
+X-HE-Tag: 1777068875-552607
+X-HE-Meta: U2FsdGVkX1+4yPe1XKGU3omZnsJwj3bclkJXwwPZb4N7mudW+YVvSR8zLGA3eR/D7eY/uZSYo8+ZhN3i5KpjsnIHNvydMMXfzpxahOkvheSb+1xenVeSrcmxLsSeLMsNSO9oLKS+Q2h7ngyKiETn9tQFCIAsSKXRMXSdQZUQGX+VXPPPYE/kjsceTMxanDwpQUTlcsnSsM1+UstZaBfQtfokpEsvVTL0YlQlH3etXB++cJlRPiptTT12tEI0kD/6g4pMipBSbzBnE/XZ+DItafRBb9d/R6PdOd4bStpcWxBa4MaY6TvjxtrfBOVwzoX12WS5v5BmYvdvqGdycf65U+iX5Q9IVCTRHwfkHUA6db4O82aKLgFlqzmktruMa0iAG/uHWjsyoXoW3YJr9xGaBLY2ObIMexS3MPTRzechgRzh68VeTDCIN3xJViRVyiJLlDncUNVn322mictqKZuLMh+eh2+x3ElngtoVtBC+gVKnBxqHMbkiwM9jKbuAL+X8O4MH3bdqzhbz4w6bW+A65hBJy4j0pPtz8B+ZnPK7Q/8uxNr6AlbsjSOMNSJHiuKzMtZbTvLxsene/spdIcPoWvkjYQoeW1a/khAjb4cNI0HpZyAoKYIkZoOdgG+caCcNChnG44A6oEnhEF6+j9twP5X7Q4AkJGKsIdgqzPITMc3i2I7LhFJoBIBlSSiTAdgfgOZhg2m0W2LqsDzS4TWKpgJ9F/cke2newTEqTDzuPPrGRD4OuvCaVTyH3zyDszJR7iFUplbbTK2D6fmfgp6z4hha2f47yhjf8yohoKto2KbxCnfzdATFxC3wySMns1bK7/cf/+8WX9Qs6/GBaAflYBHprvS5LBFizmOxQQ8Zk8gH3RBlsMb2C47mlKF1IfLTf1pi562+GUdc3vfeKJ156IFPOP3r9quER5HJ8fqpzA0tQ5ZWIePEEvEM9JPQe/G4CwlmJjUtiOn3B20iPrW
+ KyckYLt0
+ GGyWYzZaqo70JgviRnoJ5QxVeH9BzyJ19edCINusAUErFipHWKKfTisSbi2z+ujaQhUnWK70lO7EGJlc9l0Rafij+N9QU1HD6vsqpr1PNoJKs7XF9BLxZmIq6RLUY32NkAtfUf1KnwqwKYHdRfyxHXnZQ2e5wxacPov6WAZXTSwpU3tX6asVQvLO9ZLzk+iRGeWN+CGVv5S2GsLCBGVy4AxmNy6ytQkdHgFo5NZfQ2CcnWBfiSid2v9UqAnT04ho1qYZIME9n1TY8PIMcTp5FjCWVcZHq4JyUeKzq8szO+OK9u47wHxaLeoWjfLneXJ5pW6KfgpIBGUb22vbxV9RY9Bnh3+vjhoqmhBR3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,47 +108,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During VMA merging, such as through mprotect(), VM_SOFTDIRTY flags could be
-lost. This breaks tools relying on soft-dirty tracking, such as CRIU
-incremental dump/restore.
+On Thu, Apr 23, 2026 at 9:47=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
+rote:
+>
+> On 04/23/26 at 02:48pm, Chris Li wrote:
+> > The incremental change code logic looks fine.
+> >
+> > On Wed, Apr 22, 2026 at 7:37=E2=80=AFPM Baoquan He <baoquan.he@linux.de=
+v> wrote:
+> > >
+> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > index af81fa212f1e..7644049a0919 100644
+> > > --- a/mm/swapfile.c
+> > > +++ b/mm/swapfile.c
+> > > @@ -3518,10 +3518,8 @@ SYSCALL_DEFINE2(swapon, const char __user *, s=
+pecialfile, int, swap_flags)
+> > >                 goto bad_swap_unlock_inode;
+> > >         }
+> > >
+> > > -       if (init_swap_ops(si)) {
+> > > -               error =3D -EINVAL;
+> > > +       if (error =3D init_swap_ops(si))
+> >
+> > Some more nitpicks:
+> >
+> > I think some compiler option might warn about assigning a variable
+> > inside an if condition. I suggest moving the assignment outside of the
+> > if condition expression. As it is, it looks very close to "error =3D=3D
+> > init_swap_ops(si))", Some compiler might warn, "Is that what you mean
+> > instead?"
+>
+> I personally prefer the one doing assignment inside if condition
+> expression because it is a ittle neater with one less line. While
+> it doesn't matter much.
 
-Upstream resolved this using a broader VM_STICKY infrastructure (commit
-bf14d4a05387 "mm: propagate VM_SOFTDIRTY on merge"). To minimize churn and
-risk in the stable 6.18.y tree, this patch skips backporting the entire
-VM_STICKY series (9 patches). Instead, it introduces a minimal standalone fix.
+Yes, I understand it is a matter of personal preference. It will
+generate the same code.
 
-VM_SOFTDIRTY is intentionally excluded from normal flag comparison to allow
-merging in mprotect. This patch ensures the resulting merged VMA retains
-the VM_SOFTDIRTY flag if either of the original VMAs had it.
+> Here comes the new version of the incremental update. Thanks.
 
-Suggested-by: Andrei Vagin <avagin@gmail.com>
-Cc: stable@vger.kernel.org
-Cc: lorenzo.stoakes@oracle.com
-Signed-off-by: Ahmed Khalid Elaidy <elaidya225@gmail.com>
----
- mm/vma.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+LGTM.
 
-diff --git a/mm/vma.c b/mm/vma.c
-index 5815ae9e5770..03728d855684 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -978,6 +978,14 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 	if (err || commit_merge(vmg))
- 		goto abort;
- 
-+	/*
-+	 * VM_SOFTDIRTY is excluded from normal flag comparison to allow
-+	 * merging in mprotect, but we have to ensure the result is correctly
-+	 * marked with it if either side had it.
-+	 */
-+	if ((vmg->target->vm_flags ^ vmg->vm_flags) & VM_SOFTDIRTY)
-+		vm_flags_set(vmg->target, VM_SOFTDIRTY);
-+
- 	khugepaged_enter_vma(vmg->target, vmg->vm_flags);
- 	vmg->state = VMA_MERGE_SUCCESS;
- 	return vmg->target;
--- 
-2.53.0
+Acked-by: Chris Li <chrisl@kernel.org>
 
+Chris
+
+>
+> diff --git a/mm/swap_io.c b/mm/swap_io.c
+> index 77aa8373c087..e2710d5fb44e 100644
+> --- a/mm/swap_io.c
+> +++ b/mm/swap_io.c
+> @@ -625,7 +625,7 @@ int init_swap_ops(struct swap_info_struct *sis)
+>                 sis->ops =3D &bdev_async_swap_ops;
+>
+>         if (!sis->ops || !sis->ops->read_folio || !sis->ops->write_folio)
+> -               return -1;
+> +               return -EINVAL;
+>
+>         return 0;
+>  }
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index af81fa212f1e..82d2c9b35b11 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -3518,10 +3518,9 @@ SYSCALL_DEFINE2(swapon, const char __user *, speci=
+alfile, int, swap_flags)
+>                 goto bad_swap_unlock_inode;
+>         }
+>
+> -       if (init_swap_ops(si)) {
+> -               error =3D -EINVAL;
+> +       error =3D init_swap_ops(si);
+> +       if (error)
+>                 goto bad_swap_unlock_inode;
+> -       }
+>
+>         si->max =3D maxpages;
+>         si->pages =3D maxpages - 1;
+>
 
