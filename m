@@ -4,87 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD58AFB44C5
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:26:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B44EFB44C4
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:28:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDD716B0005; Fri, 24 Apr 2026 03:26:28 -0400 (EDT)
+	id 825D86B008A; Fri, 24 Apr 2026 03:28:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8DF76B008A; Fri, 24 Apr 2026 03:26:28 -0400 (EDT)
+	id 7D6696B008C; Fri, 24 Apr 2026 03:28:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7BDD6B008C; Fri, 24 Apr 2026 03:26:28 -0400 (EDT)
+	id 6C6246B0092; Fri, 24 Apr 2026 03:28:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A63646B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:26:28 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 346678C219
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:26:28 +0000 (UTC)
-X-FDA: 84692616456.10.DB13C8D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CF3D6B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:28:53 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE203A0769
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:28:52 +0000 (UTC)
+X-FDA: 84692622504.06.ACE57D4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 54201A000B
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:26:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="C6/S2Vgh";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777015586; a=rsa-sha256;
-	cv=none;
-	b=zAVMU7MobcnHHUBbfcMJRbiVqI4FjKMGvkNEBT1wia43+dlDobkHHKucxK8Li6Huf1LbPc
-	dc84u2U5Av85EvHlKXPNgjS6ZiepaoTVtYnIh5eJYLGHwz8zUuK+CKdTLIMMl1u32N4juy
-	4yvsJz92D3G+0g72T44PK5XFNl8PYZ4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="C6/S2Vgh";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id E654E40007
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:28:50 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s3cWFCHb;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777015586;
+	s=arc-20220608; t=1777015731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uje65QBS8nkEsvDxvrhqo0gIkSqNi9hZLH7oH59/OSg=;
-	b=aCSFi0EmKxHgJECP8jZ758TLxMug6L8n/+JfZi2fyDvU7GMPsdlOHmuOpdrK1SGziIj2FQ
-	v7AXzCxucNvgXxd4Nivx2q6401eogSrMyVBnuC2526d2ZHpJA0Sh4giVKu1tUQlpAW7LG3
-	5LpZyFY2ORvMB+VLQ8wzymFh+PM3RgE=
+	bh=9J5YHddFzzYnJDgh4WXjnm+KmA+EDV2qWWdAasFJsys=;
+	b=ok3x5Oz36sy2l7jWuE/gH3082Z5bDUpvRbgNqrCFBFo6WfLOHm0fdJrUf0AftjAdCNQdTk
+	srFqCOlca5Ebstah2CaREjk2KoquzslYN5+FEEF87EIggEn03CDrtVHo6Vu3xM3fzXtxlx
+	dl55W3ga50zeNY266aWFBTfHMzBItXg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777015731; a=rsa-sha256;
+	cv=none;
+	b=igCUCOftmsHwG4XOiDavIUBg9Dea4dIKG+6Huxx31NCAQurCa/UaZbRluZ8RGi40RBWn82
+	vUSAwtd5mNJ+vpPhfepszrcmvoQeg8NcYGGWld1ZWtpjzNdVYRH9416EMvPn7YKg1o5/tb
+	rjM3+0jncKubGyDKqcKJlXSGVoTnIZ4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s3cWFCHb;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 08A5C444A0;
-	Fri, 24 Apr 2026 07:26:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53E4C19425;
-	Fri, 24 Apr 2026 07:26:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B0AA540A66;
+	Fri, 24 Apr 2026 07:28:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449D1C19425;
+	Fri, 24 Apr 2026 07:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777015584;
-	bh=5dmzXPh5bpR2t1b0uCMuOAqmdZYp5LGnT+Lwxr5M/oo=;
+	s=k20201202; t=1777015729;
+	bh=D5WTkAG67DCeRIXXL7QTaoWz4jtq3LR9v34sTXeVWX8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=C6/S2VghcGegNnoRZvvUqEJC5Se8UaQriA/q3zpdTKceryHugwPWmW3hLepdvu1F+
-	 2pM+7AAqUoTcF2vFap5zsQEkhXzDgXYV78p0OUuJuBbqwBv3O/8qmPDmftAAl3npF0
-	 xW/rsHX18FkQjJ+YAAeoc6OliYWOCGHcOEkrOczwwIR7JJOdORUKzS+ONFq0/aasrm
-	 hP3Sx+oWS6eTZF945+EHKpbaheEyeT0B2vNJIJS1KrWjWeYm3RWxWjG9f4dFefYjb2
-	 Mwbeyt6hyV1NXzUvZvL3q+lySBi28hFUyuJMztEzXOwji88N0hU/rAZhQILqhxViia
-	 bamHzpaHrw1WA==
-Message-ID: <a1252167-63a1-481b-9f1d-2a7bae7a3b6c@kernel.org>
-Date: Fri, 24 Apr 2026 09:26:18 +0200
+	b=s3cWFCHbvARap4MiTOiZhdctXelw9CweptCYFnW+h/atSINq5YTY3xRoxZwJKlbTM
+	 A6tmoD4Qb+0YU4vYTzSFsqwfLtKy1AQIF19Zgt+4qLLHblg4j/MdJrY4OyBkQmzgl+
+	 C/HUcHHz725Z4v7OIdL1eSqmQ9VtLWoMWOj44AgdQj85j+Hi2gGiWtkkkJx9Cnz3uM
+	 Go8Jk7fc+gcSdR53WBvrvLND0M9EA0NYDystm2T0ulfYZttqGKi8MgXFa4Ce6AQPeX
+	 2+piW6vCAARfbJ3PWJ8j4iXltKDT3qy+JFzCWsvynZX/7r16t8jYNrc1qaGxQxe9sy
+	 kMBAp8IQ2hOww==
+Message-ID: <016cc5e5-044c-46c6-a668-200f90a64d85@kernel.org>
+Date: Fri, 24 Apr 2026 09:28:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm: Introduce zone_appears_fragmented()
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>
-Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Johannes Weiner <hannes@cmpxchg.org>
-References: <20260423055656.1696379-1-matthew.brost@intel.com>
- <20260423055656.1696379-2-matthew.brost@intel.com>
- <76191a17-18bf-4e9b-9ab5-dc9a48abfabb@kernel.org>
- <be42059924cde9bb16a087ee2a5abb0b9d850d68.camel@linux.intel.com>
- <aepuNL2fwp47P1Wi@gsse-cloud1.jf.intel.com>
- <aeqbe/9YRKNyYuWY@gsse-cloud1.jf.intel.com>
- <291406b26b8badf2e565996515931d9ebe50208f.camel@linux.intel.com>
+Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+To: Gregory Price <gourry@gourry.net>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-mm@kvack.org, virtualization@lists.linux.dev,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, linux-fsdevel@vger.kernel.org
+References: <cover.1776808209.git.mst@redhat.com>
+ <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
+ <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
+ <20260422171315-mutt-send-email-mst@kernel.org>
+ <aemglPlcwFFHNj1A@gourry-fedora-PF4VCD3F>
+ <c165d6af-4a35-4a41-9086-ee307640c044@kernel.org>
+ <20260423074433-mutt-send-email-mst@kernel.org>
+ <aeohzbmhQAoOODPm@gourry-fedora-PF4VCD3F>
+ <88b0765f-7cfc-4e44-83d2-c01a1755c842@kernel.org>
+ <aeozRZ9AvW2jTQkX@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +151,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <291406b26b8badf2e565996515931d9ebe50208f.camel@linux.intel.com>
+In-Reply-To: <aeozRZ9AvW2jTQkX@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 54201A000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: cn79nkxfw7gz4z3ujymd8zk99o3ebqay
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ftxdnsth58mkanxzq7yoe718ts4dn48k
 X-Rspam-User: 
-X-HE-Tag: 1777015586-222199
-X-HE-Meta: U2FsdGVkX1/qlCXH346+n0AwP+zxcA2lIhWpKq/pMXvkDw2fQ+n+4ByCRP0Qxt6yvldMvhiZcM3HPcRVo6CST0rNB24UznGnU8t3Qt0sqgDZNrlciPCjW411qCH9fQo4LoUstGfxcjYNOiMwmCklzP5BrlU3kaCdrCIwhfu/8cbqLGFwmUOnCqryM0l6RmJ8uevPy/y4/XOyZ2uF36Y51Dyjrk80jH9NUtE2KTLw9q2w6VQ99UOL5YYqQqOrZ8FlvMYmVtQ+qwV94p1XzmHOpVEWIGQZplHf+l5EObzr2hMfWftJoZaoQ9plZyXarV5qT7PDwZW+ZhzpBxzQ/Lji3FxyBrGxxF9Y0JydymY/zcKr2Hu17tMXvsDM+Gyd8qq238wqfh1XpH2RFJDhIhwR2XyMS/7/lOTc1usvfe8LqPBFY8bRDfuPDJoVMPMpd5yYnKRPsKGZF/Kn8T0V41wc3KWCWF1f2b8B+1Pp1v93rzEJpry7KEZp8W2yBv+0OzflxJdmIQmNp7tg3W7qob46Rg3a4MUd03A7lfDazDfqs7XoU3kckJENAvurAAtnG1tDnL5cTxin8gP9CtY++HLyseWVfKCHB3jLAePO76kIiXWbJTJINR4+LPwwyLoI70G3EkGRpRilGYVwJI4Vua+v5KEKiW4ZJ77zxhGlt7IlYelW8VUu0FgvaohN9KPPTtliQgDDiVVgzrNz8da/z2MFC9JnvcR8Kqgr6/q5oNmRaaxPzvNVENtCluBjxWWmFPBRqxKP2AiAnDkHlDPyUpLgHoaxUUnmkb4O3MdPTWrKYSkUvzeHMdtfB6r1EuTplyFgQK+LHYvBFdpN/uT4B2h2KLlKkmYXMsW/tCC/hW7IRHKmAPAcPFHJzhetACgbvmhwt5Ia0MIxwBzqifIDDFfbkB2bBUI39bsssr5fcUbdiJJBNpcdhERbegn8LasPfQqlaoVvK28ee8TP/ekECkY
- bw9nRlQ2
- 1Oljia+gf3EFppA2g+EvLI+ttVsGHXs496TnTbE6MdBiYamvUJl15pdEhzd90UoEIhMJPUkJmPXLD673xbwll0y304sNRoHXJBLO9e/ddypxltzCn4SitIvhli4vYVlvcbZBjPAaDhOu1s5x8tfeP2YU9EDJT+6Dd85AfQu44TzcCtcoJwBE6Bb2nibuU9SmTau+8xnDFswzXlz8UW2WzxA7yP3Y7zdpCNL9X1PiAbjho0oCgRRrTGQrV+DHK3ghMhgpmCR67s0sv9VCz1TWi/caI0OIGs+X4V9rs6vKM0UMTdaz1i6Q15nSmjpycqAITVrTny98M/irB1fbIxoEw2na7CvALmlMp/K/dvhmMzG0ptIk/XWYZ39r6KjH5DfYXSV94tzEvd8ND0N8=
+X-Rspamd-Queue-Id: E654E40007
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1777015730-794547
+X-HE-Meta: U2FsdGVkX19mYK0vFgf12vIq+1CNv6ZbzU9lfIuzS7YQ3c+WAnjJCHS21zEDPJ74J3NLwmJ5ywBwV+Gv74cr7Op/XXcj2J8IhM6XOFLpuD24dGCQMy6fTVPTLCshNtZjA3fjwkZs6mveVQSG2kOY9XDKbeAl73QsB05ExmoQDAs5diRFFkzI+LwFg38doz/v5mE9b6ZqPHY+8qf/65IFNP3XxT4sc+j27nO7r80B4FSgMdaxiNUWmF7Nkr59pruoN8Z/IEHwyzy4EYxQcYDfKM1xB/h9/IElNb1xOgFWxXoBysLM6kF8uSVYQx+tvqk5KSNROEjjrJxAMFs9y5o4EJnWbuQbaTtVLEG+w9IsMAjSzs1BX+p76smRACVu6oDQix6NZuCXbpKOrq0Ldjo3rX23qGnuPLIMrAPnj+10DRLQbIblr6ofBRIfA7nwWkyhmXTNbZvB7WDnznTlPaM667jD/b8Vh0sQ0NhrXRmoh09UcqXDBm7fTmTZpCEOJa3MCqRD+x1JDbgijj2upvuj3CnXv8tFui6SEEeyY1pwA3DKUfHin2xM/ytY7bHV2te9Y/3JobhFK2JWOde/ePEoO17kpLYZJQ+A0n5Rkj/n+v0f1XNOp/T5PGpih3g6JpC81DSQoDV/k0SmlzLqQEzH5Z3gRSWHw0f2ckGkYfZM/46/oeTT+ypmuDFrxNHpttl3ciG0BtgxdG5zoL2PW+2AErrQjxqMmOEK+3n5JDdKVWlThL0l5kJFIfxRD+Y95SyxunFlO+mVtuP3SxNcpFS1IRUDfEyRudo+/l8L5joT1ZVUY/nnBms+rOO7aEdByk9avskKEIgkO5AicRY8SKN0f59SRcpqsRn+JqVwMxptMMRQtJn6wlbxZ+J55WQwxE05FeRAPXkH7F1m6AgbOW78wWci+MdzLJIsbp2tKiq3zJl6S7eDDzTtJwvgPet/yF4xhNaWqbhsfx87OtNMfbW
+ XAknavgP
+ RMa9VBswDOaxJvpesgIAMfx59EzYg/CY+WQEazTolrddCKTepvxHeAk6oU4tDOVZ6q+MtNmKM3AtDLTu3HQIVviJZ0EMOmLd4HEdP3tpSKGUWhQx6moSeLF+5aNiu5IveIkSYlVrrOUOTIIROJURQEq9sjpXBv7qfdCcGQSL5VIFKoUAU+fx6woc1R9Mc3pIXf4iwXnheYuNuUSn03mO8+og+R/XtgsNsKIG9JbT63sjc3+RdmrRXEgXv2cxg4Ko4ZbHzVNqb1a55i2erU1V8vdGJUsrTW1O39vwcEplfMgA/K98wtSQyt2f6yPSTp7QvQiLd0TGq2IQm2tf8hNKH+QvZa/sxVQWnGKHJ5GQyGDuFPGeS/L2W1hLUCczDNfcnhYk0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,49 +169,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/24/26 09:05, Thomas Hellström wrote:
-> On Thu, 2026-04-23 at 15:21 -0700, Matthew Brost wrote:
->> On Thu, Apr 23, 2026 at 12:08:36PM -0700, Matthew Brost wrote:
->>>
->>> If the order were included in shrink_control, there is about a 95%
->>> certain that this change would allow TTM / Xe to break the
->>> problematic
->>> kswapd feedback loop. This may also better express the intent of
->>> the
->>> problem we are trying to fix here.
->>>
->>> For reference, the cover letter [1] details the problem.
->>>
->>> Any guidance from the core MM folks would be appreciated—would
->>> adding
->>> the order to shrink_control be an acceptable solution?
->>>
->>> Matt
->>>
->>> [1] https://patchwork.freedesktop.org/series/165330/
->>>
+On 4/23/26 16:57, Gregory Price wrote:
+> On Thu, Apr 23, 2026 at 04:13:50PM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/23/26 15:42, Gregory Price wrote:
 >>
->> It doesn't look like __GFP_NORETRY, __GFP_RETRY_MAYFAIL, __GFP_NOFAIL
->> make it to the sc->gfp_mask flags from the caller and get into kswapd
->> loop...
+>> Maybe we could forward the vma+addr here and call a vma_alloc_froze_folio() if
+>> we have a VMA+addr to have a clean interface.
+>>
+>> But really, that hugetlb code is rather messy. I'd vote for leaving hugetlb
+>> alone on a v1, and focusing on non-hugetlb first.
+>>
 > 
-> Perhaps that's because they mostly (only?) make sense from direct
-> reclaim? Looks like the trace is from kswapd.
+> If we're ok increasing the buddy surface this way, then I'd vote for
+> only updating the exact interfaces that MST needs to update for his use
+> case in a base set of patches, and then have each additional updated
+> location (or logical set of locations) updated in follow-ups.
+> 
+> My initial go around with this - the patch was hard to read at best.
+> 
+> But I also think we should also seriously consider not increasing the
+> surface of the buddy. 
 
-kswap obtains the desired order through pgdat->kswapd_order, as a hint from
-allocation code (wakeup_kswapd). The order can be easily merged (just use the max)
+Exactly, that's why I am saying that vma_alloc_folio() is the only external
+interface people should be using with a user address. all other _noprof helpers
+are supposed to be internal.
 
-We do have the gfp_flags there, but merging them from different wakeups is a bit
-more tricky (and when to reset?).
-
-Assume we have one urgent request for order-0 and one non-urgent
-(noretry,nofail, ...) request for order-9, we'd have to figure out a way how to
-represent that. Gets more complicated for more orders.
-
-Of course, we could have some kind of array, and try to store some "priority"
-per order. But I assume plumbing that into the rest of kswapd might not be that
-easy.
-
+For hugetlb, we might need another interface for frozen folios later, which is
+why I suggest to defer that.
 
 -- 
 Cheers,
