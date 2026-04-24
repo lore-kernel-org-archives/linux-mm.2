@@ -4,129 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 448BAF34C45
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 02:56:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33A78FDEE5E
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 03:15:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA6326B00B2; Thu, 23 Apr 2026 22:56:35 -0400 (EDT)
+	id 2D2486B00A4; Thu, 23 Apr 2026 23:15:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A57606B00B4; Thu, 23 Apr 2026 22:56:35 -0400 (EDT)
+	id 2833D6B00A5; Thu, 23 Apr 2026 23:15:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 946BD6B00B5; Thu, 23 Apr 2026 22:56:35 -0400 (EDT)
+	id 172936B00A6; Thu, 23 Apr 2026 23:15:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C0A26B00B2
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:56:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25DF61C0F0E
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:56:35 +0000 (UTC)
-X-FDA: 84691936350.25.0EE9A3F
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 49934140006
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:56:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=fOL67c+A;
-	spf=pass (imf09.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F36186B00A4
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:14:59 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 250A41A0C08
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:14:58 +0000 (UTC)
+X-FDA: 84691982676.23.D6B83A3
+Received: from smtp186.sjtu.edu.cn (smtp186.sjtu.edu.cn [202.120.2.186])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B9D6380002
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:14:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=sjtu.edu.cn header.s=default header.b="jl35am/A";
+	dmarc=pass (policy=none) header.from=sjtu.edu.cn;
+	spf=pass (imf02.hostedemail.com: domain of b.suvonov@sjtu.edu.cn designates 202.120.2.186 as permitted sender) smtp.mailfrom=b.suvonov@sjtu.edu.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777000496; a=rsa-sha256;
+	cv=none;
+	b=fkYVA518MK8tccaRMaygGsiWX3jW/dkFJ4CO1TmMrL8BLJc+OhHmBpWqiJO1VOya2SM4r8
+	ZBLVbyPQ5fiBlON4kVOoZDS6O8tiq1YAGFsGXKcoQiSb5uYVc4ecvJS5+1mQsIWdfzw+cB
+	M2SB5QLOkizGpbDFOzqHiTvBy2KfDkw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=sjtu.edu.cn header.s=default header.b="jl35am/A";
+	dmarc=pass (policy=none) header.from=sjtu.edu.cn;
+	spf=pass (imf02.hostedemail.com: domain of b.suvonov@sjtu.edu.cn designates 202.120.2.186 as permitted sender) smtp.mailfrom=b.suvonov@sjtu.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776999393;
+	s=arc-20220608; t=1777000496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ETx/tSKnTC+n/nV2wgCSbp2pIhIkVNUTkv0q633meJ0=;
-	b=bcdXT+RWTZeZYWzFib0BsGT/ZPoT7T8bYokRR7rK1rs4w4aNRNYEMAS9ju5yUy6hWM2dNe
-	diCtRDtz4m4SKlOi3VQi5TmSj3ENkEbI/3cOqe33Lm8GT6LxNnVLEIVtfVCgyZ7ywosPeM
-	eQdX5LuK69NmlZPL+BbzYPIp4tQQAuQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=fOL67c+A;
-	spf=pass (imf09.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776999393; a=rsa-sha256;
-	cv=none;
-	b=x+/atQf31sag9b/9vSEHF7tg5CCPg++q415U3TjK/fZj09XFmhw2Nhw4FexPWUxq2f0TOX
-	5pYTr7Tnyy0hdhlLj9AWbEiqWI5uiJRQL7/L6m/iCD8ZLZ+GFH5lXOdWagnZdptTG8FF+b
-	QyuCDNM4NUhlcwFkmK0RbaBS477U4ao=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ad9516a653so37177795ad.0
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:56:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1776999392; x=1777604192; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ETx/tSKnTC+n/nV2wgCSbp2pIhIkVNUTkv0q633meJ0=;
-        b=fOL67c+AC8jiJsONThF3yLHW3YQetfFUYzavuO0oIxd2WWPMqpUB/fItNOIEZ54+Xc
-         bX8UokW3SdeHkHiDUIpLv8erhv7QxtLX2/qVC9ucZ/7sjrRbDeHvhXPssBDfJpFCsGPZ
-         5lV6PRKQRo30zLb8pFyylWEZkp+Kr9AaLhirH8S2b0sku4KlvLVV1fuXMLTpoiGEwTKB
-         QPePmburBXH5xfYbBV/lNJGKCihd8Kw07lPykEs+fLsg7onx51mrszvsVmm2S+L/VOSz
-         z2BpsWr+qQxkKuy+G1bKV0u1knTN1oRkqLjANaip29AFbHdyilTca4P/NHWiNqsuvGHg
-         JEpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776999392; x=1777604192;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ETx/tSKnTC+n/nV2wgCSbp2pIhIkVNUTkv0q633meJ0=;
-        b=M6pVvJ/vNQuzFps8q3J0JIlNi0t28n8sloW3YFt9pGkz2rLsc9+OZNHXczwJh0LgxN
-         huKU+BpCN9gRo1OaHtUTTDnylbqUhawLMIwRAeV/P+av93FH6FS6x/92pdROJ/d193zm
-         o6cidgE7vY5SA62KhRrMrmf33+bvXGVAdD3CPxRYNUB+PmPFAcBIh1HaJjhW+jcc1oou
-         lxi9vxTyha+n76gWUONRbQ7KDHq+z3RC+X98JsJPQmm0wKO9gnFPhXH+gCjigziNOjVK
-         bDnRfcyLmbZRbOBRlN6FyHo3Nosjr8jqNHpeu+OpSpteW/nxYrYfjFKPB/cXv3lGbOdz
-         Uxlg==
-X-Forwarded-Encrypted: i=1; AFNElJ+py2ODHOesDKhRv9Tqba41ckG2qop+sasUt1FhhKdUv/gtB6svMx4yQUc52gsVtQtP5xgzu4NOkg==@kvack.org
-X-Gm-Message-State: AOJu0YxYmzzzYgCfX2aVkfD6EyjdHoiTlTE8ajhuRRbVz5uwUCEJSXUA
-	dzVcpvJzysVDxkAVrrniWu4K/Ot8vqKj0vOHcQjnlcoRKoSPrQL3OhyOcZn5J6+TjOc=
-X-Gm-Gg: AeBDietvdOkVig0yg+Zp+L5tSbrEHDSXkZQwipxFh8Nw7mOAQF1GJqc7Hop07trqPhB
-	R8Oj3xpF38mXcq5RUJZoLuEVnzoRqfGnbl+4rbyaPP1z9x9kFdDIQBFo0kkuV3GfLduu9YjJmOU
-	Kdnjy1+WFKY5Y2EHEVzVX8qZQxj332Gw+qnRXpAsRAPsLpgnoa1p1XRoFTHYEZArHkfIPktGO0X
-	tKzDhXdLik0aL1ui4s+cE62QQBSUfCFlqVqJP1UBMLu/+ZGHbqQdZfiK4ExOcgVJRRJty4ZbnJM
-	S/PHBN9gSd4lmB60+hs3i52yc2y79iM/2gAfMweNKU8aSgiFLuZ+RLyB+Zt4a1v5fXvJEUP3Rst
-	khFGpBS/3ymheQDGvB1iKt5LQ6mbJB9J+jg0KgC8Ww5WwAti0cU9gpBeF72bkykzBg/vW0IIKss
-	kdcJA7VoWRP01G7TyJ/VWN2jw+ph9Wyi2CrmZ8lviWULLl7KVjCtroaZ5Ml0CgVORlkw==
-X-Received: by 2002:a17:902:6bc2:b0:2b0:9101:1b77 with SMTP id d9443c01a7336-2b5f9eaf6a6mr216777385ad.17.1776999392104;
-        Thu, 23 Apr 2026 19:56:32 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.102])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab20d33sm221668325ad.63.2026.04.23.19.56.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 19:56:31 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com,
+	bh=hFPdl9GfLiKoz1LcnPyH1kI6Wfk4/80gGk7Izw4pBPk=;
+	b=Hri7mj+QKI2kBLFuK3rmHlKYh4rYAXOEzT8VRsrg7/SPmFMf3wVG1KerpnoClqtrbhf2Ia
+	bOOhKcSQflj+ShdttgJW/gTR79zCqpEar70flNBptbD5tW75rCoBzuYsDr5v7W4gj9HZz0
+	S4mq7o4Gi3w0Hqx2zo8kc/k7/tAkB0I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sjtu.edu.cn;
+	s=default; t=1777000489;
+	bh=W++Xowgx77JKFlnjRViqybtmnhU+fIz2BoMIlWT0MTg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jl35am/AImuqxCCWBV1VA6kkI5AkprfA+wB5mb620xjQvOmQAd4RG8A/oB1eg9P2c
+	 Yvj3137vCg8aotsrYo6E3Pei+RBurSgaEpFwUDDucQFA1ExS+GwFwH/XeiJrFWuERP
+	 oUKqTv2DqWlgc2J0fR1QtSJECFU8ha3v9JaWtF6wB+Y6/Kg2BtJrXOHRZMKTybQIIZ
+	 w4ihhWhOXP0SSsm9u25ydO7FJpPpeCaLMlfOabSEQTCz+n0aIYhqvGQjZrLUhOJaSy
+	 ZGy9O75LLy1+um63r5HZhjjii3WXfSNUGvei7Erp3a1WmNONuUGNgYq6hx34X6kgbL
+	 D82dOBEeLMa0Q==
+Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
+	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id D05522FF4E5;
+	Fri, 24 Apr 2026 03:14:49 +0000 (UTC)
+Received: from dynamic.ipv6.sjtu.edu.cn (unknown [10.180.122.86])
+	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id 75E0A37C921;
+	Fri, 24 Apr 2026 11:14:49 +0800 (CST)
+From: Bunyod Suvonov <b.suvonov@sjtu.edu.cn>
+To: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org
+Cc: david@kernel.org,
+	mhocko@kernel.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	mathieu.desnoyers@efficios.com,
 	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v6 7/7] mm/memory_hotplug: Factor out altmap freeing checks
-Date: Fri, 24 Apr 2026 10:55:47 +0800
-Message-Id: <20260424025547.3806072-8-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260424025547.3806072-1-songmuchun@bytedance.com>
-References: <20260424025547.3806072-1-songmuchun@bytedance.com>
+	Bunyod Suvonov <b.suvonov@sjtu.edu.cn>
+Subject: [PATCH v2] mm/vmscan: add balance_pgdat begin/end tracepoints
+Date: Fri, 24 Apr 2026 11:14:18 +0800
+Message-ID: <20260424031418.174597-1-b.suvonov@sjtu.edu.cn>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260423103753.546582-1-b.suvonov@sjtu.edu.cn>
+References: <20260423103753.546582-1-b.suvonov@sjtu.edu.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 49934140006
-X-Stat-Signature: ur48erte5hsxn6g8bh7ziqx846huepx1
+X-Rspamd-Queue-Id: B9D6380002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: jh66sp3kftznw5po583gjwagbjbz57uj
 X-Rspam-User: 
-X-HE-Tag: 1776999393-451167
-X-HE-Meta: U2FsdGVkX1/jt5kqKdKQ/hQu82lXOXiB0PnSDC0UYrudsCcRlG8qbIcgh4P8CVLiLHhKRILWfKPjMpXiv7xnWib5jfTQy4mURMncv4jOdyDfEKxad9wfamankFyFwCbhgwHwb41WmxrNOVEvYXp9i0LjF7Zi3DbHio3/iWUwTMp82S+9kzBWvm8fRbbBGOotMvqIRCSTeNj/9JMO0FjfJfX3/YgEjKxcNI0vEGlxbivY52GW4KbCytld8HjZAHLP6gJX9/1kg1PkCAeGMYQpoFI1mkoDp166JDA6R4ej6nc5ffivWqJT0Kh6OjdEPNJrIib1FXO/J+bsvsOtkfv7EbBgWw08KM/OMZSxZTrYLipnSApgCTuYb2K2wyCD0I/0hNxHdAStu2N8qujfa2ZwboNEwI1hROhOqaShoAj4md7lj+buJd5/6W73IJ8Jy5nofgeTkSbdeUCYynbXwCKPCzmMpbnRNSXnv7W+CaLRj86s9Xkar/fG/0y/oj3lMBt29QaAsTE8D8gOQAcl5mTJPYS/xfsYrfyB1CViGbhGMpMaIAKiR45fbEmYhCgmI/JvHc6ZBMDFPgx1ePetYLotV+jh9TMn4fx3VLyJowLA1y/xdHvyD/VvNAUmkgucICR5o8FphoW7BYLXk91ZcGoc2CPVamf0UueUjNXeGuTlJc/pHCOtQEXC7Aw5QXvkFmx4dFg/S/aNEjeKPGUWvft0DQkyQKwhj2GQPDBGU6WNxFayM3h3zzZlK7o59JPpCNseFGYjsW6VcHuIN6tM2/pZXrBp9H+ShIBVisxkzjBWwsNp9Vdm25luO7n29SvkKV4GTNi3JUzocU7mJP5l4cSlTWrKxxb35A+Qm9akqkrw9YWolzgeR3HsqCZcWUSjlYIgyXWT47fCCLjJ09oQqrnriAnip2702Yhcdepklxnr4XdkehV/tXFPW1VTLaiN+MjRtvpvdFazcByDw/SfANr
- egTkUL15
- Ctc5338xAbELN0uKc9CEuoQCZ/IEpY1iTebobXt9UFSzQgdQ+ZLMurGb/rlVZi0mOTJp+qHqVE0cIiDRWjdjpBExki1xLx1ELST/hXcTIs7hEkIRQVD35Iaxbr9H+eyP+w4E8P/Si0hmHEb6eZ/hlP/wiYn2/cMwVlBtuhGJAUGjQIC1SMeZpr66AUtNz/t44F+8moz4O9HIZ7yxmJzjNLS5eXYTt8j/Je8dxGwEKEOHWH9oz68jbdYPTGas3BMVsR0trC0WgQ0U+dVusv3MuYSiGpmamWzdAKo0m8vJeEhJNxBek25+bJHhhz7AY3SLyajak1Prl5U9k72rdCm9jP45KTw==
+X-HE-Tag: 1777000494-87937
+X-HE-Meta: U2FsdGVkX18su9TTRnBdp0Ut3n48vcNyuZxhAGXBfFtFSpdfG262sRdpAhC2JXjj2KY9rK7sAUsWwrQaB4RP/PN1jy717Vs4lB59sY6EHLgvGcBPCMltMBRYtJ4DhnIyWBdyttIIe2vmQko/U3krS9N1IwJ3AICfuwjIlVROKa9PDr3ksxt8pQT1BFM0GwFv0oz+ryAQHlpoWQAt84RHIqzYekAjNCulMHw6KzVDi5cUfGVBZH3pFAO0vfEn1g3iQK8scmqxYkrd84kwy+6OeeBOZBbVOxrGlOyQV1AAeoElKF+E34g2GbyypAavGuT/ivXmGve6zah1vTECj1IQg4jBXa3ZrYa6e/PZUi9eOMPNaOqi3KHT9uIWSf4J8o3//Ddgc2g6TLrXFGHCs2nUJeOwOOrZnM/Q5t8xto0bWsT+C0FgJrsbAZPWFcmJ/FhbVq4sa0XPCC3T/74claHuwmgS1jst4pPgpPinnoRDVqoMHojmT/ZcjATKoV7gx0unIH8JvS+nOQBTlUNISPhiBAive8BrRGWcjRegt1pECcYcR8DEfjC7b0xijMqR+KIElopE8S0IFmaIZzgcBCRlh8jthnLOeyD0UQJ4hBZEUITCixc8v8v5kKKeHXugmk4qUn10J1ueeTvCLdn2AFK/yrKrNyHhIqZLWoV1u6v7CdfLWu9kwuNognaTTo21eYc896bbJSxzsBKlTwAn2uJURMWd7VUV56b6/5q5vxfxlcTB7rZF7ZvQGfVBA12aZ5QTeCDjCLmGqsZ3Rj+zur8uJwIBCcHJnX4S9g1MQPei+Ko8f//lb7RfWjh9YkFbqpmt3vSsv32m9LX6pKwJZIt4m4lWjm0MqFbM87oalauKjB26Wycjmx8XJMeuNOB+YAbft8wrEAfIEvnPnOS1NcoL9Z1YOGSEs3UKtA731N9rkDqGPGY/2XBMnn1ZbNA5ghJ9qLKnXPjuY6jH0ofrrhD
+ q4T0/J/t
+ EAR8ZqNsc572SrvZt8Jl4pHD8JqDQwvM6ljyA8B3y57e0L3h6xv/wCVMCx0+UC7aSi8UhLlHatSQ5EYh25h0nikoAJtw3GXbQsgQLCIE3obluFw/wExkS5qDO/LiMr0AmreljSVxDESrHVE6wh9TVCAJ/POlE+gZTIiE6Uti7jZ014zRAyMyfHYCRPQ7mu2pJNM/drgKKvDc7TpvR58I0orEhKNNUtEipRLPXoE13G6UTvN3hZ1opRN3uTYf8Tfe6hCPpxeFs8A7jkGN2yjoJAo4LKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,66 +102,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use a small helper to centralize altmap freeing after verifying that all
-vmemmap pages were released. This keeps the check consistent between the
-normal teardown path and the memory hotplug error paths.
+Vmscan has six main reclaim entry points: try_to_free_pages() for
+direct reclaim, try_to_free_mem_cgroup_pages() for memcg reclaim,
+mem_cgroup_shrink_node() for memcg soft limit reclaim, node_reclaim()
+for node reclaim, shrink_all_memory() for hibernation reclaim, and
+balance_pgdat() for kswapd reclaim.
 
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+All of them, except for shrink_all_memory() and balance_pgdat(), already
+have begin/end tracepoints. This makes it harder to trace which reclaim
+path is responsible for memory reclaim activity, because kswapd reclaim
+cannot be identified as cleanly as other reclaim entry points, even
+though it is the main background reclaim path under memory pressure.
+There may be no need to trace shrink_all_memory() as it is primarily
+used during hibernation. So this patch adds the missing tracepoint pair
+for balance_pgdat().
+
+The begin tracepoint records the node id, requested reclaim order, and
+the requested classzone bound (highest_zoneidx). The end tracepoint
+records the node id, the reclaim order that balance_pgdat() finished
+with, the requested classzone bound, and nr_reclaimed. Together, they
+show the requested reclaim order and classzone bound, whether reclaim
+fell back to a lower order, and how much reclaim work was done.
+
+The end tracepoint also records highest_zoneidx even though it does not
+change within a balance_pgdat() invocation. This keeps the end event
+self-contained, so users can analyze reclaim results directly from end
+events without depending on begin/end correlation, which is less
+convenient when tracing is filtered or records are dropped. It also
+makes it straightforward to relate nr_reclaimed and the final reclaim
+order to the requested classzone bound.
+
+Signed-off-by: Bunyod Suvonov <b.suvonov@sjtu.edu.cn>
 ---
- mm/memory_hotplug.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+v2:
+- explain why highest_zoneidx is kept in the end tracepoint
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 7bfdc3a99688..ee150d312bd9 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1403,6 +1403,12 @@ bool mhp_supports_memmap_on_memory(void)
- }
- EXPORT_SYMBOL_GPL(mhp_supports_memmap_on_memory);
+ include/trace/events/vmscan.h | 52 +++++++++++++++++++++++++++++++++++
+ mm/vmscan.c                   |  5 ++++
+ 2 files changed, 57 insertions(+)
+
+diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+index 4445a8d9218d..b4bf7b8def1f 100644
+--- a/include/trace/events/vmscan.h
++++ b/include/trace/events/vmscan.h
+@@ -96,6 +96,58 @@ TRACE_EVENT(mm_vmscan_kswapd_wake,
+ 		__entry->order)
+ );
  
-+static void altmap_free(struct vmem_altmap *altmap)
-+{
-+	WARN_ONCE(altmap->alloc, "Altmap not fully unmapped");
-+	kfree(altmap);
-+}
++TRACE_EVENT(mm_vmscan_balance_pgdat_begin,
 +
- static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
- {
- 	unsigned long memblock_size = memory_block_size_bytes();
-@@ -1425,12 +1431,8 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
- 		mem->altmap = NULL;
++	TP_PROTO(int nid, int order, int highest_zoneidx),
++
++	TP_ARGS(nid, order, highest_zoneidx),
++
++	TP_STRUCT__entry(
++		__field(int, nid)
++		__field(int, order)
++		__field(int, highest_zoneidx)
++	),
++
++	TP_fast_assign(
++		__entry->nid = nid;
++		__entry->order = order;
++		__entry->highest_zoneidx = highest_zoneidx;
++	),
++
++	TP_printk("nid=%d order=%d highest_zoneidx=%-8s",
++		__entry->nid,
++		__entry->order,
++		__print_symbolic(__entry->highest_zoneidx, ZONE_TYPE))
++);
++
++TRACE_EVENT(mm_vmscan_balance_pgdat_end,
++
++	TP_PROTO(int nid, int order, int highest_zoneidx,
++		 unsigned long nr_reclaimed),
++
++	TP_ARGS(nid, order, highest_zoneidx, nr_reclaimed),
++
++	TP_STRUCT__entry(
++		__field(int, nid)
++		__field(int, order)
++		__field(int, highest_zoneidx)
++		__field(unsigned long, nr_reclaimed)
++	),
++
++	TP_fast_assign(
++		__entry->nid = nid;
++		__entry->order = order;
++		__entry->highest_zoneidx = highest_zoneidx;
++		__entry->nr_reclaimed = nr_reclaimed;
++	),
++
++	TP_printk("nid=%d order=%d highest_zoneidx=%-8s nr_reclaimed=%lu",
++		__entry->nid,
++		__entry->order,
++		__print_symbolic(__entry->highest_zoneidx, ZONE_TYPE),
++		__entry->nr_reclaimed)
++);
++
+ TRACE_EVENT(mm_vmscan_wakeup_kswapd,
  
- 		remove_memory_block_devices(cur_start, memblock_size);
--
- 		arch_remove_memory(cur_start, memblock_size, altmap, NULL);
--
--		/* Verify that all vmemmap pages have actually been freed. */
--		WARN(altmap->alloc, "Altmap not fully unmapped");
--		kfree(altmap);
-+		altmap_free(altmap);
- 	}
- }
+ 	TP_PROTO(int nid, int zid, int order, gfp_t gfp_flags),
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index bd1b1aa12581..b2d89ed69d22 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7121,6 +7121,8 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 		.may_unmap = 1,
+ 	};
  
-@@ -1461,7 +1463,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
- 		/* call arch's memory hotadd */
- 		ret = arch_add_memory(nid, cur_start, memblock_size, &params);
- 		if (ret < 0) {
--			kfree(params.altmap);
-+			altmap_free(params.altmap);
- 			goto out;
- 		}
++	trace_mm_vmscan_balance_pgdat_begin(pgdat->node_id, order,
++					    highest_zoneidx);
+ 	set_task_reclaim_state(current, &sc.reclaim_state);
+ 	psi_memstall_enter(&pflags);
+ 	__fs_reclaim_acquire(_THIS_IP_);
+@@ -7314,6 +7316,9 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 	psi_memstall_leave(&pflags);
+ 	set_task_reclaim_state(current, NULL);
  
-@@ -1470,7 +1472,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
- 						  params.altmap, group);
- 		if (ret) {
- 			arch_remove_memory(cur_start, memblock_size, params.altmap, NULL);
--			kfree(params.altmap);
-+			altmap_free(params.altmap);
- 			goto out;
- 		}
- 	}
++	trace_mm_vmscan_balance_pgdat_end(pgdat->node_id, sc.order,
++					  highest_zoneidx, sc.nr_reclaimed);
++
+ 	/*
+ 	 * Return the order kswapd stopped reclaiming at as
+ 	 * prepare_kswapd_sleep() takes it into account. If another caller
 -- 
-2.20.1
+2.53.0
 
 
