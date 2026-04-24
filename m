@@ -4,85 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ACC6FDEE5E
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 02:30:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B65AFDEE5E
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 02:34:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2AC06B0005; Thu, 23 Apr 2026 22:30:16 -0400 (EDT)
+	id BBCF46B0005; Thu, 23 Apr 2026 22:34:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD9276B008A; Thu, 23 Apr 2026 22:30:16 -0400 (EDT)
+	id B6E4C6B008A; Thu, 23 Apr 2026 22:34:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEDB46B008C; Thu, 23 Apr 2026 22:30:16 -0400 (EDT)
+	id A86046B008C; Thu, 23 Apr 2026 22:34:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5E206B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:30:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5343F40608
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:30:16 +0000 (UTC)
-X-FDA: 84691870032.16.50B878B
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6B68A4000B
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:30:14 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 8C9E56B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:34:08 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3F751140614
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:34:08 +0000 (UTC)
+X-FDA: 84691879776.23.326D7E5
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 85A3A4000D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:34:05 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YIdZCov6;
-	spf=pass (imf11.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776997814;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tTzVObsTgjPyebBtAz0CydyHn0WqV/3sHEsRDFpTpG8=;
-	b=ZJF6zK/Qfa0W72LrXLroA6bfFsdmfnWxyz1c8wJhQ3oY71tYZ4ts0zfFCpWUZlRxd8TI3x
-	uLB/DaI2ooPOxA871DPfRYYg2ZpITj8uAwvLc5Zso2wh6IK7wKiIdWC+0TNTvve3yknaRI
-	36I1384ND5poVy7//7zbTWNTFSbLU64=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776997814; a=rsa-sha256;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GKdfG653;
+	spf=pass (imf11.hostedemail.com: domain of arjan@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=arjan@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776998045; a=rsa-sha256;
 	cv=none;
-	b=fsP8+NsVeRDkq5pO6TT0CzV7HhfTHXJU8VNX2w2ZDLXRvIuXyRlKi5JtlK0N0AQvSvr72P
-	+paA0uIfpMTURTTpIFPpsCGkpNArgifEV9GTxuRAvphEWQkETyj9bcAX5fOwkHP9jVCpP/
-	Fg1TLziTRZydH6gjkixpmnhO8dFebFA=
+	b=eaCobRKlWtbA6IhpTBcv6T7ORjMvHsUUu+DHfV7vwGa4LnmubEBbp1F2s3pddo9pEL3eQ4
+	1y3A0D0xqHIvb1Gi68Y+QuLPjYz3T0t+upNDUvv12XfPBnQMLAoQNhQMPW9mfz+fJlr5eh
+	26HmoCEmhHzvy1RGw1EpoPiHMzrwpGM=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YIdZCov6;
-	spf=pass (imf11.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <eb215ae6-bead-47ef-9c3a-3f4c80d39361@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776997812;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tTzVObsTgjPyebBtAz0CydyHn0WqV/3sHEsRDFpTpG8=;
-	b=YIdZCov6euTzkkQemuooEt8m5udPXFPoCJVGnqEJ5Lroxn6vbEG9eoAizO8MV/U6ATEf5a
-	vPwUr4vT7AVOae13PmFcw5kpbgdLBN60OL5kY7IzUfUa2J+i4KZzoCx1Ts74AHtIF5nnW7
-	iLV+5t7CvvWhH+IIfeQYLGFYgPO7vSc=
-Date: Fri, 24 Apr 2026 10:29:58 +0800
+	dkim=pass header.d=intel.com header.s=Intel header.b=GKdfG653;
+	spf=pass (imf11.hostedemail.com: domain of arjan@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=arjan@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776998045;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1gZ4WlZOXpH12TKaCvBUkbFeP1/+AZ4e/89y4g+vNzI=;
+	b=MsSQTdRMJDul80Fe+wu8P26otvdd3BicsNxgwvcfMR6S/KAF7pmadbObWO1gu+h2bHgN6L
+	ei7Bk42hmMpKKaXFaWyqmsc6oCCnKSayy328pxNRB/eqw2g13pH2JyDN8fwCuYqQPXqt+R
+	qIxtvrsZzpfDsQqOjRjY5XStbWGBRZ4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776998046; x=1808534046;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4HoO+TiilUqYRofvchVhUVPT6xynrltiaL0pHQnn1jM=;
+  b=GKdfG653plZ8XF0DmgPnsmBfJn6pHuOUYWeseuIeq5RKiMPK+O1h0LkM
+   Fg3fhsrTwIwaYhdrxEGByup7tHozSIHDlGT0K7m3vgmlAOa4va4oipIgk
+   1O+ZXPHCRuvXSgudsOqZX4A6xDQd6cEYUIZRldTIVROvuPW+SeJRnusmJ
+   YKZXFT+vgNS1VJ1jNLJT+kVc0L2EsQLdx8hgSighdF+aeuaHl6k2gAics
+   Of2whkGhFqIWJuAdNrq5spcuD+g+raePnUbLUqVoScv0mBSM9ZKliTMNe
+   +uaejKgbaJMtOklDR77PJMlBUcYXJuLs4bihScfASkyYBR1FkqCBwVHlV
+   A==;
+X-CSE-ConnectionGUID: Vr5Ocp4gRZSYf6c0n2qAyQ==
+X-CSE-MsgGUID: 2qAUqEVkQ/qjJlfIUtnTsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="77679011"
+X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
+   d="scan'208";a="77679011"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 19:34:04 -0700
+X-CSE-ConnectionGUID: o2pY462DT224npT3EHrYug==
+X-CSE-MsgGUID: 82L8oYUUTb2cM947U5T3Tg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,195,1770624000"; 
+   d="scan'208";a="237822173"
+Received: from arjan-box.jf.intel.com ([10.88.27.153])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 19:34:04 -0700
+From: Arjan van de Ven <arjan@linux.intel.com>
+To: linux-mm@kvack.org
+Cc: syzbot+9722a25de70a85ff48a1@syzkaller.appspotmail.com,
+	akpm@linux-foundation.org,
+	baolin.wang@linux.alibaba.com,
+	hughd@google.com,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [mm?] BUG: sleeping function called from invalid context in shmem_undo_range
+Date: Thu, 23 Apr 2026 19:34:54 -0700
+Message-ID: <20260424023524.322251-1-arjan@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <69eab803.a00a0220.17a17.004b.GAE@google.com>
+References: <69eab803.a00a0220.17a17.004b.GAE@google.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/2] mm/damon: introduce damon_rand_fast() for per-ctx
- PRNG
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, Jiayuan Chen <jiayuan.chen@shopee.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260424013621.983-1-sj@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260424013621.983-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 8c6c6p9364cecz59cu8wdib6fa7tnro6
+X-Rspamd-Queue-Id: 85A3A4000D
+X-Stat-Signature: yfc1omn3gwz1w6yodz17yrcsqupgkym9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6B68A4000B
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776997814-463099
-X-HE-Meta: U2FsdGVkX1+cOGGAMfbhQ5/YKnlQUQkdxgQXWvPEAM6qQQEbqxu5Tw7BYGNNp1TNyBqQ6Zxb/Mr0Z5gY9CtNqtKvLA5leApzZhuvTO2HybDJBueboQ7SlSf6nDaJn8HW7Ozk7afVbUPxHo++3LMjYj077KxUfdF0XXPvPKbTkMtAlPQvgJzhtCLMt6PAyDjgi5ubVYblgJo1Mq0mRKBoJJ0MRmWWQjP7wdpKyyAHbVJ2DdaPAN490tY0I8NH7oeqRhJ9Ga9Q52KdcdXDNKpD/O1h+LgoT9fXZilrHMj3cWVRVh4zEzZmbFOCKJQyxTb4ZVZrtG2uhCUjfAedlp9W4FO9C2G096pur0AC47f8izPJKqDLGU8aM+Q4lX18TTrkMaejyXAq4gVPBYAma1u5CdukbXeuHERb5yCzxZ+0yP/V8qxsG7MdteST/v/21VJrKoSnsM5/OmkHkOD+pN+9+zkfjffnmhydTIzfMK9MzdIUXXTUYnHhxuuCec+GNtXyLjXj3KEj+McNsMwLp05TX1+rmPNDLg8XpaJ/2JJt5wtOgqmEDNRXjHBR4T7d1rlKQiThRVEYlktjddKBK40doFFy7jPNDlJMF5x0ksBVi1gqfJZlVFQYQtT3XHmBmo3n4eqHS9XeH4fDqFc8qQw1DasxcsVArbtAS0UdAmhodmChhln3g/6W8jKL0/aH6MocJJHtLqne2XG24Zy03W0b4L185+OT5uud+BbZqy6Zd2RBygtVBJ0eSCmXHxib4rS/UPULWT0Pi9jMU3W7KdyueOJRBz8iA5EzJcGHrKGzfWoDGGrYBgGvXPCJzx4tbb1MLpR/rKcAdXqY10ttH+s7Jiz/drlRNFBwN1L9ObGdSjBy3YjwQBZDGCHh62b/UAqcjaD29gXgz1Ly9FzUjCCfDJwLhZ6ZPxGzU3g+lPm40arlL84XU2JlsLbpTulwvFVsxF28Yp81pieqZZjsslU
- y3AHLbGD
- BW1YKeURmF9MHb9/mPydhQwNx3iza+hNCGl9+LYTWtOOn74LkNL/pvJBTMfjRYxTYXJEzVn9HOhcRNuiEmMmvMVjmVkFf3zAxFNcu0BTUL3KvcL8+cAEd60OmAvPSu6L6eRh9mmZHOwJEXn5LKTba+euLU+HdV7ckdMm8TQ9DWCUP5xwnUjKBVduRU3T39eKcoRY43IRu4EB5BCkN69wbl6lYPI2JrlRBmDbPf8xFZIBTY61p6gZN1B/Ene5Pk68YWUvYenHzp+8LBcjFk3JGHgPZtULt1kR0vJ7p5XxQ52x8pJPfKVaNRxCLSQ6HDTUTWgsCd5b2bblpeLmIZqeIvevYr8sy0ezmAlK1UDVS/pqVfOA=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776998045-542714
+X-HE-Meta: U2FsdGVkX1+EeLkkMvBFz4/SpBR+8fEmFKZEO7IEUWWJxvgX3UZVbO9pPrLdRQ1tQhq8KxiyynH7CLZEJl/EfzjMwcEw+1JitAPvYkBEcnflpP0hsDHA/SlMB0hwF9tLQe7ha2BiWzcOwpdxJTJCju+bTeipVEl76XBwPwC3RV5VDyKBiEEIzwLYsIQkzIjwLNA+6ASFIj3BHt2H6FDIc44wIXYH/bEFMHVu1vtcYspA9m6/35cSLcPVXK9a2Z3s9hp77E+xFBEj3dd1SgsHvLJgTDWoDM8sBv+lRMqSHJH8iFen5nJthn+OeXyXEvkgKPA9R4A+7I93HjrShftByRluQPkuViuA4ziQbmshlCYSGjlJCJhbyaAIC13ORdQuGpddzVIe+3Dc6kqlXcbythHG46+xQM0oRpDFhQ7XccAiFjHrMZkUA3Zoffo2jJsQF0mOm8ygXGA+lgqCMS0abmzykSQ9PXepOiGo3ZmSfxlbMDKsmj/nvEiXRo2ZRDHf4V9EQiN3Rq+1PuEpuLLZz2J6i/SsMA1CMcHlDsZs7EsCoOtPLYYvDf6N5xat7jlRuclTeawOuCfpHulZ9nonyhP3XmkMpPX8mGtjdtAs455/VyOB6lTWMQvgvmKgGSyhxqw/rEnuSxSA9M0nKJ8rGd1WAeTCSK4anYZyMFmzN7hnmacuDbllxYfoU+cok3jlCoSMVBWz7Rr3NYTAnXds+ZQdanAhA4yO5erNbD4a48SFLUE7s5/OkFJzAKg5kAQSsQ8orr+2yGd8J9GxO68O3yLc+2OQEQAdLHFVxJ0nHh4p88BXVFKrzeb8zymo2BOKKqQVJrAQB/3JU8b7vGXE2cJABz9XB74K1TstWyp8bws5drH7TSpsOEjQv5Z0njE29PdzWjD+DIsUYCVDqE4rznbdwkR5xo1ew4u2OvfodOT1naeL8DpFYxrfozc7NU7lVnp6exnBx//5HyNwhIS
+ plGFfPQV
+ uwuVDJUWDdy+tbRAzzmX4kKaEQnGFhecLxS1CIMcgmpZZ8oA26BN7pHRohgZFJXbzrq1tG4+BqvLxEhOX2/EnkaHxPRcS3QlcgqAFxKiDrw4uA46vS8evYU4cbCKgLTsPh+Xi8T921vOQjXP5J+pLE9IfLNvDOJvAZtzhEijXnelOwaoQZtLqRzWYvLP/B2a6MZSrgQlJNHIQA3XF5Z2/nxJhfeQ4ek4LJ2wKqhCO7QueIcjNhnHpb9uFYslZlQiv30+ECiY2fNhm2HjMRTcX3/u8tAtfVa9qOgAceHrda5BrUfV03Ye5mj0CxIR1UhhnkOVEqpl3piCiOboR/yMj4CR801FbY+EuGRM+BUWvBC4BI3tJ6a/7WGLfZncwRTk72VbnHa14vxjYquhtNgw5YIZLMUIBfkrqC0D/CxvcgSnri2DN2+PWiiH4wdzTxUqxbxSf5qF/T7a3BOTNUnCtCxIduImU36guZ7X0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,269 +106,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello SJ,
-
-Thank you for the review.
-
-On 4/24/26 9:36 AM, SeongJae Park wrote:
-> Hello Jiayuan,
->
->
-> Thank you for sharing this patch with us!
->
-> On Thu, 23 Apr 2026 20:23:36 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
->
->> From: Jiayuan Chen <jiayuan.chen@shopee.com>
->>
->> damon_rand() on the sampling_addr hot path calls get_random_u32_below(),
->> which takes a local_lock_irqsave() around a per-CPU batched entropy pool
->> and periodically refills it with ChaCha20.  On workloads with large
->> nr_regions (20k+), this shows up as a large fraction of kdamond CPU
->> time: the lock_acquire / local_lock pair plus __get_random_u32_below()
->> dominate perf profiles.
-> Could you please share more details about the use case?  I'm particularly
-> curious how you ended up setting 'nr_regiions' that high, while the upper limit
-> of nr_regions is set to 1,0000 by default.
-
-We use DAMON paddr on a 2 TiB host for per-cgroup hot/cold page
-classification.  Target cgroups can be as small as 1-2% of total
-memory (tens of GiB).
-
-With the default max_nr_regions=1000, each region covers ~2 GiB on
-average, which is often larger than the entire target cgroup.
-Adaptive split cannot carve out cgroup-homogeneous regions in that
-regime: each region's nr_accesses averages the (small) cgroup
-fraction with the surrounding non-cgroup pages, and the cgroup's
-access signal gets washed out.
-
-Raising max_nr_regions to 10k-20k gives the adaptive split enough
-spatial resolution that cgroup-majority regions can form at cgroup
-boundaries (allocations have enough physical locality in practice for
-this to work -- THP, per-node allocation, etc.).  At that region
-count, damon_rand() starts showing up at the top of kdamond profiles,
-which is what motivated this patch.
+This email is created by automation to help kernel developers
+deal with a large volume of AI generated bug reports by decoding
+oopses into more actionable information.
 
 
-> I know some people worry if the limit is too low and it could result in poor
-> monitoring accuracy.  Therefore we developed [1] monitoring intervals
-> auto-tuning.  From multiple tests on real environment it showed somewhat
-> convincing results, and therefore I nowadays suggest DAMON users to try that if
-> they didn't try.
->
-> I'm bit concerned if this is over-engineering.  It would be helpful to know if
-> it is, if you could share the more detailed use case.
+Decoded Backtrace
+
+shmem_undo_range (mm/shmem.c:1108-1151) -- crash site
+------------------------------------------------------
+1108 static void shmem_undo_range(struct inode *inode, loff_t lstart,
+1109                               uoff_t lend, bool unfalloc)
+1110 {
+1111     struct address_space *mapping = inode->i_mapping;
+1112     struct shmem_inode_info *info = SHMEM_I(inode);
+1113     pgoff_t start = (lstart + PAGE_SIZE - 1) >> PAGE_SHIFT;
+1114     pgoff_t end = (lend + 1) >> PAGE_SHIFT;
+1115     struct folio_batch fbatch;
+1116     pgoff_t indices[FOLIO_BATCH_SIZE];
+1117     struct folio *folio;
+1118     bool same_folio;
+1119     long nr_swaps_freed = 0;
+1120     pgoff_t index;
+1121     int i;
+...
+1129     folio_batch_init(&fbatch);
+1130     index = start;
+1131     while (index < end && find_lock_entries(mapping, &index,
+1132             end - 1, &fbatch, indices)) {
+1133         for (i = 0; i < folio_batch_count(&fbatch); i++) {
+1134             folio = fbatch.folios[i];
+1135             if (xa_is_value(folio)) {
+...
+1143             }
+1144             if (!unfalloc || !folio_test_uptodate(folio))
+1145                 truncate_inode_folio(mapping, folio);
+1146             folio_unlock(folio);
+1147         }
+1148         folio_batch_remove_exceptionals(&fbatch);
+1149         folio_batch_release(&fbatch);
+1150         cond_resched();   /* <-- BUG fires here; RCU nest depth=1 */
+1151     }
+
+filename_unlinkat (fs/namei.c:5526-5587) -- top-level caller
+-------------------------------------------------------------
+5526 int filename_unlinkat(int dfd, struct filename *name)
+5527 {
+...
+5545     error = mnt_want_write(path.mnt);  /* lock #0 (sb_writers) */
+5546     if (error)
+5547         goto exit_path_put;
+5548 retry_deleg:
+5549     dentry = start_dirop(path.dentry, &last, lookup_flags);
+...
+5563     inode = dentry->d_inode;
+5564     ihold(inode);
+5565     error = security_path_unlink(&path, dentry);
+5566     if (error)
+5567         goto exit_end_dirop;
+5568     error = vfs_unlink(mnt_idmap(path.mnt), path.dentry->d_inode,
+5569                        dentry, &delegated_inode);
+5570 exit_end_dirop:
+5571     end_dirop(dentry);
+5572     iput(inode);   /* triggers shmem_evict_inode -> shmem_undo_range */
+...
+5579     mnt_drop_write(path.mnt);
+...
+5587 }
 
 
-Thanks for pointing to intervals auto-tuning - we do use it.  But it
+Tentative Analysis
 
-trades sampling frequency against monitoring overhead; it cannot
-change the spatial resolution.  With N=1000 regions on a 2 TiB host,
-a 20 GiB cgroup cannot be resolved no matter how we tune sample_us /
-aggr_us, because the region boundary itself averages cgroup and
+The crash is triggered by running rm(1) on a tmpfs/shmem file. The call
+chain is:
 
-non-cgroup pages together.
+  sys_unlink -> filename_unlinkat -> iput -> iput_final -> evict
+    -> shmem_evict_inode -> shmem_truncate_range -> shmem_undo_range
+    -> cond_resched()   <-- BUG fires here
 
-So raising max_nr_regions and making the per-region overhead cheap
-are complementary to interval auto-tuning, not redundant with it.
+At crash time, two locks are held (in acquisition order):
 
->> Introduce damon_rand_fast(), which uses a lockless lfsr113 generator
->> (struct rnd_state) held per damon_ctx and seeded from get_random_u64()
->> in damon_new_ctx().  kdamond is the sole consumer of a given ctx, so no
->> synchronization is required.  Range mapping uses Lemire's
->> (u64)rnd * span >> 32 to avoid a 64-bit division; residual bias is
->> bounded by span / 2^32, negligible for statistical sampling.
->>
->> The new helper is intended for the sampling-address hot path only.
->> damon_rand() is kept for call sites that run outside the kdamond loop
->> and/or have no ctx available (damon_split_regions_of(), kunit tests).
->>
->> Convert the two hot callers:
->>
->>    - __damon_pa_prepare_access_check()
->>    - __damon_va_prepare_access_check()
->>
->> lfsr113 is a linear PRNG and MUST NOT be used for anything
->> security-sensitive.  DAMON's sampling_addr is not exposed to userspace
->> and is only consumed as a probe point for PTE accessed-bit sampling, so
->> a non-cryptographic PRNG is appropriate here.
->>
->> Tested with paddr monitoring and max_nr_regions=20000: kdamond CPU
->> usage reduced from ~72% to ~50% of one core.
->>
->> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
->> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
->> ---
->>   include/linux/damon.h | 28 ++++++++++++++++++++++++++++
->>   mm/damon/core.c       |  2 ++
->>   mm/damon/paddr.c      | 10 +++++-----
->>   mm/damon/vaddr.c      |  9 +++++----
->>   4 files changed, 40 insertions(+), 9 deletions(-)
->>
->> diff --git a/include/linux/damon.h b/include/linux/damon.h
->> index f2cdb7c3f5e6..0afdc08119c8 100644
->> --- a/include/linux/damon.h
->> +++ b/include/linux/damon.h
->> @@ -10,6 +10,7 @@
->>   
->>   #include <linux/memcontrol.h>
->>   #include <linux/mutex.h>
->> +#include <linux/prandom.h>
->>   #include <linux/time64.h>
->>   #include <linux/types.h>
->>   #include <linux/random.h>
->> @@ -843,8 +844,35 @@ struct damon_ctx {
->>   
->>   	struct list_head adaptive_targets;
->>   	struct list_head schemes;
->> +
->> +	/*
->> +	 * Per-ctx lockless PRNG state for damon_rand_fast(). Seeded from
->> +	 * get_random_u64() in damon_new_ctx(). Owned exclusively by the
->> +	 * kdamond thread of this ctx, so no locking is required.
->> +	 */
->> +	struct rnd_state rnd_state;
->>   };
->>   
->> +/*
->> + * damon_rand_fast - per-ctx PRNG variant of damon_rand() for hot paths.
->> + *
->> + * Uses the lockless lfsr113 state kept in @ctx->rnd_state. Safe because
->> + * kdamond is the single consumer of a given ctx, so no synchronization
->> + * is required. Quality is sufficient for statistical sampling; do NOT
->> + * use for any security-sensitive randomness.
->> + *
->> + * Range mapping uses Lemire's (u64)rnd * span >> 32 to avoid a division;
->> + * bias is bounded by span / 2^32, negligible for DAMON.
->> + */
->> +static inline unsigned long damon_rand_fast(struct damon_ctx *ctx,
->> +					    unsigned long l, unsigned long r)
->> +{
->> +	u32 rnd = prandom_u32_state(&ctx->rnd_state);
->> +	u32 span = (u32)(r - l);
->> +
->> +	return l + (unsigned long)(((u64)rnd * span) >> 32);
->> +}
-> As Sashiko pointed out [2], we may better to return 'unsigned long' from this
-> function.  Can this algorithm be extended for that?
+  #0 sb_writers#5  --  acquired at filename_unlinkat+0x1ad
+                       (fs/namei.c:5545 -- mnt_want_write)
+  #1 rcu_read_lock --  acquired at rcu_lock_acquire.constprop.0
+                       (include/linux/rcupdate.h:300)
 
-Sashiko is correct that (u32)(r - l) truncates spans greater than 4 GiB.
+Lock #1 (rcu_read_lock) was acquired AFTER mnt_want_write (lock #0 is
+always recorded first in the lockdep list) and before the iput() call
+at line 5572.  That window contains start_dirop(), security_path_unlink()
+and vfs_unlink() (which calls fsnotify_unlink() and d_delete_notify() on
+the success path).
 
-This is a pre-existing limitation of damon_rand() itself, which
-passes r - l to get_random_u32_below() (a u32 parameter) and
-truncates the same way.  My patch makes that truncation
-explicit but does not introduce a new bug.
+On a PREEMPT(full) kernel, rcu_read_lock() increments
+current->rcu_read_lock_nesting instead of disabling preemption.
+cond_resched() -> __cond_resched() -> __might_resched() checks that
+counter, finds it is 1 (not 0), and fires the BUG.
 
-We can restrict the region size when config or just allow spans greater 
-than 4G.
+The same leaked rcu_read_lock persists all the way back to userspace
+("lock held when returning to user space!"), and a timer interrupt
+firing during the syscall produces a third warning:
+"Voluntary context switch within RCU read-side critical section!"
 
-static inline unsigned long damon_rand_fast(struct damon_ctx *ctx,
-               unsigned long l, unsigned long r)
-{
-       unsigned long span = r - l;
-       u64 rnd;
-
-       if (likely(span <= U32_MAX)) {
-               rnd = prandom_u32_state(&ctx->rnd_state);
-               return l + (unsigned long)((rnd * span) >> 32);
-       }
-       rnd = ((u64)prandom_u32_state(&ctx->rnd_state) << 32) |
-             prandom_u32_state(&ctx->rnd_state);
-
-       // same as 'l + (unsigned long)((rnd * span) >> 32);'
-       return l + mul_u64_u64_shr(rnd, span, 64);
-}
+All three messages are symptoms of a single rcu_read_lock() call that
+is never matched by an rcu_read_unlock() somewhere between
+mnt_want_write and iput in filename_unlinkat.
 
 
->> +
->>   static inline struct damon_region *damon_next_region(struct damon_region *r)
->>   {
->>   	return container_of(r->list.next, struct damon_region, list);
->> diff --git a/mm/damon/core.c b/mm/damon/core.c
->> index 3dbbbfdeff71..c3779c674601 100644
->> --- a/mm/damon/core.c
->> +++ b/mm/damon/core.c
->> @@ -607,6 +607,8 @@ struct damon_ctx *damon_new_ctx(void)
->>   	INIT_LIST_HEAD(&ctx->adaptive_targets);
->>   	INIT_LIST_HEAD(&ctx->schemes);
->>   
->> +	prandom_seed_state(&ctx->rnd_state, get_random_u64());
->> +
->>   	return ctx;
->>   }
->>   
->> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
->> index 5cdcc5037cbc..b5e1197f2ba2 100644
->> --- a/mm/damon/paddr.c
->> +++ b/mm/damon/paddr.c
->> @@ -48,12 +48,12 @@ static void damon_pa_mkold(phys_addr_t paddr)
->>   	folio_put(folio);
->>   }
->>   
->> -static void __damon_pa_prepare_access_check(struct damon_region *r,
->> -		unsigned long addr_unit)
->> +static void __damon_pa_prepare_access_check(struct damon_ctx *ctx,
->> +					    struct damon_region *r)
-> Let's keep 'r' on the first line, and update the second line without indent
-> change.
->
-Thanks
->>   {
->> -	r->sampling_addr = damon_rand(r->ar.start, r->ar.end);
->> +	r->sampling_addr = damon_rand_fast(ctx, r->ar.start, r->ar.end);
->>   
->> -	damon_pa_mkold(damon_pa_phys_addr(r->sampling_addr, addr_unit));
->> +	damon_pa_mkold(damon_pa_phys_addr(r->sampling_addr, ctx->addr_unit));
->>   }
->>   
->>   static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
->> @@ -63,7 +63,7 @@ static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
->>   
->>   	damon_for_each_target(t, ctx) {
->>   		damon_for_each_region(r, t)
->> -			__damon_pa_prepare_access_check(r, ctx->addr_unit);
->> +			__damon_pa_prepare_access_check(ctx, r);
->>   	}
->>   }
->>   
->> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
->> index b069dbc7e3d2..6cf06ffdf880 100644
->> --- a/mm/damon/vaddr.c
->> +++ b/mm/damon/vaddr.c
->> @@ -332,10 +332,11 @@ static void damon_va_mkold(struct mm_struct *mm, unsigned long addr)
->>    * Functions for the access checking of the regions
->>    */
->>   
->> -static void __damon_va_prepare_access_check(struct mm_struct *mm,
->> -					struct damon_region *r)
->> +static void __damon_va_prepare_access_check(struct damon_ctx *ctx,
->> +					    struct mm_struct *mm,
->> +					    struct damon_region *r)
-> Let's keep the first line and the the indentation as were, and add 'ctx'
-> argument to the end.
->
->>   {
->> -	r->sampling_addr = damon_rand(r->ar.start, r->ar.end);
->> +	r->sampling_addr = damon_rand_fast(ctx, r->ar.start, r->ar.end);
->>   
->>   	damon_va_mkold(mm, r->sampling_addr);
->>   }
->> @@ -351,7 +352,7 @@ static void damon_va_prepare_access_checks(struct damon_ctx *ctx)
->>   		if (!mm)
->>   			continue;
->>   		damon_for_each_region(r, t)
->> -			__damon_va_prepare_access_check(mm, r);
->> +			__damon_va_prepare_access_check(ctx, mm, r);
->>   		mmput(mm);
->>   	}
->>   }
->> -- 
->> 2.43.0
->>
->>
-> [1] https://lkml.kernel.org/r/20250303221726.484227-1-sj@kernel.org
-> [2] https://lore.kernel.org/20260423190841.821E4C2BCAF@smtp.kernel.org
->
->
-> Thanks,
-> SJ
+Potential Solution
+
+Find the rcu_read_lock() call that is missing its matching
+rcu_read_unlock() in the vfs_unlink() / fsnotify_unlink() /
+d_delete_notify() code path.  Adding a WARN_ON(rcu_read_lock_held())
+to iput() (alongside the existing might_sleep() check) should produce
+a backtrace pointing at the exact acquisition site on the next
+reproduction.
+
+
+More information
+
+Oops-Analysis: http://oops.fenrus.org/reports/lkml/69eab803.a00a0220.17a17.004b.GAE_google.com/report.html
+Assisted-by: GitHub Copilot:claude-sonnet-4.6 linux-kernel-oops-x86.
 
