@@ -4,102 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C812FE51EF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 09:11:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6A9BFE51EE
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 09:11:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8250D6B0005; Fri, 24 Apr 2026 05:11:55 -0400 (EDT)
+	id 2F50F6B008A; Fri, 24 Apr 2026 05:11:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D5836B008A; Fri, 24 Apr 2026 05:11:55 -0400 (EDT)
+	id 2A6866B008C; Fri, 24 Apr 2026 05:11:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EB966B008C; Fri, 24 Apr 2026 05:11:55 -0400 (EDT)
+	id 1947F6B0092; Fri, 24 Apr 2026 05:11:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AD056B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 05:11:55 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CFB751A0872
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:11:54 +0000 (UTC)
-X-FDA: 84692882148.21.59FDD09
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F22EA120007
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:11:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=pF0brLID;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	spf=pass (imf29.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777021912; a=rsa-sha256;
-	cv=pass;
-	b=bdWwd6PrOm8AcD2byWaVrfVuQIcpEsGNWWIpz2a7YteCc56L3RaP20Cjrd5zoI0vV/OEdb
-	eIbRvgut1TRsF5inXXYzNYu7SX/OeAKuQ/6B8IJU0dzSiOH43vWT9hvYAP+XB1su6S8AT7
-	5DGMqA8ElRk9BCQ1gXg+YIP1rRH118w=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=pF0brLID;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	spf=pass (imf29.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777021912;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 054E76B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 05:11:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9AC61607CB
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:11:56 +0000 (UTC)
+X-FDA: 84692882232.07.FF66AF2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 218A01C0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:11:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Su1jyHjF;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777021915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c1S+XNViJsK2dlK5vthdolcetegYkFpsmkuQs+AM+8w=;
-	b=eRVRoGSi/vHTI5BvRdRQN8ovyvwtByKBnV5gXhI+TI1sCa+CcYt5KdxNta9KvVWuSWgfmP
-	CLNVWIoqYxUPvqtTz/xpwIfehvHYA5d/nOSBbc6T0SUq7LFCORXEvNiXPcrCT3/ZlGNnwl
-	ThXJCwclx4krzUOc2JGNhom7YKhhIm8=
-ARC-Seal: i=1; a=rsa-sha256; t=1777021896; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=YsWDG2YExA+5ljaUNqt9Rbfa4Ju83XEo4L+C5gcLEAHGIxXTra9trofCM3cDUthQ0+a8XA3PozRQEcdf2g0HadzZCYuR1xHXyJqHnzfYixU4tMSjMKMPc9js6HlSf9fVd50M9hiaNOzGOxtPCqkQnyrR0OhuLiNvHIgpKyHrZz0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1777021896; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=c1S+XNViJsK2dlK5vthdolcetegYkFpsmkuQs+AM+8w=; 
-	b=ZcRvbcHq8rjgGejhv+4V2pXyCgmjuCRimln1ra51DGdAEs7h2n5sdDr2BEWxIYmynsTTn3THMt/P3bk2VmCStw152HPXt54mREXjJMueOKJYpeCQdU1Puo6qRUEy5EjKDSaBDdF8xRhBoZBtWURyBqLOIQfDmphNiibDtoVe3Qg=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=adi.sharma@zohomail.in;
-	dmarc=pass header.from=<adi.sharma@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777021896;
-	s=zoho; d=zohomail.in; i=adi.sharma@zohomail.in;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=c1S+XNViJsK2dlK5vthdolcetegYkFpsmkuQs+AM+8w=;
-	b=pF0brLIDHe79zIJVPiJd5CYMAU7F2jNWsI+vZwEJl/AZWjXKR5h/MKqpa9R2w6bW
-	dNJrZ5AwPZ1VlM6LDDSgqDs3wKYpgL/MKkLoPIyOgc+WUILGrbot77EbJQtUi5d5JEQ
-	w6idHLSUDCKVpqBMUBH/tbgPgutUSMf/uROUxUXM=
-Received: from mail.zoho.in by mx.zoho.in
-	with SMTP id 1777021895533927.8659684351834; Fri, 24 Apr 2026 14:41:35 +0530 (IST)
-Received: from  [14.139.128.24] by mail.zoho.in
-	with HTTP;Fri, 24 Apr 2026 14:41:35 +0530 (IST)
-Date: Fri, 24 Apr 2026 14:41:35 +0530
-From: Aditya Sharma <adi.sharma@zohomail.in>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "linux-mm" <linux-mm@kvack.org>, "akpm" <akpm@linux-foundation.org>,
-	"ljs" <ljs@kernel.org>, "Liam.Howlett" <Liam.Howlett@oracle.com>,
-	"vbabka" <vbabka@kernel.org>, "rppt" <rppt@kernel.org>,
-	"surenb" <surenb@google.com>, "mhocko" <mhocko@suse.com>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>
-Message-ID: <19dbec24364.4b5b174f164.4542907846511755351@zohomail.in>
-In-Reply-To: <9b993dc6-f8a3-4f39-b9e3-3b1da29c8343@kernel.org>
-References: <20260423165609.251787-1-adi.sharma@zohomail.in> <9b993dc6-f8a3-4f39-b9e3-3b1da29c8343@kernel.org>
-Subject: Re: [PATCH v3] mm/memory: update stale locking comments for fault
- handlers
+	bh=0S9EV25mhlv+RfkyJC3SADA/Hq4CXD18D0UhyZP3nWs=;
+	b=eZOVe+DGyhs9FSov5mYvENwgepe6dR2VanQJxAAnxgYMiccZBHhD0l6IfqCXPFx12zg/zN
+	0fClDoJ1bG8G6dNgKWTXLgDBnAo+sxsgAA80fFwPs4BUJNx/75qeDidelfcDcCfyflQMFq
+	kDB+fhRbkLmXPzFb1d/Tp8AkY8Gs42Q=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Su1jyHjF;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777021915; a=rsa-sha256;
+	cv=none;
+	b=Q6FgPeX8EQrlzPWyj4rG1REnhTijZhjLquN2NiAYM4Dz0D4SQQsPxG6vGiwGlsQq4yhPh6
+	MipDLN1yjytdKQTzXx2PGdZjvqvjibKab3QC2Wo1MheWnJPUL3ZeVq6zU8LI5oYLBSuQe9
+	+6I9juWhVOiaL/w/ZUS+FEnCUZr+h6w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 32684600AE;
+	Fri, 24 Apr 2026 09:11:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C07C19425;
+	Fri, 24 Apr 2026 09:11:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777021913;
+	bh=SsqSo4+zjog+NkLRTA0Kn233Cxw/eENvVArd9TQ7CcA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Su1jyHjFu/8YsS48wDh711n00szcy8RRRx8P4BZ+dQyykIbYmeeE9RTMf8ATgJBsJ
+	 jCQHZ4bj09apvjrQpVki8eBjYYIiLVXFTEfekDI/YJsEsigdOWyqc5nEHmK/O7azzw
+	 QU6u8C25RMKPE+YqRBm12lfEW6MHkhInS6brKvL1XEEzhxgYEGdXwVtkwaESEH7eoT
+	 JKGgUB+mnHGanzv0cifDp5Bjq87FKWg63zEiKjoD8iOqA/Q53kdAIY+BAauVSSkHfo
+	 MBu7Bgg9iyCY0xvNfHK8lISptO8ffBRbj2VO3lQNmVpb6iJ4hopu2byxyx3pDpX5El
+	 H+Z5ortWjUULg==
+Date: Fri, 24 Apr 2026 12:11:39 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+	Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Sarthak Sharma <sarthak.sharma@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 16/53] selftests/mm: protection_keys: use kselftest
+ framework
+Message-ID: <aeszy67Qrb8Q-Xw_@kernel.org>
+References: <20260418105539.1261536-1-rppt@kernel.org>
+ <20260418105539.1261536-17-rppt@kernel.org>
+ <f8495e44-a34a-4289-90f8-0faa71bf1a71@sirena.org.uk>
+ <aeczFjEs6sqRPy0w@kernel.org>
+ <bf3133c3-ae12-45ac-a3d1-5e58b849f817@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-X-Rspamd-Queue-Id: F22EA120007
-X-Rspamd-Server: rspam12
-X-Stat-Signature: wx9niqckqaornh8j5nqxs74cojassmby
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bf3133c3-ae12-45ac-a3d1-5e58b849f817@sirena.org.uk>
+X-Stat-Signature: g996scomwtzchu93c3d5x5ituwwf9uq9
 X-Rspam-User: 
-X-HE-Tag: 1777021911-216897
-X-HE-Meta: U2FsdGVkX184a4Y/fcFNmc+VTdIzjsUDmM+dEOPCImaHBnh4SD8enywL1pABgdpI4SPxQB4ApXjOX03xPwjeZvrF/ZSvl7gcbd4UWvX9OzGYGBoNMqk1ca6O85rDPfhOPhFTsuJ8jIcvsewrvO1nSZVNnJIy9Y5jN9X492XuGDWG/qLsgA3+/R9sCIEnngPF06DlzJ6+qz4rCMhRPsN4Yi6Vi5KVEBUuzj6QN9hqio+LAOimegTdXXmEKqyOg5DdbvR2073o29Od3jtwFQPhMPA6k7tfXIMU9IOwMXPHeZT2kpLUQi11nJg15sQ5KDEe323uSVwKHSfJbNTfgiQwMyWj9V2Gw4keYJdS+HjN2p4SDEZDIh0cT1GuUjPVv6/X5a3zQagvVqAsLF+NQXoOwpX5BwyFZs0aqZg0UD2ZYe+wOfM3ShgiIHqicNvK0Jj2kqWu7NWfeQrPQ4ObYZEfmAh/GDjOqHQYoAbt27UsL9I31juPNxqAcdJEsBPhxpIr8bo8bTKf38qsJmoiHgJhNdXDt7w6FEZZAA1/exU2dLpKfu1Oo4N5VTCA2GqElE4dGaJZm+4z2o2VqaLQOMZ4W0TF0oxOunRmo2Fv+toI2CblEsoN+No06uKDnlj5FjLdZ72ZlbXNKElx2Fjg5gCKuKXavd1zD/fnCIlpXzxrCt8d7g+5d09yCjsZ5N3/OEjkO8aJ9k57WlkW7oOhzx2s8rQUTm9d5l+hob0scL0QFJLfzKuQAEtQowLsdwtw/nlfuLYZX5yu9KcPP8cMI1j7R1J9bT62yZ8WIDP3VXgEEmznhjl/9Ug0jZmu5Di0AElJEqCYSQjXeHbYwDuFiqPK1nl/8mP0EaIjgDaQ/Rf3s99AIWag3cKGshKYHX7CyKbVGNGvS3QdXVYO61kueDKwodSa+dpEsQsmjwjTh6OoSnun0h6FAjWFRKhAisnSDdZVy1dRKoe9cxhcNXgk22I
- JTX05haC
- f2LBWwcFB5zhCUV9K9VRbfhtNVCvQSii88KrDipbjKmV424WhAV01IgPL7BQ5e5rO3EXMkeYEyNQEg+NJJ2ZhAKOuVRBu8wsgWgPXKYquOwljGeSfJqM+PpNr3kvvKzRGVN9joyGtfGO2UbC7E+R5GdcyiEHWAZIfdvk/DqEohOGHgTSWUufyvTkJNRo35yzAuMHyxTXlGdg2ye/ik/01tzCAGPutE2CZhFMfAYOh/QFZ2u8fVNdkZdlnjav33zm+Ylcz3jBIsuQwhFZ6km/3joO7Ny0wAFMPAMJMp6tzT48SqVMdlvUzh7aIqL1m0XYNPySCy9P8uHD+C+IIJU8B0/Gf2uJhn9qQ4nTV
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 218A01C0005
+X-HE-Tag: 1777021915-416414
+X-HE-Meta: U2FsdGVkX189nh7w/7jaioKykxEu2TBl/p6Hapu1RQjF1YB1Qt5iVVxJ0nfuyD6gBnB1ZPtwNmRA3aUMQBhNxK8Vj1NOMnPz7BC57uwbprB/p2auIULXdnglJzypMpqLPiR34dEl4VcSHmR2EDdHD3lhgA5XLoBawwY9tSHfBpcxXbOrMZuqNd64SdDS3IYuEtxo0UrHO98umSl9asvAwXpbR9Xf+yUZlCcNsGIQG12Stm108brjarw3Uu+7rlLd3YRdgmZwFTCNzkx6m30aoxf50+/yc0QqztK+Q3t2YoSR7cPnpIvg1GPhOX1lMNuz1VXEsq5BQQ8O8Hocu0fQkzCrxCBr1uzM9TOxNyOxIYLCYSQI7Rr+MVcOYSNjHdQPdDKoZWQPN9f/MsciPl9l0GfI//h1K4TIonrLuHV0/03PWf7XruZi5EZyH6vR3w4MGUt+/2COZqyPvYbZARloCnCIE9jygiAdBoktt8cLy579PiQ3iwQmrMuvFV00V7UVOZS/tsn2dNk2W9HBIDrB+C69f8XJghxRVXoW2W+D0hIe6L6BuNX2dmGwGFcCV3/Im0pqbAqdhj0E14hl6IaDoFBGmmEJe2sFxyAZq2JhZItHV0jobZ2TWO4dq7I80+HR+omewS5XRxuUTxCgeaTmHfYn80Miu8evImBNEy/oxe0k+UspIXdxAnaDRMzHNdwBZJ2BNWkZjk2QrB/fOxIKc3SDc76uL8GqUbRsAuTyZ+XPPCuCHytTN0+jsg3xhKY4ZVvfZrjyc0kOj8ujJ0x/iHnRMgAjo82DJkeEW5ZZYMNIhg+4SftCPysJEA9gSomJEEt9wzk8HKwj9YeLytg4eCslyuw03AM+tqO13BByBN9e7sZrtxRXBxe6wcfE4Vse3fvC5URCW7DAXXDX8Xgg45L6i8JjprSkkIMGCek5w/RmhDfuY2zW4K728knTk6DJCnwpBK6/t6LvUWO6bXO
+ pfJ2ojGo
+ n6wjiqOaZFX5Zd0DcSxKGN/E075E4xnfPjeiGBYRPi7e8JzDgAzYZZNQUqzR+JTyB7wa28GAmKTLjg8mpyNjnuIlQZLcY+X4GLAA91wod4jIaQIet8cP93rm0Gni9imU86pyR09PwqpgWLYkogC2w0Hf8gi2jJQf1ZTqpf0w1nBMhidEX2zUbs+f6ZLfKbt42AYW5gYdWhI8s51CgZgHyZ9fC0+m1cxFZm9Kko4UK7jSKoeieQKjD6Kgw4eovdPaDtbgi4/8lwUPGhGv+Ih1NvPLP0YxNcHuLKX2oeN9G0KzSwdI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,40 +110,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: David Hildenbrand (Arm) <david@kernel.org>
-Date: Fri, 24 Apr 2026 13:37:01 +0530
- > >  /* 
- > > - * We enter with non-exclusive mmap_lock (to exclude vma changes, 
- > > - * but allow concurrent faults), and pte mapped but not yet locked. 
- > > + * We enter with either the VMA lock or the mmap_lock held (see 
- > > + * FAULT_FLAG_VMA_LOCK), and pte mapped but not yet locked. 
- > >   * We return with pte unmapped and unlocked. 
- > >   * 
- > > - * We return with the mmap_lock locked or unlocked in the same cases 
- > > + * We return with the lock locked or unlocked in the same cases 
- > >   * as does filemap_fault(). 
- >  
- > Maybe phrase the second part similar to the other statements further below: 
- >  
- > "When returning, the lock may have been released in the same cases as done by 
- > filemap_fault()". 
+On Tue, Apr 21, 2026 at 01:59:21PM +0100, Mark Brown wrote:
+> On Tue, Apr 21, 2026 at 11:19:34AM +0300, Mike Rapoport wrote:
+> > On Mon, Apr 20, 2026 at 06:54:31PM +0100, Mark Brown wrote:
+> 
+> > > If that fflush() is needed it should go into the helper, particularly
+> > > since ksft_finshed() calls exit() so the fflush() will never be reachd.
+> 
+> > Looks like I'm missing prints because of something in my environment, I'll
+> > just drop the fflush().
+> 
+> Interesting.  Usually the culprit would be calls to _exit() that bypass
+> the libc cleanup but I'm not seeing any right now...
 
-Okay, will do in v4
+Interesting indeed :)
 
+My observations up till now that if I run the test on the host, it prints
+everything (without fflush()) changes at all). If I run the same test in a
+VM either using virtio-ng or ssh'ing into a debian VM, only the first part
+of prints is displayed. However if I run protection_keys_64 | tee in the
+same VM everything is printed.
 
- > >  /* 
- > > - * The mmap_lock must have been held on entry, and may have been 
- > > - * released depending on flags and vma->vm_ops->fault() return value. 
- > > - * See filemap_fault() and __lock_page_retry(). 
- > > + * Either the VMA lock or the mmap_lock must have been held on entry, 
- >  
- > Do we want to also add a "see .." here? 
+I'll just drop the fflush() from this patch and will investigate later.
 
-Will do in v4
-
- > In general LGTM! 
-
-Thanks, will send a v4 shortly
-
-Aditya
+-- 
+Sincerely yours,
+Mike.
 
