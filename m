@@ -4,106 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2D92FDEE53
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 00:12:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE7EFFDEE39
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 00:17:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12AE46B0088; Thu, 23 Apr 2026 20:12:25 -0400 (EDT)
+	id EECA76B0088; Thu, 23 Apr 2026 20:17:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DBE36B008A; Thu, 23 Apr 2026 20:12:25 -0400 (EDT)
+	id E75C56B008A; Thu, 23 Apr 2026 20:17:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F33876B008C; Thu, 23 Apr 2026 20:12:24 -0400 (EDT)
+	id D16626B008C; Thu, 23 Apr 2026 20:17:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E7ABA6B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:12:24 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 36FF140959
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:12:20 +0000 (UTC)
-X-FDA: 84691522440.22.841A344
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 633134000D
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:12:18 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QKhOoCcs;
-	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776989538;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BCF6D6B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:17:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2790A120634
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:17:27 +0000 (UTC)
+X-FDA: 84691535334.15.299B5D9
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3A7FD140005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:17:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JjQt0PTl;
+	spf=pass (imf09.hostedemail.com: domain of wangli.ahau@gmail.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=wangli.ahau@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776989845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=/FcUz0voUt4L6VgJUyW4964a1uPVYvz+VsQOTuJZDE4=;
-	b=dQl4uMW7pBS703qYI/Bk6Yr2Dfd804TbusT+qVs4W9Du4wFOCXfzqLA5F5933veMJoUtMN
-	hNfmS1uDXE8xycVoiHCobM2x81Cg+zc3F48TL3hMPOfIbCvMItiN0bUx+UndVqaopJNCL+
-	VSWUKuBCanqFIqORAvPHEua8rqK6SAs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QKhOoCcs;
-	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776989538; a=rsa-sha256;
-	cv=none;
-	b=6am6FaoAPZMBSztHd3S8VE0bcvyoOnQaH2qU9UmkWTKWoeSHy5hoLAQGH/KPDTPpn86dkq
-	Z9zwyqlQ7aJEQwZLyNNnIH0h4M+v5j3JIB9+2yZ8pcA80+umc4fp5dIDlygkZcHJphiCe3
-	uJlfN6gNljx7Rb9X7+5MAeqkxgNO9MI=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b23fcf90b2so69385675ad.3
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:12:18 -0700 (PDT)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FdbcbxpTtTZxFBtMUaFAEYUB7AjxIKSASl4Kxrqo+EI=;
+	b=iLcPdSoDK4LjWWnini7bmB2FOez/cY6AZjZo2TQsTCeqUaot53v4smANVWKwbO3ciT17n2
+	de9sdZMA0FYIOPON+XI40DzQMciUZiwpCO9Bx9Vc5ODZ6BAm06lM+mwg5cgy7OEwi9l+n0
+	ZiGwZti2BrZbxof8vKYis48gzj8iNh4=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JjQt0PTl;
+	spf=pass (imf09.hostedemail.com: domain of wangli.ahau@gmail.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=wangli.ahau@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776989845; a=rsa-sha256;
+	cv=pass;
+	b=22QRsgVYMG+GVUSiyX+FDGewukEdrzEoiXt7OuIRi2cJ4otBADCPqxxen3VN2n4UPrNAQL
+	0cRkikxYlkNP4eSWZAbiqM2Ik6x2Mk/o5US0zQvTTZdy7NYXRp4gnt7SACoUYS/rpU7whM
+	J2oMmVNGtYZEijbk7SZHOmGB2uCSJp8=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50e5c5033f6so48565631cf.0
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:17:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776989844; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Lu0+NnaQufoMvjhbliP9OjJ625YGvr7lycUUdp1/4gLu0T3kHWM0fum2m2x/zIV0jd
+         uMt7EA8fZm9CrzQPD2jmHi0xw5COX/ZxhvQaO8+EzBF5saqk/ma7AqZbKSYquXa9QKv1
+         FXuMvDYGQhn/wGoqrYy8Em3EoFNI4gXwwfZLyPTCPn5mRW33Y6jQ5br/zhtyKe0evq+S
+         fHgBc+a3d8xt+C7bmM8MPJspG6w0DP//ze+SQ4YY71eooRSVmJ4dKNYX+klwBxqf92tS
+         m8Utv9i4Ax52eRyFqg7SJvqnHAJ4LcYZoaYvF3ZK0oOCp68w1gSoWaaGBHwscztGsvr4
+         sCMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=FdbcbxpTtTZxFBtMUaFAEYUB7AjxIKSASl4Kxrqo+EI=;
+        fh=OB4bR590DaBVZz6HMNnq9m7mALOtPMMemqwi2A00tkk=;
+        b=evE5pSdEKLOJ+53dgT+skoW5o5bUIqA5oCnLnB20a+n7NPPlvRS5ks4Q3pFXq2+o36
+         CdYLhhc37knkIkyP5eMk0HQgGlcF8AEaUXGF91C71XDl/QIU5i1I1JLIcjGC7fkN0Abt
+         sdxRvv2sgDZbK58LVdQ7LBiD4RYoAUf5GUqNVJq5oUFio8aK0YjYHctkOUsIorD01STz
+         TZVj4Vvys1jYFNZVGXWYogSC3lLL0q5IBpuuHC/Ln4xfQ8BIxEnjrPV6EWs6ADCIzb+j
+         ZduWM1Ql9of8+yBE0oqO09MAl8hHr3hkLA63RJvCFFLOlAoZURKO+iB9nb77lKqqtsrL
+         OTdA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776989537; x=1777594337; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=/FcUz0voUt4L6VgJUyW4964a1uPVYvz+VsQOTuJZDE4=;
-        b=QKhOoCcslif2T2CZaHyKeb1+EVAtTT7v/6NaMkdHNpRZN8tRpbmPbydw9jX1/5dqFk
-         DNABPrpv77sL4tio4yCn9IQFd98dPgrtM7H+ufFrdUcLxkLQdpAiAJUa9M4j3T9JBRJz
-         E5aDA1Xbwb/1x/kZ9yne0XvO2hDP8rBtNg6qn+7g7pFolx4gZQV3eOLeGNwKJXN8x9ms
-         911f3MJpy5TSwuOK02px4qwNxVLAkbfcLTygS6DLAVN47i1f+DXeKbkWxJO08JrQ12Q2
-         CEXcHR1M61G4DZ23GV+azgl51Yd62vOD2S6c21aEzxQ0bRzqXROXineNpDF1k+jHnAeA
-         MGaw==
+        d=gmail.com; s=20251104; t=1776989844; x=1777594644; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FdbcbxpTtTZxFBtMUaFAEYUB7AjxIKSASl4Kxrqo+EI=;
+        b=JjQt0PTlTq6mp6RjxSyk+AKkmueZtaou1U1lUNUBox0Bstkn5x6RmkYdpoJ8Sif8tB
+         DKBzyC9dtsPpH9ZrfQn3wkKCUDU05dMPmjG21NyNrtevpeAAauYMev1GjW+vILPjqf44
+         Wmyuh4lbRlBEEPeMRWIbcXKSJsW7dWbHm38aTA3w8d5c71F/wCkkZAveQz29/pJ/+hAT
+         YXFMwO1u+Sayp5o8/LwYnGRzX6fKlPIixw2JoiH1lJADbRINRD2NR/l3SpgLiVAONtdl
+         o2erYYfyjeAV/TfDiIeAYQ/HT2eUjzkqhcE/D/VHvFupvEBBwuNF3kuhFiJlm0Q6ocB8
+         54nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776989537; x=1777594337;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/FcUz0voUt4L6VgJUyW4964a1uPVYvz+VsQOTuJZDE4=;
-        b=ZPwW6VRqDs0bgUC7cqM+elnbbpBnyvwmH6u0Cvw9jGpu6OrObF0QnlzCTOu9t81wqM
-         R2dAvovNjg7MpuNOuDjYOIS0U6fkd93uP48RzSZx0SNbzhMWjrA+LTnsSOSkvjDu2Yw6
-         AnTaBJFQzqI0qyLPtFxUzzjr/dBUFCPivlvMvGj+cysv7od+p8rx9pGqfYSxDIuCd6JK
-         u++X9WEVdCX/0X/hfbJFnDPL4C7RSbxy5JUoWNavJBhX5yaDC2xZtgzY7Syo+K2eMFjq
-         6IOUDW4UX8S3oza0gJwq4xXlntNlXEDSS41bsHepcutYrdnDId5fx4WdloJSdg5vrMIp
-         MW5w==
-X-Forwarded-Encrypted: i=1; AFNElJ+gQ0n3TAAyN2cWJOodfXOfs7VeJ5eyMqogNEvJ/Q/b0pXpvARDiz+sC3ZpzcEgkbWAHmXNhCm+Lg==@kvack.org
-X-Gm-Message-State: AOJu0YwIahbFYFy3KyyhIA6DKXcS8ZWwIB6kVefLzRp73Yu8Rk8pwcfN
-	tgx5dmAH3SzGZAajJ+z1umEA8k/kztEGb1w9o3tBIWgVE9aKgYypyuutGAY2Hw==
-X-Gm-Gg: AeBDieu0Rddsf6CvDhoYOjwwBg4pnsN33YLHt9uVh3vZ0epvrTuPwDulD9ZwWsNqgZj
-	qPNSWi7/o9FdNutQ8O/E9q011I12JjFGJoHBm6sgta3FV5xhYcYqpbHOcWI8KjPCv1Aj4DiJjj/
-	NJNtamqo5uXrXVvRjEf4hm/crz78G20muEU6hWyDGEETuCw6D11TM4slkXecwceHXo6Iw6AGyE/
-	tE8ydR4pDj0qiEzdTta4T9jyfXj6wh829kfBvDHI/XsXDsAlRxa1zIE9HH/sumLVqD8V55eHwvH
-	MaDBLYDw2xAN4t4bPjm8+J5bPxUR7LdUCHXk5KuSGGix7pEdkSA2Vo+UgNWf9QAC+z+6vrrPXYv
-	LUEb5xwr+nO8yjyIWtk3GPdvoY5c8IWj5OdWZZf+K4UzhsJGkXi5Lyr9rAMxkZlFHVsWF3TQbwW
-	eq9crfiK01ptYyVpKzspGp+edcck3lxeCH
-X-Received: by 2002:a17:903:1ac6:b0:2b0:c90f:44b2 with SMTP id d9443c01a7336-2b5f9e8252bmr308135805ad.12.1776989536590;
-        Thu, 23 Apr 2026 17:12:16 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff71esm213485585ad.8.2026.04.23.17.12.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 17:12:15 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>, Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 0/5] Add buffered write-through support to iomap & xfs
-In-Reply-To: <4og3axdvzyfpfx4o2rhcnwdsggha2kfoerausxx52vd6jc2hzq@u72iwxrxxble>
-Date: Fri, 24 Apr 2026 05:39:23 +0530
-Message-ID: <340lte18.ritesh.list@gmail.com>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com> <4og3axdvzyfpfx4o2rhcnwdsggha2kfoerausxx52vd6jc2hzq@u72iwxrxxble>
-X-Stat-Signature: s4awioqpitbf8fwsnf45z7s5gzghjw56
-X-Rspamd-Queue-Id: 633134000D
+        d=1e100.net; s=20251104; t=1776989844; x=1777594644;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FdbcbxpTtTZxFBtMUaFAEYUB7AjxIKSASl4Kxrqo+EI=;
+        b=RASvZWjB3MQvbAat76NQ4d547FqXnPViNjsgTbWQu8dxVPsNeR9cfudceyowZJ6peb
+         alWg9Nsb3RjZpQNO+rOUlbCw+ZigO888Z0ZeiaIweXxE7Eny3LIlECZCofryUuS3UGBm
+         anOVqVPsdSlw/IbVimYTSz6Yv2D2IsXt/E0Y9AIaovRDfyjE4lEb4XcYy8U8kkWa39fn
+         RLKkFbx3LbnWMTlijp48UAMJiOlSrHt4tR4+EQhz3rPV4uzL+2ETbP0JGthsQ4JdIzRl
+         QFebYVnk70s25V3lYzBzVB1GCm75cnCuGAEuJfU+stBXcHQzNWfdqQcDofnnOTBKqboN
+         H17w==
+X-Forwarded-Encrypted: i=1; AFNElJ8Xd2p1aOKpvTaqTdVZByWg7Yqs0RtVdDTS3HabQ1nY9YcdGAq+VLxHTCDT60TLs2OIQLip7KgvsQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywb8PvlN07DOZQCttRyWQsCTWc0cW/Fj3yniPPKMszv6LPDNm6I
+	3lnkXDQBoi2j8a5XckyeauSeQbsYd7CPtxSVovx6fiXcNSdWkshhL5xb9UArrsBStF0AC72sUq5
+	fUJpOIeQ28L1TUBV5RRlHDeZ3ybL+vA==
+X-Gm-Gg: AeBDietAD89X07TBVZiJ92rAX7NOmL3aQjIqpRlqj/iTovFWCEGJXRjvlDsCK4ThFaS
+	hKTymiZgioYyBCKowwQqcDNiJZCxGHTlrxdIvKJzD48EdIGKy4rvzQ7OEE8Br9BihzN+P22megV
+	3GhIe+2FAApGq8eG/7iWhsWlbeEkqJk915cwPrx/fbFHbwZiMMcUHdTnY2890X9QC1C26OnmjH5
+	yOCcVT01D7JUO2TbWIBr0X8EfUNtUqV1bZrbL0wEyFWeEMHTw+Up9hks8Xzg7zPloR65G4KD8N8
+	BNCcGVFXtdI/LKTUgw==
+X-Received: by 2002:a05:622a:1305:b0:50d:8db0:7abb with SMTP id
+ d75a77b69052e-50e36ecfca9mr440201351cf.42.1776989844280; Thu, 23 Apr 2026
+ 17:17:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260422080446.26020-1-wangli.ahau@gmail.com> <7a762959-014c-4727-999f-a5073f9eaf7a@kernel.org>
+In-Reply-To: <7a762959-014c-4727-999f-a5073f9eaf7a@kernel.org>
+From: Li Wang <wangli.ahau@gmail.com>
+Date: Fri, 24 Apr 2026 08:17:13 +0800
+X-Gm-Features: AQROBzDVL2tftrpxjKYjdeKYAdmQKtLCLAzF9kdVNZECjlQvHjKJ9i_dwf6nu4k
+Message-ID: <CANgNiRw_MVRF3f9JSWsThJGUrq353S5QXoGMWYttav7-7uW2-Q@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] selftests/mm: clean up build output and verbosity
+To: "David Hildenbrand (Arm)" <david@kernel.org>, li.wang@linux.dev
+Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 8o7yfr43p6zxrtys3ehrripip6w94z43
+X-Rspamd-Queue-Id: 3A7FD140005
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1776989538-161197
-X-HE-Meta: U2FsdGVkX19v6CdbLLDdGS9+GqzfiSJ/EKt1539SZ/A0HlXtdAuwCLjnUa+zok6+Kv31aVNz6CsECEcgg6dQXR7Ks0v+lBrvYFgo2mV20mATgme85+6YaM+BF4+14WHYuzzHs9x8sePu1JfUb6jFt8MPyYmxriZ/EVMHEA3xIGTd1g3xE6/iWc5AwcxyebZpzqJYqGsUM8fNEpSniYzdcGQNIe0WF0jkhF/MeoUvGxtFpXZ7clI1PmwUlgqdnRYoRvq10JmD0dmIkNlQKJ0jOz9CaGTanFOwrZi2UdabnGfDz/bkmolh5bZ33tKkdELp4zVZR+gkE9QO25d8dgpnYsse37Sagu2DY8KVP+/g1ppuz6t2cBnpq+hEsQpDbYmaQtwguCMipiy5XWFTC07eyiaVr0NbZexuzUpw8Ay1QsPlpppid9O9dlAo3qCkTD0369vx+yigiB7D9ZIR+2CikmbZ0R7uLcVBqJLzu/FvqqAt9nJUw2A4sL6uV0x8N+tAYf1MnhJ4Jb7d9nO8DXVRRrejqtCjWRtf95+pZQaXJmVOlslmMgh9K5lcZTDCoL8xXuMH1mFVA38V6+UJnqatZK3mEobuYOuCI0IaLfq9h08iJTpX0W6HqzS9RK/3L4LwLDTAXxoF3flBYW9bV1yKGyMTNbcpaJ314FEG36MFmXKm/JM7g3UQhj1chQlLY9HNtG84kAkVlSco736bLeXeViz6msk8kH+rCnExjlTuok5s9UwzqqHuvNooT7cp/Ml7wDfTs0OALlIKMZmIX1AKmCpMQXQbYb5qxvKtOt/sU4mXhC3iZLHEaQ1L5vCj9X6HAGn6+uVgdDbKpkwRXbdis3PyC8eKp5oT/BY8ePRhWjYYUxfcNTHNMAi1sqk+D9TYsYOZTmOf7BLTSXm32tLhApuDDLA2EPJBE/rQdOZHFXh82hEpDbxlOAQIznWcpwC+Os9yDuv0VtKrdhnzONB
- OXPEdPTe
- lCmHcupy9fjnTRhzulldjvHpHY7SZvgRNetu2JiD16s9ccpwZAI8ERgn2sY1SPPaDBSz68ArWebVS4X+NaxBIkSAvm1JS5aHPsPuKQeM12ZYeMVNLa9HwmWxWIagmrbUYGevZAjEtunKnzfRupboXOOohy+tw1cGJotKN6rZVeEI9iuu9hHANfWHDxxIKCQwTVzpHcPK4EN/R9SCCrpUGDLGnR9EGNF690rMvTb63ASBRPCMDQDzC+oFpiQqfFt79iCUIjXkCV3xdU3QWeCwUCx2ncKfCDJRoDdrooX91cimNV/+aJCd8mBuRqGbro5CoTbl7A+hipfjOfW3LWCX1swiz/+eyVGD/HtAjClKagWwB09lmfnWTjzS/irPzRW+c+LhLA+6RQxtjnEGuep1l4fxv9LWGKz4SkFud
+X-HE-Tag: 1776989845-203905
+X-HE-Meta: U2FsdGVkX1/89P5aPVuhnsk6E0Q29PJGmvC7rK5uZ5AzsnYbYwmR1LRYKZcWNGG4hLrVJ1ntJrSnfaTp633wtjQWg4fDC9nZgwupReqDo3zFO9DARprrxLB96kMxSgLLkQql8YsPqlUqrj5AHtYvhcGnJSwS4y+IT3jTD7FMZi778BwJ3UVtp6zoF0gCoS2lO6kpL2qjZZzNuvC2InpdCzMx27MQxa3XRnVWAGUdmkyW+znkD7yH7uTaIGZ3xuokPLOo8ZfjCvcF8Gl+nfgEk6YtAvQeec5sWPvN6lBwcnpccugjX0nFBHEE9Onj1kRCPmjbMILsJi1AgiPVDRKITKixs6kdfsx4aaWyP4L3F0RdcgW9dlA+bKuzK+SKB+3ArZ1jMgtBagmsVvN7+/517tgS/Y1C9IO1ch7tJXjh52rezlFo5+ZXxOUbkdpq8xrtT/h6GUfGgFCse+e2z5UvsIXlID9pR0eCeXUpqR/KFUmP7TYQcIYAPeTl3dX5c/xjCdL/vf4xqevxLREM8I96fO0TbGOxxYpB3xBJXB3Z8DyxLj447pscegAOmxKpGeZl1+7yApJpt7awhZKErg4uTUeli4sk3zPxtIGC1kVb9uE1QTwrBzWEBfgIPpTT0UmWnjWgFlc/fEr1bzpo4l7zqVacMioKNQXXR8OV0dhj3ZRFE43ORGspWVLo792sE98aML5Tr63leUo+Y4zozOCDnhMEaUfBu0P0OioLQxK0wnUKDCYyz5otlZXkeU2cdvGA4SdLUKpMeZTnnf8hzpgTYdR4yCHbsIvG3SI1x4+6kNIcGJTNl5ueLx6AWtqnS5TzTqkmUt3rWA+IdW/p3z3nzj3la+0fPlYzn+o+kRJgqXheFximw+i+ki+xBVkrVilSWHD7RkXuH6PdIqRB7jKlCXe+5RAk6Oli1QBnzRjkTBxNslfWcXSaL4L+IyJD3QDApizxFWXSPHz9CF/DPYt
+ dgLl81vy
+ 5KKhbOEOhZdA7o8m49dJ89GR/0RHaDMYi4mewr/0pzqUNJ74zlmzBnjvjr88Jgu58zjWes66GiLtzsZAFhfBHr1pGNd8RWAYU/Iz3CM8TRa8bGMfT/+lHaH0/0J5IpP25z2q5sh5RkrPTcf9Uy6P2FE/gZxDyvYD6YXaDIqEFyg/ODXUdkpVwmW3FnPSfHFXhLyn58D8WyoVYGZoaSgSG8nLGPoRovdhXSDeIVOsR1MPQhIbN3cJAx/I6dbTdBkUsgt4Y3vvd9sWvP7DYBb/MxA4hZ01vC8I2nPb/P4MkDOPePt7tgSL3uM2R7svLpywEzSnYTs5PbKP+MWBBLwjlOdSO/mTrbZSUylOYz2/mCGICZeHMq+gb55WUrbn+KKZFmh1VRG0w6xjZpkVKvUW6FCxCJ1oimik1r6VKVeOAoB3U9rVoqKSFBYbGUjhk+MR+/Kys+qPe7V+Pnprs6ki7AgIDhsItvoxSVZcy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,86 +137,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev> writes:
+David Hildenbrand (Arm) <david@kernel.org> wrote:
 
->> 
->> 
->> * Testing Notes (UPDATED) *
->> 
->> - I've added support for RWF_WRITETHROUGH to fsx and fsstress in
->>   xfstests and these patches survive fsx with integrity verification as
->>   well as fsstress parallel stressing.
->> - -g quick with blocks size == page size and blocksize < pagesize shows
->>   no new regressions.
+> On 4/22/26 10:04, Li Wang wrote:
+> > Currently, the build process for the mm selftests is unnecessarily noisy.
+> >
+> > First, it leaks raw compiler errors during the liburing feature probe if
+> > the headers are missing, which is confusing since the build system already
+> > handles this gracefully with a clear warning.
+> >
+> > Second, the specific 32-bit and 64-bit compilation targets ignore the
+> > standard kbuild verbosity settings, always printing their full compiler
+> > commands even during a default quiet build.
+> >
+> > Notes:
+> >   My email address has changed due to employment change.
+> >   Previous Signed-off-by was with <liwang@redhat.com>.
 >
-> I am hitting a very strange error in generic/127. I deconstructed it in
-> to two commands that can reproduce the issue:
+> :(
 >
-> ```
-> $ dd if=/dev/zero of=/media/test/fsx_lite_nommap bs=262144 count=1
+> As a former RH'er, I'm deeply sorry for what has happened there, really.
 >
-> $ /root/home/xfstests/ltp/fsx -l 262144 -o 65536 -S 191110531 -N 100000 -L -R -W /media/test/fsx_lite_nommap
-> mapped writes DISABLED
-> Seed set to 191110531
-> main: filesystem does not support exchange range, disabling!
-> main: atomic writes need O_DIRECT (-Z), disabling!
-> short read: 0x0 bytes instead of 0x6c7f
-> LOG DUMP (1 total operations):
-> 1(  1 mod 256): READ     0x39381 thru 0x3ffff   (0x6c7f bytes)
-> Log of operations saved to "/media/test/fsx_lite_nommap.fsxops"; replay with --replay-ops
-> fsx: save_buffer: .fsxgood file too short... will save 0x0 bytes instead of 0x40000
-> : Operation not supported
-> Correct content saved for comparison
-> (maybe hexdump "/media/test/fsx_lite_nommap" vs "/media/test/fsx_lite_nommap.fsxgood")
-> ```
+> Thank you for continuing to contribute upstream, highly appreciated!
 
+Thank you David, I got a new account from kernel org yesterday:
 
-This looks like fsx has a problem where while testing writethrough
-support we ftruncate the file size to 0 instead of file_size.
+  li.wang@linux.dev
 
-@Ojaswin,
+In the next, I hope to dedicate this email address to Linux and LTP
+development work.
 
-I think we should have it like this I guess.
-
-diff --git a/ltp/fsx.c b/ltp/fsx.c
-index c9901f65..3b11b1b5 100644
---- a/ltp/fsx.c
-+++ b/ltp/fsx.c
-@@ -2095,7 +2095,7 @@ test_writethrough_io(void)
-                return 0;
-        }
-
--       if (ftruncate(fd, 0) != 0) {
-+       if (!lite && ftruncate(fd, file_size) != 0) {
-                perror("test_writethrough_io: failed to ftruncate to 0\n");
-                exit(132);
-        }
-
--ritesh
-
->
-> This is on a bs == ps (4k block size) xfs filesystem.
-> ```
-> $ xfs_info /media/test/
-> meta-data=/dev/nvme1n1           isize=512    agcount=4, agsize=2097152 blks
->          =                       sectsz=4096  attr=2, projid32bit=1
->          =                       crc=1        finobt=1, sparse=1, rmapbt=0
->          =                       reflink=1    bigtime=1 inobtcount=1 nrext64=0
-> data     =                       bsize=4096   blocks=8388608, imaxpct=25
->          =                       sunit=0      swidth=0 blks
-> naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
-> log      =internal log           bsize=4096   blocks=16384, version=2
->          =                       sectsz=4096  sunit=1 blks, lazy-count=1
-> realtime =none                   extsz=4096   blocks=0, rtextents=0
-> ```
->
-> The same test passes if I pass `-G` to fsx parameters(disabling writethrough).
->
-> The error is coming when we do a read operation which feels very
-> strange. Could you run this in your setup and see if you can reproduce
-> them? I still do not know where the issue is coming from or it is
-> because of my test setup.
->
-> --
-> Pankaj
+-- 
+Regards,
+Li Wang
 
