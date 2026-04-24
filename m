@@ -4,103 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54A6FFF8850
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 22:14:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84EFCFF8850
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 22:21:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C3BA6B0005; Fri, 24 Apr 2026 18:14:38 -0400 (EDT)
+	id A2D2D6B0005; Fri, 24 Apr 2026 18:21:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89A636B008A; Fri, 24 Apr 2026 18:14:38 -0400 (EDT)
+	id 9DEC66B008A; Fri, 24 Apr 2026 18:21:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7894F6B008C; Fri, 24 Apr 2026 18:14:38 -0400 (EDT)
+	id 8CC606B008C; Fri, 24 Apr 2026 18:21:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 66F356B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:14:38 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 78B316B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:21:36 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF2C94010A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:14:37 +0000 (UTC)
-X-FDA: 84694854594.27.A57FF82
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id F2A9C140009
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:14:35 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ebeeNruC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D1C0120163
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:21:36 +0000 (UTC)
+X-FDA: 84694872192.27.43A00A7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BD89D80006
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:21:32 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gXXj5axM;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777068876;
+	s=arc-20220608; t=1777069294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KYXVqpKqsqqiZGebrYCLhyMG3YQpdcTmeTVKeiiu+QA=;
-	b=HqqRcYBCX+ocnY6yGNN+NUMrgmNLfG7KtbVYysFhJxCQF96nCeOs5YcgOc8Y220/cB1cqV
-	gVKl2YiWouXiWOF6aTsGq24HX0HxtBABn93vz4aMickf1qv292OOYL9Yg5l4Qvtyitq9Rc
-	kWmd/qi2la1J6dfwPrnXtC+WXDXHLiM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777068876; a=rsa-sha256;
+	bh=zs7kl0E7k4HAebgjnMtD+yvMPHAmj4f+tt+lglgxW3E=;
+	b=1IgGqnAoSoeMvGV4k5zbYyRymU8JUBNNSrAKgOK8fuek+UztRdS2TFEkkSWtlaMse/aeNB
+	tjRUkIkrZxt6LuykpCfkXIpWMjZSZZadn8K7WDchwJUsA0DQguGRHhA0bpTWVc+wevZvve
+	DFY4Puu2fjgVa10HYQCRwjRTPQppt3Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777069294; a=rsa-sha256;
 	cv=none;
-	b=dACi7bD6m8ASzMDs9FtEvKIkH5qncqu1YQm8rAkq0MeH76gDs/tM2PTWNbweBzWfCkBviH
-	r3KZ5fFSXKpXIGO3NH8+E76AbCmf5qHDUJ66+5BcSvVFCRvXx6sYl1KyBBtGON3zBQ57FP
-	sd5OyBl3pq3hGDu4kz1S4KnDnvW17pc=
+	b=B926FzQlG9x3OzbJf2eypw9T90Pwb0t7s/6Jr6WP8n32oQzgb+8e4eeI+XDgDopggNURqS
+	AQ8wxuIzJReGQpvmr+UhTOlKiAF7AgS989kFU1PfugHUL08aYJEvgXrUDIshtTZOUL32ix
+	rbFEYaMYatGFfISWm+aXGefoxBkOAWE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ebeeNruC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3007E600CB
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:14:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC15CC2BCB4
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777068874;
-	bh=7JdhL4gOCZvGQazx56hjZGljg1fb9Dkq9mfDphKamYo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ebeeNruCHqbX6nkD2pzr4XPt8IKb4UipG0lOuJ+Va9eDLvdvYhL0cATWWVDPQAXLR
-	 jsvAClpYPJlDsXIbBPtvUJSw7CW29GtICGU7irDb0NxHqS9YACVoWmCnCMKCGeygXe
-	 yC+PkBfIce90uJ5+uLElNlsDY+lKpRlyC0QpD81zd2XxRilVh1xdmMSW0Nq+FpaqKw
-	 SphJabamLzvqsfXdbObbhlOXx6J9gWdwImvC7sKhDdshg4TiciNe5lgNcXhwiMx6UD
-	 oBCke1OIzIToK/SmTvC4dv4SzASOkNyCBTGT2WeCI06o94cQ3txqgqWZGgz0iK7Omr
-	 rmBfZIViHcvlw==
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6501d242e3fso8130664d50.0
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:14:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+MderAePmbK6mwvX/0+/mSvy6sciCTY8MizWn4CHMQSoD6kG+Gxt2DhVjbWDphMKN7upV6bkTauw==@kvack.org
-X-Gm-Message-State: AOJu0YyokCeOp/c8vLzxCgFhMCJhxifipI9/lvzzutQ44sW3nwNWv9zr
-	ncQNpuTEARctcdV6O4wIUDKF+BThucTzp5bNBZOgjuamc5lhlK8GKBFYJJ8upjzFDeM2+oYKSSc
-	EuEimuhFu7p5tnEwdK/0y3rh9iXCmf0gsssKjTOxbrQ==
-X-Received: by 2002:a53:e1fb:0:b0:651:bc7e:4687 with SMTP id
- 956f58d0204a3-653109adab4mr19721533d50.42.1777068874149; Fri, 24 Apr 2026
- 15:14:34 -0700 (PDT)
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gXXj5axM;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777069293; x=1808605293;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=uE5U/TRnsonhe9AZmpobqbLi7ulUoDyCWPdOlYCGHdA=;
+  b=gXXj5axMQSXrGzearcETqZZKVSkXtFnVAO5zjabmeRoqOc6BgTh+zk+l
+   4TramIvxpeLAZSn2xmuBFCbUC7yVgCG5+mKsJrNWBsxiUoGur/OECJlMI
+   Z4LuWN+LBd/wnTjhKzd6uRoC1hSVf4Vut2yNkSynbdQaMYxq1zbhk6kOR
+   ls7hAXiIwm8RWNOfXC0pZWHS5Y32G4TMRCY+7ySy08+Ln9eOpZOLM5zMA
+   faIH4fYOa/1U5/ziReauEnw5RYTBu2OkUc2+oSAYuJCfsRcbIcUcT3+M7
+   DMjzTCuW2NqX9k/057mA+jFhJAdaByBiZRC9/RDzqAXw8bF30d0cGm8Wb
+   Q==;
+X-CSE-ConnectionGUID: 4GLYXEoyQbKUDYh+T5JPOQ==
+X-CSE-MsgGUID: MVvqDED4TwmqCOOuiZcr5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11766"; a="65588333"
+X-IronPort-AV: E=Sophos;i="6.23,197,1770624000"; 
+   d="scan'208";a="65588333"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 15:21:17 -0700
+X-CSE-ConnectionGUID: TeWDlCjsSMC9c6fOyjTsqA==
+X-CSE-MsgGUID: ejurBT7OTL+I8y/fVM45tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,197,1770624000"; 
+   d="scan'208";a="237035212"
+Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.108.113]) ([10.125.108.113])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 15:21:17 -0700
+Message-ID: <8cd528ca-ff9d-4825-bf10-921ed19ec3c3@intel.com>
+Date: Fri, 24 Apr 2026 15:21:11 -0700
 MIME-Version: 1.0
-References: <20260417033951.1111038-1-baoquan.he@linux.dev>
- <20260417033951.1111038-3-baoquan.he@linux.dev> <CACePvbWZO-=Nwho9Hfk-2HpuggZyb+Yt306MdA4X_icAt6+Z9w@mail.gmail.com>
- <aego1T9d6PVudYqj@MiWiFi-R3L-srv> <CACePvbVHgry4oeXeouML1YNscpuMNSXSnBY9wd-McDUar4tG1Q@mail.gmail.com>
- <aemF6D3Do9FQYUOF@MiWiFi-R3L-srv> <CACePvbUih1E7cypNwPE13Xf8tMzYG5sjLoPO0+Yt7V0uL4qt+A@mail.gmail.com>
- <aer14NAJwkJ_ZCP5@MiWiFi-R3L-srv>
-In-Reply-To: <aer14NAJwkJ_ZCP5@MiWiFi-R3L-srv>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 24 Apr 2026 15:14:23 -0700
-X-Gmail-Original-Message-ID: <CACePvbUbAY7R=ZLqMVT7KkVcbt_McRviMepg0TpdKkW1o9QUWg@mail.gmail.com>
-X-Gm-Features: AQROBzA5QECQEUQIvZcsY84gek3BRuUn15PL2zCQ3g19bL4tvUaTYDPSs_Ny0lU
-Message-ID: <CACePvbUbAY7R=ZLqMVT7KkVcbt_McRviMepg0TpdKkW1o9QUWg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] mm/swap: use swap_ops to register swap device's methods
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, usama.arif@linux.dev, 
-	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F2A9C140009
-X-Stat-Signature: s8iwf37pepfs8wy6nm1m6hzxq6z6ojoe
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: David Stevens <stevensd@google.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Will Deacon
+ <willdeacon@google.com>, Quentin Perret <qperret@google.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260424191456.2679717-1-stevensd@google.com>
+ <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com> <aevhw9xqz1pWA2Ow@plex>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <aevhw9xqz1pWA2Ow@plex>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1777068875-552607
-X-HE-Meta: U2FsdGVkX1+4yPe1XKGU3omZnsJwj3bclkJXwwPZb4N7mudW+YVvSR8zLGA3eR/D7eY/uZSYo8+ZhN3i5KpjsnIHNvydMMXfzpxahOkvheSb+1xenVeSrcmxLsSeLMsNSO9oLKS+Q2h7ngyKiETn9tQFCIAsSKXRMXSdQZUQGX+VXPPPYE/kjsceTMxanDwpQUTlcsnSsM1+UstZaBfQtfokpEsvVTL0YlQlH3etXB++cJlRPiptTT12tEI0kD/6g4pMipBSbzBnE/XZ+DItafRBb9d/R6PdOd4bStpcWxBa4MaY6TvjxtrfBOVwzoX12WS5v5BmYvdvqGdycf65U+iX5Q9IVCTRHwfkHUA6db4O82aKLgFlqzmktruMa0iAG/uHWjsyoXoW3YJr9xGaBLY2ObIMexS3MPTRzechgRzh68VeTDCIN3xJViRVyiJLlDncUNVn322mictqKZuLMh+eh2+x3ElngtoVtBC+gVKnBxqHMbkiwM9jKbuAL+X8O4MH3bdqzhbz4w6bW+A65hBJy4j0pPtz8B+ZnPK7Q/8uxNr6AlbsjSOMNSJHiuKzMtZbTvLxsene/spdIcPoWvkjYQoeW1a/khAjb4cNI0HpZyAoKYIkZoOdgG+caCcNChnG44A6oEnhEF6+j9twP5X7Q4AkJGKsIdgqzPITMc3i2I7LhFJoBIBlSSiTAdgfgOZhg2m0W2LqsDzS4TWKpgJ9F/cke2newTEqTDzuPPrGRD4OuvCaVTyH3zyDszJR7iFUplbbTK2D6fmfgp6z4hha2f47yhjf8yohoKto2KbxCnfzdATFxC3wySMns1bK7/cf/+8WX9Qs6/GBaAflYBHprvS5LBFizmOxQQ8Zk8gH3RBlsMb2C47mlKF1IfLTf1pi562+GUdc3vfeKJ156IFPOP3r9quER5HJ8fqpzA0tQ5ZWIePEEvEM9JPQe/G4CwlmJjUtiOn3B20iPrW
- KyckYLt0
- GGyWYzZaqo70JgviRnoJ5QxVeH9BzyJ19edCINusAUErFipHWKKfTisSbi2z+ujaQhUnWK70lO7EGJlc9l0Rafij+N9QU1HD6vsqpr1PNoJKs7XF9BLxZmIq6RLUY32NkAtfUf1KnwqwKYHdRfyxHXnZQ2e5wxacPov6WAZXTSwpU3tX6asVQvLO9ZLzk+iRGeWN+CGVv5S2GsLCBGVy4AxmNy6ytQkdHgFo5NZfQ2CcnWBfiSid2v9UqAnT04ho1qYZIME9n1TY8PIMcTp5FjCWVcZHq4JyUeKzq8szO+OK9u47wHxaLeoWjfLneXJ5pW6KfgpIBGUb22vbxV9RY9Bnh3+vjhoqmhBR3
+X-Rspamd-Queue-Id: BD89D80006
+X-Rspamd-Server: rspam04
+X-Stat-Signature: awdmyihgoodzkd3dogz8z8uk78f9gzuf
+X-HE-Tag: 1777069292-774017
+X-HE-Meta: U2FsdGVkX1+mOR1+c8jjPH36CdCBumC4v1oLRqSv43BF5J+VcH71qz2WmlawVBVykuQPA1tquPdi31o29l8dCSajxZytOThMtibLKa6WQ2qJwXs4NreUMzWQJztDQVkkH06fvjdlrZ4beIiu+IZoDreIypsBJdCuMga3Ht/h35ZW/L1spl5dwn+gXnod5aCtHQP9yIPHPLx9krczwx2q7bhmDKihF52Vnx3X6pt/Rqr+esHCtmdX6aaO+10doQKtJXSfpLcHaLQFLu59g6Spj0VjFQmQn6uGWEye4TIwMuAQJocMazOl5SrmV1mACY/FULMFCopca4168FFMPTQ27vSX6ayQMCla7PPweVfGRi3pnYvSss57Na/RthKIjF5J/A76sZ2p4CmQl6mCI1Im+FSJa/Hltinmd5CdVB5zmVUj7d7f5RAT/DB4JfyqqwEBMsFw7DZF1sqTKtxpg4YULJSL/YWqt1CdYg4ZCFPnDpzsAzk2Pq6qFYab2DxrFKS7AWpbrXbgpSN6w5XKEza6ew8Nuh5SGWNTrzWkA0hyXf6H7vIXCkafAtX9SLqvh9o3GQfRzMNr1yt2YrmAyB0mGTzt1LIlrbcoSmKaQve8zbcUYc7hUGSU8s9ODe/vteTQQqcSw00Dt+ISUNFDkUROQs02lMFTz3ISzKmg0dQ5Ey5oFUPkNhHCDzbA85v0UVzhqM2fNZhmJvAn/UiG5g7VxtlMKE8/EOPz9Hxfsd47h/WlbkhQdobu/V16aDNM7Gah4U/FBCwPr4f144ZRxOqaRjmzWm/KzAWRtDZ66it9SYobxVRNiDMU9CU61aNt4KkgV1RKlIC1P+ev+0GMCh+hDHmjP36LgNzgJNj1TP6EpKNvNIR0FTHRPLUHwqV6mGLbDaqp811DGwwY20aXFRxz7d7rizGck7e8JZteZedvVsvVlJEEYcqAhEh3pX2Hd3epnsw1lGKSl8QFS9YthFo
+ 9NEl2Qze
+ yrAZxcA9fjUUrJpAimnjMQZge1N8ZZ8Zm9OGzueStZQHpnaA0d8S1gMXj6+1Wf22pE400N4fFs8nOQILfKGJ6qn2o71kKn7aVIrFGTYP12xIWkeIKj9uKWu468pGsGntJJ4ugQosWFHGZNXm6AjXFI1OscP+UYkXeIxlkEAccbw9RKFebfNjbK5WMMNF2tanGRgmOFd+NA8bWcN2gCsUmfO761rSpN2WWvpTE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,82 +162,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 9:47=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
-rote:
->
-> On 04/23/26 at 02:48pm, Chris Li wrote:
-> > The incremental change code logic looks fine.
-> >
-> > On Wed, Apr 22, 2026 at 7:37=E2=80=AFPM Baoquan He <baoquan.he@linux.de=
-v> wrote:
-> > >
-> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > > index af81fa212f1e..7644049a0919 100644
-> > > --- a/mm/swapfile.c
-> > > +++ b/mm/swapfile.c
-> > > @@ -3518,10 +3518,8 @@ SYSCALL_DEFINE2(swapon, const char __user *, s=
-pecialfile, int, swap_flags)
-> > >                 goto bad_swap_unlock_inode;
-> > >         }
-> > >
-> > > -       if (init_swap_ops(si)) {
-> > > -               error =3D -EINVAL;
-> > > +       if (error =3D init_swap_ops(si))
-> >
-> > Some more nitpicks:
-> >
-> > I think some compiler option might warn about assigning a variable
-> > inside an if condition. I suggest moving the assignment outside of the
-> > if condition expression. As it is, it looks very close to "error =3D=3D
-> > init_swap_ops(si))", Some compiler might warn, "Is that what you mean
-> > instead?"
->
-> I personally prefer the one doing assignment inside if condition
-> expression because it is a ittle neater with one less line. While
-> it doesn't matter much.
+On 4/24/26 14:35, Pasha Tatashin wrote:
+> On 04-24 12:41, Dave Hansen wrote:
+>> On 4/24/26 12:14, David Stevens wrote:
+>>> The question is then: is this approach something that is fundamentally
+>>> untenable in the kernel
+>> Yes. Fundamentally untenable.
+>>
+>> Not allowing stack faults has been a wonderful simplification. It's one
+>> of those things that just plain makes the kernel easier to maintain.
+>> Saving low single digits of system memory is not exactly making me eager
+>> to go back to the harder-to-maintain days.
+>>
+>> I seriously doubt that this 1% is the lowest hanging fruit for memory
+>> bloat on these systems. 😉
+> This true until, in a fleet of millions of machines, you encounter a 
+> one-in-a-billion chance of a stack overflow. You are then forced to 
+> double the statically allocated kernel stacks on every machine, paying a 
+> memory tax even though 99.999..% of threads never exceed 4K. This 
+> overhead accumulates to petabytes of wasted capacity.
 
-Yes, I understand it is a matter of personal preference. It will
-generate the same code.
+I don't disagree with you. But, at that point, you're picking your
+poison: bugs dynamic kernel stacks versus crashes from stack overflows.
 
-> Here comes the new version of the incremental update. Thanks.
+At some point, I might be able to be talked into dynamic stack as a
+FRED-only feature. But FRED isn't widespread enough to go to the trouble
+today. I'm sure the folks who want this also don't want to wait until
+all the devices in the field have FRED because that even *longer* off.
 
-LGTM.
-
-Acked-by: Chris Li <chrisl@kernel.org>
-
-Chris
-
->
-> diff --git a/mm/swap_io.c b/mm/swap_io.c
-> index 77aa8373c087..e2710d5fb44e 100644
-> --- a/mm/swap_io.c
-> +++ b/mm/swap_io.c
-> @@ -625,7 +625,7 @@ int init_swap_ops(struct swap_info_struct *sis)
->                 sis->ops =3D &bdev_async_swap_ops;
->
->         if (!sis->ops || !sis->ops->read_folio || !sis->ops->write_folio)
-> -               return -1;
-> +               return -EINVAL;
->
->         return 0;
->  }
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index af81fa212f1e..82d2c9b35b11 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -3518,10 +3518,9 @@ SYSCALL_DEFINE2(swapon, const char __user *, speci=
-alfile, int, swap_flags)
->                 goto bad_swap_unlock_inode;
->         }
->
-> -       if (init_swap_ops(si)) {
-> -               error =3D -EINVAL;
-> +       error =3D init_swap_ops(si);
-> +       if (error)
->                 goto bad_swap_unlock_inode;
-> -       }
->
->         si->max =3D maxpages;
->         si->pages =3D maxpages - 1;
->
+So maybe this is one of those things that folks just need to deploy
+out-of-tree for a couple of years, come back with some data to show us
+that we were just paranoid, and we'll look at it again.
 
