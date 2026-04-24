@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4554EFED3C3
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:48:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CCEBFED3C3
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:48:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEA566B009F; Fri, 24 Apr 2026 08:48:03 -0400 (EDT)
+	id 51E9A6B00A0; Fri, 24 Apr 2026 08:48:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC2436B00A0; Fri, 24 Apr 2026 08:48:03 -0400 (EDT)
+	id 4CFB66B00A7; Fri, 24 Apr 2026 08:48:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D89A6B00A2; Fri, 24 Apr 2026 08:48:03 -0400 (EDT)
+	id 3E5E56B00A8; Fri, 24 Apr 2026 08:48:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B8766B009F
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:48:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1E93440149
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:48:03 +0000 (UTC)
-X-FDA: 84693426846.11.0616AC9
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DDA46B00A0
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:48:38 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC0CC86D8F
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:48:37 +0000 (UTC)
+X-FDA: 84693428274.24.03C96BE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 339BD20005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:48:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c+MBUo4Y;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 21F31180003
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:48:35 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I9QneGDX;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777034881; a=rsa-sha256;
-	cv=none;
-	b=Vs/GF/xGeZBl7de1EPeb6BrhXLXWHdAEJr3SusFptKXoS+P7Fwu4+fcdb9FcSZnY074PzV
-	j6oklYTPafvnIGgPhaB2Tk0eW8igb8s9qwoOB29z2RE/wAzOEG9u5LJ3G22X1YX5Xq0KGd
-	Y6RItgbSUOrJW7JL5mIRQcdFeSjsEqU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c+MBUo4Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777034881;
+	s=arc-20220608; t=1777034916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h1DrDpo3HgoPPFrtNqNQ3FUd48K/RVzaBiJILRM0FwU=;
-	b=BuVL+9pngjiiJ2ETk6oH3EJQJwnkt2FEL4TCGUlVOI2dtNxkLQZljuvF+uCaSlhvsHp3DL
-	ENLNUYOSdn1lkZi0ue4eK8N41p5Mgw31t40CIe2L/ZhghX2wjRh7bLPvTgBTEuqkA3xTuC
-	MV55zWg87m8yIvB0S3P6C09bJmS7co4=
+	bh=udRRN3JV2Ocz19QQMpTbv13gq8avhV9J8ui0LFb68B4=;
+	b=Hx3db51C+RNf17NPcxJAlgXw92Dw/+YuTmdbNF8TwC83qeI0jApWXz0MjehuJflNLzm13N
+	4HfiIVcR0w7Mvgn9NpW9QLQ/lOkDbApn811tU3rM841jBPHLpep79b43B+TqQl23GsoFSN
+	Nt2wxlVMarLgCbcyXdSAda8t7E+txuA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I9QneGDX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777034916; a=rsa-sha256;
+	cv=none;
+	b=pcJr4snzIK+6Ik66jqVmSXqzdWrZ4dq4QJBKjeW9OuL+YzI2IEBUzvH6ZtkEJHiMMLbuE6
+	UNVuAwIotQGsCPY4AmJdsfVsR40OWN6pCe/YN5l22/OCOLhy4FehdFWne7T9APFb+csycv
+	Otsj/669MvwjquRQe7oWmduJzBPSvfs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 25F4140A93;
-	Fri, 24 Apr 2026 12:48:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7209C19425;
-	Fri, 24 Apr 2026 12:47:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3B82F43984;
+	Fri, 24 Apr 2026 12:48:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28CFC19425;
+	Fri, 24 Apr 2026 12:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777034880;
-	bh=1Cf3B57eA/Xv1J45OL1HqPDwusKTeEJ3wvuRI4kM4Qg=;
+	s=k20201202; t=1777034915;
+	bh=bmrtpah77EcnjbmtdZKoOnEjBu6AYR2ZoxGaPqk9BF4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c+MBUo4YmmqJhSbQ4lFHV+9KptHXnOQ2WBGmJw6ZiQE7tBQ3jQlZAyfTO3iyN66GU
-	 aIMlLh9/QbG3nB+FjT1XcH+cyLPmstj0Myw9tOuwh2XOO5vbrKnmfYjNhWn1PWy65j
-	 1bm0FUiVTRTqtxHhyQ4aOxumH8Q5jW8MtCGM5/pO4DkocHAwFB9tLBoiwUR7T8BLia
-	 f3iu49Yia6FdGkcK2ti2TGHzfW1T1CTt/JK+iqEReocUdjphyJuJcmQx/iFZ3Sgw+N
-	 QTcUkVONSW+tUxsG0aHVaDMGa9lJH8Z/V6YRxgetHHhBeWoyjKFT8vu0FhB29mWECS
-	 OIxyjdHp7g80g==
-Message-ID: <312bc872-be82-457b-b0dc-fae7f4e15bbf@kernel.org>
-Date: Fri, 24 Apr 2026 14:47:50 +0200
+	b=I9QneGDXSDd53IEQJiEBnBZiPTozZyO/odDu+Y1ZwcfEByzlZF/JcVarsZ3lPOnUk
+	 uiREWsFW/O9dUTQ0IKRiWHZdF3mSZkVw3FAsDMFmWuAaSRslqdM+2iPp74trRwyW0m
+	 y/nxmvtPexntepCT/qpOFl/cPDCtF2zRk85kHWfoCXYwlJ1Y4c41TXEpnde6AHypsa
+	 0wDJbs92JVSLwy6yv0rzdqRggjDHLuUIF14y3KbBYwvTAzdf9xhGzRSYXXLlhNDwhy
+	 pitEBnT/0sK407eySB4OyWb5A2HhUlhVIMltY6wuMQdawUMI9aNhGp7axRDRxsE3vM
+	 IoYkE04vWGa5w==
+Message-ID: <16a127ef-436a-471b-b463-cdf4ea038d4f@kernel.org>
+Date: Fri, 24 Apr 2026 14:48:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v4 04/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check in hugepage_enabled()
+Subject: Re: [PATCH 7.2 v4 08/12] mm/huge_memory: remove folio split check for
+ READ_ONLY_THP_FOR_FS
 To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Song Liu <songliubraving@fb.com>
@@ -87,7 +87,7 @@ Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 References: <20260424024915.28758-1-ziy@nvidia.com>
- <20260424024915.28758-5-ziy@nvidia.com>
+ <20260424024915.28758-9-ziy@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260424024915.28758-5-ziy@nvidia.com>
+In-Reply-To: <20260424024915.28758-9-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 339BD20005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: mmbeno7ig4xujoqy6jjs6uc3ithxu4r4
 X-Rspam-User: 
-X-HE-Tag: 1777034880-407680
-X-HE-Meta: U2FsdGVkX1+M7fBIWQI8LhM0Oc0pohWy3lzkjEmDJpbZLiiaYHa+ri0Q+dmtteIkZFkd/UU4fg8WxYsOC3CFRPXHrGh/GlMFEfjQM11Vw2laJ/958EdkeSFqR4SdAmPM2ig4Zd2Uege1mXiekdZ3smiZggnVbWUY2UXaM3n1d1oAKVRssGHrCeYXUeuqSbGYqAXk4aK0S6NQDQ/jZjLk+ZSLkISSc9d8XnBBfclf0jKUV5YNxihCX/6AQnZ9PfyFcEeRgPfaaU91dyrIo2dhr/ePK0t1GFxad11rr0e2I69owMLXzm/VYS6zaQQ/BXPJ+R2H+gU6GC0U69eujMcnIGqyUFVaxgUXbd/MEZN3plngSYZPFmCg8CFum4TffMx/wuVwoZsAFcQzLH3PpP71nFpJXq7E9azzgcbSZv0Mv5SYZYemDcqJLYIGJWmRPhmb4nO5bEuw/bvEkqUHvoBZHu0CwUkE+FtgovuYmO46gN+50vrmqCvXir7neqNd92DUCPj5QsXn3rX1lsLAWKSWFF5isLtg4JQM3eVSCfRo2YCFQNACkuh29TnjYtT3JqoRsA3ojgZCV7WLQBlmfq+E6PPFZfj12X+u2ywv8S5DzgoLbgF2XwNM7tQC7kxVcVbU773yt7xCb+dSryGPXikL2xgtLKH6EemvEsVhK66uOBbfCYydujTENJXGJHKFnqUY6rWe8VLNWrYzl4+5NvFWkSH8LNN8c38JUp1CNp4cL6jVSeNBrfFaVaPR3O0ZZObUQVOtveaeAFo08kVltYVTJ5x2KQI7nr8HtK0Uw87XcxfPV2yJGVuUV2f+QsT42IoR1uZVgUowKTzV+qFspoZVnkyoKQSObFzcgfJo/qvcXsfV2aGSDOsTJlapy4uv5LpUaIfyawY0QABex1efk4x6FlSPAKQEoQYfW8ACa08fGASh5eL/uxZYqG518wl7c/gVRfU6rLvcYjp1B1WLtZO
- EWQhZKW3
- +oWVPHStKeMrFBeJ3EKvpd1IcXJ6e2CmFjMwBm9siIv7eQS/jgsVpWYmUJ9PKbCQ0YsZr9TokIFxJ/6BFXpEZQ2sNgwka4i8ocusYi7S0L959yjrvo7itsDhldm30yNY5DLy3aElfNTtP0jb7K8jlFlYVDzmCzo83tm7AcV8VPAEYvqjZnO5MjAX40tqlPDb7ufJ8e/jMUnNTTmlgCYKBYRCw4u0p6Nx9vFWCjrd8DXDCZ2G1CsSbIcqFyI9NWf4A6jWdKkgbss6ZpfB33RmNXmMIrQOye1IKf2yeICdVkm/RfgM6abqN5rGvWzEdtjwyot4gQg/p+VnbreY7JHBzuIZlK8TXr0g2u0SobrsyocpdGb5y8MOmW6ixURCDy6nQ2OjO
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 21F31180003
+X-Stat-Signature: zckpet9cgx4dm7ze8k533pomkk3ciech
+X-HE-Tag: 1777034915-92314
+X-HE-Meta: U2FsdGVkX1/iXg4g//zVAkrK+rnGxCnGBPi1buShQKsUXRR12VT++qiHqNxuc+pZ5LJkn4zCAtMw6I7yIHTu5Q/PZ2Z8R/bZf/uKxUd0BbNcEZnDAm6ns777igM8l8KxLEl/I8v7cC3Kn6a6HzGXV+dDUb03uULMEWKKo8JeKP1pZEeWvKyEKi6NT+d6jviozxH3n3Bs6ArSr7/n7VSbE8A+VudITcUlHt4carreVjH06DVqryU57/quTSDFhpCqKBX81g86w/vcpWxLQvLP93Esa7RJ89WO+5aEPPFGMciFpWOnqk0RFVNfM5W3rCaRjDI3PYwoc++IZfQQvKsZ547IL4G2R5GK5lyhIAoTN9W9WD4Azi2T7Nk6nZPE8YqTXOLBaoeSARSEcqaec7FdnlwzQtmfDAv3GhR1ejUD5PIjjSyupwruCfwPmPshCfpe+IivzUBcpzcphTOWDH0kG2vC+Pq4SLShul0fje4TEuhOQizJt03VTKNTZV4CyfKN7NzOFY+wr4Pdp2p/tX6s8FYFOlI78oLRcYUImTZJOglHXQli9JG9wj/T3V2/Mzg/oFHUjmBDusdOMDX+hQR2hYSN7/yFt8kjZ0U+hlebkhkiGcRI1unn4H2thFHjc9F6GQrtTdvFkoJ8qmKEML0P8CZIJ1wSWTtQ07kggoXeIlILvAieyez5gGe0r3QpZVOxvGwIbj1vytmGJSavqVX/TyOPDMMA+PUai+MT1rnBFGDcallw2ytbOtFEV8lWtZ8K27DjU2OTG0CeSNszTewLPOBWkgEPTTm+QO5YBjoaWC/cxQ7fCb+q3XBN/07kADbyzLAKj89P52/xovoPkF7qeOFNY8wqwJnGhSvkACwmh3XpAZa1lJxe7NzMqvgiFu9FNbhfXUA4NFMAdoJ/lPM0P3MebDX7GQIeOEQGEa3E7FsVl2Bc6irgFFdWlwzmp5pe6XmHGyZayPyA9QklFOV
+ YupZ/bWf
+ G2d2nYeShTxnwgTyt4gExO0tXCEhZdX3W1v83o6uPZ46i+0AEwS4+BEgK+nIqTiFxoWLQZZsgtTI2IC+xL0Jb/dT+pMB+4ztu7LBHdnTqEo7rs5AJnAYhB9SnACZhbdQM2s5koynff/75m7F0O1oZm6Xp2YgHehivE7j5vEk7l6NdH7VNorJ8MKmAuiUWyKskwJrD/oyoo/36gToP0S+rdra718ZUMHr3W7nxkTKwAG98pmI5LEkK1zwv/D6n6ZMllqJyuZmr9L4RBl+syBxpSRVveX7X9PXod3TY9UEFUhWYVtiPsSNhAVH+l3iHmJbOvZmalqyA964uuiNywlkc1PV/QZcIFrW8dxtBnSNjQBDf243Gp5J48AcHJLZd+9wQ2sGz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,86 +153,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/24/26 04:49, Zi Yan wrote:
-> Remove READ_ONLY_THP_FOR_FS and khugepaged for file-backed pmd-sized
-> hugepages are enabled by the global transparent hugepage control.
-> khugepaged can still be enabled by per-size control for anon and shmem when
-> the global control is off.
-> 
-> Add shmem_hpage_pmd_enabled() stub for !CONFIG_SHMEM to remove
-> IS_ENABLED(SHMEM) in hugepage_enabled().
-> 
-> Clean up hugepage_enabled() by moving anon code to anon_hpage_enabled().
+> Without READ_ONLY_THP_FOR_FS, large file-backed folios cannot be created by
+> a FS without large folio support. The check is no longer needed.
 > 
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > ---
->  include/linux/shmem_fs.h |  2 +-
->  mm/khugepaged.c          | 26 ++++++++++++++++----------
->  2 files changed, 17 insertions(+), 11 deletions(-)
-> 
-> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-> index 93a0ba872ebe..acb8dd961b45 100644
-> --- a/include/linux/shmem_fs.h
-> +++ b/include/linux/shmem_fs.h
-> @@ -127,7 +127,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
->  void shmem_truncate_range(struct inode *inode, loff_t start, uoff_t end);
->  int shmem_unuse(unsigned int type);
->  
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && defined(CONFIG_SHMEM)
->  unsigned long shmem_allowable_huge_orders(struct inode *inode,
->  				struct vm_area_struct *vma, pgoff_t index,
->  				loff_t write_end, bool shmem_huge_force);
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 726f8ace01af..cdd4b37e4a68 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -524,26 +524,32 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
->  		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
->  }
->  
-> +static inline bool anon_hpage_enabled(void)
-> +{
-> +	if (READ_ONCE(huge_anon_orders_always))
-> +		return true;
-> +	if (READ_ONCE(huge_anon_orders_madvise))
-> +		return true;
-> +	if (READ_ONCE(huge_anon_orders_inherit) &&
-> +	    hugepage_global_enabled())
-> +		return true;
-> +	return false;
-> +}
-
-Ah, that is based on Nicos work, right?
-
-> +
->  static bool hugepage_enabled(void)
->  {
->  	/*
->  	 * We cover the anon, shmem and the file-backed case here; file-backed
-> -	 * hugepages, when configured in, are determined by the global control.
-> +	 * hugepages are determined by the global control.
->  	 * Anon hugepages are determined by its per-size mTHP control.
->  	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
->  	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
->  	 */
-> -	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> -	    hugepage_global_enabled())
-> -		return true;
-> -	if (READ_ONCE(huge_anon_orders_always))
-> +	if (hugepage_global_enabled())
->  		return true;
-> -	if (READ_ONCE(huge_anon_orders_madvise))
-> -		return true;
-> -	if (READ_ONCE(huge_anon_orders_inherit) &&
-> -	    hugepage_global_enabled())
-> +	if (anon_hpage_enabled())
->  		return true;
-> -	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
-> +	if (shmem_hpage_pmd_enabled())
->  		return true;
->  	return false;
->  }
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
