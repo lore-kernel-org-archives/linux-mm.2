@@ -4,92 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E6D6FED3F2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 17:41:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F830FED3F5
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 17:42:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0BF86B008C; Fri, 24 Apr 2026 13:41:10 -0400 (EDT)
+	id 04A1D6B008C; Fri, 24 Apr 2026 13:42:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BD9E6B0092; Fri, 24 Apr 2026 13:41:10 -0400 (EDT)
+	id 0213E6B0092; Fri, 24 Apr 2026 13:42:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D29B6B0093; Fri, 24 Apr 2026 13:41:10 -0400 (EDT)
+	id E79B26B0093; Fri, 24 Apr 2026 13:42:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AA716B008C
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:41:10 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1AA0812027C
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:41:10 +0000 (UTC)
-X-FDA: 84694165500.12.CA928D1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EEC1A140009
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:41:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cPQuVxEx;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id DA0D36B008C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:42:06 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A563E1B73BC
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:42:06 +0000 (UTC)
+X-FDA: 84694167852.05.3DF12B3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 394D912000D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:42:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AbYkbuTB;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777052468;
+	s=arc-20220608; t=1777052524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DPp5UqOqR6iEsJzPDlrd2wYkt5VSV6X6hLwp3tQhkDs=;
-	b=wNhxiW9h0gPT5Cpbeh3TUCqO4GiuuKjDKjgzZ9jtV0rralgoKt7Ju4cxNl82TXIY51lQp9
-	cN2ADYAj8xoW1LO9JHCobqVNJOeq/8kN7XeDSkzsNhz2u1doJ5t0V1AuwCcEYTSCZ5Vm0m
-	0yVqBqfK/cbvx+gM0uMBC8ThOftV2mI=
+	bh=NuWtjF+Wyc1hGTB7jedMSCQYvS6gqCcPJkY5z5BlujE=;
+	b=uLkODWEm0g66qOrSgbpGEJWhecSqbQ+Jnxpv4xcnianMZVzXwsngtseFb2/vbpe4zPNgyh
+	OyXLXcYlmXboBwqyuXDsSkpdmJHRz+DXCYpLUh5uoELHOvRsKpr+QPV04L3btLiPtCkAlg
+	LFEVildOVJ5ZrFuGkZW6Tsn/nibOXOg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cPQuVxEx;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777052468; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AbYkbuTB;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777052524; a=rsa-sha256;
 	cv=none;
-	b=KYbSlK4Jur3pxfqf7PjxIL/Yf7GXZWZWBEYDau1oGpO5vHA/N8z0WkTwodOxwVlxKrpge6
-	A2rPFBXnMr8d+4DOGdOK4WCIDZHkSdUxPcUhgtb3Fd1vqZU0V90jreNPKCpJFKsxuM7KPo
-	f3nMQ8OegE8fZccw8iF9lbWiAzJxaUE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3165835AF;
-	Fri, 24 Apr 2026 10:41:01 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 76B033F7B4;
-	Fri, 24 Apr 2026 10:41:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777052466; bh=Teo20paGpHrbq1obZzr+ivLwVPOuVk5CdKUvJCX5l/o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cPQuVxEx+ilikHFEHbBAVKhTf7vRHHLLoWB14XBOqWjDoo4pBgHSEjHSse8e2RtPO
-	 3Eec2OmUSUZv5Oial8RpzuMfHYSmBrpGQWeJUf9s5ByfOdIZG35t86xdh5x2kNvtC5
-	 y/tw5yFTZfb3QB9tMRqplRkgCa2PIkOBKnomrZiw=
-Date: Fri, 24 Apr 2026 18:41:00 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: arnd@arndb.de, kees@kernel.org, mingo@redhat.com, peterz@infradead.org,
-	juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	akpm@linux-foundation.org, david@kernel.org, urezki@gmail.com,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, ljs@kernel.org,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, tglx@kernel.org,
-	usama.anjum@arm.com, mathieu.desnoyers@efficios.com,
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH v3 3/3] mm: skip KASAN tagging for page-allocated page
- tables
-Message-ID: <aeurLGC4ohFU9Xtn@arm.com>
-References: <20260424130157.3163009-1-dev.jain@arm.com>
- <20260424130157.3163009-4-dev.jain@arm.com>
+	b=sYD46sllOe9z5T13fW6hEQRQyvvjMYCxKS/QUO/mYKmOPSOBPyGOE3jHbwtTlm9B3tTvZ1
+	jc39KAHA9Y40vv1yG9XhLtfSH5s87bBFCCV/3Nz+sFtCrx2bZPP2isqItE8j3IG/SNhZ+8
+	QvdatdoTy8fp+mQQCnpHDJTXMAPg7+A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777052523;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NuWtjF+Wyc1hGTB7jedMSCQYvS6gqCcPJkY5z5BlujE=;
+	b=AbYkbuTBVCpLhTXa/VJS12ozX7De6kXmf37pkB/0DLjXZpREwZEIsZeUn8n26XkLRGOMW7
+	lOix7FE586hIYE/hdlhEb6bR9cw1fo2K550sFnnar0fCUWk1rSRYet1wDFCj92gjmUgy5w
+	3GBJm+062HypkTatQfppuUXPmHdatiM=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-79-YjbMb__-Mwy7UvKIXwPjiA-1; Fri, 24 Apr 2026 13:42:02 -0400
+X-MC-Unique: YjbMb__-Mwy7UvKIXwPjiA-1
+X-Mimecast-MFC-AGG-ID: YjbMb__-Mwy7UvKIXwPjiA_1777052521
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8b1f39c5827so79114936d6.1
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:42:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777052521; x=1777657321;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NuWtjF+Wyc1hGTB7jedMSCQYvS6gqCcPJkY5z5BlujE=;
+        b=qK7tTc3eySwmVHF3m7AZsDCSJZ9mkb43lH95yRD1kQ5Jq9B6rxq62vUDg0mjx0S2AX
+         /O9jUAT5WsN8DmXaIpLA6HeEB5sCEXklih2mGSNIfwJ3am/WsF2lsPh06COyhLjCgikx
+         JOkxCzckd048YrVjCjh8U+5LvBMqiw7308l5vTR80YpfGkTbExXodC74/TU9sJ2ZbOtX
+         VBB4LBpIB9JuK5aBGFhn19/hJDFFN+pi9e+d9Sr61Ea7eM2xHtQgjIvCh8sNkd8iRLVe
+         vlWQBae3tpDjZuheHNDQlVt2py4d9GWVp2HY9xNxSJRSVP0lU2ceKfdjPje+jlgCOC0a
+         rBUw==
+X-Forwarded-Encrypted: i=1; AFNElJ9kbDJUlJGgQ6busAa1O204Na6he1KHWuSpMdCuPdURkuPG7tRUHissD6VKITf9i99PSToIqiEuMQ==@kvack.org
+X-Gm-Message-State: AOJu0YzwRyz5WoiEqOxxS6uyVxmKYcRmW3s+DOfKJ8f6Bf6Ns4JILIZo
+	funLwhxe5s3ezBFG9++F/IS9fxI9DkQVJO8kay9J7eNc7JaTebep+VBzS4gQtPYaogVFMCwxsCR
+	boILrUUp/B3wGCCD6HZOVUesMwIya0gKqWhKLB5gU1yu/1Gt5MLU6
+X-Gm-Gg: AeBDiesKXJ8Jn3YLblyZxgv6c+LgsFGqyXj1WBu3jWxCps35xMthkwr32vEpDD+tNdJ
+	PwgnwBBNmyK0CSK3jNroZFgCnQrn9IUSKSVYtsBZ6MhIntLiulgTtD5dT3TSyCnn/TdQa6k3+GU
+	yAQQhLOOcw7U9tU36n+i+cQhQLJAS09tueeW7MTZj3+eqlsRowfJI2SYLRKCFRvId4v47aOUkph
+	nRTVb5YaVaCgSWKILY/XJU359QJcAYZtgbs6gX5f2tcE9DV1N+hF4/YQA+TfFu/dM4o81HNKbUh
+	lfvg6OR5Q/J+px+GyFZsGjXiCL5zdA8jyLMZhV5Ba1NDH7pfnu/jjU1I5TidTKgkmZ+qMvsvuti
+	rJ6UPXfa6iQ+QkwrXOj4XZ4TsRJxxtjmpS2kJ+QlpTDbmaaSydwh5A4X5L9wCm2zrgl/l2Rk5ez
+	tVKDRxmOs3s8WPdSRZaKxYBlgr4w==
+X-Received: by 2002:a05:622a:429b:b0:50b:4337:179a with SMTP id d75a77b69052e-50e36b86637mr456868651cf.3.1777052521466;
+        Fri, 24 Apr 2026 10:42:01 -0700 (PDT)
+X-Received: by 2002:a05:622a:429b:b0:50b:4337:179a with SMTP id d75a77b69052e-50e36b86637mr456868011cf.3.1777052520974;
+        Fri, 24 Apr 2026 10:42:00 -0700 (PDT)
+Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-53-69-159-169-238.dsl.bell.ca. [69.159.169.238])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50fafe9674csm151451681cf.3.2026.04.24.10.41.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2026 10:42:00 -0700 (PDT)
+Message-ID: <6732af42-fe43-489f-8561-9e6e4870e15f@redhat.com>
+Date: Fri, 24 Apr 2026 13:41:59 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424130157.3163009-4-dev.jain@arm.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EEC1A140009
-X-Stat-Signature: zjyonne1q9y5qthai3gogj5xp5z4f6ys
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/53] selftests/mm: rename hugepage-* tests to
+ hugetlb-*
+To: Mark Brown <broonie@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Donet Tom <donettom@linux.ibm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Sarthak Sharma
+ <sarthak.sharma@arm.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+References: <20260418105539.1261536-1-rppt@kernel.org>
+ <20260418105539.1261536-7-rppt@kernel.org>
+ <4d2fb0ec-91e4-4902-9d7f-68d782ee98c7@redhat.com>
+ <30bb8071-06df-4953-b189-ab6a0520739d@sirena.org.uk>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <30bb8071-06df-4953-b189-ab6a0520739d@sirena.org.uk>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: LRQXLua_wq36SKcWm40BmMjb_elydDj3Q1tDmgZ6aBQ_1777052521
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1777052467-864834
-X-HE-Meta: U2FsdGVkX19ydIqEWKpQvPBxpwmjsXZpn3mKmZ9t65/I3Uwag0pDDjoX4AlF84owN0AF98P2P9J3GTFnpzQcd9LgQcXL0CIzTUjk/GCfJhrLRDRi5/6Wx7OXTNDTCEWxqBCa80NYK+HINnSCQTjaIaKWROM518fTc8GWJzQj8aHZAQh+UpoLGUNqvy8f/KKfVgD6uocObQ5eP46ugK9wiowSjkZ8eYWaQy5jkf/6F5GjAYPBowtpjz2mvSv258SG2Wojft2tOkiWYayoshEcMJiDfYR14lMarUjReUsmuItzvGR9+mSt+cNzmawSPkGkwyFFUiJNASCNMy/3fkqDIZmT4FrniVlzD1muo3x4p1Najo9vt8TS/IevX5oE1T+SW3DJ9rU7OfDYTO3BVj81xQM/CXvQnWJckb76anBv3ry+LC+1ZJZkguG5ckWe9qwaM5NuqgyKB5mxheR4ApytV+H2g2DhkAMLmBw+QeY7gr7y+wNWJjtTs5vZc91t1RB1nCnQiZN/utLXDRpgJW/fqEY1faK+Fi1f8iff42x0t5hGy4UooxRXONBsWYS4tZZrpPZRf1voe9jUvbYw2PiIYCa2dB8CgP+RMvGz/c6R0U92Khc9zWZVTHYNAVHRkwImOrqENlusLAKfqjBw2Q81JpUNlKXGovF9XpQy4Sh2U7URCIFF/TFD5OTkmscnssOD5ylp71Md10Vr/crvmFWCwXQU7idmo6e7wknL6QO6VrvKEHuLVjxuBBK8P06U+Mmzbgcbv+vb4FP6vGjksYdDqgrYVOsCDjvrGXyoTy3Z5gOnnt+jt3DbGtm+37YucwjCpMZdlKoBL1d0jtlVKtcPB/Ba6jpm+dGO/em7LnMufb6RJq/DsBJ5C+K+rJ+mPwZMdbJNRG14cDcJ1wvjsCZ/xTmjjPJOl1X+r4OhyaaR3CFnNfBR0nBm9qgMb+YdbdrPoEnDdtjqXefWBWbF6aK
- qH3vXSXV
- Hh/y1otyE3gEx6VSMSV+1mXdPNGVrPgBee0c1NsEFRArq3CDkHDU5T2BGJxmlOmvgoyGaH2W6yNRpTIORyOx11bB0X5/ogRCe5fZmqT8Y6wa2Q5+24HSVwSKv32+QgM2601E61XhHRA7sEjZVaOmdSnwnj5mOonaZQakF5nfepDw88Y1CKnhCy35ogM+u0UN4GMN4ZNQz85pZe4kdKiFNZv7sAdBQBndyod1NDIXsnR91k9WCKBo40aPJa1tLkN0ge3iqxkw6UZlOhy6UmzekWd00ke9BCn5dQ5/AVWQIXO/mnyqLbegme1JB230jCcLks8+l
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 394D912000D
+X-Stat-Signature: c44dg6xwnzcwhzh8k1inshhrzescfh47
+X-HE-Tag: 1777052524-591048
+X-HE-Meta: U2FsdGVkX19to0jG4ZS8oBaN2LI+kOIfkBWMU9WNkd4Gqau6XnHGmq4gCXZ1EsArGfsFqARDMuDmtbq5Hym4p1utGqzK1H5NbkcIwiI87jE9rO4G0Wmfd2UEcKZH1EwTZ0UJRFhZFWDVv0LvPopwy2A+V89HKGJbw5BcrfHcYs4qRx34f4O6drrrCWq2wRBnAfGTOCWYfiHxL6jy8L7C7wrNxc3aFr7WQpP276vwcrSUfvjJKTUPJ7PF5/NSChUHABrR5WNZLm0wqrTO7hHr3AygI6SK7C7KJvlc8nsY0LvLL5iAZezO/yj5PWwNer4xZeF/ig8TDdP1YMUVbH9Hx+my8QLhVqNLF+Ef+ygudtMkZnGBc+5XbOe1ht0a3KL+cEg2doewOwbw6xZwqUK+zkx3Ce5EB0mMwRsU4T1Gdbe+RjnIGKO+ioihhdHmqgdpolEXYG5QOKb7oNv6nz64Iov/8kDpYH9YCOEdemVTsdyUT+qHCao6bWgtmJrn6TnQyR39vLrQN4nKGzgegcp0cL3LEjGWh1JwkRJe4wL+C1oqhp74U8lJFsnc+xPSSwJEgtdbJqpvIn8FwT3i15f9fb/EbScaSChDUbcsbKaBMW2kjCQ2JOeZeog84Of1O7eruNpduHbGZmbi7hFQ1co0wJgOenRF2ukA8GMGNxbUAZmUH73UNwfQ1tpuqpeaWAl/QqBGqVUXylGoKnR+ubWEtLzmF/Or5ldQNaaBChFeP33WDqnUS1cKBkEUb4uKS6CSjU8cqCjGoOukpNkjgY820QKzpOJ0MVDQZyof4mLLHHVMZxm+sECMPgvUH7O4k+9MtoMKnZUGXvhSbi/NpzvDXq/Szx1aVwYiGaX3ryJLVjKcVpefrV7XUDZoLI2cQtwkj0W0NFsuv2nqQracN1IoD0FXXL0fNY4MBRoWLDTu6ZIW9RsgjzK0LYQrcCf9RvVaj8JwK9Wp6CV21EWKzs8
+ NWXn9Y00
+ UFu0eyI8+ew66/Djk2++3ktGf9rSGe3x+SIELk15Ocjx5jcktTgiBFih9S9GSVBl8Obtu5ZsdU1CbPlNw5Pxhiacz5f8f0b8O4JYkZFDRvczqVHCofdfBERtd2jeRmRJ22hqCrnlQDm3dE0RNPbz9ACkcF2PJ7IgC3V9FedVNeH7AnuS0gH8nonw+DbuzEfgvyyKs2DzbxPaF60515W4ohKlnibOHdYCmF9gP6lMny/AZcRXMDDx2miY1HbBj4pDo1a1aPQ6uKiBWf+fSvl5auUjD89zUmJFKut+IfpTzO5RJJdhpg1gBghiWb8COrKHA3g4ph8ulRTeDNP/zb6mDX0uhQ4z3FMKObF+u59Dg9MMdsnGqj17TQYQ+9nPLTaRfDxvvnKRPv9GyHJD37V4aBM4Vwbu8HlCbChYV4Uc5CCanBNYiTmWPNLsuhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,29 +147,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 06:31:57PM +0530, Dev Jain wrote:
-> From: Muhammad Usama Anjum <usama.anjum@arm.com>
+On 2026-04-24 13:36, Mark Brown wrote:
+> On Fri, Apr 24, 2026 at 01:20:02PM -0400, Luiz Capitulino wrote:
+>> On 2026-04-18 06:54, Mike Rapoport wrote:
 > 
-> Page tables are always accessed via the linear mapping with a match-all
-> tag, so HW-tag KASAN never checks them. For page-allocated tables (PTEs
-> and PGDs etc), avoid the tag setup and poisoning overhead by using
-> __GFP_SKIP_KASAN. SLUB-backed page tables are unchanged for now. (They
-> aren't widely used and require more SLUB related skip logic. Leave it
-> later.)
+>>> --- a/tools/testing/selftests/mm/.gitignore
+>>> +++ b/tools/testing/selftests/mm/.gitignore
+>>> @@ -4,6 +4,10 @@ hugepage-mmap
+>>>    hugepage-mremap
+>>>    hugepage-shm
+>>>    hugepage-vmemmap
 > 
-> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>> Shouldn't we remove these? Also, there's a reference to hugepage-mmap in
+>> Documentation/admin-guide/mm/hugetlbpage.rst.
+> 
+> Linus complained at some point about removing things from .gitignore
+> causing issues with old binaries left around in the working directory.
 
-Your signed-off-by is missing. You must add it if you are reposting
-someone else's patches.
+Oh, that makes sense. Thanks for the clarification.
 
-Also I only got cc'ed on patch 3. You should normally cc all people on
-all patches. Maybe you could skip this if the patches are some
-independent cleanups but even so, I'd still cc all the others at least
-on the cover letter.
-
--- 
-Catalin
 
