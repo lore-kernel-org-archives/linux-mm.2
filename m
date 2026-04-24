@@ -4,91 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95176FED3F2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 19:15:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FE43FED3F2
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 19:15:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E65DC6B0005; Fri, 24 Apr 2026 15:15:24 -0400 (EDT)
+	id 9ABB46B0092; Fri, 24 Apr 2026 15:15:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E16E66B008A; Fri, 24 Apr 2026 15:15:24 -0400 (EDT)
+	id 95C7F6B0093; Fri, 24 Apr 2026 15:15:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D55DE6B0092; Fri, 24 Apr 2026 15:15:24 -0400 (EDT)
+	id 873816B0095; Fri, 24 Apr 2026 15:15:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C59506B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:15:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E4E41C0139
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:15:23 +0000 (UTC)
-X-FDA: 84694402926.16.1AEEA78
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 715C26B0092
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:15:46 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E56D402DF
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:15:46 +0000 (UTC)
+X-FDA: 84694403892.07.7881E91
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8797DC0014
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:15:21 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqMFc8Um;
-	spf=pass (imf28.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 36372100007
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:15:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpX5I2Zg;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777058121;
+	s=arc-20220608; t=1777058144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PR4QGlHov9amBKeqa5ZNXFME/qGJlG+ZZv/2bCOXjYA=;
-	b=wqMqPeUBu04znItXRfwF9o3NYL9anVHHDfqObOT21+jg3uTfqDSQUPeQ5X90TBXB0hxEGr
-	AwkrTvNkFVSWiZmGjd8kG1Z6dfDCuB3b3LLg4j/wFqKUIRU/HVflagp/tXcCSqrWzh/8Bm
-	brM2Fw0zAjxvkAAT4V1I7C4jO/Inu9w=
+	bh=JRflc675q/1idnGLrRil/l9w6yTxsq35v5W45LMDdpw=;
+	b=gwa4ncpsj8FiENbrqgUUE5FxhtCUJkRFmGBaVsDWtGxpxzXD51sY3tHZCy2dTtwyAUkih1
+	FVik3Jk/kkcN8jmftHewJ3YEmZIxpWAFZEmjhHa5nU3i8wdxBuS6/dCd5c+Xlv8GIgFc/1
+	xmTQP272Ck4rnZ/4Q9DZrpnq05BW8GM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqMFc8Um;
-	spf=pass (imf28.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpX5I2Zg;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777058121; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777058144; a=rsa-sha256;
 	cv=none;
-	b=q9g3MBvYwmf34uOCGCHAbkYQhsiZ3VfwJ1Akk8kHjKxI86GYWd0Zgp3q86cQyTTsVy+iD8
-	fMIyV1JK7NbNSup798HMFiwRIl138nJUqBQ3zOgfva6kjRME1JCGIk1e7lz4RpZY6ADoTh
-	1uElkikSLHKtfY18olGvIVbN27ZN+Js=
+	b=uErTGeGY7/NPya9EzewvRQWUSKDTK42j51HuVJirvDxbV+PKB+qha8GBanh7gO94rW0hpq
+	m4bx4jEKkJPst1S4jHqXvq8meXuO/XJgBliwuY8xALoEZ9XqvCi/9Szvzgf59VbZeNv7XD
+	tYxU3kH4W3vODikGA0uH3ccZ1M/JFZE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DDF7D600AE;
-	Fri, 24 Apr 2026 19:15:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC6DC19425;
-	Fri, 24 Apr 2026 19:15:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A3DCC600CB
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:15:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51475C2BCC4
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777058120;
-	bh=elAiMYYB8thnLDPWGWuzFWDG9U2HmB7k3ICkW3UnRss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZqMFc8Ummu0HNQYO0qnqYhFMafW5AXr1X1GDRJ7ovxKkZyWFWtJKmS2mWc4jHDW1D
-	 YLptaVzHms+E8S11zRFdecHEn7H4PsyF+GZxHXAuTuBCxSL8ALxMUlrQUu0QUPLFIJ
-	 jF3AQsgzAKV9C6siKoTwRRxC0xQKhVVbkyYvp61FIZ5L2sOLM9vXGxvV8i0M9jLU+H
-	 G6T1uQjLRLF8ciQ+VDJgJtttVdDtWSV2OmIo0IAtFVvBu3WxAh5Sc0w60jiqnE8OGb
-	 sYgZ1Aca5NVmjdLZGq2HdClqASNSDiJM40TcOLWWW/594ed2rJ54G70Ga59yuNZvlw
-	 Pkhr4HzGB/jnA==
-Date: Fri, 24 Apr 2026 12:15:18 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>, akpm@linux-foundation.org,
-	hca@linux.ibm.com, linux-s390@vger.kernel.org, brauner@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
-	timmurray@google.com
-Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
- exclusive file folios
-Message-ID: <aevBRh08X4UTMUj9@google.com>
-References: <20260421230239.172582-1-minchan@kernel.org>
- <20260421230239.172582-3-minchan@kernel.org>
- <aesg-sj6_VmXyqxb@tiehlicka>
- <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
+	s=k20201202; t=1777058143;
+	bh=JRflc675q/1idnGLrRil/l9w6yTxsq35v5W45LMDdpw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LpX5I2Zg/FeuzoeKaWINh/E3uUcwttWiEQeYZas61EYTabJE/piVzjh40m+MZg7ML
+	 2egZw8E5YYYz6I/5EL6JXUw2JKP1qA/4FTgjnrLTXGz94iUvNVFyKVaBRr0SdtJnol
+	 MnWfPTLfHCAQS8B4K9Lpelxx6imh1ltQJ3Uj9NTqQMUP8OPj7jgq8dp46Y399au+nk
+	 eq/MdAvRgGKdRJOfusoBi7GwN5X+7HyHuJe/rsPJh43JMJ/jB2Nf4gg8sGoqsbbZDm
+	 dHjlJSEXQ9Ur5ZQ4FNntPqpJD/6qGCCxZgNRccSJSEJdCEqghqIvSYdVbiyFYU+l/3
+	 GkdYoGMdsn5BQ==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bab8ae52954so542888266b.1
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:15:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8JPS6EjAhBl8Hd/kpyupFNQEDeCDSwfrKHVzNLUF+bo8iZWMap4hpB3k8Iv/pRmdtVjzKlep63gQ==@kvack.org
+X-Gm-Message-State: AOJu0YwNP/gkwBrly3NbM/kGHzkhto+dAgV+CUqb3PiDYDjJMfofvnIC
+	7F3IOhNwxw/emHifftBR/v6yl7ZTvWSVjQIByRKM5Rs3+JbHrU4lPBS8AUtBdJpT4U5soN2/wJj
+	lYkecnOCDtAmvNQ7RFbqRJMu2pX1wtA8=
+X-Received: by 2002:a17:907:3c90:b0:bac:7f7d:2bf8 with SMTP id
+ a640c23a62f3a-bac7f7d3864mr493581666b.0.1777058142091; Fri, 24 Apr 2026
+ 12:15:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8797DC0014
+References: <20260424062528.71951-1-lance.yang@linux.dev> <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
+ <aetw4aoABYj3keMh@plex> <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
+ <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org> <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
+ <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org> <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
+ <20260424190141.GA3783056@noisy.programming.kicks-ass.net> <E375C69C-557E-44EB-9B3C-618C9F7BA9D8@nvidia.com>
+In-Reply-To: <E375C69C-557E-44EB-9B3C-618C9F7BA9D8@nvidia.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 24 Apr 2026 12:15:30 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOTFUSXc_iZ3i9iL3v9Fw+SOFoROj0vcO_1GwBxO9CVqA@mail.gmail.com>
+X-Gm-Features: AQROBzBB23MjqT6n8PBLfDaZ-XYSD37hBuqxK30W4VBXepSt-pjFbfbtLqRUj6c
+Message-ID: <CAO9r8zOTFUSXc_iZ3i9iL3v9Fw+SOFoROj0vcO_1GwBxO9CVqA@mail.gmail.com>
+Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent them
+To: Zi Yan <ziy@nvidia.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Lance Yang <lance.yang@linux.dev>, dave.hansen@intel.com, dave.hansen@linux.intel.com, 
+	ypodemsk@redhat.com, hughd@google.com, will@kernel.org, 
+	aneesh.kumar@kernel.org, npiggin@gmail.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com, arnd@arndb.de, 
+	ljs@kernel.org, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com, 
+	seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	ioworker0@gmail.com, roman.gushchin@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 7ugz715dfwz7no5pw5dhzcmookqs5epd
-X-HE-Tag: 1777058121-800673
-X-HE-Meta: U2FsdGVkX19O8MRADM5nfQ/6Q2QHhgWgly7G7cTVLw/gh0r0ImGA39CG3TduGQgyONNWlLQNVXQimPyGIdnJWjXzxDxLxuZAz21KSudR8lhuDyW9yetDqOcZFsxrULN6Zu5XUJEKTNRSW7rxX45MIf71erFx2A7EKqEOLSvt7k+HskvG4drZ51oLukVR7tVHxObiB4/Ji6vQqw/kbtwT5TdYNvsW4XCbjLaVF5jzoyuSL32CsAIzSkzl23+JKXLdpxZF3N2yexP489wYR8rHfiqmkq4RIDquijWdt9wvai3Mc1LtTfxk0x+D5vEIhv8Wrg45aoZXZUr1WIkFVYFaq1B4i0xrSexJgllHJmipVbIQjOls2n4LKgqJT3rEApznHqgv2GHuCd7SeoZBP44YtKffPjEXCotE8vmwaU0ndHU0wrheouYJC37xOBwkrIgWVKk+9hVlov1A7Jr/aPqqpjQR2L2PF9h+lMluGKMn76CIeEOJIrluy/cKY7YIRshLiZcjPpYNsfeoIfkdDl2I26aQrybuvVW9iH9lvWLh/i9BXp7+tVRRfbEuY586Mx9j80H35v3KPKMLlstisG5XKYHOaGZuRWqyGKWb6akWqP+G6d5+usPbS/Pql7iW0Eerj78N16bstNcQaSjeawFMpdopd5OPKjIxuGpAcriqsWNagvhD4SaBlE31kd9KBoJtqMDYgrVm2KG8EMe+7LANps/DFwCoi9fAwH546PUq6Vw9nCU2W7WsKL/g0yuituIAhD4nhDqTuh4QZj5Q+LILEx7lrvoKJYM1Sws4rlVGPxWPhI8Lp0Z0kXGuGgovI+27TbVmsif9W2ta7P44o2VtMjscQ8K/2dV5YTCCIVojRqiVhrhGhByjzG5w8QS0EgRvQUiO33ZTBlPUF3tBkn/8zKZfJLl8PMiXqzwHlhm3BqAPrm2qqy/6Hhjl5esQvqSviJf7KvgyvpSQ393lxFi
- p2ChlVMc
- zm+9T69oeCSDi9PmaevOFkvz/48YQ+R2CzdvTgV+flgindcyIgVE026mfhjlmt2CKfhDcQYieCommQt1/CM+vydPKZQdspOp7cOJf9b+1GAonQVtvm+Szgc/7lEUQ6wuxY/XJZtXqKJvIZXWq2qarE9I5hW6QhaMhHyWMrGunGFZBsjW61jd6WrPkt8fDuFbsEyoL9I/ljtQ67OlHF+YXZfsJ+H2ZmE6bAz4+ClwxBfgMI6fiowCwzbjRdvPP3WR7VRJxWIpfvaOxezH6M1TRbrlbhV0wBhINE6P+jOdw4yTeMS6EDQ/0kvpnnj8CIoYWcfg2
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 36372100007
+X-Stat-Signature: pbbyu4dopry37s45n7wamfthxenog95u
+X-HE-Tag: 1777058144-103599
+X-HE-Meta: U2FsdGVkX186b9jYAL4jwVl0LkrLsnvUS+QHefRVld+bi6DBrvruG/Bs5fKUqEebIRRDEWNh8o2YzuOnQkhcewqqrBXq5S3NW0s55PzIiIWhIBmB+natXhjKIGfsK6WTMppOLDJ5wWMbUSqn7SDhGkM8EW9GB7VSmjbgIix6wcTp46CaeSOf+ZgZ/Jdv97kZ4C9GQ7XzvZDSmUL6Jsc77Rua4Lj28Ewg3b/MXrH5V+rljmtrWWKS+gJxbpDrRH0+ghh5850NzZhP6huH0uAkEmTePkaAGQBrg5rH/8I3TtrwlxAYaxxrdQrTecvoziQDL8krbAvYiUMQ581oMxlW14tAK2zuhHzsmX0GIqZxHE2I1hUDW9eRwmX9C8M/34YP+bzy1nwsDl1MJjS9K1bz12P8EdJj8bphD4RzO3OvxsI9HRMLOKpG21tdFckocqGpmHVI9lPHw3VhsCvEKxhne5ohW5D062wDjzGXGJSQwCFbkSLcTLB56um43TunWXtRMluSO5lopkWkJ4Y7qrpCprnWczJy4Rj6Jzz+FZPjuVj5dBJaD6aprnLDW+v2SBEZChrclzJzHO0DPblOLs2aqHgT6kpXFuOjuMkwTsVKttqS9xouSHee0qMi5JCBkcOH9+1oOgq+V7eJML/r16hoLNo9GoqBLTNB59WiLDtUH/JqpI2/0hmfwPEB4Tp1fw+aTMmJVGB2iMSuN/G18mP3xwFhBYhj66yqldI3LGyY4EChD0pV6JbRZVvE+QpSOo5Ny4SUC+VAnG8nfQaofiaUuhoyGpFB2GxC0HLjhfzIt7wX9gzoHQV/w9GvyklzKSm468GEtssgVpj2+1yHRHpwAL8lMu3eLkRrW1J7Yc5Yw4Ei6SwcEGUXU0oVldWJskzjKd/YWzj9NVwWXEIxMnP6sgkDS3jAyM5xedShrg5wLxHTkIjxvrD0AdVlQWUKQNGuVQJA4jAbZTcIfcF50Kq
+ 1S51oi5R
+ M6TvSzqQTTEaL1wFJYS9xYlQbupriA3EES/7zDdxmLj58hOlDDCGjLNkPuoldy3Z4x7IG6/L/r/0imdWvOkBkCRBrc+vxEdgutLCXcVkvSbJRSUpZu4Y/x0Mn+yAek4r1zoHOy+bSJqcbJUXkHahqbKfcU9/4+Q9Spbfkj8r3dfK8ViByn5TAUnWSvYx2ADv2p/BJRYXlDmZAOTkH1TobwZx8mG4EOumFwXIahT4OPeaNsiprAWDbbRKeGYuNnqk4qjOFSNb0wHxmP0ITv9cHaY7uWRvHrwZgDCzqaKXLRo5YnF61qNAaiKggDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,90 +117,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 09:57:16AM +0200, David Hildenbrand (Arm) wrote:
-> On 4/24/26 09:51, Michal Hocko wrote:
-> > On Tue 21-04-26 16:02:38, Minchan Kim wrote:
-> >> For the process_mrelease reclaim, skip LRU handling for exclusive
-> >> file-backed folios since they will be freed soon so pointless
-> >> to move around in the LRU.
-> >>
-> >> This avoids costly LRU movement which accounts for a significant portion
-> >> of the time during unmap_page_range.
-> >>
-> >> -   91.31%     0.00%  mmap_exit_test   [kernel.kallsyms]  [.] exit_mm
-> >>      exit_mm
-> >>      __mmput
-> >>      exit_mmap
-> >>      unmap_vmas
-> >>    - unmap_page_range
-> >>       - 55.75% folio_mark_accessed
-> >>          + 48.79% __folio_batch_add_and_move
-> >>            4.23% workingset_activation
-> >>       + 12.94% folio_remove_rmap_ptes
-> >>       + 9.86% page_table_check_clear
-> >>       + 3.34% tlb_flush_mmu
-> >>         1.06% __page_table_check_pte_clear
-> >>
-> >> Signed-off-by: Minchan Kim <minchan@kernel.org>
-> > 
-> > As pointed out in the previous version of the patch. I really dislike
-> > this to be mrelease or OOM specific. Behavior. You do not explain why
-> > this needs to be this way, except for the performance reasons. My main
-> > question is still unanswered (and NAK before this is sorted out). Why
-> > this cannot be applied in general for _any_ exiting task. As you argue
-> > the memory will just likely go away so why to bother?
-> 
-> I think there was a lengthy discussion involving Johannes from a previous series.
-> 
-> That should be linked here indeed.
+On Fri, Apr 24, 2026 at 12:12=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> On 24 Apr 2026, at 15:01, Peter Zijlstra wrote:
+>
+> > On Fri, Apr 24, 2026 at 11:50:03AM -0700, Yosry Ahmed wrote:
+> >
+> >> But I imagine it's useful for reviewers to see Sashiko's feedback as
+> >> well (without having to go look on the website).
+> >
+> > That's why I have a script; if I press 'S' in mutt on an 0/n email, sai=
+d
+> > script goes and does webrequest to sashiko and inserts the review
+> > comments into my local maildir as properly threaded replies to the
+> > series at hand.
+> >
+> > No looking at website needed.
+>
+> Do you mind sharing that script? It looks like a great work flow. Thanks.
 
-How about this?
-
-    mm: process_mrelease: skip LRU movement for exclusive file folios
-
-    During process_mrelease() or OOM reaping, unmapping file-backed folios
-    spends a significant portion of CPU time in folio_mark_accessed() to
-    maintain accurate LRU state (~55% of unmap time as shown in the profile
-    below).
-
-    This patch skips LRU handling for exclusive file-backed folios during
-    such emergency memory reclaim.
-
-    One might ask why this optimization shouldn't be applied to any exiting
-    task in general. The reason is that for a normal, orderly exit or just
-    pure kill, it is worth paying the CPU cost to preserve the active state
-    of clean file folios in case they are reused soon. Preserving cache hits
-    is beneficial for overall system performance.
-
-    However, process_mrelease() and OOM reaping are emergency operations
-    triggered under extreme memory pressure. In these scenarios, the highest
-    priority is to recover memory as quickly as possible to avoid further
-    kills or system jank. Spending half of the unmap time on LRU maintenance
-    for pages belonging to a victim process is a bad trade-off. If speeding up
-    the victim's reclaim by avoiding LRU movement and evicting cache negatively
-    affects the workflow (due to immediate restart), it implies a sub-optimal
-    kill target selection by the userspace policy (e.g., LMKD), rather than
-    a problem in this expedited APIs.
-
-    Therefore, we choose to prioritize immediate CPU savings and faster
-    memory recovery over potential future cache hits for the specific victim's
-    files.
-
-    Profile showing the overhead of folio_mark_accessed during unmap:
-
-    -   91.31%     0.00%  mmap_exit_test   [kernel.kallsyms]  [.] exit_mm
-         exit_mm
-         __mmput
-         exit_mmap
-         unmap_vmas
-       - unmap_page_range
-          - 55.75% folio_mark_accessed
-             + 48.79% __folio_batch_add_and_move
-               4.23% workingset_activation
-          + 12.94% folio_remove_rmap_ptes
-          + 9.86% page_table_check_clear
-          + 3.34% tlb_flush_mmu
-            1.06% __page_table_check_pte_clear
-
-    Signed-off-by: Minchan Kim <minchan@kernel.org>
+Yeah that sounds great :)
 
