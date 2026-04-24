@@ -4,128 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B94D5FF8850
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 23:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D62DFF885A
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 23:10:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D31D06B0005; Fri, 24 Apr 2026 19:06:23 -0400 (EDT)
+	id D378F6B0005; Fri, 24 Apr 2026 19:10:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBB726B008A; Fri, 24 Apr 2026 19:06:23 -0400 (EDT)
+	id CE8C06B008A; Fri, 24 Apr 2026 19:10:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B82736B008C; Fri, 24 Apr 2026 19:06:23 -0400 (EDT)
+	id C03876B008C; Fri, 24 Apr 2026 19:10:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E5126B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:06:23 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 446701B6B4B
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 23:06:23 +0000 (UTC)
-X-FDA: 84694985046.27.0F5AE00
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6A04940015
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 23:06:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Gl86QCqN;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id AA8206B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:10:39 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F01D140173
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 23:10:39 +0000 (UTC)
+X-FDA: 84694995798.25.176AEB5
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5BF3BA0002
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 23:10:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VXHbxxZf;
+	spf=pass (imf25.hostedemail.com: domain of ihor.solodrai@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777071981;
+	s=arc-20220608; t=1777072237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RtoQqCQTkTrD0PDh6RrLNWtjJq5PmFm6VcLxe9y1JUE=;
-	b=X9hffZtWaR8LHlFyUFCgVJcSoGaxmSArPlGFO0ncKy++sZsG2OF6onMPfuy0m+LMa5WxHY
-	pvBnPHCT+27cqJT2I84aJHRpQK4+Ug6erUI//nn5+qhuMFdA5WHwvdE8Df5HuXMORIOxmf
-	bVGL5WOqXdonF3puaG8cz2X5HKVC+ek=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777071981; a=rsa-sha256;
+	bh=ZF2xo+im5ABqQb8juDoszdqEpMu6aUbnETaBqpZGMY0=;
+	b=8bCJtj/PVJ9SFjJeR/XrHpNl1tLKaJY3mFSJB0016fb/e9QH3GFJnXMQMHBO0awl2Vb+KX
+	gn3pz8TUHjSzAgjVTg3f1AJsgc+byMdFh7RnkhOSb2FlkEKDh+c11QC1pwkJfX9wMouXqI
+	B+C5XfhTZ6hoA6mblcXfSeXuwH5wbA0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777072237; a=rsa-sha256;
 	cv=none;
-	b=vYijCwHjuvv3j36olRhRBRz880/LthVcXbvgmhiOxLqYCMU+PEnywmDTq8+oibreyttvwF
-	Qmi7K9igEbk6NHDhE3zM0pDlC7fEHXLw6wrmB2EBPBZF3S3b/8QQDumqhPPlOEl0fEymCr
-	dD82bXEf/enri6VwSwt5lMtSzZUsOH8=
+	b=mpy82QyRyDD18J1dInT4dp7SKbpWTzYAmNSHUQ/QRCmnl+UlJNCoM0pSet+26FvzFPTSLo
+	KsZ95Xi8eYARwvmgUd9PxxnMrfUZAsnfRO3FiroTxc5ZhFFVMYbPELHAYxSiY+tnvQiJqe
+	AaSYDRHzI1YB+flIitCsSYhHNOTrHwY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Gl86QCqN;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8d560ede296so920828085a.0
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:06:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1777071980; x=1777676780; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RtoQqCQTkTrD0PDh6RrLNWtjJq5PmFm6VcLxe9y1JUE=;
-        b=Gl86QCqNsNhe3okh2ofMXW2peNVGHC3XWna3kmUtPbud6nCr9Jf7hgmQA6ntoebrwb
-         A8XSlBMClTKA4XjAbIidhhU3p6jWQ04ZI0hK9+wRUvUX7HPudM/TSL7GnfBqpTXezjaf
-         AvEZz5gIT7UCU5H+LwcN2Q30IP5ju2dDpgjNBjJY+Rte7kBANMg+RGDsZHROiHRAi3mT
-         rRMNfXWPelpP8Jg20258AuyQVw4tmPwKZ2L7tTNOvmnXpsZEUaIhyCrPHQZCLZ8xfmcT
-         Z5iv1TWs+Di8ozx6HfwI9I9erN/Yf7vHfaylDo2ljEE8uQk6BxIN+0CqL4r38d0vKVkd
-         hIxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777071980; x=1777676780;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RtoQqCQTkTrD0PDh6RrLNWtjJq5PmFm6VcLxe9y1JUE=;
-        b=KzN6mN68CiArLGXRQTich7xSmdR6Qkmy9nGZlzwng5jUcCRH/+x/vc3VzjNA4vIIKd
-         TOeFAc2Z3suOGrQ3IGnJduVYuSTpmXd48GYrMIdJk0QBNiiycCPbXORbM7/G4zYPoLrj
-         h107cN+nNg9PfyQ3syq3IwlDS33Qiv3CV7pVcPDxMmeNH9/J2EOMUnrOFJhKslvdHN+e
-         Nfz3S9tRsjBin+Zf1Iqc9Enq6dPAeclwltX2P9jc9yztDG9nqEuzDXut7ZaACWZ2Tsnu
-         182ZfkiXrpwlbtiVb7v9BLYBl5vXysQ+auGSai04AquDsr9/zXXA58qOrlz2N1ypVNpp
-         GXmA==
-X-Forwarded-Encrypted: i=1; AFNElJ84IkJS4a4/NX+olkk4qFYSoJjuAhf9crhoYpq9JWUuzWzwj875ekMdSXDcUi+euUcZfnt4BszlqQ==@kvack.org
-X-Gm-Message-State: AOJu0YyrgVO5sWdjo0Dp4z5ecaDIwQgnbVZijxBDYnFU3MNi9C9nuw/L
-	FS83f9wTm9Y+rsWXfYihi5Hl99LoFKxutw4GoSHeT1UNtvVu/yCnG8fC5TZWio4tqvk=
-X-Gm-Gg: AeBDiev/MdvGKL178PsolQ7EJciIinmmsiQxbEXfsVG3tpa9xNp/ReAgE6s8FA2tmFK
-	AhLjOOlZIqX5QPMGLlidUNO4qVrurVoEsEP9xJXtig+RPrA9whkWO9tyLygIQZl2k34x2U/RJl0
-	bs3VjqPQwO+XHGXxPz2laPUIXobP96EmAGzACHNMd7ORSqwO0hQbyioMc4K+QCjomGq2Ac7TL7E
-	F4vxXzKXJf4bUSGAEK/y6cOy+ZihKHVnZBSC2J7bF3cB2giDxBVtSUa9eFm7KtVD79/01+Jemky
-	69ENZABZ7YICEDRDgn0CWy43IBPkwbDqAm7+OEB8TAFcyq9AsLI2UNFV1EH2C3KGbI/xSs70Cfz
-	5UigNgaE1unSCBlxSQ3gWzdf8mdx5zSm0qTf1ovMDzcDvAO0t1NUjlQijZDHiQrS+9a1ldjjGGg
-	Q6i2/bJ7Czg2QjsINMry97wTSUPAruD+BlDwuOdGfM++rX8Hrune+ZlHNtzw8m1g==
-X-Received: by 2002:a05:620a:460f:b0:8cf:c106:faca with SMTP id af79cd13be357-8e791f755f5mr4775333385a.36.1777071980394;
-        Fri, 24 Apr 2026 16:06:20 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8eb3aa60b99sm1843237685a.42.2026.04.24.16.06.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 16:06:20 -0700 (PDT)
-Date: Fri, 24 Apr 2026 23:06:18 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Dave Hansen <dave.hansen@intel.com>, David Stevens <stevensd@google.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Will Deacon <willdeacon@google.com>, 
-	Quentin Perret <qperret@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, willy@infradead.org
-Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
-Message-ID: <aevzYQ8HxmDKj-1_@plex>
-References: <20260424191456.2679717-1-stevensd@google.com>
- <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
- <aevhw9xqz1pWA2Ow@plex>
- <20260424232637.054f15dd@pumpkin>
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VXHbxxZf;
+	spf=pass (imf25.hostedemail.com: domain of ihor.solodrai@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <71fb19ff-6dde-43f4-a0e9-5c8cf2ba4ed4@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777072234;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZF2xo+im5ABqQb8juDoszdqEpMu6aUbnETaBqpZGMY0=;
+	b=VXHbxxZfy9OoLtXfzxZ8LCjQMjD/OkCiG8Davia89CJr1Bfd4TuZZXt6E5Iwkup+l0h+3v
+	cFjh3APLkpXSJQIKe7Yoo0ID2ftKfKivDSn005tkbrPGCE8tOLFAb99bTVlgqSaCzwUXKq
+	dS3LDHdZC3mJaN1fdjTfIxwCD2pD6Pc=
+Date: Fri, 24 Apr 2026 16:10:19 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Subject: Re: [PATCH RFC bpf-next 0/8] bpf: add support for KASAN checks in
+ JITed programs
+To: =?UTF-8?Q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?=
+ <alexis.lothore@bootlin.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ Jiri Olsa <jolsa@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Shuah Khan <shuah@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: ebpf@linuxfoundation.org,
+ Bastien Curutchet <bastien.curutchet@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Xu Kuohai <xukuohai@huawei.com>, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
+In-Reply-To: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260424232637.054f15dd@pumpkin>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6A04940015
-X-Stat-Signature: 1ufqa9hsw611hh3na4h5gtx4g5qzhsz6
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5BF3BA0002
+X-Stat-Signature: g3kcsmjomesz7hfqtd6om3rs51y75ocx
 X-Rspam-User: 
-X-HE-Tag: 1777071981-474541
-X-HE-Meta: U2FsdGVkX1//4rNeiAlaOHr/mxtA4t49eUR1Oa9vui3Or79QaDoZLynxeNmxF/hyFe7txemz/FyVm+FRrXhaC08VyzczaXKYNu/JNxPDohGjs926x6RcW9ZtOIJM7JEEppK9HEO/LYhaNbjjH4p0dfOSmiiAm91/pi3EL+sSEKyfhSlvkxz8yfDCCosSB237eTOSNb97aFF+2D/BtSXC5w8Zdt690tbNvR5mvjkZlsOrxPKF67PzQ61OXCSLEiAT7RRLLYHuYp8UZy090KIGQbzKQMqxHcIv8hEKpZ+L0KnMRzg29hDIGi253ap6jajPnlsqJtH5vni4ouEph7vSmrS5hllFUXXfqoArdi1LXyiHidF+GTBMy7D0L9SMZQeio5qtsn2vUvYHFyilpbjMoqfdqNkJA2Z2i36Sk0Ing3PK7hZZYcoZM7jamDeL6LOTeXcgIolEOwY9nhRUJkXrAn7dmz6GYwjsYddm/SkOQEKLISKcthBKY6Vt0MIQP8Mt5XE0T6qlAouFcghzum7vtABO9No2x0MFcDT4c64Ub8N2ciY64E//6HaOe8iBYmXC5He+B/0se4jJm3NHDGZYgy5e6KESJBpb27B24dlIJjpRWL70MXMPC2QnjWxhEYgSYwoQilX2w+hxBq8Q3OVjM4eJS6RUPaEkQyg1IG5le3nsi4bKyvbpbE5bJlIz3MC3pC8FDYsdjvG1NuNvIx/4h3U6JXnbO1A9UUq4D8Bv1vuWRIBGHDjZ5+KUjFYF7TTJktrKQAZCmjD5yEAmuIRE+4gO8T8K/3YrQ5LSVlUho/ulBVkbGacGdNA/Ja+CzqKhVjR6sHq/xWMLgrXHONEpqeTpsadkjLqlJzaj9iRKak6utzZB3HWfejtLAhvHy5H98F1oYVM75OlObzZnrt7LLIB1xn8/VS3TA/d0btpDU+a/aguczGkCbLf7c6eKVP6ZGGAWQCQgXe2/u1GBTtV
- TQnJ4Peh
- yEbWTXWkqr4cSDEoauYfFLEbk8+KQQkOekvQQsNyGPaXZzTAIY6BaMvF64bF9OiSLDZCEKit5Fz6X8w4+sx2Kpv9lg45kcyFvCruG3e+eyR2KEHUxKABn3ZxxR921k0he9YLtr7Elhf0TFnV2uvQ2BDGChu4k5APflKdX+b0qWVED5n9UrtaUtpR+pjqOQpawOSgjHWwlUFzA/OlC8mT1brGbV2pE0DV1DFlOZQ597j+wvXR4w3t4CMD0yKvngMIq+Sobgg/lTq79sAo8KzD3SMRmqYrd6C0VRY2vFD0k3xu/znnde0FoPohmjbTuzOBTqIfA5CaZg3EsRfTwcQWt3KmuPG2ny18etGrL8FRRQRMbD46EdOCF150FtVMzAdN/iD43Yl0xE2G8WNDGm4YLmHud+JEoPRRB9VU3t6Q0+2SYvVzjSpxN1kQhGCY+jaORqWMMTYUVGjLFU3LWJbQ/qoFXZw==
+X-HE-Tag: 1777072237-988543
+X-HE-Meta: U2FsdGVkX1/obDEbc5m8vXp2I1ED07YGcWcD5+jppXGAKioGK58lJgykeEEC4EAKURRKrlZGfMl0Xe+KxBC2MAdBJzn9etrLlzkS8yn/CsJp/9R2DxVjNIQekQWTqMKLOJRK7tgFZENwL/r4HrgaoU7v/Z1iKkCzbCzT3BmSUFxwvHbIRdrepVbwlshg2dyneLEvKi2UijP2y41kPqA4+fiZYUAy7XaiVBsQF/omkzFrG2kgP2Ofp112C8Xow3elaXL/RTp7mw4Bn7WljC3/5yqagu8zscYD4IRJvBsU3zLK6Dc6aJQYMIqunUdFAJqy7AXfiKmv+AV8nvYPqRdyG4sB0i89SMD/azLMTXedgLDiYArBUEjWiUptpf13mrW1nNjXj94MkOfi6ZdB90gUHjnu3ldnm1SQmv9hS6oyBaVTyoHXrUddceFxkXBBNdvE8hWRcRcmFHw+SBqgdQo6O47ekr5PgWkFvCYQBIBnAVkZOs7ByizttFrvCi+BpK7rTabUFSHdI5Pk4/NfecElHaQumODAaNTEq0ExyOmbCAIeXPFNHerquif3GjejkH5fvxOJ1v9DF7fAPDzEa4Kdr03mTd48YW2KPca4YuWKAT1g4615c15Zyr7SEDOTsPQi+ZQA80PvR1pW2HGI2mDZMLX4RIbYt5j3z5/Y6SK4GNpEYqBKQM1TaS4Uriretkot+Wz5r+JKk/naxfnFeVRWGHtpPQrgU5kvl3DkHgVh58Adglpo7QX2HEvgB/N78ONJe9f88nlbiwcDR5zYa5PFiDb4gq1zGxkF4okppDN30ypKeSt6kRtyLpVGdhm9QnqSJS84hEMUUdtShjyuaDxAdGu7ajoBqycd6GOIL94qHcggGgpmQLMnTTsV5+n59rZhKnYoAoVl4Vt17MpEeMheX8XXoGCp9z7kqO/Zq21dEzC1qcP6iu64FhQS/saN1bLW7z2nu7hKiwEPp+9O4WN
+ 4ELLlDxz
+ ctMExVLbwyvUwitdXQI+hxbrJG4amoJNMr/L8XGQPqzdS2BrdYu9Ur4aEXnL3XlnhfusL9q/1XrsOTiwuDIaKQeWcSDJc2nWtU2PYZbzNnWdC4yOiTFxBOXP8poGdINxqJa44bGfKijs9Kl2WgmAPkspT1+R7MJFjU9u/8LeroSvxxmSXfkZm0TxDo19PPyQlXhzA9+PbZcuuV4AqfPeAtrCOXPCCAX6DOstD6la6l82g8IR97Ob3zX4qKhvIBEebMMjjS7PuJCp46lZWhWqyXM7VlvtzSmTTpRM2Lyw++r+PkMYfSpXOROVPCEjSbE/5Z808KJ2uoQHxF+0gv06mE84aNNRhV2uLAa8ccEbT0ORe0R/LmX4LlVDp87Ha/aAFRW8ZuLSuV9sKpTd0sjlUHDqDDMjShu4+s6Yl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,64 +113,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-24 23:26, David Laight wrote:
-> On Fri, 24 Apr 2026 21:35:20 +0000
-> Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+On 4/13/26 11:28 AM, Alexis LothorÃ© (eBPF Foundation) wrote:
+> Hello,
+> this series aims to bring basic support for KASAN checks to BPF JITed
+> programs. This follows the first RFC posted in [1].
+
+Hi Alexis,
+
+Thank you for working on this, it's a real testing gap.
+I have a few comments, see below.
+
+The series doesn't apply cleanly on bpf-next right now, but I was able
+to apply to a little older revision (eb5249b12507).
+
 > 
-> > On 04-24 12:41, Dave Hansen wrote:
-> > > On 4/24/26 12:14, David Stevens wrote:  
-> > > > The question is then: is this approach something that is fundamentally
-> > > > untenable in the kernel  
-> > > 
-> > > Yes. Fundamentally untenable.
-> > > 
-> > > Not allowing stack faults has been a wonderful simplification. It's one
-> > > of those things that just plain makes the kernel easier to maintain.
-> > > Saving low single digits of system memory is not exactly making me eager
-> > > to go back to the harder-to-maintain days.
-> > > 
-> > > I seriously doubt that this 1% is the lowest hanging fruit for memory
-> > > bloat on these systems. ;)  
-> > 
-> > This true until, in a fleet of millions of machines, you encounter a 
-> > one-in-a-billion chance of a stack overflow. You are then forced to 
-> > double the statically allocated kernel stacks on every machine, paying a 
-> > memory tax even though 99.999..% of threads never exceed 4K. This 
-> > overhead accumulates to petabytes of wasted capacity.
+> KASAN allows to spot memory management mistakes by reserving a fraction
+> of memory as "shadow memory" that will map to the rest of the memory and
+> allow its monitoring. Each memory-accessing instruction is then
+> instrumented at build time to call some ASAN check function, that will
+> analyze the corresponding bits in shadow memory, and if it detects the
+> access as invalid, trigger a detailed report. The goal of this series is
+> to replicate this mechanism for BPF programs when they are being JITed
+> into native instructions: that's then the (runtime) JIT compiler who is
+> in charge of inserting calls to the corresponding kasan checks, when a
+> program is being loaded into the kernel. This task involves:
+> - identifying at program load time the instructions performing memory
+>   accesses
+> - identifying those accesses properties (size ? read or write ?) to
+>   define the relevant kasan check function to call
+> - just before the identified instructions:
+>   - perform the basic context saving (ie: saving registers)
+>   - inserting a call to the relevant kasan check function 
+>   - restore context
+> - whenever the instrumented program executes, if it performs an invalid
+>   access, it triggers a kasan report identical to those instrumented on
+>   kernel side at build time.
 > 
-> And then you hit a stack fault in some path where you can't sleep and
-> there isn't any available kernel memory.
+> As discussed in [1], this series is based on some choices and
+> assumptions:
+> - it focuses on x86_64 for now, and so only on KASAN_GENERIC
 
-Well, at least if we hit this rare case, we can simply double a buffer 
-of pre-reserved stack memory per CPU. This still saves significant 
-memory compared to wasting it on every single thread.
+I wonder if it's feasible to implement KASAN support on the verifier
+side in post-verification fixups. AI slop for illustration:
 
-> An alternative idea is to arrange for some system calls to sleep in
-> userspace, so when the thread is woken it re-executes the system call.
-> It then makes sense to assign the kernel stack to the process when
-> it enters the kernel.
-> That might mean that you don't need a kernel stack for all the threads
-> sleeping in futex() - it might even be possible to do the retry in
-> userspace saving the second kernel entry most of the time.
-> It is all 'hard and difficult' though.
+  ;; Original (1 BPF insn):
+  dst = *(u64 *)(src + off)           ; BPF_LDX | BPF_MEM | BPF_DW
 
-I was thinking about a similar approach as well—sort of multiplexing the 
-kernel stacks. But honestly, when trying to cover all the edge cases, I 
-didn't find it to be any better or easier than just using dynamic kernel 
-stacks.
+  ;; Rewrite (~7 BPF insns):
+  r_tmp1 = src                         ; BPF_MOV64_REG
+  r_tmp1 += off                        ; BPF_ALU64 | BPF_ADD | K   (full address)
+  r_tmp2 = r_tmp1                      ; copy
+  r_tmp2 >>= 3                         ; KASAN_SHADOW_SCALE_SHIFT
+  r_tmp2 += KASAN_SHADOW_OFFSET        ; shadow address
+  r_tmp3 = *(u8 *)(r_tmp2 + 0)         ; BPF_LDX | BPF_B   (load shadow byte)
+  if r_tmp3 != 0 goto +2               ; BPF_JNE | PC+2
+  dst = *(u64 *)(src + off)            ; original access (fast path)
+  goto +1                              ; skip slowpath
+  call __asan_report_load8             ; BPF kfunc
+  dst = *(u64 *)(src + off)            ; retry the access after report (non-fatal)
 
-An alternative approach, which was proposed at LSFMM by Willy, is to add 
-an explicit deep stack calls. When we enter a path that we know is 
-exceptionally deep, only then do we extend the stack, keeping the 
-default (say, 8K) everywhere else.
+A sort of inline kasan directly in BPF.
 
-> The easier solution is to rewrite the system code so it doesn't have
-> 1000s of threads :-)
+There are plenty of issues with it: instruction limit, exposing asan
+API as kfuncs, etc. On the flip side we get cross-arch support out of
+the box with no or mininal JIT changes.
 
-That ship sailed in the early 90s of the previous millennium.  Nowadays, 
-we have high end workstations with almost 200 hardware threads. 
-Rewriting system code to reduce thread counts simply isn't an option for 
-our storage machines, which have millions of threads per unit.
+Honestly I'm not excited about this approach, but curious if anyone
+thought about this, or maybe it was already discussed?
 
-+CC Matthew Wilcox
+
+> - not all memory accessing BPF instructions are being instrumented:
+>   - it focuses on STX/LDX instructions
+>   - it discards instructions accessing BPF program stack (already
+>     monitored by page guards)
+>   - it discards possibly faulting instructions, like BPF_PROBE_MEM or
+>     BPF_PROBE_ATOMIC insns
+> 
+> The series is marked and sent as RFC:
+> - to allow collecting feedback early and make sure that it goes into the
+>   right direction
+> - because it depends on Xu's work to pass data between the verifier and
+>   JIT compilers. This work is not merged yet, see [2]. I have been
+>   tracking the various revisions he sent on the ML and based my local
+>   branch on his work
+> - because tests brought by this series currently can't run on BPF CI:
+>   they expect kasan multishot to be enabled, otherwise the first test
+>   will make all other kasan-related tests fail.
+
+AFAICT this can be trivially fixed on BPF CI side, we just need to set
+kasan_multi_shot for the VMs running the tests. I will do that, your
+next revision doesn't have to be and RFC.
+
+> - because some cases like atomic loads/stores are not instrumented yet
+>   (and are still making me scratch my head)
+> - because it will hopefully provide a good basis to discuss the topic at
+>   LSFMMBPF (see [3])
+
+Apparently, KASAN reporting routine takes a lock [1]:
+
+   __asan_load()
+     -> check_region_inline()
+        -> kasan_report()
+           -> start_report()
+             -> raw_spin_lock_irqsave(&report_lock, *flags);
+
+BPF programs can run in NMI context, and so it appears to be possible
+to get an unflagged (because of lockdep_off() in start_report)
+deadlock, if an NMI fires on a CPU already holding report_lock.
+Although I guess you'd need two KASAN bugs to happen
+simultaneously for that to occur?... A rare event, I would hope.
+
+It could be addressed with either in_nmi() check at runtime, or
+forbidding kasan for NMI-runnable BPF program types.
+
+That said, this may be a case of being overly defensive to appease the
+ai overlords.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/kasan/report.c?h=v7.0#n204
+
+> 
+> Despite this series not being ready for integration yet, anyone
+> interested in running it locally can perform the following steps to run
+> the JITed KASAN instrumentation selftests:
+> - rebasing locally this series on [2]
+> - building and running the corresponding kernel with kasan_multi_shot
+>   enabled
+> - running `test_progs -a kasan`
+> 
+> And should get a variety of KASAN tests executed for BPF programs:
+> 
+>   #162/1   kasan/bpf_kasan_uaf_read_1:OK
+>   #162/2   kasan/bpf_kasan_uaf_read_2:OK
+>   #162/3   kasan/bpf_kasan_uaf_read_4:OK
+>   #162/4   kasan/bpf_kasan_uaf_read_8:OK
+>   #162/5   kasan/bpf_kasan_uaf_write_1:OK
+>   #162/6   kasan/bpf_kasan_uaf_write_2:OK
+>   #162/7   kasan/bpf_kasan_uaf_write_4:OK
+>   #162/8   kasan/bpf_kasan_uaf_write_8:OK
+>   #162/9   kasan/bpf_kasan_oob_read_1:OK
+>   #162/10  kasan/bpf_kasan_oob_read_2:OK
+>   #162/11  kasan/bpf_kasan_oob_read_4:OK
+>   #162/12  kasan/bpf_kasan_oob_read_8:OK
+>   #162/13  kasan/bpf_kasan_oob_write_1:OK
+>   #162/14  kasan/bpf_kasan_oob_write_2:OK
+>   #162/15  kasan/bpf_kasan_oob_write_4:OK
+>   #162/16  kasan/bpf_kasan_oob_write_8:OK
+>   #162     kasan:OK
+>   Summary: 1/16 PASSED, 0 SKIPPED, 0 FAILED
+> 
+> [1] https://lore.kernel.org/bpf/DG7UG112AVBC.JKYISDTAM30T@bootlin.com/
+> [2] https://lore.kernel.org/bpf/cover.1776062885.git.xukuohai@hotmail.com/
+> [3] https://lore.kernel.org/bpf/DGGNCXX79H8O.2P6K8L1QW1M8K@bootlin.com/
+> 
+> Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+> ---
+> Alexis Lothoré (eBPF Foundation) (8):
+>       kasan: expose generic kasan helpers
+>       bpf: mark instructions accessing program stack
+>       bpf: add BPF_JIT_KASAN for KASAN instrumentation of JITed programs
+>       bpf, x86: add helper to emit kasan checks in x86 JITed programs
+>       bpf, x86: emit KASAN checks into x86 JITed programs
+>       selftests/bpf: do not run verifier JIT tests when BPF_JIT_KASAN is enabled
+>       bpf, x86: enable KASAN for JITed programs on x86
+>       selftests/bpf: add tests to validate KASAN on JIT programs
+> 
+>  arch/x86/Kconfig                                   |   1 +
+>  arch/x86/net/bpf_jit_comp.c                        | 106 +++++++++++++
+>  include/linux/bpf.h                                |   2 +
+>  include/linux/bpf_verifier.h                       |   2 +
+>  include/linux/kasan.h                              |  13 ++
+>  kernel/bpf/Kconfig                                 |   9 ++
+>  kernel/bpf/core.c                                  |  10 ++
+>  kernel/bpf/verifier.c                              |   7 +
+>  mm/kasan/kasan.h                                   |  10 --
+>  tools/testing/selftests/bpf/prog_tests/kasan.c     | 165 +++++++++++++++++++++
+>  tools/testing/selftests/bpf/progs/kasan.c          | 146 ++++++++++++++++++
+>  .../testing/selftests/bpf/test_kmods/bpf_testmod.c |  79 ++++++++++
+>  tools/testing/selftests/bpf/test_loader.c          |   5 +
+>  tools/testing/selftests/bpf/unpriv_helpers.c       |   5 +
+>  tools/testing/selftests/bpf/unpriv_helpers.h       |   1 +
+>  15 files changed, 551 insertions(+), 10 deletions(-)
+> ---
+> base-commit: 7990a071b32887a1a883952e8cf60134b6d6fea0
+> change-id: 20260126-kasan-fcd68f64cd7b
+> 
+> Best regards,
+> --  
+> Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+> 
+
 
