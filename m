@@ -4,118 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C32F3FB44A8
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 05:03:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F900FB44A9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 05:07:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B897A6B0005; Fri, 24 Apr 2026 01:03:56 -0400 (EDT)
+	id D8B906B0005; Fri, 24 Apr 2026 01:07:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3B986B008A; Fri, 24 Apr 2026 01:03:56 -0400 (EDT)
+	id D3CDA6B008A; Fri, 24 Apr 2026 01:07:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A29276B008C; Fri, 24 Apr 2026 01:03:56 -0400 (EDT)
+	id C51E46B008C; Fri, 24 Apr 2026 01:07:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DCAD6B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 01:03:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E613EA06F3
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 05:03:55 +0000 (UTC)
-X-FDA: 84692257230.23.3407BD0
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EB9911A0011
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 05:03:53 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=k6w7+Mgc;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id AE16D6B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 01:07:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6B828140628
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 05:07:50 +0000 (UTC)
+X-FDA: 84692267100.04.092655B
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BBA5A4000B
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 05:07:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kvvMUI+9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777007034;
+	s=arc-20220608; t=1777007268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rF/14iOG/TKWQJ1iA5emqkLbN1JUZtyc7urLxXkKtYs=;
-	b=dtr19nVgzoZxCw/CB/6JFQWuzZ8ZTm1TO2fkE6kze3A47CHEIEPYQf+6FB29XBRCgKdEJw
-	ayKVFTiEPUqIs1kzcNQzMNT1x2N8TMT0H9bCebUdLIqbF/8JwCZSwlP5Ft7lPwW8WqUpiW
-	WE9yAnHr4AC5GzDHCB20PdglOS/OoPo=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=oUFDhoYbNqo8dXYU9en7BHWBBYUPonRzR5+Mg8X7c5M=;
+	b=0w23SkGA1Wy7BvwM01FnItx+e4UKLRoKKLXM8c3//KeT21EsKYGDjwZKyYgur98CJoZbr9
+	RjQp44lNF4TpWwsHIN1YZUpSsyeHFf1e8avicgYAhl1Khq/mRG3fd/ApEpuPjMp0tVmCn/
+	tYILXeVBy3CFF+VSePeUEmCbS/3Tc64=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=k6w7+Mgc;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777007034; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kvvMUI+9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777007268; a=rsa-sha256;
 	cv=none;
-	b=4P9ltjOVsX0xrDa7dhLjHSENOLmONv38Avp7cVsFwTW/aG4seTb37JaeZ+pHJ2Fg+69Ag1
-	sAtSSl6bkHv2EXfMT269pQtc5rtD44EHRNxzliFWqC6+FDbCAv0bO691vQqj3jhpSi6Uho
-	DlqHMOiu8jQHmj40OWK3CzgXjol9jlo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777007031;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rF/14iOG/TKWQJ1iA5emqkLbN1JUZtyc7urLxXkKtYs=;
-	b=k6w7+MgcqYIlU+lFz2OOnnJETtGqStoZm15MrlwZJlFr80pOyWH6gZ6d2zM2guk98Kx4hw
-	tXCLb6gF/s7OF6Yz18Pc0TSuybZ8lAg9MR+ILu0Icc1wm4wkNrZjQ12wjGjJGxTsyLLXJc
-	mGIvQmB9tRHJGZ2PRed7SjpDnA1qOfM=
-From: Lance Yang <lance.yang@linux.dev>
-To: dave.hansen@intel.com
-Cc: lance.yang@linux.dev,
-	akpm@linux-foundation.org,
-	peterz@infradead.org,
-	david@kernel.org,
-	dave.hansen@linux.intel.com,
-	ypodemsk@redhat.com,
-	hughd@google.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	shy828301@gmail.com,
-	riel@surriel.com,
-	jannh@google.com,
-	jgross@suse.com,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com
-Subject: Re: [PATCH 7.2 v9 2/2] x86/tlb: skip redundant sync IPIs for native TLB flush
-Date: Fri, 24 Apr 2026 13:03:29 +0800
-Message-Id: <20260424050329.96623-1-lance.yang@linux.dev>
-In-Reply-To: <f856051b-10c7-4d65-9dbe-6b1677af74bd@intel.com>
-References: <f856051b-10c7-4d65-9dbe-6b1677af74bd@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: f96ooibhcym13yji7rmkfizewhpprs9b
+	b=k2WUYvagC/vSPBnRZI8UEq39rPkZvA6FbFKezF5Rn6eQ/i5HIMx2e7PhoQ2qxMf2ObXbtV
+	mMs2qADPHJYfK6nn0ccSKl7/l4BWC87/gvAyV5ce3yg1XEp2tirw6xkvgMg6ArmRgqgtFI
+	SWtlaSeJ2XuLUgKcbzNxbb1dBTcxYOQ=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-35fbca04006so3807670a91.1
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:07:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777007267; x=1777612067; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=oUFDhoYbNqo8dXYU9en7BHWBBYUPonRzR5+Mg8X7c5M=;
+        b=kvvMUI+9JlxcTVrTwkrO97WI4qLj0SyOwqSCqI0KOuk67nTQ/IqSK0BOoEKmhCtCi1
+         tozhB9f4z5prKhc4+Zvd+E1lM8jUnd622w8KlAy+jzKl4er/L0x6hS50Uk+1X1ExKpPm
+         D0AAWY1xpwAhGW15yfjceL2ykdsucl+cKdWNOY36ukIfEDmTD29DwEGFdm+iGdfTyVMm
+         uvih91oLfG/zhlcwKev7II9nvhBr8G131EKTNycSZ/5tKmmxuYKOa5AcTKtN9Ao9ZTTG
+         rsZcm469NGe01txpWOLrj+u2zEi0rDpHQXaRqRP0gQzh2CVHwLEawG+lcv0x944XuFSQ
+         pYkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777007267; x=1777612067;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oUFDhoYbNqo8dXYU9en7BHWBBYUPonRzR5+Mg8X7c5M=;
+        b=ssk/k41rxeHteuY9bXIhFXr9mHkxSlvuJkhMLnkI8dlBBOzbPLYKkWreB+j+z5EDze
+         r/7kuxNcZ3P3RwWtCyV0DL40m+QVOn5j9vuErAhZC3a5FG3G4MUvboOkn3cv3Knvdn1M
+         +HbqGlyIUUJlWqL8eK+Jg1iOlBg2Ar+TjcJqMqpNNBaQ848KkwO4q+JIsoD6U/bh42jt
+         koRfYFxUyV4oPF+1BYJnJcPuZVSfANb5l904zMcjgWgRyx//9BiT86njAFvrz/SHTp5+
+         N2OJfWPzunfnbA09wX0qD13i48WzOBTuhiEvzueoYM3WxqY8ChO/0SaUG6HV8FvejrQN
+         A/Sw==
+X-Forwarded-Encrypted: i=1; AFNElJ/gI+LA89cdxepOdsTw65cY02h7cTJdkkEZU8CfRh2cdxSNlylmlAK9QXR9T002lsxhrKdaww0MaA==@kvack.org
+X-Gm-Message-State: AOJu0YxNiVdWydkxTg6LKHMhj0KwZQ5ku/oBH34D0JJZOkSNf1tCcdJc
+	210oQ18/dukokFJOckWyq0M3/o99EVrtYagu2l1zILbY6AxSEFWB+jCN
+X-Gm-Gg: AeBDiesFbHA4js7wkwNzxMT51DCHhNufw3ahp/8BPtLBF/9/oz2Cb0lrPwmbcT5tQW/
+	/1zu10bTUGEsBsTe5+3AnjyjjZQ+oCFXDJh2D+vGB2BWfSXSvOAu0Lux6NZU2FF/8vKEat/0lRi
+	lftzlnPUYg2r+CGE9td/j0eMDRLjkX4H3LbUuTJzNcO+DY7vlq+hT7ZjuQm4PkTAovGsJ7SJo5C
+	WYK0YIqsgnOV27Y/MR2+zFLAeSL4784qEM1LwIQZVHqVPkLS4dSm85tjlu3ieJXfpRqdQxbD0lj
+	2F2EwuX9PG8HAOU5+wCb9kH+E78h0AFioRbAkSgR0jJf3Zru+//I5skPYwTmXbupv8VBqvn3VLg
+	PN6WtMK+vWoqIGzkxRKZ/YI2QY+8vt/M/GmkptmVCPBaMkmfEuuv/8V7LHIRmV4rir2QNX6V3jo
+	qYyGo9ol7PhORKwuodtgdFVKKLbp8ud92xT7xqTMHNx8c=
+X-Received: by 2002:a17:90b:5890:b0:35e:5723:85e3 with SMTP id 98e67ed59e1d1-361403f12ddmr31417110a91.9.1777007267369;
+        Thu, 23 Apr 2026 22:07:47 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3613fab1c32sm8342149a91.5.2026.04.23.22.07.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 22:07:46 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Christian Brauner <brauner@kernel.org>, lsf-pc@lists.linux-foundation.org, Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>, Ojaswin Mujoo <ojaswin@linux.ibm.com>, Pankaj Raghav <pankaj.raghav@linux.dev>, Andres Freund <andres@anarazel.de>, djwong@kernel.org, john.g.garry@oracle.com, hch@lst.de, Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com, linux-xfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] Buffered atomic writes
+In-Reply-To: <aer0wd2Ig0hjN3R0@casper.infradead.org>
+Date: Fri, 24 Apr 2026 10:20:27 +0530
+Message-ID: <v7dhrmgc.ritesh.list@gmail.com>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev> <wlxxrx10.ritesh.list@gmail.com> <aer0wd2Ig0hjN3R0@casper.infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EB9911A0011
-X-HE-Tag: 1777007033-794619
-X-HE-Meta: U2FsdGVkX18JHAlJddKvpUwiiH8AoeyGAt19qlDm+1ZFiJdrSPCv+X2pIDIhEJP0W0RQ1T4/n2bvUVx1ROYTTolw0V21aYG59r7zpWR61praZjsK2ad+/iHHYLNw+4waZ8VNx4yqg43Qz7naZgzKK4wUtQ7rhiDz+PHdcnbrbt9moEJclscMvE+eudG2R440OEdrW64mFlR+BA6Fozxx+XMsS29FPdODyq2GgdqGVq189G6YB/zQ9MtqxGpv+F/GGjBUbjupOrL9foGN0MnQft/EYiGtPGsxxbplvoLb86x8GkhufKmYhN+Rb7OpjAO7AIZIs8fA7M0PpyZ7h9JwSHtYhSteyDlqnyQAKpVPcWvufvyOYZePIrasYW1jLnkCTbxZnGGiRThKHzhQNfoqfz2DG4ghsZTTUpU/aL8nEz0ucyh8U8THjqD6EC6Elw8SBS4ECSMv/AVI7Qw/Z5SMZVoaKqm2DCe7WkmKvMy3G2vubkY07KGdWWRBP3EbhqfOaoDGxNTeb0QrWNx/cAoRpGiiA91DYqTF5xl39TP8EafJd5FDL/9mGBE7j66WPzO0keFOvw0Mdj3ILFM64vYTuDTKjaKRSIXRGrRYiO4OqBxt0RIFdNd6UHAy0DbGZPhFnc5JdN+wFgINfX7GgsIpiYnLtdOT03FvPMbtNF/He/XgkZZ6piECP9Ek1FhdeIN2O5kbXimzXuVfEIcSxHB+1bOQqzrP54M6Y3vx4uIEd2EB+ZdkFDdTFEoflzlx+NtsVs/QuvdfS0hSKCP2Ez1htyKQMIFkZvQFC5cyziVcNe0JRMVX2cWXynsCvaIHla+ywMIZSOOljqI70Q2BJgTZeeTaDmy5kWTqjc1RopuXEoI8edtXdrWLi/aoQVKBnW3q0QpenDMpPy8vw//W1B8whnEF2x2H35egNme6uORTTwFWHRULFsXJy7gR+uFN17mxOUkBo+kTIyhuEcY9ahk
- k+5De8Io
- 2hmnoz6apo7z1Ht2zkUkP/JB4gWnrvQi87FJhmepb3uXrxFssko7+a77a1mZbLUbSJ6mNq/K+jOhK9SkxptbWsOzcCb9pxzje/jhxoVpjjMv0N4UInsUjOzYJC0OYlA46btSXz7hge8hSV/Lhyq361jOwaRknkqFI4q4xdlSdEF45BPSvGRK6oojNnGD1UrNLhWgVsFgsSQpgBh86U77KRE+EFA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BBA5A4000B
+X-Stat-Signature: 6u5a5wgmdjwj9m3ckbsun53cs6piuqhu
+X-HE-Tag: 1777007268-896432
+X-HE-Meta: U2FsdGVkX18FVmfkEWc00tajW3if4axckYunvJAGCOwIp1UxgQaosJ6fARbZsu+50b+hk6HlXmVQeOGuPLHpwLZPcWWFPdO1At+LVjYoCWbq9w1c8veYhq2QpE7Am0B5B1Uum0vT7j780pRR2q6wQt+fjvT67IGbzuaDfrmeKXiNzWH3opvysP8Z2EeXGbyNA8PehEx4MimX8X5UQCtbqa24ijIXVZHZ2kuVwjhMl9xFAWQB10E64E1YJs1vYBdCQJJsDzVDbV9nCrILY1mBBqJNZ4sclC1tUivynq6ROxq2Be4E8y4fe0kfxaqxqBwq8p6sHUmnny3xDAEVJZKeE3TQzVZdaFbDQcAJOqG6xiAvXgP+jvwuwMb6TtVptGazUVzlm7nMdx4eofoUF3G/3iG5OZrhKQ4Pp+oku/M0VXjM21HTdDp+ZBPfg1yUd/WNJMnTDa+tfp73mEN85g+spwMm6lM/YemkY+3Rn5WStvkjQwaLz0MV69qjr4rBwysfsLS0PrQzG9x+x7dAgUDzZvo9XOPkR0yP7SWI0fPUcsrr/pwALNhCyBasRiGOwE3TIKUkmP5DBFQhtz9ey+MgGxP/nrqo9v4i96+weTDjQRdSlMv06rD1MBs8cKXFKq4goSPMdY60xAoVdZ/gCosA67/e3qHWe8uN1KQvy3rpfcUkPaazQKR9IoZyRmJh5VCMYp7S1ROPl8BH40WmgfPAPZyvveX5jC83OH8/0W06jrOl9l+peErWnHiKHoJFwpwictf4LQ6I8v4JwcVjIZ51b/C5C12MhdiZgBl7ZTVcW8rKI8QhmOF/K6xWAQoekj0iEHQwCgSbvur9m2I0+AbXidKwPZ9yvNmLfb/yeOKoo3+zI6dv0yakMZvGaEL/hkkvoe1Nv3FM0nuvGte8rlBzyspSst060IZ8r9d/WXcgw12nLnzOklZTc+iKTVNpDBI6XurQJxN3tjLgb6pftbi
+ 1eqnWupd
+ Gtg4OgSszM6CiAUbpLOEu3XeU48sl4rYr6CbitW3LxxW0fej9fKZO7NaobDHFoJKu02Ylrmb8pYmtbKCC5lVIOQ4VgbO8EAAxqY9Upv374mLs0gW3i9im4ctxQjBBgyzFKujYFy1+YyWckZnZP2ReIsMah9N7Hwr6/umy6XbgoF2bRVW47vXrPNDO6fHYekb/h8vq8nHfTsuAj9P9TVBxofsOyvXrzblJNob/LHMJgBis6iwozPe1VF76r+oCIds8+jKKwWqgLlcs1N3aqs3ZTHmp5dCYhftkBvF4SRiu5J66EFfk4KyP7zmTUTaiBVyZyfMT5rqDNcwMP6nBDQ4SwzgPqnGVFYiXRuYQsV4naUipkKpwNsENxqL9VhIi4XTm4nalzi8yrog0pjllTk7vmr5DXtRUYCUyT1V08+S6r85vFN0boq0jUlEeH2Fkq2BQkagDJPvHrMLQkkGgqhf75ATt9Lloyz5v9ewy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,70 +111,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dave,
+Matthew Wilcox <willy@infradead.org> writes:
 
-On Thu, Apr 23, 2026 at 10:56:03AM -0700, Dave Hansen wrote:
-[...]
->On 4/19/26 20:08, Lance Yang wrote:
->> -	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
->> +	/*
->> +	 * Treat unshared_tables just like freed_tables, such that lazy-TLB
->> +	 * CPUs also receive IPIs during unsharing of page tables, allowing
->> +	 * us to safely implement tlb_table_flush_implies_ipi_broadcast().
->> +	 */
->> +	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
->> +			   tlb->freed_tables || tlb->unshared_tables);
->>  }
+> On Fri, Apr 24, 2026 at 06:32:03AM +0530, Ritesh Harjani wrote:
+>> We were thinking if it is possible to extend the Buffered Atomic Write
+>> session into two "continuous" halves of 30mins each (total of 60mins)?
 >
->I've been staring at this trying to make sense of it for too long.
->
->Right now, flush_tlb_mm_range() literally has an argument named
->"freed_tables" and "tlb->freed_tables" is passed there. That seems
->totally sane. It's 100% straightforward to follow.
->
->But it makes zero logical sense to me to now mix "tlb->unshared_tables"
->in there. Sure, what you _want_ is the freed_tables==1 behavior from
->tlb->unshared_tables==1, and this obviously hacks that in there, but
->it's not explained well enough and not maintainable like this. IOW, it's
->still just hack.
->
->I think what's happened here is that info->freed_tables is being
->modified from being strictly related to page table freeing, and moved
->over to a bit which tells TLB flushing implementations whether they can
->respect CPUs in lazy TLB mode.
->
->It's mentioned in the comment, but then ever reflected into the code.
->
->Shouldn't we be doing something like the attached patch? Look at how
->that maps over to the flushing side, like in the hyperv code:
+> This is painful because you've requested me, plus both Storage and FS.
+> FS has lots of space, but I don't, and Storage is also pretty full.
 
-Cool, thanks!
+I see, sorry about making your (and PC) life difficult here. I know it's
+a lot of planning :(
 
-I was trying to keep the change small by passing unshared_tables through
-the exsiting freed_tables argument, but that made the code a bit harder
-to follow ...
+I think, both FS+IO folks will be interested to discuss both of these
+topics. Do you think breaking this into two discontiguous session help
+us plan better maybe? In case if we don't have any continuous slot, then
+maybe we can split those into two.
 
 >
->> -       bool do_lazy = !info->freed_tables;
->> +       bool do_lazy = !info->wake_lazy_cpus;
->>  
->>         trace_hyperv_mmu_flush_tlb_multi(cpus, info);
->>  
->> @@ -198,7 +198,7 @@ static u64 hyperv_flush_tlb_others_ex(co
->>  
->>         flush->hv_vp_set.format = HV_GENERIC_SET_SPARSE_4K;
->>         nr_bank = cpumask_to_vpset_skip(&flush->hv_vp_set, cpus,
->> -                       info->freed_tables ? NULL : cpu_is_lazy);
->> +                       info->wake_lazy_cpus ? NULL : cpu_is_lazy);
->
->That even makes the hyperv code easier to read over what was there
->before, IMNHO.
->
->Thoughts?
-[...]
+> Do you need me for the full hour or just half of it?
 
-Yeah, renaming the flush_tlb_info bit to wake_lazy_cpus reads much
-better. Will fold this into v10, Thanks for spelling it out!
+Although I understand buffered writethrough is an FS related area, but I
+am sure a new writethrough I/O path is an overlap for you in page cache
+as well :)  So, yes, it will be good to have your feedback on the second
+part of this discussion which is - buffered write-through for buffered
+atomic writes.
 
-Lance
+Thanks again for considering it!
+
+-ritesh
 
