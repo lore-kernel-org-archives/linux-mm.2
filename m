@@ -4,94 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B13BFED3CC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:36:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 377F1FED3D6
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:40:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A30056B00A8; Fri, 24 Apr 2026 10:36:21 -0400 (EDT)
+	id 74F7A6B00A9; Fri, 24 Apr 2026 10:40:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B96E6B00AB; Fri, 24 Apr 2026 10:36:21 -0400 (EDT)
+	id 705EF6B00AB; Fri, 24 Apr 2026 10:40:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8810D6B00AC; Fri, 24 Apr 2026 10:36:21 -0400 (EDT)
+	id 63D1E6B00AC; Fri, 24 Apr 2026 10:40:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 715D86B00A8
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:36:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 165318788A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:36:21 +0000 (UTC)
-X-FDA: 84693699762.23.287B145
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D4516B00A9
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:40:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0691A01AC
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:40:28 +0000 (UTC)
+X-FDA: 84693710136.18.C03CA6D
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 44A1D100014
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:36:18 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=uS7k5z64;
-	spf=none (imf14.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 48237160013
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:40:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=sVfAMZEf;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=none (imf08.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777041379;
+	s=arc-20220608; t=1777041627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rGmnz578Am/EljZenrf+7J6ZrtzAwbZgPZsP3LVCvBI=;
-	b=gDyVUJXEO1WsjcfFaLJnTToD/4mGaT15z2Ck4ALENYvcKHQQZP7Ky4T3X2CHNP61bEjZuu
-	I6bfQ85dpvKUNR6sZ0X2sM+tqOqizG0qv4R2JHvcBBCtsbnqA3MiOY8Q1nMp/S+svp3Wum
-	/hTmAqXZuZMsQN1/UMkZ6gcpvZOKFyQ=
+	bh=MZWsZXfkCJdG85BGLfewXfKgzlxRh9RmyEDX14KHVAs=;
+	b=6Y5OTVJvBBrWjzYJA6BaiBcijTQE7LNDQaihOqMYwwg1rqnUkhQHdKgch5Oa5WFgervjUV
+	odvBkk9XxRSRO3nyHjm5NtYhO115xkRLhu5fpMgipyVbbJWjw8epVDbfAY2lcKRx6PyKV8
+	S0ZI54fN7IR10fjUX1AaTGgUoTFLhhk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=uS7k5z64;
-	spf=none (imf14.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777041379; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=sVfAMZEf;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=none (imf08.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777041627; a=rsa-sha256;
 	cv=none;
-	b=fcoRxYGOdufQblSeYgyK3dRRi9Tk4XRA8FuJWxhnVcWrSXta68T8zGXOZxP+3nNgs8ZVIT
-	an37x5F0GYJlF8/q7qdzOaVyP0hXxz66mWfIWo8X5WCXqRa9YAAfokFUzd6nShZrAIfo50
-	TPzJknrpjbf9DbpnkX8x3q9pLJAruYw=
+	b=J+IZOB4zvO6DYPgL6m1iBH2x1Dis5RtrfbK0HtHBO2wxxl4j2q//MEFGpN/Bz2IxVPepAe
+	daK7d5pdEHkpOKEeq98w4sIzYeSZl9B/mM8LVfFp0p+8OJtG2UVso7wAX2TitZ8t2oEe8t
+	2Kx5f/4s8shnztvym9poYFJ91+sr8fA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=rGmnz578Am/EljZenrf+7J6ZrtzAwbZgPZsP3LVCvBI=; b=uS7k5z64BLNXXKkJZk1AJgoa+N
-	XlWAYm9riEmlvDyWMw+NkRQy4utmzYV2Zk17yRxY023jQugDaQqwlq7bSXa0UUzqsIxM1O7P4xaZ5
-	6BCfsug5iQJW/l6e0Z/iD0OEykAtnsfAoWXCdyel2wqVB1EiDk18gFd/NGw/6CWXD6LMbRHjVI8il
-	aRo69/FLW1MKYPXaSPthOajqeUXpP+hRc2D2u6Gq/f7e1e61vekr9nhhJDo5m7qjHaVhYVRChbh2+
-	qJpQeLU/+d+HGs7u48rK2qGValkQj6NfHErJS07qQIVIJCuCaI1Hx5ixFFEzsmK5r5LEhQ9VRjq8Y
-	yQGnPNhg==;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=MZWsZXfkCJdG85BGLfewXfKgzlxRh9RmyEDX14KHVAs=; b=sVfAMZEfh7q1NDuffqvDWC4ruC
+	BopU9PZQ2Y7bl9TT2MytBxrPPv2LMUeuTZI1Kk5nkD66ytloA0VRKNjeIgYS1TCMI+v4YQJCPOpAk
+	IrfrVcGu3H04M/0rDDpAg4+nPOPaMxcywtVSg5LqqJbGLF2LiIEuWr+BNkSayHw6rI8/Z8ogg281L
+	NPevIFXsYO39nwDJRKkhbqurwqcZxQs8W2aTahxB0NImCywDnEXjAvPHFmSdoJR03L/Q+qvscT2wM
+	O7IjwD4R4atdXyGpyDRoOSEzapT2Kx3AqgoWeyUAQKaxFi8CJuUwORcAuYJv0YHCXHoIHuKy0gSKh
+	7XZzuaGA==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wGHdY-003Eu9-0f;
-	Fri, 24 Apr 2026 14:36:08 +0000
-Date: Fri, 24 Apr 2026 07:36:02 -0700
+	id 1wGHhI-003F2t-1K;
+	Fri, 24 Apr 2026 14:40:00 +0000
+Date: Fri, 24 Apr 2026 07:39:54 -0700
 From: Breno Leitao <leitao@debian.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 0/2] mm/kmemleak: dedupe verbose scan output
-Message-ID: <aet-vYNQr_5tF_hy@gmail.com>
-References: <20260421-kmemleak_dedup-v1-0-65e31c6cdf0c@debian.org>
- <20260424065325.d9643671feedb0f27297cc94@linux-foundation.org>
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 0/4] mm/memory-failure: add panic option for
+ unrecoverable pages
+Message-ID: <aeuANP7U9IEzA2X_@gmail.com>
+References: <20260424-ecc_panic-v5-0-a35f4b50425c@debian.org>
+ <aett0XmQ1EPSDdnY@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260424065325.d9643671feedb0f27297cc94@linux-foundation.org>
+In-Reply-To: <aett0XmQ1EPSDdnY@casper.infradead.org>
 X-Debian-User: leitao
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 44A1D100014
-X-Stat-Signature: aj18a69twn17ffwd1x4fufkirio7zoqa
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 48237160013
+X-Stat-Signature: id9ozrenpmrsetjfq9zgitgfrtpxy55i
 X-Rspam-User: 
-X-HE-Tag: 1777041378-219913
-X-HE-Meta: U2FsdGVkX18dN5HulnX0xu34Ukv6qya1+hKsSpk5gZx7bWmnZInKTrj3SCjyUz6bgb1yFW3Vg/5zgGmc0v9HcDG4X4rQqV2GIdNf0BrvNNVXPz6wrTPceUHKs9meT0d11LknWDl5krzpP7Xxpo+Gcqua9yGy3YjMO1W9FREKTb4TNN4Rvhe3xLUlv/ZZsvWK1LQBu5iNz8B86j74X0ZRPJGeKXwGY2obaEicGgDbPcZFhDzWLbFCvfecqkZWbzll6ncjJLTTKnzA7fTQfabES3vOnJz/99t/fTfq3d3q/uUFfxiiNJocjuGUUAVUHieh2sAkcLI8yTBER6nYTtICzlqyvwjcH94NjpGmkOTnS/2yzi0yLVztF2mi5wemDhoJmgXSdmZOT/1nJvPGeZa4KVG1eabjYecdX0Nbm3v/k3MjW8drufB4w/RIw5yP6l2VNXmN+tgfcWaEACkXxNMorAM3VHkmsiRxbe+v5dc+yudzAKxY15UAXnv1rbCMVOUQZd4qun4KUcQCERmlznf1psWWJ0ggp2RxA0Rwx5KyN9QEy4KwD1/Hj2zoZy5aAJfksdqyPAX7msD5i9cevgSPYsiOtfYVpE/sGwlj4dUWxBJ/jZ6i2Yam8wNGC+lYEbyOh1KWoaHoOfzL4u8retahQnqwbDr9P84TMz9Wwz7X8UUYaXlgTOToUCMmN8xcgHGdT4L4XeHyPeXdWzSXzcaqiRD6W0QZrFePbWKUhFHrAUMSSa7xOy9l0mH893LvXvJlWSSGjLAmdc6UrtqOUyLKbp2N1YbOZzWYJfLYKuBPq0DeQAJH3JoQz3I8t1GjKROXRkYiJAvIx61fJqFe7DVjhIrapj7g6/mfiMRI1QIn4F2xBtvUvpwJnNx1wJ49X7mxQLgKNOF/botUCzSn+Sw13YtwaCvEK/9Skty73Re5QLo/F8NOri9xvt2VUFJBTo25dmBK3MVRyacDcO3Zr8t
- OcZ4gjlu
- H2GQWto3NOcyVx8M3Qou53Yy6tjNTBk3vjdiiQFsdn0KSEnJNkO2bxXzB+SFakpRWI+JiucgCszL7/89QBOBts5XGi6aNSV9pM8miTJnHnsh6Qhqul2nL5D9VlVmJ2MiCevKvlWBViQlC1ATmeJdi7FzI8cHKImSHInzt4hfP/+7BoocXQ2v3YzMOtYoVFYKV54g1mhj3O2BIvAO9mpyrh5PaLPTNnbRh7KEtJ9vdUrDdXSoC934D40dskulTPrS0veDATC44TNUJ+HUqVuYUZqPA7DnpHGa+JmeqBTy4soLZr0boiplq8jBxwg==
+X-HE-Tag: 1777041626-207476
+X-HE-Meta: U2FsdGVkX18Horj5obz1Jg4wNemn58BaKdhQq0FhCVI6jolH5GKuYnfzAyUl/mAPwK1xveLMUWcE27GRNNov/fnEgpa6jat1gZ9pQZUOmKfgEmlDqyOEIFPtvhqAKdcAIi7y6FVt5t+QU6jPQN+EtLOGJ4r24+v660G71XGCFR9nOBUVDSbAnaPQbrFUym9N50R7MtiPoHI0LEFgsCa3TMvvJCwHL4Bmp0bmxmCi8D96r1lMtZplnj4nzCl5hAz8stX3kov2a7f7QziWzXqLmFkPVD6MCQFg5NxK55AWn5wDg/I3osz0rY8OlivbhcQrSCvj7YM9q50m2jVSFMfV3McL6/cuKH07ERk92syPgmN/Rb051caWCxYp1yaDUZMFpQVvepiNNSSFOcge8HwNI9wMTLx5YqyK4i0D1vH++gBNGij/V+8peQFVtC6rkb3hdW53Audd8OFGhyCjFq58SXNXs4+HPCWjKBkBM03zzFysFJKh/IMf77sTHbQUryHTs97vE+RXyMDvMSBPnsDAMr6rBeXgNK9qOLnp1zb+S2Dl6g9g+sk72T2rL+usVKCjA/f2vGbJMwWET1aAeIr/KqnZ/FSE0TAttVoJZoEsnFHR5cwkSjzPYS2ljgefW2G/lmA5SsF42LfY+pNcmA1o0Q75WECUCXJ/6GWr2AhGFWDW33+cgVUF7u6I2AKKXzyXmCBZJLlCqA/3F86j7hEmukIDnGslPWkOiF3yGU5bCePBUZI1Y2mmkV7x3FkYfg/EnJ4bbGAvK75fr1l6rCDxnQBn7KFEVI7VgTb10UL+7Ynv8N5zwW6Kll/DXFZfbcFLlg1mL4g74rulqM28kHJ4puIWMmfbyQ3xprPpBIsEj4ZLf8KtyTbeM2/vljhuGpw8zHPGItmsAqiAZB+0Z7KVlTlpN2Dc/eLPmxNpSERMWsobT+Em/O+ZODx3bl5xE+nUvzmgZldmjXEJLqlJduF
+ XpIRqLoR
+ nexNmQVQS63SkYnqy79Vxd7YhNvS5DPdd7CO6hbI3A91tejDZc96HA6fR/KujhXpSis5S62HOcdlQDqaDWv2gEBHwVEn75n7yPYjdTGTHw2YNrgzioqbW0iDGJPTSv/KZPNkKKzWYPvB1OvIh2JrVQZlTYiApHAXJEo8MGyPTTjYRbVTGFWZgGV9jBN1SC0eif3BI+RjbG2aKh6+7iba2mfqgNQtlzpa9zT4u4Ld5JuPxChLQAhEMebvanTvBR+X9PM4+AfvQMq+MHyE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,72 +101,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Andrew,
-
-On Fri, Apr 24, 2026 at 06:53:25AM -0700, Andrew Morton wrote:
-> On Tue, 21 Apr 2026 06:45:03 -0700 Breno Leitao <leitao@debian.org> wrote:
+On Fri, Apr 24, 2026 at 02:19:13PM +0100, Matthew Wilcox wrote:
+> On Fri, Apr 24, 2026 at 05:23:58AM -0700, Breno Leitao wrote:
+> > This is a common problem on large fleets. We frequently observe multi-bit ECC
+> > errors hitting kernel slab pages, where memory_failure() fails to recover them
+> > and the system crashes later at an unrelated code path, making root cause
+> > analysis unnecessarily difficult.
 > 
-> > I am starting to run with kmemleak in verbose enabled in some "probe
-> > points" across the my employers fleet so that suspected leaks land in
-> > dmesg without needing a separate read of /sys/kernel/debug/kmemleak.
-> > 
-> > The downside is that workloads which leak many objects from a single
-> > allocation site flood the console with byte-for-byte identical
-> > backtraces. Hundreds of duplicates per scan are common, drowning out
-> > distinct leaks and unrelated kernel messages, while adding no signal
-> > beyond the first occurrence.
-> > 
-> > This series collapses those duplicates inside kmemleak itself. Each
-> > unique stackdepot trace_handle prints once per scan, followed by a
-> > short summary line when more than one object shares it:
+> Who is "we"?  Please attribute your patches to your employer by putting
+> their name in brackets after yours.  My ~/.gitconfig has:
 > 
-> AI review:
-> 	https://sashiko.dev/#/patchset/20260421-kmemleak_dedup-v1-0-65e31c6cdf0c@debian.org
+> [user]
+>         name = Matthew Wilcox (Oracle)
 
-V2 will have them addressed. Here are some of the answers for the question
-raised by Sashiko.
+Thank you for the feedback. You're absolutely right - I avoided
+"we" entirely since it lacks proper attribution. This is something
+I catch before subimtting patches, but this one went through. 
 
-> Can print_unreferenced() access freed memory here and in the fallback
-> path above? Since the lock is dropped and reacquired, do we need to
-> re-check object->flags & OBJECT_ALLOCATED before printing?
-
-v2 introduces print_leak_locked(), which re-acquires object->lock and gates the
-hex dump on OBJECT_ALLOCATED:
-
-	static void print_leak_locked(struct kmemleak_object *object, bool hex_dump)
-	{
-		raw_spin_lock_irq(&object->lock);
-		__print_unreferenced(NULL, object,
-					hex_dump && (object->flags & OBJECT_ALLOCATED));
-		raw_spin_unlock_irq(&object->lock);
-	}
-
-hex_dump_object() is the only path that reads object->pointer's user memory;
-the rest of the report (backtrace, comm/pid/jiffies, checksum) lives in the
-kmemleak_object metadata, which get_object() keeps alive. __delete_object()
-clears OBJECT_ALLOCATED under object->lock before the user memory goes away, so
-the recheck is sufficient.
-
-> If get_object(object) failed, it means the object's reference count is
-> already 0 and it is actively being deleted. Unconditionally locking and
-> dumping it there seems like it will read freed memory.
-
-Fixed in v2 by reordering: get_object() is now attempted before xa_store(), and
-on failure we simply skip the object — the leak count was already incremented,
-and the memory has been freed concurrently so it's no longer a leak. 
-
-> What happens to valid memory leaks that failed to record a stack trace (e.g.
-> due to memory pressure or context limits)? Will these leaks also be
-> permanently ignored in all future scans?
-
-Also fixed in v2. dedup_record() now starts with:
-
-	if (!trace_handle) {
-		print_leak_locked(object, true);
-		return;
-	}
-
-so leaks with trace_handle == NULL (early-boot allocations tracked before
-kmemleak_init() set up object_cache, or stack_depot_save() failures under
-memory pressure) are printed inline through the same locked.
+I'll update the commit message when I respin the series
 
