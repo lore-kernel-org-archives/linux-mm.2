@@ -4,106 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 428EDFED3EF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 17:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D5AFFED3EF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 17:17:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A34056B008A; Fri, 24 Apr 2026 13:15:05 -0400 (EDT)
+	id 861C06B0092; Fri, 24 Apr 2026 13:17:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BDCD6B008C; Fri, 24 Apr 2026 13:15:05 -0400 (EDT)
+	id 839F76B0093; Fri, 24 Apr 2026 13:17:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85DC66B0092; Fri, 24 Apr 2026 13:15:05 -0400 (EDT)
+	id 701526B0095; Fri, 24 Apr 2026 13:17:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B6C16B008A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:15:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5355640279
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:15:04 +0000 (UTC)
-X-FDA: 84694099728.03.08C6D28
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C37A74000C
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:15:01 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DkCtRoNi;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5828E6B0092
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:17:06 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDBCB1601F1
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:17:05 +0000 (UTC)
+X-FDA: 84694104810.04.9FC4E6C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id F24A7C001D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:17:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DRKBeYNB;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+	spf=pass (imf10.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777051022; a=rsa-sha256;
+	cv=none;
+	b=sYBQeFDsywpGePr88W2PIDzsXpe51lHWstsQFKywN9qgamFNSMmLcw1/pQkbaJmQMMyKw/
+	n679oIGOsQleAT2p4WIypgjle6ESrKQLW0FpuIRrHFkBb8aLCOmYGrscvMdzWCzTTKobsx
+	6H8NG6RpCMc6+DMAhlhMyag7XTwB00k=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DRKBeYNB;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf10.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777050902;
+	s=arc-20220608; t=1777051022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KXR8yXZCeA8u9fVuIG6yunhw2x1dtW4UlYoFgYFZU50=;
-	b=Fa9YI6gp1g6ZJSdtvwmLg3uQVj17CJ4q8scjw6kJO0FVyVFYlsDJRZZbcc/AZufUjT0r95
-	e+Cwd/Sa05EeHNDEE4iuYQQzCDm3dusLpnPrWxRhZJRlwQl1MUhrhG5R/qj2cuP47pAXUq
-	b9pJE9ZJlPbVQo6cuaM/CgXMCwFpBSw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DkCtRoNi;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777050902; a=rsa-sha256;
-	cv=none;
-	b=LGeT7UmwxhInV/mC8P8iSvKedSBTLRftd1fB/6HSS/HpVCLx3wxGdpac8UHvP0xe85PbIw
-	z7m/aAh3sDX1wpuHd3NGXUFTVM3pckf1Tf6fCuh7skFd/B15nlJ5Y6gDH4Zo88mZ+U3Qo3
-	ocqAyGxxhcu2UG/cv17jD3DXIV5U6Xg=
+	bh=jJ8saootNnEwiz5oyNfmQuGhXkI29a9gU/iJodI/fbM=;
+	b=VtzxjaOJDLpxlKjAy5BhRsE/nnEaD6ePszSkI2OK/4XHPGlEHSeyrtC/3af3w4xHyjlRZR
+	OtiE+N6xPcLaVhUtG0rEnr/YDVt6gqImzpLV6dg2ADQKT7UoGfUdILeBi9+z2CV8zlJlKr
+	ZhLph8pSJZusxNZqj1hFmGb0adoVpP0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777050901;
+	s=mimecast20190719; t=1777051021;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KXR8yXZCeA8u9fVuIG6yunhw2x1dtW4UlYoFgYFZU50=;
-	b=DkCtRoNiYOdUDFi/TIjCT94RAkMbwtaOV/tqfJVPjtQsDJBdHPwyxJfl5MFwNRQLv0bGIP
-	tjcYOgMSYv2YMVHiIPtMozmo30t2oTR+DumPLiwyCpjPMrcDPPncfDYlBvcAnwVRcfInvm
-	5qbgQ/0qGOAIUXeI3rsfKmuVrWbDH2A=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=jJ8saootNnEwiz5oyNfmQuGhXkI29a9gU/iJodI/fbM=;
+	b=DRKBeYNBsfV/GVVxNQt0PKSM3/M5ISeRlanOy468bcVOrJPkHoLdKCxj8Gx34HtEMgL+J+
+	eLdJMGvDVVrqqKolnWw7/nFdCPA4nS94wnylcMt0QjAZZxrCqFaGymb2Ae7b8PF+vk/uor
+	p1SzAaRpD5FEz45AyQ6bbAiFtjdZXaQ=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-jfdbmSVYPW-tAwevwjVtGw-1; Fri, 24 Apr 2026 13:15:00 -0400
-X-MC-Unique: jfdbmSVYPW-tAwevwjVtGw-1
-X-Mimecast-MFC-AGG-ID: jfdbmSVYPW-tAwevwjVtGw_1777050896
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8a14905811cso65023456d6.2
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:14:56 -0700 (PDT)
+ us-mta-209-Nexli291PXqiwUbL3uWdIg-1; Fri, 24 Apr 2026 13:16:59 -0400
+X-MC-Unique: Nexli291PXqiwUbL3uWdIg-1
+X-Mimecast-MFC-AGG-ID: Nexli291PXqiwUbL3uWdIg_1777051019
+Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-605e5d95cccso6453412137.3
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:16:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777050896; x=1777655696;
+        d=1e100.net; s=20251104; t=1777051019; x=1777655819;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KXR8yXZCeA8u9fVuIG6yunhw2x1dtW4UlYoFgYFZU50=;
-        b=o3d5aL/gALmlPXynuvmiy6sA6xTL3SzOSH9ZMI4yfqC9ZiW5PDxCDG0ZfOx3/AvMFc
-         I7Y0KnysJWrkCr6/pm1FsrVLly1cghhbIc3gn2XvXkh1PgSPcfRoWSylT+cLC6C78dgE
-         lMJWqoJxUuCPQMU9UJutTcbciHxDwbQgzY4Hp2p0qdVbIGrT0FoY7RPTgnoYG34gSE+C
-         SUWb23YGDsCoEM19qAKzpyqJg3LQ6Ag2l2a4FTqW2QrgwsDphKMhkF85LmBE8J70ak+0
-         ilh4WOsZ9EMLqaFcuz94pRKT0opFK+9fIFk0YiTrRedW6vXfRwHT51KP8572d0lfcYgD
-         gRpw==
-X-Forwarded-Encrypted: i=1; AFNElJ/ilGmLBOnoRZ/wN0NvmZZ59c1kuQdDtGjPL2jwDNmUPMe/qt9f10RKxTjgwPBkqZ5cXeSVqRmxIg==@kvack.org
-X-Gm-Message-State: AOJu0YyqF7vtFCozWssyUtiSRW1nh9CrFyX0Gb19pZ0JsPFa4TiJpeb4
-	B2YJ1dekk3qJaAh22tksa9fG3VbJtoT4lJd6ktl7mKbkYR9hIw7WGOPGN5LDN3eZjdv5Ywr8RUB
-	T5S69IpVLeZQAJbSA97/Xa1Bb+jPKOxP1uyIErCIFQ/aWf5Hidqwh
-X-Gm-Gg: AeBDieuDCwQoPhqGAa5GeMFT+T83+Za13t6xLPMIdLZPhdzJMZ04Y2QwEJx5fF6k6Mh
-	7NHkvMond+kVZxWVgpALzUYXmQjsOhFDfxbjOwX2UNag0ZsyhA9JQDL1ceOjLqEFWV/53wAPhuE
-	CPNzg+6NUOYdoUupNEAZjaLNi613cTbfdVPUH+vCEdJU2iSg47MDh6V0z+j97FqZ4PCUaQzBfiU
-	lo/EH1HOPt4GTN92dAsero1I0Tru8ycbWKKhEvmuuL3COLmB6UxKcg1nf1i0PDiT5OoOer7oCMz
-	I88qXthaU2gBjs3QXNXyXF4QZ4yL5cS074xj4Zdbgtut2mKBBxImorJeM1T00x+6O4Ob/jAgQoV
-	qQEbzTsj5B/6evUiYV7RFJDCM7hUmdlKpuOr/
-X-Received: by 2002:a05:6214:1c43:b0:8ac:4fd1:2d4a with SMTP id 6a1803df08f44-8b02811c4b1mr535508616d6.33.1777050896269;
-        Fri, 24 Apr 2026 10:14:56 -0700 (PDT)
-X-Received: by 2002:a05:6214:1c43:b0:8ac:4fd1:2d4a with SMTP id 6a1803df08f44-8b02811c4b1mr535507756d6.33.1777050895695;
-        Fri, 24 Apr 2026 10:14:55 -0700 (PDT)
+        bh=jJ8saootNnEwiz5oyNfmQuGhXkI29a9gU/iJodI/fbM=;
+        b=bqbUMS/gSY3MFe2jL7NsxTeCp6LEpKpEKSOWzNGQgs3kvGiSnq3kTR8U4d6mU8/nnb
+         J/eN6QYTGFmrORbN/JI9Wka0+mN97+84rnd+O1PFEwLFUEN2LjIQ9qIQbVkIBZ34oiay
+         36y3O3qB4NlB/Ww0Jlx/JmEfGKzD4AzPcqQtk6zIhodHVHPrkR9n1c490wF74PZkQrem
+         qH3u20he96XMAtf34uL6XcVd1l31xOuOOdSrqeuez3kVRwk/Wm5PT1vzGTiy1Ph8LuFQ
+         VekVQGAHNV6sOAT4QZi5UoMK01jGzfdp7Oj5tbaOoSWfcrasGLPEyQWOZpaLRpXolVRD
+         PVTg==
+X-Forwarded-Encrypted: i=1; AFNElJ/gtvxjVU6acDZ5pPybxM9Jy1qM6ZJc0Dm0I6znLy6acHyiYo4whq8gezPSQnD+FR6eIK+XWI6DRA==@kvack.org
+X-Gm-Message-State: AOJu0YziMxdyVEsCRtDf1JgTykmnfFadJs6dGwTVNspT13nsb6CPZAW4
+	98nI19XAHUWnz7O8UFCejevYD/suOcTbvFifvvVIRSeGzc4AzQXWLaMbg/OF4CbfN5Utt8gBDQl
+	ZRZGxlog7G2pKrfvXjJyrKJB7Iz4+Q/8Dh7JMwbz4y6+ihfBIBazl
+X-Gm-Gg: AeBDiesFabJVdV3koe8XEIvrHbXZuMXN9kNUMpCkCBFynsE/fUrv2L7Kkmplx2aGvDS
+	sxZd+GPadYOAD8v3USASu1AQ5jot4aQM6Stu/cb0qFQig0vU12J292zR5UWar5yNVtWIJsry+ek
+	YgDkQHSL16TH7jG2mCYFrKfceA8jUHrGYG81cSmMTQGMAdl+CD48dzeck4HIP4h/gNCl3kdQkDw
+	Gnsk7TAHyFiQqwQZe/kzuOec2oKPZEQlho2BFm6+cn8ehnXoe2zOCQqoHILimJf1ca9h6KKk5DJ
+	SWFHM+MGWbZOgDhHxcE8TOjqIDIjqwmjGs9BW6awIqzwchQXLl9TWG2cEZS6NEFxVgIF2u04flw
+	oZXbUasnFzh3glEiFHwTxRHGuNaQ4FsqJQwod
+X-Received: by 2002:a05:6102:3e1a:b0:610:eb3d:bb2f with SMTP id ada2fe7eead31-616f7a45fc9mr18121384137.28.1777051018964;
+        Fri, 24 Apr 2026 10:16:58 -0700 (PDT)
+X-Received: by 2002:a05:6102:3e1a:b0:610:eb3d:bb2f with SMTP id ada2fe7eead31-616f7a45fc9mr18121305137.28.1777051018402;
+        Fri, 24 Apr 2026 10:16:58 -0700 (PDT)
 Received: from [192.168.2.110] ([69.159.169.238])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02aa4f1f9sm188233276d6.0.2026.04.24.10.14.54
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50fc9715610sm61896621cf.10.2026.04.24.10.16.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Apr 2026 10:14:55 -0700 (PDT)
-Message-ID: <c1e9cc74-e831-4068-9d34-1f3a665b3fd6@redhat.com>
-Date: Fri, 24 Apr 2026 13:14:44 -0400
+        Fri, 24 Apr 2026 10:16:57 -0700 (PDT)
+Message-ID: <5cf27d20-83b9-4690-b14c-b08d34d357eb@redhat.com>
+Date: Fri, 24 Apr 2026 13:16:46 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/53] selftests/mm: migration: don't assume hupe page
- is TWOMEG
+Subject: Re: [PATCH v2 05/53] selftests/mm: merge map_hugetlb into
+ hugepage-mmap
 To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
  <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -120,23 +120,23 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
  Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org
 References: <20260418105539.1261536-1-rppt@kernel.org>
- <20260418105539.1261536-4-rppt@kernel.org>
+ <20260418105539.1261536-6-rppt@kernel.org>
 From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260418105539.1261536-4-rppt@kernel.org>
+In-Reply-To: <20260418105539.1261536-6-rppt@kernel.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5i0j_sXScuNTQ--m4z54xEvgyKI5mCPMtAry-JALIdU_1777050896
+X-Mimecast-MFC-PROC-ID: TDofzgii4UzvPXpyLXXkFh9h102V5mAp_y5GSAirM0A_1777051019
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US, en-CA
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C37A74000C
-X-Stat-Signature: uf9hty8exhtbdahspt8d8dqrww6rgr7s
+X-Rspamd-Queue-Id: F24A7C001D
+X-Rspamd-Server: rspam12
+X-Stat-Signature: n3p68strmqmw7cuqearmwdzrj5j5qz9t
 X-Rspam-User: 
-X-HE-Tag: 1777050901-730493
-X-HE-Meta: U2FsdGVkX1/cq7V2sNvlqVrzMvZoMAmGUoo3EjdUd7ZKGh8OupGGO3NjzbjgcV65FgwXQkt/VVVxlP/T8OLjcy13EDdF7pqkkmEty+rcVNZB1QHrOfR05nhR2KPcbbdrb+wK4tbuV6SORtokj5IapMIksxWgqiSu8UazjE9eACFOavh8oLWdNBY683EM5NTnql4AnYob68wpLH/9BcqRAYlD0vXnbNkqCjb3zUceP3sx+1zvv8yjFKlkiDfAvxR5SBZKrWF3HDjmv2gNG7fUfxqCXr+Bl6juaVOt8ZK46uA+mJY9J3egw9PBzZTtdbQPxDh087y4a2gTWRth96ulluiyM072NS7joewys8/CL01RBcizZDYYjNaIvkgBs3L/+f+9kNDPkSVWu02grssy5BxjDze82pPYNozWq9kMYMcD33uHFW23EAJd/35bmWBNxygd1MPkxZdxRCFWEznpGN8HOj1AwHKrYzgKqyyqa9sEhLq/DMjOmCnNldQnbdrhNdpolo9M6UYcRlp496o/JEmsZnbEtVE5d90yLI/szJARTpB3wzsGVmkc8kGwr7I1RAjh84V74LC30evPuxQHsdXC1LDrFTmIUJ5S22fF3iilNcdSGUToTIbS8pCtVpBIgeeqUTisk0I7lXRDRQRsR0wnL+a1R8RFCa4CIKFdFRkp5Bp0jVwyCEI6ZyeM0QPhZfiUivgijWbBv8Y/gtQxJguibNLISIQdPnERXa/vh4Ch0NTDG/Sif0UVbZHTkt/9qVvu3aQSj0EKK0kuMmn7Wjf51WTwWYK7Mpb9OKD+13MOzMaMgUsMNQXTtnw95z6e1c391DYX1qBoZgI2ra0YO1TJ/0AfB1MswUMVxdPiOU//37npbjJ37tv0b08CY1e++DYeFCDPJieyQw+6rrr/BS9PO37Kuv6GR25JWFAHELwd290qrh///GWdnAHuJgy62GSpNgirBcwepyVJw0G
- KQnqOHB4
- ZaHPOAyH0Re3nv9GY2YSD9ARyvQWJuRptoivR3csHb51P0TYQHAZlgSakTsBLgWSGnbAer3CaibcFDdG1bK4ksflgLlSU1PMCZyCrXXOF3xdmt6yd+7kXKnu/Ei99ItOr72ByYcw+o36/Va9U1OKqbKSn6pbqgHMnbkqd1f4mxJeDKnH4bnBwqgJ7w/aBC9CNMCWlYC1fKXE9rKnzHX/wIhDPOaGguPrX58bEGXOJ14Jwr6Nwtiqxq0e/OGwH7nZ5hJ6XIAsrwZ/69GvmMGez3au434hk72yvinOUD3rp+owJ3X9IuQFT5B3emk9hARHthNw6zSjM7xUaPCX3YoPaFRKi26/+F+KWGZy+uBVPaszVC87N0FCR9LUx27vUzvjWRr43IX7YgLa5qOz1czwxHTZoUYmw0NAijwPpMA/Yy8FgvwflH07chkVO48RQ6BNXFLNrr2JpnuaiBa5LpkvRBrsT/Asw4GiyIyLl
+X-HE-Tag: 1777051021-841615
+X-HE-Meta: U2FsdGVkX1+IsW/Q+DJ7Vkc+5NWObbGcHF/BW+hW35Wc3KPu6oui8b9Q6045GeesUUle5dvXqTdkbTJ11G7MLm+2RntT+CbgHgalKxCNB4Hd49ySnfA0RrBsb5KPcyhOiARIJaV9NkH8rnuSFqT/aRehKwjwyX0wM8TrvBiOXflnFIAaaei28O9v1OB4+rvdbF1MN/hT2b7oQbukEDWM7JcnuzlzuaFQwqAMYBO0l7sRhQZfz7zU1G2GA4wjy5V4+CbvxaIi6EPHAd48mj6dMkEiEDdVOPbIhTXRGtBNlyzxoujpNrFYztoQWLKgFqyGhadMV1VhZdS2CElGXI/l4AYcSp0NhcUDHio3NFznJBzOiE9YfzzJsoat/fzd2l19ULf5X8N0nvM7xPWoapCWfrgNndb1BperrYwqSJHlE4+UdbDOyGhDwJw//dE3ofNUGNgPPcL700NakLtyFJXri1l+EIX50biqoXzm0+azTtLtOOTTyBwxPZQyPrgL1NUCuAgnepdM4pAMZy/rHLJTUCMtPYvs0GWy9t6gJQKfPtEhmPCyOAVALNTRKXgTt7fu15uYJz9OHwyGyhRYCwdEqi6nzA6svXI4RYFUCun4vBj1LhfLhC+/aANDY6tTPW3lN5LpXNJk89f3/Zgu1SkEjvYtTSP2d2Sw/ZO6XUz6mcZ/V7i0CiI+mGxtnAYCFE7QsCDIvKA0esw9w0Dlpv1l7DCzZN9tUB8qHezikwQfrjRao1ZnNvdJD76GE5jwsmPrPZ/+e9ZwANJ5ljdbQzQq8kPXE1zrPJZi2F8ya8V/T2oCFyq5mMYDiUoeKVvxkGfSftPA+wyi8vKFtt28I58AnMKvdxB4rLYC71rTOn+WwTvLetxmZlso85BWmHKOYgNU2u12JzcV16LGQlP30HKYTbaSZT5Vb223ZsySznD9SLtnBS5ZUV/fu3g7c5DVZqmzQ1tWqnzohXv0txPUHHX
+ N8Vw93T6
+ b11PVP43e9LXqhV4I5NGpnneNrNuumFJlCCxU9QBr9MxS32CxqDMzP7Xl/ETGRoC3gy74EbAipxha8w9t0DwS1ko6U25R+Jojw5kV5L/+yWj02rVlmjvljLIbfh1PF6buGM4Clz1Sxgp2LmvuiSYOwJ+KNezGDwdITLbFb3OOSnvQxxKVaNtNEpbXjRY05bkfx19CeHy3Ye8tOxehNRIjFVSaZZSbjxfPyJjdBUyvArgsFx9ylfGHrhsbKRwtlDm8sQAGbg6adoMh5BDKp+xBKZsSO3CqFEtVCHGDK7ecq+agn5MlNTXFTFLjES0zz3atoKdORQuOjQ0bNH6kiRO0s4M/FUNB+V2PQ0dH/qXMaIgQK9YXAtWxAr1+F0LdZ/mvhYdS0hydNMLn+H5AtLzJ0tRGp/3By2ZhIzxfgQSGm44y5s7LTxdpIKTrxFz6JjalIjaEIT9qHT/Jhct0BUrO3QEQ6Nn2xa8LMtaamnj1l3kr19GFRiw5tDllSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,141 +147,293 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2026-04-18 06:54, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> migration tests presume that both THP and HugeTLB huge pages are 2MB.
+> Both tests create a hugettlb mapping, fill it with data and verify the
+> data, the only difference is that one uses file-backed memory and another
+> one uses anonymous memory.
 > 
-> Add dynamic detection of huge page size with read_pmd_pagesize() for THP
-> and with default_huge_page_size() for HugeTLB.
+> Merge both tests into a single file.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed by: Donet Tom <donettom@linux.ibm.com>
 > ---
->   tools/testing/selftests/mm/migration.c | 44 +++++++++++++++++++-------
->   1 file changed, 32 insertions(+), 12 deletions(-)
+>   tools/testing/selftests/mm/Makefile        |   1 -
+>   tools/testing/selftests/mm/hugepage-mmap.c | 112 ++++++++++++++++-----
+>   tools/testing/selftests/mm/map_hugetlb.c   |  88 ----------------
+>   tools/testing/selftests/mm/run_vmtests.sh  |   1 -
+>   4 files changed, 85 insertions(+), 117 deletions(-)
+>   delete mode 100644 tools/testing/selftests/mm/map_hugetlb.c
 > 
-> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-> index 60e78bbfc0e3..e3c2f831e15a 100644
-> --- a/tools/testing/selftests/mm/migration.c
-> +++ b/tools/testing/selftests/mm/migration.c
-> @@ -184,22 +184,27 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
->    */
->   TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+> index cd24596cdd27..cbda989f6b6a 100644
+> --- a/tools/testing/selftests/mm/Makefile
+> +++ b/tools/testing/selftests/mm/Makefile
+> @@ -70,7 +70,6 @@ TEST_GEN_FILES += hugepage-vmemmap
+>   TEST_GEN_FILES += khugepaged
+>   TEST_GEN_FILES += madv_populate
+>   TEST_GEN_FILES += map_fixed_noreplace
+> -TEST_GEN_FILES += map_hugetlb
+>   TEST_GEN_FILES += map_populate
+>   ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64 loongarch32 loongarch64))
+>   TEST_GEN_FILES += memfd_secret
+> diff --git a/tools/testing/selftests/mm/hugepage-mmap.c b/tools/testing/selftests/mm/hugepage-mmap.c
+> index d543419de040..f4fcc7c45875 100644
+> --- a/tools/testing/selftests/mm/hugepage-mmap.c
+> +++ b/tools/testing/selftests/mm/hugepage-mmap.c
+> @@ -15,6 +15,7 @@
+>   #include <unistd.h>
+>   #include <sys/mman.h>
+>   #include <fcntl.h>
+> +#include "vm_util.h"
+>   #include "kselftest.h"
+>   
+>   #define LENGTH (256UL*1024*1024)
+> @@ -25,54 +26,111 @@ static void check_bytes(char *addr)
+>   	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
+>   }
+>   
+> -static void write_bytes(char *addr)
+> +static void write_bytes(char *addr, size_t length)
 >   {
-> +	unsigned long pmdsize;
->   	uint64_t *ptr;
->   	int i;
+>   	unsigned long i;
 >   
->   	if (!thp_is_enabled())
->   		SKIP(return, "Transparent Hugepages not available");
+> -	for (i = 0; i < LENGTH; i++)
+> +	for (i = 0; i < length; i++)
+>   		*(addr + i) = (char)i;
+>   }
 >   
-> +	pmdsize = read_pmd_pagesize();
+> -static int read_bytes(char *addr)
+> +static bool verify_bytes(char *addr, size_t length)
+>   {
+>   	unsigned long i;
+>   
+>   	check_bytes(addr);
+> -	for (i = 0; i < LENGTH; i++)
+> -		if (*(addr + i) != (char)i) {
+> -			ksft_print_msg("Error: Mismatch at %lu\n", i);
+> -			return 1;
+> -		}
+> -	return 0;
+> +	for (i = 0; i < length; i++)
+> +		if (*(addr + i) != (char)i)
+> +			return false;
 
-This is really minor, but I'd match read_pmd_pagesize()'s uint64_t
-return type.
+Is there a good reason to drop the ksft_print_msg() call? It looks like
+a good debugging information. I'd also add the address to it.
 
-> +	if (!pmdsize)
-> +		SKIP(return, "Reading PMD pagesize failed");
 > +
->   	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
->   		SKIP(return, "Not enough threads or NUMA nodes available");
+> +	return true;
+>   }
 >   
-> -	ptr = mmap(NULL, 2*TWOMEG, PROT_READ | PROT_WRITE,
-> +	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
->   		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->   	ASSERT_NE(ptr, MAP_FAILED);
->   
-> -	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
-> -	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
-> -	memset(ptr, 0xde, TWOMEG);
-> +	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
-> +	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
-> +	memset(ptr, 0xde, pmdsize);
->   	for (i = 0; i < self->nthreads - 1; i++)
->   		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
->   			perror("Couldn't create thread");
-> @@ -215,6 +220,7 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
->   
->   TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+> -int main(void)
+> +static bool test_mmap(size_t length, int mmap_flags, int fd,
+> +		      const char *test_name)
 >   {
-> +	unsigned long pmdsize;
->   	pid_t pid;
->   	uint64_t *ptr;
->   	int i;
-> @@ -222,17 +228,21 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
->   	if (!thp_is_enabled())
->   		SKIP(return, "Transparent Hugepages not available");
+>   	void *addr;
+> -	int fd, ret;
 >   
-> +	pmdsize = read_pmd_pagesize();
-> +	if (!pmdsize)
-> +		SKIP(return, "Reading PMD pagesize failed");
+> -	ksft_print_header();
+> -	ksft_set_plan(1);
+> +	addr = mmap(NULL, length, PROTECTION, mmap_flags, fd, 0);
+> +	if (addr == MAP_FAILED)
+> +		ksft_exit_fail_perror("mmap");
 > +
->   	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
->   		SKIP(return, "Not enough threads or NUMA nodes available");
->   
-> -	ptr = mmap(NULL, 2 * TWOMEG, PROT_READ | PROT_WRITE,
-> +	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
->   		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
->   	ASSERT_NE(ptr, MAP_FAILED);
->   
-> -	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
-> -	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
-> +	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
-> +	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
->   
-> -	memset(ptr, 0xde, TWOMEG);
-> +	memset(ptr, 0xde, pmdsize);
->   	for (i = 0; i < self->nthreads - 1; i++) {
->   		pid = fork();
->   		if (!pid) {
-> @@ -256,17 +266,22 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
->    */
->   TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
->   {
-> +	unsigned long hugepage_size;
->   	uint64_t *ptr;
->   	int i;
->   
->   	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
->   		SKIP(return, "Not enough threads or NUMA nodes available");
->   
-> -	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
-> +	hugepage_size = default_huge_page_size();
-> +	if (!hugepage_size)
-> +		SKIP(return, "Reading HugeTLB pagesize failed\n");
+> +	ksft_print_msg("Returned address is %p\n", addr);
+> +	check_bytes(addr);
+> +	write_bytes(addr, length);
+> +	if (!verify_bytes(addr, length))
+> +		ksft_exit_fail_msg("%s\n", test_name);
 > +
-> +	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
->   		MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
->   	ASSERT_NE(ptr, MAP_FAILED);
->   
-> -	memset(ptr, 0xde, TWOMEG);
-> +	memset(ptr, 0xde, hugepage_size);
->   	for (i = 0; i < self->nthreads - 1; i++)
->   		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
->   			perror("Couldn't create thread");
-> @@ -281,6 +296,7 @@ TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
->    */
->   TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
->   {
-> +	unsigned long hugepage_size;
->   	pid_t pid;
->   	uint64_t *ptr;
->   	int i;
-> @@ -288,11 +304,15 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
->   	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
->   		SKIP(return, "Not enough threads or NUMA nodes available");
->   
-> -	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
-> +	hugepage_size = default_huge_page_size();
-> +	if (!hugepage_size)
-> +		SKIP(return, "Reading HugeTLB pagesize failed\n");
+> +	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
+> +	if (munmap(addr, length))
+> +		ksft_exit_fail_perror("munmap");
 > +
-> +	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
->   		MAP_SHARED | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
->   	ASSERT_NE(ptr, MAP_FAILED);
+> +	return true;
+> +}
+> +
+> +static void test_anon_mmap(size_t length, int shift)
+> +{
+> +	const char *test_name = "hugetlb anonymous mmap";
+> +	int mmap_flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB;
+> +	bool passed;
+> +
+> +	if (shift)
+> +		mmap_flags |= (shift & MAP_HUGE_MASK) << MAP_HUGE_SHIFT;
+> +
+> +	passed = test_mmap(length, mmap_flags, -1, test_name);
+> +	ksft_test_result(passed, "%s\n", test_name);
+> +}
+> +
+> +static void test_file_mmap(size_t length, int shift)
+> +{
+> +	const char *test_name = "hugetlb file mmap";
+> +	int mmap_flags = MAP_SHARED;
+> +	bool passed;
+> +	int fd;
+> +
+> +	if (shift)
+> +		mmap_flags |= (shift & MAP_HUGE_MASK) << MAP_HUGE_SHIFT;
 >   
-> -	memset(ptr, 0xde, TWOMEG);
-> +	memset(ptr, 0xde, hugepage_size);
->   	for (i = 0; i < self->nthreads - 1; i++) {
->   		pid = fork();
->   		if (!pid) {
+> -	fd = memfd_create("hugepage-mmap", MFD_HUGETLB);
+> +	fd = memfd_create("hugetlb-mmap", MFD_HUGETLB);
+>   	if (fd < 0)
+> -		ksft_exit_fail_msg("memfd_create() failed: %s\n", strerror(errno));
+> +		ksft_exit_fail_perror("memfd_create");
+> +
+> +	passed = test_mmap(length, mmap_flags, fd, test_name);
+> +
+> +	close(fd);
+> +	ksft_test_result(passed, "%s\n", test_name);
+> +}
+> +
+> +int main(int argc, char **argv)
+> +{
+> +	size_t hugepage_size;
+> +	size_t length = LENGTH;
+> +	int shift = 0;
+> +
+> +	ksft_print_header();
+> +	ksft_set_plan(2);
+> +
+> +	if (argc > 1)
+> +		length = atol(argv[1]) << 20;
+> +	if (argc > 2)
+> +		shift = atoi(argv[2]);
+>   
+> -	addr = mmap(NULL, LENGTH, PROTECTION, MAP_SHARED, fd, 0);
+> -	if (addr == MAP_FAILED) {
+> -		close(fd);
+> -		ksft_exit_fail_msg("mmap(): %s\n", strerror(errno));
+> +	if (shift) {
+> +		hugepage_size = (1 << shift);
+> +		ksft_print_msg("%u kB hugepages\n", 1 << (shift - 10));
+> +	} else {
+> +		hugepage_size = default_huge_page_size();
+> +		ksft_print_msg("Default size hugepages (%lu Kb)\n", hugepage_size >> 10);
+>   	}
+>   
+> -	ksft_print_msg("Returned address is %p\n", addr);
+> -	check_bytes(addr);
+> -	write_bytes(addr);
+> -	ret = read_bytes(addr);
+> +	/* munmap with fail if the length is not page aligned */
+> +	if (hugepage_size > length)
+> +		length = hugepage_size;
+>   
+> -	munmap(addr, LENGTH);
+> -	close(fd);
+> +	ksft_print_msg("Mapping %lu Mbytes\n", (unsigned long)length >> 20);
+>   
+> -	ksft_test_result(!ret, "Read same data\n");
+> +	test_anon_mmap(length, shift);
+> +	test_file_mmap(length, shift);
+>   
+> -	ksft_exit(!ret);
+> +	ksft_finished();
+>   }
+> diff --git a/tools/testing/selftests/mm/map_hugetlb.c b/tools/testing/selftests/mm/map_hugetlb.c
+> deleted file mode 100644
+> index aa409107611b..000000000000
+> --- a/tools/testing/selftests/mm/map_hugetlb.c
+> +++ /dev/null
+> @@ -1,88 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -/*
+> - * Example of using hugepage memory in a user application using the mmap
+> - * system call with MAP_HUGETLB flag.  Before running this program make
+> - * sure the administrator has allocated enough default sized huge pages
+> - * to cover the 256 MB allocation.
+> - */
+> -#include <stdlib.h>
+> -#include <stdio.h>
+> -#include <unistd.h>
+> -#include <sys/mman.h>
+> -#include <fcntl.h>
+> -#include "vm_util.h"
+> -#include "kselftest.h"
+> -
+> -#define LENGTH (256UL*1024*1024)
+> -#define PROTECTION (PROT_READ | PROT_WRITE)
+> -
+> -static void check_bytes(char *addr)
+> -{
+> -	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
+> -}
+> -
+> -static void write_bytes(char *addr, size_t length)
+> -{
+> -	unsigned long i;
+> -
+> -	for (i = 0; i < length; i++)
+> -		*(addr + i) = (char)i;
+> -}
+> -
+> -static void read_bytes(char *addr, size_t length)
+> -{
+> -	unsigned long i;
+> -
+> -	check_bytes(addr);
+> -	for (i = 0; i < length; i++)
+> -		if (*(addr + i) != (char)i)
+> -			ksft_exit_fail_msg("Mismatch at %lu\n", i);
+> -
+> -	ksft_test_result_pass("Read correct data\n");
+> -}
+> -
+> -int main(int argc, char **argv)
+> -{
+> -	void *addr;
+> -	size_t hugepage_size;
+> -	size_t length = LENGTH;
+> -	int flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB;
+> -	int shift = 0;
+> -
+> -	hugepage_size = default_huge_page_size();
+> -	/* munmap with fail if the length is not page aligned */
+> -	if (hugepage_size > length)
+> -		length = hugepage_size;
+> -
+> -	ksft_print_header();
+> -	ksft_set_plan(1);
+> -
+> -	if (argc > 1)
+> -		length = atol(argv[1]) << 20;
+> -	if (argc > 2) {
+> -		shift = atoi(argv[2]);
+> -		if (shift)
+> -			flags |= (shift & MAP_HUGE_MASK) << MAP_HUGE_SHIFT;
+> -	}
+> -
+> -	if (shift)
+> -		ksft_print_msg("%u kB hugepages\n", 1 << (shift - 10));
+> -	else
+> -		ksft_print_msg("Default size hugepages\n");
+> -	ksft_print_msg("Mapping %lu Mbytes\n", (unsigned long)length >> 20);
+> -
+> -	addr = mmap(NULL, length, PROTECTION, flags, -1, 0);
+> -	if (addr == MAP_FAILED)
+> -		ksft_exit_fail_msg("mmap: %s\n", strerror(errno));
+> -
+> -	ksft_print_msg("Returned address is %p\n", addr);
+> -	check_bytes(addr);
+> -	write_bytes(addr, length);
+> -	read_bytes(addr, length);
+> -
+> -	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
+> -	if (munmap(addr, length))
+> -		ksft_exit_fail_msg("munmap: %s\n", strerror(errno));
+> -
+> -	ksft_finished();
+> -}
+> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+> index e2dc9ac87bfc..61b450032af8 100755
+> --- a/tools/testing/selftests/mm/run_vmtests.sh
+> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> @@ -292,7 +292,6 @@ CATEGORY="hugetlb" run_test ./hugepage-shm
+>   echo "$shmmax" > /proc/sys/kernel/shmmax
+>   echo "$shmall" > /proc/sys/kernel/shmall
+>   
+> -CATEGORY="hugetlb" run_test ./map_hugetlb
+>   CATEGORY="hugetlb" run_test ./hugepage-mremap
+>   CATEGORY="hugetlb" run_test ./hugepage-vmemmap
+>   CATEGORY="hugetlb" run_test ./hugetlb-madvise
 
 
