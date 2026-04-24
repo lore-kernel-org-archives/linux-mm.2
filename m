@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DC13FDEE59
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 01:42:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD1C2FDEE56
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 01:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 702F06B0088; Thu, 23 Apr 2026 21:42:56 -0400 (EDT)
+	id 2C2996B0088; Thu, 23 Apr 2026 21:46:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B3C56B008A; Thu, 23 Apr 2026 21:42:56 -0400 (EDT)
+	id 2736C6B008A; Thu, 23 Apr 2026 21:46:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A3746B008C; Thu, 23 Apr 2026 21:42:56 -0400 (EDT)
+	id 189286B008C; Thu, 23 Apr 2026 21:46:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48E736B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 21:42:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BBE89140680
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 01:42:55 +0000 (UTC)
-X-FDA: 84691750710.10.7C42047
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 21B8A4000E
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 01:42:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BHk011y5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776994974; a=rsa-sha256;
-	cv=none;
-	b=11dS1c2eLL6qOMGLjc2NDE0Za4oZspLHgsheoIxS3dIdi5grDqbowd7bkGlGjwYySJW1oB
-	wWZ5pzHwavrCXhLo+2zsWbljOAai5Qa5ZRuZ+BRLMn95zUrVgbfSRo4LvuWkYAg/+yzDQ/
-	MP4CY/LTgr4zmK5EKUga1y1uUOz9q+Y=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BHk011y5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0386C6B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 21:46:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D913160763
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 01:46:51 +0000 (UTC)
+X-FDA: 84691760622.29.C89607C
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5C798C0003
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 01:46:49 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NkTv6S0c;
+	spf=pass (imf28.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776994974;
+	s=arc-20220608; t=1776995209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/q2HQawH4gS8WtM0N9MclymHaTvpj9p5Uu+SoCUc2EM=;
-	b=yTp5Eh+/8YpJzdeM34OafyWttZdfp06JdzHplW+2MNZXm8sSW623rPsvwGrWjZiJ+bgdRO
-	IN1cGImNpSZYtcgUn/PN5Nddsye0pRuaWxJdDyJVoJQt6xJpmp55MoVzfQpVFTCeT+IR9c
-	1Unfm7ia1dwT81BCN7OBNbPf4ogDukI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 644FA60018;
-	Fri, 24 Apr 2026 01:42:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E81C2BCAF;
-	Fri, 24 Apr 2026 01:42:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776994973;
-	bh=QSSazNTuZnTtnxSTAVV/omqIibexYYaHVv32vSM+ju0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHk011y5Tu5pSPb+NUNCFvmb5kjhWiRIURuxLfWuBxcJebDoo+a0ykEL9ct3C7Jey
-	 +c82I/dZUSZsQx4+psoG9KYEMLmbiQAjitXTa8uhHpLxH0BPF9VLfK4FR3GHWRhelY
-	 uj/wUW06lIxYLsNTnvCnj/cpymNNASFaJMbonzrgTEhq6yAUGBPn1icEiZuwX8JRiJ
-	 wY7TridOAebUl6K/IcR4j9eSgxMGxxI1ABsVvIiB0PHuEYMEatHbPeQIvn9aHIOr1b
-	 3rX0yZ1bL8AskzLOAY5FvcoD03cI/BUBqHhZtwTb0/+i9qsxBLkyVLiii4ZvLKbacJ
-	 n4Ghapr0tMD3Q==
-From: SeongJae Park <sj@kernel.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/damon/paddr: prefetch struct page of the next region
-Date: Thu, 23 Apr 2026 18:42:45 -0700
-Message-ID: <20260424014245.1124-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260423122340.138880-2-jiayuan.chen@linux.dev>
-References: 
+	bh=P52wiUOMlzlFIjlIdW/hjb2V5GhJzkN7ef7FawczLxw=;
+	b=2M0L+r2pjQ+nd2NdLiId52/cD5fVgKhxMQe4ymq8fz5YdJ9VURk69XsWO/im0/2pl5fFOR
+	8yaEeHcLMVF4hTwkuKkYb/3Zkt423+Rzfttp4TznipSDUxU3UILLoBwEQ8/s1XliqZWlz5
+	W5uYi2UlY1/Wctg805mquRuvz/XFdJ4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776995209; a=rsa-sha256;
+	cv=none;
+	b=DHp3jywv11BP2ZwDuPb/220N0W2E4vzNG7gJ4ZvfQIEuS2QJt0VL9i99vWA+eY2pZ5reT+
+	/Gn1VX82/jLBPGnWN80lNiwkkhFXttywCOQKD0wssEY99n8ZufkJU1ajY9Jw0q0BvywLDW
+	/pG6Zsbnx4q85aKldcz1JJ4Af31ZpNA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NkTv6S0c;
+	spf=pass (imf28.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <59887af8-24ae-4d29-a637-be13d5d715fa@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776995207;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P52wiUOMlzlFIjlIdW/hjb2V5GhJzkN7ef7FawczLxw=;
+	b=NkTv6S0cldIfMOVdOltfF4u3hyc2n7q2LgwFHb0ap+JkZwZFeomhWQiT1fMgA+FiC012SK
+	v1BtdnaB5WkzR54C6m/i3wCaSZqnGdVeTMLQvZgcbcVymEmLUL+GUDf4mN1NDi7tCc4fs/
+	WZqq2QCES2oAAV47dcwIuupUk6mYWPQ=
+Date: Thu, 23 Apr 2026 18:46:39 -0700
 MIME-Version: 1.0
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+Subject: Re: [PATCH] mm/lruvec: preemptively free dead folios during lru_add
+ drain
+To: Barry Song <baohua@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, vbabka@kernel.org,
+ mhocko@suse.com, willy@infradead.org, hannes@cmpxchg.org, riel@surriel.com,
+ chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
+ qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260423164307.29805-1-jp.kobryn@linux.dev>
+ <CAGsJ_4ygEvptQy662tTiPm-k+E4cbfvUKGGg3w7NaaALO-F4ig@mail.gmail.com>
+ <aequK2ZM3O_7NM1M@linux.dev>
+ <CAGsJ_4xy+kGktiePL28DP3PAcVsdnz8Noann2UGhD=EV+3xjqA@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CAGsJ_4xy+kGktiePL28DP3PAcVsdnz8Noann2UGhD=EV+3xjqA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 21B8A4000E
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 6jx7o8q6u53sthz7b4gfnzehjwq475ma
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 5C798C0003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: o1hpps5q5xugy5s1cwzaracjx7ru1w6r
 X-Rspam-User: 
-X-HE-Tag: 1776994973-447919
-X-HE-Meta: U2FsdGVkX197hEdAPL0bPpwZkyxh/DEh6TItchHEA0Rc1R8rzWhLP7Zom6T0eCCX1qz3JY65T0bH2QbKrE+yGJZhP+/GgWJRfvoCxVPp7UP7GKAgLGhJrkcZu5NWo1W3EFfvArEOOLL62/nEl701OYWIe9lC1Q8qetlCjuCjMv7hz+NXh0KJVUPmMPAy6KBMJdCHOv7OiGWO6ZuZtJnJDESdx7D0quTD2zrbGA8kYcgzfzVjxEGW/aNeQbCCLR/Rc9agovKcbSm0IZVOQxOztAYP0CIKa4ZhoPCht1MyyI7oje8eW882WxFRkx1Fis0YsGsRHnsPOFkLyYmejPI3fPR0afpG7OZfHinlus8xuNcxDbne79wLZMtBN3UwwfdLXyiaO66Sk1Zbcfkn8rsVRgyzGbDtMgZbQnsS0OFvJt2Lr1CLgGzXj6hTGzyigrmKCSTW9SA9Y3NX3FtSwv55sm1aJfdKkhTKFfOvH5/YnCcu59ARIBBPF/uIUjvLGt9+87fUvYdFQCkW8jANDhUlIud7vM9BoljB8XbPgA7jj20ZEQJFk2gfzPASgG2gkK2+Nk8DDY3OPYRp5kgXwWXk3vJOKLAZLJaPzdD3t37kz2gDDCCcFstHYN8dx08gfuF0A98CY6QPJp6h66KbnurXmzc45jK8Y7oR3udqjEoXtbqr9GZ3ZGDwS/QYGmWyAKbqOhU0huzeQ5DRw6ugBRhKaVul9i56XrsXDxCpEsWR8Tr7dw68qJX/hHCLA2BecADi8pCfvpZHmjU7ARwOGi1DJeF9WTJmxhcuIwUfy8DZi+XTJwohJKfClv7a8mvDPKPjNxnfLcK+ioVG0GE38fHsFeCDn5gLlqOpIx91KVzqL83D04e9Z/JajeFnLlLbCr2ipICL3eORSaAJpOr/wcNNxYWY/DJ8/E8PN/1W2Si0XG4GVDwvAH/S3Nn5gUgG5IBfu0UWdrzdwnSC4ocUijV
- Zv/mdplz
- AwlkF3c3xPLN2wSrkRhRJy5cWC0kRZwzdOwAa7Y0DdwwT7qGcuGmFPBw/QeHilw+3fJzGHBstMzSJJUjBUuqqMw7xeSjs/DXAnwS9FdySxpQ9+SjJc2NBXQhAhLH/mdjlDKitfPfE5tnI6j1y06eXbaPENih547TGCiqIFyshPLSS+1PpBY0q8ToQeDndIlA6LYAovjD6CiIHgEbQWC7oxg7lLkC9oamuN/+X1a0vTJ3pD2evtZaJHqUjR+J2aCoV1RDxRLDEHpq6Sl9rw5PBi/mQWHQfHo7QfB2F
+X-HE-Tag: 1776995209-461166
+X-HE-Meta: U2FsdGVkX1/507qrCgafxmsJ4gI61OsbXggS2x9KOtos64V+uiNV2A2dAnZv7t4ntzTUTT3WS4zzEfTWGC7VT5XK7hr2ltCPvvyPRAOI+w0brYeF4vcv+j+bGJm3yFvwJ7oz2EOK+ltd2xuY4q0bGkID6RpX8VWFXO2Mdck84E3NMJPsjv4sPU3rWavfaDiYgl5KXTF3YNVS8q6/Xx/CdOxTD65E0bO8AVepCoMmUFx26gLPMwEXAoErA3dwfcEOpLJr0LnSJLIjz6c1MdUKO4wft2Z3m4IemCW0aK2JTWhZOOF4t3oz9yNhQR1qAM9uyduvylSvzF60M9goUafjT7zpnBSR48Accqs/unFqel97GM2M/NMdl5q+TBqk4kJcs/HpHh1IqZw6OP8Jgjf6bAQQiptRSJprG1Fc9e573SnbU5ZLab+gqqMD8WumA8nV2OLEhzzOcBeYPjPEnM/X/LoKu/rYa4QZxD33MHHdOU2LLhe9+KrWzgKExxy8DSze4mGQoE8TjgUwYVk1ci8xD5EgzHskHCnVGG+H7dOfXxbMqDMj6lihs5Qo6F+OZmxy71PZya7tTU/qLGeDrx2RgbCwy/n5nlaIwUGRMa0GNuX7F9eXBWypmtTwMhqcVrVVaBsDgQP4SHGH56aQOWCzkOUvPkT2cmjy2Kv7SwqWVtiwEdDaCw+9F+v1MifWbgs3AYzY62tBPpVe0luZRcaDodx8rPvYjliRRqNLryVgMxLb4LNuiWLEXx9kD+iuVkOubBTaop/EtP9fwFcG/DxfUAxaCCnMPVg+CWqIrQ5fUWH6ukuXaWAsHWwdvA6W2FJMTszH1Zb8HF+TS1Om3k1QlKRSnRKESPYn8nsTXjOAj/u3PlZV7/+psSgaXaU76jOYa5ATezFfUaFgg8HDdGasQQyrNGkNxIYcB58Ky/Qn0gFqsAlj0KBWuz9pRGUXWpEhjT+n/KAD4+QTHOwVwBV
+ HXho1axL
+ Hxk80PKclFB1x4f/twJPxARcjNZ+Rp4uvVOvfwyhLhkoulLm0NWbeCrIGB560dhTrJD5k1OASBhO17D6HL1M4SE0tLYBLcxPz2msTBdvUsmYbjYkfLmeQt1iDJF8cTYOdX5YNYheTtXy5BfAdFo9EV4hJKzTyLb8DqEGtB3nNvQKPyActb1SWPu4b9qTv7L9EL3DG3Fgh2a1f5+zbVxMIFlaGRs7l8egbF7FVGIXsUQ/P2DiJuZa9FnJCRZ7kn7GaVsazCk+MSL4Ice+eWC9JlQFslvAI1FY7hWBHMWVfOOB5X/n/+MPuyjRZlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,69 +97,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Apr 2026 20:23:37 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+On 4/23/26 4:53 PM, Barry Song wrote:
+> On Fri, Apr 24, 2026 at 7:46 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+>>
+>> On Fri, Apr 24, 2026 at 07:22:30AM +0800, Barry Song wrote:
+>>> On Fri, Apr 24, 2026 at 12:43 AM JP Kobryn (Meta) <jp.kobryn@linux.dev> wrote:
+>>>>
+>>>> Of all observable lruvec lock contention in our fleet, we find that ~24%
+>>>> occurs when dead folios are present in lru_add batches at drain time. This
+>>>> is wasteful in the sense that the folio is added to the LRU just to be
+>>>> immediately removed via folios_put_refs(), incurring two unnecessary lock
+>>>> acquisitions.
+>>>>
+>>>> Eliminate this overhead by preemptively cleaning up dead folios before they
+>>>> make it into the LRU. Use folio_ref_freeze() to filter folios whose only
+>>>> remaining refcount is the batch ref. When dead folios are found, move them
+>>>> off the add batch and onto a temporary batch to be freed.
+>>>>
+>>>> During A/B testing on one of our prod instagram workloads (high-frequency
+>>>> short-lived requests), the patch intercepted almost all dead folios before
+>>>> they entered the LRU. Data collected using the mm_lru_insertion tracepoint
+>>>> shows the effectiveness of the patch:
+>>>>
+>>>> Per-host LRU add averages at 95% CPU load
+>>>> (60 hosts each side, 3 x 60s intervals)
+>>>>
+>>>>              dead folios/min  total folios/min   dead %
+>>>> unpatched:        1,297,785        19,341,986  6.7097%
+>>>> patched:                 14        19,039,996  0.0001%
+>>>>
+>>>> Within this workload, we save ~2.6M lock acquisitions per minute per host
+>>>> as a result.
+>>>>
+>>>> System-wide memory stats improved on the patched side also at 95% CPU load:
+>>>>   - direct reclaim scanning reduced 7%
+>>>>   - allocation stalls reduced 5.2%
+>>>>   - compaction stalls reduced 12.3%
+>>>>   - page frees reduced 4.9%
+>>>>
+>>>> No regressions were observed in requests served per second or request tail
+>>>> latency (p99). Both metrics showed directional improvement at higher CPU
+>>>> utilization (comparing 85% to 95%).
+>>>>
+>>>> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+>>>
+>>> Hi JP,
+>>> I’m seeing a large number of "BAD page" bugs.
+>>> Not sure if it’s related, but reverting this patch
+>>> seems to fix the issue.
 
-> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+It seems this was missed since classic LRU was used in testing.
+
+>>>
+>>> [ 2869.365978] BUG: Bad page state in process uname  pfn:3a5417
+>>> [ 2869.365981] page: refcount:0 mapcount:0 mapping:0000000000000000
+>>> index:0x724884c20 pfn:0x3a5417
+>>> [ 2869.365983] flags:
+>>> 0x17ffffc0020908(uptodate|active|owner_2|swapbacked|node=0|zone=2|lastcpupid=0x1fffff)
+>>
+>> Hi Barry, are you using MGLRU? It seems like MGLRU set active flag in
+>> folio_add_lru().
 > 
-> In paddr mode with large nr_regions (20k+), damon_get_folio() dominates
-> kdamond CPU time.  perf annotate shows ~98% of its samples on a single
-> load: reading page->compound_head for page_folio().  DAMON samples a
-> random PFN per region, so the access pattern scatters across the
-> vmemmap with no locality that hardware prefetchers can exploit; every
-> compound_head load misses to DRAM (~250 cycles).
+> Yes. If you are referring to this set_active, I think it is
+> incorrect, so I have fixed it here and am waiting for review:
 > 
-> Issue a software prefetch for the next region's struct page one
-> iteration before it is needed.  In __damon_pa_prepare_access_check(),
-> the next region's sampling_addr is picked eagerly (one iteration ahead
-> of where its mkold will run) so the prefetched line is usable, and the
-> first region of each epoch is handled with a one-off branch since it
-> has no predecessor to have pre-picked its addr.  damon_pa_check_accesses()
-> just prefetches based on sampling_addr already populated by the
-> preceding prepare pass.
+> https://lore.kernel.org/linux-mm/20260418120233.7162-1-baohua@kernel.org/
 > 
-> Two details worth calling out:
-> 
->   - prefetchw() rather than prefetch(): compound_head (+0x8) and
->     _refcount (+0x34) share a 64B cacheline.  The subsequent
->     folio_try_get() / folio_put() atomics write _refcount, so bringing
->     the line in exclusive state avoids a later S->M coherence upgrade.
-> 
->   - pfn_to_page() rather than pfn_to_online_page(): on
->     CONFIG_SPARSEMEM_VMEMMAP the former is pure arithmetic
->     (vmemmap + pfn), while the latter walks the mem_section table.  The
->     mem_section lookup itself incurs a DRAM miss for random PFNs, which
->     would serialize what is supposed to be a non-blocking hint - an
->     earlier attempt that used pfn_to_online_page() saw the prefetch
->     path's internal stall dominate perf (~91% skid on the converge
->     point after the call).  Prefetching an unmapped vmemmap entry is
->     safe: the hint is dropped without faulting.
+>>
+>> JP, we need to clean active flag but let's check what else can be set before
+>> folio_add_lru().
 
-Sashiko raises [1] a concern about this.  Could you please reply?
+Looks like only active is the problem. If we start manually clearing
+flags it starts to feel messy. I get that some fix is needed though. I
+don't see this patch in mm-new yet so maybe we can hold off on merging
+there to avoid the MGLRU case. But if Barry's patch is accepted, could
+we re-apply?
 
-> 
-> Concurrency: list_next_entry() and &list == &head comparisons are safe
-> without locking because kdamond is the sole mutator of the region list
-> of its ctx; external threads must go through damon_call() which defers
-> execution to the same kdamond thread between sampling iterations
-> (see documentation on struct damon_ctx and damon_call()).
-> 
-> Tested with paddr monitoring, max_nr_regions=20000, and stress-ng-vm
-> consuming ~90% of memory across 8 workers: kdamond CPU further reduced
-> from ~50% to ~40% of one core on top of the earlier damon_rand_fast()
-> change.
-
-This patch feels bit complicated.  I'm not sure if the performance gain is
-really big enough to compensate the added complexity.  As I also asked to the
-previous patch, could you please share more details about your use case?
-
-I will review the code in detail after the above high level question and
-concern are addressed.
-
-[1] https://lore.kernel.org/20260423192534.300CEC2BCB2@smtp.kernel.org
-
-
-Thanks,
-SJ
-
-[...]
+Let me know if you're thinking there are any implications beyond the
+active flag.
 
