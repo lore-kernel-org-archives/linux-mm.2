@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E24FFED3FA
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 19:23:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5CF3FED3F2
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 19:25:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9C3F6B00A2; Fri, 24 Apr 2026 15:23:02 -0400 (EDT)
+	id 0B93C6B00B0; Fri, 24 Apr 2026 15:25:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4D3A6B00AF; Fri, 24 Apr 2026 15:23:02 -0400 (EDT)
+	id 091606B00B1; Fri, 24 Apr 2026 15:25:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3C066B00B0; Fri, 24 Apr 2026 15:23:02 -0400 (EDT)
+	id EC2BD6B00B2; Fri, 24 Apr 2026 15:25:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F1E06B00A2
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:23:02 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 27C551602FE
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:23:02 +0000 (UTC)
-X-FDA: 84694422204.22.3BEACE5
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2E6DA140010
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:22:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=BGSm0Ayh;
-	spf=none (imf09.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D8DA86B00B0
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:25:07 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 690EB1202C7
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:25:07 +0000 (UTC)
+X-FDA: 84694427454.21.B199609
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 886E61C0012
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:25:05 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UGs3mmbp;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777058580;
+	s=arc-20220608; t=1777058705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=csVqsTPVwZnRAGi9vx1W5ZwqxSQGzc7MPqLazrUL+FI=;
-	b=3ZVU89j2aM9tnL9YyailG2Bn46ArcnllyZEPzcfhIn7R/tDBg32++C2Wqc7v1FFP64i9Dj
-	yoKvhQL1EFXzMk1zpL0jLQyBDrqTYq0Q2Q+ON4YnhJJKnsYgGRpuQoDZXI18T7uAm1vEKM
-	IIRIx/tvMQbC71duIRZV03372xekIwU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777058580; a=rsa-sha256;
-	cv=none;
-	b=W4j6mWcYN4sP6LFpM7joaaLl4W48wsAamKGtVRlVWYuYXRtcs+rjkTTiocQsb6Jt2Jtj8W
-	kXXRJD/QzABpBMHjonnyqohbnrf4e/w8zplJgREYNktBOrdR22Iu+7B3MN/ByWQcM4Sgsm
-	LKqMdJyGSUaEkYXcFbPvNbRoJ6K6RO0=
+	bh=Hd8MGQNQ0vs6/pjt6NvxRQ0PF0JI93MoiYbOCwZBUec=;
+	b=A04sBGd4GtpKUCf38qpn5OEy2sNBwm9QaNxKtzjcJAkc44OeLFzZOnppfxW5z+uzAj7K7G
+	azUsDcR/viXMV87Yvw9sgnJx71oHdh6JDXqPQJFdpK6VsAAZfBdZgOsfTyRsx/lLfsmWvx
+	hJrS1OOrZf6iufqI58gN8ZiCnDCu8L8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=BGSm0Ayh;
-	spf=none (imf09.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=csVqsTPVwZnRAGi9vx1W5ZwqxSQGzc7MPqLazrUL+FI=; b=BGSm0AyhlQXPD4cBWWz292PN/6
-	NggpRStwrlBlFg0LZS3Hb9lSTB2tkhWccIjz51pDfcCdL3/41CvKVo1mcSCDn24309i6zbCGyyYZ2
-	jA0bgaB890tME+A71+BzzerccnbEM+GfyHhJNzSj/mGk6jsd4tjL9IbY0pRnj3DTJfQAKPKs7YMzz
-	lTE7/U9f8BvYawwQXvN6iuVc85RHcMmt1ys0/KhpX06WdHmMgIrBxmlYIYQxSQytO8NV9Xn469fWV
-	XmyFbFX/8HdNPNMfztrN4cpr/nPVgFYhnR3ynYRKWmfgAPksjrOmV+w+EmQFCtvT7o/vw545vb6bm
-	g6o1QF7g==;
-Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wGM71-0000000FOP4-1yUY;
-	Fri, 24 Apr 2026 19:22:51 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id F401F301142; Fri, 24 Apr 2026 21:22:50 +0200 (CEST)
-Date: Fri, 24 Apr 2026 21:22:50 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Yosry Ahmed <yosry@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Lance Yang <lance.yang@linux.dev>, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, arnd@arndb.de, ljs@kernel.org,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, shy828301@gmail.com, riel@surriel.com,
-	jannh@google.com, jgross@suse.com, seanjc@google.com,
-	pbonzini@redhat.com, boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, ioworker0@gmail.com,
-	roman.gushchin@linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UGs3mmbp;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777058705; a=rsa-sha256;
+	cv=none;
+	b=fQPMK6/iuBAyvsxv+YJtQSnILN2ZLaclobMQqWHpTS3T4QaHorr2N/xdcRoCrqTKSl2jA8
+	RN5i8UbReBV+Yzq77s50aGZ3W7MpZfZUl2HKbRWO+W2fKrp1JY8gskjNGRLmpCTIVc5FIL
+	WT4+IByG0G73eVoeCahbq9Nrp0JrK5U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8EE8D4427A;
+	Fri, 24 Apr 2026 19:25:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEECC19425;
+	Fri, 24 Apr 2026 19:24:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777058704;
+	bh=F7k6cjRg4CFixZ/0jQLerFH32svmezAB7nqzyIjg15E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UGs3mmbpDlum+/IWv9fKQBfKk6bexijAUEvP9+2METrUAY6R4ht8G8ral2o6X+bu9
+	 RdEBv/WyKHq8ADVxi3SqY+sF2pUl8uJfSjU1yduJppRz2f05hQhc2IIPMVJW1DAt1K
+	 avKVyZGckdxk+2JE6pmf1bJ1JwaPO/lTAzRB6Qpzo0J6FDEjnAZfw9cOPIFFQEsAxm
+	 c6++FEuBIF7TQVA3CkvFJpIiJgI5Y31NNq2xoqvqx4BrJKtX8Yw7mDr557s+QkGNsS
+	 UL6xfOwr4CTgzip0iDGp9QcZezu43w398SoAiKvMdYqbEiAKAe6rwasX7diGO1HdSd
+	 PHaNPs9DzImRg==
+Message-ID: <3cc55400-dc0c-4746-8a8e-5f8a84f360e4@kernel.org>
+Date: Fri, 24 Apr 2026 21:24:51 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
  them
-Message-ID: <20260424192250.GC3783056@noisy.programming.kicks-ass.net>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Yosry Ahmed <yosry@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Lance Yang <lance.yang@linux.dev>, dave.hansen@intel.com,
+ dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
+ will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
+ seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com, roman.gushchin@linux.dev
 References: <20260424062528.71951-1-lance.yang@linux.dev>
  <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
  <aetw4aoABYj3keMh@plex>
@@ -96,20 +93,65 @@ References: <20260424062528.71951-1-lance.yang@linux.dev>
  <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
  <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
  <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
- <20260424190141.GA3783056@noisy.programming.kicks-ass.net>
- <E375C69C-557E-44EB-9B3C-618C9F7BA9D8@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E375C69C-557E-44EB-9B3C-618C9F7BA9D8@nvidia.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2E6DA140010
+ <4e7699eb-e101-4a25-b585-79a777eb7cc2@kernel.org>
+ <20260424191703.GB3783056@noisy.programming.kicks-ass.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260424191703.GB3783056@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 886E61C0012
 X-Rspam-User: 
-X-Stat-Signature: xn7r71748tsgzt8twyso9sy58p8ufws1
-X-HE-Tag: 1777058579-278439
-X-HE-Meta: U2FsdGVkX1+4mErEXcu7ZYr3qk3Kqvt3gYw3ms4EKIiCw1Qkn8I7d4PbTECA5oKq5r9oT1aNexPkTpmRWIXuqeq4nOixaIU7pR9xtF4UDzkM3PSGD4dGMmWfWbfNfyzLdPS7cmppSVj4NTGdAd2lpKUobCswkxjQE5DP2IW8zaFz1BkqwkdF9LyS4COdHn5f/v3lmHyM6cgPxVDrwbadLjL5498vIxFr8V5nYaNlE88qIMDR1TraIi3DtoL9rOqN+HO4pXTK631omAWgICOldgP5zcxb8KZRxUHfoq+Mu+veqSwRQWMMFygRh7KksG2pEeEw5bDBSX+UgMNOWNG2Og6mW8EzHjQ8c1TmmNgWqJcVTRDCJHowkaNuYe3J7h1ucMUVitEyW1tz+2gTchvjIQX1TxopdT4gwqyXptdr/Ou1jsOpyMw96Cu71h9gp82gBz31DEmfkV3naSK0AU0iKMMSAlLy+960rAsOc3yuckhHY0k9esh8o/LycpO7VJpFKlIvEgLX/8D8H/fAdVjPCxoMJpYIbnDx0tbdeKJTG7Y7+/GsYPyQ+FaWaVlLrMtoX6ry9zF9dvc+oKKhNwOTE9X6HipRsgrdRfI8Bn/vywQ/Z6xuFzKoqXB0k/Pu91Mtc0/5fYA/mYcAYENkXac28cAFow2TavkUQvXPCpob5tpNRWcX1wp9hFlmYANWwBGNAi0bNdt/J2ZmGHG5uUANdbCKMj5OEXmLxFmHgqyyQcaKVOvJozhUU5iH+bwucXSNTuZUYINIq5yhOAGelJYprc3unPTiwvnYHhnQJTN/B3oEqHUCaHFLVrYrbnugEcZmVu0vLTFeJ1CJljz1PdEkzRtRvpJLnE1yCnx6zA/9jj/oBbe7U79b/9UuZAyUQseDYaVhFj4TMZ1CIOxywHpb5tj7L7Nwnonh66fzwngmEnU0ClUTKBYaO7ZBrXiT/9kn95Stnc8McZT66/Ms8x6
- T9Txgsnv
- MCyPWDh8qP4XPccqbMadCReVAU93Tjjb9BpGmtepzuXtucw1RwKYevH75T+Dw/xlqijaWSxOa7iD9TWsVrx5gW4pdx7RmXoWKbXDbzIgobu6d1IwUTtMHSm6XKiZEOoR9NCErHJMB1eE6VVPMR6qdfaXOA9rCagwdkKbXqRbvf7ZQzOQkRq9x2nJuLE+ww2YJeI59JpSYsRnff3vGq889dzyuBsgebhZC7PJboxY7eobHSShprAAVkMccB+A/Loxa7yxDFe7m/UESS7xiu7HXNUePSHpIn6/zacTnyXsCCGuX63BACmvmA/ghaYnWaKGSrtw6U17TDgaW6IDh5fjITQOW47AeLFYo/OSs
+X-Stat-Signature: fqqs3mfrudzk8ym1wztswrfb8g3zygom
+X-HE-Tag: 1777058705-766969
+X-HE-Meta: U2FsdGVkX189WBA3MgJogRB5xz3x43zuO5aQc7cz9SJRIUU/Ly3DBjKPxHHcFC6M8psCPNRBIzGaBxvHExeaGfWyUTp9a1gAGvdE42j+iaHg7o7fpNmQ+N1NF/FQuJ411o7ur6DLl/d2q/pL2k3ob+gGLJeAilCuOugL7LB08FmKD6JJyb5F0Llku7m4E3zgnm3vPdqPfzNEcsVBHq3c5CdERxiKVdzSMoqnIfhKKAbE5OIphkGcxK+WJgOp8OvZuUgypqLcD4W5w53g8mV7PpmLOB9iPDi8QnbpacMOs10H2QiVaOFATDZLjNkETL7CJV/zyaSXzaQNWgoek/tbKCOI4JVTxeC92E4D+9CVINxw2L0n1KQqSj2OXSbpGDmIPEkgCENsSA5MUkZOhFhw3Z2bag+CW7FJYVtWjZgMrZ91d6/6Lj3ZcIyyCLsbgA0tjIGYJr26e2bK29afRWXmZ1j+KMKljcjMxpswwfIDuCRmDLEfbd6eZluFkJ3Wpsvzd2M9H565tLaCZvdZ9Fx2FTGy48yyUdqMnfssHGY/bYSCxfH7XjxfyqGqG5PDJ57gQRiG+Je8G7pGZ/aHzb9samjLGZRveJLZoRhdOBVWUIVb5u6Pna1XKlS77LyUZIE9xN73VxOaq980j20NNdbj3ARo+ZQPEFYwXJrXo/EuJ/XW8P0tHWEUHMmouWD2Et2Pfm1KCa4088DZtmdbBWCIzlHUQErMt9IdwtNSXt6mKy51LBix9rYlRKpfCNGO7PT4vv5OXzDyNF7wYX2qNWinwSKbkaKv7lFvUHAPFFxhP6hiipCAVtluUzSnxnG3QJOjYmP97+YZlqEEVACdhJGbNuId6wSvyZg+g3veQMYKZuXDBpEJ75g2YK/6/okWxj00Z417yIQ2tTysjd6edVEAFW7DuDe/GXcjUHDlZJ1G10cQHrflC9c368BdADzBQ/Arfe0nFRlP5CS1Y6l7hI5
+ xvdnQ5Gc
+ eeElLSdEefb8aMAz9j0VJNBAXVx5tuTKt2ASkZk30M5NtUDwJdn6hQoKvdWTfvD601UVt8eAaNnnq5SYnX/qVKVR/aRkNsy92Y8AQx8SnmYwVCOgSg03mJ3r23za9rlFMmsS6ixrVYOdyKgEmWg15fkfahgbgQE78oLQoWmkct6ygR2iQqYr/R36U/wI0boVWSWY1aQrxgEocziJyktRy6T8OiOAd2dqgc76JbcV7kOmMU6liTfKO4hTHhuCwO+Ej0yLj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,130 +159,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 03:12:34PM -0400, Zi Yan wrote:
-> On 24 Apr 2026, at 15:01, Peter Zijlstra wrote:
+On 4/24/26 21:17, Peter Zijlstra wrote:
+> On Fri, Apr 24, 2026 at 09:09:21PM +0200, David Hildenbrand (Arm) wrote:
 > 
-> > On Fri, Apr 24, 2026 at 11:50:03AM -0700, Yosry Ahmed wrote:
-> >
-> >> But I imagine it's useful for reviewers to see Sashiko's feedback as
-> >> well (without having to go look on the website).
-> >
-> > That's why I have a script; if I press 'S' in mutt on an 0/n email, said
-> > script goes and does webrequest to sashiko and inserts the review
-> > comments into my local maildir as properly threaded replies to the
-> > series at hand.
-> >
-> > No looking at website needed.
+>> Forcing contributors to reply to everything. I don't like that, in particular
+>> not as long as there is no way for contributors to run it early in private.
+>>
+>> In most cases, contributors just do the reasonable thing: incorporate the
+>> feedback in a new version.
 > 
-> Do you mind sharing that script? It looks like a great work flow. Thanks.
+> Yes, so I understand that you can run it locally, but then you get to
+> pay for the tokens (and sashiko burns tokens like dry grass). I also
+> understand why Google/LF doesn't open this up, its a money pit no doubt.
 
-Sure, it is in a 'works-for-me' state and probably should get a once
-over before you run it locally to make sure it fits your environment (at
-the very least you should probably change my email address :-)
+Indeed.
 
-This is cobbled toghether from a script I got from Thomas and staring at
-the JSON with generous hints from Gemini (because I can't write Python
-at all).
+> 
+> OTOH, I see this causing more reposts of series than we would have had
+> previously -- and we all love more versions of series.
 
-.muttrc has:
+Fortunately, reposts are easy to review, at least for me, when tags are properly
+incorporated and the version diff properly describes the changes.
 
-macro index S "<pipe-entry>grep -i \"\^Message-ID:\" | cut -d: -f2- | tr -d \" <>\" | ~/bin/sashiko.py<enter>"
+> 
+> I'm not sure I see a solution, other than to read less email -- its not
+> like I can even begin to read all email I get anyway.
 
-sashiko.py:
+Sad but true.
 
----
-#!/usr/bin/env python3
+I consider the last AI review before something gets merged the most important one.
 
-import sys
-import mailbox
-import requests
-from argparse import ArgumentParser
-from email.message import EmailMessage
-from email.utils import formatdate
-from datetime import datetime
+-- 
+Cheers,
 
-def getsash(url, msgid):
-    surl = f'{url.rstrip("/")}/api/patch'
-    try:
-        session = requests.Session()
-        session.headers.update({'User-Agent': 'sash2txt_0.2'})
-        resp = session.get(surl, params={'id': msgid}, timeout=30)
-
-        if resp.status_code == 404:
-            print(f"Error: Patch ID {msgid} not found (404).", file=sys.stderr)
-            return
-
-        resp.raise_for_status()
-        data = resp.json()
-    except requests.RequestException as ex:
-        print(f"Request failed: {ex}", file=sys.stderr)
-        return
-
-    patches = data.get('patches', [])
-    if not patches:
-        print(f"No patches found for (msgid).", file=sys.stderr)
-        return
-
-    msgids = {}
-    subjects = {}
-
-    for p in patches:
-        msgids[p['id']] = p['message_id']
-        subjects[p['id']] = p['subject']
-
-    reviews = data.get('reviews', [])
-    if not reviews:
-        print(f"No reviews found for {msgid}.", file=sys.stderr)
-        return
-
-    mdir = mailbox.Maildir('~/Maildir/');
-
-    for i, r in enumerate(reviews):
-        inline = r.get('inline_review', '') or ''
-        if not inline:
-            continue
-
-        author_name = r.get('author_name', 'Sashiko Reviewer')
-        author_email = r.get('author_email', 'noreply@sashiko.dev')
-
-        msgid = msgids[r['patch_id']]
-        subject = subjects[r['patch_id']]
-
-        # Create the Email object
-        msg = EmailMessage()
-        msg['Subject'] = f"Re: {subject}"
-        msg['From'] = f"{author_name} <{author_email}>"
-        msg['To'] = "peterz@infradead.org"
-        msg['Date'] = formatdate(localtime=True)
-
-        # The critical threading headers
-        msg['Message-ID'] = f"<review-{i}-{msgid}>"
-        msg['References'] = f"<{msgid}>"
-        msg['In-Reply-To'] = f"<{msgid}>"
-
-        msg.set_content(inline)
-
-        mdir.add(msg)
-
-    mdir.flush()
-
-if __name__ == '__main__':
-    url = 'https://sashiko.dev/'
-
-    # Check if there's data in stdin (piped input)
-    if not sys.stdin.isatty():
-        for line in sys.stdin:
-            msgid = line.strip()
-            if msgid:
-                getsash(url, msgid)
-    else:
-        # Fallback to arguments if no pipe is detected
-        parser = ArgumentParser(description='Sashiko retriever to mbox')
-        parser.add_argument('msgid', nargs='?', help='Message id of the patch series')
-        args = parser.parse_args()
-
-        if args.msgid:
-            getsash(url, args.msgid)
-        else:
-            print("Usage: echo <msgid> | ./sashiko.py OR ./sashiko.py <msgid>", file=sys.stderr)
+David
 
