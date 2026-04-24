@@ -4,111 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B119FED3F2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 18:50:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 266B5FED3E6
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 18:51:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31D1B6B0005; Fri, 24 Apr 2026 14:50:20 -0400 (EDT)
+	id 914B66B008C; Fri, 24 Apr 2026 14:51:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CDD66B008A; Fri, 24 Apr 2026 14:50:20 -0400 (EDT)
+	id 8EA5A6B0092; Fri, 24 Apr 2026 14:51:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E3B46B008C; Fri, 24 Apr 2026 14:50:20 -0400 (EDT)
+	id 8004B6B0093; Fri, 24 Apr 2026 14:51:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D3D66B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:50:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AB49A1B7471
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:50:19 +0000 (UTC)
-X-FDA: 84694339758.23.FE49FA7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F0886B008C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:51:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 106068A43A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:51:41 +0000 (UTC)
+X-FDA: 84694343202.05.1649295
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A18FE1A000D
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:50:17 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pftDalM3;
-	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 22D274000B
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:51:38 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I73QB/Yo";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777056617;
+	s=arc-20220608; t=1777056699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4C3FewfjEWfeVFCs+GkHycvgwaNmSe1j4HxrdF5jm4Y=;
-	b=Yp4QPafIdkaTYqv485bJc6c/hqXQHqh+y//l3iTwapuknsWFwG1XT0lYZtxRQqLrt/l65h
-	ntAGPln+pNqOVUG+xHxQ5Ew+OYHBuKfdLYX2yP/dpIbo/rQpNVewS4F8Sn0thQCax4jgjo
-	9Z4HlYHd3wtVfo8svq2gKFL64O6wxNs=
+	bh=1MORKsTImeIr4TjVhGEtdBn2NHX8NEyxGoKMvYtvEHs=;
+	b=zFuWEw659/4DAcf+JN2gPUTmYfOONFU6fzOmE/PxP2gs0Zpr9HgMwhaLHPvYuSVLqHXj1S
+	ljrmH0XrSdaNxvab/pQW8bS41l1ennijM1j7hu07Cg5yfn1l1xZNA0A33FDGqJPxntGvAH
+	SqlUbjDRMoZmv12d0yl79VHSg52dgaA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pftDalM3;
-	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I73QB/Yo";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777056617; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777056699; a=rsa-sha256;
 	cv=none;
-	b=6A9FVg0BwBh2D510xM5z/c4ICEkMK+2OI6f9DiZXH1OaP3T2+XJAdQcTbUoE9c32DP3tg6
-	Zk4wE63cvKc1F80Js7d52+vf3q1F3liTAW0cn0ZB6WXD+vznbO9x9RqkWXcMSKxJQNco0S
-	FFM/GBeQ8SEuWj8FcdA4kpyoSSI8gDc=
+	b=Qphu0+ChMeK7pL1WD+sKdpNYk1ZBcaNZrdrJ31yz38LL5xRSoA6UQ9sUF0Y+xKZFbiMYFq
+	X0dMxeX9Ct/I9XXlgjDhWS1NCw0Delz/0KAQ9ee2CjvxBfNedde4i2V7gnbGj0mAfUt3pS
+	Yq3npNIwFeU3M9uwpm+iZ/S+0qUVfsQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 843EB44590
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:50:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F9CC2BCB8
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:50:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EAC4E41B6B;
+	Fri, 24 Apr 2026 18:51:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EC2C19425;
+	Fri, 24 Apr 2026 18:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777056616;
-	bh=w5kUoCAdRW22OY51cZNgSK5N7Gpb3BDGbpsiHoe6xEA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=pftDalM3kJ9DPPvgqPonQ8Vuac/lSzURnxnvhHdDJpTgHP0CDrIvO8ljHgA/fBiH6
-	 12m42BYH8ANEfIcVa+brAYwt+ei5bXS84bXwbuc/W+GfHRNCHqqQdHtVJ2gH7VqiqY
-	 izqXhaLsSXtSq5Tx50f+kHKWJ3HhvIVdUh+IUxp9TpZG2WLyZ8aL4P/629m+/Q+ErU
-	 ZglR5Y9QZOOWcmcHa+C0vr7X8x1aH6uNqjNmdHhayQcuQM68oXiN6BGhm4WJSczF2Y
-	 DRugXmwBSroybC7MpT+/CqOhNAY3G3BQ39fm9SOKNxB6PPd7TK94BwTN1DEcqA6LTb
-	 ymVgyyrngrjug==
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ba36357195bso1000095666b.0
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:50:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8ZIEZuccsYBHGCRwZ2qwUyt5oiLsyao2RPyG0kI+lp0tqC+RAnOF0rp7XE7/t12sNlMMs9kGf/yw==@kvack.org
-X-Gm-Message-State: AOJu0YwX8Vb5g0rlGZ0xjum01ds2iar6fedNSLYCMFMc/Ywi+6ppnOVa
-	7uY1fJ5OVQk+zSuyISiDYLqdQN0KcNtMv0UnqInMTrUx611QpfVQECXi9a7jjN62JQ5DHQDQ3sc
-	ZJGKtOUlQPBOt9ftr7jZU1OokyTMlei0=
-X-Received: by 2002:a17:907:2d9e:b0:ba7:ade5:8605 with SMTP id
- a640c23a62f3a-ba7ade5873cmr1292114966b.6.1777056615011; Fri, 24 Apr 2026
- 11:50:15 -0700 (PDT)
+	s=k20201202; t=1777056697;
+	bh=+gfjjzK2HjGlwyfcUBpjGFMM8VknhFJmUXv7rsRO1Tw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=I73QB/YoKiHDxTJYDQAZJJqd6DpiWso0Fv34A29QLEdUDh4e/9DIMBxEx6bjkHaME
+	 eSOcJ/kr8JheEFprhBsRAIYwP8ui81DS4Ec2MhWcAb3LTduz/Mw0tHH74Ypekkq31f
+	 tWzmRP1hbVGBek3ZImYupzEnyAgFtJkj8scXdz6NeXJZg3Emc4SM0scKvVwyE5Yvn8
+	 q6eVKd8YZlneyt/S+2klo8xFuk/s+iumOQMZw7M0YDjTBpq/xwQiLotDxKofUq2cRB
+	 aBUac+XxaFCMgRvSsJ+dlJnmUsVyLaWjS4/TIqP4CQ5v7roQrj8+LPbMHANxYsjaaB
+	 wpq3Yb5wx3O0g==
+Message-ID: <b289b4f8-391b-4748-b8e6-0acb0b21b0c0@kernel.org>
+Date: Fri, 24 Apr 2026 20:51:25 +0200
 MIME-Version: 1.0
-References: <20260424062528.71951-1-lance.yang@linux.dev> <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
- <aetw4aoABYj3keMh@plex> <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
- <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org> <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
- <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
-In-Reply-To: <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 24 Apr 2026 11:50:03 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
-X-Gm-Features: AQROBzAzgmye5h2hgq6OujP1bhxfaF6hprGZxVf_6cZmOYHaxIkk2WQtzQUABGE
-Message-ID: <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
-Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent them
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Lance Yang <lance.yang@linux.dev>, peterz@infradead.org, dave.hansen@intel.com, 
-	dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com, 
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
-	hpa@zytor.com, arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com, 
-	seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	ioworker0@gmail.com, roman.gushchin@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: bneo3k6qu9zny3m7639xguh6b9deccyw
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A18FE1A000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+To: Matthew Wilcox <willy@infradead.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
+ Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+ virtualization@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, linux-fsdevel@vger.kernel.org
+References: <cover.1776808209.git.mst@redhat.com>
+ <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
+ <aeu5P1bZW3yEH54t@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aeu5P1bZW3yEH54t@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1777056617-65517
-X-HE-Meta: U2FsdGVkX19oHIL6hecMCOLZexm6rxNWTnQK3AmPKutMVmzNz2RXhR4W9WP0MltmlHUBQY5P5oKAoTspjxYeoDQ9JkFiIz0hXiDI3CJQNaUERNZIw2rmEV++W64ZZR2NjUcKYzEKbjsswsOS8E2UUzRR6BUE6bhW8+UROl9pVyVk9HGKDob9tOTw8yIH72EOHep98KOHUfoeoX0Yus4TrO9O8ImKo2AITB4WGwLTbcUYW8EmCT+ZXBrQFPOe9tJJNEphMquf0hmhlcG8BuJ3V6nTspLlZfvCE4+Vr9b9pgXojR4yH5ToWCcQN9uSv9bqJycvtXqf7+Ldq7NOfQYawGLMIdA1j+2JLolNJ3jl/jy+kdf4nRYQXsyNcYlXwULgYznFsJCXYjIeffZ/RKpLTIK4E+F+aM92Oipl3cs9UmXzKDqG+b0fxYrJPq/HTVlEm5CKdIpcV2OSOFRVpKd0d5Ug1skYnVmSozrJA0HP6IWjfrclDcWHj8VrcG6O8x7ub9ZVvirkRPuBXGPZC7MCwbKg7yrexk2zokYHiXgE7bW8XYKWOM7e9bTVfo1axvR7+kEzCFFyxS37FQX/J1Yy2lXv2Zg/7Rov/PXL3OV3ABjsIRPYPSOedkPLy5GQJ9twTNAtlIlq/uKtyVF2ctaqpZ5OA6ZPKqDaW/8ojBlDbuzxxYTNPgCXbB3mc3Iqpyiqj0MYDIP6twoMKYUzLf9BZHupBrYY2P0b4HABE9c+wTux/Qe2YILybDI4JBbA5nFnOpO1O6lVH3AA6hAyc9Pu/LjiuwEeOMjd8+zaL+azAZaFDFqplnvaBHGo7JQ3YXoNskXU33vF6+LWo2qXHvStJcNywfqiiLjNG3TdGw4MuKSiDVh5QUPBRPMvOMXzImvv3TFc21m0YTO3Lg+n+myHkP8k8JS/Du30co0FKvY25nNy7nT2oSSNefupn7wkJDd2wQ1YMH+mA0hY2UYWnyN
- kvayHBYR
- zlXhazwGSoEwP9mWFMqAoHpjgq0YeGez2Pl+BCWxeTDteQhe9kwxozGca7TXYsWWUyzWgwHi/3Bi8G2WtWYjg1fkZvfGry0ztqxUulHQkM9dpMJpfr6TdDkump4bF4o4iq+zGzqYqGoTlfBufzjtTWY34TwW7zhTY33vEcJwntHg2Nu8TpDPayLHBdq3ADK49o/NNbhk8bfgMP8aX3iARlUdvhLAOXQuaXuqzeNqAePWOQJD53UyrSYgPQnli5W4UPIBYkQWALlecUoHJ6tY15HTJeSboJBgv7ahkuBO8OWjQUWI7BLhsrdjrXQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 22D274000B
+X-Stat-Signature: cw9ah5cwjzgq8cfsx9519g6tftkdw8ex
+X-HE-Tag: 1777056698-438829
+X-HE-Meta: U2FsdGVkX18ZV1MognbuFF5mNPU11PxXqPp7mlVKF9FTCWkMs1vORMyQYxCyKXr6lPohbCSmjC7SqjCq3g7aUzVgUqjLxF75cNcB34uVXJkUJgP9JJLDum1QhacrkYZJ02R8PRNXZvX1s6WQ2UoaDLBgVIaIynyKb0rKtD+lReoTqvR68AEz5mXHJ3PVXc+h5Kmnn+rw7IhICzb9VyMlen/HPuGZANwfleGZibRUinQ65zfTGcqwPPvu4Nz6rTwENvqsC6EqFi0/OsxZbDi26kD+bsYznxVFM17hFkEt+S9PcxadhxztCTLpc6lSl/kiK3AKUDI/2aU6nav3KNdqYKzLY1XB6s9fH1uSR8ENPWwkuH4nVG4OozefYpeWT85WsrIswfUqstj9TxFyEvway18UMzBQID13ErkWoJfufxOeeNI7wtyGi0Znq7+Ubu3WJAIBqXbh2fP46CQl3BRU3eXQDvbcX1Y46IZ8OquSlLsFHpVYulPp96TYLymA/XdBkDJ7R50WHbexhnkCWqanzEQrHDQgTFZMxQEqSry4zkEP6eogn8dVyryz5rTxfVD65pZduU6Qfkci6aEwD1WLWEs8GIrMb8ucJOgKzEZiIn1LHDKtAtAJu4U4nrDkTIsk9p0lS2saa7vSit0bf3HgLQyz+yjyOnGib47X42Ej5cQpFTEnRmTPOLwf8LFBIx7LBteFireu98juQF3/W7jAX04/B5v2W6//e3l5SaMRNuYFnFZb47/WyIKU0JWvlvFvgUpN3UgBYHEN3AWeAe2xOhx9y5U6BRoiN23ojInsF67W37RujipW+y61dO4Pp8vxDDVgSOW0l2BHEcf7TnK3XgOCoh9hA5Kua6K+9kAzQSX5SrN8Osye5KAcWzph3NH5yVpFkchfO1HjthKX23c4+MuoNKZdmrDUscwzdy7kg6aWN2IYQn4utv9HJY4pEFZ0jNJV4TvOMGBSw6kelHz
+ oRafPir4
+ apNswa0xaLrz5KnZ16qWv86K100sQRgZQ+DmkfnvPxg78L4SYfm7oRZvAeyw9ByTslBbcieZ5dG1lFgF9AiH4y5ckBmRUHfkbNsy+90U1stzQ+8o6iXE9daF0c+TMqxzDORRWfFulyENGbZdeSwnlXTR1mPyySddEA7x9UpDT0xHUpD9ba7JYe9CjXLR1LtMaYvC0kUWfkLX6pndCMcDnKGtwI/LxDoM/P5MWhD0Hf8jsf+JWQL7Af8eUmBqSQyoYpyB3HzQGZ1HYkshmOwjzjIIyTDcwkVMkccwwuNfTSXdSA7p+gP176uI2qcNhCWzUzluVhI7XOyBNqxxhYHZEff0d6EsZ1lq+K76b2qxYUDagkter2BfKBc7CR8K3mz97TRT8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,48 +162,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 11:36=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 4/24/26 16:31, Andrew Morton wrote:
-> > On Fri, 24 Apr 2026 16:20:55 +0200 "David Hildenbrand (Arm)" <david@ker=
-nel.org> wrote:
-> >
-> >> On 4/24/26 16:15, Andrew Morton wrote:
-> >>>
-> >>>
-> >>> Yep.  I'd be OK with an automatic reply-to-all.  Maybe some won't lik=
-e
-> >>> that.
-> >>>
-> >>> An alternative I've discussed with Roman is an automated
-> >>> reply-to-author with a cc to a dedicated list (we could use mm-commit=
-s
-> >>> for now).
-> >>>
-> >>> Preferences?
-> >>
-> >> Reply-to-author would likely be better as a first step.
-> >
-> > Why do you think so?
->
-> The most important part for me is that authors are aware of the reports.
->
-> Sending them as a mail forces people to publicly reply to the feedback, a=
-nd at
-> this point in time, I am not convinced that that is the right approach.
+On 4/24/26 20:41, Matthew Wilcox wrote:
+> On Tue, Apr 21, 2026 at 06:01:10PM -0400, Michael S. Tsirkin wrote:
+>> Thread a user virtual address from vma_alloc_folio() down through
+>> the page allocator to post_alloc_hook().  This is plumbing preparation
+>> for a subsequent patch that will use user_addr to call folio_zero_user()
+>> for cache-friendly zeroing of user pages.
+>>
+>> The user_addr is stored in struct alloc_context and flows through:
+>>   vma_alloc_folio -> folio_alloc_mpol -> __alloc_pages_mpol ->
+>>   __alloc_frozen_pages -> get_page_from_freelist -> prep_new_page ->
+>>   post_alloc_hook
+> 
+> I don't like this.  I think we should instead lift the zeroing from
+> post_alloc_hook() to the callers of __alloc_frozen_pages().
 
-But I imagine it's useful for reviewers to see Sashiko's feedback as
-well (without having to go look on the website). It's possible that
-Sashiko is right but the author isn't convinced, so getting more eyes
-on the feedback would help. If Sashiko is wrong, it's still useful for
-more people to see it and point it out, instead of Sashiko privately
-misguiding the author, especially that reviewers are probably more
-likely to tell if Sashiko is right or wrong.
+I don't think so. In particular how zeroing optimizations are related to buddy
+details (tag zeroing, kasan unpoisoning, init_on_alloc/init_on_free, now
+pre-zeroing).
 
-I understand the fear of too much noise, but I think it's easy to
-ignore Sashiko if we want to. It's also a good exercise to spell out
-why Sashiko is wrong (e.g. improve changelogs/comments to document
-assumptions more obviously). We can always tune it down later if we
-think it's too much, right?
+> 
+> I don't understand why you want to remove the double-zeroing of memory
+> when the user has asked for zero_on_alloc.  They asked for stupid things,
+> let them bear the cost.
+
+That's not how the world works :)
+
+
+-- 
+Cheers,
+
+David
 
