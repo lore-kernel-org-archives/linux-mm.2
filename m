@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91007FED3D7
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 15:55:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DACF5FED3EA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 16:09:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 023546B00A0; Fri, 24 Apr 2026 11:55:47 -0400 (EDT)
+	id B81C76B0095; Fri, 24 Apr 2026 12:09:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3DF46B00A4; Fri, 24 Apr 2026 11:55:46 -0400 (EDT)
+	id B33216B0096; Fri, 24 Apr 2026 12:09:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E539B6B00A5; Fri, 24 Apr 2026 11:55:46 -0400 (EDT)
+	id A213F6B0098; Fri, 24 Apr 2026 12:09:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D39836B00A0
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:55:46 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 99BEE16022B
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:55:46 +0000 (UTC)
-X-FDA: 84693899892.22.635C2FF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 90DFA6B0095
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:09:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FCE514026D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:09:57 +0000 (UTC)
+X-FDA: 84693935634.30.8F86B6E
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 47FA720011
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:55:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O3bS9i0B;
-	spf=pass (imf13.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777046144; a=rsa-sha256;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 61BAEA0006
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:09:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RWaBeHjd;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777046995; a=rsa-sha256;
 	cv=none;
-	b=JrFNJ+ZHHwI6z/p2rFC50ZlpPjWTG8EylCrKibEXNik6xby/hKDWgNrJgiZE+tAQwuwERD
-	kmqVV5caxJb4BaPbn2C2r1QbLUMgnyLF2KTG1nfUhq4TEMQS22x4IrKcWzzR1ZBoQgmWZd
-	Pz1kqBfsJbxxbQdTmREiKQaaj33ICd8=
+	b=6EvWMaV3HG+xn22kBk4KB0WqxbSk/pzAIpmg6bj4vkktlmmpmo7PUtURlZmdnJVSegZ+nV
+	sW+FBYgYjhHEe/gOVZItU/MarcNp7/bkBDkoNQpEh6knpnT6LvTWZSxm5Lx3rVlUSP5O6I
+	vxnblehpd2Iw7Yr3ksa31paQzsKgNaM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O3bS9i0B;
-	spf=pass (imf13.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RWaBeHjd;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777046144;
+	s=arc-20220608; t=1777046995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
-	b=0ZlbVI1X5IPwB89fiV2P0XN5WnmJCLNmVNDkxMkjVIhW2/jwJ4ZsGpRhuttgNJ6kZFOVJ+
-	1F23LZuiPypAgxXd8v1IDEJpzCojOKG3kzlqu6Jbv2E6pJJLT/vmUBJbin9DziP9yPqqxz
-	2AtjBZ0lSleADc5WeM3o3bTisuO6i5s=
+	bh=1zynltM+qCB1+gf0Itcd03ZQyLMvAA175jbKGHoVBPI=;
+	b=JNFLb6fXN+Hip4z8P6/1Jl443C95NJxXByzsfG8bzgOKbxGZjo2mR9nh+TKR+ouhLvkMSD
+	F0m07P05wEfhlx8E5U/M5Orf4f0elr7PQDk9huBmoKubwcXjl+IBpDWJpWxI1RUn30ih2Z
+	Eze+6Nto1Z9li0NwXdghiPZ3lOCF0Lc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777046143;
+	s=mimecast20190719; t=1777046992;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
-	b=O3bS9i0Bug9ZofHx2fd0fuHbDlAO33JkaEKeTtghMdV85FPNwMYCM0LsQP3jQWrsttYkdK
-	5nprh6FwtOJttSQC8oOVJwtPXnqmSQUBKTL5IaYhX7xdps0OYE4CsZxAl5J2Vyk2QmOV5j
-	uqcwcRjWMD4mgPe22KwPDt1KTLwwIuE=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=1zynltM+qCB1+gf0Itcd03ZQyLMvAA175jbKGHoVBPI=;
+	b=RWaBeHjdsMzSJ950NO9DaOZbAglCUIFNjndnTX/9GzGSZz1KVztUVx3VQDCl9yyZ7f68UJ
+	KDUX1WfvtdAF5qC1Od4LmFUm1Gbi3Q4KqawfzG9MOnvttKFExiDxHhUGgui8ciMkhN6vcx
+	Ua1r+g8L33SkwwNusHFKYwVCDmyml80=
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
+ [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-dHZIqCmFNPKsY2ORlkti_g-1; Fri, 24 Apr 2026 11:55:42 -0400
-X-MC-Unique: dHZIqCmFNPKsY2ORlkti_g-1
-X-Mimecast-MFC-AGG-ID: dHZIqCmFNPKsY2ORlkti_g_1777046142
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8a16036c90eso199816866d6.2
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:55:42 -0700 (PDT)
+ us-mta-512-ptCVjvV_Pnqn0czftTdx2Q-1; Fri, 24 Apr 2026 12:09:51 -0400
+X-MC-Unique: ptCVjvV_Pnqn0czftTdx2Q-1
+X-Mimecast-MFC-AGG-ID: ptCVjvV_Pnqn0czftTdx2Q_1777046991
+Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-651c8371fd1so13226048d50.1
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:09:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777046142; x=1777650942;
+        d=1e100.net; s=20251104; t=1777046991; x=1777651791;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
-        b=W/G09qcJN36TSKCwk83jDq2oeG4TROL4G1Md8HlXPLRXSACi3ghwWCa+XTdYM6GUeO
-         g7Oj5cOsPRkc1hjZtlPQHQJp39p5+d5VSVEMqxlnYFu8m+og/zPOXpTngLFNN/eUtvbx
-         Nun3PJ/DDANXKxL/CmMUrhdiPIX0af6pqibjlRJyMASXTGb0SFv8K5fN+NQXFF0CUl3g
-         /rcNNKl+bTDchxQtFjKY+99qkyd8OeyiYNjbAXW+wFev4vzrVzPw34t6/TDiFQzkH5cL
-         l4WdrvLsqngqkFy7WjxuMmIfhG98C5y/x3LMWOBENiUBXj8unLsncwx8vxBvvk4Sa5RI
-         6+TA==
-X-Forwarded-Encrypted: i=1; AFNElJ+oi6mY7edIU4RtnsCq9CDif36oIDzcnA827xZ17fql53oeSS4Q+rUQpXTLB4YiW5hfDbKUnxAUaQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx0PucjseeNrGht7JiFVNx1P8aU6olRpts7uqS8hfbk7MPjbstb
-	DPlSOqKfJ0rIL2A2GMLQtSvJPmqyj9WTxc0VtEl9+Jk81jcVOlpuMQ5DHiUBQ53JS54SzOWw/6X
-	P05uJ0bxpOGelI4PecX3iK0tW3YKwzcVra2rx0kqxcHw5lT8lnFwm
-X-Gm-Gg: AeBDiet9m5eFwSJT3lFLttcIwZfKeC69PhtV3nVaiMrbi7oA2rpuENJ+hFb+uKH5WCc
-	4Rv7rBlQFrCBm31tzYpBtvH5sMg6O9nEg7UMS9ldcnlE/kwYBXD85s0UvmsugMdpdTMBb+behIn
-	TxM95u/0GVcA9KeXr97KQxUqEr16IpUQkR1bXYdu4KJBBiapoqMHwX9EPzketxf85K68RGq5pkL
-	UL3dG/9nq0BcHPY4+3nXW6Hto4rCJRdi3pTMckVpIpZV0i+wkOAXov/IBUW5EEcoOgEYgHyhNCH
-	xowKcE619Ksj7hZAS6zXpCky+yQ5Ge7fn2FtV/vcQNTO/g90StVyuyloS1CPuZjhEW45RztZ226
-	XuTgtebENEze88CJcyeIgpL9xTZVtaMS0mn/e7uxG+AbRUnKSF89qYdLCPQ==
-X-Received: by 2002:ac8:5892:0:b0:509:3cd:b22f with SMTP id d75a77b69052e-50e36b41242mr499700361cf.23.1777046141638;
-        Fri, 24 Apr 2026 08:55:41 -0700 (PDT)
-X-Received: by 2002:ac8:5892:0:b0:509:3cd:b22f with SMTP id d75a77b69052e-50e36b41242mr499699791cf.23.1777046141002;
-        Fri, 24 Apr 2026 08:55:41 -0700 (PDT)
+        bh=1zynltM+qCB1+gf0Itcd03ZQyLMvAA175jbKGHoVBPI=;
+        b=mMXj0k/gIHhw+LHgJyt7grf7MlxusaIL03CrhjUQRLmcA5k95ZCH7vHM19LzWTVTEm
+         +dxKtMUdEcR/svGbElBXqqlbDg5dJxRRkyiRDR/MIt4adNw/yIQU2RU79KkihlSbS/YH
+         NpznK8JLmfd4J2AWvSRRa6Seo2Va/gr0o+bwJWzc4QIleBE6MA1+xrKtAWh710R8jBuN
+         cEa59MOnIXS2z5wfxT0WMwDpleZYsJM0UyoxJGHw9h14Y1sETAPOAXHgNYap3ERuKaVG
+         5Ie3qMw/xqxcvjv2mz7m1/KvxOaQyCeRIKQZ5PG+CtLPpdkxcWhZyK1Hf3akCh++tg9C
+         ChbA==
+X-Forwarded-Encrypted: i=1; AFNElJ9R/uATAVENY4G7iRL64DGYulxOveEvBTAxxh9BO25/eq2emIyTrkTmsAWBlyod72ki1RdzkX5mVw==@kvack.org
+X-Gm-Message-State: AOJu0YwSwJAUE3w4+tv49BHDar2gb+TFdmv1sx3sWlNN0LFOjulxqH5y
+	pknbPPR2w8NUzJXPMYR/l2Q/1lgDkE+TGCNVvjfeVibXeWhKSeVRNIwU4M6wa9NJ6KjG40fh32C
+	c2oDvATyjl3XZMgSaTFSOYMr91lYcZIRTptoU5oTyb6PqP/vHJXVO
+X-Gm-Gg: AeBDiesMevH3JH5CKi4EwmW5mOrqbeWc4muzPCmvjnnpDEAbPd/1N5ystVtpTWwNppj
+	QQKFzJ9hO7lYYJA8qZ4j7a4pww1VwBbPP/lZGpfLWBsoPz8QdkUaAdOyUN9cpUIYhenovK+veef
+	wn0TqZYcj+t/FX0c1ZOs0cgg4i/Q74BYy9jwdLLVcZOj7EVFyvyLiJBRILZY37ph50Pv0KbX0Vm
+	vqThHB9BEakB8UF/aKArMbON5TRePPSmyleg2UGRU2mpAvppTnnC6I53/tKSxWyMYSIu3/X5Fn5
+	no9B/Q2Ygyv54lTgHnkRGfRz2PqX03U/IrGLZ6lwFNmniFpouDov0CO6Ns8eCbltB0wpFYIxj1c
+	f1nkISCHs2geTka0cb05hOCTv+f17i+oNDoVJuBtJz2YJQbam5elDwvZBzw==
+X-Received: by 2002:a05:690e:419c:b0:651:cf84:7744 with SMTP id 956f58d0204a3-653107ebc28mr25160550d50.11.1777046990818;
+        Fri, 24 Apr 2026 09:09:50 -0700 (PDT)
+X-Received: by 2002:a05:690e:419c:b0:651:cf84:7744 with SMTP id 956f58d0204a3-653107ebc28mr25160511d50.11.1777046990305;
+        Fri, 24 Apr 2026 09:09:50 -0700 (PDT)
 Received: from x1.local ([142.189.10.167])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50fafe9674csm148150631cf.3.2026.04.24.08.55.39
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ae5eaf1sm191939006d6.30.2026.04.24.09.09.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 08:55:40 -0700 (PDT)
-Date: Fri, 24 Apr 2026 11:55:39 -0400
+        Fri, 24 Apr 2026 09:09:49 -0700 (PDT)
+Date: Fri, 24 Apr 2026 12:09:48 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Kiryl Shutsemau <kas@kernel.org>
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
@@ -112,9 +112,8 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
 	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
 Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
  guest memory
-Message-ID: <aeuSe0PY-g10KNUF@x1.local>
-References: <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
- <aed6fHLrIdahbdY3@thinkstation>
+Message-ID: <aeuVzCUJ1P3pL4rD@x1.local>
+References: <aed6fHLrIdahbdY3@thinkstation>
  <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
  <aeorZMvKwu8zKX5i@thinkstation>
  <aeoxnuGKO3uqS2kG@x1.local>
@@ -123,21 +122,22 @@ References: <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
  <aes7b17nG0cXrtEd@thinkstation>
  <aetZUOINzfTXChLL@x1.local>
  <aetyhki-UD70dyRL@thinkstation>
+ <aeuSe0PY-g10KNUF@x1.local>
 MIME-Version: 1.0
-In-Reply-To: <aetyhki-UD70dyRL@thinkstation>
+In-Reply-To: <aeuSe0PY-g10KNUF@x1.local>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: aXprHpoZhpkywATSLY3arXF0ZSO4Vb4gPUbsxKsJYN0_1777046142
+X-Mimecast-MFC-PROC-ID: 9r10RQLZaV_J_kgDW0nXdEtgbSlRS8-MABYuBgYSYbk_1777046991
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 47FA720011
-X-Stat-Signature: ytffqfxpda8dbpudm7ma7k5sqity3mc1
+X-Rspamd-Server: rspam10
+X-Stat-Signature: zqjkiuxanbcy3afcdnnk74xmehk3xqns
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1777046144-496948
-X-HE-Meta: U2FsdGVkX18fuiRjB4UHTbMasBNuztgRSNlDDNxXVhOSf/Bxe6JszXLRWs88TbvqJ0Yhs6TWYXS5nTLpKBwWfB0+m1aKB7BeXvarG0SXaLdMneM4TZwSqb1anqK3aW2tqps2+TT4dA4/TKN9l+4JDJoDzmBr7aUkaRRp35UasPjde4/xFAq97oiAKssqWi8Yt44vMXi7MbLodUtuMYvUG0TghsDfnm4HBcgvdEOURPStmg+7PlpQdSJHkpN1SjLiQaeeIDjbUge8dkiAOGp1ARC0RnPcEe1uigy/9zCkCMjC5bru5gqLDTLKmLBOhFq8IqLSG4xmO2ZeJ4mw8tCki8G52/2JMJQUV6f7jr2pdTuBYwXbIA1HqQ4Zzv023iUP+S0sz2TF4XzASvGkFONa1wWfzWkTPsaTcy5Y+j68v8NyKr8gpUev3Gv8pbKYjEq5bRX6l48BQmrhLsvDhRtDmEeU4zukfnsVmj4d2F47XOlRazYLoUS1QTHDDhazAsc3YKL2eXI/tm4+vC1KmeYSxByH38n3bBCxNoS1cNN7jrDrDtxiRBpumkC9oySekvECq4Hxf0cOZFLl+WlnJf8XvI1ObhGAG2+amK39tMHSs4cJJ3zgzWy1NNw/1uX82oFHoM/ldFvUueTjWplDo3JS9f04NDelsyEPi5GBx3cjQNpDJFQWRT1FXOO/7Z0EIa55xbmcpOSfrMDyfR7xMyiH2tkIRBnIPpgUk7GeMVcDkps1PjD3VmICJ4j6VcN7Do2y8gl1AIuc+3HpSfTi2TIF2MSjPLCDGSGYXNrsdRNFaUN3P/k/+TmgTakB104Lg297jj5Yem3Crrt4p35OlC+mgg6o3w4Hvc2pSemJ5KNfPOWGUzVxFcsYxXgcNWZsGE7PMHxIRZOdDp5mRsdUtgm72dWbglQmSiM/wRQsWX1aGcrL6r5spWYXqwGpZkIcbXrybiG3sXurVMAahti1mIa
- JjOlNjCH
- /8mSMuV23ptgyqa+OLnC0xRbiXP9d0j8AM5JtWzovvinSUWYyCVUDN9+1fgC85GtOJCziFSEQQtgcCVwJNdIYwVm30q4SNDLyLgZNQAWEQFOixR96Hk1lfFBgCZ/uG1toLBJsTM5cnL3DyiR7vSf954vrvKaUTQ9rRTTTVJOYvzUTdZ+Uzyu6fQSfHPafn9qPF/UI3X0Ytt5zbo/w+faorKShUbFYjQbqD06y07N2qSQxuMN+cNOBPiHm/YIaB8xO+/UXLfT02W6WBumBODrVrbFcjlrD8GoHb+9PV/9dhimWPqITj8eBtMuRlBw1IgVkK59BRAUCkzJ6xOjOzRd9jwkgbn+e6QpUc4nEW1TLQHhZNr1crBTEchf0K/a2BhpvC/bj
+X-Rspamd-Queue-Id: 61BAEA0006
+X-HE-Tag: 1777046993-401222
+X-HE-Meta: U2FsdGVkX18UkznFA3sEXR7ZhgvylQiVAYgp7/25KUN71ehl91umLz1kkhwIeXYtD2d2EIgTkjygt+d729JHd//MiLzZYr78QIs1YvZkiBZDnzrx8LG5y51B2yCk2H2HA3+JorpB+OYHAYOGk8ubyaRg9hFyONC+j17e5wEuuN4DkOTo9tjsigMtYSbRkwv0FhOIMyiLdlhzI/1eCjUuOHii7gqpa2kd46lgbyYcwFouQCT9o9StSPhw44/sqX9l0Cr8rbBcHhUEaEkfF15D9mIAUVzqTQ94/p1e6nTFU1vQtPKl6O64LRTMHYZM+LqwO0IgEXSOs0qfDBCinwiS98NRPd3YPm/ZOZYz2sgDt1i/6NbteRAFabDAH/hMm0lqUq4RDXLtelOU/NOkmcNutKL+b/dAUrs78FXexiy9/vGZ7ZnqU/KqIHKZ1Yr0Y/DfVVq1KP0dMyUyTw5hYEBvCPLvoauCMBUZR8/PSUFsaTTR053aNhbntpkbKtaM53PMDATMYQt+dfeJ+3FoLSV3HZXwmJ173HQb/bSRDlBCnEArbYTaM8C1XFWGcEP94E1rIMWdLdikISzNcrOep+7ERoSSZ4xs9Acmo7UhVebRddREAweBthLBdU398RORNdObu5/DCO2qd429DYd09Q6iaH1LGzw2F4MyMpLE/HfIG0Oyihcju1COUGbBY8ivPUnwifIq2HOy2gqFXyitYFxg+UfY5KGB0m+mjQHlgl91jGXmp+QBUa7K9FZM+/M8ZuwDTY9UP1ytji3Rce+0yAQa307XM/RsOIy3zW48Shis74TumLF4QYVPL+uGDpJXtsoG3DvU38CSO9z8YmjW//K2KhvgBDpSrD8uRKKd98PCuP2vI7mZs0yUzTpNNFWTwec559qS1Tlx3T5nsexvHtWK323FS3qTemIvpIMNVA/H8RouH+iXFPCVXZ+BlxssEQxwlH32sfrjIVdNvjw7zgt
+ aHzRKFwY
+ KQuE8riIIHMLaRwt8381KVlWBTeZ2Jgi4iF7v7PxokB9ZCzUpqvPMR3KZTXid2uzvIKfxj8CMz7lOrvbQIXCrW1hUFxyPm5CqIU9TszT9I3k/trQfx11pVVFEM02Pa2gNNThb5C4dG/nQpg+i9b6XYfU93c6YiDMQJww59ktM87oYKDeCRM9DWrgf+5QF7sK9GgLUJDPDAsXqXbRTg/7JTUn0efKg9cWqr0vz3Gpv7JseALmselT1Pp0gIYdTFQSI66wu9bf/6wVvfmb7GWTrv0SjpN1d2Rrl5R+kO8UUZyva/CSi/yAklsMqNx2+BCbGATwJtBeNZ1EqOV7e+SPxc9cY4xePDC0D6hS36636ha112svxmBp/4S8GsgL6ABmwVCFK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,64 +145,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 02:49:58PM +0100, Kiryl Shutsemau wrote:
-> On Fri, Apr 24, 2026 at 07:51:44AM -0400, Peter Xu wrote:
-> > On Fri, Apr 24, 2026 at 11:34:48AM +0100, Kiryl Shutsemau wrote:
-> > > Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
-> > > memory. We need visibility in the virtual address space domain.
-> > 
-> > Yes they are, but ACCESS bit isn't.
-> 
-> A-bit is not a reliable signal for userspace working-set tracking
-> because the kernel itself is a concurrent consumer. It is exactly why
-> page_idle needs PG_young on top of the A-bit: PG_young is the "kernel
+On Fri, Apr 24, 2026 at 11:55:39AM -0400, Peter Xu wrote:
+> For us, we know the overhead in theory, but we never really measured how
+> much.
 
-I assume you meant PG_idle.  I actually don't know whether PG_young is
-still actively used anywhere in the current code base.
+I think I didn't discuss the other side of things, where hypervisor can
+touch some pages and mark it accessed, even if you don't want to.
 
-> ate the A-bit but the page was actually touched" escape hatch. And
-> bringing PG_young into the picture puts us right back into physical-side
-> tracking.
-> 
-> > For migration, see e.g. remove_migration_pte() has:
-> > 
-> > 		if (!softleaf_is_migration_young(entry))
-> > 			pte = pte_mkold(pte);
-> 
-> remove_migration_pte() only propagates young-at-unmap. It does not
-> cover the common case: A-bit cleared by reclaim before migration
-> started. The concurrent-consumer problem is what breaks the signal,
-> not the migration boundary.
+IMHO we should track most of such accesses, except special cases.
 
-IMHO it's a separate problem, and AFAIU it was well solved at least with
-old LRUs with PG_idle. It's just slightly unfortunate it doesn't yet work
-with MGLRU.  Also, when the extra bit is in folio->flags, it only works if
-both the consumers are reporting per-folio, not per-mm.
+One example is when the access happened because of emulated DMAs, then it
+should be marked alongside to the guest access: that's when you mentioned
+vhost, and I believe whatever vhost touched on the pages it should be
+marked hot even the guest didn't touch it.
 
-I'm actually curious whether there're numbers or solid proof showing that
-in your case the per-folio perf is too bad already to justify a new per-mm
-API, like RWP.  It's because currently this proposal is still so far very
-much about "let's implement a swap system".  It really doesn't yet have a
-lot to prove on hotness tracking POV.
+The special case is really migration that I can think so.
 
-Not asking for a time-consuming test immediately, but IMHO these should
-really be solid clues to first justify the overhead with current rmap in
-production.
+When at this, I also want to know whether you can benefit from something
+like swap_access() / maccess() that I can propose when it's ready.  It
+means we can shift some corner case accesses from hypervisor to that API
+then it won't cause false-positive even if rmap is involved.  Then rmap
+will be a pure perf issue, if it will still be an issue at all.
 
-For us, we know the overhead in theory, but we never really measured how
-much.
+I can also share at least my plan on our side, in case it helps to find
+shared goals. Basically we at least have two ways to go:
 
-Even if so, I don't think it's unsolvable.
+Plan A: propose maccess() then use it in qemu for migration purpose.
+        migration is so far the only thing we want to rule out.  We want to
+        keep DMAs access promote pages, for example.  This will keep
+        relying on kernel to do hotness tracking and evictions.  IMHO the
+        best and simplest solution so far taking both user+kernel into
+        account.
 
-I want to explore if there's something that can still be generic and work
-for per-mm tracking.  I believe if we can have some bit in the ptes, then
-when mm reclaim code walks clearing ACCESS bit and sees some vma is being
-tracked, then instead of setting PG_idle, it can just move the access bit
-over to that special pte bit, and only to this vma this pte.  IIUC that'll
-benefit from both worlds: fast HW-accelerated access bit, and no minor
-faults.
+Plan B: if above didn't work, we can implement swap in qemu.  We need some
+        API like what you're looking for, except that the major challenge
+        to us is MGLRU compatibility.
 
-Would something like that worth exploring?
+So IIUC if you're looking for completely flexible swap backends, then Plan
+A won't work for you: that'll always stick with kernel's swapfile
+managements and it's not always flexible enough.  Then I want to look if we
+can share goal in plan B.  But if we can find some shared goal in plan A /
+maccess(), then I'll also be more than willing to know.  For that part I
+can definitely see what I can do.
+
+Thanks,
 
 -- 
 Peter Xu
