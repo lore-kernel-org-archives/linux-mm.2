@@ -4,117 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E19C5FED3FC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 20:00:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0FD0FED3FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 20:00:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 582406B00A1; Fri, 24 Apr 2026 16:00:12 -0400 (EDT)
+	id 385AF6B00A6; Fri, 24 Apr 2026 16:00:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 558FB6B00A6; Fri, 24 Apr 2026 16:00:12 -0400 (EDT)
+	id 3368E6B00A9; Fri, 24 Apr 2026 16:00:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46FAE6B00A8; Fri, 24 Apr 2026 16:00:12 -0400 (EDT)
+	id 24D876B00AA; Fri, 24 Apr 2026 16:00:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 347456B00A1
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:00:12 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ED84E8AB0E
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 20:00:11 +0000 (UTC)
-X-FDA: 84694515822.13.B9096AD
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BD961180012
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 20:00:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=lATYIi50;
-	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777060810;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vKqBvQFy0haKdUtjK97pLXW69B86nqbjxH3fSUsXZ54=;
-	b=cWIGKJMJyu+SunGhx48K+knMktYaLEm3+uxylz1p00DBX913wuARFiZ7rckBKXiq/MSviU
-	i3H2X8jEVs9i6Cr6mLqlDUpUneTtccMkfzL6XPdua9rq84hpJs/ZLzlkbb4c72OwB0OIf8
-	iDWLIefQVBwtEn0Uj/fZRwErPNwZsUw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=lATYIi50;
-	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777060810; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 11FF06B00A6
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:00:38 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB49B1C0323
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 20:00:37 +0000 (UTC)
+X-FDA: 84694516914.09.F617648
+Received: from mail-ot1-f78.google.com (mail-ot1-f78.google.com [209.85.210.78])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9323F20020
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 20:00:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf13.hostedemail.com: domain of 34svraQkbAH8v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.78 as permitted sender) smtp.mailfrom=34svraQkbAH8v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777060835; a=rsa-sha256;
 	cv=none;
-	b=syDy9L8jJ+kg7OuSCSvymSoabb0gu7ZtUQuu8N44zVuFKiq37HVdc8Hg0Qbel5rIJguDVr
-	QGUJc4hm4AWG5GulHisp1shOJZGXyWargBNw9+0I9dSv+1qyDopMoyX26WdCeXV+2Koh/3
-	6Ho8SoitQ4pkQDpFud7zJ1ThYZBK/4A=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50e63771d91so66428061cf.0
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:00:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1777060809; x=1777665609; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vKqBvQFy0haKdUtjK97pLXW69B86nqbjxH3fSUsXZ54=;
-        b=lATYIi50bdjvwVTjvncy1GSOWSkAemHm9AITYrqxgkdMZ8jN/zYnak+Gd7kF01zgj8
-         oLn9Ue2E16EEgWXPI75zQ+BerYN3hIuwP2RIzbqOyRkuVfMY9MemFkwgg6to0dR6WY93
-         XO0sh9C34W5PmmgqKpPalLcG0At/vy+nJr26KSDXsPN0Ntw6c27ZQPTXqKS5ObiY3xRl
-         b1Wpa2Tvs7vNEUS/ODWLhZ04/3UR7VPXD5QRem8i0KtCP+bQAq6egNeU0cmLp7r7/VxH
-         5jvdRjo9qAeHGpE2Rv1RtpyUDW+xfaAG4XiKo7p4Y9Tqcz2M2Kf/q6IfYWH9kjnnySZg
-         3zhA==
+	b=aTKXOcPuE8PAke3ekZ5WaBDahtxymreqK2wgXonT5MLpWaGd8a9Chxn2P0dr9It1VQ6AGz
+	IkhVi7112shBRLCIaOaIfpgcYUzAClHK0Txd32KywrFXQ4kZwjZtaBb2zHU46hGFD8E8dI
+	BSDyCWOAB9ezh2gNFCb3cmVQmrhleNM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf13.hostedemail.com: domain of 34svraQkbAH8v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.78 as permitted sender) smtp.mailfrom=34svraQkbAH8v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777060835;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=ggGX+6weTYqFFNdLkFPYeANYaSekrOHoGD6NL8WI18o=;
+	b=kxSGvk0i+Czjb0BdGq07uVZn7ensczIQ4KnduGHX3ijZjDuEoJNVUvRDy+u1sPBdKDZWH5
+	Ez5rs1rlGrrA6c2v9s0Z7Kl2ecDY9YB/JBzZ1g8TBYpD6sfO92y83JeSvIrCD/e2HiFGEx
+	P7eBCM/kADSkj4ByVnSHnB+6GTmfMJ8=
+Received: by mail-ot1-f78.google.com with SMTP id 46e09a7af769-7dbd1866b66so19712463a34.1
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:00:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777060809; x=1777665609;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vKqBvQFy0haKdUtjK97pLXW69B86nqbjxH3fSUsXZ54=;
-        b=htULIOL+a5C3Y+MzWPoa4NH59DMsOUoAbHvLdq7Bz6LWTVlkjYjvK+b8blj4jEAXaw
-         KN/2zW2Au6lQr8xpU6dZbfyax9H5WPGzY51w8QT/N/3zRlWGw85/A6XM3kMvRpv50dKr
-         wMGVg/nr9/WIcXTBnW+LSkFTyvFrnKSmULTByrbzIqOqSGWnYJsh+jbzGmEQhn3474F1
-         m4dUxRiwpoIrIRb90bElE6Ij0gEKDvbLEqLzWg3Zu4uysBGl8yGnBmcWti7AL7OIsCAs
-         kAaf44tHIge45GJRyvOa4yrl2/tslS9QQ8Sjd8KkuHgQVcWcgzzCyTBdswWSqOjYPV47
-         bR/g==
-X-Forwarded-Encrypted: i=1; AFNElJ8/Ve+lmdAi88jlNTWbOX3w4sffmtiA1fjWUqoiIUBwh3bWSirFNOx/Atz5RyGAHQYtx8J7Q7HQag==@kvack.org
-X-Gm-Message-State: AOJu0YyNJl0sRMrz8RVRwmQQppcmO+2+ztaVMisNn5PvaumL+DNu4th0
-	TscZKE2hZiY77CUJe9f960tP+IehyIzCH7e6t/SnYoeND3YC5aOIvHyim2yVk4rOFi8=
-X-Gm-Gg: AeBDieukMvI7YSXPqPh1B69edX4r2tRcR4odLnmkE6js9SXuu+1LgXcin2Siu/ob0uX
-	6b/2uyIIpUg1UOG1gq1IzP0phUeaBPK2DXZTnuYn9d79E9QyFhoUiX7WQQIw1y5yW0BnP5lGwMg
-	gvLA0vLoDdh0xxpfghSb47+g2wvx0p67KwzTratHwrHyB/3w8vUV5z0pv+qpPmFTj6GqZgngZUm
-	PgG/iyHsmqTTs4D06wdbqdkL3yQ2g3lEl7rK8ULIh5jf4h0dfXOqIopa037yIrLa3cVC3Fftys2
-	Vj90e+errNIP8KvHNhVs0P5GpTbZoUeoiwNz1AKjp+x6gUgD0fCpjrfSdHvuLwyT+x3dvPfB1GP
-	ZK8i/r/zB9SBnaNNb66Bg8t/Hfk5DcKWq6YFOTfMeYzqn9a7dDvjmxBxGblH9mtsVUdtkyFWmEy
-	Mgbtrawwfvppa8v6cMICDMV49qiaIbJNzq
-X-Received: by 2002:a05:622a:848e:b0:50e:5cc3:6f42 with SMTP id d75a77b69052e-50e5cc37bedmr276335431cf.59.1777060808338;
-        Fri, 24 Apr 2026 13:00:08 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50f13ba2509sm129707921cf.8.2026.04.24.13.00.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 13:00:07 -0700 (PDT)
-Date: Fri, 24 Apr 2026 16:00:03 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: Matthew Wilcox <willy@infradead.org>, lsf-pc@lists.linux-foundation.org,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [LSF/MM/BPF TOPIC] Page cache tracking with the Maple Tree
-Message-ID: <aevLw0DsPOEeRd-J@cmpxchg.org>
-References: <biynsvpcamct5fva5nxxdvc3q43dqi72jotpyasvrk3pumdz2w@7okprmuwznlo>
- <aeKO6bKupHa2bgWt@casper.infradead.org>
- <aeaKAxrAUtfwM9ns@cmpxchg.org>
- <oi2kit3a2qulr53c7j3h4g3cjjgbss4kd2djdqota2sriiaaov@7uewnraaq4gk>
+        d=1e100.net; s=20251104; t=1777060834; x=1777665634;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ggGX+6weTYqFFNdLkFPYeANYaSekrOHoGD6NL8WI18o=;
+        b=pk4Et32LK7ykNEjd25D6LJKtTpR8E5NKeqIzSCz8re5jPELFiuQfH7n60KMpQ74vtI
+         GYifZLDMeVw3UwzMPxeobdZaDvtFSFVnzWpiJFQrTvEnf2hpyDmgD4t8qsDoNB1zI3V/
+         HpXFS8ynAXpdQjOwagx0i1DT7V6Ip+esI4ore8dxpgxLcZGAkdBVuPaA546yGba9UiQG
+         xbGy6sBBgRf3B+PriW2qz5/vmyW4Kf0z5LR8M/zwHL9paJuNU02Sga0FMLbUuSnbBtZc
+         qY4nJtFecXdX1GBL5zpm6jMvJdzQbVQTTLcMMbOHvHY2hkY3Y2A1lbpneFJ1DfKYo3B6
+         BRKg==
+X-Forwarded-Encrypted: i=1; AFNElJ+SrayqBqDINIw3lK3PV9fv5rbGSXro4swNOYD4qPLCIEY/qzQh4hOhhjMOIUwxQwk8wY2JUE/nlQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw9Sx9ukG4nd4EGhUz3dLU9KDsgkZY39c7P6dacphMSQt/i/5gH
+	N0bxWUFSy4EfIqwssYMnczRR23sywp4Wd8uhbklm5cCxmRT4hXV9gGR+DfQyn517x2gXoilN/y6
+	yYImml0NdZb10loj05o2Riprdy7t1L717I2Q2Mrb44O0RgQ9+uqj2HcgBEf8=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <oi2kit3a2qulr53c7j3h4g3cjjgbss4kd2djdqota2sriiaaov@7uewnraaq4gk>
+X-Received: by 2002:a05:6820:f024:b0:694:9d60:99ab with SMTP id
+ 006d021491bc7-6949d60a6d0mr9785179eaf.6.1777060834437; Fri, 24 Apr 2026
+ 13:00:34 -0700 (PDT)
+Date: Fri, 24 Apr 2026 13:00:34 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69ebcbe2.a00a0220.7773.0005.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING: bad unlock balance in __zap_vma_range
+From: syzbot <syzbot+d2be42d723da59b38697@syzkaller.appspotmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, jannh@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 1pai8k56naitpekmcunbrpra5qabop76
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BD961180012
-X-Stat-Signature: rza38k9gctno4dqdrhmte7jt7bd7p4cc
-X-HE-Tag: 1777060809-95740
-X-HE-Meta: U2FsdGVkX19LPPvxeucSNhxUHItMSisk2pHXrdX6ui9KNLPcFLXCKzKK7xp7pAWC14YD5/g4H1V3K0i4bi5nMD0nkb9snu5Qua+UQ/O2xfz3nl0H4Chx7BGa7tCfSNQXjGH8TTKPxQ4lCWJd9GtLjKBmZwBSm6S0gs3bzd1k9OZPLpfyVlcWgXr4fUOxUlwUmViAbHUmuMMf1uKY51OGJPJjCbEmtu7LRclZw0hdMx0DHrc/lD+9fP6x+ZWzKinzhkuODK54s97Rmo2cYagYWliugMSfYY8SPooIdGLkLXJRXAquTpCqs7LjfZJaYGaaVtlj7zfhDjeUev4ZyMlqJFCq9LQ6pEEKzB0dvfltAIhXxdiAwayEhol6L7AzOcMNMnnQoPu3JogPah3DAtVbqDJhWw9r8ADoltM4W7c1fNduez1gfiWmscxWyeg4sEIYrw4nTeODDrNvN/Iahqua9i/mBWVcrFo4FfA+Fsy5G00XP25+lPYEdIObgquB8qH5j37BGf3WLe+oAQ0jjlqEXlJmcNZhC2dCY/2T9ajsAGyhxDr4CBrdCztKAzcX7k0KSTSL8hIakcULb7sadlm7mM5xyMBRwl99J9OHEfFwyxWVjpYit1G6ZoD7zPpA/eRzUPdm8qLcoE23EnYabmjsAhxESpLgt6YAt2tdMcs/hKRZj9UeP60JkMH6c4AdkoaQ5jXxzSlPXjUex89RiF5uiWrayrRdwZsbK3WN1m9q/fDtRE7Fy1ONc1WwVOFOQzycgfM+lJhxV9OQX4ZOali9zQpWJK7VGBC9AokVgNOhUdgqMqGRHTyNYRQDLzCnBMciNlbh74RIdyUl8oDk4FXgGkRxCelguRA/jatQO0y3N/2vZXfCn/oP5kaalmKDsS34TpnSCwHMXbGn/IbrsmgyjCvg1f61v+nujb6beHQZGJQQcJex9BNcGCGPQEz7mQgVz6FfBV89cud2YVcRobK
- 4GdupGvS
- qE2OrJHIADx+KH1wt7gmGLUkurF4uhT+GeG3VRt79gzQsCn12MFcLt4SfOx+1cAUvosXnranrH2A5cilaIG4lBIoFwGVS+C0sSpbNO3nVQzqECfKroah79tGuFPe7T72K4G7eHThWvglHI95vZI59Y0SDcYN4wK+JOSHS6tebePeq/GgKKk9hsQdR4VOZFBy4rQK7TklWxhofHB/12gi5QP7PgNqk0bjaGVpKsK1mzD2CUTpSmljkk7Zvn3VolfwjoLX1WmeBTdzUnVCvs05D2qdbxX8lMLNI3Y6ZdZTrGZfmG+Cf6al35RMDXNzxuzVhhUnE37/0Ihv3bmAEEeQVZ36EIfXQusaKpvJNgq+V8m7Dxnb/mt2JnPa69eUizDwEmE+YzoIfswUIM56+suEI+7bHXw==
+X-Rspamd-Queue-Id: 9323F20020
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777060835-914268
+X-HE-Meta: U2FsdGVkX18BckflSpIzbw95/8Y8rwi3hKb6lpchU76Qdf4uT8PlJr7gLrqOV7iRLBrIDoClyyRUYjocjRLtDWrk816jPzjZ/GadMI8sLP0eSYaqUGHs/5/xfMEFlvJdIZbs5wdJTJ8ij1Ha7XfnCVOhVkeSEKQ9bibWeanMLhLOlnHnZOwKB5rN+vC2ZnWcqQ141kDX/tLDORUVrsMmMIzuZxt0YWhDMWWFy3DDqOqLmna77DDuQTrPMP1/V3oedUT/hm5QlmxP4h+qKELLTbLINkdIrot1FXmek0wZ9qbK3Z2q0mQ3EHYwF7IqP0bINVSxp/GJASST89CDxRTAe92WaUdVQT17e+aq6cNvMJS74f2s8F+Qx2ziq9NY2DZ/uqaC7zhR1WPIHO8qtt19y8c4C/ddKgJmynmbKAMX1gIVUX8zf5ItJCmdysfpgTErtiLWSLXS+jhGhuBFCm8G6MFXWzpPiYwznLpHPFh3cUSnq61fWDPyXBlIMKJ6DPSj0pq2mYKE9pJ67HeDjKq3L/rrF6IcKWH5oxmfLffi16RPfsPTCRtbYZt7+dcijLQJFSzxec132ukz0UdvKV1oLeRWoDmM98zQZHJWoAMI0ZMlrCmmNGqSMFLBz2LqSFqhbisof0I11HJ0QZIrbZxwh/WrYzasawYypTIS1OueBysa/xb4c+qbc5yUUfA5DIRC7z8cv/LyCbTWWSUACcSP4cVIXVQJYmmEZZZH3i1XiBmt1RDjhtUHYztJ2h04aZ1vKfAH6yR9+lYIBX6mKiFxsZ0OP8jxGvMoWamvA/U3pdKnjBOSyUcL1KA5aBDofEJwFcff2Ip2QgZakdactlai4rGaj4+eGZo8MUWlmAG/aJZ6e6MswFDr031BJ+4g2jBu8Su5TjkbKPYso1PxTv8FK2cFkzS20D1b8fyVSbU6OB+27ajePMoUZn+uUtfiEMJdr1WVTnDWcrDmOEBp9xw
+ Fo4EpI/r
+ 9i76PQJmij14Smcxw4xg0fbEA7Rr93i5eVDg0SfIYVqQFsLGA5iB35t+IEkx8lfXBe+ZH6Nab7/I0LbWdg+SzZV/lWg06VIUdMa6niUEV9D/ln70Yn/yrkxOcvGyx7Of7l7bMeNvdMVaLpumN6VL7AhnEzSAnDszXEw/sTXy1Pg9zpNuz5kph8JMiw3zmZ8l4Ewn0rgh+pa46fkrsEP52Dhy2UCP0EUuLx0MWPOCV+NUuxYugJPKh2nTFU7T/18VaiQkfOm+EzvZvKAyyhvqFFLbMl7msqTRE/C1VtYR51HriF/1UPsD3VsHAT/8ksOFm3PpMFlgOViRwrq49j50tCXxLsCsLuiGGu6mPBExM1lKYPo5L5btYdchMQ6hx0rii99l39xp8DwmGWfRTWpEa1OrqtqM3XJL4CbvoxBsHpeTzc7LU7cbKCS5jjgaGEiumfq7PZy8SehczhiWA5lJ2Mitn59mGU/8Li0dalioLW2cX8tsM2tvbM5UF8z9yRQAHgAaBItQj4sEm5BmkEAQzrJ4v0XL9fhKTMY198IB8uufoPf4xg3X3kKun2hIRhLlC13iAQKWTPKAAb1bDHDqQjItOgvaThN7BQhSKu5x1ojrbPZkZKxFqMqOa/JnSiFuwLQYHjq6h1RUMNbG5U52TIlMwwv8nIMFInyqx9sCey6Uvh+eYpMxZlz3234T9zTLG11ugD3esvDe9dvYE4NiGvY56UvR1uFli9l1Q32agEFtmDIgPP4WAKbBcjlgX58B0z+0eO4XCKrZaNzgjEQS5apOE+uMQg93IgXhIJDChba/Ltuhttr3acLqqTw4LAUMZMz1LjGcPmqRFlC095KvgXnrATga2NEP77+zYha+wZRwJl/o7bVMEBuBwvcRX5xVtxhiFN6FHSluaUrvpyaq7vK+SD5LWjebzgrFTrwGAIo/3PsToOCNku6YzqdDHwjMu7br3i5bwU8i31p8EF+2y1pgYMvPj
+ kBYqprhY
+ 8nlRUd4VIgwnFy7mhtO+cv6TFnE6Eef3bNIhJ86g6R+voGqM0teolTTngkrJtZL7aykq+mJDKJILp9mLjU5e8/ilbjHIQDgTyCtHthXmcpTE+iOUI1ZESx3Iea9+dbB/XxSBncq6NeLdC1ewEp05PFHbYQtu8VZFniy3x+clMD7cgMPs5k4feqxzniTOlNZ9tDtIG0+onaiibkuQvR6+xjKOY4rHg3xUEKB12YjC4ActXCMpBR76aerXNTV1lHKq9O4ltBulQ0KJ9Q7y1N/CKWl25E61R12fIt0+EdY0ExO4NQ34Ts88n7MHSZ4ZHVb0DYRY98mRIfGxctYN3JRt9YIjvnikSCYsohFsJbXsB15njpPLDaQkAgJHKHRPb9BFEaCdO8S9E3Qj9ULKoduszhH2M8cW0IEKC9zMu0EUpKRgl/j0FpJImgn+Tfor77xcu65qBYW5GUuVFe/GPzmHXD/qGn4KwZ4D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,115 +95,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 12:45:32PM -0400, Liam R. Howlett wrote:
-> On 26/04/20 04:18PM, Johannes Weiner wrote:
-> > On Fri, Apr 17, 2026 at 08:50:01PM +0100, Matthew Wilcox wrote:
-> > > On Tue, Feb 24, 2026 at 12:10:26PM -0500, Liam R. Howlett wrote:
-> > > > The Maple Tree needs some enhancements:
-> > > >  - Support for purging shadow entries from the page cache
-> > > 
-> > > Liam and I hd some preliminary discussions yesterday around this
-> > > and we'd like some feedback if anyone has time before LSFMM.
-> > > 
-> > > For those who aren't aware, when a folio falls off the end of the
-> > > LRU list, we store a shadow entry in the page cache in its place
-> > > so that if we access that page again, we know where to put its folio in
-> > > the LRU list.
-> > > 
-> > > But this creates a problem (documented in mm/workingset.c) where
-> > > we can fill up memory with shadow entries.  Currently, we embed a
-> > > list_head in xa_node and add nodes which contain only shadow entries
-> > > to a list which can be walked by a shrinker when we're low on memory.
-> > > Ideally we wouldn't do that with the maple tree.  There are a few
-> > > options.
-> > > 
-> > > The first question we have is whether it's best to keep nodes around to
-> > > wait for a shrinker to kick in.  Was any experimentation done to
-> > > see whether eagerly freeing a node that contains only shadow entries
-> > > has a bad effect on performance?
-> > 
-> > Hm, I'm not sure how that could work.
-> > 
-> > The LRU order created by readahead makes it highly likely that all the
-> > folios in a cache node are reclaimed/made non-resident at once. Going
-> > this route would destroy a large part of the non-resident cache the
-> > moment it is created.
-> 
-> Not the moment it is created, but the moment the entire node only has
-> NULLs or shadow entries.  Meaning it's removed the moment the last
-> entry becomes a shadow entry.
+Hello,
 
-I'm saying they can be often the same event. Readahead means LRU order
-matches file index / node range order. So there is a good chance that
-reclaim batches will create all shadow entries in a node in one go.
+syzbot found the following issue on:
 
-> Still much sooner, but not as extreme as just dropping them immediately.
-> 
-> > 
-> > The goal is to garbage-collect the oldest shadow entries whose
-> > distances are too long to be actionable at this point. Specifically,
-> > their distance to lruvec->nonresident_age (per-cgroup, per-node).
-> > 
-> > In the current scheme, we just go in the order in which nodes became
-> > all-shadow - oldest first. And we only do so lazily when the
-> > non-resident cache is far into that territory (cache set vastly larger
-> > than available memory). That gives us confidence that we're mostly
-> > dropping very old entries without having to look at them one by one.
-> > 
-> > We don't have to stick with that design, but whatever replaces it
-> > should meet the goal, or approximate it well enough.
-> 
-> The goal of garbage collecting the oldest shadow entries based on the
-> nonresident_age.  That's a broad target, which I think is made more
-> specific within the implementation to 'groupings of 64 shadow entries',
-> which I bring up later.
-> 
-> Besides the locking improvements that we can bring, is there anything
-> that you have found doesn't work optimal in the current solution that
-> may be nice to fix?
-> 
-> > 
-> > > The second idea we talked about is that the maple tree is much more
-> > > flexible than the radix tree.  Having even a single folio in a node pins
-> > > the entire node, so it's "free" to keep the shadow entries in that node
-> > > around.  But with the maple tree, we can be much more granular and
-> > > delete shadow entries in arbitrary positions.  So we could (for example)
-> > > keep track of inodes which contain shadow entries and purge shadow
-> > > entries when they reach, say, 10% of the number of pages.  Or 1000
-> > > entries, or some other threshold.
-> > 
-> > It's not the volume or the concentration of shadows, it's their age
-> > that makes them good candidates for garbage collection.
-> 
-> Maybe I'm reading this wrong but it seems workingset_update_node() adds
-> nodes to the list that is composed of all shadow entries (or removes it
-> if we have changed one to resident).
-> 
-> Doesn't that mean there is a concentration of shadow entries since the
-> entries in the tree are in order?
-> 
-> That is, reclaim is at node level granularity, and the nodes are sorted
-> sets.  I think, sibling entries aside, it's fair to call that a grouping
-> of 64 shadow entries?
-> 
-> This also means that with today's code we are keeping older entries over
-> newer entries because the node has at least one resident entry.  But
-> that's fine, because we can't gain anything by removing them today.
+HEAD commit:    c1f49dea2b8f Merge tag 'mm-hotfixes-stable-2026-04-19-00-1..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=10b09f16580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6a29a582d8ced859
+dashboard link: https://syzkaller.appspot.com/bug?extid=d2be42d723da59b38697
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
 
-Yes that's a great catch.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-It's the last eviction, i.e. the very youngest shadow entry at this
-point, that suddenly demotes the whole node to the "old" set. And
-there could be much older entries in circulation that just happen to
-still be next to a resident entry.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-c1f49dea.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/402c79548d6e/vmlinux-c1f49dea.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1bc39526d7f4/bzImage-c1f49dea.xz
 
-But I think this would require a pretty spectacular breakdown in
-access locality. More likely you get mixed nodes when individual
-entries refault. And yes, not much we can or need to do about it,
-since the resident entries pin the whole node anyway.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d2be42d723da59b38697@syzkaller.appspotmail.com
 
-So the question, I think, is still: in what order do you reclaim a
-gazillion all-shadow nodes when the time comes. And the answer to
-that, IMO, is still best approximated by going in the order in which
-they became all-shadow.
+=====================================
+WARNING: bad unlock balance detected!
+syzkaller #0 Not tainted
+-------------------------------------
+dhcpcd-run-hook/5886 is trying to release lock (rcu_read_lock) at:
+[<ffffffff825b687c>] rcu_lock_release include/linux/rcupdate.h:310 [inline]
+[<ffffffff825b687c>] rcu_read_unlock include/linux/rcupdate.h:869 [inline]
+[<ffffffff825b687c>] pte_unmap include/linux/pgtable.h:117 [inline]
+[<ffffffff825b687c>] zap_pte_range mm/memory.c:1948 [inline]
+[<ffffffff825b687c>] zap_pmd_range mm/memory.c:2004 [inline]
+[<ffffffff825b687c>] zap_pud_range mm/memory.c:2032 [inline]
+[<ffffffff825b687c>] zap_p4d_range mm/memory.c:2053 [inline]
+[<ffffffff825b687c>] __zap_vma_range+0x22dc/0x4bf0 mm/memory.c:2093
+but there are no more locks to release!
+
+other info that might help us debug this:
+1 lock held by dhcpcd-run-hook/5886:
+ #0: ffff88802b94b438 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_lock include/linux/mmap_lock.h:592 [inline]
+ #0: ffff88802b94b438 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x124/0xa10 mm/mmap.c:1284
+
+stack backtrace:
+CPU: 2 UID: 0 PID: 5886 Comm: dhcpcd-run-hook Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_unlock_imbalance_bug.part.0+0xfb/0x106 kernel/locking/lockdep.c:5298
+ print_unlock_imbalance_bug kernel/locking/lockdep.c:5278 [inline]
+ __lock_release kernel/locking/lockdep.c:5537 [inline]
+ lock_release kernel/locking/lockdep.c:5889 [inline]
+ lock_release+0x28d/0x310 kernel/locking/lockdep.c:5875
+ rcu_lock_release include/linux/rcupdate.h:310 [inline]
+ rcu_read_unlock include/linux/rcupdate.h:869 [inline]
+ pte_unmap include/linux/pgtable.h:117 [inline]
+ zap_pte_range mm/memory.c:1948 [inline]
+ zap_pmd_range mm/memory.c:2004 [inline]
+ zap_pud_range mm/memory.c:2032 [inline]
+ zap_p4d_range mm/memory.c:2053 [inline]
+ __zap_vma_range+0x22e1/0x4bf0 mm/memory.c:2093
+ unmap_vmas+0x299/0x5f0 mm/memory.c:2162
+ exit_mmap+0x1ef/0xa10 mm/mmap.c:1300
+ __mmput+0x12a/0x410 kernel/fork.c:1178
+ mmput+0x67/0x80 kernel/fork.c:1201
+ exit_mm kernel/exit.c:581 [inline]
+ do_exit+0x833/0x2a60 kernel/exit.c:963
+ do_group_exit+0xd5/0x2a0 kernel/exit.c:1117
+ __do_sys_exit_group kernel/exit.c:1128 [inline]
+ __se_sys_exit_group kernel/exit.c:1126 [inline]
+ __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1126
+ x64_sys_call+0x102c/0x1530 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4a27bab6c5
+Code: Unable to access opcode bytes at 0x7f4a27bab69b.
+RSP: 002b:00007ffe0faf6ed8 EFLAGS: 00000202 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 00007ffe0faf7104 RCX: 00007f4a27bab6c5
+RDX: 00000000000000e7 RSI: ffffffffffffff88 RDI: 0000000000000000
+RBP: 0000000000000003 R08: 00007ffe0faf6fd0 R09: 0000000000000002
+R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+R13: 00007ffe0faf7210 R14: 00007f4a27dbb000 R15: 00005576e2150d98
+ </TASK>
+------------[ cut here ]------------
+rrln < 0 || rrln > RCU_NEST_PMAX
+WARNING: kernel/rcu/tree_plugin.h:443 at __rcu_read_unlock kernel/rcu/tree_plugin.h:443 [inline], CPU#2: dhcpcd-run-hook/5886
+WARNING: kernel/rcu/tree_plugin.h:443 at __rcu_read_unlock+0x235/0x5e0 kernel/rcu/tree_plugin.h:430, CPU#2: dhcpcd-run-hook/5886
+Modules linked in:
+CPU: 2 UID: 0 PID: 5886 Comm: dhcpcd-run-hook Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__rcu_read_unlock kernel/rcu/tree_plugin.h:443 [inline]
+RIP: 0010:__rcu_read_unlock+0x235/0x5e0 kernel/rcu/tree_plugin.h:430
+Code: 74 11 c7 45 58 01 00 00 00 bf 09 00 00 00 e8 d2 70 da ff e8 cd fd 22 00 9c 58 f6 c4 02 0f 85 dd 02 00 00 fb e9 57 fe ff ff 90 <0f> 0b 90 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc e8 a4 74 88
+RSP: 0018:ffffc90003387778 EFLAGS: 00010286
+RAX: 00000000ffffffff RBX: ffff888025320000 RCX: ffffffff81e8a36e
+RDX: 0000000000000000 RSI: ffffffff8df30d5f RDI: ffff8880253204c4
+RBP: 0000000000000004 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000000 R11: 0000000000000001 R12: ffff88802b94b9b8
+R13: fffffbfff21b8360 R14: 0000000000000000 R15: 00007f4a27cba000
+FS:  0000000000000000(0000) GS:ffff8880d64e7000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe0faf6018 CR3: 0000000037c7b000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ rcu_read_unlock include/linux/rcupdate.h:871 [inline]
+ pte_unmap include/linux/pgtable.h:117 [inline]
+ zap_pte_range mm/memory.c:1948 [inline]
+ zap_pmd_range mm/memory.c:2004 [inline]
+ zap_pud_range mm/memory.c:2032 [inline]
+ zap_p4d_range mm/memory.c:2053 [inline]
+ __zap_vma_range+0x22e6/0x4bf0 mm/memory.c:2093
+ unmap_vmas+0x299/0x5f0 mm/memory.c:2162
+ exit_mmap+0x1ef/0xa10 mm/mmap.c:1300
+ __mmput+0x12a/0x410 kernel/fork.c:1178
+ mmput+0x67/0x80 kernel/fork.c:1201
+ exit_mm kernel/exit.c:581 [inline]
+ do_exit+0x833/0x2a60 kernel/exit.c:963
+ do_group_exit+0xd5/0x2a0 kernel/exit.c:1117
+ __do_sys_exit_group kernel/exit.c:1128 [inline]
+ __se_sys_exit_group kernel/exit.c:1126 [inline]
+ __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1126
+ x64_sys_call+0x102c/0x1530 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4a27bab6c5
+Code: Unable to access opcode bytes at 0x7f4a27bab69b.
+RSP: 002b:00007ffe0faf6ed8 EFLAGS: 00000202 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 00007ffe0faf7104 RCX: 00007f4a27bab6c5
+RDX: 00000000000000e7 RSI: ffffffffffffff88 RDI: 0000000000000000
+RBP: 0000000000000003 R08: 00007ffe0faf6fd0 R09: 0000000000000002
+R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+R13: 00007ffe0faf7210 R14: 00007f4a27dbb000 R15: 00005576e2150d98
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
