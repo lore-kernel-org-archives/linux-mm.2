@@ -4,98 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D2DFED3C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F1E4FED3CC
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:17:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD30D6B00AA; Fri, 24 Apr 2026 10:15:38 -0400 (EDT)
+	id B99116B00AB; Fri, 24 Apr 2026 10:17:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAAB16B00AB; Fri, 24 Apr 2026 10:15:38 -0400 (EDT)
+	id B70A26B00AE; Fri, 24 Apr 2026 10:17:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E8466B00AC; Fri, 24 Apr 2026 10:15:38 -0400 (EDT)
+	id A5FD66B00B1; Fri, 24 Apr 2026 10:17:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DD9A6B00AA
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:15:38 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F65D1C0121
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:15:38 +0000 (UTC)
-X-FDA: 84693647556.24.78C92EF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 751AC20015
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:15:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uQNXKqM+;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777040136; a=rsa-sha256;
-	cv=none;
-	b=U/0z6TsjWkLTv55lIzHwuOn7x4WSBpi180gOeDtKt1+nsQlVu1dnUKJd7GnnDxsGJTBe6R
-	U0zaCdBA5K5AhnAG0FKXX47EqnczTyt+oukAJrg5JsIDXlZz1sVjnl+3GMwj6J5IhQRwiV
-	OqC+Pt22hYYCp/LD8XAnSgtywH9DLa8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uQNXKqM+;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777040136;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 960E56B00AB
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:17:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4126D160141
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:17:13 +0000 (UTC)
+X-FDA: 84693651546.16.C3D6680
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3817E8000B
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:17:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=X6N68JKY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777040231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nyK95quYkZ2efvIo/lOVO2C8R8VhlGTOEAzo29ISL8g=;
-	b=FSdSnymv4z+8qNv8jlQC4K7h9HH2h0C1njyPOi4LQ60sOmARfI3QQMuzxyGiQygx/jSp3C
-	L5S3J3FvzxL/i5v7CT+/6zCgcIc6VGQnc1ICKO4FN8R97cRVsmepILKQ1MqNZ5BrIwVp+b
-	ERAuGLijMIibWwFzuy+Puslthuziu48=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B97E0600AE;
-	Fri, 24 Apr 2026 14:15:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450B1C19425;
-	Fri, 24 Apr 2026 14:15:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777040135;
-	bh=L08wbD9RP1yIjusIkp7uHpvtDFAssJesg0vXbY3SOlo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uQNXKqM+5mUhzXG3wrgwsljDXLTKkGCn8k++R/99g0dgBzwKo29qei3pipqEpVoSp
-	 HuV9V9S/Im3ZA6Vaz92WxkLH2DorTEPO8R4P/gHUl8PtrDg1axezxhJHT7OiIMHGd9
-	 KAwmmNczlPPrkQAfSbFnDc8IB/UfpxrsFV/tN4G0=
-Date: Fri, 24 Apr 2026 07:15:33 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Lance Yang <lance.yang@linux.dev>, peterz@infradead.org,
- david@kernel.org, dave.hansen@intel.com, dave.hansen@linux.intel.com,
- ypodemsk@redhat.com, hughd@google.com, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
- arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
- seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com, roman.gushchin@linux.dev
-Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush
- sent them
-Message-Id: <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
-In-Reply-To: <aetw4aoABYj3keMh@plex>
-References: <20260424062528.71951-1-lance.yang@linux.dev>
-	<20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
-	<aetw4aoABYj3keMh@plex>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 751AC20015
-X-Rspamd-Server: rspam12
-X-Stat-Signature: smizidhf37n4fx8cy3tmbwuiuhqhyts1
+	bh=x+wyR9J6mRA82cv/13Hb4OzZ1JWi5cUMIYU7fMR32Ss=;
+	b=AhkJ2SM9IAg6cmPRnsbmH/1VeTJF6ZThKO93ldPBrKnyPGsxXoLLFSG+BnvBuB/VdqywKt
+	Nv0EOkMLw5Fp+o/MfGBczMtggdBfpHRdfkEdpEhRuMihFT2abiZ3SIDPlRHkXCgY/DdraT
+	nBqya7QjOyXG5OwPXfIeeQXh0xXICQc=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=X6N68JKY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777040231; a=rsa-sha256;
+	cv=pass;
+	b=sLCGySQdrPyP0eq2NDAfrPdDM3A8ZQJDuaoAAcX7KKMYpJDgUf2FGxjOGbMJyoSZz2k3TM
+	ez7iwChT+95ppz95y85kmascSsAkC0Wyu6PUgUtjYjfBf6qOebte/M4pC4kzYhWvGceeRK
+	/cjmpvM1/ogWqsganwyrlh1ntW8bRQs=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-678a1642a81so1893678a12.0
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:17:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777040230; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LyfkYmup5/hrl33LGVCYuxAMv6iU047vdGphnQAhT0jge3f+MCraN5t1U1JAqxUwD7
+         I70C/EFai57PnFTbWCA4runLMVDtwtRGBY97bi/i/CXhmIE0fBg2Ar1XgC7k10QIfGhJ
+         Jkiv44Njmhm+s7+zdE2GBPc5rwnA2cBx48vZKJ+qGtp18s7vJVkCXWaq44K6rO/PaY6I
+         bj417qdLLf5AEGyBHWxlLOoC8nl/AGjJuYAVurEEPip90dYKjwgng9QRI0yoRyB0l8Lh
+         BILei7FW3fLmsdSb0IiTAwJQLhMg0pGyrNEPcEKmHGtIO6cm8j0lWHEsUiYlo3t6S8z1
+         ShVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=x+wyR9J6mRA82cv/13Hb4OzZ1JWi5cUMIYU7fMR32Ss=;
+        fh=rg4IpdRb5F0f7ix/7c2rhqkNyYTwz+s1onNj3XZSiNw=;
+        b=Wdo9ysvcdttq15lEc8SlMobKRMtsa98n+zEWwv57PpdQdFpt71nt1AKbqIDQ40igAV
+         WUMPyNwDzL96KJVLWNC3VEzXCinAnf5AxJtbOXahLt2K0Z1o99Fvkqli0DyO2pdw3uF4
+         oZyIfoSlwdCv5KBDyLy6zrywbetzwEKD9Z210Rb7GWykNzvX/s65uJ7qI5MM2NwPnvx+
+         H9tb1VyOlPwwYqG5gT2xC1SPD/QEC+MEGKUNAZeZB4p8IxzlwAveqULis5b3o6WO0i4P
+         U5xtmLSKSh566GWwOZD3gy6qyKiYq0+H9aV7mHzfF+SUhxYdMEuTANTx0IWdMpP4MYGR
+         tzYg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777040230; x=1777645030; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x+wyR9J6mRA82cv/13Hb4OzZ1JWi5cUMIYU7fMR32Ss=;
+        b=X6N68JKY/zY8C4dpsx9ave81sex85/XVDWsyTRYyYrWsnXMAtsrpq7w39J6fsjlDIm
+         qHS9ySWh28XLrM93OGpBd4sxTDnGxy2d3lp/OFAVMgezyUfbLkseyYrAmUD+e/K8Yffo
+         pX3myHn3qliU7gjsqsSr5HZBCfQPcBbOsWrqe2rVH8E/0OXjMm0qj/MDagg3zhP8VqwX
+         68Gdr1nKCk8nqu5JO+U5fJI/94g7zIPTldiAxMBlquzGhZMstmgjbv7yLYE7iB+E5aJ0
+         BnqegGJ5LYYpgrjj1HvAfoxBzLoUR6ZJ7LD1QA9KXiwf/+uSxh1AKRjFTsfmZF0zFzLr
+         kh8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777040230; x=1777645030;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=x+wyR9J6mRA82cv/13Hb4OzZ1JWi5cUMIYU7fMR32Ss=;
+        b=bC3EIHVhruOfRelAiwY8X8oqDVUpmgrETWWofWay6HTc9H76pGI4mN/lRubcQTZkoV
+         hs48dZTBsFmCIdchqbi0Gg9ZnXA6eNgt25YtjxBSmmNzw+/KfvLrPWsKIRYaC5dX+V4n
+         zxavgDXX8i8xFqBOAg/k6jRXIXHJy+xazjm3LXO4ZYtrKodr4WYi59fAQHauG09Jjww1
+         hSRatQ2ys+3eIcaghBIICFmUUZKyTXzzZwdjNzruezad3hqYy6vuuUWRAAYQWnmaCClo
+         gptNoY8R7bmunbH63dkMLo0wfVkwkwqn5sWMUkxu5+YbfUlP/LqSAPqb5gXy1NAVZ+hI
+         Accw==
+X-Forwarded-Encrypted: i=1; AFNElJ9WDcluc206WANC5WOeclRoUd7OcvyuCxFWxMwOjYrQKPWCplfjiaw+dhxRJo65RL1Wbxx8x8uHtQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyy9zmOaOCJP4S+mSpoI14KHJii0tYoYDJ2D6nT8ExJK5TqoF3g
+	JNKfcvlPTDJZzJS2N6VP8XkHQBJ3tZ9OEzyU4apNRraSLDhhEAmlCEsj2NxOE75PVbpnuXWXOo8
+	tJtEYJXBibXzHS9Wg7HyGzXPDQhbkPQc=
+X-Gm-Gg: AeBDiet3uvi4ziBas24EgsmFxgJdVz8qzkZ4ytGEU/hzAoSuPc9/jMMT4Ujtk9YNB8F
+	fWWq2gqg0mmAG25VybARjxXtdPvkitBxm+p1E40RUhJ385Xr1yhXag4KEtOtdA/d5hUVm1wcHYz
+	GQ6goTI/K/xO9S8Kg3WiCeJkYi0R2FQprqiYdHvZHLdStI9MuSUz4YgiztLcgSEaoppjM8kLd/v
+	0kLh3tr5fd976DH1Vd+u5MyuH0aOJVrvZHf26e23eK2CyEjZGdR2JEi3UnS8ytU3nFCMX28fVfX
+	+EsOfRXrpFD8/okJtXbaLaA4mkNWk8xDc4sUHdLg2O5NRi1z5rs=
+X-Received: by 2002:a05:6402:e9c:b0:673:f729:c7a1 with SMTP id
+ 4fb4d7f45d1cf-673f729efcdmr12444569a12.14.1777040229397; Fri, 24 Apr 2026
+ 07:17:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260424-mglru-reclaim-v6-0-a57622d770c3@tencent.com> <20260424063636.539c202e4d1326088843a0f2@linux-foundation.org>
+In-Reply-To: <20260424063636.539c202e4d1326088843a0f2@linux-foundation.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 24 Apr 2026 22:16:32 +0800
+X-Gm-Features: AQROBzBO2m3qsME_fb1jALjDKyi3brSJgNggaZ_EZJlHlMYrpvwIAde5-tpDcvE
+Message-ID: <CAMgjq7A-WbFpNcMmMH6baTA63f5dsJJ8=1p1yWT5JLr0i79Pbg@mail.gmail.com>
+Subject: Re: [PATCH v6 00/14] mm/mglru: improve reclaim loop and dirty folio handling
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3817E8000B
+X-Stat-Signature: 53xjyf53rqh7hdqtiafasnj9j9gwp69d
 X-Rspam-User: 
-X-HE-Tag: 1777040136-310213
-X-HE-Meta: U2FsdGVkX18u6HCxugZ3pCzwJmEYbURlR056spVIvxi7QXh5d5G+csVlVg/Obbohw85cVie/GvTp7fwqz5iIWC/LH5Yhzx3/UCFXScDN3/K8TgdBvtWNDglfGBxHj9UzwzgsOmQTwPzb82oyfJlCd4vgTPQ2z9fLDbJL4JzY93+v+BmD444AxlDo73H5GcHVgx+QBY2hafKmU020J2hwjBTjq/xRO8u9fgpxN+VDFQOtyhTAFEYr0zvfEZizvoAlmStPcW/DGu8Q7r70Zx6NTL/owzSHTgKwmaD0YTXNvWZSWG/6c4skz/nc1iwlNM+rnOjKdd0P7AjsTLG700vPtOzkUZBciK7VNLdeCEUo6R/YEylO1vYEUaNq0K/yuhAARyb6lCqhvHn9FQJ6DGn76w2D1Zuok2W1XcK9/Y88GnUpDJugRzBIV+rMHGv+SvbdBHM9JoDGQyHDZGfVlKkQWwvh7FG4x5TSwpEn9drtXRPUQAKHD2Ed44dfuWo9tdByoH5flR1H9doUohFTPCey1pXy9O1YTRG9jWld8lN5EAqni+maA5dYgMGOusHxcOhguHPohGZIT/276DTEbDuTrFxiihwvLRP3yqyMmia8vyfkOgAk8G6HDpBw9a9jXupTFz8NhiuKLS2vLRqb/FEYs44WnRK/7/ufHdm3LpPJ5fgfE0NWlIB4t/v0Z4wX3FFlyDoUsvoJsK64Xe3CrBWwN2qr44D1HJiquTvNhN/lH/Gd+djTK6wT3Rvd2yUIaMQQlRrZWAOjPc0k//jOx5OGZ3swuS0LJcLNhbM6ug33uT4ewwTJX48mLPvYZ3wtAuYLnOf80pSgsTKOJuve86aEIY3hLchSLTrYerdgXK0trGIw2WXGcGEDIx+WGdHt73XO9OsR0chNQ8VnfP71VD51uEowQW8lIJGUGWL+M3jhVGjbH1Mex4Tp8fjRMLCxG5RpDvgNrwoCrzofySSb6CY
- Aq7uVLkE
- TfuyLAoL5JjkLLMAbxO0VVGf3gFw38ZTOdRWVsAIKaANnDUxP66hqJy/TvR3n8tRB79kcZ1EOupV8CQW0pPnwK5g1fXgrCP0qd/y24soOKjlo/sBZP0CV46k8fgENlpbTWhb6FBJFLQrusAqJv/8B8RgSt8M41EvmPBrUBWnt/d1LxYMr3Nz7PGeg/AH0ekUyoGTSsZ/2WYGW3D+M0ksd/1r6k0mCwxBlrVGCYsUJ++3K3J+Vq0vogfrHZWbYp5Nx8MvANHC3LFnUkzVCQHgIHmLQ77+ijmhqfd7fMyFdYI6pnoCETF7rct1oqjzOMjP63W4fWw1Lpsden81fQ3uGl6jcbwfwq7Yu7O33oth7vUmoQhNgFqkk7f7HSw==
+X-HE-Tag: 1777040230-125807
+X-HE-Meta: U2FsdGVkX1/cyVhFJooM7G/Z6q+IPvBheY55qP9tH9+NOB0U7alJIb8S2QhotpMdlyM6DYOsxMkeWAFTqYP3dAblZQ6cYSmXmvDTup6w2We2Qi0+D9U2Dfsb+MCtkhLlJju4n/tnBkO53G+7mwhKSYMCfas9iPU9cgg6Co6TEtBqC3b88lqV3YqvSBFXEOE7F9qv0JzY3UCqjU1ZSc7tDG42aNEbzp+KfOlQZ9O+2ldeIZ+3v2dUpIvrnV9erlKBrBcskp8Gbch73vh8FgN2Zlho0wd346znWcs1EB+l2garmb6vfBaWUSWjk90K3zyuiuU9tjt4SdVYiz0uOIXTbJa0+ZD+VkmpUkJ7phcWOTqXMrYijNV1mUT20rJFtpUuf00Vc+B0zxa2SrBXVS3qC/ti16QWPC/9JIql5KTVyl5gs+u6FU8istyIdgXfnOLeYGNO1lqFe2byRk4GxbIPGXPWCERRCLnLa01CxfOdsW+2rimdc+8ugVpX36lloFkngZC1rYIMDZB1IsjgraeTPgbNssx3/UjsDBLlDyRtWDjEQeAYMy8oYNMUz28dUW7gVNxjQmdrG2ju1Sm2FdwwyjzGqygH7powWka65foKNqt4GXoaE8HxV4UP6IizUdZl2PZWMXX6ftAdy1OpHn4Mc8P2kcnEkdWn18jTJ6N7A+nsOhycVQ6vE0QdldPWy2vNuMYflr8tOO8iQT/UVQ8RLosn+aBEZmC+628EkNVnBOmtaFDO0reZxKVwO2/+2SS+Z7yUvZb1i7tm2qnsO+jsyrOUPeSll46GPMaz7KHgbKnXtTnoRFXRjDWtftLkrdVGJCb2fCiwHRHJr5kYK8cTEhJjwnuqEcBF0T2G42euevH5bWvMTmIzlsvE09OB4z3IBCCZaQjMxCU0oNpv6PTj+7JdhYDOcQB+B3u9K2BZXvjwowZ92AtsrotFfB7l0t9f6aNuktS0K6YwmX5ieHb
+ VCzErC1e
+ 27lmh/LLgLMroDgiHHBqmHBEpb/FTtVcmQwtOHCUYsPCaqC+EBwXB9+Ep+/PoM7y1tUKH1pZAPQJWLwp6Ql6Z53enbUPsV8KVnVU5mShNFtRQJ57vNz6LZbS2znZxlfRzGN6ioOqYRwK15FM7srRtzesFkP9ekKNNXIgrLKo4dNTNEL3uXas+V1fYdJRRXeTrZK4pvXA+gWbRMVrJiN6hJdjEVc1kRrGZfLtPWuaXNnQ3Xtpcsg2/5jf0wV3XNMlFvyEKn7GaMbNjT6UY5EBt6kf5gDCtV+qGfsCllv9geZ9VgEBhmB9mUZvkabOayFpGF3LWzkXz0m3Had6a5ajsgoFRQqXvEHQLgj/Wd38XU9kdMW1L2p8EWqxTVlJBbwfv8TBW3uaUBvYxomICsWNbZt1sNMYQKAn31Xghl+D1oAbKSzr8OoLGglTCxASr3eHzb+i7gploDd3WFttpsb7FLvJq1en7cOLsl8TjW8NQD/JPW0xg5gTgNWX9K217j9jTNndAEwWfRqr+xJ6UZpPGCiyO96AZTK5WGo7YYAkDZD7LYS7ag1ANLMZfXbUACxW02ySxGUrLY2rxwWsqzrZuiSYN/WSOvhEFeebbwsx8PQiOKsppP0a9g7LNAqY2qfVUPbHb+kDIO1BVSuWJ5rtegxNsRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,58 +148,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 24 Apr 2026 13:37:04 +0000 Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+On Fri, Apr 24, 2026 at 9:42=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Fri, 24 Apr 2026 01:43:11 +0800 Kairui Song via B4 Relay <devnull+kaso=
+ng.tencent.com@kernel.org> wrote:
+>
+> > This series cleans up and slightly improves MGLRU's reclaim loop and
+> > dirty writeback handling. As a result, we can see an up to ~30% increas=
+e
+> > in some workloads like MongoDB with YCSB and a huge decrease in file
+> > refault, no swap involved. Other common benchmarks have no regression,
+> > and LOC is reduced, with less unexpected OOM, too.
+>
+> Sashiko:
+>         https://sashiko.dev/#/patchset/20260424-mglru-reclaim-v6-0-a57622=
+d770c3@tencent.com
+>
 
-> On 04-24 06:30, Andrew Morton wrote:
-> > On Fri, 24 Apr 2026 14:25:26 +0800 Lance Yang <lance.yang@linux.dev> wrote:
-> > 
-> > > When page table operations require synchronization with software/lockless
-> > > walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
-> > > TLB (tlb->freed_tables or tlb->unshared_tables).
-> > > 
-> > > On architectures where the TLB flush already sends IPIs to all target CPUs,
-> > > the subsequent sync IPI broadcast is redundant. This is not only costly on
-> > > large systems where it disrupts all CPUs even for single-process page table
-> > > operations, but has also been reported to hurt RT workloads[1].
-> > > 
-> > > This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
-> > > the prior TLB flush already provided the necessary synchronization. When
-> > > true, the sync calls can early-return.
-> > > 
-> > > A few cases rely on this synchronization:
-> > > 
-> > > 1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
-> > >    of the PMD table for other purposes in the last remaining user after
-> > >    unsharing.
-> > > 
-> > > 2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
-> > >    and (possibly) freeing the page table / re-depositing it.
-> > 
-> > Sashiko questions:
-> > 	https://sashiko.dev/#/patchset/20260424062528.71951-1-lance.yang@linux.dev
-> > 
-> > (I never know if my Sashiko emails are welcome/useful.  Maybe Sashiko
-> > said the same stuff about v9 and it's all wrong.  But better safe than
-> > sorry!)
-> 
-> These emails are helpful; but, I do not believe you should have to 
-> manually follow up with a link to every new patch series.
-> 
-> Perhaps  Sashiko could automatically send a summary email in response to 
-> the cover letter, or provide a link once the reviews are complete. For 
-> the kexec ML, we opted-in with Roman to receive automated emails from 
-> sashiko.
+Thanks. It's interesting that I followed sashiko previous suggestion,
+cause it's a trivial part, and now sashiko is suggesting to change it
+back to what I was doing :)
 
-Yep.  I'd be OK with an automatic reply-to-all.  Maybe some won't like
-that.
-
-An alternative I've discussed with Roman is an automated
-reply-to-author with a cc to a dedicated list (we could use mm-commits
-for now).
-
-Preferences?
-
-(I'd suggest automated-reply-to-all, see who complains, then figure out
-why they can't figure out mail filtering ;))
-
+Nothing critical and I just saw a false positive, but anyway, I'll
+forward the review to corresponding patch, I do prefer to change it
+back to the previous design, maybe do some other slight improvement
+too. Let me send an update in a few days after double checking the
+swappiness issue reported by Barry.
 
