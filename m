@@ -4,87 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2CE0FED3F2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 18:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3D9EFED3F2
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 18:31:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5986A6B0005; Fri, 24 Apr 2026 14:29:51 -0400 (EDT)
+	id CEE1A6B0005; Fri, 24 Apr 2026 14:31:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5702B6B008A; Fri, 24 Apr 2026 14:29:51 -0400 (EDT)
+	id C9ED66B008A; Fri, 24 Apr 2026 14:31:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4ACBE6B008C; Fri, 24 Apr 2026 14:29:51 -0400 (EDT)
+	id BB47A6B008C; Fri, 24 Apr 2026 14:31:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B8436B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:29:51 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 810BE1C028F
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:29:50 +0000 (UTC)
-X-FDA: 84694288140.21.E49B046
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C03771C0002
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:29:48 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TkEikQa7;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777055388;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AA2956B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:31:48 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 387E0A02AE
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:31:48 +0000 (UTC)
+X-FDA: 84694293096.25.5C83816
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 97FC418000C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:31:45 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=Pq9kbNWE;
+	spf=pass (imf24.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777055506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NnFKVKgl+PPhoj6jfp1IthN6FbfFXx15mLnWLyqyCUU=;
-	b=0+NbBD+gbRwJAOGamhVu7MGmsBC94X86wb8EQPAlWHqvzCewZ+4lP5B0MTRZqVelYSpr/2
-	AWaK01/dQktpTicoxEa0cUiu7oRvTivQz8mMxYoMjed60EmCoLFnm1nO8kfS0RkkDJymfB
-	K0Rkyz3neB19w/E9G4whZLX24vITK6A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777055388; a=rsa-sha256;
-	cv=none;
-	b=DpfpJ8hjCH4HF4nkSeEmciqKACnT1bKvttn9CdEQPkLOLxvnU+J4iHdY6ZwGHP2ytj4r+4
-	ZBSL/e1DESmTjyVw9JrlAda9NtCdo+2cyfnqOAwrcRFtpxzOyt2og9xFrpjfNEcFfQsen5
-	WqDJ4UkkP6UnM2E+AT3iB5nfAHczXEY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TkEikQa7;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B634E4370A;
-	Fri, 24 Apr 2026 18:29:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEBDC19425;
-	Fri, 24 Apr 2026 18:29:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777055387;
-	bh=3kkooBEHJF5hLBMrc88e/f1Fx4klTLxcQLIvIY/U0pw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TkEikQa7+cB0BwOlrtQLBC2F8wSXhYtRVNQR11G6dPJNZqLw+ED3uvByC+3EPR7fR
-	 u/5hKjCBfJo635Lqq+gMhUEX+p42mdk4Yn3cTlrG9iGOI0OClH03vexG51H8GpqQVc
-	 8US1nADY16Mb6wLjtIA8VnRBe8p9RitxsQ3c8+Uw=
-Date: Fri, 24 Apr 2026 11:29:46 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sunny Patel <nueralspacetech@gmail.com>
-Cc: apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
- gourry@gourry.net, joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, matthew.brost@intel.com, rakie.kim@sk.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com
-Subject: Re: [PATCH] mm/migrate_device: Cleanup up PMD Checks and warnings
-Message-Id: <20260424112946.4b4ba29987e166dfade76c2c@linux-foundation.org>
-In-Reply-To: <20260424172208.11674-1-nueralspacetech@gmail.com>
-References: <20260424065922.5f15ca8c88eaf8a02847af17@linux-foundation.org>
-	<20260424172208.11674-1-nueralspacetech@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	bh=Pbv4EWq/Cd5RENoa+J7LVRBPpcEtejZq7+JufMh2ebM=;
+	b=kaptuaF0gDDGvmMNMl5IxS7g+JNimzKabGXVJ+1Ci8aNEhO6GBxUUU3JveuvY/5HskeLMZ
+	NJcdwJpa7+47McnTXmTtrMgUrAl01Y3F6+ezM5YGf5pEHwxGM1krAzFszUdi605SHqbbJK
+	G3l74Zv5PoOQZ3QvX7C65iUOujUsE9A=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=Pq9kbNWE;
+	spf=pass (imf24.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777055506; a=rsa-sha256;
+	cv=pass;
+	b=DOlzhkVAYSWDKQVquSBLzSIELdoz1Ge8M6YpZ+XvPSyXGK7e98Ho2iZQ5uwQXnw04WUxRu
+	intFLiEhPD2/rCV+ZoAl0eLWBNQqKvLc9BQUgHgzi30mTYgLw9dhQmXNBoclEcGm90aUM6
+	3mwa7+9oSSwLw5XDKBAQI9fOvNmy2e0=
+ARC-Seal: i=1; a=rsa-sha256; t=1777055483; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=RgGwWgsQ+knSqmPynRcyy5iAyNoEqmOVONANwdljTpHS8EXo7ACnE1/VBvuWKoWDZRIV5PTsoc4YwHf8K1+xiR5b83YueOJf8ggZZlUqwv2PDj3XZW2pWCaP1XxeLixtNIqdn1/WmjmtUpZCQPACm0cbnciOuOb8hvDv7kgtlYc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1777055483; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Pbv4EWq/Cd5RENoa+J7LVRBPpcEtejZq7+JufMh2ebM=; 
+	b=CGdNQI64fWl1Vk96GPsBXjhcX0y40sSDyXeAdkYSUQLj2k7AtJOS9JzJKsifMqfaOc96ua66ECn6aNi+oR0t2F9ZHKRx95jUSSk089mj+vzDBWtX2dSrcBABcaz+W3LeY8hXMk1hGYO8PRgv5X1gJ8YIMsWHvitGM053Xdmgjwk=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777055483;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Pbv4EWq/Cd5RENoa+J7LVRBPpcEtejZq7+JufMh2ebM=;
+	b=Pq9kbNWEwX1hftXkDLdATvNPKvhxVb+m7p0oxxM3U2rmMMgxnSSsav9Y/WAl4WRR
+	Nue0JMkYVqgOe0l9485TcQNKuR8b32st8ZWyqjmK+tUvE7jUb0okA1jcF1SGg3vhfdN
+	PfwP5PmYw2KPOMGXkeFzOBmeWaL1ySeGyR947DUA=
+Received: by mx.zoho.in with SMTPS id 1777055479390430.2742345262843;
+	Sat, 25 Apr 2026 00:01:19 +0530 (IST)
+Message-ID: <248498ea-c5c2-46a9-80b0-4197ebe82b56@zohomail.in>
+Date: Sat, 25 Apr 2026 00:01:18 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 1/5] mm/vmalloc: extract vm_area_free_pages() helper
+ from vfree()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20260420-vmalloc-shrink-v11-0-cad80b00853a@zohomail.in>
+ <20260420-vmalloc-shrink-v11-1-cad80b00853a@zohomail.in>
+ <20260423103654.2b50501df33f9fd03d48eb34@linux-foundation.org>
+Content-Language: en-US
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+In-Reply-To: <20260423103654.2b50501df33f9fd03d48eb34@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C03771C0002
-X-Stat-Signature: 1gfnmierabze9a1d643r9wzwpoury8z4
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-HE-Tag: 1777055388-224735
-X-HE-Meta: U2FsdGVkX18WS8ZTipFI+c9FNq+Cf7bqONXpsavFxxHomPXIbqtvvymSc/pynAuIR17d7mulfmmOBRIfiXesnfWTprZ619MoA0QV5cqaySE/Ww5n9k/eVaHasDtaR8Oofrra8YPeqUnxfUwNgg/8Ih6FpgFOUb3RGkZzug2qoLQQ4rcz+AK8FtQ63hiT9i57sPd8icK/SrTguFeRY0lmBdMYZyT5NuG6gWsICEXankTJ/q8rOaqGZVsmF8oebq05Xw87XdHiTeA/980hQZLTLl/L0iQGnbsbPREXmSteM+3M0VSs1QLiDcRe3uQ3XYQ5900JuXb8qAEpIbs587ZDzCrG0K65MvIShmEIaC3eIvip53218yL7+q6i5WXNmvkdC4Y45OfjqG4cxcmMFm54W/E6qKv9hnGoN1JQSRzOKIHHqLuylgmACkmYEOg8DzQWRifysgPWfYIMvgA3d7vuEp1k/NCgZsSwROKrFoiRot7UA0+A6eo2QFXK7U9ejiIBkGEjTgKzWVgSH0SrzGbdkdLUdN1OBK097q/J5U7IlVsxmHbGcnV1OF5ZAQJW0tzGYtSeC/yHXS7CZ51DeOY+1Z91Pz6cqUcZYptYvcm+5Dkq0afdlFWLN0LyfGsE87fvJu5C4dkiXxWbK93zOEnmKe8W8y7kwHhV9bqcTAeEto8fjSSaqKYYbSqojA0/8bPwvDKWIWrMKlGwu+v6/CfBHMD4JqMPyBcWd6yWmWXEMdV6PKTc4eBxki9PkZGA8rk6NjB0HUvaNP0YbEThboV0DsAqnfJTj+SXvXLOWjh7s/oOOhbeZwUc8+fAH/abbE4XS7PqO3jNYHTiWZtC89lG1q/mkXid9Br1oAh7p7T9eDXqeZdS5Z155VwVh64PYY1HWqEUHM6xFoq07/4EGk2ymzKnHjUnXD5w/deYEzquafY06lQyUpSMJpkJvqRF4TqvBgKzf7VCyvfpmuoqwpw
- 2kj6htbx
- 8h4zrebmS27UzyJjzw0Lr6OE7C47ASgGLg1sn9uCGJde/NLgog5Syae+EJ5gA7SvPQmVfAN59UcDKDuXeqgKOQk8bcY7lRNTV1PSQ7kxYf5uEUU8BX1lVcbXfGvXbkNHMsctrEuvgfAVyqH+/zDoT9HR4rNv1Zhk2slD1HgAAW803Dd9iDhIQhzFcJn8XDnYjbpIswJufeqa+VLfJSRy4YQs3CPt5S2MgxMNQwFIw/5k0vxw363RRPsc8bTNXNmanw75kDazoiidbynrmIySCjLShUrRTiLKJbzcxY71LOtlQECmwHHC+C544NmOMLuD5mbror9KLcGyEdNcbiDSaPFnwlIj31e5QLW0Kidt46l5emHhQRtkQWr3RDu4rFJ0jvyhdSToAHlhfT/SvUdAVNDglVq6QE/wiK2td0+TYyQ8anidk+wFZFsfO3Vf21/P4HEN53AcSHglUd+k=
+X-Rspamd-Queue-Id: 97FC418000C
+X-Rspamd-Server: rspam06
+X-Stat-Signature: gngiat4m5qwog1zf1c4y64kyso5ajy1w
+X-HE-Tag: 1777055505-530284
+X-HE-Meta: U2FsdGVkX18VMDFDRu2EyeuTtc7QnRtz2BNDOgzdm9Ee1EdwC1jHXt/I4Nw/SqiLtSTUJSpBxIAijWsPP/Cbt0YRGdST9Ss9ohBALRhUrK8ubWBCTwqyWSXJv51XUAACWwFpQjWWK36p5f7V1AYzQagizz5XYBwSCcfhzTXHbxDwsehRJkla7Xh8s4IlqD/MC1+b2R9ZiXMKzAnIZFBnaXmMXG41tJfLRXajlcG8kEP5iCGAgGp8BdGpGun3WHUVyrZbBdt0m/XU38gBG14wQV/MZzb9VMajiU2ERUshLbZ8ZxblOMALyh+mnM1tuM+Y25UPP4+WVz8jP4oMtS1XF+bRyJ6rzqU91rxsBN3CwD6GWsNBJwsb6do9J6YOdvKkLdwoMH21pcstl6Ohy/D1sD28LhNi72fihheAseu9897vflgXxoZxWVlpGJRFaeuuJL0fyr1op4oFPThK0kv33+vJix7m8MzgGpPMxMMLDIolt+z8bCI356eARGpNRaG+n9M5DiAH/92goSutf9mZWc5/tzxApnbyCiuMKVKou5HqMFQTjfUc7RWHeat4sjPIPTqVgz0Kp/hodibBfLLmTvkmXSuwbsAuuHN4peV2iVG3cL+gYbayAxmVmXIsuQXSWqVjM6oHDSh3idQ6sD96FyT7Gp66OMtFTdofdiUf5EflIV3Ukc+iUYwGm/a1WYaaT2vieyqP1vIGzBuY/cklv/jul7GhfbqgcsefWlZTRa94TrorXDdpxsj250z5Hz4FyFq9VQXoBt3JK5etuS2B5YFX5mPYb7LTjhLoAvpDsorOZpvSUCDRRpxbdlUQQMRKkbC364mdkjHXmg5t4f7JQ3rthc/X3trUBL45QGpeivvZsay5zx2SINM/8wtcu2Xb6zQ1Uvl3J4P9Np8J44Q0efVZOVIdIgGUlYw69s/luJLxdNB9qaWUcCakYofKFMV2iH515jgxLz/IgkCgvN/
+ 6SQHDnXH
+ 1JUubIXQ/YVRPcyy02y1c786oVOZSmxx8cBny1NvjY6gvyPBNZ/dEnLLl8QvbgIxsdTI/xSGszphPYlfAGSLr/0S6gBIosKJ+NgrrY9YDe+5lvTm9cTl7wJ2o2PJZf9YG9EF3+k2q0f0MTI/RjPaAfWo8V1It+EMBvi0f+N4A4D931vW6zkQ/XodlKVlSySA3dCtxvwWzbl+ko4OiKwn6jgKe4SP2vW2R8xVQoMOGMcGWRUAXJrrOpJPIBfKfyUiFttMwheXninPWI+RXnWb/usvhueWBU8amGTGDylcIKDvhqiXfrLjrLj5N+13qVqVUwZaBf5065BOpAawDBvT8wDQXnqy6u0Y8scW2bf9OKO5z+m53t7dJVW4GVUFQPj6gEChwfix4Jc+z1T+oMWKIOsWRsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,40 +105,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 24 Apr 2026 22:52:08 +0530 Sunny Patel <nueralspacetech@gmail.com> wrote:
+On 23/04/26 23:06, Andrew Morton wrote:
+> Ryan's "vmalloc: optimize vfree with free_pages_bulk()" just altered
+> all of this.
+> 
+> Can you please redo this series against mm.git's mm-new branch?  I'll
+> be pushing that out later today.
+Sure thing. Will update the patch series soon.
+> Thanks.
+> 
 
-> On Sun, 19 Apr 2026 23:17:43 +0530 Sunny Patel <nueralspacetech@gmail.com> wrote:
-> 
-> > Remove the odd VM_WARN_ON_FOLIO(!folio, folio) usage and replace it
-> > with a simpler VM_WARN_ON_ONCE(!folio) check.
-> >
-> > Drop the redundant VM_WARN_ON_ONCE(!pmd_none(*pmdp) &&
-> > !is_huge_zero_pmd(*pmdp)).
-> >
-> > Refactor the PMD checks, making the control flow
-> > clearer and avoiding duplicate condition checks.
-> 
-> AI review might have found a bug in the surrounding code:
->         https://sashiko.dev/#/patchset/20260419174747.10701-1-nueralspacetech@gmail.com
-> 
-> After looking into the AI comment found two potential leak.
-> 
-> 1. The goto should be unlock_abort instead of abort to ensure 
-> the spinlock is released.
-> 
-> 2. The pgtable allocation at the top of the function
-> is indeed not freed on the unlock_abort path. Will add a
-> pte_free(vma->vm_mm, pgtable). 
-> 
-> Since this patch is more of Cleanup on PMD checks and
-> Warnings Is it ok if I send different patch to address
-> this potential leak issues or need it in this revision
-> itself?
-
-A separate patch, please.
-
-It's best to prepare the bugfix patch against current Linus mainline,
-then any cleanups come on top of the bugfix.
-
-Thanks.
 
