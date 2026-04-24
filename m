@@ -4,81 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E232FED3C3
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:49:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09488FED3C3
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:54:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8A816B00A9; Fri, 24 Apr 2026 08:49:40 -0400 (EDT)
+	id 379E16B009E; Fri, 24 Apr 2026 08:54:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B616E6B00AE; Fri, 24 Apr 2026 08:49:40 -0400 (EDT)
+	id 32B206B00A4; Fri, 24 Apr 2026 08:54:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A51056B00AF; Fri, 24 Apr 2026 08:49:40 -0400 (EDT)
+	id 21A986B00A6; Fri, 24 Apr 2026 08:54:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 93D166B00A9
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:49:40 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5369A160157
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:49:40 +0000 (UTC)
-X-FDA: 84693430920.09.537E54E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 61999A0008
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:49:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KL16CErn;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BDF26B009E
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:54:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9FF7B1A0167
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:54:23 +0000 (UTC)
+X-FDA: 84693442806.10.3B50AAB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D6989180008
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:54:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tb+TBMi1;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777034978;
+	s=arc-20220608; t=1777035261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yvyTD+qKBSRCChFZN/37m4WXkztG1rfCaFiDIMtki3A=;
-	b=tZqZWS/lgusnhoOW+o0NL7ayg4CfZMHStGuPbzjQV0Dg0Q8myQ92MP0yNaeP3XbyCVZ7QK
-	8NZMswPKTFIyEJHvTdG73M5+p7NwmVP9d78XnUesqILwpj/JYDia0RO5d3PHpY6R4yxUfY
-	+ATAhUDLYOQlwCUiPZaXCcvyEJerauQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777034978; a=rsa-sha256;
-	cv=none;
-	b=G54d1qTjSCCKw4NTWviTOb2rMFjJ23/3jcKb+n5wt9GnXD/vsj+iIxj4uDZpUWNWhwuyeF
-	ziuDoZLxOHpe1BKTt06H6bk5TLQTvh6IsEx6tC5DgPZ/CCh3lJM7/lWp4adwtYwRpNoWiG
-	rvneluBlz67e6P+mJa7PqpMDkkFbcYs=
+	bh=oiD7MDVH4lzADkp8xadkfQ1Y1hNPTBi0mXKT3b+URDQ=;
+	b=aST7XURc0AAqhVXB/+AIMeqTK7Y+33pV1rGjlrZL//C5f2lFebSWdL/E1Ix3fmK4LkuYPj
+	rHG3xSL/4CVyaBHTIxtxG0oTyx9RIpAbOwbR2QV6in6g+923iz0QcDlaJTM4M5sER4ShCK
+	6YkOTXHoelKGzAeJ+5ZPl96kZUlyny0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KL16CErn;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tb+TBMi1;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777035261; a=rsa-sha256;
+	cv=none;
+	b=G5sWhiyqX2e0ccg0nOzTiJcwQAMbnmf+mbnKq7jJvsitxsylDDHlp0ugWW6z5lS26t6a9D
+	uJPzPMJXe9mQlTSqMfrylowDVuLQVRz/pFXZ0b82if5Gc7sbTdRoAxZKoqmou4TQScIpPu
+	i41S1RBS0bOsHXvmvBeNuWr+CalLgSg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5253F43E31;
-	Fri, 24 Apr 2026 12:49:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E26C19425;
-	Fri, 24 Apr 2026 12:49:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 263CA60132;
+	Fri, 24 Apr 2026 12:54:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4FBC19425;
+	Fri, 24 Apr 2026 12:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777034977;
-	bh=fSL4TNgwdCxWuu9T8lZ6Cc8udwY/lN78cLiN9F0b0uM=;
+	s=k20201202; t=1777035260;
+	bh=4un0AvoUA+zLuhMb6+AyLNGwgmWdLWkPi6NVYswIZ80=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KL16CErnkSvpcXhiyMROU+zxGXf6meNaDIK6qj485o7EmGxtDwExqz7mkDoEZXRUR
-	 0ydIwTGx1BJpwp8LVL0NCBg9iKTDH8P/QH51U+9ZdwzNxu1rdPlM+oFdZ7/hgbpvN6
-	 D9Bwt9sdhNul3yVMj+b8LkUwqDEUz9iT2nz3mb77A+Ff0cxI8M+fqcIn4FJKsL5Agn
-	 NMtrjLy3L1AJZUmgB1DphEyhdYcEenRI6nWLvkYPYBmskWZ0vnVdhis2lmUBIgHHQo
-	 vrqYuQQ5KrD3my2JeVHbgxtSYRv6b/nWMoY2Z2FIMij/nCyXMGpgjgF/1L3fKfkllX
-	 RD6NjAMr0+N0Q==
-Message-ID: <a6b2b7f2-1bbd-4c6a-866c-da473ed2e112@kernel.org>
-Date: Fri, 24 Apr 2026 14:49:33 +0200
+	b=tb+TBMi1jFQtKruV0mazW23XvhWz95tKb+MHlI1XunrIZWMwTL6vFacr28CB/ZUBl
+	 Ku6DP5vY9utRnL7Kj2hWoZr12wMlYHV2faKXC2J16c7XmPT6JlnvhmrFOpnyI6wYFS
+	 LJ7S1J9dlVsIR4jL0eqz8w1e+GKtxC+Nr59+ynZH9S348LkkbJGM1RnPCgtUYmNhyI
+	 yeK5ZXSsQGgLw5JOYD+LZPWJoCs7Z29irMSDFfF3KI/MACi9Cu0ayo9e6mC+Dup/XH
+	 OQJq4UMuGKoWR/0Ax5FaMmfum2c2FQUNygcnGrQOMPiz0ZyncHrWHc3RivHAL7D1mR
+	 zQizA7rigd3hQ==
+Message-ID: <896b3956-3cdc-48b5-a0a0-a3ec35aefa07@kernel.org>
+Date: Fri, 24 Apr 2026 14:54:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/gup: honour FOLL_PIN in NOMMU
- __get_user_pages_locked()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
-References: <2026042303-vendor-outright-b9d2@gregkh>
- <a20913f0-476c-4f56-a044-9802bb1c7f1a@kernel.org>
- <2026042431-charter-ranging-597c@gregkh>
- <e9c5cf89-fa4c-4b83-ae70-9d3c72542ee9@kernel.org>
- <20260424054143.087847e1617a84df8b501313@linux-foundation.org>
+Subject: Re: [PATCH 7.2 v4 09/12] mm/truncate: use folio_split() in
+ truncate_inode_partial_folio()
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>
+Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260424024915.28758-1-ziy@nvidia.com>
+ <20260424024915.28758-10-ziy@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260424054143.087847e1617a84df8b501313@linux-foundation.org>
+In-Reply-To: <20260424024915.28758-10-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xyc8nid4fi3xnqdpd69ybnaaem4one33
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 61999A0008
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D6989180008
+X-Stat-Signature: 38xdcutijy77wwxwmctnygdqs4hgm1we
 X-Rspam-User: 
-X-HE-Tag: 1777034978-218451
-X-HE-Meta: U2FsdGVkX1+r/jfnUHOfuw8jC146c5w321GukNws1oC0u+BW63UeFMNnPTRpUg2yd2fSX8R6qSCB04VxBTZ1wtr+lKWczOgoQPM9HVTeIsU4aRC0rbS9l1qaxfL1XZKuyFIIKtx/ma+/RAw0j+sHEFQtJFTS3a8RcutN02+THhw8CCE4UVwEn30yHn5aCf/R8/A8Na60OwuVYr58Ti3l5iLAI+/sBVdNZApjzEEIdgg72l4srtoh0Ib4JEHil6JnkZ6FQua01m173KoEBFDaYq5BK/EyHzOnVQhzZwcM/Rilp2XsxbwFs4/qWEZX8xohvGL67friRy6Xe+uUydy+p9jnDx69k4MTFQnqZuW0hNM4Qs4SrE8bFciu9Unz3Ec9ZB+BkRbVJmzQNqGGwNkgrfiYlzFgLeUAFs+OGlDBTelYP+MzPNOtxSnQXnPXZMz8Yg2PSnrzmacSzGxMDnqHupr9X830Fu41Ml5uf6Su9FyIVk/nr3hWUmatmxhqt1dkX5Mhj1kOh6xm+eR3Lv3UPjGAvMt8UFEB/UIYSy8coPlnF6Nwazs2dSfHeqX/VF4H5KHITbVISoXlYMpk+Gl/CH3cdoc/Av8zydPO24bKWw43Xs1ovCtCTxhkF5VjcIT5czvd/4VgXELT/IxKGbIT+tL9HFVQ5SICznqkrsXCBeovRnqdAjybh7wOF4tg1V/YnI4Zre3ndlLUmgMs/f17Eqv3okwdJOAFlo88LPaHbUYSeY/UexAJ06tl6bqMV0VyfCuCx9CEFS65BICobjFRVwscmEENRm9sVNgEvOVBeE9K26twFV9O68+48xW0w+hPlM6ZbDeRqadj9XoSVFlW6n+x//zSB7sEL5EULYwRrimnZdkkaEB6KFH352JZ8oyfDFVJloyZ9WgT3wmBTuhcGZbsHy0UBvmNierxxrdGbHanYbJfp0Um7V/c5wJ+2V4mg8tcpwrwS47HW745OuO
- 2jTxM4UB
- zbmK82ph0W3P1xtOMAd+5En74cdbIOHOsRkRMNygy1p7CGu2T1exfiCZBMGhtygInFAcX3hXLhP9bmbRUKzvP9pwbGGRXt/RkKNvNWB08t4v2CXUKcscYJndM6aebJ+tVYOdGETG1vt6OxbxdWeIuDmn2DKXdYX7MS1tJEUMfPT8khejhJoDQfNAHiTHqHUZKkPtj4JqCBZjnm8q79joyB6blSY/MS4Tdw6Dej+iCUzOJ9GNqYX/xILHGGtUkakXZV5WTMayI8TjuTmjU50VRbkp5VsFh2yDrmux7XWod+vDCjNOATMwIIsmeq275rynsxJf1il6OBrZODXM=
+X-HE-Tag: 1777035261-116488
+X-HE-Meta: U2FsdGVkX1+sAkTbIxzPkso3teoj1ZjcWHSJKk3OZ/LkrhrbhRy0y4R4fxLr6rzmUWCizaCxbpXVSQcUDprr1d1l0oFZlr3s+B01hBOCuabkwrcwNWcOL/MjkHQSlUFf6TEAf3DBugk1pYlJ1B3Mdc6uj2wz8dFez6xbpD1wOSMy0d17EiIIBS9KUYtgJsy16iAV/ZQxhIvF4/J6hvLCHi+0rXuIhqWYqnEPGmp8a7LINzhKnKEgu2ro+ceDeHYatdmqx9vuhnXiuqFgxfT6kfed6canf/8BQ2zIDyWks3SXDYSutP8776S0frTUsEvXCSwyPrleTmqtQ/LEGIIF+AVFzLybl9ZAsdQC2MsdgPHYpIn4D8qYZUnN+lhIBsD3MwSzpEab16Cc1C7fO5qwYDB2IjDeGg0K/rhXgNJ52ic4DvP3RIW7SUYTN9wJSKxVbuI13SCtGrDyQ0hGdd3v1gk7Hep7bhQM1BonXVif31CVlqObhDxrr9SlqIxa/moUE+Y19Q8C7OMk3tJT4KdsjeJPgvX8bvApdIz27+RdmaOxgOZuFCwHu3ug/xwvy9U+oD9vqWreGsPCKABQnx4meSYS+xsVdBG3SsTjxrAzel/053aVponrw2julc5ojX0b+tgxjzBj5poljUaRuGc/5lWa++NkUIihPtK3u3P2QTDchRmNeaUtbsaU+WwIJ4oi14lpzN7Z8sUgQLQPMZc5GANtf1poksvigMoeBEmmpwAWkYdWl/NQfSpgx517eH7bqzJYktDguycuLHmMiLuPFo7O3VvNihUV7Fu+0tM/TlDXTe4swh3etvZ99Z1G+qE6zdv3L9m9U6c1zd3aGP+T0aCE+1uxwjL0ugkhTPfnI6JgSMhUJsIWd4ExQhFywN5WPTM5WL2gsaD2MkIh82rZKuG2T5VHLUQP7e5gpZyIZpmPzKZAQkWI1mBiGs6TbGMStIxI/P70eP5Cx8wrskh
+ BhqMGsgr
+ t3yr1ocDOP5Fz1GXd3mHpOw8dBioqg9akNH+yMFuy1aGZOE8i/qCTzrbiktUjHRaMD0s8yTGf+n/lmnbhGQz2xugIoAtZFgG9uUv9zsIN903Ad6UTJad5/afDvyXiepWupgN4xcfWpMggMz37YnNf24xOXEpbAr5Ul8ITwduDF9kssUGxTBK8YHxFgRqAzYuwC0JGQLyoTiqunVTqVUBzjixvSMRDMapwz3aLIdYxS4+V2VaIby7dMvirqnvteX59M+AoOH16sqm/ncPy1VN4r/+5JQ1k0mViJRLYFux9xGYgxFWLEtk2W7Bcn2/MAmBKfk9g5Xq19+/c/iQ0OMMfnHKG0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,21 +152,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/24/26 14:41, Andrew Morton wrote:
-> On Fri, 24 Apr 2026 14:16:21 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On 4/24/26 04:49, Zi Yan wrote:
+> After READ_ONLY_THP_FOR_FS is removed, FS either supports large folio or
+> not. folio_split() can be used on a FS with large folio support without
+> worrying about getting a THP on a FS without large folio support.
 > 
->>>
->>> True, sorry, I guess people can "assist", I should have added that.
->>>
->>> If Andrew's tools automatically pick this up then:
->>>
->>> Assisted-by: David Hildenbrand <david@kernel.org>
->>
->> I think we usually use Suggested-by:, but really I was just joking :)
-> 
-> I thought you were gkh_clanker_t1000
+> When READ_ONLY_THP_FOR_FS was present, a PMD large pagecache folio can
+> appear in a FS without large folio support after khugepaged or
+> madvise(MADV_COLLAPSE) creates it. During truncate_inode_partial_folio(),
+> such a PMD large pagecache folio is split and if the FS does not support
+> large folio, it needs to be split to order-0 ones and could not be split
+> non uniformly to ones with various orders. try_folio_split_to_order() was
+> added to handle this situation by checking folio_check_splittable(...,
+> SPLIT_TYPE_NON_UNIFORM) to detect if the large folio is created due to
+> READ_ONLY_THP_FOR_FS and the FS does not support large folio. Now
+> READ_ONLY_THP_FOR_FS is removed, all large pagecache folios are created
+> with FSes supporting large folio, this function is no longer needed and all
+> large pagecache folios can be split non uniformly.
 
-That was supposed to be our tiny little secret. ;)
+In general looks good. Just one question:
+
+folio_check_splittable() also rejects SPLIT_TYPE_NON_UNIFORM / new_order for
+swapcache pages.
+
+It's confusing, but truncate would never stumble over such folios, correct?
 
 -- 
 Cheers,
