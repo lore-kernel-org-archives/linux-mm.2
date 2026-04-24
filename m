@@ -4,104 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF7DCFB44C4
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:51:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ED2CFB44C4
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:56:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27AEF6B008A; Fri, 24 Apr 2026 03:51:31 -0400 (EDT)
+	id 5DCE06B0005; Fri, 24 Apr 2026 03:56:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 252AD6B008C; Fri, 24 Apr 2026 03:51:31 -0400 (EDT)
+	id 58DFB6B0092; Fri, 24 Apr 2026 03:56:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 142036B0092; Fri, 24 Apr 2026 03:51:31 -0400 (EDT)
+	id 47DA16B0093; Fri, 24 Apr 2026 03:56:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 020326B008A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:51:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B60991B8BE9
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:51:30 +0000 (UTC)
-X-FDA: 84692679540.12.386512E
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 97A3B1C000D
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:51:28 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f5sWadWI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FF086B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:56:10 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C6F651C06AF
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:56:09 +0000 (UTC)
+X-FDA: 84692691258.16.BC54EA7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 194E71C0010
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:56:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pjktQOmh;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777017089;
+	s=arc-20220608; t=1777017368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/ORSaWnko0V3NhVqidFGTv7S6AWqSkqSLorMuOfpODA=;
-	b=qQqSYHG4pPWs8Rbk+dxTkC200JLrYO6dM/i7CDjWpKfXm4mDSA9n5+cr4e1RNutqNiJpBP
-	0VgICHoqui5it4YGQVE0boeDMc5xvghinwbYE8pSCqrFAw4/HTAGPcs6C3s0kHnJ1JD4xZ
-	S+psa7l2m0XOjFhMKmmzkcKoTngc0qc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f5sWadWI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777017089; a=rsa-sha256;
+	bh=9ARK6xsEDdpIUMxYMIK4fn1VH3LMUGGReAsJxdAcJWQ=;
+	b=jPXA/HAXtaTvQykjvhmy/YU7+70q0qWScw2fzOHZrPbrri85o6mUmMuPOh5OMRJrJzMHa4
+	dJyoP677beh+Kk8MW+KkSbXtetAbftV+0K/UkMC1YzVH/DC2CP7UMD1eguUX8vxzZ+5K7j
+	OsA/yyGsyeOUmhLVtKJygl4TpNedot4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777017368; a=rsa-sha256;
 	cv=none;
-	b=yiW3qcznwjydIurT3xb054cOniT2BJOpCmFnuAdl1P5GQbuHfcK6ZJuijEMGCRdFIZWkge
-	6ojM+FQAxxXMwhQ7tkYbMxsLw77/+kT1j4eiT2A2R2Ze9udeQIrCDBNg1YDUHQ782YeaCy
-	EEskixnwKtI+eVbBCh3IOeMg9uBXg6w=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777017086;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/ORSaWnko0V3NhVqidFGTv7S6AWqSkqSLorMuOfpODA=;
-	b=f5sWadWIcXFWMoPuLXqfAVQq8XtQDNfCfsvXrl+tyhRViG3SQIamnGMCotuewbABJ9cFH4
-	PYhz/HibwXyamvirz+mWtj2C3RPJ/RNlVHmjxhhppl13+g7APOW6R5fSkAUQgJxqYQ7tdZ
-	DvCm6GbEn5PGd64kYmFnP3vBYTawe0o=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
- optimization
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
-Date: Fri, 24 Apr 2026 15:48:44 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com,
- joao.m.martins@oracle.com,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5A4644D9-B64E-4AD9-9D9A-B3DAB84CB827@linux.dev>
-References: <20260424025547.3806072-1-songmuchun@bytedance.com>
- <20260424025547.3806072-5-songmuchun@bytedance.com>
- <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 97A3B1C000D
-X-Stat-Signature: hdntryyt3gu8d7kqag3ojrr5pyt8koz4
+	b=Sy4z8iQNhUP7JyDvJv9XnyiQ1obqRsDDkQ9ylzCGELGEskM4a9Fmh/djp6hPCww7aZsPav
+	KRgOCaf7BricwHcMRCGtSlBzvbaOIEd1lYVIQ1DHHzvHkAbpXLdeuJeSqvPpGWfqyEcBr8
+	f+T+5wlJhtPjHYf8KhLkWCP0lnXmAXg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pjktQOmh;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 62F4C60120;
+	Fri, 24 Apr 2026 07:56:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F72EC19425;
+	Fri, 24 Apr 2026 07:56:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777017367;
+	bh=cOX51pLs474pi005MOfvb17akqyNW7MI+y9gkwPe5rA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pjktQOmhx/sH0iMOwAA99wAlDyOT8OQNlWORxK6FjzzP/ORvSr1hXOhn/+yMLq389
+	 w4khR5Rkb8j6ka5PZIyTIPS1N+f1fvek3m1RjZUdWCQiGm5Ir402sn5Fqqil6w18pN
+	 w0olg0p0PmWPcetDUap1kdx1dQ2ioLKKLQwp93a5J1z9rKEPcqtgs5PeTLm6VcPbi9
+	 hNAh61GkRKILlus9vFvTlsXytTjwZoRhnSuwSM8r8FGl0K86MUah83xIoO93DvTiA+
+	 QD2Oldk8qpEvdGjQvphvV6jBNtYy5P7GuwvVvyrkhTPDbcmxY5J3ruM2C6xAYyLsNN
+	 2zD7l6+rbC6Eg==
+Message-ID: <7b4bf980-4ff3-4f53-8c64-1ba2d85cf1b8@kernel.org>
+Date: Fri, 24 Apr 2026 09:56:01 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/3] mm: process_mrelease: expedite clean file folio
+ reclaim via mmu_gather
+To: Minchan Kim <minchan@kernel.org>, akpm@linux-foundation.org
+Cc: hca@linux.ibm.com, linux-s390@vger.kernel.org, mhocko@suse.com,
+ brauner@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ surenb@google.com, timmurray@google.com, Minchan Kim <minchan@google.com>
+References: <20260421230239.172582-1-minchan@kernel.org>
+ <20260421230239.172582-2-minchan@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260421230239.172582-2-minchan@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 194E71C0010
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 97xy1a17n6obb1fcut3d1rdhzdw9zetq
 X-Rspam-User: 
-X-HE-Tag: 1777017088-179106
-X-HE-Meta: U2FsdGVkX19fNPXFV1SYKSoPVl5HKP43A+0ESqwFbozwRtxP29N5daysOmhdGZ+T54RS/4V864m2ArNTY8p0bs0Zajt45+9hvSPw0KLttgzVRMNVyVm0NwYZFw7tunpc3H9CEn/pp516GjpTHE1yT4ER3f8siG0eAPEMQXkMVeTbPyJBta7By7HUzj+K5ZDqv+2SUZ4j0WX7LHIjxZ1B4FYQos+XuZCJ9caLaF4NfPLfXj5kiVI5EZi6n74+FBNU6lYb+D7p8qf7TWuaBc2v99+Xr8axqcRwKqf9EHmZScV3uKFcfWmUXagTB43iORvT+9a/x7NPQ8xHKh91yQ3WoKJVCKt4OzWu9XBUr6ryIk9X2PLu4ZBJ/Z/xrVTGKttsEYbW7IVv54cZqSyxJzCk1U9cn2qsfG/OCKhS2sgacSkEYNSdBIif1Uz+idPeL1D9XDwZw/hAOH4tDW9UiFbINrPmiB3gvy+Ydk2Ooit1tuqn5JtRZHFZIiYWROfGEi0sqKB5m5xKKsI04tV2g8h/0mhKhmbpGK+QDVkywKhIGYF2gAYxPGWCzxafJlV+Ny+xDYktU2U3jSIUUskixeKFvf/ttk+0CEq1xUQntVjyi4SOQL5IApql7UOlNsBLV7Kr/ufL9CeyzyziLlwddNxloQqbpFn+xvaN4AfgSN02fdbLHGQv6KrjDyl1fVUp+xzRO6i2KC8CIXUvyks+Rt7m/zDg+yzSlJrEBxRiA/hQZsOQxtMDX7qI4RLomACBJqjNzhu+uNdiW4ogzYGAAwkUarCZZMUcMyaz9F13YNXADpehZj6GRHgxCNW32RA51S2g3uBM96NGJNXYHdChdat8rL+lP/ETs9sXdv4V/IhrUvru1WBQLyvQ5cHootjeBFAywsnI5WqnvL3RUpoH+bv7bqf79G7IV1zKPOHrt258Kl0KNUn1/WLSF5QwD2X+tOyifjXVY+3uuLFyt0uEY7G
- v3N+mBhI
- xQeL4fnvcafrH6lXX82w16F0H0WqW8PPQkmLW+r1s4YPubj4QXlBL8f/sSer1UFW/yC3H0XGh0TKUU6ofkA5IPU2rlFqfJFO+ZQGWZ+f7YBlnXh88exclOXT6bzAe4jM+gutzPqXfH33iFNGHA8ARmBtAP9JXNUPHxJtgEHo0xSFpV5YxQznOfZO2DAu+foRu/V4qTlnGORUU3gXv3v1e13SGUsaCt6Z3X5KCP9X/0+yExqqZ9DtPn9BVnsmS/tNm8kSfCp7t8L2o8uzQlLQQwL9rIw==
+X-HE-Tag: 1777017367-222622
+X-HE-Meta: U2FsdGVkX1/0BXqhNBNsw9xIN1iWelUczGXgXycbujd37iSxH/NYV4FnHOcWgd4BvRSr3QMPhoztIT8kqmsGLpH1e2ltXv49ysGwXF75Nxe40GmRf3tkOQ2VDhancsEeL+TOeOqrfgXzaFME+Vlzvxi6XeooUtg5b+wyG3QwJUrlhapOfr3Dz5ncgk4rgqGRPh6vHneZk77SftwKzzBaeMWhTMpY2Pu5zW4WTXAO5DueA2nslV1Qt85q3dVsMvtutYmJ4e1mHsOqtww8iR3l+dIm1OJDk/5TPsgp9+L8owCon64blHk/gTTHVjRBTtodpEF5KJA3Noe4T45SF1oAZ7YHsRYyP5nI3UWw9smanFNVWkHrfw6UgcKC0ozQaCYuu05/KS1GWWQ+w+z6/W7AhE9/cSLnd2m99ocyXwk1JnW9SfX+XLsqlwFehTwzzy/+pqjH33eRFS5Pt4UxOZTPkDMqDv3Pthqw1d1vsuf84BEwkT0azG4pzzR5OOxwZWIAIax2Fr3ZxmFXZwZijhMNjy4+C0SE9o5kUSiK1vC8nzRnIWFDoWIYrikunW/IC2h3vtOOUL+aU48GuuYHO1w12Lvp0/pdapz2PJiw9sLVOdCUninMoxzaIrAw2RR98GU1WYfZev7GW+NHdUa6o97jmLvbeitD/OVV3P7bELB+UPys/cw5205XpAwtEUqQCkGrKxJJ6ArKMO6i57IReQzfQg1o58TuTnFY+zxBIJ/tw07k7r/l9pT38WZPiAEBTzNXWRvFZdWzg+N1QFCF9z6hJSn0boz09tgnG+lx5My4uCNPzCl6LNbJNq5AXbFsALEGBYgMhtZ41xEB8dXzZL8uqnSCbfZS/aJpPPrQU7iNQD1FIIV6kdysic9oW5a8lS/mOfpxDUgbE5DuEIAfZXJFnzms7ltZAhT5tq/cV0oC1KZfsjGN4p+pLqIW4WYn0KkOWtpMEhsmrxiHzSKInSP
+ sdbh7Me1
+ Z77D2lymelaavUd1M8fBDZSzt1T8jcaxYMBVEtESD+MdcXUsQtCYsY3qpljAhjdOYRZ5sa7gkDlvqef09XzP4xeh9mOsCka8hrMoSbEOXu61IwlIGwVU7nTK5BSMp/FUjSUuVyQDG1MXcPgB9TU1g1sMlI5+MmVh3ToGeUurhojnXEHKtYAL0feBH2Wp8/HYb49vInWtGBAA9o2dFUMcPp1oFrxLKTFqk9wmDHwOTDpREPugCH1vvxCadkjf0+4ohkNROyHM95zMgrwNG3liFliIJAxagXxeGw0Isjk8ynqbZpTNGF5lvgoBYqMNKlj7f48xcuOG75CYo2fSSlJlp3L08zSeZVhj4AbbOnt18mB+gcRk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,96 +140,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/22/26 01:02, Minchan Kim wrote:
+
+Can we make the subject easier to understand?
+
+"mm: process_mrelease: evict clean file folios when reaping a process"
+
+> Currently, process_mrelease() unmaps pages but file-backed pages are
+> not evicted and stay in the pagecache, relying on standard memory reclaim
+> (kswapd or direct reclaim) to eventually free them. This delays the
+> immediate recovery of system memory under Android's LMKD scenarios,
+> leading to redundant background apps kills.
+> 
+> This patch implements an expedited eviction mechanism for clean pagecache
+> folios in the mmu_gather code, similar to how swapcache folios are handled.
+> It drops them from the pagecache (i.e., evicting them) if they are completely
+> unmapped during reaping.
+> 
+> Within this single unified loop, anonymous pages are released via
+> free_swap_cache(), and file-backed folios are symmetrically released via
+> free_file_cache().
+> 
+> Signed-off-by: Minchan Kim <minchan@kernel.org>
+> ---
+>  arch/s390/include/asm/tlb.h |  2 +-
+>  include/linux/swap.h        |  5 ++---
+>  mm/mmu_gather.c             |  7 ++++---
+>  mm/swap.c                   | 42 +++++++++++++++++++++++++++++++++++++
+>  mm/swap_state.c             | 26 -----------------------
+>  5 files changed, 49 insertions(+), 33 deletions(-)
+> 
+> diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
+> index 619fd41e710e..2736dbb571a8 100644
+> --- a/arch/s390/include/asm/tlb.h
+> +++ b/arch/s390/include/asm/tlb.h
+> @@ -62,7 +62,7 @@ static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
+>  	VM_WARN_ON_ONCE(delay_rmap);
+>  	VM_WARN_ON_ONCE(page_folio(page) != page_folio(page + nr_pages - 1));
+>  
+> -	free_pages_and_swap_cache(encoded_pages, ARRAY_SIZE(encoded_pages));
+> +	free_pages_and_caches(tlb->mm, encoded_pages, ARRAY_SIZE(encoded_pages));
+>  	return false;
+>  }
+>  
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 62fc7499b408..bdb784966343 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -414,7 +414,9 @@ extern int sysctl_min_unmapped_ratio;
+>  extern int sysctl_min_slab_ratio;
+>  #endif
+>  
+> +struct mm_struct;
+>  void check_move_unevictable_folios(struct folio_batch *fbatch);
+> +void free_pages_and_caches(struct mm_struct *mm, struct encoded_page **pages, int nr);
+>  
+>  extern void __meminit kswapd_run(int nid);
+>  extern void __meminit kswapd_stop(int nid);
+> @@ -433,7 +435,6 @@ static inline unsigned long total_swapcache_pages(void)
+>  
+>  void free_swap_cache(struct folio *folio);
+>  void free_folio_and_swap_cache(struct folio *folio);
+> -void free_pages_and_swap_cache(struct encoded_page **, int);
+>  /* linux/mm/swapfile.c */
+>  extern atomic_long_t nr_swap_pages;
+>  extern long total_swap_pages;
+> @@ -510,8 +511,6 @@ static inline void put_swap_device(struct swap_info_struct *si)
+>  	do { (val)->freeswap = (val)->totalswap = 0; } while (0)
+>  #define free_folio_and_swap_cache(folio) \
+>  	folio_put(folio)
+> -#define free_pages_and_swap_cache(pages, nr) \
+> -	release_pages((pages), (nr));
+>  
+>  static inline void free_swap_cache(struct folio *folio)
+>  {
+> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+> index fe5b6a031717..3c6c315d3c48 100644
+> --- a/mm/mmu_gather.c
+> +++ b/mm/mmu_gather.c
+> @@ -100,7 +100,8 @@ void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma)
+>   */
+>  #define MAX_NR_FOLIOS_PER_FREE		512
+>  
+> -static void __tlb_batch_free_encoded_pages(struct mmu_gather_batch *batch)
+> +static void __tlb_batch_free_encoded_pages(struct mm_struct *mm,
+> +		struct mmu_gather_batch *batch)
+>  {
+>  	struct encoded_page **pages = batch->encoded_pages;
+>  	unsigned int nr, nr_pages;
+> @@ -135,7 +136,7 @@ static void __tlb_batch_free_encoded_pages(struct mmu_gather_batch *batch)
+>  			}
+>  		}
+>  
+> -		free_pages_and_swap_cache(pages, nr);
+> +		free_pages_and_caches(mm, pages, nr);
+>  		pages += nr;
+>  		batch->nr -= nr;
+>  
+> @@ -148,7 +149,7 @@ static void tlb_batch_pages_flush(struct mmu_gather *tlb)
+>  	struct mmu_gather_batch *batch;
+>  
+>  	for (batch = &tlb->local; batch && batch->nr; batch = batch->next)
+> -		__tlb_batch_free_encoded_pages(batch);
+> +		__tlb_batch_free_encoded_pages(tlb->mm, batch);
+>  	tlb->active = &tlb->local;
+>  }
+>  
+> diff --git a/mm/swap.c b/mm/swap.c
+> index bb19ccbece46..e44bc8cefceb 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -1043,6 +1043,48 @@ void release_pages(release_pages_arg arg, int nr)
+>  }
+>  EXPORT_SYMBOL(release_pages);
+>  
+> +static inline void free_file_cache(struct folio *folio)
+> +{
+> +	if (folio_trylock(folio)) {
+> +		mapping_evict_folio(folio_mapping(folio), folio);
+> +		folio_unlock(folio);
+> +	}
+> +}
+> +
+> +/*
+> + * Passed an array of pages, drop them all from swapcache and then release
+> + * them.  They are removed from the LRU and freed if this is their last use.
+> + *
+> + * If @try_evict_file_folios is true, this function will proactively evict clean
+> + * file-backed folios if they are no longer mapped.
+
+There is no such parameter.
+
+But I do wonder if such a parameter would be better than passing in the MM here.
+
+Also, is there a way to avoid moving the function?
 
 
-> On Apr 24, 2026, at 15:33, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 4/24/26 04:55, Muchun Song wrote:
->> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
->> counter in /proc/vmstat is incorrect. The current code always =
-accounts
->> for the full, non-optimized vmemmap size, but vmemmap optimization
->> reduces the actual number of vmemmap pages by reusing tail pages. =
-This
->> causes the system to overcount vmemmap usage, leading to inaccurate
->> page statistics in /proc/vmstat.
->>=20
->> Fix this by introducing section_vmemmap_pages(), which returns the =
-exact
->> vmemmap page count for a given pfn range based on whether =
-optimization
->> is in effect.
->>=20
->> Fixes: 15995a352474 ("mm: report per-page metadata information")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> Acked-by: Oscar Salvador <osalvador@suse.de>
->> ---
->> mm/sparse-vmemmap.c | 31 +++++++++++++++++++++++++++----
->> 1 file changed, 27 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->> index 3340f6d30b01..2e642c5ff3f2 100644
->> --- a/mm/sparse-vmemmap.c
->> +++ b/mm/sparse-vmemmap.c
->> @@ -652,6 +652,28 @@ void offline_mem_sections(unsigned long =
-start_pfn, unsigned long end_pfn)
->> }
->> }
->>=20
->> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, =
-unsigned long nr_pages,
->> + 		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
->> +{
->> + 	const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
->> + 	const unsigned long pages_per_compound =3D 1UL << order;
->> +
->> + 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
->> +     				    min(pages_per_compound, =
-PAGES_PER_SECTION)));
->=20
-> FWIW, I though the right thing to do here would be:
->=20
-> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound);
-> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION);
->=20
-> I don't really see how PAGES_PER_SECTION make sense given that
-> PAGES_PER_SUBSECTION are the smallest granularity we allow =
-adding/removing.
->=20
-> Also, the "min()" implies that there is a connection between both =
-properties,
-> but there isn't to that degree.
->=20
-> If order =3D=3D 0, then you'd only ever check alignment for ... 1, not
-> PAGES_PER_SUBSECTION, which already looks weird.
->=20
-> So you really want to check "max(pages_per_compound, =
-PAGES_PER_SUBSECTION)", but
-> just having two statements is clearer.
->=20
-> Or am I getting something very wrong here? :)
->=20
+-- 
+Cheers,
 
-You are absolutely right. I misread it earlier. I mistakenly read
-PAGES_PER_SUBSECTION as PAGES_PER_SECTION, which is why I still used
-PAGES_PER_SECTION in v5. That was my mistake and obviously not what
-you originally meant.
-
-I completely agree with your suggestion to use two statements here,
-as it makes the alignment requirements much clearer. I'll fix this in
-the next version. Thanks for pointing this out!
-
-Muchun,
-Thanks.
-
->=20
-> --=20
-> Cheers,
->=20
-> David
-
-
+David
 
