@@ -4,79 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F769FED3CC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:19:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3991FFED3CC
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:21:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 163F16B00AF; Fri, 24 Apr 2026 10:19:39 -0400 (EDT)
+	id 50F3A6B008A; Fri, 24 Apr 2026 10:21:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09F0C6B00B1; Fri, 24 Apr 2026 10:19:39 -0400 (EDT)
+	id 4BF886B0099; Fri, 24 Apr 2026 10:21:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECFF56B00B2; Fri, 24 Apr 2026 10:19:38 -0400 (EDT)
+	id 3AFA66B00B1; Fri, 24 Apr 2026 10:21:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D5A8C6B00AF
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:19:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1CCBA0172
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:19:38 +0000 (UTC)
-X-FDA: 84693657636.20.D76AD9D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F00C3C000A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:19:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GrdIEGT5;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 28B3B6B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:21:11 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB8C288BB2
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:21:10 +0000 (UTC)
+X-FDA: 84693661500.27.D83BA32
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BC69FA0011
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:21:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FcO/T2OJ";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777040469; a=rsa-sha256;
+	cv=none;
+	b=I/NrK1gDjk3EALloYzsDDl77HY2uaRjBgy6IFPw9rzYDaaPRvFFio7YFGA6OAft4eX2gY+
+	HonAPn6laCNH0InyAxb0NPRvs5vMACBA0gtfm38tgFXQ5NIxp5hh7Z0TF/95fwx0NbEW9k
+	1Q99tObno4vYNRGCFYBtY/h9YXCOAQ8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FcO/T2OJ";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777040377;
+	s=arc-20220608; t=1777040469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VEneAfJWsUMVLNfN8zo5gCn1CY9r5Vq4Tp2VkL6dJlk=;
-	b=CdtkK/ME3cLDVEQ8zc+tGmhPYtZoDnfMq/5q+G63LGmuGxUNRS+UZgOhE36kK2tBAavEpS
-	VeuUUdOiHtmECI8tvS0kL4uw/phi6Qgv0xL7/+jq42gR43uQbU1VRhyjDneAjH6O9y0NOt
-	GRY2om2Jy1jSZd1hIS1R9hJGsG310zc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GrdIEGT5;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777040377; a=rsa-sha256;
-	cv=none;
-	b=qCwodyJdS+FKUWSJ1HdvKpZH4b/SFVjQ+pusn46YoZWTelyEJLmKT5iWgQOnfC1N21Sz5z
-	KaQAcuMY2lnFAKiLscME/lEyygKcVNpmzN2/9BZYs12GRASsEZ9kR0Gl6USH5YnuNCN16s
-	JCGhF6Oja0qvrBftwkawkzdO4miy3DA=
+	bh=eEeqeRRTjIDPdDNLl+n6lSmcGB/IDccW8PQ3eLuhsnM=;
+	b=TQ/GdvwVt2bFYiF28yZGf4or1OHODDkK9UBV1QqqGJHPoxZdZMitKi+U9FSjKAyN4rKHq2
+	QhURhROnpYdsd5GZW4xNomQWWUdkIrg+WJBImnoiU9G10Tl0tbudXbe6vJOdSSuE+tSwDK
+	45oyXwA1XIhDagreqGFqOmahJa8EcpM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F52460128;
-	Fri, 24 Apr 2026 14:19:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D526FC2BCB2;
-	Fri, 24 Apr 2026 14:19:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A3EEC40607;
+	Fri, 24 Apr 2026 14:21:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037BDC19425;
+	Fri, 24 Apr 2026 14:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777040376;
-	bh=CxHM58NpmQrbLpCcUPXfUThwYQpzZAqUhNDe2CK5d54=;
+	s=k20201202; t=1777040467;
+	bh=m1TLXBSapE9k/3U2BTj9Ixbf1K+29lmFaAWUNRfDm/Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GrdIEGT5dd29aeRSp9p9Xj/eqqtbMHDNGU3SqHHSNemLYtVxmK/iokYP3Xk+RTCcC
-	 OyrtHWW9npnZScQ958cViCG6tx7M/zz/bj5LwaXeUzhs5rMmAUC6fKinkMLeZbxbv4
-	 zs19Cpf6pvfYqFQQ79DJyG0mP1YE5VpAPtB/DSb5CTWQ05zVVyJvUoCp3C+L5zYyN2
-	 PoMfFRXHPJWFBjRMVEPacWU1d3vaB2MxyQY1Pv2jdbW+90z7A/2nwWt/764WOA7MIN
-	 9x1MZCjjyx8JxlWTh3K49J7IUP9EcHx0eJALHygs/tizIuycfm9LB3KUbXCm9fMH7z
-	 qmJIyTgr/IQqw==
-Message-ID: <d17188e3-a710-44a5-984e-689a127d4c1d@kernel.org>
-Date: Fri, 24 Apr 2026 16:19:32 +0200
+	b=FcO/T2OJBiXLuu2jOYNIQQjpOEf6UNNJeCnFHM1G3rkXVxZipjDU2f9hG18XgZSR6
+	 nuvrFYyosEs07P/Rq5p1uyZxffKIx7Jx6DUl30rlgxqSa7ONJA+rAiYOXUUEt1y+fx
+	 T1D3wFcSPJccj056BZMc6nNLnm34u729tzvGgbXISBpwg57i2VwUrlim4w8/A93egS
+	 okGfpoNM6aK58HOLnHfYBdAX/JlfE9ZcjBMEny1KF2gZEZlJabPXMoASKc1XnvLObQ
+	 n0SUzJQPoDVypAvwajJaRAG2RPTR3Rnm/yjlVFWpBs32jM6WZzTmGBDVNGhBYotvo3
+	 6II/JCaXvWD7w==
+Message-ID: <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
+Date: Fri, 24 Apr 2026 16:20:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/gup: honour FOLL_PIN in NOMMU
- __get_user_pages_locked()
+Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
+ them
 To: Andrew Morton <akpm@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>
-References: <2026042303-vendor-outright-b9d2@gregkh>
- <20260424063817.552a894d4b5bfa4de40792fa@linux-foundation.org>
+ Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Lance Yang <lance.yang@linux.dev>, peterz@infradead.org,
+ dave.hansen@intel.com, dave.hansen@linux.intel.com, ypodemsk@redhat.com,
+ hughd@google.com, will@kernel.org, aneesh.kumar@kernel.org,
+ npiggin@gmail.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ x86@kernel.org, hpa@zytor.com, arnd@arndb.de, ljs@kernel.org,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ jgross@suse.com, seanjc@google.com, pbonzini@redhat.com,
+ boris.ostrovsky@oracle.com, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com, roman.gushchin@linux.dev
+References: <20260424062528.71951-1-lance.yang@linux.dev>
+ <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
+ <aetw4aoABYj3keMh@plex>
+ <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260424063817.552a894d4b5bfa4de40792fa@linux-foundation.org>
+In-Reply-To: <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qd8hgaemuc8kcp7xun5t9rfapb37zsnm
+X-Rspamd-Queue-Id: BC69FA0011
+X-Stat-Signature: yfgw6cihncibpew7h373zcei58icqbje
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F00C3C000A
-X-HE-Tag: 1777040376-105434
-X-HE-Meta: U2FsdGVkX1+Oh4AKt3mcTpkvrMh9hQdg8Gw7OMBXopjD1OKYe5V+lUUSoqX5QEJhaV5xcK642n0zyauCQ0ohu8IVCwjdVGG1HsF/zx2jnEsGTY1+PakWawhbYabv07d62zfojfGGtTZqraRtBNabnGBvEL63xroGQH+VHr39CL+ZQK4hc7O0xdp4QReN8iYsTtwdp8B2G1BogloFnN8iEM9PVzwvIH/F1HPZznTqpGB6YJmY+iwgzDNKEQXX+oEjBqCWcIXrrp8HCoAjbkzbEucEJcKmTLgGv6kgxavOPg564jUlRegNYIy/pA6//u4WcsvMYp5gQGDtCPdn+07YNAmtBLRbLUyKMuKFN6ijMdUwoVHOZbvf60bT4a0PD0Wp//yLoDEK2gkuNxYyXJ9DXWzb8Ari3FvoQmNWn9NeOHgsfI1BUP8xFvb12nBH8LcGgiBI4Zcqxi3tHP3K5QUD26xQkAY5VM0CeFJ5YVNR1f/b+o/ewi4vde9voOgeyQfM9f/D54vj1PPl0yQ24+bnW6PTx4IFp2u+jZLwmRn81sflEwmBN7QCF4jxowSGWkF8OsWyroDXaVFhnHfPPZnZMW+3lbbl5vRblNvB3cHYKnkk1MyqkWkZsUNVjQ488j8FjMGowFkbreOJggSMrDtZtC5eBmslZ6FjCxam23nC1I8eawlT/kN3olenx7NILROjJDbJAiRVR+Tt28PwMX8NVqXFy4ceAHgvSkONHrzTNLz337BD2ctLQP1SszYJeH5U0NkH98eKzhyoseBUx9PlA9UnggWrUVtV44gP1nAXOZ/WOg91ddttaOAWb0DZMhjebh17/PE/O5aIGqJwXdyKJFDW5t3x6wCHNWjgDb6LT+OvsnCvXi7e7sjR/Enl0ZUQvjBvQvv9Hk4mKyPv8TURgFyUwFS5yzCr4viobr83lxiT3H5Ya1Ew5753y/iKMLkAixap7i0TEVwGkgv525h
- axGSx0Ak
- dvDqSdQrlUeSj9j0mleTZiojZ3Ag+lj//L0VtKSt9A0vQ3871Lf7lxTvdQdNUKacYkCgvtPc9/4lxfMbJvg5re5PqLGh4x9rithvpfNyRHZFsLDKGgQgt/p+35LvJmtxCtOVfxtnLoNzxjxu/jxII8d0q93e8eTStYTvSwhUBnCIdiqZYHnOSjq30CDt1sfSQ8MbvOTeBErc1G5danXd536ZgGHGpyJhYFmitHUT9cuyWVYfO4t7/sK64BBcvYYeQteIILanx0/vDPB2c7YrTouadmFpXlECNkz67iPdcIqnihxoRyIirP5wJ6pBb2cn34pUmqnuKUiR/HoFQtboKsmuLn2K8O1HfwmDNnM0Hm7+WWjRpOBLJtQ34316DHLv2ZeD6xQ8eaEwaGKgEM+m8cBDJ9X3aADRPAdm94X5QTPG8DLA=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1777040468-837621
+X-HE-Meta: U2FsdGVkX1870o3Qo+Zr+iRp/IOo7l1TON3/O7MMw0JtGjQ9wujcOfqh0fmyOGlJbQcY/dq9cLP4soIv8XNa4ULdv85Nnr38DyxOVMc1oXyPRcEW5OCpZQPhpN8J8Km6qsqxXoNnrJjZYtVk4QD+pDzKBcfOQYDvBjWageVeehSJwaAuTAMsV7Z/30KAiBSBsvQM8GxbWa3UEIM3qOV2vHls1+lmxSu4cwUGcQvSu0TOGAAkc90V85ZXVMV0GVH5M053FiBkMNYgDwizEERJkPJP4qDAg7dvom60rhuyAkMIRqAEqrusAr10LtJ2XTfp2H/imDxPLlcNAfYm/kNDZWyq5vGYJbOAfZI6VM9qdA25rE5S8ruTriZMIloSJ/CoEww1ebdJK2bszFd5Q1jHX7pfotLWvqL5wOv+NA/B3iMcvqwHdB+DV1LCsBtdJAKQ6+X13G+6PSd95AE+kP9Jv3s8MDa1G/FEMX76apfaHgWpvZ1rb73fma8TGhr6jSlTr8Nl1vcpMjDkR/mUmXuJZW+j2uwKZ+VeVvOMg5UnPlSYn6OsLZ8N7EvrQ7Svkhful5hj56iRgQjsD5OPv8KWqeU8wpnXgcAq6I3oUFqC/zUJePPkwdrvfCpLjJVVgb/bDVxzfzn2PJ2pzmapkY55ZxaGSnc20oAFZvU9lWfrjK2nybkQIJ4RxxwuVSKOrgTTJ+dwsrYKznOZz8FTInVLQzQA3Sr3UKESGjBvKh4Sl/7bSuSIrw/xMIggPyc/5nMoonGTM2inGYXJeFdxonAz3izwsBa7ayAphxZGQJHVZrIviMG1sJllsQ4s8EoUXzKYPu258ZXj7Tk2pG7j9T+8E2Idh3RC7OVLNj5Ft2/6KP4ynRliPrbGcmccoKgDxIt39XKd1wl/3B60HwFHoYukU97+77mL4q7tNecUiurmuEPSjcP6kKFjSA1HA9MPgQlnxAvMad4SiUyTEcJaEgz
+ v2JYse1n
+ 7ZbS5I1xPuZ5wu+0U1kZF+GgDxiG8spKbFhh7mCp1FxzbN5aLNeO4IAsR8CDcWzFPeRRMEHa1RpcikJxJJYJ38ZBhZoxH/sEmpQIiIbYiGUl/HzwfQ3iLModDM9GYFK5HBQZSL5ceVFSU9SKvKLuBqE5Gkd3sKqVvB0UKLwLeJ7oIx/WPw9InIooMOlkMc9xBPaDZ91yn6a1hQ/TXDEoR2Q4kTI3ZaeNqoRqd0hlh83sFd/9OOr02NiSzjpsTm9Y142rFtEQgg44lxnAPAsn+zYg0GQcKqV3Ciaro2lZ3DpPnZiMkczC1q6WW07UIkdZmlmTlH3bJ+UsEIPzHkWlJ5qlFHLfpERD3w27y3pSgYWFKosh1nOx2CaONW1vzWYVbIzQm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,64 +152,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/24/26 15:38, Andrew Morton wrote:
-> On Thu, 23 Apr 2026 16:28:04 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On 4/24/26 16:15, Andrew Morton wrote:
+> On Fri, 24 Apr 2026 13:37:04 +0000 Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
 > 
->> The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
->> get_page() reference for each page regardless of foll_flags:
->> 	if (pages[i])
->> 		get_page(pages[i]);
+>> On 04-24 06:30, Andrew Morton wrote:
+>>>
+>>>
+>>> Sashiko questions:
+>>> 	https://sashiko.dev/#/patchset/20260424062528.71951-1-lance.yang@linux.dev
+>>>
+>>> (I never know if my Sashiko emails are welcome/useful.  Maybe Sashiko
+>>> said the same stuff about v9 and it's all wrong.  But better safe than
+>>> sorry!)
 >>
->> This is reached from pin_user_pages*() with FOLL_PIN set.
->> unpin_user_page() is shared between MMU and NOMMU configurations and
->> unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
->> GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
+>> These emails are helpful; but, I do not believe you should have to 
+>> manually follow up with a link to every new patch series.
 >>
->> This means that pin adds 1, and then unpin will subtract 1024.
->>
->> If a user maps a page (refcount 1), registers it 1023 times as an
->> io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
->> unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
->> the page is freed and returned to the buddy allocator.  The remaining
->> 1022 unpins write into whatever was reallocated, and the user's VMA
->> still maps the freed page (NOMMU has no MMU to invalidate it).
->> Reallocating the page for an io_uring pbuf_ring then lets userspace
->> corrupt the new owner's data through the stale mapping.
->>
->> Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
->> for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
->> symmetric.
+>> Perhaps  Sashiko could automatically send a summary email in response to 
+>> the cover letter, or provide a link once the reviews are complete. For 
+>> the kexec ML, we opted-in with Roman to receive automated emails from 
+>> sashiko.
 > 
-> Battle of the bots?
-> 	https://sashiko.dev/#/patchset/2026042303-vendor-outright-b9d2@gregkh
+> Yep.  I'd be OK with an automatic reply-to-all.  Maybe some won't like
+> that.
+> 
+> An alternative I've discussed with Roman is an automated
+> reply-to-author with a cc to a dedicated list (we could use mm-commits
+> for now).
+> 
+> Preferences?
 
-It references the
-
-	if (pages && !(flags & FOLL_PIN))
-		flags |= FOLL_GET;
-
-I'm not sure if there is actual NOMMU code that triggers it. For example,
-uprobes uses that pattern, but I suspect that that's not a thing on NOMMU.
-
-
-Probably best to just squash:
-
-diff --git a/mm/gup.c b/mm/gup.c
-index ad9ded39609c..44bd28cf6e00 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1988,6 +1988,9 @@ static long __get_user_pages_locked(struct mm_struct *mm,
-unsigned long start,
-        if (!nr_pages)
-                return 0;
-
-+       if (pages && !(foll_flags & FOLL_PIN))
-+               foll_flags |= FOLL_GET;
-+
-        /*
-         * The internal caller expects GUP to manage the lock internally and the
-         * lock must be released when this returns.
-
+Reply-to-author would likely be better as a first step.
 
 -- 
 Cheers,
