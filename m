@@ -4,91 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1234BFE5214
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 11:53:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69E03FE5210
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 11:54:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6783C6B0005; Fri, 24 Apr 2026 07:53:38 -0400 (EDT)
+	id D80256B008A; Fri, 24 Apr 2026 07:54:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 628CC6B008A; Fri, 24 Apr 2026 07:53:38 -0400 (EDT)
+	id D314B6B008C; Fri, 24 Apr 2026 07:54:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53F9B6B008C; Fri, 24 Apr 2026 07:53:38 -0400 (EDT)
+	id C205F6B0092; Fri, 24 Apr 2026 07:54:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 44CED6B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:53:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9D08C01B1
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:53:37 +0000 (UTC)
-X-FDA: 84693289674.11.61960A9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 508FB40004
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:53:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XGHeCumi;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B388D6B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:54:31 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6557016011D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:54:31 +0000 (UTC)
+X-FDA: 84693291942.21.B6BB438
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0B5581C0007
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:54:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=i6H58vB8;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf18.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777031669; a=rsa-sha256;
+	cv=none;
+	b=RlfQLuZaUF9Wv9PG46z2QYh/qxEPU95uzbZqeiV1Fz1DFtiLIOk3c/JZa6Aiim+gEOcZKo
+	QcqAjy89WeR7PeNl9mcwdlRKE+iYMdIYQ0ZKvXNSa6IZBha7swKT5FOpF9pwW3LPp0FL/e
+	y6dPu0L8KAHlMtfkB2hhCMrhdsVN6hY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=i6H58vB8;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf18.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777031616;
+	s=arc-20220608; t=1777031669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qgllW9MhwY2i7ExISGq4a4MBTjLWeZkGtwZpDRuz9iI=;
-	b=AHbsWgaKZwJUSDfNrOsq+3Zcz7ZkGI5DSZXGzHmSjve4/4BC1GVU6y9qPBWcsRu/gKRCrm
-	Gyi1TFzwHNoIO4ld6zoG1S/nYXy2rIXUP2xIFLYd1OeebEFVYb3rVV8d1q0KbnWCqJFRco
-	K6wCFLQMwZCNxTFhnRWYULmAev+/Sx4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XGHeCumi;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777031616; a=rsa-sha256;
-	cv=none;
-	b=bEmVmacA2tFxNU2oHlOEBy5/NzCmiBgde8s7ChdGwQpZJz4pzWb4fm74qoSq2QJSofvKFW
-	75PfaiHXx1SwnleAZamFxzajwNAEQ2WyqtfeF66jc6NJxMvYMmzU7Gv9NToQZFPcm8j3mw
-	CChB7Qj8u7kvE6hkm966D87FoOf+/sE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 803F3600AE;
-	Fri, 24 Apr 2026 11:53:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2554C2BCB5;
-	Fri, 24 Apr 2026 11:53:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777031615;
-	bh=ElAcgQXNRHYhayu5c+VNdA15FV3TAK774nNECHjKGFg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XGHeCumidfXtyQlwlHTFHq47UBB7t2V9ZZ1C1JtNFAG4K1i9dk4/jj2eukKjcckjf
-	 eeHHvUji2rdbDymzp+D3Sd9ljHbmwegU7IJQ3tnjAcEWa3Q+iIGdcZtEyRxN1d+tUV
-	 bYVz6MRaozMEEpt9keoFc7YISYEMa05veEKs9Eqw=
-Date: Fri, 24 Apr 2026 04:53:34 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, Lance Yang
- <lance.yang@linux.dev>, Xueyuan Chen <xueyuan.chen21@gmail.com>, Kairui
- Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, wangzicheng <wangzicheng@honor.com>, Suren
- Baghdasaryan <surenb@google.com>, Lei Liu <liulei.rjpt@vivo.com>, Matthew
- Wilcox <willy@infradead.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Will Deacon
- <will@kernel.org>
-Subject: Re: [PATCH] mm/mglru: Use folio_mark_accessed to replace
- folio_set_active in PF
-Message-Id: <20260424045334.ce9801ecd7a077bf3d5e4ff1@linux-foundation.org>
-In-Reply-To: <20260418120233.7162-1-baohua@kernel.org>
-References: <20260418120233.7162-1-baohua@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 508FB40004
-X-Stat-Signature: x9rpn61farfsf5s5byaoqttkkfbr1gh5
+	bh=+wAdlqQB/ZcosrMkMEnAlX1EnYA8Qltq05LW3i1TVMI=;
+	b=BhipL4urHZmvxOHtHo9gqsc+XhNuZEmxVXv8+Ndz45yqnD5+dpgJ2ImmgMuyHoGTG4/lld
+	HvON+TvQxYcEuWUaq+pEWiwv1KBlkTRFlqWnrPiOhT8Itc5X7c6+wr4+U1NDFHoDCxw9KD
+	tmlFLvOgkFC3T9EWYnexLc1SrHu0ysM=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63O9sItb3229011;
+	Fri, 24 Apr 2026 11:54:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=+wAdlqQB/ZcosrMkMEnAlX1EnYA8Ql
+	tq05LW3i1TVMI=; b=i6H58vB86JvZ63VK4wgXeAOMV68a1wClDNsat1FP440E5s
+	uTZkhPT9c+IOp8oP7ijZG4W9c/OENGf0k2bVIVyGbdsmerb86UdOuGc7T5THi/qW
+	gzuZyWx52kr1GahEUY57znw58696lGWndDxnhAfPHHTQIE8ZM4v8I60+wsv4N7i9
+	O06IDen1PXW8iQM5W7m2C5zGTfQDdcN8lMXhjveniG6dt1zF0be7ctfslTHkvFTp
+	xklAsOOP5GRrZU6BExqguzU8cOsXaP5f7orsNK6YvRSsDwNa/pnkyUzzzf4ZfasB
+	zEApF4MmoulRvPIqvhw3QHQ2Bn8+WIgrUOn8lFAQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu2dm3u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 11:54:24 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63OBoGIY014370;
+	Fri, 24 Apr 2026 11:54:23 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkytmxr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 11:54:23 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63OBsJq647382898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Apr 2026 11:54:19 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 819DE20049;
+	Fri, 24 Apr 2026 11:54:19 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 52AD520040;
+	Fri, 24 Apr 2026 11:54:19 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.52.215.75])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 24 Apr 2026 11:54:19 +0000 (GMT)
+Date: Fri, 24 Apr 2026 13:54:18 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/6] s390/mm: Complete ptep_get() conversion
+Message-ID: <0ce9c2f7-e9cc-4018-92fe-a2a966889181-agordeev@linux.ibm.com>
+References: <cover.1776264097.git.agordeev@linux.ibm.com>
+ <7ad766612a3095c8c8d9a253ef0f484ef98196a5.1776264097.git.agordeev@linux.ibm.com>
+ <20260423105118.10371C15-hca@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260423105118.10371C15-hca@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _tBjGR7m1MDL9l7NnWkpQNGHIoum42SJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDExMyBTYWx0ZWRfX6ZIBUbdeUSbk
+ iC7bi1WAG6BiKq3V4pqZWM2UVoSJSrI6Zga/HgzDb6o5DuDExGC4v6b2DvPUlDPhceYB3yzJeSd
+ W9hIimXmraCtp5Xd9B2x3C41Ag8T9o0g5uxk0UnBHsagVebB0vjbKnNZIy83Er4UnDHS1dHQaPi
+ 0StRNyIzh1aXvQ1swzbVBkM0pVN+8DgBAVgrKXa0rJN8qWlHkxBLxWz08tuGOhO5XZ97yVjASK+
+ bIH9Egf2utbL2UHK7ShiYxwT6hSOSFUKsvQQXh5SfrYiYrV96aE1yvZW7CZ667E/rGxkFA0Iahg
+ Zj4+IwVqJtbyU+FE4jOQaY45PjeI3AWZ7tzeQFBESVtNitX30EfHe/DdRJ8lGq2lHpgPPQo48kN
+ ALc1cMIhOejsjIYOBXgX0AQewO27u/LRgzE7y1gA7PuBsJrY6CFVqXJQ19CNBCVdJhBqZYpmgno
+ DLOfZN1AUc8JkjMjWkA==
+X-Authority-Analysis: v=2.4 cv=C8LZDwP+ c=1 sm=1 tr=0 ts=69eb59f0 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=7-lpDXNR-v68OR7j9qkA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: _tBjGR7m1MDL9l7NnWkpQNGHIoum42SJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604240113
+X-Rspamd-Server: rspam10
+X-Stat-Signature: i7p8suhez5hb7bspoz4ime83bagx36w7
 X-Rspam-User: 
-X-HE-Tag: 1777031616-376610
-X-HE-Meta: U2FsdGVkX18Xtp82PKg0WIRz+s6/rvIapaWrmpyW14kK8d7ClF67+ZU+w+JwtNeopr65CFo+93OEC35Tcxi2bh3yVJBQJkLd/30fDHCJ6EBAonf7L7oySxMKhmyFXcweHwFpd3n7VR6Ap8r4f39gWG8zD9x9/lTRL3jhw4uaLpNY4EXYaSj+7D7yxId6ugq8K3/efrvc0coI+2iT7SBVCaez9SGAxgPKIZW1/pqcHbo8Vfm0ac79V2xW5dHk6if9bIWF9OQCnp13AVB6svI/WudEHKBaGxhyE5iUhZGDDlN1S2C7a6c7t5BVrxI5fUCypy+Y8g1rXNdE7/OSYLocl2jX5dkUlPSc4unHU7FKjVOlVoOSrdZl0GrpAhhtg+54DprWiRLPXWoacUKe4MFqXUPxGdExpVsmb/H7lB0AmxMIXxVqSeYoJkMtNTOenP+x1/AlksUhbvaOI/55O1V9VUn313WYanWvNsx6bvQb++a3UUseSZyyAZ+4U2C0O9VAkiEoCBx7YUouQVzchR6NdfCabjC9XPFTp7KwqI2zOts3EaByhF4IGUmbDCPV4Zx/sjItF7MCi3trwQfI4HeZSazux9tJCqxlMHYBhJTwFTTXC7FNsVIrOD2bVrUNE4QYkw+VuO+qJB1+JVf4m9C790OtzK6f4SDQxR1i9XVUL0W67QkFBftXq7PulmZyAqxiFLP1FWm6BKllpQhUfyjoKLLc6Qwtte5RbJ21qqqzFUMNgpYCRijwDUvBJDEs0w9a7/rMjZqzOsz7BkUS8cdsgX2Zfj41/TMdq7DHcwKvszaOUQ7IYN9poQrxdggh6LPIrBW81U2M0mLaEPHa21bTYGoNLA3dSWUhgm86CODv2krxwiLVILAnAOd5zu0PCDh6eC/jVGx9tM3goOrXzgqEGFbBpJ4G36atHTyae7S2+oYSNpvrKCDrQElpTnRw6PQvWApr/7Mx/4inUFDM/YI
- nZlycD1A
- 8i0I9AOcEa41UZmLnJTIxQVAAfD6K9OW8eTbTU8DW1UoSYGvno0GqXVPBTUD6VojQc0tJj5fXg3cYvCt8a3tkRNSfxk6Ac1auKbHz5D4OAm4UKXeVJ5mUyZTlWKZLTLaK1sNLRPH5jCfTw/J4QfWPAgdDVXD5WSJWfNQHCenCEXRXAOcSsLGnQtd+lebTOGCLj4h8tapJ5opNUdHcIc7lRbMf3DNczcpi2Ilooo7v8r7jTmzg4d6k2wAyt0/4PNa6IwVSyoe1FNds5/No+R/z/lTbxDhy+G7DC/0SHfSvovoAV8b+ULpaN+QrB2awVLcSfLbil98V4rnTjG/yaZ7EQRgO0cphYesp8cARqJuo1uD5hBVIG5GX0yvKLgXerZ8hGDrPkLp1T7QbIT3b0PRDJX5KwSJUHNZUn7Z3
+X-Rspamd-Queue-Id: 0B5581C0007
+X-HE-Tag: 1777031668-492145
+X-HE-Meta: U2FsdGVkX1/IOlvffRuaMw3p06cgnrGya9CpF67TG/+dgVXU+PY7dw7cGehZtJEKAGmGMQ7T9FXHLjiFkAOH0d21ACD0jtqkKsHWM6Uwtn4Y1lN1UHQpME5wpOgk2afbtJ32Fgy7ZLDL3YJV0jvp4kFAxwhxLEVaztvFwFkYo0Br650oDoGMmogGrcZxkUDDlaHNBh+d+htbfWc9wgx7dR2eLdggZ7tBGwLOfCzL+3hhsDnsfKgUgwnSmDyTKUnA3GBxo52qj2+8Dv2FewwoMiavLFTXG3C6ZKC5/dxn0+NIHKfv46rsO5g0HNYyPxe9xLWCw30GxP040iVHJpsG49nUWwXFgMMvVAM5ocMR3lp2lsCByxuJEbff2cIkgQqJb+ldmtPMrqFdlAb0gyskxullcvxdecUvyL6kxG8cgKvB2KPwM0+z/ZXuQW3CGwB0MSKczszXPZe8bC5vvSbOeXEre5ITFD6bv3j0VSZP8fbhOl6PeQAnDfGPRMUpHhYHQVSVxLOrMfuNbX81177+66SbhW+Y8vGV4c87dMFD3XsDVSe3PyaJymuh3GvR7snhQB0hFG3LrRpBsd3ScVhd2pbPjuf2OtbdL6tqIoDt4Xdg2Jxrnx4dRMHaqJpNz3k9vEDFUnlyxz9JdAvTWVldYjEoIY/aMi24Lii6R0chCsagFZANQyNYWSPEQmxv96W/BRBJKpi1YTlBhm19SxzWlqh0aF/Bs4dWjtq7Dc8ZqwxgH2QeAPA38B1ad0it1WoYjCk2qnLX26dIlMUpTlUfoTPDLqb1omXhKjqmKj5sMdl2aeQIj7A9C8mBQMIVWtjVCurSdF1ktaLQ3n1qpFIPbb/RWoLQUkGdmHIMaHtN+JX82G1LwnO2rBshO+WyRrFh8AWQcdzii5b7kaHUdfvpiFmVxgHxCyhBr4MbnbY6PfYt1uZ0yQ5fVDeE4Zq06/oTsHMYqJ/FqMKxoN1fohL
+ XSVBvNpg
+ 2Xst/DHgDy/M+33Yu7r9F83KpfLZ4JJiD3fEWwh1Ys3dnSsR38MITet2bDxoK7pLENvCBWpmPXxo3cYsRQU31oD5z3nqTmaixQZ4EPdAdHOj0OejuQBjaV4ApFn3qp10IZSccq9lVzwdrDvqSYP5+Hc0eQxymhGyNplWIBp/ZqNvdf8MR4Wdoi1C74DQPu+LM5IWProURiXIPynykTg/UrdU1ow8H21fPUJqWh0K3WnkUlmmsYolBdKKjjBp4/8noPbFuLjusDL0ATL2EjrEFyyvnkLtgep/WEZKszUIXyrEEQLDRgSgSQrZbeH0jT/xqENi0BBciVwgAEyA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,72 +144,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 18 Apr 2026 20:02:33 +0800 "Barry Song (Xiaomi)" <baohua@kernel.org> wrote:
+On Thu, Apr 23, 2026 at 12:51:18PM +0200, Heiko Carstens wrote:
+> Was this a manual conversion, or did you use some tooling?
 
-> MGLRU gives high priority to folios mapped in page tables.
-> As a result, folio_set_active() is invoked for all folios
-> read during page faults. In practice, however, readahead
-> can bring in many folios that are never accessed via page
-> tables.
-> 
-> A previous attempt by Lei Liu proposed introducing a separate
-> LRU for readahead[1] to make readahead pages easier to reclaim,
-> but that approach is likely over-engineered.
-> 
-> Before commit 4d5d14a01e2c ("mm/mglru: rework workingset
-> protection"), folios with PG_active were always placed in
-> the youngest generation, leading to over-protection and
-> increased refaults. After that commit, PG_active folios
-> are placed in the second youngest generation, which is
-> still too optimistic given the presence of readahead. In
-> contrast, the classic active/inactive scheme is more
-> conservative.
-> 
-> This patch switches to folio_mark_accessed(). If
-> folio_check_references() later detects referenced PTEs,
-> the folio will be promoted based on the reference flag
-> set by folio_mark_accessed().
-> 
-> The following uses a simple model to demonstrate why the current
-> code is not ideal. It runs fio-3.42 in a memcg, reading a file in a
-> strided pattern—4KB every 64KB—to simulate prefaulted pages that may
-> not be accessed.
+Manual :) But I will try to recheck with a tool.
 
-Are you able to suggest any workloads which might regress?  And test
-for those?
+> I'm wondering since I can spot not converted locations, e.g. one in
+> __kernel_map_pages().
 
-> Without the patch, we observed 12883855 file refaults and a very low
-> bandwidth of 58.5 MiB/s, because prefaulted but unused pages occupy
-> hot positions, continuously pushing out the real working set and
-> causing incorrect reclaim. With the patch, we observed 0 refaults
-> and bandwidth increased to 5078 MiB/s.
+Whether this fixup is fine?
 
-Wow.  And that isn't a crazy workload.
+diff --git a/arch/s390/mm/pageattr.c b/arch/s390/mm/pageattr.c
+index 3a54860cb05f..e6f788696dd1 100644
+--- a/arch/s390/mm/pageattr.c
++++ b/arch/s390/mm/pageattr.c
+@@ -455,7 +455,8 @@ void __kernel_map_pages(struct page *page, int numpages, int enable)
+ 		nr = min(numpages - i, nr);
+ 		if (enable) {
+ 			for (j = 0; j < nr; j++) {
+-				pte = clear_pte_bit(*ptep, __pgprot(_PAGE_INVALID));
++				pte = ptep_get(ptep);
++				pte = clear_pte_bit(pte, __pgprot(_PAGE_INVALID));
+ 				set_pte(ptep, pte);
+ 				address += PAGE_SIZE;
+ 				ptep++;
 
-> For those who want to try the model on x86, you will need the
-> following in arch/x86/include/asm/pgtable.h.
-> 
->  #define arch_wants_old_prefaulted_pte arch_wants_old_prefaulted_pte
->  static inline bool arch_wants_old_prefaulted_pte(void)
->  {
->  	return true;
->  }
-
-Can you propose a patch?  We can at least toss it in there for testing
-while we think about it.
-
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -512,7 +512,7 @@ void folio_add_lru(struct folio *folio)
->  	/* see the comment in lru_gen_folio_seq() */
->  	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
->  	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
-> -		folio_set_active(folio);
-> +		folio_mark_accessed(folio);
->  
->  	folio_batch_add_and_move(folio, lru_add);
->  }
-
-lol, I was expecting something larger ;)
-
+> Besides that:
+> Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
