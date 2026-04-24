@@ -4,108 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75D36FED3F2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 18:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1848CFED3F2
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 18:36:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2AC56B0092; Fri, 24 Apr 2026 14:34:02 -0400 (EDT)
+	id 553AC6B008C; Fri, 24 Apr 2026 14:36:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E02396B0093; Fri, 24 Apr 2026 14:34:02 -0400 (EDT)
+	id 504A56B0095; Fri, 24 Apr 2026 14:36:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D18736B0095; Fri, 24 Apr 2026 14:34:02 -0400 (EDT)
+	id 3F2926B0096; Fri, 24 Apr 2026 14:36:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C22936B0092
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:34:02 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 87CAE402BB
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:34:02 +0000 (UTC)
-X-FDA: 84694298724.27.D1D4D64
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C3336B008C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:36:32 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2A05C16CF
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:36:31 +0000 (UTC)
+X-FDA: 84694304982.24.3D849E2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D7CE8C0008
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:34:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sKA0DITd;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2ACDD180003
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:36:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rL1BpIwr;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777055640;
+	s=arc-20220608; t=1777055790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TmWVG+MDzcAoy+j4BlMNgcs31+NIvg5mQI315xzbz8M=;
-	b=jQX+eXuRVMFLRa4kPqAxuBGbwnMsO06dA+xiudVoIvn7txhgh+Hej00afo62wDu+NOQ1O+
-	r0CO8u5BA4MMgKC0Tb4t0W4Y/1ydUgDxRmIRPbxBSTapf/3HcPcxDxpv3aRF5060pBMLzm
-	q65Maej2cjS7cQX6fAEr59WQtLNi1t4=
+	bh=V7mJO8UbhaUrFHsEF95AZIBG6a5ynIYZrhw8uopWdic=;
+	b=Op88fla5ULQ0a+wNaWAKCIVGVaa/MFSDenHkXOJ7X3JD1zvy7GphyiIUeVvV6yxUcM1/ci
+	DRKi16D0groV416oBWZBFblNoOR5YnoQxlH0jyOT7JX6KsUOROiejKTn4E92yf8+H4V7KK
+	BcFlwGQZjxR5XEO2RcA1UsHTVYxIVv4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sKA0DITd;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rL1BpIwr;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777055640; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777055790; a=rsa-sha256;
 	cv=none;
-	b=VC0fkXG9iyCEMFwjap6+GAlm+P02Rz07h6/5TZCmcgmQkVveaE87C0D40htZERdmYlEhRu
-	pcHe/vse7TnHumD38pwkxVbz8WUBBSjMpF6zOEHw//NBnRiyhTzzh2L9fAKGFBnFWlIUW1
-	u9jOJRrJkQT9r3ftu4Xb7TwUIzODPAk=
+	b=jEHqulIVAezF77jgbknhBS7ofVrwNUYnng9RrdkDSCw5VW9HwB8QrJDyWVxv6VDXejdhRB
+	jU8ttUD4UvXii8/HISVfySGfRIZ8Pvz82Q+CT+nQNMhp9u81sxl3a6Dvaj/97XV7r+D8mF
+	U/pyGjslP2Dc41uaGAJNAIVT+IHMDm4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BB83860123;
-	Fri, 24 Apr 2026 18:33:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EC2C2BCB4;
-	Fri, 24 Apr 2026 18:33:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 764C1600AE;
+	Fri, 24 Apr 2026 18:36:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AD4C19425;
+	Fri, 24 Apr 2026 18:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777055639;
-	bh=/eLx7kUbMNf35MbwljFoEAxjWli6DbZEA0fmcECuzY4=;
+	s=k20201202; t=1777055789;
+	bh=L4jbMDY27DDz6+DS6kI4Qsu8AZq31/9+/cVOm1CDF24=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sKA0DITdxCODM2VDwZATIZV/+2Q9QtqKKTgXbCegYwXkeCv1Azbn8CqIHxt8LfhH1
-	 HPKO1kqtZgmbjfcua6vhYps3h6FiKiz57KHM71R+jRGGgRREvijLUAvzgyNlQHwAGW
-	 AxV/pmaBrSrFt9O5MG2keZoVNWRyuuq6Xh0DxndarOEmyqixLwoG6+nL+q02jy7f3P
-	 6gX3e1fWep/QK11+v9C6S3lrPJ/83Pi1E8v18aFPl5mZBohsULf15WQtjc33bNgD5p
-	 Pyc97vZWzSErPc9V1VxAIwwBCF3/pHOm5qoy9jZcf72RKKtl49JIuIEexQiCFAAwgt
-	 Q592MfBIXnWWw==
-Message-ID: <4e12d67b-60e3-4bf5-a229-43c0d2c62cfb@kernel.org>
-Date: Fri, 24 Apr 2026 20:33:45 +0200
+	b=rL1BpIwrTJNAvql1Vcp5x5Vv+xdwUtQ/JLUc71lzSiqRWO/R1/Sd2AzOoI2+qMGzz
+	 qAp1pSPvHgAFPeeZGcoIj6VYUoHG6TqWMrHXiBb0xqdx1bfBQ0559ZX6TxoJ31FD2v
+	 UXsObbvodX7PRYHBDe+Q1iG5pThWfqknVK6Dz2H03FAasVRv/640v+maaFx/sdGVbS
+	 DQpJEpkLiOyeuP6v9X1WoKe2m/ciWY3uTuodtKnxLOO+OlC+uqjAZghf/KHYn1Xkvl
+	 OujMFbWOYaPtf0W0etm++tRK65YxhknAEo0p2wcUrMqHAb6WZ1LjTXZGYcXhFMFwMX
+	 NbYPyoSa9Tx7A==
+Message-ID: <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
+Date: Fri, 24 Apr 2026 20:36:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
- for cache-friendly zeroing
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Gregory Price <gourry@gourry.net>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-mm@kvack.org, virtualization@lists.linux.dev,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, linux-fsdevel@vger.kernel.org
-References: <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
- <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
- <20260422171315-mutt-send-email-mst@kernel.org>
- <aemglPlcwFFHNj1A@gourry-fedora-PF4VCD3F>
- <c165d6af-4a35-4a41-9086-ee307640c044@kernel.org>
- <20260423074433-mutt-send-email-mst@kernel.org>
- <aeohzbmhQAoOODPm@gourry-fedora-PF4VCD3F>
- <88b0765f-7cfc-4e44-83d2-c01a1755c842@kernel.org>
- <20260423104120-mutt-send-email-mst@kernel.org>
- <1ab6e58f-d984-4bae-a343-1b0d3c973ad0@kernel.org>
- <20260423121222-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
+ them
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Lance Yang <lance.yang@linux.dev>, peterz@infradead.org,
+ dave.hansen@intel.com, dave.hansen@linux.intel.com, ypodemsk@redhat.com,
+ hughd@google.com, will@kernel.org, aneesh.kumar@kernel.org,
+ npiggin@gmail.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ x86@kernel.org, hpa@zytor.com, arnd@arndb.de, ljs@kernel.org,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, shy828301@gmail.com, riel@surriel.com, jannh@google.com,
+ jgross@suse.com, seanjc@google.com, pbonzini@redhat.com,
+ boris.ostrovsky@oracle.com, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com, roman.gushchin@linux.dev
+References: <20260424062528.71951-1-lance.yang@linux.dev>
+ <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
+ <aetw4aoABYj3keMh@plex>
+ <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
+ <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
+ <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260423121222-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: chba8c1zz3phe55zp4nkf61do3of7k1c
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D7CE8C0008
+X-Stat-Signature: 8bezoj7runsbu3pcckujomhm484mz3oa
+X-Rspamd-Queue-Id: 2ACDD180003
 X-Rspam-User: 
-X-HE-Tag: 1777055640-575990
-X-HE-Meta: U2FsdGVkX19jWEyM02TIiCC7sjIrbGHA+Z3/rrLpmzBWyAAq7/qQp9uCS7nbQh2mOMrKbka643bp/ISlbwRCpyH7F+YIiuh6N7sB9WMVgjR4DeEe8Kjz357AmiI/Fnruia+OyGeRPc77QfnFX2q3iLcv5XegFV8OHM8f0/4hdIvYYQrZlQN75iqeom0WGLCwdLdddl0KyIbl9ghB8LXYnYXMskcYVB8dRqLGOow8IfIZdU+QDguziI+rD4sOL3gyGDD/xbmxlP04lzf4BNKNgtje39py969MGF2ti89NxdE7hWK2sar+cY+nkruZyowT22nt+AFZpmeniWcObBTemfwCZ0SPblQk2KSSQn9FxQgCTGrsj41/04GnLqA3xpQnc6SuaCGRQSrH+iCkJ4g4Q3wpCBA7apsmeOT3pjXQJ4y5IdDFhCov0ekb81pT69+lo9J1SYdF7gpnzPC4pHlb3vWBOarQPfqSR6lHEAkLPvd+4/3N4M6FGLElhJ2lvRy3foiJ634bV9De4GqEsX3eMJAPGO6Sm9k+dRWFDzBqErhyqRxR6xnUcyyKFVttx3Zu7fiKBBPKwu13apsTAxVjSIRnY8SJcfsil4ze0tNeFpPqGL/K13cT1UkxHnKZWj8QxZs32QAjZ98k8mEo7D42mKoE6dMc6nnyrYZzKYTJFozck2NEENcJ0J/cENcrAZp9dglytVeBNrdegOJVVqQfwAVzed5x1Npb7XIvywDqgOVCxbX7VGLKg8KZ9oaGR3I7if2yfiKagOWbs7hwW7sMn0+B6jK8BVk84iHruLTTJREqy8HV0nyZaDnFMKLGkEMaL0uRH+TQNJnnY+KXabLQJQ9GDd0LdH1msqVxX9pP0eSkZUpiPhd9xUGXhdnfGkc1EFhUKEMU6dquoeIuIyi9+gbVPgqS9U5qFp3bvgfxKHrgFw4399xzzSL4fzNm0SZE3fx693mykr+RMR/kjBt
- 7I+T4qZ1
- 4wOrU6H7S/01h6Pong2msTQdgQc6KbjY1rmUZdIoliPItHrmGigzyIqUt0wNvOvyl9zr1rssA71YCH8qVVW7GqIM+d80Fl0BbPjNc/ziLKajGUHfNhkpr//K4s8WctvKqkX2pm8NUHHxF4kTm5nL3aIShHjsDGZrXjkGYmbIZxeZYbQZFu5NRI0lcLwI30xbW+pFrSYL6Ld7W9dSkMq9OYEUpRjvSijtlc03PxEGEpZc36LnN51/z/7hj3a83G01DHdyUx3Hm3JmD7rRdA1iLarQvvuAJQM2YGh+h76ZkV5QAL4i/KkJyPoL2xP+qWg07O81U2WCxSfnSXniBbUPOJJmBuVa0GpBAX3pwaHVkLsqVJts/6n0VmeWHINZHzIJZf1DL
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777055789-861931
+X-HE-Meta: U2FsdGVkX18t542MYImklKIj6Z3CzGikIhCEGpOPNnpmUeMhpaRcDA2/RqBAqrGmxceaDqWm0ZkI7oWxKgSWvGZHUbRFBVetq/e0m9/PzGTekQTdYxEBMGuB/gu7lDFk9wrXDtiPaVFU2FlRIcKnjzp9m7echRROViEA0LfKx0fz2Dt1bJcA4R2w6MdN7Jh3prssGH6D3LK+5wn0gQ2U1nXYbFjAfl2IMvEOVS4Ai7FEZFz6CKfSN6NwA7H4m7fm6PB1+wovXBc78EqLmhjUwikYlhzIFV+XWQl678yhZXqg5C6qEVkd17qJmqdcAKrO+SUPcMqp2dgDiuDdksieYmHLRgMXoR226tRopXNlIs4lkjvC14Sva6lqCl563t3uhrdeESZpZOYfKYqM5PZyBKjdwL5IXis6k/5kaELGVSFVdgNa9WB0nEE3MG742tEGbIvPgHsKf/wOAOmwv65OlX+Yyi33nHRjDd3StxP1u5l+tdxVmgoGHOKYgqYN32YdNI3jnaf0PRhrtV6RdOMwQuytu1uxdJK7+3pul8puIi8913HQZzO/mQcsBenbJlsOIoBUqJz4NMQCi32AkEmo60FcXMEgyr9Ezbnge/6dEYFF6rh4gZ8McVHqpI3Nk3decuRpjUbDoMjkSoEZ1v7i9M7JIjXm5KfMSBIVgk6MOyGmm8JoIkldwEJaDFIRaradJQfYSKl0ThzK3/RQk+QqwcpBTrlekIpcl2e5mdnSyh1rtD4cp39n9c/ozSf2agbaSWrJ8GkBLM6u/ZMNHa4qyIJPePN/cSxuk2hW1cQ+4zYJf3JMSB93Q7/n6DdxdCxNpbIF/i/wOhg/nGm04VtjDnecszlQMIZYQpyVAPmp7csPDlCZNB1/fvG3upEqOvumZOVtrTKQcF1OweS6+JIet/BwLZMNmhbv5wCVTKHxi5k6g3ueltC318GS1j1Zh3yFrKnPJsktgzQQhz5QMbB
+ EArPuU1J
+ ums0o1Pcwrvw/wOv7vpUjlZ8B81Qu8KVCkFCYUD20Q62i1Wqia1qzn8WmBZd6hfl076A424OpHbZw68XhuVen3DYLr1CxgjRaDedZ68tFJhGgH3JKYVBL9rU4vuhT1/7lLd8lx9hAkWLrcLcVYvQVtukknsojHZDS6x3qinYuK2XOIDWlHLdaosWOmb348AJKtFwgsRwrCYtpm76dbrLKS12L0NUw3jLVAL7vDZ6VYRSTQrks9CKr+Znf+P0obyyOcZN7gYBbe26eIs6MY8oeKMuscg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,22 +154,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 18:13, Michael S. Tsirkin wrote:
-> On Thu, Apr 23, 2026 at 05:54:26PM +0200, David Hildenbrand (Arm) wrote:
->> On 4/23/26 16:46, Michael S. Tsirkin wrote:
+On 4/24/26 16:31, Andrew Morton wrote:
+> On Fri, 24 Apr 2026 16:20:55 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+>> On 4/24/26 16:15, Andrew Morton wrote:
 >>>
->>> I just dislike it when things are non orthogonal.
->>> People are used to: hugetlb = same perf as THP but more predictable at the cost
->>> of being harder to use and using more resources.
->>> Here, suddenly, we have an optimization but only for THP.
+>>>
+>>> Yep.  I'd be OK with an automatic reply-to-all.  Maybe some won't like
+>>> that.
+>>>
+>>> An alternative I've discussed with Roman is an automated
+>>> reply-to-author with a cc to a dedicated list (we could use mm-commits
+>>> for now).
+>>>
+>>> Preferences?
 >>
->> Note that we also didn't care about user_alloc_needs_zeroing() with hugetlb so far.
+>> Reply-to-author would likely be better as a first step.
 > 
-> 
-> You mean, that it stays because of the reserved pool?
+> Why do you think so?
 
-I meant, that if we are running with init_on_free or init_on_alloc, that we end
-up double-zeroing right now upstream. So nobody cared to optimize that part so far.
+The most important part for me is that authors are aware of the reports.
+
+Sending them as a mail forces people to publicly reply to the feedback, and at
+this point in time, I am not convinced that that is the right approach.
 
 -- 
 Cheers,
