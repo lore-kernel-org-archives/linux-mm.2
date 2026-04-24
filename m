@@ -4,147 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22145FED3C1
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:40:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0D63FED3C0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EB636B00A1; Fri, 24 Apr 2026 08:40:28 -0400 (EDT)
+	id 451526B00A4; Fri, 24 Apr 2026 08:41:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C2ED6B00A2; Fri, 24 Apr 2026 08:40:28 -0400 (EDT)
+	id 428AE6B00A6; Fri, 24 Apr 2026 08:41:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D8236B00A3; Fri, 24 Apr 2026 08:40:28 -0400 (EDT)
+	id 366606B00A7; Fri, 24 Apr 2026 08:41:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AFD36B00A1
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:40:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D30D81B4DAA
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:40:27 +0000 (UTC)
-X-FDA: 84693407694.27.B239EF0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 275666B00A4
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:41:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B4761160132
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:41:46 +0000 (UTC)
+X-FDA: 84693411012.01.D37D865
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1A03CC0008
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:40:25 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D2b3kBO+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777034426; a=rsa-sha256;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0B81A140006
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:41:44 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nLQI89a2;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777034505; a=rsa-sha256;
 	cv=none;
-	b=QD/m+VgtEdsFaXJjs1nyyCVFUdRJyFJworg4NSy/P5xCE3oVm7Kq/fRqZRPCwdMJVKdYiA
-	Qw+APRLQHBG86lSUGYctx7uFpR1GRIaXJRbLRop5LDwXH7Xm5WmNYJgRHz86y6a1aFegQv
-	gl4610WTtNxXYD1rQrjrOpdDn51HXiw=
+	b=BvAwCryIWmeFVvBHFfblrnolE+wS2OgHR+u3hZEmcZxEAyAvoy6PxaM+ZJuAw+Bw+JMWkT
+	VnTfHWSMAy9Si5kZ34q/svfrnnd7Cc0Hud3bySGeSWDGMGXzhF99m0zmNXYVCXSVeP2exx
+	syOXjunRb9se7oeSSj577/ibNX99Mw4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D2b3kBO+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nLQI89a2;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777034426;
+	s=arc-20220608; t=1777034505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PXMLX0b/gnia7/TosvEjLd2bGh0Z3ZBrMOuo/J09m8k=;
-	b=gNHxIVTfWF+qf2Hg5Qi7DrnLJ7hPlVvwpuUnKJ7HUUDaRQ9AESSttARRvx3YUzDUN/nGzW
-	wCfemqckmcW+ebsGJzoyhvIT7gACFd7OxpoCL7t4Haz2dPPCqgscp4APZ9wdMTCUUOm73V
-	d1xZco2B6bhnWbs3PHPQJoczms0oyuI=
+	bh=C4F+IOniokIYjGcU7tu8UzxEE02kHEqSXMi/8M2Uw/4=;
+	b=c/UssxP4ItKbJto1hPKRiNYOJjxlw64UUO0eJ35UCRfobUs1Yxh7O4lUNlGjy70AG8CwSL
+	T3GfrRFClvFqGbBF4MIeX24D8eOZqqhd2vg1e56JV0ielGxaqIzcuoRHmE9QyVQmKOZfO6
+	dd75Z0naAaLh7MwbhwgcWu7AVUpNCco=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6BF726001A;
-	Fri, 24 Apr 2026 12:40:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF66C19425;
-	Fri, 24 Apr 2026 12:40:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777034425;
-	bh=q0B7PIomCbA4KfpFAGu72MXTppnJpzPXV1+37LeHxAc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=D2b3kBO+V9D6WWvw1eVjp3w/zRJGMBbmQ5e2qACkZ0WjRSQpRD++xE+9ytQZNnkLe
-	 a3seRAlrhqJFKHyEl/UHNbWNJBBtWKVlN+Ev8yTqXDy3sDgA47cGJ72yXnZh+3JdNP
-	 ygCTu7CaRx/jtG5aSNfmC5vVqHjnU88W/hvt31gk7XuPoUvFX1Q5niXOpBKWEdpNX7
-	 f+7uQGmQn5o1OLMs6clpzkaN9954ebX+4SDZq+pUCETWpw4595UjkO+E3wXo/R5CvP
-	 iYX++6a7AOJl7zi6pnZYUZ6SsdzLS1WyYpaQmF1JfXgMyPpjir5PI9yIGAUij36fEf
-	 2HjWUkBELvbJw==
-Message-ID: <f416ea70-fb70-434f-8807-6638c9787b57@kernel.org>
-Date: Fri, 24 Apr 2026 14:40:16 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v4 01/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>
-Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260424024915.28758-1-ziy@nvidia.com>
- <20260424024915.28758-2-ziy@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260424024915.28758-2-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
+	by tor.source.kernel.org (Postfix) with ESMTP id 665BE600AE;
+	Fri, 24 Apr 2026 12:41:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C70C19425;
+	Fri, 24 Apr 2026 12:41:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777034504;
+	bh=6WyGvXM6KrRwk2FYS/oHDsLRLQGvZ+dAbuY5JYWFfvk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nLQI89a2V5ZI3KSg9JZd/J/lYid7rrGeqdezDBgBTSzXvSAlSBciZ7LLTyVQK2q2e
+	 XEW/dXU0S/wLlplEyMAdQiN9qa751li2Fo5LV2FbPmIqN3tIjfP85bUW1mqrM4PlDC
+	 I5pt/yFYU/S9MtVBVld3gRpAxY2zPuz8towAG22k=
+Date: Fri, 24 Apr 2026 05:41:43 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
+ <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH v2] mm/gup: honour FOLL_PIN in NOMMU
+ __get_user_pages_locked()
+Message-Id: <20260424054143.087847e1617a84df8b501313@linux-foundation.org>
+In-Reply-To: <e9c5cf89-fa4c-4b83-ae70-9d3c72542ee9@kernel.org>
+References: <2026042303-vendor-outright-b9d2@gregkh>
+	<a20913f0-476c-4f56-a044-9802bb1c7f1a@kernel.org>
+	<2026042431-charter-ranging-597c@gregkh>
+	<e9c5cf89-fa4c-4b83-ae70-9d3c72542ee9@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Stat-Signature: shk183xhth9orha6xzzwz9prum7hzxtx
+X-Rspamd-Queue-Id: 0B81A140006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: jxdbkmnoogtrkb6ibtqb7ebt6dnwxa86
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1A03CC0008
-X-HE-Tag: 1777034425-234105
-X-HE-Meta: U2FsdGVkX18g8tpRFDksrMyQwT0VO8q3d+1eIywuYo+yqgZ3oTlRvwvADjdwNajhkukbZihaUl7aOKEGaoM5sNttPb886veNjWfqK6r9+z05/eOO03JEVi0+Cx1LekMsN5jAEXGlp8KLXEMa8SvR88Yx4bNmgtRxZqP1yJ9F8rjycseNpYRqWBiv2xAHdMU9JC/+bq7DlZqF1bNcrKKXr9ZtpVl9U7AG4gGCTuaMk6nSL2fqeTr280V2J18+mtDKuuITYNE9ZB9MiGlsTiaub/EAkEjMBXlZSum544WE+EZ/e06+WdZnINccECL5VkP9/XPNBkxGZBCId1Kv6ULaECbleDjVzUd8e43pP2Bd6duKHUKd4SRrQXb7SJbWo29+yuYGWvHDUlf6pdMvjV7GnJfCeyqsSxRWp6f3SOjPKN3fduxfkqcZwd7UyyLd5rPO/Qh0OKlatRn+0Wo8VyOV6Vd6INp/dCPLr2hY2W4qLroZOIBLKFFC+SMgfFI27UPMdoiRNOUTekA0Lu+YUzmcCIrsvovQBhdHwVXcKdCc7HWVhv5Re1jI3ZzYdhZrjZnq34fXf3DipBSBhcClElOiSw1vj8MMK+zl4b4WfCmw7lFxPh/txgulRdr7Yn2dRaXAAy4aHc9LU+83SSNvaHRkyg86ZrU2AGBnlsV6pI3bMObkEjEch/1pTIZdIq/BUUJjBj35RHHUSQ21mVPC7/ri6UMzO4pMkrQgyoNjLPhuwBdo3sZjeyBgK9L5H3fS8SUEBwp/y/5WV2wdsM9d63D4qim2aF4CI4oCUHbEKgDoj+nML5Aa8JqzJTA+r6y3HJ1YV7CGLvGgzJQXSxEtXy/33Kphih9UgwkQ9l606oabCTgYpmQ07m5coNBHFxibfviyEirdo4SEDb5zd1lpezHkuK809Kxy0/wBgNKHe+omx4QOuVH4J+wGSauh4/cQy0XowN1vdXKyM1xFvnpqnoF
- JxmmE3pP
- iHvKdI9UlgOwcVpLWRD/DmMGt4ZXxOB6Oz0mDg4CkJQxPWvTUI61/xJz2vE7M+C3LKAblxA3EnIU9GH+xUGqwvOd9gGJm4Gk7nP/TyiHQ3BCwlU5IZW9SX4sOPzwQDbiu3sc58W0k5iprpZDL1DWhie1O/QW+WQ/XCP2pG2ZoPB6zwpqdHV+DUs8jS5idqPEifk9rYOj703UdwOgCEugHCMurHTNsCyLjZp+0ewfYC7YePfVDCos3CYLbutsfz00Tp0bUAOhjoRMVHy0a++HsH8lwwjW6w/Kb/RzZMFMBAfSliv3G323vcklBuYYlKkAcWcBW9j+DiILhUNEC0Rx/KERo003BYcKDoNSJgfAUdcA819JhYBh/lMR3t+kePON8Gwxe
+X-HE-Tag: 1777034504-390240
+X-HE-Meta: U2FsdGVkX1+j4F52FGF1qTLpQS/ZQnMVbh6/EsdG8Px8iPahRvoZtm3XKvKazUmVbOOHts2GRuYwEL2FwOk+W0bbZjd0BwrKozN2SWUy/pu3mfQq7BRo9OVmruqzwRpFrneQVm+Nce3CqorjSYCDABob0VRJrKKVElj+VL3lgL729KnhJwNhh5YKbe0CserO9JummI6j3p5SLLY39mMgMFnBCg6JVWzX6kYAAEJ5Qz7me/fyByQIW8vAGF6yRC7zgXeKfHbdN20+ClJOgtl68jOxFeNabFIIpbuPe4O7Q6Co2LFeurOf+2wB2N/rW4/YLyz37ikw3wPnsLhxcvBrr2Y+F8SQ98zAlGPdrZHMBm9tnas6pYJ3uiJOKLuLUY6TmaaXRO75MFz2m1WFqA6BrKAZm/5kXFk97h8e0JIDiFi1otnjCVMlVhRWZ61w8efjQx0hOBy9wnYXdBRa18oxuDiSZ9nxYR5uTqYpq9eSA6e9oEfV6xrlQEAo52Qj+1TSVo/Hr/RBE/QGmYc30jWF5qqtuOtdfhRmAsXT3nRaGKBodd7hDeUgEewOz9zl6SOtWPFBtK1AbZOqBvTaJqcQUzczPmUouHE8WxtMHOottshfcxj/tNCUYEeZ3AWb4v8g2dpIrXqnsBeLIc6uoqCuLwPN9Fv6XISJKkLkE6rYYwKlFFsYLFcVMSphCCrv/GW3bKNIQzjeaXdDQkQKq68bOwkRhdgVLLZA1DTrmJo5iFrYoVnA9tdGt1AW9Saz/MHRHUisfmNYnfclCKBUAzNyq1EPm898jhC3OG9NQEGeizjP4s3YbwgQxc3x4zNepkeOXJPeTFnKJC0FROTNI7QWCBzfzb6Mltueg/o4Qs/Sy11LN8RLAlJgw01MBpLjde6TyZCw4qETkrcpKEhCCz2/fg3V5xyTZptWxxj4BsajEQ5hc8ocKXmbhCBy/FflYIwrJpmzXja38Iyo1nkaFr1
+ qTUQRIzJ
+ 0Mie1dHyd2XiVHxSgoBMPLj5/8bKtQ3Ga4VUM7kKfQFdIS1llnmAsGjpcX1Gh5b25FfpQ1uhlePEd/LjDMcPp5n9APfeMST22LCa9Vt6cIjJMaA5gfnwhp3guY1XAIg/8ACA3NH/IAZQjYzak1yJqcbI8/UfA/0c9J3T4q+sRFBuI7NMU/cQWLTU6PirvHfnorZhLi2pE2ttvBCdYBUKmHMJZFQURbd/mJgg1aB4PSf7O2gYwqdfSIAH8WzWosUIFtTqoJ6onuWygXGjBehEDivQWjYU39dtWk7XBP3vE27g10rsLjlPEj4lNQ9Jyr22QxeVRwPzJDhjXJvR2jjTae5RdQv3CUt/m58fA56ZvZZoTHCPYxpuKgUpHvNyEVwMBcRb6UKbuLWObkMiOtuqLT23dkSeYPHIKG9NqRiTJXLSTLr8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,78 +94,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/24/26 04:49, Zi Yan wrote:
-> collapse_file() requires FSes supporting large folio with at least
-> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
-> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
+On Fri, 24 Apr 2026 14:16:21 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+
+> >>> Cc: David Hildenbrand <david@kernel.org>
+> >>> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> >>> Cc: John Hubbard <jhubbard@nvidia.com>
+> >>> Cc: Peter Xu <peterx@redhat.com>
+> >>> Reported-by: Anthropic
+> >>> Assisted-by: gkh_clanker_t1000
+> >>
+> >> Assisted-by: David :(
+> >>
+> >> (no, I'm not a tool! :) )
+> > 
+> > True, sorry, I guess people can "assist", I should have added that.
+> > 
+> > If Andrew's tools automatically pick this up then:
+> > 
+> > Assisted-by: David Hildenbrand <david@kernel.org>
 > 
-> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
-> 
-> Add a helper function mapping_pmd_thp_support() for FSes supporting large
-> folio with at least PMD_ORDER.
-> 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  include/linux/pagemap.h |  9 +++++++++
->  mm/khugepaged.c         | 10 ++++++++--
->  2 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 31a848485ad9..5b4313d91137 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -513,6 +513,15 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
->  	return mapping_max_folio_order(mapping) > 0;
->  }
->  
-> +static inline bool mapping_pmd_thp_support(const struct address_space *mapping)
-> +{
-> +	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
-> +	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
-> +
-> +	return mapping_max_folio_order(mapping) >= PMD_ORDER;
-> +}
+> I think we usually use Suggested-by:, but really I was just joking :)
 
-Given mapping_large_folio_support(), I wonder whether we should call that
-mapping_pmd_folio_support() ?
+I thought you were gkh_clanker_t1000
 
-> +
-> +
->  /* Return the maximum folio size for this pagecache mapping, in bytes. */
->  static inline size_t mapping_max_folio_size(const struct address_space *mapping)
->  {
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 7d48d4fbd5f3..79f051eb6195 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2235,8 +2235,14 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  	int nr_none = 0;
->  	bool is_shmem = shmem_file(file);
->  
-> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
-> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
-> +	/*
-> +	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
-> +	 *
-> +	 * TODO: once shmem always calls mapping_set_large_folios() on its
-> +	 * mapping, the shmem check can be removed.
-> +	 */
-> +	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_thp_support(mapping));
+> Andrew, can you add "While at it, don't return NULL pointers in the page array,
+> as this is really not expected for GUP users; instead, just fail and return
+> -EFAULT."? Thanks!
 
-
-When we always make shmem to set the mapping to enable large folios, can we then
-drop this special casing no?
-
-> +	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
->  
->  	result = alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
->  	if (result != SCAN_SUCCEED)
-
-
--- 
-Cheers,
-
-David
+Did.
 
