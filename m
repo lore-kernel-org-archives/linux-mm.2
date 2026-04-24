@@ -4,106 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BB83FB44C2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:03:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7141FFB44C2
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:05:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D55156B0093; Fri, 24 Apr 2026 03:03:05 -0400 (EDT)
+	id D320C6B0005; Fri, 24 Apr 2026 03:05:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDFE56B0095; Fri, 24 Apr 2026 03:03:05 -0400 (EDT)
+	id CE2036B0098; Fri, 24 Apr 2026 03:05:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0A2B6B0096; Fri, 24 Apr 2026 03:03:05 -0400 (EDT)
+	id BD0C56B0099; Fri, 24 Apr 2026 03:05:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 95CA66B0093
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:03:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 312A740781
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:03:05 +0000 (UTC)
-X-FDA: 84692557530.11.44E19E1
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4B1E1C0011
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:03:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IkaDdnud;
-	spf=pass (imf10.hostedemail.com: domain of 3pRXraQYKCNIGIF2Bz4CC492.0CA96BIL-AA8Jy08.CF4@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3pRXraQYKCNIGIF2Bz4CC492.0CA96BIL-AA8Jy08.CF4@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777014183; a=rsa-sha256;
-	cv=none;
-	b=U/Rbj5Af+3cB1WejCuuHUiqbARTM0Pmm1Ce181ZfXMevf3dZ6Et+TVGUw7dvkm3uaCFKHF
-	HRv+gPohExdl3Ampg3NxNEtg4Sr+By02JFNZnfuliNwimZ1PhcXVXaHaNPNXGrCQ46fBf7
-	eGADyCoBq8MWUfKA05lgMkFFB+7/F2I=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IkaDdnud;
-	spf=pass (imf10.hostedemail.com: domain of 3pRXraQYKCNIGIF2Bz4CC492.0CA96BIL-AA8Jy08.CF4@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3pRXraQYKCNIGIF2Bz4CC492.0CA96BIL-AA8Jy08.CF4@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A5CAF6B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:05:27 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 52D921C0AF6
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:05:27 +0000 (UTC)
+X-FDA: 84692563494.29.5FCB9EB
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5CFD1180003
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:05:24 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=G1aAAIGz;
+	spf=pass (imf06.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777014183;
+	s=arc-20220608; t=1777014325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0swTopRwFXSNiJeH+dx7Oyuq8zIyt+95DwEnqw+0GOE=;
-	b=Oh7aXRCqAEvHwOgMFeIdFWZSA0VmAwZ72YiXGfdjtyo2UrmqgAQdAta4Ui2iVIpBmygoFA
-	+wnwffgXt88GyIg9kLUwyVKYkiTcO5d7lEnA7SIYn8qzsDZbzxWzpgqBbCSQE16WrH6V/I
-	V9Hi9u+uqPzk1I9Lp6nK7L4d2OaZsLs=
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-12c8ccc7593so8291504c88.1
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:03:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777014182; x=1777618982; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0swTopRwFXSNiJeH+dx7Oyuq8zIyt+95DwEnqw+0GOE=;
-        b=IkaDdnudI/cvBe/6MrmFZ13Hx50y6kF0a46sXfC8q+V6WB/lcpXkLxS4QTUC/uio/+
-         Nbl4R3y8lTN+LQfR9kveLLrOwcxyxF29JXiE7hduL1KnY+mbN7d6T5kEgjU0l2t2QATH
-         f1HIYMln4zCf4UUT6FK0AYVDP6+662XL/F2MfozolAO2vWP1sxhh0Rysxu4WZ+sC+bWE
-         MW6CqllkHrEw+Sdb1BvetVOt4cNdmXuLtKyIGSTtf21IQ3yJYOCEBY1qTxEhFFce7lYI
-         bd2MVRnHgGqLCfzBJhU1o0kvzDD3WkIB1YDyYDSlOR0zayNCwvMRlKTglrOZqJP4BTXj
-         YjEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777014182; x=1777618982;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0swTopRwFXSNiJeH+dx7Oyuq8zIyt+95DwEnqw+0GOE=;
-        b=omQYtw4mOSx8541Os1LRmiaxwwubq0AVqtxfI5YSOA2THY/opDH8MEf8jFO9ld8r4A
-         42bdvBwcGqUZuFVO/vDYlO9SMy+rIPC1FL+8Lf08hemFkQp33AbSTvQ7ihdpcRIg+abr
-         EsDcTltHVMq08idAWnIiVj5rDzES5WYsnAgfUwSp8ayfUwZHRzxMEHmyOK2c2WNID7IY
-         w2VYDwG1dwkycE6Ar/DpbKDd0/kENCVt+0nnUP4YQtDOs2xRC11CMxUekujHNMeu5y0I
-         DVPegmoejKQRlEjPXuPs28WmMMMWwgDolrNKxfjhWDW+SefRlLce/4YtPwNEiBNreDir
-         bn3g==
-X-Forwarded-Encrypted: i=1; AFNElJ8AqIDeBPtVfuihfx2kcKou01SCXd2XwfRg+XH+YVwLaRqXF3oF/Tt5Sk0xEGMSWQBZDtFKRKzCmQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx+l7rMkDuddWt+CTmyAv0nkGw4ZKtL7H4gSrlUCL+GZldgCR6S
-	jKgNYN9fMM27yXnA1PzRkavS7B0Y20C+ysgwFZ5eb+ZD6u2gYFDBf/jw4IkbNvNF6lqpqZfX7KJ
-	/yKFVqA==
-X-Received: from dlea14-n1.prod.google.com ([2002:a05:701b:420e:10b0:12c:49a5:e4a4])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:6b8d:b0:128:ca90:3301
- with SMTP id a92af1059eb24-12c73f71963mr16316333c88.11.1777014181789; Fri, 24
- Apr 2026 00:03:01 -0700 (PDT)
-Date: Fri, 24 Apr 2026 00:02:34 -0700
-In-Reply-To: <20260424070234.190145-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20260424070234.190145-1-surenb@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260424070234.190145-4-surenb@google.com>
-Subject: [PATCH 3/3] selftests/proc: add /proc/pid/smaps tearing tests
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com, 
-	willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de, 
-	shuah@kernel.org, hsukrut3@gmail.com, richard.weiyang@gmail.com, 
-	reddybalavignesh9979@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, surenb@google.com
+	bh=lv8en6ROVToGVO6NQlpsZwsbrBP5PFlYZ+7SkBfTmCs=;
+	b=o2f//aA+y6tocBVi/uIEKlCnZ0Tw35P3Jcmk9s7SvS1Q7BkgZPKazqK+t9GGyV/NbEX99z
+	7GGtZjzIPtIvImfXiBT7bpUBs4uhJ9kTXF/1paPQvziEmHPnuLWE4G/kFmiaRx04saGaa0
+	6zNOMyL5tXFtL7HYzW0oXT0wAaDEaFc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777014325; a=rsa-sha256;
+	cv=none;
+	b=hNE1jSZRthtxsqTxZfuizVMbsrkeu4FIjYqKulKZaYopm/yijAqVUI/qEntS5Mwc4C0nzV
+	RHhy1GPlNX6T07ixC5JHyPO5SVkiBumiNfOi33K7jO26AxuwgUqZpmE1Uz2VXEAMj0TsYj
+	818r4kwcdANbid3Z0POf8CTFFf2aS88=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=G1aAAIGz;
+	spf=pass (imf06.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777014324; x=1808550324;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=wKkQjksF58KOBShBOIr4QCuWLnUJX6G0srOO77XVonw=;
+  b=G1aAAIGzL9m0QZtHGKsGnt2yMJnrC2ug+nSfoulAHRja7K55j4Edkzt2
+   28iDv/wFu1HfLzHeOy2sHn33AXC8ld8mMAWI9E00p4WktLJNKpwWeVp1z
+   pNw6+sG4Dkuf/4APZcBs1cgd3r5VgQOqp22o5NhMLFoFbcU3ut73Pzkf4
+   jQV9jTi4zKf6H1AfLlVvvrAznzSQMXZ4GOkqQagamCxF6THtA1uFQUvV5
+   hYz18VF7eUuobMmpzWOlC039Exga0ZAC0iGS2nC1wN4N464F1SRYAnMQB
+   tDfAmiH8jeZiPlRGKQAg4vh8GZBHhKjMQpDM4CDAPyEGkIHlFJd0T9XKR
+   Q==;
+X-CSE-ConnectionGUID: DSa8mfpmSCO96r40u0Neiw==
+X-CSE-MsgGUID: nG0nmA/5STeKkHdvxK70Hw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="81852600"
+X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
+   d="scan'208";a="81852600"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 00:05:22 -0700
+X-CSE-ConnectionGUID: jALR2HnjQy2FSh+IwLvczw==
+X-CSE-MsgGUID: AFI2FRyNTSWr9Z8LdXAzDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
+   d="scan'208";a="228315564"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.245.58]) ([10.245.245.58])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 00:05:19 -0700
+Message-ID: <291406b26b8badf2e565996515931d9ebe50208f.camel@linux.intel.com>
+Subject: Re: [PATCH v2 1/5] mm: Introduce zone_appears_fragmented()
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, Andrew
+ Morton	 <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>
+Date: Fri, 24 Apr 2026 09:05:16 +0200
+In-Reply-To: <aeqbe/9YRKNyYuWY@gsse-cloud1.jf.intel.com>
+References: <20260423055656.1696379-1-matthew.brost@intel.com>
+	 <20260423055656.1696379-2-matthew.brost@intel.com>
+	 <76191a17-18bf-4e9b-9ab5-dc9a48abfabb@kernel.org>
+	 <be42059924cde9bb16a087ee2a5abb0b9d850d68.camel@linux.intel.com>
+	 <aepuNL2fwp47P1Wi@gsse-cloud1.jf.intel.com>
+	 <aeqbe/9YRKNyYuWY@gsse-cloud1.jf.intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 4B1E1C0011
-X-Stat-Signature: 15yx6d65xjcg8essnk81mapob31kjuom
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+MIME-Version: 1.0
+X-Stat-Signature: zy844mjhodjymztgw3ncom4npoth8fbk
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5CFD1180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1777014183-829055
-X-HE-Meta: U2FsdGVkX19QAtmJU7yKfdlIS3Snvd6MotV8ibDeK6cWbk+lQqOYSarAteSeg0NMeEJMGhgAZrfRMaQ18HkwAG3zOYBgaL1voT1GGvKKcSlLt0a1OIt4rXFj8+CjxWbbcRrl2HQ+GwPLe5vXLvyvDn/hHwKGvqy358jtLI0xsMq4MJiaK+y2LIDiH9vgGOFtIo9rjeqAYdG5u+gx7C0xIL4hOr0iAW6amVQKl8h5GvDh4z4rXGOhRYcWbU8HwkZX5wet4wqIzxVBEkWZcP9GLZiplH3TjgEqch5X1ffpQBmN5n/iyI/F4yn51euTvHLYuPKYz/sTRpq6FG1S8gQvov8sw/4+NBR8MAWhy/ElhTYm2dXTPEbtBnUIT+nJPGEGRrNtjpv+Cuyg0iamnxwZ0zd1uCg36Rq2yXkKNcKtQJXbzCsaZgm42rnBBhjiyrZa7qXWVg6xH3oNw7Zcpa3gV/YLP9jBCRdcMmurfioVwsY7y6YyTP4zyh9jBB1ylGZSXjEAqM7FJLjPsviiKTFTS+xAO5KfvX5mD3gBFImkLMb86imct6GIvoOZHvyWGad9yph13aq7YqA0nRblCgLwvoHR7DwSKIhhmOLHPw5DEtTayOgb13MuuEDjyTPZEJeIyMYBr4X2OYSblOPI1P2nuKziEfrGk4UPM4P6CWvW189FL2j6WMsEex9gfQocTynxghjuXthMGKq4nPrV7d9lESJoh4XTYKzO0vmgb6CvjVU6rZB1XEmDDNaxnO4oaj7B3LmcrM6O7jcOSooo3dOrv7mQOSbTGDHGg3VaYmvUR1YjJOTLgEtex25goJt8PnDJ0KlGLzFl9d137JfIOWyCCwSh7ThTEmLzj+ai4bEeTtgtXRjvn0ojeiBhed7DmKBtFtY4/X6Pkuea2aXLYlEuVBD2ln1M5ds+bL8zS939sAEtUIMXLiQrUqjH9fiMtGtX6w7nyxDBarYtcVXUa/x
- jMMNgwMr
- ZUqfrfXv3YlGB8/0tee2HPBW9rwyP5P7v60Y/LikzZ6SpFEI56K0lOihm2ZSS1Oidpt6INYTwDSlouK/iGOUbKC03V6AWyDf85Sn3Uob1rvNYghBIeMPr0u/n/NDQYbtKXv4SAKwL7TKqLO9Lb8yjdBaE2mjBe3Ykm9lGnGKNxDuxOzstPxI22yCFNbwhoyiEFGDBFut89sTdDR+sroupeYGkRJkYIOxMPl2Fh5601Y2UmhDQqzsNyDWZvO+CUBy0FrLo4nW432LHQcnLteuxRV9B6fz7XjP2std8Pk1rth8rvC8HvD709GR6nB1UKJb/gg9k9rZX7BdOLs7JPQWlsPqgZ787aQ/b4paocXzILuWZv3VBmQPJjEaudi/479YwDovWZxKGGRGA7LOBZLK8wkOn4aT5xAy6toiOUkpdd7gpD00wlTMgfWw4VRw2BHhc6KoyFPylEgLypOfyqYEtE+IzpYDNFOQxPOwdvnnHG2rPJa8L9D9oJGpM/3pHlCHsYLSErkqDqVb6bRfToSm/qoR5Qgf8SUGyx1XO1uq1Lu+0AHCqX+KypBZ/hu/dckSnEIrR+Z/qeanEJXoWcSHRmpwUHO92ZnSLvLnl2iqi2my41KEBi19XY+zR9V+KYmdDGQj0zEsWRsKSBAw1YwUSsLmQJ/ah5ooAkugmZC1Wz9jSFJRviDC6vZ8h3lDe0gekqLeT
+X-HE-Tag: 1777014324-744467
+X-HE-Meta: U2FsdGVkX1/ho047BE6inZfR8J39iDV8ExAuQg8/h5JJEvk/e0RU6veBXLe9yn5ZoCY7LjANQV8xhmwHXucZvDo/pkPMpJHH74uMf5XK9OnGhG5/1Y3qzLgvlNVSV8tBEtEf/JPoVo+osFK0lzVhJEGF7fuhwujka4WTPJ8DyebArNAzVCJPVu0dq5WavwQ0XAqpfoFaFdi+PUyGa96L5jDz25uWOBzfP7n/w7HSs6EEoV9DF1C12f1+oCQd1+8v0zAMkb2TD3JjX+wra1zmd0lo+CecaQUGMlBBCZevu/CQpNon4+SmFv1lC4WPVgPAyW305lsnuRvINTAQUvwE9ZXigqIP1NkW3I3uW0/xAlnQCCKfe4Vlime1HYVbLtxPKleIhNe5h7s9HU6fEzltTz7x8NILVVntM6s/cwc3/ecvdA+sRPBPWMCouSz1maRKzKOUyC7EvrgsFKfn2S4NdSlBojyhAQj0tuH30TL32gk8dNY9YHqNZEezdJRnqknTXZLg/nV65YH2oqRrgZ40RiiRU0OBmpVnLuUsDFL9HpvTAYEkgU0XVwHHHKTXX0VjlCLrHgxHbaG+7ishF/eyNgLYsjJ1LxC5A9QYkjMZf/7UJZNADBCUhKZ7tUE9JhAFdHn6pVtKSNJSd9rEo8vo9L6nYxSWRTue5ln2jDlUsYXY8YjgPky6ZFCJoN+MEQwZ2mm82vB9F8gX00vpyvouP/kbutm98ogBHJoWQwm/VCjfaDMAJZOefWEWEc1ZNLSg6A4Z/hP0SQ/l8+JeIm7+k2Aw/C5s0g9uE6Fzln2mM+w1OvcMTrchpO2ufZ/rd8MEC62Z1OWGOyYqDm0dUhgb/Q1kNwzD1Hx9/zksxNRKjNm7hx2czrWKuHWENhG8nmyyzmq766iggdrGPO41EQ8lcscTYOZETuhlxuyXpd1LR8Akm0cDajk0iPpbIEXber1TDt5hzLjo49eQ9C92yFT
+ Izie0COr
+ yqO5mhtSqU18KgJe/tjrBTkXqifCDAzubgANn5TkQzh3LBnE3Xt8L7y+8sNkvJ0uAc0wWUA2djXLk3QXqLj0DDaidzs/RdHQ6J7KhWh4RFBMddtJo3/wYrZtDkNYJWZ64WB98LS2rDP+mtEVkvzuFErsSflhT4U+2E3MzUBGBZxHonH/HkRlCheWC14ICkZuMaaJEJMKsWJX6YzmTqmoDRbcjjdtDeELJ792sSvQMxklwpV7mc/Ze324LWxtUJC/FlzqRLjNc7Xguv95sDYWUuz1h8yzV6OdOcsumVAmXAeAtVXLw6OzL7WBCFCNYyNDlPyezOy8pNwuRHe+QrlCeCRMDYgyl4fDUu5/CnpuK4cjgDPsaNY59O3WJIau8nzIwxMLLxcwaJsTMSAfQIyRPDfyInUxOQH3nLS85qV6UT/Y81zjPh/RkU/NLHUNqT8DkHELWV7D+csmMYy6MjiV/W23xm5/yiYaNymPIuGVWqBUxyqq9l0eZdW+ItKVC9k57eX3lfNdarDBD4MsLPEM3iWYWTElgxiGDzwIAHsI5XUXGFoW+s4yYz7LVuxoBfzHJfYe0Toz0QGvdvCfzvghtxs1vX19cRiUtw682EeQZSfaqC5okPLX8dKeFPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,276 +115,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add MAPS_FILE environment variable to select whether the tests to be run
-for /proc/pid/maps or /proc/pid/smaps. Add support for testing smaps file
-by reusing the same logic as with maps file but skipping all the data
-except for the VMA addresses, which are the only part relevant for the
-tearing tests. Skip PROCMAP_QUERY parts of the tests because smaps does
-not implement that ioctl.
+On Thu, 2026-04-23 at 15:21 -0700, Matthew Brost wrote:
+> On Thu, Apr 23, 2026 at 12:08:36PM -0700, Matthew Brost wrote:
+> > On Thu, Apr 23, 2026 at 01:27:11PM +0200, Thomas Hellstr=C3=B6m wrote:
+> > > On Thu, 2026-04-23 at 12:27 +0200, David Hildenbrand (Arm) wrote:
+> > > > On 4/23/26 07:56, Matthew Brost wrote:
+> > > > > Introduce zone_appears_fragmented() as a lightweight helper
+> > > > > to
+> > > > > allow
+> > > > > subsystems to make coarse decisions about reclaim behavior in
+> > > > > the
+> > > > > presence of likely fragmentation.
+> > > > >=20
+> > > > > The helper implements a simple heuristic: if the number of
+> > > > > free
+> > > > > pages
+> > > > > in a zone exceeds twice the high watermark, the zone is
+> > > > > considered
+> > > > > to
+> > > > > have ample free memory and allocation failures are more
+> > > > > likely due
+> > > > > to
+> > > > > fragmentation than overall memory pressure.
+> > > > >=20
+> > > > > This is intentionally imprecise and is not meant to replace
+> > > > > the
+> > > > > core
+> > > > > MM compaction or fragmentation accounting logic. Instead, it
+> > > > > provides
+> > > > > a cheap signal for callers (e.g., shrinkers) that wish to
+> > > > > avoid
+> > > > > overly aggressive reclaim when sufficient free memory exists
+> > > > > but
+> > > > > high-order allocations may still fail.
+> > > > >=20
+> > > > > No functional changes; this is a preparatory helper for
+> > > > > future
+> > > > > users.
+> > > > >=20
+> > > > > Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> > > > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > > > Cc: David Hildenbrand <david@kernel.org>
+> > > > > Cc: Lorenzo Stoakes <ljs@kernel.org>
+> > > > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > > > > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > > > > Cc: Mike Rapoport <rppt@kernel.org>
+> > > > > Cc: Suren Baghdasaryan <surenb@google.com>
+> > > > > Cc: Michal Hocko <mhocko@suse.com>
+> > > > > Cc: linux-mm@kvack.org
+> > > > > Cc: linux-kernel@vger.kernel.org
+> > > > > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> > > > > ---
+> > > > > =C2=A0include/linux/vmstat.h | 13 +++++++++++++
+> > > > > =C2=A01 file changed, 13 insertions(+)
+> > > > >=20
+> > > > > diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+> > > > > index 3c9c266cf782..568d9f4f1a1f 100644
+> > > > > --- a/include/linux/vmstat.h
+> > > > > +++ b/include/linux/vmstat.h
+> > > > > @@ -483,6 +483,19 @@ static inline const char
+> > > > > *zone_stat_name(enum
+> > > > > zone_stat_item item)
+> > > > > =C2=A0	return vmstat_text[item];
+> > > > > =C2=A0}
+> > > > > =C2=A0
+> > > > > +static inline bool zone_appears_fragmented(struct zone
+> > > > > *zone)
+> > > > > +{
+> > > >=20
+> > > > "zone_likely_fragmented" or "zone_maybe_fragmented" might be
+> > > > clearer,
+> > > > depending
+> > > > on the actual semantics.
+> > > >=20
+> > > > > +	/*
+> > > > > +	 * Simple heuristic: if the number of free pages is
+> > > > > more
+> > > > > than twice the
+> > > > > +	 * high watermark, this strongly suggests that the
+> > > > > zone is
+> > > > > heavily
+> > > > > +	 * fragmented when called from a shrinker.
+> > > > > +	 */
+> > > >=20
+> > > > I'll cc some more people. But the "when called from a shrinker"
+> > > > bit
+> > > > is
+> > > > concerning. Are there additional semantics that should be
+> > > > expressed
+> > > > in the
+> > > > function name, for example?
+> > > >=20
+> > > > Something that implies that this function only gives you a
+> > > > reasonable
+> > > > answer in
+> > > > a certain context.
+> > >=20
+> > > I think that test would not be relevant for cgroup-aware
+> > > shrinking.
+> > >=20
+> > > What about trying to pass something in the struct shrink_control?
+> > > Like
+> > > if we pass the struct scan_control's order field also in struct
+> >=20
+> > If the order were included in shrink_control, there is about a 95%
+> > certain that this change would allow TTM / Xe to break the
+> > problematic
+> > kswapd feedback loop. This may also better express the intent of
+> > the
+> > problem we are trying to fix here.
+> >=20
+> > For reference, the cover letter [1] details the problem.
+> >=20
+> > Any guidance from the core MM folks would be appreciated=E2=80=94would
+> > adding
+> > the order to shrink_control be an acceptable solution?
+> >=20
+> > Matt
+> >=20
+> > [1] https://patchwork.freedesktop.org/series/165330/
+> >=20
+> > > shrink_control, really expensive shrinkers could duck reclaim
+> > > attempts
+> > > from higher-order allocations that may fail anyway:
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (sc->order > PAGE_ALLOC_COSTLY_ORDE=
+R &&
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (sc->gfp=
+_mask & (__GFP_NORETRY | __GFP_RETRY_MAYFAIL))
+> > > &&
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !(sc->gf=
+p_mask & __GFP_NOFAIL))
+>=20
+> It doesn't look like __GFP_NORETRY, __GFP_RETRY_MAYFAIL, __GFP_NOFAIL
+> make it to the sc->gfp_mask flags from the caller and get into kswapd
+> loop...
 
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- tools/testing/selftests/proc/proc-maps-race.c | 176 +++++++++++++-----
- 1 file changed, 132 insertions(+), 44 deletions(-)
+Perhaps that's because they mostly (only?) make sense from direct
+reclaim? Looks like the trace is from kswapd.
 
-diff --git a/tools/testing/selftests/proc/proc-maps-race.c b/tools/testing/selftests/proc/proc-maps-race.c
-index c5031b0593b7..b677bc23cab9 100644
---- a/tools/testing/selftests/proc/proc-maps-race.c
-+++ b/tools/testing/selftests/proc/proc-maps-race.c
-@@ -17,8 +17,8 @@
-  */
- /*
-  * Fork a child that concurrently modifies address space while the main
-- * process is reading /proc/$PID/maps and verifying the results. Address
-- * space modifications include:
-+ * process is reading /proc/$PID/maps and /proc/$PID/smaps, verifying the
-+ * results. Address space modifications include:
-  *     VMA splitting and merging
-  *
-  */
-@@ -73,6 +73,11 @@ enum test_state {
- 	TEST_DONE,
- };
- 
-+enum maps_file {
-+	MAPS,
-+	SMAPS,
-+};
-+
- struct vma_modifier_info;
- 
- FIXTURE(proc_maps_race)
-@@ -83,6 +88,7 @@ FIXTURE(proc_maps_race)
- 	struct line_content last_line;
- 	struct line_content first_line;
- 	unsigned long duration_sec;
-+	enum maps_file maps_file;
- 	int shared_mem_size;
- 	int skip_pages;
- 	int page_size;
-@@ -199,6 +205,57 @@ static void copy_last_line(struct page_content *page, char *last_line)
- 	last_line[end - pos] = '\0';
- }
- 
-+static bool copy_first_entry(struct page_content *page, char *first_line)
-+{
-+	const char *start_pos = page->data;
-+
-+	while (start_pos < page->data + page->size) {
-+		unsigned long start_addr;
-+		unsigned long end_addr;
-+		char *end_pos;
-+
-+		end_pos = strchr(start_pos, '\n');
-+		if (!end_pos)
-+			break;
-+
-+		if (sscanf(start_pos, "%lx-%lx", &start_addr, &end_addr) == 2) {
-+			strncpy(first_line, start_pos, end_pos - start_pos);
-+			first_line[end_pos - start_pos] = '\0';
-+			return true;
-+		}
-+
-+		start_pos = end_pos + 1;
-+	}
-+
-+	return false;
-+}
-+
-+static bool copy_last_entry(struct page_content *page, char *last_line)
-+{
-+	const char *end_pos = page->data + page->size - 1;
-+	const char *start_pos;
-+
-+	while (end_pos > page->data) {
-+		unsigned long start_addr;
-+		unsigned long end_addr;
-+
-+		/* skip last newline */
-+		start_pos = end_pos - 1;
-+		/* search previous newline */
-+		while (start_pos > page->data && start_pos[-1] != '\n')
-+			start_pos--;
-+		if (sscanf(start_pos, "%lx-%lx", &start_addr, &end_addr) == 2) {
-+			strncpy(last_line, start_pos, end_pos - start_pos);
-+			last_line[end_pos - start_pos] = '\0';
-+			return true;
-+		}
-+
-+		end_pos = start_pos - 1;
-+	}
-+
-+	return false;
-+}
-+
- /* Read the last line of the first page and the first line of the second page */
- static bool read_boundary_lines(FIXTURE_DATA(proc_maps_race) *self,
- 				struct line_content *last_line,
-@@ -207,8 +264,16 @@ static bool read_boundary_lines(FIXTURE_DATA(proc_maps_race) *self,
- 	if (!read_two_pages(self))
- 		return false;
- 
--	copy_last_line(&self->page1, last_line->text);
--	copy_first_line(&self->page2, first_line->text);
-+	if (self->maps_file == MAPS) {
-+		copy_last_line(&self->page1, last_line->text);
-+		copy_first_line(&self->page2, first_line->text);
-+	} else if (self->maps_file == SMAPS) {
-+		if (!copy_last_entry(&self->page1, last_line->text) ||
-+		    !copy_first_entry(&self->page2, first_line->text))
-+			return false;
-+	} else {
-+		return false;
-+	}
- 
- 	return sscanf(last_line->text, "%lx-%lx", &last_line->start_addr,
- 		      &last_line->end_addr) == 2 &&
-@@ -464,6 +529,7 @@ FIXTURE_SETUP(proc_maps_race)
- {
- 	const char *verbose = getenv("VERBOSE");
- 	const char *duration = getenv("DURATION");
-+	const char *maps_file = getenv("MAPS_FILE");
- 	struct vma_modifier_info *mod_info;
- 	pthread_mutexattr_t mutex_attr;
- 	pthread_condattr_t cond_attr;
-@@ -474,6 +540,18 @@ FIXTURE_SETUP(proc_maps_race)
- 
- 	self->page_size = (unsigned long)sysconf(_SC_PAGESIZE);
- 	self->verbose = verbose && !strncmp(verbose, "1", 1);
-+	if (maps_file) {
-+		if (!strcmp(maps_file, "maps")) {
-+			self->maps_file = MAPS;
-+		} else if (!strcmp(maps_file, "smaps")) {
-+			self->maps_file = SMAPS;
-+		} else {
-+			ksft_print_msg("Unknown maps file %s\n", maps_file);
-+			ksft_exit_fail();
-+		}
-+	} else {
-+		self->maps_file = MAPS;
-+	}
- 	duration_sec = duration ? atol(duration) : 0;
- 	self->duration_sec = duration_sec ? duration_sec : 5UL;
- 
-@@ -540,7 +618,16 @@ FIXTURE_SETUP(proc_maps_race)
- 		exit(0);
- 	}
- 
--	sprintf(fname, "/proc/%d/maps", self->pid);
-+	switch (self->maps_file) {
-+	case MAPS:
-+		sprintf(fname, "/proc/%d/maps", self->pid);
-+		break;
-+	case SMAPS:
-+		sprintf(fname, "/proc/%d/smaps", self->pid);
-+		break;
-+	default:
-+		ksft_exit_fail();
-+	}
- 	self->maps_fd = open(fname, O_RDONLY);
- 	ASSERT_NE(self->maps_fd, -1);
- 
-@@ -675,20 +762,20 @@ TEST_F(proc_maps_race, test_maps_tearing_from_split)
- 		last_line_changed = strcmp(new_last_line.text, self->last_line.text) != 0;
- 		first_line_changed = strcmp(new_first_line.text, self->first_line.text) != 0;
- 		ASSERT_EQ(last_line_changed, first_line_changed);
--
--		/* Check if PROCMAP_QUERY ioclt() finds the right VMA */
--		ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr + self->page_size,
--					  &vma_start, &vma_end));
--		/*
--		 * The vma at the split address can be either the same as
--		 * original one (if read before the split) or the same as the
--		 * first line in the second page (if read after the split).
--		 */
--		ASSERT_TRUE((vma_start == self->last_line.start_addr &&
--			     vma_end == self->last_line.end_addr) ||
--			    (vma_start == split_first_line.start_addr &&
--			     vma_end == split_first_line.end_addr));
--
-+		if (self->maps_file == MAPS) {
-+			/* Check if PROCMAP_QUERY ioclt() finds the right VMA */
-+			ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr + self->page_size,
-+						  &vma_start, &vma_end));
-+			/*
-+			 * The vma at the split address can be either the same as
-+			 * original one (if read before the split) or the same as the
-+			 * first line in the second page (if read after the split).
-+			 */
-+			ASSERT_TRUE((vma_start == self->last_line.start_addr &&
-+				     vma_end == self->last_line.end_addr) ||
-+				    (vma_start == split_first_line.start_addr &&
-+				     vma_end == split_first_line.end_addr));
-+		}
- 		clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
- 		end_test_iteration(&end_ts, self->verbose);
- 	} while (end_ts.tv_sec - start_ts.tv_sec < self->duration_sec);
-@@ -758,17 +845,18 @@ TEST_F(proc_maps_race, test_maps_tearing_from_resize)
- 					strcmp(new_first_line.text, restored_first_line.text),
- 					"Expand result invalid", self));
- 		}
--
--		/* Check if PROCMAP_QUERY ioclt() finds the right VMA */
--		ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr, &vma_start, &vma_end));
--		/*
--		 * The vma should stay at the same address and have either the
--		 * original size of 3 pages or 1 page if read after shrinking.
--		 */
--		ASSERT_TRUE(vma_start == self->last_line.start_addr &&
--			    (vma_end - vma_start == self->page_size * 3 ||
--			     vma_end - vma_start == self->page_size));
--
-+		if (self->maps_file == MAPS) {
-+			/* Check if PROCMAP_QUERY ioclt() finds the right VMA */
-+			ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr,
-+						  &vma_start, &vma_end));
-+			/*
-+			 * The vma should stay at the same address and have either the
-+			 * original size of 3 pages or 1 page if read after shrinking.
-+			 */
-+			ASSERT_TRUE(vma_start == self->last_line.start_addr &&
-+				    (vma_end - vma_start == self->page_size * 3 ||
-+				     vma_end - vma_start == self->page_size));
-+		}
- 		clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
- 		end_test_iteration(&end_ts, self->verbose);
- 	} while (end_ts.tv_sec - start_ts.tv_sec < self->duration_sec);
-@@ -838,20 +926,20 @@ TEST_F(proc_maps_race, test_maps_tearing_from_remap)
- 					strcmp(new_first_line.text, restored_first_line.text),
- 					"Remap restore result invalid", self));
- 		}
--
--		/* Check if PROCMAP_QUERY ioclt() finds the right VMA */
--		ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr + self->page_size,
--					  &vma_start, &vma_end));
--		/*
--		 * The vma should either stay at the same address and have the
--		 * original size of 3 pages or we should find the remapped vma
--		 * at the remap destination address with size of 1 page.
--		 */
--		ASSERT_TRUE((vma_start == self->last_line.start_addr &&
--			     vma_end - vma_start == self->page_size * 3) ||
--			    (vma_start == self->last_line.start_addr + self->page_size &&
--			     vma_end - vma_start == self->page_size));
--
-+		if (self->maps_file == MAPS) {
-+			/* Check if PROCMAP_QUERY ioclt() finds the right VMA */
-+			ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr + self->page_size,
-+						  &vma_start, &vma_end));
-+			/*
-+			 * The vma should either stay at the same address and have the
-+			 * original size of 3 pages or we should find the remapped vma
-+			 * at the remap destination address with size of 1 page.
-+			 */
-+			ASSERT_TRUE((vma_start == self->last_line.start_addr &&
-+				     vma_end - vma_start == self->page_size * 3) ||
-+				    (vma_start == self->last_line.start_addr + self->page_size &&
-+				     vma_end - vma_start == self->page_size));
-+		}
- 		clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
- 		end_test_iteration(&end_ts, self->verbose);
- 	} while (end_ts.tv_sec - start_ts.tv_sec < self->duration_sec);
--- 
-2.54.0.545.g6539524ca2-goog
+Another metric to weigh in is perhaps the scan_control::priority field.
+From my understanding it is progressively decreased towards 0 with 0
+indicating most urgent shrinking.=20
 
+Thanks,
+Thomas
+
+>=20
+> =C2=A01182 [=C2=A0 394.049058] xe_shrinker_scan: no skip order=3D9,
+> gfp=3D0x0000000000000cc0
+> =C2=A01183 [=C2=A0 394.049061] CPU: 2 UID: 0 PID: 110 Comm: kswapd0 Not t=
+ainted
+> 7.0.0-xe+ #355 PREEMPT(full)
+> =C2=A01184 [=C2=A0 394.049062] Hardware name: Intel Corporation Panther L=
+ake
+> Client Platform/PTL-UH LP5 T3 RVP1, BIOS
+> PTLPFWI1.R00.3332.D05.2509011438 09/01/2025
+> =C2=A01185 [=C2=A0 394.049063] Call Trace:
+> =C2=A01186 [=C2=A0 394.049065]=C2=A0 <TASK>
+> =C2=A01187 [=C2=A0 394.049066]=C2=A0 dump_stack_lvl+0x55/0x70
+> =C2=A01188 [=C2=A0 394.049073]=C2=A0 xe_shrinker_scan+0x274/0x280 [xe]
+> =C2=A01189 [=C2=A0 394.049181]=C2=A0 do_shrink_slab+0x132/0x360
+> =C2=A01190 [=C2=A0 394.049184]=C2=A0 shrink_slab+0xf0/0x3e0
+> =C2=A01191 [=C2=A0 394.049186]=C2=A0 shrink_node+0x2bd/0x800
+> =C2=A01192 [=C2=A0 394.049188]=C2=A0 balance_pgdat+0x323/0x760
+> =C2=A01193 [=C2=A0 394.049189]=C2=A0 kswapd+0x1c3/0x340
+> =C2=A01194 [=C2=A0 394.049190]=C2=A0 ? __pfx_autoremove_wake_function+0x1=
+0/0x10
+> =C2=A01195 [=C2=A0 394.049193]=C2=A0 ? __pfx_kswapd+0x10/0x10
+> =C2=A01196 [=C2=A0 394.049194]=C2=A0 kthread+0xdf/0x120
+> =C2=A01197 [=C2=A0 394.049196]=C2=A0 ? __pfx_kthread+0x10/0x10
+> =C2=A01198 [=C2=A0 394.049197]=C2=A0 ret_from_fork+0x1d0/0x220
+> =C2=A01199 [=C2=A0 394.049200]=C2=A0 ? __pfx_kthread+0x10/0x10
+> =C2=A01200 [=C2=A0 394.049200]=C2=A0 ret_from_fork_asm+0x1a/0x30
+> =C2=A01201 [=C2=A0 394.049202]=C2=A0 </TASK>
+>=20
+> Will look into if this is fixable, but again any core MM guidance
+> would
+> helpful.
+>=20
+> Matt
+>=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return S=
+HRINK_STOP;
+> > >=20
+> > > Possibly exposed as an inline helper in the shrinker interface?
+> > >=20
+> > > /Thomas
+> > >=20
+> > >=20
+> > >=20
+> > >=20
 
