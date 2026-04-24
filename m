@@ -4,131 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8732AFED3E3
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 15:19:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3051FED3DF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 15:34:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBA8F6B008A; Fri, 24 Apr 2026 11:19:10 -0400 (EDT)
+	id C0EE96B008A; Fri, 24 Apr 2026 11:34:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C926B6B00A0; Fri, 24 Apr 2026 11:19:10 -0400 (EDT)
+	id BE7256B00A0; Fri, 24 Apr 2026 11:34:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA8396B00A4; Fri, 24 Apr 2026 11:19:10 -0400 (EDT)
+	id AFD0F6B00A2; Fri, 24 Apr 2026 11:34:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AB67E6B008A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:19:10 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 690DA1201E7
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:19:10 +0000 (UTC)
-X-FDA: 84693807660.03.2749D92
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2774640007
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:19:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bmPFuXtc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2TojRZYU;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bmPFuXtc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2TojRZYU;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 899A66B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:34:21 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3AB061A0223
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:34:21 +0000 (UTC)
+X-FDA: 84693845922.12.3691E4F
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 37683A000C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:34:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=RR6MS8AZ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777044859; a=rsa-sha256;
+	cv=none;
+	b=PG9VZztI2dE2aw9TbpAsWP26tVt07JwiXwUMzhVA6vwC+cooeVzXPngvcSOYvZX/4EQeRN
+	CYEmejnQGYyM6UaEgkVnjPZSE9kJKK68LDl7KBKdD606t7RgQztL61Thkt2cIejRBhXbSH
+	e9bV8gM589ZuBA/AJJHM2bvK5pWnXY8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=RR6MS8AZ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777043948;
+	s=arc-20220608; t=1777044859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QiZWwL1oO7W6rcVWiGLDctlVSpHEDUggXUoQ7EfcP0E=;
-	b=y6MXDTmvzgOeYPM1TUSIl7/GvysWXeLm/IHmBLNCOhFGVSLBn7SdXxwCslxrN34IP5eWcE
-	E9+ngHOHo9ArVMX63E60UgEvF5b2yP6Pvadz8HqpQKN38rmG575sBKVq8wKMHAffDpgIUM
-	IPkYRMopMLrgWtWlseKLmgT8clfYfZI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bmPFuXtc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2TojRZYU;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bmPFuXtc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2TojRZYU;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777043948; a=rsa-sha256;
-	cv=none;
-	b=haE8aY/E9yFWANdBcgPupJyU1NlBSdecTvev77QuZA28D7yWa66SmEN3+RNogZJ5uFdbK0
-	soN8/9+3rBuTeRZ9CmnhkmrHsSDOfBI9CjV+dP/M/Kk2RUEgnp0N+YL7EgJHoTIuZusEsQ
-	VKp8xg73F80BenJA+9nyJi3ozRb7PXM=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6DF965BD80;
-	Fri, 24 Apr 2026 15:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777043946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QiZWwL1oO7W6rcVWiGLDctlVSpHEDUggXUoQ7EfcP0E=;
-	b=bmPFuXtcCqnqa1B5gP1hYOlaIYxkRFPEZUaqTp+b7KfJBbxp7OpdfTnozi8F80VX25E7MB
-	Z5YfHOpQddE7xoyBLI/khAsE4XpERsHnsgik7DYqetw+0/c2g0AWleh1fSVMxFwssSaB9G
-	Pio0/Cl9bFMMwYIShIhEWi/NA2amznU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777043946;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QiZWwL1oO7W6rcVWiGLDctlVSpHEDUggXUoQ7EfcP0E=;
-	b=2TojRZYUIeyLOzo3YVulHhiikfR1XLAvh9NMksMD3t1uUOE4FL2c88s3ipHn67t/5re3Gv
-	CwfwPHcRV5PpkADw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777043946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QiZWwL1oO7W6rcVWiGLDctlVSpHEDUggXUoQ7EfcP0E=;
-	b=bmPFuXtcCqnqa1B5gP1hYOlaIYxkRFPEZUaqTp+b7KfJBbxp7OpdfTnozi8F80VX25E7MB
-	Z5YfHOpQddE7xoyBLI/khAsE4XpERsHnsgik7DYqetw+0/c2g0AWleh1fSVMxFwssSaB9G
-	Pio0/Cl9bFMMwYIShIhEWi/NA2amznU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777043946;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QiZWwL1oO7W6rcVWiGLDctlVSpHEDUggXUoQ7EfcP0E=;
-	b=2TojRZYUIeyLOzo3YVulHhiikfR1XLAvh9NMksMD3t1uUOE4FL2c88s3ipHn67t/5re3Gv
-	CwfwPHcRV5PpkADw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 51C14593A4;
-	Fri, 24 Apr 2026 15:19:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WzyWEOmJ62lqJgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 24 Apr 2026 15:19:05 +0000
-Date: Fri, 24 Apr 2026 16:19:03 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>, 
-	Xueyuan Chen <xueyuan.chen21@gmail.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, wangzicheng <wangzicheng@honor.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Lei Liu <liulei.rjpt@vivo.com>, 
-	Matthew Wilcox <willy@infradead.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH] mm/mglru: Use folio_mark_accessed to replace
- folio_set_active in PF
-Message-ID: <w5ekxean6g6eph4427frzclgzu5hrd7kqres3ronlqpvqtsusb@kfdagnk2xqif>
-References: <20260418120233.7162-1-baohua@kernel.org>
+	bh=a4+pgU+NOVMpYPBvLE6fPcolyKcgS2xdHtxW5mhk/JI=;
+	b=Sw/hHpplnjK2fmD8H2iNQ1DiCwKuZtectfLYBybpVrTMg61kmJNMcn2IHoIy3uWSnkLGTS
+	mm3cEmPJI81Btnm12dalJTvrI1MMgB5e1TAOuRymZ/oMGF5WCQlCV2+yCqsmKIpKNDSELJ
+	tUfBEx0CXVakKgE4t9JTc48+Odm0z0c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=a4+pgU+NOVMpYPBvLE6fPcolyKcgS2xdHtxW5mhk/JI=; b=RR6MS8AZVqxdv9GKFbKJ9/6dWe
+	tPPVqT4d/0XBnTmWSSMgDp5pcm+mJWVV5xc4riFRky0ZEx2e6t/5I+lke7VP6zkEOgcmjYodWgiId
+	y0TSQCM9ssNO+ROqkh+/WDvxpudchcJPLu9YUloWhtf5JRXJzaIx+FKyCJWrhw2EJG4woWDXHSlbs
+	JlNOvpaXgSQb6YRseKGK7wHZYsivOJRut6TPcBAH6rBnKBH4yC5APPF/w98oKyc0AJdIHLQRLJhtk
+	MwMsyCWr25G4Tgg+GXG7EWVMZk7uZ3fZ+5wjz0+XTl/sssCBwa5t4fCASKtsk3s5wXqs1vVEVkkHX
+	NZgX4Y8g==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wGIXl-0000000FQ6e-0GXQ;
+	Fri, 24 Apr 2026 15:34:13 +0000
+Date: Fri, 24 Apr 2026 16:34:12 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, corbet@lwn.net,
+	ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	skhan@linuxfoundation.org, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC 0/7] mm: dual-bitmap page allocator consistency checker
+Message-ID: <aeuNdOmgxA-k9BqY@casper.infradead.org>
+References: <20260424140056.2094777-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260418120233.7162-1-baohua@kernel.org>
-X-Rspamd-Action: no action
-X-Stat-Signature: gnk191ee8b7infa9c8p3ynipkkzgxgxn
-X-Rspamd-Queue-Id: 2774640007
+In-Reply-To: <20260424140056.2094777-1-sashal@kernel.org>
+X-Rspamd-Server: rspam10
+X-Stat-Signature: qdyny8ze6dryu34ic94ykkob46ygmgw9
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1777043947-881078
-X-HE-Meta: U2FsdGVkX1/tKCdo8/CdBtWEvJ7RWbBeVI6/xMo7WSkqTqvxs6pMlVXgWORproER4HwHkM89UDrjhXddVFrBmmLrNRu1nI2pQrSsii1nTiv/grdpOTx8w5xvI3IuTbpD3GDYjqzSeaVGR3d4sNNThjPiHlr6G+gmnyYOZJP9hiKy6tCmbvT6/ewx1V7ZKStsIPY2FIfDUW+RvHVrUQhObUD0Ao1K3f5tS4GeM3zR6Ykp7r7cR2gGVhQslUm0psrRHvM9O87FI5p23LkQnf6VeDvfJC7mvdmD4DOCs89KIeEFK6PXwzkknjtrXtmZ2NwBQ5gsgquC/IVpj+yXyYLWcNuggoJGrABJopwKJyihYyLDpA+wwpGlA5ZDCGeGnc1/GyO1TBQFiJpJ8GQnDiiESvn39yX+4jDPP21FHur8xMdTMgAxqBfVfNznXkcRIBcG+JSCcHhXwlgbaxqNXHCwkYo9UI2/S0/F1C4ZWb+5PaB68ylZtqq1ra96QNNIt+R6iZa50M/CL+bB/N2hcHl2taoocRKN4XTzh/L4da3WkHab7yjzKZW9ztNxOtOpMOuOtf943/GWkA0BdE91LX0WPT1JIZf0SCg/rJjRD0T9QXrrB5tV4yUx8Nog0vaRUuYbwFAc/ZBTZUcKnJu2J52aTNfc7pfYxJud+Oj4xONuxHqnIfEb7c9GOj13bSygIcTEAfSJJFEowRIeglSlmP+jXRtHOQsmOyQQppvFWcmBqXtFHIoShxN1RJ1ZAIkJUPWkHivpiHzG7noyB7yVJlA0Zrq+XqU+bYa1qbg1DxgAXlEVZHBithbTSidwyek+XAza0VaEQ6Bqlqx3nAyBSm3f5KAdO12+i7j03zdZJCUiHwK0ikRA+DkjgSjMi0SRrgVhrPMlsQ2dLM4qf6a7854XdaviohXrpn7/97wOaCtsu9+dgUXMAiqAFs1/JL73H9J6wiS1QOzoSyA4vX5xIGI
- mhkAtse5
- 3N+fVk3GKy2PReV1CU9xkmDjfX2hEjwqXBjbeYS2IOYF8+3tGjTodnqlTYdfnTrT4R7o8WAIwtJ7R3cEd7KesgfHuFxt05fCWuFpU/fZ5uTTHj2HiHt4/DKhEGxyoWV6daJoi9UIkHm9m5Vz5qB5z0LadWCmLMfUwSKU8CIbggViqMQhRXFsfk2pwv2VWX7M1vhnosm4z0rL0hTac+ky3soycww+YEtGQfopUq2hTV4qcjuITuJFIIYA9HC87aj/Hk6/A5sHeN/nTMvNg47uPxucWPgBEoVfpdzmo0I7rq0R9EdT25QRGR//FhHb4pLbiKeCkuiDBlDdIJlAsvj6eyQQL8yZoTjtcwVyLa+cLXAxEz/wBIlm6Te7v5vorXssv6S2q3VFEdHuzfPm7oZE67lM5mHzI4YKDs6VBoibAsBTnyOoZs3ZaqnC1hGsXCM7dSiY3frG5f4CuKU/CGayDqBMeFQ==
+X-Rspamd-Queue-Id: 37683A000C
+X-HE-Tag: 1777044858-701136
+X-HE-Meta: U2FsdGVkX19KZ22huh1XKwmm2fWAZMQPgFjs2YQHHKxSKJly3kmTNIO24WlUEb6Emms07QLFwwU4nlh+V1ultcV9jk+kdRIoaJAOmOg2escDTU6iDJ2dfH5X/WOPxJB9kPKBTvVnNzG4UI852iLJzsy01IdA5PvnI6WL8A8tvzknxmzh5d53znJH3c3HD8MyA+SqHZrTrfvdmScr/o0P5UGMw20xnzISrHjM3CFbBNINbHEQr0MqOUQpt/Sy7wf/eXRekgUmhtoo6X/p1RRJSVBNbFjrkMuCUDjx7CwyOzcJfULhbMTDneVh9udeKJd3gFQJVHHZmZ/agX74ciizP1uK6kbk0Fxbycy8BqZ8J2IO98HBpssIABKxU+1OE+0ypOwBtMA9gxfunWhfHgl8Sz9LDskBeyP25LX0CQEDU/cq8+3+O/TFTiy12HLINpdx+ETILQJVHNXBEo0sofAizBfOCX2wehu/95UKqOP6WxHHKUckousrUmK/XUKg/f6R83VDVmQeMRAWtDme2aNb0OU93kvM+lAGZGhc7YlN+EMLWfldal+Ix7tv3yHUXgo2XIhDU4s2XOG8nAHdT7/Pf9v8h1tGZQU5pW1s4hMW9p4I6Ynl+5eeQUUVdUAOSnRh22RhmFA6kPobPRcq+cRTMtOPRuTUgotXlqjWvXQStrY3CSxTqOBCK+8SepZgUoUziatw2nA989IHWVDwt+lNVaIfZOxiQ+Vi6LJQT/cwxJcyOmbGuUjOO3ci3RBwM4l0ddCDVCPXpdPKaVi0bSMtJm+P2ufjGPPSzZIArnGk6Cmjv/n4qKX6wZQjzdidTW9M/pglgfLOYWyFZK5P8QF0b/joawMUU+lot2paYYvTf4Xo9hXUZh8yTfes73RfB8KfLjNRfSozRkH1C+SFsPU68qrfULe3hEAvH4zqTG8RXaxWHzZ56F4GW4u/gSr4jtDPDGj60BsEyyjwSKFcBS+
+ GVQ9T01J
+ tPNtcTLJpq5NbbehpuCGER+8YMI7PInIeckD6kDh+q2qYIF5QAEM7jbLaceWFSYoZJMCPTfm1jjRPRMO50UwjxqWI3/FkAQNr5orHeFBvZ2Pp1PFSaD9IQjxNu5OYbL/KVV0V9S6IRZcDLgRk+u8wW1xUKunqjOjyEGg/52zDkBP4zBuxnHu3RTF9L25h4RqK7ofnXr9da76ZfuzHezSnSD4b4J6jgdCH4MpWhoiVg7C9qQlgejYwZLaajl+nJlKwYSgy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,27 +92,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 18, 2026 at 08:02:33PM +0800, Barry Song (Xiaomi) wrote:
-> MGLRU gives high priority to folios mapped in page tables.
-> As a result, folio_set_active() is invoked for all folios
-> read during page faults. In practice, however, readahead
-> can bring in many folios that are never accessed via page
-> tables.
-> 
-> A previous attempt by Lei Liu proposed introducing a separate
-> LRU for readahead[1] to make readahead pages easier to reclaim,
-> but that approach is likely over-engineered.
+On Fri, Apr 24, 2026 at 10:00:49AM -0400, Sasha Levin wrote:
+> corruption must be detected before it propagates. The dual-bitmap
+> implements a way to protect from corruption coming from hardware or
+> software - two complementary representations of page allocation state,
+> allocated independently via memblock, where any single-bit fault in
+> either bitmap is immediately detectable. Performance is secondary to
+> correctness in this context. A safety mechanism must be simple enough
+> to audit and certify, must fail deterministically (panic, not
+> log-and-hope), and its correctness matters more than its throughput.
+> The dual-bitmap adds two atomic bitops per alloc/free, but for
+> safety-critical deployments this cost is acceptable because the
+> alternative - undetected corruption propagating silently - violates
+> the system's safety case. The static key ensures zero cost for kernels
+> that don't need it.
 
-Why does this even need to be kept? I'm not sure it makes sense
-to even mark readahead folios as referenced.
+But doubling the storage requirement in order to achieve merely detection
+is significantly worse than state-of-the-art in 1950 (when Richard
+Hamming invented Hamming codes).  If we used a (7,3) code, we'd have
+SECDED at a lower cost.  Of course, there are far better codes available
+than that today.
 
-I'd suggest folios should only be marked referenced (or even active, whatever)
-when they're mapped. Anything else is a bit random and is hoping you are
-eventually going to map them in the future (which is not true for, for example,
-anything in an ELF file that may be readahead but not mapped, like debug info,
-symbol tables, section headers, relocation tables, etc etc)
-
-
--- 
-Pedro
 
