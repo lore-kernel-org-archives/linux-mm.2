@@ -4,88 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2122AFED3F0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 16:45:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 787BEFED3F0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 16:50:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 303AA6B0005; Fri, 24 Apr 2026 12:45:44 -0400 (EDT)
+	id A39466B0005; Fri, 24 Apr 2026 12:50:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B4C06B008A; Fri, 24 Apr 2026 12:45:44 -0400 (EDT)
+	id A0FB96B008A; Fri, 24 Apr 2026 12:50:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CAC16B008C; Fri, 24 Apr 2026 12:45:44 -0400 (EDT)
+	id 926EF6B008C; Fri, 24 Apr 2026 12:50:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 09FB06B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:45:44 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CDD401A0255
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:45:43 +0000 (UTC)
-X-FDA: 84694025766.29.6579ECC
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 56B77100002
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:45:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JIWAhgVJ;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf05.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777049142; a=rsa-sha256;
-	cv=none;
-	b=mLJ00E3RuDFClMHHQfVY4uZorqxac5+oxtRt0OKZqeaVuXJrBfZZlOuAyty0KYHkjxfK9j
-	KYVbtp03NiklodUi6HK0OihQ32gcDWsuCV3rWXKt53lSIcWcjpmGEN3rmE228HhgfIRZza
-	a3IJI07LYKtAlySlxuHrDRog8ga7MVw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JIWAhgVJ;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf05.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F07C6B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:50:48 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 217C31C01F1
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:50:48 +0000 (UTC)
+X-FDA: 84694038576.30.5AE74BA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BABB940009
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:50:44 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Obv6SLiw;
+	spf=pass (imf04.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777049142;
+	s=arc-20220608; t=1777049445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6MuIhTKn81QH0/FznwtFyEBRCGi6RLudX/kQq6UY2bI=;
-	b=BptyM9VmsJTvDm17GbaH7R0CUY6wyL9Pq0Orr5epq+P7GM4cByBQLo98ggTpG5fPTKNoPw
-	ZGHrUm1bAHfDDj+iDfYPzMEZP+wqHbDJYb411JCLclvgUhF3PKTRvGQB89rcwsL7vgGtsq
-	BNGXx0s+RhgEsXla6QOTMVB0cPYpJUY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6MuIhTKn81QH0/FznwtFyEBRCGi6RLudX/kQq6UY2bI=; b=JIWAhgVJoTGgF90npbxq2/cgHu
-	bq4/mViVjxtLFxXB4EYuCD23xBVkNFN+87L+NhL7/n1LhEjcZEjh8cQn6oPfv4XaneT3X0KX7SPIZ
-	XyfWL+Vgqhxr799qOpfDwagohch91PzE49v7rQFd7ProqwXXwti9g7HwZ4EA7iRWoU7jvx7fwV/Wk
-	d69Q/ENZoGIA7KCwgp25vZqr/PjbmR3uQ7ToDHdLCTzgZy4xMZ+Gg693EKUYBLR97VZam/opyuSX3
-	3ePKpH17x4xNeRTyyiGI9mfdqg3HUAY64eV6ZW+DOOqJ0UjEDGGZ7oO5sU89wZWsHlKtQGW30BJPU
-	4GZVdjnA==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wGJet-0000000DT0j-0FcI;
-	Fri, 24 Apr 2026 16:45:39 +0000
-Date: Fri, 24 Apr 2026 12:45:32 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [LSF/MM/BPF TOPIC] Page cache tracking with the Maple Tree
-Message-ID: <oi2kit3a2qulr53c7j3h4g3cjjgbss4kd2djdqota2sriiaaov@7uewnraaq4gk>
-References: <biynsvpcamct5fva5nxxdvc3q43dqi72jotpyasvrk3pumdz2w@7okprmuwznlo>
- <aeKO6bKupHa2bgWt@casper.infradead.org>
- <aeaKAxrAUtfwM9ns@cmpxchg.org>
+	bh=keHZ0O/SFDCod4eBPIiE4SkvZSALREhE81hMbz0IYMs=;
+	b=1bbzGwEnXB38W8KutIQEYNMq3EmjHlD8NPgn0mErl2hbQ80EkMc19+6XJWhRg4g5UIs+7O
+	6VPUj57em9PvLAEHxIwSj7KQGrJIWeb3Xc+UxflTi4PPB8BFs+ksOVDnLaYu9e4nxth8/p
+	wNw8KB+HtZpaSICNSpAD1dJqr2bLLxI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Obv6SLiw;
+	spf=pass (imf04.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777049445; a=rsa-sha256;
+	cv=none;
+	b=53XGMF2cZEQWQCuX2Q595a3CsfSYtL8zkPU+1y/ZjHmvNxxrVtrOwiQdpDnXXG9Wg+/FZX
+	Ag+krqttYhFvmq5XVNwgs1XOagI2NCxax8glLAsBqXHIEQtnnNbvgQa0hIIa03zZM+P0E5
+	nNaBqtxcXDGPBzQHikoXHYAXQCvjZTA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777049443;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=keHZ0O/SFDCod4eBPIiE4SkvZSALREhE81hMbz0IYMs=;
+	b=Obv6SLiw+onWu+wlskfqZdpv3gR1UoS6bbbbcWcSxjf7e16zAE1eobexyTBvqvUzC4ydvR
+	VYukKlET/i4nkGBabzfdHyylP7DsXMIuJIFUhVQ8Sgi0cLdiI8CWbSRRS9+LOvEQXL/Oxr
+	X63Vn+E3KL7jyHz5JTtPWrfZfDlKj9w=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-367-iIPinvI8OAi0rhzGQav0_g-1; Fri, 24 Apr 2026 12:50:41 -0400
+X-MC-Unique: iIPinvI8OAi0rhzGQav0_g-1
+X-Mimecast-MFC-AGG-ID: iIPinvI8OAi0rhzGQav0_g_1777049440
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5a3ff732c58so6788835e87.1
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:50:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777049439; x=1777654239;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=keHZ0O/SFDCod4eBPIiE4SkvZSALREhE81hMbz0IYMs=;
+        b=pZjPAw/KOdnd5ZCTECXLsKF9Hh8xZ+L5VAw9AhiHg3vlDaBU3XzcsEuIUWMIGqetBh
+         7XGhtOGC+9DTUvHscZi8c1pR9PBsP2+Aa9Vk8TrDMsZuN4PmkmsH/AmeITC3Af2OgD1N
+         sLd8NjtTsOzSdaH96DfG66SjWTNEfYNmYg8UmFLnOS7M/oKCH85OcOwOOS2r2SkWtnth
+         pGVhFGz57gNmB4acPsvKEEBytTtg2ygNqlNHdTfHJD1KZHsafBzPGRWxZfFB8UnBCqQ5
+         LEGYsdlN0H1FBfoMbO7eCGGKORY9yUIKysGrXBwbDnvPCnnJJ8kxa9IkO79QaZOmEccg
+         jHEQ==
+X-Gm-Message-State: AOJu0YxpW8pn2zqjes3TO4Bx1mruTVllDcTt6OZcSynhaKqXIHJUdcJW
+	P8WwWl9vl7oZ0PqH69eJ5taHvy/Sy6HLh4N5BP0KAyrfC2Y56AI060y1xMOdXuA+V/O52A2oUoB
+	jEnDhAbDZvX+dQJK9Vvlvqk4iOAdu/cPgK5j162eWrn5kmePjwx4=
+X-Gm-Gg: AeBDievne0LLIllCfHIjT8nXU+CsqO+xIlBBJCJOX5Fa87s1DKhd6LwLKe/DK2qrnYB
+	FK8whAhw8Ez/Ey7N+lIePnmXU0y9ftUoh9TEBszMXA6QjKjEMSK3yXiMGTCEC04hY/Gm5vrBW46
+	UW/uWAgCqxloXuxxkM3DIYpG44V4U8dMaJh7HwprwcYLAB+ELZxLIvi2fIJPCtHxErz9XfD01BR
+	8ztE6g9As04qlhwQNPaLRp1TOJluyuiCzvmXc5w7+P5gBxDxnB/M8YMllF49naB+F0ppACEQgkX
+	hGTVCgln57lDpeCn5mDAmhw8fm2O3pxwgj5CTdCi+/xp24WFlpfH7Sfq+a6j88oXt3No1p/Kg1a
+	XiAVE8SupQ6cDawFTePDsbSqBF6Ffcgil3+n3nBPuKKCDz9qfv98q1SsoZA==
+X-Received: by 2002:a05:6512:3196:b0:5a4:56:aa88 with SMTP id 2adb3069b0e04-5a4172e7bd3mr12410416e87.27.1777049439436;
+        Fri, 24 Apr 2026 09:50:39 -0700 (PDT)
+X-Received: by 2002:a05:6512:3196:b0:5a4:56:aa88 with SMTP id 2adb3069b0e04-5a4172e7bd3mr12410391e87.27.1777049438914;
+        Fri, 24 Apr 2026 09:50:38 -0700 (PDT)
+Received: from [192.168.1.86] (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4185bc297sm6104200e87.18.2026.04.24.09.50.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2026 09:50:38 -0700 (PDT)
+Message-ID: <3faef07e-5093-4d9f-bb1f-e9a1f2dc6100@redhat.com>
+Date: Fri, 24 Apr 2026 19:50:37 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeaKAxrAUtfwM9ns@cmpxchg.org>
-X-Rspamd-Server: rspam10
-X-Stat-Signature: g5gr8xdx9nzfzfkofnm4i48apgrt43sw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/5] Migrate on fault for device pages
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+References: <20260414041226.1539439-1-mpenttil@redhat.com>
+ <20260424092336.7f8f5b0c00f4b46f9e0879d9@linux-foundation.org>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <20260424092336.7f8f5b0c00f4b46f9e0879d9@linux-foundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: tRNp2dR4TPOfQA2ho7wlKe2Y8bkP-3QQm1Mv-CKBjqE_1777049440
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: cb6i414pu4w1c6y1xou8yyr1tdxyyy5x
+X-Rspamd-Queue-Id: BABB940009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 56B77100002
-X-HE-Tag: 1777049141-49752
-X-HE-Meta: U2FsdGVkX18wSDr+a84NnoU2ZlLclxDJuGlNXpXDtJmE4lH5jtsAlEAkQeT5aO4qisStFnAAcr6ko3m70wIHZghPKJ/j5Y2lxdYOhOnO5xqMFAL5hoSB2Wmcfwz2HMf6gTfRqEEjJdctkSqQVSHQK8errwZzGhV6NywvaPLdjoOK/6AqZwbYuu4DlVzdmlppKwHiUOItnx1WJ+vA3XbOqc4K4LifPZV+5cNsYHUcvLDnffY4JAhQipHPgEar4OAWj2q0QKlYeeyn4Bwbpwhu0crO3WcUAVN5RS8hp0NMndZX+4yWh0XIjX6NDEjgyAP3yYvEOKZN0SNcG8DGCT+35pH+ZW8IfP4+C9I3UDvloaFPHWXSSsXF3OzktKvDetBeC8+Dk2epkNEVoejDGkh1tHP/XLuKP7+yN+Mrshufgz88MwykMTXf8aHLqXSU6Ktz8CPzItXBON7HuD0xRF4FmoPkFpeZ81ix80PfOTFzZQBVkFfW2vv/fMxz6F4sfryMy0+LvwyjiB3HLz/5nf3hg3u0tzMLpX/upStg7n66TC2fE90kT/FgtgGoHvt3kFPquN/WRsKE2ljz81uEN5+axL29D4R4HJ427hc4RRtHLHZuX3vQcqzWNfk6dM3zIeyoGb0DiYC1pYuNY/+gSgr0f0XHulAK+Q1000CyyNRhk7YLm8C8DQikyF+/JM3qHOlBBT56VYr2SUbfTnMKQbdciTjpck2z0vgDZOvC6paEDXR+L2/uOOlEIxmAIVBh8lsm11qK2b17cQpuhbJMeUXxpDXgjMfoit9saT+4yaxa3+B6/3oxfQw7Ncx2PfZs+WIzIG6WEzxmXVzZhIPZH3ni//iZAMqy/BOgueY0R8sJW+2yvjTjHMw+h2sS5z7Og+yAQaH+8b2jXQMXf6udoIC8VcVTFhgw6KZvtzjPxJc8Ypl/mZmyn9stWmizomd3MR+3sY/fFLzq3z0mkNFoSoL
- OaFvH+5e
- 9E+uE0mQ06JDbEpJ6jcFaLZDscfysfPjWfSWvxE7xVfz4DTrOezUseDEQhErYN2r7ufw2E5JEMEPBj4H53v3TcdLfW13mw266V4ll/GFVDq3rLZfAtsafgACRlTxc9hU0tzgxZbJuwfXnCoFPsgdnj6Uc80HeY8piXPN4eGgTNgcD31SrbkCqWttPhl8YRrEJS694t95p+782Onxve3flqXH6ByZDRDpRTmJnvNdNk2f8cbvMVpArBrKULxGl1U+pU/yL15vvcyL2t+yHZABYLe1uoW1cNkSMI52e
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1777049444-361206
+X-HE-Meta: U2FsdGVkX1/Jsl58Cds9EFVxX+Xml5zYK4CuSZ6vqSpV/MlQ/oozBscR1HCCNd0aD9hwqmIadeYZ3RiGYBlDIaYhHd7RhpG9FIdoGl+/2QQN81i5Vu+ZA1OCsS2CncOxvGS6F65YM04yO5LAcPdUm2nTwVxwNIW+faSi18uQQIzwlOtUK9HrQqGRI7r6WnKWCl6GgImRwlqc8cpAAgmSFHo4yQVvXCDLwBak6j4vWmEh4f6v66GLtxtOK4bAQsKJOp5Xa6jEQg3uvvUFs15d6YgpQlzJMACMSBEjqgc+ev8j0Pm6X4rj5MCXLS/YBjmXn5OwyMPJf8S0Zo8QQBMlxZgDsUnY8rqxJ1nMQohqqZWwveR9cWNYxLVACfdmHUm9qGd0UG8upNFMino0kMgFPlad5SsYLolGtP9RUN1gbmya8fSIXAkfsPBCgLhxLhTOCe7SUBsA+/w71ucgElG4ygyx8IT5zzF7TVpu1JrKiU4pCHy+3ITNT26fbvj5SBgiRbh5pIXVouk5UQu+5jomPmg1hrZudEEZa5+/ZmVzQtVc8MI1PVyGa10062yTbCE0BQxZfvY0HhbaE0uwwcC9ufgCMFSRitceeXtKdsewRfsWU/JaCU9ZI5jpE8ko9ch4MMCgUWHBFrea+LXMhl1xMirmfdveNHcNkUBcsrD8QT8Xij7t+Kf1l7ThFbXrMrUX1r2uJKD7kWbPD0xjElUD+xoCgUtFPZFv7R830IPoMME0hz5AKDprjF8Hw1fUVmbrw9GEG2++F3t//cg9Y2LW63PBYL0emym8UMx5j74pL6kzAfeVrZBh17XRRxR0N9/G9bzkHgtuWSLDTJHiZQBHHug3MGW5WijjTTzLTL0obpJYVK95MUi4+1XI/7vvSZlWnkeUD/7ib7AsoSQs9thQEqiKQPKL/wOsiERU/utIMl0o/Zy61RX1rQXW0AtI8DPPQ36lm5eI9V54anki+se
+ PdvR9dbT
+ JXEeoDijQFlnKxRZQiRMpxzKpQ8q4aeE//poha2W21lPa02EKRPRBXNdUaq8d3sPyyeRbKZ3C63RAYVfyNRtyOZHJ6PdfpbA7chkZO6LmTa4Y+cqFnDCSjBbQGNidO1BtwdNHFpqVIwmanubea/Shu4U297xzuBkLNbs+mQtcqJ9Gc2Mg3JoONnaqgylm6mFs0EPbl5IBgCjtyipN2KI732DG8Z0T2OMiLpDp/eNJGWIqLu2MkDFQSGIcDz8ECWpBf1U/A+ulm3lPb0KPd3F0hyFDs/7kbpqbeZoLTpnO5gLb6AbnXBQ3UTuHapXk6ptr2Bgl1jh5JLshvRLfEqr/DlhxwsDzTuaEkiDahz2cmPVHCk/v/khSvWsR08WSolpmZZl41UXl2EfQqDWAW/6euB8b9jZsYHOPdeKe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,136 +137,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/04/20 04:18PM, Johannes Weiner wrote:
-> On Fri, Apr 17, 2026 at 08:50:01PM +0100, Matthew Wilcox wrote:
-> > On Tue, Feb 24, 2026 at 12:10:26PM -0500, Liam R. Howlett wrote:
-> > > The Maple Tree needs some enhancements:
-> > >  - Support for purging shadow entries from the page cache
-> > 
-> > Liam and I hd some preliminary discussions yesterday around this
-> > and we'd like some feedback if anyone has time before LSFMM.
-> > 
-> > For those who aren't aware, when a folio falls off the end of the
-> > LRU list, we store a shadow entry in the page cache in its place
-> > so that if we access that page again, we know where to put its folio in
-> > the LRU list.
-> > 
-> > But this creates a problem (documented in mm/workingset.c) where
-> > we can fill up memory with shadow entries.  Currently, we embed a
-> > list_head in xa_node and add nodes which contain only shadow entries
-> > to a list which can be walked by a shrinker when we're low on memory.
-> > Ideally we wouldn't do that with the maple tree.  There are a few
-> > options.
-> > 
-> > The first question we have is whether it's best to keep nodes around to
-> > wait for a shrinker to kick in.  Was any experimentation done to
-> > see whether eagerly freeing a node that contains only shadow entries
-> > has a bad effect on performance?
-> 
-> Hm, I'm not sure how that could work.
-> 
-> The LRU order created by readahead makes it highly likely that all the
-> folios in a cache node are reclaimed/made non-resident at once. Going
-> this route would destroy a large part of the non-resident cache the
-> moment it is created.
+On 4/24/26 19:23, Andrew Morton wrote:
 
-Not the moment it is created, but the moment the entire node only has
-NULLs or shadow entries.  Meaning it's removed the moment the last
-entry becomes a shadow entry.
+> On Tue, 14 Apr 2026 07:12:21 +0300 mpenttil@redhat.com wrote:
+>
+>> From: Mika Penttilä <mpenttil@redhat.com>
+>>
+>> Currently, the way device page faulting and migration works
+>> is not optimal, if you want to do both fault handling and
+>> migration at once.
+>>
+>> Being able to migrate not present pages (or pages mapped with incorrect
+>> permissions, eg. COW) to the GPU requires doing either of the
+>> following sequences:
+>>
+>> ...
+>>
+> Via which tree would it be best to upstream this?
+>
+>>  include/linux/hmm.h                    |  19 +-
+>>  include/linux/migrate.h                |  26 +-
+>>  lib/test_hmm.c                         | 101 ++-
+>>  lib/test_hmm_uapi.h                    |  19 +-
+>>  mm/Kconfig                             |   2 +
+>>  mm/hmm.c                               | 821 +++++++++++++++++++++++--
+>>  mm/migrate_device.c                    | 589 +++---------------
+>>  tools/testing/selftests/mm/hmm-tests.c |  54 ++
+>>  8 files changed, 1053 insertions(+), 578 deletions(-)
+> Looks like mm.git.
+>
+> It might be more useful to add it to a DRM tree if there's ongoing
+> development against this.  But please no upstreaming without good
+> review!
+>
+> Anyway, this is a bit dated and Sashiko AI review wasn't able to apply
+> the patches.  Nor was it able to apply v7 or v6.  So please refresh,
+> retest, resend?
 
-Still much sooner, but not as extreme as just dropping them immediately.
+It is against Linus tree v7.0, base-commit: 028ef9c96e96197026887c0f092424679298aae8,
+but applies and passes hmm selftests on mm trees as is.
 
-> 
-> The goal is to garbage-collect the oldest shadow entries whose
-> distances are too long to be actionable at this point. Specifically,
-> their distance to lruvec->nonresident_age (per-cgroup, per-node).
-> 
-> In the current scheme, we just go in the order in which nodes became
-> all-shadow - oldest first. And we only do so lazily when the
-> non-resident cache is far into that territory (cache set vastly larger
-> than available memory). That gives us confidence that we're mostly
-> dropping very old entries without having to look at them one by one.
-> 
-> We don't have to stick with that design, but whatever replaces it
-> should meet the goal, or approximate it well enough.
+I plan to do v9 refresh and maybe minor updates in week or so.
 
-The goal of garbage collecting the oldest shadow entries based on the
-nonresident_age.  That's a broad target, which I think is made more
-specific within the implementation to 'groupings of 64 shadow entries',
-which I bring up later.
+--Mika
 
-Besides the locking improvements that we can bring, is there anything
-that you have found doesn't work optimal in the current solution that
-may be nice to fix?
-
-> 
-> > The second idea we talked about is that the maple tree is much more
-> > flexible than the radix tree.  Having even a single folio in a node pins
-> > the entire node, so it's "free" to keep the shadow entries in that node
-> > around.  But with the maple tree, we can be much more granular and
-> > delete shadow entries in arbitrary positions.  So we could (for example)
-> > keep track of inodes which contain shadow entries and purge shadow
-> > entries when they reach, say, 10% of the number of pages.  Or 1000
-> > entries, or some other threshold.
-> 
-> It's not the volume or the concentration of shadows, it's their age
-> that makes them good candidates for garbage collection.
-
-Maybe I'm reading this wrong but it seems workingset_update_node() adds
-nodes to the list that is composed of all shadow entries (or removes it
-if we have changed one to resident).
-
-Doesn't that mean there is a concentration of shadow entries since the
-entries in the tree are in order?
-
-That is, reclaim is at node level granularity, and the nodes are sorted
-sets.  I think, sibling entries aside, it's fair to call that a grouping
-of 64 shadow entries?
-
-This also means that with today's code we are keeping older entries over
-newer entries because the node has at least one resident entry.  But
-that's fine, because we can't gain anything by removing them today.
-
-So, we can change this behaviour to something new if we want, if 64
-shadow entries are too many to accumulate before removal, or too small.
-
-> 
-> Searching the tree for all-shadow nodes should be possible, but you'd
-> still have to filter for age. Naively, that would be unpack_shadow()
-> -> workingset_test_recent() for each one, but that's likely too heavy.
-> 
-> What might work is a monotonic ID counter for each node that becomes
-> all-shadow, then search the trees with quick comparisons for any IDs
-> below a certain cutoff?
-> 
-> > The third idea is that instead of having an injected list_head that we
-> > keep a tree pointing to inodes (or even just maple tree nodes which
-> > contain a lot of shadow entries).  That's not how list_lru works today,
-> > so a certain amount of development work would need to be done.
-> 
-> Ah, so you don't need storage inside the inode or maple tree node.
-> 
-> That could work well with the monotonic ID counter, you'd just scan
-> and reclaim through that tree, oldest node first.
-
-I think this would end up looking like a linked list with a few extra
-metadata points.  Basically a linked list, node pointer, min of the
-node, maybe a size if we support multiple node types.,
-
-I'm not sure the node pointer will do us much good, considering how the
-maple tree node allocation needs to track the tree status on walking to
-minimize allocations.  In fact, if we do a write that rebalances the
-tree, we may have stale pointers.  I don't expect this to happen under
-any normal circumstance - the node would need to be altered, but maybe
-the node type changes..
-
-It might be better to just track ranges and the largest (thus newest to
-become a shadow) monotonic ID counter.
-
-There's many ways to do this, but it'd probably be best to decide on a
-size that makes sense (I say size because of the siblings..).  On that
-note, the siblings stuff will go away with the maple tree as well.
-
-Thanks,
-Liam
 
