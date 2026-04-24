@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F27A5FB44C5
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:33:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F6CAFB44C6
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:34:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 287A66B0005; Fri, 24 Apr 2026 03:33:56 -0400 (EDT)
+	id 8A3DC6B008A; Fri, 24 Apr 2026 03:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2126B6B008C; Fri, 24 Apr 2026 03:33:56 -0400 (EDT)
+	id 82D3D6B008C; Fri, 24 Apr 2026 03:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08BC36B0092; Fri, 24 Apr 2026 03:33:56 -0400 (EDT)
+	id 71D266B0092; Fri, 24 Apr 2026 03:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E70536B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:33:55 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B2E4A06CD
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:33:55 +0000 (UTC)
-X-FDA: 84692635230.03.6327264
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CB3C740006
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:33:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ET2IVhVP;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CE5D6B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:34:53 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3076C283E
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:34:52 +0000 (UTC)
+X-FDA: 84692637624.08.7FE7586
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 083B14000C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:34:50 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJIR4PtA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777016091; a=rsa-sha256;
+	cv=none;
+	b=UWka4+m+oriHj3rygyee0IQX63iFOLaQ/Ihc6gXd4Iy1rF0lxyJqu9tbhejdBScld1K+/H
+	tD8MIE7Ilr+nkOBbX+kob3O4x6PCVc2Fy3qgnV9nd5M3uBUBdRPWToicBzOr1UXNRGR1nH
+	LcyXUCrwj5xXNdbTrA+24g5IKhBdrhw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJIR4PtA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777016033;
+	s=arc-20220608; t=1777016091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i3emymLQKMW5KNMhf0/v5WxkXv+ccDytIAO46/7sqmQ=;
-	b=s3sHOFOhpEmWvKMKAPAioptBUeJqwyHrGvol4M+fmwRSprMmg9RS/wHOfCZbT0EyMVIM5F
-	pZ7/Sh7exfdo9c+Ns/mOU0DO5PYhrbCvsdM6ls35QV4LfOiDBq1o+YcINfcPpqcfRVQJyt
-	7T0vHu00sjcG+uacjrMe4mVpF4gy5xE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ET2IVhVP;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777016033; a=rsa-sha256;
-	cv=none;
-	b=7a/XNlxSi4Wv1I2vdMp4Q+ot84WL+oVO6DxYRHJprUzBNcCBlAu/+c7W27gWBD4QZoEI/K
-	7yyqGltLakrDnelE36KCZZbTWJMRVjoGMHSbecNJhJemTY2peDyRm3c4vrjkhfSuN2xJUE
-	K/wEIeS2JdXZc8LkeKb6yq0RgNlwukE=
+	bh=dJdObXEbkahQYZLDnmZ+m0VPGz1sbGsEE1rZKCn5pOs=;
+	b=Brahjf/4kck3JpcJKdrcF/pP1GmyUNJnSrcFCW79XbuFWbVP6NewqRtXsMp/aY/LpNJWlW
+	AJuK9cye15rVKx8eLs1P2bHtogDQ8yUGNqJwBGjxWKzKm2UorWDovrrcO8AKFj7gtqgLFR
+	NhW18G+61PCz+iAiIxoLofHUK2OSi58=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06B366001A;
-	Fri, 24 Apr 2026 07:33:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E265C19425;
-	Fri, 24 Apr 2026 07:33:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 122FF4449D;
+	Fri, 24 Apr 2026 07:34:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5D6C19425;
+	Fri, 24 Apr 2026 07:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777016032;
-	bh=FWUCIjlRnfU0ETPJAkdUekHGrm29nbNvT4ou3u2ZJrI=;
+	s=k20201202; t=1777016089;
+	bh=NGQdePNFp6hyo74+R+XMpXlJRT/ZhqyV2fpxjwJ+zcc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ET2IVhVPW1Je/rflovdV0szP2Nft7DLDtK4Cjt8gOa3tlrF0PYvVAsdr0AtKcI2nw
-	 Nq+tRJktHRoOnrRgLjk5Kv3ysZ2GmBvgxsuvvvVS0TTGEE7lrAaIzb149j1fee4kf4
-	 suHj+w2LF9Z9O8b/zefIcUsWF1YP8BPRUf94MHKp5vYpn5HZl+5iwfqHVhO9BKX13G
-	 TokYxhGt++juL6hzDh2Tme7OW4r63MYtWKGLTq0MG3pu3l2XBFHr7Tbi8btjUy7Nuu
-	 Gn8N/LHbYUCbRCqqvn8DuTdr5+LOL4DK+dRWxwDt3pTs3GTdLY10KD3DuG7COGtHP1
-	 QTWokFnUqoNtw==
-Message-ID: <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
-Date: Fri, 24 Apr 2026 09:33:45 +0200
+	b=oJIR4PtAGwQD47DsXDZcjQwU406yilrd7N07yZZWCTThqtXZ+E8VMJIMyxVQcIUm/
+	 nxI1l2rdPNJYsCBYEl5PhsfAL6UI+U1KwzjOmLV0jGP7VvBb7vP9H7DViktrFZXg0/
+	 326lMtT/SxGyrzSPICixgGw6fqKsRZXmeIJokaqS4g8uBHiEg6hCyEjbjDrVLVIEEr
+	 dk/HqmnYYuJvk1ePSWInp4PFWW5LYcxbAvyjfrmyZ+YZsfnc3JfiPJFm4X9LvX80q8
+	 js8PYKWZZsLmL+TQeeoJEfF+/qG/s5BLOteVgmMsxVY16Virerc4SNo7UaousfS8KQ
+	 26QG2mT0/xlTQ==
+Message-ID: <6dd8e62b-97e3-4261-92c7-ba3a02ae6397@kernel.org>
+Date: Fri, 24 Apr 2026 09:34:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
- optimization
+Subject: Re: [PATCH v6 7/7] mm/memory_hotplug: Factor out altmap freeing
+ checks
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
@@ -81,10 +81,9 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
  aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 References: <20260424025547.3806072-1-songmuchun@bytedance.com>
- <20260424025547.3806072-5-songmuchun@bytedance.com>
+ <20260424025547.3806072-8-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260424025547.3806072-5-songmuchun@bytedance.com>
+In-Reply-To: <20260424025547.3806072-8-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: od4oc1muxtqk9t1sy4bdjfyq57ceicga
+X-Rspamd-Queue-Id: 083B14000C
+X-Rspamd-Server: rspam12
+X-Stat-Signature: hn4z76fhkqgxfdtb49aj9szbw7qyxx8u
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CB3C740006
-X-HE-Tag: 1777016033-377460
-X-HE-Meta: U2FsdGVkX1/IqkQXsJEeaqXfxJUMNRTZ3OD7draVeK0HZ30ef1eJZPmooNTruW4v6uECf6hsOvdpYnniFX6YNsp+Bk507Xr2CvBbzMJDsVweDNclsAkqEUCeYIz0POnY30R86JW8BA4IhR5R9AqJ/6SP3xyxWfk9NuwrVm7yWCQ+c/694jUkfUUAfm405f3WsKe5pbFHZ9CBnDTVVy/8vrpshq3mUEU5B8rPVw06dgjW+QKrwlTwtsfUqnMPPpa+aps0/Lu7DxfAffVaBj8+hNAbqDYcEtnqerAxIR5mJrpLtV6h3jqgyUZyWxMhr9FGRc+ozNzTPS81J1OV41S2TF1d4Oby9jTp6KQzL39v9T+3JWNWTnUvpZ6VflT6KWpTB9dbXYjT15l5bB4miFuJkaLJw3uWNI+DKjBaXjHJRyUr39GEsGgv/hYKegLWv/KJL0M+nhm1SWVSds8KCq0c3E/e5Oa+yWDgss3wdQ0+cbcO+mVn4PBXuT4gHQ+6U+T+W0N1bIcK1hRsryZMsg2AU6dV1GtzTZtt2WIQqXDld+x6gHye47NiJ4m5WkHLZo7Pzd6a4Zit6u/torih0tO51Itt83HnAGSenye7xQ2rRcdjRe87CigUO3VcaqDQQOXgmS8bZm4yDjKRfOLxGgxcgc2mHUZU+RFG5lI+nIUuS428Vya3WEPMmwhi7pSSHRK1+u0ncTeHiYlQUlacNqgPQ5q1ne7NlOEyDgd7/hSknsWTHsKrPN9tY1YYDTzGLNHrRFffb5ICkbZsnS5j8uGGkmDNeLm36U9oGATbwxmtEvJqixlLtdp0cVwXXPr5lSxu6jAx5gfDnNU+tuWors+wB3wVmIr1Kllh7lMgpOjj21L/RcrL4uILZ3PiAtx9ZsKD2ZXUVDlMaHwA/L2v8AGZFtSD+LcXVfd37UN8HiAIRY02OwXzqpC9JHh11F1DO7uRhNBvb6YYDc01KP3QTvX
- pRiqy/Kn
- Ti/N2kr4YXnxH4uhhfmH7VPx60VldwgrWrX76rBzEBEF2TrPExU+hmb5QVVzbij3WSdjORWP8mK7CiXDmDOkm+Hczrj3CApuyRPbZb0PBUcCxXEV3z4fL2NJCyajlQoBvSAmZ3OI/1n0qDLhv1eHquZdkrRc6pYgCeJ2wFfux9rltpLCP24bnSe+leqoiY2vGQzoIUxuoZTOu5kmCszXNZ7sbyCH0GG8ODiXvHLwXMmQYhUVHgKFIJw/xrrE6TKByOA2LpO4RUxee5pXNFGNhmotfixqq70uFEMmr3dfKrBmhB+diLV3PrWXNHQ==
+X-HE-Tag: 1777016090-520819
+X-HE-Meta: U2FsdGVkX19R0+BmTWIk/lqXjcUPpR6BIDxuHll5R2/P/xVrYqgHcomQU0g0jJ6piVf4C67LLgWhE4jBPDcLmbyk0CYydSCWlKkUu1uw2f/xw+kxObST537slzzOUrKMpSjjArG6JerXjeMGMJr310nyeWGyvyb9bTM/sTAP4ovTWWJ3P5lJOTF7nMHcJbb3xWyhs6Wu4AUW8xSVfaRc8ONPWfwnzDINH+GnZ1RbIgSVk37e+55wRbiv8CbITgjb3aiE9Pku5vclMIjRMjTdSdHIXoBxDWuw2+IJ/4kJAZCvvz9kH0vlvRyctUSy5jLcWGnpS66+Z5PSDusNbe1uyasxQbrmHp/lKwx6s8s81uBB0EYiqMsJoU1SnMjkvnw4ID97IINTjLd1htxI7ZRMYbChFVeCuDXBUA5mvey/8WtAnikwdmVFUZnaBCr/mT4L+y2SBAaM/JMgVHuviUGCdAPq0v3ioceTFHuR+LOaEbgtrHrkcJ4THZC7OZ1cbbb8fBAoi3yxkER81VY+Y0kEa7vD0won+uNjWN7umwfz3CwRNrIevVk1zWRScIQe8Zkkzd/AOjorxQyn9/xXyvSP8TfSeIG16Nmq85bj6fBRkl+NrnKfFgwAxkPYH9EByZIvlWLXJtz6aypPhBGDitndI9xDXBhq9ar3CdLudGPlwboprqrOS6xmcYIR9NdELHj7XPU7Cafijez/Gv+r8kdv4+yeHe8J3V4WlDGBLTz7fPRFKPlcwY4lVO6Uc3SoYMNgUhxEQd1MB1eCzOC/ytFZ0cTKSM2tJEjVMntUh/mZQAjvpIRHecPrhU+qo59wCaa6GCcGh7Tuk28+1ClTACsLXNuU5dcMOmP4V+ylugUGrNdvuAHQtDdL+axXyJVKFpJZkbOI2iLeYam/bV00fT0GqOGaMsh4SV5nub0QW8MMbsjS8wksFfMPZGw/Q9l/U15vhd+YOz2PWz+LTsBKZce
+ 6+gngd/m
+ yh0bntMI8Zt+OY6TLunhbMeMJuXtBYCk5qedWf3Ggh2SVq7JUjxUe5yxLyN7g0DiJ+8mgBLkcBxKWpoRADdSWDVwChooe9hGYqRp1TLROWyuC/+jgLuphgDOh/AknfEWfBB3js/H5jHVwJy7a0CTNWelqYlj247QfIyGoW3acGj+tDrFapFzmW9pd3Jy48bKRS93wLSNtBBL9wE/W/LkliFYjlPoaQUBjsIGXMaudAHeLRFru+7DY3lX4UY2EdA3d2jFg9oxNZZn3EGRSxrwpVsg8xNFhLiykp4ZHyCFEWZgaMVdziHZ9LQRLj5nU5p2O63C59mc0VRDX9vmBb5CBd7JJzH7z9zztHHp9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,62 +149,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/24/26 04:55, Muchun Song wrote:
-> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
-> counter in /proc/vmstat is incorrect. The current code always accounts
-> for the full, non-optimized vmemmap size, but vmemmap optimization
-> reduces the actual number of vmemmap pages by reusing tail pages. This
-> causes the system to overcount vmemmap usage, leading to inaccurate
-> page statistics in /proc/vmstat.
+> Use a small helper to centralize altmap freeing after verifying that all
+> vmemmap pages were released. This keeps the check consistent between the
+> normal teardown path and the memory hotplug error paths.
 > 
-> Fix this by introducing section_vmemmap_pages(), which returns the exact
-> vmemmap page count for a given pfn range based on whether optimization
-> is in effect.
-> 
-> Fixes: 15995a352474 ("mm: report per-page metadata information")
-> Cc: stable@vger.kernel.org
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Acked-by: Oscar Salvador <osalvador@suse.de>
 > ---
->  mm/sparse-vmemmap.c | 31 +++++++++++++++++++++++++++----
->  1 file changed, 27 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 3340f6d30b01..2e642c5ff3f2 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -652,6 +652,28 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
->  	}
->  }
->  
-> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
-> +		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
-> +{
-> +	const unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
-> +	const unsigned long pages_per_compound = 1UL << order;
-> +
-> +	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
-> +				    min(pages_per_compound, PAGES_PER_SECTION)));
 
-FWIW, I though the right thing to do here would be:
+Thanks!
 
-	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound);
-	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION);
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-I don't really see how PAGES_PER_SECTION make sense given that
-PAGES_PER_SUBSECTION are the smallest granularity we allow adding/removing.
-
-Also, the "min()" implies that there is a connection between both properties,
-but there isn't to that degree.
-
-If order == 0, then you'd only ever check alignment for ... 1, not
-PAGES_PER_SUBSECTION, which already looks weird.
-
-So you really want to check "max(pages_per_compound, PAGES_PER_SUBSECTION)", but
-just having two statements is clearer.
-
-Or am I getting something very wrong here? :)
-
+Andrew usually prefers sending non-fixes separately, but he can tell us how he
+prefers it in this case here.
 
 -- 
 Cheers,
