@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11B82FE51FD
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 10:05:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54FF3FE51FD
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 10:06:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 234B56B0005; Fri, 24 Apr 2026 06:05:10 -0400 (EDT)
+	id 9FE5D6B008A; Fri, 24 Apr 2026 06:06:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E4EB6B008A; Fri, 24 Apr 2026 06:05:10 -0400 (EDT)
+	id 9D57A6B008C; Fri, 24 Apr 2026 06:06:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FAD46B008C; Fri, 24 Apr 2026 06:05:10 -0400 (EDT)
+	id 8EBDF6B0092; Fri, 24 Apr 2026 06:06:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EF5126B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:05:09 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C89B12080B
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:05:09 +0000 (UTC)
-X-FDA: 84693016338.25.02F628F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B2CE81C0017
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:05:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cd14Qaa9;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EB3E6B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:06:09 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F1CD1607EB
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:06:09 +0000 (UTC)
+X-FDA: 84693018858.20.3A6B800
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 56DF8120013
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:06:07 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h3Twi9g5;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777025107;
+	s=arc-20220608; t=1777025167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4uXld3+xpwlxKZU4t8S+MXIQEikoQhpqpO+PZpbyIJg=;
-	b=Ofr4BZXdtM7ibaQijj90umbtgOCTV9SwUdBwpdjMqVTh9tG9SSX4H98N2Okll10nGrc+Cr
-	vMb0vtA8hpp3oja2PtMQfQ+LsdIDzzfPA0WyGdMPgfOkqTAqCyJ0ccVvthVIssUTIfdmlu
-	5j0J/t3FzYT2et6PRDCP5HTwPuz9pkE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777025107; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mnZM19ykwzsxutuutuir7X+M04yIAZtCvgS60wta4hw=;
+	b=paoF5fsZBoVyu+Ud6XW3o+ojE+r6pyjZ9BZv98Vne/x2iu+tdBq99aZcYVb7rNH49GTImJ
+	zI8KBdP8u0AKgPFX+dGvU7Kb2Pwab4CFyIileFIpg9p8WU9QHYj+fATPLtRglI2OM128JD
+	wE06X6SoFtkHTdan3lmg7ZypXx3bRnI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777025167; a=rsa-sha256;
 	cv=none;
-	b=6ASkmrbE6czi4F29UFQuH9CO8t/jxXQl7D+9P49N4VXhIX1ixYU7uJQ75BX1pNFa3kxNFs
-	zA1qp71Xo7kjc0hWWfgg66u/OSLHiu3MMfAPBhe18S+e8KPfnrLosqSLkIoawTdQqeRrPh
-	GBO2/9rxxlHNjFIizUMV+BIiqjC2psg=
+	b=NiRzt6ZGaDWtWcImr1tflpu8sLw+JVl5silFcb+doBICS5mYO0o4BPdnDg28TlRSx6n6wT
+	9ssyU6Yp9ZER3/CFHIawKBhVUczaIzObrH/ESZ905bu/UTNpjz8ItGVfw5JdviZ779RJyP
+	oMSH8aymGlzxkun8RSLIBbySz3J6fNs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cd14Qaa9;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h3Twi9g5;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D75243C39;
-	Fri, 24 Apr 2026 10:05:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD69C19425;
-	Fri, 24 Apr 2026 10:05:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777025106;
-	bh=TqZB9kXYbfSmnAILwRwd78ABr9axtOH8jmUfPVQcbJM=;
-	h=Date:From:Subject:To:Cc:From;
-	b=cd14Qaa9Tkr3cQjUlHOnyDzB36KDDpHFUo+9l1UbzXSddtb/ZrjbLMBNLh4Zt1z82
-	 bxaZ7tWR2t4GMfS5rq8eZV6kyD1n44ZwfmHupYJZvcPR1FkqzMsJKTDhKSkBZvypsQ
-	 Ym4Wp/0vTHV0K89PcbqARkux194F4b1JOKvjcg1C0Tu6sHK6ei0twUoBqX/1y9LuAH
-	 JwNSpUu1N6zfQbEFqKkVUCA06sdAH7H+dI1xQNYOkhuoah2aLS4zd8Z7YFsSzLDJ3v
-	 qzyYsGH+X+86oVXfmU4kqDbhL/gweHLDGqxDlXr1IYkjWqqUgu9twxk5oh/Bd2WX8A
-	 FVdbTNVqPNn3A==
-Message-ID: <2123729b-578c-4f47-a33d-d1706dfd2712@kernel.org>
-Date: Fri, 24 Apr 2026 12:05:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [GIT PULL] slab hotfix for 7.1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- LKML <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+	by tor.source.kernel.org (Postfix) with ESMTP id AA0066001A;
+	Fri, 24 Apr 2026 10:06:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88C7C19425;
+	Fri, 24 Apr 2026 10:06:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777025166;
+	bh=5QXbN60HW7CsXZ5gwYFqYgAkYkkEIgU02nf2dVj5W3Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=h3Twi9g569dZT07Ied/Me3zb+JPHA6eAsaQsNpHFXJrsrM4zUZlehSAh2LWT0VN/4
+	 qKd3Usi/c2Y7+LBaDAlN7ZMeW3J/2WG2cgGiEo1CkFwqRMSAowxutZvnGNxVteJQA3
+	 31c//zfVgdvryiRcUuP4ITuW/prdCVrvtsJdZkf4=
+Date: Fri, 24 Apr 2026 03:06:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Li Wang <li.wang@linux.dev>
+Cc: tj@kernel.org, longman@redhat.com, roman.gushchin@linux.dev,
+ hannes@cmpxchg.org, yosry@kernel.org, jiayuan.chen@linux.dev,
+ nphamcs@gmail.com, chengming.zhou@linux.dev, mkoutny@suse.com,
+ shuah@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 0/8] selftests/cgroup: improve zswap tests robustness
+ and support large page sizes
+Message-Id: <20260424030605.6d0053c0df14bba325114e1b@linux-foundation.org>
+In-Reply-To: <20260424040059.12940-1-li.wang@linux.dev>
+References: <20260424040059.12940-1-li.wang@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8tfmttpgafxmpkkn3e999mykncfntij4
+X-Rspamd-Queue-Id: 56DF8120013
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 1cgfbqewy5fb88mz1p44fcjnu86qk4q3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B2CE81C0017
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1777025107-428797
-X-HE-Meta: U2FsdGVkX1+ErivLBDqKRZzcxYrmd4sxg4myoqObAoM1yO6OEICJpPcm0BF8fK0hwZHmA1MrnZX2dCnjHSSt1o/pFUMe4T0o0X+qO3FMJBNgIcceMTJ7ngbLVWWBpQX4fhLq0FlzeuDmEV3c2h7ZJv4335ctysVsia+NZoSK2ZqjOTw2tCWqS6HY9tq0cvE7BeDXdi4bDqzbVPl7JMKBj6VfILc7MR6YrIaWBpNvaAwAfiCYSPkHzDvDE1WBKWIeeU/3Yb1hysCflE6ZqJbnpJvTpJb00iXFk6wN3nf4iHXZaLSuuF3AXOFZwDLzpN+aJ5trOg5cVIbpPaSHN0SVdvlw9zG5VLEFntFZDdmtaI10dGRSFS57qEjKwJ/jN2MoBFuYPLCikCw4he9+1CozIZQDfskXc6+lF97abdhvCfmNFcI1N6prfl2yNdu+D8dmWmjGRkYIWF1Un9Wk8ZCXJ1jNhSqZqjEjOmf1vVpn7vYkXPNgPodNT/DfmA9NzncXex7Fm8sz5+5ZHoLEYdQCAeNRvY123WcUXzYjqibOOeJiA0C5CZKK7MYGPDfRRRy52Pet/QFRs8MNMTZntrI6E6Ahv9Vf77xsbf0idJnWVTZbJKRGHQOzS11w+zVHvHIdsSWC80VxmX23yEg5Dod+k/7JunLcQxc/ktMJkyUW4Lxo+eOCUE2x/dC6tHr2DB1KRF/n6oOcZECExNTSA0NrbLOC294w0FD0yafr7mA7BmmmO96iy5aTVNZ9jcdBDPOg0S0kQjF4k52gI450ITI7TRERFpe6Y8DBu5w+VWrsW2xS4FH/zIYNl9YRR/uAZmaJoIgBHP7yHmr5WuLEKcsxWNn8PqTRhBpmW0TTou1oOwbUFokTpnG/zGiT/4ayp88r3LbZzmpyymuk+4AKxeeCJdIMfbagO2XeEczNZgIQ3/dsOO2iB09o+1oeTINntJ1PdVqk3JOvgFCYl6gP7H8
- loNgDIK6
- EdsA5YzeFEbjNoVhQEvnSoV0XwmHXQ7C/Je3GE0w8vvIYRJ3pJiCuLEtPkCQJwnhBaJ/dJHla2vBSL4Ddv9QL3b3Ar+jBWJCmbhYKmrQvbXxpCyinr+Dj7NmeNwaS27QiyA58T33/8uf/UIPVFPkeLbl/jzMJf2VqPY3uMPAGyPR4np+TSsiNpkgzPlJm5+Ns7YYHS35vccp7gTjDYvk+miz7W0nrAzXXXTlOaQk42ezq4HIDCMMJ+HcD2UF0NH1weP9sImMWKYuNjGWDr5vSu9NOOClaBtHL6BkSYNKguDvPPNd4dbKsojnzav+RqNTRqEyW
+X-HE-Tag: 1777025167-902473
+X-HE-Meta: U2FsdGVkX19UO55OPtGisqvHTJD9lfzmhDlScVNzNKGhRPiP/pjnfcFuwSVxe8C6tWzZ9URyhih8whYQttSPnxShMgamPgUNbbyFSuSNAZh8V3a0BlkfbgMrvXBAwVI3MeDizRKcQlGVvSb8nOc9gRiNzpMrZQB9Cgl0bB9j6izvPzVITKDKsWVWuMDl6CRCkQ6E3c9PzTO1rzwu4207aStSVfdrJJEWjtUEvLDeEqrsJX8SyuszF82bpu3/HMQ4NoqZSLaGkMc8myt2KHUXnWar0S7CEa97EgRLnozrcXtJHtFmUenTcu6mpDQwdeAmcva/X7lVrACoj7f+QbojnUdn2GJc1ABWGWO34hAoocdiRKnLBhdZ64QWlCCM0X73XTAw9b+IaI/DZFqYu0zCZNSIEBv+hw2lXp6nawwbCVAJC1nQG15hFkHpoCxE64hXoLD5SXp5YmjiT9+DSl/HjeVswe0qh8/CXDxOpqMn6CEDy2i/llMs0lOfy5xW2eATgahQm3VJH8j5nuBZruYnDyrFlgMRzNKtGh92F2s5q6eUlo8+2sH3vMo24cP9GPn+Bwsg/VZPHLIpsgt/Dyonfh7yz+uc0kzCIxy2ULRLMkEq4HyFbgq9CmgkjE22I6giSRv4RGsxVkaVgil8z18Fo/HFWEMm1YWWvk1SDn/3o9JJxWgl1+OZaAuHEwfTymkdz1aqEFQYj+mOSEnCExFvzKRh0InSOMykS8ouv9t3VohdqXsNest0exn5trsm6pzvG/gDcH7KaawwYJ3a0gwUtk4BquTD71NNBy8EwaE2QuAxA8ylPw74VRI4MO/leHhxQ9lSiUUmhYaRvldbgTDcWXu1I8lE7yS5dCjo8zIdGx9nSUMtoZP36CESyQm7JQecCxoCCr10HLqeD6qOupImIfjIJK2Iiq1bBZm3ETSbnEPj3s5yBSxsUbfAFK26RHN7gMS8RWDDY9UlwMlNTyX
+ GfcCPsLa
+ ySp/GeixXdLpwFfvoTZUOalmXy70KcULMIG6KEh4QV6lZXGoptf57lePe0FwSoi9Dr0znujsxIX0CdCkREu1PDXSH0yccB1DNuaQmVZ+lDm+ohkGjhOhSqp92kVNLxZRjzrkajTXaumTKi7wCBZZ8BP+yfHsOdJoJgYhIMz++yESwc6bLzwg00vUFixZb/PkZBGWCUhUkP6nE0FTC6fFRh5U9P0gvBVXpwU7jhT+FUu+k5ZqVvM7jg7hvb1YVysOTMxR0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,41 +93,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On Fri, 24 Apr 2026 12:00:51 +0800 Li Wang <li.wang@linux.dev> wrote:
 
-please pull the latest slab hotfix from:
+> This patchset aims to fix various spurious failures and improve the overall
+> robustness of the cgroup zswap selftests.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.0-rc3
+Great, thanks, I'll queue this in mm.git's mm-new branch.  Next week
+I'll move it into mm-unstable, where it will receive liunx-next
+exposure.
 
-Thanks,
-Vlastimil
+> The primary motivation is to make the tests compatible with architectures
+> that use non-4K page sizes (such as 64K on ppc64le and arm64). Currently,
+> the tests rely heavily on hardcoded 4K page sizes and fixed memory limits.
 
-======================================
+Well that's an oops.
 
-- A stable fix for k(v)ealloc() where reallocating on a different node
-  or shrinking the object can result in either losing the original data
-  or a buffer overflow. (Marco Elver)
+> On 64K page size systems, these hardcoded values lead to sub-page granularity
+> accesses, incorrect page count calculations, and insufficient memory pressure
+> to trigger zswap writeback, ultimately causing the tests to fail.
 
-----------------------------------------------------------------
-The following changes since commit 43cfbdda5af60ffc6272a7b8c5c37d1d0a181ca9:
+I assume you've been testing on arm64 or ppc?
 
-  Merge tag 'for-linus-iommufd' of git://git.kernel.org/pub/scm/linux/kernel/git/jgg/iommufd (2026-04-16 21:21:55 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.1-fix
-
-for you to fetch changes up to 082a6d03a2d685a83a332666b500ad3966349588:
-
-  slub: fix data loss and overflow in krealloc() (2026-04-17 11:07:48 +0200)
-
-----------------------------------------------------------------
-slab fix for 7.1
-
-----------------------------------------------------------------
-Marco Elver (1):
-      slub: fix data loss and overflow in krealloc()
-
- mm/slub.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+> Additionally, this series addresses OOM kills occurring in test_swapin_nozswap
+> by dynamically scaling memory limits, and prevents spurious test failures
+> when zswap is built into the kernel but globally disabled.
 
