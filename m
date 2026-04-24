@@ -4,96 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71C12FF8850
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 23:34:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7374EFF8850
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 00:00:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7929F6B008C; Fri, 24 Apr 2026 19:34:42 -0400 (EDT)
+	id 9B1F96B0005; Fri, 24 Apr 2026 20:00:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 769B66B0092; Fri, 24 Apr 2026 19:34:42 -0400 (EDT)
+	id 989906B008A; Fri, 24 Apr 2026 20:00:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A6C16B0093; Fri, 24 Apr 2026 19:34:42 -0400 (EDT)
+	id 878836B008C; Fri, 24 Apr 2026 20:00:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BFDC6B008C
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 19:34:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08BA0120174
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 23:34:42 +0000 (UTC)
-X-FDA: 84695056404.20.09B47C8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 731466B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 20:00:11 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2612A1C00B7
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 00:00:11 +0000 (UTC)
+X-FDA: 84695120622.08.988227D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7B0D7120003
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 23:34:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QXAoIme3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777073680; a=rsa-sha256;
-	cv=none;
-	b=eEwO4ti8plwtt6j0jR2d++eFxnSFJXLer4JbMY4QZmpuHFGz2jKrpwkLxuNusrMmZgBChe
-	kb8qrASTDzQXPK/w2a2/D1IHmITumWLBQ2A0JvASNscUNBcTRzFHSyxnf/ZoNqAXuI/c7f
-	dB9e6DIPyxINi0NLJkjO1R0FQ7aVKos=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QXAoIme3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7548240014
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 00:00:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IsP6Nh8W;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777073680;
+	s=arc-20220608; t=1777075209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+nEpBAu+5Rqz3lxOX92+fEqLUBDYkHT0u3zdmFxooyc=;
-	b=esv4sLhzmuS7iAVqG7qwQL5qW/kY6WXkc3SeumXczKxRQMsciFxu+SH8KhygAqVzSK3txl
-	YwWu6Rdz2OWTugTUu6qx80X/Z6tEzVNA5nXgYgqbi6EIZ/OzTMGKdGYhorF80l8IQxtALk
-	llZMWTAbdjqamZ7M9k7RQ+VuKPXplZE=
+	bh=W3J7R3MayZb6K9GPTphDP/mJ8lRHfTntmHcZ44PjNvM=;
+	b=tr4EAjxVOPYhIcl8lSq4IXCgXawLSf+DGzUtYpkmPWq5fGl7ATzoU+hQziG+41wj7fIKGu
+	iogIaYBtJhD9e0LCe6xNbfeZf1sBQo4js6F/77nb0jLJmYzJTNlfbfxh100PlrP/PCn6C8
+	MXfvCdWDKvBadpvj1bB8AInPOYrB2M4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IsP6Nh8W;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777075209; a=rsa-sha256;
+	cv=none;
+	b=EchrJSa6Z8jcMTpiqVPZqW+iPJ0yYhEqyLGDaNtFDKpdnfUTy06c2iuQ0C2hLyEN7n9Go5
+	uLh8JO8NU98w8ZzZoXsLushb8dsy7/grKCkQ4zHjup0vI9GygMmI4wvrSdCQHmJic/9IbC
+	FPftxIO3stn/97X311TdMjyYmxR4POM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 894A7600AE;
-	Fri, 24 Apr 2026 23:34:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07202C19425;
-	Fri, 24 Apr 2026 23:34:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC07F600AE;
+	Sat, 25 Apr 2026 00:00:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F5DC19425;
+	Sat, 25 Apr 2026 00:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777073679;
-	bh=1jfIqbSPLq0qNuZBiP9OXbiRWtkR9TZEqZHMCmgXsmY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QXAoIme3BN9MOWbMmkOHbwVnKRUFLR6VA0Nnquc++LvdF7S1NRFA0R/KtjF3T31fR
-	 svONuj93lYFCzC7uf/K9bL9As8LSUJ4ooDs+dLm5ykPwNbmO+aPeKS9XN1T4BihfV6
-	 8qooFBLCoBDVpWEUjy1/yEYa/rgElMvoQbOEh5n9QxsAd0dbhIEJ/RPZs0rHYOM79T
-	 +t4nxZTZVaUG/WWE7s8E7hagyKZ0zd6Ro4nFwG9qimjeLy6VAWynfbBP4efTy1/ZUm
-	 WR+4oOxM1gjDxhzL6WLX534MH1AegOHN6c3AcOa811gzfzQ3ai+99KCFjCfItg8EOU
-	 evbLewer0CmVA==
-Date: Fri, 24 Apr 2026 19:34:37 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
-	corbet@lwn.net, ljs@kernel.org, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, skhan@linuxfoundation.org, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Sasha Levin <sashal@nvidia.com>, Sanif Veeras <sveeras@nvidia.com>,
-	"Claude:claude-opus-4-7" <noreply@anthropic.com>
-Subject: Re: [RFC 4/7] mm: add page consistency checker implementation
-Message-ID: <aev-DS4YTp5soVPd@laps>
-References: <20260424140056.2094777-1-sashal@kernel.org>
- <20260424140056.2094777-5-sashal@kernel.org>
- <4b961a07-b72d-4c8a-ab49-23f61ed12b53@kernel.org>
- <aeuC6TJ4XowazVZj@laps>
- <aeuFnuiYDBjttEKt@plex>
- <12985b32-88b3-47ab-8292-2e0ec6f5fbae@kernel.org>
+	s=k20201202; t=1777075208;
+	bh=C8r7huZNyRElYBe+dzNVCmXSopmsS7PatU3slqIvHiI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IsP6Nh8WvKEeCyPJ56ahQHwF2bxzxblJotd1wZXbilPyV3ve/Uv8Fv6kAOoOzg680
+	 JLRwJXvtvWV8b+bWgo10MkWEQwvxbFRoRRApx99J14hHn8fRbsy2knuRrjitI/Yqwd
+	 5TDlZhBpyC/o7ItjCRUbfLopFA09l+QpXJe3pklvOuKrdKP7MrYWCUQGYquGkA6Ylc
+	 z+mx7p/i4O4Y3yD3JVGMuSPP2XfiojskNYGLRFLNAXsvYcNyZ6ucZXPH7nVSKGrAy9
+	 qs9kjsYLBG6KTgXZQrtiCzdp1e7jFlwQE8kqWEmr7uXOjnB2b3S5Jk68JSgotIDUQR
+	 qvV2VssP7PYQA==
+From: SeongJae Park <sj@kernel.org>
+To: Peter Xu <peterx@redhat.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest memory
+Date: Fri, 24 Apr 2026 16:59:59 -0700
+Message-ID: <20260425000000.84178-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aetaH3W47iR56nQ5@x1.local>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <12985b32-88b3-47ab-8292-2e0ec6f5fbae@kernel.org>
-X-Stat-Signature: e78yzita7ojdiamr6mpyb5g7arxbna4q
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7548240014
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7B0D7120003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777073680-76032
-X-HE-Meta: U2FsdGVkX18uTIpoFOU/1pr9sIWhk99/OFBfkf7GOecFOItuLjWbTjgySK3EPGNQb+NuK4zJPTq5Y5oqEfr5b5ymAWnLcIfh3AxkUQqVSV6X48kbJ6zMck+/JWTAi9xWhjUhEz/fyJzgDAG/9OPllHqaKvzvfwXrGylm0LRo0HitKj7O3kNeq16D7EK5p1VMmstGf/UxJ/JY9veiApfiIgoex5E0B+paipInMsKhb32p27ugvcCvpXDUdtZ+fldaBSo+vUTPyrSmg77IZr8QN5r2RBr2in41P+xUZAbfmBKpkon+j2HSyHasdiGVR/f/v/6JamiuYsDuaytYAFXo3+pk2S4mKjZgj/79cI9kQoS+i3YklFUVDsneDIza+sehoN+8EexfomgFTIpIc9S+h9kklHEorM6rTY+/WdFWCx7u5wv6rci60erR+aGkzeBUABcPlND9gt0SLhJ0eNjO6GyP4Qdpi54MH579+XKtohrYgLghEJcXiyD1fPCd9ubvjkucNP3XQF2VLttjuUMe5jL/X4fgiWVHmUaEitchYzJN+uw9vy6VLLiLgDo3uGv9Yj/sMLJNQeDifq8J2geT+CORJZeDEVzpcpF66PsZ6TtrRFs5qR9qsZ793GWN5P+Sw1C4f+HpkGP8cA4T7gGppWXrghBLgIDdbwCPLI50PHB4ffMzQrcHNVF2J9VESohD8/FAyXVPpxFNuUK8mhO3q9pY+UpsIeMdQWNboQRgCAaeSw2QfMYGlnFJNVqBXiiSrYmg47UWjYQ7YIlymLo8fjFI642SevfZaHXRW4O6ajYNwJCKzNXkNp++zIwildFy1RCZrajeNicil7kU3MwtokpbOk3dgx6/hA1Q9yxYyw6J9KduyJMdeTecEhlOa0kXczPgoWoY9+TZuWVu8aR/ikuUHH8aMViVD2zgGQcUheuKR5h8MWlq3EDLgeuW8iVqo+K+FsXHQsZQIsXRNOd
- OjF2ZtFz
- S6YCHO0f4oKmiIXGSuvH2+CDsB9MRqT7GxbHCLuqY8lp3+oQf46utiscD7MK8jsZuDrec2/2n5p6MHiIPHkmpihsgLCBBx3UC4GjMjL0jOKDjfKT3AnUTTxU7+GejwYiwmBiVFEBIh9OPURkQFlQUav1Dcrfj8gQJyZDA4xLj7i12aet6ajl10GIAsqgHv4wdPiI+YaZVFINtLy0YQd3q+UDyXtbPSmcFSOAbpr3+WWZG1ChSHE8EyiyFnBu44NWkY+eP
+X-Stat-Signature: j784kepcayia1neznp7qwdkfg49og3oz
+X-HE-Tag: 1777075209-28893
+X-HE-Meta: U2FsdGVkX1/8Ia6cZBAXKXabA9/W+afEwNaE4umtRkYu3kROkUnA/F11BzIdWsHRkfPiQcthglMQv+cUs92GWX4DIoDmO8Iz71jGhia1dDPQ8urUwZwixV2lXudV2hFb2fPI8r4G2SG7BU6ku4hDS0SS8947nBxtSSzmepaz1N+VqCl3KJr85SfPv02Q0fHPxP+cDKgJ9INEeL0iO12fu5lfCJf3bkaPbP10gJY0YEiH5XIhIKinnVTmeqZcI40Ok50h7T9El5led8JOOiupLOXuHX3NWLylHHwvloWm5NPiF5clDTJNSmRX0OoKoQRkm2Yzxw6r7MKHkpO5sB3LIBhJFs+I/IDu/KR+ZK92aGd+v/R1J+vP6cnH+SRJ+LXyYAblDR7SwkuHqomPO4bM1vuuQkFdrRm9ftM6clVCXynDJvc9s+WS7qcji0kULUR/Fk4KPOUlLCPGbi2MUnUADp87amYHlCYDoag+8K1b2EBfL2dKrtv5/lj3q5ZpvU50aVeG0b3hguhNXu9zo+bU/B2qpJQhI41NfsmKe0zhF/kjl/11w/TtHul09YNy7fQtjYXCRU4+VXI8YBlbw+pi1fPTJXg+i/ftVP3yfHlJftq+0Ol1ul3fHqdJLtbaYak4JNVdyn+8FNa2mwEB07Ksrans27FwXqrZdDHmGqrWTFltHqFIHTcPlZpN+8pD/qrfJOj6lR9Jeh0ZupfmgnFNj5jsXgWwhTsE9yvbYQCGxGh2HXHFWZrPel6hNyFZKXpBrKm4vWxmKm4QMRe4hCtrPni6OoVbqis4AaF6HxjxnYSlDVhQT4V8tztgqUSgkgNNH2zkSvpDaBMMskmItKVGVkFWihlOKLTrBLkoUYrlOmM+L5C1nWcmWQ8NMptNSjEfUIn65Vvwh8DU5x1o/TPQJNHYZDuEzuUCFJEl+X5VXZDzeMr6xpJ8T3jHsK3mLyBQdVpbkZi8RK8JGpeuimn
+ 8sZZEPHh
+ ELEp4oNfboM6ZpDF6UOgEZBlONKW+m5uB1KA+1NBDlI7/KPTbJd/l5B/UVyy52cqIbLDubbAYXygx4MjAlYPPWNOU+hWnuWLXIY0YO+zowoqhWmSsIq+xqM62oFA8C09UN3ozgdIyHHrYMq3ig5e5JXmlF2Z2OPs84YBU7kwpSb9YYoErnmFz0BT4CQIosJd436WkJ5KjUvLNwrZf9BIrYj+FOVexsFGttv4PV76FFrROjO71uZ4lvlLw1IpHZpHH988RVC3haWgbRDCTYnRCwaIXOkfv/tXTaQAC2vxMXJLlfGlK10zmwVjL7wNbpPnoE02MQeK+B3jwtHREfXqUqPlVShJNPagx5oEqQhRE7UaPcuK6pD89qWhfA9Pf4hJH46yoC+eGyL9g9NHdvw1rAAaza7f5pOu9N0DB38lWOnhij+c1g971LmbtSo5NHtGH4wP5uvcGwGltDZT/O05fTXzu2WAkdrx/AKtCz9URZbN33JqnriUqfEC0Q8qkKXBRH+YbduQq00aOEJCic4x28lBAZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,42 +107,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 08:28:14PM +0200, David Hildenbrand (Arm) wrote:
->On 4/24/26 17:06, Pasha Tatashin wrote:
->> On 04-24 10:49, Sasha Levin wrote:
->>> On Fri, Apr 24, 2026 at 04:25:41PM +0200, David Hildenbrand (Arm) wrote:
->>>>
->>>> One bitmap that covers all sparse memory available at boot.
->>>>
->>>> Conclusion: Just horrible.
->>>
->>> Depends on who's looking at the code :)
->>>
->>> I picked it for auditability: covering the whole range with two
->>> memblock_alloc'd arrays means the only thing on the lookup path is the bitmap
->>> words themselves, which is what the dual-bitmap invariant already checks.
->>
->> The issue is that we are going back in time to a flat memory,
->> without NUMA or hotplug support. We need an abstraction that avoids
->> allocating this memory in enormous contiguous chunks, as thit approach
->> will not work on modern hardware.
->>
->>>
->>> We could go with per-section bitmaps which will fix the waste but pull
->>> mem_section[] into the trust boundary, so we'd have to start validating it too.
->>
->> Page-ext provides all of these capabilities, but as you described in the
->> cover letter, it does not meet your requirements. Therefore, I believe
->> a new abstraction layer is needed.
->
->If we decided that we want this (and I am not convinced), we definitely want
->something that supports sparsity and, in particular, something that support
->memory hotplug.
+On Fri, 24 Apr 2026 07:55:11 -0400 Peter Xu <peterx@redhat.com> wrote:
 
-Makes sense. Let me take a few days and see if I can find some middle ground
-here.
+> On Thu, Apr 23, 2026 at 05:26:24PM -0700, SeongJae Park wrote:
+> > On Thu, 23 Apr 2026 14:57:34 -0400 Peter Xu <peterx@redhat.com> wrote:
+> > 
+> > > On Thu, Apr 23, 2026 at 07:08:00PM +0100, Kiryl Shutsemau wrote:
+> > > > On Thu, Apr 23, 2026 at 10:50:06AM -0400, Peter Xu wrote:
+> > [...] 
+> > > > > - Whether we have explored other approaches on page hotness tracking
+> > [...]
+> > > > DAMON is built around sampling. It is good for working set estimation,
+> > > > but I don't think it is directly useful for eviction decision. It can
+> > > > miss hot pages. LRU rotation will also loose info.
+> > > 
+> > > Exactly.  If we need to collect ACCESS bit (or anything similar) for
+> > > eviction accuracy pusrpose, IIUC we need per-page info, we can't estimate
+> > > by sampling.
+> > 
+> > That's a fair argument.
+> > 
+> > Nonetheless, there are some companies who use DAMON [1] for a similar eviction
+> > purpose on their products.
+> > 
+> > Also, page level accuracy issue was indeed concerns from many people.  DAMON
+> > therefore provides page level DAMOS filter [2].  The idea is finding a large
+> > region of cold pages in low overhead first, then do page level access recheck
+> > on page of the region using the filter, just before doing the eviction.
+> > 
+> > DAMON-based memory tiering also uses it [3], to avoid wrongly
+> > promoting/demoting cold/hot pages in DAMON-claimed hot/cold regions.  The
+> > evaluation result was not very bad, and a few more users reported positive test
+> > results.
+> > 
+> > Also, DAMON can be used for page level monitoring [5] and open to changes for
+> > users.  Actually a work [6] for making DAMON-based page level monitoring more
+> > lightweight is ongoing.
+> 
+> Good to know that, thanks for the info, SJ.  I'll add a note and try to
+> explore all these at some point.
+> 
+> I recall I read a paper describing damon tracking overheads when
+> granularity is small and when the memory scope is large (in VM's case, it
+> can be e.g. 1TB or more).  Would there be quick answer on whether this one
+> still suffers (or maybe it was never a problem)?
 
--- 
+I think that should still be same.  In case of fixed granularity monitoring,
+the overhead is inherently proportional to the memory size.  And we didn't make
+many effort on making the overhead lower.  We have two ongoing works [1,2] for
+that, though.
+
+Nonetheless, whether the overhead is too high or not would depend on the use
+case, I'd say.  That is, if the system has hundreds of CPUs, letting DAMON
+occupying one CPU might be no real problem.  Rather, there were users who
+willing to give more than one CPUs to DAMON if DAMON can provide more accurate
+monitoring results or work faster.  That kind of scaling is possible, by using
+multiple kdamonds that monitors different partitions of the address ranges.
+
+> 
+> > 
+> > I understand no one fits all and the decision is up to each user :)
+> > Nevertheless, I will be happy to help if you have any question or request for
+> > DAMON.
+> 
+> I'll definitely ask after digging more into that, thanks for the offer!
+
+The pleasure is mine! :)
+
+> 
+> > 
+> > [1] https://cdn.amazon.science/ee/a4/41ff11374f2f865e5e24de11bd17/resource-management-in-aurora-serverless.pdf
+> > [2] https://origin.kernel.org/doc/html/latest/mm/damon/design.html#filters
+> > [3] https://github.com/damonitor/damo/blob/next/scripts/mem_tier.sh#L40
+> > [4] https://www.phoronix.com/news/DAMON-Self-Tuned-Memory-Tiering
+> > [5] https://origin.kernel.org/doc/html/latest/mm/damon/faq.html#can-i-simply-monitor-page-granularity
+> > [6] https://lore.kernel.org/20260423004211.7037-1-akinobu.mita@gmail.com
+
+[1] https://lore.kernel.org/20260423004211.7037-1-akinobu.mita@gmail.com
+[2] https://lore.kernel.org/20260423122340.138880-1-jiayuan.chen@linux.dev
+
+
 Thanks,
-Sasha
+SJ
+
+[...]
 
