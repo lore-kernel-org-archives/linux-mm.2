@@ -4,90 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75234FED3EC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 15:54:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91007FED3D7
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 15:55:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E28C86B008A; Fri, 24 Apr 2026 11:54:02 -0400 (EDT)
+	id 023546B00A0; Fri, 24 Apr 2026 11:55:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E00656B0092; Fri, 24 Apr 2026 11:54:02 -0400 (EDT)
+	id F3DF46B00A4; Fri, 24 Apr 2026 11:55:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3E6B6B0093; Fri, 24 Apr 2026 11:54:02 -0400 (EDT)
+	id E539B6B00A5; Fri, 24 Apr 2026 11:55:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BF9D36B008A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:54:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 73D431A022F
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:54:02 +0000 (UTC)
-X-FDA: 84693895524.08.73D957D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BBB4B40016
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:54:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UCixd85V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777046040; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id D39836B00A0
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:55:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 99BEE16022B
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:55:46 +0000 (UTC)
+X-FDA: 84693899892.22.635C2FF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 47FA720011
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:55:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O3bS9i0B;
+	spf=pass (imf13.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777046144; a=rsa-sha256;
 	cv=none;
-	b=krzyC5KacJOEjUQt4oErRRimNLO8Pty9QcR9GTvb2IngqCzWhtJ2m7cG4HKqmodPnc3bp0
-	20YBBmf6z4kirKMcEKERPS/AfoJrb/bhrcN7CedJVY9vxrcKts9dtbRL6SbiktaLYN3Stk
-	IrfbpfQ48EX9xXv3ML4YbaS/T4mO9/c=
+	b=JrFNJ+ZHHwI6z/p2rFC50ZlpPjWTG8EylCrKibEXNik6xby/hKDWgNrJgiZE+tAQwuwERD
+	kmqVV5caxJb4BaPbn2C2r1QbLUMgnyLF2KTG1nfUhq4TEMQS22x4IrKcWzzR1ZBoQgmWZd
+	Pz1kqBfsJbxxbQdTmREiKQaaj33ICd8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UCixd85V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O3bS9i0B;
+	spf=pass (imf13.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777046040;
+	s=arc-20220608; t=1777046144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jhixw9LE/eoE5ENGIt2g7/waIGAJqNUyqL7AlX/L2g8=;
-	b=jIOuaF2FC/YEhvxGKtTeEx67eanwlxC3+Qxa7QXSBfE3o2vMVgsLY+z+OXgh0QGglX+nK7
-	CLeQS6T3vMCd4aPud2MfT2Aq+EXdO7FnKWWnfb1qUpl6BctGo/h+pcJxXDjb4zOIe3/MEH
-	LCIF7Cg/gBIAimWAucXq4O+WhxO56TY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8271544449;
-	Fri, 24 Apr 2026 15:53:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277C0C19425;
-	Fri, 24 Apr 2026 15:53:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777046039;
-	bh=L1qvt9XFmKqHuBL1luYsZv9G/s41zEhYQsK5r3exiK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UCixd85VwId4bqsHLmqNCoDTR2MYJm8+INbqMo/JyDU6Bd6W8QxEUsNRNOk5hcEHN
-	 6nfDzJ8wOunIAz7+NbcFhjEcKl0X5z25xjIDav2SO4h6K+ujR0Z198EWEqN3nKp++/
-	 8Sq5sUmfGu7h3lSguPSUMwuQQZGLRWeCOgTpxSfi1vDDIBk52pKVVqH8XfxYm6+rf2
-	 6OCtZRLYzVQp/bPCtRdv6cJ2MX6TNVxHQ3bVKdh3mknIiCSHsYFH96Z3AfnJQk4EwX
-	 pdyzEAssBR6sd99ee/Qx/2TX38FkKQCh6ZQzZWvld5WTzqeQ8aEypEDRaCHjdmzbJ2
-	 23m7B8PYQoXKA==
-Date: Fri, 24 Apr 2026 11:53:57 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, corbet@lwn.net,
-	ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	skhan@linuxfoundation.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC 0/7] mm: dual-bitmap page allocator consistency checker
-Message-ID: <aeuSFV6IcfQ0lifO@laps>
-References: <20260424140056.2094777-1-sashal@kernel.org>
- <aeuNdOmgxA-k9BqY@casper.infradead.org>
+	bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
+	b=0ZlbVI1X5IPwB89fiV2P0XN5WnmJCLNmVNDkxMkjVIhW2/jwJ4ZsGpRhuttgNJ6kZFOVJ+
+	1F23LZuiPypAgxXd8v1IDEJpzCojOKG3kzlqu6Jbv2E6pJJLT/vmUBJbin9DziP9yPqqxz
+	2AtjBZ0lSleADc5WeM3o3bTisuO6i5s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777046143;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
+	b=O3bS9i0Bug9ZofHx2fd0fuHbDlAO33JkaEKeTtghMdV85FPNwMYCM0LsQP3jQWrsttYkdK
+	5nprh6FwtOJttSQC8oOVJwtPXnqmSQUBKTL5IaYhX7xdps0OYE4CsZxAl5J2Vyk2QmOV5j
+	uqcwcRjWMD4mgPe22KwPDt1KTLwwIuE=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-dHZIqCmFNPKsY2ORlkti_g-1; Fri, 24 Apr 2026 11:55:42 -0400
+X-MC-Unique: dHZIqCmFNPKsY2ORlkti_g-1
+X-Mimecast-MFC-AGG-ID: dHZIqCmFNPKsY2ORlkti_g_1777046142
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8a16036c90eso199816866d6.2
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:55:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777046142; x=1777650942;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qLmU//rnAAA5yNF6Ee9JskKj79xD8INjyMeyu+N95bA=;
+        b=W/G09qcJN36TSKCwk83jDq2oeG4TROL4G1Md8HlXPLRXSACi3ghwWCa+XTdYM6GUeO
+         g7Oj5cOsPRkc1hjZtlPQHQJp39p5+d5VSVEMqxlnYFu8m+og/zPOXpTngLFNN/eUtvbx
+         Nun3PJ/DDANXKxL/CmMUrhdiPIX0af6pqibjlRJyMASXTGb0SFv8K5fN+NQXFF0CUl3g
+         /rcNNKl+bTDchxQtFjKY+99qkyd8OeyiYNjbAXW+wFev4vzrVzPw34t6/TDiFQzkH5cL
+         l4WdrvLsqngqkFy7WjxuMmIfhG98C5y/x3LMWOBENiUBXj8unLsncwx8vxBvvk4Sa5RI
+         6+TA==
+X-Forwarded-Encrypted: i=1; AFNElJ+oi6mY7edIU4RtnsCq9CDif36oIDzcnA827xZ17fql53oeSS4Q+rUQpXTLB4YiW5hfDbKUnxAUaQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx0PucjseeNrGht7JiFVNx1P8aU6olRpts7uqS8hfbk7MPjbstb
+	DPlSOqKfJ0rIL2A2GMLQtSvJPmqyj9WTxc0VtEl9+Jk81jcVOlpuMQ5DHiUBQ53JS54SzOWw/6X
+	P05uJ0bxpOGelI4PecX3iK0tW3YKwzcVra2rx0kqxcHw5lT8lnFwm
+X-Gm-Gg: AeBDiet9m5eFwSJT3lFLttcIwZfKeC69PhtV3nVaiMrbi7oA2rpuENJ+hFb+uKH5WCc
+	4Rv7rBlQFrCBm31tzYpBtvH5sMg6O9nEg7UMS9ldcnlE/kwYBXD85s0UvmsugMdpdTMBb+behIn
+	TxM95u/0GVcA9KeXr97KQxUqEr16IpUQkR1bXYdu4KJBBiapoqMHwX9EPzketxf85K68RGq5pkL
+	UL3dG/9nq0BcHPY4+3nXW6Hto4rCJRdi3pTMckVpIpZV0i+wkOAXov/IBUW5EEcoOgEYgHyhNCH
+	xowKcE619Ksj7hZAS6zXpCky+yQ5Ge7fn2FtV/vcQNTO/g90StVyuyloS1CPuZjhEW45RztZ226
+	XuTgtebENEze88CJcyeIgpL9xTZVtaMS0mn/e7uxG+AbRUnKSF89qYdLCPQ==
+X-Received: by 2002:ac8:5892:0:b0:509:3cd:b22f with SMTP id d75a77b69052e-50e36b41242mr499700361cf.23.1777046141638;
+        Fri, 24 Apr 2026 08:55:41 -0700 (PDT)
+X-Received: by 2002:ac8:5892:0:b0:509:3cd:b22f with SMTP id d75a77b69052e-50e36b41242mr499699791cf.23.1777046141002;
+        Fri, 24 Apr 2026 08:55:41 -0700 (PDT)
+Received: from x1.local ([142.189.10.167])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50fafe9674csm148150631cf.3.2026.04.24.08.55.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 08:55:40 -0700 (PDT)
+Date: Fri, 24 Apr 2026 11:55:39 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
+ guest memory
+Message-ID: <aeuSe0PY-g10KNUF@x1.local>
+References: <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
+ <aed6fHLrIdahbdY3@thinkstation>
+ <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
+ <aeorZMvKwu8zKX5i@thinkstation>
+ <aeoxnuGKO3uqS2kG@x1.local>
+ <aeo5IPpQi7onyjTF@thinkstation>
+ <aeprnnccJeyHB2rt@x1.local>
+ <aes7b17nG0cXrtEd@thinkstation>
+ <aetZUOINzfTXChLL@x1.local>
+ <aetyhki-UD70dyRL@thinkstation>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+In-Reply-To: <aetyhki-UD70dyRL@thinkstation>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: aXprHpoZhpkywATSLY3arXF0ZSO4Vb4gPUbsxKsJYN0_1777046142
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aeuNdOmgxA-k9BqY@casper.infradead.org>
-X-Rspamd-Queue-Id: BBB4B40016
-X-Rspamd-Server: rspam12
-X-Stat-Signature: t9z76zr3sewznntz5hyjgboai3rexs6s
+X-Rspamd-Queue-Id: 47FA720011
+X-Stat-Signature: ytffqfxpda8dbpudm7ma7k5sqity3mc1
 X-Rspam-User: 
-X-HE-Tag: 1777046040-278949
-X-HE-Meta: U2FsdGVkX1/g+oetPvn7Kt9VsYKSuJfcXLaKXFEijf1BoUl+a+myfKyuJdGSpTet3NsmU67/QGD6GBAmOsxnh+B+P5KdZslKOxE7KmsEzeHeiA0g2gxVZ68/y8VAEofBKV6fZevfFfFB793hsmM9mB28QiqIES+9OhX+WVeToIfMleo+GWfV3/tTPIpctWsowY6KqEKutt7m9v0NfRuv5R3yWMN8stPMPueMW+afVhf7PcEkDht3pWtCO5s2E6STtP7V42nCfjrRQA1PS+gFZjgXMi0R5O85qBldE7ykJ3BHCsTxitYYoQxKCbow43D8Uv9HgPmgvueHozUv+h0jKgeOne9bqIcshIKttuCKOBLdv6VRF5eaWW8UDp+z3/iBYJ32pC/Nb0CVj2qEtCL+TYIg5bAqYRTRV4FbtHisLtXcn3xMpGxbkRy5RDa3XpYojWD5aua6GN8rzYQp0diNdoh8++qV45wo9nKeZdwlWIAXmDOLASQCU64NSkIbr196BE5xIxl4gIqyEg/JddOEGpt2f6arfw6GbMAbiHsEON6tns+PRabBKeF9ZiJf7cs2I/t7GctJsEwi9zd2qj89HSh/87D7MY+euNHsdHe2vE2Frznnv3Z483YNi8PSgpfThN4CfN8zAAnlffAx4i6hZa4ln6q3s0Ni09czqe5xbrXAYrYlb6B79bVVy+0yf8W0vtF/Fq0or2YBUESh/9Y4g3Vx5N6DQdttIToTgQ293YS9HqMMavNDHmqBZvjNZd/cj1F8F5CspE8ECLEPd1+7OMHoz0W/OG9w5oDLo4ogi8plo8OuUDrrl/2kvEC5Oq+TgCgoRQolWu/l55TFo2QbIm4aMP/5jdpB5tvaJ0HVwWc3P7rFHzevJMe+666mDMd/tZO44RZVdhvqYT1F1cyFUggoLPx+pfPBbbPimOKossIbWHBfLSqT1wt/vvmmJK0WFaUzwO/BhkxpSL460ED
- CuHBGkGj
- Dlu6kzAI1t1ZTOVRMSeh0Ba3bIh8yJt6nrhYayOl0NL1i8ExabrEtr+7H2CreD5PKeMAbr6uxVevPR+d5qSghokf+g3RzaygNaN+kwfO7atMiSwvmn+dr4UceogYLrG19AtzgJ4/QAiHPJ659iFZOlUAwVyVYmr/hdezZHiSiHxcXfe4qin6w/+1/LtsA20AehZZ63kO+tDp2U4eMWV+ryqdUSRC68ThpMzgqn8UEgFDkBRj9KGbYvG5por2IDNDZv51qT4BUaDBn9dz5ar7JwHP/Pw==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1777046144-496948
+X-HE-Meta: U2FsdGVkX18fuiRjB4UHTbMasBNuztgRSNlDDNxXVhOSf/Bxe6JszXLRWs88TbvqJ0Yhs6TWYXS5nTLpKBwWfB0+m1aKB7BeXvarG0SXaLdMneM4TZwSqb1anqK3aW2tqps2+TT4dA4/TKN9l+4JDJoDzmBr7aUkaRRp35UasPjde4/xFAq97oiAKssqWi8Yt44vMXi7MbLodUtuMYvUG0TghsDfnm4HBcgvdEOURPStmg+7PlpQdSJHkpN1SjLiQaeeIDjbUge8dkiAOGp1ARC0RnPcEe1uigy/9zCkCMjC5bru5gqLDTLKmLBOhFq8IqLSG4xmO2ZeJ4mw8tCki8G52/2JMJQUV6f7jr2pdTuBYwXbIA1HqQ4Zzv023iUP+S0sz2TF4XzASvGkFONa1wWfzWkTPsaTcy5Y+j68v8NyKr8gpUev3Gv8pbKYjEq5bRX6l48BQmrhLsvDhRtDmEeU4zukfnsVmj4d2F47XOlRazYLoUS1QTHDDhazAsc3YKL2eXI/tm4+vC1KmeYSxByH38n3bBCxNoS1cNN7jrDrDtxiRBpumkC9oySekvECq4Hxf0cOZFLl+WlnJf8XvI1ObhGAG2+amK39tMHSs4cJJ3zgzWy1NNw/1uX82oFHoM/ldFvUueTjWplDo3JS9f04NDelsyEPi5GBx3cjQNpDJFQWRT1FXOO/7Z0EIa55xbmcpOSfrMDyfR7xMyiH2tkIRBnIPpgUk7GeMVcDkps1PjD3VmICJ4j6VcN7Do2y8gl1AIuc+3HpSfTi2TIF2MSjPLCDGSGYXNrsdRNFaUN3P/k/+TmgTakB104Lg297jj5Yem3Crrt4p35OlC+mgg6o3w4Hvc2pSemJ5KNfPOWGUzVxFcsYxXgcNWZsGE7PMHxIRZOdDp5mRsdUtgm72dWbglQmSiM/wRQsWX1aGcrL6r5spWYXqwGpZkIcbXrybiG3sXurVMAahti1mIa
+ JjOlNjCH
+ /8mSMuV23ptgyqa+OLnC0xRbiXP9d0j8AM5JtWzovvinSUWYyCVUDN9+1fgC85GtOJCziFSEQQtgcCVwJNdIYwVm30q4SNDLyLgZNQAWEQFOixR96Hk1lfFBgCZ/uG1toLBJsTM5cnL3DyiR7vSf954vrvKaUTQ9rRTTTVJOYvzUTdZ+Uzyu6fQSfHPafn9qPF/UI3X0Ytt5zbo/w+faorKShUbFYjQbqD06y07N2qSQxuMN+cNOBPiHm/YIaB8xO+/UXLfT02W6WBumBODrVrbFcjlrD8GoHb+9PV/9dhimWPqITj8eBtMuRlBw1IgVkK59BRAUCkzJ6xOjOzRd9jwkgbn+e6QpUc4nEW1TLQHhZNr1crBTEchf0K/a2BhpvC/bj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,48 +145,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 04:34:12PM +0100, Matthew Wilcox wrote:
->On Fri, Apr 24, 2026 at 10:00:49AM -0400, Sasha Levin wrote:
->> corruption must be detected before it propagates. The dual-bitmap
->> implements a way to protect from corruption coming from hardware or
->> software - two complementary representations of page allocation state,
->> allocated independently via memblock, where any single-bit fault in
->> either bitmap is immediately detectable. Performance is secondary to
->> correctness in this context. A safety mechanism must be simple enough
->> to audit and certify, must fail deterministically (panic, not
->> log-and-hope), and its correctness matters more than its throughput.
->> The dual-bitmap adds two atomic bitops per alloc/free, but for
->> safety-critical deployments this cost is acceptable because the
->> alternative - undetected corruption propagating silently - violates
->> the system's safety case. The static key ensures zero cost for kernels
->> that don't need it.
->
->But doubling the storage requirement in order to achieve merely detection
->is significantly worse than state-of-the-art in 1950 (when Richard
->Hamming invented Hamming codes).  If we used a (7,3) code, we'd have
->SECDED at a lower cost.  Of course, there are far better codes available
->than that today.
+On Fri, Apr 24, 2026 at 02:49:58PM +0100, Kiryl Shutsemau wrote:
+> On Fri, Apr 24, 2026 at 07:51:44AM -0400, Peter Xu wrote:
+> > On Fri, Apr 24, 2026 at 11:34:48AM +0100, Kiryl Shutsemau wrote:
+> > > Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
+> > > memory. We need visibility in the virtual address space domain.
+> > 
+> > Yes they are, but ACCESS bit isn't.
+> 
+> A-bit is not a reliable signal for userspace working-set tracking
+> because the kernel itself is a concurrent consumer. It is exactly why
+> page_idle needs PG_young on top of the A-bit: PG_young is the "kernel
 
-I agree with the density concern. I have two reasons for that:
+I assume you meant PG_idle.  I actually don't know whether PG_young is
+still actively used anywhere in the current code base.
 
-1. Update cost. On the alloc/free hot path the dual-bitmap update is two
-independent test_and_set_bit. A Hamming/SECDED codeword needs a
-read-modify-write of the whole word with locking on every state change.
+> ate the A-bit but the page was actually touched" escape hatch. And
+> bringing PG_young into the picture puts us right back into physical-side
+> tracking.
+> 
+> > For migration, see e.g. remove_migration_pte() has:
+> > 
+> > 		if (!softleaf_is_migration_young(entry))
+> > 			pte = pte_mkold(pte);
+> 
+> remove_migration_pte() only propagates young-at-unmap. It does not
+> cover the common case: A-bit cleared by reclaim before migration
+> started. The concurrent-consumer problem is what breaks the signal,
+> not the migration boundary.
 
-2. Correlated faults. The two copies need to sit in different physical memory
-so a multi-bit fault (row, column, bank, row-hammer) can only hit one of them.
-See this paper which has some numbers:
-https://dl.acm.org/doi/epdf/10.1145/2786763.2694348 - About 21% of DRAM faults
-span more than one bit, plain SECDED can leave up to 20 FIT per device of
-undetected errors from those, and it only helps at all if data and parity bits
-are spread across physically separate cells.
+IMHO it's a separate problem, and AFAIU it was well solved at least with
+old LRUs with PG_idle. It's just slightly unfortunate it doesn't yet work
+with MGLRU.  Also, when the extra bit is in folio->flags, it only works if
+both the consumers are reporting per-folio, not per-mm.
 
-Two memblock_alloc'd bitmaps give that separation for free. You could
-interleave a code across two independent regions instead, but then
-the invariant check stops being a one-line complement check, which is
-what I was trying to keep simple for the audit side.
+I'm actually curious whether there're numbers or solid proof showing that
+in your case the per-folio perf is too bad already to justify a new per-mm
+API, like RWP.  It's because currently this proposal is still so far very
+much about "let's implement a swap system".  It really doesn't yet have a
+lot to prove on hotness tracking POV.
+
+Not asking for a time-consuming test immediately, but IMHO these should
+really be solid clues to first justify the overhead with current rmap in
+production.
+
+For us, we know the overhead in theory, but we never really measured how
+much.
+
+Even if so, I don't think it's unsolvable.
+
+I want to explore if there's something that can still be generic and work
+for per-mm tracking.  I believe if we can have some bit in the ptes, then
+when mm reclaim code walks clearing ACCESS bit and sees some vma is being
+tracked, then instead of setting PG_idle, it can just move the access bit
+over to that special pte bit, and only to this vma this pte.  IIUC that'll
+benefit from both worlds: fast HW-accelerated access bit, and no minor
+faults.
+
+Would something like that worth exploring?
 
 -- 
-Thanks,
-Sasha
+Peter Xu
+
 
