@@ -4,89 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11017FDEE5E
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 02:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9F2FDEE5F
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 02:50:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 081916B0005; Thu, 23 Apr 2026 22:43:59 -0400 (EDT)
+	id DD0A06B0005; Thu, 23 Apr 2026 22:50:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 032FE6B008A; Thu, 23 Apr 2026 22:43:58 -0400 (EDT)
+	id D81756B008A; Thu, 23 Apr 2026 22:50:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E62E36B008C; Thu, 23 Apr 2026 22:43:58 -0400 (EDT)
+	id C484F6B008C; Thu, 23 Apr 2026 22:50:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CBFCD6B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:43:58 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 297E51B8E54
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:43:58 +0000 (UTC)
-X-FDA: 84691904556.03.57FCBD0
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3837814000F
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:43:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DEJgBHtj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776998636; a=rsa-sha256;
-	cv=none;
-	b=FPFq4Ni7/6UVQ5vQO3ZPAcK6Jn+XTB3/ThN92orDcjXnEH2rqLiy5iqWesLzaILm4UvynQ
-	L3IVaT+OyLxYl7eqOqhf9BYH46iDLh5wph4kl3nH02EKZCygd1dGWIyqAUMv/afQxd+rUV
-	uUhcGyEGTTOjxD2CDXQWT25BWVAf730=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DEJgBHtj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776998636;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2FF6B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:50:07 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 31D2A1B8677
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:50:07 +0000 (UTC)
+X-FDA: 84691920054.13.4D5F4DC
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013002.outbound.protection.outlook.com [40.93.201.2])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 42D35180002
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:50:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TVesvqC3;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.2 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776999004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RO4V253MZEIDTpHGw3UaYeZwGEgMYAIpsz+50OjDg3s=;
-	b=BAZPSnZyr6AgDZs23TSZgc5NyWYsCE8xkZo7NRcVTQELetNSi7BB3vjwNDMY5VoDFw8Q3F
-	JSZAHXCPJJqHEd4hTEG4lClxQWstyJIel/n5ZfDK2AMQlzlsp5PfovCzkAbFyir1Lg9VLh
-	bTofTSEAy3zY4dAR4UTYQ4dKcPVK04w=
-Message-ID: <e0902ce5-b817-44c2-b126-72948f8347d1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776998630;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RO4V253MZEIDTpHGw3UaYeZwGEgMYAIpsz+50OjDg3s=;
-	b=DEJgBHtjPqw00641ZXF36ORVQfB7pdivPsAM4HeEUO3cvc3k1lqAXg77D7hiMLKUdLjStJ
-	hcBiCOoJah9m6Bo8mF9dLdoBGWTxHNBhmobjlM3pvu2Y3baJCJqCN8MBLDkwNSk9E3ISZa
-	jBi3h9z5ab/p2Curm3nH+T4UQFQJvJo=
-Date: Fri, 24 Apr 2026 10:43:08 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm/alloc_tag: replace fixed-size early PFN array with
- dynamic linked list
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260421031406.1189000-1-hao.ge@linux.dev>
- <CAJuCfpHvCODeKG1y3Ndte9immkW6cUzqsaduOozSEhDv17x82w@mail.gmail.com>
- <a4d4ac18-fbae-4ace-8f1c-651c8fefcf38@linux.dev>
- <CAJuCfpGOd=p4UOkn1UF=KmAFL6Xxm4FGomZt83eRj_cjeUxAjw@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpGOd=p4UOkn1UF=KmAFL6Xxm4FGomZt83eRj_cjeUxAjw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=I/5izaT+f2mYrPTBPN8+ZApukXtFr9fKFOyq17ktj7I=;
+	b=15dDl5NIkIHc88LyEz43TcQmjvBRiqv2+M8WK8ghACmCpKP/BNd9ZZHbKOx+hIuvBYj9Vm
+	bACsHLsqp6IADr7/TBCxcT9+8qWwknwBDMYWHiiDHZuA2M6BnJZfbBcb9gnVmQe7lR4ciF
+	FeZR1SqaND7pLkBdvoNH1qWwP46QNq8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776999004; a=rsa-sha256;
+	cv=pass;
+	b=RBNswB7gZTJ+jA+JLVBw/JpLHw1aafQX8u+sszPMTdWa1VjcPfggK5iWUMcsXG/YzSxkor
+	d2VjIOObir5j+thV5k4yeJVK9VyaC84tfzLggPzW35215AXwhFj17NiAh4SNFG2CG8C2o0
+	G2enI28l5wwAdNFCpYLVKDEq+SCIJrQ=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TVesvqC3;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.2 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QFQfTEDWYcCaOLooEF8l30otme9ekVxRyhH9rwY5KXpsbfZXDRZ4H9cEAV/gMezK9+ecO05bCBeQjJP1wHOCOdZhQMleW+vzeSSn4AZWyNFCIyZMW1vwmos766FYlDEuEKrUDrThNgzO8btSn7Exvb898uQlQvqm2r9wVoqap1La+pqD0ujl+R7+XwuRN/yj8gym7fHVPvUDCLI36TVT+8+1Lf6sIZx/BEmhdNcZcegrwuwNHuYJWYIvsJSBufki8mwzmSPJmdR+1KJ3KlUJ2heerlfinQ7g5TVNZ/Xwsf9GXGYIi5A9RIQIKD95JOnbr3+zZigtuZ1WhtLo6AiXDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I/5izaT+f2mYrPTBPN8+ZApukXtFr9fKFOyq17ktj7I=;
+ b=p/zzpTVUfGZMTu1MSR+4OwvKVDhiCIFvBLwWx4JXifuQ8CEF/AgUoc9493c4SIZJQlSrVxpnBWDEMDyL+GaYeL8765WbQt1fX0WRHIDaD5P8Xy/IIK/GEi30iLfAVu2oOQH+E/MUv2eA9WburAdhy8siwGjPSqu0FaAnrcrpulpO4qzxalh4IcfjZkhmBNpy48JI4gmfE2Ew4ZfpFeMNJZBJXKh8l9tBe09hsEGFzu50P3MrCHWE7RFWyXE0l2ma4U3OLIRn6V5cmPun/ZxciTdFz+H5gvgpIybe6CHx0FIYy+U9GIXptSqCf4zUmDcIh+uBU75TOSyPnJfE+vZbdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I/5izaT+f2mYrPTBPN8+ZApukXtFr9fKFOyq17ktj7I=;
+ b=TVesvqC3Sta8Cwcut1Z7mexr/Hanyqugw+Sei6A3zO/uverVzPawKgaycG3QsTib2VGzQK3kkkJ1OypFWJnAhCkdg/zx8iff+GXRD3oi/EXo70wJBZ2WWhHXwZg9+2ZRJQ6oRaeGmP0dO4m/rIGqFo/9C01XjLMkvDlhjKEwrpzKePk2aHYUb1GYi4db0cy4TzhlHcnVc+yrvtAhtASZx9QfQOTrrnpfieJtq76kNgc+6drpyofZ3q7ZyTTYFae7gKYN5210ZK+qgatGRZauQT+4UbsmhsoXIJtWpxBv3+MlmKL7HW0dmj5CSPqxqmjxNBcbeCWnLHCC5uCUQ2v6LQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS4PR12MB9588.namprd12.prod.outlook.com (2603:10b6:8:282::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.16; Fri, 24 Apr 2026 02:49:56 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9846.021; Fri, 24 Apr 2026
+ 02:49:56 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Song Liu <songliubraving@fb.com>
+Cc: Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 7.2 v4 00/12] Remove read-only THP support for FSes without large folio support
+Date: Thu, 23 Apr 2026 22:49:03 -0400
+Message-ID: <20260424024915.28758-1-ziy@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 3837814000F
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 9npai5fdyzisy183qoqn6zxdkxt3rt7d
+X-ClientProxiedBy: BL1P222CA0001.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c7::6) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS4PR12MB9588:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca6a3cb2-4834-4a6a-84f2-08dea1ac2b2b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|366016|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	+gucY0tg52PZCEn+sJ/Q96basB8x3y3xEPSF6/2YY87Trw/M73aDiDuY1Wr77jlW5i8/7fCNYZW2kkvAgB49B8yjTFVoFE5ku7X8hZXHfXyMldp1RblhuGMHe9uCib7tr9iW9Lb9mFIfqMmri9fkFuF/Kl8uQn5UwZoDFjPAXa4p3xlWsURhOBodGmQjo5bBIMeSx+IH99ny7l+Avbr6Gn+sVSZIa8lXEqfeq9XJG17m7QBTkAF/kiT6FFJCVwofRw1hRobQIl7ECKlGztI989Yszd40WxhuGPUbYfwM2LMpiRkfb9s0XptEtrJGbyV5ppEx5M95H8lCWebPRHm+6L1Pmru5CDcEEMTRqPVJmERcTtNEO/JVw8+CdaYCVJeuH46/oFDeSKXlMvQenvzzswK/idh9ePbE++smEzXbqt4buRUHchX1YEZFCKw8gyIn9s5VzYsXnvEsqhrNqKy2uf669zs3XFGODpJ5bdm8QrU7EHTCOAwgLUkctXzsgm0CZQ4Maua5v3UTTQ7XwjswDpIWZJYxvbEFLEYWmMva5v+qigmfI4TFTXppXGRSBPZGVtuv9WhurfwySoF5TcuGU6uIZDm9z9cXXwFFGltHsLrumP+FjTp7w7hUQu9c95wZH8scE8YdI67yTht3wbfAWEsEkeztO8uxNBhfEeAzXfbv26Ogtnw0U8V9q5DFN7F2DSL/7DJvlec3GonU2aE4lXt0/5QGLQ7iItoj48DvJVs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(366016)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?LzN1SUxmZHo0ZWdFdFFGd3FDUTh2WFNIaDBxYmlDeElvajFSaW8wNU5PRlZy?=
+ =?utf-8?B?TGo4NExEMU81MUdoTEdvdmsrRTk0MXFVd05DZmVrOG13WmxwdklNaXl4UkpJ?=
+ =?utf-8?B?TFpXa2dPV2NMNE4vcjVwQndGVlJmUnF3eGllWXY1bzVEdWt6NDNnUVNKNDQr?=
+ =?utf-8?B?OEtHNmtvUWtjZitzSEJuOGY4MFdXR0dxUFB1NnBnT0RnNFliYmZlYk1UcVhX?=
+ =?utf-8?B?eXlqdENUTzZvU2E5NW5oc0NUS1ZSU2thSUVsNUp0eUtpOENoZXhZS0dwL0FD?=
+ =?utf-8?B?eGkvQmFabHcraHJIdW5xMjRLOWhSNjE3RVNYZGM4YWdTa3daUzAyUUYva3B6?=
+ =?utf-8?B?cElDaFQwc2dTeGZycCtYMTd6aExORHRqVzNSeGhwWmlkNDNDbld1TGRvY1Q0?=
+ =?utf-8?B?NEk3ZmRwcXdPZFJiV2ExUExxWjk0OGFNby84MGNhUWxhSExTNkV3TUE4c3Yr?=
+ =?utf-8?B?WFgyMzZCdjZ4L016VWtQTWtLVlUyZW4rMTJHN0dGeDdjTDVqMHdDQzZKTUhC?=
+ =?utf-8?B?dUs0eEs5K3lYcXNXZVR4TnlMaERIbTUvRkVrUTZGMmJoT1QvU3BFSzB1THZY?=
+ =?utf-8?B?bDEydTkrNTdqQ3YzNEErZktZVURWQWNZK29LTHN4UXhZV0F2emNwTE9Zd0Rt?=
+ =?utf-8?B?a1lNY3lwcGxwbytzSmx3dm81TjRrU3VBcXJhNHRPYW9jQm5lOXRCQmcyTzB0?=
+ =?utf-8?B?cFdKdXRVL1Y2dHFZcUtWU1BrL1lSZFpMN05KTjVLazlMRG5OT2ZtdDZOaXhp?=
+ =?utf-8?B?Wi81ZzdERnZpclFubjBtM0lVeUtGaFVkUjcyNnM4dmhRK0RaaysvRndOZkFC?=
+ =?utf-8?B?MlZqbTFaS0h5cWpxVHhPL25lallITk5FRUoyTUNseXpGQ201LzJPdlA3dTFI?=
+ =?utf-8?B?OXhTZGVab0RoU0daTmhhS0pWQjI1SGQxUWlhcHR4andpUkJOUWlwdlhMV1JS?=
+ =?utf-8?B?ekZVZnBJMVZMc2tobVN6Um9kN0cvWEFZbXlLdTdETjh5SGNYOEVLMFQvK08z?=
+ =?utf-8?B?djQ4RTB1RzhoZGJOWjdiMnkxN1R2UlBDa2RteXo2VnZ5djNGQmNXZGxwYW9V?=
+ =?utf-8?B?SXhiNEpSdXMrcWk1cHVjUDE2L0YvTHZjU3hSQnFpSnZ6dGFweGVjakt3NUNR?=
+ =?utf-8?B?dDEyTUhneUtXamNVV2ZHblIzTlhHS1A2aloyRDVaTXRVbnpZaDR5MUtsZm5j?=
+ =?utf-8?B?VVkzQ0dHQldnQUFtaXQ4dVNJQTZrN0V5TDM4a1dMZlVKeUZYOFd0cWh4eUcy?=
+ =?utf-8?B?cmpreEpIdWhOZ2txYXlwQTFFOS9yMTRxNHRDWlY0cDY5NUxDTUJqbUltOHRk?=
+ =?utf-8?B?bmhUUDQzRlAzNlppNkM4a0REdWltaHJFaURtL1dtS05tYi9DTTlBTmZyM0E2?=
+ =?utf-8?B?SnlHV0lBR25IdkdnMytzUlhFOGgyWnpyTXR5MHJzOXhOMHpvRHowWERDQkcr?=
+ =?utf-8?B?bHpZb2l4bk52OExZdE02d1kxQjlaYTZHaEZtK2NXT1phYkczZzJRVzVhUWVJ?=
+ =?utf-8?B?MlRZWndlcTNwcGlLMGFvdGxOblpuQm1jNUVwRTVkRGpuYzZPQzUyNUQ0QXQx?=
+ =?utf-8?B?ZHVQTldjT3BTazNRZ0JIeVpoQTlBYy9MSnp3WkhPL0t4V214dEV2ZWxzcGwz?=
+ =?utf-8?B?eXhKakhJUVdhODJrT1ZjVUtJVnJjTXYvZmhEUkc0aTF4eW0zbkxxbTVVQndK?=
+ =?utf-8?B?YU11d3pJS3B2YWRjcTQzOHVzOWk5RGVEVzgvT1d2a3VJdEtXVVNFcjNHd0Jh?=
+ =?utf-8?B?NFRGakl3NVJZY2hzaG0rS2p5KzBiVzA5NWpqZWZENGVxQ2NqM0RWTnArNHRh?=
+ =?utf-8?B?eERnSnRrenZTQ2lpRTd0RUNBVEYyMEdHSm9GUjBSTnNLeGVuWTlnSm84NVRa?=
+ =?utf-8?B?MFRuUTBhWnBPK1VTZDZKV2ZvaDZ2dGpYYUo0SHU4eGFtTkJqMS9qUmc1ZnBo?=
+ =?utf-8?B?VEt2cGVuaG9GL0s0eS9xdkdWYk5jUGxTRWpVMDc3bEYwWVQ5TkpqVGZFK2lk?=
+ =?utf-8?B?TUZ4N2ZCMngvNm5mR3dJYXNEZTA2N1IvbGk5VnVMZ2JOK2t1VG1ScDQ4bnhP?=
+ =?utf-8?B?YjVwYW16dGs4Wlh3Uk51UEpCN2R2VEFqS2E2YWFHeGFIREdNbEpmTWxDYjVO?=
+ =?utf-8?B?Tm5yV01VSjF2QlNtNFJMRjN6UXBKbE80U1lHcWhNQkMwUXMxWkVJN2tBY1VE?=
+ =?utf-8?B?SGdMaStDdzBLakNyRGZ1YXBEYVFWa2RoMUFxSVNxaXYxUzBvSm9nbU5KSjRD?=
+ =?utf-8?B?ODdhOW9kUTQydGVUMm5iaGdTZ0swMTYycU9HQXZkT3JJcWZ3Q2x3cVVRT3NZ?=
+ =?utf-8?B?OXgzMTV4NlYyc3dURjZXYWRGeDJOU2ZXVWYrTmpPaEQ5anAyL3FnRlA2TXky?=
+ =?utf-8?Q?HTTQM4sr1pI98jxFo/OqoM/kspiWWPNDCkuLH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca6a3cb2-4834-4a6a-84f2-08dea1ac2b2b
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 02:49:56.5168
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kolDOsn7dZ+NYMP611QSnn8jkNz0Z6sEORg9ivE91GEEhyRSoPNM2z4Lyp8FaSdc
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9588
+X-Stat-Signature: yzbdn8w811iprchx15rifof45gcfaxht
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 42D35180002
 X-Rspam-User: 
-X-HE-Tag: 1776998635-106685
-X-HE-Meta: U2FsdGVkX19pjy+aIvFkXdzARKQyiQiPNDtwtViM4cUE9v3U+G37NmB2JrwOIscPggvXOkzYKD5TXIiin9sz7bwNEsIJQ+Ov1aOJj72k0lzNZwGFNg29ObStTMhHZ5VRg8iDbXKRk0HDoAjXsiUEsXjFqJM38nfTIY3JACh2qT45tH+FC95DkWWy3BWarH49B/unhKMu1F1MKQd4wyM9ouk6tWFVPS4US0TOWTAEj3LVhbfN3ksKHS9ZfD9cxfH5W21cspQWVbCBXQ3dzxAOlqywqtd+iulJEM8iGdnGnyWSEOI0s3THin1VUugmUMX8VzbSegP9ZCZq2GyvhznBToDsPKmX4tLCyGYuZIrx1LVuXTTQ49DCSdIVA032dGyHSolyxaRJ28Ib05YoJUjiwpZq1p++p8k4jhdSkSYIbPVKEPhA45VaeiQUp4aYPzYfj0aOuhSyskUNgMchuFvnlQBQ0ljnPFuGyYEUQI841Zp7h7nttCUW4BwlKsvFSStqe7gdmnCPQP/DLkVyZN1DvuCczPBgh+BxTf1no7ac6wegQZ5fyuqLubbi3uZLavVs78MUxTFdcvcgXQ2bXHIcQyJhR9uqy2E+fr8yStzQOW6DF7riy/QCq6U0hDCf/Jc1Ol8huXSaA9uZvcOKbRiCd6G0H6AB5XghAU5bh3XZ0My0MC+chN6Jk1X11ojGsPwWdYqv6B2Zcug1OdzmfCu5KuG23yM1c2zyeXU2Vd2j+a8aqkOZI2+SJjL9l126FiRwKLrOxdqwr7KT1NGiI6X6fUDCe/JrUoa694tn2LFc+5/nluAF7BEQj/As+2yzijbLYxs9VAeWqWEdjc6VM1VqheiOZ7Rq5n+pV5JS/GAF8Ak+n7yPJVQjHLbQujaMlwMCqNTKZkvkSfCGKf7Sw/LpmJ2Y41ESu5R1ExecBvgKJVKWtvBIqEqhCvY5Vbbv2Ic7xv9ZmsVh+31ZvAA3DBL
- PmWXOIi9
- 7ozD2D4jTXbYCICJ3SHv6G2vzd6HKAst/MwTUt+vuGqPDhHDlDqj0xdosnDP4rGm5yZfn8/a96w/bmeGpNUEKYJbCnFCqo17VdtKiOm98BQyrvoPl5sTkvhoSmwY7GR62/Wx+XuDncutMXuM9TK+IV4GWQKPVelzjOOdyO5S/v7jjS2hMK0K+vhLtVedVGQtcnwxNuPu81sq+XpiLlK0hQCfI6I/IMq3qHY0UBUgjG7zM6+HGsQDdIoiH/Km4vsxP9zWZozuhoBNoaBKdEtpiXoyGG2ZQ7l5sPeHOg1WrKzrE1Ljf2PVo5n5lMxI7B+spzw6Z0iBbbxD3cjoGG8kPhkTWaA==
+X-HE-Tag: 1776999004-9582
+X-HE-Meta: U2FsdGVkX18oG1Pip1eAcxx4XS2KHYmzoS2l1OJKtQ58ZZR4CFmldPBlaRFrwuHmiOs4OeZM9/3fy3YViRN1Ac2xlRFX1wuqxbTQLAVSjHSB7mHcbidP5Am0uB1CmBDukIiPLllkPL1oP3En3q1zMqa0SohSvnRkiUftlTAsWxX5QEblRgbEhG2yPt0KRRMSCWv7F2bO80BsS6V8JKYSC3sh9ooLdDd8LCHhxa1Gk3tLA/5FNI/nfOTBombkoVFge0DVlIYGeoMhicsgX0sdF85uWxzeOLnkjBjaanjCE1sKyqkKvTDhPKEiaCx0x/rSWsgh9AFirbSH49XEnbFUpPn9si7/l+EBqcisZG9mpvIKEtq8YN1rckUBePaBNjh18pQcn0UCaT1S6eCB6a/18yd0Nbwv2pjfdobbdyjVAgaJBjcKhLM9K0TXtwo6zNi7GPIx8zpcI+TcSMpLGgciMrgyvsOG9gJerWuM6mUCuUFU8SQVV9U1OfCb2G1x8HXrNW4Zt12Z2v/KMu4fM17GrKYIEoF2HdEZqCv7Hviw8F20MvsN2hkhsRs0tqGYmpXZXDTmZU1B1s7CcMun3Op7IEnFfWj5NWQzrfPUSNrtiJPdTIHlGVc93v/bMSV2BZYe+XIQdr6/8D8ngB0X4WOjHlkIFZRk2kKCXDN60pw2xtAJnYEovG34ClxCDiiIZbqC/yqR9NR1Dy3rxW713gHhh1S771lWvVfHk+TwShbsax+TMZglQHXmVb6dc2SnOr28RRypysOLFKsg2VXNWawdZ3kb5OmjVph534zRxUvCc9WgPqrgKegbvQH1uCXQTkM/B/aemNzXp2QllX4yxBdpWEwTopdsagJBfusySXTk6Ulv5XPP21/zr1WiEctpgHmODeoTfXWe7pt+aQftPOGuRaVrxwzL8EQL8/G+h4NURC/uXV9H47J1KBV8N3O59DY41PN3HcVvTOug5AEDRuA
+ rx3OGYMg
+ I4g3y2K0nn7qg8I9ARGE9MohbKEr78FVURmgl5rZ+KAkbIrjgJbPKs7riDU3vF5FoTbeKw5Vlr+LhssitOi5BGNuLA6wbeTFzqoNRmyYPUhx10/y6FR6kYntPzjEz8DodLJ0+gWHuV9EvQJBFWwQHqbRuPZVOD0tJ7Xbot/b67DVusVXjHPufaF/NWOdJ0coCOTDT4H4+UPYsoWhILUyGm5GHqh404eIDyqd3jEtLtmhmUPX4mxGvxJ3VKjI9O1/1QcM7JTcbKfdyW+vQfxfUSoMQJJSzu2yIaCi3p/GlLZfB2ATlIWrdKb6D7XRhowRgCipH+A63oJGYpusIfOxdWARExghFB9Ry2RUVydMQ3XR30pO2ymQy2vvOLbhCPNfAwB0a+1b1P+uZDNltoFCDZsLibq+8fSoAzdG3uZ6kIiNIRPn9Bdsw32t9TBZQLi21b+4S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,435 +191,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi all,
 
-On 2026/4/23 12:10, Suren Baghdasaryan wrote:
-> On Wed, Apr 22, 2026 at 7:10 PM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> On 2026/4/23 01:32, Suren Baghdasaryan wrote:
->>> On Mon, Apr 20, 2026 at 8:15 PM Hao Ge <hao.ge@linux.dev> wrote:
->>>> Pages allocated before page_ext is available have their codetag left
->>>> uninitialized. Track these early PFNs and clear their codetag in
->>>> clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
->>>> warnings when they are freed later.
->>>>
->>>> Currently a fixed-size array of 8192 entries is used, with a warning if
->>>> the limit is exceeded. However, the number of early allocations depends
->>>> on the number of CPUs and can be larger than 8192.
->>>>
->>>> Replace the fixed-size array with a dynamically allocated linked list.
->>>> Each page is carved into early_pfn_node entries and the remainder is
->>>> kept as a freelist for subsequent allocations.
->>>>
->>>> The list nodes themselves are allocated via alloc_page(), which would
->>>> trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() ->
->>>> alloc_early_pfn_node() and recurse indefinitely.  Introduce
->>>> __GFP_NO_CODETAG (reuses the %__GFP_NO_OBJ_EXT bit) and pass
->>>> gfp_flags through pgalloc_tag_add() so that the early path can skip
->>>> recording allocations that carry this flag.
->> Hi Suren
->>> Hi Hao,
->>> Thanks for following up on this!
->> Happy to help further develop this feature.
->>
->> Feel free to reach out if there's anything else I can do.
->>
->>
->>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->>>> ---
->>>> v2:
->>>> - Use cmpxchg to atomically update early_pfn_pages, preventing page leak under concurrent allocation
->>>> - Pass gfp_flags through the full call chain and use gfpflags_allow_blocking()
->>>>     to select GFP_KERNEL vs GFP_ATOMIC, avoiding unnecessary GFP_ATOMIC in process context
->>>> ---
->>>>    include/linux/alloc_tag.h |  22 +++++++-
->>>>    lib/alloc_tag.c           | 102 ++++++++++++++++++++++++++------------
->>>>    mm/page_alloc.c           |  29 +++++++----
->>>>    3 files changed, 108 insertions(+), 45 deletions(-)
->>>>
->>>> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
->>>> index 02de2ede560f..2fa695bd3c53 100644
->>>> --- a/include/linux/alloc_tag.h
->>>> +++ b/include/linux/alloc_tag.h
->>>> @@ -150,6 +150,23 @@ static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
->>>>    }
->>>>
->>>>    #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
->>>> +/*
->>>> + * Skip early PFN recording for a page allocation.  Reuses the
->>>> + * %__GFP_NO_OBJ_EXT bit.  Used by alloc_early_pfn_node() to avoid
->>>> + * recursion when allocating pages for the early PFN tracking list
->>>> + * itself.
->>>> + *
->>>> + * Callers must set the codetag to CODETAG_EMPTY (via
->>>> + * clear_page_tag_ref()) before freeing pages allocated with this
->>>> + * flag once page_ext becomes available, otherwise
->>>> + * alloc_tag_sub_check() will trigger a warning.
->>>> + */
->>>> +#define __GFP_NO_CODETAG       __GFP_NO_OBJ_EXT
->>>> +
->>>> +static inline bool should_record_early_pfn(gfp_t gfp_flags)
->>>> +{
->>>> +       return !(gfp_flags & __GFP_NO_CODETAG);
->>>> +}
->>>>    static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag)
->>>>    {
->>>>           WARN_ONCE(ref && ref->ct && !is_codetag_empty(ref),
->>>> @@ -163,11 +180,12 @@ static inline void alloc_tag_sub_check(union codetag_ref *ref)
->>>>    {
->>>>           WARN_ONCE(ref && !ref->ct, "alloc_tag was not set\n");
->>>>    }
->>>> -void alloc_tag_add_early_pfn(unsigned long pfn);
->>>> +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags);
->>>>    #else
->>>>    static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag) {}
->>>>    static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
->>>> -static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
->>>> +static inline void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags) {}
->>>> +static inline bool should_record_early_pfn(gfp_t gfp_flags) { return true; }
->>> If CONFIG_MEM_ALLOC_PROFILING_DEBUG=n why should we record early pfns?
->> Good point! I'll address this in the next patch.
->>>>    #endif
->>>>
->>>>    /* Caller should verify both ref and tag to be valid */
->>>> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
->>>> index ed1bdcf1f8ab..cfc68e397eba 100644
->>>> --- a/lib/alloc_tag.c
->>>> +++ b/lib/alloc_tag.c
->>>> @@ -766,45 +766,75 @@ static __init bool need_page_alloc_tagging(void)
->>>>     * Some pages are allocated before page_ext becomes available, leaving
->>>>     * their codetag uninitialized. Track these early PFNs so we can clear
->>>>     * their codetag refs later to avoid warnings when they are freed.
->>>> - *
->>>> - * Early allocations include:
->>>> - *   - Base allocations independent of CPU count
->>>> - *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
->>>> - *     such as trace ring buffers, scheduler per-cpu data)
->>>> - *
->>>> - * For simplicity, we fix the size to 8192.
->>>> - * If insufficient, a warning will be triggered to alert the user.
->>>> - *
->>>> - * TODO: Replace fixed-size array with dynamic allocation using
->>>> - * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
->>>>     */
->>>> -#define EARLY_ALLOC_PFN_MAX            8192
->>>> +struct early_pfn_node {
->>>> +       struct early_pfn_node   *next;
->>>> +       unsigned long           pfn;
->>>> +};
->>>> +
->>>> +#define NODES_PER_PAGE         (PAGE_SIZE / sizeof(struct early_pfn_node))
->>>>
->>>> -static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
->>>> -static atomic_t early_pfn_count __initdata = ATOMIC_INIT(0);
->>>> +static struct early_pfn_node *early_pfn_list __initdata;
->>>> +static struct early_pfn_node *early_pfn_freelist __initdata;
->>>> +static struct page *early_pfn_pages __initdata;
->>> This early_pfn_node linked list seems overly complex. Why not just
->>> allocate a page and use page->lru to place it into a linked list? I
->>> think the code will end up much simpler.
->> Ah, yes! You mentioned this before, but I misunderstood your point.
->>
->> I apologize for the confusion. I'll optimize this in the next revision.
->>
->>>> -static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
->>>> +static struct early_pfn_node *__init alloc_early_pfn_node(gfp_t gfp_flags)
->>>>    {
->>>> -       int old_idx, new_idx;
->>>> +       struct early_pfn_node *ep, *new;
->>>> +       struct page *page, *old_page;
->>>> +       gfp_t gfp = gfpflags_allow_blocking(gfp_flags) ? GFP_KERNEL : GFP_ATOMIC;
->>>> +       int i;
->>>> +
->>>> +retry:
->>>> +       ep = READ_ONCE(early_pfn_freelist);
->>>> +       if (ep) {
->>>> +               struct early_pfn_node *next = READ_ONCE(ep->next);
->>>> +
->>>> +               if (try_cmpxchg(&early_pfn_freelist, &ep, next))
->>>> +                       return ep;
->>>> +               goto retry;
->>>> +       }
->>>> +
->>>> +       page = alloc_page(gfp | __GFP_NO_CODETAG | __GFP_ZERO);
->> One more question: since this is called in an RCU context, should we use
->> GFP_ATOMIC by default?
-> You mean it might be called in RCU context, right? If so then I think
-> we should not use GFP_ATOMIC when GFP_KERNEL can be used.
+This patchset removes READ_ONLY_THP_FOR_FS Kconfig and enables creating
+read-only THPs for FSes with large folio support (the supported orders
+need to include PMD_ORDER) by default. It is on top of mm-new.
 
-Hi Suren
+Before the patchset, the status of creating read-only THPs is below:
 
-__alloc_tag_add_early_pfn() is invoked under rcu_read_lock(). The full 
-call chain is:
+                            |    PF     | MADV_COLLAPSE | khugepaged |
+                            |-----------|---------------|------------|
+ large folio FSes only      |     ✓     |       x       |      x     |
+ READ_ONLY_THP_FOR_FS only  |     x     |       ✓       |      ✓     |
+ both                       |     ✓     |       ✓       |      ✓     |
 
-post_alloc_hook()
+where READ_ONLY_THP_FOR_FS implies no large folio FSes.
 
--> pgalloc_tag_add()
 
-     -> __pgalloc_tag_add()
+Now without READ_ONLY_THP_FOR_FS:
 
-         -> alloc_tag_add_early_pfn(pfn, gfp_flags)
+                           |    PF     | MADV_COLLAPSE | khugepaged |
+                           |-----------|---------------|------------|
+ large folio FSes          |     ✓     |       ✓       |      ✓     |
+ no large folio FSes       |     x     |       x       |      x     |
 
-                 rcu_read_lock();
+This means no large folio FSes need to add large folio support (the
+supported orders need to include PMD_ORDER), so that they can leverage
+read-only THP creation function.
 
-                     alloc_tag_add(pfn, gfp_flags)
+To prevent breaking read-only THP support for large folio FSes,
+1. first 4 patches enables the support, so that without READ_ONLY_THP_FOR_FS,
+   read-only THP still works for large folio FSes,
+2. Patch 5 removes READ_ONLY_THP_FOR_FS Kconfig,
+3. the rest of patches remove code related to READ_ONLY_THP_FOR_FS.
 
-                         -> __alloc_tag_add_early_pfn()
+NOTE: collapsing writable MAP_PRIVATE pagecache folios is not supported,
+since:
+1. PMD THP CoW only faults in at PTE level to avoid long CoW latency,
+2. the first check, due to 1, in file_backed_vma_is_retractable() prevents it.
 
-                         -> alloc_page(gfp)      // lib/alloc_tag.c:783
 
-                 rcu_read_unlock();
+The overview of the changes is:
 
->
->> Also, should we remove GFP_KSWAPD_RECLAIM here? I'm not entirely sure,
->> but I recall Sashiko mentioned a warning about this before:
->>
->> ---
->>
->> page = alloc_page(GFP_ATOMIC | __GFP_NO_CODETAG | __GFP_ZERO);
->>
->> Sashiko's concerns:
->>
->> Can this lead to a deadlock by introducing lock recursion?
->> alloc_early_pfn_node() is invoked as a post-allocation hook for early boot
->> pages via pgalloc_tag_add(). GFP_ATOMIC includes __GFP_KSWAPD_RECLAIM,
->> which triggers wakeup_kswapd() and acquires scheduler locks.
->> If the original allocation was made under scheduler locks and intentionally
->> stripped __GFP_KSWAPD_RECLAIM to prevent recursion, does this hardcoded
->> GFP_ATOMIC force it back on? Should the hook inherit or constrain its flags
->> based on the caller's gfp_flags instead?
->>
->> ---
->>
->> Even though this only happens during early boot, should we handle it
->> more safely?
-> That seems reasonable. Any reason you are not doing simply: page =
-> alloc_page(gfp_flags | __GFP_NO_CODETAG | __GFP_ZERO); ? IOW why
-> aren't you simply inheriting the flags?
+1. collapse_file() checks for to-be-collapsed folio dirtiness after they
+   are locked, unmapped to make sure no new write happens. Before,
+   mapping->nr_thps and inode->i_writecount are used to cause read-only
+   THP truncation before a fd becomes writable.
 
-As I described above, __alloc_tag_add_early_pfn() is invoked under 
-rcu_read_lock().
+2. hugepage_enabled() is true for anon, shmem, and file-backed cases
+   if the global khugepaged control is on, otherwise, khugepaged for
+   file-backed case is turned off and anon and shmem depend on per-size
+   control knobs.
 
-We cannot simply pass through gfp_flags, since it may cause sleep,
+3. collapse_file() from mm/khugepaged.c, instead of checking
+   CONFIG_READ_ONLY_THP_FOR_FS, makes sure the mapping_max_folio_order()
+   of struct address_space of the file is at least PMD_ORDER.
 
-That is the reason why I chose to use GFP_ATOMIC initially.
+4. file_thp_enabled() also checks mapping_max_folio_order() instead and
+   no longer checks if the input file is opened as read-only (Change 1
+   handles read-write files).
 
-Thanks
+5. truncate_inode_partial_folio() calls folio_split() directly instead
+   of the removed try_folio_split_to_order(), since large folios can
+   only show up on a FS with large folio support.
 
-Best Ragards
+6. nr_thps is removed from struct address_space, since it is no longer
+   needed to drop all read-only THPs from a FS without large folio
+   support when the fd becomes writable. Its related filemap_nr_thps*()
+   are removed too.
 
-Hao
+7. folio_check_splittable() no longer checks READ_ONLY_THP_FOR_FS.
 
->>>> +       if (!page)
->>>> +               return NULL;
->>>> +
->>>> +       new = page_address(page);
->>>> +       for (i = 0; i < NODES_PER_PAGE - 1; i++)
->>>> +               new[i].next = &new[i + 1];
->>>> +       new[NODES_PER_PAGE - 1].next = NULL;
->>>> +
->>>> +       if (cmpxchg(&early_pfn_freelist, NULL, new + 1)) {
->>>> +               __free_page(page);
->>>> +               goto retry;
->>>> +       }
->>>>
->>>>           do {
->>>> -               old_idx = atomic_read(&early_pfn_count);
->>>> -               if (old_idx >= EARLY_ALLOC_PFN_MAX) {
->>>> -                       pr_warn_once("Early page allocations before page_ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
->>>> -                                     EARLY_ALLOC_PFN_MAX);
->>>> -                       return;
->>>> -               }
->>>> -               new_idx = old_idx + 1;
->>>> -       } while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx));
->>>> +               old_page = READ_ONCE(early_pfn_pages);
->>>> +               page->private = (unsigned long)old_page;
->>>> +       } while (cmpxchg(&early_pfn_pages, old_page, page) != old_page);
->>> I don't think this whole lockless schema is worth the complexity.
->>> alloc_early_pfn_node() is called only during early init and is called
->>> perhaps a few hundred times in total. Why not use a simple spinlock to
->>> synchronize this operation and be done with it?
->> I initially used a simple spinlock, but Sashiko raised a good point in
->> his review:
->>
->> https://sashiko.dev/#/patchset/20260319083153.2488005-1-hao.ge%40linux.dev
->>
->> Since alloc_early_pfn_node() is called during early init from an unknown
->> context, in the early page allocation path,
->>
->> a lockless approach is safer. However, you're right that if we use
->> page->lru as a linked list (which you suggested earlier),
->>
->> the code becomes much simpler. I plan to simplify the code and continue
->> using the lockless approach in the next version.
-> Ok, let's see the result and decide then. Allocating a page from NMI
-> context sounds extreme to me. I would expect NMI context to use only
-> preallocated memory.
->
->>
->>>> +
->>>> +       return new;
->>>> +}
->>>> +
->>>> +static void __init __alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
->>>> +{
->>>> +       struct early_pfn_node *ep = alloc_early_pfn_node(gfp_flags);
->>>>
->>>> -       early_pfns[old_idx] = pfn;
->>>> +       if (!ep)
->>>> +               return;
->>>> +
->>>> +       ep->pfn = pfn;
->>>> +       do {
->>>> +               ep->next = READ_ONCE(early_pfn_list);
->>>> +       } while (!try_cmpxchg(&early_pfn_list, &ep->next, ep));
->>>>    }
->>>>
->>>> -typedef void alloc_tag_add_func(unsigned long pfn);
->>>> +typedef void alloc_tag_add_func(unsigned long pfn, gfp_t gfp_flags);
->>>>    static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata =
->>>>           RCU_INITIALIZER(__alloc_tag_add_early_pfn);
->>>>
->>>> -void alloc_tag_add_early_pfn(unsigned long pfn)
->>>> +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
->>>>    {
->>>>           alloc_tag_add_func *alloc_tag_add;
->>>>
->>>> @@ -814,13 +844,14 @@ void alloc_tag_add_early_pfn(unsigned long pfn)
->>>>           rcu_read_lock();
->>>>           alloc_tag_add = rcu_dereference(alloc_tag_add_early_pfn_ptr);
->>>>           if (alloc_tag_add)
->>>> -               alloc_tag_add(pfn);
->>>> +               alloc_tag_add(pfn, gfp_flags);
->>>>           rcu_read_unlock();
->>>>    }
->>>>
->>>>    static void __init clear_early_alloc_pfn_tag_refs(void)
->>>>    {
->>>> -       unsigned int i;
->>>> +       struct early_pfn_node *ep;
->>>> +       struct page *page, *next;
->>>>
->>>>           if (static_key_enabled(&mem_profiling_compressed))
->>>>                   return;
->>>> @@ -829,14 +860,13 @@ static void __init clear_early_alloc_pfn_tag_refs(void)
->>>>           /* Make sure we are not racing with __alloc_tag_add_early_pfn() */
->>>>           synchronize_rcu();
->>>>
->>>> -       for (i = 0; i < atomic_read(&early_pfn_count); i++) {
->>>> -               unsigned long pfn = early_pfns[i];
->>>> +       for (ep = early_pfn_list; ep; ep = ep->next) {
->>>>
->>>> -               if (pfn_valid(pfn)) {
->>>> -                       struct page *page = pfn_to_page(pfn);
->>>> +               if (pfn_valid(ep->pfn)) {
->>>>                           union pgtag_ref_handle handle;
->>>>                           union codetag_ref ref;
->>>>
->>>> +                       page = pfn_to_page(ep->pfn);
->>>>                           if (get_page_tag_ref(page, &ref, &handle)) {
->>>>                                   /*
->>>>                                    * An early-allocated page could be freed and reallocated
->>>> @@ -861,6 +891,12 @@ static void __init clear_early_alloc_pfn_tag_refs(void)
->>>>                   }
->>>>
->>>>           }
->>>> +
->>>> +       for (page = early_pfn_pages; page; page = next) {
->>>> +               next = (struct page *)page->private;
->>>> +               clear_page_tag_ref(page);
->>>> +               __free_page(page);
->>>> +       }
->>>>    }
->>>>    #else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
->>>>    static inline void __init clear_early_alloc_pfn_tag_refs(void) {}
->>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>>> index 04494bc2e46f..4e2bfb3714e1 100644
->>>> --- a/mm/page_alloc.c
->>>> +++ b/mm/page_alloc.c
->>>> @@ -1284,7 +1284,7 @@ void __clear_page_tag_ref(struct page *page)
->>>>    /* Should be called only if mem_alloc_profiling_enabled() */
->>>>    static noinline
->>>>    void __pgalloc_tag_add(struct page *page, struct task_struct *task,
->>>> -                      unsigned int nr)
->>>> +                      unsigned int nr, gfp_t gfp_flags)
->>>>    {
->>>>           union pgtag_ref_handle handle;
->>>>           union codetag_ref ref;
->>>> @@ -1294,21 +1294,30 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
->>>>                   update_page_tag_ref(handle, &ref);
->>>>                   put_page_tag_ref(handle);
->>>>           } else {
->>>> -               /*
->>>> -                * page_ext is not available yet, record the pfn so we can
->>>> -                * clear the tag ref later when page_ext is initialized.
->>>> -                */
->>>> -               alloc_tag_add_early_pfn(page_to_pfn(page));
->>>> +
->>>>                   if (task->alloc_tag)
->>>>                           alloc_tag_set_inaccurate(task->alloc_tag);
->>>> +
->>>> +               /*
->>>> +                * page_ext is not available yet, skip if this allocation
->>>> +                * doesn't need early PFN recording.
->>>> +                */
->>>> +               if (unlikely(!should_record_early_pfn(gfp_flags)))
->>>> +                       return;
->>>> +
->>>> +               /*
->>>> +                * Record the pfn so the tag ref can be cleared later
->>>> +                * when page_ext is initialized.
->>>> +                */
->>>> +               alloc_tag_add_early_pfn(page_to_pfn(page), gfp_flags);
->>> nit: This seems shorter and more readable:
->>>
->>>                  if (unlikely(should_record_early_pfn(gfp_flags)))
->>>                               alloc_tag_add_early_pfn(page_to_pfn(page),
->>> gfp_flags);
->> OK, will improve it in the next version.
-> Thanks,
-> Suren.
->
->>
->> Thanks for taking the time to review and provide these suggestions!
->>
->> Thanks
->>
->> Best Regards
->>
->> Hao
->>
->>>>           }
->>>>    }
->>>>
->>>>    static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
->>>> -                                  unsigned int nr)
->>>> +                                  unsigned int nr, gfp_t gfp_flags)
->>>>    {
->>>>           if (mem_alloc_profiling_enabled())
->>>> -               __pgalloc_tag_add(page, task, nr);
->>>> +               __pgalloc_tag_add(page, task, nr, gfp_flags);
->>>>    }
->>>>
->>>>    /* Should be called only if mem_alloc_profiling_enabled() */
->>>> @@ -1341,7 +1350,7 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
->>>>    #else /* CONFIG_MEM_ALLOC_PROFILING */
->>>>
->>>>    static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
->>>> -                                  unsigned int nr) {}
->>>> +                                  unsigned int nr, gfp_t gfp_flags) {}
->>>>    static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
->>>>    static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
->>>>
->>>> @@ -1896,7 +1905,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
->>>>
->>>>           set_page_owner(page, order, gfp_flags);
->>>>           page_table_check_alloc(page, order);
->>>> -       pgalloc_tag_add(page, current, 1 << order);
->>>> +       pgalloc_tag_add(page, current, 1 << order, gfp_flags);
->>>>    }
->>>>
->>>>    static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
->>>> --
->>>> 2.25.1
->>>>
+8. Updated comments in various places.
+
+
+Changelog
+===
+From V3[4]:
+1. added a TODO comment in patch 1 noting that the is_shmem exception in
+   the VM_WARN_ON_ONCE() check can be removed once shmem always calls
+   mapping_set_large_folios() on its mapping. Used VM_WARN_ON_ONCE() in
+   mapping_pmd_thp_support() instead.
+
+2. fixed the dirty folio bail-out path in patch 2: add xas_unlock_irq()
+   and folio_putback_lru() before the goto, which were missing and would
+   have left the XA lock held and the LRU isolation ref leaked.
+
+3. renamed hugepage_pmd_enabled() to hugepage_enabled() to reflect it
+   controls khugepaged for all transparent hugepage types.
+
+4. reverted the comment in hugepage_enabled() in patch 4 to the original;
+   only removed the phrase "when configured in," which referred to
+   CONFIG_READ_ONLY_THP_FOR_FS.
+
+5. fixed commit message in patch 6: the dirty folio check is added after
+   try_to_unmap() in collapse_file(), not after try_to_unmap_flush().
+
+From V2[3]:
+1. removed unnecessary check in collapse_scan_file().
+
+2. removed inode_is_open_for_write() check in file_thp_enabled().
+
+3. changed hugepage_enabled() to return true if khugepaged global
+   control is on instead of false. cleaned up anon and shmem code in the
+   function.
+
+4. moved folio dirtiness check after try_to_unmap() but before
+   try_to_unmap_flush(), since that is sufficient to prevent new writes.
+
+5. reordered patch 4 and 5, so that khugepaged behavior does not change
+   after READ_ONLY_THP_FOR_FS is removed.
+
+6. added read-write file test in khugepaged selftest.
+
+7. removed the read-only file restriction from guard-region selftest.
+
+From V1[2]:
+1. removed inode_is_open_for_write() check in collapse_file(), since the
+   added folio dirtiness check after try_to_unmap_flush() should be
+   sufficient to prevent writes to candidate folios.
+
+2. removed READ_ONLY_THP_FOR_FS check in hugepage_enabled(), please
+   see Patch 5 and item 2 in the overview for more details.
+
+3. moved the patch removing READ_ONLY_THP_FOR_FS Kconfig after enabling
+   khugepaged and MADV_COLLAPSE to create read-only THPs.
+
+4. added mapping_pmd_thp_support() helper function.
+
+5. used VM_WARN_ON_ONCE() in collapse_file() for mapping eligibility check
+   and address alignment check instead of if + return error code. Always
+   allow shmem, since MADV_COLLAPSE ignore shmem huge config.
+
+6. added mapping eligibility check in collapse_scan_file().
+
+7. removed trailing ; for folio_split() in the !CONFIG_TRANSPARENT_HUGEPAGE.
+
+8. simplified code in folio_check_splittable() after removing
+   READ_ONLY_THP_FOR_FS code.
+
+9. clarified that read-only THP works for FSes with PMD THP support by
+   default.
+
+From RFC[1]:
+1. instead of removing READ_ONLY_THP_FOR_FS function entirely, turn it
+   on by default for all FSes with large folio support and the supported
+   orders includes PMD_ORDER.
+
+Suggestions and comments are welcome.
+
+Link: https://lore.kernel.org/all/20260323190644.1714379-1-ziy@nvidia.com/ [1]
+Link: https://lore.kernel.org/all/20260327014255.2058916-1-ziy@nvidia.com/ [2]
+Link: https://lore.kernel.org/all/20260413192030.3275825-1-ziy@nvidia.com/ [3]
+Link: https://lore.kernel.org/all/20260418024429.4055056-1-ziy@nvidia.com/ [4]
+
+Zi Yan (12):
+  mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+  mm/khugepaged: add folio dirty check after try_to_unmap()
+  mm/huge_memory: remove READ_ONLY_THP_FOR_FS from file_thp_enabled()
+  mm/khugepaged: remove READ_ONLY_THP_FOR_FS check in hugepage_enabled()
+  mm: remove READ_ONLY_THP_FOR_FS Kconfig option
+  mm: fs: remove filemap_nr_thps*() functions and their users
+  fs: remove nr_thps from struct address_space
+  mm/huge_memory: remove folio split check for READ_ONLY_THP_FOR_FS
+  mm/truncate: use folio_split() in truncate_inode_partial_folio()
+  fs/btrfs: remove a comment referring to READ_ONLY_THP_FOR_FS
+  selftests/mm: remove READ_ONLY_THP_FOR_FS in khugepaged
+  selftests/mm: remove READ_ONLY_THP_FOR_FS code from guard-regions
+
+ fs/btrfs/defrag.c                          |   3 -
+ fs/inode.c                                 |   3 -
+ fs/open.c                                  |  27 -----
+ include/linux/fs.h                         |   5 -
+ include/linux/huge_mm.h                    |  25 +----
+ include/linux/pagemap.h                    |  34 ++-----
+ include/linux/shmem_fs.h                   |   2 +-
+ mm/Kconfig                                 |  11 ---
+ mm/filemap.c                               |   1 -
+ mm/huge_memory.c                           |  39 ++------
+ mm/khugepaged.c                            |  92 ++++++++---------
+ mm/truncate.c                              |   8 +-
+ tools/testing/selftests/mm/guard-regions.c |  18 +---
+ tools/testing/selftests/mm/khugepaged.c    | 110 +++++++++++++++------
+ tools/testing/selftests/mm/run_vmtests.sh  |  12 ++-
+ 15 files changed, 163 insertions(+), 227 deletions(-)
+
+-- 
+2.43.0
+
 
