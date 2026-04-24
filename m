@@ -4,106 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B84BFDEE28
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 00:20:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61B5AFDEE39
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 00:23:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AF1F6B0088; Thu, 23 Apr 2026 20:20:55 -0400 (EDT)
+	id 7C81F6B0088; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8609E6B008A; Thu, 23 Apr 2026 20:20:55 -0400 (EDT)
+	id 778BD6B008A; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74F276B008C; Thu, 23 Apr 2026 20:20:55 -0400 (EDT)
+	id 68F1A6B008C; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FF2A6B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:20:55 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F38F6A09A1
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:20:54 +0000 (UTC)
-X-FDA: 84691544070.29.AE8F4AD
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 436CD140009
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:20:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=A2y31Qs6;
-	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 573406B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BAD5B1A0A6A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:23:33 +0000 (UTC)
+X-FDA: 84691550706.20.54728A5
+Received: from mail-oa1-f79.google.com (mail-oa1-f79.google.com [209.85.160.79])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1D910C0010
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:23:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of 3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.79 as permitted sender) smtp.mailfrom=3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776990053;
+	s=arc-20220608; t=1776990212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=9prmMr/fIcHvT4Kdkrzhrvvq7KnrqsNR3KWHLAQJlTo=;
-	b=REZpBJGZItePOTWakC7tTnjWB6uNohYgxZ3Er6KZUI/ewDyjuXl/fPOudRhUwuB4+256+G
-	3Rcz1KT5FCpI3DMdQhvMjN6XYaBOLYSqU1k+kKeoYL9GgM+4Okl8rsAcaBZ4Y7EJWkI7Jv
-	2yHAtvHaL8rvUEPtEUDsc0+XDCyoGeQ=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=toPj91gHoyvrb/6k9QW3xQFCS5cPHJVPPzwARqoevbM=;
+	b=n3q/3QBu9Ngz2pKBaCGvWLcpLiWzFzOr9Y0LbFrfUWWepTE0yHwet1qgb5BlY5wSQqp3Hn
+	tz3YmWD3f9WTetbUhnfXb/a2ZJamrRcfuZgW1trJoPwSKrVI1jlZUz+xbWkVL/7bLnM0qz
+	yVYDL5kJF9Wv+b244IU+Jb9kLOmm7cM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=A2y31Qs6;
-	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776990053; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of 3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.79 as permitted sender) smtp.mailfrom=3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776990212; a=rsa-sha256;
 	cv=none;
-	b=H6HsFyhk32PgcEr+mV6mSuDWPI9nECIcc8R7yWfvdOG9b3ecyNZMCa2/KcDLe0zjuU3tV9
-	tQuyFe/EJWHPqKJO4+KRO6G511TXWF2IPe1hS+/7y715wvmgZ90WXvcLcC/THASCsQ1xdk
-	YGAPd7zSZyp2H8o7pzqznZyzdZXrrUI=
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c79467f128cso2727267a12.3
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:20:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776990051; x=1777594851; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9prmMr/fIcHvT4Kdkrzhrvvq7KnrqsNR3KWHLAQJlTo=;
-        b=A2y31Qs6LTBw+FsZuGoj0I7V7CaMClKMo7k4zvHLyhocOHjORHmrqdLC1Y1L2CIWoZ
-         xWA/vJ85+g4eQ7y4Z2Pza5Bnte3UN+5xw1FNRYD2zrURj9it0hPrUYsjDu7xSvmCaOaX
-         ST47viuoIZyc+ARJUOcuBgqxgCTVUtxbgi7YB8aMpIT0cjH1dGlpQiSc2rT1UBHlkzDn
-         06HBub7UB8WpIjTILHlUzz+2PoWb0yVGRJc5Vl00jpkUsAfjveARFMWo370L2XdUKM/V
-         GMVUTbRUz6OheP8JFkzKwjfxnlsVGn1PSk8gLaz2zi+CGqmpvJpdQl1q76XBLvWRi5uw
-         jotg==
+	b=LCMASS50d9t1hkJV/mQizE1zcWFK29Qfh9K+1MBxUNsUyP0Ei3al5ztt+GOf7FX1Uw6Rt6
+	NJBdjyqyw4lK5IaGLmroP1Vgc8gc0K1UH26pVsdBi+tToaBT1rtQNCxdkzmE6+amLx1JNU
+	t25+Iw6qoe2M87YJ68QyM9Z+cKa9Y+g=
+Received: by mail-oa1-f79.google.com with SMTP id 586e51a60fabf-42393e9b4aeso6704500fac.0
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:23:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776990051; x=1777594851;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9prmMr/fIcHvT4Kdkrzhrvvq7KnrqsNR3KWHLAQJlTo=;
-        b=DkhLeWAjL/KtR3cCPnAtUeIHHaL3bggsVrwFXspY1FLj1hBTqFQOdEk07SpWNYUiDL
-         G/twHp+XhrZmAkBEd5IQfudvld2V8gBg0uI+DfGLFqqU2J/ZMdvP5VvJ4UPbL07x/nLn
-         4b/rnMRiAue+3Icykojl6ahkhP+o4iQ0hg0Wwn9qPKkji6eAOA51ICfh6ep/083K6eqg
-         9GPRahYkYiav6c0rWT//4ZfzbgvbUKfv8MmqxGu43yszYxjN7qsDVOhEXltVIUuJhmaX
-         gFo6lxUS8d17QeSuxkl1ar7Gno5XrPfB74RgbcCMwvSoM+WXk47M50w0FlePB+zfUR9T
-         UqLg==
-X-Forwarded-Encrypted: i=1; AFNElJ+QxP65iHNDGg8/GdtyTv/wDZHYJyGZwCzyLOT481t3hD9T9jluVPe8l3m4w2DWVkZS4bTbHv5BZg==@kvack.org
-X-Gm-Message-State: AOJu0YwU9vYO9H5fg47eP7kx9ENLheO/oXl5kV6Sv30/uCEgMNY4Xw9l
-	bQbcL7WOZa/q89IxyK53FQN9JV+9QIS3ZsgJRj73dW9RUklpLiKwjidrr8r0Ww==
-X-Gm-Gg: AeBDievxui69f9tRiCl7/jphQkgEVtj3uR3qr0g8yWxGl/ulxbaoe9YI/8P3jIW5jKs
-	xN+FWPaExz8yycviKqUZdeksnq35kXi0zYCpmkD+EomkXWPx/LfvRbu11DmEsMSwfdmXCLCK0pK
-	tjZbr599o39HIAyJYnjtJOj1xyzqyH454KadfHeTcBpLD/B9YDfIEUQrdjHtPy3lpgZxj4sLm9A
-	8dhsDzOUYY02xXeEMY2GFRA4V4ZNDaj9ouAkrL1YR3lojuhdGxD3Cwc+Mx5ZD1UjohFBrjKfjb8
-	XpRlpi74y+6zjFCh5EpC3izwnuqtMjHab+fHVpbAGPPEywmKSqkb+uMdJk6Q6L72eg6bvfYQRdc
-	FVrKhJI5dzY9aFn0JoeRFdlUM8p8cYNef3B065eHNF1uqMLZqxA4O/+aB4iRThmIsQdgzHEx8m9
-	wp4TNWHz8VBMChhkQ7BJwdbgaQWutj36rP
-X-Received: by 2002:a05:6a21:329b:b0:3a0:129a:9748 with SMTP id adf61e73a8af0-3a08d76d958mr31549415637.25.1776990051094;
-        Thu, 23 Apr 2026 17:20:51 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7976f92183sm15156744a12.3.2026.04.23.17.20.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 17:20:50 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>, "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 0/5] Add buffered write-through support to iomap & xfs
-In-Reply-To: <aeqxFKaw1uOk1GuZ@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-Date: Fri, 24 Apr 2026 05:47:17 +0530
-Message-ID: <1pg5tdo2.ritesh.list@gmail.com>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com> <4og3axdvzyfpfx4o2rhcnwdsggha2kfoerausxx52vd6jc2hzq@u72iwxrxxble> <aeqxFKaw1uOk1GuZ@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-X-Stat-Signature: w6otcr4oqknhjaszf6ibrdh63bw39wu8
-X-Rspamd-Queue-Id: 436CD140009
+        d=1e100.net; s=20251104; t=1776990211; x=1777595011;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=toPj91gHoyvrb/6k9QW3xQFCS5cPHJVPPzwARqoevbM=;
+        b=aTwUnADFWtXSHc77C+yZD5n2kO9isZXN4Ff6/IYcjje4Zgz42R3VJGLrzFQbHPRPPD
+         UHI/Ek+/S+4eIib/2xt328cxB+NjRZWLsp2iqC4m719srOVgcYnpADf08KaZl/SOuSCX
+         mcyIkBCFwMpcxZ0ahBsbD3R9lcyhW7+iYE4aIFfy001l0Og6SFVTdwtRC1JhgAgltT3X
+         JpSdxWpeKPCAgg/ktrMNumXh/Q6BPAUyLqmrWZNWKu3dATAgERzF0uMB9LH0ZAsBaYvH
+         g6Kn8KgcY8mNMTSJlyYzzdkctmV8uX240Dn8VoOi84PYPadkN4qPIBdl6nE9tjdW1uDe
+         NHYA==
+X-Forwarded-Encrypted: i=1; AFNElJ/jLPODc44gVLbKVH0F+Lkur9uR5pubQ0aNOBhlXkGfu6kGgZbnjKA5rl25NvvzIDvmesUrYpM8+Q==@kvack.org
+X-Gm-Message-State: AOJu0YwwF1G02wdnDzHW/6Fclf5linC/nPt2pSbGuYaWButF0BFFyFEP
+	D8ZPrOXSFX3OYvifcw3qXwmX1JvYIvtcBDfkjfju2qdbUoqg2viMUDO6mLq6VTNjVOs2TBi9C5c
+	qYzDurDk5o/W6DAjBSRZPYEIKKQw0apojngsQ2G4OhGifo+Xe+PxKekuRlWQ=
+MIME-Version: 1.0
+X-Received: by 2002:a4a:e84a:0:b0:692:a19b:af6b with SMTP id
+ 006d021491bc7-69462e57b48mr15598213eaf.13.1776990211136; Thu, 23 Apr 2026
+ 17:23:31 -0700 (PDT)
+Date: Thu, 23 Apr 2026 17:23:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69eab803.a00a0220.17a17.004a.GAE@google.com>
+Subject: [syzbot] [arch?] [mm?] BUG: sleeping function called from invalid
+ context in tlb_flush_mmu
+From: syzbot <syzbot+98bfe400bc653d89958c@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, aneesh.kumar@kernel.org, 
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	npiggin@gmail.com, peterz@infradead.org, syzkaller-bugs@googlegroups.com, 
+	will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1D910C0010
+X-Stat-Signature: qg498reokg5dird8u8u7kus3absbcc7e
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776990053-630761
-X-HE-Meta: U2FsdGVkX1+opWvprEypqicmckqtLlALyQlbAwfcPMaNwjsQz91OnfG7qxZ/ujPK8OaT4Wa+Ul8XgPOLY65lNvm/fnD4yM5jh0jj0vCH37J3bryr94gJYnzbCYK8/Hr/2OuLV3GO5qFWHjeXun5njo/t9T8RPQRi2qeN1sQqYSEjotwJssVQbJJs+gwIalOEXxfTWzv/65FC5qdbkep/sRie70deGZtxKeE3A+WZMlOa5lVq5Jwf3PK/8nGIYpADBVSVVfP8hiXq5Dog474K5k/6NmdrGc1GYNup1e+7nFrnYqdFTRk6kHK2UbhTrdSP45r7ki0mSRZfcV59lkA22j8uimwfG0bANoTSkhTevbLyQv/BRjPGin5AaBSiQ85/g2Ck47Fx3MjhYl5cZhkYMKXE1Ff2mM/TQy6KTkB/W4xAOpeXJ2ay1ucklVlRidnE1mfsLWlrK7SivK4psS5umnoBatRnNEUM+02whrGJcK+ToApa5TmzGNMzTCd0pkkhmY6hdekCBs3wKVSzc/Cv/RNGVcstcSVJo43pH90Z01q5AEFPXm5vqc/P/1UQcxSv/Ovq+NL7F6chE/ZR0sWB/SJ7rfRAB2U8DbMYngRGZ4Icp0CfDBeR/dwYU1N/+GXkXC+3qSSCUOJ0HtD5AAfaVcHAVXoCraozD3lL87/o6AVHUpwLfFOTGzYM/xr4fKGNA997qpuD6dwbpBMnjqtw0DLJwBOwFPy40KBvnKrnxryDJzWTpPVKx3grnkuDwwV6GNh9aOYe0oPnhCSzFCad2+i9UHGwZfs3AeBgYrxkBvXc8JM2Z1FMgugj9YC0NXgjvdWSXTetxpayGxmT5NSVipYYSLsA5NqJd82WV9xUmMJ78wpxgyt7cLkU27eSqbrHUy19RllV1AHK/ccttAsrY3zAeeYJ0oFnfs6i0OBwmGbtRmFa/FIgqQkQpZhhcltHXGb7/DmR58/ec9ECkhL
- WjV8JmXe
- NINiIlWu5rab4T1wdPYpm0q5el9hcwsCYe3X2gysiqn3kOHcS/Qk4iaPjTzoidt0k/3wm5XMZOufjuUDySXKDILbHjgroVrbvnjA51phVHrBSiBel466MUmCGb15JhwhQS6w716kiL2ZRYYeSEUCHpWYzVr6U3gTQ3DOTfMh+dc6cB61W3/04616fDUH+gU4wThFrK7pRecDN58DPB+ydId8WLhL2U5XNCwhaBeW/lW0EhpaNXVHcRcY6RcgF8hFtFTGAmdEi/Jkku1PQUbz9UMHCxBX3WDmOzqgF6FrReU+ugfnhyZdmC0JOeicEMbe9oALbvaj0AxVgg6Mbl8ahmpS7DNaz8EKdbkujaD+Np5mRRhQ8jzpXwgkIJt5x1Yf6zzScoqFxWOc6w3MR2bMG5EzYzE1VGUCwIj3HrSW+Z0QvPdbB2/FCaAm/uPBHDhq+JVP1se+N8e+lmXQ8v4AX3Wi/gg==
+X-HE-Tag: 1776990211-548121
+X-HE-Meta: U2FsdGVkX18bLEmA3Ab9KVA3AKy/96FSeactxMhXGPmlYzEDzD3D3Jn3lnlEX189xCspLFBaPCMDw8X5mlQseqbgoe81LcsH2OOjTtBmW+DA0KmJDmo9+fSWvHfkFmGB2tDbuDGVdH4h10Ry621K3MWzyvBItJ1Y72/E64ZnjDVawyecSwTU7D9/YGMsY2LIiMs33VWv7nn5kGTJoIdHVime+noGONuQUDWR6NDeurL1Cu+k0xBrgq7qda+qgxcO+nubXbgUvk9ENqSqiWyL6SGKlqi+v1Uay720KwisK6c8x/Z3NQutkt5tWeaaW/Tfp/sQWHMVrc/V07UxUVIloQPgNJrTST5XWLPfIT1oaQ/PcqMCBp/MUSvdaakcyLauK7LGrewPhW6xjdSQyEa3E4ZW2sjlWz6MtP6cL2ljC6XPng8Lefkl96UqaOCGuZQ4iMfIQvI+Kz5dV5/MmQivtQEM2Uxp5H/EGao3Mcf5T2aI8T+PEHiNoHVYHtTnzyuru8EPjeDrF/A8vUQT1PUBXtHnmkVTqP4z6XLNfwBAcQyQe2yh0I9seuwOhRIL45RH5mojS7ZZQp9RhiX+9QyKumaBV0tmk+wI2sqwojzCazaVVJJTvtva6N7YzIkuxHFtM1aoUkNyteg99tfDwiBmGQDPJSPyleIhcqXhXq/39LLDO6PUghiCItjuN9qsbNW5cM4pyshpBfH83khBnRLorPBVWP3dJOYME8InCWzbLyG5E2h9j2v/75ItM2z4m92J4fd1+AdNLE7nz5pskxU6+NFl2uPCvpPDMTz2UQdBEFGUgid6VwzG62Qp/J3nOm9V3orMO/BAmGexpUI1cvyZ6SUJwUPwfaBzhTKa72hwqbeCAoRXY8/BnqSjIlxRE9NAqxR+qKAv5zuH7jaM6Pqa2J2Hbkxoid0rWlyqnkEiSgeXa25i32HpK7p9jahRvaOFCH/aEIQkZswZqIClddJ
+ b4LyQN/S
+ ++XSq1SMP28zkvq1jeM1nEJ6W3YSv79AvS+IjuB/gUxveHMcir++eQcldgEBC/bJCjwquE8uVay+dY82qPYQTMrZcLLmXHpeMNIQF7xR86D6QJUkbu83Ozfo56AqhRiGMSdlKF2xj7pJkEw+XETsCQ39A7qtF8yfJ8Rk6wv7SqpXzSE20NWGYzW/+afDuzFGvKdWQ27M75ciKM+Q/aM0TgRZKbLv5v3zeCDMArE9/uEz9OwTnzZBPOyHTd0Nht+2+4yGad4HMMszGcM31TjO3OODoy547MRxvyvCzfDVyTRbxnl4nrD8ourFCkfJ6tbkzCiKr09BqfvbY2whqK5F+fGN4gCJrxMwwOF0oTZFvj5H7YSZoQvjD/DKFlZRnha6d+PjzaQWo0NYCCaAiGSbO0cQieci2Eiq/K890kud28HsUvey4lVjE5ykmHO5kAz15Cpng2zmd2WC9QtVfExU3qPbGzUCmSEJB0SxSdXL9+vDt6oSAu9Tqiqm6Af0WCqaY7qND+xFUMXO2N5WUtpZOLW48Tah8gcW3CMHu8eQEJQHdzal8nLGR4b8c7N1DTjQgCuJyZa6cx6Fds6aW27JkWxpdtk+oGIyzNRpwYGyI3lvPH/XEgHfOiJT60LhAY9iIYXY6Aep2vwcvHt6gorhwjzVIdJACKIAz7ZpfXKbY11mwv0/DoATsX+V2bOqnnw9JNRMFmwo3b8pD1enqNTO+xBf18lBY9JsMmHYEUkP4MlzEbqXBMhoyQPjhEPOn+grMSlPWcdCrDG+gymCglZgWng2Kzvdrgqa6z3hLW4Lu4NL4JeaHDJ2tdeaPGbtQGa8wPnugP/jIBLwfMPqldflhYfMSLkhEriC+hfSobzzB59l6se9NatW6C81ffYdxQ2sopmGZ9hRbGa5Bls1rgNSZqT77HFEh7V96enLE69MOIvstQ4XAQcBjvBOFbaF6SYRGcaVNbRoFMQrE2jrd5E7BJ1ff+vHs
+ 7FXBP3mn
+ XAyeyHiq8HUG18oi+jAAz9/ygPeUzXXau+X2U+9XoherzM2A8+bh4eyv3zoqYfn+jaue5xjlPvC6+8XPLJyxQAvpHfKVDquH5I4DCQ+Pep52Xe3InQwMDFfdHpf2AOBbuRaX6bGFWUziGzpUBvEPaolOljVk3IMMK//e8ZmZ2jTtQm67/mX7KoQa9th4A8kwME8Kf/VJ9+xw/zjU+gROOTzDkHtf/6lN7ovQLaFxrbJ9cDw7+G/MuxOm2jflli2idnBeMLNvlRcxYFMhpQse7dmz52e9ua/EGdD1IGK6dXn2BMMckZIKFuz92SrQ0bnxkD0AV9TTsCvzYgyjQLAwOpKRj5QE7eZjxRqIXA9YCiwp13oo3PzKe4csh0tXOL38L7hEtA2WqyRSZsdrrcuKYcIVj9bph4B9mWpmMXNbMWmpNasvBrRq/EYoROp4V3eXc9NEZqnKXYadZdlVwfiw1XIPJjwdhSwc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,99 +97,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ojaswin Mujoo <ojaswin@linux.ibm.com> writes:
+Hello,
 
-> On Thu, Apr 23, 2026 at 02:25:43PM +0200, Pankaj Raghav (Samsung) wrote:
->> > 
->> > 
->> > * Testing Notes (UPDATED) *
->> > 
->> > - I've added support for RWF_WRITETHROUGH to fsx and fsstress in
->> >   xfstests and these patches survive fsx with integrity verification as
->> >   well as fsstress parallel stressing.
->> > - -g quick with blocks size == page size and blocksize < pagesize shows
->> >   no new regressions.
->> 
->> I am hitting a very strange error in generic/127. I deconstructed it in
->> to two commands that can reproduce the issue:
->> 
->> ```
->> $ dd if=/dev/zero of=/media/test/fsx_lite_nommap bs=262144 count=1
->> 
->> $ /root/home/xfstests/ltp/fsx -l 262144 -o 65536 -S 191110531 -N 100000 -L -R -W /media/test/fsx_lite_nommap
->> mapped writes DISABLED
->> Seed set to 191110531
->> main: filesystem does not support exchange range, disabling!
->> main: atomic writes need O_DIRECT (-Z), disabling!
->> short read: 0x0 bytes instead of 0x6c7f
->> LOG DUMP (1 total operations):
->> 1(  1 mod 256): READ     0x39381 thru 0x3ffff   (0x6c7f bytes)
->> Log of operations saved to "/media/test/fsx_lite_nommap.fsxops"; replay with --replay-ops
->> fsx: save_buffer: .fsxgood file too short... will save 0x0 bytes instead of 0x40000
->> : Operation not supported
->> Correct content saved for comparison
->> (maybe hexdump "/media/test/fsx_lite_nommap" vs "/media/test/fsx_lite_nommap.fsxgood")
->> ```
->> 
->> This is on a bs == ps (4k block size) xfs filesystem.
->> ```
->> $ xfs_info /media/test/
->> meta-data=/dev/nvme1n1           isize=512    agcount=4, agsize=2097152 blks
->>          =                       sectsz=4096  attr=2, projid32bit=1
->>          =                       crc=1        finobt=1, sparse=1, rmapbt=0
->>          =                       reflink=1    bigtime=1 inobtcount=1 nrext64=0
->> data     =                       bsize=4096   blocks=8388608, imaxpct=25
->>          =                       sunit=0      swidth=0 blks
->> naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
->> log      =internal log           bsize=4096   blocks=16384, version=2
->>          =                       sectsz=4096  sunit=1 blks, lazy-count=1
->> realtime =none                   extsz=4096   blocks=0, rtextents=0
->> ```
->> 
->> The same test passes if I pass `-G` to fsx parameters(disabling writethrough).
->> 
->> The error is coming when we do a read operation which feels very
->> strange. Could you run this in your setup and see if you can reproduce
->> them? I still do not know where the issue is coming from or it is
->> because of my test setup.
->
-> Hey Pankaj, I think the xfstests branch I shared might have been missing
-> one small fix that can cause this issue. I've update the branch with the
-> fix, can you give it a try:
->
-> https://github.com/OjaswinM/xfstests/tree/iomap-buf-writethrough2
->
+syzbot found the following issue on:
 
-Ohk, just noticed your reply, after sending a response...
+HEAD commit:    70c8a7ec6715 Add linux-next specific files for 20260422
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=1586ae6a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d941ac7f11ceb230
+dashboard link: https://syzkaller.appspot.com/bug?extid=98bfe400bc653d89958c
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
-Thinking it again, I agree we should just always ftruncate it back to
-the original file_size. Because we might have changed to file size while
-testing the writethrough support.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Thanks for fixing it! This fix looks right to me.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/a920efda9ff7/disk-70c8a7ec.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/7d7626f0c3dc/vmlinux-70c8a7ec.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/261effff1138/bzImage-70c8a7ec.xz
 
-~# git diff
-diff --git a/ltp/fsx.c b/ltp/fsx.c
-index c9901f65..720bca83 100644
---- a/ltp/fsx.c
-+++ b/ltp/fsx.c
-@@ -2095,7 +2095,7 @@ test_writethrough_io(void)
-                return 0;
-        }
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+98bfe400bc653d89958c@syzkaller.appspotmail.com
 
--       if (ftruncate(fd, 0) != 0) {
-+       if (ftruncate(fd, file_size) != 0) {
-                perror("test_writethrough_io: failed to ftruncate to 0\n");
-                exit(132);
-        }
+BUG: sleeping function called from invalid context at mm/mmu_gather.c:142
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5808, name: udevd
+preempt_count: 0, expected: 0
+RCU nest depth: 1, expected: 0
+2 locks held by udevd/5808:
+ #0: ffff8880387090b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_write_lock include/linux/mmap_lock.h:536 [inline]
+ #0: ffff8880387090b0 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x2c2/0x9e0 mm/mmap.c:1308
+ #1: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #1: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+ #1: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: folio_lruvec_lock_irqsave+0x24/0x540 mm/memcontrol.c:1452
+CPU: 0 UID: 0 PID: 5808 Comm: udevd Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ __might_resched+0x329/0x480 kernel/sched/core.c:9162
+ __tlb_batch_free_encoded_pages mm/mmu_gather.c:142 [inline]
+ tlb_batch_pages_flush mm/mmu_gather.c:151 [inline]
+ tlb_flush_mmu_free mm/mmu_gather.c:417 [inline]
+ tlb_flush_mmu+0x6f2/0xa30 mm/mmu_gather.c:424
+ tlb_finish_mmu+0xf9/0x230 mm/mmu_gather.c:549
+ exit_mmap+0x498/0x9e0 mm/mmap.c:1313
+ __mmput+0xcb/0x3e0 kernel/fork.c:1178
+ exit_mm+0x18e/0x250 kernel/exit.c:581
+ do_exit+0x6a2/0x22c0 kernel/exit.c:963
+ do_group_exit+0x21b/0x2d0 kernel/exit.c:1117
+ __do_sys_exit_group kernel/exit.c:1128 [inline]
+ __se_sys_exit_group kernel/exit.c:1126 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1126
+ x64_sys_call+0x221a/0x2240 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f62bcd8c6c5
+Code: Unable to access opcode bytes at 0x7f62bcd8c69b.
+RSP: 002b:00007fff29267f78 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 000055dbfa9391d0 RCX: 00007f62bcd8c6c5
+RDX: 00000000000000e7 RSI: fffffffffffffe68 RDI: 0000000000000000
+RBP: 000055dbfa6da910 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fff29267fc0 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
 
--ritesh
+=============================
+[ BUG: Invalid wait context ]
+syzkaller #0 Tainted: G        W          
+-----------------------------
+udevd/5808 is trying to lock:
+ffff8880406438b8 (&sb->s_type->i_mutex_key#13){+.+.}-{4:4}, at: inode_lock include/linux/fs.h:1029 [inline]
+ffff8880406438b8 (&sb->s_type->i_mutex_key#13){+.+.}-{4:4}, at: __sock_release+0x89/0x250 net/socket.c:725
+other info that might help us debug this:
+context-{5:5}
+1 lock held by udevd/5808:
+ #0: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #0: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+ #0: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: folio_lruvec_lock_irqsave+0x24/0x540 mm/memcontrol.c:1452
+stack backtrace:
+CPU: 0 UID: 0 PID: 5808 Comm: udevd Tainted: G        W           syzkaller #0 PREEMPT_{RT,(full)} 
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_lock_invalid_wait_context kernel/locking/lockdep.c:4832 [inline]
+ check_wait_context kernel/locking/lockdep.c:4904 [inline]
+ __lock_acquire+0xec1/0x2cf0 kernel/locking/lockdep.c:5189
+ lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5870
+ down_write+0x3a/0x50 kernel/locking/rwsem.c:1625
+ inode_lock include/linux/fs.h:1029 [inline]
+ __sock_release+0x89/0x250 net/socket.c:725
+ sock_close+0x1c/0x30 net/socket.c:1529
+ __fput+0x461/0xa70 fs/file_table.c:510
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x70f/0x22c0 kernel/exit.c:975
+ do_group_exit+0x21b/0x2d0 kernel/exit.c:1117
+ __do_sys_exit_group kernel/exit.c:1128 [inline]
+ __se_sys_exit_group kernel/exit.c:1126 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1126
+ x64_sys_call+0x221a/0x2240 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f62bcd8c6c5
+Code: Unable to access opcode bytes at 0x7f62bcd8c69b.
+RSP: 002b:00007fff29267f78 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 000055dbfa9391d0 RCX: 00007f62bcd8c6c5
+RDX: 00000000000000e7 RSI: fffffffffffffe68 RDI: 0000000000000000
+RBP: 000055dbfa6da910 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fff29267fc0 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
 
 
-> Regards,
-> Ojaswin
->
->> 
->> --
->> Pankaj
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
