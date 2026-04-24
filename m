@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61B5AFDEE39
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 00:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBFB1FDEE28
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 00:23:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C81F6B0088; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
+	id AFCC26B008A; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 778BD6B008A; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
+	id A85CA6B008C; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68F1A6B008C; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
+	id 99B8E6B0092; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 573406B0088
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AF646B008A
 	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:23:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BAD5B1A0A6A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:23:33 +0000 (UTC)
-X-FDA: 84691550706.20.54728A5
-Received: from mail-oa1-f79.google.com (mail-oa1-f79.google.com [209.85.160.79])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1D910C0010
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:23:31 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
+Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2DE8140AA8
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:23:34 +0000 (UTC)
+X-FDA: 84691550748.28.921069A
+Received: from mail-oo1-f77.google.com (mail-oo1-f77.google.com [209.85.161.77])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4A3DE1C000B
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:23:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of 3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.79 as permitted sender) smtp.mailfrom=3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf18.hostedemail.com: domain of 3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.77 as permitted sender) smtp.mailfrom=3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776990212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=toPj91gHoyvrb/6k9QW3xQFCS5cPHJVPPzwARqoevbM=;
-	b=n3q/3QBu9Ngz2pKBaCGvWLcpLiWzFzOr9Y0LbFrfUWWepTE0yHwet1qgb5BlY5wSQqp3Hn
-	tz3YmWD3f9WTetbUhnfXb/a2ZJamrRcfuZgW1trJoPwSKrVI1jlZUz+xbWkVL/7bLnM0qz
-	yVYDL5kJF9Wv+b244IU+Jb9kLOmm7cM=
+	 references; bh=CWIVnShUDLsum8iUvvALRfGhmvCAHleL8NwdfLyFyxE=;
+	b=efGPDRxdxrOLE9UVuD6r0PQaeP6S85DXmw0WRG0ZIpUamQj1dWthM3kiSMWTKXjL5Z2wfh
+	X3aIRxz9+NvPdw0PmO7zKUSNJHxGig80vMw2H8l8bvnR9nI/JbUUOl/aRwgqNiZF0QhVL8
+	RCVoTPsVMPl4SvHyVcDa1rEmkNeXwOw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
+	imf18.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of 3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.79 as permitted sender) smtp.mailfrom=3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf18.hostedemail.com: domain of 3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.77 as permitted sender) smtp.mailfrom=3A7jqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776990212; a=rsa-sha256;
 	cv=none;
-	b=LCMASS50d9t1hkJV/mQizE1zcWFK29Qfh9K+1MBxUNsUyP0Ei3al5ztt+GOf7FX1Uw6Rt6
-	NJBdjyqyw4lK5IaGLmroP1Vgc8gc0K1UH26pVsdBi+tToaBT1rtQNCxdkzmE6+amLx1JNU
-	t25+Iw6qoe2M87YJ68QyM9Z+cKa9Y+g=
-Received: by mail-oa1-f79.google.com with SMTP id 586e51a60fabf-42393e9b4aeso6704500fac.0
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:23:31 -0700 (PDT)
+	b=UxIQ9dku/E4X3s8TIN4vLGbJmIgfrwi5KDCU84cepFR55v1+HuC5HT9BCI0diYRAbz8RFu
+	vDu+gwqtKvnuSQu3q9ibXWdqrZ0RUthlZyIsk1u6JbF8mihp0fVs7fJTLOM+mIryvf2vco
+	HhHSw0oK1VPZmSGvJ5awq9CAJyQGtoM=
+Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-6961bdde2a1so2141818eaf.2
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:23:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1776990211; x=1777595011;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=toPj91gHoyvrb/6k9QW3xQFCS5cPHJVPPzwARqoevbM=;
-        b=aTwUnADFWtXSHc77C+yZD5n2kO9isZXN4Ff6/IYcjje4Zgz42R3VJGLrzFQbHPRPPD
-         UHI/Ek+/S+4eIib/2xt328cxB+NjRZWLsp2iqC4m719srOVgcYnpADf08KaZl/SOuSCX
-         mcyIkBCFwMpcxZ0ahBsbD3R9lcyhW7+iYE4aIFfy001l0Og6SFVTdwtRC1JhgAgltT3X
-         JpSdxWpeKPCAgg/ktrMNumXh/Q6BPAUyLqmrWZNWKu3dATAgERzF0uMB9LH0ZAsBaYvH
-         g6Kn8KgcY8mNMTSJlyYzzdkctmV8uX240Dn8VoOi84PYPadkN4qPIBdl6nE9tjdW1uDe
-         NHYA==
-X-Forwarded-Encrypted: i=1; AFNElJ/jLPODc44gVLbKVH0F+Lkur9uR5pubQ0aNOBhlXkGfu6kGgZbnjKA5rl25NvvzIDvmesUrYpM8+Q==@kvack.org
-X-Gm-Message-State: AOJu0YwwF1G02wdnDzHW/6Fclf5linC/nPt2pSbGuYaWButF0BFFyFEP
-	D8ZPrOXSFX3OYvifcw3qXwmX1JvYIvtcBDfkjfju2qdbUoqg2viMUDO6mLq6VTNjVOs2TBi9C5c
-	qYzDurDk5o/W6DAjBSRZPYEIKKQw0apojngsQ2G4OhGifo+Xe+PxKekuRlWQ=
+        bh=CWIVnShUDLsum8iUvvALRfGhmvCAHleL8NwdfLyFyxE=;
+        b=PzWz/FJTvheUlc6AjC4zZucLSbrBUSNYoPuhUeEHepDXgULwUV5cBTYg2kkg2dlJcr
+         +fS4ZzcwbpsFOUNY9q40xxXq6iil1KV/If5o0A6wlZjQ005dWwcSihaxSAFCq+/gw6Na
+         HTT2sCJOVITs0Gmn9Si+9flbrjt8M/2LupYl5bqqBniG8GsrSU9nonFkJ2qPUAr6Ty33
+         iOQix6qzmkek323pmtPG/GlIv+CB2+D6/kiOOPK0JCb0MIe+oTzvVSqMtu9NXHm+BN4d
+         wbF1miKcN37irpM+20EIi2UkWjYtd7LoPqvCizhShGcMlz4XUGzB3kGdIUumkc2CDyMj
+         5mbQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9KwmDr8bB2Xe8+MydphkqsPDvsDihzV4QF7G+/o9YuIeR53aBznItOeI6LBJYv0DRak7KttrpxlA==@kvack.org
+X-Gm-Message-State: AOJu0YzjfFgPk69HG4bd13MFvn3Aass20SfJ/KkCbLJK1DQ685t6ulfv
+	oHjLFnW5nK/ZN0OpqN/OdEiPZtgVAIGq0hBLeVdof3LffSsLznLNx6nAetq5pIZpCbh8RVoWCsM
+	t3KvI9Spt4Zb85gFiigXUU0YVZ0nsPacSw92m4M3CRvOhMNVFmhdgVtp3Wsc=
 MIME-Version: 1.0
-X-Received: by 2002:a4a:e84a:0:b0:692:a19b:af6b with SMTP id
- 006d021491bc7-69462e57b48mr15598213eaf.13.1776990211136; Thu, 23 Apr 2026
+X-Received: by 2002:a05:6820:5104:b0:686:48b7:d81d with SMTP id
+ 006d021491bc7-69462e39623mr11432744eaf.15.1776990211364; Thu, 23 Apr 2026
  17:23:31 -0700 (PDT)
 Date: Thu, 23 Apr 2026 17:23:31 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69eab803.a00a0220.17a17.004a.GAE@google.com>
-Subject: [syzbot] [arch?] [mm?] BUG: sleeping function called from invalid
- context in tlb_flush_mmu
-From: syzbot <syzbot+98bfe400bc653d89958c@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, aneesh.kumar@kernel.org, 
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	npiggin@gmail.com, peterz@infradead.org, syzkaller-bugs@googlegroups.com, 
-	will@kernel.org
+Message-ID: <69eab803.a00a0220.17a17.004b.GAE@google.com>
+Subject: [syzbot] [mm?] BUG: sleeping function called from invalid context in shmem_undo_range
+From: syzbot <syzbot+9722a25de70a85ff48a1@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, hughd@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1D910C0010
-X-Stat-Signature: qg498reokg5dird8u8u7kus3absbcc7e
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4A3DE1C000B
+X-Stat-Signature: xobrhtfhag5rfyt9i4fkn7gennfjureq
 X-Rspam-User: 
-X-HE-Tag: 1776990211-548121
-X-HE-Meta: U2FsdGVkX18bLEmA3Ab9KVA3AKy/96FSeactxMhXGPmlYzEDzD3D3Jn3lnlEX189xCspLFBaPCMDw8X5mlQseqbgoe81LcsH2OOjTtBmW+DA0KmJDmo9+fSWvHfkFmGB2tDbuDGVdH4h10Ry621K3MWzyvBItJ1Y72/E64ZnjDVawyecSwTU7D9/YGMsY2LIiMs33VWv7nn5kGTJoIdHVime+noGONuQUDWR6NDeurL1Cu+k0xBrgq7qda+qgxcO+nubXbgUvk9ENqSqiWyL6SGKlqi+v1Uay720KwisK6c8x/Z3NQutkt5tWeaaW/Tfp/sQWHMVrc/V07UxUVIloQPgNJrTST5XWLPfIT1oaQ/PcqMCBp/MUSvdaakcyLauK7LGrewPhW6xjdSQyEa3E4ZW2sjlWz6MtP6cL2ljC6XPng8Lefkl96UqaOCGuZQ4iMfIQvI+Kz5dV5/MmQivtQEM2Uxp5H/EGao3Mcf5T2aI8T+PEHiNoHVYHtTnzyuru8EPjeDrF/A8vUQT1PUBXtHnmkVTqP4z6XLNfwBAcQyQe2yh0I9seuwOhRIL45RH5mojS7ZZQp9RhiX+9QyKumaBV0tmk+wI2sqwojzCazaVVJJTvtva6N7YzIkuxHFtM1aoUkNyteg99tfDwiBmGQDPJSPyleIhcqXhXq/39LLDO6PUghiCItjuN9qsbNW5cM4pyshpBfH83khBnRLorPBVWP3dJOYME8InCWzbLyG5E2h9j2v/75ItM2z4m92J4fd1+AdNLE7nz5pskxU6+NFl2uPCvpPDMTz2UQdBEFGUgid6VwzG62Qp/J3nOm9V3orMO/BAmGexpUI1cvyZ6SUJwUPwfaBzhTKa72hwqbeCAoRXY8/BnqSjIlxRE9NAqxR+qKAv5zuH7jaM6Pqa2J2Hbkxoid0rWlyqnkEiSgeXa25i32HpK7p9jahRvaOFCH/aEIQkZswZqIClddJ
- b4LyQN/S
- ++XSq1SMP28zkvq1jeM1nEJ6W3YSv79AvS+IjuB/gUxveHMcir++eQcldgEBC/bJCjwquE8uVay+dY82qPYQTMrZcLLmXHpeMNIQF7xR86D6QJUkbu83Ozfo56AqhRiGMSdlKF2xj7pJkEw+XETsCQ39A7qtF8yfJ8Rk6wv7SqpXzSE20NWGYzW/+afDuzFGvKdWQ27M75ciKM+Q/aM0TgRZKbLv5v3zeCDMArE9/uEz9OwTnzZBPOyHTd0Nht+2+4yGad4HMMszGcM31TjO3OODoy547MRxvyvCzfDVyTRbxnl4nrD8ourFCkfJ6tbkzCiKr09BqfvbY2whqK5F+fGN4gCJrxMwwOF0oTZFvj5H7YSZoQvjD/DKFlZRnha6d+PjzaQWo0NYCCaAiGSbO0cQieci2Eiq/K890kud28HsUvey4lVjE5ykmHO5kAz15Cpng2zmd2WC9QtVfExU3qPbGzUCmSEJB0SxSdXL9+vDt6oSAu9Tqiqm6Af0WCqaY7qND+xFUMXO2N5WUtpZOLW48Tah8gcW3CMHu8eQEJQHdzal8nLGR4b8c7N1DTjQgCuJyZa6cx6Fds6aW27JkWxpdtk+oGIyzNRpwYGyI3lvPH/XEgHfOiJT60LhAY9iIYXY6Aep2vwcvHt6gorhwjzVIdJACKIAz7ZpfXKbY11mwv0/DoATsX+V2bOqnnw9JNRMFmwo3b8pD1enqNTO+xBf18lBY9JsMmHYEUkP4MlzEbqXBMhoyQPjhEPOn+grMSlPWcdCrDG+gymCglZgWng2Kzvdrgqa6z3hLW4Lu4NL4JeaHDJ2tdeaPGbtQGa8wPnugP/jIBLwfMPqldflhYfMSLkhEriC+hfSobzzB59l6se9NatW6C81ffYdxQ2sopmGZ9hRbGa5Bls1rgNSZqT77HFEh7V96enLE69MOIvstQ4XAQcBjvBOFbaF6SYRGcaVNbRoFMQrE2jrd5E7BJ1ff+vHs
- 7FXBP3mn
- XAyeyHiq8HUG18oi+jAAz9/ygPeUzXXau+X2U+9XoherzM2A8+bh4eyv3zoqYfn+jaue5xjlPvC6+8XPLJyxQAvpHfKVDquH5I4DCQ+Pep52Xe3InQwMDFfdHpf2AOBbuRaX6bGFWUziGzpUBvEPaolOljVk3IMMK//e8ZmZ2jTtQm67/mX7KoQa9th4A8kwME8Kf/VJ9+xw/zjU+gROOTzDkHtf/6lN7ovQLaFxrbJ9cDw7+G/MuxOm2jflli2idnBeMLNvlRcxYFMhpQse7dmz52e9ua/EGdD1IGK6dXn2BMMckZIKFuz92SrQ0bnxkD0AV9TTsCvzYgyjQLAwOpKRj5QE7eZjxRqIXA9YCiwp13oo3PzKe4csh0tXOL38L7hEtA2WqyRSZsdrrcuKYcIVj9bph4B9mWpmMXNbMWmpNasvBrRq/EYoROp4V3eXc9NEZqnKXYadZdlVwfiw1XIPJjwdhSwc
+X-HE-Tag: 1776990212-639109
+X-HE-Meta: U2FsdGVkX19ms1hwuZ0KrX2iZ98KNVDChwVV5R+2AxAEiX+1IiVNnTS25oYGgIx+w/+peLUoLs8HyBHb/gUfc3Pxm68eHJsqi0KUQvu6q0tt4sn90pht2GM9NDqYD5MEdeKj0Cxq4GLehVz8Zas25uKn8QtaMW9xJvfPVdlC5Oi3j6TFREo+GCcY+vTHz49kvChncmJt/PlqKB3Pz4qd0/06TUJjd7qtRKMcvcHGi8uKsF8GNNSjIJS/jqfPqyfiCz5ubxV3ztadnxebU/unlX4yM60wOUb3kY8FnQP23iFmU4wzZA3Y15O+xOWXe2td60tBuDlIsFcVxNktinj/5D9nPXuuo8pQFcwJfpYTc7x72YJDbSRpE5hsxmyrvaVfY+La0vQ3eTP2xrcEUqz3zXLwl6QBQujTK++yoPV7ydx9y4EXuYcKrxQ8yF7+DKVfCGvE/vGNIHPAgzvYZCXL8c2Dzw5A1IEs3TXlSI9BXXd+coHGpU2qUK04eP2Box2re7kdsdcZ3gUfFbYq6v5E8PuhuOf3pA0E43lWaY0wXb3h/Ac5ABL+LyPy2yfOzuGLb7gxjP00S1FEezmjO1ui9hV7S8K2fm3H7bKZA1QVZZxQ+9xQT1FjRRnbGnICy3rRPPZfqLjnt9q0uiqo57hEBx2hzla+VRP7wXEFx9yx1wkgsQvi7uN48+sBirh7/8ikLn8du1DMuu8v6sqjkzjQhH1tp6HzAGEX+vOOPvYgXbUXLyC1ze/hLeyDZdrfgqnzMAab8Pz44q7TL645DbB4SFZw1c2rgnrA7S824ySlqXjmpATXt/5ktO/vCKoUUB4fWzX1HDVhVM6ve0ir8FEj9h8Kmq0fgv/j8sVMhkFWEghlq7uc4GDWZYOQifclYSNHn4lZA1tLMgtZWgPSW+ahskOB2LZgP+sD0Kh/VFxBAycXnPdCTeNQL7eQFuSbaMWR8BainLolTluiy8nKfhF
+ JYEPmg7Z
+ oqadFzN0ZXUxYhTsTLgeHMUYj58dHxqMVrCRx+N9+LMc7zFJhARJP7ZA5l9BcjlGOJF92/cIqye33cWh+7sYVG1T721G93PvM7EzX+pUFjZmskRuQsRwcfWBS0KlfkfuSQHF0CwqYU3B+IOvycGxPhdNJLkUTa2VAx5uiaakwYYYBruLJeoaA72Gt9TqzmKWZq1zUQ+oYKp6qutusikx2pTcAEGrAvmrfPoi05Q4imAraHKXLWIasPwBHJK6GfFWEn1IAfL/I+DU8DlvY+xs0OCuZ//kf02NNW9f32bOnA3cYbLS/h4msQLFY9d6aydp8P4evqlE4H0Yq32DEL7WUAPjvnYT0ZxvOvpmSD+pkg03kUppes3gtdV/Pd8jPFTLdEZPyiCoNcj6jEOXuizzZ7PU839wIaU2Az/6cI5jOE08aiEaZznw9uCn4B8fIV58xP+OMZZLe1W9DtQREq7yQRsgNUfuThsxT1Tz4OsMQ4PsZ5A1Ojq8vb0Y9rjPKQNymv/nS5RaIVhlODZgy5U/VxDAnlGy90IBafqpukS2vZk+f+xmGHbMmWedw726S6M7tiNocwDisGRtzDm0e/0XxRz5FAOlg5PAcrtAajCYHASqWfiLCz3I3zWXE96qgzRLsaBTi0r7IvpeDlvRrNz9pu016YiPEUVzZd4gRdO/Um3RZ6GXNwd6bE7TXfVxKh8RaY4OKU1MRBgL6H/zBirMhU4KHe2x1KqrIo211qgmxcZMawMWWFRLl6Pf2dA212vMsxeu2Cplpah8HDMeWIHjfUjrUPKAeKfTNqu5sAHVjjJV4hejEbP6b2pFyQIybA77rRtV+VeKH9Ar8RUPHXp3a868JvUnCn5L3/pgppJjeqFM762d0cCW3v+VzjsvPzqT2TkMijasCi/UYw7fiTWtJt8oJ2o12Ft/tsSs55t6Gc/LJnxlIrHJpByGIBzIco1GvJrufq59h2RjSsp2wMRVHMRg2ZMZ/
+ +cMK2ojz
+ 7ede9Wf2hDsoLZGYLeUJ6ACr51PWPRCQALB7Q93tpM4x1ujolBGWxOvy21l3bhO410FDgHmYAY05pxeC4yQH6z1uiVAQkFSc/puQe0OxHLKBnC85e+//io+3IhxJ1nDXKtRoAx2OHSGZpeukROkazQpk8RdUDzen6a7lr6uwkIa7dKGxst9oJ5/HGncnqTJOVHJyb8mbmCqJFBb6ShM3/yc008PCy7YXRC/IV5a5oRb2pvvs7xnf12gYv1h89PDCvVhYz4SG1h3qTvWvN0XtKncLRLf6YJICR4mvtGyqgpW8Gbvgk4JEYRiExrows6byGvAwSiszhQHbQAnLBHn4RYHKiFErax6wCiKhMCWpDIOaVMLj4QFUwMePGojw/XaZcP7Ia0+vYLEOENnDmG300i4IbmGZZJL/YQmCL13TQAlfdScUPAUdtIG7+EEyRt+A2Z8SzhyTA2UntLgYIIZIEBuK/umoCvZ+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,115 +99,125 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    70c8a7ec6715 Add linux-next specific files for 20260422
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=1586ae6a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d941ac7f11ceb230
-dashboard link: https://syzkaller.appspot.com/bug?extid=98bfe400bc653d89958c
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+HEAD commit:    2a4c0c11c019 Merge tag 's390-7.1-1' of git://git.kernel.or..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=109c12d2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=24c8da4692f901cb
+dashboard link: https://syzkaller.appspot.com/bug?extid=9722a25de70a85ff48a1
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+userspace arch: i386
 
 Unfortunately, I don't have any reproducer for this issue yet.
 
 Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/a920efda9ff7/disk-70c8a7ec.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7d7626f0c3dc/vmlinux-70c8a7ec.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/261effff1138/bzImage-70c8a7ec.xz
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-2a4c0c11.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/acfb852f3eb2/vmlinux-2a4c0c11.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/d8166ea5d3da/bzImage-2a4c0c11.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+98bfe400bc653d89958c@syzkaller.appspotmail.com
+Reported-by: syzbot+9722a25de70a85ff48a1@syzkaller.appspotmail.com
 
-BUG: sleeping function called from invalid context at mm/mmu_gather.c:142
-in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5808, name: udevd
+BUG: sleeping function called from invalid context at mm/shmem.c:1150
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5904, name: rm
 preempt_count: 0, expected: 0
 RCU nest depth: 1, expected: 0
-2 locks held by udevd/5808:
- #0: ffff8880387090b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_write_lock include/linux/mmap_lock.h:536 [inline]
- #0: ffff8880387090b0 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x2c2/0x9e0 mm/mmap.c:1308
- #1: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #1: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
- #1: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: folio_lruvec_lock_irqsave+0x24/0x540 mm/memcontrol.c:1452
-CPU: 0 UID: 0 PID: 5808 Comm: udevd Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+2 locks held by rm/5904:
+ #0: ffff88802b0d0410 (sb_writers#5){.+.+}-{0:0}, at: filename_unlinkat+0x1ad/0x730 fs/namei.c:5545
+ #1: ffffffff8e7e5260 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 include/linux/rcupdate.h:300
+CPU: 1 UID: 0 PID: 5904 Comm: rm Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
 Call Trace:
  <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x329/0x480 kernel/sched/core.c:9162
- __tlb_batch_free_encoded_pages mm/mmu_gather.c:142 [inline]
- tlb_batch_pages_flush mm/mmu_gather.c:151 [inline]
- tlb_flush_mmu_free mm/mmu_gather.c:417 [inline]
- tlb_flush_mmu+0x6f2/0xa30 mm/mmu_gather.c:424
- tlb_finish_mmu+0xf9/0x230 mm/mmu_gather.c:549
- exit_mmap+0x498/0x9e0 mm/mmap.c:1313
- __mmput+0xcb/0x3e0 kernel/fork.c:1178
- exit_mm+0x18e/0x250 kernel/exit.c:581
- do_exit+0x6a2/0x22c0 kernel/exit.c:963
- do_group_exit+0x21b/0x2d0 kernel/exit.c:1117
- __do_sys_exit_group kernel/exit.c:1128 [inline]
- __se_sys_exit_group kernel/exit.c:1126 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1126
- x64_sys_call+0x221a/0x2240 arch/x86/include/generated/asm/syscalls_64.h:232
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ __might_resched.cold+0x1ec/0x232 kernel/sched/core.c:9162
+ shmem_undo_range+0x447/0x1570 mm/shmem.c:1150
+ shmem_truncate_range mm/shmem.c:1277 [inline]
+ shmem_evict_inode+0x3f3/0xc40 mm/shmem.c:1407
+ evict+0x3c2/0xad0 fs/inode.c:841
+ iput_final fs/inode.c:1960 [inline]
+ iput.part.0+0x605/0xf50 fs/inode.c:2009
+ iput+0x35/0x40 fs/inode.c:1975
+ filename_unlinkat+0x466/0x730 fs/namei.c:5572
+ __do_sys_unlink fs/namei.c:5603 [inline]
+ __se_sys_unlink fs/namei.c:5600 [inline]
+ __x64_sys_unlink+0x46/0x70 fs/namei.c:5600
  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+ do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f62bcd8c6c5
-Code: Unable to access opcode bytes at 0x7f62bcd8c69b.
-RSP: 002b:00007fff29267f78 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 000055dbfa9391d0 RCX: 00007f62bcd8c6c5
-RDX: 00000000000000e7 RSI: fffffffffffffe68 RDI: 0000000000000000
-RBP: 000055dbfa6da910 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fff29267fc0 R14: 0000000000000000 R15: 0000000000000000
+RIP: 0033:0x7eff00dbe937
+Code: 00 00 e9 a9 fd ff ff 66 2e 0f 1f 84 00 00 00 00 00 66 90 b8 5f 00 00 00 0f 05 c3 0f 1f 84 00 00 00 00 00 b8 57 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 8b 15 91 b4 0d 00 f7 d8 64 89 02 b8
+RSP: 002b:00007ffef2c377b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000057
+RAX: ffffffffffffffda RBX: 00007ffef2c37dd7 RCX: 00007eff00dbe937
+RDX: 00007ffef2c377c8 RSI: 00007ffef2c37dd7 RDI: 00007ffef2c37dd7
+RBP: 0000000000000008 R08: 00007ffef2c37dc0 R09: 0000000000000000
+R10: 0000000000000100 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007eff00f4e9cc R14: 00007eff00faa000 R15: 000055fe0234bd98
  </TASK>
 
-=============================
-[ BUG: Invalid wait context ]
+================================================
+WARNING: lock held when returning to user space!
 syzkaller #0 Tainted: G        W          
------------------------------
-udevd/5808 is trying to lock:
-ffff8880406438b8 (&sb->s_type->i_mutex_key#13){+.+.}-{4:4}, at: inode_lock include/linux/fs.h:1029 [inline]
-ffff8880406438b8 (&sb->s_type->i_mutex_key#13){+.+.}-{4:4}, at: __sock_release+0x89/0x250 net/socket.c:725
-other info that might help us debug this:
-context-{5:5}
-1 lock held by udevd/5808:
- #0: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #0: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
- #0: ffffffff8dfc81c0 (rcu_read_lock){....}-{1:3}, at: folio_lruvec_lock_irqsave+0x24/0x540 mm/memcontrol.c:1452
-stack backtrace:
-CPU: 0 UID: 0 PID: 5808 Comm: udevd Tainted: G        W           syzkaller #0 PREEMPT_{RT,(full)} 
+------------------------------------------------
+rm/5904 is leaving the kernel with locks still held!
+1 lock held by rm/5904:
+ #0: ffffffff8e7e5260 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 include/linux/rcupdate.h:300
+------------[ cut here ]------------
+Voluntary context switch within RCU read-side critical section!
+WARNING: kernel/rcu/tree_plugin.h:332 at rcu_note_context_switch+0x859/0x19c0 kernel/rcu/tree_plugin.h:332, CPU#1: rm/5904
+Modules linked in:
+CPU: 1 UID: 0 PID: 5904 Comm: rm Tainted: G        W           syzkaller #0 PREEMPT(full) 
 Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:rcu_note_context_switch+0x859/0x19c0 kernel/rcu/tree_plugin.h:332
+Code: c1 ea 03 80 3c 02 00 0f 85 9b 0b 00 00 48 8b 53 28 b9 01 00 00 00 4c 89 ef e8 a3 cf fe ff e9 1d f9 ff ff 48 8d 3d b7 5e f1 0e <67> 48 0f b9 3a e9 99 f8 ff ff 48 b8 00 00 00 00 00 fc ff df 48 8d
+RSP: 0000:ffffc9000407fcf0 EFLAGS: 00010002
+RAX: 0000000000000001 RBX: ffff88802b33c3c0 RCX: ffffffff81ee0fc1
+RDX: 0000000000000000 RSI: ffffffff8c1c1000 RDI: ffffffff90dfe2a0
+RBP: ffff8880267b2500 R08: 0000000000000000 R09: fffffbfff21b89ca
+R10: ffffffff90dc4e57 R11: ffffffff94142590 R12: 0000000000000000
+R13: ffff8880267b29c4 R14: ffff88802b33b380 R15: ffffffff90dc81c4
+FS:  00007eff00c00c80(0000) GS:ffff8880971e2000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007eff00da0850 CR3: 000000004cf7d000 CR4: 0000000000352ef0
 Call Trace:
  <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_lock_invalid_wait_context kernel/locking/lockdep.c:4832 [inline]
- check_wait_context kernel/locking/lockdep.c:4904 [inline]
- __lock_acquire+0xec1/0x2cf0 kernel/locking/lockdep.c:5189
- lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5870
- down_write+0x3a/0x50 kernel/locking/rwsem.c:1625
- inode_lock include/linux/fs.h:1029 [inline]
- __sock_release+0x89/0x250 net/socket.c:725
- sock_close+0x1c/0x30 net/socket.c:1529
- __fput+0x461/0xa70 fs/file_table.c:510
- task_work_run+0x1d9/0x270 kernel/task_work.c:233
- exit_task_work include/linux/task_work.h:40 [inline]
- do_exit+0x70f/0x22c0 kernel/exit.c:975
- do_group_exit+0x21b/0x2d0 kernel/exit.c:1117
- __do_sys_exit_group kernel/exit.c:1128 [inline]
- __se_sys_exit_group kernel/exit.c:1126 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1126
- x64_sys_call+0x221a/0x2240 arch/x86/include/generated/asm/syscalls_64.h:232
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f62bcd8c6c5
-Code: Unable to access opcode bytes at 0x7f62bcd8c69b.
-RSP: 002b:00007fff29267f78 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 000055dbfa9391d0 RCX: 00007f62bcd8c6c5
-RDX: 00000000000000e7 RSI: fffffffffffffe68 RDI: 0000000000000000
-RBP: 000055dbfa6da910 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fff29267fc0 R14: 0000000000000000 R15: 0000000000000000
+ __schedule+0x276/0x6820 kernel/sched/core.c:7043
+ __schedule_loop kernel/sched/core.c:7267 [inline]
+ schedule+0xdd/0x390 kernel/sched/core.c:7282
+ __exit_to_user_mode_loop kernel/entry/common.c:54 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:98 [inline]
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inline]
+ irqentry_exit_to_user_mode_prepare include/linux/irq-entry-common.h:252 [inline]
+ irqentry_exit_to_user_mode include/linux/irq-entry-common.h:323 [inline]
+ irqentry_exit+0x359/0x790 kernel/entry/common.c:162
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+RIP: 0033:0x7eff00dbe937
+Code: 00 00 e9 a9 fd ff ff 66 2e 0f 1f 84 00 00 00 00 00 66 90 b8 5f 00 00 00 0f 05 c3 0f 1f 84 00 00 00 00 00 b8 57 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 8b 15 91 b4 0d 00 f7 d8 64 89 02 b8
+RSP: 002b:00007ffef2c377b8 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: 00007ffef2c37dd7 RCX: 00007eff00dbe937
+RDX: 00007ffef2c377c8 RSI: 00007ffef2c37dd7 RDI: 00007ffef2c37dd7
+RBP: 0000000000000008 R08: 00007ffef2c37dc0 R09: 0000000000000000
+R10: 0000000000000100 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007eff00f4e9cc R14: 00007eff00faa000 R15: 000055fe0234bd98
  </TASK>
+----------------
+Code disassembly (best guess):
+   0:	c1 ea 03             	shr    $0x3,%edx
+   3:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+   7:	0f 85 9b 0b 00 00    	jne    0xba8
+   d:	48 8b 53 28          	mov    0x28(%rbx),%rdx
+  11:	b9 01 00 00 00       	mov    $0x1,%ecx
+  16:	4c 89 ef             	mov    %r13,%rdi
+  19:	e8 a3 cf fe ff       	call   0xfffecfc1
+  1e:	e9 1d f9 ff ff       	jmp    0xfffff940
+  23:	48 8d 3d b7 5e f1 0e 	lea    0xef15eb7(%rip),%rdi        # 0xef15ee1
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	e9 99 f8 ff ff       	jmp    0xfffff8cd
+  34:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  3b:	fc ff df
+  3e:	48                   	rex.W
+  3f:	8d                   	.byte 0x8d
 
 
 ---
