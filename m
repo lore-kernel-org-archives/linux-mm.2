@@ -4,78 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E075FED3F2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 18:25:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CA66FED3E6
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 18:27:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE9366B0005; Fri, 24 Apr 2026 14:25:17 -0400 (EDT)
+	id 015B86B0005; Fri, 24 Apr 2026 14:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A996D6B008A; Fri, 24 Apr 2026 14:25:17 -0400 (EDT)
+	id F08C16B008A; Fri, 24 Apr 2026 14:27:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9884E6B008C; Fri, 24 Apr 2026 14:25:17 -0400 (EDT)
+	id DF7A86B008C; Fri, 24 Apr 2026 14:27:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 83DE36B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:25:17 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CB27E6B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:27:00 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A0051B7267
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:25:17 +0000 (UTC)
-X-FDA: 84694276674.16.CBB63AF
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78EB6160280
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:27:00 +0000 (UTC)
+X-FDA: 84694281000.16.37DADE4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 39DE11C0009
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:25:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DS+pNH2G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9DB891C0013
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 18:26:58 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="u+/3vppJ";
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777055115;
+	s=arc-20220608; t=1777055218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rN6rRsyES5tB0N1C5vrXIlkxoR6VT+UBf8tnWAgxbwQ=;
-	b=Ib3quoO1DJGVVL00QbO8LiKqGITfuZ2XxcDvX1McAJDO3BbpkuOUwVXW9h4Qj6gvHx31NW
-	PxwhLE1GJRlSHV+Pm7AGsvtaXlepk27xSViCjUrB3RpVtaOlLtxs6Q6ogOW3llodhH29Wq
-	UcrwGFsGRmhr5Jmh6wcdppm6OvPwmk4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777055115; a=rsa-sha256;
-	cv=none;
-	b=J4ZDmpMjuFLbTCAFhIs/VdctNqI+0Z3nVpFNncXzNla5hmXAzSYBxe4TCKKP1GPn+6yFAD
-	DDURWDkUb6efiJcCPTNUg7C3fSGe+5ruOKSaZ7bcpeB+bw5JiJ+R598I2ktgmMGWVrjljb
-	gk6IJfDp1+0RVqLJhHNWtVnny0Hz+XI=
+	bh=4+jS3NSZ/pWuHI9hX1IWYMyRsaWF/3cxfOua17HST4o=;
+	b=WrZQvVhAF4tyW/QaZn9EZdNKZRADfrUJfxHAnGcviexdx+MKjmOc5hhIFjZ3Dk4OjYI6gg
+	cdIR1Pm3qFCRmKpxXB4jci3b1dpMWhojNBEzUEJKNeJKKTof7lTHlO1HB8QNQYEVwiFiIJ
+	zNuxRmUQaRMBTzzNI+CYNQ6kOsJ2BMI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DS+pNH2G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="u+/3vppJ";
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777055218; a=rsa-sha256;
+	cv=none;
+	b=nA155Z4FqBVdUJ/TgcFg4sEM3lwCSB2RkmQvDcL3Ke+Jxx/N7blVfnCwqXYRqEtw0xbiba
+	IYaB/rnl/7Wt5UXaitIlniQw+06C8LLt9UrE9FNhmAbr878c3/ZW4BQSdk4XQuEdekZcBd
+	UpCSR+LuseX0gGNceKsohf4swObEpe4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1706C40678;
-	Fri, 24 Apr 2026 18:25:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE42C19425;
-	Fri, 24 Apr 2026 18:25:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ACD18438AD;
+	Fri, 24 Apr 2026 18:26:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE05C19425;
+	Fri, 24 Apr 2026 18:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777055113;
-	bh=VQ8hc4BwTuKlIp4qUFxYLXF10OdTQNZ5/iYxWI8OxTU=;
+	s=k20201202; t=1777055217;
+	bh=jE+zr5OC/t8vyDfTHUxqFb6gZ02duNQ6SztJCyxGuqE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DS+pNH2Gna3GmmRZk5v6dwoylCMW+dpIGiyjbNZh1ct9dAV5WF+vIcU/LpL5fbY/2
-	 r7R4VRcLKeff6SOcj+UVJiuKYflC+gbRoi67Fo318gJoWdW3Q97/CHixa7+6Msnzc9
-	 ORjaJfxjcJseTT//flNRI2mthEf5Eia9fmWoq+DJ7Tu8GhI3VZvxbToeEgggn3IliU
-	 eomHmcBeWb5au5TSZqs4NKzuuUnpLUzB+CaHd4k1UKJKV/Ng2c3DicI3Pv3w8k8878
-	 QScUER8ln3uXO/b+b/ralZya/ime11G4HNK+DxPhDD0NtJMNsgHtBtqv7AC8IfVkg5
-	 FhT9vRuNiOLvA==
-Message-ID: <b3176027-a1b0-4aea-8401-18cbdad9bc44@kernel.org>
-Date: Fri, 24 Apr 2026 20:25:06 +0200
+	b=u+/3vppJBKOOpM3X1nw7OU1ci2VL3WwTteFLA23ZxyYPekT8sRH+NkSv9MryHCfw4
+	 ByyOzoUTfzuyMEq/N4IgIhqN4WwV1+MnscD2fDaeHpW4WJ0ogBhoE1jWFzymx3Puf4
+	 1rYxvxeXeOquKGwELqQ7LltCH/S5/mb5bogRPhMUmN96sLIjY7OgKyhUK/2zKbdJwB
+	 7k5V7SoTeMWJpZTuTKG7gXD9PiZnMH7VOi2O4Cwbc8TdX+SnK+7XsIFe1yE9W9O8M+
+	 JhrG9BNe+RbqZQeYPpuGmN5a9kscoHzq/1/9EA062MO0XLZDAiWAJcsgmVHQGIjBUw
+	 XW7ksSG+PnkYQ==
+Message-ID: <1dea839c-8a26-4fb4-b432-a866e31572ba@kernel.org>
+Date: Fri, 24 Apr 2026 20:26:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate_device: Cleanup up PMD Checks and warnings
-To: Sunny Patel <nueralspacetech@gmail.com>, akpm@linux-foundation.org
-Cc: apopple@nvidia.com, byungchul@sk.com, gourry@gourry.net,
- joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- matthew.brost@intel.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com,
- ziy@nvidia.com
-References: <20260424065922.5f15ca8c88eaf8a02847af17@linux-foundation.org>
- <20260424173347.44621-1-nueralspacetech@gmail.com>
+Subject: Re: [RFC 4/7] mm: add page consistency checker implementation
+To: Sasha Levin <sashal@kernel.org>
+Cc: akpm@linux-foundation.org, corbet@lwn.net, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, skhan@linuxfoundation.org,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Sasha Levin <sashal@nvidia.com>, Sanif Veeras <sveeras@nvidia.com>,
+ "Claude:claude-opus-4-7" <noreply@anthropic.com>
+References: <20260424140056.2094777-1-sashal@kernel.org>
+ <20260424140056.2094777-5-sashal@kernel.org>
+ <4b961a07-b72d-4c8a-ab49-23f61ed12b53@kernel.org> <aeuC6TJ4XowazVZj@laps>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260424173347.44621-1-nueralspacetech@gmail.com>
+In-Reply-To: <aeuC6TJ4XowazVZj@laps>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 39DE11C0009
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 6e3jsdwsinatma196titq8amt4ebdttz
-X-HE-Tag: 1777055114-171664
-X-HE-Meta: U2FsdGVkX19Zk9/IWRSOB1rfNfwM3x23LefGGal6/XcBsWrxTw4FZGZ4jdjjYs05aR/17W3YpRelDoR/EhArhwWgjJJSt6xLMqye+WUC0gUg33YhBEbg/H1iPJSWBdIlN56Hv3Vv6FIPJI9dPvEor1kxtS1su9riixMr+LGmNeqAxGlzRUxeymvFpXdYvw0HSfaAyC55Ws0F0zxZbfhIZePuDMYhIa6eRjajz0/50iAF+goUHe3D0c6MrgygDC9DDFw509OzPOM8C+L/xESrpXf0Wf5t3/Cavv8lqSR+YMVslteWurk401tzKZglm+X4RXwmnkhz8yxtG2dV9EiJHkReI8FrnZ2OZXV6U7XfZ+gElp5BSlcgymW2q8ZYzj0Wck5n/EBqz82xvPtjb4IDKI5obTSctN+c+BQg/UrqKxReXp9eOP+82gJ3DuODWcb8uuWebBDxFFkEcrm81G6r357AQ4dPUCLtt6wS6RfJmzXR0Rl7jnrGvjIDTSqwrAaFn0M72t491iMrwHIeiAL24f7cvFgi4bJImSQqGtGOt1jy7ZCm9LRRJJWX6ww6zHmlkl1xWXOKZQ7Yp9iGTQAILPjkqtRAqwIX61IE/qCHgLhmxvVMiS4fI3KMHiyv3GO3z8JeU8qhNp56g+UaImPYuW6O3JRSANPukhk+OjgiMNF0J38C0V95UqDOdlGxSFwB81Xj+IxaaEUonIJUhhsChaZaWIfmlIu/zMhTfMS7kbedSO8TvS4SNfXUClVCrLF6UUfPyNkMXOwF/KCfM00WeAtcgAJkfYFGRF50EUZdRLzU5tZ+Tp5JFRX5BrUAoPIX8+IXQi4J0kMOsI+/QM9HwOBQcnQyRVX/JHxB1PPffAXcwxkP2rKOSSM7RXKeizwM+qVJ+2wZOG1IsLFgdmwUSNAxU5vm1hOu/b6FGVWSRQFkUnUgH/0TpbenLHNCkI1RX7gAh4rxSrjh6Sb5PxP
- 2F5n3zyC
- E4UIXU4SY4/nUSJq77VcZzehr87dwaT6Dn0mPLZrnI77EOoZ7YAoXuvI5xRUEvDAK1WaQX1GXlS+AT+N+8m0mrZwrVfXdWhVLegD/SOD84bc32Vh5f1fV/hj3r/9Dt+Dalwv9jfGsfBLnYmNVq2GduB3Kev0QwMgemJEVFpvd1m1vvc9+PVVfKv4DCw3MnURkV6jeDR7vaxIrFTQOLHXAb8X70mrRiYy2AFUdgW0e98K9db+3nXF3bxcwA3/A6YdbeIPoWwm7xsONxNcObu79RnHAapJyK4TRbBm4UpeXafcGK04COk4jEFoW4PLjTleMHNZUH6i0UW8NymNx+ENF+FaNwEvEL1GScFZpBdH2XU43EsKc6Hox9dGFWRdwmWzTujexqyyWE2gmWlzJejBq2kLmwqVcoIBHOJPJev9Sg2jiUbibPpSy32yU9Q6wZKxL3BODZkN9erLH2TU=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9DB891C0013
+X-Stat-Signature: mzn7ob3j87dkus7tksgese1jxx1tjdk1
+X-HE-Tag: 1777055218-250068
+X-HE-Meta: U2FsdGVkX1/rlrLFXmuF8op49H2Dcs+MCs3ul9tydNCwEOp/wNCVuIK6uqPm3IUCcQ9X78VjkEKGI52HA9pnUDGQq+iZumzfblRA8U+8vbP6MkxQ6+S4SWGc3bMWSPqpca4Vw2yoV9vSor2Pmug2e0ch+KxB9KFqLsbrqDPxbqdcD1xe6SJhlDj7zkER5uv9xBbErgVy3tQpDVKa2LBsrbJijlILTGjSv/GJAv+D/+Cmregf8fkBD8Ftk6P9Hw3/Tb8f6YiHD1hAAfJaefpnNtAgcUBfGMR84/qurqr73PTPgOIwQ2Rv3WFdJV5n9eA59PJbs0rY0YYY49MXYjNt8oQm+iwZP2r9O+cF6lf9bSjrau0BuALhmTsJvcalLfHlFUdaOVvJEndfNgfZ4HE+7V7N6vM7YxofSNObD080KIQLfSRt8mvQpH65onXW48fEPoUMlLIhd5iL+2MWM7fYGNr7vQahYxFb4IAbJZt5UqastM5jxQC//OG46nvfZR+3m4VHKOyThLGIXf18U9NcQ0tJ8hwXnGxwAFdBzwJN95ATJSos/hhgogHFNhJZnVUoPOTC6/rHwfSXtIdx7aRJWd0vHdEKThL2A8YsAfE7Lr4gwqBe+6XOeaxOpH5Qf9sIeu1/bY9WiyITAPyL2zawqJgIajB9b+L8PgiSolu/ieVNXcaTpU0uC1YcQdlrl/ZoxzEqJ5l+U3/zhR+80SFziPPoQoqN4np3s8rpbi03solUHRLpwMBVY/8zW1xlEqNOqoJuPvJeytHSKBJmo/TmvgyF2ZQC/SxAKWUMgtmS4s/KZlIdpnQATmIqaa4tJk9/1HANMVg6eDVPcfbqlmpNjsF5qTBeMXos5j/6glbekBSS1f74puAGnMQkk95Cn8H5NL0cak2tBB/gJI47DzGDjCQN3FF1OgN7yv38xCwtSNo41C6LnAcUimVMPCZG9BpGsiBrsglWqfT+6JA/crV
+ zQsweGGJ
+ 6kEMaZVowPqkCLLnIGC7b1kgUUgvwTLbvl58hIl+Ntse7q8iR2tE0cvxllTArY8k+GZ5X3BUxLpcW1Be1aApFNZpWpP4yK/HSfl1mBgijVzCbzig8MMrW8oUyNk+5XtxceQipR+Cqgx8jKVYsnBMsE/KsXiqnW5HWyUG66UawTvblnEiX3GMxVMU3WDuXa4GJ8y6u1SUqRL9tm0akah1yBsJBwiacwYrhJVs9Y8heMppobMKSyxUoRssBpz56qvir7v2Q3uDi9E85MwHrzRYmmYtbeuGUt+9RjuVm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,39 +144,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/24/26 19:33, Sunny Patel wrote:
-> On Sun, 19 Apr 2026 23:17:43 +0530 Sunny Patel <nueralspacetech@gmail.com> wrote:
-> 
->> Remove the odd VM_WARN_ON_FOLIO(!folio, folio) usage and replace it
->> with a simpler VM_WARN_ON_ONCE(!folio) check.
+On 4/24/26 16:49, Sasha Levin wrote:
+> On Fri, Apr 24, 2026 at 04:25:41PM +0200, David Hildenbrand (Arm) wrote:
+>>> +    /*
+>>> +     * Size bitmaps to cover the full PFN range including any holes.
+>>> +     * Holes waste a few bits but a flat bitmap keeps the indexing
+>>> +     * trivial (pfn - min_pfn) and avoids additional data structures
+>>> +     * that would themselves be subject to corruption.  This matches
+>>> +     * the approach used by pageblock_flags.
+>>> +     */
+>>> +    pc_state.min_pfn = PHYS_PFN(memblock_start_of_DRAM());
+>>> +    pc_state.max_pfn = PHYS_PFN(memblock_end_of_DRAM());
+>>> +    spanned_pfns = pc_state.max_pfn - pc_state.min_pfn;
+>>> +    if (!spanned_pfns || spanned_pfns > UINT_MAX) {
+>>> +        pr_err("PFN span %lu cannot be represented by bitmap APIs, feature
+>>> disabled\n",
+>>> +               spanned_pfns);
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    pc_state.db.nbits = spanned_pfns;
+>>> +
+>>> +    bitmap_bytes = BITS_TO_LONGS(pc_state.db.nbits) * sizeof(unsigned long);
+>>> +
+>>> +    pr_info("Initializing: PFN range [%lu-%lu), %u bits (%zu KB per bitmap)\n",
+>>> +        pc_state.min_pfn, pc_state.max_pfn, pc_state.db.nbits,
+>>> +        bitmap_bytes / 1024);
+>>> +
+>>> +    /* Allocate primary bitmap (zeroed by memblock_alloc) */
+>>> +    pc_state.db.bitmap[DUAL_BITMAP_PRIMARY] =
+>>> +        memblock_alloc(bitmap_bytes, SMP_CACHE_BYTES);
+>>> +    if (!pc_state.db.bitmap[DUAL_BITMAP_PRIMARY]) {
+>>> +        pr_err("Failed to allocate primary bitmap, feature disabled\n");
+>>> +        return;
+>>> +    }
+>>>
 >>
->> Drop the redundant VM_WARN_ON_ONCE(!pmd_none(*pmdp) &&
->> !is_huge_zero_pmd(*pmdp)).
+>> One bitmap that covers all sparse memory available at boot.
 >>
->> Refactor the PMD checks, making the control flow
->> clearer and avoiding duplicate condition checks.
+>> Conclusion: Just horrible.
 > 
-> AI review might have found a bug in the surrounding code:
->         https://sashiko.dev/#/patchset/20260419174747.10701-1-nueralspacetech@gmail.com
-> 
-> NOTE: Ignore the previous message was sent on different 
-> Subject Header by mistake.
-> 
-> After looking into the AI comment found two potential leak.
-> 
-> 1. The goto should be unlock_abort instead of abort to ensure 
-> the spinlock is released.
-> 
-> 2. The pgtable allocation at the top of the function
-> is indeed not freed on the unlock_abort path. Will add a
-> pte_free(vma->vm_mm, pgtable). 
-> 
-> Since this patch is more of Cleanup on PMD checks and
-> Warnings Is it ok if I send different patch to address
-> this potential leak issues or need it in this revision
-> itself?
+> Depends on who's looking at the code :)
 
-No, independent issues -> independent patches :)
+Or who generated that code ;)
 
 -- 
 Cheers,
