@@ -4,134 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DBF4FF885A
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 21:29:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B975FF8850
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 21:35:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91C4A6B0005; Fri, 24 Apr 2026 17:29:04 -0400 (EDT)
+	id 814B36B0005; Fri, 24 Apr 2026 17:35:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CE116B008A; Fri, 24 Apr 2026 17:29:04 -0400 (EDT)
+	id 7C5106B008A; Fri, 24 Apr 2026 17:35:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BBAD6B008C; Fri, 24 Apr 2026 17:29:04 -0400 (EDT)
+	id 6DAC06B008C; Fri, 24 Apr 2026 17:35:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 686686B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:29:04 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 05C3A4010A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 21:29:04 +0000 (UTC)
-X-FDA: 84694739808.01.AE4663E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8210AA0002
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 21:29:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X/Uk8OT6";
-	spf=pass (imf25.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E0326B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:35:25 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 01E581A012E
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 21:35:24 +0000 (UTC)
+X-FDA: 84694755810.28.6FB0527
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 31FB840005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 21:35:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=bzdlVBed;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777066141;
+	s=arc-20220608; t=1777066523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/tXnAyR3M5cJTscCoBgY20NRui5GnKz1WT/QsmR6338=;
-	b=Bx8x/WQaKIl+IkODr/bcLZhUvV58WFgawgvNBQd9X7V33Ka6rFMxEJUX9+W2TPsbN+6EJ2
-	xwxUABKOxgdRuUJLfIHbkt4SUE+M1wJnM1bj3ZF14hazNRFQ/LCVVyJ/lL/Ak+Vqne1dRG
-	GgfQPBBpfk4j4igTJwm3UphXCCGlhdY=
+	bh=Rt3o1IfEBdIRMaZ2FTQd3jDL/mv0HSAF/yDpkwc3728=;
+	b=L5gljdSR/5IJ5NT3rFNr0RrYIFPpGPl+W1ZYyuJ9ptNqb4n1RELbRV1xgsbTJ1e7fWDvpr
+	nLw/lkV5DUG6b6/rc0loWtE3NIw9AheTddxwoGRHK9uFFmyE6vSVwB1GK2RdtkqGEDFCCo
+	p9s5rzEcud1/U+85Z10N8Xk8kxH6GX0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X/Uk8OT6";
-	spf=pass (imf25.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777066141; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=bzdlVBed;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777066523; a=rsa-sha256;
 	cv=none;
-	b=V1prdQ+DDRkrN8nssfxtlt4081Epcpkii9ZFa247gHzz8r+WvhlWPLLd+gdoaWD2L08VLP
-	Go5ngSuPcxJCB51KqtIsOPJmzNrHIsW7flu5N4782q4+ovHsOE+sfmlVVUFQEqR37RwK+g
-	Mc4fe8lzUEbGQ4gKohjDXI6JRP1VXtw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777066140;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/tXnAyR3M5cJTscCoBgY20NRui5GnKz1WT/QsmR6338=;
-	b=X/Uk8OT6hIUowuz/rcEp5BXkGbV7tieFK3r5ubisZTVAwWZbSIejtrTvHV5MByUWfIoGqs
-	vlg4Xx/suffMdAtctPEoiiBtZQt1cU1JppzjC5gXdm6Iaw1pMvdQRzdSr9B0nJXy4ebUYC
-	psQ4Ti6/vNQpuIWYOwI+MZz+qiJE4As=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-R7McZTRUMK2-NkmUQ4tYxQ-1; Fri, 24 Apr 2026 17:28:59 -0400
-X-MC-Unique: R7McZTRUMK2-NkmUQ4tYxQ-1
-X-Mimecast-MFC-AGG-ID: R7McZTRUMK2-NkmUQ4tYxQ_1777066138
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5a124b5672aso7134563e87.2
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:28:59 -0700 (PDT)
+	b=jx8SBRaREciZS02F6gHZe2Y0rEf7YwwTPKih3Ovools1RsjxvDMwARfOcQ3oAQtGIkxYGH
+	I77ea8oh82beXiJP+BmX+ea3N7P+s3QCI9MVFQ8r8+MnrIafeXS0Jamx5t8BavEJo2NQKn
+	vB/Gdr+0OuErJ5PWHrPu/SGdmTishM0=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a58057d7baso98439396d6.1
+        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:35:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1777066522; x=1777671322; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rt3o1IfEBdIRMaZ2FTQd3jDL/mv0HSAF/yDpkwc3728=;
+        b=bzdlVBedqJ2k2Lrza3aUwcsRFme9t+dQmfd24V0Bk45cplzZGnazeWU6P2QhA9OgW6
+         Cv+3l4DeBaI+LK1+RLHsp6xcvlf8g9sGsSmIGlzbptFC7ROwG+1A3w7JzPFU1pAtnDcj
+         475wFgmcmAbRrp7VF5A0kR2hDDkHgbp0ih5lky5o9M7fm1KlsoYr+lHz7DDBaz5ZmhFf
+         mLVvrSgCZjAQ0b+SSbRyFD5Q665nTXPs24AAd+06gb8fRwD8ou7q+DdORp5v9MGpaYAt
+         O1PqfgnR1cWvzegAb+9JaXU3VTvPZ9WuzI5v4cL7wq4I8uCrx+gyTDett+VVzOu2ucQP
+         wMJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777066138; x=1777670938;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/tXnAyR3M5cJTscCoBgY20NRui5GnKz1WT/QsmR6338=;
-        b=BBome43+9eED/iMVmulXzl5bWt4riNsia8uFlKECzkzOnpwMweNX6w+MQ6csSjd6y3
-         GXcZlszgBiTt2JghaxXVS7toe1+7IDYJaRHDQFRrJ3bJEz0+LXU8nASuwa3juv9LEHSm
-         +zzheucrnXMKPA1sdllHJtGaWUvn0EJwR5JXI+IkQydAW1wOaLufZ2h8HSSQ4kETPUeF
-         NKvDAWrlCFE/ae+adYqg3pZ1qhvBawxbCXLEB3Yy6OVlKA15d9qxHSlIeVGqs1UbFm38
-         JgaKdMVlLrETuYSDJlERZ1csdWEiTY+15hyUMxsish42WLVc33aPGHgdsugJJrdq+vkX
-         S0hw==
-X-Forwarded-Encrypted: i=1; AFNElJ8r+i/SQgPHM7fETgHSNjfi9ywM85atOwHWwEJCX4NqjPz6LlQ+OBCWMRkcK0vS78Z5UHyw+R87JQ==@kvack.org
-X-Gm-Message-State: AOJu0YwT/6+0AHpjqAs+YwqKJTACNQVW9lVBmug3O3B7DqBwou1SPSJU
-	RD1c3rxeXxDWww/EuOM3Ru2ct4Q+VyWjabZxbmIn2nxz/1YVs07L2bXhaS98WIlVYl3UtFNMVpT
-	jFE7ySgHfytuwCSqJs7tQ7S4GH9hbYXswnwOVjJRYM/Ny3hyiagw=
-X-Gm-Gg: AeBDietdr2ujTjS+gXcV1luGShZFvcvkyUxrorGmlZzQWG1VoDJ4BFVcGxuC4yM4biX
-	zu7aYHkUczSc9Co84MpgiF0/drq3krdAGAvV4tAet5ttOKlkJ2L21gv+lyiOwH4ctSsE/6gTgIQ
-	0Qai8Y4qPFiFbTHDJHcjYJqwXw08w+lqDDsMGwa9IgxEYDqHf6c6mV04WGMLz1w5AunYvamWWWM
-	rXQ2yhwm8xK0/tpPP3Yi6qItPZ7YOXpeBlPkDkUzxg7bjCNhLRRWacoZUK8QSIvnO1M432UfXzl
-	vRyK/jkzBDriirVGGtcmIGU4U80hsRS4XJjmRIyZLyV4fQONmWC4XA7KgzBSmY8MYDYl9KOLjeN
-	Z31UX7OhwCN64qGSSMch32uyPyVHQKGqsl2wF55UrRNXySPoE00kt26DkRA==
-X-Received: by 2002:a05:6512:1189:b0:5a3:d1d0:543e with SMTP id 2adb3069b0e04-5a4172e876bmr12367590e87.36.1777066137916;
-        Fri, 24 Apr 2026 14:28:57 -0700 (PDT)
-X-Received: by 2002:a05:6512:1189:b0:5a3:d1d0:543e with SMTP id 2adb3069b0e04-5a4172e876bmr12367581e87.36.1777066137381;
-        Fri, 24 Apr 2026 14:28:57 -0700 (PDT)
-Received: from [192.168.1.86] (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4187e7ad0sm6197416e87.58.2026.04.24.14.28.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Apr 2026 14:28:52 -0700 (PDT)
-Message-ID: <55de9b82-5a16-4d4f-8729-db7f2ccfa0eb@redhat.com>
-Date: Sat, 25 Apr 2026 00:28:47 +0300
+        d=1e100.net; s=20251104; t=1777066522; x=1777671322;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rt3o1IfEBdIRMaZ2FTQd3jDL/mv0HSAF/yDpkwc3728=;
+        b=qmbmDkv6sQrF+WnunH/p6ZmTSJHcvmKu3WVxpPnewHQx/xZnS53y/RfpXkaIliGAwg
+         CeBXOSQd2duKpKyeAjb05hoUhx47U+gIR2nT0zbKYuV3TdhLMHjnjPne0MzX51dlMpuO
+         Mhjr9Y0faugS/WYAkQL9P3P6kdBMIZOJ3Opt0323wZscqr/MWt6BM3DDBxfGd7NHjMmg
+         t8/dsW+v+2nJt22oSiqt5jr7an5c6JovjeH2CnnErVvWsIxghsYo/tvFmzGcgTlqmiBy
+         pcb7HJBUpRi1P0nd5eTJXwFRZRyJof7FYVzAI2xw0JMZt3efS9Qn5HsdWxJBcrtk9Nr8
+         EGLA==
+X-Forwarded-Encrypted: i=1; AFNElJ/7d221rnfnd4xA715nTpsbx2oDNEp+wGD0ma/w75v+YI8+LSwVRi2HNMG+TE5IhS18jt10r/jx/A==@kvack.org
+X-Gm-Message-State: AOJu0YyQuC7cn9/TubQDanCezUo+j8Bz7hqlF2x4krPzGCQQuxsdIErP
+	kwIAHMqn4zz5cALoM8jGaXm2MPhivcizx5/tJN4BO/W+ofvZqnsstT9UfbN5KUVwR7w=
+X-Gm-Gg: AeBDievE+DEr8jN/3tbyV/k0ReavsxOWywN8/7G2s0GhoHXroDrVLDPMJpXr0RuAlJO
+	mfCaFez7hauLp9SjlqBOgQsfX2djrqG2WCvXd0pHxjAkchmbs/EqcPle56rpJs017RahtxJwUY6
+	6Q9L5+THA4f5qih1FhEk8f6WNlItiV1KP+0uSxwN9k34zG9W29jklZOREbxnjIFq4jFqSLt4LSw
+	2nTSDKMlYY1mUgXlxiwEgpyCtRVifwp53RUTpbFdlfaAC2mo2+p6LgCghpMj8Tjp/p1HnZ9f07S
+	ifDzRRWi1pNRNAB0iYy8x3Z4LJKMhx5KaeEnJVwJY1wZsCLXzEjdOMmvvqyuUUzBo0y6C5Btmq2
+	AolYkcfDkyBVsveDyjC/PkpymqSNoluhmCzKRA+AZLleUgQqevhFkGv1s0jwt4bLnUK5H5BgTvA
+	hzFfACGsDLCsGoI/QLBwDENvsaObrt9YPx2Zxf51a0ubAp0ySHktbb5mUe4Icr3w==
+X-Received: by 2002:a05:6214:1d08:b0:8ac:74f5:fbaf with SMTP id 6a1803df08f44-8b028177e9fmr535664396d6.51.1777066522192;
+        Fri, 24 Apr 2026 14:35:22 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac72915sm199191356d6.15.2026.04.24.14.35.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 14:35:21 -0700 (PDT)
+Date: Fri, 24 Apr 2026 21:35:20 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: David Stevens <stevensd@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Will Deacon <willdeacon@google.com>, Quentin Perret <qperret@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
+Message-ID: <aevhw9xqz1pWA2Ow@plex>
+References: <20260424191456.2679717-1-stevensd@google.com>
+ <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/5] Migrate on fault for device pages
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
- Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-References: <20260414041226.1539439-1-mpenttil@redhat.com>
- <20260424092336.7f8f5b0c00f4b46f9e0879d9@linux-foundation.org>
- <3faef07e-5093-4d9f-bb1f-e9a1f2dc6100@redhat.com>
- <aevfOMdaANt0lAUo@gsse-cloud1.jf.intel.com>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <aevfOMdaANt0lAUo@gsse-cloud1.jf.intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 1wzVcPtk5l-p0QZ71ro1lFIAqSS2Q4DqMZqehR-odrU_1777066138
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
+X-Stat-Signature: t6g7cc9yyihp888bcemksxmwy3aoxr9j
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 31FB840005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8210AA0002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: aqqsqbre7mco5kf7z43waszssjhuj974
-X-HE-Tag: 1777066141-596522
-X-HE-Meta: U2FsdGVkX18IQpdmwX8M5ZatAVCRu0jDzxcdPpW+w14eSydz/Z1GA1HOWlJURrnOM54pLwtG7fSzFiWvAt04Gf0DL+72xTp3dXuTtogvDx1ewe0Tdf+NCIw43zPxh0+p5SlrTVXD8PCE4owH4Ew/q5mWG0cCsmJN42HLpSxWlm3Abdyg93KAlCpbr3JViUJVukJ3FmZ3qjOlKY9AQN7lUiiTjShJpJ1ZzFn0Yuh9fKZ/K/wj2Sa/CNaqPa0j7nXQVFhOVCA5HnwQjv931SUr1nmlid7CSA4EvxAyJguaRMFF/iBuHpjeHRiaBOpvEjPGqZw86HBlnjDPo36DMY2kjCksGtotebqrrV8mZAdNIOPffh71EpkYo8k2+f2r7Npbv4cXEU+H5I8C3L4Kn0rxYhiyyub7Bof4RU4rEvCWIdDg+HpFdH5IAAiBcaUmKUsZvNQ71PE0XTcgg65TYzy+C0hsOudKqQgUmf1+YJe3zQzInJdQP5wFK4+R2YFLrhWS1sl6hiO2GTLSLDN6fx3CfoGYqXhz/GFNdzKhUNLZ5hpPAsxMbJz/WnoKhNQeyiEhXnCVlWY41LeGOrngH9pMEojGJPMXLEi7acVVM5c5a0HigQSodH5uxIffHwnidvGzlKVaKg2q9BXvZLhLTdutAdoEKhTm8F0TdGiMbb/asOk6WfGooWkOjbwf62H+pkjjrkjWbB1dQws1QEtRiMNxteM5FnKlCI9KgG7GqGND1QGOQhWRdG3+HUv2ldsDZ/1NGf8zDrosn3CILLLX9/FLeQfWVkJGo0GOX/5WU25VDGS2EFKoUBFYhLyT85ffoS297HkmQHC2Msoz1KVzuIwasJ871HeMuSOqPcH/LEqUWtsmk5e8DQXLCHSBS9rwm60HM5kIq8EvNXOEWKWexUUkymSG+WGKyO3duqA8jfTUQWrKxSWIUvTMWHKKhU8RWmR88i9w/NhjCrDux/JizkB
- HrkzvdSx
- oKViE3lhTgserGCrNncCkdIjU9f9bb1Ta3HBL50kRZ2hPJ9zfDcwQZ1Yter5ZgRdl8R8YEr3zybVc7FaaxreHpPxBeVoW1ruBZ4Jzt/ktbFD9I6mWo5WhSv8ZkzTdZ/mKVfKTmdk/RSECLTBblj4tz6CQx5855tiNWlK/7JEQBC1MUS1HuIhpmBaJwa+T8UeYQgMgy2O8NggBvwrh0GX+KBO04g9jcLYlz4vdVBt0OEEXYigbyy1VALsB5gaXV/h2MYuskMfEGkckkBwfaZtsYn6q4MPvvr3tCWkbZGOko3Opb9SV4kW2tfGTUmgPPU87x5qlUgP4Wx/JjPjIsCEyGcBjajoQudh8VKFl/+arkD8Wx1Gzs0Y5WvyEnS4lyAFoewEPYjEdK4VutVD9YrmT1RZsghwoMY6vc7jAaOHBTn9ewe6/AiwG+Od+tr926458JZXt29MfPkdISsx4DaGfaNO7Qw==
+X-HE-Tag: 1777066523-153230
+X-HE-Meta: U2FsdGVkX1/wyNOzM1rbu6gbrOcFXT92fctDdeH9+aLBSBSRt5Q1Yr5rx1Wb4Ms82E9FW4HLI8lYNRkATILgTkVyNEpfixFxuu0ehVHxcsMCjOSCx1VLMp7862xjfWsbh8mwDf+gNnZ+ew651JPTf7Y+aX1Gh5r513t10PMjVZpm/ewacTTNE/qJMc+BLRtFtgMDFw/AtVpt1m/8g3qMseP4BlvfJ9W80HOEVfDxiMz7PBBPzBLFg/m60U0pbJTCv2e58pTtgkCLyS1t3eVZ8I4LyWK9bzww+EpwVvaC4oAIPPNHdnKqR6A5ssSmKuo+HHuQWspdhCSQJqmIK67MyvVfmK0mgDgpl0mp5AfuyDBdF+PFRWTN+KqXcVXI65pYZQCEVRDrH3mP0o75QAweXrlN0pvy/b7kcWg1L6YEESU/Fjm8APuEF7FhL8dRM96BgTWoFCGLUtDZ1155unjFlbb1NMWb1cLEmf9lR8VsuCFn55YHAa1crqnF/b3xQoslP8bCqA9vGMGTUwVx/WO6t7gcGWa2nolaZ5peDnw9nRKesSPhNF+nScxQQtumVpK2c6ofQTZMTHQYu3ueohl8rFF5DXmFSFq/yIrB+/1aTDUGVhtm4jEi7UzplHeahpDdpq9cN8L/c8v9fcvITTrlLuMPC9J8H8UdSXR4XCgLLVHeX8jvqODmgaLvfRu1ERDCVgSp/ZO5asHG9dQw9tjj2Po+BwsVL5nTsVVQIOt/lIKHOvTBBo4NVJYvIP/JCOX9oLtoRisPTXHd0m+wfbyDAT4lERzPUQPOxmmQ6NEiaslefr+gcnn5tfKqfGvA0u8wbwUoujiGOmIxCk/UDWNya0GxyZk+TF6FxMH3rMoRZfUJUEVvKiawjMiJ7ZWTVRyaT6TPDb9Y7z7A9rnLScb3+D/YP1SFVjGdXPyXTJSmvoTgG7rVY8nBhN0DZzLX36+CI4/hmVvLYlRGx1Kihpl
+ 6yNsRlDO
+ mGKVpdr0lrUkd/HBIXgp+v260db5P2V/N/I5P4SskCyGNQqMRsBtx1dFGq/qoODVIMdZKRZnDIUbF7IbGOHnanSLxHyGLqMD7sdi9E5GE5Xq0EJ24mNnZuqiRcuMa5sO6jpaJSfTlHnNu8wyK8u3MRFLOcIWq8ZLvbIu5xLkCsqU44ynzGSZEYPdi4dm+ylfzOUqWrJYgfWYvTaAWAfxjgl+ChUWgulues+IaQQgQbUmrKPdjgpawH5tYFis0MV4siHpPkStYfGD6M2Lvrksj9nIMV/wCBYF7lv6ovyOf4bHp6AO0o6PrKY7CnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,60 +127,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 04-24 12:41, Dave Hansen wrote:
+> On 4/24/26 12:14, David Stevens wrote:
+> > The question is then: is this approach something that is fundamentally
+> > untenable in the kernel
+> 
+> Yes. Fundamentally untenable.
+> 
+> Not allowing stack faults has been a wonderful simplification. It's one
+> of those things that just plain makes the kernel easier to maintain.
+> Saving low single digits of system memory is not exactly making me eager
+> to go back to the harder-to-maintain days.
+> 
+> I seriously doubt that this 1% is the lowest hanging fruit for memory
+> bloat on these systems. ;)
 
-On 4/25/26 00:23, Matthew Brost wrote:
+This true until, in a fleet of millions of machines, you encounter a 
+one-in-a-billion chance of a stack overflow. You are then forced to 
+double the statically allocated kernel stacks on every machine, paying a 
+memory tax even though 99.999..% of threads never exceed 4K. This 
+overhead accumulates to petabytes of wasted capacity.
 
-> On Fri, Apr 24, 2026 at 07:50:37PM +0300, Mika Penttilä wrote:
->> On 4/24/26 19:23, Andrew Morton wrote:
->>
->>> On Tue, 14 Apr 2026 07:12:21 +0300 mpenttil@redhat.com wrote:
->>>
->>>> From: Mika Penttilä <mpenttil@redhat.com>
->>>>
->>>> Currently, the way device page faulting and migration works
->>>> is not optimal, if you want to do both fault handling and
->>>> migration at once.
->>>>
->>>> Being able to migrate not present pages (or pages mapped with incorrect
->>>> permissions, eg. COW) to the GPU requires doing either of the
->>>> following sequences:
->>>>
->>>> ...
->>>>
->>> Via which tree would it be best to upstream this?
->>>
->>>>  include/linux/hmm.h                    |  19 +-
->>>>  include/linux/migrate.h                |  26 +-
->>>>  lib/test_hmm.c                         | 101 ++-
->>>>  lib/test_hmm_uapi.h                    |  19 +-
->>>>  mm/Kconfig                             |   2 +
->>>>  mm/hmm.c                               | 821 +++++++++++++++++++++++--
->>>>  mm/migrate_device.c                    | 589 +++---------------
->>>>  tools/testing/selftests/mm/hmm-tests.c |  54 ++
->>>>  8 files changed, 1053 insertions(+), 578 deletions(-)
->>> Looks like mm.git.
->>>
->>> It might be more useful to add it to a DRM tree if there's ongoing
->>> development against this.  But please no upstreaming without good
->>> review!
->>>
->>> Anyway, this is a bit dated and Sashiko AI review wasn't able to apply
->>> the patches.  Nor was it able to apply v7 or v6.  So please refresh,
->>> retest, resend?
->> It is against Linus tree v7.0, base-commit: 028ef9c96e96197026887c0f092424679298aae8,
->> but applies and passes hmm selftests on mm trees as is.
->>
->> I plan to do v9 refresh and maybe minor updates in week or so.
->>
-> It might be good to send a version which applies to drm-tip to
-> intel-xe@lists.freedesktop.org to trigger our CI too. I know tested an
-> earlier rev and everything seemed to be working but another round of
-> testing before merging is likely a good idea.
->
-> Matt
-
-Sure, will do that, thanks!
-
---Mika
-
+Pasha
 
