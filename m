@@ -4,140 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DACF5FED3EA
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 16:09:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9629FED3F0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 16:23:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B81C76B0095; Fri, 24 Apr 2026 12:09:57 -0400 (EDT)
+	id 380886B008A; Fri, 24 Apr 2026 12:23:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B33216B0096; Fri, 24 Apr 2026 12:09:57 -0400 (EDT)
+	id 331476B008C; Fri, 24 Apr 2026 12:23:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A213F6B0098; Fri, 24 Apr 2026 12:09:57 -0400 (EDT)
+	id 2473E6B0092; Fri, 24 Apr 2026 12:23:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 90DFA6B0095
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:09:57 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FCE514026D
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:09:57 +0000 (UTC)
-X-FDA: 84693935634.30.8F86B6E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 61BAEA0006
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:09:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RWaBeHjd;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777046995; a=rsa-sha256;
-	cv=none;
-	b=6EvWMaV3HG+xn22kBk4KB0WqxbSk/pzAIpmg6bj4vkktlmmpmo7PUtURlZmdnJVSegZ+nV
-	sW+FBYgYjhHEe/gOVZItU/MarcNp7/bkBDkoNQpEh6knpnT6LvTWZSxm5Lx3rVlUSP5O6I
-	vxnblehpd2Iw7Yr3ksa31paQzsKgNaM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RWaBeHjd;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 09BDE6B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:23:41 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8D9B2120226
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:23:40 +0000 (UTC)
+X-FDA: 84693970200.24.6BDB502
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C97F38000C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 16:23:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IRwXu7Od;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777046995;
+	s=arc-20220608; t=1777047818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1zynltM+qCB1+gf0Itcd03ZQyLMvAA175jbKGHoVBPI=;
-	b=JNFLb6fXN+Hip4z8P6/1Jl443C95NJxXByzsfG8bzgOKbxGZjo2mR9nh+TKR+ouhLvkMSD
-	F0m07P05wEfhlx8E5U/M5Orf4f0elr7PQDk9huBmoKubwcXjl+IBpDWJpWxI1RUn30ih2Z
-	Eze+6Nto1Z9li0NwXdghiPZ3lOCF0Lc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777046992;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1zynltM+qCB1+gf0Itcd03ZQyLMvAA175jbKGHoVBPI=;
-	b=RWaBeHjdsMzSJ950NO9DaOZbAglCUIFNjndnTX/9GzGSZz1KVztUVx3VQDCl9yyZ7f68UJ
-	KDUX1WfvtdAF5qC1Od4LmFUm1Gbi3Q4KqawfzG9MOnvttKFExiDxHhUGgui8ciMkhN6vcx
-	Ua1r+g8L33SkwwNusHFKYwVCDmyml80=
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
- [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-ptCVjvV_Pnqn0czftTdx2Q-1; Fri, 24 Apr 2026 12:09:51 -0400
-X-MC-Unique: ptCVjvV_Pnqn0czftTdx2Q-1
-X-Mimecast-MFC-AGG-ID: ptCVjvV_Pnqn0czftTdx2Q_1777046991
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-651c8371fd1so13226048d50.1
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:09:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777046991; x=1777651791;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1zynltM+qCB1+gf0Itcd03ZQyLMvAA175jbKGHoVBPI=;
-        b=mMXj0k/gIHhw+LHgJyt7grf7MlxusaIL03CrhjUQRLmcA5k95ZCH7vHM19LzWTVTEm
-         +dxKtMUdEcR/svGbElBXqqlbDg5dJxRRkyiRDR/MIt4adNw/yIQU2RU79KkihlSbS/YH
-         NpznK8JLmfd4J2AWvSRRa6Seo2Va/gr0o+bwJWzc4QIleBE6MA1+xrKtAWh710R8jBuN
-         cEa59MOnIXS2z5wfxT0WMwDpleZYsJM0UyoxJGHw9h14Y1sETAPOAXHgNYap3ERuKaVG
-         5Ie3qMw/xqxcvjv2mz7m1/KvxOaQyCeRIKQZ5PG+CtLPpdkxcWhZyK1Hf3akCh++tg9C
-         ChbA==
-X-Forwarded-Encrypted: i=1; AFNElJ9R/uATAVENY4G7iRL64DGYulxOveEvBTAxxh9BO25/eq2emIyTrkTmsAWBlyod72ki1RdzkX5mVw==@kvack.org
-X-Gm-Message-State: AOJu0YwSwJAUE3w4+tv49BHDar2gb+TFdmv1sx3sWlNN0LFOjulxqH5y
-	pknbPPR2w8NUzJXPMYR/l2Q/1lgDkE+TGCNVvjfeVibXeWhKSeVRNIwU4M6wa9NJ6KjG40fh32C
-	c2oDvATyjl3XZMgSaTFSOYMr91lYcZIRTptoU5oTyb6PqP/vHJXVO
-X-Gm-Gg: AeBDiesMevH3JH5CKi4EwmW5mOrqbeWc4muzPCmvjnnpDEAbPd/1N5ystVtpTWwNppj
-	QQKFzJ9hO7lYYJA8qZ4j7a4pww1VwBbPP/lZGpfLWBsoPz8QdkUaAdOyUN9cpUIYhenovK+veef
-	wn0TqZYcj+t/FX0c1ZOs0cgg4i/Q74BYy9jwdLLVcZOj7EVFyvyLiJBRILZY37ph50Pv0KbX0Vm
-	vqThHB9BEakB8UF/aKArMbON5TRePPSmyleg2UGRU2mpAvppTnnC6I53/tKSxWyMYSIu3/X5Fn5
-	no9B/Q2Ygyv54lTgHnkRGfRz2PqX03U/IrGLZ6lwFNmniFpouDov0CO6Ns8eCbltB0wpFYIxj1c
-	f1nkISCHs2geTka0cb05hOCTv+f17i+oNDoVJuBtJz2YJQbam5elDwvZBzw==
-X-Received: by 2002:a05:690e:419c:b0:651:cf84:7744 with SMTP id 956f58d0204a3-653107ebc28mr25160550d50.11.1777046990818;
-        Fri, 24 Apr 2026 09:09:50 -0700 (PDT)
-X-Received: by 2002:a05:690e:419c:b0:651:cf84:7744 with SMTP id 956f58d0204a3-653107ebc28mr25160511d50.11.1777046990305;
-        Fri, 24 Apr 2026 09:09:50 -0700 (PDT)
-Received: from x1.local ([142.189.10.167])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ae5eaf1sm191939006d6.30.2026.04.24.09.09.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 09:09:49 -0700 (PDT)
-Date: Fri, 24 Apr 2026 12:09:48 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
- guest memory
-Message-ID: <aeuVzCUJ1P3pL4rD@x1.local>
-References: <aed6fHLrIdahbdY3@thinkstation>
- <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
- <aeorZMvKwu8zKX5i@thinkstation>
- <aeoxnuGKO3uqS2kG@x1.local>
- <aeo5IPpQi7onyjTF@thinkstation>
- <aeprnnccJeyHB2rt@x1.local>
- <aes7b17nG0cXrtEd@thinkstation>
- <aetZUOINzfTXChLL@x1.local>
- <aetyhki-UD70dyRL@thinkstation>
- <aeuSe0PY-g10KNUF@x1.local>
-MIME-Version: 1.0
-In-Reply-To: <aeuSe0PY-g10KNUF@x1.local>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9r10RQLZaV_J_kgDW0nXdEtgbSlRS8-MABYuBgYSYbk_1777046991
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Rspamd-Server: rspam10
-X-Stat-Signature: zqjkiuxanbcy3afcdnnk74xmehk3xqns
+	bh=gcTbq1JXL+aXDcT9t7qPIZ5/r+BSTh6U1kBQpvZfCmg=;
+	b=3h0ODWR7KGJG2LFGB3fH4x3aCgnNPKaMmrcDM+7g4Cv+LIVK1q9qTsNHGOwXWEZJuOcrBz
+	rA5iFNAKLzEuA6Cv5NbQE2GW8jDgdPyc29kUWlvavpNqTacGAXuEdEvqfH72o0BeEl5Dda
+	FOk9tL08Gy3cjOoO/oMP3LQVyoUsoTY=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IRwXu7Od;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777047818; a=rsa-sha256;
+	cv=none;
+	b=sf+fSshZfn1Uxm8BhtnAKHUDeuSQaqs83gULSJitfUrGzWjtt6BuxyD+36653ys0gzlLZm
+	0dCD4GCSe4Zdv8A59sTMSOqw5VpCjR2DCFpS4HFA6Jyk8pIRiBgbC7R++x/iBF02nnIccM
+	mbBaA8U37GfXcmxhgHmkU95MOIfcRDg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B8036600AE;
+	Fri, 24 Apr 2026 16:23:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF255C19425;
+	Fri, 24 Apr 2026 16:23:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777047817;
+	bh=XHsSKdWBfJ8xwH2NIQLRNdaVkmG3kAIguJv5IXWgybE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=IRwXu7OdxvrX2QIsdEBmnerp/FQxrMkuestO4WSRa4Ol4ytF6NdcGJwxtgk/s4qvq
+	 Tvron+PGjWCumBCJappijmqHHP6gQDpbrHChlmRlBjgdgoWvqZ/6gU2YdqlW4j+CjM
+	 T9RWxvaz3W6ibHB9jYQOXSags19Ho+fp2RAnGoEs=
+Date: Fri, 24 Apr 2026 09:23:36 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: mpenttil@redhat.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, David Hildenbrand
+ <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky
+ <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Balbir Singh
+ <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+ <matthew.brost@intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v8 0/5] Migrate on fault for device pages
+Message-Id: <20260424092336.7f8f5b0c00f4b46f9e0879d9@linux-foundation.org>
+In-Reply-To: <20260414041226.1539439-1-mpenttil@redhat.com>
+References: <20260414041226.1539439-1-mpenttil@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 5mmoowbttjucoyi5qmmzzxnecgj3moc3
+X-Rspamd-Queue-Id: C97F38000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 61BAEA0006
-X-HE-Tag: 1777046993-401222
-X-HE-Meta: U2FsdGVkX18UkznFA3sEXR7ZhgvylQiVAYgp7/25KUN71ehl91umLz1kkhwIeXYtD2d2EIgTkjygt+d729JHd//MiLzZYr78QIs1YvZkiBZDnzrx8LG5y51B2yCk2H2HA3+JorpB+OYHAYOGk8ubyaRg9hFyONC+j17e5wEuuN4DkOTo9tjsigMtYSbRkwv0FhOIMyiLdlhzI/1eCjUuOHii7gqpa2kd46lgbyYcwFouQCT9o9StSPhw44/sqX9l0Cr8rbBcHhUEaEkfF15D9mIAUVzqTQ94/p1e6nTFU1vQtPKl6O64LRTMHYZM+LqwO0IgEXSOs0qfDBCinwiS98NRPd3YPm/ZOZYz2sgDt1i/6NbteRAFabDAH/hMm0lqUq4RDXLtelOU/NOkmcNutKL+b/dAUrs78FXexiy9/vGZ7ZnqU/KqIHKZ1Yr0Y/DfVVq1KP0dMyUyTw5hYEBvCPLvoauCMBUZR8/PSUFsaTTR053aNhbntpkbKtaM53PMDATMYQt+dfeJ+3FoLSV3HZXwmJ173HQb/bSRDlBCnEArbYTaM8C1XFWGcEP94E1rIMWdLdikISzNcrOep+7ERoSSZ4xs9Acmo7UhVebRddREAweBthLBdU398RORNdObu5/DCO2qd429DYd09Q6iaH1LGzw2F4MyMpLE/HfIG0Oyihcju1COUGbBY8ivPUnwifIq2HOy2gqFXyitYFxg+UfY5KGB0m+mjQHlgl91jGXmp+QBUa7K9FZM+/M8ZuwDTY9UP1ytji3Rce+0yAQa307XM/RsOIy3zW48Shis74TumLF4QYVPL+uGDpJXtsoG3DvU38CSO9z8YmjW//K2KhvgBDpSrD8uRKKd98PCuP2vI7mZs0yUzTpNNFWTwec559qS1Tlx3T5nsexvHtWK323FS3qTemIvpIMNVA/H8RouH+iXFPCVXZ+BlxssEQxwlH32sfrjIVdNvjw7zgt
- aHzRKFwY
- KQuE8riIIHMLaRwt8381KVlWBTeZ2Jgi4iF7v7PxokB9ZCzUpqvPMR3KZTXid2uzvIKfxj8CMz7lOrvbQIXCrW1hUFxyPm5CqIU9TszT9I3k/trQfx11pVVFEM02Pa2gNNThb5C4dG/nQpg+i9b6XYfU93c6YiDMQJww59ktM87oYKDeCRM9DWrgf+5QF7sK9GgLUJDPDAsXqXbRTg/7JTUn0efKg9cWqr0vz3Gpv7JseALmselT1Pp0gIYdTFQSI66wu9bf/6wVvfmb7GWTrv0SjpN1d2Rrl5R+kO8UUZyva/CSi/yAklsMqNx2+BCbGATwJtBeNZ1EqOV7e+SPxc9cY4xePDC0D6hS36636ha112svxmBp/4S8GsgL6ABmwVCFK
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1777047818-3059
+X-HE-Meta: U2FsdGVkX1/Mujvk2HqzSIDSTr6kwsrpEUpA4gVUrGA3NAxN1jnWJrqE6MVl3fWwf6rHvysqba/cbIIjybXLIZYho8Nyk1zv6Z77/MlJ67yBAPSDEfOe0B/C93Zd40jQCMGzz3UM5N7Egs0A76tkm71v8aQFBX0W+NJGGBQj27OcJtGVDOHezyf1cOX/SQxCC6kNFFd8VdQE8vyiW6my7mtm4lXlYCstxpeaZrA1c+ZHm/wqI7Eqx6mS4yNM0ecV7w18c6uPSloP6eUKQAYDNLhDMcGBFVjA+5xym3SelctFTlTfEhLXmFTVG4kU0E1AF/HxvlxpHiiWDNRDJLP121jseMKtI0GL+OTqsfdA1roHqGqSJ7vheERwx6hcm/jjOMFRx8YJwculs0EwQziQVURfKc96MgwvPAggnEEmfMUTOrf3peeKFja58vGiOM1rHXx9ntOHzc68dn+tm5YIoHn1J+PZ0AEgQFd06pQMOXpCdV0MGbXvv37gc0SDcDkf0TuiayHDvOklaMoQYU7WMrUHQUa3G6W+mTTZ4freXC4IhQ/hWmG8nV21vh+5dKuDO2FmObkmMHdFU6dmxzcpr6mIuJPEtvmsUzSkF7NfzURy6zjqrxATWiTfbg65aXYoL3NQ5vVB2UABojgLM+vWqwFGcsTjkquWVCC6q2nq3dHKUBLtxo0UK5ZvR0kkr6NsOeeo49Gm5AxyrQXK3agSxO2U3wVByts9JUpjYMGcVNzCfg1CTQkGgyP+Sdd8BD8B4dv4dmXsYEhwF7mgqwxni+JB22krW62zO6mCplPpYe8wYl8b73fjYX53eQ82ShLVZ1M/k52qKaPGDL7M4v5MxrGtETy5jGbQHzyrn6OrIuLshEJ3bBnENBZXnmxLEy1PaG/dBIkXRFkpfn+g5ODQFjxiPvxIWAlgyfrObf/R7WD9o/GEZPmVpNienord0Hu1ZkK+q834DmePZPIZbWW
+ D3Jez3N3
+ W6F4dJcKt72ehL78qLbDGx71+dZHw80I1Mc2Q9RJBEBfn/E3s6VbfAGa9G+6Q8CCApzObDq/BGmdWPOyjQDdnqEdDxmnpRVRGIz4LJbqDr2kmloVD7y2EO8wrPMAG6Bn5yDeRgug1XstOuxa9l7om7co2gdkDyujqbJtBvjBW7PdT/z+mE1GVhqQKd4M6XL48GrnFrgz2Ey7hDCTaRxBiOm5vkVLm1wg000jgG0wnJM2+38QOwaGOweCsgj+mgXFVclyxkq8qzieG0O/N64VQ0OUWHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,52 +95,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 11:55:39AM -0400, Peter Xu wrote:
-> For us, we know the overhead in theory, but we never really measured how
-> much.
+On Tue, 14 Apr 2026 07:12:21 +0300 mpenttil@redhat.com wrote:
 
-I think I didn't discuss the other side of things, where hypervisor can
-touch some pages and mark it accessed, even if you don't want to.
+> From: Mika Penttil=E4 <mpenttil@redhat.com>
+>=20
+> Currently, the way device page faulting and migration works
+> is not optimal, if you want to do both fault handling and
+> migration at once.
+>=20
+> Being able to migrate not present pages (or pages mapped with incorrect
+> permissions, eg. COW) to the GPU requires doing either of the
+> following sequences:
+>=20
+> ...
+>
 
-IMHO we should track most of such accesses, except special cases.
+Via which tree would it be best to upstream this?
 
-One example is when the access happened because of emulated DMAs, then it
-should be marked alongside to the guest access: that's when you mentioned
-vhost, and I believe whatever vhost touched on the pages it should be
-marked hot even the guest didn't touch it.
+>  include/linux/hmm.h                    |  19 +-
+>  include/linux/migrate.h                |  26 +-
+>  lib/test_hmm.c                         | 101 ++-
+>  lib/test_hmm_uapi.h                    |  19 +-
+>  mm/Kconfig                             |   2 +
+>  mm/hmm.c                               | 821 +++++++++++++++++++++++--
+>  mm/migrate_device.c                    | 589 +++---------------
+>  tools/testing/selftests/mm/hmm-tests.c |  54 ++
+>  8 files changed, 1053 insertions(+), 578 deletions(-)
 
-The special case is really migration that I can think so.
+Looks like mm.git.
 
-When at this, I also want to know whether you can benefit from something
-like swap_access() / maccess() that I can propose when it's ready.  It
-means we can shift some corner case accesses from hypervisor to that API
-then it won't cause false-positive even if rmap is involved.  Then rmap
-will be a pure perf issue, if it will still be an issue at all.
+It might be more useful to add it to a DRM tree if there's ongoing
+development against this.  But please no upstreaming without good
+review!
 
-I can also share at least my plan on our side, in case it helps to find
-shared goals. Basically we at least have two ways to go:
-
-Plan A: propose maccess() then use it in qemu for migration purpose.
-        migration is so far the only thing we want to rule out.  We want to
-        keep DMAs access promote pages, for example.  This will keep
-        relying on kernel to do hotness tracking and evictions.  IMHO the
-        best and simplest solution so far taking both user+kernel into
-        account.
-
-Plan B: if above didn't work, we can implement swap in qemu.  We need some
-        API like what you're looking for, except that the major challenge
-        to us is MGLRU compatibility.
-
-So IIUC if you're looking for completely flexible swap backends, then Plan
-A won't work for you: that'll always stick with kernel's swapfile
-managements and it's not always flexible enough.  Then I want to look if we
-can share goal in plan B.  But if we can find some shared goal in plan A /
-maccess(), then I'll also be more than willing to know.  For that part I
-can definitely see what I can do.
-
-Thanks,
-
--- 
-Peter Xu
-
+Anyway, this is a bit dated and Sashiko AI review wasn't able to apply
+the patches.  Nor was it able to apply v7 or v6.  So please refresh,
+retest, resend?
 
