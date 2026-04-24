@@ -4,91 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEEFAFED3E2
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 15:11:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3988EFED3E3
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 15:12:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF91C6B00A4; Fri, 24 Apr 2026 11:11:49 -0400 (EDT)
+	id A1A926B00A6; Fri, 24 Apr 2026 11:12:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAA886B00A6; Fri, 24 Apr 2026 11:11:49 -0400 (EDT)
+	id 9CAD96B00AB; Fri, 24 Apr 2026 11:12:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D99686B00AB; Fri, 24 Apr 2026 11:11:49 -0400 (EDT)
+	id 892046B00AE; Fri, 24 Apr 2026 11:12:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C2C586B00A4
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:11:49 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 73C131401C5
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:11:49 +0000 (UTC)
-X-FDA: 84693789138.07.A98BA60
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AF99E140004
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:11:47 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kyKaecCZ;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777043507;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 72E556B00A6
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:12:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1DD43C0BEF
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:12:55 +0000 (UTC)
+X-FDA: 84693791910.09.7CB2C2A
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012070.outbound.protection.outlook.com [40.107.200.70])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 55A7C140012
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 15:12:52 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="c5rD/GX3";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777043572; a=rsa-sha256;
+	cv=pass;
+	b=GA4C4EMX9zstP17YPXNRdx2NVJdRk6I665yeASuPXu6QNEfR1VKIfHMGgUy7TW5pPSVfpQ
+	fC0biRMgf8JDNynZUFxD6CZdvSzTh54kHin6Fc/V68iH6EuSXqL0Pk6oVJXTCZfHTmtury
+	AjHwc/5lMEfo+6CtS2UduHEaLO06TSE=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="c5rD/GX3";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777043572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VZDiHKL9Ii5ZJArgcdLthhax4hBth5WqDKqfrLVvMPE=;
-	b=2Ujd/5ROJ1UBl3EUXrC9wNfkGbcuyCdsc6PqeYK7VteiT+3bHJwmqzRAJq8o+4qBIbIxR7
-	KhxW1+USHSt1jMyuphyVYIMHNoHvkv7d2hd6NPcck8AIHpPyvRvwY520HVaOzZaMS4QY6i
-	QcxjMo99PFE8+pGiNJvBRSx821empT0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kyKaecCZ;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777043507; a=rsa-sha256;
-	cv=none;
-	b=7ZVZqtwvG0zY5a5dIxehsoPsgYb6hx05Gq47vwkTx42LBzKDqJB+sO8hjDmNlB9YxAWBFu
-	MoJ8sGA1cUkVyBWugTbG9dHYwciUja7n0ZW2eKFnWK4vO+oyCdVJa2G4kqcUUMrHnoVaGS
-	xx6ENuvB1iTctxTMjYassR6KR3L/MQ0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6928600AE;
-	Fri, 24 Apr 2026 15:11:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070EBC19425;
-	Fri, 24 Apr 2026 15:11:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777043506;
-	bh=9+RqmMFlBNXW0TQUXqXjzFnZMxrBJbIBkvK0FcCfowc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyKaecCZWrMobSMG0KveoOGwikyfXdgL5vtfdxePM+XkREFuv8qwiGweOFI8mj5Lb
-	 1qNRaFqulP8VPZkWyp10NrlDI8hoCUS9SrIMr51tSqT8nCQxwsK/+/dVjH/EHvJI/M
-	 kUhZavxRrUk8gIrT1sD6mWLCt2jKbpUuF/2ix4fYwVbEuy0EjEWUpwQatsrUsD9f30
-	 OLaZMJ7GZeSumGk3GJM0r2mYEc/DEFG80Kk6PyZ4sn2gnIlkpE17VD6QPT/OknJevq
-	 5Ef8gkHzze8dnfNpie3RPzBR8ZvdakQ9rDZdigXkPWOCEZRDthMaSnhc1PZWzzfOg6
-	 xJ0He6uHdkIQA==
-From: SeongJae Park <sj@kernel.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon: introduce damon_rand_fast() for per-ctx PRNG
-Date: Fri, 24 Apr 2026 08:11:37 -0700
-Message-ID: <20260424151138.4692-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <eb215ae6-bead-47ef-9c3a-3f4c80d39361@linux.dev>
-References: 
+	bh=nlmWwchAz2bajBf/dTP3cJpYTzcr6TYrFg7IoJXgr9I=;
+	b=8W/jrpQYdrBDGNH1PuBEaEkYN8mP3oBMucHRodaoGo6il8q0NDhhUATV0Sxd3B3ygJX5Xc
+	yvqN7pqBZ/OXV3Cuc+7ioU5eHoYiBXwaSWBngApsKwrmVQwsX1aBADOfF6JBnT++/4WFx9
+	AVi5p/0NgvRBiXAVNWEQLXsjAJ1DW5E=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D7D/J6tArKl60K1FeqGP7bhVPLlnjHB8SHIoVwl4mIicFDdeyfceG4bKluqUZO5u5ZI2uv55hZeMsrEQ6q398TTZzNW8JePGGtQ9KQU19h4/f0/u2uBX1/JnO7em+lvaV3ZcRHpWGRZAOSMlIfHbjEKvWglpJiyHfslU8UU6vtsAzRWTP60ljPlUgPsYTygFNqBea/GiCVz8agtW+L2FqfJ/s0VyLXLc0lkFQKgxP5yjyepwenLb7QnAPJU26ddsY8GxvYMKAMTydTDp3gRjSAfZFKLrySCMLZHGo02/U77LoemY9e+7C8/wXCIGulJZ81rYh0gGgCPs6SWcwqjMCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nlmWwchAz2bajBf/dTP3cJpYTzcr6TYrFg7IoJXgr9I=;
+ b=RiMlI9JX3kLalqWd8ER/6WDB4Cdzj/gYzdL2JdW3cT7+TJB8W8IJ+jU3hEHHOEJANCI/bN/eKC5QJltsMlpQCm8U0B47g+VcrQ6PNYXYiBLWUzQSNaxA93wER2QbUzJaWbroksgCTn2w8jAv/hVT7tUpoiKezadWC6JAgQ9eG6O3/75v+KMd6ybkt2snCrwh5aPmxJZIvRoT8M/EyY/Af8Debo8/GUj3XENUjLrDx1uFG8il4ifxjsPYAuWk98hike9wLI7GYSLS7VGZY7+n3msVayOOFmTYVJvkL2c/I99nmVlqiS3lnQT0seVKtsYItNwFybRoRHm6OFaItK6g9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nlmWwchAz2bajBf/dTP3cJpYTzcr6TYrFg7IoJXgr9I=;
+ b=c5rD/GX3bPV8Bc/26nCAL9/+92ZgiW0HCzjYnLw4v/NCDztBxqyA34bd+xjFuMszeNWLC5xmwtF97QPkkInJhLasYhuKlpWNBfOnQ/HB3+dhNEE0qrs/n67zNPlmyCnwKOF9UK3O5LwTs2nBTxC1M1Q2ihU+/jkapZAK7O7BVl8sI+ue9wUiuuqdN9H8aCi7MRdekjaTvCn18om7GR3ql6lnyAZoGUkhZE6VqhkTa9/rghR5dvyYOUJ8ijXt0/AWlwGBD4uD3NJ1eTqdEGyUVVNkN/L99BGmeUbI2ycRVnkL8y9ebyJlvd4lgNXX/2iMA7nBKU4pUyypdQ/mwWBOaA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ SJ0PR12MB6927.namprd12.prod.outlook.com (2603:10b6:a03:483::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.22; Fri, 24 Apr
+ 2026 15:12:44 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9846.021; Fri, 24 Apr 2026
+ 15:12:44 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, <linux-btrfs@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH 7.2 v4 09/12] mm/truncate: use folio_split() in
+ truncate_inode_partial_folio()
+Date: Fri, 24 Apr 2026 11:12:39 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <DD21736C-7EFC-4746-B926-54551B757785@nvidia.com>
+In-Reply-To: <B2F4546B-F57D-4EF8-90E7-37879711877A@nvidia.com>
+References: <20260424024915.28758-1-ziy@nvidia.com>
+ <20260424024915.28758-10-ziy@nvidia.com>
+ <896b3956-3cdc-48b5-a0a0-a3ec35aefa07@kernel.org>
+ <B2F4546B-F57D-4EF8-90E7-37879711877A@nvidia.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BN0PR04CA0135.namprd04.prod.outlook.com
+ (2603:10b6:408:ed::20) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AF99E140004
-X-Stat-Signature: wxs1i5zfjmczkmoagd7bm1gm348b3mqx
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SJ0PR12MB6927:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62ebeca5-c47e-4d81-74e6-08dea213ef83
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	IfWN/hTzpzVT+n383ozCgyc6lNRqsq7jZNnmJbUhBknhWIgNNrJH97sjwaTG9KQNgHrdyEErOfPnl2HI5dUhecEgkPah29+nP1qJ4oxsfc0rzPfyjk3sI2ZUz36HHhp6mlv05jun4mfWGOIkwTEuXTrzw0+fYUdadOjGHbSw9tsH+Dc3Ik2G6AjMn8dvu6nFqNz2qJK7da7ZKnUqV5l8RB9GjDVy2UXtlGSxdd4eXYwGneFuStH3lRJ7ti/8Agg1XTRBdDHKTddh4yq3viVzQ+W+cpAcoIfBAQipvVOu00qN5IRHCTNhaQikDG/T9HKlBr8r4nsJ4U22hw3YbG8uCDVqsZsoA5Qt0XKKCUySMSEqzudLhYjozDc3Zbk0HnENtsyrIVcvGXyG3VByGzIauJkPPBEFR4lFBCAkhwpi31zIXETj2Izu+YFtApdJo7Jk/c0ItQMiX6r6I+NbPcb3xfc2huw4X90mAPOH0jSDzyyAguUcg/kB8jPfdXs1rLSzPUlBm2r3JezR1v3WKME5aDU+FXJ7Ni1pgsv2ij1Q7R0ZCKcVFJt9R7kpZsb6W/r97iNd7pHmMAYvkLWNJOrUK5r0Xev4lwchifFIQHI00ae6JlyzcjIku4+P1uXAZTN7gHDD0jSrHNeVzkR7ygtnDcv0Pqs9YBjfOqNySAkUebLh7YGuxvd36DSy4cY/lSCN0fbgeSZpKPFlE/nST1A+yo6YCpa5FVZa+7VRySnXzew=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8Kfu7NgtbQ9Pb55i56wMzAI2wxnS58sifLArdqb6qoOkvMN72f1kHbAO0O0K?=
+ =?us-ascii?Q?mhCAk+zcErWAVkjwvbZRYjQTMqPEV8kKdtG6PUzIeFqBLzqNppjyCOWt3yXQ?=
+ =?us-ascii?Q?aj/9NJOPFv7Xr7e4NHosTk4cUIHlpvHRWA6sdgkoAz6GdL8a1+ZRgV4oQfkg?=
+ =?us-ascii?Q?CSfXuqwlBaqzDVYh9iuF+I4LoaeMFs/huCcSUCKk+/HbNgrEHb9qdOa2TfOt?=
+ =?us-ascii?Q?gGj/TOyONjzxj6ISvG7ZLgiBsIi7vz+F1nMgxsoMte4mgmscugBQmmAXlVbt?=
+ =?us-ascii?Q?1AnvlFrMWdVJoC0iccpGVFUEF0++WoqMVxwpDw2+NJlc7jF9epALktver95W?=
+ =?us-ascii?Q?IFhgw6YrD2XlF92C6YX3q42JMKazJkdlFQ+bhTUFML1eAlrWMkxGLp9zXwZG?=
+ =?us-ascii?Q?eEjUFzgHBTSgB7NeFjnr7wYidWN9SS71wdGkeqPFcbD5eJW318IR/MxDPHHp?=
+ =?us-ascii?Q?OtuxbaUOnElCOuuGtDV/w4349b3ylrrATBEwDR0vTBNOpPRXzXsIbPRb6muT?=
+ =?us-ascii?Q?ZWaLBTsifQ7ouDPY3AMol5LWIIL/oI9bwSnxWj+k2ayJcGda9Yiq5bAMyDfc?=
+ =?us-ascii?Q?Tu/F3sGhmTfMvS82r5PEhySqCAWOuqH+djl/g4BVG4h6J8UK8/GlJ2lZrrm1?=
+ =?us-ascii?Q?ensyq5o7RNlG3i4zzHU6le2vmvrg4U/EdBEiciR1RKCuTdQ0p8JqZrEx1Eeu?=
+ =?us-ascii?Q?uG9QbL5+y66Zi6VVLIcT0YxHXtuWcYJYeojQbCU9WBf+7StZzIOEwSM83ZY8?=
+ =?us-ascii?Q?RqBFREaqL1qxEQWOS+6TX7XxjF5q9SNBSCdg5ksaRZ3yNZp1jBlIKZTol5jV?=
+ =?us-ascii?Q?nT2v4K+nWKZ8lqdy8gz89PQEML9ajCjNfn+MaFXYL929Vu7PzSjMBe/SHqhU?=
+ =?us-ascii?Q?j2E/kIjGdJTMq91GL9NFcP8nvOPctEkAVHUD7tqBqxIuMpV/SvMohfwvKMNU?=
+ =?us-ascii?Q?rzAnSL4YRKwWefAsnjv28xNrhFtm9zxlk+oy/Zpr/P9CKJkPZ2na/NfqGOqv?=
+ =?us-ascii?Q?Zd0D740CNUlB6pMLbCc4ywF+b/5ohIDKhcGqRj6hHDno2GqEeiAG3A9GPxyI?=
+ =?us-ascii?Q?kZmNc5ATBHY0zS24zLkMHdIUZkIbiGjS1HLfyawfCLgEaJzZwq4cDf8KlF7q?=
+ =?us-ascii?Q?WlzksW+XYAupkm+qaCOBe2Q2fZQtfhLbNPg4hDtNBV8kQnMTAUldsZKWF8jA?=
+ =?us-ascii?Q?nnXCy5mU/D8nWEYC+zRfLKizXANIGfG1DpSH3InGzncAxezWs/+of/li5Kmz?=
+ =?us-ascii?Q?mNwqrEYW/rFzhQ8LLLVT4h6FAqTEwhq96NhKBYwq9Mc5RNlt/9szIuRkZJdp?=
+ =?us-ascii?Q?USYsrVDX5WhWo3ves+zkj3Fgi6mSYRxKyzOeTjY5YfnM3nWkbh2wB7V2uLB0?=
+ =?us-ascii?Q?FmCOfVNRrLfMKulI71tw6tuwV7yHUmzhTTCNYXPQaCfiDpFUQLPmqE1EJQXU?=
+ =?us-ascii?Q?uM23Z87nfz2Ed/LM6NMZ5Ko0jNssIjTcjRdgVfNTDQQYCFX6RUSjrl+IXhia?=
+ =?us-ascii?Q?bkd4LtJuZ5/oiufHFxw++hcGOiBrCvvW5XqeW8YJW5szipImWp7TYi+t7Mw/?=
+ =?us-ascii?Q?sO8QrWlReXCF84EbukvsxkXjHBsKdwAEzSYc6fLmfjmDseEgsuZLGgJeXJ9d?=
+ =?us-ascii?Q?sT53qcZ+FDlS1bVlKwHgA6T85SzeKqjcEMZL9f8Otlx03SnuoRQbZMLXYDsp?=
+ =?us-ascii?Q?o8+pN4PgIKoHYBSwEg/0KzlcoXO/8RT2dB293Y8BDSJS2taCNnLFIMKCMR6e?=
+ =?us-ascii?Q?/qpyLaHlng=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62ebeca5-c47e-4d81-74e6-08dea213ef83
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 15:12:44.0716
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w7rM65a50Ss+Ch3veb9UCzfJQHdmL+9/VN2CB6PRTSjmgSreZXCOcjz2GpTPW7wT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6927
+X-Rspamd-Queue-Id: 55A7C140012
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rywj9fqhx9ym1eh8hffnjxkbyfibe1gm
 X-Rspam-User: 
-X-HE-Tag: 1777043507-169178
-X-HE-Meta: U2FsdGVkX1+ojYjG1qvGKqFBFxlbnl1OMUuFjBB5qEF8BUbGt/crQWka0dx9I7ErS6RJaCR17ntSYPtCY4aqEJss6qyhUf29hJiQsMuutkycbyQSyvn/s3vRdLb3Gv2KvEuj1nKOAVPy4BjzCjsgpmgLjPlY3Svf6iJp4CePFZq1SyP+HalNEPNLi+DpGYgkspriL8go8sIlK6z3YCYQf2xCN/2d47t6UQTYNcx3PjSonfCatqvuo9apcrP4/OCAc/h7TbWZth8rd2vxeKxXdaBkpQGiw1viGnOofCwjntopySudkWEf2dhLzU1VIpg68pYYl7qb6uJNXEpoW6NA2uDJ3rqYBFiKgs3TAK/EuHgipZcZnoOyOo92cQrp83OqLfz3u4oVTnZkFMceL4adnJNkKCHYwjyUz2DCg6OGKKzCDx8SuwQo5icoAgJipJh6BzqPcGbYrUhZh96BUgbKDUNjoQmqfR6Cy2/kVFB++VYOxzYUzY+Pu+q+S3TK52re6mZROzUJvFT4cJdgJYtpPUGfz9cDHZvtszrtgMWHleGNmg404wmTWW5BTbNbXVrMBV9KVdAEzqPvRIXmF78DZQ+df2SAmM3rji4LnmT+zBjn9GmisC5kMIFPkQNEfWi6jUTx8L0ZenXfr2HoZYwuPyM5VLniR0lFN+oIpHpNm5SRnvhrihJT2INgf2OsLpdUkM3eFRZ8m2oU2+uB3+lzr9b00S9nNHiBcaItLUsv+rLdy0Q8G36RHXWkzgScrodxrOZDP5XL42dd+jsDVKhSisJGiZrwoLwJSDV+Xs0BuXoEYX/c90Z2t2NX9p5E/Ymee9jsNATLIy4aR/KIaZXUz8ZSIejFPaWEdjzupCjfsNis5hSWJtcIcWnZrPN8cfR6S2pSPVu4zbxh9cT6zzX4hnHsZleVbk3yn+ZspawwyhfQ/9TM4LN4l5txEHPyWGPIHi9dHa4IKTMAIl0SAZa
- R6YrRFJu
- y6IHdEhCSRvklX1gPLjRKUBMEx0okHIdIT7gUix8UyJ78/bLNx48/lfrrL6+sRl7+edS2x7IwDRcQ9shu8xco41fFrOxXUOB3iizipSJzKdUKocpU07kA0hBdFvdeRWrUKAViOcuRNFjjsHMvHi3lhbY9MNI8L7pjyfo3V3xYXOc4lHb2jMIasphI7VsOyQUdnplQs/PM1dzzLkl+YlX6jG7gSFkMmu6n9DSwlpQ9e2AGfEf3HdOL++DCiU0VPevmu6upm3MADil1U4Blyy/5ZHFzfEzgWnq7E05hZ0obJLIVJgD6oSxXsKVGfKAYgWX1bq/V1RPhwRN3Yp7a4ew4i09kFVi7X+v2gSxNG2U74shaSOckjCjxBDIQary1lqFUGw688/4Nhrtj7Jf56giPyuoXn7g9p6PggOiD7aMBeWDTXqZp7D6LzmjzYg==
+X-HE-Tag: 1777043572-205704
+X-HE-Meta: U2FsdGVkX18iFsPfEJhUlBn7l49TGcqAluKKLD+7XczcxfTu88oJSLvaSRzzUrjWjeOetfzPp6uYbWYgkyxz18YqSncCNv1u73PraEQdnhrQ9H00Ee4bgTRylA5d/v9jbOsYplR5wnB3gesukirxDdj+Lau7Bi+yzvOwHsGi7ydDuHdPAI/Eqx4OEGcMaAiibmhEpRxu7JDTadk65vGfey4fp6OMZ0pgJFS8emZa8NUPZHWZWpudOV8jetwAGVH4dKZWBz3/A7p9N0DTGDrg224Gu9OrSmofE5Da979D7yeyC9xOmW5SSX8a2EwTo8DrVVNfC/Vx/R7oGWDuVj5UuQa97RGVogScx7bfHkgWyZVimvtHslWjh2hEYV87dfoYixgJZx7xtzje2uobqBODQLUVIZ+9Y0Y5DdcbQj5oF49X8XSUN/SHrJSeCP0K6+9QBMHPq7z/Sxzv0G4xWbvAHLcdRJLypfc/h2e32Ea5lZ9kU6ZwuR9qf/mCfF2AX4vPiN6+bSJjBB6D4+21z0b6ml+sCzRE4Q3I9JvTHsGCsmp6Nyfaza4lav3diZIjT5bTekzMAXEhlBCI/nIKHyC7kIwJkvV2bCwgDmrYzfULTmZ09U0/0IQVbOty6Qkn+KD86ucVZXCujvc7VqPm/7oqK6+NlkOY/wprRI7qal+OFAUNGEK8lzb+/mpFDHs/OILa6UVuLlYc9UuJYG0nW+2gv9WbJlSslHQxC+QJuEe+05NhKk0wlrTxAowx8KJMlPlFIQD9QPMYJWdmS3JQJp6yv92qF8YBaVVpcsnMklY40C9MlCfvroL2tZty81dCN9HbHUiQvvetJf7/czCOXJcVep2MNw/O6HJdZgiIzVnzdt1gJz7D8Hr8rpV7kymcN+YkJV7aXrq7jjyVQQgIaRJkrQV3vPUVpRufsddOesTG7BURaMf5qUr5ovdJ5DAtqcR8VncOo2RvVHRhbbopTdx
+ VC+XB7b8
+ BYwuFR4xDIWVlfga9FJUOqPA0nxk8oiQZYrAFkkRZCScBky4rBfNyGzV3Z+FqFeE3MlbPYZ5DzPFq1G/VnyJMHd7smvOFeRWenl8fKZ0g9SdhwHDKlLIwjXnptq3mHxWgq1Qvm7urbSs+rSYzoo49ywp+eKmpgoHkdM5oCkDkn4VaAlTVuJFok+tdMRNBCZ6qOYCEPI/WE1V1E/LFbMRmKCIKWEYtXRZoGboSGIUNkJQyVaZJwKvXkm6Yv04wwhSmwwwmC+f4WszUfSLYHoXnpNOWTkeQOWwVGQxD9tZY0joSmgLfgmpGvnnrZWPKsvnGVwaJTExC+dHKIhPfnXr2KJ4s8X6F5+pYBf1AX/K9C8TaGcTTgcL62nlkInQ2FbQWMNiji8yJZ+E5SrP6/VW+BdTJoGZCfzVyu0a21VqGaHECVbT7C7NoNqPANe4PN2BpIqlAe6lYA7S2Fh8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,292 +177,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 24 Apr 2026 10:29:58 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+On 24 Apr 2026, at 11:07, Zi Yan wrote:
 
-> Hello SJ,
-> 
-> Thank you for the review.
-> 
-> On 4/24/26 9:36 AM, SeongJae Park wrote:
-> > Hello Jiayuan,
-> >
-> >
-> > Thank you for sharing this patch with us!
-> >
-> > On Thu, 23 Apr 2026 20:23:36 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-> >
-> >> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> >>
-> >> damon_rand() on the sampling_addr hot path calls get_random_u32_below(),
-> >> which takes a local_lock_irqsave() around a per-CPU batched entropy pool
-> >> and periodically refills it with ChaCha20.  On workloads with large
-> >> nr_regions (20k+), this shows up as a large fraction of kdamond CPU
-> >> time: the lock_acquire / local_lock pair plus __get_random_u32_below()
-> >> dominate perf profiles.
-> > Could you please share more details about the use case?  I'm particularly
-> > curious how you ended up setting 'nr_regiions' that high, while the upper limit
-> > of nr_regions is set to 1,0000 by default.
-> 
-> We use DAMON paddr on a 2 TiB host for per-cgroup hot/cold page
-> classification.  Target cgroups can be as small as 1-2% of total
-> memory (tens of GiB).
+> On 24 Apr 2026, at 8:54, David Hildenbrand (Arm) wrote:
+>
+>> On 4/24/26 04:49, Zi Yan wrote:
+>>> After READ_ONLY_THP_FOR_FS is removed, FS either supports large folio=
+ or
+>>> not. folio_split() can be used on a FS with large folio support witho=
+ut
+>>> worrying about getting a THP on a FS without large folio support.
+>>>
+>>> When READ_ONLY_THP_FOR_FS was present, a PMD large pagecache folio ca=
+n
+>>> appear in a FS without large folio support after khugepaged or
+>>> madvise(MADV_COLLAPSE) creates it. During truncate_inode_partial_foli=
+o(),
+>>> such a PMD large pagecache folio is split and if the FS does not supp=
+ort
+>>> large folio, it needs to be split to order-0 ones and could not be sp=
+lit
+>>> non uniformly to ones with various orders. try_folio_split_to_order()=
+ was
+>>> added to handle this situation by checking folio_check_splittable(...=
+,
+>>> SPLIT_TYPE_NON_UNIFORM) to detect if the large folio is created due t=
+o
+>>> READ_ONLY_THP_FOR_FS and the FS does not support large folio. Now
+>>> READ_ONLY_THP_FOR_FS is removed, all large pagecache folios are creat=
+ed
+>>> with FSes supporting large folio, this function is no longer needed a=
+nd all
+>>> large pagecache folios can be split non uniformly.
+>>
+>> In general looks good. Just one question:
+>>
+>> folio_check_splittable() also rejects SPLIT_TYPE_NON_UNIFORM / new_ord=
+er for
+>> swapcache pages.
+>
+> Since swapcache only supports PMD order or 0 order yet.
+>
+>>
+>> It's confusing, but truncate would never stumble over such folios, cor=
+rect?
+>
+> Right.
 
-Thank you for sharing this detail!
+BTW, sashiko had a similar question when it reviewed v2[1]. It also compl=
+ained
+about when the split fails, the entire folio remains in memory. But that =
+is the
+consequence of failed split, unless we want to keep retrying the split.
 
-Could you further share me what do you do with the hot/cold information?  We
-found some people want to use DAMON for proactive cold pages reclamation but
-they watned to use it for only file-backed pages, and therefore developed page
-level DAMOS filter.  In a similar way, if we know your detailed use case, we
-might be able to serve you better by finding not well advertised features, or
-developing a new features.
+[1] https://sashiko.dev/#/patchset/20260413192030.3275825-1-ziy%40nvidia.=
+com?part=3D9
 
-> 
-> With the default max_nr_regions=1000, each region covers ~2 GiB on
-> average, which is often larger than the entire target cgroup.
-> Adaptive split cannot carve out cgroup-homogeneous regions in that
-> regime: each region's nr_accesses averages the (small) cgroup
-> fraction with the surrounding non-cgroup pages, and the cgroup's
-> access signal gets washed out.
-
-But, pages of cgroups would be scattered around on the physical address space.
-So even if DAMON finds a hot or cold region on physical address space that
-having a size smaller than a cgroup's memory, it is hard to say if it is for a
-specific cgroup.  How do you know if the region is for which cgroup?  Do you
-have a way to make sure pages of same cgroup are gathered on the physical
-address space?  If not, I'm not sure how ensuring size of region to be equal or
-smaller than each cgroup size helps you.
-
-We are supporting page level monitoring [1] for such cgroup-aware use case.
-Are you using it?  But again, if you use it, I'm not sure why you need to
-ensure DAMON region size smaller than the cgroup size.
-
-Fyi, I'm also working [2] on making the cgroup-aware monitoring much more
-lightweight.
-
-> 
-> Raising max_nr_regions to 10k-20k gives the adaptive split enough
-> spatial resolution that cgroup-majority regions can form at cgroup
-> boundaries (allocations have enough physical locality in practice for
-> this to work -- THP, per-node allocation, etc.).  At that region
-> count, damon_rand() starts showing up at the top of kdamond profiles,
-> which is what motivated this patch.
-
-Thank you for sharing how this patch has developed.  I'm still curious if there
-is yet more ways to make DAMON better for your use case.  But this patch makes
-sense in general to me.
-
-> 
-> 
-> > I know some people worry if the limit is too low and it could result in poor
-> > monitoring accuracy.  Therefore we developed [1] monitoring intervals
-> > auto-tuning.  From multiple tests on real environment it showed somewhat
-> > convincing results, and therefore I nowadays suggest DAMON users to try that if
-> > they didn't try.
-> >
-> > I'm bit concerned if this is over-engineering.  It would be helpful to know if
-> > it is, if you could share the more detailed use case.
-> 
-> 
-> Thanks for pointing to intervals auto-tuning - we do use it.  But it
-> 
-> trades sampling frequency against monitoring overhead; it cannot
-> change the spatial resolution.  With N=1000 regions on a 2 TiB host,
-> a 20 GiB cgroup cannot be resolved no matter how we tune sample_us /
-> aggr_us, because the region boundary itself averages cgroup and
-> 
-> non-cgroup pages together.
-> 
-> So raising max_nr_regions and making the per-region overhead cheap
-> are complementary to interval auto-tuning, not redundant with it.
-
-Makes sense.  I'm still not sure how it helps for cgroup.  But, if you do want
-it and if it helps you, you are of course ok to use it in your way, and I will
-help you. :)
-
-> 
-> >> Introduce damon_rand_fast(), which uses a lockless lfsr113 generator
-> >> (struct rnd_state) held per damon_ctx and seeded from get_random_u64()
-> >> in damon_new_ctx().  kdamond is the sole consumer of a given ctx, so no
-> >> synchronization is required.  Range mapping uses Lemire's
-> >> (u64)rnd * span >> 32 to avoid a 64-bit division; residual bias is
-> >> bounded by span / 2^32, negligible for statistical sampling.
-> >>
-> >> The new helper is intended for the sampling-address hot path only.
-> >> damon_rand() is kept for call sites that run outside the kdamond loop
-> >> and/or have no ctx available (damon_split_regions_of(), kunit tests).
-> >>
-> >> Convert the two hot callers:
-> >>
-> >>    - __damon_pa_prepare_access_check()
-> >>    - __damon_va_prepare_access_check()
-> >>
-> >> lfsr113 is a linear PRNG and MUST NOT be used for anything
-> >> security-sensitive.  DAMON's sampling_addr is not exposed to userspace
-> >> and is only consumed as a probe point for PTE accessed-bit sampling, so
-> >> a non-cryptographic PRNG is appropriate here.
-> >>
-> >> Tested with paddr monitoring and max_nr_regions=20000: kdamond CPU
-> >> usage reduced from ~72% to ~50% of one core.
-> >>
-> >> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-> >> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-> >> ---
-> >>   include/linux/damon.h | 28 ++++++++++++++++++++++++++++
-> >>   mm/damon/core.c       |  2 ++
-> >>   mm/damon/paddr.c      | 10 +++++-----
-> >>   mm/damon/vaddr.c      |  9 +++++----
-> >>   4 files changed, 40 insertions(+), 9 deletions(-)
-> >>
-> >> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> >> index f2cdb7c3f5e6..0afdc08119c8 100644
-> >> --- a/include/linux/damon.h
-> >> +++ b/include/linux/damon.h
-> >> @@ -10,6 +10,7 @@
-> >>   
-> >>   #include <linux/memcontrol.h>
-> >>   #include <linux/mutex.h>
-> >> +#include <linux/prandom.h>
-> >>   #include <linux/time64.h>
-> >>   #include <linux/types.h>
-> >>   #include <linux/random.h>
-> >> @@ -843,8 +844,35 @@ struct damon_ctx {
-> >>   
-> >>   	struct list_head adaptive_targets;
-> >>   	struct list_head schemes;
-> >> +
-> >> +	/*
-> >> +	 * Per-ctx lockless PRNG state for damon_rand_fast(). Seeded from
-> >> +	 * get_random_u64() in damon_new_ctx(). Owned exclusively by the
-> >> +	 * kdamond thread of this ctx, so no locking is required.
-> >> +	 */
-> >> +	struct rnd_state rnd_state;
-> >>   };
-> >>   
-> >> +/*
-> >> + * damon_rand_fast - per-ctx PRNG variant of damon_rand() for hot paths.
-> >> + *
-> >> + * Uses the lockless lfsr113 state kept in @ctx->rnd_state. Safe because
-> >> + * kdamond is the single consumer of a given ctx, so no synchronization
-> >> + * is required. Quality is sufficient for statistical sampling; do NOT
-> >> + * use for any security-sensitive randomness.
-> >> + *
-> >> + * Range mapping uses Lemire's (u64)rnd * span >> 32 to avoid a division;
-> >> + * bias is bounded by span / 2^32, negligible for DAMON.
-> >> + */
-> >> +static inline unsigned long damon_rand_fast(struct damon_ctx *ctx,
-> >> +					    unsigned long l, unsigned long r)
-> >> +{
-> >> +	u32 rnd = prandom_u32_state(&ctx->rnd_state);
-> >> +	u32 span = (u32)(r - l);
-> >> +
-> >> +	return l + (unsigned long)(((u64)rnd * span) >> 32);
-> >> +}
-> > As Sashiko pointed out [2], we may better to return 'unsigned long' from this
-> > function.  Can this algorithm be extended for that?
-> 
-> Sashiko is correct that (u32)(r - l) truncates spans greater than 4 GiB.
-> 
-> This is a pre-existing limitation of damon_rand() itself, which
-> passes r - l to get_random_u32_below() (a u32 parameter) and
-> truncates the same way.  My patch makes that truncation
-> explicit but does not introduce a new bug.
-
-You are 100% correct and I agree.  Thank you for making this clear.  I should
-also mentioned and underlined this in my previous reply, but I forgot it.
-
-So I think this patch is ok to be merged as is (after addressing my nit trivial
-comments about coding styles), but we may still want to fix it in future.  So I
-was wondering if such future fix for this new, shiny and efficient function is
-easy.
-
-> 
-> We can restrict the region size when config or just allow spans greater 
-> than 4G.
-> 
-> static inline unsigned long damon_rand_fast(struct damon_ctx *ctx,
->                unsigned long l, unsigned long r)
-> {
->        unsigned long span = r - l;
->        u64 rnd;
-> 
->        if (likely(span <= U32_MAX)) {
-
-I think we could drop 'likely' and hope compiler or hardware branch prediction
-to be smart enough.
-
->                rnd = prandom_u32_state(&ctx->rnd_state);
->                return l + (unsigned long)((rnd * span) >> 32);
->        }
->        rnd = ((u64)prandom_u32_state(&ctx->rnd_state) << 32) |
->              prandom_u32_state(&ctx->rnd_state);
-> 
->        // same as 'l + (unsigned long)((rnd * span) >> 32);'
->        return l + mul_u64_u64_shr(rnd, span, 64);
-
-Makes sense to me.
-
-> }
-> 
-> 
-> >> +
-> >>   static inline struct damon_region *damon_next_region(struct damon_region *r)
-> >>   {
-> >>   	return container_of(r->list.next, struct damon_region, list);
-> >> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> >> index 3dbbbfdeff71..c3779c674601 100644
-> >> --- a/mm/damon/core.c
-> >> +++ b/mm/damon/core.c
-> >> @@ -607,6 +607,8 @@ struct damon_ctx *damon_new_ctx(void)
-> >>   	INIT_LIST_HEAD(&ctx->adaptive_targets);
-> >>   	INIT_LIST_HEAD(&ctx->schemes);
-> >>   
-> >> +	prandom_seed_state(&ctx->rnd_state, get_random_u64());
-> >> +
-> >>   	return ctx;
-> >>   }
-> >>   
-> >> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> >> index 5cdcc5037cbc..b5e1197f2ba2 100644
-> >> --- a/mm/damon/paddr.c
-> >> +++ b/mm/damon/paddr.c
-> >> @@ -48,12 +48,12 @@ static void damon_pa_mkold(phys_addr_t paddr)
-> >>   	folio_put(folio);
-> >>   }
-> >>   
-> >> -static void __damon_pa_prepare_access_check(struct damon_region *r,
-> >> -		unsigned long addr_unit)
-> >> +static void __damon_pa_prepare_access_check(struct damon_ctx *ctx,
-> >> +					    struct damon_region *r)
-> > Let's keep 'r' on the first line, and update the second line without indent
-> > change.
-> >
-> Thanks
-
-You're welcome :)
-
-So I'm still unsure if this is the only single and best way for your use case.
-I'd like to further discuss your use case and find more way to help it if you
-are also interested.  So, I'd like to continue the conversation.
-
-Regardless of it, though, I think this patch is good enough to be merged for
-general use case, though it require above trivial style changes.  I wouldn't
-strongly request you to solve the >4GiB region issue together, but it would be
-nice to be added from the beginning.  It's up to your choice.
-
-I'm also waiting for your answer to the second patch of this series.  I'm still
-bit skeptical about it, though.  To my simple brain, it feels introducing too
-much complexity.  I feel like making this damon_rand() optimization patch
-merged first and keep discussing your use case and the second patch later might
-be a path forward.  If you agree, please feel free to post a new version of
-this patch.
-
-
-[1] https://github.com/damonitor/damo/blob/next/USAGE.md#damo-report-access-page-level-properties-based-access-monitoring
-[2] https://lore.kernel.org/linux-mm/20260307210250.204245-1-sj@kernel.org/
-
-
-Thanks,
-SJ
-
-[...]
+Best Regards,
+Yan, Zi
 
