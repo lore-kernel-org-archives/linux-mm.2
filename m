@@ -4,104 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4FBAFE5215
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 11:59:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F88AFE5214
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:01:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BE526B0093; Fri, 24 Apr 2026 07:59:33 -0400 (EDT)
+	id 7BC1D6B008C; Fri, 24 Apr 2026 08:01:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56EB66B0095; Fri, 24 Apr 2026 07:59:33 -0400 (EDT)
+	id 76D6C6B0093; Fri, 24 Apr 2026 08:01:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 436516B0096; Fri, 24 Apr 2026 07:59:33 -0400 (EDT)
+	id 65C226B0096; Fri, 24 Apr 2026 08:01:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BCCC6B0093
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:59:33 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFADFA00AE
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:59:32 +0000 (UTC)
-X-FDA: 84693304584.20.33C1B75
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 629F88000B
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 11:59:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Pp+Vu8IM;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F39C6B008C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:01:22 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F02E54014A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:01:21 +0000 (UTC)
+X-FDA: 84693309162.05.E95B499
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1F4A518000D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:01:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=XXhpjgvn;
+	spf=none (imf24.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777031971;
+	s=arc-20220608; t=1777032080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IHQYPzAV990Uhew6eBIq9GNsVsyr4/52nVfMb6QSTqQ=;
-	b=DuF/846tqlqurNIYA5S75+xBJ4Pw1B5fcckRKeHujqsdE3NhctENXMNYpQCHPkpBTbJHRs
-	Q4TzGdacd9qL0PWvzwLConcc3yVAwH6SuEArpin0gvfCqTksIdHoWl6++97ZWal88hQ+Cu
-	SgCTc8a7HkIw5ReddpB9bk+y5ZnoMio=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Pp+Vu8IM;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777031971; a=rsa-sha256;
+	bh=i9gfDuuaXGFcGzcTQeLr1pg8fqm0C7Flns4/9cvFi4g=;
+	b=pJTrQ3m70XaP+/3oNve2jEPz5+XeS73SyX+F5iwSoLsWvQUmhGN5bHwQV7V3Y5CMib1My4
+	lOv+C62CrBkAOOKJLo5uY38g1s2abpbT8CubM9YMwwwKPI8tJy5fkhFprcS9iAVYx8Euet
+	OMZfhbbkBAWCwKq9xH4T+MwayP/0E/E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777032080; a=rsa-sha256;
 	cv=none;
-	b=EkPk/+2eOD0x1lc503m+PuplXikePfXD4pYfVE0EpSnSlA1opB12RPL6kAxvExUd38R/EK
-	7roaLl8VDMJewNpBNheyIsMNl8blV5bWXnD1gbfmEFSE2sDa7pQvyylOePfsZjICmYRlAW
-	DsI+jEussaPTrAU64Ds4s4X/FJpyu8g=
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777031967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IHQYPzAV990Uhew6eBIq9GNsVsyr4/52nVfMb6QSTqQ=;
-	b=Pp+Vu8IMlRT1HXTy/rykslM1Plape2KDpGMSDX3NKXZ68euahDQGlPY8zAIrMbOEcYapEb
-	ZGM7yA3d+S/yRj2l5FezOlNTDHGJWWQLHweIq05WAmXtCWycRusfEBhThWETI5BGIIT0th
-	3cJOz5zV5HFizSDxO8DsXIHMwEIoprI=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH v6 7/7] mm/memory_hotplug: Factor out altmap freeing
- checks
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260424032039.a43516455eb1ef7c7fd7867e@linux-foundation.org>
-Date: Fri, 24 Apr 2026 19:58:32 +0800
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- Muchun Song <songmuchun@bytedance.com>,
- Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com,
- joao.m.martins@oracle.com,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8C537157-7EE6-4542-A922-6D34C3A88F47@linux.dev>
-References: <20260424025547.3806072-1-songmuchun@bytedance.com>
- <20260424025547.3806072-8-songmuchun@bytedance.com>
- <6dd8e62b-97e3-4261-92c7-ba3a02ae6397@kernel.org>
- <20260424032039.a43516455eb1ef7c7fd7867e@linux-foundation.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: wfjmh453s3fjkczkd9jc7xezerhbwkne
+	b=SK2CdmHi6aCBllkNg/OqT4pPLx0wvoJWkl/VLqXlhSrwJBZFF+rWxuUEwj6LhH8XsPWYTd
+	H1QH9HYCNJAUu1OITIWT1mJ+eGWlYUljUq7ziZj9dLchglD7b2cCBhCOlmpqU/d9pV2bOm
+	BYLJtmL3QM0hG9/wMDNnJxx2Atu0KxI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=XXhpjgvn;
+	spf=none (imf24.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=i9gfDuuaXGFcGzcTQeLr1pg8fqm0C7Flns4/9cvFi4g=; b=XXhpjgvn+c0oE9J0xyNK5mpMTS
+	kUx+kT9SiAQJQHow1kuklllfRYjp1nacBmIV6NiAm/4iuo9zbo2lQ1vk2QMuF/Esq985vSWJtpHH6
+	onBsQragEGxgW8PFJ9SQZ/kB3P+ktm0N+nqjXTxia0n6bW449lIyALBK8wobcvq9eS+rGZChiCBPU
+	O+/ml6KOuQugS7YhUCdPf8qPgzTIuUaexfm26y8itblIlcOGXAnxNRq07GFDLeBrqcCQKKlIGhGQr
+	HyQc51x84G0ritTwD28VsX+RGp5ar9kMoruGbjgnfZewEtZl9FqpY+b+mznM4BVfzx5CmAz6IXf5Z
+	d8WmURlQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wGFDW-0039ct-3A;
+	Fri, 24 Apr 2026 12:01:07 +0000
+Date: Fri, 24 Apr 2026 05:01:01 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kernel-team@meta.com, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v4 2/3] mm/memory-failure: add panic option for
+ unrecoverable pages
+Message-ID: <aeta8Ifvmqi6-E8w@gmail.com>
+References: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
+ <20260415-ecc_panic-v4-2-2d0277f8f601@debian.org>
+ <6b505601-747a-0812-7544-63a8ab3cffce@huawei.com>
+ <aejlg62nxcF_5g2v@gmail.com>
+ <c1517ad3-91d1-2ea1-efa7-0f29415d513d@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c1517ad3-91d1-2ea1-efa7-0f29415d513d@huawei.com>
+X-Debian-User: leitao
+X-Stat-Signature: 7w9rq9dqjiy793a34sezy8dd6gooonxt
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 629F88000B
-X-HE-Tag: 1777031969-515867
-X-HE-Meta: U2FsdGVkX198royYY1qKfwXq2ILqa9ux6QwyGlEg5W0rhFIqaEnlez++snblD8Cd/L+zWZBrztCv2Qauzaxkk+bAKeonsQANjcu6WNFtQPBNphAwbzwtP/KwJirlS53IaC8JAhMjYvzAUvXVOXqGOwhIld7U4R/6AC9YuXgfS9aX40B8qEjXIAYMsr+sUQPUksqqZ3/0jgBUpi1GGIGl04BpUiaiMZiYYqSj9wwIh8ciG9laQnhzWhaq8siYzEieclCazPjcETSIJw6X1+O6OGBCEcJjB+jbbtLcSLIQQeCM094LrxetqewxRC7JaYLzBfta9JLgq1dHG5hGpuAVdJEuSKf1eLIuvo4SMECcvUKUX2cHGBVYUJk/lUbqOoJ31bydRqZB0FXEofbKcX/gU4AUrFsjgVvEK6MMKOOYGfNP7C3At4HkFyPsoBPrSYXdxo23PC1AF33U09GikElipi2B0dy5yCvM33b1gn8llgET8+mrwKZplZQnCJIQtJGYDiq4lMqOesiybTsQVMvkguaS8ykq5C5p+nBJBhP2NyGD2i2IVWqO59CgVq4d0zwlON6f91XbT3k9QajE9TyBfXPkqQZmKDn1D1ulPnzKqvYUQudYaEr2tDk09msuYbTfczCazeMoNmEaUuZoSFBjjBWLpIkqmvdkCVLmtE0wO5U3MObOORmlSrq0uw7OcMv2VlIDut7QDyMZmeRfrAuDJx6sfLuiO4+pzRUeI0C03U2muyamRRgaNJyMCN4+9uM15b42VWtWPrmfzuho4GV3y10g9aMc7Vi3k7+9xj7Ix5KnQTAwtyWfC1H0JrEE5WNfNeF017XNgM7I6m01ADdUkZvqbgrouipksPJtGbW/6usEwEtcTcKZfisX4U4mSABNmiq61IYkjsFZKcEMwTiJg85h8X+PDkJKZqedsLCZlvFG1Sa+b5yToJqlhB8+akRqIRqNOZh/sAR5SKmt4tY
- 4/JvUBwc
- +ZkfiG8ndgff/bAKzSwkMGZU9L7UaGFi02kZwcNcv3XD+y2s+XF0EcWJsj7Zp0k6/chrOquoDj7CoUO+XksI+3fQ6DtMF+7kM+EArMQJ14eiHj43/EgTI1r/H57xKeyWPH1yUy6l5p9POeINSwqBxFZNkAo4zlXG3blJWdVNc7txxVNv8O+JzJ7YVB7I4BPn/u1fBetPEnVjd2rsIbK6aJ1z4xkb6XCmLY3/YFiSPd9oxuACMz1iY3ixcY4qCKPs3e+KCn3KlG5DWcWdk0Ab19mOsYWFi4eDAMGCHTtFiKJPWOowaiJaGt4Ca+YOu1Dzoh06cwawCHkaDOSEaLqNHsXowaeWpJ1iuNeup1huytOYHQWwd9vEuBk5lmB2N9IyxyUFs548NfrKbw9I=
+X-Rspamd-Queue-Id: 1F4A518000D
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1777032079-219636
+X-HE-Meta: U2FsdGVkX1/Z6OVSjUVACuC6wFZ/dVtN78X72rzKODXuHYiw18c+e9eYyWwyz1rK+h3Ty1lpptFmM2ljY36+jV52vpqEMJpDfaxZcXGXcc4rmSg3y8eBz35idy9Eq9mnjfMXk4ekhORIbMuUf8yO+TYYNaVtLitEDrJhRzMLgKFTd1DUfWT1KxeD1jcPqj4AxRPgeTcjO+23DI5fYOvvtoOIbcT6Nvrm+LZ1tgou/Im/qhvK1o2gxFmdf45Qh/VF//jGXaaeREKE50l6iq8V5jpXpHMx37z5r789hMqg6QN/flEPJcbNdur5TKwfFBSJ0a2OcnxPrjzzmCS+0odivaNrEjejYm4AcRiw1XmMw4iNMh03mrDaw3UkcJp0nBx73TFOAp1iNNNYFSf23WKEsG2HJKg8iZetx5vcEOBY2rezEw/o39TFO9/5MuSECn0AygvOEXQwmeegFZz3byzY2+0XCmz6jX7vtmbqJnVMx1J5WwEy9GEULfiJyI1dOQ3EQEEqHm/dQHf3mOmxng/9XYjuDuzi/0iklOLl+nXRxqHKU20f7nVRIAgmZ3xZFFdgtX5gLHXq5d3UV6CweWdy7vb3mNzh1bi31NJNF1bsI7DW+6EDhGyC4mQaOCA08Xz6AxQd/MXAywFTPuyrU3rN4zOmen/v14QmPkiqw4KtWS+IALCzXlXw9mLo8Mbk+TGhwpz3T/8RLf2IVQt3AZxKWrjzDLlzrKNNbsyCji23D+/4dHd5M6KZOpZtSXBXbu8UVhervSc3dtuZ7uU0uwsPAazKnmV/hWmVTXjlh/NDPRBGMlEBpixmVl6P0rbpJf2WRmHWLU7CECviiQRCqphKpDr1dvoWR6SJn5tMIJLuCtczY0wWUNMiOCGVB7Q052NCpk0mKOG6hoR+GQdznEGXLh/cSz2SvoUsR3nO/zF+ZE3hjmonTUBMRGrrCwxH4TbYpKNNYjfH0y1an+Ue9Ap
+ lvoUZGVS
+ yF2XJlHeSddoRED3b4MFpTXSzFq5J6PM1KzJ8AcMJ9mjvXsvk2LD/2Db2iu0wy+CdAHE01X+LvoYrYWZfFOBpAEEG2Yi/G2JGOWiEhNDHc3VZ4YG3m36eXcflRQ/dziLVFtnIfoxbdwcJNo4QoxWS2EzTh+mypz7gAH2w9Moz4etpwaLso1tiogHnEfU/2j1A5yliQh8rhNEso3ogQShRZQju7LXL2luK8fQVZ4hUOhAAlJjTlMnyvo/0v95oSSqbht18EbXiBBLG89Z1O4qfu2v6XzeFvAbkGx3StDpuYI9J0PE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,76 +104,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Apr 23, 2026 at 10:38:19AM +0800, Miaohe Lin wrote:
+> > are you suggesting I drop MF_MSG_KERNEL_HIGH_ORDER from here, or, document this
+> > will not hit userspace pages?
+> 
+> No, maybe we should rule out or document above rare case if I'm not miss something.
+
+Good catch. A buddy page being concurrently allocated to userspace can
+briefly satisfy get_hwpoison_page() == 0 && !is_free_buddy_page(), and
+that page is recoverable via the standard SIGBUS path — panicking on
+it would be wrong.
+
+The page allocator can't filter it out either.
+
+check_new_pages() is gated by is_check_pages_enabled() and is a no-op
+when CONFIG_DEBUG_VM=n.
+
+For v6 I'll try to rule out the race inside panic_on_unrecoverable_mf() so
+action_result() stays unchanged:
+
+	case MF_MSG_KERNEL_HIGH_ORDER:
+	p = pfn_to_online_page(pfn);
+	if (!p)
+		return true;
+	cpu_relax();
+	return page_count(p) == 0 &&
+		!PageLRU(p) &&
+		!page_mapped(p) &&
+		!page_folio(p)->mapping &&
+		!is_free_buddy_page(p);
 
 
-> On Apr 24, 2026, at 18:20, Andrew Morton <akpm@linux-foundation.org> =
-wrote:
->=20
-> On Fri, 24 Apr 2026 09:34:43 +0200 "David Hildenbrand (Arm)" =
-<david@kernel.org> wrote:
->=20
->> On 4/24/26 04:55, Muchun Song wrote:
->>> Use a small helper to centralize altmap freeing after verifying that =
-all
->>> vmemmap pages were released. This keeps the check consistent between =
-the
->>> normal teardown path and the memory hotplug error paths.
->>>=20
->>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>> ---
->>=20
->> Thanks!
->>=20
->> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->>=20
->> Andrew usually prefers sending non-fixes separately,
->=20
-> Patches which are destined for the current -rc cycle (and possibly
-> -stable) (aka "hotfixes") take a different route into mainline from
-> regular next-merge-window material.  They go into different branches
-> and they have different timing.
->=20
-> If a patchset has a mixture of hotfixes (upstream next week) and
-> regular patches (upstream mid June) then I have to pull the series
-> apart, stage some things into one branch and other things in another
-> branch, rework the cover letter etc etc.  Problems with this are:
->=20
-> - what goes upstream doesn't map well onto what was presented on the
->  mailing list.
->=20
-> - the hotfixes (upstream next week) may have dependencies on the
->  regular patches (upstream mid June).  This is backwards.
->=20
-> Much depends on the urgency of the hotfixes.
->=20
-> In this case, iirc, the determination is "not very urgent at all".  So
-> the series is OK as-is - it's all "upstream mid June".
->=20
-> This is still a bit suboptimal because when the -stable maintainers =
-get
-> onto backporting the cc:stable patches (after mid June), they may
-> encounter merge/build/runtime issues due to the absence of the
-> non-hotfix patches from this series.
->=20
-> So generally, it is best for authors to have a think about these
-> timing/priority issues and to present the patches in a suitable =
-fashion
-> - hotfixes/-stable patches in one series then non-hotfixes in a =
-second,
-> later series.  This way their presentation matches what goes upstream
-> and we reduce the possibility of problems when the -stable maintainers
-> get onto backporting.
+A buddy page being allocated must transit rmqueue() → prep_new_page() →
+post_alloc_hook() before the caller can use it. Each step either bumps
+_refcount or sets state we can observe (PageLRU, ->mapping). cpu_relax()
+lets that remote-CPU progress become visible before we resample.
 
-Thanks for the clarification! Since I'm heading into the next revision
-anyway, I=E2=80=99ll go ahead and split the series.
+A genuine non-buddy high-order kernel tail page stays unowned across the
+recheck, so the panic still fires on the case this series targets.
 
-I'll drop the non-fix patches for now and focus this series on the
-bugfixes to ensure a smooth merge. The regular patches will follow
-in a separate submission later.
+The window is much narrowed now, not eliminated — I'll say so in the changelog.
 
-Thanks,
-Muchun.
+I also added a selftest that enables the sysctl, injects MADV_HWPOISON
+on a userspace anon page in a forked child, and asserts SIGBUS (not a
+panic). I've been running this in a loop for hours, and I haven't seen any
+false positive.
 
-
+Thanks for the review,
+--breno
 
