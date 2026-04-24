@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED45AFAD41C
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 04:02:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C08DFAD3F3
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 04:03:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6006D6B009E; Fri, 24 Apr 2026 00:02:48 -0400 (EDT)
+	id F28DD6B009F; Fri, 24 Apr 2026 00:03:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D84D6B009F; Fri, 24 Apr 2026 00:02:48 -0400 (EDT)
+	id ED9096B00A1; Fri, 24 Apr 2026 00:03:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5159E6B00A0; Fri, 24 Apr 2026 00:02:48 -0400 (EDT)
+	id DEF806B00A2; Fri, 24 Apr 2026 00:03:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 40E9D6B009E
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:02:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED941C2B5D
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 04:02:47 +0000 (UTC)
-X-FDA: 84692103174.20.31DF3FF
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 17CD240007
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 04:02:45 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=U5fjPqF+;
-	spf=pass (imf27.hostedemail.com: domain of li.wang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id CDBF06B009F
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:03:01 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 819A11B8FD8
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 04:03:01 +0000 (UTC)
+X-FDA: 84692103762.28.925936B
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9E09980014
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 04:02:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=u2UUUdOL;
+	spf=pass (imf02.hostedemail.com: domain of li.wang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777003366;
+	s=arc-20220608; t=1777003379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FdU7Rewe0JBnvI+IPS10alBnrpSA6+jzICgCf1+ep1U=;
-	b=Y//bAsZH8aQygV5nJL+VXYiX9Y68n0Eq9XNKiJhCY+fYtK2Gb+/aJF3Cx0ey/b5zt8rym9
-	rFp10I4gVEIBoiUutRjTjU/+WpwTYQGm+8ekhNSsr3T8W02gHwfkFlFyrvNcohUxQOdaz4
-	01MZh/YC0ehBe6paGMjlFpV5nydYrEk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=U5fjPqF+;
-	spf=pass (imf27.hostedemail.com: domain of li.wang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777003366; a=rsa-sha256;
+	bh=VcJ71eB0Ct26LCodBxWEDWyUKWisA2ZlGgHlF6yt2M8=;
+	b=GJz4m6FgmCZI4ZT9VJaKSVMkwLB1o8f5dn0ttc91c7+A9dzx8Hwnrr5wEixFuE0aTZM+xP
+	wDpQTdxJD/lp3XUvx1Pt+eWNcve+LUU7MnRTA3lHbt57pDMXcpOM1G4B0fcZvqqVWMjVoa
+	3l61JRiwJOrphULlQkvaCsIwko86pL0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777003379; a=rsa-sha256;
 	cv=none;
-	b=E+FDfxEU/NaFe01SHCXK/6wV2ESH+wShfQIn/Ql2dYxdoZnWYq/xR7oCT/tGYcHVvWzEo2
-	lZIbLtJK0hfE1A4REb2KHG3Zbmt/eFoFbvhZdvJBCdYdm47ONEuPtAgqwSfsRyVIkD79kr
-	T2HQfsMxqVTW8rwvsjiP3yaqxYnhs9w=
+	b=pYt7auMB7Rjwk2wmddUXO4Uy0aKEgD7R8hzjVveLcYW6TmXyypkTjCYEWbP/wYiOfmNRiG
+	CNbq2aW3r6tFgVoUcjwJgu3HVHtPNdN10XjPYlvo25bmnE4Ny/TOkMP7BDBVqbpkMOM3c0
+	97tmFuDg9eEwlQ38eg6pwAIDq7czQBA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=u2UUUdOL;
+	spf=pass (imf02.hostedemail.com: domain of li.wang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777003364;
+	t=1777003378;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FdU7Rewe0JBnvI+IPS10alBnrpSA6+jzICgCf1+ep1U=;
-	b=U5fjPqF+pm76sZZaxN+3woOitsl6wVvsvP9t/e4ULmjo3veM4lWVgJjWTRsEplnE37Kr3r
-	VQ21e7PjO8fKU0qLT1WAdg6kCaUmJOW+3ZFViARe1zenaAHAUlZpmIDPKhUC+f0r1E+rCm
-	jDJmH9BVwhZ/Fm7ocQQR/R4r/AHxTLg=
+	bh=VcJ71eB0Ct26LCodBxWEDWyUKWisA2ZlGgHlF6yt2M8=;
+	b=u2UUUdOLq/sTdbKir0hjZ104Y8LIJpS74cn7qDT1LzGQvC8x59z4JKTAYYFv+Mi2wy77jP
+	0erlRvbTWrp6xVDva3XA8Q9mWdOuWMDPKHx9XMzdrSkIVihGcR7+omGvoVjKtNcjcQJGTn
+	HOhQ3z3hpFynAlwnZwurAZ3K3oZ/krY=
 From: Li Wang <li.wang@linux.dev>
 To: akpm@linux-foundation.org,
 	tj@kernel.org,
@@ -78,24 +78,25 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Michal Hocko <mhocko@kernel.org>,
 	Muchun Song <muchun.song@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: [PATCH v7 7/8] selftest/cgroup: fix zswap attempt_writeback() on 64K pagesize system
-Date: Fri, 24 Apr 2026 12:00:58 +0800
-Message-ID: <20260424040059.12940-8-li.wang@linux.dev>
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosryahmed@google.com>
+Subject: [PATCH v7 8/8] selftests/cgroup: test_zswap: wait for asynchronous writeback
+Date: Fri, 24 Apr 2026 12:00:59 +0800
+Message-ID: <20260424040059.12940-9-li.wang@linux.dev>
 In-Reply-To: <20260424040059.12940-1-li.wang@linux.dev>
 References: <20260424040059.12940-1-li.wang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 17CD240007
-X-Stat-Signature: tapoabgcws9z3xanyhd1u6demtzzin8u
+X-Stat-Signature: 9i8b4q34n6tdr1dtqkzao8e7hz9cnxpe
 X-Rspam-User: 
-X-HE-Tag: 1777003365-424927
-X-HE-Meta: U2FsdGVkX1+9em3+kOOqInO3p5HZrpx2jVX/iSw31dm8qXIm9v5iA4xS6cjblF8CZqbJeYrnIULGL3qA2Se2udLrSrjsRj4Wy6lou7/tu70lIzhJtu8k7n/qn7FqvhMemMefUHPvMTaXc3US3v1XSy0QxVh4WBmFi6JimX/cM+6tLxTTIZM1gu2qAFp6DlMHRs+UQ7J9g4clc/tXjWP7ZRtLRbetAhK+ctkB1u81G+m69w5kjFqm3K6ZhhpvANJJXVp2VW2FRDPwY7zp6ck3UKgGT1CWh4FEqDH6Fe4OCjoza3yJFQ7VeL4wuUUvkhNRGuJ42sCNCcehRhkx5gmUASdDzC/1ejrbLp3yzgBoHE8jB4nGHYfPW3HKX0YLCW5SihWZKjjPDPqLKBsfYjyVj9CfYjBMUhZyCFiBJZItOVZBS6UxugZnSxfRgju4miX9uvEq/Bo+v+lru9Kq/R24KVYW9OnDJDKQkrew0w7xqPGZH/Zg2YBfaxpADfxL4NnLuM/X8eRzugpU95jHO0hm64+OOMz54OtgxpwRZSV6ztZDPtFh32Udq+8Gkb2N5loZEtQXx6vQ8NTdWm4GHRv9tc3RDo88o9kPna8L5XqOKeRCbrFanjn4c7VQGuINFhV+F2djccskAQy0qxSEAX5g36/PYWSjfRSDWQ6dicXVjmoiHMEEHR9cYVSnEdg0/4PBHCrS/vW76c4f7G0sf33X1E4t1EKVprcJfrl7U0LLL7GyvT/3Z8mmlxzmA+LNCzHK44bVnyyy1Jx15p3QKt7m9B5PTqMSYJNSI3qMb7y3sHYpTSzLR9F8c2vUkTC8ORI8XYQ2HCjHSMN3pNVLF2kE1er4LiOkdN8TPUw/V/uOwOt/KWTTZdwZ90WMcIWKh/X2VMbkTE3rtnhi1F8RcC9ZANHEUmiDAxxFzPTKXTWySz2edfzH5YHb01hkeLtic0Up6etS41z9Ju5DJKwMwB/
- grMJHf0o
- I22eo6FEePEeRVOJ84yOYPqq+xStiKw7GEbLkkW1uva9U3ys6+x6xXPKPn81Cwd6FSZL2Dm5KeOdnWtPkdnXA7MG5dQRGyLQLDJHbNNJwMMiXDfB8uCcdEo0sTo+DcZU64O8whuFVFprMUJc6NG1bjo+m6voElRXYLcGOqCW4mkSJ2MONDArwUy+kR0GY5Pl6GORgjMiTi1xMqm7m+YUoaaB/nUWMqiVaWybCmnHucwI8sm/VL4s2ojyhxnERPS2HF0O7+6UNBDLQCTO8SUw1Fo9KwqFh2s/j8ryJiC+ebaEuyI1pYxf5upcfeXw1TJZagkv9BaYy2gKRaV98zP6kPg4+dSybTjjJvDmvwYMyoWIWOTnI8rLE2NEuZg6gBoKM2BRew0X/dZdpDA43Pu6cRVzOrPaSY+wdj30mM87DnILuCv4WllWgVgSdkbeyw0bVu2H8
+X-Rspamd-Queue-Id: 9E09980014
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1777003379-791100
+X-HE-Meta: U2FsdGVkX18EXJZmb1iEh9LuAxNsWRD8L8rHPgXeirsjqBGW9BF0d8TpUAeFFLXPSo1bx1mjfjGIQVMQaTzsMEhkUk3xIWEnx6MtoSxQ8rOgDQjuTlQEWEA/iJxX5LVD7y2ZBKDki74jtmA+hVqZF+EweZ+YXvrSm1CCerWi20fpItla7Z8C0N4vMZe9U2qob251Z76HMGo5BT7THmOj3TEkhpea/KfeLzeRElMts7CheBcf1EVyRG/6z4A/DlSJ110pO6/nT0elMagEVLaXu+p32OUO9evvjcxILSomXayfLBrwhGALRTWfUJ41+l+uD+q5KuuVSKMqXl3MNXY1ujzNuEMYvLLA6lDyvuNsTmnYi6I5y2aB0wfjJSIORln2ULwmBbOoqljXaD8Dh5voK8WFxmOIo0i1+I6CAU0rJPWwPqTHdjc5N2wc8OqxQ34vC1jpvTNOujClrnv2Tbtz61QFyrWzLf9x9b0ASREv85WXqVxR9F4wD+0u1jDtAr2tJz79Es/n4KOQ1YY2pdhF9KN2K83iDBdvWYQbtGQee8JlHIxWfianA4SrH8OHtytP2rlNdfN9Q2IELPC8832OIpUpuMooLeKvI8DRfHLJ4QjOp/YEJ45b+3yr4KmSKryVCi90C0Th7TjcJmu01T2303yX1sBdAGCSR7ubwRxQ3DCofnG9DwLlqL8/rTqu0PGh5KgC8EvetiMboZ4SLchGYZBM0qXJLE2+J5wSP/PixKFfIoIV7UsHpsxSVMJH4QZMyAXA8KwxKKc2SbHHFB3LlNWKyJusXt/u4+BAbLAB500ornRFKtFqPfeOjlg2x1kv/DWCLFCm+21Sd0FeaefCDUrx9YRGVpiMMQFD53nz0pF2oRMODAOmU2lQ4VsR0waqjKVyPeYkDq+zbubcYQ1snyJAJwBjMuldfcv8bY2YV9Ny4+3lvjcnMu0wwoZw2A/C1UmBWwKqCN+DKGqcC3I
+ WUZTilBI
+ yQCyAqJ9ucaw5PXaB4C7pjzQ90/DwsCq7alrzcCKBmCJ1GGGsm9H4kMrGEAMLo0CHyEfgEtoh/evQ1/0E6YTdFVDk4yJdX3/EYmWqD6V7ZHmE7QYy71fDGIcppv0C6HH9jzXYzraYFEcskpvN23epBl73GkLL/lV45tVhGchJOHwT/1BttLqbjH6Lfo/+ZR0vkqYLWZW1bNi5OZiB9XXJ9qhjLryBzXqaL0oo4WMqbrpwaP2zDyNKFWypdgwG0l2vQzYy8CX5I9Eebo+Y0zpcvJczcswp5Cmvsq33ff+aXq0tBbUlLGGCQ8bdKxoednZPQjVlZ2FR0e2BcSl0YVfAUom/H5RjG4APbxM4XRUX6JTZarUoGqmXDeeFqsvCOx1aw4hRK11N/qNBPXHq8VNuOBvrik7PiPmqEx65KadRa4OvVusqqjaqXg0n9JqdjUP+Wh24MyNTqwu43/JKanHjDKISiQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,43 +104,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In attempt_writeback(), a memsize of 4M only covers 64 pages on 64K
-page size systems. When memory.reclaim is called, the kernel prefers
-reclaiming clean file pages (binary, libc, linker, etc.) over swapping
-anonymous pages. With only 64 pages of anonymous memory, the reclaim
-target can be largely or entirely satisfied by dropping file pages,
-resulting in very few or zero anonymous pages being pushed into zswap.
+zswap writeback is asynchronous, but test_zswap.c checks writeback
+counters immediately after reclaim/trigger paths. On some platforms
+(e.g. ppc64le), this can race with background writeback and cause
+spurious failures even when behavior is correct.
 
-This causes zswap_usage to be extremely small or zero, making
-zswap_usage/4 insufficient to create meaningful writeback pressure.
-The test then fails because no writeback is triggered.
+Add wait_for_writeback() to poll get_cg_wb_count() with a bounded
+timeout, and use it in:
 
-On 4K page size systems this is not an issue because 4M covers 1024
-pages, and file pages are a small fraction of the reclaim target.
+  test_zswap_writeback_one() when writeback is expected
+  test_no_invasive_cgroup_shrink() for the wb_group check
 
-Fix this by:
-- Always allocating 1024 pages regardless of page size. This ensures
-  enough anonymous pages to reliably populate zswap and trigger
-  writeback, while keeping the original 4M allocation on 4K systems.
-- Setting zswap.max to zswap_usage/4 instead of zswap_usage/2 to
-  create stronger writeback pressure, ensuring reclaim reliably
-  triggers writeback even on large page size systems.
+This keeps the original before/after assertion style while making the
+tests robust against writeback completion latency.
 
-=== Error Log ===
-  # uname -rm
-  6.12.0-211.el10.ppc64le ppc64le
-
-  # getconf PAGESIZE
-  65536
-
-  # ./test_zswap
-  TAP version 13
-  1..7
-  ok 1 test_zswap_usage
-  ok 2 test_swapin_nozswap
-  ok 3 test_zswapin
-  not ok 4 test_zswap_writeback_enabled
-  ...
+No test behavior change, selftest stability improvement only.
 
 Signed-off-by: Li Wang <li.wang@linux.dev>
 Cc: Johannes Weiner <hannes@cmpxchg.org>
@@ -150,48 +129,65 @@ Cc: Nhat Pham <nphamcs@gmail.com>
 Cc: Tejun Heo <tj@kernel.org>
 Cc: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+Cc: Yosry Ahmed <yosryahmed@google.com>
 Acked-by: Nhat Pham <nphamcs@gmail.com>
 ---
- tools/testing/selftests/cgroup/test_zswap.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/cgroup/test_zswap.c | 28 +++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index 8f0478923bd..5fe0cffb557 100644
+index 5fe0cffb557..49b36ee7916 100644
 --- a/tools/testing/selftests/cgroup/test_zswap.c
 +++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -268,14 +268,14 @@ static int test_zswapin(const char *root)
-       This will move it into zswap.
-  * 3. Save current zswap usage.
-  * 4. Move the memory allocated in step 1 back in from zswap.
-- * 5. Set zswap.max to half the amount that was recorded in step 3.
-+ * 5. Set zswap.max to 1/4 of the amount that was recorded in step 3.
-  * 6. Attempt to reclaim memory equal to the amount that was allocated,
-       this will either trigger writeback if it's enabled, or reclamation
-       will fail if writeback is disabled as there isn't enough zswap space.
+@@ -120,6 +120,27 @@ static char *setup_test_group_1M(const char *root, const char *name)
+ 	return NULL;
+ }
+ 
++/*
++ * Writeback is asynchronous; poll until at least one writeback has
++ * been recorded for @cg, or until @timeout_ms has elapsed.
++ */
++static long wait_for_writeback(const char *cg, int timeout_ms)
++{
++	long elapsed, count;
++	for (elapsed = 0; elapsed < timeout_ms; elapsed += 100) {
++		count = get_cg_wb_count(cg);
++
++		if (count < 0)
++			return -1;
++		if (count > 0)
++			return count;
++
++		usleep(100000);
++	}
++
++	return 0;
++}
++
+ /*
+  * Sanity test to check that pages are written into zswap.
   */
- static int attempt_writeback(const char *cgroup, void *arg)
- {
--	size_t memsize = MB(4);
-+	size_t memsize = page_size * 1024;
- 	char buf[page_size];
- 	long zswap_usage;
- 	bool wb_enabled = *(bool *) arg;
-@@ -313,12 +313,12 @@ static int attempt_writeback(const char *cgroup, void *arg)
- 		}
+@@ -345,7 +366,10 @@ static int test_zswap_writeback_one(const char *cgroup, bool wb)
+ 		return -1;
+ 
+ 	/* Verify that zswap writeback occurred only if writeback was enabled */
+-	zswpwb_after = get_cg_wb_count(cgroup);
++	if (wb)
++		zswpwb_after = wait_for_writeback(cgroup, 5000);
++	else
++		zswpwb_after = get_cg_wb_count(cgroup);
+ 	if (zswpwb_after < 0)
+ 		return -1;
+ 
+@@ -476,7 +500,7 @@ static int test_no_invasive_cgroup_shrink(const char *root)
  	}
  
--	if (cg_write_numeric(cgroup, "memory.zswap.max", zswap_usage/2))
-+	if (cg_write_numeric(cgroup, "memory.zswap.max", zswap_usage/4))
- 		goto out;
- 
- 	/*
- 	 * If writeback is enabled, trying to reclaim memory now will trigger a
--	 * writeback as zswap.max is half of what was needed when reclaim ran the first time.
-+	 * writeback as zswap.max is 1/4 of what was needed when reclaim ran the first time.
- 	 * If writeback is disabled, memory reclaim will fail as zswap is limited and
- 	 * it can't writeback to swap.
- 	 */
+ 	/* Verify that only zswapped memory from gwb_group has been written back */
+-	if (get_cg_wb_count(wb_group) > 0 && get_cg_wb_count(zw_group) == 0)
++	if (wait_for_writeback(wb_group, 5000) > 0 && get_cg_wb_count(zw_group) == 0)
+ 		ret = KSFT_PASS;
+ out:
+ 	cg_enter_current(root);
 -- 
 2.53.0
 
