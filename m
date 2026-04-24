@@ -4,100 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C7A8FDEE53
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 00:08:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2D92FDEE53
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 00:12:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC2BF6B0088; Thu, 23 Apr 2026 20:08:44 -0400 (EDT)
+	id 12AE46B0088; Thu, 23 Apr 2026 20:12:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A737D6B008A; Thu, 23 Apr 2026 20:08:44 -0400 (EDT)
+	id 0DBE36B008A; Thu, 23 Apr 2026 20:12:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9897D6B008C; Thu, 23 Apr 2026 20:08:44 -0400 (EDT)
+	id F33876B008C; Thu, 23 Apr 2026 20:12:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 89F776B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:08:44 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E0A71206B6
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:08:44 +0000 (UTC)
-X-FDA: 84691513368.04.5A0B476
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 68B21A0006
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:08:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpOa89wR;
-	spf=pass (imf25.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E7ABA6B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:12:24 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 36FF140959
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:12:20 +0000 (UTC)
+X-FDA: 84691522440.22.841A344
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 633134000D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:12:18 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QKhOoCcs;
+	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776989322;
+	s=arc-20220608; t=1776989538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Os1EUfUO+9RFc5AzhZ0mhGnPra6wa/aa5GdZ2zZeuWc=;
-	b=pa3/qU29jzkCQTS0hQrpMTlVqdlMAFx1MK653BiNc1jIMrU2IfNIlRRocp+GM7M1z+ITIk
-	Tf+PIWZnrIqwUJZMSbbl+jbnd97fk3xeGfkTDvsd1G+HBhE9vX9GrBZLUrazUBwQi/Rx0i
-	rOMVMwyo420yOdZIRCcLfam1lvz01/Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776989322; a=rsa-sha256;
-	cv=none;
-	b=arXHDiW1vhAFrGJrRV486DQ9pKPv6wruhM4OjT8r1fETW6qjHP52kkzfHsaYyVSVveqHWf
-	jAQQn6HNRv8r/fV45PMK8/FvyNYnKgiyJ+JpmcrxU5btKUHsxZhdZd9M7tVOxK4hbWlAGN
-	BxdQGUIu7f8ISUD1fnESDU8Q57GLXgU=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=/FcUz0voUt4L6VgJUyW4964a1uPVYvz+VsQOTuJZDE4=;
+	b=dQl4uMW7pBS703qYI/Bk6Yr2Dfd804TbusT+qVs4W9Du4wFOCXfzqLA5F5933veMJoUtMN
+	hNfmS1uDXE8xycVoiHCobM2x81Cg+zc3F48TL3hMPOfIbCvMItiN0bUx+UndVqaopJNCL+
+	VSWUKuBCanqFIqORAvPHEua8rqK6SAs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpOa89wR;
-	spf=pass (imf25.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5525B60018;
-	Fri, 24 Apr 2026 00:08:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79EBC2BCAF;
-	Fri, 24 Apr 2026 00:08:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776989321;
-	bh=+P1MRbncfPNSZCuKVTFzs10FnL8JYlgrg9/6Uyx3XaU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LpOa89wRNfFuxGL02wxiK1czOdncRvWCeNALWGXRBSKwmqLZ3l9R3n8FCxhopwRDM
-	 F3OPkHZPLiF6A0X5APbB6tjJOl6bgMTf+YvzGROIB4tM+wGhqr22sgjQlgV7uruxVf
-	 R9xN+m6cdNcO73fV/rbFskaObOyMOJuzb6Otll0BUm6U/TamiSJYcn6X12POuIWt4v
-	 0/e10Tfe59utUINa6fGp3Wv4WoVFsf+Cnt/fwU+CI/NDwrQUiqbz7pN8acGoVAXcoR
-	 4RK3HvrNWNVmzbmsOTMLM8Ut4TEVoaKU6Xa+RkWOoTdMargixKC0F4JgqNlGgXV4nr
-	 myhBjTUF2aTjw==
-Date: Thu, 23 Apr 2026 17:08:39 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, akpm@linux-foundation.org,
-	brauner@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, timmurray@google.com,
-	Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [RFC 0/3] mm: process_mrelease: expedited reclaim and auto-kill
- support
-Message-ID: <aeq0h1Tp8eO1gR-d@google.com>
-References: <ad6c0DN7AGoOQ_Iq@google.com>
- <ad9AXVYxWCkHmh6J@tiehlicka>
- <aeAeqoJ_acUAza8D@google.com>
- <aeCHvYOKP1exBBns@tiehlicka>
- <aeHRLv834FCAQlQ8@google.com>
- <aeHdGf7XDjvOES1V@tiehlicka>
- <aeagUxlju40rvkYQ@google.com>
- <aenPV9ewKAzRF2Vg@tiehlicka>
- <28c3ae9f-c974-454c-b8ed-ba0ba0a5706d@kernel.org>
- <CAJuCfpEGCvuaQ43W4_bPjpoiYgmEspxV78-U4dkA2bcjfxCyFA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpEGCvuaQ43W4_bPjpoiYgmEspxV78-U4dkA2bcjfxCyFA@mail.gmail.com>
-X-Stat-Signature: 9fmm9j4tnu1zzzkw8bgbu1o9wxbzmcuf
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 68B21A0006
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QKhOoCcs;
+	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776989538; a=rsa-sha256;
+	cv=none;
+	b=6am6FaoAPZMBSztHd3S8VE0bcvyoOnQaH2qU9UmkWTKWoeSHy5hoLAQGH/KPDTPpn86dkq
+	Z9zwyqlQ7aJEQwZLyNNnIH0h4M+v5j3JIB9+2yZ8pcA80+umc4fp5dIDlygkZcHJphiCe3
+	uJlfN6gNljx7Rb9X7+5MAeqkxgNO9MI=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b23fcf90b2so69385675ad.3
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:12:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776989537; x=1777594337; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/FcUz0voUt4L6VgJUyW4964a1uPVYvz+VsQOTuJZDE4=;
+        b=QKhOoCcslif2T2CZaHyKeb1+EVAtTT7v/6NaMkdHNpRZN8tRpbmPbydw9jX1/5dqFk
+         DNABPrpv77sL4tio4yCn9IQFd98dPgrtM7H+ufFrdUcLxkLQdpAiAJUa9M4j3T9JBRJz
+         E5aDA1Xbwb/1x/kZ9yne0XvO2hDP8rBtNg6qn+7g7pFolx4gZQV3eOLeGNwKJXN8x9ms
+         911f3MJpy5TSwuOK02px4qwNxVLAkbfcLTygS6DLAVN47i1f+DXeKbkWxJO08JrQ12Q2
+         CEXcHR1M61G4DZ23GV+azgl51Yd62vOD2S6c21aEzxQ0bRzqXROXineNpDF1k+jHnAeA
+         MGaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776989537; x=1777594337;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/FcUz0voUt4L6VgJUyW4964a1uPVYvz+VsQOTuJZDE4=;
+        b=ZPwW6VRqDs0bgUC7cqM+elnbbpBnyvwmH6u0Cvw9jGpu6OrObF0QnlzCTOu9t81wqM
+         R2dAvovNjg7MpuNOuDjYOIS0U6fkd93uP48RzSZx0SNbzhMWjrA+LTnsSOSkvjDu2Yw6
+         AnTaBJFQzqI0qyLPtFxUzzjr/dBUFCPivlvMvGj+cysv7od+p8rx9pGqfYSxDIuCd6JK
+         u++X9WEVdCX/0X/hfbJFnDPL4C7RSbxy5JUoWNavJBhX5yaDC2xZtgzY7Syo+K2eMFjq
+         6IOUDW4UX8S3oza0gJwq4xXlntNlXEDSS41bsHepcutYrdnDId5fx4WdloJSdg5vrMIp
+         MW5w==
+X-Forwarded-Encrypted: i=1; AFNElJ+gQ0n3TAAyN2cWJOodfXOfs7VeJ5eyMqogNEvJ/Q/b0pXpvARDiz+sC3ZpzcEgkbWAHmXNhCm+Lg==@kvack.org
+X-Gm-Message-State: AOJu0YwIahbFYFy3KyyhIA6DKXcS8ZWwIB6kVefLzRp73Yu8Rk8pwcfN
+	tgx5dmAH3SzGZAajJ+z1umEA8k/kztEGb1w9o3tBIWgVE9aKgYypyuutGAY2Hw==
+X-Gm-Gg: AeBDieu0Rddsf6CvDhoYOjwwBg4pnsN33YLHt9uVh3vZ0epvrTuPwDulD9ZwWsNqgZj
+	qPNSWi7/o9FdNutQ8O/E9q011I12JjFGJoHBm6sgta3FV5xhYcYqpbHOcWI8KjPCv1Aj4DiJjj/
+	NJNtamqo5uXrXVvRjEf4hm/crz78G20muEU6hWyDGEETuCw6D11TM4slkXecwceHXo6Iw6AGyE/
+	tE8ydR4pDj0qiEzdTta4T9jyfXj6wh829kfBvDHI/XsXDsAlRxa1zIE9HH/sumLVqD8V55eHwvH
+	MaDBLYDw2xAN4t4bPjm8+J5bPxUR7LdUCHXk5KuSGGix7pEdkSA2Vo+UgNWf9QAC+z+6vrrPXYv
+	LUEb5xwr+nO8yjyIWtk3GPdvoY5c8IWj5OdWZZf+K4UzhsJGkXi5Lyr9rAMxkZlFHVsWF3TQbwW
+	eq9crfiK01ptYyVpKzspGp+edcck3lxeCH
+X-Received: by 2002:a17:903:1ac6:b0:2b0:c90f:44b2 with SMTP id d9443c01a7336-2b5f9e8252bmr308135805ad.12.1776989536590;
+        Thu, 23 Apr 2026 17:12:16 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff71esm213485585ad.8.2026.04.23.17.12.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 17:12:15 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>, Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 0/5] Add buffered write-through support to iomap & xfs
+In-Reply-To: <4og3axdvzyfpfx4o2rhcnwdsggha2kfoerausxx52vd6jc2hzq@u72iwxrxxble>
+Date: Fri, 24 Apr 2026 05:39:23 +0530
+Message-ID: <340lte18.ritesh.list@gmail.com>
+References: <cover.1775658795.git.ojaswin@linux.ibm.com> <4og3axdvzyfpfx4o2rhcnwdsggha2kfoerausxx52vd6jc2hzq@u72iwxrxxble>
+X-Stat-Signature: s4awioqpitbf8fwsnf45z7s5gzghjw56
+X-Rspamd-Queue-Id: 633134000D
 X-Rspam-User: 
-X-HE-Tag: 1776989322-614338
-X-HE-Meta: U2FsdGVkX19IDWWA+Wzzco7PLRvejFIiVZYbGrz8zZL9WLDa+5Pdu9oHe1jyZxilrf90lPOV4EDNTvxHp7zICVpvBg5Usb7wHo5M7Si3Vr83tg3dCRYznP3/G19wd92AxXY55cWveBxT1yov5MlLJHo9EPpoougVRjlC28nmWZHZyfsDwoUDk9ZLco/5X69n98kUn4+S9h86v9IncaHF49FNNny5P4EeHPalpmuTk9V544vEGSdEzr+mvXDImVGCTJPvvmYLH/8YFriIVTK7R84o1D9U05jyagaBbHUsTwUkuIQYN71v5ddPr/i18z1/b+FEEAsC+zi5OGAc6CeDyECSNXI6CTC9Y90i46GyVAgs/kt+OfzzfXt43uDqlVAW7GSsY63TuLaUZjZbqJEJ9MKc7bEuzXBVWFHuQBaiQs0nIwL3SYljB/PuZXJrA77wYtk8DKcJpwSRDVMSuXZ7TBPwoZXV8H98ZMAx3vfXGRnlnyPRcITd3UZ5mGIqi4kfM8GOYUUunjRCZ4oXG1aCb+p3bJqLjPR5/lnGFsAqhKs6YmXo8ZZ0/i56WfWfGGFn/tg7J53v93p1iiaNdttmvr1g2IPu+hyFfeX2/kFj+EQ3OfJ6SqcIFcNwbWi/1ykC5yeE2FqGqWHMvP8y+3n9I4AggGdojMwxA7XZbmKPJqdpP2VdcQSEJ7tMmOHffJT4wl9Ifu9sU+biVfQWGlkDqfySa6IDKgOEqE6o0BOGY0Hk+pIIr1DPyu8wqE+pWpbVxCtrg8S8em/026JOAZnwtpDXMXeZpaWRScs2atosSyylFadKjVb58qh1AjpjQEprF4zO0PQTqD8ZFbUwYFFU99Y43o+SCZbV6OnawZfrwEUv/Yp1fgmu12gzbOWAFpGer9DKOeNjZNRO9EXrUUURkqP4FliiCsBkz3aOJJuuP+616JP02NTDAEBTE7T6lsMqBEDD4gZZAxbrHnXJehd
- vGX3PKNq
- d9jr6ks93BDHPoVHP0egO9fWMTDjXNtOeNICYN+WCj09//QNFM5Dm/62PqmlTVJzWTHrugA8p+G5uRJAg5bspjT7JA6Fh2kgNRnnN4GaoWj31/s8fQxAgTUmdEcPUnHaDJugPT6WWTywgTr8ScNh37G8RgQUTZg7bCTO1zFayr9HQw4Qpnt8Xc7f81XKcouRiHJhieAEn8FTAaT4wYZT18uXOvlyPH9SXpm716OTNDyVvGK9m0uMDOzGw6a46y9eaEPMu0Blv1b4J1UrJne0HdNyKSVL2DDeSE68iLSQ64TXgYDSgwp3Rb37tnbRcpzU8noHvtOQfPmufjN1ccQmJrwLTygvVSGgCWv5rqdp7WjiBYEX3usLYN+kqOyRlJc5tNR33
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776989538-161197
+X-HE-Meta: U2FsdGVkX19v6CdbLLDdGS9+GqzfiSJ/EKt1539SZ/A0HlXtdAuwCLjnUa+zok6+Kv31aVNz6CsECEcgg6dQXR7Ks0v+lBrvYFgo2mV20mATgme85+6YaM+BF4+14WHYuzzHs9x8sePu1JfUb6jFt8MPyYmxriZ/EVMHEA3xIGTd1g3xE6/iWc5AwcxyebZpzqJYqGsUM8fNEpSniYzdcGQNIe0WF0jkhF/MeoUvGxtFpXZ7clI1PmwUlgqdnRYoRvq10JmD0dmIkNlQKJ0jOz9CaGTanFOwrZi2UdabnGfDz/bkmolh5bZ33tKkdELp4zVZR+gkE9QO25d8dgpnYsse37Sagu2DY8KVP+/g1ppuz6t2cBnpq+hEsQpDbYmaQtwguCMipiy5XWFTC07eyiaVr0NbZexuzUpw8Ay1QsPlpppid9O9dlAo3qCkTD0369vx+yigiB7D9ZIR+2CikmbZ0R7uLcVBqJLzu/FvqqAt9nJUw2A4sL6uV0x8N+tAYf1MnhJ4Jb7d9nO8DXVRRrejqtCjWRtf95+pZQaXJmVOlslmMgh9K5lcZTDCoL8xXuMH1mFVA38V6+UJnqatZK3mEobuYOuCI0IaLfq9h08iJTpX0W6HqzS9RK/3L4LwLDTAXxoF3flBYW9bV1yKGyMTNbcpaJ314FEG36MFmXKm/JM7g3UQhj1chQlLY9HNtG84kAkVlSco736bLeXeViz6msk8kH+rCnExjlTuok5s9UwzqqHuvNooT7cp/Ml7wDfTs0OALlIKMZmIX1AKmCpMQXQbYb5qxvKtOt/sU4mXhC3iZLHEaQ1L5vCj9X6HAGn6+uVgdDbKpkwRXbdis3PyC8eKp5oT/BY8ePRhWjYYUxfcNTHNMAi1sqk+D9TYsYOZTmOf7BLTSXm32tLhApuDDLA2EPJBE/rQdOZHFXh82hEpDbxlOAQIznWcpwC+Os9yDuv0VtKrdhnzONB
+ OXPEdPTe
+ lCmHcupy9fjnTRhzulldjvHpHY7SZvgRNetu2JiD16s9ccpwZAI8ERgn2sY1SPPaDBSz68ArWebVS4X+NaxBIkSAvm1JS5aHPsPuKQeM12ZYeMVNLa9HwmWxWIagmrbUYGevZAjEtunKnzfRupboXOOohy+tw1cGJotKN6rZVeEI9iuu9hHANfWHDxxIKCQwTVzpHcPK4EN/R9SCCrpUGDLGnR9EGNF690rMvTb63ASBRPCMDQDzC+oFpiQqfFt79iCUIjXkCV3xdU3QWeCwUCx2ncKfCDJRoDdrooX91cimNV/+aJCd8mBuRqGbro5CoTbl7A+hipfjOfW3LWCX1swiz/+eyVGD/HtAjClKagWwB09lmfnWTjzS/irPzRW+c+LhLA+6RQxtjnEGuep1l4fxv9LWGKz4SkFud
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,86 +111,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 03:36:57PM -0700, Suren Baghdasaryan wrote:
-> On Thu, Apr 23, 2026 at 2:50 AM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
-> >
-> > On 4/23/26 09:50, Michal Hocko wrote:
-> > > On Mon 20-04-26 14:53:23, Minchan Kim wrote:
-> > >> On Fri, Apr 17, 2026 at 09:11:21AM +0200, Michal Hocko wrote:
-> > > [...]
-> > >>> Yes. All which make sense, really. I am still not convinced about the
-> > >>> clean page cache because that just seems like a hack to workaround wrong
-> > >>> userspace oom heuristics.
-> > >>
-> > >> I see it a bit differently. When paltform decides to kill a process
-> > >> to free up memory, they want that memory back right away.
-> > >>
-> > >> So it doesn't make much sense for the kernel to ignore that and leave the clean
-> > >> file pages to be picked up slowly by kswapd later.
-> > >>
-> > >> In some aspects, you can think of LMKD as a more specialized, userspace version
-> > >> of kswapd. It has high-level knowledge of process priorities and knows exactly
-> > >> which process is safe to kill to get memory instantly. The kernel's kswapd,
-> > >> however, operates globally without this specific process-level awareness, which
-> > >> makes it less suited for this kind of targeted reclamation.
-> > >>
-> > >> If we force LMKD to rely on the slower global kswapd to actually free the clean
-> > >> pages, it defeats the whole purpose of targeting a specific process.
-> > >>
-> > >> So letting process_mrelease speed this up isn't a hack at all. It's just helping
-> > >> the kernel do what the admin wanted in the first place: fast, targeted memory.
-> > >
-> > > This is a very creative/disruptive way to do a memory reclaim. From a
-> > > user POV I would much rather see clean page cache reclaimed before my
-> > > apps start to disappear. But this is obviously your call and your users
-> > > that will care.
-> > >
-> > > Anyway, I still maintain my position. I do not think it is a good
-> > > idea to drop clean page cache as you do not know whether there are other
-> > > users.
-> 
-> I'm very much familiar with these issues in Android and really want to
-> find a good solution for them. IIUC, this RFC tries to address 2
-> things at once:
-> 1. handling clean private page cache when reaping memory of a kill victim;
-> 2. addressing a race between kill() and process_release() when
-> process_release() can't happen before the kill() but if it happens too
-> late after the victim passed its exit_mm() then process_release()
-> fails to find the mm to reap. This defeats the purpose of
-> process_release() call because the actual memory (released by
-> exit_mmap()) might not yet be free and a successful process_release()
-> would be very beneficial.
-> 
-> I see these two as separate issues and I'm not sure combining them
-> into a single discussion is a good idea.
+"Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev> writes:
 
-Yeah, they are two different issues so I tried to show those problems
-in cover-letter and address each issues one by one from each patch.
+>> 
+>> 
+>> * Testing Notes (UPDATED) *
+>> 
+>> - I've added support for RWF_WRITETHROUGH to fsx and fsstress in
+>>   xfstests and these patches survive fsx with integrity verification as
+>>   well as fsstress parallel stressing.
+>> - -g quick with blocks size == page size and blocksize < pagesize shows
+>>   no new regressions.
+>
+> I am hitting a very strange error in generic/127. I deconstructed it in
+> to two commands that can reproduce the issue:
+>
+> ```
+> $ dd if=/dev/zero of=/media/test/fsx_lite_nommap bs=262144 count=1
+>
+> $ /root/home/xfstests/ltp/fsx -l 262144 -o 65536 -S 191110531 -N 100000 -L -R -W /media/test/fsx_lite_nommap
+> mapped writes DISABLED
+> Seed set to 191110531
+> main: filesystem does not support exchange range, disabling!
+> main: atomic writes need O_DIRECT (-Z), disabling!
+> short read: 0x0 bytes instead of 0x6c7f
+> LOG DUMP (1 total operations):
+> 1(  1 mod 256): READ     0x39381 thru 0x3ffff   (0x6c7f bytes)
+> Log of operations saved to "/media/test/fsx_lite_nommap.fsxops"; replay with --replay-ops
+> fsx: save_buffer: .fsxgood file too short... will save 0x0 bytes instead of 0x40000
+> : Operation not supported
+> Correct content saved for comparison
+> (maybe hexdump "/media/test/fsx_lite_nommap" vs "/media/test/fsx_lite_nommap.fsxgood")
+> ```
 
-I can easily drop either of them if it's not received well.
-I am fine to send them separately, too if that's confused. No problem.
 
-> 
-> >
-> > IIRC, Johannes raised in the past the we cannot predict the future.
-> >
-> > For example, if an app gets OOM-killed, wouldn't we usually try restarting it,
-> > re-consuming the clean pagecache pages we would be evicting here?
-> 
-> Sure, we can't predict which app the user will use next, so when
-> killing we usually kill the least recently used one. That's a
-> reasonable strategy in most cases.
-> In general, if speeding up the victim's reclaim negatively affects the
-> overall user workflow then this would mean we are selecting wrong kill
-> targets. In that case, we would need to adjust the target selection
-> strategy.
-> 
-> Thanks for tackling this Minchan! I'll try to review the patches this
-> weekend and provide my feedback.
+This looks like fsx has a problem where while testing writethrough
+support we ftruncate the file size to 0 instead of file_size.
 
-Please go with second patchset.
-https://lore.kernel.org/linux-mm/20260421230239.172582-1-minchan@kernel.org/
+@Ojaswin,
 
-Thanks!
+I think we should have it like this I guess.
+
+diff --git a/ltp/fsx.c b/ltp/fsx.c
+index c9901f65..3b11b1b5 100644
+--- a/ltp/fsx.c
++++ b/ltp/fsx.c
+@@ -2095,7 +2095,7 @@ test_writethrough_io(void)
+                return 0;
+        }
+
+-       if (ftruncate(fd, 0) != 0) {
++       if (!lite && ftruncate(fd, file_size) != 0) {
+                perror("test_writethrough_io: failed to ftruncate to 0\n");
+                exit(132);
+        }
+
+-ritesh
+
+>
+> This is on a bs == ps (4k block size) xfs filesystem.
+> ```
+> $ xfs_info /media/test/
+> meta-data=/dev/nvme1n1           isize=512    agcount=4, agsize=2097152 blks
+>          =                       sectsz=4096  attr=2, projid32bit=1
+>          =                       crc=1        finobt=1, sparse=1, rmapbt=0
+>          =                       reflink=1    bigtime=1 inobtcount=1 nrext64=0
+> data     =                       bsize=4096   blocks=8388608, imaxpct=25
+>          =                       sunit=0      swidth=0 blks
+> naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+> log      =internal log           bsize=4096   blocks=16384, version=2
+>          =                       sectsz=4096  sunit=1 blks, lazy-count=1
+> realtime =none                   extsz=4096   blocks=0, rtextents=0
+> ```
+>
+> The same test passes if I pass `-G` to fsx parameters(disabling writethrough).
+>
+> The error is coming when we do a read operation which feels very
+> strange. Could you run this in your setup and see if you can reproduce
+> them? I still do not know where the issue is coming from or it is
+> because of my test setup.
+>
+> --
+> Pankaj
 
