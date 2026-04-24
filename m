@@ -4,88 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF036F34C45
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 03:16:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C466F589DF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 03:20:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45B4A6B00A5; Thu, 23 Apr 2026 23:16:41 -0400 (EDT)
+	id BB4776B00A1; Thu, 23 Apr 2026 23:20:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40D406B00A7; Thu, 23 Apr 2026 23:16:41 -0400 (EDT)
+	id B8CAD6B00A3; Thu, 23 Apr 2026 23:20:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34A4C6B00A8; Thu, 23 Apr 2026 23:16:41 -0400 (EDT)
+	id AA1D86B00A5; Thu, 23 Apr 2026 23:20:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 259D46B00A5
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:16:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A93A0140360
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:16:40 +0000 (UTC)
-X-FDA: 84691986960.08.D1B84A4
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6C33818000C
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:16:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=J6+VzU43;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 94AFB6B00A1
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:20:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 301F3120C2C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:20:48 +0000 (UTC)
+X-FDA: 84691997376.15.7BC19A8
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9FB6514000D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:20:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KgS2rpB5;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777000598;
+	s=arc-20220608; t=1777000846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v1NQXyoIZKwnFAlS0+sIC5LZWfMSPAnT8N08Bst9LIk=;
-	b=O8Pb+nYvSGaGmh5dksWDEjsyioUrc8Sa1Nv8Hac+xG+HSP5roSXns84hnHP4m5BP8MPRmQ
-	D8DH//irxW/bwkzX8Ojh7lwOlMPFx2nqqpN5IYXHJe3F/J5zyFSwWlzu1bGXzdxFS4VYXS
-	gbAIuHaULp6sTk0n+boS3ObPII7wqKQ=
+	bh=vF1AU0LXlnhIfmJBF/DVKC/jdqA8hAJ+qqGd+yTOFkg=;
+	b=wYS+/qPL6kG0LfCsjUNDATjaNcWHOpZBokR9s3836or48tXwSpehXrGlMdfEmS4eTFDYyl
+	D7bUZ6zpZwxM3DM6HQfu+RD1BUQD2WfaQdO2Q79MJ8R00zmYvmYdv++nlGPiy4XvPbPCIJ
+	otftWqsG3Y+w6W+MJYzvQjrklla0QXc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=J6+VzU43;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777000598; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KgS2rpB5;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777000846; a=rsa-sha256;
 	cv=none;
-	b=dgAng3+gR7Rwf+QrsrWAsPSeS0kxLnIw00XwP0Z/SsgcNyVfQwYxxLXlubgD0FE091JLgv
-	uuX+UuY2VCOhnGvXqN6PtHYs7OeVE+LYDsjqXDYrhb+SFcyIx2+/x4NnWoMBKgFwcAWMPa
-	R/tEie8kf0x1YRGLq0Os9ZmpAt7bNSE=
+	b=tlfjK8o20s82vy2fkJbsgpdbqGuEf25Fq9Msx+VTWTw6WUGdvT5p5fYXxhA3Tsw0lh7z5f
+	oTxDD/c2tga4ZFP7/RcrCQ+z/X6JAfUJ1pkMfNv3zbHWrGaJK5HvQpbGKKM9tnMwHO564o
+	v05XVC8dpyVum3bftVpz9xkHpA8bP/Q=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=vF1AU0LXlnhIfmJBF/DVKC/jdqA8hAJ+qqGd+yTOFkg=; b=KgS2rpB5V/NgcXiZBzBut1nFMM
+	VXy6TDHg2uPCUyKs50GnvU925GmHjYdme9k93ETpkPAcMi4yGAcHfoloHON5royLGcfk8+E08UqPw
+	naQHxuP1Ae5cpfKVxnSmm3CrrlOmlG8Z5N2UpAfZUhfEQhojGoZ1YG4o9AYgbK/XNG1c7lR+QYFLS
+	uZVbeirmfMjaa+0naIO+FQir+qgxIig2+vN0cuJ+zvrC9eX/Dm2LJuul3conDsK9cZNJW92dW6eV7
+	C0LLBztiFOrzhZhwKq+Gv6w/0pBl7kmGRUdJhEs2thWxRXXuAoCXgq+y1/NEw8Tua6QB7h3wlsfUh
+	e8zCrlEg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wG75r-0000000EUjd-3o1v;
+	Fri, 24 Apr 2026 03:20:40 +0000
+Date: Fri, 24 Apr 2026 04:20:39 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Yibin Liu <liuyibin@hygon.cn>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+	"viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
+	"brauner@kernel.org" <brauner@kernel.org>,
+	"mjguzik@gmail.com" <mjguzik@gmail.com>,
+	Jianyong Wu <wujianyong@hygon.cn>, Huangsj <huangsj@hygon.cn>,
+	Yuan Zhong <zhongyuan@hygon.cn>, "jack@suse.cz" <jack@suse.cz>,
+	"jlayton@kernel.org" <jlayton@kernel.org>,
+	"chuck.lever@oracle.com" <chuck.lever@oracle.com>,
+	"alex.aring@gmail.com" <alex.aring@gmail.com>,
+	"vbabka@kernel.org" <vbabka@kernel.org>,
+	"jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: =?utf-8?B?562U5aSNOiDnrZTlpI06IFtQQVRD?=
+ =?utf-8?B?SF0gbW06IEFk?= =?utf-8?Q?d?= RWH_RMAP_EXCLUDE flag to exclude
+ files from rmap sharing
+Message-ID: <aerhh_tzSs5XapUz@casper.infradead.org>
+References: <20260421020932.3212532-1-liuyibin@hygon.cn>
+ <aeikm2e5Gh5reJ30@lucifer>
+ <bc514883d6154420b3cfde4ab25a20c7@hygon.cn>
+ <aejzSsiXZBK1emv7@lucifer>
+ <a96c20b74b874248bc0cdc2b926a43fe@hygon.cn>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777000596;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v1NQXyoIZKwnFAlS0+sIC5LZWfMSPAnT8N08Bst9LIk=;
-	b=J6+VzU431YtV6KyK6MjnabKRLohMOIaMxZHVTh1qt+xXqQCxaqdPmMxOhWOxW/3nuV0mFn
-	bUW021+IIBE/5JPiTmpYjbZfrMMG42x+ddheBI5gFygQyX6LpMgH/mytLseIJpAJagjx6H
-	tkRtW848Kx9IYSWeGwqBfwP6W4fTjw4=
-Date: Fri, 24 Apr 2026 03:16:33 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Shakeel Butt" <shakeel.butt@linux.dev>
-Message-ID: <8cd382082ba7f5b9a23e0e6cc99e0fd7b9b663cb@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v2] mm/vmscan: add balance_pgdat begin/end tracepoints
-To: "Bunyod Suvonov" <b.suvonov@sjtu.edu.cn>, akpm@linux-foundation.org,
- hannes@cmpxchg.org, rostedt@goodmis.org, mhiramat@kernel.org
-Cc: david@kernel.org, mhocko@kernel.org, zhengqi.arch@bytedance.com,
- ljs@kernel.org, mathieu.desnoyers@efficios.com, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org, "Bunyod
- Suvonov" <b.suvonov@sjtu.edu.cn>
-In-Reply-To: <20260424031418.174597-1-b.suvonov@sjtu.edu.cn>
-References: <20260423103753.546582-1-b.suvonov@sjtu.edu.cn>
- <20260424031418.174597-1-b.suvonov@sjtu.edu.cn>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6C33818000C
-X-Stat-Signature: spxp5b6wkmfntsxrs1xrs4i7u9fmtqiw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a96c20b74b874248bc0cdc2b926a43fe@hygon.cn>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9FB6514000D
+X-Stat-Signature: tuan1qrqqxctfz5bsguonwhpgtqfrhay
 X-Rspam-User: 
-X-HE-Tag: 1777000598-89276
-X-HE-Meta: U2FsdGVkX18/GAr354qxSdUfHtp3xzviaVRtCQruWgyTWEwBwT1kYjIJsRKfpax4oaji2VlLYZLutA8k4RZR0LWzJhOcgmsuDMW6itrIEDe8tuew04X5Lwr3lVPIE9YosiTipcOReTibRPgX/z6Ww54dWJdsoO3Q5gPDA/Iz9DVhpbjXS2eINOzVAW6VEhoM1/rbpTi5l9Tmq6LTALMl1cpRNmjGSWFYENzlQ7y2EeZgQTjHbpTjG/cY2ehXgb4XM9sn5qQzlBMb1MZqqCBpQuS8eZb6cw3KRaDsZ+zJaonue6yTyY3hEEGtlh5zNAYVhQnYxIxTwxEO3ANeLBOKCa5pPf9eTOMR/GIB5fN4BZLsrhIQdCunLdsL1nEZGfimV4YWOkRKY+GVTGrqAFNMK9hteFTDnoKtiEpU3jlyauo9sXnvIS+B0kkNbtI8h8snDhxY4SEsbqfi8JyEi2+b1hdoL6AMxClgzTtpcC1Mw8viH86wkjFAalimifATlHUW+IfFlBR/H7kLZq9/BySQDeBcPhuPEt7BfwBrtV7lx4uSeF/qcG7XyhgJUsz0eietkGWxZqNNqhPiSUDAyPwNH/yqaKvCPe0QQLSPVNzizQ7dCvlgRs8loScvWzXi6WNYDDiBr8kZZFj1mfi5JsMqZqaOqvOwO8TqVfe8A3PK9w68WcIqR61A2uYFy6kvQ2g6aecFGclCb94tLJJlJtMCnUt2ww1qkdCQZxAZTJW53RWbjJ1cVAGMnh6EH5DOYIzBdVeyVmYAW+NnQh9aSS6GOhcEBxucN3WMlunRx+NsCdgID7ZQlWVt8irutCuza6zbQRg8aW/NlayXzhhsruNSf5tWIw2w0blPaTfweST8zedqpPsyLexBZbWtHgo9YvRNvyNbikbM6MoRKk7+hnxbKFjZyVCx/ZseANVOYVGf8e+Jg6ndnT697VZXVN3CFR96dTHeamnuo6fJNfFTIis
- PLPsDXyS
- rLjPDNltPbIOupDHmTwW6Yga02ffm9AbGK3v0jZDca31FaOw0rV5DTBtrsE7XKXHsBzbInETZjTv2Mv3cZBE/w7d1z4xHCm3Kh9q1CukNIcMzhhEauWN74ecpMFosNYQ0Xy5VOuHL+98Yif1EVGCDL71uQnvsXzqy6ZN1uxW337mtlJ9zlyeKNgHAOX2zUgQsIkG1GckOhvjk0eU/48UYoYPaNGIt+yxgdymMklxPNHxc3UNlCeFvVLHVvsED77FhPjaX
+X-HE-Tag: 1777000845-667646
+X-HE-Meta: U2FsdGVkX1/K0qBD8BoxYs5kjoFw1hhVjqUw4OP2ehyycQ6c09CHfLNfpM2n8k7VyFo6TP4EbGeHlxpVxqGOcOmE84CgeW98Amc8DqVPQLHFCeOy4i1o3wNiAV6Z5PsJWUlO9+tqmj/GBCTy0lP9YkJPRJH7Rksyl0oPCOwIOH6+AiCfLI7DEAX82qnP+OGH244XjP4zpyAs+MI/mAJ+EOYHdZma6uuD7/RmUqfr+sw3Ki6dKdLEtV6WHcr0iPNJCH4TyQJNR7Q0BzWE+Pdewpqvrun0aP3wvK8schVSjumAvKzgWXpHulZtC4Ut/9Yi0qtnKaP5TJdBJWt3bYAnDXQeUz0CJ8OYc1rceP5WCFZDoNiFFnhReVx8UIrIW54w88dyUi+A1RFYSSnzyDca70KN6rVluSLV+8w+ngnUi3OvoapVXYE0A6DciSENdDEKQyZsP0TA3UqlomClTuZHF/dvMviYP0ROaz3qxhcpNhkct05msSnMg7K/IUrbEQdLag+MaFCIMfOC41Yl/aG6JTQdUgAsaXo2FszJdK9UD4YMM2Yw/VurYtkSOKkJIk+abKHo1RoLXVlGcuCJjoWKzcKk8loBy2K5n9rcQ6ad2dXv4ZDoyxtBZpNRthvf6TBy9OT3x9tEFcWwHNHcDHfyHBbNQU1bnHD9rfRwoM8rYqbnZh9EHfAqmIRauedXNYainpT49c09XJgwbo1FygvlROU6FcA8w55Ea+yCoXZD0l9iEr3wPuluopEdn9fUS2GRkv3pyAhYui88VOBC/9teIcDovgL1uG6x301qoY4NrMNqsW7IhPzFdT4emvG+9w6SGrRIy9vNqMz2Y3k9CMAG/yDNAOHaPqECYpb3GdreH2tm/qYZiEPCnFmmRTOclk74KuI6roUhUrqICSZ/0x0Nmc9FMPz7mR91N7r3DeIGT0sHuMNpg+0+shAB+Nt8pLpNlCnNqIWIo42EURva5TT
+ AXoL4c2d
+ ddSyxspiF+06cgfXyCDeUNcWgc9BOXmFCb+Au7Ne1R5R4sv2dr/+NcnM0e0Miyy3mvDrqVSidWpYG5H/F5yCoelkY2O6vXGFWchV/8y4G/cr/fxfYzIGulY8/iW+1Rn3f0apydQKua+ZSkvLUfnrSut2zKuhqnhwi7OoGQTgPRlgrvAE4IcTo2eCntlK/c1W/gXu9oEi6FZMLgjabS+gvFhVRRUQmx2Rxj+JUeCOfWG1/Gwn1EBuX4/z+rT/M3CrnWz7ovhs0GzOq9YlO9tA5T9HsdofAWkMxj/2aWPlO+VTJ6BC+cLS6EZeVJNkNJKKXx2mcTl1TCFax1meNH6CpbC6tCbh20sZaWfuTnTkUOIO3+H006rstOc1WkSt2RupilycGA4/FxFuAVjmL8KVu7WwMz4T6goZKR2/xHVzyMm0WrnbUNW6ZHVe6bQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,46 +109,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-April 23, 2026 at 8:14 PM, "Bunyod Suvonov" <b.suvonov@sjtu.edu.cn mailto=
-:b.suvonov@sjtu.edu.cn?to=3D%22Bunyod%20Suvonov%22%20%3Cb.suvonov%40sjtu.=
-edu.cn%3E > wrote:
+On Fri, Apr 24, 2026 at 01:08:35AM +0000, Yibin Liu wrote:
+> On an Intel Emerald Rapids server (112 cores), run the execl benchmark from
+> UnixBench with the command: ./Run -c 220 execl
+> Then perf top shows:
+> 
+>   91.53%  [kernel]                    [k] osq_lock
+>    0.50%  [kernel]                    [k] rwsem_spin_on_owner
 
-
->=20
->=20Vmscan has six main reclaim entry points: try_to_free_pages() for
-> direct reclaim, try_to_free_mem_cgroup_pages() for memcg reclaim,
-> mem_cgroup_shrink_node() for memcg soft limit reclaim, node_reclaim()
-> for node reclaim, shrink_all_memory() for hibernation reclaim, and
-> balance_pgdat() for kswapd reclaim.
->=20
->=20All of them, except for shrink_all_memory() and balance_pgdat(), alre=
-ady
-> have begin/end tracepoints. This makes it harder to trace which reclaim
-> path is responsible for memory reclaim activity, because kswapd reclaim
-> cannot be identified as cleanly as other reclaim entry points, even
-> though it is the main background reclaim path under memory pressure.
-> There may be no need to trace shrink_all_memory() as it is primarily
-> used during hibernation. So this patch adds the missing tracepoint pair
-> for balance_pgdat().
->=20
->=20The begin tracepoint records the node id, requested reclaim order, an=
-d
-> the requested classzone bound (highest_zoneidx). The end tracepoint
-> records the node id, the reclaim order that balance_pgdat() finished
-> with, the requested classzone bound, and nr_reclaimed. Together, they
-> show the requested reclaim order and classzone bound, whether reclaim
-> fell back to a lower order, and how much reclaim work was done.
->=20
->=20The end tracepoint also records highest_zoneidx even though it does n=
-ot
-> change within a balance_pgdat() invocation. This keeps the end event
-> self-contained, so users can analyze reclaim results directly from end
-> events without depending on begin/end correlation, which is less
-> convenient when tracing is filtered or records are dropped. It also
-> makes it straightforward to relate nr_reclaimed and the final reclaim
-> order to the requested classzone bound.
->=20
->=20Signed-off-by: Bunyod Suvonov <b.suvonov@sjtu.edu.cn>
-
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+OK, but does this represent a realistic workload?  It's pretty easy to
+construct workloads that hammer on particular locks; the question is
+whether it's a relevant performance bottleneck that customers care about.
 
