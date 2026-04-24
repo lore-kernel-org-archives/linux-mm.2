@@ -4,157 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D665CFED3E6
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 17:28:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00D58FED3F2
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 17:30:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AAE46B0005; Fri, 24 Apr 2026 13:28:56 -0400 (EDT)
+	id 540B76B0005; Fri, 24 Apr 2026 13:30:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05C246B008A; Fri, 24 Apr 2026 13:28:56 -0400 (EDT)
+	id 518CE6B008A; Fri, 24 Apr 2026 13:30:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8C706B008C; Fri, 24 Apr 2026 13:28:55 -0400 (EDT)
+	id 4560E6B008C; Fri, 24 Apr 2026 13:30:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D69096B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:28:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 674188A6B2
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:28:55 +0000 (UTC)
-X-FDA: 84694134630.15.3C6A794
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 61D8A140012
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:28:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="A57J/lHI";
-	spf=pass (imf26.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777051733;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 375426B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:30:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5D56A0271
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:30:20 +0000 (UTC)
+X-FDA: 84694138200.26.D81903E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2C6EF180014
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 17:30:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=iOAoXV+n;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777051819; a=rsa-sha256;
+	cv=none;
+	b=6UcOalcbXS7JvmfdDv56bDWgH1UoEfvi50uezrvGk3c12gcFdws+4LIWJ8mBaJvuK5QpcN
+	bTo8kVNc1u3hXXBxQR/AJDtm5ynPewRcPQRt+uGrzNf6o+TNZIEHVkQZMvQ0jwWlY5nvJa
+	+lOOSYJHLVngM35gAbwx0dJe2S56kdU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=iOAoXV+n;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777051819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YidFLTtj8Fy5To1lZWA10VGnbGbsaMEJ758g9oG+2+U=;
-	b=GYHrZKPIuTY9RXEWbSjX4fIHoW0h4RjvF12yitBG7GFLvOh/OiTizKq34gonpqoNrLenJ+
-	cXhRihBF7qhgKfwqc+EPZE+f97zfbIiL6LEbqPPFKKkRPFkg+Ud10ZW/yD52txGhgQRhON
-	QPytnFEGWZ1b3++5dP09EhN2JdQYs5o=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="A57J/lHI";
-	spf=pass (imf26.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777051733; a=rsa-sha256;
-	cv=pass;
-	b=AM4IJz4JezBgcuYjtu4+H7w/DxXmwwEgtPMWLz/O9456JXtbLchUVR+Eq7FgezoE420h5X
-	pdFBu2gaTAzRpRLg12QvsFpjLn9o4CUlNzc7wd1uoNErEOF+jrIFTlPQoAkdZorJkAZi5L
-	rvX6SifeCuR7iDrNKsL9UmNmkj1MUwc=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43d6fbd0954so6323355f8f.1
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:28:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777051732; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Sb8KDorHGdS4A97gxMmEz3W77wXmnrjvCjOt0r/luswnM7Mecz6fReqQ3z5StLIoN8
-         sjAj/YpZiXbH2ny7hCArfCxRPX4z7Z3BvIiLwzUpyuLtfsU4J0TtA6+1EbbIKLfpmJ9s
-         JgOX2s5IhpMS3sediXYcHFiF2IdOkW9F1nPqO8j+Vlvjtadxpw4cB/HwXZxUBND3DxNM
-         w3ah0zkVfqFaf+pusMkriwwKrvtfSb4sI0REmBqECcY6vJ+nbHHujoK16s4T9kYaBKCG
-         ustaPFXesegx+HNRvV1vCdzFZtqNdivYjhd5A35aluD7BzhasaR+F7tDuFVOD3RKJomC
-         LIOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YidFLTtj8Fy5To1lZWA10VGnbGbsaMEJ758g9oG+2+U=;
-        fh=qs0dBAEeq0UDkfzkGABnvr7BjTtAWQiXtVC80hSys7k=;
-        b=LM+dKBQOS2EtJfqvVhOHH3vvnLeLNU7oKvLzGstjet6UBlx8HqZk508spP57pX8b/5
-         PuIkQuUDwdyIkXTqTS7o96N4rRdYvWOJU6hNY0WrQJShSH8tG8m/tZe2VUkREHUIVwHD
-         8s7CyfGlTrcZJziQX+HGkN9oIG87rb/gmU1n6CPtf+Ir+hEu6uSMMA8i+gxzQ718TzEe
-         1sXznSTHYs3i1A0Zuk+MFGsEzXS7EznnAP8mdQdrj2nTIdAVyDkjSWAdvS5NCUNUEBdG
-         wAujp9mclmu7KgRCIfU13qWWPMRfYtl2H+miCHuyRGN0A0xa0oj+y/BWmZEB34vipVSL
-         vJgQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777051732; x=1777656532; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YidFLTtj8Fy5To1lZWA10VGnbGbsaMEJ758g9oG+2+U=;
-        b=A57J/lHIESlzTjPWLH38Wx17FiK7GkKT0nK5nPrERrso+mujUknUhb5PaISz4K2CDR
-         epUXgFqWkuCUItYCQJWIuHsXq7h0AIvT08xCEoib3ImOTNswMNoJ3KdUvJ0mVx5kkGal
-         aJxFUeA7N6+vllYjSk7LIeiBs1aCD2JXu0wdHmG7u0DjsIr2op4WgTSQZFzuvRf3QwPG
-         sXUxHjcz0gVK11+RMVCTCWsK3y9zcBzNLpfGrM9IKF6cT7/yZYOK4V9dHcJLpac/UR2j
-         PLsBkuU2/hYqCx1ta1p6v0K4D3GvRlBgu23dJmMr7DjsPn3vxuVFogJgI9MwmflZ42nl
-         M5CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777051732; x=1777656532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YidFLTtj8Fy5To1lZWA10VGnbGbsaMEJ758g9oG+2+U=;
-        b=W17vOq1Yt6T8gVtXrUNCc/cVKOskztHBnwctNVIhQLWjIALgCXnyzAn8hJwihrP+96
-         OeQ0WiHrhVqe1sPnoiRT1O6c9hvzacdjIc41mHePdqoZuC9iOMNsSiscpr9uA9aMnBHa
-         XzeQRmY2pdyuWrZRDxn4ffNqfzvyoFk/8cjr5Bbjws+Gsgsd6S2oKoRL9q25JsrxPIiQ
-         1AG2+ntZaKxYqQqPg5hOwcHWJ/5/ryBzfTgN+uVf8PooGxDbtFRKyI5ftOPdPkNQBDyZ
-         BLoUN0AMaGMJoPygGsfGeaj9LuHQk7Wppzw4ueiizdo5fe4cDJfXGyGyiAevV8ffPEhE
-         xalw==
-X-Forwarded-Encrypted: i=1; AFNElJ/sAmz9Ty2OX+Jw9A2XAQgiItTKAwsUUxO92cNh8cGnIjdYL/aQJ49uRQbc6sVfEeG24nkkK8ss3g==@kvack.org
-X-Gm-Message-State: AOJu0YxSFTMu4DDw16Kw9JN4z+ySSnrMwtus9nd5GwR5txlqJjrOiESO
-	tBGpqyiken3lQIDmHSG+/0uCcuvRSWRCa1N5xraU6Ei0cR2aZIynF6qAK7I/QzZDhbMutlYZwCo
-	6paetpQ2uprKJ5emHRWE9Xe//1I5DvwA=
-X-Gm-Gg: AeBDieuEV/E2V7W2h6W487S9GWnecP/2S2LJ1bfF11pzeGXJxrmCLFbBExag7+0agQV
-	XuT2oP800/Z6UqbEclXLaHFgANJ9Xdr0HKtpiKvk3aBJR6GBWWhQOGZqVThxEPYxF/K4vUdJBUf
-	HPg7ElIn440YGNFicevP3gwhghxy89UIYUZpPiEhGux7Dxv3vL4eGW1l28mZtxvf/zfmh9Ggpp2
-	2YXWfrNHg+nwwWU6ZbyP6WMC2v8YTILwUFRVoaz36GMzcImAPePtEY110T755/NkgTk68KNNp70
-	26WnbUXKTzbivQmc2m17ViJ0+OU0zbtaUJaikOGTZH81LygWN0t9oZg03PLqBt4GoA==
-X-Received: by 2002:a5d:5f96:0:b0:43d:7d24:b4ff with SMTP id
- ffacd0b85a97d-43fe3e0ae9dmr49334811f8f.40.1777051731295; Fri, 24 Apr 2026
- 10:28:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260320192735.748051-1-nphamcs@gmail.com> <aegUoOiUbjUAH5aT@google.com>
- <CAMgjq7C53WRS5oYxO157mX7JxhfoPoi34k+taiKLrMah-b-iRg@mail.gmail.com>
- <aektdlD4npMVThu3@google.com> <CAMgjq7DRrz4Hdy-s4y-C=3BmPt50LKOfdWjjf2mWmCybdRaJ4w@mail.gmail.com>
- <CAO9r8zPvApgxKiVy5NhiWup_m57huF3MTuPvo=iq5kAxjRZC8Q@mail.gmail.com> <CAMgjq7AGzBubCkmv7LubBjPLN1DzL472d4zUm+sGxo8ZptMgRw@mail.gmail.com>
-In-Reply-To: <CAMgjq7AGzBubCkmv7LubBjPLN1DzL472d4zUm+sGxo8ZptMgRw@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 24 Apr 2026 10:28:39 -0700
-X-Gm-Features: AQROBzCRP5S3HopOvqFdpMFjj9C-mi3ioQAh-7_Tr6thiAF3WyHAmOj6A97QdRo
-Message-ID: <CAKEwX=ORdgAwaJLv8CidOQZ0r6ZBHkDYVUxZv1k2PiaZi3qe+g@mail.gmail.com>
-Subject: Re: [PATCH v5 00/21] Virtual Swap Space
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, akpm@linux-foundation.org, 
-	Alistair Popple <apopple@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Barry Song <baohua@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Baoquan He <bhe@redhat.com>, Byungchul Park <byungchul@sk.com>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@kernel.org>, 
-	Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Lance Yang <lance.yang@linux.dev>, lenb@kernel.org, 
-	linux-doc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
-	Mariano Pache <npache@redhat.com>, Pavel Machek <pavel@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Pedro Falcato <pfalcato@suse.de>, 
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Suren Baghdasaryan <surenb@google.com>, tglx@kernel.org, 
-	Vlastimil Babka <vbabka@suse.cz>, Wei Xu <weixugc@google.com>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Yuanchu Xie <yuanchu@google.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Zi Yan <ziy@nvidia.com>, 
-	Meta kernel team <kernel-team@meta.com>, Rik van Riel <riel@surriel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 61D8A140012
-X-Stat-Signature: 4tysnndjjnd8obm5qwquu76sby38mwa6
+	bh=d9Jg9Lzi8tSEG9qdok9IxuJnr/WiNyH5aRTYirTZ2CI=;
+	b=xYJzOG7P9gGGWzBOFt3y2Gd3hbJuFC/VDLCaxQ0GZn2u3O4kocz326M2Ob8skbsAI6ma+s
+	0yvDig5/IdcNVrxQcfhxJsvRAlZViCCDGlfX1c+mz/b98sI2F3WjLfBShE83IBGBsLgF3N
+	o8NUn5FC/9vxa2uGiiiOAolc3L+st6I=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E2D2600AE;
+	Fri, 24 Apr 2026 17:30:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548D8C19425;
+	Fri, 24 Apr 2026 17:30:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777051817;
+	bh=FJU/2TkCOeajLjX0b6PlHQiWuH3XWM9F2Fppc5W6w1Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=iOAoXV+nD0woDWou3qWdbKPLCxnMBb6XSFk8Fa+kFopjKVG7GJy+vOCPAwQ19OLlg
+	 dsIP4hsihV5RDoBZvoocZKO/0i0MvAlvqLKtkgliyXPylDuNDOzgWGyxjgrvGnHdn5
+	 7XXTVveqyBlOQ42NPRt3rr+9d/ZzDvJhrq7uC3Rk=
+Date: Fri, 24 Apr 2026 10:30:16 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan
+ <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 0/2] mm/kmemleak: dedupe verbose scan output
+Message-Id: <20260424103016.4ad3219ae815e45de62cfaf7@linux-foundation.org>
+In-Reply-To: <20260424-kmemleak_dedup-v2-0-8bea649b2a92@debian.org>
+References: <20260424-kmemleak_dedup-v2-0-8bea649b2a92@debian.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2C6EF180014
+X-Stat-Signature: yrfg93ps6u5keorh7tjh1fcbr6bxujfg
 X-Rspam-User: 
-X-HE-Tag: 1777051733-174453
-X-HE-Meta: U2FsdGVkX1/P5/6+RjL4j+ACYKYxlsRO+rqmooo/hz2RxFHvxdShtTR/5Uycz5e7ERL030aWNk/tZBmcdyhFwnnX3v1NW22b4vzrX/WtJwNCd2TZTJ2ppTcUrq/GMECVITijSlrKPw8U/UUZX6IrmXx7t2XfwfxRqVlOkTtPj8TzGcr89XnctM+kYF32bkqMA4YehM6TAGihZUcFzPD0xaP58ztSZoF4YMFfn68MapxxUqKJkTI37TEfp4S8qfJhzNS6PHo6S76GhOlUeBSg1+E7l4rjL1ZMcEGtcvN2W5iV8iecULqd5suVHxN0pPuSRSBMCt3b3JO+bxx2zDRplwXUtNgSnWVrsnhdoKpcrDtmP5MdvEjIWgz1xpDpj8Y3AdfZiBOomutZg9z7zgFV7jsQf2OUHi91FN4t2sdtzVOjMylz2sfa6bR5xLtUPQcNSdYkvWGRaSbYDiKcbxdMXZoxcDQFSn5RjgouSoliW8qmnAF5bom889aUDtQheVfQouDEh/NbmD27t9d5D3u0z98CjXqSp+jYswSNvjKXLVLAqfBc79lp/RigPH2Ca6KxsjtM4kVSEY3DD0mvI2izDmcb/DwjQr0QCG0AOH4fSUQhQyAKPK2xuntH3oerESxkJSn/IPRdKAec36ODj/WfVZBBncWaSLtEFFGAkwVk8eyHz1cfn+GxDAaFaIjQOXqeskegU3TavN31P6kScKHii5FSKRcnVUZYHEUegUBvi/zFPmZDnQr2MWZyGClFTMXn23ewBsOkAL7K1h6q43JQLE4njPL07yYPH0ZZ3l5dDqfXqowvfYdVpoVMYwevCcKgSKilZ2zWFk8VPlu9j5QTh04Ry5qruBmub8hXvK3jNESmETr1P8oEKdHmCT9TU5dqCXA5DkQ+vzcL29Lk95N3Pswm9Ry2I85RyLM9igLZbs6W/6uBNgsfZiqh+L7Jvj5tZkHVMIDX6IDuqk16BXr
- vYUaRUIU
- 8LZxB14s+m7qK63klgtqBfKHJfQsWdfD83igwDaRRbuZYTXY6vDMuFmFK8wkbK9S2ydcJ8LWdWwqqmTX3Hvwm1yTHazWNSQOd1U1cWuRvgF54zLeBouuC4PquIvE6uO0JacLimYQVkXMryzUT/pnirke1nj3LmmxTQ4C2tnXGitFLF2iug9cSHcDso2Cp2cAZJ2wKi17eZN1dC8YJPHBxZvpS+YM37mEK2Ifp54nN5N5Tm65t6FuVGxyc9kJ4YItFOXI0qDFTD7iwiohpIYVih4ATrl74OoUIavPgZ8XfvRh/RtsC02976eegWTbsOj49W4ceke9ou2ZmhQmP7HWoejSAmlF0TtIePtvuA+nPsUK88U4yOKF4UEryUARorfJVRkLIvU22z8C/yEo+G1Q9nQ11727re3j71Ej2lXbQQhx7j7/Y3K7AI+bt3fBkeiY0BLCcCDKQRM8ea3WNz6Huf0TLovONIS2PbJFdJ97CFIaucSvIrmjy7ghU8B7Xt+039b6HTD5XCpesS3vsliwv31Jvdrwz9OBd+Qdd
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1777051819-130462
+X-HE-Meta: U2FsdGVkX1+FtcDgi+kAVbx3/S3zdVyRuz+V5iijVMjAlWC8QappP1wqf7y5N10dUTVjd3tbT3P+8/rc5rgk7rGJPGjhYLX/ZIOs1xB0+wyOJlBXqLkLf3Rxir8RXR9mj6Un54n9y6s5A5eVxUL77XOG4ia+W8obTn5Uy27oFekRjaD2/WEZU/brN0EbVR8jH0VtmlT/3TMMuuzfrAD7bRVttr+oP78Ur+MNEAravwQh0EcuLYByFGvzSVBcW0Y89w2G9Iyi0fL9FdAjrgcDHmoAyJwrDWs+JgEawDB7ox7/LMbC/pZSxKj7JqnYk2OUk/B6BpvnVe1CvtojdtT1gVxf9d9x8XwPeNuTb7lTx/bu3wJZWAvtVxQO96yxd91S28FUAjhP2SFnnEEewwW2nv8cknwUSzF4Yy7HSHBbhyG3dogLvavbE+Pw+mT657RMRRXqO3XH4zNJFcgvA5+Y71VVTvCsi9MN7x0dgYjdCH6B+/lhe6Wtq1kGz7Pn60rJy9w8j3DYiF1YePXF/iK+B+602qn6krl4TG/QhD3pXnWrYXPpVpsUxDvhHMnZFSped+ywhhKuw0j6KWO69HxCsP2llj94XHFsdTFAcu4exA85mG02X11jwExnVTBFe+VNszv9dbITWpTGbNvtKO3aIjUmtjUpOCEIBNc3v3bSfDP1UkIFJEDJr/XhP+2aEDGErfaQX0pA/P6gZKkAkD4krrQFj48UHacVj6TKEPPFjXMEkboWzQB7bSxRGuqwFhpX98GPljoS2Mv2XEU1aViNUf1Wu4C7ID4NsgVsEi9JDo4dWVTEfFQVZEGfIcE3nMrJdtOnfwGBhvEdsbM6n4TRfhkFMJdLoZruXNcMHXhr5jD6ogw+OCmYINklrxbVxoeQdlWw0N0wYPc15CnHRmDCpKwrzmvsuZJnPJwjC9FNU2YTpi4iUv/TYw/0Ff2y6uanq2vjJzoRoHoXuAHDh5E
+ Qndwlq6q
+ YpCpsaQI5xf2UPk/erm6Tv8JwOykVES3Lw8mpOl4s9xAaQ6e/f4l8uKrCTgpHySK7Sd3bmLeXo+bTkc/FARtkvbDx+gb/YtfhpVgJ5vtNX4vc8PWramlEd4tOTOSCurK9HKgFN6xEvyOUhwjgifaaUSUFG4qJvXiE5vLvR4cmx0PASvFS17hFNMyZJGr+1D/1G8hbcJj0oQuuhgVeRQwOfmFJMiAra8BHFJKM4054AxA5t8+yp5zjzX4CZK8oXizBbu8mc48nV89EoHToHHAl8Qgo3w5qchYs86Iow96B9f2AtIPmgmqOMqE+O+ULSL4tnDJwCOBb/BLY5Wg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,82 +94,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 9:16=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
+On Fri, 24 Apr 2026 08:03:35 -0700 Breno Leitao <leitao@debian.org> wrote:
 
-My apologies for delayed response - I'm cleaning things up, and
-fighting with some memsw issue. I changed the semantic of the
-memory.swap counter a bit, but that makes it diverge operationally
-from memsw. Need to be careful not double charging or double
-uncharging here.
+> I am starting to run with kmemleak in verbose enabled in some "probe
+> points" across the my employers fleet so that suspected leaks land in
+> dmesg without needing a separate read of /sys/kernel/debug/kmemleak.
+> 
+> The downside is that workloads which leak many objects from a single
+> allocation site flood the console with byte-for-byte identical
+> backtraces. Hundreds of duplicates per scan are common, drowning out
+> distinct leaks and unrelated kernel messages, while adding no signal
+> beyond the first occurrence.
+> 
+> This series collapses those duplicates inside kmemleak itself. Each
+> unique stackdepot trace_handle prints once per scan, followed by a
+> short summary line when more than one object shares it:
+> 
+>   kmemleak: unreferenced object 0xff110001083beb00 (size 192):
+>   kmemleak:   comm "modprobe", pid 974, jiffies 4294754196
+>   kmemleak:   ...
+>   kmemleak:   backtrace (crc 6f361828):
+>   kmemleak:     __kmalloc_cache_noprof+0x1af/0x650
+>   kmemleak:     ...
+>   kmemleak:   ... and 71 more object(s) with the same backtrace
+> 
+> The "N new suspected memory leaks" tally and the contents of
+> /sys/kernel/debug/kmemleak are unchanged - the per-object detail is
+> still available on demand, only the verbose (dmesg) output is collapsed.
 
->
-> Yosry Ahmed <yosry@kernel.org> =E4=BA=8E 2026=E5=B9=B44=E6=9C=8824=E6=97=
-=A5=E5=91=A8=E4=BA=94 04:48=E5=86=99=E9=81=93=EF=BC=9A
-> > > Using a swapfile does have its benefits, though. For example, the
-> > > virtual layer could act as an ordinary tier following YoungJun's
-> > > design:
-> > > https://lore.kernel.org/linux-mm/20260421055323.940344-1-youngjun.par=
-k@lge.com/
-> >
-> > Hmm I didn't look too closely at this but I don't understand how
-> > making it a swapfile helps with tiering? If anything, I think it makes
-> > tiering more difficult. For tiering to work, we need an
-> > abstraction/redirection layer, such that we don't need to update the
-> > page tables (or shmem pagecache) if we demote/promote pages. That is
-> > exactly the use case for a virtual swap layer. The page tables point
-> > at a virtual swap ID and the backend could change transparently (e.g.
-> > for zswap writeback, or tiering).
-> >
-> > If we make the virtual layer a swapfile, how do we demote/promote
-> > without updating page tables?
-> >
-> > IOW, I think the whole reason we want a virtual layer is to separate
-> > the backends, which would facilitate tiering. If the virtual layer is
-> > itself a swapfile, wouldn't it become one of the tiers?
->
-> That's exactly what I hoped, virtual layer being part of the tier.
-> Tier could be set up per task / cgroup. So is the virtual tier.
->
-> A standalone implementation of the virtual layer is more heavy than
-> being a swapfile. Actually I think at this point, it is the word
-> "swapfile" is misleading now. We may rename it to "swap mapping" or
-> something. A swap mapping could be physical or virtual. Virtual
-> mapping can realloc from physical ones (redirect), and swapoff of
-> physical ones just read its data into virtual mapping's swap cache.
->
-> I think it's actually functionally very similar to Nhat's design
-> already from a high level, the only difference is we don't need
-> standalone infra for virtual parts.
-
-Well yeah, great minds think alike ;)
-
-As you have noticed, I have also converged towards a lot of your
-metadata design and operational arrangement.
-
-Case in point is the delaying of cgroup check merging with swap
-freeing - I did not notice that patch you had in your series, but I
-realized I had to do it as well after studying the regression for
-awhile.
-
-(I did think about proposing that outside of the vswap series, but I
-was thinking it would not be a problem at all with the current code.
-But in hindsight, since you're also merging swap cgroup with swap
-table, it will have a similar implications, albeit less expensive due
-to no xarray indirection).
-
-Hopefully we can iron out the rest of the differences. I have a couple
-more use cases in mind (compressed writeback from zswap, discontiguous
-fallback for swapout, etc.), but without virtualization they seem like
-a deadend :(
-
-And Gregory's cram stuff too - I think it's not undoable without
-vswap, but it's just a lot hairier :(
-
->
-> For swapoff or migration you don't need to touch the page table, same
-> as in this series, just update the virtual swap mapping to be cached
-> or update the entry, it's identical to what this series is doing.
-
-Yeah the swapoff is no big deal.
+AI review likes the kernel patch but worries about the selftest:
+	https://sashiko.dev/#/patchset/20260424-kmemleak_dedup-v2-0-8bea649b2a92@debian.org
 
