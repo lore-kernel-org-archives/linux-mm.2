@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F5C9FED3CD
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:01:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6630FED3CC
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:01:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 715266B0005; Fri, 24 Apr 2026 10:01:27 -0400 (EDT)
+	id C6BAC6B008A; Fri, 24 Apr 2026 10:01:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69D7A6B008A; Fri, 24 Apr 2026 10:01:27 -0400 (EDT)
+	id BCD366B008C; Fri, 24 Apr 2026 10:01:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5669A6B008C; Fri, 24 Apr 2026 10:01:27 -0400 (EDT)
+	id A6E756B0092; Fri, 24 Apr 2026 10:01:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C0CF6B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:01:27 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63B461B6F5E
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:26 +0000 (UTC)
-X-FDA: 84693611772.05.82CC5DD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B0D9CC0012
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UF6mG7Dh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777039283; a=rsa-sha256;
-	cv=none;
-	b=n8Jb/RFBfVt4uOoQVgkOxopTbv5xNxYNnmJlw1vfjF97HVp8yugUhYLFm5YBh3qICtUT5W
-	jLqE9vn4Jkfpc6720zT5feV7Eh74M7/7oXwUls2f7I2b97m4+uLCjYCY6LbvOjBsDG4lmS
-	/n8cb3xbkfqQRlPGrOdly+K1kWFDbdU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UF6mG7Dh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 901B56B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:01:28 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD616401CB
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:27 +0000 (UTC)
+X-FDA: 84693611814.28.A7FCB81
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8C9E718002B
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N4LFlvWX;
+	spf=pass (imf24.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777039283;
+	s=arc-20220608; t=1777039285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=hoWIey7imDsa8W79L+EJK/6Oy5tMaZ1Ka5xZdoGC0H8=;
-	b=mVdkuN2ZMdo4biq6iYAhnrtJy4zBEYzE2/QSHplOFxtdKfQONlLdAh6ljPob7JF2K/NYNj
-	ZbXPJAAEz1ZZgva3GSKut0HtLdJCyDpqdc4s77vg2H4o388VfK3bWxGzKO5SdUVeO3v2zi
-	ZPgIHyaf85v8ssS02fZ+yCXkhmjCJaY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RO6qDge3MPXwzRJiRtDLpDEoiPA2crfPdsMVGpyGTu0=;
+	b=Rb079AoBlLogJQ5/ykg1/KKXpk3Y+TZQVHBfGfSKBADMerIVylnj0e+1WB3e/1b2YiGxa8
+	/p2OmB9aMRHVlIdu3x+mpRtkWLZvbB4a9xroKhH8CwZxrAw2h043HRGr6/z9fMyIx4+q5m
+	bSTScaFsDJaELfQP2YOg25J8UYRZ6XQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N4LFlvWX;
+	spf=pass (imf24.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777039285; a=rsa-sha256;
+	cv=none;
+	b=lrawRZyIo8TayFMrwCm+PmmtFDDsplLTD+EOMvz8kqFAq7EgXOTDa3MaRZc5JQp8DQjcGE
+	8bTTeduT2twnRh9WRlBUlhRSX4t09Cinb/tn/dx5TV0M7kg4gpnc6gQXJNzwdqlCgq9nrq
+	jMXzPpP/sPmr+4TFuj/u8HtEkvmsfMU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9FC21600AE;
+	by sea.source.kernel.org (Postfix) with ESMTP id 73EB341B16;
+	Fri, 24 Apr 2026 14:01:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927D0C2BCB2;
 	Fri, 24 Apr 2026 14:01:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DD6C19425;
-	Fri, 24 Apr 2026 14:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777039282;
-	bh=DFy9AhLANCuPcMWrswbPLcW9ACoxuoxOoAiw0fx5Ep0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UF6mG7DhKt9iEDmQyL15UPzJXX6xodvOiof8RN6zvJQjMYULbqq/STXmrcmxxVuEu
-	 mRpC22v3aiBpQMAPb4Sq7yFL5Y4R5glujEtTCVG8mUYE2Trd3Pni513IFcAjMQnpNY
-	 VJ603ahyjx/ABQoBZLGBTQRxhcc6x7qm7rh58j8a79h7aemfifLmrUs8L0a21jY0X0
-	 q5TRr5ZN+740Q/jeBf1ZlPK9gQ8egsvjuxpJlH+oRiuBHB+vaKw1H1TxiHogGDetxR
-	 R3FqPVK1eCeRB2LIgWMb0NOyUJXP6l/RGlE5V2ugWgb1rHPeQJzLst1sJPRPsG+M7G
-	 wUL5HSVpKOzWg==
+	s=k20201202; t=1777039284;
+	bh=jn2J3yA0J0jkmQB7t5ls5b/AEhdqnAVp7d4GDg/Z45k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=N4LFlvWXRa+nC2LrxZiweANVn2sW/mtDJtn9Hc8U2IyjZIgSy4LNgQs+IcGbxKtKB
+	 SQXc/kEvUje04JOPH7+CFjBAkhuNvJ1+mJpMKSbR3Ape53qEz2rSthY8WkOHr+x/AD
+	 NerivrUMmvutjugXmGXWN2xhWSt5Eg1Z+HGbi1TwI2Sj41+fdZ0AVNy+sVEUVCKVPG
+	 tLwhV6Z90OosV7D6kFMR/VPDcZwTKg+fgxFgCAHVlS42dHsnn/IJeYntXseH2xsUih
+	 orNQgIAhSM/STtN+hJVaSrAZAogD0kKuva7+i6hCEbPLvJar+PoD4pQMRXPnUSHvQp
+	 ApS4f2wWVf0jQ==
 From: Sasha Levin <sashal@kernel.org>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -80,21 +80,25 @@ Cc: ljs@kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [RFC 0/7] mm: dual-bitmap page allocator consistency checker
-Date: Fri, 24 Apr 2026 10:00:49 -0400
-Message-ID: <20260424140056.2094777-1-sashal@kernel.org>
+	Sasha Levin <sashal@nvidia.com>,
+	Sanif Veeras <sveeras@nvidia.com>,
+	"Claude:claude-opus-4-7" <noreply@anthropic.com>
+Subject: [RFC 1/7] mm: add generic dual-bitmap consistency primitives
+Date: Fri, 24 Apr 2026 10:00:50 -0400
+Message-ID: <20260424140056.2094777-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260424140056.2094777-1-sashal@kernel.org>
+References: <20260424140056.2094777-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B0D9CC0012
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dzs7y89jtjrt5apknkhtpefykcwhjq79
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8C9E718002B
+X-Stat-Signature: pgsaqdi6n5nwsyxickqojmbe3fawrfr7
 X-Rspam-User: 
-X-HE-Tag: 1777039283-331124
-X-HE-Meta: U2FsdGVkX1/G2tuZskPqDt3F8e6QSaXJ7OUxo3Tlr6k9REQqBbvuqKCx1AfqIeVOpHOIOU9MYd+kITzdU7BQQP01sU+OHhnlMrgUKX2bLwZw7UKQBqbW7f5giNDfTeLpyr4PLYLMCoS7sWMx3umgnqs5wX6Ip9aCKBprqjU4AcOiQsSljCmyh2OQP5oJFKvrpbZzBhEkXuSTP38VtggqPqV7RYeclIpCCjXBiGu/8Qj5jkzrmVIbBmfyzQRIPfIyAl2HtRx57oZzg/yVyF59mAexAoQwTn5FHAkHV8jB3Tk7aNHZw5sSD2TbFt4ElByZBrzlkeYB2QdgaNvzrBvjKLXPKqayoFiDriYWChH1sh0sYilbW4novwaasn0i/Jt/Lzw5+EJ0anT994LLdRU/5FnRXaQdcb/HuiE0+vwSgJ8oylN8WYOQ2y8GrwJctWamSs2DJmlQRT/wjBsJnwGpF1v6aJwGHpQ3z+TEHfTJXgBh0XpeE4hOUatNf0kfHQq8awviFCBrG0RVay7W6U0iXAGai1LGwdCZ2QEjzEUTV9zqYJeD2Qnp8kRuWVpEpzV4V78QeRAk9zbb91qe5uyypytcoiNI9SB3RdcIcIHg915jPlikilgtLzBGzH4MhOaWDg3yZQazgu1TqYfiNV3ZvI1HxucWc6d7+IfxO5kKwzyCUFsCQV9sfnC2XxiTVqvzDq69zIuzy4CJUAQ6wnx+3juKNg+lDjjV+tC85h4M7eN3yLDxfBO0Z9Wryj5EYFKCskDtDqg/DCZN6JoV94wFzDvwIKUd1ZfaBlyDsbbjd7J4PF/rA9HlOMW7vKRtkTl6huZUk0Yi6AtiMGZTV4SOzhJQas4WuXmAdWoXyGQIlVPqhYT+6pC8aobp/F14YlZYlyPJrGp7Vb0o2eWmkTLHfaPAOcWq4+UyD71jpilExy95HIpQBzosXsJHmPW+eevSnfks+TI4sFbo/O5jo9O
- xwW/9j1/
- RBSo6MHa5Wg9zqtL3kHZ3Wpb8fYJae1vgA1LG7GKv0BQQpThLUOG0YCMWuxkSWOt8QUfcNgCpn+gupiN4Q80aEliIozbmF+wVfD/JRPm/V/+qvqbjB2xTabpwE9HI7aIyX4gDZ9kEqcu6KOkS6y7Z52oT9UtW2V7bGjUyUTFnCwPv7QGuBFJsVYrYesxv2tEZKIBuumK0xPvN3Os=
+X-HE-Tag: 1777039285-428932
+X-HE-Meta: U2FsdGVkX1+4CkvmT8oWZ+65Nv5WFxIlmYAlJCfJCajYPWsry3tiXkvzuzKCJJCQyxS4w0z1SoOiq1xUk/SV4i1u9rSA7H+RerR4D4HQU1vpQ5lGy0ht/3M6q8SK4LkIFvkATxzQe6rIcbjP8eMUaxXAFXzv0jf7k83kYxkLtOYjroL7UbCDYa+/Bri/IU92X20JQ37n/c4gfLrmzGW8bwj7zXF0OS0C37/YTmTLRBKNQ0RSAiyPPnESLs04ShO7CVy/gXdi0nOTu1YWsG87LTuO/p8oI5cAIDX4i7FyhVLS1pgyCyN2rxEZmhkfNeaSmgwCUmMWmBHHJ5jwCjxXv+8QmJ3llsOzrWKeIg8YIxUJG/q9xQC2YkvN2OJ/YZmQPaW8WcYwZr1D5GaD9BvVDvFZsUtF6T5qaQjILxD5jrVVDAhptw2o7lNFm7VxB7EqqKirI/VCw4KXb5YWxWlInlI7vHmxCffObwkA6IQnj04Zi6gEs9sExF2YT13WXEUO8/IkyPM1Rvz6O3n7gf6q0l16vLsyhG2wbiuZAFuaRZHUD20bHw3XKnorao5RZzISIrRvY+fO32F2f5RJJyZhT9K3ahaMpsYxNFCsBa+xyqFOvZXeIJSK3cgvpHk9hzOLbPtJhmdwSjQqPCZtJHJh5lBDtoTEdaDExFCAbLwoJvC99JwlAvCAslXf1+UQdwQtz6XcutUszU0W5ajY+WwMvNoSXNl8CbDxT7LR1iRZPqyYoH4Y0iRmzxyrDBxpkTT9+yAteHSZk73pNDhEyGuZFQBQHkbnZq/ESb01MGehrm688s1NWJN29/nlQTa3pBSLbjktM01LwP5r1FLLfPeoRsTQhCR5+75Ebm3lUSCmPlWIdfZFN5wjR/E+VRr4OVMAFnVKVXcj8vwvwn81H/U8Zt6HJI+owFs3sOJAYwTtH11tLrOVRyw5eYoVFBmi7AOiawfPPDTgVftTPU1TzOi
+ ilhj9EsC
+ rMBTDJT5apQDiywkaYeKDEJoA4ZE96yn/arTfNGokwmd/R+au42x9fYvgysLIf0zSpsVH43DRNz4rvVn2k2cd6uXGc0wK7+7uX3Fk+M+STtZzWh0fPvabTVJp8nJtTb5WTBo3AlPYJkxpifMrXFmLXAd856HLhGghET3h3Jsa6r4MjpCL8/yb0AMrNWOny2xCrPhpErxRM7XFjAAyw/6HLJ1rpdaKEmcL6trB3wJa+tGOy8p2F94OOfOBs0Oa/VMneJ+tgtt/zqF61K8wLuIPrsAeXuFdbVHLWGyKushRYWNJDcFWIMTFxcCx69g9nIyY8ciDTjltDSvXvFHOGSZPXvlhXa4shw2rJOKB/7xVasncXy3thgtFzPOUnQ2tRmXs6U7w/IRfninH8zZOaPxws5kr9yygOuP5Wj6ShOzqZXAf4saspMNx++7UPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,97 +106,288 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Existing memory debugging tools - KASAN, KFENCE, page_poisoning - detect
-access violations and content corruption, but none of them can detect
-silent corruption in the page allocator's own metadata. If a hardware
-bit flip corrupts an allocation bitmap, the allocator hands out a page
-that is already in use (or fails to hand out a free one), and nothing
-in the kernel notices. This series adds a dual-bitmap consistency checker
-that maintains the invariant primary == ~secondary across two independently
-allocated bitmaps, so that any single-bit corruption in either bitmap is
-immediately detectable. The approach is based on NVIDIA safety research.
+From: Sasha Levin <sashal@nvidia.com>
 
-Field studies consistently show that DRAM errors at scale are far more
-common than textbook assumptions suggest, even with ECC. Schroeder et al.
-(SIGMETRICS 2009) found 8% of DIMMs experienced errors per year in
-Google's fleet; Sridharan and Liberty (SC 2012) reported similar rates
-at LANL; Meta's 2021-2022 work documented silent data corruption at
-scale, including memory-related faults. The critical property of
-allocator metadata corruption is that it doesn't trigger an invalid
-memory access - the corrupted data is structurally valid, just wrong.
-KASAN instruments accesses, not metadata integrity, so it cannot see
-this class of fault.
+Add a header-only library implementing a pair-of-complementary-bitmaps
+integrity primitive: maintain two bitmaps where primary[i] == !secondary[i]
+for every bit i, and detect corruption by checking that invariant.
 
-Functional safety is a different discipline from security that aims
-to reduce the risk of hardware and software misbehaving to an
-acceptable level. Security hardens against adversaries; safety hardens
-against random hardware failures (cosmic rays, cell wear-out, thermal
-noise) and systematic software failures (bugs). ISO 26262 (automotive
-functional safety) defines four Automotive Safety Integrity Levels,
-ASIL A through D. ASIL-D, the most stringent, is derived from the
-severity of the hazard in case of failure. IEC 61508 defines similar
-levels (SIL-1 through SIL-4) for industrial systems, and there are
-equivalent standards for avionics and medical devices. ISO 26262
-requires Freedom From Interference (FFI): a safety element must not
-be corrupted by faults in other elements. For an OS kernel, this means
-the memory allocator's metadata must either be immune to corruption or
-corruption must be detected before it propagates. The dual-bitmap
-implements a way to protect from corruption coming from hardware or
-software - two complementary representations of page allocation state,
-allocated independently via memblock, where any single-bit fault in
-either bitmap is immediately detectable. Performance is secondary to
-correctness in this context. A safety mechanism must be simple enough
-to audit and certify, must fail deterministically (panic, not
-log-and-hope), and its correctness matters more than its throughput.
-The dual-bitmap adds two atomic bitops per alloc/free, but for
-safety-critical deployments this cost is acceptable because the
-alternative - undetected corruption propagating silently - violates
-the system's safety case. The static key ensures zero cost for kernels
-that don't need it.
+The motivation (silent metadata corruption that KASAN/KFENCE cannot see,
+plus the functional-safety argument for wanting this in the kernel) is
+described in the cover letter; this patch only introduces the building
+block.
 
-The natural question is why not use page_ext. The key objection from a
-safety perspective is that page_ext stores per-page metadata in memory
-that is itself subject to the same hardware faults we're trying to
-detect. The dual-bitmap approach works because the two bitmaps are
-independent allocations - corruption in one is caught by comparison
-with the other. Embedding both in page_ext means a single fault could
-corrupt both the tracking data and its redundant copy in the same
-allocation region. ISO 26262 recommends this approach for protecting
-against hardware faults, but it also helps against software faults -
-co-locating both bitmaps in page_ext violates this principle. Beyond
-the safety argument, there are practical issues: page_ext adds
-8-100+ bytes per page depending on enabled features while the
-dual-bitmap uses 2 bits per page total, and page_ext initializes
-after the buddy allocator while the checker must be active before
-memblock_free_all() hands pages to buddy.
+The primary bitmap uses 1 for "allocated" and 0 for "free"; the secondary
+uses the opposite convention. dual_bitmap_set() and dual_bitmap_clear()
+update both bitmaps and return the previous primary bit so callers can
+distinguish a real state transition from a double-alloc or double-free.
+dual_bitmap_validate() walks every word and returns the number of words
+that fail the invariant.
 
-Sasha Levin (7):
-  mm: add generic dual-bitmap consistency primitives
-  mm: add page consistency checker header
-  mm: add Kconfig options for page consistency checker
-  mm: add page consistency checker implementation
-  mm/page_alloc: integrate page consistency hooks
-  Documentation/mm: add page consistency checker documentation
-  mm/page_consistency: add KUnit tests for dual-bitmap primitives
+Concurrency note: set and clear perform two independent atomic bit
+operations against the primary and secondary bitmaps, so the invariant
+is transiently violated between those two ops. A concurrent reader can
+observe an inconsistent pair on a healthy kernel. The validation
+helpers absorb this by retrying a small number of times with cpu_relax()
+and, after the retries, issuing an smp_rmb() and re-reading. Real
+corruption is persistent and survives the retries; transient races
+resolve within a few cpu_relax() loops. This keeps the update path
+lock-free at the cost of a bounded false-positive probability under
+extreme write rates, which is acceptable for a fail-stop integrity
+check.
 
- Documentation/mm/index.rst            |   1 +
- Documentation/mm/page_consistency.rst | 211 +++++++++++++++
- MAINTAINERS                           |  10 +
- include/linux/dual_bitmap.h           | 216 ++++++++++++++++
- include/linux/page_consistency.h      |  84 ++++++
- mm/Kconfig.debug                      |  59 +++++
- mm/Makefile                           |   2 +
- mm/mm_init.c                          |   9 +
- mm/page_alloc.c                       |   4 +
- mm/page_consistency.c                 | 360 ++++++++++++++++++++++++++
- mm/page_consistency_test.c            | 274 ++++++++++++++++++++
- 11 files changed, 1230 insertions(+)
- create mode 100644 Documentation/mm/page_consistency.rst
+Based-on-patch-by: Sanif Veeras <sveeras@nvidia.com>
+Assisted-by: Claude:claude-opus-4-7 <noreply@anthropic.com>
+Signed-off-by: Sasha Levin <sashal@nvidia.com>
+---
+ MAINTAINERS                 |  10 ++
+ include/linux/dual_bitmap.h | 216 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 226 insertions(+)
  create mode 100644 include/linux/dual_bitmap.h
- create mode 100644 include/linux/page_consistency.h
- create mode 100644 mm/page_consistency.c
- create mode 100644 mm/page_consistency_test.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d1cc0e12fe1f..81b1f44215b3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -19972,6 +19972,16 @@ F:	mm/page-writeback.c
+ F:	mm/readahead.c
+ F:	mm/truncate.c
+ 
++PAGE CONSISTENCY CHECKER
++M:	Sasha Levin <sashal@kernel.org>
++L:	linux-mm@kvack.org
++S:	Maintained
++F:	Documentation/mm/page_consistency.rst
++F:	include/linux/dual_bitmap.h
++F:	include/linux/page_consistency.h
++F:	mm/page_consistency.c
++F:	mm/page_consistency_test.c
++
+ PAGE POOL
+ M:	Jesper Dangaard Brouer <hawk@kernel.org>
+ M:	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+diff --git a/include/linux/dual_bitmap.h b/include/linux/dual_bitmap.h
+new file mode 100644
+index 000000000000..136822267be1
+--- /dev/null
++++ b/include/linux/dual_bitmap.h
+@@ -0,0 +1,216 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Dual-bitmap consistency primitives
++ *
++ * Provides a generic library for maintaining dual bitmaps with the invariant
++ * that (primary == ~secondary). This pattern is useful for detecting
++ * single-bit memory corruption in bitmap-based data structures.
++ *
++ * Based on NVIDIA safety research.
++ */
++#ifndef _LINUX_DUAL_BITMAP_H
++#define _LINUX_DUAL_BITMAP_H
++
++#include <linux/types.h>
++#include <linux/bitops.h>
++#include <linux/bitmap.h>
++#include <linux/bug.h>
++#include <asm/barrier.h>
++#include <linux/processor.h>
++
++/* Number of retries for transient inconsistencies from concurrent updates */
++#define DUAL_BITMAP_RETRY_COUNT 3
++
++/* Bitmap indices */
++enum dual_bitmap_index {
++	DUAL_BITMAP_PRIMARY = 0,	/* 0=free, 1=allocated */
++	DUAL_BITMAP_SECONDARY = 1,	/* 0=allocated, 1=free (complement) */
++	DUAL_BITMAP_COUNT = 2
++};
++
++/**
++ * struct dual_bitmap - Dual bitmap structure
++ * @bitmap: Array of two bitmap pointers [PRIMARY, SECONDARY]
++ * @nbits: Number of bits in each bitmap
++ */
++struct dual_bitmap {
++	unsigned long *bitmap[DUAL_BITMAP_COUNT];
++	unsigned int nbits;
++};
++
++/**
++ * dual_bitmap_consistent_word - Check if a word pair maintains the invariant
++ * @primary: Primary bitmap word
++ * @secondary: Secondary bitmap word
++ *
++ * Returns true if primary == ~secondary
++ */
++static inline bool dual_bitmap_consistent_word(unsigned long primary,
++					       unsigned long secondary)
++{
++	return primary == ~secondary;
++}
++
++/**
++ * dual_bitmap_set - Set bit in dual bitmap (mark as allocated)
++ * @db: Dual bitmap structure
++ * @bit: Bit position to set
++ *
++ * Sets bit in primary and clears corresponding bit in secondary.
++ * Returns the old value of the primary bit (true if was already set).
++ */
++static inline bool dual_bitmap_set(struct dual_bitmap *db, unsigned long bit)
++{
++	bool was_set;
++
++	if (WARN_ON_ONCE(bit >= db->nbits))
++		return false;
++
++	was_set = test_and_set_bit(bit, db->bitmap[DUAL_BITMAP_PRIMARY]);
++	test_and_clear_bit(bit, db->bitmap[DUAL_BITMAP_SECONDARY]);
++
++	return was_set;
++}
++
++/**
++ * dual_bitmap_clear - Clear bit in dual bitmap (mark as free)
++ * @db: Dual bitmap structure
++ * @bit: Bit position to clear
++ *
++ * Clears bit in primary and sets corresponding bit in secondary.
++ * Returns the old value of the primary bit (true if was set).
++ */
++static inline bool dual_bitmap_clear(struct dual_bitmap *db, unsigned long bit)
++{
++	bool was_set;
++
++	if (WARN_ON_ONCE(bit >= db->nbits))
++		return false;
++
++	was_set = test_and_clear_bit(bit, db->bitmap[DUAL_BITMAP_PRIMARY]);
++	test_and_set_bit(bit, db->bitmap[DUAL_BITMAP_SECONDARY]);
++
++	return was_set;
++}
++
++/**
++ * dual_bitmap_test - Test if bit is set in primary bitmap
++ * @db: Dual bitmap structure
++ * @bit: Bit position to test
++ *
++ * Returns true if bit is set in primary (allocated), false if clear (free).
++ */
++static inline bool dual_bitmap_test(const struct dual_bitmap *db,
++				    unsigned long bit)
++{
++	if (WARN_ON_ONCE(bit >= db->nbits))
++		return false;
++
++	return test_bit(bit, db->bitmap[DUAL_BITMAP_PRIMARY]);
++}
++
++/**
++ * dual_bitmap_consistent - Check consistency of a single bit
++ * @db: Dual bitmap structure
++ * @bit: Bit position to check
++ *
++ * Returns true if the bit values are consistent (primary != secondary).
++ * Uses retry logic to handle transient inconsistencies from concurrent
++ * updates - real corruption persists while races resolve quickly.
++ */
++static inline bool dual_bitmap_consistent(const struct dual_bitmap *db,
++					  unsigned long bit)
++{
++	int retries = DUAL_BITMAP_RETRY_COUNT;
++
++	if (WARN_ON_ONCE(bit >= db->nbits))
++		return false;
++
++	do {
++		bool primary = test_bit(bit, db->bitmap[DUAL_BITMAP_PRIMARY]);
++		bool secondary = test_bit(bit, db->bitmap[DUAL_BITMAP_SECONDARY]);
++
++		if (primary != secondary)
++			return true;  /* Consistent */
++
++		/* Inconsistent - could be transient race, retry */
++		cpu_relax();
++	} while (--retries > 0);
++
++	/*
++	 * Inconsistent after retries. Issue a read barrier and check
++	 * one last time to rule out stale/reordered reads.
++	 *
++	 * Note: the two test_bit() calls are still non-atomic w.r.t.
++	 * each other, so a concurrent set/clear between them can cause
++	 * a transient false positive. This is acceptable because real
++	 * corruption is persistent and will be caught on the next check.
++	 */
++	smp_rmb();
++	return test_bit(bit, db->bitmap[DUAL_BITMAP_PRIMARY]) !=
++	       test_bit(bit, db->bitmap[DUAL_BITMAP_SECONDARY]);
++}
++
++/**
++ * dual_bitmap_validate - Validate entire dual bitmap
++ * @db: Dual bitmap structure
++ *
++ * Checks that the invariant (primary == ~secondary) holds for all words.
++ * Uses retry logic to handle transient inconsistencies from concurrent
++ * updates - real corruption persists while races resolve quickly.
++ * Returns the number of inconsistent words found (0 = all consistent).
++ *
++ * Note: this is a cold-path diagnostic function kept inline for
++ * header-only library simplicity. It should not be called in hot paths.
++ */
++static inline unsigned long dual_bitmap_validate(const struct dual_bitmap *db)
++{
++	unsigned int words = BITS_TO_LONGS(db->nbits);
++	unsigned long violations = 0;
++	unsigned int i;
++
++	for (i = 0; i < words; i++) {
++		unsigned long primary, secondary;
++		int retries = DUAL_BITMAP_RETRY_COUNT;
++
++		do {
++			primary = READ_ONCE(db->bitmap[DUAL_BITMAP_PRIMARY][i]);
++			secondary = READ_ONCE(db->bitmap[DUAL_BITMAP_SECONDARY][i]);
++
++			if (dual_bitmap_consistent_word(primary, secondary))
++				break;  /* Consistent, move to next word */
++
++			cpu_relax();
++		} while (--retries > 0);
++
++		if (retries == 0) {
++			/*
++			 * Inconsistent after retries. Issue a read
++			 * barrier and re-read to rule out stale/reordered
++			 * memory views before declaring corruption.
++			 */
++			smp_rmb();
++			primary = READ_ONCE(db->bitmap[DUAL_BITMAP_PRIMARY][i]);
++			secondary = READ_ONCE(db->bitmap[DUAL_BITMAP_SECONDARY][i]);
++			if (!dual_bitmap_consistent_word(primary, secondary))
++				violations++;
++		}
++	}
++
++	return violations;
++}
++
++/**
++ * dual_bitmap_init - Initialize dual bitmap to empty state
++ * @db: Dual bitmap structure
++ *
++ * Sets primary to all zeros (nothing allocated) and secondary to all ones.
++ * The bitmaps must already be allocated before calling this.
++ */
++static inline void dual_bitmap_init(struct dual_bitmap *db)
++{
++	bitmap_zero(db->bitmap[DUAL_BITMAP_PRIMARY], db->nbits);
++	bitmap_fill(db->bitmap[DUAL_BITMAP_SECONDARY], db->nbits);
++}
++
++#endif /* _LINUX_DUAL_BITMAP_H */
 -- 
 2.53.0
 
