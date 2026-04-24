@@ -4,115 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E545FE521D
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1047EFE521D
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 12:29:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D85A46B0093; Fri, 24 Apr 2026 08:24:49 -0400 (EDT)
+	id 417BC6B0005; Fri, 24 Apr 2026 08:29:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5D636B0095; Fri, 24 Apr 2026 08:24:49 -0400 (EDT)
+	id 3EFB36B009B; Fri, 24 Apr 2026 08:29:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C740A6B0096; Fri, 24 Apr 2026 08:24:49 -0400 (EDT)
+	id 305006B009D; Fri, 24 Apr 2026 08:29:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B3EA56B0093
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:24:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1FA9D1C00FD
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:24:49 +0000 (UTC)
-X-FDA: 84693368298.10.8695A96
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2FEC0C0008
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:24:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=YN3rWZLc;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=none (imf10.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 20B716B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 08:29:57 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A83E414018C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:29:56 +0000 (UTC)
+X-FDA: 84693381192.20.E92D993
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E4232100012
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 12:29:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GMP7indr;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777033487;
+	s=arc-20220608; t=1777033794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VJ09Jo0h/vP/hOFzbwH4NhaWc8BN8qSSaNGeuLFDRBg=;
-	b=Y6d/u88Pc2YDqVLI6YnCP+FdlqK2e0CbTrOV/EcqD/LbDp7JpvaDE0+kZJVdWmxc1gVT1L
-	Bn5AbRk4LNT1Mn9xWQLVqEKP9eV4EN+7icNYJORRshvfTd9e0+GZ5NpHMrHVX2WekYUa/S
-	utGpMXB2Ef080nvL2a+mYdUpzPeYAAE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=YN3rWZLc;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=none (imf10.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777033487; a=rsa-sha256;
+	bh=Y6fNq3bLLblcuhX/ezeW8fniX00qVWvolSa35e9m/Yk=;
+	b=UllMpLUCBpu5Lg72BZzqCgVkg4fdhEYhxl9dM8PsUc935dFyxZkcEkhVs0WrdwiM+rYFT3
+	eafqnIh8SN3Znh8NJ3lqH+HGHrH6MVhOMzzgplfycvsavjbbc7bnywaoX9CnIhQwcvSRit
+	V2cOKxe4rAZGGwjzoL19S8RO2QkhNs0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777033794; a=rsa-sha256;
 	cv=none;
-	b=y9EBWu8dQNQqF1J2mAc06NeNE5TJimG3tzzw9TWGpq+Vkm2AMlLDef0qw01uLVDO+Mqt3Q
-	5e32CgET1FsTaMbAics/o18j+H5Yr1ssbMHfBB/CHCcxWZGiqelNAMChBThcq07pOzvuNE
-	0cf5M7YIM3qjF2oZ9NUYXKhGDKaG3xs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=VJ09Jo0h/vP/hOFzbwH4NhaWc8BN8qSSaNGeuLFDRBg=; b=YN3rWZLc23qtp4id7Che7GivgN
-	LF8Am2+CC2mxHoaRu6hOkF4Usj7eEN2lt36BXtrcuCZHr0CRb9M/FG1Ww3J3kohVSyInyp1hyL3l8
-	jmn1ipXgtFzxQbSUpXrTbw/mbQ+J+IJEd4kqeE0PHYxGWcyJ+fP89PpGplBbNJHZOXBwEkJj3Fzpk
-	i4TlXPfLlVClj7Wn0MhbDkO47SINKJMlIMr/IoiGn9+3pBC/cZIqOhfVroRDtO6al8t/eMyO4IdXQ
-	Ii9j6FATtWNS92NqCAPLU5EhlNwANxF4onx6QHwt5toxqK3JS82KjsNx1Dhj1Edw7p3Xiy8qS2hGG
-	BToyHnJw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wGFaK-003AQL-1h;
-	Fri, 24 Apr 2026 12:24:40 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 24 Apr 2026 05:24:02 -0700
-Subject: [PATCH v5 4/4] selftests/mm: regression test for
- panic_on_unrecoverable_memory_failure
+	b=BXUnEdl3/BTvt7DEXVxc2L0oysaiHAfT1FceAybZEm4970meXu8oiYAeWL3dxwOY2uIiAu
+	FpPIrjJwircm0Gsu2dl/ENitHzUjopOA3oLIJ9h0V4hiYIDP5CeoAcV2Y+0t1pHhfKxmtW
+	AuefHmfsmHDHo5YvytYStehMsDGHNBA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GMP7indr;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 56B54600AE;
+	Fri, 24 Apr 2026 12:29:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B83CC19425;
+	Fri, 24 Apr 2026 12:29:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777033794;
+	bh=xuaMXZZQHTCLWOn+RiAaPNIAvlQmSERJSFvFOzPMvlQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GMP7indrU77W+r7c7BQJDzWNuwDS7Svmqq4sBy8ieEmzMi5uh16P8Rt0Ax/7vqTtK
+	 EysXMjjYYx97m95htM9KUAIBqoEA4FnNjQ1SLN9OSYOLt4jNMOVVEys5amHoFf/fk/
+	 VP6Jy+syyvQRaaywUWg3ZKrlQEkBtkJspRuYV+Yhk7uPBarKelHvil1d2gi4OlEFWv
+	 PNEOKfwuDJilZUMftcpZzzYbySgTxz2yji+/nfw5QVIaehjH08DX57L/RTbeI8HwEr
+	 +NsGZwc45SFj0tU20g2P4zKDpFKeDncDpSvfu8ccNCldiY3Ix+Wz8vsvDyzCVqvD/X
+	 4fe3mbYbLRS7A==
+Message-ID: <4b30e014-2746-47d9-a122-554572271d9b@kernel.org>
+Date: Fri, 24 Apr 2026 14:29:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260424-ecc_panic-v5-4-a35f4b50425c@debian.org>
-References: <20260424-ecc_panic-v5-0-a35f4b50425c@debian.org>
-In-Reply-To: <20260424-ecc_panic-v5-0-a35f4b50425c@debian.org>
-To: Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, kernel-team@meta.com
-X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3929; i=leitao@debian.org;
- h=from:subject:message-id; bh=Ju4F+y15N/15YSKcoOoe8hecUCP4Fg5cxAM43INPgiw=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp62Duu02nZb1HcgkNBUxR/EIf1G8rz/XDjppUT
- a5iK2aM0haJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaetg7gAKCRA1o5Of/Hh3
- bWsDD/9hAKxJHJJVVYekL9J7smIGLipCaTr4t1HTbxP1YFDcRGht3rB9LvffgMAKZ62PgQoIP3k
- Wv5fIbdL4Wqec2gvXjLyr+VE5aQxBiIZSpqsTJx8iKAsQIBI4xpXpjy+T/j7Du+BP2EElYhXjKD
- +f9SEYoqgOYL8XCgucawSJQ2yzGSykz0pj4Cp2JqGqTTMVNSNn+P0bf6j0/fHRNdKclHBz6rL+f
- 5tHOkvT9UyD5FQwvuxJ/lDyT5b0D3PYChXL5Och1JmS33EzDyKZtKclj4qtaEgaI2PlToBApaTW
- nHOlSx4tDt0Xyh55JRMqCAKvHLWUw52QeABwgugBgR/CM4vlbct8Ep71GfT9AGwjz/sR6yqEZRh
- w03TG61wtVlT6gNdaYhCeX4t7fu/EpivZfdO2/qaB5A3QPAPtijmolOVwjlZGVixcPDnQGppcog
- 6uZyckkp4wLCspqDn8TfZ1gJp24FSSVZs4RKaFLUtuWzfNWKiN38ZwoZ+XU/96usP8yHOt7OuBB
- g66OGBDe5NJJUju6idlaxWnnowQ7TdpfNYWq8QpLQGEtDn2IU2DHrqD3L1Zb7VdCicDrnEnSqb+
- iiiuXHHejKuVCcRSHbwdxDE6P8smOYx45fIXYbcu+sfSSyscZ+RyQ7hTORpdAHkVC1vYSVwveVr
- giSdM36EMaw2/hg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] mm/sparse-vmemmap: provide generic
+ vmemmap_set_pmd() and vmemmap_check_pmd()
+To: Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-kernel@vger.kernel.org
+References: <20260404122105.3989557-1-songmuchun@bytedance.com>
+ <20260404122105.3989557-2-songmuchun@bytedance.com>
+ <adIKIhRL6q2NIgnj@kernel.org>
+ <D0D4B0DA-56F3-4ECD-8855-96C21A6DE1F0@linux.dev>
+ <adeC--_dkgWHdSPj@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <adeC--_dkgWHdSPj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E4232100012
+X-Rspamd-Server: rspam07
+X-Stat-Signature: d5un9c55xj31yg9grrx3qr1emdzzzinj
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2FEC0C0008
-X-Stat-Signature: z35jez4wpnpic1z3ng6abfecypmxx3k6
-X-HE-Tag: 1777033486-536895
-X-HE-Meta: U2FsdGVkX18x+sHDBrUCoNFJrhs7XJxl4gB++3A9ICgxiv4y05w0r4CSb9775ODobVIOEVeXw6aO326nH6JMNIxgq5ym/0GFlA+844VGV1lAejq19qOc5glU7CmpH/qnibeEY+i1rSPtGH+maxZmO7oEkMkkwDyiH9ghq/uSWW760EDXTDGg8OLjU06f8ZPe+G9l3rYpX7qpvwRRCHCvyUEljkGsV4oETNLV/L4h7eESDK9Q6KSc5vkHi8NOSTpmHlz5XHrkaxQBmUG0vQ/yuMH2tzQB0dxZWzP48TGzUFZNVpDdX8mlWdqt7LH0fiCT8onS/BT6GW2/cx76ljSrHG8j71Lc5Y8e6hLtMVtIRPy3akHyx1zyGZHTv4yHbtrt1U9i6nRSryzbfdpHtXdRc8GRemTStcHmm/ptbxM430uAZD9tZws88DPR0VZXKG4DSjC3HRXskD+bkkcRnZK9XG2xVrHY7SmtMP3DFbdcoAJOrT4aj6ajtbJ1Yu4m7ItSeffE91DHMpZ7LKw+lmD1ZCTeMaPKy1h/THZXClpjv6HmZBVF7e9XzwEPJPLArIVoFX/074cixv6oOQ0bnuK5HlGHJCZC9SnqJPqUK7DhShW4+1V7uH6+elRgUHIoa36zVWzxJanIxuWFb2Wo+DFua5QzOhKNjHi766wk7UcdFg9otR10mdFXC9+JSmL+bNpmmwsz+9Dlmfnx8/u/PX/RYPiiTpESbDkDU/bgKDUXqL5V082vmjBYpSSFin/19YhMh0Ip896GGrHq8KusorYc3yuvJ1HKGSrprEmFU5ZKMgSL76lGiDwUNAOU46Ka3UjzI5Xowb4rE6qftCuSjqMLh98RinauqdIlaLnDzxRi8mgBTZZ9Og0uCiN2qQEprCZ3tut4EdMkzDJZt5pwK+LPVMI/fAIWafxGCduFaVspYGsZVmvo/fF6Xm8jkBw0hqU5Ey4wHzCX89647BFDCQx
- xwg/x1UV
- in52PYnE1bqas/nSlQuypt8ImU6gffQKrB9Nzsee5xO7Bnuke7hH5TTO8mtaHDFzrtD2XkIXdZeUobRiWJP9yufgzqrJ5/9LdZbSWu6X+FUZqn52DjyFdKJK4ABvYfeM2CMri+wCnA2J4HckVt8FJR0EeCz+6mbtMFnTpL5ECxvQ4jGb8BmZtTJDUSbUjA5fUaqpA4KZontZ6BezNfLLtPnzpwhbQIg3wTJ4xq5REGvg2Ut5BrpuE28TkSWT32xg54K3C5dYBsGcJ1tw25ksVoPG5dDnQjTDsrComWcrT8phKAFbfetQHv8v7QEJguXhhtDWJLM4qmvRILsiA6iZu3xY8NWVqP/KkFjV9jNXwTJs6zwPG0pSSD3KXGA==
+X-HE-Tag: 1777033794-918089
+X-HE-Meta: U2FsdGVkX1/36mz5gzG6B2x+IV5gp6wyJ973RUv5IMGgeYV5aYvN09zxtZ2IZoR6gure/LV1pGxNPJz6TeAuPw3nYCN91fG1fNpSx/ntXgKhIyIteOOKNgfSldliSCGDyuNmamFaCQGlrkSjVgRFQkeQdqk6TmLo7ECz0/hXsU+HWmAj72+6TaaJAeWbOayDxSLlKEnGeqpUvYpeGOCOzLNrbVQDsOmAN9GFF7nWRy5/584k+79ep1sL8HtGIVrC2lMuYmOvMTcv0tStnex0M0JIJU0mpS4vjmiLJW4/hOBFDiAJ7qz2VrmI0okX4ASmZNC3xQwx5H48t/Kv/KWyiGJ1fGxuUmaVSumexuM6ornls7qcYffRjLdCsnj8Z1/INkXuIFf97Tzhamc3FQf/vr3ojwYdQnBV0Py4i4CclWP8Y9mPTMp1kRSsye36AGIWZXTFmY89vYiQrTKHpeZedAJZ0Ms40ky5IP2q2psXl3P2IA1tlPp/ah82j4Qs8ZtMNqzG/2YEjRJ5eZAWUVNS8PAW+yVy1dEbgFh+osLsz+VXDEK464y0jFAPNNF3h3YnqASDEGTlUEM7doUHhV+gxvWohB55NEKuGD2CuokrQcwEFA0ORxr9ofcirzq4HJwhyE4tnJFMPHZ4xoBKMobSpMwKBeU2qpAA1r++7JB56qXrciZWACfUNRN6+PH4yiw1ykNQ2ur5LmWESDgspcRNaBjDghA3T1LQuaa1xEmI5siBdQyOFPMAW16ogE9Rkau3E1P0TrJzM7xBCRMJ+NxDOhYblxsnGcwlPBkv3MUHRX+C0XuRpsKh9b3y9AN4+GLShhD8c6HsSIA+xteG33Lrxb3Mh1+G/U75PcyaBBAj0tRAUlANbpvAc8MVb7YpxNqHXLhtZ/ei5enFI7k7lUqse1BPVGPLD/GdP2h3evczzcyvj8lwC6nPqGwNisdEnPUwaKhPLfgpYRKRKTTgHI+
+ y1CFz6aY
+ tazFx8egicAEOQ/juxZZlVZFK4V2D2oxxN0aPAS3B43kR/nSscG/baYpCbSZepK/kc2zE8a9+0yWbvSnDMGdo5aZ0om3MM404xbfh06IWqD7OgCUKUgLaxbVAMcLRWbuo8LLDOrzoUNXZwutQrYtw/IitTTjQSs9+mqUamLdW3ef3+/Bkc9q1yeEPJeqD2lEpIw3R3Q0nuu1G53WsiS4Ly4NdyjfqoR1BjJiy0is0rrff0rAzPsISA+e/H7AX1+ooqEaM+70YhxPi1YrhWmPhnx38gR6tNtpi5AN3h43PJuynB4opqcwYHInaCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,135 +146,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a test that enables vm.panic_on_unrecoverable_memory_failure and
-injects MADV_HWPOISON on a userspace anonymous page. The page must
-still be recovered via SIGBUS — it must not trigger a kernel panic.
+On 4/9/26 12:44, Mike Rapoport wrote:
+> On Sun, Apr 05, 2026 at 10:07:36PM +0800, Muchun Song wrote:
+>>>
+>>> Do we have to crash the kernel here?
+>>> Wouldn't be better to make vmemmap_set_pmd() return error and make
+>>> vmemmap_populate_hugepages() fall back to base pages in case
+>>> vmemmap_set_pmd() errored?
+>>
+>> Hi Mike,
+>>
+>> Thanks for the review. Let me explain my original thought process here.
+>>
+>> My assumption was that pmd_set_huge() for the kernel virtual address space
+>> should rarely, if ever, fail in this context. Furthermore, if we look at the
+>> architectures this patch replaces (e.g., arm64 and riscv), they are either
+>> ignoring the return value of pmd_set_huge() entirely or lacking any graceful
+>> fallback mechanism anyway.
+>>
+>> So, to keep the initial generic implementation as simple as possible, I used
+>> BUG_ON() as a strict assertion.
+> 
+> Fair enough, let's just make it VM_BUG_ON().
 
-This is the regression test for the panic_on_unrecoverable_mf()
-recheck: a buddy page being concurrently allocated to userspace can
-briefly land on the MF_MSG_KERNEL_HIGH_ORDER branch (refcount 0, not in
-buddy), and without the recheck the kernel would panic on what is
-actually a recoverable userspace page.
-
-Run in a forked child so the SIGBUS path is fully exercised; if the
-kernel ever regresses and panics, the host VM dies and the harness
-reports the binary as never returning, which is itself a clear
-failure signal.
-
-Skips when the sysctl is not present (feature not built in) or when
-the test cannot write to it (insufficient privilege). Saves and
-restores the original sysctl value.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- tools/testing/selftests/mm/memory-failure.c | 84 +++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
-
-diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-index 032ed952057c6..9cb8d694aee94 100644
---- a/tools/testing/selftests/mm/memory-failure.c
-+++ b/tools/testing/selftests/mm/memory-failure.c
-@@ -17,9 +17,13 @@
- #include <sys/vfs.h>
- #include <linux/magic.h>
- #include <errno.h>
-+#include <sys/wait.h>
-+#include <stdlib.h>
- 
- #include "vm_util.h"
- 
-+#define PANIC_SYSCTL "/proc/sys/vm/panic_on_unrecoverable_memory_failure"
-+
- enum inject_type {
- 	MADV_HARD,
- 	MADV_SOFT,
-@@ -355,4 +359,84 @@ TEST_F(memory_failure, dirty_pagecache)
- 	ASSERT_EQ(close(fd), 0);
- }
- 
-+static int read_sysctl_int(const char *path, int *out)
-+{
-+	char buf[16];
-+	int fd, n;
-+
-+	fd = open(path, O_RDONLY);
-+	if (fd < 0)
-+		return -1;
-+	n = read(fd, buf, sizeof(buf) - 1);
-+	close(fd);
-+	if (n <= 0)
-+		return -1;
-+	buf[n] = '\0';
-+	*out = atoi(buf);
-+	return 0;
-+}
-+
-+static int write_sysctl_int(const char *path, int val)
-+{
-+	char buf[16];
-+	int fd, len, ret = 0;
-+
-+	fd = open(path, O_WRONLY);
-+	if (fd < 0)
-+		return -1;
-+	len = snprintf(buf, sizeof(buf), "%d\n", val);
-+	if (write(fd, buf, len) != len)
-+		ret = -1;
-+	close(fd);
-+	return ret;
-+}
-+
-+/*
-+ * Regression test for vm.panic_on_unrecoverable_memory_failure.
-+ *
-+ * With the sysctl on, hwpoison injection on a userspace anonymous page
-+ * must still be recovered via SIGBUS — it must not trigger a kernel
-+ * panic. This guards the panic_on_unrecoverable_mf() recheck that rules
-+ * out concurrent buddy allocations being misclassified as unrecoverable
-+ * kernel pages (MF_MSG_KERNEL_HIGH_ORDER).
-+ *
-+ * If the kernel regresses and panics, the host VM dies and the test
-+ * harness will report the binary as never having returned — which is
-+ * itself a clear failure signal.
-+ */
-+TEST(panic_on_unrecoverable_user_page)
-+{
-+	unsigned long page_size;
-+	int saved, status;
-+	void *addr;
-+	pid_t pid;
-+
-+	if (read_sysctl_int(PANIC_SYSCTL, &saved))
-+		SKIP(return, "%s not available\n", PANIC_SYSCTL);
-+	if (write_sysctl_int(PANIC_SYSCTL, 1))
-+		SKIP(return, "cannot enable %s (need root?)\n", PANIC_SYSCTL);
-+
-+	page_size = sysconf(_SC_PAGESIZE);
-+
-+	pid = fork();
-+	ASSERT_NE(pid, -1);
-+	if (pid == 0) {
-+		addr = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
-+			    MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+		if (addr == MAP_FAILED)
-+			_exit(1);
-+		*(volatile char *)addr = 1;
-+		if (madvise(addr, page_size, MADV_HWPOISON))
-+			_exit(2);
-+		FORCE_READ(*(volatile char *)addr);
-+		_exit(0); /* unreachable: SIGBUS expected */
-+	}
-+
-+	ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+	write_sysctl_int(PANIC_SYSCTL, saved);
-+
-+	ASSERT_TRUE(WIFSIGNALED(status));
-+	ASSERT_EQ(WTERMSIG(status), SIGBUS);
-+}
-+
- TEST_HARNESS_MAIN
+VM_WARN_ON_* please.
 
 -- 
-2.52.0
+Cheers,
 
+David
 
