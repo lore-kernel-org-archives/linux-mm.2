@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71017FB44B9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 06:26:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92139FB44B8
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 06:26:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB7406B008A; Fri, 24 Apr 2026 02:26:20 -0400 (EDT)
+	id 0717F6B008C; Fri, 24 Apr 2026 02:26:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D67886B008C; Fri, 24 Apr 2026 02:26:20 -0400 (EDT)
+	id F3CFE6B0092; Fri, 24 Apr 2026 02:26:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C57996B0092; Fri, 24 Apr 2026 02:26:20 -0400 (EDT)
+	id E2C3E6B0093; Fri, 24 Apr 2026 02:26:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B0FF46B008A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:26:20 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F5E11C0AE2
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:26:20 +0000 (UTC)
-X-FDA: 84692464920.11.CD34FE9
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 94B84140006
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:26:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fB+5sM7g;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D0A6B6B008C
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:26:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C3011C0AD9
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:26:35 +0000 (UTC)
+X-FDA: 84692465550.17.47A264D
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8724A14000F
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:26:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lXFN78sr;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777011978;
+	s=arc-20220608; t=1777011993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r4i42uUk09a42HzxE9DZCh9MNHfSJlOmtFh/Ez0FeKo=;
-	b=eQnA6EsHLuzOdvgSEH/WR5NcnDO4Ci0ZiEoaVSJOedemhQtjDGxDP/70ZmCqc8mG3n/Rd0
-	fU7CZtjb7qvhklmUEZH3uZca8KH2I3bP7dxT2hLiIguc4fG7xR+CPR2VgjsIZVTm4cS3KR
-	ouGDIuz5zIGfvDbBAafowQ3mv8i6udw=
+	bh=rTh+Yvx/G+4eA9lbJw6qEK4XyieG3LR31VvrGkRr96o=;
+	b=kI7c4ExU8IvXkoIg+lg6Xjx7dDJV2GZoljaSrfnNlsrf6K4dfAjg5+D68SA8Cckd+4wQUH
+	q5AVtv+EoNkZGmL87pHtNtDgyUrMMsmzuiTN48u7zRx2RL4/SRI+a2c/Wuz6cDP9J537tf
+	OP9r7Mt3nfSUWyIhQPMgMS1BXtgAR1o=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fB+5sM7g;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lXFN78sr;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777011978; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777011993; a=rsa-sha256;
 	cv=none;
-	b=qdAdSXu5nB8sgZOnNHntNriokVPUVhWa1PbSI0JtixVa865FAKeFtlt54rouUYMWyHYMOV
-	ZYr0PjrS0sl5pfJlGuidJDeuQAImxAoew++0ajdj+KDoWQ6LbqA4Rcvu6RQoBjwSYrDkcu
-	gxLBGbiHRLxPgKzs+Xx3fL94OlMOSwI=
+	b=dN2cqOfYBE2icBNY+fYIhixvxZQKNinSeyyjgbV51+RoZmB9R7pbEb4syQYtK/avXNpkE5
+	mzbobzOB/OLDPWXw4INh5DlaAmhw6nrO0lDKDR8V1STP/kc6yP1/GPw0ZzPDdBvQhWxQmd
+	vIl4OYKKtF5QXpme3Kg+CCrlPS/3A00=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777011976;
+	t=1777011989;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=r4i42uUk09a42HzxE9DZCh9MNHfSJlOmtFh/Ez0FeKo=;
-	b=fB+5sM7gMx2on5aLQHGonIkRBU1HzC1Qr4OzNjxhHU77wNinnNBc9rippSgLMbbXX6/ENR
-	YhqKF5dOnXSibRmTfsDJJHzi8TgFN+umza8gWguEhfnrZtGvFoHTJ/0qtb96e7al7099hI
-	0uh8GEjClEWTmvJCfoi+JokTjJch4VE=
+	bh=rTh+Yvx/G+4eA9lbJw6qEK4XyieG3LR31VvrGkRr96o=;
+	b=lXFN78sryZ4PB+yHSBlA0WPl5M4L4ogY1eH/biaBzsnxm7WNDoMkzHzGdk7QKgYfxNeOy0
+	5st7Qf4OgYppgPfZFHjFoqGEV8pmnNmBKnkB0JO8npFF6lWb+nYs/1TlvCaH5DfMx0R1aR
+	DISGE9gPZLPERc1OKnbM0iSsegCiaus=
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org
 Cc: peterz@infradead.org,
@@ -98,22 +98,22 @@ Cc: peterz@infradead.org,
 	linux-kernel@vger.kernel.org,
 	ioworker0@gmail.com,
 	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 7.2 v10 1/2] mm/mmu_gather: prepare to skip redundant sync IPIs
-Date: Fri, 24 Apr 2026 14:25:27 +0800
-Message-ID: <20260424062528.71951-2-lance.yang@linux.dev>
+Subject: [PATCH 7.2 v10 2/2] x86/tlb: skip redundant sync IPIs for native TLB flush
+Date: Fri, 24 Apr 2026 14:25:28 +0800
+Message-ID: <20260424062528.71951-3-lance.yang@linux.dev>
 In-Reply-To: <20260424062528.71951-1-lance.yang@linux.dev>
 References: <20260424062528.71951-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: tei4wic9myoaseowm54b3wetkks9joab
-X-Rspamd-Queue-Id: 94B84140006
+X-Stat-Signature: 37ttw1g9e3ysf5poy7ansenje619xqop
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1777011978-998500
-X-HE-Meta: U2FsdGVkX1+ivKLbhApY7Lkwd0CdiPvDwaW0xdOsY6dF7tqWA+SG6vB7PkIzXY+u+UQlPfgWEFF+rjsV0mMDGUexv8BwbwZHwBrdWbr/cLqthITNFv2yPSSnAF10Rcj8kqv1u4DjfvlQ2jwLhHMBqVCYcyIjDAEsZIcDeLKIXruE4QKrxTLDcksriEttV+60RaX2EZ/UeQtMAt6wvaDzNzFr7A/Z7fMQlAwgzQqOa8jhXWX5QW+iM6rH19Ree60PlyFK0LEP4FYKbRk1kUakCRVOtQKOKXoh2uqxYL3X/ese4muXMsFSua2dpdJ+2Ai5kvEa2YlWKIpaz6cF5mP5T+mxYnT1VnvULzD0dxrOZ1sy2Nr+Z4pM3BQdZJ9ameCn74Szc+/DbNwdCxKha/9Of2ITK/0TDXkj81j7SP1haPiOcCruMxoVyCcqLsN68bSqY/LGIRidkeL9Zyx8Z0ErZP6Q5Ig81VInllif8rtkqJLA+4MstzisWp/iPzNHBi8qlDvzkTvA+JF+npJjPnvFFK5bujMj9Yi4EU/ODv4lA0ggZRsjGE8XdMpnQnF+NYI7TqQl/zzDnY1v8LjJXRenFuoZjYfHA/Ygcqdcu2guPH0CyKJf9nozA9Xzxu5Ek2VP2iP4WK9KUPY4HgTWfEutnwYqRgz09zsF/JgYWA5Nz5VGsh7NyNC4cHplSrZGEZSnloZCPrPkrVWqzCGVa8f4LMXVmkzVaAl6n0BMihZUdpS8XFcIFwf2thca3OSnJGGe53x1LNJjJ8tSKNGuTlomFVTzWRCOzYIFKahWBwJmLmJe2eM8LyiEdAPoNDO1Q4tTJzJKqMRflbUftNK1lv8WzRkF1vRNs7MztNHzLVqb7IbgCvIl70iIljYjrIdvqf6NayiqlT4wkPfwN0gMdVglw6fxM17Cosqs5jOczSqNvBlQYxE1AYGIhwTk7tPc27c4YiVDstKx+sT473MVXUv
- Z/FUp+uw
- pIGurSJEppH4wYwq45GwaKc7rE6UJL03++GMVzMz4suRzCrFJu8iLvEAALOQDftSFlwzG88bk6mtd2oUWx8RWEb6HDXqEul3z82FsqhJwUXgsLiqu/3+WD8JZcbCAIZAE6RSYt73QmVR+nUIVE8zTAihdhsTYwo5tS3pY6gXfkkd5G69dnizM/ARhE72s/9uJ5xqylpG6ZYWUCSViIFxL43XfUAKj1PNBaeMO3tHbPcSZYl1wtMIAZQRCk5JntTCY29RI9bGI/Icsig01HfTNC6ow4B2O2Xvb/fOaa9/V8Ya4WmB2cocjKABRzRR4MmPjrzqrgsjzlZh/XQA=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8724A14000F
+X-HE-Tag: 1777011993-813092
+X-HE-Meta: U2FsdGVkX18AmOz6QqtTbs6EaIRxX86Z7VKBMJcYDo/b1WadO0SNmLFNTg5Y0DN8+PyE4lco4LDAKDunjPTYZnhBdu0NXT+/HobSZnhc/MxKRHqZhSP6w8Z0WGql5SVPAz0awu4QYhEzKQdZDuJomwhoevmaJVOzgzm5ZPo/+XxBbAFzRCZ4fq9tY1oQ5aD5fRuxEk3AD1vTypHrLUQE7p445rpb9qWpUTsVHM15NGt/nhwCzlf4WZLnRigVpdAPBctT76OhHyLH8EYWk+5tOYAOYmJgrbi5yKeDm2SY/zV54S5VWqH2pVpcE/037ZS9o9hu7TRPA0p1x56XPs729XEeD6kx/PGtNGBCX1ssldlH7cK0rRKjKqz41G1NcbvWU9ZfpTUdF69chrRw15K7ky/qCjYl429XY0UL0TwADRYj/ZLmTWXUR40jIF8/ef7aiHhbHKQkPzPznmEGV6S3OBQMuMPWUF26pBui3ABooqHCFkI2kbTtX5V3A+DZNI+fhPkzWcWv8Uk0THZ05scAQ3UIkogKNLs4sloreu/N8c8d5OrYvxyVGThnchAxwr6qR1RSvsJ8KSgtZxIRVI826yUZ3qjksU9ADaBMd48MDxoJzT81EwY0bheUKQk8QInACtCdnHKGZ0JXnVdAx9FRFS5QjJmbiz8TT2E0oAfJUymCpmu+8m706Jhi1rMIjU+VYZcG9CE4CsjFkG5YNHKKqgJ7ZrJ15QTr+vX/na2tkHlZsRbbA3PjR/3aEYe0yvbNSM8OlA6pO2kd6YC8G9P60jVqzP3lAXlJsmlU0zOj3HVHysESjm9KRSU2olfEi8eBXmAGdkbDvONTMstqW+xo3KjIw+KoaIjyYdOBFUMyXHT7Qn18QTLsqjK11i+wlm0GTqnvZsVQFv0iFDaJ2C4xLcF7G5CJRNbvdwrAQviz5N75F208ewUHaYD5eR6g4WqcHB6yv2+yO1LHf//4Ds+
+ 7U4J3jl3
+ O1VJA3p1zTwECqgPKL13kaJ6zlwx0Zyae4lS8uUcywAKUz06D5hg8d3vAR5gYoBpOpUKJy4oTEipy9lXmhZ+moJBacOjbuoFGizyjXn1sewhipu8kAIz019hY4pWYVAfJVZeYsWcZuVrWo39vYhZTcBMjqyY6cVrKeXUQ66T7/kYdQv9V5UKSeb8X9hN0Iy17NOcslzNBwWzMkWMmQKjk+hPpTJYjUjHILxrtAcE20UWH6rR2I3zeLoXTDH8u0Av0xZTg4AJoGKK//UKoleVhpVTfWDi7kYDBrWK2UiEX4FBxebBVbh3xW8+3MCtnLDCnzl7cHKu+kS2qa2xS95ZSwsUkZAzKhIoACeUgAmWdE07/Y+M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,104 +123,260 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Lance Yang <lance.yang@linux.dev>
 
-When page table operations require synchronization with software/lockless
-walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
-TLB (tlb->freed_tables or tlb->unshared_tables).
+Some page table operations need to synchronize with software/lockless
+walkers after a TLB flush by calling tlb_remove_table_sync_{one,rcu}().
+On x86, that extra synchronization is redundant when the preceding TLB
+flush already broadcast IPIs to all relevant CPUs.
 
-On architectures where the TLB flush already sends IPIs to all target CPUs,
-the subsequent sync IPI broadcast is redundant. This is not only costly on
-large systems where it disrupts all CPUs even for single-process page table
-operations, but has also been reported to hurt RT workloads[1].
+native_pv_tlb_init() checks whether native_flush_tlb_multi() is in use.
+On CONFIG_PARAVIRT systems, it checks pv_ops; on non-PARAVIRT, native
+flush is always in use.
 
-Introduce tlb_table_flush_implies_ipi_broadcast() to check if the prior TLB
-flush already provided the necessary synchronization. When true, the sync
-calls can early-return.
+It decides once at boot whether to enable the optimization: if using
+native TLB flush and INVLPGB is not supported, we know IPIs were sent
+and can skip the redundant sync. The decision is fixed via a static
+key as Peter suggested[1].
 
-A few cases rely on this synchronization:
+PV backends (KVM, Xen, Hyper-V) typically have their own implementations
+and don't call native_flush_tlb_multi() directly, so they cannot be trusted
+to provide the IPI guarantees we need.
 
-1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
-   of the PMD table for other purposes in the last remaining user after
-   unsharing.
+Also rename the x86 flush_tlb_info bit from freed_tables to wake_lazy_cpus,
+as Dave suggested[2], to match the behavior it controls: whether the remote
+flush may skip CPUs in lazy TLB mode. Both freed_tables and unshared_tables
+set it, because lazy-TLB CPUs must receive IPIs before page tables can be
+freed or reused. With that guarantee in place,
+tlb_table_flush_implies_ipi_broadcast() can safely skip the later sync IPI.
 
-2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
-   and (possibly) freeing the page table / re-depositing it.
+Two-step plan as David suggested[3]:
 
-Currently always returns false (no behavior change). The follow-up patch
-will enable the optimization for x86.
+Step 1 (this patch): Skip redundant sync when we're 100% certain the TLB
+flush sent IPIs. INVLPGB is excluded because when supported, we cannot
+guarantee IPIs were sent, keeping it clean and simple.
 
-[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
-[2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
-[3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
+Step 2 (future work): Send targeted IPIs only to CPUs actually doing
+software/lockless page table walks, benefiting all architectures.
 
+Regarding Step 2, it obviously only applies to setups where Step 1 does
+not apply: like x86 with INVLPGB or arm64.
+
+[1] https://lore.kernel.org/linux-mm/20260302145652.GH1395266@noisy.programming.kicks-ass.net/
+[2] https://lore.kernel.org/linux-mm/f856051b-10c7-4d65-9dbe-6b1677af74bd@intel.com/
+[3] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
- include/asm-generic/tlb.h | 17 +++++++++++++++++
- mm/mmu_gather.c           | 15 +++++++++++++++
- 2 files changed, 32 insertions(+)
+ arch/x86/hyperv/mmu.c           |  4 ++--
+ arch/x86/include/asm/tlb.h      | 19 +++++++++++++++-
+ arch/x86/include/asm/tlbflush.h |  6 +++--
+ arch/x86/kernel/smpboot.c       |  1 +
+ arch/x86/mm/tlb.c               | 39 +++++++++++++++++++++++----------
+ 5 files changed, 52 insertions(+), 17 deletions(-)
 
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index bdcc2778ac64..cb41cc6a0024 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -240,6 +240,23 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
- }
- #endif /* CONFIG_MMU_GATHER_TABLE_FREE */
+diff --git a/arch/x86/hyperv/mmu.c b/arch/x86/hyperv/mmu.c
+index cfcb60468b01..2cf1eeaffd6f 100644
+--- a/arch/x86/hyperv/mmu.c
++++ b/arch/x86/hyperv/mmu.c
+@@ -63,7 +63,7 @@ static void hyperv_flush_tlb_multi(const struct cpumask *cpus,
+ 	struct hv_tlb_flush *flush;
+ 	u64 status;
+ 	unsigned long flags;
+-	bool do_lazy = !info->freed_tables;
++	bool do_lazy = !info->wake_lazy_cpus;
  
-+/**
-+ * tlb_table_flush_implies_ipi_broadcast - does TLB flush imply IPI sync
-+ *
-+ * When page table operations require synchronization with software/lockless
-+ * walkers, they flush the TLB (tlb->freed_tables or tlb->unshared_tables)
-+ * then call tlb_remove_table_sync_{one,rcu}(). If the flush already sent
-+ * IPIs to all CPUs, the sync call is redundant.
-+ *
-+ * Returns false by default. Architectures can override by defining this.
-+ */
-+#ifndef tlb_table_flush_implies_ipi_broadcast
+ 	trace_hyperv_mmu_flush_tlb_multi(cpus, info);
+ 
+@@ -198,7 +198,7 @@ static u64 hyperv_flush_tlb_others_ex(const struct cpumask *cpus,
+ 
+ 	flush->hv_vp_set.format = HV_GENERIC_SET_SPARSE_4K;
+ 	nr_bank = cpumask_to_vpset_skip(&flush->hv_vp_set, cpus,
+-			info->freed_tables ? NULL : cpu_is_lazy);
++			info->wake_lazy_cpus ? NULL : cpu_is_lazy);
+ 	if (nr_bank < 0)
+ 		return HV_STATUS_INVALID_PARAMETER;
+ 
+diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
+index 866ea78ba156..fb256fd95f95 100644
+--- a/arch/x86/include/asm/tlb.h
++++ b/arch/x86/include/asm/tlb.h
+@@ -5,22 +5,39 @@
+ #define tlb_flush tlb_flush
+ static inline void tlb_flush(struct mmu_gather *tlb);
+ 
++#define tlb_table_flush_implies_ipi_broadcast tlb_table_flush_implies_ipi_broadcast
++static inline bool tlb_table_flush_implies_ipi_broadcast(void);
++
+ #include <asm-generic/tlb.h>
+ #include <linux/kernel.h>
+ #include <vdso/bits.h>
+ #include <vdso/page.h>
+ 
++DECLARE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
++
 +static inline bool tlb_table_flush_implies_ipi_broadcast(void)
 +{
-+	return false;
++	return static_branch_likely(&tlb_ipi_broadcast_key);
 +}
++
+ static inline void tlb_flush(struct mmu_gather *tlb)
+ {
+ 	unsigned long start = 0UL, end = TLB_FLUSH_ALL;
+ 	unsigned int stride_shift = tlb_get_unmap_shift(tlb);
+ 
++	/*
++	 * Both freed_tables and unshared_tables must wake lazy-TLB CPUs, so
++	 * they receive IPIs before reusing or freeing page tables, allowing
++	 * us to safely implement tlb_table_flush_implies_ipi_broadcast().
++	 */
++	bool wake_lazy_cpus = tlb->freed_tables || tlb->unshared_tables;
++
+ 	if (!tlb->fullmm && !tlb->need_flush_all) {
+ 		start = tlb->start;
+ 		end = tlb->end;
+ 	}
+ 
+-	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
++	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, wake_lazy_cpus);
+ }
+ 
+ static inline void invlpg(unsigned long addr)
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 5a3cdc439e38..39b9454781c3 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -18,6 +18,8 @@
+ 
+ DECLARE_PER_CPU(u64, tlbstate_untag_mask);
+ 
++void __init native_pv_tlb_init(void);
++
+ void __flush_tlb_all(void);
+ 
+ #define TLB_FLUSH_ALL	-1UL
+@@ -225,7 +227,7 @@ struct flush_tlb_info {
+ 	u64			new_tlb_gen;
+ 	unsigned int		initiating_cpu;
+ 	u8			stride_shift;
+-	u8			freed_tables;
++	u8			wake_lazy_cpus;
+ 	u8			trim_cpumask;
+ };
+ 
+@@ -315,7 +317,7 @@ static inline bool mm_in_asid_transition(struct mm_struct *mm) { return false; }
+ extern void flush_tlb_all(void);
+ extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+ 				unsigned long end, unsigned int stride_shift,
+-				bool freed_tables);
++				bool wake_lazy_cpus);
+ extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+ 
+ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 294a8ea60298..df776b645a9c 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1256,6 +1256,7 @@ void __init native_smp_prepare_boot_cpu(void)
+ 		switch_gdt_and_percpu_base(me);
+ 
+ 	native_pv_lock_init();
++	native_pv_tlb_init();
+ }
+ 
+ void __init native_smp_cpus_done(unsigned int max_cpus)
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 621e09d049cb..3ce254a3982c 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -26,6 +26,8 @@
+ 
+ #include "mm_internal.h"
+ 
++DEFINE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
++
+ #ifdef CONFIG_PARAVIRT
+ # define STATIC_NOPV
+ #else
+@@ -1360,16 +1362,16 @@ STATIC_NOPV void native_flush_tlb_multi(const struct cpumask *cpumask,
+ 				(info->end - info->start) >> PAGE_SHIFT);
+ 
+ 	/*
+-	 * If no page tables were freed, we can skip sending IPIs to
+-	 * CPUs in lazy TLB mode. They will flush the CPU themselves
+-	 * at the next context switch.
++	 * If lazy-TLB CPUs do not need to be woken, we can skip sending
++	 * IPIs to them. They will flush themselves at the next context
++	 * switch.
+ 	 *
+-	 * However, if page tables are getting freed, we need to send the
+-	 * IPI everywhere, to prevent CPUs in lazy TLB mode from tripping
+-	 * up on the new contents of what used to be page tables, while
+-	 * doing a speculative memory access.
++	 * However, if page tables are getting freed or unshared, we need
++	 * to send the IPI everywhere, to prevent CPUs in lazy TLB mode
++	 * from tripping up on the new contents of what used to be page
++	 * tables, while doing a speculative memory access.
+ 	 */
+-	if (info->freed_tables || mm_in_asid_transition(info->mm))
++	if (info->wake_lazy_cpus || mm_in_asid_transition(info->mm))
+ 		on_each_cpu_mask(cpumask, flush_tlb_func, (void *)info, true);
+ 	else
+ 		on_each_cpu_cond_mask(should_flush_tlb, flush_tlb_func,
+@@ -1402,7 +1404,7 @@ static DEFINE_PER_CPU(unsigned int, flush_tlb_info_idx);
+ 
+ static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
+ 			unsigned long start, unsigned long end,
+-			unsigned int stride_shift, bool freed_tables,
++			unsigned int stride_shift, bool wake_lazy_cpus,
+ 			u64 new_tlb_gen)
+ {
+ 	struct flush_tlb_info *info = this_cpu_ptr(&flush_tlb_info);
+@@ -1429,7 +1431,7 @@ static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
+ 	info->end		= end;
+ 	info->mm		= mm;
+ 	info->stride_shift	= stride_shift;
+-	info->freed_tables	= freed_tables;
++	info->wake_lazy_cpus	= wake_lazy_cpus;
+ 	info->new_tlb_gen	= new_tlb_gen;
+ 	info->initiating_cpu	= smp_processor_id();
+ 	info->trim_cpumask	= 0;
+@@ -1448,7 +1450,7 @@ static void put_flush_tlb_info(void)
+ 
+ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+ 				unsigned long end, unsigned int stride_shift,
+-				bool freed_tables)
++				bool wake_lazy_cpus)
+ {
+ 	struct flush_tlb_info *info;
+ 	int cpu = get_cpu();
+@@ -1457,7 +1459,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+ 	/* This is also a barrier that synchronizes with switch_mm(). */
+ 	new_tlb_gen = inc_mm_tlb_gen(mm);
+ 
+-	info = get_flush_tlb_info(mm, start, end, stride_shift, freed_tables,
++	info = get_flush_tlb_info(mm, start, end, stride_shift, wake_lazy_cpus,
+ 				  new_tlb_gen);
+ 
+ 	/*
+@@ -1834,3 +1836,16 @@ static int __init create_tlb_single_page_flush_ceiling(void)
+ 	return 0;
+ }
+ late_initcall(create_tlb_single_page_flush_ceiling);
++
++void __init native_pv_tlb_init(void)
++{
++#ifdef CONFIG_PARAVIRT
++	if (pv_ops.mmu.flush_tlb_multi != native_flush_tlb_multi)
++		return;
 +#endif
 +
- #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
- /*
-  * This allows an architecture that does not use the linux page-tables for
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 3985d856de7f..37a6a711c37e 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -283,6 +283,14 @@ void tlb_remove_table_sync_one(void)
- 	 * It is however sufficient for software page-table walkers that rely on
- 	 * IRQ disabling.
- 	 */
-+
-+	/*
-+	 * Skip IPI if the preceding TLB flush already synchronized with
-+	 * all CPUs that could be doing software/lockless page table walks.
-+	 */
-+	if (tlb_table_flush_implies_ipi_broadcast())
++	if (cpu_feature_enabled(X86_FEATURE_INVLPGB))
 +		return;
 +
- 	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
- }
- 
-@@ -312,6 +320,13 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
-  */
- void tlb_remove_table_sync_rcu(void)
- {
-+	/*
-+	 * Skip RCU wait if the preceding TLB flush already synchronized
-+	 * with all CPUs that could be doing software/lockless page table walks.
-+	 */
-+	if (tlb_table_flush_implies_ipi_broadcast())
-+		return;
-+
- 	synchronize_rcu();
- }
- 
++	static_branch_enable(&tlb_ipi_broadcast_key);
++}
 -- 
 2.49.0
 
