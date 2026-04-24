@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BFA7FED3CD
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BA00FED3CD
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:01:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 789BB6B0092; Fri, 24 Apr 2026 10:01:36 -0400 (EDT)
+	id DCB636B0095; Fri, 24 Apr 2026 10:01:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ECB56B0095; Fri, 24 Apr 2026 10:01:36 -0400 (EDT)
+	id D7BC86B0096; Fri, 24 Apr 2026 10:01:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D8116B0096; Fri, 24 Apr 2026 10:01:36 -0400 (EDT)
+	id C1C2A6B009F; Fri, 24 Apr 2026 10:01:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 459226B0092
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:01:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EAF24C0E33
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:34 +0000 (UTC)
-X-FDA: 84693612108.09.369570A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C8FAC40023
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AA0E36B0095
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:01:37 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 25243894FF
 	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:32 +0000 (UTC)
+X-FDA: 84693612024.28.D846110
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7A19E40009
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:29 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CaG0oB7y;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I9H0hbfM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777039293; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777039289; a=rsa-sha256;
 	cv=none;
-	b=nSQ6C2Un3nY2OrB/jAzQabk62lEQxhMtWmZrHuImdiF7+Jw/yyN00NpdA6QWZiXaDi9E9J
-	azKWSU0qPmb/MnbCiX+kIPDqlRRCzPyUqRSEmJJff/Ryp3tFizw+6fV6gddNeq0jo5nZID
-	zE1/sw5gsHsUNrS59V5HzgzBMQ3EhWk=
+	b=Ypa3EzeMtqWWITDzckmH8LTCxUasojf4uUQSLkmgcZrMsDlQiawkxrpve7ARzfkIKrLHUO
+	0ZkPNl6ZtWcb9lsG9XWWuSXz+nqDoBWqKYvsncD9DcRRzR+jeTYBh/X2SpLglYTGASk/ub
+	Nui2qa+uD4UablQgCQr+cHZIhKPcK2I=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CaG0oB7y;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I9H0hbfM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777039293;
+	s=arc-20220608; t=1777039289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RWp3Jh5blDNrkgFQpMnLzuCIT5hKdgCLSg5wUPxZq4U=;
-	b=XNsOfoZ2ya4R4RAh9oynGpPtWQpxjzcZimZI5ayxUVqvbTWd/ifSKHNo24r4wivjtfg2g0
-	w1aPXGqYHXyR5moFnn3k1ZHXZ5gqztWcK9hyScT5YKRY+2w5YYV9bS9ZqaAoU4d0PcoBoB
-	byMRWkyYy3xKbtbKN8Jq4316WvzA9I4=
+	bh=3bXxNTX6f36IfipoZBOW83M9/wNv+uoZFYydeuJEH30=;
+	b=R02sO6JzHFhkCpSWuC/XyeOpNP0DvhwzGa5Xtt5G1YjwUMCHN+WoyJ2/zIlldkXO1jvK/j
+	xWqz6IHrDIe26MXAUE3vKmzZ5Sida4wOsJzEQ49MqDcsGk+PMZyF6+7WknV6lLQIDMe0W3
+	B2B6rlbuJhC7klCCllp9bDROTnNUn2g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C88A4465F;
-	Fri, 24 Apr 2026 14:01:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E47CC19425;
-	Fri, 24 Apr 2026 14:01:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 78BD144211;
+	Fri, 24 Apr 2026 14:01:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93534C2BCB6;
+	Fri, 24 Apr 2026 14:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777039292;
-	bh=ArDqKUGEZwiJhWfrZPmHU41Dcmah9WrzPqg0XPgBvRA=;
+	s=k20201202; t=1777039288;
+	bh=ne0w3U/qb9Eq3ShDvj1y+mTm0Iqj6lSthxxEzyDc60g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CaG0oB7yE/8MMkLVNptpROnS8QY0hY7zRDigwMad2xHJ4WdtE7xWL9Qy53kDSK4I+
-	 vW8Zc/EkjFXCWK59rgGUEcHesVVv+GWXB6weOest7y+gCIf+ljKWTNcOkHW09GAHAD
-	 fPcJPxYVJ9g7qDykJeX/fVPlBS11BRHXyzJGxNBBAO9ClIyUOFu0u+o/BY5UItOpfy
-	 KOD7k7XOZkMkMqnnwxHCOmjXFqoXjCSEN0X2HwAP+tGW8z1DiPGx81VY8JjyttZGmQ
-	 XDrPZR9EsX6fJwfl2Nwy+pawBhFinnvEg+H6Lmgy8aIrTEOqvEvExqFwDHdFpGqGjq
-	 BCeAktUcwFnWg==
+	b=I9H0hbfMFtXWEg5HWINI/FHkJ9LkKBaBFKX3V7MsIYLgPac0I5xlVQGxhaQg3naj3
+	 4G7bPpahxNPtNYrVS34oz8M6Mt1E/hqS5TOb8hhX7QJ0F40hOFGnWicy9BpiRNdGw9
+	 9uHnRGZ0npVlu/iBL3NdQ0Vk+rR5LUa92Ms2AMVwhpuzjdcdv/diAhFHwWsUtBLC3+
+	 WmpWHc0/+CeSQPFp/s2Piq1QaaAtajpXxEndvi/wEia9+Kk/cg1rYvon+mveRlHCGp
+	 glaFm1BtTZ8LRj+tx5XUp10+9q48mgjIX3MbdLDlZVggK989NoBkAXb1/IkYh/n01R
+	 TUcfBxG0cHyig==
 From: Sasha Levin <sashal@kernel.org>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -83,22 +83,22 @@ Cc: ljs@kernel.org,
 	Sasha Levin <sashal@nvidia.com>,
 	Sanif Veeras <sveeras@nvidia.com>,
 	"Claude:claude-opus-4-7" <noreply@anthropic.com>
-Subject: [RFC 5/7] mm/page_alloc: integrate page consistency hooks
-Date: Fri, 24 Apr 2026 10:00:54 -0400
-Message-ID: <20260424140056.2094777-6-sashal@kernel.org>
+Subject: [RFC 3/7] mm: add Kconfig options for page consistency checker
+Date: Fri, 24 Apr 2026 10:00:52 -0400
+Message-ID: <20260424140056.2094777-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424140056.2094777-1-sashal@kernel.org>
 References: <20260424140056.2094777-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C8FAC40023
+X-Rspamd-Queue-Id: 7A19E40009
 X-Rspamd-Server: rspam12
-X-Stat-Signature: 8nc733t7meok83zpc59ptegsd3t1t8rw
+X-Stat-Signature: xre9siuq6h4nyywxqii865jsdxdjmnic
 X-Rspam-User: 
-X-HE-Tag: 1777039292-179559
-X-HE-Meta: U2FsdGVkX1/QgptBx9tELZV+/61+GLZnh/b1kHnIeo9KtVs+UH/A9PoDcDn8XVUR0KC4i+XMB0MGOFBTruqKBgglBwxttCtn61+dBR8w+DL6KAY2jt4fWY/NpuS/efDUSDA8nyClQLwxRqiZ0A3iEmMkm1nljWyaF6iSU7PoxyLC6rLGQRFXxSnXjZJ6vKoPPjTkI8h8EGDD4ckteY9NOMgccJ3LeBXWMUGtLZmcdkPnqjFTbwsAAJVXGSxqEL0SVzi7dVB0aBOpZJWfay902su/eZ/rd+y8yWqHcScZSbN56YxhjzXRzK//oVgRgZb2LOAiV2UGkUc0iWMnxjn/g0mNM4rs2pLo7Q2kLQFJ/t2of7M1y1ZqHrsasXUp4pUtoqao/TrgT/fG5dFUUL6mWLVtDR5I6Xqj9Lc2LjDgS57iVGqEEBxNpfFFGahnIFEEszDCKn/p112aenI3fn84qiVq2czdO8DoSrowzraeIAdkGycAMFdaauzWVD4ahYKU/MBf2p4pQhMnN4YZYxQWV6T4MA0VesuIQWTEHhClOReErwRtDY8BxPGPMrMplXjgeWbmM99od2BSWUP7NM7U8GFoI9jgd/iyzhJ9tQ9y18XDjG5XLvBkZIN/AkjzzSGt0yot3Potxk838RXdAP9HBj1Ic+e+TsikA+lSXmbX9CBQdMq8bZA58KkP4YALTwiCCqb2Jozh9DuckJzSXM82ciDPjAHsqjz9tS47mcrhdEGUWuk3Y36qeqoOEmj9QAmpnBnYZijvXtJV13FCMojmZSm8FO39XxUAnI+xixE4q4hjyTg4OUgRTgc1VQcIu+T+CHD/Xh7KQD6AAgt3wZJxWVyEQU7zNLBZEbtFe00P0O46Vd9Pu7KnCf1C8tLg/gJ0QYE9ETzzL6sUvXOZO8bRgjRtfqdB1BJRsdgulvXkHfD3cxfpGeu2YNdN3G641h6szERkV/IIUGJRj4i4lRl
- svIIureI
- XNYQGONuKLPhvrXDEfi6RbYrVmU9mkH9lEBzC2f1DVXdYBC0IJRAptjHScIPn+mUorRSXFPqDrSxfEftg47BUP94RgBHqV+36LZKAL0OvF5VnStQ0Zf8LwkJQ9iAcjZYZ2JAYKi/ERisyYNq9aVnvAQ60Gq+6yDBHHlHi4Q/3VnXH+RWi33rgVvrQ0mg++K/twiggXOBdezfCHWZhEcnWI4pLUvOcO/HeTbumI9CqQ6fobLKnDrar7J6H2C22cmaxIuln4xcHN82thA3tUEmmf4myE2XCJzkyipL3zdb4uPOv+1P20ZRCek+VrIJEpcP3LG+IUUt2nBqk6J3aF3dP47YOhiVu8Hs+ynW5Eb/iDkDIigC52VykfVIBfg==
+X-HE-Tag: 1777039289-624288
+X-HE-Meta: U2FsdGVkX1//sCR1vjGwLsP+GyMzZpVMW0X/GV4iX6mzJ2/b4NS0Ta7MKlBAje7NBj+OTdA8HS1bxxkmGPkVdRAudJzatwAOroQr5b/LWO9mgkSuCl4q13Q/57zXpF5ZFHi6G/KxabdlLaGva7RWptgLloZ9mozVAbydeiRhvPN6w3jJLvp7TAal0H4xjYFAT83zK6lEi7UvOGu2/U5AmEU6RUhYesqHpIwCBfGmvoYEoByYP2OW17y83IZw5NJca+w5T7Dd1Saw7aneNqixFAb99oDwb4bl3vKIWeOhIqdzZwiOfv9EYtoLlvWdstVRH7V6IP7xfd+4sgajsnn8fyu3rn7U9VOjkTyxf04zF0oxO5ntWK5TgFaK5ITK2pexRZ7+CKJMJB9L9il+uRwMOHISxrrCmEI/sfvu9ErFmplwYVqiIQzmUoXBYJYqcd3mBvy077XuhIXUW+stBuKP8Cst0rolR4gb4Amit5Er2J+KszcAb/6rPYjmkiqwI4XFaDTa3Dsl+k4JletU9sEFrrYlbyWJw2kvdVDDyaTwJqo/54B3k0XKGhEvFyhEobEVC4xeV4K/4asyOmX5a1KuOJMXWQrbRAGDv3F4LyQXngjIi+nUa/FwCzIhzST2lCwiEJ5cch96s29WVMvR+9/Gz7zm5sTcqKpUbljevsYVbA86+lWLBix7ohpUGPRZpj+dwCldwRgOUf5HNo2fK4+IungjecEh2nHwj4VU/aL2mG2hC8OCyxC9bB7aCzSaTZ0Wph2UHa62LfFKD7qDFLfn95UcTutaZ2+gwIZ9WWCnEKOQ/UU7iENcr6/E/BUpU+I7XDz1APG6UAk7zIbFcWOWm6DjD7hD4mlLp5nyN/THVNisPwihRnuUSV993T4ApYw4UHpys/MaQCV/fRHp1spZLXsGgf9vr7eTxa3lolZPiFe9NDihc11J9TOPp85e7Sucf7rypNRWd31q1E8LLcu
+ L3chcxzL
+ K0f571s8InUWbR5JgxfTCQfgUa/6EGPGM7I4VUbjkjpDZiZXj6D96Dl+3sZNcHWtWpeGJtFJEYxCL9xDxgQg+T+QcigZXrER1yz5pdmhzueVTNvwgHkHBGqL6+I68DkA5qT4NzrXWDrPCiiIZgxXCTGPfDPn/fmnTekHiJYdFKd08DcbbVJ7jz0IUuH9aNQHIBndT+XXNvSWhzMjQ5dWXpI9tpXjWoYJwrhosYFWurenyPb7r9L/gw2h3R+pJivnmXJTSwT83cBYR+ZkdYLhKpNZKBDbfRIp9AeaL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,102 +108,99 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Sasha Levin <sashal@nvidia.com>
 
-Wire up the page consistency checker with the page allocator by adding
-tracking hooks in the allocation and free paths. The hooks follow the
-same pattern already established by page_owner and page_table_check,
-inserting calls at the points where page state transitions occur.
+Add two configuration options for the dual-bitmap page consistency
+checker.
 
-In post_alloc_hook(), a call to page_consistency_alloc() is added after
-the page_table_check_alloc() call. This records the allocation in both
-bitmaps, setting the primary bit and clearing the secondary bit for each
-page in the allocation.
+DEBUG_PAGE_CONSISTENCY enables the feature itself. It depends on
+DEBUG_KERNEL since this is a debugging tool, and selects DEBUG_FS to
+provide the statistics interface. Memory overhead is two bits per
+physical page frame across two bitmaps, so about 1 MB for a 16 GB
+system. The bitmaps are statically sized at boot from memblock, so
+memory hotplug is not supported and the option depends on
+!MEMORY_HOTPLUG.
 
-In __free_pages_prepare(), calls to page_consistency_free() are added
-in both the early-return path for the hwpoison check and the normal
-exit path. These calls clear the primary bitmap and set the secondary
-bitmap, maintaining the complementary relationship that enables
-corruption detection. The free hook lives in the internal
-__free_pages_prepare() rather than its free_pages_prepare() wrapper so
-that every free path (including the bulk folio free path) is observed
-exactly once.
-
-Initialization is hooked into mm_core_init() immediately before
-memblock_free_all(), while memblock is still active so it can use
-memblock_alloc() for the bitmaps, and after kho_memory_init() so that
-any memory handed back by a kexec-handover source has already been
-accounted.
+DEBUG_PAGE_CONSISTENCY_PANIC controls the response to a detected
+violation. When enabled (the default) the kernel panics on
+double-alloc, double-free, or bitmap corruption; when disabled it
+logs a warning and continues.
 
 Based-on-patch-by: Sanif Veeras <sveeras@nvidia.com>
 Assisted-by: Claude:claude-opus-4-7 <noreply@anthropic.com>
 Signed-off-by: Sasha Levin <sashal@nvidia.com>
 ---
- mm/mm_init.c    | 9 +++++++++
- mm/page_alloc.c | 4 ++++
- 2 files changed, 13 insertions(+)
+ mm/Kconfig.debug | 59 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index df34797691bd..4d9495fb8789 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -22,6 +22,7 @@
- #include <linux/kmemleak.h>
- #include <linux/kfence.h>
- #include <linux/page_ext.h>
-+#include <linux/page_consistency.h>
- #include <linux/pti.h>
- #include <linux/pgtable.h>
- #include <linux/stackdepot.h>
-@@ -2717,6 +2718,14 @@ void __init mm_core_init(void)
- 	 */
- 	kho_memory_init();
+diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+index 7638d75b27db..a005c904677c 100644
+--- a/mm/Kconfig.debug
++++ b/mm/Kconfig.debug
+@@ -144,6 +144,65 @@ config PAGE_TABLE_CHECK_ENFORCED
  
-+	/*
-+	 * page_consistency_init() must run while memblock is active so it
-+	 * can use memblock_alloc() for the bitmaps.  Boot-time reserved pages
-+	 * may be freed before SYSTEM_RUNNING without ever having been allocated
-+	 * through the buddy allocator, so the checker suppresses double-free
-+	 * reports until boot has completed.
-+	 */
-+	page_consistency_init();
- 	memblock_free_all();
- 	mem_init();
- 	kmem_cache_init();
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2d4b6f1a554e..ae8f619875e9 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -46,6 +46,7 @@
- #include <linux/sched/mm.h>
- #include <linux/page_owner.h>
- #include <linux/page_table_check.h>
-+#include <linux/page_consistency.h>
- #include <linux/memcontrol.h>
- #include <linux/ftrace.h>
- #include <linux/lockdep.h>
-@@ -1374,6 +1375,7 @@ __always_inline bool __free_pages_prepare(struct page *page,
- 		/* Do not let hwpoison pages hit pcplists/buddy */
- 		reset_page_owner(page, order);
- 		page_table_check_free(page, order);
-+		page_consistency_free(page, order);
- 		pgalloc_tag_sub(page, 1 << order);
+ 	  If unsure say "n".
  
- 		/*
-@@ -1432,6 +1434,7 @@ __always_inline bool __free_pages_prepare(struct page *page,
- 	page->private = 0;
- 	reset_page_owner(page, order);
- 	page_table_check_free(page, order);
-+	page_consistency_free(page, order);
- 	pgalloc_tag_sub(page, 1 << order);
- 
- 	if (!PageHighMem(page) && !(fpi_flags & FPI_TRYLOCK)) {
-@@ -1888,6 +1891,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 
- 	set_page_owner(page, order, gfp_flags);
- 	page_table_check_alloc(page, order);
-+	page_consistency_alloc(page, order);
- 	pgalloc_tag_add(page, current, 1 << order);
- }
- 
++config DEBUG_PAGE_CONSISTENCY
++	bool "Debug page allocator with dual-bitmap consistency checking"
++	depends on DEBUG_KERNEL
++	depends on !MEMORY_HOTPLUG
++	select DEBUG_FS
++	help
++	  Enable dual-bitmap tracking of page allocations for corruption
++	  detection. Uses two complementary bitmaps where the invariant
++	  (primary == ~secondary) must hold. Any bit flip in either bitmap
++	  will be detected.
++
++	  This is useful for safety-critical systems requiring Freedom From
++	  Interference (FFI) guarantees per ISO 26262 (ASIL-D) and IEC 61508
++	  (SIL-3).
++
++	  When disabled, the hooks compile away. When enabled, a static key
++	  gates tracking until initialization succeeds. The bitmaps are flat,
++	  covering the entire PFN range from memblock_start_of_DRAM() to
++	  memblock_end_of_DRAM() including any holes. This is deliberate:
++	  simple (pfn - min_pfn) indexing is trivially auditable and avoids
++	  auxiliary data structures that could themselves be subject to
++	  corruption. Memory overhead is two bits per PFN in the spanned
++	  range, e.g. ~4 MB total for a 64 GB system. Waste from holes is
++	  typically under 2%.
++
++	  Based on NVIDIA safety research.
++
++	  If unsure, say N.
++
++config DEBUG_PAGE_CONSISTENCY_PANIC
++	bool "Panic on page consistency failure"
++	depends on DEBUG_PAGE_CONSISTENCY
++	default y
++	help
++	  If enabled, the kernel will panic when a page consistency
++	  violation is detected, such as double-alloc or double-free.
++
++	  If disabled, a WARN with a stack trace is emitted and execution
++	  continues.
++
++	  For safety-critical systems, say Y.
++	  For debugging/development, say N.
++
++config DEBUG_PAGE_CONSISTENCY_KUNIT_TEST
++	tristate "KUnit tests for dual-bitmap consistency primitives" if !KUNIT_ALL_TESTS
++	depends on KUNIT
++	default KUNIT_ALL_TESTS
++	help
++	  Enable KUnit tests for the dual-bitmap primitives defined in
++	  <linux/dual_bitmap.h>. These tests verify the core algorithm:
++	  setting and clearing bits in complementary bitmaps, detecting
++	  double-set and double-clear conditions, and detecting simulated
++	  corruption.
++
++	  The tests exercise only the header-only dual_bitmap library and
++	  do not require CONFIG_DEBUG_PAGE_CONSISTENCY.
++
++	  If unsure, say N.
++
+ config PAGE_POISONING
+ 	bool "Poison pages after freeing"
+ 	help
 -- 
 2.53.0
 
