@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06430FF885C
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 09:14:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6967FF885D
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 09:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F6176B008A; Sat, 25 Apr 2026 05:14:44 -0400 (EDT)
+	id D3DBC6B0005; Sat, 25 Apr 2026 05:20:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A5B76B008C; Sat, 25 Apr 2026 05:14:44 -0400 (EDT)
+	id CC8856B008A; Sat, 25 Apr 2026 05:20:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E2B76B0092; Sat, 25 Apr 2026 05:14:44 -0400 (EDT)
+	id B8EF16B008C; Sat, 25 Apr 2026 05:20:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E0F26B008A
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:14:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E7C6B1202D5
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 09:14:43 +0000 (UTC)
-X-FDA: 84696518046.18.85D74B5
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0D1DC140004
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 09:14:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="hs/REWCj";
-	spf=pass (imf23.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A231E6B0005
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:20:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 302521602D7
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 09:20:10 +0000 (UTC)
+X-FDA: 84696531780.01.04BC105
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9E29240006
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 09:20:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ppJESJUT;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777108482;
+	s=arc-20220608; t=1777108808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CVnXxlcJbnKFtW+7QTgIbQ4r0L3YJZHhXyURqARd+OU=;
-	b=Iro/qhjBMIPogzUqwrbBo+E3RQdluedJlflGs/uCFV8k0liGdZCbNycHTOk7eRn7+SbMs+
-	pIgW/AnQeHLCAORZ3AwA6InhYzgJ6ZnLzGPvFbTv/X5eqpaaZJpTYQ4WIN+vhTp4YusSBk
-	GiyAryOAgMgHHmUp3hlJTrVpzbXrHzo=
+	bh=jRPoJc/f5jPzCB/9uV71kcICbEvqEdIYan1fyiLZQE0=;
+	b=8O8LbOUlZDk/RHEXje6jDV4qh4hwCGbQE0ucAb5mj2qHsW3eknCYZmlOvrTiuNTfqE8BHy
+	bYJ+soWhG1lyowVYmjZjSFD5WInX+pRc1jlzh+Kx6aANdzowJaA00/Z39rMScu6O1nBodP
+	cpfylmlzH83G4a7bpFGsFO1WF0oO7Fo=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="hs/REWCj";
-	spf=pass (imf23.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777108482; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ppJESJUT;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777108808; a=rsa-sha256;
 	cv=none;
-	b=wHeWqibJMzWYQpCa8DbhCfNrm7FtSOT2JkaBBVCFDsE2ea1LD6rhuM7kGJ9yDHogoCqyVA
-	MCFu9g0+qmlk2EyP2bvqMLHJ7GZl5fEXn5RDCWJpXZ553Q/yIc1nwBHP4j0e/AE5kHc5B8
-	TcLSgBE9YQpmeNUcUzvSSErGixvTs5Q=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2ECCE1762;
-	Sat, 25 Apr 2026 02:14:35 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 441373F62B;
-	Sat, 25 Apr 2026 02:14:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777108480; bh=ndwM1adU0Ywc49Htd35zTWEkTDTVzUK6JgCrM5wCvp4=;
+	b=6YP5p2gJbcWh+KJFd2BnxfJE4oHr4ifSCNR6Fl2Nf2a2MlA/EnUW+M5X3OrHrEDHn5Yr15
+	LmtEqwIrNJNOHbrxm1lCgo/zQfyF0uWJyMQW3okWsHussxSthS2E1v4C9lS+KmZhwgAisM
+	dcemuxA+IrmU04wPbxw3zlxLkPh3kLM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AF03060052;
+	Sat, 25 Apr 2026 09:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06160C2BCB0;
+	Sat, 25 Apr 2026 09:19:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777108807;
+	bh=UpHIvSShmli0yvarMS8zFU7rWyK9POcDK0gwCighl1Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hs/REWCj1nJJbdFLaDzl5x3SlkAUdGEOeK2cS1VirrpLk0LadSf0nMMFYkELitCEb
-	 2cF/0fQYvMLiHmbRZwhac5JlGZi8yxE7lcFtAnbolD9wmjiSTUVPWoN8g0hFcOMXjP
-	 o5xr1kzh6WR2heWeC6UU0QJrGjqiD3QydgEZKLcM=
-Date: Sat, 25 Apr 2026 10:14:34 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: arnd@arndb.de, kees@kernel.org, mingo@redhat.com, peterz@infradead.org,
-	juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	akpm@linux-foundation.org, david@kernel.org, urezki@gmail.com,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, ljs@kernel.org,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, tglx@kernel.org,
-	usama.anjum@arm.com, mathieu.desnoyers@efficios.com,
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH v3 1/3] vmalloc: add __GFP_SKIP_KASAN support
-Message-ID: <aeyF-pEruWRMk5bS@arm.com>
-References: <20260424130157.3163009-1-dev.jain@arm.com>
- <20260424130157.3163009-2-dev.jain@arm.com>
+	b=ppJESJUTnMlIchUddBtrKRhcr7r+Qgy6mLfBp5t3RFZe4nWSyeowsFGg62sSKPTD8
+	 IA3aIzpjB/q6yglJ8grs+J3qIhOSRpOGXK/PNwup7Cwr5dPirwVyKMn7rNbtyyybVf
+	 POkt1sD4/mtUOgWLhYI1MgptaUIsSxhqR4pByNgXmglzMIsttGt1eIuabZJHOf/nM6
+	 +nuPUSO/myAaAIbkJy1alH0o+NExCuD150U2Jq4Qiej/IVM6BiBLXSR54W0mwjwZ1k
+	 SSB8GfbYATdr72GJhcqxGH++88tYSE/pgGKov5x0axX30S8G3PsLCtjQTcXxw7rvDB
+	 XtYJWbjZYl7Fw==
+Date: Sat, 25 Apr 2026 11:19:55 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Luiz Capitulino <luizcap@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Sarthak Sharma <sarthak.sharma@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 03/53] selftests/mm: migration: don't assume hupe page
+ is TWOMEG
+Message-ID: <aeyHO4PJoWk9siqB@kernel.org>
+References: <20260418105539.1261536-1-rppt@kernel.org>
+ <20260418105539.1261536-4-rppt@kernel.org>
+ <c1e9cc74-e831-4068-9d34-1f3a665b3fd6@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260424130157.3163009-2-dev.jain@arm.com>
+In-Reply-To: <c1e9cc74-e831-4068-9d34-1f3a665b3fd6@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D1DC140004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ife1y74oywh5sw14n1c4feq9wnoyxrrn
-X-HE-Tag: 1777108481-283319
-X-HE-Meta: U2FsdGVkX1+2DIiA7O0YgQY+FgB6U1uReQtmjugwH5ALrz+KkClOVBhMIftLFjZwsNFr5lFUKXlfSpTb4gqxf7PtXRCQrzUdOLlCT0xCWwur9Ow9shg43BdlN9whCuOwZvp2XOz31MvJCtzzJhCoQ7Usi3Hu2IyIV55OS2Ks5enBVy8Mi6bawNha21SSz92fDN+OHxBgYBH2dcZwyVhz4aXeOEBXIL9f6SQxNilJEWGxGrO/FPvQDvrGHQ2q47nSpSTrQlMDMTJoIA4zLWCqrWLZsjJP7JCSXxd+WmfnkaD53vQQgc/iB2aPjthw1x21fVkARouG4ea1IiMbgI3IA3BzdaidM9Kij1xJ7YHoo5r6XUu01i2rqNKH/EyM0evk0Ngt3yGDH/y3HsZTqKHwHS00xFVBxnHdZ/x6bAS/b3jddVMjOGPMNFwAIWR8Z8erC+gYJaxZt3xFjUemHS/Z8KetWcKweL0iUvzPzEih64j8P5cIC0XY9WQ6T5ith881H+HYdIUd/HiKK6kzX5AaHkoEllgDvh0St6tRnywPfgpNOhZXXsinfA9XjSLaNPItt8yCEcCGUGmM2e94l6oy0icPXLiMTTvmEu2OAUoPIq520yzNsLHblzWhBS5GV1fvQ0NEDLN6+VFLR6zR3gJ+AAez00C52MitiI6/UFT4XjwxoRzq4ksBJZallJ+VzTsTmfB6Uaqj+zoGmF6MxjFVUYUfa04LvZSI7Yz4btC961h9INggQ+z4Bk1S/qqFmutN/GTT68/8Nbmk3PJsAYYf2Ar/+UUtwcAjqgnD7j9g/kD3s6pO3tP0EWIAw1CBfE2cKbYBLSibVcAWPwlJlwjVFPyuoaOjbkSYBPyJr0Hc1v1As4IKTEgtPkaX8YeX2bCrut7s5lGi+hBMGMkv0IHgs82Hoy1ua+cIWlSdbasJdV7HGBbjo9pHK1UfflEXOPm4KqUoHVSSVjHkVojSwWw
- ggkJcwJo
- wmUtfiLFBM2tF9Z5hsrAgEPujw9nJv8KiUd9z355FF07HYOkHgZI9nN+kvY05DlrnIyhN6XfvVU8IsedVomTT2pHRvHH611NMqNI+ZEBeOqnR8WkLeoKp3EBjDIqD5Pf5vL+QqZwh26f6oRAq8GN1JE/3dzZKgOJLQpCviNV4eLLWFoYk51+pKvUTNONjoGZgvbtuGnEoDx3X9rDbSmITYowz20dDi/hPGncxV1ybIgl9Ios=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9E29240006
+X-Stat-Signature: jxnz8fssycnxrwog58kwyuhxh85fbne8
+X-HE-Tag: 1777108808-553236
+X-HE-Meta: U2FsdGVkX196BPdSXTueD1a9QBd9THbTsdlgxvgkRIWLGT5myBEgaN4GqEPZv6HtpfCWwiay0hikaoCoOBAY2r9tBFNEjoXgciEuyF7mM87XLu1QknSGw/vblcav3OMKFkayYTC8/g3ohEmsHdoJOskWzQbVMrMDCEWaAVorQdftrmMSeImI7hWNsuuYds+l08xJyA6+WQ8NbXHX4MvOScs+LzaloQGJa4p453PzniTquGFIEPDmIYRswxtEgDUnJoU3dKW8Lln8bSmu2gU7XPyMBiSVF57G6phwAkHM1YlIxrxg0wmOGOXGsW9rXMECywyHO+5PU3w5t5UPG5mbl7IXAgitIz3+HDxSHWyb7CoJ9mB2OkMSSidm5wiFQcs7pvPFZfh/R5VcZ1+LqwzG/Jon7eqbIBCYr+8akxJ9hVp7kN8CGaRC11uKt5fioxzbLjv4DQfCmQuBOpHUJpdV+qR6ZP4dsmZWHbdSiboKrKMGQt8ydmmEaW0xDIvkl0lC4etSmrxsdhlN40entok2CaOcMPjkXfD1xpTTGTYV2abEkJTlHaJKZBGCPEUOTBoIUGDwOPLGZJrCZTsVO9RS3WinM2KhshdbSQZifrFYJ2noDIpwpbi8wqBMIaTJrwoVps1ae0MIuHXEDyIUucbqYrHQ0li2C92eR5L1PzmgbSXd+RE9uLVDU+O8mudjJC0XxdChJMf1w+kLv/6LHx/twxC6fWB2eUUhM1UbYFzQwKQHKml6KlyLvhaUSb619Ag9GZPuydTvcBUGmeOvRvO3otclf4zkphj9oTlbANPpIy2CZor/7EdzU196IyLYPAOl7E4sgz+RAcVGYg+Qn/GEczFr70OmtBVIX9thqOgzf8w6V7IMgrfkLPdtjXb5zhnYahRDn0hSnJ0+XaPANmiWuMxzSBpAUx7tDSkAd/9/+ny1HqnaGe3dy0sgj8/bAf8l5oHWcny05CdBWW0Y1o9
+ /9lKz+tD
+ 77oDwPaR4kqPHpX13DzLQe62Zg3vYOr4ptW9pdUiCil9WvOgA+gI8IpdAw/30NVuQetAFSl4oL1TjXv9Bi1AP8Ky6RuJoSKG7zhodPRpLmnw4f2RK88np6LecgBvc7wsOLTcHJLacG5v7GBjhP+vd0ZACjzeHzKSjf+6MsBmmdI4AlZOnxAEt7ukkzsc7mBhIyU/5407fsaEUJ3DoQHsg+FjRgJqnlqt28Nz2fZB9AHQ0Pzh10C5i1p6QgibsnUZjslcyfyvgPNETSwDoJQu8yHYUxv0QaMNwHXBhPYOcb+HTUIU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,36 +109,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 06:31:55PM +0530, Dev Jain wrote:
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index b31b208f6ecb3..c94fcb2725b6b 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3939,7 +3939,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->  				__GFP_NOFAIL | __GFP_ZERO |\
->  				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
->  				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
-> -				GFP_USER | __GFP_NOLOCKDEP)
-> +				GFP_USER | __GFP_NOLOCKDEP | __GFP_SKIP_KASAN)
->  
->  static gfp_t vmalloc_fix_flags(gfp_t flags)
->  {
-> @@ -3980,6 +3980,9 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
->   *
->   * %__GFP_NOWARN can be used to suppress failure messages.
->   *
-> + * %__GFP_SKIP_KASAN can be used to skip unpoisoning of mapped pages
-> + * (when prot=%PAGE_KERNEL).
+On Fri, Apr 24, 2026 at 01:14:44PM -0400, Luiz Capitulino wrote:
+> On 2026-04-18 06:54, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > migration tests presume that both THP and HugeTLB huge pages are 2MB.
+> > 
+> > Add dynamic detection of huge page size with read_pmd_pagesize() for THP
+> > and with default_huge_page_size() for HugeTLB.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Reviewed by: Donet Tom <donettom@linux.ibm.com>
+> > ---
+> >   tools/testing/selftests/mm/migration.c | 44 +++++++++++++++++++-------
+> >   1 file changed, 32 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+> > index 60e78bbfc0e3..e3c2f831e15a 100644
+> > --- a/tools/testing/selftests/mm/migration.c
+> > +++ b/tools/testing/selftests/mm/migration.c
+> > @@ -184,22 +184,27 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
+> >    */
+> >   TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+> >   {
+> > +	unsigned long pmdsize;
+> >   	uint64_t *ptr;
+> >   	int i;
+> >   	if (!thp_is_enabled())
+> >   		SKIP(return, "Transparent Hugepages not available");
+> > +	pmdsize = read_pmd_pagesize();
+> 
+> This is really minor, but I'd match read_pmd_pagesize()'s uint64_t
+> return type.
 
-I just realised, if we go with this flag for vmalloc(), there's also a
-comment in gfp_types.h implying that pages are unpoisoned by
-kasan_unpoison_vmalloc() instead. This is no longer the case with this
-patch.
-
-A VM_SKIP_KASAN flag may have been nicer but we already have
-THREADINFO_GFP and GFP_VMAP_STACK, so all those call sites would have to
-be moved to call the lower-level __vmalloc_node_range().
+Ack.
 
 -- 
-Catalin
+Sincerely yours,
+Mike.
 
