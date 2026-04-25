@@ -4,87 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C28A4FF885A
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 20:24:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AED1FF885A
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 20:33:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A769B6B0088; Sat, 25 Apr 2026 16:24:53 -0400 (EDT)
+	id 7C3526B0088; Sat, 25 Apr 2026 16:33:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FF5E6B008A; Sat, 25 Apr 2026 16:24:53 -0400 (EDT)
+	id 7A24A6B008C; Sat, 25 Apr 2026 16:33:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EEA76B008C; Sat, 25 Apr 2026 16:24:53 -0400 (EDT)
+	id 68AA96B008C; Sat, 25 Apr 2026 16:33:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AD7F6B0088
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 16:24:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CB574038E
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 20:24:53 +0000 (UTC)
-X-FDA: 84698206866.29.BFE890D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 562EA6B0088
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 16:33:21 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC1CB403F8
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 20:33:20 +0000 (UTC)
+X-FDA: 84698228160.08.B11FD3D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8C270C000E
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 20:24:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kr4kLGcz;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 63AE5180007
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 20:33:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ISMfSf8B;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777148691;
+	s=arc-20220608; t=1777149199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=rTk8CMOri8tGHWee5nrOt2ZjV+8IR82yi+Gf3ddfiq0=;
-	b=MMuqpynGQ5yyhx3t7txDJc8/DusSIjegunbDJ1iAVm3xnIM8Ag2kjJnW2xki++QOaEgMsM
-	xGT9wlnfV1zaXdupgshgYadV+lqSDiy+Jo1E/elR1BwG2ljnJ46AuzGXONylL8N0G+q0c/
-	ICHhAr/BzRnxMjhiawsGacC2yJgzgX8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777148691; a=rsa-sha256;
+	bh=FoPuBGAdwvckVLfGajT68F+Jrca9YJWlBH3q962J9fg=;
+	b=CO4miqAedVdnP8+BE06tvwSwOuz80Aby7af5W1RNEOW1QYDMBeaC/kE2DFsy6m38OGNs48
+	CBdwoCFk5Dyzx/ii4nWDw/R1TG9l1nZrt4xLQ02jc2ws/CstQaO7jNqW3pbks49CIJA67u
+	VWAdw+XclOBxBqoklZstvj0whHHSbD8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777149199; a=rsa-sha256;
 	cv=none;
-	b=BFb71g3D0PW4P0l3gFuuLnedDz7C8jD74Zg0KtTAkX0hBvACj0v1m85xWaDJnZPS/9M+5v
-	DB7JJrgnV4EpjmMXpR9OMK/7xLL206frCUkxSoa57c7bXmikLtZJLhfc1/egxhV7HvgH07
-	h9BTEOvjHMi7AHWSBr7R/ZyuU/0qB6E=
+	b=TR5KqXbZ7YJHf777T/4OvGHJ7ugC28zI9qD7cWh8F6xmC/OrFNUNgnLM9lHeSKi16myS7c
+	/2c1lQQ7rhagGZ9V6tk8qgjXpblW57gs24djLaovYZhhxPsgj9qdhH7bhFaMABrU4wB6DN
+	vP9ql25FX/OhuUbwi58AQ0AsNLFMs18=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kr4kLGcz;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ISMfSf8B;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD6E760055;
-	Sat, 25 Apr 2026 20:24:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE4AC2BCB3;
-	Sat, 25 Apr 2026 20:24:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC09C60052;
+	Sat, 25 Apr 2026 20:33:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE07CC2BCB0;
+	Sat, 25 Apr 2026 20:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777148690;
-	bh=ZxomxQePr7AKqbVr8jYWuTL2wbyw82jIcBeFpsB83ZM=;
+	s=k20201202; t=1777149198;
+	bh=CjM5lHlUhKQqvVPvH7UjU4XdbEsk9yGpjrvSpB7psBw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Kr4kLGcznmVP0L1rZP2VjW4Zfh/wHYrk6Kl855ccaB1ty73vkAwZnvIOPUQ3waZit
-	 Xc34bRh9XdKhKW2NYToGQPbzwyzPpAjH5V1+1kTiGREllW85+aVcLtgO2niN0MVprV
-	 3H3+XmSj2DFSG4TmQBbIrLTdpMOmwcnceaPsMoHASMU5kAc9nPxOaWbSue2xHAkqnV
-	 naUmtvLsl/8J+yPCCxM8SFSRdd9IXX2SBiCR4oO2jx3MhlPU2nrHRNVN/gfUA9E7oK
-	 y5qEcb9msNlDhG8rXjQf5/unVAsDXmanlKu/At9e1Lpg9vvfiY3/Ueel2f09KkioNN
-	 gAm7SLYzhPEnQ==
+	b=ISMfSf8BKWaQOyhRKMyF1fdfzSjS6trY71nemW+erw60DWG+tyXf1QJGLa36u79WG
+	 XhFSPMfUCdO7cTgp+8EAcJH9gYB1iVv19yJARhMo9rNZ/aKsVOEaUW8cFYn94qvVlA
+	 Bdj/N2gio+kSw4fT4UrP8rsExEgqHZkSX2AfLDyouuop8mS+YE9Zo8LLApj5nj7EZx
+	 5RK3jsK2xCcIwYdXmUPvDe1WrmZRYlt40hhifvJFVvHb5MaJfkJjUV6+G0Q5n8DHJh
+	 QAzhTrz8+YOmLNth0V21SWMysRzYa/Ugi171v9dqdQY+oZddFr6jRJGJVaIgFDeE68
+	 x9oc89H1ZOQuQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 3 . x" <stable@vger.kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/sysfs-schemes: call missing mem_cgroup_iter_break()
-Date: Sat, 25 Apr 2026 13:24:44 -0700
-Message-ID: <20260425202446.108095-1-sj@kernel.org>
+Subject: [RFC PATCH v2 0/2] mm/damon/stat: add kdamond_pid parameter
+Date: Sat, 25 Apr 2026 13:33:05 -0700
+Message-ID: <20260425203309.108879-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 63AE5180007
+X-Stat-Signature: uagoq4ij9kjsyapp8dcg5ewns4zh4s87
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8C270C000E
-X-Rspamd-Server: rspam04
-X-Stat-Signature: jfemh38guma5mz1swkz4kic7t6at18sr
-X-HE-Tag: 1777148691-155809
-X-HE-Meta: U2FsdGVkX1/RwE6SSRke83VcLh4QOSgCKC/W/TLLv2OfO7DhEbgH1az/aO6LPEKzLFLvwYNUlwEyuhFvfWgh/LNSI7slnggtOif3AEMCZJhf24oEYmyz3U0iYbd7zLHFZnA+8u5/OcdTNwXkHZFsyDzI2nAXUP3O6gTgtkFbz486BwdQDFBxSVVCsROGDUREPE0P1BShM7Opk6PirB+uoHuRxxnHrlDsXArd2JuN/uTMOly1ujCD7Gx2mpK+vpca3ThGBo7MPgikh5S6qrW32AJINwJ2lxEPXvzFzN1x4TZfxG+ZPG2yRGV/8gTITsY4JDO7MORmi4t+oWA9u6mRqHkDPMKYXAus5sl8swOMYYQlN7rw+FHQnll92qotyfFs/jVfkQ6tP5WCRm68bOtoLsHR9JVz4anMKKUZrELl0WvqM3J28vJJ+AtOg+YfFz9m8iArIrVvJxtHUol0TmnmSTc6mqxCcxfyKuUSUyCtTOdxNMYXGPTLLIKHbl9kKW8aqpoGfKZQT2HHdLqhqeK5j3uSM5ZHBDnjcYFTMi6ujGgTVjch5vvryb40hRG00PYz6DLV95dbSyb8NIq0UgR3u9GcBqOtVFv2K5VcCB8imOB2ZeGsZSg1pBsUmR8cuybQlT3x7iiTM0FnR6NG5hxRbpXsDHQRxbQCRZmCnS9L4hQx5eqw37RU99nk5t/Tz0s/Jbsu7xKKpbw6OjRfs7JHwi7xIlPAUC+6CcTXkbiVGqrELr8xCEi+NkwdA8WJmRlhOKnRVR7oFuJIyLPM1g0dl4CAorbA3I+m9Wkma4qs37wMpvm2/AEadNTIvM8DDLNCU+rbtg48rEMfoh1E88UujsiQyQfTzBEZdCftwf3xhbiz5s6r52n6HnZKZAAe9zP7RqnL//lxbvhBjzs7PaK+Hm3v0o1tSrOQwkDS5Ppiw93Cra32qyofTa+mSR4Ib0bGD66MCBqxSElH+i7MYRI
- BTuQ5mAt
- qSoTvBN4/3xqDabadeu4Pk2vywoQgGTPbLVfvxGFKHiifg0Nxq9Nt72fA9pbcqBWEaNUttjBwGhyUcBzYfBz8XIhnYuJ2CGx7V1ALWKNUaU0o6VyLa6VFQqFrIZSsvFbHw59Y+A1/nRSDlQz9ZeSQgtB7II9VzaJiXViVaX92c3C7Eonz9P1QwaWCiLeKSP+wxMqVCHfDi5Z5udDtlditalZ0m5rltT3rkdL8GI5uO3FJXMTBsrevFXYFkX2QUtaytzfHrWhYbhcj9Cdnu3TY/iodJw==
+X-HE-Tag: 1777149199-694252
+X-HE-Meta: U2FsdGVkX186VKJXa5zop8xekGk62VfL4BJEQvawdyKHo8QxwGd1AXC8tIBET/ge3bYGA6/dP7oM4Oj6UhasQj6gSpnUycbhypMUPNZxNPbbRGvXpWMSL8mtCq+ThSRvZ2cDWLvfeG3NhhhsjKRXbz8GEiGRCQmoVg3riJgwzi5P78kZPF+aTdoyOTjWnJPjyhN3/+IulvSvymHcDMSuzS+4Ks4lM0ucVfuV2gc9FCy4v9oEfM7dje1RaEBIKocfdoE0lOJ9tbIUVvG+mV0dHQhosXyZX6EsO6jl7BrTqsofWUvRABGnj/H4hjefr5R646PVnFotJuz9X5sLLCBKeX2Tajxq03gjeTtd5etSRVOrJhkQ4scFLHCAWLjxw3Z80pqTeHvfuTWyNaWzV8fb02jU7V3imeSoYVZSeVzFkMRf1IdMPakQxpIai22wELB1YjrtzksvVhmA0DQCrd26IC5b3oPuPO2KscI2Nm1ov0rPzp4pBF2hqBC+d7lrtdM/WRid1R9L6g4zNv62H6UThSmRNNNu9l/7+9iym8mjCFlWoWj1+CkhW3QU4QG06fEKY7DI2eFDpk1ODnxyxKuHzxxHU3nwUDNjSAsZH4sHsApJ8pOc19So9HxvBeeBQDqYRz5Fk84JJA6VvBf6+XEjWkRci+OnbZatgYBLmBHZ7qnIaGiAK2VYRIl1dAdq1g254XvsY4DCgl9g27SuVbDtzro4ktmf+LQWbyCjYrOLqb/p+ivf8Y4mjRnK5JrHdGlsWE8j5K2UMIduipzPb4mZnU7PpOoqlIxNbCXoSzziJ7H9U5rTV9Tb63f/NflJbUxxDGViDkLxG1plVCVyLVzxfYomhalGsiMnYoZD8pawfD5XPuBVei9Czx3v19Gns6PcebUVWixIIP1fclrH6evmSixkRBUuxEi1Mig6LmM54nyBIWgG2pGxnrszLMJCSErIpO855M/ieV5UluGO6Jj
+ 4U8OP+iG
+ RJVXpgGkyo2GFPLeNM97ryIVvyllCPTtLZV//sMy+wZOIsSkcJdaBNcusjPggrS7ri2wdcBoCNCrl0GE8RcxLJaRXEmxNNkTe+VSVAerMMF0iAcpEyrXpM3jjV0ILgQio7hvauphRC0gKrDKswrmCaOB37Ro70mQ67eZub4qyb0LM9maMNRRRjdopDgMAOUXe2YPotBUsTjhFpzvxkCfcmNsoKkgy8178+dCORRPLvfCEwslc0B15Ghx2z+WRZJiSDd3rFIeUof8J/cu9sbtzxZCh6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,35 +101,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_memcg_path_to_id() breaks mem_cgroup_iter() loop without
-calling mem_cgroup_iter_break().  This leaks the cgroup reference.  Fix
-the issue by calling mem_cgroup_iter_break() before the break.
+DAMON_STAT doesn't provide the pid of its kdamond, unlike DAMON_RECLAIM
+and DAMON_LRU_SORT.  This makes user-space management of DAMON_STAT
+unnecessarily complicated.  Provide the information via a new parameter,
+namely kdamond_pid, and document it.
 
-The issue was discovered [1] by Sashiko.
+Changes from RFC v1.2
+- rfc v1.2: https://lore.kernel.org/20260416002149.87090-1-sj@kernel.org
+- Detect and use fresh kdamond pid.
+Changes from RFC v1.1
+- rfc v1.1: https://lore.kernel.org/20260414235912.98174-1-sj@kernel.org
+- Close the parentheses of error handling block.
+Changes from RFC
+- rfc: https://lore.kernel.org/20260414053742.90296-1-sj@kernel.org
+- Fix damon_kdamond_pid() failure handling.
 
-[1] https://lore.kernel.org/20260423004148.74722-1-sj@kernel.org
+SeongJae Park (2):
+  mm/damon/stat: add a parameter for reading kdamond pid
+  Docs/admin-guide/mm/damon/stat: document kdamond_pid parameter
 
-Fixes: 29cbb9a13f05 ("mm/damon/sysfs-schemes: implement scheme filters")
-Cc: <stable@vger.kernel.org> # 6.3.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs-schemes.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/admin-guide/mm/damon/stat.rst |  7 ++++
+ mm/damon/stat.c                             | 38 +++++++++++++++++++++
+ 2 files changed, 45 insertions(+)
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 245d63808411a..04746cbb33272 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2594,6 +2594,7 @@ static int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id)
- 		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
- 			*id = mem_cgroup_id(memcg);
- 			found = true;
-+			mem_cgroup_iter_break(NULL, memcg);
- 			break;
- 		}
- 	}
 
-base-commit: 8aa462c5a7540f9f8882cf8fa6add712fdf38c91
+base-commit: 4eb752fe1ea250a5339f1e70398c5fa3a18afb87
 -- 
 2.47.3
 
