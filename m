@@ -4,167 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1EAEFF885A
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 23:44:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8FCBFF885A
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 23:48:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F0A16B0088; Sat, 25 Apr 2026 19:44:43 -0400 (EDT)
+	id 07C276B0088; Sat, 25 Apr 2026 19:48:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 779FE6B008A; Sat, 25 Apr 2026 19:44:43 -0400 (EDT)
+	id 02C966B008A; Sat, 25 Apr 2026 19:48:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6415A6B008C; Sat, 25 Apr 2026 19:44:43 -0400 (EDT)
+	id E5E246B008C; Sat, 25 Apr 2026 19:48:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 52F246B0088
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 19:44:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DAD7A1C0101
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 23:44:42 +0000 (UTC)
-X-FDA: 84698710404.27.B3CCF66
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012052.outbound.protection.outlook.com [52.101.53.52])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1222B140005
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 23:44:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Gfb0wO49;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D04CC6B0088
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 19:48:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68E5CA0444
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 23:48:55 +0000 (UTC)
+X-FDA: 84698721030.04.B662EB6
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6FA5380006
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 23:48:53 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=V4NI6EMm;
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777160680;
+	s=arc-20220608; t=1777160933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M/r2N5l5yK7dhwnzM1nSh2VY5//1TR9ZJXHM/Ut7AXY=;
-	b=ho27lpQiuFlcic3QoHQ4j20/rDPMvP5ss9Njdla0faDmNc076pgl3hdz99yGQkWwtlofuX
-	xcv5lJ8r5NTFTgtCCtAJmNmRUWizug0v9Xqz9MvbU7NW/OxJynpE4+Rly2vl2rOz5JnBlh
-	3OrDaB2WdX09Sj01J8pU0aUkUy6pdaQ=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Gfb0wO49;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777160680; a=rsa-sha256;
+	bh=bZydx8l84GIjMRw3J0wCqIG05nmQhWK3VDWewjGvVJo=;
+	b=VjIjxK7tlUmDORI1yY4vyLKWEekRvK+xT9EE7YJ1pdXo+MnfT5d/Lz7CbqGbKqwdVSYcgg
+	6ehMlRg+qDm3x8ylPlL7mf8L4HRuDoVmnfY/qL7X4Jqy3OVby3YUD5lsDJrGcpUIfV5GRZ
+	HB+eGu3lZcXEhpgLKqKBR0EYqCpQ9SQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777160933; a=rsa-sha256;
 	cv=pass;
-	b=aYzrtYxOnJQYADMOY87yRRp9e1o+KmPXGUcTX2YGv5hsa9BRXMKaA8sitkEcLQ31+mEtRF
-	WJ615zmfraJPDMiS1n4u19dhokVeSyWVpxz1I8muNPKwQ1Bk/lraIGYh9AXys9nQzMq0eH
-	IIIP+UVqiMZR20P63iOdBhsde9JaHkg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lW20rYU7FONZRXEOSrREGkxnhN2eEHxu/jm+rqBoudRjsPQlq5Dky9wFPjDuLPMrDOJh2pQRGvjz8kAboxrRhMY2uYJAzAuT0D4jPqrNxEIb+gLNdjWU0OKbQUkmKjHft8SBaCrMOjeuKkDUKdlmqWApM9/0BTYQN55DDLAqOgnHLMMt8YXSYUxvHtTc2Fnz73djRJoFbwJ7YwWdUvw87CrktlfXxUjfG7uP698ssH5YUUjTvdPYvjL7UT8xiUSqXuptKWRb5m7b9k9kFzXHlNw1lvqWvyH/S5CapYlBv/0FF2U8Om9Tkkzt4MRAG4+8i+Bf4v9SIorpqujh5+i5FQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M/r2N5l5yK7dhwnzM1nSh2VY5//1TR9ZJXHM/Ut7AXY=;
- b=MItQWNnlC1fEw1U7sEWh3QdYosVsYXQ8I/JvJMkK9LLZpSDMfORmJzmYzdqZgogYGrudBuuTPhEUJLAe1Twk3POYSHpbObbq/VEmj/mbwEX28bdPT4xaod6I3l/OD9407eW4nWYCYOQDM7iqMnFZUVQgWaEST1Galpg+glQOOWWCGTFl4d0qmWLEO+aypywNZzH1DWpLtbV2mUUMOpiPKbY/SdyqReOhaV5ZT4LPiP1rAmLWcQWm0cxOhCUm06dPgU7ww8+zYUU7Qdp7i1Dr4kMPy+THzjeHVeYHlJpJ2H87pWtdLQ/8OncJ9kXCcPLFxDlysoOjYKFKikdlE1xdoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M/r2N5l5yK7dhwnzM1nSh2VY5//1TR9ZJXHM/Ut7AXY=;
- b=Gfb0wO49lIvdYCa/5b4WBKRjhNercwHXmibvJH3Vvq6T952c1TIkTBh1fJcVduCjBlYivC3ZZgJsiPErwoGIX3OfMrHcTeNPZGNxWPCVHqoz6lqnX3CVi5PAej4CodypN7P2E8nxbyqPdw6ie+/ExRjeEA+hJM5jVEsMjUlGwCJDOtTwiyEc1NhDE1YEETzcTsmR338gxO+XUmKHE+cTtxXlp+bWGEcYPnl9AuMkob3XGHcuvO4kCuf4zRb8PbReJDx5jH50X2WMdyj/eJ1rMuj9jKLqTb+cHFjDqgtbfVjuBJTXDTEeEqSbP6T+w1ThcnypG57GXBJnlQReE7G7Ng==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS7PR12MB5814.namprd12.prod.outlook.com (2603:10b6:8:76::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9870.13; Sat, 25 Apr 2026 23:44:33 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9870.012; Sat, 25 Apr 2026
- 23:44:33 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 7.2 v4 01/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check
-Date: Sat, 25 Apr 2026 19:44:30 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <AAC60F49-769A-423D-8EEF-B1DD9860F083@nvidia.com>
-In-Reply-To: <20260425150613.95532603a9a9404c7638f65c@linux-foundation.org>
-References: <20260424024915.28758-1-ziy@nvidia.com>
- <20260424024915.28758-2-ziy@nvidia.com>
- <20260425150131.c4b3703b65e6de0fd3893d48@linux-foundation.org>
- <20260425150613.95532603a9a9404c7638f65c@linux-foundation.org>
-Content-Type: text/plain
-X-ClientProxiedBy: IA4P221CA0002.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:559::8) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	b=hd4tKeFL2p58MzDdtazMIycJvOIlrhFdUFChTdWziLb1qvKwf0kWG3MEdQk76OCBkhv9kV
+	XSIEyTOtcSxvEtGtDS9vDRSyOmZxayk5vSMGkPScVdg0e7EWVf0yp/RqjOAFM65eDyjLmq
+	ef3aP+7IijDBLAW/QTbMFGMGOttxa/4=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=V4NI6EMm;
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-50d6b393d60so5218811cf.0
+        for <linux-mm@kvack.org>; Sat, 25 Apr 2026 16:48:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777160932; cv=none;
+        d=google.com; s=arc-20240605;
+        b=h5DXV2FiTDKEhQ3rJWdI5IhISEzO3//hX5ZkwgwuCzieQfwXvhnMzrsNxMGr9XqMWV
+         yWP7SCyRlfNqJ5KqnTaEoh+jKfSsN9ofcwrHnEa2wbil6YVIGgvLD20ZdGUY8MtS6RN4
+         pOXlkkjPkR5sjgOx6G9Mj1xkP8lrMQv7vvvQB1v2oQ9dVgQty8qMXN0uhmNr39Ux4SoB
+         jM1EBT6OUJOY+NN3pyty1QUt/pO5MXGgSi/+bNEcM6lVzwBzHXuUcTjy+KGknWMde/D2
+         MwVN0CfLTvjiquvks5D7DIRyX0aeGPjkQjSWB+9IcUy5+nIycUrz0QnUdU5ysWjHS+0/
+         Y7/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bZydx8l84GIjMRw3J0wCqIG05nmQhWK3VDWewjGvVJo=;
+        fh=61s0zj6I3udG9uZAEvEeYAOTfGcCbPCUAcrlssnxKFw=;
+        b=TjrNU1qmS9+o4TzKHcr9ZP4E1KatFOje2JHISLlSQ9CSWZ+A4zu35eW5klBg/uX9vr
+         uEud9Mzx6ZHhcZsc6nAyMXg7MbXICQ8Ws4xf2DgbTpBt4a/VLaXpmeCulSNLiUhA1Kpa
+         KD5tiHaaqt8A+QZcJLuedq3MzhGvwKZarLM/dl4bMkCKk6fTsAvV3JR4Lztzks4hobkD
+         dkPVCpEh5O6rJvjJz0TCXdla67f0qQFngFTqCj79qyS1bfTeSTDiyODZVwh9YSh/tPFN
+         W0ZKVyMY95Zj8fgxBWNk9LGfC90q1B5EksTPObcDpyauW3G+avQp/J8nQF9xbh3PespE
+         jSsA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777160932; x=1777765732; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bZydx8l84GIjMRw3J0wCqIG05nmQhWK3VDWewjGvVJo=;
+        b=V4NI6EMmOtqmP/M0htHcmv9ApYA98LUtL8sX0BEjqX97YNJacrOqKYoYG+wBWh2HVP
+         CSA2laf1xagitofsiC4Ldj6DPHBTVDfFdjqr4AbxioEI10GrsglUYKYeUAnGUwB2DxDK
+         d0MgmWhiQI/9c+39a3wYaNtaIlb+5KOkGjq9UBAMxX20G3RPxipsaojeS7S+ytv0f/R9
+         OLtdm7DSWlSrRc2KvY39VOyFKbZA+/4VK0vkyTVutaQFlQ5wtnzJrGIWzenT+eQMzC/6
+         SEAGi/FXLcu+W0awkD1POeRRONI57YJ4GTICG4itC9YotAONiD/J+6lBetvZ7nWMdESC
+         RsKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777160932; x=1777765732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bZydx8l84GIjMRw3J0wCqIG05nmQhWK3VDWewjGvVJo=;
+        b=mEn7NaCK56HFAhJGpbZbxO9tCjJ0d72yRjvuAIGH7ZmguuOW5RFvFVW9qkrOSa6ZWS
+         kZ0DuE8D0oZg5NrPB4okNuYJmyRgDGc5KFb93Q1sVD6P/uD492u6kbwvFgPjIucQFBqX
+         5MTt2m66lE+GypFmKUcH9uzVWmJ5jV17UmSqb3ummaR2CPK9UmdP3AKO8Bh5nYnPhXvl
+         S7NhclKrG7995NRBp4lvOmnycMBApx9BA7u8zk4yKojL6+0daur0f0xDAyNx6TBOkLJW
+         yVXMwV1gDBUeZEUF0Z/iRKP5PcmxOKb2NCo4gwqf7N2wmdX4e9mzQ/vKZMEhPf5TVNtV
+         R7iw==
+X-Forwarded-Encrypted: i=1; AFNElJ+LyJtn+J6sx7X6yIDGS1fsl7b/K4qOhNerzXH1Chg+XR8f7QZjJpc28FhLwPyEeb/0uLfhjR7zzA==@kvack.org
+X-Gm-Message-State: AOJu0YzDH2jNsYo4FDwGeIjvd6jYRtuaehlOA0hPoRy0KF4l2957URl9
+	3Fn8LytoB22pL3Q+MYixdGytUEUqmRNCquIMQxjvWArEFBo3E2hXLsFFBap7HqDiwaUDZlxo1Wi
+	xQuPBCtQD+G2oau4rSx8OrhxY8vqOqIcbMbn+uceK
+X-Gm-Gg: AeBDietLU9RJgNm6N5FhcSy1XrNrEX5zzvbwm2IDpuDD/7Eemu7Wwjucpcxqs3173LS
+	yZnbkA7YvME9vMKB2J/03Ta5bTOFz0Le403PXcviFq2AoOBGmISaqqJaeUD9Nb6Wp6vFNjqiq2G
+	SFK2owhZouddSVyLRv+W5vy1AS0eX+ZHTmQ8SNP2c65WjvLCBENQ+KVt6jGYYMyfl1Z2uvatdDD
+	amdofHsC4pGwmOiZfiycBhOcNDtD0B8coGYe2smz0Fkz2KFDF/Mrw75u9IfHIHkmei5LKpNncEZ
+	+botLa27ydT8i3+tuXbzu/JOZko=
+X-Received: by 2002:a05:622a:2599:b0:50e:41f3:6467 with SMTP id
+ d75a77b69052e-50e42a9a87cmr75265781cf.12.1777160932012; Sat, 25 Apr 2026
+ 16:48:52 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS7PR12MB5814:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25f77125-3566-440a-bd4e-08dea32499ee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	yaW0D/g72WjmoBoB0+nFS1hQQ2EN1piM6Jwuh7Dszgg88yZUPus/JQyEiV0fC1SmLNAY2RXI4nXovfi6ZbnNmkJ8g1mVyr322wiAgomLRVKbKOKuMCdgcNDsNnre+FO/eun/K50VY/Ajfvs534zxLv6NaRk3JwndZlAgi7QWsZgqvkAxGlcLGKa3HQzZTCqXshJ+8YJZP8tF4NDlofDI1V2zJbWs7BeRcs17CfLCHi4aS2tw4MwCIxN0IOjJp/92go6mlVJALamkYUR/PC9iD0JJWOz4EFFSInRcerNzRRSYO98SQQDtPaRGTVLTEQfCc3W8XlID8THaavcTv6YDXKbCERonErRi88oQeUQ4Rz/WEvk9LhUahT539b3v9bGenrtw0SqJXbcXd7DYQSD4O2BFcL81nbzTWYtMKTM1xhoz3Ef0DQIXogqv0skrxtzlezQ41l/wr+9yRPBwJhdFxiQjFx/d+FXprhl/os06WN/v9RM6bemuXQosi+95vVar5ev93ovvBHYts+Ue8xkAR1vM2L+IKNFg359o+uGjcRIfbjGWY9uzOJRE1JNhfSvoTS9633FvHjMdQuzvMPrbnWLfsZLylikSJ727/l3hUYirpRRVcMYMpz064RlvLGi7PXhBa0cNgxiVNgfEipldFWOK+pSdKAOZv1EZgXe1XFXD8JlCYP3gz6tzjw0Kkiwuzvn8kFKTmzCVA+IR3vNqnLIhqbkfQNmFSASrL8/9lno=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DvCOtPfN0RWRp63ojWaNfnSHeprqbTX03Ldl3KAEv9txVz+z5OgRXUllZwY5?=
- =?us-ascii?Q?iTyY+mwpKLt3ohiPdowJWrDPtuv2bnS0IasrjVHdjNjY5wNyaOMCoUiRt9MS?=
- =?us-ascii?Q?W7+mwXg78lSo6/iDcpdohss1EDxLNFBA9faS2Tv/CDX0L/+COQrzaxzxF5pb?=
- =?us-ascii?Q?DmAzFkQuoLDPcCeCa767+vsG4ymAZef2WNYBcJPn7XUjZm548gC0w256TMtL?=
- =?us-ascii?Q?6Sz3pac1IkxWDvuzfWaad6RPHoM7JFc/pJRcKUGOb2x2wDqTvS1UrKGa/Zw3?=
- =?us-ascii?Q?jGKZJLaayHXwITMgp7zRzM0fjsxsLekJp+/LHgpM/6uAvHFc0LrwucyOokwr?=
- =?us-ascii?Q?ej4vAF+XJb7MS8O3GYyuN+SYNlIXhV+tKW/PFEuFGLH4ZF1QOJWGgcyGm3ed?=
- =?us-ascii?Q?qaFkWhQOWr4sjOlTZlmPPxrjLcCW0OZRqi8QkLx5VgTZoOD73sFJAJNjOb4Y?=
- =?us-ascii?Q?rNDRWGbljBVtOgu95IR8GtJF6mw/weWs3tNnLDOQXX4s7ML9AG9xLIl/rwnq?=
- =?us-ascii?Q?ZfUbSotL3uDHsfAIKyr71f4oCy/fgCwmTeA5+TbzPTF0sEKEZ9gAsC3/qLFj?=
- =?us-ascii?Q?2ukuGnoKFlnvFcxOVrbevSRTXTErXfCCfdkuQROsfuqXWEUAfJQcfJ4j0g7A?=
- =?us-ascii?Q?ZQ1l1IePvGee/9y1b9Gaxbx5tmLvjVwLuhvhx1nTQmL9K+BEz8Z3b+yRjoS3?=
- =?us-ascii?Q?TjyCbGn95KzgfJ8/sOF5Sis5vMEVaw/2jnD6RP0wT1RSJyTWbOWYPyd53BnV?=
- =?us-ascii?Q?OyYybhwKiVZiJMmV0kd0Mtn0KWsWKC7oAYk4JsGCtELSiPYciB9mjKKBrQzf?=
- =?us-ascii?Q?Yk0X2lyYsTGt/U51nPtwi5vx8hMgQtY8GCV0pGB0h8kc0bSfAfg+FxpX8PTo?=
- =?us-ascii?Q?TjSWzGkuJ2bOK0FguZQRvvcBBdVGa/HkD/O7JkPbXVe2CZiLcA/xq7ChiUZ/?=
- =?us-ascii?Q?fa5OsesWRITpjMOb7XrU29zpByxqGOn5z19g+bU0VWBghiVz40wQ+dj9lao4?=
- =?us-ascii?Q?PYUKxW0kUt9e7H142ptgC0wIjA+U20KWAdQdg+djKQEUAZ8GsBzJHUIZiMft?=
- =?us-ascii?Q?HO5s4zsnvP1wItVmiIizXaJuzonZxGpDzf9liwbhamx3GguCAz+FUPj8xwfR?=
- =?us-ascii?Q?49hvgsGTIxANca/75YZvQ7Y441C1Lhy5YBNPXfUTD2k+A21KakO3Z7VAE4n4?=
- =?us-ascii?Q?FD/dJjtcwYoubP6MKfh5CkizR4jUmDrugb08/p+wr6JexQ1Pi+qIARzAMCkj?=
- =?us-ascii?Q?UZNxv0rT/z3r6QeGWOQEKHTKX/gEBzWy2fu7ZlatDsCRQF77cwr2p29rM/4W?=
- =?us-ascii?Q?V3PnYE4RupolWcCzkP0NyAXIMIM2tWI8FeuC+4txMvIGKd6QzvmEpApOm19K?=
- =?us-ascii?Q?woSWRy22jU0P5O+JmSyAGJnu2gD8tfGf50TF8HaPzWUy0zXqWorVRjOVy7XH?=
- =?us-ascii?Q?87GCWx66PhGqseDrUtY3ZDK9//Osc0+EW5TBd34JOp/f1UhxxbUTnxr/bHFK?=
- =?us-ascii?Q?RB+tIWZ4ifgMGldpV5wgC/tOFXwcOBvSanEjBfpxk+3PGP79GzQkKYBzgjJe?=
- =?us-ascii?Q?e/5x6q3Iv6FmTphZp1G57oNuPSgrxVfPDLWdKhH7hYe+P/ih2ZzlAZD91o2L?=
- =?us-ascii?Q?7JY2B7XAbxVq2xmHEWbRYUk825W+COJRFhJQg1etDgzk8iTXF3wT5rxvtygQ?=
- =?us-ascii?Q?LR+JAhRBAHOegynSb40guC9Ks4p1o5ZhRx/0hp0bgX9Jsa5L?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25f77125-3566-440a-bd4e-08dea32499ee
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2026 23:44:33.1232
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BguJOop59KLI8v6fZnigl9/dfj6rXQ/6mIb6uYxTq3nZqIaS3G08bJj/O6JWJwb2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5814
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1222B140005
+References: <20260424070234.190145-1-surenb@google.com> <20260424070234.190145-4-surenb@google.com>
+ <qxxhshfoe5tph4z324fzl74r532bxdrdvll2xvhaeken6bsdwb@q2wk2nbvxr3p> <CAJuCfpE5C9UpkrAEvm6amw7=JYRoXeiSJuPFJnb+LRrVwn4ntA@mail.gmail.com>
+In-Reply-To: <CAJuCfpE5C9UpkrAEvm6amw7=JYRoXeiSJuPFJnb+LRrVwn4ntA@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sat, 25 Apr 2026 16:48:41 -0700
+X-Gm-Features: AVHnY4KZBbekKCuP917ssJD9scQNvVAIkA6V3UQh7_KRcYvTGhJaQbkMQyDyQ6c
+Message-ID: <CAJuCfpG6wZe9N2XREe0Aef=aH5LRGriZYaQeCsqPqoKqMEXN6Q@mail.gmail.com>
+Subject: Re: [PATCH 3/3] selftests/proc: add /proc/pid/smaps tearing tests
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, vbabka@kernel.org, 
+	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
+	pfalcato@suse.de, shuah@kernel.org, hsukrut3@gmail.com, 
+	richard.weiyang@gmail.com, reddybalavignesh9979@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6FA5380006
+X-Stat-Signature: bf9jbm9esnrhjij8fmokzbie6hi5zzrj
 X-Rspam-User: 
-X-Stat-Signature: 6bh89kbpfagmce4b9g5t7771n671umm6
-X-HE-Tag: 1777160679-107708
-X-HE-Meta: U2FsdGVkX18jqk7QKY1WcCJe4fodu4gzPmCbO14C3r52r4FoLBnCEcMbS2YwDUc7CiL7fSIkFToElJaO4PiF6CBghgG3MRb01GvZgejZuyKe25EyOjRqItC/H49Vlu38y17+a4sWNh0tTWDA1+Jfi2r2XRm9209zG18Slf7WljT3sHTNP25MhrQt6JquF9pSLSrU54II7qKqmFbxcwQlhZur3yr9EF5h+oZ6Sn+mQwGjnmO0OLMeG+FXBxxHthhk8q7Y0V2aFSqHdMoIVqLyw6eLue9UhsJdZGQ2Fug7lD72m+iJXCWZWfZ7o3Pn1Ah7lIfCIMqFMDegpUPu2PGa7a2Kc95VUBtjFIZVQgYdIGfLbjXhtAlRhAJyNMXlS3FF9g49C0snETLSw//DsJS9cJ2meElDZcUa8Y4+Hwy/SKj3QOKe73JWgwBGpsfUhJocO00qvQIvTeMM36NlzbIJoRoqq/LqxvdS48tZlIc6hLi4vuaUcjhE5bfc8Lp7A1W/f6ev/D0CaG4nGrONoqmS3qY/Y6MSeWjUDCLAMi5ZzvIDN28CBbQV3CdjvDP1XXs6qkZkmTL8NKKPREetUdyUpMQjv3iY+Ph2nOg1NMBSsIzPiXI9RCXhlyS+gLYIa/q+SRbzQXMe6NYTrEKU9WVzOn7yvRQ6fLE2Li4nNXPOscedYUTD0PVpBAGux1tlJihdc5tpohOrmbnoPJYVGn7lfkK+X6noplrj86X+eQiV85BPwuQGZgHtfkHODxIc2ADYQ6uLJuPyWnli/6S5N7fJMP3oRYrlwMagGol8yeR1U5Nn4QlA/oJ7lGO7t8EdXTfhf7SNIzc+DoNmULka5DpDtCPHajKFaar7wbtaGSTa2AzlYATpGno3tdVrHIzm4keUvIkCCvNSkG3q6cGXJqSpnnCjAefOfXA2v8M8VNd3xpqkaT4B8mkrca6u6Bo1WU2IdsET611wI0oCxXuMSKe
- AJ3Y+tvi
- sTVxpO6wMYc70mCGV0I1ItFcTxg/omPKo3FiATJa7RF1tCHYUdp7SiAuTX/BJy40lCgPW0NPi/Aii8VfI24Oj47VwjGE00GJeqXrVZ5d199HogH2id2eNpom941eQDStNcK8IJG+sKxaLL86B5zpgcg0EBA1OoYoglh/5LzEkoWy3UvDGLMvzbChxUX9mBtyeOm+Vx2JUApDFpMA6gYZQ8W4VYLnrdSUQRGL+42mWZLhxXRJxZZtWcyf0vM4cIrVFsvyjG1292dpAD0m+1OQy77NgfpXC8LOaUVWY3a94oC9006YT9g7uSog0CKsLDH7kBmvDbz2IzzpCVy+Rcmk11MTnIxNHzsGLVvWf6pV0pUW2THcT/VtiU8vqJk+rCrnn4Rt0WnYRxNZEsaKuRdkboVP7ULxdoIklSaI/YF7x9QNMdZL/5NxtWw42KcnTPo3bRteCAi2kugQzYkjNPBumpAjWzTLHJnaCN1ejXoCKtpwB03G6LQ1euA9fO1vchDFx7MlSXOZbP8q7v3KWV8FGi2wKj7Zjnm8oYRk9
+X-HE-Tag: 1777160933-569450
+X-HE-Meta: U2FsdGVkX1+IQfaLJ/qVBGC9ZYEwHw4x9snGeuc65Py1oYwOOBZ7LkDf2XqFm3e4azxhI7PhM4f5P217q3JQ/VpIQWjIhWjSt/YJmLJiEjgCpsmSkSoLk0piSgl5H8C41hgfbqldu5hlz7EE2g6ea/lLSjvhr6f9yiz+snI0esWAjcGs6s94tp2SVb1JcNkqiuB+TAiN82KrYvJQ7iiyW+ureU0dlmLjNS2HOix+L84rucBwhzZBsmwXkbUSuFhry4TqrHXW9ItMKlYOXs1L1io9OSQQfK+uvoPyFY9A83MAWrGXcMVAhYzfDgBznpsRNG9mrsZHtHZG3CVS1iYjVg1P518VctsJVazcBCGIhIJKUMeOXOQ7Ui5SmCbYl4z6knlz2U1QiI7HH18ZI0XNpkt/9Qt/auBbJLLoAxwcnavDqBZ6WsejknlXBUNyHufWo8Bjpgbf5k0dSAYNe/5kUiHOvb9OlhASzfGwtorS9z2R3xn3jJ5JXP679VAhK6wfaVUuo1/gqDvNeRTJashpSeFV1jBI/1SqMzwggdFPtxFnygFT69viocNTI7h9sm00HPXcNnTUAuBSP6CXj0dUzsa4ce2w3wv9OfaPD0Bfl3mvB5S2sG5N1KGWOTDkAK25LULdpM0YoUiHpSGDssd6h+1CUBfS7qAobrZkjWXNyhQ9kiommZzzdeDrLAx9ZW6jf3WHH+0mrlxvmub4zYfNUzxfn/VZ9Dcjfzbvb3GFNEKXSAYoiRMOqInKbBWoHBlzio5QORBvWfUNedidFLQrkTMsQzBtNPnAxCtafiNsUdEVc3/Ri1wgwHSds1uCIawFZ8MoXjaHztXIirBRVgft3S9Ip0CuBag4rVAw3SAULrw9W/E6ICR/viHtXU/gTm1MlfTfqhlWAQSf+UDyQA+JEBhtUrFqz7rULvTpeDoMaEjOgNbj/HxL3K9P41Xb52wKDmULRRDdumsfmov/zvO
+ AAbJBpjg
+ SS4IbTCW+CcFZgsMfOlu4x0ERTBbyv6RjfLd/6sBJSo6KIn3gkq2YRFzNVWayJuRmlI53EvfL7JcyXXJ/BeJNO40iM5AQ7zvQ61Fi453xanIjg/vN7uonglO526uibrYuAheaeIzBBPjoj+m8XQTUGg1rbz9My6iizwUEe/qqHki6nqMJ7gwd1oHQRqmgc9z5SgHfjv6qIOlaeORDMGXGfZlhtc/PRUOQdOYCKHUisMEWX6IdJpSD9AVNxGc6l1BKXHf+8Fj0rARo5QrzBNSrxnr1iESfBTgL8nvcntF56ld9bzkPeoX9w0tiCntLWgBKBNwDxDBhCSvlQfhRVGZusq8by05GMRSMmc5ZqNyFJjD3IqPitgt0gNSfqDOBKaSZCzWL8iI/LvvW+uA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,26 +143,389 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25 Apr 2026, at 18:06, Andrew Morton wrote:
-
-> On Sat, 25 Apr 2026 15:01:31 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Fri, Apr 24, 2026 at 12:59=E2=80=AFPM Suren Baghdasaryan <surenb@google.=
+com> wrote:
 >
->> I added the below.
->
-> Nope, still doesn't work.  I guess 32-bit arm doesn't have a PMD_SHIFT.
->
-> The series has a few todo notes:
->
-> https://lore.kernel.org/f416ea70-fb70-434f-8807-6638c9787b57@kernel.org
-> https://sashiko.dev/#/patchset/20260413192030.3275825-1-ziy%40nvidia.com
-> https://lore.kernel.org/DDB6CEDD-116D-48C1-B558-D64CA2F58F55@nvidia.com
-> https://lore.kernel.org/896b3956-3cdc-48b5-a0a0-a3ec35aefa07@kernel.org
->
-> so I'll drop this version.
-
-Sure. Will fix this along with other TODOs.
-
+> On Fri, Apr 24, 2026 at 11:23=E2=80=AFAM Liam R. Howlett <liam@infradead.=
+org> wrote:
+> >
+> > On 26/04/24 12:02AM, Suren Baghdasaryan wrote:
+> > > Add MAPS_FILE environment variable to select whether the tests to be =
+run
+> > > for /proc/pid/maps or /proc/pid/smaps. Add support for testing smaps =
+file
+> > > by reusing the same logic as with maps file but skipping all the data
+> > > except for the VMA addresses, which are the only part relevant for th=
+e
+> > > tearing tests. Skip PROCMAP_QUERY parts of the tests because smaps do=
+es
+> > > not implement that ioctl.
+> > >
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> >
+> > One comment question, otherwise..
+> >
+> > Reviewed-by: Liam R. Howlett <liam@infradead.org>
+> >
+> > > ---
+> > >  tools/testing/selftests/proc/proc-maps-race.c | 176 +++++++++++++---=
 --
-Best Regards,
-Yan, Zi
+> > >  1 file changed, 132 insertions(+), 44 deletions(-)
+> > >
+> > > diff --git a/tools/testing/selftests/proc/proc-maps-race.c b/tools/te=
+sting/selftests/proc/proc-maps-race.c
+> > > index c5031b0593b7..b677bc23cab9 100644
+> > > --- a/tools/testing/selftests/proc/proc-maps-race.c
+> > > +++ b/tools/testing/selftests/proc/proc-maps-race.c
+> > > @@ -17,8 +17,8 @@
+> > >   */
+> > >  /*
+> > >   * Fork a child that concurrently modifies address space while the m=
+ain
+> > > - * process is reading /proc/$PID/maps and verifying the results. Add=
+ress
+> > > - * space modifications include:
+> > > + * process is reading /proc/$PID/maps and /proc/$PID/smaps, verifyin=
+g the
+> >                                          ^^^ and? Should this be or?  I=
+t
+> >                                          doesn't match your commit
+> >                                          message.
+>
+> Quite right. I'll fix it. Need to post a new version anyway since
+> Sashiko found a couple of issues.
+
+Actually, I realized that I can use FIXTURE_VARIANT to easily run
+tests for both smaps and maps in the same run. I think that's a better
+option.
+v2 has a number of fixups for issues flagged by Sashiko but they are
+quite straight-forward, so I think I can keep your Reviewed-by.
+Will post an update shortly after I verify that Sashiko is fine with it.
+
+>
+> >
+> >
+> > > + * results. Address space modifications include:
+> > >   *     VMA splitting and merging
+> > >   *
+> > >   */
+> > > @@ -73,6 +73,11 @@ enum test_state {
+> > >       TEST_DONE,
+> > >  };
+> > >
+> > > +enum maps_file {
+> > > +     MAPS,
+> > > +     SMAPS,
+> > > +};
+> > > +
+> > >  struct vma_modifier_info;
+> > >
+> > >  FIXTURE(proc_maps_race)
+> > > @@ -83,6 +88,7 @@ FIXTURE(proc_maps_race)
+> > >       struct line_content last_line;
+> > >       struct line_content first_line;
+> > >       unsigned long duration_sec;
+> > > +     enum maps_file maps_file;
+> > >       int shared_mem_size;
+> > >       int skip_pages;
+> > >       int page_size;
+> > > @@ -199,6 +205,57 @@ static void copy_last_line(struct page_content *=
+page, char *last_line)
+> > >       last_line[end - pos] =3D '\0';
+> > >  }
+> > >
+> > > +static bool copy_first_entry(struct page_content *page, char *first_=
+line)
+> > > +{
+> > > +     const char *start_pos =3D page->data;
+> > > +
+> > > +     while (start_pos < page->data + page->size) {
+> > > +             unsigned long start_addr;
+> > > +             unsigned long end_addr;
+> > > +             char *end_pos;
+> > > +
+> > > +             end_pos =3D strchr(start_pos, '\n');
+> > > +             if (!end_pos)
+> > > +                     break;
+> > > +
+> > > +             if (sscanf(start_pos, "%lx-%lx", &start_addr, &end_addr=
+) =3D=3D 2) {
+> > > +                     strncpy(first_line, start_pos, end_pos - start_=
+pos);
+> > > +                     first_line[end_pos - start_pos] =3D '\0';
+> > > +                     return true;
+> > > +             }
+> > > +
+> > > +             start_pos =3D end_pos + 1;
+> > > +     }
+> > > +
+> > > +     return false;
+> > > +}
+> > > +
+> > > +static bool copy_last_entry(struct page_content *page, char *last_li=
+ne)
+> > > +{
+> > > +     const char *end_pos =3D page->data + page->size - 1;
+> > > +     const char *start_pos;
+> > > +
+> > > +     while (end_pos > page->data) {
+> > > +             unsigned long start_addr;
+> > > +             unsigned long end_addr;
+> > > +
+> > > +             /* skip last newline */
+> > > +             start_pos =3D end_pos - 1;
+> > > +             /* search previous newline */
+> > > +             while (start_pos > page->data && start_pos[-1] !=3D '\n=
+')
+> > > +                     start_pos--;
+> > > +             if (sscanf(start_pos, "%lx-%lx", &start_addr, &end_addr=
+) =3D=3D 2) {
+> > > +                     strncpy(last_line, start_pos, end_pos - start_p=
+os);
+> > > +                     last_line[end_pos - start_pos] =3D '\0';
+> > > +                     return true;
+> > > +             }
+> > > +
+> > > +             end_pos =3D start_pos - 1;
+> > > +     }
+> > > +
+> > > +     return false;
+> > > +}
+> > > +
+> > >  /* Read the last line of the first page and the first line of the se=
+cond page */
+> > >  static bool read_boundary_lines(FIXTURE_DATA(proc_maps_race) *self,
+> > >                               struct line_content *last_line,
+> > > @@ -207,8 +264,16 @@ static bool read_boundary_lines(FIXTURE_DATA(pro=
+c_maps_race) *self,
+> > >       if (!read_two_pages(self))
+> > >               return false;
+> > >
+> > > -     copy_last_line(&self->page1, last_line->text);
+> > > -     copy_first_line(&self->page2, first_line->text);
+> > > +     if (self->maps_file =3D=3D MAPS) {
+> > > +             copy_last_line(&self->page1, last_line->text);
+> > > +             copy_first_line(&self->page2, first_line->text);
+> > > +     } else if (self->maps_file =3D=3D SMAPS) {
+> > > +             if (!copy_last_entry(&self->page1, last_line->text) ||
+> > > +                 !copy_first_entry(&self->page2, first_line->text))
+> > > +                     return false;
+> > > +     } else {
+> > > +             return false;
+> > > +     }
+> > >
+> > >       return sscanf(last_line->text, "%lx-%lx", &last_line->start_add=
+r,
+> > >                     &last_line->end_addr) =3D=3D 2 &&
+> > > @@ -464,6 +529,7 @@ FIXTURE_SETUP(proc_maps_race)
+> > >  {
+> > >       const char *verbose =3D getenv("VERBOSE");
+> > >       const char *duration =3D getenv("DURATION");
+> > > +     const char *maps_file =3D getenv("MAPS_FILE");
+> > >       struct vma_modifier_info *mod_info;
+> > >       pthread_mutexattr_t mutex_attr;
+> > >       pthread_condattr_t cond_attr;
+> > > @@ -474,6 +540,18 @@ FIXTURE_SETUP(proc_maps_race)
+> > >
+> > >       self->page_size =3D (unsigned long)sysconf(_SC_PAGESIZE);
+> > >       self->verbose =3D verbose && !strncmp(verbose, "1", 1);
+> > > +     if (maps_file) {
+> > > +             if (!strcmp(maps_file, "maps")) {
+> > > +                     self->maps_file =3D MAPS;
+> > > +             } else if (!strcmp(maps_file, "smaps")) {
+> > > +                     self->maps_file =3D SMAPS;
+> > > +             } else {
+> > > +                     ksft_print_msg("Unknown maps file %s\n", maps_f=
+ile);
+> > > +                     ksft_exit_fail();
+> > > +             }
+> > > +     } else {
+> > > +             self->maps_file =3D MAPS;
+> > > +     }
+> > >       duration_sec =3D duration ? atol(duration) : 0;
+> > >       self->duration_sec =3D duration_sec ? duration_sec : 5UL;
+> > >
+> > > @@ -540,7 +618,16 @@ FIXTURE_SETUP(proc_maps_race)
+> > >               exit(0);
+> > >       }
+> > >
+> > > -     sprintf(fname, "/proc/%d/maps", self->pid);
+> > > +     switch (self->maps_file) {
+> > > +     case MAPS:
+> > > +             sprintf(fname, "/proc/%d/maps", self->pid);
+> > > +             break;
+> > > +     case SMAPS:
+> > > +             sprintf(fname, "/proc/%d/smaps", self->pid);
+> > > +             break;
+> > > +     default:
+> > > +             ksft_exit_fail();
+> > > +     }
+> > >       self->maps_fd =3D open(fname, O_RDONLY);
+> > >       ASSERT_NE(self->maps_fd, -1);
+> > >
+> > > @@ -675,20 +762,20 @@ TEST_F(proc_maps_race, test_maps_tearing_from_s=
+plit)
+> > >               last_line_changed =3D strcmp(new_last_line.text, self->=
+last_line.text) !=3D 0;
+> > >               first_line_changed =3D strcmp(new_first_line.text, self=
+->first_line.text) !=3D 0;
+> > >               ASSERT_EQ(last_line_changed, first_line_changed);
+> > > -
+> > > -             /* Check if PROCMAP_QUERY ioclt() finds the right VMA *=
+/
+> > > -             ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr=
+ + self->page_size,
+> > > -                                       &vma_start, &vma_end));
+> > > -             /*
+> > > -              * The vma at the split address can be either the same =
+as
+> > > -              * original one (if read before the split) or the same =
+as the
+> > > -              * first line in the second page (if read after the spl=
+it).
+> > > -              */
+> > > -             ASSERT_TRUE((vma_start =3D=3D self->last_line.start_add=
+r &&
+> > > -                          vma_end =3D=3D self->last_line.end_addr) |=
+|
+> > > -                         (vma_start =3D=3D split_first_line.start_ad=
+dr &&
+> > > -                          vma_end =3D=3D split_first_line.end_addr))=
+;
+> > > -
+> > > +             if (self->maps_file =3D=3D MAPS) {
+> > > +                     /* Check if PROCMAP_QUERY ioclt() finds the rig=
+ht VMA */
+> > > +                     ASSERT_TRUE(query_addr_at(self->maps_fd, mod_in=
+fo->addr + self->page_size,
+> > > +                                               &vma_start, &vma_end)=
+);
+> > > +                     /*
+> > > +                      * The vma at the split address can be either t=
+he same as
+> > > +                      * original one (if read before the split) or t=
+he same as the
+> > > +                      * first line in the second page (if read after=
+ the split).
+> > > +                      */
+> > > +                     ASSERT_TRUE((vma_start =3D=3D self->last_line.s=
+tart_addr &&
+> > > +                                  vma_end =3D=3D self->last_line.end=
+_addr) ||
+> > > +                                 (vma_start =3D=3D split_first_line.=
+start_addr &&
+> > > +                                  vma_end =3D=3D split_first_line.en=
+d_addr));
+> > > +             }
+> > >               clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
+> > >               end_test_iteration(&end_ts, self->verbose);
+> > >       } while (end_ts.tv_sec - start_ts.tv_sec < self->duration_sec);
+> > > @@ -758,17 +845,18 @@ TEST_F(proc_maps_race, test_maps_tearing_from_r=
+esize)
+> > >                                       strcmp(new_first_line.text, res=
+tored_first_line.text),
+> > >                                       "Expand result invalid", self))=
+;
+> > >               }
+> > > -
+> > > -             /* Check if PROCMAP_QUERY ioclt() finds the right VMA *=
+/
+> > > -             ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr=
+, &vma_start, &vma_end));
+> > > -             /*
+> > > -              * The vma should stay at the same address and have eit=
+her the
+> > > -              * original size of 3 pages or 1 page if read after shr=
+inking.
+> > > -              */
+> > > -             ASSERT_TRUE(vma_start =3D=3D self->last_line.start_addr=
+ &&
+> > > -                         (vma_end - vma_start =3D=3D self->page_size=
+ * 3 ||
+> > > -                          vma_end - vma_start =3D=3D self->page_size=
+));
+> > > -
+> > > +             if (self->maps_file =3D=3D MAPS) {
+> > > +                     /* Check if PROCMAP_QUERY ioclt() finds the rig=
+ht VMA */
+> > > +                     ASSERT_TRUE(query_addr_at(self->maps_fd, mod_in=
+fo->addr,
+> > > +                                               &vma_start, &vma_end)=
+);
+> > > +                     /*
+> > > +                      * The vma should stay at the same address and =
+have either the
+> > > +                      * original size of 3 pages or 1 page if read a=
+fter shrinking.
+> > > +                      */
+> > > +                     ASSERT_TRUE(vma_start =3D=3D self->last_line.st=
+art_addr &&
+> > > +                                 (vma_end - vma_start =3D=3D self->p=
+age_size * 3 ||
+> > > +                                  vma_end - vma_start =3D=3D self->p=
+age_size));
+> > > +             }
+> > >               clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
+> > >               end_test_iteration(&end_ts, self->verbose);
+> > >       } while (end_ts.tv_sec - start_ts.tv_sec < self->duration_sec);
+> > > @@ -838,20 +926,20 @@ TEST_F(proc_maps_race, test_maps_tearing_from_r=
+emap)
+> > >                                       strcmp(new_first_line.text, res=
+tored_first_line.text),
+> > >                                       "Remap restore result invalid",=
+ self));
+> > >               }
+> > > -
+> > > -             /* Check if PROCMAP_QUERY ioclt() finds the right VMA *=
+/
+> > > -             ASSERT_TRUE(query_addr_at(self->maps_fd, mod_info->addr=
+ + self->page_size,
+> > > -                                       &vma_start, &vma_end));
+> > > -             /*
+> > > -              * The vma should either stay at the same address and h=
+ave the
+> > > -              * original size of 3 pages or we should find the remap=
+ped vma
+> > > -              * at the remap destination address with size of 1 page=
+.
+> > > -              */
+> > > -             ASSERT_TRUE((vma_start =3D=3D self->last_line.start_add=
+r &&
+> > > -                          vma_end - vma_start =3D=3D self->page_size=
+ * 3) ||
+> > > -                         (vma_start =3D=3D self->last_line.start_add=
+r + self->page_size &&
+> > > -                          vma_end - vma_start =3D=3D self->page_size=
+));
+> > > -
+> > > +             if (self->maps_file =3D=3D MAPS) {
+> > > +                     /* Check if PROCMAP_QUERY ioclt() finds the rig=
+ht VMA */
+> > > +                     ASSERT_TRUE(query_addr_at(self->maps_fd, mod_in=
+fo->addr + self->page_size,
+> > > +                                               &vma_start, &vma_end)=
+);
+> > > +                     /*
+> > > +                      * The vma should either stay at the same addre=
+ss and have the
+> > > +                      * original size of 3 pages or we should find t=
+he remapped vma
+> > > +                      * at the remap destination address with size o=
+f 1 page.
+> > > +                      */
+> > > +                     ASSERT_TRUE((vma_start =3D=3D self->last_line.s=
+tart_addr &&
+> > > +                                  vma_end - vma_start =3D=3D self->p=
+age_size * 3) ||
+> > > +                                 (vma_start =3D=3D self->last_line.s=
+tart_addr + self->page_size &&
+> > > +                                  vma_end - vma_start =3D=3D self->p=
+age_size));
+> > > +             }
+> > >               clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
+> > >               end_test_iteration(&end_ts, self->verbose);
+> > >       } while (end_ts.tv_sec - start_ts.tv_sec < self->duration_sec);
+> > > --
+> > > 2.54.0.545.g6539524ca2-goog
+> > >
 
