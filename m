@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69CAFFF885A
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 05:57:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A63EFF885A
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 06:05:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5FF76B008C; Sat, 25 Apr 2026 01:57:04 -0400 (EDT)
+	id 95B8D6B0005; Sat, 25 Apr 2026 02:05:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A11016B0092; Sat, 25 Apr 2026 01:57:04 -0400 (EDT)
+	id 8E4B46B008A; Sat, 25 Apr 2026 02:05:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FFA76B0093; Sat, 25 Apr 2026 01:57:04 -0400 (EDT)
+	id 7861E6B008C; Sat, 25 Apr 2026 02:05:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D4286B008C
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 01:57:04 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 56E5E1B7173
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:57:03 +0000 (UTC)
-X-FDA: 84696019926.29.CF4D0CF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 612026B0005
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 02:05:28 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0DD3CC136A
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 06:05:28 +0000 (UTC)
+X-FDA: 84696041136.20.AE80CA9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6A04080009
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:57:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="csaj2/sP";
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 25F5040007
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 06:05:25 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XaW2yCS2;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777096621;
+	s=arc-20220608; t=1777097126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/SAdnBTygtTh2NK8lr0Q2fCwrNkVrYhcyCoxfv0ysc4=;
-	b=Wafdxt94sv8oDwmVC3jUuphNUijF1RVRAKn3CvBE76w7FDSqmU4SAWGZb+JZC4slj7m3Gu
-	yyB3KkQtZbYy7JpIjlt9YoCuRYYxZ0M/4q4nUfKbWfo0PYZ2ZRQZwdUIrxR/E8M5TzcGvz
-	yi6QWRjh/nMYBmB3oUDJAIjCS9aEDVM=
+	bh=+sH8zZhyp0kpjNtyHs3QHMdsCqlwUlLft0+pZyKCqGU=;
+	b=EG8vSBBOZGRysJiDi8uK0bxpUzW2Om1wzymEnTD0P0NaiCm3tI8fNbx9p4t64V8xEiso98
+	bz12DZcvagPF7yUl0Ye9U7b5MNYg/rPlTssVn86QBzrYsFKEPaS24nT8bWqZ26eUfaTiMi
+	IMsQzsH/aDv1DVU2cmu3SBbpXXoR+wI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="csaj2/sP";
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XaW2yCS2;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777096621; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777097126; a=rsa-sha256;
 	cv=none;
-	b=SSfI9ScSofewPg0w4n4SDctnvB7nFcpRSag63CMeLiDMsSsaPsdPIM30W7d7AkSt2whSf4
-	4Xz9/rHlMaHLXSj9MoaXp3vo1ZVCvGKVv4iZdfbNdHjXEjRvINUa0SlshL8iRyIM4nOzxu
-	5rzDtOapw98qq5ECEKhopP5N7BxZX2E=
+	b=6DdhahDjwCYVNAVcSfjjVOt9M58kbp5W3aJ75Q/ejNK6c1vKdGxB+XM6nfCAi/s+GO707x
+	vzmRTE8PsCrgu2cZV2w/12QKbkK6ptu78d27bWzKzot7RZnuO7Rkqo3cYwKXUXypW9Ozvc
+	fySXtivL2Y3UoGQb7AJMUfOvbxu4vJM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43ABA43AE2;
-	Sat, 25 Apr 2026 05:57:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD955C2BCB0;
-	Sat, 25 Apr 2026 05:56:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E1A2643C66;
+	Sat, 25 Apr 2026 06:05:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20932C2BCB0;
+	Sat, 25 Apr 2026 06:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777096620;
-	bh=Tm1RVF/otoy7t8GU5QzG858Hip+jjhcSOcigpbnnIKY=;
+	s=k20201202; t=1777097124;
+	bh=fCn5CkE9SAvKIPG+1QSeNXcmbKoRK85ZM5U75VHX5pA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=csaj2/sPuUjak144yih/NYw1vSry/TXCHzWpoDZcz5rAcuuVYu5iInicKb4zlCr44
-	 w9BepnEXbI6L9DWYUaTMPSi6oeEGk7YcprFxmNZus0KmJ4M5azn8XHPlou0JYacw+h
-	 bDvFfwrtUnik8NSo1Gm7EzIXQazOuvmYF2mWkscyHv85tIwo2FAqHrxyOovalwtkGE
-	 FHiuWIzk5oN8en9lg33iJ/GvC8hEbbBfsyEi5oGw6YUXwmHbVDdhDNCIbdUtvfSzXj
-	 8W3+FjlTTLkY0fd5L+eBYd6NWQQo70jpddYtlprwAlT/rvNwT11pUuqG12oFU3uNA3
-	 lIqP29VveexVA==
-Message-ID: <602b431e-244e-4171-bc82-6ba7ee71fe65@kernel.org>
-Date: Sat, 25 Apr 2026 07:56:52 +0200
+	b=XaW2yCS2subdMaUlxpPlBvDvgFPt6XRix/Vipx7bAXFR79GRy5+gY88ihVJGTr4JA
+	 DwB90CNgUSlyrNWLInV70jqwTVCnzO4xgZPKk182bnCJGFpjEGwenXcB5mHQmXIeKG
+	 GvumtJwbBFSSrrR5IFwDr0V0RpqsY7Vjqc4/d+MRP7BeDD7nfDcCu20Wd06zcskmZ9
+	 EQ92OFzv9q5tLLJNNNosWWF6NAj6LihNtf8JUHYhizq2RPBBJHh+2NTxD8JuOchddU
+	 5h8QtuloPhsrfbhZ6EsqJH/a9jSXs9R+3ljsvwO2yizfzb9yIcDGayxEa7sAehhNZf
+	 8T8jq2b+pw3VQ==
+Message-ID: <652b4a01-2382-4faf-bc1c-f127ee0b2c75@kernel.org>
+Date: Sat, 25 Apr 2026 08:05:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
  memory
-To: Peter Xu <peterx@redhat.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>,
+To: Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
  "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
  Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
  Sean Christopherson <seanjc@google.com>, Paolo Bonzini
  <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
  kvm@vger.kernel.org
-References: <aeImfRrrvr3UoKtL@thinkstation> <aeTnlQUOOh-dHG8z@thinkstation>
+References: <aeTnlQUOOh-dHG8z@thinkstation>
  <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
  <aed6fHLrIdahbdY3@thinkstation>
  <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
  <aeorZMvKwu8zKX5i@thinkstation> <aeoxnuGKO3uqS2kG@x1.local>
  <aeo5IPpQi7onyjTF@thinkstation> <aeprnnccJeyHB2rt@x1.local>
- <17b0dc02-eee3-46d6-9afb-5f81a3a20216@kernel.org> <aep8tsYFfr_Xe54q@x1.local>
+ <aes7b17nG0cXrtEd@thinkstation> <aetZUOINzfTXChLL@x1.local>
+ <aetyhki-UD70dyRL@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aep8tsYFfr_Xe54q@x1.local>
+In-Reply-To: <aetyhki-UD70dyRL@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5e85fg5ir7gb4359ogqsu8am6yhnyznm
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 25F5040007
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6A04080009
-X-Stat-Signature: u8dfry68qb399iajph3gefo7bmjk5yb1
-X-HE-Tag: 1777096621-300948
-X-HE-Meta: U2FsdGVkX1/w0h78SZDo324a7bba4BBMnki9MhAdmgKZJCrN2ZxWAg4fD9R8wsnzTib9yv0nrDQGkmAbhMiJYpn446YREWy9XLFRcIjwR7RSQ/+QGnmLNDGdJQXRMcDqspabYuQKvlZT2KO9IUH9JtOueFCtNEi6gtppKFFuVrjAl65aLCYRnd1NCL6hpp01HOV3XsOiWuoHICSIlRQTU+T9waG+ZHmDmUEZY/33AjOubKgdrP3FOSSTbryk5pnML8q/F7l3NQSk/+MeZFYFluBjnaLRYJhm0ULYPGdg/+ZJhsSacxGHP0K1s7Qhf4VOubvFZvRBmYGBeczbrpCOQ8/E8eIr1b/WL6m8ragO2zCjWZ7MsBXRYkva3s5/lW7rByN2+HKh2gEasy0V06WO/YvOU3rY2cFAzn4w+SHRSNgaCHn5+G5i/Cb0vhDu/wfKiJEl+NhF/QsyVGAwppMcfSPzIvcX8Tj/jcd+huhJVL1vpwst0UDq0HK6kXKZcrIZPn2FBhYUQ0NB7epEOjJfIUTLBH+q6WZ3ABfqZ9NlznwApLaExcrYL1VcwfUYBOin317MHvkHGYoiso1Ie+34HhzcecEDqGyAmghvGACyA3Rz5wr/EYDJ7sph9He0y79fn3zrRavAg0KzBqX2FwuVSijG3P92YU8lsZeWuEN1Wa1TnSSgvArq47oOVHP+coyDpNNms69TR6nKwvprwCEObS8se7ZCmC9gN0oTEDtvzYNXB4aymBbjD0FnAYmbVGvTvQyH+hudRtzeiXyNa6M2MWI4sFud6cXsd2BbhjpaGuJIbL9pM0uT7DpyfQo6yYofG9b6yrymJ9WAnE5nenvQZduBzW2VyhpkRpsNEDue4ux/1xdhFriYbgyyQlTiZqqxg8nbJTWz2LaUNHyAYNSgkHcw/rYpNu4qlTZtYqAYdfVnVeHjw74F5ZSNtHaa6mrEObmvbkltf68fHvbIQOB
- KwGqwfrk
- e2eNnkJifZcVjaZK40HZas2Vc1q1PgZWDO/P2+S46Aj43BLuvQ59zvWspRSpLOpurMjmPk/1erSrASNpNn4sfhOl734Z7qS0iG6pdqQBqokBT1lTynW398ulXlBvDWad26Qnl/2ZELMCCh4+/94MsFPg1DaWx7JIQUl/KmI+wlD/TSFz9hpdKFqZT7tVbiEeP9RnIjaKs9wQQWLsOf2h9j0+0uEDlm6hVDXgwEbb1DwXnrfKGL6N+ULKAiJgWbNMdApCPeWmCur8x6PQZpmFgoe2a/6u2QGzNu/vQ
+X-HE-Tag: 1777097125-861517
+X-HE-Meta: U2FsdGVkX1/JtwV14ez4cVqF3bfvRu6Z0uybFR4alNpSE26dCjkVWOBaXqSjeXMvHvNJLwFQWc8WwxJ6N1xM/Vb7X509HTOFNmwSfwAXtvnwmF7zL46p8GgrxzLTWmLkHaGNJ+dcMTNtOQuZyAqS33UnMqMuWIOBTKxTzTdCdT3bk+dRTacAS+cAuzPfqlX3XtWfMIOWvE9pye+c11mljzh5N0FTuaD8fjyeimk101nD5efiHQsvaathY+ZtpLZUggAF/UwIchG5gaKudrQ31/KNbhEdPY4DWVVTXcXL34RO01Vkjb6+fhjvhd9Id5JXr/g/+pK14T5I8HEPkk/j3L0cA3zhOmKc0eUvfmF6jUyUv23RHD14WlSVcTdpt8bwqd3cVtpyywR2k7eWVH7RafRF26SsDegrRzqlPnt/XOer3XyaYJ5DfPpYWIRYZ9JVCSsRWZfRNc6SbaRS8PE9TYdH1mW4jFza0Fu+o9QBSqaAuUb0cI35yqiRG5pBQjBGUdy/1ebAU4hp7tzbOrifJDVY7G/I9AHXi6Qy3/ikeqBcvUEUtCeM/2jvgil1t2mtjwMu/NkM4L1RBhxwEkWgsPx4bA5TaiKnH2TM+chqUgHXhCbA1EHdNGuwkHp+NOfZ4A1Aa6b736u926034qyYzWUMsBXtyqI0FP/4QhFdG7ZnWQzMMEu5XGwSXQvT/2/6s62qYhlznybW9i6gxg5uRYSK0tRJcKUbajLJBl5RF9z0+00j206/ZZYKi3RGWm+JR8IRmY35RtOVKUwJho4WT8yjqbEp8LTLATueVjZ1s7KeLG5mkb5y+zpNixhK0ZFgmwHV5VHRLTT5gk42LLLvO5q2gfw/Jbse/3+JWRUrsbEnNTG42EYLYTrptRdRuhOXuxUI/w6BO+ei9JWQjbtDAO4guUUA8gZRPdmBnN5js08ykm6BxRx8gHcRzAuNhrOdA/8qJ1kmwGpMVMC9lDJ
+ R4KvJNo8
+ 7BHAEuzLugDYL4H/LTSK54a4PvKLctJguujdN/9IwieL1NmXTehhz7+X+E2hNCR4YMPygjrfz3fb45mwG65FmH+WvbXhN8rjtvbriwApEIAkX58RYnGjGuntC8eQq4M8VgsBvf/cj4fz6WkAQvmPM/wG1gOfy8mKl0kq0YWHPWNAU0Ow+lAMseRF5FeVa0z74oDrTqh98MsjXvWuPKo8LdsE1oKeFkNnFxVDAtF0S/A8tKOE4A9QkEBgEoWzIPbJjTGKH52Rmc8SHmovBjG4Z1XCPVNroNeIbIlRX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,51 +152,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 22:10, Peter Xu wrote:
-> On Thu, Apr 23, 2026 at 09:25:30PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> The other thing is, as I mentioned in the other email, I still don't know
->>> how the current RW protection would work for anonymous.  I don't yet think
->>> the user swapper can read the anon page with RW-protected pgtables.  So far
->>> my understanding is maybe you only care about shmem so it's fine, but it'll
->>> always be great to confirm with you.
+On 4/24/26 15:49, Kiryl Shutsemau wrote:
+> On Fri, Apr 24, 2026 at 07:51:44AM -0400, Peter Xu wrote:
+>> On Fri, Apr 24, 2026 at 11:34:48AM +0100, Kiryl Shutsemau wrote:
+>>> Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
+>>> memory. We need visibility in the virtual address space domain.
 >>
->> I wonder if uffdio_move could be used for a swapper implementation instead?
+>> Yes they are, but ACCESS bit isn't.
 > 
-> If RW is justified to be useful first, maybe.
-> 
-> I had a gut feeling Kirill's use case doesn't use anon at all, then if
-> nobody needs it we can still decide to not support anon.
-> 
->>
->> If we ever have to read from a protnone page, maybe we could teach ptrace access
->> to do it, or have something that can read from prot_none areas -- like
->> uffdio_copy, which can write to prot-none areas.
-> 
-> Somethinig like swap_access() in my proposal can also partly achieve that.
+> A-bit is not a reliable signal for userspace working-set tracking
+> because the kernel itself is a concurrent consumer. 
+Right, I don't think we want to rely on either the A bit just like we don't want
+to rely on the Dirty bit in other code. (and even SoftDirty bit is a flawed concept)
 
-Looks more like the hammer for the nail here: we could fault the page in just
-fine, while keeping it mapped prot_none and keeping the uffd-rwp pte bit set.
-
-I was rather thinking of some uffd-specific thing that can read from a uffd-rwp
-protected pte without trigger uffd.
-
-> 
-> https://lore.kernel.org/all/aYuad2k75iD9bnBE@x1.local/
-> 
-> There, it was only about reading from swap so far, though.  But that one
-> might be easier to be extended to read PROT_NONE and directly put data into
-> buffer user specified (ps: in my local tree impl I named it maccess() to
-> pair with mincore(), but it doesn't really matter; it doesn't even need to
-> be a syscall..).
-> 
-> To me, the interfacing is not a major issue.  The major question I have is
-> why RW protection can help in swap system impl when we already have uffd-wp.
-> 
-> So I want to make sure the use case can't be implemented by uffd-wp already.
-> Because that's really what we might do for QEMU.
-
-There has to be some added value indeed.
+I do see some value in a reliable RWP mechanism based on uffd. The real question
+is, how much benefit it would bring (which other use cases could benefit from it).
 
 -- 
 Cheers,
