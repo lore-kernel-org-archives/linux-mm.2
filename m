@@ -4,122 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04808FF885C
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 13:53:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0224FF885C
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 13:54:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27E9B6B0005; Sat, 25 Apr 2026 09:53:11 -0400 (EDT)
+	id 16EFD6B008C; Sat, 25 Apr 2026 09:54:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22F566B008A; Sat, 25 Apr 2026 09:53:11 -0400 (EDT)
+	id 11FD26B0092; Sat, 25 Apr 2026 09:54:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 145F16B008C; Sat, 25 Apr 2026 09:53:11 -0400 (EDT)
+	id 035796B0093; Sat, 25 Apr 2026 09:54:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 038BE6B0005
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 09:53:11 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9FF088B0C7
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 13:53:10 +0000 (UTC)
-X-FDA: 84697219740.22.9FC9E92
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CC9334000C
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 13:53:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BJMoP8GQ;
-	spf=pass (imf04.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E93746B008C
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 09:54:15 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADEA7A0356
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 13:54:15 +0000 (UTC)
+X-FDA: 84697222470.02.CD62CD6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0BF2914000D
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 13:54:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0kL6sRJC;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777125188;
+	s=arc-20220608; t=1777125254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OqiP47VwxYnYrJlsTn439Gu2RrPtIy2CXWplvb/r+wE=;
-	b=5Tb4P7SCLIGmUxOySiL/tuHlNohwEzOgOZ3mXfaCpJdSbyj8btMNu+LDunws53IabWAgE0
-	KdsLPOgjhbWBAiZCba6aupVU7EsyLqOQqqHi7LgvBd/kyaomsbLDYznCxV5mC9ZLmDzJdW
-	2N+/NVGQnowQbcgz/FtEpeCSXxbzJJc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BJMoP8GQ;
-	spf=pass (imf04.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777125188; a=rsa-sha256;
+	bh=1ZoQ057GgHTHJZFfIBdjhqZTkWuihzM7v63pjaY7gqg=;
+	b=Lyvi7nf2TAcBq5dLjtcdYlTmlIEqHqUUOkpDL9nX2WCAMeuopsqeJDzjGYKLKEJejAVQRm
+	E90x2krU7xjGJ/VkDnCq3//IIQTrgJz1g/pU4IFnRQbkCMe5KNWPRyMVDb9N+nRNL7XTAt
+	rcoid2qYhS+iiaQQtwH/71/u4RfOwMM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777125254; a=rsa-sha256;
 	cv=none;
-	b=xNwdg/IWpkg07mUL1GyGljLGOgG6q4oYL0gNUVoXTrr2HEpNKNYOa4t/KUkyVVXYPCXAVi
-	aHTPJA7q7w7LVuwYa2fIHCS2sLDCO1DSjkNpUf58Zh0VD0KI881K8rh9dNc2BXYLmawbVc
-	1PGX1ID/9rd0A4WlvvM643KDarIPfBo=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82f8893bff3so4154946b3a.2
-        for <linux-mm@kvack.org>; Sat, 25 Apr 2026 06:53:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777125188; x=1777729988; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OqiP47VwxYnYrJlsTn439Gu2RrPtIy2CXWplvb/r+wE=;
-        b=BJMoP8GQCs6DRb60VDfLclu2xNFkfNjbEPlewvclQn7iiJG41liumbL3Hi/08GoTC4
-         4BWSh4xB75kYb3CkXULl0YkXlfCS7XjxuTGDS7V5yv90NXPWrtTrOxVQruZKWDaH55rE
-         sqkXFbQHi3DvRunPLLFL10r/NsI2chjqHmzRgOmms6PnrqMygYyoXtsAtdY/w3HoUW5k
-         ZXJ02eWeC4VUHvlP6NTU6vGKYb+i7lIFPh3iHJp/G3TtkjgR3B/kBoXoByH5A43v2kNm
-         uE6M8Z6xIVoNZZDiMMAmp4J5MAl+NEzLUA27b0yOaKOmtJdmFR5nUCdphsCmi/l3mJOM
-         ZG3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777125188; x=1777729988;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OqiP47VwxYnYrJlsTn439Gu2RrPtIy2CXWplvb/r+wE=;
-        b=nNMBcWI8Tks18HkDBJQ/M8d5V2KsgPkwCGb0vE4YHPK7E64I7V67fI2GBSStQo2e/t
-         c+/QlaYVovW4oDRtgMzPDLYVC8BLrQxu8FLG6cJti/D6bkKs611hcKqyA9/FzTAcAHv+
-         aMuZPTaF79b894KEeKw0mxV7QxECxYjViosI/MMCrPwR4fturGelJaL+trtNEcDdgEVM
-         AhYb9IOK/wVlKlSTPSu3ClE7EJWonEbYnLDZVMS4Tgl018bmgMuq7DXCm16An4dvpxuV
-         rodw2kS6VQ/Abmffxd4FSoSpE9L6LikUMh84ydN7As3HeIt8yknIA8/UXQ3IJy5MpDyO
-         l17w==
-X-Forwarded-Encrypted: i=1; AFNElJ+mh9Vm32fKPWmaxY/fr3i+nW3Vm/PV2EZCpinM4xcsQ7Lshx1CT3vswpk9bEIqX2yMYXZApvICqw==@kvack.org
-X-Gm-Message-State: AOJu0YydhI31QiPgBfmpHS4L1xOiJ9Pp+cVPJlnx6k9Kfoqq4/i5SADB
-	f1JwiqAj+7R63P0g+rljcforWfi/P6vBtiwN1XENN55zwocil8I9QX66
-X-Gm-Gg: AeBDietG+EUihDpcuKS4VK3YXBMhiD6BPsY20DNuSHu4OKiOblgqe7StLrefaHJ2ghN
-	8xHRsa3h+tr4t8hVlk2HjWNSBpx86of39NA/0VrgCTbqVDxNK693ane+5sbedpq4Mq8fqtAMBxx
-	Tb5YWFsJLdWWkPRvNNfbZvEoUuT40OuHmfsWHsfBlUBcu36vwBSisvlHbg7N6edILBj2X5/OnI9
-	3uJv4wCzZSIXI+li98Ed1NnOLWH9aL1qYqfV8J/3NWcnA4f4uyH623/gMQxDaI/gCnjPrlBTsdn
-	Qd2T2gfdqXHSvpBBlNSuyO4YWfoLgODRSzolAQF3cKStuWoVAgcefSij9JiVQVkOxR+M6Hkyxb9
-	CCt/qPRxru/rXVP0Rhz9UxU4AAsF3F3AahlSBaw2t8YLfDhkpUbHD34VOZ5GgslXfireW3mE3/C
-	FrmsMBrTzsIOR+eJORYFZCDvRnDluEbMGhi5t7A4VqHywh+4dSNoA4hXMYOQBBobf5034=
-X-Received: by 2002:a05:6a00:1da1:b0:82f:2319:7d4a with SMTP id d2e1a72fcca58-82f8c91a5d1mr33328722b3a.31.1777125187592;
-        Sat, 25 Apr 2026 06:53:07 -0700 (PDT)
-Received: from tech-Alienware-m15-R6.. ([122.171.21.105])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec04448sm31761931b3a.55.2026.04.25.06.53.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 06:53:07 -0700 (PDT)
-From: Sunny Patel <nueralspacetech@gmail.com>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	apopple@nvidia.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	matthew.brost@intel.com,
-	nueralspacetech@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH v2] mm/migrate_device: Cleanup up PMD Checks and warnings
-Date: Sat, 25 Apr 2026 19:22:59 +0530
-Message-ID: <20260425135259.26122-1-nueralspacetech@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <b3176027-a1b0-4aea-8401-18cbdad9bc44@kernel.org>
-References: <b3176027-a1b0-4aea-8401-18cbdad9bc44@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	b=tWYbQknFXDmrMbH05vGSKkPX38SUvMLSOE822lBC+JmUWBhA6arbrEywetSLCu8rDm15Wk
+	56TOCFiNx2TGiiSEI8ievpV3s2A8+jVy+q3iCTkEaN5U5a1FdrjGRz6XYVY/pZmDxR4+Ea
+	AkO0tVhksbVOxAgjp4FYw9nWzxh8uR0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0kL6sRJC;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E55260055;
+	Sat, 25 Apr 2026 13:54:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E419C2BCB0;
+	Sat, 25 Apr 2026 13:54:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777125252;
+	bh=rUdHut0GlCu/YVEzg8W+5uhsWoukZ83p9VDTAwAPfH0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=0kL6sRJCj3dAOI67ke33l8+BZ9BD7BTS/8bUUX4bSYv2qyP59nR86sGY0UJYFpdI8
+	 CKtIoCkkz/XQIszfcPPWpdeMxrWNl04RsoVZgYpU1gwoQiUUVVynMJK2i8QMptOC9o
+	 UYS2TIxYAv9LpY0RdoXAn49G6V+SSxrwVa41bXhE=
+Date: Sat, 25 Apr 2026 06:54:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sunny Patel <nueralspacetech@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew
+ Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory
+ Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Balbir Singh <balbirs@nvidia.com>
+Subject: Re: [PATCH] mm/migrate_device: fix spinlock leak in
+ migrate_vma_insert_huge_pmd_page
+Message-Id: <20260425065411.39842a941750fadab250cd79@linux-foundation.org>
+In-Reply-To: <20260425133537.17463-1-nueralspacetech@gmail.com>
+References: <20260425133537.17463-1-nueralspacetech@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0BF2914000D
+X-Stat-Signature: rwqcb6dekaqns8gjcjx6mzreyoj99bc3
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CC9334000C
-X-Stat-Signature: c11w7afzp66hytqfpt7nu53jujk9dqmd
-X-HE-Tag: 1777125188-176125
-X-HE-Meta: U2FsdGVkX19Y+aD4QD6QodBZJEdEyw2+igMY0nutjaX4TC4AvCU7UkTvx3gjwoQ2wRBnFtAGknLBcgeTY+zJMe6pMPLGVJ7p9ZKq9qz3LaphPu6XIAi32wwnH9Z2kHH5hPXQSyc932nQZms26gsT2XpFBVgccWnEZHq/13TFz0xkXMhfjsVzNSr6l44NMalXTHxcZF5AhdkkIcHqD0P54bolIoMlasBz3WI0IBiX6KlFVAvNzUBmoWUhxiLuOFxMukEEszyHC9Gn6IMvi3mcit+NxDDSty3NSlJlQAFJ74kG5RKo8Y/QBI7yALA3+8ERVQMDyOzjz8fd1xy4WBnLBwM4LEyjmEaXCs53Kr4gvIy5Md3pm5GSrcyoRzLU45VFZTDfeGDjwBBgmgeZg0SZGptoKi3xgt8ylo7PrfTS3/5pGYZmjByy5oGNN5eEaRHd8lMDgYo7q1XLZia6TapfzmHa5l161OCA7jlbX+mlXKZAJxMlTCis6y+ayTdBjgj6qntYvG/bvrEpGxkV8GV7RlLRMSWkqJjbawAhEeqxfMjV5MQr5uIRMRtUSwBf2brFdpRmhC78E+X7in6x+Pb+xqVLctLRXFpri67lqd8b4nnIdGA78pJtNdJZ65C8nYxD6qZ9mkPRCwYBjxC8QkSMOy/ORwPUSt/VcQZydbE7ztSXvDOJQeERtcSH7Lh4jgGq7FIyDU252xr9YdNyjh3jwlzqwrKkM7ShcvX7wlLDhYM4IbiiCo1/DYPz8NaL2CtX/6Y6Nw5m2UFVn3N7TmlKOCDUuHDXEdncfF2zJhkEfO+5hFezCkN40CvbL9Jsy8eFqm2ctvCgB1OxNQFEZFrhMKQv54xy+3VwmzUmUQ21IS3BUlqdePSwKhkX0dyY6cjp6JYMg30ZvaZ4Y8/bhB2iLDzfsRiXXU+4Sj1/5lrvuFYy84hnf2Cz12pUlUJjboUof1t4AI97IhkWmdaS1MQ
- RkqP7LP5
- L+OXAyeeWC+nVtzDcW+eN/P3Wp5CktwGC9SooH7WFV5oRru22jaVf1EqCB4vpybIOZwK/QI59/xk2C1zOOZ9nE30k0qqpZDltYILyQ75kYmsXaLC1kzpSFmEUlJk0C+XINZwYdzeKC1fctwuytaMTZsN0/MFDQmuS4f8RDH25rgJEURE4+8/rf7ZrhyPGNpIa8thoP2GMqKrJOOZuuFxNYD+HLhzOgAYfgWLEWBuL0ybdfCdj94struOTTiikx3zGC3uF05xTAYtOIP6R/kekD3SyVt6H3dAXLJ8K1+t7jDelHI3yWMKVOhSDNvntfJl4YQOrMvJ9Ss5OFz5rjAgiWboTMNW9QVEX4yi5Be60LsrTfegsfw1V9Q6D8DEAH31Me+F5rHNUWhW6o9y9gXxOvhv95jjXOzo0IUPbufMWDUo2PPpZgscsxa+IIAGcn/i7i7q3KEdZor+aIQmD9aWM4I4/NrilDRDs3xb59BqzTYenxdUP1s5/yY4YLPKO2/ek+FxZ8zbVFgAK6nd9DSGanAvBsVbX18UOQJCniJrnyJADKJ49E4Pj/fsOow==
+X-HE-Tag: 1777125253-489021
+X-HE-Meta: U2FsdGVkX19Bi942Z1Efo0wGfMAG5x9PEuQ2R6V/PZtfx9O1xA/qOpBai7G8csQhETfgczLAVKAizwW3BR3sXqO9Q6pfiDN5Wlo3geLK5+595uYjS4mdc9W2wBrzQO0icsxMF8eVMpYHP9urxPFPKomAI8H9277t6mxuCEXe+jBnQCanLehFHPBWev8E+OQy1C9rCvyJFUDyoSIAULwz8/DIeigUAMPwHaCWAX4oPptJDufxYcJ8TDW/ZXYTZzKND+QnUke5CPfca48iyMdMKOIqSi81ZthijsrxMbKb5cayJGV0cES9qUkZGBMnDWSoqVQ8WVhYx6ft47Othb2ZIrg+8kVXfWqfg7lmB4dnqj9iBsOvYmS+lCVg5dHVlhFvZomy34BQfTivDYXRtO7gNNbQbhUOvUwq+Cinphho41laR3lSlAY6B4AT3bm5lhXP2500m9wgl9mGxPnUfiJGUjeGYyHNzPVB6KAQATxBSZADqc9QHd+CR+splJXUpP+tMKdXfhV6Rwj23ZaiDhHVL5uKriRcKjagQDOzmaia32XFnEG+BYUtzP0nee6WTMB2/5qDMOhtOwHgXn+6jJM9yb+07d4dqQULgesFPUExcOtog5kcMECOuRJ1o3yDmbhI49JHWoDi9iifYtbHCwpnHbviVtAwaDz5kOyNIwiHX3Bcj6rdVayIC/G1Hr2ptbifd8HtDT8G6jM8oMzYK9Q16wXFJa+pZcKmFDW8/LdKH6ICRZWqRCabq7NIl6bEWWJ+1WRkCjIUtQK5/mBM+RS6nYZYzKzA9c6S/1mHpictHS3gFFLWIkpTQP4zqsgho/HqudC5ySlSU2G3tEzOfvsVsdhrWXGvSDFYuh5nY6UwLAvJ4zoqgErNuRKI3qbwQ6S9otA3IkRn8uWTEyCbvTwG5Cf7pFxzzS8yHmokQcy6Oy+rMkXFKGYTaTCoOBOwE3xxip34t4JdNOvP2LZU8FI
+ ZPvq3G3s
+ nt5JN+/R24TESMmVIJMa38uFgX0SkIuETRirhUOKBXakn1hv9qMc9bh6EzS2cYg1HLwDRJ1DEPnhI5qSoSGXa6xr+5P9u4wh5Mm8PQiOxw/DP+vjerTB52WFo07YzytzbZHdcEs5TaW1PgOiJlKCNwAOISGfcbSNSNfJ9emtJ99Cf1dn1HFxNGoORwooO0jpDk2qjUQmZe8PLRWmCeLEzImojEwCitPzXGgSYJv3aNV0KUEO6MVaVJKAUU7hRpiKxLBY99iPuALLvjImeQzSH57EEiaDG/DTwZSKeEdLDqLjYSiLsMHs8oPjloqN9CZDcXzIT8bwDxNxRjhDyzjrbKaVvT00e72f40Uus9tlJ9HjRkH3WCi7OXae7QaXnAMgF7lVAWrJWvd30oy++UeNztFTkTaKs9sgLedwr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,14 +94,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 24 Apr 2026 20:25:06 +0200, David Hildenbrand wrote:
-> No, independent issues -> independent patches :)
+On Sat, 25 Apr 2026 19:05:27 +0530 Sunny Patel <nueralspacetech@gmail.com> wrote:
 
-Sent two individual patches for review as discussed.
+> When check_stable_address_space() fails after the PMD spinlock has
+> been acquired via pmd_lock(), the code jumps directly to the abort
+> label, bypassing the spin_unlock() call in unlock_abort. This causes
+> the PMD spinlock to be permanently held, leading to a deadlock.
+> 
+> Change the goto target from abort to unlock_abort to ensure the
+> spinlock is always released on this error path.
+> 
+> ...
+>
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -850,7 +850,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>  	ptl = pmd_lock(vma->vm_mm, pmdp);
+>  	csa_ret = check_stable_address_space(vma->vm_mm);
+>  	if (csa_ret)
+> -		goto abort;
+> +		goto unlock_abort;
+>  
+>  	/*
+>  	 * Check for userfaultfd but do not deliver the fault. Instead,
 
-1. https://lore.kernel.org/linux-mm/20260425134453.23769-1-nueralspacetech@gmail.com/T/#u
-2. https://lore.kernel.org/linux-mm/20260425133537.17463-1-nueralspacetech@gmail.com/T/#u
+whoops.
 
-Thanks,
-Sunny Patel
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Cc: <stable@vger.kernel.org>
 
