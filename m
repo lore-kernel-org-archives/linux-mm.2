@@ -4,92 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A775FF8860
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 16:09:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDCCAFF885C
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 16:38:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C75A56B0088; Sat, 25 Apr 2026 12:09:50 -0400 (EDT)
+	id 155FE6B0088; Sat, 25 Apr 2026 12:38:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4D0F6B008A; Sat, 25 Apr 2026 12:09:50 -0400 (EDT)
+	id 1076C6B008A; Sat, 25 Apr 2026 12:38:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8AB66B008C; Sat, 25 Apr 2026 12:09:50 -0400 (EDT)
+	id F37706B008C; Sat, 25 Apr 2026 12:38:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A679E6B0088
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 12:09:50 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 425DDC194C
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 16:09:50 +0000 (UTC)
-X-FDA: 84697564140.19.B8B1301
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E02F36B0088
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 12:38:20 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B65C12036D
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 16:38:20 +0000 (UTC)
+X-FDA: 84697635960.08.7A59BCD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 73EAE40008
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 16:09:48 +0000 (UTC)
+	by imf01.hostedemail.com (Postfix) with ESMTP id 84AE440011
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 16:38:18 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tzPVVKPi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dkp8MEy6;
+	spf=pass (imf01.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777133388;
+	s=arc-20220608; t=1777135098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B2Xbr42KweWlmug1UU1TR8tzObfVgePq2EtP7k/7/w8=;
-	b=ELnl8m3qOnE+NCWqKGpSoOJaxrw26QPADn/tNxOswxtmDNlNOSkhpgtjGM9JZs3Dzv8+us
-	yo0L+0N017Uv0cSS9A6RRZcAOq7zFzMxFE6cVuiz1SAcLTsMvH3o2x3cr1DvyL88kP7GF+
-	+RyOmK0ofqGGXD8rBoKvOOAQuLuKhyk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777133388; a=rsa-sha256;
+	bh=0MmHX+mE0A39dIlINHn1FZ1iFXfsddgRRs69I14BlNk=;
+	b=ZcQlx5y7brTNivMQrIKErVSFOCDIgzmETahEJjhWw5vH1ql6P9SZaFn+PXIZv+P/IbNVmy
+	hkmr4FFDXAeAvFk5o7KbZ6Jd3I6vZ9LwYFJK4KguXQYzZTkK9X/IpXb+Yuu7x425NpYI24
+	fPpQcEgG4LwsHFkBv9zggEa4f3uIbWw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777135098; a=rsa-sha256;
 	cv=none;
-	b=0aUt9Y/VzoBeO+juZnbwjOCjmwE41VV+h7/rJKnJn5JVUsui3RUmPAEMUaRa8GR85iCfyW
-	SHyQ4tk3I0gtxxDB6ZHq0pyARR8IVG0HRK9XJwMXo+8p9Pk40QKY4PIFQ7niZbX62frTOv
-	7sulYmghxv3AH7biCYmqVfCfd5LJaCM=
+	b=D1n9dA2UvCGVo9QMzBVyUjAW4BvIxmYC06XIviyTwQ0lCPZn2OibcShNYRbDTvMuESUPvf
+	2djo8xVyvJW6soksA0So+16iQzgLZcEOp1bHUVcE8HT3qTGJor19MtxqmGxwPjwVwSGnP+
+	/DWiCokEeTSDH5Vgrl8inFBifyc8mUs=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tzPVVKPi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dkp8MEy6;
+	spf=pass (imf01.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3C77043F80;
-	Sat, 25 Apr 2026 16:09:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81E6C2BCB0;
-	Sat, 25 Apr 2026 16:09:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 59C774369B;
+	Sat, 25 Apr 2026 16:38:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F4CC2BCB0;
+	Sat, 25 Apr 2026 16:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777133387;
-	bh=B/lgklGe1J5JXKAyck0MPX6Wmp6wz1ndCOue9ot4ns8=;
+	s=k20201202; t=1777135097;
+	bh=EQaknTyW5xfrIybCdsauIZdStSASsj39zFLJnMiJgm4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tzPVVKPihQ9cAeGJzgRwLIjBHoZIftqV9ajNQhJmX+k02XFjVI5kgwRu8DbVr7QMn
-	 J7qIPnY+opMqspKI6iSzRLacFQnXaP/MLfT3tYBBFWGjefvrRFp+bvVN2AcJ6XSjup
-	 NOeJCnWOZdKz0JOSS+bQlO5gjgYhAHNn3FtpUY6EFm/RmRlJiA3P10UY43WhMwAQ2x
-	 fiOmqIyXgDWVZm+leyJJ/a5MxbkfFftUuPk/i0P2gISGXCL3SL8o4NZX10cKpSNoQu
-	 iNsOT06S0XKdPzDyHFoe85HoMkjwetveI1r7TC4Ak41RonQQgqkl/lQX5LG+VBpybP
-	 lD8B5e2YkPIIQ==
-Date: Sat, 25 Apr 2026 12:09:45 -0400
+	b=dkp8MEy6yFyo6oGIcyMXEu1jfTy/7hNVAesl76XcrbMoLka631A+jjV3mUGp2nK0c
+	 c8uou1pbzxT1Gbu4kKSXLNyV4QSkOPHlSeBZlMd/Xdsk4terPUz48fqhUkqncAQUqB
+	 WbOT43uXx5U/gMI6w2dwjJANUgXXjMC0xaU58GZg3Q4MXp9M6j+dtXWcQMfqqJk2Ve
+	 B6zYvzGkkIqJr4Kur/pmx/AMOPPSqE5FWGinQ+/J+89+tBObJgNrkZaDxVM+1v/H4J
+	 L0cfYdvHWg5YYSfSMvPQ/iOKQKZtFjjqrqRYEgSyxaYxM0Oo041NY1zmypkMBSFc1T
+	 bAUpyfNeU0Q5w==
+Date: Sat, 25 Apr 2026 12:38:15 -0400
 From: Sasha Levin <sashal@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, akpm@linux-foundation.org,
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
 	corbet@lwn.net, ljs@kernel.org, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	skhan@linuxfoundation.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC 0/7] mm: dual-bitmap page allocator consistency checker
-Message-ID: <aeznSeoi1qFAVu3n@laps>
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, skhan@linuxfoundation.org, jackmanb@google.com,
+	hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Sasha Levin <sashal@nvidia.com>, Sanif Veeras <sveeras@nvidia.com>,
+	"Claude:claude-opus-4-7" <noreply@anthropic.com>
+Subject: Re: [RFC 4/7] mm: add page consistency checker implementation
+Message-ID: <aezt96xgz_qyf4d-@laps>
 References: <20260424140056.2094777-1-sashal@kernel.org>
- <b001932c-e376-462e-895a-5e4a9c7c0dc5@kernel.org>
- <aeuZcY0u_7PIQb6R@laps>
- <b2a15eea-6ed9-4b35-af68-4586554ad2a3@kernel.org>
+ <20260424140056.2094777-5-sashal@kernel.org>
+ <4b961a07-b72d-4c8a-ab49-23f61ed12b53@kernel.org>
+ <aeuC6TJ4XowazVZj@laps>
+ <aeuFnuiYDBjttEKt@plex>
+ <12985b32-88b3-47ab-8292-2e0ec6f5fbae@kernel.org>
+ <aev-DS4YTp5soVPd@laps>
+ <3146ebcf-5649-44a7-aa21-163bf404c42b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <b2a15eea-6ed9-4b35-af68-4586554ad2a3@kernel.org>
+In-Reply-To: <3146ebcf-5649-44a7-aa21-163bf404c42b@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 84AE440011
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73EAE40008
-X-Rspamd-Server: rspam04
-X-Stat-Signature: byr5ewwhr9jx5oo1tfwt34jxttja5zp5
-X-HE-Tag: 1777133388-296428
-X-HE-Meta: U2FsdGVkX18PW1V1hSv8C1RTfQid2K1b4BAE8q0RqnR4QSa3q+n9HFOJRNRtJep6zLWeCk7UrYhXM0J7ADnW5dLINZMsnSttl5IjXOkl8q0EAl9kf0DeVmZ0DbCXBpNl5pFgVbVnTL0ZVIXM+u/ktd3YHF5aDx07kjHj7ltxrzkxdGiQ+MTEM6k94B+Q09glY4Q7amH1fycS61eemw75jfHIdj+bXoD+PqXf1Nn3iUMTIHIHhO35AWA2cKSCiygfEYcHlsKV8tqD3cxo6TN9Dpi5uHHJSNH+4OkakmA1EiSfB9/NWFkscgD4Icz6SNHKakQ/388e25oa84ppH4lysl8vo3wamx9xtHY5AW1hrgrBJz8x0+4UPrp54csU6n7y7vLTO+X1f3zjvaCdQugTNKxfhbR0CT5o5aBcvIcFkK270YgSnBKYeWgMSYzPaSotMW+gvDPEvJDI2zm5SRTkoB8Yas9RqqIvby8m5ubJo96WmCednIHUMrQ9FpPDdthpr0VHWk8f6dZnndx0EC3nhT9oawaYPtdytL1/s2w25RoLPbfMaast9nsrYp4dsR4YPSwURma2y6lV0zA2IhheDUTAAgo2xCdteOPmflruSE9wSlwqSB3Gygb1tSav9GIyLiqojKhZVTiRPGojyhfbz5FkdAg6yLjCNgCmBHq4ii0o2kUd5HwbpbRW0d6hSoPM3MYlXgHdhdnZBjjnJ2anKH55EbIe6UuT5ObFXn2hH3m/mhT5xvEgIHi3svMu/IJhHC5Kow9ecrMu2le0pRFm5i1H3GDHc1kRFhRKg4wmbx0ua421dJ0af/zzKnr7SNsgZg9xJjgGBd4SQ677E+50LUQ0WaBjf0HB9EwqKPqwIMQAjCU7vkWclVuULkwmbqNlhaXhpc4uYFnNOX1IIgNMYQu6d+JG1sQxVtnnrFktwdSkGfx/CGy+zJGGWtgnM5GTvABcuWUnzl3rHU/bEdw
- 4VtTSwxo
- HJTQaFWMe++YuH2Iy73WFxoBqNby1v5VnSnNMrJ2oCbk6kD/T9iLe9g0JbuWfEZwK08vehkfhnRDW3/y3+Z/mqiI+R1UnE47CaCE97Gsk4KbMQJrGTo60ImgV8JH6gkM4fY4I+1OzoQ6kK8bcLgWnH8m8L3HF1jMeTTR/3hJsLPPLNRtiWiesHLrgmmWznzjvcEW/PctMNUMMg2wzAYKKRKlqEFKyODY8EhOwWyLaudLj97A3/sZuTz/YltnJujbmkTsD
+X-Stat-Signature: hbb94gxn4swt1m3ipjr1qj7fcsceq59e
+X-HE-Tag: 1777135098-700221
+X-HE-Meta: U2FsdGVkX1/lmrVUrHu0ydLh2Z4cP8wn5gd0XvUcz5Qw7dSgh6CuFck7t7i3wFJ2WnLI3Ribmff7L273ei/9CwY537XVUvZn24V0ADU6QSSlmUAHlhTtxexTZ5UOvcELhAHhYiAtR+GG0m7xxzcJzGYLMqPGimx01lw4oJ15Vf581AfEfFCqmJZ9ONBd1NQU3CoMrHQrvzRuCHmIZDe4AsRBMhsvCy82DqyhuLwfBqFo+fYeTYCIHB2c0uup8is5Cs5kF4QUuUzk6xbklRO5J0LxX+p0tOYIOMWp20t7C1RM2e/7WD/K9YrKgfSjXLXqJ+71SN1BTsgHSUnyQ+MPuVirNAMVxUx+BcTokNCtJ3MDmfLFaeS27G2IESKBwcUD4OMIIqPNQV9VZrHoMV5nczKrtBJyS+8enxKZaHvnRBPokttht/5qhhdzC9A3m5J7FsX326+3wdILhOrujef1DBWGOPnyODWhtRhMLuHdhWHSFi1lFupRZ2GwWIqm42jYiYE2bl4eF92xPCGpY2o3iEfSgnIY1rr3/YW9nN6HaBocJw/KFQbHrMoQj8c7njpK19bA9xzoXGspQMIgyHYVqiZsGZw+twUHqOM6TbQJWclf+w7R5p+WHkBe0st8vAY4/pVBu7ENCc2ET3iFTerHkrvhrVvDHZ8G+Toubst+htrhQk7kkKl7wwe4qpfc97fM7ZWYOtFU1wNFiT23EGZzO4rEMBSUsQI4MDJRn/Hqwkex032frgR28e+DPGkmJyn7RZubYcl/MmC7jTFw63RdmA+euRZOwruarDvO8GH8odpRaO3MsGflcyewkijr/ZOxRxws4cGp+Y2nR8BESBbfGCE0/UdyY5l8dWo1ffx+caxDtpvKs4hvR5iuzHEF7T7JcY90QWvN3N0y8oDYb76s5guOX1Aa/zzJlhwhHY+eZRtycjVP4Pu610d+ssxI/8zRKwexfhIqkw+AxIbwvAF
+ 8+3Mpfan
+ C/zPI2FrAgEArtGtJt6/+anzHOCnH3QxGfYzpr9uQDay2KvTcm7N9WBrZnUefjNIBDstqexAu4emlWZT2rORH228m2JOv+CRGAPwmJOneGSpgYAEoFJKfLi3mcQIE4D7VZKbi4GXudw4JmzkvQGkExH9szQF6VGYiMPsqBfbibZA2eb4cXwxLztityKqHEBqsTWT8DKba5NA8i7riizJkVKHfx69Hmte/MIcqIad1vOl4E9/58BxqS08KSlPKfq7xMB5P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,37 +103,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 25, 2026 at 07:51:10AM +0200, David Hildenbrand (Arm) wrote:
->On 4/24/26 18:25, Sasha Levin wrote:
->> On Fri, Apr 24, 2026 at 05:42:53PM +0200, Vlastimil Babka (SUSE) wrote:
->>> On 4/24/26 16:00, Sasha Levin wrote:
->>>> Existing memory debugging tools - KASAN, KFENCE, page_poisoning - detect
->>>> access violations and content corruption, but none of them can detect
->>>> silent corruption in the page allocator's own metadata. If a hardware
->>>> bit flip corrupts an allocation bitmap, the allocator hands out a page
+On Sat, Apr 25, 2026 at 07:30:56AM +0200, David Hildenbrand (Arm) wrote:
+>On 4/25/26 01:34, Sasha Levin wrote:
+>> On Fri, Apr 24, 2026 at 08:28:14PM +0200, David Hildenbrand (Arm) wrote:
+>>> On 4/24/26 17:06, Pasha Tatashin wrote:
+>>>>
+>>>> The issue is that we are going back in time to a flat memory,
+>>>> without NUMA or hotplug support. We need an abstraction that avoids
+>>>> allocating this memory in enormous contiguous chunks, as thit approach
+>>>> will not work on modern hardware.
+>>>>
+>>>>
+>>>> Page-ext provides all of these capabilities, but as you described in the
+>>>> cover letter, it does not meet your requirements. Therefore, I believe
+>>>> a new abstraction layer is needed.
 >>>
->>> An allocation what? The page allocator is a buddy allocator, it has no
->>> bitmap to track free/allocated state of pages?
+>>> If we decided that we want this (and I am not convinced), we definitely want
+>>> something that supports sparsity and, in particular, something that support
+>>> memory hotplug.
 >>
->> You're right, the cover letter is misleading there. Buddy doesn't use a bitmap:
->> PageBuddy lives in page_type, the free list is a list, and page->private holds
->> the order. The dual-bitmap is new metadata the feature adds, maintained from
->> the alloc/free hooks.
+>> Makes sense. Let me take a few days and see if I can find some middle ground
+>> here.
+>>
 >
->Given that you have PageBuddy (first "bit"), could we use a second bit in page_ext?
+>"The natural question is why not use page_ext. The key objection from a
+>safety perspective is that page_ext stores per-page metadata in memory
+>that is itself subject to the same hardware faults we're trying to
+>detect. The dual-bitmap approach works because the two bitmaps are
+>independent allocations - corruption in one is caught by comparison
+>with the other."
+>
+>So you want to have two bits per page, whereby both bits come from in dependent
+>pages I assume?
 
-Hmm... Thats an interesting idea.
+Ideally completely different DIMMs (though as you point out later, we can't
+easily make this happen).
 
-I can see two concerns with something like this:
+>Storing one bit in page_ext and one bit in page flags would be possible if we
+>had a spare bit in page flags ...  We could allocate two bitmaps per memory section.
 
-1. The checker has to be live before memblock_free_all() hands pages to buddy.
-page_ext isn't fully up that early I think.
+Right, I think that the approach you proposed is roughly equivalent spatially
+(though I'd need to check with the safety folks here).
 
-2. page_type encodes buddy, offline, slab tags, etc... and a page that isn't
-PageBuddy isn't necessarily allocated through alloc_pages. The invariant gets
-case-y.
+>But the real question is: how far away do these bits have to be in memory to be
+>considered "independent" and not prone to the same corruption?
+>
+>1 bit?
+>1 byte?
+>64 byte?
+>4096 byte?
+>???
 
-But let me think about it a bit more.
+The notes I have from the research side of things (which should be taken with a
+grain of salt) are something along the lines of:
+
+  - ~79% are a single bit corruption
+  - ~9% are row faults, so multiple bit corruption within ~8kb
+  - ~4% are bank faults, so multiple bit corruption within ~512mb
+
+Obviously the numbers would be very different depending on usecase, hardware,
+physical location (did you know bits are more likely to flip in higher
+altitudes?)...
+
+>"Embedding both in page_ext means a single fault could
+>corrupt both the tracking data and its redundant copy in the same
+>allocation region."
+>
+>I might be wrong, but isn't that the case for any such fault, as you don't 100%
+>know how the DIMM is organized internally?
+>
+>Do we really expect that a MCE event would, for example, very likely corrupt two
+>neighboring bits, or two bits in the same byte etc? What are the odds that we care?
+
+For something like a datacenter deployment I'd agree with you - the odds are
+too low to care. For an unsupervised self driving vehicle, where there's no
+human (locally or remotely) available to take over, I'd like the odds to be as
+low as possible :)
+
+>It's hard to tell here which part of this work is "too research focused". For
+>example, if I were to write a paper about that, I would make such claims to make
+>it sound more complicated than it needs to be :)
 
 -- 
 Thanks,
