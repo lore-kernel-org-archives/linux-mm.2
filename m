@@ -4,88 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 738B4FF885C
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 05:48:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67FF4FF885A
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 05:51:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AE6A6B0005; Sat, 25 Apr 2026 01:48:14 -0400 (EDT)
+	id CC8326B0005; Sat, 25 Apr 2026 01:51:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45E8E6B008A; Sat, 25 Apr 2026 01:48:14 -0400 (EDT)
+	id C78E36B008A; Sat, 25 Apr 2026 01:51:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3018B6B008C; Sat, 25 Apr 2026 01:48:14 -0400 (EDT)
+	id B679A6B008C; Sat, 25 Apr 2026 01:51:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C1676B0005
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 01:48:14 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9182FA0278
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:48:13 +0000 (UTC)
-X-FDA: 84695997666.12.3FF7860
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A29766B0005
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 01:51:21 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 616BD88BB2
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:51:21 +0000 (UTC)
+X-FDA: 84696005562.09.5D7CFFE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8C262A0004
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:48:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=thmNnp1Y;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6923A1A0011
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:51:19 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n4kzHdFk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777096091;
+	s=arc-20220608; t=1777096279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AV1g9Sat2a/9+oVe3xDX65z/aFyH5b3s+05X3o6F9K0=;
-	b=D7OzSoP+Xzh36ShCAZaOIV30H1Yup/l6i9LDOhecAeqWGUYYPCQdOOEs7ioFoX1jpGHg67
-	gqCiYyiPffHOgfm7FEWXAtmhQUyDYXwK5EcxYLzTCBV7Hred/aiKFrhA3HiwwjdaCP90UT
-	kmVdsqqjCjJGnuGSdpOkwul4AiWiJIs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777096091; a=rsa-sha256;
+	bh=kVNv3MXfWzGqAivxHzwdF5oBfIuVHOtLtp36DQh8Y5s=;
+	b=7a9Fy9x8+IWnF/HzPdveMW3H9v0of06g7pSSUkg8n9hJg69wrnplTTZl4f9giE10t/l9uq
+	TNDZlgGRB/3UhuvMvcffp6YRorQVhWS3RUXzNjedVFGVzM0oC4iAHkuQzXpyw6sgXTAZzD
+	5vXK2085ECSEHHs5h/3tPb3Q0Mq7sgA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777096279; a=rsa-sha256;
 	cv=none;
-	b=2rYlV3Mmf2SmwMmaOEaw0fJVr/y8kYN/nEbEZil8zNDvP5rP7v5mrzGyUKZ16xNYM4Ckcd
-	8Hj6hVogCrMi9YE4aif1HiOiGZJu5qgZY0vncsscQSPn0LlNbrmvnaeZBTZdIyCsaAQBzR
-	kvMnE8yqPx7wiAwn6nF9M2ZuNiZE2Dc=
+	b=gFAASCp098Lqicog6rG/+43GMars4tU/yYXJ+nKXOQcQIZdjXqi8Ie6KAzPHZ9ZIfkpvW1
+	LdUXkT/D/XfvECsP9UbU3yOnulsKHC9Skw7W1uh+uT1vU4qcCoEN5sF9iHjMK7hupmQ8jp
+	JcitwZrzUat4dQ8xtJu08sfeLkLegC8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=thmNnp1Y;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n4kzHdFk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5958440925;
-	Sat, 25 Apr 2026 05:48:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0166C2BCB0;
-	Sat, 25 Apr 2026 05:48:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 39E6043976;
+	Sat, 25 Apr 2026 05:51:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43358C2BCB0;
+	Sat, 25 Apr 2026 05:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777096090;
-	bh=TFZoT4ewW+EPY1kuAmOC4+PMIwzgunDufK7tVV63EtA=;
+	s=k20201202; t=1777096278;
+	bh=1TX6ihQk3kucuVDvqFiea8KYgGnEz+xLRlMxsOzGOA4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=thmNnp1Yn+JoZRSrZrnw31qyHr0rBUVFdo5m+quhGp2LjGFrYFb4UIPF/Wx07E2aL
-	 azR//5GhR+f9zh4S3NoiamDS6ftW9JO848KW3AR3TNBsbS/jAW2gFooLe0AUAeQPpm
-	 whRl5VUTGjXRQYFrGWS76ZiiuHhZM50Zghz5WrWK86bcZGnVwwdXYWHxn2WiXMVkxQ
-	 cmaSwx8B7u+0WXo1g+SxrNWFU0gYpRsmmjYujpX3BDnRSkJDzMHdfwIPBRpkD1gt/a
-	 wK5WWKU4G1A3OxYbp7L4ZVo6uX0DYE90Xq3DikbapSu94miVg8RWYrkr3LMupRML4e
-	 rg/FpCe4XsDdw==
-Message-ID: <02e35414-8c30-4753-9403-432d90263f39@kernel.org>
-Date: Sat, 25 Apr 2026 07:48:01 +0200
+	b=n4kzHdFkS93dzBf/0sB8LNKsZ13c/FMalJ7qio3iOrsEsZ7KoSTLEFgzargeBcq+d
+	 91GPSZFDSYKszIoGvVWUcz4DBGBcNf/fGVAheD01TE6yF3/oM/FF2HA4YprwGHF8YC
+	 HmX2P/Ex08ZqCO8bd/tQoXuXA6iN8Z2uBkWM69wbTQhDPR3Q0Nmfh4pfyzsuEO9W1f
+	 Lp/Fnq+oVLRj8WQ1OBEpzbF5vmN6zREJhq3cBavYShrRFJiYGAYG+hxtZAiRVGG9dA
+	 Za/4kBiS4LglmJRU758hdOa5ybFwfbSnO3RsKBwcDgP/VN9eQX/4DO3RF9ii8tmYSd
+	 2szB50df5VyvQ==
+Message-ID: <b2a15eea-6ed9-4b35-af68-4586554ad2a3@kernel.org>
+Date: Sat, 25 Apr 2026 07:51:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
- optimization
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260424025547.3806072-1-songmuchun@bytedance.com>
- <20260424025547.3806072-5-songmuchun@bytedance.com>
- <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
- <4C6CE53F-918C-4D03-9DBD-1745E28A2D9E@linux.dev>
+Subject: Re: [RFC 0/7] mm: dual-bitmap page allocator consistency checker
+To: Sasha Levin <sashal@kernel.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: akpm@linux-foundation.org, corbet@lwn.net, ljs@kernel.org,
+ Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, skhan@linuxfoundation.org, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260424140056.2094777-1-sashal@kernel.org>
+ <b001932c-e376-462e-895a-5e4a9c7c0dc5@kernel.org> <aeuZcY0u_7PIQb6R@laps>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <4C6CE53F-918C-4D03-9DBD-1745E28A2D9E@linux.dev>
+In-Reply-To: <aeuZcY0u_7PIQb6R@laps>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8C262A0004
-X-Stat-Signature: j37bstr1p4u7u1ouf4t7ytdxqnfu6yd7
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6923A1A0011
+X-Stat-Signature: kitdupunpjphk8abdd7fcu55ybeyqweq
 X-Rspam-User: 
-X-HE-Tag: 1777096091-240438
-X-HE-Meta: U2FsdGVkX1+Fz6sP6WjPXhWJkUYwEHJexALEwdOpjcRv5YMcfCXaU5yuiMouLtbZKE0GNO2OhPzX0L4nuFc007fGXH/49TiMU61BlqFolkCDxTJO0rUfQP7LfWSX8tGK5AhGBFza/uCpsTijtaNttEghmGwQDS4LIpgTVqIDGotD8sEbeI/5tEjz6BLIJVuRRweCwcjDHSrpiq6mbRuTkl6zrLkznJn80Sdx8AVW+e0ncRaKkkJTup1ER/PbJNDmWB+fLfuiRloFoGyMf4VB79W9urdwnL4t29Sd/AwtX5OoaXpJzzzwYMKSPeU4/eQBp1trR+yNpbsXoL0AQ3XaxtD1Uf4uPoaFOCicfqIytHNe8kJ1COjEXzLwgcW09IRy/bPpMHKEY9p2WJYx7SMZdUlCN50TYK+CS8nhfZXKR6+C5Fh4IzfB7A6YMHpq3LrBmsg4UR+Hf1VjSC1hzRoFpCUX66ez5J7s1e3qPVaJA4or1rKXINbP3g4x97qfp4H4G2PBjB0tXRkuafPf5Is3Xqrv1dl2pejKItzuoJjm7vjdQxiMZBWwtKWl6brPrtIVuAEOXcriF9NoDDz04BA+By3Kir9CMZQlLM643LlIT4IRYXMXEkHTM+9nyH3j/WBC0ekaFJwRSgDzVolmmYlAz27GJrgSvXBqZqTNFWwrwiGmytw1ZUBlqpiBVW0sh9fSpLG1vTXRlOSlsd7ODoXjVeGAto1WXulW06fJja9BLrcRjxuQCjvh1sssI4djManj+EObEYtWhXe/5glc+AOADUvCnaIGaTi4YohVuEYU1cQznIlO0mMV3QFC8hZfvlYzR9zd0cl4fxNS8gh8J2Vv/mCnIywHyISRt09e3W2tDUzz6DroxiNbsc9OkNnISLq0Krhybx86Bt79fj4VznsScAaz6ZFFd35ZEarOgqgwN5X2YR2I/O42qMBLHskdkWZqc60ai+job4BU9bFju3X
- C84N2kno
- OWTC19Yx5RtHPv/ZBHE37pr3IHbzVXpGni4fYrNvDTFKFs5viI32S0ogkpxDMrKc+BLawvHuG13tRMT+BYypXWquxIohKdA40/s+dSah3IDsUKmC3v85EE6ynipoEVPbWMnEhZufiPm0nyK991CYBXLuWfM2DTln5yEejY1SgCaM29G2QVa/Kjhn40iG/Mjpqd1hCztKhyP9iHBWT8LCvWiB0laHYOq80pAlTGPHRQHjcJGqfhi7274ns9QFENqL2aG2U
+X-HE-Tag: 1777096279-266459
+X-HE-Meta: U2FsdGVkX189rMQAWrsSnrSIGPETJhnY05qtLwZ970GGdBAMKtVrsOVxncdxyIPjkRtxWcECUGNgbzfsiSQaHt7mt3jZObTTKyrK2CfAMz5Kr0w9sUocfExNZQY/5zpXtuSn8B8hoMeV8tnAIpBQQdpdfgSlO3tgn1iUUso5/o8ZvlM/Nw/oj2jXayRRDBQUp5pucbZGWea1mLudQH+QJtSk22esY/afFbo/O+ZngvS4JgDmdit904iWJoEGBAwc4kB0vqeYRyOTSkjTmRcj4sPpruWdFuWcNYiQ5xCswX3x9kwehM8vbmQpgOqfGft1CT5bppx2CRdOS3N9TktrlyPY1X+vzrq9HqfedKGGD/Nc1fLPRaxz7MRYwOb0c4BungIXWwEY7aDRLoaTYhZ89hfxWCly8+LfgjEcvvmuRXMDa+TxXRosYbBwqKfXFpUJxLm5QRmdesDjuJH8dbCLzVY9r0E/9yZls/N7JmDjrq5YL+YhkQ1sg33ZMouMAKjoWLBWsyMFx2DyTpzHDAo5g35IbR72htTWPjYMB8SMn0r9cAvfz24TeswniNo8BzBHVfJayRxc7tgWYAXvy68F0y0hYOMsF7Eh9NNY3lGxOV+6nHdUHkOrcpCE8vBCTWwYK5NB9+JXndgCbbMPmbrhT8zT60UcgcFAnRfvnFzcKzqbHt/xSk/BlvlofXDFJNxIw0siElxpXQZiUtU0pCVKXcTcBiFMPG+Vud//6qfTjD8O0c7FeVHGr1AMYF8353LLbTwi/SwAZEbVmWtwwFw0Jr8iEH2JNWNNAoqJl38X0FqQTRTpfnEjvAIFNi8w4Hnscm24DeraBAloj148SwL9xuGY6K1TVss2y8s1geCNYDZrbmFTFBAtTZ+sx9ZVVXprLv5uiXJpltz8SX2JB3z0+ure+hWqjUF8NRsluZ8JIc6mv274HpQ759dRhxnoy7v35WiGyXgIovjmvfmqQw+
+ HiGfx+lo
+ K6Uzh1beM5GioRf2Ou7IZzGbQ7TWIw/iKzSCVibPLZCx/5qXgh3LC9P/aHXecrpNO4z3XSPWaS+TCOYoQCUTKgeQWoA2qIpAn7qMeEPuhqhSz6QxfAhUqUuSnuE2EqBFsAlV83QrDotnADmDRaK/0Fz0hrTWUU5PEE5GXeaVe14lYhfmSshEIZmNJ0lJ5lSpTzK/OHq7mT8JJ8ROJlALnxdb2ijYJ1XMZoZKcAIShGKmxf9T9WywJK4t1b4m9bya+gEuwYSTZfRpz61TL5s9vAbZou68TOzJSQJnz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,57 +142,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/24/26 18:25, Sasha Levin wrote:
+> On Fri, Apr 24, 2026 at 05:42:53PM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 4/24/26 16:00, Sasha Levin wrote:
+>>> Existing memory debugging tools - KASAN, KFENCE, page_poisoning - detect
+>>> access violations and content corruption, but none of them can detect
+>>> silent corruption in the page allocator's own metadata. If a hardware
+>>> bit flip corrupts an allocation bitmap, the allocator hands out a page
+>>
+>> An allocation what? The page allocator is a buddy allocator, it has no
+>> bitmap to track free/allocated state of pages?
 > 
-> Hi David,
-> 
-> Sorry, I missed the 1GB hugepage scenario earlier. Given that sparse_add_section()
-> operates on a scale between PAGES_PER_SUBSECTION and PAGES_PER_SECTION, the pfn and
-> nr_pages parameters wouldn't be aligned with the hugepage size (pages_per_compound),
-> but rather with the PAGES_PER_SECTION boundary. Do you think this explanation makes
-> it clearer? In the interest of code clarity, do you think the modification below
-> makes it easier to follow?
-> 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 2e642c5ff3f2..ce675c5fb94d 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -658,15 +658,18 @@ static int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long n
->         const unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
->         const unsigned long pages_per_compound = 1UL << order;
-> 
-> -       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
-> -                                   min(pages_per_compound, PAGES_PER_SECTION)));
-> +       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION));
+> You're right, the cover letter is misleading there. Buddy doesn't use a bitmap:
+> PageBuddy lives in page_type, the free list is a list, and page->private holds
+> the order. The dual-bitmap is new metadata the feature adds, maintained from
+> the alloc/free hooks.
 
-That here makes sense. We can only add/remove in multiples of PAGES_PER_SECTION.
-I think what we are saying is that we want that check in addition to the
-existing min() check.
-
->         VM_WARN_ON_ONCE(pfn_to_section_nr(pfn) != pfn_to_section_nr(pfn + nr_pages - 1));
-> 
->         if (!vmemmap_can_optimize(altmap, pgmap))
->                 return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
-> 
-> -       if (order < PFN_SECTION_SHIFT)
-> +       if (order < PFN_SECTION_SHIFT) {
-> +               VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound));
->                 return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;
-
-That makes sense as well, within a section, we expect that we always add/remove
-entire "compound"-managed chunks.
-
-> +       }
-> +
-> +       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
-
-And this is then for the case where a 1G page spans multiple sections, where we
-expect to add/remove an entire section.
-
-So here, indeed the "min" makes sense. I guess we also assume:
-
-	VM_WARN_ON_ONCE(nr_pages > PAGES_PER_SECTION);
-
-Looks better to me!
+Given that you have PageBuddy (first "bit"), could we use a second bit in page_ext?
 
 -- 
 Cheers,
