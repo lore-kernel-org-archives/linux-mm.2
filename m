@@ -4,98 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9ED3FF885A
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 22:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E803AFF885C
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 22:01:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1A056B0088; Sat, 25 Apr 2026 18:01:36 -0400 (EDT)
+	id 3635F6B008A; Sat, 25 Apr 2026 18:01:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CB226B008A; Sat, 25 Apr 2026 18:01:36 -0400 (EDT)
+	id 3141D6B008C; Sat, 25 Apr 2026 18:01:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E11F6B008C; Sat, 25 Apr 2026 18:01:36 -0400 (EDT)
+	id 22A806B0092; Sat, 25 Apr 2026 18:01:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B7316B0088
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 18:01:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9B0FA1B7E4D
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 22:01:35 +0000 (UTC)
-X-FDA: 84698450550.15.EDAAE87
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C9589C000D
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 22:01:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qWwiMSnu;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 121006B008A
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 18:01:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8CB451C0592
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 22:01:39 +0000 (UTC)
+X-FDA: 84698450718.11.D51A244
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 987822000B
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 22:01:37 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d59uV/ih";
+	spf=pass (imf13.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777154494;
+	s=arc-20220608; t=1777154497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V4ZyFSJewBdT/Qacww+YVMvNuE01OJQh0jvK7iyNtnY=;
-	b=gHMtz6N3xizYZ9Gg4t/E36sVVAU4J7jsWS4SR/9ktXFfQ+ZYfcEU0FFpfv4tN3sHvbgZOA
-	z1tC86rr3t3ggD1tDwmhyTjVO9tC0Q+j2tydfyWp+uFLfZ2PGjmaR93/lCOZp7Dbv37z2y
-	n4ctpJsSoe/kSBkAcwl6E01s/8v459g=
+	bh=35JI4T42UkEo4Y0KyaDcg3Nod1MWEvkh5LAwsg4s+/s=;
+	b=DLkGlKVi3BkxeW+ssvrskfNEDJhqHqxgA25hK0i1tKgAygGQoiybqjayxIsCE7dq8hKhlp
+	XNCeg4QIuP9e6x/0c9biH9Ex9blG5SFbxE1fFxomFygjYimucp4nJgkgZb2ZvHc82Wdr9e
+	PO/lRHB+sjbtVJ5mmjoHCBmesr8hL9s=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qWwiMSnu;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777154494; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d59uV/ih";
+	spf=pass (imf13.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777154497; a=rsa-sha256;
 	cv=none;
-	b=8H3g21vmC83myrmwYFlqOQRcIUEEoBV/Z7jQBt4fEivrFesD5gJcxNB3l4yGlbM9IkA6F2
-	EzVLKzG8XeReszSWHJoMQBXdVjIe6SXIyGX8zARCjZo9A7nosSxFetjk21MsWEM29lzH7E
-	8A6+1WtcQVvm1TgLN5B7LwuxOGi4KA0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C58940DFC;
-	Sat, 25 Apr 2026 22:01:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94764C2BCB3;
-	Sat, 25 Apr 2026 22:01:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777154492;
-	bh=0NuIDsEyNQ/Ifatv/CQaE7y12IP9xQxKHtJQ4WrtH/U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qWwiMSnupHPl2CqJmPf5mv5cppTi87sHIgN8pIR1OUU5pCHxR6Hc+Oek1h/58ER7s
-	 lIxgZPW9kw83+47mMnBo+ffv2OfnZlPugTdXzLSWW3ze7+vEtzognUMoc2P1bhJb6q
-	 pyfFW6pYNWDsZj+NRecEwCULFziFnLmWvOW5PlxM=
-Date: Sat, 25 Apr 2026 15:01:31 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Song Liu
- <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba
- <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan
- <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 7.2 v4 01/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check
-Message-Id: <20260425150131.c4b3703b65e6de0fd3893d48@linux-foundation.org>
-In-Reply-To: <20260424024915.28758-2-ziy@nvidia.com>
-References: <20260424024915.28758-1-ziy@nvidia.com>
-	<20260424024915.28758-2-ziy@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+	b=g7WixqkECZHqPXkdfaT7GH6qnk/lKbpF3e3xfrBu8FmH1KtqMEFY21H2x8riTctGpasyCp
+	pTktd8Fy9sWmdFicC40GaR+qq2GnEyQc8KIW1bk/6qbDzC7olPZvF77kKGwUnPs05GK4nD
+	52zp5gtbj6iVz6e/AVETdzhRjeIKrIU=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso92546745e9.1
+        for <linux-mm@kvack.org>; Sat, 25 Apr 2026 15:01:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777154496; x=1777759296; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=35JI4T42UkEo4Y0KyaDcg3Nod1MWEvkh5LAwsg4s+/s=;
+        b=d59uV/ihglKUq4yuDu8KXWcgV1F+phdOnE8dC5DpiSHyvRFVolt1cEtJEkTEzCLz+K
+         gJLXlQFVUS9k7Ju9mNF0wNZIULgSiVF3bfr95QBAbd5TkENUu8eghMX8Gr8b71cxHbBm
+         gZH2xZikYaYgL4yybghNyUilmbvhDIoPbkxHwjBIil9p6KBVk2857HiUib62oZxMj3MY
+         To9GHK3yh2a+z5+LCLymYah/C9kTN3NVSw56/1gLUfShR5w5Zc3B3w0D9jfzJCGAUEV/
+         whXGIW+VmZRVaobfz3dH09I71GhJYjRd4CGUiHAzVIGmfzmNcZyFemaNqBtIS7q0Tt3Z
+         NsRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777154496; x=1777759296;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=35JI4T42UkEo4Y0KyaDcg3Nod1MWEvkh5LAwsg4s+/s=;
+        b=dJbwjtYIUZMi3kG8tMV5nbHhk8A2cAkZYqJEUclsikni6YtUICUJJhowh2sonPR3Ik
+         DSRpxZBM5PCo6I4TmoU5L8M1Ys+FmiIux06ZEx1hgfFm4v6pDxBHBwylu8S0Re+MqX3L
+         +ZqNL74s+h15GIb07ORl4b54VwgD/c5OACwWJznLk1vHRz6IUAOZtC01kT3hn8za3vlj
+         s5mXD+0dlvwprsuDh0hcyptG/M87dz0h0qlgwV/zZSfQkpecYhB/EYaxYFN0Kx2DfI/c
+         BJ8pXETie3t4i4HxEie5gtswmDdeuI11BB7WF1NAwn2kuDG2Nz1j066PJwyZwv8QjCOy
+         FsLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/Zp0sNKWBXBm5oIEAo6Xv4RprcDDVfg8yMelgQJHNkeTy6nj6Gt7PQo/mQDvTLeF36+H3DGx43nA==@kvack.org
+X-Gm-Message-State: AOJu0YzLnywYUl8FdDsaYBM8nVRk25Pn7MOasInVGxpladYU5F3MezkI
+	KwMfISq1fyyzo9WkqgaUwRLDbtJaGE1OzMQ+awfN1n8LJgqdSE3PZ7K5
+X-Gm-Gg: AeBDiesqiBhNQgfeq+XtKw/15J357noLAdBvXrJA3AQ2Xbz6hxNd5XCFApDC6Sth6cl
+	ILLvYQMt7dhoYXOrX0xVwLhNiraKxlfAOouwIkaTkFkU7bSsrhtR+UJ2HztUlyKiGREGssbb+gw
+	W/0C4UoGEYo9pLNKv6ay1I4jFxq+TSyb/RFbIEzIs2R5dffynG0gN4AGJNjk+NdyZjg5r6xeSu1
+	iWa/APZYdX+MGuZjWJF+3ssnowoiqmYGAuVHEK8hKnZgbFC7sW/P+TfWjtzGQ6tDFVNbPuE72F7
+	kSEVKujW6x9Cm7FPcEQV+7523bDeyc/CrQAjHN7EfD37OrTtL483dCrtq0o27BJyWh7ch3Uf8xZ
+	9MvPd3uD1f8KjNOpymClKRH6AQq4i5yjyR38ck9qWpr6VqCLptKWlkUFcFGFQ3SdDLJwIIjwf8I
+	7Bh8f43wf3tEkKKgMqPbRXv755RXLSASWRJ+a3XPdjziOKx7NVJ9gpNVBdR3aTGJLJhHAAlPXjA
+	18=
+X-Received: by 2002:a05:600c:c10e:b0:488:8185:e672 with SMTP id 5b1f17b1804b1-488fb792e84mr425930625e9.30.1777154495710;
+        Sat, 25 Apr 2026 15:01:35 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a4b329542sm704004115e9.3.2026.04.25.15.01.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Apr 2026 15:01:35 -0700 (PDT)
+Date: Sat, 25 Apr 2026 23:01:34 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Min-Hsun Chang <chmh0624@gmail.com>, arnd@arndb.de, msalter@redhat.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] asm-generic: replace ________addr with
+ __UNIQUE_ID(addr)
+Message-ID: <20260425230134.5449498a@pumpkin>
+In-Reply-To: <20260425135737.e79c4b546d22b5ebfd96c0b5@linux-foundation.org>
+References: <20260307092119.20733-1-chmh0624@gmail.com>
+	<20260322144032.7353997c@pumpkin>
+	<20260425135737.e79c4b546d22b5ebfd96c0b5@linux-foundation.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C9589C000D
+X-Rspamd-Queue-Id: 987822000B
 X-Rspam-User: 
-X-Stat-Signature: uayge7gxjxq1ws35ba8oymr16dc5yw5r
-X-HE-Tag: 1777154493-854203
-X-HE-Meta: U2FsdGVkX18sTb14Cs3a7mkObDmPIUa4BpZrHggtI14EeJ9hVnI8sEyxc64DqBuG/oJBirVol05Ub3T/J6sJMps5/42EZMSsI7b7NO3nwoTDmHrivw32FOaX6vYgVEOkq5wPpOdZhzccw0cn+1KUcwxt5S9JQT6KpwiLSLM7HMa8GF9yBvQH6np9AyDWkGXrynaOW5qMQitjDQ3axGEFrvWJUs4gcBjmrkHlisMoNSwXRk6Fn84IgpB+vJagUkZ2XUxQhaLsuB0CV4Z9QmBzf4SgrCVplCT5O73TVN5M7xUglqeq9jZl8YEvSk1+4WcpASynBa7o9oncLkk6S738ycMzY8nQssV0S754FBesK8XWJNl15mFMkdEfQy9VuEe+U9H01N8GJIBKayLLCMW2F7VbXv6IqFhzUgmFZeCXZseasbJfxll3Qs991UE5UuA88wKAsw9FL/d7p+LUBr5cJTpCpDBhd5sqb9UqsetrH5GpptT9TRT0C9E1BjZ4rNDlTEFwtRwK/K/atDIv0HZrq/+AcVb1ynzFCVk/AZyKgULuqLKoAgAblbl8iYidtWsq/P1O/3FfsHYg+vtkZh4jXLlvbeaKt/92gJ1b+hDPx1rCCYfhkxd/aPm+JCalNscgDIuw6qZOt+y0VdCJsY5pTKP1wmFf822s6Wt+39VGgdDJ+k13ffC3HMnkrTqiRqU93g5jaAGRrY0VmTa79rI/mCNvq0hHHWmtDT+KmwKPAiT3lSDRkyPgwEzFznmqCXSvHQo5NVUUQMaqYag9oYY47Q6e2Trn4f2mDmuG7SZTj/r+Qxaeu1tEaMRUqZfrvfnC48jQpZ76RKTdKxHCVFBjRnBayjJn+oel9QYrXsujGVgoukU3zQaKBE3qNB5sI8iuutcszzd40v6fbyXGkNgFuaiKoDFxo28Di+iydK6CAS+9ZCD40ut1Wq4kSa5Qsy17eYBeOj1zeKYECn+ZONY
- QzcldCN9
- ng9qOwn2i4Yu965dzKD9qJjBdsGa1htmP8dnpsqivv1lnstBZ9QjaSmnvN7iswSe8MMj5L6ohPtNnUj+NUhRd9sEkOCpyoKAKL/pYl649VixlZxZpENR8O3+X6zK+VLDPEcwzzVj/E09fw0pfT4Nrf1YXZ9vbHXugkXemyS3ZLJNSbwM6BQTmtliWWlzC2iLd1KPnklVjFjyc6TgBUlVvSnfr+/aR4qS1Q6q8qigaw822XNqaPFEL6ZAeUwsI9pqELLnGkfDOfyGRa0qjmPlOkw82y6nB11vm08+detv1M7yRSl8Pd+WqlvHP1LYucRJXWslOAXkE3VLRvx1MOehtMNfhXh1HeIycwREDwDxjIySE2vboZd/08txhfK1EO6bTEAT/
+X-Stat-Signature: 8pr7rnpyo4xuk8zeog5opmsc94fbysus
+X-HE-Tag: 1777154497-561381
+X-HE-Meta: U2FsdGVkX1881cUAf4OmyRHzuQOivpx+DQ5Q3mSAgFCRYzEdiJ5x0pmKLyEiJqzIUyJlklV7EpGKOossqSWUUHe6N+Eoh/9D7V1O3LUEW2VhH30BHc/J/J4LxpsN+3n+dJechAnqAsc4XwH3tvYUQdOW1/Ozhbc7MtWVKt/4B4jObmbZxS6v8vzdZLVTeGZDSFvrEoZejKOSeMAFtNLVTRu21A48As4Aql/uutsrXLfoRvTY+ABS0dxc5FPkQoPdABrBAo8fulj8wJ5RY1XoPn3RFBBF7QFqhix2jRGuXuT/TIn5fXlFNEMpdVO0iDj1nop4ZjEXhpKe9k0uWKOU8lV/WhArLYW5feunzA/QQfGkZXXTTcq+JMITE8xd2bdCyIGmNNf96RaUHUCz8DScBTjhgMoH8LOOrISKfsf7zH+QmPMehD5+D3VzqqE9HKR2ROlUv5l4zISsxo9XSlmWVJHMkmbbOEkSXJ1yAZsHtCdRDR1Wu+yUZhSr89p6Z9fzm/Iwe0uAdz+B4BKPGV1bMcglDvo6AEt5HsagZy8gPV1qiJ7zut1JFevXxs28bNuMw42Bf1XTeYTTAsSqwMu8o8zGvbK21oAUTjz2hMM1O6iUSxrkTVCpvLeAbjKaoeVCxWy+DOsp8hFW8hsvTwC7CgGFxBkBtYaZaTelgPsNJVDxyYORKSnpsZrdpFDI/lNStB1tG6DUBoDJoKhpGlax3bUVkW9RgtmfrJXEUb6HnLPENQC85pRSBsaMKcdeSQt+75v0POuy1Lc1j/QVcJ4ndRGGxDPv2J6N3toIjp5kOiUIF8Q//715/8uLUzVRIkomC7RJbmaVFXjJKh9ckrq56fljTRRpX6Oc+ek8yTV92K6ifCcZl0Vuesv1Q4tw93cedFe+9ZvN+Dzs4MoV0uQWFYLxQFmbXCb71Ge2Ez1tQ2KiCGXpiAKG1Vi70dpc3ewCCwmFvXovz/aTzyoxnbh
+ w2dcj//x
+ 6PiEzfuLr1gc6QQ2r7FeoZSP87Mraccw5zQE4CiSi0rWwo78Pl9tqNORGuz9AER8ZI5DxSvmwggYIUgQX2kiqCcE1QhHL4Y+8RVX33+157lYRXV6RVooA0Er32yUcZT43vVGTxylOMsbG8lrP8niLS4PnkAo8T88G9Prm9d27plZofr1asLWPtmtvhjLMllUgq0kQED860fa5pc+WNYbfOoxAvz55R/7IJ2rzrEhZpa/hw9b+UrBx0lRWKW+0QAbYQbyOWYfFYt2BTOA1EjItJjf2s6OnJFU35NSvbeKLD5ACzPf92NCbmVhESaUU+1+1amh+pdI6vYe+yEBBy+QBLpAG/XLstd0sRu/5P6sWYqeOGX4DbyH9YJfjrONg+owRqOqXEZGCNSmQHgYaz1w7RGPYdxIe7HDVkKoddpAUzq7MmnUE3tVJLjoFm25SBNYV1JxQ237SqaYMe+DyDRNnA0LYhsSU7zM+Kr85v1PJRRZlRKYrImRqnYhHbJGzG6fbwMdD0nYPZsu9vPIrnSI/2t8Cd5xEAyxNN8RjSb2TaCkd5VnBIBRWlCWoEKYYkzsmddZF4mEIbYc7e9571J7TTsnzkVjZQ27991ut
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,114 +124,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Apr 2026 22:49:04 -0400 Zi Yan <ziy@nvidia.com> wrote:
+On Sat, 25 Apr 2026 13:57:37 -0700
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> collapse_file() requires FSes supporting large folio with at least
-> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
-> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
+> On Sun, 22 Mar 2026 14:40:32 +0000 David Laight <david.laight.linux@gmail.com> wrote:
 > 
-> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
+> > > -#define __set_fixmap_offset(idx, phys, flags)				\
+> > > -({									\
+> > > -	unsigned long ________addr;					\
+> > > -	__set_fixmap(idx, phys, flags);					\
+> > > -	________addr = fix_to_virt(idx) + ((phys) & (PAGE_SIZE - 1));	\
+> > > -	________addr;							\
+> > > +#define ___set_fixmap_offset(idx, phys, flags, uniq)            \
+> > > +({                                                              \
+> > > +	unsigned long uniq;                                         \
+> > > +	__set_fixmap(idx, phys, flags);                             \
+> > > +	uniq = fix_to_virt(idx) + ((phys) & (PAGE_SIZE - 1));       \
+> > > +	uniq;                                                       \  
+> > 
+> > You don't need a variable to hold the result at all.
+> > 
+> > The real problem with this define is that both idx and phys are
+> > expanded twice.  
 > 
-> Add a helper function mapping_pmd_thp_support() for FSes supporting large
-> folio with at least PMD_ORDER.
+> The real problem with this define is that it's a define.  Why oh why do
+> we keep doing this to ourselves?
 
-My arm allnoconfig blew up.
+Sometimes #defines generate better code because they are expanded earlier,
+and sometimes you want type-agnostic 'functions'.
+But neither is true here.
 
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -513,6 +513,15 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
->  	return mapping_max_folio_order(mapping) > 0;
->  }
+But I think I'd go for 'always_inline'.
+Sometimes the compilers make silly decisions.
+
+	David
+
+> 
+> 
+> What's wrong with the below?
+> 
+> /* Return a pointer with offset calculated */
+> static inline unsigned long
+> __set_fixmap_offset(enum fixed_addresses idx, phys_addr_t phys, pgprot_t flags)
+> {
+> 	__set_fixmap(idx, phys, flags);
+> 	return fix_to_virt(idx) + (phys & (PAGE_SIZE - 1));
+> }
+> 
+> static inline unsigned long
+> set_fixmap_offset(enum fixed_addresses idx, phys_addr_t phys)
+> {
+> 	return __set_fixmap_offset(idx, phys, FIXMAP_PAGE_NORMAL);
+> }
+> 
+> /*
+>  * Some hardware wants to get fixmapped without caching.
+>  */
+> static inline void
+> set_fixmap_nocache(enum fixed_addresses idx, phys_addr_t phys)
+> {
+> 	__set_fixmap(idx, phys, FIXMAP_PAGE_NOCACHE);
+> }
+> 
+> static inline void
+> set_fixmap_offset_nocache(enum fixed_addresses idx, phys_addr_t phys)
+> {
+> 	__set_fixmap_offset(idx, phys, FIXMAP_PAGE_NOCACHE);
+> }
+> 
+> 
+> I'll toss the below into mm.git, shall send it to Arnd if nothing blows
+> up.
+> 
+> 
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Subject: include/asm-generic/fixmap.h: reimplement nasty macros in C
+> Date: Sat Apr 25 01:42:28 PM PDT 2026
+> 
+> Min-Hsun Chang reports[1] "the macro __set_fixmap_offset() uses a
+> hardcoded identifier ________addr, which can lead to variable name
+> shadowing if a caller happens to use the same name in its scope."
+> 
+> As is usual with macro messes, the answer is to reimplement everything in
+> C.
+> 
+> Reported-by: Min-Hsun Chang <chmh0624@gmail.com>
+> Closes: https://lore.kernel.org/20260307092119.20733-1-chmh0624@gmail.com [1]
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Mark Salter <msalter@redhat.com>
+> Cc: David Laight <david.laight.linux@gmail.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+> 
+>  include/asm-generic/fixmap.h |   34 ++++++++++++++++++++-------------
+>  1 file changed, 21 insertions(+), 13 deletions(-)
+> 
+> --- a/include/asm-generic/fixmap.h~a
+> +++ a/include/asm-generic/fixmap.h
+> @@ -71,25 +71,33 @@ static inline unsigned long virt_to_fix(
+>  #endif
 >  
-> +static inline bool mapping_pmd_thp_support(const struct address_space *mapping)
+>  /* Return a pointer with offset calculated */
+> -#define __set_fixmap_offset(idx, phys, flags)				\
+> -({									\
+> -	unsigned long ________addr;					\
+> -	__set_fixmap(idx, phys, flags);					\
+> -	________addr = fix_to_virt(idx) + ((phys) & (PAGE_SIZE - 1));	\
+> -	________addr;							\
+> -})
+> +static inline unsigned long
+> +__set_fixmap_offset(enum fixed_addresses idx, phys_addr_t phys, pgprot_t flags)
 > +{
-> +	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
-> +	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
-> +
-> +	return mapping_max_folio_order(mapping) >= PMD_ORDER;
+> +	__set_fixmap(idx, phys, flags);
+> +	return fix_to_virt(idx) + (phys & (PAGE_SIZE - 1));
 > +}
-> +
-> +
-
-- Should it be named "mapping_pmd_thp_supported"?
-
-- What does it actually *do*?  A little comment explaining this would
-  be appropriate.
-
-- Is it appropriate that this be inlined?
-
-I added the below.
-
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: mm-khugepaged-remove-read_only_thp_for_fs-check-fix
-Date: Sat Apr 25 02:54:04 PM PDT 2026
-
-fix arm64 allnoconfig by uninlining mapping_pmd_thp_support()
-
-In file included from ./include/linux/mm.h:31,
-                 from fs/inode.c:9:
-./include/linux/pagemap.h: In function 'mapping_pmd_thp_support':
-./include/linux/pgtable.h:8:26: error: 'PMD_SHIFT' undeclared (first use in this function); did you mean 'PUD_SHIFT'?
-    8 | #define PMD_ORDER       (PMD_SHIFT - PAGE_SHIFT)
-      |                          ^~~~~~~~~
-./include/linux/pagemap.h:521:52: note: in expansion of macro 'PMD_ORDER'
-  521 |         return mapping_max_folio_order(mapping) >= PMD_ORDER;
-      |                                                    ^~~~~~~~~
-./include/linux/pgtable.h:8:26: note: each undeclared identifier is reported only once for each function it appears in
-    8 | #define PMD_ORDER       (PMD_SHIFT - PAGE_SHIFT)
-      |                          ^~~~~~~~~
-./include/linux/pagemap.h:521:52: note: in expansion of macro 'PMD_ORDER'
-  521 |         return mapping_max_folio_order(mapping) >= PMD_ORDER;
-      |                                                    ^~~~~~~~~
-make[3]: *** [scripts/Makefile.build:289: fs/inode.o] Error 1
-make[2]: *** [scripts/Makefile.build:548: fs] Error 2
-make[1]: *** [/usr/src/25/Makefile:2139: .] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/pagemap.h |    9 +--------
- mm/filemap.c            |    8 ++++++++
- 2 files changed, 9 insertions(+), 8 deletions(-)
-
---- a/include/linux/pagemap.h~mm-khugepaged-remove-read_only_thp_for_fs-check-fix
-+++ a/include/linux/pagemap.h
-@@ -513,14 +513,7 @@ static inline bool mapping_large_folio_s
- 	return mapping_max_folio_order(mapping) > 0;
- }
- 
--static inline bool mapping_pmd_thp_support(const struct address_space *mapping)
--{
--	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
--	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
--
--	return mapping_max_folio_order(mapping) >= PMD_ORDER;
--}
--
-+bool mapping_pmd_thp_support(const struct address_space *mapping);
- 
- /* Return the maximum folio size for this pagecache mapping, in bytes. */
- static inline size_t mapping_max_folio_size(const struct address_space *mapping)
---- a/mm/filemap.c~mm-khugepaged-remove-read_only_thp_for_fs-check-fix
-+++ a/mm/filemap.c
-@@ -126,6 +126,14 @@
-  *    ->private_lock		(zap_pte_range->block_dirty_folio)
-  */
- 
-+bool mapping_pmd_thp_support(const struct address_space *mapping)
-+{
-+	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
-+	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
-+
-+	return mapping_max_folio_order(mapping) >= PMD_ORDER;
-+}
-+
- static void page_cache_delete(struct address_space *mapping,
- 				   struct folio *folio, void *shadow)
- {
-_
+>  
+> -#define set_fixmap_offset(idx, phys) \
+> -	__set_fixmap_offset(idx, phys, FIXMAP_PAGE_NORMAL)
+> +static inline unsigned long
+> +set_fixmap_offset(enum fixed_addresses idx, phys_addr_t phys)
+> +{
+> +	return __set_fixmap_offset(idx, phys, FIXMAP_PAGE_NORMAL);
+> +}
+>  
+>  /*
+>   * Some hardware wants to get fixmapped without caching.
+>   */
+> -#define set_fixmap_nocache(idx, phys) \
+> -	__set_fixmap(idx, phys, FIXMAP_PAGE_NOCACHE)
+> +static inline void
+> +set_fixmap_nocache(enum fixed_addresses idx, phys_addr_t phys)
+> +{
+> +	__set_fixmap(idx, phys, FIXMAP_PAGE_NOCACHE);
+> +}
+>  
+> -#define set_fixmap_offset_nocache(idx, phys) \
+> -	__set_fixmap_offset(idx, phys, FIXMAP_PAGE_NOCACHE)
+> +static inline void
+> +set_fixmap_offset_nocache(enum fixed_addresses idx, phys_addr_t phys)
+> +{
+> +	__set_fixmap_offset(idx, phys, FIXMAP_PAGE_NOCACHE);
+> +}
+>  
+>  /*
+>   * Some fixmaps are for IO
+> _
+> 
 
 
