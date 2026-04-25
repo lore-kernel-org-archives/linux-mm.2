@@ -4,119 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAD5CFF8860
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 13:45:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04808FF885C
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 13:53:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FD646B0005; Sat, 25 Apr 2026 09:45:07 -0400 (EDT)
+	id 27E9B6B0005; Sat, 25 Apr 2026 09:53:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AE426B008A; Sat, 25 Apr 2026 09:45:07 -0400 (EDT)
+	id 22F566B008A; Sat, 25 Apr 2026 09:53:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09D8A6B008C; Sat, 25 Apr 2026 09:45:07 -0400 (EDT)
+	id 145F16B008C; Sat, 25 Apr 2026 09:53:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E701A6B0005
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 09:45:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 97B571B75F6
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 13:45:06 +0000 (UTC)
-X-FDA: 84697199412.14.F4BA307
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BB62AC000B
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 13:45:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eqsAIYRv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 038BE6B0005
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 09:53:11 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9FF088B0C7
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 13:53:10 +0000 (UTC)
+X-FDA: 84697219740.22.9FC9E92
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CC9334000C
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 13:53:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BJMoP8GQ;
+	spf=pass (imf04.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777124704;
+	s=arc-20220608; t=1777125188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=GZa8V4V+L1cbe14Qji0FuVA6E1esCIns+Fs7vnMJGGM=;
-	b=AqawxbN5SZQ+y6c0Z+Y4lZbvRx/AhepIFIhE2Bfkz2ki1h3iiH9IWn3YdwuZF+LHPdlbrG
-	pVSIXvCx+4WUNJD4Bpr9cpgmhYWjNypxQ0Xmaa/CKuXN4WBro4hOHC2TYwQZXtzpDVUIHs
-	Y0EpWWpRk3R9QTZWZOO5j+fX3shSD3A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777124704; a=rsa-sha256;
-	cv=none;
-	b=m1jqD/4O6TUMgzNfvFSb6JSI9ElNJqj2zK98WcrKqOFYxP8heOek6/LqDnRCBuo1qwBq9f
-	zjLA607AaFAKq9UIO+EMB8X93q7X8sAdTGzBqRYApIxK/37s3zOOiOz1RayMm4JnOcVwrT
-	8G6bOit+suZsq6htxChbqqq5g0o5eoo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OqiP47VwxYnYrJlsTn439Gu2RrPtIy2CXWplvb/r+wE=;
+	b=5Tb4P7SCLIGmUxOySiL/tuHlNohwEzOgOZ3mXfaCpJdSbyj8btMNu+LDunws53IabWAgE0
+	KdsLPOgjhbWBAiZCba6aupVU7EsyLqOQqqHi7LgvBd/kyaomsbLDYznCxV5mC9ZLmDzJdW
+	2N+/NVGQnowQbcgz/FtEpeCSXxbzJJc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eqsAIYRv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c7973bbc16dso5763120a12.0
-        for <linux-mm@kvack.org>; Sat, 25 Apr 2026 06:45:04 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BJMoP8GQ;
+	spf=pass (imf04.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777125188; a=rsa-sha256;
+	cv=none;
+	b=xNwdg/IWpkg07mUL1GyGljLGOgG6q4oYL0gNUVoXTrr2HEpNKNYOa4t/KUkyVVXYPCXAVi
+	aHTPJA7q7w7LVuwYa2fIHCS2sLDCO1DSjkNpUf58Zh0VD0KI881K8rh9dNc2BXYLmawbVc
+	1PGX1ID/9rd0A4WlvvM643KDarIPfBo=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82f8893bff3so4154946b3a.2
+        for <linux-mm@kvack.org>; Sat, 25 Apr 2026 06:53:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777124703; x=1777729503; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GZa8V4V+L1cbe14Qji0FuVA6E1esCIns+Fs7vnMJGGM=;
-        b=eqsAIYRvmKW/qlIkpJMto4aUkUVMcGyPA7X/R5+uWdMMHijhJPWWFb3MP9YjDbDHIF
-         ojIxZ7FFI7E4dxdKiZjV7l0hgkLCbt2BatcJBwR3DiJ1YAWHhgNP6uM1EtngC0KZQ5cG
-         i8OHHBm6+5EbyQFYr6hoM+0UgCiUd6lrxOv+7NebVh+kZpO8qRZ8IVrB2lWhRagB2ild
-         DqXihqhrHHzYoS+xd3/YjXoRlNGwKES3eIsZHENtt8b7uOQEWBq7PcHXOuSt+RAzk9eS
-         UD4qVciiq5r2IkkJJ0p6wCh1+8w4CUjyBy8agWWORKJSTnw7Ech/t/FyLVPtFdJ50yGG
-         H2kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777124703; x=1777729503;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1777125188; x=1777729988; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GZa8V4V+L1cbe14Qji0FuVA6E1esCIns+Fs7vnMJGGM=;
-        b=ZZh60H9HeccVsYPAC3nnfpXG1yIi8YKVe6yGXyIwxhAIW3t8ofRmldmZ8UfOf68/8i
-         wgbI9Gq1+8MMplxLVV8aSQb7CcCGntA0pQ6405Qut6KO7QfEX5zOrbCeFkaQlJ6xNaxP
-         I1Rei1vGW+F/7gyuk6Dthnu3a6HGSsi1lh1hUgt27Cl+pIW1mtQfgjKBr0wgjwsVJGLW
-         xC/yDcJQQhQMxe4ov1ij57j7P47ggY3ls7R78lDr78AfBzrxU2IdqojF/NXhTX0Hfwd3
-         BPYzENctzS9xsjdroowwDLCFuRQirhyIWkLZuzyixcC5vk16qaJHmLr5RzGqRoc8K1Ye
-         l+GQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9pPuUKWat6N3XfpykdGm3q3Ll7XpS4C8b1O6wg1Ui/h8pyxf36etAJ4m3D6H948wccnCOCvsuHcg==@kvack.org
-X-Gm-Message-State: AOJu0Yyj8h/AlecveWF3u5KtAdhwR+NWkUzz7+UxEkZ+nYLsjknWrg9H
-	RyZn9ompTWKy09y+Alt4tZtezpAZVVozMp8QR+9EO6VYU5Pr8ww8C7o3
-X-Gm-Gg: AeBDiet8MgSKoSkEw1wkknmQ+pfnlzy9ynYn4GUl0EbHcAlyvpFHpOh/42U1LD6zEFv
-	XIU+RXiFAG3JKZqq/qF4pOxC5VlhWKz41KO2LtMe4JtShWS2pZTD6b+UDslb3QzFBkjiKktZXSL
-	OLCD8HlNg7AKOB8Gn7J6N/PRqadNZZ3zRyM4k9BrpCH9pb8wSCVDJdpPmYBVTub/2eaksbwVYTX
-	rKDQpE+fubU4KB1cdvvvutfuZd8194Dh+Adj0mXp1LeQmDpXDHVXl0x/m4ShA49Q09j4Vv19nBY
-	SsSn4hyLXTQ9b6j0CTeErAu06VQAzA9xix9Zv4jXOXoRMzwfJEeWjmgum605m2x5OfSYXBQC5PX
-	x0V4ietoY289Gtlipp16QrIoyUsbp2njeFSSnAlXVUZa6wC/CSSohpMOeljlJpwq+iIFkNPt8be
-	NMQkONwZ0LRBT4ouN1VRleKg6jTbXRx6GSzZ4oKp+98J2KtKn/itrqlKzY
-X-Received: by 2002:a17:902:690a:b0:2b2:50bd:83b3 with SMTP id d9443c01a7336-2b5f9e8196fmr273111755ad.10.1777124703464;
-        Sat, 25 Apr 2026 06:45:03 -0700 (PDT)
+        bh=OqiP47VwxYnYrJlsTn439Gu2RrPtIy2CXWplvb/r+wE=;
+        b=BJMoP8GQCs6DRb60VDfLclu2xNFkfNjbEPlewvclQn7iiJG41liumbL3Hi/08GoTC4
+         4BWSh4xB75kYb3CkXULl0YkXlfCS7XjxuTGDS7V5yv90NXPWrtTrOxVQruZKWDaH55rE
+         sqkXFbQHi3DvRunPLLFL10r/NsI2chjqHmzRgOmms6PnrqMygYyoXtsAtdY/w3HoUW5k
+         ZXJ02eWeC4VUHvlP6NTU6vGKYb+i7lIFPh3iHJp/G3TtkjgR3B/kBoXoByH5A43v2kNm
+         uE6M8Z6xIVoNZZDiMMAmp4J5MAl+NEzLUA27b0yOaKOmtJdmFR5nUCdphsCmi/l3mJOM
+         ZG3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777125188; x=1777729988;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OqiP47VwxYnYrJlsTn439Gu2RrPtIy2CXWplvb/r+wE=;
+        b=nNMBcWI8Tks18HkDBJQ/M8d5V2KsgPkwCGb0vE4YHPK7E64I7V67fI2GBSStQo2e/t
+         c+/QlaYVovW4oDRtgMzPDLYVC8BLrQxu8FLG6cJti/D6bkKs611hcKqyA9/FzTAcAHv+
+         aMuZPTaF79b894KEeKw0mxV7QxECxYjViosI/MMCrPwR4fturGelJaL+trtNEcDdgEVM
+         AhYb9IOK/wVlKlSTPSu3ClE7EJWonEbYnLDZVMS4Tgl018bmgMuq7DXCm16An4dvpxuV
+         rodw2kS6VQ/Abmffxd4FSoSpE9L6LikUMh84ydN7As3HeIt8yknIA8/UXQ3IJy5MpDyO
+         l17w==
+X-Forwarded-Encrypted: i=1; AFNElJ+mh9Vm32fKPWmaxY/fr3i+nW3Vm/PV2EZCpinM4xcsQ7Lshx1CT3vswpk9bEIqX2yMYXZApvICqw==@kvack.org
+X-Gm-Message-State: AOJu0YydhI31QiPgBfmpHS4L1xOiJ9Pp+cVPJlnx6k9Kfoqq4/i5SADB
+	f1JwiqAj+7R63P0g+rljcforWfi/P6vBtiwN1XENN55zwocil8I9QX66
+X-Gm-Gg: AeBDietG+EUihDpcuKS4VK3YXBMhiD6BPsY20DNuSHu4OKiOblgqe7StLrefaHJ2ghN
+	8xHRsa3h+tr4t8hVlk2HjWNSBpx86of39NA/0VrgCTbqVDxNK693ane+5sbedpq4Mq8fqtAMBxx
+	Tb5YWFsJLdWWkPRvNNfbZvEoUuT40OuHmfsWHsfBlUBcu36vwBSisvlHbg7N6edILBj2X5/OnI9
+	3uJv4wCzZSIXI+li98Ed1NnOLWH9aL1qYqfV8J/3NWcnA4f4uyH623/gMQxDaI/gCnjPrlBTsdn
+	Qd2T2gfdqXHSvpBBlNSuyO4YWfoLgODRSzolAQF3cKStuWoVAgcefSij9JiVQVkOxR+M6Hkyxb9
+	CCt/qPRxru/rXVP0Rhz9UxU4AAsF3F3AahlSBaw2t8YLfDhkpUbHD34VOZ5GgslXfireW3mE3/C
+	FrmsMBrTzsIOR+eJORYFZCDvRnDluEbMGhi5t7A4VqHywh+4dSNoA4hXMYOQBBobf5034=
+X-Received: by 2002:a05:6a00:1da1:b0:82f:2319:7d4a with SMTP id d2e1a72fcca58-82f8c91a5d1mr33328722b3a.31.1777125187592;
+        Sat, 25 Apr 2026 06:53:07 -0700 (PDT)
 Received: from tech-Alienware-m15-R6.. ([122.171.21.105])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9fedf0sm310473435ad.6.2026.04.25.06.44.58
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec04448sm31761931b3a.55.2026.04.25.06.53.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 06:45:03 -0700 (PDT)
+        Sat, 25 Apr 2026 06:53:07 -0700 (PDT)
 From: Sunny Patel <nueralspacetech@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-mm@kvack.org,
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	apopple@nvidia.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
 	linux-kernel@vger.kernel.org,
-	Sunny Patel <nueralspacetech@gmail.com>
-Subject: [PATCH] mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
-Date: Sat, 25 Apr 2026 19:14:48 +0530
-Message-ID: <20260425134453.23769-1-nueralspacetech@gmail.com>
+	linux-mm@kvack.org,
+	matthew.brost@intel.com,
+	nueralspacetech@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com
+Subject: Re: [PATCH v2] mm/migrate_device: Cleanup up PMD Checks and warnings
+Date: Sat, 25 Apr 2026 19:22:59 +0530
+Message-ID: <20260425135259.26122-1-nueralspacetech@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <b3176027-a1b0-4aea-8401-18cbdad9bc44@kernel.org>
+References: <b3176027-a1b0-4aea-8401-18cbdad9bc44@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BB62AC000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: doameskrif6rpwi3kjjw3xkxib44qzmh
-X-HE-Tag: 1777124704-490148
-X-HE-Meta: U2FsdGVkX1841CAOVupMvp4OUBbkDhB39mV87Rsg1EAShXmJs6A5Oy9hgmNY1gvKFOOJiiJuTC2lQfDr+OVdmh9b9oOv3lq71822iGsq8Me0QR6Zxm7tZioTkpjyCds4XcqS1PCfVu1CfQe5b5tVfn6ZbRnuzDSpRpZnUePPtLCyyxCQYTQnbSEvrsS3UW/h+jU4uVaFmMWJKhhdKJlC+S6C0M6ts+NtTolX+66CpcS/I60HtKdIo2kvc2+89xbFplq00J97XCZsuQ8x41CK4fXfs6AXpqQZba5xJ7K+uUVuPvblb+UVGCuXgMP3GrQ8KZFgUcC36Ljdc1FJ+Fa6bllXPOirvhMvc+J7AMJQI9EvM+Zyhsyargw96z/zXH3S7bFA/EQQfaRkU92F7eGnD2NkTW9fpMv7lZacEjOF80PLTrM4OUwNohn+5vjhKMMyH2UXcccx30a5ANooeGyCQ/OVGXqeugbwWCKqew8JfeElKav3J+gr/GUiN1djXDJD7De9CKOq5zVlcKUvQrviaH4WwIpXI/DMkIFaOePWwmx0me3uAJhr+KmDZM2lLLizdDxySO/PdUBsgrTPosJXvWZgAkLP4P2ghtOjAO+AOTjQ9Q46MQs6GfgSGMmphBaKTyKNFvcwLRTY5XHfkjueTZtmbz9eT6baDQXJBJtlK6rAkpm6vcoYna1ge/wh33cyI/29Qyi3GCTpeBAk9LDmLcO9ktiXmk7IaQQ1Ed3Pnu2K5cu/vgmxaXjee+uOszLDabrXSp3zFEeKpHJO5+pUFMzKZ01g4EzuaMgnVe9zSLS1hDW5L2oI+OTH4WC4+v71/eAJRTjHh2wCtwvB/LNGinHVFMboSjmcPbl/Aia9rfJCjvi3zb2Y8bwu6UWW+aHa6kTDhiolvrMkAmVbzOD/tMI6eb9mp9HpQYRJB7+eOn6AkSIPmtoFVxdiKF18TNDK/ncAhiC7paDYMyIcoPp
- uj7Dvb5o
- qgg3dl5qq9gnH5gHLYoec+z6xr6xheTU0v2FhvSJfrzBFN3fUFRS1gB2qc58ueLQeAV93wYDt/MQwP0UX0KQdA/F8iiriae9TSlH667IHFFMR4TzZoE1YWpJFsR8uXBrvt9ad181eEXiKrViADyQmeQE36WobLAXhTeg5V5WQCe0n2Bo0g56YDPKgMAu48LUPWdBJtyh/f8bzfjG4tBAPx/JGOnO9RgRxXWotBqv0CWpARfUArVrUiucVKTRw09W1tI0CyxGmGxMWsOTBV6AJkNs+XnxIIFxYGHqF4fY+5pcUqiDxHdfUD4FFQ2cpazTvM3MY0ePc0LZK+B+ptJ5rSGS+J/FQFjQjU5Pyry3MwIiNn4EgCjVugQIuIbbFhp1GCV8JEH420R3HfBy29srJdS4C1uXnNNZRtHjWfgPuU2XTUfQe3d6Ycaqb0p9W9NYLKbtSEd5NMLc19ctQQyzprK6AdW4ssyNCsCCbIlMn2XeDpNHyOE6mq6rh1UXWHKrtcSjAIkiUqt1w8XbxmAZrHgRbHA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CC9334000C
+X-Stat-Signature: c11w7afzp66hytqfpt7nu53jujk9dqmd
+X-HE-Tag: 1777125188-176125
+X-HE-Meta: U2FsdGVkX19Y+aD4QD6QodBZJEdEyw2+igMY0nutjaX4TC4AvCU7UkTvx3gjwoQ2wRBnFtAGknLBcgeTY+zJMe6pMPLGVJ7p9ZKq9qz3LaphPu6XIAi32wwnH9Z2kHH5hPXQSyc932nQZms26gsT2XpFBVgccWnEZHq/13TFz0xkXMhfjsVzNSr6l44NMalXTHxcZF5AhdkkIcHqD0P54bolIoMlasBz3WI0IBiX6KlFVAvNzUBmoWUhxiLuOFxMukEEszyHC9Gn6IMvi3mcit+NxDDSty3NSlJlQAFJ74kG5RKo8Y/QBI7yALA3+8ERVQMDyOzjz8fd1xy4WBnLBwM4LEyjmEaXCs53Kr4gvIy5Md3pm5GSrcyoRzLU45VFZTDfeGDjwBBgmgeZg0SZGptoKi3xgt8ylo7PrfTS3/5pGYZmjByy5oGNN5eEaRHd8lMDgYo7q1XLZia6TapfzmHa5l161OCA7jlbX+mlXKZAJxMlTCis6y+ayTdBjgj6qntYvG/bvrEpGxkV8GV7RlLRMSWkqJjbawAhEeqxfMjV5MQr5uIRMRtUSwBf2brFdpRmhC78E+X7in6x+Pb+xqVLctLRXFpri67lqd8b4nnIdGA78pJtNdJZ65C8nYxD6qZ9mkPRCwYBjxC8QkSMOy/ORwPUSt/VcQZydbE7ztSXvDOJQeERtcSH7Lh4jgGq7FIyDU252xr9YdNyjh3jwlzqwrKkM7ShcvX7wlLDhYM4IbiiCo1/DYPz8NaL2CtX/6Y6Nw5m2UFVn3N7TmlKOCDUuHDXEdncfF2zJhkEfO+5hFezCkN40CvbL9Jsy8eFqm2ctvCgB1OxNQFEZFrhMKQv54xy+3VwmzUmUQ21IS3BUlqdePSwKhkX0dyY6cjp6JYMg30ZvaZ4Y8/bhB2iLDzfsRiXXU+4Sj1/5lrvuFYy84hnf2Cz12pUlUJjboUof1t4AI97IhkWmdaS1MQ
+ RkqP7LP5
+ L+OXAyeeWC+nVtzDcW+eN/P3Wp5CktwGC9SooH7WFV5oRru22jaVf1EqCB4vpybIOZwK/QI59/xk2C1zOOZ9nE30k0qqpZDltYILyQ75kYmsXaLC1kzpSFmEUlJk0C+XINZwYdzeKC1fctwuytaMTZsN0/MFDQmuS4f8RDH25rgJEURE4+8/rf7ZrhyPGNpIa8thoP2GMqKrJOOZuuFxNYD+HLhzOgAYfgWLEWBuL0ybdfCdj94struOTTiikx3zGC3uF05xTAYtOIP6R/kekD3SyVt6H3dAXLJ8K1+t7jDelHI3yWMKVOhSDNvntfJl4YQOrMvJ9Ss5OFz5rjAgiWboTMNW9QVEX4yi5Be60LsrTfegsfw1V9Q6D8DEAH31Me+F5rHNUWhW6o9y9gXxOvhv95jjXOzo0IUPbufMWDUo2PPpZgscsxa+IIAGcn/i7i7q3KEdZor+aIQmD9aWM4I4/NrilDRDs3xb59BqzTYenxdUP1s5/yY4YLPKO2/ek+FxZ8zbVFgAK6nd9DSGanAvBsVbX18UOQJCniJrnyJADKJ49E4Pj/fsOow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,31 +127,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
-to a PMD check failure, the pgtable allocated earlier via
-pte_alloc_one() is never freed, causing a memory leak.
+On Fri, 24 Apr 2026 20:25:06 +0200, David Hildenbrand wrote:
+> No, independent issues -> independent patches :)
 
-Add a pte_free() call in the unlock_abort error path to release
-the pgtable before returning.
+Sent two individual patches for review as discussed.
 
-Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
----
- mm/migrate_device.c | 1 +
- 1 file changed, 1 insertion(+)
+1. https://lore.kernel.org/linux-mm/20260425134453.23769-1-nueralspacetech@gmail.com/T/#u
+2. https://lore.kernel.org/linux-mm/20260425133537.17463-1-nueralspacetech@gmail.com/T/#u
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index fbfe5715f635..457bab5c7c31 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -893,6 +893,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
- 
- unlock_abort:
- 	spin_unlock(ptl);
-+	pte_free(vma->vm_mm, pgtable);
- abort:
- 	for (i = 0; i < HPAGE_PMD_NR; i++)
- 		src[i] &= ~MIGRATE_PFN_MIGRATE;
--- 
-2.43.0
-
+Thanks,
+Sunny Patel
 
