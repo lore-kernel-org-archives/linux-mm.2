@@ -4,87 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4AB8FF885C
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 14:57:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ADC9FF885C
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 15:37:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 308E76B008C; Sat, 25 Apr 2026 10:57:57 -0400 (EDT)
+	id 9D4686B0088; Sat, 25 Apr 2026 11:37:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E0946B0092; Sat, 25 Apr 2026 10:57:57 -0400 (EDT)
+	id 984B96B008A; Sat, 25 Apr 2026 11:37:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21D3C6B0093; Sat, 25 Apr 2026 10:57:57 -0400 (EDT)
+	id 89AF16B008C; Sat, 25 Apr 2026 11:37:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1000C6B008C
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 10:57:57 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9E6081C04A3
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 14:57:56 +0000 (UTC)
-X-FDA: 84697382952.11.528F238
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 780866B0088
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 11:37:36 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 056661C0135
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 15:37:36 +0000 (UTC)
+X-FDA: 84697482912.10.5006E8E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0A9DFA0002
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 14:57:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rEKeu3N0;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf19.hostedemail.com (Postfix) with ESMTP id 66F9E1A000C
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 15:37:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dJJHnpRW;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777129075;
+	s=arc-20220608; t=1777131454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BT8q0DVs4qWRn3oOm4KcXx8o9fP0GCc6vrnmQnkq5YE=;
-	b=NHijndBUINscraqvsq0NZxLYzxo8jlnou9GC27Hhhu91zlzlOVa3x86dsu1PKas/W1igVC
-	fGrzqgHSpFUeWw9vNq7eO0aHrUdJPH9yLrJoK6ElcDcunHQCa/ya3CqlRkp75x4iPFjZ/j
-	S63h+6ug1MJebNq0oLIRVgTsbSH/aNs=
+	bh=7PdBQ1kOULz+lVIBD9m5Y1st1YOkSDbk6WeA2i3ax0o=;
+	b=mJvPFGXmuMgsh6C4Ms3Q14B6cgJqQF7hbymogTHpEgPJWYeDKkhwSl/li+QnosAKoN5Bd2
+	e6fkqSh1SIcwQ2E2Tes8TDd0JL8BwHFnN4nw1aEpiQFKugu1YG9zhLAjBVBceWs+qb1O2p
+	bxBh82xVCv82wEoHGjZp8Mrz92KKfyM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rEKeu3N0;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777129075; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dJJHnpRW;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777131454; a=rsa-sha256;
 	cv=none;
-	b=Xu3i7Y1WeOFIrSB6aKUSrPmveAsOvSQQaJRv1f3vZzM/mNE49xQp3DVLBUvcJh95Hn52JE
-	ZGfXbTO7n16YFNDHy2WNtFuGy7mCGvW1naUS2JPvEiHGkmjMDWdwOnqM8VZ9Ae+PoHV6+y
-	Jq6yigaujN69WuHmZkNgtax1ALdCzyc=
+	b=zM5d1dRnoGxvo+2bWXOeCPku0l+SmwENBwb382PtdLzuA6CnwbtzfQ1yIuJ+Z6VuAf+0HF
+	5dSNk2U8iqCYJgi7rsoFTXIFSao48AQgg91bAtmP313QBp3+vbatlkfMjn+Hb/99eXhMYk
+	j00BFasTuz9w+Zmyir3+GhY7WZ/nBa8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4CCF160055;
-	Sat, 25 Apr 2026 14:57:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80DBC2BCB0;
-	Sat, 25 Apr 2026 14:57:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777129074;
-	bh=p9NIKZ3p2iPPLemB41z0f9r9GTpX1JVIj3yIsQ7bB10=;
-	h=Date:From:To:Subject:In-Reply-To:References:From;
-	b=rEKeu3N0k017FBmeBmrcD/bKroFhUGzm573E+hdrbA5/uv4T10BbkTgPrGjEs7QYc
-	 XjHV2b71Olf2DjNTL850JXx4TicaA6oZYSXZuTYGFQM4S2LoCwgkje2ip1GOcS3SJ3
-	 xHPn5X8BUK+Pz1UwCMQewaT/OX9zV2zyyFoBduq8=
-Date: Sat, 25 Apr 2026 07:57:53 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Deepanshu Kartikey <kartikey406@gmail.com>, muchun.song@linux.dev,
- osalvador@suse.de, david@kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, syzbot+226c1f947186f8fef796@syzkaller.appspotmail.com,
- Mina Almasry <almasrymina@google.com>
-Subject: Re: [PATCH] mm/hugetlb: fix hugetlb cgroup rsvd charge/uncharge
- mismatch
-Message-Id: <20260425075753.eab83d221fd6ad59241e0f1d@linux-foundation.org>
-In-Reply-To: <20260330131525.630b8ff8913ade1e0e5c2054@linux-foundation.org>
-References: <20260328065534.346053-1-kartikey406@gmail.com>
-	<20260330131525.630b8ff8913ade1e0e5c2054@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 6716060055;
+	Sat, 25 Apr 2026 15:37:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BC1C2BCB0;
+	Sat, 25 Apr 2026 15:37:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777131453;
+	bh=QvQvNJC7LvyQEmdZeYV/Lpf/XYhQlzkNstKvh8ss6gQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dJJHnpRWXOSWFvuGVf93+nyAHul0E9HhqmZai5gxzO+EFGza1Pf97SNMO/q3hHTot
+	 c0u3tQqMxX4x4cuNOJ1VoijsF494IScHpjc9LPkMxs7AihGn6Upc+nOwlvl17QByc9
+	 1HuCmYY3Hr+9mjrQ7WTHVByEob9jgZGws6nZmyy1OX0u6BvZdCk8lkTaMqiP/23DgG
+	 +guf2bI3P/YW4LMnYqWBDNSWSVZ4OcVHGV8iOVNyW9MYz4HocUsP1KMzW5NS8Ay/e0
+	 mjmBDIqqujw5IYM0si+oINPo4NpgoWeAa0tXoInGUxflAJx0y5xEusiLhXjWNiVTlP
+	 RnNsv+6Bo9wng==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [PATCH v7] mm/damon: add node_eligible_mem_bp goal metric
+Date: Sat, 25 Apr 2026 08:37:21 -0700
+Message-ID: <20260425153723.89488-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CALa+Y16VuXb2DfeiBiE5avpEsqGVfc6DAKZWacNsu-1hD51hMQ@mail.gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: piw1opksqm8chrhdxzhoqs8oefkqz1wq
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 66F9E1A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0A9DFA0002
-X-Stat-Signature: 4ch1yuie1ggu8okfsnriwrqp57wcqc6n
-X-HE-Tag: 1777129074-299691
-X-HE-Meta: U2FsdGVkX1+mgiDQMEIFkIaM6mpfNSPxVKroagYo3TuHYOJT2iVlgeYq8PPihVERtC6FPJmnv8uZWrHVdZujuOhxw64F1YwZP4V0yoFiVP+PTVvBS/MxqbD+14wtZ9CZ6H9TiZfPI0C/250D2fyEgLU8OB/jcuN7S7EjmFCRZcYKwrIOqdlMNEnj/69qq+z98TG6wAHxbcMYZkD+w+m/er0hz9Bma/hZXKsw7IwtIeBYktE+ZPVokRU8kC4IZ6zkUgDcCDkW4iSxzE8hVQeMWVzlYxmg2JRRTV8kB3rgaSHRkha0/w2/ZF24QczKQEfjZx7qt6Pp39riCYR/+LBYAmPczTDe925xHNoLzyalyHyzEuQPksIJYxryxpytL1o/a8XHChm6klSviSQrqeqyVlj5d9LFqvB3Y1NZ5fFS40MoZqmQK4Q6AWrbRrJuJCLZqnjppxohqhc/PpRJNlT/M7CfXnGF5tprJRHfJEd4uHvdzSbkt9oLqmY108fizK2Twd6HkDLGAV4Ws/zw64yW7o3oI9VWTFZ44QiL+owfZprApLm13C3uBSaAT5QxOJMjSiPlHAq3BCTC7KK41cio0Ys894FdPHNmtB8EaZWLUjQfeQ8o9cwE3GB5Y2zsVHsRdHQVZhWIroIZn86Y40Hym7ofZMggyQrdNc9WqtkF83zE31kXM4l0OQaV1gl+E4uyB0k/OWEth7Qi4CanX1A2wPGkruq//NSR7Lrrdntogew2ilcs4twlUZIFEDNO9Q5t+kmqehEv9apBmQd9PR7x7HvfuR/BIMAyaE//hRGiXhrhlsA/EtGr7y60U6iYZwRAeapako1r2QzB1ViB71RrFf6Nu2Tnf7t5TyIuuWdsGyOjDnqyNqkoy/BHgINQeYYjYsBV9eD2XEcZyc5q/CEvb9qsWYtiI5/dvobNBwffvm5NfrCL8fOnS3019H3U5S0wLg8ASNdf24oDaw22cbD
- afilQ+oE
- zArT8+HvL1i7d03xxfH2jd2BYmg7uqBHKl5u6Nen38mffQeMinR2U92DA8UgSuN1/CImEyeI8mHW+/9xzkoSPgi9A1uuP23HQ7a1K5SB01Exdc7JTdSumVHw5Ksz84fAUWAtmmdDUNLKKB9CF/9j5flSPDrz+Xu0oZAZMBTHkucu0P+jKEFSaZ085ADGoig4a+fpWdG2PcIOe5pwc0CtQY/+esCUPx2py+ac8NlQTyA+MswPvuclJbHL0rgqF7cnycFZSH9/cN7Kg4NJd/dcx0wQgHyfUCwzbuLulL1783EB4Q1us/FAaFT9VmpVBLmABG81kSBgyFNnrUpVmNqw+BfErViQ90B7OfgwE9EMklO76uxAhK4H6FLKyt04fPzIRwkib59+9z6h/QygP0TGnrLUU9MOo8hiwq0U+CPXiAUcndtj2GwQIoSyfp+Rm+KPaCSknMUg0+FUaU+gc8SmTqUUrkbHpbKOVucVV1OwEto6gDz+CwDWlER+WT2xg2jYY2mBgDIxOfMFAFYi/2IIvMhRv2LuJW8c+Ii08FlEC5ftVs2bWjs3TX4+esHnj8BgJL2tbhNwOG9eYJrEcdxlaDcZ0Pg==
+X-HE-Tag: 1777131454-470352
+X-HE-Meta: U2FsdGVkX1/zotiMR94x86eUzZLOib1j7jtQW0QTqtIqe9GpmNGc+REz90CYkZmSm7lyMJ52uXoq7Hw6q8QOVRhmXQtn0tq4aqo4fzo3F78XniQaI8hLiEE1mkrD5bP9MnPY16B8NwqstTL9X0dRd+hz1xXWTsdOrpBNbNW6vW58vR7CyS07ntUSRgnNg9sxtVG3m3s0d1bfq3x0NOp3JniNyv2Vp8Ex0OWltzP1y/2OkvOYdRCNH5RRxxt+3nDkD7T8uznJoqwDZzdEZG+wlE35OBX2QNUdfu7XSrbe+30rB5OsEvLjf61t7ud/+pDxRUIk8TS6obhtWE7UHzVRWvBW3QuchRgnNUHQz8AY1u9dLmc6Wtq3CLg5EIKWiCEDJ0SkqKQi97L+PxO/nXMr/udX4ame2MkGOaFD9+2ue7oWBNCULxuO+Volw+5Sg71veq7ZGCIwqx48vAif0He1jZXCd9Lm6+H3FO5MGMu1R553sBlvr+H3+dCyUo09opJiaH4c1Cav/jz/A09Xo/frDDSMv+xDwfdTsJeW4r1C7AMmuHLCv+lf3g0lOWQ5+xD2PIJUNk5dg1mYRE5tOCqOGgkW+itLfzcX1LkEnann7KnhIzH9RlclomvBTCiaPKoQrPot4BEDyBEKB2oZMoIWi7pkLy56mEwx3eTNKWBY1uunLQGqUSXB1wDUn3yNY0gmbIF7ZKKx098IPD+1JMhvjlxSHZqE21Wk92SK3AV5g/n6BlqQZYzKsX3vA++M1J8uNIX+4YGo5Zic0wXVb1eTHoVABFcKchDnm5RkUQqyqA5ehFRHekfpfUK2Ox1eB2CfW8+6JyWOCHZuiHatCGBLwlEtBdAgKvmmkqs67m8UTQ3nhF35tlquaJLgWo27V/Mjebot2Iyufz/1j7TsrOvPALcDzaVnvknCHdC4yb5Gy+n5SZQIzFajYwLI8d5zr12Dzkjetub3hhZw/8m9G1G
+ TFeMGRpe
+ sTURu6jyv13MFI/6hl3CxeNQHWBxrXneoCdH2qmIKNA8S8SGi/EthO6CTB9qTRCRq5rlpRwgHMB1/DeSW770SurfMnBPdeVshCfu76/3b60+Qz/5p1PKH5a1zaRQTOkW1kXSTFxgBkyoO2kpxXUYP6NKSnoo9eHkXdBQ3XERPXjA4qKwrwoK2aqzwPIW5GqcXtVYX/x4EQ3NfU0hKJPlTqmDvWdF16pBws8BMV6bIp4xiO28UMSwVDeIlvL01Sfzxp2LC4+B4ub6KEE7e3LgcGHaOK6vw7CrosM9Pwj9HOxrLzZh0eVScbSwyqFjvcNA/fbfe92H/LW+sxz99a7j9gWMpwQlpYho6+sbdBlhk3VSFapKX/C8eWKxPO2Lku+ZkqTjZyKVDedtIYtqwB46zAzJWgnSM6tD5kfU7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,131 +101,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 30 Mar 2026 13:15:25 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Fri, 24 Apr 2026 21:18:57 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-> On Sat, 28 Mar 2026 12:25:34 +0530 Deepanshu Kartikey <kartikey406@gmail.com> wrote:
+> On Fri, Apr 24, 2026 at 5:39 PM SeongJae Park <sj@kernel.org> wrote:
+> >
+> > Hello Ravi,
+> >
+> >
+> > This version looks good, except very trivial nits.
 > 
-> > In alloc_hugetlb_folio(), a single h_cg pointer is used for both
-> > the rsvd and non-rsvd hugetlb cgroup charges. When map_chg is set,
-> > hugetlb_cgroup_charge_cgroup_rsvd() stores the charged cgroup in
-> > h_cg, but the immediately following hugetlb_cgroup_charge_cgroup()
-> > overwrites h_cg with the non-rsvd cgroup pointer.
-> > 
-> > As a result, hugetlb_cgroup_commit_charge_rsvd() stores the wrong
-> > (non-rsvd) cgroup pointer into the folio's rsvd slot.
-> > 
-> > When the folio is later freed, free_huge_folio() unconditionally
-> > calls both hugetlb_cgroup_uncharge_folio() and
-> > hugetlb_cgroup_uncharge_folio_rsvd(). The rsvd uncharge reads back
-> > the wrong cgroup from the folio and decrements a counter that was
-> > never charged for that cgroup, causing a page_counter underflow:
-> > 
-> >   page_counter underflow: -512 nr_pages=512
-> >   WARNING: mm/page_counter.c:61 at page_counter_cancel
-> > 
-> > Fix this by introducing a separate h_cg_rsvd pointer exclusively
-> > for the rsvd charge path, keeping the rsvd and non-rsvd charges
-> > fully independent through their charge, commit, and error uncharge
-> > paths.
+>  Hi SJ,
 > 
-> Thanks.
+>   Thanks for the super quick review! Very helpful.
+
+My pleasure!
+
+[...]
+> > So this looks good to me, except the trivial things I commented above.  Could
+> > you please revision for the last time?
 > 
-> > Fixes: 08cf9faf7558 ("hugetlb_cgroup: support noreserve mappings")
-> 
-> Merged in 2020!
-> 
-> Could reviewers please give consideration to whether we should backport
-> this?
-> 
+> Will do. Summary of changes for v8:
+>   1. Mention addr filters for source-node filtering in Two-Scheme
+> Setup
+>   2. Move implementation details to commentary area with full
+> changelog
+>   3. Wrap the 80-column violation in damon_commit_ctx()
+>   4. Use PAGE_ALIGN_DOWN(addr + PAGE_SIZE) for alignment
+>   5. Wrap damos_goal_tune_esz_bp_temporal() (81 chars)
+>   6. Remove unintended damos_trace_esz() from first charge window
 
-OK, then ;)
-
-
-I'll queue this up and shall add the cc:stable - that underflow warning
-needs to be addressed.
-
-I'll add a needs-review note-to-self.
+Sounds good, looking forward to the v8!
 
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: mm/hugetlb: fix hugetlb cgroup rsvd charge/uncharge mismatch
-Date: Sat, 28 Mar 2026 12:25:34 +0530
+Thanks,
+SJ
 
-In alloc_hugetlb_folio(), a single h_cg pointer is used for both the rsvd
-and non-rsvd hugetlb cgroup charges.  When map_chg is set,
-hugetlb_cgroup_charge_cgroup_rsvd() stores the charged cgroup in h_cg, but
-the immediately following hugetlb_cgroup_charge_cgroup() overwrites h_cg
-with the non-rsvd cgroup pointer.
-
-As a result, hugetlb_cgroup_commit_charge_rsvd() stores the wrong
-(non-rsvd) cgroup pointer into the folio's rsvd slot.
-
-When the folio is later freed, free_huge_folio() unconditionally calls
-both hugetlb_cgroup_uncharge_folio() and
-hugetlb_cgroup_uncharge_folio_rsvd().  The rsvd uncharge reads back the
-wrong cgroup from the folio and decrements a counter that was never
-charged for that cgroup, causing a page_counter underflow:
-
-  page_counter underflow: -512 nr_pages=512
-  WARNING: mm/page_counter.c:61 at page_counter_cancel
-
-Fix this by introducing a separate h_cg_rsvd pointer exclusively for the
-rsvd charge path, keeping the rsvd and non-rsvd charges fully independent
-through their charge, commit, and error uncharge paths.
-
-Link: https://lore.kernel.org/20260328065534.346053-1-kartikey406@gmail.com
-Fixes: 08cf9faf7558 ("hugetlb_cgroup: support noreserve mappings")
-Reported-by: syzbot+226c1f947186f8fef796@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=226c1f947186f8fef796
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-fix-hugetlb-cgroup-rsvd-charge-uncharge-mismatch
-+++ a/mm/hugetlb.c
-@@ -2879,6 +2879,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	map_chg_state map_chg;
- 	int ret, idx;
- 	struct hugetlb_cgroup *h_cg = NULL;
-+	struct hugetlb_cgroup *h_cg_rsvd = NULL;
- 	gfp_t gfp = htlb_alloc_mask(h) | __GFP_RETRY_MAYFAIL;
- 
- 	idx = hstate_index(h);
-@@ -2929,7 +2930,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	 */
- 	if (map_chg) {
- 		ret = hugetlb_cgroup_charge_cgroup_rsvd(
--			idx, pages_per_huge_page(h), &h_cg);
-+			idx, pages_per_huge_page(h), &h_cg_rsvd);
- 		if (ret)
- 			goto out_subpool_put;
- 	}
-@@ -2971,7 +2972,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	 */
- 	if (map_chg) {
- 		hugetlb_cgroup_commit_charge_rsvd(idx, pages_per_huge_page(h),
--						  h_cg, folio);
-+						  h_cg_rsvd, folio);
- 	}
- 
- 	spin_unlock_irq(&hugetlb_lock);
-@@ -3023,7 +3024,7 @@ out_uncharge_cgroup:
- out_uncharge_cgroup_reservation:
- 	if (map_chg)
- 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
--						    h_cg);
-+						    h_cg_rsvd);
- out_subpool_put:
- 	/*
- 	 * put page to subpool iff the quota of subpool's rsv_hpages is used
-_
-
+[...]
 
