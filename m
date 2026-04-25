@@ -4,110 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37CBFF885C
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 20:58:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14A12FF885A
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 21:04:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26B806B008A; Sat, 25 Apr 2026 16:58:11 -0400 (EDT)
+	id 1D9566B0088; Sat, 25 Apr 2026 17:04:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2432E6B008C; Sat, 25 Apr 2026 16:58:11 -0400 (EDT)
+	id 18A9C6B008A; Sat, 25 Apr 2026 17:04:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1802E6B0092; Sat, 25 Apr 2026 16:58:11 -0400 (EDT)
+	id 09FBB6B008C; Sat, 25 Apr 2026 17:04:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 086446B008A
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 16:58:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 977DCA03B4
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 20:58:10 +0000 (UTC)
-X-FDA: 84698290740.25.F4B6346
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CE3AC80009
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 20:58:08 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BcbK+xze;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777150689; a=rsa-sha256;
-	cv=none;
-	b=GdltaBV5AZurw+XzEXk0xiuKke3KtvYtCb3uf4x5W/bnloBaxv9ft41m7lLEZejpPU26H/
-	0SF2IVE9v3vIFzflRNWMijUZy6bUlwTpstW30VZsA8ZsRJi1sUe+M6BzHCoOkodte+uCFq
-	R2gszrNI1hGrM4kInGJlU9s8mjTttiI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BcbK+xze;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E820C6B0088
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 17:04:49 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B7BCC19FC
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 21:04:49 +0000 (UTC)
+X-FDA: 84698307498.17.296D9FB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E6FF21A0010
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 21:04:47 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DNOwtKwo;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777150689;
+	s=arc-20220608; t=1777151087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BgdEEd8doLUvs/dn9flQgsDbHK4z9m7/mgNcer+Vti0=;
-	b=r2Wb4Ylu/w7tfMnljQIZWgRxirf0iAiDjTQPKU+Tzb07lSt9/TfgxvcD8dCv1EUUrb92z4
-	v/PUvNsVLELJoK2pxT/x+rHFpMT2f+ufFmFUCtmqQAW+N+SLKka0pf4MZLuh6+zajCM5EZ
-	L89xvpm3ADKZ1bmoJZNB6r4Qn94pqDY=
+	bh=ve6CgzqBQQMz4Ha6RMOg8/H5yEbwriSnmgV728dVJs4=;
+	b=Pt4IC+7C94R9MHVmiQCZRUFholznKvYKl3FkdF4CwN428MVaN3cCerTcQCcWgxyOiNtr18
+	XOb/y8Ha8lk4Cl0+9uSPDFAakWtDg5brtFaRaeAegWiiA8PVOhOIKEZGM7id+JdH2MIe+K
+	oSp0oVxG/VZy2j3P1mjm+nGeDFDjXv8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DNOwtKwo;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777151087; a=rsa-sha256;
+	cv=none;
+	b=Fv/nAwLhwQYJRVYE7PW/2/QOKVw77ffnpQeK6i5SXAZa8Cv8KaaKlIVgp6BUkM5lMeG8mK
+	TExQztglEhO6Hszpdo5pzdYLbGmo2DGFz8Bqc8J2/LOxOS+bdariuxXjKlDP6HBS5hXAgM
+	GJq7Jm9//bZndXgBKoyWZfmHVf5rr78=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC47B43FF2;
-	Sat, 25 Apr 2026 20:58:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58321C2BCB0;
-	Sat, 25 Apr 2026 20:58:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777150687;
-	bh=+hSFQy10jXOwXKkPWQmI+ovca5nHeECfaZ4vk+Fo/YE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcbK+xzeaaHw9zafOoOvGc7MHhe83Ktwvpsj77yR27U01k3Fog5Cu92T7e+Zgy+Rb
-	 DRkuvkSHMQbRZcRWTU64fej+2Cb61+rhjAC0pISZtsud0iql0tLkPeS55ZE426MtTI
-	 53ULH9sFlXlUDcrLs6tMtBHqF0njXcP8xDORQFP4bG2rJJuYhkFtd0lcWYJaQU5Fs3
-	 1/6v994uGrQ3Kfr3kUck4nTDKOhDnCmR1KUnzr/WltYvDPMqOs4LPfEoK/Ux2Fcc2r
-	 P46q/+Lik147WDM3VgtT/3jucTBQ7Sh/XjaTLMe+AhtMeVVWl0z4BAyqmSn/MkGGry
-	 Vb1FP+3dHuFSQ==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: ryncsn@gmail.com
-Cc: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	chenridong@huaweicloud.com,
-	chrisl@kernel.org,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	kaleshsingh@google.com,
-	laoar.shao@gmail.com,
-	lenohou@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	stevensd@google.com,
-	surenb@google.com,
-	vernon2gm@gmail.com,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	yuzhao@google.com,
-	zhengqi.arch@bytedance.com
-Subject: Re: [PATCH v6 00/14] mm/mglru: improve reclaim loop and dirty folio handling
-Date: Sun, 26 Apr 2026 04:57:59 +0800
-Message-Id: <20260425205759.1701-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <CAMgjq7DM6Sd5EYx=PLtYHBYk6gAPFupYg2a7nib2KrGBO=HtGw@mail.gmail.com>
-References: <CAMgjq7DM6Sd5EYx=PLtYHBYk6gAPFupYg2a7nib2KrGBO=HtGw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xs61chxyfwrwcrnatbgdinzuwgoezg7o
+	by tor.source.kernel.org (Postfix) with ESMTP id 368D860055;
+	Sat, 25 Apr 2026 21:04:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618BDC2BCB0;
+	Sat, 25 Apr 2026 21:04:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777151086;
+	bh=ve6CgzqBQQMz4Ha6RMOg8/H5yEbwriSnmgV728dVJs4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DNOwtKwo1mgKh8MR3NGdt8e8NmcYb5J4s16oMWSUwpVyuPahMZjwXmB3E8gLyURqB
+	 34AaOktg9xvjfInuQdgQuFDUEFvxLW6XvNjJBK1HTxtlw588T8+m7WUWV9dg9m8yDf
+	 BkWmZDdNnswtxrDYkyG2O+RTyD5qO3kg161Zn8Ec=
+Date: Sat, 25 Apr 2026 14:04:45 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Haifeng Xu <haifeng.xu@shopee.com>
+Cc: david@fromorbit.com, roman.gushchin@linux.dev, hannes@cmpxchg.org,
+ mhocko@kernel.org, shakeel.butt@linux.dev, zhengqi.arch@bytedance.com,
+ muchun.song@linux.dev, usama.arif@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 0/4] record non-slab shrinkers for non-root memcgs
+ when kmem is disabled
+Message-Id: <20260425140445.14ab61224955c88d359dd6f7@linux-foundation.org>
+In-Reply-To: <20260311030235.240953-1-haifeng.xu@shopee.com>
+References: <20260311030235.240953-1-haifeng.xu@shopee.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CE3AC80009
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777150688-599430
-X-HE-Meta: U2FsdGVkX1+s+5KUzMNMuA9GSfAf+4s5zTpEdpyhJmfyOVBK7I+84X7uOX/cOUnQx5RQ8tUDjMBKtarWj+K4oTVqqqNeWNEXcRzfaRFE3cbaSbMRWv/YrBg1RhLFORoYi/i9VdCrT5DwIxG4KfelzWWq68oSEvv18Trec8K3SQeSGWyEzfeLHaz4LmwEovcD4Y9kLxTcdM8LbNxc0Br1k3z9I33czikZbeRSKeddHH21JXEH0gmjHC8AtFk02kCURPU5g0mgUE1cgQITlo0z2bFc8BgOjVcvbabkQ9hIB5LFMomLsjnq0mHxYJMu1qfgemj4l2ljThB7rp1MAl5+72aAZZpwMxmEVTPuC0Xac/78nsTP9+B7XpFyYQDTMBtTmVZXHMIAmINq16MdwT8t3dYVk3sRliFuPiY8WmCRVTEOKKgWuLqLoekLJeyVh4ju4kYJLUF4N6631wFV2M4I5cDFm2jseFVamAWeumdkFEyt169+mMU46ZC3VJ+Hl3oe22bLmZ99JqVTdVtZcdwUtPE+rSeM/mHf2tVtqWsszs+PQyyqB+FVeW7wGJyWehx/9FZ1YGg8R2FPEzXBX/XcNtL7i1FOC+HRZsi/grd6j2BM0/EQYWQJIydikoVqQbuPUu++SnFNOoQHVc2cLrPz4XPxs++lM3x16EplrXhz5M2LRvD7tsHRaHzvNkKx3ABLyffOTwO/HBmVWAzX4c/RUfdNVewgqYeKSPrdq61CZixh2Y2YqoEksbs4aE4KbEU1bUU5mS3tu560VmGMeA/LFkaDyXhL6crAnhuaXx0LWcGNuu9Qk7qucP7bXwxUBvhgmQ+IW4X5vWxlVDCzX+T4dES7n5Cku4mHKZrxoHIVolvsp/GJ3x8AckKVX7oWLncIhUvbk8z2JKZvana8sMO05Hua9Pr6LPKYVAq0kUzgppI7oPs9A3e1Bh7wCFH06jAcHlQyNYaXJtcYAT1P8Pg
- yDTK70fU
- Td0IoOCrR9WJn1WHhsmQNuApyv/xcA7tbSkT+tVb/GIqeFzaoxQLXyRoZ7HvaX7qKSDHrrelswYU9ayZz71g9upPYtvh3qxOJmffE1UcqJF3KsyM4fn2ezh/lwKQq8n4yePyBacgZ16nWcwZBQ8ukRT8Ks8s8+o4PWLF2eKJpY/82NiZlmZ36B7pXgB2Vs8ZXbeiVoNi/7P2ghKrVP3+uKlOsb45h4zeJ+LhrSwrgtlFVFE6OtjhdTQ6kbsyya/u8NkdZMtK7zWnJve4U+tTBx4NA6D34u2QfOedSyu1UQ4wUitJEls07rLd5yawWVctnbDJUD7v/z5I3UAD+Qjb4GbnsMVoO8YW+3DtYun5GlfWy4+o=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E6FF21A0010
+X-Stat-Signature: wikdjypnwx3gt4wqzisfzarpaj4zwhik
+X-HE-Tag: 1777151087-580325
+X-HE-Meta: U2FsdGVkX18oEOcm5MgN8y2bE2us20bHvV3wfrX9RPAbCbtCyfEDvPVRN5EpNBmntZNpGy0hz/tbbq4xwEHsft8T6+SJSdJ+6jsrmB0m25PSkIeji+w5GWWeEVRqf4TLLS65pu0xAuB0ebASXm5MVM6AW0PNcsuo9e2Mg36zZLpjLR361iIeVlpHbXmUdjBR3TXIT7DxhSFjxDptdGxBuKo2oLIq3XlbJEsAWPhpS5ByeXN7VqUPIN9P3dJ3AbfDbbr6p6rLaaN1STRCvMzJbDUbXyQNJ402e8rZvk+2trj1cu60ktjvrxTaQA5bfZisiPIOhDV7Fllk+am1EEefWB3373o6OgiNdS8nD1KJ0iFJE9svODFNhtSZ6D440/fPqUBKX8r524IPDuczIpwV1gSYCyADrJOHL2ei4ZsRgwILT48Sf0Sk4FxoPihawCSEn4Xxo9VVqfSR1mUxHY0CGFuRdGjXcPO2xsoGMZ7y56Ni+J1w0WsAXsFZVmWvmTgFpMqlDgye3N/BAXEU36pL1G4MAM9FxtGuf9hN7PRJEisEMhlip0WlfuVBrosJOOY+deldA6UOSTwNN9oJwU+T0vmdFzhoQOfu7ErGVPOZYYh0CcupxIzOeJlYpTky3qLg0/qmhJyYCbymmH1byDYm1jkOq9BFQsQPTHifG2aNSvllgChl9u52qJC76OLRfsO0vUB7TVo3BVGMk1OrT+X/r/swvebtLhY+3XvbOEOh447Rlw3MbGyosx4h+Hw8dZLanwLPMQZ4tt5LQ3nOiVkLxW0sFGHyg+lU0ml96NwxQUXSmq58H9kN5dJDTNKG//PC92yD5a1NQ7rqx9QPUn3LVI1zwT+UoD9ICAPsUsOuA4EKMhNYgi3gUtZcAYuzejPR02cALg5yQC/NnavZtpmwpe6FBMH0VmM1FgA8/REANnO4hcWgeXA3SsK7051HYtCsZo4PlpGjHtd3uVl7sZa
+ 2J3Z9cUy
+ XZbw3Ju1G6Lx6pz6/2Y13PXQ+Me5YwCuIavXnHjXy1sjzRxaNTB80m9xpZ0A3S62fUBeOiH1OMUtqGE9woaJmwLHlyVlNlPC+nl56/2aAjwdjOSIl05UzZ5LE4vIAK7JRApzpoDEEhLn84mgIR8+Cpokzy1EU4e50gOPbjW6hgl3DnBGeM9ymumTNIwIm5Gff1poohEbkgs++K+qc7x5rsjAqbmzWTNqC+2ScatymYNViuAqdQfKNHjv1dKJRov0PGS5VmuvDHKySJz3iuWGzqIZvYEUKwT8dLi8sJuRSfNQCUF235shb0rYVXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,81 +92,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 25, 2026 at 9:30 PM Kairui Song <ryncsn@gmail.com> wrote:
-[...]
->
-> I just ran a matrix of for kernels (mainline, mm-new HEAD, before this
-> series, after this series) X 3 different memcg configs (-j96 3G, -j48
-> 2G, -j24 1G), and none of these showed any regression but all
-> improvement. That's really odd.
->
-> One possibility is that I removed the:
->
-> if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS >
-> lrugen->max_seq)
->     scanned = 0;
->
-> Which will make the reclaim loop go further and trigger aging.
-> Previously if reclaim drained the LRU's cold gens, it may go reclaim
-> slab instead. So idle inodes will be dropped with the mapping and
-> reclaim more file, and we won't see any refault data from that since
-> the mapping itself is gone. Sys will be lower too, as IO isn't counted
-> as sys. Checking your data, despite sys is higher, real is acutually
-> lower, which matches my guess.
->
-> Will the following patch help? I'm not sure if this is the problem,
-> but this added back that early abort, personally I don't think this
-> really makes much sense as it's more like a workaround for other
-> issues, but if that helps we might better keep it.
+On Wed, 11 Mar 2026 11:02:31 +0800 Haifeng Xu <haifeng.xu@shopee.com> wrote:
 
-Hi Kairui, after five hours of sleep I’m feeling much more
-refreshed and should have identified the issue. I think the
-problem will be clear once you look at the patch below.
-Feel free to include it in the new version if you find it
-helpful.
+> When registering new shrinkers, all memcgs need to expand shrinker info
+> if new allocated id exceeds shrinker_nr_max. But if kmem is disabled,
+> only non-slab shrinkers is useful in memcg slab shrink. So in this case,
+> it is enough to allocate non-slab shrinker info for non-root memcg. This
+> can save a bit of memory and reduce the holding time of shrinker lock.
 
-From e3a0b50dc53a3a5f2ef1adfb73111336e3c2d08b Mon Sep 17 00:00:00 2001
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Date: Sun, 26 Apr 2026 08:34:21 +1200
-Subject: [PATCH] mm/mglru: Avoid falling back to another type when
- scan_folios() leaves no remaining pages
+Are you able to estimate how much memory it will save?
 
-While remaining reaches 0 in scan_folios(), we quickly fall back
-to the other type in isolate_folios(). This is incorrect, as the
-current type may still have sufficient folios. Falling back can
-undermine the positive_ctrl_err() result from get_type_to_scan(),
-which is derived from swappiness.
+> With this optimization, the finish time of pod creation in our internal
+> test is reduced from 150 seconds to 69 seconds. We test it based on
+> stable kernel 6.6.102.
 
-A simple fix is to continue scanning this type for another round.
+Is that internal test some crazy thing or is it representative of a
+real-world workload?
 
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- mm/vmscan.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+IOW, what I'd like to see in your [0/N] is some indication of how much
+time and memory we can expect real-world Linux users to see in
+real-world workloads.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index ef45f3a4aa38..169fbbe17c7b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4788,8 +4788,13 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 			*isolate_scanned = scanned;
- 			break;
- 		}
--
--		type = !type;
-+		/*
-+		 * If scanned > 0 and isolated == 0, avoid falling back to the
-+		 * other type, as this type remains sufficient. Falling back
-+		 * too readily can disrupt the positive_ctrl_err() bias.
-+		 */
-+		if (!scanned)
-+			type = !type;
- 	}
- 
- 	return total_scanned;
--- 
-2.34.1
+So please have a think about that, add some words then resend the
+patchset.
 
-Thanks
-Barry
+Thanks.
 
