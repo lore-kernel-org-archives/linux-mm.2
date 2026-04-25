@@ -4,165 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7A8BFF885C
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 12:00:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 944C8FF885D
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 12:18:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D5976B0005; Sat, 25 Apr 2026 08:00:56 -0400 (EDT)
+	id ACAC96B0005; Sat, 25 Apr 2026 08:18:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ADD16B008A; Sat, 25 Apr 2026 08:00:56 -0400 (EDT)
+	id A7BBC6B008A; Sat, 25 Apr 2026 08:18:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09CA06B008C; Sat, 25 Apr 2026 08:00:56 -0400 (EDT)
+	id 969A16B008C; Sat, 25 Apr 2026 08:18:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ECE666B0005
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 08:00:55 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED99BC18FE
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 12:00:53 +0000 (UTC)
-X-FDA: 84696936786.10.817F413
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011029.outbound.protection.outlook.com [52.101.52.29])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 767D5180006
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 12:00:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cG04i6H6;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.29 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777118450;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 826F56B0005
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 08:18:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1AC541C03CD
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 12:18:58 +0000 (UTC)
+X-FDA: 84696982356.03.2419C15
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1ED25140009
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 12:18:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SOELmWJI;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777119536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fHtdjaGcbUjrQWaR2bse8uIiTCMPzar0l7abrB5l0EM=;
-	b=y0Cg9O48UBban2uEtXSRYzy+Be1cVMnHruMvR13dp0HXMepcAFnb9i7uXaEf/xCbcxXQAU
-	4oMXsdhDk8ag5lGXUZhcjdXj8r8cE3yWP1edrXtRPixs/AhNotn1SdXXVoyXOFUovlU54c
-	RQqdHnwH9gEizHdNTkkc98F4wzri6U0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777118450; a=rsa-sha256;
-	cv=pass;
-	b=X38SIXziACZKjf0INK6RsGktu4rEBzlwuKfiBwxWumdntdwvfulKkkXUcwR9ydGD5HppNi
-	58h6MMqnFcVWWGKzStGg/yrOT5GbIhUsurlWwSrXTZKnuHSgnK7D1lkegrdBJguO3XxUdI
-	nf9aaFGudOB1qqIkr8W/2N0HdW1Rz/I=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cG04i6H6;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.29 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ihNgSU4d5RkozeIubLGYAeijB1N5ZAR0ZfVCJVaNiOLBO2luuGNvFj4s0pJ9MGCX0QJ4qKAch4vybnM+JxzHTjRd9oPwXCH+Rmt2pqew7iTHmJnc/6NUJ6kJqMvsQyUc/LUOy5WGqBobHeJSndlWkO2Foclu13YvmdDN6D8Z2Tc8JBrBXCTGnnVWlnBP6UIz8aMsYGETUa+lyX1AX7V0XbgHAhe8i7ph2JGs8i+QkxEwpfLufx1S45Y504eaCXMPeDVr29HP6jU0LaLtaqt0ecpkkaqLqFQ91NcEdfMb0m75EB4SfYOUDgZ1IpwJ8hxmMwVYRxWxquyFr2w3+rxm+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fHtdjaGcbUjrQWaR2bse8uIiTCMPzar0l7abrB5l0EM=;
- b=RmnO5OOn38oGjDbtUwBNuZnEv7lJntWYEa1I67aWnXL0tr26BE5XLvzp3uBEw+mp8Sto90xaTpgqxRFbFuKF7YXpsFUxBsVcVCk9I8gDuRmIhfrq3tWqrKEbco7bopSynQi1Dyde5yJTVyzBqDIscJwMXOq8kfCu1uwTQX+pQA0vRqdnXxwYbVR+IF1vmN5wk39N1+ecHjtxPI/Lxacr4UmC1hoXtY5I4PZUuLDV/HQI9H3NRM3v4mf4otVnQtwY0KDHiGX9pe0kgXL7Qx+aLiflS9yuQ4ueXPDk1nhrsDbxgIZ0Tlq3NV5TMhZZYwsJmxikQacQx8muOIiMnp2VhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fHtdjaGcbUjrQWaR2bse8uIiTCMPzar0l7abrB5l0EM=;
- b=cG04i6H6p+KQZaWgSORm/HrJloWz2Xy5OpwuPoNvyxBUSV0T4cywCnaN/fCChjzIBBFY/GtG4dZsEoNPKSTSca2zZXS+cwXcb2/kuvCK68zak53cqApI/H/IGZNnQLQ8nApZPk6TXs9ak8IMnfhyft38YROMuehaGjJVJs+bcrn6dO+OzijLi6L9seNyBTTvp/CRQnLd/4bqNB/dg9xOFkKyUcByOoUepa9JBBqDRRE6FKH/uNI6DfQ4KG9YwdAvbcGufZ007tyvYRT5kMOiX7TYuNkVrS7lR9hvSKEemhwa8eU2xDS4QsQYMRXc5vERPgxLmsRsirhvvq3l1JC+dQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- IA0PR12MB8376.namprd12.prod.outlook.com (2603:10b6:208:40b::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9870.12; Sat, 25 Apr 2026 12:00:45 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9846.021; Sat, 25 Apr 2026
- 12:00:44 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 7.2 v3 03/12] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
- from file_thp_enabled()
-Date: Sat, 25 Apr 2026 08:00:41 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <74D4C50B-CB20-45B3-8E7E-E9A499701F61@nvidia.com>
-In-Reply-To: <20260418024429.4055056-4-ziy@nvidia.com>
-References: <20260418024429.4055056-1-ziy@nvidia.com>
- <20260418024429.4055056-4-ziy@nvidia.com>
-Content-Type: text/plain
-X-ClientProxiedBy: YQBP288CA0037.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:c01:9d::14) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=hIDS7vXAMwmiGcsZKhoiFxKGoUs3/xiJNp4Z6NYtc1k=;
+	b=hwh4/pJgueE+cxc/BdfKZJm+sxOLRw3jVsLS80RVJ+BVvveTRUpV2OynF/T3N6uJIocyTr
+	E95eCdbHTN1SVc0/TWpxaKWzAB2bW7Q52gqCMnj7rfjdPEnqhyUZVIX0//p3Lzuo3IcAd+
+	62ufmk8uXM3ML7oOlwWYZ+C++E1YJ1E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777119536; a=rsa-sha256;
+	cv=none;
+	b=PI94tf6BImlxp1Ml0MwtW5lJDjXPViRjmw+u3XjSYpz9oddBIyJ0sToEOj7hBmVFejlaaK
+	MH5skZtF7w44s2vkAOE+mQPhgeCp3Sg/qNY+Mxz7507T1zRTA46RYPJzNWxqCv6RhTvOoB
+	YZDyl+TiEolH2rx+R58aAxjWH3ykgPg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SOELmWJI;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D7AEE445B1
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 12:18:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1E1C2BCC7
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 12:18:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777119534;
+	bh=y0EdA11+Scj4z0lc4oRAEok9QiRf38USXDDhYl7e5Us=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SOELmWJIkkKKBuj7XMZ8ZExu0Dx/KEQgQUjkfMMnIzjHr0VAZnE7XRc6SMOrjOotb
+	 ZS0Jk7EzIVic9tpnJ7MuK133LPv3HgDZLQ0wyojKMS723pLXYKsPcPZ9GVAOaER5+C
+	 DIpzpmS+EiS/sdOOvG6Ea6zlvL1TU19cRHfxinJ7tPfq0GFGjzmo8wt0RA9uqZOvNH
+	 o5iKpzQwRRKNJIHwJKnMeTl99OTKy4ZbP2YK5bkDS+5Julo8s+GcI4Fj/WAjcQSmc5
+	 enE7l8d7/GZFouwLtZ8Gv+uQ+ZhqIxc6ig+2gH27cIE786Kr6NpMENrTgBo1Guo7w3
+	 N3vZBWuqC6Vpg==
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8ee9ec26edaso550366785a.2
+        for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:18:54 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyKXgCiahWE4Iiy0ToPn7zXc/3+ien6AzhAikwur6yad0tLSswy
+	uEkepEI2wgVDtKQQR1yrPrlbqwel6I1G+0nR84b4ndQKooV9i4fJcWSY5sfku41+jaKmgGsbXqH
+	0nsWNSUH/b7K/xdVjjuMSIud9dvv7dp0=
+X-Received: by 2002:a05:620a:1999:b0:8cf:ebeb:c284 with SMTP id
+ af79cd13be357-8e79217f588mr5090362685a.54.1777119533763; Sat, 25 Apr 2026
+ 05:18:53 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA0PR12MB8376:EE_
-X-MS-Office365-Filtering-Correlation-Id: 479d07ff-e8ed-4640-1400-08dea2c247e2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ze090QUzkOXdc7WgHm4XPX8N9pz7/I8f+Z/4SXZkAUee7vuiYeo8janGCH/z1a2N0IGBb5CC0u9CSG+Wrvl8kzRepCvH7W1x0AIRAtIiaeg4rcAW00lhwHNIyBLMaIj34XE7rXDfd5qpT5ds+iBDegRfYAnfjxiXlZeWhYaysZTNCUU82rvnHNii4K98kTRBB18M0bQgp3Ws4kSR6ZcehE4SiOjPHPL91hovFRb+Q/w55BGaqNFQwc+rwIoBZ6/xvJzgstiAWnxn8UQOBTkvALOi99Dv7DyWoG1StJScew1KoCdra0G40s7gojVjDw3exLwJrFf8xmwVbHA/w68LzAm6GAzz57SfQ2ds8oCN/8mz73KX/vPP6bVf/xxu0WvZ/UmkvwyLzNnPXSsGaQEoMvwKSqWJHfiQ2Z6jHe6BqsSfKMoy27VUTOvjww9ogY0k1BYLAHMz7rGE++L0NAAbDXpFNXmv/qdf2WFKCSa3FjmyGn3vXWpED9yuFutvzZjDv2qfUomG/cQ24DerVAr/XA2oEO0lxM7thWE8mihZIS0bJW4jEX482Sdmt59FDqmNF4lFQ8KJ/8E18Pg2XfYY1bdIqTCcTN593YP14jtrGXPC7yaY3HaGyxgM8gZqD8HuYHVndnT64fqVEIxY/yuw466mWHcjuSqunXYgoUoB+SVUtc9kW7YZcM/x0cRzdll2yoCpgWNIDaYvyJVmzYQiPXxEONZphzx3AIrvPFg5WF0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eQE7NXC5M/d6SkFus6k7pOzf+zitPSSaYT97ssa0WmzOynMtPKVjATLXcbFT?=
- =?us-ascii?Q?Uu2FEvIOIULiibxvxJy2GIqp0o8XwYC6ppT7UAS01DnBD7RN2iFkwvYB2gXU?=
- =?us-ascii?Q?n05siePvPeHurAJ3f4nXwiPF8+X47B09/PSh8ubhSru3ydH4ETaBXoY2kr5Y?=
- =?us-ascii?Q?wbX58DRdtH8D6u5MW4cYemJ688bxjIYFQR9PDnJD9TGqR0JfOInFcB6Wep5j?=
- =?us-ascii?Q?P5NMDCN7Q+u1z6F2MtOMIVokRWoHpKEIPY6wvXb1GP9vw81pVahsIU5zp6fx?=
- =?us-ascii?Q?V4FgHU3h1l2eqJN8yEMnXfoCPUNLT5ep+buzPNLQuU/nR3M4KRWl+bPwUX+p?=
- =?us-ascii?Q?6K3iXTQlaZEGfgGwEeGrI/IPPoKFW/hK7YtpA+zTutDQnh45wBcqRKYngPI2?=
- =?us-ascii?Q?j+6KMHa7o4QxKGiwMWArizxUcJTg1qrAYKR+sWiV8/qgX9XhnRS6ObrIl/Gk?=
- =?us-ascii?Q?vfnFtXEYVhXxrR0KQxgvvkGFYB9LLx3XE7ndswTvnAtEsGgZP2oru/BPaXG/?=
- =?us-ascii?Q?AaEugGzvK9wtATl+00LbOs7Oh0D/yNICuKbOsKuoauHmq6TyA48kVlCuKJgW?=
- =?us-ascii?Q?vCmJ8lFa8iCU52duZUUF8J0/spWzlrEAYB74ZmKDMF6A2TOLM9QzZ6PlJyTa?=
- =?us-ascii?Q?r30kVHYRBTlyiPKEFndzaXZrWidKsrFqGntlIMA7TnIx715wDRJh2iKYsoCO?=
- =?us-ascii?Q?/esGHOQLdSTpSBmmQw6cYMnWjCzaoCDEQi8dcUGf21p9lQzLz+c87D8UvaH8?=
- =?us-ascii?Q?SqqXmxbVWRdKcU9GQZWIwWDhAZSkCf+y1ssvzXRoUSBC8m6Sq75gQb1WWjsm?=
- =?us-ascii?Q?QZCqnOgTXsQw2FE9sIcdKEMct1uEZMWukarNpSPm/u8VzghXlad/s4n89Qkl?=
- =?us-ascii?Q?RC1cqF3rsJBBdAbmQ56iKzgrW1P39bhJw0GnmPh7y83EFEHNhYZ6h+A91Byj?=
- =?us-ascii?Q?gdr7T5entrO6rJDPz+g+P7TThh7FtbrOh9qG7Kr8JzbtxCzOFBZ4tUebs0Oe?=
- =?us-ascii?Q?xv+2iM5JzzXI1sCn6HpJHzPf0mGV1+SVKWIGOoQghA/ezTcsEFWfezdAEo/v?=
- =?us-ascii?Q?sd6UKWdR5N8FjqjNKUJ512Pq78LERIt39qj05HWydij7iyisq4lTXxNYDrya?=
- =?us-ascii?Q?Xc3ySJJTx04evijrAkvuN8cW9y+OzQS+mr4iYd7HFUfwDOxnjHv3Up+UMCu4?=
- =?us-ascii?Q?5jNhs2nof6Aoy3uMw7TvtMqefYKv6WXAAkeKfusmZ9IO/phIGgU7QgF6Iz8k?=
- =?us-ascii?Q?nP6QXt7sgshqoCwvuvQpQd5kzZI5OIwR6lD/ceJ4ipjJcq0EsC5ac9Q8p/Aq?=
- =?us-ascii?Q?UaPSCQdL8k9LdljbDCTSQd49/yPuXYDGxW+sYg+XNKkX37COdyk7FVivLSEb?=
- =?us-ascii?Q?besdKumxumIIVN6JKz6g3/521YgrYDEQ4uezwiXOx43QFIVu4y/40RycDRhS?=
- =?us-ascii?Q?0ofg9ujxWoFH9KDAumBztQJ17yP/2Dz1o61hNHEn9vGRURIfk48g9lYF7dYN?=
- =?us-ascii?Q?b5otJNSwiy60q62l83s0D66s+lBLHVKwr0aZRKWi2C0I9AW9WZHRAbTLDElJ?=
- =?us-ascii?Q?DLPxLzUDgJEpFRjoU902II5PmLpp9qkuUCDUIECcWG+iJTKyHw3Kna3KJy7d?=
- =?us-ascii?Q?bl1tem8km8o8Gf+Znpr7yFXXTzpFZt3XOEP9YGbtrmkEiazam5ufB5E0TPJW?=
- =?us-ascii?Q?shp1Vl/xvnvFrC5bDGADs7CILMtyZxO2fScG43BFIElnuPzN?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 479d07ff-e8ed-4640-1400-08dea2c247e2
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2026 12:00:44.8332
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DxjH/k6dtRZPNhiQyHCblIHpahliPXtj7an7Kyf8ozBvDOk8t+wMjeYj8rQRIK3Z
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8376
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 767D5180006
-X-Stat-Signature: 653o8sd74aqmywcw5nwku4q6a1n6d5sk
+References: <20260424-mglru-reclaim-v6-0-a57622d770c3@tencent.com>
+ <CAGsJ_4wLc15iF4sa6z+i812vaoabAGHS5ErPpjRyjLGMP=44AA@mail.gmail.com>
+ <CAGsJ_4xre-x0e+qNVm=KLFnO1dbPkPX5RuecqwvTZu-vS+o8yQ@mail.gmail.com> <CAMgjq7D1bzYd+WmdbkUvS_7sNmC-QKYYY2+J2Oy60njJx4FfJA@mail.gmail.com>
+In-Reply-To: <CAMgjq7D1bzYd+WmdbkUvS_7sNmC-QKYYY2+J2Oy60njJx4FfJA@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 25 Apr 2026 20:18:41 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wKStv8roeKmWLXScz0k0cMJmsnyEPjoLfH21k+R00V+Q@mail.gmail.com>
+X-Gm-Features: AQROBzC5VL8rFCyONDpHqiycXrEhPzL_mKcUicSpVCCorC8aqL6znNRioaMeyRE
+Message-ID: <CAGsJ_4wKStv8roeKmWLXScz0k0cMJmsnyEPjoLfH21k+R00V+Q@mail.gmail.com>
+Subject: Re: [PATCH v6 00/14] mm/mglru: improve reclaim loop and dirty folio handling
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1ED25140009
 X-Rspam-User: 
-X-HE-Tag: 1777118450-177246
-X-HE-Meta: U2FsdGVkX1/1G+E7FKZRZb321CaxEpvzk2qaoJw/ADxlDe4JZ10baQ1bxZnv8ELxQhQRK6uueoi+Qd0MB8Hv0YUszNd0m6/kf8R0rktj1YZm2TmvzBzdPpPB4piF9IzudBKUgvDqlhsMVoQPVzMoCCPTid5CPs0bl02ypM517jBmTpQGPBMV+8QrdBjQCNalw2/z6xJfGQMp2L2R57YT2JkHhdRa6MDpUgvNBCmfkDu5RBfiZ1TjckFASMoLdl+IaOdr56xG4u6dpcHe3LF1Sc49/zAdrrAgs7mTlFA5W/kbVrY+bzyX7pt/kzmFXcfFt5hKuS0qKKKyPmaj3g3xRzuPhXEQfD8ie8Z3ipWarj/rTY1f5NVr3fsCFalUuD0aekK1Y/XvjQ+KAut9tpsgl6LKbCQLO7eOAIj8BGis1G7p4Ig1Kl8T8BQ9fP0KKaXMpPrI6anyLcoLhB49jmcTV4obRzjMFpcXB9cvrXmWub4EYOb6OKGIZlrrWWbMhDEEq/OMZliuC2+JxXQkMpRFLgXjUYx3nQ2hK2Pcv1WCYIB1Bpp7EWt64ibnvzsvMDWqleSb1jTccApWmE8ipwxLWPl9fL3PSArY3SQ8kONmjX04U7r6Bx8NMQO/3ZxYDYUG+zye4+CxZo+aGjRLW7emDSJNez+MmNLvEAe1wQAvTe6Z2O3JcvzVn8OOz6f/Mz3u+QS8Xz34meBBlB/qdV+Fx3JsmI2EWwan1bu6Tl8nuyj0dqy7t/veq0P6Pk3gBLd+h2t0olEzRUrvSwpwUfmv1l7biObqsa4PIRYucEAYQZLmvRv04y7LE4L8FcQuQAHUIOZZO4X/iFAIJ4v/S42Cj+Uyebie7KdSh5FJRfDASIGSZweg51ugnc6JMCNG16iq2QpjgMNmVC6d3yjtoYMWKjy3LR6Glc6KjX2oM4g2for6GYsuSX6PkW6MM4q6qxooqOHND+fkwW3vyNfba2W
- DL7YKppH
- ipPCR7YEnsq92IagF5/5SX4rcKw0cLe6ag1e2IAjnbPT4lRPwairI2z8tUurmMBoA7xL9NDc6ZsRyze5DD2aE8JgnbUkkEhy0DFYEp959XdAI8Ah6J7a/pVaylYhzgCKRcS1C48Z1Nk5HFF7aGe/gDhUzyYDRjc14CXWAz3z6DvKB690DHPjpwZscJY7BF1Km+1YgE3WIbAiSpPk2Jo8Yo7yBpWmMu1P6tFkFLd3q9tLBvSOO3+eL/Ht7CIEOxSC9yZbv8by2LGeQ9cj+x1qoxqpj+4XDPCmqYoqqrWcLN319gXAY64CGDU8ecKyqEPOcdEhn5iCz61j+Ew5tNpV1tiweF+Ez7ZlXudcYMxmoJHyNFek=
+X-Stat-Signature: ms3xorzz8qmr45fxpf3zmmntn787nakk
+X-HE-Tag: 1777119535-931390
+X-HE-Meta: U2FsdGVkX19FcVjg71/LiBoQc5p5SxbI5O0k+HTUPXOdPHFtf5eixHCalzeen2Hchc8t6k22v8TPBWWZtPR+WQAd0VA1/MBE+gvqU7MKyxaJvxe8oYGS2f9I7x/uqam9NXQ+hC8ifR8DiDJaXAu5dYaKme0Sl7Cw3YSIbF5A9xUo1exmMIjK1GubWAiDRIblH/D4bywbi6NdmA2MKXggFUOh7FyG55s//R9TJ+iInSyQhsJE0kVLf8QJwev7GxB7ViXF0mqSERCmofYm/rl1xBRNyMBVpGhW8zXcstFgP13spXKPSwS56kAYWKnOAddR8VK4+wWkSBbh2MXzMEnGBAH4pyNpQ7Z7dNZEEehkhr6KKJ4pjk5vRamkEu9uCAzfYt9wiV72jQVBNZ7Wp8BHfB6lIFxvFBN4odO2WUFqKr1bVp2ZZLW2iXJygBL2s9zFZMTa66jAjpuddwwaGgL0EYWZfb/8F+HBMksvyfoPlPNQFoXhj8/Z+1DwuxFdMUDpj/0Xm4ilGI93o9hTZN6aJOtG+iZiABPeIrNSdQm8hPploLh8Kw7OG436Zm71EadFj6ALQTYuzVWabyFR1sXpVJ5yWLEI0c6A/Wc1ai9468IchQPLZCawhAX7V5DoxBf/GZ4VnkZ4pkewsqguakc/9IPY7tBrzZfZV4PiVN6U+RWLmwpEKwqmw0L/oQsSFKDVOlTAZgOGsSAussqHNthGfpRAWvAabuDuVxZFaNCnFUyEzzD9J6xNZGB3UmJEbq/7npR8ZWW0bypHXtrOr8RIk0mx1JiZ6tgQHFakR2c7D5eaQYkw9C/tIWqUkaycgKXmwnTWgmUe574EsOf/lryVmD2P3Y4Juvldot/WAWhTQsi6dVXwN9CgOs0tZ64Gg+q1TFpqjncNtutNzQEIVQRtk3/3g8J60HkP2zG54AbqOnyLBQgNsQ6pJnL/76+dCrh+ULwqHKUm27Oo/OmIRus
+ XEYDmJ/t
+ tVVQSdA0vvo8BYCzYVCTlnUvUfGprvD5oj1UHTHOcfuwNjFGocFJTfM8Ei9EfIcZWXqCu5Whwc7TqTWaKrzVU8mFGe3xoM11F+NukKH66hDUSQhVJZGSHHhcfGLi5FCI2Xbfkw8HvBjp7mANpbBn318ruVUrAYURmB0PaPSLn+CQOyRVdwS+fYNA8zOjAOC/k8PNPzXvUJWYNwqG0Sco6uAfA4KKV9X5hjvSQqhSIGXNZuUux0YXl4X9BNzHjga4fgASaYTXRDnxC5Opt57Dg0/hSNHRk2KbP5rQ1a2HBMOQmoVFp179LmYxfF5BgdSTCGPSZmMTj/XyzMsMR/pNWwrJY5o47jN1UBOh3ECwa+1Z5CyF4HF96m/O7drfOZcnGRN3yycs23v2aPMVYv81BqseCyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,62 +113,241 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17 Apr 2026, at 22:44, Zi Yan wrote:
-
-> Replace it with a check on the max folio order of the file's address space
-> mapping, making sure PMD THP is supported. Also remove the read-only fd
-> check, since collapse_file() now makes sure all to-be-collapsed folios are
-> clean and the created PMD file THP can be handled by FSes properly.
+On Fri, Apr 24, 2026 at 8:56=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  mm/huge_memory.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> On Fri, Apr 24, 2026 at 7:58=E2=80=AFPM Barry Song <baohua@kernel.org> wr=
+ote:
+> > Could this be because get_nr_to_scan() was moved out of the loop by
+> > [PATCH v6 04/14] mm/mglru: restructure the reclaim loop,
+> > while in mainline it is re-evaluated in each iteration?
+> >
+> > Will take a look tomorrow or the day after.
+> >
+> > Thanks
+> > Barry
+> >
 >
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 970e077019b7..7e9cf8c0985f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -86,9 +86,6 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
->  {
->  	struct inode *inode;
+> Hi Barry,
 >
-> -	if (!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS))
-> -		return false;
-> -
->  	if (!vma->vm_file)
->  		return false;
->
-> @@ -97,7 +94,10 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
->  	if (IS_ANON_FILE(inode))
->  		return false;
->
-> -	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
+> I ran your test script a few times, and strangely I can't reproduce
+> it. Swapniess behaves similarly after or before this series. I
+> directly checked out the mm-new commit of this series (4ce85c040e0a)
+> and compare to the mm-new commit right before this series
+> (31a112f05f62). I also extended your script a bit to test more
+> swappiness:
 
-Hi Matthew, David, and Lorenzo,
+Hi Kairui,
+I reset the repository to commit 4ce85c040e0a using
+git reset --hard, and I can still reproduce the
+swappiness issue. My machine is:
 
-After some discussions on irc, I feel that we probably should not allow
-read-write fd for PMD THP collapse at the moment. Combining with the
-filemap_flush() under folio_dirty() check from collapse_file(), khugepaged
-would become a kwritebackd that scans pagecache folios and writes them back.
-If we limit it to read-only fds, at least khugepaged would only write
-back once for the pagecache folios from these fds.
-
-I am planning to restore inode_is_open_for_write() check in the next version.
-Let me know your thoughts.
-
-> +	if (!mapping_pmd_thp_support(inode->i_mapping))
-> +		return false;
-> +
-> +	return S_ISREG(inode->i_mode);
->  }
->
->  /* If returns true, we are unable to access the VMA's folios. */
-> -- 
-> 2.43.0
+barry@barry-desktop:~$ lscpu
+Architecture:                x86_64
+  CPU op-mode(s):            32-bit, 64-bit
+  Address sizes:             39 bits physical, 48 bits virtual
+  Byte Order:                Little Endian
+CPU(s):                      20
+  On-line CPU(s) list:       0-19
+Vendor ID:                   GenuineIntel
+  Model name:                Intel(R) Core(TM) i9-10900 CPU @ 2.80GHz
+    CPU family:              6
+    Model:                   165
+    Thread(s) per core:      2
+    Core(s) per socket:      10
+    Socket(s):               1
+    Stepping:                5
+    CPU max MHz:             2800.0000
+    CPU min MHz:             800.0000
+    BogoMIPS:                5599.85
 
 
---
-Best Regards,
-Yan, Zi
+swap is zRAM only:
+barry@barry-desktop:~$ cat /proc/swaps
+Filename Type Size Used Priority
+/dev/zram0                              partition 12582908 280940 5
+
+The data is as below,
+
+*** Executing round 1 ***
+set swappiness to 35
+
+real 1m51.699s
+user 25m31.134s
+sys 4m13.127s
+pswpin: 1562949
+pswpout: 4840525
+pgpgin: 8751872
+pgpgout: 19741097
+swpout_zero: 1095783
+swpin_zero: 18079
+refault_file: 515292
+refault_anon: 1580980
+
+*** Executing round 2 ***
+set swappiness to 70
+
+real 1m51.603s
+user 25m33.600s
+sys 4m21.738s
+pswpin: 1786413
+pswpout: 5350804
+pgpgin: 8833652
+pgpgout: 21715596
+swpout_zero: 1230981
+swpin_zero: 21051
+refault_file: 313099
+refault_anon: 1807417
+
+*** Executing round 3 ***
+set swappiness to 105
+
+real 1m50.315s
+user 25m40.863s
+sys 4m12.446s
+pswpin: 1555289
+pswpout: 4911737
+pgpgin: 7597548
+pgpgout: 19956948
+swpout_zero: 1125969
+swpin_zero: 17594
+refault_file: 237475
+refault_anon: 1572835
+
+*** Executing round 4 ***
+set swappiness to 140
+
+real 1m50.992s
+user 25m34.774s
+sys 4m14.068s
+pswpin: 1642575
+pswpout: 5027730
+pgpgin: 7937214
+pgpgout: 20426400
+swpout_zero: 1155712
+swpin_zero: 20248
+refault_file: 215237
+refault_anon: 1662775
+
+*** Executing round 5 ***
+set swappiness to 175
+
+real 1m50.207s
+user 25m38.244s
+sys 4m7.655s
+pswpin: 1522633
+pswpout: 4788104
+pgpgin: 7307172
+pgpgout: 19464984
+swpout_zero: 1109281
+swpin_zero: 18085
+refault_file: 186203
+refault_anon: 1540669
+
+I disabled turbo for the test:
+
+echo 1 | sudo tee /sys/devices/system/cpu/intel_pstate/no_turbo
+
+My bisect shows that the commit causing the swappiness issue is:
+
+[PATCH v6 05/14] mm/mglru: scan and count the exact number of folios
+
+Before that, swappiness behaves as expected, and there is
+also less swap-out/in activity(and much shorter sys time).
+
+*** Executing round 1 ***
+set swappiness to 35
+
+real 1m49.406s
+user 25m28.458s
+sys 3m41.098s
+pswpin: 984605
+pswpout: 3329809
+pgpgin: 5985696
+pgpgout: 13648560
+swpout_zero: 780136
+swpin_zero: 11379
+refault_file: 367629
+refault_anon: 995982
+
+*** Executing round 2 ***
+set swappiness to 70
+
+real 1m48.577s
+user 25m34.994s
+sys 3m42.694s
+pswpin: 985650
+pswpout: 3450097
+pgpgin: 5468828
+pgpgout: 14116020
+swpout_zero: 820143
+swpin_zero: 11808
+refault_file: 245353
+refault_anon: 997410
+
+*** Executing round 3 ***
+set swappiness to 105
+
+real 1m49.262s
+user 25m34.871s
+sys 3m41.633s
+pswpin: 998178
+pswpout: 3553741
+pgpgin: 5328896
+pgpgout: 14535068
+swpout_zero: 840706
+swpin_zero: 10393
+refault_file: 205514
+refault_anon: 1008525
+
+*** Executing round 4 ***
+set swappiness to 140
+
+real 1m49.417s
+user 25m35.395s
+sys 3m47.169s
+pswpin: 1138043
+pswpout: 3756034
+pgpgin: 5807584
+pgpgout: 15345816
+swpout_zero: 884539
+swpin_zero: 12652
+refault_file: 185767
+refault_anon: 1150649
+
+*** Executing round 5 ***
+set swappiness to 175
+
+real 1m49.654s
+user 25m35.244s
+sys 3m53.330s
+pswpin: 1235427
+pswpout: 4058085
+pgpgin: 6108792
+pgpgout: 16547764
+swpout_zero: 974086
+swpin_zero: 14280
+refault_file: 170452
+refault_anon: 1249705
+
+It=E2=80=99s too late today; I=E2=80=99ll continue debugging tomorrow.
+
+[...]
+> Since you mentioned it's mm-new vs mainline, and you have reverted
+> part of this series and the problem is still there. Could it be
+> related to something else in mm-new? I'll keep testing more stress and
+> workload to dig deeper too. Or maybe the swappiness behavior just
+> changed slightly, some it may perform better or worse depending on
+> timing and workload? Swappiness on MGLRU currently only works as a
+> factor for calculating the refault and reclaim balance of anon / file
+> so it may behave a bit unpredictable. There isn't a proportional
+> calculation like active / inactive LRU. That's a problem too, and we
+> might fix that later.
+
+read_ctrl_pos() should also bias towards swappiness, as
+both sp and pv gains are affected by it. Yes, we need to
+fix the swappiness for mglru.
+
+Best Regards
+Barry
 
