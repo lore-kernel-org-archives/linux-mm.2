@@ -4,142 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C10FFF885C
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 05:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CDBEFF885C
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 05:34:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4460C6B0005; Sat, 25 Apr 2026 01:31:09 -0400 (EDT)
+	id DC1AB6B008A; Sat, 25 Apr 2026 01:34:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CFB06B008A; Sat, 25 Apr 2026 01:31:09 -0400 (EDT)
+	id D99536B008C; Sat, 25 Apr 2026 01:34:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2708A6B008C; Sat, 25 Apr 2026 01:31:09 -0400 (EDT)
+	id CD5B26B0092; Sat, 25 Apr 2026 01:34:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 10DD96B0005
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 01:31:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8DCD71B6FD5
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:31:08 +0000 (UTC)
-X-FDA: 84695954616.15.305B80E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9F0AA18000D
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:31:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jYysDsHk;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BABFA6B008A
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 01:34:47 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 45E601A0279
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:34:47 +0000 (UTC)
+X-FDA: 84695963814.17.B227D67
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5493B20003
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:34:45 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LPLgtwEH;
+	spf=pass (imf03.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777095066;
+	s=arc-20220608; t=1777095285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=izoWNZpptbtssuD2FUMoZUclN6qI6Z56asGfirveslY=;
-	b=6/Kt0Q8hHC1WAtZlnpNLN9drygUosTV1IwVaT+19u6Aw46dhvDs+e079TNTXUcU2aw8MQI
-	9WBOoY6gEGURaMPE5LnmTrb4eJqLCHQ5+W6P6ntJ2xgV7g+FhgGVasvIjPXqVXmCBRzeGq
-	UOJOBu/avIsTkLb4GSoCD+oDRwGvIkQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=O2wKaLfeccrLPK9TR/V0xj0n49MCRpo9cMDPX1EG854=;
+	b=SrQ5e6ZGuNmKPSuEkrDSvMk6p41SIkXM/d6Zr3xFNzH4LnTTQH4zJi+ypoQGPF2GP6Y3H0
+	xC2Zx6vx+3vIbNmGOlcqI2eTpFs5Mk4LwZx4HTupC+BG8DDV1mu57RldQCLI5O6tY/Q5CB
+	tvZwPxnyOewnpTLD2gOtgGi54J9C7Us=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jYysDsHk;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777095066; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LPLgtwEH;
+	spf=pass (imf03.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777095285; a=rsa-sha256;
 	cv=none;
-	b=NLcnNzQkfc6p//Rqbnu+WKUgobrgnq8ur2jbME2xyfzM5xyVXERKtEphQB1UdBTZzskdZZ
-	ToGY5q0PsjkB3xLcv1HCa/bMSnbpmJ8ZoHIlMJZ5tLTHOvyU4P3mdFRoVF9EGnlx7vHYte
-	P9eQV4wYKtJRhvBcr5u6A9DafDvnI/Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4E588442DC;
-	Sat, 25 Apr 2026 05:31:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F001C2BCB2;
-	Sat, 25 Apr 2026 05:30:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777095065;
-	bh=+42vCSXJu+YT6e/EV0HGcmeCkiK/R9NkN3Va4VSdmwY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jYysDsHkvzw4w3++oWoxcKUL5tUhrDt3tudCV04MV1nF6s9NwRS4bhdI529+APIVp
-	 ejYWAhExQ58uN+VhVKMTGIyFuUp8YKZYbyBJ649BnZt401mdS16uq9UohqyGyvLPpo
-	 EVe9C/S246G1qZ9H1DiWlXVk64R5SqUWekLWPAeVIign7HTq9u+iQ5ko68UpXhr0Uo
-	 lbV4kFk/bGyYYa2rJpbcN1koXSnY/Ei8FcxGEh9asrApLEawwiYlYYWIkDqJkOWmm5
-	 82sP/HTZ71rZSx7i8vDUdxsLDNpZKssDXnn20eRmqB/85UuLgUMzcbAAqCVWAChA91
-	 7NCRl6Yncqz1g==
-Message-ID: <3146ebcf-5649-44a7-aa21-163bf404c42b@kernel.org>
-Date: Sat, 25 Apr 2026 07:30:56 +0200
+	b=qbBhHuvPBjG7q/B4QyxIx+if0kJ1O+vxXTfKWEO4Xd1Foj08zvrTCt8uZwduEMyppavxQy
+	gIEIEgLCa0aBPokvbzHxuy/K4mhUqQUsfUqWTvd+57ZXwhk9J8QvDC2RZXbqoFVlFcSPCp
+	jhNOC/yYmEdI7I52cIluRO/NbjRYGQo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777095282;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=O2wKaLfeccrLPK9TR/V0xj0n49MCRpo9cMDPX1EG854=;
+	b=LPLgtwEHTOentynaddiLXYxSON7SMFqntHAFikcN7Vqdqn2HG7t5Ts2ILIacZ7fO/o3oz9
+	YyTiiUBTacaacPL6Xd5u8Ss8euxJvWRxA13+UJ++Fwu/SoalBEiTvf1SieXmXmdK3aIZhy
+	pscxUbgSzsopGUj+tLs2KtG6AB+Vf88=
+From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	willy@infradead.org,
+	baohua@kernel.org,
+	mhocko@suse.com,
+	vbabka@kernel.org,
+	hannes@cmpxchg.org,
+	shakeel.butt@linux.dev,
+	riel@surriel.com,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	youngjun.park@lge.com,
+	qi.zheng@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v2] mm/lruvec: preemptively free dead folios during lru_add drain
+Date: Fri, 24 Apr 2026 22:34:17 -0700
+Message-ID: <20260425053417.351146-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 4/7] mm: add page consistency checker implementation
-To: Sasha Levin <sashal@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
- corbet@lwn.net, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- skhan@linuxfoundation.org, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sasha Levin <sashal@nvidia.com>,
- Sanif Veeras <sveeras@nvidia.com>,
- "Claude:claude-opus-4-7" <noreply@anthropic.com>
-References: <20260424140056.2094777-1-sashal@kernel.org>
- <20260424140056.2094777-5-sashal@kernel.org>
- <4b961a07-b72d-4c8a-ab49-23f61ed12b53@kernel.org> <aeuC6TJ4XowazVZj@laps>
- <aeuFnuiYDBjttEKt@plex> <12985b32-88b3-47ab-8292-2e0ec6f5fbae@kernel.org>
- <aev-DS4YTp5soVPd@laps>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aev-DS4YTp5soVPd@laps>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 7gw1aofnmcmijtbko9nanqu11p5c1ysw
+X-Rspamd-Queue-Id: 5493B20003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9F0AA18000D
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 68111mxhi533kstw9cw8hw4jdaq3889t
-X-HE-Tag: 1777095066-414980
-X-HE-Meta: U2FsdGVkX18nGmzUa3i3Mk9CQ6uhB4Trqt+dzSIS4DWsvuvOiTuVBpnCDsPV75tabW2KdrBdBRqhF9DgeR+2koMhOyTdhrxthCne3MWBYeXY2w/PKd8GcHyi+lpPCNY3s6ttuo8JTKACBShdGR7c4cbJ5YeO5HsUF//aBzEh2GhX0jP7Xvgi97YbLWNqyr4rPEhCQwmr7uMuZvyJuGUt8YUUybvSYGqUQIZSh5ttaC9XdGnWgCmLdWmC4/a3WvCL8pq/7rCmP/Vi4Nbs+tovK51kV3PnsC7c5mZf2BT8Ch2z5vpFB3aROjLeKWuIOXwZmNrPEG81yiB++uyOozmTSwWK7T0CV6A0OVuH2VDWQzF1hnEyEfkNIpBakkhxR26zqENue1AvK+DeH0euuoqfSImwo5+zSeJw8/lfnjg0SEs26QLElAbwOUqwn0QGiFnurXL7LSx+IxDfxccbqMIF2q8NcKCMyHC3yy9sTHM9izIH9ulJ5jrcVAIrZouKeiEDX0HIxgHmF7Bq1kkoURUPKN0YQwkTBfKxMbyIv5ofc4rZ0rX6BkauHz5JchiUzaXNeGHyw3idLY6ESKrMH49pb56O/POgz9hVQwVi2VZBpZmN6/BxbV13C4RUocQpXx4XhSbZLbhe4EpaS0k1nMGRAtCxtnGuuST0558BLQ8ZPeOtPZ5L2IM7YOc2GdxaD1M6hn5oYG+/r0x2/9gmqrAmhC9Sa3uIV00Obp9+8L3PYCeuujJluUjtYla3ICMmc0clRM9iywXdp5u92iXHrrRj7u069r+rNyyE93ycXHPEDbJK6xCerHtrypI0IVSWCggbXf37viQuRkyiLUib88TDNvRfmiNESBbLN2Lmz87jl1Sz0Dlh4CuA4fP0zpurAY9Tx3z7JXBv9E/liY8nXZnzrDhvc9SOS1LF4FPfB7Nz5m0ZbqcNgE3QKWwgYzkBOOkEUoT5DCCols/yc2IoW+j
- Dt4Z+W2l
- z/FSbnHhYzVLrY8W4wg4l/yXYHfjEzDlAB79Sc+PvkFTRj35qcADNO8Ctd0dnLrINd2mC4DJNmBmQl7OTKKGd80JJiVkPI+HYBtPpoIM7TteUK6/g5p02PjH6smx9ONrUEljqxWyat3pVzkZcH92uBBYrrD4VOjBvEo+t7fhJyRyzsgI9qBi0z4UPxsqf+HRngoaaT8mFlbb6e/crV7xIdB50ZYqCKj8QZgj+JJMK0oTFMCUdRxzCELeVvhD8yJ+64UKS
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777095285-432458
+X-HE-Meta: U2FsdGVkX19xeqH+j+MP5RZM+8kQwT854m/+nNHqMk2HOFE1dUJOT59JYESBESUKndz9WkYAoBhHAYKN8pTtFQE7by7Q6Q6356YMxucLyCFoBmDmHCvESatH42XmpjBpGsKN1x4w6bEKfp0JSaEU/Zmqvf+3mQZ5A/WJANiDUGIsM4TjX8iaKi8+Trcy36UZkRKllJUV4fsJtLU5RMqtebY4cZXcIdMJ4rMmL8rPo0S6Dp0Zyq0NTUO0+I6UxqbB6b9WHsQpkcd2P/RkELBj82h+xZHgpSOoM3O+1fsdslWifmZQNcpws5JCjAFhG/PzWV+RoUcPQAt6ko+X4prVk3bCVifGIrSTBMxVO1/oQlVp7yg+tQWqsCq/EiBAvNkqbTCDAMJW4omo7iVmmBvv1imjxny4vplDQbRCaR4J5eIN1cjwXeG6PBn9XC9/+g6KCkdf6wfpNaaJLYmRb7kwo+JkmgR99VRpcyCA0ieeh0gL+a2qZANUl0m3TCqC86S0hGEYvEAYARymePl06ob03OJm9VFlkQI+cDBSAS+/GYqZ/3dwDSeAQvCrfneCTev5FjlwJ0JUTskn6KG3neW10EzO4UrXeCKww7gzhHamsiGVKG0XrWZqS4nbeUopeDqnRavMrIq4nPxXh1apR9KvnY1zbN2laVtpVs+OTuCyG1sMb71ghlQ19T2B/7i1BLB6rnUNAJ/+8Wrs/pfVx7mYFniXXpu/EEz0n9tq3ngTCRIzfRucbq+B2HWeIugdPs43h5LSKF9AXKVO9uGr7qtbGIyhVCiUy9/2vj0jfBobJODA65UqrIB5RrDLAl2PKWilokH++wYSGnBXJGfj+E4haTHIRkxwfRpwX/Oh5w3fQnvDqD3R928rE4xrIdP7EMvwaAsKemSoXSTaCrsJhpoWz29VpyYwmknpx8BRunBcVX72ia4HyvOLJmmtFMiKgJQIrCwkJm2W1WL1KqYicQK
+ rsogaDQo
+ dhVqjDReFsylvTOUjPTrUvXG5BWrD3UynyIaL6M6XDQBS6KpuDNlb+sf08URVdpu7fUO5ULcyfKp0o+SQ718YgPDwY7kqZmPqjOAnuXw0qPxADyKUwqyJmEaIluvtB43MazjT/Wwb56bKs3ktN7fGWgFsL7VetClytJg3GSlPNsYU19+/iBwrlyBGA9yE89NqoR3AURISem6mJ/dEWeNr9WA6fzZrhO0inKsL5WTWyFcc4WOsRTQWhPmSn0d7hUnbZpUADYvIgHXaCNz/WIwH2ixNjcGTu+8LbWK2gpruUHVjdaK5CQ9rL+/VuPhMG6PwUmNUAI/pjWOWPVgZFj4LA+54Uy1pXMjzIo0C6YLWxk8VR5xLAjwQ9IawPUO/8r4lj3+uQkpH41od4FE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,66 +101,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/25/26 01:34, Sasha Levin wrote:
-> On Fri, Apr 24, 2026 at 08:28:14PM +0200, David Hildenbrand (Arm) wrote:
->> On 4/24/26 17:06, Pasha Tatashin wrote:
->>>
->>> The issue is that we are going back in time to a flat memory,
->>> without NUMA or hotplug support. We need an abstraction that avoids
->>> allocating this memory in enormous contiguous chunks, as thit approach
->>> will not work on modern hardware.
->>>
->>>
->>> Page-ext provides all of these capabilities, but as you described in the
->>> cover letter, it does not meet your requirements. Therefore, I believe
->>> a new abstraction layer is needed.
->>
->> If we decided that we want this (and I am not convinced), we definitely want
->> something that supports sparsity and, in particular, something that support
->> memory hotplug.
-> 
-> Makes sense. Let me take a few days and see if I can find some middle ground
-> here.
-> 
+Of all observable lruvec lock contention in our fleet, we find that ~24%
+occurs when dead folios are present in lru_add batches at drain time. This
+is wasteful in the sense that the folio is added to the LRU just to be
+immediately removed via folios_put_refs(), incurring two unnecessary lock
+acquisitions.
 
-"The natural question is why not use page_ext. The key objection from a
-safety perspective is that page_ext stores per-page metadata in memory
-that is itself subject to the same hardware faults we're trying to
-detect. The dual-bitmap approach works because the two bitmaps are
-independent allocations - corruption in one is caught by comparison
-with the other."
+Eliminate this overhead by preemptively cleaning up dead folios before they
+make it into the LRU. Use folio_ref_freeze() to filter folios whose only
+remaining refcount is the batch ref. When dead folios are found, move them
+off the add batch and onto a temporary batch to be freed.
 
-So you want to have two bits per page, whereby both bits come from in dependent
-pages I assume?
+PG_active may be set on a batched folio as well as PG_unevictable (via
+migration path). Since filtered folios bypass the normal lru_add() cleanup,
+both flags must be cleared before freeing.
 
-Storing one bit in page_ext and one bit in page flags would be possible if we
-had a spare bit in page flags ...  We could allocate two bitmaps per memory section.
+During A/B testing on one of our prod instagram workloads (high-frequency
+short-lived requests), the patch intercepted almost all dead folios before
+they entered the LRU. Data collected using the mm_lru_insertion tracepoint
+shows the effectiveness of the patch:
 
-But the real question is: how far away do these bits have to be in memory to be
-considered "independent" and not prone to the same corruption?
+Per-host LRU add averages at 95% CPU load
+(60 hosts each side, 3 x 60s intervals)
 
-1 bit?
-1 byte?
-64 byte?
-4096 byte?
-???
+            dead folios/min  total folios/min   dead %
+unpatched:        1,297,785        19,341,986  6.7097%
+patched:                 14        19,039,996  0.0001%
 
-"Embedding both in page_ext means a single fault could
-corrupt both the tracking data and its redundant copy in the same
-allocation region."
+Within this workload, we save ~2.6M lock acquisitions per minute per host
+as a result.
 
-I might be wrong, but isn't that the case for any such fault, as you don't 100%
-know how the DIMM is organized internally?
+System-wide memory stats improved on the patched side also at 95% CPU load:
+ - direct reclaim scanning reduced 7%
+ - allocation stalls reduced 5.2%
+ - compaction stalls reduced 12.3%
+ - page frees reduced 4.9%
 
-Do we really expect that a MCE event would, for example, very likely corrupt two
-neighboring bits, or two bits in the same byte etc? What are the odds that we care?
+No regressions were observed in requests served per second or request tail
+latency (p99). Both metrics showed directional improvement at higher CPU
+utilization (comparing 85% to 95%).
 
-It's hard to tell here which part of this work is "too research focused". For
-example, if I were to write a paper about that, I would make such claims to make
-it sound more complicated than it needs to be :)
+Note that tests were performed using classic LRU.
 
+Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Michal Hocko <mhocko@suse.com>
+---
+v2
+ - clear PG_active and PG_unevictable flags before adding to free batch
+
+v1: https://lore.kernel.org/linux-mm/20260423164307.29805-1-jp.kobryn@linux.dev/
+
+ mm/swap.c | 41 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
+
+diff --git a/mm/swap.c b/mm/swap.c
+index 5cc44f0de9877..2dd84813f4dde 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -160,14 +160,42 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ 	int i;
+ 	struct lruvec *lruvec = NULL;
+ 	unsigned long flags = 0;
++	struct folio_batch free_fbatch;
++	bool is_lru_add = (move_fn == lru_add);
++
++	/*
++	 * If we're adding to the LRU, preemptively filter dead folios. Use
++	 * this dedicated folio batch for temp storage and deferred cleanup.
++	 */
++	if (is_lru_add)
++		folio_batch_init(&free_fbatch);
+ 
+ 	for (i = 0; i < folio_batch_count(fbatch); i++) {
+ 		struct folio *folio = fbatch->folios[i];
+ 
+ 		/* block memcg migration while the folio moves between lru */
+-		if (move_fn != lru_add && !folio_test_clear_lru(folio))
++		if (!is_lru_add && !folio_test_clear_lru(folio))
+ 			continue;
+ 
++		/*
++		 * Filter dead folios by moving them from the add batch to the temp
++		 * batch for freeing after this loop.
++		 *
++		 * We're bypassing normal cleanup. Clear flags that are not
++		 * applicable to dead folios.
++		 *
++		 * Since the folio may be part of a huge page, unqueue from
++		 * deferred split list to avoid a dangling list entry.
++		 */
++		if (is_lru_add && folio_ref_freeze(folio, 1)) {
++			__folio_clear_active(folio);
++			__folio_clear_unevictable(folio);
++			folio_unqueue_deferred_split(folio);
++			fbatch->folios[i] = NULL;
++			folio_batch_add(&free_fbatch, folio);
++			continue;
++		}
++
+ 		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
+ 		move_fn(lruvec, folio);
+ 
+@@ -176,6 +204,13 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ 
+ 	if (lruvec)
+ 		lruvec_unlock_irqrestore(lruvec, flags);
++
++	/* Cleanup filtered dead folios. */
++	if (is_lru_add) {
++		mem_cgroup_uncharge_folios(&free_fbatch);
++		free_unref_folios(&free_fbatch);
++	}
++
+ 	folios_put(fbatch);
+ }
+ 
+@@ -964,6 +999,10 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
+ 		struct folio *folio = folios->folios[i];
+ 		unsigned int nr_refs = refs ? refs[i] : 1;
+ 
++		/* Folio batch entry may have been preemptively removed during drain. */
++		if (!folio)
++			continue;
++
+ 		if (is_huge_zero_folio(folio))
+ 			continue;
+ 
 -- 
-Cheers,
+2.52.0
 
-David
 
