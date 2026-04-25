@@ -4,97 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF60EFF885A
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 05:17:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C10FFF885C
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 05:31:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25D8A6B0005; Sat, 25 Apr 2026 01:17:38 -0400 (EDT)
+	id 4460C6B0005; Sat, 25 Apr 2026 01:31:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20E356B008A; Sat, 25 Apr 2026 01:17:38 -0400 (EDT)
+	id 3CFB06B008A; Sat, 25 Apr 2026 01:31:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FCE26B008C; Sat, 25 Apr 2026 01:17:38 -0400 (EDT)
+	id 2708A6B008C; Sat, 25 Apr 2026 01:31:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F067F6B0005
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 01:17:37 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D87C51C0232
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:17:35 +0000 (UTC)
-X-FDA: 84695920470.01.B6CD317
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1D74840013
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:17:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cdbnbOvV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777094254; a=rsa-sha256;
-	cv=none;
-	b=EGwwKEC1P1RIHVfpSSxiWfy4g7HW9jAPV/A9xQcSvcxAoZjxQ/xJokRbwaicL8SvU+Hshk
-	Rkuj9JZsYpJcMufOhNdKziWJ0MhaJTKZbeeO54af2fVrUKg5n6K9ZGUlnYOHPNN2oSYZpn
-	g/XB1mvjPWqHd9xGsS4wkEhtai84ef8=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cdbnbOvV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 10DD96B0005
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 01:31:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8DCD71B6FD5
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:31:08 +0000 (UTC)
+X-FDA: 84695954616.15.305B80E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9F0AA18000D
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:31:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jYysDsHk;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777094254;
+	s=arc-20220608; t=1777095066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X0ufuje2Pkx+7JY9Y+wgw5Qzs0yQFPJFayPDXyeKHrE=;
-	b=VPYC0lgPghkYB2KHpLxcVSS8idyBKEKPIy8hFm16OdRjer/Z9VQX0igOso6T6tOhtLLgwI
-	HSEV2IepOSUcFhEZBxujBlxhEz0+vSRMP/h5N1wf7Pfkoebc0atAbGzQqbCBhkG5DhDJtP
-	5+QR+x5UrHj2nCAp89zjjVxexBhsFXc=
+	bh=izoWNZpptbtssuD2FUMoZUclN6qI6Z56asGfirveslY=;
+	b=6/Kt0Q8hHC1WAtZlnpNLN9drygUosTV1IwVaT+19u6Aw46dhvDs+e079TNTXUcU2aw8MQI
+	9WBOoY6gEGURaMPE5LnmTrb4eJqLCHQ5+W6P6ntJ2xgV7g+FhgGVasvIjPXqVXmCBRzeGq
+	UOJOBu/avIsTkLb4GSoCD+oDRwGvIkQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jYysDsHk;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777095066; a=rsa-sha256;
+	cv=none;
+	b=NLcnNzQkfc6p//Rqbnu+WKUgobrgnq8ur2jbME2xyfzM5xyVXERKtEphQB1UdBTZzskdZZ
+	ToGY5q0PsjkB3xLcv1HCa/bMSnbpmJ8ZoHIlMJZ5tLTHOvyU4P3mdFRoVF9EGnlx7vHYte
+	P9eQV4wYKtJRhvBcr5u6A9DafDvnI/Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA1F060052;
-	Sat, 25 Apr 2026 05:17:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B17C2BCB2;
-	Sat, 25 Apr 2026 05:17:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E588442DC;
+	Sat, 25 Apr 2026 05:31:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F001C2BCB2;
+	Sat, 25 Apr 2026 05:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777094252;
-	bh=5j0hI25fcLwvYs9O7EkFhaSQIshTYicy/Hs4ivFoX7s=;
+	s=k20201202; t=1777095065;
+	bh=+42vCSXJu+YT6e/EV0HGcmeCkiK/R9NkN3Va4VSdmwY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cdbnbOvV4TD3FZeIGsUUcdf9MMkutHF5KfqVKtYmFCSCXqO5GuwwpFG6lm6IVVtzd
-	 LpgUZ7+Q934UMJJnJnvl4Ax2ep+64+pjmAyavKljk4KBbiz9J067TXLEJ54uclHQEY
-	 UTtzfKNbX7rOtJs35REfe+0KnxAVy1MMN8DTary7pT+fNnaPpHKYQTBjJ6DUXHvyFS
-	 V6H2s9nyK6jpFsSIfvLyuU+9PaPLQvBWPVn4f/97W4BV0IB9mNDO3mglYi3XmOr9cP
-	 f74Er1HQYlZ1TFJxEqicTb0wRfEGihBbaqjxidkw4bKL1pMjDHcH1gBAvoVpmVjZZs
-	 hfsO7Kv5mVPng==
-Message-ID: <872e752d-c7fa-4a75-a963-4e2f42ce468b@kernel.org>
-Date: Sat, 25 Apr 2026 07:17:18 +0200
+	b=jYysDsHkvzw4w3++oWoxcKUL5tUhrDt3tudCV04MV1nF6s9NwRS4bhdI529+APIVp
+	 ejYWAhExQ58uN+VhVKMTGIyFuUp8YKZYbyBJ649BnZt401mdS16uq9UohqyGyvLPpo
+	 EVe9C/S246G1qZ9H1DiWlXVk64R5SqUWekLWPAeVIign7HTq9u+iQ5ko68UpXhr0Uo
+	 lbV4kFk/bGyYYa2rJpbcN1koXSnY/Ei8FcxGEh9asrApLEawwiYlYYWIkDqJkOWmm5
+	 82sP/HTZ71rZSx7i8vDUdxsLDNpZKssDXnn20eRmqB/85UuLgUMzcbAAqCVWAChA91
+	 7NCRl6Yncqz1g==
+Message-ID: <3146ebcf-5649-44a7-aa21-163bf404c42b@kernel.org>
+Date: Sat, 25 Apr 2026 07:30:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
- them
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Lance Yang
- <lance.yang@linux.dev>, peterz@infradead.org, dave.hansen@intel.com,
- dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
- will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
- seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com, roman.gushchin@linux.dev
-References: <20260424062528.71951-1-lance.yang@linux.dev>
- <20260424063024.ce42ee6a5546e4d9337dd007@linux-foundation.org>
- <aetw4aoABYj3keMh@plex>
- <20260424071533.d28ce90126f05e1c6fc1b740@linux-foundation.org>
- <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
- <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
- <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
- <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
- <4e7699eb-e101-4a25-b585-79a777eb7cc2@kernel.org>
- <CAO9r8zO4eSiAK9U-ijzWJMK80XsK+LmFxGAG+nTo+tmK6aLfYA@mail.gmail.com>
+Subject: Re: [RFC 4/7] mm: add page consistency checker implementation
+To: Sasha Levin <sashal@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
+ corbet@lwn.net, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ skhan@linuxfoundation.org, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sasha Levin <sashal@nvidia.com>,
+ Sanif Veeras <sveeras@nvidia.com>,
+ "Claude:claude-opus-4-7" <noreply@anthropic.com>
+References: <20260424140056.2094777-1-sashal@kernel.org>
+ <20260424140056.2094777-5-sashal@kernel.org>
+ <4b961a07-b72d-4c8a-ab49-23f61ed12b53@kernel.org> <aeuC6TJ4XowazVZj@laps>
+ <aeuFnuiYDBjttEKt@plex> <12985b32-88b3-47ab-8292-2e0ec6f5fbae@kernel.org>
+ <aev-DS4YTp5soVPd@laps>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -141,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAO9r8zO4eSiAK9U-ijzWJMK80XsK+LmFxGAG+nTo+tmK6aLfYA@mail.gmail.com>
+In-Reply-To: <aev-DS4YTp5soVPd@laps>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: sqj6ubkdc5d34pc8zycasefxpm9kox6n
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D74840013
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777094253-90080
-X-HE-Meta: U2FsdGVkX1+q7tv1+LdKhVxJjIk11PKpzF+niAvaLTeHe1TdxvqM5CsONHYJpbcETGCc+n/wkvKQ30GoAWyqvaA3YdzOi0b2KRePXmWpFcyDN6O67yXdxyZL9zwOEEtw6jUw3TQQSAkuY+oDUACgbWq7TLOGY2DJH7e+ihxSd4vJxo78y7oFSb/do8W2ECN+NHn3qXlyDuKYImlHq5WCP/P8ciSkx/qnh76Yqlfnlcu8vLSh4MHsFWgA2J4VbRzgB5Yt1zGzNtEQY3ukpZzXY6oV1UzqOGRadITJLKcfjtC5n2OhYnrKuTdsnBz5rM5d6CNtmPYIi1i3EOdXqG44TWEy6ozegk7ZDNvd8UujRXHZ8b4uZdLoOiKHdus9Bf7oQo8P5tBU0SdXXSbwSqGAeu+5jzbg9S3pJvAV9WgNHFvZBIlT7YRVy2Nv568ARuL+MixWgkC0T8hXvPTLCMlnsM3ll2odxEuhvSzvaedDX1ZXaD8QEYi33GfXNJTVBL5SRlUKJGOyuBrPn0t/WgGcKb2v4NBCbYXK/e8TmJW0H5jrvCUzUZa8dNdqK60u02dTmCH32rqH0+HtqJzs2CksTycWQWIq8oO/rQbxW+ZZgO/rWMeEuwGtzHFPxMGaSr2EXTX14pCNNJpfTq1Tg+2tjbeE8Qj0W4q7KiJMJM3AxzNobWiFCHNRmwLfQJ1CP3wx1X+ghLra5cBsC+MTjH85tC1IXWm56ss7ilFTYjlpN4WrAqdvm8IO983Z4ypmyI67poAnZU198tqUmEgEzk/yzy75CNMio83Iei7gsuaD1avnMDRW2no3aP0UDc+WuSx8gHGmZwVya++mxKOt6Qi0tsW/PtPV9hapU3rbfm0T074+47vg2LP5maxcAQETiO2vI1vDYhiB5OMq+0dUmvIq43d8z/UvEPgVdtlZHeQJqgNdD/M55jA7JKbovHT7vjwWrpCTsfG42v7A4Z5ecyG
- yZ27ZKQc
- UOFe00sUiGE05/zx21SaPfHFudNLJnYC0q2xO3eXDPTH1mOYS9U45048zTxoWh8IASuEBOrhpkoKegXy6L1WujlIjnoAzda7kS4QP0eBBoVPddVya92VeK0DvNUKmSnqBHcYXLjSxrAGewWNdON/k4PBBu5QKE2feGgcJ2+QWwCXVIbQmQLHBI1ixDnj+AnZzcdCBcZykUnI36ZIb9j8x0v2ogocQV0S4vm9FiwVLGdJhrZ44GJfb8ylXEAvuBh+5UrWGYU3oBlqrWG9gA6GB9FDr36OgAqgANpSqb9KX+SqL78i6N58RNKXP00Je4c8AXfLsGkE+uRpRL+Q=
+X-Rspamd-Queue-Id: 9F0AA18000D
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 68111mxhi533kstw9cw8hw4jdaq3889t
+X-HE-Tag: 1777095066-414980
+X-HE-Meta: U2FsdGVkX18nGmzUa3i3Mk9CQ6uhB4Trqt+dzSIS4DWsvuvOiTuVBpnCDsPV75tabW2KdrBdBRqhF9DgeR+2koMhOyTdhrxthCne3MWBYeXY2w/PKd8GcHyi+lpPCNY3s6ttuo8JTKACBShdGR7c4cbJ5YeO5HsUF//aBzEh2GhX0jP7Xvgi97YbLWNqyr4rPEhCQwmr7uMuZvyJuGUt8YUUybvSYGqUQIZSh5ttaC9XdGnWgCmLdWmC4/a3WvCL8pq/7rCmP/Vi4Nbs+tovK51kV3PnsC7c5mZf2BT8Ch2z5vpFB3aROjLeKWuIOXwZmNrPEG81yiB++uyOozmTSwWK7T0CV6A0OVuH2VDWQzF1hnEyEfkNIpBakkhxR26zqENue1AvK+DeH0euuoqfSImwo5+zSeJw8/lfnjg0SEs26QLElAbwOUqwn0QGiFnurXL7LSx+IxDfxccbqMIF2q8NcKCMyHC3yy9sTHM9izIH9ulJ5jrcVAIrZouKeiEDX0HIxgHmF7Bq1kkoURUPKN0YQwkTBfKxMbyIv5ofc4rZ0rX6BkauHz5JchiUzaXNeGHyw3idLY6ESKrMH49pb56O/POgz9hVQwVi2VZBpZmN6/BxbV13C4RUocQpXx4XhSbZLbhe4EpaS0k1nMGRAtCxtnGuuST0558BLQ8ZPeOtPZ5L2IM7YOc2GdxaD1M6hn5oYG+/r0x2/9gmqrAmhC9Sa3uIV00Obp9+8L3PYCeuujJluUjtYla3ICMmc0clRM9iywXdp5u92iXHrrRj7u069r+rNyyE93ycXHPEDbJK6xCerHtrypI0IVSWCggbXf37viQuRkyiLUib88TDNvRfmiNESBbLN2Lmz87jl1Sz0Dlh4CuA4fP0zpurAY9Tx3z7JXBv9E/liY8nXZnzrDhvc9SOS1LF4FPfB7Nz5m0ZbqcNgE3QKWwgYzkBOOkEUoT5DCCols/yc2IoW+j
+ Dt4Z+W2l
+ z/FSbnHhYzVLrY8W4wg4l/yXYHfjEzDlAB79Sc+PvkFTRj35qcADNO8Ctd0dnLrINd2mC4DJNmBmQl7OTKKGd80JJiVkPI+HYBtPpoIM7TteUK6/g5p02PjH6smx9ONrUEljqxWyat3pVzkZcH92uBBYrrD4VOjBvEo+t7fhJyRyzsgI9qBi0z4UPxsqf+HRngoaaT8mFlbb6e/crV7xIdB50ZYqCKj8QZgj+JJMK0oTFMCUdRxzCELeVvhD8yJ+64UKS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,57 +147,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/24/26 21:18, Yosry Ahmed wrote:
-> On Fri, Apr 24, 2026 at 12:09 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 4/24/26 20:50, Yosry Ahmed wrote:
->>> On Fri, Apr 24, 2026 at 11:36 AM David Hildenbrand (Arm)
->>> <david@kernel.org> wrote:
+On 4/25/26 01:34, Sasha Levin wrote:
+> On Fri, Apr 24, 2026 at 08:28:14PM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/24/26 17:06, Pasha Tatashin wrote:
 >>>
->>> But I imagine it's useful for reviewers to see Sashiko's feedback as
->>> well (without having to go look on the website).
+>>> The issue is that we are going back in time to a flat memory,
+>>> without NUMA or hotplug support. We need an abstraction that avoids
+>>> allocating this memory in enormous contiguous chunks, as thit approach
+>>> will not work on modern hardware.
+>>>
+>>>
+>>> Page-ext provides all of these capabilities, but as you described in the
+>>> cover letter, it does not meet your requirements. Therefore, I believe
+>>> a new abstraction layer is needed.
 >>
->> I read a lot of them, yes. Maintainers know how to find it.
->>
->> I even think maintainers should  briefly go over it before applying to spot if
->> anything in there is still left unanswered. But that doesn't need a mailing list
->> posting.
->>
->> I enjoy if contributors are aware of the reports and use that input in a
->> reasonable, like Zi just did [1]. And if they are unsure, they usually ask to
->> double-check.
->>
->> [1] https://lore.kernel.org/r/15191F7F-0D10-4907-B963-DA4EA0E36EB6@nvidia.com
->>
->>> It's possible that
->>> Sashiko is right but the author isn't convinced, so getting more eyes
->>> on the feedback would help.
->>
->> Forcing contributors to reply to everything. I don't like that, in particular
->> not as long as there is no way for contributors to run it early in private.
->>
->> In most cases, contributors just do the reasonable thing: incorporate the
->> feedback in a new version.
+>> If we decided that we want this (and I am not convinced), we definitely want
+>> something that supports sparsity and, in particular, something that support
+>> memory hotplug.
 > 
-> The usefulness of the mailing list posting is that it makes it easier
-> to respond and discuss the review. Yes, what Zi did is great, but it
-> would be nice if contributors/reviewers didn't need to manually quote
-> Sashiko.
-
-I think the most important part is the contributor side. A private posting is
-sufficient for that.
-
-So if possible, I'd start with that and see how it goes.
-
+> Makes sense. Let me take a few days and see if I can find some middle ground
+> here.
 > 
-> That being said, I understand the concerns and the pressure to respond
-> to everything as you mention below. Maybe at some point this will
-> become an easier decision to make as reviews become more refined.
 
-There is another thing to consider here: impact on other reviewers, in
-particular, new contributors, when they spot excessive review already posted to
-the mailing list. And the first thing being them reading that.
+"The natural question is why not use page_ext. The key objection from a
+safety perspective is that page_ext stores per-page metadata in memory
+that is itself subject to the same hardware faults we're trying to
+detect. The dual-bitmap approach works because the two bitmaps are
+independent allocations - corruption in one is caught by comparison
+with the other."
+
+So you want to have two bits per page, whereby both bits come from in dependent
+pages I assume?
+
+Storing one bit in page_ext and one bit in page flags would be possible if we
+had a spare bit in page flags ...  We could allocate two bitmaps per memory section.
+
+But the real question is: how far away do these bits have to be in memory to be
+considered "independent" and not prone to the same corruption?
+
+1 bit?
+1 byte?
+64 byte?
+4096 byte?
+???
+
+"Embedding both in page_ext means a single fault could
+corrupt both the tracking data and its redundant copy in the same
+allocation region."
+
+I might be wrong, but isn't that the case for any such fault, as you don't 100%
+know how the DIMM is organized internally?
+
+Do we really expect that a MCE event would, for example, very likely corrupt two
+neighboring bits, or two bits in the same byte etc? What are the odds that we care?
+
+It's hard to tell here which part of this work is "too research focused". For
+example, if I were to write a paper about that, I would make such claims to make
+it sound more complicated than it needs to be :)
 
 -- 
 Cheers,
