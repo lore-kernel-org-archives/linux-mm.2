@@ -4,74 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B4C3FF8850
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 02:38:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11311FF885A
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 03:06:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51BE06B0005; Fri, 24 Apr 2026 22:38:34 -0400 (EDT)
+	id 14E846B0005; Fri, 24 Apr 2026 23:06:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CCCB6B008A; Fri, 24 Apr 2026 22:38:34 -0400 (EDT)
+	id 0FF9A6B008A; Fri, 24 Apr 2026 23:06:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E2876B008C; Fri, 24 Apr 2026 22:38:34 -0400 (EDT)
+	id 014386B008C; Fri, 24 Apr 2026 23:06:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 281596B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 22:38:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 473CD1201E9
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 02:38:33 +0000 (UTC)
-X-FDA: 84695519706.23.8E3F27B
-Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8A3E34000B
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 02:38:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E42EC6B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 23:06:21 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C04691B6E83
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 03:06:20 +0000 (UTC)
+X-FDA: 84695589720.06.1A5B098
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A10AC140002
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 03:06:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B19j9Sh9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777084711;
+	s=arc-20220608; t=1777086379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=GqAlbzim2Q1p1t/hFGibmsvrrZ8VDQ1QmtSnpDyxHMI=;
-	b=mOg42hWK1Sqro5dIboLm9PUlc/iN5uFASoJRroO8V9B0oOjbRvl1VQqQRFGoLDfvEjFozz
-	wlytyPAYaZrsp47mhStjBI/5gIXPC5nZiCMKOawhREDhA6x64uO8rwqg6yhkIaCMwIt7l3
-	K40BHc5Kj1tUnBXmXa5zt3B3qfjSnPA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777084711; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LS6FCqD8VSXr924Q4YkPV/vRhy4BlRM8EbIWjkTCfxQ=;
+	b=z1n1I+wreCDJ/x3IISM4QN3Fx4lLgrY/H9z6r5COvv/xSrrJaXmAUeK7U4WFhpncYFfsb9
+	20T3KwIhcffZrC9944k78mjDNMTG4bIcQ7GEQwxlA9apE3fYF5/tPWIDL/B6SxV7+SCx0x
+	AK4WMmE6YaPhjeRhtpkB4Nuz19Vai6I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777086379; a=rsa-sha256;
 	cv=none;
-	b=kv1Jwl5mpGc+UgvO48aHiC7Dq+w8vFF4VEOMht9lzeuhDSyOIMeCRhc/5mnYJP0JzSn7y7
-	rAgTrrJ70b9Ayu1UPgVUXJUOnPOLhvEcpxj72oJGNfDUek0FtuDVSflZ4zhTXwTuHyQc8K
-	X3m0hfkiCtWcwVp6JfsuqGFVG0el9DY=
+	b=T6pzJv9bC2i61YMfIPaxVXql5yvKhmxXMQX5lcLnUbXOKIu5aStOoIesi7NJ9y17CBOwoB
+	QPTxBoC6bbshdWhN9PsxWKorPLZ/pAffT0mXu4lQfgP86twfYYQv7koXdkwh7lLAXm03Fu
+	ohdTkBoC4DPhpeh9pGS8C2kTP5kJBBE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	none
-Received: from omf10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6463E1C004B;
-	Sat, 25 Apr 2026 02:38:30 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf10.hostedemail.com (Postfix) with ESMTPA id E9AB141;
-	Sat, 25 Apr 2026 02:38:27 +0000 (UTC)
-Message-ID: <d9cbb89faa5bdb71d451781d214a51ce8923a83e.camel@perches.com>
-Subject: tools/testing/radix-tree/maple.c & vs | defect
-From: Joe Perches <joe@perches.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl	
- <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Date: Fri, 24 Apr 2026 19:38:26 -0700
-Content-Type: text/plain; charset="UTF-8"
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B19j9Sh9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777086376;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LS6FCqD8VSXr924Q4YkPV/vRhy4BlRM8EbIWjkTCfxQ=;
+	b=B19j9Sh9uoyXQoT2jp7I4pOlIjQZYabWyU3GKN59qbm6g12VJj3lhVYjDoCrWYP4/xTSij
+	gLNZZdLCkzFGTjkwSlTZuOJUQWEfwwmKiZ0zKs6/nksrzMF/ZYksFvgyyNoBbjTnjk9Q+h
+	W1DXvgmK08TwKJnZu+cKBozIo3rbYpQ=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
+ optimization
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
+Date: Sat, 25 Apr 2026 11:05:38 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-MIME-Version: 1.0
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX194umgHdIYoRNTpdu9d/3eZyUORtsdGRtQ=
-X-HE-Meta: U2FsdGVkX18LeMnRkpOCimFx/8VLdJRKH1py04izRhSyBzAyo3q6uSc+k2t4J5m8EMMIiO8425IdFvdUpi2Qf8HLq8gMxvYVJGyVw3Zfj6cexdS3YIXky+0OtZOslPEqrTYONh7RK9nhEJMzcCmOrncqP/du51X8NzNCEan4reChKsFpzx9xWcD9eXYYPqiWF5wfB5/ftaABabllo145EYKsYwBaQGxlwPnSyDrj6SnctuuEMM+fB/xS9KqgDsE2tqjgNhd0xyTAo09L2xAVPOE5W16iL+STfDvcUJS7DTcnuQ9MCo/UjfYis46+kq/o
+Message-Id: <4C6CE53F-918C-4D03-9DBD-1745E28A2D9E@linux.dev>
+References: <20260424025547.3806072-1-songmuchun@bytedance.com>
+ <20260424025547.3806072-5-songmuchun@bytedance.com>
+ <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8A3E34000B
-X-Stat-Signature: d55j4uznx6scuko39j8d9go9rn7ayc5m
-X-HE-Tag-Orig: 1777084707-41909
+X-Rspamd-Queue-Id: A10AC140002
+X-Stat-Signature: 1hukj5rgi4zio4yj8wsjx9iyo9gdxdq7
 X-Rspam-User: 
-X-HE-Tag: 1777084711-470051
-X-HE-Meta: U2FsdGVkX18ZsbTxNLJTeR4Nh9gFikRe/5+I0aZM5uHlSJ5ubEUTQEp+V2pb+pRW/dS4jfwMv6Czt3nrMvF/ycN7n3tRIj5TaBqOB5r2Q5FnjTS2czJbSV4IXacA+kH1bAOLp0+LHxAkIsz6yef679bc2/cZYeiV6+zdWz2vDHyvg3DMGv4F+VcsS5D82cQsg+pCUPpkMRpYJN99+oET6sVmmogAoDOKoYhmQ9ZJ32P/WQWkwSYq0+fPCc2T9q/wimezgm7zTWqZsIcBxb+z/hzdHEQHXLzdg/6AuxW7p3LB6eMbaereHTIl4PmYvoBj2RfgwWEoMF/9erLnY0f5TgkUeQ86QvMDdDsNPKUKAcdm0eDqDTRrxxOAMXVaOL+QGPPPAoOcsmlswC0zavBncAaYxy65RP1kvHK8Ep+b7nHedgjlRmV/hbzBqImOJw/kXPb2MmKF2TFmjxqYbZnfgyccX3CM37u+osto8ME0DuSMvuRTTsI88CYmusAtcDkfIC4UbrjW3hNLsQDt08MUhrYknUAwrm1Mpu5Xkk4DbRC1DjPI/tfjDcBqPy7Sa7OMpozkcOzoUzJZpDtpxwrOENX8DysAdijYNkNg64sUDxJqMwF0J3redPmdNFRbYrxOqoSlNOXw5o7iR5No1qhJfRC9i5Sxu3K640Vo4a7u2WbMCGiQOR0UtX5lCI1Hwxr/xweSTEvcVstKuv35MRcNerEMtEPUvdI1Rht2532ed/mr9gdLJvFwsDmoJgdqVh9yqeEvVJ/JZ6FsniM/tBhCp2mQKWv/FpYxpFLOsS8sA0iXMIvhvnUf2moV2deWeStf4IvsMxNp4T3f8TOq5KIIiVM//1j+qrZwwDGSY9IodYCw7gCOUlB12DFkrTKej4LdK72f+QY2XfODS+N+ID3OPqr3UcYnATZr/0pXjrieCy/bPOv+8tcFMo4slpa4BvdE
+X-HE-Tag: 1777086378-417173
+X-HE-Meta: U2FsdGVkX1+hq583X5fmhOcJDlhj16MXzxTLGMeQHQEfL4d8uu1efV8MXx3EvKoWIbaD86g3jj5MKIYXzYyE817lops0wI3ZGJ3GahBto7bNJwiQWnwZ7D6+SUG3oAJNe22LbaS9jep4xSFPkwsymDlH24XQ6VDQhfuvfF7r1LBArKH8Fj3tpuZiePb+BpYImxE5Gvw+hYeFEfEmFNpQtOyL85gyX0uPFxQ4lOAJgNvXporTyWb6+kgw/1ZWeYD9y6IDxwdh3KCO53kJxZ7Gm+awIcAz+YuyYqIHX5InpEQncK8ddquZwKHEagEwsRDyRJnAuxdJjpcHLpd6TzMQHWu/UHY/boDCiJpl1vXTalLAMB0F41kzxw9BsVb8Hd9081g0LPGSi063+uqY986k6lt0E9l/EKC7uPQUMo4oP2X9OthjhYuFniHkwqYsWjWHZ5r1kix6mUQELqPwB7+tCVBldfFj12rmdVPKoUGDEQgIOQPZNxPsd2S9rwMBAkid8KowjJKjm+JUJb5/KrOAVb0zVpDE8qYfIx8F0HteGz6kolAtN/1/gLY3d/iGcaaTOpOUImGMC+xmP3+AqzAowoQ96bMvpe1DxLcQKrLeY4hQaweFRgcA41Czci6serRt7R2sNiqzVx/J7Wqhm+24zZDec+Fi2jdJ77CxZq7fM4RN52cueLrndDSURlB///7R3e0oZPd8HhHCX1Bu9IoPAGdzyM5GOHNmw6oEa7KkyqBqSItdYIZaQwCUGWgjNh956C7dKTbxxibMhCGLIK+fm0GD6feVFEeyaMj9iIQr9ig6vn7XWVOvfedLQ1Mr/XdABPnVoV6Ib00au+Jd9Y1RsK2oQIJM9Zcjp4llcvO3HvhEb6n8t3bRNmrbTDW7e1fsRnpTyqHGvaslsHbVYwbX9wIf/UgtIIN/YZhgjWu9nnbPq32OpN0svFO16XTiA8D+6OMtWnOPYz/BjV1t57b
+ dt6svHPT
+ sFlKRbfhiTFpf8fsC3dK0gCgbJpy8mGKtkzbaP9IvDdx+1xQ7v8I94U4FFwOHJB3RHwbRdxIGtg5rOUk8qGpkbGug+Pnt3mrxWTh23vLoddGqIAYI9129HFB4RO5EmuNnATFjFOvGJzfoBXVTpWIt6fOqrmew52oYY8DIlZhjOlxFLRB1VBlNbr4NXXElcL9hKCYIx6kMbLMFtlAcmmAwBMVHEn6x/zz7cEgE27A1AZna2GHwNFTVctuZuZe/o5Aagtxv6Khs2ohuizgw1vd8Er7yOaP5NlIHe/W9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -79,10 +109,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tools/testing/radix-tree/maple.c:       MT_BUG_ON(mt, mas_preallocate(&mas,=
- ptr, GFP_KERNEL & GFP_NOWAIT) =3D=3D 0);
-tools/testing/radix-tree/maple.c:       MT_BUG_ON(mt, mas_preallocate(&mas,=
- ptr, GFP_KERNEL & GFP_NOWAIT) =3D=3D 0);
 
-Presumably the & here should be |
+
+> On Apr 24, 2026, at 15:33, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 4/24/26 04:55, Muchun Song wrote:
+>> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
+>> counter in /proc/vmstat is incorrect. The current code always =
+accounts
+>> for the full, non-optimized vmemmap size, but vmemmap optimization
+>> reduces the actual number of vmemmap pages by reusing tail pages. =
+This
+>> causes the system to overcount vmemmap usage, leading to inaccurate
+>> page statistics in /proc/vmstat.
+>>=20
+>> Fix this by introducing section_vmemmap_pages(), which returns the =
+exact
+>> vmemmap page count for a given pfn range based on whether =
+optimization
+>> is in effect.
+>>=20
+>> Fixes: 15995a352474 ("mm: report per-page metadata information")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> Acked-by: Oscar Salvador <osalvador@suse.de>
+>> ---
+>> mm/sparse-vmemmap.c | 31 +++++++++++++++++++++++++++----
+>> 1 file changed, 27 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 3340f6d30b01..2e642c5ff3f2 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -652,6 +652,28 @@ void offline_mem_sections(unsigned long =
+start_pfn, unsigned long end_pfn)
+>> }
+>> }
+>>=20
+>> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, =
+unsigned long nr_pages,
+>> + 		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+>> +{
+>> + 	const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
+>> + 	const unsigned long pages_per_compound =3D 1UL << order;
+>> +
+>> + 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
+>> +    			min(pages_per_compound, =
+PAGES_PER_SECTION)));
+>=20
+> FWIW, I though the right thing to do here would be:
+>=20
+> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound);
+> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION);
+>=20
+> I don't really see how PAGES_PER_SECTION make sense given that
+> PAGES_PER_SUBSECTION are the smallest granularity we allow =
+adding/removing.
+>=20
+> Also, the "min()" implies that there is a connection between both =
+properties,
+> but there isn't to that degree.
+>=20
+> If order =3D=3D 0, then you'd only ever check alignment for ... 1, not
+> PAGES_PER_SUBSECTION, which already looks weird.
+>=20
+> So you really want to check "max(pages_per_compound, =
+PAGES_PER_SUBSECTION)", but
+> just having two statements is clearer.
+>=20
+> Or am I getting something very wrong here? :)
+
+Hi David,
+
+Sorry, I missed the 1GB hugepage scenario earlier. Given that =
+sparse_add_section()
+operates on a scale between PAGES_PER_SUBSECTION and PAGES_PER_SECTION, =
+the pfn and
+nr_pages parameters wouldn't be aligned with the hugepage size =
+(pages_per_compound),
+but rather with the PAGES_PER_SECTION boundary. Do you think this =
+explanation makes
+it clearer? In the interest of code clarity, do you think the =
+modification below
+makes it easier to follow?
+
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 2e642c5ff3f2..ce675c5fb94d 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -658,15 +658,18 @@ static int __meminit =
+section_nr_vmemmap_pages(unsigned long pfn, unsigned long n
+        const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
+        const unsigned long pages_per_compound =3D 1UL << order;
+
+-       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
+-                                   min(pages_per_compound, =
+PAGES_PER_SECTION)));
++       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, =
+PAGES_PER_SUBSECTION));
+        VM_WARN_ON_ONCE(pfn_to_section_nr(pfn) !=3D =
+pfn_to_section_nr(pfn + nr_pages - 1));
+
+        if (!vmemmap_can_optimize(altmap, pgmap))
+                return DIV_ROUND_UP(nr_pages * sizeof(struct page), =
+PAGE_SIZE);
+
+-       if (order < PFN_SECTION_SHIFT)
++       if (order < PFN_SECTION_SHIFT) {
++               VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, =
+pages_per_compound));
+                return VMEMMAP_RESERVE_NR * nr_pages / =
+pages_per_compound;
++       }
++
++       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
+
+        if (IS_ALIGNED(pfn, pages_per_compound))
+                return VMEMMAP_RESERVE_NR;
+
+Thanks.
+
+>=20
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
 
