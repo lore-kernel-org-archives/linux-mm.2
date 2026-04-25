@@ -4,96 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CDBEFF885C
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 05:34:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA980FF885A
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Apr 2026 05:46:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC1AB6B008A; Sat, 25 Apr 2026 01:34:47 -0400 (EDT)
+	id D5E896B0005; Sat, 25 Apr 2026 01:46:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D99536B008C; Sat, 25 Apr 2026 01:34:47 -0400 (EDT)
+	id D0EFD6B008A; Sat, 25 Apr 2026 01:46:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD5B26B0092; Sat, 25 Apr 2026 01:34:47 -0400 (EDT)
+	id BFE7C6B008C; Sat, 25 Apr 2026 01:46:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BABFA6B008A
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 01:34:47 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 45E601A0279
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:34:47 +0000 (UTC)
-X-FDA: 84695963814.17.B227D67
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5493B20003
-	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:34:45 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LPLgtwEH;
-	spf=pass (imf03.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AE2D76B0005
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 01:46:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 519728A6B2
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:46:55 +0000 (UTC)
+X-FDA: 84695994390.27.574D2E7
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 292AD160005
+	for <linux-mm@kvack.org>; Sat, 25 Apr 2026 05:46:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=GJ0XVQmP;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=uwnlv62W;
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf08.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.151 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777095285;
+	s=arc-20220608; t=1777096013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=O2wKaLfeccrLPK9TR/V0xj0n49MCRpo9cMDPX1EG854=;
-	b=SrQ5e6ZGuNmKPSuEkrDSvMk6p41SIkXM/d6Zr3xFNzH4LnTTQH4zJi+ypoQGPF2GP6Y3H0
-	xC2Zx6vx+3vIbNmGOlcqI2eTpFs5Mk4LwZx4HTupC+BG8DDV1mu57RldQCLI5O6tY/Q5CB
-	tvZwPxnyOewnpTLD2gOtgGi54J9C7Us=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LPLgtwEH;
-	spf=pass (imf03.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777095285; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L1U+Lzz1qrYnndGzgY0hK0tfu2XW3iifx6J3/jCY6ZA=;
+	b=XaYu6/3x3T4RyKiqMb6jeTdVg/l1v3+uBBJU+gDByHgvrYMbxt+gPIgHlwah3bwXdT+ObL
+	fYhJhVJ1hDaIcC35SGWgYW3A+oJlKKZPxNXGo1kMi4iB+BQeAAi4i6usx7dmeT9y/zM6Q+
+	UDsJXGV2A3U3PioDKxVbDF1tsL2sVYs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777096013; a=rsa-sha256;
 	cv=none;
-	b=qbBhHuvPBjG7q/B4QyxIx+if0kJ1O+vxXTfKWEO4Xd1Foj08zvrTCt8uZwduEMyppavxQy
-	gIEIEgLCa0aBPokvbzHxuy/K4mhUqQUsfUqWTvd+57ZXwhk9J8QvDC2RZXbqoFVlFcSPCp
-	jhNOC/yYmEdI7I52cIluRO/NbjRYGQo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777095282;
+	b=AWoHewqcAQRjg2asV34rLXK2BDxDW7q6egQMj+bZQ+0VMq0dBg0RgxDkEwfiU2VS7WZgJq
+	BLPsv3TCgP2LhEeX035bZ08kjfqwcNEFR6C/Uhmi1GxzsvIuOUdggT8e7ZXUD9BGjKalNB
+	mhfCZ4TKJUiE0JWyrsekKsnrDRn33Hc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=GJ0XVQmP;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=uwnlv62W;
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf08.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.151 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4g2f3G1B5xz9tjB;
+	Sat, 25 Apr 2026 07:46:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1777096010;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=O2wKaLfeccrLPK9TR/V0xj0n49MCRpo9cMDPX1EG854=;
-	b=LPLgtwEHTOentynaddiLXYxSON7SMFqntHAFikcN7Vqdqn2HG7t5Ts2ILIacZ7fO/o3oz9
-	YyTiiUBTacaacPL6Xd5u8Ss8euxJvWRxA13+UJ++Fwu/SoalBEiTvf1SieXmXmdK3aIZhy
-	pscxUbgSzsopGUj+tLs2KtG6AB+Vf88=
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	willy@infradead.org,
-	baohua@kernel.org,
-	mhocko@suse.com,
-	vbabka@kernel.org,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	riel@surriel.com,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	youngjun.park@lge.com,
-	qi.zheng@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v2] mm/lruvec: preemptively free dead folios during lru_add drain
-Date: Fri, 24 Apr 2026 22:34:17 -0700
-Message-ID: <20260425053417.351146-1-jp.kobryn@linux.dev>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L1U+Lzz1qrYnndGzgY0hK0tfu2XW3iifx6J3/jCY6ZA=;
+	b=GJ0XVQmPVZ3C29V9VBzl1FqGS399NvjW9ZZ3Czra6gwGX4whf9zFV5hgdEw1oKpLtx2Vrv
+	nOXr0u1WiFNxSOlWBJZkxz39rjVqiQyYtumwli3ddvkY4e0tWQCdzP5pzDJWY6DYwSJVhO
+	fDs2HQ5eOXNs6kFxoluFlnI2S1htr6BcfNCCkhXPh6AbZ4uWMKZP2z8m9BmEQHUS3rbONy
+	JKjGz2+vXemyfx8PL/YVHLryudAG4KWcs1jxi/BGdMG/88M9FlI/ataiI5t3HyGvJA906W
+	P6ETUPC3HtEqGg0bc8v/W05+GnJWhyxaIWbLa/FiXFNjm2bcDj5KppO+lFSyzg==
+From: Manuel Ebner <manuelebner@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1777096009;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L1U+Lzz1qrYnndGzgY0hK0tfu2XW3iifx6J3/jCY6ZA=;
+	b=uwnlv62WEPzcPWrQ5ZoaPqt6xlfYJLtO8XDZ46qQf0Tp3LSBPrknlCmYXpVhTgI3EyUV5A
+	lElEPJo0PzvigUjm/TwgKEgzqD4q7XAHeC3bvyy0YIZ30oeYz2i4yovhysO26IQ3JLUhhD
+	kgTXPpAXchi2m+OmBWEvOk6ocrVn9lW9g42g4XmLzERtZXzCYpwCuTLu5b1E89WhOlo1LB
+	9U1vE3A1PQ5VKeQd5194wA1rmfSojZpyB9TWxoezmi4J+Ex42PiXen/asjwsU3sbqSIAgE
+	d5ycbOektijgf7+dIkUSkcFspf3q/6bUKhFzYos3cDwNIYKE3EJCc/AQdsQSyA==
+To: manuelebner@mailbox.org,
+	corbet@lwn.net
+Cc: kees@kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-mm@kvack.org,
+	paulmck@kernel.org,
+	rcu@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: [PATCH v3 2/3] Documentation: RCU: adopt new coding style of type-aware kmalloc-family
+Date: Sat, 25 Apr 2026 07:46:31 +0200
+Message-ID: <20260425054630.272707-2-manuelebner@mailbox.org>
+In-Reply-To: <20260424175553.258412-3-manuelebner@mailbox.org>
+References: <20260424175553.258412-3-manuelebner@mailbox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 7gw1aofnmcmijtbko9nanqu11p5c1ysw
-X-Rspamd-Queue-Id: 5493B20003
+X-MBO-RS-META: j4corux7dnuf8pgzx97gu3oi9rymqth4
+X-MBO-RS-ID: 47ae089f101825f15ed
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777095285-432458
-X-HE-Meta: U2FsdGVkX19xeqH+j+MP5RZM+8kQwT854m/+nNHqMk2HOFE1dUJOT59JYESBESUKndz9WkYAoBhHAYKN8pTtFQE7by7Q6Q6356YMxucLyCFoBmDmHCvESatH42XmpjBpGsKN1x4w6bEKfp0JSaEU/Zmqvf+3mQZ5A/WJANiDUGIsM4TjX8iaKi8+Trcy36UZkRKllJUV4fsJtLU5RMqtebY4cZXcIdMJ4rMmL8rPo0S6Dp0Zyq0NTUO0+I6UxqbB6b9WHsQpkcd2P/RkELBj82h+xZHgpSOoM3O+1fsdslWifmZQNcpws5JCjAFhG/PzWV+RoUcPQAt6ko+X4prVk3bCVifGIrSTBMxVO1/oQlVp7yg+tQWqsCq/EiBAvNkqbTCDAMJW4omo7iVmmBvv1imjxny4vplDQbRCaR4J5eIN1cjwXeG6PBn9XC9/+g6KCkdf6wfpNaaJLYmRb7kwo+JkmgR99VRpcyCA0ieeh0gL+a2qZANUl0m3TCqC86S0hGEYvEAYARymePl06ob03OJm9VFlkQI+cDBSAS+/GYqZ/3dwDSeAQvCrfneCTev5FjlwJ0JUTskn6KG3neW10EzO4UrXeCKww7gzhHamsiGVKG0XrWZqS4nbeUopeDqnRavMrIq4nPxXh1apR9KvnY1zbN2laVtpVs+OTuCyG1sMb71ghlQ19T2B/7i1BLB6rnUNAJ/+8Wrs/pfVx7mYFniXXpu/EEz0n9tq3ngTCRIzfRucbq+B2HWeIugdPs43h5LSKF9AXKVO9uGr7qtbGIyhVCiUy9/2vj0jfBobJODA65UqrIB5RrDLAl2PKWilokH++wYSGnBXJGfj+E4haTHIRkxwfRpwX/Oh5w3fQnvDqD3R928rE4xrIdP7EMvwaAsKemSoXSTaCrsJhpoWz29VpyYwmknpx8BRunBcVX72ia4HyvOLJmmtFMiKgJQIrCwkJm2W1WL1KqYicQK
- rsogaDQo
- dhVqjDReFsylvTOUjPTrUvXG5BWrD3UynyIaL6M6XDQBS6KpuDNlb+sf08URVdpu7fUO5ULcyfKp0o+SQ718YgPDwY7kqZmPqjOAnuXw0qPxADyKUwqyJmEaIluvtB43MazjT/Wwb56bKs3ktN7fGWgFsL7VetClytJg3GSlPNsYU19+/iBwrlyBGA9yE89NqoR3AURISem6mJ/dEWeNr9WA6fzZrhO0inKsL5WTWyFcc4WOsRTQWhPmSn0d7hUnbZpUADYvIgHXaCNz/WIwH2ixNjcGTu+8LbWK2gpruUHVjdaK5CQ9rL+/VuPhMG6PwUmNUAI/pjWOWPVgZFj4LA+54Uy1pXMjzIo0C6YLWxk8VR5xLAjwQ9IawPUO/8r4lj3+uQkpH41od4FE=
+X-Rspamd-Queue-Id: 292AD160005
+X-Rspamd-Server: rspam04
+X-Stat-Signature: dzjfzjpux3fnnc9fqd6moux7dxkqfnnd
+X-HE-Tag: 1777096012-653006
+X-HE-Meta: U2FsdGVkX1+0znI/6sczJl+NuwS6cDZAuzfl0V9d/288Zg9j7TD/01tYwpxLZWP8ji8FMdTwOSQJOU69cQe3AObr8AsFwAObkUtW52q1j/s506VQYN6bueiERP0XH6sWSlV2ascxTim1zGqu8CKnM4Mqel3HekxwBu66EtCCzSYHiumpYJVR9HH3lwokXcClYlJyzNxu/5YsERYqyWX9ap6nLyt4dw2L+jMsCZQic3ROcH+v3ZU0jlsQYaWczvgxlv1NmpalS2q8wS10nPypxjy/TcM+3xRSNfXaZR/FfrT5ZwrcEkZWOJhkSUb/dll7DinOsb+W0wvmCrKbK5v3YpnvF+g7+dvtdnf+H24C5e8UQz6NiJpPIIO9LTwi+phj69rkbaFdFHXu7P63HPmXawCa12+o8nftiyaB+0SVd7isURhSMiNF/xx5HTaYrYwfzmAD/uSEMW45X6SCeDSTuAr6MD/5cWbpoTVhSs+420cJOKg+BKpPFIGwHqIsK0aqxwxjVJz6vrrq3sO2oc+bmMMrYJv1HPvzFb19fqH/hNgwftmph98ySo/UrYq/hP9xYzSMsvVyVHlyCq6u1joS/3yee3nHSJQMMiim7XTrfG4TkbYM9noLEOEcA6axZCJjby1uowmPRNEaIyohhn83QkAwYSO1sN4OEVNUYRLjI8grd/LPRN06R4IDnHh2bEHBcExrYNUi6Wotnl8dG/GdfmgAttHrRH9GwVO3gnHje4eX1Kz/iBvSMq3JB9Bc0wUEyIqIgEQjRPZV16CSN2hkgxtxi+D7GnVxtpmLZKJYpKphJ0FLZ4Df7ogME353y98yZCy2A0nHbnFpmONzuimmdJlT0bSa5KKprw8ZlBYSTOjTfuQ+6AM0FvDB3Tmm0dwEXYn//udn/uuvAAk5rZ/Cpk8Fhv6EdNRpS5dwoFR/eWB+rZv7YJOI+OQgWBalVxKPTTgZHpoSXcqbfcRnV8D
+ deejMwFK
+ pjbT4PbfU5mEhOIaZygUP9AOMDRWqejr09MV7QP/R56iUg9Mkr4ZOlxZMP3Ra3WcWiWG/ZV6OCEsFJ+NiCXlW5kHgNx9hkPr/zeWVGMorlC5BhTkiRojGj1aPGuMwl4IPqoFwjyCFIwnmSFdRmOTkYa/lRYCKTBEhOpa/XL9r78GKJk/NbpI7nEupMCjSAMqCavt+7J9958B50lCE7s2u7Fa9zlHwpU6OEJzkSiP4DTpewkV3uHNUfSwhHFcHWifBJVdqvlKbjRnBoksYNYrrbvYDf+KLFuxO7K3YGra3Lzr1T70nWD0e7TrBdDkhIKTGS4pVOx4JWzVMKPU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,135 +113,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Of all observable lruvec lock contention in our fleet, we find that ~24%
-occurs when dead folios are present in lru_add batches at drain time. This
-is wasteful in the sense that the folio is added to the LRU just to be
-immediately removed via folios_put_refs(), incurring two unnecessary lock
-acquisitions.
+Update Documentation/RCU/* to reflect new type-aware kmalloc-family
+as suggested in commit 2932ba8d9c99 ("slab: Introduce kmalloc_obj()
+and family")
 
-Eliminate this overhead by preemptively cleaning up dead folios before they
-make it into the LRU. Use folio_ref_freeze() to filter folios whose only
-remaining refcount is the batch ref. When dead folios are found, move them
-off the add batch and onto a temporary batch to be freed.
+ptr = kmalloc(sizeof(*ptr), gfp);
+ -> ptr = kmalloc_obj(*ptr);
 
-PG_active may be set on a batched folio as well as PG_unevictable (via
-migration path). Since filtered folios bypass the normal lru_add() cleanup,
-both flags must be cleared before freeing.
-
-During A/B testing on one of our prod instagram workloads (high-frequency
-short-lived requests), the patch intercepted almost all dead folios before
-they entered the LRU. Data collected using the mm_lru_insertion tracepoint
-shows the effectiveness of the patch:
-
-Per-host LRU add averages at 95% CPU load
-(60 hosts each side, 3 x 60s intervals)
-
-            dead folios/min  total folios/min   dead %
-unpatched:        1,297,785        19,341,986  6.7097%
-patched:                 14        19,039,996  0.0001%
-
-Within this workload, we save ~2.6M lock acquisitions per minute per host
-as a result.
-
-System-wide memory stats improved on the patched side also at 95% CPU load:
- - direct reclaim scanning reduced 7%
- - allocation stalls reduced 5.2%
- - compaction stalls reduced 12.3%
- - page frees reduced 4.9%
-
-No regressions were observed in requests served per second or request tail
-latency (p99). Both metrics showed directional improvement at higher CPU
-utilization (comparing 85% to 95%).
-
-Note that tests were performed using classic LRU.
-
-Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
 ---
-v2
- - clear PG_active and PG_unevictable flags before adding to free batch
+in the prior mail i forgot the e-mail address of Paul
+Acked-by see 
+https://lore.kernel.org/linux-doc/7a49fee0-09c8-4a48-9506-d9172ef024b0@paulmck-laptop/
 
-v1: https://lore.kernel.org/linux-mm/20260423164307.29805-1-jp.kobryn@linux.dev/
+ Documentation/RCU/Design/Requirements/Requirements.rst | 6 +++---
+ Documentation/RCU/listRCU.rst                          | 2 +-
+ Documentation/RCU/whatisRCU.rst                        | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
- mm/swap.c | 41 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 40 insertions(+), 1 deletion(-)
-
-diff --git a/mm/swap.c b/mm/swap.c
-index 5cc44f0de9877..2dd84813f4dde 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -160,14 +160,42 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
- 	int i;
- 	struct lruvec *lruvec = NULL;
- 	unsigned long flags = 0;
-+	struct folio_batch free_fbatch;
-+	bool is_lru_add = (move_fn == lru_add);
-+
-+	/*
-+	 * If we're adding to the LRU, preemptively filter dead folios. Use
-+	 * this dedicated folio batch for temp storage and deferred cleanup.
-+	 */
-+	if (is_lru_add)
-+		folio_batch_init(&free_fbatch);
+diff --git a/Documentation/RCU/Design/Requirements/Requirements.rst b/Documentation/RCU/Design/Requirements/Requirements.rst
+index b5cdbba3ec2e..faca5a9c8c12 100644
+--- a/Documentation/RCU/Design/Requirements/Requirements.rst
++++ b/Documentation/RCU/Design/Requirements/Requirements.rst
+@@ -206,7 +206,7 @@ non-\ ``NULL``, locklessly accessing the ``->a`` and ``->b`` fields.
  
- 	for (i = 0; i < folio_batch_count(fbatch); i++) {
- 		struct folio *folio = fbatch->folios[i];
+        1 bool add_gp_buggy(int a, int b)
+        2 {
+-       3   p = kmalloc(sizeof(*p), GFP_KERNEL);
++       3   p = kmalloc_obj(*p);
+        4   if (!p)
+        5     return -ENOMEM;
+        6   spin_lock(&gp_lock);
+@@ -228,7 +228,7 @@ their rights to reorder this code as follows:
  
- 		/* block memcg migration while the folio moves between lru */
--		if (move_fn != lru_add && !folio_test_clear_lru(folio))
-+		if (!is_lru_add && !folio_test_clear_lru(folio))
- 			continue;
+        1 bool add_gp_buggy_optimized(int a, int b)
+        2 {
+-       3   p = kmalloc(sizeof(*p), GFP_KERNEL);
++       3   p = kmalloc_obj(*p);
+        4   if (!p)
+        5     return -ENOMEM;
+        6   spin_lock(&gp_lock);
+@@ -264,7 +264,7 @@ shows an example of insertion:
  
-+		/*
-+		 * Filter dead folios by moving them from the add batch to the temp
-+		 * batch for freeing after this loop.
-+		 *
-+		 * We're bypassing normal cleanup. Clear flags that are not
-+		 * applicable to dead folios.
-+		 *
-+		 * Since the folio may be part of a huge page, unqueue from
-+		 * deferred split list to avoid a dangling list entry.
-+		 */
-+		if (is_lru_add && folio_ref_freeze(folio, 1)) {
-+			__folio_clear_active(folio);
-+			__folio_clear_unevictable(folio);
-+			folio_unqueue_deferred_split(folio);
-+			fbatch->folios[i] = NULL;
-+			folio_batch_add(&free_fbatch, folio);
-+			continue;
-+		}
-+
- 		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
- 		move_fn(lruvec, folio);
+        1 bool add_gp(int a, int b)
+        2 {
+-       3   p = kmalloc(sizeof(*p), GFP_KERNEL);
++       3   p = kmalloc_obj(*p);
+        4   if (!p)
+        5     return -ENOMEM;
+        6   spin_lock(&gp_lock);
+diff --git a/Documentation/RCU/listRCU.rst b/Documentation/RCU/listRCU.rst
+index d8bb98623c12..48c7272a4ccc 100644
+--- a/Documentation/RCU/listRCU.rst
++++ b/Documentation/RCU/listRCU.rst
+@@ -276,7 +276,7 @@ The RCU version of audit_upd_rule() is as follows::
  
-@@ -176,6 +204,13 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ 		list_for_each_entry(e, list, list) {
+ 			if (!audit_compare_rule(rule, &e->rule)) {
+-				ne = kmalloc(sizeof(*entry), GFP_ATOMIC);
++				ne = kmalloc_obj(*entry, GFP_ATOMIC);
+ 				if (ne == NULL)
+ 					return -ENOMEM;
+ 				audit_copy_rule(&ne->rule, &e->rule);
+diff --git a/Documentation/RCU/whatisRCU.rst b/Documentation/RCU/whatisRCU.rst
+index a1582bd653d1..770aab8ea36a 100644
+--- a/Documentation/RCU/whatisRCU.rst
++++ b/Documentation/RCU/whatisRCU.rst
+@@ -468,7 +468,7 @@ uses of RCU may be found in listRCU.rst and NMI-RCU.rst.
+ 		struct foo *new_fp;
+ 		struct foo *old_fp;
  
- 	if (lruvec)
- 		lruvec_unlock_irqrestore(lruvec, flags);
-+
-+	/* Cleanup filtered dead folios. */
-+	if (is_lru_add) {
-+		mem_cgroup_uncharge_folios(&free_fbatch);
-+		free_unref_folios(&free_fbatch);
-+	}
-+
- 	folios_put(fbatch);
- }
+-		new_fp = kmalloc(sizeof(*new_fp), GFP_KERNEL);
++		new_fp = kmalloc_obj(*new_fp);
+ 		spin_lock(&foo_mutex);
+ 		old_fp = rcu_dereference_protected(gbl_foo, lockdep_is_held(&foo_mutex));
+ 		*new_fp = *old_fp;
+@@ -570,7 +570,7 @@ The foo_update_a() function might then be written as follows::
+ 		struct foo *new_fp;
+ 		struct foo *old_fp;
  
-@@ -964,6 +999,10 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
- 		struct folio *folio = folios->folios[i];
- 		unsigned int nr_refs = refs ? refs[i] : 1;
- 
-+		/* Folio batch entry may have been preemptively removed during drain. */
-+		if (!folio)
-+			continue;
-+
- 		if (is_huge_zero_folio(folio))
- 			continue;
- 
+-		new_fp = kmalloc(sizeof(*new_fp), GFP_KERNEL);
++		new_fp = kmalloc_obj(*new_fp);
+ 		spin_lock(&foo_mutex);
+ 		old_fp = rcu_dereference_protected(gbl_foo, lockdep_is_held(&foo_mutex));
+ 		*new_fp = *old_fp;
 -- 
-2.52.0
+2.53.0
 
 
