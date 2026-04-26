@@ -4,101 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3101CFF885C
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 12:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8BD9FF885D
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 12:36:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D2096B0005; Sun, 26 Apr 2026 08:35:00 -0400 (EDT)
+	id 070606B008A; Sun, 26 Apr 2026 08:36:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8828C6B008A; Sun, 26 Apr 2026 08:35:00 -0400 (EDT)
+	id 046A66B008C; Sun, 26 Apr 2026 08:36:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 797E06B008C; Sun, 26 Apr 2026 08:35:00 -0400 (EDT)
+	id EC6676B0092; Sun, 26 Apr 2026 08:36:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DF806B0005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:35:00 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 03BE71B7CE4
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:34:59 +0000 (UTC)
-X-FDA: 84700651560.09.9C99955
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D99BB6B008A
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:36:04 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7E488C17A8
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:36:04 +0000 (UTC)
+X-FDA: 84700654248.12.60A7CEC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 66BF440009
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:34:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fcxiKN5r;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf08.hostedemail.com (Postfix) with ESMTP id A4FA6160003
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:36:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dtw9Mvfg;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777206898;
+	s=arc-20220608; t=1777206962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AKbTS9iRsQYvXb8uofILDdWjS5pBKx09kXH/B9KI7IY=;
-	b=kLZ2Y2QmLLMgrT5/hLvEy4NNeEoNhjNwBqmrBK/Yo1ZnK3YiJVac2NgF/qAdmgUtCPaYWY
-	FlVzQKvvZ3ZP7PrOVeIXTCRIS3OC6qWDVE3xaulxy9HhOQwMX08/x5wdcGoFH4JttuX55f
-	oBuT2hBpvdld7239NfmjathlaV1me6A=
+	bh=UDbrgHw+jZdxcc0yj+q24rw9RPXOdbYWmdGQz7WtJYg=;
+	b=V7lcqpIM1BhCPtMZfLoMPBNQSYK34YNPVEvly8SkEfhRUIkoyMyT97BlV0axmPDDS5F1yn
+	pJULZBP0WlzRK9NoQ6LQQ1O3nIJLAM7toGgbF+uszXBGQtxmozeJtu2+3kmtVTACcPsWbx
+	KXz2zKctw8hi0zVBbWAGcAsjsfcDHMw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fcxiKN5r;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777206898; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dtw9Mvfg;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777206962; a=rsa-sha256;
 	cv=none;
-	b=elxh0UMAQpu1w+g0KWO9xwIszpiF7+IcOzs0Bn7KFiDA2uyq4dArV+2nrHgT6wpfg3Fl/x
-	CxOfavLE/Xe0uTdVDqoDgLsJ2+VQ6XaGmpgsVOP7tFKiLc5D1LYE5wIipVLZPgwErtAne/
-	/GDVtTPnLby2YdD3F2yCa6IbhHTBiCM=
+	b=Ar59B2XRmEJvtN3OJct7jrjSJnnP7zQELBZHOY8UNtkbMklz+DmtZLANebkfklVThkRPXZ
+	YPRxhJJW0rSq5FQvhgZy1kQpsapQZ8EwbbAgO03BAP7DgApzp47BbrEiIry/YjMmjo5sGj
+	ooTotU75E8IBwD7Ghm1aRnt5lFresPo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D90660120;
-	Sun, 26 Apr 2026 12:34:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA71C2BCAF;
-	Sun, 26 Apr 2026 12:34:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777206897;
-	bh=BaSaKLFcdJ+SYi5Kybvkce1qiCJ+Moij9HYFUQ8DY2M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fcxiKN5rSz+bLNRnfPlWCVNiwZdMQHiXq8jp8dmXPVZ5kTaH+NOl8+71ePWUnWN0e
-	 NhdjG8fmfRLFCbhVLPF3TELHbG/hLx18MhzGBq8F46N2vsuUCITTWM2BtUNoU67RoD
-	 /6H+5HN+eQBtHXsXcG41Yhd5rrZtFQ4pe8eZPsCs=
-Date: Sun, 26 Apr 2026 05:34:55 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Mike
- Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, Ritesh Harjani
- <ritesh.list@gmail.com>, Christoph Hellwig <hch@infradead.org>, Kairui Song
- <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
- <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Chuck Lever <chuck.lever@oracle.com>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] testing: add nfsd-io-bench NFS server benchmark
- suite
-Message-Id: <20260426053455.4c06140446976964e6fbb8ab@linux-foundation.org>
-In-Reply-To: <20260426-dontcache-v3-3-79eb37da9547@kernel.org>
-References: <20260426-dontcache-v3-0-79eb37da9547@kernel.org>
-	<20260426-dontcache-v3-3-79eb37da9547@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 13D3860125
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:36:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5F8C2BCC9
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:36:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777206961;
+	bh=UDbrgHw+jZdxcc0yj+q24rw9RPXOdbYWmdGQz7WtJYg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=dtw9MvfgRhXX/ZPqDbg4IyvPfwVxAjlQp3G94FNPlOBt1LgcFzUkYqAzynWEsBllY
+	 G3v4D45pa3Dptv3F+SugseC+G5YTIsrozEp+UcVQ0mQVf8mQR7j+Qt7xuNeD1yrivZ
+	 3WP2Ysa2CSA5wyeDfQyLLmOoGDbTyNPyZLYxjnIZVhnS9AvQqx4JvYIUm07Ibahasv
+	 QmwMVCDu1Y++NyDB0W8763XX6mTg9dRDHuEmgum23Kk18Z8rlr22MvN2Zikl1W11C4
+	 hHqdHpg9rbAHtkmg/+sO5btZRigjBqiLINITX12fO+KYXeDXgCCIcxkImCNODaQb68
+	 K3yP243S5H5Ug==
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50d75bfb259so69646811cf.1
+        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 05:36:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8KzKiAZkhajuBtPUvdt/XJpQ2enOVLc5GL1nKBElsXKoQO771hGDA1SvRBiPp0u32tLOgKvUT3vg==@kvack.org
+X-Gm-Message-State: AOJu0YxeMLFWCaOdUdS6lLEVgdRBSXL/1eTey7x5x1AArgVwNeMZgQ8C
+	t8M4u3PwLN7BnPJzwVgx8VG7UrmcqGLTgdLtkdaR5e5RcZwSwFzGoH3OKMIPbRFqb7CWYHuHFRd
+	0R3vY1lo7X0YQz+igllmodCIatl8BiF8=
+X-Received: by 2002:a05:6214:3385:b0:8ac:aeb0:2eb4 with SMTP id
+ 6a1803df08f44-8b0281573bemr664694236d6.45.1777206961024; Sun, 26 Apr 2026
+ 05:36:01 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260418120233.7162-1-baohua@kernel.org> <w5ekxean6g6eph4427frzclgzu5hrd7kqres3ronlqpvqtsusb@kfdagnk2xqif>
+In-Reply-To: <w5ekxean6g6eph4427frzclgzu5hrd7kqres3ronlqpvqtsusb@kfdagnk2xqif>
+From: Barry Song <baohua@kernel.org>
+Date: Sun, 26 Apr 2026 12:35:46 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wo8Chd-B8oRwTEQsU+CQu_tvwmkx=PdNweTBTQLDsRUA@mail.gmail.com>
+X-Gm-Features: AQROBzANUl9Pcz9hyjO7uKCugSQGl3onSRWlRS_4KEaYUsDc_mdraZQmarUsz1w
+Message-ID: <CAGsJ_4wo8Chd-B8oRwTEQsU+CQu_tvwmkx=PdNweTBTQLDsRUA@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: Use folio_mark_accessed to replace
+ folio_set_active in PF
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>, 
+	Xueyuan Chen <xueyuan.chen21@gmail.com>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	wangzicheng <wangzicheng@honor.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Lei Liu <liulei.rjpt@vivo.com>, Matthew Wilcox <willy@infradead.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 66BF440009
-X-Stat-Signature: 7ubf5ekhyahhqrx7fn5nw6iuh14mw7d1
-X-HE-Tag: 1777206898-393914
-X-HE-Meta: U2FsdGVkX1/JpFo1FmWqXWBJXT/ZqEJJCVY3QR0baDD1XKTMAlidw0wpCDHWw/j80ukOXcyjl7SAiBvwS86MooEOfMJj18gl7CqTZOkqXPBFs4dCLt6B+VsJ/hgBUDhp29Jy7v2dtMFQ3LU9gxDan+Dqr9P3A533UdVIAPXoGZPnEcS3bvbc9J5/uCD5NI8RrQQm++Kuh/JqXjNDT4jD6GsvMnkysc7xq5Tfl05ScSfXZAQqTkiW7qZL/GXuNT1N+XRTK2TGdRD7ETsQ0kaWNc2eLlKcyoEguqTA7j/ZBQtITaHB35or3AOQ7dw8iZd2AArm9hQEffC4yqwEZXPlExN/+c9K5dXS+SrF6KnlY7c/PA9v8WONdQWF932KZ/MEyEp9I8aPPS8LtkKZo0rvwFNPJZ36b2u/2zMYLdesEsXyWnh6W9rhLEz7LWAgrddxB3JNOBH0UGefndn8t3lk0plBvH/kKHQll4H9Jc13wcE9dvDc+quU/6xDO04LpNlAP+zgCOG6oRXVIIUcovx3ywJGWTt9ciKGi3yURKzmMe+CDZ939t5V1+pztxOavO0S2D/RP37xOjaNmD//ykAAgkvafYrGJVSgaYSxAoP+kFjuCn+TzGMUVMMkEugf/Vw09u+6RHkpXEOf9mnx97ZFtBJycSZ0v8qjBSQ0qBy6ILIatVjAtOmNrUNPXCjbGgA+tHzGDUqz91ZCZwiTVQKhnv6ymqEg7obdb8QTcJ2LgbXk9KxpBba++WHdB1w/tuST7zyep5cqu0ZompqgbqOI8w8zsKGqOyW/bFI1dJ0DWQRmGz3o8vy3ULHJvk7qjotUUhrH/CJOxp/kDMN2+gwdwWKd7zS4sNXS6KCENLzZ9a4txBzX8kBgnm+PGKeRFoW/HRsUfY6B/sfxnNIUWnc6tVdhWLznCmU+ueOGxR/emfEKzDqD6Q2OpkYy2UvyXJTl5xT97zM1aDlmF0msZ8E
- UFyrbQRl
- UhHXETwtvf4xq/Ea8Uy1cJ3O36Fd5QtUVlO1Aw0MaLc1oj4ek6hORfnRRq7bD73fumP9VXWJMk1MZSydyDVSjnqoZwjGNIz1g9/TXA46p4nzxPN0Q/AMcnOnuBoKbZERYvLSEgkSoLMDwz1wllA5IqlwYaFn7epun4x7Y/NFyGkLP3wIGHZ+1RaUbIfamAsZJjp87mp3f0jnEXC7C4Q3awIaacguag54sIGZKRKlqquGqd0hUyONjS2giyp/ZqGjoioY5zKKMpOXIGbQ3KXLTKOA2HUUFdhJPljaxIOBVbH7449R1m8POeYGQfnGfqikn+Gr326ZRmSJkDOZzDIbqV8bDyQ==
+X-Rspamd-Queue-Id: A4FA6160003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 4a9fjjg6i1ypkjx3boqkmn8ekh88fuh4
+X-HE-Tag: 1777206962-368739
+X-HE-Meta: U2FsdGVkX18/Te1NibdntQzzhj/AaVYgn2VfPmPlsahlXOlvRNGwQ9Az9PIpJufCH/oZTvTwfuxRT+JR+VwNTMWYnsD14eoKVQ0IUD6mYniP233mHAt+xCMEMO/fTxSWm5vaKHanYvWl5/BcNeFTwKsHBLKPrsBzmYBZDBrkF7MO2kP9DRZY9SlcIcAASOIwvQvcpo3EUI/DPasIoTJSqx6/haAxu8pYsCfhkxe4M9EsLAzHtPnsVWFhAIA2L3HZXuMdXOwJ9Ubh64CKjG/UWWUiHpGdz2O1RRsoZwwHGIqIe0vRcgZ7rYp/0PyHjs9XWRYoZNf8SNkStr3Fg4lydz7wJlK61dDcNbhzDNXZAwXO0lqA7AHNTN5MWLccKWLHuxYfGIfQOuxgFbNefEPOHUmDsnxoZSfkBQuFs+wy/y0gAZiZ8KTamaCcrwcBLs77dpNiGTqnWsTn+zGa0y6brxIt4i0JWdOEksBZOQGeptiOG4uWG3hq5mXwNy5madlWnmp6y9oEz6im6k7TCGvqBaozPRQGRRouGMDNGMrcprNE5P0Lzg0+oo3/eeCLxzfSPQsM8Kc39AmffZD1PiTiWXvUMVWsVYzf3BBbscxcL//TuLopZIGvssGCeM1/GARqRmr1yHVeJn7efWWP7MhUbESC3YA3+qBghzgCeHzQkxjrNEpXl/60dKkU6n5fc38rA10Y8CJgls1MZrtSDgVhpIfd+Zd9o4QiHXU9ms+oyOVAlijmJRtRCaJwTsv45J3rXnG7PKQDEl8bTPLfBfjUKYCzlH6uLM3RCObqYVVHh+IRGUlohqqpsvop+Xc4kkUmaYouVgz7PVpbbcc/UqxbIx+27iduYqWw48YUH0E+F167xaZNasFueIUaqoKbXAFQp1IbVpKd0cYNP6nbP70RsiGFUROzRj4zVI/fQ2eyFK7syYyFOZjr8Cl24pAe4sRPdK7CNKWv7NWImEOTGLx
+ 3S7ATFyO
+ z3Ys/qs00ftnoq1ga+6Fy8B59N2RLPO1HQitQj10rRalhgBKUrQqj9P7LBEAK0UnRN9MhCp693ieHCnQrFKjiV5PW8/N0DANW7FLXLiChuhgp+OYH2qyNcdhMYhdZWJpZ1PoV9vNF5hW/ytoGoLgOtu/dq5gUL43mvuDSEBZqYJkc2dXENAeBR0ay9x+UH73MaBVhGvsX+dFJRM7lTNVir5CLU1AEuwnBW+Ed9qnZ3p575UJt65htqkGW+bSULB+0Pzf4ncyRdLBmAZ5F41+l/W8vXW8ykjx6WOTIwZ357QUUSkwJbRVneU6N9M4bt2g17hEiaSXnlm7XZuummJov5nZv+03CM/DaB7hKRwGCBVrnU3qGGNFXKkcikkoo3BfBYXN5tVpTdpsRapDI5T6H+i/UhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,36 +109,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 26 Apr 2026 07:56:09 -0400 Jeff Layton <jlayton@kernel.org> wrote:
+On Fri, Apr 24, 2026 at 11:19=E2=80=AFPM Pedro Falcato <pfalcato@suse.de> w=
+rote:
+>
+> On Sat, Apr 18, 2026 at 08:02:33PM +0800, Barry Song (Xiaomi) wrote:
+> > MGLRU gives high priority to folios mapped in page tables.
+> > As a result, folio_set_active() is invoked for all folios
+> > read during page faults. In practice, however, readahead
+> > can bring in many folios that are never accessed via page
+> > tables.
+> >
+> > A previous attempt by Lei Liu proposed introducing a separate
+> > LRU for readahead[1] to make readahead pages easier to reclaim,
+> > but that approach is likely over-engineered.
+>
+> Why does this even need to be kept? I'm not sure it makes sense
+> to even mark readahead folios as referenced.
+>
+> I'd suggest folios should only be marked referenced (or even active, what=
+ever)
+> when they're mapped. Anything else is a bit random and is hoping you are
+> eventually going to map them in the future (which is not true for, for ex=
+ample,
+> anything in an ELF file that may be readahead but not mapped, like debug =
+info,
+> symbol tables, section headers, relocation tables, etc etc)
 
-> Add a benchmark suite for testing NFSD I/O mode performance using fio
-> with the libnfs backend against an NFS server on localhost.  Tests
-> buffered, dontcache, and direct I/O modes via NFSD debugfs controls.
-> 
-> Includes:
->  - fio job files for sequential/random read/write, multi-writer,
->    noisy-neighbor, and latency-sensitive reader workloads
->  - run-benchmarks.sh: orchestrates test matrix with mode switching
->  - parse-results.sh: extracts metrics from fio JSON output
->  - setup-server.sh: configures NFS export for testing
-> 
-> Assisted-by: Claude:claude-opus-4-6
+The patch targets the mmap readahead path rather than the syscall
+readahead path.
 
-OK, question.
+With lru_gen_in_fault() in place, it=E2=80=99s roughly equivalent to
+the mapped case, since readahead is typically 128 KB while
+fault_around is 64 KB in PF.
 
->  10 files changed, 1024 insertions(+)
-
-Seems that this code was largely machine-generated.  So I assume that
-you're in possession of the scripts/prompts/whatever which were used to
-generate this code.
-
-(Can you please briefly describe the process which you used here?)
-
-So how are we to maintain this?  Will other developers have to go in
-and hack this machine-generated output by hand?  Or would it be better
-to provide (in-tree) other developers with the means to regenerate this code,
-presumably using Claude?
-
-IOW, this feels a bit like shipping the .s file without giving us the .c
-file!
+Thanks
+Barry
 
