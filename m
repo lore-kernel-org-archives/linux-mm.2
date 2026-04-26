@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27032FF8850
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 06:01:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CAA8FF8850
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 06:27:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8048F6B0088; Sun, 26 Apr 2026 02:01:41 -0400 (EDT)
+	id B7FD16B0088; Sun, 26 Apr 2026 02:27:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B4506B008A; Sun, 26 Apr 2026 02:01:41 -0400 (EDT)
+	id B30746B008A; Sun, 26 Apr 2026 02:27:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CB2B6B008C; Sun, 26 Apr 2026 02:01:41 -0400 (EDT)
+	id A1F086B008C; Sun, 26 Apr 2026 02:27:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E6CE6B0088
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 02:01:41 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F3E00A0442
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 06:01:40 +0000 (UTC)
-X-FDA: 84699660360.07.37FC9B3
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4ACAF80003
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 06:01:37 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E8CF6B0088
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 02:27:25 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B5441B7849
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 06:27:25 +0000 (UTC)
+X-FDA: 84699725250.16.A14F160
+Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 794B580004
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 06:27:23 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="mD/H9xBA";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	dkim=pass header.d=google.com header.s=20251104 header.b=ci2Yqcgm;
+	spf=pass (imf02.hostedemail.com: domain of 3SbDtaQYKCLYoqnajXckkcha.Ykihejqt-iigrWYg.knc@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3SbDtaQYKCLYoqnajXckkcha.Ykihejqt-iigrWYg.knc@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777183299;
+	s=arc-20220608; t=1777184843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b+wabLzY7PQDl0SUnNEn2ncKgvz1hAOANX6yNTSodsQ=;
-	b=22rcTd5Y9GTLrqHbgur9dc29Ew47Ne+7AsA9Z4LtLG1WJXohrI+xvJvfTMfzgVYgNW8ZqM
-	Nfa/iEvwQa4DExaVigZA40Lroyt9j3x7Vk0waKtFj5K6DZqcBl8U263ssl2hFxU6ZMfDbe
-	Df1WcpTVxHQMJJevSgVLJVGTIGzd8wQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777183299; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=x3geMF9pl2AS94E2sOaM47L9pSj3O9H8NiYQAnGXwdc=;
+	b=nlJ/SSdfNh+IOQgAERDDDpugPOAZZkPj3AYJUYjOjbEWBFShzHbsAtfVCm2qJjfCsOvkY3
+	HiojmE3B4C40rnUrUNJ0BFnBeh+8bAT/iUY8Qy3v8o7q1CdHqyQlbkna954YnUJzbMRs1x
+	3Cm0lYuZT0SL0T8tF6DsGMkpWaAgbOs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777184843; a=rsa-sha256;
 	cv=none;
-	b=V4wKC0OTzvHTx0V9sgC/lR1lGBHJKTClv4a2NTxh0KZU81Bf/GAf2zmlpSamfy+804Whuy
-	WdtLBrRBEKSYexY+az8vZHW1A2RJjmeBjpyqgHC5W8Wg6rrbZMTOMCSYxJBO00SNa6ZvC6
-	GcYExH0voG23qBmdRmp0ws3lOaCsgqQ=
+	b=nyNoeg+U1aVrE6w2o5l8jeBjP4cenh7zP9DjnpC8rqgMKOcvJDJW+jkVIu+YvBzVkcf1OA
+	kTJSnO4sTvVuitIS4OMuclDFQjGsh33QKFS5L1MDsoFRScwDmG9PEIm3OLqhOWLBx1IAB1
+	7mGWvMlO8HNfUr/F5os1yY0oFyYSsnU=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="mD/H9xBA";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777183295; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=b+wabLzY7PQDl0SUnNEn2ncKgvz1hAOANX6yNTSodsQ=;
-	b=mD/H9xBAz6Jq09uKI5Ckro26gwVve6ObUrB2+4bVUWfIKZj8AHXTiVjj/ZtstBOzOtzjssmV69JMDZONJiejMv4v+NA9gGsWGxgWxZgjQdTt4A55TLfOzOT/cH2XLbsiDLHmFOTj+aMo0JU5gyCXzKqVeD1RuX6C8ikv0JPV7TI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R411e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X1gM9NY_1777183293;
-Received: from 192.168.0.100(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1gM9NY_1777183293 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sun, 26 Apr 2026 14:01:34 +0800
-Message-ID: <6a6f15ff-233a-4912-8be4-b2a43d442692@linux.alibaba.com>
-Date: Sun, 26 Apr 2026 14:01:32 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v4 02/12] mm/khugepaged: add folio dirty check after
- try_to_unmap()
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>
-Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260424024915.28758-1-ziy@nvidia.com>
- <20260424024915.28758-3-ziy@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260424024915.28758-3-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	dkim=pass header.d=google.com header.s=20251104 header.b=ci2Yqcgm;
+	spf=pass (imf02.hostedemail.com: domain of 3SbDtaQYKCLYoqnajXckkcha.Ykihejqt-iigrWYg.knc@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3SbDtaQYKCLYoqnajXckkcha.Ykihejqt-iigrWYg.knc@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-12c87ba0890so31290613c88.0
+        for <linux-mm@kvack.org>; Sat, 25 Apr 2026 23:27:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777184842; x=1777789642; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=x3geMF9pl2AS94E2sOaM47L9pSj3O9H8NiYQAnGXwdc=;
+        b=ci2YqcgmS7g/5iMLM19Z0a24VEUHJ3tbGj1/KHpOwVpM3aCzuahsMpCXN9DyIOJvN7
+         NgRfymENIQ8UbzSwNnVuG8iVm688usJu2fn/a5pV/dEParuk9t43specbAAC9KPMHfsW
+         2nY2Y4mFKRM0VBvR1LUomATzg7Mx9APyO+todUkrFkQ8JWacDTyCcQBm4s5n2O0yfQw9
+         m0XKM4XMm1TS89kqrMUZ34q4tHZizb4Y0aRJ4PihciOf0adZRc/msu5/XTcHUAmyNdqB
+         yv/ho8Y/y/ROqafoJU3WSYnbDbcV+Ki6J3vfjUiVyseBfXahHE1y3XpQ5gyq5A7d8AMy
+         h7Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777184842; x=1777789642;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x3geMF9pl2AS94E2sOaM47L9pSj3O9H8NiYQAnGXwdc=;
+        b=e3FWpZpf7NsH3J0XUndlOBZWMrD6Qu7UOikW9s21cSEiph6EkSu1yw/+V9JlhSNy1I
+         D9JAoG2EkCJDdmksH5u8TNe8Qp4d/lbYUTljffWmJV7LoMcdjSbJ+j8/gGY5zEW230bj
+         zlgdgvfieabv8iioRl+ruQTPW3n1CZEXe/OjxVRAuhC3X7G/3vf6xddpBnylO9afr16I
+         Dw9AYvhdM29mKFow5pPnrtFXrQtV5GvraGEz9Kb8Nafa6ijfNjxjrnyStG/o2G7Hr/zH
+         Dh23kjQo6wjgZHLREMuvBZ1FFKceT4uWAD+XAsyq5mclPAYqhYle6uBwhuAzqxc6vLiK
+         vJKg==
+X-Forwarded-Encrypted: i=1; AFNElJ/kNWzBDgxT1svQJht7ZhUmtaET5hYOrgZVxwJheJWGAuG+TtN8bHFxtJ2Bqg4/e9TdnozuitTcwg==@kvack.org
+X-Gm-Message-State: AOJu0YzNvdZmusePDggE3F29NCj4K9Zz3tO2uTGQHVhN6BSBECHRw7WI
+	OLt85IhmNaVw4NYkM3rp9b6WF6MrjIf9ATaRaGmOWxcXY8UrrQW7yz1LJZHSgsg6Y2FTOpdV9T/
+	//IGK6A==
+X-Received: from dlbur21-n2.prod.google.com ([2002:a05:7022:ea55:20b0:12d:c516:f51])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:11c:b0:12b:ec67:3523
+ with SMTP id a92af1059eb24-12c73f726eamr19447643c88.9.1777184841793; Sat, 25
+ Apr 2026 23:27:21 -0700 (PDT)
+Date: Sat, 25 Apr 2026 23:27:15 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260426062718.1238437-1-surenb@google.com>
+Subject: [PATCH v2 0/3] use vma locks for proc/pid/{smaps|numa_maps} reads
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com, 
+	willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de, 
+	shuah@kernel.org, hsukrut3@gmail.com, richard.weiyang@gmail.com, 
+	reddybalavignesh9979@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 794B580004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4ACAF80003
-X-Rspamd-Server: rspam04
-X-Stat-Signature: r5ftoqu9bnz4e1p8k8kq9g5entrzyseq
-X-HE-Tag: 1777183297-473315
-X-HE-Meta: U2FsdGVkX1/5aWneGOInp6NtKxv0+GhNUClxb8rw1Ap5vcTihAwI42553h0GJBOfhFayqUv3r5oKHnKM5AjNyUcuGkBsN19vDHzmySY8sWmCAVpcudAiKSkP7Xg45aQh/xLs10NC7eZtURSg7lpIzgb4SlnNEguMFxaltHfF35EBeLfrhYdXhyXghxiH3mo3ngJQJP6Mvl0sFRpwF399K12qkargRw0T0Xi/eeP0sp4PjwlQdNfdDvF7Lpksv/ppWXBRMCvDwzh0A8BMFgvXq3QafESj0SVXuqyQsHvvG8ort0D18E13PX9gAbLmnO9sOZ3lCuPqaK+/cJOQdJKAwT8/qb246FsktfcEop0ySz8SLxxwC0fxEIe/3G9xpHVJVtZK9l2S/TtJkOGk0gfWPSqna0PPKGaUD9BbC/fNGk9NyvcEvSRjiaJUQ3tLVCB9MVgFQuBhP/wxoBCS694Cwid30ZRYEDKcwLTsErPlYVm8YXN2ow43Wq4PFrqpG6L1VmQ/2nynuKq3ysxRrumqLzkMWkdtFGui/fWQUWEf1DJ6U3ChfaHmWlVjTAkNzduvfEofwgn9njQfmqOwEE2MJ2ejt/hqDHNJ8W3DwQUsroNALnPFnJW9r2M4JCeHgFTt6rVg9iTogzPdgqL6t3fezQeI+DeNQJUl44ouu3NQKxIbG9DuK4Lpk5FLCTIDbOhDkJyYDYIrE2FydCdVz+0Ihi42ZX3Z5Qg3Saw8p15gahWIpUdPXyNJ9Kzz+P8FVsp9M/4dc3sHiWoy4lAZR82JeM6TLa3ChqmLLWHj/37mgLOmQKegytoK5dzETOk20oN0VTxJk3j8aC6GuM1ftStVAhg47e+xyHwH8pmpPVRxsjiX5jiYzd1XYFK6Nt6McyHYO2ZeYVzRBh0rBPtI6SvbfqjyeYtPe3bBbp6grgGzCv1A/SNM/bcERJ6saUjl483A+DvxH1m2N8IefVUmZUZ
- yAG31o45
- fFrW4FoWkE77cOWrFILUbgQvRar3Lt/TBxIMyNBL3bKDKy1kyUXaOhL8WT50JiKrFM7iGm8VUHmdI/FLhkMmBJPz10cRNcs6UeHS4nTRGPGoPxrNCXOyg0lbHTdVAccTefhDNTh0iZWCbHT/pDEVoTeldTQFvtUI0BR0vIaTU2knKTVziN9NJkvuDco3PvqWqM0YVPkOJXHYfLwSuTUADxt9iImHDRSKZy3Ec2fnYnKGktXZTbdleqrlPzUBBX7ckO2WwFwtwOn3hcyjs2hTUlKc279usfcNnVLceJ5IQkrZzobzq3HbPGzz2IqJUiJG6MTNo+HAN4ON4pcamCAdHb+nWGKTBRlbp8+WAqmbHohnz3UBLkzjsJYYL2g==
+X-Stat-Signature: pgtifibr7k8segfiqj3g9yisxi77gpoq
+X-HE-Tag: 1777184843-120043
+X-HE-Meta: U2FsdGVkX1/qdRpzKmwM1T2ugbTlGh3naOMhPPVUuar7oQ/1+rlqdwPve+YqWlW1hJARqh99OOUTvtv2DUqgILrG+mXJMrvGmCD7UV5zV5h+4O7FPKpl3dB/sg+3JAzwOyssgDu1c7dmRikaESIKs2pJIyF3Vvr0OUIo5GSlNlJU80vSBojGLtrVLY+H1aqueMxnkIhml0tH0WREZvWZ7+Izo4eXyVbMh5yRCy1X5Mkj0nQq/eJjvimnhikZEUs5W9P6lczaWNDYaAPabeBuQvUHqMmeCT6HEqeGRv9S43pNBxxlX3Gbbvt82vbtFrOA5Pec6IuRMb3k/cLVQO34AZSd/Q4CB8JVahSoQ4/9v4339K7YDQc/gMYJ3uQ98qeoCmQNN2woPjYbOCoKxXhs3RyWjNTlpXC83ACrLJgRuWzcuXfzAXJTSPT/uOL6Qrx+dtUdcYsXNDbC5zbpumLijJPrqvdVBA4ErEShby0ZJr2DFm0DR8fUiYO8+/qdhhhOwdJatDsq9eBD1+npnvu8YtAGXrnSJFCUqP5kH4Mdga+U357KI73eOq2TlKo1eGW3VeuGoToa5DAhMK6ukUtmLUoOfzqocxtUyzjjmQXO95McbcgZ8yVDKgs+dXqtpw/fHOqay5sBN5eh6TqerjHbDeyf9WWtJIV9uMiQ8TEdW4NKpRip3pFVuR0O3FP6NmKPpRQgM78dlnC0SnPWRUxndeoyg7Jq1V37ZwVZ1Qz//5KeTEeOmwvECaPh3mxoKwmNxlhpPxng3v5hBst82H7c36qUGdsx3k8LZD8zxpKPqmj1vwiAyckBNjWQ2PwIm2Rzi4MFAcuo4D4S/ebviVWDs3RYMn9QJPcuqdz0LNercgQHXBK/b8dkkw/s5GIJSUhzM6eFuJRGNJFEYQ9wY15xTRcVkWd1Eaxd1W+/aMxUaQC4a7tdhR7s8C6JuVPvp8W+wXqkUn3iJwqHwB4nyKW
+ fFvZQtpf
+ AxyVdJ1l6S5Ql2bsJE23oSdrfhzK970lu6GyNs9FbnN8iX5I+s+W41nkJsKR809WTH/DtEuVVJ/ABS26A8GKQvGXWz8se75MkQRL99KXBASbXsPQcoTl9bDEJgii3NBH6VHmkhXLtSkkcaAGn+u+Amek8vWQv2Ku4JeqqIUW9u8e+n6EFaLJmu4Q+rCYAAazhgmQfrMxLGX4xaZOy/PpCFAgly5U4hvJUYQqndybtMGSeiPO2YYdmo7rqYYaiwlxoFsA5lTBLj+U/wK/FAyh1u3sgwCX1TN9YKua4SMsvTVjbUhgsDc3wlgVYWicB/MFDTpDiF8RxCy8gVgYqW0ph8VQ0Z/HBlLYKgO/UOYEs0ImA8cHLnR+NlpHL69ypmAwfG1jdjMe0Si5RDWzeKTsERie7jKKP1N5nrLPHLnQ18wUx7CoAvot0ZdI0RDLvTiH16kEXd86090Oe6knOTM2vryWGN7+zKpLurVcZTfaF3/wgIe9UdiD9k2GdSPZ8l3RM5t1YdeOHEPDqM2iGFxmuq2S/oh8AAifaqOJe+/2iDMcNm86EYpcObZACajzOp5cp4QDPzcSV32/0mBGsdp4KI7VC9vyhbKo/Kh7bn26VycarriB0LKsKNzL4aimzjO6XindCZ92Q35YsAfoUySEmcoAgvJrIWTATwLXlOYbEquZ7ly2YTRWVgbSrPiX8pl0D3YsGyUOMl5kFl+VC67CR18Xj9sn0Epy/ai61jLxKb6xdlkDofEof5NohuxGGQGacDTPKl+oZ5y1o3xU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,28 +108,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Use per-vma locks when reading /proc/pid/smaps and /proc/pid/numa_maps
+similar to /proc/pid/maps to reduce contention on central mmap_lock. One
+major difference between maps and smaps/numa_maps reading is that the
+latter executes page table walk which can't be done under RCU due to a
+possibility of sleeping. Therefore we drop RCU read lock before this walk
+while keeping the VMA locked. After the walk we retake RCU read lock,
+reset VMA iterator and proceed with the next VMA.
+
+The last two patches extend /proc/pid/maps test to cover /proc/pid/smaps
+reading during concurrent address space modification.
+
+Changes since v1[1]
+- moved drop_rcu earlied in smap_gather_stats to avoid sleeping under
+RCU lock in shmem_swap_usage(), per Sashiko
+- skip page walks for gate VMA in show_numa_map(), per Sashiko
+- introduced parse_vma_line() and copy_line() helper functions to ensure
+input string passed to sscanf() is always NUL-terminated, per Sashiko
+- used FIXTURE_VARIANT to run both maps and smaps tests in a single
+test run, per Liam R. Howlett
+
+Applies over mm-unstable.
+
+[1] https://lore.kernel.org/all/20260424070234.190145-1-surenb@google.com/
+
+Suren Baghdasaryan (3):
+  fs/proc/task_mmu: read proc/pid/{smaps|numa_maps} under per-vma lock
+  selftests/proc: ensure the test is performed at the right page
+    boundary
+  selftests/proc: add /proc/pid/smaps tearing tests
+
+ fs/proc/task_mmu.c                            | 195 +++++++++---
+ tools/testing/selftests/proc/proc-maps-race.c | 293 ++++++++++++++----
+ 2 files changed, 387 insertions(+), 101 deletions(-)
 
 
-On 4/24/26 10:49 AM, Zi Yan wrote:
-> This check ensures the correctness of collapse read-only THPs for FSes
-> after READ_ONLY_THP_FOR_FS is enabled by default for all FSes supporting
-> PMD THP pagecache.
-> 
-> READ_ONLY_THP_FOR_FS only supports read-only fd and uses mapping->nr_thps
-> and inode->i_writecount to prevent any write to read-only to-be-collapsed
-> folios. In upcoming commits, READ_ONLY_THP_FOR_FS will be removed and the
-> aforementioned mechanism will go away too. To ensure khugepaged functions
-> as expected after the changes, skip if any folio is dirty after
-> try_to_unmap(), since a dirty folio means this read-only folio
-> got some writes via mmap can happen between try_to_unmap() and
-> try_to_unmap_flush() via cached TLB entries and khugepaged does not support
-> writable pagecache folio collapse yet.
-> 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
+base-commit: 761e9fad336afb6fe2cd488c7bd522e2783064fc
+-- 
+2.54.0.545.g6539524ca2-goog
 
-LGTM (Thanks to Lance for pointing out the xas lock issue in the 
-previous version). Feel free to add:
-
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
