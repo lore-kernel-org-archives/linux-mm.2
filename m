@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6293FFF885D
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 20:52:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACBCFFF8850
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 20:52:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 447C96B0093; Sun, 26 Apr 2026 16:52:39 -0400 (EDT)
+	id 7C9FF6B0096; Sun, 26 Apr 2026 16:52:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D0F16B0095; Sun, 26 Apr 2026 16:52:39 -0400 (EDT)
+	id 7A1206B0098; Sun, 26 Apr 2026 16:52:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FCD16B0096; Sun, 26 Apr 2026 16:52:39 -0400 (EDT)
+	id 669166B0099; Sun, 26 Apr 2026 16:52:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AB2F6B0093
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F2266B0098
 	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 16:52:39 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B48FB14057D
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:52:38 +0000 (UTC)
-X-FDA: 84701905596.09.D377258
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0896A18000B
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:52:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SDQJoe1N;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10168C22EF
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:52:39 +0000 (UTC)
+X-FDA: 84701905638.23.C195CD1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8102C40003
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:52:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GXMKqhsQ;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1777236757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rG2SQvHixMcNE7r5UJnouCduRtenhJYwYWgmKcI2nVU=;
-	b=UaNoZM9SQsAKxjFzFSkQc62mdjeRcu1tX19KKLNk5ypeLXgXK/S7ZSmZx0OlV1uMzT+2QJ
-	LITzqhUzstevFCojIpMF0oQVE88RFJplNZYpiGHONIKUsfhwHWCNDmRianOmCFui8u2ZQY
-	4DKWSP2862btR/R47P+d5wqR6I8IJqw=
+	bh=1RNfw4rBtu6n86gT5HvOtDC0ps78dggT9IqjKvYBlEY=;
+	b=c7dfUV1XWgNBWCgjCCTKgRVQWOqvHKPAk/BJ2XimCNr/U+usUIGvvtyjCVCIjBFxibTSY1
+	qpkcMuYsJSFcMIAhsm75VXjnuP9Ae0Mv/97IIrZRkMxLiszvWcxPucIgq1L42oB/9mbHYc
+	270/zkuf2tbcDZflIqUw8gsPS1W3JHU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GXMKqhsQ;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777236757; a=rsa-sha256;
 	cv=none;
-	b=vpjs0GqhszL0IjdcqfFyTOkkWWNevMiROTX5Yft+8ENOIRs1IYNJUyWISnf2IwKV/Rgd5G
-	1JAkB/Xpt7mWmrUp7gj/yiOoWedD2MANutGkAQtgGQyvCc/1UvgCwZw/8U3V+pyuli/HUg
-	vfz1MMzbpRGons4Wr98CbDC7m4Htpv8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SDQJoe1N;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	b=k0AAuUoERSUjrtWl0Gfhl48OkResKDkgvL8UfeAa1/PClvPOWVHFtHD9biDx4DnJoEUBgK
+	PI3aONUak6GiEoa9qfcHuiZS16MKQlGjpU/I2r+bplJ8i/+k7DKECCKVCjh6ySePhJHHEd
+	JxyRUNnmrL2P4Pz/+wdsJA3IXp56rcs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 35A9144598;
+	by tor.source.kernel.org (Postfix) with ESMTP id 04FA660145
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:52:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDD0C2BCAF;
 	Sun, 26 Apr 2026 20:52:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB8BC2BCB6;
-	Sun, 26 Apr 2026 20:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777236756;
-	bh=o22ugjrNFWbpUtXu+ccYCDc/5RGuMV8QTJSNQEdoQzs=;
+	bh=eeiUmDXDACMbPx16b5hdV72jEFWacDugbdDQW4vjkpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDQJoe1NFwHYqANaMOcCpJgaKxKqgUOOQFcaHK+dQDBzj62M2kqwbRu7YI4QitFf3
-	 63l7CpBP7+tA7bhepE122ngllyQHBSstJ78Zg9v5v+3soPmmbQTQlNDix+guqzZIwO
-	 Tmq70z1SV+5T0Co9FVYXpvu3PCfrX3gM6V1vC44viR2SjLBat6ZSBv+FiAlPojytMQ
-	 /OlnA1g1WkSBbENnbAiR+tdtHyCneE+SiVkYq9wGTlIESAmfOPC5Si3jb69Dudw5AA
-	 vxnw91V5zasqUR/fp6yDLfWZGDnvbwSQHMG1sEQZ18zpODH7bUp+FkBb87McGC7RDu
-	 r8rKzWNedcTeA==
+	b=GXMKqhsQ5FoHGqmoLFZYr3lIcs2q57qa/lQj1+BBzHZ1w2UubNCRvee/ZMw/MzLxb
+	 kXtHOuZXZneHfiZIyWEP785KCR9MZFl4ck3t6TFIllQrSyoM0UmRZQfkuQcDIdllXe
+	 jS28y9pkO4ol6pOBWw47bC6B04X/7xAGdFOn6ljQOO7ao79j/i3/jIXzX8/JTatk4j
+	 Wm2HswnkcWuDwZBTKm6j1Z0WhWVu3C+mov2cf2wMDvTQu8+RJnOHUqWFzM9v7d113y
+	 DZMbbP9WwWbpUl7Qx0ismbDLp9ccDL8gbnn/kVSVGxKKs9lDNvkWoQz3wrDfkihcin
+	 9OvrzP3HkxDEQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 04/19] mm/damon/core: commit probes
-Date: Sun, 26 Apr 2026 13:52:05 -0700
-Message-ID: <20260426205222.93895-5-sj@kernel.org>
+Subject: [RFC PATCH 06/19] mm/damon/core: introduce damon_ops->apply_probes
+Date: Sun, 26 Apr 2026 13:52:07 -0700
+Message-ID: <20260426205222.93895-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260426205222.93895-1-sj@kernel.org>
 References: <20260426205222.93895-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0896A18000B
-X-Stat-Signature: k5jeyfzit1ywadj51to43r99rwigfnhd
 X-Rspam-User: 
-X-HE-Tag: 1777236756-5186
-X-HE-Meta: U2FsdGVkX19x1m44v3JkN0b9NcvDvDGGVVxmBqq7h//hRY0FOs6J/JB5qOENXQqjcouOo9SzwR7RzzRSTKV4ZutQXb4zEP1uwZ+yWOetJ68JNgFF1crRO8yoDM9NH4X9tmoQwXG804hojRJxSA3fzdl/bo2MPa0vXNISJHRv/I5Dz7Zi+DsoNjtklr9MeuyEIivPdGDdApDqNvZNtiVU/vOCGR2XqTkASE/vCw5GNlDrLqC9urwMDc37kLHH7C0DqD3D/7HgehTvI+9FEl822CwCPjHRT3K3AxB9REQJmHvbd2d5N7QFVEW8KvALzw3h5BdZG1uVzn5YJXuT0nVVipUBiNCLP6o72QqiVcNtQrrWEejz4M63X1Qgl1uOUYKcM7R5Jq0otd7DWnTb2dA0WUt64m7vS548Y5+8gFeCidLCu1Q2ChWyk52JkiQaHzvR/u5XOchi4LtqIQfgCTglDfv2DquVfML9/kHAMGcqgO7GbrikGIDgaCeClgy9ctAxOFSMCmY/bD7ynZQPaYLOj+b0yeGxdxw3pJy4ZGi6CvT6kJ3+DDPPfGuig7m60oso85v7stXlzjt5Oq+aMFbjsr/qi5h12qwR1SJ5NvCrNYgaa7mYdUr0y9NKDa3QzF3BJcrEyS72mF8NPSYPApmQOvXhZi8Z8y623XWvcLhVKenmpGaH1SCosyOp0Zm5HIQn++H5plD6Afz/2D4OIms6TCgh/WRiouljGpH/sUa2WQGFJhe+5raRSXwrk133ahK1KwIX3E1H7BjeJh2ejjNZi7wA22cVkqcJzLD2eRu0/Wc0x11JDxc9ElQZwKOhpxxJQ+FQn+vnJmaoPzmD/+avfKNa3kOujsIieFh/V7N8VEU/KKiQ6dPUTcXLic5hEJNGPQ5udcbiNbqbHwjYf6/zFlnlKXp/ECKBr0XEFcsUNPjIq6CStolTr/B/5Tlij6SHAKU+SDuTbkxATGG/fzA
- CMcieHNb
- sIvaPle0rnbF57VrdYyQ6NgeyC4QizQ3h9BSv3rUH1g/kgwXsuAjn0eSQ92mYejndU3hcQ7iZGxyyqtlb/yPTW2ncDTl0H7hrHMy6zkNtLNMlCjKFL/wKWNz4i+2M2B5E9L1CAOuH37HyiVRDg8iguUZAul76KDyPeAzAvB/4M9hv7Qu50ua4K5QufVDQxwZS22G48zopLUmPacVjVy6PYm1e3R8gBqOoDaS8XXaMPOuzieE=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8102C40003
+X-Stat-Signature: qx9c6nbm356yasdgn9oxzcifmwip5ydc
+X-HE-Tag: 1777236757-886947
+X-HE-Meta: U2FsdGVkX1+jgoZpjfrO+ozKQqRw76kZ0MQkiGavwEOQTN55jQwGAVX5vTvdvIA2/DmlhYxMgsyZcr+ELig97gDGkZZpCfTjxOq3PGBECHaQsE6tpv7/rlDhfQkD3xgl2sS9E76vd8Elyo9afS9b3fzi34Twgd/ThGXMPcGmhAxrv+sabp/wm6a7bfhix5MkPksQBYBthTyWi//WkObmrNvKlUwM0O5ekBaYJZPXhE89vEFraadN74Y5BMeY3rmW2ORYH0nAUFeSW6opm2brQB8HVIFHSsFh5BE0Q0DMCQEeOJpNFFEEqa9h4EgQa98PGi6GrwuG/5sijavYQ0oQXjTq4x+HIuKiRK6CSiBvoiAdlx+EdPSa22wsRd/TIPVs0x3jzLoRnDSocRYWwTpNiG9YLur4qpnSv5CZJQk18x3NP4TATBKDGZeoo00C38fjwYvWO8dCgbTFwk+8r1k5XcYbRgPnKzRGrZ+BWMw/ly6JRnr3Lci9C1qRhVnxWQL5Iy6xokbfP9ShPi8kWjt0kzGDGBqIENtgHugtBMsqzdPnDlRFJpBttZCSAJSDtbqmbK3OR34o5Oj1RAH1b+rfm1SYJmT0McNfZohKpCvf0KvQpkWkMGdkGmBuR3BoIoFloc4PWRVMvuFtcloVlcw8WxvSG20NWXAziJ8wEnfno+TECP1oPWdJnaiU+NuHIu73DtdzqFGKwjnRL+Qe7MEiZ7ry1zyuRr/ogMYjl7kRaVLR85YbmnoLwRHV1UfTLn3jiluRvxQ5CEjEW/rkv88gqYyqhT/bRYrb6cnsMwWkqprveUg0R88Pd8RcND1pFD9FBKt1l5KhSn0++XDVMpzNZFMWa4TBUyb6kGJcB2SwBl+BVczwUx3l6EHFvxxOE2Vmz0MURlwDdGkHRm8jaDjYPzhbvNln/I/TeDzCv1g+tmUkEKkDMgi0pk5dNq9bJacENZA2kmZJcQVhNLhRVBo
+ naxyzmY1
+ +KFAfO7PvgvJWLs5foNkorr4AFqwwbdwp3CP+9tQwj0vGL++qjcpjLZ4RAeBDijmbtLBJgGyhArZR70O8bGzmNhqJW62NNhmx7xNzKUaUrYotZx7fahQNUrADHlGdmLoMQT6zGxGAmHv9F3v/doKaeR2ha30SzqEZ548DBzxK+m+0NeOuu+P/gUAs5IEIISpmj/r1ffkpUCOkLXtfUNj0GSHiK72uwRAz9pCIOyMORigoYf8t3FrOis8r3g/MQbQBsdxBArHE3KzotzQzS1ZaEU+jSkRAt6ULTUhV5qiJjSIRJxUB00zbQfaiaOCuRb/u2olCQhvJeQhtr0G4hBlEx6PQ4ZFxixzlx0bTph1Psx7OWGFu37ZA7qGcofZ6/fEFdm3x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,154 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update damon_commit_ctx() to commit installed data probes, too.
+Extend damon_operations struct with a new callback, namely apply_probe.
+The callback will be invoked for data attributes monitoring.  More
+specifically, the callback will apply damon_probe objects to each region
+and update the per-region per-probe counters for the number of
+encountered probe-positive samples.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 104 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 104 insertions(+)
+ include/linux/damon.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 170abba8fdf2a..2ab1d6dd47da4 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -129,11 +129,34 @@ void damon_add_filter(struct damon_probe *p, struct damon_filter *f)
- 	list_add_tail(&f->list, &p->filters);
- }
- 
-+static void damon_del_filter(struct damon_filter *f)
-+{
-+	list_del(&f->list);
-+}
-+
- static void damon_free_filter(struct damon_filter *f)
- {
- 	kfree(f);
- }
- 
-+static void damon_destroy_filter(struct damon_filter *f)
-+{
-+	damon_del_filter(f);
-+	damon_free_filter(f);
-+}
-+
-+static struct damon_filter *damon_nth_filter(int n, struct damon_probe *p)
-+{
-+	struct damon_filter *f;
-+	int i = 0;
-+
-+	damon_for_each_filter(f, p) {
-+		if (i++ == n)
-+			return f;
-+	}
-+	return NULL;
-+}
-+
- struct damon_probe *damon_new_probe(void)
- {
- 	struct damon_probe *p;
-@@ -171,6 +194,18 @@ static void damon_destroy_probe(struct damon_probe *p)
- 	damon_free_probe(p);
- }
- 
-+static struct damon_probe *damon_nth_probe(int n, struct damon_ctx *ctx)
-+{
-+	struct damon_probe *p;
-+	int i = 0;
-+
-+	damon_for_each_probe(p, ctx) {
-+		if (i++ == n)
-+			return p;
-+	}
-+	return NULL;
-+}
-+
- #ifdef CONFIG_DAMON_DEBUG_SANITY
- static void damon_verify_new_region(unsigned long start, unsigned long end)
- {
-@@ -1412,6 +1447,72 @@ static int damon_commit_targets(
- 	return 0;
- }
- 
-+static void damon_commit_filter(struct damon_filter *dst,
-+		struct damon_filter *src)
-+{
-+	dst->type = src->type;
-+	dst->matching = src->matching;
-+	dst->allow = src->allow;
-+}
-+
-+static int damon_commit_filters(struct damon_probe *dst,
-+		struct damon_probe *src)
-+{
-+	struct damon_filter *dst_filter, *next, *src_filter, *new_filter;
-+	int i = 0, j = 0;
-+
-+	damon_for_each_filter_safe(dst_filter, next, dst) {
-+		src_filter = damon_nth_filter(i++, src);
-+		if (src_filter)
-+			damon_commit_filter(dst_filter, src_filter);
-+		else
-+			damon_destroy_filter(dst_filter);
-+	}
-+
-+	damon_for_each_filter_safe(src_filter, next, src) {
-+		if (j++ < i)
-+			continue;
-+
-+		new_filter = damon_new_filter(src_filter->type,
-+				src_filter->matching, src_filter->allow);
-+		if (!new_filter)
-+			return -ENOMEM;
-+		damon_add_filter(dst, new_filter);
-+	}
-+	return 0;
-+}
-+
-+static int damon_commit_probes(struct damon_ctx *dst, struct damon_ctx *src)
-+{
-+	struct damon_probe *dst_probe, *next, *src_probe, *new_probe;
-+	int i = 0, j = 0, err;
-+
-+	damon_for_each_probe_safe(dst_probe, next, dst) {
-+		src_probe = damon_nth_probe(i++, src);
-+		if (src_probe) {
-+			err = damon_commit_filters(dst_probe, src_probe);
-+			if (err)
-+				return err;
-+		} else {
-+			damon_destroy_probe(dst_probe);
-+		}
-+	}
-+
-+	damon_for_each_probe_safe(src_probe, next, src) {
-+		if (j++ < i)
-+			continue;
-+
-+		new_probe = damon_new_probe();
-+		if (!new_probe)
-+			return -ENOMEM;
-+		damon_add_probe(dst, new_probe);
-+		err = damon_commit_filters(new_probe, src_probe);
-+		if (err)
-+			return err;
-+	}
-+	return 0;
-+}
-+
- /**
-  * damon_commit_ctx() - Commit parameters of a DAMON context to another.
-  * @dst:	The commit destination DAMON context.
-@@ -1453,6 +1554,9 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 	}
- 	dst->pause = src->pause;
- 	dst->ops = src->ops;
-+	err = damon_commit_probes(dst, src);
-+	if (err)
-+		return err;
- 	dst->addr_unit = src->addr_unit;
- 	dst->min_region_sz = src->min_region_sz;
- 
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 766d6daa52a3e..4266fcb121a33 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -632,6 +632,7 @@ enum damon_ops_id {
+  * @update:			Update operations-related data structures.
+  * @prepare_access_checks:	Prepare next access check of target regions.
+  * @check_accesses:		Check the accesses to target regions.
++ * @apply_probes:		Apply probes for each region.
+  * @get_scheme_score:		Get the score of a region for a scheme.
+  * @apply_scheme:		Apply a DAMON-based operation scheme.
+  * @target_valid:		Determine if the target is valid.
+@@ -675,6 +676,7 @@ struct damon_operations {
+ 	void (*update)(struct damon_ctx *context);
+ 	void (*prepare_access_checks)(struct damon_ctx *context);
+ 	unsigned int (*check_accesses)(struct damon_ctx *context);
++	void (*apply_probes)(struct damon_ctx *context);
+ 	int (*get_scheme_score)(struct damon_ctx *context,
+ 			struct damon_region *r, struct damos *scheme);
+ 	unsigned long (*apply_scheme)(struct damon_ctx *context,
 -- 
 2.47.3
 
