@@ -4,99 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1A29FF885D
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 23:16:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89193FF885D
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 23:43:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C420F6B0092; Sun, 26 Apr 2026 19:16:33 -0400 (EDT)
+	id 7AEDE6B0005; Sun, 26 Apr 2026 19:43:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B30386B0093; Sun, 26 Apr 2026 19:16:33 -0400 (EDT)
+	id 75FA26B0088; Sun, 26 Apr 2026 19:43:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A90E6B0096; Sun, 26 Apr 2026 19:16:33 -0400 (EDT)
+	id 64F756B008A; Sun, 26 Apr 2026 19:43:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 875F46B0093
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 19:16:33 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A9398C0A7
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 23:16:33 +0000 (UTC)
-X-FDA: 84702268266.22.73E01F4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B1BFB2000A
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 23:16:31 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dJkTEiD/";
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 51DCF6B0005
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 19:43:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A33E8C1A0C
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 23:43:19 +0000 (UTC)
+X-FDA: 84702335718.01.6B884CC
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BCEF740007
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 23:43:17 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cF64z5Z+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777246997; a=rsa-sha256;
+	cv=none;
+	b=6Z5+Wd1rqFfLF4D6ErIfuSDVZhAiX4Renvmg03Lzy/7SGIbcqpv+0MrKRyGz2xsBfdSOny
+	qldMqzWEnSg52Ug77XzR0M0f7aUaztDQ+3Hs3xF2slPL3bKKvDQ4jQ2yXvsUCu+0Q08e2G
+	HG3AQP/3k+GfLhboFx9vdj3abU++G0E=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cF64z5Z+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777245391;
+	s=arc-20220608; t=1777246997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Df5/uWUExlNepLRc/WmaWmPyXM6qwz9mJ9fgjrI3TMo=;
-	b=WJ6ejYy9ALDrfCEhpMKF98QGMiHozx8rbhxSVGMaI9oGWfLV1whBjvh8JVzA783y5Jgdmm
-	3U4Ggg0uef6p6OwjSg0tHCoDfu3BYl5a7HhxPI5pPRbNSJ+Bl+gSB5jgJGxeB9grrBKzN9
-	fzYB4GnI33MDdac4hCOSJ2RFx5073/w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777245391; a=rsa-sha256;
-	cv=none;
-	b=2DKShS2q+eCbuC2WxM1HKCtKnEm4Kfscdg01dcNzT5bgOUmFZtXkrn3+4wlaA5jEMScM+Y
-	vQDLm7aqFwQiq92KY4V9o2ruJGMXDo57DwJ7YXut5DFsDr77v0IQFd5j6cfIpfzkAB2Q+Z
-	b/HlyXecSXTxjjV356Ynamm2qMPZbJQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dJkTEiD/";
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3411860580;
-	Sun, 26 Apr 2026 23:16:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCA3C2BCC4;
-	Sun, 26 Apr 2026 23:16:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777245391;
-	bh=9YE+I9oyMLDWrax5J73tcs4Z0G5Qgydawv3W19tJHVs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJkTEiD/MB1C5su+HVsYIpFroT51qwmn2v7M/Z9FUzT1hf6SaG5EXQtvx8A5bxZ+w
-	 umc6cy9zI24KU3P3puw3N5yzNF8wRSTCHScWbK++HW6nj97+NY6VRpylIteWEGc9gY
-	 NPbEPHZwKhd7C7kIHoiPnYcByKv/K1v1eetZmlc+o+hKACbVdikK/o3sH8B9XEsugC
-	 NaeizqyLt18+2fruhFKreFRalXEVDPgj6vxNt+7gUEi/OuB1oeq1c5NJIhqk1E8hC8
-	 tjaU9d7065VycLvnog/XZBdklfwiPly8kXpfFCy0u76eX5crJn6sKNHEhDJ/9n0X5z
-	 9RfXBnjqhjwXA==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	SeongJae Park <sj@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 4/4] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
-Date: Sun, 26 Apr 2026 16:16:17 -0700
-Message-ID: <20260426231619.107231-5-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260426231619.107231-1-sj@kernel.org>
-References: <20260426231619.107231-1-sj@kernel.org>
+	bh=GMcuATLy/ginolpQIDJCxy12h57szRVGfrxwU4MqXGI=;
+	b=mwWzRBl8jrGZEySSYqI/wamQiL8yI0rbTDkWGua2SQFZ6f59wA6eWEcO/A8p+eA6l95DQ8
+	8dtaLcjKDkkjTu1AbCOopkgOZBFOoaknt04pqrMbLEzcaqf1Q3rb9KckmyaYi1qWajgTfB
+	YWvODqEe0qxEd0Rw27VC1l6wFekqUbM=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so6453904a91.0
+        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 16:43:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777246997; x=1777851797; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GMcuATLy/ginolpQIDJCxy12h57szRVGfrxwU4MqXGI=;
+        b=cF64z5Z+NyiCtU5LNGSyWc+9o2VdWUYo0JrFV917SxBR0uqRzng12IKh3ji+LkDU3Y
+         ck6FE45QjzwZMGXjso6cj2s30Cjaauq6CwKTI78TFjSfnrs5fhhDaIWHIJseLR58IuAR
+         OR34SAQ937303yQqKz6hmfCSvODgWhcNUTHlxclo0Uit9+iTDx8UbDj4QUz25qDbT1+b
+         xZtVroLHN2q2pe7s9aAc9OBmeA91i0tkFWaOmB29LJt8DqbmTNcEE2DYAPzDyptU9CZL
+         lZ8TlRSI78B4nI9SlzZ2mFu9DGAKbISpBlJVke4z1cdxF8WnOaM1ejLIb2PfGYhSZA0M
+         nl3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777246997; x=1777851797;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GMcuATLy/ginolpQIDJCxy12h57szRVGfrxwU4MqXGI=;
+        b=NzDdeqEFfMJ/O+Do0U7ZwyiqF7KYT/ghbONcVkKE/Dq+AyLBJHPIONXmSRM0XQsQvt
+         qGCEj4uL7Y8eFxh89xg5zAiIFrzxqWdQ6zJO/ENXH+aJ8wehX9ipYa7PI3+sppPhDHvY
+         UR9Y9yMNxCA5+/QbT/JDI6wmfhL5W94dFsVBzjtOKNk1Ofjob+iAwodXj3m2trL7x/5s
+         3GMGwz6kZQSLV6Kt+qXidRuv/Y1ndH6ndXbL2REpCgDR654PExJhCc0ZpvySLg1pMNWZ
+         OPcJhPcukzg2NH3CjW28dTUjMGVzH553U9FieknROhL1yBpq5limUz0JDoXnVV4uKTD+
+         snRg==
+X-Forwarded-Encrypted: i=1; AFNElJ/xc1+SvCkQJHoTpuevAC73BBfcQdbn+WvGo3lDaCW1hHEF2blQh/2tSxEEebMQwyXFSXtO8lyLjg==@kvack.org
+X-Gm-Message-State: AOJu0YweRvcgrlR+6mOynNbsCjmJjbyycN+KMJStiYrrTfPIVcZPtH2G
+	0I3uu5xoOW6oyzOAOnBg4jvRPK0M8pRDvm1l4Dj87TFTVmet/ysDBaPA
+X-Gm-Gg: AeBDievUb9srJXWrUfQMJNyUfCg4BdqNSxDtkU0WFAmRdcB1LGmetBKympdoCbzD+Ch
+	M5dRa/0rX9gX8zih0PSYxmoc1MwpOM35APpT3y0uisJA0/zJbudrLJPlDvTAAZOGm+b8YmLn9q4
+	KbHv0Uc/h6RpyImVF/9Jkuk/fMr0PHr7a1t5Vl2fKgOm3CibOzZdScRadCumZ+DtfmMGtCi5gq5
+	FAvA766LYoJuhMMd2rjEEaURSPV7Q1POFwyCp9sSDdHiTkVtC4BKgbdC/KmrZQjIUlBhGA90x7B
+	1yUmzPHWRQOfteHbe3spvHtlPsjMB4qNTSOmpjbaYlUZSSLSEzMrBiiW/yqO1EgM9Hja7pYG/Ee
+	cQ0OJ9lUlay8cootzqEh2YNzjB78gymrC+OVng7NlLzlgKTV+AfxdDvak45hfR1K8Oc4eYepEyu
+	8qSkZ5Yf2Fc2A8ATpOthalozWyCBVXXhw7
+X-Received: by 2002:a17:90b:5845:b0:35f:c46f:2b0 with SMTP id 98e67ed59e1d1-36140473f70mr42914414a91.14.1777246996503;
+        Sun, 26 Apr 2026 16:43:16 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-362b9a79176sm17396721a91.5.2026.04.26.16.43.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Apr 2026 16:43:15 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Jeff Layton <jlayton@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@infradead.org>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Chuck Lever <chuck.lever@oracle.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
+Subject: Re: [PATCH v3 2/4] mm: kick writeback flusher for IOCB_DONTCACHE with targeted dirty tracking
+In-Reply-To: <20260426-dontcache-v3-2-79eb37da9547@kernel.org>
+Date: Mon, 27 Apr 2026 04:01:15 +0530
+Message-ID: <qzo1s6a4.ritesh.list@gmail.com>
+References: <20260426-dontcache-v3-0-79eb37da9547@kernel.org> <20260426-dontcache-v3-2-79eb37da9547@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B1BFB2000A
-X-Stat-Signature: 8we983icjzende35eoktp88qbpnp9ynw
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: k3nje1qf8ggkckefbhbkfrgmmmm5s53a
 X-Rspam-User: 
-X-HE-Tag: 1777245391-217348
-X-HE-Meta: U2FsdGVkX1/XP985pj76JQZFQRGg7aTRwaGDhU/lzwUukm/KNAcLdgm9ODd+A2ZHpSjeMYOEZYCgQxWrr7DJZ/6/MJGPmuqy0dNGRGQOspb/qAY5yOIB0lLKt8qOJgLUlB3absVdjyZhZlrQkwEEVLdR8shQu+DOZJS8uO9YYxcUNxLPo1PzZxYpkm00ysVBUax4uqUlwszcxHbD+dmRUXxA1EpEDI6JSyP/TCgne3AUZsCkr07qMU2NHQQZ4Oqn+4YwG3J7xg4rRJxeicRjVQcgP2D+ZyXQ2pWy7luzRHtfjT85wz0ulNclUIom1HtspyRCJjq3WIK5iMXN+FiV9JsRYvkVjwxHmfSNOdIrXQbuDssZYw1TK7PxkeiCvuqpok986c/2iJJdsfL8PPKz7xfQxMEv+qTZ4YEDsPl1g0j+Dy95TpwWc12u8ZZnnP1ZqqP7wCzZrm9TZWMvTTUOWYouDswmpc0TyLxPAv7YI0F1V/UcVQm2ap8C5RO4Q07uIVzUAvlzLaRo0aqb+vUAAEQz1Cp4QQ/TzbXd5xPIUjj6/aVx/lCauhqYw/UYwmd/u+KVCnfZ0BJNLG25bzEjUPzEWsHz8RPItEcd8Y1ks+CPODENTfMD9kTWRFP+ZUE9lpK3k/BDrUt5xssAi/2YRt9PSZXpTxVNztGTDVPvbTUmYr1JGM+XcdDhpezrL6ZjfmubP0jlxSq4AssXKBCdkNqZI0S7lWogf1T98UvxSfhGqEzVDZ/d7Xm26Qqmp3EltLSOTwO2XiNt7TaILaLHGiIQh5ldYJ9M0bQUz0T0pidEFnUowQDF9Q+pQa9VrhDkwXDmowdtHqNbn8jv2mSDTzkHF61/8KHu1vwFy4VonudvFhKh5whKY18elYkjepGg83SNjknFBd5ZtiHD4JoV1/RS/7EhNInZuF5nh+AOhU4fgqVkNMufDgWkdDtOkNNo+1W15o7B06PY4kJzzJs
- TR9wYO0o
- g4CglXflc/N0AciIy1a+2Q1Qqw5tgvyTgUGeDfwrDq6STx1TZjt+eODO2rcxGf1SPwiWIcSbxyETg3m+kvo9WsdZ/OO82WBzSST/U3/9ZQfdf6iKh/VH+wfsURtQTQVF4yo/usoMiKpMjWepKgiiH4v+yNKGBJ43Yeda4MVWUBILZF3X94oV4nEXrhbyQaGr3XWTa6YeTUnyw5qdmrnsnf0CflJiwkcJ8gcGVg/RAJJ1uzrq08YAcc8C4lj1c07CxMzdgFG/ZbljLkCV57LVQk1tQnaWlS5cKm/6ystf5W9Ei4QMOxN0n4QXfhsEhYs9Bdj2voUNJHU9FQWzfYAUik/PVKg==
+X-Rspamd-Queue-Id: BCEF740007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777246997-838254
+X-HE-Meta: U2FsdGVkX1+Hf2J82tdpEYPdxtGY/KnNiB2+0TUKZXGya3xZ9YjB+jv9I2QN0DAvSI3Q7LCQGbl0rRtEx9+HbJaTNvJ5fLqmI7pOnaxXOv8Uwb+7UortNOqHGdFrMWkZRbihGXIylFFG693SqjbkRFa7l76YB6FQWB54cB5gJSkslAVR4NFMv6Gb18KJu5GPalyGyFEEHnVPP0xDQtNoZW1FLUJdFwY1ZGADxiH7/oOJK1kArriWnDCzsQuUGDaGG3f4Cgo9ZLNlZ/78d1sn/+6XSOs0wFBBFZirbJjd6dr/PJxpDjpXZ7gFAvpvRl8wNmcw3nVv8thCqMhgFKxfwgXMXwYnmX+0zv0wVS7beDHINqjSLKtHeL6sKRbji04Gv5okbdx4dxPSMeOiGnq3JNn8gqIloiixwfBQzWxSIfKDGkwdQVsm3A4JrvQx/JM33QCtaGkMv78m/XUklN1nmULVGzsqWq6gPiYvZ0hUmabPJeK4JPcOcnsxFcrQfACP0fk808jP/KMlJKke4Nech11gumf2P97aBZIGUpW8CLPbrEgmT7uSKOO+hJYHJdNlXSdL+lRRGEWH2QjuCus99twaDGzr459sCpV2X3XuxW4nvuYMYsarRGkq9KufFHLmXg4HfFRKt+QhYv/pxAirq4O+sXxAVNpILS+qb/UXisITotiu8IWGSyppRBmiAIQb1TtKmNUbGHZq0qkw3CTy3svsEFoDVxZNLptuNh19Jk85YUdtJ1PHjl2YWNrDrEZyg46aaKmFWjKiJvu1j/cVFxkN0mQk+OHdtv81Fn35x9jKKg9uWAOACj+qro44jvEzCv8swaPpkjuS3B9W2auYj4dJ2f7+wEqX1hl0cQFjx/bdzUWZ1DpsFHRMAyWDc96EzP/ReumLYx4WqmkOt0p760CjtIPGAS06v85+uaf5Zjw1ePMUShLacK4nxMKGK5tH8KHOOzk6Xr/Q8A5JWqk
+ Y7AhZw54
+ VGuV5/U7oGoSEmg7OJFl8Co1QhTzhgllPwaEB0eWlGebMjDXWdv2w28zZV2QbhHyRG8hKyGzaiTjKTE6qLMbmCTXuEPJQH1dEo4O6zcdVo17NLFW69JWrHAqnGXI25GJKkZzPekeu8QznTOWTm40Skd0nyk6BSJYRh1HJpuLl/PSFxlsz0kMZrJE+yOkofXgALlBULF4wbW01lpQV916UlenkYP6pAfRgNNjzrKHlsEXX4VZEpvbT2US6XTpEnw9+aRJSmWX/Z4i6UjVqzdjPFTmPJxLh+dTFsQ5RXg9F1iwryNZEWM4WHteGSge+Fx8m3T3j/F002AoTuA98DYJ5djP1uvwd633ToYiQf6uqkIhl2+ylf+v5x+D5Tuqn1mhjF/AOMaNjzg471cfmtulxqdVHnYCoZl/Wa5px/7ottWiZrVhrvaW+HUn1ysOhDCOeM64+rTn7Lf6Vun20MurmnTfMzyzhQCuAY63DgZ3jnf7uGC6Rx4yDEZHwGANHc5PTeTzM0SLtethVEZOey7RLvevmeEx0T6YNKRbe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,278 +129,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+Jeff Layton <jlayton@kernel.org> writes:
 
-This patch set introces a new action:  DAMOS_COLLAPSE.
+> The IOCB_DONTCACHE writeback path in generic_write_sync() calls
+> filemap_flush_range() on every write, submitting writeback inline in
+> the writer's context.  Perf lock contention profiling shows the
+> performance problem is not lock contention but the writeback submission
+> work itself =E2=80=94 walking the page tree and submitting I/O blocks the=
+ writer
+> for milliseconds, inflating p99.9 latency from 23ms (buffered) to 93ms
+> (dontcache).
+>
+> Replace the inline filemap_flush_range() call with a flusher kick that
+> drains dirty pages in the background.  This moves writeback submission
+> completely off the writer's hot path.
+>
+> To avoid flushing unrelated buffered dirty data, add a dedicated
+> WB_start_dontcache bit and wb_check_start_dontcache() handler that uses
+> the new NR_DONTCACHE_DIRTY counter to determine how many pages to write
+> back.  The flusher writes back that many pages from the oldest dirty
+> inodes (not restricted to dontcache-specific inodes). This helps
+> preserve I/O batching while limiting the scope of expedited writeback.
+>
 
-For DAMOS_HUGEPAGE and DAMOS_NOHUGEPAGE to work, khugepaged should be
-working, since it relies on hugepage_madvise to add a new slot. This
-slot should be picked up by khugepaged and eventually collapse (or
-not, if we are using DAMOS_NOHUGEPAGE) the pages. If THP is not
-enabled, khugepaged will not be working, and therefore no collapse
-will happen.
+Yup, so, we wakeup the writeback flusher, which will write those many
+"number" of dirty pages. Those dirty pages written by writeback, can be
+of any type though, can be DONTCACHE or normal (non-dontcache) dirty
+pages. IIUC, writeback doesn't distinguish between them while writing.
 
-DAMOS_COLLAPSE eventually calls madvise_collapse, which will collapse
-the address range synchronously. In cases where there is a large VMA
-(databases, for example), DAMOS_COLLAPSE allows us to collapse only
-the hot region, and not the entire VMA.
 
-This new action may be required to support autotuning with hugepage
-as a goal[1].
+IMO, what we could also include in the commit msg is why is this above
+approach taken? IIUC, that is because, by writing NR_DONTCACHE_DIRTY
+pages, it still reduces the page cache pressure and still reduces the
+amount of work that the reclaim has to do, even though some of those
+pages maybe non-dontcache pages, in case if there was a parallel
+buffered write in the system.
 
-=========
-Benchmarks:
-=========
 
-MySQL
-=====
+Also should the following change be documented somewhere? Like in Man
+page maybe? i.e.
+Earlier RWF_DONTCACHE writes made sure that those dirty pages are
+immediately submitted for writeback and completion would release those
+pages. But now, in certain cases when there is a mixed buffered write in
+the system, those dontcache dirty pages might be written back after a
+delay (whenever the next time writeback kicks in).
+However for RWF_DONTCACHE reads, it should not affect anything.
 
-Tests were performed in an ARM physical server with MariaDB 10.5 and
-sysbench. Read only benchmark was perform with gaussian row hitting,
-which follows a normal distribution.
+> Like WB_start_all, the WB_start_dontcache bit coalesces multiple
+> DONTCACHE writes into a single flusher wakeup without per-write
+> allocations.
+>
+> Also add WB_REASON_DONTCACHE as a new writeback reason for tracing
+> visibility, and target the correct cgroup writeback domain via
+> unlocked_inode_to_wb_begin().
+>
+> dontcache-bench results on dual-socket Xeon Gold 6138 (80 CPUs, 256 GB
+> RAM, Samsung MZ1LB1T9HALS 1.7 TB NVMe, local XFS, io_uring, file size
+> ~503 GB, compared to a v6.19-ish baseline):
+>
 
-T n, D h: THP set to never, DAMON action set to hugepage
-T m, D h: THP set to madvise, DAMON action set to hugepage
-T n, D c: THP set to never, DAMON action set to collapse
+Can we please also test parallel buffered writes and dontcache writes?=20
+Since this patch series definitely affects that.
 
-Memory consumption. Lower is better.
+BTW - adding these numbers in the commit msg itself is much helpful.
 
-+------------------+----------+----------+----------+
-|                  | T n, D h | T m, D h | T n, D c |
-+------------------+----------+----------+----------+
-| Total memory use | 2.13     | 2.20     | 2.20     |
-| Huge pages       | 0        | 1.3      | 1.27     |
-+------------------+----------+----------+----------+
+>   Single-client sequential write (MB/s):
+>                        baseline    patched     change
+>   buffered              1449.8     1440.1      -0.7%
+>   dontcache             1347.9     1461.5      +8.4%
+>   direct                1450.0     1440.1      -0.7%
+>
+>   Single-client sequential write latency (us):
+>                        baseline    patched     change
+>   dontcache p50         3031.0    10551.3    +248.1%
+>   dontcache p99        74973.2    21626.9     -71.2%
+>   dontcache p99.9      85459.0    23199.7     -72.9%
+>
+>   Single-client random write (MB/s):
+>                        baseline    patched     change
+>   dontcache              284.2      295.4      +3.9%
+>
+>   Single-client random write p99.9 latency (us):
+>                        baseline    patched     change
+>   dontcache             2277.4      872.4     -61.7%
+>
+>   Multi-writer aggregate throughput (MB/s):
 
-Performance in TPS (Transactions Per Second). Higher is better.
+Can you please help describe this test scenario if possible.. In above
+you mentioned we are writing file_size as 2x RAM_SIZE. But your
+multi-client tests says something else..
 
-T n, D h: 18225.58
-T m, D h 18252.93
-T n, D c: 18270.21
+local num_clients=3D4
++	mem_kb=3D$(awk '/MemTotal/ {print $2}' /proc/meminfo)
++	client_size=3D"$(( mem_kb / 1024 / num_clients ))M"
 
-Performance counter
+Also the multi-writer case is spawning parallel fio jobs, and then
+parsing and aggregating the bandwidth results instead of using fio to
+spawn multiple parallel threads... which is ok, but a bit wierd.
+Why not let fio do the aggregate bandwidth, and latency calculation
+instead?
 
-I got the number of L1 D/I TLB accesses and the number a D/I TLB
-accesses that triggered a page walk. I divided the second by the
-first to get the percentage of page walkes per TLB access. The
-lower the better.
+>                        baseline    patched     change
+>   buffered              1619.5     1611.2      -0.5%
+>   dontcache             1281.1     1629.4     +27.2%
+>   direct                1545.4     1609.4      +4.1%
+>
+>   Mixed-mode noisy neighbor (dontcache writer + buffered readers):
+>                        baseline    patched     change
+>   writer (MB/s)         1297.6     1471.1     +13.4%
+>   readers avg (MB/s)     855.0      462.4     -45.9%
+>
+> nfsd-io-bench results on same hardware (XFS on NVMe, NFSv3 via fio
+> NFS engine with libnfs, 1024 NFSD threads, pool_mode=3Dpernode,
+> file size ~502 GB, compared to v6.19-ish baseline):
+>
+>   Single-client sequential write (MB/s):
+>                        baseline    patched     change
+>   buffered              4844.2     4653.4      -3.9%
+>   dontcache             3028.3     3723.1     +22.9%
+>   direct                 957.6      987.8      +3.2%
+>
+>   Single-client sequential write p99.9 latency (us):
+>                        baseline    patched     change
+>   dontcache            759169.0   175112.2     -76.9%
+>
+>   Single-client random write (MB/s):
+>                        baseline    patched     change
+>   dontcache              590.0     1561.0    +164.6%
+>
+>   Multi-writer aggregate throughput (MB/s):
+>                        baseline    patched     change
+>   buffered              9636.3     9422.9      -2.2%
+>   dontcache             1894.9     9442.6    +398.3%
+>   direct                 809.6      975.1     +20.4%
+>
+>   Noisy neighbor (dontcache writer + random readers):
+>                        baseline    patched     change
+>   writer (MB/s)         1854.5     4063.6    +119.1%
+>   readers avg (MB/s)     131.2      101.6     -22.5%
+>
+> The NFS results show even larger improvements than the local benchmarks.
+> Multi-writer dontcache throughput improves nearly 5x, matching buffered
+> I/O. Dirty page footprint drops 85-95% in sequential workloads vs.
+> buffered.
+>
 
-+---------------+--------------+--------------+--------------+
-|               | T n, D h     | T m, D h     | T n, D c     |
-+---------------+--------------+--------------+--------------+
-| L1 DTLB       | 127248242753 | 125431020479 | 125327001821 |
-| L1 ITLB       | 80332558619  | 79346759071  | 79298139590  |
-| DTLB walk     | 75011087     | 52800418     | 55895794     |
-| ITLB walk     | 71577076     | 71505137     | 67262140     |
-| DTLB % misses | 0.058948623  | 0.042095183  | 0.044599961  |
-| ITLB % misses | 0.089100954  | 0.090117275  | 0.084821839  |
-+---------------+--------------+--------------+--------------+
+Nice :)
+Some explaination here of why 5x improvement with NFS compared to local
+filesystems please?
+(I am not much aware of NFS side, but a possible reasoning would help)
 
-Masim
-=====
+-ritesh
 
-I used masim with the "demo" configuration, but changing the times
-to 100 seconds for the initial phase and 50 seconds for the rest of
-the phases.
-
-Memory consumption:
-
-+------------------+----------+----------+----------+
-|                  | T n, D h | T m, D h | T n, D c |
-+------------------+----------+----------+----------+
-| Total memory use | 2.38 GB  | 2.36 GB  | 2.37 GB  |
-| Huge pages       | 0        | 190 MB   | 188 MB   |
-+------------------+----------+----------+----------+
-
-Performance:
-
-THP never, DAMOS_HUGEPAGE
-initial phase:                40,491 accesses/msec, 100001 msecs run
-low phase 0:                  39,658 accesses/msec, 50002 msecs run
-high phase 0:                 41,678 accesses/msec, 50000 msecs run
-low phase 1:                  39,625 accesses/msec, 50003 msecs run
-high phase 1:                 41,658 accesses/msec, 50002 msecs run
-low phase 2:                  39,642 accesses/msec, 50002 msecs run
-high phase 2:                 41,640 accesses/msec, 50001 msecs run
-
-THP madvise, DAMOS_HUGEPAGE
-initial phase:                51,977 accesses/msec, 100000 msecs run
-low phase 0:                  86,953 accesses/msec, 50000 msecs run
-high phase 0:                 94,812 accesses/msec, 50000 msecs run
-low phase 1:                 101,017 accesses/msec, 50000 msecs run
-high phase 1:                 94,841 accesses/msec, 50000 msecs run
-low phase 2:                 100,993 accesses/msec, 50000 msecs run
-high phase 2:                 94,791 accesses/msec, 50001 msecs run
-
-THP never, DAMOS_COLLAPSE
-initial phase:                93,678 accesses/msec, 100001 msecs run
-low phase 0:                 101,475 accesses/msec, 50000 msecs run
-high phase 0:                 98,589 accesses/msec, 50000 msecs run
-low phase 1:                 101,531 accesses/msec, 50001 msecs run
-high phase 1:                 98,506 accesses/msec, 50001 msecs run
-low phase 2:                 101,458 accesses/msec, 50001 msecs run
-high phase 2:                 98,555 accesses/msec, 50000 msecs run
-
-Memory consumption dynamic (how quickly collapses occur):
-
-It shows in seconds how many huge pages are allocated.
-
-+----+----------+----------+
-|    | T m, D h | T n, D c |
-+----+----------+----------+
-| 5  | 32       | 188      |
-| 10 | 48       | 188      |
-| 15 | 64       | 188      |
-| 20 | 96       | 188      |
-| 30 | 112      | 188      |
-| 35 | 144      | 188      |
-| 40 | 160      | 188      |
-| 45 | 190      | 188      |
-| 50 | 190      | 188      |
-| 55 | 190      | 188      |
-| 60 | 190      | 188      |
-+----+----------+----------+
-
-=========
-
-- We can see that DAMOS "hugepage" action works only when THP is set
-  to madvise. "collapse" action works even when THP is set to never.
-- Performance for "collapse" action is slightly lower than "hugepage"
-  action and THP madvise. This is due to the fact that collapases
-  occur synchronously. With "hugepage" they may occur during page
-  faults.
-- Memory consumption is slighly lower for "collapse" than "hugepage"
-  with THP madvise. This is due to the khugepage collapses all VMAs,
-  while "collapse" action only collapses the VMAs in the hot region.
-- There is an improvement in TLB utilization when collapse through
-  "hugepage" or "collapse" actions are triggered. The amount of
-  TLB misses is lower.
-- "collapse" action is performance synchronously, which means that
-  page collapses happen earlier and more rapidly. This can be
-  useful or not, depending on the scenario.
-- "hugepage" action may trigger a VMA split in some scenarios, since
-  it needs to change the flag of the VMA to THP enabled. This may
-  lead to additional overhead.
-
-Collapse action just adds a new option to chose the correct system
-balance.
-
-[1]: https://lore.kernel.org/damon/20260313000816.79933-1-sj@kernel.org/
-
-Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-Changes from v2:
-- v2: https://lore.kernel.org/20260409150128.1566835-1-gutierrez.asier@huawei-partners.com
-- Add Reviewed-by: from SJ
-- Wordsmith changelog
-- Rebase to latest mm-new
-Chagens from v1:
-- v1: https://lore.kernel.org/20260330145758.2115502-1-gutierrez.asier@huawei-partners.com/
-- Added masim benchmark
-- Added performance benchmark for MariaDB
-Changes from RFC v2:
-- RFC v2: https://lore.kernel.org/20260323145646.4165053-1-gutierrez.asier@huawei-partners.com/
-- Fixed a missing comma in the selftest python stript
-- Added performance benchmarks
-Changes from RFC:
-- RFC: https://lore.kernel.org/20260316183805.2090297-1-gutierrez.asier@huawei-partners.com
-- Added benchmarks
-- Added damos_filter_type documentation for new action to fix kernel-doc
-
- Documentation/mm/damon/design.rst      |  4 ++++
- include/linux/damon.h                  |  2 ++
- mm/damon/sysfs-schemes.c               |  4 ++++
- mm/damon/vaddr.c                       |  3 +++
- tools/testing/selftests/damon/sysfs.py | 11 ++++++-----
- 5 files changed, 19 insertions(+), 5 deletions(-)
-
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index afc7d52bda2f7..365e068a8dbe4 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -474,6 +474,10 @@ that supports each action are as below.
-    Supported by ``vaddr`` and ``fvaddr`` operations set. When
-    TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
-    fail.
-+ - ``collapse``: Call ``madvise()`` for the region with ``MADV_COLLAPSE``.
-+   Supported by ``vaddr`` and ``fvaddr`` operations set. When
-+   TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
-+   fail.
-  - ``lru_prio``: Prioritize the region on its LRU lists.
-    Supported by ``paddr`` operations set.
-  - ``lru_deprio``: Deprioritize the region on its LRU lists.
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index f2cdb7c3f5e6c..ac71b845bb6e8 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -121,6 +121,7 @@ struct damon_target {
-  * @DAMOS_PAGEOUT:	Reclaim the region.
-  * @DAMOS_HUGEPAGE:	Call ``madvise()`` for the region with MADV_HUGEPAGE.
-  * @DAMOS_NOHUGEPAGE:	Call ``madvise()`` for the region with MADV_NOHUGEPAGE.
-+ * @DAMOS_COLLAPSE:	Call ``madvise()`` for the region with MADV_COLLAPSE.
-  * @DAMOS_LRU_PRIO:	Prioritize the region on its LRU lists.
-  * @DAMOS_LRU_DEPRIO:	Deprioritize the region on its LRU lists.
-  * @DAMOS_MIGRATE_HOT:  Migrate the regions prioritizing warmer regions.
-@@ -140,6 +141,7 @@ enum damos_action {
- 	DAMOS_PAGEOUT,
- 	DAMOS_HUGEPAGE,
- 	DAMOS_NOHUGEPAGE,
-+	DAMOS_COLLAPSE,
- 	DAMOS_LRU_PRIO,
- 	DAMOS_LRU_DEPRIO,
- 	DAMOS_MIGRATE_HOT,
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 04746cbb33272..c14a564dd8218 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2061,6 +2061,10 @@ static struct damos_sysfs_action_name damos_sysfs_action_names[] = {
- 		.action = DAMOS_NOHUGEPAGE,
- 		.name = "nohugepage",
- 	},
-+	{
-+		.action = DAMOS_COLLAPSE,
-+		.name = "collapse",
-+	},
- 	{
- 		.action = DAMOS_LRU_PRIO,
- 		.name = "lru_prio",
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index b069dbc7e3d25..dd5f2d7027ac4 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -903,6 +903,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
- 	case DAMOS_NOHUGEPAGE:
- 		madv_action = MADV_NOHUGEPAGE;
- 		break;
-+	case DAMOS_COLLAPSE:
-+		madv_action = MADV_COLLAPSE;
-+		break;
- 	case DAMOS_MIGRATE_HOT:
- 	case DAMOS_MIGRATE_COLD:
- 		return damos_va_migrate(t, r, scheme, sz_filter_passed);
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 3aa5c91548a53..72f53180c6a88 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -123,11 +123,12 @@ def assert_scheme_committed(scheme, dump):
-             'pageout': 2,
-             'hugepage': 3,
-             'nohugeapge': 4,
--            'lru_prio': 5,
--            'lru_deprio': 6,
--            'migrate_hot': 7,
--            'migrate_cold': 8,
--            'stat': 9,
-+            'collapse': 5,
-+            'lru_prio': 6,
-+            'lru_deprio': 7,
-+            'migrate_hot': 8,
-+            'migrate_cold': 9,
-+            'stat': 10,
-             }
-     assert_true(dump['action'] == action_val[scheme.action], 'action', dump)
-     assert_true(dump['apply_interval_us'] == scheme. apply_interval_us,
--- 
-2.47.3
 
