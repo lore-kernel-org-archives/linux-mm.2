@@ -4,91 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBABFF885D
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 11:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED994FF885D
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 11:56:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62CAB6B008A; Sun, 26 Apr 2026 07:09:30 -0400 (EDT)
+	id A1CE16B0005; Sun, 26 Apr 2026 07:56:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DCF86B008C; Sun, 26 Apr 2026 07:09:30 -0400 (EDT)
+	id 9A6376B008A; Sun, 26 Apr 2026 07:56:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51A1E6B0092; Sun, 26 Apr 2026 07:09:30 -0400 (EDT)
+	id 86E176B008C; Sun, 26 Apr 2026 07:56:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4265C6B008A
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 07:09:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DBBF91B8532
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 11:09:29 +0000 (UTC)
-X-FDA: 84700436058.06.F6739D6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FF4E6B0005
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 07:56:43 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01A5D120572
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 11:56:42 +0000 (UTC)
+X-FDA: 84700555086.22.ADA8977
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 19F1610000A
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 11:09:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LBhlIXrl;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0A87AA0002
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 11:56:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pkx2DBIS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777201768;
+	s=arc-20220608; t=1777204601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7wHPK2qiAWP541LNIZUE2iRjUCI+lxAiteZ8VOWogGs=;
-	b=tGfidd2kPSmocFp0c9JdmprOt2k5lhOWqhc69C0YdlOmTPmmW4dXg0FcaqXvx1f1TNCAsO
-	dwH2aaTNv6stFFGVnCdCPLTuPFvdd5I4FoXGdgZeBgXe2MxMu/iRLDA8iiHIB8yfj0uHUK
-	XJi+u5H+9tOnhKCyL8qHV67mO/VINGs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777201768; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=z8bJH0seTnZd88bPok9dS2KdzStFUauwH8mSDYyzRLY=;
+	b=TOQUitYIOPQgcjAwHFOLZsRNdXhALfLToQMQP0DdJcq+g+lmQxIEg1uN6WUPsHYb3ej6Dt
+	e4kYjoaIcz8EY5vTblEXi5oqNuNyIt3scMUEJFC+zajAvdexPzGNxDqi+i5nqNm+1ifgin
+	r1RsoaiaYhh5k1AH89IZSzQkieVYuZo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777204601; a=rsa-sha256;
 	cv=none;
-	b=FuF/gUSj7lKqUYBJM/G7byRzAXGyiSKnzRTnVFYZ+/EuUDG1X1qRvdr0ha0digqQIa56hM
-	ZkL5AZXlg6yhNcnVDg81DnqbWXY8sJQEWElOtkQgJazRQg1iBMpWO2X6UlFp5wGvonOOTM
-	GxRHRepO8dRMQcUHfyQB+CsYMqldikw=
+	b=582RaFDYzMVDFS2Om4hd6UKKRb7KS1N+UJsh0AzlRe1VbtXPYPzlEVqoSe7ekLh4Wg4j2M
+	wXqp3s6ubi0XU9X+DC+3+Ha+/n9BvlGgCEtdATlJl7yHtbtL8LzQ+q9HaLq5Xi9vySOgAE
+	1V+yfXeP0Brn0cSbB6sG5+Qk9X6eYEE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LBhlIXrl;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pkx2DBIS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E739041929;
-	Sun, 26 Apr 2026 11:09:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4F2C2BCAF;
-	Sun, 26 Apr 2026 11:09:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777201766;
-	bh=pbIEORir0Ac/K2INhsvTrLmqOd8GXcfOwlVr+xdk80c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LBhlIXrlz7FDITo83KiESVr8Z6pZkiZQQn1pWmi8jVCmJwkpwXlYYhaje6yhNNl7N
-	 HM1B4KVo/xcTuEyTdoPQYDa6hTU4m5djY4XkWF8j+0dgHedNIlm7FUEEEVO25q40Gt
-	 N8GjHLYgmEK0ujoWeJLH4e5KZmGAu9U1ZkQTcmCw=
-Date: Sun, 26 Apr 2026 04:09:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Min-Hsun Chang <chmh0624@gmail.com>, arnd@arndb.de, msalter@redhat.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] asm-generic: replace ________addr with
- __UNIQUE_ID(addr)
-Message-Id: <20260426040925.b25cb2a32680bfe884431abf@linux-foundation.org>
-In-Reply-To: <20260426114938.4dff28c8@pumpkin>
-References: <20260307092119.20733-1-chmh0624@gmail.com>
-	<20260322144032.7353997c@pumpkin>
-	<20260425135737.e79c4b546d22b5ebfd96c0b5@linux-foundation.org>
-	<20260425230134.5449498a@pumpkin>
-	<20260425151240.2a46e3a8640fde3902461d41@linux-foundation.org>
-	<20260426114938.4dff28c8@pumpkin>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	by sea.source.kernel.org (Postfix) with ESMTP id B012F44329;
+	Sun, 26 Apr 2026 11:56:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1221C2BCAF;
+	Sun, 26 Apr 2026 11:56:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777204599;
+	bh=bl3sJbVGz9TiGz2FlHfKChu0f4MKe8tz0T9GJRS1TBM=;
+	h=From:Subject:Date:To:Cc:From;
+	b=pkx2DBISHsaExlC7SN08Iq4EDDICnkycUtGnKY5GeLzk8p55eo/XF2fE6FkPsC9iy
+	 2YSYKU9VVJUgVRZjhSzRouPan1R3RiuLGhnkPZIY5CGz0Do2h7RBJ77VAxOmMegNc1
+	 YalwLgs8OOCjenA471qkhEhY15v5aFa2w/dQqXu15/MjQh3fr0lFyBwAJmnn379+JW
+	 fYKUzigcRAIkhiWB+Vwy8uM/uJgC9Vtro3SuDh4rpsYdaRsRipqo7RyILqk4EPuPG3
+	 AkP7YphApRU1F7aimgj7btwPdQFfB2czHxsU6kC9emKkUVe4ap+seJ6nGG/oMIXBuy
+	 +Qd5XJzc5ae4Q==
+From: Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH v3 0/4] mm: improve write performance with RWF_DONTCACHE
+Date: Sun, 26 Apr 2026 07:56:06 -0400
+Message-Id: <20260426-dontcache-v3-0-79eb37da9547@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 19F1610000A
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22MQQ6DIBQFr2L+ujSAKLar3qPpAuGjpA0YMKSN8
+ e5FVzbpcl7ezAIJo8ME12qBiNklF3yB+lSBHpUfkDhTGDjlLRWUERP8rJUekTQdY2iNRGVrKP8
+ ponXvvXV/FB5dmkP87OnMtvVfJTNCCbONFK1VvZDq9sTo8XUOcYAtk/lR7Y4qL+pFdAY1Q9m0/
+ Y+6rusXm5JfjN4AAAA=
+X-Change-ID: 20260401-dontcache-5811efd7eaf3
+To: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+ Ritesh Harjani <ritesh.list@gmail.com>, 
+ Christoph Hellwig <hch@infradead.org>, Kairui Song <kasong@tencent.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Chuck Lever <chuck.lever@oracle.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
+ linux-trace-kernel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3511; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=bl3sJbVGz9TiGz2FlHfKChu0f4MKe8tz0T9GJRS1TBM=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBp7f1qg1sKuyaOZKrn3qCqDk/uRJ3vfoQhHnBVM
+ EQ/kc3F7cyJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCae39agAKCRAADmhBGVaC
+ FR0qEAC/tsTXxpbW9lpyK7ZFDMkpNcA2PMA93Bpgv7oLQI/LKg8aybErtMbgtFZ7vAElKL7BNoq
+ cRmUU4BGOS5fBjpJL/ZmDCeAoQveWsDIncrUDoSshvPREODKr3urQywMntRtYzfr9Iq371l25EL
+ KAXHyQmxQN2f3R4iVdyeuCm6ETxzFMdk1+zROdadqogg0GQ3uaZJb3YrxchmHrdXj3H9tSHZu5q
+ 27GD7c8hldvxxPWJyEk5G8mBcLj60cmO/muMgsIqliLi+us8QK7f/PjIV9xUvq4/EV2DZpd2coH
+ hCiqe8mNgKw6er1ciK0t9Pn/2oSUZsEKriuXoLxdw64+cFlbHlwS5HKUJzIpecg+HXxoyGsZtEJ
+ l8BT5J2UDXOtx+jN2pjMW6ZSXQ3Arw/w2jUZklH8Kt1WjMqriRhFAzoHf6RNftue2S8Z6c9vNT3
+ MurJjnKgbO6fkZSdujKePC0mznbztbgXlYpys0xEbheGklBOzZTb/O75WD16J//Xc/CWF8FfrXq
+ VqUv3/wJUoSJD+K3dZuWa1l82VnUbdePH9ISDV70KkPTEW6Nta5msHhN1rX45V9mCK0AcbmCphX
+ tL2m7jvCf955HCF/Cp3zKczyVqnygTlch0z9rm0X83mBlpBIEWLte6ABk2wVjND3H28amFEPRpa
+ 92/1Z8RCTzeb00w==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0A87AA0002
+X-Stat-Signature: mdwm1qtqjb4nwtkhis7xfzh5fiipoxqo
 X-Rspam-User: 
-X-Stat-Signature: h8jjh1fsdmr5o4fw5pwgj7516h7co9t6
-X-HE-Tag: 1777201767-244640
-X-HE-Meta: U2FsdGVkX19yfGosy1kN3RYfzqB1FOJaf5diqYet/HtGyNnhwjqbVpp98rMgcnRM4WhnuD+j6TMeGEt9+PIdBBmRm0iqYP9R5PB89XM2Mfcj3eUhqK4wmQZi4NxoMgHcpBque7x1Da1qw5sSrOVn4t40d9+wfZ9t8QjTI6P51/aNHb9AwC/AtTlnXLD0Jj84M48vBLzhtd7EL8XbU7UPK8zeUlUwAYb8DYlSF4PJBpgC5KscEj+DU0lLg9V5SQgKq22DxZtDvhl503LTQjpiP1lHa+6MwCQDl5xzDEvDJIlrdFIaI2TFelx4NgDj0rQPNHWm8nuXYOUPZDVPoeWeyRCnV00orP9eqoRUiCmJq9v08Tmzi/YSf4jiibp0JPokNmTl2ojUTLyCduC7ZYznUl5AxFdp7ibSXFYiEcPFn2D2Xxrheasgn9BC6Ap7EaRKBobUNuZWGISsKBrp9Ywn7lIgiHgUOXMKh+t8Ns5OOJpt4n+YsNq3vEyLx6vDyd/C7sEHQP9URLUdV9Qfzzi3/UPvdhYMDrIN5BWDGd5EzqtrBN6xPar1qpCHDWh/Rgjvfi6VnKIDzCInQXbEhmJC994wgVRfeZWIPFDu5KMfcV2sfELUFWTQL8OfkqHklytJAlI5C+/AEmxp6fc//8SB35iCb24/b1Fak2ivTZ8nIHJIq9gzrae0EziJKGa53yzni6jl2vvtQvXUYV9CBLVWr13aEbNzdoBCRCiDcctkAV/hii9FMWKf+r9WgH8GZF7+bljUcUGiJriudSgzwgU2eAbtuj+eDJQBr9hQ0DnUurermNiPNimEOYSPQs+UV2MchZbJoer+gbxyuWB0t0ePUDMSI3P5qQTfcKoixOZT2JjOeBw5Im3yJrBiAskWi5jRp1JXTXO46dkY6uhvcR6pnf/drkZuBS5g/pF26YIoAx6L5lkfMPOHJQtm0h+7GA7wrkfolGIq2VNZDuGoATm
- IBwnlgzD
- A58JdczC1IE6ovlqX8FhzwH53EOQYjIigMjgQYN+7p0utLYiPvoRhQujNbad1fzoQV2ZG6+f7u5GiaMToMlL3DqjO0E5nSiqCyVQabUEAfbYwwR1ygxErs428ScgNeGrrIWXhP5sB1Q+/QhayyvWlEakkqDoLmSjZ8JJJ6L8IXjAOiizTbtOtdMIL0fpDEmYKXCydAzAEzHy++hN1X/E0WrxKk1jJwfDfcWNOgCuww9UKiL+IEPH95bzHQ/2A9lNtHI4XWaBtPBAxvEHEskiE57r7Kem4oq/u66XlsKdHRAPB56cFKTsANsl4bK12byy++cZ/z96AdjOZ5eEmnQ+cueB0IRnOI2BKkmhh9j8X9FXrgYRe4i+BxX9lA3GTPQg1BkhE5jskZfMc315kDJr+oQWVYuL6RhJDnxsaEdmgTK1Z6x+fjheNFUt1kbd7s0RpwKkq
+X-HE-Tag: 1777204600-48003
+X-HE-Meta: U2FsdGVkX1/3aVZ4gJP8tTcEfduWz4OxZ/hEek3189gByFlQSFBJodeDxZcTwGRzpgDivNVip4PW/Tps+NQLbCO16R7Pe5zcrGJM6J/e4D118X9pT+MNE8YThYNA9oX4Pd3fwXbGfUhTj2gbrionKE8Krx9ayb+mPELVHjCvOog3FxrhVN/dorRpGRg7ANUDMI59TR/HGoFE8RIoRhNUoEbaCuj4oJ/3Rs89kmr+TVU/wG2lAJVSZvvgcF5CRF1I7pcYZKNPuh5diiD3WDHGTS3fNQvGVSJFIubI4QQQH0ES6iwXlk8jQtfw9+4+erzdV7tyhUyBFJkNLcDcGO8Pz/vUnTZCDUkBhb3BN0Mp3ODKQJ+MZif8VASKwvnzvHDuLYEXUD/YMZR+IfHuKHu6UPoF7kPODe6ontDgtRLjZ4NtZTi5sn/XPujq+u8lyhl5l9qt9KFXEN+pd8hx5HGIdAjIQdelYo6AvF8NAOrCqcyaFP0Yc8nF/O0FpMh4m8CDv8HmbYJ1mhPy4kbQaTkKfkBmWWBJENxKaZ4pT++UmZfQALcBf8oQv7Il2tT7FNjsq9kPkgS3SOtTOAlLxBId8tiSty4wAI0AlUBig8n6UCU3oi4sw2fNqydW4EQmLqEblc5uWnqkDJpUTqhd3aKO7vKOIkgA7aECe75Y5JZpgjYthQmY75FP99qRrQxx0pWIlyyMQU2b8PcIPxx7VfkMdL95HvngzzRmTtY5b75XvnJgm6V5N4M5ffH5p2Uz5kVdg6hRtBLdTsAbajaTl8pvohDB1MD9K8CyMO1QvX9GCbZGOTL9Q3e3Fyjv19g1EzbApHp48VWE6lM6fUaoFy4bC09p4dNe5+pNT6EFI0/dmVfeoArYr/+QWBNYvnAwulNqyewO/IKCNWfTsYErN1SbhSVMq5B28q68rPg7IdKLb8oQdi3gg8BqIt9j+KqDxnjyS1pZpKhtdz8pkPdIRmQ
+ MyEQN3dZ
+ soR80HRHFRS4NlDvpBVzfgW4a19GJ0IJVVhbO1/wHTInvDhDvXG4Wq7sBtB63HxVrQiRfGnIh4UTbdMVzOb5EP+FG6NOePMhhr8LR9m9BYC0xkU6RMZuusfuEMLktLzrRWpFCh3elDJ0matcrs3vD1a9n3nEFU/1/oqRbz/pHBbq2HX35Pzsy84rznmukhkJ4n7LaH2BsBDoxfcui4vP+DUDBZnFwysvhn007XAsw9S/PWlsDD1Vus40htdJBOvcug3CXZSTQGJKmhBQYEVB+MVDorZ20EImaneMtqHd/Q28RcA5NspxO5EtKlA05l/flQaLFTuH4ZJrhX7k0xE9wAmCesDWPhtZ9eOuA7FMKqfc2QUM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,69 +128,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 26 Apr 2026 11:49:38 +0100 David Laight <david.laight.linux@gmail.com> wrote:
+This patch series attempts to improve write performance with
+RWF_DONTCACHE. The main justification and benchmarks for the series are
+in patch #2.
 
-> On Sat, 25 Apr 2026 15:12:40 -0700
-> Andrew Morton <akpm@linux-foundation.org> wrote:
-> 
-> > On Sat, 25 Apr 2026 23:01:34 +0100 David Laight <david.laight.linux@gmail.com> wrote:
-> > 
-> > > > > The real problem with this define is that both idx and phys are
-> > > > > expanded twice.    
-> > > > 
-> > > > The real problem with this define is that it's a define.  Why oh why do
-> > > > we keep doing this to ourselves?  
-> > > 
-> > > Sometimes #defines generate better code because they are expanded earlier,
-> > > and sometimes you want type-agnostic 'functions'.
-> > > But neither is true here.
-> > > 
-> > > But I think I'd go for 'always_inline'.
-> > > Sometimes the compilers make silly decisions.  
-> > 
-> > Gee, if `static inline' misbehaves then we have big problems!
-> > 
-> > What's special about the fixmap code anyway?  It's not exactly
-> > fastpath.  Perhaps this stuff can simply be uninlined.
-> 
-> Some of the inlines are trivial - just adding an extra parameter.
-> But this set would be simpler if the last function
-> (__native_set_fixmap() for x86) returned (address & ~PAGE_MASK)
+This version implements a scheme that Jan Kara and Christoph Hellwig
+suggested during review of the earlier series: after a DONTCACHE write,
+kick the flusher thread to do an amount of writeback proportional to the
+amount written, but don't target any particular inode or pages when
+doing writeback.
 
-I don't understand this?
+The second patch in the series has a summary of the benchmark results.
+This seems to work as well or better than the earlier approaches.
 
-> > 
-> > Pet peeves:
-> > 
-> > We use too many macros.
-> 
-> Indeed, I get fed up of looking things up to find they are trivial.
-> Some of the 'helpers' do nothing for core readability.
-> Even things like BIT() can have unexpected consequences.
+The benchmarks I used are in the last two patches. I'm not sure if we
+want to merge those into the tree as they are (mostly) AI slop. There
+is probably a better tool for this out there.
 
-Sure.
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+Changes in v3:
+- Track dirty DONTCACHE pages in the VM
+- Have flusher write back a proportional number of pages after DONTCACHE write
+- Link to v2: https://lore.kernel.org/r/20260408-dontcache-v2-0-948dec1e756b@kernel.org
 
-> Not to say I haven't got the pre-processor to do odd things in the past.
-> But it is usually trying to avoid having to keep multiple definitions
-> aligned with each other.
-> 
-> > We inline too much stuff.
-> 
-> True - don't look at what strlcpy() can generate.
-> The inline code should just get the constants from the compiler and
-> then call the appropriate function.
+Changes in v2:
+- kick flusher thread instead of initiating writeback inline
+- add mechanism to run 'perf lock' around the testcases
+- Link to v1: https://lore.kernel.org/r/20260401-dontcache-v1-0-1f5746fab47a@kernel.org
 
-I can't actually find an in-kernel strlcpy()?
+---
+Jeff Layton (4):
+      mm: add NR_DONTCACHE_DIRTY node page counter
+      mm: kick writeback flusher for IOCB_DONTCACHE with targeted dirty tracking
+      testing: add nfsd-io-bench NFS server benchmark suite
+      testing: add dontcache-bench local filesystem benchmark suite
 
-> As does the compiler.
-> pixpaper_panel_hw_init() repeatedly calls two static functions that
-> contain sleeps. They all get inlined bloating the code size and
-> exploding the stack when clang separately allocates all the buffers
-> in the called functions.
+ fs/fs-writeback.c                                  |  60 +++
+ include/linux/backing-dev-defs.h                   |   2 +
+ include/linux/fs.h                                 |   6 +-
+ include/linux/mmzone.h                             |   1 +
+ include/trace/events/writeback.h                   |   3 +-
+ mm/filemap.c                                       |   6 +-
+ mm/page-writeback.c                                |   7 +
+ mm/vmstat.c                                        |   1 +
+ .../dontcache-bench/fio-jobs/lat-reader.fio        |  12 +
+ .../dontcache-bench/fio-jobs/multi-write.fio       |   9 +
+ .../dontcache-bench/fio-jobs/noisy-writer.fio      |  12 +
+ .../testing/dontcache-bench/fio-jobs/rand-read.fio |  13 +
+ .../dontcache-bench/fio-jobs/rand-write.fio        |  13 +
+ .../testing/dontcache-bench/fio-jobs/seq-read.fio  |  13 +
+ .../testing/dontcache-bench/fio-jobs/seq-write.fio |  13 +
+ .../dontcache-bench/scripts/parse-results.sh       | 238 +++++++++
+ .../dontcache-bench/scripts/run-benchmarks.sh      | 562 ++++++++++++++++++++
+ .../testing/nfsd-io-bench/fio-jobs/lat-reader.fio  |  15 +
+ .../testing/nfsd-io-bench/fio-jobs/multi-write.fio |  14 +
+ .../nfsd-io-bench/fio-jobs/noisy-writer.fio        |  14 +
+ tools/testing/nfsd-io-bench/fio-jobs/rand-read.fio |  15 +
+ .../testing/nfsd-io-bench/fio-jobs/rand-write.fio  |  15 +
+ tools/testing/nfsd-io-bench/fio-jobs/seq-read.fio  |  14 +
+ tools/testing/nfsd-io-bench/fio-jobs/seq-write.fio |  14 +
+ .../testing/nfsd-io-bench/scripts/parse-results.sh | 238 +++++++++
+ .../nfsd-io-bench/scripts/run-benchmarks.sh        | 591 +++++++++++++++++++++
+ .../testing/nfsd-io-bench/scripts/setup-server.sh  |  94 ++++
+ 27 files changed, 1989 insertions(+), 6 deletions(-)
+---
+base-commit: 27d128c1cff64c3b8012cc56dd5a1391bb4f1821
+change-id: 20260401-dontcache-5811efd7eaf3
 
-Poor thing.  I guess compiler developers are more focused on userspace
-code and aren't especially concerned about kernel's particular
-requirements.  And that's understandable - it's down to us to persuade
-them to add options to permit us to tune the compiler behavior.
+Best regards,
+-- 
+Jeff Layton <jlayton@kernel.org>
 
 
