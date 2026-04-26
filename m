@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAA92FF885E
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 08:17:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57201FF885E
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 08:35:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E35C6B0005; Sun, 26 Apr 2026 04:17:28 -0400 (EDT)
+	id 542466B0005; Sun, 26 Apr 2026 04:35:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 794B26B008A; Sun, 26 Apr 2026 04:17:28 -0400 (EDT)
+	id 4F38D6B008A; Sun, 26 Apr 2026 04:35:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AAD36B008C; Sun, 26 Apr 2026 04:17:28 -0400 (EDT)
+	id 4096A6B008C; Sun, 26 Apr 2026 04:35:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 589B86B0005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 04:17:28 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01B8A1B8234
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:17:27 +0000 (UTC)
-X-FDA: 84700002576.05.6E53479
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4E0A420005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:17:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of 3FcrtaQkbALYouvgWhhanWlleZ.ckkchaqoanYkjpajp.Yki@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3FcrtaQkbALYouvgWhhanWlleZ.ckkchaqoanYkjpajp.Yki@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B5756B0005
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 04:35:06 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F068C1BFE
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:35:05 +0000 (UTC)
+X-FDA: 84700046970.30.12E01DB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 90E93140004
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:35:03 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YDMFyZZ/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777191446;
+	s=arc-20220608; t=1777192503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=abpl5VjWxNF871HT77D7jiqQ5tPgHx4siodqZ1Cbc4o=;
-	b=gm3Lw/rj2rl+IEQ1dyOC+QzwDk578c/an0Yx0kDCpbAF5751NAB7TrO0TlETaQF9Fy0wKp
-	rrbjWM5zEYl0wNkhHjZ9u9B2AuROsWpmL6zMmyQX6Eae/PxdwAdWyxknq1ioDd0xTdXvxH
-	jKpBln3ZTRxpvGC2oeXbUFXNe2Fj2ug=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of 3FcrtaQkbALYouvgWhhanWlleZ.ckkchaqoanYkjpajp.Yki@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3FcrtaQkbALYouvgWhhanWlleZ.ckkchaqoanYkjpajp.Yki@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777191446; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hsmcK1ZqcBUFaWtRiDoLbdAS5LLO3iYDMpiHJ4ojWz8=;
+	b=DVHqzq1SsA8mW/BnAOHakqppdYJ677ZxnUHoIpu+rCMRTbzLZFZLbXmjKSIeUC99HwxEhW
+	ln+fqLZ25xOB+QsJPUCPY8A1Q5ty38CHDoLw5MrmkTM9dLuCfFvl/4FpoHLzR/2DAD/mi/
+	Enaw0lR7WurMcHivpCTszNltmjij5fA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777192503; a=rsa-sha256;
 	cv=none;
-	b=2RZuIq2f+jgezgbHvnV686+fm8VTZTEFsuNI9uwjB7lYMQ3g02nhyPXQ66Esh+YSt2aNGa
-	N/2l6DyfnJgSUjyIdhfVKk3EY4UrC96e21MPKpQpl3JpwwRmSzZzSUf8z9xlHHsYcYSER0
-	DvPPUL77hrHD3ENjH2CqaaCvmFH54So=
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-679c5ed0942so14088846eaf.1
-        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 01:17:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777191445; x=1777796245;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=abpl5VjWxNF871HT77D7jiqQ5tPgHx4siodqZ1Cbc4o=;
-        b=MXLTo/8ZAGM3f7KAHPGJxw/tUZehhRZPGuDkZbSfOgyzoHz5VF92rOmndTfiM0iiqF
-         5SqysiRGNKsJD9XHcRrPK8Cem4bQN/XWAX3sy2+miH7qQRQU2s2FSRBOIenXNX8s97mw
-         Iv/a53baJDVDi+NbDHpxuy/RxlHJsg3bP6SsbP+kjjr46yXTGqOy2HuHhBobEGzXEM1p
-         RIe8ySg5vrqr9u5e3SCgIa/rKRhxfB0hmpIQJEkQYaJauKwemFIMR6k8UUt46g5HjDiX
-         iaQNMkLWAtAniolb+wB8XAKRzoZwdZqbjzy4SY6DrqhYOyLLxaG8LyedebAwqryrVle/
-         Vu3Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8dosZU4QyuLNGHpboQpr/hbrSnBYpg0h6MAa2RF10ES8gyRIO2XSeOo00Hjzn8KoXh0x9aOMVxLg==@kvack.org
-X-Gm-Message-State: AOJu0Yxijq5bIhKZFLbTWXQKalXlvc0vHOFyVj8/lUdXYOuZZoe3BQeo
-	3nohYtfJgelUwt7Ht2ENeZhoOV7+meQEJT/rRLInx82LQ7+gWpBF719tjMUfQHsWdJqwSLmslFD
-	EfhX0Usjkuwfj7ha+6FwOX8E6zQomTlcLfB4+SsWM573UOKA6+aRglxnf4ew=
+	b=8pKAOQMYh+/+nBo5VZF/jivSXLcVqvnYX3QQEUjpNTpgJFDp6TMooU7a2xZYE2NvdT+m5G
+	SgqLeY8y7EnE9519m86kVlhaLgFI1YLF8Po+aFo56cVY7+G1nNiPbSz7VVUzyqoYr5eycn
+	SrGguZKd3WJ1jwvhx1CqicK/VAzq75g=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YDMFyZZ/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 31AE044599
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:35:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DC0C2BCC4
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:35:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777192502;
+	bh=xVeg6cLID+JhfPIApIaGZEe0CDr+S3A/xz1jf46aA6I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YDMFyZZ/nBXgIduDufs+Z6FawaVk1j4/S+FgcYg6nF8TRe9ffr1+vUl1b8KiLH3rV
+	 Szr3lqqQUaSo+sG3gLWieMb6DDRcVAJNgaptgVaTrYSIOAS2k4NGhU/XEVTFAQVRL+
+	 kqAHwSArjbNCiOuHKRXtOF/mMcE5aixaO9CkLEd05/48tIAH9ufeAriKpves7y0e2D
+	 TpHA+6ATcBhn1HDHhxLxcaLlfxSS+S0UJ9p/enZdAk+ckNfFgV3QPlO2Vp86JwOrA3
+	 JItZjWrr9R0FDhyxxpbjAiBST4Pj+9KTxpvbfVh7EVAQSJHkrtUbFTumvS8UkxKw4Y
+	 oZ2SRuJMdAm7Q==
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8a151012558so101376946d6.3
+        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 01:35:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+eWAqgXzC6WbGbvPrMnCCQoIzmbSocfFefgQF5JPk+fjgSxYUff8/7KvUy/RqNuagl/7u8pSi6GQ==@kvack.org
+X-Gm-Message-State: AOJu0YzblCxGzwFxaHhyJcB2/kP+0EwxfawAPORLQh9ID1wrDb64zyYr
+	cGEDNRTn1Nyea1Jgwyi+sa5aKS+HBo6OR15Sisl7UdCgOjMnMiYuENJqXBEvCarJZU32zO/RknD
+	JtBzedMqtrnu1MeN985XVS27+3Lul1hc=
+X-Received: by 2002:a05:6214:459c:b0:8ac:74d7:dd17 with SMTP id
+ 6a1803df08f44-8b02817761bmr572254846d6.50.1777192501064; Sun, 26 Apr 2026
+ 01:35:01 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4b14:b0:696:25d4:1e62 with SMTP id
- 006d021491bc7-69625d42208mr5229115eaf.2.1777191445302; Sun, 26 Apr 2026
- 01:17:25 -0700 (PDT)
-Date: Sun, 26 Apr 2026 01:17:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69edca15.170a0220.38e3f1.0000.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING: bad unlock balance in do_wp_page
-From: syzbot <syzbot+7d60b33a8a546263da7c@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	shakeel.butt@linux.dev, surenb@google.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@kernel.org
+References: <CAMgjq7DM6Sd5EYx=PLtYHBYk6gAPFupYg2a7nib2KrGBO=HtGw@mail.gmail.com>
+ <20260425205759.1701-1-baohua@kernel.org> <CAMgjq7ADH89OVheesAPBUCK11pYmje4rXTLkxRW2nAw+8r54Jg@mail.gmail.com>
+In-Reply-To: <CAMgjq7ADH89OVheesAPBUCK11pYmje4rXTLkxRW2nAw+8r54Jg@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sun, 26 Apr 2026 16:34:49 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zjdOYEtuO6gNjABm7NDxW0skzBFNRNee-k2D6VwsYEQA@mail.gmail.com>
+X-Gm-Features: AQROBzCncax3okfyoHUgr0JCLB1FEjZXTYLMU2M6YWS1_NV1STJmGWtKknJHQss
+Message-ID: <CAGsJ_4zjdOYEtuO6gNjABm7NDxW0skzBFNRNee-k2D6VwsYEQA@mail.gmail.com>
+Subject: Re: [PATCH v6 00/14] mm/mglru: improve reclaim loop and dirty folio handling
+To: Kairui Song <ryncsn@gmail.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
+	baolin.wang@linux.alibaba.com, chenridong@huaweicloud.com, chrisl@kernel.org, 
+	david@kernel.org, hannes@cmpxchg.org, kaleshsingh@google.com, 
+	laoar.shao@gmail.com, lenohou@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, stevensd@google.com, surenb@google.com, 
+	vernon2gm@gmail.com, wangzicheng@honor.com, weixugc@google.com, 
+	yuanchu@google.com, yuzhao@google.com, zhengqi.arch@bytedance.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: hpywnxjrtxfkhf9s65pdpfuidij9dy4k
-X-Rspamd-Queue-Id: 4E0A420005
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 90E93140004
+X-Stat-Signature: 4n9npxio9atbugh81k1froawmaqcnn39
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777191446-497449
-X-HE-Meta: U2FsdGVkX18RqaKNrRbHBRDcrikpakPFTt2vE7CTB0wWYHvERzz3oboUhkeQKVRxYuN6up9P/zpwSghL/85wZ6vcp+MNMQg0UZxjY/T+nY2o/gs/k7CE4ieslNNYQTV4e9powDrXPkkrc8sn0ObEedCNi8bVqoR8iyeQiu2Unk7RGVJa24Mko2aRb/V+9zYJQrzyDiBygXFTvAs7HOa6Os7DAdl4cr29IsoWSRoFs+Qo6bDAG1HSwXqCBRhQR72YRloSu7l1whhl/643q3avsnSySoEF4yNJ7fu7Z4O0uKaej8cKmR4G/8dorAPE6enVXifRi7oeRzwCRVrp7Tsl6gTfQ1QnquUJtTkEH9+CtYo/v+c6fMj51JOlFUmgVhmZ/B6dS/C1GqSa6t+0PAEbgThI4kd3+A+ddq5JBeq3q7HZ2kJiEukAJgzrCvZ4O8a8WARf4tcww0R1OVlhRm3/G4Ltp5A8vxNLnxOCW+fATf17aUegXby902WM2vS3Ba0LutwPX34MiZLjXiWHtosaRWLlgsT2JAUa/LbGLJ9NFFsVQvCK7MZNftlwIWUjdfaw380Bgr5pz60MFKqnA4lmh+uhyow4JQerJAdBZDAginrMiKY5OE4xRmLL9QWp+NMVAYtk8GOO1QcJ/gacG1Un9nMl+wNRdSg6m8sQ3T5tOvPxZlgUVBie91GCIVayBYCNzypOuiKwUVgyv1SP+NWNHIlqjRtKuL3WTMOd6gpfJieE77f2R2EL8VFlJgmGZe77/7+9nPfDEFncjKqS/cL/8uNBFhwEpihppxE+ZuN32vGfNPvuBaVbiq29Si0xdywAg8ZycLCGaZkCXkECvi2o+mFznaQiNMHm4QvlFMePru7WLqdyYOZHgMNhZBMtv6fTKjN5oM56rherV1RmyLKuz6Gmh36m+MJ6x/Yp0G8fm40kgMHmKU4ixgVizKEo2OexC9LnAganCwodlufcF9W
- B55OZ4h4
- oBozNN6Oh0zNLIz6lugr1+z+SFGqs8RepbXdi1/t6U+oVMG+8+T5V3C9qV7EC8bGQW/XD0bvOB1eW2Do4hSFSnraOfpzpGRjn1RVKgdxum3/YKYuOd1n+QdpxtM5BEtCCrijtzQsMxWBLv29YoEiZfA2n5H5cNyxrsv4Axh2Kqq6E4De2bewJsI1uIzmaz+W0EWC+q17pfoa8xM3zk7oWGDANwY8vYymCxS+v4tO3aaA1n7S9KBk/Y1k5McHC6vHULuuobwLmadG0yTGc1kNSQ6UBnFJVrPE56L58vqj8S4GqVme2u6VvfT4i4hYENQq/43Fo+0h2r1CPCPVGCntuPCiyPe1pF+2lXHyxyLjP785E7lMhvIdAUgRga+YmZFrynwAsfCxNg6wcxDsyUEzkkqmm32P3uUQPklsyrAx/ggOvtOifkM9cqVuDMgtKQd59mPDU+pJdWDnZNdJJrN9PPHpN4jNPPRq3e5xZ/17F0z1D71cMKACMQSXlmYpSI9A8/oolAh7QVf/Re188RWHhKszmkhOO+rSWCvdp+gGSbeRCRXLyqpcDtcDer5jtn7hNzLUa2MvoNPWSGaYwcOhAmumq/qYUonzFlaInDXSs6T9NSm1Cdci1l0ebnqEfEg7qVGf+h+NJTnB9x2PUQSN7zCcc3pjizf/8w6NBaSlL4jDD6V3QRepPpLY6O60VFrnG09sWlV5M6r3ANSLzciaz9mE4eTS8gV7Gd8RLA8T4FddtJ/CMnjCd5HyXlB+IjXznSr1BKVY5lvlASOlWfJlFaXymFe+fobIRElst7AOGBCbSdQQ1hROBYs4yKdDjWaF7Npa3mtYuJ+m0pTpOam6EyINSmSJK9+QobJapErf3jGAOVvQ1Yeb9oyG2ZkVfXpDCxDQ51H6WeTFF9pyohx5eWsYyEBxr5nlirT3Kgk6FNK6DAgsudUbF47CbGl57WAhYeRqH2fOjK6iE80L5xZfZYvsDs0G8
- xQbBqpR5
- nO3dnAeuC6L1JNOtUjyhuK6KYrB/f1/Ts1i28DYnZbR0VYC8dQYGu0rXzszrP00r5+LhLI6kKOCzBPcmaf52i8eOan/dOwfo2mJDcMT7AIh5F7PpFkWkjh1tjv5gBAG56GqeiWGM80/Kg9hQ76sofBWWj50rCvW3CPbekPAKDLZYAD/w8/ui3NzVGfvevMsbwuIvnkpy+6ZbAfWJEboMBoHjusKFlnXAdCIBFF7EskRtAxJPlfKkZUPPKQhB0tyJIe4AXF1rg/Hs9Q9ZryIdnecU3mPHqE8JuQdRCaOcF98fSSUCUtRLFRDu2c9n5mdc0XTZoy2d5ZCvsBeuf89IieyqWbONtmd5bMBImCtOU31ZwKjSpDVpZAw2YyAQoDGTnovU8if7wpPF3tz66GX4jCFWWPHCBAMV4hFqpstYsJJ5P2cecHiLmUQGqadrIjbQy2uaYj76+juvFRvbylsu87hIz2wijf9d
+X-HE-Tag: 1777192503-664717
+X-HE-Meta: U2FsdGVkX19xVqYJXsgYoXZ4ntqYsY9mADEvSMt2hKgLFHK6ULeC2BeYLpGDFC5U0fuoAWakZn/fEyoKsXjzOQfjOgBNOlw65q008kpYPUWpuS4T2DtlUzz7zhw7s9dAE3jCOz4MHFwcAbSN7GszhXtaU9ZsDNzllwR7j8RJrY3VzGImxfC8Z1cmWW785Y0AxVtcxn9jAEvE/H4WAMG+byqL3WkqHc0GvCYf8HLVRi5P8fobXxDjWbJb6FiGNbEF8g6KJllYRHv+lGByX9ecSTkmYEFCAnqUI/ciU+LXe6NnbH6L4Bn/XzZzhm+8WgOD3Vcr3/+ISg+oRQNy4ungYRLemSDVp7qdz0mwlwErPfZpMDhlILeDdi0z0NAjneetLH1qsJFNwUS9zVtrOMc+a3li0S9dS1N+Cy1cguPJTklmHUQd8thn6DJ3rsuO/5/dVVfkLKvMizmyZrgpbK9PHj6XXzQDSARF9Xg4hzJkbmoa+v2+rpXPBpzLz/fekbS2WAU9UyF9GrBL0Y2eZe8bwZjeSG5C8B9JUMRt5XznBox5gsylSdS+mE6AHeTig5KWh6Esg3Pa8EwLdHKEl9dUF4CfxGd/LiQwgqFOIJvVhOWTWOATqqDLH8Jb3X6UptYE7MqwHvgBhth9D5PUhm6cBbkP2KDQCn5Vf7vnkmK/wZWJ+IoaTVdDqbfdNNk9PMXIu2W/afjI1nfS7W/no2YOmkqAIj5joPmE1hVIXh7qA2o3TZnuwDsinwyxI8KUEdEiLPoLrhljokFqmpZvptPAD3aKfX15vRMMKD1DD/wVWCBRpWkdDXhhMNvBARnCtMFygWl4Zfs8xqx8A8ZceMRrTl7ZN80beG7p4AnThto1E4ZWkcsrWfh5Rt5NB/3f4ebpoZ5aqWT+gEKVPwnzwjj/a7GkIqmXN8ZGJq/XPCt6/q1HC0HAJ3r+iFNV+/I4awBP9Xylij9iyqiaawpAikp
+ oGIz5NG9
+ 0n19ABbVYtRf8DrmLnaKeqLrTaxvbmM0DRbBvF3ln9G1ggFrq/zLWQeSRSpFLigZSReHCKtjg4qykf7UXIZKU4qVS9m/dVQkPrwD0qEqypV8vdN6dONg5TlgD/DyAuCsJwzcqHsRbDzt7NMC1l4UOrQkwMq45j0CZIBy4FgkledXt113JCgH5y36LUX7XBpbKGwPLna6vms9Lf4AUUWk6YzM34q9XOmtTJmma4bChXpLDwmnzKrVyVNK+jDrvlFU7F6Iejln4+Es5jiY4UVLDY2BIEXTO9DKP/Dy2TTIOajN+I4iALKpUiNFudnp1mQsVtJPYZlJMTZWHhdksZtcysE2AqzzO1k0JfFafGTnK/Y0IY1jJje+e2mQHoFDMVYj3a1pcu6aVXufE6x8nRYZk81oA0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,132 +109,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Sun, Apr 26, 2026 at 2:59=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Sun, Apr 26, 2026 at 4:58=E2=80=AFAM Barry Song (Xiaomi) <baohua@kerne=
+l.org> wrote:
+> >
+> > On Sat, Apr 25, 2026 at 9:30=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
+wrote:
+> > [...]
+> > >
+> > > I just ran a matrix of for kernels (mainline, mm-new HEAD, before thi=
+s
+> > > series, after this series) X 3 different memcg configs (-j96 3G, -j48
+> > > 2G, -j24 1G), and none of these showed any regression but all
+> > > improvement. That's really odd.
+> > >
+> > > One possibility is that I removed the:
+> > >
+> > > if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS >
+> > > lrugen->max_seq)
+> > >     scanned =3D 0;
+> > >
+> > > Which will make the reclaim loop go further and trigger aging.
+> > > Previously if reclaim drained the LRU's cold gens, it may go reclaim
+> > > slab instead. So idle inodes will be dropped with the mapping and
+> > > reclaim more file, and we won't see any refault data from that since
+> > > the mapping itself is gone. Sys will be lower too, as IO isn't counte=
+d
+> > > as sys. Checking your data, despite sys is higher, real is acutually
+> > > lower, which matches my guess.
+> > >
+> > > Will the following patch help? I'm not sure if this is the problem,
+> > > but this added back that early abort, personally I don't think this
+> > > really makes much sense as it's more like a workaround for other
+> > > issues, but if that helps we might better keep it.
+> >
+> > Hi Kairui, after five hours of sleep I=E2=80=99m feeling much more
+> > refreshed and should have identified the issue. I think the
+> > problem will be clear once you look at the patch below.
+> > Feel free to include it in the new version if you find it
+> > helpful.
+> >
+> > From e3a0b50dc53a3a5f2ef1adfb73111336e3c2d08b Mon Sep 17 00:00:00 2001
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> > Date: Sun, 26 Apr 2026 08:34:21 +1200
+> > Subject: [PATCH] mm/mglru: Avoid falling back to another type when
+> >  scan_folios() leaves no remaining pages
+> >
+> > While remaining reaches 0 in scan_folios(), we quickly fall back
+> > to the other type in isolate_folios(). This is incorrect, as the
+> > current type may still have sufficient folios. Falling back can
+> > undermine the positive_ctrl_err() result from get_type_to_scan(),
+> > which is derived from swappiness.
+> >
+> > A simple fix is to continue scanning this type for another round.
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+> >  mm/vmscan.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index ef45f3a4aa38..169fbbe17c7b 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4788,8 +4788,13 @@ static int isolate_folios(unsigned long nr_to_sc=
+an, struct lruvec *lruvec,
+> >                         *isolate_scanned =3D scanned;
+> >                         break;
+> >                 }
+> > -
+> > -               type =3D !type;
+> > +               /*
+> > +                * If scanned > 0 and isolated =3D=3D 0, avoid falling =
+back to the
+> > +                * other type, as this type remains sufficient. Falling=
+ back
+> > +                * too readily can disrupt the positive_ctrl_err() bias=
+.
+> > +                */
+> > +               if (!scanned)
+> > +                       type =3D !type;
+> >         }
+>
+> Thanks so much for catching this! The fix makes perfect sense, it
+> restores the pre-patch behavior. I was too aggressive with the
+> fallback; positive_ctrl_err() should win whenever the preferred type
+> is actually productive.
+>
+> Would you prefer I squash this into the original patch (with a
+> Co-developed-by for you?), or keep it as a standalone fix on top? I'm
+> fine either way.
 
-syzbot found the following issue on:
+Either approach is fine=E2=80=94use whichever works better for organizing v=
+7.
+My boss would definitely be happier with the latter, as it would better
+support and encourage more active engagement in upstream development.
+It=E2=80=99s rare these days to find a boss like this who is open-minded an=
+d
+insightful about upstream contributions, especially with everyone
+moving toward AI. :-)
 
-HEAD commit:    6596a02b2078 Merge tag 'drm-next-2026-04-22' of https://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12483702580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=24c8da4692f901cb
-dashboard link: https://syzkaller.appspot.com/bug?extid=7d60b33a8a546263da7c
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-userspace arch: i386
+>
+> One related thought for a follow-up: scanned =3D=3D 0 from scan_folios()
+> is essentially driven by get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS. So
+> when the type get_type_to_scan() picked is the one that's
+> gen-exhausted, maybe the right response is also to age that type
+> rather than fall back. Right now should_run_aging() only looks at the
+> combined evictable_min_seq, so the ctrl_err preferred type can
+> silently stay starved while we evict from the other one, that could be
+> an old issue we can fix later.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Yep, I=E2=80=99ve been thinking about the same thing for quite a
+few days. This might also help address swappiness. On the
+other hand, it could lead to more aging, but it seems like
+a necessary trade-off if we want a simple solution that
+doesn=E2=80=99t require separate max_seq for file and anon to fix
+swappiness for mglru.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-6596a02b.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c5a50c04af50/vmlinux-6596a02b.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/70da0dbf8561/bzImage-6596a02b.xz
+I=E2=80=99m also trying another approach. For example, if the
+number of folios in the old generation is too low relative
+to swappiness, should_run_aging() could return true=E2=80=94similar
+to Yu=E2=80=99s earliest patch as below, but with a swappiness bias.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+7d60b33a8a546263da7c@syzkaller.appspotmail.com
++ /*
++ * It's also ideal to spread pages out evenly, i.e., 1/(MIN_NR_GENS+1)
++ * of the total number of pages for each generation. A reasonable range
++ * for this average portion is [1/MIN_NR_GENS, 1/(MIN_NR_GENS+2)]. The
++ * aging cares about the upper bound of hot pages, while the eviction
++ * cares about the lower bound of cold pages.
++ */
++ if (young * MIN_NR_GENS > total)
++        return true;
++ if (old * (MIN_NR_GENS + 2) < total)
++        return true;
 
-=====================================
-WARNING: bad unlock balance detected!
-syzkaller #0 Not tainted
--------------------------------------
-dhcpcd-run-hook/5941 is trying to release lock (rcu_read_lock) at:
-[<ffffffff8258a32d>] rcu_read_unlock+0x2d/0xb0 include/linux/rcupdate.h:867
-but there are no more locks to release!
+Hopefully, the above can resolve the problem before we have to
+resort to separate max_seq, which would break the shared time
+axis between file and anon.
 
-other info that might help us debug this:
-1 lock held by dhcpcd-run-hook/5941:
- #0: ffff8880440f3d48 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0x11d/0x590 mm/mmap_lock.c:310
+Maybe I will send an RFC before LSF/MM/BPF if we have enough
+time.
 
-stack backtrace:
-CPU: 2 UID: 0 PID: 5941 Comm: dhcpcd-run-hook Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_unlock_imbalance_bug.part.0+0xfb/0x106 kernel/locking/lockdep.c:5298
- print_unlock_imbalance_bug kernel/locking/lockdep.c:5278 [inline]
- __lock_release kernel/locking/lockdep.c:5537 [inline]
- lock_release kernel/locking/lockdep.c:5889 [inline]
- lock_release+0x28d/0x310 kernel/locking/lockdep.c:5875
- rcu_read_unlock+0x32/0xb0 include/linux/rcupdate.h:867
- pte_unmap include/linux/pgtable.h:117 [inline]
- wp_page_copy mm/memory.c:3960 [inline]
- do_wp_page+0x13d7/0x4350 mm/memory.c:4320
- handle_pte_fault mm/memory.c:6427 [inline]
- __handle_mm_fault+0x1ab6/0x2a00 mm/memory.c:6549
- handle_mm_fault+0x36d/0xa20 mm/memory.c:6718
- do_user_addr_fault+0x5a3/0x12f0 arch/x86/mm/fault.c:1334
- handle_page_fault arch/x86/mm/fault.c:1474 [inline]
- exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1527
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-RIP: 0033:0x7f7501c33f87
-Code: 5c 25 28 49 8b 57 10 48 85 db 74 27 8b 74 24 0c 23 73 08 44 39 f6 75 16 48 39 c2 75 05 e8 62 ff ff ff 48 8b 53 10 48 83 c0 08 <48> 89 50 f8 48 8b 1b eb d0 49 83 c4 08 49 81 fc 38 01 00 00 75 be
-RSP: 002b:00007ffd29921270 EFLAGS: 00010212
-RAX: 00005645dcc81140 RBX: 00005645dcc716d0 RCX: 0000000000000002
-RDX: 00007ffd29925f83 RSI: 0000000000000001 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000008 R11: 0000000000000246 R12: 0000000000000008
-R13: 00005645dcc70e60 R14: 0000000000000001 R15: 00005645dcc70c30
- </TASK>
-------------[ cut here ]------------
-rrln < 0 || rrln > RCU_NEST_PMAX
-WARNING: kernel/rcu/tree_plugin.h:443 at __rcu_read_unlock kernel/rcu/tree_plugin.h:443 [inline], CPU#3: dhcpcd-run-hook/5941
-WARNING: kernel/rcu/tree_plugin.h:443 at __rcu_read_unlock+0x235/0x5e0 kernel/rcu/tree_plugin.h:430, CPU#3: dhcpcd-run-hook/5941
-Modules linked in:
-CPU: 3 UID: 0 PID: 5941 Comm: dhcpcd-run-hook Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__rcu_read_unlock kernel/rcu/tree_plugin.h:443 [inline]
-RIP: 0010:__rcu_read_unlock+0x235/0x5e0 kernel/rcu/tree_plugin.h:430
-Code: 74 11 c7 45 58 01 00 00 00 bf 09 00 00 00 e8 12 a5 da ff e8 9d e2 22 00 9c 58 f6 c4 02 0f 85 dd 02 00 00 fb e9 57 fe ff ff 90 <0f> 0b 90 5b 5d 41 5c 41 5d 41 5e 41 5f e9 d9 14 ad 09 e8 44 64 87
-RSP: 0000:ffffc900049c7af0 EFLAGS: 00010286
-RAX: 00000000ffffffff RBX: ffff888029ec4a00 RCX: ffffffff81e80bfe
-RDX: 0000000000000000 RSI: ffffffff8df2fec2 RDI: ffff888029ec4ec4
-RBP: 0000000000000001 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000012 R12: ffff88802ad93408
-R13: ffffea0000ad7800 R14: 0000000000000000 R15: ffffea0000ad7800
-FS:  00007f7501945c80(0000) GS:ffff8880973e2000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005645dcc70950 CR3: 00000000297d6000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- pte_unmap include/linux/pgtable.h:117 [inline]
- wp_page_copy mm/memory.c:3960 [inline]
- do_wp_page+0x13d7/0x4350 mm/memory.c:4320
- handle_pte_fault mm/memory.c:6427 [inline]
- __handle_mm_fault+0x1ab6/0x2a00 mm/memory.c:6549
- handle_mm_fault+0x36d/0xa20 mm/memory.c:6718
- do_user_addr_fault+0x5a3/0x12f0 arch/x86/mm/fault.c:1334
- handle_page_fault arch/x86/mm/fault.c:1474 [inline]
- exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1527
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-RIP: 0033:0x7f7501c33f87
-Code: 5c 25 28 49 8b 57 10 48 85 db 74 27 8b 74 24 0c 23 73 08 44 39 f6 75 16 48 39 c2 75 05 e8 62 ff ff ff 48 8b 53 10 48 83 c0 08 <48> 89 50 f8 48 8b 1b eb d0 49 83 c4 08 49 81 fc 38 01 00 00 75 be
-RSP: 002b:00007ffd29921270 EFLAGS: 00010212
-RAX: 00005645dcc81140 RBX: 00005645dcc716d0 RCX: 0000000000000002
-RDX: 00007ffd29925f83 RSI: 0000000000000001 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000008 R11: 0000000000000246 R12: 0000000000000008
-R13: 00005645dcc70e60 R14: 0000000000000001 R15: 00005645dcc70c30
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Thanks
+Barry
 
