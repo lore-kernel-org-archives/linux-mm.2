@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E825FF8862
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 12:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57030FF885C
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 12:57:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5FED6B008C; Sun, 26 Apr 2026 08:57:44 -0400 (EDT)
+	id C01546B0092; Sun, 26 Apr 2026 08:57:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C76666B0092; Sun, 26 Apr 2026 08:57:44 -0400 (EDT)
+	id BB32E6B0093; Sun, 26 Apr 2026 08:57:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B64936B0093; Sun, 26 Apr 2026 08:57:44 -0400 (EDT)
+	id A7A386B0095; Sun, 26 Apr 2026 08:57:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A50546B008C
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:57:44 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68B9CA057D
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:44 +0000 (UTC)
-X-FDA: 84700708848.15.2176164
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5337516000B
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 98CDD6B0092
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:57:50 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 34C46120178
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:50 +0000 (UTC)
+X-FDA: 84700709100.12.CCC05C4
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1771EC0008
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf08.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	spf=pass (imf10.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777208262;
+	s=arc-20220608; t=1777208268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y9N+aXz56XMHlnxqo6ALkeCKfQJpI7gw8DFoQfw8SIU=;
-	b=ez3u793TnVTAPXZDwwwlTTcA2E5NQinBi/+YoPXfpfrj8SWjJ31e3JZRV4NsrQhFJ5aRfc
-	4P4hBMdlkflA4SK4jEiNBrD9qbYdBnYuulqPwFmEfNewm8WEx4evksMxsrwY5NeP2Qyt1Q
-	/v57e6sBsCOyS1/v6ESutTNG3lstCV8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777208262; a=rsa-sha256;
-	cv=none;
-	b=afAn1vY6mzRuE3kMSNDd1305ZAezU/ysqTFjP2A+MrjcQd8lCogv6ud9wyL172RpT8TuLY
-	mMoW9rnqB493RLoewgt7yf/bOY0QhqBZyzJPUO2Te6hARsseZtJ51RuDkZx3RGtj9UlLkK
-	A0+4qcuS4uXKhjP+CmS7VsdcpgHhOFI=
+	bh=xpHiMIVL/n8XlCby+SL6/v4wf5J9N4x6EFwGCFeoXUo=;
+	b=ylzjPpv8g4/ylITNgU3rWgu9fbx83/P7lkZ+riYdG5lI8gCcRadYz5EA8jIqmE1vBxty++
+	buhuCypmu15t6Z31CgAarumNKQr6qiAGXEY23g7LE0C5okmOCd7gIKkaeaycGg1vLJfqkd
+	NVBL6wwOornHVUOhPulZ4adO1hGmdhM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
+	imf10.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf08.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	spf=pass (imf10.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777208268; a=rsa-sha256;
+	cv=none;
+	b=uyqRdHxXijLIi0IezO0pbTflvtTHvR8iFNrAaeAM0HUzlA8bxLS9vFbJJWxUmYExzzm+Cj
+	sBOZT3IRJ1Rq7hk+6coOt1ScVKDXmWSRsHF9rRGZ8eFcY6gzD3lnN5FtzdmFXu0bs+iBqF
+	QnzeMXLeMNX9Y8nmkHmVhuv4GyKR820=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 123D26A7F4;
-	Sun, 26 Apr 2026 12:57:41 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 279C05BCF7;
+	Sun, 26 Apr 2026 12:57:40 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A351B593B0;
-	Sun, 26 Apr 2026 12:57:40 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5288593B1;
+	Sun, 26 Apr 2026 12:57:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +LzUJcQL7mmtRAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Sun, 26 Apr 2026 12:57:40 +0000
+	id aEETKsML7mmtRAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sun, 26 Apr 2026 12:57:39 +0000
 From: Oscar Salvador <osalvador@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -74,9 +74,9 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [RFC PATCH v2 3/7] mm: Implement folio_pmd_batch
-Date: Sun, 26 Apr 2026 14:57:15 +0200
-Message-ID: <20260426125719.24698-4-osalvador@suse.de>
+Subject: [RFC PATCH v2 1/7] mm: Add softleaf_from_pud
+Date: Sun, 26 Apr 2026 14:57:13 +0200
+Message-ID: <20260426125719.24698-2-osalvador@suse.de>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260426125719.24698-1-osalvador@suse.de>
 References: <20260426125719.24698-1-osalvador@suse.de>
@@ -90,13 +90,13 @@ X-Rspamd-Pre-Result: action=no action;
 	Message is reply to one we originated
 X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5337516000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: uo4h6zteh7skpsn3dzkjgdxm7wa1cog1
-X-HE-Tag: 1777208262-769332
-X-HE-Meta: U2FsdGVkX18BbCMce5dcfdvANCX8J0yVFsBnAsMj0IOFbEtWeIhxaFOdxkuVyV7cMoI9vmASo3J7wqMzVP1Cp7kvhcBhuL3QxdLeabDHjamh/3ORjYjIuKGIJl9uVNaCdr/Mre0PLR3kH+Hnhj65D1TQolqUiJwB1gKQYkRJ1z5Bt3u1URVneOzCmTg/cdFFA6iPssMB5Gin39nEgYPurs4Cz1AtCv1x3fwopK60X6/xEjB07HmvmgrcXuyBj2TwaBqtaGxV+JnwAyfEBdlb6l8/NZzuZtjiURpnPX7JsjTY9JVwHoQhsGwnwDHjWLgxRlhOL14NU1ciFMoHNuEawhKF+214SDNYC4zwLrGBijgytCMXn2S+go+J836HG13boygFYyA9lIAKLQN0y0kpnR5APMMApbfyUcY7Cfb1iWnW8Yj40XoBynjcOI8/Nom6jNMgWlCBB5OkPWuFjlqu08FSQjw+hsqCLwthqEGZWU0S0MEUC2tJc1jLm9ee/upVJQvx26tLbnV5I/oxc4Hzh1NwJTK0EIOGkzg04T0Ur0Nrxi90q46LBFeeTcF19RM2TRu5GuKN6XjESDROMqj4aOTGzkDFO+C1G2GVh54cXNxUKErkgK/586EdAxiL3dS9lEND4UUhZINP4SNNHbbtzuD0Lh5TEzMKCskWB6vEQxAPF/VtP0uJ5ZAUN6nooUnyIjGd5YASDhv9ewmBB7PK0izZ2phxxrbdrLY3+WFDnRfP+fJtBtr+IR3ZDaWkPAyyNLC6EpCtoWzH2DnR0LR7NSGhKSSct2amiHKzymlbKtDgmSnqSwbS/Ij8N9NMia+Tbny0Q/Hr/5ASsmUSeR7nin0J8XGCNrQn66yOaO9TsygbtOonyfGFig+bHbMqfjYEHiJT5o5uUCDhMjiymzaYGcLDUW8onEsZYHa5tBqqB/XI1lHlWqiYQhOrOgH9rsO/hlu5G3HSzcC4sh/RG+O
- G07YpGZK
- r3dULilhtTCyfrgP459bmICW7xxWh5nQ1C+ElvRk/w49lJCLW5Ux+Qn6a2urF2c+KBofkDv6iMjrNU2VQiR00biEsTOwRemnLT/ypdrXTLCOSiJ5wK297SiycWwwrrdF7beJZ0eI4PlELR7l78qjDJcjEJU19WuoTDqs/97bvFO7kXck=
+X-Rspamd-Queue-Id: 1771EC0008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: osmzm49hw1tqkdizsmk8rbd96kx6xxg6
+X-HE-Tag: 1777208267-865934
+X-HE-Meta: U2FsdGVkX19FIKOzOMV774fvWWbzDODyz95o3KS+fhavAglF4V+fBYH+Xb71+ojuqwIznevLOqYT7a2ptW5iZWyxGedZbIQWMpZCE/T9wfYVg/3Vi3Q22A/byCroOg66LBnqVTIRaHC29ynoGSvfyPziLYhJGmyGQ6WcX2RwRJjR0sWF/i6RpmmES26RTMnkGDMprWhE8Ip5jqnT16THTSSpP3NDEPZOmaOGXkbKNf74385m/5rO2VUHtpxmThHMo2YLOykDfpLFRgjKK3IoXciv94+/6TH2xxpG0clHMtUMS+7F6xv8VJAIAzS5fb1xfYY/QfUgR6Zrs5gE3+9JxdpsXD28OaBUsnddb+yKdmDMso+KA95T/9l56nOzgHrtSCebJM++NfWRoTR6IuK62iq87I+KAWZcZnv61cNysZvJ1iHB+xr+lQqNd91GYa3uXPPSPgD6LShnZyA9KucNwl61kdnPIhxgHEavoWBCMnSHfgvc4ABQK+5sxvd7GhfeTuEBzUZf7XDEnskuhHiBE3ESIWXJ0JW7Fdwr4fecFKQVn69L+bEu5vXy02DYIokzYA8WK3UzWQTcxgNljK+XoUW/5QF+znCmJh63kI+6/GZUX9KhMBsE1QjejCYU/EubFQfuU74aXIDJHpqlaEwy9m/elTBRkIfPpQtQl3UcaS6Ci9NL3QHEX3km8huEX/SaGoa2fqlWpGvzf6tNjkOvbcGub2M/fHLOyWGB3QKAZeiuM+gLVQ1fA/bj0E4pocclt2vj8qDCTYJ4cP0pSNYJ7NdRi+ZwJUk9nRuwWQ/VSrQuh4VzcX7BA18mDh+bRShPo5TCMKkNmGkWwsDYg42/6HOzZrTzF4Z2skukbEHC4vuRNPbjJ/dmj+TU9ZmL41dq+u+bwxqZKsrNah8Xu/t617pwPOyNpGmUSQcj64ft0hDdiaaQJZ7BQg6pgMICvfk5oV5nm6Y6kIGYON0xUU1
+ Ls4po5nx
+ wkVvmazcgPoE5h1xCLYGCFE3xyF3CCz8J9mqk4Lu+t8gffmql17rtoQigoLt+plVI1s/yXHO5XYdD7dZ0dn2OB+EVq6OrQFOSuXgq0aGKvXt/VWf5CxukgNNH/E6kYQBsjavlldmmRX53tgs57PmnLaDNQiCddVW63grgp/LtnIREmq4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,193 +104,366 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-HugeTLB can be mapped as contiguous PMDs, so we need a way to be able
-to batch them as we do for contiguous PTEs.
-Implement folio_pmd_batch in order to do that.
+We want to be able to operate on HugeTLB pages as we do with normal
+pages, which means stop pretending everyting is a pte in HugeTLB world
+and be able to operate on the right entry level.
+
+Since we can have HugeTLB as PUD entries, we need the infrastructure that
+allows us to operate on them, so add softleaf_from_pud(), and the
+infrastructure that comes with it.
 
 Signed-off-by: Oscar Salvador <osalvador@suse.de>
 ---
- arch/arm64/include/asm/pgtable.h | 19 ++++++++
- include/linux/pgtable.h          | 28 ++++++++++++
- mm/internal.h                    | 75 +++++++++++++++++++++++++++++++-
- 3 files changed, 121 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable.h             | 12 +++++
+ arch/loongarch/include/asm/pgtable.h         |  1 +
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  7 +++
+ arch/s390/include/asm/pgtable.h              | 38 ++++++++++++++++
+ arch/x86/include/asm/pgtable.h               | 48 ++++++++++++++++++++
+ arch/x86/include/asm/pgtable_64.h            |  2 +
+ include/asm-generic/pgtable_uffd.h           | 15 ++++++
+ include/linux/leafops.h                      | 33 ++++++++++++++
+ include/linux/pgtable.h                      | 37 +++++++++++++++
+ 9 files changed, 193 insertions(+)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index e42ad56a86d4..5b5490505b94 100644
+index b3e58735c49b..e42ad56a86d4 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -170,6 +170,8 @@ static inline pteval_t __phys_to_pte_val(phys_addr_t phys)
- 	(__boundary - 1 < (end) - 1) ? __boundary : (end);			\
- })
- 
-+#define pmd_valid_cont(pmd)    (pmd_valid(pmd) && pmd_cont(pmd))
-+
- #define pte_hw_dirty(pte)	(pte_write(pte) && !pte_rdonly(pte))
- #define pte_sw_dirty(pte)	(!!(pte_val(pte) & PTE_DIRTY))
- #define pte_dirty(pte)		(pte_sw_dirty(pte) || pte_hw_dirty(pte))
-@@ -670,6 +672,12 @@ static inline pgprot_t pmd_pgprot(pmd_t pmd)
- 	return __pgprot(pmd_val(pfn_pmd(pfn, __pgprot(0))) ^ pmd_val(pmd));
- }
- 
-+#define pmd_advance_pfn pmd_advance_pfn
-+static inline pmd_t pmd_advance_pfn(pmd_t pmd, unsigned long nr)
-+{
-+	return pfn_pmd(pmd_pfn(pmd) + nr, pmd_pgprot(pmd));
-+}
-+
- #define pud_pgprot pud_pgprot
- static inline pgprot_t pud_pgprot(pud_t pud)
- {
-@@ -1645,6 +1653,17 @@ extern void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long ad
- 				    pte_t *ptep, pte_t old_pte, pte_t pte,
- 				    unsigned int nr);
+@@ -596,6 +596,13 @@ static inline int pmd_protnone(pmd_t pmd)
+ #define pmd_mkyoung(pmd)	pte_pmd(pte_mkyoung(pmd_pte(pmd)))
+ #define pmd_mkinvalid(pmd)	pte_pmd(pte_mkinvalid(pmd_pte(pmd)))
+ #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
++#define pud_uffd_wp(pud)	pte_uffd_wp(pud_pte(pud))
++#define pud_mkuffd_wp(pud)	pte_pud(pte_mkuffd_wp(pud_pte(pud)))
++#define pud_clear_uffd_wp(pud)	pte_pud(pte_clear_uffd_wp(pud_pte(pud)))
++#define pud_swp_uffd_wp(pud)	pte_swp_uffd_wp(pud_pte(pud))
++#define pud_swp_mkuffd_wp(pud)	pte_pud(pte_swp_mkuffd_wp(pud_pte(pud)))
++#define pud_swp_clear_uffd_wp(pud) \
++				pte_pud(pte_swp_clear_uffd_wp(pud_pte(pud)))
+ #define pmd_uffd_wp(pmd)	pte_uffd_wp(pmd_pte(pmd))
+ #define pmd_mkuffd_wp(pmd)	pte_pmd(pte_mkuffd_wp(pmd_pte(pmd)))
+ #define pmd_clear_uffd_wp(pmd)	pte_pmd(pte_clear_uffd_wp(pmd_pte(pmd)))
+@@ -1528,6 +1535,11 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+ #define __swp_entry_to_pmd(swp)		__pmd((swp).val)
+ #endif /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
  
 +#ifdef CONFIG_HUGETLB_PAGE
-+#define pmd_batch_hint pmd_batch_hint
-+static inline unsigned int pmd_batch_hint(pmd_t *pmdp, pmd_t pmd)
-+{
-+	if (!pmd_valid_cont(pmd))
-+		return 1;
-+
-+	return CONT_PMDS - (((unsigned long)pmdp >> 3) & (CONT_PMDS - 1));
-+}
++#define __pud_to_swp_entry(pud)         ((swp_entry_t) { pud_val(pud) })
++#define __swp_entry_to_pud(swp)         __pud((swp).val)
 +#endif
 +
- #ifdef CONFIG_ARM64_CONTPTE
- 
  /*
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 1abd9c52a4f2..ab43d0922ec1 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -358,6 +358,34 @@ static inline void lazy_mmu_mode_pause(void) {}
- static inline void lazy_mmu_mode_resume(void) {}
- #endif
+  * Ensure that there are not more swap files than can be encoded in the kernel
+  * PTEs.
+diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
+index c33b3bcb733e..eba6d20f007f 100644
+--- a/arch/loongarch/include/asm/pgtable.h
++++ b/arch/loongarch/include/asm/pgtable.h
+@@ -335,6 +335,7 @@ static inline pte_t mk_swap_pte(unsigned long type, unsigned long offset)
+ #define __swp_entry_to_pmd(x)	__pmd((x).val | _PAGE_HUGE)
+ #define __pte_to_swp_entry(pte) ((swp_entry_t) { pte_val(pte) })
+ #define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
++#define __pud_to_swp_entry(pud) ((swp_entry_t) { pud_val(pud) })
  
-+#ifndef pmd_batch_hint
-+/**
-+ * pmd_batch_hint - Number of PMD entries that can be added to batch without scanning.
-+ * @pmdp: Page table pointer for the entry.
-+ * @pmd: Page table entry.
-+ *
-+ * Some architectures know that a set of contiguous pmds all map the same
-+ * contiguous memory with the same permissions. In this case, it can provide a
-+ * hint to aid pmd batching without the core code needing to scan every pmd.
-+ *
-+ * An architecture implementation may ignore the PMD accessed state. Further,
-+ * the dirty state must apply atomically to all the PMDs described by the hint.
-+ *
-+ * May be overridden by the architecture, else pmd_batch_hint is always 1.
-+ */
-+static inline unsigned int pmd_batch_hint(pmd_t *pmdp, pmd_t pmd)
-+{
-+	return 1;
-+}
+ static inline bool pte_swp_exclusive(pte_t pte)
+ {
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 1a91762b455d..476781c59d5f 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -1065,6 +1065,13 @@ static inline pte_t *pmdp_ptep(pmd_t *pmd)
+ #define pmd_swp_soft_dirty(pmd)		pte_swp_soft_dirty(pmd_pte(pmd))
+ #define pmd_swp_clear_soft_dirty(pmd)	pte_pmd(pte_swp_clear_soft_dirty(pmd_pte(pmd)))
+ #endif
++
++#ifdef CONFIG_HUGETLB_PAGE
++#define pud_swp_mksoft_dirty(pud)	pte_pud(pte_swp_mksoft_dirty(pud_pte(pud)))
++#define pud_swp_soft_dirty(pud)		pte_swp_soft_dirty(pud_pte(pud))
++#define pud_swp_clear_soft_dirty(pud)	pte_pud(pte_swp_clear_soft_dirty(pud_pte(pud)))
 +#endif
 +
-+#ifndef pmd_advance_pfn
-+static inline pmd_t pmd_advance_pfn(pmd_t pmd, unsigned long nr)
-+{
-+	return __pmd(pmd_val(pmd) + (nr << PFN_PTE_SHIFT));
-+}
-+#endif
-+
- #ifndef pte_batch_hint
- /**
-  * pte_batch_hint - Number of pages that can be added to batch without scanning.
-diff --git a/mm/internal.h b/mm/internal.h
-index cb0af847d7d9..488cb5c1e340 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -269,7 +269,7 @@ static inline int anon_vma_prepare(struct vm_area_struct *vma)
- 	return __anon_vma_prepare(vma);
+ #endif /* CONFIG_HAVE_ARCH_SOFT_DIRTY */
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 1c3c3be93be9..0d1d571215c4 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -901,11 +901,31 @@ static inline pmd_t pmd_clear_soft_dirty(pmd_t pmd)
+ 	return clear_pmd_bit(pmd, __pgprot(_SEGMENT_ENTRY_SOFT_DIRTY));
  }
  
--/* Flags for folio_pte_batch(). */
-+/* Flags for folio_{pmd,pte}_batch(). */
- typedef int __bitwise fpb_t;
++static inline int pud_soft_dirty(pud_t pud)
++{
++	return pud_val(pud) & _REGION3_ENTRY_SOFT_DIRTY;
++}
++
++static inline pud_t pud_mksoft_dirty(pud_t pud)
++{
++	return set_pud_bit(pud, __pgprot(_REGION3_ENTRY_SOFT_DIRTY));
++}
++
++static inline pud_t pud_clear_soft_dirty(pud_t pud)
++{
++	return clear_pud_bit(pud, __pgprot(_REGION3_ENTRY_SOFT_DIRTY));
++}
++
+ #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+ #define pmd_swp_soft_dirty(pmd)		pmd_soft_dirty(pmd)
+ #define pmd_swp_mksoft_dirty(pmd)	pmd_mksoft_dirty(pmd)
+ #define pmd_swp_clear_soft_dirty(pmd)	pmd_clear_soft_dirty(pmd)
+ #endif
++#ifdef CONFIG_HUGETLB_PAGE
++#define pud_swp_soft_dirty(pud)		pud_soft_dirty(pud)
++#define pud_swp_mksoft_dirty(pud)	pud_mksoft_dirty(pud)
++#define pud_swp_clear_soft_dirty(pud)	pud_clear_soft_dirty(pud)
++#endif
  
- /* Compare PTEs respecting the dirty bit. */
-@@ -293,6 +293,79 @@ typedef int __bitwise fpb_t;
+ /*
+  * query functions pte_write/pte_dirty/pte_young only work if
+@@ -1901,6 +1921,24 @@ static inline unsigned long __swp_offset_rste(swp_entry_t entry)
+  * requires conversion of the swap type and offset, and not all the possible
+  * PTE bits.
   */
- #define FPB_MERGE_YOUNG_DIRTY		((__force fpb_t)BIT(4))
- 
-+static inline pmd_t __pmd_batch_clear_ignored(pmd_t pmd, fpb_t flags)
++static inline swp_entry_t __pud_to_swp_entry(pud_t pud)
 +{
-+	if (!(flags & FPB_RESPECT_DIRTY))
-+		pmd = pmd_mkclean(pmd);
-+	if (likely(!(flags & FPB_RESPECT_SOFT_DIRTY)))
-+		pmd = pmd_clear_soft_dirty(pmd);
-+	if (likely(!(flags & FPB_RESPECT_WRITE)))
-+		pmd = pmd_wrprotect(pmd);
-+	return pmd_mkold(pmd);
++	swp_entry_t arch_entry;
++	pte_t pte;
++
++	arch_entry = __rste_to_swp_entry(pud_val(pud));
++	pte = mk_swap_pte(__swp_type_rste(arch_entry), __swp_offset_rste(arch_entry));
++	return __pte_to_swp_entry(pte);
 +}
 +
-+/**
-+ * folio_pmd_batch - detect a PMD batch for a large folio.
-+ *                  - The only user of this is hugetlb for contiguous
-+ *                    PMDs
-+ **/
-+static inline unsigned int folio_pmd_batch(struct folio *folio, pmd_t *pmdp, pmd_t *pmdentp,
-+				  unsigned int max_nr, fpb_t flags, bool *any_writable,
-+				  bool *any_young, bool *any_dirty)
++static inline pud_t __swp_entry_to_pud(swp_entry_t arch_entry)
 +{
-+	pmd_t expected_pmd, pmd = *pmdentp;
-+	bool writable, young, dirty;
-+	unsigned int nr, cur_nr;
++	pud_t pud;
 +
-+	if (any_writable)
-+		*any_writable = !!pmd_write(*pmdentp);
-+	if (any_young)
-+		*any_young = !!pmd_young(*pmdentp);
-+	if (any_dirty)
-+		*any_dirty = !!pmd_dirty(*pmdentp);
-+
-+	VM_WARN_ON_FOLIO(!pmd_present(pmd), folio);
-+	VM_WARN_ON_FOLIO(!folio_test_large(folio) || max_nr < 1, folio);
-+	VM_WARN_ON_FOLIO(page_folio(pfn_to_page(pmd_pfn(pmd))) != folio, folio);
-+
-+	/* Limit max_nr to the actual remaining PFNs in the folio we could batch. */
-+	max_nr = min_t(unsigned long, max_nr,
-+		       (folio_pfn(folio) + folio_nr_pages(folio) -
-+		       pmd_pfn(pmd)) >> (PMD_SHIFT - PAGE_SHIFT));
-+
-+	nr = pmd_batch_hint(pmdp, pmd);
-+	expected_pmd = __pmd_batch_clear_ignored(pmd_advance_pfn(pmd, nr << (PMD_SHIFT - PAGE_SHIFT)), flags);
-+	pmdp = pmdp + nr;
-+
-+	while (nr < max_nr) {
-+		pmd = pmdp_get(pmdp);
-+		if (any_writable)
-+			writable = !!pmd_write(pmd);
-+		if (any_young)
-+			young = !!pmd_young(pmd);
-+		if (any_dirty)
-+			dirty = !!pmd_dirty(pmd);
-+		pmd = __pmd_batch_clear_ignored(pmd, flags);
-+
-+		if (!pmd_same(pmd, expected_pmd))
-+			break;
-+
-+		if (any_writable)
-+			*any_writable |= writable;
-+		if (any_young)
-+			*any_young |= young;
-+		if (any_dirty)
-+			*any_dirty |= dirty;
-+
-+		cur_nr = pmd_batch_hint(pmdp, pmd);
-+		expected_pmd = pmd_advance_pfn(expected_pmd, cur_nr << (PMD_SHIFT - PAGE_SHIFT));
-+		pmdp += cur_nr;
-+		nr += cur_nr;
-+	}
-+
-+	return min(nr, max_nr);
++	pud = __pud(mk_swap_rste(__swp_type(arch_entry), __swp_offset(arch_entry)));
++	return pud;
 +}
 +
- static inline pte_t __pte_batch_clear_ignored(pte_t pte, fpb_t flags)
+ static inline swp_entry_t __pmd_to_swp_entry(pmd_t pmd)
  {
- 	if (!(flags & FPB_RESPECT_DIRTY))
+ 	swp_entry_t arch_entry;
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 1662c5a8f445..a68ff339cd56 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -656,6 +656,23 @@ static inline pud_t pud_mkwrite(pud_t pud)
+ 	return pud_clear_saveddirty(pud);
+ }
+ 
++#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
++static inline int pud_uffd_wp(pud_t pud)
++{
++	return pud_flags(pud) & _PAGE_UFFD_WP;
++}
++
++static inline pud_t pud_mkuffd_wp(pud_t pud)
++{
++	return pud_wrprotect(pud_set_flags(pud, _PAGE_UFFD_WP));
++}
++
++static inline pud_t pud_clear_uffd_wp(pud_t pud)
++{
++	return pud_clear_flags(pud, _PAGE_UFFD_WP);
++}
++#endif
++
+ #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+ static inline int pte_soft_dirty(pte_t pte)
+ {
+@@ -1557,6 +1574,22 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+ 	return pmd_clear_flags(pmd, _PAGE_SWP_SOFT_DIRTY);
+ }
+ #endif
++#ifdef CONFIG_HUGETLB_PAGE
++static inline pud_t pud_swp_mksoft_dirty(pud_t pud)
++{
++	return pud_set_flags(pud, _PAGE_SWP_SOFT_DIRTY);
++}
++
++static inline int pud_swp_soft_dirty(pud_t pud)
++{
++	return pud_flags(pud) & _PAGE_SWP_SOFT_DIRTY;
++}
++
++static inline pud_t pud_swp_clear_soft_dirty(pud_t pud)
++{
++	return pud_clear_flags(pud, _PAGE_SWP_SOFT_DIRTY);
++}
++#endif
+ #endif
+ 
+ #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+@@ -1589,6 +1622,21 @@ static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
+ {
+ 	return pmd_clear_flags(pmd, _PAGE_SWP_UFFD_WP);
+ }
++
++static inline pud_t pud_swp_mkuffd_wp(pud_t pud)
++{
++	return pud_set_flags(pud, _PAGE_SWP_UFFD_WP);
++}
++
++static inline int pud_swp_uffd_wp(pud_t pud)
++{
++	return pud_flags(pud) & _PAGE_SWP_UFFD_WP;
++}
++
++static inline pud_t pud_swp_clear_uffd_wp(pud_t pud)
++{
++	return pud_clear_flags(pud, _PAGE_SWP_UFFD_WP);
++}
+ #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
+ 
+ static inline u16 pte_flags_pkey(unsigned long pte_flags)
+diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
+index f06e5d6a2747..0cf02ddd3d4b 100644
+--- a/arch/x86/include/asm/pgtable_64.h
++++ b/arch/x86/include/asm/pgtable_64.h
+@@ -236,8 +236,10 @@ static inline void native_pgd_clear(pgd_t *pgd)
+ 
+ #define __pte_to_swp_entry(pte)		((swp_entry_t) { pte_val((pte)) })
+ #define __pmd_to_swp_entry(pmd)		((swp_entry_t) { pmd_val((pmd)) })
++#define __pud_to_swp_entry(pud)		((swp_entry_t) { pud_val((pud)) })
+ #define __swp_entry_to_pte(x)		(__pte((x).val))
+ #define __swp_entry_to_pmd(x)		(__pmd((x).val))
++#define __swp_entry_to_pud(x)		(__pud((x).val))
+ 
+ extern void cleanup_highmap(void);
+ 
+diff --git a/include/asm-generic/pgtable_uffd.h b/include/asm-generic/pgtable_uffd.h
+index 0d85791efdf7..59c9d6762ec8 100644
+--- a/include/asm-generic/pgtable_uffd.h
++++ b/include/asm-generic/pgtable_uffd.h
+@@ -78,6 +78,21 @@ static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
+ {
+ 	return pmd;
+ }
++
++static inline pud_t pud_swp_mkuffd_wp(pud_t pud)
++{
++	return pud;
++}
++
++static inline int pud_swp_uffd_wp(pud_t pud)
++{
++	return 0;
++}
++
++static inline pud_t pud_swp_clear_uffd_wp(pud_t pud)
++{
++	return pud;
++}
+ #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
+ 
+ #endif /* _ASM_GENERIC_PGTABLE_UFFD_H */
+diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+index a9ff94b744f2..122ac50aeb09 100644
+--- a/include/linux/leafops.h
++++ b/include/linux/leafops.h
+@@ -117,6 +117,39 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
+ 
+ #endif
+ 
++#ifdef CONFIG_HUGETLB_PAGE
++/**
++ * softleaf_from_pud() - Obtain a leaf entry from a PUD entry.
++ * @pud: PUD entry.
++ *
++ * If @pud is present (therefore not a leaf entry) the function returns an empty
++ * leaf entry. Otherwise, it returns a leaf entry.
++ *
++ * Returns: Leaf entry.
++ */
++static inline softleaf_t softleaf_from_pud(pud_t pud)
++{
++	softleaf_t arch_entry;
++
++	if (pud_present(pud) || pud_none(pud))
++		return softleaf_mk_none();
++
++	if (pud_swp_soft_dirty(pud))
++		pud = pud_swp_clear_soft_dirty(pud);
++	if (pud_swp_uffd_wp(pud))
++		pud = pud_swp_clear_uffd_wp(pud);
++	arch_entry = __pud_to_swp_entry(pud);
++
++	/* Temporary until swp_entry_t eliminated. */
++	return swp_entry(__swp_type(arch_entry), __swp_offset(arch_entry));
++}
++#else
++static inline softleaf_t softleaf_from_pud(pud_t pud)
++{
++	return softleaf_mk_none();
++}
++#endif
++
+ /**
+  * softleaf_is_none() - Is the leaf entry empty?
+  * @entry: Leaf entry.
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index a50df42a893f..1abd9c52a4f2 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1761,6 +1761,22 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+ 	return pmd;
+ }
+ #endif
++#ifndef CONFIG_HUGETLB_PAGE
++static inline pud_t pud_swp_mksoft_dirty(pud_t pud)
++{
++	return pud;
++}
++
++static inline int pud_swp_soft_dirty(pud_t pud)
++{
++	return 0;
++}
++
++static inline pud_t pud_swp_clear_soft_dirty(pud_t pud)
++{
++	return pud;
++}
++#endif
+ #else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
+ static inline int pte_soft_dirty(pte_t pte)
+ {
+@@ -1821,6 +1837,21 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+ {
+ 	return pmd;
+ }
++
++static inline pud_t pud_swp_mksoft_dirty(pud_t pud)
++{
++	return pud;
++}
++
++static inline int pud_swp_soft_dirty(pud_t pud)
++{
++	return 0;
++}
++
++static inline pud_t pud_swp_clear_soft_dirty(pud_t pud)
++{
++	return pud;
++}
+ #endif
+ 
+ #ifndef __HAVE_PFNMAP_TRACKING
+@@ -2369,4 +2400,10 @@ pgprot_t vm_get_page_prot(vm_flags_t vm_flags)				\
+ }									\
+ EXPORT_SYMBOL(vm_get_page_prot);
+ 
++#ifdef CONFIG_HUGETLB_PAGE
++#ifndef __pud_to_swp_entry
++#define __pud_to_swp_entry(pud) ((swp_entry_t) { pud_val(pud) })
++#endif
++#endif
++
+ #endif /* _LINUX_PGTABLE_H */
 -- 
 2.35.3
 
