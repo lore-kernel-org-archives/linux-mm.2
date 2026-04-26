@@ -4,105 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9455AFF885C
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 11:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBABFF885D
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 11:09:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5AE66B0005; Sun, 26 Apr 2026 07:08:33 -0400 (EDT)
+	id 62CAB6B008A; Sun, 26 Apr 2026 07:09:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0BFD6B008A; Sun, 26 Apr 2026 07:08:33 -0400 (EDT)
+	id 5DCF86B008C; Sun, 26 Apr 2026 07:09:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FACF6B008C; Sun, 26 Apr 2026 07:08:33 -0400 (EDT)
+	id 51A1E6B0092; Sun, 26 Apr 2026 07:09:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BA536B0005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 07:08:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A54A1B89CB
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 11:08:33 +0000 (UTC)
-X-FDA: 84700433706.08.F0DF122
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8D342180006
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 11:08:30 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=E3nYPyZi;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf16.hostedemail.com: domain of fujunjie1@qq.com designates 43.163.128.53 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4265C6B008A
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 07:09:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DBBF91B8532
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 11:09:29 +0000 (UTC)
+X-FDA: 84700436058.06.F6739D6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 19F1610000A
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 11:09:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LBhlIXrl;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777201711;
+	s=arc-20220608; t=1777201768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YJoTltremD7Kya8CfcAZL7++rjFxHo615qsgHJhBL7k=;
-	b=Rj4XM5c6cA7S99TFn8VxU5fqSrMiHft9MaHf7U7KS31phJ8YnCscyk/61dxy41+qEFh3BX
-	3ODks6r9vvH9kfwSlQqEeXonrgt2EeuVGbTMO/mDCV7GhSXbPLHaOvubPSE0fWcKMQt1Dx
-	r4eC7/MklBtaf+uXr9bMdVIEF04K8hs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777201711; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7wHPK2qiAWP541LNIZUE2iRjUCI+lxAiteZ8VOWogGs=;
+	b=tGfidd2kPSmocFp0c9JdmprOt2k5lhOWqhc69C0YdlOmTPmmW4dXg0FcaqXvx1f1TNCAsO
+	dwH2aaTNv6stFFGVnCdCPLTuPFvdd5I4FoXGdgZeBgXe2MxMu/iRLDA8iiHIB8yfj0uHUK
+	XJi+u5H+9tOnhKCyL8qHV67mO/VINGs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777201768; a=rsa-sha256;
 	cv=none;
-	b=yV7ijp4l+A74s98dbcKFHpqxNOxll+2ZXlfE/4uPW3hK+yEszjnjLIKs0wiyr7lgeoUNJF
-	NLcxiEafB6x9PMeiEGvvSWFdzsWKRCnJrwIY8T8IQjZjbggk4V+8SIKEQbZq++HgGINGvU
-	Az67AlL1ZLwzRd08H7yh3sQF7tsy7nE=
+	b=FuF/gUSj7lKqUYBJM/G7byRzAXGyiSKnzRTnVFYZ+/EuUDG1X1qRvdr0ha0digqQIa56hM
+	ZkL5AZXlg6yhNcnVDg81DnqbWXY8sJQEWElOtkQgJazRQg1iBMpWO2X6UlFp5wGvonOOTM
+	GxRHRepO8dRMQcUHfyQB+CsYMqldikw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=E3nYPyZi;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf16.hostedemail.com: domain of fujunjie1@qq.com designates 43.163.128.53 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1777201706; bh=YJoTltremD7Kya8CfcAZL7++rjFxHo615qsgHJhBL7k=;
-	h=From:To:Cc:Subject:Date;
-	b=E3nYPyZi/nF16AESo6Y1spzEVSpeDPC7BouJEU14Xiu79toRnPsKhOy4pRCqm3W57
-	 CzQtqXFAhjbjqq4ktFBjMsEMYHcZraCkx4fsl6A+n1xE5PCBtY0b6d49PnFdpH2XJK
-	 d/CI3onXaAnXu9FGk355PazR0npU5ukCwqxW4c6Y=
-Received: from node68.. ([166.111.236.25])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 21735AF9; Sun, 26 Apr 2026 19:08:23 +0800
-X-QQ-mid: xmsmtpt1777201703txxumchuu
-Message-ID: <tencent_98F3571EF9236437E5165F5C08CF258A9E08@qq.com>
-X-QQ-XMAILINFO: NC4p7XQIBeahjLyMy+mxShhJwheb0epV3omBl741iKBFUbGfcokmwWgbO66a+f
-	 HdGjCKikyvlZpq3vJ47kYD7Xt3wEWLpJpE5ekGucYfRx2Mx0tcqEoWBI23wlnf0J7q/1N7M94QkR
-	 WvqwRoFi6IuonuXBq1UnT/wf5aZsN2XSzyPbtnvugXKXFh1ddvMh1Lnj5oz5K13rLdnv75AVUgba
-	 Yu5sud5JSuIlVfsT9XAsCCzdxmWqwO8sJCKz+ol9PLQvYM9VTyU5Hkzy0nAEQvjoxD+WDkqyDpjx
-	 eUPfrmReCPvhvtoj0MBkMQoKoY7ewSY0L1yVzapwz1AW9HP1ZeoeWvSM3DJ1hzfUaJCWKra4/xaD
-	 LcifQ1H10kW4yMsmD8dQz5kEH4gYFg0lojl023Qou7ywrEN0uxhA2T5MqpuS5dVbI5bEeZAwb8rS
-	 hi/nM9pg4pZs1WVkIAaf1AXqmrxtW0UrM4bBmHZjMFmNsd2Gu6zhZR5MD3YHoDkdFz5xxnnmjiKW
-	 0YSPABOoG/9eUV8x47gFw3qqBTITNc9BzGJGZvy2bv51wmTPG1FSxQ5bOKcixTFnlWlPmp5cVO53
-	 2KBVfVDg0K/uIddWMKbxTQZ23VNzL/ks8GYX88R9hAj7AeDpX/aKbQQSAnrbiVHqAAW1hLW+Tyq7
-	 BuO8K8nL9bwFphh9T2AbwU+dznVXTYnw2vKNa9Np+4fphNS+2CiSw418CGAueIr2/JZqbuhd1whI
-	 LMtutB1YZdgC2cdl545YFKzvXMzHoPmn7myG8QrFaKfuxz+QiTYvS5AhNGyZBFXQwFMc8TsNVjHS
-	 O89OXMz2ZFnJinPw/fgAEfk/xpsLgpq/ku8Xva+gq6QJJxVJff9Iwu5VhBQbIZEnexMnqP0UVVFm
-	 meeqHtmKYEv4eEKhHMKKdqaGtXswShEQtqqQeB2Q06knSj6hJWb9k/pG7AqHMZhSU3fwcpC3Q7mr
-	 AGNAB991WdLLTDGUT4quG8Vzs8L3xobL2JmdZqLZK9ojDvvBCR/sUrFGA3TTHOpXuhpEE+R+LD23
-	 wht2/PX3/8eMWajK2Khpgp2h/r9BI=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-From: fujunjie <fujunjie1@qq.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	fujunjie <fujunjie1@qq.com>
-Subject: [PATCH] mm/madvise: reject invalid process_madvise() advice for zero-length vectors
-Date: Sun, 26 Apr 2026 11:08:22 +0000
-X-OQ-MSGID: <20260426110822.2750927-1-fujunjie1@qq.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LBhlIXrl;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E739041929;
+	Sun, 26 Apr 2026 11:09:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4F2C2BCAF;
+	Sun, 26 Apr 2026 11:09:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777201766;
+	bh=pbIEORir0Ac/K2INhsvTrLmqOd8GXcfOwlVr+xdk80c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LBhlIXrlz7FDITo83KiESVr8Z6pZkiZQQn1pWmi8jVCmJwkpwXlYYhaje6yhNNl7N
+	 HM1B4KVo/xcTuEyTdoPQYDa6hTU4m5djY4XkWF8j+0dgHedNIlm7FUEEEVO25q40Gt
+	 N8GjHLYgmEK0ujoWeJLH4e5KZmGAu9U1ZkQTcmCw=
+Date: Sun, 26 Apr 2026 04:09:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Min-Hsun Chang <chmh0624@gmail.com>, arnd@arndb.de, msalter@redhat.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] asm-generic: replace ________addr with
+ __UNIQUE_ID(addr)
+Message-Id: <20260426040925.b25cb2a32680bfe884431abf@linux-foundation.org>
+In-Reply-To: <20260426114938.4dff28c8@pumpkin>
+References: <20260307092119.20733-1-chmh0624@gmail.com>
+	<20260322144032.7353997c@pumpkin>
+	<20260425135737.e79c4b546d22b5ebfd96c0b5@linux-foundation.org>
+	<20260425230134.5449498a@pumpkin>
+	<20260425151240.2a46e3a8640fde3902461d41@linux-foundation.org>
+	<20260426114938.4dff28c8@pumpkin>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 19F1610000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8D342180006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: wkyiguw1qq4exe6iowmb96889fh71sex
-X-HE-Tag: 1777201710-721049
-X-HE-Meta: U2FsdGVkX1+oeBvwcR+aOgT4OXR2Xz83GdNZFWs50WUoTmpJBwR/c89FOVpKgZWO3b4qRUpRlfPvn7fmh/wjAJsn5TeHp47MNbqassQkyBIHHcCS5/5OcGb9hLAfZjVSexTmBtRHs6aQMdPUaRgyMAS6EDGrdiVISfV0vz8ef27LfEh/8xCMHvDY5p0/i264NYxNUI2e6iPszb6qOzFVNDsnqVe4JMcjSmq+MpqjtD7f383zSQbOdlkqhYeV/EfW+qO2zV2dyN5dBwD8nsI4KKWRC3ocMcDGW/am/rRWPSLzRGVs6z4vsGvmicFOWmKwmgup0N1j2ZzAlXyinruDj0OatznIae1inkqSfvEB33orVSdBE50CzVPV4wLqmbvSo7ZghTBGKKnCqzglqHpbYZQYBRwzTRPaxU76TSFUsokyxAYNZP3UxeI/qK3whbNy9sQrJjXEwXPSzWqROnMWp9I07vpOQzPBoHhR7geNhY2/CkkNlqfFjI0E2HiKoUOjHyq8E8QX5fmpeEeiaoIysfTO8cQ2hq8ReHs3s6HuaYLP58TJgokKjpAS3h6oSep7FEzLAeMSAlAI0kzjzoreBOcXKWx9XPHWMrHLdw3RNrsrw7PX+Mgsqee5ivh7Lwroj3mPiWHk/4W6KBHvkL3xSRe6ljUgfn1AE/GY5jf7HziP9+BoE9OSLyecHQm/UQ4tXKW22whXV4tD0aEXO5Pq6KKHi282vA37wDw/+eWIZB1r/2m3QwOcLoJifWyYba+37D0PtDKexQXZuWhXQ3di3GQJSzVopd28FLRn9r21V1gQOdVXsn5pbd7HfMRiRt7cH9XbbtEwbH/B5tyiTRfkDgdjQWkWFtdgVGoDLd3bg209dgNtEoW83IniHqeQ9RlZ2bOP0wDVQq3r+YbOpRiiLwSRNy81fA8tw6C8cb+JLpvXwKz1rZcGa1YsNWwIF7L6QEDEEHZMfEVFcqyTy52
- ZaMXElrS
- mWVwkOvQ/vIiDMVOr37hFDsyj3obnLulv6yzP/XMfEotzTKlFYcg3EAnS3e2060sbTcKb9eS8hPeXudU6iiScWI/141nLCUuYlE2nbzZo09DeC/ttq8zo9NQ6WQKTqxUWWcinHoWMgta9uckpVogoxN++wZmdSiqxV9kDuWqF1WTO32mSnTjDsZsEPCAgKBciGqqdNFiZIN6eZq2K/ULmsYwgmCwbyUsVGTR9BMAposP/upqnRSZp7YIBVTr4KwDEl0dp60USnxQWWCdlokUzOI860lNIX4MDjDzQrLNz2hwLRgxgqmUhJB9UTg==
+X-Stat-Signature: h8jjh1fsdmr5o4fw5pwgj7516h7co9t6
+X-HE-Tag: 1777201767-244640
+X-HE-Meta: U2FsdGVkX19yfGosy1kN3RYfzqB1FOJaf5diqYet/HtGyNnhwjqbVpp98rMgcnRM4WhnuD+j6TMeGEt9+PIdBBmRm0iqYP9R5PB89XM2Mfcj3eUhqK4wmQZi4NxoMgHcpBque7x1Da1qw5sSrOVn4t40d9+wfZ9t8QjTI6P51/aNHb9AwC/AtTlnXLD0Jj84M48vBLzhtd7EL8XbU7UPK8zeUlUwAYb8DYlSF4PJBpgC5KscEj+DU0lLg9V5SQgKq22DxZtDvhl503LTQjpiP1lHa+6MwCQDl5xzDEvDJIlrdFIaI2TFelx4NgDj0rQPNHWm8nuXYOUPZDVPoeWeyRCnV00orP9eqoRUiCmJq9v08Tmzi/YSf4jiibp0JPokNmTl2ojUTLyCduC7ZYznUl5AxFdp7ibSXFYiEcPFn2D2Xxrheasgn9BC6Ap7EaRKBobUNuZWGISsKBrp9Ywn7lIgiHgUOXMKh+t8Ns5OOJpt4n+YsNq3vEyLx6vDyd/C7sEHQP9URLUdV9Qfzzi3/UPvdhYMDrIN5BWDGd5EzqtrBN6xPar1qpCHDWh/Rgjvfi6VnKIDzCInQXbEhmJC994wgVRfeZWIPFDu5KMfcV2sfELUFWTQL8OfkqHklytJAlI5C+/AEmxp6fc//8SB35iCb24/b1Fak2ivTZ8nIHJIq9gzrae0EziJKGa53yzni6jl2vvtQvXUYV9CBLVWr13aEbNzdoBCRCiDcctkAV/hii9FMWKf+r9WgH8GZF7+bljUcUGiJriudSgzwgU2eAbtuj+eDJQBr9hQ0DnUurermNiPNimEOYSPQs+UV2MchZbJoer+gbxyuWB0t0ePUDMSI3P5qQTfcKoixOZT2JjOeBw5Im3yJrBiAskWi5jRp1JXTXO46dkY6uhvcR6pnf/drkZuBS5g/pF26YIoAx6L5lkfMPOHJQtm0h+7GA7wrkfolGIq2VNZDuGoATm
+ IBwnlgzD
+ A58JdczC1IE6ovlqX8FhzwH53EOQYjIigMjgQYN+7p0utLYiPvoRhQujNbad1fzoQV2ZG6+f7u5GiaMToMlL3DqjO0E5nSiqCyVQabUEAfbYwwR1ygxErs428ScgNeGrrIWXhP5sB1Q+/QhayyvWlEakkqDoLmSjZ8JJJ6L8IXjAOiizTbtOtdMIL0fpDEmYKXCydAzAEzHy++hN1X/E0WrxKk1jJwfDfcWNOgCuww9UKiL+IEPH95bzHQ/2A9lNtHI4XWaBtPBAxvEHEskiE57r7Kem4oq/u66XlsKdHRAPB56cFKTsANsl4bK12byy++cZ/z96AdjOZ5eEmnQ+cueB0IRnOI2BKkmhh9j8X9FXrgYRe4i+BxX9lA3GTPQg1BkhE5jskZfMc315kDJr+oQWVYuL6RhJDnxsaEdmgTK1Z6x+fjheNFUt1kbd7s0RpwKkq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,93 +96,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-process_madvise() validates the advice while walking the imported iovec.
-If the iovec has zero total length, vector_madvise() never enters the
-loop and returns 0 without checking whether the advice value is valid.
+On Sun, 26 Apr 2026 11:49:38 +0100 David Laight <david.laight.linux@gmail.com> wrote:
 
-For a local mm, such as process_madvise(PIDFD_SELF, ...), the remote-only
-process_madvise_remote_valid() check is skipped.  As a result, an invalid
-advice can be reported as success when the vector has zero total length.
-This differs from madvise(), which rejects an invalid advice before
-returning success for a zero-length range.
+> On Sat, 25 Apr 2026 15:12:40 -0700
+> Andrew Morton <akpm@linux-foundation.org> wrote:
+> 
+> > On Sat, 25 Apr 2026 23:01:34 +0100 David Laight <david.laight.linux@gmail.com> wrote:
+> > 
+> > > > > The real problem with this define is that both idx and phys are
+> > > > > expanded twice.    
+> > > > 
+> > > > The real problem with this define is that it's a define.  Why oh why do
+> > > > we keep doing this to ourselves?  
+> > > 
+> > > Sometimes #defines generate better code because they are expanded earlier,
+> > > and sometimes you want type-agnostic 'functions'.
+> > > But neither is true here.
+> > > 
+> > > But I think I'd go for 'always_inline'.
+> > > Sometimes the compilers make silly decisions.  
+> > 
+> > Gee, if `static inline' misbehaves then we have big problems!
+> > 
+> > What's special about the fixmap code anyway?  It's not exactly
+> > fastpath.  Perhaps this stuff can simply be uninlined.
+> 
+> Some of the inlines are trivial - just adding an extra parameter.
+> But this set would be simpler if the last function
+> (__native_set_fixmap() for x86) returned (address & ~PAGE_MASK)
 
-Reject invalid advice before walking the vector.  Valid zero-length
-requests remain no-ops and continue to return 0.
+I don't understand this?
 
-Add a selftest that covers invalid advice with a zero-length iovec and an
-empty vector, while also checking that a valid zero-length request still
-succeeds.
+> > 
+> > Pet peeves:
+> > 
+> > We use too many macros.
+> 
+> Indeed, I get fed up of looking things up to find they are trivial.
+> Some of the 'helpers' do nothing for core readability.
+> Even things like BIT() can have unexpected consequences.
 
-Fixes: 021781b01275 ("mm/madvise: unrestrict process_madvise() for current process")
-Signed-off-by: fujunjie <fujunjie1@qq.com>
----
-Testing:
-- Built bzImage.
-- Built tools/testing/selftests/mm/process_madv.
-- Ran tools/testing/selftests/mm/process_madv in QEMU:
-  # PASSED: 7 / 7 tests passed.
+Sure.
 
- mm/madvise.c                              |  3 +++
- tools/testing/selftests/mm/process_madv.c | 29 +++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+> Not to say I haven't got the pre-processor to do odd things in the past.
+> But it is usually trying to avoid having to keep multiple definitions
+> aligned with each other.
+> 
+> > We inline too much stuff.
+> 
+> True - don't look at what strlcpy() can generate.
+> The inline code should just get the constants from the compiler and
+> then call the appropriate function.
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 69708e953cf56..83fe9e651a907 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -2046,6 +2046,9 @@ static ssize_t vector_madvise(struct mm_struct *mm, struct iov_iter *iter,
- 
- 	total_len = iov_iter_count(iter);
- 
-+	if (!madvise_behavior_valid(behavior))
-+		return -EINVAL;
-+
- 	ret = madvise_lock(&madv_behavior);
- 	if (ret)
- 		return ret;
-diff --git a/tools/testing/selftests/mm/process_madv.c b/tools/testing/selftests/mm/process_madv.c
-index cd4610baf5d7d..9a7e2788fcc50 100644
---- a/tools/testing/selftests/mm/process_madv.c
-+++ b/tools/testing/selftests/mm/process_madv.c
-@@ -309,6 +309,35 @@ TEST_F(process_madvise, invalid_vlen)
- 	ASSERT_EQ(munmap(map, pagesize), 0);
- }
- 
-+/*
-+ * Test that invalid advice is rejected even when the iovec has zero total
-+ * length. A zero-length advice is a no-op for valid advice, but invalid
-+ * advice should still fail with EINVAL.
-+ */
-+TEST_F(process_madvise, invalid_advice_zero_length)
-+{
-+	struct iovec vec = {
-+		.iov_base = NULL,
-+		.iov_len = 0,
-+	};
-+	int pidfd = self->pidfd;
-+	ssize_t ret;
-+
-+	errno = 0;
-+	ret = sys_process_madvise(pidfd, &vec, 1, -1, 0);
-+	ASSERT_EQ(ret, -1);
-+	ASSERT_EQ(errno, EINVAL);
-+
-+	errno = 0;
-+	ret = sys_process_madvise(pidfd, &vec, 1, MADV_DONTNEED, 0);
-+	ASSERT_EQ(ret, 0);
-+
-+	errno = 0;
-+	ret = sys_process_madvise(pidfd, NULL, 0, -1, 0);
-+	ASSERT_EQ(ret, -1);
-+	ASSERT_EQ(errno, EINVAL);
-+}
-+
- /*
-  * Test process_madvise() with an invalid flag value. Currently, only a flag
-  * value of 0 is supported. This test is reserved for the future, e.g., if
+I can't actually find an in-kernel strlcpy()?
 
-base-commit: 1b55f8358e35a67bf3969339ea7b86988af92f66
--- 
-2.34.1
+> As does the compiler.
+> pixpaper_panel_hw_init() repeatedly calls two static functions that
+> contain sleeps. They all get inlined bloating the code size and
+> exploding the stack when clang separately allocates all the buffers
+> in the called functions.
+
+Poor thing.  I guess compiler developers are more focused on userspace
+code and aren't especially concerned about kernel's particular
+requirements.  And that's understandable - it's down to us to persuade
+them to add options to permit us to tune the compiler behavior.
 
 
