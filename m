@@ -4,130 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8571FF885D
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 09:27:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F265FF885C
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 10:49:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45A706B0098; Sun, 26 Apr 2026 05:27:43 -0400 (EDT)
+	id 069016B0005; Sun, 26 Apr 2026 06:49:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40B476B0099; Sun, 26 Apr 2026 05:27:43 -0400 (EDT)
+	id 01A076B008A; Sun, 26 Apr 2026 06:49:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 321C26B009B; Sun, 26 Apr 2026 05:27:43 -0400 (EDT)
+	id E72426B008C; Sun, 26 Apr 2026 06:49:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 23C106B0098
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 05:27:43 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D95321601EC
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 09:27:42 +0000 (UTC)
-X-FDA: 84700179564.18.784A417
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1107980006
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 09:27:40 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=dSFst2Jb;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D62186B0005
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 06:49:43 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1CB211B89B4
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 10:49:43 +0000 (UTC)
+X-FDA: 84700386246.24.A270973
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4F6A0180004
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 10:49:41 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FCWhKPr+;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777195661;
+	s=arc-20220608; t=1777200581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sKHGjwyqOWL6rVsBt0Sw/YSvydX7Gt+2C2Tpk5skGPU=;
-	b=5cBnyvOZjckA6KansdSyA5KCq+RNRqdQUpBi60wD298brVtThE/cW56jepRT6kaaUIhUpt
-	y/W4KoARb+LtpIMtLbXfzImeIKxku688LQewyoJSpra9XTnmBAr5NUAdJQKLnrr7OMQp0e
-	pPy2cOaSiw0TASO/p602z0I3cqLhHxA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777195661; a=rsa-sha256;
-	cv=none;
-	b=UQbRDhk1P1CUhdo54xLR+UOPbVrTUDfionh4rTvX8C09kxUtgyCOgH8iQ1umYF5sLPQtGs
-	sqZHAl/rAc5HuyGigRtbDHN+C0a5uHEFUe1LZVAl4dwW4Z89sCeB4k78HuF8HV0LrdAU9s
-	MZqEKvMHGtOa9Pzpf+ntTI/DD/6OGp4=
+	bh=ajDY3kCUWUjj1xfsi9X6I95j2f9yaGXagZjSXs2416M=;
+	b=ClFgi+fI/f+qmWkMC4fETcMy+Iq72vrBWv1VuBamrEryiyNqM4JK6BVOLSKOtmUHS1Ijhy
+	AVZnEuEAWqp1TMgtz9ZneHvpzn5Nxy5pt3s+Esyqb0YTG9Mh1SDXeq1nRNaELluRoB08ht
+	+T54tr77dstUcofFl0tFHjwHGNGigyM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=dSFst2Jb;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b7adb38d65so30870375ad.2
-        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 02:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1777195660; x=1777800460; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sKHGjwyqOWL6rVsBt0Sw/YSvydX7Gt+2C2Tpk5skGPU=;
-        b=dSFst2JbBhmX+1eIMPT3ez+zDAidvlLM37/mgvoXqzA2yfcKuYLqof9R2ZhLYqfils
-         WGJOMGWLhTpWLpTVraqIT2fASkyMjfs6X8rRUHKZu0V62khdK71KKpZD1e4r0+fDqL58
-         IjRjSFGj12O+/BVbzS22PVFAFbtRu0HcwNAftymkSpAN3Nn8Jawv3yNXN9ErGo+Q/F4+
-         Oenav+oLgDdIe6HcIz7rwObivGIvWsdrRtbdGuDXdunu2/dHU9hoPxE42mrFWCUrVF6O
-         uz9jviMC8JO3BSRFpnzdx7PMC4WxBrfbw4IwY0qS0pvLv4HZUyF+nVapIzbI8mfvZZaf
-         HW5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777195660; x=1777800460;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sKHGjwyqOWL6rVsBt0Sw/YSvydX7Gt+2C2Tpk5skGPU=;
-        b=VZ9F1zjVhBXQVq2hOKIkgUjU+TEVznNGtWc8pcsmisjcTuTtPgM/WERYYuyuDNC/Lg
-         7wZPvV5W8dS870o/XU8p4MSTIVASZSYV+bgVGMsqvL1SbzP73/SgmwlL/DluX1wWkWoV
-         gdorhlNdRG/i5lV7cVRsWoaKVivy5iUcnM1xzgwu7iMQF5Q2Dky0k0X0I9YcCGa302cp
-         M8N/siyxEonAltqGfipZsI4B7ZvQJ52IGUwQGuK0/o6XjnNLk30YqrIwdWaBjnAl9rgp
-         8MihoDNrIEGVsVghN6GUG5tICRHfHG0Zd9eUyeyajzpne7jIY5dY4sMsABChI0ILQjW7
-         OAew==
-X-Forwarded-Encrypted: i=1; AFNElJ/xwSWzfjIm4buB1plMr1oq3/CGSFpTecQQNbBSzTxvbcuR0hzGZYJlHWdbe8r8EzMI9UVLCsBIag==@kvack.org
-X-Gm-Message-State: AOJu0YySEIY+ePvjbzEAGi1UHkjm4JEIs2l0NjkTHTvpNPJhOYakgw1Q
-	bNToKq5eSAA2Ysfk2QonLk7TkSIWN5GL61eTOxOXskta63xWLA4sGMrJV6MzVYCoINk=
-X-Gm-Gg: AeBDievjrUx1PGxwNzKJn1Gss2ewFgbRIv09D4dO+HdDvyklSeMN2rutc9WYkcyVwvI
-	UXbdf1S7W2VhgI7FoAGb+HTWRw4/EP2QP7DdVTZYKUJlpmpQ6+PNR7f6KVrcvGGHgD290FcInWl
-	KMFF1UxQ7TSxfrYD2jQ1nMjDMHCWbE5Qw9i3xHNzPVd/ifotkJ2t1Cgh/KNzq/bfB9V4kWlrUeH
-	IIJkF3fNHvUyUVslKY58khyZPvJVMlXOzBGUX5molqMP2/3Zne8ZUqiWw89hSj4QoPpwP4nbkgV
-	/aNQS7FSHtu/HvCYYlqNlJWFyxoInumiI0WT1000vva0pjrRafFIWW533lN6B2AAkbC3R8Baq/K
-	i7iSIbjnopOIKPPVc6atjWxBWf+uVPeusKKW/SLS/cWslgaufUraee52RwD6ihjRNywyUOZKVqO
-	En+hAgawMzZBGdI4NwP763UqtMRHN5
-X-Received: by 2002:a17:902:d652:b0:2b4:62bd:ee3 with SMTP id d9443c01a7336-2b5f9f5eac7mr310134635ad.33.1777195659828;
-        Sun, 26 Apr 2026 02:27:39 -0700 (PDT)
-Received: from n232-176-004.byted.org ([240e:83:200::34a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab0caa9sm270352885ad.40.2026.04.26.02.27.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 02:27:39 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v7 6/6] mm/mm_init: Fix uninitialized struct pages for ZONE_DEVICE
-Date: Sun, 26 Apr 2026 17:26:40 +0800
-Message-Id: <20260426092640.375967-7-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260426092640.375967-1-songmuchun@bytedance.com>
-References: <20260426092640.375967-1-songmuchun@bytedance.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1107980006
-X-Stat-Signature: im597f8zhnmetswjn4wbmcdpntew7i7t
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FCWhKPr+;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777200581; a=rsa-sha256;
+	cv=none;
+	b=BHRCHF/fEOmcvYJg+ofIOdd2EB85Ce5MEMI1n3rRU6J0RljS7QvzbQkgKVzwZM65IMDjZ2
+	y8uAQqxl80JS+nRsiwFDTqfl0YsUta+Y7SXk+yaPKyifN3OpW+PbJJrrs2EoDr+Nrg1fVy
+	2fXXL5nKBe/GPLsxhMlIyxhTDPz18gY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 10D6541AEE;
+	Sun, 26 Apr 2026 10:49:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9261BC2BCAF;
+	Sun, 26 Apr 2026 10:49:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777200579;
+	bh=L1nbLO0Xj7/K8G+R19OFJ/yJuZU2dwzW1RcyM4ouWPU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FCWhKPr+x/+OaHV3MpHuliUX7bbExsb2uYJYnKRtVWVy4rl0Nv8eVMX24Xbq19L9o
+	 AAnb3kFvhj2UigzwT9nWAugGbRwWKuiAwz8lsknVS1eItkpd3oFKo9YG6WSsTdAM7L
+	 FZI2jBVtYW1kqjslfJJtvI+qEGwq5SjujJ4ofF4o=
+Date: Sun, 26 Apr 2026 03:49:38 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+7d60b33a8a546263da7c@syzkaller.appspotmail.com>
+Cc: Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, ljs@kernel.org, shakeel.butt@linux.dev,
+ surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org,
+ Muchun Song <songmuchun@bytedance.com>, Qi Zheng
+ <zhengqi.arch@bytedance.com>
+Subject: Re: [syzbot] [mm?] WARNING: bad unlock balance in do_wp_page
+Message-Id: <20260426034938.db29d74982a8eb8463f8cf3a@linux-foundation.org>
+In-Reply-To: <69edca15.170a0220.38e3f1.0000.GAE@google.com>
+References: <69edca15.170a0220.38e3f1.0000.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1777195660-627824
-X-HE-Meta: U2FsdGVkX18Qvr5fg/1aLBrtQWbJsJxAFPp6PwXGmL5X/9kQZp6wlLvzoElb7bxflg2Ic9rk3d6D3rC9cqkDwIAlZlFh8p9OgDUE9EkNpE8ZBE44c3RIo6Lg0BEuhPxU5aRXp83Yp+uIM7iaj1mFU4d+v3z2t/tdUbnO6VHeuLI49tfdlMe7o2AnyV8q78uYGr6I+8ETkYsDh8GV8L0DULgWYsTcbuO4hsGc92CTt4MLZjDxfmKM7j3H+rFklZu7A3+MiruSp+4d8/bZ//RFNTRy1kIlOQmBe/5uMtzIZKIiztuJppyThLSj2D7GPNiE5AZcetI/kj2yEI0OugbE1d+cl82P8c7bvP2879D+mvf3l2IEMjWl3hpUP0z/+uCtx/B8mxnnjRG2FUYbmVaWOHv9PQgpsXdIrW9tO8iDrJffsxWZlPX4fohvVvC4+lml+nL2dWvOPg+6tdzostYYi/ejVBwosaaMSYfe4psdRHnk/6NlTbVFQRGcbSNwEXcQ9hHNKr43UR3skXD1E443cyqXiYFYOUXEOSNANvrNxwnrooSl7o+EOUA098zOmjy2S4Q81gqLlQXCyzXm7qQ3wYxh3vp7DIydMjdom6UGkAlLtIsssITzPso+8FcT8J4G3xK8qsEM3NQXNEBQxZqzck15qhfIm6R3lxZqeFeYaQurLRHdjmNlxrfBPGpPO5hDY0GIEs0vCvaWUNa+AYicA/Lol57G8GT4fEOTP35Ka9i7Rooy68l64BPQwsCAqzJRPyIdBrXtv4OT0REintLrTscnnjPWZT1I65ThlhQ9xYZ7CYCF1ZVhGGxfhdPIBGyOZcqbpNZS3oV9NcJXDv77SszEdt6jBqCDqV8wgGSSNGsvCf9Z+ixEwS2vSgEyTi9j3coA+EFJL9hslBjg1bFruh9Wm1eliuKJj0v1ys3NjV8Sc/cEJ+i3wksO/jE82pvOKR1SpIMWwzlgoeU2eJ9
- Otih8eoB
- awW8HXq49KECrJ+z8zMYyHPHQy1+7QsncCJ+t5qsswmmLPweuy18PW/AJRAjJ6Pqz7ag6rXu/xEk7tb28rCtfCEPEpMRh6QSs8UIctF54CPSnfiX9v2bnl0XhkJWRzdv6tQbrM7Nx0HhX+QbMeIUJVPnT/I3tEPklPont7S7D0kOjo34DeTNG23TJ45f4+ytSZ3sTnnPL/uW2gGqQg6Z0F5K1f7CrOYInYgJmoqapmeEsa6b29O66mYRpRfuQ5Ixo+88BxjSEaDuJ+aJTvAJhhulEyLd1ms+rj9ZpQIYmfiCfCLFTKifTx07lyGKz273OaxOGapqsbijQvbN8ZYsNeOeMWy6qREo9OPy9/v5hOshowVrbSjvmThWyYtxLvzfNRsrVl94qV/OsYg8=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4F6A0180004
+X-Stat-Signature: yf7xqryqajyntejy9r44t7bfwipm8rum
+X-HE-Tag: 1777200581-786939
+X-HE-Meta: U2FsdGVkX1/Iup8hgd/BL1Nmxnq9x8dORIK0LRb1Qj+C+i/n3KIMC9yiwLtI6UMkRhN25dq7U3QeA0qTLJaO79bw34+aQiSK5srCme0UAXlf6UgvghBUPR+918zmcMhw+4qAIo1lL/i2eLHuXAsIr5Zu4Jps0G+9N4LyS3wg8ioEEeWzgwx1TDZ+Va7HmOU+3sMyf85aAYYohouf+ojvZfFhNrUiyPEfL4qpHZ28xFfQJOMhnmi46QPFR1rIBcAStFK+9Ej5qLxO4WGeZikW3KvU3nRaUgpJBUQBKfvIvays8zhBhGvzRtbdg5NFph0gmMy9m0gD+Fcc/OJNHnrfVrIjpYfclJk2iGUfdqkEAU2nLSllc0iYMkDWB0ZKvLlZGb5EzEoNUyuu64JYRTPyGWZZvfVaBOUN3AQKlglICvgzZ3vbKDFIVl6uhlouq0+o+UePWU81tVyAL4ifGyBx7GUg6r75n/2zKdQRK14AHG9ugaeBkjWEiTk4+e7Z3CV7BuF3/OC7sKOZ0Q1GqWnNlIisU5Rqa5r5Qdf9xEZ4W6alt2WaboqnjLk7rK9PMXS+WTz6sQnT/WngkYnREDn5vk9AtcEjRvnPPRL+NH1FrkSsHut7Rtltw69nEZowKplr/JPDUop5QCZrME78xgb8cd6ofyqgQjx0aER5e5ngNVnD83ScUd9lAv8Qt/JbPSnQuQyL9WQ4SaEg9dmYf/vGry27ATkCS2el9wYTefU4iLpqBQQ211+Jm9B7Ns+hNpmxlWBSH3drfGO3JoZ0mYrzq9l6VU6xvAwYkVkSBGP6HbTmgYpHla61rTrS1k6YTTNiy1Kty3LLbGh4plJUJkOc7t+Z5v2vmlovw4AY+6RCUA4GVUeT08b28aTJPmuWG/WWfwSlzskuTDvgxNL+qmv0eqtmPSoSNiKcx3XZL91ztE59SID+C9d9UGx64WhHVFtPKTFfssW+lE9mJnUX7hU
+ RNumpOF6
+ eZysYO3JUyk2pah1YoTsKmAYTzmOrY9B0dyvLG2WWWhonV5n7hHTQ1dEOz+hTa+TAkf3djqMVHk68/Je55KIvdUOISFeaymuknr3TMx8oNjyK2UWFTy+YtC8K0Djw7oR63R9cV8QjAF9b8kReI00vf6DPRp9yGeDJz/AZX6PYADIOh4yaPNlO7dluL7KaJA8446SxYYHPpdIL4HfkwpXBUwNyd6puYco85jQk0IywvlK48hey2en5feaRLn+3rCe3TzECHGiEmrUJ9bbyFHZ6WTK45iOnEOE0Bd4BOXjN8YOdBnqK032HA8UexstynXZZVNd90uUhlC2Lu3UopTo1DpJAspFYDHsIBxyKWY8v6xi72PxQIgY3+FGyQihM2ek7u2CQoZ0MIL3Vb6fESR7UO+RS1RzC/HgsAJ5I7tNQrSIGfH2xIwJkV0TH02z/kT0MEqxaiOPFFRJkNp3skXz3t2xm1Bg9NAnM9ALQPiWo4r7+QevvdV3o8uE0kIwiIrd8ySfvq7ON2xER20vckXy1CDR6upy7SeHiByVKOUdUoan1taiTI9NjAW4qlWbgqg4DMBCWJSVgq3wzvHmvuTM2MWn22prxstqPJulKTWk7Hcy4/1zV449AG7oY0jbM3YIpwrah0D3V2u3SenNCQ9Ri7Ge+8pNH07coGQ5AmD1sM7VxGl0SmCKBhCe1Zm9N/qxpTHemrvT6Yf7dW04=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,59 +92,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If DAX memory is hotplugged into an unoccupied subsection of an early
-section, section_activate() reuses the unoptimized boot memmap.
-However, compound_nr_pages() still assumes that vmemmap optimization is
-in effect and initializes only the reduced number of struct pages. As a
-result, the remaining tail struct pages are left uninitialized, which
-can later lead to unexpected behavior or crashes.
+On Sun, 26 Apr 2026 01:17:25 -0700 syzbot <syzbot+7d60b33a8a546263da7c@syzkaller.appspotmail.com> wrote:
 
-Fix this by treating early sections as unoptimized when calculating how
-many struct pages to initialize.
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    6596a02b2078 Merge tag 'drm-next-2026-04-22' of https://gi..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=12483702580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=24c8da4692f901cb
+> dashboard link: https://syzkaller.appspot.com/bug?extid=7d60b33a8a546263da7c
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> userspace arch: i386
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
 
-Fixes: 6fd3620b3428 ("mm/page_alloc: reuse tail struct pages for compound devmaps")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- mm/mm_init.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+argh, that dreaded sentence.
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index cfc76953e249..bd466a3c10c8 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1055,10 +1055,17 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
-  * of how the sparse_vmemmap internals handle compound pages in the lack
-  * of an altmap. See vmemmap_populate_compound_pages().
-  */
--static inline unsigned long compound_nr_pages(struct vmem_altmap *altmap,
-+static inline unsigned long compound_nr_pages(unsigned long pfn,
-+					      struct vmem_altmap *altmap,
- 					      struct dev_pagemap *pgmap)
- {
--	if (!vmemmap_can_optimize(altmap, pgmap))
-+	/*
-+	 * If DAX memory is hot-plugged into an unoccupied subsection
-+	 * of an early section, the unoptimized boot memmap is reused.
-+	 * See section_activate().
-+	 */
-+	if (early_section(__pfn_to_section(pfn)) ||
-+	    !vmemmap_can_optimize(altmap, pgmap))
- 		return pgmap_vmemmap_nr(pgmap);
- 
- 	return VMEMMAP_RESERVE_NR * (PAGE_SIZE / sizeof(struct page));
-@@ -1128,7 +1135,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 			continue;
- 
- 		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
--				     compound_nr_pages(altmap, pgmap));
-+				     compound_nr_pages(pfn, altmap, pgmap));
- 	}
- 
- 	pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE);
--- 
-2.20.1
+Thanks.
 
+Something's definitely amiss.  This is at least the fifth report of
+rcu_read_lock() imbalance post-7.0.  Others:
+
+https://lore.kernel.org/69eab803.a00a0220.17a17.004a.GAE@google.com
+https://lore.kernel.org/69eab803.a00a0220.17a17.004b.GAE@google.com
+https://lore.kernel.org/69eafb0e.a00a0220.9259.0031.GAE@google.com
+https://lore.kernel.org/69ebcbe2.a00a0220.7773.0005.GAE@google.com
+
+In some cases we released it too often, in other cases we failed to
+release it.
+
+The first one is slightly more useful in that it tells us that the
+not-released rcu_read_lock() was taken in folio_lruvec_lock_irqsave().
+
+Muchun & Qi: you played with that rcu locking in 31b54a5e8916.  Can you
+please double-check that we didn't miss something?
 
