@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67867FF885D
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 14:05:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14D51FF885E
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 14:12:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C189B6B008A; Sun, 26 Apr 2026 10:05:51 -0400 (EDT)
+	id 3E44F6B0005; Sun, 26 Apr 2026 10:12:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF60B6B008C; Sun, 26 Apr 2026 10:05:51 -0400 (EDT)
+	id 3956A6B008A; Sun, 26 Apr 2026 10:12:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB8936B0092; Sun, 26 Apr 2026 10:05:51 -0400 (EDT)
+	id 2848B6B008C; Sun, 26 Apr 2026 10:12:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C1FA6B008A
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 10:05:51 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A6DE1A0596
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 14:05:51 +0000 (UTC)
-X-FDA: 84700880502.08.9C227BD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A42081C0008
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 14:05:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GuZN3lNZ;
-	spf=pass (imf20.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 172E66B0005
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 10:12:07 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B4A50160666
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 14:12:06 +0000 (UTC)
+X-FDA: 84700896252.22.AEA9674
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D2F544000F
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 14:12:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sbS+owDk;
+	spf=pass (imf12.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777212349;
+	s=arc-20220608; t=1777212725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ifUUoE5ADy0pilplShbL3vPBkM3Dr2g15JgBdHmlu10=;
-	b=xc43pd7PV6YInrvjsMF5uEFprpB6nrikb/fA5RxCaNbVqz9fDuckxOtZfZdoH9NG50q7Y1
-	+Fuk3FFNUlkL7u79DZtSeAkn1GonJnC9d6K2YB1uMa8lzRi3S1WyQhW1OLRB5BuZlS8Xt6
-	a7Ey0pWO9ERgXCuQr4+lSX5vsUw/8tc=
+	bh=Gbjq+JDm0qgbiH1vWyfH7KSSaHNCGUiItaFwx+TeQE8=;
+	b=x5Lj5D2qQDlfd+6u9j+U9Lam0jpiG01ZaZMKaLZGYYn9qxMWol9/BAxiSrEXbgYahoAdci
+	uDMOaEz7kmOBo+XIuq5nxmLqk0pE+KTrPeUfBC7lnX+sRZ8JOwt/ZQQbHfEVC1VxkKxHNE
+	BJLeMCFqveZLxeVQqSFuXorlEK7J2Bo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GuZN3lNZ;
-	spf=pass (imf20.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sbS+owDk;
+	spf=pass (imf12.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777212349; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777212725; a=rsa-sha256;
 	cv=none;
-	b=mPI+VfqRVUv9PrwVVeCKJCVz8gY5X18xZgDPAPKrqw4f+tqNDmiUG0wlvoR2DvykBsLNm4
-	z876mEO7JB60mzLCz1CNQ4MplRtolAXzcA8ftNI/glQVj1leINBGGNvIkV9NKZLfJJtXlx
-	ReY5nWchybADAK+jtboCwCuQcgrrru8=
+	b=sIanoD07mcMUGkY/UoRX344sKdpP5PvrBE3IPY/wBP4jkOLUvS3DsNuKUuDi7QjTxqY002
+	XTzaSWf91DfKaVZyWyxejdWZYzUY4RG427qDnd8qTLeeBkcRikZYNghVzEbVB8wV9hKt0I
+	ZfnpJHLc9oXo8DVynes6mWsgTmnBrUk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B276E60121;
-	Sun, 26 Apr 2026 14:05:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FB6C2BCAF;
-	Sun, 26 Apr 2026 14:05:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 268B840983;
+	Sun, 26 Apr 2026 14:12:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD22C2BCAF;
+	Sun, 26 Apr 2026 14:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777212348;
-	bh=T4tAq8f3GyMyfad25bLCniXA7N6Mz1oCdcVsZpFwgJ8=;
+	s=k20201202; t=1777212723;
+	bh=IRJJiiWDnfkZo3XiMcLry7109Jt3Fee6f9sFz863eWk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=GuZN3lNZME/yjE2qdULa20BWGzJC/R7ThVsMc3/fu4Nra77mXgLO8zF/akws1vuMR
-	 5SahTXISJHdXrw34jbyROxbYk2kXjFD0DgG3REtg1X/z9rFdbvC2ZI9LyV3VC8DdTm
-	 rZNPiqoj/9gDCnQKCW4ACKQsWaMmF3iW/6COSdXeZclcYHfxE0haX/Y7F8RxjWgXby
-	 YHKOBnQGknEAmkSGPRHysFUiOmCEr7sC1C+rOOr7stT0u2bqpa7hbEFwYzfx1vL4p2
-	 Wz42SCHeI5jshpWp6VH5zy8UKI2+Kh4XzYwcI5OYZsQJu6YQEOOBAOdvHWnnFFDHKZ
-	 iopiD24Wp+XyA==
-Message-ID: <2a2d77bb3caf096781b1a4a6000a1c1318d52840.camel@kernel.org>
-Subject: Re: [PATCH v3 2/4] mm: kick writeback flusher for IOCB_DONTCACHE
- with targeted dirty tracking
+	b=sbS+owDkb+Z6IQpYoYT79Ic65NymGwKhoyCQIan/oSu29or04JEu9p8piPBG2MMjx
+	 8ZqFJzx5pQjQ56T0JAjG2QuWKbTGaTyv6GxSWKvGcKjvrhYDWSFBU6KcImBFG38JKT
+	 LiDH0l0mUaePnvDMuxrGVwaRtp9igTEYCNY8kXp7zU1CmWGR4Ir0k1FnEfE9aqTEwY
+	 lrYws+O9sUW6NSs4tADsIlcV1yJd4oR0JmtinLwJVPzAuHj5S6sWWaUuYX8TBnMycn
+	 HABqFbdEjhzZukfuB1QzFmNwS63LYDeIjTPBAqDHnfTTSXsUEEFeCbPX7d5zFmwBnX
+	 W9RI3RnkIkW4w==
+Message-ID: <a1e784d7006fe5d4331d41a0638be117ac67fb21.camel@kernel.org>
+Subject: Re: [PATCH v3 3/4] testing: add nfsd-io-bench NFS server benchmark
+ suite
 From: Jeff Layton <jlayton@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner	
@@ -86,11 +86,11 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
  linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
 	linux-trace-kernel@vger.kernel.org
-Date: Sun, 26 Apr 2026 10:05:42 -0400
-In-Reply-To: <20260426052854.8372fb9d4c616f16a8aa0a0f@linux-foundation.org>
+Date: Sun, 26 Apr 2026 10:11:57 -0400
+In-Reply-To: <20260426053455.4c06140446976964e6fbb8ab@linux-foundation.org>
 References: <20260426-dontcache-v3-0-79eb37da9547@kernel.org>
-		<20260426-dontcache-v3-2-79eb37da9547@kernel.org>
-	 <20260426052854.8372fb9d4c616f16a8aa0a0f@linux-foundation.org>
+		<20260426-dontcache-v3-3-79eb37da9547@kernel.org>
+	 <20260426053455.4c06140446976964e6fbb8ab@linux-foundation.org>
 Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
  keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
  n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
@@ -169,14 +169,14 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-X-Stat-Signature: krk4hq5pcibzn3t9w41gptkjx1ui1fcj
+X-Stat-Signature: cn11j11th3xykdexbqz1diff3rnr49y6
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A42081C0008
+X-Rspamd-Queue-Id: D2F544000F
 X-Rspam-User: 
-X-HE-Tag: 1777212349-910513
-X-HE-Meta: U2FsdGVkX189WHTWSRJQrdIiCWIdebRnCenht876q+qN4jVtBvGQHule6WFXNkI18m9gW1WfSbwXOeNIUr4UY2nPGUev+PUJj6Azv8XDV1RxmU4zAMPV4bGlFC1GK/wx918ykthcKoAGGUaUusGC6QZJiJ9dStbXcmHzuYLlXK4nv08x5203NMWrXV5xAng8WFjKg6c2mi/JFPsVuqy/B3vwYbDqadlga8BYHmhXnXdxt0f0Vl/18tbp7+IWt39giVo53VG8AvZAmO9Fzx5qOU0zRV8zXdykT3nE1BYMkRioMlYu8Sq0mNvoy5UFgPPNm5WBhmpOFO9IaHoI9sHCidWQl1CTIkZvuSy9A27rxFzKXf0a44MHYL1wxTf3ivXhyVhPgU2jDUxADxf/HBSz5fX9nDsf44gz0k7aLg6b8RKoJNLZjiflLFTkrl8tD94XJcRMW9/rG7IY8m65FPtK7hAk/h+T1ZbcM84fX6FfoEEkayc7C2u+Dclni67oTZnzkcQ78hvDXAe7PftWrul+SGArXFnfXsa/Ax2I7srJKrTfebjtypFFLzkfSxJGgznYbwg+RpWEWFN3i+B52bfnuGtSfvq5+NiF6xCB0qqBhyIOjxjAP3s/g5bYw4dbBdQ00oyGzPDI3wT9WC6yUQJcwfj9pbAA1i1dcBWs66c2Vw1yV8HjVWOnc9CZbkoV637Hm5645L/knbVMw31iIclZXc6ZWUZkV3ThDw14qiO9zQaAIxLi28Q0Nc+F1EAK+sf4T0XVw/GVz3eJu+LnhjjF5stTlTpXM06iWhj4IFkn362758PMwIVBA5gkUXE6qxC2IcGoN4js7AwuBWsAoPodawdlLSAD81W8rt2LwMXf7nzx6Q13sC06Z64YSKwjwZvjHBnQX+WwBs6HJnuqp6iLtS3rWqOk0qqJxbxm1MGWJGYF1ziqULuXL/1ydFfbmNglJehvAb62wJ+j/HrJlQQ
- I4IkP3/9
- Nb6OMJxkjGxCaNAR9UkKG5YN4IXgPS56JzM8WNxdAPRaW4w3090eDnQGuiJS2hxxXwej2aGvtPAeDpCx5YDFhkUrjfh6rjvxSXvpVfahaioCeFMkngJgjr+Wu4MJ7XytOe325x1CdUo7nrEg+8QrSbGVwqqBZmm1yt2+NEp0+3eEiv302G75AiIbwz5zQEPPP/kCJea+fgEbCSGrOHvidkokLMPvBY+MnenhINsKrw0v3I7s8rww1Lyg7tPL0+l3bqJV5U/hL02yAf22tF0gQ6sEYcZuCLH+nx9bgPVWD2m5DvPxyqZreReIfqSYCMoiiaEqh70s28tiNgmWPazIYrr5c7Bytw4Ig97+gW4xl94wgWbs=
+X-HE-Tag: 1777212724-384614
+X-HE-Meta: U2FsdGVkX1+17lHp0jNCDuMqgjzemgUTt765q+ORdwJXgU7zTj/kcarZqVqZMQe8A4/PBQsNQXUNQowlxJDpfG8MXQwXWjGQWN7CN8/T/56j6FiD4SskIo3knoFN6x6/T1h9mWLh7rEOqI6mGiLB93eQFps/fzgPf9IUIkwLK8ZSv9k4bM9IPOXqUIPIkk8gQtgEeveaIPR/zP8WzveMvuFZyOFDZmnVrZyTPVdU3JEasthjwTspnR8EuphHB9ruO2qjh6/6F884AMp/tOMSL6QJB3iUmGR5+gVDcrBhA5OlGOg0DMAo5fG2I7rzF758QEAaMllUV69tuicVKzd1JySDVOB7Om382ygpY9+jxXaoJb3oQ/YNEjja3wDDaB/ZXar183y/opB3lE50VNDkh9HyGblMI/cUFMqrALz1LJIReqJUGjDSSuy0RI9Msvm6OaDzJukqlMklbnXgG5+lRHxmf1xW6GgK4fmW+wkt72zwCs2pYoPuavYyqjNsMjYkFxjPCUuyZk821+kGtYUp9A28OGSNcImeDfAJOE4A6bBPHnqko2JUCIWO24z2qg7794ygXD/wM2YEWs59gu5Nwu2WEpYuCKEUm3SXw8aG1zuRvHXYh/gsg5gOGAFShXcYqNDuVHussD4QxI3IWlba36QbgnWby2cECwyoN3vdoowhWrlvsqSmGnaBwRIT8hM/C3mLWnsU5g7WXIPxX/RS1Y4CbqKZwUU9MkpHszNdcAMPjlljIW9U+U5qBpJ7PlRmADhmyvU/RgbB2m+xHsZiANLit8JI5K6ic0k1LloAQ3s9QsN4485TY1jGHDh2BNGukJlUrsb0U7b3Ca0dhs1QkCAGwA6UThqVQrcRmK8o4Irro9Spf6sv3xSeNnV69fQSWsH9MBu4lgCqa7u0snIi5q1k4WrHPYpbCJJfb+DtokiK67xf2DlUot/0AxpV9NQPEVtg8dh9TKgD9RC9sUN
+ bhxhn4DK
+ O1QNYTEBj/VJy9YGLamWjSE8ufPB0dwEW4ItW99ay4t8HpCD+jkDmqiMsDx6n6t7Jwm1MH2nZ44bUhM+vO8CnkdQBkrOP3Bpe/cd0pUwMUDV2jleLPf1LjC5SzVM+6LOHRM56z6jwdHxTVDA0vw/VLo4QgFz93EvO6EWb9NepDYw6a7FKAOgvyOqMmCuvS3J/MCCV5ZULIwxDzNK3z3Ty7o+vMUcFbsqq4mquUNPZ9ArQ+HE8lj3vPyznHAF6ErRsbIFGQPKqgAnhTncu1+ew6qJZHY22j7GVXa6cWS0rWOGWanddVBINbk4pO5B1cH8Oo4Sj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,141 +184,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2026-04-26 at 05:28 -0700, Andrew Morton wrote:
-> Naive questions...
->=20
-> On Sun, 26 Apr 2026 07:56:08 -0400 Jeff Layton <jlayton@kernel.org> wrote=
+On Sun, 2026-04-26 at 05:34 -0700, Andrew Morton wrote:
+> On Sun, 26 Apr 2026 07:56:09 -0400 Jeff Layton <jlayton@kernel.org> wrote=
 :
 >=20
-> > The IOCB_DONTCACHE writeback path in generic_write_sync() calls
-> > filemap_flush_range() on every write, submitting writeback inline in
-> > the writer's context.  Perf lock contention profiling shows the
-> > performance problem is not lock contention but the writeback submission
-> > work itself =E2=80=94 walking the page tree and submitting I/O blocks t=
-he writer
-> > for milliseconds, inflating p99.9 latency from 23ms (buffered) to 93ms
-> > (dontcache).
+> > Add a benchmark suite for testing NFSD I/O mode performance using fio
+> > with the libnfs backend against an NFS server on localhost.  Tests
+> > buffered, dontcache, and direct I/O modes via NFSD debugfs controls.
+> >=20
+> > Includes:
+> >  - fio job files for sequential/random read/write, multi-writer,
+> >    noisy-neighbor, and latency-sensitive reader workloads
+> >  - run-benchmarks.sh: orchestrates test matrix with mode switching
+> >  - parse-results.sh: extracts metrics from fio JSON output
+> >  - setup-server.sh: configures NFS export for testing
+> >=20
+> > Assisted-by: Claude:claude-opus-4-6
 >=20
-> So in the current case, when generic_write_sync() returns, all that
-> memory is written back and clean&reclaimable (or freed?), yes?
+> OK, question.
 >=20
-
-No. Before returning, it submits the I/Os for the portion that it wrote
-rather than leaving it to the flusher to take care of things, but it
-doesn't wait for the I/Os to complete.
-
-> > Replace the inline filemap_flush_range() call with a flusher kick that
-> > drains dirty pages in the background.  This moves writeback submission
-> > completely off the writer's hot path.
+> >  10 files changed, 1024 insertions(+)
 >=20
-> Whereas after this change, that pagecache is probably still dirty,
-> unreclaimable, waiting for the flusher to do its thing?
+> Seems that this code was largely machine-generated.  So I assume that
+> you're in possession of the scripts/prompts/whatever which were used to
+> generate this code.
 >=20
-
-Correct, but that's sort of the case today too since DONTCACHE I/Os
-don't wait for the completion. With this change we're just deferring
-the I/O submission to the flusher thread (which should hopefully soon
-wake and take care of business). If the flusher thread can't keep up,
-then eventually balance_dirty_pages() will kick in and start slowing
-things down.
-
-> So is there potential that the system will get all gummed up with
-> dirty, to-be-written-soon pagecache?  Is there something which limits
-> this buildup?
+> (Can you please briefly describe the process which you used here?)
 >=20
 
-Today in this situation, the writers are limited by the backing device
-throughput. Once the I/O submission queues are full, then the DONTCACHE
-writers end up stacking up on those. With this change, the writers will
-be more limited by traditional VM limits in this situation.=20
+It's been a while since it generated these, but I think I just asked it
+to concoct a set of benchmarks for DONTCACHE writes when that involved
+file sizes that were larger than the machine's memory.=20
 
-In the test runs I did, the peak pagecache with DONTCACHE writes was
-higher than with the unpatched version but still considerably less than
-with normal buffered I/O. That's the cost of deferring the I/O
-submission to the flusher.
+I ended up asking it to make some changes (e.g. the mixed-mode test,
+and some of the perf stuff), but it seemed to do a reasonable job of
+creating it.
 
-One thing we could consider is going back to submitting the writes
-inline when the number of dirty pages is high. But, that could have a
-detrimental effect on performance too.
+> So how are we to maintain this?  Will other developers have to go in
+> and hack this machine-generated output by hand?  Or would it be better
+> to provide (in-tree) other developers with the means to regenerate this c=
+ode,
+> presumably using Claude?
+>=20
+> IOW, this feels a bit like shipping the .s file without giving us the .c
+> file!
 
-> > ...
-> >=20
-> > dontcache-bench results on dual-socket Xeon Gold 6138 (80 CPUs, 256 GB
-> > RAM, Samsung MZ1LB1T9HALS 1.7 TB NVMe, local XFS, io_uring, file size
-> > ~503 GB, compared to a v6.19-ish baseline):
-> >=20
-> >   Single-client sequential write (MB/s):
-> >                        baseline    patched     change
-> >   buffered              1449.8     1440.1      -0.7%
-> >   dontcache             1347.9     1461.5      +8.4%
-> >   direct                1450.0     1440.1      -0.7%
-> >=20
-> >   Single-client sequential write latency (us):
-> >                        baseline    patched     change
-> >   dontcache p50         3031.0    10551.3    +248.1%
-> >   dontcache p99        74973.2    21626.9     -71.2%
-> >   dontcache p99.9      85459.0    23199.7     -72.9%
-> >=20
-> >   Single-client random write (MB/s):
-> >                        baseline    patched     change
-> >   dontcache              284.2      295.4      +3.9%
-> >=20
-> >   Single-client random write p99.9 latency (us):
-> >                        baseline    patched     change
-> >   dontcache             2277.4      872.4     -61.7%
-> >=20
-> >   Multi-writer aggregate throughput (MB/s):
-> >                        baseline    patched     change
-> >   buffered              1619.5     1611.2      -0.5%
-> >   dontcache             1281.1     1629.4     +27.2%
-> >   direct                1545.4     1609.4      +4.1%
-> >=20
-> >   Mixed-mode noisy neighbor (dontcache writer + buffered readers):
-> >                        baseline    patched     change
-> >   writer (MB/s)         1297.6     1471.1     +13.4%
-> >   readers avg (MB/s)     855.0      462.4     -45.9%
->=20
-> These results look ambiguous.  Sometimes better, sometimes worse?
->=20
-> > nfsd-io-bench results on same hardware (XFS on NVMe, NFSv3 via fio
-> > NFS engine with libnfs, 1024 NFSD threads, pool_mode=3Dpernode,
-> > file size ~502 GB, compared to v6.19-ish baseline):
-> >=20
-> >   Single-client sequential write (MB/s):
-> >                        baseline    patched     change
-> >   buffered              4844.2     4653.4      -3.9%
-> >   dontcache             3028.3     3723.1     +22.9%
-> >   direct                 957.6      987.8      +3.2%
-> >=20
-> >   Single-client sequential write p99.9 latency (us):
-> >                        baseline    patched     change
-> >   dontcache            759169.0   175112.2     -76.9%
-> >=20
-> >   Single-client random write (MB/s):
-> >                        baseline    patched     change
-> >   dontcache              590.0     1561.0    +164.6%
-> >=20
-> >   Multi-writer aggregate throughput (MB/s):
-> >                        baseline    patched     change
-> >   buffered              9636.3     9422.9      -2.2%
-> >   dontcache             1894.9     9442.6    +398.3%
-> >   direct                 809.6      975.1     +20.4%
-> >=20
-> >   Noisy neighbor (dontcache writer + random readers):
-> >                        baseline    patched     change
-> >   writer (MB/s)         1854.5     4063.6    +119.1%
-> >   readers avg (MB/s)     131.2      101.6     -22.5%
->=20
-> Ditto but less so.
->=20
-> > The NFS results show even larger improvements than the local benchmarks=
-.
-> > Multi-writer dontcache throughput improves nearly 5x, matching buffered
-> > I/O. Dirty page footprint drops 85-95% in sequential workloads vs.
-> > buffered.
->=20
-> It sounds that you like the results, so OK ;)
-
+As I mentioned in the cover letter, I mostly included this in the
+series to demonstrate how this was tested. I'm not sure if the two
+benchmark suites are suitable for inclusion. I'm fine with leaving
+those two patches out of the merge. I found the testcases useful for
+this, but they are indeed AI slop, and I'm not sure they have long-term
+value or will be maintainable.
 --=20
 Jeff Layton <jlayton@kernel.org>
 
