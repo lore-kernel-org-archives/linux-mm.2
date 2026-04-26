@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E651AFF8850
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 21:48:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 735A9FF885D
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 21:48:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CE0A6B00B6; Sun, 26 Apr 2026 17:48:28 -0400 (EDT)
+	id DE3B56B00B8; Sun, 26 Apr 2026 17:48:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A5846B00B8; Sun, 26 Apr 2026 17:48:28 -0400 (EDT)
+	id DBAED6B00BA; Sun, 26 Apr 2026 17:48:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BB8D6B00B9; Sun, 26 Apr 2026 17:48:28 -0400 (EDT)
+	id CF8366B00BB; Sun, 26 Apr 2026 17:48:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ACB16B00B6
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 17:48:28 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07A3C1B7EC8
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:48:28 +0000 (UTC)
-X-FDA: 84702046296.05.862ABF5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CA6D1180006
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:48:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y+nKiNys;
-	spf=pass (imf16.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BEA2C6B00B8
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 17:48:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8805F12057D
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:48:32 +0000 (UTC)
+X-FDA: 84702046464.28.B29CE37
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 407621A0004
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:48:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MBt268WG;
+	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777240105;
+	s=arc-20220608; t=1777240110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iX7QlDEIRvMq/lhdobB75J6k8cJUQBTaq/dVJzKRSYI=;
-	b=8PfH6uuJV06j8FFlsxVTdMR0eYw/kleRSqIvpX+BhUoacdUXRRnUYPbviL2waZI2WPA4wR
-	CXVCKINygUJEPoF7Os6GQ2p1EjSdGkiefYUEC9EJtrODQKSyYt4E7IaZG8FP3GlTHlgsRW
-	BsT6kgkNX+DL+/NrckDbaziPQE2rTdA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y+nKiNys;
-	spf=pass (imf16.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777240105; a=rsa-sha256;
+	bh=AlVg98QjuOmMUhZ+nzy6BehsEB+gtg7rKVvx2cLdIro=;
+	b=tbuQ58AklPkMxEVy65FOyqL0NcEv/EIiyRUBV7zFNFUbBggG4JahuXQL3kyaQdDAhwz59d
+	jQamqgTtfusp+vz3kZ1cQP/4f7e0bXkXP9Ulg2NdwNChJykv16cgYZ5MZ2CtACKvUb2PRI
+	3GEF5WYTyHqoB/9hMqMjb04f/3L5mYc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777240110; a=rsa-sha256;
 	cv=none;
-	b=wQx7dN/rxEe87r0d4eHCOjnFGA4fGOQ7BMGkyRZs+pmtGxk+cKFYdnWJeLxtP5lL53vpVz
-	pGJ1Mzfnrh7TJWsG+2EdwNgC4NFXhu0uK6y7twodOF1OCAQuGPQi7Gh6R7hZta9K1g6rdP
-	v+4IH9+T2j4aLuyVp0OVp8YG75vIYfg=
+	b=vBHDuBM0JvoTxEtB1X5hFtPDW7r3ArgXLLH664PqiyxdldDIrHAcH5QYQQPcmDHiBsDQCW
+	DH7OdCq5Y1VZ2KXdEKHmpCMKxM86JpAbSZFrCx/l11i0AIbUZtX4jvz4lfkUICnQ5ps3Tz
+	nGGMhhFtxa/z2jJ1F2eIY35X6j3Z5aA=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MBt268WG;
+	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777240105;
+	s=mimecast20190719; t=1777240109;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iX7QlDEIRvMq/lhdobB75J6k8cJUQBTaq/dVJzKRSYI=;
-	b=Y+nKiNysJzhgCLW/V9drMBu5yZTkmFV3CMtv8Kj08TW3IKST8p+1n8GPINVptMBGiEaZXy
-	gbhgNS8lk4Ci3RPmTJCpwOgxo7PdD0T/cLMO3DgpxxEFyfCMdwYAv2cbdPZ2iPTmUd7SvU
-	Mu1+Mnfrsv4R+TALNmPISN3FI9VEWqc=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=AlVg98QjuOmMUhZ+nzy6BehsEB+gtg7rKVvx2cLdIro=;
+	b=MBt268WGfD/aGzzaB0/RhAhQaEnKbjjg6wZ0tGKdmWDv7beQ1eld72eL40+Vj1dLvS4t/T
+	PUdyugy3Ciko8+YLuaRXcJ4JBVCZnYVC5fj6xcgii7jcztrZ9s3t7Lbo4k/+Holsor/D/l
+	lngvMjnsQgi8y/hBTOGpv3ZdIMI7n7c=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-N0f45js9NZKAYSOC62n2aA-1; Sun, 26 Apr 2026 17:48:23 -0400
-X-MC-Unique: N0f45js9NZKAYSOC62n2aA-1
-X-Mimecast-MFC-AGG-ID: N0f45js9NZKAYSOC62n2aA_1777240103
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d7e5b98ebso7785851f8f.0
-        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 14:48:23 -0700 (PDT)
+ us-mta-457-tpOpXx2gNk2WdMX4TG2qUw-1; Sun, 26 Apr 2026 17:48:26 -0400
+X-MC-Unique: tpOpXx2gNk2WdMX4TG2qUw-1
+X-Mimecast-MFC-AGG-ID: tpOpXx2gNk2WdMX4TG2qUw_1777240105
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43ea7a5da57so7915022f8f.1
+        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 14:48:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777240102; x=1777844902;
+        d=1e100.net; s=20251104; t=1777240105; x=1777844905;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iX7QlDEIRvMq/lhdobB75J6k8cJUQBTaq/dVJzKRSYI=;
-        b=gsisiNkHLVp5NHAXU24tYEACojy+LMeOZ8ZqYrVdZpB+j+ZUIAYQk0bT3uHUdrrpiN
-         Qc7JcfhI97jYTyqi28+X6c49mwGIQNs8AUvr3VHO81s+LadbznsbdEIzIVj7xqMWPRQr
-         Ib6dAeFAfBO6feq47shBW0C3xnarU13LL3/jsp5OQem/jT8x2PADQqnYn/7IyyWtn7BT
-         elNlcoeKTvV3dWx9fsSom5NcpBsDl5AC/X3eWZvJ4rpvwemEEjlchP1/HST1BZiZglIH
-         40z2BG01Kr8M4zIj3eLkmlu2u8xZ9ySr1pF+DGwh1rFAMWCaGeZn5iS93fkS3vuUNBAH
-         0vUg==
-X-Forwarded-Encrypted: i=1; AFNElJ+bbC2GFekmEUJfPzxA+1u0E6rXBtZl//8LvnLNbAxxGRiDUjmvUhKm6iJysA5rdj5j2LrCLjvDdg==@kvack.org
-X-Gm-Message-State: AOJu0Ywe17Vu2B2vKvC5pc3gNlcQM3z3wCKcF6aABuc9y3WTgfxTw0Y6
-	z2dxem9+nYKLm0aE49gicqwc9lUfIT7F0Yg2B+D6Gkz7GXJCTRs/VSN1vCbtssiFcGAXpi4zV9j
-	4Qh8727N9LtYaje86DcjXABj/XPeEbqC9RDBb83kNxHsph0++3zLa77i/+0tI
-X-Gm-Gg: AeBDievqmXkL76n+3FUQk5yOsLs0FqunwO8UZf0CeepStucP0MV+XxxVR1+SfuMYht6
-	Emb0ytu999zoIwfSFJDhn0K3+S7M2XeY/8jANMRCtNSQFOugSju5DooWDVjsL7b/u4zsvmIGHPU
-	6vpEoi91+nrvkURfTv5zgMYOVy2T/FCqUD/yEmHc/x3pJKsJBxAHQ2F2o6QdTXqWSGyOyMULcV/
-	VIBYVQM8hNO6ear+u9/+MgyBWR6NcgTXBSDxSwcaeJeW/v4zyEl1Sld6LH7dTUT1yZ69H6HvhDk
-	ZMu3RqEM6arZSz8/9Kl+qOd4T/RGI/AqQzg7gbpWA9N634BxQuHXeA0cVSEuulpuD+XvuLqo2Or
-	YftW3rUZF3DWyFq6cwTeEcij8tSCpCwueFsFgf1EHjFJWMy9YCiQGyU2x
-X-Received: by 2002:a05:6000:420a:b0:43c:4810:dc4a with SMTP id ffacd0b85a97d-43fe3e14f81mr62740558f8f.38.1777240102254;
-        Sun, 26 Apr 2026 14:48:22 -0700 (PDT)
-X-Received: by 2002:a05:6000:420a:b0:43c:4810:dc4a with SMTP id ffacd0b85a97d-43fe3e14f81mr62740532f8f.38.1777240101794;
-        Sun, 26 Apr 2026 14:48:21 -0700 (PDT)
+        bh=AlVg98QjuOmMUhZ+nzy6BehsEB+gtg7rKVvx2cLdIro=;
+        b=EAw/mlYz7gLwMdy2ys1C2u/6fkRRLdVuYiJpQdPbdk1ERry7fgXmfTjIfcfW2xHQH2
+         V2dFdyrxhPZrbhvfEHBIwsnZHeL11kJyc5mozWj4yqKEc3x9275E3pY+JjsXV8mh1set
+         Y2GrVD4Ms9dILVFDXngLUz/prXJ48MMjiwBXIU7LmpRsiMk3jIE6NduqgiDUp3iT7irD
+         8FiwSKRUahcw+D0+5D1gQjgJWqECzWfBrFNT/QpFhuE7NtghgYE/yDuoI7qGd7y6d8qb
+         rKKq5LFcE1JzJuSJyfQJ49nVFcAfsAJ/38Nz9KFZpiT40MLZLNTD48dhqT/1Ms7nxRdW
+         56aw==
+X-Forwarded-Encrypted: i=1; AFNElJ+PUk6oyMPYPcOzpGsM9AOaJ+PIFBavDM8pXJbhYidWTeQ6t9Mboe8ZIwBvIxvqZjAoZPCBP1dbmw==@kvack.org
+X-Gm-Message-State: AOJu0YxwOSWQMot54PU9pz0L3W4KrkOtjyfqw4KPZg8B8vcqivU+h76e
+	3/Oo57N/uPL2vqohaPlUZg5E/TfQQ+R4v6o5BVZ+uTawhPaeFEPB9k56TIXFC7wKnGu/iC/FGzG
+	o+s26u3u5y4MYdLB0/TX4qqFnC2fuTZByUqIOAo0L9b95/P7hEp8w
+X-Gm-Gg: AeBDiet0xdOgL6DPCaKv3vLhLYN/kl0o1KcEFwFy7sIymlZ2GHtIkQPXBhE6665bWQB
+	j2of+UT/couPXWADuo7ZIQbzB3c4eMzUKto6kn4PhZ5wpwoGfrtgZSVQfMTaXIo/9WqIedl4Psk
+	Ea6LX70qV2PRs1hw54uf7GLyFk4ehXZMUbjyPFajQW6VamoxaNwFsZgXRbh4bnJTsW8fiwqqAd1
+	GLoa2XuBS42YFzD5kc4vF3iBfHFntbrSz5RGVBNCfAz3hbE/6bDfrXfM9RBIRMzOKszOZlDD5J0
+	A5nmZ1xzk7ZJ90hr9jUmDufMYCuMQG2a0gQUBDl/ZNDJXV46ANXzgek+crYRpiZoX7XGrCrzYS4
+	mV5o6mdIiNctTJRYRvjoy16EV/CPOi8kUa83ytSsDamjSk7KaArKfineu
+X-Received: by 2002:a05:6000:24c7:b0:43c:fe0e:5bb9 with SMTP id ffacd0b85a97d-43fe3dd4ca7mr63036145f8f.12.1777240105096;
+        Sun, 26 Apr 2026 14:48:25 -0700 (PDT)
+X-Received: by 2002:a05:6000:24c7:b0:43c:fe0e:5bb9 with SMTP id ffacd0b85a97d-43fe3dd4ca7mr63036104f8f.12.1777240104579;
+        Sun, 26 Apr 2026 14:48:24 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-47-179.inter.net.il. [80.230.47.179])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cc0f31sm76656472f8f.12.2026.04.26.14.48.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4ffa8sm78084778f8f.35.2026.04.26.14.48.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 14:48:21 -0700 (PDT)
-Date: Sun, 26 Apr 2026 17:48:19 -0400
+        Sun, 26 Apr 2026 14:48:24 -0700 (PDT)
+Date: Sun, 26 Apr 2026 17:48:21 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -109,27 +109,27 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
 	virtualization@lists.linux.dev,
 	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Subject: [PATCH RFC v4 15/22] mm: page_alloc: clear PG_zeroed on buddy merge
- if not both zero
-Message-ID: <cf13854ffba899df37f25e9dca05c6ed9efc1a64.1777223007.git.mst@redhat.com>
+Subject: [PATCH RFC v4 16/22] mm: page_alloc: preserve PG_zeroed in
+ page_del_and_expand
+Message-ID: <1db0cfd570fff4b93688619eba55c655be589b35.1777223007.git.mst@redhat.com>
 References: <cover.1777223007.git.mst@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1777223007.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: f-2VeEtZflzSwAkZ-ZZxd4Zsf3X0FGRK3K_QBkve8Sw_1777240103
+X-Mimecast-MFC-PROC-ID: 3edZDSbNHEkQuGdlsD6NAHNlW4lYaKqZafYhMkr3OnM_1777240105
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 407621A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CA6D1180006
-X-Stat-Signature: pt6jbw9h6owcktygkouqds16uhp1b67p
-X-HE-Tag: 1777240105-723224
-X-HE-Meta: U2FsdGVkX1+eSOCEDpxomSUslTdsgEaSB8K+1GXMetQaC41Z3ljFmFqZ8o2F5eNhVUiWi1bcRYkPpAyEMNxQ+npGAfk2a/4mY2+L45R9o+Ws8rXYSuVNNxbgsEeX1ddYSiecZ7gu+Zro3sQTuGJ1340nyLgoFqnVCzunGkoiDzCdRxy+VHrDgzGs528zxvixO6eaxcy3msylwZ67gstP0M+7VUx3hdHEy/uERK1ccHAw7km9fk8YA1ZH0fMMOq1sSvk6neDWqjjvAzcf3pvGa483fNsWMUaJc7pOxWn8zhl0cff9/2exV5lFse01s00z8FIDG6E9X03LOsYL7dyEaG3TCBt+cpXPPnaNWn6yenArtWNyODPt6HQs2/7JIa8hiAfk60nLEk4Kw1tdL/PyrdHhUY97oY2HyQPh6k884Tgr0Lppgez7DewoPqV7d4Wmih3m6U+1bN6jTMrTneDFWf/9S44tU5s7HCA4xz53DZ1wNxOPX8d/r4uTCzVfm4+Ax0Wowojbn7i7RTmJHyk0DgTcbzBb4YJbEsMO7IYOxcWD99P4MgknDoSjEIzyJqt0HTlpHrQHtaLCPMyT9UZ8SgvNCaNwx99SV1JQG1gUB13AMOfK0VsjyejEDR1JYsBPA+1w1lSEYtkG825wQ7XRiJEITxtlVqRoRzeXUBjemcsrvWiOtldan76QF17LHu4A+Y4+quGEtyRj/uf1mMxQ8mPLl5XxLO1ndL0XZ6pDcq7oq5qP+yixxDd+2JeSU0zdRn7agiIPManaQi9IfTO8vottA7CukhjWBDyQkgVbsXXNptD9eRrGDwy4I7oj2NntHNopSptFi3ri9dA1L/09IdP6DiRhHG06fw8Bb9nTTaavDAjsLXoBWLEi0W2hS79p8KtKp0KWGtZhDI/sVCufwdcThx1T/1oAaR15aGB3cF3yToj728txlIt7kI++xIQWoKd6uMT8aEUZG7IyKjx
- WmhJXiRQ
- fMdlNmBuSmFW3IbqlxkW/vYRXF5quVhhGYZ2EaawhgKLX+KYXWx/4erOFvuB3NxJw8jkNMpu0DT2drajgOjhQ3Rjxcccz41mrxnTj7OTeBC9I5hUGHs8rt9H4i7Bz51/bMTgdXxr9wsnnsHngNaX7MImpQR9KItbKqWSCTPd8L83YQJQg22y5cryEt6vJX87KH49T3EACZuEoypxgXobnphu+iLFru4BfGIEvFJrHL4V/evi3jtTfVO8TNVNXMEpfjckQPxpqOfx9+fH1IPXlrgkgsKmaKrFkJBjl1tLdjK1UPvp7kwHj/3zi5JQTw4sP4leReXiTpXQaUJziZ97vv0957krY/DSzCF470LCYKLFASyHacnltLiSV8A==
+X-Stat-Signature: u1ridkmttuhmbnyw3jf4qdd3kpue9jyc
+X-HE-Tag: 1777240110-431861
+X-HE-Meta: U2FsdGVkX1/XNJ5B3cIZcjTR/OPVKz3bDakgMPpkbhdk3/aTM/Qn/cQNUF897QtlNO89cE8piVs616b40GPJhzxGPQyjfAI0m6zgWkGSDwHl3HYNGtqoD1lsfAQQt81lUU8ow7OFUxIFnydGohCUUUHyEMMAw6K5dT1hSb8l91Gbc7ssNgFkHTj0BDFc7KXPcF8XeM1sBjg3X02ReBgaYLESMY1papuWKjgcdYE5RKrT8UsKfFaO7+A0e8wqWFdDFuKFrJUsVkwmucp6yCmzqxMEnKjw2PQmZp3KmnvaVvbS1HPDqSj81/WcbYc9X1Hrsn+aAf/AJi0Bvkq3hMSa+l8gZtd6EGCrch/GIIRDA1A9Rc8ZEt6zBAgXsUnbFrk6g7QFchzVqkg6zQY688ABH5i+vjVzXzQet+pPRkEow+mmXgTLFptu5tCKj4d1c8AAbdUNsU07gVL5WVd9ZBhdogh1aLttGMITfS3+EHY/7ovpM+GIHNhgh0QsKxKNxInaxrl2bw9Nef8UbBri7mJOqgRrBwZrNk+tCmhJ1Gbl1LIcZBnGkzPPMWoeaLTjYKz1HSPAF8Zje84xYeSud2qVD1FMfGIYlCUmzOBHPiv6zB6dk6nFMuTKEUIyCK/EZja7ZxWyAUKiKG8SUVF4OK06lBJEFW5QIesm9lFmDmCyw26GZYGksJJiP34g/U+NQDpjimJpkJLNpvXILcElOqQnRNsnJvQcfT4FSVduYjHEE3nEbxcr+Tw00hUt3B4WJZLJBRV4wG+mbS+P1js2njRCyljeTSh3D9UsNJ9W7PSeL4MnUCiot3ctXshGwFsUEkcn4FtoHMrBdVrRg4SWznQotcJfRBaVxcQ31LERxQtN0PsqAM31aa9b+/JKxWbAZRVtk/6gmtXDgbFpG9c50db6wemk4sWQJKB+MZlJ+Phwo0i0onokg0e4Ajf0INBUa9NvxT22PH2iNLWyGmNN8BE
+ nCEleB16
+ MhrybBsJTLwGZLdPS0GmYmnRV2gHLm8/60Yo9fCgZ6SgZUwFBeyJr7/CegM1E3Vs4JL7CsLR6W8Wv1n+6S4XFtR9YdcokYnkFVHrtYWEKoNTP5XlKrc4EZd4bsrzfIQSLTmeqppAuU818iW3936iz9fRVGfw//CFp6p7+jFIpbwoOqFl+zkdTVeyfaH8M91dMRs2xHlXki6m/7Epkhf1pg0f06T+NDcchzFB8zGY8WD2U8F4MYQ3cOoTjwufSsHsB2klr9h4TDFvRZor9C+xj3HjtvySNceWB6O9YxLrHOFYjfF4bw6M2o+CegORK/WA2IeeO53hY5VG+8U2xPd/D7JQCR5Ipfyo/AJZGuEUYxMp7qENorZ/oOHF7Gg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,72 +137,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When two buddy pages merge in __free_one_page(), preserve
-PG_zeroed on the merged page only if both buddies have the
-flag set.  Otherwise clear it.
-
-Without this, a zeroed page (freed via free_frozen_pages_zeroed
-from balloon deflate) could merge with a non-zero buddy.  The merged
-page would inherit PG_zeroed, and a later __GFP_ZERO allocation
-would skip zeroing stale data in the non-zero half.
-
-The page reporting path is not affected: it sets PG_zeroed during
-allocation (page_del_and_expand), not on free list pages.
+Don't unconditionally clear PG_zeroed for non-reported pages in
+page_del_and_expand().  Pages freed via free_frozen_pages_zeroed
+(balloon deflate) already have the flag set and should keep it
+through buddy allocation, not just PCP reuse.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Assisted-by: Claude:claude-opus-4-6
 Assisted-by: cursor-agent:GPT-5.4-xhigh
 ---
- mm/page_alloc.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ mm/page_alloc.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index eff01a819744..1183ef3e91c9 100644
+index 1183ef3e91c9..1169714406e7 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -984,10 +984,14 @@ static inline void __free_one_page(struct page *page,
- 	unsigned long buddy_pfn = 0;
- 	unsigned long combined_pfn;
- 	struct page *buddy;
-+	bool buddy_zeroed;
-+	bool page_zeroed;
- 	bool to_tail;
- 
- 	VM_BUG_ON(!zone_is_initialized(zone));
--	VM_BUG_ON_PAGE(page->flags.f & PAGE_FLAGS_CHECK_AT_PREP, page);
-+	/* PG_zeroed (aliased to PG_private) is valid on free-list pages */
-+	VM_BUG_ON_PAGE(page->flags.f &
-+		       (PAGE_FLAGS_CHECK_AT_PREP & ~__PG_ZEROED), page);
- 
- 	VM_BUG_ON(migratetype == -1);
- 	VM_BUG_ON_PAGE(pfn & ((1 << order) - 1), page);
-@@ -1022,6 +1026,8 @@ static inline void __free_one_page(struct page *page,
- 				goto done_merging;
- 		}
- 
-+		buddy_zeroed = PageZeroed(buddy);
-+
- 		/*
- 		 * Our buddy is free or it is CONFIG_DEBUG_PAGEALLOC guard page,
- 		 * merge with it and move up one order.
-@@ -1040,10 +1046,17 @@ static inline void __free_one_page(struct page *page,
- 			change_pageblock_range(buddy, order, migratetype);
- 		}
- 
-+		page_zeroed = PageZeroed(page);
-+		__ClearPageZeroed(page);
-+		__ClearPageZeroed(buddy);
-+
- 		combined_pfn = buddy_pfn & pfn;
- 		page = page + (combined_pfn - pfn);
- 		pfn = combined_pfn;
- 		order++;
-+
-+		if (page_zeroed && buddy_zeroed)
-+			__SetPageZeroed(page);
+@@ -1743,7 +1743,8 @@ struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
+  * -- nyc
+  */
+ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+-				  int high, int migratetype, bool reported)
++				  int high, int migratetype, bool reported,
++				  bool zeroed)
+ {
+ 	unsigned int size = 1 << high;
+ 	unsigned int nr_added = 0;
+@@ -1774,6 +1775,8 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+ 		 */
+ 		if (reported)
+ 			__SetPageReported(&page[size]);
++		if (zeroed)
++			__SetPageZeroed(&page[size]);
  	}
  
- done_merging:
+ 	return nr_added;
+@@ -1785,10 +1788,12 @@ static __always_inline void page_del_and_expand(struct zone *zone,
+ {
+ 	int nr_pages = 1 << high;
+ 	bool was_reported = page_reported(page);
++	bool was_zeroed = PageZeroed(page);
+ 
+ 	__del_page_from_free_list(page, zone, high, migratetype);
+ 
+-	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
++	nr_pages -= expand(zone, page, low, high, migratetype, was_reported,
++			   was_zeroed);
+ 	account_freepages(zone, -nr_pages, migratetype);
+ }
+ 
+@@ -2365,11 +2370,13 @@ try_to_claim_block(struct zone *zone, struct page *page,
+ 	/* Take ownership for orders >= pageblock_order */
+ 	if (current_order >= pageblock_order) {
+ 		unsigned int nr_added;
++		bool was_reported = page_reported(page);
++		bool was_zeroed = PageZeroed(page);
+ 
+ 		del_page_from_free_list(page, zone, current_order, block_type);
+ 		change_pageblock_range(page, current_order, start_type);
+ 		nr_added = expand(zone, page, order, current_order, start_type,
+-				  false);
++				  was_reported, was_zeroed);
+ 		account_freepages(zone, nr_added, start_type);
+ 		return page;
+ 	}
 -- 
 MST
 
