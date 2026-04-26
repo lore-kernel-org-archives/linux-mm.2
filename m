@@ -4,100 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB7CBFF8862
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 20:53:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F388FF885D
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 20:54:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C54E6B00A3; Sun, 26 Apr 2026 16:52:44 -0400 (EDT)
+	id C60976B008A; Sun, 26 Apr 2026 16:54:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99E726B00A5; Sun, 26 Apr 2026 16:52:44 -0400 (EDT)
+	id C115D6B00B6; Sun, 26 Apr 2026 16:54:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 865F16B00A6; Sun, 26 Apr 2026 16:52:44 -0400 (EDT)
+	id B01D26B00B7; Sun, 26 Apr 2026 16:54:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DEFC6B00A3
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 16:52:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 331098B8D0
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:52:44 +0000 (UTC)
-X-FDA: 84701905848.28.EC20D82
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 722B140009
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:52:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wik89Mgn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9EA9C6B008A
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 16:54:48 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F4A51C0680
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:54:48 +0000 (UTC)
+X-FDA: 84701911056.13.E8E2EF9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 00F691C0003
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:54:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AsIJj3Bl;
+	spf=pass (imf18.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777236762;
+	s=arc-20220608; t=1777236886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8i8uGSMu53fmTfJkOXmpH4mTGNlu9DwHYub/xLuKQ7g=;
-	b=bhzZkh112hlIeNCsDrC9HkqN2yiS1ZbOykNvWIHHtnDxdSh8Cmrx3rk7LtHZe93oCZVfPl
-	teg/vNp4D7YP2NCYg8dg+c1SQATqI50h4gP4s7b+iBKDS7eMMgCw7E8PVLJtLF7WfUUghX
-	GWRRwj5vIakXu/PzaMN8eqDzDKZojyw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777236762; a=rsa-sha256;
+	bh=F7ngkkoYTFNaoszFfXjnqMQHnCI7xfB39TzmshJL6/Q=;
+	b=tqtDQtcrrJoZKS51S60eU87fqtFVVgnNPx3eOT8o0sIkFnxZV3s3fBn+Zotg6Ks+0RYHza
+	DU16SU1LMY4eemK7kdr3h7RhrAFFxlLAPto7jIirA3tsE4ViVavEcaqf7loe4ywZAapNIa
+	EC0ZvT3i4RfB9wzohwwB+5Rjp6GUrOE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777236886; a=rsa-sha256;
 	cv=none;
-	b=oMq4hMs4bS542KyIsHF//6Jbe8zfpwe53Cfl6XUgmmSXxCQlbBrrq0hjvuX5ABwQjeSPfT
-	m2p4vsZ8lZ8wtt1C5T1p4dRU9d2TPIVyifitIhazY73UpueGaqLKLIJ6cwtRrtDGqm+YF9
-	iDsSPAR6+vJnTYX5ozIctmUKNHQYBUQ=
+	b=doO6/JrpfJ66uIaP1W25QYH5mMVVJ4nUfKxMebrYlB3h/6SGYx8g7F3ekAumCO8/98vetL
+	W+bghL8JoG3r+m6df8jBA434RPivnOVdMyS9EJeaoP8Rokf1BFlRI1m5EMmEq35oX8ibX9
+	eEtED6kcUCn48Yz8JlM5lM0Dm6tzAzc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wik89Mgn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3159444189;
-	Sun, 26 Apr 2026 20:52:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8609FC2BCB6;
-	Sun, 26 Apr 2026 20:52:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777236762;
-	bh=jWZtEYC4wpgJ869rcJBTeYX65E0OwiGQ6QxZ8akF1Bo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wik89Mgnzr4HtAStJRJvoasrrOnWhUE5QGd6dU6Xxi8DeHbnuTzMW8ljVuivcZ89w
-	 PY7vZ8SEXqIwgbJE7wgwxeBfRI4yVyYCqYE2phydAfUfXpUykiihIt5fpXQ0RptNFp
-	 FqVAi9KnoKTd0z7oAGpdeOa9LiAyrrXZI4kmUDrR8BPq7CXTrTN5msGUX7jPX+2R6z
-	 t574ji7UaEa1EGRijZoxd5rbN+lyxQzgD/85Q7SYTgpME/Wv+go7g6IWVb6jAwuQOC
-	 2gz3d8yID0Ml8SiBFwVIkcvnalDJtg8QE7ghiuv742aYgwV85wcL4vqxV9LCNXcqsz
-	 t5dpBRMwjIwNQ==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AsIJj3Bl;
+	spf=pass (imf18.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777236885;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F7ngkkoYTFNaoszFfXjnqMQHnCI7xfB39TzmshJL6/Q=;
+	b=AsIJj3Bl4555v1QiDKCLiynDZxxG/s/bmorNrGecz2yWnz7lwFcJ4SrgikwC1IwqiVH75M
+	/CYGnfaHsTZTjSlV55RRPY7ZiIE1VdhD9LrEendEdL69cORZtC0LSfkobWmBYs7hQlcWxf
+	cTzI0y+gr1RqC+laD4NW4FBZ4C7SRUA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251-Yf_qz0MyMSiXyx4UYTQnug-1; Sun, 26 Apr 2026 16:54:44 -0400
+X-MC-Unique: Yf_qz0MyMSiXyx4UYTQnug-1
+X-Mimecast-MFC-AGG-ID: Yf_qz0MyMSiXyx4UYTQnug_1777236883
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-488cc31ea57so73779225e9.3
+        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 13:54:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777236883; x=1777841683;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F7ngkkoYTFNaoszFfXjnqMQHnCI7xfB39TzmshJL6/Q=;
+        b=eyCDiqcj84QsWxK4ypBT/zU+j3Rk5CunXBsfbKKtgZyX0uAEcB9G9ZLbngjJftgV3v
+         K/6DZrk8ZfDHZPnXcyhTnTi45HpbyD1o5uyGYtPkFxHAo5CLO8W2HUj8DbMHFmemfDf+
+         Qhj+IWSyXdORgQjKeYHaJ3esOWcbz5YzRipgkKC+xDfn9pKfox+bSbO47yWt8pnepyLO
+         WRh8+Os/UGlhja4PuuQ1AI8IH0HtF9blREBiOiXrcJhdY3RKFM2pRDfN67LZOkWyfirW
+         HtCVUsKoX/4oJNrWMs8KhlZ8Mac4ypigHQeZmCqx/zVzdjSDgNPUaL3hKjgBWKkKCneM
+         01wg==
+X-Forwarded-Encrypted: i=1; AFNElJ9fJm/zFtKaQ9IC3WOEooweoTT3PoQp1KjSCYPG7yJfhuLnUem4EojZaDr17FvKcwjpA4RyJVssRA==@kvack.org
+X-Gm-Message-State: AOJu0Yxq/tB1Ep6ta1ens1RB5YD0vCZw8ycIYv20yAvnPuIEzNWjYqAg
+	GYblMh+8Yzj/eGkC4czuQruP6aubGJGig2176zzQd7mi7HGqSn3G+qo51Acu6t8r/5dWaCyIB5c
+	va3b74qqK5ZiBnTVEFwndujs8l9x4Wv5eZ5lKessSUYYKERJZ9R5b
+X-Gm-Gg: AeBDietkdZ3EJD4bHimjoL1wATxS5jlJGgztKjLCTF+EG19Au/5c+pI+FjGaL5MwtYg
+	kJY6vDVt7Xn/UoHZDEj7jotTa+PjHN+avDq7ZMhAFO710Wml0jpYPY3jl5K3HEA3xzfWpQC+NXR
+	WPdsP0P1T3OeiI/D4WQ6ZAyICSFD8Rm8m3Ay2xpc7zb3OKHaNiSqAQJXI9Aq1JbNMkznv0P1lmV
+	Tbbc8FOyNk6fNDvmaf3sbkBTc+cssmMDVKE2uXQgo2vzxLOFU5/qeyI7aCebfQUnNydeIbwCVpp
+	A7IYGAkK2v/0kYKFoEysA6MpNpIYSS2Ca1flq1om08QQbd1obM3tCIlhXfEZtRoBxOdssNbuaeN
+	mqAVDsqv2JNP3MCNZp0wK33Y6f4VKsZz2T0IIsqxFNmK4GvMb2qkTXtUR
+X-Received: by 2002:a05:600c:3e0d:b0:489:6c28:dbc6 with SMTP id 5b1f17b1804b1-4896c28dd4emr413474195e9.31.1777236882614;
+        Sun, 26 Apr 2026 13:54:42 -0700 (PDT)
+X-Received: by 2002:a05:600c:3e0d:b0:489:6c28:dbc6 with SMTP id 5b1f17b1804b1-4896c28dd4emr413473955e9.31.1777236882086;
+        Sun, 26 Apr 2026 13:54:42 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-47-179.inter.net.il. [80.230.47.179])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a5c24d82asm164063795e9.7.2026.04.26.13.54.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Apr 2026 13:54:41 -0700 (PDT)
+Date: Sun, 26 Apr 2026 16:54:35 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 19/19] Docs/admin-guide/mm/damon/usage: document data attributes monitoring
-Date: Sun, 26 Apr 2026 13:52:20 -0700
-Message-ID: <20260426205222.93895-20-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260426205222.93895-1-sj@kernel.org>
-References: <20260426205222.93895-1-sj@kernel.org>
+	Brendan Jackman <jackmanb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+	virtualization@lists.linux.dev,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+Message-ID: <20260426165330-mutt-send-email-mst@kernel.org>
+References: <cover.1776808209.git.mst@redhat.com>
+ <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
+ <aeu5P1bZW3yEH54t@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 722B140009
-X-Stat-Signature: 9g9tjsdjegjmdichm8ndb7uwpfiko5ho
+In-Reply-To: <aeu5P1bZW3yEH54t@casper.infradead.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: -nFVlSfTIXGXs5SOPEZvJW76wGhnyI0BF9fdofo52c8_1777236883
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 00F691C0003
 X-Rspam-User: 
-X-HE-Tag: 1777236762-539800
-X-HE-Meta: U2FsdGVkX1+HxDXG/+4s13rvt8g2U7VtWl2xFV62NqK0DkQmJoJABgZD1+kyqfPVsaG8PZf6bGXJXdYPEzuZkp7MiNvchYqResRgp1J4qrgDMz5TxSri6dmTdyjSRP5WNR5T5bQKCbG66HGNeWPYV5wBbHx6/eI7d5hTvlxMI59tBtObkVyEkMtmTQIQUYA4ug8Ph3YE/+Wky4h+mePLJh8/cLfzUZ00h3Z3QkZcy5vU6/yC62pDvLVqnajRsOS/268xbNMUUgS2s5ori54smeJTgtEqkKku2r4qZz4/Ki+o6mfayKCO/A9hYKMjNNhW5ctNKYIyOdB17E8qSJCybbCs8JAeklzlTW/+4KJc9BGcxTZoW9ql2Bm+djB252Bp8/2zkmlXm/Y0WXQ4q7iCu246envVSaV442AlWqv22VdbZhOsCva0HgBObRuNWaNGQmyM9MRk6EHOagYbuZOGV5HKw3B1cTDFO2gH4t214+kPu+Xs8CCA4Z7fQFz9+8udPOZaheZHjZfpz4tD3jeSAZiGmf2KhIhqydoIxTCxolR500AG9qcy3n82xjgpQ1B+sL+kuibYjXV1nQmG9p3RBLGSOCl0rc5hFzLXQqZHUx4JjPamsu6HLArCWOYhsv/qM5PmFb1lDvJQ1cC10Z7u8+TYqQCPTcDNuHAWR1AHdaQvJVhmZ7+GZDOve6k3HZRMtieL9/OAgI/Q0M+l1PvfTvtlUPkX3ooflieHv/8McJtDbBIXQabsBMIPlndkXEyIhWOEk3osLvLcbtNJZrPmbRAE70vQwp+85sJIB48U0l0+K0zvTxkZuZTONrnD/ltZBj3YdqLhUcMOxlAnLRJ2qUOyjTjUklpHaQQkPyckXzqhVKUZcea4YCQpDA7LuQoBZ2lW18zKXOGQ0zB0ag6L1fCoLGBB3gXIsJXxMeEfKAjtNsWuOAeiozVW9v3IsFUA06klfZuAnnqneZ1o7rw
- c9rowi4O
- /OUSKXXAYbYETL27rejsd5eTHrVjsNSg6ucuAJfqj+3NPVwAXWlShPT+OCtyY7CbGOxVfooCEIbfcJN0ahYFmx+LCon3WjPfEyAnLLcofQ6y24rjn9N9VWe6o1o991UgqyzfEN6xTstALhCttY7VPwIlBLJFPl0pQk4PcnHJMF2Irn5T8fiAL16OznsNPJYn3bSAwVDEuJvZGO8CLKMUEyw5/rMMiptNv+xCSe9ChpbTGKJjZWOLn9+QxAarmaXXUPW+DeS0p/8UMwiKAZOHOm97MPLhvBXEwlPXmJ2x5ZAt5eUyugzQ3BvT3bA==
+X-Stat-Signature: fznrs3oqbjbnmqapo9ojbexduayk6tx3
+X-HE-Tag: 1777236885-505295
+X-HE-Meta: U2FsdGVkX18f+c+gDBPYuAjeT6WkaVFu3nR2MpvY2+vaR+VIc3rBzQpzOTjzCdAdrMqbiTTS6ttUyaHL3W43mEfJi+NNMk3YZAJUGlE7qM+Uflkx/lBFfPedQXco5DQ7fDOfMbE4aYrLV3Dz7o0oocsf2R9704u/+3CkmqZczxDdOfHKTuBlIr+HeCQFjWf3ssSfJ9O7Iqb+VqVsRKjzamDnbhNIUIA06V+JsuLGQ4FnJHSyvHt5hXU5gLqCTfqneeDCKYlQAHQW3nJKVNB07rnxz23MeRaq2nC17JeKdr7sUg3FxOdEXEkErkdyXS6jhHe74gyiSTedUziM0X1nkKFvhAxMJcj6fhejXuAM8Miz2ECRgHDYzUp7gUwyUiAloDn1stPhCyDE/upq5r1pu0h3hPoh7TzFcJJXmJ1pquA1j/X476dWjkcfplMFmiUfNrVV05qeHy80cMttWPSmQD2PuUwhZ4cAIYgz1tZ7G/i6/2da/TgULB8SG8WafJHRkDoF8l8GiCX4GzGMxm3kO9H9OiachfM1tquzFkvIZM/0yjDE1iQzQ2v2NWJCJotxqlEqvzp4yKnAnb/qX64wRqsDuUbxcH2Wbs4DWCjoVKQp6EC4dEVghJzKz5PrsvTyvhJx0x/maWXs3n5ElHeGuyJCp74/8SLIneSXBx0KhON5Qe/QQq4QaLR1fUJG7dyaLef2Nb6J96Z0G8xhCPIESSlFRE5sSLJI6A9YnkZoh0GCX3yqQQRCr/Si38oCAla2mi97DpN26WinBPWt1dkWHVdm30lEUOBqX3HgGQlzZLWhllzz68Y8nRoHQZDS70dx0Wg1Erey7+xRNeBDNy6WA9Cnf75kKhOrqg62suTYH1nMyitxwB/SKeXA0+UvoF1kcd4p0Peo1bZvoKjt/pHpb16dlPd/GaJTY6tsFI3MbD4UAyL1GAjCCBeWOkIDjrHlFMgnNbmbJtkRnQtngPJ
+ mdL5g0fN
+ vGdpD9zpBQ3O2THQ08FWRhUBSm5ejFEEzHX8WMWlAA3xh1Ozj3i6jxJrbCy7ybAnDoUqMGIiGDXzkNsYgNHhF3mylymn359+VKyff6mrnHE90KRRVktR4LBGKIqoqgaVmPEhoxAcexAz8z8VIaP9agqUiTk/p84miiWiXyePT7zEdR4Ie+mTn3MveySjETE6r1qEfPcoDCvYmzqu9yt6Lzimjm6sZD6I7tfn7x/1zD8JyuYBBU4Zmr+obkZtELAfI51GmgmnFfvJ/pn0sLqeCp9uePNPbdQ+L6GVRH8gcMRXkSeB1cl7+bWXh30c9PNMHmy5fto2HcJuVSkK+JCpAeBz9hIsFAY60dYUw0ZEsQggoimf8yZ5H9aiBOabTI3gg/gvjQqrrXOuwfyqV34CpF4HPw5Ja4s0CLwD+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,111 +159,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON usage document for the newly added data attributes
-monitoring feature.
+On Fri, Apr 24, 2026 at 07:41:03PM +0100, Matthew Wilcox wrote:
+> On Tue, Apr 21, 2026 at 06:01:10PM -0400, Michael S. Tsirkin wrote:
+> > Thread a user virtual address from vma_alloc_folio() down through
+> > the page allocator to post_alloc_hook().  This is plumbing preparation
+> > for a subsequent patch that will use user_addr to call folio_zero_user()
+> > for cache-friendly zeroing of user pages.
+> > 
+> > The user_addr is stored in struct alloc_context and flows through:
+> >   vma_alloc_folio -> folio_alloc_mpol -> __alloc_pages_mpol ->
+> >   __alloc_frozen_pages -> get_page_from_freelist -> prep_new_page ->
+> >   post_alloc_hook
+> 
+> I don't like this.  I think we should instead lift the zeroing from
+> post_alloc_hook() to the callers of __alloc_frozen_pages().
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- Documentation/admin-guide/mm/damon/usage.rst | 44 ++++++++++++++++----
- Documentation/mm/damon/design.rst            |  2 +
- 2 files changed, 39 insertions(+), 7 deletions(-)
+can you and david agree somehow? I don't like being caught betweem
+maintainers like this.
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index 11c75a598393c..397820ac8bbb0 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -72,6 +72,11 @@ comma (",").
-     │ │ │ │ │ │ intervals/sample_us,aggr_us,update_us
-     │ │ │ │ │ │ │ intervals_goal/access_bp,aggrs,min_sample_us,max_sample_us
-     │ │ │ │ │ │ nr_regions/min,max
-+    │ │ │ │ │ │ :ref:`probes <damon_usage_sysfs_probes>`/nr_probes
-+    │ │ │ │ │ │ │ 0/filters/nr_filters
-+    │ │ │ │ │ │ │ │ │ 0/type,matching,allow
-+    │ │ │ │ │ │ │ │ │ ...
-+    │ │ │ │ │ │ │ │ ...
-     │ │ │ │ │ :ref:`targets <sysfs_targets>`/nr_targets
-     │ │ │ │ │ │ :ref:`0 <sysfs_target>`/pid_target,obsolete_target
-     │ │ │ │ │ │ │ :ref:`regions <sysfs_regions>`/nr_regions
-@@ -97,7 +102,8 @@ comma (",").
-     │ │ │ │ │ │ │ │ 0/id,weight
-     │ │ │ │ │ │ │ :ref:`stats <sysfs_schemes_stats>`/nr_tried,sz_tried,nr_applied,sz_applied,sz_ops_filter_passed,qt_exceeds,nr_snapshots,max_nr_snapshots
-     │ │ │ │ │ │ │ :ref:`tried_regions <sysfs_schemes_tried_regions>`/total_bytes
--    │ │ │ │ │ │ │ │ 0/start,end,nr_accesses,age,sz_filter_passed
-+    │ │ │ │ │ │ │ │ 0/start,end,nr_accesses,age,sz_filter_passed,
-+    │ │ │ │ │ │ │ │     probe_hits
-     │ │ │ │ │ │ │ │ ...
-     │ │ │ │ │ │ ...
-     │ │ │ │ ...
-@@ -227,8 +233,8 @@ contexts/<N>/monitoring_attrs/
- 
- Files for specifying attributes of the monitoring including required quality
- and efficiency of the monitoring are in ``monitoring_attrs`` directory.
--Specifically, two directories, ``intervals`` and ``nr_regions`` exist in this
--directory.
-+Specifically, two directories, ``intervals``, ``nr_regions`` and ``probes``
-+exist in this directory.
- 
- Under ``intervals`` directory, three files for DAMON's sampling interval
- (``sample_us``), aggregation interval (``aggr_us``), and update interval
-@@ -262,6 +268,27 @@ tuning-applied current values of the two intervals can be read from the
- ``sample_us`` and ``aggr_us`` files after writing ``update_tuned_intervals`` to
- the ``state`` file.
- 
-+.. _damon_usage_sysfs_probes:
-+
-+contexts/<N>/monitoring_attrs/probes/
-+-------------------------------------
-+
-+A directory for registering :ref:`data attributes monitoring
-+<damon_design_data_attrs_monitoring>` probes.
-+
-+In the beginning, this directory has only one file, ``nr_probes``.  Writing a
-+number (``N``) to the file creates the number of child directories named ``0``
-+to ``N-1``.  Each directory represents each monitoring probe.
-+
-+In each probe directory, one directory, ``filters`` exist.  The directory
-+contains files for installingt filters for the probe, that is used to determine
-+the data attribute for the probe.
-+
-+In the beginning, ``filters`` directory has only one file, ``nr_filters``.
-+Writing a number (``N``) to the file creates the number of child directories
-+named ``0`` to ``N-1``.  Each directory represents each filter and work in a
-+way similar to that for :ref:`DAMOS filter <sysfs_filters>`.
-+
- .. _sysfs_targets:
- 
- contexts/<N>/targets/
-@@ -614,10 +641,13 @@ set the ``access pattern`` as their interested pattern that they want to query.
- tried_regions/<N>/
- ------------------
- 
--In each region directory, you will find five files (``start``, ``end``,
--``nr_accesses``, ``age``, and ``sz_filter_passed``).  Reading the files will
--show the properties of the region that corresponding DAMON-based operation
--scheme ``action`` has tried to be applied.
-+In each region directory, you will find six files (``start``, ``end``,
-+``nr_accesses``, ``age``, ``sz_filter_passed`` and ``probe_hits``).  Reading
-+the files will show the properties of the region that corresponding DAMON-based
-+operation scheme ``action`` has tried to be applied.
-+
-+Reading ``probe_hists`` shows the number of data attributes monitoring
-+probe-hit positive samples of the region.
- 
- Example
- ~~~~~~~
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index bada2010ad1ca..2b68a1880a4a1 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -276,6 +276,8 @@ interval``, DAMON checks if the region's size and access frequency
- (``nr_accesses``) has significantly changed.  If so, the counter is reset to
- zero.  Otherwise, the counter is increased.
- 
-+.. _damon_design_data_attrs_monitoring:
-+
- Data Attributes Monitoring
- ~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
--- 
-2.47.3
+> I don't understand why you want to remove the double-zeroing of memory
+> when the user has asked for zero_on_alloc.  They asked for stupid things,
+> let them bear the cost.
+
+it's just a side effect. I did not even test what effect it has.
+what I care about is the overhead with
+reporting.
+
 
