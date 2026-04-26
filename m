@@ -4,100 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A08A0FF885C
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 12:57:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E825FF8862
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 12:57:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06A6C6B008A; Sun, 26 Apr 2026 08:57:44 -0400 (EDT)
+	id D5FED6B008C; Sun, 26 Apr 2026 08:57:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01A406B008C; Sun, 26 Apr 2026 08:57:43 -0400 (EDT)
+	id C76666B0092; Sun, 26 Apr 2026 08:57:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4AC56B0092; Sun, 26 Apr 2026 08:57:43 -0400 (EDT)
+	id B64936B0093; Sun, 26 Apr 2026 08:57:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D1C8D6B008A
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:57:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5DD388BBC7
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:43 +0000 (UTC)
-X-FDA: 84700708806.19.FD3E332
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4F96A20009
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:41 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AW+EiCrn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dPd1hzft;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AW+EiCrn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dPd1hzft;
-	spf=pass (imf13.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A50546B008C
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:57:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68B9CA057D
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:44 +0000 (UTC)
+X-FDA: 84700708848.15.2176164
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5337516000B
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf08.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777208261;
+	s=arc-20220608; t=1777208262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=hjxeVCVft8gt21g5txFUGcslMLtnS0XxEcIIj3NcHI8=;
-	b=iOd9fX6kVPKYuqxmT15x1TWFHg8HUYTCzTL7HlSSRm4KvGIHvZPDDH81VeXu6ASKN9IWRd
-	iWoadaS4RAq+52gp07yBRTRt9iGd3IzVg2zJg4L5pQXoG+ZXLHJDNZlLwmXGjQznlQgoQ4
-	mRkzm6bNjbwmmkyPOwYuMzx34UYrn1A=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AW+EiCrn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dPd1hzft;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AW+EiCrn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dPd1hzft;
-	spf=pass (imf13.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777208261; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=y9N+aXz56XMHlnxqo6ALkeCKfQJpI7gw8DFoQfw8SIU=;
+	b=ez3u793TnVTAPXZDwwwlTTcA2E5NQinBi/+YoPXfpfrj8SWjJ31e3JZRV4NsrQhFJ5aRfc
+	4P4hBMdlkflA4SK4jEiNBrD9qbYdBnYuulqPwFmEfNewm8WEx4evksMxsrwY5NeP2Qyt1Q
+	/v57e6sBsCOyS1/v6ESutTNG3lstCV8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777208262; a=rsa-sha256;
 	cv=none;
-	b=wLqJoUseXMvxrDI0emw/ixzswgc7d1OAlmwOhRLkdjn5J7AbFawgxPLvwjj2U5JosqzWvH
-	v1g8Z7ZIdAjVF1tCDg2lVyPxiuBs4X5NfdwuOvXbtrlhJdAMFPiSNF5gcqYS81t/Yq0KjF
-	LzE4nWF7McLXVmrHoDYc7cqYv0jh+uM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=afAn1vY6mzRuE3kMSNDd1305ZAezU/ysqTFjP2A+MrjcQd8lCogv6ud9wyL172RpT8TuLY
+	mMoW9rnqB493RLoewgt7yf/bOY0QhqBZyzJPUO2Te6hARsseZtJ51RuDkZx3RGtj9UlLkK
+	A0+4qcuS4uXKhjP+CmS7VsdcpgHhOFI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf08.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A75FC5BCF6;
-	Sun, 26 Apr 2026 12:57:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777208259; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hjxeVCVft8gt21g5txFUGcslMLtnS0XxEcIIj3NcHI8=;
-	b=AW+EiCrndp2jboSl2snJvaRhrtzCCT0J53Mjx6wFZWXyXWE+B3eucnkigACO5UkDUg3lyr
-	AXH0gYLWK27O/KDstBscCDyO+sibzOjDcABvEcO/BDvBgrGhaZea9L3N9H1UCpcX48Wpeo
-	XJl/rxuki3cn8VQAfWsqNHNrQp5ZXNA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777208259;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hjxeVCVft8gt21g5txFUGcslMLtnS0XxEcIIj3NcHI8=;
-	b=dPd1hzftXULltqoTZU1XKIrlUGVSDAWS7Z0GG/iB9s6PgPWquuPG4974V/IvE7Rhl7D3Jf
-	w965utFV4zj1TPDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777208259; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hjxeVCVft8gt21g5txFUGcslMLtnS0XxEcIIj3NcHI8=;
-	b=AW+EiCrndp2jboSl2snJvaRhrtzCCT0J53Mjx6wFZWXyXWE+B3eucnkigACO5UkDUg3lyr
-	AXH0gYLWK27O/KDstBscCDyO+sibzOjDcABvEcO/BDvBgrGhaZea9L3N9H1UCpcX48Wpeo
-	XJl/rxuki3cn8VQAfWsqNHNrQp5ZXNA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777208259;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hjxeVCVft8gt21g5txFUGcslMLtnS0XxEcIIj3NcHI8=;
-	b=dPd1hzftXULltqoTZU1XKIrlUGVSDAWS7Z0GG/iB9s6PgPWquuPG4974V/IvE7Rhl7D3Jf
-	w965utFV4zj1TPDA==
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 123D26A7F4;
+	Sun, 26 Apr 2026 12:57:41 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F702593B0;
-	Sun, 26 Apr 2026 12:57:39 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A351B593B0;
+	Sun, 26 Apr 2026 12:57:40 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id I1wnDcML7mmtRAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Sun, 26 Apr 2026 12:57:39 +0000
+	id +LzUJcQL7mmtRAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sun, 26 Apr 2026 12:57:40 +0000
 From: Oscar Salvador <osalvador@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -108,20 +74,29 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [RFC PATCH v2 0/7] Implement a new generic pagewalk API
-Date: Sun, 26 Apr 2026 14:57:12 +0200
-Message-ID: <20260426125719.24698-1-osalvador@suse.de>
+Subject: [RFC PATCH v2 3/7] mm: Implement folio_pmd_batch
+Date: Sun, 26 Apr 2026 14:57:15 +0200
+Message-ID: <20260426125719.24698-4-osalvador@suse.de>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260426125719.24698-1-osalvador@suse.de>
+References: <20260426125719.24698-1-osalvador@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4F96A20009
-X-Rspamd-Server: rspam06
-X-Stat-Signature: kf3jnm9wirfcha9znjt35ox1wjw7bcsi
-X-HE-Tag: 1777208261-586246
-X-HE-Meta: U2FsdGVkX1/KINbo96kQuR+gg9PATY7VSG0sA3+hIDkOx4X72gMMTS/4jmw1iwVZEFWxycnYQ7gV3gDVQu6U5JGtunbXAlTCcDn64bTJugfqT/4XTp+wK/oJiEXteu+UGA79Uy+D1dvPcnauICxXlXGyh32LPXbgVVu9NnMidO35DpcN6qhrm3/PasX+sIPPhnnKRpUUR8+DfP8EpvOYmD4arWkzLEPqIc1j2T706WR80zcEof5+yHj5mPSKIom3mNU0pQRptORoMrvIrTux6dclX1ZevJKwx+CRKFbxGrpbokepca1gjuA6OJSipc0KoXl6TCkyykIuY8/irXQ+GGzWgJG3rJAyIPDqPda1GSxB0cZ25a4aAAjzyEou9sN/EpvblT+6R2PBxaSfdFpjCMpmxCT6wWqnbLSh637Cc2enCUgJemCTyL+OjmdaK93wSyz3APXAvUJ1/FoKKcm4zKONCh8+Fgi9Jy5KCDiJVrSta5LyvKrsyyAw9gnxXfPlPqDS/oshK2+5I9WeHdgQSbcz712VoUI04z+7Cau2fYzFNqwzPno+RZKoz7eIDDdegK4QpZxQwbtqA1mBxxrb4ng19EvGTTrE/UF0aKwH7OO5R+oEEbuOho3Xnl6GTOgCsmYGvvcUf9eZ6Qu30q0adNiIEzG09qK3o+7WUHye/TFoLHOqRFHkj2/AGIlVAMYCLMbQPghwuKkbNtcHUJu59Iua9+DxlMO6vwZgBYVwQJ1Y36Ov0Z9xAech+6TXU9x0RqJ4yMCUFiDXOfyZfbogHweTCilmPqv+9DxZMU1vgncpM6G5Rur9gzqJOOSzg+adMO+NK7wldJE5WB6tEL4jwQ8QwXmBOrNgvFdutwSVQ2GIZJxx9UJ6zcYzUqdn+zLFQHoSUFzUo/A/pBlnqaA2AIUoSO5aVHpyRA5QiHtdS1LJGBb+vpg1HV9yRxF+zB6MqhNN//FmyI0hslQgbZ3
- CmVh0qy+
- g5qVs9vAb/GEW9RtBDAnKRd2M+7V/AA/znQMTrRXt2nJiphNCJUKpgXivFi4HbRQmR9PEnFVdqMJZGG+IfjmPDl3yl2/4DWU8+mdLz2yP4s3FTxT/TmjxscPcG81ji9aBfjPakIOmM4h/7xNXhfUKG/kkw2F6ET4NRP5nS1p+bR1451EcgRfVK9LnozSek+PSl0Ze2vuTDlDQav0WlwKJ0BJ1LROhW3K2IfARfLQ2HCoAtf+K4S7UQBL/SMpViWxi1ofS
+X-Rspamd-Queue-Id: 5337516000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: uo4h6zteh7skpsn3dzkjgdxm7wa1cog1
+X-HE-Tag: 1777208262-769332
+X-HE-Meta: U2FsdGVkX18BbCMce5dcfdvANCX8J0yVFsBnAsMj0IOFbEtWeIhxaFOdxkuVyV7cMoI9vmASo3J7wqMzVP1Cp7kvhcBhuL3QxdLeabDHjamh/3ORjYjIuKGIJl9uVNaCdr/Mre0PLR3kH+Hnhj65D1TQolqUiJwB1gKQYkRJ1z5Bt3u1URVneOzCmTg/cdFFA6iPssMB5Gin39nEgYPurs4Cz1AtCv1x3fwopK60X6/xEjB07HmvmgrcXuyBj2TwaBqtaGxV+JnwAyfEBdlb6l8/NZzuZtjiURpnPX7JsjTY9JVwHoQhsGwnwDHjWLgxRlhOL14NU1ciFMoHNuEawhKF+214SDNYC4zwLrGBijgytCMXn2S+go+J836HG13boygFYyA9lIAKLQN0y0kpnR5APMMApbfyUcY7Cfb1iWnW8Yj40XoBynjcOI8/Nom6jNMgWlCBB5OkPWuFjlqu08FSQjw+hsqCLwthqEGZWU0S0MEUC2tJc1jLm9ee/upVJQvx26tLbnV5I/oxc4Hzh1NwJTK0EIOGkzg04T0Ur0Nrxi90q46LBFeeTcF19RM2TRu5GuKN6XjESDROMqj4aOTGzkDFO+C1G2GVh54cXNxUKErkgK/586EdAxiL3dS9lEND4UUhZINP4SNNHbbtzuD0Lh5TEzMKCskWB6vEQxAPF/VtP0uJ5ZAUN6nooUnyIjGd5YASDhv9ewmBB7PK0izZ2phxxrbdrLY3+WFDnRfP+fJtBtr+IR3ZDaWkPAyyNLC6EpCtoWzH2DnR0LR7NSGhKSSct2amiHKzymlbKtDgmSnqSwbS/Ij8N9NMia+Tbny0Q/Hr/5ASsmUSeR7nin0J8XGCNrQn66yOaO9TsygbtOonyfGFig+bHbMqfjYEHiJT5o5uUCDhMjiymzaYGcLDUW8onEsZYHa5tBqqB/XI1lHlWqiYQhOrOgH9rsO/hlu5G3HSzcC4sh/RG+O
+ G07YpGZK
+ r3dULilhtTCyfrgP459bmICW7xxWh5nQ1C+ElvRk/w49lJCLW5Ux+Qn6a2urF2c+KBofkDv6iMjrNU2VQiR00biEsTOwRemnLT/ypdrXTLCOSiJ5wK297SiycWwwrrdF7beJZ0eI4PlELR7l78qjDJcjEJU19WuoTDqs/97bvFO7kXck=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,271 +104,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Changelog:
- rfc -> rfcv2:
- - Add pte_hole functionality
- - Fix pagemap issues
- - Fix shmem in smap
- - Testing with pagemap "testsuite"
+HugeTLB can be mapped as contiguous PMDs, so we need a way to be able
+to batch them as we do for contiguous PTEs.
+Implement folio_pmd_batch in order to do that.
 
-[WARNING]
+Signed-off-by: Oscar Salvador <osalvador@suse.de>
+---
+ arch/arm64/include/asm/pgtable.h | 19 ++++++++
+ include/linux/pgtable.h          | 28 ++++++++++++
+ mm/internal.h                    | 75 +++++++++++++++++++++++++++++++-
+ 3 files changed, 121 insertions(+), 1 deletion(-)
 
-This is not yet fully complete, but before investing more time into it I would like
-to know whether 1) this is heading into the right direction and 2) this is something
-we are still interested in.
-E.g: one of the things that still needs work is make the new API being able to
-take other locks like i_mmap, since that one is needed for hugetlb to protect
-WP vs pmd-sharing in pagemap_scan.
-That is already a WIP, but I still need to make a small adjustments.
-Another thing is to convert "make_uffd_wp_huge_pte" to normal non-hugetlb specific
-code, and that is too a WIP thing.
-
-Kudos go to David, who was the person suggesting the interface and
-he gave me some ideas where to begin, besides providing feedback
-on early stages (in case there is something stupid don't blame him, blame me)
-
-Also, I would like to thank Vlastimil, who helped me running this
-patchset quite a few times through Claude, to catch some fixes.
-
-[/WARNING]
-
-[TESTING]
-
-So far, tools/mm/page-types.c reports the right outcome (compared to the old API),
-and tools/testing/selftests/mm/pagemap_ioctl.c only reports 4 failing tests.
-Although to be honest, I do not how much should I trust that one because if I
-add a few delays in the userspace code, some tests that were failing before are not
-now, so yeah.
-
- localhost:~/workspace # ./page-types -p 1168
-              flags     page-count       MB  symbolic-flags                     long-symbolic-flags
- 0x0000000000000800              1        0  ___________M_______________________________        mmap
- 0x0000000000000828              2        0  ___U_l_____M_______________________________        uptodate,lru,mmap
- 0x000000000000082c              1        0  __RU_l_____M_______________________________        referenced,uptodate,lru,mmap
- 0x0000000000004838              1        0  ___UDl_____M__b____________________________        uptodate,dirty,lru,mmap,swapbacked
- 0x000000000000086c            423        1  __RU_lA____M_______________________________        referenced,uptodate,lru,active,mmap
- 0x0000000000205828             29        0  ___U_l_____Ma_b______x_____________________        uptodate,lru,mmap,anonymous,swapbacked,ksm
- 0x000000000020586c              1        0  __RU_lA____Ma_b______x_____________________        referenced,uptodate,lru,active,mmap,anonymous,swapbacked,ksm
-              total            458        1
-
- localhost:~/workspace # ./page-types_lab -p 1168
-              flags     page-count       MB  symbolic-flags                     long-symbolic-flags
- 0x0000000000000804              1        0  __R________M_______________________________        referenced,mmap
- 0x0000000000000828              2        0  ___U_l_____M_______________________________        uptodate,lru,mmap
- 0x000000000000082c              1        0  __RU_l_____M_______________________________        referenced,uptodate,lru,mmap
- 0x0000000000004838              1        0  ___UDl_____M__b____________________________        uptodate,dirty,lru,mmap,swapbacked
- 0x000000000000086c            423        1  __RU_lA____M_______________________________        referenced,uptodate,lru,active,mmap
- 0x0000000000205828             29        0  ___U_l_____Ma_b______x_____________________        uptodate,lru,mmap,anonymous,swapbacked,ksm
- 0x000000000020586c              1        0  __RU_lA____Ma_b______x_____________________        referenced,uptodate,lru,active,mmap,anonymous,swapbacked,ksm
-              total            458        1
-
-page-types being using the new API and page-types_lab the old one.
-
- # ./pagemap_ioctl
- TAP version 13
- 1..117
- ok 1 sanity_tests_sd Zero range size is valid
- ok 2 sanity_tests_sd output buffer must be specified with size
- ok 3 sanity_tests_sd output buffer can be 0
- ok 4 sanity_tests_sd output buffer can be 0
- ok 5 sanity_tests_sd wrong flag specified
- ok 6 sanity_tests_sd flag has extra bits specified
- ok 7 sanity_tests_sd no selection mask is specified
- ok 8 sanity_tests_sd no return mask is specified
- ok 9 sanity_tests_sd wrong return mask specified
- ok 10 sanity_tests_sd mixture of correct and wrong flag
- ok 11 sanity_tests_sd PAGEMAP_BITS_ALL can be specified with PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC
- ok 12 sanity_tests_sd Clear area with larger vec size
- ok 13 sanity_tests_sd Repeated pattern of written and non-written pages
- ok 14 sanity_tests_sd Repeated pattern of written and non-written pages in parts 498 2 2
- ok 15 sanity_tests_sd Repeated pattern of written and non-written pages max_pages
- ok 16 sanity_tests_sd only get 2 written pages and clear them as well
- ok 17 sanity_tests_sd Two regions
- ok 18 sanity_tests_sd Smaller max_pages
- ok 19 Smaller vec
- ok 20 Walk_end: Same start and end address
- ok 21 Walk_end: Same start and end with WP
- ok 22 Walk_end: Same start and end with 0 output buffer
- ok 23 Walk_end: Big vec
- ok 24 Walk_end: vec of minimum length
- ok 25 Walk_end: Max pages specified
- ok 26 Walk_end: Half max pages
- ok 27 Walk_end: 1 max page
- ok 28 Walk_end: max pages
- ok 29 Walk_end sparse: Big vec
- ok 30 Walk_end sparse: vec of minimum length
- ok 31 Walk_end sparse: Max pages specified
- ok 32 Walk_end sparse: Max pages specified
- ok 33 Walk_end sparse: Max pages specified
- ok 34 Walk_endsparse : Half max pages
- ok 35 Walk_end: 1 max page
- ok 36 Page testing: all new pages must not be written (dirty)
- ok 37 Page testing: all pages must be written (dirty)
- ok 38 Page testing: all pages dirty other than first and the last one
- ok 39 Page testing: PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC
- ok 40 Page testing: only middle page dirty
- ok 41 Page testing: only two middle pages dirty
- ok 42 Large Page testing: all new pages must not be written (dirty)
- ok 43 Large Page testing: all pages must be written (dirty)
- ok 44 Large Page testing: all pages dirty other than first and the last one
- ok 45 Large Page testing: PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC
- ok 46 Large Page testing: only middle page dirty
- ok 47 Large Page testing: only two middle pages dirty
- ok 48 Huge page testing: all new pages must not be written (dirty)
- ok 49 Huge page testing: all pages must be written (dirty)
- ok 50 Huge page testing: all pages dirty other than first and the last one
- ok 51 Huge page testing: PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC
- ok 52 Huge page testing: only middle page dirty
- ok 53 Huge page testing: only two middle pages dirty
- ok 54 Hugetlb shmem testing: all new pages must not be written (dirty)
- ok 55 Hugetlb shmem testing: all pages must be written (dirty)
- ok 56 Hugetlb shmem testing: all pages dirty other than first and the last one
- ok 57 Hugetlb shmem testing: PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC
- ok 58 Hugetlb shmem testing: only middle page dirty
- not ok 59 Hugetlb shmem testing: only two middle pages dirty
- ok 60 Hugetlb mem testing: all new pages must not be written (dirty)
- ok 61 Hugetlb mem testing: all pages must be written (dirty)
- ok 62 Hugetlb mem testing: all pages dirty other than first and the last one
- ok 63 Hugetlb mem testing: PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC
- ok 64 Hugetlb mem testing: only middle page dirty
- not ok 65 Hugetlb mem testing: only two middle pages dirty
- ok 66 Hugetlb shmem testing: all new pages must not be written (dirty)
- ok 67 Hugetlb shmem testing: all pages must be written (dirty)
- ok 68 Hugetlb shmem testing: all pages dirty other than first and the last one
- ok 69 Hugetlb shmem testing: PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC
- ok 70 Hugetlb shmem testing: only middle page dirty
- not ok 71 Hugetlb shmem testing: only two middle pages dirty
- ok 72 File memory testing: all new pages must not be written (dirty)
- ok 73 File memory testing: all pages must be written (dirty)
- ok 74 File memory testing: all pages dirty other than first and the last one
- ok 75 File memory testing: PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC
- ok 76 File memory testing: only middle page dirty
- ok 77 File memory testing: only two middle pages dirty
- ok 78 File anonymous memory testing: all new pages must not be written (dirty)
- ok 79 File anonymous memory testing: all pages must be written (dirty)
- ok 80 File anonymous memory testing: all pages dirty other than first and the last one
- ok 81 File anonymous memory testing: PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC
- ok 82 File anonymous memory testing: only middle page dirty
- ok 83 File anonymous memory testing: only two middle pages dirty
- ok 84 hpage_unit_tests all new huge page must not be written (dirty)
- ok 85 hpage_unit_tests all the huge page must not be written
- ok 86 hpage_unit_tests all the huge page must be written and clear
- ok 87 hpage_unit_tests only middle page written
- not ok 88 hpage_unit_tests clear first half of huge page
- ok 89 hpage_unit_tests clear first half of huge page with limited buffer
- ok 90 hpage_unit_tests clear second half huge page
- ok 91 hpage_unit_tests get half huge page
- ok 92 hpage_unit_tests get half huge page
- ok 93 Test test_simple
- ok 94 mprotect_tests Both pages written
- ok 95 mprotect_tests Both pages are not written (dirty)
- ok 96 mprotect_tests Both pages written after remap and mprotect
- ok 97 mprotect_tests Clear and make the pages written
- ok 98 transact_test count 192
- ok 99 transact_test count 0
- ok 100 transact_test Extra pages 143 (0.3%), extra thread faults 143.
- ok 101 sanity_tests WP op can be specified with !PAGE_IS_WRITTEN
- ok 102 sanity_tests required_mask specified
- ok 103 sanity_tests anyof_mask specified
- ok 104 sanity_tests excluded_mask specified
- ok 105 sanity_tests required_mask and anyof_mask specified
- ok 106 sanity_tests Get sd and present pages with anyof_mask
- ok 107 sanity_tests Get all the pages with required_mask
- ok 108 sanity_tests Get sd and present pages with required_mask and anyof_mask
- ok 109 sanity_tests Don't get sd pages
- ok 110 sanity_tests Don't get present pages
- ok 111 sanity_tests Find written present pages with return mask
- ok 112 sanity_tests Memory mapped file
- ok 113 sanity_tests Read/write to memory
- ok 114 unmapped_region_tests Get status of pages
- ok 115 userfaultfd_tests all new pages must not be written (dirty)
- ok 116 zeropfn_tests all pages must have PFNZERO set
- ok 117 zeropfn_tests all huge pages must have PFNZERO set
- # Totals: pass:113 fail:4 xfail:0 xpass:0 skip:0 error:0
-
-/proc/$$/numa_maps and /proc/$$/smaps have been tested too, comparing
-the outcome with the old API.
-
-[/TESTING]
-
-In the LSFMM/BFP 2025, there was a general agreement that we 1) would like to have
-a generic pagewalk API 2) that replaces the existing one with callbacks if possible
-and 3) that HugeTLB can use without the need to special case it (e.g: not having to
-depend on .hugetlb_entry callbacks)., which means having a lot of duplicated
-code and also having a lot of special casing just because hugetlb lore.
-
-pt_range_walk API tries to do that and replaces the old behaviour of "in
-HugeTLB world everything reads as a PTE" and starts reading HugeTLB entries
-the way they really are, that means interpreting them as PMD/PUD entries and
-contiguous-PMD/PTE entries.
-
-In order to achieve that, we need some infrastructure we did not really need until
-know, in order to be able to read HugeTLB pages as PUD/PMD entries.
-E.g: softleaf_from_pud had to be added and some other pud_* functions.
-
-In a few words, this API goes through an address range and returns
-whatever it is in there (swap/hwpoison/migration/marker entries, folios,
-pfn and device entries, or nothing).
-
-These are the internal return types the API uses:
-
- PT_TYPE_NONE
- PT_TYPE_FOLIO
- PT_TYPE_MARKER
- PT_TYPE_PFN
- PT_TYPE_SWAP
- PT_TYPE_MIGRATION
- PT_TYPE_DEVICE
- PT_TYPE_HWPOISON
-
-
-The API also handles locking and batching itself, so the caller
-does not really need to bother with that.
-
-In order to handle contiguous-PMD mapped hugetlb pages, folio_pmd_batch,
-which is an analogous of folio_pte_batch, has been implemented.
-
-More information about the API can be found in patch #4.
-
-This was tested on x86_64 and arm64, but as I said, it is still
-incomplete, therefore the RFC, to gather some initial feedback before
-investing more time into this.
-
-For now, only the /proc/pid/(smaps|numa_maps|pagemap) have been replaced
-to use this new API.
-
-Thanks in advance
-
-
-Oscar Salvador (7):
-  mm: Add softleaf_from_pud
-  mm: Add {pmd,pud}_huge_lock helper
-  mm: Implement folio_pmd_batch
-  mm: Implement pt_range_walk
-  mm: Make /proc/pid/smaps use the new generic pagewalk API
-  mm: Make /proc/pid/numa_maps use the new generic pagewalk API
-  mm: Make /proc/pid/pagemap use the new generic pagewalk API
-
- arch/arm64/include/asm/pgtable.h             |   32 +
- arch/loongarch/include/asm/pgtable.h         |    1 +
- arch/powerpc/include/asm/book3s/64/pgtable.h |    7 +
- arch/s390/include/asm/pgtable.h              |   38 +
- arch/x86/include/asm/pgtable.h               |   52 +
- arch/x86/include/asm/pgtable_64.h            |    2 +
- arch/x86/mm/pgtable.c                        |   18 +-
- fs/proc/task_mmu.c                           | 2212 +++++++++---------
- include/asm-generic/pgtable_uffd.h           |   15 +
- include/linux/leafops.h                      |   46 +
- include/linux/mm.h                           |    2 +
- include/linux/mm_inline.h                    |   32 +
- include/linux/pagewalk.h                     |  106 +
- include/linux/pgtable.h                      |   95 +
- mm/internal.h                                |   75 +-
- mm/memory.c                                  |   22 +
- mm/pagewalk.c                                |  400 ++++
- mm/pgtable-generic.c                         |   10 +
- 18 files changed, 2024 insertions(+), 1141 deletions(-)
-
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index e42ad56a86d4..5b5490505b94 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -170,6 +170,8 @@ static inline pteval_t __phys_to_pte_val(phys_addr_t phys)
+ 	(__boundary - 1 < (end) - 1) ? __boundary : (end);			\
+ })
+ 
++#define pmd_valid_cont(pmd)    (pmd_valid(pmd) && pmd_cont(pmd))
++
+ #define pte_hw_dirty(pte)	(pte_write(pte) && !pte_rdonly(pte))
+ #define pte_sw_dirty(pte)	(!!(pte_val(pte) & PTE_DIRTY))
+ #define pte_dirty(pte)		(pte_sw_dirty(pte) || pte_hw_dirty(pte))
+@@ -670,6 +672,12 @@ static inline pgprot_t pmd_pgprot(pmd_t pmd)
+ 	return __pgprot(pmd_val(pfn_pmd(pfn, __pgprot(0))) ^ pmd_val(pmd));
+ }
+ 
++#define pmd_advance_pfn pmd_advance_pfn
++static inline pmd_t pmd_advance_pfn(pmd_t pmd, unsigned long nr)
++{
++	return pfn_pmd(pmd_pfn(pmd) + nr, pmd_pgprot(pmd));
++}
++
+ #define pud_pgprot pud_pgprot
+ static inline pgprot_t pud_pgprot(pud_t pud)
+ {
+@@ -1645,6 +1653,17 @@ extern void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long ad
+ 				    pte_t *ptep, pte_t old_pte, pte_t pte,
+ 				    unsigned int nr);
+ 
++#ifdef CONFIG_HUGETLB_PAGE
++#define pmd_batch_hint pmd_batch_hint
++static inline unsigned int pmd_batch_hint(pmd_t *pmdp, pmd_t pmd)
++{
++	if (!pmd_valid_cont(pmd))
++		return 1;
++
++	return CONT_PMDS - (((unsigned long)pmdp >> 3) & (CONT_PMDS - 1));
++}
++#endif
++
+ #ifdef CONFIG_ARM64_CONTPTE
+ 
+ /*
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 1abd9c52a4f2..ab43d0922ec1 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -358,6 +358,34 @@ static inline void lazy_mmu_mode_pause(void) {}
+ static inline void lazy_mmu_mode_resume(void) {}
+ #endif
+ 
++#ifndef pmd_batch_hint
++/**
++ * pmd_batch_hint - Number of PMD entries that can be added to batch without scanning.
++ * @pmdp: Page table pointer for the entry.
++ * @pmd: Page table entry.
++ *
++ * Some architectures know that a set of contiguous pmds all map the same
++ * contiguous memory with the same permissions. In this case, it can provide a
++ * hint to aid pmd batching without the core code needing to scan every pmd.
++ *
++ * An architecture implementation may ignore the PMD accessed state. Further,
++ * the dirty state must apply atomically to all the PMDs described by the hint.
++ *
++ * May be overridden by the architecture, else pmd_batch_hint is always 1.
++ */
++static inline unsigned int pmd_batch_hint(pmd_t *pmdp, pmd_t pmd)
++{
++	return 1;
++}
++#endif
++
++#ifndef pmd_advance_pfn
++static inline pmd_t pmd_advance_pfn(pmd_t pmd, unsigned long nr)
++{
++	return __pmd(pmd_val(pmd) + (nr << PFN_PTE_SHIFT));
++}
++#endif
++
+ #ifndef pte_batch_hint
+ /**
+  * pte_batch_hint - Number of pages that can be added to batch without scanning.
+diff --git a/mm/internal.h b/mm/internal.h
+index cb0af847d7d9..488cb5c1e340 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -269,7 +269,7 @@ static inline int anon_vma_prepare(struct vm_area_struct *vma)
+ 	return __anon_vma_prepare(vma);
+ }
+ 
+-/* Flags for folio_pte_batch(). */
++/* Flags for folio_{pmd,pte}_batch(). */
+ typedef int __bitwise fpb_t;
+ 
+ /* Compare PTEs respecting the dirty bit. */
+@@ -293,6 +293,79 @@ typedef int __bitwise fpb_t;
+  */
+ #define FPB_MERGE_YOUNG_DIRTY		((__force fpb_t)BIT(4))
+ 
++static inline pmd_t __pmd_batch_clear_ignored(pmd_t pmd, fpb_t flags)
++{
++	if (!(flags & FPB_RESPECT_DIRTY))
++		pmd = pmd_mkclean(pmd);
++	if (likely(!(flags & FPB_RESPECT_SOFT_DIRTY)))
++		pmd = pmd_clear_soft_dirty(pmd);
++	if (likely(!(flags & FPB_RESPECT_WRITE)))
++		pmd = pmd_wrprotect(pmd);
++	return pmd_mkold(pmd);
++}
++
++/**
++ * folio_pmd_batch - detect a PMD batch for a large folio.
++ *                  - The only user of this is hugetlb for contiguous
++ *                    PMDs
++ **/
++static inline unsigned int folio_pmd_batch(struct folio *folio, pmd_t *pmdp, pmd_t *pmdentp,
++				  unsigned int max_nr, fpb_t flags, bool *any_writable,
++				  bool *any_young, bool *any_dirty)
++{
++	pmd_t expected_pmd, pmd = *pmdentp;
++	bool writable, young, dirty;
++	unsigned int nr, cur_nr;
++
++	if (any_writable)
++		*any_writable = !!pmd_write(*pmdentp);
++	if (any_young)
++		*any_young = !!pmd_young(*pmdentp);
++	if (any_dirty)
++		*any_dirty = !!pmd_dirty(*pmdentp);
++
++	VM_WARN_ON_FOLIO(!pmd_present(pmd), folio);
++	VM_WARN_ON_FOLIO(!folio_test_large(folio) || max_nr < 1, folio);
++	VM_WARN_ON_FOLIO(page_folio(pfn_to_page(pmd_pfn(pmd))) != folio, folio);
++
++	/* Limit max_nr to the actual remaining PFNs in the folio we could batch. */
++	max_nr = min_t(unsigned long, max_nr,
++		       (folio_pfn(folio) + folio_nr_pages(folio) -
++		       pmd_pfn(pmd)) >> (PMD_SHIFT - PAGE_SHIFT));
++
++	nr = pmd_batch_hint(pmdp, pmd);
++	expected_pmd = __pmd_batch_clear_ignored(pmd_advance_pfn(pmd, nr << (PMD_SHIFT - PAGE_SHIFT)), flags);
++	pmdp = pmdp + nr;
++
++	while (nr < max_nr) {
++		pmd = pmdp_get(pmdp);
++		if (any_writable)
++			writable = !!pmd_write(pmd);
++		if (any_young)
++			young = !!pmd_young(pmd);
++		if (any_dirty)
++			dirty = !!pmd_dirty(pmd);
++		pmd = __pmd_batch_clear_ignored(pmd, flags);
++
++		if (!pmd_same(pmd, expected_pmd))
++			break;
++
++		if (any_writable)
++			*any_writable |= writable;
++		if (any_young)
++			*any_young |= young;
++		if (any_dirty)
++			*any_dirty |= dirty;
++
++		cur_nr = pmd_batch_hint(pmdp, pmd);
++		expected_pmd = pmd_advance_pfn(expected_pmd, cur_nr << (PMD_SHIFT - PAGE_SHIFT));
++		pmdp += cur_nr;
++		nr += cur_nr;
++	}
++
++	return min(nr, max_nr);
++}
++
+ static inline pte_t __pte_batch_clear_ignored(pte_t pte, fpb_t flags)
+ {
+ 	if (!(flags & FPB_RESPECT_DIRTY))
 -- 
 2.35.3
 
