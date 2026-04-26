@@ -4,98 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2B8FFF8850
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 21:00:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06682FF8850
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 21:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38DEA6B0005; Sun, 26 Apr 2026 17:00:13 -0400 (EDT)
+	id 384646B009E; Sun, 26 Apr 2026 17:21:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 317F06B009F; Sun, 26 Apr 2026 17:00:13 -0400 (EDT)
+	id 3351F6B009F; Sun, 26 Apr 2026 17:21:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DFE06B00A1; Sun, 26 Apr 2026 17:00:13 -0400 (EDT)
+	id 224816B00A1; Sun, 26 Apr 2026 17:21:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 081146B0005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 17:00:13 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97A3F1C08BD
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:00:12 +0000 (UTC)
-X-FDA: 84701924664.21.CC55689
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DF81A20011
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:00:10 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eKei9MSL;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DC326B009E
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 17:21:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A33F71605B0
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:20:59 +0000 (UTC)
+X-FDA: 84701977038.09.004B74F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D2EE1180008
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:20:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ek/IbZsW";
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777237211;
+	s=arc-20220608; t=1777238458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lOZL4+mogu6T8E7PAy+IXa9AoTCG/gbBu4Qc7S4VdJI=;
-	b=0/78c3dZ7ojyQzwJIh+TBZMePzmKmowwp8wmSEy5q0M/a4zjV+jIktHDFT8XAsWF8iAz+2
-	5dHxGvVbCB6dy3WXCqvdn7dfr5zz5iiUwKmNSjjTzF52k7zG7UQATJgWuAal2TYwHWQp1G
-	9zGcs8zCpA9rcA8DccrCyT4QuLhGZ3Q=
+	bh=dGxHaxX/heGhBQAqn2D/vPf9VuPFcdVw3v9kaSW9Jzc=;
+	b=iLHbtnP8UqAK190ohDZ3qadUfK1tzqFq4HWax9cvoGO17oHHyKTIUs5gGIu7yKxr3m0BKc
+	Mm9bpfXYhmjH2R3Bzpkzj5OK3M7vuMDgQgiV6egcO43sK9b3W6a+zFpI8Yomd3KTQkKRUK
+	ny5E2/hQpFcgC4SitgBXWnlsXT/ub58=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eKei9MSL;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ek/IbZsW";
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777237211; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777238458; a=rsa-sha256;
 	cv=none;
-	b=YO+i6idul9rnyrxiIQg4kGmxsCCXd2+BF2cwYv+XU3Ope7aeEe/rp5Ygyn9LsMXonvWxTD
-	bTPii3x/oJz5KrJVOGmeUrS2t3ERYsrwmDhDB7yITICZvZ3s5rdwMssr4ttaTQZqFIz9we
-	iObeAoDDotu/uTpCEEpLGPIbyOeseG0=
+	b=vIyjiqQp9NJ8J2m2MlLKtu74CWc9hAYKB5DI49eluASWyg4N56iyhkI/c1u1wmOvy//keX
+	ujFiTyQGhNRCumfWYfdPLUKdyAlBOPm5z42FwyV1cJ0hof03ggE9wH8cBZZxbp+WONdhVd
+	Rx412OMpbrMX2DRVJ9Eanyr1WkGrkOI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6FFC60145;
-	Sun, 26 Apr 2026 20:52:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EE4C2BCAF;
-	Sun, 26 Apr 2026 20:52:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B518E40B1C;
+	Sun, 26 Apr 2026 21:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646C4C2BCAF;
+	Sun, 26 Apr 2026 21:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777236761;
-	bh=wSosBJ8m1YWd2zOlUhMAmjSvy68tqvEfvThHsZfgYFY=;
+	s=k20201202; t=1777238456;
+	bh=Wz5ssFeDipE2282eBjMZgUbsO+8T8am3ncG6haNgKQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKei9MSLej3nBQoIt35TXjx08PyE2lIFrsCiVH0/Db+cqf2NdpqutXo1dWu15EuW6
-	 W+yz70+C8plwYoW+u2T/GwzygsHdjMmeQmAjxz/NZiaxeu9gGDc70DSykNKBsDKpx4
-	 bdigEK/hhI6sjbUTEo77Tjw2+l6356TPUKMcwQHJM2WCcbSLbXLyoxXx4pAIagyhxx
-	 WA0Nwe69ZaQRWBakOMonl5LWFPWsN3WhUmD93EPngyblc55ZUzTIzx81XzwD29fF2v
-	 eCInb9rkNMxRMXcnJ0koevDoFalxQo/ehg/rFqbYUIHCnp4rPEADrPbL+6WKSWay6T
-	 CH08RjmYjyPeg==
+	b=ek/IbZsWHpMkkbz2xUXuGrJKeeaqhkrx80Jz1sHt9i++pjqXaNW8UXQ8r48EfwpWn
+	 hZT5bKjdRmARcao+LCkpEjHLY2s20TEt+D3jOxFfZY6hz5CcFwJKAA+ZMl4/vEUnfn
+	 P8Dqlgnb4RlTqWI4gD95XaJX7CjcPnAXQGkxJI+dqF0j4H1ZoiN+whzSjw4kmDu+mX
+	 /M7P0JiwbLDKsR23kvpeEz5qB6fNtWX/kYzZTXW8hy3mW7ynNwv7Ki5AyXYxhcIZP7
+	 4YzFmaRdqvIy6MIqzaTuH47KLUioKaMfXk7H9EkNIu9X9StGjXrsgmsL7A15yYtcZs
+	 ws1i7KeGAjiRA==
 From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: lsf-pc@lists.linux-foundation.org,
+	linux-mm@kvack.org,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 18/19] Docs/mm/damon/design: document data attributes monitoring
-Date: Sun, 26 Apr 2026 13:52:19 -0700
-Message-ID: <20260426205222.93895-19-sj@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] DAMON Updates: Tiering, Pagel Level Monitoring and DAMON-X
+Date: Sun, 26 Apr 2026 14:20:45 -0700
+Message-ID: <20260426212048.94069-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260426205222.93895-1-sj@kernel.org>
-References: <20260426205222.93895-1-sj@kernel.org>
+In-Reply-To: <20260307210250.204245-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3qbwa5rdyaocdjaz33q3hxcwwtrfdq49
-X-Rspamd-Queue-Id: DF81A20011
+X-Stat-Signature: xfeg5o19jqkr13y1wq4ettpzz3krjo8j
+X-Rspamd-Queue-Id: D2EE1180008
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1777237210-350366
-X-HE-Meta: U2FsdGVkX1+OvEfWmRxW1rQPBf3wYxdDV7TQ3E/iya7Atx+iQDS7xyluoqQrhrnIChBlHQBcqwRBYj7oBPiytpW1PK2BBdLD+RD52Zsq8NBEsUl/pRx6Zl71kiS18J9RGv+mqbUMwX67x9V242h46n9yvA84rT98IvXordKaHkKpY1HOJuemAVU+M77oX13aKfadROCmvBQ1YDxyCDY9W1dW03DokeGjkJcISh9SqJlBrzIgzAz1SZ7x8gDQ8kUqWzRvIkDM+f6M5hcjk7fXwxCf4Dty/gqYNUjvAka+5DviyYetfklt6xYOkqeAmLYRiA5STcd/G/pHwhtG7/6UHE4y8kKhaKQc9SeSzp0tm+Hv/ERV57sv/BgfSIK77ZfDaFlJW65hb/iqU7mjRZVEmcpSSddI4GIVY/VHxcLRrIShAukCDElH4XAaxkr4f8LS9HkiV+MlyqAAJ2XlfXDB3WxFxEX5OYGoV4EaIWnLj0cy6L/jN7tcwYrHKtdt+m5CfdOCs9gEhEmndPjQSAfCVJI/G1aJVQU5pN4XO7ukn6EMB3pZsJ1BznMIXgTCvuVhYWpyWlPArKhiFr5kX5x+bv5/GZmnjo+f6pA8ta8gQhOhgDMAOHcBDPkCSyEWAuuhi4OT7jo1JO+nOlGTcrdhbKLHS90QPp25SZmLw+9MzlLHOqOKvhubUF1iYhhWusgVtiuCyPkhQ2sCb0x3KNoGDxJ+ciHuezcA+YhVhS9IqbeylX2oxKaKaOcg3GaNoxxyHfyzMf0VFgHR/kHV1cSN5hY8RhjHFtOz3JVwWMweKxMKqT1KayoVbs8SKi7jud5sZs7/z/0zdce68XBoetKX909vGJdJJJGXMXlgoQ4Lfw++ln8AzmN4Up5Du3QXbWUDbZrgRTBLaiVnITpXsCIbWodBoH8+5c1lLbKTdat/rR2EDiaMGZUZjpa8SXnByFtGrafu0x+TUXPEIKv93OU
- zBN5JRPJ
- m4gfaiyPuxovWuDJ1Q7BnFJReenWHggEt/gwzcN4E14rKZavqHnQM76GUTIoN2XenkPC+ME8WvgkLu3b3fZAHn+dupLFR8XMC6KT1AcRekL8MLYkRtMs1lB9YjqckedhhWPe8FEkBsK/Qb15QhXg7r3jBBif60fIGlOBqVUE1zaqRseIUDWxgz/PzKQngemR/zHPhFDhNISDeKoi1uXQtNTkTHz6VcWESZ4cUNz42pWDTuAI=
+X-HE-Tag: 1777238457-861633
+X-HE-Meta: U2FsdGVkX19FGk2cj+tMdj0lwPwgpWioanoLYhJx134Pw5VnkgjXher9X5SARWIMtkLHpOLYNSLT3O8Bi2TvC/HQfcyPgERI8ujMemFeUn2WAG6e9eWjIS21RVrr5YyBlRWfHnfhXwFArQLHEyrERK4NV9jVdmKC4/mjMCBHQNlC/qNM++923ZheagfeQjb6mhNzuYNc0J5fuEJVzoQyLcTLfa6NOHjNf6VFFTzzNsVe2ju/MLLU88EMEGFG7bb9RD9E7CA2n4zZ9RNMWB5vNMZHTOSYtqrNg9UUuZ/l29bZzKK4l8iuhC6/lyKvdy4TAD0flzVTThnYbdraiQ1AOS3v3JHRBjmupkeFw27Sz270O1VQmAnA6M282oQob7weFbrpG9aprN93dsqeRvcAu5+dsRLBh1r+VHlldnsXxVJHpQZ9iD+dRw8hKfA1uwN7OeB6DIXPIF/OaJGJJjNGtamRn+d1wWqpab1d8t8KCY+bIDtAXM3ole7ySXD/qjP39V3mOQmuYZVMZ5Zf1htqa46PjL+PjqUPIncMIR3Ap+3P3QYWq2I05YpaJ1hY09+6s54Nb3sAJ3m7DW97U7/ij7Gc17kyDU3AjnYBmyWuKx7DFdQP0pn1+/501wHarKCXV7syB8UFlmHbqPqLYsPztsyACGVgqFPUaDzSwNi1937LBgZ6/pFMB2i+jPR2AjJD0WoyJPqG2ay4Mxc+8t2a1CMxHuv1dLg7IaiENW/XLbi30GMHiT8akAMvC3Zk8qvC9BupoJfrZJR7Fl+ACUpxr9SRuN47NWTygu976XftZq2LuNGyhEFYe1xIXZHZl8OHMqrGbkx+hIPP5o6rg7+Eg9aTVvCiRbURJvlTo1H50PAihrUxem7w3z2lx2X4Ni+qu3Cv3ID2Ir1QgL4yfjNJzwxTB25yD7T3x4tYZwyYIh5B/c+xz53ZnDHOQ0UJgQ4UKTv0wEuDxiuAcRsQxdX
+ 1lIWp82W
+ KGODtGgTjfdTmOuvxbkjmopM+VYdpHbDXAB4ZMYKuTXtH/XnTFkdOpo/lTkJQIK/CdvVsnOnrwmmur4pQd6x0RIDYdH/Xj+p92y7iEpTrWsIUM+Bex423jiW+NBz9DglwL8xkCbrmwMP5CnsQifERhNIvA++/0+zPZd7dsXUDO1ueNWxvE40aVOg2Ph+3qvL2dj8Qnvs83tCn6G+elEcJiIlMk23iMTbA2+YC/nOxQ6cHcPTJP7IsOC42WzoOAlDWH613QNOx0RheFH28sGzdyf7o/WXaUxuyD1FkwcABaVt4zPs+6XPJ4VeUYwcNZNoifCSwSvBMa7fVHksvesWIeryZKtH0ItiIvPi1cdfGbMdZfybNGd+5TQhnVhSpnZnHuWIOkcTAbLb9f/P9yg1mxJp5bzV2mUGMnOtnsDMS2ysLs/cJ4W2KmjHrtAFy+oDdfx/fS8dvP22XIss=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,60 +94,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON design document for newly added data attributes monitoring
-feature.
+On Sat,  7 Mar 2026 13:02:48 -0800 SeongJae Park <sj@kernel.org> wrote:
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- Documentation/mm/damon/design.rst | 35 +++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+> Hello,
+> 
+> 
+> In the last year LSF/MM/BPF, I shared [1] updates of the status and future
+> plans on DAMON development.  Feedbacks were very helpful.  I'd like to share
+> new updates and gather more feedback on LSF/MM/BPF 2026.
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index fa7392b5a331d..bada2010ad1ca 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -276,6 +276,41 @@ interval``, DAMON checks if the region's size and access frequency
- (``nr_accesses``) has significantly changed.  If so, the counter is reset to
- zero.  Otherwise, the counter is increased.
- 
-+Data Attributes Monitoring
-+~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Data access pattern is only one type of data attributes.  In some use cases,
-+users need to know more data attributes information.  For example, users may
-+need to know how much of a given hot or cold memory region is backed by
-+anonymous pages, or belong to a specific cgroup.  For such use case, data
-+attributes monitoring feature is provided.
-+
-+Using the feature, users can register data attributes of their interest to the
-+DAMON :ref:`context <damon_design_execution_model_and_data_structures>`.  The
-+registration is made by specifying a probe per attribute.  Each of the probe
-+specifies a rule to determine if a given memory region has the related
-+attribute.  The rule is constructed with multiple filters that similar to
-+:ref:`DAMOS filter <damon_design_damos_filters>`.
-+
-+If such probes are registered, DAMON executes the probes for each region's
-+sampling memory when it does the access :ref:`sampling
-+<damon_design_region_based_sampling>`.  The number of samples that identified
-+as having the data attribute (hitting the probe) per :ref:`aggregation interval
-+<damon_design_monitoring>` is accounted in a per-region per-probe counter.
-+Users can therefore know how much of a given DAMON region has a specific data
-+attribute by reading the per-region per-probe probe hits counter after each
-+aggregation interval.
-+
-+This is a sampling based mechanism.  Hence, it is lightweight but the output
-+may include some measurement errors.  The output should be used with good
-+understanding of statistics.
-+
-+Another way to do this for higher accuracy is using :ref:`DAMOS filter
-+<damon_design_damos_filters>` with ``stat`` :ref:`action
-+<damon_design_damos_action>` and ``sz_ops_filter_passed`` :ref:`stat
-+<damon_design_damos_stat>`.  This approach provides the data attributes
-+information in page level.  But, because it is operated in page level, the
-+overhead is proportional to the size of the memory.
- 
- Dynamic Target Space Updates Handling
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--- 
-2.47.3
+As this topic is scheduled [1] for the conference (kudos to the conference
+committes!) and the day is approaching, I'm sharing a few updtes.
+
+> 
+> Major topics to discuss in the session include but not limited to below three
+> topics.  Of course, some changes could be made.
+> 
+> Followups on work items that we discussed on last LSF/MM/BPF
+> ------------------------------------------------------------
+> 
+> DAMOS auto-tuning based memory tiering.  I worked on a more flexible evaluation
+> setup for it.  I also upstreamed another DAMON extension that makes memory
+> cgroup-aware memory tiering available.  An unnamed user confirmed positive test
+> results of the auto-tuning based tiering.  Meanwhile other users including
+> people from SK hynix and Micron are continuing development of their own memory
+> tiering approaches and showing good achievements.  Because basic evaluation of
+> my approach is done, I'm not actively working on this now, but working in a
+> support mode for this.  I will share more details about this and discuss if
+> something need to be revisited or if there are anything that DAMON can help for
+> memory tiering.
+
+Ravi from Micron is continuing their work [2], and now it is nearly ready to be
+landed.  This is only a part of the topics I want to discuss on the session,
+though.
+
+> 
+> Page level monitoring.  The feature, which accounts the number of pages in each
+> DAMON region of user-interested type (e.g., hugepage, LRU list-position,
+> belonging cgroup) has successfully upstreamed after the LSF/MM/BPF 2025.
+> Because it imposes high overhead on large systems, a lightweight version of it
+> was shared as a future work.  Unfortunately not much visible progress for it
+> has been made so far.  Some progress on the design is made, though.  Briefly
+> speaking, the idea is sampling the types of pages in each DAMON region.
+> Implementation wise, users will be able to set the types of their interests,
+> and DAMON will provide the counts of the samples of the interested types, in
+> addition to the access frequency counter (nr_accesses). I'd like to share the
+> design and get feedback.  Hopefully RFC ideas or patch series will be shared
+> before the conference to help discussions.
+
+I was able to make some progress and just posted [2] the RFC patch series.
+Conference driven development works! :)
+
+> 
+> FYI, in future, the counters of interests could be extended to do the DAMON
+> region merge/split based on not only access frequency but one of the
+> user-defined interests.  Then DAMON might pivot from Data Access MONitor to
+> Data Associativity MONitor.  It’s just somewhat possible and sounds funny for
+> now.  I find no real use case of that.
+
+I now think this is the right way to go.  This can also make page faults and
+PMU events based mointoring like access check primitives addition easier to do.
+I added more details about this on the 'Future Works: Long Term' section of the
+cover letter of the RFC patch series [1].
+
+> 
+> New Project
+> -----------
+> 
+> DAMON-X.  In Crusoe, which is a neocloud company that I’m now working for, we
+> want to utilize DAMON for both memory efficiency and observability.  More
+> specifically, we want to show the memory idle time percentiles, and run memory
+> PSI-driven proactive memory reclamation.  The straightforward way would be
+> doing that via DAMON sysfs interface, or DAMON user-space tool.  It requires
+> some user-space programming, though.  I want the kernel to just work.  A way
+> for that would be running DAMON modules that were developed for the purposes,
+> namely DAMON_STAT and DASMON_RECLAIM.  But DAMON modules run in an exclusive
+> manner, so we cannot run those in parallel.  The exclusiveness is required to
+> avoid interference between DAMON worker threads (kdamond) for different
+> modules.
+> 
+> I plan to let DAMON modules share kdamonds to let them run in parallel without
+> interference.  The shared kdamond would be able to run on the system from the
+> beginning or on demand, and directly attach/detach DAMON applications like
+> DAMON_STAT, DAMON_RECLAIM, and future ones for NUMA-aware page migrations etc.
+> It will work with a very minimum number of knobs in nearly automated way, but I
+> plan to also extend the DAMON sysfs interface for more flexible and manual
+> control of it for experiments and investigations.  With my humble naming sense,
+> I’m currently calling it "DAMON Enabled Computer System", or DAMON-X in short.
+> Actually this is a followup of what I shared in LPC 2024 kernel mm
+> micro-conference, as a long-term DAMON project for the kernel that just works.
+> I want to share Crusoe's desired use case, problems, and design of the
+> currently planned solution during the session and get feedback.  Hopefully RFC
+> ideas or patch series will be shared before the conference to help discussions.
+
+I was unable to make much progress on this.  As we still have one week, I will
+try to share a detailed RFC idea at least, before the conference.
+
+> 
+> More Topics Out of This Session
+> -------------------------------
+> 
+> There are two more DAMON-related development works that are ongoing, that I
+> want to discuss in LSF/MM/BPF.  Because I think those cannot be discussed in
+> single session with the above three topics due to the limit of the time, I
+> proposed separate sessions for them.
+
+The two topics are also scheduled [1] for the conference.  We will have one
+hour session for all three topics.  Appreciate the conference committees for
+their works!
+
+> The two topics are "production level
+> access-aware THP [3]"
+
+Asier from Huawei made DAMOS_COLLAPSE [4].  I will repost it after 7.1-rc1, and
+hopefully it will be merged into mm-new by the conference.  This is only a part
+of the topics I want to discuss on the session, though.
+
+> and "per-CPUs/threads/reads/writes data access monitoring
+> [4]".
+
+The page level monitoring RFC patch series [3] is now also considered to be the
+foundation for the interface of this work.
+
+Akinobu continued thier PMU based mointoring work [5] and I now think that
+could be a viable option for some of users including Crusoe, if page fault
+based monitoring is rejected or delayed too long.
+
+> 
+> 
+> 
+> [1] https://lore.kernel.org/all/20250102222317.48760-1-sj@kernel.org/
+> [2] https://lpc.events/event/18/contributions/1768/
+> [3] https://lore.kernel.org/20260211050729.69719-1-sj@kernel.org
+> [4] https://lore.kernel.org/20260218054320.4570-1-sj@kernel.org
+
+[1] https://docs.google.com/spreadsheets/d/1mGEdDrWskp7Ua91jGXzquQGinorcD58DAVXhOiRp2Gg/edit?gid=1852749899#gid=1852749899
+[2] https://lore.kernel.org/20260426003245.2687-1-ravis.opensrc@gmail.com
+[3] https://lore.kernel.org/20260426205222.93895-1-sj@kernel.org
+[4] https://lore.kernel.org/20260409150128.1566835-1-gutierrez.asier@huawei-partners.com
+[5] https://lore.kernel.org/20260423004211.7037-1-akinobu.mita@gmail.com
+
+
+Thanks,
+SJ
+
+[...]
 
