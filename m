@@ -4,66 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57030FF885C
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 12:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C018FF885D
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 12:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C01546B0092; Sun, 26 Apr 2026 08:57:50 -0400 (EDT)
+	id 8CE7A6B0093; Sun, 26 Apr 2026 08:57:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB32E6B0093; Sun, 26 Apr 2026 08:57:50 -0400 (EDT)
+	id 8A5F36B0095; Sun, 26 Apr 2026 08:57:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7A386B0095; Sun, 26 Apr 2026 08:57:50 -0400 (EDT)
+	id 71FCE6B0096; Sun, 26 Apr 2026 08:57:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 98CDD6B0092
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:57:50 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 34C46120178
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:50 +0000 (UTC)
-X-FDA: 84700709100.12.CCC05C4
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1771EC0008
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 60D0C6B0093
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 08:57:51 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D62A160635
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:51 +0000 (UTC)
+X-FDA: 84700709142.25.484A3E5
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 01D4D1C0004
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:57:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
 	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf21.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777208268;
+	s=arc-20220608; t=1777208269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xpHiMIVL/n8XlCby+SL6/v4wf5J9N4x6EFwGCFeoXUo=;
-	b=ylzjPpv8g4/ylITNgU3rWgu9fbx83/P7lkZ+riYdG5lI8gCcRadYz5EA8jIqmE1vBxty++
-	buhuCypmu15t6Z31CgAarumNKQr6qiAGXEY23g7LE0C5okmOCd7gIKkaeaycGg1vLJfqkd
-	NVBL6wwOornHVUOhPulZ4adO1hGmdhM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777208268; a=rsa-sha256;
+	bh=BhJFrOuMpm/3UsgW/+8TM5V2bE1KOU+zDCK7VpePrUw=;
+	b=omjNtCOP48vdwdjUqKRvELE4rfus/sjh3f3lmPq4AHR2sDkWPxI9CwQrx5fTj5V/r9y68X
+	XIfVGAns8UuQxXCf/SUpZSO5VfshofQMevE1HgJ9C8Vb7efe0EF/3nb7HO5+MUOSPC3sEM
+	FArQA4AQYqfR01X/arN9UjjpI5L+204=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777208269; a=rsa-sha256;
 	cv=none;
-	b=uyqRdHxXijLIi0IezO0pbTflvtTHvR8iFNrAaeAM0HUzlA8bxLS9vFbJJWxUmYExzzm+Cj
-	sBOZT3IRJ1Rq7hk+6coOt1ScVKDXmWSRsHF9rRGZ8eFcY6gzD3lnN5FtzdmFXu0bs+iBqF
-	QnzeMXLeMNX9Y8nmkHmVhuv4GyKR820=
+	b=WJkmuTwGgxuVDlEyx+ipPxkXIqee/4olW1INvVGURxkeAubL0unqCiBk+Pw+GuQEPfgFMQ
+	6KphjsOgtm1WeefvKsJMst5q69jEWfuXtudyje89X6CYpNTv13LeMvMsz6YxUNy4+xvIT7
+	samFlCFEIjXukXyZlsv0FBA3R7eplTI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf21.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 279C05BCF7;
-	Sun, 26 Apr 2026 12:57:40 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8EA3F6A7F6;
+	Sun, 26 Apr 2026 12:57:41 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5288593B1;
-	Sun, 26 Apr 2026 12:57:39 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1F6F3593B0;
+	Sun, 26 Apr 2026 12:57:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aEETKsML7mmtRAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Sun, 26 Apr 2026 12:57:39 +0000
+	id EH2kBcUL7mmtRAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sun, 26 Apr 2026 12:57:41 +0000
 From: Oscar Salvador <osalvador@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -73,14 +74,16 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Oscar Salvador <osalvador@suse.de>
-Subject: [RFC PATCH v2 1/7] mm: Add softleaf_from_pud
-Date: Sun, 26 Apr 2026 14:57:13 +0200
-Message-ID: <20260426125719.24698-2-osalvador@suse.de>
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>
+Subject: [RFC PATCH v2 4/7] mm: Implement pt_range_walk
+Date: Sun, 26 Apr 2026 14:57:16 +0200
+Message-ID: <20260426125719.24698-5-osalvador@suse.de>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260426125719.24698-1-osalvador@suse.de>
 References: <20260426125719.24698-1-osalvador@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
 	module=replies;
@@ -90,13 +93,13 @@ X-Rspamd-Pre-Result: action=no action;
 	Message is reply to one we originated
 X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1771EC0008
-X-Rspamd-Server: rspam06
-X-Stat-Signature: osmzm49hw1tqkdizsmk8rbd96kx6xxg6
-X-HE-Tag: 1777208267-865934
-X-HE-Meta: U2FsdGVkX19FIKOzOMV774fvWWbzDODyz95o3KS+fhavAglF4V+fBYH+Xb71+ojuqwIznevLOqYT7a2ptW5iZWyxGedZbIQWMpZCE/T9wfYVg/3Vi3Q22A/byCroOg66LBnqVTIRaHC29ynoGSvfyPziLYhJGmyGQ6WcX2RwRJjR0sWF/i6RpmmES26RTMnkGDMprWhE8Ip5jqnT16THTSSpP3NDEPZOmaOGXkbKNf74385m/5rO2VUHtpxmThHMo2YLOykDfpLFRgjKK3IoXciv94+/6TH2xxpG0clHMtUMS+7F6xv8VJAIAzS5fb1xfYY/QfUgR6Zrs5gE3+9JxdpsXD28OaBUsnddb+yKdmDMso+KA95T/9l56nOzgHrtSCebJM++NfWRoTR6IuK62iq87I+KAWZcZnv61cNysZvJ1iHB+xr+lQqNd91GYa3uXPPSPgD6LShnZyA9KucNwl61kdnPIhxgHEavoWBCMnSHfgvc4ABQK+5sxvd7GhfeTuEBzUZf7XDEnskuhHiBE3ESIWXJ0JW7Fdwr4fecFKQVn69L+bEu5vXy02DYIokzYA8WK3UzWQTcxgNljK+XoUW/5QF+znCmJh63kI+6/GZUX9KhMBsE1QjejCYU/EubFQfuU74aXIDJHpqlaEwy9m/elTBRkIfPpQtQl3UcaS6Ci9NL3QHEX3km8huEX/SaGoa2fqlWpGvzf6tNjkOvbcGub2M/fHLOyWGB3QKAZeiuM+gLVQ1fA/bj0E4pocclt2vj8qDCTYJ4cP0pSNYJ7NdRi+ZwJUk9nRuwWQ/VSrQuh4VzcX7BA18mDh+bRShPo5TCMKkNmGkWwsDYg42/6HOzZrTzF4Z2skukbEHC4vuRNPbjJ/dmj+TU9ZmL41dq+u+bwxqZKsrNah8Xu/t617pwPOyNpGmUSQcj64ft0hDdiaaQJZ7BQg6pgMICvfk5oV5nm6Y6kIGYON0xUU1
- Ls4po5nx
- wkVvmazcgPoE5h1xCLYGCFE3xyF3CCz8J9mqk4Lu+t8gffmql17rtoQigoLt+plVI1s/yXHO5XYdD7dZ0dn2OB+EVq6OrQFOSuXgq0aGKvXt/VWf5CxukgNNH/E6kYQBsjavlldmmRX53tgs57PmnLaDNQiCddVW63grgp/LtnIREmq4=
+X-Rspamd-Queue-Id: 01D4D1C0004
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ou43iz6fgkeshy6uzpijxdqye97g9sxn
+X-HE-Tag: 1777208268-89624
+X-HE-Meta: U2FsdGVkX1/sxd2hEZ6hqz8zRs9cThip/MR7Hlpy9V6bT619b/9YbwyeuSqfgWy5WJD11sO6J9PbqVUiMuV4maBH+QiAAiG3bfBesyiEcchsNCcb9O5AiSSQeoFEABqRa/8k4gk1hDS3bx35i9IurtTh5gUUmhM7q/gKAf4FAuu5y48N8hFFarrf+CR3u/bpbAIF71OSR69O47bJN4A7ZburWDCmlp4uXmCtq9YOMtbjyQheNkUH5fdIdxzgiGFPHQzp4QI5GVM7eSWi+wK9ercf9FRF0lUwHXVNbMk2PPEv2UT7yun020tbLk11s3dm3uA0WiRnfhZXOfZcrbCHB6usyddV8BAnyssWtpDjU28X04S6esaCEVCXvdIDbdRZHNnzE/+QSHw/I40Fo3iWKCY8xLZWNmi2xwEloOpwNlsUYS30tre6Ci7n7EaftFg25KPL3fiOSVcqfcK77LUe4aU12+HiutckkJDlBhw4Sh5x37SEXcgnV1fRm1/xNHAkaLOVpsRu9+Ya0jXHUS1t4v2ihakETHhtEGdQ1xw26RGrQX86thloGBiTUr+sucinf9xHg/QCVaTKTUdXewfJCX6jt6sraV1iIDqDp4HgqAks2ueScpjhD2UeNpD5ECagXJpGE07AHYPCIAwglAbCnQCheym+mrXKXr9Nb7YyCvMqpjB4Z2xpamBIBSHHYSRVZMCHMFhk9WnE7MbFnJSoGz9Ah5QsGT3+GSUowsDH7z5lXBU+eOLxJMQ3GzsaNFSZHa5rpPRr5olIWfAdNN1xATNckC2Rg0CtPtQNL88l7B27DQDKQM8uh9/pL0xRniSBSpzVNlgBQKX/IWBbPgGfHguIPqlSt9CoHQuNZsieshuLfpJFV3ktNVe8DnsxZmYwYDR9u7V70WMSw3BqZquft9yclYAg0m1s9Xr1LF6Mr9k5jgupMGG5UGq/L8BqZZMWFekZ0g1ZTLZCOo+8ukH
+ DiVYLyu4
+ 4JWmNzx+hNHazoIufufvwVhch7kOAQ3MZ04bYSq2BHVeitQdIRz7ir94DN09ng63p6rq+kRSUgehgPC9PTJ4VF1b6fs770sjs8eGlWYvp1Sg6lk+jEmE/EmCmuTeTz+xRCLcAdUi/5vdpZRec89vvKaWwub6TEFtvORdnnXpEIaOfoE7l6mUqT1x91Gzw+hdL0ySQ2h2dziOGFKCjp0gMyl4C0cE12yFQd7Kb0k+vqU4BxUk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,366 +107,651 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We want to be able to operate on HugeTLB pages as we do with normal
-pages, which means stop pretending everyting is a pte in HugeTLB world
-and be able to operate on the right entry level.
+Implement pt_range_walk, which is a pagewalk API that implements locking
+and batching itself, and returns a struct containing information
+about the address space which is backed by the vma.
+It goes through the address range provided, and returns whatever it
+find there, softleaf entries, folios, etc. and information about the entry
+itself like whether it is dirty, shared, present, size of the entry, pagetable
+level of the entry, number of batched entries, etc.
 
-Since we can have HugeTLB as PUD entries, we need the infrastructure that
-allows us to operate on them, so add softleaf_from_pud(), and the
-infrastructure that comes with it.
+It defines the following types:
 
+    #define PT_TYPE_NONE
+    #define PT_TYPE_FOLIO
+    #define PT_TYPE_MARKER
+    #define PT_TYPE_PFN
+    #define PT_TYPE_SWAP
+    #define PT_TYPE_MIGRATION
+    #define PT_TYPE_DEVICE
+    #define PT_TYPE_HWPOISON
+    #define PT_TYPE_ALL
+
+and it lets the caller be explicit about what types it is interested in.
+If it finds a type, but the caller stated it is not of importance, it keeps
+scanning the address range till the next type is found, or till we exhaust
+the range.
+
+We have three functions:
+
+    .pt_range_walk_start()
+    .pt_range_walk_next()
+    .pt_range_walk_done()
+
+pt_range_walk_start() starts scanning the range and it returns the
+first type it finds, then we keep calling pt_range_walk_next() until
+we get PTW_DONE, which means we exhausted the range, and once that
+happens we have to call pt_range_walk_done() in order to cleanup the
+pt_range_walk internal state, like locking.
+
+An example below:
+
+     ´´´´
+     pt_type_flags_t flags = PT_TYPE_ALL;
+
+     type = pt_range_walk_start(&ptw, vma, start, vma->vm_end, flags);
+     while (type != PTW_DONE) {
+           do_something
+           type = pt_range_walk_next(&ptw, vma, start, vma->vm_end, flags);
+     }
+     pt_range_walk_done(&ptw);
+     ´´´´
+
+The API manages locking within the interface, and also batching, which means
+that it can handle contiguous ptes (or pmds in the case of hugetlb)
+itself.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Oscar Salvador <osalvador@suse.de>
 ---
- arch/arm64/include/asm/pgtable.h             | 12 +++++
- arch/loongarch/include/asm/pgtable.h         |  1 +
- arch/powerpc/include/asm/book3s/64/pgtable.h |  7 +++
- arch/s390/include/asm/pgtable.h              | 38 ++++++++++++++++
- arch/x86/include/asm/pgtable.h               | 48 ++++++++++++++++++++
- arch/x86/include/asm/pgtable_64.h            |  2 +
- include/asm-generic/pgtable_uffd.h           | 15 ++++++
- include/linux/leafops.h                      | 33 ++++++++++++++
- include/linux/pgtable.h                      | 37 +++++++++++++++
- 9 files changed, 193 insertions(+)
+ arch/arm64/include/asm/pgtable.h |   1 +
+ include/linux/mm.h               |   2 +
+ include/linux/pagewalk.h         | 106 ++++++++
+ mm/memory.c                      |  22 ++
+ mm/pagewalk.c                    | 400 +++++++++++++++++++++++++++++++
+ 5 files changed, 531 insertions(+)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index b3e58735c49b..e42ad56a86d4 100644
+index 5b5490505b94..9f8cca8880e0 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -596,6 +596,13 @@ static inline int pmd_protnone(pmd_t pmd)
- #define pmd_mkyoung(pmd)	pte_pmd(pte_mkyoung(pmd_pte(pmd)))
- #define pmd_mkinvalid(pmd)	pte_pmd(pte_mkinvalid(pmd_pte(pmd)))
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
-+#define pud_uffd_wp(pud)	pte_uffd_wp(pud_pte(pud))
-+#define pud_mkuffd_wp(pud)	pte_pud(pte_mkuffd_wp(pud_pte(pud)))
-+#define pud_clear_uffd_wp(pud)	pte_pud(pte_clear_uffd_wp(pud_pte(pud)))
-+#define pud_swp_uffd_wp(pud)	pte_swp_uffd_wp(pud_pte(pud))
-+#define pud_swp_mkuffd_wp(pud)	pte_pud(pte_swp_mkuffd_wp(pud_pte(pud)))
-+#define pud_swp_clear_uffd_wp(pud) \
-+				pte_pud(pte_swp_clear_uffd_wp(pud_pte(pud)))
- #define pmd_uffd_wp(pmd)	pte_uffd_wp(pmd_pte(pmd))
- #define pmd_mkuffd_wp(pmd)	pte_pmd(pte_mkuffd_wp(pmd_pte(pmd)))
- #define pmd_clear_uffd_wp(pmd)	pte_pmd(pte_clear_uffd_wp(pmd_pte(pmd)))
-@@ -1528,6 +1535,11 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
- #define __swp_entry_to_pmd(swp)		__pmd((swp).val)
- #endif /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
+@@ -642,6 +642,7 @@ static inline pmd_t pmd_mkspecial(pmd_t pmd)
+ #define pmd_pfn(pmd)		((__pmd_to_phys(pmd) & PMD_MASK) >> PAGE_SHIFT)
+ #define pfn_pmd(pfn,prot)	__pmd(__phys_to_pmd_val((phys_addr_t)(pfn) << PAGE_SHIFT) | pgprot_val(prot))
  
-+#ifdef CONFIG_HUGETLB_PAGE
-+#define __pud_to_swp_entry(pud)         ((swp_entry_t) { pud_val(pud) })
-+#define __swp_entry_to_pud(swp)         __pud((swp).val)
-+#endif
-+
- /*
-  * Ensure that there are not more swap files than can be encoded in the kernel
-  * PTEs.
-diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
-index c33b3bcb733e..eba6d20f007f 100644
---- a/arch/loongarch/include/asm/pgtable.h
-+++ b/arch/loongarch/include/asm/pgtable.h
-@@ -335,6 +335,7 @@ static inline pte_t mk_swap_pte(unsigned long type, unsigned long offset)
- #define __swp_entry_to_pmd(x)	__pmd((x).val | _PAGE_HUGE)
- #define __pte_to_swp_entry(pte) ((swp_entry_t) { pte_val(pte) })
- #define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
-+#define __pud_to_swp_entry(pud) ((swp_entry_t) { pud_val(pud) })
++#define pud_dirty(pud)         pte_dirty(pud_pte(pud))
+ #define pud_young(pud)		pte_young(pud_pte(pud))
+ #define pud_mkyoung(pud)	pte_pud(pte_mkyoung(pud_pte(pud)))
+ #define pud_write(pud)		pte_write(pud_pte(pud))
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 5be3d8a8f806..c4e7fc558476 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2829,6 +2829,8 @@ struct folio *vm_normal_folio_pmd(struct vm_area_struct *vma,
+ 				  unsigned long addr, pmd_t pmd);
+ struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 				pmd_t pmd);
++struct folio *vm_normal_folio_pud(struct vm_area_struct *vma,
++				  unsigned long addr, pud_t pud);
+ struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
+ 		pud_t pud);
  
- static inline bool pte_swp_exclusive(pte_t pte)
- {
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 1a91762b455d..476781c59d5f 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1065,6 +1065,13 @@ static inline pte_t *pmdp_ptep(pmd_t *pmd)
- #define pmd_swp_soft_dirty(pmd)		pte_swp_soft_dirty(pmd_pte(pmd))
- #define pmd_swp_clear_soft_dirty(pmd)	pte_pmd(pte_swp_clear_soft_dirty(pmd_pte(pmd)))
- #endif
-+
-+#ifdef CONFIG_HUGETLB_PAGE
-+#define pud_swp_mksoft_dirty(pud)	pte_pud(pte_swp_mksoft_dirty(pud_pte(pud)))
-+#define pud_swp_soft_dirty(pud)		pte_swp_soft_dirty(pud_pte(pud))
-+#define pud_swp_clear_soft_dirty(pud)	pte_pud(pte_swp_clear_soft_dirty(pud_pte(pud)))
-+#endif
-+
- #endif /* CONFIG_HAVE_ARCH_SOFT_DIRTY */
+diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+index 88e18615dd72..f46780c0310f 100644
+--- a/include/linux/pagewalk.h
++++ b/include/linux/pagewalk.h
+@@ -204,4 +204,110 @@ struct folio *folio_walk_start(struct folio_walk *fw,
+ 	vma_pgtable_walk_end(__vma); \
+ } while (0)
  
- #ifdef CONFIG_NUMA_BALANCING
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 1c3c3be93be9..0d1d571215c4 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -901,11 +901,31 @@ static inline pmd_t pmd_clear_soft_dirty(pmd_t pmd)
- 	return clear_pmd_bit(pmd, __pgprot(_SEGMENT_ENTRY_SOFT_DIRTY));
- }
- 
-+static inline int pud_soft_dirty(pud_t pud)
-+{
-+	return pud_val(pud) & _REGION3_ENTRY_SOFT_DIRTY;
-+}
++typedef int __bitwise pt_type_flags_t;
 +
-+static inline pud_t pud_mksoft_dirty(pud_t pud)
-+{
-+	return set_pud_bit(pud, __pgprot(_REGION3_ENTRY_SOFT_DIRTY));
-+}
-+
-+static inline pud_t pud_clear_soft_dirty(pud_t pud)
-+{
-+	return clear_pud_bit(pud, __pgprot(_REGION3_ENTRY_SOFT_DIRTY));
-+}
-+
- #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- #define pmd_swp_soft_dirty(pmd)		pmd_soft_dirty(pmd)
- #define pmd_swp_mksoft_dirty(pmd)	pmd_mksoft_dirty(pmd)
- #define pmd_swp_clear_soft_dirty(pmd)	pmd_clear_soft_dirty(pmd)
- #endif
-+#ifdef CONFIG_HUGETLB_PAGE
-+#define pud_swp_soft_dirty(pud)		pud_soft_dirty(pud)
-+#define pud_swp_mksoft_dirty(pud)	pud_mksoft_dirty(pud)
-+#define pud_swp_clear_soft_dirty(pud)	pud_clear_soft_dirty(pud)
-+#endif
- 
- /*
-  * query functions pte_write/pte_dirty/pte_young only work if
-@@ -1901,6 +1921,24 @@ static inline unsigned long __swp_offset_rste(swp_entry_t entry)
-  * requires conversion of the swap type and offset, and not all the possible
-  * PTE bits.
-  */
-+static inline swp_entry_t __pud_to_swp_entry(pud_t pud)
-+{
-+	swp_entry_t arch_entry;
-+	pte_t pte;
-+
-+	arch_entry = __rste_to_swp_entry(pud_val(pud));
-+	pte = mk_swap_pte(__swp_type_rste(arch_entry), __swp_offset_rste(arch_entry));
-+	return __pte_to_swp_entry(pte);
-+}
-+
-+static inline pud_t __swp_entry_to_pud(swp_entry_t arch_entry)
-+{
-+	pud_t pud;
-+
-+	pud = __pud(mk_swap_rste(__swp_type(arch_entry), __swp_offset(arch_entry)));
-+	return pud;
-+}
-+
- static inline swp_entry_t __pmd_to_swp_entry(pmd_t pmd)
- {
- 	swp_entry_t arch_entry;
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 1662c5a8f445..a68ff339cd56 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -656,6 +656,23 @@ static inline pud_t pud_mkwrite(pud_t pud)
- 	return pud_clear_saveddirty(pud);
- }
- 
-+#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
-+static inline int pud_uffd_wp(pud_t pud)
-+{
-+	return pud_flags(pud) & _PAGE_UFFD_WP;
-+}
-+
-+static inline pud_t pud_mkuffd_wp(pud_t pud)
-+{
-+	return pud_wrprotect(pud_set_flags(pud, _PAGE_UFFD_WP));
-+}
-+
-+static inline pud_t pud_clear_uffd_wp(pud_t pud)
-+{
-+	return pud_clear_flags(pud, _PAGE_UFFD_WP);
-+}
-+#endif
-+
- #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
- static inline int pte_soft_dirty(pte_t pte)
- {
-@@ -1557,6 +1574,22 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
- 	return pmd_clear_flags(pmd, _PAGE_SWP_SOFT_DIRTY);
- }
- #endif
-+#ifdef CONFIG_HUGETLB_PAGE
-+static inline pud_t pud_swp_mksoft_dirty(pud_t pud)
-+{
-+	return pud_set_flags(pud, _PAGE_SWP_SOFT_DIRTY);
-+}
-+
-+static inline int pud_swp_soft_dirty(pud_t pud)
-+{
-+	return pud_flags(pud) & _PAGE_SWP_SOFT_DIRTY;
-+}
-+
-+static inline pud_t pud_swp_clear_soft_dirty(pud_t pud)
-+{
-+	return pud_clear_flags(pud, _PAGE_SWP_SOFT_DIRTY);
-+}
-+#endif
- #endif
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
-@@ -1589,6 +1622,21 @@ static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
- {
- 	return pmd_clear_flags(pmd, _PAGE_SWP_UFFD_WP);
- }
-+
-+static inline pud_t pud_swp_mkuffd_wp(pud_t pud)
-+{
-+	return pud_set_flags(pud, _PAGE_SWP_UFFD_WP);
-+}
-+
-+static inline int pud_swp_uffd_wp(pud_t pud)
-+{
-+	return pud_flags(pud) & _PAGE_SWP_UFFD_WP;
-+}
-+
-+static inline pud_t pud_swp_clear_uffd_wp(pud_t pud)
-+{
-+	return pud_clear_flags(pud, _PAGE_SWP_UFFD_WP);
-+}
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
- static inline u16 pte_flags_pkey(unsigned long pte_flags)
-diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-index f06e5d6a2747..0cf02ddd3d4b 100644
---- a/arch/x86/include/asm/pgtable_64.h
-+++ b/arch/x86/include/asm/pgtable_64.h
-@@ -236,8 +236,10 @@ static inline void native_pgd_clear(pgd_t *pgd)
- 
- #define __pte_to_swp_entry(pte)		((swp_entry_t) { pte_val((pte)) })
- #define __pmd_to_swp_entry(pmd)		((swp_entry_t) { pmd_val((pmd)) })
-+#define __pud_to_swp_entry(pud)		((swp_entry_t) { pud_val((pud)) })
- #define __swp_entry_to_pte(x)		(__pte((x).val))
- #define __swp_entry_to_pmd(x)		(__pmd((x).val))
-+#define __swp_entry_to_pud(x)		(__pud((x).val))
- 
- extern void cleanup_highmap(void);
- 
-diff --git a/include/asm-generic/pgtable_uffd.h b/include/asm-generic/pgtable_uffd.h
-index 0d85791efdf7..59c9d6762ec8 100644
---- a/include/asm-generic/pgtable_uffd.h
-+++ b/include/asm-generic/pgtable_uffd.h
-@@ -78,6 +78,21 @@ static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
- {
- 	return pmd;
- }
-+
-+static inline pud_t pud_swp_mkuffd_wp(pud_t pud)
-+{
-+	return pud;
-+}
-+
-+static inline int pud_swp_uffd_wp(pud_t pud)
-+{
-+	return 0;
-+}
-+
-+static inline pud_t pud_swp_clear_uffd_wp(pud_t pud)
-+{
-+	return pud;
-+}
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
- #endif /* _ASM_GENERIC_PGTABLE_UFFD_H */
-diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-index a9ff94b744f2..122ac50aeb09 100644
---- a/include/linux/leafops.h
-+++ b/include/linux/leafops.h
-@@ -117,6 +117,39 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
- 
- #endif
- 
-+#ifdef CONFIG_HUGETLB_PAGE
-+/**
-+ * softleaf_from_pud() - Obtain a leaf entry from a PUD entry.
-+ * @pud: PUD entry.
-+ *
-+ * If @pud is present (therefore not a leaf entry) the function returns an empty
-+ * leaf entry. Otherwise, it returns a leaf entry.
-+ *
-+ * Returns: Leaf entry.
++/*
++ * Types we are interested in returning. Those which are not explicitly set
++ * will be silently ignored by keep walking the page tables.
 + */
-+static inline softleaf_t softleaf_from_pud(pud_t pud)
++#define PT_TYPE_NONE		((__force pt_type_flags_t)BIT(0))
++#define PT_TYPE_FOLIO		((__force pt_type_flags_t)BIT(1))
++#define PT_TYPE_MARKER		((__force pt_type_flags_t)BIT(2))
++#define PT_TYPE_PFN		((__force pt_type_flags_t)BIT(3))
++#define PT_TYPE_SWAP		((__force pt_type_flags_t)BIT(4))
++#define PT_TYPE_MIGRATION	((__force pt_type_flags_t)BIT(5))
++#define PT_TYPE_DEVICE		((__force pt_type_flags_t)BIT(6))
++#define PT_TYPE_HWPOISON	((__force pt_type_flags_t)BIT(7))
++#define PT_TYPE_ALL		(PT_TYPE_NONE | PT_TYPE_FOLIO | PT_TYPE_MARKER | \
++				 PT_TYPE_PFN | PT_TYPE_SWAP | PT_TYPE_MIGRATION | \
++				 PT_TYPE_DEVICE | PT_TYPE_HWPOISON)
++
++enum pt_range_walk_level {
++	PTW_PUD_LEVEL,
++	PTW_PMD_LEVEL,
++	PTW_PTE_LEVEL,
++};
++
++enum pt_range_walk_type {
++	PTW_ABORT,
++	PTW_DONE,
++	PTW_NONE,
++	PTW_FOLIO,
++	PTW_MARKER,
++	PTW_PFN,
++	PTW_SWAP,
++	PTW_MIGRATION,
++	PTW_DEVICE,
++	PTW_HWPOISON,
++};
++
++/**
++ * struct pt_range_walk - pt_range_walk()
++ * @page:       exact folio page referenced (if applicable)
++ * @folio:	folio mapped (if any)
++ * @nr_entries:	number of contiguous entries of the same type
++ * @size:	stores nr_batched * entry_size
++ * @softleaf_entry:	softleaf entry (if any)
++ * @writable:	whether it is writable
++ * @young:	whether it is young
++ * @dirty:	whether it is dirty
++ * @present:	whether it is present in the page tables
++ * @vma_locked: whether we are holding the vma lock
++ * @pmd_shared: only used for hugetlb
++ * @curr_addr:	current addr we are operating on
++ * @next_addr:	next addr to be used walk the page tables
++ * @level:      page table level
++ * @pte:        copy of the entry value (PTW_PTE_LEVEL).
++ * @pmd:        copy of the entry value (PTW_PMD_LEVEL).
++ * @pud:        copy of the entry value (PTW_PUD_LEVEL).
++ * @mm:		the mm_struct we are walking
++ * @vma:	the vma we are walking
++ * @ptl:        pointer to the page table lock.
++ */
++
++struct pt_range_walk {
++	struct page *page;
++	struct folio *folio;
++	int nr_entries;
++	unsigned long size;
++	softleaf_t softleaf_entry;
++	bool writable;
++	bool young;
++	bool dirty;
++	bool present;
++	bool vma_locked;
++	bool pmd_shared;
++	bool lock_i_mmap;
++	bool i_mmap_locked;
++	unsigned long curr_addr;
++	unsigned long next_addr;
++	enum pt_range_walk_level level;
++	union {
++		pte_t *ptep;
++		pud_t *pudp;
++		pmd_t *pmdp;
++	};
++	union {
++		pte_t pte;
++		pud_t pud;
++		pmd_t pmd;
++	};
++	struct mm_struct *mm;
++	struct vm_area_struct *vma;
++	spinlock_t *ptl;
++};
++
++enum pt_range_walk_type pt_range_walk(struct pt_range_walk *ptw,
++				      struct vm_area_struct *vma,
++				      unsigned long addr, unsigned long end,
++				      pt_type_flags_t flags);
++enum pt_range_walk_type pt_range_walk_start(struct pt_range_walk *ptw,
++					    struct vm_area_struct *vma,
++					    unsigned long addr, unsigned long end,
++					    pt_type_flags_t flags);
++enum pt_range_walk_type pt_range_walk_next(struct pt_range_walk *ptw,
++					   struct vm_area_struct *vma,
++					   unsigned long addr, unsigned long end,
++					   pt_type_flags_t flags);
++void pt_range_walk_done(struct pt_range_walk *ptw);
+ #endif /* _LINUX_PAGEWALK_H */
+diff --git a/mm/memory.c b/mm/memory.c
+index 07778814b4a8..e016bc7a49d9 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -850,6 +850,28 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma,
+ 	return __vm_normal_page(vma, addr, pud_pfn(pud), pud_special(pud),
+ 				pud_val(pud), PGTABLE_LEVEL_PUD);
+ }
++
++/**
++ * vm_normal_folio_pud() - Get the "struct folio" associated with a PUD
++ * @vma: The VMA mapping the @pud.
++ * @addr: The address where the @pud is mapped.
++ * @pud: The PUD.
++ *
++ * Get the "struct folio" associated with a PUD. See __vm_normal_page()
++ * for details on "normal" and "special" mappings.
++ *
++ * Return: Returns the "struct folio" if this is a "normal" mapping. Returns
++ *         NULL if this is a "special" mapping.
++ */
++struct folio *vm_normal_folio_pud(struct vm_area_struct *vma,
++				  unsigned long addr, pud_t pud)
 +{
-+	softleaf_t arch_entry;
++	struct page *page = vm_normal_page_pud(vma, addr, pud);
 +
-+	if (pud_present(pud) || pud_none(pud))
-+		return softleaf_mk_none();
-+
-+	if (pud_swp_soft_dirty(pud))
-+		pud = pud_swp_clear_soft_dirty(pud);
-+	if (pud_swp_uffd_wp(pud))
-+		pud = pud_swp_clear_uffd_wp(pud);
-+	arch_entry = __pud_to_swp_entry(pud);
-+
-+	/* Temporary until swp_entry_t eliminated. */
-+	return swp_entry(__swp_type(arch_entry), __swp_offset(arch_entry));
++	if (page)
++		return page_folio(page);
++	return NULL;
 +}
-+#else
-+static inline softleaf_t softleaf_from_pud(pud_t pud)
-+{
-+	return softleaf_mk_none();
-+}
-+#endif
-+
+ #endif
+ 
  /**
-  * softleaf_is_none() - Is the leaf entry empty?
-  * @entry: Leaf entry.
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index a50df42a893f..1abd9c52a4f2 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1761,6 +1761,22 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
- 	return pmd;
- }
- #endif
-+#ifndef CONFIG_HUGETLB_PAGE
-+static inline pud_t pud_swp_mksoft_dirty(pud_t pud)
-+{
-+	return pud;
-+}
-+
-+static inline int pud_swp_soft_dirty(pud_t pud)
-+{
-+	return 0;
-+}
-+
-+static inline pud_t pud_swp_clear_soft_dirty(pud_t pud)
-+{
-+	return pud;
-+}
-+#endif
- #else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
- static inline int pte_soft_dirty(pte_t pte)
- {
-@@ -1821,6 +1837,21 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
- {
- 	return pmd;
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index a94c401ab2cf..b71c2d48acd9 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -1029,3 +1029,403 @@ struct folio *folio_walk_start(struct folio_walk *fw,
+ 	fw->ptl = ptl;
+ 	return page_folio(page);
  }
 +
-+static inline pud_t pud_swp_mksoft_dirty(pud_t pud)
++enum pt_range_walk_type pt_range_walk(struct pt_range_walk *ptw,
++				      struct vm_area_struct *vma,
++				      unsigned long addr, unsigned long end,
++				      pt_type_flags_t flags)
 +{
-+	return pud;
++	pgd_t *pgdp;
++	p4d_t *p4dp;
++	pud_t *pudp, pud;
++	pmd_t *pmdp, pmd;
++	pte_t *ptep, pte;
++	int nr_batched = 1;
++	spinlock_t *ptl = NULL;
++	unsigned long entry_size;
++	struct page *page;
++	struct folio *folio;
++	enum pt_range_walk_type ret_type = PTW_DONE;
++	bool writable, young, dirty;
++	unsigned long curr_addr, next_addr = ptw->next_addr ? ptw->next_addr : addr;
++
++	if (WARN_ON_ONCE(next_addr < vma->vm_start || next_addr >= vma->vm_end))
++		return ret_type;
++
++	mmap_assert_locked(ptw->mm);
++
++	if (ptw->ptl) {
++		spin_unlock(ptw->ptl);
++		ptw->ptl = NULL;
++	}
++
++	if (ptw->level == PTW_PTE_LEVEL && ptw->ptep) {
++		pte_unmap(ptw->ptep);
++		ptw->ptep = NULL;
++	}
++
++	if (!ptw->vma_locked) {
++		vma_pgtable_walk_begin(vma);
++		ptw->vma_locked = true;
++		ptw->vma = vma;
++	}
++
++keep_walking:
++	ret_type = PTW_DONE;
++	folio = NULL;
++	page = NULL;
++	writable = young = dirty = false;
++	ptw->present = false;
++	ptw->pmd_shared = false;
++	ptw->folio = NULL;
++	ptw->page = NULL;
++
++	curr_addr = next_addr;
++	if (ptl) {
++		spin_unlock(ptl);
++		ptl = NULL;
++	}
++	/*
++	 * If we keep walking the page tables because we are not interested
++	 * in the type we found, make sure to check whether we reached the end.
++	 */
++	if (curr_addr >= end) {
++		ptw->next_addr = next_addr;
++		return ret_type;
++	}
++again:
++	pgdp = pgd_offset(ptw->mm, curr_addr);
++	next_addr = pgd_addr_end(curr_addr, end);
++
++	if (pgd_none_or_clear_bad(pgdp))
++		/* PTW_ABORT? */
++		goto keep_walking;
++
++	next_addr = p4d_addr_end(curr_addr, end);
++	p4dp = p4d_offset(pgdp, curr_addr);
++	if (p4d_none_or_clear_bad(p4dp))
++		/* PTW_ABORT? */
++		goto keep_walking;
++
++	entry_size = PUD_SIZE;
++	ptw->level = PTW_PUD_LEVEL;
++	next_addr = pud_addr_end(curr_addr, end);
++	pudp = pud_offset(p4dp, curr_addr);
++	pud = pudp_get(pudp);
++	if (pud_none(pud)) {
++		if (!(flags & PT_TYPE_NONE))
++			goto keep_walking;
++		ret_type = PTW_NONE;
++		goto found;
++	}
++	/*
++	 * For now, there are no architectures which supports pgd or p4d
++	 * leafs, pud is the first level that can be a leaf.
++	 */
++	if (IS_ENABLED(CONFIG_PGTABLE_HAS_HUGE_LEAVES) &&
++	    (!pud_present(pud) || pud_leaf(pud))) {
++		ptl = pud_huge_lock(pudp, vma);
++		if (!ptl)
++			goto again;
++
++		pud = pudp_get(pudp);
++		ptw->pudp = pudp;
++		ptw->pud = pud;
++		if (pud_none(pud)) {
++			if (!(flags & PT_TYPE_NONE))
++				goto keep_walking;
++			ret_type = PTW_NONE;
++		} else if (pud_present(pud) && !pud_leaf(pud)) {
++			spin_unlock(ptl);
++			ptl = NULL;
++			goto pmd_table;
++		} else if (pud_present(pud)) {
++			/*
++			 * We do not support PUD-device or pud-PFNMAP, so
++			 * if it is present, we must have a folio (Tm).
++			 */
++			page = vm_normal_page_pud(vma, curr_addr, pud);
++			if (!page || !(flags & PT_TYPE_FOLIO))
++				goto keep_walking;
++
++			ret_type = PTW_FOLIO;
++			folio = page_folio(page);
++			ptw->present = true;
++			dirty = !!pud_dirty(pud);
++			young = !!pud_young(pud);
++			writable = !!pud_write(pud);
++		} else if (!pud_none(pud)) {
++			/* PUD-hugetlbs can have special swap entries */
++			const softleaf_t entry = softleaf_from_pud(pud);
++
++			ptw->softleaf_entry = entry;
++
++			if (softleaf_is_marker(entry)) {
++				if (!(flags & PT_TYPE_MARKER))
++					goto keep_walking;
++				ret_type = PTW_MARKER;
++			} else if (softleaf_has_pfn(entry)) {
++				if (softleaf_is_migration(entry)) {
++					if (!(flags & PT_TYPE_MIGRATION))
++						goto keep_walking;
++					ret_type = PTW_MIGRATION;
++				} else if (softleaf_is_hwpoison(entry)) {
++					if (!(flags & PT_TYPE_HWPOISON))
++						goto keep_walking;
++					ret_type = PTW_HWPOISON;
++				}
++
++				page = softleaf_to_page(entry);
++				if (page)
++					folio = page_folio(page);
++			}
++		} else {
++			/* We found nothing, keep going */
++			goto keep_walking;
++		}
++
++		/* We found a type */
++		goto found;
++	}
++pmd_table:
++	entry_size = PMD_SIZE;
++	ptw->level = PTW_PMD_LEVEL;
++	next_addr = pmd_addr_end(curr_addr, end);
++	pmdp = pmd_offset(pudp, curr_addr);
++	pmd = pmdp_get_lockless(pmdp);
++	if (pmd_none(pmd)) {
++		if (!(flags & PT_TYPE_NONE))
++			goto keep_walking;
++		ret_type = PTW_NONE;
++		goto found;
++	}
++
++	if (IS_ENABLED(CONFIG_PGTABLE_HAS_HUGE_LEAVES) &&
++	    (!pmd_present(pmd) || pmd_leaf(pmd))) {
++		ptl = pmd_huge_lock(pmdp, vma);
++		if (!ptl)
++			goto again;
++
++		pmd = pmdp_get(pmdp);
++		ptw->pmdp = pmdp;
++		ptw->pmd = pmd;
++		if (pmd_none(pmd)) {
++			if (!(flags & PT_TYPE_NONE))
++				goto keep_walking;
++			ret_type = PTW_NONE;
++		} else if (pmd_present(pmd) && !pmd_leaf(pmd)) {
++			spin_unlock(ptl);
++			ptl = NULL;
++			goto pte_table;
++		} else if (pmd_present(pmd)) {
++			page = vm_normal_page_pmd(vma, curr_addr, pmd);
++			if (page) {
++				if (!(flags & PT_TYPE_FOLIO))
++					goto keep_walking;
++				ret_type = PTW_FOLIO;
++				folio = page_folio(page);
++				if (folio_size(folio) > entry_size) {
++					/* We can batch */
++					int max_nr = folio_size(folio) / entry_size;
++
++					nr_batched = folio_pmd_batch(folio, pmdp, &pmd,
++								     max_nr, 0,
++								     &writable,
++								     &young,
++								     &dirty);
++				} else {
++					dirty = !!pmd_dirty(pmd);
++					young = !!pmd_young(pmd);
++					writable = !!pmd_write(pmd);
++				}
++			} else if (!page && (is_huge_zero_pmd(pmd) ||
++			    vma->vm_flags & VM_PFNMAP)) {
++				if (!(flags & PT_TYPE_PFN))
++					goto keep_walking;
++				/* Create a subtype to differentiate them? */
++				ret_type = PTW_PFN;
++			} else if (!page) {
++				goto keep_walking;
++			}
++			ptw->present = true;
++			next_addr += (nr_batched * entry_size) - entry_size;
++		} else if (!pmd_none(pmd)) {
++			const softleaf_t entry = softleaf_from_pmd(pmd);
++
++			ptw->softleaf_entry = entry;
++
++			if (softleaf_is_marker(entry)) {
++				if (!(flags & PT_TYPE_MARKER))
++					goto keep_walking;
++				ret_type = PTW_MARKER;
++			} else if (softleaf_has_pfn(entry)) {
++				if (softleaf_is_migration(entry)) {
++					if (!(flags & PT_TYPE_MIGRATION))
++						goto keep_walking;
++					ret_type = PTW_MIGRATION;
++				} else if (softleaf_is_hwpoison(entry)) {
++					if (!(flags & PT_TYPE_HWPOISON))
++						goto keep_walking;
++					ret_type = PTW_HWPOISON;
++				} else if (softleaf_is_device_private(entry) ||
++					   softleaf_is_device_exclusive(entry)) {
++					if (!(flags & PT_TYPE_DEVICE))
++						goto keep_walking;
++					ptw->present = true;
++					ret_type = PTW_DEVICE;
++				}
++				page = softleaf_to_page(entry);
++				if (page)
++					folio = page_folio(page);
++			}
++		} else {
++			/* We found nothing, keep going */
++			goto keep_walking;
++		}
++
++		if (ret_type != PTW_NONE && is_vm_hugetlb_page(vma) &&
++		    hugetlb_pmd_shared((pte_t *)pmdp))
++			ptw->pmd_shared = true;
++
++		goto found;
++	}
++pte_table:
++	entry_size = PAGE_SIZE;
++	ptw->level = PTW_PTE_LEVEL;
++	next_addr = curr_addr + PAGE_SIZE;
++	ptep = pte_offset_map_lock(vma->vm_mm, pmdp, curr_addr, &ptl);
++	if (!ptep)
++		goto again;
++
++	pte = ptep_get(ptep);
++	ptw->ptep = ptep;
++	ptw->pte = pte;
++	if (pte_none(pte)) {
++		if (!(flags & PT_TYPE_NONE))
++			goto not_found;
++		ret_type = PTW_NONE;
++	} else if (pte_present(pte)) {
++		page = vm_normal_page(vma, curr_addr, pte);
++		if (page) {
++			if (!(flags & PT_TYPE_FOLIO))
++				goto not_found;
++			ret_type = PTW_FOLIO;
++			folio = page_folio(page);
++			if (folio_test_large(folio)) {
++				/* We can batch */
++				unsigned long end_addr = pmd_addr_end(curr_addr, end);
++				int max_nr = (end_addr - curr_addr) >> PAGE_SHIFT;
++
++				nr_batched = folio_pte_batch_flags(folio, vma, ptep, &pte, max_nr,
++								   FPB_MERGE_WRITE | FPB_MERGE_YOUNG_DIRTY);
++			}
++		} else if (!page && (is_zero_pfn(pte_pfn(pte)) ||
++			   vma->vm_flags & VM_PFNMAP)) {
++			if (!(flags & PT_TYPE_PFN))
++				goto not_found;
++			ret_type = PTW_PFN;
++		}
++
++		dirty = !!pte_dirty(pte);
++		young = !!pte_young(pte);
++		writable = !!pte_write(pte);
++		ptw->present = true;
++		next_addr += (nr_batched * entry_size) - entry_size;
++	} else if (!pte_none(pte)) {
++		const softleaf_t entry = softleaf_from_pte(pte);
++
++		ptw->softleaf_entry = entry;
++
++		if (softleaf_is_marker(entry)) {
++			if (!(flags & PT_TYPE_MARKER))
++				goto not_found;
++			ret_type = PTW_MARKER;
++		} else if (softleaf_is_swap(entry)) {
++			unsigned long end_addr = pmd_addr_end(curr_addr, end);
++			int max_nr = (end_addr - curr_addr) >> PAGE_SHIFT;
++
++			if (!(flags & PT_TYPE_SWAP))
++				goto not_found;
++
++			nr_batched = swap_pte_batch(ptep, max_nr, pte);
++			next_addr += (nr_batched * entry_size) - entry_size;
++			ret_type = PTW_SWAP;
++		} else if (softleaf_has_pfn(entry)) {
++			if (softleaf_is_migration(entry)) {
++				if (!(flags & PT_TYPE_MIGRATION))
++					goto not_found;
++				ret_type = PTW_MIGRATION;
++			} else if (softleaf_is_hwpoison(entry)) {
++				if (!(flags & PT_TYPE_HWPOISON))
++					goto not_found;
++				ret_type = PTW_HWPOISON;
++			} else if (softleaf_is_device_private(entry) ||
++				   softleaf_is_device_exclusive(entry)) {
++				if (!(flags & PT_TYPE_DEVICE))
++					goto not_found;
++				ptw->present = true;
++				ret_type = PTW_DEVICE;
++			}
++			page = softleaf_to_page(entry);
++			if (page)
++				folio = page_folio(page);
++		}
++	} else {
++not_found:
++		/* We found nothing, keep going */
++		pte_unmap_unlock(ptep, ptl);
++		ptw->ptep = NULL;
++		ptl = NULL;
++		goto keep_walking;
++	}
++
++found:
++	/* Fill in remaining ptw struct before returning */
++	ptw->ptl = ptl;
++	ptw->curr_addr = curr_addr;
++	ptw->next_addr = next_addr;
++	ptw->writable = writable;
++	ptw->young = young;
++	ptw->dirty = dirty;
++	ptw->nr_entries = nr_batched;
++	ptw->size = nr_batched * entry_size;
++	if (folio) {
++		ptw->folio = folio;
++		ptw->page = page + ((curr_addr & (entry_size - 1)) >> PAGE_SHIFT);
++	}
++	return ret_type;
 +}
 +
-+static inline int pud_swp_soft_dirty(pud_t pud)
++enum pt_range_walk_type pt_range_walk_start(struct pt_range_walk *ptw,
++					    struct vm_area_struct *vma,
++					    unsigned long addr, unsigned long end,
++					    pt_type_flags_t flags)
 +{
-+	return 0;
++	if (!ptw->mm)
++		return PTW_DONE;
++	if (addr >= end)
++		return PTW_DONE;
++	return pt_range_walk(ptw, vma, addr, end, flags);
 +}
 +
-+static inline pud_t pud_swp_clear_soft_dirty(pud_t pud)
++enum pt_range_walk_type pt_range_walk_next(struct pt_range_walk *ptw,
++					    struct vm_area_struct *vma,
++					    unsigned long addr, unsigned long end,
++					    pt_type_flags_t flags)
 +{
-+	return pud;
++	/* We went through the complete range */
++	if (ptw->next_addr >= end)
++		return PTW_DONE;
++	return pt_range_walk(ptw, vma, addr, end, flags);
 +}
- #endif
- 
- #ifndef __HAVE_PFNMAP_TRACKING
-@@ -2369,4 +2400,10 @@ pgprot_t vm_get_page_prot(vm_flags_t vm_flags)				\
- }									\
- EXPORT_SYMBOL(vm_get_page_prot);
- 
-+#ifdef CONFIG_HUGETLB_PAGE
-+#ifndef __pud_to_swp_entry
-+#define __pud_to_swp_entry(pud) ((swp_entry_t) { pud_val(pud) })
-+#endif
-+#endif
 +
- #endif /* _LINUX_PGTABLE_H */
++void pt_range_walk_done(struct pt_range_walk *ptw)
++{
++	if (ptw->ptl)
++		spin_unlock(ptw->ptl);
++	if (ptw->level == PTW_PTE_LEVEL && ptw->ptep)
++		pte_unmap(ptw->ptep);
++	if (ptw->vma_locked)
++		vma_pgtable_walk_end(ptw->vma);
++	cond_resched();
++}
 -- 
 2.35.3
 
