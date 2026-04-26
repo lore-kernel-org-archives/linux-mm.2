@@ -4,87 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F265FF885C
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 10:49:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BB83FF885D
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 10:49:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 069016B0005; Sun, 26 Apr 2026 06:49:44 -0400 (EDT)
+	id 5994B6B008A; Sun, 26 Apr 2026 06:49:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01A076B008A; Sun, 26 Apr 2026 06:49:43 -0400 (EDT)
+	id 522D96B008C; Sun, 26 Apr 2026 06:49:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E72426B008C; Sun, 26 Apr 2026 06:49:43 -0400 (EDT)
+	id 4113A6B0092; Sun, 26 Apr 2026 06:49:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D62186B0005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 06:49:43 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1CB211B89B4
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3283A6B008A
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 06:49:44 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DABBD1B89BC
 	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 10:49:43 +0000 (UTC)
-X-FDA: 84700386246.24.A270973
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4F6A0180004
+X-FDA: 84700386246.14.9869E84
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E5D63160008
 	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 10:49:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FCWhKPr+;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=R4XXpPgC;
+	spf=pass (imf08.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777200581;
+	s=arc-20220608; t=1777200582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ajDY3kCUWUjj1xfsi9X6I95j2f9yaGXagZjSXs2416M=;
-	b=ClFgi+fI/f+qmWkMC4fETcMy+Iq72vrBWv1VuBamrEryiyNqM4JK6BVOLSKOtmUHS1Ijhy
-	AVZnEuEAWqp1TMgtz9ZneHvpzn5Nxy5pt3s+Esyqb0YTG9Mh1SDXeq1nRNaELluRoB08ht
-	+T54tr77dstUcofFl0tFHjwHGNGigyM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FCWhKPr+;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777200581; a=rsa-sha256;
+	bh=ep7scWKVDqquDfjlRMHGlmqZl4NIrLMdEyZJu2mgSNY=;
+	b=6zAeKUZm0uXOtrz+XGwbdtuGaBal9VdwHIqYj8xSmtDehfkP+5tWI9yCqr/1aLaTrooTNa
+	ebcrAeZc9NnhvSxYPoy5I36BnIMd7uuKvhxBZ42bm01UyCEWjN5jC1TXBT+P6PXE4grfJj
+	MThU8sBn8lbvxYYJs6z3m2zembPRtEo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777200582; a=rsa-sha256;
 	cv=none;
-	b=BHRCHF/fEOmcvYJg+ofIOdd2EB85Ce5MEMI1n3rRU6J0RljS7QvzbQkgKVzwZM65IMDjZ2
-	y8uAQqxl80JS+nRsiwFDTqfl0YsUta+Y7SXk+yaPKyifN3OpW+PbJJrrs2EoDr+Nrg1fVy
-	2fXXL5nKBe/GPLsxhMlIyxhTDPz18gY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10D6541AEE;
-	Sun, 26 Apr 2026 10:49:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9261BC2BCAF;
-	Sun, 26 Apr 2026 10:49:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777200579;
-	bh=L1nbLO0Xj7/K8G+R19OFJ/yJuZU2dwzW1RcyM4ouWPU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FCWhKPr+x/+OaHV3MpHuliUX7bbExsb2uYJYnKRtVWVy4rl0Nv8eVMX24Xbq19L9o
-	 AAnb3kFvhj2UigzwT9nWAugGbRwWKuiAwz8lsknVS1eItkpd3oFKo9YG6WSsTdAM7L
-	 FZI2jBVtYW1kqjslfJJtvI+qEGwq5SjujJ4ofF4o=
-Date: Sun, 26 Apr 2026 03:49:38 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+7d60b33a8a546263da7c@syzkaller.appspotmail.com>
-Cc: Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org, shakeel.butt@linux.dev,
- surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org,
- Muchun Song <songmuchun@bytedance.com>, Qi Zheng
- <zhengqi.arch@bytedance.com>
-Subject: Re: [syzbot] [mm?] WARNING: bad unlock balance in do_wp_page
-Message-Id: <20260426034938.db29d74982a8eb8463f8cf3a@linux-foundation.org>
-In-Reply-To: <69edca15.170a0220.38e3f1.0000.GAE@google.com>
-References: <69edca15.170a0220.38e3f1.0000.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+	b=TsNEm98hZOtULAPpJG7am4FOsS8u6Ae9g6acfy2x+IdYEU2cqCTBeUZ4OhjUnbHED30eFn
+	RPLhgF73mghs/n16eKIYs71FBgP/4NRdQlABgad0AzY8Moj+rgV/5w9desW1K3tiwcXNI7
+	Jo0bE167192zKLswFxuJd9A5tNYx1Jg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=R4XXpPgC;
+	spf=pass (imf08.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4891cd41959so74775315e9.3
+        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 03:49:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777200580; x=1777805380; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ep7scWKVDqquDfjlRMHGlmqZl4NIrLMdEyZJu2mgSNY=;
+        b=R4XXpPgC0CxIgdIo+mxidleHLFcENjFGBP38Q1mmOq1dMSSvO0n0pnT8y2XL25cP/m
+         2NIesRPKT/vg+JX45IrYam1MaUEoT1uuiY51X+e7uf9MTg7FAb0nHX5hIpBmuNf72eVC
+         9MMIY6SdJDR9zXTsQeAT0tAcqP7L2LNcKZc5DMeoYgiK9wrypI9u8Sz0E0sBmyMhvTDA
+         Z+WC8CcUMZHtGiXwRCLZgVLzqTJYEeL7Ksiu0nW5UMlK8xpVkcKy40I9xeQbbJpS1iAV
+         f0BxRqlVCSjpSeePOn8Sz3F8lnyp5DN5CBzcT+WtSreZul3DQAIImPqqFKEN3Znza+cB
+         dTsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777200580; x=1777805380;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ep7scWKVDqquDfjlRMHGlmqZl4NIrLMdEyZJu2mgSNY=;
+        b=JXwx0BUlAZXYY1OuaV8mR12vsz9SVArTpJZRBqt+ldMXi/tF0V2vu4ujE1cfRhz7FX
+         2IIP8+XL44D++/HZJnhw2/Ra8HG3Wj+D5JhUOp7eydliE8930Qk5SESvJOs0fg3fC4cf
+         1dQgr292hHiV5/L08jrulU+KLl4/yCwIjpllYAD5poS5Hjxjf4AiqsMkmynhL4oyCodJ
+         OamdUBmDobYG5qeHCXwb1GxpDD3cMwlc8wRJCZEA/OXDMCTEyIU4MgUE6gq+rp916G6e
+         26v0WTNtTrYQwdQUcppmoMv8v/1a5sV1FI5p9Sde4aesN7XlQivwWMJuAoKcpfix4E/3
+         s+1g==
+X-Forwarded-Encrypted: i=1; AFNElJ8ifT+pB7/yP9bRxO9fU9Z92wrDG8uQ57EkxlkLgJj7FtP3R91M/g0s8Bykh88bCf/nROtVJTeYdQ==@kvack.org
+X-Gm-Message-State: AOJu0YzpJuTQcxFZ9hJrvAYRWMVkOaN/5bBuWBgH8AFzaJW7Jmjk5WDX
+	B3zseEmpCPHLGwX7EQVKbzVIUPLvs79pISeGRM0KUfQyO5oZQUtSxzD9
+X-Gm-Gg: AeBDievjEMXyi4zu52hayHTEdcX3jloSt1eEFHaEoekuOe7YzG70BhHa/920aYglAM3
+	ZDCSThSFDiJGG3NMojb1nnY7JfM4cOklxOcmLCEqU1OtJVyg0knT6tLwlpplCv4090rBWQiYAXS
+	IYOfq+s+EiEa6W+ognqtphweruEAeRjE27EmnFkHBpbXRTP3UnjqluA2McUDJzgTWZi7aw//HRC
+	5RZeNG0iy6wnMK79vzFk3XA8fkY0eyb2WeUodL7SoiI51UwA8AXqOlNmOZACEOGnoll4SLvqsiJ
+	8X60hi+2E6FUyduE/EgIZPVdKwlmL5DXrZFR68tMy0UT5SNo2dyfKOR3vAyPejh1ZL1yBhqzUb9
+	UiMJzC1H54dgcT2chSvzMzvDZhCg+gl8KlLyZSMfLoqoS86Nl+fibtN1KfvWlLlb19DYxzvbtY6
+	C3VUm1ory9lNcUaltvlTrlmb89SImI1G0w3u/E5T4a/cH0JpLzOe21Ao7QPXFnlJ+fT679l5aeQ
+	E0=
+X-Received: by 2002:a05:600c:154e:b0:488:9ed3:1492 with SMTP id 5b1f17b1804b1-488fb74fc02mr518917135e9.10.1777200579989;
+        Sun, 26 Apr 2026 03:49:39 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc1393f5sm666871765e9.9.2026.04.26.03.49.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Apr 2026 03:49:39 -0700 (PDT)
+Date: Sun, 26 Apr 2026 11:49:38 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Min-Hsun Chang <chmh0624@gmail.com>, arnd@arndb.de, msalter@redhat.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] asm-generic: replace ________addr with
+ __UNIQUE_ID(addr)
+Message-ID: <20260426114938.4dff28c8@pumpkin>
+In-Reply-To: <20260425151240.2a46e3a8640fde3902461d41@linux-foundation.org>
+References: <20260307092119.20733-1-chmh0624@gmail.com>
+	<20260322144032.7353997c@pumpkin>
+	<20260425135737.e79c4b546d22b5ebfd96c0b5@linux-foundation.org>
+	<20260425230134.5449498a@pumpkin>
+	<20260425151240.2a46e3a8640fde3902461d41@linux-foundation.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E5D63160008
+X-Stat-Signature: sz6iy75uyx397xrn5d4y9q4h6f7krkc8
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4F6A0180004
-X-Stat-Signature: yf7xqryqajyntejy9r44t7bfwipm8rum
-X-HE-Tag: 1777200581-786939
-X-HE-Meta: U2FsdGVkX1/Iup8hgd/BL1Nmxnq9x8dORIK0LRb1Qj+C+i/n3KIMC9yiwLtI6UMkRhN25dq7U3QeA0qTLJaO79bw34+aQiSK5srCme0UAXlf6UgvghBUPR+918zmcMhw+4qAIo1lL/i2eLHuXAsIr5Zu4Jps0G+9N4LyS3wg8ioEEeWzgwx1TDZ+Va7HmOU+3sMyf85aAYYohouf+ojvZfFhNrUiyPEfL4qpHZ28xFfQJOMhnmi46QPFR1rIBcAStFK+9Ej5qLxO4WGeZikW3KvU3nRaUgpJBUQBKfvIvays8zhBhGvzRtbdg5NFph0gmMy9m0gD+Fcc/OJNHnrfVrIjpYfclJk2iGUfdqkEAU2nLSllc0iYMkDWB0ZKvLlZGb5EzEoNUyuu64JYRTPyGWZZvfVaBOUN3AQKlglICvgzZ3vbKDFIVl6uhlouq0+o+UePWU81tVyAL4ifGyBx7GUg6r75n/2zKdQRK14AHG9ugaeBkjWEiTk4+e7Z3CV7BuF3/OC7sKOZ0Q1GqWnNlIisU5Rqa5r5Qdf9xEZ4W6alt2WaboqnjLk7rK9PMXS+WTz6sQnT/WngkYnREDn5vk9AtcEjRvnPPRL+NH1FrkSsHut7Rtltw69nEZowKplr/JPDUop5QCZrME78xgb8cd6ofyqgQjx0aER5e5ngNVnD83ScUd9lAv8Qt/JbPSnQuQyL9WQ4SaEg9dmYf/vGry27ATkCS2el9wYTefU4iLpqBQQ211+Jm9B7Ns+hNpmxlWBSH3drfGO3JoZ0mYrzq9l6VU6xvAwYkVkSBGP6HbTmgYpHla61rTrS1k6YTTNiy1Kty3LLbGh4plJUJkOc7t+Z5v2vmlovw4AY+6RCUA4GVUeT08b28aTJPmuWG/WWfwSlzskuTDvgxNL+qmv0eqtmPSoSNiKcx3XZL91ztE59SID+C9d9UGx64WhHVFtPKTFfssW+lE9mJnUX7hU
- RNumpOF6
- eZysYO3JUyk2pah1YoTsKmAYTzmOrY9B0dyvLG2WWWhonV5n7hHTQ1dEOz+hTa+TAkf3djqMVHk68/Je55KIvdUOISFeaymuknr3TMx8oNjyK2UWFTy+YtC8K0Djw7oR63R9cV8QjAF9b8kReI00vf6DPRp9yGeDJz/AZX6PYADIOh4yaPNlO7dluL7KaJA8446SxYYHPpdIL4HfkwpXBUwNyd6puYco85jQk0IywvlK48hey2en5feaRLn+3rCe3TzECHGiEmrUJ9bbyFHZ6WTK45iOnEOE0Bd4BOXjN8YOdBnqK032HA8UexstynXZZVNd90uUhlC2Lu3UopTo1DpJAspFYDHsIBxyKWY8v6xi72PxQIgY3+FGyQihM2ek7u2CQoZ0MIL3Vb6fESR7UO+RS1RzC/HgsAJ5I7tNQrSIGfH2xIwJkV0TH02z/kT0MEqxaiOPFFRJkNp3skXz3t2xm1Bg9NAnM9ALQPiWo4r7+QevvdV3o8uE0kIwiIrd8ySfvq7ON2xER20vckXy1CDR6upy7SeHiByVKOUdUoan1taiTI9NjAW4qlWbgqg4DMBCWJSVgq3wzvHmvuTM2MWn22prxstqPJulKTWk7Hcy4/1zV449AG7oY0jbM3YIpwrah0D3V2u3SenNCQ9Ri7Ge+8pNH07coGQ5AmD1sM7VxGl0SmCKBhCe1Zm9N/qxpTHemrvT6Yf7dW04=
+X-HE-Tag: 1777200581-548396
+X-HE-Meta: U2FsdGVkX184LgVR6mZRoczfTx09GGU5lqmovmToAAZffi0JuV5/T+D8QcM9aPMb1IVVUKfRvmMkoY/J/ObZYE5XA+zSyvC1oRFbUAS2asVqOezsbFPeCCI1aAGKYNwf8fTYgQFtZMagCXxzG30unBe/0Pt7oJZfTHR3riiJ0FAZD0N4JcQ3gKFPh+5GUq5YPdd92lDNEjkuwgr4AoPrIqyn/mg8fcV0koosYx7cU8g8oc6R4FR5M06qyL9gu109LLViimHf5b/HMnSLZad83B35X63TXR32ajBaWQnh3emeSyrDU7R+sItjW14fterWf+RR3qDvUtDzoMlTcgEySTdY02eptEhS0oAku7tuuiGzD9RKP6Z34quF7ZMIugUgUcNBf++lOCeDwWokSVTPI2D7PbayLhUVrD2CKbDb1XCzVIVZGwGXOJlE9ew7QL/MIL2OreeWV+W5B2g3VC0N9BlRXlD3Qelc4WJHy9+Ikh1pX1JsfoxVqJjENEZGJq3RlSorSvWNn2vJwxaLlghPheTpRNSzWZdWtGSpElZcrHhNMK36FTgZey17s9hlCm4eY0hWG/SBQb+mXmAYf7Y9RfHyV5Wii+SuYWBQuh+DTTot85oBFfESXufjNuAONvu7106fQMx42NBDb8rxIFAru9sTUiXUbZKgdowoQNW1PnnrZ26JdnML8flM0AugqQoF7PCNSe0eTyENZoDCSeIu45yVli1ZEi7l89d3ajm9qOjRgJgCL2LlNvDAfxiNs/C5S+ji+IU1i5JbGrsDfeml/UM1DgOY7Xe+hDnjKWT8YSXPxJOD+OL1+wc1TeF5zD7Kj8x33RpbEVcU2HFljGeJPqGkwiRIR0WWqSFRDBMxuL8Z6fGrzCRJVAO9JjnBY36EcXiYwrpIh8Rh/66HNaqFQzuApRV2ZO+NIFXuEaomS7gvN+TEg0CQFfK5y+qYIl+x5eoqem4kmr2IZzAQBZW
+ uwV7E/mB
+ fby/JM3ubsa2/Qo6YQMxJdz61QRdQkQ4i8YBxgHj5+N9mRdcGTFGH4EN7KUGLZDx3ELAzDt2H4tkJsmE97dxGseifhWECadXK6QtXfuACzh2qE+yxqwItHGn97rwrHbOHcIDWRJYQhUkujvXCsWh5Gl+gtpCkmjDrJt/z6aNb8G865ywOzswao5RGcgEcBBMerYr6UTJ72QwCB4s8oz/EO9QuSpbgxWrrmaeXMkugFrQJ7FWsnpUNy1gT3cBu/5dDJ7VUffFcDyElYDKsd5qlRzCmiOeOC4ruJY+gDo5aNDr7++q2FIKhV2snQvsdMLIxFR9GZ5FdBuQCOMV/fwz4dIyXMEV+v1/3TBd+m6FEyX8E1syvZgCwCV4NzytNIxnCAYwtimWwtj88OMSvhc3qaBJTwtQCtgVZjU4DUPIuMWKDDS3YGoENXOxj+CVjzrNb8GB5bL0t9wCaM9V9nBWeWHuBTuGcEAZsuF3aHjtdr3gg2awD3COAAM9VhlyKX6o7fmzJc5NRFvIljuNfFMAw9CSp3271186uQDS2hl5TfR1yR/tXy32JVD4zOzXUIa/zIL6D0VfYvEYMl86GHpZOTbbylB/ZGp9rGDuXGn0EPBxATpfZzMkXoMlGe0GxI/0W5uVJkG/er6WOa/BsPPwG0EZLMo+lANJtKpZf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,40 +126,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 26 Apr 2026 01:17:25 -0700 syzbot <syzbot+7d60b33a8a546263da7c@syzkaller.appspotmail.com> wrote:
+On Sat, 25 Apr 2026 15:12:40 -0700
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> Hello,
+> On Sat, 25 Apr 2026 23:01:34 +0100 David Laight <david.laight.linux@gmail.com> wrote:
 > 
-> syzbot found the following issue on:
+> > > > The real problem with this define is that both idx and phys are
+> > > > expanded twice.    
+> > > 
+> > > The real problem with this define is that it's a define.  Why oh why do
+> > > we keep doing this to ourselves?  
+> > 
+> > Sometimes #defines generate better code because they are expanded earlier,
+> > and sometimes you want type-agnostic 'functions'.
+> > But neither is true here.
+> > 
+> > But I think I'd go for 'always_inline'.
+> > Sometimes the compilers make silly decisions.  
 > 
-> HEAD commit:    6596a02b2078 Merge tag 'drm-next-2026-04-22' of https://gi..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=12483702580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=24c8da4692f901cb
-> dashboard link: https://syzkaller.appspot.com/bug?extid=7d60b33a8a546263da7c
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> userspace arch: i386
+> Gee, if `static inline' misbehaves then we have big problems!
 > 
-> Unfortunately, I don't have any reproducer for this issue yet.
+> What's special about the fixmap code anyway?  It's not exactly
+> fastpath.  Perhaps this stuff can simply be uninlined.
 
-argh, that dreaded sentence.
+Some of the inlines are trivial - just adding an extra parameter.
+But this set would be simpler if the last function
+(__native_set_fixmap() for x86) returned (address & ~PAGE_MASK)
 
-Thanks.
+> 
+> Pet peeves:
+> 
+> We use too many macros.
 
-Something's definitely amiss.  This is at least the fifth report of
-rcu_read_lock() imbalance post-7.0.  Others:
+Indeed, I get fed up of looking things up to find they are trivial.
+Some of the 'helpers' do nothing for core readability.
+Even things like BIT() can have unexpected consequences.
 
-https://lore.kernel.org/69eab803.a00a0220.17a17.004a.GAE@google.com
-https://lore.kernel.org/69eab803.a00a0220.17a17.004b.GAE@google.com
-https://lore.kernel.org/69eafb0e.a00a0220.9259.0031.GAE@google.com
-https://lore.kernel.org/69ebcbe2.a00a0220.7773.0005.GAE@google.com
+Not to say I haven't got the pre-processor to do odd things in the past.
+But it is usually trying to avoid having to keep multiple definitions
+aligned with each other.
 
-In some cases we released it too often, in other cases we failed to
-release it.
+> We inline too much stuff.
 
-The first one is slightly more useful in that it tells us that the
-not-released rcu_read_lock() was taken in folio_lruvec_lock_irqsave().
+True - don't look at what strlcpy() can generate.
+The inline code should just get the constants from the compiler and
+then call the appropriate function.
 
-Muchun & Qi: you played with that rcu locking in 31b54a5e8916.  Can you
-please double-check that we didn't miss something?
+As does the compiler.
+pixpaper_panel_hw_init() repeatedly calls two static functions that
+contain sleeps. They all get inlined bloating the code size and
+exploding the stack when clang separately allocates all the buffers
+in the called functions.
+
+	David
+
+
 
