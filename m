@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44FE4FF8850
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 05:50:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DCC5FF8850
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 05:55:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E3386B0088; Sun, 26 Apr 2026 01:50:55 -0400 (EDT)
+	id AB9A36B008A; Sun, 26 Apr 2026 01:55:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 694536B008A; Sun, 26 Apr 2026 01:50:55 -0400 (EDT)
+	id A6A426B008C; Sun, 26 Apr 2026 01:55:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A8EE6B008C; Sun, 26 Apr 2026 01:50:55 -0400 (EDT)
+	id 97FFE6B0092; Sun, 26 Apr 2026 01:55:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 467506B0088
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 01:50:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE11CA04D1
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 05:50:54 +0000 (UTC)
-X-FDA: 84699633228.18.EED96D8
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BE026180002
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 05:50:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IN3MqOO0;
-	spf=pass (imf06.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 85ED86B008A
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 01:55:37 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ECC90120530
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 05:55:36 +0000 (UTC)
+X-FDA: 84699645072.24.28BF1CF
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 244F180008
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 05:55:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JPX742mA;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777182653;
+	s=arc-20220608; t=1777182935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kb3H3rW7NU0018MqykYuVnLzoeob+L0x69+WsyTVnFM=;
-	b=XnfGjo8XyW9gl8ab92W2LehDFWbGTu1RqxkKwrlsLVEU/4XuWOgTc6W1m9YNd0xL51OQmS
-	NNRAXigzVTXK/YMltZKF9LfAfAcfeOHFr9hmIMFB/mo9fxJPdKqwccrG3tnCNsEdxrlo3C
-	tKfX/2pw09JuON/6kRFZIDf067eH/Mc=
+	bh=O7hla+waPd4X+8cmZRfq3UTNBtiWb6lpCkJ8BRZsSoQ=;
+	b=uPsRYUIhV02avldoAhhVuBIIioP6tsFNQc2xeTfbtQ2Y06JB6uKcvFYhYWnmv2YNMUGxdf
+	KgTWCMABlkaB9zPT1yrkWnd493ixtG68Kw7vNFcM/8kjru8iZSvNYUobMaOEtWfHd1SrX2
+	56FLfrulek5kiPUwJFoYEL9nH6k8RTA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IN3MqOO0;
-	spf=pass (imf06.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777182653; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JPX742mA;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777182935; a=rsa-sha256;
 	cv=none;
-	b=pSLIOxWoQjerzdfKZadG0SxGT82Zso//aAULEJz4VJosKGOp3RDaCnAe6+KZxznWTf9LnJ
-	tN+ozCX3OA8woUo3GrPhJkSLsZ6Ux0b/85D7NrkKNxTej7k8f3fX7Fe8g4c+3SOuQFyNF9
-	dwxNoGyDNc9kaTshPCrgjt4aP+cUPkU=
-Message-ID: <afcbb502-b91e-47d7-8fb7-2e4e237928c5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777182650;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kb3H3rW7NU0018MqykYuVnLzoeob+L0x69+WsyTVnFM=;
-	b=IN3MqOO0OIu0sinrtIqVJ/fapkg2iQtX4L3/rRf1a6f7UyNvfE0ng4j1Z8h7CnbiXQjW8X
-	8+XO4kBSapxKPwrhWuzA23e3hj3pRXYqBt8/Px6APNy/MlTySOKvzwtm6RQYbCF72pzE6A
-	iW83IMo8dGYan6p2m/TbubarYmY62C0=
-Date: Sun, 26 Apr 2026 13:50:42 +0800
+	b=ubc0wBXjjWVC0DXQfDw1nu0BhdYs/5KFrIq0tdGvu2pGk+A3QEzuE/XcKdPDlO250k/t7X
+	tfud1HEDfNmf2PQDzdmg1j0Lpd57DvNlUuJLBMF41wtfR41Yg9L3tuVyl+bwhwtWAa5ddx
+	1Cc9uhOAPiYkIg0P01E9WD4bYgp8bIU=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1777182926; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=O7hla+waPd4X+8cmZRfq3UTNBtiWb6lpCkJ8BRZsSoQ=;
+	b=JPX742mAhZblANZJ2rdabphj6Aq5vwdOjF11Z6o84PB52wOCjtgXQN8FvMTZXXH2ZFYtqPLcFP+R2+B4XBpBcqAaKUtAggAmZwoCbwXNYGanluRW6yegPG3W7yc4vRZmdS+Z6TQt5u/wARrukqMgjJZwULK7+cp7LEIaw9Zkm0w=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X1gM7MC_1777182923;
+Received: from 192.168.0.100(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1gM7MC_1777182923 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sun, 26 Apr 2026 13:55:23 +0800
+Message-ID: <bc7f1260-a4a8-4940-a80c-c359831f29d8@linux.alibaba.com>
+Date: Sun, 26 Apr 2026 13:55:22 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/2] mm/damon: introduce damon_rand_fast() for per-ctx
- PRNG
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, Jiayuan Chen <jiayuan.chen@shopee.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "tmpfs: don't enable large folios if not
+ supported"
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, wangkefeng.wang@huawei.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-References: <20260425155953.89674-1-sj@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260425155953.89674-1-sj@kernel.org>
+References: <b2c7deee259a94b0d00a7c320d8d24d2c421f761.1776908112.git.baolin.wang@linux.alibaba.com>
+ <d3cc7e29-c84e-438f-8168-58544161d67f@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <d3cc7e29-c84e-438f-8168-58544161d67f@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: o3gum1eceh5a4wbb5cbir34fxieawc4u
-X-Rspamd-Queue-Id: BE026180002
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777182652-574250
-X-HE-Meta: U2FsdGVkX1/r49IXzitHLAouJRIVRkIeQV8p6kFONveE1JO28px9rd2TthI2sMlO5yl6k6NaakshvtFdWusHGNtZGRIAWkMFH+QSm0emfsQvSyBPyIi/ZLe+ZeYzWpovK1y8/rjVeDD4bRoA9h0a9UNUofdNLgDWL7dFHXcGohpzP+hbKvS9CGBzOqt4gD9QPYHdLM9Psujv8N1EZewINXtFc/14msiHglOPMBUjqEkZeofa/4pimXnLHRurIhGR3lms31hx+WwSrfgdfP1lt3c3MlYIWAUJs3JTW1wvbwD/xB+chg2fbuMDDQbdBfH40EUle+Pdt6nv77wCXcCH6rngiKRmBgni24TslTkf4HrK1oUMTrMpouxCWS6LY4n43/B8jEmm7vOlRNEmgAtGQCagrmRwYwho417UPq0ZTOHY7m03+4rpzAhVWAna0jUBOGjqwlQIv3JSRTbAXlBIhkOnrC8+Wu5xE8U27qqhiRf0u2PTzM7qIVjVoCztMFs0QaWbUL9qXcUVsS/vTwFVh+LtrER9wJcdBkk25ecN/H+J2Ovh3TrSW15c4P+iKLWPqZtYkMJX1y3KmJLYaXKum4wubgx41B2XSZ8DN/Xez3au+BA2Ye1ODMmvqW+VLDDciaithji89klQvvCt5y4rdk57CN/wnG99PnYDe3XCjO/Pa3SrHFOe47BVJ+aoGhoHkFXynBUISg3ttzSp6u2gnR7YvJ3X9x/Hja69aiZCP6aQCHrU4+xL6rSW8Odi8NQTiF9WHfedOYX0oRIU6gaRsPgr79O0LbRmOw9csCrWB9WzCRIZ6frBJecTLURSBzymIw8MEfO5Qn0tUgNA2yGfcGK63mSrnodxKQie2tJ7PZyge3ES3j5FhP9BBehLq/z4ggxgs36TIsimvFJX4wFCITqCYc1zGTAFeXQwAjwRf3rHnyOs8mxjHmcvEmFYcALenk+TLTxNU+qybrU1Z9i
- /OHQoJDn
- idW4LZ2nLXHyt5wl3qgQ8z5F4lOwlbdYN1NuUMrfGCCNOS+II1XqSM20m7Y8y2cVdHXdxo3ZW5fzn+m3v81Xkhxfjq6vOtDIG66sffm6WaEl6bW8F1BEijRMmi3Dv9pj7RJBT/DpMqvG53byhV2kq+p1UNqDGS7CIWMjkEkM9esWfEXEeBn4OyRnp+ZJcPf+IEA19GQ2R5vcvCMpIke0yzkG1uFu4BkOkgvy+YhRZL35BjNyHW7upekp9H8AjQ2o3/H9dU6ooCTwVDY88ViQr3O5zSg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 244F180008
+X-Stat-Signature: yr84oo9f5jb3jrbk5pcdifibugxobh57
+X-HE-Tag: 1777182931-919463
+X-HE-Meta: U2FsdGVkX19ZYF5iSp0XQbyexdfnxJ+jZWgI03akOk8o0J17aAUu8uQGWMdJFQdZZKSx7X3ISOuYEiEh5KvCccO4ACGEAUZnLAhdldjwReoDmkZVFNFi8w+papcqA2k+17OeVjVUxrrGkdtEGKj7jPsDeSS0e3R3iAYbQgeGdqQMtMSJkP8y410UjrrVNQ1LRywLi5KnYGckTlp+vVn6XJOPihtChDVvCmeYhI9X6/S8IuCyw70mZQGuv+n4OWrAEToqgcPJGM1rcHY1NsCQxJN46HZuhuGKIu06893wDjBWcC/9ev0Oy3h1jgYJQk0kt+Ki0qHHfmqT3ZmAc1siLfdRdm5D4avQe+zJk8L5fCQzs30kfg3NO9W81GRixgxNiSYyE47p/v3HFx9I7Tn1iUAmynGisLHOHmk6ndu3Wlpomy3RutHj6UPZscWAhKka3IFwhcsjtXXmevBQ9QNriwTW5vV8uLqUC2iqbKUQ4Tma2q/KWvZxzFSA1DkwqJ30b2Dd0Nps1TZzniuJIpXPk/0tVWi5OxR8nvhStrQJbOIcj3iSgPyDBrhXKVGbrovUWMJlbU8cYDeIasiznjcGg9IASPI3IXZFYdaOAjZO6AzRYyXTKYasz1BQuu+Cl894LCdNGJl8WdoJGO+Ex0OB7/h7M+wjw1yRExx5EywUF276xyImiEjWYTNlhLOtV6dVcrBsnfuqwJSOGn988jsovOt7jCyh9ZzGUc+p1K/MHkaqzpL3SlMOewntztsaVbz3zTkRZ9Va5xutWuMAjFYf9rCzPJHzm3C/jfnuRYDzlih2CG/89q2c6zBuBW8Y/tpdvkvDMAUDtpgzqgCFKhhxzwni3Ebmm2UuBU+WFV7Ae2a3jlsKQhsO3dKw4pQ/9kRuE7AQrl4KwYogVFjhzd//68kCFkgvTtF1eGOsRvjA62fONNT0XyRwACz4aVRWSu4Q4/tTCaUt1lTODGBnrcD
+ dKAMOIe+
+ tmS1UTgVHgen5MEiyPCRCOzdWTOEfdBZEXZcRxHPElmT3I65+sornJsDP9lWWJ1vpAjVDRJPPeHiD3NLI7eHu6YzRXAB+QF8FuhCbovb5tgwiBuCtSOkkOM43hxGqQEk0caHRPY46CatDrTI8I/O0mJkrQST4uumsE42tnCpOqRjcOU7xF8pomhNOO8wxuVMpFXqyFqVnaM64CCVcQgwOoxKDHVmCgjU9UdtE/G0wXta1/KYhQNGP7LHOwMa6P0tDv9mN8dUb0r/polotrxiGZZeL/m4bBjk/r5F/P8u/Pam5MtMoOsvY0Svui4+4t5zSb4veClytqui2m3A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,161 +91,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-Hello SJ
+
+On 4/23/26 9:20 PM, David Hildenbrand (Arm) wrote:
+> On 4/23/26 03:41, Baolin Wang wrote:
+>> This reverts commit 5a90c155defa684f3a21f68c3f8e40c056e6114c.
+>>
+>> Currently, when shmem mounts are initialized, they only use 'sbinfo->huge' to
+>> determine whether the shmem mount supports large folios. However, for anonymous
+>> shmem, whether it supports large folios can be dynamically configured via sysfs
+>> interfaces, so setting or not setting mapping_set_large_folios() during initialization
+>> cannot accurately reflect whether anonymous shmem actually supports large folios,
+>> which has already caused some confusion[1].
+>>
+>> Moreover, for tmpfs mounts, relying on 'sbinfo->huge' cannot keep the mapping_set_large_folios()
+>> setting consistent across all mappings in the entire tmpfs mount. In other words,
+>> under the same tmpfs mount, after remount, we might end up with some mappings
+>> supporting large folios (calling mapping_set_large_folios()) while others don't.
+>>
+>> After some investigation, I found that the write performance regression addressed
+>> by commit 5a90c155defa has already been fixed by the following commit 665575cff098b
+>> ("filemap: move prefaulting out of hot write path"). See the following test data:
+>>
+>> Base:
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.2 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.2 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.1 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.0 GB/s )
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=3000K count=1398 (3.0 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+>>
+>> Base + revert 5a90c155defa:
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.3 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.3 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.2 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.1 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/testbs=3000K count=1398 (3.0 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+>>
+>> The data is basically consistent with minor fluctuation noise. So we can now
+>> safely revert commit 5a90c155defa to set mapping_set_large_folios() for all
+>> shmem mounts unconditionally.
+>>
+>> [1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>> Note: for more investigation and test data, see:
+>> https://lore.kernel.org/all/116df9f9-4db7-40d4-a4a4-30a87c0feffa@linux.alibaba.com/
+> 
+> 
+> Maybe add that as
+> 
+> Link: https://lore.kernel.org/all/116df9f9-4db7-40d4-a4a4-30a87c0feffa@linux.alibaba.com/
+> 
+> above?
+
+Sure. And I noticed that Andrew has already helped add this link. Thanks 
+Andrew!
+
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Thanks.
-
-On 4/25/26 11:59 PM, SeongJae Park wrote:
-> On Sat, 25 Apr 2026 11:36:02 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
->
->> On 4/24/26 11:11 PM, SeongJae Park wrote:
-[...]
->> With ~2 GiB
->> default regions on a 2 TiB host, a small pod's pages are averaged
->> with thousands of non-pod pages in the same region, and the
->> region never reaches nr_accesses=0 even when the pod is genuinely
->> idle.
-> But, the adaptive regions adjustment mechanism dynamically change size of
-> regions, down to 4 KiB.  If the small pod's page is really cold while its
-> surrounding pages are not, DAMON should down-size the region to capture only
-> the page and show you nr_accesses=0.
->
-
-Looking at kdamond_split_regions() / kdamond_merge_regions():
-the per-region floor is 4 KiB, but the *total* count is
-hard-capped at max_nr_regions, and split itself is blind --
-it picks the cut position via damon_rand(1, 10) without looking
-at access patterns.  What keeps a split in place is the next
-merge cycle finding the two halves have visibly different
-nr_accesses; if a small cgroup's signal is averaged with
-surrounding host pages on both sides of the random cut, the
-halves look identical and merge folds them back.  For a 1%
-cgroup on a 2 TiB host with max_nr_regions=1000, the
-split-merge loop never converges to cgroup-aligned regions --
-random cuts almost always land in "99% host + 1% cgroup"
-mixtures.  Raising the cap gives the random splitter enough
-attempts that some cuts happen to land on physically-clustered
-cgroup pages (THP, NUMA-local allocations) and stick.  That's
-why the cap matters in practice, not the 4 KiB floor.
-
->> The cold signal is gone before any cgroup attribution
->> happens.  Cgroup attribution itself is done at sample granularity
->> (folio_memcg per sampled page), not at region granularity -- the
->> regions just need to be fine enough that there *is* a cold signal
->> to attribute.
-> Could you please share more details about what is the cgroup attribution, and
-> how it is done?  I guess that is the way to map DAMON's monitoring regions to
-> each cgroup to determine if each cgroup is hot or cold.  I'm unsure how it is
-> really be done.
-
-
-We sample physical pages within DAMON regions, look up
-folio_memcg() per sampled page to find the owning memcg, and
-accumulate cold bytes per memcg.  Userspace reads the per-cgroup
-result and sizes memory.reclaim per pod.  Conceptually similar
-to the page-level monitoring you pointed me at -- we'll evaluate
-whether [1] / [2] can replace this path.
-
->>>> With the default max_nr_regions=1000, each region covers ~2 GiB on
->>>> average, which is often larger than the entire target cgroup.
->>>> Adaptive split cannot carve out cgroup-homogeneous regions in that
->>>> regime: each region's nr_accesses averages the (small) cgroup
->>>> fraction with the surrounding non-cgroup pages, and the cgroup's
->>>> access signal gets washed out.
->>> But, pages of cgroups would be scattered around on the physical address space.
->>> So even if DAMON finds a hot or cold region on physical address space that
->>> having a size smaller than a cgroup's memory, it is hard to say if it is for a
->>> specific cgroup.  How do you know if the region is for which cgroup?  Do you
->>> have a way to make sure pages of same cgroup are gathered on the physical
->>> address space?  If not, I'm not sure how ensuring size of region to be equal or
->>> smaller than each cgroup size helps you.
->>>
->>> We are supporting page level monitoring [1] for such cgroup-aware use case.
->>> Are you using it?  But again, if you use it, I'm not sure why you need to
->>> ensure DAMON region size smaller than the cgroup size.
->> This is also why DAMOS memcg filters do not bypass the
->> nr_regions constraint -- the scheme's access-pattern matcher
->> operates on the already-averaged region, so by the time any
->> filter sees pages the signal is already lost.  Whatever
->> attribution mechanism we use afterwards (custom callback, memcg
->> filter, page-level reporting), the region count needs to be high
->> enough first.
-> But, I'm not understanding why the regions adjustment mechanism cannot work
-> here.  Your answer to my above question will be helpful.
->
->>> Fyi, I'm also working [2] on making the cgroup-aware monitoring much more
->>> lightweight.
->>
->> Looking forward to it -- hopefully it'll cover our case. 😁
-> I hope so, too! :)
->
->>
->>>> Raising max_nr_regions to 10k-20k gives the adaptive split enough
->>>> spatial resolution that cgroup-majority regions can form at cgroup
->>>> boundaries (allocations have enough physical locality in practice for
->>>> this to work -- THP, per-node allocation, etc.).  At that region
->>>> count, damon_rand() starts showing up at the top of kdamond profiles,
->>>> which is what motivated this patch.
->>> Thank you for sharing how this patch has developed.  I'm still curious if there
->>> is yet more ways to make DAMON better for your use case.  But this patch makes
->>> sense in general to me.
->>>
->>>>> I know some people worry if the limit is too low and it could result in poor
->>>>> monitoring accuracy.  Therefore we developed [1] monitoring intervals
->>>>> auto-tuning.  From multiple tests on real environment it showed somewhat
->>>>> convincing results, and therefore I nowadays suggest DAMON users to try that if
->>>>> they didn't try.
->>>>>
->>>>> I'm bit concerned if this is over-engineering.  It would be helpful to know if
->>>>> it is, if you could share the more detailed use case.
->>>> Thanks for pointing to intervals auto-tuning - we do use it.  But it
->>>>
->>>> trades sampling frequency against monitoring overhead; it cannot
->>>> change the spatial resolution.  With N=1000 regions on a 2 TiB host,
->>>> a 20 GiB cgroup cannot be resolved no matter how we tune sample_us /
->>>> aggr_us, because the region boundary itself averages cgroup and
->>>>
->>>> non-cgroup pages together.
->>>>
->>>> So raising max_nr_regions and making the per-region overhead cheap
->>>> are complementary to interval auto-tuning, not redundant with it.
->>> Makes sense.  I'm still not sure how it helps for cgroup.  But, if you do want
->>> it and if it helps you, you are of course ok to use it in your way, and I will
->>> help you. :)
->>>
->> [...]
->>>> Sashiko is correct that (u32)(r - l) truncates spans greater than 4 GiB.
->>>>
->>>> This is a pre-existing limitation of damon_rand() itself, which
->>>> passes r - l to get_random_u32_below() (a u32 parameter) and
->>>> truncates the same way.  My patch makes that truncation
->>>> explicit but does not introduce a new bug.
->>> You are 100% correct and I agree.  Thank you for making this clear.  I should
->>> also mentioned and underlined this in my previous reply, but I forgot it.
->>>
->>> So I think this patch is ok to be merged as is (after addressing my nit trivial
->>> comments about coding styles), but we may still want to fix it in future.  So I
->> damon_rand() is now only called by damon_split_regions_of() with
->> the constant range (1, 10).  may by we can rename it to
->> damon_rand_u32() to make the u32 constraint explicit in the API
->> name; that closes out the truncation concern at the legacy helper
->> without needing a separate series.
-> Good point.  I'm wondering if we have a reason to keep using damon_rand() at
-> all.  I find no such reason.  If you also find no real reason, how about simply
-> removing existing damon_rand() and renaming damon_rand_fast() to damon_rand()?
->
-
-Good idea.  v2 will remove the legacy helper, rename
-damon_rand_fast() to damon_rand(), and plumb ctx into
-damon_split_regions_of() for the new signature.
-
->>> was wondering if such future fix for this new, shiny and efficient function is
->>> easy.
->>
-[...]
-
-
-Thanks!
-
-
 
