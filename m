@@ -4,179 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64CC9FF885D
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 18:25:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E529FF885D
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Apr 2026 19:01:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 452AD6B0005; Sun, 26 Apr 2026 14:25:45 -0400 (EDT)
+	id 3EEFF6B0005; Sun, 26 Apr 2026 15:01:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 403716B008A; Sun, 26 Apr 2026 14:25:45 -0400 (EDT)
+	id 3A0756B008A; Sun, 26 Apr 2026 15:01:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CAE26B008C; Sun, 26 Apr 2026 14:25:45 -0400 (EDT)
+	id 28F856B008C; Sun, 26 Apr 2026 15:01:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 186D46B0005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 14:25:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9FC6B16042E
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 18:25:44 +0000 (UTC)
-X-FDA: 84701535408.27.C176668
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EFD8340007
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 18:25:42 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OlybZ2Iu;
-	spf=pass (imf11.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 124A46B0005
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 15:01:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5128D120534
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 19:01:56 +0000 (UTC)
+X-FDA: 84701626632.05.7C73739
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8CE95180004
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 19:01:54 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf24.hostedemail.com: domain of 3IWHuaQkbAPImsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3IWHuaQkbAPImsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777227943;
+	s=arc-20220608; t=1777230114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JHsQUawhJe9ux9X3F+zQTMW+Z3PqHiJIxTSLLkto5jo=;
-	b=I2iR2SpGfiBoRf2dKnF6LAZsMT7AhOtmoTTtyN+7LHALN/pbLPc7blwCVAp1pVAfh4J7GV
-	AT7WOSxK+tP2ZGjEcJgfkp57BUbfHZQhwynAFI0CPZrZtFOuM5skPdxsbVsnxoe9/aBem4
-	JKqpcS2u+jHRKAqGg8RVgXr03irE2wg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=uIpHQ00KRisBd10MQGygJ2CgQh8Ls6b/N523GUy25pc=;
+	b=qfuePOB/nACRnvkHTscGC7krocMBmkTBeXK0USl1VF2QB0d2Ekn7127kt3om76eRPNZkPx
+	3rwOu1Lbpqs5yptn/6bt3CW4eqDCxJHuFr9wPt+mudgQa3LzxuLuah4gFLDVYI2vVLlCn4
+	7iggp8aT5nxqvW82uRNVJjtE1KO8q9g=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OlybZ2Iu;
-	spf=pass (imf11.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777227943; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf24.hostedemail.com: domain of 3IWHuaQkbAPImsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3IWHuaQkbAPImsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777230114; a=rsa-sha256;
 	cv=none;
-	b=pRCAem0oh0R+bBZv3Un6qQk61AWe8Q7c2w4EWFMoMp9QD181HVwKZ9R/NzVo5jj38E6UlB
-	An4wboDcNbbKEV65h8AbyOlmdKooM0UP7LUaKYDmaxBFnjuy9soFeRIoLiCdcErAyhgeGL
-	XTcx9GueEh4c2FafcIqIRgWj7bLz5C8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D2C356013B;
-	Sun, 26 Apr 2026 18:25:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71ADC2BCAF;
-	Sun, 26 Apr 2026 18:25:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777227941;
-	bh=xAvxxc+GJErYibe3Dff2VWhiLf5NPpiX6PZCm4fg5XE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=OlybZ2IujoiP0PzXbBns5uTh4PTxWaHeIyjJv3sUFL0Gs2b1QykWluRggP1n8afkT
-	 Tq64WvAky+PcSkCdPLQoi1XQKpzWaIE5S9Hq0bAgaNwjG/YAML+vcXZvB41M3Y+0MW
-	 03N6Bxtmc7AttYs0TnoQMfCZVteNmubunXMc5EoEyLXxp/avrcMGqHQ7y2hgGVCEAm
-	 65kY8DfTP/9i5W2XpsDILrABn5LvN6fDJFYgxnC+0gUS5d5t+wv8Ze9gSzyJfDgISS
-	 +HXIGCbeOz2z90jMgod1z2BzA7Gf4pyF9XvSEf92vW6XoiK1XI4yum3wwl6sFBzfxs
-	 AJsNfRtkS2ZZg==
-Message-ID: <c40b691f76e6d397b889b4ee27e43490320660f1.camel@kernel.org>
-Subject: Re: [PATCH v3 2/4] mm: kick writeback flusher for IOCB_DONTCACHE
- with targeted dirty tracking
-From: Jeff Layton <jlayton@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner	
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Matthew Wilcox (Oracle)"	
- <willy@infradead.org>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes	 <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan	 <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Mike Snitzer	 <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, Ritesh
- Harjani	 <ritesh.list@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- Kairui Song	 <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel
- Butt	 <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, Axel
- Rasmussen	 <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu	 <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>, Masami
- Hiramatsu	 <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>,  Chuck Lever <chuck.lever@oracle.com>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org
-Date: Sun, 26 Apr 2026 14:25:36 -0400
-In-Reply-To: <20260426052854.8372fb9d4c616f16a8aa0a0f@linux-foundation.org>
-References: <20260426-dontcache-v3-0-79eb37da9547@kernel.org>
-		<20260426-dontcache-v3-2-79eb37da9547@kernel.org>
-	 <20260426052854.8372fb9d4c616f16a8aa0a0f@linux-foundation.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	b=iIEvRYUpi3LTxGjCePs76nGkd8Om0eSqpMci1dfplDj8TyBJeF48m+UFpFGbanSuma8qs4
+	S8v+pVhWWKXxQ1HrOcpoF5lHvGQvf5vnBW3DO+pXzGxJiuBPiilm+84VdLfFT7U2iiMOLA
+	qceNc+RPRb/49IABm+mhadrghHpW/fQ=
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-69644bda339so464092eaf.1
+        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 12:01:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777230113; x=1777834913;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uIpHQ00KRisBd10MQGygJ2CgQh8Ls6b/N523GUy25pc=;
+        b=cylUw4AK3wEIhol4PLagNJlSjmHAI64junbmaFDCTFaoyDU5BbpOFuy3MDNb4+W46o
+         imB7CtS0MM0uICrUtrHxlZn2rY5jfUi67Z8h6P/YfeD/c1QAoLy8RgQ+3PaCsIxTJ4KY
+         y6o5XMMoRKaw2xFMY+C67ztWjLtB65was9QfdZkqD7S/Tf7wkB+VbMQQfyKfhUGxV4ye
+         XbPqxKSe2ZeA9bYlZ0EuM43i5VdLs8AwE1eKRKZfo4KpPmsPx2GkDdYopQ7BcyQ/dceu
+         aw3STgMO0p+1VnOOVQLwpgcBSDsCEPbLmfpqSUWZqpj+/2zqQs1aQlmXmF6AH9GORcSU
+         wcug==
+X-Forwarded-Encrypted: i=1; AFNElJ/22uWXi/sEsXBYgTJ8jLpjVQ0DdC3cFaSmEALxH9hs5lCoUNihQvPfAxJdgsFhkm6g/Kwuic7R8A==@kvack.org
+X-Gm-Message-State: AOJu0YwUh+Qk2vq47DJBnSxxbKngDtuwAPxchfkNIlrkzZMts34WX8f2
+	ZynOMWTXw0nLbobHf7MOqv5hsZ3uG/1RdMb0LAcugIVrxjB7VtUqzdXF6Np7l2JXBOvwDNQ3eYG
+	/HaCneuEgD/nm+nML0TpAXzKnrN6BqME+utz19JZvn5BqBvKvdV6HJF7GrrA=
 MIME-Version: 1.0
+X-Received: by 2002:a05:6820:55cf:b0:696:2b58:4ac0 with SMTP id
+ 006d021491bc7-6962b58521emr2864608eaf.35.1777230113545; Sun, 26 Apr 2026
+ 12:01:53 -0700 (PDT)
+Date: Sun, 26 Apr 2026 12:01:53 -0700
+In-Reply-To: <20260426125719.24698-1-osalvador@suse.de>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69ee6121.170a0220.11de9.0010.GAE@google.com>
+Subject: [syzbot ci] Re: Implement a new generic pagewalk API
+From: syzbot ci <syzbot+cic0b10fee257fdf9e@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@kernel.org, david@redhat.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	mhocko@suse.com, muchun.song@linux.dev, osalvador@suse.de, vbabka@kernel.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8CE95180004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EFD8340007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: w9xhqf5dz5iijwfr383c9zwjos7j5wzt
-X-HE-Tag: 1777227942-212869
-X-HE-Meta: U2FsdGVkX19dpTZM+3lMCsdDKDsvmy74/T0f+FOCNbCbAJ8a+ecckVmrX1ItFR1R9T0mM/LIhDOTQ91oU08LxuQoYrOZEVqQto+lLCj3PDRLqm3E01SsMtixsyWf08lLjykvFv/u74c+C6wo0mv0RyMjcloQT5M+tw3WWZaoy26FjzwqtWRg4/DSxAqDnWUfWkh/tbuuIoTnUEklo5osDpAVjHDMPLk7JzUJBisBIFjNQ+1LAaq+x/QYM72TvMlDoxDR5Q/vQjMmsD1EvYpGNznJubQdJOnjXiJipKG009laCgP99qlCGoFywDQJqP/g1ed17K80yeQRi6XTDgWkw9Bam+XTo9dXXRjwy/kxX7v/x3kizVPT4CfCubIiGBjb4//lir/S1PWYpokfFSOpbY2sp21ILctRDt76C8p3cgHEr6MOKCIzfn9yuzwxIaGwXLgrmkQFthic57ikvGGxdwgJNWhPLt6q7cybEOyp9cRfmN1C6dJGGy9luezCoX9prvay04pgAwPoMBiXh/C4ygQ+33Ev8RQ9uVlYVXWXPHQO+KnPSZudyOExctN5RrI0aGlAJGWf9y+f7Ab3Vujrbvxpq8j2tPnPuVO8q/h8ePHijOca3NUowU2NrjVzH4Q89d70XLeV2YBt5zLHKhN6kaphqjtPhPPSgLXkElWD6ufnraG2GUKM8zjXtmLx6zZbwk6iAhgmP72iz92qM3iOxiIElqdvUdJllCthe/31a0r/7AeXK4EYmWinimWXgYAdK4oi3hbjCXKHIbrwHS7BE7SrOXNjtLOLBBhHHuF92gdl5uMWUASvJkjVtT9nJrDm0AefdvGD9MtmKIsQWzn/r6iyTg4UeixJRushnSJ/OvWk9aHN3DOEwAZfXdVymClOjFbJl/uzsH4d5trKRbMZsQOg0Yov+dKIja6XriSVXiiToTgKYiM0LpHZXS48LOrNm+nvfIx9tUCzPHMrcR1
- MAVm4Ttx
- veN1XxG++RtWgdY2gBkqDRZJh39+8QbGtHNMZWAR+X43TlL1N+kA2ahlIV8xIwgc9EJ0TFszW7NnN3BsdUuxW/gET2ntbOJz7mEaxGRUzTDp00DIrb2lcHmeOzwbbydvN/fIpUWSlfvpPwMitm9pWcDFWaCfaCwy1jhrIv+KJfAW2wCkZoDAuWUx2xzmB36Ho6kcDIvU5v7uNdcvAHmi4B2IAiN0vkJdjHEwjBjtl5m4OzpmWXTEbYYepm9a5ntFksjauFvtw+kXy6wTHelysvb7vQQocldcQSrnpHObPed3bOLrAXRjxFRcHlEvDeY9L470AxdNTrTnXTqdSko6Z1ld5PIBByZgbfFG942onsCdPEeg=
+X-Stat-Signature: xk3ninkw1jzatax8f47pkugxnuj6jj75
+X-HE-Tag: 1777230114-19735
+X-HE-Meta: U2FsdGVkX1/ThGlB8xBBYwODiox4YlVdz3VQGpKC2F6MGyjDcFvBcOB2ZRhkdrYLKEXSkxeZqT7vq+bqj7NILDX0AM+5/LzVKXwiBNJFqfxlQ4o973ghMBXJk1SPs9iY72Nia4HalSjOcrj2DnjyIqbKbMCogbTjo5dhFTDP6T7miVOdF6xJzhM+UKqNHDddptJ7cJ1Cb3nqJNZ/a7IQNRNxeol1GgwnSUA9J3HSooX9i3rIuQbL70p4PB2fvsywopKnMkTm9TB0hZJ7D2eqvwYz6ahbSdLDasiUmlnPYnuwR8qwSG/dgPY7GZih8j57UFEpwqtCvvvk4tEhfg69du3kVWMvzZPfO9HJNQcYOyIB7joLb5pEnVFXgKINkBTI8DoAHghrsFwTYxpxdyVqH0QkY4usXd3M0wLJzXqM2PWkmh1d3U+oElc4BzeWhBpAsOO9UMF2ugVo+SK8aKBausbEZir/4k2lD/O/u59cg7u7d1KtEdeNmm7J1tK8r61YkKydNw/0T1rJMo5ptxFUMV1dpuFU8mSl1piZ7EHWhFkhVKrtjcZk+GKQW1BtLxW6tEGbCVe0csnoBdFlVKy2+1z0/uv4yWnpbgdA8gz4dWQIwdyuVJ8WfohbVG7FtyqwJshDqTzVnV71sSKV5+kwrLzXhBxjzskdhsahd90mSLl0IGbCik9ag0Ra48LffK8zEvR7UnuQImQGnVEa1U7yLT/8lujsdMvnxcusKfYjde2anFPvgwj71Xm3Fd6TBt0L11if1r7uD2/yMmjQMpV52tUWqAyF8c8nSZukF+3tgQ/4Z4bkfssOc0AkwBlqNmfGc9NaPyBqbE4xd8ATomdcV1w283ss7BfD6SKzdmr54LXe0PKeMe/MIVw8zXzGs6CKOYtKHK0xnIqJruIDsBWh0I8qAXHrWU+FEkuHc5k0EV/Unhwlhbl8sETVLrTcVBsVPO0MIEKm6OCXnhZSUE9
+ P3F+uAwx
+ PQiJWDVCxHOsRNT3zjbq0qrWuAt+x5pXzyZyX3G9h+oI8pEpIztmrP71qZhOp7hbdib4rn5i2lY0M/e5FWplRMwQv0DBSO+yBBdDnAI0iqaIrgzYxyNf+ekUryJJV4PVswFuPPLkQiRelLxC9HG9xMWRf2Nhy3zu76eq9QvHIsn6EsxRhaJbejmIGZfWu8SFGR9bEpbXm9IoLuNS+NvBFpG6jJJty8jK6quQw0ZQgyfzXXKwiOW7KqUlXxTcHB+kVH2q/1a+Aiz2iA6/PRw5v9hk8QI3WU+ZUsrbkTSx13WnagYNwU0UYqYIcYFqzDxdG4t5qpgSvSH63FghTUqOsH/YuKlYh9BnMKeVrF79SzDD4eigFyvIE4RerA+2MP4Pytwm+q4tmBcvU0ym6pQ+HkTxnxWDwJxwP2p+Of3aZaBINZoddPz1msiQqeizC+ss8BVTj9LDg61fndPEbAxj66C5S81I9IhxpMnOaGyyNm9RdXG0mpr7dXDMko2YWqCEbijMZbvw0MEVg2yq9w02Y01eelzGrmeUttx9N2oEWBXj78COENy0yVvhgywcqD+Ypd/LTeV57HMF1t2HG+gEbrFBjn5WhlYOm+GG8P7wCugWdqnTr3cOvZZvlgfTwS5s4pewPusZQ8KUAiPv8lcQA7l72rSVmOmk2nZ98xYqsqNPvHHaWWGsR/AAQ3ab2defSajFkUW836ktihkzqUJ/76utTme151BVk3G80Z+QFYtReLIZpvOFf19y/dOLRJZOJrtVHZNWXz2jwK7NoxNaw7HinEeTPko86qak9elPNXgs1t91tOLZtYm8hFxF5tkXAH075/L3p5wjyteNOZRkT67rymO7lDFEmYgZZR8A60O4sNXOOtS84n88EU8UNfNrTVEdo9v3edjRVDi1wswAJyq6Wp/vVZBrpzwQS+Z64/08PCwwcedfk4SGN+klQOlDmBbzcchp9rWpqmBqyi6TjdnUzhY66
+ svWcsgnv
+ Gt4VFKLoISs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,138 +98,354 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2026-04-26 at 05:28 -0700, Andrew Morton wrote:
-> Naive questions...
->=20
-> On Sun, 26 Apr 2026 07:56:08 -0400 Jeff Layton <jlayton@kernel.org> wrote=
-:
->=20
-> > The IOCB_DONTCACHE writeback path in generic_write_sync() calls
-> > filemap_flush_range() on every write, submitting writeback inline in
-> > the writer's context.  Perf lock contention profiling shows the
-> > performance problem is not lock contention but the writeback submission
-> > work itself =E2=80=94 walking the page tree and submitting I/O blocks t=
-he writer
-> > for milliseconds, inflating p99.9 latency from 23ms (buffered) to 93ms
-> > (dontcache).
->=20
-> So in the current case, when generic_write_sync() returns, all that
-> memory is written back and clean&reclaimable (or freed?), yes?
->=20
-> > Replace the inline filemap_flush_range() call with a flusher kick that
-> > drains dirty pages in the background.  This moves writeback submission
-> > completely off the writer's hot path.
->=20
-> Whereas after this change, that pagecache is probably still dirty,
-> unreclaimable, waiting for the flusher to do its thing?
->=20
-> So is there potential that the system will get all gummed up with
-> dirty, to-be-written-soon pagecache?  Is there something which limits
-> this buildup?
->=20
-> > ...
-> >=20
-> > dontcache-bench results on dual-socket Xeon Gold 6138 (80 CPUs, 256 GB
-> > RAM, Samsung MZ1LB1T9HALS 1.7 TB NVMe, local XFS, io_uring, file size
-> > ~503 GB, compared to a v6.19-ish baseline):
-> >=20
-> >   Single-client sequential write (MB/s):
-> >                        baseline    patched     change
-> >   buffered              1449.8     1440.1      -0.7%
-> >   dontcache             1347.9     1461.5      +8.4%
-> >   direct                1450.0     1440.1      -0.7%
-> >=20
-> >   Single-client sequential write latency (us):
-> >                        baseline    patched     change
-> >   dontcache p50         3031.0    10551.3    +248.1%
-> >   dontcache p99        74973.2    21626.9     -71.2%
-> >   dontcache p99.9      85459.0    23199.7     -72.9%
-> >=20
-> >   Single-client random write (MB/s):
-> >                        baseline    patched     change
-> >   dontcache              284.2      295.4      +3.9%
-> >=20
-> >   Single-client random write p99.9 latency (us):
-> >                        baseline    patched     change
-> >   dontcache             2277.4      872.4     -61.7%
-> >=20
-> >   Multi-writer aggregate throughput (MB/s):
-> >                        baseline    patched     change
-> >   buffered              1619.5     1611.2      -0.5%
-> >   dontcache             1281.1     1629.4     +27.2%
-> >   direct                1545.4     1609.4      +4.1%
-> >=20
-> >   Mixed-mode noisy neighbor (dontcache writer + buffered readers):
-> >                        baseline    patched     change
-> >   writer (MB/s)         1297.6     1471.1     +13.4%
-> >   readers avg (MB/s)     855.0      462.4     -45.9%
->=20
-> These results look ambiguous.  Sometimes better, sometimes worse?
->=20
+syzbot ci has tested the following series
 
-Forgot to comment on this part earlier...
+[v2] Implement a new generic pagewalk API
+https://lore.kernel.org/all/20260426125719.24698-1-osalvador@suse.de
+* [RFC PATCH v2 1/7] mm: Add softleaf_from_pud
+* [RFC PATCH v2 2/7] mm: Add {pmd,pud}_huge_lock helper
+* [RFC PATCH v2 3/7] mm: Implement folio_pmd_batch
+* [RFC PATCH v2 4/7] mm: Implement pt_range_walk
+* [RFC PATCH v2 5/7] mm: Make /proc/pid/smaps use the new generic pagewalk API
+* [RFC PATCH v2 6/7] mm: Make /proc/pid/numa_maps use the new generic pagewalk API
+* [RFC PATCH v2 7/7] mm: Make /proc/pid/pagemap use the new generic pagewalk API
 
-This is the "mixed-mode" (dontcache writes + buffered reads). I played
-with a bunch of different settings under nfsd, and those settings
-turned out to perform the best with this benchmark.
+and found the following issues:
+* KASAN: slab-out-of-bounds Write in pagemap_read
+* WARNING in __page_table_check_pmds_set
+* WARNING in pt_range_walk
+* WARNING: bad unlock balance in pt_range_walk
 
-I suspect what's happening is that the increase in write throughput
-from writing via the flusher thread is crowding out reads. So, read
-throughput suffers in this test from that. There are a number of ways
-we could probably make that more fair.
+Full report is available here:
+https://ci.syzbot.org/series/409219de-ca42-45a5-9204-0b315095160c
 
-> > nfsd-io-bench results on same hardware (XFS on NVMe, NFSv3 via fio
-> > NFS engine with libnfs, 1024 NFSD threads, pool_mode=3Dpernode,
-> > file size ~502 GB, compared to v6.19-ish baseline):
-> >=20
-> >   Single-client sequential write (MB/s):
-> >                        baseline    patched     change
-> >   buffered              4844.2     4653.4      -3.9%
-> >   dontcache             3028.3     3723.1     +22.9%
-> >   direct                 957.6      987.8      +3.2%
-> >=20
-> >   Single-client sequential write p99.9 latency (us):
-> >                        baseline    patched     change
-> >   dontcache            759169.0   175112.2     -76.9%
-> >=20
-> >   Single-client random write (MB/s):
-> >                        baseline    patched     change
-> >   dontcache              590.0     1561.0    +164.6%
-> >=20
-> >   Multi-writer aggregate throughput (MB/s):
-> >                        baseline    patched     change
-> >   buffered              9636.3     9422.9      -2.2%
-> >   dontcache             1894.9     9442.6    +398.3%
-> >   direct                 809.6      975.1     +20.4%
-> >=20
-> >   Noisy neighbor (dontcache writer + random readers):
-> >                        baseline    patched     change
-> >   writer (MB/s)         1854.5     4063.6    +119.1%
-> >   readers avg (MB/s)     131.2      101.6     -22.5%
->=20
-> Ditto but less so.
->=20
+***
 
-Same reason for the drop, I think.
+KASAN: slab-out-of-bounds Write in pagemap_read
 
-> > The NFS results show even larger improvements than the local benchmarks=
-.
-> > Multi-writer dontcache throughput improves nearly 5x, matching buffered
-> > I/O. Dirty page footprint drops 85-95% in sequential workloads vs.
-> > buffered.
->=20
-> It sounds that you like the results, so OK ;)
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      819bd270abf9de3b7f306e233054b85a07c47820
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/0361816f-57b2-43e4-aef2-186d8d35fdc9/config
+syz repro: https://ci.syzbot.org/findings/7f740037-7398-46f2-aa01-a57caa186d06/syz_repro
 
-I think it's a win overall. As with anything writeback-related, it's a
-game of tradeoffs. The good news is that DONTCACHE is still fairly new
-and not many applications are using it yet, so the blast radius from
-any change here should be rather small.
+==================================================================
+BUG: KASAN: slab-out-of-bounds in add_to_pagemap fs/proc/task_mmu.c:1776 [inline]
+BUG: KASAN: slab-out-of-bounds in pagemap_read_walk_range fs/proc/task_mmu.c:2949 [inline]
+BUG: KASAN: slab-out-of-bounds in pagemap_read+0x1d60/0x2810 fs/proc/task_mmu.c:3092
+Write of size 8 at addr ffff88816f1bd000 by task syz.1.18/5957
 
-As a side note: I've long thought that we in general wait too long to
-kick off writeback with normal buffered I/O, particularly with modern
-memory sizes. DONTCACHE gives us a place to experiment with this
-scheme, but we may want to think about kicking off writeback earlier in
-the normal buffered case too.
---=20
-Jeff Layton <jlayton@kernel.org>
+CPU: 1 UID: 0 PID: 5957 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xba/0x230 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ add_to_pagemap fs/proc/task_mmu.c:1776 [inline]
+ pagemap_read_walk_range fs/proc/task_mmu.c:2949 [inline]
+ pagemap_read+0x1d60/0x2810 fs/proc/task_mmu.c:3092
+ vfs_read+0x20c/0xa70 fs/read_write.c:572
+ ksys_pread64 fs/read_write.c:765 [inline]
+ __do_sys_pread64 fs/read_write.c:773 [inline]
+ __se_sys_pread64 fs/read_write.c:770 [inline]
+ __x64_sys_pread64+0x199/0x230 fs/read_write.c:770
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f340679cdd9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f34075d2028 EFLAGS: 00000246 ORIG_RAX: 0000000000000011
+RAX: ffffffffffffffda RBX: 00007f3406a15fa0 RCX: 00007f340679cdd9
+RDX: 0000000000019020 RSI: 0000200000000200 RDI: 0000000000000003
+RBP: 00007f3406832d69 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000001000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f3406a16038 R14: 00007f3406a15fa0 R15: 00007ffdb721f7e8
+ </TASK>
+
+Allocated by task 5957:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __kmalloc_cache_noprof+0x31c/0x660 mm/slub.c:5339
+ kmalloc_noprof include/linux/slab.h:962 [inline]
+ kmalloc_array_noprof include/linux/slab.h:1109 [inline]
+ pagemap_read+0x27d/0x2810 fs/proc/task_mmu.c:3033
+ vfs_read+0x20c/0xa70 fs/read_write.c:572
+ ksys_pread64 fs/read_write.c:765 [inline]
+ __do_sys_pread64 fs/read_write.c:773 [inline]
+ __se_sys_pread64 fs/read_write.c:770 [inline]
+ __x64_sys_pread64+0x199/0x230 fs/read_write.c:770
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff88816f1bc000
+ which belongs to the cache kmalloc-4k of size 4096
+The buggy address is located 0 bytes to the right of
+ allocated 4096-byte region [ffff88816f1bc000, ffff88816f1bd000)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88816f1b8000 pfn:0x16f1b8
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0x57ff00000000240(workingset|head|node=1|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 057ff00000000240 ffff888100042140 ffff888160400a08 ffffea0005c6fe10
+raw: ffff88816f1b8000 0000000000040003 00000000f5000000 0000000000000000
+head: 057ff00000000240 ffff888100042140 ffff888160400a08 ffffea0005c6fe10
+head: ffff88816f1b8000 0000000000040003 00000000f5000000 0000000000000000
+head: 057ff00000000003 ffffea0005bc6e01 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5715, tgid 5715 (rm), ts 50636400155, free_ts 46909302793
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x231/0x280 mm/page_alloc.c:1889
+ prep_new_page mm/page_alloc.c:1897 [inline]
+ get_page_from_freelist+0x24dc/0x2580 mm/page_alloc.c:3962
+ __alloc_frozen_pages_noprof+0x18d/0x380 mm/page_alloc.c:5250
+ alloc_slab_page mm/slub.c:3255 [inline]
+ allocate_slab+0x77/0x660 mm/slub.c:3444
+ new_slab mm/slub.c:3502 [inline]
+ refill_objects+0x331/0x3c0 mm/slub.c:7134
+ refill_sheaf mm/slub.c:2804 [inline]
+ __pcs_replace_empty_main+0x2b9/0x620 mm/slub.c:4578
+ alloc_from_pcs mm/slub.c:4681 [inline]
+ slab_alloc_node mm/slub.c:4815 [inline]
+ __do_kmalloc_node mm/slub.c:5218 [inline]
+ __kmalloc_noprof+0x474/0x760 mm/slub.c:5231
+ kmalloc_noprof include/linux/slab.h:966 [inline]
+ tomoyo_realpath_from_path+0xe3/0x5d0 security/tomoyo/realpath.c:251
+ tomoyo_get_realpath security/tomoyo/file.c:151 [inline]
+ tomoyo_path_perm+0x283/0x560 security/tomoyo/file.c:827
+ tomoyo_path_unlink+0xaa/0xf0 security/tomoyo/tomoyo.c:162
+ security_path_unlink+0x15f/0x330 security/security.c:1457
+ filename_unlinkat+0x349/0x610 fs/namei.c:5537
+ __do_sys_unlink fs/namei.c:5575 [inline]
+ __se_sys_unlink+0x2e/0x140 fs/namei.c:5572
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+page last free pid 5257 tgid 5257 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ __free_pages_prepare mm/page_alloc.c:1433 [inline]
+ __free_frozen_pages+0xc2b/0xdb0 mm/page_alloc.c:2978
+ __slab_free+0x263/0x2b0 mm/slub.c:5532
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x97/0x100 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:350
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4501 [inline]
+ slab_alloc_node mm/slub.c:4830 [inline]
+ kmem_cache_alloc_noprof+0x2bc/0x650 mm/slub.c:4837
+ alloc_filename fs/namei.c:142 [inline]
+ do_getname+0x2e/0x250 fs/namei.c:182
+ getname_flags fs/namei.c:225 [inline]
+ getname include/linux/fs.h:2512 [inline]
+ class_filename_constructor include/linux/fs.h:2539 [inline]
+ __do_sys_unlink fs/namei.c:5574 [inline]
+ __se_sys_unlink+0x1e/0x140 fs/namei.c:5572
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff88816f1bcf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff88816f1bcf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff88816f1bd000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                   ^
+ ffff88816f1bd080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88816f1bd100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+
+***
+
+WARNING in __page_table_check_pmds_set
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      819bd270abf9de3b7f306e233054b85a07c47820
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/0361816f-57b2-43e4-aef2-186d8d35fdc9/config
+syz repro: https://ci.syzbot.org/findings/f8fe52b4-cef7-4d25-8e60-cbbb1a4f4df5/syz_repro
+
+------------[ cut here ]------------
+softleaf_cached_writable(entry)
+WARNING: mm/page_table_check.c:227 at page_table_check_pmd_flags mm/page_table_check.c:227 [inline], CPU#1: syz.0.17/6022
+WARNING: mm/page_table_check.c:227 at __page_table_check_pmds_set+0x18e/0x340 mm/page_table_check.c:240, CPU#1: syz.0.17/6022
+Modules linked in:
+CPU: 1 UID: 0 PID: 6022 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:page_table_check_pmd_flags mm/page_table_check.c:227 [inline]
+RIP: 0010:__page_table_check_pmds_set+0x18e/0x340 mm/page_table_check.c:240
+Code: 89 fe e8 85 44 89 ff 48 b8 00 00 00 00 00 00 00 94 4c 01 f8 48 c1 e8 3b 0f 94 c0 4d 39 e5 76 0f 84 c0 74 0b e8 83 3f 89 ff 90 <0f> 0b 90 eb 05 e8 78 3f 89 ff 31 ff 89 ee e8 af 43 89 ff 41 89 ef
+RSP: 0018:ffffc90003ce7af8 EFLAGS: 00010293
+RAX: ffffffff823c4d7d RBX: ffff888111416001 RCX: ffff88816cbd1d00
+RDX: 0000000000000000 RSI: 6c00000000000000 RDI: 6c00000000000000
+RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000003
+R10: 0000000000000002 R11: 0000000000000000 R12: c7fffffffffffffe
+R13: dfffffffdc9bfe06 R14: ffff888111416008 R15: 6c00000000000000
+FS:  00007ff0386af6c0(0000) GS:ffff8882a9466000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000555574a1a9e8 CR3: 00000001063c6000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ page_table_check_pmds_set include/linux/page_table_check.h:92 [inline]
+ set_pmd_at arch/x86/include/asm/pgtable.h:1234 [inline]
+ make_uffd_wp_pmd fs/proc/task_mmu.c:1903 [inline]
+ pagemap_scan_walk fs/proc/task_mmu.c:2631 [inline]
+ do_pagemap_scan fs/proc/task_mmu.c:2785 [inline]
+ do_pagemap_cmd+0x3bd8/0x4310 fs/proc/task_mmu.c:3131
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff03779cdd9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ff0386af028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007ff037a16090 RCX: 00007ff03779cdd9
+RDX: 00002000000001c0 RSI: 00000000c0606610 RDI: 0000000000000003
+RBP: 00007ff037832d69 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ff037a16128 R14: 00007ff037a16090 R15: 00007ffd47ec5488
+ </TASK>
+
+
+***
+
+WARNING in pt_range_walk
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      819bd270abf9de3b7f306e233054b85a07c47820
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/0361816f-57b2-43e4-aef2-186d8d35fdc9/config
+syz repro: https://ci.syzbot.org/findings/02bfe437-a81f-4510-9fff-4b769eb9a0a4/syz_repro
+
+------------[ cut here ]------------
+next_addr < vma->vm_start || next_addr >= vma->vm_end
+WARNING: mm/pagewalk.c:1052 at pt_range_walk+0x14e/0x35a0 mm/pagewalk.c:1052, CPU#1: syz.2.19/6013
+Modules linked in:
+CPU: 1 UID: 0 PID: 6013 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:pt_range_walk+0x14e/0x35a0 mm/pagewalk.c:1052
+Code: 74 08 48 89 df e8 12 1a 15 00 49 89 de 48 8b 1b 48 8b 7c 24 10 48 89 de e8 6f a5 aa ff 48 39 5c 24 10 73 13 e8 03 a3 aa ff 90 <0f> 0b 90 b8 01 00 00 00 e9 88 2b 00 00 49 8d 5e 08 48 89 d8 48 c1
+RSP: 0018:ffffc90003d37920 EFLAGS: 00010293
+RAX: ffffffff821b11f0 RBX: 0000200000800000 RCX: ffff8881134f5700
+RDX: 0000000000000000 RSI: 0000200000800000 RDI: 0000200000800000
+RBP: ffffc90003d37b30 R08: 00000000000000ff R09: 1ffff1102dc8b830
+R10: dffffc0000000000 R11: ffffed102dc8b831 R12: ffff8881709b1800
+R13: dffffc0000000000 R14: ffff8881709b1800 R15: 0000200000800000
+FS:  00007f33141ff6c0(0000) GS:ffff8882a9466000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f331344f0d1 CR3: 000000017150e000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ pagemap_scan_walk fs/proc/task_mmu.c:2463 [inline]
+ do_pagemap_scan fs/proc/task_mmu.c:2785 [inline]
+ do_pagemap_cmd+0x3924/0x4310 fs/proc/task_mmu.c:3131
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f331339cdd9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f33141ff028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f3313615fa0 RCX: 00007f331339cdd9
+RDX: 0000200000000140 RSI: 00000000c0606610 RDI: 0000000000000003
+RBP: 00007f3313432d69 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f3313616038 R14: 00007f3313615fa0 R15: 00007fff980e14d8
+ </TASK>
+
+
+***
+
+WARNING: bad unlock balance in pt_range_walk
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      819bd270abf9de3b7f306e233054b85a07c47820
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/0361816f-57b2-43e4-aef2-186d8d35fdc9/config
+syz repro: https://ci.syzbot.org/findings/1e53935d-6673-468b-905d-88da8f1e39f3/syz_repro
+
+loop1: detected capacity change from 0 to 4096
+=====================================
+WARNING: bad unlock balance detected!
+syzkaller #0 Not tainted
+-------------------------------------
+syz.1.18/5968 is trying to release lock (ptlock_ptr(ptdesc)) at:
+[<ffffffff821aeb0a>] spin_unlock include/linux/spinlock.h:389 [inline]
+[<ffffffff821aeb0a>] pt_range_walk+0x25a/0x35a0 mm/pagewalk.c:1058
+but there are no more locks to release!
+
+other info that might help us debug this:
+1 lock held by syz.1.18/5968:
+ #0: ffff8881626b0340 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_lock_killable include/linux/mmap_lock.h:601 [inline]
+ #0: ffff8881626b0340 (&mm->mmap_lock){++++}-{4:4}, at: do_pagemap_scan fs/proc/task_mmu.c:2746 [inline]
+ #0: ffff8881626b0340 (&mm->mmap_lock){++++}-{4:4}, at: do_pagemap_cmd+0x618/0x4310 fs/proc/task_mmu.c:3131
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 5968 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_unlock_imbalance_bug+0xdc/0xf0 kernel/locking/lockdep.c:5298
+ __lock_release kernel/locking/lockdep.c:5537 [inline]
+ lock_release+0x248/0x3d0 kernel/locking/lockdep.c:5889
+ __raw_spin_unlock include/linux/spinlock_api_smp.h:167 [inline]
+ _raw_spin_unlock+0x16/0x50 kernel/locking/spinlock.c:186
+ spin_unlock include/linux/spinlock.h:389 [inline]
+ pt_range_walk+0x25a/0x35a0 mm/pagewalk.c:1058
+ pagemap_scan_walk fs/proc/task_mmu.c:2463 [inline]
+ do_pagemap_scan fs/proc/task_mmu.c:2785 [inline]
+ do_pagemap_cmd+0x3924/0x4310 fs/proc/task_mmu.c:3131
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f0ce439cdd9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f0ce5214028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f0ce4615fa0 RCX: 00007f0ce439cdd9
+RDX: 0000200000000140 RSI: 00000000c0606610 RDI: 0000000000000004
+RBP: 00007f0ce4432d69 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f0ce4616038 R14: 00007f0ce4615fa0 R15: 00007fffbeb73768
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
 
