@@ -4,100 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 621C8FF8867
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 20:56:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5306FF8864
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 20:59:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 869E66B0088; Mon, 27 Apr 2026 16:56:32 -0400 (EDT)
+	id 2A33C6B0088; Mon, 27 Apr 2026 16:59:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81A9A6B008A; Mon, 27 Apr 2026 16:56:32 -0400 (EDT)
+	id 252DE6B008A; Mon, 27 Apr 2026 16:59:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 730D46B008C; Mon, 27 Apr 2026 16:56:32 -0400 (EDT)
+	id 142B96B008C; Mon, 27 Apr 2026 16:59:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DF296B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:56:32 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 13C0A1A01CA
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:56:32 +0000 (UTC)
-X-FDA: 84705544224.09.C9DCAB1
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 219D480011
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:56:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=g3klIaNv;
-	spf=pass (imf30.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F3B386B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:59:38 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AC2AA1C0383
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:59:38 +0000 (UTC)
+X-FDA: 84705552036.05.E5D73F3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A896C40017
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:59:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fB0MsEdR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777323390;
+	s=arc-20220608; t=1777323576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w4+T1q5j1gjl12AzNykoZ9kgKNsM0AyLqJTGq2x4mJw=;
-	b=MOHmt4I3k+yjN/68d32IoAHyTBPttUyXIQ0MdI4+s8zPX75x/8NPYy1LoFSpMPYhqQ+00g
-	HihsII1WFDnhQC+pB5bxUE+HN6vDvnU6LMBG6QIA6FA/0Jhb0wpLJAaPbflk1rqzP5o1js
-	DVidwQTUM5tAlRkdmqufg11lDNTTxVA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777323390; a=rsa-sha256;
+	bh=W0xbzX9wZmv42XHV/ZmZTyw6S9VYjXqDsMwKLwQ2JuE=;
+	b=Nfxw3/qz02k45tIz2NTgDSy90Tc7YBkZt5quCovh48MFfM7RhGpJjj7tIs7Q7QQwvHrax0
+	GYTmR8Hodk+5ajWD89p4XfqwlB01ClKL6x0ZgSzChORitM2ijVoJghTV8mqJTFsg30+bnt
+	Ug03EPUHm9DBPhvqCLBbUZOWfxLeUJE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777323576; a=rsa-sha256;
 	cv=none;
-	b=sBjN4IlqwabbdaP86mQvSuB/oxcqcqaS7Pffm2nAUfbdAHumZ2JcQvN+sCct8/rOTofLtw
-	Z3d1iur6a4C/URBqwW0tEUfdGPrckcICzeTbtMDOlVBStrAUlXhROK5M6sgjqgbzBWjKxo
-	bzjcwLaceVMVxEThC2/3NmFSIbtblHs=
+	b=SJ3R6ItEeNqvHnQ8hde1T6YecycR89dzpxrhpEESeLrEiW0mLsdPaHds/+0ClAtMuGOMag
+	cm+pJPt6vASYsaTOH+2dOq7NeHfDwbZTZvLLczitaO26pPpth8NdR0nTf2NhQ/l20rkKvK
+	1wEcniES58yaqBdJ0GX6dFNjBNtzUPE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=g3klIaNv;
-	spf=pass (imf30.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-Received: from localhost (unknown [20.29.225.195])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 80A2820B716A;
-	Mon, 27 Apr 2026 13:56:28 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 80A2820B716A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777323389;
-	bh=w4+T1q5j1gjl12AzNykoZ9kgKNsM0AyLqJTGq2x4mJw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g3klIaNv0aZDwiuY6aSr9d1ovw1UNaC1yS0v955Li3fu510xl6luT8FxEwoEqgsV9
-	 qO5XgODem35nBKQSBw1Y/oPQwo73ezTIvaKLd6m9LDkmCPmXDtkuNmar6v6P8E4uZZ
-	 NJTPwgA90pNAQX3lXJdDUBe1VtE8QmuErhznSO4I=
-Date: Mon, 27 Apr 2026 13:56:25 -0700
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
-To: David Matlack <dmatlack@google.com>
-Cc: iommu@lists.linux.dev, kexec@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org, Adithya Jayachandran
- <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex
- Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris
- Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, Jason
- Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>, Jonathan Corbet
- <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon Romanovsky
- <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport
- <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
- Pratyush Yadav <pratyush@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja
- <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Will Deacon
- <will@kernel.org>, William Tu <witu@nvidia.com>, Yi Liu
- <yi.l.liu@intel.com>, jacob.pan@linux.microsoft.com
-Subject: Re: [PATCH v4 08/11] PCI: liveupdate: Require preserved devices are
- in immutable singleton IOMMU groups
-Message-ID: <20260427135625.0000413e@linux.microsoft.com>
-In-Reply-To: <20260423212316.3431746-9-dmatlack@google.com>
-References: <20260423212316.3431746-1-dmatlack@google.com>
-	<20260423212316.3431746-9-dmatlack@google.com>
-Organization: LSG
-X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fB0MsEdR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D5B6401AE;
+	Mon, 27 Apr 2026 20:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52FFC19425;
+	Mon, 27 Apr 2026 20:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777323575;
+	bh=4fCdoQX9tOKa3DEv8CT8f6q/tReZla5dySYrHKOPds8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fB0MsEdRgoihroZKswclQKQK7DSaYaBeTbYgcnwk+cGwwMNHZs+Ewrbsx8gMZ3CyM
+	 QtJzJG7vGabw1+iCAwGf0eeEzwn4VwU6nVQ3BOASjmOtgG9H5rY8QhX2YWlZAfPVNo
+	 zoz0HYLK/I5mosk9uxs6yULiL2WCKuks9JvwOebp4t60hFYZEACArzvOGq1sLEAm6t
+	 H4DtPpdc96HIPXtY7h0zoyvunWqXabnlUPE25QE3718JB7KMtR/87czjxFFJIj5lo1
+	 D6BQLhkgCE5rpeS8GUVhFAPr3DDqFGeq9eMkxXKmYNzBOJebAuAgqyooYpqY16Qyr5
+	 Ag0QFqf0GI2fw==
+Message-ID: <97192ac3-643d-4393-87ef-53a9f3ddaf95@kernel.org>
+Date: Mon, 27 Apr 2026 22:59:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] mm: remove page_mapped()
+To: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
+ <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-mm@kvack.org
+References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 219D480011
-X-Stat-Signature: bdih5jo9a8fipox9my38phuyhf171ky8
 X-Rspam-User: 
-X-HE-Tag: 1777323389-226082
-X-HE-Meta: U2FsdGVkX1/jgHVR0fk/CykeM0h5Mm6kOiRt8MVkOvk+rKhOO1FFpOvaUk8rJ2sgUu4ypbyVVoFtfVDr1pK6lZNv9QGxdouVF74UBrwg6bIl/KCiVxuNi6MXUKJtWRGb2agwXRcFbd6CU+JYUYPBmNnnn77hj4YLNykPuNXE1+imOQeKr8SSkLiWdrl61hRjSAeyk3mqNfpxI+cfe5086CGYb0kCOYdb6B9+vUOV9COYNCtym1PFKXtcHQExKfMhkYXDnKr4eLsm0xMBsb+EyyCQTvHyUUxV6FtkZgy10JqrJ9MtHJIGXDd1BiVDnazpHSx3sGBLaJ34X0jruft9tRihjo/qDlVMUUAyxl6OpSIDnCgm6NA4tBZ/8cbuIc8ym7cKtrgPkM3wv8nvCe42wsKZ6Dp4qHwVZArVrB6To0DrSZem3t4RJXHB16PYHesiDEHsfdMk9pfOLjaERuzCjjs2rWSNy32cfngYdl4p3GoascEoUPLJmbJKciYhF9N+nP8kaOeSkQQIC7ExnhX66UXWQfhKR1zja3Ey+LtaB67osgWv2/272YJzY3OMGHtlLNdWrDJX3gp/A84ybOYuerVRclirvw71hsJIksTv/keANv7LDD67vdHwnJBcBUvcmUN6fqpNJZmHUvSBEJSAIBAaqQezHJzIzQJ8MogGFsmigcqfd7YCgpJUxrXKy5foSO8rJdxeavf3HS3GJUOAyStUWYZXtUxFITYVHIF9wbqLLMvGbcpzAIlQm9ft3i+S45O6wSfKpwBdX5p3vyLpLZ+wY3G8jnYEXS14jfa/pgTWEaFk+/NjobQTsxFD/liDu756LWSQnwaeTm/f4VjLE/pF06zbALB7SMqLI5e9YH1wVK4eg/iSvaQ5pCPv5nmwVfU0ycTuwmpzWREHRSJUHmgccdIcPABmmZp3LYhl0x8/DlL6uY/vcxd2Wu7p0mvlwo5Xvw0sQ1yaRy4iDT5
- M18zFgrY
- lJGJTAmTagBQ+pE0bFNRP9O2X39R2DwdfkZeQT33H8ZdNWPwhi5UxQfo6nhu2G+ozrv9a2acQwqxzJQkY1xt62TsuxpSnYhao6fs555XKj01N9SECMPLI05DK3lahCvg2qkaHeMGJ+B5cw4Zb5zECU6ry+SLEG9H4a9rFRV154d1sjpuU7t8SIwlOQUf/bFTY+VwBolfeDq4c7Ce7C7u8IYyNr2Nnk8VQEwvlIe4RQW3odj9c6oKwYDCL2SZf39kLOHPsApoLwzClz42mS7RwprVZIoKAPsOMPjeNUV2j8zh/pkKG4WZEDpmb+tgDmjwWObaEdInzflQbYutgLeVpKzwtWy6eGE5EuYbEgr16Jurk9duu7bAi3RRD57+PjjVGdiJ0+V7D8ORkJYj2b7jNqdMkyQAfk9+LP7pYtAS3p1ZzUjY=
+X-Rspamd-Queue-Id: A896C40017
+X-Rspamd-Server: rspam04
+X-Stat-Signature: u7p3gg9df7ae5ki6bkgei6yypo1x6e6s
+X-HE-Tag: 1777323576-89407
+X-HE-Meta: U2FsdGVkX19P4wERUZLJMuD4puh7YEdjAjMM9qX+5SjsC4gip35daK9xeKb6dwS0baHUQD+ITnmrT6WIN6A+RP1X/rBFWkTPoiyt73ICJdqPQuyc6pDj0KFWNsbNyULQaJwwgWd7wAfb+Ntq4Wv2vwoSaoLqqTzu3oY/4IBk0Sw2b/Tm5bDZvsrJTQ6jK1o2CTdJnBYr1RhOGid/OBBFTVPh6IDphrPYizncXyb/vxPoyuwuGs/VGUQv3NgpKak3rwns0S/hPOaYOh8o09oCAcbdwAkREgEL5ZN8i6ui6mAAnH68XmlzhnOp8XVNz5r3extCxCFVHWbWDfzP+gGYuyJZK4BPlGkz7GROUY+c+rnOrxKa/5m+azweSI0mY2ps8MYi5a/9y0L9dv897//tfZKziyYIRzYNp8Ig8JhhKDqtfXgUw3Cu0ROvo62U+KhyiCpBkF80yxrGh5Xw8ntK9JpCkEtX7IpA1mVbOFPDoW1eHi5oJ1rn/OMOpnXMDyq6cvMWVM0o76dF5ufVFaJ1lV50KYHO1l758QwupK0zQgCt225XEYvymBsyxk2xxOW0zNRE/O7KLTiFqvob2ILhMLPrq6U49uz+OmKV7kKuBss3pp8ku+NnKhR6Q8McTfXWk+TSV7zlpwbYLiGHYNcIEmj2Aso8T1xE7wXOs0fLgHoBhsCSrhvs2nfR1LVY+26QG+ZbLLtiG96t+5EdOkFtHoFJDEPziLeFoEbNE2HOUZmH4v7J5p4G4m7QD3Oy2vo+Q43cPaJlo02qVFewiwQVV4dmSXRPQEs+hIF3Fnq07DokPa4iM/EityAtiKPnfuddbNQMbAzZUBHAsDsx9oBp66OXDu6stLx/ikCCqVBPjpMQMquWI1yGwn92306b81fQ3ZKGAUG3kZ6DQU+JJTXjNwD/ZFUAf9MZp3Aw+i+zNfIecBo335P0DGZKtbHW4RZ/74pQF0E/91Bghoc0G/x
+ oqjHeTu1
+ 2Fk8Rhfxgp10t+fjQvB3WOuukVOdOytTfoMS7viGHb5/KIaqbPbt9+QFWjgHnuat8QPvhAEsjkjEzEHn8x8bCIfoKjSYpAnEunydY0XC93d8iLR1EwqLjtjIQyJmDofH3nc/Pf5W1kdFT+yUUMmo717l/+oBZlh95C703dJuOi6lFajNvYg6mpCDEqBD9f7uz0Emur+Ndx9+KFXDGNtnLYwYpYW+YXl1zdeONU2PuzY777bn/LajHlsVEZhP28t+mAa31J3+tCn+/ag9yeGQeJHyBCMVy4Mk4TLPRubBxZSVI6pPohGQx/36l/3z8bdvirSg0yLMOGpqMHLQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,140 +149,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
-
-On Thu, 23 Apr 2026 21:23:12 +0000
-David Matlack <dmatlack@google.com> wrote:
-
-> Restrict support for preserving PCI devices across Live Update to
-> devices in immutable singleton IOMMU groups. A device's group is
-> considered immutable if all bridges upstream from the device up to the
-> root port have the required ACS features enabled.
+On 4/27/26 13:43, David Hildenbrand (Arm) wrote:
+> While preparing my slides for an LSF/MM talk, I realized that I did not
+> yet remove page_mapped().
 > 
-> Since ACS flags are inherited across a Live Update for preserved
-> devices and all the way up to the root port, the preserved device
-> should be in a singleton IOMMU group after kexec in the new kernel.
+> So let's do that. In the BPF arena code it's unclear which memdesc we
+> would want to allocate in the future: certainly something with a
+> refcount, but likely none with a mapcount. So let's just rely on
+> the page refcount instead to decide whether we want to try zapping the
+> page from user page tables.
 > 
-> This change should still permit all the current use-cases for PCI
-> device preservation across Live Update, since it is intended to be
-> used in Cloud enviroments which should have the required ACS features
-> enabled for virtualization purposes.
-> 
-> If a device is part of a multi-device IOMMU group, preserving it will
-> now fail with an error. This restriction may be lifted in the future
-> if support for preserving multi-device groups is desired.
-> 
-> Signed-off-by: David Matlack <dmatlack@google.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  drivers/iommu/iommu.c    | 35 +++++++++++++++++++++++++++++++++++
->  drivers/pci/liveupdate.c |  6 ++++++
->  include/linux/iommu.h    |  7 +++++++
->  3 files changed, 48 insertions(+)
-> 
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 61c12ba78206..782e73a9d45f 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -1664,6 +1664,41 @@ struct iommu_group *pci_device_group(struct
-> device *dev) }
->  EXPORT_SYMBOL_GPL(pci_device_group);
->  
-> +bool pci_device_group_immutable_singleton(struct pci_dev *dev)
-> +{
-> +	struct iommu_group *group;
-> +	struct group_device *d;
-> +	struct pci_bus *bus;
-> +	int nr_devices = 0;
-> +
-> +	group = iommu_group_get(&dev->dev);
-> +	if (!group)
-> +		return false;
-This may not work for noiommu mode where we could have a null group.
-Maybe I can add special case later?
 
-> +	mutex_lock(&group->mutex);
-> +
-> +	for_each_group_device(group, d)
-> +		nr_devices++;
-> +
-> +	mutex_unlock(&group->mutex);
-> +	iommu_group_put(group);
-nit:
-	scoped_guard(mutex, &group->mutex) {
-        	for_each_group_device(group, d)
-                	nr_devices++;
- 	}
-> +
-> +	if (nr_devices != 1)
-> +		return false;
-> +
-> +	for (bus = dev->bus; !pci_is_root_bus(bus); bus =
-> bus->parent) {
-> +		if (!bus->self)
-> +			continue;
-> +
-> +		if (!pci_acs_path_enabled(bus->self, NULL,
-> REQ_ACS_FLAGS))
-> +			return false;
-> +
-> +		break;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->  /* Get the IOMMU group for device on fsl-mc bus */
->  struct iommu_group *fsl_mc_device_group(struct device *dev)
->  {
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> index a9a89f7bd3e5..54a90ff02bdd 100644
-> --- a/drivers/pci/liveupdate.c
-> +++ b/drivers/pci/liveupdate.c
-> @@ -133,6 +133,7 @@
->  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
->  
->  #include <linux/io.h>
-> +#include <linux/iommu.h>
->  #include <linux/kexec_handover.h>
->  #include <linux/kho/abi/pci.h>
->  #include <linux/liveupdate.h>
-> @@ -359,6 +360,11 @@ int pci_liveupdate_preserve(struct pci_dev *dev)
->  	if (dev->is_virtfn)
->  		return -EINVAL;
->  
-> +	if (!pci_device_group_immutable_singleton(dev)) {
-> +		pci_warn(dev, "Device preservation limited to
-> immutable singleton iommu groups\n");
-> +		return -EINVAL;
-> +	}
-> +
->  	if (dev->liveupdate_outgoing)
->  		return -EBUSY;
->  
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index e587d4ac4d33..6f5d1dec3f89 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -1096,6 +1096,8 @@ extern struct iommu_group
-> *generic_device_group(struct device *dev); struct iommu_group
-> *fsl_mc_device_group(struct device *dev); extern struct iommu_group
-> *generic_single_device_group(struct device *dev); 
-> +bool pci_device_group_immutable_singleton(struct pci_dev *dev);
-> +
->  /**
->   * struct iommu_fwspec - per-device IOMMU instance data
->   * @iommu_fwnode: firmware handle for this device's IOMMU
-> @@ -1528,6 +1530,11 @@ static inline int
-> pci_dev_reset_iommu_prepare(struct pci_dev *pdev) static inline void
-> pci_dev_reset_iommu_done(struct pci_dev *pdev) {
->  }
-> +
-> +static inline bool pci_device_group_immutable_singleton(struct
-> pci_dev *dev) +{
-> +	return false;
-> +}
->  #endif /* CONFIG_IOMMU_API */
->  
->  #ifdef CONFIG_IRQ_MSI_IOMMU
+I scanned AI review and I think it founds something that is not related to this
+patch.
 
+We use the page_mapped()->page_ref_count() check as an optimization to avoid
+calling zap_vma_range(). We must be able to call it even without that optimization.
+
+Just like the bulk zap call earlier
+
+	if (page_cnt > 1)
+		/* bulk zap if multiple pages being freed */
+		zap_pages(arena, full_uaddr, page_cnt);
+
+It talks about concurrent "munmap(), unmap_region() executes unmap_vmas()"
+racing with our zap_vma_range().
+
+Looking into the details, arena_map_mmap() calls remember_vma(). We reject
+mremap and VMA split. arena_vm_close() removes the VMA from the list. The
+arena->lock protects our VMA list.
+
+So in zap_pages, the VMA cannot go away. If we find a VMA, ->close could not
+have been called yet.
+
+In vma.c, we call remove_vma() after vms_clear_pte(). So after unmapping the
+pages and freeing the page tables.
+
+So munmap() can indeed race with zap_vma_range(), and the page_mapped() check
+would not have changed anything about that really.
+
+
+@BPF folks: does BPF take anywhere the mmap lock in read mode before calling
+zap_vma_range()? It should do that.
+
+-- 
+Cheers,
+
+David
 
