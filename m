@@ -4,140 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C39FF8864
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 21:58:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2636DFF8867
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 22:03:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6C826B0092; Mon, 27 Apr 2026 17:58:34 -0400 (EDT)
+	id 54C516B0092; Mon, 27 Apr 2026 18:03:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E44686B0095; Mon, 27 Apr 2026 17:58:34 -0400 (EDT)
+	id 4FD1C6B0095; Mon, 27 Apr 2026 18:03:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D33516B0096; Mon, 27 Apr 2026 17:58:34 -0400 (EDT)
+	id 4132B6B0096; Mon, 27 Apr 2026 18:03:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C46366B0092
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:58:34 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 47E2A1602AA
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:58:34 +0000 (UTC)
-X-FDA: 84705700548.14.9F2DAF3
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 20603C000D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:58:31 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=CNutsi5l;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 30D8C6B0092
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:03:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CE30A1602C5
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 22:03:54 +0000 (UTC)
+X-FDA: 84705713988.23.C81BC28
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 35F481C0011
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 22:03:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h41KS2Z7;
+	spf=pass (imf20.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777327112;
+	s=arc-20220608; t=1777327433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eodThUBj1SnOvacXe/3ftYxEWQMFbYqc4B0FCa9Alx4=;
-	b=oz5J9cslqEtGEE8/7/klLxoIgcuZTQy5ZwYQ+wr+JUYNhR+A+yPXTsJwrH6WveDjWRHFjb
-	buhlnJHn/9rii0/CCGBQ9LOpwuXBlPuHIsVsxvevxT1BRNmXHFU0amFh/NpbA9pvdeKTB3
-	t4j9CMsgFsT74nvzJCqkQVbidpH4GJ4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777327112; a=rsa-sha256;
-	cv=none;
-	b=7Uyvm/IZXGBmyBmXMSO+FlL3FRwIHKGwt4dLrbFYrez9uDc5+9iffs62BN0pd99RMzsN51
-	776RBzzpKzdu3+BQHNjp0Eb2r5YZtW0m7KXnxzImwhxofL/OgtIqDPmu1O0ibG2FvyyKVq
-	BZXgXuiAAZYmhNDoZlpcv3Ka/1WfsZc=
+	bh=JU9V/u1lpcXmaFxcPn/Tt62APimG3Gscn1V7zAvwLBk=;
+	b=M5i80QW4V7kL3LsABY2EmOY3YY52NI+lTUAQTi/o+xQaw615Aot9Z0QdEgPuHcAwSprmN3
+	uFA5aNLup8pwZTswQ3KM+bq81/w+cCDRiAY2mgOHamOuLQIWniE3mAJUpcFg58JMaQWcGo
+	lEOeczxjrrHIs8ETDl2rSetN81fAjD8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=CNutsi5l;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b9c3a9fe80fso1581939566b.3
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:58:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1777327110; x=1777931910; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=eodThUBj1SnOvacXe/3ftYxEWQMFbYqc4B0FCa9Alx4=;
-        b=CNutsi5leJyRH4ts2ijT/2A6mj8jeOQsK7MHkkqKN295MMCTBlTP3dAdv5GPSXo3Af
-         ss34aFSMWM87FAu8DCe5LbLiGKF2VaTolIPzNfthzUAX1RLicX1KjxY/WlwYDn5tAOaB
-         5Hqfgu1UekanBc8c+FsTB7Je0VoXaT7hAfpgs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777327110; x=1777931910;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eodThUBj1SnOvacXe/3ftYxEWQMFbYqc4B0FCa9Alx4=;
-        b=VxAAEfo9S4g8gpxMlt7U2NqCZe8Fap1sMD68YUhxbLb4Rse7WvizutcVI7XP1bsggO
-         4ro6ffRW0hQLh6A/I3owT7R3beBjah/R9wskt8O1oLLsLj9jDovtDFdz4BimC/5Ww9ES
-         N+nZYzJEV3ODdfkKqLPUUVKo83TRq/3Xehzed3hWCLfLmkKVgXAmo0yHWj2px4+sqT/K
-         itCvGvbakIIIw3ELe0AeGQ6HRD9WFyeUPIUHnJCfXYtv5LaR+vdcqUiSDcZTrtMRWSDo
-         iT8IZgG+CJPgfQ9gXsgQelCUpABzLMWVe2gM822NMSoZ2aehzRkKCpn4n4ENcAdXJoE8
-         8XMg==
-X-Forwarded-Encrypted: i=1; AFNElJ+fJZN+VlC1aGO6n7aAHJapPOng/oXEMJsTpCwXpDIypV9eXmKoTxCB6iICojAGVXLDEHyn9bzcxQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy30Mpdff36YpTPRvk/ncozUEt//3IBm3Dr/mtmPVUhyyaD5Yca
-	MiyK5hEGnCm4NVPldWnJ5vxclwl9lon+u2Y8bV0bYfDxMhF3vPNi03nUkKDlLBR7ekyBdumrIJx
-	FeJErrQNZXw==
-X-Gm-Gg: AeBDietfPNXOtif0r2gQdBN9LfDTxYlJ3Sro7GZbI3WKZVKSp+gZqM9avnR08ni/atO
-	I94OLYU47PH7c90Hn9U+5j0ev40PcEr//olWNjqBB2hiMqHWEPTheDg47mNujS1vWwFrhtYz2wO
-	9iWFEY/wkiIznyHn9EJD/1Kq2wNEdZb6iUpQQWp0BgY5k5Vl86zg4gC4oMK5MH1sPqZisNAZ20m
-	zgbhgIMOTilFQXHTyikRa/7ecTbJqpPqTKLalFHcUb+vDBpQ2TEphCAkP7vMMIjk647mu9XosBJ
-	EwfRZtRLtNvrIJpDSZthhdDw/dqAWDTZNQQeVP1cHnJRh2maSjwxbOo4DoJsxAF2gbURzLUQMvg
-	yJx3lz5D0ZmQbSe45QV+7W9NsLg1Mp+VhrvUNStSjqlQl901he4YICSgQnnOzTnjBU3IokcwrN/
-	NKitYgkjh4xQ3Tg/Qv7mexLU3E/pcx4MlnGEj7YdC96XP6HCvkqGEUlbIqIR+3FBN6nXHbr8I85
-	FlgzibF5B4=
-X-Received: by 2002:a17:907:3e1e:b0:ba0:d58b:6045 with SMTP id a640c23a62f3a-bb803778202mr30902766b.27.1777327110392;
-        Mon, 27 Apr 2026 14:58:30 -0700 (PDT)
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bb80b2add0fsm10106266b.34.2026.04.27.14.58.30
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 14:58:30 -0700 (PDT)
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-676e62faf2bso10759750a12.1
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:58:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/vMrtkkPIZx8l6R8lt/FgOYH2CJA8sHwBZIAqSpo067nOVgYft6y4Q7Qx25loWkKqQXUdjujgmYA==@kvack.org
-X-Received: by 2002:a05:6402:35c2:b0:677:270f:6f4b with SMTP id
- 4fb4d7f45d1cf-679bb04a8a7mr185115a12.1.1777326742385; Mon, 27 Apr 2026
- 14:52:22 -0700 (PDT)
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h41KS2Z7;
+	spf=pass (imf20.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777327433; a=rsa-sha256;
+	cv=none;
+	b=NFTnk/BSvgl/TGNc6r2eHIWa1uUxrjOrgSr6DvQMyHhPXG8w1VijkWboyexwlLfTIHNZaC
+	bWP+rY2jWo3uVq6h0mr/RvEOSSzSwEJG9VlsPY+UezU5LSskhoHQc7ityaz/IeRQzHpGsP
+	wu6Pua7iRsCcpAZ9KCnK806S/dXpHa8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 34F8D60138;
+	Mon, 27 Apr 2026 22:03:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F5FC19425;
+	Mon, 27 Apr 2026 22:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777327431;
+	bh=pPTuUPRefTYXU0h48znUz5nLioqs+x++M3hE2079xYU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h41KS2Z77hg/VY2/+NTtoUFxQIthkEBER+hZSEVIpJPXonq2EWUNVVUwjwsbNRBgs
+	 KSZCamtEW0ld0Je/vDvixlslp/ydxcYwhmo37UePuG71OgymKVtfRLTSSjtOEgxGaQ
+	 U7OS0H2Rx72wANcLxqefSbt8c6kwJa1lB9gYTmoehWXLV4B6QdDsuUzrB7cGI6fazN
+	 nHrJJtau5azQogDf6HtV/j+plH/wwwUcPq2DDIyTdQ27xiTBptmuApKUP7XtJ9v3Wi
+	 vWFGRTordeQQAURGGO2SIcp1/GOgJwYLYtsLJv/r8abloGac0Rh/0tRxbSgvs4PF3i
+	 FZfIK3umVgTzg==
+Date: Mon, 27 Apr 2026 15:03:49 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, hca@linux.ibm.com,
+	linux-s390@vger.kernel.org, david@kernel.org, brauner@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
+	timmurray@google.com
+Subject: Re: [PATCH v1 3/3] mm: process_mrelease: introduce
+ PROCESS_MRELEASE_REAP_KILL flag
+Message-ID: <ae_dRZ95dCDTTxaQ@google.com>
+References: <20260421230239.172582-1-minchan@kernel.org>
+ <20260421230239.172582-4-minchan@kernel.org>
+ <aesiYAumkLCyedf0@tiehlicka>
+ <aevzbx_Pk5Cu5exa@google.com>
+ <ae8KD_Tq0t7RvUy1@tiehlicka>
 MIME-Version: 1.0
-References: <cover.1777306795.git.chleroy@kernel.org> <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
- <ae-j2_QirCySZD02@yury> <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org> <ae-2yLWSGnfeTvh1@yury>
-In-Reply-To: <ae-2yLWSGnfeTvh1@yury>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 27 Apr 2026 14:52:05 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgPrLy0FR3sEWBYQuNAac1axDASYMnTuPuxEU0WytzL7w@mail.gmail.com>
-X-Gm-Features: AVHnY4LQUFWo9ODz4M3q2vZC9Gn8nsdYr95Nd4ky5ERVHHxIyN_9ZXY5zjebfdc
-Message-ID: <CAHk-=wgPrLy0FR3sEWBYQuNAac1axDASYMnTuPuxEU0WytzL7w@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
-To: Yury Norov <ynorov@nvidia.com>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Laight <david.laight.linux@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	linux-alpha@vger.kernel.org, Yury Norov <yury.norov@gmail.com>, 
-	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
-	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 20603C000D
-X-Stat-Signature: pypnsm4f3hgjkgdy6m7bn6uyn8ear887
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae8KD_Tq0t7RvUy1@tiehlicka>
+X-Stat-Signature: sqbofx6nh56zr69aqmmbzmbrpdgcjyjf
+X-Rspamd-Queue-Id: 35F481C0011
 X-Rspam-User: 
-X-HE-Tag: 1777327111-278241
-X-HE-Meta: U2FsdGVkX18sIlXRLUMdHXQqFtIFCQ10XjY/iDzhKHLKKWaPBEKscxp8QsjbouhCB9ix5rZvXfDR3puVou1qwqQhfJU4y4lDZubyAQpJ/6Bwa+QpxfLBj25kOB9qzcu+lQKnwpTBZ3RhVVD0qksGo2X8zK8apY0dFv+dRuIrP1aZNkPKo5CmnWWN7xE4mFDhxFvbQTEQOpPtyF4L+KyAtmK4ydg5X9C26n5QN1f6fjmXmppK//NjwHycDPCFi0SZ25NF0m8izk9HiKdH44L3MBTvCHrkamBa+Ra9XWuGbt2eO8/LVuiyTwVhlp3oWiCzyvP5G/hhP5ILpz9v3Dh5MIi7AaiPWNGRo14kM2vwBuWuMmRPhTTyToO9o41BEjPoRZA7gw6vD6j5GpaGtmCH20Jz2PUb9aqPV05yr2nMvT/kZVRReS5KOLdo8Ku+Au5xw6gefkQNb/HmuQ3pSdevHheejmL/0+s16eNisBHYsW59mXifx6ehfQjXmS5ppirM+5J2WZY40EtbkM6WV83W1sVGZ+ZYhbbF1cls3uMdk2OHX6luSmnBT6lLLWtEIgrFb7isX8DNN3/vKoyOL/tEkgvkNg62oA5WZVlWuI9ik9omTv0gEmzOB9aIjM/VBhvkiob7GJ4L4IFrFxjJDROayQiI/II327Gz3pne+Kl2jVFJtZSPFxysJB9mZvkm2L0un+X3lvSJ78Y/gGErWUqgF20lH0/1fCk83GSLlScPqsbFNz0YH0EmKmIE+UEIvYlc+Md5DAQTegjjlJojB/vxkPt1+NeVW89AcjMYqsvB9c7Gw1dgzh6UtpZ0z0lELf/NkyCNHoMn9ElnRvUsfax5GWCVHFv3nhqrnNZWvAk1xTLrSEIpteAWDorADEdS7jky+hxRVuccOgyFrkDavIfwN1o2kanSUAp6/8BmfIMbXMwS0hrdRWYB/zD+UTPKlIK/99wRTSB68hyd1UHu9Fc
- cGMnVBnD
- wHNSvAR0ujI7mGB53c80lFRbPwjFQ3rUpfL+vbifxn+wkgKx0wq+s0kLtjZgxasl1+lnNMjcoFRwem5kBcRgLuGkmN/a2t87Ic/aM2dwhOqxqx8Gu9t9Sm7efYPxsbV+q6E52MWcfJEq7ikG1aRK9Fo3a86veHRbn6mWlY5xuJxgu9kvlSMSjzD64eYviF1+e9ydm+f6Sry7AHghsim9mNqDjDd9rcIP9pVTDy7l/2goDBv2MklGuhIDHR5LQRERJGEUTgtKPF7V7fmneN+9Aw8tbvUyXdvFDzQ2MXoCSHvt0oHiZfPZrLjmYWRajnFwO8eD9GcDHXxQBaqOe3NzOsE1vWaTnooCO23yhilL2WP/gaaJPsFStJVgECjQdDcpLTRItkZkuXhdsGdT9MY+49ZEFQFi0fs3ZGNp+CmzWBdq/D4wGruCJ/OG82J1Eym3mjxiLaXs6VnCfzJGHNurDFaGnY/3hQ75h9muZ7qPux2kHMK1X+/BKXPOSwS9t7RfzBiIL3VL10Hklj8fEUHA8rCu6HcIMa8PXuBR2pFb8K6UlZ3VMO//PdJlX7u1FG5ZoC3ieKZlFsm5XlOddxjTmfOgbXuM4ZW0vew/Oa+gAYoxEwFze1q+R1fRZtNZOyDwctYYNpzdQo2f6JhVg6tMnUrVLt3qA4iHwRXnMLfIe7iJzJquJjkLKH+ckMQy5mXMwi6p1ZO37sPWoYf3ltHRNQTk3qMV991P+e4xxf5FW7vaeytxSP1wGAodxcsj/bAmuRimQToRtELewT20vYBF+fhAfQJI0UBX5AE1HssoQBZiaxQ6Elfv8v7HcgGaH+qnjWSjtkl5AAZRz8LIzuPGG9UYSsFsZ2FuQ+unMRO6KpKXCX9o23034rI5Ydhjyps6o/QqCoSq3J0jOmWo=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777327433-276131
+X-HE-Meta: U2FsdGVkX186F28tucQZfBWly6tMEYqaD4fKzPXZMnFKfEt6+TWyuc/0aBlQnusciLH5DyQZoLJTpfh4ziaBFf8xw7ze+wZeltcxaE8t3ZILse+CPU+UyM39AyKd1AL2HP06x4hFidjoj/rW1hAL3+mCcCYCpqOda1O0pI/MUZUB0Km4hmqAyyPvTU9zOiAY0NIXsRX4sPhlRhm5UgmA+S1uXF5zvTMZ62ZU8P4W3J7z+JeWCgxByJufiEm9ZTsQt1BBSdvRuSczI1mF8FUlJsCjJxDPVkddUOSadT8DHZmdtA+cFE9V2aJ8mvQu8jhf7sGmGIXr6iDf8F2gZNw6jH5fVrDVUfGE8OI9/LaxcLOngmZuMZNkUE+cn3bu4b4HiNFYjdLDijNN3NEykytr9L7l6ZsNQi6VPRBmXkwujceWiC31YTBMxwbRTPGqqJeaqwOfkBcZuGvnJQoBaRwRQC3U7hJ/xCaB65u7aUVxnc2VoIC5QZ2ahm/YVt2ayRrwKqdS97AnU727BrEqNhbDEKHNNxQFzWsyE8ii4fDMt1yXOt5oXE1dU2ptD6EnnYK0JN4HHwazURBhENGZVF53FpphsjDaKgSkE+cEe6QeoUg2WPHvJlztDYIF07sQPtljsZIZwkn4EGLTTGRlBDru1NYDkPa728roWjinI8DOTHNu+tqNGpcCESyJPVJc8kfy8kiFQIPov4bRu78oPdhIOu2S4XIgXm7kUJcElFHX42WgEq7NFM3AhdfZC/ghprF/k/yEowV3sjhfhkmiiQO/mWcCZdMDLgEOxsApTEM9rEfRjsadIS8/hRA7h9nfaWRSItxR8CtAys+/6hcGX5yuQigN9jRSKIbwE3n7lboIc/dRiSWcBu0eIWD7TXpc6Wh11rGZel87kJCqGz5phcPVBuXzybdf+J++dD6NvhfmLQfhFnaMTJzEk92MlfKoQg0tW63/tfd9+dVg+ngWjWU
+ CxlSQNtX
+ QN0f3NC/uLwahOkluc/baXjHSuWJdNPb7tMYKjyHXFpl5SccnTFFCJ8BhgaUA6nYJV6uSGHVBKVeGmeSMlgU96yt088f3ubCaOFWoVL/jdRYsCh2qWYxL2yC43fziynPiRhm5AdsqTS/wGMYk2c/yif1/Tnu2qtq/txsAYY8FNPVQnG4qJ0DZNd0/aPRNFyaIasX5XjAe1kEaK59N5LllZEdH6PG4M4Z1BuZ88Pt84rqOQQftcAUoDu/DagmePom9c7ZHAwbTlsXH4uVwXv9t3tQntxCna/sPWKgAWNPfrm9SWaf+kRiAJqV7U7KDXXXtDbaK/PRlrvzl4vONwDIVL/LsoICSOKSsfcCwieBjDcKoa0Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,23 +97,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Apr 2026 at 12:19, Yury Norov <ynorov@nvidia.com> wrote:
->
-> This is what Linus said when added x86 implementation for copy_from_user()
-> in c512c69187197:
+On Mon, Apr 27, 2026 at 09:02:39AM +0200, Michal Hocko wrote:
+> On Fri 24-04-26 15:49:19, Minchan Kim wrote:
+> > On Fri, Apr 24, 2026 at 09:57:20AM +0200, Michal Hocko wrote:
+> > > On Tue 21-04-26 16:02:39, Minchan Kim wrote:
+> > > > Currently, process_mrelease() requires userspace to send a SIGKILL signal
+> > > > prior to the call. This separation introduces a scheduling race window
+> > > > where the victim task may receive the signal and enter the exit path
+> > > > before the reaper can invoke process_mrelease().
+> > > > 
+> > > > When the victim enters the exit path (do_exit -> exit_mm), it clears its
+> > > > task->mm immediately. This causes process_mrelease() to fail with -ESRCH,
+> > > > leaving the actual address space teardown (exit_mmap) to be deferred until
+> > > > the mm's reference count drops to zero. In Android, arbitrary reference counts
+> > > > (e.g., async I/O, reading /proc/<pid>/cmdline, or various other remote
+> > > > VM accesses) frequently delay this teardown indefinitely, defeating the
+> > > > purpose of expedited reclamation.
+> > > > 
+> > > > This delay keeps memory pressure high, forcing the system to unnecessarily
+> > > > kill additional innocent background apps before the memory from the first
+> > > > victim is recovered.
+> > > 
+> > > Thanks, this makes the motivation much more clear and usecase very
+> > > sound.
+> > > 
+> > > > This patch introduces the PROCESS_MRELEASE_REAP_KILL UAPI flag to support
+> > > > an integrated auto-kill mode. When specified, process_mrelease() directly
+> > > > injects a SIGKILL into the target task.
+> > > > 
+> > > > To solve the race condition deterministically, we grab the mm reference
+> > > > via mmget() and set the MMF_UNSTABLE flag *before* sending the SIGKILL.
+> > > > Using mmget() instead of mmgrab() keeps mm_users > 0, preventing the
+> > > > victim from calling exit_mmap() in its own exit path.
+> > > 
+> > > Why is this needed? Address space tear down is an operation that can run
+> > > from several execution contexts.
+> > 
+> > Agreed.
+> > 
+> > > 
+> > > > This ensures that
+> > > > the memory is reclaimed synchronously and deterministically by the reaper
+> > > > in the context of process_mrelease(), avoiding delays caused by
+> > > > non-deterministic scheduling of the victim task.
+> > > 
+> > > The memory is still reclaimed synchronously from the mrelease context.
+> > > This is really confusing.
+> > > 
+> > > Please also explain why do you need to do all that ugly
+> > > task_will_free_mem hoops. Why cannot you simply kill the task if
+> > > task_will_free_mem fails (if PROCESS_MRELEASE_REAP_KILL is used).
+> > 
+> > I wanted to handle shared address spaces.
+> > Even though we are okay with the target task not being in a SIGKILL
+> > state yet (since we are about to kill it), we must ensure that all
+> > *other* processes sharing the same mm are also dying.
+> 
+> Then just bail out when the mm is shared accross thread groups, rather
+> than kill just one of them. Or kill all of them. There is no reason to
+> play around that on the task_will_free_mem level.
 
-Note that some things have happily changed in the six+ years since...
+Kiling unrelated processes just because they share an mm is too radicical.
 
->   That's partly because we have no current users of it, but also partly
->   because the copy_from_user() case is slightly different and cannot
->   efficiently be implemented in terms of a unsafe_get_user() loop (because
->   gcc can't do asm goto with outputs).
+Thinking about quick check whether mm is shared.
 
-now everybody can do asm goto with outputs.
+An idea:
 
-Yes, it's disabled on older versions, so it's not *always* available,
-but all modern versions do it. And if you care about performance, you
-won't be using an old compiler.
+`atomic_read(&mm->mm_users) > task->signal->nr_threads` to detect sharing
+across thread groups without looping like task_will_free_mem.
 
-             Linus
+However, the problem is that mm_users is easily elevated by transient remote
+VM accesses, such as when monitoring tools read /proc/<pid>/cmdline, which
+happens quite often in the field.
+This would cause too many false positives, making process_mrelease() fail
+unnecessarily even when no other thread group is actually pinning the mm.
+
+Do you have any ideas on how to check this quickly without calling
+task_will_free_mem() reliably?
+
+
+
+
 
