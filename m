@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D36BFF8862
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 12:04:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBA57FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 12:04:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 155C66B00A1; Mon, 27 Apr 2026 08:04:05 -0400 (EDT)
+	id A2F686B00A5; Mon, 27 Apr 2026 08:04:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E00E6B00A5; Mon, 27 Apr 2026 08:04:05 -0400 (EDT)
+	id A06AE6B00A8; Mon, 27 Apr 2026 08:04:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F10D96B00A6; Mon, 27 Apr 2026 08:04:04 -0400 (EDT)
+	id 8F5AD6B00A9; Mon, 27 Apr 2026 08:04:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DAFE16B00A1
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:04:04 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 859B6876EE
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:04 +0000 (UTC)
-X-FDA: 84704202408.20.EEC138D
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 772496B00A5
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:04:06 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D71F16010D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:06 +0000 (UTC)
+X-FDA: 84704202492.06.90C4DC1
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AFA7E1A0017
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:02 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vxg2AMkE;
-	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5678CC0017
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=etUonoN6;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777291442;
+	s=arc-20220608; t=1777291444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gj45V0DQhizCrF9yLb99+bK3rPcmaZ+a+RO79RLE/P0=;
-	b=cp4Y40nNFASI3zM5iN9z+0ETGogj6Cbj188S1eAReeDOwIxT802M9mOaczRK+e7zsZLcfg
-	+Q7saiCt3a8AMtBJazu1YKr5vFSjKWsdxtARuuok3stmB03ckfIZbSor52ONeco8oi+z94
-	Q9UsdVxfIaE6/tmuiUx35fLr9qH7OX8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vxg2AMkE;
-	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777291442; a=rsa-sha256;
+	bh=nWBf5TMJ5SJ/i7mrUIHd6S2sJXG0sYPofpDKEaeLN0A=;
+	b=RmV68z+8npl1gVASpbbW5b9IzgIcl0/9sMXWQbXnNurjn+EQMVUdWG3TXeIxgj0Tzuji6e
+	AURLEu3mVWzw6UdPMhhpGUP8M/Ep1zk7lm8gyrfCP7+R/n5ko6uh5hDOUvIhDXOIduiVYA
+	Qq5HD0gZxl0Zq8e44bizdU1G7Rwon4A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777291444; a=rsa-sha256;
 	cv=none;
-	b=p4UWpA8HMF3wH9+ijmAWb+SftECOmOumnOkdXoKWV9pCL6xeSK69wjiaD87OsERlKuT/tb
-	AQ3fWKohVpAW+EGPXVq11EH6zIlPdeHu5LiDPL9a0DODROdvzVU4vTtLEJhmNtKj8x4LC7
-	6SrOh+FubKh1qZUI6eim/v8mTgDrbpQ=
+	b=v/yCRmTfO3hdQvKBAAaCZDvNTEtL2EjdOv8gwyihQYwrrJ53EeeLUpPJWa2yOgAys0cZD5
+	DSPJvwvoMSJw+cPmReYdi0BR09VD1NK97bYTmBg321YiqjViPlMTSuTeyauN2rfmJcQJ2T
+	U+uwSHhndKXIdogYfrJrg8XIks92qXQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=etUonoN6;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 360C91FC7;
-	Mon, 27 Apr 2026 05:03:56 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27EF4237B;
+	Mon, 27 Apr 2026 05:03:58 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 177223F62B;
-	Mon, 27 Apr 2026 05:03:59 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 06D033F62B;
+	Mon, 27 Apr 2026 05:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777291441; bh=slrafw9MOFyBo/v8zwX3peiajbdJyOH74VvtDwDB9UQ=;
+	t=1777291443; bh=awcZVPdgr4NoF6FXkdZLV9n173eUmmWJVTl+xzU9qi0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=vxg2AMkEnOQuZ6mDO6cV3q3P+xPWKKgasAMEAyIb23+H/+HglfDlScLV73Cp5qVaD
-	 Nyg1f0E/85GwcF2+uUWgldgKYrq9DOcI1gg40nhD3hcgHWReH/d20w7e8SiUQyk/k3
-	 Fuyna3CGcPTJzFlnulf41IrAk0CI+0/cZriDXirA=
+	b=etUonoN6yDhxKa6hqLVL5RxhyWOxzED9Q58uZo0iPeFyW4oCmYJkq8Lttdn11mcQJ
+	 Yu0mQ+jiepIcjiXT0sced8SveI+geZ8cg46DEctgDeFySf5k863kuKk0/D2yyElW+Q
+	 qBMdUlbRGgYjwOqzdfPCbApXucgS20R46HQoI8j0=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Mon, 27 Apr 2026 13:03:33 +0100
-Subject: [PATCH v2 1/5] arm64: signal: Preserve POR_EL0 if poe_context is
- missing
+Date: Mon, 27 Apr 2026 13:03:34 +0100
+Subject: [PATCH v2 2/5] selftests/mm: Fix resv_sz when parsing arm64 signal
+ frame
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-poe_signal-v2-1-2bd9d6f16ab4@arm.com>
+Message-Id: <20260427-poe_signal-v2-2-2bd9d6f16ab4@arm.com>
 References: <20260427-poe_signal-v2-0-2bd9d6f16ab4@arm.com>
 In-Reply-To: <20260427-poe_signal-v2-0-2bd9d6f16ab4@arm.com>
 To: linux-arm-kernel@lists.infradead.org
@@ -81,21 +81,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777291437; l=5608;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777291437; l=1455;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=slrafw9MOFyBo/v8zwX3peiajbdJyOH74VvtDwDB9UQ=;
- b=MVsLaSQUtzBk2Ysh4JQTsUjt2XFmOZOJwMNMNpWEaLRYmDd/XLhfcN+XZK55TQq7hob0Tic8i
- xh0wf54gogVBQSsnRVBsRaTMZDoZe+ks2YKFfERfHz6ssnWNIe2zmFS
+ bh=awcZVPdgr4NoF6FXkdZLV9n173eUmmWJVTl+xzU9qi0=;
+ b=HUE7VaV5mymXwUwqCX1U0mb2g/qez2BgKu9EqDu+FVf3vPerOr9icMeIKp6NWvRlEynUXEsXu
+ 6AbWmvJwVciC+2FBPdj7AuDDoP3Y49f/5k9SEqqhbMvqVxsge4RRZ1b
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AFA7E1A0017
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5678CC0017
+X-Stat-Signature: eq7ct8ejawiwxgi99pyc8tg6s6cqoxi9
 X-Rspam-User: 
-X-Stat-Signature: r7kmiw9yhsi448p34wthu5nt1hdth95c
-X-HE-Tag: 1777291442-779496
-X-HE-Meta: U2FsdGVkX1+Iu91Rcb+320ydyinGiI6O6/eJgqTU9tb6+mWUAFPgfdJ+VaqPXRRxBePEKnLAaXVSiKTBXuZf5TDS9rHA8pPjVumxoE+C9Thgntyq1pjKG43llqb0SOolckWTHDVQju7kot+uI7MXawFEJ2+mitOrwubcRkO7p7TGUlxOrQPCLhsQ5haTS8qmdLn/BU1ah1Py8bqnXPgdnJsvJyxg4hv8Uhyv93asASGzdgCCdU5bELa1TJwxZIZ+rEtG9NsuC6dF0ljuxZS8VqAjinY+bc8Rl8K5tgxGyYl/mavZSaNXzHAxsUNDS8uUk/dA5RQjiLHNefO8w9Om/a3fEkAzQgQBG+jgpTxYLrl/zhvUtikakMZh0uYj7+Hav9AJlxIOCGZAFaSEZUdRiypwewcgRCx+pY1G2xrWt9cq5Pt+nfvHwcXVOaCeJBtBwHTSdHFu2/3JnaXoMFLFCCHEpDd5Lio+mtlEXm5W9Tf6dHyHyrU2OMbMNMl7dV0Ceqa+rSzvabdGpofiUede9TG4+veZ3EARbN77MfM+PpBs/0OUwH+CsCFq2QvvyP0lUEwYx3SQ0RnDecXhATiJLJpxZ30AIAPAflrWr6nhzEm4As3b+0Uh/sG9k1tUW7on98Hr4VpJDU7diyHLfadax99EgQKDs9awLrxtSxBQfDfIIZ/XxsTGmiWyLbpPnjZ4Kwa607EnsYhDO7Y1oKi8wq/+75fZHEAntxjjF3LmDW196qbJDsc72Z5IMGCzH+/VG+DbxSvH0Pjt5EJEEm9abxp6Ko4dZKl6C9Ij4NVAJuKqJzdxE3SGNK7CV9pUk2hoHRTjgdOf3KhFyGC0PlGvbuXBMS6teMAl2JuwKSlR3SDsGy2jV80r91l7lBOhgxqs2eU806osIQcbouglLda/HphvWQ/RyTnbM5bcJnBWIQ0mKD2iw7iOPsRggP3ZIx6U44Qt9hc+zzocIdpGG04
- 9BFHZ5CY
- SAHr2Ehquq1RL+ajZyniSEmK1j6ocgzf53JUlj86qPWdJcvHRAL3kIQvzzmYyFf0J1oQvMO5xJCJt1uizjo4YsNr16ySMgQZyAWzdvIDjeIFdGb820l9WAbXkvch552bdc8d5RPFzs7ho4OSQI5WHmn7IdIANzu1BRt9k1sAR42+jz+NfXYo6K37BFKmjForgvQv/8/+yIhXOc7njilPVAPcD/ylPt1bw//qX0315mSuS38YU9ukQAu6g1AP/2R1NwfuFPkRpBZAr1lisykDXjXRbbKqHTiUELFwVe7WYa2cToZHNaIvLa0u2Th7A88MCccBjpavlMYH3dnI=
+X-HE-Tag: 1777291444-891774
+X-HE-Meta: U2FsdGVkX19URDU0C1ddzngO0sjGxuHVbzwUlvTvB+fDfMoK/tt1DqgsgM3bNURIAQt0X6mxTek0l0uLcRSgq6Vi7WsqZ2iO5dnn2INtDFN64LvjsvMvNmsK6m7naWj7d8LuumfTd5OMpofqDNVPHTYlYRntXwwdmHx96dlIMNiAPaLYsDOWIq9ixUpsJrkDrGLU4wERmQdrfDdrF3DgCkKDygz8QhRy5eDkgLaJhxHVrC74Z6c0EIbTrm0OqEn+wktdtoF78gmwHebFXfkC3meqFT03D7lPH2vIiov4/+LcAH6vZ1p86+AwKwNpUKVu0XL8SihBDPqK21Ungtz47re/k/jiCRrnQMxyutTjQSAPgnEkg5H2gFv3NQoikzgSf8oKCeG1msUrWCZuNLTAPayTsNl5FKAQU+kNXDVPY4L0ykUlUTOe6B8m2G3oq5LWYULbLTcA0eJnXjfAjm+1Ks6ewOtVhPjTn1t5v4ZGuh/t9G0D3w5W+31kwjvtHD8CjPThcptp6hNF4gVg6FEbgkBCujB0mlnJ7Wrei3SQVaAMESVHOT+O1r9JcsX0ygdEtj9m3WrcsU/4q9n9HXVJMBPN2IEHRf3gWcMdqzwlJW4Dmerm1Z7Za6N3ZcYtaTpeqXHDjFxMJ/CnyV16bvV4VznebyUr+7I/I400l19JH7imhw4/HhfumH76Xc2ssbzUSRrEhCGS7sjzQI5hZ5jzVoWsYlE40zcoX2zbleb9crq0zcKTBkghowIWq8X0tLyVJr4fvNIkQmjI7y7PITyDkM3ukU5bCeeMRd1LMmjXTWteL4W4wZsOxWSXPYuVvkh/L5kurS0hCdaXzqyZJTVQEwtaDUgXZzVwnzqve0J1SuosehL6/N8ZtdYLkf133IiwvfKDmtztzHB+j6Nmi7hVES436lKGS1gUezwPfID9U1HQ6P+4RL5YK2OmDSYMs2YeUUV1Zpcx+EKoeqBg7tp
+ BlhYtdJo
+ hGfkoxDx5oIe9OvNs0yzOpJC+648b/bIthSwslCFNwX+Fuu7gQQOL47Xi6f0FryjYuv/tK5ZO5SAWCT0tFrVXxV7Ac9DZggZCBvhS4qhMtRaWNECgZf5mo5YwVsbNhDQuN/N4m2wxl64ROzNBAMUX2GduWP1+Puvg4de0GxI3KrBrrLjUmZoNN7jgOa+Ev8DpMH19H1a43Nb9+utRwNN/ElueRhzD1l/Xa66+iG95XKNBQejRruxssfjIrVUmv5bx9eIc+QDdm36HKcWFUz89RA6Z2Xpzc9ZgsPALkWf0prcDCfD0chK4KywyaJixrl/3dKmjrIKog0EYU55SL1NDMLFrPKp1Xqg+UR1ym6f1NLoR164=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,154 +103,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 2e8a1acea859 ("arm64: signal: Improve POR_EL0 handling to
-avoid uaccess failures") delayed the write to POR_EL0 in
-rt_sigreturn to avoid spurious uaccess failures. This change however
-relies on the poe_context frame record being present: on a system
-supporting POE, calling sigreturn without a poe_context record now
-results in writing arbitrary data from the kernel stack into POR_EL0.
+get_header() wants the size of the reserved area in struct
+sigcontext, but instead we pass it the size of the entire struct.
+This could in theory result in an out-of-bounds read (if the signal
+frame is malformed).
 
-Fix this by adding a __valid_fields member to struct
-user_access_state, and zeroing the struct on allocation.
-restore_poe_context() then indicates that the por_el0 field is valid
-by setting the corresponding bit in __valid_fields, and
-restore_user_access_state() only touches POR_EL0 if there is a valid
-value to set it to. This is in line with how POR_EL0 was originally
-handled; all frame records are currently optional, except
-fpsimd_context.
+Fix this using one of the existing macros from
+tools/testing/selftests/arm64/signal/testcases/testcases.h.
 
-To ensure that __valid_fields is kept in sync, fields (currently
-just por_el0) are now accessed via accessors and prefixed with __ to
-discourage direct access.
+This issue was reported by Sashiko on a patch that copied this
+portion of the code.
 
-Fixes: 2e8a1acea859 ("arm64: signal: Improve POR_EL0 handling to avoid uaccess failures")
-Reported-by: Will Deacon <will@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260421144252.1440365-1-kevin.brodsky%40arm.com
+Fixes: f5b5ea51f78f ("selftests: mm: make protection_keys test work on arm64")
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/kernel/signal.c | 54 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 43 insertions(+), 11 deletions(-)
+ tools/testing/selftests/mm/pkey-arm64.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index 08ffc5a5aea4..38e6fa204c17 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -67,6 +67,9 @@ struct rt_sigframe_user_layout {
- 	unsigned long end_offset;
- };
- 
-+#define TERMINATOR_SIZE round_up(sizeof(struct _aarch64_ctx), 16)
-+#define EXTRA_CONTEXT_SIZE round_up(sizeof(struct extra_context), 16)
-+
- /*
-  * Holds any EL0-controlled state that influences unprivileged memory accesses.
-  * This includes both accesses done in userspace and uaccess done in the kernel.
-@@ -74,13 +77,35 @@ struct rt_sigframe_user_layout {
-  * This state needs to be carefully managed to ensure that it doesn't cause
-  * uaccess to fail when setting up the signal frame, and the signal handler
-  * itself also expects a well-defined state when entered.
-+ *
-+ * The struct should be zero-initialised. Its members should only be accessed
-+ * via the accessors below. __valid_fields tracks which of the fields are valid
-+ * (have been set to some value).
-  */
- struct user_access_state {
--	u64 por_el0;
-+	unsigned int __valid_fields;
-+	u64 __por_el0;
- };
- 
--#define TERMINATOR_SIZE round_up(sizeof(struct _aarch64_ctx), 16)
--#define EXTRA_CONTEXT_SIZE round_up(sizeof(struct extra_context), 16)
-+#define UA_STATE_HAS_POR_EL0	BIT(0)
-+
-+static void set_ua_state_por_el0(struct user_access_state *ua_state,
-+				 u64 por_el0)
-+{
-+	ua_state->__por_el0 = por_el0;
-+	ua_state->__valid_fields |= UA_STATE_HAS_POR_EL0;
-+}
-+
-+static int get_ua_state_por_el0(const struct user_access_state *ua_state,
-+				u64 *por_el0)
-+{
-+	if (ua_state->__valid_fields & UA_STATE_HAS_POR_EL0) {
-+		*por_el0 = ua_state->__por_el0;
-+		return 0;
-+	}
-+
-+	return -ENOENT;
-+}
- 
- /*
-  * Save the user access state into ua_state and reset it to disable any
-@@ -94,7 +119,7 @@ static void save_reset_user_access_state(struct user_access_state *ua_state)
- 		for (int pkey = 0; pkey < arch_max_pkey(); pkey++)
- 			por_enable_all |= POR_ELx_PERM_PREP(pkey, POE_RWX);
- 
--		ua_state->por_el0 = read_sysreg_s(SYS_POR_EL0);
-+		set_ua_state_por_el0(ua_state, read_sysreg_s(SYS_POR_EL0));
- 		write_sysreg_s(por_enable_all, SYS_POR_EL0);
- 		/*
- 		 * No ISB required as we can tolerate spurious Overlay faults -
-@@ -122,8 +147,10 @@ static void set_handler_user_access_state(void)
-  */
- static void restore_user_access_state(const struct user_access_state *ua_state)
+diff --git a/tools/testing/selftests/mm/pkey-arm64.h b/tools/testing/selftests/mm/pkey-arm64.h
+index 8e9685e03c44..c5a78a2f211d 100644
+--- a/tools/testing/selftests/mm/pkey-arm64.h
++++ b/tools/testing/selftests/mm/pkey-arm64.h
+@@ -130,9 +130,10 @@ static inline u64 get_pkey_bits(u64 reg, int pkey)
+ static inline void aarch64_write_signal_pkey(ucontext_t *uctxt, u64 pkey)
  {
--	if (system_supports_poe())
--		write_sysreg_s(ua_state->por_el0, SYS_POR_EL0);
-+	u64 por_el0;
-+
-+	if (get_ua_state_por_el0(ua_state, &por_el0) == 0)
-+		write_sysreg_s(por_el0, SYS_POR_EL0);
+ 	struct _aarch64_ctx *ctx = GET_UC_RESV_HEAD(uctxt);
++	size_t resv_size = GET_UCP_RESV_SIZE(uctxt);
+ 	struct poe_context *poe_ctx =
+ 		(struct poe_context *) get_header(ctx, POE_MAGIC,
+-						sizeof(uctxt->uc_mcontext), NULL);
++						  resv_size, NULL);
+ 	if (poe_ctx)
+ 		poe_ctx->por_el0 = pkey;
  }
- 
- static void init_user_layout(struct rt_sigframe_user_layout *user)
-@@ -333,11 +360,16 @@ static int restore_fpmr_context(struct user_ctxs *user)
- static int preserve_poe_context(struct poe_context __user *ctx,
- 				const struct user_access_state *ua_state)
- {
--	int err = 0;
-+	int err;
-+	u64 por_el0;
-+
-+	err = get_ua_state_por_el0(ua_state, &por_el0);
-+	if (WARN_ON_ONCE(err))
-+		return err;
- 
- 	__put_user_error(POE_MAGIC, &ctx->head.magic, err);
- 	__put_user_error(sizeof(*ctx), &ctx->head.size, err);
--	__put_user_error(ua_state->por_el0, &ctx->por_el0, err);
-+	__put_user_error(por_el0, &ctx->por_el0, err);
- 
- 	return err;
- }
-@@ -353,7 +385,7 @@ static int restore_poe_context(struct user_ctxs *user,
- 
- 	__get_user_error(por_el0, &(user->poe->por_el0), err);
- 	if (!err)
--		ua_state->por_el0 = por_el0;
-+		set_ua_state_por_el0(ua_state, por_el0);
- 
- 	return err;
- }
-@@ -1095,7 +1127,7 @@ SYSCALL_DEFINE0(rt_sigreturn)
- {
- 	struct pt_regs *regs = current_pt_regs();
- 	struct rt_sigframe __user *frame;
--	struct user_access_state ua_state;
-+	struct user_access_state ua_state = {};
- 
- 	/* Always make any pending restarted system calls return -EINTR */
- 	current->restart_block.fn = do_no_restart_syscall;
-@@ -1507,7 +1539,7 @@ static int setup_rt_frame(int usig, struct ksignal *ksig, sigset_t *set,
- {
- 	struct rt_sigframe_user_layout user;
- 	struct rt_sigframe __user *frame;
--	struct user_access_state ua_state;
-+	struct user_access_state ua_state = {};
- 	int err = 0;
- 
- 	fpsimd_save_and_flush_current_state();
 
 -- 
 2.51.2
