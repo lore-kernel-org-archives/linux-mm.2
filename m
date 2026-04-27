@@ -4,99 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B34C9FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:47:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C303FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:48:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29D816B00B2; Mon, 27 Apr 2026 07:47:55 -0400 (EDT)
+	id 758F26B00B4; Mon, 27 Apr 2026 07:48:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 274186B00B4; Mon, 27 Apr 2026 07:47:55 -0400 (EDT)
+	id 72F7C6B00B6; Mon, 27 Apr 2026 07:48:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18B276B00B5; Mon, 27 Apr 2026 07:47:55 -0400 (EDT)
+	id 61FB76B00B7; Mon, 27 Apr 2026 07:48:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0747A6B00B2
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:47:55 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C25331B6F0B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:47:54 +0000 (UTC)
-X-FDA: 84704161668.04.A23E9E0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AE0BF80008
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:47:52 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eg9Jiiou;
-	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DF936B00B4
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:48:04 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10CACC03FE
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:48:04 +0000 (UTC)
+X-FDA: 84704162088.06.23B03E8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0FC9D4000E
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:48:01 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Es3uUV8y;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777290472;
+	s=arc-20220608; t=1777290482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5vg9xoDKrzbnriu8DCxQCXsgI1uZAv4Cl72wPpMiEa0=;
-	b=0mmZu1CYzCJhx3sn7BLjkff5LF4wy+DT6zZw+urJqk1b2EkvJpgaS54xp/oVb8TBPVZphT
-	Qq38O4I6fkBGoqvxi7jDC+NIhdMB9rV79xwYdAtr3JQw4CJ81eGi05d5MzdXSzWjcfXMJs
-	m2mWPr6tM+82NVbrUlvqCqK/N3nNUL8=
+	bh=xemQXlW7aJTBSAySyyCPhVPuwfv1qWFx4CvFj3cCdlE=;
+	b=dQkmjthVCTsdfv7IEN27b4p6ESFvrd71N8XnmFpD51Y/KwKGHHshcLgxqu3G2q3VjU+Qvh
+	9Cafce5HthGiLqnljqYSqgoZQr5fVTQCIDFln8iHa8E6HWczYbs6HKIjSL2nC33gMTFz71
+	z4A/wtwcVrApAXmxk6zgC93rrOBx2hA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eg9Jiiou;
-	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Es3uUV8y;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777290472; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777290482; a=rsa-sha256;
 	cv=none;
-	b=OHUhAMsi17jgBEuGqq51tJS/bh7R4utrI2asgAvGBNJopQc5W0bG1AU3RHE0QvcX5UNzze
-	7T3Ys3U2k53BBoM4Us0SXl+gt/y4HgLk6176ndhG3g2XANrJLHbcvQMrunSeG/JsM0OTJN
-	2TDCvaGRrHbj4jDlgeUX1U+he9qWwH8=
+	b=VBh8Mp2v7beLdQLkjX5rk0w+CIvRib3cnAnSRbeHuHsCscjbHnHcEKyCPQC0l56nJLAa9Y
+	K0xcwbAUUVvK0EB5fHDhmn71WMxHIxFPOEz33AoZF4lbJXcLUNpZo228OJ443cUs+ujc6o
+	B78OYtC305Y22bIcVcHkl/V2T4yxXzg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D358B43DFB;
-	Mon, 27 Apr 2026 11:47:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33668C4AF0B;
-	Mon, 27 Apr 2026 11:47:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F33560582;
+	Mon, 27 Apr 2026 11:48:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C9AC2BCB8;
+	Mon, 27 Apr 2026 11:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777290471;
-	bh=hRY7obmR9e6QVqFUCEmAN4SbG7l3gAQ60qItIMhRPe0=;
+	s=k20201202; t=1777290481;
+	bh=bFpYJ6c5r646lD2k4KgbkzTBVYwCH7HuXwcZzNixDWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eg9JiiouctuUABW9G2hFJPK56S97wwLRrS8UqsN9Ib0aV3769tFkptTI1EEhujooF
-	 4jqAGKkPNrGNHf1Lj128ABqR/ossA4jknjuJtPQJ5yGArfCcUuktoDuUdZ91JAORKR
-	 N4Yv9WWppQm6uAF9fblyPKF0bnM8dTcrU0ySXLnyN/aBluBAkMsdxRz0A4zI3cMej+
-	 XTSviGI1Imtrc34OsdffAoYhSG0Bp+JPrPBW9YUAuSmWQeiH3EBtoSX5Tg2v9Z8/6+
-	 f+RuI9E9A3rCRl2RX/eB5su/kTEng+mXdR53osoPJFGX4bEtil201v1bEhkM4wsw3b
-	 dYu5ZoBoNh9tg==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5BD14F40069;
-	Mon, 27 Apr 2026 07:47:50 -0400 (EDT)
+	b=Es3uUV8yr637+99sfaJPwvyqfs6MZRWDVg85fxuaXeeyfkpifrJdYZQjFzGQOrnzb
+	 WNkP1n148BUoEQLGtu2cP158V+nh7sPs/pgM4rWd90p/H3tnHFzBfdarJiHiE0LgMg
+	 c2Re8RdYWQe/tYztv2kJt3ApKkclrJGQ+O4LnVCFzE9tzu2d2c50XV9uqOGw25SLbF
+	 TY0xFVh0c4RY1+5n0vDsTgCWThXUva0qycAAO5gsayK+6JwrIA8lw68zUqMhYxa+go
+	 bjyj4E/JSG7X5OpPicv8h4Epxo7rw+nrmAFllBT9IR1sbatObvtAslJCJMIV1XL1wk
+	 vuU1VwEt4qsQQ==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C4DACF4006A;
+	Mon, 27 Apr 2026 07:47:59 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Mon, 27 Apr 2026 07:47:50 -0400
-X-ME-Sender: <xms:5kzvaUFy18kEp-30nW--_kDEeHiGd8r_oAfIRp8aZFP_3ueBK_Gh2A>
-    <xme:5kzvaRRTeAF9VXtfEtcCebKV9XO3YSaZe1InmaD4DaDZxrtO4bj2b58B4_t3AFkG9
-    xn8BbCyH7O7UawwDsUGmGKFEDNB4kloY8xOkb__JlB-XaBUSSrcPheE>
-X-ME-Received: <xmr:5kzvaWqXDPJf5myhpjL0KHo-GbMvyeiZbFTRMqkjvqUwSIizXYEkIyM9yYM_Dw>
+  by phl-compute-05.internal (MEProxy); Mon, 27 Apr 2026 07:47:59 -0400
+X-ME-Sender: <xms:70zvaWi-tLl3blAer98aUPuO0wDv9K6zckfnd0ujRUR4pGgYlLXYNA>
+    <xme:70zvaS7Co3UQxw2hWSgq6rqP7tDrYsAiffgsCJb31CYlTtHB1Ee0mgSaXRDFu2c7j
+    CFoQhXf99f4QIZZNKgZjqVOmD5SxOY7U3uOZvT0TiAM8uqglhL-CUk>
+X-ME-Received: <xmr:70zvaW4Sc480oemm6iR4EJW42aOm0VFjkvHkvy6YA1siTTro9lNyqrU89CFcAg>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejkeeiudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhephffvvefufffkofgjfhgggfestdekredtre
-    dttdenucfhrhhomhepfdfmihhrhihlucfuhhhuthhsvghmrghuucdlofgvthgrmddfuceo
-    khgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpefhudejfedvgeekff
-    efvdekheekkeeuveeftdelheegteelgfefveevueekhfdtteenucevlhhushhtvghrufhi
-    iigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprg
-    huthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhk
-    rghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtph
-    htthhopedvgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghkphhmsehlihhn
-    uhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrphhptheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphht
-    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghp
-    thhtohepvhgsrggskhgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhh
-    hofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgr
-    rdgtohhm
-X-ME-Proxy: <xmx:5kzvafrE-VLf03Dqrii8IRIE8tHz18hhXPbkaCy1byZDSGf8txAhQw>
-    <xmx:5kzvaR3NkexKgdevnXOo5PA6H09IT1dRuyNcxGlAJODKolB-Tbozdw>
-    <xmx:5kzvaTh1YfSIsrYFWWFGqfLifJogcLEWOJLaJJvDBoOQRuu1qC5ORg>
-    <xmx:5kzvaQlfYIxjLrQWjA0ZJAwnSJe59haFuy8aHV9gvA4P53i_Gz1jzA>
-    <xmx:5kzvab-7WB1FQj8Ax7uhnqOW2NE4CKXLo68ACPXeDiKtx8IWGZ7JeMV7>
+    ihhlohhuthemuceftddtnecunecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertd
+    ertdejnecuhfhrohhmpedfmfhirhihlhcuufhhuhhtshgvmhgruhculdfovghtrgdmfdcu
+    oehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnhephfdvfedvveejve
+    ehhffhvedufedujeefuddvkeehleduhfeihfehudejffffiefgnecuvehluhhsthgvrhfu
+    ihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtph
+    gruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedq
+    khgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtg
+    hpthhtohepvdegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhi
+    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghp
+    thhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgt
+    phhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhirghmrd
+    hhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopeiiihihsehnvhhiughi
+    rgdrtghomh
+X-ME-Proxy: <xmx:70zvaYH_vabgqy4TBDkRbHi8ZqcUdZMb8NwJAh_TbHaw-xXW3BdIHA>
+    <xmx:70zvaczBqBpyJCO4Na19V1lB3I50jfB-Pr07QqCVjDZ8twS7XPVvuA>
+    <xmx:70zvaQ3y-NfdGSrKWbTFAakfP_im2C2w7IKVW3FwihR9QgJHAbB9Lw>
+    <xmx:70zvaXPsFGHmF6dIL6H9ymQHA4KT817F0QNvl8qGaXF20_OxV5pXRA>
+    <xmx:70zvaUtLpv4ttNbw4DJve90OfgRofPkSOjgcvNCx92sveagtq0bZVfWq>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Apr 2026 07:47:48 -0400 (EDT)
+ 27 Apr 2026 07:47:57 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
@@ -122,22 +123,23 @@ Cc: ljs@kernel.org,
 	kvm@vger.kernel.org,
 	kernel-team@meta.com,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH 12/14] userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
-Date: Mon, 27 Apr 2026 12:46:00 +0100
-Message-ID: <20260427114607.4068647-13-kas@kernel.org>
+Subject: [PATCH 13/14] selftests/mm: add userfaultfd RWP tests
+Date: Mon, 27 Apr 2026 12:46:01 +0100
+Message-ID: <20260427114607.4068647-14-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260427114607.4068647-1-kas@kernel.org>
 References: <20260427114607.4068647-1-kas@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0FC9D4000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AE0BF80008
-X-Stat-Signature: mf6mhw6idmb6c4148a3ot8jw638r7uhz
-X-HE-Tag: 1777290472-661672
-X-HE-Meta: U2FsdGVkX19AY/Xivt3B4i2zxfMPRqBYvxi6TgTe/Hf8qp/z/CUnG0sU0fi93wxc2J+OEPR6KmMaEypauwalMwTSHqLJ1tOhfyyHVODmcFVp9JRW76BfPBXMXMj43lksCvEeBPUCL0mo2LV3UMOoc9czFe6gPuRMTs427YqKWwucaobYm9urSQd3j7XMl9GSeraDW+8NGdDLBPry0az3GiPMYnX6w0MP4bLq8+iJx3rj/eifL+s/hTWVoVYSuL7bjd7N0PLwx21Nml9EXGT9eZOlXB1IWZJjVQXv51eLO+tKGsDD0qPojt5T1Ol0Fu51uzLHEvveb2vxYBo1fRt0fRbZBKi2skADs1aQ/UtpJ76KV30Z/Cei3l6pt1Is9UrQ97ck2rYSvi8QB0ZdnXuk931vbXgt0oYKKRDjhihYcr5B7V+SLJtxjXSccW+5M2Kl9Cc0M119hm82JzpQOebII1wsgGwY/r0fCY50ucK48OEDnUvKTnhlbc7m1u0EdpaHz74mADPagptDED5wXsEqpf0l+SzX8PJDfaOClWGRHIhjbrIGc7G6uar6ntXYC2xPKIRLfZod6jEpss6GZs8GLtgjqdkix8u1W4hOvPZ5eqeRpwWhOIO2j2ZQRMt/9nYi57ANvVA0QLuM7lBjE9/Ln7eE82tnlGWhELC13HzeSZdqBl+WGP/FR/Zek1XN9aImrrxAq+B+dZacmlBwHM/vdJr36rURS7UvmSW3fMUgqqv1cQnkRQlcXV4n1A+yvE1BKZPpfk7aW7mNeUOJMjHMpz6ezJ3CuH716e3GQ6RhRQYfC1RQU7CInwQ4vSPo6Iv39bp79/zsW0AWZR6yZoXTtdN0kFfhMO7e7L62uwXcPimGJeUfrMQWs3WzzCPzpU44UgkoguRiS6PrCle9R5CeCOegnvdFzQVPgpoUwjK5z6+VvFUR91jQr1MNJUN3Rswyi6O9fwVCCnVjp/Yp0rK
- ocvpB6oj
- hs2mH66kYQVauvympK5tE01wa7qgFqvS822sR76PCQVWa9YydBDhY93wBr8cdiccsDyspwyBipNP+4MRBVL1xhckFgaz6MJ1u04xmy5ITnaYy0WOrjeIEkjkaQ0TTcKmXEnV6fiQ7uCElIi8Jzzyl3+MNC+6pqmBJIIX/jAWMrJ0fT0b/UdpcUUR+P8zKN9Lu1IGX8On10ftidGRNpExWa0I1tALH4fz/jUq8koT0ZG54Va2zJZ5G0qet4M9EtFqiWlQudVzCfVcOJKRGmAQ/sUIXoIBNYvlyvbUp/AWrL/EVpnvGrxKuhQRjyQ==
+X-Stat-Signature: 43y9mfndhab3do1i8uci7rhm7ukkp6cm
+X-HE-Tag: 1777290481-696681
+X-HE-Meta: U2FsdGVkX18CHqhdYqqnnwSN25BHOul8vYnFMTn6NSvNDWEgGKkvCmUj869rpc+EgeWDAGRY6ltVmv3nUvCf1QgXts840LBcA1MWDAjWgopw1+zK+ak1K1U6DmNV5tcZg9gqFAfGysMr38JqwIHbXBA892bMQHAjsEaPJfpGDUTQGf8L1wBV7nw3Ra2dWoevux4BZtgLrTkPYwbyuGKju9YEimBeKuIBVGlCiZlZSkY3rygmT9mjmqbaOet7f1GH5LAsCWLsAZv7JFZNWIiYm1CjHpFX6fn8vtpLDAIsUbWu+Nt/71iRy/6zTOVbxvK5snvtWrdYYMezfbVQfX4IXMVeunXsb0U93yRj0csTYnEafxsi0NXTmf4lRTkq+wcQdaVlAieMVPVvLTNokHVJhCvMh7Sh2KmSt8GezqwS9E1mbBa1Cnmm6/NtrKkN678Ky7kSNw5v6heJt7cs2hgbo4vn+Rz9GrhczdtJQMxknRnPq9UKJVNhGsW50kfHDWoB9cUPxLF2KCsU3cykrFx5U0x4F1e4SfCan1+0PCGTOpg+yrjABG1161cwDcPp20zr6pwnSPD5kkucF2/Yhox+vqa3E84kwr4AnSvKKL5N32ra+lqo8ZmWobYY3HXHeRXMzKbQqGUoyGdUJY/MFnp39ENBcM8WKgR6mehu41gN1tqpqUA+hLKtXzOlFE6qZAc4KhPOUNukqCnYbg118w49cpjs0KNm9NFhcFxrUHy4YI6aVTMDKStXvB1JvjcE8yeRw1b5eVKgfkjpEup6k2FE619hFUp40M1ghQmo262TBJ0BeUVrtlkZxCM+WekKcSB8pthUKTV4CB1nRd78vtR3j6L76NwoF9CH7mcdqET8Zs0L/9Q3z5V5rFJ5p3/Rs/Xi+ce2VoEuoAnLITd54RfE136DHsD1rYArbweDOQ6rAhiMZO8XgvCzNWVQmvrpdC8Fas0cDdOT0c2LIZ70KV/
+ lUVTnNtF
+ HDh0DjAd3731Ny23Do/XcoH/cHdlU/vMjNcyMar42aMsP8Bz0Zfkmo9dofmyh9fMxoVk+3tK3B+qgmMXTz8+ApejLBduA42bvIXwhE/6zJ709wLCKfl3+rz4dUbJYKYCy/xs91sTlj5I9rd+w2p9+DF1orUWHjT5TY2FkFtVM5/f30J0GizL/zut8q5kmMdHDtTKrvexenM4CGkAIyer1k++WC7tySWZRBiL3EMonUOLRSUP0+eAdML4En0u+oBrF0T+GQ/jqh9keTPiY+JI0Y6GQxHBfxKykr6wu0KVhbC/hFkM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,245 +147,805 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add an ioctl to toggle async mode at runtime without re-registering
-the userfaultfd. This allows a VMM to switch between sync and async
-RWP modes on-the-fly -- for example, starting in async mode for
-working set scanning, then switching to sync mode to intercept faults
-during page eviction.
+Coverage for UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT:
 
-UFFDIO_SET_MODE takes an enable/disable bitmask of UFFD_FEATURE_*
-flags. Only UFFD_FEATURE_RWP_ASYNC is toggleable today; the ioctl
-rejects any other bit with -EINVAL. Enabling RWP_ASYNC also requires
-RWP to have been negotiated at UFFDIO_API time, mirroring the
-UFFDIO_API invariant.
+  rwp-async          async mode — touch pages, verify permissions are
+                     auto-restored without a message
+  rwp-sync           sync mode — access blocks, handler resolves via
+                     UFFDIO_RWPROTECT
+  rwp-pagemap        PAGEMAP_SCAN reports still-cold pages via
+                     inverted PAGE_IS_ACCESSED
+  rwp-mprotect       RWP survives mprotect(PROT_NONE) ->
+                     mprotect(PROT_READ|PROT_WRITE) round-trip
+  rwp-gup            GUP walks through a protnone RWP PTE (pipe
+                     write/read drives the GUP path)
+  rwp-async-toggle   UFFDIO_SET_MODE flips between sync and async
+                     without re-registering
+  rwp-close          closing the uffd restores page permissions
+  rwp-fork           RWP survives fork() with EVENT_FORK; child's
+                     PTEs keep the uffd bit
+  rwp-fork-pin       RWP survives fork() on an RO-longterm-pinned
+                     anon page (forces copy_present_page()); child
+                     read auto-resolves and clears the bit, proving
+                     PAGE_NONE was in place
+  rwp-wp-exclusive   register with MODE_WP|MODE_RWP returns -EINVAL
 
-Fault-path readers of ctx->features run under mmap_read_lock or a
-per-VMA lock; the RMW takes mmap_write_lock and calls
-vma_start_write() on every UFFD-armed VMA, so those readers are fully
-excluded. userfaultfd_show_fdinfo(), however, reads ctx->features
-without any lock, so the RMW is written as a single WRITE_ONCE and
-fdinfo reads it with READ_ONCE. That keeps the lockless observer from
-seeing a mid-RMW intermediate and removes the audit burden when new
-toggleable bits are added later.
+All tests run against anon, shmem, shmem-private, hugetlb, and
+hugetlb-private memory, except rwp-fork-pin which is anon-only —
+copy_present_page() is the private-anon pinned-exclusive fork path.
 
-When switching to async, pending sync waiters are woken so they retry
-and auto-resolve under the new mode.
-
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Assisted-by: Claude:claude-opus-4-6
 ---
- fs/userfaultfd.c                 | 130 +++++++++++++++++++++++++------
- include/uapi/linux/userfaultfd.h |  14 ++++
- 2 files changed, 120 insertions(+), 24 deletions(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c | 734 +++++++++++++++++++
+ 1 file changed, 734 insertions(+)
 
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index 4a701ac830f4..83e759054464 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -1871,6 +1871,107 @@ static int userfaultfd_rwprotect(struct userfaultfd_ctx *ctx,
- 	return ret;
- }
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index 6f5e404a446c..6fdfe8bc3a70 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -7,6 +7,7 @@
  
-+/* Subset of UFFD_API_FEATURES actually supported by this kernel/arch */
-+static __u64 uffd_api_available_features(void)
-+{
-+	__u64 f = UFFD_API_FEATURES;
-+
-+	if (!IS_ENABLED(CONFIG_HAVE_ARCH_USERFAULTFD_MINOR))
-+		f &= ~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
-+	if (!pgtable_supports_uffd())
-+		f &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
-+	if (!uffd_supports_wp_marker())
-+		f &= ~(UFFD_FEATURE_WP_HUGETLBFS_SHMEM |
-+		       UFFD_FEATURE_WP_UNPOPULATED |
-+		       UFFD_FEATURE_WP_ASYNC);
-+	/*
-+	 * RWP needs both PROT_NONE support and the uffd PTE bit. The
-+	 * VM_UFFD_RWP check covers compile-time unavailability; the
-+	 * pgtable_supports_uffd() check covers runtime (e.g. riscv
-+	 * without the SVRSW60T59B extension) where the PTE bit is declared
-+	 * but not actually usable.
-+	 */
-+	if (VM_UFFD_RWP == VM_NONE || !pgtable_supports_uffd())
-+		f &= ~(UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC);
-+	return f;
-+}
-+
-+/* Async features that can be toggled at runtime via UFFDIO_SET_MODE */
-+#define UFFD_FEATURE_TOGGLEABLE	UFFD_FEATURE_RWP_ASYNC
-+
-+static int userfaultfd_set_mode(struct userfaultfd_ctx *ctx,
-+				unsigned long arg)
-+{
-+	struct uffdio_set_mode mode;
-+	struct mm_struct *mm = ctx->mm;
-+
-+	if (copy_from_user(&mode, (void __user *)arg, sizeof(mode)))
-+		return -EFAULT;
-+
-+	/* enable and disable must not overlap */
-+	if (mode.enable & mode.disable)
-+		return -EINVAL;
-+
-+	/* only toggleable features that this kernel/arch actually supports */
-+	if ((mode.enable | mode.disable) &
-+	    ~(uffd_api_available_features() & UFFD_FEATURE_TOGGLEABLE))
-+		return -EINVAL;
-+
-+	/* RWP_ASYNC can only be enabled on contexts that negotiated RWP */
-+	if ((mode.enable & UFFD_FEATURE_RWP_ASYNC) &&
-+	    !(ctx->features & UFFD_FEATURE_RWP))
-+		return -EINVAL;
-+
-+	if (!mmget_not_zero(mm))
-+		return -ESRCH;
-+
-+	/*
-+	 * Drain in-flight faults before flipping features. mmap_write_lock()
-+	 * blocks new mmap_read_lock() callers, but per-VMA locked faults
-+	 * (lock_vma_under_rcu() + FAULT_FLAG_VMA_LOCK) that acquired before
-+	 * this point keep running. Calling vma_start_write() on each UFFD-
-+	 * armed VMA waits for those readers to drop, so no in-flight fault
-+	 * can observe the old features after mmap_write_unlock().
-+	 */
-+	mmap_write_lock(mm);
+ #include "uffd-common.h"
+ 
++#include <linux/fs.h>
+ #include "../../../../mm/gup_test.h"
+ 
+ #ifdef __NR_userfaultfd
+@@ -167,6 +168,23 @@ static int test_uffd_api(bool use_dev)
+ 		goto out;
+ 	}
+ 
++	/* Verify returned fd-level ioctls bitmask */
 +	{
-+		struct vm_area_struct *vma;
-+		VMA_ITERATOR(vmi, mm, 0);
++		uint64_t expected_ioctls =
++			BIT_ULL(_UFFDIO_REGISTER) |
++			BIT_ULL(_UFFDIO_UNREGISTER) |
++			BIT_ULL(_UFFDIO_API) |
++			BIT_ULL(_UFFDIO_SET_MODE);
 +
-+		for_each_vma(vmi, vma) {
-+			if (vma->vm_userfaultfd_ctx.ctx == ctx)
-+				vma_start_write(vma);
++		if ((uffdio_api.ioctls & expected_ioctls) != expected_ioctls) {
++			uffd_test_fail("UFFDIO_API missing expected ioctls: "
++				       "got=0x%"PRIx64", expected=0x%"PRIx64,
++				       (uint64_t)uffdio_api.ioctls,
++				       expected_ioctls);
++			goto out;
 +		}
 +	}
-+	/*
-+	 * Single WRITE_ONCE so the fdinfo lockless reader can't observe a
-+	 * mid-RMW intermediate value. Hot-path readers already serialise
-+	 * through the mmap lock + vma_start_write() drain above, so their
-+	 * load doesn't need an annotation.
-+	 */
-+	WRITE_ONCE(ctx->features,
-+		   (ctx->features | mode.enable) & ~mode.disable);
-+	mmap_write_unlock(mm);
 +
-+	/*
-+	 * If switching to async, wake threads blocked in handle_userfault().
-+	 * They will retry the fault and auto-resolve under the new mode.
-+	 * len=0 means wake all pending faults on this context.
-+	 */
-+	if (mode.enable & UFFD_FEATURE_RWP_ASYNC) {
-+		struct userfaultfd_wake_range range = { .len = 0 };
+ 	/* Test double requests of UFFDIO_API with a random feature set */
+ 	uffdio_api.features = BIT_ULL(0);
+ 	if (ioctl(uffd, UFFDIO_API, &uffdio_api) == 0) {
+@@ -623,6 +641,653 @@ void uffd_minor_collapse_test(uffd_global_test_opts_t *gopts, uffd_test_args_t *
+ 	uffd_minor_test_common(gopts, true, false);
+ }
+ 
++static int uffd_register_rwp(int uffd, void *addr, uint64_t len)
++{
++	struct uffdio_register reg = {
++		.range = { .start = (unsigned long)addr, .len = len },
++		.mode = UFFDIO_REGISTER_MODE_RWP,
++	};
 +
-+		spin_lock_irq(&ctx->fault_pending_wqh.lock);
-+		__wake_up_locked_key(&ctx->fault_pending_wqh, TASK_NORMAL,
-+				     &range);
-+		__wake_up(&ctx->fault_wqh, TASK_NORMAL, 1, &range);
-+		spin_unlock_irq(&ctx->fault_pending_wqh.lock);
-+	}
-+
-+	mmput(mm);
++	if (ioctl(uffd, UFFDIO_REGISTER, &reg) == -1)
++		return -errno;
 +	return 0;
 +}
 +
- static int userfaultfd_continue(struct userfaultfd_ctx *ctx, unsigned long arg)
- {
- 	__s64 ret;
-@@ -2109,29 +2210,7 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
- 		goto err_out;
- 
- 	/* report all available features and ioctls to userland */
--	uffdio_api.features = UFFD_API_FEATURES;
--#ifndef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
--	uffdio_api.features &=
--		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
--#endif
--	if (!pgtable_supports_uffd())
--		uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
--
--	if (!uffd_supports_wp_marker()) {
--		uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
--		uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
--		uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
--	}
--	/*
--	 * RWP needs both PROT_NONE support and the uffd-wp PTE bit. The
--	 * VM_UFFD_RWP check covers compile-time unavailability; the
--	 * pgtable_supports_uffd() check covers runtime (e.g. riscv
--	 * without the SVRSW60T59B extension) where the PTE bit is declared
--	 * but not actually usable.
--	 */
--	if (VM_UFFD_RWP == VM_NONE || !pgtable_supports_uffd())
--		uffdio_api.features &=
--			~(UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC);
-+	uffdio_api.features = uffd_api_available_features();
- 
- 	ret = -EINVAL;
- 	if (features & ~uffdio_api.features)
-@@ -2201,6 +2280,9 @@ static long userfaultfd_ioctl(struct file *file, unsigned cmd,
- 	case UFFDIO_RWPROTECT:
- 		ret = userfaultfd_rwprotect(ctx, arg);
- 		break;
-+	case UFFDIO_SET_MODE:
-+		ret = userfaultfd_set_mode(ctx, arg);
-+		break;
- 	}
- 	return ret;
- }
-@@ -2228,7 +2310,7 @@ static void userfaultfd_show_fdinfo(struct seq_file *m, struct file *f)
- 	 *	protocols: aa:... bb:...
- 	 */
- 	seq_printf(m, "pending:\t%lu\ntotal:\t%lu\nAPI:\t%Lx:%x:%Lx\n",
--		   pending, total, UFFD_API, ctx->features,
-+		   pending, total, UFFD_API, READ_ONCE(ctx->features),
- 		   UFFD_API_IOCTLS|UFFD_API_RANGE_IOCTLS);
- }
- #endif
-diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
-index c10f08f8a618..cea11aad6b54 100644
---- a/include/uapi/linux/userfaultfd.h
-+++ b/include/uapi/linux/userfaultfd.h
-@@ -49,6 +49,7 @@
- #define UFFD_API_IOCTLS				\
- 	((__u64)1 << _UFFDIO_REGISTER |		\
- 	 (__u64)1 << _UFFDIO_UNREGISTER |	\
-+	 (__u64)1 << _UFFDIO_SET_MODE |		\
- 	 (__u64)1 << _UFFDIO_API)
- #define UFFD_API_RANGE_IOCTLS			\
- 	((__u64)1 << _UFFDIO_WAKE |		\
-@@ -85,6 +86,7 @@
- #define _UFFDIO_CONTINUE		(0x07)
- #define _UFFDIO_POISON			(0x08)
- #define _UFFDIO_RWPROTECT		(0x09)
-+#define _UFFDIO_SET_MODE		(0x0A)
- #define _UFFDIO_API			(0x3F)
- 
- /* userfaultfd ioctl ids */
-@@ -111,6 +113,8 @@
- 				      struct uffdio_poison)
- #define UFFDIO_RWPROTECT	_IOWR(UFFDIO, _UFFDIO_RWPROTECT,	\
- 				      struct uffdio_rwprotect)
-+#define UFFDIO_SET_MODE		_IOW(UFFDIO, _UFFDIO_SET_MODE,	\
-+				     struct uffdio_set_mode)
- 
- /* read() structure */
- struct uffd_msg {
-@@ -406,6 +410,16 @@ struct uffdio_move {
- 	__s64 move;
- };
- 
-+struct uffdio_set_mode {
-+	/*
-+	 * Toggle async mode for features at runtime.
-+	 * Supported: UFFD_FEATURE_RWP_ASYNC.
-+	 * Setting a bit in both enable and disable is invalid.
-+	 */
-+	__u64 enable;
-+	__u64 disable;
-+};
++static void rwprotect_range(int uffd, __u64 start, __u64 len, bool protect)
++{
++	struct uffdio_rwprotect rwp = {
++		.range = { .start = start, .len = len },
++		.mode = protect ? UFFDIO_RWPROTECT_MODE_RWP : 0,
++	};
 +
- /*
-  * Flags for the userfaultfd(2) system call itself.
-  */
++	if (ioctl(uffd, UFFDIO_RWPROTECT, &rwp))
++		err("UFFDIO_RWPROTECT failed");
++}
++
++static void set_async_mode(int uffd, bool enable)
++{
++	struct uffdio_set_mode mode = { };
++
++	if (enable)
++		mode.enable = UFFD_FEATURE_RWP_ASYNC;
++	else
++		mode.disable = UFFD_FEATURE_RWP_ASYNC;
++
++	if (ioctl(uffd, UFFDIO_SET_MODE, &mode))
++		err("UFFDIO_SET_MODE failed");
++}
++
++/*
++ * Test async RWP faults on anonymous memory.
++ * Populate pages, register MODE_RWP with RWP_ASYNC,
++ * RW-protect, re-access, verify content preserved and no faults delivered.
++ */
++static void uffd_rwp_async_test(uffd_global_test_opts_t *gopts,
++				       uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	unsigned long p;
++
++	/* Populate all pages with known content */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
++
++	/* Register MODE_RWP */
++	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size))
++		err("register failure");
++
++	/* RW-protect all pages (sets protnone) */
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size, true);
++
++	/* Access all pages — should auto-resolve, no faults */
++	for (p = 0; p < nr_pages; p++) {
++		unsigned char *page = (unsigned char *)gopts->area_dst +
++				      p * page_size;
++		unsigned char expected = p % 255 + 1;
++
++		if (page[0] != expected) {
++			uffd_test_fail("page %lu content mismatch: %u != %u",
++				       p, page[0], expected);
++			return;
++		}
++	}
++
++	uffd_test_pass();
++}
++
++/*
++ * Fault handler for RWP — unprotect the page via UFFDIO_RWPROTECT.
++ */
++static void uffd_handle_rwp_fault(uffd_global_test_opts_t *gopts,
++				  struct uffd_msg *msg,
++				  struct uffd_args *uargs)
++{
++	if (!(msg->arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_RWP))
++		err("expected RWP fault, got 0x%llx",
++		    msg->arg.pagefault.flags);
++
++	rwprotect_range(gopts->uffd, msg->arg.pagefault.address,
++			gopts->page_size, false);
++	uargs->minor_faults++;
++}
++
++/*
++ * Test sync RWP faults on anonymous memory.
++ * Populate pages, register MODE_RWP (sync), RW-protect,
++ * access from worker thread, verify fault delivered, UFFDIO_RWPROTECT resolves.
++ */
++static void uffd_rwp_sync_test(uffd_global_test_opts_t *gopts,
++				      uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	pthread_t uffd_mon;
++	struct uffd_args uargs = { };
++	char c = '\0';
++	unsigned long p;
++
++	uargs.gopts = gopts;
++	uargs.handle_fault = uffd_handle_rwp_fault;
++
++	/* Populate all pages */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
++
++	/* Register MODE_RWP */
++	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size))
++		err("register failure");
++
++	/* RW-protect all pages */
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size, true);
++
++	/* Start fault handler thread */
++	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &uargs))
++		err("uffd_poll_thread create");
++
++	/* Access all pages — triggers sync RWP faults, handler unprotects */
++	for (p = 0; p < nr_pages; p++) {
++		unsigned char *page = (unsigned char *)gopts->area_dst +
++				      p * page_size;
++
++		if (page[0] != (p % 255 + 1)) {
++			uffd_test_fail("page %lu content mismatch", p);
++			goto out;
++		}
++	}
++
++	if (uargs.minor_faults == 0) {
++		uffd_test_fail("expected RWP faults, got 0");
++		goto out;
++	}
++
++	uffd_test_pass();
++out:
++	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
++		err("pipe write");
++	if (pthread_join(uffd_mon, NULL))
++		err("join() failed");
++}
++
++/*
++ * Test PAGEMAP_SCAN detection of RW-protected (cold) pages.
++ */
++static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
++					  uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	unsigned long p;
++	struct page_region regions[16];
++	struct pm_scan_arg pm_arg;
++	int pagemap_fd;
++	long ret;
++
++	/* Need at least 4 pages */
++	if (nr_pages < 4) {
++		uffd_test_skip("need at least 4 pages");
++		return;
++	}
++
++	/* Populate all pages */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, 0xab, page_size);
++
++	/* Register and RW-protect */
++	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size))
++		err("register failure");
++
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size, true);
++
++	/* Touch first half of pages to re-activate them (async auto-resolve) */
++	for (p = 0; p < nr_pages / 2; p++) {
++		volatile char *page = gopts->area_dst + p * page_size;
++		(void)*page;
++	}
++
++	/* Scan for cold (still RW-protected) pages */
++	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
++	if (pagemap_fd < 0)
++		err("open pagemap");
++
++	/*
++	 * PAGE_IS_ACCESSED is set once the uffd-wp bit has been cleared
++	 * (access happened, or the user resolved). Invert it to select
++	 * still-protected (cold) pages.
++	 */
++	memset(&pm_arg, 0, sizeof(pm_arg));
++	pm_arg.size = sizeof(pm_arg);
++	pm_arg.start = (uint64_t)gopts->area_dst;
++	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
++	pm_arg.vec = (uint64_t)regions;
++	pm_arg.vec_len = 16;
++	pm_arg.category_mask = PAGE_IS_ACCESSED;
++	pm_arg.category_inverted = PAGE_IS_ACCESSED;
++	pm_arg.return_mask = PAGE_IS_ACCESSED;
++
++	ret = ioctl(pagemap_fd, PAGEMAP_SCAN, &pm_arg);
++	close(pagemap_fd);
++
++	if (ret < 0) {
++		uffd_test_fail("PAGEMAP_SCAN failed: %s", strerror(errno));
++		return;
++	}
++
++	/*
++	 * The second half of pages should be reported as RW-protected.
++	 * They may be coalesced into one region.
++	 */
++	if (ret < 1) {
++		uffd_test_fail("expected cold pages, got %ld regions", ret);
++		return;
++	}
++
++	/* Verify the cold region covers the second half */
++	uint64_t cold_start = regions[0].start;
++	uint64_t expected_start = (uint64_t)gopts->area_dst +
++				  (nr_pages / 2) * page_size;
++
++	if (cold_start != expected_start) {
++		uffd_test_fail("cold region starts at 0x%lx, expected 0x%lx",
++			       (unsigned long)cold_start,
++			       (unsigned long)expected_start);
++		return;
++	}
++
++	uffd_test_pass();
++}
++
++/*
++ * Test that RWP protection survives a mprotect(PROT_NONE) ->
++ * mprotect(PROT_READ|PROT_WRITE) round-trip. The uffd-wp bit on a
++ * VM_UFFD_RWP VMA must continue to carry PROT_NONE semantics after
++ * mprotect() changes the base protection; otherwise accesses would
++ * silently succeed and the pagemap bit would stick without a fault
++ * ever clearing it.
++ */
++static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
++				   uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	unsigned long p;
++	struct page_region regions[16];
++	struct pm_scan_arg pm_arg;
++	int pagemap_fd;
++	long ret;
++
++	/* Populate all pages */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, 0xab, page_size);
++
++	/* Register and RW-protect the whole range */
++	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
++			      nr_pages * page_size))
++		err("register failure");
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			nr_pages * page_size, true);
++
++	/* Round-trip mprotect(): PROT_NONE -> PROT_READ|PROT_WRITE */
++	if (mprotect(gopts->area_dst, nr_pages * page_size, PROT_NONE))
++		err("mprotect() PROT_NONE");
++	if (mprotect(gopts->area_dst, nr_pages * page_size,
++		     PROT_READ | PROT_WRITE))
++		err("mprotect() PROT_READ|PROT_WRITE");
++
++	/* Touch every page. Async RWP must auto-resolve each fault. */
++	for (p = 0; p < nr_pages; p++) {
++		volatile char *page = gopts->area_dst + p * page_size;
++		(void)*page;
++	}
++
++	/*
++	 * After touching, no page should remain RW-protected. A stuck
++	 * uffd-wp bit would mean mprotect() silently dropped PROT_NONE and
++	 * the access never faulted.
++	 */
++	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
++	if (pagemap_fd < 0)
++		err("open pagemap");
++
++	memset(&pm_arg, 0, sizeof(pm_arg));
++	pm_arg.size = sizeof(pm_arg);
++	pm_arg.start = (uint64_t)gopts->area_dst;
++	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
++	pm_arg.vec = (uint64_t)regions;
++	pm_arg.vec_len = 16;
++	pm_arg.category_mask = PAGE_IS_ACCESSED;
++	pm_arg.category_inverted = PAGE_IS_ACCESSED;
++	pm_arg.return_mask = PAGE_IS_ACCESSED;
++
++	ret = ioctl(pagemap_fd, PAGEMAP_SCAN, &pm_arg);
++	close(pagemap_fd);
++
++	if (ret < 0) {
++		uffd_test_fail("PAGEMAP_SCAN failed: %s", strerror(errno));
++		return;
++	}
++	if (ret != 0) {
++		uffd_test_fail("expected no cold pages after mprotect()+touch, got %ld regions",
++			       ret);
++		return;
++	}
++
++	uffd_test_pass();
++}
++
++/*
++ * Test that GUP resolves through protnone PTEs (async mode).
++ * RW-protect pages, then use a pipe to exercise GUP on the RW-protected
++ * memory. write() from RW-protected pages triggers GUP which must fault
++ * through the protnone PTE.
++ */
++static void uffd_rwp_gup_test(uffd_global_test_opts_t *gopts,
++				     uffd_test_args_t *args)
++{
++	unsigned long page_size = gopts->page_size;
++	char *buf;
++	int pipefd[2];
++
++	buf = malloc(page_size);
++	if (!buf)
++		err("malloc");
++
++	/* Populate first page with known content */
++	memset(gopts->area_dst, 0xCD, page_size);
++
++	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, page_size))
++		err("register failure");
++
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
++
++	if (pipe(pipefd))
++		err("pipe");
++
++	/*
++	 * write() from the RW-protected page into the pipe.
++	 * This triggers GUP on the protnone PTE. In async mode the
++	 * kernel auto-restores permissions and GUP succeeds.
++	 */
++	/*
++	 * Use base page size for write — hugetlb pages are larger than
++	 * the default pipe buffer, which would deadlock.
++	 */
++	if (write(pipefd[1], gopts->area_dst, getpagesize()) != getpagesize()) {
++		uffd_test_fail("write from RW-protected page failed: %s",
++			       strerror(errno));
++		goto out;
++	}
++
++	if (read(pipefd[0], buf, getpagesize()) != getpagesize()) {
++		uffd_test_fail("read from pipe failed");
++		goto out;
++	}
++
++	if (memcmp(buf, "\xCD", 1) != 0) {
++		uffd_test_fail("content mismatch: got 0x%02x, expected 0xCD",
++			       (unsigned char)buf[0]);
++		goto out;
++	}
++
++	uffd_test_pass();
++out:
++	close(pipefd[0]);
++	close(pipefd[1]);
++	free(buf);
++}
++
++/*
++ * Test runtime toggle between async and sync modes.
++ * Start in async mode (detection), flip to sync (eviction), verify faults
++ * block, resolve them, flip back to async.
++ */
++static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
++					      uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	struct uffd_args uargs = { };
++	pthread_t uffd_mon;
++	char c = '\0';
++	unsigned long p;
++
++	uargs.gopts = gopts;
++	uargs.handle_fault = uffd_handle_rwp_fault;
++
++	/* Populate */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
++
++	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size))
++		err("register failure");
++
++	/* Phase 1: async detection — RW-protect, access first half */
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size, true);
++
++	for (p = 0; p < nr_pages / 2; p++) {
++		volatile char *page = gopts->area_dst + p * page_size;
++		(void)*page;  /* auto-resolves in async mode */
++	}
++
++	/* Phase 2: flip to sync for eviction */
++	set_async_mode(gopts->uffd, false);
++
++	/* Start handler — will receive faults for cold pages */
++	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &uargs))
++		err("uffd_poll_thread create");
++
++	/* Access second half (cold pages) — should trigger sync faults */
++	for (p = nr_pages / 2; p < nr_pages; p++) {
++		unsigned char *page = (unsigned char *)gopts->area_dst +
++				      p * page_size;
++		if (page[0] != (p % 255 + 1)) {
++			uffd_test_fail("page %lu content mismatch", p);
++			goto out;
++		}
++	}
++
++	if (uargs.minor_faults == 0) {
++		uffd_test_fail("expected sync faults, got 0");
++		goto out;
++	}
++
++	/* Phase 3: flip back to async */
++	set_async_mode(gopts->uffd, true);
++
++	/* RW-protect and access again — should auto-resolve */
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size, true);
++
++	for (p = 0; p < nr_pages; p++) {
++		volatile char *page = gopts->area_dst + p * page_size;
++		(void)*page;
++	}
++
++	uffd_test_pass();
++out:
++	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
++		err("pipe write");
++	if (pthread_join(uffd_mon, NULL))
++		err("join() failed");
++}
++
++/*
++ * Test that RW-protected pages become accessible after closing uffd.
++ */
++static void uffd_rwp_close_test(uffd_global_test_opts_t *gopts,
++				       uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	unsigned long p;
++
++	/* Populate */
++	for (p = 0; p < nr_pages; p++)
++		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
++
++	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
++			  nr_pages * page_size))
++		err("register failure");
++
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			 nr_pages * page_size, true);
++
++	/* Close uffd — should restore protnone PTEs */
++	close(gopts->uffd);
++	gopts->uffd = -1;
++
++	/* All pages should be accessible with original content */
++	for (p = 0; p < nr_pages; p++) {
++		unsigned char *page = (unsigned char *)gopts->area_dst +
++				      p * page_size;
++		unsigned char expected = p % 255 + 1;
++
++		if (page[0] != expected) {
++			uffd_test_fail("page %lu not accessible after close", p);
++			return;
++		}
++	}
++
++	uffd_test_pass();
++}
++
++/*
++ * Test that RWP protection is preserved across fork() when
++ * UFFD_FEATURE_EVENT_FORK is enabled. Without preservation, the child's
++ * PTEs would lose the uffd-wp marker and RWP-protected accesses would
++ * silently fall through to do_numa_page().
++ */
++static void uffd_rwp_fork_test(uffd_global_test_opts_t *gopts,
++			       uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	int pagemap_fd;
++	uint64_t value;
++
++	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
++			      nr_pages * page_size))
++		err("register failed");
++
++	/* Populate + RWP-protect */
++	*gopts->area_dst = 1;
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
++			page_size, true);
++
++	/* Parent: verify uffd-wp bit is set before fork */
++	pagemap_fd = pagemap_open();
++	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
++	pagemap_check_wp(value, true);
++
++	/*
++	 * Fork with EVENT_FORK: child inherits VM_UFFD_RWP. Child reads
++	 * its own pagemap and must still see the uffd-wp bit set.
++	 */
++	if (pagemap_test_fork(gopts, true, false)) {
++		uffd_test_fail("RWP marker lost in child after fork");
++		goto out;
++	}
++
++	uffd_test_pass();
++out:
++	close(pagemap_fd);
++}
++
++/*
++ * Test that RWP protection on a pinned anon page is preserved across fork().
++ * Pinning forces copy_present_page() in the child path, which must restore
++ * PAGE_NONE on top of the uffd bit. Using async mode, a read in the child
++ * auto-resolves if — and only if — the PTE was actually protnone+uffd; the
++ * cleared uffd bit afterward proves the fault path ran.
++ */
++static void uffd_rwp_fork_pin_test(uffd_global_test_opts_t *gopts,
++				   uffd_test_args_t *args)
++{
++	unsigned long page_size = gopts->page_size;
++	pin_args pin_args = {};
++	int pagemap_fd, status;
++	uint64_t value;
++	pid_t child;
++
++	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, page_size))
++		err("register failed");
++
++	/* Populate. */
++	*gopts->area_dst = 1;
++
++	/* RO-longterm pin so fork() takes copy_present_page() for this PTE. */
++	if (pin_pages(&pin_args, gopts->area_dst, page_size)) {
++		uffd_test_skip("Possibly CONFIG_GUP_TEST missing or unprivileged");
++		uffd_unregister(gopts->uffd, gopts->area_dst, page_size);
++		return;
++	}
++
++	/* RWP-protect: PTE is now PAGE_NONE + uffd bit. */
++	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
++
++	pagemap_fd = pagemap_open();
++	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
++	pagemap_check_wp(value, true);
++
++	child = fork();
++	if (child < 0)
++		err("fork");
++	if (child == 0) {
++		volatile char c;
++		int cfd;
++
++		/*
++		 * Read the pinned page. Only reaches the fault path if the
++		 * child PTE is protnone + uffd; async mode auto-resolves and
++		 * clears the uffd bit. If copy_present_page() dropped
++		 * PAGE_NONE, the read would silently succeed and the bit
++		 * would still be set.
++		 */
++		c = *(volatile char *)gopts->area_dst;
++		(void)c;
++
++		cfd = pagemap_open();
++		value = pagemap_get_entry(cfd, gopts->area_dst);
++		close(cfd);
++		_exit((value & PM_UFFD_WP) ? 1 : 0);
++	}
++	if (waitpid(child, &status, 0) < 0)
++		err("waitpid");
++
++	unpin_pages(&pin_args);
++	close(pagemap_fd);
++	if (uffd_unregister(gopts->uffd, gopts->area_dst, page_size))
++		err("unregister failed");
++
++	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {
++		uffd_test_fail("RWP not enforced in child after pinned fork");
++		return;
++	}
++
++	uffd_test_pass();
++}
++
++/*
++ * Test WP and RWP coexisting on the same VMA (async RWP mode).
++ * Register with MODE_WP | MODE_RWP, apply WP, then apply RWP, then read
++ * pages. Async RWP auto-resolves, and the WP bit must survive the RWP
++ * protect/unprotect cycle so subsequent writes still deliver WP faults.
++ */
++/*
++ * WP and RWP share the uffd-wp PTE bit and cannot coexist in the same VMA.
++ * Registration requesting both modes must be rejected.
++ */
++static void uffd_rwp_wp_exclusive_test(uffd_global_test_opts_t *gopts,
++				       uffd_test_args_t *args)
++{
++	unsigned long nr_pages = gopts->nr_pages;
++	unsigned long page_size = gopts->page_size;
++	struct uffdio_register reg = { };
++
++	reg.range.start = (unsigned long)gopts->area_dst;
++	reg.range.len = nr_pages * page_size;
++	reg.mode = UFFDIO_REGISTER_MODE_WP | UFFDIO_REGISTER_MODE_RWP;
++
++	if (ioctl(gopts->uffd, UFFDIO_REGISTER, &reg) == 0) {
++		uffd_test_fail("register with WP|RWP unexpectedly succeeded");
++		return;
++	}
++	if (errno != EINVAL) {
++		uffd_test_fail("register with WP|RWP: expected EINVAL, got %d",
++			       errno);
++		return;
++	}
++	uffd_test_pass();
++}
++
+ static sigjmp_buf jbuf, *sigbuf;
+ 
+ static void sighndl(int sig, siginfo_t *siginfo, void *ptr)
+@@ -1625,6 +2290,75 @@ uffd_test_case_t uffd_tests[] = {
+ 		/* We can't test MADV_COLLAPSE, so try our luck */
+ 		.uffd_feature_required = UFFD_FEATURE_MINOR_SHMEM,
+ 	},
++	{
++		.name = "rwp-async",
++		.uffd_fn = uffd_rwp_async_test,
++		.mem_targets = MEM_ALL,
++		.uffd_feature_required =
++		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
++	},
++	{
++		.name = "rwp-sync",
++		.uffd_fn = uffd_rwp_sync_test,
++		.mem_targets = MEM_ALL,
++		.uffd_feature_required = UFFD_FEATURE_RWP,
++	},
++	{
++		.name = "rwp-pagemap",
++		.uffd_fn = uffd_rwp_pagemap_test,
++		.mem_targets = MEM_ALL,
++		.uffd_feature_required =
++		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
++	},
++	{
++		.name = "rwp-mprotect",
++		.uffd_fn = uffd_rwp_mprotect_test,
++		.mem_targets = MEM_ALL,
++		.uffd_feature_required =
++		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
++	},
++	{
++		.name = "rwp-gup",
++		.uffd_fn = uffd_rwp_gup_test,
++		.mem_targets = MEM_ALL,
++		.uffd_feature_required =
++		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
++	},
++	{
++		.name = "rwp-async-toggle",
++		.uffd_fn = uffd_rwp_async_toggle_test,
++		.mem_targets = MEM_ALL,
++		.uffd_feature_required =
++		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
++	},
++	{
++		.name = "rwp-close",
++		.uffd_fn = uffd_rwp_close_test,
++		.mem_targets = MEM_ALL,
++		.uffd_feature_required = UFFD_FEATURE_RWP,
++	},
++	{
++		.name = "rwp-fork",
++		.uffd_fn = uffd_rwp_fork_test,
++		.mem_targets = MEM_ALL,
++		.uffd_feature_required =
++		UFFD_FEATURE_RWP | UFFD_FEATURE_EVENT_FORK,
++	},
++	{
++		.name = "rwp-fork-pin",
++		.uffd_fn = uffd_rwp_fork_pin_test,
++		.mem_targets = MEM_ANON,
++		.uffd_feature_required =
++		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
++	},
++	{
++		.name = "rwp-wp-exclusive",
++		.uffd_fn = uffd_rwp_wp_exclusive_test,
++		.mem_targets = MEM_ALL,
++		.uffd_feature_required =
++		UFFD_FEATURE_RWP |
++		UFFD_FEATURE_PAGEFAULT_FLAG_WP,
++	},
+ 	{
+ 		.name = "sigbus",
+ 		.uffd_fn = uffd_sigbus_test,
 -- 
 2.51.2
 
