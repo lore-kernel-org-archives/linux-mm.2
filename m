@@ -4,107 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77AA8FF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 18:51:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 659C6FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 18:56:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCCFB6B0088; Mon, 27 Apr 2026 14:51:03 -0400 (EDT)
+	id 8A4956B009B; Mon, 27 Apr 2026 14:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7D7F6B008C; Mon, 27 Apr 2026 14:51:03 -0400 (EDT)
+	id 82E4B6B009F; Mon, 27 Apr 2026 14:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C93B56B0092; Mon, 27 Apr 2026 14:51:03 -0400 (EDT)
+	id 6F6B86B00A2; Mon, 27 Apr 2026 14:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B8E4F6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:51:03 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 85EFF1C033E
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:51:03 +0000 (UTC)
-X-FDA: 84705228006.14.00727F3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C0E33180010
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:51:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0L0AZP9;
-	spf=pass (imf06.hostedemail.com: domain of "SRS0=5R8g=C2=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=5R8g=C2=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 588C26B009B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:56:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 080BB1B7EE9
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:56:33 +0000 (UTC)
+X-FDA: 84705241866.03.BAF3656
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4AFBD140012
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:56:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G9238WJ7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777316191; a=rsa-sha256;
+	cv=none;
+	b=YeEepRYRJVpTKih82sl/5zwO9jXYwoxBva9xw7oGZ0LnGEjhsCY41Vl+UJt6Du608+FrUw
+	NaIaGC9/5hn2T05FXzSdYumvghHXui5JerJ2JLNTxR1D1SKbJ2fFxJcnQaOC2Lll28RMT2
+	YY95+iwY4wMICQz5W0ScAbPkYyWwXzE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G9238WJ7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777315861;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1777316191;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gp83lGspVAjzx8xM35sMJOv6Nx6ekR0y+QLqz9EQJQ8=;
-	b=hUXwjdiuOa+K/KJdG+nW7WcmU1fuU2CvO51gcp63uOX73YpvSLMG065biHN9vqvNCHGrfp
-	RhPEf2ABOCnjWFKhDr7dvcqFz0xltCtq33O3V9QQuolDpOSpvV2IzzUMv6YTVgdT3lyUhJ
-	YVCNs1/cja4FOUD+kOGt8AkmSzZVysQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0L0AZP9;
-	spf=pass (imf06.hostedemail.com: domain of "SRS0=5R8g=C2=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=5R8g=C2=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777315861; a=rsa-sha256;
-	cv=none;
-	b=3SdIAw4b8Z5GTHxrErrLWh/hqx+dy/mCjc86RJzc8O22qzMVC/4bh2pfSFrLIRwLJAu7CK
-	0OS2GbFMiXfGcXAfOiN37RimwE9iASM1VwpSRhWWsEAXcfigJYKu0uyeDuGk6SjoEZ/2zT
-	aGqmZrCkABihJOQqxj/39622S6UxcQ0=
+	bh=I74jyHi6WfTZuDsMEJoTzRYGQk10/KNqNMOM844SYOU=;
+	b=aAfvlXVmu+0JvZrdPlHCr3i5eJSylBbg/RT+b/43to7NYoSqEOVi1EpsbZ3h1FYQ91Fve+
+	z2pQPliCwHR5LYeIZTx3ONn32beWw9TYf5QLqN8fxvg7L2poYVJBaBW/mz6w29+y+7c1du
+	Zve722rrfIkK5hjyXmS5fJFwStChO7w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2B92860138;
-	Mon, 27 Apr 2026 18:51:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4D8C19425;
-	Mon, 27 Apr 2026 18:51:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 547A5403D5;
+	Mon, 27 Apr 2026 18:56:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0876C19425;
+	Mon, 27 Apr 2026 18:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777315860;
-	bh=v55i0w6M0EcnzLsslbo9Aiy+5pDv63hc63AF66VcSWA=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=a0L0AZP98abJNOh6BidmAL1LYYkuUK5S75umWl97+QgD6zA2qkGPYHs9hphVGG6Fv
-	 6GqWxjWhwlPoj7tsvz62+3peBqK74Hhkw69GSoNtQy1r64Fy+EeCJLVNduxMrujur7
-	 eqw/8msUeVFfU5P89Lir+TIColzTYCrfeIyNxtpf3rEEB7qYchzRuapU4G/TGXqknJ
-	 T78/cbnkD46LwN8NhuShusptW8ho2zushibx2uY20CtJ+WCENi5BLs2mmakjIopk5V
-	 m7iX96x775m8EOThSLL/hNKgVx79C1B3AuQzeKEVJVzlqac+we54AEumElnIQAjp+V
-	 JoPVZuNIQXUKA==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 83F12CE0DD4; Mon, 27 Apr 2026 11:51:00 -0700 (PDT)
-Date: Mon, 27 Apr 2026 11:51:00 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hao Li <hao.li@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 4/8] mm/slab: introduce kfree_rcu_nolock()
-Message-ID: <efef0b9c-1b1d-47b0-9c73-b2f9659ec635@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260416091022.36823-1-harry@kernel.org>
- <20260416091022.36823-5-harry@kernel.org>
- <aejeVK0J_jHSfVhD@milan>
- <aelxH--hZkCahPv6@hyeyoo>
- <ael8R0vOeZ0Xbcoe@hyeyoo>
- <7526f30a-a008-49bc-a064-07f4e4a7920b@kernel.org>
+	s=k20201202; t=1777316190;
+	bh=MpePPJ1H5FdPyHmRmIns0IGr3K1GdEibm8qRgpRvHlM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G9238WJ7iV4t1t3oKjhnDqXFZakWlqZ4NNess3dlMDMIZDHFzAz+6JpkMSch/DGdq
+	 yqRIdGKSMaWAyjx2gBngUZs5V4pr2d5q93yVOB3ZvorK6njgG5HQgFeuDEtn0oRHXF
+	 Ckwmx05EscNn7uKnmfgSB+miF+SNL+JE9vaSYRwImrmW+Ot2mJKBqA7a6Nyv/IjMcw
+	 bUtDgf8BO0YijpQhD1orjHfpR3dfUMxKBSl2P06VHVraZvhkcBFNBcaS1Y+7bBLpE3
+	 MaTPGUsbci4BfS2Q1OcojHi9GuML14TlOK15iKFoR3hB5d2dIuYbrWifEuU9CaLMO8
+	 YpkWky560Hz5Q==
+Date: Mon, 27 Apr 2026 14:56:28 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
+	corbet@lwn.net, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, skhan@linuxfoundation.org, jackmanb@google.com,
+	hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Sasha Levin <sashal@nvidia.com>, Sanif Veeras <sveeras@nvidia.com>,
+	"Claude:claude-opus-4-7" <noreply@anthropic.com>
+Subject: Re: [RFC 4/7] mm: add page consistency checker implementation
+Message-ID: <ae-xXHUGfDiFcBUk@laps>
+References: <4b961a07-b72d-4c8a-ab49-23f61ed12b53@kernel.org>
+ <aeuC6TJ4XowazVZj@laps>
+ <aeuFnuiYDBjttEKt@plex>
+ <12985b32-88b3-47ab-8292-2e0ec6f5fbae@kernel.org>
+ <aev-DS4YTp5soVPd@laps>
+ <3146ebcf-5649-44a7-aa21-163bf404c42b@kernel.org>
+ <aezt96xgz_qyf4d-@laps>
+ <f910969d-1071-4174-bd42-da45cb6f9749@kernel.org>
+ <ae9ucgtCNf0JQtGu@laps>
+ <c50aeb03-538b-4dca-9a81-ab84bc19a333@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <7526f30a-a008-49bc-a064-07f4e4a7920b@kernel.org>
+In-Reply-To: <c50aeb03-538b-4dca-9a81-ab84bc19a333@kernel.org>
+X-Stat-Signature: a7f8jeg1k8e44j5if8eu84ichjut36dd
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C0E33180010
-X-Stat-Signature: hz1bnsgqcsc3t5tdd9h1ey6rqezejjcy
-X-HE-Tag: 1777315861-501721
-X-HE-Meta: U2FsdGVkX18vFp8P83N7IBBESlB7PHuI66SDbB4nHZT3xF40TdWJQmZO21b3CCMXPNynOU8WOKyHH+UlvpMLqFSDRSnYImlIbx4JTRaLQqkia+fltEMmTZVv/Sgx9hZV5PzMnLX+OW2AvWa6KYGpH2TU1mJdXUwcNt7zU5HV8aNKfRmG4ol19UaSRes08y3HzbTF/g3SsZYhph2149Bs08ejj1uqhT7HciQr2dm/8aIYAwqRwDcj5hx+ISOZknonxaWTlmkID8tIkQw7wHFgx8cF+hIn4rWz7/izNTPQ+93DidgCvFr/IQJf8QKBeKE5b7R1rTbT8P1dlUKKJ5Gx89bmVg/Wh52tPlLYUfpJ4fG/AOrlY1Yv4LEewwE0U3jA8ePwZwem66jDj1CtC3pnVBviRmtgPIlhiM+W1AheKluifWGz5lyFB3a2Nd8e99lT+BtnATfXi3w8IXCAtCcDn2ZkpeQ2DgXhpzpSdnK5TMZQDvd4it99C8oMuHU9Zbss+4OHRinubNvUabXmjwWwf5tSqQMDl8xrcSfWtR8h5IvjCt4dYUyCzjFKlBLE707DtSh7XlqTr16Oh6NufDHR53zhiQg73fHEyoUpCoh8K7tdAq8/aKSx7a1QtU4nsl+5wMFApazQSzBas9mihWKQI2CxzbZv519103Tyo5MlweiEOU3fiiOUmbCEgKgRcKvYzHDcBApsdPR12prqrrt8VzxYMTaeMY3mYGAbaG8+YgPNlA/X4O1zqLBoeSCPxzQmI0OJCJJtvd5u+S5mv5EKcZM+frfYEaKBjm5On6i2anA0pYuLlAa7HPyGMnAZ9KztrQ/2xoCqJ+8vAGHjxj6LNlMfDaW9YvQ2ArQ56z2wcxLx5lxDVj05+PVhLlY/gid0r1D3mLfYnLEGgLRxY4Fe9Q5NT/NJqwpbnIpJJBowLp/Q3MA//vmnZdbV67OKK7iSGBimDUc3Pkhhi2QNmNh
- ANGbm1F6
- k0Ygr1cc4n/6REXl5b/TiXV/xJ7VAMOQglcX0RXYWQpiUnLK4wFVMQyTX4pC7SlBvStaOxY4JmHWCZfJwcNUoAUoDqD/61m5sa1jRH+dMq5mHpEqR/9xZalCxQm+ayA5rV7/c9goUsA58p++Ec11fa3MEwIKy8cQGZorZYKsMAMPP9mgm4sf0p8aF1bK+h+FMGIcd3VWl7aJp01iM9ibrb6FCdLMu9mpmsmELcYKHyKJdldnPW2A5CB2AXS940FbZF98NqL9tEegTXPTW1XFPCrUXtHHha/jBEnAJjswH9ABHKzjtlnBJlzDhBxHbbxvY3jasa2prEnGwJE0rNP/f/dyVj+MPw8eZbEwF9v2CMfiDNc9xTkUo5zfwfpUwJVfjhy0u/5HrVJNbssptV/4BvIYuHfhmIoTUDv+QBenGSU61MrjK6cFfWuOmjcH+Lqtgla5ZkvdIYzHNqbaujvZnK3fBhqh0yOG/TM2SfCanWjRyTfTdmbBnTZQE+XLsTJrDukBstxXTrXEbRKaWx24MHi61UKG2ClH1Zz4n0Bky+JZvQFIYyC+GinLHpHqe7POOvQvmMuuR+p4bhSPco7mgPXQqIGExcsqgb/OWi6PlIOc8TbeBs3DFSzs6mEs6+FB7fKvslbbz+l1WtjatNZxhD7NyRMJiogZ2U0JrQyvIPmCKekqJx9Mp5Jl6SnFfXUewUqOS
+X-Rspamd-Queue-Id: 4AFBD140012
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777316191-793857
+X-HE-Meta: U2FsdGVkX1+QJ76Sd/ANYFsDCt1cyxDibWPrnzTr5r7Z0Z/QpZ7Ch2HZnvIWDHGU5XkwSRkXiCgDPJaQqPJkhr0VI7mKqMRu7mxmMuDSM1WHqMH3p3WK2GW9+lUOwQdmYvJ9G4kEoYRXKPQZ8vdlkmqJaIdE2J6zG/GiZ/exuA4bEPg7HubgESiJ1b4wh7/h6cDsAb8tH5GIl8GpvfLrFx5zGX+QXF/CdxytMqYZa+Ywyj8aap97qBuQBq9VA42+zhEH1jx52a3DINyf1m2kY5l03k+EvK2B14Cmt95Lwgs6xvgFj+49jYtVyJA3vktp//q3+RmyUQe5fiYlMTvGjt7s67Kw/JWhWi4tn4KM1x5TOoSZFePQ0mPqmfaSd3OlXFeDvjJaiabDgbPneKVzN4HSsWHKkUAlAQIbirJoJd3/SP71GydgeQ720QDuAulE1rlWfrDej/PBA5gMFDF4xUtx8KpQJd5wDavM7H6hUlt4f2bYbjkkxkEaABoykgRDhTX4KloDvXmRZN4RnBZ5FGbL+u6lAgpOaD7uM9TMW1udRKARiDRr4pJtyH9AUMc55IbKpI7GE5yxMmRQFKX+XZKtLKFR+FV4dlpSyAFhmMMMkR+RY7LfNHlAdCq5RndDOfg3Np4JmmeLKItXMcW/0I+9bEMNGYK2KXxUaS4nTv8a06V7IT+yFg2Ws0ytYypkYtsaTE5xgKw6F/0teos08dV75pSNX6dYtShOooWexHL757irsU+a7oSNAStYYIAWXmOZDPckUeDcugouLs6y0z81xb5ZgWpafYME5GZf2qEy30l30crUTZBpEF+F+epSPB2+VyS58A1gdL0v9HygPVAFGlPiQ4geq4Kie/XDeSIj4Snsu1L6aZ8cCl9PT341XLgFcJ2fANhTotOii7pJQrPXV2EhFB3EQy2VLKiQz06KrxKrvPBpIwTkD7tsyWqhV6m9ch7oK1zDZKaATx8
+ tbt+5yXV
+ WnisBoTKHPfavs0pvc+7DjJ7KgBUCT8g6v+MyovRuqsMUGU1RgZmPYySQ5YgRUXm6VWFSYYJ/oqKEFY7AE/rQ7/10gS+Z1RwmjrCCOfWMYh0Y+/pCuLN3u5DfQ63nveaIqibirGLP2BldUMBCCubUWhyETFKHd3tee1/1G2i9blhbzfVocu54QmEPyOp+9w6ZhP8g5cJkydbCQI/bhA1P1F8o9DYNAHR0XnaSoAirvK3r9/colVFiSwh3T0DLsa7IpZCYdjxsC3pRtXPnqrKV8BcMXF2u/WbbV+tnbUmhiGezGT0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,41 +105,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 08:08:43PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 4/23/26 03:56, Harry Yoo (Oracle) wrote:
-> > On Thu, Apr 23, 2026 at 10:08:49AM +0900, Harry Yoo (Oracle) wrote:
-> >> On Wed, Apr 22, 2026 at 04:42:28PM +0200, Uladzislau Rezki wrote:
-> >> > On Thu, Apr 16, 2026 at 06:10:18PM +0900, Harry Yoo (Oracle) wrote:
-> >> > As discussed or noted earlier, having third argument and check the
-> >> > entire path with "if (allow_spin)" is not optimal and is not good
-> >> > approach. I do not think it this would be a good fit for mainline.
-> >> 
-> >> I understand that this pattern is pretty uncommon and adds complexity.
-> >> But there is a reason why we're doing this. As Alexei pointed out
-> >> earlier, even rare spikes of irq_work hurt performance [1]; that can be
-> >> avoided in most cases where the lock is not in use. That's why buddy [2]
-> >> and slab [3] accepted this pattern despite the added complexity?
-> > 
-> > Perhaps we can avoid complicating existing kvfree_rcu batching
-> > (and still avoid hurting performance).
-> > 
-> > Given that kfree_rcu_nolock() (at least BPF) doesn't need to free
-> > vmalloc objects, we can make kfree_rcu_sheaf() handle most of frees
-> > (slab already knows how to handle allow_spin = false) and fall back to
-> > a simple irq_work as Ulad suggested.
-> > 
-> > But then we need to make kfree_rcu_sheaf() try harder (currently it
-> > gives up when it fails to get an empty sheaf from the barn).
-> 
-> Yeah, if there's a burst of kfree_rcu_nolock() calls, it might exhaust that.
+On Mon, Apr 27, 2026 at 05:40:34PM +0200, David Hildenbrand (Arm) wrote:
+>>>>
+>>>> For something like a datacenter deployment I'd agree with you - the odds are
+>>>> too low to care. For an unsupervised self driving vehicle, where there's no
+>>>> human (locally or remotely) available to take over, I'd like the odds to be as
+>>>> low as possible :)
+>>>
+>>> I thought that people usually use special RT OSes (with proven logic etc) for
+>>> any safety-related systems. Using Linux on the core safety system sounds ...
+>>> scary.
+>>
+>> RT OSes are indeed the current approach.
+>>
+>> s/scary/exciting ;)
+>
+>Not so exciting for the passengers ;)
+>
+>>
+>>> But, I'd expect corruption of other data (user pages? page tables?) a much
+>>> bigger problem than page al locator metdata? What am I missing that this here is
+>>> -- in context of the bigger problems there -- a thing we particularly care about?
+>>
+>> You are very correct! The allocator work was fairly standalone, so it was an
+>> easy first project to tackle.
+>
+>But in general, wouldn't we just expect ECC memory to give us an MCE, so we can
+>detect what was corrupted and act accordingly?
+>
+>That's how it usually works: hw detects a memory corruption and injects an MCE.
+>We detect that we corrupted memmap state and kill the kernel.
+>
+>Why does ECC not help here?
 
-The usual trick is to do an irq-work or similar and have the handler
-do the allocation.
+It helps, but it's not enough. ECC doesn't detect all errors (For example,
+SECDED corrects single-bit, detects double-bit, but triple-bit errors can land
+on a different valid codeword).
 
-							Thanx, Paul
+>> In general, the approach depends on what we're trying to defend from:
+>>
+>> 1. bugs: an ASI-like MMU enforced "context" system.
+>> 2. physics: just like in most other areas - lots of redundancy. For example,
+>> consider redundant variables in safety critical code which exists as two
+>> copies: var_v1 = value and var_v2 = value XOR mask. When accessing them, read
+>> both copies, XOR the second back, compare.
+>>
+>> There were a few sessions back in LPC about this. Here's the one from Bryan
+>> Huntsman which gives a good overview:
+>> https://www.youtube.com/watch?v=ie_ClBCed94
+>
+>Thanks, but I fundamentally don't understand how RAS capabilities interact here?
+>We have mm/memory-failure.c for a reason :)
 
-> > And I guess the tricky part is making kfree_rcu_sheaf() work on RT ;)
-> 
-> I hope we're close to that, as discussed on patch 5/8 :)
-> 
+We do, but self driving safety requires way more than the current hardware can
+provide.
+
+I'll point you to https://dl.acm.org/doi/10.1145/2775054.2694348 , which
+researched these issues in a datacenter environment (so no sun exposure,
+temperature controlled, designed to avoid electromagnetic interference).
+
+"We call a fault that generates an error larger than 2 bits in an ECC word an
+undetectable-by-SECDED fault. A fault is undetectable-by-SECDED if it affects
+more than two bits in any ECC word, and the data written to that location does
+not match the value produced by the fault."
+
+[...]
+
+"A Cielo node has 288 DRAM devices, so this translates to 6048, 518, and 57.6
+FIT per node for vendors A, B, and C, respectively. This translates to one
+undetected error every 0.8 days, every 9.5 days, and every 85 days on a machine
+the size of Cielo."
+
+[...]
+
+"Our main conclusion from this data is that SEC-DED ECC is poorly suited to
+modern DRAM subsystems. The rate of undetected errors is too high to justify
+its use in very large scale systems comprised of thousands of nodes where
+fidelity of results is critical."
+
+The passengers you've mentioned before would be excited if they knew how high
+the bar is around their safety :)
+
+-- 
+Thanks,
+Sasha
 
