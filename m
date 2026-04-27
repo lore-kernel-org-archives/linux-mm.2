@@ -4,89 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C94BFF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 14:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63954FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 14:26:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C597A6B008A; Mon, 27 Apr 2026 10:18:43 -0400 (EDT)
+	id 7AA196B0088; Mon, 27 Apr 2026 10:26:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C30A56B008C; Mon, 27 Apr 2026 10:18:43 -0400 (EDT)
+	id 781EA6B0092; Mon, 27 Apr 2026 10:26:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6EE96B0092; Mon, 27 Apr 2026 10:18:43 -0400 (EDT)
+	id 670EE6B0093; Mon, 27 Apr 2026 10:26:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A83036B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:18:43 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0579A1C01AE
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:18:43 +0000 (UTC)
-X-FDA: 84704541726.10.B1976CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3660920015
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:18:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XPy6ZXkA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777299521; a=rsa-sha256;
-	cv=none;
-	b=zTXA/VnmovAFZwmXN0hqRMEl/ZdOEwY9u0mGRt1BrAyQppzlTbCU2HuhgUx4VKbVCnfdie
-	zqoHGZm3m8aFBxI8TWZiuN85uYV9HdGHfpq1PRbsPhxHBEuTv3ZqGZpQZIlm6TsOlysBYZ
-	HHqFUSX+IhYfdUhUmd5t2Bffz3O0Pfg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XPy6ZXkA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777299521;
+	by kanga.kvack.org (Postfix) with ESMTP id 52E0E6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:26:44 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B2681403EE
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:25:45 +0000 (UTC)
+X-FDA: 84704559492.25.53F5F5F
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011058.outbound.protection.outlook.com [52.101.62.58])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DEDC04001B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:25:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="2d3/wmQ+";
+	spf=pass (imf11.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.58 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777299942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8ji5pC6owolBIYU4bB24ouYRDxvvVgAQBxoU8fSA39c=;
-	b=E+qK0aw0L8yw+PN028IC+1eTnms/z9B1Qt50OqX+65/H6oB5KG5NDiT+bPYaWlLg5KFgfE
-	bFvYEcyLObFvQz4zEedz2LyvuPU2KCBlRC04iBMPIFWmPsPq1O/TasDfc7R4FYw4BtynPl
-	hxk18Kz4lzGPtHF7/EqHQmUlJArQ9eI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 16DCC43A9D;
-	Mon, 27 Apr 2026 14:18:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626BCC19425;
-	Mon, 27 Apr 2026 14:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777299520;
-	bh=l7cPruqxRuL8cZDdPdNmuQwTk7T49Y8JS67+jg/DKN0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XPy6ZXkAopreXAZMZdUpKYx97gPmDjCSm7GpXKBJFSMKpsRHgcT2N9o/2W7UL8OKL
-	 lLo8VvooPGdG8loUz1AkIQRscUTQCJWxhglQiEAKCe5WcmblkPnxvn+wj7DMwbvekq
-	 jDRaW+S06syAiDvZ3yIpaHQ7bnomqY9IkT2+Xi2nUW0NB9m8qxZDH07LNXOwA4cNtX
-	 5vh+4bcuP/ORz2FrtKgYm8WTEVeHcPTU0dq2ywoe4YyHSU9RyUAP+RXYgjnwVFurQv
-	 Lb+RI9DQUyFfxsbWhAphc47Kp1vSN6/75dW+CQoJJJ3AIddz5px2VPnKp3E9J1aghE
-	 GDTwsjGIpqp2g==
-Date: Mon, 27 Apr 2026 15:18:34 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Mingyu Wang <25181214217@stu.xidian.edu.cn>, Liam.Howlett@oracle.com, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, osalvador@suse.de, 
-	david@kernel.org
-Subject: Re: [RFC PATCH] mm/hugetlb: fix resv_map memory leak in
- __mmap_region error path
-Message-ID: <ae9tVZbNFtBBet8f@lucifer>
-References: <20260425070700.562229-1-25181214217@stu.xidian.edu.cn>
- <BCFCF1D6-8F39-4E60-AD86-0ECF799FFD9D@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=XX9buGiAGz0jHy3aY3vA8IUuaBn9K0+DEsfCSoKq5l0=;
+	b=lOjc59V9cpT5uGZcYRW+TUFmGc1k9axf65id+hLQyVz567kKaSv6wNbUXBIdIUFVYOB8/c
+	dNdMGQzt2AXEqHuV4ktYxSacJxkspR58b9srgiNYaY3G94dv679HZsjcf4rvHXGyozRZwS
+	jquYAWqlb/H6eMQ+TUnVbjJ0PFrSZsk=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="2d3/wmQ+";
+	spf=pass (imf11.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.58 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777299942; a=rsa-sha256;
+	cv=pass;
+	b=hgNDHn7+rBPNT5qdPmQ+VYLgkb+6ea+/rKhs2cX76XCyCcU1WXOMM4WxHdVhFNLkW3RbFu
+	vpNHDTu43k639a4r21wSbITr9T0gGTf3znMGICffh1gloEH12KRd5E4cnQ/7fM/2AjUNSQ
+	DQefEE2ubNdRW94x0BAeNcv8hcDseho=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SM6D/DYWIuwk4MxKisR8JVWdVBpcd3i/XB1oUdGzN1KgbhlMhk6KV4/FD1+kmUdi0gN1IP9v0liR2zUZ76USyJ+LTcddzAX7hEqs++ZO7c55Mat8glsNiMGwnNvmT6sow1X/Kirkwt5XW1nE3rTr8QJm6/IliRE5+Lpb2Y4oK0lpGk/Hx9dSxFBYzgRDpGQM9u3/Z3LzjQCvTbufX/phU1nV9NvcjlMUaOTrhNhV+czuTj2grA6+pX40lnstHh4bT2yx6ngf7rtCirHvEtYP3hlda9uRkbA1X7oEUrLn+RfgNherh2xEYXD9BqvqQ9KYAsRr5U0LGIwcy2IXWg6rIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XX9buGiAGz0jHy3aY3vA8IUuaBn9K0+DEsfCSoKq5l0=;
+ b=LONRlQ2U/kpS8biPRMfLDVwHZYzi55n0SkrMJ/dnEHqyDyyCMDuQm4JzMjppTLXi9E+ezQuAFl2rtx8S6E65s8G4xgWpdEMc9yOywog66c4kO/AMIk7csbykipNtAeoSX+pQAh6kv0OmvBRindW0CNz4vo9We+VTBnEoAgF7TAHWTqpOQs0l4VEBLlDHaO7GFaDDeE7Zu1ywTPZ5cOCWnCkui8Tnvn8pk0xiU0FHUA0P9hmmfFGxs8w+zRZqR6uE6n7+HKqN84Pfos6SlsfmlYclMvZv+EilX2y5ua8SOdMqeCMtnF++cxNg2E8uzvy0aWs9zt7rBEkRMbniA5g3pw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XX9buGiAGz0jHy3aY3vA8IUuaBn9K0+DEsfCSoKq5l0=;
+ b=2d3/wmQ+KU2WhgolcGeHTeMyVzmKMtca9UF+KToUjoOUV8NAH16kW5mAcIy+PoY0eBX62tNK3tLGljq1XqFKc9Wc40iO5nqm/gxmsAvfY4XO9n+hdnTFh/uC/JHhhgKIlxML2oVUu3rOGUhOIkZJf6uMEnPOSlqtVmXWca7d+C8=
+Received: from PH8PR15CA0010.namprd15.prod.outlook.com (2603:10b6:510:2d2::6)
+ by MN2PR12MB4255.namprd12.prod.outlook.com (2603:10b6:208:198::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.15; Mon, 27 Apr
+ 2026 14:25:34 +0000
+Received: from CY4PEPF0000E9D1.namprd03.prod.outlook.com
+ (2603:10b6:510:2d2:cafe::8d) by PH8PR15CA0010.outlook.office365.com
+ (2603:10b6:510:2d2::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.26 via Frontend Transport; Mon,
+ 27 Apr 2026 14:25:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY4PEPF0000E9D1.mail.protection.outlook.com (10.167.241.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.18 via Frontend Transport; Mon, 27 Apr 2026 14:25:34 +0000
+Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 27 Apr
+ 2026 09:25:28 -0500
+From: Shivank Garg <shivankg@amd.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<x86@kernel.org>
+CC: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+	<Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, Ankur Arora
+	<ankur.a.arora@oracle.com>, Bharata B Rao <bharata@amd.com>, "Hrushikesh
+ Salunke" <hsalunke@amd.com>, David Rientjes <rientjes@google.com>, "Shivank
+ Garg" <shivankg@amd.com>
+Subject: [RFC PATCH 0/1] batch page copies in folio_copy() and folio_mc_copy()
+Date: Mon, 27 Apr 2026 14:20:36 +0000
+Message-ID: <20260427142036.111940-2-shivankg@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BCFCF1D6-8F39-4E60-AD86-0ECF799FFD9D@linux.dev>
-X-Stat-Signature: 4oj36agw6ymonpai3xz1acfeyuf6g7ih
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D1:EE_|MN2PR12MB4255:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7111b9bb-526c-497d-b3c5-08dea468d839
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|36860700016|56012099003|18002099003|18096099003;
+X-Microsoft-Antispam-Message-Info:
+	Hs0WKm3Az2JS8kOWY0EFkQKXJZzOBbsAMSmc44JnVVDSaNAE9VQ9IvB/7WiuAXzkpPItCZQkIYjyHsTnf/25mZ/Us37ozdl72Ij76ZaGoaMj7vICv0afB7jxVsbjHmjqpKL90EdDTswW1qrlUXwXmHV3ipX4KGYfrSDSWtJHIwHAPHkTKl7sfpsn9KIMAugX+a9QVme5/95caZu3VkygXZbAWw54QgRMzbDlL7xDDQZLMvZEkHS0bP8lqokbJyKrw0EMXsfbKYu5uNbEGQKwlftHr7dtFl5heT8UJPFU9gr0aR0YBbfd0QKvH8/ZM5jQZYO/UDWXN+xUcaK6W2Xi3xETA3B4TEf1a1QIJTrhO9naX5pjrdjC2FafFMwNuQ4BcEnlZx73LVHuPVgIfhS+w3IDymRrDWk/oJXW42AdnwDx/i2iVSB/RYO7YE42smN885MzWWmWM08w/8koLzk/ru2mfcOZeaJ05f5iQE3ahebjda9Yybj1p9Y3dA7WaeQGGVhtmh4j6X3EvZyB9nson7pIL0ywSNC0L8C7fjJxXHFIkG05lY64H9vodx2fLdef2SciwlngS19orKpBBakPMpLuy73HASrelnDGtHR7QOuaQQqhztdc39QY89zzLRv1tgScjn6mfzpEwG8+ZqveitgKfOIKY8rsXazkaMReTPPfUa8iNSDweTQWOGn/SQe/ZUPNBnHMTwO5bGW29UaciFhYRdW1H8T9Xn+2lSZjtvIpSN9Wn7njIEnBRCBZHXtCLe0Qzp4hXphUCs5iJAnI/g==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(36860700016)(56012099003)(18002099003)(18096099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	MtmwlUezBsnPGYk4oQiaaV/BOH5JnKrMSVl8c4biJKcoZBconMQp2rggs4nOMxYE2H1dgYFjKI7saj6Ozrd9GhWvwQ6kwQvxh4APPPhESrcRsrgx6Uuxmu5JDmlO8cQABkk19iawr0gcJSOToqNrFXPAxrUIPAU/b4bnEX86AOpjy3V9B4maxojcHho0ac7cWijP8GCDtqsFiL+FvvXLj5883QRh1fHQ6AJ/qKgwxAwssTPhzrNyM0tazb3DnxpYYzgUGs2H9NvA4XykeQfNh9K5T2/O8iVNc+PFXoG72ERASFQxapjug+wLlV8LJDIesXrNP1V9ru8buU4rYOnGp6khSeVkIYUBbQV6EcomCK53IjRpmZjy55kwoYhRfnO9DIXCE4P4kSjVNhpXCwWWBmZHToxdkdve22S/fSMigNRyuGnCO9pDFrTJ+l66URIm
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 14:25:34.3539
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7111b9bb-526c-497d-b3c5-08dea468d839
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000E9D1.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4255
+X-Stat-Signature: m3jotj41rpa63n8xqm5dacudapgugeu8
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DEDC04001B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3660920015
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777299520-835151
-X-HE-Meta: U2FsdGVkX1+CgjW6uabUlGT/f/GyWxrgp+feBzJNfLq6mmxelZmygNxJEQ4/BA3+3/iXsZ3+f2z8oEKaNL/v1d324h7ng37xq6Et67y9tRFTfXQtIEy8i5sG1WjaWlPQl/hgGk08LbDP0tFbBFm2FmSESUFQQysLvVxND+mcXkFutfnskl++sWQkT3H62vLXPhS7K1ktmezaarvGgav0hbH3EmC1o7nKTEhsHpnnHeyG8Oai3BhTDC6H2pQIzS3Y21+PdumogxtW3tnk7epnotM8vrXHFjzm/7nsE2/ccgbgdkvKKhNB0CyMz2o2CVE2Xy2Uyanm8rvX8YV0DVgMYh9U2QDWc0zQt3Cd0VzWH2+A+rhs79cKUYNJeIi+N0iKJJ9LNIHGjp41MFQoBHI/vCJ0LqhYo9iDqbwOA0R38KJH4Hqk/Qipj1vrVi1HJCQboAeeFC0PCibBw4NZUlSdfGBME8EwhWdGrxE0SAUZy8dWx1XyLT+zV6uyDmpVbOgG43ekYFlnRz5DBrCGWqIXhg3D7BA7XT5fDhOJ8c39tbffy1N5u91HZXaQdFu/41BW7/E0X70O4b4kijbyd5pcCOf+zPh6f7rZW53n/wDpLIgbd8kADFEcCjvnQEFcCnYA6zlZvIjsGACEnecab3xnRLbyOEetRu8B6etBgvh7jd8OSce8dwuPggJf1K5tV/+6NDeeYaUOpm54ZtYlbq40yVZ5DtQLbDK/mKOar8PMtvqRtJqwxDL1IeORfmaa7/PtyXy/WGrLt8eCtyaCzZOH4k0nR8NfKjep84vusCEo9xXSx8exKbNY4sFwHGWSxJlGx50zTSHQt3GhFcALtCQUiKlgQIpGoerp4SyVxBmLPyFdhBFetCVsFdMLu0EWZOMajW58ZHaPNKzJq0cjm30Qy8a5OiOw929qXLAx4fghfhS7gs5qRROXHPVMRp0apNJ4mg0OFkgzsryjcXEtAvh
- RsKagjrv
- nyQOwxgBzlETmgZEyNIvVZqmXAxyCD2GlVn4f0N42jIFp/RjDX1jknKDQvwZj0tCRpB/b7dBp0UDpM47shoS+yZ/QsBVlYGV8C/u5tMl4YHt2o0SJX8SUfpSS7Qx+Xuvj+M/KMvUbX8gL4LtwFXpdEKUi/5AuDemqNM7QRCr1MCtefCoNK+dZ+0kSY/GZ2knogPzFEgzxTI/yg8gVIrOCUyI7T0fPIg2xW/fIbYH5q8mTVySK/TlpeHiFWqRUFsk8AHhdRj5Wx08U1DDe028nDexgP0i7o5DkaZ/ELMJeeqIx2Ow=
+X-HE-Tag: 1777299941-917041
+X-HE-Meta: U2FsdGVkX19wvxgA5j7AkHeOGo4KNAc3K/bn2zoIeVCzcCjopbDz7s3l3Vts7x/sNr1DMjlBSC3sHSfVJcPYU+LSlIP8+zzbO0XPDo97cYQ8G1R8IEYqgtaqfAc3xCQErFADkFtfUzJh/6iRrbzFqqwifS23jmQkWfkp0C2bJz9pYYfIZ6/yt0lGcMV8Ilgg37LKPTzC8WLrx5kb2YJtg42JsNaG+5QiuT6k+GKzhEca7JMAw2nmkzBnu6YYcoMANhFaKRPxL/9L1b+/2B7OWgaB2tjWkBNPQ90hkuVvkIyWAsl85gvPPfOrW7i1sa4bX01K5BOa5RUuxpoBQo4gbY2jmoudYzPUje9nmYbyRW0rQEKAPCH53filnFP+pjKy/Q9M6naO7kEtvtC08mraQJ1OgldEmTe08FZcYU/TCw6WlY+lHJ5B6YTUiBu9sjFCpiv0APiuigT9urUd6JMv4VP71qEo0kaTxy6tJ7lWHCzLgqeBtIpRRCSk0lx/uLpWYC+JQympko1B1fJIKpjzPxLnZFbGG6L5DSGDqN9quVOIN3ABc0GkU6WawFhXT0WkZc2Vw7EcAO26LxV9jiojQNBVVuFd3LUV68J/cULbPBfZTrV9cca2xrTbofU3/XgtCEYKhr1qvJQErMfpgQYh9j+Z9kUWtcIjtlyeV4P8vdBJPRoC1NhmXIt2Nl4NSwTctbAuIlZs1t0MBM22CqC0tluj468fJOpN3WqqXChrJr1lJUpzTYhpMeVl0WK+V5uD1BiSrDevog+7VvFHZZaoKMvCDQ3XN8Lx+o+IjdQzhGEYiGW72l2VbcnyOdvFM1O9A+48srLKY7zSQcKnxKjG1wkbHUFzsFKyYjDMjPy6H9W0RiSJktl9lwG5ZmrmQf5LK1SSMXWln7ogOcFJ/gccBW091k1QQQwEt0BqycTb1pNX1jUpW4zVrzmqBPuHDqBWbHuVZ+Zzsx4x/gMQs8B
+ OYst+dQ5
+ xb0WPUo5TgtKoIrshMG3a2UdG+QgKdOj1JHPq5S0eaBBFJqCaTChOCIpbzI4cAMw9/+KMWD1leEyCd2glkFv/9HEoX2MuV5+7ItD5DQw9PR2IULhwr/y1mXibSECblQipLSWh2L8rbDNS57tH0AcvndD6TNTkrlFZZu8Y1Wl/DwUMZf0jU1d/sOm9uR08y4//F91GTiAVJT5hrLvWqLDvCdnjsASN9OPz19JPm56hM0oes0aSR8W5cWKOGOlnPOboShoq1u8WKjPiCeBUaDIgHT3IGpS7JJe7Y3ZbA/skgXH9xoFG0+9cCW8cgY8cYJ+yRpr0bQqQa2Qyd8qlGQMSg+nShHqHjQckZK0XRXTd4ojqLHkjiHVN2ZDrTEe3tK5H9FzD0Fc0EhhCJrS3diCnejfeMnlFRW0gg9019GAo69Bw7ruHKblR/gHV1tYdABUQU0fpjbUkrCH5RkUKPMA07o9ASs8W0xvA8cS88S1FqY0RJxAi8XqRSndPr/WkIetvkyIwzJfJxPdm63/uE9m3FVp52s87WV4dWGbVF7y/CTog/IY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,148 +153,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This RFC batches folio_copy() and folio_mc_copy() for the
+!HIGHMEM && !__HAVE_ARCH_COPY_HIGHPAGE path. A naive bulk-memcpy()
+implementation gives ~2x on AMD Zen 5 but regresses AMD Zen 3, because
+memcpy() resolves to different primitives on the two uarchs. I think
+the right end state is a copy_pages() x86 helper that mirrors what
+Ankur Arora did for clear_pages(), but I'd like opinions before doing
+that arch-side work.
 
-On Mon, Apr 27, 2026 at 03:55:00PM +0800, Muchun Song wrote:
->
-> > On Apr 25, 2026, at 15:07, Mingyu Wang <25181214217@stu.xidian.edu.cn> wrote:
-> >
-> > While fuzzing with Syzkaller and fault injection (failslab) enabled,
-> > I observed a persistent resv_map memory leak in the hugetlb mmap error path.
-> >
-> > BUG: memory leak
-> > unreferenced object 0xffff888110b92400 (size 512):
-> >  comm "syz.0.5386", pid 20390, jiffies 4298157188
-> >  backtrace:
-> >    __kmalloc_cache_noprof+0x509/0x6e0
-> >    resv_map_alloc+0x47/0x3a0
-> >    hugetlb_reserve_pages+0x758/0x1220
-> >    hugetlbfs_file_mmap_prepare+0x492/0x790
-> >    __mmap_region+0x1ae6/0x29f0
-> >
-> > This is a regression introduced by the recent VMA iterator and mmap region
-> > refactoring, which decoupled mmap preparation from VMA completion.
-> >
-> > In `__mmap_region()`, `call_mmap_prepare()` triggers `hugetlbfs_file_mmap_prepare()`,
-> > which successfully allocates the `resv_map` and registers a `success_hook`
-> > in `desc->action`.
-> >
-> > If `__mmap_new_vma()` subsequently fails (e.g., `vma_iter_prealloc()`
-> > returns -ENOMEM due to failslab), the code jumps to `abort_munmap`.
-> > However, the `desc` structure is completely discarded without invoking
-> > any cleanup. The newly allocated empty VMA is freed, but since
-> > `set_vma_user_defined_fields()` was never reached, `vm_area_free()`
-> > doesn't call `hugetlb_vm_close()`. Thus, the `resv_map` is permanently leaked.
-> >
-> > This RFC proposes adding an `abort_hook` to `struct mmap_action`
-> > so that subsystems can properly clean up resources allocated during the
-> > `mmap_prepare` phase if VMA creation fails.
+Both helpers loop per 4 KiB constituent page:
 
-Yeah sorry, this is a general problem that I addressed already with the
-vm_ops->mapped callback.
+folio_copy(dst, src):
+    for each page i in src:
+        copy_highpage(dst[i], src[i])
+        cond_resched()
 
-I'll come up with a patch to fix this up for hugetlb, thanks for highlighting
-this.
+folio_mc_copy(dst, src):
+    for each page i in src:
+        if copy_mc_highpage(dst[i], src[i]):
+            return -EHWPOISON
+        cond_resched()
 
-I plan to get rid of the success hook in any case, it's only because hugetlb is
-doing something really... not great with the 'VMA lock' (really hugetlb VMA lock
-I suppose) that we need a VMA pointer at the point.
+On !HIGHMEM and !__HAVE_ARCH_COPY_HIGHPAGE, the per-iteration calls
+boil down to:
 
-> >
-> > Any feedback on whether this architectural approach is correct, or how to
-> > properly implement the hugetlb unreserve rollback, would be highly appreciated.
->
-> Please use ./scripts/get_maintainer.pl to get full mail list for Cc/To since
-> it is not only related to HugeTLB subsystem. It will also consider the author
-> of commit introducing the problem.
+copy_highpage()    -> copy_page()         = rep movsq        [REP_GOOD]
+                                          = unrolled movq    [otherwise]
 
-Please do do that, I wrote this whole thing, so y'know :)
+copy_mc_highpage() -> copy_mc_to_kernel() = copy_mc_fragile  [if enabled]
+                                          = copy_mc_enhanced_fast_string (rep movsb)  [ERMS]
+                                          = memcpy()         [otherwise]
+                                            = rep movsb        [FSRM]
+                                            = memcpy_orig      [otherwise]
 
-Especially at the moment I am very very busy with LSF coming up so you need to
-make sure you include me in the mail.
+So the two helpers are not symmetric. copy_highpage() is unambiguously
+a microcoded rep movsq per page on every CPU we care about.
+copy_mc_highpage() is a runtime dispatch that already uses rep movsb
+on ERMS/FSRM CPUs and otherwise falls back to memcpy_orig.
 
->
-> >
-> > Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-> > ---
-> > fs/hugetlbfs/inode.c     | 9 +++++++++
-> > include/linux/mm_types.h | 2 ++
-> > mm/vma.c                 | 4 ++++
-> > 3 files changed, 15 insertions(+)
-> >
-> > diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> > index 8b05bec08e04..002bb6d9ca23 100644
-> > --- a/fs/hugetlbfs/inode.c
-> > +++ b/fs/hugetlbfs/inode.c
-> > @@ -102,6 +102,14 @@ static int hugetlb_file_mmap_prepare_success(const struct vm_area_struct *vma)
-> > return hugetlb_vma_lock_alloc((struct vm_area_struct *)vma);
-> > }
-> >
-> > +static void hugetlb_file_mmap_prepare_abort(struct vm_area_desc *desc)
-> > +{
-> > + 	/*
-> > +	 * TODO: Implement the proper rollback for hugetlb_reserve_pages()
-> > +	 * and drop the resv_map reference held in the desc here.
-> > +	 */
-> > +}
-> > +
-> > static int hugetlbfs_file_mmap_prepare(struct vm_area_desc *desc)
-> > {
-> > struct file *file = desc->file;
-> > @@ -172,6 +180,7 @@ static int hugetlbfs_file_mmap_prepare(struct vm_area_desc *desc)
-> > 	if (!ret) {
-> > 	/* Allocate the VMA lock after we set it up. */
-> > 	desc->action.success_hook = hugetlb_file_mmap_prepare_success;
-> > + 	desc->action.abort_hook = hugetlb_file_mmap_prepare_abort;
-> > 	/*
-> > 	 * We cannot permit the rmap finding this VMA in the time
-> > 	 * between the VMA being inserted into the VMA tree and the
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index a308e2c23b82..9320f6699fa9 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -861,6 +861,8 @@ struct mmap_action {
-> > * it is not valid to clear the error here.
-> > */
-> > 	int (*error_hook)(int err);
-> > +
-> > + 	void (*abort_hook)(struct vm_area_desc *desc);
->
-> At least for me, it is not good name to distinguish it from error_hook.
-> abort_mmap_prepare? I am not sure if it is a good solution, Cc other
-> MM maintainers as well.
 
-Yeah no we definitely don't want this, I plan to eliminate these hooks
-eventually.
+For RFC, I added a naive batched fast path that replaces the
+per-page call with a single bulk call:
 
-Really intend on adding no others, these were to work around effectively legacy
-issues in mmap callbacks.
+copy_highpages()    -> memcpy(N * PAGE_SIZE)
+copy_mc_highpages() -> copy_mc_to_kernel(N * PAGE_SIZE)
 
->
-> Muchun,
-> Thanks.
->
-> >
-> > /*
-> > * This should be set in rare instances where the operation required
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index 377321b48734..d64cea5b4335 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -2799,6 +2799,10 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
-> > */
-> > 	if (map.file_doesnt_need_get)
-> > 		fput(map.file);
-> > +
-> > + 	if (have_mmap_prepare && desc.action.abort_hook)
-> > + 		desc.action.abort_hook(&desc);
-> > +
-> > 	vms_abort_munmap_vmas(&map.vms, &map.mas_detach);
-> > 	return error;
-> > }
-> > --
-> > 2.34.1
-> >
->
+copy_mc_highpages() is fine: copy_mc_to_kernel() lands on the
+same family of primitives at any length, so batching it just amortises
+per-call setup.
 
-Thanks, Lorenzo
+                      | copy_mc_to_kernel() at any length
+                      |--------------------------------------
+Zen 3 (REP_GOOD only) | memcpy()           -->  memcpy_orig (movq)
+Zen 4/5               | copy_mc_enhanced_fast_string (rep movsb)
+
+
+copy_highpages() is where things break. It swaps the per-page
+primitive from copy_page() (rep movsq on REP_GOOD) to memcpy(),
+which has its own ALTERNATIVE that picks rep movsb on FSRM and
+memcpy_orig on everything else. The primitive choice now depends
+on X86_FEATURE_FSRM, not on what the caller wanted:
+
+                      | copy_page() (per page)| memcpy(bulk)
+                      |-----------------------|------------
+Zen 3 (REP_GOOD only) | rep movsq             | memcpy_orig (movq)
+Zen 4/5 (FSRM)        | rep movsq             | rep movsb (FSRM)
+
+
+Test setup on Zen 5
+===================
+
+  - Dual-socket AMD EPYC 9655 (Zen 5), three NUMA nodes
+    (DRAM node 0/1, CXL.mem node 2)
+  - Kernel based on akpm/mm-new:c656c6a02
+  - performance governor
+  - Bench thread pinned to CPU 4
+
+Microbenchmark: folio_mc_copy() / folio_copy() in isolation
+===========================================================
+
+Wrote a simple kernel module that allocates a single src/dst folio
+pair of the requested order and times folio_*_copy() between them via
+ktime_get_ns(). Each iteration optionally streams an eviction buffer
+(128MB) through L3 to evict cache lines, so we can measure both
+cache-cold and cache-hot regimes.
+
+Cache-cold (2 MB total per run, source evicted before each copy):
+
+  fn=folio_mc_copy
+  direction      folio    baseline GB/s    optimized GB/s   speedup
+  DRAM0->DRAM1   256K     15.63 ± 0.55     30.81 ± 2.10     1.97x
+  DRAM0->DRAM1   512K     16.14 ± 0.66     33.74 ± 2.74     2.09x
+  DRAM0->DRAM1     1M     17.09 ± 0.63     36.04 ± 1.85     2.11x
+  DRAM0->DRAM1     2M     18.65 ± 1.37     38.03 ± 3.21     2.04x
+  DRAM0->CXL     256K     22.55 ± 0.37     36.34 ± 1.32     1.61x
+  DRAM0->CXL     512K     22.24 ± 0.86     37.42 ± 1.89     1.68x
+  DRAM0->CXL       1M     23.28 ± 0.94     39.23 ± 0.97     1.68x
+  DRAM0->CXL       2M     25.46 ± 2.89     39.29 ± 1.17     1.54x
+  CXL->DRAM0       1M     17.88 ± 3.88     33.53 ± 0.40     1.88x
+  CXL->DRAM0       2M     20.61 ± 3.95     35.07 ± 0.62     1.70x
+
+  fn=folio_copy
+  direction      folio    baseline GB/s    optimized GB/s   speedup
+  DRAM0->DRAM1   256K     14.93 ± 0.57     29.66 ± 2.44     1.99x
+  DRAM0->DRAM1   512K     15.60 ± 0.36     34.21 ± 1.23     2.19x
+  DRAM0->DRAM1     1M     17.47 ± 0.41     36.20 ± 1.40     2.07x
+  DRAM0->DRAM1     2M     19.36 ± 1.97     38.92 ± 1.58     2.01x
+  DRAM0->CXL     256K     21.49 ± 0.39     34.92 ± 2.95     1.63x
+  DRAM0->CXL     512K     21.01 ± 0.69     37.09 ± 2.13     1.76x
+  DRAM0->CXL       1M     24.37 ± 1.99     38.94 ± 0.90     1.60x
+  DRAM0->CXL       2M     26.59 ± 2.78     38.40 ± 2.59     1.44x
+  CXL->DRAM0       1M     19.05 ± 3.87     33.93 ± 0.42     1.78x
+  CXL->DRAM0       2M     20.50 ± 4.53     35.78 ± 0.93     1.75x
+
+Cache-hot scenario (1G total, no eviction):
+
+Even when both source and destination already fit in L2/L3, the
+batched helper still wins. For a 2 MB cache-hot folio the old code
+runs the kmap_local_page() / kunmap_local() / cond_resched()
+sequence 512 times; the new code runs it once.
+
+  fn=folio_copy
+  direction      folio    baseline GB/s    optimized GB/s   speedup
+  DRAM0->DRAM0    16K     83.61 ± 0.41     96.70 ± 0.58     1.16x
+  DRAM0->DRAM0    64K     65.95 ± 1.14     78.77 ± 0.20     1.19x
+  DRAM0->DRAM0   256K     68.59 ± 0.88     82.55 ± 0.10     1.20x
+  DRAM0->DRAM0   512K     66.02 ± 0.50     82.66 ± 0.17     1.25x
+  DRAM0->DRAM0     1M     38.07 ± 0.06     41.53 ± 0.05     1.09x
+  DRAM0->DRAM0     2M     38.54 ± 0.02     41.60 ± 0.04     1.08x
+
+
+End-to-end: move_pages(2) on anon mTHP
+======================================
+
+Measure move_pages(2) syscall wall time on userspace pages obtained
+via aligned_alloc(). This includes the rmap walk, TLB shootdown,
+destination folio allocation, PTE rewrite, and refcount work, on top
+of the actual copy. The microbench wins do translate, even though the
+syscall floor work caps the speedup.
+
+  fn=move_pages(2), 1 GiB migrated per run
+
+  direction      folio     baseline GB/s   optimized GB/s  speedup
+  DRAM0->DRAM1   256K      4.77 ± 0.01     5.09 ± 0.01     1.07x
+  DRAM0->DRAM1     1M      4.83 ± 0.02     5.19 ± 0.02     1.08x
+  DRAM0->DRAM1     2M      7.20 ± 0.03     8.01 ± 0.02     1.11x
+
+  DRAM0->CXL     256K      6.07 ± 0.02     6.65 ± 0.01     1.10x
+  DRAM0->CXL       1M      6.29 ± 0.02     6.74 ± 0.02     1.07x
+  DRAM0->CXL       2M     11.12 ± 0.15    13.07 ± 0.03     1.18x
+
+  DRAM1->DRAM0   256K      4.72 ± 0.01     5.06 ± 0.01     1.07x
+  DRAM1->DRAM0     1M      4.83 ± 0.02     5.17 ± 0.02     1.07x
+  DRAM1->DRAM0     2M      7.21 ± 0.02     7.95 ± 0.02     1.10x
+
+  CXL->DRAM0     256K      5.08 ± 0.06     5.24 ± 0.05     1.03x
+  CXL->DRAM0       1M      5.30 ± 0.05     5.44 ± 0.05     1.03x
+  CXL->DRAM0       2M      9.10 ± 0.05     9.49 ± 0.01     1.04x
+
+
+Regression on Zen 3
+===================
+
+Hardware: AMD EPYC 7713 (Zen 3 / Milan, no FSRM, no ERMS).
+fn=folio_copy  (with current patch using bulk memcpy())
+
+2M cache-cold: 
+direction      folio   speedup
+DRAM0->DRAM1     1M    0.90x
+DRAM0->DRAM1     2M    0.89x
+DRAM1->DRAM0     1M    0.85x
+DRAM1->DRAM0     2M    0.86x
+
+2M Cache-hot:
+direction      folio   speedup
+DRAM0->DRAM1     1M    0.60x
+DRAM0->DRAM1     2M    0.61x
+DRAM1->DRAM0     1M    0.60x
+DRAM1->DRAM0     2M    0.60x
+
+1G Cache-hot:
+direction      folio   speedup
+DRAM0->DRAM1     1M    0.59x
+DRAM0->DRAM1     2M    0.59x
+DRAM1->DRAM0     1M    0.59x
+DRAM1->DRAM0     2M    0.61x
+
+
+QUESTIONS:
+==========
+Should we introduce copy_pages() infrastructure for folio copy
+optimisation, or just patch folio_mc_copy() and leave folio_copy()
+alone?
+
+Should folio_copy() and folio_mc_copy() use symmetric primitive
+selection? It is unclear (to me) whether the asymmetry was deliberate
+or accidental.
+ 
+Unchanged paths
+===============
+ - CONFIG_HIGHMEM: each page still needs its own kmap_local_page(),
+   so the per-page loop is retained.
+ - Architectures that override __HAVE_ARCH_COPY_HIGHPAGE:
+   copy_highpages() falls back to the per-page loop.
+
+Thanks for review and feedback.
+
+
+Shivank Garg (1):
+  mm: batch page copies in folio_copy() and folio_mc_copy()
+
+ include/linux/highmem.h | 58 +++++++++++++++++++++++++++++++++++++++++
+ mm/util.c               | 25 +++---------------
+ 2 files changed, 62 insertions(+), 21 deletions(-)
+
+
+base-commit: c656c6a0242712b537ee75208d431b210ab390c3
+-- 
+2.43.0
+
 
