@@ -4,93 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B264EFF8861
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 07:56:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB702FF8862
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 08:00:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F253A6B0005; Mon, 27 Apr 2026 03:56:28 -0400 (EDT)
+	id 00F1D6B0088; Mon, 27 Apr 2026 04:00:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFC8B6B0088; Mon, 27 Apr 2026 03:56:28 -0400 (EDT)
+	id F29756B008A; Mon, 27 Apr 2026 04:00:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E39176B008A; Mon, 27 Apr 2026 03:56:28 -0400 (EDT)
+	id E65E36B008C; Mon, 27 Apr 2026 04:00:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D2B766B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:56:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B99D1A07FD
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:56:28 +0000 (UTC)
-X-FDA: 84703578456.07.96EC7B3
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0BC151A0007
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:56:24 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D857A6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 04:00:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 87A0E1607C1
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:00:24 +0000 (UTC)
+X-FDA: 84703588368.05.466EE30
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A8D261A000D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:00:22 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K4S5OJ67;
-	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNZsVs5d;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777276587;
+	s=arc-20220608; t=1777276822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=srNLnD8+s9OliipECDwqoPjWKvlwyPl55SmJ7/0HSYQ=;
-	b=SuEcK7Uc5o+CQ8jG+YPqWVjV5eK7im/CPivHJZSQPschVorjmCnBMof9lzC23LiP7w3y18
-	MtFZqQW+bPWniywgmlmgvGRcCq+cpO5lSah1t3sGxUbIrQhJ5Xwzudr5Thqns/mou2ecQp
-	UAGD+XJLy7uBUnaAiVlphEiXG1QShL4=
+	bh=PuZQxqHroHOLffHYEMi3Pfqn5+RFbjA73RJP47DZNxg=;
+	b=bixBQaciz2XFhAVwXAe22C8tacNnhySl49x5lsUevX2Dn2okWmd+bQRH2Plu8hwlHwrAC6
+	wSyadyaQCdlfPeTYpafYgo6KVpUXueXvhu/RkUh+DrZsL9yXMt+JxpEWhAvXiK4n1lvFDJ
+	/SnNulkkscAAL95XhFZcWNLR18WHyyo=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K4S5OJ67;
-	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777276587; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNZsVs5d;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777276822; a=rsa-sha256;
 	cv=none;
-	b=jtC1XlcmAdDE+Tcnb3J8OHM5zLVdgRvoSwMFRSqhD+BSi+AhnYCWcW+z0BHyybVPjfLMHM
-	7nh4NUdlOkU+Qg7XKX1isB85prs9BA+VwvINV3XXHqkgSu8377KYnB3Tpzcd/qm88TDyug
-	Cqkmp0RTEk/XF0I+5EnyK+7ZvL6GUtY=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777276581;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=srNLnD8+s9OliipECDwqoPjWKvlwyPl55SmJ7/0HSYQ=;
-	b=K4S5OJ67U8gyj75430b7Hm2IHdAalie/0+hRyASPyhuoLIoag6cMS1fT/4Kf5mqEH/u7MN
-	nDWYN7ZghYLtpM+MQCM97uk7ztsZPHUrhmemTxDM8aJR8LK8es3CyeFmAAvy8ywTlAE6OG
-	D5Rp+2kbrpNyBe3/M1wepTLpgeFUKmM=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [RFC PATCH] mm/hugetlb: fix resv_map memory leak in __mmap_region
- error path
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260425070700.562229-1-25181214217@stu.xidian.edu.cn>
-Date: Mon, 27 Apr 2026 15:55:00 +0800
-Cc: Liam.Howlett@oracle.com,
- akpm@linux-foundation.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- ljs@kernel.org,
- vbabka@kernel.org,
- jannh@google.com,
- pfalcato@suse.de,
- osalvador@suse.de,
- david@kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BCFCF1D6-8F39-4E60-AD86-0ECF799FFD9D@linux.dev>
-References: <20260425070700.562229-1-25181214217@stu.xidian.edu.cn>
-To: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-X-Migadu-Flow: FLOW_OUT
+	b=70IesHYVG9ctC8m/MaxpgsdTZ3QeKcdiUU/sNAmZaB2lGpD17irWBeFwuPwvxofXIz7fDN
+	p+Qi2I56QAcDmOQUUDYdSxmA7CKE2fZz4aJMNN18125eG1gzNe+rCiEf+5uiKEeHlX0/wP
+	gqzyltLRN508UnqQp/x9XDG2RnoiOL4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 91CA642D73;
+	Mon, 27 Apr 2026 08:00:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDABC19425;
+	Mon, 27 Apr 2026 08:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777276821;
+	bh=6lSQYBY2+IuLHDfyeYcIQP7M9ufPZ8ri79+137pQ1+w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vNZsVs5dlJ6IIUwPClc7UZHRymQhjIiYtz4kz7lvFmHQK3+4MOCMw8gtFBpQFAy+c
+	 HLiRM0b1nxo6h1KtTqewlfvqG92VW6laNBiW4JdS7lf0apSF9XsJ+6jgf4HGTHsnLB
+	 FV2HKV1iVmhhpvKUPno4SpNZXdAektVWSB3+CntNHeor54MMpLDARIaAHT/ZtYf+6P
+	 /fv4A+8woGTR4scKjC6Gqh+idMLufSrwNEy8xxZRTkBQA2GzO9RVyUt6ZTsYFIv/fe
+	 2rEtyeSGu74o8HZDeVjqdvh3Dyd8AGTmbxAj2QnFT4hlQkZuF7/w4AbYrSR0mryuTH
+	 w1r1neGMuyw7A==
+Message-ID: <c3f7b8e4-85ae-4e80-bb02-a7b205cec88e@kernel.org>
+Date: Mon, 27 Apr 2026 10:00:16 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-hotfixes v2 0/2] mm/page_alloc,slab: return NULL early
+ from *_nolock() memory allocation APIs in NMI on UP
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A8D261A000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0BC151A0007
-X-Stat-Signature: o9818hqwjzz94tjrjz7tqxze9t7ghh71
-X-HE-Tag: 1777276584-192301
-X-HE-Meta: U2FsdGVkX19/ulh4B7HWxo7gS1FiOWXzSb3cLTLBSlIi91F8wUppLqxmvywx5o4PiMZDfZ/qds9LOy8t64BzYgUxY04Sz9eIFf0S+D4IPbGa3ty1pVsu0gimEeSInx0kwLM44ZDJNFgSSi3EqCTyUmDF/b8lLF0+eEeIfcnb8HU5RIt5sI0o+YdEy0d+hRrlDqaPB2ZfNM1m5oofGEpPKTUDGB/r7Ogwuijs5Kw72hXcEeJ8Mv79dSsmV+TAE9OqLCIf2LMtIM1nGqQQFmFvslIWLSuHBlwzrHKB2wzP20N3w0KuVP3C2fSKzKmBZdgynB8Dc2t5QTmkIhhx4UlbcF/PXZt58ZEGg+M8Kx0UHH4l4Mko3iWwPp83FVCPYJCjp6rXVnq7ntHkInZWnQBddZDQJeDusHQAVwfgN6ZOKshVQ909yavF5fLOLSN2WMtYYXm8dcCZo3fYKL3zzbUdunnvFA5Dhz+JMptZkTB0KHss/ubtM1Y9RkpjnDbYLNjvO8jTLBAMgsdNrLUW8ppZMysg05MsF1CMIOODO3TTnOv3Nxwk2PNyP6G83VfMu+Addhs7sW36Vfc49DYqGUcrGDJtc1Y+rQKbUXmjbL7VnhQTvGQQYSzWtMvSnH8qoO9BRk/BVB972TOX/lP4rsEjkJPfZdzoKWAa2UYU8D3DGZuDKO8Wg+3GA2tv3nxTAY9145/jAC+yIEvipfIjT+zY0In1hzS392rY3q+cMwgEVZBRZOUEQhdIO7N7AGbDe/AOltZc0AZopYLqlfTj7c1qDh1BYvQnnecPj7l42LzkMpjcWUA77ji+yJGLiYCVtyf+XMlVOSr57jdokhReAFgRni0DQevTi6Fs+fgFmzt2GWpBq6CR3dVE9y6cNZ0rQbJ0xFEKGPtSXCTMq4KVYIa5uxEqTXgakuulT1aQ+bqaWJhg2T7AEhwPihXdKetncGnkx+d3h/ctGvZSuv6Dp97
- 2Uq3MuSi
- JbsvimSAtA7CbpYkZDqb95lX4W6BBK74Pdm3Jpz29/XL7dFmvnJyBRk5zF6wPTKrY3h+WfmbJJq8akzDm6F/C/REu7jh7fQn8dG8Aq3Ig+8teOerC3BTDl6rHtSGJ06QpnIrD4g5pEuAcxYSPJ/QyI2x3/Quh/G1L3yX9nBRnevSlGKYyGzLMV9mnIDhXrjG0b/XsuHW1ra0GdKe+eEjLRMFyQ8X4QOHEaQAVKEsJ9sNyeyRo9+kn6H7+TmjMdrsH0xQr6ENyVTtb+Dg5azKhnYIwmwZ+3YcIW9hW
+X-Stat-Signature: g5aihwqgaiabhbmyq3uzou53mnj1uzwk
+X-HE-Tag: 1777276822-169950
+X-HE-Meta: U2FsdGVkX1+clT8DqM/8CMTEGOPuSZhl8fOs2H5PMy9EWT7g7FGf42lWEHAMokmkBXeor5haTGY+PlqXqS2EASTgfi3UZBIASeSeLU1hM11x/3nEGG2jtQR1lxgbEhcp4cXH9DxF0dlv2bungb6Bxop5bTfyNXDZ2gdTHWHQVNQKsfGcfvLyX/5xNVKY4x3BqhlHM85HiKe6kiv/4SaVmnEtCF4N1LI20io0+eaK8mnsCJ4elYrK/3FDW8kbmV08LGKRZroQHYXD7n5Tzo60I57EPe/+u52kIbUcHYAxxexC0FVKduMkGcj5bCCeH1jcLBQw9fj6HGtwTSN3UGPKTm4cWCUsOIYnsPP7brN2BRJEd7HI1Vod4+yEqXXHFThggrjm+iF/ko5ZFiQyFq5+wt+n4vfHbC48sMptG22eK3FZHw9F0FTruhiuRMKuXxf3jygm8h8BQSkwulrz6rAzOAVFkuKJ9Cgqpzv//Jm+FvkZIL3yjhcTnfiCgzWDP5xNf/VHtA5qirPvcoXUcbBfn/5TGPHzLbG8T1R9A7MNevvJBMb3Tm4SxObhPBxzDOkjKj34bGy15DlyA1T+ua9Ds06ojPXDV+la+l5MbvMkGtFpHolgA3Dx1XXJWTQ0irs0ZfMrDdH2APvFi5aq+D4WxbMc6EIYcB2SkL/d2zhWEGHD/FDkqlTaG0RA4lA3pCZsx01QER31X/J5yNeZH4Tdui4FBVS5NWL4KyYmJe5un2Td9euKqligkD8BP+JxgHyaQ0l1TZxSIucy9CsboM7M72SKxgT2MejMSxx+/s3CAfDDubIBr/5pgWG/h9+g0zXerDytgg923q8T5RPKPgeHPppoiO8dU/uoTYP/+z+7yrdapjIq89FPtBTqCU3ZwIjDZonEL29zlupysQ4d+FsnXbeJHVVfrc49BELQMl+0gCdJn2yHU6gfxSYBT8TdXce608a4wV98lYQjuoOryKJ
+ HiSTXC9Z
+ uvZ3pKbt/cXz5YmqtzmEQtC6443sb2dSxz4dC12VBAPqLL15nzyzYugxTxnkjCUh3T/QK6ZHv8RIR52JTNkD68QSBX+ZuxRCsFfuqO+lvjxC9s0mVAtgp/30D0VX12pncWjDePhFZg+oXTETontVFJoc/ETWpmt0bidOowxQt5qA6+f4BYiNQt/+oU2qrXuW+Ldc3zQoh1vatjfQA3V3gDQIYN1FYvGRn0dmgdSMfSIL+i3YWabs42co/cgYjJY0fJOdlYB3mrv+PAaH+6ji/0TUedL3G5fcNXHE/h0k8twK86MM+gHiV8oX6V2VOnThp8OK8hePKhfI10cs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,136 +100,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/27/26 09:09, Harry Yoo (Oracle) wrote:
+> Due to my mistake, V1 was sent twice w/o proper cover letter and
+> Cc: stable. Please ignore V1. Apologies for the noise. 
+> 
+> Changes since V1:
+> - used b4 to send patch series (w/ a proper cover letter) instead of
+>   my broken git send-email script (Thanks Vlastimil)
+> - added Cc: stable to patches 1 and 2
+> 
+> On UP kernels (!CONFIG_SMP), spin_trylock() is a no-op that
+> unconditionally succeeds even when the lock is already held.
+> As a result, alloc_frozen_pages_nolock() and kmalloc_nolock() called
+> from an NMI context can successfully re-acquire the lock that the
+> page/slab allocators are already holding (no deadlock because it's
+> trylock,  but leads to e.g., allocating the same page/object twice and
+> causing use-after-free).
+> 
+> It was discovered while testing the new kmalloc/kfree_nolock() test case
+> in the slub_kunit test module with CONFIG_DEBUG_SPINLOCK=y on a UP
+> kernel.
+> 
+> Patch 1 fixes alloc_frozen_pages_nolock() and
+> patch 2 fixes kmalloc_nolock().
 
-> On Apr 25, 2026, at 15:07, Mingyu Wang <25181214217@stu.xidian.edu.cn> =
-wrote:
->=20
-> While fuzzing with Syzkaller and fault injection (failslab) enabled,
-> I observed a persistent resv_map memory leak in the hugetlb mmap error =
-path.
->=20
-> BUG: memory leak
-> unreferenced object 0xffff888110b92400 (size 512):
->  comm "syz.0.5386", pid 20390, jiffies 4298157188
->  backtrace:
->    __kmalloc_cache_noprof+0x509/0x6e0
->    resv_map_alloc+0x47/0x3a0
->    hugetlb_reserve_pages+0x758/0x1220
->    hugetlbfs_file_mmap_prepare+0x492/0x790
->    __mmap_region+0x1ae6/0x29f0
->=20
-> This is a regression introduced by the recent VMA iterator and mmap =
-region
-> refactoring, which decoupled mmap preparation from VMA completion.
->=20
-> In `__mmap_region()`, `call_mmap_prepare()` triggers =
-`hugetlbfs_file_mmap_prepare()`,
-> which successfully allocates the `resv_map` and registers a =
-`success_hook`
-> in `desc->action`.
->=20
-> If `__mmap_new_vma()` subsequently fails (e.g., `vma_iter_prealloc()`
-> returns -ENOMEM due to failslab), the code jumps to `abort_munmap`.
-> However, the `desc` structure is completely discarded without invoking
-> any cleanup. The newly allocated empty VMA is freed, but since
-> `set_vma_user_defined_fields()` was never reached, `vm_area_free()`
-> doesn't call `hugetlb_vm_close()`. Thus, the `resv_map` is permanently =
-leaked.
->=20
-> This RFC proposes adding an `abort_hook` to `struct mmap_action`
-> so that subsystems can properly clean up resources allocated during =
-the
-> `mmap_prepare` phase if VMA creation fails.
->=20
-> Any feedback on whether this architectural approach is correct, or how =
-to=20
-> properly implement the hugetlb unreserve rollback, would be highly =
-appreciated.
+Thanks. Given the problem exposed is in a slab kunit test I think it's
+better to handle this in the slab tree. The page_alloc change is small and
+should not cause conflicts. So I've merged both in slab/for-next.
 
-Please use ./scripts/get_maintainer.pl to get full mail list for Cc/To =
-since
-it is not only related to HugeTLB subsystem. It will also consider the =
-author
-of commit introducing the problem.
-
->=20
-> Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+> Note: As pointed out by Vlastimil Babka [1], in theory a kprobe in a
+> locked section could trigger the same issue. However, fixing that
+> involves a non-trivial rework (e.g., inventing a new spinlock type) or
+> introduces unnecessary overhead for all spinlocks on UP (e.g., let all
+> spinlocks check locked status on UP).
+> 
+> Given that BPF tracing on UP is rare, and it's even more unlikely to
+> trace a function called from the memory allocator within the locked
+> section, this patch series addresses the issue only on NMI contexts
+> (which is rare as well but now covered by the new test case).
+> 
+> [1] https://lore.kernel.org/linux-mm/af3a7fa9-b368-4ffd-964d-9e4fcba863a8@kernel.org
+> 
+> Cc: stable.vger.kernel.org
 > ---
-> fs/hugetlbfs/inode.c     | 9 +++++++++
-> include/linux/mm_types.h | 2 ++
-> mm/vma.c                 | 4 ++++
-> 3 files changed, 15 insertions(+)
->=20
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 8b05bec08e04..002bb6d9ca23 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -102,6 +102,14 @@ static int =
-hugetlb_file_mmap_prepare_success(const struct vm_area_struct *vma)
-> return hugetlb_vma_lock_alloc((struct vm_area_struct *)vma);
-> }
->=20
-> +static void hugetlb_file_mmap_prepare_abort(struct vm_area_desc =
-*desc)
-> +{
-> + 	/*
-> +	 * TODO: Implement the proper rollback for =
-hugetlb_reserve_pages()
-> +	 * and drop the resv_map reference held in the desc here.
-> +	 */
-> +}
-> +
-> static int hugetlbfs_file_mmap_prepare(struct vm_area_desc *desc)
-> {
-> struct file *file =3D desc->file;
-> @@ -172,6 +180,7 @@ static int hugetlbfs_file_mmap_prepare(struct =
-vm_area_desc *desc)
-> 	if (!ret) {
-> 	/* Allocate the VMA lock after we set it up. */
-> 	desc->action.success_hook =3D hugetlb_file_mmap_prepare_success;
-> + 	desc->action.abort_hook =3D hugetlb_file_mmap_prepare_abort;
-> 	/*
-> 	 * We cannot permit the rmap finding this VMA in the time
-> 	 * between the VMA being inserted into the VMA tree and the
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index a308e2c23b82..9320f6699fa9 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -861,6 +861,8 @@ struct mmap_action {
-> * it is not valid to clear the error here.
-> */
-> 	int (*error_hook)(int err);
-> +=20
-> + 	void (*abort_hook)(struct vm_area_desc *desc);
-
-At least for me, it is not good name to distinguish it from error_hook.
-abort_mmap_prepare? I am not sure if it is a good solution, Cc other
-MM maintainers as well.
-
-Muchun,
-Thanks.
-
->=20
-> /*
-> * This should be set in rare instances where the operation required
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 377321b48734..d64cea5b4335 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -2799,6 +2799,10 @@ static unsigned long __mmap_region(struct file =
-*file, unsigned long addr,
-> */
-> 	if (map.file_doesnt_need_get)
-> 		fput(map.file);
-> +=20
-> + 	if (have_mmap_prepare && desc.action.abort_hook)
-> + 		desc.action.abort_hook(&desc);
-> +=20
-> 	vms_abort_munmap_vmas(&map.vms, &map.mas_detach);
-> 	return error;
-> }
-> --=20
-> 2.34.1
->=20
+> Harry Yoo (Oracle) (2):
+>       mm/page_alloc: return NULL early from alloc_frozen_pages_nolock() in NMI on UP
+>       mm/slab: return NULL early from kmalloc_nolock() in NMI on UP
+> 
+>  mm/page_alloc.c | 5 +++++
+>  mm/slub.c       | 4 ++++
+>  2 files changed, 9 insertions(+)
+> ---
+> base-commit: ba24da38a519dfcff8cce3f3f2726d7b159a4d75
+> change-id: 20260427-nolock-api-fix-bd056911e68e
+> 
+> Best regards,
+> --  
+> Cheers,
+> Harry / Hyeonggon
+> 
 
 
