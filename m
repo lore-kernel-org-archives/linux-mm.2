@@ -4,144 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77269FF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:19:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D0CFF886C
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:19:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E073C6B009D; Mon, 27 Apr 2026 13:19:17 -0400 (EDT)
+	id D43F86B009F; Mon, 27 Apr 2026 13:19:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDE5C6B009E; Mon, 27 Apr 2026 13:19:17 -0400 (EDT)
+	id D1AE96B00A0; Mon, 27 Apr 2026 13:19:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCDB56B009F; Mon, 27 Apr 2026 13:19:17 -0400 (EDT)
+	id C316A6B00A1; Mon, 27 Apr 2026 13:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BCBC16B009D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:19:17 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6632D14023E
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:17 +0000 (UTC)
-X-FDA: 84704996754.12.FE18929
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1136A80003
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iaFOX4SW;
-	spf=pass (imf30.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B2E676B009F
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:19:27 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4540C87919
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:27 +0000 (UTC)
+X-FDA: 84704997174.19.9D93122
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8FA3CA0008
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:25 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k8kV5Zhk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777310355;
+	s=arc-20220608; t=1777310365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SkL75I88AklWMnxS4Gn8bySfx4E22i3sGhBT824tKPk=;
-	b=wLtxVwXs1+sHupnmqKPepTByYkerfbKr973lkI6DaX+z3FsaSCNHbum5UxB4STL2vUL5my
-	gJC2T3DOhBtbLGsCIBiCpDGaLj3g8Yq3ETpTtYn1LGVTP6PLJ8YLqXocolv6frYue8O2Ma
-	zSgjlB4oAPt4pbSlx8Lv66fmOhJ6/E0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777310355; a=rsa-sha256;
+	bh=h3Z/nVyoovIhD0EOyurWXqapA3Ve0yAERyRow/fU/M4=;
+	b=8XoQKhWJWzEwIrZVnV8JWOavmms38VsfXqj04d6tmn9yAW13c+GGOKR2vrM7HACT6lvgG7
+	wir8riTy6JOtzQoBO5fSLaoj1qAd2kUjcVWDfT8/+W0e2wvK2iYo8RBxeAJW/s7MdgXvg5
+	nJrCWVdHGL2ByVqg6urM4mJcvIc5y+A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777310365; a=rsa-sha256;
 	cv=none;
-	b=b4MwQ/npEnSsDgcI05JCfGjSpPtmrz20hQvJU+lyrrDK70XExwN6wn+QsrpPwJWQQKsKmn
-	64AzUtSgpJ3zQlf11Oil/D5QlNYpTKeZUQ4Hy3UoKsx7wF/ODq9L19B++A0N4iXElVweM5
-	b9US+2jGB7kvqWsL5WM9qtmMX2bsPJw=
+	b=pkQIO0IZQApXR1BemijBw0hcNNum6y8bSJR4GDym7L30AhvfXvdNHcngPM50N3sLs98uaf
+	gyUgUrxNktnRSAw0xVNPASGDQ+unUzfDhoGgckV7zypVmV9fjb9+XMK21D+RSvD6Dtw+4M
+	eyygWoQaFCI8Rfjj7G+1FYotnsniKqU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iaFOX4SW;
-	spf=pass (imf30.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777310354;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SkL75I88AklWMnxS4Gn8bySfx4E22i3sGhBT824tKPk=;
-	b=iaFOX4SWjjzje0SDwBu5IeJemt+148HI+/0O7bUI5RJ+XQi5f7cYv5C2rAjKIvY2zXvNTP
-	G0Zu4VrXJMRkriFuOFhcXUiTwzi+/fw/MFyUgQpSe5s1uZ7flLM+eLbB15ItuCko+ys4Aa
-	cq2P6OKKzoZdm9jGR1/aWbM0dimUSF0=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-Olw5rQlkPTu4IrqvNsMbGw-1; Mon, 27 Apr 2026 13:19:11 -0400
-X-MC-Unique: Olw5rQlkPTu4IrqvNsMbGw-1
-X-Mimecast-MFC-AGG-ID: Olw5rQlkPTu4IrqvNsMbGw_1777310350
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-50f817c3240so103156001cf.1
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:19:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777310350; x=1777915150;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SkL75I88AklWMnxS4Gn8bySfx4E22i3sGhBT824tKPk=;
-        b=k1bBmdsiwEEN5e3YIcbJyRhoY5NlD7+vNZp3+iSRdgBgj9+HBj7u7Y9VtHnztATKW9
-         +pqYqYqs9IRnf8Ho+8D4qcDl2AE4Kfe2tBldLB8WMZ57Qya/QAksBfBkjre41nsYN/Yt
-         QoXagrrHgjCliOZJW+TOgIr14HlLj8wNyvZWGYQAt+mPaGKK0U2baKtIbM42TEeO/EwH
-         /nWCRGAHE3X64fSxz9HjijMVv5OP8/aViSuwSm9w7nICxxkTL/msHgrC6K/ypNMQFgsE
-         uupZ32Bzt5MUdls+7MjmVpBGSaCK5/TZJfJUQs94gg3zrtXflvep94yyc8WueGdVM1Ue
-         FiSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8/sSTIChJY6u6oyxmIzSjTuRl/BYeyP11MUY+zDEiFRBmsk2MpzPOso8YLfD3bzSDtExJ181Iy+A==@kvack.org
-X-Gm-Message-State: AOJu0YzL4TwmpyTDqfx9UBuvHCAp+dlV0cQgOBNQHivk7rmT7PyLLntN
-	oJMmsJgPYWtSkNwnQbYAxHP1DUbeuECPrUfXbZY3n7KBOo8jfCzO3o+kKIC28mYfyjcN84et9Al
-	6/rneCE92ekKBOE1D/zb2yQVdJIshz5HJGBcmVgOjLUsNR5BouC84
-X-Gm-Gg: AeBDietwesSeDV9O90lmxkD94yWM6U7RpetXRizSxLJhLP/KjjX7lDuIr8vVh7VyfOq
-	Z3Y6yr87Jp/b1oNcC09D1uBhtFO26IB2/KBzDYhZQ81jqRYG8zrj0Tgga5LPPsYt84sva00PJKj
-	VMZAH6JqqlazDXCY8kEk9iDLZGf2gxLIlv5guYlIFA4vRtY+JuJB4CHk9DvSou0YoD8f/hG+Ex/
-	YXkogrX0nw4f8uyFCZaelWMFYx8PbyiAn2//LlUUmUuv6o7IV7WjVB9LC4s9MPKj2cXMlnkqPdb
-	nzeUiDWfpIWUWZyioEQpnLgFD5SeAnh+ivkIVaU7Nm1TApdHl2YHMQMZRipDDR3zDAFFQZW5dAp
-	DTloUeyIQahr+T10ASv2clwesa8V4rl4Si4tqZvLmeY+1aLiJRLYGe9URr5bk8SFqv7OihopT1e
-	yeIC3XP7A6OjFvh10dHGz827jntg==
-X-Received: by 2002:ac8:5a13:0:b0:50d:aa29:2b64 with SMTP id d75a77b69052e-5100c944df7mr2438891cf.33.1777310350426;
-        Mon, 27 Apr 2026 10:19:10 -0700 (PDT)
-X-Received: by 2002:ac8:5a13:0:b0:50d:aa29:2b64 with SMTP id d75a77b69052e-5100c944df7mr2437961cf.33.1777310349853;
-        Mon, 27 Apr 2026 10:19:09 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-53-69-159-169-238.dsl.bell.ca. [69.159.169.238])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50fc91de051sm130914531cf.2.2026.04.27.10.19.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 10:19:08 -0700 (PDT)
-Message-ID: <0e2ef2c0-d74e-4aff-bba0-6dd91dbd4e41@redhat.com>
-Date: Mon, 27 Apr 2026 13:19:07 -0400
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k8kV5Zhk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 180046024D;
+	Mon, 27 Apr 2026 17:19:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25EEC2BCB7;
+	Mon, 27 Apr 2026 17:19:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777310364;
+	bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=k8kV5Zhk7HZbxy8X7mxqUL5UgTTJPPuuLtSKHKOe5PwbIiNodL9/7ESxRbcOMv4dB
+	 NN/pd897F5mMQZv6MW+RM/3mikWvqmJGQCtupbd6YHiobStaCQu79RRkwt3Bs1rL/A
+	 WmXtcy3vIzgejB2MGSu6MrKJ33itreKKdFlemNypyCUExoUHGXA1bHbqFqaNX4ujdd
+	 iXZiXWTV/w69yfgs2V8e+zdWAilhhtsvDDxzPIT8CbbievjXPmrPwVloE5aoqLKmYP
+	 ca2+sf92YJQm2mLHcpyNlGd6mMQP6QhUed6Hx8vk/CloBjO7tSgz4fayv+CeXka+Fz
+	 NwGM6tvALNVmQ==
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+To: Yury Norov <ynorov@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	dmaengine@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-fsi@lists.ozlabs.org,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-serial@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-fsdevel@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-x25@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	sound-open-firmware@alsa-project.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-arch@vger.kernel.org
+Subject: [RFC PATCH v1 9/9] uaccess: Convert small fixed size copy_{to/from}_user() to scoped user access
+Date: Mon, 27 Apr 2026 19:13:50 +0200
+Message-ID: <8780eb2ef80575931a339e5225bc80eb13e9be6c.1777306795.git.chleroy@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1777306795.git.chleroy@kernel.org>
+References: <cover.1777306795.git.chleroy@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 43/53] selftests/mm: migration: add setup of HugeTLB
- pages
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Donet Tom <donettom@linux.ibm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
- Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Sarthak Sharma <sarthak.sharma@arm.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-References: <20260418105539.1261536-1-rppt@kernel.org>
- <20260418105539.1261536-44-rppt@kernel.org>
- <a8510cbd-4a30-460c-b870-a250ceb8a522@redhat.com>
- <ae3v1cyMLbcvJtYW@kernel.org>
- <67d7b067-97a8-4600-a9a6-46f3e797ffed@redhat.com>
- <ae-UCVba16jg3-gR@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <ae-UCVba16jg3-gR@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mkmwbCq-22dBkw4jeUfbWWr02NjphnMcO5tDW18Feb8_1777310350
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1136A80003
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3638; i=chleroy@kernel.org; h=from:subject:message-id; bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWS+nxlr/n9yu2DE7uwkCZGbl0uCp6Y1JLvZTPpz+P/PY xNqPMoaOkpZGMS4GGTFFFmO/+feNaPrS2r+1F36MHNYmUCGMHBxCsBE9HwZ/ns82Ho9PV2Q+7Pp 5fqvs6O/v3YN+3EgL+Wk4b/co1rlkZ8YGVZxmDl7XFiUcmPSTPW14WGSHT6/1u4pcTY2cjD0U7P bzAkA
+X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8FA3CA0008
+X-Stat-Signature: agwdrpz45gq866r3udokkdccbwn5ofwy
 X-Rspam-User: 
-X-Stat-Signature: 71wih3ifx13wmqys866ozzn47pkfeemr
-X-HE-Tag: 1777310354-339494
-X-HE-Meta: U2FsdGVkX1+Ln4xE/ioOGXFF1rEQ7PHAmS1ZTzLRcJo3UH6ORv9rHg0EVKFr8wUOR1UsIszLwnLM48sFTzkcGuugSAWJxMSzR794JQNYZYTqUG2K6vIpL0I+boxKLqtZHQIqFVxo2Ku4iihnFkGtvEea1gAVmbGR2UEqHol7eD1FGnLDFFPt6hEXUWsGr7YSHtFaIleW33fjTHt6Hah5Tb2DmZtkpbrO9syWtLgF/1TZkNMzKD8H+02cs4Tc2fOLlZrsGwBCUhJMLYN+v28wxlh08bEf4DHjluBZXQYLmQ6Mv3hJI2fN4gUCxhQiJbkE+1V8zgmIqOIpPfAlwW8gxo+MvA9rL6nEjR/hbESBSQ3lVINImGAIznNQRH+A2d0uXicpi1idk3U/IS5zeAvCduEbZOIcSbg3ihropDnzkuoa29tPgHh23SHOe90LbO1eG8wAIrv3Lqyyu1gBMy6CDX+74IdQMPNSe0R1eh6nX901FTOd+KVSNLjPYfwsJdaRjbXuOYHRrvjFTdQJg4w/UvIcLEwceYmWebK2e9K9Q4pC3HUQYRqljASod4h/ica4gC6dBM9Y33hnKVAwFpP0ELg+ua4CWIMyOLMnqv6h1dv8yANxaQkd81NL+uugH4SoRljRusqkPR0dX5Q5fZD1he14ZQA7WSqD0Tmd+5VuuiSMXQKaiHqqXbbfL2FgGP8Ae1PTfAmO7UmwBv4Wn0yKsZdvegIJzUHnuet81FXJ4BhoVysXsW17g6O9w78sGQPd0xy9H4G9LKusbdQN0ixa0XGrOc4FTEFzCFgG+QVKz4FFxOE00uLNyC072WkJtmgZcWH+TeEuiBTUVuUP2m+INTVqJ58ICgCf2EaBnm7sH9D7ngmKlsUXVb6M9rDKEX7k1qKKz1MPwj6jJFh00ajULuwdgvjVibBrycCyPkVrTQq1v5T/UZizmd9Mwby0Ym5OzD8LgcxvK2921PMcJf8
- kMKHv4fW
- EZ9HaTMc+z5oEle1C90tAdmRXweyRazejVfQpibX2luZ1zeh4GRtqNJcQaXoR3nXgKutt5dADmvJdPo+Ow8eyywo83R0U75bbZKpq4pUVMX7ZbFknEM0gBYcSDztepi3q1ZnvBtboNgQx68dPCs7BwYTfHAURSw/wdxbOnqGdpS6ImIi0QOaXJlOmsOkoUxGM73vpD3U1Ib5wZtm0yyh6H9qU9a40KAKJmUmY/wD0JuDL0gkntd/PekItJYD+jwGXoSqWJmQ2vzHezGMSWoqvoM53FU2A4nnQlkEpi4k/DXEzd6lkxRzUveEqQTrgEPQZgI1zRvDpocgWWkVoSUdDivR1S14CJlQwjaFcLEVZL/ev988pmpM8RXPpB2neGMdmQGJntslwuNeUH9/V0ASfUK61ehk5e/Da3gsof9ZMTq3XHjDiIxVnokol8KAJuzYPLoBuMSOUzSck82Y=
+X-HE-Tag: 1777310365-672777
+X-HE-Meta: U2FsdGVkX18lMGlajTssOt5+X91TUFPVz1DPnLRfTaXo2uqdareyRd1+KUZPyYLzVziNN98fRSvJAbKfnoPCn0C0L3kxZZAO62Ck1ZRqSdJX21VmjoI0LS9MDnE8vyoj+nqooYomM2fAGgII0EDC0RhTDeyAlAigtteAUyWGmisXq2jyMHwace0m6KwRNPlRZ5rVS3L1CVj0Td5EAojmkmPpwkiYDnCPTbvoY80A/OtHjDXO2z+VczCLP0EQ9IypZJHuaKPbmHsVPy+A0nZY3y90D1ph8KqGMS3ns8wL5E0LZP2cOGJykV3OkvT6fhEv9jtVgcbck2TfTHebk5uYiZOcKmJKC+cl+YNT8xpVL1FyIaUlNsJKBILy4fT+jjMICI0Z9yMYh0EzF5cg6YIVOsOfAjGm6PaqNCLarC9wk0k0Y2oeUFHzqoOMNxbDUT6BF9PBmtJMndjrHHr/hZlBmE28ZVXXDkuXlCMSt7ZhhtpVyibk4pCNw4lrUuHGkTRHtJ9ltNhbtRZElPPHbAdf+5rUFqxezXdO/hEZ5L0enCKVujon8JIRXpFf4dgUxGw7ceW1+XlfK1ayC6oPffwm7jEGvnjkQmZC1LXVP+mHY0Dkap4Jzxp+dPQwRqbKImWvnECuFvVEh3o+YKDD2/4BLZ7P/k5M/ijHSpXRh/+wba5VbyG7hgWIqQ7jRNStxPlGbJwi4r9Ud4ZMXAp79NWG8PaVPYQzsoq5DiTTDRJP8uRQAMbjsUHyMcHnY0DWYpvxzvQwOu2JTs4kbV987oL47+df9Yn6gE+hNBmXeelkCxsdRdLxBzydd/MFBDPkBYbm59/R+hz1sRJUY1sYfXtDjg8KLqjSWgmK33rh++cU/ymlDbnARobl7pjjg8gAZpGlKS537NuklkYMhLNRUly9AydAsX+mPH61Fzy15nnqI2hnZUedN15nsp/nV1XZS6eSvBYOuvoju527fTK22kj
+ 60ByIHlq
+ ZKOt+L9Cj/5m0aYrQicpBKyuEL6dseWIJsAatPPhoyrfmjoAUAu25mWonFqRgFtMt9XoHHpfHuLOC6K2Z2gXIDnvNHGFmFfqNV0TNinxHs6NKPUptHwAgcH8bRfWdR/ml/i+D/VDmrZtKJcXRS1en8U9+P+yQ2r1nIWzS20JYnSbezMddRXVgzJoweKqmgZtqbbg034GSRa25FfLOUG82ksgtG3tmlcwRApiAfIIHtsQjJ+RmrzTmcd+/6a/zctPx/SfUDSjPicJH6gc47GRjtVRl7QhWemwT/PTWxYOHHVwqFPx3lEFimRe+UlMfjwqEejY+QI3wWxTvGoXaQstNgU4ZpwVMsXv1QrgQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,35 +138,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-27 12:51, Mike Rapoport wrote:
-> On Mon, Apr 27, 2026 at 08:56:27AM -0400, Luiz Capitulino wrote:
->> On 2026-04-26 06:58, Mike Rapoport wrote:
->>>> And there's another issue: when running the migration test individually,
->>>> private_anon_htlb gets skipped. I guess it's because the previous test
->>>> is restoring the HugeTLB state:
->>>
->>> It could be.
->>>
->>> I pushed the updated version that has the fixes for both zombie and
->>> signal issues:
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=mm-selftest/v3
->>>
->>> Would be great if you can test it in your setup.
->>
->> This works! Both issues are fixed: the migration test completes w/o
->> hanging and when I run it individually all tests run.
-> 
-> Thanks for confirming!
->   
->> One last question: should we munmap() the mappings in this test? Though
->> I understand this goes beyond your series goal.
-> 
-> We could, but the tests _exit() anyway as a part of kselftest_harness, so
-> it does not really matter.
+copy_{to/from}_user() is a heavy function optimised for copy of large
+blocs of memory between user and kernel space.
 
-OK. Just to clarify that I meant exercising the munmap() path, not that
-we're not freeing resources. But if we know that _exit() is sufficient
-for this, then it's fine.
+When the number of bytes to be copied is known at build time and small,
+using scoped user access removes the burden of that optimisation.
+
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+---
+ include/linux/uaccess.h | 47 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 33b7d0f5f808..3ac544527af2 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -50,6 +50,8 @@
+  #define mask_user_address(src) (src)
+ #endif
+ 
++#define SMALL_COPY_USER		64
++
+ /*
+  * Architectures should provide two primitives (raw_copy_{to,from}_user())
+  * and get rid of their private instances of copy_{to,from}_user() and
+@@ -191,6 +193,9 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
+ 	return res;
+ }
+ 
++static __always_inline __must_check unsigned long
++_small_copy_from_user(void *to, const void __user *from, unsigned long n);
++
+ extern __must_check unsigned long
+ _copy_from_user(void *, const void __user *, unsigned long);
+ 
+@@ -207,6 +212,9 @@ _inline_copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	return n;
+ }
+ 
++static __always_inline __must_check unsigned long
++_small_copy_to_user(void __user *to, const void *from, unsigned long n);
++
+ extern __must_check unsigned long
+ _copy_to_user(void __user *, const void *, unsigned long);
+ 
+@@ -215,6 +223,8 @@ copy_from_user_common(void *to, const void __user *from, unsigned long n, bool p
+ {
+ 	if (!check_copy_size(to, n, false))
+ 		return n;
++	if (!partial && __builtin_constant_p(n) && n <= SMALL_COPY_USER)
++		return _small_copy_from_user(to, from, n);
+ 	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
+ 		return _copy_from_user(to, from, n);
+ 	else
+@@ -239,6 +249,8 @@ copy_to_user_common(void __user *to, const void *from, unsigned long n, bool par
+ 	if (!check_copy_size(from, n, true))
+ 		return n;
+ 
++	if (!partial && __builtin_constant_p(n) && n <= SMALL_COPY_USER)
++		return _small_copy_to_user(to, from, n);
+ 	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
+ 		return _copy_to_user(to, from, n);
+ 	else
+@@ -838,6 +850,41 @@ for (bool done = false; !done; done = true)					\
+ #define scoped_user_rw_access(uptr, elbl)				\
+ 	scoped_user_rw_access_size(uptr, sizeof(*(uptr)), elbl)
+ 
++static __always_inline __must_check unsigned long
++_small_copy_from_user(void *to, const void __user *from, unsigned long n)
++{
++	might_fault();
++	instrument_copy_from_user_before(to, from, n);
++	scoped_user_read_access_size(from, n, failed) {
++		/*
++		 * Ensure that bad access_ok() speculation will not lead
++		 * to nasty side effects *after* the copy is finished:
++		 */
++		if (!can_do_masked_user_access())
++			barrier_nospec();
++		unsafe_copy_from_user(to, from, n, failed);
++	}
++	instrument_copy_from_user_after(to, from, n, 0);
++	return 0;
++failed:
++	instrument_copy_from_user_after(to, from, n, n);
++	return n;
++}
++
++static __always_inline __must_check unsigned long
++_small_copy_to_user(void __user *to, const void *from, unsigned long n)
++{
++	might_fault();
++	if (should_fail_usercopy())
++		return n;
++	instrument_copy_to_user(to, from, n);
++	scoped_user_write_access_size(to, n, failed)
++		unsafe_copy_to_user(to, from, n, failed);
++	return 0;
++failed:
++	return n;
++}
++
+ /**
+  * get_user_inline - Read user data inlined
+  * @val:	The variable to store the value read from user memory
+-- 
+2.49.0
 
 
