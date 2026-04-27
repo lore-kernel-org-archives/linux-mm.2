@@ -4,96 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD688FF8862
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 08:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79F29FF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 08:13:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CCC26B0005; Mon, 27 Apr 2026 04:13:28 -0400 (EDT)
+	id D43956B008A; Mon, 27 Apr 2026 04:13:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A4CD6B0088; Mon, 27 Apr 2026 04:13:28 -0400 (EDT)
+	id D1A766B008C; Mon, 27 Apr 2026 04:13:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E0FF6B008A; Mon, 27 Apr 2026 04:13:28 -0400 (EDT)
+	id C0B456B0092; Mon, 27 Apr 2026 04:13:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B77D6B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 04:13:28 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B21511607C3
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:13:27 +0000 (UTC)
-X-FDA: 84703621254.17.BE7038F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 19E081A000C
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:13:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=seMxTGJN;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AB9A86B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 04:13:55 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ACB90A07A0
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:13:54 +0000 (UTC)
+X-FDA: 84703622388.19.5FD9FC3
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 75CCB20003
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:13:52 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0z0jaFwz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1mckzUnH;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0z0jaFwz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1mckzUnH;
+	spf=pass (imf03.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777277606;
+	s=arc-20220608; t=1777277632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F+LlbafF3EmC7ODCERbNe6jrsO190zmkzGMXWzcltIk=;
-	b=ad4d6shWG4mfdz85KVQqtGI/6QR6X6/gSl3yQLfGZAOUaHColi1QfR7nVBY3MK3ecGpT5c
-	arD+wvtk8cSLpAisLx+VYinu4bx+TSAaH3FiAcoCRM+xyYgWuJ2nRlzuTam2VvPYQQxrLZ
-	rDClfVPwa2MHJcLUInAHsQEDC68gb3A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777277606; a=rsa-sha256;
-	cv=none;
-	b=A+5Y1VA0YoCx+zRCgwoaqb4fIqTxe17Po8AQ5esc2geAhs5gN7xZGEjTVMZBeugyrN/4lA
-	MLpjDCyvRjfbqIGiLmPerzEQwdiUt11/PIn9qMUUBU7yI4PotfvODIsLlFaeMkl55jkHyx
-	94pwgTOJE3A+JeGsTGWWfq/eqYKxGyE=
+	bh=AuQV9jJyH30aDM2Bz1IuN9VTNix0UN5WEuQpT3Fpupc=;
+	b=xwv3xwzXMpdQ8Sw1RPs8SosoEibhVS7cBkmHiTAcy+lgmxmZmNAoNapiAuBuNDHLBvP8xL
+	agIfQOv6FwJoFPd6tmg+9Dfg4NyiBel5M2AlEzwyxf3kAuk2dMc+nWc1sAYLQ/5XU/+PmY
+	6T8rZxbsshmB3KxbQXtwlSEUP8tC4fQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=seMxTGJN;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4362760145;
-	Mon, 27 Apr 2026 08:13:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980A0C19425;
-	Mon, 27 Apr 2026 08:13:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777277605;
-	bh=WmHusDz6RAwttLki4w/qj6U6yTjKSQFS4mC/99h4CTE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=seMxTGJN4uv6l+RdFXYx1uMxe4oufBuf9DmTpU6mefMKEkq+nUS6OyD2tYH7tZSaL
-	 1vn27hcMwt7dXLXkBuElGqXmIzggyVJ6sdLXMnWiu/H6CE12CIjmUjzrmx0LtbjQmq
-	 jI6yj6Ssost+fkqK/jzHRdUeyG6QZSTsWSohW5PyHVuHQpq0FKcSd41j00KlT+FWcx
-	 7D24Iw8X+d33WTN9Fe0+BYDDpEp6Ouhn65cgeU/Q5uwPqJWAyTZOyvwtNEGazy6MAN
-	 YUhOGaOVGw+W5rh4DGRABMMv/aiCeR4u9gTptrIF/+5l5aKNyptCW21EF6AMac48Yd
-	 6hRJnhdAu3tGQ==
-Date: Mon, 27 Apr 2026 17:13:22 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0z0jaFwz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1mckzUnH;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0z0jaFwz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1mckzUnH;
+	spf=pass (imf03.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777277632; a=rsa-sha256;
+	cv=none;
+	b=bQVAKjnX1mgggm2XbdQy+bRuqdImDLwoV2vLH8zJCIgJ+PcIjCHtJe4XzTm7uH2+/M4W1U
+	QjfIolhi1Ybih02leUo9Bbw2IeAwn0r7SQa4UAyJ8KgTo1hhbIVTkjuiUuKbh4x6MbRacf
+	Rm7DOCW0lfNUL1fd9DgJgEpoSHSzpg0=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D30B65BCF0;
+	Mon, 27 Apr 2026 08:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777277630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuQV9jJyH30aDM2Bz1IuN9VTNix0UN5WEuQpT3Fpupc=;
+	b=0z0jaFwzAjjEyKQxnVCt3DilS1qh8AVcUTdjyNX9unVq71cORSUkjbaygEJPik9LIzf4bc
+	Z8SuT053SuJrTslUBIKlc/x+7oM3wj0eXJKPhEN3JNP6wTyYIWhvCfw0Ddfw41EHJHuAif
+	jEHll/97pqpvBeKOeMxbUae/Tdvx3eM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777277630;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuQV9jJyH30aDM2Bz1IuN9VTNix0UN5WEuQpT3Fpupc=;
+	b=1mckzUnHukCKa96Ks+LmlW+gcWarB1YUDjcdhkHHVovufNMZltT1GNl9/Yv2OiTSp4b2em
+	cmpT65Wlnu6oQTBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777277630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuQV9jJyH30aDM2Bz1IuN9VTNix0UN5WEuQpT3Fpupc=;
+	b=0z0jaFwzAjjEyKQxnVCt3DilS1qh8AVcUTdjyNX9unVq71cORSUkjbaygEJPik9LIzf4bc
+	Z8SuT053SuJrTslUBIKlc/x+7oM3wj0eXJKPhEN3JNP6wTyYIWhvCfw0Ddfw41EHJHuAif
+	jEHll/97pqpvBeKOeMxbUae/Tdvx3eM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777277630;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuQV9jJyH30aDM2Bz1IuN9VTNix0UN5WEuQpT3Fpupc=;
+	b=1mckzUnHukCKa96Ks+LmlW+gcWarB1YUDjcdhkHHVovufNMZltT1GNl9/Yv2OiTSp4b2em
+	cmpT65Wlnu6oQTBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 25062593B0;
+	Mon, 27 Apr 2026 08:13:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LtDpBr4a72nSCAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 27 Apr 2026 08:13:50 +0000
+Date: Mon, 27 Apr 2026 10:13:48 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes v2 0/2] mm/page_alloc,slab: return NULL early
- from *_nolock() memory allocation APIs in NMI on UP
-Message-ID: <ae8aojxbv4PHq_C3@desktop.tail10959e.ts.net>
-References: <20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org>
- <c3f7b8e4-85ae-4e80-bb02-a7b205cec88e@kernel.org>
+Subject: Re: [PATCH 1/2] mm/memory_hotplug: fix memory block reference leak
+ on remove
+Message-ID: <ae8avFsiMx-45ZOW@localhost.localdomain>
+References: <20260426144447.817722-1-songmuchun@bytedance.com>
+ <ae8U73RyTE2a6bdp@localhost.localdomain>
+ <7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c3f7b8e4-85ae-4e80-bb02-a7b205cec88e@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 19E081A000C
-X-Stat-Signature: h5a1ij5nwmz7a7nbc9bidmt69uarkxz5
+In-Reply-To: <7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 75CCB20003
 X-Rspam-User: 
-X-HE-Tag: 1777277605-57924
-X-HE-Meta: U2FsdGVkX1+L4ICIVh8roYmTbAItRtIWYyYIBQAJMhoYyhazDxwf89rK8zkVvYgVyGRNh6EwFSwOmoRWBkPl8kpJIBsud5o/lEWniUDTv1FdDpqPd8F1mOvrRs+FEVes1xJ6zh8wJ0olLM05+248JQRy8TMpD5gq8S9tOH6mECcgMQuKgqzlUOVY9uTl4/G3rQp8g5C0mU8Vuex+UlUJOh5oyWLEst9srKiG9lMx/8rsx/L0WB1xwHmq76vgeO51mpNQQmDC03oHEzjtOQEiimrzvo7M5it3KqCU7l79DJBFU5DweyMDg6Y0GMEnoj6RlM8bYONEjV1tm03NQnNn+Nnvp7TG/fiSve5XL92yaoK7LiapHwab3i96ju3bfch3adBZwmaL8ydsjCNesfSd1cHeUgvuLMo1ZarJi57YIy0UlVGegRJv68+f7EQ1AWc0+jjfY5tJ/SHykWFaxQz65wD5adNqpMe0MfEtibklsPpR8GTfxyQM12bIzbeZtOgOx/iMd69JGkT2GKFq7CdUmioQBW8mP8vqT/ST5BBgndji4yB5T57ab02/AOFMtteV6N11x5Fl2LOwdiDAw/gVP1bvln0IbTnvtUWt7UxSj1h8HrAkmQ++sXHVgTCfp2lci9j1+iUtmwSJRPQZGVnP/ULMtYiEJT3uACT51fgodrMIIRwk4UL3QaAQusOKolVs4SGBjxEwzIZ/CvmtiwJzw+DxFmb93DPNwfr4y89P0updKvWGK3RkUHy5+oMPQ4XXLOFfimijS32PjOzWBWWCBMbmBd41wNfHI0FUeMN/TnUR5PU3wsX1hTymYUVcasCOzubq7ltPYLpOrPD9/LYBgULTUWPJn+5x5myBc3EHgcEzEbPsz4Zm4Gc9TLVIh4QkXWQ1ig+jlWG2ixC4aJXwOUP5BPaRWH6qDtW+cfGgR1Hf0sEudJ4u/Ue/EsVYoMZ3Y6JVqc59aj4B3o4LuYM
- WsrMcbur
- MnEGhJW/0k2zNpAYs45xA4EOSC8qt1ztwzc3hMERwBKTypapWJw2aJ8ODBgzjFx2u/xdfhtGwEprPDms/5fnAfU63xSloM81/73ThZmbOZhP22gos6lULLlBh3HFpWm5IkvFzRKNQgVd89Ypa+eRK3GrYvS8FphxaYxcuyPSQD82au/ska358GaVGi5HOsfWqrY6+4ch0UIEOwISxVPfwUDPdcr0GjSt9kO6mL/8D45m6sRvDBBhy9KSc+7rtApwS+OCjLMwJ1/vJpbo=
+X-Stat-Signature: iu57fe3j5nrs6yo74hw9znpb9wcdsgsc
+X-HE-Tag: 1777277632-525646
+X-HE-Meta: U2FsdGVkX182BE728LgJ9x5oDJ1t+vk/Qua0LLdAu8hZ8L1pbncTV5czXZMBfE2BO+M8bgtjxUSxYxGkQpjN2Vs5BWDqpXegoRkBWnaKym1CSNPSBPppT4V7ug4oUongWln/IvHR5CChuBUH/dQjBr1Vvfkbvn53NKVsGAJJt99BMbYvTW8WakR6OB6CzFC2305pjqoJhcopGiQkALj3vSYRNqR/0PxNH8j6aWjM01C91gluGd6ec1wCqu3R39qnCmGPF5YAMJYdyuyuS5O4ZCmJXXloHQ13n5hmiUHtMrL5rxCBv5n5lN3gQSAaEuKomnZIjigC5lWp4EcuE8RNb8Bx9Nr0CpyulnL2N40jnvYo0X/IFvGUCd0Dq1k4m98Bavv6GLZPc5QaVmNbtzQDMFEIJB/wr7Itw1sWlG5OeRPDH91sUs6miuSjWhTBC0j92Ns2J1t00IhMuxPI3iugkAm27O1CyfZxL3b6ZwD2hQdRaou5JhjaBtdTUxkio9uHP87HwXOhItKN0pq3j2bTi2GlJQjtlQu816bSxgMi88q/bWMLERlgFQAwH0q3mWjR0NEUUT88J9bQK4/ntrdC9N+Gg/pC2FgLQiHDQu6u1Qin3vY4x9rH/kdlA2+8O/6eB6GfG/zyfRrQmkqRhcNM+sM8scEmiAYdbBAUrXqXr72unXOXKAQtSz6pc5yWJyW6W9C4cCpBsFeCCR3HPQlDDeM+mWoVrZFFIpomYZGte8nHJFUtB2RDFZ/Er6GDxyN4McVE4im31mGewtBO/C+WBAjcunL09+nrE1Ld6C9inS6fIhgjinA2RCtxsQo6MrTOHpL9N+gEaBIObHc7+854mJe2z1YeqhCMNQ43NI/FFsuuFsFN4OKBDrLLAdfb9FtjQ8s2tsNDzA/JNps7HlK1tg8MnhaQqNLleKazV59E2eUQ/7Yg0gsj0ryszJIvf2pJvU8ZQl9yrFcSSba0a3S
+ J2qqWvLt
+ TN8Z0LkJIeQhQOpGWhFbZV3D7NiKh0YP7XjDFkENOXIjviF7pc6xCQRlr/pcd4u5BzaHRMNe6nm9oO3R/VBeUHLKgaOHlVEJPjWm2SAPTyvt6LzYLmhx8pN4HmZUK0aTP3v1nobGECX34jXuNzlAsMFtDQbRlTKS0ahm5GA8BRAHYKz14dEVpFjVyHBX6p1ZsH0hZMpM4CrXClKNtLexycns6wSL6F7Hlwk1gk6MBF/RytlwM4Vm7fP0ma2M7E+VB5o8mFPplMh2no4ukDXann8OzMZ+jtd3fNdCnH9P7Z/VsTHOmL0BV2nTVyK6C1evuNJmmQCfr66W5r7/2Z3NbSes3CaTtXSGf7h8Zb1URb41psTXkSD/5tl9+p/jD4ETHvBZr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,46 +144,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 10:00:16AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 4/27/26 09:09, Harry Yoo (Oracle) wrote:
-> > Due to my mistake, V1 was sent twice w/o proper cover letter and
-> > Cc: stable. Please ignore V1. Apologies for the noise. 
-> > 
-> > Changes since V1:
-> > - used b4 to send patch series (w/ a proper cover letter) instead of
-> >   my broken git send-email script (Thanks Vlastimil)
-> > - added Cc: stable to patches 1 and 2
-> > 
-> > On UP kernels (!CONFIG_SMP), spin_trylock() is a no-op that
-> > unconditionally succeeds even when the lock is already held.
-> > As a result, alloc_frozen_pages_nolock() and kmalloc_nolock() called
-> > from an NMI context can successfully re-acquire the lock that the
-> > page/slab allocators are already holding (no deadlock because it's
-> > trylock,  but leads to e.g., allocating the same page/object twice and
-> > causing use-after-free).
-> > 
-> > It was discovered while testing the new kmalloc/kfree_nolock() test case
-> > in the slub_kunit test module with CONFIG_DEBUG_SPINLOCK=y on a UP
-> > kernel.
-> > 
-> > Patch 1 fixes alloc_frozen_pages_nolock() and
-> > patch 2 fixes kmalloc_nolock().
+On Mon, Apr 27, 2026 at 04:02:17PM +0800, Muchun Song wrote:
 > 
-> Thanks. Given the problem exposed is in a slab kunit test I think it's
-> better to handle this in the slab tree.
+> 
+> > On Apr 27, 2026, at 15:49, Oscar Salvador <osalvador@suse.de> wrote:
+> > 2) I kind of dislike having an internal put_device() lingering here in
+> >   memory-hotplug code, it feels like it does not really belong here.
+> >   Ideally we should have a high-level function in drivers/base/memory.c
+> >   that calls put_device itself.
+> >   Something like "put_memblock_dev", dunno, names are hard.
+> > 
+> 
+> I share your perspective. The current naming of find_memory_block_by_id
+> is ambiguous as it fails to signal the internal 'get' operation. To improve
+> clarity and reduce errors, it should be renamed to memory_block_get_by_id.
+> Pairing this with a new memory_block_put function to wrap put_device
+> would ensure a more robust and intuitive API.
 
-Ack, I'm fine either way.
+Even better, yes.
 
-> The page_alloc change is small and
-> should not cause conflicts.
+Thanks!
 
-Right.
-
-> So I've merged both in slab/for-next.
-
-Thanks! (I see it's been added to slab/for-next-fixes)
 
 -- 
-Cheers,
-Harry / Hyeonggon
+Oscar Salvador
+SUSE Labs
 
