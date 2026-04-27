@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E353FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 12:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17325FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 12:21:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 514086B00A6; Mon, 27 Apr 2026 08:18:03 -0400 (EDT)
+	id 4F36F6B00A2; Mon, 27 Apr 2026 08:21:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EBA26B00A7; Mon, 27 Apr 2026 08:18:03 -0400 (EDT)
+	id 4CC266B00A6; Mon, 27 Apr 2026 08:21:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4286F6B00A8; Mon, 27 Apr 2026 08:18:03 -0400 (EDT)
+	id 406916B00A7; Mon, 27 Apr 2026 08:21:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 31AD16B00A6
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:18:03 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C81C640171
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:18:02 +0000 (UTC)
-X-FDA: 84704237604.28.10255ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0B700100006
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:18:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fiFx94gu;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2FB026B00A2
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:21:20 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3A0F88ACB
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:21:19 +0000 (UTC)
+X-FDA: 84704245878.16.9769954
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2BEA7180015
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:21:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RscBaywc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777292478; a=rsa-sha256;
+	cv=none;
+	b=evo+6kM9CkrwvbEeCzaTQgsq3p0oObLPoS5ETSFCoo+9eiyKO5x9bUngRkbbjGTfiRacHZ
+	zZ7fPIqspi/TDDOXCdcV2ppGLgLDN2WO0RxRO2+uNtvuuuuf33pVwevd1y4f/TzrIfS4Si
+	2Fnu0Ih9g4iyUmKDHu+tC6a6/PtZXUU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RscBaywc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777292281;
+	s=arc-20220608; t=1777292478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+LDdgowznJ80yc4FSIIjuF1YZskEhBOBaw8pwQcLhv4=;
-	b=OmB8aVjpEw3dK1MKUGiuFmbQBUqauxO0tyl0A9LWpF5UToI6dx7NvNDZKhrBbUQDd8vCY2
-	MlBhftzUr95Ck1oRS4zxiRcQNKswDW/jVQ8vtYiQHXkHMjV52U8ct5Nd9FAsWp5P/zCLRh
-	KLJ7WSbEpmyWjyX1x+7d6xEm3/2f3uU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777292281; a=rsa-sha256;
-	cv=none;
-	b=tK+xSZgbMGhA6wA39I8YXI1c3sNlzQbrSMgGzcux57sL3dywT8zDE/A9dys+gzmkWm0guZ
-	LcCkoAZafVcnb4zbrp2y72gse9MI9eXrDsoZJaUsUkGm/2b5ypFM9aKCcEHwwnr2eFb6a+
-	bcZZvkJlCSAzlTH0Z8mg3AwIHAH808s=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fiFx94gu;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=HzcYpC2vyvn+HZ/paGjPO2fPo0+EMmAbH+eI5hURHRw=;
+	b=XsUYRKaondHpeF/cv8kta7UrkSgLamH3cVWvtuhmo6OCGHz5beZr8NBG6dMsjcvwQqeDUc
+	9228Y1xdyp916TOyu0Q7asN5e4zCirfY5AcSpMFoTKMzq5EV6kkwn+XZMAEKuMaVjZNgdk
+	Z0nCjHiCWKW2TRc46lvd1rB0YzXevk4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 022E96014B;
-	Mon, 27 Apr 2026 12:18:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB317C2BCB5;
-	Mon, 27 Apr 2026 12:17:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777292279;
-	bh=AQ4MxxuG0FLIcClDhsTCj2LB5MBEyzoHu1DSqDFxwmU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fiFx94gucSnLNgfPsXQ6PkeKXBxrZAes8+MyPSVTnQtSHgxCxOgepMVd9ezClmOYh
-	 661TwppiHatNg981pbUYr7Wx+07vpWIoXk5tf9119+sUPpC1tjtDHhvVEBFjVAwyyM
-	 z4FQvDG6nYl4yDFqyAfwe4QfcfJHlUUawc1seo6w=
-Date: Mon, 27 Apr 2026 05:17:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
- <dalias@libc.org>, John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu
- <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
- <jolsa@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel
- <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn
- <jannh@google.com>, Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett"
- <liam@infradead.org>, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
- page_mapped() in arena_free_pages()
-Message-Id: <20260427051758.e1b714a4b567917971920eaa@linux-foundation.org>
-In-Reply-To: <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
-References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
-	<20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0B700100006
-X-Stat-Signature: 8r1kicyk6r3tp1t6peqp5cjochx8ffmt
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C8B341A3E;
+	Mon, 27 Apr 2026 12:21:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF84C19425;
+	Mon, 27 Apr 2026 12:21:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777292477;
+	bh=y5YbLZwgt5tGfMeBdX7DbB1fAcNv5JOlbmjt5fbiW8M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RscBaywcFhwoI3SqDyzrigx+bPwRL4F6kV1gY7DSITn7AFSvt/XrXV9jwgFBMmfma
+	 l7QsGrNpDg/2TqwSm8SaY5BPQDb5DXHP0Fmo461xxj9R/kycEznf2AqDxoL/OqlRCE
+	 Ki4cDJipE+/Lz4ezngsXUthKafX+XMzveZM3Xx0hZIjXlUwtMXfIWrz91FRyODKRfP
+	 RiCdz6kaME6KLLcia+I1KwgxGdsieiSYwd84Rge2TqMFb/J2WCiprpOGphi8tZkjtq
+	 VtDOKaJARCp2y0VReMYF906QaVSy+BGMZNvp8ZZNKps7Gk8KJa60XxCotrq8+wOgq0
+	 vDA61Tu0ebQGg==
+Date: Mon, 27 Apr 2026 14:21:10 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Thomas Graf <tgraf@suug.ch>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com, 
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, Jan Kara <jack@suse.cz>, "Darrick J . Wong" <djwong@kernel.org>, 
+	linux-crypto@vger.kernel.org
+Subject: Re: [PATCH] rhashtable: give each instance its own lockdep class
+Message-ID: <20260427-ledig-urform-4719da0a06d2@brauner>
+References: <20260427-work-rhashtable-lockdep-v1-1-f69e8bd91cb2@kernel.org>
+ <ae9ItoKFvB12Qimn@gondor.apana.org.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ae9ItoKFvB12Qimn@gondor.apana.org.au>
+X-Stat-Signature: igmc5tryu5ct1o1fo44jjjgt1wfpmfy3
 X-Rspam-User: 
-X-HE-Tag: 1777292280-211962
-X-HE-Meta: U2FsdGVkX1/RKpUheFFwgquNKaSnqhg5SjuTXQirF/eATcUft6Vwo1jm8i6tCN7VKFS8+1QNQLxx2ECzE7oF/aAd4UAXSNNS2qLiIcoB/R6nr07CvNzZXvp/9SmJ/UgMh2mFzBVwcLOgmGNCK86a9FroeMYNBgvlWk8oG7UISi6pjVrVVojVfJGGIH3wFJerla0+RMqK+MmcPUA0l8SaIIiC5PdMG1uqZ7hn+DESWvwjJvNk4Xy6QActUM1YlzQl+UtVo1Dp6+XsVXyJ2DWdIeg9iPZy2J/q1ApalO+2H2DiTM079p83SQuEYXyNjFKupmf0SninTglU4AlB6wc4JGebNgLh38V9bWUFNGZ2rEW02O2nkGHTf03XvYGPEveRjC3QTMGYKC1GFPzFDl8YODkACiRHv//Mkq7LpjOuoRdBSHYeo2i918ijrzd8T1qMXzcpHFBvq9FHP3vN41wj2R96URW+tpvu3DcJpIwVqyJmC8aeKI8LRw/rPtoqoilFSs6vzqtEm1jJfws5ssvxCxUiTJb1aUwsilnC75T2eHvzzY5SCbuQ0rOlOyo8KGRSSsM7nnl4GhgitWYu26yiR5i9wAQEBzNMTWmaG40VEb8p0GEoMdR+JmaK7sUfNgyrVix8K4cLKnLaB9aEkqVWjFqiEK5Mm2euSKhcsth7JD9XtSPc3rX2w+j/ssZylopT6CMCtrs7WqioFU4qlaQIwlsVwZixqqUQIS2RhAI7tA+qC7KoJ6B80UjJdTWgVLWF4yL8TKSHIcoMAo4Wr7I5PUPsfZPbbiAcVk7gWmAevQhVhv4NJCA2ackbifQ0cpjy0I5+/sdDYeT28v7Tvd4M15KOHpmXFsg7wD7++DuVLZry3RY2QFVAl9E7xu0bMphci1E9w6cVA/5H+r4awdmfEyE1Jp5yXkTBAQEKYqpEX4PfWFeZbuYQsgiXMtglidoIrFjkYQ/++8u60ga9u4l
- 03TTGC5f
- fItv7ud4IM4E7UBZNXZxdJYrGIW/Jl20YIgAvfRQ3khf9H9/5LUsYiQUE5PTyfgA6p2ivZmAMGxgv6aXWPyeejregCRfzuUpB0HFxtTm8GCLf2R6oPc6o+R+Q3iCFKeFVa0x/L/eonr0iz/ULSVnpGn6VP43oMFg4Jk1ZaGxQN5EZHgU1RpXU5Zb8/VpPe3uMFLYjyfT6Dc0S3iugDF/mvILvsFx4eCmLMyeUuwtugCq/MvLAemuK+n0lm1YF4GydxGwvHWJ42XNU8/iRXkV5am0d5LfSXgPr8rzRlHLeMeDs5XfX5Xj34r9Ak0LHUzq4N2Vy
+X-Rspamd-Queue-Id: 2BEA7180015
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777292477-655387
+X-HE-Meta: U2FsdGVkX19KAFLZLTKOlJGoMeokJB+vZGcHqe6kR1zo/Eq5kUQAynA6REShGJfEmYQ3vMDyFsVX4ivcXw/Q/bf/+QoiSZG5chVznu+MkB3KeZ17QGA8OdlvvrON55u+NFnTeJugcPQ8h4/xHGopVVLBlSiYJ7l+ELLW17s/BIUMCbqN9eeNtM9uVFUikHtT0gb1PL+E6Rr6xTsSVgdheTPwxYarg0lqn1c2wLM39yGCHeZkTPB/NweQ97tA8xlC7QttCxKLG5cz1N7WD5ad+s18eoxpHTi9oSScDG8rToinInIkB72Yvdra+CnGsAyhghXvqDzCx+W7JmW29emlPq7TY22CsGK8LU5N6fy2RMHc/eELJOLB1U29ghXvj6gPKyPH/waHAd78CL1kwI6vZTC9a06DShMg36fcDaZnJZcW42j8TS0uTgl00e/tm2Rf8VJsH9ET37sECXEq+q7y8q/fCYH89X/RUkWO30hasN7SqX5v4jCVAY2TTRWRFOBnHxx4SQPx2muNUhsp5NcAOex3bUdRPjD7+vk2n4TKIfCyNpHqqvfJCtPXUME1qL0iZIWoXnwdA3Ov6bMIAo4l4vIXAukz6GeRjc02/GIT9gY0mqhn3yWDnX8bzD3SuDM9Z3bteyS4Mnc25Uyt+3f2LmYvzHq7OpZDdfYiirNrS4Bfk9+9MfL0xuOk1TfCzgTl9y+Laa3ThBpcZ1BW3HwcNaBSCOYbALltJXvJhoOENXfbOhVgfN9o834HfyWjejAsHnhbr4IqZ0k94P0qncsYRkbgzGr5b0gAsnp7R1EPBVEaMIvmjMOsBsdPbHx39KPjGNHLBAW/1W/LFm0t844Rv9Kx73GaRuYUv2tl9+AQhAQhh09VjaXaARFrwjrBxDJGr5cXoIU5ecG+5ZYzjFZkqXeq2kw4cat+nzfL6C8nD0MO2cHXR/hyqzuenz8rm1NyG1RvDv0fFZrFMgWY9Ix
+ mdyfukKB
+ 16OqRObCr91uKoH15ao1WwFdHUkL0+Ia6l9NYOF6u0hnEcabAP9Lf2JzJYL97yUHO/aeUzy4+TcLu7az2AvvvEQH8db3myrMJOcWcp/DMJxgDPpiwECNKEABW3MJl41PPY8iKQw23ao0OI2bkjcTkdPqX9GarOYsTssyqLAJv1NNGCvH8U7F2eaXFIbubBJnsSwnsXWdLO+qoo5faYY5pvkoEgXyPUyR8uWHgA3Ay2QFKCMCK1BXoMbc3bleELVT0JpIHJAjPRPUaqTgf3D8R0Ei2U+ePyRZRRhX6rhWHFNHEIRirFek697W7VnibXoVPj+7Pv2u6sB1NYdlChDZMlTwShn5cbLDLJoJ8W4esClUF7nAydVO1iDriPB4+JknlxQ8SCGht4TqLfcCIEqbTfJqJQGi0LAIY7jYXSncGfTEmdchgZjYjPDeaQVk7ijisLWR8sy4qVj64YAm9/jVSYasB4KNDhRt+IRwlFx/KC4VJWluvq4WTj/quF0GvTkjf6PXtHoNCbIuiWJMxG8oEUw9h2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,33 +96,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Apr 2026 13:43:15 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Mon, Apr 27, 2026 at 07:29:58PM +0800, Herbert Xu wrote:
+> On Mon, Apr 27, 2026 at 01:09:57PM +0200, Christian Brauner wrote:
+> > syzbot reported a possible circular locking dependency between
+> > &ht->mutex and fs_reclaim:
+> > 
+> >   CPU0 (kswapd0)                    CPU1 (kworker)
+> >   --------------                    --------------
+> >   fs_reclaim                        ht->mutex
+> >     shmem_evict_inode                 rhashtable_rehash_alloc
+> >       simple_xattrs_free                bucket_table_alloc(GFP_KERNEL)
+> >         rhashtable_free_and_destroy       __kvmalloc_node
+> >           mutex_lock(&ht->mutex)            might_alloc -> fs_reclaim
+> > 
+> > The two halves of the splat refer to two different events on
+> > &ht->mutex.
+> > 
+> > The kswapd0 path is unambiguous: shmem_evict_inode at mm/shmem.c:1429
+> > calls simple_xattrs_free(), which calls rhashtable_free_and_destroy()
+> > on the per-inode simple_xattrs rhashtable being torn down with the
+> > inode.
+> > 
+> > The previously-recorded ht->mutex -> fs_reclaim edge comes from
+> > rht_deferred_worker -> rhashtable_rehash_alloc ->
+> > bucket_table_alloc(GFP_KERNEL) -> __kvmalloc_node ->
+> > might_alloc -> fs_reclaim. That stack stops at generic library code:
+> > there is no subsystem-specific frame above rht_deferred_worker, so
+> > the splat does not identify which rhashtable's worker recorded the
+> > edge -- only that some rhashtable in the system did.
+> > 
+> > Whether or not that recording happened on the same simple_xattrs ht
+> > that is now being destroyed, the predicted deadlock cannot occur:
+> > rhashtable_free_and_destroy() does cancel_work_sync(&ht->run_work)
+> > before taking ht->mutex, so the deferred worker cannot be running on
+> > the instance being torn down. If the recording was on a different
+> > rhashtable instance, the two ht->mutex acquisitions are on distinct
+> > mutex objects and cannot deadlock either.
+> > 
+> > Lockdep flags a cycle regardless because mutex_init(&ht->mutex) lives
+> > on a single source line in rhashtable_init_noprof(), so every
+> > ht->mutex in the kernel shares one static lockdep class. Lockdep
+> > matches by class, not by instance, and collapses all of these into
+> > one node.
+> > 
+> > Lift the lockdep key out of rhashtable_init_noprof() and into the
+> > caller. The user-visible rhashtable_init_noprof() /
+> > rhltable_init_noprof() identifiers become macros that declare a
+> > per-call-site static lock_class_key.
+> > 
+> > Reported-by: syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/69e798fe.050a0220.24bfd3.0032.GAE@google.com
+> > Signed-off-by: Christian Brauner <brauner@kernel.org>
+> > ---
+> >  include/linux/rhashtable-types.h | 22 ++++++++++++++++++----
+> >  lib/rhashtable.c                 | 17 ++++++++++-------
+> >  2 files changed, 28 insertions(+), 11 deletions(-)
+> 
+> Thanks for the patch.
+> 
+> But could you please try this patch and see if it also fixes
+> your problem?
+> 
+> https://patchwork.kernel.org/project/linux-crypto/patch/20260422213349.1345098-2-mikhail.v.gavrilov@gmail.com/
 
-> Pages that BPF arena code maps are allocated through
-> bpf_map_alloc_pages(), which does not allocate folios but pages.
-> 
-> In the future, pages will not have a mapcount, only folios will.
-> Converting the code to use folios and rely on folio_mapped() sounds like
-> the wrong approach.
-> 
-> Should BPF arena code allocate folios and use folio_mapped() here? But
-> likely we would not want to use folios here longterm, as we don't really
-> need folio information.
-> 
-> Hard to tell. But in the meantime, we can simply use the page refcount
-> instead, as a heuristic whether the page might be mapped to user space
-> and we would want to try zapping it, so we can get rid of page_mapped().
-> 
-> Page allocation will give us a page with a refcount of 1. Any user space
-> mapping adds a page reference. While there can be references from other
-> subsystems (e.g., GUP), in the common case for this test here relying on
-> the page count is good enough.
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  kernel/bpf/arena.c | 2 +-
-
-BPF maintainers will probably want to carry this in the BPF tree. 
-That's fine - please go ahead and add it.  I'll carry a duplicate in
-mm.git so it compiles.
+Possibly, I don't have a way to easily reproduce this though.
+Imho, the right thing would be to have both: actual useful keyed lockdep
+annotation and - if safe - dropping the mutex.
 
