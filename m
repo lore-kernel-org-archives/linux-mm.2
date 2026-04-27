@@ -4,101 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50725FF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84B89FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:33:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8C476B0095; Mon, 27 Apr 2026 12:32:10 -0400 (EDT)
+	id C8B026B008A; Mon, 27 Apr 2026 12:33:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A64406B0096; Mon, 27 Apr 2026 12:32:10 -0400 (EDT)
+	id BECE46B0096; Mon, 27 Apr 2026 12:33:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A15C6B0098; Mon, 27 Apr 2026 12:32:10 -0400 (EDT)
+	id A8F746B0098; Mon, 27 Apr 2026 12:33:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D2636B0095
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:32:10 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB3BD121387
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:21:27 +0000 (UTC)
-X-FDA: 84704851014.23.1760AD6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E816D120013
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:21:25 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mHpyoUJW;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9776D6B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:33:58 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 989CC1A06D5
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:29:23 +0000 (UTC)
+X-FDA: 84704871006.22.8021DFB
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9A1241A000C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:29:21 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RbuUferT;
+	spf=pass (imf19.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777306886;
+	s=arc-20220608; t=1777307361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jC5Ajr4a4rXVj9lOYr6ncLyoFPtYegjs3bNCdujjCOU=;
-	b=B1JvieI4FZ71o342LNTgT0p9/ZermjbnoBVXnFwvHkQlFYujr2WbfhQqX8sZvfGLkDgQfx
-	ahGK2KzyuIcbggqLA4qzh5hD+eAYeUXZnlbKwEo4Np/jOvhHCcje/GxDM+uF16V+TElREd
-	Xw+7OxNJBvhL+dQWtX7qcJ6pQtR5Fqw=
+	bh=DSfx7+SmbHArcxIwIbdzwX89/TyvDFQ+ngyr7SD3GvA=;
+	b=kRTp9E4N03PjuqqAmnXTnKzeTzMUqzdeofheIlyxswhJnvrl+iGpsJaqm17qunmUJqZcpT
+	SlcYkz1+ToUi/LvR9841C9pWt6okegXjxtn62VymXD1WMFmWEhh6gZHgeMZDP0eDubeZi2
+	UaIuMjaHIw1gZUO64rBcWmAmaUfbHPU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mHpyoUJW;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777306886; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RbuUferT;
+	spf=pass (imf19.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777307361; a=rsa-sha256;
 	cv=none;
-	b=b6fZvLy3WukqxBx+5Wv3LGuNyY7dfeejHmqI/1tTE3LfZysgXIHgXuwIT8hTT1ytqsNHZL
-	l8iWziPO9K7mTiS9GYdh9QdByWJNqtc7v8xhNlL7jHPFR32s2MI2jLD/gUD18bCqIokmIp
-	d/qXQbaZhBDLD4aCo/QKKHi0imaJAPg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B8F3343919;
-	Mon, 27 Apr 2026 16:21:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC569C19425;
-	Mon, 27 Apr 2026 16:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777306884;
-	bh=Qn6KG8K9yrtcG327jkMoStft/n8GyYVwtBTkac6FJZ0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHpyoUJWSEbFh+Lkh0+aQpZHuWd2gyE0vKYYeDA/AVyUCe21NPRrGQ1fY+FlJn2A2
-	 JJx/ZD0h7gFf6QPiOm84qB6YwSATbPZPYyvohxYNXSHBXoNMUWgejdpxu9SyQGvhNO
-	 uSrn1EPskbnnZ5urRPGWjQ9neKN4tCOO4e5UnsfaW+W9ysb95OryKPMn/BUu20sksF
-	 +5rzCgytas/KkeEhYV0wBESiuUi7YydhnlHljcZtXNWVwYrFvBZpG2wDYbejzQsbdA
-	 siF7uJTsFfhS7ILMBAWRC0WSSfT3cUnkDFjrqrJ7Ksls3D+gEzrF/mIFkaeuoDSAxA
-	 hXGpByAbc+GUg==
-From: Mike Rapoport <rppt@kernel.org>
-To: Evangelos Petrongonas <epetron@amazon.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	Michal Clapinski <mclapinski@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v9 0/3] kho: add support for deferred struct page init
-Date: Mon, 27 Apr 2026 19:21:01 +0300
-Message-ID: <177730685404.1888067.9769034341045819620.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260423122538.140993-1-mclapinski@google.com>
-References: <20260423122538.140993-1-mclapinski@google.com>
+	b=0QWdmNjWze8dMPE3iuNvY60hDDyhR2m3//ZDKt0nCUWAFkEc5JKs0dfc0L0Jhw++H9m1XV
+	YRNzi39s+k6xJwPE4N6xngPi5C1+nfFDaoozZEgRgapQGG47ThX5e0DWgVVTpXPjMCYhZm
+	QGaNZP6BEr4l+2GRb/eQdboOWa0vA5w=
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-38ce0ab821cso89103791fa.0
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:29:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777307359; x=1777912159; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DSfx7+SmbHArcxIwIbdzwX89/TyvDFQ+ngyr7SD3GvA=;
+        b=RbuUferTGgf0zs3KsPC6hEkLMPY8NJ8w+QGMmbtnW8ZO02kqMbItiGQwEQ4CtQ4+bZ
+         o8TzUK8TF04g6YLkFVLo9SNHQ2m2vklX7aun+iNTU8dsdfLcHcSuKtxkUBT/CwZHzhIe
+         Ab12tgus4UVuLKlgJQJcpNStEKKi27EG28K0gmYwNknCXtREKnN8N7GG6WYcRj7gAhW1
+         GWHGbEXP1918yi7CmwlehCIFOELoxdEpZGRicfwsEYHBSjFVHfgPTDdm7fXcsif73r4A
+         bLZUvknDisqcnYRhNDBp0xeu76XB0H++n6HyeJF0yLjtMWmGFG/+6pzouXq5P8NRgruJ
+         8NQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777307359; x=1777912159;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DSfx7+SmbHArcxIwIbdzwX89/TyvDFQ+ngyr7SD3GvA=;
+        b=f5rq7c4zCCRpCKb5VHrnIqf1qFodKE8gZutyKtqeZd78XykJnJaExMVw8prJ1CJQNW
+         Ad2QzVylq0bGrf6fFMUwoNlUJ3V9ody/JkJZtMjne51iSWjnq2La2eOZTkBSqfVAxtKF
+         TvcVGiBLXIM+9KCQv9OjoJO3VyY+P0CU8lfsxLCFHz1D/8u9vqdqK+rVNY3T2Oef1wTB
+         /RQOOqvUEt0NDwi1VbepNt+5bUYLH/zr2isUOfMPkmYZCGAKAVFzgEFGR8yn14J3gQZN
+         f8ykrbdw6ipii6/h3XK4KrgJmalnHTMh3fvcIVhlifjiGssHaI46APmm9QNG0G08/Vmp
+         6zEg==
+X-Forwarded-Encrypted: i=1; AFNElJ8MVM42U36KQ/bMHRkOF8QYHBkXWzxZ4rlXNsVjzq/eCC3q5orhAS43GMgoqsVQp5CNKLT00D6TgA==@kvack.org
+X-Gm-Message-State: AOJu0YxV/eD/KzXup3sACyPEFKc3bpXIx9GG0zNR2pcYfxMRjwfvhHh7
+	Ab1zwH+b02hhpeECGtRYEFdX1jovJR3b3obvHrDM8rZWlNVDRZTOEcAEY+Whsin5
+X-Gm-Gg: AeBDietfL0+n+IfGIfBvIbTn6phWBO5tVAK7b0ug32qLlD9LvRgRKc1NxSdLxZbGdGw
+	9RpMc+VyRxp7YeNLwMEL4Z7n9tJ6w0jtNf24E7l2OslJuX2by1TFfatcqSbbraYH60I0QaIY28q
+	Y0QnM76s7hel2Zw4GxWkR2UEuya2LW8xl9hFQubyH15y3Vq8pONAW4oAKleD+K80gD/O3BbiHyo
+	1rtHyrbohGKn+Fd+EkVdwHVD8DEpiwaM1MnoZ/qV0e774WgFkfrvT79yxlPG4lDiAww/9t8+gEz
+	z/Z64wfg/325sYZr109IshhKKTOnSzWYMn264e0DhDTaOjYxWmty5bBIbHjfGQEZlX+G8wLSWTl
+	scbJSzId2FVzs+NW+OyRPdqR4feqIqW1gqugUgu3FHsE8H/tmaS1mNVikBOXXO/E+faXqazTcdo
+	Y=
+X-Received: by 2002:a05:6512:1189:b0:5a2:b59a:5e99 with SMTP id 2adb3069b0e04-5a4172e7bdemr14244454e87.22.1777307359417;
+        Mon, 27 Apr 2026 09:29:19 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4185ad11fsm8240873e87.14.2026.04.27.09.29.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 09:29:19 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 27 Apr 2026 18:29:17 +0200
+To: fujunjie <fujunjie1@qq.com>
+Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, shivamkalra98@zohomail.in
+Subject: Re: [RFC PATCH 0/1] mm/vmalloc: reclaim tail resources on large
+ vrealloc() shrink
+Message-ID: <ae-O3URyANS-mkoV@milan>
+References: <tencent_824873CD3C7F2A76CD237A308C00DF18580A@qq.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E816D120013
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_824873CD3C7F2A76CD237A308C00DF18580A@qq.com>
 X-Rspam-User: 
-X-Stat-Signature: pfyn1ppw1mkzri4enio397cph33ccenx
-X-HE-Tag: 1777306885-669262
-X-HE-Meta: U2FsdGVkX19vNy6mJ6JRlbBbumXe7ZsdhJqlirWEXD1biAt7R+BCYd930m7g9pb1/MJqcaHhTwrcOKWLGjRSaJCV6D0UgFM+GkOZRE7jQ/YSJapbtbEogzX8VosnhDqA67m9J6FdwCodWc1P4g/b/n/VhtfdI5oT6cJ7eR3p1ThuFMg8P1kd1ei0A6M45FOYXMcJLEU3Zux51z0ZTcwsEi9mJ/20ww18yn7r2I8h2/Rzce+63kM64fJO+2Dd7x/nopf9setKo6uWtixKLEOgJOxT4+uIeEE3DtQT8noKBU1SwmKgoh/xlh6uJJZ6knpmyXp+IX7ZDovZpv/asGI4Fw/Yd85A+DSVxPO7KPXxEDhdQub5NXVRdU5rJz/r+rCghSnRtIm6dyNDOquGhRmfEJpeA1r/PRXLZU3MomnCIMyImbvTxIQglV2b5dHPO/WOxSdF7lr3vWAI5TvOFxL0Nocdleo5mOuJVPOozo7LOOY3Cjil1VIubGFodr5aDx1l0QN407ocpI3h57Fu3M203qNf7DuBZVgsB0WsOlYrRQ/4ZUpYLip5Jfm9yUhWXvZbS6k4AuspcX8ZmNunsW87EoOWiy9Rcd2mjN0Ip9HRvbCb08o166DyHUpR16KhYvRY6NMOXzwiudDhkdKJqACw508S/VFBPTjSoz8YcAveA7hoE7fdW5OUIk57hW0tnp7kXfp2uGMET/As+JP60uKZdp54owFEvjg86aJcRFNqjxNuiK8lAKMljrqeVVpYiP91PYTi4wjXgXEDWoqYXG8Wi/YUMLdgS113I477Un0l8Tc9sP7bKhXBFhmg7qcIuVkkrp1c8e4t6XxYV4yRixLYtGJ53J7v5/LbE9rtTvDUfNFZHqKT8eVxAhMe4dlo7DfrHqnlvewPXvHVWOpKq2qqiQ7vuVZrVboZkeZDZTj7CGe4ckHilmqTeabUeAXYidTwYwVf/yNzwTZuQduLdKz
- 5fy+kNYa
- tP+Gs67f56Qeb8IQkTYUvShAT8p20ftUwZxOobrr1aqYUyHDvZcMLla1RTElsaArksnJ19iH7xQX/CKMrpGb6og5wuWZxQktbEL171/pqv/lUNInbYOGQ8TdBnXp17OipwbRc+g6Ax+QjyvQbCy3YnefsdDR6qVWxICRh4cSJOl8oU3Qdza2dTJwKbIFFrfNdigUuCi6/HRxQzEnJzNsewmkHFcXIdv8O5iGQM0bLfgIv5LqbjKcKntMZCg==
+X-Rspamd-Queue-Id: 9A1241A000C
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 6u9x17o5khdh1eph7zdbfmf1btqnfgqg
+X-HE-Tag: 1777307361-73749
+X-HE-Meta: U2FsdGVkX1//GwpWnnm4i0cdx7sAeRdn2BWlKnngW+ThJZSPk3EkP3vcygwFZTnrmp7QlfbhFPoTHtyhMmAS6TEHSLPOTUlOfJQkzbu0jhpKsqAcn2bghIPnoTkkd0f7JHq3pPOMhacVXxY2Qn7qQAlmjU8pQNy/QXPhYX3K7u7crtDeNYc30KtgAHNPZU5z/SWqw/ApzRfbyeYpAXJ0TSo5D/K3S1NpeUzdd9vomZrUUOJ/N55Mb5K4DDvldFqOTleBIEermUrlVYTABfS+UMRoU3Hpig+HzF2QSebWQR9wUhbz5ODklKi9Ryjj0tKfeC2HmgZMWdI9dl7KVjI9e/r8v3b4EgHK641upcepgDMmylhOqoiat0xGrIjnbvWPtP2vTFFWskMrErKTcngFF/oLMKGW3YbOmRmKt7ac1un+gfVHb2Zf1vNPgpNT5M+2cPA6XjrkHoUP1f5Zk4vcW+7sjlAiWrfG/3W+JbJti7HHeBYzf+uxK4lGogUXuNM94xhT2nGly5WbnY6Kgio1jdk7o6j4h/UHvn69TLc02+C229PaUtNYfJnZL/Lze0FFKi3tpA02l3KcLiQMOMXo26iHn9zWEP5mLLoveg8YUsIafgOCHcVoZmCDAWuRiiV+AAskmTiWrPrqAYflUAnqxqMdhJbL2R89nV2AcZXZBpgF1a4OuS8Qq5pI6RyYvIeLrkQckr7TdtFPrExJj4ChEZbyo94kNP5CyGrcpTKtBFTHH5nBQUW5OgTgFdqxwxQS+SBa4OTje1x9o7sIpZYBy402k37TQbdQnH4IhNcOxojDPz+0SvTS7DKlKcuo04g2zQPTkOc1EYzIUxw83qDCjYXUkRky+p/WlefwAkNHjBR6tQrRrzWjwf2nXlffk5CMFkk63e2EUWQ6vfYitJciEslCF1FVai0XThFi8FHyyIeEa/IJceTQuKqowbuWZULpfa+eaZDDDlahlgUv8xY
+ FKRrhM1E
+ Vau1xs169otKxfZi4fTG1tJYTHqvYxj4ETaPhcM1eNItPcRtFsLN6XIYKI7IwHnAt/UALaVGUX7/V2YLxghc8weLPEKauh/+cE5I1tSuOTJsNk6DvGJifDwfV4NsR5ImyCGYbpihXEsftjMzMbV+DfkDrVMtw81s6qObChfM1zxAAX++URT8Mif9V1CGDEJbpPlz5Mp72yOkUX0+jN6mB8Vi9PtXCVtPlfuXTZSGOYK0jGo5Yc2xJs0gqSiz144aoP39T1ClBVkt2/XIvsMk5KhKsm355nvahmMzuhwQpgCgh0yzX/4BpQ/OXeQY32RMV5OfOrEtuu6N7dLQ43G5tWwRHFxv737ju52ZqQC7+AU0tGqE5sx5k5D3Mt6fYiH1a+DqQAtMPg7lXITFZxtkzfHqlqbjwG/qPIhDCb6l8jQOwujhU6RKZ8rDwjrXA3YE5YCqoxwFnr+zy2ZL6J4PWLSmZVO+GVlFDjBz7ix5snIl0/9/qmldfzg9sM6fKdqwfWqQ+i4T0EdbsfTy76sKVCbhKpvEp5fL+N6RSO+euT9GHve3PM2HeWhavVOZKaWIv+3sw2qqGTXDt+2E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,32 +118,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-On Thu, 23 Apr 2026 14:25:35 +0200, Michal Clapinski wrote:
-> When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, struct page
-> initialization is deferred to parallel kthreads that run later in
-> the boot process.
+On Sun, Apr 26, 2026 at 05:28:56AM +0000, fujunjie wrote:
+> Hi,
 > 
-> Currently, KHO is incompatible with DEFERRED.
-> This series fixes that incompatibility.
+> This RFC explores closing the resource retention gap in the vmalloc-backed
+> shrink path of vrealloc().
 > 
-> [...]
+> Today, when a vmalloc-backed allocation is shrunk, vrealloc() updates the
+> requested size but can keep most of the old vmalloc mapping and backing pages
+> alive. For sufficiently large shrink operations, this can retain a large amount
+> of tail resources even though the logical object became much smaller.
+> 
+> This first RFC keeps the scope intentionally conservative:
+> 
+> - only ordinary VM_ALLOC areas
+> - only page_order == 0 allocations
+> - skip more complex vmalloc object types
+> - only reclaim tail resources when the retained waste is at least PMD_SIZE
+> 
+> The current evidence supports this as a resource reclamation fix rather than a
+> workload-tuned performance optimization. Local validation currently covers:
+> 
+> - synthetic large shrink correctness
+> - shrink-then-grow regression
+> - threshold boundary correctness for the current heuristic
+> - KASAN run-rootfs vmalloc_oob regression coverage
+> 
+> I would especially appreciate feedback on:
+> 
+> 1. whether this shrink direction is desirable upstream at all
+> 2. whether the initial object-type restrictions are reasonable
+> 3. whether a conservative PMD_SIZE threshold is an acceptable first heuristic
+> 4. what kind of in-tree regression test would be preferred
+> 
+Could you please have a look at this work:
+https://lore.kernel.org/all/20260420-vmalloc-shrink-v11-0-cad80b00853a@zohomail.in/
 
-Applied to next branch of liveupdate/linux.git tree, thanks!
-
-[1/3] kho: fix deferred initialization of scratch areas
-      commit: fe60961059eee7a3a303454c827bb347c45612c1
-[2/3] kho: make preserved pages compatible with deferred struct page init
-      commit: d4835433f4f6b5d618955a6a6eeb3e9f8b2b725e
-[3/3] selftests: kho: test with deferred struct page init
-      commit: eee13213401bafb7ffe3b447adffb1f570b9d813
-
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
-branch: next
+Shivam is working on the same feature. Could you please check?
 
 --
-Sincerely yours,
-Mike.
-
+Uladzislau Rezki
 
