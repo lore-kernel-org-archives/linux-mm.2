@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D39BFF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:20:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A8BFF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:21:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73FBD6B0095; Mon, 27 Apr 2026 11:20:52 -0400 (EDT)
+	id 0D67D6B0099; Mon, 27 Apr 2026 11:21:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 716C86B0099; Mon, 27 Apr 2026 11:20:52 -0400 (EDT)
+	id 0872F6B009B; Mon, 27 Apr 2026 11:21:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 653FE6B009B; Mon, 27 Apr 2026 11:20:52 -0400 (EDT)
+	id F072A6B009D; Mon, 27 Apr 2026 11:21:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 583ED6B0095
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:20:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7923640537
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:14:28 +0000 (UTC)
-X-FDA: 84704682216.09.AAE94BC
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 60D334000E
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:14:26 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lOr3L0Tr;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E120E6B0099
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:21:00 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1CE1E8E25C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:43 +0000 (UTC)
+X-FDA: 84704677806.17.E60A784
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 57E1E12000B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iYrNgWHp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777302866;
+	s=arc-20220608; t=1777302761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6UgDbcmIJGZlRjzn8XIrNR1a7hkzoZAPPy0uySZ/X8o=;
-	b=NF15HCEAG29DfY4w18XIU8WD61kVqiDsJv+n9XH8uZjaZpIWqZOHPjhyZVh7bP8lUQGpbs
-	yh7aRBq+emNi8ESntJenp0fsm8VieFs1L4FM1Cea0axSsY+8iGVy/vSTxv2ZZj2j2qJAK0
-	4BJFS77MIXHOMlryf6Vnh/DHolg8D9E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777302866; a=rsa-sha256;
+	bh=z3PTrI49ovdbyNFpEK781z99KMvNW4lbp6jy6ZAGKzs=;
+	b=Sk7zt04NBj4hC8CHaJ5+gvv8nlH50VygBD4QFJ28DAcC5gLdMc3Lps1n0Arc1WsydM/Txd
+	+lZk6+zSmK7S9YaKklCyGmEL0EwF3QPwrx57C6SA6AE2t62rHGigiaA0HHnyR1fCPk4tDF
+	CmmEtrRrI1p8AJUVd/KRxCTHw3BxUPw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777302761; a=rsa-sha256;
 	cv=none;
-	b=khC7FffWrLm+5+88yBCiUyxLBn/9O0Ux/7H6chK2SKq7TVNdbl2XPenK4JiAgjzKQJRRnI
-	u0nYW4Khobd0DPzWhlm8TMecUKMw0oKwlSCg23S7Rs0cB31hkffpmXqbM5GTDAEOrpZtu3
-	3OAQtBmv9U6vAtH7pC8UiOfdbhMEXDQ=
+	b=NKmouzFsIG/pEwsEKA3s2Y5KyMi4XzVyBWResm0TzDS5ufR/Vt6yjxN708c8Yv2IBC64hs
+	LbEcISqUjOYN8umQcn9NlnBJDDgBy3ZEbRDGHxD6kn16d3PTugQl6MIN1zeKuB+l46LhsX
+	c5/Q57KzB6IrQHVOcZYIzZ/i+Gkreqg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lOr3L0Tr;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <b2c0fedc-0641-4c51-9426-879c6878a2e5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777302864;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6UgDbcmIJGZlRjzn8XIrNR1a7hkzoZAPPy0uySZ/X8o=;
-	b=lOr3L0TrmrYswkMnhmVGOjNxRAxxODxJ+wIm/s2Pa5435yehAW/WXL7l7sreR9iNnPs28P
-	xtQ8QSqfCzL3to5dmce73+RBVowv255ePLqtsPGWDWy9Ome+rt/c7JeckpVBkXQ6ZNcjW9
-	vxZ4jiONxJWFr2Up/G+bVKbnvQlvAVI=
-Date: Mon, 27 Apr 2026 23:14:11 +0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iYrNgWHp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C522360181;
+	Mon, 27 Apr 2026 15:12:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657DBC2BCB5;
+	Mon, 27 Apr 2026 15:12:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777302760;
+	bh=2dcPQ5utp96tpuaw38bt8ZePM4bNlSedzhIzyfTdfgk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=iYrNgWHp5tLzOz/3aqLuMzSn23KTXvrapVoPTw/yBJZ9qbPiEl2mHbD2/7KAcG5yY
+	 OtNwvMV/Fwcq57a0D/j1GsDkRO11Pu8gYvB/B9ZWsulVGKEZSRTY/bUwXRmkiq0huD
+	 H3hXg2S6vvUgJr3xopSpNwdarO45CgJMaYTDukmpkKOrfPhs+yjrQH0/56+zA9Gawn
+	 RU9BVYhxxSdiR/5sVumDvNc/n4cgDnasEYDKuKPdAmdTRKx3UxAuvDXtsKvFoNRVbf
+	 Hhiga0luIB/6LHOYBajYCmFXXIC7Ojxb3Cu7sUdsRddsS7JXNn+auf6f8CPBCFe1TX
+	 J1ME36DrUTvTQ==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 02/10] mm/damon/sysfs: add pause file under context dir
+Date: Mon, 27 Apr 2026 08:12:21 -0700
+Message-ID: <20260427151231.113429-3-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260427151231.113429-1-sj@kernel.org>
+References: <20260427151231.113429-1-sj@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 1/4] mm/memory-failure: report MF_MSG_KERNEL for
- reserved pages
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>
-Cc: linmiaohe@huawei.com, nao.horiguchi@gmail.com, akpm@linux-foundation.org,
- corbet@lwn.net, skhan@linuxfoundation.org, david@kernel.org, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kernel-team@meta.com
-References: <20260424-ecc_panic-v5-1-a35f4b50425c@debian.org>
- <20260427123330.92847-1-lance.yang@linux.dev> <ae92WpsjxQ71BE9Q@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <ae92WpsjxQ71BE9Q@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 60D334000E
-X-Stat-Signature: 4q65s3yxh5ekbsd79hb3gkw9jj1hcw85
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1777302866-587362
-X-HE-Meta: U2FsdGVkX1+SBW56yMmvIcxXfuoEANBz73gynS8TmW+mi2Oq5ZO0ssY7i8Nkzvwu+PDLkOgrCNnYInYSdR3xCYDCIgMkwLq1roW336Ewm7otWJy4W1BEQrT/xpN0fxhvd79xBdx9HcwsCP+pVF3SRpsCfZZMr79eZ+g+dQLKAQtugAr3/TEMAVwrmgRA3+i3SBCaiLFqP7QfFyVzK55xzOy/du4PLtUseWvRAIAyj9AJFVSBbggExHRjO5TXMqjzNpofAKTVppgAJ3tw4lb9YmiR7yXSXwyHVNIiuy7rbnQBR6P0qJP7Bbqms4w34+WxOu+9R9VQU2E1cjCMgJwmhOo8lDQJn8dqLJk6ZmOpBz+O/CScuv62j9sw+wl0/JN4lAm5BrNe4RKeQkBwwJmmKC+lcwQIbPWfEqk8BvafGhf2Xf3ws9DFmAMVl9ELraIv4lMeFIrdYNUS5MW2o9Non9IC17xe4uibcPWcHOObsCgcAhWbIwffP7Hx8hayzL91FpVYFmb9UAri7V/nxtW6Jxc7R1kLzl4uS59SHb/wnZqHWolgBivAKg/GpY8wqr7RXhGo90z2wCd6ckjlPNpR7psGDhjY8tZZAIzdDs3Ephf01FOBgpeCbnqBY9tEED9LhC752GHNdvmTnLeoekN3nS+6/WUV6cOs/aDgUVztFpJWXRcUCguQ5ELtDzFROlom1kx4CIKuigoqzS8hFbbCIdxxpVO7vqQf9fSVwp1C1s3dC8B2GFxqItOYW8TKpD1iT6LOZz5gJFZAzb6CPxHhsoYsjmzJkoPzDGTuYbLh131mruTrGo8E6C5kNw9LxyhmHI1/mT+OJz/2LtEPMqh5/uvLihacDVGQtOP73EPMvDmL7IOnqmnISOVZy/HaOPMPjk5wfVRU9ZhkTDtlAqwE61flJBh9qA05tqnGCbk8pOcoFYrcqLI/6ElpPe4qjluDKm7480pq850X6jUtwFa
- g2J4OYat
- SThiBdrnBC7g+f3M+SHZ31A8MgRe+kqH9z9FxPjSEUoO7/vwVHT3rKeWLTg3VPX6X2j9+dTqBZCbglOvp22BDigBKkL4QbhJQ8vIWaNmEg7y5GmCKVRDgRliHATKQMCzPdXGOTmIFJ8nLQqMkyKfCaJB9XXqEyMwtEMiKZi/6cEVI9ukwL3y1CodoRy6dhEnRAri4eBD8FP1mmSWZwEpsw3Uq+oELQdrbUR78YeUiheFsZupkx5Y7NiJ0RF3nyIrZ3F4wBkGrDsmMZE7ysp64a7N6mX+t7+zHIiZkPwpa5U5zBNQnMng5GEkiebHT9I4DoNKQxnEukfneiTvWJpIQGv76Hmnb9jaKYMfatgFQ5oHMiIOQ68oUnGxs6A==
+X-Rspamd-Queue-Id: 57E1E12000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 6478s4gehc6zp3g8i6gpokmbbu66w4tq
+X-HE-Tag: 1777302761-432870
+X-HE-Meta: U2FsdGVkX1+0IOSoMkUUuzgqflVE4PXH0ckR7jgsMzGH9BTgMNC8jFE2+1a9jSL62d/sA59C29mRfPFqM8CnL10knuBjJvUCRSgnwwJbC02tSnOsDG0EQWbGxOpuJwuVlhc4bquAwUNK0CohVljwG74R3qyA4APHkXaaHOVSgLFeEmnNcOmP4L6NKFV7YR85ESHA7zYn9n53hOZuMKfvTs9d38ocvmbjDRzX+ELuUPjPlcJv5mmKhyK9BBeMHGFOp8HGrlWrhCtQfnzi/+8N+nG9+2MLMDIinXKJZKffphWaMyv3M26hdrQqbD/SOF/+WITxh556tsHca155I6spLQQJ2DrkCU7MdV/zLHqnwzvz73Oi9P1zbMc/D2IbxMEi90Edx3uGX9Z8QbiiE6rMAxGZZrm3oIKto3TV28P406fpq0l/swf8KBt5bb13oRyChI8EYsOKFKSDVUu5Pv9ITmo2ag/vpoejph+hZcbFZvAU4sWUxXmD3uY/BUUkkJFh5C8VvAeELsKbsEZAKAjEk/KoLPBrYx9v0pCam1yNgjP2ySCZSF9gq/fRzb+saDGRoeFglvOg+qWndzs1zPdE7eiUYFl3qAZ2N6GbE1eyuMm7sq9s/VwdOmJ/A6VcL/xiUwpb0F9dX7MYUs9t6V5t5LSk7flARlAop/7+t8C1KMOi0kG1KLKfCRkRKrkfrDRbmg1ndpP2YxWopKNB5bLbHALXii5bDkr7HgWDKj/TvXk3YF6rbAmFQE6BeyGb8VvzQ0766ELQuSg74m4Rmvx9gPCnlvgnzBiCrPhXDCuG5wH38gH/vjrRgbo2NhqK7bJSnLuf34ESEBlWG7r/tXiG0VlaaDquIgNYunDPYmOVnLDyCBA3amhhqahIkvPiU2QFVc5rawiVmtlWoD061U9llrONoIgiQv1WxCdxHwKDQdEutRiGaeDAXBUKKZOl74KNJvJHxO+vcNPpUrEWMXy
+ V9D7cFPG
+ 8o5BwKhee9hCBjmMYGOo5r1KSXv47+3+aKtvJBLceo/9i3eKLf/GlykSVkjSCW3mW25o9QxLIXOdWZj9h2dBHVFoRl766+AAxNef759SwZGew80HUCL0V6eEIhUi1XQtSY7fzwbEVPj3kcDctLNpYQel6M05W2PvWu9/ol8KyuHtsPcvK9zN0Ks//tzch2ESt6fxk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,60 +92,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Add pause DAMON sysfs file under the context directory.  It exposes the
+damon_ctx->pause API parameter to the users so that they can use the
+pause/resume feature.
 
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/sysfs.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-On 2026/4/27 22:45, Breno Leitao wrote:
-> On Mon, Apr 27, 2026 at 08:33:30PM +0800, Lance Yang wrote:
->>
->> On Fri, Apr 24, 2026 at 05:23:59AM -0700, Breno Leitao wrote:
->>> When get_hwpoison_page() returns a negative value, distinguish
->>> reserved pages from other failure cases by reporting MF_MSG_KERNEL
->>> instead of MF_MSG_GET_HWPOISON. Reserved pages belong to the kernel
->>> and should be classified accordingly for proper handling.
->>>
->>> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
->>> Signed-off-by: Breno Leitao <leitao@debian.org>
->>> ---
->>> mm/memory-failure.c | 11 ++++++++++-
->>> 1 file changed, 10 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>> index ee42d43613097..7b67e43dafbd1 100644
->>> --- a/mm/memory-failure.c
->>> +++ b/mm/memory-failure.c
->>> @@ -2432,7 +2432,16 @@ int memory_failure(unsigned long pfn, int flags)
->>> 		}
->>> 		goto unlock_mutex;
->>> 	} else if (res < 0) {
->>> -		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
->>> +		/*
->>> +		 * PageReserved is stable here: reserved pages have
->>> +		 * PG_reserved set at boot or by drivers and are never
->>> +		 * freed through the page allocator.
->>> +		 */
->>
->> Not necessarily. PG_reserved is not a permanent lifetime property for
->> every page that has carried it.
->>
->> page-flags.h says early reserved pages may later have PG_reserved
->> cleared and then be given to the page allocator :)
->>
->> At least some drivers also clear PG_reserved when releasing pages they
->> marked reserved.
->>
->> Would it be clearer to say that pages with PG_reserved set are not
->> currently managed by the page allocator, rather than saying reserved
->> pages are never freed through the page allocator?
-> 
-> Would a comment like the following look better?
-> 
->    /*
->     * Pages with PG_reserved set are not currently managed by the
->     * page allocator (memblock-reserved memory, driver reservations,
->     * etc.), so classify them as kernel-owned for reporting.
->     */
->    if (PageReserved(p))
->        res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
-
-Works for me, thanks.
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index eefa959aa30ae..d5863cc33d230 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -866,6 +866,7 @@ struct damon_sysfs_context {
+ 	struct damon_sysfs_attrs *attrs;
+ 	struct damon_sysfs_targets *targets;
+ 	struct damon_sysfs_schemes *schemes;
++	bool pause;
+ };
+ 
+ static struct damon_sysfs_context *damon_sysfs_context_alloc(
+@@ -878,6 +879,7 @@ static struct damon_sysfs_context *damon_sysfs_context_alloc(
+ 	context->kobj = (struct kobject){};
+ 	context->ops_id = ops_id;
+ 	context->addr_unit = 1;
++	context->pause = false;
+ 	return context;
+ }
+ 
+@@ -1053,6 +1055,30 @@ static ssize_t addr_unit_store(struct kobject *kobj,
+ 	return count;
+ }
+ 
++static ssize_t pause_show(struct kobject *kobj, struct kobj_attribute *attr,
++		char *buf)
++{
++	struct damon_sysfs_context *context = container_of(kobj,
++			struct damon_sysfs_context, kobj);
++
++	return sysfs_emit(buf, "%c\n", context->pause ? 'Y' : 'N');
++}
++
++static ssize_t pause_store(struct kobject *kobj, struct kobj_attribute *attr,
++		const char *buf, size_t count)
++{
++	struct damon_sysfs_context *context = container_of(kobj,
++			struct damon_sysfs_context, kobj);
++	bool pause;
++	int err = kstrtobool(buf, &pause);
++
++	if (err)
++		return err;
++	context->pause = pause;
++	return count;
++}
++
++
+ static void damon_sysfs_context_release(struct kobject *kobj)
+ {
+ 	kfree(container_of(kobj, struct damon_sysfs_context, kobj));
+@@ -1067,10 +1093,14 @@ static struct kobj_attribute damon_sysfs_context_operations_attr =
+ static struct kobj_attribute damon_sysfs_context_addr_unit_attr =
+ 		__ATTR_RW_MODE(addr_unit, 0600);
+ 
++static struct kobj_attribute damon_sysfs_context_pause_attr =
++		__ATTR_RW_MODE(pause, 0600);
++
+ static struct attribute *damon_sysfs_context_attrs[] = {
+ 	&damon_sysfs_context_avail_operations_attr.attr,
+ 	&damon_sysfs_context_operations_attr.attr,
+ 	&damon_sysfs_context_addr_unit_attr.attr,
++	&damon_sysfs_context_pause_attr.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(damon_sysfs_context);
+@@ -1470,6 +1500,7 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
+ 	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
+ 		ctx->min_region_sz = max(
+ 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
++	ctx->pause = sys_ctx->pause;
+ 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
+ 	if (err)
+ 		return err;
+-- 
+2.47.3
 
