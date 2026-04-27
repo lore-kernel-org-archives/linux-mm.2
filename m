@@ -4,87 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 424ABFF885E
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:18:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 533C9FF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:19:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7B076B0088; Mon, 27 Apr 2026 06:18:11 -0400 (EDT)
+	id 85A976B008A; Mon, 27 Apr 2026 06:19:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2BBC6B008A; Mon, 27 Apr 2026 06:18:11 -0400 (EDT)
+	id 831A36B008C; Mon, 27 Apr 2026 06:19:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91A886B008C; Mon, 27 Apr 2026 06:18:11 -0400 (EDT)
+	id 747F16B0092; Mon, 27 Apr 2026 06:19:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EDF86B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:18:11 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0836B12013C
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:18:10 +0000 (UTC)
-X-FDA: 84703935582.10.8929AFD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 10F4C180004
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:18:08 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QM1aJHxz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 64B1D6B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:19:07 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 04B161C0031
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:19:06 +0000 (UTC)
+X-FDA: 84703937934.15.62DA392
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4AC9E4000E
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:19:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rkPI5fPe;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777285089;
+	s=arc-20220608; t=1777285145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wKk2ll1D3ZJ6s4IP6sE45BcGF90ItdkcTm+IkNnd13k=;
-	b=5PD6qxundS/3WNotA3ESNN3JJNMLHIou5YTOorpOupkRniIWpIxaLRc6G5vdI5DPCoyYr4
-	KzttudwahNodUVKt+2NH7OXbn37UAeZ8Gfz57LpsOdMxYM8Vq8Ab2evqget7KRLYrmQl+a
-	2pd5VGCE9c7QeczLm1BdcyWjftKfaTQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777285089; a=rsa-sha256;
-	cv=none;
-	b=eF6V8NDCmTOtWrT5oQOhaZU/dByugkBQKLUdFrIJTwgVTEaKy+XDqt0XC/maTNqs6qR1Hb
-	Wl7n4PO95I8R/YPUy8tAlhFZCiJg7DH/OF3JF6rqTdFoHKpM9zoAb9ROhOQtOs7ANu9pyy
-	a23CbIl2dru1vJ8x0KhGT38VPegl6FY=
+	bh=+fuu95ndJ+xUF2lXaCrOhMt8fKj+tvVnbdiI5gOgN5s=;
+	b=DS/3Wqh0y8uq8vsiONkhdypWrehgc8drB+8LHYVn/fz+jj4bBaDN0w5x40a/CWuO0MTC8v
+	l6ZVoYwte8ZwWGbVvwJqAgcjOt4WYTBoP3Do1klnryZ445Dh83kyXhZa+5iZt5bmaCoasF
+	qISxfEOdOsC+I0aJiPiiwedVRpN+XDw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QM1aJHxz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rkPI5fPe;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777285145; a=rsa-sha256;
+	cv=none;
+	b=L/lIm7ohpj4/NBvc3EYa8QAUh9XyW73AOYn0H4AuNepPhHOnL4zfSQEgtANIsjAQjfKP6u
+	4+bVAxr94ArwcuVui2/U3mgdbVCm64cJ7pPA8G5VZvB2SQ/l6EvlVXXNnZ4vnrviiYPImd
+	fqG6Hle4305VCft3e2CzQlCjdrAm65A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E0C63441E7;
-	Mon, 27 Apr 2026 10:18:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A365C19425;
-	Mon, 27 Apr 2026 10:18:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9F5F560138;
+	Mon, 27 Apr 2026 10:19:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1484FC2BCB4;
+	Mon, 27 Apr 2026 10:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777285087;
-	bh=vA1+mJeHSLbEw9npbrF1VPrAm7bpS8jJonX0Sr709CA=;
+	s=k20201202; t=1777285144;
+	bh=DSzvsfJ3WfLZpO8yCaBWIdjudc8BN3vcoj724E+Ga4M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QM1aJHxz3I2TspVV/exFtiRcUTjqKti6h/o6CHk6fa7ZyK8bGGqvct7rd2MsGDN+F
-	 EP9LaRlTpYVPKw4D9ygb1icNmMC7arKZVGGR9rdESvLqByR0hDMB8aW6AQhRK5LFvJ
-	 5PbZJago1asJ5kOUOiwYO+W8BqXlAh16tNBBZrzgwsmvgbV1OlGHJKP48xdzQHzfpE
-	 45v4uAVV22E6fZuwbiNXUEnWFHFXv3fLPiax9M9lZaz8Fq9q8+trTOtMAfFAm3x+Sc
-	 C98xM1Gt5JUyS+4wSUKjC4GPR0pRv8tC9FtRNpo/G3E8wAE215HYzzwdmchHG5pYua
-	 IoI6GLfMAhrmA==
-Message-ID: <09298afa-9a36-4f29-a8e1-d4750c338df2@kernel.org>
-Date: Mon, 27 Apr 2026 12:17:59 +0200
+	b=rkPI5fPeqLKTFnK3bRLHUS0I2bXexbwl2ZYgydHyUgY0zigqm5W4UAZRSnD/DqZGs
+	 aBPg5hzby2v+0/h/n0Bfq3oOWWoHkEe6e9RkAECNEBtLPqeSgs5HRPPb3a81UpAi/0
+	 QFJWhp1t/bfn4M4usHIceZlr1fHlWb02IY+5hTXOt1ZFEB1EVu6LyG/EqyFmiZjgoI
+	 Z8a+e1jUOSaEB4jlsgGNcdmVFze/o3+4wZu01wHsW2SJGouXVjDmT+FvXogZ7fz5Xv
+	 QGhBhimXjOmvnat0bR3M8CQM8gXQiawMa3WA7QTuR0C4K4skxsmfDxB30Cn125Eawg
+	 i/ffKlVcXb1fg==
+Message-ID: <8c9069b0-6668-43fd-ace0-c707d7aff082@kernel.org>
+Date: Mon, 27 Apr 2026 12:18:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/6] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
- optimization
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260426092640.375967-1-songmuchun@bytedance.com>
- <20260426092640.375967-5-songmuchun@bytedance.com>
+Subject: Re: [PATCH] mm/migrate_device: fix spinlock leak in
+ migrate_vma_insert_huge_pmd_page
+To: Sunny Patel <nueralspacetech@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260425133537.17463-1-nueralspacetech@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260426092640.375967-5-songmuchun@bytedance.com>
+In-Reply-To: <20260425133537.17463-1-nueralspacetech@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: sciixybdrq8xixbr8gzmz8dmapz3qkmg
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4AC9E4000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 10F4C180004
-X-Rspamd-Server: rspam04
-X-Stat-Signature: hqo3npq7ahdpn8i4wtm7oc9q5qpurhhy
-X-HE-Tag: 1777285088-556461
-X-HE-Meta: U2FsdGVkX1+gtBhUSn1j8ZZE+KISCYf6oaFumeXrkaCcFoz9TMqh0MRoX3krp344GRveV0WPey5jSJajLUJmiAY0mk7dVYubNrf5IRy5yrPWigqkA2Vp5J57l3OHiV9oRLVSjmolG8O5VTyTM7A2mQ3XS9I7yr2/hu/uEMqGzGzn7bKJ5AbakRV2IFgZm3Mmn05epNX8la17K/kosP84JXc9hX7yUEGDOHuI5Vk5X2vpT+23pjhTDk737Ep1k/bkRcZYoaK2DzHlIv+2qRAhCsSKjAZusc3HPG/i2MgGQ+BD1QlWxwgdYzLKBjAQ8GBGT4kAhoN0JNz6j6mZR2WafkxtmiGrS0Qy/U8lQYWa0i9gB1b7NwJdVSNsm//seJ3x66TUnSrx62cUxV6NhJv0Fg+zWgClZDdF4jLZvAKyO8DkBIu1Iik5gIqE0BOCYJaL8vBptAuSRLn1yDllZwah4UW5KHccA3SI5IvAOMOZ74YkyHvcqHYdtINjfgkfngz6Pfe+gkUmREYQfSASLquOIfDAOsHFdiu8UEenNTjXVq5o+ztBrxOhKZhGYSjy/RSL8HP/3EcWx/l85c6wOUwZ6uZbzzZOifNSpnCF3I2OXfSmWiBao+00P9pwcDF6hccnopSYSgPP6ndNhNjb+AF25JtCItwjf/eKycuxlgsnJOdXOP7UJU4fR8OhV0vDSGzeK7Xwv9P71gTLCzGI8NWYzD9IfB/LUN9d22r5J8SwLaZPCjXqs0mKi+5XucAuKg7eWr3BDf3OP9UF8rvyg7Q/sXPWFARV/xCwvizq3paQbsydMwn3uaAAVPcnzgSwGsJF+P/4Yg/gxW1UsE04N2yONB8OF0Tc9h3wXXaPI+bQxGqRZzHDDGVSwRbfYX9plCtxqtWAZktLXytPhwU6e+f6D0THvbN8VooDb3mFiNNevoaA9mECWGvMkaIc5J3p6sPRxdtP0nEME3HuocOLVJc
- J23plDFs
- qJkXMGzZQs7ZFgnP12pbcNTbUO84AYLEhxrOR7FescKVOKxepHc62Tb52sAcDNTWgmi5nC7F5Ukth1+1wsW3O6dnRiLYzU4EkRrScB30NBQdQlHIuVui7aWTkKOIOn6UlfvLhAQ39Jz9inSMTZuYgGSYVxzc8YZa7GY3TifPoHomojU8ENxpRkWwORDRqlItm7FjSnwKSLH205Stc3opE/1sHo/7gbdWU1z8gWF2XIvr2X8w1819z2tzMiIGmleSEzO/ko3yfUYrQqgyi36h/nbX0pP6XzyKzfkTfLohteEfEaYzXxzuaBT9oGg==
+X-HE-Tag: 1777285145-505239
+X-HE-Meta: U2FsdGVkX1/PK/nPDCQU1m4oUvqhP4nT0zqiwYcykzpN3BmjEwHNjGfLPnxB5jMK1SAA3MtTHkdfyw8aNWIrvZvgWyFyAWgxgqWUNl5J/u0fWY8c2cVvK6D0wH+xlBfK6B+lSrE3hBvkc3bkAKALbhM6vJ2MGG/FA0ESpYAd2klx+OHhc+ZyoUin8CyPifj6sxpefYnn7jjl0i0EXkbRkwecvWGqii2OT+t4cJNnYvxs3NwhAJSCu6bz2c+YmWpUEaBUlVsAx+DiBTPr0kqIeincq5WEsPcNHHxY88gEuY3WuCJkpB02qT3ppvkg7Kcw44tFmBBJVa3dy/Yg8QGOQ2atWJHyRV32n/YKYFOm1cW5CbkrKY1BCeThtwM2xxvpL1RtD7rzWHiMrqQ5cNk0rBl/9rnufZwpIxhci+FC14wEt2VKKkR6MLyO2xLjEmQo13i+EjRai2gwc+iVT7PPmNB90J5m2+aWheSE7f2Nm8OxdYfIZcU+nHlKs3O6LMk7eyjDlh1t/IFfFz9J4CjxTfFrJ+GdWYYARFN4a6bIzUxkzyEvD/JPsvKcfL8FnnsehYWyPt5+tnlJ/4OkEWI1Ds55jdV318Tew+/FJq0YEwFcfgul9e53abCnLOjzDk5IES6Mv4eqdbfLKq+xw1+ySNacIZQdEEaPjdunKVkRhwUiLMtJeL/uxf3HN5F9kBBPpzcjMrr9ZuXWC04nPHezGEM/piKeYyrNa9GZhu/rry403vsSGDjTyI42PuARaL9T4o+6vBovL2ifZPvgkLHZW2hji7cn2rBOvAOO01/OisbVCHxjSdS4WAsUnp3bcU28A3G+84ZQxjt07sgbtCuR1SDtOsJ3GiLvX914ueaRTdbdQq1+Zi6FV8MU85jg9R1+mThVpqswlUtVpeNrhxyj6fj98myIuv4j+bgvZqRmncFNX+7RG5W+nHS3AinN6BGZVwea8Qme1tanY2/ZT1P
+ z/wZMp1P
+ nhimGQM3yQYdicOqomQS+Beq+7Mv29DLQ8m1sGx9rNGL8Qa34OPceYGIHFnayU4F3pmEc39kO/KVSy3wGIplNBRhW3hzsxUoNTH18rphLq7qk+eJzTXPJOmS5IDRM3XZMKQOmJZC461rVk0DKAOND/iJhcFJOxy1gB6rouKIuXLMeuybhHmQf9vK6hRcImt+VIdfD6wtiZ/vqPqJQqTRh/RTfl23hTCGMFPVpT0pJXAFcx/JYaAJ+ZN+NHNHeA1OBratwsAXnGXZpETAelisYZ3yX/swsRVHgby/sgZO9zA/cDfc8XXEzV5okRRlpjzzd05DkShQJXz4iHLol4/WdB9wh5Hayk+sYgb5zjkoAWaOf/IQJumsoPR9JDoYJdOhgNXxsA9AM49CQqCDBET7MgVpOlQxYCcoKMi5g2a9X75g7Z0c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,58 +143,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/26/26 11:26, Muchun Song wrote:
-> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
-> counter in /proc/vmstat is incorrect. The current code always accounts
-> for the full, non-optimized vmemmap size, but vmemmap optimization
-> reduces the actual number of vmemmap pages by reusing tail pages. This
-> causes the system to overcount vmemmap usage, leading to inaccurate
-> page statistics in /proc/vmstat.
+On 4/25/26 15:35, Sunny Patel wrote:
+> When check_stable_address_space() fails after the PMD spinlock has
+> been acquired via pmd_lock(), the code jumps directly to the abort
+> label, bypassing the spin_unlock() call in unlock_abort. This causes
+> the PMD spinlock to be permanently held, leading to a deadlock.
 > 
-> Fix this by introducing section_nr_vmemmap_pages(), which returns the exact
-> vmemmap page count for a given pfn range based on whether optimization
-> is in effect.
+> Change the goto target from abort to unlock_abort to ensure the
+> spinlock is always released on this error path.
 > 
-> Fixes: 15995a352474 ("mm: report per-page metadata information")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Acked-by: Oscar Salvador <osalvador@suse.de>
+> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
 > ---
-> v6 -> v7:
-> - Refine the alignment assertions in section_nr_vmemmap_pages().
-> ---
->  mm/sparse-vmemmap.c | 34 ++++++++++++++++++++++++++++++----
->  1 file changed, 30 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 3340f6d30b01..01f448607bad 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -652,6 +652,31 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
->  	}
->  }
->  
-> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
-> +		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
-> +{
-> +	const unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
-> +	const unsigned long pages_per_compound = 1UL << order;
-> +
-> +	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION));
-> +
-> +	if (!vmemmap_can_optimize(altmap, pgmap))
-> +		return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
-> +
-> +	if (order < PFN_SECTION_SHIFT) {
-> +		VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound));
-> +		return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;
-> +	}
-> +
-> +	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
-> +	VM_WARN_ON_ONCE(nr_pages > PAGES_PER_SECTION);
 
-I would just have done that at the very top, as this check applies to all cases.
+Thanks!
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
