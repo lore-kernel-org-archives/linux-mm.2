@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35944FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:30:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E8AFF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:31:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47E326B0088; Mon, 27 Apr 2026 07:30:11 -0400 (EDT)
+	id 93B4A6B0088; Mon, 27 Apr 2026 07:31:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42EF46B008A; Mon, 27 Apr 2026 07:30:11 -0400 (EDT)
+	id 8EBFF6B008A; Mon, 27 Apr 2026 07:31:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3445E6B008C; Mon, 27 Apr 2026 07:30:11 -0400 (EDT)
+	id 801A66B008C; Mon, 27 Apr 2026 07:31:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F2BA6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:30:11 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A4501C00B2
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:30:10 +0000 (UTC)
-X-FDA: 84704116980.22.EA30F24
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf12.hostedemail.com (Postfix) with ESMTP id ADE674000F
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:30:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=AAiSRxe+;
-	spf=pass (imf12.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F3DB6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:31:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12973120158
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:31:54 +0000 (UTC)
+X-FDA: 84704121348.01.A770FBD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 40760C0002
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:31:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="YgCAbI5/";
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777289409;
+	s=arc-20220608; t=1777289512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qafNQ0xEOY5qhlm+wLT4AEic9YBI56O7zFUIfvV0p/E=;
-	b=hGY7HUgllPTlLyweL5SecMFb3KLeSQ/otV8oEaePmQCCPptx2fgeyNI1ANssPW45+2hzGm
-	doUd+Oo+xg8FBU8UTFwjUA/h0XcgENKms6wcV0hTfFbZ7lW/bn4vT5uDptyrXZZRjvvP19
-	PP6r0imk2FnkXtSgvOIJZVTAmGUKzR0=
+	bh=e+fG8ZfBTDJSUoDzjYayBxRy67LkPztdITyPoRKc3Ug=;
+	b=CT9fKCku+UjMqOO+RNFlpasEbPPJdC+R02Xby0QbZu1ZTgwPB14L+mcvU9f2xMzpmSAGJ+
+	PvO84twBcbk6lV86yaQse9vozJ9Ba0a77/gAqkV/mBvsUZYck7lCck2A81dG8/ysICDnnp
+	ZMEfyFhFnxLEPpqbB82b1LREAiICkZ0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=AAiSRxe+;
-	spf=pass (imf12.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777289409; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="YgCAbI5/";
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777289512; a=rsa-sha256;
 	cv=none;
-	b=MYLEKqj08XmPc+5IFv5fO0JBVSpg/x5oAtQxAKQijSbBuDZ0qumH7tb7epwDPBItDSyzj8
-	QjvAAVzB3K/4EEoev3ba6hYkoNifSn3I1BJnEt5xkNv1dMj0E6u7bGr293yS3Gsm9m8u+U
-	0aZu92inLNOcQVbB18Yu/GnjNaopeec=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=qafNQ0xEOY5qhlm+wLT4AEic9YBI56O7zFUIfvV0p/E=; 
-	b=AAiSRxe+Slb3G7C+CaAuCw0FXEVNvwsBQ5tm+1rxXjTmJezECU9MP+te1CnAd7PwvYGN3H1ZPEO
-	d8M6OBgz+KeYafzYp8kC1xPZZ/+UBkxcG14qFJc3ekbqnoiiCt8lbT1q6s+tJ0VFy+W9LcjZLcrMY
-	sRV6aAtnbjcvcYxmI882TVG8T/c9UMPgSYYb9lUukuL4vILYND3Z0oSaUIJ9buLtGhnrvH85Es/Lt
-	qWv2HYZfGrqE5uLkt5lFjDUD5PDd4sljV7TcfHkBqf57DgNrwtXcV8Xr75pgtcODOorrAP0IOdxqq
-	4frAdohppS82LZeOpi1g/pqi+4V3H4piRsig==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wHKA2-00993v-0I;
-	Mon, 27 Apr 2026 19:29:59 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 27 Apr 2026 19:29:58 +0800
-Date: Mon, 27 Apr 2026 19:29:58 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
+	b=FEmc7pmmWnVi9gS7CcppfgIR+08ireyOaE1Z7rSHlsgaPfmJKRhAUy+ext/FZunHAq8eOj
+	uar0a8s0FBN4cZ4F1xBUmGYwQyZ1hhUobF537Hd2Suzkr5S5IYH5+718FHb95x8r7MIIGX
+	zbVIi6PDqTtF3tHQ88+l5/u3uOx1Nts=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DE1C544251;
+	Mon, 27 Apr 2026 11:31:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AD5C19425;
+	Mon, 27 Apr 2026 11:31:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777289510;
+	bh=iNslZoTyQAg0rKSwDznTtdERDBUeqpLTEMT5UjUqXQ0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YgCAbI5/49351SMViTuoAykJaAlMsQGsGGuhnM1gQBqXu9W/qJxHJse/OfV2NQiKe
+	 r1a1bGncfNUOi3K7DzPUclTfGl5L0gt0BgDd4ieGd6NbozoFUXpgGeb4uRZPu9YXWm
+	 Os/Sya5U/QdzAngUigeVrTP8Zsix0Fm3LC2mF/Bc=
+Date: Mon, 27 Apr 2026 04:31:49 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
 To: Christian Brauner <brauner@kernel.org>
-Cc: Thomas Graf <tgraf@suug.ch>, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	linux-crypto@vger.kernel.org
+Cc: Thomas Graf <tgraf@suug.ch>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org,
+ syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com,
+ "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 Subject: Re: [PATCH] rhashtable: give each instance its own lockdep class
-Message-ID: <ae9ItoKFvB12Qimn@gondor.apana.org.au>
-References: <20260427-work-rhashtable-lockdep-v1-1-f69e8bd91cb2@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Message-Id: <20260427043149.e8fe46494d92d561175861ca@linux-foundation.org>
 In-Reply-To: <20260427-work-rhashtable-lockdep-v1-1-f69e8bd91cb2@kernel.org>
+References: <20260427-work-rhashtable-lockdep-v1-1-f69e8bd91cb2@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ADE674000F
-X-Rspamd-Server: rspam06
-X-Stat-Signature: cop78jjcebnusopznmjbabz6uu6c3u8y
-X-HE-Tag: 1777289407-889116
-X-HE-Meta: U2FsdGVkX1+DQvLZOAb7JjC/reTuOeUyyYNwSMzIqjNgPwblCsQF402vOz3Lj4KQLgFv/TBTEOYKbbi3tEhGq7hvRObctnF6S5Mdlpp9V9RKGisvSvEkc2qi90hn3QwU5nTXQKjVMhNds5ih0aw3lGI9/a8QFphu+OH5excBbJb3l+A6s1wlEFs3oZY6sI1mD8ItZX1XFqwSfIksnklrBp2ciJZgUrO2tVSzbWQQI0BTXsDkIYaegvsW0sE3FgrkxPuj6PEPkP08IMI+IT/pjCOCXI1gMY3w/prSnZJUi+mH37Nq31qLW86cMi3L8sisdLIgLfV0u/NsTA8Mzc7zUu2griW+mmdKqPgACxm1+m2GinM87nEyJ/UW9F+FAXImL2/5T1ry95twkd6fDjuAhBcfVvWdCBNsUAbalSrxPxtHpiEd5E7XQrwFt3FuoVtFLwYepguM8pA7zOs4w0dyWf3oM8fts2KF6hapCG0W0jrbN1gVNAcXlHXIQjWQeL4ak6YRTOK9k3kc2veSSCGMX7Q9d2yK90uFe2ApTk0SQRLDBnMGB+Gvc0py219DY1Qp0D7RPt3XcFM4HKCBGHohmdngqE3MMjWg8pv6BPR+30Jc5HTwFCLqqrFP8pLiCz4mEFUjZzrdJ7R15VA6m+S73HV4MxAN0JbFcHe7mlv9hIyxT6xhw/8/JUeCoCiBzNUIS4qmUrw/OhFJmXXMMGWJEAyS0a4UfMBpLfqfHEphoQoMiCzWupjib36cyLkDuV9q0i2aF+YQ5VA6py0l8EYEF2/NFBdMJcURNj8lYurkLgxtbyqP1jorSMtl2F3tpti9m6J24oi8FVU45wvKwrPFt7w9+HYaFpFR44lemKUeClk8nXBsM+vxEnLJYQNR7tbpMmHZcOxzmWKjU+l9JyRuOVHJvI5Xxs2E9RYUeKq7MTEcnQEBHHKB7ilzqQIVcO3zF4+Po2E5aYIZTPyarJd
- tcM6k5kw
- MPtitekVQy4IOGlnYrsYjiVJPd0lELR7f5VrBBf4+ysfz8v+gV8NfbPhpox16CG4Cu4OP1pF+1+sSu+a7IXoIe0VmRpCqF1YHgniH216qpOAYvlKS5hZLy3ZKbtodd0X/TKo9zRmsMvroXywBRUXZc5h8gSEQG/ZZC0F9/Elqcd+w7+/HTYAzjjupfHsC4wxQMC5FMIDbYw6n4Fv7XUJaqCi1c1Apbp57Ny7gZOxqTArcw8ipFhuB5SfzPfak/a+dx7NhPlRMYla8EejO0597jy9XmLW5XkJFHiMaiprLs4B/LEVmXaw7kRpDYHgbRlpBtJPYgNOd/7iRynu1JUqKfkGvCBUzlDfn04Fjdy0Ra7XcXuT8ywhtB7FIcJ+EJotXTjfjNzH3xWgYLwssLh+Qf4JK7t3l6klMuiimZiLbscSp4NrlatNBpJxZRXdNej+VXLFzuBiNQeyKRdOQe8tmMsjNvKuydZiSC2nxgc1SIEdmteqjkFcHZgSBHsspVafZR85jZ7aqiIaKnQE=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 40760C0002
+X-Stat-Signature: rphurw3c19g7fb8apoj5pe34coic8h9i
+X-HE-Tag: 1777289512-810542
+X-HE-Meta: U2FsdGVkX1/E4oR1HCHjf26FaDIHVenvCqYRm0jTEIWjPmXkUrw689ws2ThFtozhWw2fftldaYWmwzUO5WcleC8HcA0C4Fl3bS7XfMUSZd6JtB0vH7/XRUVFljIbyUD1U7qDwnAw9ZN9EVMEbkVPHXYBtKTWqB+XzPiQXiZ78lOUditxO+9FJy9MzJWRVxkt0Xl3mVI2vh+oiyEIABfnEbIiT/i4lIWaT5VFuNm1vaU3Bs+tA4fHqBIWXMNkKTkvakXd1tYX9b0uMe0R1wSc+TB+3vcX9jtMPSjoj7Hl1NLopPTQk1H+lzx/EX8UQcVZu0n0XE6DZkNICK0GiRxvXnHdQd2QPW3xA9SOqxb63iENEW6ddFslp+0gaX878CwMAHP8dGPPzI1lm2QnAhq+jLR9WUsqfhK4Lh1uWBQqrtj25wMWl1QMR5DSJentq/DM72qcE1nSoIcJSP38W9pqttB/i2ZyN0vyiPZJUGKkHcrvm/L6zMXH/etxmV3Rfy0HWl6al+RW2SMHutGatcpGHlFUyybIGe4jAMXF/Sy0b/i+j2ps/cxORGrS57imGdjW0Hshr3FmMAi+M/3BDlxHmhhFXvVaIDJA5iH2+iqPOFe1nkz0FlyGZ6I6Mspf4VAzFUDRftkDgeeVRmYOx+JnsJLEwUxMv4b1LtXhvxUY7ML/tOmI5PGI7NuIrAGQakQd1TZ6yPsU5AhIIIiKzrzF6SX5u/ovW6kmfjXSZm7Jy2B/Fc6rTalq+xqcxnNnHgI/9/bF7XzAo+bQN5ooXSxtdbG4Dgso/K+n6H4E542KVz/uzZXdKFpqwCbO5iqV1UeobP+uwK24kR3EqP85SPUwq5dYtYVzWo6VJ8bpMWn2pNFGas8iFwBILVUgbfTTiYFt9ZGo+usXUpmhA0I38p7kK1+qAYfRYKNiZG2+vK/0a21ubWJMtnIJz2ZYwMgTq2wiuJhl1dLfKxbTxgrXbOx
+ OP6PEjjz
+ ArUSbjGaDybJxEL6/uWMxj4zkC8GVaFuBefyK3b13MGiE4WGZEXqQAM2t8T9vFupSxM+2CF2rFu+9iGirts63gWRkQkYJ1WLHK5P/NKt1n8mREE/Mao266c3Gr9N9gId8myQr/Qhd7grEYAgzvBMLzy0Y1eQT0saLf0TN/UoLrC7n3XFJLmFv5Ph4636K7ZKRovpOy40iHr7F2pyO8/rupqArWsEYzkfwKAS9XmA1ZSlxUf3vQriY/mE6Oe8czHZ6JvamtzIGf/en+Bg5P6NP+kjtcLzG8iDYnZVBntgsSQX4rkORDegD2Pk8DBvGUtQ3SPpfKZuBmPWELzDfx5WGYZpTanqc6NYWzCUXK6SiRY8U2Mk+xYNN6UtzwbrNNST0b+P6l4kyuynGBRTNBmkvGjUMnz4ZA/bpFA29FLpyNKGFLH91X4WmFGrnAb4xukVEQ27b1zrnnbZ+DdHIzz9UIEADrcjadwVfv8rb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,7 +95,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 01:09:57PM +0200, Christian Brauner wrote:
+On Mon, 27 Apr 2026 13:09:57 +0200 Christian Brauner <brauner@kernel.org> wrote:
+
 > syzbot reported a possible circular locking dependency between
 > &ht->mutex and fs_reclaim:
 > 
@@ -148,22 +145,15 @@ On Mon, Apr 27, 2026 at 01:09:57PM +0200, Christian Brauner wrote:
 > 
 > Reported-by: syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com
 > Closes: https://lore.kernel.org/69e798fe.050a0220.24bfd3.0032.GAE@google.com
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> ---
->  include/linux/rhashtable-types.h | 22 ++++++++++++++++++----
->  lib/rhashtable.c                 | 17 ++++++++++-------
->  2 files changed, 28 insertions(+), 11 deletions(-)
 
-Thanks for the patch.
+Thanks.
 
-But could you please try this patch and see if it also fixes
-your problem?
+Is this related to https://lore.kernel.org/202604211323.fac1b29e-lkp@intel.com
 
-https://patchwork.kernel.org/project/linux-crypto/patch/20260422213349.1345098-2-mikhail.v.gavrilov@gmail.com/
+Are we able to identify a Fixes: target?
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+In the above-linked thread Herbert had
+Fixes: c6307674ed82 ("mm: kvmalloc: add non-blocking support for vmalloc")
+
+
 
