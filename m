@@ -4,89 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20C93FF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:05:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5CDEFF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:09:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7003D6B0098; Mon, 27 Apr 2026 11:05:58 -0400 (EDT)
+	id 2235C6B009D; Mon, 27 Apr 2026 11:09:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B1396B009B; Mon, 27 Apr 2026 11:05:58 -0400 (EDT)
+	id 1D40E6B009E; Mon, 27 Apr 2026 11:09:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A0076B009D; Mon, 27 Apr 2026 11:05:58 -0400 (EDT)
+	id 0C3576B009F; Mon, 27 Apr 2026 11:09:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C7A86B0098
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:05:58 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08C19120A82
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:05:14 +0000 (UTC)
-X-FDA: 84704658948.18.6C8A809
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B83371C001E
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:05:11 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="ZvPqTD/8";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777302312;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EC55D6B009D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:08:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9FE0C1A1684
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:01:20 +0000 (UTC)
+X-FDA: 84704649162.25.4C3A157
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CC3FBA004C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:01:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dpfoRKwT;
+	spf=pass (imf15.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777302072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lKmktgMsLT8bswV/+6qn/5r6AsKY+Ic+6aIWG845vb4=;
-	b=Y6J68SIy7JHfGnqOwwYApPU45FbwDCQQOasC4WEQ7nb5KiD2Zu2g2s7wpei5LMrF1glL9K
-	QpTwylFGAxGb3RX7S40jHPenxx23k3ZHgvOC7HcFoaWNoQsH7VJFYdd+G6wH00SKmCW8WS
-	sFPGnH1MTfWunlCO/h44NyMTE5Ageg0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777302312; a=rsa-sha256;
-	cv=none;
-	b=rlskdY99+XRFr+JAJS5ouDor2Fvbv4WR8vnLDWJow/QjODM1OgrPxn2LFIpbquoU7IhCez
-	OLOPOElEUQHeujgUEj+cH8RnFb0qbIaWM6YzzaiBZ8oqZNjCZFIbA4ph9FywsQQ2L/pMAq
-	tnrgJ1hWnS5ZkJXnbldmiOJKQU4DvSo=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="ZvPqTD/8";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0699B1FC7;
-	Mon, 27 Apr 2026 08:05:05 -0700 (PDT)
-Received: from [10.164.148.37] (MacBook-Pro.blr.arm.com [10.164.148.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 952753F7B4;
-	Mon, 27 Apr 2026 08:05:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777302310; bh=LF4eMdK0ID4NJDAUmuKQ8VsmPWmO7w6FTTlpJhcDycs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZvPqTD/8uz+vouJEXQWe5V4WnPgvNPoD0zRcg/+h/FtE7s8IlA6PhWIUySQ6Ot+HJ
-	 7KCalBDGW0j/7MxTtrtqV9TDUTDg/99gV52ADTb5nu8Ml/zvWGSKnJ6WAsgr+vS0FR
-	 BRD/orHCUaiFgQi9kEUiKiBo8YlSGbTrzSKMfScs=
-Message-ID: <fb022a6f-0faf-4742-8934-8a7ffae806f6@arm.com>
-Date: Mon, 27 Apr 2026 20:34:57 +0530
+	bh=IsMoDiMZP2yl8KNjLXtX/OQcgCLqcJjLZJHfEPoEHys=;
+	b=FR1uY7tuNqxrLQ1X1zs1Trt2SBtE4+uz1cvTR16E8/GOuoc83hek40KtW8yxVe0BHleLzF
+	QhDFBGahL8lMA5qXuwkZbOTln8qg9sbGCl25FSYBZZaZ10QIvQ4Z0M7MPnI1k12vnGpPcr
+	oWdY+6bu7VsRMaUjWQAs6O58vqsGFuw=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dpfoRKwT;
+	spf=pass (imf15.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777302072; a=rsa-sha256;
+	cv=pass;
+	b=xuhez2d0waQTkUp/JddlGxIaTQpMT083GbgzicN4Xn8r9NSplMkVpH323jBN4TmN01IpSD
+	VC5AYssveqZsqFW4LoTdEbU6VH+ZNhnWT4Qu7oWbch6pRokWV/0RH1Yuw7GRcI7W8Sx9/I
+	OYiN3GQcZSfRn9Hohy7X5UxtjuxTiQc=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso76511295e9.0
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:01:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777302071; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T5Z9/jW8eW638qRpTDDpFKhcIl6VfgXnvJbX7iC059sCo1D8gAwB1h9EBdFlMH/vTu
+         E3iXbxQNlS5uldufP/twrxdxDsom9tUzNyvl8AmqkFfy9dXfid6/eLvuvdfAeRIUbF6G
+         QQ+rWq80dJ9yClNFUqTmCE5rnLyhE3F9h8dT4lLUZjZbTqyE3gMXBSfNAavQVyeNgRtL
+         LhM/HFAJ5nxJfYMdXP1ZtlTr6+L/gB9lk2l4pQQwAqt6zr8zmq5IpT5iXDMeOad0UsPi
+         7lG3m/dqR0M7IFUC/QZpSyhGCh0tOqKia7hPPi4yaa8shvukuhbRNbpalcblAbiMbxMW
+         zDzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IsMoDiMZP2yl8KNjLXtX/OQcgCLqcJjLZJHfEPoEHys=;
+        fh=mQ5sfqKlyL1ExHN4Q4KXbyIwafdZEpKgYqLkgfQEvPg=;
+        b=C3Ws1PA2qQE9wJPt0EycK1n7kKEIrey8qB/nxCg6ki7MVv3Hm4pC02KK+U5BOOmvNu
+         QcVpQLvHjFd0sOSmPYe1i/t1PH9IdaDCPq11C+TCSioAR7Q+ffT8ZFwIjAsOlkyhTBCG
+         oqd2UbBgCs0SfFQs1GSdxU56WBMiLD9I3QFTnn5vnId+dXmX5FowdVON+pypiy6etpN6
+         ic2Ff0+NksymtuGAflwLjyN4vP0zYmPgTX7HEhduG4xl0A+DPPx/IuBPZdm1qIHLM4gT
+         BUTZQ5aB9Rb9yO6laYrGedC3ese1Gyn02MPgabzkUdT3UMcTNDWlYPGOfuq+pDF9A80q
+         kepQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777302071; x=1777906871; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IsMoDiMZP2yl8KNjLXtX/OQcgCLqcJjLZJHfEPoEHys=;
+        b=dpfoRKwTnNDB0rU3d/f0J6dZx4M9ih/ox3VE53qDmn4suDmXiJg4cnXKbIXFAKzMKK
+         rH2GwmwDno+pEbJWRPYEosbMIyssuI5F3yZyAZJyUjfdkdee11h8hnjeyT4s+hYI6uJY
+         GT8XSGgPacc5MZwadWtjPMR8FStTxPACTW1YfCzsB5qBf2hCCX7B8gOr/dBCnAhRBOsK
+         tC0Ma+3R4944eRP58GAHQlya0JnSKQ21Pp1E6rP0w/YX+pZmmSkELD4+Jxav86ApCQbS
+         yVJ6qeD7LDQMRo04zqTCUJk/E3+APhd56wLUTO1N2trsQX4ERUmtV01bpcsqMiendRJ7
+         JcBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777302071; x=1777906871;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IsMoDiMZP2yl8KNjLXtX/OQcgCLqcJjLZJHfEPoEHys=;
+        b=nHlTjghittiz1eSS6d316Jc7maNk+QSz228mdIcaLcgIm8ORSvTqB0L/0hlMDZRK19
+         FM3c0qmi20HWKQimC6eBiIG53p1O0x2SzsqpKc5x37ro14nZtfqKGDippciRn7i9Wbqs
+         Q2Zun0hpN5sxKMnsL5zURQxe1wRxpjHtZUDZwIT7fnCAYzwc3ePZl2t6584WxeWUsK8c
+         uv3wBVt8j8yJo1DSXtc3dSvCGz9w80Cl5J7MPeqDw9caloub5ci4iTzQK9cgmkTByDqm
+         P216B7xbizouygzrb2KTN3m/cOZefFc2yCbYcJgz5K/gwNz7gBmx5mtOIhgCpqtOUd8O
+         cq5A==
+X-Forwarded-Encrypted: i=1; AFNElJ9ziZZfFPZm95t/A+/LCvMv/vQB/mt2qJOTNUzxHNqLKMnFapLPhe3tHb4MH0ro9YeyABBF4Z5KkQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyfqv8lo22+Yw6hpI3HzcBgU5RKlaxW+WtzUqqjJaXBQMewrHwN
+	4TujB/tIZk4q/RPvW//GLUzfvTI+yUJ+RAgAV5wVDML0FS20RuR7tDiqqpEIDskL7CfYLoSJhVt
+	hizr/XV2aOPE8SM6N4D+vqMXdVZm/mKM=
+X-Gm-Gg: AeBDieu5vR6pJ57h/BefnO1+1/RLEdSO4/b3X8mmgBnNQdznNHSVLZO25VcGL/TfL3M
+	xVNHbw1Z+zsdwIAgFIkPhzJKC3qKGjprNxrze7MDBqvjrsY06Xtc1GnOpsgQGgz1d22rqjh86s8
+	t0+eQWfTHch4o29b8I8dWhwCDCYNKnCRod4ooAIGc0sfeJ2we0qWTEeGG4Y4p6QVE9gJWiJo1Iw
+	xMJ4PWxtXwiT7743GDWhoFEd+WLTo3nn5fYGBNqV6C7z3t2Au8rMU8x71cqgV/6fxLmkIqKM3/P
+	axSAm6OFnN5Xk+Pu303ebTCOXuFTT36m6cFTw3mrlvWrB1IhI1NBv0Lj2ic6uSaimGzb1U5O4cP
+	Nh2M=
+X-Received: by 2002:a05:600c:4e4c:b0:48a:58ae:9938 with SMTP id
+ 5b1f17b1804b1-48a58ae9f69mr423287055e9.19.1777302070487; Mon, 27 Apr 2026
+ 08:01:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/8] mm/vmalloc: Speed up ioremap, vmalloc and vmap
- with contiguous memory
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
- will@kernel.org, akpm@linux-foundation.org, urezki@gmail.com
-Cc: linux-kernel@vger.kernel.org, anshuman.khandual@arm.com,
- ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org,
- Xueyuan.chen21@gmail.com
-References: <20260408025115.27368-1-baohua@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260408025115.27368-1-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B83371C001E
-X-Stat-Signature: k8p7xzkdmukbybh75esoueb3zz58rpid
+References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
+ <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org> <20260427051758.e1b714a4b567917971920eaa@linux-foundation.org>
+In-Reply-To: <20260427051758.e1b714a4b567917971920eaa@linux-foundation.org>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 27 Apr 2026 16:00:59 +0100
+X-Gm-Features: AVHnY4IasoXaoqIWZAdmFU7XS_Idge0ITPUKZpISd1rL0jATf9af3D4zNm_fFNY
+Message-ID: <CAADnVQJ9JXrtAnFgE8UFK=W1GDeT6T6Wi5zB7g0AfRjU8M4=bQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
+ page_mapped() in arena_free_pages()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett" <liam@infradead.org>, linux-sh@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1777302311-161845
-X-HE-Meta: U2FsdGVkX19LVPlxvVKyj3s5UEQzcEKlh4gmt27htO269R6W7A2GlAssbkNOSSxE9TzahR5Zb05cHNdTWikUxXR3P4DxeJ71KOddD8I4UyWGYp554qDrOkqyTE7w+YoUJYGjLLQbrd6XoNmQ7FaLYTykYVwRF3o51QIIpGuy1oyBlH8UcLWkJ3Sm6GgYlabTOqfCrVSq4Kdm/j++vQzh/GqUCk/TbuRz1mB8prLdvt0QoPAFMqVQeKNH00RVjXV6nlHE/312I9IkOKmwkHJFVOFrQfAh6iAgHGJy1OUYcwoumSpjAAK/ShiKMYODmV7otZj/3cYUxC5BR7uf9jegyNuPZ7L81x8xT67C5ez63VkxUZTuAv2HIlcvJ6PDXiDUd+dHxFFpLiy60VaPmBnCuE8EhF5fztpdDjHl4YEph0PMxEVDCi3rRQxUOZUf6oIE9Q3DU+N1ey2VgtR1lQfmFhdnZxNRQLxaV3HTYg30dH3Ko39qxU4frReubRLHm7XrSH8kWs+ICpKW4nChHqUCuE1cW+6HCc/oV/MmsWxxAxj/Z92h/YybnPTAtoNQ8FuUtUB/eoJzxlExKQqLQ/eDFSV4WsxHPHV84e/0FlLkfWqUwKlIpXsgvXzTYts8ZJC9CcLnYzfp//kzy8qy/iTXyeVzqx3KCmg8jMdpdqGxTVqMRSa1DLUVyV4kosA9tb0Hq+tAaUYDO6XgCuPfZvz/TxeBA3D54MQ2SfZK3peuM5esrxnO1pxUHIV95vBZYVBUlv/2QcI3jj2sSL8R706MbElrgzrrRneAYh2sV2t1KEKhAZLSnmB9rXlIjvCiQx5V2MYB0Dx1qbqLLGUwCULVMfDZoODhCsubHYTv75iFm8HJBhNacyuWrLEJwlAaofmMhsHPosuG52BZZfZ/tQqascIKBH6GeKKzyxxAXG2wbdynbZFtPQB8VVXCnKm3SXjzmdhTyx+cHfm/mlVX26b
- qd0L20bz
- UP43jHC1gmKlVfpEzBO5yhjuJqBPIDDmCUVuCVwxaPryz1Z05zWS1bKGnYdQow1YLZbQglqzR0/RgdkE7/d9FUa2d7g/oVFCLwaHPhILOv/7fnPEJOYxeRjsRRW6P/IxdCnZDv7w4p9n+mH9ylM9UktnVS3qPSRqT5VlQPyCDKYimsAV7yAyipjwsbF8XBHGYOlozFqp8DwwgT/Yk5pX5oLFSB8QJqNiJeWPgLW0YylXJTsbJGIwbzhjMNYjgYnChkSJbs76NNvd8stvEFQb5PHEnyPyhvbJbZqPUakwP8I3C7mX84J58NKJoEoLYUwBXKpIKVnCocenZ26c=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CC3FBA004C
+X-Stat-Signature: fh6b5o1siygjorrrf3yp5kpgo4se31io
+X-HE-Tag: 1777302072-932882
+X-HE-Meta: U2FsdGVkX18E25bhUXqqXBoXQl773mmYkgEAsFMYTD1LTpwOd8s+YN1QQbmZtd2R+WchkkPP79qc+dIYE/ZDwvJNksHG+xXP9vmld+W6VYylno9xvxMEgQO7HBOzLUJwTe47T2vVvEl9kxegFj8gb/SRD4ud0cDMWmdZQkSlHdng5ZKIKjz4owMe2PEOovb6ZD1RsX8uGulIsdmYpOMBBonT96TY4QrUej9aG9OQFjWEmfjr8PCfaaX2Kv5SNKSAVmMwXREEdJlgJEzGfhkgIABz/SZqe4ONrutPT1Gc/aK1cUvHHTc3kz7M2seU8zHcUmOXO/mmsfqsVjWvxx+rK4epD0UCXFVz6wV287szfEsMsnn2p5tuQfSb3TkoFEbJdQ/UXOm0GLky9AWNcjVVLnXs1YkLJIHGJyROXweZufztqw9RFswfAl690PztljLGCc11RBIEXvCDzdXgvqtC+DLUEW03PDy7NXfJl9R1q3W/fTi8k6o8YosE6PbskxTx4KwItmQ4rNNsZQ5/DNAsoUPUFtpymnSvpFSMYlVLfTbQ4JE3/7AO/X0yYVqd8wtkO+sMmiDYoksq67efgDUHv1TWEBhbWwm3UHc9U6GyNApdc41+DxCacJMqBrDXGc+RmhSOwRHJYID0fTfuAoF3POzOd7vxMO7QKUhFAmpUWXHFFiA/Dtem8Ph+4g8ulhGGH6FuOGaoixX0vBiBkVWmKXPSDbyzmPG2I27Nddqp6/g4WQp0onoBAeneN/m101NeM38Z4ShEXPLTj0jMavyI1qxbVxZ9He9yhq5ilOp5rzz5O7AC8+tw5YEMq3XdR6E9nIB8dYXCpthoY/6sKt7v2iwpJBzAi6uvrye7TkJp3LUzjfBdIslNFkdL67rjnFOu7+IFgQgmWELLU3QRdt1KxqXcy70JEWYvcwroz5c6K/5YpAe6uZcfQZVAM+FvUZpbqPZdD5RYt4BHDShfgOx
+ +C5HJV2L
+ BsKohMn6yuy/lg4i83uZuD5nFO0KNnkm8PCvW07ZQJg66W8z5Ici4LSji8ldRf23F4K/jZvFzkChmYHs1mknfyHMmsg/Oov+XlHAlRoJAUB6pjlvcwpNF1k+0M7fMIwFot1bKjiQS1Z+ifRW30VzpP/Kam8ypUGdnR43Xz+myuGdSXXRVMzAgoiNWL3qLiHYtr71kol+a52OHS9cy9VbZwyOpx8+fgsUUpGPg+Q5SGTIazijWGTJ8q+nkAc3vppOxh4nDhFes7DyzaSFqNAU9zoag6u+D4IEP0Mm5dSSR8B984bjQ/rlJk3oKBnLXS7QBNwr21O7egRuuOdyAEucERLKxD4lO+ia5IIzK/3SuqLbL/W9vGjJ48g8f7Sfdf/9YBubtbcZuJ7h9y8XcJ8dE+0u/9lcwXFwx3jzF2eT2mJ0ZTaAokzw32TfOVeQlbso3ZnieSIqKwh293rnk/61YTxgVgao8mA4b2CeBfMulonOa331SyXwIKfF+IeI+UwuPwW1Yrz4rWLksh30Gl75pI9Ll+O9Wx1gQPpEXJ8/wjGt2xi/bs6k6c79zx/npMnFbvDRZgsmSkqHoxkYeLCrnNygh4Wut05UG0p3q2qglZf856fKcV1DRGJ0YNXUQvpsRFwprh+xkHvPzyKg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,60 +151,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Apr 27, 2026 at 1:18=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 27 Apr 2026 13:43:15 +0200 "David Hildenbrand (Arm)" <david@kerne=
+l.org> wrote:
+>
+> > Pages that BPF arena code maps are allocated through
+> > bpf_map_alloc_pages(), which does not allocate folios but pages.
+> >
+> > In the future, pages will not have a mapcount, only folios will.
+> > Converting the code to use folios and rely on folio_mapped() sounds lik=
+e
+> > the wrong approach.
+> >
+> > Should BPF arena code allocate folios and use folio_mapped() here?
 
+no
 
-On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
-> This patchset accelerates ioremap, vmalloc, and vmap when the memory
-> is physically fully or partially contiguous. Two techniques are used:
-> 
-> 1. Avoid page table zigzag when setting PTEs/PMDs for multiple memory
->    segments
-> 2. Use batched mappings wherever possible in both vmalloc and ARM64
->    layers
-> 
-> Patches 1–2 extend ARM64 vmalloc CONT-PTE mapping to support multiple
-> CONT-PTE regions instead of just one.
-> 
-> Patches 3–4 extend vmap_small_pages_range_noflush() to support page
-> shifts other than PAGE_SHIFT. This allows mapping multiple memory
-> segments for vmalloc() without zigzagging page tables.
-> 
-> Patches 5–8 add huge vmap support for contiguous pages. This not only
-> improves performance but also enables PMD or CONT-PTE mapping for the
-> vmapped area, reducing TLB pressure.
-> 
-> Many thanks to Xueyuan Chen for his substantial testing efforts
-> on RK3588 boards.
-> 
-> On the RK3588 8-core ARM64 SoC, with tasks pinned to CPU2 and
-> the performance CPUfreq policy enabled, Xueyuan’s tests report:
-> 
-> * ioremap(1 MB): 1.2× faster
-> * vmalloc(1 MB) mapping time (excluding allocation) with
->   VM_ALLOW_HUGE_VMAP: 1.5× faster
-> * vmap(): 5.6× faster when memory includes some order-8 pages,
->   with no regression observed for order-0 pages
-> 
-> Barry Song (Xiaomi) (8):
->   arm64/hugetlb: Extend batching of multiple CONT_PTE in a single PTE
->     setup
->   arm64/vmalloc: Allow arch_vmap_pte_range_map_size to batch multiple
->     CONT_PTE
->   mm/vmalloc: Extend vmap_small_pages_range_noflush() to support larger
->     page_shift sizes
->   mm/vmalloc: Eliminate page table zigzag for huge vmalloc mappings
->   mm/vmalloc: map contiguous pages in batches for vmap() if possible
->   mm/vmalloc: align vm_area so vmap() can batch mappings
->   mm/vmalloc: Coalesce same page_shift mappings in vmap to avoid pgtable
->     zigzag
->   mm/vmalloc: Stop scanning for compound pages after encountering small
->     pages in vmap
-> 
->  arch/arm64/include/asm/vmalloc.h |   6 +-
->  arch/arm64/mm/hugetlbpage.c      |  10 ++
->  mm/vmalloc.c                     | 178 +++++++++++++++++++++++++------
->  3 files changed, 161 insertions(+), 33 deletions(-)
-> 
+> But
+> > likely we would not want to use folios here longterm, as we don't reall=
+y
+> > need folio information.
 
-Hi Barry, have you got the chance to work on v2?
+exactly
+
+> > Hard to tell. But in the meantime, we can simply use the page refcount
+> > instead, as a heuristic whether the page might be mapped to user space
+> > and we would want to try zapping it, so we can get rid of page_mapped()=
+.
+> >
+> > Page allocation will give us a page with a refcount of 1. Any user spac=
+e
+> > mapping adds a page reference. While there can be references from other
+> > subsystems (e.g., GUP), in the common case for this test here relying o=
+n
+> > the page count is good enough.
+
+makes sense to me.
+
+> >
+> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
+> >  kernel/bpf/arena.c | 2 +-
+>
+> BPF maintainers will probably want to carry this in the BPF tree.
+> That's fine - please go ahead and add it.  I'll carry a duplicate in
+> mm.git so it compiles.
+
+We cannot carry the same patch in 2 trees.
+Sooner or later it will create problems for linux-next
+and issues during merge window if more changes
+are done in the same area.
+The only way to share a patch between trees is to
+create a stable branch and pull it into 2 trees
+then sha will be the same,
+but mm tree has its own way of doing things,
+so this patch needs to stay in mm only and if no one
+should be touching adjacent lines :(
 
