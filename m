@@ -4,131 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6E00FF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:27:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81954FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:28:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CAD76B008A; Mon, 27 Apr 2026 12:27:23 -0400 (EDT)
+	id A88146B008C; Mon, 27 Apr 2026 12:28:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57BEE6B008C; Mon, 27 Apr 2026 12:27:23 -0400 (EDT)
+	id A5FB06B0092; Mon, 27 Apr 2026 12:28:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 492106B0092; Mon, 27 Apr 2026 12:27:23 -0400 (EDT)
+	id 976766B0093; Mon, 27 Apr 2026 12:28:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B1D36B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:27:23 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E67CBA0D8B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:19:06 +0000 (UTC)
-X-FDA: 84704845092.08.3BFFFC2
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E80B112000D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:19:04 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pO5kmU47;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777306745; a=rsa-sha256;
-	cv=none;
-	b=VIYZ4ToTqR6X91upMbKK16sniTx+UV3CSxlnSbrlMYZ+4m+xhgdzd2hwRA/AhMtM3bI/re
-	nyXQ4pamPwvU4UEA09ZRw21zpuGCaB4hmEV5kx5rFbafN2/ZH/ksOuGEbylcxCJctZXZEp
-	30+Z/rV/ST8ZuIn8KFa/1TsZMsmsC0E=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pO5kmU47;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777306745;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 87B8C6B008C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:28:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 82B89A1729
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:15:16 +0000 (UTC)
+X-FDA: 84704835432.16.317AD8C
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5259B1C0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:15:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BBglNgnf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777306514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QJNjSMzEVnhmJlAn1BmExHidoyff7BzpUCDWj8QBgqY=;
-	b=A8tnWq/oJATXQTZkrmGTc45qrE+CJx/roa3HsjU+IU04QZi/N9QLqPjAa07ZrqDqfiG/Aa
-	PBMUF2PgYoC3p2mNbu88uVzC0yc8XoppgI2Z+C5Gi35F5CH1FJO2cyGQ7uX1KBeDhC1e/u
-	x4XtYbo7HOXQm579pcSNqoqtEr0AZtY=
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a40502e63bso9257782e87.0
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:19:04 -0700 (PDT)
+	bh=FC6WaYfu1DAc73+NQ7e2JKxP2obY8GrSWpPpAtjERwY=;
+	b=BKaBaoau/a5kkl36fyKlhZ56DhCqsASOrTRNk3xVXJGzN0qpheD3aiEr6QfPOnaDekNdzj
+	4Je/5uzcAYmb/mU6h9sm3HXnhYen3Yke7O4Qs7PyKl6xabySWqqWXiunt7XZ6yg5aw3ycP
+	0FHTN9t1fopK7JvgePTOHLblpi6MAuU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777306514; a=rsa-sha256;
+	cv=pass;
+	b=LffxQxI8AYHum7H+3Rs3RHc3VfG4Mj7CmktQtSveIvutBwWhQ9gorPNxAdhEVVjDZD9Y9i
+	eaHHN1hyINgs+yo1oyAxmA4UGks03vMqdnJlTFhrcpfb+kfzyXEq76sOF7P9XdCQsFrfEA
+	ceQsuImhBhBDFpMe5ci8bK41jrDiMNI=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BBglNgnf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso88847a12.1
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:15:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777306513; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ARGevwWBoBRH0nlwxLrdC97mXkioB5K2B+PCJ6OzNaAiN5tY/PXJB9M3Qnf8XJWRuH
+         bumQlFQ6IoiiZsdfri5kmLwtnPu6uGkEg9ci6ZuKuurHMRqMrpa2NhdqUAKSNDIhQjek
+         Qy7XxHKbX1NVOA45WFfcSss1dOYdznRD+L5ILH3ND1CCzuHOp1e/rW2bgZwEVribZNi1
+         V/7NZk0Ai40zMHpyFe4Rxhj+UTlcG1cq6cHcsPAL74hXP9CvExyXEsOXei4f4cg/LJSc
+         C2oeUsRsJv9LEmYqDUZ39B6d8EekBQTn90S8jeO9ibVBJ4gXmd9lx4eFrTKxKyB43/ex
+         xkVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FC6WaYfu1DAc73+NQ7e2JKxP2obY8GrSWpPpAtjERwY=;
+        fh=/ndX37FbounDPw9CPWWBXjVndUciWZnp9YrepdFVHbo=;
+        b=Iw9hnsWJz16p4ylvnQTayHMPV3F4PRg0jBXrGO9EADWtACI8Is1IUnxiAbwBiLneW0
+         e6kJB0gJwSsaDv9uvztERF3vgMobdaXNg2KJPAL43kwQhw6JWg+tYN5FCSoJoMWbgsaQ
+         RmIoj+WECkiPFWdp1TLhswRADm+4P9nAhkvoukuhZrcU2uDSV/LUMGGm7MQEMKaulgSq
+         lAJzKNgNo1oOZJpjtln31fv/57NJaF8M8LfhGuXuayCHUOhT7x1y/YoCwgqlBAhApWZO
+         ImFbi8I6t76I1toQD5o1bm6vmQaNLIQZaDVhst4bccv/O+N4ry0DaF8zW/t09J6rMM7N
+         Oo0Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777306743; x=1777911543; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QJNjSMzEVnhmJlAn1BmExHidoyff7BzpUCDWj8QBgqY=;
-        b=pO5kmU47XuFkoDXybdd50fhKH5U+LOj6GwvZehaWepUYKCINFblhdwgZbFqi6pQqQt
-         T/enGjQhkxkzdiPaIRn7E60vpLM/oo+s/lKfxslczT7f239R3HLyMwVbQidGcpCfQaZJ
-         pFPZpilXuhEaJDcJboGVlRaiT88BbHjAMdlZjnCrLpWr5NAGIBPqlXVztual7dXttoZj
-         YuHhPTLPBfvTGn2B9+OaWNeRtJelj6/vqdzCsMtIi4BNFTSRgEhpRQHe09R76ZsvDout
-         Rg3yrCykv9BCInxRw0EMesMxXdU9ud8SWiXu9JElniAWl4Em1d6VN2qe0+lBkYjukpPX
-         sfBg==
+        d=google.com; s=20251104; t=1777306513; x=1777911313; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FC6WaYfu1DAc73+NQ7e2JKxP2obY8GrSWpPpAtjERwY=;
+        b=BBglNgnfphd5n1y1EvYvlOtoTf0p3ljRRZTfADWtnSadfrsrP+timPHsyqfQv7u0Gs
+         rfl8bTlILzPQHBD664/D7tio94hDWPXGOy+qsYpxOBpsBslREs0iX1wmnxK8pOAykvLt
+         kFCJEOa9K9+t3/O8MxxsLFEohn3zGLDaZaKlsS+0ExFHlhu4FqkExE1nmHyT+VlMKt9Q
+         ztH3FKQuaE9TIDHZTdCpCI4sJvwXZtdI9OcXTbLyQIq9+0YQ91ib1/EP/vtQFYP6UJhj
+         DC2/M8PVVjB9Nc/CArdNA3Gu+0oXqAWsJqZF04hDviYIVbpLvRT8zlNdZ72rgkbFWjLP
+         mz0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777306743; x=1777911543;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QJNjSMzEVnhmJlAn1BmExHidoyff7BzpUCDWj8QBgqY=;
-        b=sITDwAcvPoYbx0LkAQNz+BuYawhCCi5upZRSvOWy1k61KsPaD0YG1O71VrwFSWdEPO
-         Bp07H4o9Mgr25VM5tdPi9bfADF8YncCDQGn/59FRq5kkkfmw4u7UYqzOdYjCTc0gD6N5
-         zgmE9uHy81DLka+UNWVea5JAAYHzt39LvuOsUoj6yfVOe5VcIWEKINnQ9KVUsXlVJEjb
-         iEwaXxd5hl7e5TdJCZMrtWwBiQGP9qtb/yYxcV9MbSOqKoeJ3qM8dd6RhlCS/VnxmKaW
-         0tO4zjZXMR+jzj7C6zqBFiZLRVCuq3DNaUnjoTyhS8pyu1zjjQQ8AWGG3riLv2QQhzTJ
-         SRvg==
-X-Forwarded-Encrypted: i=1; AFNElJ9HYaknGM6c5oyV4hoaIX7yCgWb2zb2jeqJKUKLFUrlGgLjPCVzUyH1RmGKLd+T2JvHfeQUNBx8MQ==@kvack.org
-X-Gm-Message-State: AOJu0YysLVhWCzD3S/XJU/cCiJ4ephBso9DhfjmLcoVcPcH5D1U8ov0S
-	KPq/XYBHKB3cil0VJx814H2jdliBTZMSJJVFYUx5zpeZBhgue9qQOzZD
-X-Gm-Gg: AeBDievJRhFBeG2RsTOjNiyxh+YhjfNENgLLhWbIrUUZKMHYk4wh5a1VGRDnO0ckB7q
-	szLsav+v75DIlVCQ6W4zROyXE+67xU+aAjZd84p4+CiXpiN6M9BLvEIH8LyVcFk/RUGzpo6fgwh
-	OmutTlOtsCx7oof7KEYI32RW4as9wn8vsivFGGBSjyScLO/skbsLHreXbbV7UbXy/JiZbD8EFR1
-	jYCTUuCQTTgx2agq+bxaUx0aEmmynaenSt8Pjz82FGVkZqadGEGvQZDVacURMlfkuBrjN1zSRpq
-	CXRCK5Zp+4JWdY83ZLrCzvDZJ6bNDX5+rmcpoXYvoFss2bPka+JTRF7TxYYTFNzQbCDQWSuqYsJ
-	JJ+gPueVketEbTI9KuBKt3IUsp7Y1oI7a3tyNH0fqzXkfrMu3ulZZC1WH1uv2i2ASvkJeztuDWj
-	8=
-X-Received: by 2002:a05:6512:1256:b0:5a3:ff77:aa05 with SMTP id 2adb3069b0e04-5a4172c33demr15446017e87.11.1777306742548;
-        Mon, 27 Apr 2026 09:19:02 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4185bc361sm8293981e87.32.2026.04.27.09.19.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 09:19:02 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 27 Apr 2026 18:19:00 +0200
-To: Vlastimil Babka <vbabka@suse.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
-	Thomas Graf <tgraf@suug.ch>, oe-lkp@lists.linux.dev, lkp@intel.com,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
-	linux-mm@kvack.org
-Subject: Re: [linus:master] [mm] c6307674ed:
- BUG:sleeping_function_called_from_invalid_context_at_mm/vmalloc.c
-Message-ID: <ae-MdIOcSkfphbHM@milan>
-References: <202604211323.fac1b29e-lkp@intel.com>
- <aedvSnhOGM_mauYP@milan>
- <aehdcxC14ycvY481@gondor.apana.org.au>
- <aeh2Ii9CxtgfsX_p@milan>
- <aeh_2WwIb8nAIcy2@gondor.apana.org.au>
- <aeiHkG7X_dieMdw5@milan>
- <aemTW8yiAe6y1tsQ@gondor.apana.org.au>
- <4e269fb1-cd6c-46ca-ac2a-168ce9fd06fe@suse.com>
- <ae9wFZp7dS8QF8br@milan>
- <6cae0418-eabe-4864-b87f-b1f953de06b0@suse.com>
+        d=1e100.net; s=20251104; t=1777306513; x=1777911313;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FC6WaYfu1DAc73+NQ7e2JKxP2obY8GrSWpPpAtjERwY=;
+        b=YAMKYym2qEXKxbTkcJqioTe+a96ryYAU9BD8j87avK4xpNLnsAOUPYyuSVmHHth3+J
+         cP+qcEkakX/Fn1ywqDX5tTGitDUgmJYM1sx9BHSKEae/u/5DVyRcyin/4iSSJBKTzcBf
+         nAOixYi2C9+eUglkGtSvUgczhizNSjzOe6ncs8VG6fpsfm0CGoF8fBjSgmQeRmEct2v8
+         7eYOAsCV6XMGqw2fFLeM75x8vg//NKul4TpodoJyhFvpU32IaVXJ2kFHUhohusweac8s
+         aAeGi+uPL+MkpTZHFKmhx+lo9avpOhTOi1Y8yx1QSwAUZ9QiplO2Y+DJ86Fxfq4L+w0d
+         1Egw==
+X-Forwarded-Encrypted: i=1; AFNElJ91bjBzUcM6ediAbpxkdAh6xmL+d22dqpyWX9Xw8xhqxM1Lh/PuEHmW7ymoeq5a4aTQsKZOhO0urg==@kvack.org
+X-Gm-Message-State: AOJu0Yy7ml8H1kJKS2wLtDy31qUqxp0xWocsCCgHZFaVxW+iHyKxEXhx
+	iaAjoYUQiRB/lyax3rfQqfL2iqhFcNhD68CdPO+BqtvAU1YgghCEdTDWue6EtBua6nai3SL1sGA
+	bw7ZiDWQQAWPKxiO7t4gGyXMLVQBJWp0rngHrPKyY
+X-Gm-Gg: AeBDieuz/j7gdC12QZbX9l6/Ed73GYPhnMaG/ZLVS5K8SL1FG9TzkXxF+8nNMg4DTQ5
+	nF5amh9luW26C7bmMu3WJ5itg/wD+i3kqgeYxo2vgT3ehU5WPn/UvBo7oDU7XcIlDlktBGSwL78
+	9GiEcH8lUf+X2QkAN4JujDGdrH1/RMEHlnlJbTq6ukPzgKgUK64crbFRCC7WKZ4u+qdVhWwfYGy
+	Z0P6kBd/P3I6/FkJ396iRRisaea+ErbkLMY9KTj53t4VGg7yAKznFytmcTEXP0Ys4fW6gnF+Ytv
+	nJJnnthFPj77eRdfBjXckp2taUA=
+X-Received: by 2002:aa7:c7cb:0:b0:668:c2b6:9fa2 with SMTP id
+ 4fb4d7f45d1cf-679b626daf3mr211a12.7.1777306511908; Mon, 27 Apr 2026 09:15:11
+ -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6cae0418-eabe-4864-b87f-b1f953de06b0@suse.com>
-X-Stat-Signature: sbya1hcto7zknit461fn85ahrirzoz7b
+References: <20260413223948.556351-1-minchan@kernel.org> <ad3ldU4DZxga_J2L@tiehlicka>
+ <ad6c0DN7AGoOQ_Iq@google.com> <ad9AXVYxWCkHmh6J@tiehlicka>
+ <aeAeqoJ_acUAza8D@google.com> <aeCHvYOKP1exBBns@tiehlicka>
+ <aeHRLv834FCAQlQ8@google.com> <aeHdGf7XDjvOES1V@tiehlicka>
+ <aeagUxlju40rvkYQ@google.com> <aenPV9ewKAzRF2Vg@tiehlicka>
+ <28c3ae9f-c974-454c-b8ed-ba0ba0a5706d@kernel.org> <CAJuCfpEGCvuaQ43W4_bPjpoiYgmEspxV78-U4dkA2bcjfxCyFA@mail.gmail.com>
+ <dfb0e367-894e-4230-98f2-8e5bc554d293@kernel.org>
+In-Reply-To: <dfb0e367-894e-4230-98f2-8e5bc554d293@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 27 Apr 2026 09:14:58 -0700
+X-Gm-Features: AVHnY4JJxxmzA7sgWEjze6mLmBwQ76JQRoThS_bkstQvwBhzT7IsmyirvQcqKK0
+Message-ID: <CAJuCfpExF0V-f5WT-N-77S+P6TwQfgaJGY+TeYpQy_j_tT0_mw@mail.gmail.com>
+Subject: Re: [RFC 0/3] mm: process_mrelease: expedited reclaim and auto-kill support
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>, akpm@linux-foundation.org, 
+	brauner@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	timmurray@google.com, Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5259B1C0005
+X-Stat-Signature: pzh4jxbjfbe5x1tepoc8n5ahngrpz7tk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E80B112000D
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777306744-87983
-X-HE-Meta: U2FsdGVkX18myTi6KyjKTTTvYfEle8yReckV/6HOoNWua6v5IAHYRjCP/qsWI1qgaZ+9SvuerHaJC9Jp0hlmF0r1JdHAhV3mRcRkm+a09q+YJdD16GrAvBDjPrywEqTVHZbRyWaAlrCeNGsAVk6UjaYMleIvSyI8ICaPowpS8AQ5Qus1dI8Yi0r6/Z2GLPVIzhVeQwfxkP8sVJ0u0ihb7JYHWMYZrqbqqkzzqpYbC+sLdmi9+kAZ6tydro/oZHJwUHFWpVPWp5QKYEEs+BE2ML1JVX89Dizyzt3Rgsi23srBSWqLn2YmmFKEMoGkSeLYRvaLDjlcS9Ysgez8RUkRMcpGYuvpUeWfZnA3VldFe30ftsMBaVpXbU6ECpP2zfQj/USG3F/cF7yUmGH93425NVFsQcXcOcExXPgt1X9b5CJgNdZ9b2xaHen1zO3CndiujrSntmBA4jTdBxbc6Nxf8pAOYPG6zvjKHb5sBgeRvDkMG9zP4Cl+/RDJbSDTTJH+v3BLMh+gEBHqrSI7UM1MiTuSV/Df9E3zGnsFe2TQNvv1To8FcKXx60iUSIaMqztyhO8g8ct+DwzAilcmNdh0krxplCf31mzI1SCxYZNg1jYu8xndETVIdlcERAiXJO3bIuGBIZ/Cry6f41iRD/o3v6dSMcAy0c1kRRVqRRFcNp7/6QdCd/IJVFq7RqLHkwKYLUCRxkNnfaDOTR8UANasWEXEwIUzeH/kDYY94FtZ2hltRngVmoZcIdPnfrv4E2Nc/QiTwWNXwpYO4+hXVoveBUAajn8f+OtrXKa0Omk1HKBzXNeBZvqpHmGVM6DFjvm+gIoJIHMFi9uEbxi4Mioien79imik2djo+0t88r/vtogKlGvUW6eeBvNM07fcoFZtlaGuh7nIK8fEnE1c/GBkB+tUG8GKAI/ssufzF5CWZ18Wo2KMJ0cUphN21f2CpFuVXLeOjVg2k72eXCE65bg
- CDbzTt2t
- 9QcHNk8hKPcBnUV7Kw/DtibeXCOeTGBN3OwLTiHWB90BdJ+Qp8ZqJTeblg4lXLc4+g547Wf+jad7a3ESOb5GY+woNbnDPjHOhuNkRO49lEuUhzL3SetJpmhLbaBm7TRGyqe9yKFTBsMJnJcnfPW4sRB1kpIXPMpx3flDEJE52U40gq8EcO1vuVrH3bwLatmEcbSWFFRpIDWZRL6QFNFJTygolmUI2LjNb5bpPR+c19EZdNaM04J+TibHt5ly4mZT9ehe2ZZCEuiDjV8ZWsntGiZqfOSn2xYjKGGVRQuAu/Wn7PV0Lg6DWulF5sDDuAJAvbd5YTHCb4DE/BhuZC3nPXEsjUxysWZiVwmAcrPJK+mW9mpAOyb0z38DN4gyVrhUDpJ9RGsfeTwznLXZfnGQeZU0NxdwVKNVUr8j3cQzcPrIffvyo9CxpIxw/ic8nO39aAOMun91ubr6PYVLFeC483ZYcFsv4KEJW+l67FMrFJqXQQZHCi0wjWHVqs8M5ubzsX6U3lg4wmnt2ng4xQpFsC4LdbHHTx0o4rfMhTxjOrQoweBwIVb8N1shMm3pavOFXQ64dfvFP7wWYO1PedoVgUC/BA+ZBhDzz9nMwBAcVKbK358J4BQfvVfJVic9/Ds+Yl2E4UgYKieofY0N8hJZhVIobJPSQqL4M++zxRYAelVAXHUR4lisR4kCGcQ==
+X-HE-Tag: 1777306514-645157
+X-HE-Meta: U2FsdGVkX1+TXCYyCHoA8ZfD7mR/rg486kYJJ5za/tuA/0PSjsc4YbryEOddIFgFs6By7YBH/55U2ffe4eV7MAiP81YBNQVGjiWTaJeGqf6y4RCHJrtXSfJlHBCIQCJQRaPiRVFjmUecyeV61DUxdHPBrgoLy7+5vNKVR1/EjJcGhryN4qAUUWDpBuGvDH3AjIFMrdqY0ERZwmc6Jkg1+l/T08zu6m/z7q5glH+/OJYtlXpnt/ejWYrlNJgpwuHhdmtxZPaOJ4SjyaTRuydSP/LxQQBHo23Csr2GvlOOBl7amMpQRSJoo+QkJzpaDxpwonayqiOjIhB+xYiNzFO16fxgJGNQD+xr1u7WiDLbkqFCX/IpkLCD4dQUU/1htMQezjCf7+1GEEEcSs1mW+duivu6Z4EPyLWZcuj3AJezk6TGpK4hqnBBe+6Rux0D8ubPW3r2R2r7LmdV54gOl2YD5dHTCbRyZW8DHwH49qj69BMwcNBenxof8G7naukGLoYSD5Nf8/jENsE+yrtdq8XkkWHRDGs+zXa74uwOZ+0Tmru/oXUil+kUiq4VHigwNYA3XtUJbL+K26+mYg3FVrg1R9RdKdZpg2I3hkrJAZ+UgP4t/w0Ny4sU3iIyqM+RD44hUIUPXLvI7ZQ/S3FhqqZux5H+g1aDfTKlwYRJvO4uKkspt5P+LqP30Yirkn2cgnddjlP6azoII3t9bfn2ECbglXSCbd7I8pKE6JvCt7ALh2zo1PTdgw5Bk1JCMoGLu6Qu0S5mLYcS2SJ20Cri/mrmdbM95qOTz4QMiAfcGed3dxeO3fdRYPaDFvN0unHMdXR8a94l67wUjxtbQ/v4QEoMLHX5dYcNOGh2GHmPfOedDrAQDsnFAneC94PNbRuwYIEJtdD7nKVIuw9RbtJ1gdjKQT4Kosvbfn03UNcedAbIAbeUiu2Krn7o6OrIKYMVsw/XPU7KHh44HVi1VLd150F
+ ekb7iAUL
+ 5LkpEwa//zhzFSR2fInkUBUUUkImdYjdbSXDXBV3oz6qOsrreuvt7cISHlOBdQ0GGdfTjv7MmA1kWnVypaJa2gIcKDGI2SjSCTkUR6pFp2K1F2ITUMKCvb8FXEbQn9jhgsPZxyxDTlA2QXBn/aWoPL0E0cgIUs+yYkjYJracUzcJ02iX4SzICOh/XZpEA2FZaAPPCR/UWmj4uDOgKuCFd9IRY3m9lo4AG5T+Xu9LVornHZLEq6+vGTCz3B8PKtbxzoqxWIMMPQm6IGyaYj+N+svP9ZAlt5MW+v/qAIRaXnEdJlwzwZk9wmLA00g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,146 +145,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 04:37:11PM +0200, Vlastimil Babka wrote:
-> On 4/27/26 16:17, Uladzislau Rezki wrote:
-> > On Mon, Apr 27, 2026 at 10:53:52AM +0200, Vlastimil Babka wrote:
-> >> On 4/23/26 05:34, Herbert Xu wrote:
-> >> > On Wed, Apr 22, 2026 at 10:32:16AM +0200, Uladzislau Rezki wrote:
-> >> >>
-> >> >> We have added non-sleeping flags for vmalloc() to extend kvmalloc()
-> >> >> functionality as folk need those.
-> >> >>  
-> >> >> Another option, would be: always use vfree_atomic() from the kvfree()
-> >> >> path.
-> >> >>  
-> >> >> Any thoughts?
-> >> > 
-> >> > Perhaps add a kvfree_atomic that just calls vfree_atomic?
-> >> 
-> >> kvfree()'s comment says
-> >> 
-> >> " * Context: Either preemptible task context or not-NMI interrupt."
-> >> 
-> > I am not sure the description clearly reflects the intended usage.
-> > To me it sounds like all contexts but excluding NMI.
-> 
-> Agree it's not clear, my immediate reaction was the same and took me a bit
-> to understand.
-> 
-> > For example, calling this under spin_lock() will be invalid, as
-> > the vfree() path may invoke cond_resched().
-> 
-> Yeah, it's covered by the "preemptible" word, but not super clear.
-> IIUC it all boils down to this in vfree():
-> 
-> 
->         if (unlikely(in_interrupt())) {
->                 vfree_atomic(addr);
->                 return;
->         }
-> 
-> Which can do the right thing in an interrupt, but obviously cannot
-> automatically recognize the "under spin_lock()" situation.
-> 
-> So I don't think we can change it now with all the existing callers, but if
-> a better wording exists, we could make the comment more clear.
-> 
-> >> so this is neither. It might be ok then to create kvfree_atomic(). Always
-> >> using vfree_atomic() from kvfree() might be wasteful.
-> >> 
-> >> > For rhashtable it really makes no difference either way.  But it
-> >> > would eliminate the unsightly call to is_vmalloc_addr in rhashtable.
-> >> > 
-> > Seems atomic version makes sense here:
-> > 
-> > <snip>
-> > diff --git a/include/linux/slab.h b/include/linux/slab.h
-> > index 15a60b501b95..2b5ab488e96b 100644
-> > --- a/include/linux/slab.h
-> > +++ b/include/linux/slab.h
-> > @@ -1234,6 +1234,9 @@ void *kvrealloc_node_align_noprof(const void *p, size_t size, unsigned long alig
-> >  extern void kvfree(const void *addr);
-> >  DEFINE_FREE(kvfree, void *, if (!IS_ERR_OR_NULL(_T)) kvfree(_T))
-> >  
-> > +extern void kvfree_atomic(const void *addr);
-> > +DEFINE_FREE(kvfree_atomic, void *, if (!IS_ERR_OR_NULL(_T)) kvfree_atomic(_T))
-> > +
-> >  extern void kvfree_sensitive(const void *addr, size_t len);
-> >  
-> >  unsigned int kmem_cache_size(struct kmem_cache *s);
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 2b2d33cc735c..e25a0eab6ff7 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -6802,6 +6802,22 @@ void kvfree(const void *addr)
-> >  }
-> >  EXPORT_SYMBOL(kvfree);
-> >  
-> > +/**
-> > + * kvfree_atomic() - Free memory.
-> > + * @addr: Pointer to allocated memory.
-> > + *
-> > + * Same as kvfree(), but safe to use in atomic contexts.
-> > + * Must not be called from NMI context.
-> > + */
-> > +void kvfree_atomic(const void *addr)
-> > +{
-> > +	if (is_vmalloc_addr(addr))
-> > +		vfree_atomic(addr);
-> > +	else
-> > +		kfree(addr);
-> > +}
-> > +EXPORT_SYMBOL(kvfree_atomic);
-> > +
-> >  /**
-> >   * kvfree_sensitive - Free a data object containing sensitive information.
-> >   * @addr: address of the data object to be freed.
-> > <snip>
-> > 
-> > I can post it if no objections.
-> 
-> LGTM but also should be now used in rhashtable_try_insert() I think?
-> 
+On Fri, Apr 24, 2026 at 12:41=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 4/24/26 00:36, Suren Baghdasaryan wrote:
+> > On Thu, Apr 23, 2026 at 2:50=E2=80=AFAM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 4/23/26 09:50, Michal Hocko wrote:
+> >>> [...]
+> >>>
+> >>> This is a very creative/disruptive way to do a memory reclaim. From a
+> >>> user POV I would much rather see clean page cache reclaimed before my
+> >>> apps start to disappear. But this is obviously your call and your use=
+rs
+> >>> that will care.
+> >>>
+> >>> Anyway, I still maintain my position. I do not think it is a good
+> >>> idea to drop clean page cache as you do not know whether there are ot=
+her
+> >>> users.
+> >
+> > I'm very much familiar with these issues in Android and really want to
+> > find a good solution for them. IIUC, this RFC tries to address 2
+> > things at once:
+> > 1. handling clean private page cache when reaping memory of a kill vict=
+im;
+> > 2. addressing a race between kill() and process_release() when
+> > process_release() can't happen before the kill() but if it happens too
+> > late after the victim passed its exit_mm() then process_release()
+> > fails to find the mm to reap. This defeats the purpose of
+> > process_release() call because the actual memory (released by
+> > exit_mmap()) might not yet be free and a successful process_release()
+> > would be very beneficial.
+> >
+> > I see these two as separate issues and I'm not sure combining them
+> > into a single discussion is a good idea.
+> >
+> >>
+> >> IIRC, Johannes raised in the past the we cannot predict the future.
+> >>
+> >> For example, if an app gets OOM-killed, wouldn't we usually try restar=
+ting it,
+> >> re-consuming the clean pagecache pages we would be evicting here?
+> >
+> > Sure, we can't predict which app the user will use next, so when
+> > killing we usually kill the least recently used one. That's a
+> > reasonable strategy in most cases.
+>
+> That makes sense. As long as other apps you open next won't need the same
+> libraries etc that you just evicted.
 
-Like below:
+True. However shared libraries have a high chance of being used by
+more that one process when we kill a background apps. So, while it's
+possible that we might evict a page from a library that will be used
+shortly after, it's more likely that pages from such libraries would
+not be private to the victim. Again, all this is probabilistic and no
+ideal strategy exists without knowing the future. All we can do is
+optimize for the most likely scenario.
 
-rhashtable_try_insert()
-  rhashtable_insert_rehash()
-    bucket_table_free_atomic(new_tbl);
-
-the patch for rhashtable.c can look like:
-
-<snip>
-diff --git a/lib/rhashtable.c b/lib/rhashtable.c
-index 6074ed5f66f3..4111aab8cee4 100644
---- a/lib/rhashtable.c
-+++ b/lib/rhashtable.c
-@@ -114,6 +114,14 @@ static void bucket_table_free(const struct bucket_table *tbl)
- 	kvfree(tbl);
- }
- 
-+static void bucket_table_free_atomic(const struct bucket_table *tbl)
-+{
-+	if (tbl->nest)
-+		nested_bucket_table_free(tbl);
-+
-+	kvfree_atomic(tbl);
-+}
-+
- static void bucket_table_free_rcu(struct rcu_head *head)
- {
- 	bucket_table_free(container_of(head, struct bucket_table, rcu));
-@@ -473,7 +481,7 @@ static int rhashtable_insert_rehash(struct rhashtable *ht,
- 
- 	err = rhashtable_rehash_attach(ht, tbl, new_tbl);
- 	if (err) {
--		bucket_table_free(new_tbl);
-+		bucket_table_free_atomic(new_tbl);
- 		if (err == -EEXIST)
- 			err = 0;
- 	} else
-<snip>
-
---
-Uladzislau Rezki
+>
+> --
+> Cheers,
+>
+> David
 
