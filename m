@@ -4,99 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D80D2FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:26:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6E00FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:27:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A6056B008A; Mon, 27 Apr 2026 12:26:07 -0400 (EDT)
+	id 5CAD76B008A; Mon, 27 Apr 2026 12:27:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 356E56B008C; Mon, 27 Apr 2026 12:26:07 -0400 (EDT)
+	id 57BEE6B008C; Mon, 27 Apr 2026 12:27:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2946E6B0092; Mon, 27 Apr 2026 12:26:07 -0400 (EDT)
+	id 492106B0092; Mon, 27 Apr 2026 12:27:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 154C36B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:26:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BEEA9140B2A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:21:41 +0000 (UTC)
-X-FDA: 84704851602.02.EE225BD
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B553A80009
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:21:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=ItpP3WD3;
-	spf=pass (imf02.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B1D36B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:27:23 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E67CBA0D8B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:19:06 +0000 (UTC)
+X-FDA: 84704845092.08.3BFFFC2
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E80B112000D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:19:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pO5kmU47;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777306745; a=rsa-sha256;
+	cv=none;
+	b=VIYZ4ToTqR6X91upMbKK16sniTx+UV3CSxlnSbrlMYZ+4m+xhgdzd2hwRA/AhMtM3bI/re
+	nyXQ4pamPwvU4UEA09ZRw21zpuGCaB4hmEV5kx5rFbafN2/ZH/ksOuGEbylcxCJctZXZEp
+	30+Z/rV/ST8ZuIn8KFa/1TsZMsmsC0E=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pO5kmU47;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777306900;
+	s=arc-20220608; t=1777306745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qv5T2llCY7Jdq5wbaWSpQr20nZRTC/EVRfNcw1lmEc4=;
-	b=p86Kxr5/rhQC/+CKnVacHapwRtV5/LxWayNlgY5ROe+CElNP8S3OIcSzNzMrWA8m6hxAja
-	eAr1r4cQUF81v+q4AGrntUAIebcpBUu1MLh09VoBwA4/OmzUx4SPYk3GbY8LEBrqSHtxIx
-	VuiZEqDjcf1OqCLymC+/WtK9IAALHQ4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777306900; a=rsa-sha256;
-	cv=none;
-	b=cTAn1u66w+JR4e9Eq+hY3rGqvPkOlQp2zhlSEZnQzu6H8yOZuZZ+NmlzWnK5v6h5d/XVMn
-	HJvQHLwuBG8BoozqsuTXyL0j4dIBWEN1Mv/sFHAAkOed1Uzt7h9avoBkGhuj8CmGg5N54m
-	xjs5pFOwDLaF9/0pkhwTLzFewrFha5U=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=ItpP3WD3;
-	spf=pass (imf02.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1777306893; bh=Qv5T2llCY7Jdq5wbaWSpQr20nZRTC/EVRfNcw1lmEc4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ItpP3WD3eJ3OQwiTc3HEFhYsIdC13pxcD6rXG2qHFIU0xAov1iiE419jzP8YS7yai
-	 QvLYHzNvQFgYB02qb0wMS6ZEi5cvwfuf4q4Qm66WAikQ3Hxd0V40Lyb3x29jRVnifq
-	 3hjjLLy/H40GsVO9OQwPMDC5gkNKxC/j6p2uaTXs=
-Received: from node68.. ([166.111.236.25])
-	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
-	id 55F09E02; Tue, 28 Apr 2026 00:21:31 +0800
-X-QQ-mid: xmsmtpt1777306891t3b887e0q
-Message-ID: <tencent_97CF3C9347EA08FBCDA2C507D7DDF3A16206@qq.com>
-X-QQ-XMAILINFO: Nx5J06Esz7r7adk3nRgV4JYRK8JQCG1ZDJ9VLEbwqgY3ndga9r06rlFv2r3PkL
-	 hlZp/g3QIYCgpRe8vx/+zalxSiJY6ohoLEfteXbLfqysAy48E1pFmAuacGSkhQGDtq/OqpL2xVtL
-	 VpVoKhK1UMcuxpYL0gmv1mFTO2HbFvAfJVJgKU9uT+d2DE0zw5jrgBovFyivniJOOaqumV6QSbZG
-	 rJflasZ/Mq5PSxBjJafvJDOzdkuCRebR8LwOYI2kxE28zpY7NHtemgIeOrYw8P6Hl8E0GPx7s9ve
-	 tEahmOXN+7xVi5zaiSfSezSRSx/6wY+v2nZmPzry99NyyaT+oOznTJn6EdlrYtWHSEDoxKWX4TAh
-	 qvgDhJkn83vmGIklZlpF66MH96Oy6djDLvqFoe0OOzb2oCFC41HHGoqCUtAXlLMguWiZ7s/rcRdF
-	 Ffd77tsN/JoUK3QM+6DppJSYkdILZ69IbSC1XiBSFnN53nUURsbxmXRwx4mBR8M1KzCX3F5VSTgY
-	 H3CDENxL/3qUXSKcXevZtFBQRSm7ITbJ3WmD5rLJKhxQlvh9AE1IB+vC6Qw/TiI/1KkecRoYc3bD
-	 WuQFp1+fMLYdW10Yo2NP6C7x+FFF7Oez6H1KS/ESsuT9O5Pcwb5AaBoQA1NStFDEcWGsL2j+hqsJ
-	 1iPW6GogVsV/roGdzttXIEcxXemdM8QGi7DeCpAkb9yErY6w1DN4t24rwbq1aJ/00iRJJmmTE7wl
-	 X+yIAzPP8jhoA5UarcpD5y3EKhiy82DzUNOQAeyvEq/pPX9rExN3z9sYnJ+vWmLfdcR5WcWsC7gy
-	 U1gIe4rKSXdFeg4+akDu1fxUxn/XYdYy1qNCX9AX2CGraelaLGY0A7pZc1QoNe9fHINrTIBd0D6s
-	 BeZWYksNp/WpMV4GBBhXUAWpxKIJo2bWEtolMiSM3sDNZ3TvoP+QHFE9wSilREgQIjPeT+Ob9XKZ
-	 w9g9sX7nelVacoTfwl3RToR955vX/v7uoqK8GtjMRUvVTLGS7UVWaN7Q1q0U5F
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: fujunjie <fujunjie1@qq.com>
-To: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>,
+	bh=QJNjSMzEVnhmJlAn1BmExHidoyff7BzpUCDWj8QBgqY=;
+	b=A8tnWq/oJATXQTZkrmGTc45qrE+CJx/roa3HsjU+IU04QZi/N9QLqPjAa07ZrqDqfiG/Aa
+	PBMUF2PgYoC3p2mNbu88uVzC0yc8XoppgI2Z+C5Gi35F5CH1FJO2cyGQ7uX1KBeDhC1e/u
+	x4XtYbo7HOXQm579pcSNqoqtEr0AZtY=
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a40502e63bso9257782e87.0
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:19:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777306743; x=1777911543; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QJNjSMzEVnhmJlAn1BmExHidoyff7BzpUCDWj8QBgqY=;
+        b=pO5kmU47XuFkoDXybdd50fhKH5U+LOj6GwvZehaWepUYKCINFblhdwgZbFqi6pQqQt
+         T/enGjQhkxkzdiPaIRn7E60vpLM/oo+s/lKfxslczT7f239R3HLyMwVbQidGcpCfQaZJ
+         pFPZpilXuhEaJDcJboGVlRaiT88BbHjAMdlZjnCrLpWr5NAGIBPqlXVztual7dXttoZj
+         YuHhPTLPBfvTGn2B9+OaWNeRtJelj6/vqdzCsMtIi4BNFTSRgEhpRQHe09R76ZsvDout
+         Rg3yrCykv9BCInxRw0EMesMxXdU9ud8SWiXu9JElniAWl4Em1d6VN2qe0+lBkYjukpPX
+         sfBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777306743; x=1777911543;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QJNjSMzEVnhmJlAn1BmExHidoyff7BzpUCDWj8QBgqY=;
+        b=sITDwAcvPoYbx0LkAQNz+BuYawhCCi5upZRSvOWy1k61KsPaD0YG1O71VrwFSWdEPO
+         Bp07H4o9Mgr25VM5tdPi9bfADF8YncCDQGn/59FRq5kkkfmw4u7UYqzOdYjCTc0gD6N5
+         zgmE9uHy81DLka+UNWVea5JAAYHzt39LvuOsUoj6yfVOe5VcIWEKINnQ9KVUsXlVJEjb
+         iEwaXxd5hl7e5TdJCZMrtWwBiQGP9qtb/yYxcV9MbSOqKoeJ3qM8dd6RhlCS/VnxmKaW
+         0tO4zjZXMR+jzj7C6zqBFiZLRVCuq3DNaUnjoTyhS8pyu1zjjQQ8AWGG3riLv2QQhzTJ
+         SRvg==
+X-Forwarded-Encrypted: i=1; AFNElJ9HYaknGM6c5oyV4hoaIX7yCgWb2zb2jeqJKUKLFUrlGgLjPCVzUyH1RmGKLd+T2JvHfeQUNBx8MQ==@kvack.org
+X-Gm-Message-State: AOJu0YysLVhWCzD3S/XJU/cCiJ4ephBso9DhfjmLcoVcPcH5D1U8ov0S
+	KPq/XYBHKB3cil0VJx814H2jdliBTZMSJJVFYUx5zpeZBhgue9qQOzZD
+X-Gm-Gg: AeBDievJRhFBeG2RsTOjNiyxh+YhjfNENgLLhWbIrUUZKMHYk4wh5a1VGRDnO0ckB7q
+	szLsav+v75DIlVCQ6W4zROyXE+67xU+aAjZd84p4+CiXpiN6M9BLvEIH8LyVcFk/RUGzpo6fgwh
+	OmutTlOtsCx7oof7KEYI32RW4as9wn8vsivFGGBSjyScLO/skbsLHreXbbV7UbXy/JiZbD8EFR1
+	jYCTUuCQTTgx2agq+bxaUx0aEmmynaenSt8Pjz82FGVkZqadGEGvQZDVacURMlfkuBrjN1zSRpq
+	CXRCK5Zp+4JWdY83ZLrCzvDZJ6bNDX5+rmcpoXYvoFss2bPka+JTRF7TxYYTFNzQbCDQWSuqYsJ
+	JJ+gPueVketEbTI9KuBKt3IUsp7Y1oI7a3tyNH0fqzXkfrMu3ulZZC1WH1uv2i2ASvkJeztuDWj
+	8=
+X-Received: by 2002:a05:6512:1256:b0:5a3:ff77:aa05 with SMTP id 2adb3069b0e04-5a4172c33demr15446017e87.11.1777306742548;
+        Mon, 27 Apr 2026 09:19:02 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4185bc361sm8293981e87.32.2026.04.27.09.19.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 09:19:02 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 27 Apr 2026 18:19:00 +0200
+To: Vlastimil Babka <vbabka@suse.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+	Thomas Graf <tgraf@suug.ch>, oe-lkp@lists.linux.dev, lkp@intel.com,
+	linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/1] mm/filemap: tighten mmap_miss hit accounting
-Date: Mon, 27 Apr 2026 16:21:31 +0000
-X-OQ-MSGID: <20260427162131.621461-1-fujunjie1@qq.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <qll45txbsmwpkrgzjqpzqh563vwd7dcycfl7beaey5gqh63wfa@y2kqsfvhltca>
-References: <qll45txbsmwpkrgzjqpzqh563vwd7dcycfl7beaey5gqh63wfa@y2kqsfvhltca>
+	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
+	linux-mm@kvack.org
+Subject: Re: [linus:master] [mm] c6307674ed:
+ BUG:sleeping_function_called_from_invalid_context_at_mm/vmalloc.c
+Message-ID: <ae-MdIOcSkfphbHM@milan>
+References: <202604211323.fac1b29e-lkp@intel.com>
+ <aedvSnhOGM_mauYP@milan>
+ <aehdcxC14ycvY481@gondor.apana.org.au>
+ <aeh2Ii9CxtgfsX_p@milan>
+ <aeh_2WwIb8nAIcy2@gondor.apana.org.au>
+ <aeiHkG7X_dieMdw5@milan>
+ <aemTW8yiAe6y1tsQ@gondor.apana.org.au>
+ <4e269fb1-cd6c-46ca-ac2a-168ce9fd06fe@suse.com>
+ <ae9wFZp7dS8QF8br@milan>
+ <6cae0418-eabe-4864-b87f-b1f953de06b0@suse.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B553A80009
-X-Stat-Signature: dphpef5t6qyeg85qhji7mwp4a4txih6f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6cae0418-eabe-4864-b87f-b1f953de06b0@suse.com>
+X-Stat-Signature: sbya1hcto7zknit461fn85ahrirzoz7b
 X-Rspam-User: 
-X-HE-Tag: 1777306898-170164
-X-HE-Meta: U2FsdGVkX182U/2OyOgUOoSLLH7qUoZsImz59wJHM123aFNuDOaxpKdZHy1Z/YOQuHEuQ7YpL6aOeiiuXKun0QNCLs0Irovfe4RF5Bj31AfoPqEv/lJmHZFhou7WlJpcBDaBCyOVB1ZsHh075HYwmdWnZdKQU9P5Uh70f7MtFbc+oKInuYzpUnLItODzjsWbMa2ZbuZhbpG1i49yate1BGMjpftracV+F9Nw5EBfdcRBrsF32FPJRNfvbXXSFT+w9MZzbRCUweB6Q+bti/l3HyEBK3qb/V+PJThZCu4mOsIo+lhxHPcs/HI7ITI4f6+H6DTjuFPcmruwI/Zs6ODUbCT1TdDga3nuWgCzNIvdawywH7OMW9nuSdOGrKCn+MGuMb8KN2p3oWHpbORe3SjaGaEiWKGc0YAsG7WMn1rIc29A6TteqdiR3kYKdCdfHJ1eEGIdn+wBWcpLeq3DfSCLVU5bn3lp2Akn9OHZi2fNd6QFysl5O8UdK2UQYobB40sde2b6eWlR5mPDxF7yeYe1+3WBO+rONOecsJO3d+PxcM0+XEfyDimNCeaBAyqziyLfhNlLoYUu7F+opuNRGSIjHZnc2wCRYreFjPKKoJLvFU+aG1SsUxaHYxOly1S2odUyhpp70TDP19aX/rlFD+m2HR1eQoJx9lNEGtjYGYyGHBlZDu8exoxzQoVygaRrvhU7DNoZI2/T0fVUvEOUlmJKqRMNbV9LfIuo04J6djaWb+BvvfTp2kW2v/+yUxTou9bahGiPUsx1/zN4tS63013t8REn4Tm+gnD0WQx5CtiiaKMSIhyT6AAYBgX+Eq4KT291dxzz2L/nw+WCKS0qpWhSldB7icjZgGS3iYEUMBpxrYR5CTH44Ef8qQw4DMHrnCid1IsN1azNjryuSSSqF49Wlc15Ox6ih+G76xbOnGFQsUjJaplgeEYrgLro1ZebiyWymUdchOojxB4GzNAXa9u
- dyDbL8cP
- ypUP3/Oef0oQHYilIZvqJBiw4VdK68unxOgcE7s46bgjPkpaLp9Sjckq7nkhPC1rWBZmJoVlgjshS/y9OoMd9+od7V/6GCyJ8dYCBBzGXGI/UxUxOoLzQd7txsSOM89pU8az5/Yos+xJhQLJQbcjNzEz4hWFe3plJ4VnaK8pOd6WYxCCZ60NfnTo6y9T/F2x10jV2jJNbZt9sELJXxRfHI/UKXmyiPlQjFdSQcRXvR2wIApEAEpIPuKZ/CsnWp2+uFDye0CVOWvP6ZqllWmLRP5BmoZheZivVjRFN
+X-Rspamd-Queue-Id: E80B112000D
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777306744-87983
+X-HE-Meta: U2FsdGVkX18myTi6KyjKTTTvYfEle8yReckV/6HOoNWua6v5IAHYRjCP/qsWI1qgaZ+9SvuerHaJC9Jp0hlmF0r1JdHAhV3mRcRkm+a09q+YJdD16GrAvBDjPrywEqTVHZbRyWaAlrCeNGsAVk6UjaYMleIvSyI8ICaPowpS8AQ5Qus1dI8Yi0r6/Z2GLPVIzhVeQwfxkP8sVJ0u0ihb7JYHWMYZrqbqqkzzqpYbC+sLdmi9+kAZ6tydro/oZHJwUHFWpVPWp5QKYEEs+BE2ML1JVX89Dizyzt3Rgsi23srBSWqLn2YmmFKEMoGkSeLYRvaLDjlcS9Ysgez8RUkRMcpGYuvpUeWfZnA3VldFe30ftsMBaVpXbU6ECpP2zfQj/USG3F/cF7yUmGH93425NVFsQcXcOcExXPgt1X9b5CJgNdZ9b2xaHen1zO3CndiujrSntmBA4jTdBxbc6Nxf8pAOYPG6zvjKHb5sBgeRvDkMG9zP4Cl+/RDJbSDTTJH+v3BLMh+gEBHqrSI7UM1MiTuSV/Df9E3zGnsFe2TQNvv1To8FcKXx60iUSIaMqztyhO8g8ct+DwzAilcmNdh0krxplCf31mzI1SCxYZNg1jYu8xndETVIdlcERAiXJO3bIuGBIZ/Cry6f41iRD/o3v6dSMcAy0c1kRRVqRRFcNp7/6QdCd/IJVFq7RqLHkwKYLUCRxkNnfaDOTR8UANasWEXEwIUzeH/kDYY94FtZ2hltRngVmoZcIdPnfrv4E2Nc/QiTwWNXwpYO4+hXVoveBUAajn8f+OtrXKa0Omk1HKBzXNeBZvqpHmGVM6DFjvm+gIoJIHMFi9uEbxi4Mioien79imik2djo+0t88r/vtogKlGvUW6eeBvNM07fcoFZtlaGuh7nIK8fEnE1c/GBkB+tUG8GKAI/ssufzF5CWZ18Wo2KMJ0cUphN21f2CpFuVXLeOjVg2k72eXCE65bg
+ CDbzTt2t
+ 9QcHNk8hKPcBnUV7Kw/DtibeXCOeTGBN3OwLTiHWB90BdJ+Qp8ZqJTeblg4lXLc4+g547Wf+jad7a3ESOb5GY+woNbnDPjHOhuNkRO49lEuUhzL3SetJpmhLbaBm7TRGyqe9yKFTBsMJnJcnfPW4sRB1kpIXPMpx3flDEJE52U40gq8EcO1vuVrH3bwLatmEcbSWFFRpIDWZRL6QFNFJTygolmUI2LjNb5bpPR+c19EZdNaM04J+TibHt5ly4mZT9ehe2ZZCEuiDjV8ZWsntGiZqfOSn2xYjKGGVRQuAu/Wn7PV0Lg6DWulF5sDDuAJAvbd5YTHCb4DE/BhuZC3nPXEsjUxysWZiVwmAcrPJK+mW9mpAOyb0z38DN4gyVrhUDpJ9RGsfeTwznLXZfnGQeZU0NxdwVKNVUr8j3cQzcPrIffvyo9CxpIxw/ic8nO39aAOMun91ubr6PYVLFeC483ZYcFsv4KEJW+l67FMrFJqXQQZHCi0wjWHVqs8M5ubzsX6U3lg4wmnt2ng4xQpFsC4LdbHHTx0o4rfMhTxjOrQoweBwIVb8N1shMm3pavOFXQ64dfvFP7wWYO1PedoVgUC/BA+ZBhDzz9nMwBAcVKbK358J4BQfvVfJVic9/Ds+Yl2E4UgYKieofY0N8hJZhVIobJPSQqL4M++zxRYAelVAXHUR4lisR4kCGcQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,25 +136,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 21:25, Jan Kara wrote:
-> 1) These are two separate logical changes - handling of filemap_map_pages()
-> and handling of FAULT_FLAG_TRIED. Please create two separate patches for
-> them.
->
-> 2) After changing the mmap_miss logic in filemap_map_pages() there's no
-> need for the odd propagation of mmap_miss variable to
-> filemap_map_order0_folio() and filemap_map_folio_range(). Now you are
-> guaranteed to need to update mmap_miss at by at most 1. So I think you
-> should just drop mmap_miss argument, check return value of
-> filemap_map_order0_folio() / filemap_map_folio_range() in
-> filemap_map_pages() and based on it just update file->f_ra.mmap_miss if
-> appropriate. Much simpler.
+On Mon, Apr 27, 2026 at 04:37:11PM +0200, Vlastimil Babka wrote:
+> On 4/27/26 16:17, Uladzislau Rezki wrote:
+> > On Mon, Apr 27, 2026 at 10:53:52AM +0200, Vlastimil Babka wrote:
+> >> On 4/23/26 05:34, Herbert Xu wrote:
+> >> > On Wed, Apr 22, 2026 at 10:32:16AM +0200, Uladzislau Rezki wrote:
+> >> >>
+> >> >> We have added non-sleeping flags for vmalloc() to extend kvmalloc()
+> >> >> functionality as folk need those.
+> >> >>  
+> >> >> Another option, would be: always use vfree_atomic() from the kvfree()
+> >> >> path.
+> >> >>  
+> >> >> Any thoughts?
+> >> > 
+> >> > Perhaps add a kvfree_atomic that just calls vfree_atomic?
+> >> 
+> >> kvfree()'s comment says
+> >> 
+> >> " * Context: Either preemptible task context or not-NMI interrupt."
+> >> 
+> > I am not sure the description clearly reflects the intended usage.
+> > To me it sounds like all contexts but excluding NMI.
+> 
+> Agree it's not clear, my immediate reaction was the same and took me a bit
+> to understand.
+> 
+> > For example, calling this under spin_lock() will be invalid, as
+> > the vfree() path may invoke cond_resched().
+> 
+> Yeah, it's covered by the "preemptible" word, but not super clear.
+> IIUC it all boils down to this in vfree():
+> 
+> 
+>         if (unlikely(in_interrupt())) {
+>                 vfree_atomic(addr);
+>                 return;
+>         }
+> 
+> Which can do the right thing in an interrupt, but obviously cannot
+> automatically recognize the "under spin_lock()" situation.
+> 
+> So I don't think we can change it now with all the existing callers, but if
+> a better wording exists, we could make the comment more clear.
+> 
+> >> so this is neither. It might be ok then to create kvfree_atomic(). Always
+> >> using vfree_atomic() from kvfree() might be wasteful.
+> >> 
+> >> > For rhashtable it really makes no difference either way.  But it
+> >> > would eliminate the unsightly call to is_vmalloc_addr in rhashtable.
+> >> > 
+> > Seems atomic version makes sense here:
+> > 
+> > <snip>
+> > diff --git a/include/linux/slab.h b/include/linux/slab.h
+> > index 15a60b501b95..2b5ab488e96b 100644
+> > --- a/include/linux/slab.h
+> > +++ b/include/linux/slab.h
+> > @@ -1234,6 +1234,9 @@ void *kvrealloc_node_align_noprof(const void *p, size_t size, unsigned long alig
+> >  extern void kvfree(const void *addr);
+> >  DEFINE_FREE(kvfree, void *, if (!IS_ERR_OR_NULL(_T)) kvfree(_T))
+> >  
+> > +extern void kvfree_atomic(const void *addr);
+> > +DEFINE_FREE(kvfree_atomic, void *, if (!IS_ERR_OR_NULL(_T)) kvfree_atomic(_T))
+> > +
+> >  extern void kvfree_sensitive(const void *addr, size_t len);
+> >  
+> >  unsigned int kmem_cache_size(struct kmem_cache *s);
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 2b2d33cc735c..e25a0eab6ff7 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -6802,6 +6802,22 @@ void kvfree(const void *addr)
+> >  }
+> >  EXPORT_SYMBOL(kvfree);
+> >  
+> > +/**
+> > + * kvfree_atomic() - Free memory.
+> > + * @addr: Pointer to allocated memory.
+> > + *
+> > + * Same as kvfree(), but safe to use in atomic contexts.
+> > + * Must not be called from NMI context.
+> > + */
+> > +void kvfree_atomic(const void *addr)
+> > +{
+> > +	if (is_vmalloc_addr(addr))
+> > +		vfree_atomic(addr);
+> > +	else
+> > +		kfree(addr);
+> > +}
+> > +EXPORT_SYMBOL(kvfree_atomic);
+> > +
+> >  /**
+> >   * kvfree_sensitive - Free a data object containing sensitive information.
+> >   * @addr: address of the data object to be freed.
+> > <snip>
+> > 
+> > I can post it if no objections.
+> 
+> LGTM but also should be now used in rhashtable_try_insert() I think?
+> 
 
-Thanks a lot for the review.
+Like below:
 
-Both points make sense to me. I'll send v2 shortly.
+rhashtable_try_insert()
+  rhashtable_insert_rehash()
+    bucket_table_free_atomic(new_tbl);
 
-Best regards,
-fujunjie
+the patch for rhashtable.c can look like:
 
+<snip>
+diff --git a/lib/rhashtable.c b/lib/rhashtable.c
+index 6074ed5f66f3..4111aab8cee4 100644
+--- a/lib/rhashtable.c
++++ b/lib/rhashtable.c
+@@ -114,6 +114,14 @@ static void bucket_table_free(const struct bucket_table *tbl)
+ 	kvfree(tbl);
+ }
+ 
++static void bucket_table_free_atomic(const struct bucket_table *tbl)
++{
++	if (tbl->nest)
++		nested_bucket_table_free(tbl);
++
++	kvfree_atomic(tbl);
++}
++
+ static void bucket_table_free_rcu(struct rcu_head *head)
+ {
+ 	bucket_table_free(container_of(head, struct bucket_table, rcu));
+@@ -473,7 +481,7 @@ static int rhashtable_insert_rehash(struct rhashtable *ht,
+ 
+ 	err = rhashtable_rehash_attach(ht, tbl, new_tbl);
+ 	if (err) {
+-		bucket_table_free(new_tbl);
++		bucket_table_free_atomic(new_tbl);
+ 		if (err == -EEXIST)
+ 			err = 0;
+ 	} else
+<snip>
+
+--
+Uladzislau Rezki
 
