@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACBFBFF8867
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 20:25:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04357FF8870
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 20:33:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AD906B009E; Mon, 27 Apr 2026 16:25:22 -0400 (EDT)
+	id 450486B0093; Mon, 27 Apr 2026 16:33:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15D846B009F; Mon, 27 Apr 2026 16:25:22 -0400 (EDT)
+	id 427DA6B0095; Mon, 27 Apr 2026 16:33:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F41806B00A0; Mon, 27 Apr 2026 16:25:21 -0400 (EDT)
+	id 316EC6B0096; Mon, 27 Apr 2026 16:33:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E15E96B009E
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:25:21 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ADE331202C7
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:25:21 +0000 (UTC)
-X-FDA: 84705465642.14.F99FCDE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id ECB671C0003
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:25:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gkxKUB71;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D9166B0093
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:33:02 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE64C1A0200
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:33:01 +0000 (UTC)
+X-FDA: 84705484962.05.82ABE3B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D894B40007
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:32:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CPpGeZqU;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777321520;
+	s=arc-20220608; t=1777321980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OuqEfNC9STi0a42y/qCfYZKty2/XnTez6/LZXP9j1Fg=;
-	b=1HntZjvadXfM7macaY7qJwxNt2hJX4KJPNR3iKsxl+yQ+25wGVMRM+r9YLpxOru7xt77e7
-	RnzFOqkHPsGgq7qcRkauGz5uYDw2EKW6LFwwyc67iJEnVonv4PAPTeZVzIRURtt9Th+6rW
-	qKFMSJoSwPzcvN+qEF6e1z3LsO2ooOQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777321520; a=rsa-sha256;
+	bh=0zilGkucIvAKI2C1BINewP5ngC2cVQqU9MCjENDL+F0=;
+	b=RC0Y/Mx1OiSTzFehJX7yM9mcBv4clB8a/1weAJi2J95hVNP4+6HARg7gwgcuufs4plhjdj
+	QzaWzUlBZ3psvQk6ZlZF8mdu2XxZ32q6Plg5PQBw8vxgqZGJArdAdpOEkCItcbn+pxTNo3
+	bKzZTowjDvIEWte2Mxul0nf0Wa96w1w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777321980; a=rsa-sha256;
 	cv=none;
-	b=WRYdQzQHeLoypY7XakKqalg1XnHa886/3eaHVb9zS+h4E39JcjuOqeS39UwOAcdfC1s+WG
-	fQs84LiSmXyUQDcnsEDZwIPZqYkgjenDeQxzj5ffq/4JHoj10PxqP1+YmBp+2RmamipRHF
-	sOn/DifKf/q7NMWXs6lec14vCNpXhAw=
+	b=3QS09aV386hTbaQRFvzivPkqOiQANoNin4DfideeudoiS4eZluvS3M9uUtj7rjgZwucg2b
+	T3eWGOlY/Cdn4ZtyEiZ3ZAKu7HHTNxa3zrSEKh9UIp2KsHi4aF8VUFOo4LNybAJPj+dNKZ
+	0Lx3WIbgWF4mLml3W1my5ekbBc4Xju0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gkxKUB71;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CPpGeZqU;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 685D460138;
-	Mon, 27 Apr 2026 20:25:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF12C19425;
-	Mon, 27 Apr 2026 20:25:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DC5F642B8C;
+	Mon, 27 Apr 2026 20:32:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907F7C19425;
+	Mon, 27 Apr 2026 20:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777321519;
-	bh=wZ62JJbJbBFYxmz4nXsEdURZ9ZvZQcCgwl8lIq3rVHI=;
+	s=k20201202; t=1777321978;
+	bh=AYegFMHP0FdsG4kub/LfFJkX3yPMbTV5RSbToEya7YE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gkxKUB71RDl0C8Txlx3EhD82nFBtJoCkuZlpTFV1lUNcqsSh8sMHSpg9Gd2zDckOX
-	 d57E0mKovidPdCFENazaUlbeAwBZzgv6VWMK4AyLbVsRZ31Ky1K0r1lo8HN83yFxFP
-	 i5YUdGj4UPCvbyv14v45UZO72SJn+Tq40WipfZVuxjJbQ/X0vysEoxqBKYqq9rBuDN
-	 jvpMIXGkqcYdvy9jGQ7rpQWMfjUc4Dsd8Wm6tHbTfcBWjXy/IDMCDd4wOFM2/1RUnU
-	 HbYmg7WocFt5sWdAoDVRF9or3z5fNBwhHIBblyV35zwihyDmmm1YU9+O2iFTbzliLT
-	 zlb7HcaNpqRUQ==
-Message-ID: <5564e170-d052-4445-9914-70bfd852d3b1@kernel.org>
-Date: Mon, 27 Apr 2026 22:24:59 +0200
+	b=CPpGeZqUUq4NeHLjr8Y6gHhQ05OKQLcZ0ZJVizuxBD/hnh6paiIYrIaKnVuuk0EWe
+	 uYc3mVuCWJhlzjC04W4vgsZ2z+vmdwMvbLJyFiFcyeCY/Uqq8FIQ7ITfxECAGUtWnT
+	 445TSQd8UPwBSkkeHWgDEd08Z5PuIQaQrtrInshYoGmv/n+R8hYzz6uxvVaiH5hL4n
+	 tAUtIiwsnIUACypW2QAIXakl9lt0s90+wFQj1nY9viO0zXAtVev6mYsQGHg8yzH+9V
+	 LLCz45rzypGCC1pYmnOEA0N1vkqM7F3g1RBDqMXXhebeC5qq5sDX5noJ6G/U/bdIpd
+	 ydqaY9P//sj0g==
+Message-ID: <67a655e3-fa23-4d2a-9685-14e6221d5d26@kernel.org>
+Date: Mon, 27 Apr 2026 22:32:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v16 09/13] mm/khugepaged: introduce
- collapse_allowable_orders helper function
-To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org
-Cc: aarcange@redhat.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
- cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
- dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
- jack@suse.cz, jackmanb@google.com, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- Liam.Howlett@oracle.com, ljs@kernel.org, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
- rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
- rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
- shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
- thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
- vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
- will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260419185750.260784-1-npache@redhat.com>
- <20260419185750.260784-10-npache@redhat.com>
+Subject: Re: [RESEND] Re: [PATCH RFC v3 4/4] mm: add PMD-level huge page
+ support for remap_pfn_range()
+To: Yin Tirui <yintirui@gmail.com>, lorenzo.stoakes@oracle.com
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, willy@infradead.org, jgross@suse.com,
+ catalin.marinas@arm.com, will@kernel.org, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, luto@kernel.org,
+ peterz@infradead.org, akpm@linux-foundation.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, anshuman.khandual@arm.com, rmclure@linux.ibm.com,
+ kevin.brodsky@arm.com, apopple@nvidia.com, ajd@linux.ibm.com,
+ pasha.tatashin@soleen.com, bhe@redhat.com, thuth@redhat.com,
+ coxu@redhat.com, dan.j.williams@intel.com, yu-cheng.yu@intel.com,
+ baolu.lu@linux.intel.com, conor.dooley@microchip.com,
+ Jonathan.Cameron@huawei.com, riel@surriel.com, wangkefeng.wang@huawei.com,
+ chenjun102@huawei.com
+References: <20260228070906.1418911-1-yintirui@huawei.com>
+ <20260228070906.1418911-5-yintirui@huawei.com>
+ <9886b2c6-5516-4be8-ac31-db3133455af2@kernel.org>
+ <39dac497-220c-4e71-9d3e-d9cf32357400@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260419185750.260784-10-npache@redhat.com>
+In-Reply-To: <39dac497-220c-4e71-9d3e-d9cf32357400@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D894B40007
+X-Stat-Signature: d7r4xxmtyampsa48grfrc8qeewsjddub
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ECB671C0003
-X-Rspamd-Server: rspam04
-X-Stat-Signature: kmpcoyhsp6c8r7imnez6tm8e49wjr4eb
-X-HE-Tag: 1777321519-378299
-X-HE-Meta: U2FsdGVkX19Ynk5B8T4yXyhsL6spTka+i0+z+CYQ3Ypyz2XXpP3WxBy9HCuz0s1bt0mxwIgt8eLyJn0ZGQFL39jNJFf6QvcA+rMGF6bNwPvtdXL+hNDP2slm1t0wdUawqjcTEZX5X51yrsSkm04ZbYWzI3fColb0PpKqwKt1Z154r8GEWZ+acz5WzQRTo8CWY4uFLhhcRSuPKdky/rgZWBZWLvmXtM6Ry2nJQFW5UKuzk6vAC6q27ZaoVFElf19hIrKhp+eRcy1Ybyckk7mDpDAdWhXUO6xtXrOlEEaiTwTmZl5sImjmsk88ed9ASlP9bhp76N+C5ihZg9+DFuEk30vHkm49VsHLwceWogmv3WQFg68dk1EEZXA98C7p54T+/n7qpBJ3srMfZakrEbu6HEveci8tQITniwIErVzPYj0KD/LepNwqSrHap5LNe5/OZeFF8MdV7xYlJ42hKwOxEB3wo0U7AFdcRnwzrnpOM3Gi5h4SDLVsPLlWFaYJBRRUPTpFukx7RKc7iAhzaUYBMVn3/bzPhJb2Z4EgqF5z6Ic9qn+o62Pj1Zcx6UJTP+j/iavdT2b+im651Q/+YCyRUH5yOeubX3EfDnCfKFa58G1y6l27TZdyhSKzd+AxkZ5SpZhwRe9/8Gun61vad/ONrGO1IXbWweR57zw9KApfgUZJ4CaC4uWi4E+spRfOoc+XYEE3hqZGf0KvDryNoLd9caQ4V+kqQLq5OzycxqxJwv3JWr4XH+RDr2x5i0knsyp9OQybmLnlKq/qvrIjpdhsw9hc0/z3Q7LF4lcfzcQjqaoahGwNs2yb2oct3uUJ9MJn0KRsmUzofRAIgQcFfvDPj0psyNGTK7uH5A97OQmFW54OxzLnhKykMj8CI4SZy8A5CLkpFXRFnPHUYfsBblDsI7CnxEHiCkbT2b2f2hgvJJaWWNash58BAdb6L3HLfctML67bf9KwTQ7eDCNGQYn
- Ie6wNIlj
- EMN/Ij3jDt8qf8E6wOPrO86aa1ElnqC3ZCQM/spdEQkGp3HjNwwVqtC0MsRbLeRdLTVlYh20iDMkdnUKjqSDAYfsa1/HjIO9RUQV1YZMA8YeL8494d3aydte6UOo1lM+/che/cS3hH6OpLo6ZCI+avAC7QgwsITLSkRqvMrVkLj/Dy7MQs1NHM5eoXDR4RoGQIxQO7XeTPVh/nliawfPLOLfr/hGJT9VGKtVJQdLr8OOctvWtIFpSDrRnO9LgqzAd5h+7mLe3FyhSLjfPFf82Ly6gX7oPaTCck8u0hl3G73BChX5joBiUkqpB1wYemGoS5Gyx4RIRqBo+xT7FLIGJ9vqyXvjMjYMNqkHLNP0d1eCpO48D97PeB57mYERk32KfjaMVD4gbWXywYgQrluJ6TVat6pN7WrbkhbPkqXy/nv2PDd8=
+X-HE-Tag: 1777321979-319577
+X-HE-Meta: U2FsdGVkX1/4qmN5DDf+0QpWIH2+9Sn3ssHvbdvwzOgyqtxpJac63cu1pz5j1LYHkpOyDeFQfdtIGDXBCDwW59aGGQ/axgIhdSI2DZhFI26xG2dUSG1a/MgLFwTzWomSW+h4//IQX4efM2IXPGsNo7kunAz+1aCGXjo0l/kaRXv9ld6yAky35JszeP+M3VwrG65wrustrmXzhezPkvJDBXrkKa+4fDxfuuJPBRfQBoj46LEiPVl3JviDv3SJ9SZRD1tqJe7wLsJwnPc24SQINYkrhpEZK6tNJeT9Q4JE+Kq5T2zW4mowrdTjrlfUdLWR4FInlXYRTRA9yik3wtc+NbH4q6bGiACyXHDc5hH1ee8aS6oL/exq1YNCYW6TK0Kx0yZvYfVfD396Kwfskur2jNXvhJOqfs3OPPfdEnIw+htsXvuemlXGwkot5YzQQpSNGSZtCVXxcmMbdHv122rh6nbGZVt6rJd8sry6ltk9tgNlJaI4ww5j/WVWR+5gc7XR+kCOMCudj+c7T4Tvq+oNwU30qQnK4nVhd70ahTOT6Q61DicSrgmXYC9PUCbXYotOX87g/PphzqQPBJu6J2mi3Oc1yS19xgoY94X54ni2CkOs/tG2uDHZH2e+DEnPsNXZ6VKHCnS0CjDQkQxu3mZqKEKhuTrqvInGeRsUPMB+qjF2WmXKPJVHVLTtsbEBlySGFal4VJ297O55QhZSWda7bs3WcXrTq2Q6pesImfVSvUYH02CmVXlECUT1w33hbBYu0Xf9VSHqr/Ypwp9U3Nnr9faxaPq3BijwL12MKaGuR1+e5AANSvNf+mvjF6/amAarHNsQRC+v/5Zc6x4tna5oxV6vmZjuPp+syb+4Ti84UOg59du5fAkqEhKOMLhNGHysae4mhe8Tk9ZXrpCHUVnl2TdaarOV06kV5EbYBioNZhnvN50EfVpYO6A/oneXUvHIz+6fo6QMYTO+Mlhy/fo
+ w+jvTGL/
+ j4U2KlrGpqqBBV7SSF2vOnLgIDBcyVmIpkxpSAM4In4ypasEXq3TmexShaAQS+8LYQqkg4w8k06ZgSo2jfF4QAlWgd3ibee7kkMmntoHDrx3ORrRX48Sz6M2OmrsOQqtTJzKuA7bggYjugmcZPNz5knMIpPorIw61R+1zXit92fDPQWPE/F4oT+nsoA84mr705sM7UFLJmaqNI22YLrxnt1zYw/LPHj9iuePXt2Anon+k8uMNQjXc8IPnWbKuoOhgZLpPvVkne4hivt45UaMoLVgttuvG363nTWMKQvgVtUrSQpiX4LfNU7TE7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,62 +154,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/19/26 20:57, Nico Pache wrote:
-> Add collapse_allowable_orders() to generalize THP order eligibility. The
-> function determines which THP orders are permitted based on collapse
-> context (khugepaged vs madv_collapse).
+>>> +			pte_t entry;
+>>> +
+>>> +			if (!pmd_special(old_pmd)) {
+>>
+>> If you are using pmd_special(), you are doing something wrong.
+>>
+>> Hint: vm_normal_page_pmd() is usually what you want.
 > 
-> This consolidates collapse configuration logic and provides a clean
-> interface for future mTHP collapse support where the orders may be
-> different.
+> Spot on.
 > 
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
+> While looking into applying vm_normal_folio_pmd() here to avoid the
+> magical VMA checks, I realized that both __split_huge_pmd_locked() and
+> copy_huge_pmd() currently suffer from the same !vma_is_anonymous(vma)
+> top-level entanglement.
 
+Yes, that code is an absolute mess.
 
-[...]
+> I think these functions could benefit from a
+> structural refactoring similar to what Lorenzo is currently doing in
+> zap_huge_pmd().
+> 
+> My idea is to flatten both functions into a pmd_present()-driven
+> decision tree:
 
->  	cc = kmalloc_obj(*cc);
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 377321b48734..c0398fb597b3 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -989,7 +989,7 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
->  		goto abort;
->  
->  	vma_set_flags_mask(vmg->target, sticky_flags);
-> -	khugepaged_enter_vma(vmg->target, vmg->vm_flags);
-> +	khugepaged_enter_vma(vmg->target);
->  	vmg->state = VMA_MERGE_SUCCESS;
->  	return vmg->target;
->  
-> @@ -1110,7 +1110,7 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
->  	 * following VMA if we have VMAs on both sides.
->  	 */
->  	if (vmg->target && !vma_expand(vmg)) {
-> -		khugepaged_enter_vma(vmg->target, vmg->vm_flags);
-> +		khugepaged_enter_vma(vmg->target);
->  		vmg->state = VMA_MERGE_SUCCESS;
->  		return vmg->target;
->  	}
-> @@ -2589,7 +2589,7 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
->  	 * call covers the non-merge case.
->  	 */
->  	if (!vma_is_anonymous(vma))
-> -		khugepaged_enter_vma(vma, map->vm_flags);
-> +		khugepaged_enter_vma(vma);
->  	*vmap = vma;
+Likely similar to how we handle PTEs.
 
-Are you sure that in all cases, vma->vm_flags already corresponds to
-vmg->vm_flags / map->vm_flags?
+> 1. Branch strictly on pmd_present().
+> 2. For present PMDs, use vm_normal_folio_pmd() as the single source of
+> truth.
+> 3. If !folio (and not a huge zero page), it cleanly identifies special
+> mappings (like PFNMAPs) without relying on vma_is_special_huge(). We can
+> handle the split/copy directly and return early.
+> 4. Otherwise, proceed with the normal Anon/File THP logic, or handle
+> non-present migration entries in the !pmd_present() branch.
 
+Yes, that sounds about right.
 
-That's a change that makes this patch unnecessary hard to follow, in particular,
-because it's not documented in the patch description.
+> 
+> I have drafted two preparation patches demonstrating this approach and
+> appended the diffs at the end of this email. Does this direction look
+> reasonable to you? If so, I will iron out the implementation details and
+> include these refactoring patches in my upcoming v4 series.
+> 
 
-If you think the change is fine, you should better move that into a separate
-cleanup patch where you only drop the flags parameter from  khugepaged_enter_vma().
+Yes, sounds like nice cleanups.
+
+Maybe the code could then benefit from moving the present vs. non-present
+handling into separate functions? Just a thought.
 
 -- 
 Cheers,
