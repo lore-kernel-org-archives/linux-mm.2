@@ -4,99 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 275D3FF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 14:40:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4146FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 14:48:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91F6C6B008A; Mon, 27 Apr 2026 10:40:37 -0400 (EDT)
+	id 275226B0088; Mon, 27 Apr 2026 10:48:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D0706B008C; Mon, 27 Apr 2026 10:40:37 -0400 (EDT)
+	id 1FE846B008A; Mon, 27 Apr 2026 10:48:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80D716B0092; Mon, 27 Apr 2026 10:40:37 -0400 (EDT)
+	id 09FE76B008C; Mon, 27 Apr 2026 10:48:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 715FB6B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:40:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 37C3116028E
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:39:54 +0000 (UTC)
-X-FDA: 84704595108.26.68EEE62
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net (zg8tmja5ljk3lje4ms43mwaa.icoremail.net [209.97.181.73])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 59BB740019
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:39:49 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=stu.xidian.edu.cn header.s=dkim header.b=pXbAJtGc;
-	spf=pass (imf27.hostedemail.com: domain of 25181214217@stu.xidian.edu.cn designates 209.97.181.73 as permitted sender) smtp.mailfrom=25181214217@stu.xidian.edu.cn;
-	dmarc=pass (policy=quarantine) header.from=xidian.edu.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E787D6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:48:34 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0263DC2725
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:46:30 +0000 (UTC)
+X-FDA: 84704611782.14.D7CF2F0
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9D86AC0018
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:46:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oRBWq7Ar;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XtHe9oOA;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oRBWq7Ar;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XtHe9oOA;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777301188; a=rsa-sha256;
+	cv=none;
+	b=vK2iZSCYfyAjjwajnMlMNiq37lO/w5iG7SgWVqQN9E/42p+73AsocjylXKOEgl0GBVWv2r
+	7ifETC3hTzj8lK4FYN8a2WwbNQgxP8CzIRkrwOh2xHIG8IEIoTxRP7vpbwMvZWU1gHTUU1
+	i0KSABdm365jZyESAhxGlg4qNmTQq/o=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oRBWq7Ar;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XtHe9oOA;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oRBWq7Ar;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XtHe9oOA;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777300792;
+	s=arc-20220608; t=1777301188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3c05qo/BvAAbZlsi4SesB+tzNorZ0soT6/DlgNcJ1YY=;
-	b=YIU9igRVvS91vxi7pfotz1Z4xD6jup7qqoJWcJgJ0eFu9r2LUkIuWHXZu7rgWdRL1kTAfU
-	r/8aMdkinwjtOFfMQAHSXrd3ubI6doCX57EBrQRduNF8PaiVn0Z+scnubNNDfR+xAONp57
-	w1fmILzmlD8P6LVMVQBZK8DliYC/k/I=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=stu.xidian.edu.cn header.s=dkim header.b=pXbAJtGc;
-	spf=pass (imf27.hostedemail.com: domain of 25181214217@stu.xidian.edu.cn designates 209.97.181.73 as permitted sender) smtp.mailfrom=25181214217@stu.xidian.edu.cn;
-	dmarc=pass (policy=quarantine) header.from=xidian.edu.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777300792; a=rsa-sha256;
-	cv=none;
-	b=OckYeGD0UpD2MGfhT+TZQ/yEUHevWeTYoGkHclxDUyYO5ljclJgOxDSsfAwVNVvSbTPs3P
-	0zxc9lwCFQ9lIr8rYx9tYoD7yhI0X2TMVCDdIkXpqEyvGF2dOXtE5oOgSTv6yv5tuOL8/w
-	CWGje1YsHqZg75ZwXUeHbeJjPfxfSIU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=stu.xidian.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
-	In-Reply-To:References:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID; bh=+7mYHWnLZQGppRMmI7CSvoUzZ15G9XDm7qKP
-	Rq91aiw=; b=pXbAJtGc3rBYuwSptKbWKkNxPUzK+0AxmPIx1kXWSvmBShPSTibH
-	Ywmi1X+1xFdqPeDes5ohjjFALVZHF3C/zeknQSOlQlh+ikK5f1UtfW0lfr4/l+JD
-	7M+T/NzCT/8xuqC1mYZ/Vett0ZS0KheHZeK4N48LAg4imRENMMHJSoI=
-Received: from 25181214217$stu.xidian.edu.cn ( [113.200.174.80] ) by
- ajax-webmail-hzbj-edu-front-4.icoremail.net (Coremail) ; Mon, 27 Apr 2026
- 22:39:37 +0800 (GMT+08:00)
-X-Originating-IP: [113.200.174.80]
-Date: Mon, 27 Apr 2026 22:39:37 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?546L5piO54Wc?= <25181214217@stu.xidian.edu.cn>
-To: "Lorenzo Stoakes" <ljs@kernel.org>
-Cc: "Muchun Song" <muchun.song@linux.dev>, Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, vbabka@kernel.org, jannh@google.com,
-	pfalcato@suse.de, osalvador@suse.de, david@kernel.org,
-	ljs@kernel.org
-Subject: Re: Re: [RFC PATCH] mm/hugetlb: fix resv_map memory leak in
- __mmap_region error path
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250410(2f5ccd7f) Copyright (c) 2002-2026 www.mailtech.cn
- mispb-8dfce572-2f24-404d-b59d-0dd2e304114c-icoremail.cn
-In-Reply-To: <ae9tVZbNFtBBet8f@lucifer>
-References: <20260425070700.562229-1-25181214217@stu.xidian.edu.cn>
- <BCFCF1D6-8F39-4E60-AD86-0ECF799FFD9D@linux.dev> <ae9tVZbNFtBBet8f@lucifer>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	bh=Al/x5q529VJCE509yhGj5VG+fYkakbkdSGNT/ABWIts=;
+	b=H9mBJj7c119+A/GSCfbk9nZlTB9658s6V+V2HTj3FBp6S3CVrcczbU+G985vVgcuHeQIOB
+	MKTv+9TeSsKpI2NJ/yfR5hTL9M0OamoifMEJ7Yh3rEC+CXI1at8F8RFO7oCfmau0JX1K9v
+	GlaffZ7jmwozneg6IdwMHzkYMlpJxYY=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C6DDD5BCC1;
+	Mon, 27 Apr 2026 14:46:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777301186; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Al/x5q529VJCE509yhGj5VG+fYkakbkdSGNT/ABWIts=;
+	b=oRBWq7AroN09LeiAxf+DsEYteBQmd8Kfa0ldNWmp7lV6XCsHt+tcP6Cji/62JJ7exMlWux
+	zItvL8PDpZi6Q2ukL0m4ColIWrUmw8ZEoUz+1Zqg9thPnx9pUEXcHPc971TF6GvVIk8W2G
+	esYtsNsw7b7dMYB2O5tIrWzPEDRkhd0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777301186;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Al/x5q529VJCE509yhGj5VG+fYkakbkdSGNT/ABWIts=;
+	b=XtHe9oOARok/7LgN5sOGVBDIb9GdZ0e6BCrgRyXJZIotx4UL5fK4pijFd83YIm2lcCnIRY
+	WXxezlams5u4/3AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777301186; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Al/x5q529VJCE509yhGj5VG+fYkakbkdSGNT/ABWIts=;
+	b=oRBWq7AroN09LeiAxf+DsEYteBQmd8Kfa0ldNWmp7lV6XCsHt+tcP6Cji/62JJ7exMlWux
+	zItvL8PDpZi6Q2ukL0m4ColIWrUmw8ZEoUz+1Zqg9thPnx9pUEXcHPc971TF6GvVIk8W2G
+	esYtsNsw7b7dMYB2O5tIrWzPEDRkhd0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777301186;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Al/x5q529VJCE509yhGj5VG+fYkakbkdSGNT/ABWIts=;
+	b=XtHe9oOARok/7LgN5sOGVBDIb9GdZ0e6BCrgRyXJZIotx4UL5fK4pijFd83YIm2lcCnIRY
+	WXxezlams5u4/3AA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A6643593B0;
+	Mon, 27 Apr 2026 14:46:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gxg7JcF272nbKAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 27 Apr 2026 14:46:25 +0000
+Date: Mon, 27 Apr 2026 15:46:23 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>, 
+	Xueyuan Chen <xueyuan.chen21@gmail.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, wangzicheng <wangzicheng@honor.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Lei Liu <liulei.rjpt@vivo.com>, 
+	Matthew Wilcox <willy@infradead.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH] mm/mglru: Use folio_mark_accessed to replace
+ folio_set_active in PF
+Message-ID: <ae91A9US6ybEzqM2@pedro-suse>
+References: <20260418120233.7162-1-baohua@kernel.org>
+ <w5ekxean6g6eph4427frzclgzu5hrd7kqres3ronlqpvqtsusb@kfdagnk2xqif>
+ <CAGsJ_4wo8Chd-B8oRwTEQsU+CQu_tvwmkx=PdNweTBTQLDsRUA@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <5c504419.9025.19dcf61abcf.Coremail.25181214217@stu.xidian.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:BrQMCkCWPbkqde9pKUvKAQ--.45870W
-X-CM-SenderInfo: qsvrmiqsrujiux6v33wo0lvxldqovvfxof0/1tbiAQUQEWnuLFp0b
-	gAFsr
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 59BB740019
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4wo8Chd-B8oRwTEQsU+CQu_tvwmkx=PdNweTBTQLDsRUA@mail.gmail.com>
+X-Stat-Signature: pjxwgpzzw8ifogd4cw793m3sub888gmb
 X-Rspam-User: 
-X-Stat-Signature: 8pz6jq549z4iefeyt6x6homrwpihhak4
-X-HE-Tag: 1777300789-436718
-X-HE-Meta: U2FsdGVkX19HTqpOWDPaQRcFI21ElwIP9ApycQZOVWJkFQVK1ztexiiwo3PFVza1jJEQfGquLQ+ldWhiDDBELDnayC/hXOGxsxdsOGWKChPvHmsPI8j7XbaKtwXGSx+mJ0e9skCPXPV+tERmi5Pq32747FQc1skgHrzqDXSliDnIUiBL2uKHsw8sn1TM5EUmhx0GiMAz1IYjE9Yk2+cV+c+7ZdjRbygrjWmRgj/JDunGSKounwWVlXEnMEHu351o9rZWK2c9Caiahxs5HwDUxn7XxWUJ7gRh4WHkAYzr/kH5ybMY8wOI3Eimf1PeSEhCWMbLxe7y7cnQIonCapbCviaKrD/w9W8m1dzTS+Fx7+Vwl5iz0W+5ifF5TDdAZv4Zf4gbKiJcHpJFQPudEAhWeU/R5xrYoW4Ek0Kx91O7QK4DeXOKDFBqPUiwx8U3NzKbQo+H+b/YbARsu6iSzWF06Bhht0YzzM/p6UqgpQ8qq8JazywbuqDwZAfhxLFWPjQR2wvmGttzvWcxRfHMvMZN3vIADaLbSC5i1bj9QvfDeko+PrGxBxpzin3I+6gmCD/6ovHg1Y7loaKGuPXIg3ZNn55OPPD+HPvjGAhNFKBba1g5wYXZ2f+VGiyVF8gzmjYia6ZdbCtzNOnb/01RG3ClIcvqxqQvLMnSmSQ3B91aM8ajsxPIheZuU5Bcv9Sf1hykKHG4nkv2FW/8FFWcUcfDEVPLuAAeI9q/1Sg/M6jDRLxD5cPkjcS1GRIlwQHhVrCrx1ZujltSW/y2QfUJ5lalKxJPBZS5c/BYnFpE7fjm0KF1C79peHWUSvqpbmS/K/vTvQhMy85/DweAVRdxqrgJet36dBtl3ClwNXJceoRcKs43HhK8lRPm/LXPFy907yGtEKx0my5ns/4MCZ13Cw7G/idyVrZJlI8rjpz5ty3hiJyG6CvsEIq0CIeMvnIapNv+pBOUmjtuWdKC0DmPEGx
- 0Y0D/9Sp
- d5YL4n6drwe0FQLzNslRTQtGhwjcKCYW/kQ4WVppwD58taHL+27hHfdVi3X3Xi5bxd5vDQ0zQN/ug50wvsyCbvwlaT8Ic0F9m59WOB18JqIkoOocK1p1/DK2lSJ8x2hv0FWRwbM6/8+xFw8xzn8BXmt/c0PQAk8cnooI6o73u2CM6/3Ka7ta8MRV09Af7ct5x/MfO/oqDZS6xVYJzVV/KiJRlenyaMvAFcJrhdxAzg9SduiKnF/oyFSfW3ndENmUiWyBKDWy6/Pdc5Gn7qUO0RphYfUNWVkiiLXq6xBevfP4J6yZB7rAXlHRFNpomB5KnJrz4bJPgvn+hd0BdayGxW2t1lj3AdiVegoi2HXrZtoEdMRXQ3UwzJ445PBXvOy6yvVikcbXzYlt9oq7sWDpOjA/XTlCDVcX8P1id48Wf+P+QylFiXO/iXUQ1wUGvlEwjmQzl3x6mu/ltHM0eoP36PaehuoQ5FSjwdMTIlhSMt5dLTlQxMxetRghu67+m71rXFNspVGtGAKgAbJy+E3LW1WWi+YhQvQf+vPpQYlDq4nQKl4VuypNjvl48ysIXANgz0KHGt5L9RlAd7eioH5rNJFPaIU3RZXoKVtY8JbwPjfYq39YaFXxaFN3FdPGgl/HOiEeXx0LnhRCYlvY=
+X-Rspamd-Queue-Id: 9D86AC0018
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777301188-876146
+X-HE-Meta: U2FsdGVkX18jmdPTOwb/4utzYztxuyaOBRIU0eVXGV62SEKS+lLoWsnQzS4xyz3HuYcLQmJZMZUU0ZXLBt+zojeODzB1leuHv0rUpq3JIWJ7FcprZdbLtxtiyIckT0ppoc0Wj5GkTA5X+91JJlqkkt2IIxsLotO8ZO4fLUb+IAvfP7kSXzQeN8jKb3QLoiQ8s10uDrot/h8xQdWgC+tbmtfLkTx+QfquWvlQ0rFLPo8aeaqzF3AyWGjPySfvRtpgHM8Jhxxs9A4FqTju1onxwE01MO4mw9XVsNidu9Gc4UenGcAbmt62Atp9jKPBdkuQz1XVgqNYCBTMoITODJ3dkObo/SDYyOCJNaPBNZB4xuOFraVlJRc2ohALlazJhjU3gR8qpWXcqArvpc9/p6alHS5ef/2ZWCcZ6r5eeTkK4ujfWoqqbe9QxvoHtHNnq4/7nycoqeJmo8biiNUyfcTutFWjSRHpvim1feA37gzetGHuWsjGN4XBIrT2DQW4p1wb562AFmdrPmCU80oHe7Dz0gZ/v5uRwqNCvONeOeWyvhmj1li7OAoY9VVFLPa2BKyuKh0mMLO1tNesbgQN9ogc0E9HCXPu0m49h7uV9KkoDAs8zr9FwXs5xYtEG9ktWTdiFGi8oSbZ9xb1zIRi2FhGJJfkbk9PXdsMhkCeif7YFSYbML4ud4z4f3kC2DE8Trbmr6rl9DJRTdP4rGNIoWCeerLEHJMnZqVkLxcp3Yeu3X0EjwqiQw+KUgGb1kmfmRcn0Qf5MeXr+qofPGSdteRvRyWinYz36Q4YASBYPofQYyFecVpNBpdXEYEkaVcNuIU76mPTHDr0/fbifNP72WxlPcJtc74YOVh3dWXSy1No7tEnRgACExxASg5Fx+11UB9HwxZc7dUJTZLfoXly4Dmox3TG+54u3+NSPiqTVGprL4kjouhpoLAr88KbUl4/SYQ7ZYry4wmDk40mbxKbCGK
+ ubJykWt7
+ rX6oLX27+OgQG2OM14/yrGzGU4E43GgopqM5D2unHMnKGJGQhFGS+WmSeoFnQuSxbsn3iAZKSwlCCLF/h6rOw2tsrKVw4P7ZDLrxZDrt+Ad6kB1pzRlAl0LTOFiHHbYcdMIZqAfyn4Ajmzp/jBsJpDys7QCxn01dV/OhTWWjoYQSYJMLyWqE2mTaGweji6k63X6e/skTmrU10HAlv7Dt+djqowoPW4dpfiUtPV7MKSL1d/G1WTW573NMabbU08L5wFR0HvedJ0JySAq+oax2x2Dliubojj+e1sHawJuJL+IeGPgFGFlMVJzKOiPSX+hQ+3E+SPXQFydkquOn8Egtoq/r5DPABQ7LmhyqmYpVeBM4EAUnZYAYo1Zl7KCz/9JALp+04ssK6EKkiMDvVLK3EaNOpfUSSH+wwYY+TVH2zbZ8r4MYAD/kFZToakpoqsO3TSHu3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,122 +143,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SGkgTG9yZW56bywKClRoYW5rcyBmb3IgdGhlIHByb21wdCByZXNwb25zZSBhbmQgZm9yIHRha2lu
-ZyBvdmVyIHRoZSBmaXghIAoKSSBjb21wbGV0ZWx5IHVuZGVyc3RhbmQgdGhlIGFyY2hpdGVjdHVy
-YWwgZGlyZWN0aW9uIHRvIGVsaW1pbmF0ZSB0aGUgaG9va3MsIHdoaWNoIG1ha2VzIHBlcmZlY3Qg
-c2Vuc2UuIEknbGwgd2F0Y2ggb3V0IGZvciB5b3VyIHBhdGNoLgoKQWxzbywgbXkgc2luY2VyZSBh
-cG9sb2dpZXMgZm9yIG9taXR0aW5nIHlvdSBmcm9tIHRoZSBDQyBsaXN0IG9yaWdpbmFsbHkuIE15
-IHVuaXZlcnNpdHkncyBTTVRQIHNlcnZlciBibG9ja2VkIHRoZSBlbWFpbCBkdWUgdG8gdGhlIGxv
-bmcgcmVjaXBpZW50IGxpc3QgZnJvbSBgZ2V0X21haW50YWluZXIucGxgLCBmb3JjaW5nIG1lIHRv
-IHRyaW0gaXQgaGVhdmlseSBqdXN0IHRvIGdldCB0aGUgcmVwb3J0IG91dC4gSSdsbCBtYWtlIHN1
-cmUgdG8gZXhwbGljaXRseSBpbmNsdWRlIHRoZSBvcmlnaW5hbCBhdXRob3JzIGluIHRoZSBmdXR1
-cmUuCgpHb29kIGx1Y2sgd2l0aCB0aGUgdXBjb21pbmcgTFNGL01NIQoKQmVzdCByZWdhcmRzLApN
-aW5neXUKCgo+IC0tLS0t5Y6f5aeL6YKu5Lu2LS0tLS0KPiDlj5Hku7bkuro6ICJMb3JlbnpvIFN0
-b2FrZXMiIDxsanNAa2VybmVsLm9yZz4KPiDlj5HpgIHml7bpl7Q6MjAyNi0wNC0yNyAyMjoxODoz
-NCAo5pif5pyf5LiAKQo+IOaUtuS7tuS6ujogIk11Y2h1biBTb25nIiA8bXVjaHVuLnNvbmdAbGlu
-dXguZGV2Pgo+IOaKhOmAgTogIk1pbmd5dSBXYW5nIiA8MjUxODEyMTQyMTdAc3R1LnhpZGlhbi5l
-ZHUuY24+LCBMaWFtLkhvd2xldHRAb3JhY2xlLmNvbSwgYWtwbUBsaW51eC1mb3VuZGF0aW9uLm9y
-ZywgbGludXgtbW1Aa3ZhY2sub3JnLCBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnLCB2YmFi
-a2FAa2VybmVsLm9yZywgamFubmhAZ29vZ2xlLmNvbSwgcGZhbGNhdG9Ac3VzZS5kZSwgb3NhbHZh
-ZG9yQHN1c2UuZGUsIGRhdmlkQGtlcm5lbC5vcmcKPiDkuLvpopg6IFJlOiBbUkZDIFBBVENIXSBt
-bS9odWdldGxiOiBmaXggcmVzdl9tYXAgbWVtb3J5IGxlYWsgaW4gX19tbWFwX3JlZ2lvbiBlcnJv
-ciBwYXRoCj4gCj4gCj4gT24gTW9uLCBBcHIgMjcsIDIwMjYgYXQgMDM6NTU6MDBQTSArMDgwMCwg
-TXVjaHVuIFNvbmcgd3JvdGU6Cj4gPgo+ID4gPiBPbiBBcHIgMjUsIDIwMjYsIGF0IDE1OjA3LCBN
-aW5neXUgV2FuZyA8MjUxODEyMTQyMTdAc3R1LnhpZGlhbi5lZHUuY24+IHdyb3RlOgo+ID4gPgo+
-ID4gPiBXaGlsZSBmdXp6aW5nIHdpdGggU3l6a2FsbGVyIGFuZCBmYXVsdCBpbmplY3Rpb24gKGZh
-aWxzbGFiKSBlbmFibGVkLAo+ID4gPiBJIG9ic2VydmVkIGEgcGVyc2lzdGVudCByZXN2X21hcCBt
-ZW1vcnkgbGVhayBpbiB0aGUgaHVnZXRsYiBtbWFwIGVycm9yIHBhdGguCj4gPiA+Cj4gPiA+IEJV
-RzogbWVtb3J5IGxlYWsKPiA+ID4gdW5yZWZlcmVuY2VkIG9iamVjdCAweGZmZmY4ODgxMTBiOTI0
-MDAgKHNpemUgNTEyKToKPiA+ID4gIGNvbW0gInN5ei4wLjUzODYiLCBwaWQgMjAzOTAsIGppZmZp
-ZXMgNDI5ODE1NzE4OAo+ID4gPiAgYmFja3RyYWNlOgo+ID4gPiAgICBfX2ttYWxsb2NfY2FjaGVf
-bm9wcm9mKzB4NTA5LzB4NmUwCj4gPiA+ICAgIHJlc3ZfbWFwX2FsbG9jKzB4NDcvMHgzYTAKPiA+
-ID4gICAgaHVnZXRsYl9yZXNlcnZlX3BhZ2VzKzB4NzU4LzB4MTIyMAo+ID4gPiAgICBodWdldGxi
-ZnNfZmlsZV9tbWFwX3ByZXBhcmUrMHg0OTIvMHg3OTAKPiA+ID4gICAgX19tbWFwX3JlZ2lvbisw
-eDFhZTYvMHgyOWYwCj4gPiA+Cj4gPiA+IFRoaXMgaXMgYSByZWdyZXNzaW9uIGludHJvZHVjZWQg
-YnkgdGhlIHJlY2VudCBWTUEgaXRlcmF0b3IgYW5kIG1tYXAgcmVnaW9uCj4gPiA+IHJlZmFjdG9y
-aW5nLCB3aGljaCBkZWNvdXBsZWQgbW1hcCBwcmVwYXJhdGlvbiBmcm9tIFZNQSBjb21wbGV0aW9u
-Lgo+ID4gPgo+ID4gPiBJbiBgX19tbWFwX3JlZ2lvbigpYCwgYGNhbGxfbW1hcF9wcmVwYXJlKClg
-IHRyaWdnZXJzIGBodWdldGxiZnNfZmlsZV9tbWFwX3ByZXBhcmUoKWAsCj4gPiA+IHdoaWNoIHN1
-Y2Nlc3NmdWxseSBhbGxvY2F0ZXMgdGhlIGByZXN2X21hcGAgYW5kIHJlZ2lzdGVycyBhIGBzdWNj
-ZXNzX2hvb2tgCj4gPiA+IGluIGBkZXNjLT5hY3Rpb25gLgo+ID4gPgo+ID4gPiBJZiBgX19tbWFw
-X25ld192bWEoKWAgc3Vic2VxdWVudGx5IGZhaWxzIChlLmcuLCBgdm1hX2l0ZXJfcHJlYWxsb2Mo
-KWAKPiA+ID4gcmV0dXJucyAtRU5PTUVNIGR1ZSB0byBmYWlsc2xhYiksIHRoZSBjb2RlIGp1bXBz
-IHRvIGBhYm9ydF9tdW5tYXBgLgo+ID4gPiBIb3dldmVyLCB0aGUgYGRlc2NgIHN0cnVjdHVyZSBp
-cyBjb21wbGV0ZWx5IGRpc2NhcmRlZCB3aXRob3V0IGludm9raW5nCj4gPiA+IGFueSBjbGVhbnVw
-LiBUaGUgbmV3bHkgYWxsb2NhdGVkIGVtcHR5IFZNQSBpcyBmcmVlZCwgYnV0IHNpbmNlCj4gPiA+
-IGBzZXRfdm1hX3VzZXJfZGVmaW5lZF9maWVsZHMoKWAgd2FzIG5ldmVyIHJlYWNoZWQsIGB2bV9h
-cmVhX2ZyZWUoKWAKPiA+ID4gZG9lc24ndCBjYWxsIGBodWdldGxiX3ZtX2Nsb3NlKClgLiBUaHVz
-LCB0aGUgYHJlc3ZfbWFwYCBpcyBwZXJtYW5lbnRseSBsZWFrZWQuCj4gPiA+Cj4gPiA+IFRoaXMg
-UkZDIHByb3Bvc2VzIGFkZGluZyBhbiBgYWJvcnRfaG9va2AgdG8gYHN0cnVjdCBtbWFwX2FjdGlv
-bmAKPiA+ID4gc28gdGhhdCBzdWJzeXN0ZW1zIGNhbiBwcm9wZXJseSBjbGVhbiB1cCByZXNvdXJj
-ZXMgYWxsb2NhdGVkIGR1cmluZyB0aGUKPiA+ID4gYG1tYXBfcHJlcGFyZWAgcGhhc2UgaWYgVk1B
-IGNyZWF0aW9uIGZhaWxzLgo+IAo+IFllYWggc29ycnksIHRoaXMgaXMgYSBnZW5lcmFsIHByb2Js
-ZW0gdGhhdCBJIGFkZHJlc3NlZCBhbHJlYWR5IHdpdGggdGhlCj4gdm1fb3BzLT5tYXBwZWQgY2Fs
-bGJhY2suCj4gCj4gSSdsbCBjb21lIHVwIHdpdGggYSBwYXRjaCB0byBmaXggdGhpcyB1cCBmb3Ig
-aHVnZXRsYiwgdGhhbmtzIGZvciBoaWdobGlnaHRpbmcKPiB0aGlzLgo+IAo+IEkgcGxhbiB0byBn
-ZXQgcmlkIG9mIHRoZSBzdWNjZXNzIGhvb2sgaW4gYW55IGNhc2UsIGl0J3Mgb25seSBiZWNhdXNl
-IGh1Z2V0bGIgaXMKPiBkb2luZyBzb21ldGhpbmcgcmVhbGx5Li4uIG5vdCBncmVhdCB3aXRoIHRo
-ZSAnVk1BIGxvY2snIChyZWFsbHkgaHVnZXRsYiBWTUEgbG9jawo+IEkgc3VwcG9zZSkgdGhhdCB3
-ZSBuZWVkIGEgVk1BIHBvaW50ZXIgYXQgdGhlIHBvaW50Lgo+IAo+ID4gPgo+ID4gPiBBbnkgZmVl
-ZGJhY2sgb24gd2hldGhlciB0aGlzIGFyY2hpdGVjdHVyYWwgYXBwcm9hY2ggaXMgY29ycmVjdCwg
-b3IgaG93IHRvCj4gPiA+IHByb3Blcmx5IGltcGxlbWVudCB0aGUgaHVnZXRsYiB1bnJlc2VydmUg
-cm9sbGJhY2ssIHdvdWxkIGJlIGhpZ2hseSBhcHByZWNpYXRlZC4KPiA+Cj4gPiBQbGVhc2UgdXNl
-IC4vc2NyaXB0cy9nZXRfbWFpbnRhaW5lci5wbCB0byBnZXQgZnVsbCBtYWlsIGxpc3QgZm9yIENj
-L1RvIHNpbmNlCj4gPiBpdCBpcyBub3Qgb25seSByZWxhdGVkIHRvIEh1Z2VUTEIgc3Vic3lzdGVt
-LiBJdCB3aWxsIGFsc28gY29uc2lkZXIgdGhlIGF1dGhvcgo+ID4gb2YgY29tbWl0IGludHJvZHVj
-aW5nIHRoZSBwcm9ibGVtLgo+IAo+IFBsZWFzZSBkbyBkbyB0aGF0LCBJIHdyb3RlIHRoaXMgd2hv
-bGUgdGhpbmcsIHNvIHkna25vdyA6KQo+IAo+IEVzcGVjaWFsbHkgYXQgdGhlIG1vbWVudCBJIGFt
-IHZlcnkgdmVyeSBidXN5IHdpdGggTFNGIGNvbWluZyB1cCBzbyB5b3UgbmVlZCB0bwo+IG1ha2Ug
-c3VyZSB5b3UgaW5jbHVkZSBtZSBpbiB0aGUgbWFpbC4KPiAKPiA+Cj4gPiA+Cj4gPiA+IFNpZ25l
-ZC1vZmYtYnk6IE1pbmd5dSBXYW5nIDwyNTE4MTIxNDIxN0BzdHUueGlkaWFuLmVkdS5jbj4KPiA+
-ID4gLS0tCj4gPiA+IGZzL2h1Z2V0bGJmcy9pbm9kZS5jICAgICB8IDkgKysrKysrKysrCj4gPiA+
-IGluY2x1ZGUvbGludXgvbW1fdHlwZXMuaCB8IDIgKysKPiA+ID4gbW0vdm1hLmMgICAgICAgICAg
-ICAgICAgIHwgNCArKysrCj4gPiA+IDMgZmlsZXMgY2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygrKQo+
-ID4gPgo+ID4gPiBkaWZmIC0tZ2l0IGEvZnMvaHVnZXRsYmZzL2lub2RlLmMgYi9mcy9odWdldGxi
-ZnMvaW5vZGUuYwo+ID4gPiBpbmRleCA4YjA1YmVjMDhlMDQuLjAwMmJiNmQ5Y2EyMyAxMDA2NDQK
-PiA+ID4gLS0tIGEvZnMvaHVnZXRsYmZzL2lub2RlLmMKPiA+ID4gKysrIGIvZnMvaHVnZXRsYmZz
-L2lub2RlLmMKPiA+ID4gQEAgLTEwMiw2ICsxMDIsMTQgQEAgc3RhdGljIGludCBodWdldGxiX2Zp
-bGVfbW1hcF9wcmVwYXJlX3N1Y2Nlc3MoY29uc3Qgc3RydWN0IHZtX2FyZWFfc3RydWN0ICp2bWEp
-Cj4gPiA+IHJldHVybiBodWdldGxiX3ZtYV9sb2NrX2FsbG9jKChzdHJ1Y3Qgdm1fYXJlYV9zdHJ1
-Y3QgKil2bWEpOwo+ID4gPiB9Cj4gPiA+Cj4gPiA+ICtzdGF0aWMgdm9pZCBodWdldGxiX2ZpbGVf
-bW1hcF9wcmVwYXJlX2Fib3J0KHN0cnVjdCB2bV9hcmVhX2Rlc2MgKmRlc2MpCj4gPiA+ICt7Cj4g
-PiA+ICsgCS8qCj4gPiA+ICsJICogVE9ETzogSW1wbGVtZW50IHRoZSBwcm9wZXIgcm9sbGJhY2sg
-Zm9yIGh1Z2V0bGJfcmVzZXJ2ZV9wYWdlcygpCj4gPiA+ICsJICogYW5kIGRyb3AgdGhlIHJlc3Zf
-bWFwIHJlZmVyZW5jZSBoZWxkIGluIHRoZSBkZXNjIGhlcmUuCj4gPiA+ICsJICovCj4gPiA+ICt9
-Cj4gPiA+ICsKPiA+ID4gc3RhdGljIGludCBodWdldGxiZnNfZmlsZV9tbWFwX3ByZXBhcmUoc3Ry
-dWN0IHZtX2FyZWFfZGVzYyAqZGVzYykKPiA+ID4gewo+ID4gPiBzdHJ1Y3QgZmlsZSAqZmlsZSA9
-IGRlc2MtPmZpbGU7Cj4gPiA+IEBAIC0xNzIsNiArMTgwLDcgQEAgc3RhdGljIGludCBodWdldGxi
-ZnNfZmlsZV9tbWFwX3ByZXBhcmUoc3RydWN0IHZtX2FyZWFfZGVzYyAqZGVzYykKPiA+ID4gCWlm
-ICghcmV0KSB7Cj4gPiA+IAkvKiBBbGxvY2F0ZSB0aGUgVk1BIGxvY2sgYWZ0ZXIgd2Ugc2V0IGl0
-IHVwLiAqLwo+ID4gPiAJZGVzYy0+YWN0aW9uLnN1Y2Nlc3NfaG9vayA9IGh1Z2V0bGJfZmlsZV9t
-bWFwX3ByZXBhcmVfc3VjY2VzczsKPiA+ID4gKyAJZGVzYy0+YWN0aW9uLmFib3J0X2hvb2sgPSBo
-dWdldGxiX2ZpbGVfbW1hcF9wcmVwYXJlX2Fib3J0Owo+ID4gPiAJLyoKPiA+ID4gCSAqIFdlIGNh
-bm5vdCBwZXJtaXQgdGhlIHJtYXAgZmluZGluZyB0aGlzIFZNQSBpbiB0aGUgdGltZQo+ID4gPiAJ
-ICogYmV0d2VlbiB0aGUgVk1BIGJlaW5nIGluc2VydGVkIGludG8gdGhlIFZNQSB0cmVlIGFuZCB0
-aGUKPiA+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvbW1fdHlwZXMuaCBiL2luY2x1ZGUv
-bGludXgvbW1fdHlwZXMuaAo+ID4gPiBpbmRleCBhMzA4ZTJjMjNiODIuLjkzMjBmNjY5OWZhOSAx
-MDA2NDQKPiA+ID4gLS0tIGEvaW5jbHVkZS9saW51eC9tbV90eXBlcy5oCj4gPiA+ICsrKyBiL2lu
-Y2x1ZGUvbGludXgvbW1fdHlwZXMuaAo+ID4gPiBAQCAtODYxLDYgKzg2MSw4IEBAIHN0cnVjdCBt
-bWFwX2FjdGlvbiB7Cj4gPiA+ICogaXQgaXMgbm90IHZhbGlkIHRvIGNsZWFyIHRoZSBlcnJvciBo
-ZXJlLgo+ID4gPiAqLwo+ID4gPiAJaW50ICgqZXJyb3JfaG9vaykoaW50IGVycik7Cj4gPiA+ICsK
-PiA+ID4gKyAJdm9pZCAoKmFib3J0X2hvb2spKHN0cnVjdCB2bV9hcmVhX2Rlc2MgKmRlc2MpOwo+
-ID4KPiA+IEF0IGxlYXN0IGZvciBtZSwgaXQgaXMgbm90IGdvb2QgbmFtZSB0byBkaXN0aW5ndWlz
-aCBpdCBmcm9tIGVycm9yX2hvb2suCj4gPiBhYm9ydF9tbWFwX3ByZXBhcmU/IEkgYW0gbm90IHN1
-cmUgaWYgaXQgaXMgYSBnb29kIHNvbHV0aW9uLCBDYyBvdGhlcgo+ID4gTU0gbWFpbnRhaW5lcnMg
-YXMgd2VsbC4KPiAKPiBZZWFoIG5vIHdlIGRlZmluaXRlbHkgZG9uJ3Qgd2FudCB0aGlzLCBJIHBs
-YW4gdG8gZWxpbWluYXRlIHRoZXNlIGhvb2tzCj4gZXZlbnR1YWxseS4KPiAKPiBSZWFsbHkgaW50
-ZW5kIG9uIGFkZGluZyBubyBvdGhlcnMsIHRoZXNlIHdlcmUgdG8gd29yayBhcm91bmQgZWZmZWN0
-aXZlbHkgbGVnYWN5Cj4gaXNzdWVzIGluIG1tYXAgY2FsbGJhY2tzLgo+IAo+ID4KPiA+IE11Y2h1
-biwKPiA+IFRoYW5rcy4KPiA+Cj4gPiA+Cj4gPiA+IC8qCj4gPiA+ICogVGhpcyBzaG91bGQgYmUg
-c2V0IGluIHJhcmUgaW5zdGFuY2VzIHdoZXJlIHRoZSBvcGVyYXRpb24gcmVxdWlyZWQKPiA+ID4g
-ZGlmZiAtLWdpdCBhL21tL3ZtYS5jIGIvbW0vdm1hLmMKPiA+ID4gaW5kZXggMzc3MzIxYjQ4NzM0
-Li5kNjRjZWE1YjQzMzUgMTAwNjQ0Cj4gPiA+IC0tLSBhL21tL3ZtYS5jCj4gPiA+ICsrKyBiL21t
-L3ZtYS5jCj4gPiA+IEBAIC0yNzk5LDYgKzI3OTksMTAgQEAgc3RhdGljIHVuc2lnbmVkIGxvbmcg
-X19tbWFwX3JlZ2lvbihzdHJ1Y3QgZmlsZSAqZmlsZSwgdW5zaWduZWQgbG9uZyBhZGRyLAo+ID4g
-PiAqLwo+ID4gPiAJaWYgKG1hcC5maWxlX2RvZXNudF9uZWVkX2dldCkKPiA+ID4gCQlmcHV0KG1h
-cC5maWxlKTsKPiA+ID4gKwo+ID4gPiArIAlpZiAoaGF2ZV9tbWFwX3ByZXBhcmUgJiYgZGVzYy5h
-Y3Rpb24uYWJvcnRfaG9vaykKPiA+ID4gKyAJCWRlc2MuYWN0aW9uLmFib3J0X2hvb2soJmRlc2Mp
-Owo+ID4gPiArCj4gPiA+IAl2bXNfYWJvcnRfbXVubWFwX3ZtYXMoJm1hcC52bXMsICZtYXAubWFz
-X2RldGFjaCk7Cj4gPiA+IAlyZXR1cm4gZXJyb3I7Cj4gPiA+IH0KPiA+ID4gLS0KPiA+ID4gMi4z
-NC4xCj4gPiA+Cj4gPgo+IAo+IFRoYW5rcywgTG9yZW56bwo=
+On Sun, Apr 26, 2026 at 12:35:46PM +0800, Barry Song wrote:
+> On Fri, Apr 24, 2026 at 11:19 PM Pedro Falcato <pfalcato@suse.de> wrote:
+> >
+> > On Sat, Apr 18, 2026 at 08:02:33PM +0800, Barry Song (Xiaomi) wrote:
+> > > MGLRU gives high priority to folios mapped in page tables.
+> > > As a result, folio_set_active() is invoked for all folios
+> > > read during page faults. In practice, however, readahead
+> > > can bring in many folios that are never accessed via page
+> > > tables.
+> > >
+> > > A previous attempt by Lei Liu proposed introducing a separate
+> > > LRU for readahead[1] to make readahead pages easier to reclaim,
+> > > but that approach is likely over-engineered.
+> >
+> > Why does this even need to be kept? I'm not sure it makes sense
+> > to even mark readahead folios as referenced.
+> >
+> > I'd suggest folios should only be marked referenced (or even active, whatever)
+> > when they're mapped. Anything else is a bit random and is hoping you are
+> > eventually going to map them in the future (which is not true for, for example,
+> > anything in an ELF file that may be readahead but not mapped, like debug info,
+> > symbol tables, section headers, relocation tables, etc etc)
+> 
+> The patch targets the mmap readahead path rather than the syscall
+> readahead path.
+
+Yes.
+
+> 
+> With lru_gen_in_fault() in place, it’s roughly equivalent to
+> the mapped case, since readahead is typically 128 KB while
+> fault_around is 64 KB in PF.
+
+I'm not sure I understand. How is 128KB roughly equivalent to 64KB?
+That's almost a 2x difference!
+
+And readahead, as of now, will read beyond the VMA's limits (which will not
+be mapped).
+
+Really, it's extremely unclear why this adhoc heuristic is here. A folio isn't
+active just because you started readahead for it inside a page fault. It's not
+even necessarily active just because it's mapped (although that is more
+understandable).
+
+And of course, because the whole ordeal is already extremely simple, it turns
+out that in_lru_fault doesn't actually mean "we're inside a page fault" but
+"we're inside a page fault and this VMA/file don't have any sequential/random
+annotations".
+
+I would really like to understand why this is here (and this is true for the
+various odd heuristics mglru uses) if we ever want to have a chance to merge
+the two LRUs together.
+
+-- 
+Pedro
 
