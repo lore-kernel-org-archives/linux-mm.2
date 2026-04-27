@@ -4,102 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9E68FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 18:17:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DAD3FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 18:21:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18DE66B00B2; Mon, 27 Apr 2026 14:17:37 -0400 (EDT)
+	id DEF6B6B00B1; Mon, 27 Apr 2026 14:21:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 165366B00B3; Mon, 27 Apr 2026 14:17:37 -0400 (EDT)
+	id DA0D56B00B3; Mon, 27 Apr 2026 14:21:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A2C86B00B5; Mon, 27 Apr 2026 14:17:37 -0400 (EDT)
+	id C8E396B00B5; Mon, 27 Apr 2026 14:21:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F0A046B00B2
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:17:36 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9CFA2120255
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:17:36 +0000 (UTC)
-X-FDA: 84705143712.14.6167392
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AFEDB6B00B1
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:21:23 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 471491B7F37
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:21:23 +0000 (UTC)
+X-FDA: 84705153246.27.9C3D0D4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7522310000C
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:17:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SkHTm9+Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4B9904000F
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:21:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J2scZpbK;
+	spf=pass (imf17.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777313854;
+	s=arc-20220608; t=1777314081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u4rc2QEolUfipG8l1VsxC6NAPaWQr7ALhmrqEkOLGvA=;
-	b=XWQx6nuai2gQVbi3lubiyLbJeLVpj1I1Q1QUkB1eDGAYKOV0r4KVNOzAWhBoyf1PfZ0U/+
-	Ltv8I8/UzXGFhbH5wANyzEM9mu63X7X9Kuv9uyzLDt8uviiOlOCqOItjMZ+T9GUq/MI8r6
-	K24IcC4aPOnF2/EHX3ebvhAPphyINTc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777313854; a=rsa-sha256;
-	cv=none;
-	b=H459DKhktEUOsD2V5GUAO66a6wrZLRnDx70ZP0pkfKkAshPaS9+gHjKonHKwtu3ru4mvXE
-	pFbGjJ+dXXYQ6zPJrtK5EYOQfqZ0JACVuPZmFMkKMJ9gqIoK3IGhv1eLWeBpkFgL8O4xCZ
-	NbZqqtJtM16Gduz3gJ+Aw6vzXFCxq2I=
+	bh=jRL0edEqnjRKMMuAf8kNDWGdxE3K4+zobIK6wBqidRA=;
+	b=oiRmNdXT0KCS16aTnlxdsXNowuu1FgMO4+KQZ1zav3kuj6P53YOSCvGFRMMcv+/vf1MHp3
+	JD96GAUTfbiUfdkyZV/PDlu/T5Myv93+4PLleAvHl6+zfiHUC2J2sonyYOiFdv9qQhNQOX
+	RarXZv7Xs8OBjzNMCK44W056ETrwgic=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SkHTm9+Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J2scZpbK;
+	spf=pass (imf17.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777314081; a=rsa-sha256;
+	cv=none;
+	b=5U3pYvAS482GjYkWCkSEavmO+Y+x/rFlCp51Hf54qRFdp/SwOpXuRNZ5zmvAltYycIIObA
+	61W+rufOyisp6PrbqAAtmYtRzELIdtJxPKnQXXGZqEMapj3eZZtvJ01vqx5N6DMOy4oaBS
+	z2wvECTCM+92KhFxugZDRP8fwpVXmU0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2D5C044768
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:17:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89573C2BCB9
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:17:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 46E9540246;
+	Mon, 27 Apr 2026 18:20:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCCFC2BCB5;
+	Mon, 27 Apr 2026 18:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777313848;
-	bh=FsvLa0WQ+ppWSL2ZBwu07rxJb0VFpJsdirmzSrdOFVw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SkHTm9+YjDbbZVDp5ZuhGykXVSnv8mnZhzMp4lRHTlUB6GdE1cRztG6Ni7bdn41Eu
-	 f2uVqfgSLTGpvGv83QE4MIao3JMkjfXXVDTxy/6Ort+DBKR721YH12zmBOlF04AnM9
-	 UeivVBVFnr7CKqktHdfi9hHlsbHqswZHA8fRmVz1nySVEW02sNBSdCGDiRuPKETIxU
-	 Zihezih6dhde/++xQ1ichw+SBu7uXJLxCTBys3OWD88PBx+4f2Ssaq6TU7zS2wnarm
-	 n5guPMFIOaAtlLpyZdDXF5+rhmBJzIZS5MvmGifiY5x/qmPP+ISs9SC6oKAVEYgU/U
-	 v3PNcft2kMrUw==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b9358dd7f79so675744566b.1
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:17:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/W1KHmZKBhk8qN6bauoHMOLrEPv8MxaRboLMR4vKC3J9P8vpEKbHCfHqujHKgBqNbRSmhYUhyEJg==@kvack.org
-X-Gm-Message-State: AOJu0Yyv3ZjDGq0K91aVJyiIu2xZbLt8KeVx9tirdRqcnEh/zzD0tB5a
-	PxfmxBaQd4VHIE2EDzpBnqUtvaQ7rnGXbLG1DeG09ByyfcQHLKAGiEqzLhoRhvqwKjJPKb+Ei16
-	LSMq47giPZVxL7aPc76WtbQl3rEy6Z8s=
-X-Received: by 2002:a17:907:6c10:b0:bb2:71a9:37d7 with SMTP id
- a640c23a62f3a-bb7fc6b329amr331966b.39.1777313847341; Mon, 27 Apr 2026
- 11:17:27 -0700 (PDT)
+	s=k20201202; t=1777314053;
+	bh=fSfdZ5/fBIJBn92+lTQ8RknrFiSruKk4Zm5FPbyuhQI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=J2scZpbKenpOejPaCkxdr8Fr6c4RornKyxLjF0dKFYhSlw+matCdj3SDWlLeqEo9E
+	 a373XI9Iold2YwxLkAFI1OVkbxbR9JLgxu/comiCZJeBJjQK8IiPFbF3a0OQIu5zFJ
+	 z32D8XDVz5Fo00XfpR09lc3WO+fPx7ont3FOA+TL4jxGM7w1J5Z2cHWcv2Vi05coRU
+	 6lIPjD/Eh4XtMiOh4PUlJfQ+hbcnF50oIaF0Y5is14Jb9Uy7pNbq6e4WVWxwPn3QZF
+	 F5175xYuXBtUSK+HvgeuPZTDTXog5e6524IUP62vgqpWl/U/vR5Pqvo+DbOYeGkne+
+	 cSOzK+yVIhXWw==
+Message-ID: <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
+Date: Mon, 27 Apr 2026 20:20:38 +0200
 MIME-Version: 1.0
-References: <20260421121616.3298845-1-haowenchao@xiaomi.com> <CAOptpSPs-1UrEa8AHg19e590=SiV6bpnex7gCbif8=aY7BtpuA@mail.gmail.com>
-In-Reply-To: <CAOptpSPs-1UrEa8AHg19e590=SiV6bpnex7gCbif8=aY7BtpuA@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 27 Apr 2026 11:17:13 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOjugCwWqHP3zxXPmjp8TwpoROCjCqTZ_uxOBQwVqCWqA@mail.gmail.com>
-X-Gm-Features: AVHnY4LkdWo7aosvwMF_0ub38leF0QqpBslIr0st4sctLN5j8Y2EyELEuoMI2nU
-Message-ID: <CAO9r8zOjugCwWqHP3zxXPmjp8TwpoROCjCqTZ_uxOBQwVqCWqA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap
- release path
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, Minchan Kim <minchan@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Barry Song <baohua@kernel.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
-	Wenchao Hao <haowenchao@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7522310000C
-X-Stat-Signature: yfdwqwka5tdc4xao8yuamkai3dnezdtp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ David Laight <david.laight.linux@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+ dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
+ ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-x25@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-sound@vger.kernel.org,
+ sound-open-firmware@alsa-project.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-arch@vger.kernel.org
+References: <cover.1777306795.git.chleroy@kernel.org>
+ <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
+ <ae-j2_QirCySZD02@yury>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <ae-j2_QirCySZD02@yury>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1777313854-240239
-X-HE-Meta: U2FsdGVkX18GBsSvYe8PVEoUNNfKYiX4J7yDlP/KHD/G8n7abKLGz2p3rApFWcQxpmF+94ojmuoHCgGhw7vVixmbUTIPHv7DEcMi/4N+T+XoOre4MYFPyvnKqvs+QBL0Jd9X8lb8ArrfPPYrMGvJOE38wvl9nRmFjGlm1YwoYqMNUEmv1cngfn7HJLz9PC7C71GNg1BM3lNCJvZGbzkyb9S6f88fFgKeKg/QPTpRizDZ5zYs3prqoz6G+tCXBuAtFWJS9mnzr7aUVeq7CiFZMcKTMmTJcp4P7NyorGORTHM0eE4Tw1poyBYzdxgPXy5lElzNQgeLrprW7g8pW2cRXuR0kAu3t7SgD9dNXL9tPHkEnyKaOGqLz9gH2/pJ4vyr55b/nxIaGiTpub/av3IZ7ZkIWGC2hszUYTeOtzeyh7nSZckySzB2hP57IGSQviVgZerwPL1gXHuxJw6u1Rs9wlD3hXxymMbglC69fXmkzyeTcWf6Z2fcNqr1Q/iOmc5V8X9hriQ/3FR6S3SPDiZg1hZqTbDJXnIkAmX2Js2P0pICpi3U02rhBQVIaGc5Gat4nGTFfZ3o+EgbfHSFxfzDkTAQEkq/C8d3/wFAOAPoK8aUHeOpydmOwAoy0IX6k3vJCfXYjJCEPNvpZJXRcW1L+vimdFTFfj4vP1oFQ+J64uO+gQ7ZiMvYlnEhvwZ6JvJGS84IBIO2ml2WC0U++AXPtcgxowXuglySwk5coHjKvYbv8Tl8UagJ6U0z3LiPpPDWQpAKfZFRIaqavw+V1MluKdm1O7MNPwTNGakQNTbLLo6CDH6V5CuM/zG+i7qSFSEx1fcL/AHNq73x4JiwXKlZWl4fV2t2UU+CD5uguamR8a2kZpH9W3Z9xK8vPNhO3u6H8nXJysJ64TQ+12deKG/DuUCYyL93CNTDXmuynU1YinzF+AU2mIynkkVBId3IN4jIqfsE0lKrBj4f+HGYrvb
- vtZGF6VT
- hbik3dsnRh3XRzFDn2yYhess2yg/oOqF9yNSJXomKmogaHgMLK2HdBHUBgRHrfLRTWqkLwGiOK+hoqzO6P5fLvQeGGYmwCa4rNuwDyVRgUB1SjUkmMfgy4VNATOz5sx7NRp9LgkVdh4Zwk/EgOfyPcfXlmtzglVkadO7PKCfIA78/2gW3KMNpKPebzNWe//N1/lOiSPPge32zIQI7TN8kzaFiBbi3VMPWZSNKL/8hfex9Qy38BxJ28J10KA8EswPwNeMEQkY9m4X42lUopsudmeo2vZzD6JSd/eSsFSpu+DKc9ubN9sJcK9c0/yQMnWpcG1E7Tsty56gOEHMGf2GbnYB3wggVDn0Hh9HEhs6mWSPYl44XN247PMQdK5Zxf9T8fCmz3OIjLE+dBu7HeUrpZu+cvTziRc9CoJhmZyAeyVXXuuQ=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4B9904000F
+X-Stat-Signature: 31teoehcxwwbh8yerh6og9twp4mag6rb
+X-HE-Tag: 1777314081-923993
+X-HE-Meta: U2FsdGVkX19xorvlPH++of4uHwIJb74XAVQVj8Ys49x6BiObbg0FchzfKzq1vIrbmY2juBa6oocI8qsRkUygLxyPRSYUF+GQJzXSHUa9bwDOPMSY+jhPn5gWkHz2ji4Yif7/gFURsT5wW/Z3gYIiWLAJAX2uSXNFdYcCYfDDegfdETIpRADngBXtkNnQwVST2DJXezDNNcNqO7CRj4o3nmAKrCWBTyRymQzm9mjXO9UhdJcuHFleGnAcyom+SRR+/tZfU2E6ezVROY6EMY7SbZa46N/dtyTwiIjOZZjzRKJ3M1RuJ6LyWjD60AcbqfcwrgQD/2f6b8WpxvIKwa2HZp+kmOCVDxsv6b6sQ0E6B6eIoNH6N8lBVgzai6L85eoo4QRXAhQI/Dm3yIHs7/JvaRb5VPtVQY7sEYk5HUHkyO0jteVn1Eq2jC0QXIo9eYVuc0hSlXqRr5RT7DVVeytDUBJ0grOTzrBIpxEOyD37u3lb9zFNKCAg4UNxxvztvIo0P3Lw1gWFBQaigVVeS5701ulmy3fYqQsYGwoieCgGVF+zs1UDGiGyLOuoLY0Vli5POMNswbGUjCW2pElQawHe+okVn+11tq+eOqCNOSWOBixQwJM53MIO0/2ePxUzqE6rZHJyCnlk8zyAmXxMzWdBQdawFA7WezO7BIhUlRZTM7r9Y9W7a8xqK1oYvS33DjvOTYLGkiCfe/kgjN2wi1v4BRwOOTn6u4w/0nD7goHU19m64mT1tGDKXkcDB+jdorLPd7Ut7ak9QlyeBtSXTsBmjbbyUguxTHl7Xp0AloFjtRak0wKApj7Uh8VvtBtkwtrZlEtlfrVK5VxpgGhVUTeZBs7cgTFGOIQhxpM+xtUGkcJTnn7voy+ITeLS8Z+Vr8ruW678dddC0IJSikxHfKjmXwA0HIXa9J06Ej5sP+QI3Zyg1ziH7WAH5b5/2yAkDoqYMKeGDH+E4+VXND5VoBO
+ S2w3hMU7
+ K9sJbbjccgI1dGr1JbYaa9ONxe97ouGI//o4THeTKPCj1hMHocLlA8ziCJzoNdkA3UKjKPEjhYvYNk3sXWrMIP1EUedqMGw6i12q79xaaEur2mlA7HMMvJ9cpzWZ0a+pCCMdU8NUPCCBHHCY7sMaHTjI9vXZrWBm9HZkUcWV6XbJbfQWT0mD6dSuLe4dlDlXwzVFDoYi4iN3Mhaazmhq9uRj0ULqn9Uk4uQm8DBBWJbvm7x7yahGP/JGTKmEziHaNPpbljz+k905yOVMPJ3IUFnvxV3VXEtOriBAEBvSu47WjcgdSSbMxiUXeSLrPihoI7nvpKXUGyvJwO17zSRmf4VaIBdD25ljHUjbgp7o45mUmlGiidrssSP2VNXQYc4ih2dWnmcfWdprKrkt+KrX5oLQadguLMpFh7hFGMXlGT49+SDE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,59 +118,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 25, 2026 at 9:13=E2=80=AFPM Wenchao Hao <haowenchao22@gmail.com=
-> wrote:
->
-> On Tue, Apr 21, 2026 at 8:16=E2=80=AFPM Wenchao Hao <haowenchao22@gmail.c=
-om> wrote:
-> >
-> > Swap freeing can be expensive when unmapping a VMA containing
-> > many swap entries. This has been reported to significantly
-> > delay memory reclamation during Android's low-memory killing,
-> > especially when multiple processes are terminated to free
-> > memory, with slot_free() accounting for more than 80% of
-> > the total cost of freeing swap entries.
-> >
-> > Two earlier attempts by Lei and Zhiguo added a new thread in the mm cor=
-e
-> > to asynchronously collect and free swap entries [1][2], but the
-> > design itself is fairly complex.
-> >
-> Hi Nhat, Kairui, Barry, Xueyuan,
->
-> Thanks for the review. I agree with the direction and have some ideas for
-> an alternative approach.
->
-> My approach: first eliminate pool->lock from zs_free() itself, then defer
-> free to per-cpu buffers with a lockless handoff, and finally reduce
-> class->lock overhead during drain by exploiting natural class locality.
-> Achieving both per-cpu and per-class is difficult, so the class->lock
-> optimization is a compromise =E2=80=94 but one that works well in practic=
-e.
->
-> 1. Encode class_idx in obj to eliminate pool->lock
->
-> OBJ_INDEX_BITS is over-provisioned on 64-bit. For example on arm64
-> (chain_size=3D8): OBJ_INDEX_BITS=3D24 but only 10 bits are actually neede=
-d
-> for obj_idx, leaving 14 spare bits.
-> We can split OBJ_INDEX into class_idx + obj_idx:
->
->     obj: [PFN | class_idx (OBJ_CLASS_BITS) | obj_idx (OBJ_IDX_BITS)]
->
-> OBJ_CLASS_BITS is computed dynamically as `ilog2(ZS_SIZE_CLASSES - 1) + 1=
-`
-> (8 bits for 4K pages, 9 for 64K).
-> Since class_idx is invariant across migration (only PFN changes), zs_free=
-()
-> can extract class_idx locklessly, then acquire class->lock and re-read ob=
-j for a
-> stable PFN. No pool->lock needed.
 
-How much of the benefit do we get with just these locking improvements
-without having to defer any of the freeing work?
 
-As others have pointed out, I don't want to just defer expensive work
-without understanding why it's expensive and running into limitations
-about why it cannot be improved without deferring.
+Le 27/04/2026 à 19:58, Yury Norov a écrit :
+> On Mon, Apr 27, 2026 at 07:13:48PM +0200, Christophe Leroy (CS GROUP) wrote:
+>> At the time being, x86 and arm64 are missing unsafe_copy_from_user().
+> 
+> No, they don't. They (should) rely on a generic implementation from
+> linux/uaccess.h, like every other arch, except for  PPC and RISCV.
+> 
+> But they #define arch_unsafe_get_user, and the unsafe_copy_from_user()
+> becomes undefined conditionally on that.
+> 
+> So please, fix that bug instead of introducing another arch flavor.
+> We'd always choose generic version, unless there's strong evidence
+> that arch one is better.
+
+But they both implement the exact same unsafe_copy_to_user(). What is 
+the difference here ?
+
+Should that function become generic too ?
+
+Christophe
+
+> 
+> 
+> Thanks,
+> Yury
+>   
+>> Add it.
+>>
+>> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+>> ---
+>>   arch/x86/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
+>>   1 file changed, 24 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+>> index 3a0dd3c2b233..10c458ffa399 100644
+>> --- a/arch/x86/include/asm/uaccess.h
+>> +++ b/arch/x86/include/asm/uaccess.h
+>> @@ -598,7 +598,7 @@ _label:									\
+>>    * We want the unsafe accessors to always be inlined and use
+>>    * the error labels - thus the macro games.
+>>    */
+>> -#define unsafe_copy_loop(dst, src, len, type, label)				\
+>> +#define unsafe_put_loop(dst, src, len, type, label)				\
+>>   	while (len >= sizeof(type)) {						\
+>>   		unsafe_put_user(*(type *)(src),(type __user *)(dst),label);	\
+>>   		dst += sizeof(type);						\
+>> @@ -611,10 +611,29 @@ do {									\
+>>   	char __user *__ucu_dst = (_dst);				\
+>>   	const char *__ucu_src = (_src);					\
+>>   	size_t __ucu_len = (_len);					\
+>> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+>> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+>> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+>> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+>> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+>> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+>> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+>> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+>> +} while (0)
+>> +
+>> +#define unsafe_get_loop(dst, src, len, type, label)				\
+>> +	while (len >= sizeof(type)) {						\
+>> +		unsafe_get_user(*(type __user *)(src),(type *)(dst),label);	\
+>> +		dst += sizeof(type);						\
+>> +		src += sizeof(type);						\
+>> +		len -= sizeof(type);						\
+>> +	}
+>> +
+>> +#define unsafe_copy_from_user(_dst,_src,_len,label)			\
+>> +do {									\
+>> +	char *__ucu_dst = (_dst);					\
+>> +	const char __user *__ucu_src = (_src);				\
+>> +	size_t __ucu_len = (_len);					\
+>> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+>> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+>> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+>> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+>>   } while (0)
+>>   
+>>   #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+>> -- 
+>> 2.49.0
+>>
+
 
