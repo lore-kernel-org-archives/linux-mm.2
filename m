@@ -4,114 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B3A2FF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDBDBFF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:43:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 870F86B0088; Mon, 27 Apr 2026 11:42:03 -0400 (EDT)
+	id 4538A6B0088; Mon, 27 Apr 2026 11:43:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 821BD6B0093; Mon, 27 Apr 2026 11:42:03 -0400 (EDT)
+	id 3DD196B0096; Mon, 27 Apr 2026 11:43:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 711066B0096; Mon, 27 Apr 2026 11:42:03 -0400 (EDT)
+	id 2AAA56B0098; Mon, 27 Apr 2026 11:43:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F3896B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:42:03 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C00139FA62
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:47 +0000 (UTC)
-X-FDA: 84704735976.28.9A4BB5A
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A9A6180006
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=duGMHPd3;
-	spf=pass (imf30.hostedemail.com: domain of 3T4LvaQgKCGgGXJH+MOZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3T4LvaQgKCGgGXJH+MOZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ardb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777304145;
+	by kanga.kvack.org (Postfix) with ESMTP id 168EA6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:43:27 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 26D58121E2C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:39 +0000 (UTC)
+X-FDA: 84704735598.02.BC1A409
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012040.outbound.protection.outlook.com [40.107.209.40])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 25D48100012
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:35 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="lk/WwprX";
+	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.40 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777304136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1BA/E6WicDwezK3gyiAo3eqUE5pDQu9c0JrSuIiaUTE=;
-	b=2Pnt4q3FmzTsIMBtCxdch5kP//ey/zUfMOe0BLbz5a2EsX0A120yWCbQPu1Za7P9XAs3wg
-	CLKtTamhEcVgVPyZsSqsFp/Nb6/VRWNFFqzSU/IXOonDuBwietpXVXc25XUcBvROx0HhXu
-	jgXcwYdqmEYbczJNbOvFp142Ups/TiI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=duGMHPd3;
-	spf=pass (imf30.hostedemail.com: domain of 3T4LvaQgKCGgGXJH+MOZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3T4LvaQgKCGgGXJH+MOZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ardb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777304145; a=rsa-sha256;
-	cv=none;
-	b=NWXTEWfwykR+trzNaVRvcFDtbzZNlY9or/nsAoI5uZYClQLNBD2C0dNvNzSfe8UpLDKctN
-	mYx0ZPWz8eslWZNq4J/KK8Uwez95cB+xlw8g1zEn+n6LcE6rkpoKaOCgeXjpGSRArHKjEy
-	zsPz7sWrjr1L3xhrWbWgWdtLIDwRjp0=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso112810305e9.1
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:35:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777304144; x=1777908944; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1BA/E6WicDwezK3gyiAo3eqUE5pDQu9c0JrSuIiaUTE=;
-        b=duGMHPd3YhRBtMr3tyi9p7gmL0qUPhkKjpPBPNigZPux+sU/odhxDXkDEJw7S63Bvb
-         vwQdFpAgC9tU1CL6GvpqUV6WSwFJMbxm+rGPPwxIxNAJ+k436796wUmt6Oi7wOcPQpnq
-         g4ru2rTXUT2R7LSSK/iupqsokvXhxhY+4NC1xB+QEh8WC1RYp3AI8llYl4rkCAS+FzsD
-         d0vxDsdZi5bEKJLYr11ylpcV4PrhN7qwra2I1PEM6j5AxjaAG1zkmRxByyZo74Arc85h
-         DyC+RQpGUygtpPtilWHYIWCC6ogSFdtiUehAOMBQUAF0P0PhOoQ09Hr6LQmILU8qXyyF
-         6j8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777304144; x=1777908944;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1BA/E6WicDwezK3gyiAo3eqUE5pDQu9c0JrSuIiaUTE=;
-        b=H2Z0rtu/jXVT37vsuRetoGOMocJwg4IEF1BrbSb2eBq/Rrf/8fntBubXLTPy4L+sHW
-         QmSQ5xRgnBoWhAAyMhnYqjN/VXe58UnU/zwOQuiZOGzGnEFAjoW3MmbQ4wgeOGVlDOgW
-         +d0u3fblPACRG8FaqUI1o9P21hgZ7XoQGu2OIpfOUHumn+6U0nnp1LsJLrntHji4753T
-         8bGOy1sntXTJPmq2fPTIlDe8oJ9tM/Uv4sHNLVA+ACXfL+yTaJUzPm6UeahXMm0lisiP
-         /YGOKUCkKHA6BDsC31C/iwCCnGvSxKyP2RR+C9TwCwkzCj2o5QP/R5p51ct6CfSMhQbL
-         6f6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9R8ox3teNgRXTj/+c12Aa6hqsV23XmTLuW4JLmKqNOa1fEQ376XmD8Dh2ZVWuWu2SbV7+qRpSqkw==@kvack.org
-X-Gm-Message-State: AOJu0YzfPFlC2dLmOBFyW0a1hijExXkOGtHfhSePw8k54FTZFJRRzDF2
-	Msdm/wsSqE0oQTjHWDkqDInm3PrTegfdq2AlUhkM09D9z4lOIsgpGlcVjy2SMBty/7jypmGT2w=
-	=
-X-Received: from wmsl15.prod.google.com ([2002:a05:600c:1d0f:b0:488:7f4d:30f4])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8115:b0:488:8577:d9cc
- with SMTP id 5b1f17b1804b1-488fb77faacmr552964815e9.20.1777304143994; Mon, 27
- Apr 2026 08:35:43 -0700 (PDT)
-Date: Mon, 27 Apr 2026 17:34:26 +0200
-In-Reply-To: <20260427153416.2103979-17-ardb+git@google.com>
-Mime-Version: 1.0
-References: <20260427153416.2103979-17-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2895; i=ardb@kernel.org;
- h=from:subject; bh=KZuPOnzhvCTYIkGg+7u5wsbMT7w/fODSH3EL/0/zagg=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIfN9E5vLgafBpVHCxz1SUmelxP6Kd3qkdfpFsMXLg9sPF
- WoserK1o5SFQYyLQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEykTJOR4TUXe41Hw4vaRzxT
- mGLXWVx6se1hW1uOb3v81vdLAn5m5jP84ZJm0rae256UuMVmRe7sInHmbY93p/Jwyz966BT+h1O dCQA=
-X-Mailer: git-send-email 2.54.0.rc2.544.gc7ae2d5bb8-goog
-Message-ID: <20260427153416.2103979-26-ardb+git@google.com>
-Subject: [PATCH v4 09/15] arm64: mm: Permit contiguous attribute for
- preliminary mappings
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
-	mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Anshuman Khandual <anshuman.khandual@arm.com>, Liz Prucka <lizprucka@google.com>, 
-	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: t9nbdz7pbh7pg115n1emncuhbtim3fu5
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A9A6180006
+	bh=n6C6LdcR8d9suTBa/3gUUBdhoiR800mTkENfgAVD7Xs=;
+	b=zKV4IgHPdTgGVeuJC2upu+ZlPzN8EJtTusyRE4NRRg8l8fO2fPcSDysdBpmrixT8lBh0L5
+	N+jxu5NxwTM80KapM6ukd5tEZ/g9FZLcek4EReX5/0PVx9Pxml6sjrFtsRjfVl/GJBfOwj
+	zL1hG11tYDNqK/h3zwEWBjC/yVS3Vvg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777304136; a=rsa-sha256;
+	cv=pass;
+	b=1LhwC+cPNtELL6DrIwruLKPLZMrWvVyloMS1vVmRT3+lP2fynHvVALJP1Dr7OJ4eYVg1x+
+	HjP9jk6LSw8fNWmi0nWCYs4LHeB6WYfZ17G/hQKT22M5rJzwg2wEnOZtSiKpz0FtnDwxhm
+	yaqIQKtzCtHjRBJ5/wh+GbS3bBNO/jM=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="lk/WwprX";
+	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.40 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mN/4kLJqNU9rMxvFtd8PpA8Qu+HbVYyMMu/k/z/2bWRnqMnjC9V8jsOn2mNrbnVyzPeCphyG6Fcu9mLRUpwh7G2DsBiUIrgT1hu0X2FyYDOiEkwXzKEjOlTxhQRp57NVupT9Zd4ADcyR6U+QV7PJz7bjXkDsLisnJ2mf3TTNvtOBdsTji4tY9+I/Ik1f9prBID6qADiVWuYYeL+1GczhgE+Dv/2+nnpvzKikvAZKQTiIJcME9rY/xYm7Uajx1x5fACrOLG70d4Yzk5PR++DGxXnvnwRkAsboQAZx17UPm1i0iEA2ZL3Z34LFx9xkxGtl5WOjL+0asrSVH1u6+oOmbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n6C6LdcR8d9suTBa/3gUUBdhoiR800mTkENfgAVD7Xs=;
+ b=ckHmLVk3wyHNm0Z48Fe58WRi9yZe1RBj1g+ay5y6RJTQ549k25qSMqqAbtRAmEuy4AdRc7cz2fRF+qK4b7mN5unjz9NAhBmOOPR9BswGwUjLj/nBWF82DzsmqVKl3bJ6cx2B9Vn4wHOK6UevCou5kzn7fj/l9g0e1RS+B+4QSh1A7bi8/fvEihuFDEP2WbELz/2Gvg/McrwP4XmaTKC7sC/PpPD9AaiZp0tHs8pLfB/Rnu9X/E7YaeU1M3EKEiB/lvK6+Nn+/M4cJwU0QcbzrlEVodyqTd26IIjb/7xcB9hTpXQ7J0Ex+TyE2B2La1YrA3l2Ub4717iUW9L41GksPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=n6C6LdcR8d9suTBa/3gUUBdhoiR800mTkENfgAVD7Xs=;
+ b=lk/WwprXQBnHZFqZzX0YrLvJEchk0wgfAXdXyI46WQ5KqgL2vBUR/Gut2Uvy2lEgywSI4VecPhPLQ5yqk1otZDSk0r2vyJcH3OIrPg4CvOP/3hOBOJTIegk14+hJdZ0M5X39fjzMyxyxMyzd6t0K+XsMrQOnh9Bb14jP/k92t0YL6cpCt0+Fk2Ztvv77HVWi0GsDKYK8oA8FOIHu3gVYJ3OC9L3KPmrpD0vOg106rDJO65GxN20c+Cx2Ji198SvfIj7LHbcj5Zogllaww1thNVsxZNCYXFZ5wjvlGdKIrc9dsg67q7o1zwTBiHenrUwNltqCXWhKomU5HcqZkKji8g==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS4PR12MB9681.namprd12.prod.outlook.com (2603:10b6:8:281::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9870.15; Mon, 27 Apr 2026 15:35:30 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 15:35:30 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] mm/page_owner: add filter infrastructure
+Date: Mon, 27 Apr 2026 11:35:28 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <12259EA6-2095-4F79-A7C4-E89DAFE9E8D6@nvidia.com>
+In-Reply-To: <20260419155540.376847-2-zhen.ni@easystack.cn>
+References: <20260419155540.376847-1-zhen.ni@easystack.cn>
+ <20260419155540.376847-2-zhen.ni@easystack.cn>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BL1PR13CA0030.namprd13.prod.outlook.com
+ (2603:10b6:208:256::35) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS4PR12MB9681:EE_
+X-MS-Office365-Filtering-Correlation-Id: f90ae980-8858-4ce9-e2d1-08dea4729d48
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	cqgASODrRAC3jJFrrwFvEdz59XKJjxgJItkvmeibwt6hVsJQUiuNOpgQPv8iM589B5U5Q9MWIN9L6KUfnLyPwZhNpIiDaK/6qtHGDGZGAAzKTt6ze8IQiuzAjWhMmldMIew/8BBuQp5OEop18D8Yp8FuV5MIHbND76xQbJYiEKCCpMmDQdIPLFSufdTTOxn2hwiYQtJr0fDkfuxxau2LQctwjXp3fZNNt1HZSCa7qU2E9ZpiGPO2LLvebeaaU8VHM20A1GlfGIBsUgMTyUrAH8OlnJ9dJ2Z/Dut/jI2X9xFrdVpW/GXOeHkdqTz4HqgGB5DTbVvu7rZLHkukBmLXHrPHrXYdyfwXuNgRWXSxwAgnRT7nPGlJnQY1qD50beqWjuKRGHbsI9pPWWjeZQuE0m3YNytjgBAj368EZXdhHntPJtyT6KkiVjXjHHtqg4wt6vNPScnbIKNNFVBg85yub/zHWWQITrqDq9rOuhTSiyDuttrCSZUNBsIrLkXX0aE2AjrCML2EZ06SLE/7BQtIfpO6FQt8Crn2TyJSd1PSGrbGPHtnnouCIW3D5up10zvi/NgnFTIUbkRTvla06MNUZOsxKzx4VUbmkVdP7G2F0YVx/V0zNEseDWzPrxMTbyxeJPRjgVaZ64KKjOCuVV1Z8/ZRA3pkMmwV2LPISilL/61yK02yVWJUeTSyzyH11UQSFCvrVD/tYiiYSAk4xqrTFx+Oezqzp1sGy+EFB9BJ2POX9IbPeJCRTNc3cqOEbpVj
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?B1vLdR66+KG5gJklNRdtTSQ0FF1NGcx9blxLOXCDtuvdvcCR/G1hTgu03zn2?=
+ =?us-ascii?Q?L7ml4X4ruWQK64qjzSKNDDH+5NOR2qMRNl5jMzab59ualpGIFoXvNPAax9H9?=
+ =?us-ascii?Q?b7RBELiJOLUSNSeW9WVkYOeOv3NuOV0wkGvHOAa5UfP3FDvE4uArOpIS3Otu?=
+ =?us-ascii?Q?zCEw1q0u7JrLRvyPv7BWUYGbg1Y1xUD4p06fAeOqhLoCN29C+ESMvlMAfY8l?=
+ =?us-ascii?Q?RJOeJ9mFokYkTcUnn/pwyDPmf4IRks8Zx4Qn86/HMaJAFcUu8oUlgqM06pC3?=
+ =?us-ascii?Q?HAlrLr7A90O6OCAfqMjBVK2n5TQluwHvL2RVj6P4GaaasE1wfL6tgfPu7jIv?=
+ =?us-ascii?Q?T56FrVmE3Kpz6+jiCnAkR7RCSaT8qUcYOWGoua/XtoMCUVpJRZoqrSgMMUwg?=
+ =?us-ascii?Q?Qw8fDKQ7odPJ+wdrnmX22x/d+xnntOnXAVFng/3DHCcjR8AebnBkTXOIlQNv?=
+ =?us-ascii?Q?mzQNLHgaDofFEjNJYcf0yw5wLitEnQMjuM4QjMVQkp7jTiq8pGjpnhl3Zk9p?=
+ =?us-ascii?Q?gTp52QmzooINEglaefjMymf/+ITZ+f1VyWUxhM7pmHZoM49qvbq5mXK6MSCQ?=
+ =?us-ascii?Q?9zJt/tnsbiBK/U791IAb57bGekd+UNA2918PGSEBOasuX1P6lPFyMt8ZnjP3?=
+ =?us-ascii?Q?jPMTs6+TjK22rQMKyQBJ/rKVyNszn49jsy6EtMJokal2eU4KnLs1gL3dk12p?=
+ =?us-ascii?Q?FOay9B5LAkqOkQ9Sq76KEb7hEr6gKDTGcE48j8riQCYLCdyBwlcPZclN9XWz?=
+ =?us-ascii?Q?NFhCYSrsORz7bCrl/Hta5ofrATlIgKOGXbxaTZgHXT68Rbx3yR7utAEFppek?=
+ =?us-ascii?Q?eDqAcjVC0vsIdB0BYQHuDCK/viS4fZZ9YSPkBCUQk+zE9dhzGnjmcHIxNrV9?=
+ =?us-ascii?Q?CWg7OwDlrmbcTEvzsu/iIH/fU114ZFkQZzVVIanGF990Oy7nIMFLIu0FBLUI?=
+ =?us-ascii?Q?P+rFiQVwioz8OAR58nB18Y0W/wBCraJ2eTANQiC0XqwRfN426hxSn7g7b4WN?=
+ =?us-ascii?Q?RF1g7A0yoi8fiVHbnZYlcjD8kLxboSm8xa3U2tfUC7o9D5z/7SMrqS+1nhTU?=
+ =?us-ascii?Q?u2UMowWXaQI8kK+lVOGPvCgHr0xCHTxatNhRF5Q3vpoWnxsZU+U43IW0n8Ss?=
+ =?us-ascii?Q?2tfJh5TAawcnH8dyZspXoDN7VaJV/B/p0czF+bjp+Krj2B2Xs+aft/YEh2cB?=
+ =?us-ascii?Q?5gjHYZxLsjEwbHp13hfgXh6kD8vTONWEYNbiTL6HzsBz2mBZLwouVilcmojG?=
+ =?us-ascii?Q?x8RMJxp+XNbIOApwBbevfR84Z/qpU6mrSpM5FQN5pceYTYfm42L6dcG824Mx?=
+ =?us-ascii?Q?tsFghb0iIIwHDk8P3T11ThdmsB+/LtKUjyxcA8iPnrrC7Gy19X/3SoBGNWbE?=
+ =?us-ascii?Q?CcSHtzzNSxbTa49PzyDGNs3rISYcQVZpOU19MJMadyNPyg/DlDviADC7URyb?=
+ =?us-ascii?Q?hpSlq+o9kSucFVU0YhgFi01JJoRF4mnMgvPGysupgPse/+yIrtLBitR+YJBh?=
+ =?us-ascii?Q?1SN83W2Eg+SE1FmO+cSmJM3qFKNW+uETbr8KY4dDRvM+r1/t/Sjrq4ek/527?=
+ =?us-ascii?Q?PEOqQqxptRUpBs1/Co6fRMl4FUKUfv9MHkMGXOyo1EQVCFe1CCwTn9TShs3e?=
+ =?us-ascii?Q?qcRrq8JuR/eBC11lRze69UET8omHEhW6nGihINWQU4FIeGo02HXRORzVLlG2?=
+ =?us-ascii?Q?sDr53WIWJS3hU6B8IlqDbIkqN+zO9dgv07yeNfC1atVWyudR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f90ae980-8858-4ce9-e2d1-08dea4729d48
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 15:35:30.6677
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vG5AoajnFQb7dVUI7HHSkGoTKgeMub+KtF5UtbYI4pWwgevR4LwEVuaDn9lpeZEg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9681
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 25D48100012
 X-Rspam-User: 
-X-HE-Tag: 1777304145-259681
-X-HE-Meta: U2FsdGVkX19C84MvULyETdJRFKS9fDuE3OZEE0jVoVxKMnEO7hF/eZrXrMBWeSyxjsblPqKdT9d2kefZhxmHxxr+Ed2plXWUL1OZYZjjeCSliyOseAFxQ07v8gUVPt0OmWdS+rsvGQTlkXIjetKTVpfV6Ug5z3/PI5V0y5kbljV11E96iSaWK7zR6ABMtQ9xiS0P9+JBnJg+ZLsjSQCt+PmBFFHl/8wwcoO1EXfywEEtY9xaUuSf0syUj0QTUC1PmVIIjwfaQgXhe2ZaeLT9guyx89TK9wOGp3ZdJ1aq8HDY2N9TlaQdUtC/JmrxozBn18h5fvoOFB8hsBveQHW/AQDXdpGjVtRN4CI4bokZ+yu9DCuBbFiQ/lQC0pVm4P3S3YNHL4vJuSuKgeV1E1WF8ADUF1+kms4A0AS88FjugEq6XQvq6ALkvZ20Lpva/VrFHvL89TB4jOXpnY9DWLDcbjxV04NpchPIQ77US5kgpBj5c7iwJl8MvP027Z2SFr5x9Dneg6Rj91phrSH2OiJhH7we/F9M5aSInsYsGtvugPcuzYv/y6wtmTz0tqD4no4RQEaN/H24LWeuSbpaWdRhVOyueaRXCKGJTOecBETxTn1gGNcVJ9B1MaXPWylhIx5hgVdRYLuvVMpiZeGB6DiLYTcZz+Y/f6IVKbQo1rBDwEaFVpUQChtafd1ejkXtwJaYfq3gkZoZzwQkIiraoZF29n8nhJfeH//PWz+ZHE/q0yC14wfZRzG6G7v6Hf2KPFfXUnNdIVaJQLzYpJhg3+FZYeNRGzn1swvVFXu7k5v/H0ecc5s3tAg41xX4qfrIobYDqwT0wugnc4utQ2J08dbxXSAP7Gq5zTj+V6qSjbATtaRIVev+1LrXO3njMLaOLq0Nnz7gpXsu+JNVfhfmJGFq/i12LG9luLso6d3C5oOaw89outImi3rrR2skg5G57uVNOCvx+VC7vtTvYXBl0zI
- 3AWualf2
- 77rESAdVXTw3OcDtsm5BKzFTeuLBbYzq//60k2F0dn2kOvbuPLGyP8i9G4elS9EqZyBG3HgWTarsLlCaLhfpGxxGNTr/5GgxZ8loxYGlBmvb/77rZ0zthXXvo6WahLOzpfvvKDJ/aN9AtbutpQM3NLwme7+1ic+XO/VD9mRI0sBjavsnhWJsqLCqCheht93HrpTn4FFU/OqorS0xFepcRtVI17uOw7954DmTH4nFrw17l/Ov0du4oVaq8zSxD/BDGHGgA0tlr6y/Qk6Ui47OiOJtOhGAIVXpmFbisWSXXcAZ0RjQEUbL9Vbi7yq3L/TvHLuoGKe4YjR4kFkknVC6jjBkpKYHEhM5JSa2I7FDq96CzRkJ9sMJlsrX6tCILiGun9FjCtI8YbWTxGLspGbIY12IzjfnrSfpV4sYkc3Q72pO3hlVdVmH0tDmnwtAaAdAHPRrzhSaAtlK9nhZCl/yBGALLQ3NNqTPWQ+RTAZOmSbPGUyl25m/ODp+Hz5LdaXhWX1RLqfKRSGmJu3T1QLGocX89VsrFBUz3/mUNtyI95JBp+PQYON8Na935BskilwmogzdinixRCmCdacH7nGo49T2HMYhsxEBDj11RHtnIiSFcnsx8/1KnsdCk0upQRxsI6z5lTdGpcljUL2pbOE7KCzr1Ig==
+X-Stat-Signature: h6euzoo9k7s7ucxpqrjncuf7eb6x7zed
+X-HE-Tag: 1777304135-655307
+X-HE-Meta: U2FsdGVkX18ce4aRRD+dxgU8x505LjVyHSeINwgXigJOq8R9FuW0oyGtXgBTtsExAd/w7NjQI3uZpFwPDflSrtLwATfnPgQPpyG1qNVi15MVm1r2lmH5FEMkDrM0EzJUegXR/JutxYQZVx7aZuAvZzHsoHGTUdgt229kdGkNbWbtgziNGlGDaZU3Yqqf7i4nfPZnum6OxYwGNibz+JlnMWp/11mfJO+joeyFadrcWP2v96wnwwcgE5SRLzHenFlxnQ6KUOyaD3XQOBWEpCj7DFBf2xiazVAbQvkFBVyAYyJegEOc45FVJVl3HmZwsJyfQKLcHdBl2Cw/7J9UGEpefKtQP7uqlauVQKmdJaK/UNh23AteSjpuPP7tW9YZLBKfYO17yJUv6jnPmTlGSUfcDeSS+OmI/kUnleJ2NOuLGZessRofajz6bNkNxyRWBRTAMhztJRvR7GtIPagdclgZ2w8vPy9TSHzPklAq0iBMKw+vn7H7aITg0Jy3jmJGKcWQYe25lAXsFLVHM/pLKyFtNp0ZBWeAjCgsDOAV955T6brZW9XLaYHnYahAhyt9xZeJ7SQjmS588xWUGcqu8nx+xtUdXLd7Tb8hea2/8ZzkG1PwOrdFQbOYyoyXNNlAaVuc6nFJ+ZGmRMLTGi02mfbZKtlNFco4/8j8OBm6bmsy60Jh3okCT8NOdyaUWVPtLL9I88ZfgigbT4qVQ1lop42nXvhViXjbe3E7UzM0K0PKwvXzY8n3sRcxUqIKSuY/eKiW2kMS9Lw6EuVMhP6rrDkHKd793nKzkIvQnHGbLg2eYZGuGHuQjP4dvQzCYr3BWvcHzrXIrpRtdapSKxn/1QIjm4sLMJZDwE1AeYlCYoVj5AQCYr2tFQ8d+efQKDy32NjKE6b/xDrmmNXTcS39sJYo6Nj04CL8L1h/JLmfAvGNvP4tmj5N4I4u5En4Z9v7plN/IH/8k6zaVRgptUyvXmO
+ 2vcPfLCL
+ RLTgPVjeBnZooitqjX11HmO8wLOADUhm+8Dx+eYyjmHKucCMynLK8+NDWCOI5gdX+gjK6X2xhQBb844OE46fwdD38Y3u+xOzhcCbl5BLZy815x6EDriBIgctds+QagMjnsGY/sAKIMYjMknOO8GvOPSj6CHZDOUVRPOBSkA+yK/OldM1fqOJa+mRPcim5bghlZKdMtyDCEGIMCKL0M3CHqMSNWGwvFW5ANTulUh4g2GTqVWlMjZr+tCjItxBwPe46dXJPD0woLgETzZmtczaLDH1JITea57eASOKxXqs0cRH0CwmxqeNVF5qG6mx9rCrD+pC5LuDeaiUCT0HODa3EGYkihYH9Zm5LR504PlQVbbIcHoyO9NQUaW2NnP2+ixMfwCc7yC+Zt8jTCs9Xdzd2WIQgmczpuuQb5tvXIWm6Lz4E8U0kx//WLgDk/1Col0BTmc+8nt6LCYzlYyo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,76 +160,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On 19 Apr 2026, at 11:55, Zhen Ni wrote:
 
-There are a few cases where we omit the contiguous hint for mappings
-that start out as read-write and are remapped read-only later, on the
-basis that manipulating live descriptors with the PTE_CONT attribute set
-is unsafe. When support for the contiguous hint was added to the code,
-the ARM ARM was ambiguous about this, and so we erred on the side of
-caution.
+> Add data structure for page_owner filtering functionality and create
+> debugfs directory for filter controls.
+>
+> This adds:
+> - enum page_owner_print_mode with values for full_stack and stack_handl=
+e
+> - struct page_owner_filter with print_mode and nid_mask fields
+> - Static owner_filter instance initialized with default values
+> - page_owner_filter debugfs directory
+>
+> The filter infrastructure will be used to add print_mode and NUMA node
+> filtering capabilities in subsequent commits.
+>
+> Link: https://lore.kernel.org/linux-mm/20260417154638.22370-2-zhen.ni@e=
+asystack.cn/
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+> ---
+>
+> Changes in v2:
+> - Use enum page_owner_print_mode instead of bool 'compact' for better c=
+larity
+> - Use nodemask_t instead of int 'nid' to support multi-node filtering
+> ---
+>  mm/page_owner.c | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
 
-In the meantime, this has been clarified [0], and regions that will be
-remapped in their entirety can use the contiguous hint both in the
-initial mapping as well as the one that replaces it. Note that this
-requires that the logic that may be called to remap overlapping regions
-respects existing valid descriptors that have the contiguous bit
-cleared.
+The patch can be folded into Patch 2. Otherwise, these new types are not
+used and page_owner_filter folder is just empty.
 
-So omit the NO_CONT_MAPPINGS flag in places where it is unneeded.
 
-Thanks to Ryan for the reference.
+>
+> diff --git a/mm/page_owner.c b/mm/page_owner.c
+> index 8178e0be557f..5884d883837e 100644
+> --- a/mm/page_owner.c
+> +++ b/mm/page_owner.c
+> @@ -54,6 +54,21 @@ struct stack_print_ctx {
+>  	u8 flags;
+>  };
+>
+> +enum page_owner_print_mode {
+> +	PAGE_OWNER_PRINT_FULL_STACK,
+> +	PAGE_OWNER_PRINT_STACK_HANDLE,
+> +};
+> +
+> +struct page_owner_filter {
+> +	enum page_owner_print_mode print_mode;
+> +	nodemask_t nid_mask;
+> +};
+> +
+> +static struct page_owner_filter owner_filter =3D {
+> +	.print_mode =3D PAGE_OWNER_PRINT_FULL_STACK,
+> +	.nid_mask =3D NODE_MASK_NONE,
+> +};
+> +
+>  static bool page_owner_enabled __initdata;
+>  DEFINE_STATIC_KEY_FALSE(page_owner_inited);
+>
+> @@ -973,7 +988,7 @@ DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, =
+&page_owner_threshold_get,
+>
+>  static int __init pageowner_init(void)
+>  {
+> -	struct dentry *dir;
+> +	struct dentry *dir, *filter_dir;
+>
+>  	if (!static_branch_unlikely(&page_owner_inited)) {
+>  		pr_info("page_owner is disabled\n");
+> @@ -981,6 +996,9 @@ static int __init pageowner_init(void)
+>  	}
+>
+>  	debugfs_create_file("page_owner", 0400, NULL, NULL, &page_owner_fops)=
+;
+> +
+> +	filter_dir =3D debugfs_create_dir("page_owner_filter", NULL);
+> +
+>  	dir =3D debugfs_create_dir("page_owner_stacks", NULL);
+>  	debugfs_create_file("show_stacks", 0400, dir,
+>  			    (void *)(STACK_PRINT_FLAG_STACK |
+> -- =
 
-[0] RJQQTC
+> 2.20.1
 
-For a TLB lookup in a contiguous region mapped by translation table entries that
-have consistent values for the Contiguous bit, but have the OA, attributes, or
-permissions misprogrammed, that TLB lookup is permitted to produce an OA, access
-permissions, and memory attributes that are consistent with any one of the
-programmed translation table values.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/mm/mmu.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
-
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 4eab40f4aa6f..5e2348b15783 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1000,8 +1000,7 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
- 			&phys, virt);
- 		return;
- 	}
--	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
--				 NO_CONT_MAPPINGS);
-+	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
- }
- 
- void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
-@@ -1028,8 +1027,7 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
- 		return;
- 	}
- 
--	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
--				 NO_CONT_MAPPINGS);
-+	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
- 
- 	/* flush the TLBs after updating live kernel mappings */
- 	flush_tlb_kernel_range(virt, virt + size);
-@@ -1175,10 +1173,8 @@ static void __init map_mem(void)
- 	 * alternative patching has completed). This makes the contents
- 	 * of the region accessible to subsystems such as hibernate,
- 	 * but protects it from inadvertent modification or execution.
--	 * Note that contiguous mappings cannot be remapped in this way,
--	 * so we should avoid them here.
- 	 */
--	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, NO_CONT_MAPPINGS);
-+	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, 0);
- 	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
- }
- 
--- 
-2.54.0.rc2.544.gc7ae2d5bb8-goog
-
+Best Regards,
+Yan, Zi
 
