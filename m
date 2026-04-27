@@ -4,100 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9DE0FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:30:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 416C4FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:31:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BA886B0088; Mon, 27 Apr 2026 11:30:53 -0400 (EDT)
+	id AA9FE6B008C; Mon, 27 Apr 2026 11:31:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2926B6B008A; Mon, 27 Apr 2026 11:30:53 -0400 (EDT)
+	id A81FB6B0093; Mon, 27 Apr 2026 11:31:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CF406B008C; Mon, 27 Apr 2026 11:30:53 -0400 (EDT)
+	id 94A566B0095; Mon, 27 Apr 2026 11:31:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AA3D6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:30:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18F4916041B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:43 +0000 (UTC)
-X-FDA: 84704677806.10.935A63E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 571424001B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TJH0uQrr;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777302761;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 825726B008C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:31:10 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD04014091C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:14:32 +0000 (UTC)
+X-FDA: 84704682426.21.717FEE9
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011004.outbound.protection.outlook.com [52.101.62.4])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B18EF180003
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:14:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Gx+Kx9Aw;
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777302868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YsgDC/iwN/qD3Kdp5vYSL1/lwsA0zcSIqFWisvUaVFs=;
-	b=yKOcjjCrSox8xeVloUx6LevVw67dSlAmIfulkBVlG8m1zV7zE9p2wxUWZuVob5Bt0HdDlQ
-	J9yopAg5OAXB7zbfAShARf0jo/mz9u/IlBp2YlmfxCqnA5GqiCXbAUaBm5NTIOHWGennMe
-	C4gAXzd4yrRLPlMSQTONc831VS/WJww=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TJH0uQrr;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777302761; a=rsa-sha256;
-	cv=none;
-	b=Xa/Cl7s6Hu72py14qjS3+HRQh4dRz1ha6ifEaJ+IPxf9HHcdZtHhGYphom9E/0+5LD1yOT
-	7CzAnOiti7Qq5yl/nWZ7UjnF38zaVHMtEhqc0Px8YsmMbGm6DYAhlimEXEC7ZiqzCmH3d2
-	jK9Pn1B4o355MuJgxeQQ9ybeyXB0i44=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 090D94197A;
-	Mon, 27 Apr 2026 15:12:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26352C2BCB4;
-	Mon, 27 Apr 2026 15:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777302759;
-	bh=zI5vHsvRGeABhz8+PYlJ/EahgR6YXI9rVwoXD7+ThEw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=TJH0uQrr4r3lQ4SuRm8wQheI46NGHnjW0QSkdAQJJsu2EKy+VSXazj2JF1TM4hI+/
-	 y2J5lRBaWoR34EDo5PTi/ir2Xwo0j1Ajr/SEEE/bOpV6XpNQ803wlXUP1NP9sl02mr
-	 Bw1MWIzuC9PCYv23QUAJnAyAFqF70+0jE9QvtK9kskHcnV55eFAhsKFhu/FQFHi7X5
-	 k5OFiJomVq6+m/bmS6qpa9l9qkkSKHuUVWpEWQnxWCtU/b822T8eq9k5tctOtnVvJG
-	 9m8LLjyNgoAchDQzm1+gt+Vc5bQPrD7JuEyjSD/Rg0+c6wth3tgA3OZPEKZW191Wfb
-	 hq3vYfKKtkRjw==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 00/10] mm/damon: let DAMON be paused and resumed
-Date: Mon, 27 Apr 2026 08:12:19 -0700
-Message-ID: <20260427151231.113429-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9f0ZUQCx8tznsexAQvc9lxOG7t4mOu9VoARfprPP13w=;
+	b=cz53hyl7LFKUmYtzVeT/PahpkhEyn3nodO9O1IXoiFQFTU9r34a5PnCcBefpASyR32XOJ1
+	1tSR+3WqvmGjyjIGBfyCHOI+8IUypSS7ITh3vwAGe6vLqzPfXAdMde4k0h7QB5lYAkkMI+
+	UmyUogfQ2KR6a3oA6j2tY7b8qVk2D94=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Gx+Kx9Aw;
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777302868; a=rsa-sha256;
+	cv=pass;
+	b=yd+GdcQAKQOVgKWRUNUEE5wxMSkAaCW/MWaVak+NLW8YMQyFHdkzKOygRCU1f+xga5zNHo
+	5bX60GecIS6Cci9jbBzh66Mm7rgbGMJXj7PSVTRbBz3CHPTtHOkBpXcdq1BN3Uh5Tr6P+r
+	HizBRXoUJvoPfjYjPMKpiv04Dj9sUI4=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZKGLAbOHqWqHpMFklJ5KdUV9GYtcZhofthWIsu04pscaBykr1Qb11KYnipPBvqO3kR6MPKZCndW3RMDCmEb2j+mEU+XbUKRCCEJacCjphDQIM7E2uL1vqMgAWuVJY5uSmiqX655Itv1QQmRjvOBNPTjDt00wQT0eAxEWPvQ722bOP7mWIEEDK50b0eanBlanVo/JmlFAkUqxt5rpDllzQFRv8YCZG31mP5jyS9AKhGGjSq7+amEdQhgQLNr7d295jbE+HK5cSLQYtPb54EfhCe/1AEEHzV1FW32Gnj50NFLm3I/l5vc+EBm/z6VoV2VT+PxShZu58cNKk1NLX/65BA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9f0ZUQCx8tznsexAQvc9lxOG7t4mOu9VoARfprPP13w=;
+ b=PnmPM/R1WSLirBNU2K3Yt1JP3wVLAmZNb2cdrFNAytNOCsVcLu8glBj7QcWVZ4bISx7rwhlrEDPf0+2rNpSq9qAHVB6SBQvXOrCDc85V+xRhWf/wOcauRMsAOED7mHm7M0snjJf27eflZsMGQ3tg941CvX4dfbWqIzn11sXqSAMh93F1C9JjSBSRZUkxm+C3d+xEOl0D59pEuI+eSqQ3P4GbHpKfWxITBjnC7ZG3yxTXQwSiUeBPL/s2OuE34+aR0+LGMN751mTLu7EdOu9+2N0kKpjie8eBtY3+Z4GN9zKUb1P8ubNTgPIPWVhL9XzzQAjER+qJG0nB3cpKl/+m7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9f0ZUQCx8tznsexAQvc9lxOG7t4mOu9VoARfprPP13w=;
+ b=Gx+Kx9AwlQke0H89tPcklRzHTZpsqRqI4FUzuq6MI8ZKIgrJR5CGDlLi/9jpgKwqPEZuo2Nh3SUePSR2eD4rSRUK0A4e+wGM41jYFc8yCOUTg7o0mlutD/ko6xT75VMCCHfffF7qwj/FzAi2tW7bMl6fKZLXmMgCEWQzqhsZjIWIH3J6iCaVgixmL4Njsydi0Sc/o1a/v6886BFpMNj9Jw6t4wKgjGTc8poNczDHhmT56wlZkqwugtWkL8vAuPHkOIxHyf3Wr34S/CEtBntBVVFEyHctcH3qpnjApNcUpPtpLCk81ASLgfdyHIPFfU0Xv3VZRo8MGHieYAmJkf/Kvw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ LV8PR12MB9155.namprd12.prod.outlook.com (2603:10b6:408:183::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9870.15; Mon, 27 Apr 2026 15:14:24 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 15:14:24 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 27 Apr 2026 11:13:44 -0400
+Message-Id: <DI419PSP5050.15VGMJFDMWBQU@nvidia.com>
+Subject: Re: [PATCH RFC v4 14/22] mm: page_reporting: skip redundant zeroing
+ of host-zeroed reported pages
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Brendan
+ Jackman" <jackmanb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Jason Wang" <jasowang@redhat.com>,
+ "Andrea Arcangeli" <aarcange@redhat.com>, "Gregory Price"
+ <gourry@gourry.net>, <linux-mm@kvack.org>,
+ <virtualization@lists.linux.dev>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Mike Rapoport" <rppt@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "Zi Yan" <ziy@nvidia.com>, "Matthew Wilcox" <willy@infradead.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>, <linux-kernel@vger.kernel.org>
+From: "Zi Yan" <ziy@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.21.0
+References: <cover.1777223007.git.mst@redhat.com>
+ <788d5a09394ed1456beaab23f75d91846ceeb611.1777223007.git.mst@redhat.com>
+In-Reply-To: <788d5a09394ed1456beaab23f75d91846ceeb611.1777223007.git.mst@redhat.com>
+X-ClientProxiedBy: YQBPR01CA0154.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:7e::12) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|LV8PR12MB9155:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f50090e-40ca-491f-a472-08dea46faa4d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	mUcpvGlq8GK5lfFmspAIvYmQz2TD3NOYkHOQ9MDHqJBU7P+2umJjR6X4jnVhrIYvvy5KJSO51cDt9WR2buf4t89ayKcJzneSsYo4F9ZBE8BQh4UvXGpPvXQ16ubOJG0ICUfH57usYxNgak5R+RNHQ0WPNjytFvUL8lmZoRawoYUhSXYJJRHpMGWSXzUKB1DS2RBwdPyGaeTBsiyP+nLYO54Qx6E74R5Ja3SxGQ6/6h+cNcnY4MBK8CFvV1bKoWU+oLTnwAg4fiHYeQQ42/uxJTYzvn5LMbxF6aABb8r2EarjOgEjsiDOiiEBQN6wgoWZa6Ah+5rx8ttRlHfVluu0v9LWjAKfgMeqr0lGsuSlEUo4SB6b4fjGes9DomwfOWNqICwQEDKDW8KFgyCBFxEJCWI5N+RNpVoBPLArHsFEWmZQCjIQUERLKCi2Fcv3fnAoF9A7zdAF8ZSfAae7AmB62W8RSmrlXIoFSOIoT19A1H0BpgQYcMe5LGw4QqhBEGpjyJytB3hI8wWEhOYnlAoIZOhzG0PguK4ZhhmMLRhv+kgcQZ19SxZ/1remu6ZJZWkhdBoju55HI1+eJEh8O/kfYrFcacKzftZPaLCZM+0qDN/BeISf/7EQuXzXip5gJ7zm/ChzQutIsV+Lg4JIhPYJYt1s93pXL2EBUFjdwIkrM8qdSoQiQQKmJP9afTftsz0hpkWlSJxTiGqOj9ZV/y9UDc7urpPycw3E5Llvlk+K518=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YVJLQlF0aUZ4UE9xa21idW0yV2NPKzc2M2I1MnlaYmQyVjloUE1BeGszSEx2?=
+ =?utf-8?B?Zmw5YURkMXlYMU1yd0l4emtjRWZmdlYxa1NQb2ZUcTBXRnFYZ0NqY0JHN1dr?=
+ =?utf-8?B?b1M2ZjBPVEhWVlYwUW1VbStqSk1YN2NjT1NRdE92TVNlSml2N25ncExUTUxD?=
+ =?utf-8?B?RW1pb3J0RW0veG1wV2dvd1hjSllCN3NLaUU5WXk1Z2hPSGdLN1k4RGRDVTJp?=
+ =?utf-8?B?Nm5kQ2ZZaWRrK3QwNm90Z2lWT0FrRFZ2TGpYNVgrNVkzNk02OC8vSyswbHE1?=
+ =?utf-8?B?blBFenIrclU1K2htQlhqSDlVVjBwVWdKMHZoK25udWt4UHY2dVI4akQrZ3Mw?=
+ =?utf-8?B?MGRiVE4xcW82MzRxa2NMRkdsSVdmWGh4eXRpRWFYb2NGWmVnZXk5VDJDaUR2?=
+ =?utf-8?B?TUpwVTNDVXhlUGdJK0V6VlRzODNOK2FvWWpBTjV1OWpTZEs5bkQxaUdhWlNM?=
+ =?utf-8?B?S0VzSmRKd1Y0WEc0NnNNK29VUDJzTmpjR3R5bjFjRTZadFNFY3FtQzFQakdV?=
+ =?utf-8?B?VmxrYnFqT0dsSzQyWXRZYTcyblMybFp0R1lOVkNQc1gzNVZNczlmSDJpcEcv?=
+ =?utf-8?B?MmxNdTJPb01EUGxCK256Y1Vadk5kWGdDQlNscnZtL2lYNlVYbmI3NTNFRHky?=
+ =?utf-8?B?TkRNcUN1bzZKelNEZ3Evb0dueGpGcGdxNGdGTHAyWFdXRG12UkZDaU12blJ6?=
+ =?utf-8?B?RllmNEUzOVorZXhTWnFTVW03Q2l2RGVXRE14SWdsTlArN05NT0tmUkpQSldM?=
+ =?utf-8?B?eC93eVBYQU1oNzU5ZEh0anlkc2ZHcEhVQnIvNlhWcFNNSVQ1Mnhkc2U4bW10?=
+ =?utf-8?B?TVZOYzI3ZmZjYjBpMGNTbnBDeXJyYyszWFVCbFNXTWhNN1ZnV1ZqOGo4TzNv?=
+ =?utf-8?B?bS9XZjZZTy90ZTJJMDRrbkIzRFluZmFLTkE0QzA4cERKL21lTWpVcmgzNS9T?=
+ =?utf-8?B?ZjRNVzJ0dmJSWkZoVC8xSlNvWnZ3MmhJay9CT3R6QWJXM0U4SEVmOXBHcXhI?=
+ =?utf-8?B?L0I1SjlrWm9tSTgvWW1CeTVyUElobUNKN0lZZGNMRjZKckxZMGtydlJyN1Av?=
+ =?utf-8?B?Q3R3NzRuUU1Kb0hTNWZFY0MxN1lhM2NLc1Z2WVVGL0xSYjlJMHc4aC9sM2M1?=
+ =?utf-8?B?cjZDdElISXcyNWxmNmtqR2c0bjdYQXFoRm1VcS9XNnFRUXBXaGgxY1RJM012?=
+ =?utf-8?B?LzdUQk1vT0hhV1VpZi94bjMwMlFtNnE3MDZGTWhZdTl3aU55V2dNNUJIc1BT?=
+ =?utf-8?B?Z1U2M2NCdFQwbVZZU3RDQ28rQVhwa3FIaUpJeGo4bzNxRGo0N2c5dHdmejdl?=
+ =?utf-8?B?SUdKK3VIZ1BrdkJoeDZHcFJFNHhHUGFNYnFORlZPRnErRzZpaG1tM0hwcWNV?=
+ =?utf-8?B?dUlXWGYyY3VneGgrSnF3cHNEWklBN2pmTFN4a1A0S2dxNFVFRlZNbm5PZHNE?=
+ =?utf-8?B?WE9oVk9ETHlWRk5Sem04N0ZSenltRWs5TkRxb3ByTFUxS2R6SmZ1Z1MzNUtE?=
+ =?utf-8?B?Nmhjemw1NGgxeUpQNlBTU2k3ZWlxOXQzMWh5ZlZ4WkRZNmpjR295U1NaMHlz?=
+ =?utf-8?B?bDBoSzdMR3BSdit1TzBuOWJOVG9VVTNpUDF1aitmV3RRVFFDV01ZVHRNc1FL?=
+ =?utf-8?B?MnhKeE10MUhJQ3JzeS84TE5xREtiZzlSTTVqZThTZ0tmQ2ZoYTJnNmQvNHJP?=
+ =?utf-8?B?U1ZkbTFZVVNJMmpMaVMxdUJKcjA1U3BralB5bTJ5dlpndDlWcHhhVXUrNlk5?=
+ =?utf-8?B?a2RSUmVKcHRrelZPRDBFZVdhTUpzMXpvMTVFeWkyekZEQXdUclF6bldvWjN2?=
+ =?utf-8?B?UUtKZkxQbkYwc3NLU2JVRU0xbm9vaXFOVnErejVTcFJmSXNWYldHWlZPakJr?=
+ =?utf-8?B?TzBRT3AwR0dYYno1bDUxV3RTTWM0NUVXcHl0VkRkZlp6Tmxnb0VPSGRoZmFk?=
+ =?utf-8?B?MXU1MHBxNUJKU0pOejVDVTRKbjZXWXc3WWszcjNmc2VYKzJ5c3NCTlg3VFBR?=
+ =?utf-8?B?b3AyODNrb3U1QXY2UHljTm9oYW94WVp1WENhUktuODZNWWVVd0JjVEdmNmRN?=
+ =?utf-8?B?eWMzRVgzWnJveW0wNWtvUGViT250eUNROTUvMUtiOERYVnhFNUZFT3JRbXhi?=
+ =?utf-8?B?TkpYVFhJLzIvYWVaUnNVeGNVQXg3dDFPUTVGaUh2bS96aUtiaWdwR3poQUhP?=
+ =?utf-8?B?cVVKQkQrVURnblZOOUxkZTU0dS9LVnNmT2U4MGtCcXkySmtMTGZleDF3UzBP?=
+ =?utf-8?B?N2dEd1FSS1ZHckpLeUZXZlJqTDltWnlOSUxTMWEwN0h5L2NzNFBVWC84RnRD?=
+ =?utf-8?B?R2RzYWxMV3ZSSmlJQzRNQnZ4VHZNVVF4aVU3akg4Z3NjeE5WWGMwbG9Ea2R4?=
+ =?utf-8?Q?SClca7k+pYdpeMwFeJalvNd2syq3h7wPIiwA2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f50090e-40ca-491f-a472-08dea46faa4d
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 15:14:24.0574
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: j/iEbwHiazUoFQ5xz3cnpT7D1Fo9xW+bJY3zCN+Bo8nuFX9iSAq2uB6Id0ncS3L+
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9155
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 571424001B
+X-Rspamd-Queue-Id: B18EF180003
 X-Rspamd-Server: rspam06
-X-Stat-Signature: geo4px74cg1a4dhtsf99mg47pr5fyuqs
-X-HE-Tag: 1777302761-946518
-X-HE-Meta: U2FsdGVkX19gc/Ng/Tn5po5tBy26h4zpFgSyiI1ZcqZ20JzoIoF+q62KBACYQ4SPVBwBc/6AZaABKqAsBUJ8VVl7jmwpabSIiEl0kpMdlUBimI8uNnxohaI7OJsxiZym1i+NmbdpLg1a15PMJCUrS1k37bhitR/H+Tsy3Mnum+BxAkyQDdiW0x3qMEno5XGcv3F8pJS9yjJXaxr3Ms96ciyszvdrZO53kn1Q98tU/Pb5zBdwWB5Fq6PfpH1WzUVvDFRwu2bNMrlNH0eBVn305V1ExkQ6O1Q+WxbwkfQBp5yYbZrp3AGEji7AFhgrzo8eb0lGks5EA2txGlH9zkOmgQNGgRg+K9jANTMFoOfZ5inlGAY9uRc1KZM0+VxKnchwSFh2j4vPVZ/O0aJLWSQ0Y7j3QCniof3DGTCG/VQVj4gX4dr5+pbLJxM6uBNPwJ43j11psjIOY3zBvufMhS6ijDBlpYdIZ8kL+fkUyaHYONot2aXn7yBG3IuMq5eHZ+Cnns8dTboRboNuW3dhv71P8qS3YzUQiQxGwxEysofDE8KFkx3yLY393Wi8RD6klRe98rTBlN9X1pBhFjC8TJEea6h2kCS09RssgWoERFEZJF8JZMrnWhdHRGtiZsFWayjE20g8/oBtndP3pnaR/DscG4eIQQyzhdXvLWDu/MaMyoJ1p8cmvvGoZtQn5hmINeU2rmP/Jja52eMdGLReFfY16frgwc4gkA5atIqsM5+Bl7fHOOrRNceLlrr/wJvcsdVxLF4/MzLx+6jFwkwnzN/jaYzyTD+SXppblJQGM8L489RU9cC0aJjKiPWXXBgyw1Q0x4+5HRBfoIEh1xe4g+w74LMe3BqNdsm0l24ILW81e627WgW0dfhxwlzfjOiqFUEQfTWSUwbmPrzTYaYkDJ6gqpfd9kjPl9ql5aeb1xM/K0jz6k4lSxpuWTbPUitj40kPi4jbHg1IHNBaSmyF/Zq
- lWK+hjm+
- RPBl8SQUnYJHwACpETmX/hy/lCjyf8NfJFlNnRfy834RXVrMBAT6JnkeNDjS55VjbP9c8mT5CHp0j0cOLVIDIdk/O2pwE6lnxn+0PYCtdq/fdQ6AyPUqtKLhjmphD3QDQOko5AjEyLrmatawlemQSgOgt+rDZV46AYlMdBWkm3pmk79dqXlV6Efi6BF0evIWv8sSEN8ZNZ0NO21r1y0lotVxt6g8H1wmn5iJJbsXWI9LivsA=
+X-Stat-Signature: zgfsxa63z858s754cnhxjfd5qk3x4baa
+X-HE-Tag: 1777302868-207956
+X-HE-Meta: U2FsdGVkX1+TG4qz7DRBeF8tdulOl+5wNFxxYdkmSZCClGvYuqeAgSfk/5R25AWpSYUtoGfDEmXZHeKQEq0yPCHLbI2myiy3RS3Sa0UJCNbrFnAt90gP0Gil/VSedG98fcFFkFasB22AuKIpGPtC3Mih2vN7u8IqQC/9PUyMZnaKJ0tkKgE7Mpi4T4bsz/ZQ1aPt6Yt2l+93m+FZhw52eM/Z1tTqkyXnmyw4OC5LTh5CoWjt4P24UDajDjeyso4GHR2EkCNe4DvsSGr/t5TOSh0NPSFLoEqjNgAc8N9vFFK4U8F2mQaeXi3SPaccME4SFg1wE9inmwswTcTzjmHhz2FuPDdCumvF7ZdK7Whqvy9DVJf4pHYp4f4+w3yf6D/31wyN8u698aGAFHpVWyXa0sIGypBkh5V9hAdhyUASejxRHLAn8GCTc8VHnZUHohxR+GYkr3M3Alml/puF/OxGADfZ99+I/ZBySWzHK5gEK2TWJzc/lEvKpseWP8kcH2K41Rrw8lDvjJYruCNgnzVJxnIpDA2bX3F9oe7/dRCIlzbbAB0gFwAmxKsw2KIwDbeTvMypJ+c2XIkti25BEwFfuZB232o1wpAStpVhgM33p7D8LyV0MbBEPpKK3BYe9fQb5zIsvwlMPFF4DbrdKhnCIZAnIzbNQZxrCTxM40g+hR4p/7vEESrIFkW2bXpB6yrDMJweG2Dudydc91tnn2zuTfkb7NHBnPMjbOYVQQz5yckPTBVpHs6eyslK0s7sAA6mp2ZvgN8fD6lidHG/y8K4h7u+bx14vNaGbfHx/aKei0Cj68vlhk5RAU1VB9/4zu12ZiUldWGgQHZFOfqF0ZeaKvvUAhlElLmKXtN0xX6lk3gNslyyuAt1++1hzsKAVimEiXKsa+y1GOTAHurPbYkPHgqkOtqzptvYfeP95Xub+sCgO9khCazmqYHdLuAg+3RDa9x8rpv1ReL7WWlTquH
+ Tx7e8siH
+ FeBBgERXl5ntRrBPCuR+xTUBnyo+SDrqi3YcPY8cbLn2tXcKQeMgEABlNHtNEblGSKeSVQ6qjt5I8NXrU0kgfk/owAwgGs3IVxhX1SieCmRqEHLlME5yX/4fz1lxd4ZEVU6kB1I/1YaHL9ybe9yvT8bDdup2894lZh9Jw6J68h08YmrJWOnf4eC5nqnwoL5kxxwklGgMUIxDtLg2dWLgjIWq/hRFuWG9J39e01DeFRBfCeCw32Qe8NpyVxsnwD0e0Qrvyh+CQjJ9TlDb9pveM/oz8TrnCUo4YB368Car6IC25gDLyTvXAOcrsc0v3lUJjha4sTfA48JfT+FLtYrMoENNsGXdLlDElzgBQKyJfMeYT/tnanSjXGfHFbPXKvUNngXfC9ZXGo5AvhXi68fjtPowLayqNTYHfrBTMS557SBJCwNRKlqpwqszjQ7Eh/BCtYmVk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,140 +179,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON utilizes a few mechanisms that enhance itself over time. Adaptive
-regions adjustment, goal-based DAMOS quota auto-tuning and monitoring
-intervals auto-tuning like self-training mechanisms are such examples.
-It also adds access frequency stability information (age) to the
-monitoring results, which makes it enhanced over time.
+On Sun Apr 26, 2026 at 5:48 PM EDT, Michael S. Tsirkin wrote:
+> When a guest reports free pages to the hypervisor via the page reporting
+> framework (used by virtio-balloon and hv_balloon), the host typically
+> zeros those pages when reclaiming their backing memory.  However, when
+> those pages are later allocated in the guest, post_alloc_hook()
+> unconditionally zeros them again if __GFP_ZERO is set.  This
+> double-zeroing is wasteful, especially for large pages.
+>
+> Avoid redundant zeroing:
+>
+> - Add a host_zeroes_pages flag to page_reporting_dev_info, allowing
+>   drivers to declare that their host zeros reported pages on reclaim.
+>   A static key (page_reporting_host_zeroes) gates the fast path.
+>
+> - Add PG_zeroed page flag (sharing PG_private bit) to mark pages
+>   that have been zeroed by the host.  Set it on reported pages during
+>   allocation from the buddy in page_del_and_expand().
+>
+> - Thread the zeroed bool through rmqueue -> prep_new_page ->
+>   post_alloc_hook, where it skips redundant zeroing for __GFP_ZERO
+>   allocations.
+>
+> No driver sets host_zeroes_pages yet; a follow-up patch to
+> virtio_balloon is needed to opt in.
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+> Assisted-by: cursor-agent:GPT-5.4-xhigh
+> ---
+>  include/linux/page-flags.h     |  9 +++++
+>  include/linux/page_reporting.h |  3 ++
+>  mm/compaction.c                |  6 ++--
+>  mm/internal.h                  |  2 +-
+>  mm/page_alloc.c                | 66 +++++++++++++++++++++++-----------
+>  mm/page_reporting.c            | 14 +++++++-
+>  mm/page_reporting.h            | 12 +++++++
+>  7 files changed, 87 insertions(+), 25 deletions(-)
+>
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index f7a0e4af0c73..eef2499cba8b 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -135,6 +135,8 @@ enum pageflags {
+>  	PG_swapcache =3D PG_owner_priv_1, /* Swap page: swp_entry_t in private =
+*/
+>  	/* Some filesystems */
+>  	PG_checked =3D PG_owner_priv_1,
+> +	/* Page contents are known to be zero */
+> +	PG_zeroed =3D PG_private,
 
-Sometimes users have to stop DAMON.  In this case, DAMON internal state
-that enhanced over the time of the last execution simply goes away.
-Restarted DAMON have to train itself and enhance its output from the
-scratch.  This makes DAMON less useful in such cases.  Introducing three
-such use cases below.
++willy,
 
-Investigation of DAMON.  It is best to do the investigation online,
-especially when it is a production environment.  DAMON therefore
-provides features for such online investigations, including DAMOS stats,
-monitoring result snapshot exposure, and multiple tracepoints.  When
-those are insufficient, and there are additional clues that could be
-interfered by DAMON, users have to temporarily stop DAMON to collect the
-additional clues.  It is not very useful since many of DAMON internal
-clues are gone when DAMON is stopped.  The loss of the monitoring
-results that improved over time is also problematic, especially in
-production environments.
+I was discussing with willy and David about removing PG_private and
+repurposing it to PG_folio to identify folios. IIUC, PG_zeroed is only
+set for PageBuddy, so it should not be an issue to set it for allocated
+pages for folio identification. Let me know if I get it wrong.
 
-Monitoring of workloads that have different user-known phases.  For
-example, in Android, applications are known to have very different
-access patterns and behaviors when they are running on the foreground
-and the background.  It can therefore be useful to separate monitoring
-of apps based on whether they are running on the foreground and on the
-background.  Having two DAMON threads per application that paused and
-resumed for the apps foreground/background switches can be useful for
-the purpose.  But such pause/resume of the execution is not supported.
+Thanks.
 
-Tests of DAMON.  A few DAMON selftests are using drgn to dump the
-internal DAMON status.  The tests show if the dumped status is the same
-as what the test code expected.  Because DAMON keeps running and
-modifying its internal status, there are chances of data races that can
-cause false test results.  Stopping DAMON can avoid the race.  But,
-since the internal state of DAMON is dropped, the test coverage will be
-limited.
+--=20
+Best Regards,
+Yan, Zi
 
-Let DAMON execution be paused and resumed without loss of the internal
-state, to overhaul the limitations.  For this, introduce a new DAMON
-context parameter, namely 'pause'.  API callers can update it while the
-context is running, using the online parameters update functions
-(damon_commit_ctx() and damon_call()).  Once it is set, kdamond_fn()
-main loop will do only limited works excluding the monitoring and DAMOS
-works, while sleeping sampling intervals per the work.  The limited
-works include handling of the online parameters update.  Hence users can
-unset the 'pause' parameter again.  Once it is unset, kdamond_fn() main
-loop will do all the work again (resumed).  Under the paused state, it
-also does stop condition checks and handling of it, so that paused DAMON
-can also be stopped if needed.  Expose the feature to the user space via
-DAMON sysfs interface.  Also, update existing drgn-based tests to test
-and use the feature.
-
-Tests
-=====
-
-I confirmed the feature functionality using real time tracing ('perf
-trace' or 'trace-cmd stream') of damon:damon_aggregated DAMON
-tracepoint.  By pausing and resuming the DAMON execution, I was able to
-see the trace stops and continued as expected.  Note that the pause
-feature support is added to DAMON user-space tool (damo) after v3.1.9.
-Users can use '--pause_ctx' command line option of damo for that, and I
-actually used it for my test.  The extended drgn-based selftests are
-also testing a part of the functionality.
-
-Patches Sequence
-================
-
-Patch 1 introduces the new core API for the pause feature.  Patch 2
-extend DAMON sysfs interface for the new parameter.  Patches 3-5 update
-design, usage and ABI documents for the new sysfs file, respectively.
-The following five patches are for tests.  Patch 6 implements a new
-kunit test for the pause parameter online commitment.  Patches 7 and 8
-extend DAMON selftest helpers to support the new feature.  Patch 9
-extends selftest to test the commitment of the feature.  Finally, patch
-10 updates existing selftest to be safe from the race condition using
-the pause/resume feature.
-
-Changelog
-=========
-
-Changes from RFC v5
-(https://lore.kernel.org/20260323231538.84452-1-sj@kernel.org)
-- Rebase to latest mm-new.
-- Drop RFC tag again.
-Changes from RFC v4
-(https://lore.kernel.org/20260322155728.81434-1-sj@kernel.org)
-- Fix typo: selftets.
-- Fix wrong selftests kdamonds resume iteration.
-Changes from v1 (or, RFC v3)
-(https://lore.kernel.org/20260321181343.93971-1-sj@kernel.org)
-- Add RFC tag again.
-- Handle maybe_corrupted inside pause-loop.
-- Reduce unnecessary commits in sysfs.py selftest.
-Changes from RFC v2
-(https://lore.kernel.org/20260319052157.99433-1-sj@kernel.org)
-- Move damon_ctx->pause to public fields section.
-- Wordsmith design doc change.
-- Fix unintended resume of contexts in multiple contexts use case.
-- Rebase to latest mm-new.
-Changes from RFC v1
-(https://lore.kernel.org/20260315210012.94846-1-sj@kernel.org)
-- Continuously cancel new damos_walk() requests when paused.
-- Initialize damon_sysfs_context->pause.
-- Make sysfs.py dump-purpose pausing to work for all contexts.
-
-SeongJae Park (10):
-  mm/damon/core: introduce damon_ctx->paused
-  mm/damon/sysfs: add pause file under context dir
-  Docs/mm/damon/design: update for context pause/resume feature
-  Docs/admin-guide/mm/damon/usage: update for pause file
-  Docs/ABI/damon: update for pause sysfs file
-  mm/damon/tests/core-kunit: test pause commitment
-  selftests/damon/_damon_sysfs: support pause file staging
-  selftests/damon/drgn_dump_damon_status: dump pause
-  selftests/damon/sysfs.py: check pause on assert_ctx_committed()
-  selftests/damon/sysfs.py: pause DAMON before dumping status
-
- .../ABI/testing/sysfs-kernel-mm-damon         |  7 ++++
- Documentation/admin-guide/mm/damon/usage.rst  | 12 ++++--
- Documentation/mm/damon/design.rst             |  7 ++++
- include/linux/damon.h                         |  2 +
- mm/damon/core.c                               |  9 +++++
- mm/damon/sysfs.c                              | 31 +++++++++++++++
- mm/damon/tests/core-kunit.h                   |  4 ++
- tools/testing/selftests/damon/_damon_sysfs.py | 10 ++++-
- .../selftests/damon/drgn_dump_damon_status.py |  1 +
- tools/testing/selftests/damon/sysfs.py        | 39 +++++++++++++++++++
- 10 files changed, 117 insertions(+), 5 deletions(-)
-
-
-base-commit: c12c06c4198f28d4d2bb48cc9608dbbfb020bf43
--- 
-2.47.3
 
