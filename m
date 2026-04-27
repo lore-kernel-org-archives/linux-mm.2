@@ -4,133 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BAB3FF8850
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 05:20:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91F14FF8850
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 05:25:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC3886B0005; Mon, 27 Apr 2026 01:20:14 -0400 (EDT)
+	id C1D526B0005; Mon, 27 Apr 2026 01:25:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D73BE6B0088; Mon, 27 Apr 2026 01:20:14 -0400 (EDT)
+	id BCE7C6B0088; Mon, 27 Apr 2026 01:25:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C90856B008A; Mon, 27 Apr 2026 01:20:14 -0400 (EDT)
+	id ABCAE6B008A; Mon, 27 Apr 2026 01:25:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BA1396B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 01:20:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 54F3514071B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:20:14 +0000 (UTC)
-X-FDA: 84703184748.14.EEB3CD4
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 094F480006
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:20:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kexT6xKR;
-	spf=pass (imf30.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777267212;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C4306B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 01:25:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 469711A0772
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:25:22 +0000 (UTC)
+X-FDA: 84703197684.17.ED277FA
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011037.outbound.protection.outlook.com [52.101.57.37])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 27AC8C000C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:25:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XzEvqwQu;
+	spf=pass (imf10.hostedemail.com: domain of bharata@amd.com designates 52.101.57.37 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777267519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4nEsBxBk+seZw+u7Xx1eDjzz9+lJYddsqvqoTmtvDQ0=;
-	b=qE0xzrHnBu5cYwBftSZVJRq1FmVgmHlOc7l7ic4rZlH57DJ6sK5amBCAMQiVuwVgvHpseE
-	ocVGQgi1cDhJ23NIMUZq4j5qcjSE7DSj1IZ+lG5rhalSVKFZN1IOow4v/eHMiWSX7qyF3H
-	u7K/+yK6mjdY/L4Ara9WCxdQHge8hCk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777267212; a=rsa-sha256;
-	cv=none;
-	b=3M1FLrMGRcvGwWdzZnGHg+8d+RYOjI7yVb4nHUGhluTuXC/ENqOK4GZ3vWpJ+vMP23VKlr
-	gmXjuqrVE+mJ0zExRS7rW3TwEWacarrRQ6kQTkGnOEvCxRqDlJyiOc2sMgLyoge7urmeSN
-	fktsjyZ4AL5LZ2c9nqdtsdBaNfnL9KE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kexT6xKR;
-	spf=pass (imf30.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63QMkPsJ2933551;
-	Mon, 27 Apr 2026 05:20:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=4nEsBxBk+seZw+u7Xx1eDjzz9+lJYddsqvqoTmtvD
-	Q0=; b=kexT6xKRl6u2r4yg5t5alWepxikP5khOYDICyhTTX9fe0PLnSJABE6gDa
-	hdBl0ji0Uc2QO1hpb/BAdrqtNhqY9vwWVshwKhZ3EfYWTk3X4amAb/PnRahFMNG/
-	NEAaJP3vkCTEDAksZfwzdG5qaPK59zlPWydsyQGnGuzFRmOU/EtpDrwzALe6HZHJ
-	61NRZIjrKcwpR69PxQeylURgf1QatspI2qZzkfwLecfgrXvjjwjcjzN3PcZfCT5L
-	mSbK0dTT/5FuyrUVCqEfpAl3SsdOScqA3jbo6GafH6P1sev3V6LaLD3Alqbkk8n/
-	NejuqLCmKVubL8aVKsoPt85lBy8yg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drn9qxrnk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 05:20:05 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63R58hSa005843;
-	Mon, 27 Apr 2026 05:20:04 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds8avkv9r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 05:20:04 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63R5K1RW29033212
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Apr 2026 05:20:01 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EFA1C2004D;
-	Mon, 27 Apr 2026 05:20:00 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF41020049;
-	Mon, 27 Apr 2026 05:20:00 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 27 Apr 2026 05:20:00 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id B7C87E066F; Mon, 27 Apr 2026 07:20:00 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry accessors
-Date: Mon, 27 Apr 2026 07:20:00 +0200
-Message-ID: <20260427052000.196402-1-agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IhMsT+V2w5TaZSh97hvpvQOhWz/dtxRTne/uxTncjng=;
+	b=zWwnMmLsYNRIFVuHwRFPFposezusfry/GQo81UfbINeuLrHs8G465kcznh+DPfwDXsfUKu
+	ZVb+tdOLO2ftdLcnsvZP5InQlRFbGwFGx1O/kkpm/paY+WlAmiqwJ1wHEFmjPJE3YYWILq
+	QFctm99qzKT+E0IA/nixVPWhHlr1XI8=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XzEvqwQu;
+	spf=pass (imf10.hostedemail.com: domain of bharata@amd.com designates 52.101.57.37 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777267519; a=rsa-sha256;
+	cv=pass;
+	b=YawFKc3PJalPIS6NxpFOvWs+PXeZ55KAL8yYpHDbWhNdA3Ffyao+zUoYeMS2TJKSZAo331
+	AfcgVkhObsU9mAqOX7U3oLRLQ3E+511aaGbKycmINB9YkRFjRmQDyY+jIRfJcblQBRsyRy
+	O3Pz1Ifq6MSphWQFw/b8POWsJ5M+9q8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jYgJJPODl352KycyLnk08f35RFcGrNy/h6CR3DfYm1WrQBleY14RgCQl8BR0igeBPp1Zdj2JsfcvjMpdCJVDmuJKpS+TvZM9v3IeTzLPnmVir6OH/0Bq9Qt3KXHfJ5uUopCjY6qK0rjlHpJaJvwgIw5xt19jM2uN6rkBJfNNAS1usRP1I9RxWwdpkwH0nPKemw8H6ABCL+9+dC1dSxY+pWZKLzq3VmpqH/idmZgUinTeNMfhsKNxLeur2ShVKkV7XszxotAU5qSOHFWAsH/ImmlWQ/enlIxC7LCVvdRgnA4YSMCsJeNssLuCabWELX4QXDuGB6f8FcoUxwSjm4BmuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IhMsT+V2w5TaZSh97hvpvQOhWz/dtxRTne/uxTncjng=;
+ b=cSIKA+u/Gs1v2mTldyuDELC6DwAC4h0tvC1sTWG0x/89nzphArywdVRfmIwZbJlz/BsnmvZ5kCn6tgsDvzSvsRI+3KigHIOzACOK9IXYxyZy+kxKq0j0WXosbfjZJwYHijQyv6FiztTSrB4wcjhuiYigpdnR1RptcdE9OsPga8iLwpHjluKwnbJcnyQ8Vv4v4lPzjU6COwwSxRu1X3kKE4YwEFk1BegWDAhJSjvGMOO4Y/8mWTdo1Ml3kN9AOVdzJRVHeqfTHcVmRhwVMcGC0OxqOdKoX1XZWsBuljN0PLrwsqblpkZZNcD6ZDVT+v2YGwFRWwFDk8JfMx807kGCjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.ibm.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IhMsT+V2w5TaZSh97hvpvQOhWz/dtxRTne/uxTncjng=;
+ b=XzEvqwQuywjITvDMASaoyvMkheTvUQU6HfY8M6QhtNmO8BgTYsheZp8duTAjjaz4p7gUcHHtt2xvztEGx2LZrV65CmNBXgpLwQF3sa1OZ8GBv/cv6EG/lYJ5dIO12nEIBKAebbJ0tkm5I0NqOD3z6Ee+PYPKyM6VJ5J3ilArYs4=
+Received: from CH0PR03CA0214.namprd03.prod.outlook.com (2603:10b6:610:e7::9)
+ by LV3PR12MB9233.namprd12.prod.outlook.com (2603:10b6:408:194::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.15; Mon, 27 Apr
+ 2026 05:25:12 +0000
+Received: from CH2PEPF00000099.namprd02.prod.outlook.com
+ (2603:10b6:610:e7:cafe::e7) by CH0PR03CA0214.outlook.office365.com
+ (2603:10b6:610:e7::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.26 via Frontend Transport; Mon,
+ 27 Apr 2026 05:25:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CH2PEPF00000099.mail.protection.outlook.com (10.167.244.20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.18 via Frontend Transport; Mon, 27 Apr 2026 05:25:12 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Mon, 27 Apr
+ 2026 00:25:07 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 27 Apr
+ 2026 00:25:07 -0500
+Received: from [10.252.192.21] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Mon, 27 Apr 2026 00:25:00 -0500
+Message-ID: <ce8bf715-5e76-4c73-9523-8e7309821404@amd.com>
+Date: Mon, 27 Apr 2026 10:54:55 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KLWXsFStS9wxIe74e9wlHShCUGR159aI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDA1NCBTYWx0ZWRfX6pdaSSR0sFra
- 2C2qDgF7ggAvahOz4etl+xbC5UdXzVr+dxqD5A2hHywN5ncaCSDF68YLabuwl/JX+xSpUwKXCgs
- m4I92f6BgzzOb9PSXacdx3JJLS/Ecf0KHHYy84BuemPRTce+rebYaKh9MN5hbrcSVLb4z/vjwJN
- nQhqj64oVuB1bB8O2HJcEmjezgTtnLg/vqg5N0nv4QjTiP5w13+SkHk94wpfJECvvIbIlrVNbd2
- hKM30dfNaBanKEaF9PpSxGKSLOz9hb6zEoYb18FZGIZcryroQdmrvf0ffVODh4SkDgQfhD+wt9Q
- 4EOsHb7VZG2bEariAM2yFxpzyvyw8LNopcOqI7Eu+P6+8JgaBTyFjpZ+Hh+1obUkooVztelFUTn
- K465lnGTpT2EVC3nj2M9p+hBNeKo5oVvWhx14uOYHqzI2a3j05OYOj1F08OXkludDE45Nes9jj9
- W0Xsw/Xb+PYh5Dn6ekg==
-X-Authority-Analysis: v=2.4 cv=Kc7idwYD c=1 sm=1 tr=0 ts=69eef206 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=WjDiwf2ghD9uJ69bLr8A:9
-X-Proofpoint-ORIG-GUID: KLWXsFStS9wxIe74e9wlHShCUGR159aI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-27_01,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- malwarescore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604270054
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 094F480006
-X-Stat-Signature: kiha48yg5r9so1wgny8kwj64mox4mu3t
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v6 3/5] mm: Hot page tracking and promotion - pghot
+To: Donet Tom <donettom@linux.ibm.com>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
+	<gourry@gourry.net>, <mgorman@techsingularity.net>, <mingo@redhat.com>,
+	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>,
+	<rientjes@google.com>, <sj@kernel.org>, <weixugc@google.com>,
+	<willy@infradead.org>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>,
+	<dave@stgolabs.net>, <nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>,
+	<yiannis@zptcorp.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
+	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
+	<shivankg@amd.com>
+References: <20260323095104.238982-1-bharata@amd.com>
+ <20260323095104.238982-4-bharata@amd.com>
+ <250e68f3-3664-4148-bfbf-52fd4230a3b9@linux.ibm.com>
+Content-Language: en-US
+From: Bharata B Rao <bharata@amd.com>
+In-Reply-To: <250e68f3-3664-4148-bfbf-52fd4230a3b9@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB03.amd.com: bharata@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000099:EE_|LV3PR12MB9233:EE_
+X-MS-Office365-Filtering-Correlation-Id: 07c87beb-42eb-40df-bcb0-08dea41d5b14
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|376014|7416014|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	SdNbw6qwB8FAM5sYMn9eAdG4rc1FxZH+SRXPaM7fddxgdIz+OxBEtw8O+Oac+qtzDjNqGiXsgCrBf8UshGuWBuLmNfPWobT8hsbXAe6dmThaLf5AVZ/QP0P4NhHwXWMpgoxZVlFq0lwQM8qOQ8ER9Oq+ejPKn0nv//85kqUUaIfHDFpg/s8Xg76Iafqxvb2GiUd+P03OzLWPW6Ee3b1wQmDbiBe6VNLzjD8Stz0xbqIdmsOPNVN/aVhl1iJlgDg0F7E75WWyfLgwyOzoNotjIojEVdQp3RviAkX+GWHmeOPjFZmho2gsZYofkuzyn7vNvmwkDdAh+HssjyAS7IoZ7sPknT/e91WlsmSKcPZ3yDXUnjTaa32vr3ryn0lYFacyqUZeLEnyM9F7MmAZ9yc/8kgF6r2g35ky3Xnlv9IlfuBZGyG/gkk16jV+EXWrg4z4qQwc7mDzWE/EGxU9w4FFrTxkCRlPXB1Pcpt2m/qQp71d1baKzorzUtiV4zJl2d90IEtlvXGV1y9ykrWINMZcPlL7eZZdXw8F1lXnc9JMWkDNE2JVQtKftOQxDFjMEkOwMPStLTcOt6vACzRnMBkcnpGlKR4cFdIqu/zKma5pfZec5ouoeFkFQwowbhDr4971a0kxQBM4VGyMyFzy6OuJ2Z7cUTi+N6rLYIPyni3SPAbXQy33S96/L783zYzZY5uLslOSmpe3NWKnIEJcckrxZS07/rf9LsD/Lb5QlyhfERKbXaln6zPrw4j2wrmh48tnCY7/Yoy7wpSN9MKDtU2jPw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(7416014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	SPJD4/67Ltd6gqnYiEuGu4ui1VtzWfh6TPpzPOk1HaRjb3mF4sTq8cEv1He65yvEc2zAEdMo257L+6WB9hoo+lL1V1XU2lodqOQ29BJMPnEIAZ85kIp61v0Nsszv59XHCK2OXCWOrfYZ473aqCogD+tJGG2Kx9IAZUu1gczZLPMWtvIsFbnXSrU2lpTILXK4rYng1Ts20fLsbLV2V4mL/gqLnIF80OHkURIqm+H8ighHiCLQI4qM7fp2AlOwtGsPSnSdHKRsH2Y9SU+C4/gkIAxbaldmxp5gNc6mBAyH2MJYHR49HbQ7s1kYjusR0PkNafLcS9wojhAdWq+9AxUrBo72qKAa32Rw96AhLaCrrO/4f6OxE74Ii0PzEJ+5nS5qfEGw5ppa89nKYGcmWbMzk/1i9ANP6sv0qJtxqsmV1kwo6Zjcywb5t7YjKUTfvnDL
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 05:25:12.1726
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07c87beb-42eb-40df-bcb0-08dea41d5b14
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000099.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9233
+X-Stat-Signature: jsz7ehnzfc8ojqq18so5ajuk6go8r6dx
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 27AC8C000C
 X-Rspam-User: 
-X-HE-Tag: 1777267211-687217
-X-HE-Meta: U2FsdGVkX19CXo2YPjNE5YUoY5MMZtMk68DPDM574I6FjW5jZVuaRqB6jbn0K4yvE2a/W3XEMUB2lmPY8xBydaIuxI4Pb6fKWBaVBmQ6mPpCStGV4s5fxYM0k64Th3J376XnBtUpUE0pIK4aLVP7+bMnGo8mzwvvZQgXx6zDB+/qUQ8hEOnblMTrDsdrI5qmDCtuc4dnL21+Ds3MhE92rL/72SYjR6uYMS6N0rCBLl8UHDE2xkBwsUN4dY0VEbU26/j47/Kn/OZTIiuPGLtqHZD0Mvf4eXHCJJXXBx0/UefI/sYTxYTRRApwD21llp7wa9E7fskDsS2rz7pYBmfdT9aw8jowtT32/CASvAysrBtRAYdoPKPWawb/8UTIUb+OlnCWQkW+oYO+YfVthfQQ3yfLDqNarzcXaBOeDxuGJueazMyWvimWQ6r8QOp9PxVVh0BFHlbKdghAk2iqI6PVhtjnSKCTbtrEurxdEK6Ll5edM6mFVR8f46u8BJ6IicoZWlL5p9syns9sgh+Wb0pq7OXiNFoIgXISC64W2F0kkG7IV66yScwxJl0MfqnHLaRHzfQ6nhgFMtieQIex9U0fcCgxjrnHt8baPTkpuE1FSM5H4zYP3GRHXJm1m8i2uxsLECnyP0qon2+WHi0IJHkjTI4LCvxhW/+DOo1csY8qTKY49xj9/K9nxtzY59hQslACzFtCbmb7aMN11AQVWGQ8cuPOVjwI8g4OfgeHPEyK23FPc36w5O/jlUGy7+6fxv3j+RE2EZyUYGo9+aVBD9w5ePO5s5JT/b0Erozrlfddeb13bQ3tHkzzU96myoqreB6GHe6axJEBhxBS+zJXSueU+HaMGBsXMMDMoeuAm38fg8eKfRnAB7P49x2KeWz7uK6Wga52Qca2r5XficTmD6Lf3sSGuPBcfPeY0S1BRD2fJk5jct9yjqIcpw++7i03S+gcG3tSL/lAtvSheRVnWFA
- VdNv4hnD
- yp3/ZbjL7AOUHpPammaVPlTuosj1Sy0/Srw+aqMxq77KvSaHtVXbjr5MRYr0XTBy/Akj17XXc6ISlLYRLX9eOXfLqV/m1q5KiQJqEb5HzoDS/FIBAyOQTsgJFM4ErY9knYyH9iWdDqQNf7m6hPxl5o1gazwlFa/jG3vzwIzVEh4eRmIU+jNiCUo4qgFWZIHGlLe6Pwk39fbJQzok=
+X-HE-Tag: 1777267518-161962
+X-HE-Meta: U2FsdGVkX1+D6fblkyKTvvkOAWZ9EvZXSawFoos7VbM8yw5REQu4DP52neW6NQHBgybGoDFECJKDy5JILUUxpTAOdfN72+E3iQaNmKoaFZEKiJ4xqfs3jzTdJv6eTxhPT1frsU6iGtcMTYCDE+blbHwjM7U2yrbX30oE3FNQ4LvD/4wkLkT1HLJIN+rW+3//HfygH8Gglk3uofLKmi+t1QBH/Ekd9hQKFOCKiyfoOPi9GavSPp0D8IsXWDW0TnhRTycBWeK9F2021c6F6GDRSb3/6+pJXPEt3hWUqEiC1kw39+9ytvi12K5CCD8NVPL+D07K5YRW0Yy7WnW5Ndsw5h7VzqyrHIAIWeOpL7VyVcSpYNJJ3gPKJ5wOCvhSBoeSLk+yFixMDW05wmTQZzF9h/6wxriA+4zZGZuM+RK8ny45FeROEC1/zgux5MDkLFK28tEMg8yh3RNMTTFD9RZZfPQcFp3FaUrhpn6WsisFSFIjWYeQBHHbUlpjwQhMBKv3OQKo/r6ZFYZVwlxz85UPJrij6FVvShjlBtteHUVw1owtrtRKoXGBSbcwQOVdzc1VdSfjDdsS/NrTskwHJb7P+iNG0EFxoUjfyuaGdlO23NjzI3EWUqWLqeOdaY+KB9T5G3k7wZU0VUs6L6uvMKlsrxZFjn492ezDm5fpURlxSqCbxto68UcTbti4mq7FXaaZZ/9ca6+13zp1IyPggVfFdH3T7BfuuO5/igoaIobmm1zrNOAMRwdQw+eJ0ZyIMeDBQ4MTV2vTEMrnBA7ayhsQw8vjIfkY+bv2XC3tHuMK+vHQZU3GHEm4co/3kLuiQ3nj7ZQn7V+XV0EFfu8++tMp78qovFxV7L0b8aSr++jm8moSSO9BQ9edDILaaIYBJOnXzvSIRD8PFvP5pF+BH2VssgJ75chwUfW3jNsx+pDmfKHq0S8I1cbPkScNo50NtDsFqhhF3FTl20FTt37kuMG
+ wmKV3Njp
+ G2YspJqtvP+QHxVCpTZ/NQrg6t+PdnuJoxTyGjqmtzW60oVLOmiLXYpuIV1DOjSxl6eausWNYewT61AUqW3O2roMvL7nf7deHtpU4l3qrnVzwAH55errjnEUL1JNpX4P6AMWVcDX0YFYONkFuAoApxgiNY+T51DOmuQEjGjGDPANIAw/JksP7I79VNYuWauJV30IesS1SzzWzclXDyHHQUChiiYlw3vVNF4Fhf3Hmr5lzifeeweAJpcPw/peVo3aDw2fOEc0s3O8Aafq3ffrGvU7q604RBKu8xKtFAVs2jtzgTdJgcOKnRC/yc1lAVRm0N6QjEhOBYW7n3FlG03VI+Ij/DEujoSRHzwjh7y3RzU4aEXd7tvWQZCfhuKOgFvxk127zWOWOhi0k79ihjsxOtssc0JW89gs9E7MvnaB8sg54wRp/UYNjg9EJ0HEBlbOLEQ1F7/nLdnuyzsF1NakXlK1/tPoMqUtE9p8jCW3Mv9sdDrtZXoioUetRqxswKtrC682S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,72 +165,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert pgtable direct entry dereferences to the corresponding
-pXdp_get() accessors. Use ptep_get_lockless() variant for PTE
-reads when no lock is taken.
+On 24-Apr-26 6:27 PM, Donet Tom wrote:
+>> +int pghot_record_access(unsigned long pfn, int nid, int src, unsigned long now)
+>> +{
+>> +    struct mem_section *ms;
+>> +    struct folio *folio;
+>> +    phi_t *phi, *hot_map;
+>> +    struct page *page;
+>> +
+>> +    if (!kmigrated_started)
+>> +        return 0;
+>> +
+>> +    if (!pghot_nid_valid(nid))
+>> +        return -EINVAL;
+>> +
+>> +    switch (src) {
+>> +    case PGHOT_HINTFAULTS:
+>> +        if (!static_branch_unlikely(&pghot_src_hintfaults))
+>> +            return 0;
+>> +        count_vm_event(PGHOT_RECORDED_HINTFAULTS);
+>> +        break;
+>> +    case PGHOT_HWHINTS:
+>> +        if (!static_branch_unlikely(&pghot_src_hwhints))
+>> +            return 0;
+>> +        count_vm_event(PGHOT_RECORDED_HWHINTS);
+>> +        break;
+>> +    default:
+>> +        return -EINVAL;
+>> +    }
+>> +
+>> +    /*
+>> +     * Record only accesses from lower tiers.
+>> +     */
+>> +    if (node_is_toptier(pfn_to_nid(pfn)))
+>> +        return 0;
+> 
+> 
+> Just a thought—could we check this at the beginning of the function, before the
+> switch case?
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- mm/page_vma_mapped.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+I am accumulating two stats here: How many hot page intimations pghot obtained
+that are attributable to different sources
 
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index b38a1d00c971..a4520bb10d2a 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, =
-pmd_t *pmdvalp,
- 	if (!pvmw->pte)
- 		return false;
-=20
--	ptent =3D ptep_get(pvmw->pte);
-+	ptent =3D ptep_get_lockless(pvmw->pte);
-=20
- 	if (pte_none(ptent)) {
- 		return false;
-@@ -219,17 +219,17 @@ bool page_vma_mapped_walk(struct page_vma_mapped_wa=
-lk *pvmw)
- restart:
- 	do {
- 		pgd =3D pgd_offset(mm, pvmw->address);
--		if (!pgd_present(*pgd)) {
-+		if (!pgd_present(pgdp_get(pgd))) {
- 			step_forward(pvmw, PGDIR_SIZE);
- 			continue;
- 		}
- 		p4d =3D p4d_offset(pgd, pvmw->address);
--		if (!p4d_present(*p4d)) {
-+		if (!p4d_present(p4dp_get(p4d))) {
- 			step_forward(pvmw, P4D_SIZE);
- 			continue;
- 		}
- 		pud =3D pud_offset(p4d, pvmw->address);
--		if (!pud_present(*pud)) {
-+		if (!pud_present(pudp_get(pud))) {
- 			step_forward(pvmw, PUD_SIZE);
- 			continue;
- 		}
-@@ -244,7 +244,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk=
- *pvmw)
-=20
- 		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
- 			pvmw->ptl =3D pmd_lock(mm, pvmw->pmd);
--			pmde =3D *pvmw->pmd;
-+			pmde =3D pmdp_get(pvmw->pmd);
- 			if (!pmd_present(pmde)) {
- 				softleaf_t entry;
-=20
-@@ -317,7 +317,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk=
- *pvmw)
- 				goto restart;
- 			}
- 			pvmw->pte++;
--		} while (pte_none(ptep_get(pvmw->pte)));
-+		} while (pte_none(ptep_get_lockless(pvmw->pte)));
-=20
- 		if (!pvmw->ptl) {
- 			spin_lock(ptl);
---=20
-2.51.0
+and
 
+out of them, how many turned out to be actionable
+
+> 
+> 
+>> +
+>> +    /*
+>> +     * Reject the non-migratable pages right away.
+>> +     */
+>> +    page = pfn_to_online_page(pfn);
+>> +    if (!page || is_zone_device_page(page))
+>> +        return 0;
+>> +
+>> +    folio = page_folio(page);
+>> +    if (!folio_try_get(folio))
+>> +        return 0;
+>> +
+>> +    if (unlikely(page_folio(page) != folio))
+>> +        goto out;
+>> +
+>> +    if (!folio_test_lru(folio))
+>> +        goto out;
+>> +
+>> +    /* Get the hotness slot corresponding to the 1st PFN of the folio */
+>> +    pfn = folio_pfn(folio);
+>> +    ms = __pfn_to_section(pfn);
+>> +    if (!ms || !ms->hot_map)
+>> +        goto out;
+>> +
+>> +    hot_map = (phi_t *)(((unsigned long)(ms->hot_map)) &
+>> ~PGHOT_SECTION_HOT_MASK);
+>> +    phi = &hot_map[pfn % PAGES_PER_SECTION];
+>> +
+>> +    count_vm_event(PGHOT_RECORDED_ACCESSES);
+
+which is this ^
+
+>> +static void kmigrated_do_work(pg_data_t *pgdat)
+>> +{
+>> +    unsigned long section_nr, s_begin, start_pfn;
+>> +    struct mem_section *ms;
+>> +    int nid;
+>> +
+>> +    clear_bit(PGDAT_KMIGRATED_ACTIVATE, &pgdat->flags);
+>> +    s_begin = next_present_section_nr(-1);
+>> +    for_each_present_section_nr(s_begin, section_nr) {
+>> +        start_pfn = section_nr_to_pfn(section_nr);
+> 
+> 
+> I may be missing something, but in pghot_setup_hot_map() and kmigrated_do_work()
+> we seem to iterate over all memory sections. On large memory systems, could this
+> become a bottleneck right?
+> 
+> Since hot_map is allocated only for lower-tier memory and the hotness
+> information is primarily used there, would it make sense to skip scanning
+> higher-tier sections?
+> 
+> for_each_online_node(nid) {
+>         if (node_is_toptier(nid))
+>             continue;
+> 
+>         start_pfn = node_start_pfn(nid);
+>         end_pfn = node_end_pfn(nid);
+> 
+>         s_begin = pfn_to_section_nr(start_pfn);
+>         for_each_present_section_nr(s_begin, section_nr) {
+>     }
+> }
+> 
+> Would this approach be reasonable, or am I overlooking something?
+
+I didn't just yet optimize the walk. Since there is one kmigrated thread per
+lower tier, this routine already is aware of which node to scan. We can limit
+the section walk to that node instead. Something like this:
+
+static void kmigrated_do_work(pg_data_t *pgdat)
+{
+	unsigned long section_nr, s_begin, start_pfn, end_pfn;
+	struct mem_section *ms;
+	int nid = pgdat->node_id;
+
+	start_pfn = SECTION_ALIGN_DOWN(node_start_pfn(nid));
+	end_pfn = SECTION_ALIGN_UP(start_pfn + node_end_pfn(nid));
+
+	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
+		section_nr = pfn_to_section_nr(pfn);
+		
+		if (!present_section_nr(section_nr))
+			continue;
+
+		ms = __nr_to_section(section_nr);
+		
+		...
+
+		kmigrated_walk_zone(pfn, pfn + PAGES_PER_SECTION, nid);
+	}
+}
+
+>> +static int pghot_online_sec_hotmap(unsigned long start_pfn,
+>> +                   unsigned long nr_pages)
+>> +{
+>> +    int nid = pfn_to_nid(start_pfn);
+>> +    unsigned long start, end, pfn;
+>> +    struct mem_section *ms;
+>> +    int fail = 0;
+>> +
+>> +    start = SECTION_ALIGN_DOWN(start_pfn);
+>> +    end = SECTION_ALIGN_UP(start_pfn + nr_pages);
+>> +
+>> +    for (pfn = start; !fail && pfn < end; pfn += PAGES_PER_SECTION) {
+>> +        ms = __pfn_to_section(pfn);
+>> +        if (!ms || ms->hot_map)
+>> +            continue;
+>> +
+>> +        fail = pghot_alloc_hot_map(ms, nid);
+> 
+> I may be missing something, but after pghot_alloc_hot_map fails, we continue the
+> loop. Would it make sense to break and go to the cleanup logic instead?
+
+There is a !fail check in the for-loop due to which we break when alloc fails.
+
+Regards,
+Bharata.
 
