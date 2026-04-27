@@ -4,140 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DFABFF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 18:23:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FD02FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 18:23:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA82D6B00B0; Mon, 27 Apr 2026 14:23:13 -0400 (EDT)
+	id 8C2406B0088; Mon, 27 Apr 2026 14:23:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7FB96B00B6; Mon, 27 Apr 2026 14:23:13 -0400 (EDT)
+	id 872716B009B; Mon, 27 Apr 2026 14:23:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A96936B00B7; Mon, 27 Apr 2026 14:23:13 -0400 (EDT)
+	id 761926B0095; Mon, 27 Apr 2026 14:23:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9865A6B00B0
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:23:13 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 431F78ADDC
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:23:13 +0000 (UTC)
-X-FDA: 84705157866.10.26CD149
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3C809120009
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:23:11 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lVE7jl6r;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf29.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=axelrasmussen@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777314191; a=rsa-sha256;
-	cv=pass;
-	b=TKNaeNVwjjM0u8wgnTfHJkj2z8Do1wm6SvVKvYvKXtpUqYEe81qwqt7pyfQBCzmZrKO/fx
-	qsHPN2FWnoTwK+bahMAmXf48dbyeaAj0ibThekrKnSFZjy5fPiz2Q2Ar2Q9GXHUPhTKfak
-	w8Rc0udht/T/Si6cHExQYfK6pJBMJ3M=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lVE7jl6r;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf29.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=axelrasmussen@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777314191;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 617D96B00B6
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:23:25 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5DFCBC13F6
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:23:24 +0000 (UTC)
+X-FDA: 84705158328.02.6C073B2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 62CAE140008
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:23:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AxtXtoW9;
+	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777314202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3vnOG3GtQn2x/iRu7QND9APlhftBUG3M308IdNqyP3E=;
-	b=QaW3NaADaJJ+SYYg03v5QEB3tvjJ6pKKq552htFcg9iaI9esCPfOdQOFV1x7LeXxGUh/sl
-	FlH5ZzSifYWIuC5pLKeD3FB3GJFK2txBvXiJWDTcjPpMMcehUJ+aDIDSgsO6Y0yFeDPR5s
-	67gi08dsWEownbtlUrGHLkB2VIwTskk=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso1056a12.1
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:23:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777314189; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PCOAZffklchjxHMf4hstZraGyYCiAvaarVQm0kPomCeBs8foFsvWcaaUwb6RVMQt4n
-         u2Rn0BQKR65cNt9ubj4iO2yk0e+ewA/KdVmfIWFH+mdRY1yCR3x5Q+fti4rvsG55gzzJ
-         Hc2Cr5Z7OqWNcS/S7jVeLWKxzhItN5Il0zexCFBdkiIv7jnTPdi3Hz4iCweaEEdhHGKI
-         UiluvhMTQ0rcpmYHZGXXZvxg/YX3ozRPmnREE28r44iI5DhcBgHH9Np5VXPs7vOSr+F/
-         jlWVq8V8gfZyUuY1x4iX8lKx8Xlo/XnLwwMUJDXXx/sn1b4gyFYXJV+WImfbIEEj9xcl
-         /EeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3vnOG3GtQn2x/iRu7QND9APlhftBUG3M308IdNqyP3E=;
-        fh=qrnbPqJSo62b900xG3N0pzJ71gfpGGQrcMDNHq2gayU=;
-        b=dfS7m2c3RC6tW6DCfp91fLaQCtN+dDby5dVncGu6dZBq207Y+LvbN7TP0blZE1D2Dv
-         /16/enAz++i8hzXnZoyPdvOhkZ7wntrCaZebOV4mbTaWyGDtf2SgrfDdFUgTDwxYkruZ
-         VpDe+79WoNFZN5/FnoKmRYOD6pkUcXtKkS/qcSvzpRZNfjaC4N7c8E2uKUxCG9+Xq+nF
-         +TF96jzybFtt/M/9wv56HTMeNDUhs6NjHTtAT97njXD1tdNpU76T6SAurxBANYN4Srx7
-         aHBHU8xwXIFl8HiLWvDNYgYRmhQ2XOCSZZ0bigt4A4doMuLq+iauvC0K+s2IG7rPDtPV
-         l0Gw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777314189; x=1777918989; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3vnOG3GtQn2x/iRu7QND9APlhftBUG3M308IdNqyP3E=;
-        b=lVE7jl6rF5jkvMQABaxTohxFk7GfBIoh/TD584ISyWRHKmMMij5NeCn9bLG+D8c3f/
-         jgDtKg6AKuNCLCv9FOtP5qVD54zJwMhcxaK5Q6TzkIPHl5HeBLGkODv+xar9l6g4AWqz
-         bibjYuyDnWWoeupPEKcHiwyPINdByyIDyKHMWdFrcVMjiM29Nl30xvc9JWJsxHGesw7j
-         OpBq0cH3aJLX0C3zTSy/KWOSjsWmhHKbWiCNGEnv/9nFyBanGutZr43Mn4LsmE+a8MUG
-         IdIaOzIbblKyMJfCogC5Hh6HOWmhxe2YXmklxKwxZtjkc9xCZV+62nZ/wfqLqzCGIkWU
-         hJWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777314189; x=1777918989;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3vnOG3GtQn2x/iRu7QND9APlhftBUG3M308IdNqyP3E=;
-        b=g1lgzc/DpEm5wwP2ATryfX0MV3NzNjDrcMQFZmzM0/WPhL47MxsXJKBmrnX05HMCam
-         Z/xrcL2FScOpkrl2vwQTzSMZS2lvslaKkvWr3rWb6EwInlp2duxHlc01uIod1ywiU6hl
-         g0V6DgfbGWIfRNIpIvZ8QhLxf5Wt2wvQgBr7uZ5Jd5rx9FMrIfpMMfLRhEgb4IWiqPHa
-         Av7CBa9Lzm4mqIwCv7sTuAyxL/I1uWFXvwUxTTSUW59fY+68JNjuggnZGtnxROkGIByw
-         0GA6nJVG2WDGL7DntYfaNcr7l0JvBAPpDN/Oq5FIC1iHFIT/fIdA3HmcX2e+Bt/qbLkO
-         7sPA==
-X-Forwarded-Encrypted: i=1; AFNElJ+ZJ3k9XYDYHdjdqTlMuRyinrJKntDHkUuDSAB5RJXPIl9VttqCDhijGHiWpAXWP4MUNodJCL6uoQ==@kvack.org
-X-Gm-Message-State: AOJu0Yztu87hi2HbG7NmbCcNVQrAhH2qfjSLM22BMi6fsMCG8LFyPUH8
-	RRiu4YEHiufla2WhgZkIGTLzfFcomPpiIT/DIWoIvObQFfjzDCiGrTLbz8cHCBzEGBgge9wRF0r
-	sWsuKRcQjLTSJedd0tYMBofqWMWWtPGGLMdYkGuSp
-X-Gm-Gg: AeBDievwsy85mzt64vH4WW5vgrPPUcNpBhg+K9qrb33DyzDw3Ecy0ze6+ulrwNVh/Lm
-	CihN8u1K4ewmqcOiCsBc2SKGqW14/KGgtl8EXZEDaQxulegoBCZ3/qDvnDveSregknqcudITae3
-	Mip3sDj5mAig7F3oDp9thIVGa7v7cx6c3RIlnqi5YKvNRvSAq/zGOof2wpW4AKZx9lqeKXgd5KT
-	tAr4AVge4k7T2ZnTPczghxCVJcvoijbIgdVVjnaWTxfw2vMmTen9Bhfy8tsAkTAIGm2ewQMWtBL
-	rKlpyLI3acEwH/20q9ew+16mB+SQP0Q4j9DcyjJgwOcjXo59gyQzPzfNZswnI3ltOb1FBw==
-X-Received: by 2002:aa7:ccc7:0:b0:672:117e:55d4 with SMTP id
- 4fb4d7f45d1cf-679b6701ea3mr8613a12.0.1777314189007; Mon, 27 Apr 2026 11:23:09
- -0700 (PDT)
+	bh=7e7Tf2MGPPvF7IQtCfLfncjsVrLZZIHywY4b/DUulQo=;
+	b=bez8jyNdtpHSy7hIQITU2UxtzFvURfYBrUQKFsCw1SwpiOyEsq1P2T/gpRw1y0f9c9u6C/
+	Fb/cS/99cf97e7+uUxwuwIrIoSIWIiKg6kBA1j2j1ZqE2pFyOzK5P5XuMWNLXtIUTE0n8B
+	PV9/TpJbdtGGGImRiCgWYELBQVG64qQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777314202; a=rsa-sha256;
+	cv=none;
+	b=IAnY+9Qnl7ygMuPjr9GjBJP/kqeTOfE040lOf8slkOymp46M1KQ916J7mVm9bw5A8RdQGc
+	OW1wmylYH2/fiQlMM+NBataXhPygU/mIjygNhkJoT3AJrCqb75TSg4XgyGtJFy4IgSI5zi
+	wR4k4Vko/9RHu1MTGZYL9Kv1Wf40oMk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AxtXtoW9;
+	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B9FDA6133B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:23:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381B1C2BCF4
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:23:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777314201;
+	bh=7e7Tf2MGPPvF7IQtCfLfncjsVrLZZIHywY4b/DUulQo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AxtXtoW91Szs1ppf6YGfwYILqEnqNth9WCmpuZQNj+WzMjxYOBk7QwDAhz5wXitVh
+	 GIJWN65tEr5z7Rhs3yVwPrmHtxOk0jGUEGxOzHF7dKLLi3fyNFBH9BhQ9qhasVS8Ov
+	 Yw/L3ly9WTIehMz5N26+6UUt8f1MqAwBtpOZW8XqeotLPH7v5XDxczg7HjMSvSYPnz
+	 oe13yt1zt2PIamae0azrqg8NnTtIGoUVubvm+A/shtxSo5YpdQ3pnhAICf+sMObQ/2
+	 WIM7KNQ1LS27df/0Co9YDsl6DAxCHX3uNRIHOgkhBmhQKbjugIW9jzLHTKzD/8qF3L
+	 Wg8qXelz6C3yA==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6788838d543so8346340a12.1
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:23:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+7tZytLy/10f2jFt2iIARA7gnucJuENrP/bJcCxdjJkUbFTy4smznb0q56sQcDM7gerYSWnjQ6cg==@kvack.org
+X-Gm-Message-State: AOJu0YxAfFwM+Vm6O8Rz9Vi3Bm0JtHCJgS0jKJ4cRVvuEQb65J8Hccux
+	1fJ12JYIkzW/4FFYKeKhv+CXwRtIsyrzpA02zaCcOCeLviE31EW58ymP5+7kR9dUtc0wadP8D30
+	j4TZ/RlV5pfQTT2I4q1v7XvaQSBFP6ow=
+X-Received: by 2002:a17:907:8b95:b0:ba8:8c8c:1c5d with SMTP id
+ a640c23a62f3a-bb7fd089780mr894166b.47.1777314199304; Mon, 27 Apr 2026
+ 11:23:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260418120233.7162-1-baohua@kernel.org> <w5ekxean6g6eph4427frzclgzu5hrd7kqres3ronlqpvqtsusb@kfdagnk2xqif>
- <CAGsJ_4wo8Chd-B8oRwTEQsU+CQu_tvwmkx=PdNweTBTQLDsRUA@mail.gmail.com> <ae91A9US6ybEzqM2@pedro-suse>
-In-Reply-To: <ae91A9US6ybEzqM2@pedro-suse>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Mon, 27 Apr 2026 11:22:32 -0700
-X-Gm-Features: AVHnY4JFZIbck82FH2Gxd-klW9wfV9cBevrSHXzdSvVRHwoEmMnjlaFzOu_fIZ0
-Message-ID: <CAJHvVcjH+BS306KKOsFcVKkbmkj0aKXtfpuFy+SVYKE4PQmVQw@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: Use folio_mark_accessed to replace
- folio_set_active in PF
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>, 
-	Xueyuan Chen <xueyuan.chen21@gmail.com>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	wangzicheng <wangzicheng@honor.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Lei Liu <liulei.rjpt@vivo.com>, Matthew Wilcox <willy@infradead.org>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>
+References: <20260320192735.748051-1-nphamcs@gmail.com> <aegUoOiUbjUAH5aT@google.com>
+ <CAMgjq7C53WRS5oYxO157mX7JxhfoPoi34k+taiKLrMah-b-iRg@mail.gmail.com>
+ <aektdlD4npMVThu3@google.com> <CAMgjq7DRrz4Hdy-s4y-C=3BmPt50LKOfdWjjf2mWmCybdRaJ4w@mail.gmail.com>
+ <CAO9r8zPvApgxKiVy5NhiWup_m57huF3MTuPvo=iq5kAxjRZC8Q@mail.gmail.com>
+ <CAMgjq7AGzBubCkmv7LubBjPLN1DzL472d4zUm+sGxo8ZptMgRw@mail.gmail.com>
+ <CAO9r8zO+tm2J0FRC64VKCYOSuKPXX8cQG7C07SwMWKoLiwoV+w@mail.gmail.com>
+ <CAMgjq7D1WXUHqAV1yuXvrUmEsE_m_+yx0mBq6teJhipx6mySbA@mail.gmail.com>
+ <CAO9r8zMk7xTi-Txmj1+Z9=250fD8HuMQFyT1iwjTW9coLXgqoA@mail.gmail.com> <CAMgjq7A4+Sac9-CYkig1LFfEh5rq-4vLka8AXREei_m3svzJ7w@mail.gmail.com>
+In-Reply-To: <CAMgjq7A4+Sac9-CYkig1LFfEh5rq-4vLka8AXREei_m3svzJ7w@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 27 Apr 2026 11:23:07 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMv6oYvqXti8dFfQd79Nd_Yge5g-EjjjhsEWj44gwJ-qQ@mail.gmail.com>
+X-Gm-Features: AVHnY4JSrF4JaGtUa9RGykJDx4LJmM53x95FeUNsFKceHbvA9vScOToLoywkb9c
+Message-ID: <CAO9r8zMv6oYvqXti8dFfQd79Nd_Yge5g-EjjjhsEWj44gwJ-qQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/21] Virtual Swap Space
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	akpm@linux-foundation.org, Alistair Popple <apopple@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <bhe@redhat.com>, 
+	Byungchul Park <byungchul@sk.com>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@kernel.org>, 
+	Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Lance Yang <lance.yang@linux.dev>, lenb@kernel.org, 
+	linux-doc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
+	Mariano Pache <npache@redhat.com>, Pavel Machek <pavel@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Pedro Falcato <pfalcato@suse.de>, 
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Suren Baghdasaryan <surenb@google.com>, tglx@kernel.org, 
+	Vlastimil Babka <vbabka@suse.cz>, Wei Xu <weixugc@google.com>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Yuanchu Xie <yuanchu@google.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Zi Yan <ziy@nvidia.com>, 
+	Meta kernel team <kernel-team@meta.com>, Rik van Riel <riel@surriel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8f7swkk5kgfeqoqnuntg1kf1krny81pz
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 62CAE140008
+X-Stat-Signature: 4swpua16dkddizef9n8z6k5cxfets4ab
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3C809120009
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777314191-923583
-X-HE-Meta: U2FsdGVkX199ERz3DmorKn1aEA3oIdfj8JOQC9dR+hLw9ys8Q3Q3Bq1VmGu00h1q4FdZ+Xc/iG+mHEA9lRTtihFydiO5qPq9aBQJAo3jUN/6g7S9tQFdtYFmoOb7MXjIrpI5mhK0MfXywtmX96kXbzswE4zbVsCbASkIjj6h46Scg7zqZaLFP3qyuXLd6oTXMq8o6yLluQ2329b5szZvlSR4YNZdT5vXHVKV4Qu1vP+GpBqTgIvOSly+iSMS8WcmkNwcFHpCUrBAu3iPOfjGQQsbNy5FB7XC7x6P0NwMY1jSgl/KBnzsYPPju2u+qwhxmk9HiSZgmlVd5I8XdR5Qxs6NMqWNQtT5BoG4aGvR3Ng50YQnRq2ThOhgGJ5EB34yNbqFrqXSJPEdik+9fVDc3BTVo3EjS8o44iQCFrGgyBCi2Sy4WKsb4mwOiwVWVG1sXCTEVxpOwA+L7MjjOJouhcFtHhL7imE4/7MPqOoFb2x5MVN9ETJQ/5E6LBqBuAfJRFnL+4En7B26d0kadwY5qkrxBRcIt19tt+E/hEuWZ0psByG0QMbhyRwpdVXPksdIVLEfyAM4oYjzJGHCnksYteiaE71M3Zp0kaulsrCE5qSKqWHwGyFy0gy77hspnlwIn6vCY68JCRiJVA8vSkITokilyfzPGMD5eiNvYmLfXwxTz8MEystINJuoYPl5Kk3/JEBk8YvYMWKMWPwuehCWmFtKLeVnrhC8vg1fTzuWmZnOaiZlNgRpygl9sixNMmP3x+K0lIANgGM50NNZn1RpRReN6FUz9uW4FlPGn2amCnQ4Y+X8txQTtCEQdNx/zDWfjUmwxF7puvFM8tr2/X19oNzxM0TDgIfeNGNZTzxPcWl2aPMhJVMuqFrZ4177UetgAJ/bz4X4haHGCN8UJEyl4exqDSxpS68QXoJaqTad9aD6/jbnxLlm94Bw4mq2lgtWQtRwt4Ds1dm6nV8cVra
- vLYCIdBj
- 8RtuJ8zqQS0o9ixqKBQ/Lw3fmVbUmmxVr/uTjIl5l2XIjCbn0JDZSCn64PnF5S/pAEhZmp0VpZ+4OcPheLZU7QyJw1qd8k4mtaqqbIMqDvzcI0eQIvT6KzvqgSiqo7pVQHCBM6zXsK/9Gc+Vg0taTTqw6ri6fVWZuVZ8NKjotnNAw5s6e5IAMAIM3CPm04wQCBnjuUSUBCE24EI8agSzAN+HvBBIhdoDQSPvVp17pabeyj6047VCq6FwsKFXU9jG0uXlOyFIDGlrMi3PtoPVKbJzG5U41GQPnzk2UUfa1cppEyuWZhpsm2MaxZ9p5O3FBKSi0VksTa6GlQdcsI6Poq9x1e5QyZmgWMMxO1UNKJxkl8MnsJtr63KrQY8ciPKcY2sBLz27TgZTQZSocdb0srALX/2x9mxRyCOdCuS3Oqj01p/sd5kjKReSo+A==
+X-HE-Tag: 1777314202-870287
+X-HE-Meta: U2FsdGVkX1/ht79OESVBFkXB9J80Alu+3SBVa/AORigk3DUVj+PwldQoRh79rmp17ezqk+CfbUE3KIV2OFjJ1vsKYf9ml5K+HrD9epUS3vD65lu8HLSW+3o1sZ06fexmsHKecnUc/YADfOUhmK+SH+3FA5sSV79ons9R4JCwibRIR29bk3bd3H+JZ2TLFD5STewVlpV+rXxoNZWNbs3KpBb2qTIS+wX5tE5DctKSv26NN0TQmcf3GZvPwco2g/GcK1C9kNYhmUWQ4Fl7zxeCYM58Tkeyg8fjPc/b3BJbx1p/M9XvmV4mVVdMU69MPPBk5j2BvR1G0L9tKDM9idBbR62cHgmC1maXiFeWX1ieX7ohgeaEDYDqRD1hfyZu0IS6J1W1jTYzG6AYVxuWjntPv3sAz8hv7u11jvJWKH/8wFNgKCo3YkdlzdRmfwLbtuhbtDdPjK7M9+NkeYJehy9g7rttYaBF68nhzVfhWBPtSxviLNXMGQWcDZX5HKX7Ti14yrEUaQ7+mQ6j2VQQp9znQzXcPD+mZs8jVR1b3ryB2n9kV5/qaIWV4KYSwBSVmMNiA6fpo92mD01lOgxLz4y6hFl9qmc8s2dffts1XpEP4yZWsFE3aGkVBlWSKsKzy3frHydSwcnLzDS1F3fgMH1hqmCSdWh0fYBwiKWr58mVtmxJhRURLPGQikJrHZEMy+rk8f1q5O/MuFf8VJ8QNpcahATxlJkPAII+5G/r+wgYYcKsT0OBuut/O4ZFpITLeyRnTehso/JARGQO2YaamCSg1YlEzxMaiPqT1MXYIXZrgadeuu/pLH9QztdeQ/t91gV9ObrB0uAMe0GXafUW328hQ6A/vah4YxT1I8QEIL7/Cwmh8wUgHz0jvPfSThTR5qeLyEoEIJ+JInUSRP7Kl7U/AdqPOGxf0IgLmY2rxBvqPqfdEkXWtxVKRBKDh+TELtGSKApUOg/jgsTuREsuiSO
+ pl7m23lo
+ fw+Bjq1CaGNsvXRzHRhD7X6fHi4jPV2HBRBiX731t7bR+bTnv9yabYsKapCK7Zr+zCee6NsbHZ42DPwVmswwxhhiBLQxXXlgX9FPo4amy7xNYus+2h2l9WIHCGoxmC2/dYC8UffdoVO76LoRZzeIPtoL5Lxzj7moWgZdBg12VUeWLFbLztvMMj17tBhRF8zEBqDtwWqhOBwS/9DD2ksh8cmFn8iVK11gls+XRH6ZVsfe1u8UQm4qLnHpH+4wsf4q1+vgwmMP7LmWIoUbC2xr9UR3NS/Os1B/RBT027R9ZPy9v+hWS8fz4XIvisvjP8VBGgK6D7gJsVr4/QdIt0F34M/hPUobq6XiV6Ql4/jk7OmxuoatVs2w2wClBnoz4y0Jarb3P/I0h5xXjVxcjYma6ZvzQSEU12fd8IcmHOXG0yPuS9BJKoS2NxzfaQOAaYzoT0yZY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,106 +131,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For what it's worth, I agree with this change in principle.
-
-In production we set fault_around_bytes to 4096. That setting is
-surprisingly load-bearing (i.e. if I change it, even at a small
-experimental scale, I expect workloads to notice and complain). So I
-don't think I have an easy way to test this change under production
-workloads.
-
-Like Andrew said the workload in the commit message doesn't seem
-unreasonable, and the benefit is large.
-
-I guess the workload that would see a downside from this is one that
-heavily uses readahead pages but also generates many "one-time-use"
-pages instead of maintaining a "fixed" working set. Without activating
-the readahead pages, does it lose some of the readahead benefit
-because they are pushed out?
-
-About the Sashiko comments, the tier bits being cleared doesn't seem
-that problematic to me. However, the WORKINGSET_ACTIVATE counter issue
-seems worth fixing.
-
-On Mon, Apr 27, 2026 at 7:46=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> wr=
-ote:
+On Fri, Apr 24, 2026 at 12:52=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
+te:
 >
-> On Sun, Apr 26, 2026 at 12:35:46PM +0800, Barry Song wrote:
-> > On Fri, Apr 24, 2026 at 11:19=E2=80=AFPM Pedro Falcato <pfalcato@suse.d=
-e> wrote:
-> > >
-> > > On Sat, Apr 18, 2026 at 08:02:33PM +0800, Barry Song (Xiaomi) wrote:
-> > > > MGLRU gives high priority to folios mapped in page tables.
-> > > > As a result, folio_set_active() is invoked for all folios
-> > > > read during page faults. In practice, however, readahead
-> > > > can bring in many folios that are never accessed via page
-> > > > tables.
-> > > >
-> > > > A previous attempt by Lei Liu proposed introducing a separate
-> > > > LRU for readahead[1] to make readahead pages easier to reclaim,
-> > > > but that approach is likely over-engineered.
-> > >
-> > > Why does this even need to be kept? I'm not sure it makes sense
-> > > to even mark readahead folios as referenced.
-> > >
-> > > I'd suggest folios should only be marked referenced (or even active, =
-whatever)
-> > > when they're mapped. Anything else is a bit random and is hoping you =
-are
-> > > eventually going to map them in the future (which is not true for, fo=
-r example,
-> > > anything in an ELF file that may be readahead but not mapped, like de=
-bug info,
-> > > symbol tables, section headers, relocation tables, etc etc)
+> On Sat, Apr 25, 2026 at 3:12=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
+ote
+> > > https://lore.kernel.org/linux-mm/20260421055323.940344-1-youngjun.par=
+k@lge.com/
 > >
-> > The patch targets the mmap readahead path rather than the syscall
-> > readahead path.
+> > Does this do promotion/demotion of swap entries?
 >
-> Yes.
+> Not yet, let's do things step by step.
 >
+> > > For example just reserve a type (e.g. type 0) as the virtual type?
+> > > (type is really a bad naming though).
+> > >
+> > > The that swap file (or swap mapping) will be
+> > >
+> > > I was trying that based on this:
+> > > https://lore.kernel.org/linux-mm/20260220-swap-table-p4-v1-15-104795d=
+19815@tencent.com/
+> > >
+> > > It seems to work and the only thing we need is actually just somethin=
+g
+> > > like this one in VSS:
+> > > https://lore.kernel.org/linux-mm/20260320192735.748051-15-nphamcs@gma=
+il.com/
+> > >
+> > > This part:
+> > > + /* fall back to physical swap device */
+> > > + if (!vswap_alloc_swap_slot(folio)) {
+> > >
+> > > We do a folio_realloc_swap if folio->swap have type 0.
+> > >
+> > > Which means, if there is no virtual device / mapping / file / space
+> > > (I'm not sure how to name it at this point :) ), the ordinary swap
+> > > routine is just still there untouched.
+> > >
+> > > If there is one, and it's being used, then, it is still the ordinary
+> > > swap routine, just do an extra allocation (and the extra allocation
+> > > strictly follows YoungJun's tier rule), which is same with VSS, but
+> > > everything is reused. From a user or high level interface perspective=
+,
+> > > this can be designed with no difference as VSS. Just with a few
+> > > bonuses: being per memcg / task / runtime optional, zero overhead if
+> > > not enabled, and reusing all the infra.
+> > >
+> > > BTW this deferred allocation (in VSS or dynamic swap mapping, similar
+> > > thing) is actually a bit concerning to me as well. It changes the
+> > > common swapout routine and maybe worth reconsideration (e.g.
+> > > activate_locked_split and mTHP stats is now ignored?), being optional
+> > > for now also seems safer.
 > >
-> > With lru_gen_in_fault() in place, it=E2=80=99s roughly equivalent to
-> > the mapped case, since readahead is typically 128 KB while
-> > fault_around is 64 KB in PF.
+> > I am not sure if I understand you correctly. I think what you're propos=
+ing is:
+> >
+> > - Page tables either point directly to a swap slot, or to a virtual swa=
+p entry.
+> > - By default, page tables just point to swap slots maintaining current =
+behavior.
 >
-> I'm not sure I understand. How is 128KB roughly equivalent to 64KB?
-> That's almost a 2x difference!
+> I mean, they are all swap entries, nothing special from the page table
+> side. Swap subsystems handle things internally.
 >
-> And readahead, as of now, will read beyond the VMA's limits (which will n=
-ot
-> be mapped).
+> > - If we have multiple backends (e.g. zswap or tiering), we use virtual
+> > swap entry instead.
 >
-> Really, it's extremely unclear why this adhoc heuristic is here. A folio =
-isn't
-> active just because you started readahead for it inside a page fault. It'=
-s not
-> even necessarily active just because it's mapped (although that is more
-> understandable).
+> Actually that can just follow the swap priority, or tier rule. Even if
+> virtual mapping exists, it can be bypassed. e.g. you have a large NBD
+> and don't care about either fragmentation or compression for offline
+> workload cgroups, then why use a virtual layer for them which could
+> double the kmem usage or spend more CPU? Setup is a different issue
+> which can be discussed.
 >
-> And of course, because the whole ordeal is already extremely simple, it t=
-urns
-> out that in_lru_fault doesn't actually mean "we're inside a page fault" b=
-ut
-> "we're inside a page fault and this VMA/file don't have any sequential/ra=
-ndom
-> annotations".
+> > - The physical swapfile has clusters and swap tables (status quo).
+> > - Virtual swap is implemented with clusters and swap tables in a
+> > virtual space, and each table entry points to an underlying swap slot
+> > or zswap entry.
+> > - If a page table has a physical swap slot, and we need to do tiering,
+> > we basically "make it virtual" by making the swap table of the
+> > physical swapfile point at a virtual swap entry? or another physical
+> > swapfile? Not sure.
 >
-> I would really like to understand why this is here (and this is true for =
-the
-> various odd heuristics mglru uses) if we ever want to have a chance to me=
-rge
-> the two LRUs together.
+> They are still ordinary swap entries, nothing special. The virtual
+> space is also just a ordinary swap file (or swap mapping), which is
+> easy to do:
+> https://lore.kernel.org/linux-mm/20260220-swap-table-p4-v1-15-104795d1981=
+5@tencent.com/
+>
+> Then its virtual_table will have a different set of swap entries. (I
+> left that part undone though).
+>
+> > > Right... I mean with two layers you will likely have >16 bytes
+> > > overhead, and double lookup.
+> >
+> > Why >16 bytes? Do we need anything extra other than the reverse
+> > mapping? Also why do we need a double lookup?
+>
+> You will have to store at least the following info: memcg (2 bytes),
+> shadow (8 bytes), count (at least 1 bytes), and revert mapping (8
+> bytes, since you have to address a full virtual swap space). And some
+> type info is also needed. Part of them can be shrinked but still,
+> scientifically, merging two layers into one is considered a kind of
+> optimization.
+>
+> You need lookup the virtual layer, then the lower layer for many
+> decision making, is was discussed before to introduce more cache bit
+> or things like that and I think that is getting over complex, reminds
+> me of the slot cache or HAS_CACHE thing...:
+> https://lore.kernel.org/linux-mm/CAMgjq7DJrtE-jARik849kCufd0qNnZQs7C8fcyz=
+VOKE14-O+Dw@mail.gmail.com/
 
-This heuristic was added in the original MGLRU implementation, which
-is quite a large patch. If it was added later in response to some
-specific issue/use case, we'd have more rationale written down. I
-think it really just comes down to this line in the original commit
-message: "A page is added to the youngest generation on faulting." - I
-don't see evidence that a great deal of thought was put into the point
-Barry is raising here.
+I think that's where the disconnect is. You are considering these two
+separate layers, each with its own metadata. The metadata should only
+live in one place.
 
+If we only have swap tables in the virtual swap layer (with the
+metadata), backends do not have to carry the metadata. In this case,
+backends should only have a reverse mapping (if needed), and some
+internal data structure (e.g. bitmaps) to track usage.
 
->
-> --
-> Pedro
+This is difficult to achieve if the virtual swap layer is optional,
+because then the metadata can live in different places. This is why I
+think we should have a virtual swap layer that all swap entries go
+through and all metadata live in (where today's swap tables would
+live). Backends then only carry backend-specific data (e.g.
+compression handles for zswap, slots bitmap of swapfiles, etc). In
+this world I *think* the reverse mapping could end up being optional,
+depending on what we need it for.
 
