@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0E5AFF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:01:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9B97FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 531566B008A; Mon, 27 Apr 2026 12:01:48 -0400 (EDT)
+	id 07B5C6B0092; Mon, 27 Apr 2026 12:04:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BB466B008C; Mon, 27 Apr 2026 12:01:48 -0400 (EDT)
+	id 052BC6B0093; Mon, 27 Apr 2026 12:04:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 382FA6B0092; Mon, 27 Apr 2026 12:01:48 -0400 (EDT)
+	id EABE06B0096; Mon, 27 Apr 2026 12:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 21D926B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:01:48 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5C8C89F7AE
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:57:32 +0000 (UTC)
-X-FDA: 84704790786.07.F18B16B
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 476331C0018
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:57:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DAEFF6B0092
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0198C120E30
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:47:47 +0000 (UTC)
+X-FDA: 84704766216.08.5ABA601
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 218D91C0013
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:47:45 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=OhQoS5cT;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com;
-	spf=pass (imf20.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZhKAxlUM;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777305450;
+	s=arc-20220608; t=1777304866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9LeH8B86nKcZOpLZaBsejYDxB8jSKUcx+rF/bpcYhS4=;
-	b=BiSjkexmB55az6PFUa/3l8NEvJQef18BM9Jjw27kVrGQpf1PqPAcNx6xongilXlIxQV4zl
-	HjCibjdVitxS/8TzKRxSRc+RBrOdYYBuALHsutgiTcQb/fF9TJqDRbPfQsyTNLJSA4Edoh
-	lpoeGre0W7iIxgAZyWbVLDBebrz+NxM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777305450; a=rsa-sha256;
+	bh=QCMpB9OfZRwjYgRWTeLad5rLP/f0szDjd8Y8Qmp238s=;
+	b=udXTMAIPA+WOIEhza6Q5HcQW+f12oYCXuyryQ142O53kZavjao7sG1ZDiBmapPhiO6Eo5i
+	5946vPKh4YThQmuCQ4iqBj8MlS4bd08ZrEkSGYCbiTprBL/82NFoyavSy9jCK/2qWs1WEi
+	eRbddZbILIYI8Kcdv5l0YiaWnAatY1I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777304866; a=rsa-sha256;
 	cv=none;
-	b=wtPZ5F5TdfFqYBLVyceA9PZiEiuK9F+kU0tnYFBDuFmubsLjn7+khIU5qNu9pDobMK8T31
-	xu28Vutd/WsdtuzWRDSZIlWDfc7mir9sm6q+y+DYP18wBv3b8zBxqr8BUi/xMKGbUwgp3B
-	WX4iqmFkl6/8avSafZGK36HC1ygx0Sc=
+	b=3xNqsUKA/a19bxA2xKMxKtS/EyjnXjvNsF7sRi42WKHGgEd4P+v/fDEZbh1jPUxjdRnk7X
+	H/9AqnIMHGz3qVjvpWvkb0NsV7epc7CqcSGs4gQ5aotBr2RAFmwta0CEsIhXSZNeeHgGOj
+	/Ozk9/IOktOVyTLMczXBtcUGgk2Ao0w=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=OhQoS5cT;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com;
-	spf=pass (imf20.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com
-Received: from localhost (unknown [40.65.108.177])
-	by linux.microsoft.com (Postfix) with ESMTPSA id D338920B716A;
-	Mon, 27 Apr 2026 08:57:27 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D338920B716A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777305448;
-	bh=9LeH8B86nKcZOpLZaBsejYDxB8jSKUcx+rF/bpcYhS4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OhQoS5cTppvzXia529YlPHyl3gEpjLWlCpqEjC0wytPu1aoMn+auy5b+Twna7AZOq
-	 Lvng4260i2n0yzHjGfSp5eYpSAvQTyiXS2IYISChFXvH/uD1Pd2GiYxD6n9fpiMfwn
-	 a+1mc9wLudzyJ4EU5tC+TsVbZknBuN1SpzNpVqY8=
-Date: Mon, 27 Apr 2026 08:57:25 -0700
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
-To: David Matlack <dmatlack@google.com>
-Cc: iommu@lists.linux.dev, kexec@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org, Adithya Jayachandran
- <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex
- Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris
- Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, Jason
- Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>, Jonathan Corbet
- <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon Romanovsky
- <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport
- <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
- Pratyush Yadav <pratyush@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja
- <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Will Deacon
- <will@kernel.org>, William Tu <witu@nvidia.com>, Yi Liu
- <yi.l.liu@intel.com>
-Subject: Re: [PATCH v4 02/11] PCI: liveupdate: Track outgoing preserved PCI
- devices
-Message-ID: <20260427085725.00005283@linux.microsoft.com>
-In-Reply-To: <20260423212316.3431746-3-dmatlack@google.com>
-References: <20260423212316.3431746-1-dmatlack@google.com>
-	<20260423212316.3431746-3-dmatlack@google.com>
-Organization: LSG
-X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZhKAxlUM;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 15BE443D08;
+	Mon, 27 Apr 2026 15:47:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587BCC19425;
+	Mon, 27 Apr 2026 15:47:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777304864;
+	bh=6QyhfmdKWsqLeaywBIrX3y0EggSxtNipVXYb8EQYAwA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZhKAxlUMRWyfsqXwj4T6Fkz9QSKKjgegXNz4WzuQTf9KMWkJPTy8ph3ZbZ8Bd7G46
+	 xJ5aCLOxJGJOYWDfSGelgl4ysDhLuhxqeZFtBORtiihq6sI51VPoisfvYbhcKZ8p36
+	 3tR/ImU/GqjtVQ/GzphvIuYx33SGJMOdNZNJN30om4ygH4JE0RjOS/TqVgGzUw+FOI
+	 SDvDxURqQboX4OI5EBEumkv1SXxo4Uw9jIxuBBGFIzGR0qQTL6auU8ignQprGWLOuL
+	 C9JTFrULcaNM517z8Wo3pF43BH71wWLgsmkkJGZ+zSIr5SoxrhC5h6q+QeB28oBwiY
+	 lSQEF6WSZk6hA==
+Message-ID: <8f5952c2-d710-46dc-8ba0-012db08c9578@kernel.org>
+Date: Mon, 27 Apr 2026 17:47:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/8] mm/slab: wrap rcu sheaf handling with ifdef
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
+ "Paul E . McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Zqiang <qiang.zhang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260416091022.36823-1-harry@kernel.org>
+ <20260416091022.36823-7-harry@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260416091022.36823-7-harry@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 476331C0018
-X-Stat-Signature: us4uspjp5tiozwtuhnssg6ikcdtbwdjt
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 218D91C0013
 X-Rspam-User: 
-X-HE-Tag: 1777305450-980331
-X-HE-Meta: U2FsdGVkX1/Ny6ouWxOAQwvuo4UHVJ5YoebpQqmbseaqQ+ZRXGTs+eNDkXMs6AFVJi5EerXk0VOjSqNbN8X7MYOIc6iwvVyH2UbbSybXscSgeGEOUbBlb4CGaO1fhf8B7PcEoRBEYOAH2jdV62StFb086yvETxLZ4yacyGYcmXjXcTGe+PI+Ey0VTxSdlIV6HNYThRClyClBvxxhTQJIf7mocRm9+5qp/hAW3VUlTT17sODvJq13B79KnAGnNM3oQLZ/j1vriQBgzTB55ZZ5vkqXIjzD+T8TT7z1n2+nAcpM1wZ+5y3BlJLbsFm8uJsP2fF+IybxHaTuXv4TiZzZC1/svjJvZbGho832VVs4fzj9lkpSI/HD4lPGnnIdM+SKZbRWeR3RBCNVItl6YG02hTKUQLsZFPizq9CdX3d69jDOY7eBhvOQZh1DTxA5kSqpDt19LjJ1aSINr60tt6ser5pfkMc61U4GWzLdD4u7UX6B2SjNiWnNG0MvCVem26jDDNaMMmh5z5ng36RzeVncHr8kFQAxYY68+cOApJgaFJNBgwhEGBhA6q96QeAyz88N4fCzq3BJfUQAbKaxOc1K4bKpVm5XFNwHekRLyQX3KsDMe6o04UiciwmrtGpYYbQ8SDV+nniBxD8IIoA97sVvM2u873JFwDPP8ymRjMTDPolvbFJwf1p8jKwlKdgk7bEWJlB46Q00RtTrLPeIf9mZiSOZ+9exxwsU8ZothWEuFqzmBMDw7uhDzg/4wf6X93vfcq/Vjnrpf1aTtvdfYn6w1YaMINZZNE0xl7OjzkMLCmyn2swLBhYlgPiN3KsogsNwiIK3k5b0kY0hzyPnnChrmpOSrEg/oJVk4B5aTda7vKLbqoVQcGq/cf5wwbyGQ9Mp2AszNYIeXmvmqXI7aZFXI76YIGN3VapwQqUjelsXWedxoW2/CFE+KzoSJVyYWCefK7BfPQDXemGHSTSiaKn
- zXm7hNIS
- 3XgdDbbcaWXGrpQ4FR8hODp7cCQNHEvvBkpiY7aUQ+ohK4g3tqKZrRkKptFW2EJLuOhuhdGkQateESm+57uKMaqbmFwWL3M4gJ5QBayq+snnvoKHR8v0PQI+pFla8LOhT0DBZKQrWRFmLU9hkiOhhJa7FStREEkdAmyauUZJYZIml16w9YfI+NSZhRFJtPVsBUi4SrFeWCV0ZQjrsJPmc5afTnU6Pe9kHSD63zqme1Cf3GvQD1eml0ZO25YRCr0FJrRxHJTMEXeeAHO0CHsNz5w/bTY64ZCWw7ve+rxvCETcaGV8W+fcRIIF+S6CuHXS3xzzYplm3SMY15yaO42wQhMhOP+rY7sRyjZo/4oZBK3K+RH4wFuuCXOth1N8Voxgim6Rowp7GL9y/jfuOxvC1i/+6CpLERBVvH9Ek+CdP6RAHGys0A7tdn70aMsrE+M9tjKmeZJ8QLpgwNUCe99Jq2idYDQfATO+aD+zX
+X-Stat-Signature: 9q8rczqtpzmmx3zriobyw8t8dfhcjuyp
+X-HE-Tag: 1777304865-844922
+X-HE-Meta: U2FsdGVkX19mVZfwmpx8X4LViKn93Sei646SFTmOHkqarTvyaJW6446Ptq3muG6FHM0LASvOQVDAWCgD05xFl80d7r0vYQciyRq+EUbLQ3fvO/e18ZSO9ohju3BHfXvqyFfIgpCdqBFS9V2/MzmDgt4y616I/hWa0oZA/IA7JyIHJJPD9BtiVGl05UtvrKMps2Px9qwxxpHVCTpOxHGs3wkbdS1UmN0aqh07WuUL8ZNOrFCovLoJ5aq5iGYTJVRkIzADQ8AFA0bw0ubWDqXqu6f4ZfLIP4VnNT/St8MLL9FQdC2O5T5BlTp2NWEU3q5a2CN2P4RCC1VZNX0SNPw7kLMibaLX2bDwTblAYoFzsGf92qPQb0w+S3YYB0MOWqcnGFIl+OhuFmAEn52LAB3r4kCLc0OFqCu15kDGO10vYnQpjeo2gbXWHyAY4oBHUL0kdmtAJnOPSy7SIsO+MROmvnVpGmHib8U/XmgLzzx+6HnKUDqmZu315nCv3k0NCn3PWxtqnCsRqpedHPeFeiWuKfyCn8DfTuUg/QACwRWABfr9vTNG0knezBWxZ68YArmlWp+WhGBZIW3eG0zzj9V+k38xQWKR4VdxSkJApTaC0Xg5aZTi3eXuECFhIAtnjzm96AAeiRXjptqiHDt7hkSCiIwni1rCIdqjjtGROttf1+qAEqRk8w11cIoPi+i+YS61kyY6xI3bRa9Vw+Tnj/pfyIw+XX7ZDEhX+S4pHMja2TUvKJWqAZfi3EWC/HXBb05xNYZbxCTa8achFOD1rMDYB18xZNiQ5sMXYRg8uJSAFfcnLtcy7gYlCKw8gEu+Y/2Sgxl3G1RpScVFwCkUHEUQLX1KV4kgs1/l95ubQugv1XItH9vpY2KPeJc7iemIKJU0KxJAxM9VyKLL8IbOA8/yRZIxD3QSLl8dSctOl2jsCBNYylhT30d5iVe9tBF03ugbrpbx4hXCYngiLn2ZvaD
+ 1ckUN/x9
+ Migge1qbJsWXBq6O3PU8MR0TN5yH6tzqjCjkHdi9LkuqtYgiQxxnmPP8hwkwC4gMJAojGFNQJKIIf9SWKogdVas+VB/4FGZmM/pgyx/pWQ/iLXYPaXjfL5qXOBEu1sQhMnQKpq/0glbzMBtr3dNffBeZZlcpcZ8GGro/C52biy+LmmfRI9aE2zXiNJfppyI7ncPj3oxZUcLz+jqyrTLZhG+hT0k8GUKeCqgemj051VVfsDqeR/HGzFu36HI4eJmAuyxTBVoFzCs1xCuNWMFGlj7qjJdEcLxR/QOab
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,259 +105,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+On 4/16/26 11:10, Harry Yoo (Oracle) wrote:
+> Freeing objects via rcu sheaves is only done with
+> CONFIG_KVFREE_RCU_BATCHED. Wrap the related functions and struct
+> fields with ifdef to make this dependency explicit.
 
-On Thu, 23 Apr 2026 21:23:06 +0000
-David Matlack <dmatlack@google.com> wrote:
+With SLUB_TINY we have recently took the approach of limiting it to only
+necessary parts, and not care about unused code etc where it doesn't cause
+issues. I think it's good to minimize the ifdef complexity, so maybe it's
+possible to limit it only to allow compiling with no warnings (including
+IIRC W=1 clang that IIRC is stricter about unused functions)?
 
-> Add APIs to allow drivers to notify the PCI core of which devices are
-> being preserved across a Live Update for the next kernel, i.e.
-> "outgoing" devices.
+> Also remove a TODO about implementing __kvfree_rcu_barrier_on_cache()
+> for a specific slab cache, as there doesn't seem to be a simple and
+> effective way to do so.
+
+Ack.
+
 > 
-> Drivers must notify the PCI core when devices are preserved so that
-> the PCI core can update its FLB data (struct pci_ser) and track the
-> list of outgoing devices. pci_liveupdate_preserve() notifies the PCI
-> core that a device must be preserved across Live Update.
-> pci_liveupdate_unpreserve() reverses this (cancels the preservation
-> of the device).
-> 
-> This tracking ensures the PCI core is fully aware of which devices may
-> need special handling during shutdown and kexec, and so that it can be
-> handed off to the next kernel.
-> 
-> Signed-off-by: David Matlack <dmatlack@google.com>
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 > ---
->  drivers/pci/liveupdate.c    | 101
-> ++++++++++++++++++++++++++++++++++++ include/linux/kho/abi/pci.h |
-> 7 +-- include/linux/pci.h         |  26 ++++++++++
->  3 files changed, 131 insertions(+), 3 deletions(-)
+>  mm/slab.h        |  3 +++
+>  mm/slab_common.c |  4 ----
+>  mm/slub.c        | 27 +++++++++++++++++++++++++--
+>  3 files changed, 28 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> index d4fa61625d56..2dd8daa2f17c 100644
-> --- a/drivers/pci/liveupdate.c
-> +++ b/drivers/pci/liveupdate.c
-> @@ -43,6 +43,26 @@
->   *
->   *  * ``pci_liveupdate_register_flb(driver_file_handler)``
->   *  * ``pci_liveupdate_unregister_flb(driver_file_handler)``
-> + *
-> + * Device Tracking
-> + * ===============
-> + *
-> + * Drivers must notify the PCI core when specific devices are
-> preserved or
-> + * unpreserved with the following APIs:
-> + *
-> + *  * ``pci_liveupdate_preserve(pci_dev)``
-> + *  * ``pci_liveupdate_unpreserve(pci_dev)``
-> + *
-> + * This allows the PCI core to keep it's FLB data (struct pci_ser)
-> up to date
-> + * with the list of **outgoing** preserved devices for the next
-> kernel.
-> + *
-> + * Restrictions
-> + * ============
-> + *
-> + * The PCI core enforces the following restrictions on which devices
-> can be
-> + * preserved. These may be relaxed in the future:
-> + *
-> + *  * The device cannot be a Virtual Function (VF).
->   */
+> diff --git a/mm/slab.h b/mm/slab.h
+> index d7fd7626e9fe..bdad5f389490 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -409,9 +409,12 @@ static inline bool is_kmalloc_normal(struct kmem_cache *s)
+>  	return !(s->flags & (SLAB_CACHE_DMA|SLAB_ACCOUNT|SLAB_RECLAIM_ACCOUNT));
+>  }
 >  
->  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
-> @@ -57,6 +77,8 @@
->  #include <linux/pci.h>
->  #include <linux/sort.h>
->  
-> +static DEFINE_MUTEX(pci_flb_outgoing_lock);
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+>  bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, bool allow_spin);
+>  void flush_all_rcu_sheaves(void);
+>  void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
+> +#endif
 > +
->  static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
->  {
->  	struct pci_dev *dev = NULL;
-> @@ -124,6 +146,85 @@ static struct liveupdate_flb pci_liveupdate_flb
-> = { .compatible = PCI_LUO_FLB_COMPATIBLE,
+>  void defer_kvfree_rcu_barrier(void);
+>  
+>  #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 46a2bee1662b..347e52f1538c 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -2289,10 +2289,6 @@ void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+>  		rcu_barrier();
+>  	}
+>  
+> -	/*
+> -	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
+> -	 * on a specific slab cache.
+> -	 */
+>  	__kvfree_rcu_barrier();
+>  }
+>  EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
+> diff --git a/mm/slub.c b/mm/slub.c
+> index d0db8d070570..91b8827d65da 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -421,7 +421,9 @@ struct slub_percpu_sheaves {
+>  	local_trylock_t lock;
+>  	struct slab_sheaf *main; /* never NULL when unlocked */
+>  	struct slab_sheaf *spare; /* empty or full, may be NULL */
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+>  	struct slab_sheaf *rcu_free; /* for batching kfree_rcu() */
+> +#endif
 >  };
 >  
-> +int pci_liveupdate_preserve(struct pci_dev *dev)
-> +{
-> +	struct pci_ser *ser;
-> +	int i, ret;
-> +
-> +	guard(mutex)(&pci_flb_outgoing_lock);
-> +
-> +	ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void
-> **)&ser);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!ser)
-> +		return -ENOENT;
-> +
-> +	if (dev->is_virtfn)
-> +		return -EINVAL;
-This can be left outside the mutex?
-
-> +
-> +	if (dev->liveupdate_outgoing)
-> +		return -EBUSY;
-> +
-> +	if (ser->nr_devices == ser->max_nr_devices)
-> +		return -ENOSPC;
-> +
-> +	for (i = 0; i < ser->max_nr_devices; i++) {
-> +		/*
-> +		 * Start searching at index ser->nr_devices. This
-> should result
-> +		 * in a constant time search under expected
-> conditions (devices
-> +		 * are not getting unpreserved).
-> +		 */
-> +		int index = (ser->nr_devices + i) %
-> ser->max_nr_devices;
-> +		struct pci_dev_ser *dev_ser = &ser->devices[index];
-> +
-> +		if (dev_ser->refcount)
-> +			continue;
-> +
-> +		pci_info(dev, "Device will be preserved across next
-> Live Update\n");
-> +		ser->nr_devices++;
-> +
-> +		dev_ser->domain = pci_domain_nr(dev->bus);
-> +		dev_ser->bdf = pci_dev_id(dev);
-> +		dev_ser->refcount = 1;
-> +
-> +		dev->liveupdate_outgoing = dev_ser;
-> +		return 0;
-> +	}
-> +
-> +	return -ENOSPC;
-> +}
-> +EXPORT_SYMBOL_GPL(pci_liveupdate_preserve);
-> +
-> +void pci_liveupdate_unpreserve(struct pci_dev *dev)
-> +{
-> +	struct pci_dev_ser *dev_ser;
-> +	struct pci_ser *ser = NULL;
-> +	int ret;
-> +
-> +	guard(mutex)(&pci_flb_outgoing_lock);
-> +
-> +	ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void
-> **)&ser); +
-> +	if (ret || !ser) {
-> +		pci_warn(dev, "Cannot unpreserve device without
-> outgoing Live Update state\n");
-> +		return;
-> +
-> +	}
-> +
-> +	dev_ser = dev->liveupdate_outgoing;
-> +	if (!dev_ser) {
-> +		pci_warn(dev, "Cannot unpreserve device that is not
-> preserved\n");
-> +		return;
-> +	}
-> +
-> +	pci_info(dev, "Device will no longer be preserved across
-> next Live Update\n");
-> +	ser->nr_devices--;
-> +	memset(dev_ser, 0, sizeof(*dev_ser));
-> +	dev->liveupdate_outgoing = NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(pci_liveupdate_unpreserve);
-> +
->  int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh)
+>  /*
+> @@ -2923,6 +2925,7 @@ static void sheaf_flush_unused(struct kmem_cache *s, struct slab_sheaf *sheaf)
+>  	sheaf->size = 0;
+>  }
+>  
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+>  static bool __rcu_free_sheaf_prepare(struct kmem_cache *s,
+>  				     struct slab_sheaf *sheaf)
 >  {
->  	pr_debug("Registering file handler \"%s\"\n",
-> fh->compatible); diff --git a/include/linux/kho/abi/pci.h
-> b/include/linux/kho/abi/pci.h index 5c0e92588c00..5b4c8d9e462c 100644
-> --- a/include/linux/kho/abi/pci.h
-> +++ b/include/linux/kho/abi/pci.h
-> @@ -23,19 +23,20 @@
->   * incrementing the version number in the PCI_LUO_FLB_COMPATIBLE
-> string. */
+> @@ -2965,6 +2968,7 @@ static void rcu_free_sheaf_nobarn(struct rcu_head *head)
 >  
-> -#define PCI_LUO_FLB_COMPATIBLE "pci-v1"
-> +#define PCI_LUO_FLB_COMPATIBLE "pci-v2"
+>  	free_empty_sheaf(s, sheaf);
+>  }
+> +#endif
 >  
->  /**
->   * struct pci_dev_ser - Serialized state about a single PCI device.
->   *
->   * @domain: The device's PCI domain number (segment).
->   * @bdf: The device's PCI bus, device, and function number.
-> - * @reserved: Reserved (to naturally align struct pci_dev_ser).
-> + * @refcount: Reference count used by the PCI core to keep track of
-> whether it
-> + *            is done using a device's struct pci_dev_ser.
->   */
->  struct pci_dev_ser {
->  	u32 domain;
->  	u16 bdf;
-> -	u16 reserved;
-> +	u16 refcount;
->  } __packed;
+>  /*
+>   * Caller needs to make sure migration is disabled in order to fully flush
+> @@ -2978,7 +2982,10 @@ static void rcu_free_sheaf_nobarn(struct rcu_head *head)
+>  static void pcs_flush_all(struct kmem_cache *s)
+>  {
+>  	struct slub_percpu_sheaves *pcs;
+> -	struct slab_sheaf *spare, *rcu_free;
+> +	struct slab_sheaf *spare;
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+> +	struct slab_sheaf *rcu_free;
+> +#endif
 >  
->  /**
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index d70080babd52..eb94cbd8ab9d 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -41,6 +41,7 @@
->  #include <linux/msi_api.h>
->  #include <uapi/linux/pci.h>
->  #include <linux/liveupdate.h>
-> +#include <linux/kho/abi/pci.h>
+>  	local_lock(&s->cpu_sheaves->lock);
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+> @@ -2986,8 +2993,10 @@ static void pcs_flush_all(struct kmem_cache *s)
+>  	spare = pcs->spare;
+>  	pcs->spare = NULL;
 >  
->  #include <linux/pci_ids.h>
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+>  	rcu_free = pcs->rcu_free;
+>  	pcs->rcu_free = NULL;
+> +#endif
 >  
-> @@ -594,6 +595,9 @@ struct pci_dev {
->  	u8		tph_mode;	/* TPH mode */
->  	u8		tph_req_type;	/* TPH requester type
-> */ #endif
-> +#ifdef CONFIG_PCI_LIVEUPDATE
-> +	struct pci_dev_ser *liveupdate_outgoing; /* State preserved
-> for next kernel */ +#endif
->  };
+>  	local_unlock(&s->cpu_sheaves->lock);
 >  
->  static inline struct pci_dev *pci_physfn(struct pci_dev *dev)
-> @@ -2880,6 +2884,14 @@ void pci_uevent_ers(struct pci_dev *pdev, enum
->  pci_ers_result err_type); #ifdef CONFIG_PCI_LIVEUPDATE
->  int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh);
->  void pci_liveupdate_unregister_flb(struct liveupdate_file_handler
-> *fh); +
-> +int pci_liveupdate_preserve(struct pci_dev *dev);
-> +void pci_liveupdate_unpreserve(struct pci_dev *dev);
-> +
-> +static inline struct pci_dev_ser *pci_liveupdate_outgoing(struct
-> pci_dev *dev) +{
-> +	return dev->liveupdate_outgoing;
-> +}
->  #else
->  static inline int pci_liveupdate_register_flb(struct
-> liveupdate_file_handler *fh) {
-> @@ -2889,6 +2901,20 @@ static inline int
-> pci_liveupdate_register_flb(struct liveupdate_file_handler *fh static
-> inline void pci_liveupdate_unregister_flb(struct
-> liveupdate_file_handler *fh) { }
-> +
-> +static inline int pci_liveupdate_preserve(struct pci_dev *dev)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline void pci_liveupdate_unpreserve(struct pci_dev *dev)
-> +{
-> +}
-> +
-> +static inline struct pci_dev_ser *pci_liveupdate_outgoing(struct
-> pci_dev *dev) +{
-> +	return NULL;
-> +}
->  #endif
+> @@ -2996,8 +3005,10 @@ static void pcs_flush_all(struct kmem_cache *s)
+>  		free_empty_sheaf(s, spare);
+>  	}
 >  
->  #endif /* LINUX_PCI_H */
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+>  	if (rcu_free)
+>  		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
+> +#endif
+>  
+>  	sheaf_flush_main(s);
+>  }
+> @@ -3016,10 +3027,12 @@ static void __pcs_flush_all_cpu(struct kmem_cache *s, unsigned int cpu)
+>  		pcs->spare = NULL;
+>  	}
+>  
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+>  	if (pcs->rcu_free) {
+>  		call_rcu(&pcs->rcu_free->rcu_head, rcu_free_sheaf_nobarn);
+>  		pcs->rcu_free = NULL;
+>  	}
+> +#endif
+>  }
+>  
+>  static void pcs_destroy(struct kmem_cache *s)
+> @@ -3056,7 +3069,9 @@ static void pcs_destroy(struct kmem_cache *s)
+>  		 */
+>  
+>  		WARN_ON(pcs->spare);
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+>  		WARN_ON(pcs->rcu_free);
+> +#endif
+>  
+>  		if (!WARN_ON(pcs->main->size)) {
+>  			free_empty_sheaf(s, pcs->main);
+> @@ -3937,7 +3952,11 @@ static bool has_pcs_used(int cpu, struct kmem_cache *s)
+>  
+>  	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
+>  
+> -	return (pcs->spare || pcs->rcu_free || pcs->main->size);
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+> +	if (pcs->rcu_free)
+> +		return true;
+> +#endif
+> +	return (pcs->spare || pcs->main->size);
+>  }
+>  
+>  /*
+> @@ -3995,6 +4014,7 @@ static void flush_all(struct kmem_cache *s)
+>  	cpus_read_unlock();
+>  }
+>  
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+>  static void flush_rcu_sheaf(struct work_struct *w)
+>  {
+>  	struct slub_percpu_sheaves *pcs;
+> @@ -4071,6 +4091,7 @@ void flush_all_rcu_sheaves(void)
+>  
+>  	rcu_barrier();
+>  }
+> +#endif /* CONFIG_KVFREE_RCU_BATCHED */
+>  
+>  static int slub_cpu_setup(unsigned int cpu)
+>  {
+> @@ -5825,6 +5846,7 @@ bool free_to_pcs(struct kmem_cache *s, void *object, bool allow_spin)
+>  	return true;
+>  }
+>  
+> +#ifdef CONFIG_KVFREE_RCU_BATCHED
+>  static void rcu_free_sheaf(struct rcu_head *head)
+>  {
+>  	struct slab_sheaf *sheaf;
+> @@ -6005,6 +6027,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, bool allow_spin)
+>  	lock_map_release(&kfree_rcu_sheaf_map);
+>  	return false;
+>  }
+> +#endif /* CONFIG_KVFREE_RCU_BATCHED */
+>  
+>  static __always_inline bool can_free_to_pcs(struct slab *slab)
+>  {
 
 
