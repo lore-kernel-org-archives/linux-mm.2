@@ -4,103 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D4C2FF8862
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:22:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7444AFF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:23:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB6C56B008C; Mon, 27 Apr 2026 06:22:56 -0400 (EDT)
+	id DDE4E6B0092; Mon, 27 Apr 2026 06:23:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D67BE6B0092; Mon, 27 Apr 2026 06:22:56 -0400 (EDT)
+	id DB62B6B0093; Mon, 27 Apr 2026 06:23:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7E366B0093; Mon, 27 Apr 2026 06:22:56 -0400 (EDT)
+	id CF31C6B0095; Mon, 27 Apr 2026 06:23:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B700C6B008C
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:22:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 68C26C0249
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:22:56 +0000 (UTC)
-X-FDA: 84703947552.23.11A84BF
-Received: from out203-205-221-245.mail.qq.com (out203-205-221-245.mail.qq.com [203.205.221.245])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B44D1180011
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:22:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=w9JexJFQ;
-	spf=pass (imf06.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.245 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BE81B6B0092
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:23:17 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B522C0339
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:23:17 +0000 (UTC)
+X-FDA: 84703948434.15.95B3A36
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 30CD74000D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:23:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q53B/wDn";
+	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777285374;
+	s=arc-20220608; t=1777285395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aoxJLcqVNjU6TsY+bAss1gfZHTlNWB2CFO4nNazgUic=;
-	b=hiQkanIV9COCDc8Au4LnNU/CF58ZNbhQITKg7JHUIctqjgUS17sEdBVRsrVm/ly0Dzd47j
-	MtRxcARxuZlb8Xqcwy+VpEHmFGvUQgH7yTBFSc/o0OHuaX3mU2hNwNXQaRKxUW60/PanSd
-	S93nCyOb/wLLXLEK8K2RmGgFqhJ8zmI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=w9JexJFQ;
-	spf=pass (imf06.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.245 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777285374; a=rsa-sha256;
+	bh=Qaj+dGhMqsmOlVqI0n4zS+2yba79faKYxkzvdqljdAk=;
+	b=Fxu7qJNqQX6D7TnUToH0jSn50BDJ/CsdTLNBRPq3oexmskGwKTUzvJLwRNGiwhCnWeu2Sx
+	G+lnnvnPBbscVhTUGcBLnZ9VwbJouCC0w3xEPhveiY4h80a/qEPGChEwKBXIhCUGcRNqWV
+	+lW9PVn+QteTEos7Lt4T0MsRRO14QxU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777285395; a=rsa-sha256;
 	cv=none;
-	b=f893g2qsyKc5OTUyyNps6u1OgIcL5lfP5LZvEHVOnjuV1JGlH7BCka7ZXMgqy1yQLiroRR
-	3c/zBOgH6OAOq44XAkeOBfqR56RmvZwhx+H+CCevXj3YP8gsgKhVf+UpYGCCLTXdszF4TH
-	k/H2FPzgmHOVahtdpm9ERdLtWgHdTyk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1777285369; bh=aoxJLcqVNjU6TsY+bAss1gfZHTlNWB2CFO4nNazgUic=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w9JexJFQXXiYqd6RXM1ttSlVzK9p127ucYQfeJO9xlGaMTWTf8l9ab9qcRI3Mwj2m
-	 15Y9+gJteEjqMRd18+2mTIEqcA3qVRGqCBnzCdV0mxGYV4MsmJSKHAdQEpu8sNEUik
-	 mxDM2c7jgtnS2Epwd+/cx6vTL/YV9bxwX/kfl0Cc=
-Received: from node68.. ([166.111.236.25])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 5AC362AB; Mon, 27 Apr 2026 18:22:44 +0800
-X-QQ-mid: xmsmtpt1777285366tpspfn6ak
-Message-ID: <tencent_3F158B17AE85E73945C5F97D8F8A918F9B07@qq.com>
-X-QQ-XMAILINFO: MDbayGdXPuoetEbV4RYs2SZLJQmVfx8PY6yub6ed+idrQkmcDP4FBdYcmzsLMc
-	 NCq3vqbQ906HVQ1T8yI4ZdW25dvJzx8fKrgcCLEPENvf68TDun9CvHRRPNlb6mAsaAhAyahN21bF
-	 WwVQARB+3n+oatD8/w+e5ch64PiHUyfY8d5FVrSMiROPAnAsbzg7hpkAczNg1O0EsHXHfcmxPoCP
-	 p5Ts71LNRV+paE7GAtVNHzZKvCAemS0858QIQXsn6fTPHMEglHt3eUz6HGeOCDowPuIDnwi0S14Q
-	 ASBtNOBLu93riHvjQw6c6gNubTesHc/p3euKP/3mGxhC2L/6zW6v4BHVwHNc1UbtAVGKY1MLpxNE
-	 gHGlmQUUwR/PQd2MvrO8R+6J30z/65jDC3gdeUTxT0RxgF7XclkE4+iiRia8svjSeiLzl6uL2YD3
-	 I13Sbgr9JHyBVwb7C5qcRWPrcyomxKqC8NZnRRFrl/DIEDHEQSIZ+AypqPdQ5gt4Ymu4GbcNBeja
-	 /5BAaosEqLKiso1MIDxlJ5s+Y6h5XAbc6qTl+g7DtvNTM8kwy6IgDC1+qWdeB4zoVOQiJd94Ofy5
-	 xJQqbPc3sAxkORE5fgabiMk+7Gb3uDc4QQgJnupvr0wT/FcE+rE5DsaGz44U84pieE34VUWO187X
-	 n/Jog4QQEKAzWFl0KiRUMd6YTsu2LYCMEfLkw3p36slWM6yo9ux/WIwNikmVSz3KSXFpESntsSfz
-	 tGGhM/JanKpDBMRFu4qilWc1pwa10aM0pQ83o/8pMB8MhQPtVLTMSS/gNNzYkgFMJkOR55misKk8
-	 2O6d6pnk/VqmKgv/cSUDOaFHBnDv749LZZze4VoTFtkYDJHXnyRtuVXvyFL7Vp40a7+qwPPA/Efr
-	 gf/1YgzyfWdfReZ5BHYamwhJQOu3fJWGE/b/E5GaWtB5qEInifdlpU/nSF+LQ8Qfjy0bfSWVMgX+
-	 a3e+Z3+5eBUqdZzV3NMXfWAb+GGJsE+aoZ7xY0oeUsE29dUnVETE4Rg1ZEvTOBBiKv0cmr/R8Qph
-	 DxS3WVnagP4MPI3sdcbI56lB3mmfZ1wLXCkGk7pQ==
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-From: fujunjie <fujunjie1@qq.com>
-To: Matthew Wilcox <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Haoran Zhu <zhr1502@sjtu.edu.cn>,
-	fujunjie <fujunjie1@qq.com>
-Subject: [RFC PATCH 1/1] mm/filemap: tighten mmap_miss hit accounting
-Date: Mon, 27 Apr 2026 10:22:43 +0000
-X-OQ-MSGID: <20260427102243.3519326-2-fujunjie1@qq.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260427102243.3519326-1-fujunjie1@qq.com>
-References: <20260427102243.3519326-1-fujunjie1@qq.com>
+	b=zTj14ra6TZfxCaW4cnZ65JYihroB1VLeWIaKDOLEe4ASQi6AkaZhsikfJ/PphcntDKyo5q
+	SICHC71bAF/NUTNzN7gl/FqheNkw37m2O73Im7zy+tV2EreTNMSa6RWPb27/qJYPoNExbG
+	7n8XzN4sePjGotygSlQgFvdZgwljMiM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q53B/wDn";
+	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8092060154;
+	Mon, 27 Apr 2026 10:23:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98520C19425;
+	Mon, 27 Apr 2026 10:23:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777285394;
+	bh=fUpg5gsOkSvFFfXQrHt3olWMMe5hz0pDIK5bBl+Z4nI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q53B/wDnwzeVo4lRh05DTg7drzUct4zy+D6ard5OgdVJy7Jz1RQF1/zm6N4h0Lqzh
+	 v46K+wEI/XGqlmLe0UPUEgNf+kbOTUJWjAeigI84HIY99I0QLvaQs4D7iLH+jxw/hP
+	 z8sFdNEZnB05fIoGqDm7Uoo8a7ZZ2raE2MX7ik6PzEoDsHQETMWrvACW/S3nW6SUpP
+	 3Lb3NEJtzR0R36dqyVe7GebvpMIpkiAe8gM57BOFIKTGa9PgAvwe4iX2s+Ter7f9R/
+	 WNdq5RSGjWuRlUBYZ3k6T6FucEcqJiYIiVhusrr7DyiEGEQysQUnF+TE9oTLhsGS8w
+	 QlW+YYOWaAIMA==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A0F32F4007D;
+	Mon, 27 Apr 2026 06:23:12 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Mon, 27 Apr 2026 06:23:12 -0400
+X-ME-Sender: <xms:EDnvaQSASUKodycG1gWLUkRqBODcT9UusFWuy84vdI-C3EVmYufugQ>
+    <xme:EDnvadC6-xz2k5ijqgWULOeGYjGZQeVdWEsjAwSBx7fPDGqKpEse8NdnwVpj6k7UF
+    C2NIWcQpqiuYJJHhT9ZBPjSrZN1DtvYfXGE5uHo4X5ks1osi0kPtCo>
+X-ME-Received: <xmr:EDnvaaD_JVeCq3t-d_gtRzhqKeED6OUKcSkXYaJOJcQ3nfi7DWy9HbSPTRXHdw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejkeeggecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeeuieejieffkeehfeffffdtkeelfeelhefhfefhudehjeehvdffleeuvddufefgkeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
+    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
+    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
+    grmhgvpdhnsggprhgtphhtthhopeefiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhigsehrvg
+    guhhgrthdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhi
+    ohhnrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsgesghhoohhg
+    lhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohep
+    iihihiesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:EDnvaezPSEKdvW2LemvwhYxKBhVJcmT29F55rubrnyv9XDy2vahUyg>
+    <xmx:EDnvacg7o_b0HkyUZlruDqdALLMJrZk0a42P7vq1OIA2_qb-I6p_3A>
+    <xmx:EDnvaQZD1VWHhFcIoaSbSMel-FmR9c7XKvLPVZFQH_m0L40votz4Zg>
+    <xmx:EDnvadfzPVAnKIroABNUL3__tR9HwN84QFfqdRDcRujfhZimidzqOw>
+    <xmx:EDnvaVBEE4PfygYDF4d5N4qsl8ds4iUS0KIA0ls_UKoIIIdgGgsVhP9M>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 27 Apr 2026 06:23:11 -0400 (EDT)
+Date: Mon, 27 Apr 2026 11:23:10 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
+ guest memory
+Message-ID: <ae82JuqoHfgk1_I5@thinkstation>
+References: <aed6fHLrIdahbdY3@thinkstation>
+ <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
+ <aeorZMvKwu8zKX5i@thinkstation>
+ <aeoxnuGKO3uqS2kG@x1.local>
+ <aeo5IPpQi7onyjTF@thinkstation>
+ <aeprnnccJeyHB2rt@x1.local>
+ <aes7b17nG0cXrtEd@thinkstation>
+ <aetZUOINzfTXChLL@x1.local>
+ <aetyhki-UD70dyRL@thinkstation>
+ <652b4a01-2382-4faf-bc1c-f127ee0b2c75@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <652b4a01-2382-4faf-bc1c-f127ee0b2c75@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 30CD74000D
+X-Stat-Signature: zo6fkfmwajreiiabfsfo6k11btxf93un
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B44D1180011
-X-Stat-Signature: wsczz6fqnt177y6knbgmpkqfk4n9wq91
-X-HE-Tag: 1777285373-891759
-X-HE-Meta: U2FsdGVkX1/36j4S3igrPbH/RQbXQ8CWCDnt76H74PhFrF+RyaIyso4xejQngAYMWizm9cuIgwy7WTYbmO+H583hSQK62ub6rc0H0b0e7YxobuAqQLy1oQFMGnVuDKO4CjTpFR0s+NylYuIDn40/pGa3Rd/aHdsIEl7UoZZfX19HPP5DmAGreJW9J+Exm/XRjvpHoJF1IJSL1yTsSPGLbym7RQWUcoCVCpYbYTLzwtXuI+PH7bGuF0bXFe0MhVvaSDc9z7ijEATfytf9KYx+dB9hFJAvACiTuv8at2QM8R+LspN+PRTy3D3mQm29sMHM2jDQivwp5ZWiLNOJw33X/J4uXdRY3mYmx3Cy5Z089qyoMYE0RZBueWybQYnTcy1tn5waY6uxIYzheSMpgLA0xWJMkltSp8YMR9T9HtkZsIA0WJfbVWXVpLkGEY2neaaovHy/s93wJHaWkz3qp6L8bKH9puHF3hzzbLMc9GT7Ukv3ddLPhM4ioZmFntrzTCeXSuuzT5CLgQNh5CHuriG/bNUaj5VFXYrPLrPCJWXcntpjbxYmemO/eKrdb19ZLzSBqmUJNk7EpIoTuLHHuhKAKdBY7mOT07ay/ysWBasDSDNNOnWlAuTX+nvDF6833twfv9tmmfeumJQlvd3Ek8pA4x9D7i3JV+CQUy72xgw3458erBwdEs+3LiITLZtg/mFmSvrKlXTnZzHljKA1J8tO/Es+9EWi2R4JgT9txOZAxV4rGBmu9mjxpwmO7iuD1GFOOnnc74meiCBZ58ApNG+KG3BvqibAsXtdvqhSWu3AjiewARS50SXUfsu5OlJJDVoPv1BDzkoYltItWvNh5WQWK4EsN4DQK7SnLYeMxMie62EGJZYAqbKXte+JSoOmIkl4FAVw2Yb1jtd6V7THoyhDp2furKT14jJI8Dg0fYnJVjEK7rmhHssu5aRChTeYoNbldnGvA+NA2krXeQJBz9i
- R99OPIco
- pm+Jo8sfvNV3Wn0lWpGmQnV5lqjIzJ3aHyewrZnMd33LweBTuULtwKXfDLuvs3fGBiLb3lbPT8wbpiUUeQcg0Pqu9+mu0TB6O3xn6+yIVqO4j8tY+asimxWHJX24w0EcLisNqx4bh8oy2fxRe3dTZgBUjR4NP7zu+pntuDB/uGpSoeRa9JCVoP7299dK2QQ9drnSJTDxNeBFVw/wntk2SU6gra0xSbuvaoLhkKUSKLojSwmmYiVnfixTrQwHZI8aoiYmCQpioaBQv+azfSNXoKck6iBWHq3PVANv06SPZ5Nz3gb0FQxvH3Ffaqg==
+X-HE-Tag: 1777285395-309487
+X-HE-Meta: U2FsdGVkX19RrbS2aXq/hPz+bQnx1Ua6YDtjWqlI4WyqKZ25vOgwNky3cXkLwqu1TXDXocdQGGJDgtHHjTFJRcUFYvbHTjR292goeTYIpns7p5x5Gbuclm1lqwFCPOmIIuBjgAmBthhZwlEqAo7hYxSWscyO10MXHotYe4W72wJp29fZQFyjJTmXnM7BOWDuUgKARMgEp+Rxyleq5qUZsfeULWxxVbfule5/d10mNHiC2VoMHbOyNpQAAnlJCF3wTpPPSUxKcznK1XlgC4iEpURifNsx1l/oDeJV2IJ+TfpZJtZ8c2Dn4WE2Hq6zo8Hzrwivj7rg0QeT4iA4frZeW09PiN9l1nwUkMgwY7KF2ifSoiFBbNl5kqZt1AzpdeVdUkQr7FLF2SxyI3vMfDiyZh/PkKnkIIKq6tYKaWesQMGP5thODnBVMkT7zLGT/V7zli76Hmv67TMjOwBt0n389psIEGK3fhXbibLG3XjFqzk+6MDafQrF1ALGcAzmh78m76FBBMdEIlJkEoiEHXGXniWM8DmYO0g9i76sQzxzVXSOOzu/kSo95EG00IZ91sORSdAW2vl0EYJrVMt1HIsk+SwLK+Hl6h0ys+xw6oX6ACCTLMSAjij/XRK/5E3ECbR/URmoRWYkkR42MROipzbqf5FtNT09HbpH5AcYHaE/kFgTJ4IGvDWuSku7BY9F5j1oX620yNqRMRGVI4iHsrH86bkIv18Jbo3MlpkT7lB5gOYth9vQu2e+MVFWFkTj9rgy51PuNFrdZcCrChaUKl/VAEVpA0rP4jZFSf0touHSmQJuNn/hB0eNNfi3Z7BTp8TkZ0Sci1BjF/YCjkkVReZLHfYbyahr3ro3toU9uUKQTyvfTO/LgawNlHxwgh8CHYtnXSIRFZw6CueVnuZgok8Nk3Fw85moozyWoFy3oudUf5tz9puHuBuAs09ivbSZ4KloaYBOWE4CnQ7PXzCqqVA
+ 8knR6k+u
+ jVVDHey2rS9U+HjrbkCQkCEhjXqIhNktDYM+eRxZtwpoqEDyRAz0fJT75WUN/pNVpy98ajseeKcNe9LiXfFLrWY85SE9TcvYpORukAL6CmaTJJFw0qnPwfOMI8qiMKCk79znYMIWJSvKxQZF+Ec2BMvOGvBqm7WMzOYjXYKqmyT+xFcaNYerB9FTC0HHa99lH4EluCWPgSAB64Yb4c6Dr567yYjNzKwi/fNm5RZDpkXo+uBDfsodw2DVoVVOAHNZOoWVlVbKqr8i25PsGTXd1DdDtyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,183 +140,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-file->f_ra.mmap_miss is used to stop mmap readahead after repeated
-misses.  filemap_fault() increases it when synchronous mmap readahead is
-needed, while filemap_map_pages() reduces it when fault-around finds
-folios already present in the page cache.
+On Sat, Apr 25, 2026 at 08:05:16AM +0200, David Hildenbrand (Arm) wrote:
+> On 4/24/26 15:49, Kiryl Shutsemau wrote:
+> > On Fri, Apr 24, 2026 at 07:51:44AM -0400, Peter Xu wrote:
+> >> On Fri, Apr 24, 2026 at 11:34:48AM +0100, Kiryl Shutsemau wrote:
+> >>> Both page_idle and the LRUs (legacy or MGLRU) track accesses on physical
+> >>> memory. We need visibility in the virtual address space domain.
+> >>
+> >> Yes they are, but ACCESS bit isn't.
+> > 
+> > A-bit is not a reliable signal for userspace working-set tracking
+> > because the kernel itself is a concurrent consumer. 
+> Right, I don't think we want to rely on either the A bit just like we don't want
+> to rely on the Dirty bit in other code. (and even SoftDirty bit is a flawed concept)
+> 
+> I do see some value in a reliable RWP mechanism based on uffd. The real question
+> is, how much benefit it would bring (which other use cases could benefit from it).
 
-The hit side of that accounting is too generous in two cases.
+I have not put much thought into use-cases beyond VMs, but I think other
+mmap-heavy loads (databases, GC'd runtimes, etc) can make a use in a
+similar way: workset tracking and organizing userspace-driven memory
+tiering based on the workset data.
 
-First, fault-around can install PTEs for multiple pages around the
-faulting address.  The fault only proves that the faulting address was
-accessed, not that the nearby PTEs will be used by the workload.
-Crediting all of those nearby PTEs as mmap hits can make sparse random
-access look like successful mmap readahead and keep mmap readahead
-enabled for longer than intended.
-
-Second, a fault that misses in the page cache can start synchronous mmap
-readahead, drop the mmap_lock, and return VM_FAULT_RETRY.  The retry may
-then find the folio that this same fault pulled into the page cache.  If
-filemap_map_pages() credits that retry as a hit, the same miss can
-immediately cancel its own mmap_miss increase.
-
-Only credit one mmap hit when filemap_map_pages() actually maps the
-faulting address.  Also skip the credit on FAULT_FLAG_TRIED retries.
-Keep the existing workingset behavior: recently refaulted folios still
-do not reduce mmap_miss.
-
-Current evidence comes from a local KVM/data-disk microbenchmark using
-mmap_miss_probe.  In an 8 GiB guest with 2 vCPUs, a 20 GiB file,
-8192 KiB read_ahead_kb, cold page cache before each run, and 1% of the
-file accessed, the median of 3 runs changed as follows.  This is file
-cache capacity pressure from the file being larger than guest memory; no
-separate memory hog was used.
-
-mmap_miss_probe is a small userspace benchmark used only for these
-measurements.  It mmap()s a prepared file with MADV_NORMAL and then
-touches one byte at selected base-page offsets; the access order is
-random, sequential, or a fixed page stride.  The harness drops caches
-before each run and samples /proc/vmstat around that access loop.
-
-Each case used a fresh temporary qcow2 data disk, seen by the guest as
-/dev/vda, formatted as ext4 and mounted at /mnt/mmap-matrix.
-
-Each before/after entry is "pgpgin GiB / elapsed seconds".  "pgpgin GiB"
-is the delta of the guest /proc/vmstat pgpgin counter, converted from
-KiB to GiB; I use it as an approximate block input counter, not as
-resident memory or exact application IO.  "Elapsed seconds" is the
-wall-clock runtime of the whole mmap_miss_probe access pass, not
-per-access latency.
-
-        workload       before              after
-        random         223.377 GiB/101.293s 1.010 GiB/4.790s
-        stride1021     204.214 GiB/97.557s 204.208 GiB/108.086s
-        stride2053     409.584 GiB/193.700s 0.970 GiB/3.685s
-        stride4099     406.452 GiB/134.241s 0.975 GiB/3.499s
-        sequential       0.212 GiB/0.050s   0.212 GiB/0.057s
-
-The same 8 GiB guest with a 4 GiB file, so the file fits in memory,
-showed the same direction for sparse random access without file-cache
-reclaim pressure:
-
-        workload       before             after
-        random         3.987 GiB/1.960s   0.980 GiB/1.221s
-        stride1021     4.002 GiB/1.838s   4.002 GiB/1.851s
-        stride2053     3.991 GiB/1.835s   0.811 GiB/0.985s
-        stride4099     4.001 GiB/1.836s   0.819 GiB/1.037s
-        sequential     0.056 GiB/0.013s   0.056 GiB/0.018s
-
-This RFC does not claim to solve every sparse pattern.  In particular,
-the stride1021 rows above are intentionally included: the 20 GiB run is
-still about 204 GiB of pgpgin.
-
-In the table, strideN means that the benchmark advances by N base pages
-between mmap loads.  Thus stride1021 is 1021 * 4 KiB = 4084 KiB.  With
-8192 KiB read_ahead_kb, file->f_ra.ra_pages is 2048 base pages, and
-synchronous mmap read-around uses a 2048-page window centered around the
-fault, i.e. roughly [index - 1024, index + 1023].  A stride1021 access
-therefore lands inside the previous read-around window.  About every
-other access can be a real faulting-address page-cache hit, and the
-other half can each read about 8 MiB.  For about 52k accesses in the
-20 GiB/1% run, half of them times 8 MiB is about 205 GiB, which matches
-the observed 204 GiB.  This first version keeps the scope intentionally
-limited to mmap_miss hit accounting.
-
-Signed-off-by: fujunjie <fujunjie1@qq.com>
----
- mm/filemap.c | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 4e636647100c1..463cd19c49f09 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3757,6 +3757,7 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
- 	unsigned int count = 0;
- 	pte_t *old_ptep = vmf->pte;
- 	unsigned long addr0;
-+	bool fault_mapped = false;
- 
- 	/*
- 	 * Map the large folio fully where possible:
-@@ -3780,16 +3781,6 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
- 		if (PageHWPoison(page + count))
- 			goto skip;
- 
--		/*
--		 * If there are too many folios that are recently evicted
--		 * in a file, they will probably continue to be evicted.
--		 * In such situation, read-ahead is only a waste of IO.
--		 * Don't decrease mmap_miss in this scenario to make sure
--		 * we can stop read-ahead.
--		 */
--		if (!folio_test_workingset(folio))
--			(*mmap_miss)++;
--
- 		/*
- 		 * NOTE: If there're PTE markers, we'll leave them to be
- 		 * handled in the specific fault path, and it'll prohibit the
-@@ -3806,8 +3797,10 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
- 			*rss += count;
- 			folio_ref_add(folio, count - ref_from_caller);
- 			ref_from_caller = 0;
--			if (in_range(vmf->address, addr, count * PAGE_SIZE))
-+			if (in_range(vmf->address, addr, count * PAGE_SIZE)) {
- 				ret = VM_FAULT_NOPAGE;
-+				fault_mapped = true;
-+			}
- 		}
- 
- 		count++;
-@@ -3822,8 +3815,10 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
- 		*rss += count;
- 		folio_ref_add(folio, count - ref_from_caller);
- 		ref_from_caller = 0;
--		if (in_range(vmf->address, addr, count * PAGE_SIZE))
-+		if (in_range(vmf->address, addr, count * PAGE_SIZE)) {
- 			ret = VM_FAULT_NOPAGE;
-+			fault_mapped = true;
-+		}
- 	}
- 
- 	vmf->pte = old_ptep;
-@@ -3831,6 +3826,10 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
- 		/* Locked folios cannot get truncated. */
- 		folio_ref_dec(folio);
- 
-+	if (fault_mapped && !(vmf->flags & FAULT_FLAG_TRIED) &&
-+	    !folio_test_workingset(folio))
-+		(*mmap_miss)++;
-+
- 	return ret;
- }
- 
-@@ -3844,10 +3843,6 @@ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
- 	if (PageHWPoison(page))
- 		goto out;
- 
--	/* See comment of filemap_map_folio_range() */
--	if (!folio_test_workingset(folio))
--		(*mmap_miss)++;
--
- 	/*
- 	 * NOTE: If there're PTE markers, we'll leave them to be
- 	 * handled in the specific fault path, and it'll prohibit
-@@ -3856,8 +3851,12 @@ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
- 	if (!pte_none(ptep_get(vmf->pte)))
- 		goto out;
- 
--	if (vmf->address == addr)
-+	if (vmf->address == addr) {
- 		ret = VM_FAULT_NOPAGE;
-+		if (!(vmf->flags & FAULT_FLAG_TRIED) &&
-+		    !folio_test_workingset(folio))
-+			(*mmap_miss)++;
-+	}
- 
- 	set_pte_range(vmf, folio, page, 1, addr);
- 	(*rss)++;
 -- 
-2.34.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
