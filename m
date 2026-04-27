@@ -4,101 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF3AFF8861
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:17:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BE5DFF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 391016B0005; Mon, 27 Apr 2026 05:17:37 -0400 (EDT)
+	id 98EB66B0005; Mon, 27 Apr 2026 05:24:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31AB26B0088; Mon, 27 Apr 2026 05:17:37 -0400 (EDT)
+	id 93F596B0088; Mon, 27 Apr 2026 05:24:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E2206B008A; Mon, 27 Apr 2026 05:17:37 -0400 (EDT)
+	id 82FB66B008A; Mon, 27 Apr 2026 05:24:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 086316B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:17:37 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9EFBD120781
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:17:36 +0000 (UTC)
-X-FDA: 84703782912.25.9869CCE
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A402B1C000D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:17:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BBiq1pXq;
-	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 721076B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:24:41 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B84F1B91F0
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:24:41 +0000 (UTC)
+X-FDA: 84703800762.19.D600170
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 530CC140011
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:24:39 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pu7MRKZR;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777281455;
+	s=arc-20220608; t=1777281879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ORHngxvyZgMWhS/hIL5qRYN26UMVGb5ngq+TKZyDg0M=;
-	b=kJWMAEkOjMAObDO6045SdwDHyZchQ7Vq9ER/qHETX3JeGEze/Hdeo3zmAKjOJszD7mzGNd
-	2tATkFK3zky+doMoqR/eIzn25unPPZ/3FXTPVC3sLlxsw50Be+pmPJDZ5jpQfCAZRXpv55
-	jtR38MAPNVNvAKyL/B0bqHw7eeBLySg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BBiq1pXq;
-	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777281455; a=rsa-sha256;
+	bh=aElaZi41xJNZtC4g/Vyk4psZ3UE+b5dO2S9mpO3VXTs=;
+	b=HYsnnaMMRPKK5SiGJzIhwZORX6pf8wP1q2UCS0d4KzAa50lJ5pbpBiACvAgkeOiMkUAXfo
+	uqxQ5griOmxXan/K0CD0yvVCTxPPCJH6YF2HOHBPkaTpKDWyFUzLIwbMVkfmxpOvHMidsP
+	+0x06IOhw/0PFAaeqiaPNc4faOorCt0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777281879; a=rsa-sha256;
 	cv=none;
-	b=tXIHeqXH5rsSsc/LilJeg5lcAJwvzhiNXRG+SP5KAF21pwrzM5zus/P/gqBnMg8MakxnHk
-	FD/wH3Oh3ch7NakWnIenAB2MetVMsHjM6N9FlNHavrhbnye+wAXCntxh/D1nEUML+cbXTz
-	fEAuKfO0itwDCZn+YMr8Yd1nHbepEO4=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777281452;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ORHngxvyZgMWhS/hIL5qRYN26UMVGb5ngq+TKZyDg0M=;
-	b=BBiq1pXqeKCV203ZvOj67Z/33UqGDuxwcoU8KXnRwokCLX0JGoGrycz9MVzJYt3sNvUY8w
-	UItlOVhAetp7joyoDg60oTEh8L6qIGXkVzKLM50YvpODxYKTt9bRTIav1HhkIRprYXXVqa
-	xoUBLaui1da4tTR732wtjHotyKLSyoY=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH 2/2] drivers/base/memory: fix memory block reference leak
- in poison accounting
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <7fe73023-1fd1-0c10-107e-5c0f47383453@huawei.com>
-Date: Mon, 27 Apr 2026 17:16:34 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Ying Huang <huang.ying.caritas@gmail.com>,
- Dan Williams <djbw@kernel.org>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- linux-mm@kvack.org,
- linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D07C436E-E6BF-4E6D-9431-48C496E350CE@linux.dev>
-References: <20260426144447.817722-1-songmuchun@bytedance.com>
- <20260426144447.817722-2-songmuchun@bytedance.com>
- <7fe73023-1fd1-0c10-107e-5c0f47383453@huawei.com>
-To: Miaohe Lin <linmiaohe@huawei.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: kxz84q8ao6w7xqxte7od5mgk4nz77xqq
-X-Rspamd-Queue-Id: A402B1C000D
+	b=r7W90hz2mbpIwjDHep8Wg37coSgIP0wxDTbChHsqhvluh4EyqseBEe2HigQnHRSv4DOTk3
+	r7Sgy9h5F8cieOo8tpb/GmVW47oSnxqsHMU3prYBrfeLQLL3y0vVhvwtB/uh5g3GjbYkAl
+	z/ddLtXS8mQponhw6xtdqrxHxR879DA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pu7MRKZR;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4228743F03;
+	Mon, 27 Apr 2026 09:24:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074B5C19425;
+	Mon, 27 Apr 2026 09:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777281878;
+	bh=LlOIaS2qbwbDKSkNzUl6EoUeFODi0sapea3ORJiYiIs=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=pu7MRKZRHeQo4ILlIicC532P4mKNm7SuW3Jj9fn9NLWNlfK7RHyc8KH+M/gsUhoZs
+	 PaLC/HIgHJdvodRmZBqGZqqFSpsdeUiE7O0WWzj8sjPMyQ6adArx62CjwIdD1DYuxz
+	 n3lioAhIZI/LQZm746OQxnKjqx15kX6vax2ZNBJ+6nPFXBw34OJWBu+twbULieMbAa
+	 XZO4rhbFJ3V4BWVE6Cl8LwMBN8F7MK8AkS2Pk9UxLx0yQWWGdMpljTS/7b3Ka3apho
+	 wEicfT10ixq6DUZup/SkeLxV5jejywuiKzOWRBOzPSsZ8+xCZymZrP9bRgsLhvOAbu
+	 UW+F70bsJ/L4A==
+Message-ID: <08ecabe9-0664-4aea-82fb-f9cb1739f762@kernel.org>
+Date: Mon, 27 Apr 2026 11:24:31 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry
+ accessors
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-s390@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ryan Roberts <Ryan.Roberts@arm.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+References: <20260427052000.196402-1-agordeev@linux.ibm.com>
+ <69c4c12c-7cdc-4a17-9eb7-6fb1a61f9834@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <69c4c12c-7cdc-4a17-9eb7-6fb1a61f9834@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 530CC140011
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777281454-488916
-X-HE-Meta: U2FsdGVkX1+nNdZ+u+C7Xncy7U04snJ9ItvjBVhsTpFExwHo0pgpLTHOnKRr7+DC2a4nG7tQO6iUDZA60f+CBohXRPB2sdGfbXX5DG/ljvU4zeitHWwzbn5owkItiY8Z7s9R5QRcYc0Nyge2xGX4ksBwE7kPF1RwFPkddsdfQrmcP9aNCPe3I0hsb7xr+6AkyjUwlJ0V4iUC1EDVc43PKEgZHl0rHlGx8vj9TilY007C+fZtGUxikJPMl6FZFi0iIizPCGrrJkfH8QlPmAfFLFwVHcVCIj9Qsi2eoTN5XVYvclEO/49TYh7jkk10haZL7fPyurMlOun5sqtmB1z/4SARtGRbBBDRM3BjwhEcChqE+MYDkoJZbz8pazKageMn3j6jShIR0xnhelKqBSAxH7P4a5XHbTy6WuWVlH5Nimv4yyqWdvYUEfKb6mjtfncg3ObEZExb8Ey0GBwRKRy9Sp5eQbuabtZTCO0CI7WtW9tI4Lwz8k0do5hscDgj0gZNk8Koj8bClQYdaT5Z7vgCgIvz8jEg3pa3tB35gQ6YaRwyL0gWSWZlW+GexSDzaUJivSH+JsNi3n8TgkfXHp4nUGdlwpkVDepG5FRaow7eCZFpACCTUcoLlctnpmJKN74DwbyDj3KaiEIy+5kc8fsVz1zJkzw06hE0iP5+rDKmMTXae6TzE3zCS2J/NmmCwzbYDlJ31nNpVUCRGR4s5gA9QE2DpzwM8k9dBhJYMiU9JryUfA4gwvI6jQuNDrJmivibK5W5EbMiGqiz3a8rkC0oGy8azbhtXhPKvERFIig+gnbuVBSq5DPhSPRT5JGCbuuix6P7DCOp8FP+hD1nO5WltmtOWhDjBD5w9lPfaEOIgpDpx84szY9JrGF+QEeyhOgwfbGkLcwgEkqMsqgCOm7aXkahrNtHKworF83eGoaH3vUjW7bctJ9Uu4G4BckXWu2xzViiO6soP3AS3YuvW3q
- t6YHY2d/
- Pmbb9ya1ZoH3bzlKAfNuh6rVv2t/Yt2JI7wzSDbSaBukBua6pggfyrIbTUoqW1ScULJ84SHBulknAu79nBJ3x2mpm2uOfS6gLXVoMfpiAf6QEsy84HcwSnKTCTYlTmBoxB/nZraZ9hUj2eDbksv3MG7MH1dk2eUwZLZpOfX1c8Npo8EV+EAaMZJEt2faxQmRyj9LlsuIvPlDTibfk0BSxNvacAltgOhvw9pqcDtobOHlyl4nzf9K7z6+cs1wnVFfIteS02qSIcEpVcuq7EnbGkVvuoFy20+4yBf2K6gFkiDZn5Iwuf8EcLdlSw4WTsVa8gmPq7s1M6Z2YKRDMj/5F1zCLIlIZBkFJSQRthtntBfa/l0EL+KjTSw84DHxl+rd5cV+1EYVpVQxWyMGXUpAv8sFSi8Q3h/qFpjkpDfxQaUklNDG/AhRXO3/Q4Q==
+X-Stat-Signature: jnxzooy8fh86hmrid6eu479ew1hnxtfj
+X-HE-Tag: 1777281879-699866
+X-HE-Meta: U2FsdGVkX19DEG8RZqcnqyGguHjPSiQoymRt/NQRIpCJWaGhbyPLxksfLIHxeJ1GA/BD8fH/DMBofRWHsCBrHY/tRN0vD8A3mVr2Gcu9gyKwQZLgzmdQqLLCR7vEichWlHHMhi2VNOE/nvneGxmXjRs5JJvd1w36bYOwo7FRKT64P19kARPol+WwbtFpYkWxUxcC57/3XyYpOJzQJqZFMpO9Pr57UuK3kJbRfdgG0zmlLY4DnotnzcRF2Qd3gwNfsSFCCyDWiRiA0+G9aWjngL7FoctQ7aHTfPbgA+upsxEQTINCw48t45+JTkznNL6t0fVnr3aQGgSrUaVXtwFFRjV3U+nYqBzTfWAEvZAKEe8Uqo8pTKm5FsYgyRTC7ECrm4sP57OEO+ylhPOCcTWJ8v076hpZDZqUvLvOSWO1AxTm4NTpzy5oari+G3+FhPgs4KmTRW+pbtwOxVnRggZfDvJQ80NElpPPiJ0xWw6umcN4ov2tGI6hvGVdONH0zXa70wtl/j8exTdWSEbd5uUFqxGRymAG7LPVuaJccPCBZYL8U3N02a/gOg8eqF2RfVA5Ymyb+GbGgrOjvqP/ZWHHWS2KrZl0eOzWuDTNt/1GFP8Y/vpbeF9UuTLEt/NTwni1TAJi1n5RfXHV+Piwba0CwWfBRUuVbDth9SP2zjvlQu48mRFbt6TQp5WAp4GZwF4j0CzGdS2J2B8824h3/ThF2FQ0TxCWXOsPW2KxbgBPmFAZ5jQ6j7B4k0L6feMDzFeS9rKhy0F5vWF6XJBli3DR/xw3to9ohE1Et9yjisSyUdjpECGXvdjuQwogVNSHFX8AKK1Bz3TBrBOLHeeqs9n69xHytue/klQG9OirmoxlkTqrmynGAcEHGog989su/hD6lN8DbFvri4eu8eyYu1VbumbdbPqzo91QUHFVIdq9XQ0pkDDHlMfyvMIxnmPZq2Za5RpcmLRZ75k6Ds1SySG
+ W7xw0E0v
+ g0RJxYlsQ2HVuxpFhviMm17Zqb4QjW+/S64in3lAAWm9xJlBgJfAAU0yjyvJ3Pk+2RBtxLo3ALaBTQ20xT/glAVWsOiCl8PJyC5I5Kj+HMVjCKzWWc+X4DhzOgJPamL68dBZ39Zoz0RsqGl9OSu6tUveLMXbK5S2rhuTSOBeH3a9Ozx5Svczfy2pH7SZD2w6hzRidHAI9+5IJNUIKMAu+W7FI+kr/jkD1tkXB6QL7OoIUNOQ76GGbKk6dFHA3qBsTx2RIwyJal7BVKYRiWzkdRDKCUKO5Fouui5vW1AFh6qOunqLyeDysLSLAqxzGNWCNruyT3qm89WfowHkW2vtyHcht5iE8gje1tmhR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,74 +143,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-> On Apr 27, 2026, at 17:13, Miaohe Lin <linmiaohe@huawei.com> wrote:
->=20
-> On 2026/4/26 22:44, Muchun Song wrote:
->> memblk_nr_poison_inc() and memblk_nr_poison_sub() look up a memory
->> block via find_memory_block_by_id(), which acquires a reference to =
-the
->> memory block device.
->>=20
->> Both helpers use the returned memory block without dropping that
->> reference, leaking the device reference on each successful lookup. =
-Drop
->> the reference after updating nr_hwpoison.
->>=20
->> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block =
-hwpoison counter")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->=20
-> This patch looks good to me with one question below:
->=20
-> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-
-Thanks.
-
->=20
+On 4/27/26 11:02, David Hildenbrand (Arm) wrote:
+> On 4/27/26 07:20, Alexander Gordeev wrote:
+>> Convert pgtable direct entry dereferences to the corresponding
+>> pXdp_get() accessors. Use ptep_get_lockless() variant for PTE
+>> reads when no lock is taken.
+>>
+>> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 >> ---
->> drivers/base/memory.c | 8 ++++++--
->> 1 file changed, 6 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
->> index f806a683b767..6981b55d582a 100644
->> --- a/drivers/base/memory.c
->> +++ b/drivers/base/memory.c
->> @@ -1230,8 +1230,10 @@ void memblk_nr_poison_inc(unsigned long pfn)
->> const unsigned long block_id =3D pfn_to_block_id(pfn);
->> struct memory_block *mem =3D find_memory_block_by_id(block_id);
->>=20
->> - 	if (mem)
->> + 	if (mem) {
->> 		atomic_long_inc(&mem->nr_hwpoison);
->> + 		put_device(&mem->dev);
->=20
-> Comment above find_memory_block_by_id says it's called under =
-device_hotplug_lock.
->=20
-> /*
-> * A reference for the returned memory block device is acquired.
-> *
-> * Called under device_hotplug_lock.
-> */
-> struct memory_block *find_memory_block_by_id(unsigned long block_id)
->=20
-> But device_hotplug_lock is missing here. Should we add it?
+>>  mm/page_vma_mapped.c | 12 ++++++------
+>>  1 file changed, 6 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>> index b38a1d00c971..a4520bb10d2a 100644
+>> --- a/mm/page_vma_mapped.c
+>> +++ b/mm/page_vma_mapped.c
+>> @@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+>>  	if (!pvmw->pte)
+>>  		return false;
+>>  
+>> -	ptent = ptep_get(pvmw->pte);
+>> +	ptent = ptep_get_lockless(pvmw->pte);
+>>  
+>>  	if (pte_none(ptent)) {
+>>  		return false;
+>> @@ -219,17 +219,17 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>  restart:
+>>  	do {
+>>  		pgd = pgd_offset(mm, pvmw->address);
+>> -		if (!pgd_present(*pgd)) {
+>> +		if (!pgd_present(pgdp_get(pgd))) {
+>>  			step_forward(pvmw, PGDIR_SIZE);
+>>  			continue;
+>>  		}
+>>  		p4d = p4d_offset(pgd, pvmw->address);
+>> -		if (!p4d_present(*p4d)) {
+>> +		if (!p4d_present(p4dp_get(p4d))) {
+>>  			step_forward(pvmw, P4D_SIZE);
+>>  			continue;
+>>  		}
+>>  		pud = pud_offset(p4d, pvmw->address);
+>> -		if (!pud_present(*pud)) {
+>> +		if (!pud_present(pudp_get(pud))) {
+>>  			step_forward(pvmw, PUD_SIZE);
+>>  			continue;
+> 
+> Wasn't there a problem with folded page tables, where we would no longer be able
+> to optimize out the folded page table accesses?
+> 
+> I thought we discussed ways to resolve that. Let me dig ...
 
-Yes. Otherwise mem can be freed concurrently. sashiko.dev reported
-the issue as well.
+Here is what I have after the discussion following
+https://lore.kernel.org/all/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org/.
 
-Thanks.
+Completely untested of course:
 
-=
-https://sashiko.dev/#/patchset/20260426144447.817722-1-songmuchun%40byteda=
-nce.com
+From b4715d49feb588032c6bb44bd97cf06739b5c99f Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Mon, 27 Apr 2026 11:16:21 +0200
+Subject: [PATCH] mm: optimize pmdp_get() and friends for folded pagetable
+ levels
 
->=20
-> Thanks.
-> .
+Using pmdp_get() and friends in common code on a kernel config with
+folded page tables is suboptimal: pdmp_get() and friends defaults to a
+READ_ONCE(), forcing the compiler to actually read that value even though
+it will not actually be used afterwards.
+
+This was recently reported by Christophe Leroy [1].
+
+Once we realize that the output of pdmp_get() on these kernel configs is
+entirely ignored, as pmd_present()==1 and pmd_leaf()==0 are just
+hard-coded, we can just make it return some dummy value.
+
+pmd_offset() is expected to be called with the pudp afterwards, simply
+performing a typecast of the pudp pointer to a pmdp pointer.
+
+Let's introduce a pmd_offset_lockless() that does exactly the same:
+perform a typecast.
+
+[1] https://lore.kernel.org/all/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org/
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ include/asm-generic/pgtable-nop4d.h |  8 ++++++++
+ include/asm-generic/pgtable-nopmd.h | 19 +++++++++++++++++++
+ include/asm-generic/pgtable-nopud.h |  8 ++++++++
+ 3 files changed, 35 insertions(+)
+
+diff --git a/include/asm-generic/pgtable-nop4d.h b/include/asm-generic/pgtable-nop4d.h
+index 03b7dae47dd4..cfe87036d61c 100644
+--- a/include/asm-generic/pgtable-nop4d.h
++++ b/include/asm-generic/pgtable-nop4d.h
+@@ -32,6 +32,14 @@ static inline void pgd_clear(pgd_t *pgd)	{ }
+  */
+ #define set_pgd(pgdptr, pgdval)	set_p4d((p4d_t *)(pgdptr), (p4d_t) { pgdval })
+ 
++static inline pgd_t pgdp_get(pgd_t *p4dp)
++{
++	pgd_t dummy = { 0 };
++
++	return dummy;
++}
++#define pgdp_get pgdp_get
++
+ static inline p4d_t *p4d_offset(pgd_t *pgd, unsigned long address)
+ {
+ 	return (p4d_t *)pgd;
+diff --git a/include/asm-generic/pgtable-nopmd.h b/include/asm-generic/pgtable-nopmd.h
+index 8ffd64e7a24c..e87a42407563 100644
+--- a/include/asm-generic/pgtable-nopmd.h
++++ b/include/asm-generic/pgtable-nopmd.h
+@@ -43,12 +43,31 @@ static inline void pud_clear(pud_t *pud)	{ }
+  */
+ #define set_pud(pudptr, pudval)			set_pmd((pmd_t *)(pudptr), (pmd_t) { pudval })
+ 
++static inline pud_t pudp_get(pud_t *pudp)
++{
++	pud_t dummy = { 0 };
++
++	/*
++	 * Given that pud_present()==1 and pud_leaf==0, page table walking code
++	 * treats this like a page table and calls pmd_offset() /
++	 * pmd_offset_lockless() with pudp, ignoring the returned value.
++	 */
++	return dummy;
++}
++#define pudp_get pudp_get
++
+ static inline pmd_t * pmd_offset(pud_t * pud, unsigned long address)
+ {
+ 	return (pmd_t *)pud;
+ }
+ #define pmd_offset pmd_offset
+ 
++static inline pmd_t * pmd_offset_lockless(pud_t *pud, puf_t pud, unsigned long address)
++{
++	return (pmd_t *)pud;
++}
++#define pmd_offset_lockless pmd_offset_lockless
++
+ #define pmd_val(x)				(pud_val((x).pud))
+ #define __pmd(x)				((pmd_t) { __pud(x) } )
+ 
+diff --git a/include/asm-generic/pgtable-nopud.h b/include/asm-generic/pgtable-nopud.h
+index eb70c6d7ceff..2cacd9571b2f 100644
+--- a/include/asm-generic/pgtable-nopud.h
++++ b/include/asm-generic/pgtable-nopud.h
+@@ -39,6 +39,14 @@ static inline void p4d_clear(p4d_t *p4d)	{ }
+  */
+ #define set_p4d(p4dptr, p4dval)	set_pud((pud_t *)(p4dptr), (pud_t) { p4dval })
+ 
++static inline p4d_t p4dp_get(p4d_t *p4dp)
++{
++	p4d_t dummy = { 0 };
++
++	return dummy;
++}
++#define p4dp_get p4dp_get
++
+ static inline pud_t *pud_offset(p4d_t *p4d, unsigned long address)
+ {
+ 	return (pud_t *)p4d;
+-- 
+2.43.0
 
 
+-- 
+Cheers,
+
+David
 
