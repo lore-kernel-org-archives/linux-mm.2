@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D567FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:41:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B3A2FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:42:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABA046B008C; Mon, 27 Apr 2026 11:41:40 -0400 (EDT)
+	id 870F86B0088; Mon, 27 Apr 2026 11:42:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6A996B0093; Mon, 27 Apr 2026 11:41:40 -0400 (EDT)
+	id 821BD6B0093; Mon, 27 Apr 2026 11:42:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 959656B0096; Mon, 27 Apr 2026 11:41:40 -0400 (EDT)
+	id 711066B0096; Mon, 27 Apr 2026 11:42:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 824E96B008C
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:41:40 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 40F0E1415AE
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:51 +0000 (UTC)
-X-FDA: 84704736102.07.1B2DC50
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1A90C100019
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kQfiCSrV;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3U4LvaQgKCGwKbNL+QSdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--ardb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3U4LvaQgKCGwKbNL+QSdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--ardb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F3896B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:42:03 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C00139FA62
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:47 +0000 (UTC)
+X-FDA: 84704735976.28.9A4BB5A
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A9A6180006
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=duGMHPd3;
+	spf=pass (imf30.hostedemail.com: domain of 3T4LvaQgKCGgGXJH+MOZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3T4LvaQgKCGgGXJH+MOZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777304149;
+	s=arc-20220608; t=1777304145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UxYPOVRWmcj1klY6tkKd45C/dDkcyiHdqjwOkqhsN/0=;
-	b=dSEdR9/fydMam/IMcd6L35imFTR3B7Pz8BWuF79ft7k+wtlqQ4rdS8XVEa3JhqnITF7j1A
-	ND7ec0kiT9oDDmRTb1KkoZUt1Ks0BRgu49Gq1atEhESNKpTFXZ7Nt5B9uubGOX+CTCcGR4
-	jF/d/aJLrP8bqi+ISZEM/LOnmYlMkCI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777304149; a=rsa-sha256;
-	cv=none;
-	b=IvsjMidDXp+tabOFJeaRluSZjxbFbL5ifIXhvs4UyU8tR6KG+5D9BSrc0EShhtQI/ePp8n
-	dRRalPazFycSUiSj8lEqEoh0mS+9RS/hN0w0QX2e7wkNK/CTiCKjSaoLLd/pHf46te4zdS
-	6PcPZCMbqcf2sQD0virp3IY4nuHhr2A=
+	bh=1BA/E6WicDwezK3gyiAo3eqUE5pDQu9c0JrSuIiaUTE=;
+	b=2Pnt4q3FmzTsIMBtCxdch5kP//ey/zUfMOe0BLbz5a2EsX0A120yWCbQPu1Za7P9XAs3wg
+	CLKtTamhEcVgVPyZsSqsFp/Nb6/VRWNFFqzSU/IXOonDuBwietpXVXc25XUcBvROx0HhXu
+	jgXcwYdqmEYbczJNbOvFp142Ups/TiI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kQfiCSrV;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3U4LvaQgKCGwKbNL+QSdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--ardb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3U4LvaQgKCGwKbNL+QSdQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--ardb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43efc93e4f6so8292645f8f.3
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:35:48 -0700 (PDT)
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=duGMHPd3;
+	spf=pass (imf30.hostedemail.com: domain of 3T4LvaQgKCGgGXJH+MOZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3T4LvaQgKCGgGXJH+MOZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777304145; a=rsa-sha256;
+	cv=none;
+	b=NWXTEWfwykR+trzNaVRvcFDtbzZNlY9or/nsAoI5uZYClQLNBD2C0dNvNzSfe8UpLDKctN
+	mYx0ZPWz8eslWZNq4J/KK8Uwez95cB+xlw8g1zEn+n6LcE6rkpoKaOCgeXjpGSRArHKjEy
+	zsPz7sWrjr1L3xhrWbWgWdtLIDwRjp0=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso112810305e9.1
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:35:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777304147; x=1777908947; darn=kvack.org;
+        d=google.com; s=20251104; t=1777304144; x=1777908944; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UxYPOVRWmcj1klY6tkKd45C/dDkcyiHdqjwOkqhsN/0=;
-        b=kQfiCSrVNFA1ZoLnIKI6VcbTgcTt9AsmsjVF5B2tM6c9vJPpkQ4b8u7n6pR3RyITub
-         7NYITyZF+dgQ0537aish4RFgqOl0bqVCnwWZb40XBAG/pj/1muOHi5pjbm/BYvHU+ViW
-         FHyl26S7zicmg4BJf36nxdnXw37ZShwk4tg7u8UQrkxIrKgTHJ5zICd7Uv/zlE8y2c4k
-         u5rNGOGB8XK+lSy1ZJCzjwOaKDP8UnB/xDD+hcwjyWf70B9/gbYR5sbaUznB7vukD+gC
-         SbLO2e9Jv6J7QdcE3uzOgm4cIvwRhTWE7OhGzcUUQ+ZDqH2r3ncgY6bLU4NDhZ56dWM3
-         LJpg==
+        bh=1BA/E6WicDwezK3gyiAo3eqUE5pDQu9c0JrSuIiaUTE=;
+        b=duGMHPd3YhRBtMr3tyi9p7gmL0qUPhkKjpPBPNigZPux+sU/odhxDXkDEJw7S63Bvb
+         vwQdFpAgC9tU1CL6GvpqUV6WSwFJMbxm+rGPPwxIxNAJ+k436796wUmt6Oi7wOcPQpnq
+         g4ru2rTXUT2R7LSSK/iupqsokvXhxhY+4NC1xB+QEh8WC1RYp3AI8llYl4rkCAS+FzsD
+         d0vxDsdZi5bEKJLYr11ylpcV4PrhN7qwra2I1PEM6j5AxjaAG1zkmRxByyZo74Arc85h
+         DyC+RQpGUygtpPtilWHYIWCC6ogSFdtiUehAOMBQUAF0P0PhOoQ09Hr6LQmILU8qXyyF
+         6j8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777304147; x=1777908947;
+        d=1e100.net; s=20251104; t=1777304144; x=1777908944;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UxYPOVRWmcj1klY6tkKd45C/dDkcyiHdqjwOkqhsN/0=;
-        b=JsEsMmK6J1ICmWoU0a0vFRW2Cf6cPvt/sdF8QWLEOq8bBK4nikSdw3JodwKc2CIGUY
-         SunkHYaNIUoEoMlq1l5OhwdFXC9o0oI0vifywK+8hDK/fJINyWXX3dKMcheH+t2KMFZj
-         ojXtlL8nvSLRmi4+Oog2X9suHXdj9brjJ1F6YDbYPYg2nbUmWg+LkPVUqGVXaDMLWgvl
-         nkYAWsUZOtBOVuESTcD8ZX5y8k3Y62UPAkj3/iIlzO11Rmcj1VwMFCV5Gp7KyDD9mj8r
-         0j4FP8NcfSl+NZeRgTchOa4tgRbcGbwBnCKr0s/ioL2Rd58uqqaTiqdQO9PaMwZ3LI7W
-         ZFSw==
-X-Forwarded-Encrypted: i=1; AFNElJ8PIFc/gu5Fm4kaMefk+OwFt3BQnIhV6bqDzgNJtaofsM8X8f6EpCLYPyr2m2rSgakEBe1dO3HnHg==@kvack.org
-X-Gm-Message-State: AOJu0Yw8wHjhCOIbUFmsVkrDL+KKdZdAX4MAxt1p6+iAWcLEJvpX9sUJ
-	BFrDOp63irQ3P5V53rh/PHT30GP4gtAWWp9sNWLncsRsxaTtNdqfK+kgIxV7IV0+zzdDx1L/Jw=
+        bh=1BA/E6WicDwezK3gyiAo3eqUE5pDQu9c0JrSuIiaUTE=;
+        b=H2Z0rtu/jXVT37vsuRetoGOMocJwg4IEF1BrbSb2eBq/Rrf/8fntBubXLTPy4L+sHW
+         QmSQ5xRgnBoWhAAyMhnYqjN/VXe58UnU/zwOQuiZOGzGnEFAjoW3MmbQ4wgeOGVlDOgW
+         +d0u3fblPACRG8FaqUI1o9P21hgZ7XoQGu2OIpfOUHumn+6U0nnp1LsJLrntHji4753T
+         8bGOy1sntXTJPmq2fPTIlDe8oJ9tM/Uv4sHNLVA+ACXfL+yTaJUzPm6UeahXMm0lisiP
+         /YGOKUCkKHA6BDsC31C/iwCCnGvSxKyP2RR+C9TwCwkzCj2o5QP/R5p51ct6CfSMhQbL
+         6f6Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9R8ox3teNgRXTj/+c12Aa6hqsV23XmTLuW4JLmKqNOa1fEQ376XmD8Dh2ZVWuWu2SbV7+qRpSqkw==@kvack.org
+X-Gm-Message-State: AOJu0YzfPFlC2dLmOBFyW0a1hijExXkOGtHfhSePw8k54FTZFJRRzDF2
+	Msdm/wsSqE0oQTjHWDkqDInm3PrTegfdq2AlUhkM09D9z4lOIsgpGlcVjy2SMBty/7jypmGT2w=
 	=
-X-Received: from wrsm7.prod.google.com ([2002:adf:fe47:0:b0:43f:e932:b48d])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:5d88:0:b0:43d:6e0:9458
- with SMTP id ffacd0b85a97d-43fe3e0c779mr67106901f8f.39.1777304147061; Mon, 27
- Apr 2026 08:35:47 -0700 (PDT)
-Date: Mon, 27 Apr 2026 17:34:29 +0200
+X-Received: from wmsl15.prod.google.com ([2002:a05:600c:1d0f:b0:488:7f4d:30f4])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8115:b0:488:8577:d9cc
+ with SMTP id 5b1f17b1804b1-488fb77faacmr552964815e9.20.1777304143994; Mon, 27
+ Apr 2026 08:35:43 -0700 (PDT)
+Date: Mon, 27 Apr 2026 17:34:26 +0200
 In-Reply-To: <20260427153416.2103979-17-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260427153416.2103979-17-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3111; i=ardb@kernel.org;
- h=from:subject; bh=vnOPgzR9gwGy7RU3jbNwlQgfBXncMvaaP3oMs7gg07Y=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIfN9E7fhjbPcgs4XVKfeTnOd6X5d81L1wd6JdtmfgucZt
- Dn6GzB2lLIwiHExyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIlM/Mfwz1hYf8184+dKqf8u
- huwKYeCbfkN1Q8PZ5+f9Qlm8AtrWXmX4Z3804IBu667aItk0A8Wfbn81/Y/98HK+tuNd4pHLyrc 5WQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2895; i=ardb@kernel.org;
+ h=from:subject; bh=KZuPOnzhvCTYIkGg+7u5wsbMT7w/fODSH3EL/0/zagg=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIfN9E5vLgafBpVHCxz1SUmelxP6Kd3qkdfpFsMXLg9sPF
+ WoserK1o5SFQYyLQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEykTJOR4TUXe41Hw4vaRzxT
+ mGLXWVx6se1hW1uOb3v81vdLAn5m5jP84ZJm0rae256UuMVmRe7sInHmbY93p/Jwyz966BT+h1O dCQA=
 X-Mailer: git-send-email 2.54.0.rc2.544.gc7ae2d5bb8-goog
-Message-ID: <20260427153416.2103979-29-ardb+git@google.com>
-Subject: [PATCH v4 12/15] arm64: mm: Map the kernel data/bss read-only in the
- linear map
+Message-ID: <20260427153416.2103979-26-ardb+git@google.com>
+Subject: [PATCH v4 09/15] arm64: mm: Permit contiguous attribute for
+ preliminary mappings
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
@@ -104,14 +104,14 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
 	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
 	linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1A90C100019
-X-Stat-Signature: 8p7q5gxo3f9g59oqik4pg5bhhummmtso
+X-Stat-Signature: t9nbdz7pbh7pg115n1emncuhbtim3fu5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A9A6180006
 X-Rspam-User: 
-X-HE-Tag: 1777304148-627324
-X-HE-Meta: U2FsdGVkX1//9tyx3ytVrduDbSpx1WhgIl2oNpyr73+1kv8VB6v7EKdUOXnvNPkBdOuz7vs+p7rhqvpveOVBfbT4Ori7xdwjqiFu3ovIEIyzneRXDMuQEM9eOsnYEPpSCGmaormDZUTzgNgHC992+cKxbgejZMfnR29vqs/Bi7yWsUOobSbxsHDDescre3gKyLsa8MWfYl8jOK9iaTxcXjfeUx4xxP93UrzlZ7XbMTdbU5k1mEimV+YcVTIDLskpJv+HqtYS+RM4bKYfABb/lza6WVZ/8WiSplJ1xrmPdcBmoaN6DjM6MVSkqbSReZRC6r8IIRevjiYeHbqyJzgYppPRAGS7OS8Np+iy5KmqMuwadl7bsZuS+97HUCUwES5M98Ffzq1re6abll2MhcQX0wIfQM4hZFaXJ9QrSkzQ9iLcXAZJKWBJo8eeB8HrOuWQtDk5dSJbEydStPLuwZiRlSJVbSsxwC01sx7zq/P/u5LS611x40C1K97TrTUSdVo3+JNp1IK+SeubItOCnwQ4TNDyGAZN7PvOggJ9YZ/C1KSBy0e4QnvolVUXAkp9StfATlh36fAlNRIEsW7fEAi3nPrczHVBBGE8z0BFmTc7FOyQG/kkb2UlfCIRKi5RpAV9xRdTf5tfOB2mWyK/nH6vAhnRKFDPdSFFZOqbCxoPGJAaGYZq4oooxLn1q+m0mR5zG/cev3LoqYgAoIhwYVKbIaUet+hcMbMlpsY5hetPlokKvZ8iCc7t86of0NPhwhasFeo+vNbHHKTJV1YyCeKw8p3CGLs9OQ5v8IjpFMkdx7Kdjbr/9rCMix5PzkllmN0wJvxngVndjtoRzEbiwZiNKI6NUpQSBBVaH6E6Fjt/K9RS3Cm7ThXwgONrIRjXH9MAFHUw7GlGPMdWNWmc+n7yaijBvxBrxIu0bzFQ04OnDk+34e6J36BV3ddKJvz6WLmyws6f3nE01o9ehin61dO
- 6yK/CH6x
- wyi0Tnl/Bbs/ooqX0zD5SF7MT5/jHBsj2wLhwEKdIowHwzLMYNUNI6RdMEdLNyIVM/tk6Q/YyqjnAAgccql5WYQjcrXuB0HYaFuNiNOv8opU7HczHlscX+QpfXE6gBY7DhTkK4aC36TM2hee3MJB+WU10vmSawoUTOWbGyel/6M8N1Y1NL0eTfHSRwIR2g0wK85Ojui6bh7o3ufoxVkm1i2G5GMaomfZWjV59L/Dx22ki5HeXwoi3YuqNf0hjdnITRl9wpcRlCepaVMAhPltKg4GbJ+kAdIUyXdJBgMde6CQpWicG7fK+utdg60exWAR1aisdtnBPfViM9YiRaCvfBbmVWQPjZX1n27gL7mpB7ZmFHszwZFAgomI5BQGS6lY/YubGIpqet3vUyp5md8jNoRsub5CD4lAVZzSWoSdwBtFP9HEdJNJBv8IEliJLm96VMT1zMEdpdKQ2KKcIzHYiuvXGrDawYWV4vNYosVqS4bwD0IbzGa2PxdwAX7lvY1RBy6vqFtgiIwwzJRGGv1F6p/NKAJeGYvjtxb/1gBcy3lAyAjYh6S4sH9lIQOhdbMrwLpIE
+X-HE-Tag: 1777304145-259681
+X-HE-Meta: U2FsdGVkX19C84MvULyETdJRFKS9fDuE3OZEE0jVoVxKMnEO7hF/eZrXrMBWeSyxjsblPqKdT9d2kefZhxmHxxr+Ed2plXWUL1OZYZjjeCSliyOseAFxQ07v8gUVPt0OmWdS+rsvGQTlkXIjetKTVpfV6Ug5z3/PI5V0y5kbljV11E96iSaWK7zR6ABMtQ9xiS0P9+JBnJg+ZLsjSQCt+PmBFFHl/8wwcoO1EXfywEEtY9xaUuSf0syUj0QTUC1PmVIIjwfaQgXhe2ZaeLT9guyx89TK9wOGp3ZdJ1aq8HDY2N9TlaQdUtC/JmrxozBn18h5fvoOFB8hsBveQHW/AQDXdpGjVtRN4CI4bokZ+yu9DCuBbFiQ/lQC0pVm4P3S3YNHL4vJuSuKgeV1E1WF8ADUF1+kms4A0AS88FjugEq6XQvq6ALkvZ20Lpva/VrFHvL89TB4jOXpnY9DWLDcbjxV04NpchPIQ77US5kgpBj5c7iwJl8MvP027Z2SFr5x9Dneg6Rj91phrSH2OiJhH7we/F9M5aSInsYsGtvugPcuzYv/y6wtmTz0tqD4no4RQEaN/H24LWeuSbpaWdRhVOyueaRXCKGJTOecBETxTn1gGNcVJ9B1MaXPWylhIx5hgVdRYLuvVMpiZeGB6DiLYTcZz+Y/f6IVKbQo1rBDwEaFVpUQChtafd1ejkXtwJaYfq3gkZoZzwQkIiraoZF29n8nhJfeH//PWz+ZHE/q0yC14wfZRzG6G7v6Hf2KPFfXUnNdIVaJQLzYpJhg3+FZYeNRGzn1swvVFXu7k5v/H0ecc5s3tAg41xX4qfrIobYDqwT0wugnc4utQ2J08dbxXSAP7Gq5zTj+V6qSjbATtaRIVev+1LrXO3njMLaOLq0Nnz7gpXsu+JNVfhfmJGFq/i12LG9luLso6d3C5oOaw89outImi3rrR2skg5G57uVNOCvx+VC7vtTvYXBl0zI
+ 3AWualf2
+ 77rESAdVXTw3OcDtsm5BKzFTeuLBbYzq//60k2F0dn2kOvbuPLGyP8i9G4elS9EqZyBG3HgWTarsLlCaLhfpGxxGNTr/5GgxZ8loxYGlBmvb/77rZ0zthXXvo6WahLOzpfvvKDJ/aN9AtbutpQM3NLwme7+1ic+XO/VD9mRI0sBjavsnhWJsqLCqCheht93HrpTn4FFU/OqorS0xFepcRtVI17uOw7954DmTH4nFrw17l/Ov0du4oVaq8zSxD/BDGHGgA0tlr6y/Qk6Ui47OiOJtOhGAIVXpmFbisWSXXcAZ0RjQEUbL9Vbi7yq3L/TvHLuoGKe4YjR4kFkknVC6jjBkpKYHEhM5JSa2I7FDq96CzRkJ9sMJlsrX6tCILiGun9FjCtI8YbWTxGLspGbIY12IzjfnrSfpV4sYkc3Q72pO3hlVdVmH0tDmnwtAaAdAHPRrzhSaAtlK9nhZCl/yBGALLQ3NNqTPWQ+RTAZOmSbPGUyl25m/ODp+Hz5LdaXhWX1RLqfKRSGmJu3T1QLGocX89VsrFBUz3/mUNtyI95JBp+PQYON8Na935BskilwmogzdinixRCmCdacH7nGo49T2HMYhsxEBDj11RHtnIiSFcnsx8/1KnsdCk0upQRxsI6z5lTdGpcljUL2pbOE7KCzr1Ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,78 +121,73 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-On systems where the bootloader adheres to the original arm64 boot
-protocol, the placement of the kernel in the physical address space is
-highly predictable, and this makes the placement of its linear alias in
-the kernel virtual address space equally predictable, given the lack of
-randomization of the linear map.
+There are a few cases where we omit the contiguous hint for mappings
+that start out as read-write and are remapped read-only later, on the
+basis that manipulating live descriptors with the PTE_CONT attribute set
+is unsafe. When support for the contiguous hint was added to the code,
+the ARM ARM was ambiguous about this, and so we erred on the side of
+caution.
 
-The linear aliases of the kernel text and rodata regions are already
-mapped read-only, but the kernel data and bss are mapped read-write in
-this region. This is not needed, so map them read-only as well.
+In the meantime, this has been clarified [0], and regions that will be
+remapped in their entirety can use the contiguous hint both in the
+initial mapping as well as the one that replaces it. Note that this
+requires that the logic that may be called to remap overlapping regions
+respects existing valid descriptors that have the contiguous bit
+cleared.
 
-Note that the statically allocated kernel page tables do need to be
-modifiable via the linear map, so leave these mapped read-write.
+So omit the NO_CONT_MAPPINGS flag in places where it is unneeded.
+
+Thanks to Ryan for the reference.
+
+[0] RJQQTC
+
+For a TLB lookup in a contiguous region mapped by translation table entries that
+have consistent values for the Contiguous bit, but have the OA, attributes, or
+permissions misprogrammed, that TLB lookup is permitted to produce an OA, access
+permissions, and memory attributes that are consistent with any one of the
+programmed translation table values.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/include/asm/sections.h |  1 +
- arch/arm64/mm/mmu.c               | 16 ++++++++++++++--
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ arch/arm64/mm/mmu.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/sections.h b/arch/arm64/include/asm/sections.h
-index 51b0d594239e..32ec21af0823 100644
---- a/arch/arm64/include/asm/sections.h
-+++ b/arch/arm64/include/asm/sections.h
-@@ -23,6 +23,7 @@ extern char __irqentry_text_start[], __irqentry_text_end[];
- extern char __mmuoff_data_start[], __mmuoff_data_end[];
- extern char __entry_tramp_text_start[], __entry_tramp_text_end[];
- extern char __relocate_new_kernel_start[], __relocate_new_kernel_end[];
-+extern char __fixmap_pgdir_start[];
- 
- static inline size_t entry_tramp_text_size(void)
- {
 diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 1a4b4337d29a..9361b7efb848 100644
+index 4eab40f4aa6f..5e2348b15783 100644
 --- a/arch/arm64/mm/mmu.c
 +++ b/arch/arm64/mm/mmu.c
-@@ -1122,7 +1122,9 @@ static void __init map_mem(void)
- {
- 	static const u64 direct_map_end = _PAGE_END(VA_BITS_MIN);
- 	phys_addr_t kernel_start = __pa_symbol(_text);
--	phys_addr_t kernel_end = __pa_symbol(__init_begin);
-+	phys_addr_t init_begin = __pa_symbol(__init_begin);
-+	phys_addr_t init_end = __pa_symbol(__init_end);
-+	phys_addr_t kernel_end = __pa_symbol(__fixmap_pgdir_start);
- 	phys_addr_t start, end;
- 	int flags = NO_EXEC_MAPPINGS;
- 	u64 i;
-@@ -1155,7 +1157,11 @@ static void __init map_mem(void)
- 	 * of the region accessible to subsystems such as hibernate,
- 	 * but protects it from inadvertent modification or execution.
- 	 */
--	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
-+	__map_memblock(kernel_start, init_begin, pgprot_tagged(PAGE_KERNEL),
-+		       flags);
-+
-+	/* Map the kernel data/bss so it can be remapped later */
-+	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
- 		       flags);
- 
- 	/* map all the memory banks */
-@@ -1168,6 +1174,12 @@ static void __init map_mem(void)
- 		__map_memblock(start, end, pgprot_tagged(PAGE_KERNEL),
- 			       flags);
+@@ -1000,8 +1000,7 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
+ 			&phys, virt);
+ 		return;
  	}
-+
-+	/* Map the kernel data/bss read-only in the linear map */
-+	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL_RO),
-+		       flags);
-+	flush_tlb_kernel_range((unsigned long)lm_alias(__init_end),
-+			       (unsigned long)lm_alias(__fixmap_pgdir_start));
+-	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+-				 NO_CONT_MAPPINGS);
++	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
  }
  
- void mark_rodata_ro(void)
+ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
+@@ -1028,8 +1027,7 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+ 		return;
+ 	}
+ 
+-	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+-				 NO_CONT_MAPPINGS);
++	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
+ 
+ 	/* flush the TLBs after updating live kernel mappings */
+ 	flush_tlb_kernel_range(virt, virt + size);
+@@ -1175,10 +1173,8 @@ static void __init map_mem(void)
+ 	 * alternative patching has completed). This makes the contents
+ 	 * of the region accessible to subsystems such as hibernate,
+ 	 * but protects it from inadvertent modification or execution.
+-	 * Note that contiguous mappings cannot be remapped in this way,
+-	 * so we should avoid them here.
+ 	 */
+-	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, NO_CONT_MAPPINGS);
++	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, 0);
+ 	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
+ }
+ 
 -- 
 2.54.0.rc2.544.gc7ae2d5bb8-goog
 
