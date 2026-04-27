@@ -4,133 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09635FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:55:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3657FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:58:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24A9E6B0088; Mon, 27 Apr 2026 12:55:52 -0400 (EDT)
+	id E83296B008A; Mon, 27 Apr 2026 12:58:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FBB26B008C; Mon, 27 Apr 2026 12:55:52 -0400 (EDT)
+	id E5A816B0088; Mon, 27 Apr 2026 12:58:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EA7C6B0092; Mon, 27 Apr 2026 12:55:52 -0400 (EDT)
+	id CDA2A6B0092; Mon, 27 Apr 2026 12:58:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EDB866B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:55:51 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C473C1A01AB
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:55:51 +0000 (UTC)
-X-FDA: 84704937702.20.25D58A3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5F2E9140004
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:55:49 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GTqse7kd;
-	spf=pass (imf26.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B779F6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:58:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CEB412017D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:58:01 +0000 (UTC)
+X-FDA: 84704943162.03.C02A8E6
+Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B33201C0016
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:57:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=gQXLJUyI;
+	spf=pass (imf18.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.190 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777308949;
+	s=arc-20220608; t=1777309079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eeIymKMmn5VMvSmJ/53HZ9lwroqGaVAwlhaCdG4C+3A=;
-	b=HcdjIOMPIdGUUSWk0HjR4woDntH49Grhtq/Bxurzrg+xwnJUr0OuctTm8ath6wInU1l9Th
-	S6DCwtxuCuyKFZ8Gx0xr9nfoJwUeomXES7qrdCrfh1xU93ufcQ9xFTm3PIQlmsTW6iAnU9
-	Ad4EOCjueQ29TT+OlIR7h/xIDhNaTsc=
+	bh=+1JvSeF30219RBk+xbUaNaVTMY2zuIFNzkHsiaJcAUI=;
+	b=IhG9Rryb+mc8wpHi83lhSybrlx3elXjhWEoMKT6aUeNBrrUIyw7FhxK8WNs5+xI/K29ksY
+	u3/ZeA8MHm4+FlcLe3NI9DUL4oAxIWC8j7HL2g+Q5AJ+IuGBmGx3i59yB0E/AGHi/CjSWR
+	MZF8LdljfiRMEtS3WVa+x94PLNl+tBI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GTqse7kd;
-	spf=pass (imf26.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777308949; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=gQXLJUyI;
+	spf=pass (imf18.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.190 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777309079; a=rsa-sha256;
 	cv=none;
-	b=Ba/9qhqX4/BD3phvYk6zU2G1I4bKc5iqqPaD1G5RNfrCq2ATAoJNtt/yTPBjx4rSp+KjJ1
-	D1z6eDNbKyp7Qkd0M2IL4BDNEoJ++7ufGIz7E1jaBBIIs5b71Qx2DpDEVXBogS+5pe2Fc+
-	yPB3Fnds6Rd8FEnNtWqYs3yH9kMWyzo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777308948;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eeIymKMmn5VMvSmJ/53HZ9lwroqGaVAwlhaCdG4C+3A=;
-	b=GTqse7kdhBNbY59iyBm4LkrDz6CtQSiX2TMtcjQvQLvs04M1FZtzTQbDGbrtIMQwh7+UMW
-	Y4//Usah2Ru59miUhhipbBmtMGszORw//wF3YajKu5m0JXU3RkhXWwaA7SRPQrNXJzKqfG
-	6gldvs69Px3euqURCsID8X+6ZRPgXKE=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-449-2rJzpdyYM3CAG9xKaARLBw-1; Mon, 27 Apr 2026 12:55:47 -0400
-X-MC-Unique: 2rJzpdyYM3CAG9xKaARLBw-1
-X-Mimecast-MFC-AGG-ID: 2rJzpdyYM3CAG9xKaARLBw_1777308947
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8d5d03ae893so1825005485a.3
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:55:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777308947; x=1777913747;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eeIymKMmn5VMvSmJ/53HZ9lwroqGaVAwlhaCdG4C+3A=;
-        b=aWMyFFobY/cuV4plfer8nK8czpcrY5bfK9Uk2ylwh3YYZ4U2ZCtrOjv6GXaqq66jfI
-         UlzATkGQnqoEq+wW4s19hPw3F7D9446jYniuyvUkD2pZjztHryr6w5KzOebl5m8x14Ve
-         S2NNX5wzi7dGvWvnv2cG4rny8jEeQVLcOMhFtQ3FKqT+7qqNvDAtDZk3yh+bGDx1sPj+
-         1NXRQ9lZy/38rj2P2oXpWuB0yBJkjwFPIZBM6Vjk0jPV2gxGUKy1vo5ZpJMGlk3xD8Ak
-         nJ31olM7LDdzoMBVF46kJdiQb/rvekfIepsPi2J/o1VfSpIF5jKu2gipEynQtiZNDACO
-         IoCw==
-X-Gm-Message-State: AOJu0YzOlvB/5cZXlCD+X2CA0julkIKgx3YeU4EHDVND0BJAVqbpuh1D
-	Ut4xpbdhbtz7nlhak/0hu312dMdchq9YN/kRBlt6ZOFlh7ec2IJ+uu4bnL7pGzRRxlK1vExVVAB
-	2H8rXXE7DXFvdyoCL8CUO+umgPZ5JzPKAgcW5DbkSEuQvP5wwfTSS
-X-Gm-Gg: AeBDiev0Vb41/TCARSWW9GJWQfgSMxQmLu3Z5avfB+eAkTPM2qavZyvo35X2ZhXwrFW
-	VH+SH5lVHkB/HUwgEOIAE336CvNMkIi/pE4Z7GrS6C49V5KczN3ApPs9cziSXwsBI0bTeef4ZTr
-	AE/fUcEqaRD8LGaTjRir6IB7BVQ+4chOouur+1QmJuuYUKlOqUuYJZAUAHCiHcWR+xnV542om4P
-	5cLiofTrHiX7NplxI1OX+11lEifsE50pWPMqP2/rXHd2Bbk55iw+pXr0p+S2vNaoK5HmScqVz/+
-	EgGajbdVQ1bVTr2ZLJ17rJtm5MtkSbM/LrZ1MhwJxZ6bUio7FHQFO9WsrcGfjilkD3AgCjl7fzx
-	zoWGj536LA3KxeRL9Av3vZczk3TYRhWcNMbbi
-X-Received: by 2002:a05:620a:4115:b0:8ee:630e:350a with SMTP id af79cd13be357-8ee630e46c3mr3942340985a.58.1777308946700;
-        Mon, 27 Apr 2026 09:55:46 -0700 (PDT)
-X-Received: by 2002:a05:620a:4115:b0:8ee:630e:350a with SMTP id af79cd13be357-8ee630e46c3mr3942337985a.58.1777308946266;
-        Mon, 27 Apr 2026 09:55:46 -0700 (PDT)
-Received: from [192.168.2.110] ([69.159.169.238])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac429ffsm266093656d6.2.2026.04.27.09.55.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 09:55:45 -0700 (PDT)
-Message-ID: <6e105a9f-e335-469d-92a0-9bd0aa806706@redhat.com>
-Date: Mon, 27 Apr 2026 12:55:34 -0400
+	b=G5im6WOxJ4byqP+jyly0g3b44Oem5cPCy3pwrDDpEf8jbcYuLvw7o1SOEFQrRoGdOEE+Vy
+	sr7Xob9YQb62MjONBCmR528IG8C1W1dfm0NsuFaQzR2gzdQthrz+ihateascC60z6xRPKN
+	RTlTmel47fJo2CbdWO6TtZ1eC/bvLm4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1777309075; bh=+1JvSeF30219RBk+xbUaNaVTMY2zuIFNzkHsiaJcAUI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gQXLJUyIm5qOEHJ/B58iHD/yFGhxGdYsH8j5nwwvG22zXoUskg33/4HdRs/kdT3S+
+	 tZDOyPmdu9ssgKwABbdZChmShvXduyyU26LrQfOJ8MsHIS1a1ZBnHFCxer/s1hmAWA
+	 he/8fyZzErehb86ZA3hajls0D1m2ny5GEnJaQ2QQ=
+Received: from node68.. ([166.111.236.25])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id E73AA4C8; Tue, 28 Apr 2026 00:57:51 +0800
+X-QQ-mid: xmsmtpt1777309073to1iceus8
+Message-ID: <tencent_949F3B157FE71D3C7247AE6FAE2C5AB82809@qq.com>
+X-QQ-XMAILINFO: OIJV+wUmQOUALqh99JbrUzyKqrytGQhvISUP2SJ+lBCQnAMZx+Ah4KMdLXmAp/
+	 CYkVWiEAjpgSPZ+AP27Kda4iF/pd6tMH3yioFtTwwaGx3s1yYPOAmfQDkoclFRWL82QDH7sek5OI
+	 RlUXYkrXU+EPk2Fn3F2Ad6RFJnrQNPq+WlBoy9DQKpgeQ7JtiKwZxQ3S77zt3qpTuVixEnOL5Ss7
+	 SwUgxaq0GaTG2wD5NbrsvNvRGjtDV7cfPTkUqtaGgXkTFLqJkaxcVa5CZYc7noQex/SCI8k6EmIq
+	 VFU8sixXlICQAubYrkZq7IiI4lHlK9SQMeA2C4c8RrC1etJHaN9GuL4ts9qWqGznnZ7ThzpURkOm
+	 3LKl9USwzVyTZSoaGUCWYP+8TzxK6CSUd3xjQKwoGC7S34wm6MHrDI2dO4yr2YHpJ7s6XeeCNR69
+	 xFytxtEqB68URvc3RQjw0pF6YNQC7CxoHtdTdq3ACcmAi2xH83AIgVaJd3GqEjtF+hy9rCgVp0OV
+	 aBj8onayxhOxufZ/dSuJ/nnhJAYPG6NMOcfUE1dTM6vRvUSrZNQU5z+DP78mjnYT53mKwy6/tKJS
+	 ySrMq64g8xcak3JQwQoQtZU9doXWMhw/cMshFi/UmfelF6oPrPoLR1tBpt4D3Bds7vwWTQdnj7xm
+	 A/NQyDr3qDBrJ7HJfM5OYF/zy0wnd9tyT3mZNiOkpVgxl2Ino+ufpN11fC3/QCYYZOGqTqrYGRJH
+	 AMQRXSt+Tvx9TWP/Fmdb8K5qCXX/AqfYRSXCUy+lfPoEYBpPgQGRZdh4mUVFqezHj+v3oCa5v4x+
+	 fypNi9y6QZtU9rRy7UnQTZ1la8CGg7orPL1FkH9XlX7pzITwt1SNmwPxhAne9/+f4VMJBTdR2s0N
+	 kF8QYNU1L7PhX7SknKwCvS3gqNq3lhKIKdY1/V6C71z7IAXFKXfmwc9bm65vZaCH9pVuoSGQyrYa
+	 b0hfD7ZTkK/l8owIE9LwT5MQbKjeK9d15bRKMujp2hsJ+cp6Dt08Pl80LGixqbSPTf5vcw1AhWV6
+	 VGqAOkqNpitWBMzveS
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+From: fujunjie <fujunjie1@qq.com>
+To: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Haoran Zhu <zhr1502@sjtu.edu.cn>
+Subject: [PATCH v2 1/2] mm/filemap: count only the faulting address as a mmap hit
+Date: Mon, 27 Apr 2026 16:57:50 +0000
+X-OQ-MSGID: <20260427165751.746502-2-fujunjie1@qq.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260427165751.746502-1-fujunjie1@qq.com>
+References: <20260427165751.746502-1-fujunjie1@qq.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: run_vmtests.sh: fix destructive tests
- invocation
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>,
- Muhammad Usama Anjum <usama.anjum@arm.com>
-References: <214fd9e4-5398-4c26-859e-c982c2e277c3@redhat.com>
- <20260427091250.61316471db20dfb0852141c1@linux-foundation.org>
- <ae-TlsIq_YkQcCUY@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <ae-TlsIq_YkQcCUY@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: xcSbeBsNyT4NcwzDnl0UWe5VpbdxeneyRAPPU2nqea8_1777308947
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wfm8ngshw6qodme1gn8r5cfqwhaiifkt
-X-Rspamd-Queue-Id: 5F2E9140004
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B33201C0016
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777308949-923401
-X-HE-Meta: U2FsdGVkX1+a397be1g8woMYpHIiQwWTFlWlJ5imtOa6AFzlnBbuv5KtLUhHuOwvhPWSuCue/DVvkFzpRzgc5mFEhiJcFt4noqFL80a5j9tYa8Ha/aa62w8x59CAptBzY/RTSOrd6qZOLuQNo4d7MUidWkL4e1f3gtYgPnPM+2aoFaWiFG3oaMLz1R1Jx+170JcVLFdfcEWalyg7RWRf6OBdwDYPKgMRL/LZVuFeZQVicY8Jz6GFNwvr+7nKKCzBu8N79+TkGjUnvv8S2IRpPnJuBk5LjhNFOaDqqUL2Wuc8rrenZWCDyY9FrisPhKhr1693MabpQ7Xcpcdtnl+HnnMFWt/uINIaHCThKa1ed9pDMUCB1Xk5sYc5pt0sZXmLHLDTc+MPgz4/kbY/MU4MG+CU8KsQ7dgJaVJ8aT2e+D31/g/2WeNWjrb4kTyTV9bHi4T+h58id50biyiL9ppPvTi2QjrH31I1LsMsYBUgZDz5ed/qQ6GP90Oi1jAfnX53UDdRsNpF0ZgGNrncylyAJJ6RuC42ySqtknUxT5LX4BzwQf/86f6i5RZR8/EG2J5PIjnM/GFDkSE4QLjJyTwV2AISLJklxEHx8kIrROe+d2+fSeRpUo5Eg7d9EgZM56f40XjEigcqV81GGbehQnFz9iBZHqxrIUt5GXecy8X8Kg5vZVoTogHmhXMhLXzcYtdHOuaSupR+03L5RvtIFAaa6w//KYr4iQK4uSGMcrxLv9K0XAvSS/7S0gOl4tZeqvFgEH+SCpyyQlHMKQgwD1fnQYHqN+QG6+1+mhmJOll4HhKcUNNdUaNiA8fDvjeFI2O502Sor5ribJPBVjiiHp51yNa9u82qPv7EoNJufy0Tt0hAGMlyRPmgH1tnXQBXnRxiRc/Q/4yxinps6OttuIzBBnVMblR+QAXcxuddxsFMtY//LFYPowk8ka7gckbp4425N3dWPBdpm1zvEomCjty
- yCa3pnfn
- qvcj2mb3j8GtwX0qLvgtIvYfoOy8FL1i5vtTr0yI1NrnuM5HHe+1K0NiPpjRo17Eo9gXb0SfWk6K1LW8TL9pi4uKd9DVOqZJoiqIZhuLk2LEZ87V7XG5Twv1AQqihRsnWSYEaumjsNc4GAuPDZRXvgT4ByH3HfaQr2Cg3P8TLmQc+M2GbDIem9qMWMLiXGJJWq8AIdQ2TJq9WWJAWCMISO3A+QqeS5e52SriiJ6s39eApbrRiZi+Aw7qWlaaGtEUR5T8p87e39Qn06FAZdoNBmA1rEUSRIcPjGVqIjrNT3/0G0bNBKPbq0/EG7wfpHAH+43AAEVQNsTZhP0EEFwrGuOMr4XCFb9h215onUUuY/YbRpVYHHj2sXh8DFFSOoPhMfXt0sUWbE80/kOio7TYZgHtyzO6v3rAfR6cFPAcKqW2VIQKVQmLU406lauQZKUUtr5pdDgb0D90F/x2WCoNY6l7iaJzs/iQzD3zCTuYF5qLHom2QAKmQrxK0NzzEgcls16Mk20x+nQrY/1ko3c9cKzDyfw==
+X-Stat-Signature: d987gaic8c3yzyaj5od8rok1xwgw11gd
+X-HE-Tag: 1777309078-810039
+X-HE-Meta: U2FsdGVkX1/d0focLvRFEJUhTI923Pz//W0R8nTHYoCyqFPhGShq8LJT62wlOa2z6i41gByj1NFcuulf3/vu2N0t3ao636e6NNu+2tJFn2wWrZmtuAZbAYawwfMF1EYG2aG4GzRmV4mgRknqy0dI/adJweVjjZ8hXl0ULYQtooVYiPw/NTrEcAYr5ev3rlSdA+lJLvM472KF9RI/YMuI95SzioMqhp1AdQZccZ5k7EHKHKiclEfQvyGj9Oig0jhk+18iYb+P3aOMJnBc1/rk5sKdJqgYv5RoBCWZpW5hk1R7ytBaHSImSaNLBmSd3zWgYMPOYqQZL93k82/T1qY2y1ZcVeZ2GSNfbPdkFIu2YSlh0vE+LTOBZ0lXCIqFvkrVhkttSGywjLtQbH9lMDz1/mz37AwQ5wUHVqzmzFF4M/XC/Jvk3KSV9mjjkgzWlQhv91Lur79nLtpClat4HTIA9bY7x0z3ewbUk175LYqPSAAvQWEW5ED+hiSqY6ZV/jpb4icY7U/w61Jb1X53fueai12YAoGaDedka4IHcjDT6tkNM+iTqlz+fqtQQmn6LHn6ma/JRv1cqMiqGj2bkuoizp9kuMjjaW2HQXWnLj5jBHLitNfd7zYhTm4CimPd2sfoZgoD+/3D4SW1mB8yLFXR8vuzOlw1ahpol1iUmHbKNWlDPh9wLkOMlikTFkt0n8V5g7eQ5/z6w/xfgacrfPokXtOE0z/2ZFX5ZnRI9Eo2Sk2J2abUXm01ZNiNEqdPecYh2JfP7PqviCBEwOya9QhR0vF4t6LsHgDGgqg1ix6UGVSVEgmH1gnIiOgG/h9K/S7Xy8stnaBE1alhJMM2da2XJga09VFy/C/HFRnM5yAeqDu1+eTpcLEDv/IeRiT/E/nw/+EoJBrPPetpCN67ctOtuS15+vQJAsSCSPZqmy87n7PEdtA8BDUSLIklgn0V5uPgYGj+W+cFu2L8bcUmptS
+ b/aq/z7Q
+ +C0RSl+t8tOQGn14ghiBzz8pDdWIuSg86f1FtAFkpSvdtnfkJlW/6hKzkntEYtpsInpnztA9vgyBbQxS95RbWI5yJpo6RTs37t5gkbzEDdcGBZk9Bph+Y5Aw4t0OHD/jcdxNoRAiHuGR1x/CJTLFdQT+m7zurjRTOnH5LatN3SORFt2nyx+OyCr/eGwwCLjt90ry1UrsN8hWuoMMGyE7vLmdjZNXdKwEQMque3NfLw/EmBmXs9WVari2ECX2LEoZTbKHl+bRytXQvqmU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,63 +107,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-27 12:49, Mike Rapoport wrote:
-> On Mon, Apr 27, 2026 at 09:12:50AM -0700, Andrew Morton wrote:
->> On Mon, 27 Apr 2026 12:03:51 -0400 Luiz Capitulino <luizcap@redhat.com> wrote:
->>
->>> Destructive tests should be invocated with -d command-line option, but
->>> this won't work today since 'd' is missing in getopts command-line. This
->>> commit fixes it.
->>>
->>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> 
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
->>> ---
->>> Mike,
->>>
->>> Maybe it's a good idea to add this patch to your series since the
->>> hugetlb-read-hwpoison selftest won't work without your fix.
->>
->> Or I can scoot it into mainline as a hotfix and Mike will pick it up
->> via Linus, soon?
-> 
-> I'm fine with this.
+filemap_map_pages() reduces file->f_ra.mmap_miss when fault-around maps
+folios that are already present in the page cache.  That hit accounting
+is too generous because fault-around can install PTEs around the
+faulting address even though the fault only proves that the faulting
+address was accessed.
 
-Then it works for me too.
+Move the mmap_miss update back into filemap_map_pages(), drop the
+mmap_miss argument from the helper functions, and decrement mmap_miss
+only when the helper return value shows that the faulting address was
+mapped.  Keep the existing workingset-folio behavior unchanged.
 
->   
->> It'd be good to have a Fixes:.  It looks like a3c5cc5129ef5 or
->> 2bc4813622459?
-> 
-> It's rather f16ff3b692ad ;-)
-> It added RUN_DESTRUCTIVE and a case for 'd' option, but missed it in
-> getops.
+Signed-off-by: fujunjie <fujunjie1@qq.com>
+---
+ mm/filemap.c | 55 +++++++++++++++++++++++-----------------------------
+ 1 file changed, 24 insertions(+), 31 deletions(-)
 
-Exactly, I just found out the same thing and came here to report it but
-you beat me to it :)
-
-Andrew, do you need a v2 or can you edit the patch description for me?
-
-> 
->>>    tools/testing/selftests/mm/run_vmtests.sh | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
->>> index d8468451b3a3..c17b133a81d2 100755
->>> --- a/tools/testing/selftests/mm/run_vmtests.sh
->>> +++ b/tools/testing/selftests/mm/run_vmtests.sh
->>> @@ -103,7 +103,7 @@ RUN_ALL=false
->>>    RUN_DESTRUCTIVE=false
->>>    TAP_PREFIX="# "
->>>    
->>> -while getopts "aht:n" OPT; do
->>> +while getopts "aht:nd" OPT; do
->>>    	case ${OPT} in
->>>    		"a") RUN_ALL=true ;;
->>>    		"h") usage ;;
->>> -- 
->>> 2.53.0
-> 
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 4e636647100c1..41ffe9036c96e 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3747,8 +3747,7 @@ static struct folio *next_uptodate_folio(struct xa_state *xas,
+ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+ 			struct folio *folio, unsigned long start,
+ 			unsigned long addr, unsigned int nr_pages,
+-			unsigned long *rss, unsigned short *mmap_miss,
+-			pgoff_t file_end)
++			unsigned long *rss, pgoff_t file_end)
+ {
+ 	struct address_space *mapping = folio->mapping;
+ 	unsigned int ref_from_caller = 1;
+@@ -3780,16 +3779,6 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+ 		if (PageHWPoison(page + count))
+ 			goto skip;
+ 
+-		/*
+-		 * If there are too many folios that are recently evicted
+-		 * in a file, they will probably continue to be evicted.
+-		 * In such situation, read-ahead is only a waste of IO.
+-		 * Don't decrease mmap_miss in this scenario to make sure
+-		 * we can stop read-ahead.
+-		 */
+-		if (!folio_test_workingset(folio))
+-			(*mmap_miss)++;
+-
+ 		/*
+ 		 * NOTE: If there're PTE markers, we'll leave them to be
+ 		 * handled in the specific fault path, and it'll prohibit the
+@@ -3836,7 +3825,7 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+ 
+ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
+ 		struct folio *folio, unsigned long addr,
+-		unsigned long *rss, unsigned short *mmap_miss)
++		unsigned long *rss)
+ {
+ 	vm_fault_t ret = 0;
+ 	struct page *page = &folio->page;
+@@ -3844,10 +3833,6 @@ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
+ 	if (PageHWPoison(page))
+ 		goto out;
+ 
+-	/* See comment of filemap_map_folio_range() */
+-	if (!folio_test_workingset(folio))
+-		(*mmap_miss)++;
+-
+ 	/*
+ 	 * NOTE: If there're PTE markers, we'll leave them to be
+ 	 * handled in the specific fault path, and it'll prohibit
+@@ -3882,7 +3867,6 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 	vm_fault_t ret = 0;
+ 	unsigned long rss = 0;
+ 	unsigned int nr_pages = 0, folio_type;
+-	unsigned short mmap_miss = 0, mmap_miss_saved;
+ 
+ 	/*
+ 	 * Recalculate end_pgoff based on file_end before calling
+@@ -3921,6 +3905,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 	folio_type = mm_counter_file(folio);
+ 	do {
+ 		unsigned long end;
++		vm_fault_t map_ret;
+ 
+ 		addr += (xas.xa_index - last_pgoff) << PAGE_SHIFT;
+ 		vmf->pte += xas.xa_index - last_pgoff;
+@@ -3928,13 +3913,27 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 		end = folio_next_index(folio) - 1;
+ 		nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
+ 
+-		if (!folio_test_large(folio))
+-			ret |= filemap_map_order0_folio(vmf,
+-					folio, addr, &rss, &mmap_miss);
+-		else
+-			ret |= filemap_map_folio_range(vmf, folio,
+-					xas.xa_index - folio->index, addr,
+-					nr_pages, &rss, &mmap_miss, file_end);
++		if (!folio_test_large(folio)) {
++			map_ret = filemap_map_order0_folio(vmf, folio, addr,
++							   &rss);
++		} else {
++			unsigned long start = xas.xa_index - folio->index;
++
++			map_ret = filemap_map_folio_range(vmf, folio, start,
++							  addr, nr_pages, &rss,
++							  file_end);
++		}
++		ret |= map_ret;
++
++		if ((map_ret & VM_FAULT_NOPAGE) &&
++		    !folio_test_workingset(folio)) {
++			unsigned short mmap_miss;
++
++			mmap_miss = READ_ONCE(file->f_ra.mmap_miss);
++			if (mmap_miss)
++				WRITE_ONCE(file->f_ra.mmap_miss,
++					   mmap_miss - 1);
++		}
+ 
+ 		folio_unlock(folio);
+ 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
+@@ -3944,12 +3943,6 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ out:
+ 	rcu_read_unlock();
+ 
+-	mmap_miss_saved = READ_ONCE(file->f_ra.mmap_miss);
+-	if (mmap_miss >= mmap_miss_saved)
+-		WRITE_ONCE(file->f_ra.mmap_miss, 0);
+-	else
+-		WRITE_ONCE(file->f_ra.mmap_miss, mmap_miss_saved - mmap_miss);
+-
+ 	return ret;
+ }
+ EXPORT_SYMBOL(filemap_map_pages);
+-- 
+2.34.1
 
 
