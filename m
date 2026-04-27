@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B907FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:13:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A8CEFF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:13:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB20F6B0092; Mon, 27 Apr 2026 11:13:24 -0400 (EDT)
+	id B53226B0095; Mon, 27 Apr 2026 11:13:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C63AA6B0095; Mon, 27 Apr 2026 11:13:24 -0400 (EDT)
+	id B2A8D6B0096; Mon, 27 Apr 2026 11:13:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9F926B0096; Mon, 27 Apr 2026 11:13:24 -0400 (EDT)
+	id A67A56B0099; Mon, 27 Apr 2026 11:13:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A6F446B0092
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:13:24 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD2CD40864
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:45 +0000 (UTC)
-X-FDA: 84704677932.03.FF7F24B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C3A854001B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C5bNnQW9;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 97C276B0095
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:13:52 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7918C1B96BC
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:46 +0000 (UTC)
+X-FDA: 84704677932.10.FFADEFD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C906F180004
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GHvaeA9B;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777302763;
+	s=arc-20220608; t=1777302764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vbxQY3lvzqhT/iqaqHhhtJ4GZyPdebweaPj+BWQtC58=;
-	b=q/xUUZ8GWUZg7BubL1mKgkRhISAVvMBOEECLbpohCMpqrZWhl8g0RaepNzjelVBs7u1WTb
-	fA1cNjzaye9IC5wL6RzG1EHncIihFz4kplTiqggpkZuhEdiNr+GMyXlSr6WFWaFkjgs2OD
-	WApn4XEumYn9mSH2ng9yQkhXLVCdUts=
+	bh=n7zkmJLFhrZtgZb5xv0tfELwAXDyT6rXUNKl5w+JrAw=;
+	b=30lmDIEjhOlthvkHslnqLl3d1TqlU0PyU+CGFx+2ely0IGOGJeESkYMSm+VGwdfmEbGZ9b
+	l3ntD2hl3QktmB/ofBAMjmd3X8VjqUo71PHJZSfRKkSqZbODvythIcIOCOeNHC/YvjYxvF
+	wMopZZIRzLoMbdlMVsAJ1t4GeSSeMWo=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C5bNnQW9;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GHvaeA9B;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777302764; a=rsa-sha256;
 	cv=none;
-	b=z+CAnP5FFp2L38m58fwBjIfNgtH+ajtAGGpQslt1KUOfjeqZWuSQGY/8oa7FTU6JIA27AT
-	Lylobjqre/4TUKD9XU6wqXxn9yvLUZYQ38tfMPVgf7PgOnIAv6TI3USfKDBRcPOVtYRsp/
-	EVJ9hpxrpgiEx2O+4JXDIFf2yZKsWFw=
+	b=X5a1UfJsSbVJ27NBLOOAVGU0MHMMb1LbSA4rzSj4Hh7/U796t+wlHgaikxSaEYG+WGJDGE
+	rM3jdTZRHXl1TIcCnK4n6L8Y2M7LR0dKbfQrona4AFtbP8ncTt3K1ZczWfyGXztX2qA/VW
+	3xB0dYLc7jdwsLLepRbGTQ0/ztEpjQY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 98BFD445ED;
-	Mon, 27 Apr 2026 15:12:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFB2C19425;
-	Mon, 27 Apr 2026 15:12:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E111F61141;
+	Mon, 27 Apr 2026 15:12:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB30C2BCB7;
+	Mon, 27 Apr 2026 15:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777302762;
-	bh=acrZio7SwTIWWe0wc5YY1SpE9hMTqgCgT01pPcG9A6s=;
+	s=k20201202; t=1777302763;
+	bh=9O26QoN+V9tNeSexEgjKx5Rwm+ySmwIIy3Pdsz7ovf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5bNnQW9w6UfmygfZeMPknLdHTYsBUe+1OlK5Dgp2HD+DcUzmdn9PKZJEGpQ1Spe6
-	 Akt3bXbTxUhgwbcstxO07AF9aIriIy65eDAMGuhsn8p25p1Wm/bE/xoL8n3MeRAFgr
-	 g3Zzcq4zNRsB0a/pJ+uVN5G3mpjU7DcmTjrXdY+xxqvkx2E34OhRn54wnvTx8rLogz
-	 n0w+a+ZYAumiZNlUcrSmbgmEipQDztN36RF1erxzL0uIz6abHHGcotBS65ehtYSMQI
-	 FYEVRVedJlDEFiLRVYxB1owgQzHCbHvzLdZaktoDdYD/r6CuY+VWllhtDYBwgoJWC5
-	 ZQd3jG+u5ASug==
+	b=GHvaeA9B29EOfNwhZ2BklSXm4t/Hcqa3SiTUb2DUOZDFGSxRDTO6B7qmoBVRub2Ve
+	 O0HzutMREEg6GOFwc0InVJ4mlzGmbxWNwybN/i5sFNh9wWa5PSqIuBiUiUApIeQQdz
+	 NZF5YN36/bPjjd5NttoNMCbxS88s2WUmdm3P91MzNlr/mMOFth39DNGPpnFjC1dR7f
+	 7CuKeGpOaylKpV11mk2LwNVJRALqRuhdlAUpVKkMyEb6PaqbTLaOHei8Dg8PvLTYhw
+	 hRIoESfZzSpHRUwj3Nl2DMgbzC2rdZjwm7ncKz3Y1MNPYp2MRfQ9GOc1gsyvSvjIWc
+	 Aj4ogr0+dgIIw==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 05/10] Docs/ABI/damon: update for pause sysfs file
-Date: Mon, 27 Apr 2026 08:12:24 -0700
-Message-ID: <20260427151231.113429-6-sj@kernel.org>
+Subject: [PATCH v2 08/10] selftests/damon/drgn_dump_damon_status: dump pause
+Date: Mon, 27 Apr 2026 08:12:27 -0700
+Message-ID: <20260427151231.113429-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260427151231.113429-1-sj@kernel.org>
 References: <20260427151231.113429-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 879p4qbbsb5auk1forcbqbcmj7hemzwp
-X-Rspamd-Queue-Id: C3A854001B
+X-Stat-Signature: hfnyipnc3beo8h36s8w5he5e71fwjc8z
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C906F180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777302763-104817
-X-HE-Meta: U2FsdGVkX1/cRpfaOTbZKWZwOXZJm1nwmdRMW52gOVJDy0mSI0kI4eMjG+gTiVrwD6KRnWxanID1m9qPXgRaBocFnIS4ZRV8UyYc/1yIZJhNSF4QyGtdfyOpA3o4U2m73vTPqfS3DkaPCAq2YhwSS3ei1M7yQsJQW0oR6shK8/yz1KqlzQ5rFlCM+xkS1oOpM9xdynNPY9No9iwpOT87PvyuqA7HZepFzNPOdW4yPHHi4KJqqwhjKIw6K6H6lLfXiGlvc9N7YaR159xzJ3sMaNiIvqtTHAr4n150haZ982x871fdynTZHzyjgTjchow5THaa636+W5lwXpSYLwctuFropYARcZUoyzWaPuo6+aUCERgUOrA5SkuDs+vjqcq5H/uWzuR35p6P0cfyaOgnSaJP3Z0WfhIo8GDkFv7o689V+RxA0cDkTHHIFPoT1Npffj8vaOhMpW19W/WMzJqi+bWZXJV/mCOPid62tyTvJ0rJE6tDKSHOLPgStPFweA0CPG+e1Sqt0HcXpIOS/jnSBOsIJneyAkn6dgiQOHlonT+zUNdsk9CsyOMGSs4Qs/arT92xnbLgGmY8EDRSIMgGGYdWUV2spfmizRNEAi7QP3akKqPDGjS3DD6Hz8vW5SL/i86hNXYgNDhaNFUzJW8bEBhmlEaIebs9Pw+UX5/fz3N7CFf23r6gNPlFJOM2dthxnUthvDdHyih5HRwquucLEAWUWwz9jiq+DJrSGd5JUpWes+MvEvamTaRhkMDLSlaDSrMvEEK+0Wzvjo4wz+zxESvFRbVwf2+s3diq6j2aF8PdC7Wl6aMvwuZmWSbr65YqkrhDaQ/lmGfemgKwQc+XF7hfWHA7Q2YIAJKpeSwgIidwuz1EE69+gVea0iGR4aFT/dPdGh3M0nxTuiDCCbjBPL39FrmHJWM73SIBlCSyiTn0SbRLVhhgY7L9pk4oS+G7JhrHtG21FAY1VU0mojv
- 5kwJddTc
- SBG+m3/anOmUXjqokiaEnK1xU0tOHecBrmBNLK3lkU71UL+NG0mR3Aty+XJ59HlUC1Oc1zNUCsz90WmjyAwe/4PhB5nauUsk6ZitJb6X1P7cZA6AGOAL0mrc5wRRraMB4wjPS5iSUDtUoFD/FhyFdGbVeBBzJgSWo3bvPI0Ed0FW3Zvf4Jvxdrw5jzFPY34dmeOKRyXdIvo6kRFM3Q85IxngUzrIxEY/4fZG1O5b4x+D3P18=
+X-HE-Tag: 1777302764-389547
+X-HE-Meta: U2FsdGVkX18J8Qjx55wQOOAokoqrCX43OWCOKFc0+Xno9nGNY1bURsrSkOp+Gee/Os/9vXBNG1taYpG4/luvKK+zkrvN7beCLdaVF8/7pMjruBqfu9xAGd4OI9nvltwczOsaoRIuJ5eLYRNzMVGGAtrzWxXHLtAoNqRG+KBxCUj2aYNcIBbe49310BZZXp0KPAIEf4CPbnbTafM56rCi+OnYzhKiIkkBQemgGGyJbgRTrEhKEP5Nf0OnRb1MxQY1lVU4xdJTCpWdkyVJvHMXC4HdUEPBHYAPUHMMYpmuV1pEH9qZFS4GOD1HiCokDPMzRwNkbhQqxqyy4SZiGBfGmdgVUE+Rj0i7xr1fvs0r8l4l5n5jgoQmqMV1H23Gh322pjnAuZGl5HCiUTgYcESp7sys7GqMaHmsgrgXLgCoY9v0DrrLm/Wg7ytvAaAaMai2GYaoYxpiAEHMqq8tqH+FfK+X3coiFzyi5i4GG12sGOyvoAt/XAxW9btN2Pl4RfFP9s+JZiohLgqP0iJMh1X2aZqyHZNtE4YYNuQDFKyW/9qfi5pAB7ZGhZC02gldN6RFCc+YyyqUNbBi7do40TmtuUjye5LEACOdqSwzaRm++GIK8jRKPKnB6flsljKtHaw26EG9WUjgYSI+8DZR8mhS1WkJSF3DmWMqOmzjbk+VE0ODvYgTSVNK+QkxVYJX0HCf5VmEfH3cbq1RHrUBD+Bw4ZiLj8uLbnY8sH2TBYg9+S046YvIxtXAs2fq1EGUmHUf+EvScR2vz/lnMyATiWL8q13zuyg/ha2OxD/S3/GcBhftF0yajnnsvgLAXWzgbtib2jwdRjP8VwA+f7/Azo88Xh1eCrpDOPF9iGdV/ZXkSRGPSXEItnbZvVZRHzIpcCyEweahg1xSMv/QVXLPsDIL9qEOytPftTfVwuv3YXbWcPENAbtiJneKQyPLxeNdQBOM8DHlcfxRJWFhKp0UP2O
+ Z+9PFvxc
+ /oZ2yAiSytDjBmSmEDDXBXfo/GMD/c/B541yJYR/AmDQipu1M4JwxvsYSIBtsoai5FhAz6X5rkwCYzhdtvsV7iCFEg3pqK+i1Ty/si7rcsZv0z8NQKnts3Tyx8Ug7ZN6Hhb0mMumXkE/5p8yQuIRakDs/tnXonxcQcrZIdFBl2Y1+criPnlk/YZP7KqZcxuMsc3Nqn5cBB1nFyAAEEbFvbQPn95hWeFys2tDAOsz7EKESiWFluh7A/32pfIs2g9ODGKzpNTAfTbq+zq2W1yze9pLuSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,32 +94,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON ABI document for the DAMON context execution pause/resume
-feature.
+drgn_dump_damon_status is not dumping the damon_ctx->pause parameter
+value, so it cannot be tested.  Dump it for future tests.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-kernel-mm-damon | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/damon/drgn_dump_damon_status.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-index 2424237ebb105..7059f540940f0 100644
---- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-+++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-@@ -84,6 +84,13 @@ Description:	Writing an integer to this file sets the 'address unit'
- 		parameter of the given operations set of the context.  Reading
- 		the file returns the last-written 'address unit' value.
+diff --git a/tools/testing/selftests/damon/drgn_dump_damon_status.py b/tools/testing/selftests/damon/drgn_dump_damon_status.py
+index af99b07a4f565..5b90eb8e7ef88 100755
+--- a/tools/testing/selftests/damon/drgn_dump_damon_status.py
++++ b/tools/testing/selftests/damon/drgn_dump_damon_status.py
+@@ -200,6 +200,7 @@ def damon_ctx_to_dict(ctx):
+         ['attrs', attrs_to_dict],
+         ['adaptive_targets', targets_to_list],
+         ['schemes', schemes_to_list],
++        ['pause', bool],
+         ])
  
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/pause
-+Date:		Mar 2026
-+Contact:	SeongJae Park <sj@kernel.org>
-+Description:	Writing a boolean keyword to this file sets the 'pause' request
-+		parameter for the context.  Reading the file returns the
-+		last-written 'pause' value.
-+
- What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/sample_us
- Date:		Mar 2022
- Contact:	SeongJae Park <sj@kernel.org>
+ def main():
 -- 
 2.47.3
 
