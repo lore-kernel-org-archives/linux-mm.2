@@ -4,103 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BF11FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 13:12:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3447CFF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 13:15:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8255E6B0088; Mon, 27 Apr 2026 09:12:32 -0400 (EDT)
+	id 62DF86B008A; Mon, 27 Apr 2026 09:15:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D63C6B008A; Mon, 27 Apr 2026 09:12:32 -0400 (EDT)
+	id 5DE836B008C; Mon, 27 Apr 2026 09:15:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EC6D6B008C; Mon, 27 Apr 2026 09:12:32 -0400 (EDT)
+	id 4F5C16B0092; Mon, 27 Apr 2026 09:15:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CE716B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:12:32 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E0FB51C008D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:12:31 +0000 (UTC)
-X-FDA: 84704374902.14.5467CFB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4001E6B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:15:43 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C1A6E1601B7
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:15:42 +0000 (UTC)
+X-FDA: 84704382924.27.2D7AE4A
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BEB66C000D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:12:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HqkYlS8R;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 109E014001D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:15:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Durjr/hU";
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777295550;
+	s=arc-20220608; t=1777295741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=79uM2Zdks7gEgsRotpWu+/1rf8zg45ohibw7xbEt1AU=;
-	b=zxrpoM6ZF1JW6R/8kKQHq9NIi6JsjyJ5KzrG1wPMOuyEuEjjVAxj18cwz6xUeqWwIFnHMK
-	IaIkJeEcInS/LlSBmBWWGerIdzhZnkSDYG4YXr9REbWlHieFsZMouxKoQPRLqwNNX4ipy0
-	+3MeAtlF5MpKAGo8fxSmUSVJL41RM4c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777295550; a=rsa-sha256;
-	cv=none;
-	b=XmnjHU161E8TZwYFNATsKPARg1BYpxmPBPsn/7qPnhecSe++DsIe0oEPfxwZELiX26DwyU
-	9MT2cxcac/EDrRwWWvwjm7riaivdojASICeeLWpaAtfQ95dZlHBdqLJe281dp0ysVWWeZT
-	IZsm42VzmGgv/Pc7F66qx1mtCZLp7Kk=
+	bh=S/s8xgft+FNrzEyW9/6uYjKgCVwm5+kMCent6gWBWjw=;
+	b=hTwpQ+Kqw/HAm/TxCmDoiFDFMntaePY1hPEU07T4RhSAzYcyjCj0J6YzDsgJjNelGSYBK+
+	V95HrCHBxb8ys+DCie2JDgjQZCpFmU8SNXFcTO1+iSS8tj6LdQ9Wy7olhDq/1mxAhWSHxk
+	EHu03zhlKaqsWJcqmDm3lfZXGcoAVJk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HqkYlS8R;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Durjr/hU";
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777295741; a=rsa-sha256;
+	cv=none;
+	b=4uprrU62cIihHaES58CY3sXQz3+d54xHWNuyow4gGRkXozV2aRipNkjabl27ZSGrx2ew7r
+	+f5ep6Ajk2BGhl7JbuKH9n8UabyG8OAKK+hcpWf3Mt4uewk/wMu04Se3V9f01RqAQ1JwzR
+	5kvko620OjBcz/j/WNo/tH3WjnuSwjM=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=79uM2Zdks7gEgsRotpWu+/1rf8zg45ohibw7xbEt1AU=; b=HqkYlS8RO8wHIK9MBGbTtiUrlD
-	EOWiP9QV/zxAAwwytmnW21ZAZja+yrHTT6V9KAokVDmJEMYHLyY5wvzDthtWo4vCaJ0EhNr23Ce1P
-	KaRFfhqSBegTIxQYgsx1U9zjnpTL9W1Z0fN5k870hAXSqIZgY5ifzGveiQyKUwcLtOBtbkuPjXBm0
-	MmmxKMr1OG05FSgTvY1+qek7+N2IhQiMnKODOtwbS2K2HJ1kC1w3aVNaUyGFjp5C8SopqCeHF+3TT
-	nYPNv8PpvWRYiEPmaxsylHfFYLVwOl3YtKqCDEu/jx2pvV5DqOsP3Zig2nWy3c3P19RGfR1KYho46
-	2nV0i8nQ==;
+	bh=S/s8xgft+FNrzEyW9/6uYjKgCVwm5+kMCent6gWBWjw=; b=Durjr/hUfSN05kGXzJwLwFeokv
+	5HiCq4Y67GFQMXjU1dqtcJrXStJGANzyfZZQszjh9WF39ujDhnmy+ZKS9HWWkIVLG08Aqr62qvDGG
+	p0m1xFGk7E+8TW9v2XCmXolH4AkwT4xuyIJDRwwez6L0Fo2Hjyd7vPzsKqOjFxdl9Ag0XaPiqI/L2
+	K7Ia4KaCapj4VXZeUpYjhqBVfQK78wOXMHOIScqbr37bOijPcyM871RW4sATHsmw7hnnHrkcAzl8I
+	7Cf/tjMMFe0jMtYRiHhIW8VSD7YKL609pqd16IL0kQlbeTAn/wRkWeyatKCa+L5oTsXwhPZDL4iaD
+	n5vvTEMw==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wHLl4-0000000270I-3FhZ;
-	Mon, 27 Apr 2026 13:12:18 +0000
-Date: Mon, 27 Apr 2026 14:12:18 +0100
+	id 1wHLoH-000000027Ij-3Pcx;
+	Mon, 27 Apr 2026 13:15:37 +0000
+Date: Mon, 27 Apr 2026 14:15:37 +0100
 From: Matthew Wilcox <willy@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>, linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 3/3] mm: remove page_mapped()
-Message-ID: <ae9gsjJolKTLeoZR@casper.infradead.org>
-References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
- <20260427-page_mapped-v1-3-e89c3592c74c@kernel.org>
+To: Vlastimil Babka <vbabka@suse.com>
+Cc: Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
+	lsf-pc@lists.linux-foundation.org
+Subject: Re: [Lsf-pc] Large memory allocations at LSF/MM
+Message-ID: <ae9heafyGwN3ctUe@casper.infradead.org>
+References: <aepANOFKoA4jn8NN@casper.infradead.org>
+ <6cc83a53-4392-4925-9187-d682b60edea8@arm.com>
+ <ae9AHWvXUTuoqlfA@thinkstation>
+ <9cecea5d-9377-4d90-97c3-0cd8b2f77b35@linux.dev>
+ <616cb4c1-ca1d-4e37-a92e-b8f6f675bd3c@suse.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260427-page_mapped-v1-3-e89c3592c74c@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BEB66C000D
-X-Stat-Signature: 3aszy8xqqemkbnbz8jn9e5mkykuotnj3
+In-Reply-To: <616cb4c1-ca1d-4e37-a92e-b8f6f675bd3c@suse.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 109E014001D
 X-Rspam-User: 
-X-HE-Tag: 1777295549-122080
-X-HE-Meta: U2FsdGVkX19oVuVum0rEly1c5Q2uDPnHDlYjedSb8AlzMcJ3gwFHgSMCXDlvQyOP1JlW/kVJrKgC1FxKbCCCq/Y6tWswdSCRge6MggnB/Qf+TVXY8y+qdd24mQIz/9IrVRex3w79w+PcZST+LXwUeE6ujUufBY4isxoktE3X1enKggA3b7Hl5xAREiC5a9XaqXQCGiUpZzvyiGtFyD/EdiirGjs4wr2JdnkVETuWX7aX3brijULXprsLp0ixf7CMQiwchYZM1LU7jFbaHIvS1PH234UcJt5qqRhK2XzTgmHmkkx6GrdrthoZOAI5JyVmLNrPzpZRFkuVjpEI5AnumfAPP7h2R6EMRaSlvTuoqHepmLOqPt8MTblI8ACy7Dyx0ixefBVzIM1lbpnJe9prLXfzOswbI8mWmR5fzi4JPPjWvEAREuV+9AJUJWz6pqyoL/TesG8CgdM39Yhyuewm1NVEFD+G5k8uuejhjUhuTzItUknYgkS2rTsBzX1p+jwFhNWuaxnzWehVMEsU53lWvFL6JF26MUUShJiDVWgZNX0l7v4F0NTxCSnGmRYPO5w6LyRCpttMLj/YOgArhZCNt3IABx8vjrorJa+H4F6mX3DKmOfwHjY/S2xZRJhZ/VWc2gRVmpk4kBfF5svnXbhvpXWEY3gM5QqSF8WDOOuqtnYD8vtTXVOnOZ70pxW1D+NG2PkMY1F5z1w4MqtOKEBd1V0VPzadk+Ibvek4ty4rJMc1jakwQK1GmGcieQjZEN0Pa7kROx/l1QlEsJEaFYNU1qiFey8EPjdi8tmpeDCJRG//HSiVgtesnKbtne3jM4SpCgpDUp5/yu6p3qUPTdWSqQ0wNVgF3s+RmixiY6JCCmRtaTz0xNc0f914K1AGtIGwAlXeCBthYSGufSu5kNUdKG1bFQKu6SLn08pzDqRUunLpy4Avrpc9Db3nM5nt+tbHI30FYSgnaFcQ0P7d1Jb
- VEx9PXLA
- /9ydbwE+95Z9zgF7raylvAzpFHv3tbJea97Bnzc0YtdoQn912pVfEwZYjd76tXFN3S0CimwGP5JeOOz1k3FJ31ltuDp66NcEgCIYoCm+a2mInVJC8rvvZQnNN/7hWCzRrI//lKCl/OWdJwW2Adob/AgMUusaRjdiiIqiAiVf81uJbVFpPSyyB433Cw/N4MF9LIkgf9Zcnjnkd+DAUVsNXEYScg/o7P847GlaW5+R7oGw7xYUxggiIPnS/5AYuQMa7vge8JZw/xw4fB/Q7Pqf3oDkclO3/M5zYvEdL/Ud+r9lmX4p8XasG3DzyOLy07DeCEyfys5acHG5O6GMnhiz7gfORUvOobHr+gKu0
+X-Stat-Signature: rdwpuwrtj6cog515krhq7rf914zeqr1m
+X-HE-Tag: 1777295740-986736
+X-HE-Meta: U2FsdGVkX18rcv/CMlhblLbiQpnR2chAzIqNXfrJNWWbSx7FvyHagF0M+y17br2WGD7VBl5yZWQUOpbud6pYuOvG/LldJ21miKVJGL4gdnP+c8EDALEnp/DQ7Cg/S6alaSbnppXeCrTlj5YmYYNsozozdZW98/+qpt/MHO6XQiih1bWGnEuQ/dGkqDrofr+o2qhiyoXmfTXhfOWnNjfruC7Ufb5IkYa3AZPpeGmtmVoJMp/KcWeQkwTmSpciP/8FPwr7rUOUrZM0z4VHokzz+sJUVi2RMSowcwqnsZrCyEUsM4QIKQLnzPD+QvnSjAoOMLfZGRYdmyefpxo5xVzNAUYqWT7PVo/oLI6ZxpraukIJ2yAEwXcrKTpiI70PNeEyDP3t+h7t5agUbsGyyOAts59MnokLxC/zNt+3vzCzDfs2vlRHP1yQK69Nb9paexLAkkrPODYO8+Y5U/K0hZy3QyfNZKaCLo9Xr5NZSILLityJq556/+W6NXh7/DK+vn6m9CULGbWSlcyN996qdIYwhSD4d0Y4U27dip94xmxTTEKGal/1RZGfh+Z5KGu5O04Ronmjb6vyt3/HufN9ViVzXYwlePD2aT6KK0ARJNVYkG6B4XGI7Sp+IbF1rZZ0/Ybm+y1qk+anUMjHs2TniGWgPYw1YOooe8WsvfCWAINzjzzwWmTeY8D4KIfuaW9EsRs7CmtdW+YFOXHNrI+AnGWacr3yLorcjd+YLmKBM5qdIlBKxIUamTJAca/576cHmBaCUxCnTMDsUNlE/r399t7uKILaZi3Phg5XLYONfirb5/k4SLknDImhl+QgIF0OkRF3sivNVK0RbS5tS07U+xRsPSaPt1dacSQkKsFPvinYs4KuOa4rLx2xIQK4JtLDa0agvf5/cSxMHNIfYG7KpN/M+Lx7EOEQWFWJsDUInMpxQ749sXqDLrQdPEobC75lQdbMHCkHNgNJ6jXCYeHJZsu
+ Lcqi9/qW
+ g0RozJvca0S0Vc99cQNMZSCUb1lXhV1kilMliikZ+GrDgemZMdagq2a/cfB+pJysU1kklO+Rn3F21lb6ndIGQn2GtR5numcJp1rA2BBaQ2H0HMJrQGt+S5fvdTFn6orU+kpu3l+iizGmQSWNs2Sc2jV/kmh5jqSnJcJLV1LFvp66zGqou7Yt5FkN88QFUQD2tKHPUo6fNTGA8x6nLseGroYjsaSBl5Z4S0Z/rLwfKvo9IEApNeqAPb8IiTpAxQz+cQCM6m3G8LDaZwWI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,36 +93,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 01:43:16PM +0200, David Hildenbrand (Arm) wrote:
-> Let's replace the last user of page_mapped() by folio_mapped() so we
-> can get rid of page_mapped().
+On Mon, Apr 27, 2026 at 02:35:45PM +0200, Vlastimil Babka wrote:
+> Well meanwhile we managed to extend the session to 1:30 :)
+> 
+> ICYMI:
+> https://docs.google.com/spreadsheets/d/1mGEdDrWskp7Ua91jGXzquQGinorcD58DAVXhOiRp2Gg/edit?usp=sharing
 
-Yay!
+Sorry, I meant to follow up with the good news that we found some more
+time.  If you guys want, I can split you apart into three separate
+topics, or just leave it as a Hydra session.  It all feels pretty
+connected to me, so maybe keep it all the way it is?
 
-> Replace the remaining occurrences of page_mapped() in rmap documentation
-> by folio_mapped().
-
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-
-> +++ b/mm/memory.c
-> @@ -5464,7 +5464,7 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
->  	if (unlikely(PageHWPoison(vmf->page))) {
->  		vm_fault_t poisonret = VM_FAULT_HWPOISON;
->  		if (ret & VM_FAULT_LOCKED) {
-> -			if (page_mapped(vmf->page))
-> +			if (folio_mapped(folio))
->  				unmap_mapping_folio(folio);
-
-The idiot who authored 01d1e0e6b7d9 really should have done this at the
-time ... Oh, wait, I see what I was trying to do.
-
-I believe my thinking was that we only needed to unmap the folio if
-this specific page that had hardware poison was mapped.  But no, we need
-to unmap the entire folio if any page in it is mapped.
-
-Does the affect recoverability from hwpoison?  I don't think so.  When
-we detect hwpoison, the first thing we try to do is split the folio.
-Of course that can fail, but if we do, we kill the process.
-
-So yes, my R-b above stands.
+Looking forward to seeing you all next week!
 
