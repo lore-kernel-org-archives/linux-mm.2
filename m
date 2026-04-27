@@ -4,143 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3BB4FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:27:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9DE0FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:30:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E74916B0098; Mon, 27 Apr 2026 11:27:14 -0400 (EDT)
+	id 2BA886B0088; Mon, 27 Apr 2026 11:30:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4BD06B00A0; Mon, 27 Apr 2026 11:27:14 -0400 (EDT)
+	id 2926B6B008A; Mon, 27 Apr 2026 11:30:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D62FE6B00A1; Mon, 27 Apr 2026 11:27:14 -0400 (EDT)
+	id 1CF406B008C; Mon, 27 Apr 2026 11:30:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C37106B0098
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:27:14 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7ABEF12169D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:11:58 +0000 (UTC)
-X-FDA: 84704675916.01.F91B2F2
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 466694001A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:11:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kT0F6Dhi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777302716;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AA3D6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:30:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18F4916041B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:43 +0000 (UTC)
+X-FDA: 84704677806.10.935A63E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 571424001B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:41 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TJH0uQrr;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777302761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=64F0YnLb4HojWEGkjdb+tg09M6nzYeUGvBR151P6gwc=;
-	b=Jugj0SL7xVoLFNkaDBpR+8h9fWqPXJu3p5kUv0ZFIZFZmzYMlfiHXusiirxONzUt9jOApP
-	6i5J2cx5H+VodFVEUBtW1MmnZsqmff5szh7wGKU7KkIr7JFEPEqMk4boDuHUwc9YaEpIP2
-	rZqB00x/Ai5XnojFU8UwNXNziq2f4Bg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777302716; a=rsa-sha256;
-	cv=pass;
-	b=L1AK0g+m5vwKaFGbnkm+EqgbHsm15juYkDjKrkQYMDaq4Dkz0BDp0ONwk2QpEoioxN9v7m
-	pibclHegv95e7Uj+H/umNOfZ48iasnUbfQNhBQrEX9ZUyQA62TZZdETXaZ5KgxAGdKdJ5A
-	0iO11C/XwwImr3wisCr1dA8hDMZo+UY=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kT0F6Dhi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43d73352cf2so8730871f8f.1
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:11:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777302715; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bDBHfQHGb8TGjmthOmjrxV/FQvoFH6iyKo7+fTHjiTeiXtPiU+xdVOKDwoDwI8BShJ
-         Vdbl1gGLiEy1znwjhaKbuN5AvqAVdcTwO9+iM2lhbkB22QLqudE3Rjdn55rRCy9VkfF4
-         sJd8mO5J8LGCDST7AqzgUqpHqw1ETq5ZzH7CTP21aKhO7+qsNweLHiILIJHPWHzddiRS
-         VqFZQF2NwCHiK/vyojVFSVjIK3Rx63xgVe5sAJi+ognQl6tGCzRA2JqOEQUA/E5fJubY
-         uZMnNMBuy5H8xbubdMuU/X6Ti75xvPx3IaxhT+9MITk/yMzZig33rZ6uBr8ewUgaFb+X
-         tnag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=64F0YnLb4HojWEGkjdb+tg09M6nzYeUGvBR151P6gwc=;
-        fh=ZsVvspyxJ2HYo7TCGBo7QqhezM43ZwslPJpjWCLfPrI=;
-        b=hPhD6nX1FuP1eu+HboSRdKXUvCTaC8hQ3x5VE+HmtLoYybKYTawgdGNSqj8QAWe/D7
-         1uJ4cTYVHnQX+JhrVMtDAO/ZsC0pHMNXXCqoMdPN6K3KfwZSdffuXW/0x7WhYyR+zjNN
-         9jeofvfXk5mJ2aV1871ijuLPKB2aDi3bk0AmFfwZs62cS9H+whu7456zqJ1r79h1WPY7
-         I87w6G3dof1aZZ6SV4GGHEr4ASARYPfcURQMVDSC8DM1GwW2V1kjjKFKss44abv71C1u
-         DbwUuWu0eqx93k0Rpuk/FhuyLjX2UvvKBDsoSDh5pE/6DJIdnFMQrcnQuxgta00QDoBq
-         s82w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777302715; x=1777907515; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=64F0YnLb4HojWEGkjdb+tg09M6nzYeUGvBR151P6gwc=;
-        b=kT0F6Dhi24REVU6fjA+21IbNUV9w7tHtpJu7TdgoI7gFTzIlhDoyFe2g3vx95sNc95
-         qrxxGqUlW8qyiSAe2ZmgVrVTPA1bNu7/S/02hPyPX9anpodidQfM51T9nZ8sWTW00gKE
-         Qz3Mn/2yVl/uZZibucsl+CT31d7/5RfnhGbBmDYhykcWAdx5WGpXbF03GRnA7+7HqUe/
-         ArdnvFz0KID33oYAbnv2yO3Qpkl9uM7K2XCCx1WANbsggHXJiZA+UVUy1Rvj+peYU+hA
-         w1T5jZ+XPH4cIM2VAQUcEs0yFG6PpdMA36djhyh/mLWT0SVSMRi8bbWrI5XBGIJXDOUv
-         6c1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777302715; x=1777907515;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=64F0YnLb4HojWEGkjdb+tg09M6nzYeUGvBR151P6gwc=;
-        b=R200V2eQGKd86DUBTBjhWmZWjYMlDuJo+/27uzmiEv3TN7MbU5eLLog6fMD7CevqPq
-         PXq0McDg7yxTi9a6Bf89E8MDNJjCul1QNx/yOr9rqjB6qnuoGvYVcoxcFufT1Zcs42B3
-         Z9Su+LidNqC1WpUMjoSMTxpWlXh2SsvcUXAxtlFNkL892mgMnX6waBOENXXNRQoQHmdk
-         8EUSiRx/TE5Mj1mPPluFmBGZiMrY4U7mDIZ2v9Wc5qPK0GlCnpkCti2TWuo092J8cu4W
-         2qC66+JHSd5R76jcRf4tXKDfDoSNW5G3GYuzGN/d/z93YlZ6zZuVt0UioayziR6vtMKm
-         f94A==
-X-Forwarded-Encrypted: i=1; AFNElJ+EMrRUAzjmFZKNcBpUWa3WIfeVYGm21Hm3BUuELu2daAJgIWFqp10af39J/fFTLA3wy/v50Oj5ew==@kvack.org
-X-Gm-Message-State: AOJu0Yx0dPq28nbymRApmUTbl9uuykOh14JToy8EFX7sRP7txS/9RVLT
-	tPa9M+KNo4Nml0qltnUJy4dRAL2pIGCZPIIvSGxzU/poXPn8RLUi4kE1f/CKmFuECYYdqyhl3Wz
-	LUfjjyHStBuwG5S4Puz/1WBaXITTkHuE=
-X-Gm-Gg: AeBDiesQJZMUjZR0DlBEYDX0MDyKED+A8EjpwrnQF2iHzTgMNSCu8hWwBo1YgfIhegv
-	Q1oez3989lccRyeDh7/A1IFaUsmqx3C6rv0r7LcA+k/YDqj/qcZGwXD9MORz5guPtqTssCVVspv
-	s55uhq8kn4O1DH2S8qfCviTo5eHoKgP0/N3ge6/HO5TZXH7BZgjZlPsDRzSX8YpQiTKcSSsZ6Qn
-	E/6FAxOORww3/SB2E9CtVwaXxWF4888x9NESoxHu1jsi+I1XcbGIYPMBPrZocC5slGErVUTQIKp
-	YNjb9Me4mMOKtqx7cHmG346/HNqsVu8F1DKe4801OBMYWvRPqAB9+Tgqlmfq1THwr15zjogjLQq
-	1XDE=
-X-Received: by 2002:a05:6000:1889:b0:43d:7508:c9c6 with SMTP id
- ffacd0b85a97d-43fe3e0b305mr66814525f8f.28.1777302714370; Mon, 27 Apr 2026
- 08:11:54 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YsgDC/iwN/qD3Kdp5vYSL1/lwsA0zcSIqFWisvUaVFs=;
+	b=yKOcjjCrSox8xeVloUx6LevVw67dSlAmIfulkBVlG8m1zV7zE9p2wxUWZuVob5Bt0HdDlQ
+	J9yopAg5OAXB7zbfAShARf0jo/mz9u/IlBp2YlmfxCqnA5GqiCXbAUaBm5NTIOHWGennMe
+	C4gAXzd4yrRLPlMSQTONc831VS/WJww=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TJH0uQrr;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777302761; a=rsa-sha256;
+	cv=none;
+	b=Xa/Cl7s6Hu72py14qjS3+HRQh4dRz1ha6ifEaJ+IPxf9HHcdZtHhGYphom9E/0+5LD1yOT
+	7CzAnOiti7Qq5yl/nWZ7UjnF38zaVHMtEhqc0Px8YsmMbGm6DYAhlimEXEC7ZiqzCmH3d2
+	jK9Pn1B4o355MuJgxeQQ9ybeyXB0i44=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 090D94197A;
+	Mon, 27 Apr 2026 15:12:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26352C2BCB4;
+	Mon, 27 Apr 2026 15:12:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777302759;
+	bh=zI5vHsvRGeABhz8+PYlJ/EahgR6YXI9rVwoXD7+ThEw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TJH0uQrr4r3lQ4SuRm8wQheI46NGHnjW0QSkdAQJJsu2EKy+VSXazj2JF1TM4hI+/
+	 y2J5lRBaWoR34EDo5PTi/ir2Xwo0j1Ajr/SEEE/bOpV6XpNQ803wlXUP1NP9sl02mr
+	 Bw1MWIzuC9PCYv23QUAJnAyAFqF70+0jE9QvtK9kskHcnV55eFAhsKFhu/FQFHi7X5
+	 k5OFiJomVq6+m/bmS6qpa9l9qkkSKHuUVWpEWQnxWCtU/b822T8eq9k5tctOtnVvJG
+	 9m8LLjyNgoAchDQzm1+gt+Vc5bQPrD7JuEyjSD/Rg0+c6wth3tgA3OZPEKZW191Wfb
+	 hq3vYfKKtkRjw==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 00/10] mm/damon: let DAMON be paused and resumed
+Date: Mon, 27 Apr 2026 08:12:19 -0700
+Message-ID: <20260427151231.113429-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20260416091022.36823-1-harry@kernel.org> <20260416091022.36823-6-harry@kernel.org>
- <56381493-214b-406d-9121-f80be7658445@kernel.org> <7101d55e-ba43-4df9-a345-2af579f8e940@kernel.org>
- <CAADnVQL6iajm6L+VzqRB4b-u8OPhQSnUASnfciKGeRR4EDOutA@mail.gmail.com> <6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org>
-In-Reply-To: <6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Mon, 27 Apr 2026 16:11:42 +0100
-X-Gm-Features: AVHnY4KWrDsFBq2kyftO3HGnQXYhzZBBgffaQkMzD3NuOqLTN8McEDAm5pDHVOE
-Message-ID: <CAADnVQLLp0bdsu0xOcR+ZPsfq3M_sB4bB8LBq1op0wr+D+yRgA@mail.gmail.com>
-Subject: Re: [PATCH 5/8] mm/slab: make kfree_rcu_nolock() work with sheaves
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	"Paul E . McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org, linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 466694001A
-X-Stat-Signature: 3tfgsks6ub43gpmogfxtw5tcsddz58ct
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1777302716-321918
-X-HE-Meta: U2FsdGVkX1+k9m6Ul3Wbgve+dXXzsawvHk8eNItnelOE/1uvkr7SKtb4V7diZNtnhKfSyWOcCdT1B1sCrgg/GCx1cozAaoEOOePRtMYCBbApRtXoCY68+knX1VTl7MIE7iFUFxTX1dcc+V86DC2v28uqrzVWpI7d+0TdD6L+4QQmwsV4BOebHOij8MLplRVBGiQu5fi8snTiIo9fpDSrVxgyDwosGen+uftHti/JYJpFiMLeG65xtVHmhkCOpoZ6OMxTjCigdC8SBhoT7a6t3J63Ahiic23kl7Iplqkca+XguXprMb/yengxsOjWXxu2oB/8TyaxtcSNRtBtREU3AL53yPEbw2fuaMYnL24U6y3OD1LNpu8G3RmCffeE0pif6gUB6Ctsa3UhZ+r6aECkOrqxfyJcpdm2xqlEnttrx2eQ2YU4cQo+iQQVS/aX6kVEcAOHsLhn4sN0h5w4bXXSy7zHWN7w90MdV6YeSxxiLtgNowY5WjN7PcYIS1FzOJYtKa2DQ1fxWegdOpSIs3tQzSOy9G3cFeATbnkRt/4GIRlVUhh9ipTm0IMLd4esqPMQqrTtnbwULDTJhYSbkEIJdy2u7D8ymo0l3CQ7UjERNa4z8OorGFlWNZckOlyPd2PCrVVHgopiYytmmpszRIMMUbbwX4tkbiri+8MGDUsp8Gvohar1I/m1DOPCFDUMBuB41bljZhYPGkXyqTUoG9TMZHCdKP546usaFaDowdlR8dUwY+ue40b4LWPAM5U3lRcOw2Ds41qD+HxU3l/L5voZoE+TC1OIofH97CB64XZ6VKwn25RBIk7EC/BMZagL8bFLhmcIeGkHsgHOENeVbc5YGhdkkGO/VSQgFr/Tv52US4AzBv5q+rwI+1q9syR/QBv7A4k0Iefo2Q1z7ng6cSluFAITW+0Yi93mIEq6cu+tzQNndI7WHMmOJM/fXCJgseSB2PFUIO+z9r2hispv2vj
- Xe2AuNVq
- 4GyModu2H+8x7QJ1g1jxhgV1ywTe8amBFoxpmNXKV8yEjcIJJRfWQpq1eWVuZf43fMPDODDzY5R5b5cBbjPSvs9GvzCu6Rw8opHuafv/4L2Mhep4YFQYEaViim5vx5U8W1dFrGFqrd5vLTHsnv5earKe+2B2XzOFrkYRteB3M3sn/Ta/gfZIXqxatm/TlufGeTNIqMZjo4Xf1o8xXE96RBaK82Nc118ezqrKddAi+eVSg7jK1RKy6BYjCu+SQ9kDKcJrhVGb1DL6EJbdaSSikERcqwOaLFBhVd1eql0R1G1f6q5gqanM522mEXFh/nkCBmswrEKjlg2hUuB9VI9hfhzNOzpl26IZYED9uaEfZCW+LskX6V01s9r7F6/ujkbR09jz4UbQiWhO9KQu4mmrkZ2jSyJrD7jjxOMl1cIjFlqweHGxqiszOmkqfSgaBU1YoduSwsprz5l+OmtcH6xbXB/vBT/jhCKLNWY1nX9pKWOGjVwI7beVBq74qn3GBCjrrmJWsluD/WNPYkyMAp40/zaGtUisnfZ9I47OcW/eYZioK03dpUoUoWYKWqepJE99985nzHlv+6vK4Mr4=
+X-Rspamd-Queue-Id: 571424001B
+X-Rspamd-Server: rspam06
+X-Stat-Signature: geo4px74cg1a4dhtsf99mg47pr5fyuqs
+X-HE-Tag: 1777302761-946518
+X-HE-Meta: U2FsdGVkX19gc/Ng/Tn5po5tBy26h4zpFgSyiI1ZcqZ20JzoIoF+q62KBACYQ4SPVBwBc/6AZaABKqAsBUJ8VVl7jmwpabSIiEl0kpMdlUBimI8uNnxohaI7OJsxiZym1i+NmbdpLg1a15PMJCUrS1k37bhitR/H+Tsy3Mnum+BxAkyQDdiW0x3qMEno5XGcv3F8pJS9yjJXaxr3Ms96ciyszvdrZO53kn1Q98tU/Pb5zBdwWB5Fq6PfpH1WzUVvDFRwu2bNMrlNH0eBVn305V1ExkQ6O1Q+WxbwkfQBp5yYbZrp3AGEji7AFhgrzo8eb0lGks5EA2txGlH9zkOmgQNGgRg+K9jANTMFoOfZ5inlGAY9uRc1KZM0+VxKnchwSFh2j4vPVZ/O0aJLWSQ0Y7j3QCniof3DGTCG/VQVj4gX4dr5+pbLJxM6uBNPwJ43j11psjIOY3zBvufMhS6ijDBlpYdIZ8kL+fkUyaHYONot2aXn7yBG3IuMq5eHZ+Cnns8dTboRboNuW3dhv71P8qS3YzUQiQxGwxEysofDE8KFkx3yLY393Wi8RD6klRe98rTBlN9X1pBhFjC8TJEea6h2kCS09RssgWoERFEZJF8JZMrnWhdHRGtiZsFWayjE20g8/oBtndP3pnaR/DscG4eIQQyzhdXvLWDu/MaMyoJ1p8cmvvGoZtQn5hmINeU2rmP/Jja52eMdGLReFfY16frgwc4gkA5atIqsM5+Bl7fHOOrRNceLlrr/wJvcsdVxLF4/MzLx+6jFwkwnzN/jaYzyTD+SXppblJQGM8L489RU9cC0aJjKiPWXXBgyw1Q0x4+5HRBfoIEh1xe4g+w74LMe3BqNdsm0l24ILW81e627WgW0dfhxwlzfjOiqFUEQfTWSUwbmPrzTYaYkDJ6gqpfd9kjPl9ql5aeb1xM/K0jz6k4lSxpuWTbPUitj40kPi4jbHg1IHNBaSmyF/Zq
+ lWK+hjm+
+ RPBl8SQUnYJHwACpETmX/hy/lCjyf8NfJFlNnRfy834RXVrMBAT6JnkeNDjS55VjbP9c8mT5CHp0j0cOLVIDIdk/O2pwE6lnxn+0PYCtdq/fdQ6AyPUqtKLhjmphD3QDQOko5AjEyLrmatawlemQSgOgt+rDZV46AYlMdBWkm3pmk79dqXlV6Efi6BF0evIWv8sSEN8ZNZ0NO21r1y0lotVxt6g8H1wmn5iJJbsXWI9LivsA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,52 +105,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 4:08=E2=80=AFPM Vlastimil Babka (SUSE)
-<vbabka@kernel.org> wrote:
->
-> On 4/27/26 16:45, Alexei Starovoitov wrote:
-> > On Mon, Apr 27, 2026 at 2:53=E2=80=AFPM Vlastimil Babka (SUSE)
-> > <vbabka@kernel.org> wrote:
-> >> >> @@ -5973,6 +5977,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s,=
- void *obj)
-> >> >>      if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
-> >> >>              rcu_sheaf =3D NULL;
-> >> >>      } else {
-> >> >> +            if (unlikely(!allow_spin)) {
-> >> >> +                    /* call_rcu() cannot be called in an unknown c=
-ontext */
-> >> >> +                    rcu_sheaf->size--;
-> >> >> +                    local_unlock(&s->cpu_sheaves->lock);
-> >> >> +                    goto fail;
-> >> >> +            }
-> >>
-> >> ... this part, so an unconditional allow_spin=3Dfalse on RT would only=
- fill
-> >> the rcu_sheaf once and then stop working.
-> >>
-> >> However, can we condition this on in_nmi() or something, and pretend t=
-he
-> >> other cases of "unknown context" exist? Installing BPF hooks
-> >> allocating/freeing memory into call_rcu() internals sounds crazy, no?
-> >
-> > Unfortunately no. People attach to tracepoint lock contention
-> > which can be inside call_rcu.
-> > As discussed call_rcu_nolock() is only way forward.
->
-> Alright. But we assume those tracepoint-attached callers know to use
-> kfree_rcu_nolock(), while kfree_rcu() callers under PREEMPT_RT can still
-> assume it's not called in NMI or tracepoint-attached context, right?
+DAMON utilizes a few mechanisms that enhance itself over time. Adaptive
+regions adjustment, goal-based DAMOS quota auto-tuning and monitoring
+intervals auto-tuning like self-training mechanisms are such examples.
+It also adds access frequency stability information (age) to the
+monitoring results, which makes it enhanced over time.
 
-right. I see what you mean.
+Sometimes users have to stop DAMON.  In this case, DAMON internal state
+that enhanced over the time of the last execution simply goes away.
+Restarted DAMON have to train itself and enhance its output from the
+scratch.  This makes DAMON less useful in such cases.  Introducing three
+such use cases below.
 
-> So I think what __kfree_rcu_sheaf() could do is
-> - with CONFIG_PREEMPT_RT, treat allow_spin =3D=3D true as allow_spin =3D=
-=3D false
-> for purposes of barn_get_empty_sheaf() and to bail out before trying
-> alloc_empty_sheaf() - this is to avoid any lock activity that's not a try=
-lock.
-> - allow_spin controls ability to do call_rcu() as above, regardless of
-> PREEMPT_RT, to avoid it from kfree_rcu_nolock()
+Investigation of DAMON.  It is best to do the investigation online,
+especially when it is a production environment.  DAMON therefore
+provides features for such online investigations, including DAMOS stats,
+monitoring result snapshot exposure, and multiple tracepoints.  When
+those are insufficient, and there are additional clues that could be
+interfered by DAMON, users have to temporarily stop DAMON to collect the
+additional clues.  It is not very useful since many of DAMON internal
+clues are gone when DAMON is stopped.  The loss of the monitoring
+results that improved over time is also problematic, especially in
+production environments.
 
-makes sense.
+Monitoring of workloads that have different user-known phases.  For
+example, in Android, applications are known to have very different
+access patterns and behaviors when they are running on the foreground
+and the background.  It can therefore be useful to separate monitoring
+of apps based on whether they are running on the foreground and on the
+background.  Having two DAMON threads per application that paused and
+resumed for the apps foreground/background switches can be useful for
+the purpose.  But such pause/resume of the execution is not supported.
+
+Tests of DAMON.  A few DAMON selftests are using drgn to dump the
+internal DAMON status.  The tests show if the dumped status is the same
+as what the test code expected.  Because DAMON keeps running and
+modifying its internal status, there are chances of data races that can
+cause false test results.  Stopping DAMON can avoid the race.  But,
+since the internal state of DAMON is dropped, the test coverage will be
+limited.
+
+Let DAMON execution be paused and resumed without loss of the internal
+state, to overhaul the limitations.  For this, introduce a new DAMON
+context parameter, namely 'pause'.  API callers can update it while the
+context is running, using the online parameters update functions
+(damon_commit_ctx() and damon_call()).  Once it is set, kdamond_fn()
+main loop will do only limited works excluding the monitoring and DAMOS
+works, while sleeping sampling intervals per the work.  The limited
+works include handling of the online parameters update.  Hence users can
+unset the 'pause' parameter again.  Once it is unset, kdamond_fn() main
+loop will do all the work again (resumed).  Under the paused state, it
+also does stop condition checks and handling of it, so that paused DAMON
+can also be stopped if needed.  Expose the feature to the user space via
+DAMON sysfs interface.  Also, update existing drgn-based tests to test
+and use the feature.
+
+Tests
+=====
+
+I confirmed the feature functionality using real time tracing ('perf
+trace' or 'trace-cmd stream') of damon:damon_aggregated DAMON
+tracepoint.  By pausing and resuming the DAMON execution, I was able to
+see the trace stops and continued as expected.  Note that the pause
+feature support is added to DAMON user-space tool (damo) after v3.1.9.
+Users can use '--pause_ctx' command line option of damo for that, and I
+actually used it for my test.  The extended drgn-based selftests are
+also testing a part of the functionality.
+
+Patches Sequence
+================
+
+Patch 1 introduces the new core API for the pause feature.  Patch 2
+extend DAMON sysfs interface for the new parameter.  Patches 3-5 update
+design, usage and ABI documents for the new sysfs file, respectively.
+The following five patches are for tests.  Patch 6 implements a new
+kunit test for the pause parameter online commitment.  Patches 7 and 8
+extend DAMON selftest helpers to support the new feature.  Patch 9
+extends selftest to test the commitment of the feature.  Finally, patch
+10 updates existing selftest to be safe from the race condition using
+the pause/resume feature.
+
+Changelog
+=========
+
+Changes from RFC v5
+(https://lore.kernel.org/20260323231538.84452-1-sj@kernel.org)
+- Rebase to latest mm-new.
+- Drop RFC tag again.
+Changes from RFC v4
+(https://lore.kernel.org/20260322155728.81434-1-sj@kernel.org)
+- Fix typo: selftets.
+- Fix wrong selftests kdamonds resume iteration.
+Changes from v1 (or, RFC v3)
+(https://lore.kernel.org/20260321181343.93971-1-sj@kernel.org)
+- Add RFC tag again.
+- Handle maybe_corrupted inside pause-loop.
+- Reduce unnecessary commits in sysfs.py selftest.
+Changes from RFC v2
+(https://lore.kernel.org/20260319052157.99433-1-sj@kernel.org)
+- Move damon_ctx->pause to public fields section.
+- Wordsmith design doc change.
+- Fix unintended resume of contexts in multiple contexts use case.
+- Rebase to latest mm-new.
+Changes from RFC v1
+(https://lore.kernel.org/20260315210012.94846-1-sj@kernel.org)
+- Continuously cancel new damos_walk() requests when paused.
+- Initialize damon_sysfs_context->pause.
+- Make sysfs.py dump-purpose pausing to work for all contexts.
+
+SeongJae Park (10):
+  mm/damon/core: introduce damon_ctx->paused
+  mm/damon/sysfs: add pause file under context dir
+  Docs/mm/damon/design: update for context pause/resume feature
+  Docs/admin-guide/mm/damon/usage: update for pause file
+  Docs/ABI/damon: update for pause sysfs file
+  mm/damon/tests/core-kunit: test pause commitment
+  selftests/damon/_damon_sysfs: support pause file staging
+  selftests/damon/drgn_dump_damon_status: dump pause
+  selftests/damon/sysfs.py: check pause on assert_ctx_committed()
+  selftests/damon/sysfs.py: pause DAMON before dumping status
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  7 ++++
+ Documentation/admin-guide/mm/damon/usage.rst  | 12 ++++--
+ Documentation/mm/damon/design.rst             |  7 ++++
+ include/linux/damon.h                         |  2 +
+ mm/damon/core.c                               |  9 +++++
+ mm/damon/sysfs.c                              | 31 +++++++++++++++
+ mm/damon/tests/core-kunit.h                   |  4 ++
+ tools/testing/selftests/damon/_damon_sysfs.py | 10 ++++-
+ .../selftests/damon/drgn_dump_damon_status.py |  1 +
+ tools/testing/selftests/damon/sysfs.py        | 39 +++++++++++++++++++
+ 10 files changed, 117 insertions(+), 5 deletions(-)
+
+
+base-commit: c12c06c4198f28d4d2bb48cc9608dbbfb020bf43
+-- 
+2.47.3
 
