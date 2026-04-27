@@ -4,92 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B3EFF8867
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 22:52:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E592FF8864
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 22:58:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F8716B0088; Mon, 27 Apr 2026 18:52:48 -0400 (EDT)
+	id 79DED6B0088; Mon, 27 Apr 2026 18:58:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A9D76B008A; Mon, 27 Apr 2026 18:52:48 -0400 (EDT)
+	id 74EB86B008A; Mon, 27 Apr 2026 18:58:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BF366B008C; Mon, 27 Apr 2026 18:52:48 -0400 (EDT)
+	id 63D456B008C; Mon, 27 Apr 2026 18:58:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A6CE6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:52:48 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C1DBA12036F
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 22:52:47 +0000 (UTC)
-X-FDA: 84705837174.10.7B304BA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E55D540002
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 22:52:45 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQHuAQyk;
-	spf=pass (imf12.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777330366;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 573026B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:58:56 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD1A31B8456
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 22:58:55 +0000 (UTC)
+X-FDA: 84705852630.20.BEC9AC6
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C008C160008
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 22:58:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KuCpItxn;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of fmayle@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=fmayle@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777330733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Gvje+eEtyz9vb5dEuXg2cIwnq8XyDNbzzuL18WTmew=;
-	b=0BwxO93ZAm6ZKKqDV5lD9vlSaMHQQZBVFpnrk8Lv9YfKU/6LSue5ygWwJtvHtIsVnmv8Sg
-	BE+jaPhMagD46t3JCW3S3T7c0kpU0pS3OBWxzmHgdG/lLSFlsRbok8a5X635R3uV4AJV83
-	Rg5wDL9pqcjUMJ2iBLKJAbMubM+7KKU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777330366; a=rsa-sha256;
-	cv=none;
-	b=E0r6xB2KoiDnwKlBMzTRD43N+u4R3YJIKxzDXVeIROdJJTm/HHbzBSck+8y/G35mJvACGH
-	ygRNF4uEMAMdwbfYhW8PhfEF80t++dHoCrrZysfHOpvZFtwXuqRhyOBkBdgjd5ZneejJuz
-	v8QhwE6qG5R4lm/zSVu2LXOvNq9GfLs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQHuAQyk;
-	spf=pass (imf12.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 874124055C;
-	Mon, 27 Apr 2026 22:52:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBF1C19425;
-	Mon, 27 Apr 2026 22:52:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777330364;
-	bh=naILOOeceSH7gxGqzl9s9OfI8mPKDP5hLrbE9sgbdqQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vQHuAQykeFe6C0ai+ixhiAb4LvOC1ZVCpjNX8WMjxR9PF6w0/xLPSqb/YemocAlAn
-	 XrH5ES4JiKpw9BuyKiK8DYf5CBFuoeAnmvkAlPAffMXSDPGIWpmq4Bs00lRBCoiU/J
-	 QYgAANxb6f2ht+6XTxtDOOeJ20H2CZE2Li6DCu3lHjqSPg/q/xtSofS9iPtL8JFsuI
-	 +qWk0Pa4m7ln4qMUu9q0X8lQC/5AWr+TG99oxfURjJG6gKrFHsAIr3K5C2shi0BPsl
-	 FgcobMMzEdPvXPKVGA/K46+64l/8k8LjtLTyYmRWQRg4+qEJaQy1xupfiCVjBR1xWY
-	 97N0AtmnGhj5Q==
-Date: Mon, 27 Apr 2026 15:52:42 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, hca@linux.ibm.com,
-	linux-s390@vger.kernel.org, david@kernel.org, mhocko@suse.com,
-	brauner@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, timmurray@google.com
-Subject: Re: [PATCH v1 3/3] mm: process_mrelease: introduce
- PROCESS_MRELEASE_REAP_KILL flag
-Message-ID: <ae_oul_xgD5Kgnqi@google.com>
-References: <20260421230239.172582-1-minchan@kernel.org>
- <20260421230239.172582-4-minchan@kernel.org>
- <CAJuCfpFK+qatN_vHArEKOYe+LRHQG0e3inJrzVdz-mABi-BSTg@mail.gmail.com>
+	bh=mFDjDkHXVh2Z+wp+XcjLdnVYy1AJI7gNEwLbuf8ELlk=;
+	b=xAbpNFHJKCL44yqstWGuLJomK8mXQudIe8apGiqMH4rTgfGTvIfvBxEmbVFBQbbhsPhlX0
+	w6v7y7zrTtZSeBNVmMDpgLnF9I1tAwrdwH71vnj6DC3GcpVK/bpSvhlH1H1Zh8VkVg5zwx
+	A4MAufvFFhnNO0L+8S9E9sTtI2jhg8Y=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777330733; a=rsa-sha256;
+	cv=pass;
+	b=ixB463wADv+2cr7xJdegtCVlHbzE2u7l7lCnMSRM0o2rNHimZuZ7hkuPOgU6hdldWFRUL2
+	H8I6NZeAlUNkWOLYJUspoN0MQ37VDMNVUDm3YJb2k0Nb3KX+ZerHgiZ2udLuOJRRTFhys6
+	LMkGoE7LQzWR/s7IsyqzQ31D2M23h3g=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KuCpItxn;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of fmayle@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=fmayle@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-126ea4e9697so5404c88.1
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:58:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777330732; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bMsrvuuz/KqQEeqC02rNg2H6L2H87RbVxwZYXtBxtIa03axjcs/eQGAWnkyrTOtAkF
+         tqmTnTlhJIcxDXQTLwNtRCxOjknSKW0DDqSmAZ6Y1rOxoLXEsHPz8NGbOBoMZya8dPar
+         QTcQu920KFAer9DnfhNHp58RecGkPbZMEIf4mM5B7c6TwMmRzY0eR8FOr9NaxU2+mvcf
+         4res9Iy+LghkYKqFfPZ8QNa9703St3aaHnboBwJInXfRep0wfpDW+/VDhX/K9ApRceMs
+         wgYkkn4y12ahVl4TinDyWBJEZBIHgYj1RRhxRWHtjr7TLmY7Xm3m8nHpSDwLE7puQQ1F
+         II4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mFDjDkHXVh2Z+wp+XcjLdnVYy1AJI7gNEwLbuf8ELlk=;
+        fh=ZKAjo09bXPhqRamaqVs1qR0oJ9SlfYMAnF/y0C4XpB4=;
+        b=Y3kQxj9I2ufh9gSS15DKJWitk8RLBS2whUY9mldPdRLC3yqM9Qw3U6KsHshMkp75Wd
+         52DczPGsRbpgpEy55vbZJA4PViMLTAue52sbpm+RNvWiqx8DrRhwEufj4iFW/Z+L3gsy
+         nFglrNgkBBWVoT7MpkMdxtCHljtHNOwGKgmR26gAC0fIIn4lvtR3uTpVdhkjWUS9zZjd
+         HM8hZ9iaIpxeU7oMM2UDpXP7gDbuI5KkB51D/XHWK4i8E7VIHBBdNSPzO4oHt0qclTWg
+         2CvLicpQCAJV3yD9+fhfodbrCEiR00JIbp9iefnC3XkksVhrdRknrbqwow+cGbvkvUjR
+         6q5Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777330732; x=1777935532; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mFDjDkHXVh2Z+wp+XcjLdnVYy1AJI7gNEwLbuf8ELlk=;
+        b=KuCpItxnxqQtzMhDgcRQttKR0ViwiapgDFpGIiBTxqatvhbwlz3pFmnZldbohqSp95
+         glTyXHYWF8tTfxv7cchfuXfCAqDCzirf/kJGF6ldK7CweYTbClEUPeHjwqF5NgrvaJ56
+         8PA+xOFAAkt/nH08zQars+sh5m0qSI2iYIBK/L4+kQOiWJFQkD8X+ddBvLq9uzqdn25i
+         +CEgkBeNxv5obJhCOi0pRZPR0BS1EIew9I0NSdAFwSgZThwgyC6eA2Fulq13a0vUm70n
+         PC/yJkxLhGy3hglwls/E0us0xOlDLcupQzNRnm8VKKwmt7m+wM7wnXDRGe4WF3qqabVU
+         ObOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777330732; x=1777935532;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mFDjDkHXVh2Z+wp+XcjLdnVYy1AJI7gNEwLbuf8ELlk=;
+        b=NpSRfGFTXTipHeFz/VdnoRo7q5Jq8jnocqFeJ02Otu7pAYJvgYzizxjfGEyypn3KhU
+         wP/N9+BpzZxQT2Ef55w025eurnljE7nmohaYo+AgjGsYJz0GhtpkeHa6oQ8IxeilCpvg
+         Egf4VY5BCBs3MvRJElTUqJqILUaUzlRXu1viqBs7o42z+QyA+HbMELDRn20o8b1HT2Y+
+         3eKyA0vKsq267lTVsBlEtW+cLH04u9+4dfZEWjqXLmifKD8eBH1eFToEF/6UMn+1rYpa
+         09FfwMi/jO2I6z7dBYvJ/OP+gMbQW+r9UGR5B6X2DMO3wnGZcSMkECDaDz5JykMkjdG3
+         px6Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8KZoLE5/RWEtkyW3Xs2yFhX6IflaNRWaAlb8CmIFegG2YPDbxBow7OUzJ6V7SABVd/70+TPHix9w==@kvack.org
+X-Gm-Message-State: AOJu0Yx5OLasSkULenBv5MxFJQ64bYogsFwFRA0bJaNJ29l2g8MbgXGZ
+	xqvWeVTOs6IytPoBlWdTpAlL9GVLBtwyYtSMY64F4PWcyIv0Ib3iw6IDiAhUQdKTXF8YY9m5e1k
+	38Q+1KVX2KM8Kw0h6SInFAyb88BNC/akGMV58BqPu
+X-Gm-Gg: AeBDieu0/Rl30cbs2IjRiXQEPa0c/6Trj78kDGW4nl6Np2pGd41VbsYusjRYE95sbU0
+	NoKXGGkRbQ3/kOTRdgVxK6oiPtQGy2SaH/3BaoKZPe5lZ1rPeNg2EptBAg1S05SHSQGfSiRIHyp
+	aaDEOvqZYXYKBJxf4s0zuJ9hWpkFA6AFHXPkHoM1iKGO/Px5bSA3VlWqPZl9XpPGVl3i1mgKrL2
+	mIneQB7ovYaPbVu8gq9eBTWbcI00iUNTvrbpEW48BqdTG2NH42gph4rfZkfUWL2GTcUufs6jdgo
+	Qst0FIsde/SGLvz8zGP8eA4wHiC8/tsHGiVJDKzl
+X-Received: by 2002:a05:7022:e28:b0:11a:b4dc:7773 with SMTP id
+ a92af1059eb24-12ddd6002b9mr109501c88.12.1777330731707; Mon, 27 Apr 2026
+ 15:58:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpFK+qatN_vHArEKOYe+LRHQG0e3inJrzVdz-mABi-BSTg@mail.gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E55D540002
+References: <20260427030148.653228-1-fmayle@google.com> <c7f94ce6-1dfb-420a-b073-d86abeff1f76@kernel.org>
+ <CAC_TJvcM11got-LcMo24OTN8uXa01oVvUX6HmVvrWMJWVSgEzQ@mail.gmail.com>
+In-Reply-To: <CAC_TJvcM11got-LcMo24OTN8uXa01oVvUX6HmVvrWMJWVSgEzQ@mail.gmail.com>
+From: Frederick Mayle <fmayle@google.com>
+Date: Mon, 27 Apr 2026 15:58:40 -0700
+X-Gm-Features: AVHnY4IRZsDNSD2m-H5xb40HcijzEyG9TEJRAtLxMG16_OmGeOcdmUtyIgLLGcY
+Message-ID: <CAHCxdc7JxwCNjsyyuPxuaVd7njgXyOEHvknCvjSKLvvU7nRAsg@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: limit filemap_fault readahead to VMA boundaries
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>, android-mm@google.com, 
+	kernel-team@android.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: f3fb9oo7b594dfnutuy83arzw5bz9ams
-X-HE-Tag: 1777330365-312569
-X-HE-Meta: U2FsdGVkX1+xTjsKsiOA9PPSGfF2wO3A46G0lRiWCSfn970WU5LMyfUPtpLvEqU3s3+GtypIU95ZpKIMANrKNGGD6Frxpjpl9EIMWUsopFi814Tc7lHzI1Ol+YIb2ZReV1hEZJpIdN6p1BDELpl9ML80pojh+zXD5BqTke3UL5mFE61/30pYF/Xs4Ld8ZG1e71DkpQYLphON/1kILtL2f6oBYORH8DoRoNdOBt8isQom1Yc4vQZPYi0rzRZtIN5BOlKdcC3d4DErf8zQIppZq+0mm3jC34+EZO+o8ZADoOfl6dnNlaQLuXeGFx184AnO084ZwK6NAFBjisdqzO5xOpzOj20dBp1ZYCb0cYWiy65dYMt7d7/R5DSXDj5iC7pTFu2DXwm/XgK2sJgXdEa5OZ272U7aSqHQi0om0VxP+rwaX4wD5CfxKkJ8os42i6hjayOxLfgC1lwCP0UGDY4zW/LaVr9Wr+DCQi/xjw1J2H01Ih3n2WP6wOb94Z3jG204L3lI2N3F+/JerGTtz3eLDHRQ+6qHQXXp+A9mpVs0VLtIRU9aKAZ1NIvpLvPEKOMbbPiLIQTmkUBDXY8M9n2Zxd7qDIPylMCW/KJ86faYiXdpzBGLDqy5TF3J9iLBlXeIM8f6O0+lU+aMh2OdjFavH4QqT9nepQogleLpKHSjVtXbAeQwRKSJaixZX7hPxZeTnDe04BzAB8Wkn3KXnC5yyOidUXW7pkPVD88jgifIpajFrdUQop0SeQ40A4ljgWvr7D6+Jknil9xLPn+TaADEItYgEQmdnC0rkX2tsrTcBWd0jWBgzyydOJI7ubPp8ps2v+AtpM80BL0oZ0CQa0CxvvAGqcf5eXBueGN6ZjQsSCTiGtSpN/xQ9WLDmGA41PoamdiPpbV710Jcq0BCL+SAlw9CgmVzLZ1Z3BVP7sLhqzd9p1wfhQOMG1hvKfsMdzk05fkNBiJyjVHwNyL+upy
- 83nWRq+D
- /89RvXpUU8og7ylvuz94/FuHJvi1tdVX5GCVqa3UT1kUCyKl5BlO7iBH6v3zOxb+CldXN4eUjuAQwmehYBpTtv9ts79kU2Fx8BeWZC986TQup0BTsQkYGdUK2de4vVeDHZJuM3rnfErB1ZP3radccyONIeaIMJldjGe2BM9CyjPu7pDRFASKbGrwh75kIZdekn2FfOtq+dTr7+Ifm9sjzfS51z6Kb1g9r4nOrYKCK5127SIiUx3SUEVnH703IstEAoiW29y4IUOiSRW5dLo2rN6SikBjbvNFkH+J6fJtSumoxffG41fY+ptpcbDD0629nJMhwjnoBZluUSq0XR7Fap/G/D31dJmfpB3E2o+JK6/zalJErizPS9Yc+IJp+m4MQGzQ6infupwlseVZ2Vp8GZQyiZ723uwGOJQ8A
+X-Rspamd-Queue-Id: C008C160008
+X-Rspamd-Server: rspam04
+X-Stat-Signature: md6ea97sk1mxd4udwxion38d9rgj7u4m
+X-HE-Tag: 1777330733-859153
+X-HE-Meta: U2FsdGVkX1+Qa/jArvAtW538AEl/OWTQImn4eRIF0cWAGGAGXC5SxvH1Weph/4dJm4CoA4THSx3fGtm0q+gTLg3sNxu9n6aBfrZqyKiOJjrPBaTp8PcN4c77k0Yd/aAXEnvDbFhZzA1NdErqE6euIRLPW5C0g60vBlmh4ZGkeleV9nepA6WxJav9WQV44WSk2Wm8y2tUqxVqC5OKbGGU62d9HkFwOpru3ik1M2oxX/a9H5fFbeao+s99vYfWy0WjYdwDnf0nskMKheFVFM09CZIL5g5DiCkCeDV2L3sGTdR7NkluXLGfkUSouMSQZ21Eu2pX9OjWjHwkccsjeJMzMQZpE6ALawe1tXQzcMELrjVKnbiMKdlVE2KNz4Vj1VX9/IJ0bRju75TauCnn+2Egl8c6Bim978Nw766k/+0Ehvksn853G0EuZLcH9kR/lQVCEks2Ymlpc/qxtrcu+Rhan1fPVh3OnMD5Un/JT6/MSVd3Lcks/AwAtAljwoddj1jQ+xhyXZKhOQ5gFZUKoeh+mtFOY9a0NdEowdTHfNpE/W/5mEAwXGILFEmVXJSpTWLcID5hN1H+mNoBEF59//hHgMbihouCAKobU04VH4XMNOVb30x7Ybmj6NcJtRi05aAVuiVfsnhWLOMQdvYlJebbSNCjltBdzNb2KVpUNzAzdxLD5jISMc6ZCZAwL5BJZrt0p9ki+9bXQyrIUs7uxkBQJkohYrw8dnyXb/9TWUnbuW4RRIKohSMNVzcMLpXbkpzgD+q+Ph3L+63UPbLNE/JVlXQaSSGj5Vee/PV0q3z+3P+d85oXHb+YfhAzXqhAWBABNRq7uEP16etbUOUtcBKEwg3WLltbKvb0XZhUXLORfGJydKPJqRdp16dA7tHdPneaRB8Xz+yEfc1Dc5pX+3c1zYC1ngNvoVe3txgogk22ilfR8DjJ/sKJIhbbFdvxmTuHDiZ+5q3ISE5uKEBqGUF
+ 1hfFhJep
+ 758r521QeFO2oDja3PI3HwBTl+N3jL8P7VtqT+YSNGOJ0rpcPOdUBWw33tIjxHS3F32tE6VhbfJNdy8KnkowLxjkX6ikrouFq6bPf86WqpcTXxqehY4arrPa0AVLCVa5FgBDiGKPIeBIQTGmyUAmaQs+OgWYkycCSCxrQ+xEP9Pkf/pPoqEQfL8UaZT0fSWYikh4Kjv67OHifGWskZk6HxlDFXDN9Hdlw5A7cAxKAt94OxR0Tx2nlw3KTReFYk9hVB/dHR2Sy6YuMQhOqHnqB71nwhGfU1jFc2TMXEUaGWphwgFdqKJ5XG7IO7vlUdX/jPiRq5N61Zqf+RQ1k1GEs/vA2u7gi4pIpx6xQ2exxULXeZ9VJCKUouKxnjK+QSsGAis7XTtn4WGPKpjUro8RPRxETX8+DhuXVrsA+jzwaxijIcKBXR90MAFpAWeYwJvz7Ic5FwM4Gzfe/FCQVTy2TUPwICQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,186 +144,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 01:34:37PM -0700, Suren Baghdasaryan wrote:
-> On Tue, Apr 21, 2026 at 4:03 PM Minchan Kim <minchan@kernel.org> wrote:
+On Mon, Apr 27, 2026 at 9:23=E2=80=AFAM Kalesh Singh <kaleshsingh@google.co=
+m> wrote:
+>
+> On Mon, Apr 27, 2026 at 5:41=E2=80=AFAM 'David Hildenbrand (Arm)' via
+> android-mm <android-mm@google.com> wrote:
 > >
-> > Currently, process_mrelease() requires userspace to send a SIGKILL signal
-> > prior to the call. This separation introduces a scheduling race window
-> > where the victim task may receive the signal and enter the exit path
-> > before the reaper can invoke process_mrelease().
+> > On 4/27/26 05:01, Frederick Mayle wrote:
+> > > When a file mapping covers a strict subset of a file, an access to th=
+e
+> > > mapping can trigger readahead of file pages outside the mapped region=
+.
+> > > Readahead is meant to prefetch pages likely to be accessed soon, but
+> > > these pages aren't accessible via the same means, so it fair to say w=
+e
+> > > don't have a good indicator they'll be accessed soon. Take an ELF fil=
+e
+> > > for example: An access to the end of a program's read-only segment is=
+n't
+> > > a sign that nearby file contents will be accessed next (they are like=
+ly
+> > > to be mapped discontiguously, or not at all). The pressure from loadi=
+ng
+> > > these pages into the cache can evict more useful pages.
+> > >
+> > > To improve the behavior, make three changes:
+> > >
+> > > * Introduce a new readahead_control field, max_index, as a hard limit=
+ on
+> > >   the readahead. The existing file_ra_state->size can't be used as a
+> > >   limit, it is more of a hint and can be increased by various
+> > >   heuristics.
+> > > * Set readahead_control->max_index to the end of the VMA in all of th=
+e
+> > >   readahead paths that can be triggered from a fault on a file mappin=
+g
+> > >   (both "sync" and "async" readahead).
+> > > * Limit the read-around range start to the VMA's start.
+> > >
+> > > Note that these changes only affect readahead triggered in the contex=
+t
+> > > of a fault, they do not affect readahead triggered by read syscalls. =
+If
+> > > a user mixes the two types of accesses, the behavior is expected to b=
+e
+> > > the following: if a fault causes readahead and places a PG_readahead
+> > > marker and then a read(2) syscall hits the PG_readahead marker, the
+> > > resulting async readahead *will not* be limited to the VMA end.
+> > > Conversely, if a read(2) syscall places a PG_readahead marker and the=
+n a
+> > > fault hits the marker, the async readahead *will* be limited to the V=
+MA
+> > > end.
+> > >
+> > > There is an edge case that the above motivation glosses over: A singl=
+e
+> > > file mapping might be backed by multiple VMAs. For example, a whole f=
+ile
+> > > could be mapped RW, then part of the mapping made RO using mprotect.
+> > > This patch would hurt performance of a sequential faulted read of suc=
+h a
+> > > mapping, the degree depending on how fragmented the VMAs are. A usage
+> > > pattern like that is likely rare and already suffering from sub-optim=
+al
+> > > performance because, e.g., the fragmented VMAs limit the fault-around=
+,
+> > > so each VMA boundary in a sequential faulted read would cause a minor
+> > > fault. Still, this patch would make it worse. See a previous discussi=
+on
+> > > of this topic at [1].
 > >
-> > When the victim enters the exit path (do_exit -> exit_mm), it clears its
-> > task->mm immediately. This causes process_mrelease() to fail with -ESRCH,
-> > leaving the actual address space teardown (exit_mmap) to be deferred until
-> > the mm's reference count drops to zero. In Android, arbitrary reference counts
-> > (e.g., async I/O, reading /proc/<pid>/cmdline, or various other remote
-> > VM accesses) frequently delay this teardown indefinitely, defeating the
-> > purpose of expedited reclamation.
+> > I agree that workloads that do a lot of mprotect() magic likely do not =
+depend on
+> > readahead optimizations.
 > >
-> > This delay keeps memory pressure high, forcing the system to unnecessarily
-> > kill additional innocent background apps before the memory from the first
-> > victim is recovered.
-> >
-> > This patch introduces the PROCESS_MRELEASE_REAP_KILL UAPI flag to support
-> > an integrated auto-kill mode. When specified, process_mrelease() directly
-> > injects a SIGKILL into the target task.
-> >
-> > To solve the race condition deterministically, we grab the mm reference
-> > via mmget() and set the MMF_UNSTABLE flag *before* sending the SIGKILL.
-> > Using mmget() instead of mmgrab() keeps mm_users > 0, preventing the
-> > victim from calling exit_mmap() in its own exit path. This ensures that
-> > the memory is reclaimed synchronously and deterministically by the reaper
-> > in the context of process_mrelease(), avoiding delays caused by
-> > non-deterministic scheduling of the victim task.
-> >
-> > Signed-off-by: Minchan Kim <minchan@kernel.org>
-> > ---
-> >  include/uapi/linux/mman.h |  4 +++
-> >  mm/oom_kill.c             | 56 +++++++++++++++++++++++++++------------
-> >  2 files changed, 43 insertions(+), 17 deletions(-)
-> >
-> > diff --git a/include/uapi/linux/mman.h b/include/uapi/linux/mman.h
-> > index e89d00528f2f..4266976b45ad 100644
-> > --- a/include/uapi/linux/mman.h
-> > +++ b/include/uapi/linux/mman.h
-> > @@ -56,4 +56,8 @@ struct cachestat {
-> >         __u64 nr_recently_evicted;
-> >  };
-> >
-> > +/* Flags for process_mrelease */
-> > +#define PROCESS_MRELEASE_REAP_KILL     (1 << 0)
-> > +#define PROCESS_MRELEASE_VALID_FLAGS   (PROCESS_MRELEASE_REAP_KILL)
-> > +
-> >  #endif /* _UAPI_LINUX_MMAN_H */
-> > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> > index 5c6c95c169ee..730ba0d19b53 100644
-> > --- a/mm/oom_kill.c
-> > +++ b/mm/oom_kill.c
-> > @@ -20,6 +20,7 @@
-> >
-> >  #include <linux/oom.h>
-> >  #include <linux/mm.h>
-> > +#include <uapi/linux/mman.h>
-> >  #include <linux/err.h>
-> >  #include <linux/gfp.h>
-> >  #include <linux/sched.h>
-> > @@ -850,7 +851,7 @@ bool oom_killer_disable(signed long timeout)
-> >         return true;
-> >  }
-> >
-> > -static inline bool __task_will_free_mem(struct task_struct *task)
-> > +static inline bool __task_will_free_mem(struct task_struct *task, bool ignore_exit)
-> >  {
-> >         struct signal_struct *sig = task->signal;
-> >
-> > @@ -862,6 +863,9 @@ static inline bool __task_will_free_mem(struct task_struct *task)
-> >         if (sig->core_state)
-> >                 return false;
-> >
-> > +       if (ignore_exit)
-> > +               return true;
-> > +
-> >         if (sig->flags & SIGNAL_GROUP_EXIT)
-> >                 return true;
-> >
-> > @@ -878,7 +882,7 @@ static inline bool __task_will_free_mem(struct task_struct *task)
-> >   * Caller has to make sure that task->mm is stable (hold task_lock or
-> >   * it operates on the current).
-> >   */
-> > -static bool task_will_free_mem(struct task_struct *task)
-> > +static bool task_will_free_mem(struct task_struct *task, bool ignore_exit)
-> >  {
-> >         struct mm_struct *mm = task->mm;
-> >         struct task_struct *p;
-> > @@ -892,7 +896,7 @@ static bool task_will_free_mem(struct task_struct *task)
-> >         if (!mm)
-> >                 return false;
-> >
-> > -       if (!__task_will_free_mem(task))
-> > +       if (!__task_will_free_mem(task, ignore_exit))
-> >                 return false;
-> >
-> >         /*
-> > @@ -916,7 +920,7 @@ static bool task_will_free_mem(struct task_struct *task)
-> >                         continue;
-> >                 if (same_thread_group(task, p))
-> >                         continue;
-> > -               ret = __task_will_free_mem(p);
-> > +               ret = __task_will_free_mem(p, false);
-> >                 if (!ret)
-> >                         break;
-> >         }
-> > @@ -1034,7 +1038,7 @@ static void oom_kill_process(struct oom_control *oc, const char *message)
-> >          * so it can die quickly
-> >          */
-> >         task_lock(victim);
-> > -       if (task_will_free_mem(victim)) {
-> > +       if (task_will_free_mem(victim, false)) {
-> >                 mark_oom_victim(victim);
-> >                 queue_oom_reaper(victim);
-> >                 task_unlock(victim);
-> > @@ -1135,7 +1139,7 @@ bool out_of_memory(struct oom_control *oc)
-> >          * select it.  The goal is to allow it to allocate so that it may
-> >          * quickly exit and free its memory.
-> >          */
-> > -       if (task_will_free_mem(current)) {
-> > +       if (task_will_free_mem(current, false)) {
-> >                 mark_oom_victim(current);
-> >                 queue_oom_reaper(current);
-> >                 return true;
-> > @@ -1217,8 +1221,9 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
-> >         unsigned int f_flags;
-> >         bool reap = false;
-> >         long ret = 0;
-> > +       bool reap_kill;
-> >
-> > -       if (flags)
-> > +       if (flags & ~PROCESS_MRELEASE_VALID_FLAGS)
-> >                 return -EINVAL;
-> >
-> >         task = pidfd_get_task(pidfd, &f_flags);
-> > @@ -1236,19 +1241,33 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
-> >         }
-> >
-> >         mm = p->mm;
-> > -       mmgrab(mm);
-> >
-> > -       if (task_will_free_mem(p))
-> > -               reap = true;
-> > -       else {
-> > -               /* Error only if the work has not been done already */
-> > -               if (!mm_flags_test(MMF_OOM_SKIP, mm))
-> > +       reap_kill = !!(flags & PROCESS_MRELEASE_REAP_KILL);
-> > +       reap = task_will_free_mem(p, reap_kill);
-> > +       if (!reap) {
-> > +               if (reap_kill || !mm_flags_test(MMF_OOM_SKIP, mm))
-> >                         ret = -EINVAL;
-> > +
-> > +               task_unlock(p);
-> > +               goto put_task;
-> >         }
-> > -       task_unlock(p);
-> >
-> > -       if (!reap)
-> > -               goto drop_mm;
-> > +       if (reap_kill) {
-> > +               /*
-> > +                * We use mmget() instead of mmgrab() to keep mm_users > 0,
-> > +                * preventing the victim from calling exit_mmap() in its
-> > +                * own exit path. This ensures that the memory is reclaimed
-> > +                * synchronously and deterministically by the reaper.
-> > +                */
-> > +               mmget(mm);
-> 
-> I don't quite understand why you need to mmget() and prevent the
-> victim from calling exit_mmap() here. As long as we successfully
-> mmgrab'ed the mm, we can safely proceed with mmap locking and doing
-> __oom_reap_task_mm(). Victim can execute exit_mmap() in parallel with
-> __oom_reap_task_mm(). In fact that's even desirable! I remember a
-> recent patch that used mas_for_each_rev() in __oom_reap_task_mm() to
-> reclaim memory in reverse order so that exit_mmap() and
-> __oom_reap_task_mm() can start from opposite ends of the address space
-> and converge in the middle, working concurrently.
+> > But I'm sure we'll learn quickly if that is not the case :)
+>
+> Hi David,
+>
+> There is already this limit for the exec VMAs, so perhaps these use
+> cases are in fact rare enough; but we'll need to see ...
+>
+> https://lore.kernel.org/all/20250609092729.274960-6-ryan.roberts@arm.com/
+>
+> Frederick, could we also now remove that logic (EXEC mappings)? Maybe
+> in a follow up patch.
 
-Good information. Will change it in next respin.
+The VM_EXEC branch is still meaningfully different from the read-around bra=
+nch,
+it sets `ra->order =3D exec_folio_order()` and `ra->async_size =3D 0`, but =
+I think
+most of the details could be unified. I can try that in a follow up.
 
