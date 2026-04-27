@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE509FF8867
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 21:11:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD788FF8867
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 21:12:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC2DB6B0088; Mon, 27 Apr 2026 17:11:28 -0400 (EDT)
+	id 1F2A96B008A; Mon, 27 Apr 2026 17:12:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E99BA6B008A; Mon, 27 Apr 2026 17:11:28 -0400 (EDT)
+	id 1A3916B008C; Mon, 27 Apr 2026 17:12:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD6C66B008C; Mon, 27 Apr 2026 17:11:28 -0400 (EDT)
+	id 0B90C6B0092; Mon, 27 Apr 2026 17:12:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CEF686B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:11:28 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 897A11202CE
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:11:28 +0000 (UTC)
-X-FDA: 84705581856.25.1D8CBA6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A0DCF10000B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:11:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Jopbo+g7;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F255A6B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:12:44 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A50D7A02C5
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:12:44 +0000 (UTC)
+X-FDA: 84705585048.23.5B4EA74
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id F376E1C0007
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:12:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z+zzED3c;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777324286;
+	s=arc-20220608; t=1777324363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WOH66SUjraABYSv2luUK0UqdaDoekaBQxUT/8hXHBTw=;
-	b=vtMa7z1nI7dQXCyRAXDsv+AX601tUqD+yo8tQsBr0ag3t52xzW2Z/oy/QDbQywsvOesCIJ
-	HPVNHqBQ87ogmLvXYxCp/Kxj2rBjogmJthhpp/Eq4Dq34xXiEwTeVzYJJ0M39xmCG2XbGc
-	7/Y9ZbdjLDVja+5zcXm1WjX5GpcvBk4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777324286; a=rsa-sha256;
+	bh=equJOQ0vdg5l+arNNzIA4HiHhJm87BuekAZGbqqIel4=;
+	b=VJ6APsf7uAxX3clMjvkLBDNR2GEwwwv0/WInrdQxsGxbnaveQX5PT2MbSkYC9DCB0Dj8LL
+	RsJ6FdIU6orTuNKfXUBWmmVrEmt84dYrq2dZE4bU5akUVGxNqMDGXfLaIIpBx4tJMixu2L
+	vY8vVv+xJIdg6/JpZ3M0np3iWlnu3ns=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777324363; a=rsa-sha256;
 	cv=none;
-	b=FZU14Ij+uVkm6/XaDXHBK+QmHyOoa15rq1Zoc9s6sDhWJywgHB2mYfxwulb85JAH1Dng9L
-	5Hm0SNn3ezwRbcojvi/tpCeWadnnFDGxDJIaVZrjhRVjIaylePsIhTeB3rbePdj413To0o
-	WCcOu+a1YhO/k5BUOgaWCANcYjL4+C4=
+	b=mt886CxwEI8aC9+9EQ68onKNT4ZTQnE1m5QNA9dm1I2HFHLV0MIw9X8r72Z5xSDOSOAxld
+	bsoYMYbPQEkqLQoSwUbB7f9xygOsUgqj1v6W/uvlCaM6oKTaQFif0YVQBoPzD23QhzuPhs
+	N3pG32P9156g+ueFOiIh62W1paFdEas=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Jopbo+g7;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z+zzED3c;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3D675419FC;
-	Mon, 27 Apr 2026 21:11:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE7CC19425;
-	Mon, 27 Apr 2026 21:11:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5D1DC60138;
+	Mon, 27 Apr 2026 21:12:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA34BC2BCB5;
+	Mon, 27 Apr 2026 21:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777324285;
-	bh=VyG05trERLUUjBqaf1aHAz+Pp420OrM/UE10PBpRFNI=;
+	s=korg; t=1777324362;
+	bh=u6C67Kw9adNNGEeAM1JS8iVy7lXopdEjpI80kouBaiU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Jopbo+g77IaQmMmCio+rl3i9VUarbuNVBVxqG8AHrfG1fX+ebMSjZzMCe4tCMyStP
-	 DAM6GNubpMvhq49iPRThsGxP+bigsXiB1pNDgN4tY5ByJoDGRu6aCnXAdmFAO3zPD1
-	 XePpT2/wcyC1Uy082oCXug+ft5RiaywilfbLfLDk=
-Date: Mon, 27 Apr 2026 14:11:23 -0700
+	b=z+zzED3cbjR9ADW1kvtCE5VIDVhfyroGD1k9WUAH7hWopMwpHTUiMj+z0aCfbOatz
+	 XeaXtTEBpnxcOLChc0EQIK6Ec8DKEErb+Qfswl/QLQfeBZEhz79LIo9YvNDeyxay6v
+	 rZAU61VgQXfNzTSEx8+8fkRI4fVN/nee5QCwC4fI=
+Date: Mon, 27 Apr 2026 14:12:41 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: linux-mm@kvack.org, vbabka@kernel.org, mhocko@suse.com,
- ying.huang@linux.alibaba.com, hannes@cmpxchg.org, shakeel.butt@linux.dev,
- gourry@gourry.net, kasong@tencent.com, qi.zheng@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, david@kernel.org, ljs@kernel.org, liam@infradead.org,
- rppt@kernel.org, surenb@google.com, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, apopple@nvidia.com, linux-kernel@vger.kernel.org,
- kernel-team@meta.com
-Subject: Re: [PATCH v4] mm/mempolicy: track user-defined mempolicy
- allocations
-Message-Id: <20260427141123.734c66450100c0f900e02947@linux-foundation.org>
-In-Reply-To: <20260427151520.137341-1-jp.kobryn@linux.dev>
-References: <20260427151520.137341-1-jp.kobryn@linux.dev>
+To: Catherine <enderaoelyther@gmail.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/hugetlb: fix subpool accounting after cgroup charge
+ failure
+Message-Id: <20260427141241.83dd1445d8ea973c3a5d54df@linux-foundation.org>
+In-Reply-To: <20260427151934.88683-2-enderaoelyther@gmail.com>
+References: <20260427145247.84157-2-enderaoelyther@gmail.com>
+	<20260427081213.7935edd49d96622b08e81643@linux-foundation.org>
+	<20260427151934.88683-2-enderaoelyther@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A0DCF10000B
+X-Rspamd-Queue-Id: F376E1C0007
 X-Rspam-User: 
-X-Stat-Signature: tbqo9sz8mmqkzjhi4jsmh79ttn36xxh5
-X-HE-Tag: 1777324286-990912
-X-HE-Meta: U2FsdGVkX1+5jLoamzMLPwkS6iM18R/WjrQFKpU9ptV8FQZG7E2JuxYCsBHR+wS3a4zQkVouJGLnJ+QtaqHfbM7oWzv/rPuedd8nViZR3JLRSQvqBmSzpNaOVEpg6ltb/fPuHUieMV9XDZl6hV6S9j+kM+LZCvK7UNMZW+atqWje1q01zLrC7QKybO4SOawYaYE8Mpx3EFSOj7gsRfsHJnGVHkMvuSnIIHr20CvYxi58KKMZMDODAfDfI8LrCi3eQaGj62iKbFy+25ecPV5EzqJXYSw2tUBwIvV7HOhCHZbc9Lo2GKHRqAehm0iDCN3bkejAJkmtXJuBxytwK2VTB1ChZWVMpaqO1s7vWaihy00LGPLbk7RbU86TUSw7f7XYqFBsmsiqfxmOYoC8gSQy2h2kObQCwh/evpJGzc+iDdds3RxGFjPe9f4Mt0pxVgaBSBZeVrSEwDvHygBv/iDNtwByEmHz8UHF8hyDtnbFxZAURL4h/SwonvYkmBLQmuCZuqflNhWA0kilj/Ot0bOv+fJ2WP74v2omSKkGZwCDzp9hWoLK7h1C5y855TBnNOJhzlpP8TqUZCIak6BoDNuwXUF+GxBIdFcIb1f3m+tbfkAzXbsdGa1vf5CH0U8yP//twwwH0Jli9qjWZdmPODBFLHUgOB+ExEjple/Uhwp6+i46zrXLQNIzbCyrh6kvdfKZlOdqJhit4gaQH0JFJOQJ7YeGkSeAG6h7K8rqQZ4kXZhuNSMVrYouooIqRHHkJp6Lm1U41lf5ccDLSgi7gmorDWa9awua6sCpMOCRJzwR3a8JAjdmdC9B/W5WqExhzqlTeStGP00AxtP9t/SJVjDMl16VPBC3V/9zeNy9ATZAVizMUGyejGMSd9ZsranI6GlDCpFHUfZ7iVhhGr/bddADoMOeayBOlWcyvKrHBGKSRbdMeUtJj4214k8KkpKF2tjGLcFsv2ZHKVMOtcrb8Su
- SMnK6nbi
- V95ggmrPAG7GzoqeqcrytUWzLh4Flqnzv5mkyiofeLmqQq/tJcDcnYM72g3EH5we/Z2TBMNB/Ug1sL+YuqTzbhYPN1j6o+ScYTO9Cy5gye4S88rnl5+v3b0jNDio+gN5ZA23yS6Md4N72LTDb9A598/jG+QvbyES7QHIRIcEjAKfkgMGjVcEhWatAm0EINVUVQF7gwo5Mt2vJsiHyzXa1DgFH/elPrjmxrD8roNS/xJGUY0Zl4+K0HT23XNGzqD6zx7TGe0n8Qj01SauxFqb8a/UoW/UVkd8vgl9e7bW11ZvZc5L9f9c32jGGst7QGGWbGfIMIgGCQCOj7Pf1lu5IcfJlTq+UbCF1GHfxzKw6WRfHNGDpVvYr2O8s6oKQsBnau0L/
+X-Stat-Signature: hrqo9pnu7obgt4uwf6yruwxbo48qyfcx
+X-HE-Tag: 1777324362-422447
+X-HE-Meta: U2FsdGVkX18V46xY3QX1eqNwzZ5rPCkRVNx1N8VWtwzzuR0WpL+tUxzEeugxRpkW4rATYmvstlKwg4GG1iO1RZdBi2uKGyuAw7JdlsaoRo1qoX2t2oBCB6/OQJZsgdr1KjvFQyBI8A7i73BSXifGDi2jd9CI+pmqkCFwzhZ+Q66plVoV1EQuewPNIzwOhSUJqxG9bvMisCCna1TDuxJ1EBA+GUIZUiTw/Q63ACOjZOo+fUKvDlvzw6P08aS1Nl0CHrgmX0Wh3q3QuJs7NMDAAmiLvEjzM0oSN1xJBPL6xDnKds3FTz//SK73V6rIhOdP+rvdM5JsevNlHO3KLs09bzi89eCxNTE73c7EeDhfZJ2d9PVvY2NzEpk5p+hNWrISjPGvO7rZiy1U8BxF6HyQ5MthRVO0xCAvzD7651mDEn8rl2bO+sO0/iS0jrB2Jgxt0UoiRFEb33vqZBUrxbkmhRHKs8gYiSEre4z+9FuoM8/m78R/wyvzZlsYGIsI5KUp0q/M4wDtoQl5QkZBswVM2SKSLNfEpHEICCfsr11tnsPdwmuD/cljd3iVXS1asXQtv/hCkRqpivO3+T0dt03QgPByWloXs+Uu+vEP/WsCG5GM0g5H6PAPuelhoX9i2bpOx3wpqcHXaVsFnLdVm3F1gJdnjO00KKbyWNBDWBEBgfhVLsT6+WB3sHgm9fne0RWHTFb2XkqDmx7BtkvcjfgBOOSYdihJ4MSWW+LBvpuXRItgEZUnjomHkaP9vrr9dXImKFSUu2zmUhWp+LmVT91Z3WC6WYlLx0xJ09YiD3fj0wWUbEQzlGZvlSMHTM1V752jDWBDzXBmGDn3QLrJh8MLJD91Rdqq0bI5Y5b4zvfs+Shsm0RbD5d/XgCk5YP4ebqk7syE9Bv5m715Dg9iHv/mO6HtrlDgazShAhmgWk9MPiRZzk5rphIq0f5jVDh/8SnJATtcJmdhiQobCtIKopL
+ eURAOUz3
+ Su9i5llFCsdWL8nNpyh8RW1A/YQTw1wPCf0ERsXXMws7jcDlSldtTLVhOxc1JOwWE+cesEGJCUkj8lemE9LXNzvPqeGqkBiavLW+Sy1i4lQYqd8mHLCp4al2zX2KtbithYayTnJWZuRgLQNRb05E2tCxcEK7/XZPLxhLg7amRa+9cZtAQXAILmJq6VJaZebUrt5DUR89bsYTnZv54w+DmNtVjG1tpleAOj5hB+++4RWx1pf6Hkc5CP/VkPT5YVczDB3QRN+u9Dp2yp67eAUocH25Sqz9j2vL90dIEB3x429F5vEnJ0qusvU8ySqyVEVTAHc6/5ntrt0fpG21fM2EuttrGR2aQkCw1M9k9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,15 +93,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Apr 2026 08:15:20 -0700 "JP Kobryn (Meta)" <jp.kobryn@linux.dev> wrote:
+On Mon, 27 Apr 2026 23:19:35 +0800 Catherine <enderaoelyther@gmail.com> wrote:
 
-> When investigating pressure on a NUMA node, there is no straightforward way
-> to determine which user-defined policies are driving allocations to it.
+> Hi Andrew,
 > 
-> Add NUMA mempolicy allocation counters as new node stat items. These
-> counters track allocations to nodes and also whether the allocations were
-> intentional or fallbacks.
+> My real name is Zhao Li. Please use Zhao Li <enderaoelyther@gmail.com>
+> for authorship and Signed-off-by.
 
-AI review:
-	https://sashiko.dev/#/patchset/20260427151520.137341-1-jp.kobryn@linux.dev
+Thanks.
+
+AI review might have found an accounting imbalance:
+	https://sashiko.dev/#/patchset/20260427145247.84157-2-enderaoelyther@gmail.com
 
