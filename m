@@ -4,100 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D75FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 14:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61ECCFF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 14:52:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E9A86B0093; Mon, 27 Apr 2026 10:50:25 -0400 (EDT)
+	id CB5766B0096; Mon, 27 Apr 2026 10:52:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FE026B0095; Mon, 27 Apr 2026 10:50:25 -0400 (EDT)
+	id C67016B0098; Mon, 27 Apr 2026 10:52:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 250486B0096; Mon, 27 Apr 2026 10:50:25 -0400 (EDT)
+	id B304C6B0099; Mon, 27 Apr 2026 10:52:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 075476B0093
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:50:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A016FC142D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:43:43 +0000 (UTC)
-X-FDA: 84704604726.12.1B01623
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EE48F80006
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:43:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="BLOa/aPa";
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=none (imf02.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777301022;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B22C6B0096
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:52:14 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B3C671C100E
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:46:06 +0000 (UTC)
+X-FDA: 84704610732.29.E727119
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 44CEFA0019
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:46:01 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SOQ+CALJ;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777301163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f4zHSFMRCDIOzJvASvG53//nYdaZVKmO6GM9qNfqLSI=;
-	b=AfYYzVB4OZbvbaBfV0dVRMi+nWQeHIF/xIB3YogqlRuuZhDHAvDt7OTc7eTBeF9d5t//A3
-	pr+b2nuhIXaJ9Qn4PuK9Dk155D9wpyUzgCs1rNN9D1tYY6I5tVUbaD8WNiGTL8IU9j+kck
-	4dG/ATZRnto17e4P2/4YaysHGCMGSMQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777301022; a=rsa-sha256;
-	cv=none;
-	b=OKmQlNOKv+Bbqq4kdi7wY8Nw2yxnbylJqE+fqhklqU+HDKgnygIbyFM4ONOvDlf+76S1ta
-	63GIL73X/m02EQ50YPUgcwMW43u4pHCAs7WxHMZMxoXxoP7RyTDrotVRDosHliAR2a0NcM
-	KvXUA4/OoEu4zpSCXLIR2Fuoy72vGIo=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="BLOa/aPa";
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=none (imf02.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=f4zHSFMRCDIOzJvASvG53//nYdaZVKmO6GM9qNfqLSI=; b=BLOa/aPa6STWM/QAkpwF2fJs0q
-	0JjOWwgFJWIw6s+11hZ1BJRkwezP6zIglOWogLDCNZz7Qj+rbjP0xEUUpOt7qKQC8nps51h+KmpKc
-	aLL7UWtNr4yLW/D1e7ISuAmjj1a5leMJH9bgiDjTVNJICALMGV2OdhZDWGzSFSemoQupQzAsM/KNS
-	rGtphBvHvnbEwxDLfIV1d0Tst4GZfA3ecDCE87kaQOvpC9XZoqe62DvymnlyIinez28hlwOxlk28P
-	8ssdbmdpsYo9QfLgT6nqWmHpYj/+C0hZagB4IbjhKfI2A4LkXfmdz0vZBv6n+pFpeBQBp6mWDxqgO
-	o2UwBOkg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wHNAj-005YIa-39;
-	Mon, 27 Apr 2026 14:42:54 +0000
-Date: Mon, 27 Apr 2026 07:42:46 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett" <liam@infradead.org>, linux-sh@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 3/3] mm: remove page_mapped()
-Message-ID: <ae91ogo90bSDFNPC@gmail.com>
-References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
- <20260427-page_mapped-v1-3-e89c3592c74c@kernel.org>
- <20260427062137.48739e6fa6e550f1f0e8ff48@linux-foundation.org>
- <06218a87-8346-40b4-adf4-dc494b5f1293@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=HB5Tp0K+QSVsZ3I+ui6oE05ZiYvk/5ZTF3DAkTKZ9z4=;
+	b=exCJa7AEundbLtwoOPO+liAy1Y4pybanI/hcj9evx5TdhlfR/ymk9iSaq4q28MVJh9Nmti
+	pjk080/2TeoEyvLFNqkmXEEEiZ8wTnrJVgcClVCA/1IZsMSRf9rTaE+3gPsBEsLrw/b6h1
+	Y7V+KLQrzlJ7P61QZCFkV7OoBK8zP/I=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777301163; a=rsa-sha256;
+	cv=fail;
+	b=jE5yuFMAGTiF0wWINkrtZDm1MH0JZW0eE/sRyga+EcGzZ2HB7zpx37CgQOnCnf0hmijR7c
+	MXsDELKrD4zkozst+hiMBESEOqNdlKljxESjbr8V7YH79RFTgznUBQoXyqOylCndyeSdFK
+	nPTjGohP0vcsgFkzpbM4Ba5hjZfiEz4=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SOQ+CALJ;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777301163; x=1808837163;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=Q3WaLlYbOWU9aJEc/6sSmTng1wPXU81gMOzgoRVJd7E=;
+  b=SOQ+CALJJB22/cfEcF9s/b9DnKJxIDu2/hx8KphNU+rL+InmX7igutqZ
+   XuD/x/weO1HGl2pNhBXGjAjsEiximXbOywtyrk79l1rV40JmfQkmqcUON
+   x9k3EQepZZKrIznhSB4/JTR+XWZjyebBb6fhF/dav87mtqNX7Fn3UBUf7
+   NencCgxRDfpOqWUSYI+ErBj2Hei1qpCOOrevVFr7N1xF4VoNX+zN/y4+P
+   Yl4JlOoOdEZQeU0VdnZMr11c8ymRe/1rmfMgbr2dx89l1HtQzP4sy9ofB
+   yuNcOAX53FO9Fse5g2ra3+T8a3xUhtM1fDH27bUUHDEFzMY6hDYKxdOnt
+   A==;
+X-CSE-ConnectionGUID: rEGo1714TMG9vKd761UgDg==
+X-CSE-MsgGUID: WCXjNeiZSTixPyIytPn+yw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78378310"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
+   d="scan'208";a="78378310"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:46:01 -0700
+X-CSE-ConnectionGUID: 2xLPsojqQCmHEMC1oWGV0g==
+X-CSE-MsgGUID: bwpdF3QJQUGuM4UfNjkh+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
+   d="scan'208";a="230468080"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:46:00 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 27 Apr 2026 07:45:59 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 27 Apr 2026 07:45:59 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.43) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 27 Apr 2026 07:45:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AjmXqHMdGgCTuqf7U/UtUmE2wqhbwkYs1VJXWFEvZOVZHNIVIMeO49tFSrFcHZ6AyHh/rwYkHx8FICgqYuG2CR0ObOmorSxL+qg27joI4JjJiepaht0txxxxUEb+dyZa0HlqKYVq1bJwKO9qymF2KYEVxTvDXXOqviN081EoWHcWODODF5cYw3G1rH068s8bZ/G+/kAv2ic4OLezGDqH08VlzrsoDQZyThMkSjB7qg0n7IcJD/cwmtXJuRrloTqkAF3J6iGLEYAiRqFMzXLar+Owgl22JMqLvLj6cKBgXf8a+f6sLWI+NdYghMZfIGvFy8PHeKVszrjUsxXopfzmcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HB5Tp0K+QSVsZ3I+ui6oE05ZiYvk/5ZTF3DAkTKZ9z4=;
+ b=OO7gyuVJuqnbkhp4Kw3R32pKrfKXe09tzNohFNVC2Vczr7al5wzyNYgu1XdqKabbariQoX+DgNJeyojY+ZUT9SMChM9yH3RoWFQcEbgrbP6BtZnEC3O25rDDZ8pcrKFLBKeCYzORxHCdHNuIIUBaAT53rTZP7AgfXhnhkqe27vV04uVnFdrdwZ5NXuv95ZCFsUdaILGdqFcs9LRpdC8tq16Cuj8DrMaYYPUN5EldcDcCVPWonLKkoWP5fTJ/MF8HMA8y/iYmkAdSoUvZDJo8k8bPd4/RobUMP5CE0IITlUW9wce8gZYgb8LJdlU37lC9/QybP0GXMYiW3Xs6RC0cGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CH0PR11MB5428.namprd11.prod.outlook.com (2603:10b6:610:d3::19)
+ by CY8PR11MB6963.namprd11.prod.outlook.com (2603:10b6:930:58::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Mon, 27 Apr
+ 2026 14:45:52 +0000
+Received: from CH0PR11MB5428.namprd11.prod.outlook.com
+ ([fe80::b8c4:d29:c56:a2da]) by CH0PR11MB5428.namprd11.prod.outlook.com
+ ([fe80::b8c4:d29:c56:a2da%4]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 14:45:51 +0000
+Date: Mon, 27 Apr 2026 22:45:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: <oe-kbuild-all@lists.linux.dev>, David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, Linux Memory Management List
+	<linux-mm@kvack.org>, <mm-commits@vger.kernel.org>, Davidlohr Bueso
+	<dave@stgolabs.net>
+Subject: [akpm-mm:mm-new 117/130] ./include/asm-generic/fixmap.h:77:9: error:
+ implicit declaration of function '__set_fixmap'; did you mean 'set_fixmap'?
+Message-ID: <ae92kz3LeyaFBvKw@rli9-mobl>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <06218a87-8346-40b4-adf4-dc494b5f1293@kernel.org>
-X-Debian-User: leitao
+X-ClientProxiedBy: SG2PR04CA0171.apcprd04.prod.outlook.com (2603:1096:4::33)
+ To CH0PR11MB5428.namprd11.prod.outlook.com (2603:10b6:610:d3::19)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5428:EE_|CY8PR11MB6963:EE_
+X-MS-Office365-Filtering-Correlation-Id: fcc0a6c7-eb19-40c7-26a3-08dea46bac51
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info: HdljYQORb+R1iAHmpg2i00S3Vp+TWjqahvhKSN4JU6XicuK1W4Yqb5Nt+hQWL//TQvvP+SlZKqniNajlOeXLyL76fyBCNbM3Y43z17SGo1Z7oP06sagsig1cfn+mAC1eVR++YUH6ht77Ntd11mVZSVRFeBxBIDZpUy2+noxzmuVlHtNjg8A9F75iQedDd7lBsZ2xltD19n4jxRQPDcfCGOej35iPpIy/GHQ3UnKBd42fwhmju1kVl9JfJDscOROkEQNAYkaL74QWDSO8jWg5rZeBe6AlygP/9a5WtkRzLDCqwrbAflPLImMOYLXPgInx/hhiTfOmgd5Tw8vMbDk7bhXON8WhiWwYNE67nneeZpA9R7IJ5FbcwWLWqgSvSsaP/wFLYz6dec05LUJPWzsZfz7vXfbosCErbPxSPUCnHS32NVErhO3dOvE+j7YihUDWRWffTJps4z90XEmHdOtCtl3L3T0Ekh45MQYgmnk72SqBlIg4Gu+avONCBnekG6MqpoMat/IO0s6dn3DPbx3nNvIXMY41u9gBJOjpQZPSd3MDjebNk9kqg/iIzqxOM0V+gH2bskb/U+XNz7NUOZjA4XkaQEIMtfeVWm/WcexpjufK1/xRh3aX1vP0GNoU5IL1oP9vzL7CT7QPLFan8ZU+QMASMSLzOTiKbyYGWx/7h/Kc3WaPCva4MsHXa7oRtu3hBWiJOZ+A2KB/qODcKXQo/A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5428.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?D0kTz7tlUahEG2yq4dxIA3rwf0gI21Y4/Yny8MTY/JuaMLGk0u/wPEbT0D9O?=
+ =?us-ascii?Q?SnK4xiQV8HJGkDdn/zQWXN2tgNU7YI9WxDEW0ZN925neE2TARlY0HLJ7k/Yp?=
+ =?us-ascii?Q?DOSdZZVh0DR1t1zajMTQjY4csPPzvpzUACvJuMTWHqaDkHG5Ad4C23QhuLaC?=
+ =?us-ascii?Q?K0xIfDLADvOGOJ9SibG0KzM0eHor5i1s7k5XPaTWr2f1rT4m6Ww9ozA62uAG?=
+ =?us-ascii?Q?GmgHEr8Ho9bjQSXcHjt6H8TL5mJEGubOK/Shjq/j8xAE47hkmGI0np9FMMBO?=
+ =?us-ascii?Q?tqBX15ksUZm5BxnGbEy0qRPbyLLekmGi11j3+tIAWh5JupuzpS86u3sQjJG+?=
+ =?us-ascii?Q?VV7xE/SiJDGC29OHUm7emrrz8dXbcyo9llAgELTGsOUUI2B/EySYCOthbp/d?=
+ =?us-ascii?Q?DRS9phkjNSarppr+RTYsAu++XJEMYQc3n80AcWp0lorahBYhFu2Ge45/ucwJ?=
+ =?us-ascii?Q?p7hludUBeXqzucDjYukI1AQ2zSxgucZ14Fjhmzm3S5V5Z1vBPQ7H0hyqJTHE?=
+ =?us-ascii?Q?chye6eqNB1y41rtCOTtVlzNJ0AoBXzweGo1zkDE/zZujZpT4rNekX9JujQ78?=
+ =?us-ascii?Q?Z+zwPKcGM+tk7FixKs8drZc8pvAzvQSbWaI/PJ8GTjiniqj1916EjrlrcoCc?=
+ =?us-ascii?Q?qjpboCQ43RAw3Y6uGz2E1cZ4J4KU4q67Sr8nkqBGcYpJaLQjM/ZkHxt1B2Qh?=
+ =?us-ascii?Q?bpZ7onqCNcKmCh92MLdIcesGW0SmzJuE/cAaCLXSyRWywArrLlIsAynPa2kP?=
+ =?us-ascii?Q?4O5oXWjLdII8CYcetjgUGreHOjx/yxSMqckhlF1fdQPTYxbViybojqV1gLxQ?=
+ =?us-ascii?Q?XJJseUUk+NdftRTUxz4P3BbwN7a+0tQ6CKX4xT4sp3sBPZZkilboBmmRfGzH?=
+ =?us-ascii?Q?kyiBVZ/jmHXxXNxTLl0ckjlMVdwFvkfgUV8fd5yGgz9pzlX8U+HS7G2dGaji?=
+ =?us-ascii?Q?HlpN+uxMLci20n4tPl0wFhwvK8I0CgIDAlpIzsk22JXHjl0r/tHC/EOpOGmB?=
+ =?us-ascii?Q?BxrQA45/U8GvfJy0xe5kbMiYdjimssPL8g5ViyQHg8p/iEG3HLz6PpdgoVZf?=
+ =?us-ascii?Q?SfacKho0CGRdl6oKo58LImKQj8g8joc585kiWFxXVAsDFVtZTFub2vcQ+Y1j?=
+ =?us-ascii?Q?KACOEawqcJqAxLf0+X9q0R8vT/hqPM+GDtyFqzIz00PBoobEQjgVMHGDhaP9?=
+ =?us-ascii?Q?bOXhYPGqlF7yUFIli2UY999qQdckh4Web9tQn2BQ6shc5mQ/SJHejPPjUzmA?=
+ =?us-ascii?Q?XbkpNnnb2q4ZQ08h5mVcPfPh2S0fwESVq4HXSOGhO7CweLjYkjUd6tLcScQU?=
+ =?us-ascii?Q?0YPvPmW4S7sA4UWK7tR+fK8zXTNQ6NrHbt2XOwkguxiItsy9dozgJDyo4H4f?=
+ =?us-ascii?Q?cc7F0xOYWbof08eYaAwGND2rLF6BmJvKEeT7GMTga7Hq/cUun0c5H7EWIOhU?=
+ =?us-ascii?Q?nMi7v2QJG321zL6FF+0qCxlCWsM7swoUOtn8S4SjWih8WyQgc8sqwTyyVWGO?=
+ =?us-ascii?Q?dob2arzu+uQyxlcA8392EJkzUJhNZroqm/bmWZjGVFiees4XfqH7lKAm74ol?=
+ =?us-ascii?Q?HUVdH84OjDOrQF7XrhuNPf6JLQ/5WZcf3gdzJD4Wd/IWhzQNqrPssaBDv8+M?=
+ =?us-ascii?Q?v1YsbNjiRVkmtlSp24Xb+Ij3a2S5WNhltUg8CXSmpBZDkqUixxSoHIGFRHGN?=
+ =?us-ascii?Q?rEQRGEi3hCI9/mkZsOuUiWNQhlh64VZ+ssSXSAZUcA/IAXuxkw+MbSq0WpKK?=
+ =?us-ascii?Q?lfULdoYc7A=3D=3D?=
+X-Exchange-RoutingPolicyChecked: WUbrRIC1ij4ZzQdL+5rmQsW3zpeO+Vq7KIVLK0NtyYgg+29nB1JkRxWmJKe5KA2zKrH2RfOhQIz6HbW04m784n6u6By7G76jF9yuDn7tVta0N7MxXPouBtQld463mGx4zvQSbqyO6ernGB54lQ510xjo/3kNb4gmM51YyNyaIRFMVHjmsAqBpAbXlusBidBcVi40/JxEQ6axM0RJX8QR1K+NlWvgcc8gTxyl1SiLDOi5K3ngR06WSzTJ3cI73JQXUXPuygBFrfmSAHHVBtdnrzhGb302EizbxyDBgnRBfADb+MU/i3nj32N8HPlOo/+/oTWz5xbZ8mhmR2IULPRMqg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcc0a6c7-eb19-40c7-26a3-08dea46bac51
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5428.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 14:45:51.1648
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AlMmXdMNY7hNffJedDOoJMXLyJ3ZSwHV0ZKOKydC2pTsrqPTAzubc9HUmCZVOW7EBZPcJLfSZD5MWqaJ++9C9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6963
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 44CEFA0019
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EE48F80006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: rsh9zx3czqwk97dwfki49gekwu8zbdb7
-X-HE-Tag: 1777301021-444083
-X-HE-Meta: U2FsdGVkX1/VBjHYe5b/jmqi9mrGHm95Yt/zrjcec/iRnl8Ys+BIXeGfimT6cy6SJAITa0wUnakBvs778afIsl2vaSNtZlvlvjGXkHoCXKTn6q5MYQAuE12bX783Jyv0lV9RfBeQpmOynOn8GeFBQQbpHyXNkWEeO27Cgc49kXcFFDcUSm08Tk7laMp5g6by67JB7Hg2emIFH+gXBoiFpmUlpjELa7SU2bTdEYhQI0Y7Hfl5ST8MNkPoT2miTjnkA3c81g51v81Y2MrZfHDA2w1MiHiUdZ0C/q1GS4xKzUe93De1cSV0tiuELxr3UfqkEDQAni/jVwYWO0QviNc2EgoZS4HqfUZQ/xWDPnZPBfc4fSHEatz833pp8Rax31IiLr3a7fUzEvNfbfgjWnM/OMKdsi/KN52bE2rqGaNsF99s1VY2o9EIDIWQB+Or2GhT/eJMuulhEHkQ4t8L2Lsy/J5oxoYdQJg/3VnsNsEjuE/zq+vqXMh1wqaOTBi2k37JK9s+x1QuDgWdqx49L/DRiBDNa9rJbbVFC4bBhex9ALAr9Z8hWJ5UakIBkNOcoGOt4Co7jKoFr9m63FYNEpfTXFSf/9EZZTa1AEwq3H4kw9inNYarUxeahuoW10PRDoJqduvKmF+DN9wPkN54kF4TmCMc5mkpk38oxFC/6KS/ARVDeTOrpQejRzm7v9SI+446zBlOawF9gI5i3tH7fxBEFnXVuIpXYxpFQht1iI/hWSOw7i7jFId/gciBOr9XXPUdjjrnkOzz6mSuY43xLltq9fvH6WOElLIKCupMKJI1HFc7QYm1OJi6+ohRd9/uEAsnSJimj1kpg2jUI+OZbwZM/bCb7Wqg6eVLX/Z00cZsaFtCB68nDqvNQSI8gbBgP0AOo0P+kQTIoMv6RYOOZmMhQnqQvpzWlOMEl/Gpg/d3+1bj9gs5vryhE0OxU4UuEsk3mZ7Nz9A6V28C5n2JQSS
- PWRZu5o1
- g05rN9HlQql3LCytCa4XXzvgWf1KJRId0kp9lEfIkDjja9ZFHU/CJN5GgJcbg3wR6VK+edmK6mjny94Ot3H6/b2X2agxY/SHhz3SYaRKmHF1Gu1nSeW0DC2uVqqvaV1RLuoFwPBfYu3OUCLVOySgYhIM+CEaQyoY7h0XDg/ezb24OLvvnvsv0WmkCN5KlnEem/IVOuG++h7a/V6vkCL+UlfvTR9eV7vCvRzgxvLJsPL1j1pV5pj79LUYn4VQs6Psm2snR0YVmeWQZBWqI/UQj3VK3kPu3LhGs/K4b
+X-Stat-Signature: 4a6t39o8semqswrs1xfapzp7nd6n9y6r
+X-HE-Tag: 1777301161-859303
+X-HE-Meta: U2FsdGVkX19a1YpBAWnTfKfpm57iXhq7XgRd8zK4MLdq/CLaqzwnMsi732eV/PM9xPrdnzvSsGlsKu+hTqNMh/Vtacx17kaHGDFChIALMr9Pu2BbeYl0j3JHgjXdSpWsRrwP8rjxHnbvv2S6GqUXiw62F2B6XDNJIcZ4N3+DVqMF77e42J9cSPG30I/Dlz6VBTOzxf+CcYIeh/sc5Pyvp7kHkzy9zuDf7Y530e9rTYXdrt+d4F3IO2YNz8ePyGA4+MyaAF0KASXf/Aj7IOt6dEXquCYYVzmKtZBy0r/9txl9KJkjU8roIYMGEnjSCujvxNE8940Wt9K2Pm2Rh2Nu0y3zAB6JO4WNfbM497RwR0qR886XVsPyESM/oYUjUQUvRnSZ/5bAY6/3WWl2xyoHyAsUsY60Oc5j1+lwyjFv4vthUaMJwgQ+gFiTRDwD3TsJC8g3w1v65rS6A1Fk2FIQVZWTrj6fdWsThgbV7MbhDLbmquchHtGyscCj97fGGVnpGzsASsTuGr9OLrvgoVOddmiHbyxtvM4BRglj5ummvmtBrQWFLyAcAmx4N/ppd5Hoy2kqqbLpoHaZSulZV7yyzXi6nL1ORgX5LCzSvoHROp4n2myTf/PMC2SjstgfXAALO7ulSl4sqZ6uLGsZAF37M05o8cw5QlAe5QfDytHIoVA6aQVdhzvehBG3DoAM3+clgoJP5TbrOH0MA/Wz4Rx84ncHiz2xnP72rd203v0sfcFXkMVTPpywdj8dglImAHxU3ohdpe8PQqZM1Toivegb3mxWpDydpQyYr6GF9aQ4aQskO91dPol9ntxK5Pa5IxDPsuuLHsSLVoXTIgBkwIvUODPrsPv4cw0YS8L+vVEH8a9Cbw9+4B66m60tQ0P1v7dLtSAmFmnmgdsgyCcYNXbMlwJr4IlhuUq4kVgMBDmit4sEe8Rpjb4mSWsZBJiMty+ev/1mvumPRYeGFo/WenP
+ 5Ytiibd7
+ pQziPY9as+tas6hEKAZlrxC0mqmfyPb43im33JwEJLtSCA8mKsUzXmH+MQcnUPM4tMd6mYCoTHaj4kJd4h10oFd/KnVW5mmucGWzbtXbq66uAeQwuQdg0hGXkrF0fsD5Z4CkjXkFEde5Hn656nONRoC9FRgkrjk9J2538JJUNs9P5DxYKBM7khBUytwVUp09q54NMxGowFfhw1m/hhCBCdEF1YpDhzEJLNVLo5D+iOSWmPBN4t0bnwQuuBDKU93vzy+ftJ3W8YUGaqIr3rVVT+Cdk7h9htLsjEpqb660QPjogEQ9Gcur/etcBy5dpW3UAP4/I9OexrUBnILo3UAz9RrZ7662XL61tEr6oJKKkLgV1Zp/l7FJmZxl7WLbi4nEktso+buTkEcbmgxCBpPzmSQyvizYYl7L4PhqyN3eSFRqY2AvD3lMEQfy3xSBvcIDN2l83vx63o27idn3ULAVjMNuZn1KiaqDzwCeySDY3sipPkpz+CiKGOgjB2SJRtaIBOXsyFqr6xjvldFwueC4mNMToAVItDUDmMBCKP1eqIqGpLVrVJ62c9jabnwF3BVc7iyq1HySvlmZqGagXSqPAe97Sm3Q8XKOMnEhvXrkVErWNw3Q4Dr9G8oHqZ3peSjJqT5q0wkf1lBRSU0327W089mLziS6yHTo+dwM3MqPUJ0NxlMfARhj8c2Q0YYUAWw0JRELk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,49 +188,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello David,
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   4f7b2cc1ad8719d55a8de9675a0aca65cb17c364
+commit: 93580c23bb3da5dd2926d6ae991ef04c2cdacaf2 [117/130] include/asm-generic/fixmap.h: reimplement nasty macros in C
+config: powerpc64-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260427/202604271114.ebmzs1LE-lkp@intel.com/config)
+compiler: powerpc64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260427/202604271114.ebmzs1LE-lkp@intel.com/reproduce)
 
-On Mon, Apr 27, 2026 at 03:23:33PM +0200, David Hildenbrand (Arm) wrote:
-> On 4/27/26 15:21, Andrew Morton wrote:
-> > On Mon, 27 Apr 2026 13:43:16 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> > 
-> >> Let's replace the last user of page_mapped() by folio_mapped() so we
-> >> can get rid of page_mapped().
-> >>
-> >> Replace the remaining occurrences of page_mapped() in rmap documentation
-> >> by folio_mapped().
-> > 
-> > This broke Breno's "mm/memory-failure: add panic option for
-> > unrecoverable pages"
-> > (https://lore.kernel.org/20260424-ecc_panic-v5-2-a35f4b50425c@debian.org),
-> > which added a new page_mapped() call.  I made the below adjustment to
-> > Breno's patch:
-> > 
-> > --- a/mm/memory-failure.c~mm-memory-failure-add-panic-option-for-unrecoverable-pages-fix
-> > +++ a/mm/memory-failure.c
-> > @@ -1353,7 +1353,7 @@ static bool panic_on_unrecoverable_mf(un
-> >  		cpu_relax();
-> >  		return page_count(p) == 0 &&
-> >  		       !PageLRU(p) &&
-> > -		       !page_mapped(p) &&
-> > +		       !folio_mapped(page_folio(p)) &&
-> >  		       !page_folio(p)->mapping &&
-> 
-> If we have a folio, we should really lookup the folio once. Not 4 times.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/r/202604271114.ebmzs1LE-lkp@intel.com/
 
-Why 4 times?
+All error/warnings (new ones prefixed by >>):
 
-> Breno's patch likely needs some love. :)
+   In file included from ./arch/powerpc/include/asm/fixmap.h:91,
+                    from mm/early_ioremap.c:18:
+   ./include/asm-generic/fixmap.h: In function '__set_fixmap_offset':
+>> ./include/asm-generic/fixmap.h:77:9: error: implicit declaration of function '__set_fixmap'; did you mean 'set_fixmap'? [-Wimplicit-function-declaration]
+      77 |         __set_fixmap(idx, phys, flags);
+         |         ^~~~~~~~~~~~
+         |         set_fixmap
+   ./arch/powerpc/include/asm/fixmap.h: At top level:
+>> ./arch/powerpc/include/asm/fixmap.h:93:20: warning: conflicting types for '__set_fixmap'; have 'void(enum fixed_addresses,  phys_addr_t,  pgprot_t)' {aka 'void(enum fixed_addresses,  long long unsigned int,  pgprot_t)'}
+      93 | static inline void __set_fixmap(enum fixed_addresses idx,
+         |                    ^~~~~~~~~~~~
+>> ./arch/powerpc/include/asm/fixmap.h:93:20: error: static declaration of '__set_fixmap' follows non-static declaration
+   ./include/asm-generic/fixmap.h:77:9: note: previous implicit declaration of '__set_fixmap' with type 'void(enum fixed_addresses,  phys_addr_t,  pgprot_t)' {aka 'void(enum fixed_addresses,  long long unsigned int,  pgprot_t)'}
+      77 |         __set_fixmap(idx, phys, flags);
+         |         ^~~~~~~~~~~~
 
-Would something like the following give it all the love in the world?
 
- folio = page_folio(p);
- return page_count(p) == 0 &&
-        !PageLRU(p) &&
-        !folio_mapped(folio) &&
-        !folio->mapping &&
-        !is_free_buddy_page(p);
+vim +77 ./include/asm-generic/fixmap.h
 
-Thanks,
---breno
+d57c33c5daa4ef Mark Salter   2014-01-23  72  
+d57c33c5daa4ef Mark Salter   2014-01-23  73  /* Return a pointer with offset calculated */
+93580c23bb3da5 Andrew Morton 2026-04-25  74  static inline unsigned long
+93580c23bb3da5 Andrew Morton 2026-04-25  75  __set_fixmap_offset(enum fixed_addresses idx, phys_addr_t phys, pgprot_t flags)
+93580c23bb3da5 Andrew Morton 2026-04-25  76  {
+93580c23bb3da5 Andrew Morton 2026-04-25 @77  	__set_fixmap(idx, phys, flags);
+93580c23bb3da5 Andrew Morton 2026-04-25  78  	return fix_to_virt(idx) + (phys & (PAGE_SIZE - 1));
+93580c23bb3da5 Andrew Morton 2026-04-25  79  }
+d57c33c5daa4ef Mark Salter   2014-01-23  80  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
