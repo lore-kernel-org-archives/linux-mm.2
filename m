@@ -4,139 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 172E8FF8861
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:07:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB821FF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:13:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46B886B0005; Mon, 27 Apr 2026 05:07:22 -0400 (EDT)
+	id 4C3666B0005; Mon, 27 Apr 2026 05:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41CF56B0088; Mon, 27 Apr 2026 05:07:22 -0400 (EDT)
+	id 4742E6B0088; Mon, 27 Apr 2026 05:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 333926B008A; Mon, 27 Apr 2026 05:07:22 -0400 (EDT)
+	id 389F46B008A; Mon, 27 Apr 2026 05:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 216476B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:07:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5FED1206FD
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:07:21 +0000 (UTC)
-X-FDA: 84703757082.26.968665C
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 61CAF40007
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:07:19 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="WrPET/1p";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf11.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777280839; a=rsa-sha256;
-	cv=none;
-	b=fTTYHcrjOk3ffwXDafLIO81ujTkWe7GJvIhydnwKzVNZ9S4eqp/7NvSDDZxdz2YO19nR4Q
-	XNcbaHVyN2P35X2SJugNvoQHS5XYRDltQUDfyEhbH5hqOnlJbidWRurti8GkZ03ms+oh8N
-	fGlqwEUU2MCIX3bBXF+WG0sHbEqAZew=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="WrPET/1p";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf11.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A5266B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:13:45 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C8E4A1407B4
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:13:44 +0000 (UTC)
+X-FDA: 84703773168.17.862A1B3
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2AC7C1C0011
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:13:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=2WpVS3ko;
+	spf=pass (imf18.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777280839;
+	s=arc-20220608; t=1777281222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hSYztgf+1Sg2PXQ9FugD3AeLyfAc08d5FTb+s36utLg=;
-	b=ngnifGcJBrl0mGSG1tGvDSYZWiLwpTNK4coIrt/DUNYGRId6jQJTOCDIHAXNy+mdVK4wLI
-	9gFv74OCh7Vuqww/fxHFs6IBQ4L//eJrfZjLwZzFgp/eoGWFpVhE+Mcxn8jHC3sz6AmzaO
-	MGGSGYifv/dmpEDILsw93/Rwjeo5Vzg=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63QI8ifU3450963;
-	Mon, 27 Apr 2026 09:07:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=hSYztgf+1Sg2PXQ9FugD3AeLyfAc08
-	d5FTb+s36utLg=; b=WrPET/1p4mO9OD37s5qUsQs8FsiiQfNzZTEorc6r/SvRFP
-	DDOVzyxeHzTJlZI0frBb3X84u8bMqll3kgpvqb88x1ewhnrva5qxbymvLnxp2D6t
-	AueHZWAVA6ZygVPaKsF8Ernuyc9ztzo6u7jvLnwWlBqSssxJgDL0PKesmTzsT8Yk
-	zZVwD4sPtQ57GlWpLpmDVvL+h2WYzhEmIBJhaQWEmnDBEcSljE5lFWX7qwwA3Dly
-	9L4Ux6dipqxvG5xouOL1nDMjBkJApr97q28v/ELVxVmFoZOHTJ1TZifDe6jTT2jk
-	RuTZdvx85RM15GBUFVitAFCf5TZd0Tst9Y5wVFnw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drnb4yjgk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 09:07:14 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63R8rmtt001956;
-	Mon, 27 Apr 2026 09:07:14 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dsa5g49tn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 09:07:14 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63R97A6n27591408
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Apr 2026 09:07:10 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C8B12005A;
-	Mon, 27 Apr 2026 09:07:10 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 62A032004E;
-	Mon, 27 Apr 2026 09:07:10 +0000 (GMT)
-Received: from osiris (unknown [9.52.214.206])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 27 Apr 2026 09:07:10 +0000 (GMT)
-Date: Mon, 27 Apr 2026 11:07:08 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/6] s390/mm: Batch PTE updates in lazy MMU mode
-Message-ID: <20260427090708.9079Cfc-hca@linux.ibm.com>
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <924c91e711e8b16470eb2af7e31d0b6ffcf2940c.1776264097.git.agordeev@linux.ibm.com>
- <20260423122824.10371E07-hca@linux.ibm.com>
- <104cde89-2a33-4b54-aa2a-86b58bd713d7-agordeev@linux.ibm.com>
+	bh=zmRjeX6dNGOmmOZ8y2g2riqMomZtnDChlOtrdiwKxyA=;
+	b=FqSFy7bd6x9HczafJ/EfUxH8fQ4TprZ6xRo8VYUAuHy9ylGRuzp3PH7CKLCEw9b9Q+pCwR
+	b6Kq7Mzp8fOgAKsisVoJuTQ+p5KgTuhe5fGGdbppmiuYVtSlr5nd9aQKKHJQA9r5C7qZEZ
+	H/r2NHRUv40D61uyFxccKPE/neikm7A=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=2WpVS3ko;
+	spf=pass (imf18.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777281222; a=rsa-sha256;
+	cv=none;
+	b=gsgU9uCLJzSIX8PtB5acdAjs+gSxXzwlNvZxERqr7TFPGNqMGdaotQKkt+S+nHgJ5w4Hr3
+	wIPCMbIvSkcPPP9PrjmSUV/ABW27sI1CRxEdRwi3S4yH0E2qHZI+0azw7CoKzvxjL3go+7
+	HQjo+74wmyZemRF19f3p/ldotre8N/c=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=zmRjeX6dNGOmmOZ8y2g2riqMomZtnDChlOtrdiwKxyA=;
+	b=2WpVS3kovfqkUg90WSAUnAPn7LuxSDyzTmtBZOzDWGZz5QJ7rF6G/1xhcl7HwcNENtuH0fmpe
+	+zYUcaoLqGaMQIJ2WU2b2maEofBnlG2xr6WWKADTl4L8Rfc99FmqSniEjel140NpxbdUlcRPo5i
+	Opcc3WmEjCy3zoCKUZpuLGE=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4g3yNz69cSzcb0l;
+	Mon, 27 Apr 2026 17:06:43 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id D3B954056D;
+	Mon, 27 Apr 2026 17:13:35 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 27 Apr 2026 17:13:35 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 27 Apr 2026 17:13:34 +0800
+Subject: Re: [PATCH 2/2] drivers/base/memory: fix memory block reference leak
+ in poison accounting
+To: Muchun Song <songmuchun@bytedance.com>
+CC: <muchun.song@linux.dev>, Ying Huang <huang.ying.caritas@gmail.com>, "Dan
+ Williams" <djbw@kernel.org>, Vishal Verma <vishal.l.verma@intel.com>, "Naoya
+ Horiguchi" <nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
+	<linux-cxl@vger.kernel.org>, <driver-core@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, David Hildenbrand
+	<david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Andrew Morton
+	<akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+References: <20260426144447.817722-1-songmuchun@bytedance.com>
+ <20260426144447.817722-2-songmuchun@bytedance.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <7fe73023-1fd1-0c10-107e-5c0f47383453@huawei.com>
+Date: Mon, 27 Apr 2026 17:13:34 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <104cde89-2a33-4b54-aa2a-86b58bd713d7-agordeev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=AqDeGu9P c=1 sm=1 tr=0 ts=69ef2743 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=dWqnQgn1XxySkrmxHuMA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDA5MyBTYWx0ZWRfX3wZz11GqLvHG
- i+ulyjC4wRctioO705fekLZbHzowI2uOK6o7siZpuGBpUjdxmOSCtQgbd4LNs3mbKa1niFG+q4X
- iEC3miKIdvbmjd0nJTLoW9AzMOpM2ZYeTZKMxET0Ijm56lirajDWkC/CY8o9Bxj57Q8ApapWpVn
- TC0f7aa+9haQQwncXPCqcM0JGE1uE/7zNHjU2DxoIBrFUawcQN2kVMf25+fJhfhurDQwr8KABse
- dyhYJD07rShBDZ7accNEAoem0HkwwvbvfS7IXt6b4PgeFqGM2S8MnSjnVbaxKdwzl3acBCmmkh7
- FVN9CllwPUh4YMd4Rlm11CVuRRGw57czAoayqUXLOplCsmI448dz9dkttIMDWjjQN/O4xG5wfbN
- AAFfUWjB54gnU9qcIFrcXWGpENYZHoU5ip+QZFQN0h9olHk39XQ0nJ1gMKcO9Xr99/fhCeuV5Am
- 9FF/Xzjlr9Eb4YEOpmw==
-X-Proofpoint-GUID: vf61Zu4UnRUSWyAUjJn7c4fW2Tn0MMzt
-X-Proofpoint-ORIG-GUID: vf61Zu4UnRUSWyAUjJn7c4fW2Tn0MMzt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-27_02,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 phishscore=0 suspectscore=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604270093
-X-Stat-Signature: 4j5n1t98baycgkujnruf9wz8t9ffe7sn
+In-Reply-To: <20260426144447.817722-2-songmuchun@bytedance.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 61CAF40007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777280839-771428
-X-HE-Meta: U2FsdGVkX1+cTSulShlxumlqrVdSFdH2yxTwjPXmuiexF1TkiDPMMgk+EuBd3RzPYGxuLn4G4HBQ9to0pwWOj0pLJlWXf7wQKifEUp40r36d6Jg1HXpXdnI+G9sjllfVHYgMABr8icQ/NUugxUIl/4PKs1wk6hIMGUCG51AAs7KdqK+pe3HZ1XT92H8pz8ybBB3AWSufXRvS2TYXZAbFaM+gZ6v3kxqdBpgCaDu/7ZrsVhN82jii3QAuNE/m8P89bjMo0bZ9FNbHrkZY5a/8HhoyhDpHMXsH/pBFuWSTwKGr+iM0kMCJbNpY4ppu2CKkWtnNe5MzEtEBywjxsgGNfaUl90BI1Wchs/kijkRqKXAw4U8xZDvMWcCULwhjBE9RpXFUQVAsSh2hspMG2lUhxEQGQvCDPPZwyMpRk6DFnDSty6idQIfwJpcI326HhNsQd/s5+N9VEdffSBp05ugBwziPo2fG8HeQ5+OFZrqZfJ787hoHOeHeJk3bQedS/61vhII1kDmI/5dW2tedUu4lfDqqlfifA1HE3/E2AtFfWAXy2aT2HbQMOg76/tUfr9pTE65xUH1JZ2vtq/Kmq5/rYC6uu9CpTEzkRid1b/hFdtFlN+gtVYVw7YhPwWGkRjd1nyWQOw4mQYuLOXCLajdVMlL+dG6M5WGeume84lku1NifKO9NfQJ1A/h6AjxhikAW6K2SmjkxpibebwQojf5lvitjH0sq266VOW4yMkRkG05+JVglvNbTAkX/KqceKzRDLBabmMpLKXRssq2rHlBawfCE1LUYarC2yEQaJGd+vu6Em3LfpPM7ByOE20MrAsuybG5nxi9uvhxczF+E6CGP0JzlOqTYv0Y+0F7kB5ddwBLs6/vcFctaVhX3YKsZl/atA0V0Ntax7L5eQpohbVqbssDpUBRPL1t/SXDo9KynbAZNx3lM93dvYz5YXC+eS6FG6oifi2STrVcUP3Rcdpd
- HgDsM0hX
- 063pqi9Q/7X/fKM8IRvhbmn95kex8DjHY32DudruLge2K7bxwqodgqvSqPqzaEqDSjoUNgT6dLbtSRZ1QT4NsRMame0WrsZczMoWl0LlfYdNwCc0jgtyZUkr97KDbZtK2G8sJDDQOT6LaUNYi5LC49QiTAtWn76E/sZ97X9i2vtdZnrTsTWCb3KIB4nKMnRlO1noeNoE3ijLgLklm4Fz8eHHFQa9Kcik4AddBNSVzE/Ck0Wp1SPejBKQ1LTrKRirD4pYvJwI2SdQ1jkHnPnWNBA8OZITlXLGOdkm7SpY68BufngWK24Ftr2efzA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2AC7C1C0011
+X-Stat-Signature: 6z5tk9dzgg1uumjibiiiii8ctn1a3brr
+X-HE-Tag: 1777281220-880473
+X-HE-Meta: U2FsdGVkX19YcrQ3nSR24hD/hyI5KrRdO+AFIKqrak9V8gPa6anQaEYIAWiWNSsrgFHirGu4xj9RkFpiXyNWx0SoZB7d7tTyoBOqWfIga1ZnxrBiZQbG6LsK1pvPrpqV8uTUncEooz6N4gG9brO1BRr4AGWsku86ztMvf8x8sA9bcBqbJeN9vFAVODT06TTX55mgZKKKbCsh/69yHxgXZN9nF+4JgtJXT+pDGTJhaSQR1rMHUPP/cHLVq+hMatp9BXfd/LHS02HTdLuHzIJnpqg5t86OJBVgoWTws2b2Pd4BCNBIKJfJ3ixc2Y0Z43oq7Tk/bGDo6PVL9el/D9tNEGeu5raN86XIPaPf+MkVqXqDFnIfdB6mZbUTGtMfg+TD/lLVsrWs6YjAzdNvYuiPuwsNKAPnK5ldh3tg8N1ypVI/ZSBRve0hOFMDozImjZBnfC7I7Xz+x4Cw0EO2/GXAK+vWur0OxL9oYO4MOCYmYM1Ou+n00+98/A35qrKecsjG4INeoaHuX8c65/NbWg+E8KvPbS01kc39rn0x2/z2ucnfQ3x+c6RnwXZVbk5HJNcJw8rwATd2VNKV0uGLxMYRk4hmuNbINYeQb8bIVzFn3lVNCH7b7fOJxBB91VVc21ficMz7IW1m2vihpx3wPOWmge3fM+Jd2gEaaD8R3xUBZWBU1Ti/zyPo3HTi7qKSh8dRD5lFCchqbXe8rdrKkwVRRS415lWXRU+3wDgncl25GU3ze/h+xU74i0FIQnEiJiK4hBxcKhHcEo1M4MiW11hN8oG+0MmsL3qjOAH9JF5qeNFafaxoIr8gHTtfaDlQnQCxTwpOqxhK6GMBFijdYJlP8NcnR6rY20YY3oELhRxaLXshPiLW2ika0IjjWFyrScbWep4vqILdMsVvwutBxAIeEu9ii+aGm4TSjsRFt+Rt0Im3ggrhzMW2d8DpxfiJipsUruSrhedNQUWDZT+7X86
+ uMFpk6b0
+ yNoxEspzutbWZhW+HH1p7iX+G420YBnxlQ9w1AZclFuCsqs6AlJJfUkOAWiCOXm2fkRz2/u7+qdgzb99rcrNehsBvZuAHXLIvnuwwUyXFOCEi7MS5KMWHGr/10HxJL9LjvN6lYI3TMX2zMZBkcDA3ozVQmrS1EXFqPK5GeipFfA/x89Zd+KmLJFahuIsteVU0wkhK7nayGZJbBVM0P12Od8YNYkJz3wlFxUltPHqmpcEDZDUsL/fogTN/ChJ8Zr9vzmXWtlv9I5nmaN0RY6cW/QfK+KPHkPL6Tj8PczTKXgS9xBeo9TyvfNZcFMTBxX9UXycdmxXRMJtJS+PC6lU5B671mO1mKpqekGCsuubhhHUs7wgDyBEFaq02U3Zndyr6tVxxEzVnJca9zwLvDmrB2PhY50RKHmh6QVJqIZERJRDAsTg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,66 +111,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 03:10:42PM +0200, Alexander Gordeev wrote:
-> On Thu, Apr 23, 2026 at 02:28:24PM +0200, Heiko Carstens wrote:
-> > > +static inline void set_pte(pte_t *ptep, pte_t pte)
-> > > +{
-> > > +	if (!ipte_batch_set_pte(ptep, pte))
-> > > +		__set_pte(ptep, pte);
-> > > +}
-> > 
-> > Not sure if you analyzed it, but it looks like this might be the reason why
-> > you see the fork() slowdown: every page table operation now comes with a
-> > function call, even if is not needed.
-> > 
-> > I guess it would be helpful to add an early exit to the ipte_batch() inlines.
-> > E.g. going back to the example above:
-> > 
-> > static inline
-> > bool ipte_batch_ptep_test_and_clear_young(struct vm_area_struct *vma,
-> > 					  unsigned long addr, pte_t *ptep,
-> > 					  int *res)
-> > {
-> > 	if (__is_defined(__DECOMPRESSOR))
-> > 		return false;
-> > --->	if (unlikely(!ipte_batch_active()))
-> > --->		return false;
-> > 	return __ipte_batch_ptep_test_and_clear_young(vma, addr, ptep, res);
-> > }
-> > 
-> > Where ipte_batch_active() would be an inline function which simply tests a bit
-> > in lowcore.
+On 2026/4/26 22:44, Muchun Song wrote:
+> memblk_nr_poison_inc() and memblk_nr_poison_sub() look up a memory
+> block via find_memory_block_by_id(), which acquires a reference to the
+> memory block device.
 > 
-> The bit check alone would not be enough - it should be done with the
-> preemption disabled. Then it would be something like lazy_mmu_mode(),
-> but with one or more values in the lowcore instead of percpu variable
-> (at least ::base_pte to check whether ptep falls into the active range).
-
-What I meant: you need a one bit check in the inlined function, so you can
-decide if it is even necessary to do the function call. More checking could be
-done. However all the overhead of function calls will go away with single bit
-check.
-
-Or in other words: enter_ipte_batch() should set a bit in lowcore which can be
-easily tested. This bit _also_ indicates that preemption is disabled. So all
-the extra preempt disable / enable pairs within the page table primitives are
-not needed, after this bit is present und used.
-
-> > Just a general comment about the naming conventions: imho ipte_batch is not a
-> > nice choice, since the name of the facility is "ipte range". However I would
-> > abstract even more, since nobody knows if there will be a different
-> > instruction or facility to achieve all of this in a better way.
-> > 
-> > Anyway... maybe rename the file simply to mmu.c or tlb.c and change the
-> > function prefixes accordingly so we end up with shorter function names?
+> Both helpers use the returned memory block without dropping that
+> reference, leaking the device reference on each successful lookup. Drop
+> the reference after updating nr_hwpoison.
 > 
-> I would in turn suggest lazy_mmu_ prefix and lazy_mmu.c source name
-> to emphasize it implements the generic lazy mmu mode.
+> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Ok.
+This patch looks good to me with one question below:
 
-> At the same time
-> keep ipte_batch (or ipte_range rather) in the implementation itself.
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
-That still doesn't look to good to me, but can be solved at a later time.
+> ---
+>  drivers/base/memory.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index f806a683b767..6981b55d582a 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -1230,8 +1230,10 @@ void memblk_nr_poison_inc(unsigned long pfn)
+>  	const unsigned long block_id = pfn_to_block_id(pfn);
+>  	struct memory_block *mem = find_memory_block_by_id(block_id);
+>  
+> -	if (mem)
+> +	if (mem) {
+>  		atomic_long_inc(&mem->nr_hwpoison);
+> +		put_device(&mem->dev);
+
+Comment above find_memory_block_by_id says it's called under device_hotplug_lock.
+
+/*
+ * A reference for the returned memory block device is acquired.
+ *
+ * Called under device_hotplug_lock.
+ */
+struct memory_block *find_memory_block_by_id(unsigned long block_id)
+
+But device_hotplug_lock is missing here. Should we add it?
+
+Thanks.
+.
+
 
