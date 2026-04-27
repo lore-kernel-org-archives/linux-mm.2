@@ -4,85 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB427FF8850
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 01:43:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF98AFF885D
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 01:51:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4A9D6B0005; Sun, 26 Apr 2026 21:43:05 -0400 (EDT)
+	id EB1076B0005; Sun, 26 Apr 2026 21:51:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFB116B0088; Sun, 26 Apr 2026 21:43:05 -0400 (EDT)
+	id E61936B0088; Sun, 26 Apr 2026 21:51:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A11636B008A; Sun, 26 Apr 2026 21:43:05 -0400 (EDT)
+	id D77996B008A; Sun, 26 Apr 2026 21:51:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 90A3A6B0005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:43:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2FDCC1C09D7
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 01:43:05 +0000 (UTC)
-X-FDA: 84702637530.28.2CE1757
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E0D1DA0002
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 01:43:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bf4Nngqs;
-	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C654A6B0005
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 21:51:03 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70C6CA06E7
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 01:51:03 +0000 (UTC)
+X-FDA: 84702657606.05.2246CB8
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6902E100006
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 01:51:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZJIyZvDl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777254183;
+	s=arc-20220608; t=1777254661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ePqS8q5Is8xzOptDw0ODHvqxS5RXYp2DBozEtMHv32c=;
-	b=CWqBGgFZ2c2piM7lKaWyy2SnwBli2BrZOV5ybrdOQ3IMKUUIXLTHhdmBAuZzPKiRouNoF0
-	ORWVKcTAusMsOG64ASDTQ+nkgQ8F8GaUlwdoJX7PbALSs5CUrBu8bxCcE7bg59xxUSRBiz
-	a1YVPbMnG0bT8hGFLIMSzqKv8bavnig=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bf4Nngqs;
-	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777254183; a=rsa-sha256;
+	bh=5ILvVMY9IinAdmagfVEGFpLv9wga0zWj49+q4fH7Cbs=;
+	b=hK2zafV2Re3VyUefNIl3oJCn33D2JSWMXpHNc5QXwaEWWE9nvDoc0aaFfgcnh6Ux4dBZV7
+	gJES27H5SMbcy8//BLGCkz9mswZA2O+9BV2hfCpqsBHDco7a/hU3eusVmc8CXMfDER32jK
+	Fwx5sXK2BaMiehEJSC8kYTDjYymQ/RU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777254661; a=rsa-sha256;
 	cv=none;
-	b=rM4gx5W68Lcd189Pkep4IqMOquLAgonbnPpbKkph3As6gbIKVEUXAWkig5CwZC1UWO/0mD
-	3X3toeSkQGUnQpKep+v2XWVR/OMjZ4QxaIczq/9hP5Gvd1xO+vjwOPQlffp5QoNdSMaTp1
-	lxRLv6j/pdwhYyb5y5Er0mH90q1TUo8=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777254178; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=ePqS8q5Is8xzOptDw0ODHvqxS5RXYp2DBozEtMHv32c=;
-	b=bf4NngqspTK1IXcL9RwPFMF8W1VAZdl1CEL1PaIN19r9bAOt+If23X5gFoZe0+x4MQWo3NCbph0sIVyQBq4h+jl8lueokv/jUlCowAwm0s/emsSXZrugW6rWCIUpRlq/2Cj8Vc++CCYM/hcSWRRJLRw7Vp9AkbcOjO1YigZxEd4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X1i.oX8_1777254163;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X1i.oX8_1777254163 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 27 Apr 2026 09:42:57 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Sunny Patel <nueralspacetech@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
- <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,  Rakie
- Kim <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
- <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/migrate_device: fix pgtable leak in
- migrate_vma_insert_huge_pmd_page
-In-Reply-To: <20260425134453.23769-1-nueralspacetech@gmail.com> (Sunny Patel's
-	message of "Sat, 25 Apr 2026 19:14:48 +0530")
-References: <20260425134453.23769-1-nueralspacetech@gmail.com>
-Date: Mon, 27 Apr 2026 09:42:42 +0800
-Message-ID: <87fr4hw54d.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+	b=ILEEgcs6yceYTUz5GajN4MT7/jagU7nrRq8WaxgZE6UMSMe6Ds6I18mutF3TSzFNAG1Qk9
+	BnsVvR4oGj4Vka/DQpUH8QIuFzKtj+3nmM+wsS003/iDO57TXDZsy3rwZYGZIL6vUojj9H
+	PKLpePrAV9qOoNYXRDR4xiOpddvip8A=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZJIyZvDl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Content-Type: multipart/alternative; boundary=Apple-Mail-050A2CCA-0B25-444E-BA9B-12E28AE2505E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777254658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5ILvVMY9IinAdmagfVEGFpLv9wga0zWj49+q4fH7Cbs=;
+	b=ZJIyZvDlFL8EkayOo3eQtFY5LXrE+m7TDlJJmDBQzf7BrJgx95FnAd+AwFcOM58twrSDie
+	1DIyRtZp+dNLLMRod0HMAjWIIx0jTT/n0ZURNh5g9g3srlXBDqt7brWnNNogIyPIJkazcL
+	LFUAHGxOKk8/twwDWJyMG2+LvRAzM2E=
+Content-Transfer-Encoding: 7bit
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v7 0/6] mm: Fix vmemmap optimization accounting and initialization
+Date: Mon, 27 Apr 2026 09:50:18 +0800
+Message-Id: <C8490179-1774-4051-B4D1-46F97841317B@linux.dev>
+References: <20260426125422.f9fa79ec47db2e552d75e29b@linux-foundation.org>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Liam R Howlett <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260426125422.f9fa79ec47db2e552d75e29b@linux-foundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6902E100006
+X-Stat-Signature: bbpqgzakw55cgf6e9exn68u5juggycyy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E0D1DA0002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: tjx1iyqgg1rytyo3wqncjz8anynoq7bc
-X-HE-Tag: 1777254181-964806
-X-HE-Meta: U2FsdGVkX1+qbmHtqsycV5/GmBVuv9TqFk7LMtJobcVFK2op5QaoPGDQOeYuFyPs03O3IRPViH0rElwjEMu+Iq97Lvs9e/MRlOTbW5+f9ajJgDttPuV5Oi9dZ28cGIB9kw3/CMCyxKLa2QbixDaJDfD59tifN/8BdEtkFX8IDjvx32hEMExXpuz78p8fxNssI/K+nVVTTzb8LJ2WwUupnAuWW++6XBGZNdC6Jn5gqrNzJBYhBTqEzDXN3J2bBAmnsinlEeT9k3heNoTYRKe5Dxb3kcpkUn+sLUXuHgJMaMCOyPu9eOvlxs0kvJ/j++mgX6GkCl+EhlyLRw22bDUQsk4c/tqazX2ImAr8/H4x5brsy5WA4fONKGHlNyDXkXrw6r+MBg2G2erTfmJb8OAa11Y6sGEaDZwTh5043SpKR1hSJWs+7YTSrcfxZOSlWJ3ZL1/L/5Vrq0r+oRfaqrh96hSvWS3k8SCu3L7q3nyKOtVGfCLnge7dBQyjIdx22C3F/8kS/vNtL7dbVw6zjke2ge8IzP1REgHza5uuFBJ/xRW5Jfy5kNq7Vy4Kprdh3SFqs8gUrZyiVnoGEatMFdSst7auzzCohqMnoQJ2ZvyYFr3/thqFGWdrhcvu8cdQAaYFtSOIWHEXIEGB06uZPBCXfDckC8UP+I2ApHu1YjLtp8JuW3pZZoIsixmQOyp7AXORX1mi/tpXvQRXY/kglNOSTNSRCrVDk7CC0a3EnFqupWo6an91xTKBdF9Nl1lFS8b0vkBj1CfjVY15IODhGQFOcrCRadH1JRgq+2okdEsryRuWuIkXEMzdWGx/hSPl/ReejIMREO2U7jBuUkMHNztOWUo/pdd+y+K8VwqJV2AzP2qYtwZ9F0Hb/kbKC8scsQDRtyP0bjHkXVqRq9JLhV0FP4eOJxkVAWSppSoEUnjGMJDJRWF50MCnBdAw/Eb2jgTGjufofbX+fdINGOecfKW
- G0W9aXuV
- slur55vjfrbs0+tUen9sMaP1brSu3B6VmPAQYz2qW4pqlAIac42cJ4Pf9ys52WPWWJId4LvdVT0tWamxHTiHDznKU7og8O8DRfA+WOnbj6DDXFBqCAIgHRcuP6T+X/2XX0rsyoiCJf+npqIOv3xoH/kskCK+FYS5pLwyw2mIIxtlfdDlogbiLJNUc+mHh5QQrzrHgnMR4TvJJHTGrHIKOwD7n8RwD1e5qub8ZIY7uaoXa/vyIy1DHodxQg5Z39YXDLB+E8sbSoJIINZSD1j+BnMTmxJJHrooWYF5qzucKzMUjl/b6fOiNxJB69kxe3pmp1ASWNhWAeLiOius3A4IWCcooXrb4RfKRSnP4nzNWv9Y0dnrhjPq9dBwD847IZ0yKQFQ/nqHa6xKwoJI9d5gTHWnIev1f1mq+BDFF
+X-HE-Tag: 1777254661-916580
+X-HE-Meta: U2FsdGVkX1/0UOfgYR/fL8HedpASVvx1lFl3PZNieVSglu6egRWTLRvPyx8EdCyUGMQT5BnaS61iVxRtlAWbHe/nVqZ9FgFeiZHrVV35+K6EKMGsQkIh417RdXff6hcIVS/3gZRPKmLERPs9M3jd0kKrEbbH4hKWYdJXDfscJwjhQ/72QajR9uzXeuUaQ4H+zVgYTakXVPOnM8rMN+caVFOjHr9ZKOQjnAJO95DssvIGGL5xBlNyJ4jnLitU3Wm3YCAFAWEu0R4HeCtKTKF3UBu4jNLHHYIUbKsZ/OhYjm7tKwERFwulGlgS3VOsVGdYJrXyiKQz/TOz0mfAagj3fIRh879kNHe9ZGdN9Higd16uhahNPBvwpPBXVVya18YCblblUrDUYZzDc9zx5r1YvywIQdVlIQ+5RwuVbwHgjinlWo9cmH4topboi1O+Cczn7Tsn4GZkdgzH12fafHxLc4fZ1d9+WkRhvQrCyJvE6tq3tmZxfxfz9SLB0VGqe5N5utN2kK0/YesN+FqWhnbtjOtxIugZ6Dzb1IC16r8esCGXmkn3vyrE74W2cKtW9Nlsn3Ve8T/aGseGAFgWlo77slaSyzn+1h1Xn5ADUcoL+rymsGFMGH6H0WeqihgLfI9jSjroldVquRzCW1vJ4jYhqnqSVZyWX02igi7bES0iPKom6kTDgAsXVfIwj5ocxVW2QCW8YT6BuAGpMway8zvALHrCqHGDjbmSmKcEA7SqHELjc841aT2GIMHGDUx8yZ1RDCVVc+Tin5kb4Vk7pfD0oSNWlNdcxOh9QiZE7wmSo2h337KXH1egrY5uenkFHXVEDV1kwecy0lYADAJH5NyYqePJujudpExgsSNCMeH0jjnfiD3rQXZmd1v73wpBn0h5NWzQG1pDmtoCnJqn5IeJE6PK4uVYwP4gQEeHrZR+a63j2ypmKpMdZ17FWd+1cyyFDRmgrtOFUbvP6EQR9Xb
+ zJKLaWPK
+ kddmLArO5CKfjHVBg31HbPvdTk01Hp0Xd7IlCYU5wEGFdgIHkuNpEgAtKRD2TX0TFS9COogChDdnXjwO2cRHFvRLb/owCbHg4xmcMGvFVLAEbLCgX9OkSUuhWShaLAsNR5PlJhqurQbQwWOOGUf7tPye844CYRNd54YZ2FxAyMPFDKlQA3MfADa+KG20kyERfV5HN+Chc7GriPtAXGOLiSGPpEYi4I05U1Ufvh2zGKvu2Gv3MFwd/bWkVIugR9ArowzvyGmXbO4FM6+eQ563LbRIJqYGkF+UbVte+FMELWobfx9/DExvKiIp3t9bvXptRfgWUCWISx+eFFeV/j9LrYgv9KomuJWPinp9XNqMQYNsCvkJTMpF3ZwjpPJ0waMM1FMV8cVnJlVG51bff3w7Son2KmK7lQMUx1oEISZmToDBjDsPAfKZm8PbL8hl1sd89Akv+80OaDG471GvtjoSfiMhdgz26LnpUSK+9Bbpg7bd0ZwQ28vQ5KB+quyr5pTFU5wR+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,42 +96,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Sunny,
 
-Thanks for working on this!
+--Apple-Mail-050A2CCA-0B25-444E-BA9B-12E28AE2505E
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Sunny Patel <nueralspacetech@gmail.com> writes:
 
-> When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
-> to a PMD check failure, the pgtable allocated earlier via
-> pte_alloc_one() is never freed, causing a memory leak.
->
-> Add a pte_free() call in the unlock_abort error path to release
-> the pgtable before returning.
->
-> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
-> ---
->  mm/migrate_device.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index fbfe5715f635..457bab5c7c31 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -893,6 +893,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
->  
->  unlock_abort:
->  	spin_unlock(ptl);
-> +	pte_free(vma->vm_mm, pgtable);
->  abort:
->  	for (i = 0; i < HPAGE_PMD_NR; i++)
->  		src[i] &= ~MIGRATE_PFN_MIGRATE;
 
-Is it better to use guard based automatic memory freeing?
+> On Apr 27, 2026, at 03:54, Andrew Morton <akpm@linux-foundation.org> wrote=
+:
+>=20
+> =EF=BB=BFOn Sun, 26 Apr 2026 17:26:34 +0800 Muchun Song <songmuchun@byteda=
+nce.com> wrote:
+>=20
+>> The series fixes several bugs in vmemmap optimization, mainly around
+>> incorrect page accounting and memmap initialization in DAX and memory
+>> hotplug paths. It also fixes pageblock migratetype initialization and
+>> struct page initialization for ZONE_DEVICE compound pages.
+>=20
+> Thanks.  I'm assuming that none of this is urgent, so there's no need
+> to fast-track any of these fixes into 7.1-rcX?
 
-And check whether guard can help unlock case too?
+Not urgent.
 
----
-Best Regards,
-Huang, Ying
+>=20
+> So the cc:stable patches will be offered to -stable maintainers after
+> 7.2-rc1 is released?
+
+No problem.
+
+>=20
+> Sashiko might have found another bug in there btw
+>    https://sashiko.dev/#/patchset/20260426092640.375967-1-songmuchun@byted=
+ance.com
+
+I see. it=E2=80=99s a real issue, but not introduced by this series.
+I=E2=80=99ve sent a separate series to fix this issue.
+
+See https://lore.kernel.org/linux-mm/20260426144447.817722-1-songmuchun@byte=
+dance.com/
+
+Thanks.=
+
+--Apple-Mail-050A2CCA-0B25-444E-BA9B-12E28AE2505E
+Content-Type: text/html;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html class=3D"apple-mail-supports-explicit-dark-mode"><head><meta http-equi=
+v=3D"content-type" content=3D"text/html; charset=3Dutf-8"></head><body dir=3D=
+"auto"><div dir=3D"ltr"></div><div dir=3D"ltr"><br></div><div dir=3D"ltr"><b=
+r><blockquote type=3D"cite">On Apr 27, 2026, at 03:54, Andrew Morton &lt;akp=
+m@linux-foundation.org&gt; wrote:<br><br></blockquote></div><blockquote type=
+=3D"cite"><div dir=3D"ltr">=EF=BB=BF<span>On Sun, 26 Apr 2026 17:26:34 +0800=
+ Muchun Song &lt;songmuchun@bytedance.com&gt; wrote:</span><br><span></span>=
+<br><blockquote type=3D"cite"><span>The series fixes several bugs in vmemmap=
+ optimization, mainly around</span><br></blockquote><blockquote type=3D"cite=
+"><span>incorrect page accounting and memmap initialization in DAX and memor=
+y</span><br></blockquote><blockquote type=3D"cite"><span>hotplug paths. It a=
+lso fixes pageblock migratetype initialization and</span><br></blockquote><b=
+lockquote type=3D"cite"><span>struct page initialization for ZONE_DEVICE com=
+pound pages.</span><br></blockquote><span></span><br><span>Thanks. &nbsp;I'm=
+ assuming that none of this is urgent, so there's no need</span><br><span>to=
+ fast-track any of these fixes into 7.1-rcX?</span><br></div></blockquote><d=
+iv><br></div><div>Not urgent.</div><br><blockquote type=3D"cite"><div dir=3D=
+"ltr"><span></span><br><span>So the cc:stable patches will be offered to -st=
+able maintainers after</span><br><span>7.2-rc1 is released?</span><br></div>=
+</blockquote><div><br></div><div>No problem.</div><br><blockquote type=3D"ci=
+te"><div dir=3D"ltr"><span></span><br><span>Sashiko might have found another=
+ bug in there btw</span><br><span> &nbsp; &nbsp;https://sashiko.dev/#/patchs=
+et/20260426092640.375967-1-songmuchun@bytedance.com</span><br></div></blockq=
+uote><br><div>I see. it=E2=80=99s a real issue, but not introduced by this s=
+eries.</div><div>I=E2=80=99ve sent a separate series to fix this issue.</div=
+><div><br></div><div>See&nbsp;<a href=3D"https://lore.kernel.org/linux-mm/20=
+260426144447.817722-1-songmuchun@bytedance.com/">https://lore.kernel.org/lin=
+ux-mm/20260426144447.817722-1-songmuchun@bytedance.com/</a></div><div><br></=
+div><div>Thanks.</div></body></html>=
+
+--Apple-Mail-050A2CCA-0B25-444E-BA9B-12E28AE2505E--
 
