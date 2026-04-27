@@ -4,122 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22A84FF8861
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 06:45:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B62FF8865
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 06:51:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 850606B0005; Mon, 27 Apr 2026 02:45:29 -0400 (EDT)
+	id 106186B0005; Mon, 27 Apr 2026 02:51:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8019E6B0088; Mon, 27 Apr 2026 02:45:29 -0400 (EDT)
+	id 0B72E6B0088; Mon, 27 Apr 2026 02:51:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F0456B008A; Mon, 27 Apr 2026 02:45:29 -0400 (EDT)
+	id F0EF86B008A; Mon, 27 Apr 2026 02:51:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CBE16B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 02:45:29 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EE3431A07C4
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:45:28 +0000 (UTC)
-X-FDA: 84703399536.08.7848BA3
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 251CBA0003
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:45:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RXwBNA7j;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E3F7B6B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 02:51:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C5A71B8972
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:51:09 +0000 (UTC)
+X-FDA: 84703413858.15.FA970A6
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 096A88000C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:51:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=XD0n1FBt;
+	spf=pass (imf30.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777272327;
+	s=arc-20220608; t=1777272667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6692yq/cQ0USHN6DFzItmBiouuwHI1/l/PPRlXLNKmM=;
-	b=CdU4UkzkEa/qCcYhu4sKbZywYd32vQNEmqgJywZgNAa7GAe1WGovAvWnKDEKoWXdShEPn/
-	FNepSpU3QvkXPnaOHt8g9Y7B8WYCW2hDbMv2YMCmwPVkeLSAvlZYlXM9JIDtEsoQA7pvro
-	bMUFSfVNoAf46UU60WrbCED5psEOia0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777272327; a=rsa-sha256;
-	cv=none;
-	b=hb/jj6fvovRFBP+wflMrlXlZ8u2pXFKxzNnTbk2zqmwgK7VvwesX9+AkFcwdjQOeS5V9vz
-	ZQcGI8YPdVNGhFv7KILGOInhJciPqsDC5f2cRSlc5gAwGENJ7jJxDGY7egxkQoamVnDD/W
-	AmU1ahH5eaYpZgMO00OVBStwxo0jkf4=
+	bh=41mMcEQEek9HQ8wG1p8IAJCVbj8LtKhdJVFeik9c2TE=;
+	b=zIFjnVv+oFWMe0A32bOuYh1CR9xfwkDTcd6X2AlPAEkl4R5WQXeZY63mt+c8Z3gliGeRp5
+	tg4dLVmUEj0TuOWY0oA36HJ2QFMM12L2Y9hxVjpcXExUJqXpVoXFg+7xIs0D1xH1iQt1cV
+	X2VQ3jfQrRB/dnyVr+MkH7PUt7lyQB4=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RXwBNA7j;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b45cb89f7eso61086155ad.0
-        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 23:45:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777272326; x=1777877126; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6692yq/cQ0USHN6DFzItmBiouuwHI1/l/PPRlXLNKmM=;
-        b=RXwBNA7j6ntijavNLDeNYwDumpgBymBTxEBPEjj/2YJjnpYe6P2h3d4Y3+NIDbKUo3
-         qntdUFzSkCDsSfRh1XF1jWZicQFZjIqini7Bhlfi/JLPwiyzjRIFFTqmdVCzyvLxmgJJ
-         uolOQsn/Sls/hg6sSNjo93esL5kr+lNxJPKCFiff7hk1ia1m3EbIjlj6E+iUuFP+IiP7
-         pcYUm5Tr/ZpVcRNFE5wloEKShCyY2eHpMEcl8THNERXUf+CCNwRLq9RnazZDywf0zfAt
-         7egrq8/Ty9JaBIQWKLgQbVRAPu2CQYTjsQZhxNAMmAGXXVFIglnoFCd/qG6kTi/Pia/r
-         BSgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777272326; x=1777877126;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6692yq/cQ0USHN6DFzItmBiouuwHI1/l/PPRlXLNKmM=;
-        b=ivz7UttN65nu2ZuOW+B9/JUssbY5cf6QgtEatHzXTO0+Yvw1bpzfeDIuoAnBAWOUdF
-         T4wsF0QiD+W3KVf3jUtugMG4f1r3yS/gRNr9K4bWQk64JqTIE0kSG1iV1RQExtz9u+HD
-         fL9YjGBww5k294DoAdy3mNP0QJNO5a/iywDngxc94nO7/ujvgybTTQ+uoTTodt7njrIJ
-         /25QQQYXTlHf1G5Ty4UtVTmz517mOmvkKIlUg1ZTomTxnW/U3qUFR0LHbEC1MrBUYZAY
-         TME1d1HbD5mb0tjK9jbAuQpIX6KEuht0Po1BlnuNmvVqhIeOVbQL1ORJ/B73mAt92tKu
-         nxdA==
-X-Forwarded-Encrypted: i=1; AFNElJ/lptQe1OvtCXnYVdryUYX+c3ZSISkn8T06YkTOCwHUkuYCTJqI5f5cK7sQobIiQ20oWvB0wa9M5Q==@kvack.org
-X-Gm-Message-State: AOJu0YwMOyJqX/hueFUtbR7bpprs4JOEov1CTCSPx9JKobmqkWun7Zf+
-	O96uNNIPQL8sbdFJuw3V9FjdLA5koP88Bi47/RQ7YVxwyZtp9qY9yWFA
-X-Gm-Gg: AeBDies+TuuWpj5DtkUD7ZGCgQJQvR16u0XLWC+Iw2JkxnaSdo6oSgfoAvtBeL1SNmY
-	ka6FWejl27kcfCp3t9Ku6hFG5HoP6fuXoMKIi4vy9c45FE//jXvt4Pet+mj2Y87VThX13UpffAi
-	6HIN98Liy95SzpTm/g5tJuP0pblTEk6Pd9yaph+WXWQGZOJiP23sTFP0OA5MW4ZZ8Qu2EBNrYOX
-	9ZeZPF/EZrTuSwGGjelFNgiMHNfiOfTuydjKcM2qTzO14NlERwscjsCTFAJlCBYz6KpJozlqAGQ
-	Du/fgUHroYwF4bO0viNO2B2PDCEKj3WTfJF059kz4ZMNihNkLzEzjYaawrFpfbJ8rW1j8DeusXh
-	ex8uxQKh8tTin2ye96iXe9Da5YhfAB3DAzClLaaxTP+EnkXhv7mpJ9q3Xd+M7F9II6ct789ivdM
-	lfbu1s3YXncKWWslXRCCzIqWm9ex/j0EdhkIOcD3w5cfVvEyMyLVu/A22W
-X-Received: by 2002:a17:903:384c:b0:2b0:7e4d:f390 with SMTP id d9443c01a7336-2b5f9fb1b9cmr406146105ad.41.1777272325956;
-        Sun, 26 Apr 2026 23:45:25 -0700 (PDT)
-Received: from tech-Alienware-m15-R6.. ([122.171.21.105])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa14487sm311671955ad.18.2026.04.26.23.45.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 23:45:25 -0700 (PDT)
-From: Sunny Patel <nueralspacetech@gmail.com>
-To: ziy@nvidia.com
-Cc: akpm@linux-foundation.org,
-	apopple@nvidia.com,
-	byungchul@sk.com,
-	david@kernel.org,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	matthew.brost@intel.com,
-	nueralspacetech@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com
-Subject: Re: [PATCH] mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
-Date: Mon, 27 Apr 2026 12:15:17 +0530
-Message-ID: <20260427064517.19784-1-nueralspacetech@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <5D99B763-2544-4130-9117-9E6BEFE6A2CB@nvidia.com>
-References: <5D99B763-2544-4130-9117-9E6BEFE6A2CB@nvidia.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=XD0n1FBt;
+	spf=pass (imf30.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777272667; a=rsa-sha256;
+	cv=none;
+	b=djOkkeSMOO4rUtuv/pHgjDJs1lS3BV9jXlO5JnF9dZRySCUN1E1239Lfd5aajOSJNK2kTE
+	clj8PtaKO8KK04/NguOvHIPSPkvpVfpRAkyc2oJyeE+zPOVXk3Y9UEgBrSITljr3Y65zBy
+	DTQIc08RTTch8JaXw/4FXFuwLRTwKxA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1777272662; bh=41mMcEQEek9HQ8wG1p8IAJCVbj8LtKhdJVFeik9c2TE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=XD0n1FBtbAeaNwGIMmwlXMS9QbEMjJf3A/oa8irTeYcmSCnqOoNraL5jN9Q/V4aDt
+	 a1hqBcIec2bzy99lCHXH58PqTrkqOSraH0635C+omQHBiGP+5r1CSeh8sTAzGbCXZm
+	 hbW5Omjd9UMYLGNrHL/UZjFhbcOcCKtMFs3/rOKs=
+Received: from node68.. ([166.111.236.25])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id CC08F61E; Mon, 27 Apr 2026 14:51:00 +0800
+X-QQ-mid: xmsmtpt1777272660t8n1s7rc1
+Message-ID: <tencent_58F3A61E5F234437B8168A5C9BCF5D8A1508@qq.com>
+X-QQ-XMAILINFO: OOO9dHjlsLs7MEJRXcZ2RppC1JUDtSNcjnYvVGF83ZSqTJONqb0E9R5crTONA2
+	 6AJSuoY5ZXAJ22tWfgym4NDTzZfpDHz65OkdLi0yk8q7TphWy/RuMxceo6JN8AC8vvhwCrlHYVoa
+	 zksRejtsiNM4X/m+Vv0bMrIK7K1lrOSRHhPVdgBz9zDYKqWyBVK/Ythz65qGzcCJB75jk8nukrez
+	 Zw4wnX7ZNlW5vQCR24/eaUyf+QY4Qyt+jCvqR6kNrG2PnlLo8nh5na8s3XyE0J3t7wnS9b0Y8tcl
+	 d+32/7KiiWntJrXL8CYIWH36IT7PxsdhfZYX1Z473yN/3xbiNKG7Fg0GjRe4l5LqX3i7GSTtfG8n
+	 S+wSkmDvIENJiKgj+F8Kav7QEFzLb6YgTxB8kmmvC8fT4F01gpqOXlC9b5QR3bHLffFcD6nq4onN
+	 4vQFz1UT55ljUBWWDubrgNLtfLXj4hxqLhglW5CNoQqi/aYx/jNR1P1PVkfK/xBg31iwJePQvWG1
+	 JicVv5O8MDN+XBqpMl863KOSNZQ7opOtqieJ4d0Ckl7BA349RR5B0whL75e0lSil/qWOA90XwvCD
+	 D6cS5UCaVYkQ8FdiMZwjSJGKghsOsc55glLNYf5x5yR5ZhJDn0hVMj6PZjy8bOzO3hnSRRo7ftYh
+	 KFentOSSCM8ZDRhXvRdTlAxx87bED8q4cNxdBMTe473j63cdIREE2AOlk9iEaeP3EZCH5UQ7ctn3
+	 n5PARyKWsjYboudU5elDQuTZdqyxVm4aXEYXHiMlKza/jNvkzg8H50DVEgbPrv6JA7Z813WxGdQC
+	 KSF3KBP+nb/c2JUoPU39qz9DX5uZReFSz1NkBls81K9D2ifsrAWneG5e9nuK24J7L3xRrOQS/HI3
+	 Ze2QLs4o/k9c4AYxbJN7TdNnJiQACX9J9JHiLmzXKj3IcTimlhJVLWGDidDyzTiqsq3COpOnzGlG
+	 jV6sjSLhAt9S2TPn+yfpWL3+fC1WuyzS/X9J6U3zDE9tXj4wxqHw==
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: fujunjie <fujunjie1@qq.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/madvise: reject invalid process_madvise() advice for zero-length vectors
+Date: Mon, 27 Apr 2026 06:51:00 +0000
+X-OQ-MSGID: <20260427065100.2583089-1-fujunjie1@qq.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260426124142.88cbda0e6695522d95ef6e24@linux-foundation.org>
+References: <20260426124142.88cbda0e6695522d95ef6e24@linux-foundation.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: jc5hsu3e3pqwudbr5qbydmoy79r9enhf
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 096A88000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 251CBA0003
-X-Rspamd-Server: rspam04
-X-Stat-Signature: w33h6ofutgcufp3ig5jdxg9b75uztwcw
-X-HE-Tag: 1777272326-454477
-X-HE-Meta: U2FsdGVkX1/TyHxAh+Dc4AbDLyfi7mIHNbXYm9gGnwAD1tKtR0Ab/4V/7ymotyQ0tEqCqKSS5xDAn1Ol8XGat1xb+5OoAIWLLOcP9e85PER3NKV3QZ/RtkUmVCHLfx3LnVfuMF6Vmb4rjWOod5Vxv3cWiLrSVD+cV3a+o2TxaIvfRF2V6ZnH3R1OXphSq1HVfzgE16nHGoXDWrIZjytGssiYForSX2+7tNH16ksAUAgbkXLVww7nqRw/sDr3ogCrQHksS46q1FQM7r/MzEyjDKUu72kCGFDHTSagFDzAn4pCZc7KFc4UamK02j+toDI75j+7OsfUqwMpem9jnqElPKtiTnRCj24aL2aVYYsZRbux58QEfzUgpnAlPoWktilP8FFe6hncEAcHqGTrKAWuP1o93lzzf4aUVSsx2mRj01aPbK7XkFFMqV8HIhAaSiRQzXnl0eLkm713KZJiHSzHj1FLVsHntBU0Be0+YB6ZFa8MxfkEXmXdQF6O5VeqWQxG97Gy+uM0SxAMlBiK5u2URS2QzAdachKIzyR3xkjbe8E+ZkfznhI4VCaiL7c4BSTPg+JUlOJmHQ7WIyVvNeDSIbRYd0/trUqLmsnGOL+R4Kl7wsk7qfNk5xGhBbo3EUAhBekJvgM7IVXGC5h4oXUjSmo6J/DFBVH39RiwD1voYuadBm9weORk5sFKSh5K3vuxr7cUXn6eVke4zedzy4qxl6kdg+RgW6xnVJD2N1qYrGtmx+ZxS7ffPuit0bKhzEpaAZCrKyG/aIyFoB6M/hAoQpPXhcEXxJU2cuYiCc1XqbEFIJp7ldE46N1CEfvRMi/XWxLxmOvgdmGHUJQ+oKPest6WlPlDjnkBpGVMp22oUWF3gqqIz8TnlNGfSXwWA3ZPNHlXVpM+4Yye5MRM4PBl+4IGZwL2XKoCJjMLSsRlSzv6KpBySWheSPzVvwKj0LH+jsOmy7lB2Vc3momDeh3
- 1M5pT43O
- rRaCP4f2TiC4dYeMMhRK9tAUz5zLRmTagtHAHSjBuWc8FrxqYkxhBGrgrf4h87s9tShEmxMMf/ZCF1UdHqZaZZT+gifDR7dX7dHPhXQ6QY14CIujGmAS8ji6B/XC+Zfn/qdV+JqDE0a3bDr7pZyxMWcykoyj8TRIsoivkmUlKWC8HXNHuJX+mWy0HjXheVShytJfeCQp6yIYtency/Cu+WUi5wiKkFibeaWvRNe8eu3lgnR03zhkrmajbp5f1B10UR4DgmnSRQR24tzdVmCXSeM3YISn9BvCH431RmGSufmmMgms2TWU1r8Tc1KVl79EmyqGLF8R91h7MqfleJnxMDrUWRuIR5UbWgV2w1x41+eAWxs9k0ocnZqtcU/Xyq+gGiObvLpbq/3UZu14OH0qjkHx1Z3gtmkumwpdzkvfkL9yI7LyaNviqH83cebuNX0oEAyRyCXmm3pFy1ThUXjGoiKvobY1SpRSdqw6/eolzRutEQ+3viwHdEHj5bdZ/hqw/VkjAthe+nmZS0EWQzlVy9CJk33ZKrljIiNtLmEMb2yqNY4TPcbZo3heAHg==
+X-HE-Tag: 1777272666-427037
+X-HE-Meta: U2FsdGVkX1/gFrJ8V1rG34xwCa0OtOeIoKpAj/eQndd8Ad+XSaHG9UXETjHhbIBUCnYZIymIXTzJJKzJ0OO0AiQYGTetZ04WdXhENWU0ud+WaXzI5Dd0eRE8Uy4cS3brjS7TNwquvbouazRaWPyFEOQwMstmAylJvUO6IRBjPMPXl0NOart4vLJIKmaCeltmEKxiK11LlHO6TXkQzMoWc9/JIF9lYo8DvOpe36YcwnSZ+67c22x8IgTLbtcuZRhzGxwVZh6Q3cRQqfREzSqxQj9Mrl4LfMrA2pKblWvhMBdKEBBXO+KVPl2kq3JQUjnsZ30Xp2dHbhu4q2yaEshdAA4w3WhfhUeP2Aw2ARyfjrGNLGeMICHigIDm+PdCn70WQGYx122YlZ5jTLPMGtBzlDZh3qBatHGZLre1kcS6PeoGv4d0vZp/9BWyOry7QS3NucyzFEL3Y+/+pIeWH1oXsbBM1aBR0GKyCIvAzr4KUulTGgJpkHs5I56BdAMgkUq12cvXKiSw6FrCNXuAZj0BvtdkKObMSemCKFXV47/dHC7cySSgaM+1toiaM9dc+YEOmMOEcP3lSiCpLp5wsGloQ8/tmrLmpE0wo7Z/dNnJnV866TpmKSQ05CGqRlyO5Fsszq4pVGgHJYI7NwOhGhN6/Z9ZRVglLiUgFr5/LtB0rIZdAiNF5EVlG8IlIPaKyz//33MsAwYGdJj4tozQ3AiSN1D7tSTndQyP5yWq9hYFsbGxJsgLnYA97aR8Ein3Mfjn70b6ty2z/2f315+tsbPoZ1o61KaPCJp+GvEtbhaGgj+wM7hBc7pka0hVqZL0nJJdWGRP3xN1HmHGMKUtUKxAdf5xO+23ctEX8kLIK4hpJehZqHT7z3N7LNfNotkjqlfr/c00Yb1beeMBGpmIZQwll+Qhy4BEEpuTxgFjfH5TKBIIliXTHLhCjWd/jFa7sXJn0H2zt7SuCC+VlgZDuLa
+ NLhEbaEP
+ 1fooR5wCbMZjrtKCpu8oPGOnT/w3hGk7RJr5SsYqZMoHSdP6OZS65KnYHug4DYVgpuru+MLNHcEmuj4DyyatKdLdNzyoXxetVGkEyAsX2vw4S+hSqfnE2WbdzT5KhtiB8E8ni7YUirG/zZjs8nxsnVgI7o6js7Cv0sWlmrZYweMTruLVvuH8ISuMQARMOxkm4ytALbbIM5hQkgOMl7CCWCGPsuabE+N5/E2R/+qJZiD/NxcB8JsSkcRCcYVDgYKEM2yHfCXh57EUwgKKZMYXiVFz6ytVKk0IKv1T+S7PUBR177KV3xyRxdNPG0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,32 +101,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 25 Apr 2026 10:21:01 -0400, Zi Yan wrote:
-> I think the "goto abort" above pmd_lock() need to do pte_free():
->
->         if (folio_is_device_private(folio)) {
->                         ...
->         } else {
->                 if (folio_is_zone_device(folio) &&
->                     !folio_is_device_coherent(folio)) {
->                         goto abort; <-- this one
->                 }
->                         ...
->         }
->
-> The lock is not taken yet, so you might need to add a pte_free()
-> before goto abort.
+On Sun, Apr 26, 2026 at 12:41:42PM -0700, Andrew Morton wrote:
+> Seems inefficient to be checking `behavior' repeatedly.  I wonder if
+> your change will permit us to remove that madvise_behavior_valid()
+> check from is_valid_madvise().
 
-You are right. The pgtable is allocated before this check and
-the lock has not been taken yet at this point, so goto
-unlock_abort would be incorrect here. A pte_free() call is
-needed before this goto abort.
+Yes, I think that makes sense.  I'll look into preparing a follow-up
+patch for this in a few days.
 
-Sent v2 with the changes.
-https://lore.kernel.org/linux-mm/20260427063729.17294-1-nueralspacetech@gmail.com/
+Best regards,
+Fujunjie
 
-Thanks for catching this.
-
-Regards,
-Sunny Patel
 
