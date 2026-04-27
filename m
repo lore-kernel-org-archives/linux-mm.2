@@ -4,122 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27DFFFF8861
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C21FF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:58:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BED86B0088; Mon, 27 Apr 2026 06:58:22 -0400 (EDT)
+	id 2C7D26B008A; Mon, 27 Apr 2026 06:58:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 670386B008A; Mon, 27 Apr 2026 06:58:22 -0400 (EDT)
+	id 29F9B6B0093; Mon, 27 Apr 2026 06:58:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 585BC6B0093; Mon, 27 Apr 2026 06:58:22 -0400 (EDT)
+	id 18F436B0095; Mon, 27 Apr 2026 06:58:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 483056B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:58:22 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 06A1F4011C
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:58:22 +0000 (UTC)
-X-FDA: 84704036844.15.2B79FD4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E908340009
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:58:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MERY5AmI;
-	spf=pass (imf04.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0AD526B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:58:24 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CC7EF1A013B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:58:23 +0000 (UTC)
+X-FDA: 84704036886.07.1642184
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B91E4180003
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:58:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fPsSMVCu;
+	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777287499;
+	s=arc-20220608; t=1777287501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=wclsbCz45VsM77RlQTKKMaoJPnWAhWJRZZhkjEMod8Q=;
-	b=RU23ODB9I3UNEm3yB7K4h4JZKG1QOw89pa3vc98cKjMC4nvSvsmKquvKhvfLJgPJpVmO6k
-	SzZVQPhplmY3+L33aZmTcynJn7dDiYz+h9AVw3uG25viGBH0VwIWNkKl+LqdYI/db+JnZF
-	vXrqKnORXYZMjFA6EXihKlYzCnCoSq8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T+uzZ4Mj8ZwiBYWjZvhmHYqnD9uPtTE64Ztq2V+yfjY=;
+	b=2//6xfCtGaTA+pc5xxeoG0pjHe9Kdmfiep/GGHDOjZKW8fi+EFbFRAS5cEH9AXjQTmk6Pa
+	y74Gw8SZ1ujUUmuIGxry85dStdDZuZE4DJlEskoqlBZ8fh5v/corAUby4b5iXZdSbrjKyQ
+	sCy/ATi9AGJv3BRpJrqPKG6d866VB1U=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MERY5AmI;
-	spf=pass (imf04.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777287499; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fPsSMVCu;
+	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777287501; a=rsa-sha256;
 	cv=none;
-	b=OmMGgz1m771dMOfuzFVIAaaCMRT94mL4cYHcuqQAOou7GEsOwQoZKpHKSSQ9uEIPMiHqtk
-	6yFWgWbk2DM92gULq83rWT2B18ssm0OSm9o2i9cO/ljUmGLYmKl++A5kAp2i9OFLVBC1up
-	kKDWresijftJHKVh6XlNBX/TjinpwN8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777287498;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wclsbCz45VsM77RlQTKKMaoJPnWAhWJRZZhkjEMod8Q=;
-	b=MERY5AmISDbORg8UT5rnTDera9Fq3MOrsiql9omx8HLCRtD+5coGDzFPQGc9O5I3y1Fvlr
-	4gxcQMZ3yXKtzinj2FTlZ+2QgiiGQmEOtnavi+BquZKg3oYdEYh+UUNKfGZkW8mmDqf83S
-	k3/LkDpBviXCRjYZsJovrn/zvSIe5i4=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-gwfItt3BM1i15YiwhLLMoQ-1; Mon, 27 Apr 2026 06:58:17 -0400
-X-MC-Unique: gwfItt3BM1i15YiwhLLMoQ-1
-X-Mimecast-MFC-AGG-ID: gwfItt3BM1i15YiwhLLMoQ_1777287496
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-50d8e8c47a3so269560451cf.0
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:58:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777287496; x=1777892296;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wclsbCz45VsM77RlQTKKMaoJPnWAhWJRZZhkjEMod8Q=;
-        b=IGl62j5axz++6qnjQghcsjh91NkLZcIzTeTHruDVfMECP4yitFbVBgckr0o/TXnh96
-         aeq+ey/jF3m8kIVy4NxoKfdtdkR19Ci5DDfozkOWTuPddh4vEPUWE9K5tDlPf05UJ35b
-         GSPa9DjPxURovc1bvaa7TM94c90AZMlQOJVp2o6PKikjWXNDHLE5AOCusrCsmCoOuDhM
-         66m1NECORSleMX/U7JZQfg1BLt7P9jXIeLb1QbLYkhXT3RQxQZUmi7m/7RaSWIWCQzNd
-         ZIzVJc1lJEXsECHPO6VhFvjLp6oAkSau67cniUc/eNsy+su15eB1DCy0CIamhcDmNJ1H
-         Ro+w==
-X-Gm-Message-State: AOJu0YzgwbjzHAFmYWtzXSxRYtc9CYeWRJHRRGKruGS4sFJ0Xyvyj1Y0
-	0zloHENKF7ZZ0xgHZjPFtKlZoa5T8zf1TO8DjUGT4B0lJNfpH34fmHJUAUxlQhH5ifUt3dOmFl+
-	6aerP5oMoAVNORhlvbF6UjHFUcxW1903JwrZgteWxt1ILcPkRmh4eMrMOaR6R
-X-Gm-Gg: AeBDiesAeruigiLQ2zssC/uLxPBSbgsYykNEmGlhVOSV2Rc0K47nCprJntfyYoc5mR8
-	hIa4XhxngNqQwQPk9rsQnQXUvSooV/QQXOvVgrCHTswJGBBWU7x9utHyh6vvZk8e9KiGv/3kfxQ
-	DkFyNkPjy7n6aK1RuHKWqVXPMHEPSLEd3R21bXg5Djev/eY9LQUyL7AX6bfT1IBDmRdh/ClnaA1
-	9hraQm2Obmd7CR5S3tWSckz/OjZFuJHk7jwS/lFjEsMQRD7Z+jgIOCJ83fjKYDkMzEcF4YgpnQp
-	eQmuJn+HOW3+IX9ATftP3LHLhC5T24xzGg0KwyDq2KNzi0REoClRf11L1GHW+Jp8yl+YZIRXYK8
-	WYm9sKqNfUCY8ENn58Ukn4K79GkAo6fo3SYfjpOyzxW/eH3phNq2WEE2M4CnVXIzEDTulpp0S5+
-	WwP5mdwKaHWMSZu2b9GymKhy1I38YVtdR4GBs=
-X-Received: by 2002:ac8:7d56:0:b0:50e:ca38:e219 with SMTP id d75a77b69052e-50eca390557mr474867681cf.45.1777287495887;
-        Mon, 27 Apr 2026 03:58:15 -0700 (PDT)
-X-Received: by 2002:ac8:7d56:0:b0:50e:ca38:e219 with SMTP id d75a77b69052e-50eca390557mr474867401cf.45.1777287495453;
-        Mon, 27 Apr 2026 03:58:15 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e39495192sm263471871cf.27.2026.04.27.03.58.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 03:58:14 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linux-m68k@lists.linux-m68k.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] mm_types: remove references to s390 gmap
-Date: Mon, 27 Apr 2026 12:58:10 +0200
-Message-ID: <20260427105810.23761-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.53.0
+	b=uExPwXl67qgExp1beDjXOnRgW0pLo9+KX85OZ7BnGlsD3jsM58cxRup3dSFWC4FaTjubMV
+	0QJXGa3IXLvLhAQGvPve13x+zSQFGHtZzb5OP2eKAWMNlG+DQgilb35W8i6/Qe6VG8dVFp
+	rnZMoyfgwr9nGOv9JRKYH40NvWwban8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9EF944456E;
+	Mon, 27 Apr 2026 10:58:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557F2C2BCB4;
+	Mon, 27 Apr 2026 10:58:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777287500;
+	bh=t2cvbxJeTDwpCmvc7MQkgIGux4ZS9uBTx03M6Wy4SuA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fPsSMVCuxI5PtoZIjkgjLoKlREiZSRv8t/UUmX80SNeLScaSi+GPzoki//Za+3sJp
+	 d8wrCeDf/6n+bDsJBllKJJ69G21bZDb9Z/eEbNe4LOcUX0rhYlPHMMg+vlnoiZRYOt
+	 jGgalDJk00cBxzwhpQAHanvsfIj9SRQh6z6l0JVX8edw0DZ2gWURdhJMmyWvQX73Yj
+	 D1y0Lo4kFcksqbqKU3/6/LqTpEgFc0c6DGLeJ2AeZF9RktAaFFbDCl+sLJBKkGDTlb
+	 OxnVp7cUUIF6UMW/Td/xVC1cE6iaKIPpy/WRjILb1bV4NggZS/Eb4uFE2cHJtRI3WB
+	 NhUzSkpTU01hA==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 771CEF40073;
+	Mon, 27 Apr 2026 06:58:19 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 27 Apr 2026 06:58:19 -0400
+X-ME-Sender: <xms:S0HvafF4r7Tferxd0CzVeZyXBZNJSzKMd7AKMfe6v9QDuBfcXNou6Q>
+    <xme:S0HvafYFAEL0PzO7IeOqfzXr_EpNuUgi2L_V5ROqK0NLuLnwbD6uyj2RoD43ulIuK
+    AngytfQ9IrdLuRvJ99H5rUjsr_pl2432Sdi8yF1DwvYN6DXiFfzTg>
+X-ME-Received: <xmr:S0HvabxlQ07_eWVn-0A12U7CE8XIaDAjaNxNaa_WRv3PebqteEasbb9AH1Gyuw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejkeehudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeeuieejieffkeehfeffffdtkeelfeelhefhfefhudehjeehvdffleeuvddufefgkeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
+    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
+    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
+    grmhgvpdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    oheprhihrghnrdhrohgsvghrthhssegrrhhmrdgtohhmpdhrtghpthhtohepfihilhhlhi
+    esihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehushgrmhgrrdgrrhhifheslhhi
+    nhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprh
+    gtphhtthhopehlshhfqdhptgeslhhishhtshdrlhhinhhugidqfhhouhhnuggrthhiohhn
+    rdhorhhg
+X-ME-Proxy: <xmx:S0HvaZSwa4p1QDeQOOd_hZJU1Ebl6mk2o2WJeRQhnX1xQKcJ8dRQNQ>
+    <xmx:S0HvaQKQr2SdxWKU35KA4ROH2UUACcbXyNouW2HPipAHxwdh3Lz0rg>
+    <xmx:S0HvaYUtbNoduIyoR7x7Njd6_VvAHVKuhrV4GdtGZ3bJKn7QV9tTeQ>
+    <xmx:S0HvacShCwcw0NAaGNKlA9GgxXCdX0qvXiZi3b9gFRWU7fAKx5eGxQ>
+    <xmx:S0HvaYB-cu5MN6CwYh_5lF4gy17pEDhEM9H9IQgfgNFVAIEGANU7DPn2>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 27 Apr 2026 06:58:18 -0400 (EDT)
+Date: Mon, 27 Apr 2026 11:58:12 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org
+Subject: Re: Large memory allocations at LSF/MM
+Message-ID: <ae9AHWvXUTuoqlfA@thinkstation>
+References: <aepANOFKoA4jn8NN@casper.infradead.org>
+ <6cc83a53-4392-4925-9187-d682b60edea8@arm.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WLhbMKJY-miH3in11Ds17Fx2ep6nBn5Ymo9npTXEpsY_1777287496
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E908340009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6cc83a53-4392-4925-9187-d682b60edea8@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: t5w3qfam8pc7dx3hkzne9n3x4unfdje9
-X-HE-Tag: 1777287498-360502
-X-HE-Meta: U2FsdGVkX19HXRQKRJFfDEq65hHJ4NpNeuYG4tikR/4zLhnzg3fCt/AACrS6w/WvhXSCmzBMtJi54vdZCsmqhS8TSIcOvbosEHkxGOD+cB+TIA6/6jqL4jBAfXjmhCozGholrKxdGRmIfHkQBR0Awi4yfYjj0iFgj/igr3yl1POEDUZ1+LrXTJFzkkJSTfxsg0j5nAUYpBh6XJKxp7HGTtaugQxtAWx+foCg78JvskgEIfNkMHBPhoX9hFFwhVp894J88OTzaSUUJJAU/PUHcuE8hSDkj5BX/+JHn5Xe0dCuYBsGv70LLC5WSlVXWVLXefqq1L5QdJfJeZJgIdR+ZqtzlWJgl+5Uc/LyywCof9aT+0y+oisiW+dVMEIqWaymrzslRHk/zWJKXmr5sgyG8QNQ4owm37nrGn7IeSoDl576T+/17F7aVgQMfBkSFYwUz1lu5KLMqyoZ+flxJ2n/4UJ5h0CV2lYnd7VC49HaUVisUIuHUmNofsHaikLeTdr+YnZINJedukiR0d8Umb4TBiFJZkEQQaE+HjE0FTau4QG0BRZse4ndir6keErexaSgixO5GAXBrkAyWlJ09pC5Ip2PdMzH2MwNkiAj9qp7NNNpSAlMG9u5HCuuBRzCC3PXQ9nZf0M/GWRqItiJOrExzB07O8qJQ8DS/v5ykpnjJZI3TnRE+VNh80ULlnVdDIT1eT8YvAtZ3mJ/WKAZbJK5E/Dl+gGXzHwwuAypFJoK6FegDn8UAx6bzZqZFCHAFukNqRroAbovLb06jHLd91qLUbI+cE9dDfstad5c1TrWlAwxtPSmQjC6yCqXkRICSA2UFuF39b0Cmp2p5cLyGKaNqCM9wFTgdOSonvnLZ7l5IdEtFIIcpqzAyWc3OWMgtV98gtYIxMfaeF/ufXFdONRdT/tWcKxsFZCLso3ActOJrygWVp2i2EQ8P4gvAwfjitxf2O7ONmrHstah+VenEBS
- sC61yCcC
- VX/GtoJrmIQF4tNKFhZlM68IGnDTxlIMHd4FG8Z6vSw3p4ZuT8LtFaSX9jJBW6HibdoGPSKKyevhCteNewX+l8YaIQw3gmNp51J+IUAFavnw55MMCAYgZOo2akWhY5OddMK/GCKBg3w9vOPYD3xFcrtA5Vcd2pFhQ6sgPD1kJleU0u1+firsepIoHDyqdIINZEAX6ITLctAJGWGi9Qqv+yNVIApGc1WIi9JWwIF5CKwj8F9HKpHbWeX/PR7djgksWs9j7PTnDQfkiaZtndfHbvMkK4DhIXQmS8JgNOC7uw9JaPY5+4C9dF1YBPJMsDOCXEUJBHZpH94Ni81db90c0b2y3bQ6Ee+sZBamt6JHx/64/6YTVitiFGLitUH/d3rLpqYFcNjEjCgMmZFsEefkBqm13OQiDnXF4T7ZxUzFElK2wyDnzGDsj1JXJEBuByoBvmum08M5OuUYH9d0vgrPxbj/5fOF7JT+6wcWL9SHjVvOW1xLNwBCev/BZYMaXvj6uu9jWaBstZ8gk8a6gWttCKG6H/gxb6PyzYaR4ZIk4i1sEEQhd/pRLe549Xs3sdsQr6sx8vnTEnwefgV4KiP2QX3MdBabCEn8SchWX
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B91E4180003
+X-Stat-Signature: yy4n5qyh3dmm5863gac8ks3ecchjsmwx
+X-HE-Tag: 1777287501-518301
+X-HE-Meta: U2FsdGVkX1+DwRfZ8y1Kho1FyjmeMfCNveARVD2+OG//bCBNTq0McEKdtbY+Gg5/dW8aPYACDJbipEQQbSvLgJ4q1ea7HZXRSt62IZo21bcEyrDe8gvGMZuIIYKMEZmZQPHW0D7bGReb5IdpT3bW6e/MTVfANgkBJMiOYMKT2j8fid1SyE2HZSDfDyHk3qvh3Tac+inAk7jfto1QxJeG2UY6CyaDqBrGv3cw5dLy695Poi17WFVBJcmW1Hct57jyYIi9ecTCLXTOpkWIx5f/B3/7+ga1bY1osiWXfe/czkJKQaJcDwWSxYN0Gb/YNzwWOhByIZlz6YHjSxA/vT8pgKpsfNvpzUI6A8Qo/SRahXafqHlxUss4stc9a6Z870sc/BqpCj/BIQAZjzb/NdG1dHWM8C+dP+jzqU/VtXjtP92Yl09o5wQsUsli6Ix810IRktNiP9oXqSGRG8vXxu0t23FZh+F7umfsSGNknPgIZkHD6al0FJvyMATb83kZjBhv7ssCuGIOzE/k/MhVJhu5JFhv1MfY00cT3fMmO7EaHOUJ1WbhkNL8PDeUooVg+10RbhJ91r8DsUp4K/vdcJ4yl4wkWGzx9d/rGVWTgfNaACEAs74WWCW8vxRHzRXDeI84Am9v/R0ZqB6hT2N6s3g3bajqTiSoug2zjyaZPzIQo/+TAHvOARaJsZjE8NKNpQjEshy9Wgw7BvvIuV5PD2W6RR/Z73Te5pJH/m6pejDTcO1dZD/EXIeVjqtrKuZCO9/4Sa+3dhcXKxAO4W3OpGVCOYbK/hYB2nJeZb5AF6hl4ltAoSA6eU4arwetetkVyBoUzrb9H5hBsKUl8emTTSFqnjGzHmFe3doXjNAqRG3M+WtyEubl2fMjsXITH+pGntQ1eA9z3zN08xg4nR+M/vCa6LG1FBpjc/OSKfbXDPyilRoSRqdtFgbx5tnoMmCU13a6MjPCY/4JmxsFHnxaRNV
+ xLhhanV2
+ NjhB+sKtVYl1yq5W5KM4T5VocIvdiGt8XR88S5aMrKMTWRKnEBYMoNnMFvc+LxDup4BUXR/7kLwXIHw01hnnz1EZsfxICvy6GIacVApUdQ3Lso/mUI3kEabiLjt2lStden/iK9e2YEL7hTaiR7BRZdQmldtxgPGqZzk+lO6G3HZo4Y7J9fBopb3inKwxazqiz4UHTSwhjIblJGQjnomzVaEKVsuL5kIXCMJ+cBqj9kQCS00GfHrspqqJFFfMIk3jft6gs6qr4uklOhSqOpHD4DvA8Xg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,75 +123,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-s390 does not anymore use special struct page for its shadow page tables.
-The honor of giving a special meaning to pt_index is now m68k's, so
-rename the fields and adjust them for the desired type.
+On Mon, Apr 27, 2026 at 11:46:51AM +0100, Ryan Roberts wrote:
+> On 23/04/2026 16:52, Matthew Wilcox wrote:
+> > We've had far too many proposals for the MM track this year.  In an
+> > effort to squeeze in as many topics as possible, I've currently
+> > scheduled your three talks into a 1 hour timeslot.  I think there's a
+> > fair amount of overlap between the topics and we probably can get a
+> > decent amount of conversation going here.
+> > 
+> > If you feel you need the full half hour each, let me know and I'll
+> > try to come up with some other way to squeeze something in.
+> > 
+> 
+> Thanks for squeezing this in and sorry for the slow response. Yes I can make it
+> work in 20 mins.
 
-Cc: linux-mm@kvack.org
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
-	Compile-tested only.
++1. We can continue discussion outside of the session if needed.
 
- arch/m68k/mm/motorola.c  |  2 +-
- include/linux/mm_types.h | 11 +++++------
- 2 files changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
-index b30aa69a73a6..67e8a2cf4c41 100644
---- a/arch/m68k/mm/motorola.c
-+++ b/arch/m68k/mm/motorola.c
-@@ -105,7 +105,7 @@ static struct list_head ptable_list[3] = {
- 
- #define PD_PTABLE(ptdesc) ((ptable_desc *)&(virt_to_ptdesc((void *)(ptdesc))->pt_list))
- #define PD_PTDESC(ptable) (list_entry(ptable, struct ptdesc, pt_list))
--#define PD_MARKBITS(dp) (*(unsigned int *)&PD_PTDESC(dp)->pt_index)
-+#define PD_MARKBITS(dp)   (PD_PTDESC(dp)->pt_markbits)
- 
- static const int ptable_shift[3] = {
- 	7+2, /* PGD */
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index a308e2c23b82..9e4dbcddaf33 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -550,13 +550,12 @@ FOLIO_MATCH(compound_info, _head_3);
-  * struct ptdesc -    Memory descriptor for page tables.
-  * @pt_flags: enum pt_flags plus zone/node/section.
-  * @pt_rcu_head:      For freeing page table pages.
-- * @pt_list:          List of used page tables. Used for s390 gmap shadow pages
-- *                    (which are not linked into the user page tables) and x86
-- *                    pgds.
-+ * @pt_list:          List of used page tables. Used by m68k pointer tables
-+ *                    and x86 pgds.
-  * @_pt_pad_1:        Padding that aliases with page's compound head.
-  * @pmd_huge_pte:     Protected by ptdesc->ptl, used for THPs.
-  * @__page_mapping:   Aliases with page->mapping. Unused for page tables.
-- * @pt_index:         Used for s390 gmap.
-+ * @pt_markbits:      Used for m68k pointer tables.
-  * @pt_mm:            Used for x86 pgds.
-  * @pt_frag_refcount: For fragmented page table tracking. Powerpc only.
-  * @pt_share_count:   Used for HugeTLB PMD page table share count.
-@@ -583,7 +582,7 @@ struct ptdesc {
- 	unsigned long __page_mapping;
- 
- 	union {
--		pgoff_t pt_index;
-+		unsigned int pt_markbits;
- 		struct mm_struct *pt_mm;
- 		atomic_t pt_frag_refcount;
- #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-@@ -612,7 +611,7 @@ TABLE_MATCH(flags, pt_flags);
- TABLE_MATCH(compound_info, pt_list);
- TABLE_MATCH(compound_info, _pt_pad_1);
- TABLE_MATCH(mapping, __page_mapping);
--TABLE_MATCH(__folio_index, pt_index);
-+TABLE_MATCH(__folio_index, pt_markbits);
- TABLE_MATCH(rcu_head, pt_rcu_head);
- TABLE_MATCH(page_type, __page_type);
- TABLE_MATCH(_refcount, __page_refcount);
 -- 
-2.53.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
