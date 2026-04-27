@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B76FF8867
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 23:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FDF1FF8864
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 23:41:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1D2D6B0088; Mon, 27 Apr 2026 19:39:34 -0400 (EDT)
+	id AC72C6B0088; Mon, 27 Apr 2026 19:41:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF4DB6B008A; Mon, 27 Apr 2026 19:39:34 -0400 (EDT)
+	id A76656B008A; Mon, 27 Apr 2026 19:41:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D323E6B008C; Mon, 27 Apr 2026 19:39:34 -0400 (EDT)
+	id 98B7F6B008C; Mon, 27 Apr 2026 19:41:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C06866B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:39:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BB0F160321
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:39:34 +0000 (UTC)
-X-FDA: 84705955068.01.4A8C9DF
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 85A156B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:41:20 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 24FA0140329
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:41:20 +0000 (UTC)
+X-FDA: 84705959520.08.8BA3AC8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B7DB94000A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:39:32 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BJAG5TPP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777333172; a=rsa-sha256;
-	cv=none;
-	b=OhGP694kWzcTfsESvrK0PMZ2WkYD9SDJWUY7w/d2Bf/1+VKz2g9qPTvn6VN004f0HjEZ19
-	/Yqm9cPcHmCBG/2dOFZCcpEgQ8BnY9z0QKdJn8uyW2sFW57u8mTAY3oyWSe6GDFnK6hapB
-	zj4ZV0dhizay9ZMzQ6uMMa4l3dYsmy0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BJAG5TPP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9580E80004
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:41:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YzjLCjcU;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777333172;
+	s=arc-20220608; t=1777333278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VN0Hs1g0lWB5vyOJHHC+4bZBovNQKm+hpzBdmni4IMo=;
-	b=rNK1h44cgTWjpLdNOtG9Uf8N0dknZV0vmvD03HL/tRstxZJznxDxOL9ugr5i4A5ZR8TDsF
-	72wOh1l////8Yqbrz3EgnkVs4MfYnHkxNb1iwYzg8ptH2/p1xPsiMqd3vjx54zG4p5SJST
-	quE2sdJtI+rnjwpt7rMAYs0KdM2Jifg=
+	bh=Cuj/cBK6GSOykEn6TV/D9GcN7Pz8N200Od5X+PR2Fqc=;
+	b=hXdScG2MJSHuaOcBtQHt8gn/wC4BhkY9+CBzEbo/P//7ABL14CL8FqOUN02exX/QJ/pCGP
+	H+8KL2QeXPMDLUQS1p7FBJth88AZYfo+0rESh1Oh4vpYCAP634P3XITZFj5IJIMJDM4JEV
+	3LiBAL/T5t8HgF8VZUlwEmY1k9JWpPk=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YzjLCjcU;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777333278; a=rsa-sha256;
+	cv=none;
+	b=aPw/B7Poyy83nNrkxT/nC3wF+i1xrwL+4ZrfeePZVqDVrCC2fDQynBTyPUuuM4lCCPC3zQ
+	22b6PJiU3a2/SIAUuV0rJVnWoLUBAbIEfSKuyGGZPCyKPwGZYOlPgKQ50tzYorahgTaA0A
+	Ds1V7kg5dTL8LIhZJFeIHTIWILoeyCY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0CFDF60121;
-	Mon, 27 Apr 2026 23:39:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA48C19425;
-	Mon, 27 Apr 2026 23:39:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 04EAE60121;
+	Mon, 27 Apr 2026 23:41:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF35C19425;
+	Mon, 27 Apr 2026 23:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777333171;
-	bh=Zl4RMPcd3Mruw3bjUpCvED7vUUWsDSlxRDKdrEHiNik=;
+	s=k20201202; t=1777333277;
+	bh=j3eKjY8PPbVBXWxEaIlKvaUtDpsq77HAbJa5qEyE5Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJAG5TPPkL4hNzaTsW+UlTD8dKhYf3YmFzUu3qYI4XfO6Eeb8u8f/9kam+xhjK4Gz
-	 vwiZCBPy6dl/PL6NWYOnuMiHITcEJbJJA43QQscznMkdnL6P3D4eUDZaBl44Bj3D3/
-	 khW/QfN9fKl455dtdmlROmX3g31VfX3+qo5H+n45e9QQEWK2tQM2XDeq0SUqUseMLq
-	 io7ErQmwA2i/4QuFPcg6yJ3qyMxXTrDcnea/CNUb8bFN7IwQQuE5xW/o2qZq1ciE2G
-	 x2CByJhldavvm69nIoAITyXdcYCeqhzAFQPXQ/3u1Dd+lRO6s75RUTr8yDAOW+xF2L
-	 /eO/b4s2JFfPA==
+	b=YzjLCjcURhfZe0BV5T9KU2DvNDTKg4XYXnNshRfqh3jFPqC1uRK8HQJezCNJd/Ifp
+	 pxHQP0JaSRLm5pHQ4PfZwpY0UpRtZ3u9aVpPl/Y/WHeLyUl9I2BnVt3uSqRpiSAeif
+	 pkZxeVJrhlgdAVklYA2LB3BhTEOTxuKDmupQDJ5xJFVgoHDVaTKSZSH2XVWIUMRitm
+	 QwhW7yo+BcSmYQDntRDqaV9cZNS/8xkNqY6DfWemilTxfp1PPRZ+CdCoSVsajbxz9n
+	 BTMjc0VJ6a5TB/fMD+dhd/a9ZkTaUDWlLXRAt2cfR8sjvx1eAcVzzI4Sigy908E9EW
+	 i9kTXupYN/kEQ==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Cheng-Han Wu <hank20010209@gmail.com>,
+	Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	David Hildenbrand <david@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -79,23 +79,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/4] Docs/admin-guide/mm/damon: fix 'parametrs' typo
-Date: Mon, 27 Apr 2026 16:39:27 -0700
-Message-ID: <20260427233927.146488-1-sj@kernel.org>
+Subject: Re: [PATCH v2 4/4] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
+Date: Mon, 27 Apr 2026 16:41:14 -0700
+Message-ID: <20260427234115.154563-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260426231619.107231-3-sj@kernel.org>
+In-Reply-To: <20260426231619.107231-5-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cxzo5pqx4dim5j7az7rap7tq9wws46qp
+X-Stat-Signature: fo7nnap78gxpdyo4ajgicjz6niopxkon
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9580E80004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B7DB94000A
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777333172-160289
-X-HE-Meta: U2FsdGVkX19KzKgEI/w2oFXghul9OKTKLMq9YQwXVZQ3Lj0zaDv5ayOVFgOc2r8P9IyoyA74vmvl2N4nuyJdEcRQWcWf7epKO9HZQJ+G7JIdpLhOd0lp3QFqs4Q9YruVV5ENns7wvNpSJ5CzNFLlLRnvY8MvysuOcLoWFz0cq1TH9ocRUxypLxbBRVpGOpJ/SeG65AXHtmNTYev4/SuGLfmFCCRcZitLNvlLSk6WecLj/nlcel6uv4QxzRhr2WQN/S5gVp3u3rpOrVpFwYSfeI/UrwsUImhSqzLmxqHmymVh5r3WfbMLYCC+Lu75fr/kLeL3lUyEg66k1shiODdYp9zN3Wwcw0Bbs2xC1y0xzvrXVk4lYpKcHRUCFrRvTJWguODDTzpCzGpH4niz0ZriAQAONIFhtstrhDEm5RcK7BDkrNzrTDNNVwxssMIGjN5U63Qtmqg+kk/HmslJRB7LHdnsGiau7MOi1wJ8j4LgtauTYes3XNzF9cLHr3XPtAm0jz6nWTkKQzOa+gTPTfpSSpUmYWK8rJxm4AdVpQJmY7qsSoV9Ww8m8cc+bSn2z88Ja4KtzWn9r3VG+ECEMssfB9P0gkMMAvptffRLKxio1S00ClYYBPhoDuSAfGR6YxRgrqwLnfn8BuekPNuJT/+1N+hWMu1uuQNSeFAuH/7Uzj/d4mHVgeXvGbGGOF+NBPe1V2vrBcLVheMTSvdSOj1XlZ7D63EIy5fyw0ajiBO2r5x0aPm7gVd+gjaUCVyIVps+W13lcP5EtPN4SBHQGsMu+/fPhLt6BKka6es0KupHi7cHdVC7Ua4yvsdnwcU6W0qmMhhbuMDe0Zou/XBBR5PygMK8/u9Ll/BjDaYLJwtbk/4y/B/OK22iQ6NXKEFh1LBqpf47xaa4YV7zaZuqvaw5YsBP7yDFIkpexE/aol3OtfAh+2PaQbaAC2O4IZqPAcsuiRAH/tzXsQYm8Orlqhg
- pp/9eMSx
- PN8p97UuwwoVSGIuRiYk4WdgfbU8K+CTUT4HWHhfW15XPhbNGQ7vbx5cGCoDz7mTYlVFoyU1wLhoKabE4s8ZVn8t44toIndWA4DHOksl9/1QP4N/8ltRcKnie28pzOLOa+KJSrpAX006RXLOD90kCyq3nGHi3tORWAwanlBYMBsOqfOW/L2/jNySrLue4Dd5C2vh8XdxxG/z+EPgfba8bRSoREwWsDtwC9GCEXsXk1Q5f27LP3CZqapbNdQXeWj4ZTlMi
+X-HE-Tag: 1777333278-314095
+X-HE-Meta: U2FsdGVkX18t7yAHALEhfgK6OoTR8K/VzIkQkc0G+Rah+rqAcft2XD5w6S0tpPlUZoUA4HJjVfrO8KqE7Qb7fL5rz1BzmWru0q3B7ZFED2GL3RuiJg7HHyZx6xyGvL0nMSVD7QmFukTGiFC50NYUvOvE1zPCZl8dUL2MjOmSb7p5sv7lPR7EIGzkku7oePQl36hyIrVSUe8rxmMXfNugDvyZBXiu6qiyX2lvqBEKrWB66b6rs2echvYaUZRsWRFDLNUulH4VPmnHT/uPWEmAT3wKkNgwoAzo4L+y3TBz4kPsdagK1IvF9uAzyJaD5L3wPoPhsWLOPzRX88DfWMnt80k5ohbxAkOOkFichPpjA+4HsvWczBomZMFwW/5QRUNJIxEgbLFRvrs0DKW6SELVRF8yL/hVcRp7DEhW1N/oD/Tr+jRSdTBN1UZgybS3e5kQN4j4qIMCdeHVTCZ5hk3DCmP8zlbXTHKSscb6UFPmSk2EVBKcqNKQJ+TK0xatEPEzYHoJ0N8EHJ4psD/+peh+tiO2yqLnhH56uV4ikrM4GlIaQI2C3p2BBhnEYykNbHpbU/fVrREZbbbRE1QGg7ctlvynirVzfbyHVisnRaOWIm/T5W+ND+Jq6r6lEzNHbhhqm2Miv9TcbjhVRFNnD+8zGHy4rMBWYlvUnjg38XPEsXGPQnd0BPijMi4lAd9Wx1QevdErQB7EejDXJljBpRxLCascm4BSeTTH0qr8l8JI+qdjG+w/FQPswhXP/ZB+qgI9LC4EBP+4xwFaZBUZj9q+iFA3Q1+3WF4YIieQfkwwQAHRK/aOpEdK+V5XmlroYZqrHZ5PUHcnu6XL91shyXgpYCFGAjD0Y3Wvc/sQ6qtDZmnQ+8aWL1/th7sXQ+DEJnxeZ+9hu+VZ/Cq0WJGNWH1u2WYDs2LlyXn3oDCof55N8XaMUU6AEht1evdvk3VJ65S6PhuknSDlOG/9wnI6CRi
+ WOhU1jVK
+ GSsNCBqXNh09Tkxg7akgE/uLN6t/n2bIRdB8Mj/jTw8oKMh8nW9ClJy90P4Bye6RkpqphhRrvRXyTCthZ1I2ffKNFnAXzK3HhyuoBZO4ixD2bnzeM43wkpEfQ+wCc310r9EHhZ1bfHmOTsHr6fIk8kQhT2xNLEhX1al04YorCoMhmgH9HEWIKdpEB4jRie5h867LMq/h9MAnZbUkXfEocIC/CLKJ7dnu1etQG0+GkCgqHfdVP9Y8+TMuMGhM4IHRRNXUfqZjt9PbXFToyrJ14yMNb/Vux+Hp92dVdTopqVeqEOY6XRAwx9UGdhATPUCd3ohgkXNLRFmux6wez5H9kX5ITFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,20 +104,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 26 Apr 2026 16:16:15 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Sun, 26 Apr 2026 16:16:17 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> From: Cheng-Han Wu <hank20010209@gmail.com>
+> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 > 
-> Fix the misspelling of "parametrs" as "parameters" in
-> reclaim.rst and lru_sort.rst.
+> This patch set introces a new action:  DAMOS_COLLAPSE.
+[...]
 > 
-> Signed-off-by: Cheng-Han Wu <hank20010209@gmail.com>
+> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-Oops, I forgot adding my Reviewed-by: tag.
+I forgot adding my Reviewed-by: tag here.
 
 Reviewed-by: SeongJae Park <sj@kernel.org>
 
-Andrew, could you please add the above my Reviewed-by: tag?
+Andrew, could you please add the above Reviewed-by: for me?
 
 
 Thanks,
