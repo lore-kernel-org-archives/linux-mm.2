@@ -4,136 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27A88FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EFFBFF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:26:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91B2C6B009F; Mon, 27 Apr 2026 11:25:44 -0400 (EDT)
+	id B8DBA6B0093; Mon, 27 Apr 2026 11:26:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A54E6B00A0; Mon, 27 Apr 2026 11:25:44 -0400 (EDT)
+	id B17446B0095; Mon, 27 Apr 2026 11:26:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 793DD6B00A1; Mon, 27 Apr 2026 11:25:44 -0400 (EDT)
+	id A2CD46B00A0; Mon, 27 Apr 2026 11:26:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 637E16B009F
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:25:44 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9CE1C1A0FDE
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:18:14 +0000 (UTC)
-X-FDA: 84704691708.09.1D58C90
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BCC894000D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:18:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BhZi6x0o;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A0876B0093
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:26:25 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6BDA5160384
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:20:21 +0000 (UTC)
+X-FDA: 84704697042.21.009D5F4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AC1931C0007
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:20:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sMFZSqMd;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777303090;
+	s=arc-20220608; t=1777303219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wsHOVCUXvaEIYIkpmuMRaDJg98RHwYpOJQfqxhVn1Is=;
-	b=Dz6kRdNwomwwfRFVlVTl8mGkLcZCfz8MP9/IFuG1UDJ8wybAHdw3Vj3r3JjR1oi3UixAzj
-	lBaMJ2zB4xQmVi3SWxQrzMkyrIHArNIPXgbQo0ozfPNfP+iO8Bz6Ye1CSPaTDdxwn7TmIZ
-	VUAIEt8Ct56uHboTikBK7id425v+e+A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777303090; a=rsa-sha256;
+	bh=zHe5/nvvXNFdOD8qJOMq75qC+klX67w0vPbNZZUT58c=;
+	b=UeyaAy27TUXAx/e0oYPj/sqNQLb/NANbDzJ+xpylwe5yBf7C5PeY8VcPdWFFpKgr/KQoWI
+	bEoWbg+oReLBLtPCWy9JtJClZvbj2c68v/mSYR6TzTqqLUyweg3tC7ATUX8WSYmXV70P3G
+	zsAWaoCchlsMWkcw7zhc4NlczDqxriE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777303219; a=rsa-sha256;
 	cv=none;
-	b=0HVW19Kv5n9GEratNR1Z+LHXzbbucQG+3pCPcnwxigPlGgdotwPpCmtIHmIJ4zPpbQXbmk
-	nlTI2CdQF5yyjKS2aMTgLdvMr9K4D4/RDqXXUY8mB7BFliJqFP6cjjasAgZNLcwfFiT0JK
-	R6nP9NWb5jNaOf697MFVUACOnSbqiL8=
+	b=eYLVBZA9p5QEhPxoVaUXTWQhBJbL0Bhok4WUI8fOgZaP6tWj9++wLSeLdCtzQc2liU8+Ns
+	k+asAfJ2btocXnN8jQE7dZa8DMvJnDHGN0KR8JQWo5DlsS/9AH+PdEnjtE3PIEU05G9S+P
+	0p8/YG8aprGndFnwnrzxaqyFPuAWO0M=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BhZi6x0o;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777303090;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wsHOVCUXvaEIYIkpmuMRaDJg98RHwYpOJQfqxhVn1Is=;
-	b=BhZi6x0oltj1B3XchqwSnoeh3Ztugx2AklsNsawaQwrKDp0KBitYO/9YMd/YQEO1eb2Wnm
-	4uKXe1GJEL4Y0wz+gQCyPwUqIB+uFJ2r0/OXxZe7PVcD5lWhtLHTAVzQDUVRio4gNwN18R
-	pSoFJHRJyyzttkHD1NJVZXp4IVw0p1s=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-YEbNtdw6MSy5tefayXZG5w-1; Mon, 27 Apr 2026 11:18:06 -0400
-X-MC-Unique: YEbNtdw6MSy5tefayXZG5w-1
-X-Mimecast-MFC-AGG-ID: YEbNtdw6MSy5tefayXZG5w_1777303086
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d70c27214so7201814f8f.3
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:18:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777303085; x=1777907885;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wsHOVCUXvaEIYIkpmuMRaDJg98RHwYpOJQfqxhVn1Is=;
-        b=VuHol7Brs6sbxWqzYj6JLW6k/SqbJzWyTtSwFPgkjQQpEwhkoqnKuVkitRsLQz0VHZ
-         wE+99wTKtJzi42YpYOzB4+reOmjKh0y/uhfae2cL02vp1SPSCZFRAAWPS80nlhWIqz94
-         yB2rQpwvhMpBE06HZETwRaI+D5Q2LzU/uD8FxQNDG0kNC2zwVZCBZnzDH2sPPqno/3Jp
-         NvW6psp9xvtRtVPzVDomIlXJadvnclYEqhYrz1d5o/Sxr+8Ua3j7RXtxJwpBC+GaOjs2
-         Frq64kzMkZL+rOW2UI49WaxOoRUFOzSs4ralxrviLRULVTFJo5UmQmG2Gj9iA3yPn+eS
-         kYAg==
-X-Forwarded-Encrypted: i=1; AFNElJ8F0BUhz4lDPcsgTct8hKmG6ttCfBRelvIxAKCWvGq5E9ZLIraCep9jCn9MjnUp11S7fhx1SjwW/Q==@kvack.org
-X-Gm-Message-State: AOJu0Yx2Y/b/Hs+dieCafVwG4tCrWBHwE2S57rAkGMpHP1AeOMP8RTKF
-	YA0wvuzXy3dC08/GaBjggq7/+IvPbud/4lXeKbj41T4hxgUwzuVDqQUpHEqvKVGRasrKGT3YEQu
-	1DjP/m8jsU4OhKx5HmPU63qQyDSEVVJL6jFcNyX2fBqtfIfBAFCFP44nzgxi4
-X-Gm-Gg: AeBDiesiO+QUeKMgML5cuoo9wPhqCCHVg8lTRVYt8CRMEQ4dXautXwrsUe36W9nBzpw
-	QfdeGESSYnY9WQFiLvzHUEgzwC1+4mS2Ic/5Y3UBzbfUXXAYnWntDRCkS39MXFaxeD9otNVCIWK
-	sb0Oc/Y4THRSFoNW2kEgfinEfifXqqFe2lQiqiEPCRia5ALf/D3RcK5johpUGNnfYdxtbW702k7
-	g+pMoMsZsAboOSOhtO+QAuullAMGRf9WV8k0VbOYffrV7X7AYzeDmCd593B3vY0NgQfGuihEY1E
-	tU7T40kCtIQGS1CiszMTcvNNaab5UhYUcaiKUpyS9I30KcDcZd7n700XJwYgvcCyYcwA5NZIXVF
-	PGub2rWgTVjq8qjgM8p9lBHRcYaMWuS6j7DCqiq4628ir44CR2YgEsEjp
-X-Received: by 2002:a05:6000:40de:b0:43d:7946:badc with SMTP id ffacd0b85a97d-43fe3e073dcmr66488019f8f.26.1777303085259;
-        Mon, 27 Apr 2026 08:18:05 -0700 (PDT)
-X-Received: by 2002:a05:6000:40de:b0:43d:7946:badc with SMTP id ffacd0b85a97d-43fe3e073dcmr66487949f8f.26.1777303084696;
-        Mon, 27 Apr 2026 08:18:04 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-47-179.inter.net.il. [80.230.47.179])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e44f69sm85358069f8f.25.2026.04.27.08.18.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 08:18:04 -0700 (PDT)
-Date: Mon, 27 Apr 2026 11:18:00 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
-	virtualization@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH RFC v4 14/22] mm: page_reporting: skip redundant zeroing
- of host-zeroed reported pages
-Message-ID: <20260427111724-mutt-send-email-mst@kernel.org>
-References: <cover.1777223007.git.mst@redhat.com>
- <788d5a09394ed1456beaab23f75d91846ceeb611.1777223007.git.mst@redhat.com>
- <DI419PSP5050.15VGMJFDMWBQU@nvidia.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sMFZSqMd;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E397E60154;
+	Mon, 27 Apr 2026 15:20:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138B8C2BCB4;
+	Mon, 27 Apr 2026 15:20:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777303218;
+	bh=5QfFreQMi3AW5+NsyiW9Hbi6a/x7RZzCTbf0zZ/T5xo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sMFZSqMdIbwB6/uQt0JAY/jfCmownyzp9YcTBc/LOnQnkWM+7yomhafWMST66SYRn
+	 RKjlKUr1r1wHEkafTiGKDTKcA4thZ2IXHYTNYPkgxaO/FTfh5e6ns3RcDUvtDg7ZHe
+	 l7pag5GxlRQub1k0yUGv4/RqB6c/DKo99NGaKu8lVuaHfG4Qrg4FHuh0QT1tgg+nvo
+	 cMV7ZIGNJGhbD095t9UpHdqeS8zCSDGu4ndkR1ckI/wKJIbZt+/F/h81nUfLc6N/Km
+	 Bs4qw6WNFylYRIcWEFUGMH9V8aVZi1gudiVbzx4Yeq3i3uOT3ies8RVDAeEdXc0WB/
+	 pnx+cirFvw5ww==
+Date: Mon, 27 Apr 2026 16:20:13 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: =?utf-8?B?546L5piO54Wc?= <25181214217@stu.xidian.edu.cn>
+Cc: Muchun Song <muchun.song@linux.dev>, Liam.Howlett@oracle.com, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, osalvador@suse.de, 
+	david@kernel.org
+Subject: Re: [RFC PATCH] mm/hugetlb: fix resv_map memory leak in
+ __mmap_region error path
+Message-ID: <ae9-UhMBMqEAA4Fg@lucifer>
+References: <20260425070700.562229-1-25181214217@stu.xidian.edu.cn>
+ <BCFCF1D6-8F39-4E60-AD86-0ECF799FFD9D@linux.dev>
+ <ae9tVZbNFtBBet8f@lucifer>
+ <5c504419.9025.19dcf61abcf.Coremail.25181214217@stu.xidian.edu.cn>
 MIME-Version: 1.0
-In-Reply-To: <DI419PSP5050.15VGMJFDMWBQU@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ck_EPgKAR0b46p_hwlEUgFOJaAdmN_gw-pQ7Dxx5b6I_1777303086
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BCC894000D
-X-Stat-Signature: so4qg488jw3nmmky4dp44q7mbx5kk17a
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5c504419.9025.19dcf61abcf.Coremail.25181214217@stu.xidian.edu.cn>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AC1931C0007
 X-Rspam-User: 
-X-HE-Tag: 1777303090-952004
-X-HE-Meta: U2FsdGVkX1/tr7mi8sYp8TAloa2FsGkBkIE9ui6oLzt5m0skS2/+x3SmotGxu6ZPat1s01/VVthBO8Pdg2g7KQqHwjV3lANc3pP4m5n3sAk2LseFXv+ztJsD1Z22yShe7o/oDvFr0RQ1mIH9wjudJdChRZrn07FFBBQukedZErhQRykp0CaJ1/pxkaMaGOr4E5dIhPWMv3HR+FEheyJ/awLGz1T3kCLuYvH3agjqoMVda6nef96aFC3oc4OdES+n88I+DxBXAtBZSe6wTSem9+m7cmYFMiYRBG3Bt8IB2a65dVAfIYoYns+QUbBS8P1s7JVV1Yyv6GmTEJfX/klCxcetC2v079gsdNA4sFcmNCkY4qihsqGR8c70YVBoRkuh8729gUGOxHlC+R8L+NMqmGHnhIrVAIkaDR2zvWEQzUs1IMHntt2vtvONhnLr4M2Wg9x8QDjXPcAyTrE8m/UXb4LJZ/EMKedBOkeEXqM2pEsPDTxlcf7s0r9O40L5xzChNzAvg2i6uu0THccRK6nezjD5C4lX/hVgq5t/h8N4cx1xhU2ikL9Vo48H2Mv67i4dMvHCgefZRDOZOOI93ay4SlNXI+QCDh1f2GrT1BuxBBvQ95/1tFpeMYMWvOQuxS0VWlgU78bhaGcd95YyHrwTOR6IYrXAdVXtg4XE0o2SgjVFQdLDYzJgQz2BrhOZJnCXxLhAx9S3nI9LhbEjB3ghs8RJbisANr5cD8nBwaynfDWNVVs7j5c7CcjtyKtgD8i+BKib3KTvag7TOF2u9R7cNnkBnEVryWTNBXOjuLpyMuuVOVgs/9If9SEJk3v0H8KxC2FyPdX28vyU7U70/DqKnqhvjWsdOT8iIWwi7em2viuMLGahAIVxE3qn9ASnIENYPY92kL6AmbkQm+FHGY3PPIayc2+9WUfJA9LiO0lPUa/6+oXnKpi++SLFHgteG/C31OyBtwMFhJcD42ymzLV
- RyDj+QAq
- sLBN6ibdGQfA7v4/IHQFjyi+lumAtRo0a9t8QCAbwPYeFp5c2Zxtmz0geLV8zcpRqU3F9KalJ1jDFL+M+MiglNHTz2rwuV5ZEAIQi5CH99sGXwKpF9eB00MX0UN7LSsdYplC4W0hHXEf+6xSsVywJQaoE9LO7oGncDdWNaqKQmDUZT5nKCC7rT4t/7aq4wdeuS+7h81i21COeknqrL9EKRuRZ3hFBJTZzQSEN9Y1ZKhi5wl9uN3ySgXAyvttRXQ2eLdja1j3O2f7mgMOTAhPCH7UikSFn847V7Kx3+ZxqntZ+5IZybJBRoX5qZ/maEd2Cw9zLYSxJHP3SZDgG22rofbBBZ0uHDRZEgsA7Se42ZDv763w=
+X-Stat-Signature: 3p5h5h499hdark5dab8bbshs6fj3uncn
+X-HE-Tag: 1777303219-103070
+X-HE-Meta: U2FsdGVkX18b6hTdZegSDGQJAu0ZFAEn+dsQSXprJBTK1o0TKFajwArruQug2kutqe6AuSg6spZDG7Q2vrHNA5KVtBUj2ybOp+Jhc9Ulvt995wl6Wt03up4aUuSDp4WZz+17t2yQOScB7t+DCYWg0XDkCJD5uF/3t+ADBjqpkKFhrw+1cWf5A7sPa7AqX5ymsk0vWcbb4ZIz7ZHREzuB1n5jWV7C7s28xvNjwRvWiNwQvQkRej08mfYo3eyPAm45VE3y5bOWvJhH7XrMjgwhYkjRqXlCm8qV7RKY4wboKS/6UHn/wFLjkYF+I8y5bJyFmEryHvNYgibrqlho3b97QUCPPk4MxtGu7/bqbzUFBWJpb53mW+XjsT8PgURTxwYXBmWYp+e419LWrfIO49QcgTl7MAyeA7wGZhUva5Mt19xKe3WGoEniSl/Y9RghFATVPpYniHZAZymow6HlOy2OZo7Xg5W+AQOifx8uQalmLwVuGT5RTm5S1Xkc+j6/yJ71GJfRljz3k27f3kpwwo7eeQr7/xwFT/EP1nZSpcc/41LQqNu3dQ2cKBq8sqh+e/SIsAoO2U7yz9fF2OovnygEuU0P97unXM5SGjkkT7EU57tZZXm6G4UULH0azvZiUPgENZbEctP/luNXuzaUMmCTqbSv1nXddN3NMieAdwzPm+7F+QFD1TzrnVjqZ1QtXcxetXvi7UZtOu91K+jv+5a0GI4zMDOEyGfdT/9DqVO5VkLKN9eZstdb7uWM2xZ1WeGn9uiUEHndFnWU4YUx2w7OxROrGQGSI+CDiLQQb/ZwsQmsPlPtTItqKSCO9UwboTPnibfrBDiAqOd1p6azoLH4eNW7capD4CyQ70cNb5MLxo9X4Ox4JSPIqheir1+xShehGspgRT1irxijAkqmEt6EgokCWQMBY0hDlJmGjuYcyGIpfJoCgwj2BbH40/C6NkDfog0j0tWkrMePtoTqGyY
+ fJSIg/75
+ BmQVM2SUDBmsVzIakUMzIwQO0fU+9NedjG4RbbD0Yyh8JAW5oq4mrfqK5YTrkb+5G3jZh4yf36w6AgkoBtxSbJAOcIyHsnqVuYjVPcM7NmzkwGZU/Gw4Mf7ptFH5oB5DHexZKt6s5roKIB5/ZVckmZJPkyli17iBgGtyVM5iN979+8fEILLDS5Y9FSuYZEkx6BDGUHMqs3tq/IWBayR5TYNL4Qsa7X8yPjNzHB2im+sDgCPVQWEqVBCiQGYxOBVx93q8LvHBoFzplPz7HEtp/Qxe7PuIFmjr/yduSPjJiL0lbEBwiTu9Pj5B1FjoIC9Jrui6Uw+xDHrwBkEPBd8f4MMiW0LZGBOrlnOp4Ihhkpf7mJlhcI+dL1+aDERIQoHxbibyTQdAjinQpHtR8Rc0GDjGOaJPphaQORuBhd0rfeEdU39dMTGQhK1q/N9AOwAW8I4OC722R0Pq1ZbQZUC03tBRFZde5rE/ufPPxhHdKaVbMp4XGlrFyBP4AnemdJ9tH5dC7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,74 +98,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 11:13:44AM -0400, Zi Yan wrote:
-> On Sun Apr 26, 2026 at 5:48 PM EDT, Michael S. Tsirkin wrote:
-> > When a guest reports free pages to the hypervisor via the page reporting
-> > framework (used by virtio-balloon and hv_balloon), the host typically
-> > zeros those pages when reclaiming their backing memory.  However, when
-> > those pages are later allocated in the guest, post_alloc_hook()
-> > unconditionally zeros them again if __GFP_ZERO is set.  This
-> > double-zeroing is wasteful, especially for large pages.
-> >
-> > Avoid redundant zeroing:
-> >
-> > - Add a host_zeroes_pages flag to page_reporting_dev_info, allowing
-> >   drivers to declare that their host zeros reported pages on reclaim.
-> >   A static key (page_reporting_host_zeroes) gates the fast path.
-> >
-> > - Add PG_zeroed page flag (sharing PG_private bit) to mark pages
-> >   that have been zeroed by the host.  Set it on reported pages during
-> >   allocation from the buddy in page_del_and_expand().
-> >
-> > - Thread the zeroed bool through rmqueue -> prep_new_page ->
-> >   post_alloc_hook, where it skips redundant zeroing for __GFP_ZERO
-> >   allocations.
-> >
-> > No driver sets host_zeroes_pages yet; a follow-up patch to
-> > virtio_balloon is needed to opt in.
-> >
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > Assisted-by: Claude:claude-opus-4-6
-> > Assisted-by: cursor-agent:GPT-5.4-xhigh
-> > ---
-> >  include/linux/page-flags.h     |  9 +++++
-> >  include/linux/page_reporting.h |  3 ++
-> >  mm/compaction.c                |  6 ++--
-> >  mm/internal.h                  |  2 +-
-> >  mm/page_alloc.c                | 66 +++++++++++++++++++++++-----------
-> >  mm/page_reporting.c            | 14 +++++++-
-> >  mm/page_reporting.h            | 12 +++++++
-> >  7 files changed, 87 insertions(+), 25 deletions(-)
-> >
-> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> > index f7a0e4af0c73..eef2499cba8b 100644
-> > --- a/include/linux/page-flags.h
-> > +++ b/include/linux/page-flags.h
-> > @@ -135,6 +135,8 @@ enum pageflags {
-> >  	PG_swapcache = PG_owner_priv_1, /* Swap page: swp_entry_t in private */
-> >  	/* Some filesystems */
-> >  	PG_checked = PG_owner_priv_1,
-> > +	/* Page contents are known to be zero */
-> > +	PG_zeroed = PG_private,
-> 
-> +willy,
-> 
-> I was discussing with willy and David about removing PG_private and
-> repurposing it to PG_folio to identify folios. IIUC, PG_zeroed is only
-> set for PageBuddy, so it should not be an issue to set it for allocated
-> pages for folio identification. Let me know if I get it wrong.
-> 
-> Thanks.
-> 
-> -- 
-> Best Regards,
-> Yan, Zi
+On Mon, Apr 27, 2026 at 10:39:37PM +0800, 王明煜 wrote:
+> Hi Lorenzo,
+>
+> Thanks for the prompt response and for taking over the fix!
+>
+> I completely understand the architectural direction to eliminate the hooks, which makes perfect sense. I'll watch out for your patch.
+>
+> Also, my sincere apologies for omitting you from the CC list originally. My university's SMTP server blocked the email due to the long recipient list from `get_maintainer.pl`, forcing me to trim it heavily just to get the report out. I'll make sure to explicitly include the original authors in the future.
 
+Ugh sorry to hear!
 
-Exactly. Trivial to switch to another bit, of course - most are
-unused in the buddy.
+>
+> Good luck with the upcoming LSF/MM!
 
--- 
-MST
+Thanks!
 
+I will come back to this, it's not going to be straightforward, hugetlbfs is
+a... pain.
+
+But thanks again for raising this, there is very much an issue here that I need
+to address.
+
+vm_ops->mapped won't do here, as hugetlbfs (of course) requires data that the
+interface (intentionally) doesn't provide.
+
+I may have to revert this (ugh), because mmap_prepare should be idempotent and
+this is just an error on my part converting things a little too one-to-one.
+
+Anyway, shall return to this! :)
+
+>
+> Best regards,
+> Mingyu
+
+Thanks, Lorenzo
+
+>
+>
+> > -----原始邮件-----
+> > 发件人: "Lorenzo Stoakes" <ljs@kernel.org>
+> > 发送时间:2026-04-27 22:18:34 (星期一)
+> > 收件人: "Muchun Song" <muchun.song@linux.dev>
+> > 抄送: "Mingyu Wang" <25181214217@stu.xidian.edu.cn>, Liam.Howlett@oracle.com, akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, osalvador@suse.de, david@kernel.org
+> > 主题: Re: [RFC PATCH] mm/hugetlb: fix resv_map memory leak in __mmap_region error path
+> >
+> >
+> > On Mon, Apr 27, 2026 at 03:55:00PM +0800, Muchun Song wrote:
+> > >
+> > > > On Apr 25, 2026, at 15:07, Mingyu Wang <25181214217@stu.xidian.edu.cn> wrote:
+> > > >
+> > > > While fuzzing with Syzkaller and fault injection (failslab) enabled,
+> > > > I observed a persistent resv_map memory leak in the hugetlb mmap error path.
+> > > >
+> > > > BUG: memory leak
+> > > > unreferenced object 0xffff888110b92400 (size 512):
+> > > >  comm "syz.0.5386", pid 20390, jiffies 4298157188
+> > > >  backtrace:
+> > > >    __kmalloc_cache_noprof+0x509/0x6e0
+> > > >    resv_map_alloc+0x47/0x3a0
+> > > >    hugetlb_reserve_pages+0x758/0x1220
+> > > >    hugetlbfs_file_mmap_prepare+0x492/0x790
+> > > >    __mmap_region+0x1ae6/0x29f0
+> > > >
+> > > > This is a regression introduced by the recent VMA iterator and mmap region
+> > > > refactoring, which decoupled mmap preparation from VMA completion.
+> > > >
+> > > > In `__mmap_region()`, `call_mmap_prepare()` triggers `hugetlbfs_file_mmap_prepare()`,
+> > > > which successfully allocates the `resv_map` and registers a `success_hook`
+> > > > in `desc->action`.
+> > > >
+> > > > If `__mmap_new_vma()` subsequently fails (e.g., `vma_iter_prealloc()`
+> > > > returns -ENOMEM due to failslab), the code jumps to `abort_munmap`.
+> > > > However, the `desc` structure is completely discarded without invoking
+> > > > any cleanup. The newly allocated empty VMA is freed, but since
+> > > > `set_vma_user_defined_fields()` was never reached, `vm_area_free()`
+> > > > doesn't call `hugetlb_vm_close()`. Thus, the `resv_map` is permanently leaked.
+> > > >
+> > > > This RFC proposes adding an `abort_hook` to `struct mmap_action`
+> > > > so that subsystems can properly clean up resources allocated during the
+> > > > `mmap_prepare` phase if VMA creation fails.
+> >
+> > Yeah sorry, this is a general problem that I addressed already with the
+> > vm_ops->mapped callback.
+> >
+> > I'll come up with a patch to fix this up for hugetlb, thanks for highlighting
+> > this.
+> >
+> > I plan to get rid of the success hook in any case, it's only because hugetlb is
+> > doing something really... not great with the 'VMA lock' (really hugetlb VMA lock
+> > I suppose) that we need a VMA pointer at the point.
+> >
+> > > >
+> > > > Any feedback on whether this architectural approach is correct, or how to
+> > > > properly implement the hugetlb unreserve rollback, would be highly appreciated.
+> > >
+> > > Please use ./scripts/get_maintainer.pl to get full mail list for Cc/To since
+> > > it is not only related to HugeTLB subsystem. It will also consider the author
+> > > of commit introducing the problem.
+> >
+> > Please do do that, I wrote this whole thing, so y'know :)
+> >
+> > Especially at the moment I am very very busy with LSF coming up so you need to
+> > make sure you include me in the mail.
+> >
+> > >
+> > > >
+> > > > Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+> > > > ---
+> > > > fs/hugetlbfs/inode.c     | 9 +++++++++
+> > > > include/linux/mm_types.h | 2 ++
+> > > > mm/vma.c                 | 4 ++++
+> > > > 3 files changed, 15 insertions(+)
+> > > >
+> > > > diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> > > > index 8b05bec08e04..002bb6d9ca23 100644
+> > > > --- a/fs/hugetlbfs/inode.c
+> > > > +++ b/fs/hugetlbfs/inode.c
+> > > > @@ -102,6 +102,14 @@ static int hugetlb_file_mmap_prepare_success(const struct vm_area_struct *vma)
+> > > > return hugetlb_vma_lock_alloc((struct vm_area_struct *)vma);
+> > > > }
+> > > >
+> > > > +static void hugetlb_file_mmap_prepare_abort(struct vm_area_desc *desc)
+> > > > +{
+> > > > + 	/*
+> > > > +	 * TODO: Implement the proper rollback for hugetlb_reserve_pages()
+> > > > +	 * and drop the resv_map reference held in the desc here.
+> > > > +	 */
+> > > > +}
+> > > > +
+> > > > static int hugetlbfs_file_mmap_prepare(struct vm_area_desc *desc)
+> > > > {
+> > > > struct file *file = desc->file;
+> > > > @@ -172,6 +180,7 @@ static int hugetlbfs_file_mmap_prepare(struct vm_area_desc *desc)
+> > > > 	if (!ret) {
+> > > > 	/* Allocate the VMA lock after we set it up. */
+> > > > 	desc->action.success_hook = hugetlb_file_mmap_prepare_success;
+> > > > + 	desc->action.abort_hook = hugetlb_file_mmap_prepare_abort;
+> > > > 	/*
+> > > > 	 * We cannot permit the rmap finding this VMA in the time
+> > > > 	 * between the VMA being inserted into the VMA tree and the
+> > > > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> > > > index a308e2c23b82..9320f6699fa9 100644
+> > > > --- a/include/linux/mm_types.h
+> > > > +++ b/include/linux/mm_types.h
+> > > > @@ -861,6 +861,8 @@ struct mmap_action {
+> > > > * it is not valid to clear the error here.
+> > > > */
+> > > > 	int (*error_hook)(int err);
+> > > > +
+> > > > + 	void (*abort_hook)(struct vm_area_desc *desc);
+> > >
+> > > At least for me, it is not good name to distinguish it from error_hook.
+> > > abort_mmap_prepare? I am not sure if it is a good solution, Cc other
+> > > MM maintainers as well.
+> >
+> > Yeah no we definitely don't want this, I plan to eliminate these hooks
+> > eventually.
+> >
+> > Really intend on adding no others, these were to work around effectively legacy
+> > issues in mmap callbacks.
+> >
+> > >
+> > > Muchun,
+> > > Thanks.
+> > >
+> > > >
+> > > > /*
+> > > > * This should be set in rare instances where the operation required
+> > > > diff --git a/mm/vma.c b/mm/vma.c
+> > > > index 377321b48734..d64cea5b4335 100644
+> > > > --- a/mm/vma.c
+> > > > +++ b/mm/vma.c
+> > > > @@ -2799,6 +2799,10 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+> > > > */
+> > > > 	if (map.file_doesnt_need_get)
+> > > > 		fput(map.file);
+> > > > +
+> > > > + 	if (have_mmap_prepare && desc.action.abort_hook)
+> > > > + 		desc.action.abort_hook(&desc);
+> > > > +
+> > > > 	vms_abort_munmap_vmas(&map.vms, &map.mas_detach);
+> > > > 	return error;
+> > > > }
+> > > > --
+> > > > 2.34.1
+> > > >
+> > >
+> >
+> > Thanks, Lorenzo
 
