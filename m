@@ -4,98 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1084CFF8867
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 23:05:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40EEEFF8864
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 23:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D8496B0088; Mon, 27 Apr 2026 19:05:10 -0400 (EDT)
+	id 701C56B0088; Mon, 27 Apr 2026 19:24:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AF346B008A; Mon, 27 Apr 2026 19:05:10 -0400 (EDT)
+	id 6B2936B008A; Mon, 27 Apr 2026 19:24:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EBA66B008C; Mon, 27 Apr 2026 19:05:10 -0400 (EDT)
+	id 5C88A6B008C; Mon, 27 Apr 2026 19:24:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D0256B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:05:10 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C9F511C00D3
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:05:09 +0000 (UTC)
-X-FDA: 84705868338.07.F4B0DAB
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9CA6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:24:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CF47D4030D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:24:50 +0000 (UTC)
+X-FDA: 84705917940.09.8B3AD2E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1990BA0002
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:05:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EW8qPZfm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1DF294000D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:24:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GjLv5oKi;
+	spf=pass (imf11.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777331108;
+	s=arc-20220608; t=1777332289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mIzKEa1fM1ZzzCXikJkQfsrVjZ0mGI4pWZ4niuD4MsY=;
-	b=xu0UsQEgfqPnb469AkE2TQo/r895CtjVIGG9tNrcoskvX2xVT7W9KmLqy7YFpAIACDXSHX
-	GX8ogYTUrD82xLQNN7gv6Y5GOhVubhs8DM3J98xqG4TQr8w68NNG/0cFD/gwaUFfrmhCGB
-	Z2CSgBXIzljMx9gPGlX9qqppu8fgARk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777331108; a=rsa-sha256;
-	cv=none;
-	b=4rKxOgtKNILqnYUYPKxr9kM/GcwrVb7KJsid5+Dk31yMnMFyGE60O+azJJSQvbDYo8K7pA
-	U9YJPi+BuMl7DhdyXoHjqbOEzZcKa/Pdc5CXsqVPsHZ1r1CVZTfm9R5aWI/723K64st107
-	HDMN0Phs4ov3ACYNccZ009bhuhqMdR8=
+	bh=B9K4XB1wUAdYEFaW71fRtE28niCJMnmfPhr35vsmhkk=;
+	b=J+NvEM9mzNzpRk81EVmS3/XLIAJd4nfVBwEuVXC9v7EG7zWSTy1feEBLGfSO3iqnMfnfMD
+	IheGsini9NNoNnICLacLBzFE1pCzilg0nfJfAisUq5e34FOeBean3H0pYXA6Sc/dCZRZDt
+	KuYWoNqUY7iAbyLMKTpKOO87W1zr8ZE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EW8qPZfm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GjLv5oKi;
+	spf=pass (imf11.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777332289; a=rsa-sha256;
+	cv=none;
+	b=R/qFKNCDYg7ipr2uCAZA0zCw8HHj2ErNI0BYMRgYC04MZga0wAmxJnqlEmpDTyLNMTUEog
+	Yav4fwlGyIA2VokUtbS5b8xuTN4y+Do9zGNLAO6Q59W8Q2i6OIc4156diIu6FwX+mEvs3B
+	xAtMBuFEumbXpdxgcE8C9sgGBillZjI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06C5660052;
-	Mon, 27 Apr 2026 23:05:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5546DC19425;
-	Mon, 27 Apr 2026 23:05:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8AC7260052;
+	Mon, 27 Apr 2026 23:24:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC19C19425;
+	Mon, 27 Apr 2026 23:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777331106;
-	bh=9/lxmCbTq0AuSKOlbY/9CDJD0d3Oki7PkmDtgla38FY=;
+	s=k20201202; t=1777332288;
+	bh=k5LX/iOGfg4DxgCKRlqxi9ADeIVkwGAirV5Y9IyAgzk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EW8qPZfmVV+XQo6RVCDq/833thfnwKy5CmXCtLZ4URnkYbYAVYxO62BCvwe4rcqiP
-	 +kob29aRQ7egmjFSs5Png0XIByrIof4VJeOO/J3fPW4XWSz2yxcNNDd7m8ZwTPfHbX
-	 cDPMDOHbZ661NTbJKGngmX0zL9mYJ5pmESfjoBzs2cWzXc5+aUtXnVy0hpDVekrWCC
-	 wmEOq/4ER3XPep7q3M/mB/GmsC4na3rJSEkgtWK7p5q/MqysI+kWqS4tekpLfeNE8K
-	 E5oIPGlnF890MC1RkFIuMMEAuaLYhE45FeOJROCxhbVNq2poZUarJg2k8PYTfDJIsG
-	 5+c5B2wn1Hscw==
-Date: Mon, 27 Apr 2026 16:05:04 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	akpm@linux-foundation.org, hca@linux.ibm.com,
-	linux-s390@vger.kernel.org, brauner@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, timmurray@google.com
-Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
- exclusive file folios
-Message-ID: <ae_roPR64e6sY_fN@google.com>
-References: <20260421230239.172582-1-minchan@kernel.org>
- <20260421230239.172582-3-minchan@kernel.org>
- <aesg-sj6_VmXyqxb@tiehlicka>
- <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
- <aevBRh08X4UTMUj9@google.com>
- <ae8NT0tLt7eBmH6j@tiehlicka>
- <CAJuCfpHQdA7C50V2WjNrdYcp7feV5ukgxJf+vMNEcp0P1SGEow@mail.gmail.com>
- <ae-Zu-VAzAA7SdLa@tiehlicka>
+	b=GjLv5oKior0IPXlcphMDQ0Syj88J3E7v2IyptzNqXJxsLs1ekNkLlz+9KQFauh2Kf
+	 725yqf9BwAoImAJ5E9gZJumdsgaWFPpOuSf5ZrdF+WTFcjw6re4QjeFT1tPyiVAfbk
+	 3tmgCvXrggQ57O5l/G/7a01xIa3ahlwqhBerQ6vSklF4eU7GCHCmsUc8a/yboCz7qR
+	 d+OF7BvAZHNU85QNIZzDPucHETj8II6wQbF5+ssUAfe26N68mFJ9hHLaLg7XNcmwsF
+	 eIUbrxtqV9cfykkr1XmzGm/SY3s/03X9WVRdc9opk93qdkARptYxgDwaXKVDr1RQEs
+	 PLCmp8PJnOiVw==
+Date: Mon, 27 Apr 2026 19:24:46 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
+	corbet@lwn.net, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, skhan@linuxfoundation.org, jackmanb@google.com,
+	hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Sasha Levin <sashal@nvidia.com>, Sanif Veeras <sveeras@nvidia.com>,
+	"Claude:claude-opus-4-7" <noreply@anthropic.com>
+Subject: Re: [RFC 4/7] mm: add page consistency checker implementation
+Message-ID: <ae_wPuqYpVxicOUq@laps>
+References: <aeuFnuiYDBjttEKt@plex>
+ <12985b32-88b3-47ab-8292-2e0ec6f5fbae@kernel.org>
+ <aev-DS4YTp5soVPd@laps>
+ <3146ebcf-5649-44a7-aa21-163bf404c42b@kernel.org>
+ <aezt96xgz_qyf4d-@laps>
+ <f910969d-1071-4174-bd42-da45cb6f9749@kernel.org>
+ <ae9ucgtCNf0JQtGu@laps>
+ <c50aeb03-538b-4dca-9a81-ab84bc19a333@kernel.org>
+ <ae-xXHUGfDiFcBUk@laps>
+ <36d82055-67f3-4c29-a605-a9848a28f7cb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ae-Zu-VAzAA7SdLa@tiehlicka>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1990BA0002
-X-Stat-Signature: huwx6hs9a66tj1yog7q8nstajm1ydhqi
+In-Reply-To: <36d82055-67f3-4c29-a605-a9848a28f7cb@kernel.org>
+X-Stat-Signature: 3t3wcbzaodxpo65pp4tewanjnmtchxed
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1DF294000D
 X-Rspam-User: 
-X-HE-Tag: 1777331107-68193
-X-HE-Meta: U2FsdGVkX1/wk1l7wwpu61xgTDKGyXTdIP2yDO8M8uUC8R8Ki2HRYZnHJf2m1jNxzO1DiTOxqxxod4k/rDF3EOo9iIBx+2qI4JLkyApBJk/j+ArW3JkU81muU4eIAeT2mkk0GwanQ7DW6VZC2UMOKJsCzA2IuBlJTnwIrAXHz0xuCQCprEgsXZP4MjQ5xyU+QlUdY7/rQw0x5198IDS239tdWuSgg4OI2XJQxQTDqOR64GMWYDJTz79lI4qpAP6LVzkY9uNVUdWffiSHcRKjKLYFcJqPVev67XljSHmHuJQpYvpqU+XIPPrpmAKDpuxNCfO7s+5PDkZihOj2/6OgHDKLrvdev4TBIfrY/3+esKfgTanpMDKhaOrjckLVZdaep14srirjRMyI7lSILXAqDvQ5P5nXkdOJ1mIFQJs53ZeLq6r5LF+dJP2U/ieVInXidbxrRN0V101B5l0uoRTunxO3DUxEbJ6zVE0rkwaGxRD3vCA4BbEutxDOrnn13wJMKFANQvxlbHUiD1ExUaJSOiilp6/QhMPsHtPa+c2Zy9QacuICAoRFz5p7zCM3yFGWMO5VX/wa+BLeCgH+T9OB8gv5tBvP2EhN/SFrsb7+m1rAn1A3oGIrP41R5UTS115FKxbgY0GK/lewqWj96NjbIXFMgefyzLAmOv/xuWEeKgJz9AhacKH3Rh3hoEKo49JYQwHY/fw9ggWdtLtYTUCmW07Ml720ujrGS1/J24SSyT4ldJAr1zKyr8B1ITBlANQX7gVrWLQcnrMjDbAxXdonbLZOfvT/VGnCi/+0SPqwT+ypfsZex8tOoOVDwFtbNpdZa1EIVP6B2gwcLdEK/xxXggnZFitUapgdo9a9SxpCilbdf5kVeUsvShUGLhAssX9HQTwwrEU+K7yXKgO0UVRUigxr1ldpl8c7Qe84nXQULAfLzGpW0zFPc+pjcfNl6fw/xDDDsVbbHM6omw1oXxV
- GzNPc75V
- p2/euqfda/83xSWShzATolsY4LI4V6/3eMAugzqH8yUqr9Ze/JPAwh1qYELwH6BsfG8KS/AMoGHkjWzMNymSD/a6RcCu0z63eSqlOYBYwb3Lrm6sB0AJdyOdB5kNeNrawGX2UvUujMwzYVdgaolUML2C453vP7f3wqJFYtpaivFkzKsBy8utPdS/93t1MdL81yrCXJoQPwWwelqQDrkZCWWT4/X6WGusbIz1XHseA3Bq/YOrejqI+/BdqfC8HCZjaAICZlpFQ1PkM59l7jMpvZ4pmFKWWExNa5eXZ0y4v4S2AW3pYJ751MZN/mnyzRI3GrjrIirrqRgp3pvny7//c9yFCz8vCD9tnnQaKjLy5oT20bTayyJk7tmzVL/FHLvSwAR6wCRgr5YESga19QiLp+Nyqrw==
+X-HE-Tag: 1777332288-953179
+X-HE-Meta: U2FsdGVkX190/J6f7c1TFREXFdGRTkc1TgCjl3AWUTYzdaufUku9cpCdWAtxX3eRcfAhdR3Lpl08Wn0IXs0Kr/rkQWIomiEWfDz/Xkbk4tdMbNcRTX/x9kLQ34lxM1gANpZZblb3wc4wvbE38RpC7uIr2GkwGnb9/ykSJn/gznvHolcYD7107VVhqjYqqMDCjNNVfD4tenHRJNuxWCR23P3EezB/mItUXWXoAJjYS8Fvm4fWclZO54k7GWoImy/dVVpahQsKWaQb5Gb16NSfPAvR50sTyYEgbwjZkQ/SFbs1/EWBZq1Tu8NO3Mz1uVweWki2j9me9ERh4nE9XOmK6jYLL+mP2AMwOjfjOf3zgXIMRyshDstlDCh327ZDXF49doGgN2sXDtKiiuScn7vTqmWQ48kuBFHdWqH8bBVw1/0Bn93tE457wjyMZThhOQ4y2EWmk1XGKNcdpUzV1ATjjh+RZFTgrz1ALxAnEOjh9jLNMWIBjzteS0nsCXEObQUY4Nl3Ft4CROO3ye+eZc1YPrrhprAVB0OwG3IAE0kZmn1REi9/qMnKQrXNUJ8pi/d9h8pFrL33T1FrtHSzsKI7rCwgCetdS7iQe2miREdhJULSwMXQtovvwqxBgXVpM5pAYUKreiH3oDp/HBZ2y20SkjwobUze3sIFLQBJVwDsMNYwkaDrmTgvKd00XxBVlPHPpPFtHqbDIzP0lpH0E77KnjC2WrthlJ4R/A8DdSjwJ59o0ktgPQWQunBaoxlsdXGmQyj0Cl2vDbk/guLvMlWONTQaAbHpEu000dn9hC/IHdftldvA1aci42T2GfClH94kOkYIWTf0AaUoTHJiG55v4fcOIF7I5xFw5HLED4MLMMMcz94erFBKMcejGEeWOyCsolfiosuCxdT/TO/gyUdBK/hflHPfqFV4GSO60sfBiV24226VX3zy2E6VhnTbSpRit9NL06rRwSu9fhwjmTz
+ s9VxP8YN
+ 2qUDoch6O3OtpqwQpDYZMX6ytjOCdwbbawJQ6IP8BN7UCYUe2TbsVyxuioCtTNpN7AGCAqlaxswCUs/iKFDCOCzUnF1YSKGcE6hf5/eCU9oAulKswC3LDq8lUdffL9gDtX+NAji7Rz6AR6tyF8YkehRwcVwtp8rIdwa60r6yGrPZKxOtRRuiMQKx3VwqVh6wHGG8iZcn+SW/tFYZIc4qo3HhaFV62/NF+nvnZ8xNQNu7zCVOWooC/n8tduOELaU/W1MzCzPwGPNcTpmjbE+5x0y/mZNSfkHHy9Wi2O2cBrw330hZo5qtda2KAC2IPf6kmLJd3p5TRyhsWoBJfbOzTa36W8IQKFZl4ZDkYN4OdCoDg9Po=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,130 +105,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 07:15:39PM +0200, Michal Hocko wrote:
-> On Mon 27-04-26 09:48:28, Suren Baghdasaryan wrote:
-> > On Mon, Apr 27, 2026 at 12:16 AM Michal Hocko <mhocko@suse.com> wrote:
-> > >
-> > > On Fri 24-04-26 12:15:18, Minchan Kim wrote:
-> > > > On Fri, Apr 24, 2026 at 09:57:16AM +0200, David Hildenbrand (Arm) wrote:
-> > > > > On 4/24/26 09:51, Michal Hocko wrote:
-> > > > > > On Tue 21-04-26 16:02:38, Minchan Kim wrote:
-> > > > > >> For the process_mrelease reclaim, skip LRU handling for exclusive
-> > > > > >> file-backed folios since they will be freed soon so pointless
-> > > > > >> to move around in the LRU.
-> > > > > >>
-> > > > > >> This avoids costly LRU movement which accounts for a significant portion
-> > > > > >> of the time during unmap_page_range.
-> > > > > >>
-> > > > > >> -   91.31%     0.00%  mmap_exit_test   [kernel.kallsyms]  [.] exit_mm
-> > > > > >>      exit_mm
-> > > > > >>      __mmput
-> > > > > >>      exit_mmap
-> > > > > >>      unmap_vmas
-> > > > > >>    - unmap_page_range
-> > > > > >>       - 55.75% folio_mark_accessed
-> > > > > >>          + 48.79% __folio_batch_add_and_move
-> > > > > >>            4.23% workingset_activation
-> > > > > >>       + 12.94% folio_remove_rmap_ptes
-> > > > > >>       + 9.86% page_table_check_clear
-> > > > > >>       + 3.34% tlb_flush_mmu
-> > > > > >>         1.06% __page_table_check_pte_clear
-> > > > > >>
-> > > > > >> Signed-off-by: Minchan Kim <minchan@kernel.org>
-> > > > > >
-> > > > > > As pointed out in the previous version of the patch. I really dislike
-> > > > > > this to be mrelease or OOM specific. Behavior. You do not explain why
-> > > > > > this needs to be this way, except for the performance reasons. My main
-> > > > > > question is still unanswered (and NAK before this is sorted out). Why
-> > > > > > this cannot be applied in general for _any_ exiting task. As you argue
-> > > > > > the memory will just likely go away so why to bother?
-> > > > >
-> > > > > I think there was a lengthy discussion involving Johannes from a previous series.
-> > > > >
-> > > > > That should be linked here indeed.
-> > > >
-> > > > How about this?
-> > > >
-> > > >     mm: process_mrelease: skip LRU movement for exclusive file folios
-> > > >
-> > > >     During process_mrelease() or OOM reaping, unmapping file-backed folios
-> > > >     spends a significant portion of CPU time in folio_mark_accessed() to
-> > > >     maintain accurate LRU state (~55% of unmap time as shown in the profile
-> > > >     below).
-> > > >
-> > > >     This patch skips LRU handling for exclusive file-backed folios during
-> > > >     such emergency memory reclaim.
-> > > >
-> > > >     One might ask why this optimization shouldn't be applied to any exiting
-> > > >     task in general. The reason is that for a normal, orderly exit or just
-> > > >     pure kill, it is worth paying the CPU cost to preserve the active state
-> > > >     of clean file folios in case they are reused soon. Preserving cache hits
-> > > >     is beneficial for overall system performance.
-> > >
-> > > This is a statement rather than an explanation. Why is it worth paying
-> > > the cost? What is different here?
-> > >
-> > > >     However, process_mrelease() and OOM reaping are emergency operations
-> > > >     triggered under extreme memory pressure. In these scenarios, the highest
-> > > >     priority is to recover memory as quickly as possible to avoid further
-> > > >     kills or system jank. Spending half of the unmap time on LRU maintenance
-> > > >     for pages belonging to a victim process is a bad trade-off. If speeding up
-> > > >     the victim's reclaim by avoiding LRU movement and evicting cache negatively
-> > > >     affects the workflow (due to immediate restart), it implies a sub-optimal
-> > > >     kill target selection by the userspace policy (e.g., LMKD), rather than
-> > > >     a problem in this expedited APIs.
-> > >
-> > > Your change effectively boils down to break aging for exclusively mapped
-> > > file pages when those pages should have been activated. All that because
-> > > the activation has some (batched) overhead. You argue that the overhead
-> > > is not a good trade-off for OOM path because those pages are exclusive
-> > > to the process and therefore they will go away after the task exits.
-> > 
-> > I think Minchan's argument is that mm reaping occurs only in special
-> > conditions (under high memory pressure) and for a very specific reason
-> > (to free up memory and prevent system memory starvation). Therefore
-> > priority in such conditions should shift towards more aggressive
-> > memory reclaim instead of normal aging. I can see both his point and a
-> > counter-argument that this might cause more refaults in some cases.
-> 
-> The way I see this is that the standard memory reclaim under a heavy
-> memory pressure would likely encounter those pages and aged them
-> accordingly already. So this is effectivelly racing with that process
-> and makes a potentially opposite decision.
-> I suspect that a lack of memory reclaim, as implied by the other patch
-> (to deal with clean page cache), is the reason why this one makes a
-> difference in these Android deployments.
+On Mon, Apr 27, 2026 at 09:37:02PM +0200, David Hildenbrand (Arm) wrote:
+>
+>>>
+>>> Thanks, but I fundamentally don't understand how RAS capabilities interact here?
+>>> We have mm/memory-failure.c for a reason :)
+>>
+>> We do, but self driving safety requires way more than the current hardware can
+>> provide.
+>>
+>> I'll point you to https://dl.acm.org/doi/10.1145/2775054.2694348 , which
+>> researched these issues in a datacenter environment (so no sun exposure,
+>> temperature controlled, designed to avoid electromagnetic interference).
+>>
+>> "We call a fault that generates an error larger than 2 bits in an ECC word an
+>> undetectable-by-SECDED fault. A fault is undetectable-by-SECDED if it affects
+>> more than two bits in any ECC word, and the data written to that location does
+>> not match the value produced by the fault."
+>>
+>> [...]
+>>
+>> "A Cielo node has 288 DRAM devices, so this translates to 6048, 518, and 57.6
+>> FIT per node for vendors A, B, and C, respectively. This translates to one
+>> undetected error every 0.8 days, every 9.5 days, and every 85 days on a machine
+>> the size of Cielo."
+>>
+>> [...]
+>>
+>> "Our main conclusion from this data is that SEC-DED ECC is poorly suited to
+>> modern DRAM subsystems. The rate of undetected errors is too high to justify
+>> its use in very large scale systems comprised of thousands of nodes where
+>> fidelity of results is critical."
+>
+>Yes, I read before that ECC is insufficient to detect certain bitflips.
+>
+>But I don't understand how this patch set here is going to move the needle in
+>any reasonable way?
+>
+>You have your magical self-driving car algorithm.
+>
+>Bitflips can corrupt your algorithm, your data, the kernel image, your user page
+>tables, your kernel page tables. Even a pointer to a bitmap :)
+>
+>... and we worry about the state of allocated vs. free pages.
 
-The claim that kswapd would have already aged these pages is just an
-assumption; it is ultimately a matter of timing. We cannot reliably
-predict whether kswapd has processed them, nor can we know the future
-access patterns of a dying process.
+Do we agree that this is one piece of a (much) larger puzzle that we would need
+to tackle?
 
-Global system policies are not always optimal for every specific use case.
-That is precisely why we have hinting APIs like madvise and fadvise.
+>Please enlighten me!
 
-While hinting APIs can indeed conflict with global policies, a negative
-performance impact would imply that userspace is misusing the API, not
-that the optimization itself shouldn't exist.
+Definitely! This is a pretty hefty body of work, so outside of trying to get
+the code out there we're also working on documentation, talks, webinars, etc in
+the context of ELISA (https://elisa.tech/).
 
-We should view process_mrelease() (and this flag) as a similar hinting
-mechanism where userspace explicitly requests expedited, aggressive reclaim
-for a specific target under memory pressure.
+The concept itself was approved by an independant assessor as compliant with
+the relevant safety standard, so the story is there, we're just working on
+getting it out.
 
-> 
-> Unless I am completely wrong and misreading the whole situation this
-> might be very Android specific change. The question is whether these
-> side effects are generally useful for other worklods. So we really need
-> much more explanation of the actual behavior after this change for wider
-> variety of workloads.
-
-While the primary motivation comes from Android's LMKD, this optimization
-is not active for normal workloads. It only applies to tasks that are
-already being reaped by the OOM reaper or by process_mrelease() with the
-special flag (via MMF_UNSTABLE).
-
-Therefore, it is an opt-in or emergency-only behavior that will not hurt
-a wider variety of general workloads unless they explicitly use this
-targeted reclaim API. Any system with a userspace killer needing fast,
-targeted reclaim can benefit from this.
+-- 
+Thanks,
+Sasha
 
