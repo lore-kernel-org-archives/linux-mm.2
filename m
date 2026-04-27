@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA0A9FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:43:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FE99FF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:43:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41E5D6B008A; Mon, 27 Apr 2026 07:43:39 -0400 (EDT)
+	id 974FC6B008C; Mon, 27 Apr 2026 07:43:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F4DE6B008C; Mon, 27 Apr 2026 07:43:39 -0400 (EDT)
+	id 94CC66B0092; Mon, 27 Apr 2026 07:43:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 332886B0092; Mon, 27 Apr 2026 07:43:39 -0400 (EDT)
+	id 889676B0093; Mon, 27 Apr 2026 07:43:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2314F6B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:43:39 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 204D188322
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:43:38 +0000 (UTC)
-X-FDA: 84704150916.23.B8C4AA9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7618D6B008C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:43:47 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DFBB8160181
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:43:46 +0000 (UTC)
+X-FDA: 84704151252.05.8FBEF25
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6FADCC0002
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:43:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bt5VYUaV;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 201991A0007
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:43:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rdf9Pqyw;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777290216;
+	s=arc-20220608; t=1777290225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wtva+FS3vpAxca6Ju79ePfSu3Z7UgkanAUfbEe4Bf/k=;
-	b=7EG+CFabhgfhuH3KopafrJXVhAHHwQYeWaDSzcHnilllZyArhSLn20y/DtyEQ5fAU9WPfG
-	y0lg8aISY7/7eh9PGPCOQVYBdKbKchDqYBrDT7FidEs6juqpjgjcdKouTNQSPDU6xg1rj6
-	AAlsmHsPHAKHICGiD0BXb6CbbJMT260=
+	bh=NTaqvN8Dchb3Bj4ajlunzm1KLnnj/JpA1cIGkMsUGIw=;
+	b=IVSfyU8ZdaIXzyh4VYVZ40B37EoPdQIJVxJFJ/dPd/GIBSppJLt/rplIAefQS9vc1bwg4Q
+	AEUlLgPONT2MRH/bFhyhhJASEi2zrDUIjzJXHgqa0v9VVUnTPRgETCMs/oL60SAugzVhjv
+	szvL+QAutqySw03tvBd8ScOs/Nz8w5U=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bt5VYUaV;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rdf9Pqyw;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777290216; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777290225; a=rsa-sha256;
 	cv=none;
-	b=z3Zp+BgpT5hfqI94tptTeSok7oy7Lluu+5ZARQkzbi91biFCD1f5QwXJOwRlZ3IQ9HIlsv
-	Ov+uq6GbRMl8Xa37OhNEe56R4RdTu19sJgRvL9ErI5Gcv/aRr/TZOqhONQ1YrJaQjy14iA
-	BrJPTBzA04qPPoQP66Xo5Ts+tJF/dbM=
+	b=dckffXe5dH3pB7MNmx286HdXtzjwnllH1kHT5Wp1dfGbhRTJhdk72Ge7yep3mGjG2MkkFB
+	hWm9l4O3rlLO4NP6GJr7AjhT6AA2/Siho2Jv9kZCMClF3DNdcHBDe6f3I/gAeIt969Kvhr
+	6cTirLbJn7zNiwu/VoY65g5yWzSch1c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9CDB543EA7;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5469E43BDA;
+	Mon, 27 Apr 2026 11:43:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260D6C19425;
 	Mon, 27 Apr 2026 11:43:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6E3C2BCB4;
-	Mon, 27 Apr 2026 11:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777290215;
-	bh=EDbnBx17zS3xFZo6r0KM+PlWBWkB+tisTjXCa9SljeA=;
+	s=k20201202; t=1777290224;
+	bh=CGNwjR6rvJ+68NLhj05y2pTfObzjJ51LITNuN7MEmD0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Bt5VYUaVeiMKMvtp4PJnzxTzkhqzQtitzwOIBd7dGufTGpQdLZr+l9UI1u+wF94vZ
-	 przTAXUDjSXZPITU2w5TMfx3urPPrN2uaiYEtWIF9DjELA4Uo/uf8PsTFUWgRtk5LX
-	 X0Tq72uYHSKXbMiDinApxr7tyK/bgleYGU00D4DUxXtibOPcIFwE2jplS5S2nZDGIK
-	 XRVMUEoijnNXp9mPoWTjnEMg255JfJaljHDsj3uyF1ELYKZ7odNNG4Aagw/7Haj+R6
-	 zJJwmbPgkWWz/pFJma/i3UPApAxVDSoqoNCCo1sapUQt7ORtmpSkrNmzr8PZw5ngTz
-	 XgCcm4nFpIUgw==
+	b=rdf9PqywdjIWMAOYCFItX9wgSiEVvzPRQJIb7JuPPyrVeuryos8ETgMjPe3mI1Y4r
+	 dlzVy0Qfg3wmeeD4HTJU1B3cP1xzYhxi+azF8gG75wSP10LxRD3qP3sAv0/nzamAjO
+	 xEal3l0SDC4SPsFZen9s4yVBMa7Y5ULbBb5bUskvD8jJWzGx2lkifkpekak+RpZI+p
+	 jg5MPKQS7nrv69MYABY1dDtBQSkOGy4U4YpaIB6qsbPQNkrkhB+MOvwQ0y7N+w75yx
+	 HVLrEvfJ445QJZwAEM3X9raDthB94WoG4XVEo4jtvdxMWad88njd52wjvkAyRboxPi
+	 ZxuEFJ5rvaPQw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 27 Apr 2026 13:43:14 +0200
-Subject: [PATCH 1/3] sh: use folio_mapped() instead of page_mapped() in
- sh4_flush_cache_page()
+Date: Mon, 27 Apr 2026 13:43:15 +0200
+Subject: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
+ page_mapped() in arena_free_pages()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-page_mapped-v1-1-e89c3592c74c@kernel.org>
+Message-Id: <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
 References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
 In-Reply-To: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>, 
@@ -94,13 +94,13 @@ Cc: linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.13.0
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6FADCC0002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: qrbejokf15donzywywmpoua3znn4nc41
-X-HE-Tag: 1777290216-544573
-X-HE-Meta: U2FsdGVkX1/X/8OxcjeCtiQWwYEF52l7avqJanrFxBpl8mzEGpjJoIcxxW1OTFi/UIpjRyxzXXrBo9pOz7H5xnAQzFBdbKzK2MHAt0Lh6r1vX/18fwDY+HuaC2u49xTrAIIUxnDXdQ8Kb4qP9NQuhFPggWwXLRst9voqapdGW9Pwsy5VkJVNyQhWG3klRnJdq6137ZHQkCy2LMgaDibiX7Y4MuUmBsoMBMIKBaRE8xED9bG62woTDnzPgVhrVQNVOyamafTyklKMIbLG6lEAPy5uSbg2b6YUaxloP11UOIc/q9Sw9LnrSA1Qh4FY00mIhbHgg0YEHmkG0gHaBdyGBWRDZVfxHMxSwBLmV/UinPkmpE18N9fUYcqfU+qbqamIfq6qrWZ8XGgaGHQNrhMjZOQ9Y/XsCIB/unjPHlV0LyMHhk241DOqKLE9UB++xMlGEL9f7t2WmsP0XBaVwOTqkneXAEhNLu/mEfO4J3Xsn40i4zDoW/CJEJGyDJZqJwjt4Ccx7GdZYumbVpqHqTrzYszvU+SLjl23FqThRxau5hIZ6DVLY4OX+V/Kn/rZaVAWOd6jfz6XESGFcEbLQDV+WRvfHF8Ej3U1IjcMi3A7fRwA8lrAmr40plbqXK8e66dgR5UxPUvUcS2Cp+Ig0Jmze8BE1ZYiOY6F4hP2I8AqNESmv2Vp5wkwCvb3YCNZ+5uLTB9pGqm+LjZnmfuRE+fkgGW4I6WpdG4KpX1z/9F+/adXoFRGsf9UohThqMXATNiGeF3tvcYrVpB19Wk148StedExlclhVCwXaXJCp7w6/v81nu9I0jfF8pz4xTCiaOO3bTnih6h/1CR1oD1npir4mEFuzxJy6OPj53LX0zD4WyuBIDwyuLKYNBBNwaWuNZIjTR+NYNDEo6VgDg5fdWBx7EdTwBcq4eWnjtX+TTpSsbVYQk/EPZwKBd2AmRitc53BQ+9WL4C89PmtXBmTPDX
- LgYFooQQ
- db9jEK34Nxwxjxnwefb6DS5LtU2f/yOcsniOgUcz7SgC1T/66M85/FVP7om5k8M/6CXSWmyVeFg4F1snvZl0YG42SgYdax8mcK+TS61GWQCqKLlKsLMkMBZs8j4jXRrVbZ/eu/HOIYEoYWKYqtgzHqyjltp0jj/4MQNQETby6MOExT0j4C/PJKA2Nr9jvhy5TgdOZco5gYdPSytpV6NKlMOnswKpgwJg/ImtUJFmHgmP1TwYBws7VPQmjo1EKNaEmhlSRfOOOKylbpiZYYZEM7VGwoUgYGcuDCFB2
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 201991A0007
+X-Stat-Signature: hqzf38mnim31c1fhj9wzw8cgato7n881
+X-HE-Tag: 1777290224-152327
+X-HE-Meta: U2FsdGVkX18OQLHgVWMqHamfb1ehk8d7r5L3DGUNEAn972+ofQLEv2tS4SNv4e6EDIYJnpBpGSWwDgRPmmEb20SwlZxsXbb5jo95swpJFd/6gG94jHNb6rlRHE7rbZp+0TWVs3kvy6qZWfIGTjFZsss4853AeaCh/gXlZgf7FmZS5+tfyGm+dSFQSjD0jc1PpUpuDsLcSwEdWfnpRqhnQN86IzC6nvGxbFo0tQVSo3rOwVRJ1qWAKsiNEtCRdjMX+F066vQyb0AW8M0lQE3+tlxFiZx3jjMZ5XKCY38y0GoVXdM/3g6+Lo02ZmD6bcHQR9IGT3LdfVUbjzi0syefj7Mv0GiIwb9pjM/gsiNukajorkPYRmCqjyNnhUTzAjvJxWeIZ11Cfg6M60fOiOVO+kdLG9meYr6nO4gzDZgdpq5K8a/42Piy4i1RhL6AEL789e1Q7q1Nig9xUjLG2yRW0W4BiQz9/GCQ44USu/chwpkWcJdw85G06xQHnFvZbbNljJ6qEgt+OeF4Gn1D0TwC8dMgkzE3LanujPCfr6+yqlo867sFtbk2jR1x8SUW1OeajXhLJRz/vGaWT/Vu1irhbsoCjTpPrxi1jtIDgg+GHicHuuZ5pTLqAaMdURC12PicDXEqBYdcjYbRWixvfpq5t14pfkVCrWZm9CLUmPcgjq+rIJIfVQWBYRIUJWJgR/xjt0BmoxV5cdQ/u1EU2XjX8LmmUQT1/Yq1E8RVrRAh0Tn1C/+uvfJUwcGyhJmMEFoo2MsiTfyTkOVDxktSiFo1upcJ9J54gK5ce0kKK+77fsfvorJC8fxQwNDs35/NV5wq8UcCFB/LPlLj15+FcSWCHvWXMa3YkpJqPDfjI3KJ2nI+SuoiajTCU5C1C33vhtJMlRxDUB0mC57F7ojKXi82dKA8fZlIN5T7CM0sri1FBZdmSQPQIrP1pPKaimdiBWf93VpF1ED6th+zMdO2Be1
+ JH7Lum5T
+ VQVEwHj4BtCLKGthJgQHnQSPhjY3DKDhbIogCfsGEfuqsEtshZfT22tyoUc0MtiVCECAA8JwFplqjoAASGvWfXWvj/+xv4xoqTf4sUicGEhx96WbdKqmQVWCm1dAr50Glr9bNARavqZAUmRAIE2e8pOkqVIAOuJlkomCG8FBPXOkh5WUDzGgrb3m8GxCnjV4PGSbq/gXoy6Kv6x1va/bK7Sqnh6ZNmuJFeflzJXgbPKQppR8L7fmcLMDF+0pZnm2nPvkK2OjDoZR8z3icGCBer3NZ8WRO58DMx2H5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,27 +108,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We already have the folio in our hands, so let's just use
-folio_mapped().
+Pages that BPF arena code maps are allocated through
+bpf_map_alloc_pages(), which does not allocate folios but pages.
+
+In the future, pages will not have a mapcount, only folios will.
+Converting the code to use folios and rely on folio_mapped() sounds like
+the wrong approach.
+
+Should BPF arena code allocate folios and use folio_mapped() here? But
+likely we would not want to use folios here longterm, as we don't really
+need folio information.
+
+Hard to tell. But in the meantime, we can simply use the page refcount
+instead, as a heuristic whether the page might be mapped to user space
+and we would want to try zapping it, so we can get rid of page_mapped().
+
+Page allocation will give us a page with a refcount of 1. Any user space
+mapping adds a page reference. While there can be references from other
+subsystems (e.g., GUP), in the common case for this test here relying on
+the page count is good enough.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- arch/sh/mm/cache-sh4.c | 2 +-
+ kernel/bpf/arena.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sh/mm/cache-sh4.c b/arch/sh/mm/cache-sh4.c
-index 83fb34b39ca7..8bc9ce541c14 100644
---- a/arch/sh/mm/cache-sh4.c
-+++ b/arch/sh/mm/cache-sh4.c
-@@ -248,7 +248,7 @@ static void sh4_flush_cache_page(void *args)
- 		 */
- 		map_coherent = (current_cpu_data.dcache.n_aliases &&
- 			test_bit(PG_dcache_clean, folio_flags(folio, 0)) &&
--			page_mapped(page));
-+			folio_mapped(folio));
- 		if (map_coherent)
- 			vaddr = kmap_coherent(page, address);
- 		else
+diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+index 802656c6fd3c..608c55c260bc 100644
+--- a/kernel/bpf/arena.c
++++ b/kernel/bpf/arena.c
+@@ -729,7 +729,7 @@ static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt,
+ 
+ 	llist_for_each_safe(pos, t, __llist_del_all(&free_pages)) {
+ 		page = llist_entry(pos, struct page, pcp_llist);
+-		if (page_cnt == 1 && page_mapped(page)) /* mapped by some user process */
++		if (page_cnt == 1 && page_ref_count(page) > 1) /* maybe mapped by user space */
+ 			/* Optimization for the common case of page_cnt==1:
+ 			 * If page wasn't mapped into some user vma there
+ 			 * is no need to call zap_pages which is slow. When
 
 -- 
 2.43.0
