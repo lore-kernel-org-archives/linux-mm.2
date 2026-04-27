@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78A10FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 12:04:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36366FF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 12:04:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEE056B00A9; Mon, 27 Apr 2026 08:04:08 -0400 (EDT)
+	id F386B6B00AA; Mon, 27 Apr 2026 08:04:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9F586B00AA; Mon, 27 Apr 2026 08:04:08 -0400 (EDT)
+	id EC2AC6B00AC; Mon, 27 Apr 2026 08:04:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB5C26B00AB; Mon, 27 Apr 2026 08:04:08 -0400 (EDT)
+	id DD92B6B00AF; Mon, 27 Apr 2026 08:04:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A04486B00A9
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:04:08 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 482E216019F
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:08 +0000 (UTC)
-X-FDA: 84704202576.04.19EDE68
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C57016B00AA
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:04:10 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 574CB1C0096
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:10 +0000 (UTC)
+X-FDA: 84704202660.27.4819717
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 81DB5180005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:06 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=E5HTbU93;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 53D7D20013
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Miik+htN;
+	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777291446;
+	s=arc-20220608; t=1777291448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DGW2njlj2ugDcXFumu6adxQFAzcj81+CZlVLaZj+Ric=;
-	b=6LRvsl9/11Z1Bq3NlLZFMN9R6/Se61MOFM0yMMQJksA3xN1mvwNGiD381Zx2ZeBSEgv/c6
-	y4gaidSrN01RcrPKB7OSvEcfyGBT0/qXRxofJWUhNAvMOPkxOVZzCV9qH/bsVRxD1YXxO9
-	vo0TOfCLdrr2nilVAcQHbMcb5f+n6lQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=E5HTbU93;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777291446; a=rsa-sha256;
+	bh=9ge+gLOghAHu+0FzCbaZCe2wrIYxRBjK2+0E6CvN8qo=;
+	b=tdrItqYmz6JKD9OEsL0ZV9QqGvxmw2ppfRP8ek6mldadFqwSTFyMGtlxd3nJXpVfjRC463
+	G1nUMV810B/X4PZhGnZbr4hV48h/vDa4rH7ZQ+bMPOv6kceS6f+xoN7tsAxvgJTljpUTqe
+	IMYaCe6nIu1joSsep1W4G3De6Ul0LAg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777291448; a=rsa-sha256;
 	cv=none;
-	b=wjYrGXdl30VBtbblIGddHejnBMpeFXm1lBXF5PqsguIFdSBQ1ICN4kUZ7ehxJeIuDaTkgz
-	tTPuxlo5G7LFeDCZohskjn1rUtJTU4EGl4lDI+n8wVfEM/74KeT8SKmDJq7KXTJqTndvbR
-	BEWg9jU39RO3YUubsUmMn9bW725WaPA=
+	b=5SvnVGv8JmoeKKHgeoGiyeiXAevgdAbdxYaPoA5rxyXuLLyNx2NnBnqaUASNs7I5wwNOjk
+	wpfNvqZE8QXbJoWCOQiCJF6k29GXNdmZBi8IZAYY2W4e6wQPF8J+RhzNuceO8VQpXBbimx
+	s7q0Bamy3yc5BaS80qaF4j++VzvoTFk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Miik+htN;
+	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 143C72403;
-	Mon, 27 Apr 2026 05:04:00 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 023032437;
+	Mon, 27 Apr 2026 05:04:02 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB5743F62B;
-	Mon, 27 Apr 2026 05:04:03 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA85A3F62B;
+	Mon, 27 Apr 2026 05:04:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777291445; bh=9abFZKGlP5VpbpK/xo3o3sS4A3nxNboOdLQrnuFuT/8=;
+	t=1777291447; bh=ldcRjHyX3ikGZr7TkP8sF4TKynkn1s47t2JOAAGYL7E=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=E5HTbU93SQIM8aVlcAPTi1uVCP1N/6UdLlfw1iB5ICYPNgHuTUaYxBrlXZgdkCuLz
-	 doZig4NlvoPQiazZPffunLwI4WTyOjdLVOfj9yPtNMeOvm4Vk+J/9q1RbO1OEzZETK
-	 uAgOe2oVcTpbcNK3SbT3QQTP8ajcOnuOP6toOKG4=
+	b=Miik+htNqUHD8vM0xx8JqEjpijJJ/3fmWSdcOzhiUxUJX8LFyjsOuhSbRJ6QTtLCF
+	 x98ojX4IXXUjskp5T8b8iUrxWEOkFCf6JjJnIoySQSzjTKSt/V1TDI4v64H/FLFMrg
+	 9YAfKQxrgNv/njWtR81B9dfN559OxTMw8e1GvVXQ=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Mon, 27 Apr 2026 13:03:35 +0100
-Subject: [PATCH v2 3/5] kselftest/arm64: Add POE as a feature in the signal
- tests
+Date: Mon, 27 Apr 2026 13:03:36 +0100
+Subject: [PATCH v2 4/5] kselftest/arm64: Move/add POE helpers to
+ test_signals_utils.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-poe_signal-v2-3-2bd9d6f16ab4@arm.com>
+Message-Id: <20260427-poe_signal-v2-4-2bd9d6f16ab4@arm.com>
 References: <20260427-poe_signal-v2-0-2bd9d6f16ab4@arm.com>
 In-Reply-To: <20260427-poe_signal-v2-0-2bd9d6f16ab4@arm.com>
 To: linux-arm-kernel@lists.infradead.org
@@ -81,21 +81,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777291437; l=1828;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777291437; l=2017;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=9abFZKGlP5VpbpK/xo3o3sS4A3nxNboOdLQrnuFuT/8=;
- b=GTnr1c7p2Hin4jCm+yjPTqqelCqtlEX6rcqi1gm5BLqDAdM07xRTBou5V5Li0RVM+66g0W9+y
- P/t1n7po+HfAW3auqpcikvxL2xVW1CvymzvFNUOTdPkAlcmJ39/fx4f
+ bh=ldcRjHyX3ikGZr7TkP8sF4TKynkn1s47t2JOAAGYL7E=;
+ b=r24fR4zGfLVsqC3/BUO4grJOZYk9vXPaWiQGFFkqbpPG0E3bWUZYasLlLJnROsUstdfZcv6rz
+ l5q3dEkmPbMB4V4cqfkWkRZN/jzikVM6ShcRdFYHENfVT5ULyQjmCrh
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 81DB5180005
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 53D7D20013
+X-Stat-Signature: 9rqt5xxfnsurcp1wxtfyhsc43d7gu3id
 X-Rspam-User: 
-X-Stat-Signature: xj7hffjubii4csmefhf6k911hcdt4wmy
-X-HE-Tag: 1777291446-841955
-X-HE-Meta: U2FsdGVkX19m8JrXZ4i9OM1XYLMQoZS1w129b7aS6bNpcTiyfphsKc7ju79Y9cwjW208+wx/k/02IE91a+JwPBqJMX6UYhvL0LHTAefpBEWGDbdePEr8R632/FVjzxyLPFE7mxHPMnhkjfCHLNU29DTOFd/h4QFCAUxsBvm2fAtZcipZkgVzUVqM7Bh5LjoE6SkKTpRSIaQnhTHkU7IZq8jQOlhYdMUc6I4IwzBTI7O//GCNyC7P3Y8kBRiH/zLk5ouQm3oC5Y02V4lOfeB/6EuddYln95z3hsqiGxoIIEMCjE2LYY1532+2KnJ9ZvxUEJfDGPy6w7zUJkO6p5A4qp2dWINyLaLgl+0I/UfGcZllqiK0k9PEm6ruKAoMtMcd6SFnOnVk3lk6LCiPkgTrepXE3WwHSFX/80HRxNnU0QVJlZmgPtUG1kkooNCKawl1Z0QcGPp5FlkSqKkLe7JQcgDq7IWSn21L+po65hOPn6+owDg2JP/MJU7CgpDL+jK0g/UzXqB1gHjaunNOziTM2fPInYwgZcmrq0+eSPlG+gL92pVf6ytSoP3mEejMauS4QpdpAGOdSoxeCIkRXtiy9hbSoAVKfO2cKZqa51bNvJec9FpraXZUeXgyodokY/J2CyvSKNB1msUYz8rrwOdzAGGleZR//O88nvUOGHDF1i2M4mnGWLHseyGOSUc3y07YHqnof2Ymd5XaIdHTkU0VK0lbwFSrwa0ZphzYT52YQqz82aeGbi29k6HClWL/Tkg2aw0tskXbOt+odWAU3LLAO29urqy3e0kMTi9joWhDm0Xv9ERhvV5+Y33PaFH09tTXAjKFbYqHAWtYHXE+qnioM9nbsArmXVg3JZx/GedRuzxMquhuYd8TN/VnYtq4UruNOGIOCfH5eQU4Fu5YKQb4xrswKVvNrigQ0BZeZ6KsktqfhVDl/gCPqvTLpPaZ7XIDhNTBlVIua2HCK2e0l2A
- 6mJiY3Vz
- 4fmK/oee/6EMBmMK79goh9W5+TdVjoWxuM44cwftqVLQjbVYA5UI4VnCemE7Li1oWrjyOU7sebhF1kR0ZjwdAaZV+v9ozzXcsitM3NkUj1oGaVOmBTYjsRfpyHw4yQ2Fbqn4yfK2zIYpbvCOD+i02Zy2SOujpBYDWZJ3K8YRgeMJzHZR9J4UeIqrsQtJj+1l2wupY1OUXOeRgWzQ81SEFwVhUw4pzynPPSXNsuNhUH0xChQJ2ZEq6zYsQEAuU18EvyzVHGvYlaYLDvHkF9daiXSaqYQ==
+X-HE-Tag: 1777291448-947301
+X-HE-Meta: U2FsdGVkX1+E0dTAGF0EPkavotENLGN8N+yXMK0eAShmlE4vGTv6ImFezrlN5FyFw3bo2KHVpNvjdIbeedbfRKF+taaNHFRfoMxT9nim0UMmWyjT8xb5QkPgnU9bV8T+d84A+59QZgUB3Pc5J3E2Xk8CMMVa+ZR/TL3QKal53eJv/Y230q7G2mNve1iCw4MGAn7k0HLwqp0aClxsA7NSaKIoul2JZ98gASzOQWNdVP7EFXSCLczN8QOm6YeHNIrF6JqQud1SBEmhuaMd/0YThNQwyacsLuTQNiYb4Y76mbRVC4gKqKR3N9Hy4BmItIXKHCRE2jNOUYUmkOwGpHUuDTBCOdmTLRHlZu9qZFo5OrWfdoWoyC0qUCN0SIsjXFmYPxPo8xtNfKuF/QaQOsj+pRP7vCy9nW9ng1CtDwGl8resIn/vxG8wQ1FwHrr0RaaJZUkji2RBjtDSE+5C9kus9KSpztJq/dXWNaSJSdJxWDx0kOTHYgcS7pAuxSj0AKxgamlccX99PdHoriyUTbcUfXtNo/0/YsIISx/2ZERtwWIH/h6p+2QHBI/zsBfoDtwjcC0mrpl8ybUav3Fod/USMd/l0wv8nm/qCNPmhylL7d/5wTNpDH62iRCV9qWjqXvsiBUoI54MAA1GZoNCNR5OTar4kG3BJ84phvOGewuBs4wvTZ4mUBzzGr59DLQL9/p46rx7oex9JArw7y0gjwVElyN41uJsA4RmYbb8uXg8h988SevzicnKPAgUY9tTQGawGYg1HAOU6SnlA6AYr2ZTLGhhnJlH6cOuzAOV5JeW6fiZsw6HpUl2vd9knD+W4VVyio2gBuLR0dj59r2Td2C7Kj1ItRAXMHJeD2SwlzohXklCj6ylGunZuJDh0blYRuktM4QQA+LjA8WgROfyh6XetXGUbcfXQMuYoR4MVjDM1H/LT8bJtGpZiNx4un/G571IgeG+lPJofnveFiVaNZ4
+ 7tcobLb8
+ fefmLtGzQiEsZVEc08nyxhZXwyd+Tgh7iq01dsJGUgoem78iKHRebrXfX0w/bbMVzo41lREjuGCdWKWHEDsFxSmZaJkHCx9bJqJ+AVDv8AUQVZLtwtwDNFecCAOPuY1PhZDVGGsxZCdGhpDVr1PAyBnrGZXiCX3lQqIHkk88heG69qajErIfgXn3AQ5nuBBco32vsDAqI9Gz/oE+S5PetxfoSbZna1lZ+XYUiFj3G39qsB8F2vsM8/i4pBmKT0jV1vf/00Aj+wricJwwpiMNw372wpIX9L+Sqzy5y8kf1Ar9wCDIZPDZ08Rm2N9IEOnRTU3TJ9Sm7Ja5qaXI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,57 +103,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the POE feature to the signal tests framework, to allow tests to
-require it.
+In preparation to adding further POE signal tests, move
+get_por_el0() to test_signals_utils.h and add set_por_el0().
 
 Reviewed-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- tools/testing/selftests/arm64/signal/test_signals.h       | 2 ++
- tools/testing/selftests/arm64/signal/test_signals_utils.c | 3 +++
- 2 files changed, 5 insertions(+)
+ .../testing/selftests/arm64/signal/test_signals_utils.h  | 16 ++++++++++++++++
+ .../selftests/arm64/signal/testcases/poe_siginfo.c       | 15 ---------------
+ 2 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/tools/testing/selftests/arm64/signal/test_signals.h b/tools/testing/selftests/arm64/signal/test_signals.h
-index ee75a2c25ce7..c7c343494cb8 100644
---- a/tools/testing/selftests/arm64/signal/test_signals.h
-+++ b/tools/testing/selftests/arm64/signal/test_signals.h
-@@ -36,6 +36,7 @@ enum {
- 	FSME_FA64_BIT,
- 	FSME2_BIT,
- 	FGCS_BIT,
-+	FPOE_BIT,
- 	FMAX_END
- };
+diff --git a/tools/testing/selftests/arm64/signal/test_signals_utils.h b/tools/testing/selftests/arm64/signal/test_signals_utils.h
+index 36fc12b3cd60..2c7b8c64a35a 100644
+--- a/tools/testing/selftests/arm64/signal/test_signals_utils.h
++++ b/tools/testing/selftests/arm64/signal/test_signals_utils.h
+@@ -57,6 +57,22 @@ static inline __attribute__((always_inline)) uint64_t get_gcspr_el0(void)
+ 	return val;
+ }
  
-@@ -45,6 +46,7 @@ enum {
- #define FEAT_SME_FA64		(1UL << FSME_FA64_BIT)
- #define FEAT_SME2		(1UL << FSME2_BIT)
- #define FEAT_GCS		(1UL << FGCS_BIT)
-+#define FEAT_POE		(1UL << FPOE_BIT)
++#define SYS_POR_EL0 "S3_3_C10_C2_4"
++
++static inline uint64_t get_por_el0(void)
++{
++	uint64_t val;
++
++	asm volatile("mrs %0, " SYS_POR_EL0 "\n" : "=r"(val));
++
++	return val;
++}
++
++static inline void set_por_el0(uint64_t val)
++{
++	asm volatile("msr " SYS_POR_EL0 ", %0\n" :: "r"(val));
++}
++
+ static inline bool feats_ok(struct tdescr *td)
+ {
+ 	if (td->feats_incompatible & td->feats_supported)
+diff --git a/tools/testing/selftests/arm64/signal/testcases/poe_siginfo.c b/tools/testing/selftests/arm64/signal/testcases/poe_siginfo.c
+index 36bd9940ee05..e15fedf4da6e 100644
+--- a/tools/testing/selftests/arm64/signal/testcases/poe_siginfo.c
++++ b/tools/testing/selftests/arm64/signal/testcases/poe_siginfo.c
+@@ -21,21 +21,6 @@ static union {
+ 	char buf[1024 * 128];
+ } context;
  
- /*
-  * A descriptor used to describe and configure a test case.
-diff --git a/tools/testing/selftests/arm64/signal/test_signals_utils.c b/tools/testing/selftests/arm64/signal/test_signals_utils.c
-index 5d3621921cfe..4b12dbd7669d 100644
---- a/tools/testing/selftests/arm64/signal/test_signals_utils.c
-+++ b/tools/testing/selftests/arm64/signal/test_signals_utils.c
-@@ -31,6 +31,7 @@ static char const *const feats_names[FMAX_END] = {
- 	" FA64 ",
- 	" SME2 ",
- 	" GCS ",
-+	" POE ",
- };
- 
- #define MAX_FEATS_SZ	128
-@@ -341,6 +342,8 @@ int test_init(struct tdescr *td)
- 			td->feats_supported |= FEAT_SME2;
- 		if (getauxval(AT_HWCAP) & HWCAP_GCS)
- 			td->feats_supported |= FEAT_GCS;
-+		if (getauxval(AT_HWCAP2) & HWCAP2_POE)
-+			td->feats_supported |= FEAT_POE;
- 		if (feats_ok(td)) {
- 			if (td->feats_required & td->feats_supported)
- 				fprintf(stderr,
+-#define SYS_POR_EL0 "S3_3_C10_C2_4"
+-
+-static uint64_t get_por_el0(void)
+-{
+-	uint64_t val;
+-
+-	asm volatile(
+-		"mrs	%0, " SYS_POR_EL0 "\n"
+-		: "=r"(val)
+-		:
+-		: );
+-
+-	return val;
+-}
+-
+ int poe_present(struct tdescr *td, siginfo_t *si, ucontext_t *uc)
+ {
+ 	struct _aarch64_ctx *head = GET_BUF_RESV_HEAD(context);
 
 -- 
 2.51.2
