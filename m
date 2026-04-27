@@ -4,147 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885C4FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 13:23:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83253FF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 13:24:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9E6D6B0088; Mon, 27 Apr 2026 09:23:44 -0400 (EDT)
+	id F15676B0088; Mon, 27 Apr 2026 09:24:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E286E6B008C; Mon, 27 Apr 2026 09:23:44 -0400 (EDT)
+	id EEC586B008C; Mon, 27 Apr 2026 09:24:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEFC86B0092; Mon, 27 Apr 2026 09:23:44 -0400 (EDT)
+	id E295F6B0092; Mon, 27 Apr 2026 09:24:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B97C96B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:23:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D10C1401D0
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:23:44 +0000 (UTC)
-X-FDA: 84704403168.06.B721E2B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 995D04000E
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:23:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=keRPqmoX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D121C6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:24:15 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A30E1A0176
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:24:15 +0000 (UTC)
+X-FDA: 84704404470.02.85E0555
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6FB36140009
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:24:13 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf09.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777296222;
+	s=arc-20220608; t=1777296253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9gBUer1rWmgE2WRHUPzST+NTjyYkQ073REfOKlXWxsY=;
-	b=HO+Lln0hUatW/g4AHvGcyvHd2Nm4WAKmymBkt3c8LmJl62OJaOnkqCFPpRDnZuqYcirRLq
-	HgAVvBKCgQ1c9r55y6KGy3fnnsIMfv5YnJmAQUt07YXz7DrMuh3SsmaD7jDcvmM1mX7hqY
-	Bg9UY9qv+rMgI9xNlkJL9yjyFVSv7cA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777296222; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=VeLzrXJeO6zEBT2IRSgMl1DDUMZlXaagPzcAWHa4OcQ=;
+	b=l2h7svH1gy5RExaoDdDn1A7jIf9Y31d3mB8ipcRrWeTM08m4hP0gzx6zahThwQ/j/QW02d
+	LLJXrzjYGKa3nzTc6/TS5EM2lolHRDWsO2J5+LPWXFKrde//8ihSWH+YwGxJ9CmSHMvCc2
+	YeNACDGgAsCZmuMAOBqObVQRvM7Y7K4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777296253; a=rsa-sha256;
 	cv=none;
-	b=47Zg0a/m7yqFVTVBv0HfkMXeyN8vKSMivT4EWRUEQCR10d3AOhPF1sDQmVROmz+Z8Cfn/T
-	Lh8jz0zWK46I2/jx1D+BEpU1XGdgBms5WtZ9leYktytxp0Rc/6udVs+RsQHUEB3cB4pLcL
-	CuwozpSVGaiA1khOxHADCLU+VBjXPZY=
+	b=Qrm17j7IHAPCTsAEiVEvWw2kyZ4d0UF5bscc+YHnqKDAzKI4EwaR49bhDPSPzsvTNQhoXr
+	yjU7AXS8AI1PtS4i1zl7FX+Y7gqzaMQhaDuRSfC8o64kpjCBAyf+AeEgRX7BB0ocNWNc9R
+	nj6IqTMcKNNdtCjWvW9fGhnCI66wEwc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=keRPqmoX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E765660138;
-	Mon, 27 Apr 2026 13:23:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA73C2BCB5;
-	Mon, 27 Apr 2026 13:23:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777296221;
-	bh=9SNdGN922VYga1JfQ0RumaLfPFgOOjYtthX/0Ll8Wfs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=keRPqmoXEQVEMnHAPVtcM68vKB+aQBsOoH0KZMMV8/OWuQTSRdB4GpDONopGqcw8S
-	 XW05BbY3zjK9z+EPi7eOpTanKL89b2CnXdGXSKmlR/2yezKGDOrKPtlzNYlNpgyBPm
-	 3DcCBKGvQL9TjSl3Yu8ODAFvOBhErDRzgeab/g9S8oT5ftRLVZHVoKjqydr5G7F6R7
-	 vnKQDDKt1i+YY5MEDUA0FAKGClqcn+45WrjIjRWdxRSiyBke29JmQXIaPJ3qaGYh6y
-	 Q+JjXAzaYWUf+Db5kecXudNpXcRQNewsfOPjPWb/vRodacWwowJunPCs9YL9PEjLOM
-	 xcgY503NyLU2g==
-Message-ID: <06218a87-8346-40b4-adf4-dc494b5f1293@kernel.org>
-Date: Mon, 27 Apr 2026 15:23:33 +0200
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf09.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g445H6DRxzHnGkb;
+	Mon, 27 Apr 2026 21:23:31 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id BAE934058C;
+	Mon, 27 Apr 2026 21:24:11 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 27 Apr 2026 16:24:11 +0300
+Message-ID: <666090aa-a679-4ce4-b66a-a5bba8284268@huawei-partners.com>
+Date: Mon, 27 Apr 2026 16:24:10 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] mm: remove page_mapped()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
- <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
- Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett"
- <liam@infradead.org>, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
- Breno Leitao <leitao@debian.org>
-References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
- <20260427-page_mapped-v1-3-e89c3592c74c@kernel.org>
- <20260427062137.48739e6fa6e550f1f0e8ff48@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [RFC PATCH 13/19] mm/damon/sysfs: implement filter dir files
+To: SeongJae Park <sj@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20260426205222.93895-1-sj@kernel.org>
+ <20260426205222.93895-14-sj@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260427062137.48739e6fa6e550f1f0e8ff48@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260426205222.93895-14-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 995D04000E
-X-Stat-Signature: fiqhr5bnnzqczg19iy5umgouafsocf3y
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-HE-Tag: 1777296222-814107
-X-HE-Meta: U2FsdGVkX1/swnnPXw3EGbN0C3M7n8wi4Nq0OwP3IwKtPRqGDbyQ8YzMDJXBZUe0FN+98Dw6DXYXMj0UOGHPT2owZTts3HpybXgsXkAoHcftP4ByYW/+lSmnKLJP4pkoFoB/nKuhpp92XvE1OwKb4AO4lFkD9ZBjtgWvtPmWYVuiA5Qr++1Vu9w4Lp/XEcG7CiFgKUlyNtGIWGMxWkvekWQqF/588yBKue4lYb53fvy9kPkQfGEb3tbkb0ne8Jp8DWO0GiGv1CABtmvBJMsg71/az+GW7XaXDQdTSmAQFDMGClzr4zdYgJjM3OUlOgj2BmHCufTe4cRF/xitQ7yXvcbKeQeI5NllfWL2R1cfBheAPi6L7bTgP4CUGyQ3SDBqApHT7Z8u0nfihGv+FaBcONDDD2SvxtH07bGUJQ8fHWz3/k96boDoTCGq/LoutH+UmCWP12D+sv5Y42BuLFMj2n72y0ABBiHYSFuZduPmEnVbCke1X7yf4edBc+W9OzsukXr4sqViag+KLhUE2PkpLh46y8Ycy68r/jircS1KBo/KHGZV73ALL20fDwB6zIE3dYwas91QXVXDrIWIlVEP9NRxFnIIdcncfoX+o6lhiF/tv2Kk30MKlOSf3YedASAuc+rV0KueWDqHHIksh1hWYpMWBcOk0dkalTc2+xyWLbUQwa7CzAJ5/yrf/loEQrDFMl+0PBqlPDhm6lOx+SpRwxW5MK+5Q/pAk8+KBLeZsSIhF8EyyKYtngOJQN5hYjjR5uiQtn4XuRI51q2BLoQXZVqC4UMhGS5WGF+E020J0vXmEuTRGpOzBV5KggYTH7xFG+wNtm6jQj3/0ENOpQCU9a3qiGB+5tkBSQ73AEyRV8zfFXzusyGYO6aj3tdYuZLJxaggiD664DqTqC22Y6FNVK90w8BIVMzhAoyOSSW9hnaOYuG0TpfEPrecqAoriLNKLrXGJ0LXhGViFJjzjOY
- UoSc3Fb6
- JwRyXe2nn5l3ppUH8EKv8kC97390O3Mq/dbukU9ZzH2DFYTtBhq0xCVuYheR3xdjiUELpS+shYEjAdCM4dsnuWEvaqEMi81UPPuKFxIaezhgr2T6UEM2YPMlLtL54O81Td+l+AcRaNJeHa7KNKklP2LsUalxY/o1AAhjdMz8TEpaphl6jGAfykEsOrcJ3j/U+YQQpi7+joHlnYg6BZdw85hbKC2uBahjV+Gxe9O+JLy1hBKTbbW66Hg1smqE8U9ucoGwMj4aNwTkNQJD7pUNbPnp7+NYr0tRMyxhi25aJGd7Cyog8Fa5yhSid2LKNwYSCLe+F/4cMC/lnOTIf87FYv7iwa/UF62QnCsqT
+X-Rspamd-Queue-Id: 6FB36140009
+X-Rspamd-Server: rspam04
+X-Stat-Signature: zspuk8uy6qf5bhcr5ufsnkes1gxgtqhe
+X-HE-Tag: 1777296253-674509
+X-HE-Meta: U2FsdGVkX1/zjPJ666q129OAQF2wf0tZ2rUssOY91Te6Stukq38+zPtRQhsU7mo29pMCQeVlJgHo6P/xURapsCzj7RvFQmc3iolivAXQ4AJhQvB0HO/CNdyOcLH+VgcVNJ0KXNedSC4cxjaC96OaykFNiUIl6/zKM6w4B2dM4fdPFli79Z3q/Um/jCOa7HDMOQodPjc7Xt80b+/Xp22ChVxzSjLhwJNba+dk1vA+tpM1i3tQi3YNKVzVmB6A60nTyvhzDc59EeTOqIgGuXQHFvmLH/nWnkl6JbcUUIfizNlwY131wqjsnbaGFURoSlt61CIBczdfwksLc9wr3PsuIbPOEMVtK3Yyk5ByT7C+8RzHi2j04yt2wlGYaZTh/WS3G3Ad0GUqtrey5Eplq2DsWhoUrctW3u6HGM4R2V0cVHrlP9VIzG8bgfFxnofdjkxePWZW8z11AxVYgOZK/7fsC08A9Rx3XnXSNsL86tipMxNXZdgHrLePWc9MjKHuqlUiofEjZI8iSx2LLxYHLYjPE6/qQxz70vFSdYd+aPzJNWLTKl2nxYTGutFRm4mAbUJsjkzqzogSiZf4iQw+IBSHYBuy28SMj7hP4f8fPtWSZ75dqikGHzFA0WAEqnp80CnO2bYHiSjKMvNzk5/Lr0EtSwD3NgCziHMWhHEc31/DQw6SuAi5e+KeSKPHH2T7AzY4TNnY44BOlSiNCIiZbUaLiOKt5SyW6P1DnhOhJ+wvsr7CSqQnGHg0TWtVUDhPi1MnS94zX+yTdGcNt2i1khNJzQrn0g1quAc6jfsO+5W+jkEFjQ8eguDxOqGOLHvbP3sydc/EY/ppiNA2eiUczLPNWCHslsHvVya3r1r8cs+rS3+xKdYXeaxPZSCjCxAU5J9/s2xWSOM0Kf/WXS5zJj1l15CqxlZturJLicjWnHXGzJ26HggXh8KU2DttIRF5wl3zUFrg1TbiPQMQ44ACJ92
+ G8JIsNcZ
+ 9o+/pRAyjZ0TRj0rgJztiHgL4G/+bomYLoVZW4qf2l0nBuheC97qRdutOFBx2D+nIShhIA1/DWk3//zO+y1/AuTKjS5n3/5swHFmiQBt+syGIKpX3t4RUByLStHou5HK2jZcaix4a403k8McPxjTuwRRBK5qAW6jf00WYP0fZOQAx4PDuQTqXBBRbDRC8Yys/3eRqZJxFpp9wiygFOgg09/hREVXudOl9J2/yrHjoOpaIvK3t0YD1Yr8psWk/XKnOgLBU1nCQiuH/1ClMOnx+94RQBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,37 +92,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/27/26 15:21, Andrew Morton wrote:
-> On Mon, 27 Apr 2026 13:43:16 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> 
->> Let's replace the last user of page_mapped() by folio_mapped() so we
->> can get rid of page_mapped().
->>
->> Replace the remaining occurrences of page_mapped() in rmap documentation
->> by folio_mapped().
-> 
-> This broke Breno's "mm/memory-failure: add panic option for
-> unrecoverable pages"
-> (https://lore.kernel.org/20260424-ecc_panic-v5-2-a35f4b50425c@debian.org),
-> which added a new page_mapped() call.  I made the below adjustment to
-> Breno's patch:
-> 
-> --- a/mm/memory-failure.c~mm-memory-failure-add-panic-option-for-unrecoverable-pages-fix
-> +++ a/mm/memory-failure.c
-> @@ -1353,7 +1353,7 @@ static bool panic_on_unrecoverable_mf(un
->  		cpu_relax();
->  		return page_count(p) == 0 &&
->  		       !PageLRU(p) &&
-> -		       !page_mapped(p) &&
-> +		       !folio_mapped(page_folio(p)) &&
->  		       !page_folio(p)->mapping &&
 
-If we have a folio, we should really lookup the folio once. Not 4 times.
 
-Breno's patch likely needs some love. :)
+On 4/26/2026 11:52 PM, SeongJae Park wrote:
+> Implement sysfs files under the data probe filter directory for letting
+> users to configure each filter.
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  mm/damon/sysfs.c | 114 +++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 114 insertions(+)
+> 
+> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+> index 25487a0268cbe..2e0b7eca6bcbf 100644
+> --- a/mm/damon/sysfs.c
+> +++ b/mm/damon/sysfs.c
+> @@ -753,6 +753,9 @@ static const struct kobj_type damon_sysfs_intervals_ktype = {
+>  
+>  struct damon_sysfs_filter {
+>  	struct kobject kobj;
+> +	enum damon_filter_type type;
+> +	bool matching;
+> +	bool allow;
+>  };
+>  
+>  static struct damon_sysfs_filter *damon_sysfs_filter_alloc(void)
+> @@ -760,6 +763,105 @@ static struct damon_sysfs_filter *damon_sysfs_filter_alloc(void)
+>  	return kzalloc_obj(struct damon_sysfs_filter);
+>  }
+>  
+> +struct damon_sysfs_filter_type_name {
+> +	enum damon_filter_type type;
+> +	char *name;
+> +};
+> +
+> +static const struct damon_sysfs_filter_type_name
+> +damon_sysfs_filter_type_names[] = {
+> +	{
+> +		.type = DAMON_TEST_TYPE_ANON,
+> +		.name = "anon",
+> +	},
+> +};
+> +
+> +static ssize_t type_show(struct kobject *kobj,
+> +		struct kobj_attribute *attr, char *buf)
+> +{
+> +	struct damon_sysfs_filter *filter = container_of(kobj,
+> +			struct damon_sysfs_filter, kobj);
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(damon_sysfs_filter_type_names); i++) {
+> +		const struct damon_sysfs_filter_type_name *type_name;
+Can we move this declaration to the top of the function?
+> +
+> +		type_name = &damon_sysfs_filter_type_names[i];
+> +		if (type_name->type == filter->type)
+> +			return sysfs_emit(buf, "%s\n", type_name->name);
+> +	}
+> +	return -EINVAL;
+> +}
+> +
+> +static ssize_t type_store(struct kobject *kobj,
+> +		struct kobj_attribute *attr, const char *buf, size_t count)
+> +{
+> +	struct damon_sysfs_filter *filter = container_of(kobj,
+> +			struct damon_sysfs_filter, kobj);
+> +	ssize_t ret = -EINVAL;
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(damon_sysfs_filter_type_names); i++) {
+> +		const struct damon_sysfs_filter_type_name *type_name;
+Same
+> +
+> +		type_name = &damon_sysfs_filter_type_names[i];
+> +		if (sysfs_streq(buf, type_name->name)) {
+> +			filter->type = type_name->type;
+> +			ret = count;
+> +			break;
+> +		}
+> +	}
+> +	return ret;
+> +}
+> +
+> +static ssize_t matching_show(struct kobject *kobj,
+> +		struct kobj_attribute *attr, char *buf)
+> +{
+> +	struct damon_sysfs_filter *filter = container_of(kobj,
+> +			struct damon_sysfs_filter, kobj);
+> +
+> +	return sysfs_emit(buf, "%c\n", filter->matching ? 'Y' : 'N');
+> +}
+> +
+> +static ssize_t matching_store(struct kobject *kobj,
+> +		struct kobj_attribute *attr, const char *buf, size_t count)
+> +{
+> +	struct damon_sysfs_filter *filter = container_of(kobj,
+> +			struct damon_sysfs_filter, kobj);
+> +	bool matching;
+> +	int err = kstrtobool(buf, &matching);
+> +
+> +	if (err)
+> +		return err;
+> +
+> +	filter->matching = matching;
+> +	return count;
+> +}
+> +
+> +static ssize_t allow_show(struct kobject *kobj,
+> +		struct kobj_attribute *attr, char *buf)
+> +{
+> +	struct damon_sysfs_filter *filter = container_of(kobj,
+> +			struct damon_sysfs_filter, kobj);
+> +
+> +	return sysfs_emit(buf, "%c\n", filter->allow ? 'Y' : 'N');
+> +}
+> +
+> +static ssize_t allow_store(struct kobject *kobj,
+> +		struct kobj_attribute *attr, const char *buf, size_t count)
+> +{
+> +	struct damon_sysfs_filter *filter = container_of(kobj,
+> +			struct damon_sysfs_filter, kobj);
+> +	bool allow;
+> +	int err = kstrtobool(buf, &allow);
+> +
+> +	if (err)
+> +		return err;
+> +
+> +	filter->allow = allow;
+> +	return count;
+> +}
+> +
+>  static void damon_sysfs_filter_release(struct kobject *kobj)
+>  {
+>  	struct damon_sysfs_filter *filter = container_of(kobj,
+> @@ -768,7 +870,19 @@ static void damon_sysfs_filter_release(struct kobject *kobj)
+>  	kfree(filter);
+>  }
+>  
+> +static struct kobj_attribute damon_sysfs_filter_type_attr =
+> +		__ATTR_RW_MODE(type, 0600);
+> +
+> +static struct kobj_attribute damon_sysfs_filter_matching_attr =
+> +		__ATTR_RW_MODE(matching, 0600);
+> +
+> +static struct kobj_attribute damon_sysfs_filter_allow_attr =
+> +		__ATTR_RW_MODE(allow, 0600);
+> +
+>  static struct attribute *damon_sysfs_filter_attrs[] = {
+> +	&damon_sysfs_filter_type_attr.attr,
+> +	&damon_sysfs_filter_matching_attr.attr,
+> +	&damon_sysfs_filter_allow_attr.attr,
+>  	NULL,
+>  };
+>  ATTRIBUTE_GROUPS(damon_sysfs_filter);
 
 -- 
-Cheers,
+Asier Gutierrez
+Huawei
 
-David
 
