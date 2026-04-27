@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9931BFF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8418BFF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:22:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DD0A6B0088; Mon, 27 Apr 2026 12:18:52 -0400 (EDT)
+	id C54416B008A; Mon, 27 Apr 2026 12:22:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08DBB6B008A; Mon, 27 Apr 2026 12:18:52 -0400 (EDT)
+	id C04D26B008C; Mon, 27 Apr 2026 12:22:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBE546B008C; Mon, 27 Apr 2026 12:18:51 -0400 (EDT)
+	id B1AD76B0092; Mon, 27 Apr 2026 12:22:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DADBA6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:18:51 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 71FD3160279
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:58:04 +0000 (UTC)
-X-FDA: 84704792088.03.96351DD
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6CA27180016
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:58:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xLewC43e;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F5596B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:22:57 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B9E740CF7
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:56:04 +0000 (UTC)
+X-FDA: 84704787048.20.DE8BFBB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6E6DC100019
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:56:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dbh7pNvl;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777305482;
+	s=arc-20220608; t=1777305362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tDtbus8CxHrwyQM3OMQxzeKwt9hPmc6cbwSAuU/oDr8=;
-	b=DGgZWswgj+Lg+XHF5YVeRml9cXWizt5G4AhgS4SQ/DoCUINgKo2LDJN6mU6nY1V5DzA5dT
-	breK/R8pWvOT+58IeHDLO9kyOdX/p2pKs9hS+PVZqJiTinc7Crj4LBaqLxOqlCQ25jQzl5
-	UjMnhXDX8FhMEB96q0O1SOt6Qse+LBE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777305482; a=rsa-sha256;
-	cv=none;
-	b=m9cCORBq5Q82NcoYWgFIxSRCfJ02ZNscZ9/BMIlitMdywcrew0uJQEFeveyWvDJ5bLNItp
-	V6NxvUBEQ9edvYEtV2CyBtqPGLyIJkHHOAgCxutldNaCV9puq88LHGrqGP9mAWtVkPiFld
-	A5gwMi0bsRx4aFVXOKaM5il9IGs++rw=
+	bh=eWC8elueKMcWLFgLmq31j2LqM6n2xpTf9xGZ8V075u4=;
+	b=4ollZEg1eNJ6inc//9282fz++VkjF3jtZMkni3c7tHA7V1Kl4AJF/Sl9MNbAIZmkXwCwan
+	/PSdRrxWLNlYvz2ml4TW1zK74gh/8kd2hALAtSORKIfgXtIljuDBKtuqeUc9jCNjKyIy3D
+	hrSXg8eWxZ4una66Up9UDcAMbRgDk5Y=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xLewC43e;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777305480;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tDtbus8CxHrwyQM3OMQxzeKwt9hPmc6cbwSAuU/oDr8=;
-	b=xLewC43eXTp7cTNuezMPBEADJ3J7iL+BrYFniYehOCZGgKBxD6ZhQZp07xLW6DCG+UmilV
-	IOkePLTdKPAeFsDUqJWTK6ciN34NHPccn51FnevfhPh34nyCSvwRY+ENY2bUVVvl6mVJTS
-	i788J1u1a8TuefrI+2Erz7vnZpZ6rU0=
-From: Lance Yang <lance.yang@linux.dev>
-To: leitao@debian.org
-Cc: linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v5 1/4] mm/memory-failure: report MF_MSG_KERNEL for reserved pages
-Date: Mon, 27 Apr 2026 23:57:39 +0800
-Message-Id: <20260427155739.1643-1-lance.yang@linux.dev>
-In-Reply-To: <20260427123330.92847-1-lance.yang@linux.dev>
-References: <20260427123330.92847-1-lance.yang@linux.dev>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dbh7pNvl;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777305362; a=rsa-sha256;
+	cv=none;
+	b=kTBg8flCyB0VIHaconf5W2sJsfxVdcLiNCPY0I3SJ3/b+HNWzcIGnjZfR4ulB7im0Zppkn
+	sl15xfsN5vgB/itx4wHdvVh1CJbAYTGFz+CSH9+O09OCtayMHDwCceAzI0CKpaENTjPYgT
+	i7Fv4PmjYOFDTmQPfFjTLIHcf4KbvNw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CE87D60126;
+	Mon, 27 Apr 2026 15:56:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF07FC2BCC4;
+	Mon, 27 Apr 2026 15:55:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777305361;
+	bh=CybBkUF9PqqrkXon4a/OotVsf6egaS9WEDxo0coSCCk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Dbh7pNvlqujxe5FnKHZ43oaR7DpNHmV0YkHnDdqyjresMN5AOnx900oedYNP3oT1v
+	 Z9WHVsu0W9QrObQNcQr/NCTzwuncqFQsnSYonWUK+MONsi6XRg1/gEw/FD49bbQvBZ
+	 1QdY3zu572TlcvnLusTsZbJ9sxkYgiK91W2nGjFkCUAD7ErCpwxvqHhTRWHC2qUK5c
+	 zpa8bT4spd52AzUbXp72p9qWThv34zzy69hKfFeIq2IRs52DRIUZBU3OTsxTpSUkmI
+	 +tddMYK4syoRbwSVzUDf/yAaSbOoTFaJtNxue/WH/A/bdZNmr5VR7zQ3Ri3EsXzDOZ
+	 g4Plm6qqbl0QA==
+Message-ID: <52506ad5-99fe-4686-86bd-6d9e38b5ae36@kernel.org>
+Date: Mon, 27 Apr 2026 17:55:55 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/8] mm/slab: introduce deferred submission of rcu sheaves
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
+ "Paul E . McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Zqiang <qiang.zhang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260416091022.36823-1-harry@kernel.org>
+ <20260416091022.36823-8-harry@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260416091022.36823-8-harry@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6CA27180016
-X-Stat-Signature: 9onw5sotwwcia45hniphoa5yb9tinouc
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1777305482-449808
-X-HE-Meta: U2FsdGVkX18dUIBItlta9LHxC37gJvJd5QkFeLCmy4ikomSnvsIrJIGALkeR/Tf9RaSDYPR5PrN3TWUKT/JYdltIgMEi0Ti+xWHhjKQGC7lx9SOnEbYdMytd7gupHW5fG66Kjb2Zm4CPwPRxKs+8nx3j/R52gZJdrRTagkKrvM6IiWzVAS2NPVs02CL6wWca7q0dceN2Ug4fjH15bCYD8ob1ZWzkeO+quJdCmiOmu9RMEiZE9VcG+Tk0d6EEd9n1KllagfWrGfXKGmYmfFsrDLc5av2ePkzbXHsC+PaudgGZjoFHvm/j1ExAaTu8GiUr3dlrBy7noTXkl3tfejis+kNmqdPzbo5NurwyuXWZ/WiPz/DojJ6ewUpvvdCA1NFVyqe+yAavayX4Ph7tmVl3EW6Sjb3ePAQ5+bxXGV46CRbjf255YOejYd6lr9lLbxPUw7BggwPAPPRM+MsSdymPnzVWWEs06tdti3CrdcKfrJ8SUp/JFGswSlPYfmas0cerfzy0jXtj4wIyCL4prUEZ7grH/MU5uclFhsIduLBuhFR+Cl3hHCR3SEnZFMH6IRxBi/C90OYDRv4XhoMF4nESatD8BNK3jwokyXwoPqcYrVexoIJkoN0Vp1WmHcfaOLNrtDezyTY8VYWbb9RP99Q/hnwVJexxfGhEG2pzgHXN1SH11MFpZMKSMW8QOjojGMi+eWsUUCKzzQwPXDwxMQYum+3zxpscOUyT3sTj4fC92Uxb9n2mdSWMxUdsuBYhEv5fHURc/NGQ8v945yLpb2Eh+8dZyjiayAi/6W65cxzvnc8l6ztkvm3CkfsMqcJN8Apo72f0U9swsFEIMsOYv3oU2pM09DuAkxVpFZHPA07GUCDTh+dX4I8TDcO9FEuYvqrsYzav7qRljb8JUnBococaMVLwl5j2+5kWuWBARWgBDKF7ba23MeeV3Ep0h4ePfFjMCz3CyVSNeU4Vcvkj7mf
- iHjBlRKv
- V39k7DYu501G8LnaSaZDmES+B/faqCpmC7DhNpP7KLuuIX5dtBbst/n3WMGt8B+qA7c6vBdSNFhBfg8wPJbyWrR+I8EOPIoZl/vzAmRrY4fk/JdKlbTrwU3BfXvKimrCIPIZSWjxvwE0G5sc8DMhW1Kt8DnR6cuscmyg/R40ofkApyNaAPHOdu9WuLhV2kG3sQDZm+BHijPGBE7m8W0LBQSbcIgD+sk9A5hCgkL2pPHlXbqghyFcuyQw/aCVboRJvz3YzXnHgVhve2zwwajr83koWbeBwtH/n13swkHAHwjDRQYMOYOvhS7LrgZ9BLuATU6pCCK1IeJI63E0TJazo8MyCE7k1SozKCZ25PkW96u75Gka25LolV4imzUo62qai46LNsm8OPVILleAQl9R2fFYcLcXsF2+fpPAcrgRS944EYJOyO7ptFCNSzg==
+X-Rspamd-Queue-Id: 6E6DC100019
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 7ry3uktikgz5zy6s1prcerqcqhqox5cb
+X-HE-Tag: 1777305362-76286
+X-HE-Meta: U2FsdGVkX19MyYX6xpGfUz3ceYyUefl40eMuN3+tDOoJL1CUuGEVdkeYS+lLUOp8Ptm4nB12plxoN5K9BwEymRH3SLH7L9ynW2JSsV7f2zvh9/duqvUmlioXJT41qLNwkSyJDui19QlYjKJdk1c9V3EgzufwOABOCvG3e8DuZl8OD2HtfJsckiwQWZvVe3OE6P25NbyT9GskQ9++usJ9YMyZxp3j98PFWGpdtPDUawfp24Ayqu8JVK1cJLNPlMvPy9h8fB2KrrUshfiEFX31LZMrLBt3yasZqyI2mAwVskuFC/nlbt8kf2a0sqnGqHaZO31J2Fs2XCQpw6S0Kn4JORpww6y3RkPSnTi66mTtvcDc+b2tuy+qJMUgx4eQ5sRvetc1eY8B30OquLO6kSLMjIsG8pM8kv2Hs992jzCs7o4i/U2GeDTnuJM9aB4+JWI58sFYFacnAXOtu2Hh2c6L/89xhyFizm9HHlzjNlxO6PxmUqQLYijO30q0jSmjlps9apx6JOdC1iuI45zBAferW8scd+8Rs41m62jIdqI0pGODgfMmZHNVg9PTTIxStjvVSba+7Oj5FDvvDoABPEepmAEfbp+2auGOWgfS5pCM+Pso+7iTrWpyVOBK4qevRi8mU6clQzgx0NIHregBYwr5jEavsud9FIh+GFRl0FPboEvrXTaKKXa9zOwyM22O1Gz/0w236FNGDGtKpBBaMW097hBF6czW2ZQYPd2yN6pa5M7rtgYfWcPbxR9iqhoajISZKzmLFtVAOln7dvaSiHAwtiXM85GlBf6jWQL4aTaDIQ6u02NnGKoeTyVG4/wNXxoernI/Kkh8UAGjR5pirOZoA+RZb7/7oKotAP6jNbJXx8BJtnA3rr7ztv1Tr+2lZp2sXQnbkKUj7ErNtkd1KmrlKjJ+fnLWYQePO21FlBj5WOiQjX6lVBHACie1Yo/GMlclGIfTwIKTyIU1CW5YuLo
+ GLHSimc+
+ CTBSzZS7TlB+KsrzFMy8KBvvHL2fVumJs/N5BHq4A1R8aVFeuDwJQiIXHt7niffwZa4uExNY55pQFiNyzf59Inkdmd3wGm0+jvkHV1SolrmOTWbsotHqSnWpacqnK0OG1sUGxZ8WYdnJcvMUpVLWxuh7xZAlYY3gV+vAabr/yBBS9ros7t+9fqmvFBtp76L9c7kTrzUbF5qAjU4xzxjMiDfXu4PPbU3gKsY01wLuA+EDHpu7vlv7sJWYXnyGiuAyMqHbBdFM41hhgpTxtMrJlJBr51w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,66 +105,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/16/26 11:10, Harry Yoo (Oracle) wrote:
+> Instead of falling back when the rcu sheaf becomes full, implement
+> deferred submission of rcu sheaves. If kfree_rcu_sheaf() is invoked
+> by kfree_rcu_nolock() (!allow_spin) and IRQs are disabled, the CPU might
+> be in the middle of call_rcu() and thus defer call_rcu() with irq_work.
 
-On Mon, Apr 27, 2026 at 08:33:30PM +0800, Lance Yang wrote:
->
->On Fri, Apr 24, 2026 at 05:23:59AM -0700, Breno Leitao wrote:
->>When get_hwpoison_page() returns a negative value, distinguish
->>reserved pages from other failure cases by reporting MF_MSG_KERNEL
->>instead of MF_MSG_GET_HWPOISON. Reserved pages belong to the kernel
->>and should be classified accordingly for proper handling.
->>
->>Acked-by: Miaohe Lin <linmiaohe@huawei.com>
->>Signed-off-by: Breno Leitao <leitao@debian.org>
->>---
->> mm/memory-failure.c | 11 ++++++++++-
->> 1 file changed, 10 insertions(+), 1 deletion(-)
->>
->>diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>index ee42d43613097..7b67e43dafbd1 100644
->>--- a/mm/memory-failure.c
->>+++ b/mm/memory-failure.c
->>@@ -2432,7 +2432,16 @@ int memory_failure(unsigned long pfn, int flags)
->> 		}
->> 		goto unlock_mutex;
->> 	} else if (res < 0) {
->>-		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
->>+		/*
->>+		 * PageReserved is stable here: reserved pages have
->>+		 * PG_reserved set at boot or by drivers and are never
->>+		 * freed through the page allocator.
->>+		 */
->
->Not necessarily. PG_reserved is not a permanent lifetime property for
->every page that has carried it.
->
->page-flags.h says early reserved pages may later have PG_reserved
->cleared and then be given to the page allocator :)
->
->At least some drivers also clear PG_reserved when releasing pages they
->marked reserved.
->
->Would it be clearer to say that pages with PG_reserved set are not
->currently managed by the page allocator, rather than saying reserved
->pages are never freed through the page allocator?
->
->Otherwise, LGTM.
+Seems like we're doing two things here. Implementing a fallback is the
+advertised one. But also narrowing the definition of "unknown context where
+call_rcu() is unsafe" to mean irqs_disabled().
 
-Ouch, I missed one more thing ...
+Where does that condition (!irqs_disabled() means we're safe) come from
+exactly, does RCU guarantee it anywhere? And if that condition is indeed
+reliable, shouldn't it have been used by patch 5 already?
 
-Sashiko pointed out that[1]
-
-> +		if (PageReserved(p))
-
-"Can this introduce a use-after-free risk on the struct page?"
-
-get_any_page() may put the page before returning -EIO. After that ref is
-dropped, PageReserved(p) is not safe, IIUC :(
-
-Maybe just cache it before the call?
-
-is_reserved = PageReserved(p);
-res = get_hwpoison_page(p, flags);
-
-[1] https://sashiko.dev/#/patchset/20260424-ecc_panic-v5-0-a35f4b50425c@debian.org
+> Submit all deferred RCU sheaves to call_rcu() before calling
+> rcu_barrier() to ensure the promise of kvfree_rcu_barrier().
+> 
+> An alternative approach could be to implement this in the RCU subsystem,
+> tracking if it's safe to call call_rcu() and allowing falling back to
+> deferred call_rcu() at the cost of more expensive rcu_barrier() calls.
+> 
+> Suggested-by: Alexei Starovoitov <ast@kernel.org>
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 
