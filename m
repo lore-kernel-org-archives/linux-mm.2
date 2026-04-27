@@ -4,89 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BD5EFF8850
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 05:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C98B6FF8850
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 06:02:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB2B56B0088; Mon, 27 Apr 2026 01:58:08 -0400 (EDT)
+	id 159956B0005; Mon, 27 Apr 2026 02:02:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B63516B008A; Mon, 27 Apr 2026 01:58:08 -0400 (EDT)
+	id 0E3596B008A; Mon, 27 Apr 2026 02:02:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A78986B008C; Mon, 27 Apr 2026 01:58:08 -0400 (EDT)
+	id EED6D6B008C; Mon, 27 Apr 2026 02:02:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 95B7F6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 01:58:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27415A0775
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:58:08 +0000 (UTC)
-X-FDA: 84703280256.18.351DC1A
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9E9B8A0003
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:58:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D5D8D6B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 02:02:16 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 817BA1A077D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:02:16 +0000 (UTC)
+X-FDA: 84703290672.16.FF3C00E
+Received: from smtp186.sjtu.edu.cn (smtp186.sjtu.edu.cn [202.120.2.186])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 484FC180005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:02:12 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=sjtu.edu.cn header.s=default header.b=itanz32k;
+	spf=pass (imf06.hostedemail.com: domain of b.suvonov@sjtu.edu.cn designates 202.120.2.186 as permitted sender) smtp.mailfrom=b.suvonov@sjtu.edu.cn;
+	dmarc=pass (policy=none) header.from=sjtu.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777269486;
+	s=arc-20220608; t=1777269734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=11IgLQDRPt/7hIUjoDRIuU46fp63jSkRfWMUAwno+8A=;
-	b=lH7nE97PVZ+fU5wMp0nnJ6H4nMUC7nR2/GXB5E1r+AIW4/7xSiXj2V5Cnd4GHE5hXXjzKK
-	rPoC7eRlOzCkj8VAcipRkzv4K2xqgLcZ4CzYKeWtSuzRxlF+iHLjPcqnezp7G4gpLJsp23
-	2zGRd9vbIdq+zQUyS2tm3J3iGMHHXo0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777269486; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yUGOCbAx1XpsLO7GEZR7Q5292zPE3EIEBGnTQiy5krQ=;
+	b=t30+KYgdOYxBWMXbiQObhIoq2avWKR1rlIIuzbVs8C4OZOwinwxpD9q9dQ/wMyv+IF8Ckw
+	Pr7t2ASJ86RUi+4CsyxMboqI4NZoSjMkie8EVp1l6M+3cCNW2Cp82GeUt46M9aJvThb0z6
+	A59OaUpQ9t61IvOfGXDrW8ARqTSOylo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777269734; a=rsa-sha256;
 	cv=none;
-	b=6lD1pc4nvZGLv4OqHPysYNcVgznX9rHcxv764y/tR5DdoBzkgt8Przjd96Tq+R4sqvmOzn
-	ZAD8Y+x3LHUkaZN7GSAH8VR3QzHhXg/XlH4OmP4OMTHJl9RTrSaWTrCdKIuRH9YEk3546e
-	o59J8jAB2+wwEoZqwKVutTpqmUgMfrw=
-X-UUID: 0b74039041fe11f1aa26b74ffac11d73-20260427
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:819ba16d-b8cd-4015-b281-96f6075d7a86,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:be69ca2d8678bbedb9066af9f8a41e4f,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:5
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 0b74039041fe11f1aa26b74ffac11d73-20260427
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 891455403; Mon, 27 Apr 2026 13:57:59 +0800
-From: Hongling Zeng <zenghongling@kylinos.cn>
-To: dennis@kernel.org,
-	tj@kernel.org,
-	cl@gentwo.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	kernel@vger.kernel.org,
-	zhongling0719@126.com,
-	zenghongling <zenghongling@kylinos.cn>
-Subject: [PATCH v2] mm/percpu-internal.h: optimise pcpu_chunk struct to save  memory
-Date: Mon, 27 Apr 2026 13:57:45 +0800
-Message-Id: <20260427055745.6938-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	b=D1AcPkIoaGCN32Rh5zNtPP2VSeby8olLo3S3b3Yp/979gYumLsRqrb9SAy3fDcbBPox27A
+	dJgiciMjBGv59QH/AVrg7g/HsTnyqJdEbkTtreETNXNyTCf/wSBvNM5OMMliuLozcJFvkR
+	3aJnlo9bi5Ewv6dJg0HwSU57q4pu9BU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=sjtu.edu.cn header.s=default header.b=itanz32k;
+	spf=pass (imf06.hostedemail.com: domain of b.suvonov@sjtu.edu.cn designates 202.120.2.186 as permitted sender) smtp.mailfrom=b.suvonov@sjtu.edu.cn;
+	dmarc=pass (policy=none) header.from=sjtu.edu.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sjtu.edu.cn;
+	s=default; t=1777269728;
+	bh=/UzigxygkmT91dr6p0hNFprzzI5KRjYCyq8YphKvwBU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=itanz32k22Q4lFE8Y4XZpCt1ER+SKjMQZ4GqQxqYIb9t8Y+kt71I0go5AYOnHs8Ci
+	 mpxmDvBNSwYeKQBpHu2AEpa7YHysA4Rs2HaXQ5Qx9ph7dh8QQll1KSN0CLVqiqUrxY
+	 7ztkm/AVyyMkKe0yXac/I2X1RZnohHTY93A5tRY405iihLuy3KutvLbpuRj19j55Wa
+	 jKSbLgYTBpHS/7Su3kRQNrujrzJuRjOwUt2F4NU+FTF5h7UNGqU76eQnhv4rH3iR7s
+	 Z3mj4m2TF9YXhEsDtWzFoJPu5gsBG1nR3JL0C3UT9Ery90IT0yKC/e9c33BDcQ81ZO
+	 kT34Z9IZ8TK/w==
+Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
+	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id 822D33008C9;
+	Mon, 27 Apr 2026 06:02:08 +0000 (UTC)
+Received: from dynamic.ipv6.sjtu.edu.cn (unknown [10.180.122.86])
+	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id F27D537C96D;
+	Mon, 27 Apr 2026 14:02:07 +0800 (CST)
+From: Bunyod Suvonov <b.suvonov@sjtu.edu.cn>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	linux-mm@kvack.org
+Cc: rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	linux-trace-kernel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	david@kernel.org,
+	vishal.moola@gmail.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	Bunyod Suvonov <b.suvonov@sjtu.edu.cn>
+Subject: [PATCH v2] mm/page_alloc: trace PCP refills and PCP zone lock usage
+Date: Mon, 27 Apr 2026 14:01:42 +0800
+Message-ID: <20260427060142.131055-1-b.suvonov@sjtu.edu.cn>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260425091335.346504-1-b.suvonov@sjtu.edu.cn>
+References: <20260425091335.346504-1-b.suvonov@sjtu.edu.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 484FC180005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E9B8A0003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: cs3h6kyw6dhjun79kkf8rzqm4zunx4wm
-X-HE-Tag: 1777269484-386502
-X-HE-Meta: U2FsdGVkX1/gNOOgCg7myZSE2FWQ80/9Yvtjy1pVwY4WsQAhXRJeeN5E8+m1xo7+TnpmFMTWlDvRT4s06IgoVy/uH3PLZ1TAoa/N58OSvThUe9aFmdtijHIYf2r09e9O071hw7t079zNSK4nQpfAbpKQn5Jr0kvSMQ7KTAPWx4JgM2Ojgadyljw5xKFV8oy1hehnnPbERhgrzqiiYLMXY6X9mQzStlERWjhC46QgF4zofn1H82iBdiSQ70WmbbmVz7TWV0KTFuRVOd7J/dE781DM0Pl12fIeXbTZTCeDNZATP35weCYK6JUgNtUH09I3sqz+TMyA1IJWsZZ6meCfxqSZGADKkIA+8Aiv5RRlzsp3pBGPZo4QSTDt5cIIopawaGzenqvSlciEZjGIV/R1Als8mJQ2J0mrzFwIGmvbBJHbxzmRdF2cxXgi2mupH5/EQg2rp8raflGuf28NOKdFwFrmAUO9kdR3lep8wqAHpIOHtRn90gskJ4QdZUnrPUxHA5upWeef8FcyDr5Vk1/SDLNcS2iH9TUvcEj7eSn00kIg5i5HN2sKDFJuvUauyDgrThnktjxyVbo7YeYQYdGJhvQ/ydfhUXsgjrDZoykEeybDqDqW+gVRWEVr6TJ4/AaIKeSFqT+BzV6bfvE5FBKo2AZaYZ/nU330cnCXQtlLcKfvENA6dOkyxOaA6IgsfOO2dUU0m6TLXDBZAkZDgMfN+htlUITVIlz0Ke+kZJv2Bxefk52whl8SHr81AOMo3u/6SAjJsgr6jtjA33yjnX/ZPFEiXCW+23E1GsUz1rInCZkjbzAAmYMxfBIvu6JNqX65DOO5OpapFH7xCZfvDJ5GBGFvlv9Hk2tcIjzNsmI/CtPvDqqoiT26Q8UZX9wYQ0Cl3sWAmYEKNYjABAf74nhvpMw03BIfaZlNykN95SwJ2wVC+ZT5GhBzyrBxCbz5jY+b1t+vT7d+nx3x3nJIX2k
- Ico/sDxH
- uvazxqeAiMZ+8gftoJKYFaB0EzNq6f69/0qHf1HRWzrSqHOOeoX+PR0xMkCVq9uj8m+Cj
+X-Stat-Signature: 3f7r47a84tpajpzt9cd3q8gotiw8orde
+X-HE-Tag: 1777269732-655062
+X-HE-Meta: U2FsdGVkX182+agD0ZKsQNPFhWrB/uM1rXx+wFkAKaAkaj7lrZLBbZ36MAOvghz6Io4nhtlZLNfjVoBJsAQHeFXu8WPNQWRYcubGbIbQaIk0Sff4t7XmzLBDle353RzAgJZX/qjFLZM2vO0nzfBbJ8nbxkFOwG4iaqQ1Cgz8EXpphMT1ENIlqoKAkxy0QD2qzUarad6xi+BtW4z+3n/IEOJ1v2nXmHII2pSHtOb4BYqpnwAbntsD8rJbNHBye+npmkpd4UgOIeX5T+ZEDt2SvjSyfRgPuewVUZ2zBBgKZ5P5hm7xOgt7lsSXsrOn0UTXQuzbskeiv8+bWCbWq8KaC/5Xzt4CtjGgE3RhePEAFt/sSJGKgA55i1S6D9J9ZDkcdFEM8tv/s0C/v1u9ShFuUn7dUA9s57bfcSPeIaL6xNIjrbgC74nh1Zy6loESp4ZuuBh1Lk7I5ndHt6/1myWY33RPeadRFVYvnKNkuC/RIfoqf6ltQjhXgzPXy/XVS4YXE2WE7HoRICEtAggEwK5zD3DaM+seT1MUihT0Dd5QTFnmlOIpitiXOUY9LOofFnCCETaTFkh0gEIAx+8/4X16tEDE719WFLjPNjeg4n7H2AsE6OJt2lc5nzQI4IAl9Vu70tk605TKcZ2HYg3+feDk1/GJxHWFzJMqaPaxOwdIzURLDEINmd/er9VVmaVodXweKWcJpD/1w3b+590OgVXruwGTFUtyGm8T3OVLjFGoYVmml5lVcXzL4DL5wDQQn4cgdi/HY++L/08AZ9tFKwWVdTG+cCyL4RtZCmDf2pW18Be+SPH6C4HWK5xVWvJn830VRiVrbrYtS+iiqdO9yd26XUtnufTDTM4rX2sM0EYdgKlYMgViYnnVjPXDzpGmX1DDbE5WYf0V3YHzz30dFCUQz2nuPwVf8wQ5IZEyOKiKHOWhGVPUybFBKFrY5jThCQ/GvckVLNyacLwDq7u4YoY
+ 0pnTnsqR
+ HTgKkkqGqwYERHITzoecIJkuhKMe9QS6M6spjTxvJ4+1fDI/Zaids6TMpBqa79FlcpMOYVcD1xdoRG9iZGoWWPVzMnuHb8mijkVAFRkDj6tlckJsdI+w5kqD7OGU3/tL/+T59frR8FrVeWqwhvrYNZ9Js2PYPr+lrhcvNfn8O31P4MveOr/0NNSPXSH7EpTuG4SzuE9kI5WWCYCd5p7Y76J3moAEML17sg1rvZClGsQepx3+jaJ7UPyTf0JS4hLOc1uEniwxtOa0PZv0zz0GnsmrIagMvpNOYdl3Z+fVD2/9qqo4DQykA1FXQ/Nu7aq2KJWVMucBcOfKlNx03NSLozKE6ou76CV3fQQdG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,134 +107,244 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: zenghongling <zenghongling@kylinos.cn>
+mm_page_pcpu_drain traces page blocks drained from the per-cpu page
+lists back to the buddy allocator. There is no matching tracepoint for
+the opposite direction, where rmqueue_bulk() refills a PCP list from the
+buddy allocator.
 
-Using pahole, we can see that there are some padding holes
-in the current pcpu_chunk structure,Adjusting the layout of pcpu_chunk
-can reduce these holes,decreasing its size from 192 bytes to 128 bytes
-and eliminating a wasted cache line.
+Add mm_page_pcpu_refill as the counterpart to mm_page_pcpu_drain. The
+pair makes PCP traffic observable in both directions: refill shows page
+blocks moving from the buddy allocator into PCP lists, while drain shows
+page blocks moving from PCP lists back to the buddy allocator. Comparing
+the two helps identify PCP churn, imbalance between CPUs, and cases where
+pages repeatedly cycle between PCP lists and the buddy allocator instead
+of being served efficiently from PCP.
 
-With allmodconfig (CONFIG_PERCPU_STATS + NEED_PCPUOBJ_EXT)
-Before:
- /* size: 256, cachelines: 4, members: 19 */
+PCP refill and drain activity can also require entering the buddy
+allocator under zone->lock. The per-page-block refill and drain events do
+not directly count those lock acquisitions, because a single bulk
+operation can move multiple page blocks.
 
-After:
- /* size: 192, cachelines: 3, members: 19 */
+Add mm_page_pcpu_refill_zone_locked and
+mm_page_pcpu_drain_zone_locked to trace successful PCP bulk operations
+after acquiring the zone lock. These events make it possible to count how
+often PCP refill and drain paths enter the zone-locked buddy allocator.
+Frequent events can indicate that PCP lists are under pressure and are
+not avoiding the zone lock as effectively as expected.
 
-with NEED_PCPUOBJ_EXT
-Before:
-struct pcpu_chunk {
-        struct list_head           list;                 /*     0    16 */
-        int                        free_bytes;           /*    16     4 */
-        struct pcpu_block_md       chunk_md;             /*    20    32 */
+mm_page_alloc_zone_locked is not a reliable substitute for PCP refill
+activity. It is emitted from __rmqueue_smallest(), which is reached with
+zone->lock already held by both rmqueue_bulk() and the direct buddy
+allocation path. Its percpu_refill field is derived from the allocation
+order and migratetype, so it does not reliably identify whether the
+allocation came from a PCP refill.
 
-        /* XXX 4 bytes hole, try to pack */
+Document the new kmem tracepoints.
 
-        long unsigned int *        bound_map;            /*    56     8 */
-        /* --- cacheline 1 boundary (64 bytes) --- */
-        void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
-        long unsigned int *        alloc_map;            /*    72     8 */
-        struct pcpu_block_md *     md_blocks;            /*    80     8 */
-        void *                     data;                 /*    88     8 */
-        bool                       immutable;            /*    96     1 */
-        bool                       isolated;             /*    97     1 */
-
-        /* XXX 2 bytes hole, try to pack */
-
-        int                        start_offset;         /*   100     4 */
-        int                        end_offset;           /*   104     4 */
-
-        /* XXX 4 bytes hole, try to pack */
-
-        struct obj_cgroup * *      obj_cgroups;          /*   112     8 */
-        int                        nr_pages;             /*   120     4 */
-        int                        nr_populated;         /*   124     4 */
-        /* --- cacheline 2 boundary (128 bytes) --- */
-        int                        nr_empty_pop_pages;   /*   128     4 */
-
-        /* XXX 4 bytes hole, try to pack */
-
-        long unsigned int          populated[];          /*   136     0 */
-
-        /* size: 192, cachelines: 3, members: 17 */
-        /* sum members: 122, holes: 4, sum holes: 14 */
-        /* padding: 56 */
-        /* forced alignments: 1 */
-} __attribute__((__aligned__(64)));
-
-After:
-struct pcpu_chunk {
-	struct list_head           list;                 /*     0    16 */
-	int                        free_bytes;           /*    16     4 */
-	struct pcpu_block_md       chunk_md;             /*    20    32 */
-
-	/* XXX 4 bytes hole, try to pack */
-
-	long unsigned int *        bound_map;            /*    56     8 */
-	/* --- cacheline 1 boundary (64 bytes) --- */
-	void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
-	long unsigned int *        alloc_map;            /*    72     8 */
-	struct pcpu_block_md *     md_blocks;            /*    80     8 */
-	void *                     data;                 /*    88     8 */
-	bool                       immutable;            /*    96     1 */
-	bool                       isolated;             /*    97     1 */
-
-	/* XXX 2 bytes hole, try to pack */
-
-	int                        start_offset;         /*   100     4 */
-	int                        end_offset;           /*   104     4 */
-	int                        nr_pages;             /*   108     4 */
-	int                        nr_populated;         /*   112     4 */
-	int                        nr_empty_pop_pages;   /*   116     4 */
-	struct obj_cgroup * *      obj_cgroups;          /*   120     8 */
-	/* --- cacheline 2 boundary (128 bytes) --- */
-	long unsigned int          populated[];          /*   128     0 */
-
-	/* size: 128, cachelines: 2, members: 17 */
-	/* sum members: 122, holes: 2, sum holes: 6 */
-	/* forced alignments: 1 */
-} __attribute__((__aligned__(64)));
-
-Suggested-by: Dennis Zhou <dennis@kernel.org>
-Signed-off-by: zenghongling <zenghongling@kylinos.cn>
-
+Signed-off-by: Bunyod Suvonov <b.suvonov@sjtu.edu.cn>
 ---
-Changes in v2:
-  - Add pahole output for allmodconfig (CONFIG_PERCPU_STATS + NEED_PCPUOBJ_EXT)
-  - Fix subject to use "pcpu_chuck struct"
-  - Reorder nr_pages before nr_empty_pop_pages
-  - Add suggest by
+Changes since v1:
+- Add mm_page_pcpu_refill as the per-page-block counterpart to
+  mm_page_pcpu_drain.
+- Add mm_page_pcpu_refill_zone_locked and
+  mm_page_pcpu_drain_zone_locked to count PCP bulk operations that
+  acquired zone->lock.
+- Document the new kmem tracepoints and clarify the PCP refill/drain
+  semantics.
 
-Changes in  v1:
-  - Fix the error commit message.
-  - Move nr_pages over nr_empty_pop_pages.
----
----
- mm/percpu-internal.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/trace/events-kmem.rst | 65 ++++++++++++++++++-----------
+ include/trace/events/kmem.h         | 58 +++++++++++++++++++++++--
+ mm/page_alloc.c                     |  5 +++
+ 3 files changed, 100 insertions(+), 28 deletions(-)
 
-diff --git a/mm/percpu-internal.h b/mm/percpu-internal.h
-index 4b3d6ec43703..8cbe039bf847 100644
---- a/mm/percpu-internal.h
-+++ b/mm/percpu-internal.h
-@@ -77,13 +77,13 @@ struct pcpu_chunk {
- 	int			end_offset;	/* additional area required to
- 						   have the region end page
- 						   aligned */
-+	int			nr_pages;	/* # of pages served by this chunk */
-+	int			nr_populated;	/* # of populated pages */
-+	int                     nr_empty_pop_pages; /* # of empty populated pages */
- #ifdef NEED_PCPUOBJ_EXT
- 	struct pcpuobj_ext	*obj_exts;	/* vector of object cgroups */
- #endif
+diff --git a/Documentation/trace/events-kmem.rst b/Documentation/trace/events-kmem.rst
+index 68fa75247488..9f935db1ea88 100644
+--- a/Documentation/trace/events-kmem.rst
++++ b/Documentation/trace/events-kmem.rst
+@@ -75,30 +75,47 @@ contention on the lruvec->lru_lock.
+ =============================
+ ::
  
--	int			nr_pages;	/* # of pages served by this chunk */
--	int			nr_populated;	/* # of populated pages */
--	int                     nr_empty_pop_pages; /* # of empty populated pages */
- 	unsigned long		populated[];	/* populated bitmap */
- };
+-  mm_page_alloc_zone_locked	page=%p pfn=%lu order=%u migratetype=%d cpu=%d percpu_refill=%d
+-  mm_page_pcpu_drain		page=%p pfn=%lu order=%d cpu=%d migratetype=%d
+-
+-In front of the page allocator is a per-cpu page allocator. It exists only
+-for order-0 pages, reduces contention on the zone->lock and reduces the
+-amount of writing on struct page.
+-
+-When a per-CPU list is empty or pages of the wrong type are allocated,
+-the zone->lock will be taken once and the per-CPU list refilled. The event
+-triggered is mm_page_alloc_zone_locked for each page allocated with the
+-event indicating whether it is for a percpu_refill or not.
+-
+-When the per-CPU list is too full, a number of pages are freed, each one
+-which triggers a mm_page_pcpu_drain event.
+-
+-The individual nature of the events is so that pages can be tracked
+-between allocation and freeing. A number of drain or refill pages that occur
+-consecutively imply the zone->lock being taken once. Large amounts of per-CPU
+-refills and drains could imply an imbalance between CPUs where too much work
+-is being concentrated in one place. It could also indicate that the per-CPU
+-lists should be a larger size. Finally, large amounts of refills on one CPU
+-and drains on another could be a factor in causing large amounts of cache
+-line bounces due to writes between CPUs and worth investigating if pages
+-can be allocated and freed on the same CPU through some algorithm change.
++  mm_page_alloc_zone_locked	page=%p pfn=0x%lx order=%u migratetype=%d percpu_refill=%d
++  mm_page_pcpu_refill		page=%p pfn=0x%lx order=%d migratetype=%d
++  mm_page_pcpu_drain		page=%p pfn=0x%lx order=%d migratetype=%d
++  mm_page_pcpu_refill_zone_locked nid=%d zid=%d nr_pages=%lu
++  mm_page_pcpu_drain_zone_locked  nid=%d zid=%d nr_pages=%lu
++
++In front of the buddy allocator are per-cpu page lists. They reduce
++contention on the zone->lock and reduce the amount of writing on struct
++page.
++
++When an allocation finds the target per-CPU list empty, the zone->lock may
++be taken once and the per-CPU list refilled from the buddy allocator. The
++mm_page_pcpu_refill_zone_locked event is emitted once after the refill path
++successfully acquires the zone lock. The mm_page_pcpu_refill event is
++emitted for each page block added to the per-CPU list.
++
++When per-CPU pages are drained back to the buddy allocator, for example
++because a per-CPU list is above its high mark, PCP high is decayed, or an
++explicit drain is requested, the drain path takes the zone lock. The
++mm_page_pcpu_drain_zone_locked event is emitted once after the drain path
++successfully acquires the zone lock. The mm_page_pcpu_drain event is emitted
++for each page block drained from the per-CPU list.
++
++The individual refill and drain events allow pages to be tracked between
++allocation and freeing. The zone_locked events allow the bulk operations to
++be counted directly. A single zone_locked event may be followed by multiple
++refill or drain events, depending on how many page blocks are moved while
++holding the zone lock. The nr_pages field in the zone_locked events is the
++target number of base pages for the bulk operation when the zone lock is
++acquired. The individual refill or drain events describe the page blocks
++actually moved.
++
++Large amounts of per-CPU refills and drains could imply an imbalance between
++CPUs where too much work is being concentrated in one place. Frequent
++zone_locked events can indicate that the per-CPU lists are under pressure
++and are not avoiding the zone lock as effectively as expected. It could also
++indicate that the per-CPU lists should be a larger size. Finally, large
++amounts of refills on one CPU and drains on another could be a factor in
++causing large amounts of cache line bounces due to writes between CPUs and
++worth investigating if pages can be allocated and freed on the same CPU
++through some algorithm change.
+ 
+ 5. External Fragmentation
+ =========================
+diff --git a/include/trace/events/kmem.h b/include/trace/events/kmem.h
+index cd7920c81f85..68f5d4a84da6 100644
+--- a/include/trace/events/kmem.h
++++ b/include/trace/events/kmem.h
+@@ -243,16 +243,52 @@ DEFINE_EVENT(mm_page, mm_page_alloc_zone_locked,
+ 	TP_ARGS(page, order, migratetype, percpu_refill)
+ );
+ 
+-TRACE_EVENT(mm_page_pcpu_drain,
++DECLARE_EVENT_CLASS(mm_page_pcpu_zone_locked,
++
++	TP_PROTO(int nid, int zid, unsigned long nr_pages),
++
++	TP_ARGS(nid, zid, nr_pages),
++
++	TP_STRUCT__entry(
++		__field(int, nid)
++		__field(int, zid)
++		__field(unsigned long, nr_pages)
++	),
++
++	TP_fast_assign(
++		__entry->nid		= nid;
++		__entry->zid		= zid;
++		__entry->nr_pages	= nr_pages;
++	),
++
++	TP_printk("nid=%d zid=%d nr_pages=%lu",
++		__entry->nid, __entry->zid, __entry->nr_pages)
++);
++
++DEFINE_EVENT(mm_page_pcpu_zone_locked, mm_page_pcpu_refill_zone_locked,
++
++	TP_PROTO(int nid, int zid, unsigned long nr_pages),
++
++	TP_ARGS(nid, zid, nr_pages)
++);
++
++DEFINE_EVENT(mm_page_pcpu_zone_locked, mm_page_pcpu_drain_zone_locked,
++
++	TP_PROTO(int nid, int zid, unsigned long nr_pages),
++
++	TP_ARGS(nid, zid, nr_pages)
++);
++
++DECLARE_EVENT_CLASS(mm_page_pcpu,
+ 
+ 	TP_PROTO(struct page *page, unsigned int order, int migratetype),
+ 
+ 	TP_ARGS(page, order, migratetype),
+ 
+ 	TP_STRUCT__entry(
+-		__field(	unsigned long,	pfn		)
+-		__field(	unsigned int,	order		)
+-		__field(	int,		migratetype	)
++		__field(unsigned long, pfn)
++		__field(unsigned int, order)
++		__field(int, migratetype)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -266,6 +302,20 @@ TRACE_EVENT(mm_page_pcpu_drain,
+ 		__entry->order, __entry->migratetype)
+ );
+ 
++DEFINE_EVENT(mm_page_pcpu, mm_page_pcpu_refill,
++
++	TP_PROTO(struct page *page, unsigned int order, int migratetype),
++
++	TP_ARGS(page, order, migratetype)
++);
++
++DEFINE_EVENT(mm_page_pcpu, mm_page_pcpu_drain,
++
++	TP_PROTO(struct page *page, unsigned int order, int migratetype),
++
++	TP_ARGS(page, order, migratetype)
++);
++
+ TRACE_EVENT(mm_page_alloc_extfrag,
+ 
+ 	TP_PROTO(struct page *page,
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 65e205111553..9323bdbce731 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1470,6 +1470,8 @@ static void free_pcppages_bulk(struct zone *zone, int count,
+ 	pindex = pindex - 1;
+ 
+ 	spin_lock_irqsave(&zone->lock, flags);
++	trace_mm_page_pcpu_drain_zone_locked(zone_to_nid(zone), zone_idx(zone),
++					     count);
+ 
+ 	while (count > 0) {
+ 		struct list_head *list;
+@@ -2527,6 +2529,8 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
+ 	} else {
+ 		spin_lock_irqsave(&zone->lock, flags);
+ 	}
++	trace_mm_page_pcpu_refill_zone_locked(zone_to_nid(zone), zone_idx(zone),
++					      count << order);
+ 	for (i = 0; i < count; ++i) {
+ 		struct page *page = __rmqueue(zone, order, migratetype,
+ 					      alloc_flags, &rmqm);
+@@ -2544,6 +2548,7 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
+ 		 * pages are ordered properly.
+ 		 */
+ 		list_add_tail(&page->pcp_list, list);
++		trace_mm_page_pcpu_refill(page, order, migratetype);
+ 	}
+ 	spin_unlock_irqrestore(&zone->lock, flags);
  
 -- 
-2.25.1
-
+2.53.0
 
