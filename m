@@ -4,137 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8333CFF885E
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:29:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFF43FF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:43:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EED706B0005; Mon, 27 Apr 2026 05:29:23 -0400 (EDT)
+	id 1E41E6B0005; Mon, 27 Apr 2026 05:43:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC46A6B0088; Mon, 27 Apr 2026 05:29:23 -0400 (EDT)
+	id 1BA7E6B0088; Mon, 27 Apr 2026 05:43:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDD3C6B008A; Mon, 27 Apr 2026 05:29:23 -0400 (EDT)
+	id 0F7996B008A; Mon, 27 Apr 2026 05:43:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEC766B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:29:23 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 260E9A07B1
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:29:23 +0000 (UTC)
-X-FDA: 84703812606.02.9739920
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F37A26B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:43:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B2D41205BD
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:43:24 +0000 (UTC)
+X-FDA: 84703847928.05.5F9C2F8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 44EBB2000E
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:29:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JO/jWyeJ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id AE31F140003
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:43:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k74S5hzf;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777282161;
+	s=arc-20220608; t=1777283002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CD6a7qZoK4As6AU0wsFr0I9PtgmP3NHbZj7Y7Bpw0vE=;
-	b=WyAVpE+mHXZu2BO9u1llexOvdGX+WpVrYMJ86xnvYGfLMBoYwY8LPmBX2mNxPxTUH4rVRx
-	kOg1cpa+NkG989zqOny1qOupazdT9P9uNo5sglzhizIyXnoZW/wgPCuzFzNjAIiPQKGhFE
-	0URLEat7zIHGTMOyL4sCJJdc5672BL0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777282161; a=rsa-sha256;
-	cv=none;
-	b=d/wK/js95l/EKSMNg54sRsw/seYnR63kKwrPLS4yHDhwqECzKGFlcmmN6ZoosyX2jbmQyB
-	5zCGXOtPwypMlhofH6HSdkvrA9HPwo857qgV/RXB7/SbfJOkSyKG3l/mMgjaGUZU89dR17
-	6kP18m7xJ05C42lWHUEYbVY1ebGX/QQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=R3JpP4lu9ceK7UdgoK6uOSVjfE3i0xWPKgaPktgLFLY=;
+	b=lAWx+p8bSCFRZeSmD7fiua4a2v0R57Iojc47TJDKnwycJqD7jEGuvYS2Xk01T0/hK8mjJk
+	HRa9nmFpgPhNpT7RP1OHu3KRgVsYbf8pbJQvGTVLY5kJGLB714/pezt/oMwSAxq2T/LEGL
+	2sBzBWbHEL/0aKMN7XFZYfFYwOI3xC4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JO/jWyeJ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k74S5hzf;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777283002; a=rsa-sha256;
+	cv=none;
+	b=eD5jfQN4bEtNmlBVWrLj39xuS/SeW50y4P9FyVjGVSfJ+fkolguFFgap6xQoXCO8DtxMkh
+	6557Eo7MeVpPP+CNybE6wDA1Yo24FuCrH2/CzsOlVHqV/MR9gKJ/6/HvvEjmss2omqg0Rg
+	O+UM/UXokus/+jx7W0xxJ6b8dZ+we+U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7528443AD3;
-	Mon, 27 Apr 2026 09:29:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F2AC19425;
-	Mon, 27 Apr 2026 09:29:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A6D3941679;
+	Mon, 27 Apr 2026 09:43:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E88AC19425;
+	Mon, 27 Apr 2026 09:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777282160;
-	bh=0Y6di9yzK+/+lJwGz27qCzpdTnkxILyaVzTC3KY49d0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JO/jWyeJufM2+qQ2uYQR3y6n98G0GbZQkqz5wB0k6OWIbVAHSwjhbayHwfCnIrgAy
-	 M2+EDF3akJCH0EV5UTAw8vlRacxAfOszop2EZ188qZgRikeFtkEJB7XDUZyGaqWFv1
-	 dr9+3zsBxuZItswx51Eb7fmsj3hbEImbajbLeoO0ZQF55g6/QfrduIE8bnwd56yQHR
-	 yz9M+0T47jxUJ+8eGqED2QyfHearGh/6DgdNQsPRZgGn9OARfEJwMYHFYDeqvdtQbe
-	 +MMW4xroo4a8LlP0+nkxWqyN7JV3FgB/Ra5KOdMVyqG5gcMLKzkcjky+q5h4bMACB+
-	 l1nVY74IllSNg==
-Message-ID: <f484b864-aa7f-4612-8bf8-5f6bd041ddc2@kernel.org>
-Date: Mon, 27 Apr 2026 11:29:14 +0200
+	s=k20201202; t=1777283001;
+	bh=uYDUaTJzF/pUuA6b7DSfsIRpVqOMe/C6UQqNO2jGuWw=;
+	h=From:Date:Subject:To:Cc:From;
+	b=k74S5hzfzxe+HjkPTufokzY8q2dcT2d7XHQRY7GqrllYqWu7VQ8xJkm0fOTlX/J92
+	 Wvx9wF6mVz/AzCfOJaNtG8GJ+QZTjanV1cX1+TifmDM2adPzjpB3ztZPZNk95KGSx1
+	 ZK1twQ+v9TSBP+ojv1Nv/0k84tfIcxkPU4mBnT1ErMFC/v6y7TSXBjMcjcvqbsJdiO
+	 Z3ycfSTHSAftyBS8+6+Tn2g8SyfGVC8vc4FU0tv2jPwPis9diTArhIuJKrOCN0NxK7
+	 8Fd+H2SGgl6/bcQlLRWDtWDbjzyrdWr2SAjZ7++7980AY0PW7uya+aXk+XH2gFnXoY
+	 rU+wqqrGQoAnw==
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Date: Mon, 27 Apr 2026 11:42:57 +0200
+Subject: [PATCH RFC v2] mm, slab: add an optimistic
+ __slab_try_return_freelist()
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] mm: process_mrelease: expedite clean file folio
- reclaim via mmu_gather
-To: Minchan Kim <minchan@kernel.org>
-Cc: akpm@linux-foundation.org, hca@linux.ibm.com, linux-s390@vger.kernel.org,
- mhocko@suse.com, brauner@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, surenb@google.com, timmurray@google.com
-References: <20260421230239.172582-1-minchan@kernel.org>
- <20260421230239.172582-2-minchan@kernel.org>
- <7b4bf980-4ff3-4f53-8c64-1ba2d85cf1b8@kernel.org>
- <aevfhYW0K3y9jTjI@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aevfhYW0K3y9jTjI@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260427-b4-refill-optimistic-return-v2-1-1672467a792d@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAKAv72kC/42OQQrCMBREr1L+2kgTg6IrQfAAbqWLJv1pv8akJ
+ GlRSu9uWi/gcobHm5kgYiCMcComCDhSJO9yEJsCdFe7Fhk1OYMoxb6UgjMlWUBD1jLfJ3pRTKR
+ zk4bgmJGy2amD1FoeIRv6hXyv9jvcrheofmUc1AN1WrwL1mWJD5/1w8hX+K+5kTPOhDSlMprX2
+ pjzE4NDu/WhhWqe5y97yE423gAAAA==
+X-Change-ID: 20260421-b4-refill-optimistic-return-f44d3b74cc49
+To: Harry Yoo <harry@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, hu.shengming@zte.com.cn, 
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>, 
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5215; i=vbabka@kernel.org;
+ h=from:subject:message-id; bh=uYDUaTJzF/pUuA6b7DSfsIRpVqOMe/C6UQqNO2jGuWw=;
+ b=owGbwMvMwMG4+8GG0kuuHbMYT6slMWS+19/8V6P/v7fE0gNmEe5JGRc17B4eOZwuci9Kv+fDn
+ DeGt05WdTL6szAwcjBYiimyVO8+4Sg6U9ljmofvR5hBrEwgU6RFGhiAgIWBLzcxr9RIx0jPVNtQ
+ zxDI0DFi4OIUgKnea8r+v8DC0NWwI2z+ys8VmVfkRYTLqvtKjz1WS7s/2U9Xau+blRNKjunoJ0S
+ JZrsarTy5o8D//5d3z/cLby4J3S7b/zWMK6NtRq/NOtm9rnsnXLabfuOuYWagsvN9gxV8C342FZ
+ ZwL5b4GrHDJcLr4v2TrJen35vy+MPZk3EJ6R1Lpt1zUtm+UvbClmIN/8tzprruui1YcyMoc+equ
+ dGT70ZIXN97onRlL/+Ry8XL5/KvnuFjJ3xLi+VZ6PWyxovnox5f6vWUq/+c7NYQdbEtbneMeOvJ
+ N3uPhT/qm6XpOfn3o20Zos8OBjtvKInzXjj3shjzbXa3vH37w1XYFSRWhR1ZXXRRtbiCUTa156W
+ q17XnPQA=
+X-Developer-Key: i=vbabka@kernel.org; a=openpgp;
+ fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 44EBB2000E
-X-Rspamd-Server: rspam04
-X-Stat-Signature: ontp1w7nezj5n7ooeih39beipthpak47
-X-HE-Tag: 1777282161-203169
-X-HE-Meta: U2FsdGVkX19FIR4fOTOFuo4tvw7/6L5vllvxoMuV5d09lJsk3IfsAt2lSgrIUJXtyfANYMRXdySyxkJMOiQbMeGyt8DygP874sraUkZu0DylLD+Y8Uo+lKsuSDSCc1Ai5xCKy2bNkkezht/1xMA9lAGcbwUkK+JbK3noHQ5tRrfSylAW5tVQ2eCLVlGI79B0JhxItrKvZDLX8LJiH2zFNMY+iHLN2is5ftByJrRDzU+X4G4+U2lQuZAOKsrQXU5FSrickqJNrDF7mFazGb9g6OUB9yB09xakWtfSoyoOb48XAdxs+51cRxQrg3Q+j1AmD/hKk5HrzQNV2CbiLK1lDzeRr6XjzOw4VzBnSArkc+8M4bNZl3wwEUNX7UBsxf2jRbQ+WQR06+eL6K3T+GXGMmEXhsu/RZVzByI+SMaxrxs54A4sNCTJhA2MLSq2G13CMmjmTkXYuXCJW01xBX+plpzMA6B1/HeOwY9YIk6iM2o1c3e/+nOZ27Z7/ZeLVEW6veOYgU8EfRHWgxFWSNw1pj9EkDgn9jcpe+iSZMI65L8kTL5yBNyIJVEcmhQ7hfMQvnpirOJIl9ZUxjkQcAHGE6kL8olYbuzfvvperdrW2Gayy3ddxC510qMJSlRxKLpR4nnQreKilJseoPzN6rlsQxX/HSZuYsxV3tadRY5g8+TOB8mtrKWm9BMkk8CgPz5hGUtSI7JOMdgEkfGSVDPoa+s3V6CFwKROR9VS4mB1MJYgB+c37pMKr0/TUXmx71ksGa7jQ+qH7LC15e/nbQmXxJ/SnN4TGuWRY/rvMBKoo1b7dMTGXszX6nk9NJNPHOtzZZo5ol8yXbx9vR/n39Q4OFli7Vf9xFYiTmfIuZ38kBX4WOn4i9nWw5TeLxPXhRx9HPACKRbddSgxlP7TvF9vuElnacYaufvDJG1dJjnof7uDoxO1KqrEMBKdngyCtu/kasdc3ABKHrk+onDJwrQ
- L4oq89mK
- qcorAp2DR/t/go2wck3cgVWtjFS3Pau8nyLRTC1zMEKejTkMVqvHwncJKclsAkqjYWDWfAnMlicuKN1GJ7bPIr0+zsesr4xfVnoKFw/1sLoMJSQCAbgVq2rkTkDkL65vMr79Px5s1U1xrBPu/OaEzN3LXJki2e8iNwmEmMPBWUkXkMPNft8HOJxPQsQVwte7f80hMX4vy93CW2T/P8Kfavtnoq9U3fzwLYwRrRrkY+tS8NRY2tF4vEZnsjrqXZsrYpS4p+MGT/RIkQGCb4iGsZdXRbFH3kTP+7CzeZgMZf4ojP8jWI66NFmfCRJYgmIiwGX9kjYI4R6JJIZfsGxfWTC2Ch34v71Fhaoc15Lm9WPz/3n4=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AE31F140003
+X-Stat-Signature: rzsb86jkkddoxy77btaq5zm4aear3tyo
+X-HE-Tag: 1777283002-420370
+X-HE-Meta: U2FsdGVkX19jeEMNicrlAyndzqVKbycuRUutWA6b8nBA8j8F/F3xM/svM7a6tM1DVXWIbT/yL/wDMnN3uoqN8RXYu1kT3pItk11LzrbxujXxiTquBW0kHciaE6wcMK0dxjKON0j3GWQsmytEk6OY0QTHjUrjWvfpGpqEdEGV682yxBflN8BpbFIwUYJx8rBhNUZtNSbz7Z1ZYcF/D9aXTpCntoqShyPgwT4XgEvGJ8Ywbw7WPB/4XPv9mA48AJYJEDOmzg5d1JNfXqQx70pvSNG/uHRNt07PG4OFr6QDcx5fjdx7pVlt6VLmWt4SXdopOZsCZo09EQeUeuJa6q5cd3KvEFSvYGJLSqEx+/SVttfcy+Tung6aQk9xp5QYKFJAHf53KPJOOwHB4FWWnyNCovmsjkI5WFsgWxEpdkfub2hYYxeXdNWMjpfbpqZ4i6xaECdnFdgcqAZeKTWN9fJ1jEa6doSIwB3WePF4UFKaNw35rNyhBNILPg9H8MFWjI8wwp8AYcKdzqQZo1mhNjjYulYO/yJB+qwkOjxU0fug1F0rk3w/DHZPJqG+k4OkSU/I4rNRfGA2EsjtT25fk6LJkpVCemYT/vgNTrXARQaK5+sxzRs9BrzGb6MnbwosDJyYRVaFgfdCwgGGTrWQADqpe5ZNsqM7fVjwC0AiQ++fBBbZ/teZp6tUL6v3hv6n0vhKo3/koKMN5H7OA9A0PxP31lRnZU+wuPAgfjvyc+3IOx3PjKpzgOXe4YEYmdUJkIrVxW5L1J1Kr3BF/cuprvWakQrT0QsDV9xyQmlj4X0w6fj8z1PXyeJiWXDBed3ThqxCPvRmDEiET+35zuaArMLkDwbtg3lvYUMa4iV0BHcz1cCR3/+ehnfpZMBBEbqAntChLetQOJ4SRq3452ZEImNuM8E6jaCpFaXWTuVZyW6z7S+4LTfJlmO6wqGFG5so0ieClozOSqRCZ7WnN8GHJvF
+ OzR+L+GQ
+ FZ1EtEwzjXAbwTODvefCX/vCVWu4MWyObZw1mgGhP+RsUB1fmuf5Dr/YYSWQgFyzPkHOSlcSQu9+fIiPUYO4hpc63JRjVLdvPV5medps596+cEqECj2ykDF8ZxOe4QXnikXsIFTvPFYT/2CTi52v21b3OiTtzQFrvRH1IDF1NK47fynL/NRdmY4Wgm9cECjLqRNxVjVUXm+aqMFRl8s2z9At5IWJJArhIf3/EYIAewDzKEOYKqKkgR7UlUt6xxCQmSuRPaMmumWdctiAmSvlWMbFxXBbnnIhTYpKJbd92NORjqJzsP+Sn+KqlKLgd/Pm4sOiGc+1iJFGKcZuhy9iTu/apR2jM85rGSYqdx4L0GIA2Zi+1+xyR3Gr62w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,159 +112,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/24/26 23:24, Minchan Kim wrote:
-> On Fri, Apr 24, 2026 at 09:56:01AM +0200, David Hildenbrand (Arm) wrote:
->> On 4/22/26 01:02, Minchan Kim wrote:
->>
->> Can we make the subject easier to understand?
->>
->> "mm: process_mrelease: evict clean file folios when reaping a process"
->>
->>> Currently, process_mrelease() unmaps pages but file-backed pages are
->>> not evicted and stay in the pagecache, relying on standard memory reclaim
->>> (kswapd or direct reclaim) to eventually free them. This delays the
->>> immediate recovery of system memory under Android's LMKD scenarios,
->>> leading to redundant background apps kills.
->>>
->>> This patch implements an expedited eviction mechanism for clean pagecache
->>> folios in the mmu_gather code, similar to how swapcache folios are handled.
->>> It drops them from the pagecache (i.e., evicting them) if they are completely
->>> unmapped during reaping.
->>>
->>> Within this single unified loop, anonymous pages are released via
->>> free_swap_cache(), and file-backed folios are symmetrically released via
->>> free_file_cache().
->>>
->>> Signed-off-by: Minchan Kim <minchan@kernel.org>
->>> ---
->>>  arch/s390/include/asm/tlb.h |  2 +-
->>>  include/linux/swap.h        |  5 ++---
->>>  mm/mmu_gather.c             |  7 ++++---
->>>  mm/swap.c                   | 42 +++++++++++++++++++++++++++++++++++++
->>>  mm/swap_state.c             | 26 -----------------------
->>>  5 files changed, 49 insertions(+), 33 deletions(-)
->>>
->>> diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
->>> index 619fd41e710e..2736dbb571a8 100644
->>> --- a/arch/s390/include/asm/tlb.h
->>> +++ b/arch/s390/include/asm/tlb.h
->>> @@ -62,7 +62,7 @@ static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
->>>  	VM_WARN_ON_ONCE(delay_rmap);
->>>  	VM_WARN_ON_ONCE(page_folio(page) != page_folio(page + nr_pages - 1));
->>>  
->>> -	free_pages_and_swap_cache(encoded_pages, ARRAY_SIZE(encoded_pages));
->>> +	free_pages_and_caches(tlb->mm, encoded_pages, ARRAY_SIZE(encoded_pages));
->>>  	return false;
->>>  }
->>>  
->>> diff --git a/include/linux/swap.h b/include/linux/swap.h
->>> index 62fc7499b408..bdb784966343 100644
->>> --- a/include/linux/swap.h
->>> +++ b/include/linux/swap.h
->>> @@ -414,7 +414,9 @@ extern int sysctl_min_unmapped_ratio;
->>>  extern int sysctl_min_slab_ratio;
->>>  #endif
->>>  
->>> +struct mm_struct;
->>>  void check_move_unevictable_folios(struct folio_batch *fbatch);
->>> +void free_pages_and_caches(struct mm_struct *mm, struct encoded_page **pages, int nr);
->>>  
->>>  extern void __meminit kswapd_run(int nid);
->>>  extern void __meminit kswapd_stop(int nid);
->>> @@ -433,7 +435,6 @@ static inline unsigned long total_swapcache_pages(void)
->>>  
->>>  void free_swap_cache(struct folio *folio);
->>>  void free_folio_and_swap_cache(struct folio *folio);
->>> -void free_pages_and_swap_cache(struct encoded_page **, int);
->>>  /* linux/mm/swapfile.c */
->>>  extern atomic_long_t nr_swap_pages;
->>>  extern long total_swap_pages;
->>> @@ -510,8 +511,6 @@ static inline void put_swap_device(struct swap_info_struct *si)
->>>  	do { (val)->freeswap = (val)->totalswap = 0; } while (0)
->>>  #define free_folio_and_swap_cache(folio) \
->>>  	folio_put(folio)
->>> -#define free_pages_and_swap_cache(pages, nr) \
->>> -	release_pages((pages), (nr));
->>>  
->>>  static inline void free_swap_cache(struct folio *folio)
->>>  {
->>> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
->>> index fe5b6a031717..3c6c315d3c48 100644
->>> --- a/mm/mmu_gather.c
->>> +++ b/mm/mmu_gather.c
->>> @@ -100,7 +100,8 @@ void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma)
->>>   */
->>>  #define MAX_NR_FOLIOS_PER_FREE		512
->>>  
->>> -static void __tlb_batch_free_encoded_pages(struct mmu_gather_batch *batch)
->>> +static void __tlb_batch_free_encoded_pages(struct mm_struct *mm,
->>> +		struct mmu_gather_batch *batch)
->>>  {
->>>  	struct encoded_page **pages = batch->encoded_pages;
->>>  	unsigned int nr, nr_pages;
->>> @@ -135,7 +136,7 @@ static void __tlb_batch_free_encoded_pages(struct mmu_gather_batch *batch)
->>>  			}
->>>  		}
->>>  
->>> -		free_pages_and_swap_cache(pages, nr);
->>> +		free_pages_and_caches(mm, pages, nr);
->>>  		pages += nr;
->>>  		batch->nr -= nr;
->>>  
->>> @@ -148,7 +149,7 @@ static void tlb_batch_pages_flush(struct mmu_gather *tlb)
->>>  	struct mmu_gather_batch *batch;
->>>  
->>>  	for (batch = &tlb->local; batch && batch->nr; batch = batch->next)
->>> -		__tlb_batch_free_encoded_pages(batch);
->>> +		__tlb_batch_free_encoded_pages(tlb->mm, batch);
->>>  	tlb->active = &tlb->local;
->>>  }
->>>  
->>> diff --git a/mm/swap.c b/mm/swap.c
->>> index bb19ccbece46..e44bc8cefceb 100644
->>> --- a/mm/swap.c
->>> +++ b/mm/swap.c
->>> @@ -1043,6 +1043,48 @@ void release_pages(release_pages_arg arg, int nr)
->>>  }
->>>  EXPORT_SYMBOL(release_pages);
->>>  
->>> +static inline void free_file_cache(struct folio *folio)
->>> +{
->>> +	if (folio_trylock(folio)) {
->>> +		mapping_evict_folio(folio_mapping(folio), folio);
->>> +		folio_unlock(folio);
->>> +	}
->>> +}
->>> +
->>> +/*
->>> + * Passed an array of pages, drop them all from swapcache and then release
->>> + * them.  They are removed from the LRU and freed if this is their last use.
->>> + *
->>> + * If @try_evict_file_folios is true, this function will proactively evict clean
->>> + * file-backed folios if they are no longer mapped.
->>
->> There is no such parameter.
->>
->> But I do wonder if such a parameter would be better than passing in the MM here.
-> 
-> Makes sense.
-> 
->>
->> Also, is there a way to avoid moving the function?
-> 
-> I guess you are talking about "free_pages_and_swap_cache".
-> 
-> The problem is mm/swap_state.c is conditionally compiled only when CONFIG_SWAP
-> is enabled.
-> 
-> Since the expedited clean file cache eviction should be available
-> even on !CONFIG_SWAP, we need this function to be compiled unconditionally.
-> That is why I moved it to swap.c, which is always compiled.
+When we end up returning extraneous objects during refill to a slab
+where we just did a get_freelist_nofreeze(), it is likely no other CPU
+has freed objects to it meanwhile. We can then reattach the remainder of
+the freelist without having to walk the (potentially cache cold)
+freelist for finding its tail to connect slab->freelist to it.
 
-Ah, right. Please spell that out in the patch description!
+Add a __slab_try_return_freelist() function that does that. As suggested
+by Hao Li, it doesn't need to also return the slab to the partial list,
+because there's code in __refill_objects_node() that already does that
+for any slabs where we don't detach the freelist in the first place.
 
--- 
-Cheers,
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+---
+Optimizes the current refill leftover handling in a way that should have
+no downsides, so we have a better baseline for any further changes (e.g.
+spilling or caching the leftover) that involve some tradeoffs.
 
-David
+Git version here:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/refill-optimistic-return
+
+It's based on slab/for-7.2/perf with "mm/slub: defer freelist
+construction until after bulk allocation from a new slab".
+---
+Changes in v2:
+- rebase to slab/for-7.2/perf, drop RFC
+- simplify to reuse the existing reattaching to partial list (Hao Li)
+- Add R-b from Hao Li, thanks!
+- drop the stat items - they serverd to verify the optimistic path was
+  succeeding, but are too detailed for mainline
+- Link to v1: https://patch.msgid.link/20260421-b4-refill-optimistic-return-v1-1-24f0bfc1acff@kernel.org
+---
+ mm/slub.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 46 insertions(+), 9 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 3c4843834147..c770374490dd 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4323,7 +4323,8 @@ static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags)
+  * Assumes this is performed only for caches without debugging so we
+  * don't need to worry about adding the slab to the full list.
+  */
+-static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab)
++static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab,
++					  unsigned int *count)
+ {
+ 	struct freelist_counters old, new;
+ 
+@@ -4339,6 +4340,7 @@ static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *sla
+ 
+ 	} while (!slab_update_freelist(s, slab, &old, &new, "get_freelist_nofreeze"));
+ 
++	*count = old.objects - old.inuse;
+ 	return old.freelist;
+ }
+ 
+@@ -5502,6 +5504,34 @@ static noinline void free_to_partial_list(
+ 	}
+ }
+ 
++/*
++ * Try returning (remainder of) the freelist that we just detached from the
++ * slab.  Optimistically assume the slab is still full, so we don't need to find
++ * the tail of the detached freelist.
++ *
++ * Fail if the slab isn't full anymore due to a cocurrent free.
++ */
++static bool __slab_try_return_freelist(struct kmem_cache *s, struct slab *slab,
++				       void *head, int cnt)
++{
++	struct freelist_counters old, new;
++
++	old.freelist = slab->freelist;
++	old.counters = slab->counters;
++
++	if (old.freelist)
++		return false;
++
++	new.freelist = head;
++	new.counters = old.counters;
++	new.inuse -= cnt;
++
++	if (!slab_update_freelist(s, slab, &old, &new, "__slab_try_return_freelist"))
++		return false;
++
++	return true;
++}
++
+ /*
+  * Slow path handling. This may still be called frequently since objects
+  * have a longer lifetime than the cpu slabs in most processing loads.
+@@ -7113,34 +7143,41 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 
+ 	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+ 
++		unsigned int count;
++
+ 		list_del(&slab->slab_list);
+ 
+-		object = get_freelist_nofreeze(s, slab);
++		object = get_freelist_nofreeze(s, slab, &count);
+ 
+-		while (object && refilled < max) {
++		while (count && refilled < max) {
+ 			p[refilled] = object;
+ 			object = get_freepointer(s, object);
+ 			maybe_wipe_obj_freeptr(s, p[refilled]);
+ 
+ 			refilled++;
++			count--;
+ 		}
+ 
+ 		/*
+ 		 * Freelist had more objects than we can accommodate, we need to
+-		 * free them back. We can treat it like a detached freelist, just
+-		 * need to find the tail object.
++		 * free them back. First we try to be optimistic and assume the
++		 * slab is stil full since we just detached its freelist.
++		 * Otherwise we must need to find the tail object.
+ 		 */
+-		if (unlikely(object)) {
++		if (unlikely(count)) {
+ 			void *head = object;
+ 			void *tail;
+-			int cnt = 0;
++
++			if (__slab_try_return_freelist(s, slab, head, count)) {
++				list_add(&slab->slab_list, &pc.slabs);
++				break;
++			}
+ 
+ 			do {
+ 				tail = object;
+-				cnt++;
+ 				object = get_freepointer(s, object);
+ 			} while (object);
+-			__slab_free(s, slab, head, tail, cnt, _RET_IP_);
++			__slab_free(s, slab, head, tail, count, _RET_IP_);
+ 		}
+ 
+ 		if (refilled >= max)
+
+---
+base-commit: 8952728641305ebcd03e80f79b8d31bb41d6d95f
+change-id: 20260421-b4-refill-optimistic-return-f44d3b74cc49
+
+Best regards,
+--  
+Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 
