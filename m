@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBA57FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 12:04:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78A10FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 12:04:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2F686B00A5; Mon, 27 Apr 2026 08:04:06 -0400 (EDT)
+	id CEE056B00A9; Mon, 27 Apr 2026 08:04:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A06AE6B00A8; Mon, 27 Apr 2026 08:04:06 -0400 (EDT)
+	id C9F586B00AA; Mon, 27 Apr 2026 08:04:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F5AD6B00A9; Mon, 27 Apr 2026 08:04:06 -0400 (EDT)
+	id BB5C26B00AB; Mon, 27 Apr 2026 08:04:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 772496B00A5
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:04:06 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D71F16010D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:06 +0000 (UTC)
-X-FDA: 84704202492.06.90C4DC1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A04486B00A9
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:04:08 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 482E216019F
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:08 +0000 (UTC)
+X-FDA: 84704202576.04.19EDE68
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5678CC0017
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=etUonoN6;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	by imf24.hostedemail.com (Postfix) with ESMTP id 81DB5180005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:04:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=E5HTbU93;
+	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777291444;
+	s=arc-20220608; t=1777291446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nWBf5TMJ5SJ/i7mrUIHd6S2sJXG0sYPofpDKEaeLN0A=;
-	b=RmV68z+8npl1gVASpbbW5b9IzgIcl0/9sMXWQbXnNurjn+EQMVUdWG3TXeIxgj0Tzuji6e
-	AURLEu3mVWzw6UdPMhhpGUP8M/Ep1zk7lm8gyrfCP7+R/n5ko6uh5hDOUvIhDXOIduiVYA
-	Qq5HD0gZxl0Zq8e44bizdU1G7Rwon4A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777291444; a=rsa-sha256;
-	cv=none;
-	b=v/yCRmTfO3hdQvKBAAaCZDvNTEtL2EjdOv8gwyihQYwrrJ53EeeLUpPJWa2yOgAys0cZD5
-	DSPJvwvoMSJw+cPmReYdi0BR09VD1NK97bYTmBg321YiqjViPlMTSuTeyauN2rfmJcQJ2T
-	U+uwSHhndKXIdogYfrJrg8XIks92qXQ=
+	bh=DGW2njlj2ugDcXFumu6adxQFAzcj81+CZlVLaZj+Ric=;
+	b=6LRvsl9/11Z1Bq3NlLZFMN9R6/Se61MOFM0yMMQJksA3xN1mvwNGiD381Zx2ZeBSEgv/c6
+	y4gaidSrN01RcrPKB7OSvEcfyGBT0/qXRxofJWUhNAvMOPkxOVZzCV9qH/bsVRxD1YXxO9
+	vo0TOfCLdrr2nilVAcQHbMcb5f+n6lQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=etUonoN6;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=E5HTbU93;
+	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777291446; a=rsa-sha256;
+	cv=none;
+	b=wjYrGXdl30VBtbblIGddHejnBMpeFXm1lBXF5PqsguIFdSBQ1ICN4kUZ7ehxJeIuDaTkgz
+	tTPuxlo5G7LFeDCZohskjn1rUtJTU4EGl4lDI+n8wVfEM/74KeT8SKmDJq7KXTJqTndvbR
+	BEWg9jU39RO3YUubsUmMn9bW725WaPA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27EF4237B;
-	Mon, 27 Apr 2026 05:03:58 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 143C72403;
+	Mon, 27 Apr 2026 05:04:00 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 06D033F62B;
-	Mon, 27 Apr 2026 05:04:01 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB5743F62B;
+	Mon, 27 Apr 2026 05:04:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777291443; bh=awcZVPdgr4NoF6FXkdZLV9n173eUmmWJVTl+xzU9qi0=;
+	t=1777291445; bh=9abFZKGlP5VpbpK/xo3o3sS4A3nxNboOdLQrnuFuT/8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=etUonoN6yDhxKa6hqLVL5RxhyWOxzED9Q58uZo0iPeFyW4oCmYJkq8Lttdn11mcQJ
-	 Yu0mQ+jiepIcjiXT0sced8SveI+geZ8cg46DEctgDeFySf5k863kuKk0/D2yyElW+Q
-	 qBMdUlbRGgYjwOqzdfPCbApXucgS20R46HQoI8j0=
+	b=E5HTbU93SQIM8aVlcAPTi1uVCP1N/6UdLlfw1iB5ICYPNgHuTUaYxBrlXZgdkCuLz
+	 doZig4NlvoPQiazZPffunLwI4WTyOjdLVOfj9yPtNMeOvm4Vk+J/9q1RbO1OEzZETK
+	 uAgOe2oVcTpbcNK3SbT3QQTP8ajcOnuOP6toOKG4=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Mon, 27 Apr 2026 13:03:34 +0100
-Subject: [PATCH v2 2/5] selftests/mm: Fix resv_sz when parsing arm64 signal
- frame
+Date: Mon, 27 Apr 2026 13:03:35 +0100
+Subject: [PATCH v2 3/5] kselftest/arm64: Add POE as a feature in the signal
+ tests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-poe_signal-v2-2-2bd9d6f16ab4@arm.com>
+Message-Id: <20260427-poe_signal-v2-3-2bd9d6f16ab4@arm.com>
 References: <20260427-poe_signal-v2-0-2bd9d6f16ab4@arm.com>
 In-Reply-To: <20260427-poe_signal-v2-0-2bd9d6f16ab4@arm.com>
 To: linux-arm-kernel@lists.infradead.org
@@ -81,21 +81,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777291437; l=1455;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777291437; l=1828;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=awcZVPdgr4NoF6FXkdZLV9n173eUmmWJVTl+xzU9qi0=;
- b=HUE7VaV5mymXwUwqCX1U0mb2g/qez2BgKu9EqDu+FVf3vPerOr9icMeIKp6NWvRlEynUXEsXu
- 6AbWmvJwVciC+2FBPdj7AuDDoP3Y49f/5k9SEqqhbMvqVxsge4RRZ1b
+ bh=9abFZKGlP5VpbpK/xo3o3sS4A3nxNboOdLQrnuFuT/8=;
+ b=GTnr1c7p2Hin4jCm+yjPTqqelCqtlEX6rcqi1gm5BLqDAdM07xRTBou5V5Li0RVM+66g0W9+y
+ P/t1n7po+HfAW3auqpcikvxL2xVW1CvymzvFNUOTdPkAlcmJ39/fx4f
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5678CC0017
-X-Stat-Signature: eq7ct8ejawiwxgi99pyc8tg6s6cqoxi9
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 81DB5180005
 X-Rspam-User: 
-X-HE-Tag: 1777291444-891774
-X-HE-Meta: U2FsdGVkX19URDU0C1ddzngO0sjGxuHVbzwUlvTvB+fDfMoK/tt1DqgsgM3bNURIAQt0X6mxTek0l0uLcRSgq6Vi7WsqZ2iO5dnn2INtDFN64LvjsvMvNmsK6m7naWj7d8LuumfTd5OMpofqDNVPHTYlYRntXwwdmHx96dlIMNiAPaLYsDOWIq9ixUpsJrkDrGLU4wERmQdrfDdrF3DgCkKDygz8QhRy5eDkgLaJhxHVrC74Z6c0EIbTrm0OqEn+wktdtoF78gmwHebFXfkC3meqFT03D7lPH2vIiov4/+LcAH6vZ1p86+AwKwNpUKVu0XL8SihBDPqK21Ungtz47re/k/jiCRrnQMxyutTjQSAPgnEkg5H2gFv3NQoikzgSf8oKCeG1msUrWCZuNLTAPayTsNl5FKAQU+kNXDVPY4L0ykUlUTOe6B8m2G3oq5LWYULbLTcA0eJnXjfAjm+1Ks6ewOtVhPjTn1t5v4ZGuh/t9G0D3w5W+31kwjvtHD8CjPThcptp6hNF4gVg6FEbgkBCujB0mlnJ7Wrei3SQVaAMESVHOT+O1r9JcsX0ygdEtj9m3WrcsU/4q9n9HXVJMBPN2IEHRf3gWcMdqzwlJW4Dmerm1Z7Za6N3ZcYtaTpeqXHDjFxMJ/CnyV16bvV4VznebyUr+7I/I400l19JH7imhw4/HhfumH76Xc2ssbzUSRrEhCGS7sjzQI5hZ5jzVoWsYlE40zcoX2zbleb9crq0zcKTBkghowIWq8X0tLyVJr4fvNIkQmjI7y7PITyDkM3ukU5bCeeMRd1LMmjXTWteL4W4wZsOxWSXPYuVvkh/L5kurS0hCdaXzqyZJTVQEwtaDUgXZzVwnzqve0J1SuosehL6/N8ZtdYLkf133IiwvfKDmtztzHB+j6Nmi7hVES436lKGS1gUezwPfID9U1HQ6P+4RL5YK2OmDSYMs2YeUUV1Zpcx+EKoeqBg7tp
- BlhYtdJo
- hGfkoxDx5oIe9OvNs0yzOpJC+648b/bIthSwslCFNwX+Fuu7gQQOL47Xi6f0FryjYuv/tK5ZO5SAWCT0tFrVXxV7Ac9DZggZCBvhS4qhMtRaWNECgZf5mo5YwVsbNhDQuN/N4m2wxl64ROzNBAMUX2GduWP1+Puvg4de0GxI3KrBrrLjUmZoNN7jgOa+Ev8DpMH19H1a43Nb9+utRwNN/ElueRhzD1l/Xa66+iG95XKNBQejRruxssfjIrVUmv5bx9eIc+QDdm36HKcWFUz89RA6Z2Xpzc9ZgsPALkWf0prcDCfD0chK4KywyaJixrl/3dKmjrIKog0EYU55SL1NDMLFrPKp1Xqg+UR1ym6f1NLoR164=
+X-Stat-Signature: xj7hffjubii4csmefhf6k911hcdt4wmy
+X-HE-Tag: 1777291446-841955
+X-HE-Meta: U2FsdGVkX19m8JrXZ4i9OM1XYLMQoZS1w129b7aS6bNpcTiyfphsKc7ju79Y9cwjW208+wx/k/02IE91a+JwPBqJMX6UYhvL0LHTAefpBEWGDbdePEr8R632/FVjzxyLPFE7mxHPMnhkjfCHLNU29DTOFd/h4QFCAUxsBvm2fAtZcipZkgVzUVqM7Bh5LjoE6SkKTpRSIaQnhTHkU7IZq8jQOlhYdMUc6I4IwzBTI7O//GCNyC7P3Y8kBRiH/zLk5ouQm3oC5Y02V4lOfeB/6EuddYln95z3hsqiGxoIIEMCjE2LYY1532+2KnJ9ZvxUEJfDGPy6w7zUJkO6p5A4qp2dWINyLaLgl+0I/UfGcZllqiK0k9PEm6ruKAoMtMcd6SFnOnVk3lk6LCiPkgTrepXE3WwHSFX/80HRxNnU0QVJlZmgPtUG1kkooNCKawl1Z0QcGPp5FlkSqKkLe7JQcgDq7IWSn21L+po65hOPn6+owDg2JP/MJU7CgpDL+jK0g/UzXqB1gHjaunNOziTM2fPInYwgZcmrq0+eSPlG+gL92pVf6ytSoP3mEejMauS4QpdpAGOdSoxeCIkRXtiy9hbSoAVKfO2cKZqa51bNvJec9FpraXZUeXgyodokY/J2CyvSKNB1msUYz8rrwOdzAGGleZR//O88nvUOGHDF1i2M4mnGWLHseyGOSUc3y07YHqnof2Ymd5XaIdHTkU0VK0lbwFSrwa0ZphzYT52YQqz82aeGbi29k6HClWL/Tkg2aw0tskXbOt+odWAU3LLAO29urqy3e0kMTi9joWhDm0Xv9ERhvV5+Y33PaFH09tTXAjKFbYqHAWtYHXE+qnioM9nbsArmXVg3JZx/GedRuzxMquhuYd8TN/VnYtq4UruNOGIOCfH5eQU4Fu5YKQb4xrswKVvNrigQ0BZeZ6KsktqfhVDl/gCPqvTLpPaZ7XIDhNTBlVIua2HCK2e0l2A
+ 6mJiY3Vz
+ 4fmK/oee/6EMBmMK79goh9W5+TdVjoWxuM44cwftqVLQjbVYA5UI4VnCemE7Li1oWrjyOU7sebhF1kR0ZjwdAaZV+v9ozzXcsitM3NkUj1oGaVOmBTYjsRfpyHw4yQ2Fbqn4yfK2zIYpbvCOD+i02Zy2SOujpBYDWZJ3K8YRgeMJzHZR9J4UeIqrsQtJj+1l2wupY1OUXOeRgWzQ81SEFwVhUw4pzynPPSXNsuNhUH0xChQJ2ZEq6zYsQEAuU18EvyzVHGvYlaYLDvHkF9daiXSaqYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,40 +103,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-get_header() wants the size of the reserved area in struct
-sigcontext, but instead we pass it the size of the entire struct.
-This could in theory result in an out-of-bounds read (if the signal
-frame is malformed).
+Add the POE feature to the signal tests framework, to allow tests to
+require it.
 
-Fix this using one of the existing macros from
-tools/testing/selftests/arm64/signal/testcases/testcases.h.
-
-This issue was reported by Sashiko on a patch that copied this
-portion of the code.
-
-Link: https://sashiko.dev/#/patchset/20260421144252.1440365-1-kevin.brodsky%40arm.com
-Fixes: f5b5ea51f78f ("selftests: mm: make protection_keys test work on arm64")
+Reviewed-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- tools/testing/selftests/mm/pkey-arm64.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/arm64/signal/test_signals.h       | 2 ++
+ tools/testing/selftests/arm64/signal/test_signals_utils.c | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/pkey-arm64.h b/tools/testing/selftests/mm/pkey-arm64.h
-index 8e9685e03c44..c5a78a2f211d 100644
---- a/tools/testing/selftests/mm/pkey-arm64.h
-+++ b/tools/testing/selftests/mm/pkey-arm64.h
-@@ -130,9 +130,10 @@ static inline u64 get_pkey_bits(u64 reg, int pkey)
- static inline void aarch64_write_signal_pkey(ucontext_t *uctxt, u64 pkey)
- {
- 	struct _aarch64_ctx *ctx = GET_UC_RESV_HEAD(uctxt);
-+	size_t resv_size = GET_UCP_RESV_SIZE(uctxt);
- 	struct poe_context *poe_ctx =
- 		(struct poe_context *) get_header(ctx, POE_MAGIC,
--						sizeof(uctxt->uc_mcontext), NULL);
-+						  resv_size, NULL);
- 	if (poe_ctx)
- 		poe_ctx->por_el0 = pkey;
- }
+diff --git a/tools/testing/selftests/arm64/signal/test_signals.h b/tools/testing/selftests/arm64/signal/test_signals.h
+index ee75a2c25ce7..c7c343494cb8 100644
+--- a/tools/testing/selftests/arm64/signal/test_signals.h
++++ b/tools/testing/selftests/arm64/signal/test_signals.h
+@@ -36,6 +36,7 @@ enum {
+ 	FSME_FA64_BIT,
+ 	FSME2_BIT,
+ 	FGCS_BIT,
++	FPOE_BIT,
+ 	FMAX_END
+ };
+ 
+@@ -45,6 +46,7 @@ enum {
+ #define FEAT_SME_FA64		(1UL << FSME_FA64_BIT)
+ #define FEAT_SME2		(1UL << FSME2_BIT)
+ #define FEAT_GCS		(1UL << FGCS_BIT)
++#define FEAT_POE		(1UL << FPOE_BIT)
+ 
+ /*
+  * A descriptor used to describe and configure a test case.
+diff --git a/tools/testing/selftests/arm64/signal/test_signals_utils.c b/tools/testing/selftests/arm64/signal/test_signals_utils.c
+index 5d3621921cfe..4b12dbd7669d 100644
+--- a/tools/testing/selftests/arm64/signal/test_signals_utils.c
++++ b/tools/testing/selftests/arm64/signal/test_signals_utils.c
+@@ -31,6 +31,7 @@ static char const *const feats_names[FMAX_END] = {
+ 	" FA64 ",
+ 	" SME2 ",
+ 	" GCS ",
++	" POE ",
+ };
+ 
+ #define MAX_FEATS_SZ	128
+@@ -341,6 +342,8 @@ int test_init(struct tdescr *td)
+ 			td->feats_supported |= FEAT_SME2;
+ 		if (getauxval(AT_HWCAP) & HWCAP_GCS)
+ 			td->feats_supported |= FEAT_GCS;
++		if (getauxval(AT_HWCAP2) & HWCAP2_POE)
++			td->feats_supported |= FEAT_POE;
+ 		if (feats_ok(td)) {
+ 			if (td->feats_required & td->feats_supported)
+ 				fprintf(stderr,
 
 -- 
 2.51.2
