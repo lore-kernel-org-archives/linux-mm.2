@@ -4,135 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83377FF8861
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:03:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 172E8FF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:07:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC6856B0005; Mon, 27 Apr 2026 05:02:59 -0400 (EDT)
+	id 46B886B0005; Mon, 27 Apr 2026 05:07:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9CCE6B0088; Mon, 27 Apr 2026 05:02:59 -0400 (EDT)
+	id 41CF56B0088; Mon, 27 Apr 2026 05:07:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB49E6B008A; Mon, 27 Apr 2026 05:02:59 -0400 (EDT)
+	id 333926B008A; Mon, 27 Apr 2026 05:07:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C934B6B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:02:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69EDF407D9
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:02:59 +0000 (UTC)
-X-FDA: 84703746078.27.DC739D7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9020040008
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:02:57 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 216476B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:07:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5FED1206FD
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:07:21 +0000 (UTC)
+X-FDA: 84703757082.26.968665C
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 61CAF40007
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:07:19 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7OC+bA9;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777280577;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6K9hSDj3qOWcD40GbOfOAjuH5bh6JAGNRgKzvnVNLl8=;
-	b=kAazzSFbFs45hBYSbphYiN7UaN06Hv7lBlP+aOJ9PME/unGg6CURWwCvNKZn7vc4p4c2sa
-	HEV3eKZymMcIBnSAFN9u+k8+6I0TehH24kGkGgN/3ulCd7NC/9mQLZ/w06Rpi86Eq2HXHZ
-	9Oq0WbFbg/dssIK9ppSZnhAyA9gkHUs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777280577; a=rsa-sha256;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="WrPET/1p";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf11.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777280839; a=rsa-sha256;
 	cv=none;
-	b=fPxS3ufmoPTxBhLEXlwBQPKbtYYAt9ug9JHo2ZGitviWmqDyHRPpgsfmLkH5kfB4Iy6JkQ
-	YiZBUiF3aIUBdBF/rpfZuqkAh4PlCkECJLZmHNynEs4nmJLkdE8Ot8rZNMHsdWz+pYsUN2
-	/JIIhqPg/jGg98wgs6BKk8ythBMnqvE=
+	b=fTTYHcrjOk3ffwXDafLIO81ujTkWe7GJvIhydnwKzVNZ9S4eqp/7NvSDDZxdz2YO19nR4Q
+	XNcbaHVyN2P35X2SJugNvoQHS5XYRDltQUDfyEhbH5hqOnlJbidWRurti8GkZ03ms+oh8N
+	fGlqwEUU2MCIX3bBXF+WG0sHbEqAZew=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7OC+bA9;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9DD1543D82;
-	Mon, 27 Apr 2026 09:02:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1ADDC2BCB8;
-	Mon, 27 Apr 2026 09:02:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777280576;
-	bh=wy/P39pQu9CaZ8geWArqNl3zzbwhV+vR+8sJLe05890=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R7OC+bA99ctkDyeRAb0p7Lgp2eukG7MR2xNPuMwyaYvUtoSOole8/rtRG50kNqGgg
-	 qwCzQ4prrx3lS75jyF70qfCYRg24/RsNKGyLNAJQehTk8TxxFqVJpXKvnM2DNQn2Pz
-	 TsKcQQITzo+ejHHF5etfd7/QVHr7Q9KdzJOyA28sTKll7Xe5suu5sylKc3NEQmOsLl
-	 UybVepF43lh5cxDUpcW0E7OzYK9MKD5almH+qNP1ANsXefb9KHU98ExrQUqUrHWKJH
-	 dalubLruZlmy9oNt78mDSnLPsbw5t/oocDg2uv9qFalsyscYLElLE75eIGRY1iB7hd
-	 KH6GIgM4UrbHg==
-Message-ID: <69c4c12c-7cdc-4a17-9eb7-6fb1a61f9834@kernel.org>
-Date: Mon, 27 Apr 2026 11:02:50 +0200
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="WrPET/1p";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf11.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777280839;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hSYztgf+1Sg2PXQ9FugD3AeLyfAc08d5FTb+s36utLg=;
+	b=ngnifGcJBrl0mGSG1tGvDSYZWiLwpTNK4coIrt/DUNYGRId6jQJTOCDIHAXNy+mdVK4wLI
+	9gFv74OCh7Vuqww/fxHFs6IBQ4L//eJrfZjLwZzFgp/eoGWFpVhE+Mcxn8jHC3sz6AmzaO
+	MGGSGYifv/dmpEDILsw93/Rwjeo5Vzg=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63QI8ifU3450963;
+	Mon, 27 Apr 2026 09:07:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=hSYztgf+1Sg2PXQ9FugD3AeLyfAc08
+	d5FTb+s36utLg=; b=WrPET/1p4mO9OD37s5qUsQs8FsiiQfNzZTEorc6r/SvRFP
+	DDOVzyxeHzTJlZI0frBb3X84u8bMqll3kgpvqb88x1ewhnrva5qxbymvLnxp2D6t
+	AueHZWAVA6ZygVPaKsF8Ernuyc9ztzo6u7jvLnwWlBqSssxJgDL0PKesmTzsT8Yk
+	zZVwD4sPtQ57GlWpLpmDVvL+h2WYzhEmIBJhaQWEmnDBEcSljE5lFWX7qwwA3Dly
+	9L4Ux6dipqxvG5xouOL1nDMjBkJApr97q28v/ELVxVmFoZOHTJ1TZifDe6jTT2jk
+	RuTZdvx85RM15GBUFVitAFCf5TZd0Tst9Y5wVFnw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drnb4yjgk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Apr 2026 09:07:14 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63R8rmtt001956;
+	Mon, 27 Apr 2026 09:07:14 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dsa5g49tn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Apr 2026 09:07:14 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63R97A6n27591408
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Apr 2026 09:07:10 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C8B12005A;
+	Mon, 27 Apr 2026 09:07:10 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 62A032004E;
+	Mon, 27 Apr 2026 09:07:10 +0000 (GMT)
+Received: from osiris (unknown [9.52.214.206])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 27 Apr 2026 09:07:10 +0000 (GMT)
+Date: Mon, 27 Apr 2026 11:07:08 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] s390/mm: Batch PTE updates in lazy MMU mode
+Message-ID: <20260427090708.9079Cfc-hca@linux.ibm.com>
+References: <cover.1776264097.git.agordeev@linux.ibm.com>
+ <924c91e711e8b16470eb2af7e31d0b6ffcf2940c.1776264097.git.agordeev@linux.ibm.com>
+ <20260423122824.10371E07-hca@linux.ibm.com>
+ <104cde89-2a33-4b54-aa2a-86b58bd713d7-agordeev@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry
- accessors
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-s390@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260427052000.196402-1-agordeev@linux.ibm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260427052000.196402-1-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9020040008
-X-Stat-Signature: wt8cm8x4zwudwy5moeiexy8p8859ewy6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <104cde89-2a33-4b54-aa2a-86b58bd713d7-agordeev@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=AqDeGu9P c=1 sm=1 tr=0 ts=69ef2743 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=dWqnQgn1XxySkrmxHuMA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDA5MyBTYWx0ZWRfX3wZz11GqLvHG
+ i+ulyjC4wRctioO705fekLZbHzowI2uOK6o7siZpuGBpUjdxmOSCtQgbd4LNs3mbKa1niFG+q4X
+ iEC3miKIdvbmjd0nJTLoW9AzMOpM2ZYeTZKMxET0Ijm56lirajDWkC/CY8o9Bxj57Q8ApapWpVn
+ TC0f7aa+9haQQwncXPCqcM0JGE1uE/7zNHjU2DxoIBrFUawcQN2kVMf25+fJhfhurDQwr8KABse
+ dyhYJD07rShBDZ7accNEAoem0HkwwvbvfS7IXt6b4PgeFqGM2S8MnSjnVbaxKdwzl3acBCmmkh7
+ FVN9CllwPUh4YMd4Rlm11CVuRRGw57czAoayqUXLOplCsmI448dz9dkttIMDWjjQN/O4xG5wfbN
+ AAFfUWjB54gnU9qcIFrcXWGpENYZHoU5ip+QZFQN0h9olHk39XQ0nJ1gMKcO9Xr99/fhCeuV5Am
+ 9FF/Xzjlr9Eb4YEOpmw==
+X-Proofpoint-GUID: vf61Zu4UnRUSWyAUjJn7c4fW2Tn0MMzt
+X-Proofpoint-ORIG-GUID: vf61Zu4UnRUSWyAUjJn7c4fW2Tn0MMzt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-27_02,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 phishscore=0 suspectscore=0 clxscore=1015
+ lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604270093
+X-Stat-Signature: 4j5n1t98baycgkujnruf9wz8t9ffe7sn
 X-Rspam-User: 
-X-HE-Tag: 1777280577-37437
-X-HE-Meta: U2FsdGVkX19PnDmtzf70gCt//FKwhoMo2t/V2TvuD0PM+/AcyLAKH7X8Uj2nrlQPlFxj8VYwbLQakQzGDFarEn5Y3H8mwaAG0EbFEGRZCIOOJDRovgjF4EdvTXyVi4pF7CWkzMMz7cW1EXnXQGBauPJUH69txNcUwNIAEP5NEiKPd7thBz69Fd4ml7JZ319zwbO9c0Pviroussyjqzf5OXyRNA1U4pO9yY+Dpg4NnWhwQEceHaIWggMHUdQbyH5DgnEiOOyWWA9N22I+sCJ5J1gVTjHgcbprJNKazunZbJWWsc+2vlt2SWjrSEhYHL4b3HAJLoWoYupjBEt2HSr1ZMOsrzShv/8wysgIXLHI4clTqULYkKqKO9XhxjoYAMrppM77ut47DRuHZqZsqsbVZnEBjlAbXgjVE6NgC6h1exWyxo4blWf257vpIB1VLaqb//IOhezX6jEqQ1cT/EBmz4uSkvXeyhfOnYx0UyYCnFsG257/7VIh3rVPmF/wYiW37AMll5eoY9aA8w+UmOfnQ1zvH9d9FalL+pqQLoVMYVPeBaD8GW7uKXUDV1C+X5BTosjMHF7d2TjLfDLuEvLCcKK5FnH6vGKc8tsWcUdiD1LyuCsD58G7Zu7oBVh8iPs3ELw2XZ4SvEjM+Gk/72rPUZhPa89ZZOJfcawXe6GBAXoQoKF10KMAgmgienjJD3kXGlpzSNyssDo3xZiURVuMGCWbGC+DCbz1xteB87p0dsufRcmVcyHJ+zzgJUKck8583HKdiFvyWh8FxL/Jvx6LEIKNZATFwkk8IQ2GgEAwz/NHnJDae1M3H5GIEReHFWflqC0s5BsX6B6d5UzaYxhEeD1ahg05eJiXT4xAtLYQU9vfY9K+GuU8Tn6IwI2aNbbBnq3RKi3R14dPDOW6Uo2JfvDHXGbMIrtSkoh0HKVAdhTIf93/gCwcsUuq9LMwQ7gFp/0mAyOlGh+t/wl0/Ia
- tD2lI/0T
- gidupVHMnQix/NHMoi/jTzYrTHEvjtA6KzRbVXA91zONOAu5DgvcPfz2AepiVODgjW5ZjTyzuMYgxtE4y1q3YassLXSfpSj5RZvC6kjIE/CZ64pVW631rK+azqxHrx1tWfhKLohcP9qTO4N1Ud64yEXlk3lSUt1b1CIkKLxNA8anjg0ZID36aPg3s7GFg5uct67kiGfSxoqFMvA118zAqxxj/i+cLcLPGkQysY7yZwKvj4oaGdnBe73w2Fa5IQNxbRwmGtKswQ2BUgpxUdxDZneYyfwzdu2/OVXY/a5KVO9AsdpdIzYm+eGy6i2CYQ5VFNBqSLmFq4CL2wQE=
+X-Rspamd-Queue-Id: 61CAF40007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777280839-771428
+X-HE-Meta: U2FsdGVkX1+cTSulShlxumlqrVdSFdH2yxTwjPXmuiexF1TkiDPMMgk+EuBd3RzPYGxuLn4G4HBQ9to0pwWOj0pLJlWXf7wQKifEUp40r36d6Jg1HXpXdnI+G9sjllfVHYgMABr8icQ/NUugxUIl/4PKs1wk6hIMGUCG51AAs7KdqK+pe3HZ1XT92H8pz8ybBB3AWSufXRvS2TYXZAbFaM+gZ6v3kxqdBpgCaDu/7ZrsVhN82jii3QAuNE/m8P89bjMo0bZ9FNbHrkZY5a/8HhoyhDpHMXsH/pBFuWSTwKGr+iM0kMCJbNpY4ppu2CKkWtnNe5MzEtEBywjxsgGNfaUl90BI1Wchs/kijkRqKXAw4U8xZDvMWcCULwhjBE9RpXFUQVAsSh2hspMG2lUhxEQGQvCDPPZwyMpRk6DFnDSty6idQIfwJpcI326HhNsQd/s5+N9VEdffSBp05ugBwziPo2fG8HeQ5+OFZrqZfJ787hoHOeHeJk3bQedS/61vhII1kDmI/5dW2tedUu4lfDqqlfifA1HE3/E2AtFfWAXy2aT2HbQMOg76/tUfr9pTE65xUH1JZ2vtq/Kmq5/rYC6uu9CpTEzkRid1b/hFdtFlN+gtVYVw7YhPwWGkRjd1nyWQOw4mQYuLOXCLajdVMlL+dG6M5WGeume84lku1NifKO9NfQJ1A/h6AjxhikAW6K2SmjkxpibebwQojf5lvitjH0sq266VOW4yMkRkG05+JVglvNbTAkX/KqceKzRDLBabmMpLKXRssq2rHlBawfCE1LUYarC2yEQaJGd+vu6Em3LfpPM7ByOE20MrAsuybG5nxi9uvhxczF+E6CGP0JzlOqTYv0Y+0F7kB5ddwBLs6/vcFctaVhX3YKsZl/atA0V0Ntax7L5eQpohbVqbssDpUBRPL1t/SXDo9KynbAZNx3lM93dvYz5YXC+eS6FG6oifi2STrVcUP3Rcdpd
+ HgDsM0hX
+ 063pqi9Q/7X/fKM8IRvhbmn95kex8DjHY32DudruLge2K7bxwqodgqvSqPqzaEqDSjoUNgT6dLbtSRZ1QT4NsRMame0WrsZczMoWl0LlfYdNwCc0jgtyZUkr97KDbZtK2G8sJDDQOT6LaUNYi5LC49QiTAtWn76E/sZ97X9i2vtdZnrTsTWCb3KIB4nKMnRlO1noeNoE3ijLgLklm4Fz8eHHFQa9Kcik4AddBNSVzE/Ck0Wp1SPejBKQ1LTrKRirD4pYvJwI2SdQ1jkHnPnWNBA8OZITlXLGOdkm7SpY68BufngWK24Ftr2efzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,57 +144,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/27/26 07:20, Alexander Gordeev wrote:
-> Convert pgtable direct entry dereferences to the corresponding
-> pXdp_get() accessors. Use ptep_get_lockless() variant for PTE
-> reads when no lock is taken.
+On Fri, Apr 24, 2026 at 03:10:42PM +0200, Alexander Gordeev wrote:
+> On Thu, Apr 23, 2026 at 02:28:24PM +0200, Heiko Carstens wrote:
+> > > +static inline void set_pte(pte_t *ptep, pte_t pte)
+> > > +{
+> > > +	if (!ipte_batch_set_pte(ptep, pte))
+> > > +		__set_pte(ptep, pte);
+> > > +}
+> > 
+> > Not sure if you analyzed it, but it looks like this might be the reason why
+> > you see the fork() slowdown: every page table operation now comes with a
+> > function call, even if is not needed.
+> > 
+> > I guess it would be helpful to add an early exit to the ipte_batch() inlines.
+> > E.g. going back to the example above:
+> > 
+> > static inline
+> > bool ipte_batch_ptep_test_and_clear_young(struct vm_area_struct *vma,
+> > 					  unsigned long addr, pte_t *ptep,
+> > 					  int *res)
+> > {
+> > 	if (__is_defined(__DECOMPRESSOR))
+> > 		return false;
+> > --->	if (unlikely(!ipte_batch_active()))
+> > --->		return false;
+> > 	return __ipte_batch_ptep_test_and_clear_young(vma, addr, ptep, res);
+> > }
+> > 
+> > Where ipte_batch_active() would be an inline function which simply tests a bit
+> > in lowcore.
 > 
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> ---
->  mm/page_vma_mapped.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+> The bit check alone would not be enough - it should be done with the
+> preemption disabled. Then it would be something like lazy_mmu_mode(),
+> but with one or more values in the lowcore instead of percpu variable
+> (at least ::base_pte to check whether ptep falls into the active range).
+
+What I meant: you need a one bit check in the inlined function, so you can
+decide if it is even necessary to do the function call. More checking could be
+done. However all the overhead of function calls will go away with single bit
+check.
+
+Or in other words: enter_ipte_batch() should set a bit in lowcore which can be
+easily tested. This bit _also_ indicates that preemption is disabled. So all
+the extra preempt disable / enable pairs within the page table primitives are
+not needed, after this bit is present und used.
+
+> > Just a general comment about the naming conventions: imho ipte_batch is not a
+> > nice choice, since the name of the facility is "ipte range". However I would
+> > abstract even more, since nobody knows if there will be a different
+> > instruction or facility to achieve all of this in a better way.
+> > 
+> > Anyway... maybe rename the file simply to mmu.c or tlb.c and change the
+> > function prefixes accordingly so we end up with shorter function names?
 > 
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index b38a1d00c971..a4520bb10d2a 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
->  	if (!pvmw->pte)
->  		return false;
->  
-> -	ptent = ptep_get(pvmw->pte);
-> +	ptent = ptep_get_lockless(pvmw->pte);
->  
->  	if (pte_none(ptent)) {
->  		return false;
-> @@ -219,17 +219,17 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  restart:
->  	do {
->  		pgd = pgd_offset(mm, pvmw->address);
-> -		if (!pgd_present(*pgd)) {
-> +		if (!pgd_present(pgdp_get(pgd))) {
->  			step_forward(pvmw, PGDIR_SIZE);
->  			continue;
->  		}
->  		p4d = p4d_offset(pgd, pvmw->address);
-> -		if (!p4d_present(*p4d)) {
-> +		if (!p4d_present(p4dp_get(p4d))) {
->  			step_forward(pvmw, P4D_SIZE);
->  			continue;
->  		}
->  		pud = pud_offset(p4d, pvmw->address);
-> -		if (!pud_present(*pud)) {
-> +		if (!pud_present(pudp_get(pud))) {
->  			step_forward(pvmw, PUD_SIZE);
->  			continue;
+> I would in turn suggest lazy_mmu_ prefix and lazy_mmu.c source name
+> to emphasize it implements the generic lazy mmu mode.
 
-Wasn't there a problem with folded page tables, where we would no longer be able
-to optimize out the folded page table accesses?
+Ok.
 
-I thought we discussed ways to resolve that. Let me dig ...
+> At the same time
+> keep ipte_batch (or ipte_range rather) in the implementation itself.
 
--- 
-Cheers,
-
-David
+That still doesn't look to good to me, but can be solved at a later time.
 
