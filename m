@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D38EFF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:55:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13348FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:56:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D18886B0088; Mon, 27 Apr 2026 11:55:23 -0400 (EDT)
+	id 7C1C36B0096; Mon, 27 Apr 2026 11:56:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEF886B0096; Mon, 27 Apr 2026 11:55:23 -0400 (EDT)
+	id 772BB6B009F; Mon, 27 Apr 2026 11:56:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2CD06B009D; Mon, 27 Apr 2026 11:55:23 -0400 (EDT)
+	id 6AF946B00A0; Mon, 27 Apr 2026 11:56:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B1E716B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:55:23 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A6574432CE
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:47 +0000 (UTC)
-X-FDA: 84704735934.20.DFF79DE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D3036B0096
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:56:12 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F39AC122CDD
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:49 +0000 (UTC)
+X-FDA: 84704736018.25.B40F116
 Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 977DF180002
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kbuOCgcm;
-	spf=pass (imf16.hostedemail.com: domain of 3TYLvaQgKCGYEVHF+KMXKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ardb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3TYLvaQgKCGYEVHF+KMXKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ardb.bounces.google.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id C88B112000E
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:47 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nTi+duBh;
+	spf=pass (imf29.hostedemail.com: domain of 3UoLvaQgKCGsJaMK+PRcPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--ardb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3UoLvaQgKCGsJaMK+PRcPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777304144;
+	s=arc-20220608; t=1777304147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+WwzihijZssqSOtMqDRFEFZS96kFccDT7AOSNModvwc=;
-	b=g3WbnBl/Q5ArmagnmAnqVxyZtdQ9krVsBTNRyKrYJP1/BFCIxRpY3Pcy2+5bhYmrkcbTiD
-	5sVcnR3V66Fv/nmv38TclTrw7mtgfB9DnC57DRLZPXZZrco4CCVmyMFtFCWjBmlCoO4pcA
-	JcKNb1tVjOiQ7KlBwCbhDELB866OkbI=
+	bh=wb69xevabgQmFZqaaKZbB6ba2WMM/rgvKxL0qThMEZ4=;
+	b=AbEp4mAEJKmz8Dbz2vfX2HUVb5hQWb2Wg92FztYQsoFiMp9OzRMzWmYEcX82PDKxTRY2Dy
+	Df1WsXWHZF35+VUuPPcnbGDO1Ng1kRQ3Kd/tblH88Ic94qLnZnnwYmqZAFZphkh7BieI/H
+	uUd+nRY2t6JmSGzRy+PDa9QsP9suKIk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kbuOCgcm;
-	spf=pass (imf16.hostedemail.com: domain of 3TYLvaQgKCGYEVHF+KMXKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ardb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3TYLvaQgKCGYEVHF+KMXKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ardb.bounces.google.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nTi+duBh;
+	spf=pass (imf29.hostedemail.com: domain of 3UoLvaQgKCGsJaMK+PRcPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--ardb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3UoLvaQgKCGsJaMK+PRcPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777304144; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777304147; a=rsa-sha256;
 	cv=none;
-	b=AUAuona+fjvTS+ZOMeyHji5/hvOckM1N/es4YhZhfq6naRBxCW3Zowmc73ozSRWLoJN+gp
-	ozAqZ8yuft/6V8rA4gN1b3wlRZUNuFyJ76DPsAcK0VtWFwKxxva9F7pKERoUCdtraP0sWV
-	sOYyDa1hj0ULAWO2TNLl3k9EOj5m6MU=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43d1dea12aaso779637f8f.1
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:35:44 -0700 (PDT)
+	b=8Pw5nXpFYyWZMnyn9WjwV8xIGyOBopk1odkSBsnxBpJnSrYqmnrdTN8IaNsvcC23jLiYaD
+	vl0BmjvlHiUmxpUrKTBS237iPEEWLhrXt8qRbndHk4cgj0MXojHYWIKGoxb3z0aZ+kguSS
+	v8Ch6mAMzxYauo9I7oC8CIhuuGql2SA=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43d789cebcfso7383769f8f.1
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:35:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777304143; x=1777908943; darn=kvack.org;
+        d=google.com; s=20251104; t=1777304146; x=1777908946; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+WwzihijZssqSOtMqDRFEFZS96kFccDT7AOSNModvwc=;
-        b=kbuOCgcmcoUiVp6YFepPXPwmPZBjx5lcHYP1fUkThTOT83quJWyHYZNql9/sYaU1Z2
-         ovKkFUyRNTefeSlxJ9qYlD3BRq45r33VrZapBxcTSIAU+tmxhK9NbjQpjfqGhpLuWqHC
-         +xBV9wgb1UrgMfZ0rFF1GA71un11ZO0iNUeOTyl0f1hrCmrHXWKxyu7qxtVH8nQbgDxy
-         PA8/n/FS43npBJkMUxwuHHYxWLS4HX7oSOrt7h6AkGGv23fB40GE5yB+Yi+cRrzCJHR8
-         v2vgsxRGxfxgYiMiD1wY+2sMaiHf7p0c3zAj/9DfgLXTplybUvLcUol16CF5PxEsLmPW
-         Dvow==
+        bh=wb69xevabgQmFZqaaKZbB6ba2WMM/rgvKxL0qThMEZ4=;
+        b=nTi+duBhgLU78uRxdU53rdToQppIg5jieapD5tizzUKhlvFgSKSpwf8aKjDi0b9ZwC
+         Cx22hSFppZL99dZYJXepCZq4sfCXvcCJUmwi1ZShBHNA1xYup/OpLDmJxGU9W3bHypuS
+         5XNHdDM38G7+FjnIGf2URoe6meWEgLxY0P7MudS48TwUo9cr43SUVZluL20cTSQeUwxB
+         RtgDxRWF25FqUpluVdzMO8Mc3GH/f9VcYhim7A+Zq8oeLJzDqzx3BBZ1/BCz/p/9fnoV
+         Kd2MaERYyRIB5DmqvqD6XX96QPRytIMlu8f/hFn0kiKhwMsGzMXRoTzsFsSuCHO95P5t
+         NfCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777304143; x=1777908943;
+        d=1e100.net; s=20251104; t=1777304146; x=1777908946;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+WwzihijZssqSOtMqDRFEFZS96kFccDT7AOSNModvwc=;
-        b=em5XouIfjL5kTuKq9Hjj4spHJ5U/NVl8m5FW/E94BsW4K/S1WwuQowzsiPRhpM+2O7
-         XKR+Sjlnu81Tqx1bkKt5p5cmk+prOLZlW0gLgziMo2xwaHx9cY+S+fXk9X3bw0/wlYX2
-         v8rLIcUa1YLY0r2UXrDuFefSvtELojQI41oM+Rzi7PeE9YeAjs8YJeMaPTdOn3fZl6qM
-         xXtE/0+3EixKy0DERFFu2iJjQpFY9QRaTQB2oKv+f+VQxDHM78NFjJ6kfnbO9rICav8a
-         byf7Rr4XyxwMKiF5TYF9H9xqiPci/K7H2/q9CfnTFxlY5nsWbDw1Kq3SAomTXamgkeZE
-         Y79g==
-X-Forwarded-Encrypted: i=1; AFNElJ+kgGSnt4B+ePlHKea6DSzSvSxtOX7TrI6OpTI7xSY8fUKZpMR/Fhlvw3yFpEqfFhkDnqTAheQl+w==@kvack.org
-X-Gm-Message-State: AOJu0Yzm0FhzNim5UniVmf7O+v5co+/ZCI3mAk0yP5iv4/xHVWBEPtog
-	IMDrODE5XFF6HQWb9D6ocBRsoVkzxcvMQyklVxhGzZ2+bTR3gmB3grj3UlEFpwoqec7LzK43WA=
+        bh=wb69xevabgQmFZqaaKZbB6ba2WMM/rgvKxL0qThMEZ4=;
+        b=dBY8/IC4YscbP5xPbnu7SQ19fr5oTMKzu19PXJjFXKfvD5sp9kLsfIU7HlkAthALLf
+         0ioiSafZedrgNqu9SYk02hW7Coymi3PoTsgjHmqDGBFOTUJIzONu13TP8V7sgJtkHAdF
+         U4R3LKhwDk2wQ+WLDbTiwq+zw0Itz5acAHo5xMlDlb8u7y1axI047PwptFe3Lh0rBX4C
+         mXWDHgLt0tbjw53YGBqtWd3kGYK8ImrF/VjkaJje6r9hxbT3kFYBCsATJrQBe/XEyy/5
+         AFZwEh83wFF5l2ick3tbZaNqXrGOsaD4zXduzP83Sx3QusD99DC5VHhmNsQD2tiIOYpX
+         pdXg==
+X-Forwarded-Encrypted: i=1; AFNElJ+rcDjsN2IhI78T1L97pk38Mm5nbyaiEsAOuf6UatSbaMaGChgdcT8fKPAUFbSaScRukGM2aMS2jw==@kvack.org
+X-Gm-Message-State: AOJu0Yzix3LTZtFnUaVzh1o+5lczygYMeMKoIjlU9brdSaHFlxWmOqIe
+	aawJ15Q4FOUVC7cyjVwGQhKLT/CZN72djnPVU2fQYChqkwt7FE55YN0lus7moaCUuJdt5NBAYw=
 	=
-X-Received: from wrbdy16.prod.google.com ([2002:a05:6000:e50:b0:43d:729a:b525])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:5d05:0:b0:441:247a:e98e
- with SMTP id ffacd0b85a97d-441247ae9ebmr36895346f8f.24.1777304141472; Mon, 27
- Apr 2026 08:35:41 -0700 (PDT)
-Date: Mon, 27 Apr 2026 17:34:24 +0200
+X-Received: from wmbd5.prod.google.com ([2002:a05:600c:58c5:b0:487:38f4:9550])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:870e:b0:488:aa33:dc8f
+ with SMTP id 5b1f17b1804b1-488fb84ffb8mr585875005e9.0.1777304146208; Mon, 27
+ Apr 2026 08:35:46 -0700 (PDT)
+Date: Mon, 27 Apr 2026 17:34:28 +0200
 In-Reply-To: <20260427153416.2103979-17-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260427153416.2103979-17-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=918; i=ardb@kernel.org;
- h=from:subject; bh=2M+2R/xfGuHti5Wurk6r5E9xqbGluJyDsIl7VYMOsyI=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIfN9E8tUw49az8LPeSafvHDx3bajk3bfqxCf4/ElO9n+i
- EqbmadXRykLgxgXg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZhIxHGGf2rT5kc6JZw8EfTc
- dtq0B6b/C6uZdnxyULeaKj/79Ou3L1gZGd7fr5d6L8ZyoL7vypL3Bx1P/wzxNdu7JOz5R5H7c65 9f80EAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2467; i=ardb@kernel.org;
+ h=from:subject; bh=TVDzWXCizjusDiJt30HNr7P0mL2kBIblXPS9xGhGOSo=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIfN9E+ehGfdF/QRq/FmuJKZkGvWc/iT0g6Gl2I5tubnAy
+ Y9CG793lLIwiHExyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIlEqjAyvDcKPHlm+gTZr9FO
+ zowHGPXW3UnPWRRZvm1iz+ZPz5uFVjMyPDzwccZLZ47pM1nk2/aq55zdOYtBz/fIlbs/+xIOXNz +mgUA
 X-Mailer: git-send-email 2.54.0.rc2.544.gc7ae2d5bb8-goog
-Message-ID: <20260427153416.2103979-24-ardb+git@google.com>
-Subject: [PATCH v4 07/15] arm64: mm: Permit contiguous descriptors to be rewritten
+Message-ID: <20260427153416.2103979-28-ardb+git@google.com>
+Subject: [PATCH v4 11/15] arm64: mm: Don't abuse memblock NOMAP to check for overlaps
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
@@ -103,14 +103,14 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
 	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
 	linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 8rxz3wwm3zz95cf6q5c991fxhm3zcyns
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C88B112000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 977DF180002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: kf96xwxwk53q44f9rs5rgxjft5dnjjb6
-X-HE-Tag: 1777304144-347402
-X-HE-Meta: U2FsdGVkX1+wK+URyKonlsZdWFzyQfSh8Qb/uyMl/BCALCRWKqpS6o4PV1Icu7fUnFRD8FShMZrk1xLTisw+7NG45zLV9zgkdAvkK3eEHn61y8r4NsnhW45leK4N1dl268O3GC0vSSuo8JW1LdKRZim9Tz+Nfct2/4Ra4XQQKCIBroY5JxiHU9SBIdJtShzwPEPnOld+HXn9EH7KhcqUYxQ0q6CW20gp7roBNjA/xPjtMTSTwDPbQlshA0JO9iu1LBttM0pmtnjH96zbOmFvNbEErxYzeJms2HbTtib9iBcXjgC0/dEhgSVwsiJ77/jWE2AeP5lpZJ1jMSlWvoCFLgj37fWajXxC/B3XYiNuWmtom36OSEEYsESlULapO1bMNSsUiLU9pQydkkTZQglv6kx1W5OiSIoeh3ruo59o8asdgRVDkexsExCpNPlSVR1VRfFsrQnyGAELdgSk5s1Avf5Q3JMGUdZlc9FulN4wXz6LcFVUltFnkWVbLRmI22+n7Txom+QCJ7M3euesNDr8qnCgKZJQy2LiJlD/d9XLg08+IFazLlm2LUHocrfqpryPG/tCcDQtNMtG+M241X/+7a9a0AA2sOmadq3WN5sYwOdd7WfvdXZlg/sapL0NQ+lEb/7d45bX9iy4ls1kR/sBrtm6OBsfmSFtI5jHt2sAbsdEKPu3ViVeoSpIIVAE5AejW3wQ0sV5awhSkDivfw9xOW8zQqUW6lsWWIN/p5kGkwNmHzQ8wTLJ7UcC7SBS1M910RiV9LsdH7CEyrARI1t6mFUpx/sI3iry8jvq85z2CmTZe/VI+7tC2uErVIkHfEJJqdo89FRg9vuKGqQ9cIAjOWMswQTuq703dzIE/0uhFbVOMoMzGkTePG1/OXB5u3WaBjtI6kSCY7yk3LhvoZd0m9/MQIQfMXPSdJOnH+Xvyru/UzD2LjSoIVvHzJLlkuQFJG9eDD1q9YzC5eRBWra
- SCFCB16Y
- /dJFlSqHjMaZhE0C/ShhwijyBvUea5VZiGK4VIhJkwkm1tYOTRwZPAaqMy2YP/s1dnzKupQb+1dQD1agv9DUwa+T2WVWE5AEE/1xSmwnqfz2tcyQ1d4vPThiepf22QeK7NYZyQ2F6zcoE1d/SNUVlTWSqABbDOVchxPVKF4szaqyg459buKsS5kpNjzpu3EXc9cZcLP6trWGeitwckhTyX9ORfquJCfWP7cx8+P5lHbhMbmyHGNavAPwKFsSWrNdIHDwJKSh40ijwsBiOx0q/u3ndY6FLqXJNgMhjgtV12JFmzmB0QbhFHk4YdPOla2GyWr6L/xsyPkRYRcVvMtCapCLeAI+TQTKSR8URHNEGjZRzS3jjlSlIGmNVE4zvdA7V8TD0zJEzE6VhbnfSPekLyB4LmO5u0asE0bMj3x+csLzymmmczwKM40x70bJbhPwwibDKrL+QDk+xCq9mioXc7G5oQplqDNHfeDGkgc0LB80KbLDHZc33vVRJQWqYls4N7nMaLVkQXGD7LeJbQcRhUI8aTPJsqMEYvvqXb7nNtrc/N3srnPj6L23hGEtMw4VLIRXd
+X-HE-Tag: 1777304147-813422
+X-HE-Meta: U2FsdGVkX18McHZyN17w5AV5WAxpGcZtySdar/JuX1k3WDify6BYTFcwMRH2eobC+vmBjVOIwig+zobGx+jeLd8qGdjInuqvplQgchwdzXONItkEnN17W5vhhrNcrOmcWSPx9nHs0UfpXlJk/YTq0E1lvtHunTiQYDXLN0DaaEPBdFIJOVuFpfkEutbFHPAj/BWKxL42BafzARjK8DpRoQqwKv5qbLfnjOTJN3e0J6K9yhwDztCCcRq7p4W3jbYBy64/XT1qKAEE8dmtEwlQWJowk8sDU2oY0sC5ND8AYlwgEVYs7nExW08O27PjYId76SgVkofYVWEKGOuDp4aqoNDNw1wRn6AAdH7xWPsA9iCqdBHZ3Kz1A0jCU2Eg7jITZ4OriSxnrOjlpWjTh2668ldm1LO2eh32tzKDjr2Nux1DLgLkTOELTVVoaUYIhP68DX44sA/ol15syf6QerV7jGxJnkvjVDexWzLGf1LBd3nNWSABgywFWYEJT8aKxlI67l7ZZp2f056JfKwJPZzlmQ0mlrcisnAvzRHv8IzurqqhDM3eovBvgswmo0N5OCuZ7BCLx+Och4O9MPpdWTt2GkLcgUl8QN9nccWaK4CgaD3j+PLPLmJnJ3gMnppOwf/7kKJ1u/9IEJjc7/IVCbMO1xExMH77FC1aATQrNORdYqNG9SSm9VtJqhJwnHVu7YHwUo7SqV6fb0rfZHFLS2EofmGiUXbXBWNBwDWq2nUqu4ajgeL78xFzEDasbkvekNtfUeiFG0+UNgnaqHnOYiZ4EHT0AXPts72FeTI1MQYMKOA0095raR77R9I1LJt0bbotdaqBw2e9VYjT7oofxBKdOuVJpTmPHYxhgRdHRMVsbX5dDsBABIjvd+DrzzdMG5jOV/nBG78lA5DyKflR9h7ScGCoW2mEm3ZukxFNUC8bW/LvIB9ulYnTFa69ejY78NgUJLHp/W9DDIG4rj4bwDy
+ othwz4ED
+ Td8vO7JmL2Lcun1+Nqbu7UOfgRd4LyVr4b+ts/JpGicqF1ts9u6vWSq63qD/go8CPYAMzV6cJk3EB1tpog6dquZw1B9nAZp1+ANV9KXQQqRWJIb7afB9csXOO1jy+RWYZDNUFTP7pK0g6rr+xUHZWT8/LbO2NoG9CRWkP0jT4eLJRmdEfyzjAzFjBgD4z6IKMhB6q82avhJmVE1upzrMWHFpsBjgNMsidm8YuOjSH3skUvMXKGDeSQY2QPW6i3s1SNqFVG723gWBuWZR1c4sUzN4yFD9++mkRSvpWud04+0OCfvhGxwXHYRow7x0OU5Xx3cmtPc7D35SOpL7QzwwJWeRL+NFTifMv8jG0pVTVBftnn+UZXC88k1X6zilMNWWneFaW2yhe76c+1aWPjoy6bQQwr8btXyVLun/AMxHlHtW524JOXFgMS91lqeh4rdJUKAqVUhIIMkltDOdl5/3gb2IKEj1y682PCyefbXnmfGyng68lsxTpQe/1NLEsykVrT+bA/YEt0dOuU8NENvHa4I2vQ6iJ62hb+agYQjZeianDsvxOFfZxAaIETnS2gP1Wld0X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,32 +120,63 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Currently, pgattr_change_is_safe() is overly pedantic when it comes to
-descriptors with the contiguous hint attribute set, as it rejects
-assignments even if the old and the new value are the same.
+Now that the DRAM mapping routines respect existing table mappings and
+contiguous block and page mappings, it is no longer needed to fiddle
+with the memblock tables to set and clear the NOMAP attribute in order
+to omit text and rodata when creating the linear map.
 
-So relax the check to allow that.
+Instead, map the kernel text and rodata alias first with the desired
+attributes, so that they will not be remapped later with different
+attributes when mapping the memblocks.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/mm/mmu.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/arm64/mm/mmu.c | 24 +++++++-------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
 diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 9610dd2d7bd9..bfb2f1cae724 100644
+index 5e2348b15783..1a4b4337d29a 100644
 --- a/arch/arm64/mm/mmu.c
 +++ b/arch/arm64/mm/mmu.c
-@@ -134,10 +134,6 @@ bool pgattr_change_is_safe(pteval_t old, pteval_t new)
- 	if (pte_pfn(__pte(old)) != pte_pfn(__pte(new)))
- 		return false;
+@@ -1148,12 +1148,15 @@ static void __init map_mem(void)
+ 		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
  
--	/* live contiguous mappings may not be manipulated at all */
--	if ((old | new) & PTE_CONT)
--		return false;
+ 	/*
+-	 * Take care not to create a writable alias for the
+-	 * read-only text and rodata sections of the kernel image.
+-	 * So temporarily mark them as NOMAP to skip mappings in
+-	 * the following for-loop
++	 * Map the linear alias of the [_text, __init_begin) interval
++	 * as non-executable now, and remove the write permission in
++	 * mark_linear_text_alias_ro() above (which will be called after
++	 * alternative patching has completed). This makes the contents
++	 * of the region accessible to subsystems such as hibernate,
++	 * but protects it from inadvertent modification or execution.
+ 	 */
+-	memblock_mark_nomap(kernel_start, kernel_end - kernel_start);
++	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
++		       flags);
+ 
+ 	/* map all the memory banks */
+ 	for_each_mem_range(i, &start, &end) {
+@@ -1165,17 +1168,6 @@ static void __init map_mem(void)
+ 		__map_memblock(start, end, pgprot_tagged(PAGE_KERNEL),
+ 			       flags);
+ 	}
 -
- 	/* Transitioning from Non-Global to Global is unsafe */
- 	if (old & ~new & PTE_NG)
- 		return false;
+-	/*
+-	 * Map the linear alias of the [_text, __init_begin) interval
+-	 * as non-executable now, and remove the write permission in
+-	 * mark_linear_text_alias_ro() below (which will be called after
+-	 * alternative patching has completed). This makes the contents
+-	 * of the region accessible to subsystems such as hibernate,
+-	 * but protects it from inadvertent modification or execution.
+-	 */
+-	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, 0);
+-	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
+ }
+ 
+ void mark_rodata_ro(void)
 -- 
 2.54.0.rc2.544.gc7ae2d5bb8-goog
 
