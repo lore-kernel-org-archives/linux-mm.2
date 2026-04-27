@@ -4,137 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8F56FF885E
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:01:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83377FF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 09:03:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB1F76B008A; Mon, 27 Apr 2026 05:01:48 -0400 (EDT)
+	id EC6856B0005; Mon, 27 Apr 2026 05:02:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D89B76B008C; Mon, 27 Apr 2026 05:01:48 -0400 (EDT)
+	id E9CCE6B0088; Mon, 27 Apr 2026 05:02:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA0CD6B0092; Mon, 27 Apr 2026 05:01:48 -0400 (EDT)
+	id DB49E6B008A; Mon, 27 Apr 2026 05:02:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B97096B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:01:48 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 582EB1C09C4
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:01:48 +0000 (UTC)
-X-FDA: 84703743096.22.51DB5AF
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 214D42000B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:01:45 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=DgStsnVo;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C934B6B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:02:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69EDF407D9
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:02:59 +0000 (UTC)
+X-FDA: 84703746078.27.DC739D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9020040008
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:02:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7OC+bA9;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777280506;
+	s=arc-20220608; t=1777280577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zmk6DXmeTYCrC2/6PymHBcrqJO1bZEMLU2hVDCq6V40=;
-	b=iAcWZfagwxG9U9ONY3diNDODpu/FNECVvjbZX3pTARRS/tv1u2jRdyap4q3uBsHPARfe0U
-	SZopXx6/SSnWc0DetJMidCzW7eA3aeslidaDmqTA1UDeMMX3Siz5dsH3PlbtaItc3s25ku
-	H2teOYVZHBmbRR7pY93XDGI2si2MBUo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777280506; a=rsa-sha256;
+	bh=6K9hSDj3qOWcD40GbOfOAjuH5bh6JAGNRgKzvnVNLl8=;
+	b=kAazzSFbFs45hBYSbphYiN7UaN06Hv7lBlP+aOJ9PME/unGg6CURWwCvNKZn7vc4p4c2sa
+	HEV3eKZymMcIBnSAFN9u+k8+6I0TehH24kGkGgN/3ulCd7NC/9mQLZ/w06Rpi86Eq2HXHZ
+	9Oq0WbFbg/dssIK9ppSZnhAyA9gkHUs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777280577; a=rsa-sha256;
 	cv=none;
-	b=qPdYVNjHPdG4EEXdLxncUl8Chan2oYFI/NIPKrBK7Rx6WWf0VoZeCZMgtklFVzEr3A8NzT
-	Uwgto/TJo4Rb212sGOX3GHneIjVUelNLuAfhEM5YyXLHEQCzU/zOR0tyQrlR+vQ1Qjvw7t
-	I1CPlHpCq/GiPm9K8eg4KrqzTQPHYtw=
+	b=fPxS3ufmoPTxBhLEXlwBQPKbtYYAt9ug9JHo2ZGitviWmqDyHRPpgsfmLkH5kfB4Iy6JkQ
+	YiZBUiF3aIUBdBF/rpfZuqkAh4PlCkECJLZmHNynEs4nmJLkdE8Ot8rZNMHsdWz+pYsUN2
+	/JIIhqPg/jGg98wgs6BKk8ythBMnqvE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=DgStsnVo;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63QLq49J2652173;
-	Mon, 27 Apr 2026 09:01:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=zmk6DXmeTYCrC2/6PymHBcrqJO1bZE
-	MLU2hVDCq6V40=; b=DgStsnVoyg2jmP8mzAEZ3VWAASgzbCNOBDmIydLGpwoaXz
-	JSX0iJEGLHjjYabX0BGyO7JasE+Udqo+3RTHl3H+VPXQF9t++oDmdg2bZkIY4BnR
-	VrQQXHEPCUXRaA+fbnEZqXdB31Jy6JArc4QQByhiJSoDLIf32V9bK5iFPGyQAI+q
-	BOVBsvmhalb41CIZJMREu0GRjvwL/wGJt6IRtTT4WXuDcmNZmo7LEBEGMvyHlzvU
-	JcxegxLUtxtZnT6mHDICyl8SqCvJII++JguqOd496OFOVDudzQ5a3iFHkmVPfrxO
-	PkT8w5dqc7eGvWdQj9ZVyNW2LnwF/Bngo9mDQ9jQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drn8v6rdm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 09:01:36 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63R8rtP6004685;
-	Mon, 27 Apr 2026 09:01:35 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dsamy47ab-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Apr 2026 09:01:35 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63R91WsL41615756
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Apr 2026 09:01:32 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1960A20063;
-	Mon, 27 Apr 2026 09:01:32 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 67E9C2004D;
-	Mon, 27 Apr 2026 09:01:31 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.9.29])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 27 Apr 2026 09:01:31 +0000 (GMT)
-Date: Mon, 27 Apr 2026 11:01:29 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Oscar Salvador <osalvador@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7OC+bA9;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9DD1543D82;
+	Mon, 27 Apr 2026 09:02:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1ADDC2BCB8;
+	Mon, 27 Apr 2026 09:02:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777280576;
+	bh=wy/P39pQu9CaZ8geWArqNl3zzbwhV+vR+8sJLe05890=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=R7OC+bA99ctkDyeRAb0p7Lgp2eukG7MR2xNPuMwyaYvUtoSOole8/rtRG50kNqGgg
+	 qwCzQ4prrx3lS75jyF70qfCYRg24/RsNKGyLNAJQehTk8TxxFqVJpXKvnM2DNQn2Pz
+	 TsKcQQITzo+ejHHF5etfd7/QVHr7Q9KdzJOyA28sTKll7Xe5suu5sylKc3NEQmOsLl
+	 UybVepF43lh5cxDUpcW0E7OzYK9MKD5almH+qNP1ANsXefb9KHU98ExrQUqUrHWKJH
+	 dalubLruZlmy9oNt78mDSnLPsbw5t/oocDg2uv9qFalsyscYLElLE75eIGRY1iB7hd
+	 KH6GIgM4UrbHg==
+Message-ID: <69c4c12c-7cdc-4a17-9eb7-6fb1a61f9834@kernel.org>
+Date: Mon, 27 Apr 2026 11:02:50 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry
  accessors
-Message-ID: <570e049b-1e9b-4030-9f80-d44162979a50-agordeev@linux.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-s390@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260427052000.196402-1-agordeev@linux.ibm.com>
- <ae8g4jipQxQZRe6E@localhost.localdomain>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ae8g4jipQxQZRe6E@localhost.localdomain>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=CIIamxrD c=1 sm=1 tr=0 ts=69ef25f0 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=3mycV0Wr0ScokfTl4csA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: iS7_IKrtN8NgHGoW9hdwneOKkL3-MuLb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDA5MyBTYWx0ZWRfX2/ZYHwOxmLxh
- zQAkT4X98mKyW2oZIYPOcL2usGOWi7JRQEKx0MsD06PG/sv5H+QOzuCFUdouxDLpowB+F9yuCch
- nkQhROnBSS27RopHrXYW/DdkYpA6YOKiz+3B1sSOyeshR2ME03kWAQNpwXxfvjKWY3T/yBEFXon
- v5E55O0xLd1sy+GyyFEy6mQrXFGRAfudaU8VbcO6VkGMxMkYPaUYDhOSBZqrsL/wzL8JDhSxEqz
- KZl0SgK6StWjvpW07dSOSSzynxrDgrwZtV6eDyQ6T5PuDv49Oae+mTNq2vg0ZOuQ78EJcAPBGFt
- XCFgtHwzxSFyGNAAxNax+ht4Y6RtBLupr/5w0XLs85IQStDHMg80rzVmJSa7GKXMR6eo+wWgL7o
- OGmAV4S61IFIublU7TTSIxwoerBVq/P8cSh5cRxqbzVNG6SoUhXFVnt6F80bZsLD4wdoXmn0PZD
- DcObcQLE0roMUwN5IOw==
-X-Proofpoint-GUID: iS7_IKrtN8NgHGoW9hdwneOKkL3-MuLb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-27_02,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 malwarescore=0 suspectscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604270093
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260427052000.196402-1-agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9020040008
+X-Stat-Signature: wt8cm8x4zwudwy5moeiexy8p8859ewy6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 214D42000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: xjbitjaajt3exznpm6ipaikpird8fkhr
-X-HE-Tag: 1777280505-683359
-X-HE-Meta: U2FsdGVkX19QQ6+dc092maaaVGtkwdturW0wtEKmvqEnuEibv9IUNVS2YF9/L+WiABH0vBzpbW+BbLiTypHTqd34eiOPDdAvZhaqFiqhVwkOFWbN5pIrAuN0XbdF76zjXDgDeuKD3NNQ04IXXt9LhrULma2jdC75QpfyBDPwQD+vub5+xzGYpp75Sw2CdYUPEtUu5HVXGBgXiMwnDSEqsIzw4/FBrJz0OA9MnSNWrzmm9k/j/npPK6ouDUZk7ezrWsL646krx49MoL6Yfmsg3LJUx7tyymLq7YO8comi/bvKBDKJrjjmOl4PeOc0FTIXgBTiqj831PVPKXLLSk/l6f3OeSqhsPKfE07s38m86FY71aSreqrDsFhMCQU6B16F8uDGk42yEGSq7nD2NBvNhQMH3C9JySlv/qBSZ7YWWv8naNGQfjEQRqfvH2xfw7oLri5k8zCGgAF/MDl2pcS96nOoFdcdRNHQFDQ6325reWrvuO1S2xK3Gm3MngXY6C6odvk9FCCWLvpLP6UAjSDjnfQ6kZq5d9VzSAkqwgyKTMz+FNLde3oM+uqNm2Jhv80HhN/xVGz2VCC9DVzeCsQ+N3BwgcMBPpjJp+RdyvhDO8ew0G9C2fI6UrnGKxG41ohhC4au6AKa5kVxhveCjXsVZ3kHQ5BnTPHpn5YVfM6/sq2HVRhabiobf3taW1okRwo+XxZJp8rFxiKIuyyi+aICmHxjRedKNQeDihqccEdRApIHd8i54iGtkRKmAcN3FNqqV/SQATBwY829MRL3dOUD8KNkFB5NBoGiRbYbU6tAv4qGJ+OcVXdwcJ7lyrTcIAJPDXYHpL704bJwTZl2zRXxeI8ztJb87KJZJRVx/fqFQYEmAM9y/Hq7W4ixAvaH4qWKsXT+nphnykW1eUcwU3Ce5t0ofTr/bjv47PAbrvPrZAXIYBhOb3qJog+u495cK/igAeF/u9VZ/FxfuOmJDNq
- zfYePuvg
- vKA9BdChTCCSRhFZTVNpWLjIRS6NMYmeTx9VI66s4UXJeHLUXrCs7ZZbdsnQkax46T3N8FmfVk1hEXcmSW6dXEjx63V5wTjZuZY/zsijgOtiKG+0hBYyXWGBSCaDtENpVt0UX+3XiE68iX0/RvRR4AkNQJPIpVaAQz0cA51+wKFAm04NLuPBp3J0yxHp/pYGPhrGqoH7mT7cBOLyU8YGRUQUz/4h7O6EmWWmd6EH8muU1Ene63rvonCkdoLhQDycQJgwQHwJYWDXpUbwkPDLZ6BihICT2JSxBDPnl3Y7uGFurU2WqGaMgugtYZTINicA4QlVuxyWufoaC1jgr3vAG4bmo2L5Tz7RKCjzGq7lzTi0OME6PoeHv7+p1k2xlrEpye6Pf
+X-HE-Tag: 1777280577-37437
+X-HE-Meta: U2FsdGVkX19PnDmtzf70gCt//FKwhoMo2t/V2TvuD0PM+/AcyLAKH7X8Uj2nrlQPlFxj8VYwbLQakQzGDFarEn5Y3H8mwaAG0EbFEGRZCIOOJDRovgjF4EdvTXyVi4pF7CWkzMMz7cW1EXnXQGBauPJUH69txNcUwNIAEP5NEiKPd7thBz69Fd4ml7JZ319zwbO9c0Pviroussyjqzf5OXyRNA1U4pO9yY+Dpg4NnWhwQEceHaIWggMHUdQbyH5DgnEiOOyWWA9N22I+sCJ5J1gVTjHgcbprJNKazunZbJWWsc+2vlt2SWjrSEhYHL4b3HAJLoWoYupjBEt2HSr1ZMOsrzShv/8wysgIXLHI4clTqULYkKqKO9XhxjoYAMrppM77ut47DRuHZqZsqsbVZnEBjlAbXgjVE6NgC6h1exWyxo4blWf257vpIB1VLaqb//IOhezX6jEqQ1cT/EBmz4uSkvXeyhfOnYx0UyYCnFsG257/7VIh3rVPmF/wYiW37AMll5eoY9aA8w+UmOfnQ1zvH9d9FalL+pqQLoVMYVPeBaD8GW7uKXUDV1C+X5BTosjMHF7d2TjLfDLuEvLCcKK5FnH6vGKc8tsWcUdiD1LyuCsD58G7Zu7oBVh8iPs3ELw2XZ4SvEjM+Gk/72rPUZhPa89ZZOJfcawXe6GBAXoQoKF10KMAgmgienjJD3kXGlpzSNyssDo3xZiURVuMGCWbGC+DCbz1xteB87p0dsufRcmVcyHJ+zzgJUKck8583HKdiFvyWh8FxL/Jvx6LEIKNZATFwkk8IQ2GgEAwz/NHnJDae1M3H5GIEReHFWflqC0s5BsX6B6d5UzaYxhEeD1ahg05eJiXT4xAtLYQU9vfY9K+GuU8Tn6IwI2aNbbBnq3RKi3R14dPDOW6Uo2JfvDHXGbMIrtSkoh0HKVAdhTIf93/gCwcsUuq9LMwQ7gFp/0mAyOlGh+t/wl0/Ia
+ tD2lI/0T
+ gidupVHMnQix/NHMoi/jTzYrTHEvjtA6KzRbVXA91zONOAu5DgvcPfz2AepiVODgjW5ZjTyzuMYgxtE4y1q3YassLXSfpSj5RZvC6kjIE/CZ64pVW631rK+azqxHrx1tWfhKLohcP9qTO4N1Ud64yEXlk3lSUt1b1CIkKLxNA8anjg0ZID36aPg3s7GFg5uct67kiGfSxoqFMvA118zAqxxj/i+cLcLPGkQysY7yZwKvj4oaGdnBe73w2Fa5IQNxbRwmGtKswQ2BUgpxUdxDZneYyfwzdu2/OVXY/a5KVO9AsdpdIzYm+eGy6i2CYQ5VFNBqSLmFq4CL2wQE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,37 +140,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 10:40:02AM +0200, Oscar Salvador wrote:
-> On Mon, Apr 27, 2026 at 07:20:00AM +0200, Alexander Gordeev wrote:
-> > Convert pgtable direct entry dereferences to the corresponding
-> > pXdp_get() accessors. Use ptep_get_lockless() variant for PTE
-> > reads when no lock is taken.
-> > 
-> > Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> > ---
-> >  mm/page_vma_mapped.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> > index b38a1d00c971..a4520bb10d2a 100644
-> > --- a/mm/page_vma_mapped.c
-> > +++ b/mm/page_vma_mapped.c
-> ...
-> > @@ -317,7 +317,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> >  				goto restart;
-> >  			}
-> >  			pvmw->pte++;
-> > -		} while (pte_none(ptep_get(pvmw->pte)));
-> > +		} while (pte_none(ptep_get_lockless(pvmw->pte)));
+On 4/27/26 07:20, Alexander Gordeev wrote:
+> Convert pgtable direct entry dereferences to the corresponding
+> pXdp_get() accessors. Use ptep_get_lockless() variant for PTE
+> reads when no lock is taken.
 > 
-> map_pte() might take the lock if PVWN_SYNC mode, or am I missing something?
+> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> ---
+>  mm/page_vma_mapped.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index b38a1d00c971..a4520bb10d2a 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+>  	if (!pvmw->pte)
+>  		return false;
+>  
+> -	ptent = ptep_get(pvmw->pte);
+> +	ptent = ptep_get_lockless(pvmw->pte);
+>  
+>  	if (pte_none(ptent)) {
+>  		return false;
+> @@ -219,17 +219,17 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>  restart:
+>  	do {
+>  		pgd = pgd_offset(mm, pvmw->address);
+> -		if (!pgd_present(*pgd)) {
+> +		if (!pgd_present(pgdp_get(pgd))) {
+>  			step_forward(pvmw, PGDIR_SIZE);
+>  			continue;
+>  		}
+>  		p4d = p4d_offset(pgd, pvmw->address);
+> -		if (!p4d_present(*p4d)) {
+> +		if (!p4d_present(p4dp_get(p4d))) {
+>  			step_forward(pvmw, P4D_SIZE);
+>  			continue;
+>  		}
+>  		pud = pud_offset(p4d, pvmw->address);
+> -		if (!pud_present(*pud)) {
+> +		if (!pud_present(pudp_get(pud))) {
+>  			step_forward(pvmw, PUD_SIZE);
+>  			continue;
 
-Then ptep_get_lockless() would not be a problem. But if it did not
-take the lock, then it is a problem.
+Wasn't there a problem with folded page tables, where we would no longer be able
+to optimize out the folded page table accesses?
 
-> -- 
-> Oscar Salvador
-> SUSE Labs
+I thought we discussed ways to resolve that. Let me dig ...
 
-Thanks!
+-- 
+Cheers,
+
+David
 
