@@ -4,100 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3817DFF885E
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 13:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7609FF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 13:43:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 709FB6B0088; Mon, 27 Apr 2026 09:32:53 -0400 (EDT)
+	id DD0216B0088; Mon, 27 Apr 2026 09:43:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BA8C6B008A; Mon, 27 Apr 2026 09:32:53 -0400 (EDT)
+	id D81006B008A; Mon, 27 Apr 2026 09:43:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0E06B008C; Mon, 27 Apr 2026 09:32:53 -0400 (EDT)
+	id C6FAD6B008C; Mon, 27 Apr 2026 09:43:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BCAD6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:32:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EFAFE401ED
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:32:52 +0000 (UTC)
-X-FDA: 84704426184.11.FD0BFF7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2B9A8140011
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:32:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nc6v+uxo;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AFA456B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:43:10 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 55B6A1401AA
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:43:10 +0000 (UTC)
+X-FDA: 84704452140.22.ABE204F
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0EE67C000F
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:43:06 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=oTje4ElN;
+	spf=pass (imf28.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777296771;
+	s=arc-20220608; t=1777297388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p66gU3SgKX4mD9KPEHeVBQilZ3e6vl4LTKoi4O1R+4M=;
-	b=bK4rj8YDDWKmiG/xRufARJ9i/I4WFBbmClMscm4bD7hBIZj/5IXt5MhPf2OlyyFuaA7tlm
-	JkwJH+bKoZOqiwZc8eTC4CvhG7rtisT+dMGcHqTtDlu/rxV3R9NyvcpW9QmS67RPQm100z
-	UAtoUHmhMO8GYqo5VPht0ToKTNNv6BE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777296771; a=rsa-sha256;
+	bh=HYpZWzyqAIY0fKVdx1G8AWuk4ggGTSoGNuwwIO5d2iQ=;
+	b=sPA9pJnz8i2n45VAS936fMLMOD8W1O9ozlj0DJdznhTqfkDnvAWjx4ua+IU1iAhI/fA2Y3
+	AOht8WxNZqkvwHJ09oOw6Ws+XkX5rBzXTlMRIdGfH7/yDaR/JvHZJKISzmsTUihDdmAnZ/
+	rmgLhvF2Vej4el+VMgFHSK3uoryzThg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777297388; a=rsa-sha256;
 	cv=none;
-	b=s4yGSGPLSb8nRfcY3a4smyUguwtY/2Z4i/7hpadpgJBAR2bYQ3kiCAC6S4O2LDBFuhViRo
-	cSkrX4Rzya2qGQ810mSTfFnwledXPGwzql2FjVSoNlIR8FLx6PTymvQur21WN9IyEmHlRi
-	Q7HzVrgeEDMfeU9buD3tJ34kmqnBdtc=
+	b=TQZNA5fNdLF3q69E9x7O/3rw6eGXOd96Ik1rX7Wm8yDEOoAe5c+FzY6dr2h9l0liwqQi9+
+	kTPB9jB7WorIHLfGaEnzWNWocI0LRVg/2uib1NEfMPMPjJKyxyxLjHDB+b3iyrLPrAEWLg
+	80Kax5Idmv3+W12CbKDu99cuTdRSpcA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nc6v+uxo;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A4E840620;
-	Mon, 27 Apr 2026 13:32:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C974C19425;
-	Mon, 27 Apr 2026 13:32:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777296770;
-	bh=j406OpvUZz+7ciHe1QoVQlcLC12P+QXTt0xUkv0HFTU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Nc6v+uxoJLbp7tjuc/ew2nH32fhXau6gnhIfzXNDVqZMhAxiRHj5oJhBI6ZMugdmp
-	 /UYdNJRDR7DbZWbo0cxOC3lN2d3QUQSRMnZ1YlLl72F1SeglR2sdkldzLELbyReUe7
-	 2MARoA01UaaRt7Sh9ZfikXvmRWCuHkt+9g+Fwc9q+Mk/QBstqaN3zKBQ/FV6trKpcS
-	 zULqAUdLQFwX2PxnXgSXZdcz0YY10T4L3SqU+fX3d1KK+JFHOm6D3GTYYEOSSMNKDz
-	 MqIboSkHwbTq0igsGJ/d/2r9utRZKQLU02TJBtEegidPCRP0G3d7AH1vt32JWZvo9o
-	 cQN+KGbcqOwag==
-Message-ID: <56381493-214b-406d-9121-f80be7658445@kernel.org>
-Date: Mon, 27 Apr 2026 15:32:44 +0200
+	imf28.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=oTje4ElN;
+	spf=pass (imf28.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260427134302epoutp0196401e6a027f43e9f7a2a8e4ec37def5~qOo2fjOBb1175011750epoutp01L;
+	Mon, 27 Apr 2026 13:43:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260427134302epoutp0196401e6a027f43e9f7a2a8e4ec37def5~qOo2fjOBb1175011750epoutp01L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1777297383;
+	bh=HYpZWzyqAIY0fKVdx1G8AWuk4ggGTSoGNuwwIO5d2iQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oTje4ElNm4xecU1VG1Jrx86EY3Gpl1Vu+7Eg8igCfRDmuEWp0LdNN4Ssf0cEWBOKp
+	 03qrQy7Mwh4wQ/opBqnoORCUo1z8aoZlbY7D0/ViobxGIRXTFLcHW7dWyX9aTsl2N3
+	 Eh24v5hHa9Vb0gAdrDBssQHqG7CW+ElPnJnUatLc=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
+	20260427134302epcas5p214d5e003586bc14fd5c926391fd2af9c~qOo16jVbi1491214912epcas5p24;
+	Mon, 27 Apr 2026 13:43:02 +0000 (GMT)
+Received: from epcpadp2new (unknown [182.195.40.142]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4g44Wp1ZR3z3hhT3; Mon, 27 Apr
+	2026 13:43:02 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0~qNwDrt8ay0098400984epcas5p1l;
+	Mon, 27 Apr 2026 12:38:00 +0000 (GMT)
+Received: from green245.gost (unknown [107.99.41.245]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260427123748epsmtip257b0d1b83f2086e0e46dbf256b9f1ff0~qNv5BJqIr2057720577epsmtip23;
+	Mon, 27 Apr 2026 12:37:48 +0000 (GMT)
+Date: Mon, 27 Apr 2026 18:02:57 +0530
+From: Arun George <arun.george@samsung.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
+	kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com,
+	akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+	muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+	jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+	pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
+	riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
+	roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	zhengqi.arch@bytedance.com, terry.bowman@amd.com, gost.dev@samsung.com,
+	arungeorge05@gmail.com, cpgs@samsung.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <1983025922.01777297382206.JavaMail.epsvc@epcpadp2new>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/8] mm/slab: make kfree_rcu_nolock() work with sheaves
-Content-Language: en-US
-To: "Harry Yoo (Oracle)" <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
- "Paul E . McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Zqiang <qiang.zhang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260416091022.36823-1-harry@kernel.org>
- <20260416091022.36823-6-harry@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260416091022.36823-6-harry@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2B9A8140011
+In-Reply-To: <20260222084842.1824063-1-gourry@gourry.net>
+X-CMS-MailID: 20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----lGFk.c4Zo19QZrlL9e6EpsCdvlY3lrbI5T.6445u7ei3FFQQ=_4f40_"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0
+References: <20260222084842.1824063-1-gourry@gourry.net>
+	<CGME20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0@epcas5p1.samsung.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0EE67C000F
+X-Stat-Signature: ndq3g7wp1fyzaja9ctmshbqd8kcekisz
 X-Rspam-User: 
-X-Stat-Signature: 9h994sxcf96cwnzpj19tzghems9szinf
-X-HE-Tag: 1777296771-63546
-X-HE-Meta: U2FsdGVkX19Su727NX0E8NCEWeOO7sN6X+bj8XMoRIvGDQgpoNonGI4B2UoGNV3DjjMvfgDo5lr5j/K8OUzhqh8d4G3VU9o3+4EfDotalNVHm5Mse0YP52Q53D0OrGyeTYWReSmXXPPLTV7KOkGw7VgJZIO+ZdlqmD2sI2g/CYw3wP/m9cfaC6dg/a9TXYMiB8bDgzaGIWvtJmix3GqgS0j6Z0ebUXnZcfCOLO6/rHyI3GsmgmPGnAlCUZpzUDLvKT0eVaruW3H6tz5rMArKyw95hhauw5NYk8jhcnWFNjRPGVnsquW+3LFxGcLrCs6AH7vXItwvOhe+F3pr6CTHhWR9NEZQxMrF56OJy1zQeT7Phxj9B37Pkcm2cqJ5agzk8TX8L+ownID8rAOvH6S8nCj0r7HCb+gMxfDiIqM45lJdosB5dxs7ioJUqdiWJ/3dT2jbIkJMPq5+JJsgUOTVc8YefPhmJAzhXwLKrm7H+TVqwbdyXBJgC0KD3JOpLvBrxHiRdKJeIS6SCzP9++dS8jZdjwH+ZgUcd0sUdQjsfqpjBhEvkqJjgVzDSNBWeRsew5m226Fo6YTOxBJsJGBsurf+Uw8yHM05be/WGhlEBuKp6W6ZCpPKdpg2nhPv0QHU2dKUBaFpN+rhjIY6Nxn+vRyOeb0H2tp6PJoOpyP1fp4kduXZ1RmTzTCv2yEK0A0KiveFcaBW40fEoi5fogM/U6XAu+lewi+Xz2172YXCYsTVj2L9WoRgdxYQZuegwV6RyscdHRfx7iWSZ4TdADr9mUQyCxYOJ/0XCGifgRKPjTXNjdywcVdGvKIKGm1LFzBc4z9RQyclxMUND253awAZFuU6QvkJ+Aca6G92ZN7MvoCCBLBdRu8PRHLD1YG18lJetntoqphnudmJISvc89eUmgxurX+D9oxqL4i+knIINm0j+CTEWFXVRk9sERzK3C/UYEoWv4mSPxoQn8WvIxh
- BYAi3afh
- QUBkhZZ2zHYGlxfe048PSEulWToL4UiFSj7ONeKj319AG3aKiFe6OCsV++8BD94QbqVpYzsivPh/zc2MUdTJwC62BHRxLgBBH+QGJdgjE2gPi7ioOlLImmVKyLQKbyAzSsOq2lF6LGsn4lOIerHOq2kLPx7a/zfcVPycK63yeE3vI+3CbzJI2fWWTV5LIcDPlIJyU5zBpe/KQ0ub61SZvDaPj19D67plwl31N5Ha8AYmOM2QoQnuxmkqW+hDQz4NfdVluYTQQnHl3GRwh0fcFMbv9Bf9lqnrkKK9ucvO6i155lrqqZHB9bZQfQI5WxRuU7kY62pVu1Km7neY=
+X-HE-Tag: 1777297386-109176
+X-HE-Meta: U2FsdGVkX1/MTVtW+QQT4LJHtIq62/9KrHLi3Xm4/fN+fzkiziwzzYskQ2wTgUF9m7+MsThhWETv2ymRYiSJHf1bRCKKbTF3UXm1XruKJ9jBvmb/AzT0hq2ofKrqp6QemgTtok97tUuyp6uxv1L4DAT2rLXY09lPBQPgPXouCOjlGcN3Sg9fwEzm4L3YtCOsCQLTdfFaOQkT7DnrlwkESMvyNzFsvTRhXq+n6r6kADQOVdLzzMkavDe4k/eXf6Z+H+CsAZPH6KF/66wA280AdvKxC8XlRCijMVUT+JnOTCLR4VIr+6QhU0mBO1NQdWLh/DlItptS/mj3di3mOvb9TfQI3pfWaM12WSolyFhdDXC9zbDxHhjniDB6ZjBXHYVDBpbozUFv1iHCughcZpz6r5qewV0aVfpKHBLHlflrayPegZQe5Z+Q8RsCTwpZvKcvB2k2Cs/rgKvN64bYeg+Y0T5AUcIc30KY1dEEU31NRj6mq/kJ2KP3oXIuN5b7p/yI69HMjK/FsNHqoWyzC6xFZGvLlIaeKWwokDs/qoEo6ebLf3bDtWcyM32JqoK/06qYevGwR9MWHOSJOqIAUwwTzYG7ggDYB1hqDJoAtoxDS8nqrYjMBDaNXAnLqEsjJZizr4Jf0N3uc+5YvetlPyfuQ4WAQ/DTOaKKoM2CAlIytoyPnrt0LgPM9aQUeNMceIOr1GR6Mw1YSpGkj+LztiDYz4H1Ws6LiowrIs+FAMRUhShE4TKNB1mTdoiRpdESiYvoXQNRyWnADQfsMbTsbpev7DYZvXLXNQeq7V0RqWv8J6xABgSmONaBtlfOH+avDP8Zq7mhWzwVK28XG+sQ4DjiKwATa2rNM+4lYI3UEQgtAbdUcs7ya53vJHAQ9D/M0lvKAemER5oK/atyLRS31uV1kcjUMcc7+Kc5pyxouI02nPO1AbfqY5uxRWlDHXR18QOrC2Za06ofocFy1vWHNMi
+ 8PHkpdMS
+ i7v2Ptb60hc7t4vG9Fk+VSQJcuqWm6fxXDhJ1URPwy8EVb+o2DAflY7gMYaH812kr6kNj4PAxEmharNck8vzcfPio/O5dpx9J+/s/m/k7ufNoB9jWVslKtAs0TZDDLqbcFkUACfMzICSYEsErvMNmRwESitxPXmcUyjCxzScJTi67dTllfuW0XBonSMur7Qd3G4v6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,124 +133,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/16/26 11:10, Harry Yoo (Oracle) wrote:
-> Teach kfree_rcu_sheaf() how to handle the !allow_spin case. Similar to
-> __pcs_replace_full_main(), try to get an empty sheaf from pcs->spare or
-> the barn, but don't add !allow_spin support for alloc_empty_sheaf() and
-> fail early instead.
-> 
-> Since call_rcu() does not support NMI contexts, kfree_rcu_sheaf() fails
-> when the rcu sheaf becomes full.
-> 
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-> ---
->  mm/slab.h        |  2 +-
->  mm/slab_common.c |  7 +++----
->  mm/slub.c        | 14 ++++++++++++--
->  3 files changed, 16 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/slab.h b/mm/slab.h
-> index ae2e990e8dc2..d7fd7626e9fe 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -409,7 +409,7 @@ static inline bool is_kmalloc_normal(struct kmem_cache *s)
->  	return !(s->flags & (SLAB_CACHE_DMA|SLAB_ACCOUNT|SLAB_RECLAIM_ACCOUNT));
->  }
->  
-> -bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
-> +bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, bool allow_spin);
->  void flush_all_rcu_sheaves(void);
->  void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
->  void defer_kvfree_rcu_barrier(void);
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index e840956233dd..46a2bee1662b 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -1716,7 +1716,7 @@ static void kfree_rcu_work(struct work_struct *work)
->  		kvfree_rcu_list(head);
->  }
->  
-> -static bool kfree_rcu_sheaf(void *obj)
-> +static bool kfree_rcu_sheaf(void *obj, bool allow_spin)
->  {
->  	struct kmem_cache *s;
->  	struct slab *slab;
-> @@ -1730,7 +1730,7 @@ static bool kfree_rcu_sheaf(void *obj)
->  
->  	s = slab->slab_cache;
->  	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
-> -		return __kfree_rcu_sheaf(s, obj);
-> +		return __kfree_rcu_sheaf(s, obj, allow_spin);
->  
->  	return false;
->  }
-> @@ -2111,8 +2111,7 @@ void kvfree_call_rcu_ptr(struct rcu_ptr *head, void *ptr, bool allow_spin)
->  				IS_ENABLED(CONFIG_DEBUG_KMEMLEAK)))
->  		goto defer_free;
->  
-> -	if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
-> -			(allow_spin && kfree_rcu_sheaf(ptr)))
-> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr, allow_spin))
->  		return;
+------lGFk.c4Zo19QZrlL9e6EpsCdvlY3lrbI5T.6445u7ei3FFQQ=_4f40_
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Disposition: inline
 
-I wonder if this patch is enough to drop (or reduce a lot) the PREEMPT_RT
-incompatibility? It IIRC came from Ulad's review point [1] that since RT
-spinlock is in fact a mutex, it's not unsafe to take it with e.g. disabled
-preemption, and it's also why kfree_rcu_cpu uses a raw_spin_lock_t, etc.
+On 22/02/26 03:48AM, Gregory Price wrote:
+>Topic type: MM
+>
+>Presenter: Gregory Price <gourry@gourry.net>
+>
+>This series introduces N_MEMORY_PRIVATE, a NUMA node state for memory
+>managed by the buddy allocator but excluded from normal allocations.
+>
+>I present it with an end-to-end Compressed RAM service (mm/cram.c)
+>that would otherwise not be possible (or would be considerably more
+>difficult, be device-specific, and add to the ZONE_DEVICE boondoggle).
+>
+>
+>TL;DR
+>===
+>
+Appreciate the work as we also chase the same problem statement.
+A few queries please.
 
-But with kfree_rcu_sheaf now having allow_spin parameter and only doing a
-trylock at most with that false, it should now be safe to allow it for
-CONFIG_PREEMPT_RT, only pass allow_spin = false unconditionally there?
+I see the current support relies on read-only mappings which might
+limit the performance. Any particular workload you are targeting with
+this (which can tolerate this latency)?
 
-[1] https://lore.kernel.org/all/aL_uhPtztx7Ef0T2@pc636/
+Any deployments you think of where the goal is a capacity expansion
+with a compromise in performance?
 
->  
->  	// Queue the object but don't yet schedule the batch.
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 6f658ec00751..d0db8d070570 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5895,7 +5895,7 @@ static void rcu_free_sheaf(struct rcu_head *head)
->   */
->  static DEFINE_WAIT_OVERRIDE_MAP(kfree_rcu_sheaf_map, LD_WAIT_CONFIG);
->  
-> -bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
-> +bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, bool allow_spin)
->  {
->  	struct slub_percpu_sheaves *pcs;
->  	struct slab_sheaf *rcu_sheaf;
-> @@ -5933,7 +5933,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
->  			goto fail;
->  		}
->  
-> -		empty = barn_get_empty_sheaf(barn, true);
-> +		empty = barn_get_empty_sheaf(barn, allow_spin);
->  
->  		if (empty) {
->  			pcs->rcu_free = empty;
-> @@ -5942,6 +5942,10 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
->  
->  		local_unlock(&s->cpu_sheaves->lock);
->  
-> +		/* It's easier to fall back than trying harder with !allow_spin */
-> +		if (!allow_spin)
-> +			goto fail;
-> +
->  		empty = alloc_empty_sheaf(s, GFP_NOWAIT);
->  
->  		if (!empty)
-> @@ -5973,6 +5977,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
->  	if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
->  		rcu_sheaf = NULL;
->  	} else {
-> +		if (unlikely(!allow_spin)) {
-> +			/* call_rcu() cannot be called in an unknown context */
-> +			rcu_sheaf->size--;
-> +			local_unlock(&s->cpu_sheaves->lock);
-> +			goto fail;
-> +		}
->  		pcs->rcu_free = NULL;
->  		rcu_sheaf->node = numa_node_id();
->  	}
+On the device side, are you targeting beyond compressed RAM like
+devices such as memory with NAND etc.?
+
+The TL;DR talked about mmap/mbind way of user space allocation from
+the private node. But the allocation is controlled by GFP flag
+N_MEMORY_PRIVATE. Does the user space path of allocation set this
+flag along the way?
+
+And I believe the bear-proof cage might work in the normal scenarios,
+but may not work for all. We might not be able to rely on the control
+path (backpressure) fully. The control path could go slow, slower and
+even die as well. Should the device respond with something like
+'bus error' if the host tries to write when it is not capable of
+taking any more writes?
+
+Are there any workloads (VM?) where this 'bus error'or similar error
+could be an OK / recoverable scenario?
+
+This is assuming that checking with the device on every operation
+(whether it is safe to write or not) could be slow.
+
+--- Arun George
+
+------lGFk.c4Zo19QZrlL9e6EpsCdvlY3lrbI5T.6445u7ei3FFQQ=_4f40_
+Content-Type: text/plain; charset="utf-8"
+
+
+------lGFk.c4Zo19QZrlL9e6EpsCdvlY3lrbI5T.6445u7ei3FFQQ=_4f40_--
 
 
