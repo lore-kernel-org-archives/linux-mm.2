@@ -4,86 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D90E1FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:05:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1413CFF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:07:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50F2B6B0096; Mon, 27 Apr 2026 12:05:00 -0400 (EDT)
+	id 7AADD6B008A; Mon, 27 Apr 2026 12:07:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E6C66B0098; Mon, 27 Apr 2026 12:05:00 -0400 (EDT)
+	id 782046B008C; Mon, 27 Apr 2026 12:07:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FD266B0099; Mon, 27 Apr 2026 12:05:00 -0400 (EDT)
+	id 698446B0099; Mon, 27 Apr 2026 12:07:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D0BE6B0096
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:05:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A9EF98C9BC
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:43:54 +0000 (UTC)
-X-FDA: 84704756388.01.53D58C2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C2C5E100006
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:43:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Op4UAysM;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 59D696B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:07:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5414D121932
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:49:40 +0000 (UTC)
+X-FDA: 84704770920.17.2635AE1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8E760120014
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:49:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MI6yBmVH;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777304632;
+	s=arc-20220608; t=1777304978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZcL9SJaWhIqQTF+xzLzlWxdkIlNLwuwdoErNyviWFdA=;
-	b=RzRL5WaWpf37sBkGUptbaNgjOE8PFbswLKO2MNDCNgcuXmkZ74tNx+FilolXkQsCkdXQz/
-	BM5+nz7PhuyrwE1KfdCdt+EDPQsuTvEjz9YKCR1b8aInC4IJ1BLZbwm+v6RRJ4Jg0O7PnV
-	++ewCjG6nIRsZjln0GvP5acLEKggrAA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777304632; a=rsa-sha256;
-	cv=none;
-	b=PHMlZTLsjDh78KUBmlcioRZX1e/vXFU7ccaXGIEydB93L/9QxI9AAUb2TPZA8ELBpc8DeF
-	xc9YlVcmL0vrn0BWJscp2x0EiXm0wX/Pwwjk/Jc6IpYUsz78+iTS1fmf8UWMn8iX8laeDV
-	ISxr/FtXmTpd7BMBnf5RDUnZ1q+GCRY=
+	bh=kQ+PgdM1PbtfpIYyny31IM2+kRZt1X8KXnqjpAcJE5g=;
+	b=dxtdv/wDgJ/tJs7lWLQmorh/2N6/PVFlq8DmYAePCEEa6XifDerkuwp6IoZla4s+yaKABL
+	+pCfOAMV9l3USIo7xaDbBGxNOMlRqfCIpLTdUJEQWF6u7xrAJOdXV2kmmVQKEL6r1VqXMV
+	rSRHDxcquqZgajPUjrx6uQdmtCGNUtM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Op4UAysM;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MI6yBmVH;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777304978; a=rsa-sha256;
+	cv=none;
+	b=ahrCVmd76Wrn1JJ37HFWCKJ70A5xe3V/K+T1qgWGKlJt7C1YGPknqJXJBY4nBmGN6R0Gir
+	WkraJougHzeAmdqppV00HIPl1wh+ZgdHZov5ckz6NBOa25d26D0DsMb3dPoXPo6CHmLYj+
+	b3pGWsouMYZ9p+24rFs00Rxjzda4eNg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BB43D43382;
-	Mon, 27 Apr 2026 15:43:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C9AC2BCB5;
-	Mon, 27 Apr 2026 15:43:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E03B60126;
+	Mon, 27 Apr 2026 15:49:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5E7C19425;
+	Mon, 27 Apr 2026 15:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777304631;
-	bh=VvfxMnKh3iwekWUZ7AAC60YlyEPAqkx6fxSktTI4CnY=;
+	s=k20201202; t=1777304977;
+	bh=RnyH3VaJp9iG+DCxp6sKhHFXhoXkGIg/w2D9Ek0Oh5Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Op4UAysM/nDkZ+noUle7Jp7HBJEjirYTqilCyJV1SRbpIjv3iw/TmVGqMoQkUkZR/
-	 nyNAtk33PpzjLvrhmG3nYVvS68lpltXjss5HKx+Z84d4QLIFVSvzHoeOrBs23bTl3u
-	 RCf2NG2/A7nEMsYsatPc3D149htpYk56JmFYlZ6Fx1k3KllIWDcVKzx1OaCtZCjF08
-	 l18SOy1WPgcWslNLwC+gJMXorZVqjLBkaGlgMwBTX+t34D2bxReDF9py8ZCmp+4aLU
-	 5EeX8v9wi7l1yJmc8P0iyHiDWwZIWW8IkfAQQNM36XVUKUDkGL2VZqUUhJRaXKjBgX
-	 rMh9ya7IGKNdg==
-Message-ID: <42ad4017-185d-41bb-9bba-a73a8fdc4ace@kernel.org>
-Date: Mon, 27 Apr 2026 17:43:43 +0200
+	b=MI6yBmVHD6NdSnTMBO36N9sU6nMr/OjWEqGqd2jCLjCEWVVf7dk6mjXJGk2yQaK+E
+	 PhAYxUVn5EV8LITl1X+gPSXptKRIM68RrM34vUt2DrcVNMQao53KTVeexPSpg28oD3
+	 f0L2Wus9WpPXxriMmieKZnpDtIBoXuIfbtGyEw9UGVFgV4dr1WPwrtXnNPuVkTAPhX
+	 d0LlPk1CCsyBnddzt+4T76XT6w7AfRcUNgeHf3g8/28A86Jer16wSp+KT0ISHT+EgH
+	 O4pOx9y4K1R9LRkKGLNNOayXWpdALpsycItvZHn9moremGmL8FZrXgwn+NY/5Arsfd
+	 IEXCtXz5ZIQlw==
+Message-ID: <9d365395-051a-436b-9017-352ebc889770@kernel.org>
+Date: Mon, 27 Apr 2026 17:49:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v4 14/22] mm: page_reporting: skip redundant zeroing
- of host-zeroed reported pages
-To: Zi Yan <ziy@nvidia.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- virtualization@lists.linux.dev, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Matthew Wilcox <willy@infradead.org>
-References: <cover.1777223007.git.mst@redhat.com>
- <788d5a09394ed1456beaab23f75d91846ceeb611.1777223007.git.mst@redhat.com>
- <DI419PSP5050.15VGMJFDMWBQU@nvidia.com>
+Subject: Re: [PATCH v5 2/4] mm/memory-failure: add panic option for
+ unrecoverable pages
+To: Breno Leitao <leitao@debian.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kernel-team@meta.com
+References: <20260424-ecc_panic-v5-0-a35f4b50425c@debian.org>
+ <20260424-ecc_panic-v5-2-a35f4b50425c@debian.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <DI419PSP5050.15VGMJFDMWBQU@nvidia.com>
+In-Reply-To: <20260424-ecc_panic-v5-2-a35f4b50425c@debian.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C2C5E100006
-X-Stat-Signature: k4ubir9paee7nd7ozaw1bn3zqi1nehsd
 X-Rspam-User: 
-X-HE-Tag: 1777304632-867620
-X-HE-Meta: U2FsdGVkX19ElfQJwaa/Ctjp4pCLfrl0BJbAj1v+2aLGi4kjBvyN2iveMvabqSc+iYbQ7oZJzT/DwPJMI/aJLcahiskC6Y6mIgVAQgxkP3vI9tF6DvelpWBP39KEWWecXbugfk58VTUASk+B/cNzhynHPDV1xM8FdQTRUNYPA3xV9zul5JZ9eoUfu3Im7k+OxAUrjfUX0n2ImcpjAYLoPCwihFE3JAciNUIuF1T87Qn4O0xHaS7rYCDQm2czF9gXLSrZQczKY5cJpNzURPj6gU58QGIUOP6uhdl5J55ktuvjv6jeJFGc2bzuusJfr2VMGe8QjhReq20qA9fhX8OhBOaHKu6VksnVdnIF0DTcrHF9bnrftqmvVStReXEHxF9aheWRVs29CMdZ5K9eud627eU9waQ/QsqCDWkPwC6LIR3uy7tjXV+uJKlvukM0+SiOnCiQyeSGonJxfw9ElSd+OuNrctl7NB+gUokj9AGh7V7lq+YqH/BzeuqQG1e7ddSu7Yv6oniYRdWQsHO3yDAtTgmYzMCu48bNGa70tMO6BaXtkAjIyzyxRhxLybeBUK9A9YkC6kgIr5PR5zhPHha53uaVv9K3c1a7RwnySyiMSddIpiOlIzOZhKhLExxxgAZ/CaSnZ/QApPXPz738ciLhTirfn0HltQUmCssU7+gSDT5D3gEYUVMiyoJwDn/DDlTOHUoypaIp1umh86RBcKjZTrI6H/IYINMusi50Tdw0M10oTDYVXnAKxrlLYQub+o48pXqb0njNoOgPJC+Mvz6GRjTxhpb2Wjum8gnF7dwQlu022tPD0nJ0oFdPqG/VSlpPFnXARsQSLa1x5j20rbhsY8bO99X9UIBNu9AAaiAVa6qm6aMJMnudqkfHussSu4rR7EoQ4IO6pkswtpixo2BcdfL8N0zaBBtfNiLNdcj+0RNhPIlWALUh+14kyUXmn1qB6OuQd5j+bPXvkEfl0SG
- oagQXFte
- XL6YqEGFmugfCKQh1Ei3spKmE88bvHawPrCGToMWyjgV6nyD0p21xN9uv829UGPd2LsLC6TgHexGzgTmzQe5tHLZN8bEGgt6AJvDyM6U2a9FhdytP3B0VtvEgmtVfy7i14pNRgD2xIHV424UiPMghJESTHbHR6ZCgzoqK7rqKCwyUpFKxwE9amAbUhXA/bFaxGbQbXqrCFtzLkHJ/KtxuOfCwZMgv9+yfUkgGrab7oTc3Ie5mBWW9sofFBUl43d4J+er/j+OIdG2lummRqEXNyGjHaKSumnAlwpHOiKi1s9ZgG8dZ4eLrS38/Dq9ojsEQnVwvKTwMS5itWEA=
+X-Rspamd-Queue-Id: 8E760120014
+X-Rspamd-Server: rspam06
+X-Stat-Signature: dud4g1xgqtu7ijecspu5y1bfymtumod3
+X-HE-Tag: 1777304978-106472
+X-HE-Meta: U2FsdGVkX19xwX5qkU20niNaoobUAys9f/l7Mr4VfmJMEjne2e07Tb4j5yMXEc2sVzLe/nuCx0b5LV5gf7Lei0LbYlwmf6KtO0LQ8T58wWx7XxbaekCrSJgrjU7sSMPNYYOlh5vRdOBK0wqtABRIxmjWiPiW/rHGj8/0Os2P1oZugyCYJV7qRVt7IE45ckLqHf5rOfs3vIvQ2FgfLj0yk4EViDEQLCTz6jckuVOMe/nch14cCmKMVTnT8JGcmrexnohSLKGqmWIPU0pIoB8SdVdFGxEqcLC9dvSn+VfKnM1MZfXEclEboBmGth2aKJ/4hGkFFZtU/BGRJ3Kmt9inzbfczOpQuud6DK6z2EqfR7S/avvZcwkCoeGyAk+amCWl4QYpJZZtOM4IxlHghu3RwJqVoIKa16qnQHcOg33P+gYqEKQa8ECCU2pLkzMfhJQOatC7QkVuBLu3MvI/Bovh1vaRZ9J9XyLTwa0EuwozZqScYog+sNdE6A5XmWwpL0rxVb8gR8wXDHwteT7V7QKzoCNB8pW7Rh7rNNSx/i39+6Dh7Ewx3QIWmwzI2LGOu2Yco6m9uoGGsh34meAIXkx23Radl6GOVjgC2Sv2Va0gjPYCxpKvUyrqwhSvxb4qu49ouxRtGUeKsJfCym+yrbCT255AyYDUDBLozdEx2p/2oIyoSU3v9sOk+8ux2NNxVm3FgMKu04xrN8vzgj2ce+tCtikwEfgazhSOdFwyALQQRDPX8rWOGGxsUho0eBJV2/84fXzscmhEVhi+c54m48vXlXpKqsTIbGookX6VngS8NUK/BSaRV5aHTQFo0T5+wjF5Sb9pGQ/vHODO4ykAFB7ZjwXvNR+/b2Akbqo/fj4igjgCZSWpS28M2c+31PROYPS6Q63vJ3jnIByXgh69C6jbUqeRICKZq+lmmADwu6RYNnKISpXBuVkJ3RZRKW6BVjKo6yLwOWgHOGxHaGau9bX
+ /WvpaaYi
+ K6/1td0X3SY7L0iIPDJDE0Q1uxOdtQ9QUTXaTis1046ry8nu2VuR0lTNvN8xNmRAv54bp8bD+9qUDAym7I+G4lrkXOgp3HIARZxkknXPEemOgMrOwW91YAtCuHJcxt9bPANicEtN2zeYEZ55NMwJ5vJNpPvpuZtpFGsM8X7D//4wPl6jiSodJHMZAZ2qpq1r3zqU57GcighpMxcawp4OKVoj2cP3UlUKjeBZnX3Jx68++I5Uhku0rN3tgilpnqJel0ocqSOFu/olwAbe695oCyRoj5raQy5j02L7Ys6ZPiy7QgXJBi5YKIq7+0W/VyEESWQ90xFOcnD0a97k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,65 +147,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/27/26 17:13, Zi Yan wrote:
-> On Sun Apr 26, 2026 at 5:48 PM EDT, Michael S. Tsirkin wrote:
->> When a guest reports free pages to the hypervisor via the page reporting
->> framework (used by virtio-balloon and hv_balloon), the host typically
->> zeros those pages when reclaiming their backing memory.  However, when
->> those pages are later allocated in the guest, post_alloc_hook()
->> unconditionally zeros them again if __GFP_ZERO is set.  This
->> double-zeroing is wasteful, especially for large pages.
->>
->> Avoid redundant zeroing:
->>
->> - Add a host_zeroes_pages flag to page_reporting_dev_info, allowing
->>   drivers to declare that their host zeros reported pages on reclaim.
->>   A static key (page_reporting_host_zeroes) gates the fast path.
->>
->> - Add PG_zeroed page flag (sharing PG_private bit) to mark pages
->>   that have been zeroed by the host.  Set it on reported pages during
->>   allocation from the buddy in page_del_and_expand().
->>
->> - Thread the zeroed bool through rmqueue -> prep_new_page ->
->>   post_alloc_hook, where it skips redundant zeroing for __GFP_ZERO
->>   allocations.
->>
->> No driver sets host_zeroes_pages yet; a follow-up patch to
->> virtio_balloon is needed to opt in.
->>
->> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->> Assisted-by: Claude:claude-opus-4-6
->> Assisted-by: cursor-agent:GPT-5.4-xhigh
->> ---
->>  include/linux/page-flags.h     |  9 +++++
->>  include/linux/page_reporting.h |  3 ++
->>  mm/compaction.c                |  6 ++--
->>  mm/internal.h                  |  2 +-
->>  mm/page_alloc.c                | 66 +++++++++++++++++++++++-----------
->>  mm/page_reporting.c            | 14 +++++++-
->>  mm/page_reporting.h            | 12 +++++++
->>  7 files changed, 87 insertions(+), 25 deletions(-)
->>
->> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
->> index f7a0e4af0c73..eef2499cba8b 100644
->> --- a/include/linux/page-flags.h
->> +++ b/include/linux/page-flags.h
->> @@ -135,6 +135,8 @@ enum pageflags {
->>  	PG_swapcache = PG_owner_priv_1, /* Swap page: swp_entry_t in private */
->>  	/* Some filesystems */
->>  	PG_checked = PG_owner_priv_1,
->> +	/* Page contents are known to be zero */
->> +	PG_zeroed = PG_private,
-> 
-> +willy,
-> 
-> I was discussing with willy and David about removing PG_private and
-> repurposing it to PG_folio to identify folios. IIUC, PG_zeroed is only
-> set for PageBuddy, so it should not be an issue to set it for allocated
-> pages for folio identification. Let me know if I get it wrong.
+> +	switch (type) {
+> +	case MF_MSG_KERNEL:
+> +	case MF_MSG_UNKNOWN:
+> +		return true;
+> +	case MF_MSG_KERNEL_HIGH_ORDER:
+> +		/*
+> +		 * Rule out a concurrent buddy allocation: give the
+> +		 * allocator a moment to finish prep_new_page() and
+> +		 * re-check. A genuine high-order kernel tail page stays
+> +		 * unowned; an in-flight allocation will have bumped the
+> +		 * refcount, attached a mapping, or placed the page on
+> +		 * an LRU by now.
+> +		 */
+> +		p = pfn_to_online_page(pfn);
+> +		if (!p)
+> +			return true;
+> +		/*
+> +		 * Yield so a concurrent allocator on another CPU can
+> +		 * finish prep_new_page() and have its writes become
+> +		 * visible before we resample the page state.
+> +		 */
+> +		cpu_relax();
+> +		return page_count(p) == 0 &&
+> +		       !PageLRU(p) &&
+> +		       !page_mapped(p) &&
+> +		       !page_folio(p)->mapping &&
+> +		       !is_free_buddy_page(p);
 
-Right, we can keep using that flag here. Whenever we leave the buddy it gets
-cleared. So as part of your work, simply let the buddy use the renamed flag.
+I don't get what you are doing here. The right way to check for a tail page is
+not by checking the refcount.
+
+Further, you are not holding a folio reference? If so, calling
+page_mapped/folio_mapped is shaky. On concurrent folio split you can trigger a
+VM_WARN_ON_FOLIO().
+
+
+Maybe folio_snapshot() is what you are looking for, if you are in fact not
+holding a reference?
 
 -- 
 Cheers,
