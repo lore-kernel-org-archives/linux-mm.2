@@ -4,141 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CF06FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 12:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13D7EFF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 13:00:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 046006B0088; Mon, 27 Apr 2026 08:56:45 -0400 (EDT)
+	id 41BA86B008A; Mon, 27 Apr 2026 09:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F39136B008A; Mon, 27 Apr 2026 08:56:44 -0400 (EDT)
+	id 3CC906B008C; Mon, 27 Apr 2026 09:00:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E269C6B008C; Mon, 27 Apr 2026 08:56:44 -0400 (EDT)
+	id 2E2AF6B0092; Mon, 27 Apr 2026 09:00:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D046D6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:56:44 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 71E3E16018F
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:56:44 +0000 (UTC)
-X-FDA: 84704335128.11.BFFEB28
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 252F7140005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:56:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bW4vgcK7;
-	spf=pass (imf09.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 20C786B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:00:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3E9E88DAD
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:00:46 +0000 (UTC)
+X-FDA: 84704345292.10.DC70F6F
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D7D95C0009
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:00:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KhresZp9;
+	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777294602;
+	s=arc-20220608; t=1777294844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+URdhFKjGzMvMSRmjpUoghA1XThJExmfB2vNvQphk6w=;
-	b=nGTTvCICPoL9wm+2bq2289lhKLoO2+ZbuWpYjcWL8s343HZgwfU4qoaC1RhWswKAlj6a+e
-	UidTsVhuC9mxVL315LL/wGJp2p4dItz96S5Hp/m35lyx6KaftofHBq0Dg+WIou0wn+Upqp
-	ykzDesNcrdstgqowU9tmsPXIlJcFPpI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bW4vgcK7;
-	spf=pass (imf09.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777294602; a=rsa-sha256;
+	bh=3pPbjszTa9FPZHzEBxBvM5QTIp8aOy3rtQ8mmz6pcLE=;
+	b=3Hg5HFznjcS9qEVdJCSoljHgmfirdHsgwezJJ6DMUZzQqrGFLpfePgUmA/xruPE9iTIrYr
+	HcVJf9g68bHiF9pkQtg6myGPw6fURsJ62TB+ZTv4bLfaM+fC5zU8Uwl9hi4a8bKdmSGBvl
+	mfgHLsrx5pkuxORNMiH10zeSOv2Vmec=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777294844; a=rsa-sha256;
 	cv=none;
-	b=nnkm1QMVr2dYISviq/NeJu/FRbrnhUN/5/OxLhYLximuBDhko+dItIZNh1I+dnU3GaHs2p
-	KaRuDEJM+o3yXCeQFsjQ7CM6TH4HB786NOayBwFjW0todPFRw/6ugXFjEfQfBDJIuPDKqj
-	ugWwO2x4VczIuGL1TY/9c9AcP8eycN0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777294601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+URdhFKjGzMvMSRmjpUoghA1XThJExmfB2vNvQphk6w=;
-	b=bW4vgcK7Wqcb3k/PGw61yZXNKv5IA9CU2GnHp3QWbxK96XhI7HYzs00MNversZC/n2yFSm
-	QKkX7phMjKY9YfNmTl5rS+hZ+ncXTKRcb5bgsl8nht26WrbFzwjrGYGlErXRMm6nAuWRTu
-	xVGSGSvTVDOC8u+xhjmHM9E4PeJ83zM=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-Yj7LPVqlNlu5OB8M-crcQQ-1; Mon, 27 Apr 2026 08:56:40 -0400
-X-MC-Unique: Yj7LPVqlNlu5OB8M-crcQQ-1
-X-Mimecast-MFC-AGG-ID: Yj7LPVqlNlu5OB8M-crcQQ_1777294600
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8d3ea68b9cdso1952106585a.3
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 05:56:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777294600; x=1777899400;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+URdhFKjGzMvMSRmjpUoghA1XThJExmfB2vNvQphk6w=;
-        b=UKouyKmrasSRY3xOC6sXO3TFs/QYo7ejbW0ZaEASLuQ9zGjGeUKL3ZjBjcyaXD9Zkj
-         BXhscY6RCqRIRuFSBz67xnBNy/RrfO/G20uTlV5UCydAr4WIQEbKiPkiSGyjBHoW0uPE
-         eJi1Sk6OCEc8zpfqz7i3/HHK98/oylIbwt5tdlfi14zGYOFP0j5DCCTcrvVtHyz2JqMD
-         P3Wfjh2xAtqO4+qQnbdhA+A/UQypIg+W9oQ4AJ+rYgI7MvEqLC78N2YNaWbQXpiBBBBP
-         Nib6LgBMkklvrfI6/YIXBTpV4KdfboOaOuc0Vvyoej3TpfY6/49Ss22Cez9CxQlhLi63
-         liFA==
-X-Forwarded-Encrypted: i=1; AFNElJ8a9FZDTOPO0OzRFc/a06loopH5wwiHUzMz5MpUPpAEktMh3UbF/rRsvuz07oaSmS37ZXimT6o2KQ==@kvack.org
-X-Gm-Message-State: AOJu0YybtwfSS6KWFw1fNdqQsw78LanpsKopTnNVN3MZPqhUZDpU9X0N
-	Bz5uVG+X1HT+P8Iw1ZmQgprtr1yjlu8WEU3FDk1uhGMJe+szu0LxOvf/+y3WRiObrhKferIcrYD
-	v14nfloIPHRrNyt+y4bDq63yehKysMwLG6IC29244CaJUPPKkD2Yf
-X-Gm-Gg: AeBDietQI21QpBOtCKh2IekOSZm9a4pzne8ordm8g7RRw4KbPPLw/eT6XqNlabPqyR/
-	qdn1Cdxnaqdg9jb4Pj92Ay5wLXnvU+3eTft6Y7uOstued71bDSP/r4illCEyytMJwvNxFCBUXjQ
-	/z1pcLsS+LeumZXywXocPR+4oVvwQJi/3fauhctu/U4ssYuFWdUGqCuSrVv9kVu5gtanUWsoVYa
-	YHM5A9yIJC+lwGEjH5RaIpbWPjaRP3qRKfgPn6JIoI5eAXPQw8C5bQKDGQRkqKiv4UfeO0Ls30j
-	G3I0TD0B4TqkGQvQQEzC50CRCGp7vPJTy2I1RfjfwR8Ii+dOeu+FNy/vN6iV1GpulC4F+QaboJF
-	MV0pQn+wM2K3E5/bHingvZLLk3pStMyWKqeag
-X-Received: by 2002:a05:620a:31a6:b0:8ee:f43a:bb6d with SMTP id af79cd13be357-8eef44a0499mr3559421385a.57.1777294599740;
-        Mon, 27 Apr 2026 05:56:39 -0700 (PDT)
-X-Received: by 2002:a05:620a:31a6:b0:8ee:f43a:bb6d with SMTP id af79cd13be357-8eef44a0499mr3559414585a.57.1777294599047;
-        Mon, 27 Apr 2026 05:56:39 -0700 (PDT)
-Received: from [192.168.2.110] ([69.159.169.238])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02aa4f1f9sm256378186d6.0.2026.04.27.05.56.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 05:56:38 -0700 (PDT)
-Message-ID: <67d7b067-97a8-4600-a9a6-46f3e797ffed@redhat.com>
-Date: Mon, 27 Apr 2026 08:56:27 -0400
+	b=eRR4SnT3HUJoY3a0qkoZ8Gpow4LvlJfw1D2UYqAvOmLTLGwdiKTQaPKo/rJBp21v3FPN+X
+	NHS8OJ5yTbXL+Um1RnJJEtSfD8IgBiZpcp4HaeE2uEbVw4eH5WRG34ePscJf31boBf96v/
+	MgDbz7KYbeHyGI8WjK+mLpY33Pz5wQg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KhresZp9;
+	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3pPbjszTa9FPZHzEBxBvM5QTIp8aOy3rtQ8mmz6pcLE=; b=KhresZp9qVD0MIn2zcL6d93p+u
+	YP6E0DDNIPcfHMGbSJQeuyCSK1cj50OfRjVJARZtOM8LmCEUABm8jKVR923RuCzGDTYSBnzn7JByk
+	2HUBHnab8NCjgQi+8wTrjmCKIWQGfOqoyzc8ND874Z8uwqSGXy/nKlM1Cdcg/IeQpVHmmpxvDZvr8
+	IjJeWL9Z5BEJiGYWJNHnAu31LR6HjEC6evr5wOtENKrU9sKOPiSws7F6cpkIks6ZMYeVp9DusSyeO
+	27l2WRHnwk/V110p/IysON5iyNnX6M8KN9wujEeKBVN7/tpdN7RhNiuXYhUEdUu7Bd6Wg9YUs8+WN
+	rwLE6f2Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wHLZi-0000000263n-3frl;
+	Mon, 27 Apr 2026 13:00:34 +0000
+Date: Mon, 27 Apr 2026 14:00:34 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>, linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
+ page_mapped() in arena_free_pages()
+Message-ID: <ae9d8rXC-V2OkTcf@casper.infradead.org>
+References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
+ <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 43/53] selftests/mm: migration: add setup of HugeTLB
- pages
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Donet Tom <donettom@linux.ibm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
- Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Sarthak Sharma <sarthak.sharma@arm.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-References: <20260418105539.1261536-1-rppt@kernel.org>
- <20260418105539.1261536-44-rppt@kernel.org>
- <a8510cbd-4a30-460c-b870-a250ceb8a522@redhat.com>
- <ae3v1cyMLbcvJtYW@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <ae3v1cyMLbcvJtYW@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: J3GAh6ZnpiQEd2-u5fb9nMQpmz8247bZwY4tkCwbfho_1777294600
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D7D95C0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 252F7140005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: snj75anqnxrgrwe1q1tbgopbmbyq7qte
-X-HE-Tag: 1777294601-694747
-X-HE-Meta: U2FsdGVkX1++2yKw1CT5rsn++EkY6trU3cDotqAUqCz4EFrl2bSzpPzATJD1dGStXmm1IB5HBWN/wVC9Xx8cRgemwUyS7oE+oZGDXqBmlvwezbnQOOwIToTH58WGSpKcMJ/LpxhLONoZq/PQSTvaSU5827u7zxarKbM22bfQc5kGBnQMmJEhBH1ajHwNGDpkTddXKSQp5AuJuVexkjBJx+MVF/0tKc4YtiDZZaGn6u5Hel60G8d7wzzRR7dzja+3xn/oxhwaSbfpTY7/2oGaB2rBrWug++8l61qYWCdKedAXmUzXiaGeAB+ygNN9xYJM6rVTKN6XXg2QqEQ2zXDkNnLi1g2BToMwqlIJifsBWNN3OKV6Nr6RuZcEWsGZDFQTQe4Wiz8FzxZfmDq+xRTl1xWaxhRCPZ4dmRfxTnM+xXt5nrttPlfKnkGCNu5SutjWDS4SjLQYoD1jNkh2jYgHADfh+AkZ8YsfqMOrkoIy9QEn/0Ja7TIJJksI8I86CbadUeTmSUn5rcoy0AJJ0pyixnx9V8nyq4fPom60jiEUqpOPFiRkQl/xoFZgPxX3dKasoSrNq+PGpEBgS2ZxywWOkxHXmkpJR7b74Pvu6bDpP43qPAtjbuDX1kxdb/YS4+A44zkAOIlVMZPp8xCeT+Nb2blbVoLrpCWnRZuHqCgWXIrvba5xpWfUnUh3jjCz3bOpkIAztl0KRffQPKBgvZQV0aKqquQfxXpnNGBO31196mUBiGa2NQM0znOiIqkCf8dU1BImMhDRr5FKVAcVgB4VbDVMIb6YY+8iAx4qY6axdM8rO70oa5f7bOWe3mTCo99w7kIHgzEZf2IBZJk2vmU/a7+he7cKp0bV3VEpbJ7nU9KCr78f2jvUaz5OAj6gGdT8rGLMMqp2oenyJ0NVyFf8/Z87PmG4kBziUHiS+2aT+AYJrQWkOBe3UHGa23BWKQHhwgUopVXr+YGVymfuRK8
- fk6OoSpu
- d62PZnmE2YOURvyoU8kgnBqLCuMNvJcPGdnn4/OSXCei6qYIUVr+8US3/jb5A2H++rMMOYLEhnCodOjZWZ75Jp1hkHRZ6Kxiwqf4h5jcc6Zclety8W/uFszRMOdxEJ5vSqmW37fOt6DDTHNpiEpO4HpAjnSAVeIdvFx0nLSQr9b9IrlXRCer+3M40RWzpzhhbL5Qi7H4kIjEvo6x+wa38mT6rlqTcpPGsdBUOiEEIFozKyOhigfjOri/cSBbrXOY0F2z4dWjpOE7Et90aozCEnpxERc22XmVcLOYzupwIYFbD03x/7l/TdosACIluN7ryhmqrYqJyN33SKHexKSimyWGGZbW6Rx2YNBT99lt3HGIKWhC+FwvCpAdfVMBkQBqlK4r74Q9Zx+Yxfu88d0T8QImCKq2cOFVyZd5ZUzi0gou6fBV4dh2fGtGe+S1Ct9Q2SmwkvcrJGQqVLK8=
+X-Stat-Signature: upc9yo46aoff9knufgqf1gqjesxdzrmw
+X-HE-Tag: 1777294844-144849
+X-HE-Meta: U2FsdGVkX1+PgICpmF4gmELBT/+n/iipnZbtJFIPO1TUVhAzEoVzxXBUb9xtXDPknQWsIuvc74yRui6kHqWcD8czLS2KwU7zJMSP3aM5DCaMJo/vs3kOhZDKEcIZd39fShWR+Xr+3VPmfdvvJBs2rak3ARn57ZjX3L+DR+eS0qSRmxs2+I9SOfYkaav7Cw8bV3NC9K/GxQsQvZZD7TYSxVESkjLw3JL2U2d9wkdA/K/wX6/YvfheJ8ZKm3+1ZJNmEhiRM4Mktckl9DrgTUwMs2ubcPp+y5UFEwDyT5Tgf4nVQj5UTQCfSwR4I7QSYM7rrCBsvGB1KveMKOuvu+fhHKc2FCvMff2fGR8h6ROm0qBhmu47KGdoM7aCOUTQbCi84fnC3yNQFQS0NYUqNb2aqQeB30bK9nNoJlwN9bVhh8oJJVBsTYU9DrNuHmR4DboS8Bmy70BczjCu4uWGlbsGLFmEfbufKgd9GhhYlDEpPxsEl/flr9L96ot/S7FLHrn792UWlw+h19kRy8MPhz1z2AUjjjDrN7LRCbcL1cj1CutUBjG/6uvbQ+lh25Vl1xJFyg3N4Yo/aRrxmEZ/z6jC91tvZmol4w0BkQPkw7BNeg7F/JGweRyddIrrw5X6sYALGNIqqFhb1GL++hnReOIESqTrfoGT8xSdfPwoYO0kmMhEVAviqcfrmmZdkHjkY/sgWLcSeyRklZ4zuVjkcer7kvsOGtcDV+mAW7xEdZaWJkC2NfwF7VlMW5d+pcZKRNYds1E0fk944rweFXllZFtaoz5zkO1ba9gJJhAqst7t8x8PfSFtxfxybv6u0kT5H0t6uL4s567KBoT1NzRn62C9H5feHNUXH6dZ7Ob03J5XLu/FFxh8APJZnd7H4teT3rGWEUsBnnETOX6E2PhypxHHHTvMAAH8gBuneeA5TOBlGo2ecHaMVGFTq0R0nz5WKOqqO1BsbZxtxxO3AQ5jD3H
+ 9GtsvCq0
+ 0KpNbUfSp5BG+q5saIogXrGx6rMQIgB4+MfD/gzwoQornt/pgxqAhs5U0kJsPMcq98WAcuIWcw9iHRH1FrIo3b3GQk/B5JvYuyNENKkdWMOecXccji5LRhgc+n0Jt8mJoPAdx2O0xSRh2ELKL7xXn6G7JDrdzj4ZngS0SzYxSNeRGu9gG1zPk5wItphZJD4Ag9EQI6kBGhRAYrssyCwsUr/WM2O/X05/+j85YCYItl/KN1PXuAOnVH+7UaJ66v9tFOtQcj22aTZVcs6IjHZg0pTFgkbzJxyX/JgQc6btITKGxbrr4NOo2rzSB1AXOauYfFtD55LfE3WVA0uSghmVRve8Rht+YyuIcrfzB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,107 +109,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-26 06:58, Mike Rapoport wrote:
-> On Fri, Apr 24, 2026 at 01:11:45PM -0400, Luiz Capitulino wrote:
->> On 2026-04-18 06:55, Mike Rapoport wrote:
->>> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->>>
->>> migration skips HugeTLB tests if there are no free huge pages
->>> prepared by a wrapper script.
->>>
->>> Add setup of HugeTLB pages to the test and make sure that the original
->>> settings are restored on the test exit.
->>>
->>> Since kselftest_harness runs fixture setup and the tests in child
->>> processes, use HUGETLB_SETUP_DEFAULT_PAGES() that defines a constructor
->>> that runs in the main process and add verification that there are enough
->>> free huge pages to the tests that use them.
->>>
->>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> ---
->>>    tools/testing/selftests/mm/migration.c | 8 ++++++++
->>>    1 file changed, 8 insertions(+)
->>>
->>> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
->>> index ccf42002ce86..61fb00953f83 100644
->>> --- a/tools/testing/selftests/mm/migration.c
->>> +++ b/tools/testing/selftests/mm/migration.c
->>> @@ -23,6 +23,8 @@
->>>    #define MAX_RETRIES	100
->>>    #define ALIGN(x, a)	(((x) + (a - 1)) & (~((a) - 1)))
->>> +HUGETLB_SETUP_DEFAULT_PAGES(1)
->>
->> Hey Mike,
->>
->> I've been reviewing and testing this series and got a reproducible issue
->> with this test when running it on a x86 KVM guest with 88 vCPUs.
->>
->> The issue is that, when executing the full MM suite with
->> sudo ./run_vmtests.sh -d -a, all 6 migration test pass but it doesn't exit.
->> Instead, it gets stuck after this output:
->>
->> """
->> # # PASSED: 6 / 6 tests passed.
->> # # Totals: pass:6 fail:0 xfail:0 xpass:0 skip:0 error:0
->> """
->>
->> Getting a backtrace from gdb I see:
->>
->> """
->> #0  0x00007efd2f2c247b in __lll_lock_wait_private () from /lib64/libc.so.6
->> #1  0x00007efd2f26fa88 in __run_exit_handlers () from /lib64/libc.so.6
->> #2  0x00007efd2f26fabe in exit () from /lib64/libc.so.6
->> #3  0x0000000000404f2e in hugepage_restore_settings_sighandler ()
->> #4  <signal handler called>
->> #5  0x00007efd2f32f416 in __unregister_atfork () from /lib64/libc.so.6
->> #6  0x00007efd2f26f338 in __cxa_finalize () from /lib64/libc.so.6
->> #7  0x00007efd2f4548c7 in __do_global_dtors_aux () from /lib64/libm.so.6
->> #8  0x00007ffd66ae0320 in ?? ()
->> #9  0x00007efd2f55b2d2 in _dl_call_fini (closure_map=0x7efd2f5500c0) at dl-call_fini.c:43
->> """
->>
->> Could we be messing with libc internal state somehow? I also get systemd
->> services hung when I try to reboot.
+On Mon, Apr 27, 2026 at 01:43:15PM +0200, David Hildenbrand (Arm) wrote:
+> Pages that BPF arena code maps are allocated through
+> bpf_map_alloc_pages(), which does not allocate folios but pages.
 > 
-> I don't think we are messing with libc internal state, but we surely leave
-> zombies around.
-> All the tests that fork() terminate the children with kill() but they never
-> call wait*() to collect the exit status.
+> In the future, pages will not have a mapcount, only folios will.
+> Converting the code to use folios and rely on folio_mapped() sounds like
+> the wrong approach.
+> 
+> Should BPF arena code allocate folios and use folio_mapped() here? But
+> likely we would not want to use folios here longterm, as we don't really
+> need folio information.
+> 
+> Hard to tell. But in the meantime, we can simply use the page refcount
+> instead, as a heuristic whether the page might be mapped to user space
+> and we would want to try zapping it, so we can get rid of page_mapped().
+> 
+> Page allocation will give us a page with a refcount of 1. Any user space
+> mapping adds a page reference. While there can be references from other
+> subsystems (e.g., GUP), in the common case for this test here relying on
+> the page count is good enough.
 
-Right!
+Well, if we GUPped the page, it must have been mapped at some point ;-)
 
->> Some of the migration tests fork() and then kill() their children
->> processes. Won't those all restore the hugetlb state concurrently
->> from hugepage_restore_settings_atexit()?
-> 
-> Yeah, I missed the kill()s :/
->   
->> Also, for shared_anon_htlb, don't we need to reserve a HugeTLB page per
->> children?
-> 
-> We only mmap() a single huge page in the parent, the children don't create
-> new mappings.
+Anyway, I approve of this patch; it lets us defer the hard decisions and
+work until we know what we really need.
 
-You're right, I missed the fact that the children only read from the
-page.
-
->> And there's another issue: when running the migration test individually,
->> private_anon_htlb gets skipped. I guess it's because the previous test
->> is restoring the HugeTLB state:
-> 
-> It could be.
-> 
-> I pushed the updated version that has the fixes for both zombie and
-> signal issues:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=mm-selftest/v3
-> 
-> Would be great if you can test it in your setup.
-
-This works! Both issues are fixed: the migration test completes w/o
-hanging and when I run it individually all tests run.
-
-One last question: should we munmap() the mappings in this test? Though
-I understand this goes beyond your series goal.
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
 
