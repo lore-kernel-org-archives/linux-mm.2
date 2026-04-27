@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD15CFF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 13:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72837FF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 13:21:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F9256B0088; Mon, 27 Apr 2026 09:18:23 -0400 (EDT)
+	id A07606B008A; Mon, 27 Apr 2026 09:21:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AAA56B008A; Mon, 27 Apr 2026 09:18:23 -0400 (EDT)
+	id 991B06B008C; Mon, 27 Apr 2026 09:21:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C0326B008C; Mon, 27 Apr 2026 09:18:23 -0400 (EDT)
+	id 880ED6B0092; Mon, 27 Apr 2026 09:21:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DF686B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:18:23 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C7E251A01EA
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:18:22 +0000 (UTC)
-X-FDA: 84704389644.02.CA1D8A7
+	by kanga.kvack.org (Postfix) with ESMTP id 788416B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:21:24 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 334BF1201EC
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:21:24 +0000 (UTC)
+X-FDA: 84704397288.14.860E679
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A7B0C2000D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:18:20 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3337D4000B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:21:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf03.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+	spf=pass (imf07.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777295900;
+	s=arc-20220608; t=1777296082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/rlQ2dz7L9naLNYask5zkrnIy1bNKP76TfQanHIM5eE=;
-	b=LOnQX/MhIuAAZFP5ZvGHf6mkJRhCwpK2pUdrI/VvskeAxwnRQp1aSz/7XU1SwZERvo+aUA
-	fIZ81Y2YuFwmmCnB0UM/sAGXKs2eZzXR8Z+Zfn+l/sVVoMPiScilzBl/PugNBakUVTptqs
-	l+3Ztvf705qn8Xef+5M2r12NJ5xKuo4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777295900; a=rsa-sha256;
-	cv=none;
-	b=ZEPnxiB6ZBz3joppbXGkDpXbgU3gbRs2Xuuuky6PAH8d4JX0wPAfM6/cdJ3XxTxI/Y05mG
-	TX2x8ww466zEZVKaQ9R7h7JfBYTNNF+SWPJWyZCuej8gIgw/rpqKYA4mmyz1ZKAa33bThy
-	4JZteNOhDG+2wUzKb/skuhMG9K1NwSQ=
+	bh=iBRmhQuT0bpPuczQhvspcKpqvf0QcZcmnnOC0J/I0Pg=;
+	b=S3O5NEkjwvkyqTCsSMZyS9mcN/8aP5hM9hcpPnsIRX3aPP6jFKig2MbgtE+2HZuzV3eVY0
+	xZrQKFyIRKwhwcKEEWoxBNsUJrexKNP3bRCj2sc9b5PPxXnJVV/eIR1n4IgfUmMxCcQWzB
+	jWw9IMJhLvaOQX/1eRVZXPY0TfJN+Rc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
+	imf07.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf03.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g43yR1fTszHnGk5;
-	Mon, 27 Apr 2026 21:17:35 +0800 (CST)
+	spf=pass (imf07.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777296082; a=rsa-sha256;
+	cv=none;
+	b=UdRhV57RNa5mAlVPTWPeQc/iB+PnJw/5OXTyd8Skbl9qJwEFGXEJYV5wvagfwAjAfPHuSb
+	NC0vTTODVtz6xClecH/+Q+D1KQHc5gQKxQOI/ZME1CICziueIYe8Aesuam0UBozC7He/C0
+	1+qNzCfD2Xdwdd/i4Qzm2kBOPQ/Apgw=
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g442043pkzHnGhT;
+	Mon, 27 Apr 2026 21:20:40 +0800 (CST)
 Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1C05740570;
-	Mon, 27 Apr 2026 21:18:15 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 6FB1C40584;
+	Mon, 27 Apr 2026 21:21:20 +0800 (CST)
 Received: from [10.123.123.154] (10.123.123.154) by
  mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 27 Apr 2026 16:18:14 +0300
-Message-ID: <2e2bee93-d68c-4b29-9ad1-1ef975fccec4@huawei-partners.com>
-Date: Mon, 27 Apr 2026 16:18:14 +0300
+ 15.2.1544.11; Mon, 27 Apr 2026 16:21:19 +0300
+Message-ID: <c09f7c82-88d3-4870-9805-f22394b08583@huawei-partners.com>
+Date: Mon, 27 Apr 2026 16:21:19 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/19] mm/damon/core: embed damon_probe objects in
- damon_ctx
+Subject: Re: [RFC PATCH 04/19] mm/damon/core: commit probes
 To: SeongJae Park <sj@kernel.org>
 CC: Andrew Morton <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
 References: <20260426205222.93895-1-sj@kernel.org>
- <20260426205222.93895-3-sj@kernel.org>
+ <20260426205222.93895-5-sj@kernel.org>
 Content-Language: en-US
 From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260426205222.93895-3-sj@kernel.org>
+In-Reply-To: <20260426205222.93895-5-sj@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.123.123.154]
 X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
  mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A7B0C2000D
+X-Stat-Signature: 7w1kiwzqr4rmqw8m9zj5ub6gj7snukgz
+X-Rspamd-Queue-Id: 3337D4000B
 X-Rspam-User: 
-X-Stat-Signature: qhjicfanch7trhn91ik54taxoygz4szh
-X-HE-Tag: 1777295900-679249
-X-HE-Meta: U2FsdGVkX1+uC+68PZ2WEVQOMGzHfaDIn6QwdoG071/ECJGShQx/7BT4WZfGLIBOv2IU1Cth+8qsCCPdeE6wIDK/Cp9T88jV8a7n05uE2VHlDqa+OC6vmb9uyoU5lPU0ripPc7mqEUpdQJUf0JYiVXfIEoJvt3kwYcokulnWpAJHDWMsRDyqlkTUL3MOQ15YarjhH503kN/k1DPKigUdKRXws4rJD8M6NGmclmegLdT3dl3h+z6/LldQKlIMC6lZTpYf0StqCpNBv7kSZLcrfSvK1EBxrGU/t6trQ339jeSpB2BH7hMpbe8zwXAKnNx+/RuAza0fHl+jhUudLJSE12HiOJA9GwjZRsbMO9eshB23hLI+3lxeiLHUI/NSW/xVdfmTTrW5NAlHtNd1/KgIjNVvLspar3RSfQ+0pLD5ALPCzn2xnyk/K/Gdkkn5Iefd4JEM1bbhOgbKyG3d4L5jyx/7q2GJq8XI8IpNSBe0oyNs5vI4GDqONRWVF3Tv8aBDOD3q5dNzgrM6QGabsuICVh7ZkbSrqW0TQaVOQa+de3Lbpm+Cj00qePbdGkrcgg1iCms28gSVL+B73fEnDLz0U9+WWMVuRyQzAwAK1KdTFLVIBfwsGmHTxs0w+myA/mjiwUXgFoloG2vnSoaIXT28TVSpgpmMqQestBEd2IdR52lOUQ7G2jn1ZxVWO5yjhw1supwBRaRiko8H55ZIzxZ0TJn9aXiNdzZ59qk1h+vsppZPQKnkjmAEJzB2qzuax5YAMt7fFaCioqKfMlYXXy2Atb62iyvZB0pKScDubBpBQ+ebhNV1iCxURaxdFDUvwPzqhcue2FrKmBdZKCAfk+WgXRr8aMwwbzxZ0yyA4h/JZ06wZ3WWaLV6BLHC6aVv1ayp9JZNW44K3tnRGaHn6FtUPTenczqC2huc+25K0cUaoDFI/+J2wn4qpW+PDX6R9VU8JIQgn+9pBhPKZ72VC7d
- coNgaB/b
- KTR3c0GJbnGFNDeVKwv2/7oByo/jK0mIlHiUTBfJhH3miL0oGeVxpi1wpU/XVykL3BbReowW/yuE4SQ0HLdgF6TQPdkiudfOPzcOQKJCL3y8509QVWrUE7kjfrnOOGPqkBnQ9u4hRM5s3aAIdvoX2H1/Q9e1qZ0Y2EVDkbTmJ4PMHSbMfK1GOOE0DWXuf9liBaD5VdGQqkiUc0OXDOnNj5wtA+uK/792pn4uIB7UE4X/OXB3WvCSfVHxbiEDFo70DpnwO2kJoFy5gSRqX9bK4Qbkg7mw8y5cw2H2h
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777296081-8740
+X-HE-Meta: U2FsdGVkX1+v6xK6zMalxL48PdhksVJaKi/7q8nW0Mok6R5Qd7wo+ajg+LB9CVzuZN6/Vw3+CyJmNCWWXBPnsTU1ZYkdW5OfaRrQaOP2sOtgGZIHk4rCaSFhGFtuPSshEA01XXzhKwCw9yuWmY1Awo/3jfQiuW1DTTyy3xp5ssyoxYok7PnuPRpbnT/jtXDHjAF1WhVR+6GA7nJAucyEkV2peTAMXu9rgrG4ItcfnsCA/T8S33HbYqMmahED/vOhs49TLvDLnhxZoZ/tZMuVWY3UHmSqq4xdhjXOKPziDAsUpBfmF9pjmqXsA0o60b5cS8ScaZWoqBRoKn4GRSQLNK3M/bw/4cRa2BkdstoYCqbbsx7mxgclQWilI2Rpp1LwhopIEWfGiZNfFkvOF3TQFNSS1061gBtqg0R/Rqh1/3ZEe12VoMD+2hKuyZIFpj9p1DcUQabbhBOVzMdXTKu6jizkKRG6HVbUtGMFjT/gwtb7gG8YkLobU/cKahj+bTc+GcOLSG5lKpKy82g5R8pkDZeqbmFoBEfCc9c1n+ibb9o/LMLfEcNp4D0KmPuxGb4qg9gRHlXDo1XUc7kW6ViQw0E5k3Z2HtDDMbAI9X4LT9xIH5CqRmpA3155PMW4kBa+N7APngq+iNqdFjizTENXAGUxzHi8Yk5owtgQLGxHrZ7F7ymn6ms0rfTkqt4Ti48I7Tojw3QJsQAEeC1V+2DyYbEuYo6itJFYBEFK1UWindrE8SujEH+YxCE9iMk6P2/eSZkXsBL/NGMmImdKzzmkwWr9Mslu6siKH5nb8dhU1Of6Okyw2rf1291pSa3RLgOga0TpWiQvTOjBleytJUr/fr3qPf+uPRhegxSOzY2FN372FiKqm9xyoncqafnQAPbb+1flEnAyWYXg+IPLDqdw3gQiew0971QuK+uB12HIRkc6O1bF2t8pA8bmE0N8KkQa/5Q/eZV2aC3qP0seaOZ
+ FaPyHl40
+ tiaCuRD1Wv01keXmpsjm3gS0dU1oPWHRcnVTZqZI1Jst/1dN5SOXGI/A9flYqWgimfL7mlHmFHtz+0xiRD6HINFRIkres5F41smNDjK3jnsWz/MhgEOjaRyxV0rNvIsffzlKfXTiWNM/ePGpD5Ym7NHvtrnOAOPx8Ga4ZE0I6tq2KFL5MSUzQouHSTi3HHbvWTpxFqCvXGwklAdJDYjQNzJvixlgffIvLkoSoVNyiVDDYUVrKyY2eKDpmdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,122 +95,157 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 4/26/2026 11:52 PM, SeongJae Park wrote:
-> Let damon_probe objects be able to be installed on a given damon_ctx, by
-> adding a linked list header for storing the objects.  Add initialization
-> and cleanup of the new field with helper functions, too.
+> Update damon_commit_ctx() to commit installed data probes, too.
 > 
 > Signed-off-by: SeongJae Park <sj@kernel.org>
 > ---
->  include/linux/damon.h |  9 +++++++++
->  mm/damon/core.c       | 38 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 47 insertions(+)
+>  mm/damon/core.c | 104 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 104 insertions(+)
 > 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index da2f026eac725..65d7ee0a70ac0 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -859,6 +859,7 @@ struct damon_ctx {
->  
->  /* public: */
->  	struct damon_operations ops;
-> +	struct list_head probes;
->  	unsigned long addr_unit;
->  	unsigned long min_region_sz;
->  	bool pause;
-> @@ -892,6 +893,11 @@ static inline unsigned long damon_sz_region(struct damon_region *r)
->  	return r->ar.end - r->ar.start;
->  }
->  
-> +#define damon_for_each_probe(p, ctx) \
-> +	list_for_each_entry(p, &ctx->probes, list)
-> +
-> +#define damon_for_each_probe_safe(p, next, ctx) \
-> +	list_for_each_entry_safe(p, next, &ctx->probes, list)
->  
->  #define damon_for_each_region(r, t) \
->  	list_for_each_entry(r, &t->regions_list, list)
-> @@ -934,6 +940,9 @@ static inline unsigned long damon_sz_region(struct damon_region *r)
->  
->  #ifdef CONFIG_DAMON
->  
-> +struct damon_probe *damon_new_probe(void);
-> +void damon_add_probe(struct damon_ctx *ctx, struct damon_probe *probe);
-> +
->  struct damon_region *damon_new_region(unsigned long start, unsigned long end);
->  
->  int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
 > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index f556786597c83..861ab977d1edf 100644
+> index 170abba8fdf2a..2ab1d6dd47da4 100644
 > --- a/mm/damon/core.c
 > +++ b/mm/damon/core.c
-> @@ -109,6 +109,38 @@ int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id)
->  	return err;
+> @@ -129,11 +129,34 @@ void damon_add_filter(struct damon_probe *p, struct damon_filter *f)
+>  	list_add_tail(&f->list, &p->filters);
 >  }
 >  
-> +struct damon_probe *damon_new_probe(void)
+> +static void damon_del_filter(struct damon_filter *f)
+> +{
+> +	list_del(&f->list);
+> +}
+> +
+>  static void damon_free_filter(struct damon_filter *f)
+>  {
+>  	kfree(f);
+>  }
+>  
+> +static void damon_destroy_filter(struct damon_filter *f)
+> +{
+> +	damon_del_filter(f);
+> +	damon_free_filter(f);
+> +}
+> +
+> +static struct damon_filter *damon_nth_filter(int n, struct damon_probe *p)
+> +{
+> +	struct damon_filter *f;
+> +	int i = 0;
+> +
+> +	damon_for_each_filter(f, p) {
+> +		if (i++ == n)
+> +			return f;
+> +	}
+> +	return NULL;
+> +}
+> +
+>  struct damon_probe *damon_new_probe(void)
+>  {
+>  	struct damon_probe *p;
+> @@ -171,6 +194,18 @@ static void damon_destroy_probe(struct damon_probe *p)
+>  	damon_free_probe(p);
+>  }
+>  
+> +static struct damon_probe *damon_nth_probe(int n, struct damon_ctx *ctx)
 > +{
 > +	struct damon_probe *p;
+> +	int i = 0;
 > +
-> +	p = kmalloc_obj(*p);
-> +	if (!p)
-> +		return NULL;
-> +	INIT_LIST_HEAD(&p->list);
-> +	return p;
-> +}
-> +
-> +void damon_add_probe(struct damon_ctx *ctx, struct damon_probe *probe)
-> +{
-> +	list_add_tail(&probe->list, &ctx->probes);
-> +}
-> +
-> +static void damon_del_probe(struct damon_probe *p)
-> +{
-> +	list_del(&p->list);
-> +}
-> +
-> +static void damon_free_probe(struct damon_probe *p)
-> +{
-> +	kfree(p);
-> +}
-> +
-> +static void damon_destroy_probe(struct damon_probe *p)
-> +{
-> +	damon_del_probe(p);
-> +	damon_free_probe(p);
-
-Why don't we inline list_del and kfree here instead of calling
-damon_del/free_probe?
-
+> +	damon_for_each_probe(p, ctx) {
+> +		if (i++ == n)
+> +			return p;
+> +	}
+> +	return NULL;
 > +}
 > +
 >  #ifdef CONFIG_DAMON_DEBUG_SANITY
 >  static void damon_verify_new_region(unsigned long start, unsigned long end)
 >  {
-> @@ -633,6 +665,8 @@ struct damon_ctx *damon_new_ctx(void)
->  	ctx->attrs.min_nr_regions = 10;
->  	ctx->attrs.max_nr_regions = 1000;
->  
-> +	INIT_LIST_HEAD(&ctx->probes);
-> +
->  	ctx->addr_unit = 1;
->  	ctx->min_region_sz = DAMON_MIN_REGION_SZ;
->  
-> @@ -653,12 +687,16 @@ static void damon_destroy_targets(struct damon_ctx *ctx)
->  void damon_destroy_ctx(struct damon_ctx *ctx)
->  {
->  	struct damos *s, *next_s;
-> +	struct damon_probe *p, *next_p;
->  
->  	damon_destroy_targets(ctx);
->  
->  	damon_for_each_scheme_safe(s, next_s, ctx)
->  		damon_destroy_scheme(s);
->  
-> +	damon_for_each_probe_safe(p, next_p, ctx)
-> +		damon_destroy_probe(p);
-> +
->  	kfree(ctx);
+> @@ -1412,6 +1447,72 @@ static int damon_commit_targets(
+>  	return 0;
 >  }
+>  
+> +static void damon_commit_filter(struct damon_filter *dst,
+> +		struct damon_filter *src)
+> +{
+> +	dst->type = src->type;
+> +	dst->matching = src->matching;
+> +	dst->allow = src->allow;
+> +}
+> +
+> +static int damon_commit_filters(struct damon_probe *dst,
+> +		struct damon_probe *src)
+> +{
+> +	struct damon_filter *dst_filter, *next, *src_filter, *new_filter;
+> +	int i = 0, j = 0;
+> +
+> +	damon_for_each_filter_safe(dst_filter, next, dst) {
+> +		src_filter = damon_nth_filter(i++, src);
+> +		if (src_filter)
+> +			damon_commit_filter(dst_filter, src_filter);
+> +		else
+> +			damon_destroy_filter(dst_filter);
+> +	}
+> +
+> +	damon_for_each_filter_safe(src_filter, next, src) {
+> +		if (j++ < i)
+> +			continue;
+> +
+> +		new_filter = damon_new_filter(src_filter->type,
+> +				src_filter->matching, src_filter->allow);
+> +		if (!new_filter)
+> +			return -ENOMEM;
+We should bail out here. If we return an error, we have already
+committed some of the filters already. If there is an error, we
+should remove any fill that was already added.
+> +		damon_add_filter(dst, new_filter);
+> +	}
+> +	return 0;
+> +}
+> +
+> +static int damon_commit_probes(struct damon_ctx *dst, struct damon_ctx *src)
+> +{
+> +	struct damon_probe *dst_probe, *next, *src_probe, *new_probe;
+> +	int i = 0, j = 0, err;
+> +
+> +	damon_for_each_probe_safe(dst_probe, next, dst) {
+> +		src_probe = damon_nth_probe(i++, src);
+> +		if (src_probe) {
+> +			err = damon_commit_filters(dst_probe, src_probe);
+> +			if (err)
+> +				return err;
+> +		} else {
+> +			damon_destroy_probe(dst_probe);
+> +		}
+> +	}
+> +
+> +	damon_for_each_probe_safe(src_probe, next, src) {
+> +		if (j++ < i)
+> +			continue;
+> +
+> +		new_probe = damon_new_probe();
+> +		if (!new_probe)
+> +			return -ENOMEM;
+The same as before, we should bail out.
+> +		damon_add_probe(dst, new_probe);
+> +		err = damon_commit_filters(new_probe, src_probe);
+> +		if (err)
+> +			return err;
+> +	}
+> +	return 0;
+> +}
+> +
+>  /**
+>   * damon_commit_ctx() - Commit parameters of a DAMON context to another.
+>   * @dst:	The commit destination DAMON context.
+> @@ -1453,6 +1554,9 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+>  	}
+>  	dst->pause = src->pause;
+>  	dst->ops = src->ops;
+> +	err = damon_commit_probes(dst, src);
+> +	if (err)
+> +		return err;
+>  	dst->addr_unit = src->addr_unit;
+>  	dst->min_region_sz = src->min_region_sz;
 >  
 
 -- 
