@@ -4,103 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DB94FF885E
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:10:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C9FEFF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:14:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B6BF6B0088; Mon, 27 Apr 2026 07:10:05 -0400 (EDT)
+	id A32876B008A; Mon, 27 Apr 2026 07:14:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 967BB6B008A; Mon, 27 Apr 2026 07:10:05 -0400 (EDT)
+	id 9E33F6B008C; Mon, 27 Apr 2026 07:14:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87DD46B008C; Mon, 27 Apr 2026 07:10:05 -0400 (EDT)
+	id 8F90F6B0092; Mon, 27 Apr 2026 07:14:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 750CC6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:10:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D44D1A0159
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:10:05 +0000 (UTC)
-X-FDA: 84704066370.11.EB16F27
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5A859C0007
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:10:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c+Ockymm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D7596B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:14:32 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14D24160179
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:14:32 +0000 (UTC)
+X-FDA: 84704077584.10.7F7EF13
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net (zg8tmja5ljk3lje4ms43mwaa.icoremail.net [209.97.181.73])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AF40940005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:14:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=stu.xidian.edu.cn header.s=dkim header.b=FvxlLG7U;
+	dmarc=pass (policy=quarantine) header.from=xidian.edu.cn;
+	spf=pass (imf07.hostedemail.com: domain of 25181214217@stu.xidian.edu.cn designates 209.97.181.73 as permitted sender) smtp.mailfrom=25181214217@stu.xidian.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777288203;
+	s=arc-20220608; t=1777288470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JX3B38K3Xh2/4HKL8UX0/JqmBOnyq5ZIty77drJogz8=;
-	b=ljN82aa4xU+UUGEXN0Z0NL2AvQ55vJd9vGycyHjn2m3fxVMNapCBRfc4gSa32NYzcb07c1
-	bje/OT7qef8e4GJNAzKOY9KswxAKIyjpfKRHUv+YhcvG7JrekO9QrIjb6ipTn1gPnOzxQh
-	QDZnoLqVTclTpKkunyVHOwC1ZPk5LQA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777288203; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L/uvrT/xDOtwHjlWiwTHD3FLPmC0OEW58oN1HYaa82Y=;
+	b=1I3tGyrbjGSoK/NOFMtdcDZv/4lQsMDIzOkqM+9XDTcgYlBW8iOL5exN44G9SH52gYZh8/
+	FM9LOhQv/nUqHinPWibHdGD4Jxmn8UTXkDotb0jOorlTveD7DHnBPC5AcENziRzG2Hv+AN
+	H9nkALN5g1oxyPuzLisW1Qx5W3i6fZ8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777288470; a=rsa-sha256;
 	cv=none;
-	b=2TfYBFKfw6zST1ANiEAZHkDJLeev3VKKvDcYa2tmKE00WJLmbkfFR9NqwEzRApHL8sd4x3
-	grgqMT0ORSNUSaluJ+ARc2mRp3Ep7GXC5sbxmy8dxTHS6BFLmRRiLBclvldA8NDtVqqYFv
-	LsBu00RCI9y7iNHgBL1dA8cfR2ZUg6c=
+	b=bs1bsPhXQkWVGW+U7rB98Z7sHpd+YUjnrw3AIlkHNI9GUqU0EUvfSPPAnFA2xGeBJ6qaKt
+	wgdR4km6RHYndzLwYua7lbNzvmV2bFV1pCSUYsQtgWlcWq3KfZ9agxlN+pmCJNFPvTKOFW
+	VoQKkF67kkOtnBHoRE0lkMn1z2AOPk0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c+Ockymm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9472860138;
-	Mon, 27 Apr 2026 11:10:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716F0C19425;
-	Mon, 27 Apr 2026 11:09:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777288202;
-	bh=8fXXEDM6Q9Zfo6VHrdcBAM1RHmR921QpzOhVVp2pVW4=;
-	h=From:Date:Subject:To:Cc:From;
-	b=c+OckymmgeKcN9Sb81TLpfXxrm6YvyH+TRG2IgKkVb9vpALpk/v5EGUd3lDp7Sljn
-	 R8wVg7+VRhno4SAnq2PRnMETBPjZCAyn2Jg7nl98oQ0lkDWtIVXUMKrwpk9obHPZgk
-	 XsFUnbblHehRF8p5D/zaNojIJ5GVK+MJGu1/VYoaMnXpfn0VEfpA7kmHd/y5XoP2GN
-	 U+U8fTSqeh0ssdREvs9lbeiVGUZBCbq2W3x9oDWOM9Fb/4YVynmwYp0JibSALMtqQP
-	 uQ8n2KUyCTKGe56oyGGYJDCQs0yAARTTml+PxZ3q4NrIOVQsRgSvIb43CyseeeddsS
-	 WYxfScfJyJmtw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 27 Apr 2026 13:09:57 +0200
-Subject: [PATCH] rhashtable: give each instance its own lockdep class
+	imf07.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=stu.xidian.edu.cn header.s=dkim header.b=FvxlLG7U;
+	dmarc=pass (policy=quarantine) header.from=xidian.edu.cn;
+	spf=pass (imf07.hostedemail.com: domain of 25181214217@stu.xidian.edu.cn designates 209.97.181.73 as permitted sender) smtp.mailfrom=25181214217@stu.xidian.edu.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=stu.xidian.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
+	In-Reply-To:References:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID; bh=hEIoJhqh/zWnySkdcoflORMGvdbU+sorVFxn
+	yLsoHvU=; b=FvxlLG7U0AFXFnzZ2goEkrhMSnYsautMiAcm911GK+z00emA3iKC
+	u8fZ68B/1E7kLvLyA3q9Ah7ApAUwPkvApxUzHKTOR1YR2o92/1Zxm6MSXjyDFv3q
+	202Dbv+Q7LhN5q6YuKOz+MqKzsWwjcyTa+d1JyihTao1CW6aFQjViww=
+Received: from 25181214217$stu.xidian.edu.cn ( [113.200.174.80] ) by
+ ajax-webmail-hzbj-edu-front-4.icoremail.net (Coremail) ; Mon, 27 Apr 2026
+ 19:14:20 +0800 (GMT+08:00)
+X-Originating-IP: [113.200.174.80]
+Date: Mon, 27 Apr 2026 19:14:20 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?546L5piO54Wc?= <25181214217@stu.xidian.edu.cn>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, muchun.song@linux.dev
+Cc: "Muchun Song" <muchun.song@linux.dev>, Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, vbabka@kernel.org, jannh@google.com,
+	pfalcato@suse.de, osalvador@suse.de, ljs@kernel.org
+Subject: Re: Re: [RFC PATCH] mm/hugetlb: fix resv_map memory leak in
+ __mmap_region error path
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
+ 20250410(2f5ccd7f) Copyright (c) 2002-2026 www.mailtech.cn
+ mispb-8dfce572-2f24-404d-b59d-0dd2e304114c-icoremail.cn
+In-Reply-To: <7afd4504-1d2e-429f-ae6e-136414a9d4b8@kernel.org>
+References: <20260425070700.562229-1-25181214217@stu.xidian.edu.cn>
+ <BCFCF1D6-8F39-4E60-AD86-0ECF799FFD9D@linux.dev>
+ <7afd4504-1d2e-429f-ae6e-136414a9d4b8@kernel.org>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-work-rhashtable-lockdep-v1-1-f69e8bd91cb2@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAARE72kC/yWMyw6CMBBFf4V0bc3Q2hb8FeNipgy2gkBafCSEf
- xd0eW7uOYvInCJncS4WkfgVcxyHDcpDIXzA4cYyNhsLBcrCSTn5HlMnU8AcZqSeZT/6ruFJegJ
- trLYOnBabPSVu4+dXvlz/nJ90Zz/vuf1BmFlSwsGHfXpgnjkdraktgiIFrqos1wxABKUtvWsbU
- 7eMRnuoSrGuX+GPjzO9AAAA
-X-Change-ID: 20260427-work-rhashtable-lockdep-cb0356367073
-To: Thomas Graf <tgraf@suug.ch>, Herbert Xu <herbert@gondor.apana.org.au>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- David Hildenbrand <david@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-fsdevel@vger.kernel.org, 
- syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com, 
- Christian Brauner <brauner@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5833; i=brauner@kernel.org;
- h=from:subject:message-id; bh=8fXXEDM6Q9Zfo6VHrdcBAM1RHmR921QpzOhVVp2pVW4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS+d2E3Mj2+ZOdfVbvPmUeTNnZaJS/TNp3o4V21tfuN1
- 5qD8u93dJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkdzMjw9vqn+v2vl13fsNk
- rc7vf1WbCqubX91l0lzSpcKwnb/1aCXDX4EStRn+R5ZtCdph8v+LyJ0P7ot2f7VvU/B1SNlq9fb
- nbGYA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5A859C0007
-X-Stat-Signature: qotcoyaqjuak4tqybhzh69cc59znw1nh
+Message-ID: <4155b8e4.8e25.19dcea5b9d4.Coremail.25181214217@stu.xidian.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:BrQMCkC2XbkNRe9pUEfJAQ--.45605W
+X-CM-SenderInfo: qsvrmiqsrujiux6v33wo0lvxldqovvfxof0/1tbiAQUQEWnuLFp0b
+	gACss
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 X-Rspam-User: 
-X-HE-Tag: 1777288203-656525
-X-HE-Meta: U2FsdGVkX19DRXbW3o/rcFs4JHFQ9eQTjxgOLnurjKT/D9r+IcZHcqu0IrjBsekoyR07+3RS/EknLFRIdLB/0VsRjaKXjaK2VwCUxqRK7A6xyRVgNLjBXfSwNSqx5a3G1X2hqtnqf+cv95VG9IK2vGs3OWyBvp9+SGECAa4c8WdAh73ogYw/v9NcUA4G2haFg5xlu/loBalrWt7ykBHAcXqYK6u4yyffoMb6NG0PVZ4wvSVXze4XvJwVx0CjfmBZ+HemQNG3ED/9+B6YPis4dHTH/GQdF+LvjWAdEye2Arz9fvMMyGBNHa31HPmRFcCluwRtLFO/aNtZCdGP+8Ccu0J1FDhtWv2xtbaBs8ohEUHTMMWlA9qXkF4jETwYfivm9a08D5zXPPKvd21lsd6YQ8IiiBi797sukTCZugZ/nWhV9xnqjLq/oWC/GeGHRZuOJMQJ6YcE+Xl+0Xnb+18kHbFSmxw4ju+QTvb0B3zHOqkkC8FAvYAKIijyGb9g0Nf3mM085gCNSNbkz0euMwh1JHvYMyS++sJCt23703L/9n+xH/TkYT3yX9Sp8fOFHHyHcor5z7+d891ykMF6cyHtwAUIG6max6X4YcBpKcl/SqaiZS0aX/IgE02vM8yF0diOoUrmDq+oUHQke42a7sU+WiW6m5vaXjf8nbftc6rtoexAFAhkXj8E5VllctLLagg84MKKsS9b1q4BaDHEYaQR6mRXUOEawBrFgP1KVpeXdit7TgMqZWk/WvXbCDFlcrC1RL8EYrjAMrjLT7WgheVk8rBuzeZarq8Lq6jOi9bN5pJl0HoxV7xRg/Vh/FGcuuGg1fVXN4L8xOUx/srNUioYLjw+ONv6H+UmqrtXDVrgrbjtkNrGzISRodAMog6t5N7DD0PHQy6M12HxMcZ9c8C2kb6LScsyey/9rqyo7VX7RMOcYIv/LDlT4Iub78achZkZfh1m67T0HA+Jp2Ke9m/
- +Z/7eypc
- 7Cxjsv2c8KMoLzeY2n7nIrprwJbYm0O8EQALi8GVogMfnHs04I09a0rlDoUq/Sp5BHymygvgNmYOje6z7R9UIuvWHnIa+CvbZWWkfuS+mul2oZQHzxmeSxah8w/TBCgv57G6bli77WpW6cbvtNDNUodSY2BJ/yyOs2HRYBTTsRywrlihF70MB1cUyjoTW2b0pRzuQXA4jPUT5K3QyyYuRn7bavXFYL95yS+1OkaHRIBzP7EVHs9yRqgn/vEqpO0JRicdmmZ5Pqe0kHuaH9p3lzX0tU2w2IHzsHjxGjJX/C4RDJn0WBbEfefgBZcxrO+U/fas0BT4JawMY6Ws3wwMpp/WbaY7DF00HeNt6Iom94cWYxTvr29BdqYaToeufwETkXCVJl97jDgDnTTWy7JE5DSwMPnQasgi8svEAeK4EnCNyAZ8=
+X-Rspamd-Queue-Id: AF40940005
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 9immd59ank1aftnzo9a9bj4dgcmbn6ao
+X-HE-Tag: 1777288467-62724
+X-HE-Meta: U2FsdGVkX19ZPeiFT+nRxXW7C6xgsBQqWBx7q60wTEpsSMoeUHyv4JN4D9mQI84CZQrrdj3Jexl1+KMccHMFeVmrwiR+o2bRD1ntD84R0VH4C0wxvIgbGK3ZJmTVymFTNFutKg1Y+2EMzNn4LBeyNNPDT6iuYDykXE9ciGB6NfhE7QyQG5MCi6e4GJFYq3i6T2EqpVlUolAiXAtsTV/TVTUq670z4gB0nzLxDKBM1t6t8Y9rfRMpe2F52PM4rV+SUagBF3rPV2mTk8tuAX6ZxWwIU5VLVmWT8cedp9T5fBHmLxg9EioJnZYnhvCb343AQTfBC2ZtcN3AyMF+GC9cSuAVkotYRJrmbBKjXUbrQEbdRu7q+OHqvfjFr3t9nSoMkLMAYTCBVuIiv2Ct0GOBtuTep81R3fe9OltIk685aVtTRqQuh44tjS2WzXVO2FLKqbsTKuHKQwPjG2CeheP+2P+jseGhxVtqbT5WlUhuNbZIYtsVsfiofeXZwDCMg9DLbu+dvUqFamz7en81FM4Vf9bnDGVhDhTcX+CUhRusUM0Dc0SiHPqIHJ0UlzYZfURcW7+3F/C4Hq+ACpFKjZn6sn+8yEriyrtSdFpZa1pT9Kpg74tOtYl3pdRUau2OJC5iZ/mjNHaFbBr0IXWs55D1i11CY0g0JEYcvAHDevQmDWSqG6U+KNtkJ0X8GOcO+6RsfONpVPsksN137jXEB58NmIRl7nfoN7ewAGit91QoR8Njze89L+xeghOSoxSUyTvP2ysA8H4mjc5sR4AInpnMjNK/y892W34w5d6sJJQ3ELafgMCXt9+KFXhxPrg9SijPipmFpCtORb9xDhPHPjjqreJKVvO4JkhuJpniFRmfrNe2pS0hn/vJXePeOQ7/s582pJbyqQYNheil6xAqy+QCbdCIxtQDmJx0MUMYJ20Jwdc7uDYAbjevEopVGgEsX+J+EisjB0bBTM0Y/J+2Xc4
+ VrbXUAyk
+ FEJXmL+q8WG7YKk94Tx+yJdyIjOjhB4vFQV7hoi0ZqkjyZawxQ8+xDJ+depmoTpKF1nP4TlpgyBFlRSNrm3iV/IB+sQmbcYQ+fURWDlL0iKXrp9a44xWhDe5cTKf9hz7NAacHFeCNdrRTEBFVNd0G+3vDR/p6uJ7USHwLyJJwvNlOByWlRXl+bd7g6dZkTDL28NSONbnaImfkiCHbHnTZLJj6IolForASpXF8ihDDf1bskQuMBA4ZQjzrNnWM3tVscnrNqP0j2dIY0ZSScla6EYukp52IxR2/pqt9uk/+J56crQU7EyAWBKBIHo+wZUVJONOYnZ9RyCvNGFqHvHd/6f5etuZ787zAh2t9J8ddW0qAm5umyFZXz35Q1uQsVxUN/dUgOy79ZcfMk5j5uGSKwyQNTvwEGwSKrcogRktu50WeJiXKb/dgLiPCc+K6FI4ByulGBFp8oUVcpfu5PXGWU+KyvuZT2y0kQveFxS96zTk5xL3fmV8vmOXfgRG7QwSo68buhnrBWm7rTtQ1B34Jn8xZrrRbJmw3tNP31i7NtZk3Gs88r1zEWUl7gTN1Y0J7kQSar763swuKXswe0ZlugTZGOcOmkdx2wIHzCqvq6BPAsHj19BLU2sHJ3nX+jt51bsdee6jzi2WNAmo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,153 +104,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot reported a possible circular locking dependency between
-&ht->mutex and fs_reclaim:
-
-  CPU0 (kswapd0)                    CPU1 (kworker)
-  --------------                    --------------
-  fs_reclaim                        ht->mutex
-    shmem_evict_inode                 rhashtable_rehash_alloc
-      simple_xattrs_free                bucket_table_alloc(GFP_KERNEL)
-        rhashtable_free_and_destroy       __kvmalloc_node
-          mutex_lock(&ht->mutex)            might_alloc -> fs_reclaim
-
-The two halves of the splat refer to two different events on
-&ht->mutex.
-
-The kswapd0 path is unambiguous: shmem_evict_inode at mm/shmem.c:1429
-calls simple_xattrs_free(), which calls rhashtable_free_and_destroy()
-on the per-inode simple_xattrs rhashtable being torn down with the
-inode.
-
-The previously-recorded ht->mutex -> fs_reclaim edge comes from
-rht_deferred_worker -> rhashtable_rehash_alloc ->
-bucket_table_alloc(GFP_KERNEL) -> __kvmalloc_node ->
-might_alloc -> fs_reclaim. That stack stops at generic library code:
-there is no subsystem-specific frame above rht_deferred_worker, so
-the splat does not identify which rhashtable's worker recorded the
-edge -- only that some rhashtable in the system did.
-
-Whether or not that recording happened on the same simple_xattrs ht
-that is now being destroyed, the predicted deadlock cannot occur:
-rhashtable_free_and_destroy() does cancel_work_sync(&ht->run_work)
-before taking ht->mutex, so the deferred worker cannot be running on
-the instance being torn down. If the recording was on a different
-rhashtable instance, the two ht->mutex acquisitions are on distinct
-mutex objects and cannot deadlock either.
-
-Lockdep flags a cycle regardless because mutex_init(&ht->mutex) lives
-on a single source line in rhashtable_init_noprof(), so every
-ht->mutex in the kernel shares one static lockdep class. Lockdep
-matches by class, not by instance, and collapses all of these into
-one node.
-
-Lift the lockdep key out of rhashtable_init_noprof() and into the
-caller. The user-visible rhashtable_init_noprof() /
-rhltable_init_noprof() identifiers become macros that declare a
-per-call-site static lock_class_key.
-
-Reported-by: syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/69e798fe.050a0220.24bfd3.0032.GAE@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- include/linux/rhashtable-types.h | 22 ++++++++++++++++++----
- lib/rhashtable.c                 | 17 ++++++++++-------
- 2 files changed, 28 insertions(+), 11 deletions(-)
-
-diff --git a/include/linux/rhashtable-types.h b/include/linux/rhashtable-types.h
-index 015c8298bebc..841021c67d3d 100644
---- a/include/linux/rhashtable-types.h
-+++ b/include/linux/rhashtable-types.h
-@@ -131,12 +131,26 @@ struct rhashtable_iter {
- 	bool end_of_table;
- };
- 
--int rhashtable_init_noprof(struct rhashtable *ht,
--		    const struct rhashtable_params *params);
-+int __rhashtable_init_noprof(struct rhashtable *ht,
-+		    const struct rhashtable_params *params,
-+		    struct lock_class_key *key);
-+#define rhashtable_init_noprof(ht, params)				\
-+({									\
-+	static struct lock_class_key __key;				\
-+									\
-+	__rhashtable_init_noprof(ht, params, &__key);			\
-+})
- #define rhashtable_init(...)	alloc_hooks(rhashtable_init_noprof(__VA_ARGS__))
- 
--int rhltable_init_noprof(struct rhltable *hlt,
--		  const struct rhashtable_params *params);
-+int __rhltable_init_noprof(struct rhltable *hlt,
-+		  const struct rhashtable_params *params,
-+		  struct lock_class_key *key);
-+#define rhltable_init_noprof(hlt, params)				\
-+({									\
-+	static struct lock_class_key __key;				\
-+									\
-+	__rhltable_init_noprof(hlt, params, &__key);			\
-+})
- #define rhltable_init(...)	alloc_hooks(rhltable_init_noprof(__VA_ARGS__))
- 
- #endif /* _LINUX_RHASHTABLE_TYPES_H */
-diff --git a/lib/rhashtable.c b/lib/rhashtable.c
-index 6074ed5f66f3..fb13749d824a 100644
---- a/lib/rhashtable.c
-+++ b/lib/rhashtable.c
-@@ -1025,8 +1025,9 @@ static u32 rhashtable_jhash2(const void *key, u32 length, u32 seed)
-  *	.obj_hashfn = my_hash_fn,
-  * };
-  */
--int rhashtable_init_noprof(struct rhashtable *ht,
--		    const struct rhashtable_params *params)
-+int __rhashtable_init_noprof(struct rhashtable *ht,
-+		    const struct rhashtable_params *params,
-+		    struct lock_class_key *key)
- {
- 	struct bucket_table *tbl;
- 	size_t size;
-@@ -1036,7 +1037,7 @@ int rhashtable_init_noprof(struct rhashtable *ht,
- 		return -EINVAL;
- 
- 	memset(ht, 0, sizeof(*ht));
--	mutex_init(&ht->mutex);
-+	mutex_init_with_key(&ht->mutex, key);
- 	spin_lock_init(&ht->lock);
- 	memcpy(&ht->p, params, sizeof(*params));
- 
-@@ -1087,7 +1088,7 @@ int rhashtable_init_noprof(struct rhashtable *ht,
- 
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(rhashtable_init_noprof);
-+EXPORT_SYMBOL_GPL(__rhashtable_init_noprof);
- 
- /**
-  * rhltable_init - initialize a new hash list table
-@@ -1098,15 +1099,17 @@ EXPORT_SYMBOL_GPL(rhashtable_init_noprof);
-  *
-  * See documentation for rhashtable_init.
-  */
--int rhltable_init_noprof(struct rhltable *hlt, const struct rhashtable_params *params)
-+int __rhltable_init_noprof(struct rhltable *hlt,
-+			   const struct rhashtable_params *params,
-+			   struct lock_class_key *key)
- {
- 	int err;
- 
--	err = rhashtable_init_noprof(&hlt->ht, params);
-+	err = __rhashtable_init_noprof(&hlt->ht, params, key);
- 	hlt->ht.rhlist = true;
- 	return err;
- }
--EXPORT_SYMBOL_GPL(rhltable_init_noprof);
-+EXPORT_SYMBOL_GPL(__rhltable_init_noprof);
- 
- static void rhashtable_free_one(struct rhashtable *ht, struct rhash_head *obj,
- 				void (*free_fn)(void *ptr, void *arg),
-
----
-base-commit: 6596a02b207886e9e00bb0161c7fd59fea53c081
-change-id: 20260427-work-rhashtable-lockdep-cb0356367073
-
+SGkgTXVjaHVuIGFuZCBEYXZpZCwKClRoYW5rcyBhIGxvdCBmb3IgdGFraW5nIHRoZSB0aW1lIHRv
+IHJldmlldyEKCj4gQXQgbGVhc3QgZm9yIG1lLCBpdCBpcyBub3QgZ29vZCBuYW1lIHRvIGRpc3Rp
+bmd1aXNoIGl0IGZyb20gZXJyb3JfaG9vay4KPiBhYm9ydF9tbWFwX3ByZXBhcmU/IEkgYW0gbm90
+IHN1cmUgaWYgaXQgaXMgYSBnb29kIHNvbHV0aW9uLCBDYyBvdGhlcgo+IE1NIG1haW50YWluZXJz
+IGFzIHdlbGwuCgpJIGNvbXBsZXRlbHkgYWdyZWUuIGBhYm9ydF9tbWFwX3ByZXBhcmVgIGlzIGlu
+ZGVlZCBtdWNoIGNsZWFyZXIgYW5kIG1vcmUgc3BlY2lmaWMgdG8gaXRzIHB1cnBvc2UuIEkgd2ls
+bCB1cGRhdGUgdGhlIG5hbWluZyBpbiB0aGUgdjIgcGF0Y2guCgo+IFBsZWFzZSB1c2UgLi9zY3Jp
+cHRzL2dldF9tYWludGFpbmVyLnBsIHRvIGdldCBmdWxsIG1haWwgbGlzdCBmb3IgQ2MvVG8gc2lu
+Y2UKPiBpdCBpcyBub3Qgb25seSByZWxhdGVkIHRvIEh1Z2VUTEIgc3Vic3lzdGVtLgoKSSBhcG9s
+b2dpemUgZm9yIHRoZSBtaXNzaW5nIENDcy4gSSBkaWQgZ2VuZXJhdGUgdGhlIGZ1bGwgbGlzdCB1
+c2luZyBgZ2V0X21haW50YWluZXIucGxgLCBidXQgdGhlIFNNVFAgc2VydmVyIG9mIFhpZGlhbiBV
+bml2ZXJzaXR5IGRyb3BzIGVtYWlscyB3aXRoIHRvbyBtYW55IGZvcmVpZ24gcmVjaXBpZW50cyBk
+dWUgdG8gc3RyaWN0IGFudGktc3BhbSBwb2xpY2llcy4gSSBoYWQgdG8gaGVhdmlseSB0cmltIHRo
+ZSBDQyBsaXN0IGp1c3QgdG8gZ2V0IHRoZSBSRkMgcGF0Y2ggZGVsaXZlcmVkLiBJIHdpbGwgdHJ5
+IHRvIHVzZSBhbiBhbHRlcm5hdGl2ZSBlbWFpbCBvciBjaHVuayB0aGUgQ0NzIHRvIGVuc3VyZSBh
+bGwgcmVsZXZhbnQgYXV0aG9ycyBhcmUgaW5jbHVkZWQgaW4gdGhlIG5leHQgdmVyc2lvbi4KCkkg
+d2lsbCBob2xkIG9mZiBvbiBzZW5kaW5nIHRoZSB2MiBwYXRjaCB1bnRpbCBMb3JlbnpvIHNoYXJl
+cyBoaXMgdGhvdWdodHMgb24gd2hldGhlciB0aGlzIGFyY2hpdGVjdHVyYWwgYXBwcm9hY2ggaXMg
+dGhlIHJpZ2h0IHdheSB0byBnby4KCkJlc3QgcmVnYXJkcywKTWluZ3l1CgoKPiAtLS0tLeWOn+Wn
+i+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiRGF2aWQgSGlsZGVuYnJhbmQgKEFybSkiIDxkYXZp
+ZEBrZXJuZWwub3JnPgo+IOWPkemAgeaXtumXtDoyMDI2LTA0LTI3IDE2OjE3OjIzICjmmJ/mnJ/k
+uIApCj4g5pS25Lu25Lq6OiAiTXVjaHVuIFNvbmciIDxtdWNodW4uc29uZ0BsaW51eC5kZXY+LCAi
+TWluZ3l1IFdhbmciIDwyNTE4MTIxNDIxN0BzdHUueGlkaWFuLmVkdS5jbj4KPiDmioTpgIE6IExp
+YW0uSG93bGV0dEBvcmFjbGUuY29tLCBha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnLCBsaW51eC1t
+bUBrdmFjay5vcmcsIGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcsIGxqc0BrZXJuZWwub3Jn
+LCB2YmFia2FAa2VybmVsLm9yZywgamFubmhAZ29vZ2xlLmNvbSwgcGZhbGNhdG9Ac3VzZS5kZSwg
+b3NhbHZhZG9yQHN1c2UuZGUKPiDkuLvpopg6IFJlOiBbUkZDIFBBVENIXSBtbS9odWdldGxiOiBm
+aXggcmVzdl9tYXAgbWVtb3J5IGxlYWsgaW4gX19tbWFwX3JlZ2lvbiBlcnJvciBwYXRoCj4gCj4g
+Cj4gPj4gCS8qCj4gPj4gCSAqIFdlIGNhbm5vdCBwZXJtaXQgdGhlIHJtYXAgZmluZGluZyB0aGlz
+IFZNQSBpbiB0aGUgdGltZQo+ID4+IAkgKiBiZXR3ZWVuIHRoZSBWTUEgYmVpbmcgaW5zZXJ0ZWQg
+aW50byB0aGUgVk1BIHRyZWUgYW5kIHRoZQo+ID4+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4
+L21tX3R5cGVzLmggYi9pbmNsdWRlL2xpbnV4L21tX3R5cGVzLmgKPiA+PiBpbmRleCBhMzA4ZTJj
+MjNiODIuLjkzMjBmNjY5OWZhOSAxMDA2NDQKPiA+PiAtLS0gYS9pbmNsdWRlL2xpbnV4L21tX3R5
+cGVzLmgKPiA+PiArKysgYi9pbmNsdWRlL2xpbnV4L21tX3R5cGVzLmgKPiA+PiBAQCAtODYxLDYg
+Kzg2MSw4IEBAIHN0cnVjdCBtbWFwX2FjdGlvbiB7Cj4gPj4gKiBpdCBpcyBub3QgdmFsaWQgdG8g
+Y2xlYXIgdGhlIGVycm9yIGhlcmUuCj4gPj4gKi8KPiA+PiAJaW50ICgqZXJyb3JfaG9vaykoaW50
+IGVycik7Cj4gPj4gKyAKPiA+PiArIAl2b2lkICgqYWJvcnRfaG9vaykoc3RydWN0IHZtX2FyZWFf
+ZGVzYyAqZGVzYyk7Cj4gPiAKPiA+IEF0IGxlYXN0IGZvciBtZSwgaXQgaXMgbm90IGdvb2QgbmFt
+ZSB0byBkaXN0aW5ndWlzaCBpdCBmcm9tIGVycm9yX2hvb2suCj4gPiBhYm9ydF9tbWFwX3ByZXBh
+cmU/IEkgYW0gbm90IHN1cmUgaWYgaXQgaXMgYSBnb29kIHNvbHV0aW9uLCBDYyBvdGhlcgo+ID4g
+TU0gbWFpbnRhaW5lcnMgYXMgd2VsbC4KPiA+Cj4gCj4gSSdtIHN1cmUgTG9yZW56byB3aWxsIHBy
+b3ZpZGUgZmVlZGJhY2sgaGVyZSA6KQo+IAo+IC0tIAo+IENoZWVycywKPiAKPiBEYXZpZAo=
 
