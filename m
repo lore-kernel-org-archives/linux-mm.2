@@ -4,116 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AD8CFF8861
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 08:45:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B9D9FF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 08:50:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A66E96B0005; Mon, 27 Apr 2026 04:45:53 -0400 (EDT)
+	id 53C956B0005; Mon, 27 Apr 2026 04:50:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A17736B0088; Mon, 27 Apr 2026 04:45:53 -0400 (EDT)
+	id 4EDC96B0088; Mon, 27 Apr 2026 04:50:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DF616B008A; Mon, 27 Apr 2026 04:45:53 -0400 (EDT)
+	id 429EB6B008A; Mon, 27 Apr 2026 04:50:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 790456B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 04:45:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 11CD61A07A2
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:45:53 +0000 (UTC)
-X-FDA: 84703702986.26.9DFB7E4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CCD361C0004
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:45:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=WJbcAplo;
-	spf=pass (imf18.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3192B6B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 04:50:05 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7149120771
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:50:04 +0000 (UTC)
+X-FDA: 84703713528.15.3D7D4F7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CBEDF12000F
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:50:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FAQ0gJlp;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777279551;
+	s=arc-20220608; t=1777279803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=enlPWmXbCXiBTtPjtrqyyDQhH4YVYS+iBt6pkMFkQHE=;
-	b=Dc4jdXh6Mr3amCIEHJr2b0ShawAw2LcUzxgtWEvEU+X8c3DaelSCzVOvdB4AXSKODtcSZg
-	5JxesX5UjGdN97uM1cTXBArcskV1k8wGOXXeIPlc22lP6eRxP/o4bgVjpMrhZ6wkY505D8
-	ZmmUMrO360iBUZ1ZM56fUAByUR5Vkus=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777279551; a=rsa-sha256;
-	cv=none;
-	b=nUF7II3tm2tHyuSPnirPWEap2lzpODTV3I46Dkz3igTj0+4EoFyD2vYWaLs0dj7QaeZx1U
-	XYpjyqGEPU5+S0jsiqC3mslyHBoS8GiIYkmG1xxp4X0na94LSdtWM3sVEDOZUgXMVjIiAw
-	XlAy4/MY/TKGTilAJH7rCBF2W6s/nfs=
+	bh=I4Tv9eBsAoGe5eEspNt+G2Qm1hMHUXuiYny5ua9hJKE=;
+	b=Ngpue4pf04kqQpn4a8jEPZeeUYC5wMDuHbFPfryA1P75yd8tgCI4dQaKI9i/LjV/nSy+WX
+	gFG9onEZRR0mMMh3d0i92KPvv46KaUJfjWR7uNGztb/LdoIDBJTwGFsLxl3QR/HPy1IE5s
+	pG4lFBSMV9sgzGaUj/qteUfJvEu5Gj4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=WJbcAplo;
-	spf=pass (imf18.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id A23A04E42B2E;
-	Mon, 27 Apr 2026 08:45:48 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6D3D9600D1;
-	Mon, 27 Apr 2026 08:45:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4E94B10722389;
-	Mon, 27 Apr 2026 10:45:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777279546; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=enlPWmXbCXiBTtPjtrqyyDQhH4YVYS+iBt6pkMFkQHE=;
-	b=WJbcAploUg0VmF8Pr+sfgdotkcsE+3i3sOgj0VN9GILZjM/dn7k2l6yEnDFaLgNnsHB2ke
-	rIiFoGiqvbcbZUtxKswbsaRljyz+xXTtAxqH/KKDTh71KwOwbOw8l/vQCMnSwhlcMo4xCC
-	xoIgVMfDds0upX6YXNRrk8BNT5gtD69tE0EPWoJGdDPyPEFVH4WSMc76pnmesP3PyyGxoi
-	WSBqZVZb+deNlGfh7SjsbGBSVzPwbj+XpuWgjdaPkUDHoOr+AiZQXiqXcxWBxKDn39Kuzf
-	8xtuEKI55YCnUaxvGQOliOLdPRRmK0uaNRPXrzMWGxybldX6FdIJZBopPxlCjQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FAQ0gJlp;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777279803; a=rsa-sha256;
+	cv=none;
+	b=rZHBpUJx9syuymMLjA4dLEZ9qFd84G2PdqW+UMT54+6VHvipCIjRiFl76MWAz2HRv4YbuF
+	wkL0Hk3JRYQphQk51yfVsVDsTXby9jvpJOt93Pq5mDvDsAGlKMIZ5/QQRZRCUain42NPAb
+	WAYEZhg+4LSfntA5RMX2S4jjew54kko=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 341D01684;
+	Mon, 27 Apr 2026 01:49:56 -0700 (PDT)
+Received: from [10.164.18.48] (unknown [10.164.18.48])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0C0D33F62B;
+	Mon, 27 Apr 2026 01:49:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777279801; bh=0GWUcMnbWktPaU4qy3M0B1w8OmTn/iOg4VU4cTHjVL0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FAQ0gJlpEEoTvwEwhsU6JZVwgxLpcaIig7al3nYlT9Ydh8NDbExHUZBUoIWUQ/SO2
+	 rC6588/nH317mQspzt6mCBrwa0C2N2StAQo7oziQ9uI3uBX9qL4v0s3A0IW7s0gmaa
+	 A2uvUy2uEQrdF0BPHmTh8KBSXwWQSwE+X7txYka4=
+Message-ID: <453d3e2f-5b29-4fd5-987f-de590d89698e@arm.com>
+Date: Mon, 27 Apr 2026 14:19:55 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry
+ accessors
+To: Oscar Salvador <osalvador@suse.de>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-s390@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260427052000.196402-1-agordeev@linux.ibm.com>
+ <ae8g4jipQxQZRe6E@localhost.localdomain>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <ae8g4jipQxQZRe6E@localhost.localdomain>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 27 Apr 2026 10:45:34 +0200
-Message-Id: <DI3T0IKVGW9X.KVYWOQJN3PCI@bootlin.com>
-Subject: Re: [PATCH RFC bpf-next 0/8] bpf: add support for KASAN checks in
- JITed programs
-Cc: <ebpf@linuxfoundation.org>, "Bastien Curutchet"
- <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>,
- <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>,
- <linux-arm-kernel@lists.infradead.org>, <kasan-dev@googlegroups.com>,
- <linux-mm@kvack.org>
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-To: "Ihor Solodrai" <ihor.solodrai@linux.dev>,
- =?utf-8?b?QWxleGlzIExvdGhvcsOpIChlQlBGIEZvdW5kYXRpb24p?=
- <alexis.lothore@bootlin.com>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
- <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "John Fastabend"
- <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, "David
- Ahern" <dsahern@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
- <hpa@zytor.com>, "Shuah Khan" <shuah@kernel.org>, "Maxime Coquelin"
- <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
- <alexandre.torgue@foss.st.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Alexander Potapenko" <glider@google.com>, "Andrey Konovalov"
- <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
- Frascino" <vincenzo.frascino@arm.com>, "Andrew Morton"
- <akpm@linux-foundation.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
- <71fb19ff-6dde-43f4-a0e9-5c8cf2ba4ed4@linux.dev>
-In-Reply-To: <71fb19ff-6dde-43f4-a0e9-5c8cf2ba4ed4@linux.dev>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CCD361C0004
-X-Stat-Signature: xmbgpa3p9mbb5xeuy1miuaikh3gcfhcj
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1777279550-278994
-X-HE-Meta: U2FsdGVkX182joeKsQUwQ2lUvu2RXLOycbaM+dq4tHA5wr7OabWCswx+lOfP4RoTOZxMgyUZA3YuoP1lLy6OpXoOXrvYxHAaRedSgzjhQb5anqzGK7pQLHjIrRp+ZJU0yyS6S7ufPAiAR0YsbNN374tK0teK6RTB/MeYVvzI7YCf8N2z0/iz6nED00qLs6taUsYSShKsMrXjfn09TH7Ie29YwJtcd1Z62Ol2DirdA9GMXQot98S4aFfrmTOqfq8zdadd1kVWyZjt0pbeYPPJoMKOWu9n0zv32qvoMrNSqQUNLNtEXr5mcGrTsKOMz7Qe28hM4EEcmYhCD4EsAEXGF0wLIVQfMPEqgq+6IER8CjObfeCfsUoT62URmoEpaarrzEV9HqZxIfOaZSU00/q7UwHOudZCzUkuIaExb86y6EUalegiOwL1eNXO3aGrodUU2fsio94yVWpl3aCHOg3TPVGvC2K82Aurz9nT9qGjkKM8EgNjBIt44KYvEwDA8n/xYmFJpbueBWmIC4+yFn6f5IgH1nIatE61yhHhk8uY72n0i3IGE3evQaHwWrWMC6wVe+yTSHW4v05ISfi3+W5QC+w974HMFSTnT5/o/DR+tRAV71uZnIzPtbK84DXpjhM5X8z0zX6/g6wKeCKspHm7W4lnVM2wt/22GSAJC5sIoyPybcReZR5NGHGcoJwyAMa+ZXyh42PF2zte6UAshoxKnlSn8bawOtb09z4cjzx1YwJ0vea6OprB9YSZ1Ya4oqMzZXjoCDbzRxef4HBP+A3YzH0Hm8tmzfl0UNxIdS+cPJK60+G1LPTElPpApisavqCAFxWAkf700l6ly/4Ndh+nZpSx2LEmjWj2bt4punXBq/+YR4x9xsEsopeGQXYo1OfTWAvsSJ7GZn2u0Ko5qJ0RkmQu4eGdtTU+I+odHUGWvdd9KOAsJJtazdVkC+doW2dI0FnRKMubbrTGEi8Dimw
- 8t1zhq0Y
- PSOyK1Qu+8M5giVVojJ7QpQJc/+edXrUwio5RcNH6C9JFrSaFKJwCZvmtIxCI11WU+/RXtz+mxzzxy2ssyovMWBBIFryPk5KRHxFvKtThBazhVqmSOCvBlB2i/PmdhnMAXrpA/GLNDOaE4zZSv9vkY1Ot9lCgENi67/kevxH0TaEgHL2eoWzc/7YfqMnYC0Q9ixLph7xi+mIa6+dO5LPO0xxFHMrTx76S8aCJi5W8ivq9/rHuufmnggMjWG/x8y2uDzzaF/gkBQHmG8tCLsyojBW0n9YXxEgWDpwalYWj7zpgTDsfzUr2JnK+Ar1G3FOWT1sd/Grwp7/hhAFI/1tMLgqoSr6dFh46hTjslH+o9azL7ocVCFfD4pF2VtqL84zAZ3ExGuQ4rw+uQoKQjF+OiSat/cgZXutlOlMgEf9Q1cakYg4yCRCO08rOtR7JlhmiTw9c
+X-Rspamd-Queue-Id: CBEDF12000F
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xgoph6r7zxbmz4kf44uu43iterp4s3wy
+X-HE-Tag: 1777279802-190379
+X-HE-Meta: U2FsdGVkX18+BUkbfkLhXq5/8dhZyboxPa3pK44NqagHZe3nAXluM2HJ6hGhkxrX3ohLC39LIZKDc67RW4m/ac8pvO9+SFACNKtc9x1LCOsiF831MJM7QD/kMD7gb4GsRa/h422uCyTuyw+kYdwkgpUYjlY8fJCzkN2Zfn0fA728+MrZ5p0JJBa9H2VO1horPX0+KgHTWgR2hyhjmt5+YN+/y2xQRzsRgfcuGB9f5lrYhEgiYTUXpeQwk53B8DIMWyVYAMgJctEHBxmDYAQnKbKLpOqRhPisx2a0t/UDvXmukeJ1wxtv3mTxIt+2U9yXZJ8hmwFn4g5q/8PFqpR97TD/8kxtxLkaxV+FrwBAfEdsnNi68/of5uScVdO+dj1n77fCr7T70E5mzHIv2FmvLbHUvKq18DR2tr1sidaZA0VwVMCXazwyZV3X7FCOPIEuXKKm2Po7yAjxe5uJiv+N4fme6PZfV7+WpFm7in3p2MoFm96Cij6zxySexspo0jIP2HEZP1xPYdpFsbngO/dpastPfdfhlYxfDSp5Xuv/dVH3KTheXeIvSXhRzAc2ENT4i9EjA1hrJVQxfdynX0Kahl3Inb4eI7Cip+3h/fe76DMhzs8094N+Pv3tm01Hv9YKOp6wj/sjpeKPx3u8iVxl8hmH/RB7FNXkeEupfH32EkZabTuFBKY5AGq2Z8S+ej09c6hacwmBn99bzYNIew0el0xnN/c19MZVfTzXZmxe/4+XhtauLQ1x0rFhSNj03SCLqBGp3TxFrVNp3Y8NAKlzvQts4Dmw5MsgYtiDbFbCQ8Jzhhh9CWg0h0Q7b0tUoztx+zvNWq4cxQ0omPjHrEejwDNEKvj8qCDcQXbLxDpoRZROTTcO86dJssNAKmV9jfVSiZCg6d4mN0dZsp1X/mcDEGuMEjh4tp+kYuYOc6M4AjyyMcuDJRL7zXvleYmcpCIdK/0SGHBX01me+926qES
+ 6Nmt6vM2
+ mdhKpSmQGjgB8/xF4klT3RKkI+eJRwiOEMNHoGw5gewY7MZS2zhTYEZ4flFjw/BmdVHZ0hSur0XjK9zcynZjHHV01TANZfZnDmR2Cy0d+Zes6dsdo5UPZvgW5wBLwBsg/WR9XcxfVYCdPg5AQV7B73d1at7Qdo625H0pu7llx44mupgVzzVsdrMcWFY3hocTpU3SkoJJkkX4XE+1HBrejOoHoK8/U0Y83CKEP2qXG8PffuKcNNd2Euvait5C8vZFKG7UjSaCju7VCoCv1ozj/iPiOPPK44CJchIrd/Q116l5zm4M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,45 +96,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ihor,
-thanks a lot for the review and help !
 
-On Sat Apr 25, 2026 at 1:10 AM CEST, Ihor Solodrai wrote:
-> On 4/13/26 11:28 AM, Alexis Lothor=C3=83=C2=A9 (eBPF Foundation) wrote:
->> Hello,
->> this series aims to bring basic support for KASAN checks to BPF JITed
->> programs. This follows the first RFC posted in [1].
 
-[...]
+On 27/04/26 2:10 PM, Oscar Salvador wrote:
+> On Mon, Apr 27, 2026 at 07:20:00AM +0200, Alexander Gordeev wrote:
+>> Convert pgtable direct entry dereferences to the corresponding
+>> pXdp_get() accessors. Use ptep_get_lockless() variant for PTE
+>> reads when no lock is taken.
+>>
+>> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+>> ---
+>>  mm/page_vma_mapped.c | 12 ++++++------
+>>  1 file changed, 6 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>> index b38a1d00c971..a4520bb10d2a 100644
+>> --- a/mm/page_vma_mapped.c
+>> +++ b/mm/page_vma_mapped.c
+> ...
+>> @@ -317,7 +317,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>  				goto restart;
+>>  			}
+>>  			pvmw->pte++;
+>> -		} while (pte_none(ptep_get(pvmw->pte)));
+>> +		} while (pte_none(ptep_get_lockless(pvmw->pte)));
+> 
+> map_pte() might take the lock if PVWN_SYNC mode, or am I missing something?
 
->> The series is marked and sent as RFC:
->> - to allow collecting feedback early and make sure that it goes into the
->>   right direction
->> - because it depends on Xu's work to pass data between the verifier and
->>   JIT compilers. This work is not merged yet, see [2]. I have been
->>   tracking the various revisions he sent on the ML and based my local
->>   branch on his work
->> - because tests brought by this series currently can't run on BPF CI:
->>   they expect kasan multishot to be enabled, otherwise the first test
->>   will make all other kasan-related tests fail.
->
-> AFAICT this can be trivially fixed on BPF CI side, we just need to set
-> kasan_multi_shot for the VMs running the tests. I will do that, your
-> next revision doesn't have to be and RFC.
-
-Sweet, much appreciated :)
-
-I've started receiving some Sashiko reviews on the series (likely thanks
-to some of your actions), I'll take a look into those and prepare a
-(non-RFC) v2.
-
-Thanks,
-
-Alexis
-
---=20
-Alexis Lothor=C3=A9, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Right - should leave ptep_get() unchanged.
 
