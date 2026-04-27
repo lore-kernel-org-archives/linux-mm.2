@@ -4,101 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 310EDFF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 18:08:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9E68FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 18:17:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 928596B00B4; Mon, 27 Apr 2026 14:08:58 -0400 (EDT)
+	id 18DE66B00B2; Mon, 27 Apr 2026 14:17:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D2896B00B5; Mon, 27 Apr 2026 14:08:58 -0400 (EDT)
+	id 165366B00B3; Mon, 27 Apr 2026 14:17:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80FA26B00B6; Mon, 27 Apr 2026 14:08:58 -0400 (EDT)
+	id 0A2C86B00B5; Mon, 27 Apr 2026 14:17:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7010D6B00B4
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:08:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 358F0A024B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:08:58 +0000 (UTC)
-X-FDA: 84705121956.04.5035C14
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F0A046B00B2
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:17:36 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9CFA2120255
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:17:36 +0000 (UTC)
+X-FDA: 84705143712.14.6167392
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6FFDB180016
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:08:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="P8hM/Sjp";
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7522310000C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:17:34 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SkHTm9+Y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777313336; a=rsa-sha256;
-	cv=none;
-	b=6QYsH4caOF3+RkFHDYlkGvmIInlbGlGhmKsXC3q/8tDDvOlhusdLrUHM3cZQVioCth5Zb8
-	Imci/GfPrllMYUvcjf6v5wMjGpdh3AturGHiINgEaHAtcjLKLUZunc4a7KsFyydYSCJNvV
-	Z2ttsdH0C65aLGjq1kGQgjm307+iMiU=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="P8hM/Sjp";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777313336;
+	s=arc-20220608; t=1777313854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JV9msU68Kqn9Kac+/qrG3VH+3nVtTVNE70p9bH49Xj0=;
-	b=nnv9VTyHRKd99Bvxj1PHicrvdnsE2pWe+USGMxWq5qT7k8CWvCjIehhM4TNvuH8tpRr41P
-	7Cc4xAJfU/iXozyVWorflvvXjVkspThpzqlCu1g4xJBZpLXPI24HtDaaDGrLpsTIlSz4WA
-	vM/V0iBwMivoT1I2rBk+NOjEwxXfbpQ=
+	bh=u4rc2QEolUfipG8l1VsxC6NAPaWQr7ALhmrqEkOLGvA=;
+	b=XWQx6nuai2gQVbi3lubiyLbJeLVpj1I1Q1QUkB1eDGAYKOV0r4KVNOzAWhBoyf1PfZ0U/+
+	Ltv8I8/UzXGFhbH5wANyzEM9mu63X7X9Kuv9uyzLDt8uviiOlOCqOItjMZ+T9GUq/MI8r6
+	K24IcC4aPOnF2/EHX3ebvhAPphyINTc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777313854; a=rsa-sha256;
+	cv=none;
+	b=H459DKhktEUOsD2V5GUAO66a6wrZLRnDx70ZP0pkfKkAshPaS9+gHjKonHKwtu3ru4mvXE
+	pFbGjJ+dXXYQ6zPJrtK5EYOQfqZ0JACVuPZmFMkKMJ9gqIoK3IGhv1eLWeBpkFgL8O4xCZ
+	NbZqqtJtM16Gduz3gJ+Aw6vzXFCxq2I=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SkHTm9+Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A1DC4472B;
-	Mon, 27 Apr 2026 18:08:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCE1C2BCB5;
-	Mon, 27 Apr 2026 18:08:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D5C044768
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:17:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89573C2BCB9
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 18:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777313329;
-	bh=kMOnCgiX7WpVxs78xhcWlnKUzjZBk7mOuOAbAYfMhT4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P8hM/SjpmKKZKJmglT7pAVfcHAU86kTR4se4kSUPHgn4/oZsyXSrw+osYDOr2t293
-	 EIX1T9Zmwf8dZMAtX6WuHQgFG5aCkfIcJhY0NChlGYniVvZ0+cqEtVROdncgq5F2Cv
-	 YhxOVohQ8Hysn9YyL5kbDU9Cwi6v5y2lKTlWwnH28nUMIP2HeFfUa5pcYHAiUCSqJ1
-	 d3/MFY7RjFycpYB41K++kqc+aCsborMtRhb+Q6eo16w9IGyy5er+46OiuDDg7rXrfM
-	 x+NsyF81dcltR1PleYs7YA+Hjw/qjvw/8ulDX+/09+j58tA9GPpKTXBJCXR+5lgQQX
-	 03eTQsbitHNTw==
-Message-ID: <7526f30a-a008-49bc-a064-07f4e4a7920b@kernel.org>
-Date: Mon, 27 Apr 2026 20:08:43 +0200
+	s=k20201202; t=1777313848;
+	bh=FsvLa0WQ+ppWSL2ZBwu07rxJb0VFpJsdirmzSrdOFVw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SkHTm9+YjDbbZVDp5ZuhGykXVSnv8mnZhzMp4lRHTlUB6GdE1cRztG6Ni7bdn41Eu
+	 f2uVqfgSLTGpvGv83QE4MIao3JMkjfXXVDTxy/6Ort+DBKR721YH12zmBOlF04AnM9
+	 UeivVBVFnr7CKqktHdfi9hHlsbHqswZHA8fRmVz1nySVEW02sNBSdCGDiRuPKETIxU
+	 Zihezih6dhde/++xQ1ichw+SBu7uXJLxCTBys3OWD88PBx+4f2Ssaq6TU7zS2wnarm
+	 n5guPMFIOaAtlLpyZdDXF5+rhmBJzIZS5MvmGifiY5x/qmPP+ISs9SC6oKAVEYgU/U
+	 v3PNcft2kMrUw==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b9358dd7f79so675744566b.1
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:17:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/W1KHmZKBhk8qN6bauoHMOLrEPv8MxaRboLMR4vKC3J9P8vpEKbHCfHqujHKgBqNbRSmhYUhyEJg==@kvack.org
+X-Gm-Message-State: AOJu0Yyv3ZjDGq0K91aVJyiIu2xZbLt8KeVx9tirdRqcnEh/zzD0tB5a
+	PxfmxBaQd4VHIE2EDzpBnqUtvaQ7rnGXbLG1DeG09ByyfcQHLKAGiEqzLhoRhvqwKjJPKb+Ei16
+	LSMq47giPZVxL7aPc76WtbQl3rEy6Z8s=
+X-Received: by 2002:a17:907:6c10:b0:bb2:71a9:37d7 with SMTP id
+ a640c23a62f3a-bb7fc6b329amr331966b.39.1777313847341; Mon, 27 Apr 2026
+ 11:17:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] mm/slab: introduce kfree_rcu_nolock()
-Content-Language: en-US
-To: "Harry Yoo (Oracle)" <harry@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, "Paul E . McKenney"
- <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Zqiang <qiang.zhang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260416091022.36823-1-harry@kernel.org>
- <20260416091022.36823-5-harry@kernel.org> <aejeVK0J_jHSfVhD@milan>
- <aelxH--hZkCahPv6@hyeyoo> <ael8R0vOeZ0Xbcoe@hyeyoo>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <ael8R0vOeZ0Xbcoe@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: f3qajgtd93rwfe87b6jggceusn1se3df
+References: <20260421121616.3298845-1-haowenchao@xiaomi.com> <CAOptpSPs-1UrEa8AHg19e590=SiV6bpnex7gCbif8=aY7BtpuA@mail.gmail.com>
+In-Reply-To: <CAOptpSPs-1UrEa8AHg19e590=SiV6bpnex7gCbif8=aY7BtpuA@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 27 Apr 2026 11:17:13 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOjugCwWqHP3zxXPmjp8TwpoROCjCqTZ_uxOBQwVqCWqA@mail.gmail.com>
+X-Gm-Features: AVHnY4LkdWo7aosvwMF_0ub38leF0QqpBslIr0st4sctLN5j8Y2EyELEuoMI2nU
+Message-ID: <CAO9r8zOjugCwWqHP3zxXPmjp8TwpoROCjCqTZ_uxOBQwVqCWqA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap
+ release path
+To: Wenchao Hao <haowenchao22@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, Minchan Kim <minchan@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Barry Song <baohua@kernel.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+	Wenchao Hao <haowenchao@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7522310000C
+X-Stat-Signature: yfdwqwka5tdc4xao8yuamkai3dnezdtp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6FFDB180016
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777313335-636836
-X-HE-Meta: U2FsdGVkX1/MI69akCYVF9NDQsCmQJJELx6S6N5pg4x46T77mbWIoUg682+suPglRvPN16mAehikO+ainwVtrcMbVvmxa8/WpQCdXsOFUw4AxwuNT67CftrR8Sn2pOSkeo0opD1rWYaU2jhVw16audFBhlyQzyjzclWHUPn1/5C/Zqjm9GulWcBadLHn5CL4YYaQzsScVNbDt9uSkV7U0uZBxSSFHYObEcJaeM0DAy11eyBZXrLwzOm/mLcP8PWEQu9KkjKQgEaxbgNYjIaCPXYHzpyIGpnaoawGa3D1FwIiWC40AW5J30NwpowNjHlyrzWPeE/3YZvdPjZeHIYfs8up9gpP1knzazJJHI8GQyCcRxWV204dNDGCce8otErsk39YZZ0893/PcQCHyL1Jn1mi6anZpOS620jEZ6SWAuQM/cD+va5CIcbE5jhkw8hkP9+HgmfhJIAFqKiPWFc/s7ixKi1EiC6r81/LX++JtRX7mde+O3G7kRDX5mkHeHRuLLTzr8Xwv/ni1W4PoGCq3DjIYtJAgeteyWdQm2PntLW3MQRUYVuRwaQqXTO/KgMmUdWQTO5BmcjbSXKhpTCwf6CJa+zWwfK10HUIVHQAh9ASKwPYjGgky8IRPG92h87vbGQR4dnWQXO/XTWRAYj9RB9CgM5P0UHZtw6ktFJqV6hvTVKafvB+fHg4AYaaS2X7+RVn7aYSCOpMJooUMYlozQYVczJcf9ARYF8Z4F9yK/HxBKnUPL4AYMaGE/LDbj7vtH/dlYoDcgLxndt9TNDD96brRnw4FrQf4VjV0S36QrSuntFO9LhXO6VwyMFUXeibemAt/m18xLyQnMnqcLPb4R9JGrV3kerP0yK4FQM/jRrzW0pba1L0ilnKxyS5O12UetCU6v5zzM46UfkKsb89gtrZnyg0gmpoxQOhaZU+Seeg/9Dyx/O7ggKC3Y5tZ5ne7roSI8aFdfIhxeuuP7e
- IiuryNIQ
- lnoslTcq7kX9g3Sv2lIb/H7NCZDCRwGmkLQUWbidyxqiTmDsoc1fMoexSdGQxtRnQfzcz6hd8O8Ta4+Q5gNqy+4F/tNimPmz+octwhxzSEaogRFA8sLO16xnEy54aTm27gGMHqF36ucijvE50sgM0jlAMDsnxAAD2CwEw2qMjzHiwMBTfnyUEqS80fLKPLFa2A81kfwwLMuJX/3AAHd99VGDv6KQMADjkBV6PtwTJeAViKO4r7YsdF09khupaVZYjQ/YO044htzzFiDZgs9xfDvzlNaVh7mDc+vk8BcVxI+nT3YxLzMxXo6Bn6g==
+X-HE-Tag: 1777313854-240239
+X-HE-Meta: U2FsdGVkX18GBsSvYe8PVEoUNNfKYiX4J7yDlP/KHD/G8n7abKLGz2p3rApFWcQxpmF+94ojmuoHCgGhw7vVixmbUTIPHv7DEcMi/4N+T+XoOre4MYFPyvnKqvs+QBL0Jd9X8lb8ArrfPPYrMGvJOE38wvl9nRmFjGlm1YwoYqMNUEmv1cngfn7HJLz9PC7C71GNg1BM3lNCJvZGbzkyb9S6f88fFgKeKg/QPTpRizDZ5zYs3prqoz6G+tCXBuAtFWJS9mnzr7aUVeq7CiFZMcKTMmTJcp4P7NyorGORTHM0eE4Tw1poyBYzdxgPXy5lElzNQgeLrprW7g8pW2cRXuR0kAu3t7SgD9dNXL9tPHkEnyKaOGqLz9gH2/pJ4vyr55b/nxIaGiTpub/av3IZ7ZkIWGC2hszUYTeOtzeyh7nSZckySzB2hP57IGSQviVgZerwPL1gXHuxJw6u1Rs9wlD3hXxymMbglC69fXmkzyeTcWf6Z2fcNqr1Q/iOmc5V8X9hriQ/3FR6S3SPDiZg1hZqTbDJXnIkAmX2Js2P0pICpi3U02rhBQVIaGc5Gat4nGTFfZ3o+EgbfHSFxfzDkTAQEkq/C8d3/wFAOAPoK8aUHeOpydmOwAoy0IX6k3vJCfXYjJCEPNvpZJXRcW1L+vimdFTFfj4vP1oFQ+J64uO+gQ7ZiMvYlnEhvwZ6JvJGS84IBIO2ml2WC0U++AXPtcgxowXuglySwk5coHjKvYbv8Tl8UagJ6U0z3LiPpPDWQpAKfZFRIaqavw+V1MluKdm1O7MNPwTNGakQNTbLLo6CDH6V5CuM/zG+i7qSFSEx1fcL/AHNq73x4JiwXKlZWl4fV2t2UU+CD5uguamR8a2kZpH9W3Z9xK8vPNhO3u6H8nXJysJ64TQ+12deKG/DuUCYyL93CNTDXmuynU1YinzF+AU2mIynkkVBId3IN4jIqfsE0lKrBj4f+HGYrvb
+ vtZGF6VT
+ hbik3dsnRh3XRzFDn2yYhess2yg/oOqF9yNSJXomKmogaHgMLK2HdBHUBgRHrfLRTWqkLwGiOK+hoqzO6P5fLvQeGGYmwCa4rNuwDyVRgUB1SjUkmMfgy4VNATOz5sx7NRp9LgkVdh4Zwk/EgOfyPcfXlmtzglVkadO7PKCfIA78/2gW3KMNpKPebzNWe//N1/lOiSPPge32zIQI7TN8kzaFiBbi3VMPWZSNKL/8hfex9Qy38BxJ28J10KA8EswPwNeMEQkY9m4X42lUopsudmeo2vZzD6JSd/eSsFSpu+DKc9ubN9sJcK9c0/yQMnWpcG1E7Tsty56gOEHMGf2GbnYB3wggVDn0Hh9HEhs6mWSPYl44XN247PMQdK5Zxf9T8fCmz3OIjLE+dBu7HeUrpZu+cvTziRc9CoJhmZyAeyVXXuuQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,35 +107,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 03:56, Harry Yoo (Oracle) wrote:
-> On Thu, Apr 23, 2026 at 10:08:49AM +0900, Harry Yoo (Oracle) wrote:
->> On Wed, Apr 22, 2026 at 04:42:28PM +0200, Uladzislau Rezki wrote:
->> > On Thu, Apr 16, 2026 at 06:10:18PM +0900, Harry Yoo (Oracle) wrote:
->> > As discussed or noted earlier, having third argument and check the
->> > entire path with "if (allow_spin)" is not optimal and is not good
->> > approach. I do not think it this would be a good fit for mainline.
->> 
->> I understand that this pattern is pretty uncommon and adds complexity.
->> But there is a reason why we're doing this. As Alexei pointed out
->> earlier, even rare spikes of irq_work hurt performance [1]; that can be
->> avoided in most cases where the lock is not in use. That's why buddy [2]
->> and slab [3] accepted this pattern despite the added complexity?
-> 
-> Perhaps we can avoid complicating existing kvfree_rcu batching
-> (and still avoid hurting performance).
-> 
-> Given that kfree_rcu_nolock() (at least BPF) doesn't need to free
-> vmalloc objects, we can make kfree_rcu_sheaf() handle most of frees
-> (slab already knows how to handle allow_spin = false) and fall back to
-> a simple irq_work as Ulad suggested.
-> 
-> But then we need to make kfree_rcu_sheaf() try harder (currently it
-> gives up when it fails to get an empty sheaf from the barn).
+On Sat, Apr 25, 2026 at 9:13=E2=80=AFPM Wenchao Hao <haowenchao22@gmail.com=
+> wrote:
+>
+> On Tue, Apr 21, 2026 at 8:16=E2=80=AFPM Wenchao Hao <haowenchao22@gmail.c=
+om> wrote:
+> >
+> > Swap freeing can be expensive when unmapping a VMA containing
+> > many swap entries. This has been reported to significantly
+> > delay memory reclamation during Android's low-memory killing,
+> > especially when multiple processes are terminated to free
+> > memory, with slot_free() accounting for more than 80% of
+> > the total cost of freeing swap entries.
+> >
+> > Two earlier attempts by Lei and Zhiguo added a new thread in the mm cor=
+e
+> > to asynchronously collect and free swap entries [1][2], but the
+> > design itself is fairly complex.
+> >
+> Hi Nhat, Kairui, Barry, Xueyuan,
+>
+> Thanks for the review. I agree with the direction and have some ideas for
+> an alternative approach.
+>
+> My approach: first eliminate pool->lock from zs_free() itself, then defer
+> free to per-cpu buffers with a lockless handoff, and finally reduce
+> class->lock overhead during drain by exploiting natural class locality.
+> Achieving both per-cpu and per-class is difficult, so the class->lock
+> optimization is a compromise =E2=80=94 but one that works well in practic=
+e.
+>
+> 1. Encode class_idx in obj to eliminate pool->lock
+>
+> OBJ_INDEX_BITS is over-provisioned on 64-bit. For example on arm64
+> (chain_size=3D8): OBJ_INDEX_BITS=3D24 but only 10 bits are actually neede=
+d
+> for obj_idx, leaving 14 spare bits.
+> We can split OBJ_INDEX into class_idx + obj_idx:
+>
+>     obj: [PFN | class_idx (OBJ_CLASS_BITS) | obj_idx (OBJ_IDX_BITS)]
+>
+> OBJ_CLASS_BITS is computed dynamically as `ilog2(ZS_SIZE_CLASSES - 1) + 1=
+`
+> (8 bits for 4K pages, 9 for 64K).
+> Since class_idx is invariant across migration (only PFN changes), zs_free=
+()
+> can extract class_idx locklessly, then acquire class->lock and re-read ob=
+j for a
+> stable PFN. No pool->lock needed.
 
-Yeah, if there's a burst of kfree_rcu_nolock() calls, it might exhaust that.
+How much of the benefit do we get with just these locking improvements
+without having to defer any of the freeing work?
 
-> And I guess the tricky part is making kfree_rcu_sheaf() work on RT ;)
-
-I hope we're close to that, as discussed on patch 5/8 :)
-
+As others have pointed out, I don't want to just defer expensive work
+without understanding why it's expensive and running into limitations
+about why it cannot be improved without deferring.
 
