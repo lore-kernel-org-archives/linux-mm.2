@@ -4,133 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34093FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:39:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48C85FF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 11:43:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 724626B008A; Mon, 27 Apr 2026 07:39:28 -0400 (EDT)
+	id 9C2FF6B0088; Mon, 27 Apr 2026 07:43:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D54B6B008C; Mon, 27 Apr 2026 07:39:28 -0400 (EDT)
+	id 974226B008A; Mon, 27 Apr 2026 07:43:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C4806B0092; Mon, 27 Apr 2026 07:39:28 -0400 (EDT)
+	id 889E26B008C; Mon, 27 Apr 2026 07:43:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 41EE76B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:39:28 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 025E41A0168
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:39:27 +0000 (UTC)
-X-FDA: 84704140416.24.98B3FE5
+	by kanga.kvack.org (Postfix) with ESMTP id 742236B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 07:43:29 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1548440184
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:43:29 +0000 (UTC)
+X-FDA: 84704150538.15.2E67816
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id F38A21C0004
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:39:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MKo0bjg1;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 628B64000D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:43:27 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FyvO8iCy;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777289966;
+	s=arc-20220608; t=1777290207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cmXNX0QNd3YjmZE3ijIpYlhhcL2JDLsFLu0nEp+pFLo=;
-	b=gOI4h9ZDcpM1ojWJBf3wWSJHMxzRZmaB7C2fiXspF+r3BDUwHZ6HUnYXcH74DziKkyqqRC
-	kxsA1nBa76aRKfv4nOkqGM3BzoVVBgZa7AP+J1opWuxnWk1zVIOPNyT16+z24QmBlBf+S/
-	nb0o5+EqssleG5bCfpMhilA6zCFahiQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OEDdWIqwVUBtvuq229g4pIRsqV0lFJ85CEltcqqEv/Q=;
+	b=4gkuERhKi3N7RlI6mSwwXm+os1oipl1qUQ/UKsRVyaJWJ14g0rStZZ1NFHeEMDXK2KtkNS
+	w3Q3oq7HJARxEGgY9thdGyU/5kbVHR2R4yn7tCBDbs7s8FSNFPuVhun54ktnbt7s67LP/z
+	DCHnR9ZYm2QFBi+lf+LhNYCyFMvkCqo=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MKo0bjg1;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FyvO8iCy;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777289966; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777290207; a=rsa-sha256;
 	cv=none;
-	b=suBftS/o/kjIDLyEwql1KLqEN0DTCmKYQ54JZGrtlRvGT+zNxNLs9mTLPddXXEm/NiVzzs
-	zo/zKah9Fw36FLQ/pi+35kmr1kzMh0gETFXSEl3v5DoolkC6gs/Mkr2ToxN5MccEJCB0Cp
-	eqDIA4JtOwhPNZU1mpSnk89UO4/2YDQ=
+	b=Dgt+eCoTZjMizlMbud7r/jUB71BEkwnNSUmkreZKKwYqiXhhqbK8x6uZJ2k/iKQiHOlpy/
+	5uHSt+L0tmbxfARR6m78WRRq0z5m+mZw2fJY3hA4tO110rKolLdJFsQPw39mIyMdq8s7Q4
+	G4iFzHSMLllHB59MeaMXFfsIVGJrZR0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1941F40DEE;
-	Mon, 27 Apr 2026 11:39:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A3BC19425;
-	Mon, 27 Apr 2026 11:39:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 503F444271;
+	Mon, 27 Apr 2026 11:43:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF83C19425;
+	Mon, 27 Apr 2026 11:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777289964;
-	bh=5p/+BJw364LpBg2TW5B7Hb/TLyJRCIFAcAv/CoEAiC4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MKo0bjg1kFuTImzP+X9JZ7jTXfrIDV8HBEDsocf4wcyVyL/T2swotqNw0+zmOOOm+
-	 fh0QUwcusXnwMZZqxSDTZohj/qSw5QKEDGp3SwlOCyagvHishSDJ+/WB1zm83l1aap
-	 iNSaUQJALajTDYeULElowTiTtaeVCrjL+eLHyklWy9REKT2hGyys1jFclYkR0Vx61v
-	 xVSCmGX7A0rZwU+yTMyHKGoNaDC/sTVxFjogaGcKMAtAzFX+mXEUpo5ykrCl+3tQQk
-	 gHYZOzmUWwOt9I52UPiCAvR04DW3gTGgl18XvXUvNe8clR469jqUe5iUlmNLrKGa6U
-	 KPWRR7q2HJWCA==
-Message-ID: <f4fd0c56-6541-4cc5-9b7e-d4fdc5eb4f5b@kernel.org>
-Date: Mon, 27 Apr 2026 13:39:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm_types: remove references to s390 gmap
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org,
- Geert Uytterhoeven <geert@linux-m68k.org>
-References: <20260427105810.23761-1-pbonzini@redhat.com>
+	s=k20201202; t=1777290206;
+	bh=uDBjCE9uwaCanxz5E5CzypxBYKKLu044ftwopYhbNFU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=FyvO8iCy6U0CdSl4voD74NGPdf54CApAviztNsWG3LeztA9BljDb2zyoewVjhaSDO
+	 dHcIp6qb4pKZlD/tOulDBgZrSVPB0/TmQWLv2XVGxJVBJRgvrmbjZO+xgCJdzdswcw
+	 7AuSXWBhSyQpTDgLGIlCjsLv6Q/2HYNI7BXaZBg2qdegmxtt/bdb0LCrk7sFZAJcTm
+	 26/jSP6STtn26qBhsDnRl6Wk057bbopoyAUgGD/fxNSl0pUISvMf7U4UjR9ejul7p2
+	 rvLtw3V7wX2vWB3fNgckE4q0JJ2QLgIAKb1e4jfD0JsSKI8K0vqCh9QMdg+BnLu7Pv
+	 bTSWlUgYXopkw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260427105810.23761-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: [PATCH 0/3] mm: remove page_mapped()
+Date: Mon, 27 Apr 2026 13:43:13 +0200
+Message-Id: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANFL72kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDEyMj3YLE9NT43MSCgtQU3UQTy0QLS6O0RBNjIyWgjoKi1LTMCrBp0bG
+ 1tQAYfElxXQAAAA==
+To: Yoshinori Sato <ysato@users.sourceforge.jp>, 
+ Rich Felker <dalias@libc.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>, 
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, linux-mm@kvack.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.13.0
+X-Stat-Signature: qhyjoagk96gkdkchr55xoytmqdu7sunt
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 628B64000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F38A21C0004
-X-Stat-Signature: srqsen8qpxjogq4ksmg3ca3gxuijisoe
-X-HE-Tag: 1777289965-697313
-X-HE-Meta: U2FsdGVkX19MQNa4sAl386NOvMqY3h/5Yf17R/kKOGHwoCV7yz1i5o3iTJfVf95hXaEhgWhsdUDWYM5cBmOhwCj68YP4kkoWEhHZC7X+MmywIK1GozfC1wmxYF+yyWw4UZf8CaLh8dA0pcuYSA7GNVso/LjTxp+3Q4khqaR3VHJ7/vvbMyWLMECYHten0pjdbuP1VeAKzvpM5UDq7qB/uBLgnLrIZUrEYa8WxgFYwydGcNoYXer9geEZCWzT6cRrN4V0qQeuSTzuceXrul5lou15t9S3krq0yTzAVcym3dZob9TYjdHtbokLJYqqNIExJCZLUBV0E+yx/ThMYoeiEo2erae7ApZEK1YnHlDr5w8TXR+/zS/DrTM9cmGgTuNXARL/t9lefN/rL7akf8YdiH9506p47a3rAEWe8rCuD0ZQxmW9wmmHNyFWiuOb+on+Qf/dPIDn7eVgNHe6gg6Mng4mD1vs8onykGOIm21e/EE/ax5DUJPTn9uUanVsEzZ9ZYu8ZQnJrP0nOIN/+IqYEQAL7V2Cy8yhtoUbyTWoexr5lrvIvliKdUU/cES6MazRV2U1oadqV/e7lMDHwAaWlg8qzGDxR+PV4A87EW9p/ZiLR7wXFo9aZI+sI2BRrlOaF0yFNMoEKkvIxdS4kUIBOoFxy9OTWwsA5QjjtJJKL2fY5z0nhdAsMZilMUwQLKhuj2HksZS422+AxuxHWkjDN03R4juFVb6yLj21yCZ1HcAZACjNY737XDNjJKaSez06kJQjWtc4T0pIez0f/oyjS6VGnYof6FEvjFVo4IJkFFqavVlCTznkX4y0a/kRwDrWEVlFnt/hKdIkDBpBNh2GZu18WD1az64WpISYeTpuvCOPVJFW/kRzW7iNILizGf+fqOT3C9e2T6WiMrO2vfPLoP+VbtOKQavYzqi6QiwTYux0+Hb4dz4Y/AKqtF8kpZjNPGQeEv4HykFdR+wGz9e
- QUOiQLIS
- Lim5wfl6hpLhmfmSvhvRTfyqwB/8rYAN+0taXynGeVK9WlF0KW4iYiSxcfP5cX2U19KpoPKe6WFGRsjvG3WLalHx5uQhjysA75OMtI9ynEeW+qHMThhlDcMrGBB/8ExLVfBF0LEJmOIs8H/Dlciym3LELKsoN50NiVbG1f73KKjXR0bFb2vGEQE7NyOpq0c97izMG89z9Tv//BWRiO+AGB9gCZ2Nr2577ODK0JJB1p85i9IRufED7T4zozh6wPTiE67r0baAAOoeJgI6+1khC1FYPHeBZ9DVWK2NNnNP/Mib0NoV+DhcXB0dahX3AGEh+0+AB1rNOukO7RNUcPeIpCtuWhxse61mjY+itKaHrfM8VRJxrtAWI0LMg3pb6QtRWogIc8+LWXrJdrKbYG2GJF/kSqSReDg3uiDJMC3Akub7FoZwHUQgixs6GXTJeyEerMDHB8O9lsSYBPJN8YkNSJtsygQ==
+X-HE-Tag: 1777290207-652942
+X-HE-Meta: U2FsdGVkX1/Tz1AJ+XTAeDRUbGuXHD9ebYeOnIYGTL51lja5YeYdvbBypGU5BuazpPqQpIMhOJP9+v8snSBvQVBpGk7LWx0qtxm88ddY4XGeDSkFQxaaAHM3bNDzsC3cgxEqWCGqfXTfMg3cGOYc/x3MZSW7lJ8Z9FIruow82CqxzqiyPZmsji3Tt89pgqd+Zaaga353ufojuPKwc8ONxn5+D2b8+4LDklgvVRMoe4ymev+nitLuO4bfprBvx4cWCylpsqFdKcsFmadF5FEjWvHQe4dQ5zsianuNHfva8U1GV08B2HsYFuKKDNoirhElTj7PCn9Z4qVRzYPGTgMHC+g24+EKNVY3XcSv92mfgQY4A2d38PkYouhNeJAcLEAOILjxJgyGcmY0r3sf8r2X10JIv0mb4xVPSvW4Su8CMYUixVmsBZLPQQ3+/WwPWHXwTPY5DHs2LdzUW5d902a6FnnCT2s5GR9499nXDszPcmqqIpHTKynX5DpqHLIsKtTxFyKTatSOzVJ0i+7bpsVUqjyuNrS+hlV7S4vfFZYrNIy9cpEcKYj1A8g0H80YejHKvEjFLgnKdbtdX9Q9L2UPIo8DjfHXBuF+lw0Q4HPJqTDQZthZ9xMeu0mZ4/oCJN5OaGdMKcR1IkGXxChrGIvCbSxQECcSL1veVLKgvkPKM6HB0l0W/Af0GKve8NFLiG3ItHRp28SCvSWlbYjjVXwDD0H77Ha26XydDnjGgulfHVMPwYpgExEK+7y91kDTXum05lSyyFlpraqo2BCxOGypWQu9Dj5a7qxGSnPGZMwJM3k8FOJeKYh17D7ghiN0YKy9PUr37/gMBUMKtvmqiHhJ0zcZd6VRVsoRl2oCgwZW9Q5/gAWQxZ/BTwNJrJn3wYAG+hc0z+9dwbVQecsytK7olklKoGHibRluWgXTczzvEIgB4VGgP2JiHbvg18R2QJc6vAbPrb3IQkPQFdnGV5J
+ mRJs4/tn
+ V50aDNjmSY32SAK7f1Hf+cXj1B1YINGW199hqzm5Qw1zaJmDOc/voXuCt4OeJoK3LRTlZnat0E0pFgEfWOjXBuA6zZ61tjwfCyyF6d1mcPRXFDn9zWn1Lj6Nu9HZIPBKh9bxBIBMVHebBGlBSyBQCkG4BMTqmi3/cP01vPjEEozcO85Y59Wl3lVJn1mSwY7HmKvNrNZZifb93ffANAHqzh7kPuIjWlxkUiIaz7HHjJVTu7DQnmEGlZ2Mj+QJdTeFVH2Y7J2MsSzSFOji+Mg+gaJodzAw/dHGnVoZY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,22 +107,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/27/26 12:58, Paolo Bonzini wrote:
-> s390 does not anymore use special struct page for its shadow page tables.
-> The honor of giving a special meaning to pt_index is now m68k's, so
-> rename the fields and adjust them for the desired type.
-> 
-> Cc: linux-mm@kvack.org
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: David Hildenbrand (Arm) <david@kernel.org>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
+While preparing my slides for an LSF/MM talk, I realized that I did not
+yet remove page_mapped().
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+So let's do that. In the BPF arena code it's unclear which memdesc we
+would want to allocate in the future: certainly something with a
+refcount, but likely none with a mapcount. So let's just rely on
+the page refcount instead to decide whether we want to try zapping the
+page from user page tables.
 
--- 
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+David Hildenbrand (Arm) (3):
+      sh: use folio_mapped() instead of page_mapped() in sh4_flush_cache_page()
+      bpf: arena: use page_ref_count() instead of page_mapped() in arena_free_pages()
+      mm: remove page_mapped()
+
+ arch/sh/mm/cache-sh4.c |  2 +-
+ include/linux/mm.h     | 10 ----------
+ kernel/bpf/arena.c     |  2 +-
+ mm/memory.c            |  2 +-
+ mm/rmap.c              |  8 ++++----
+ 5 files changed, 7 insertions(+), 17 deletions(-)
+
+---
+
+base-commit: a2ddbfd1af0f54ea84bf17f0400088815d012e8d
+
+change-id: 20260422-page_mapped-a49a892fa432
+
+--
+
 Cheers,
 
 David
+
 
