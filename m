@@ -4,104 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57950FF8850
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 03:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20399FF8850
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 03:10:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79DEE6B0005; Sun, 26 Apr 2026 23:02:02 -0400 (EDT)
+	id 6233A6B0005; Sun, 26 Apr 2026 23:10:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 774766B0088; Sun, 26 Apr 2026 23:02:02 -0400 (EDT)
+	id 5D3386B0088; Sun, 26 Apr 2026 23:10:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B1606B008A; Sun, 26 Apr 2026 23:02:02 -0400 (EDT)
+	id 4C2446B008A; Sun, 26 Apr 2026 23:10:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 540346B0005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 23:02:02 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BBC6B1406E9
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:02:01 +0000 (UTC)
-X-FDA: 84702836442.29.FFE9B4D
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1027EC0003
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:01:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GhecvdTH;
-	spf=pass (imf28.hostedemail.com: domain of 3ptHuaQYKCFs8F3RE79HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--fmayle.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3ptHuaQYKCFs8F3RE79HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--fmayle.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777258920;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3418A6B0005
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 23:10:43 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B5AC21406D5
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:10:42 +0000 (UTC)
+X-FDA: 84702858324.17.077A72A
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C7982140003
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:10:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bQk+Cqcr;
+	spf=pass (imf23.hostedemail.com: domain of haowenchao22@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777259440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=5ioCKyTrZjs5zhjXH3CtGoC09/oSwp/qrBcKYJ54Avc=;
-	b=UmfubPB64j9aVE3Ya2t/viuDZQiMBfC+jXiaWScSj/MuKJugKKML4Yj0JlNj4s1QEOPMLe
-	4NJYyTD8c48vYXAE/8c3RGf4CHiuPtZo0wmi5EHUZTInXMPFjE3mWGhnKmwH5LBIpq/C5D
-	aMHMaWlNvR9RiKMI0Nx2B/QUE48Kuvw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GhecvdTH;
-	spf=pass (imf28.hostedemail.com: domain of 3ptHuaQYKCFs8F3RE79HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--fmayle.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3ptHuaQYKCFs8F3RE79HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--fmayle.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777258920; a=rsa-sha256;
-	cv=none;
-	b=whdQGDbeyTvLJp0v1Ql+pqKHBUVxMxq9V1+uSTagP0NT3tQg3jMs6/abbkidhbs05oEKSN
-	ijQoCCpMOgXqQOqEVDjoczjkDUfQSvkE9NO0b1Fh9kLsXmRL6FYn/loLyvGY0dvEewwD3z
-	hKB+VwosNnVMIlbxM3PUVTW+XD8UNZc=
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-12dc3d81736so1528941c88.1
-        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:01:59 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KM+OtwEwd97Lcv7g7hL+Q7aqQp8IkPF4SNqpVzFRcpI=;
+	b=zC9pLRyNVhaHfi8aMyOKoXLsqlLs7mS5pZWySgiCZm9jIJg8Nsa32bo1MlkyM1/askCwqx
+	5D+DiABUfQAFCy+koECg2W6JT+JSvpp7mQrtfK9U0yQ2IEP1SZdthlyi+UNgYQumqZonXn
+	MJw8ydEPw7IFGQePLjw+KIKn0Fj5IgU=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bQk+Cqcr;
+	spf=pass (imf23.hostedemail.com: domain of haowenchao22@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777259440; a=rsa-sha256;
+	cv=pass;
+	b=ypHzVjVznt5W5JW+PWbCjwu4f+IDIwuYYfeQYEnPo0CsIK+/LvBOvkoIQwVCAyAAZWwVCk
+	oZ+e2MvM5E3531DQmtAyG8a2TrTKW8wMuhfcz1v/+KoIrpXUFGaNzQ0oO5/9xHpsYZoRg6
+	THpby0yLr7l6Z3C8s4BevjT2zaPSGxs=
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-651b4d09141so12796646d50.1
+        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:10:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777259440; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DCCmFid7rU8B9IhR272Thp4gaiiDTXDmlm1sY5RZsIWKso0yCjOVRVis00818MnWiu
+         9ptip9Fur/MWOezSOGytykemWs5XGjmW3HBYHsgIlIlN4v8rjyULRmB3N7iH5+M6Wmub
+         WkiTHJH82TapTT76ESr3/DWkQcu/TKBDHTKyvTXfsTr5pXD8TKyp1i3aWff+r8S3CFp5
+         KeDXGtC1j1OIh7T9ZQ3DoUMRXpc6HlqrUnEOLVAWbQc5ep2iMwnd0Dehs8TlAhxwmy58
+         u8aR+eP6yrYGVFX7mjcsIQze6nWDvku+MRqVyvypRSjZAKR3qYAmTQM2VuwLhn+Lf87T
+         3yBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KM+OtwEwd97Lcv7g7hL+Q7aqQp8IkPF4SNqpVzFRcpI=;
+        fh=dn/gYQJkggnvx2r7qK1TdfPIJStT2w3ROPUbDEc91Jw=;
+        b=Tce6ZFpuMw9hna0A0yWMFLjESDE1geepix1F5EZxLLFH3ie8lLrZNSnYMbTQXPltYw
+         Qvu+zoHC8FHt2G9r3S2XuNbBv2/qPNkcCczU65/txCk779oX7xUt2UeosU3bGIciO6qX
+         6XLS9tdeTMyyZ94f3p/4b0YID7tSC3BL/0OcBR1o+YeMywbrb9SPtrnCcGxKF9hRiP3X
+         lD6qy4POcwF66bOfCSsNcSvUXf7Kq5hTVBp8oY1mSYmOt+9F5Me5f2bjsjnK5OGbqj1l
+         EmPhE8Ct1WZegvFs1akfTc02V6KvY+rYkAHjKN2tJRAdNzJwIvqtDzE5ZaqmfYj6dzGj
+         gtyA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777258919; x=1777863719; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5ioCKyTrZjs5zhjXH3CtGoC09/oSwp/qrBcKYJ54Avc=;
-        b=GhecvdTHMMKcEsNx8k616fObVTVekUMX8nJY1MpnPc+ruR45VqJOQCPd0jC/GNIWPU
-         Kuag6FYlAyOdGuljQwuGyr0WMdImFh8fDu0pI5Zx369+RGPaJdSVWxBH2ZtLgL8Un/Gf
-         wM8e+8kdVSFWTtaYduLxO+fyTWvj8mGc53XUYJTu3lEMpNPmR+26WS71a83c1IYtrAvC
-         MTiIomgMFUu446qXWKwQIl3tZ7IEjc+eEuLkDB4+IYW32SEIvyukP4PVM+nUG6tnkp3I
-         OiYDMk8yqI7d3DiI8/Xktxhc+tfXjEoYfPcdvL180pC7/gqNGfT/+5gQhvm/KxTk4Tpt
-         9kfQ==
+        d=gmail.com; s=20251104; t=1777259440; x=1777864240; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KM+OtwEwd97Lcv7g7hL+Q7aqQp8IkPF4SNqpVzFRcpI=;
+        b=bQk+CqcrvQNGH5JzGgh+YkbViI7SbU0aqhuWU5xRhPkAytzhfqBwyuQ6t0OigXkbJr
+         JCqxBc3hwSI14M3MOe+EUbwQOD6UB71oL2YVUT8tuJ59HIEQqcsq2kjKpNoT6NNl1AiF
+         bnjrhGvCbsVtXQ1I6Pio7cmLPDZxX/jFwBvLv/pXIryIXqVM8l0KuPySofKmBleNgMay
+         5lOhD2O04iUmMlvF2Mr922gFhjOjJsmOOsrgDLXiWxKpgW1N3Qe7EeWo4E76rtXIXW2O
+         dyoXDJr8qbh6cbTuvMscjZRwHli/OsYfXJS37bFqyrPVRgs3eBLgbY4qmY90xB2ygp0F
+         M8hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777258919; x=1777863719;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5ioCKyTrZjs5zhjXH3CtGoC09/oSwp/qrBcKYJ54Avc=;
-        b=VKU7lTfkB/lw6pvzeGEuI+Qr95EswO5gCKWsh+PIkL6j0EJwt5g3B+OkGhNXOAia0o
-         CM9G0++Cw/09cIwbYIsaLNYkz1ZnETtpPlRD0lq07DZATK33C9Xh+ntNb1s5tBg3JWRr
-         1NqWyEbO5naolb6G4/i91jWNwcQu1j+DGFm3zmEKoNnMSNz5LY1PEY6CVLbbFeAIEdN8
-         tIXtYSIJgvJl6Mrwi3wJNH8pcZysdSwPyqVbxdC3D4CcqJFwKJ03aPWI24BvbNG+dTC4
-         ohl2ADIIm2QdUqSIxbdD/yXG1rusWVmPaEmUnpH+kcOdwCXWpTMPVJmpH+bhueMaeYaR
-         iMdw==
-X-Forwarded-Encrypted: i=1; AFNElJ/ke2kSxVpw8AQ15feFls33LbFefC/HJmC8nnWzrXXGcIu3KGZqurBjkz/QYatjCmpPOt2TJ2QkyA==@kvack.org
-X-Gm-Message-State: AOJu0YxxlL9rZhrpRPHCC/72jXDZK8SU/iB55H1RGc5WJbB9rjfWeLrh
-	W3uKxBm0MaYVEK20NxffemHz1ZSSfzDjHbMTO+Sdke+Gh/QYzBVVa8rcNkg2JHwd4w+fe3Xynvi
-	Spdya5w==
-X-Received: from dlbqq3.prod.google.com ([2002:a05:7022:ed03:b0:12c:8db5:2517])
- (user=fmayle job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:12b:b0:128:cf75:42a3
- with SMTP id a92af1059eb24-12c73f99753mr21738722c88.21.1777258918488; Sun, 26
- Apr 2026 20:01:58 -0700 (PDT)
-Date: Sun, 26 Apr 2026 20:01:47 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260427030148.653228-1-fmayle@google.com>
-Subject: [PATCH v2] mm: limit filemap_fault readahead to VMA boundaries
-From: Frederick Mayle <fmayle@google.com>
-To: David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Pedro Falcato <pfalcato@suse.de>
-Cc: Frederick Mayle <fmayle@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, android-mm@google.com, kernel-team@android.com, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+        d=1e100.net; s=20251104; t=1777259440; x=1777864240;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KM+OtwEwd97Lcv7g7hL+Q7aqQp8IkPF4SNqpVzFRcpI=;
+        b=fuAnxgDzhRWbPTHtDz8S/yZP+RkUMoXXqYBMWOGh/vMqm4LhAaWPIa2zs8o8A9QA62
+         SmMEkdI1F9CR3fj00u8l/UtsOcHi+sYUFwbmx4B8btDmcepS8UNga4BOkVK8Xo9KlPrq
+         eZbTd3CjpMyE4terW4+fpmuNdkBs35RKwTuRbKX4YKBOZgIL25uKgQsmohAoTzI/lZKa
+         KCspSpcWcexWa3ezryW9vFQ+WpMz3zY0lGbEKtQHzNbwLTtTe+XIj2alF46mj8874mUd
+         XQmVgk5ciZnwbuVUXmkPLS2LkK2XPuovZzmjfInhqt7x+Fi3HZqnEsYouBzzIG2KX7hI
+         4Pjw==
+X-Forwarded-Encrypted: i=1; AFNElJ/THs7KucZ4viLbFqBh/DrLCBQYWgqNiBj/19/hCzVhBI3zz2hUfH8JnjJm/mHB+yawTtFN4Vcm9w==@kvack.org
+X-Gm-Message-State: AOJu0Yy6xlSX5hphQognHCjj3Kb83R0Hrru7nSEnZWh6amt/u3Wf8yq4
+	ceIX7P6wIyj+P9QxBM/voJ3FNWDDto0vcbxfo0FDHR7QDMhE37wOhYfPNa20ZcyRsN9m9INWt/b
+	tK0W5YKKmHABUhv9BQUKr5dn41OpfKbk=
+X-Gm-Gg: AeBDieuCEZy+M/Uo3fLQ4TcGSoNxgRv4qE2EJJ4SuLd0/X9v+wG/Aqhdj6oQ+6lq5vJ
+	CxJxp2VErTxyfiatVs48iOrnEXi7O5nxDk210JVo8oIqkvW9uOh6XAVLD3nqBuXMRDWceib0YSV
+	pP6FzKY/aWxQE1swqqIJbxlrmnkwsEwSoqyTm2Op9s9OKZBb2+SNnub7z51yTqdATW3btNNxp6f
+	NgM8qk+G3GYHVxGNWRHuwBiTS5iRa7m2hm61dTkRh3G9mcDuRO/WhE0wiZsj/WTO1asGSjf+5gR
+	45sxvl4xDX4lYNVDmXg=
+X-Received: by 2002:a05:690e:b81:b0:651:c221:9649 with SMTP id
+ 956f58d0204a3-65311aa1c92mr26554121d50.19.1777259439835; Sun, 26 Apr 2026
+ 20:10:39 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAOptpSPs-1UrEa8AHg19e590=SiV6bpnex7gCbif8=aY7BtpuA@mail.gmail.com>
+ <20260426085017.166935-1-xueyuan.chen21@gmail.com>
+In-Reply-To: <20260426085017.166935-1-xueyuan.chen21@gmail.com>
+From: Wenchao Hao <haowenchao22@gmail.com>
+Date: Mon, 27 Apr 2026 11:10:28 +0800
+X-Gm-Features: AQROBzB9YuhfVPY5XmYPGQmtYvK6q1PqYnlzHDncpFTPb3tZG54wX9J7FqwHpiI
+Message-ID: <CAOptpSNgA74W4SL-AEJNk4UVrabvaP58cs25qwYa+N-6C9OVEg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap
+ release path
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, axboe@kernel.dk, 
+	hannes@cmpxchg.org, minchan@kernel.org, nphamcs@gmail.com, 
+	senozhatsky@chromium.org, yosry@kernel.org, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, baohua@kernel.org, 
+	haowenchao@xiaomi.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1027EC0003
-X-Stat-Signature: z7r9eeh9841six1qdznz1z5jhbac1d7y
-X-HE-Tag: 1777258919-659876
-X-HE-Meta: U2FsdGVkX19YtBOnxLvXgmlA8Lzxqnc9ny2de0lkn0hB9ofCj/WI26TvYH0jYprW1tTBvPcvaEmUdNltntSTbx+TjU9Bm5F40BM1I+CW+UmwTRW4UCobXnB/E3PaVunw6Ou4oM1Nqt2qr/RwhNgIAIRt7k5sWAFp40c0dSlspnGyHKqV7xtA0YEGOOhLpTuvDzTuoFJc2dR460tH7MA9e2DzUyFGE6h7EYPqA1LYJ6vhnZSXY52487UhxrSxDc/PwI9EiuDzmnz+xR/ZU1gyQOTOWaq87DOT26Dwtb6JHX0EP+hvCcn6yACTG0w/YJ8xP26dpe8KA/Gfuiq8dFSrNC097qyybDB93vcwv9QoVF9/zPesu5jDUAKsZNOZCOJGEhcrih4aAXi/68WZof7ARsuZscRgK9O1Pg8p7SMJLIKOWuBNzF+rkPVVWQcfCQGQnl5zXBHET15LBxjR0f3IwCS17hPsMe1GLrCIGzkEa/GET7Jzma6JLLol5lC8YutrYII/fqwZTC9TYgBx+Uw5tV7wz5ByC4WIs1Leyyp63cRqYBjuAv8RKhlmP0iCtcNZGQ2LhpnTX+gkgsCs+mFpFQCDJexctCCpRw2GZOC7X+FBSVxKheu8+pXsD8oMYozEXkr/+ib69qrtHqmg7F9k0MCHcwGAer8Y6M/yg38AcNILLRjYxO0GSrVNy3oyOLSitNGR1y2J3KRMbtmENagwTSTgTvS+PB9aWZsbUyuLQpdL7E1yjFHJt9L8Y+wfvVmta79mvGBNkTisRiMnFC3kffMeftxVG8XJVemgR9Ht8NTOqlLQVRAF38DVM7Xa9/KpC6OlDB3FDD4jmrOBZ6vtbUaNvGwmMLtHVqjE9IDtXLhpBttlepBJ4Y1RDEuQxYR1SRMXs4vqlpcHRPSu7C9cBZtoqhwDpQSxjTb7EvwJ/MNakdskgAxZ27O4eJvTSET4SCA/n46H7qEDssx5iwp
- Gl11XZDL
- jdo5mKAK0jY6ns+T5Z6wwyxigM3A3ESD3yTDWKJrZ2K85i01SY3KK0pRHF70vJZzaNNTlD34qZPCGFmqd/l1WQCmrmOTGuGjjuOmQt80RN2X8k+d1fiPfoxS1jMShqWAXpHX3NWw9Tn0uQtG7hT7cq368LeVuMQw7A3/ejA7AE+aVt10Bu6owR9DbbtKkr9tBzr5Yr8+mk2vgJKezldBdQSwxy0wK7Xq4dwQjKo8q1RSCoKDYq7mjSMg+Vh4JOuzPe+JufQJZyhDI/iX6fUsHHJuQFIg14uFj5oJDiH/84t4RakBHeUUhOeDRQTKw1S3Pn8n3uiJ3zPI02AYGNUeAz+F2oqxJ5R0Zz0yHwauOvogFgRqHGTbx/b4ajq2g8zuh8RyeL2nW69ies8p+EqZPOvOldsdQxW/dX52XOTGfrlCOzd2CZZvIrmn0BHsJB3Rrpl6TjmmOB8cYCxSblMifTzMqZZ/ATmKjuh5O7eu4GpZxdBH/OnvVSZFlSYISmHFju+/NNSygyA7dAMls+FjyTDrknVotthGuotiXQ7nTQJDjayzjfrqIsYXPu/M7LtdhdKPyWZoJoYNWz33GWYX9g6ZdWQ8acOvnBLLsPEH9S7yO+PeF2fEFaXnaADXH/WZfxZG1u+TgXMGJh1pltqr51Exe01ewyETAxzAT7Lvx2ZRm1X6fynj/rrioqHI+rZD5niaEtKusrqlprMDnb+veVcx5XZW6jRR6c6Q4hZfy4JhiYxTTa/oRqyWdRjQUGNrKlNV7uzJ9Ts8iYTLKjpSQh1uYY08cKABvygcALxhXcn+YMmLTL/ltGwLOZuGqDnAEzFjxIM9pBMFPx6eNXfkUfYClqg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C7982140003
+X-Stat-Signature: djnxqfhzr48xm5sdp9f7afrc7tx4az65
+X-HE-Tag: 1777259440-833788
+X-HE-Meta: U2FsdGVkX1/01XRnB3WZH7nqtSwCxC8qOKSRgpeLvX4BsQ0ai2/Cn8WfGDxoPSoN/rZsyQq3liC6KBkc4t5xIK7mWAAreDr/rsOw6MjUf8atYNjPQdhgRXqcXFafnQebBwe/HeDxYMoUE/y8A8o1fwlvlulNMBwmZFcZ+MtL/TN9ickrEKt/mKu7D1ajaiCzxc3Ni+LTaprTTn49gUQOiVADvxiBrs/Wj0wy0DZVjoDScVnsRL2k0YEy/6eeokXjAv01tJ5UOQSfmnZ8H/Y4VCGXZrpP0K1B3rhqHwcp/+YzHyO+PBT3Mxna5jJ/yeSiZ7nutt9sqCU9I71EGM7ShWmRpdmo/TADEct7Z0B6lUR60/PuDpkXdJnYsg2qZ8AjbEFA1pLNcKw40EQxnr+7oNMrs3OauVjJLvjY5kujSZ3z3ntjo4e/6pX/YQkLxoA2Tq1pdhe9hJP+9oS2haskmEr+inIkCI5hSVQo/aaD7fhJhFA2OC5fFGNKGDZzr7C9NiSlYip4qiPKuLomxViUnEV+scQWTAFq1cwz0NY5WV7YC5BKwxn2smIilUFsT05aIglwR3dEA46nYvWB1DIfn3Dmmwj2wpeo2eRyBsPFFlORsDtbd9ahgXY7poHwlLZlnFWHdBg6W+vMq6NtfZyG1WTcaJ84l59COpg0ZZLz2C0qPgObLDc3RqVSkGXRfHXwVg9kKgMN3hjhq0xwu7Gm8g30WyNnkzQXI8207C5zjv45/RJKOQLgejHzI1NJzpLO4hj09hdfSw+dJ4rSLJ2Urx5ZJmeWxxUYdLmH+g5yPPJ4bHBcwWXYPvTCpsQh28Lvd42sxihS8+wTNvtVN5wefVrCZHgB+URg1KEqgCEsSV/JhPp0jpF/zKVyyLeLk8wNI9ZgmpVR5GDakESOkk6+NNMlgghpAQArWjENUniuvKm3pRRNiSPPMcJKjOBgXIQRGZRQNBiWORfgIgvZI+n
+ b2Bo1f7M
+ TcQ1lDzDeZV7rcJqbeGdk2/4T8853tRi4qlGKxrc4QoJ+z5n0/AoIdjD3XS1dELqRdukaTaSpSpBu0C8yj3wcNxB+UyB5Sxp/EU+ySH9xPm9JmmnP3Cvr6kluBTd9hqlCOZ8NwuTxC+Zwe17bk9CbvLeW+4xSSZVoymB6xbcEuxxWRZXlEQN1tzmxaCgB10/HOGLv2wfFWofaGAuNvxmj1ZrpbDDbHyvU3A4ktgC7Ue/DAT7534aP2fkTeTVL7KrNEWpEp4Hj4uK7S06m5OXTroWUycg95bS+A9NnLJEZAiJi2GBavOguA8e5Jz3db80NqmLm3wEgvT3Q7h0qx0GxVG6BvHvpI4rpPWda2WN12kLKh/i6oSp9kTCHd/dXe2r7pibMPgqZedJ7gRJOBX4PmjBr8b/kGSSQiQMtcy6StFhvB5YqUQi7Wku9io8rWQ7EbfvBDRk8eZUZRq+Zm69I1BnWBHqWel1nwNw6A4Ui0lEq+X4GILyPR9b6Iizac1plbCzDd5aPUviW8ppca7gXosnNOoHJG0MmKhgH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,207 +143,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a file mapping covers a strict subset of a file, an access to the
-mapping can trigger readahead of file pages outside the mapped region.
-Readahead is meant to prefetch pages likely to be accessed soon, but
-these pages aren't accessible via the same means, so it fair to say we
-don't have a good indicator they'll be accessed soon. Take an ELF file
-for example: An access to the end of a program's read-only segment isn't
-a sign that nearby file contents will be accessed next (they are likely
-to be mapped discontiguously, or not at all). The pressure from loading
-these pages into the cache can evict more useful pages.
+On Sun, Apr 26, 2026 at 4:50=E2=80=AFPM Xueyuan Chen <xueyuan.chen21@gmail.=
+com> wrote:
+>
+>
+> On Sun, Apr 26, 2026 at 12:13:02PM +0800, Wenchao Hao wrote:
+>
+> [...]
+>
+> >2. Per-cpu deferred free with lockless buffer swap
+> >
+> >Defer zs_free() to per-cpu dynamically-allocated buffers (~2048 entries)=
+.
+> >Enqueue: one array write + WRITE_ONCE under preempt_disable =E2=80=94 no=
+ lock,
+> >no atomic. When buffers full, schedule a drain worker; overflow falls ba=
+ck
+> >to sync zs_free().
+> >
+> >Drain: allocate a fresh buffer, swap it in, reset count. Since
+> >the producer stops writing at count=3D=3DSIZE, the handoff is
+> >race-free without any lock.
+> >
+> >Pseudo-code:
+> >
+> >    /* enqueue - hot path */
+> >    def =3D get_cpu_ptr(pool->deferred);
+> >    if (def->count < SIZE) {
+> >        def->handles[def->count] =3D handle;
+> >        WRITE_ONCE(def->count, def->count + 1);
+> >        if (def->count =3D=3D SIZE)
+> >            schedule_work(&pool->drain_work);
+> >    } else {
+> >        zs_free(pool, handle);  /* fallback */
+> >    }
+> >    put_cpu_ptr(pool->deferred);
+> >
+> >    /* drain - worker */
+> >    for_each_possible_cpu(cpu) {
+> >        def =3D per_cpu_ptr(pool->deferred, cpu);
+> >        if (def->count < SIZE)
+> >            continue;
+> >        new_buf =3D kvmalloc_array(SIZE, sizeof(long));
+> >        old_buf =3D def->handles;
+> >        old_count =3D def->count;
+> >        def->handles =3D new_buf;
+> >        WRITE_ONCE(def->count, 0);
+> >        /* now drain old_buf[0..old_count-1] */
+> >        ...
+> >        kvfree(old_buf);
+> >    }
+> >
+>
+> Hi Wenchao,
+>
+> I suspect there is a memory ordering issue here:
+>
+> def->handles =3D new_buf;
+> WRITE_ONCE(def->count, 0);
+>
+> Since there are no explicit memory barriers, we cannot guarantee the
+> order of these stores. If def->count is cleared to 0 first, an enqueue
+> might end up operating on the old_buf.
+>
+> This race condition is more likely to be triggered when the size is
+> smaller. Perhaps we should consider using smp_store_release() to enforce
+> the ordering?
+>
 
-To improve the behavior, make three changes:
+Hi Xueyuan,
 
-* Introduce a new readahead_control field, max_index, as a hard limit on
-  the readahead. The existing file_ra_state->size can't be used as a
-  limit, it is more of a hint and can be increased by various
-  heuristics.
-* Set readahead_control->max_index to the end of the VMA in all of the
-  readahead paths that can be triggered from a fault on a file mapping
-  (both "sync" and "async" readahead).
-* Limit the read-around range start to the VMA's start.
+Good catch! You are right =E2=80=94 there is a memory ordering issue betwee=
+n
+the handles pointer swap and the count reset.
 
-Note that these changes only affect readahead triggered in the context
-of a fault, they do not affect readahead triggered by read syscalls. If
-a user mixes the two types of accesses, the behavior is expected to be
-the following: if a fault causes readahead and places a PG_readahead
-marker and then a read(2) syscall hits the PG_readahead marker, the
-resulting async readahead *will not* be limited to the VMA end.
-Conversely, if a read(2) syscall places a PG_readahead marker and then a
-fault hits the marker, the async readahead *will* be limited to the VMA
-end.
+I'll fix this in the next version by using smp_store_release() /
+smp_load_acquire() pairs:
 
-There is an edge case that the above motivation glosses over: A single
-file mapping might be backed by multiple VMAs. For example, a whole file
-could be mapped RW, then part of the mapping made RO using mprotect.
-This patch would hurt performance of a sequential faulted read of such a
-mapping, the degree depending on how fragmented the VMAs are. A usage
-pattern like that is likely rare and already suffering from sub-optimal
-performance because, e.g., the fragmented VMAs limit the fault-around,
-so each VMA boundary in a sequential faulted read would cause a minor
-fault. Still, this patch would make it worse. See a previous discussion
-of this topic at [1].
+    /* drain - worker */
+    def->handles =3D new_buf;
+    smp_store_release(&def->count, 0);
 
-Tested by mapping and reading a small subset of a large file, then using
-the cachestat syscall to verify the number of cached pages didn't exceed
-the mapping size.
+    /* enqueue - producer */
+    count =3D smp_load_acquire(&def->count);
+    if (count < SIZE) {
+        def->handles[count] =3D handle;
+        smp_store_release(&def->count, count + 1);
+    }
 
-In practical scenarios, the effect depends on the specific file and
-usage. Sometimes there is no effect at all, but, for some ELF files in
-Android, we see ~20% fewer pages pull into the cache.
+This ensures the producer always observes the new handles pointer
+before it sees count reset to 0. Will include this fix when posting
+the formal patch series.
 
-A comprehensive performance evaluation hasn't been done, but, in
-addition to the anecdontal memory savings mentioned above, a benchmark
-was run with fio 3.38, showing neutral looking results:
+Thanks,
+Wenchao
 
-    /data/local/tmp/fio --version
-
-    fio --name=mmap_test --ioengine=mmap --rw=read --bs=4k \
-        --offset=1G --size=1G --filesize=3G --numjobs=1 \
-        --filename=testfile.bin
-
-        Before: 4366.6 MiB/s (avg of 3459, 4592, 4613, 4697, 4472)
-        After:  4444.0 MiB/s (avg of 4633, 4655, 4511, 4571, 3850)
-                +1.7%
-
-    Same, with --ioengine=mmap --rw=randread
-
-        Before: 445.6 MiB/s  (avg of 446, 447, 442, 452, 441)
-        After:  447.0 MiB/s  (avg of 447, 446, 446, 451, 445)
-                +0.3%
-
-    Same, with --ioengine=psync --rw=read
-
-        Before: 3086.6 MiB/s (avg of 3122, 3094, 3066, 3094, 3057)
-        After:  3084.6 MiB/s (avg of 3039, 3103, 3103, 3084, 3094)
-                -0.06%
-
-    Same, with --ioengine=psync --rw=randread
-
-        Before: 2226.4 MiB/s (avg of 2256, 2183, 2207, 2265, 2221)
-        After:  2231.4 MiB/s (avg of 2236, 2241, 2236, 2193, 2251)
-                +0.2%
-
-[1] https://lore.kernel.org/all/ivnv2crd3et76p2nx7oszuqhzzah756oecn5yuykzqfkqzoygw@yvnlkhjjssoz/
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: android-mm@google.com
-Cc: kernel-team@android.com
-Signed-off-by: Frederick Mayle <fmayle@google.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
----
-
-This is v2 of
-https://lore.kernel.org/r/20260422005608.342028-1-fmayle@google.com/
-
-In v1 of the patch, I made a mistake and accidentally mailed twice it,
-the first time without including get_maintainer.pl output, so the
-mailing lists weren't CC'd. There were replies from Andrew to the first
-email which aren't visible on the mailing list or lore.
-
-Changes in v2:
-  - Add Jan's Reviewed-by tag.
-  - Tweak commit message wording, per Andrew
-  - Change field from `unsigned long max_index` to `pgoff_t _max_index`
-    and move next to `_index`, per Andrew
-  - Avoid min_t, per Andrew
-
-
- include/linux/pagemap.h | 2 ++
- mm/filemap.c            | 4 ++++
- mm/readahead.c          | 6 +++++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index ec442af3f886..6fd2a8914073 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1361,6 +1361,7 @@ struct readahead_control {
- 	struct file_ra_state *ra;
- /* private: use the readahead_* accessors instead */
- 	pgoff_t _index;
-+	pgoff_t _max_index; /* limit readahead to _max_index, inclusive */
- 	unsigned int _nr_pages;
- 	unsigned int _batch_count;
- 	bool dropbehind;
-@@ -1374,6 +1375,7 @@ struct readahead_control {
- 		.mapping = m,						\
- 		.ra = r,						\
- 		._index = i,						\
-+		._max_index = ULONG_MAX,				\
- 	}
- 
- #define VM_READAHEAD_PAGES	(SZ_128K / PAGE_SIZE)
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 4e636647100c..97772a05a18e 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3314,6 +3314,8 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 	bool force_thp_readahead = false;
- 	unsigned short mmap_miss;
- 
-+	ractl._max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
-+
- 	/* Use the readahead code, even if readahead is disabled */
- 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
- 	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
-@@ -3396,6 +3398,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		 * mmap read-around
- 		 */
- 		ra->start = max_t(long, 0, vmf->pgoff - ra->ra_pages / 2);
-+		ra->start = max(ra->start, vmf->vma->vm_pgoff);
- 		ra->size = ra->ra_pages;
- 		ra->async_size = ra->ra_pages / 4;
- 		ra->order = 0;
-@@ -3438,6 +3441,7 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
- 	}
- 
- 	if (folio_test_readahead(folio)) {
-+		ractl._max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
- 		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 		page_cache_async_ra(&ractl, folio, ra->ra_pages);
- 	}
-diff --git a/mm/readahead.c b/mm/readahead.c
-index 7b05082c89ea..8c12b63ccd4a 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -324,6 +324,8 @@ static void do_page_cache_ra(struct readahead_control *ractl,
- 		return;
- 
- 	end_index = (isize - 1) >> PAGE_SHIFT;
-+	if (end_index > ractl->_max_index)
-+		end_index = ractl->_max_index;
- 	if (index > end_index)
- 		return;
- 	/* Don't read past the page containing the last byte of the file */
-@@ -471,7 +473,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
- 	pgoff_t start = readahead_index(ractl);
- 	pgoff_t index = start;
- 	unsigned int min_order = mapping_min_folio_order(mapping);
--	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
-+	pgoff_t limit;
- 	pgoff_t mark = index + ra->size - ra->async_size;
- 	unsigned int nofs;
- 	int err = 0;
-@@ -484,6 +486,8 @@ void page_cache_ra_order(struct readahead_control *ractl,
- 		goto fallback;
- 	}
- 
-+	limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
-+	limit = min(limit, ractl->_max_index);
- 	limit = min(limit, index + ra->size - 1);
- 
- 	new_order = min(mapping_max_folio_order(mapping), new_order);
-
-base-commit: db2a1695b2b6feb071b47b72e61d0359bf1524bf
--- 
-2.54.0.545.g6539524ca2-goog
-
+> Thanks
+> Xueyuan
 
