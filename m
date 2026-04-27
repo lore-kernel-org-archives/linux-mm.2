@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D2CEFF8867
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 21:06:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFAFFF8864
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 21:07:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E45586B008A; Mon, 27 Apr 2026 17:06:19 -0400 (EDT)
+	id 98B7B6B008A; Mon, 27 Apr 2026 17:07:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1E436B008C; Mon, 27 Apr 2026 17:06:19 -0400 (EDT)
+	id 9636D6B008C; Mon, 27 Apr 2026 17:07:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5A896B0092; Mon, 27 Apr 2026 17:06:19 -0400 (EDT)
+	id 879816B0092; Mon, 27 Apr 2026 17:07:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C66C56B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:06:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 587D11C042A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:06:19 +0000 (UTC)
-X-FDA: 84705568878.18.F04A886
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CD7FAC0002
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:06:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YoNJN0KK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777323977; a=rsa-sha256;
-	cv=none;
-	b=52GEojqbvWQI1+v6XkECNwTX7j3fX5bvs5Y7xg6hxkoAj++Q0TAMYq0t7YcpXW/Mf9zSgS
-	SQIqwiyzgYjeAb5VGovAPMFdHAHwSFx2dHvFTAmuFaO4797gCI2VJtdabo2bP2Nnqto/Cp
-	9xciv+6Rzf/WMhsfm0ZYfPXN+wl0ReM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YoNJN0KK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 76D586B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:07:04 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 256AC1401E1
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:07:04 +0000 (UTC)
+X-FDA: 84705570768.27.11B5F22
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7091440018
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:07:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QFGNDaTG;
+	spf=pass (imf04.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777323977;
+	s=arc-20220608; t=1777324022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=hgHpiDOCUudw7O/cEVLVNH4ElJQq9HH5iQOKl9zHxME=;
-	b=GFcRb/9g5P/xPge2ZNhAX66D1uktXo1TT9btpey700DnA6SCrTyD3V9vpswxbxct6dvH+F
-	DBKWZP/TTkJA68RmXSeuxQtU1ZgK34rs1xt5gcrxF7BB0JSJ47QLdw0DhwRP0Y83pcmM8E
-	pzdE/uYxtO4nwbAZoOW2Ez6gySgRmBY=
+	bh=NSfP7dnw2gP3DlZMyk6kvLJqbY+uoXgiA8d0A2mseMU=;
+	b=VNw1gS08oPQUj+2R2dKRidEupmujr+VlqsEz6ocZ84HQVvJRuoW5tgifr8ulGwQ2FLqAHN
+	lEYmuzHJiRQw1/2a9BIW0wf2CFSWDW50z2W9rexXzoks4AD0b5CvnR0c3syzcAYpfZwl4j
+	mA1B0uP3LyIF1F/pcfwwGJhyvq5GZCA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777324022; a=rsa-sha256;
+	cv=none;
+	b=m9hr1Zhasy5RZfU5n59Heefpghj3Ec3SW0HdYHkuJ5aCYsxHSQE+tFXOkDbwfKDhpL+Ogh
+	IcckMfJCM5KxL5zbVrA6nl5Sp0JjjtYAMOmF72CSiKN9JfdC0COZppbuTPuiFMUWNqaWEd
+	g218abSRTTbQGZ0aIvxrT2HhE8T3yQU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QFGNDaTG;
+	spf=pass (imf04.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 332236057A;
-	Mon, 27 Apr 2026 21:06:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4DBC19425;
-	Mon, 27 Apr 2026 21:06:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B55A40667;
+	Mon, 27 Apr 2026 21:07:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11644C19425;
+	Mon, 27 Apr 2026 21:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777323977;
-	bh=CIswUHjtV6oSUsxjeWT06cacL6KEcFHO+pUSNAd7kso=;
+	s=k20201202; t=1777324021;
+	bh=Ji6QG+tICOp3jZRjVIPmRNoeZX3XNm+1s3nZGqpXmws=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=YoNJN0KKRc41UjoNkjKTVxHCQ9uHmb1vXRgaeoA4tQWz/iAKTXe43aboUj7ZhDG0t
-	 grNENZpJKNHzFBJy7Y506+AuuCHjO1qZfDRXYgBS/0Yw8y5dlIOWegmRBKPba4bB6Y
-	 5VcibMz6TPsiqAgZkvXp2IBx61Yw3YfO9M4cAandeRfDj83rXbzcmH2WqXx6KVwMY1
-	 tFRBliyM+9VjS8JW20gNO4qb1z7tkpfpIBwBl3Wh8cGH9NaUQh2VAbsD4l95ckOfFr
-	 7cMHIO7JOZkCSv8VfoEMbGIMwpAhmicK4vHq6YczTKvrrB2AuD0Nao69SvIM0v/DRr
-	 xVcZfTO9P4O2Q==
-Date: Mon, 27 Apr 2026 16:06:15 -0500
+	b=QFGNDaTGW9a6kdfYz+Q7sP5WR3ZkbzEL1ZCMz/x/Se8P+hqKd3UU21B0gzVx4pqBl
+	 kykxyVYNOR7VMHGZ+ds/id+OC9sE4OJiDDrLvBJuAtwrEL/oYKUj25SReZiK63RWqV
+	 zqLGHgGm4CQzNaDmqo+Ta83Ay0qv+7jcHNQkaY/6E5JQ9nFVjxzjC2iuYoPQaq1/27
+	 0XleZbQtLDheHJpPJP0IVRsnCI+hQSiEFIetIZfoCYJn1sRQx3kn2wlhuvPKWYM0G1
+	 nI8/zJ/fR1QDFe6OK/JGPNIwx73t5SJiu7g/Tn0MksDCYe357ycHL/XROhv+A4Hhfc
+	 cSXQLsRyl3SJw==
+Date: Mon, 27 Apr 2026 16:06:58 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: David Matlack <dmatlack@google.com>
 Cc: iommu@lists.linux.dev, kexec@lists.infradead.org,
@@ -88,21 +88,21 @@ Cc: iommu@lists.linux.dev, kexec@lists.infradead.org,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Will Deacon <will@kernel.org>, William Tu <witu@nvidia.com>,
 	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v4 02/11] PCI: liveupdate: Track outgoing preserved PCI
+Subject: Re: [PATCH v4 03/11] PCI: liveupdate: Track incoming preserved PCI
  devices
-Message-ID: <20260427210615.GA186434@bhelgaas>
+Message-ID: <20260427210658.GA186673@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260423212316.3431746-3-dmatlack@google.com>
-X-Stat-Signature: dmt7tbf1e8mj4mc5twjoggx7r8qbakk9
+In-Reply-To: <20260423212316.3431746-4-dmatlack@google.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7091440018
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CD7FAC0002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777323977-836466
-X-HE-Meta: U2FsdGVkX194nod70wuoZsjtLO/H5VtP4miC/o8cnvrUuam6PdEppZf6lYGA306NgrBCzA3u2UHavjrvzKrWq+aK305RwmJ+cIjhwN7rV8ngembJ5gpiCQYCUKDGWJz5arMhmhH6u2g4oQx66eX9d/j3jEdj6RirLDALNOXOa27tt8m/cet597sT/OQ/C1g0cl7uK0eOiBhSmAVBPFhB5jQyBsuEQHWnV8lfN47dw0/rq4mykMOLokLCygm7vJtXRJhRpN2851EA0AY1YnMQe19f4UmRjmwRP7LsLN8m3HuK9w6eEhLOZCiFO1DflzKipajSnfLmdOS6Kp3en0Ylroncv/8Uc5jsMr13kcyM2EM7Zhlz21KQ2u5kMm3RBEfQFODmJ6FGJCZLhY6mmM6uxTlM29m0pezt3879uXqaUGn4VIVCRUWgaTh2F+fcSUMCYtzqWLj3OwlrIFyvsO/sWigZkHrIHLB1ljnf9pv5wZ4UH/4GJd7L9vIiLG/Y5b+hT3QkdXSrbDZZmRvCGQ9vQwWH3p2lTpkKJhWbrkjVA622MN114AEi1o8A96RNaqAKR34ekAhospNbP6HY3Lt9pCTWeRCLpbxFMV3JZFCD/K5im4ZueSLNPIZtB9rb5I8C7txAJgaN2b5dnuzLZz9yk59fkKkeVyiHv2GnjjSvla7m1/VvodBY6IA66E+Hk05rczfn2zj6PaBjoZzIQuQPiQ8sD1hhNAu0TZ1No0oTjzkC9UgP8D8z9wvfetUtaQAaYdOnExJXXMxS3qlIsB8XmibmRkF2tKoyEwkmDEMr6Y5VIz3bgEZSaSjhF1MX7if8RRyg4Ywzxx71PRQQnfny78lZLVFhiJyjkrUwtVaHUigc2kTI0k2ImY5GjeRTvCuchGZe6BoPzF7MjwNUsCoPud0iUgURzzd3GSKtLZaDM/tdQWr5vWuEpDBJ6yLOK5PGj9t06ShEnKUKpNVBQEp
- bFQSP+Di
- aVB9Ep7oY1CeRNBFllTHbZiFDzxykAJuuk39Wzut7516yjqEFiuxP9raCtZ5W6VxVVtAO8Wfk3O/UwTepxvvHUUbPVJvVecfHtg05Z6BOcXWofrIfEpXmDP8uJ0M7hJrzXTL6+4+GqTEU+N1jelbsc6V/EzCtw6S+ShN26p1fExUUGH1GWAPEand+Vrp466bShWEMx8Fux+6iGDH2/guXHoGUetw3dAzCcIGzQR1hbihCdjoegzOyN+kGtVoTGfLROjMX
+X-Stat-Signature: wssq4z3crjcsrm5nb759mw7fp56bw5qf
+X-HE-Tag: 1777324022-368153
+X-HE-Meta: U2FsdGVkX1+hfl6raZ20Yx5kEkAbMAOypZbOCWNw/o5L8pY2N3YBIk6ioy4mcVWpeMQfcGDfSGz5q0bS5SjprC32sUbUZD643LwDuF6KnuOmGBwxcyRX+ON7sIP5uKqFhi3ocJ3JJTPZytbbZOXPDydfVhImpTgXV68TYiAQ2gbgmHr+OXz9QQ32TprCsJ7NGv1NFUi9fMyHDXkaKcXIEf/u05tur871SSZxxF61XhkZ3GmuGT7oKCjpaG9g36oKcbKhV+Lea7GXC4LQGH5zbK+JCkMTVJqA+D7HTDRyGhIFpjIQAmT5UkP2fa4B+NnFdHkoptK8xdOXH0bE5Ql2ZZvtSli7Xx8/tXqEAi4t1kx1hTy+9fwCaH18ctviyx21Bh5ge2LEkhhelhxw8FHP3d5sAdmQf4Ie5BUgmc9vZj6kf47wfD7tPpYR7+7XF0BeIyeyUU17zPaJmDKYNF8qxRoo1FerZWeLEBV/Q8aTu5cNKPfvV2ImbKpDYvkd755Bm/6Hk4rkTrH2K2XBa+aOZsKnqvjJN0Rw0DWGr7jG2Ghdp8NlzrLgtiaEH8/QK4RAsdoPAcbNp2ZFBu+0pRDdbcpuKPJXkx4MVnLoW53f419Xem6PU20SRI5Ld8qfUP5dcLsTjACcz11bV3CIv5amPfL1Xz0MHixJw0XgPU4a7bWNRsNFfTyXxxKjrsfEIv6Vzc/prVOtjcTdXO7vgn8JyvAtNHenftXsBbvr1Q7pDJ6NYuzCaB2WgDEJA9aKPBU1qktJG7Ez3qG6hHikHTCSLteAtf8YktjBDS9F5R9hGXpD3hcZH8C6TZCpyDC9X1maDVKCRJ8CKnH09qQL9A03MMRzwmLBGGr3qR+S2uRbq1pM0j3JXitT3lL7t8KFb8Sa8Ql0PuGThwSBKfZfv918C9ZKRrWe2/pferwUsMJLIjGxOAI3c6iHkLLG1Dc5RuCYufkwmnOvl+GpI8wP3H8
+ Dkewu6fF
+ rYdjERqZ16OUygmF2IddaL0ybMs+DDjaVlaRqum+DG+2ocaPGxQGO8dD7nXYCKqoY9erQDNGw1Ug6XobybaJsk2mUGQd9ksYmB1HXkfeEt6ebkaC7GoqXj+YkJqLb6ecTaUwp/WtXAZSxqYbLwssfrzoIwhACd5Zbe5XbcFrwjACtqjrubdDP32lYVsnzBphmilpbxZr6dx3xPP3UOx5zB+/+yqZa+0CWZnfKz7JyAJ8b3z5lkLVVEW0xMYcxcH3ReFyF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,28 +110,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 09:23:06PM +0000, David Matlack wrote:
-> Add APIs to allow drivers to notify the PCI core of which devices are
-> being preserved across a Live Update for the next kernel, i.e.
-> "outgoing" devices.
+On Thu, Apr 23, 2026 at 09:23:07PM +0000, David Matlack wrote:
+> During PCI enumeration, the previous kernel might have passed state about
+> devices that were preserved across kexec. The PCI core needs to fetch
+> this state to identify which devices are "incoming" and require special
+> handling.
 
 > +++ b/drivers/pci/liveupdate.c
-> @@ -43,6 +43,26 @@
->   *
->   *  * ``pci_liveupdate_register_flb(driver_file_handler)``
->   *  * ``pci_liveupdate_unregister_flb(driver_file_handler)``
-> + *
-> + * Device Tracking
-> + * ===============
-> + *
-> + * Drivers must notify the PCI core when specific devices are preserved or
-> + * unpreserved with the following APIs:
-> + *
-> + *  * ``pci_liveupdate_preserve(pci_dev)``
-> + *  * ``pci_liveupdate_unpreserve(pci_dev)``
-> + *
-> + * This allows the PCI core to keep it's FLB data (struct pci_ser) up to date
-> + * with the list of **outgoing** preserved devices for the next kernel.
 
-s/it's/its/
+> +void pci_liveupdate_finish(struct pci_dev *dev)
+> +{
+> +	if (!dev->liveupdate_incoming) {
+> +		pci_warn(dev, "Cannot finish preserving an unpreserved device\n");
+> +		return;
+> +	}
+> +
+> +	pci_info(dev, "Device is finished participating in Live Update\n");
+> +
+> +	/*
+> +	 * Drop the refcount so this device does not get treated as an incoming
+> +	 * device again, e.g. in case pci_liveupdate_setup_device() gets called
+> +	 * again becase the device is hot-plugged.
+
+s/becase/because/
 
