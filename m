@@ -4,124 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F747FF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:15:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3077FF886B
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:17:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB77C6B0088; Mon, 27 Apr 2026 13:15:44 -0400 (EDT)
+	id 4680C6B008C; Mon, 27 Apr 2026 13:17:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B68466B008A; Mon, 27 Apr 2026 13:15:44 -0400 (EDT)
+	id 43E646B0092; Mon, 27 Apr 2026 13:17:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A57216B008C; Mon, 27 Apr 2026 13:15:44 -0400 (EDT)
+	id 306806B0093; Mon, 27 Apr 2026 13:17:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 95B036B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:15:44 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 438F216021F
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:15:44 +0000 (UTC)
-X-FDA: 84704987808.02.25507DD
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 385C5180016
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:15:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bzlWr7mF;
-	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B42B46B008C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:17:02 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 54C5F88E11
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:17:02 +0000 (UTC)
+X-FDA: 84704991084.22.6B20131
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7E5CC80015
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:17:00 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U2+LLE02;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777310142;
+	s=arc-20220608; t=1777310220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AakHsZlEQE9Rq1pnBFm3m7E9zfrXxQ6QJvrADxUHjrg=;
-	b=K9pbObt8QVPLgKOeuHMQbcCDGAEkWom0ngW3WV6YUE8fZMQeRrNQg8hvnQTlbxhtRCuqA/
-	Lql0yMrVXFymYMvgRX82FhJYAXDX+q8r8crdM5omHiPmbVQYafx4wE7YnqBZYh8Xxrsbu6
-	EquCmDzRcJeO10bwQdYeLxmYHudNy3I=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bzlWr7mF;
-	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777310142; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=jhUiSYlSjWHWqHISdWgh0N8CQlPC2mYxEyllaCORLRs=;
+	b=VyX9Vclrgu6wR/URfhXCzoR6LVGYNzwZVWZ7/7kXogzUZ7Le23llfctv4LwC+Ker3UqePV
+	niJjkD2fBlLpowNOVkuUdXayjQIlZX9bFPvLgdWnJ5ZWD8w5PDl5MYKaTgxOGT7FX4x0nD
+	l//ftpqD+rNxzcOmt84ObcBQmfyGQnY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777310220; a=rsa-sha256;
 	cv=none;
-	b=dzSJLab8Qz9pJjTKBJtj8Ok2/jnN4DhPX655jfRf2BDX25UHTnex7LhiR3KO+6NHSx3iVN
-	tfP8kC7ChMvZKjLTfmLAchKqnQ54sy4SKjyUsHKAr8Y7eUoyZkADcj2U7KgeFOh6M5jGii
-	6nuZhj1FtehJvjDkrlk8tnuAzdcBk5w=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43cf8d550bdso8970035f8f.0
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1777310140; x=1777914940; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=AakHsZlEQE9Rq1pnBFm3m7E9zfrXxQ6QJvrADxUHjrg=;
-        b=bzlWr7mF7x7VT+y814w41+yDa5iNSrYAaJG48kD6scBkBX2XSB3ozsW4bqgA1pyVg1
-         ORLDUck47KiazhBVhNboUApeSzS1ytURpIQi2u0fOlEYEZwR9PWRaJFxsJgfGIyy0Bk3
-         8/OU4G06XsuOSbfNgxbLkU8UwrbvUKhCfTytke6gV1qPpAYrw32CFBZdYIzsqlRylF0l
-         5G88LhJIHNNUfkSGVMv5geQoqnDagYTgKl8DEFeW1TPBp03G19Lsr7mYHQ2ln+3Bwy9k
-         FbbPIlW47DeU+YAu7H2a95NykEWzta5Bnm8gn0X3+PlF5A4nu6zMBXfJc/6foFVmJe/1
-         Zk+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777310140; x=1777914940;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AakHsZlEQE9Rq1pnBFm3m7E9zfrXxQ6QJvrADxUHjrg=;
-        b=r9Hrs5HxQWcOGdc7KeybYvQQQMWGC7P/ekDCDUdHHEHrtixcVLTS1IxmtH40LGZDua
-         xFxgl9RoTiRTySxddVhoLVRFC/GNhck9pruQjtK3fczjaZ0uRQBGI2inWTLYiIOyHZUO
-         l+04xUMR3iKRfXZGmhYlDbGHPx/pV5JqC/fQRbwhkDH75+6VDAc1J1w/xfscWkEsvaOB
-         CnEkrQvqQ+/FO3ZFx8YjQmFiP2h1NYq+aGoJW7sQPWYu/qlZvatPieDq3MuCz95KD5Ac
-         Np0oQe0Os4K6Jwm2aL//DlZfF7Na8joIRksJjSGLX+iM1qS3wMNuSP3XVQDxQ0UYxB+X
-         3egA==
-X-Forwarded-Encrypted: i=1; AFNElJ9nZa8ADPQRFgotWpgAMfvWEBvCEADA9yLRSyAIHrq37ubYemuX4xKtPqfsUnNqxj6OYxITKYsogg==@kvack.org
-X-Gm-Message-State: AOJu0YwU8hCoEW2d0FNPFsPYanMhmbvr0XkSB+KxiBXmfBSm3jIrRj1X
-	NLQotiFexJdzET2Vp5DEqwhlNY8pYtvcqkZoWjhlCunw3r6Ip3B9PhvvGmq+Xfoi21E=
-X-Gm-Gg: AeBDievt3SAF1BPVhw5eRuKVWFbLUMTQCN2rhdctUffq5b+4cPkC5MWiDciTS07PxvE
-	QhBjhcX95WmKExMLphH2MUbyJtFpPALLHz5EgMMt/Am3CH1SAsia93Rg01lp3crG8skn6bol7QZ
-	dG3ud9OrofCFqL5e8chJigDcy/3i4MxKgIC27/j/0qFCGnEA28H7CAmCCTxbPMe1gU/597Iar0I
-	TfoL/NtXHS4oS95kfzJmMxqUjEs8gumPNgJ1GG1oM7Vw5Oyj67mWvsF8c/7nPdxtJcWM1a64FfN
-	FSJx5vTeIqzAkEQmyhJEKsik0FFeXcGq1zcA8SuvrPHqtG6X9rS0R3om0Uj4Q8LZe39cB0fvVDj
-	QH3mcwAUJXPiCIeQGHDnNMzrQm3cyETZ9qusZ4DM6gWxG7m46otDSuPy5YTOP3Pj07ware4/Kze
-	hF1nLOcRJvIn2QHWnV7xFtDGTjIFsPwCgUAiwWglGiFXx/kKA=
-X-Received: by 2002:a05:6000:2902:b0:43d:77a8:3baa with SMTP id ffacd0b85a97d-43fe3dc551dmr69959006f8f.3.1777310140368;
-        Mon, 27 Apr 2026 10:15:40 -0700 (PDT)
-Received: from localhost (109-81-17-171.rct.o2.cz. [109.81.17.171])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44123d23e0bsm41748981f8f.15.2026.04.27.10.15.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 10:15:40 -0700 (PDT)
-Date: Mon, 27 Apr 2026 19:15:39 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Minchan Kim <minchan@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	akpm@linux-foundation.org, hca@linux.ibm.com,
-	linux-s390@vger.kernel.org, brauner@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, timmurray@google.com
-Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
- exclusive file folios
-Message-ID: <ae-Zu-VAzAA7SdLa@tiehlicka>
-References: <20260421230239.172582-1-minchan@kernel.org>
- <20260421230239.172582-3-minchan@kernel.org>
- <aesg-sj6_VmXyqxb@tiehlicka>
- <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
- <aevBRh08X4UTMUj9@google.com>
- <ae8NT0tLt7eBmH6j@tiehlicka>
- <CAJuCfpHQdA7C50V2WjNrdYcp7feV5ukgxJf+vMNEcp0P1SGEow@mail.gmail.com>
+	b=ggb28lBYOKlbS7H0NOnGYpYEyWAqfmx/Qh6jluko+V0XlW8nFqB/nx1Y3MYQZ1TrNnyq/s
+	dOa85zPAnZncq/i/whOs6/M5I7jiDXv/mCRiNic+siwVDJ+imxQJvg/4izyXfkBpa7NI1Z
+	gQf3aX+7v6jCfrMFyPT04AdwxwvsZWA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U2+LLE02;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E7B742ACA;
+	Mon, 27 Apr 2026 17:16:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FE1C2BCB4;
+	Mon, 27 Apr 2026 17:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777310218;
+	bh=Gdo90UdOw5JDNcbBc6CTpgqBoS99tJWdzzhKt47HDkg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=U2+LLE02v2RJdGrHn64GqYJdP4+hDdO9CRQcGon9U+fg19LBxhX5PBepS5h9HJCqe
+	 szqGGe/Sn0Ja8ufrVfKBRayklpg7ZNqhD3AjlJFyhWTD2cy+E9nyVtxoXvU6RVePwS
+	 nC/EKNFwPrGycTqEuaSwxvd9NLoS3iznsIjTk0KPgTVc+veLovfoR+uQQZvkXu6BEL
+	 XY5HSP+s8CkmcaZnZCCWlv0qtPkuKqPRoos+3EvmYxD3lbF+eVbofOW/u0ribOc9N6
+	 46gB4iCE7qS4DHXiu+LbPED9AO2rWWkmtG0xffEU92OaQJ+vWiy9PumgjbDE3AiKLE
+	 isfjlgjrnrghg==
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+To: Yury Norov <ynorov@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	dmaengine@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-fsi@lists.ozlabs.org,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-serial@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-fsdevel@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-x25@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	sound-open-firmware@alsa-project.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-arch@vger.kernel.org
+Subject: [RFC PATCH v1 0/9] uaccess: Convert small fixed size copy_{to/from}_user() to scoped user access
+Date: Mon, 27 Apr 2026 19:13:41 +0200
+Message-ID: <cover.1777306795.git.chleroy@kernel.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7253; i=chleroy@kernel.org; h=from:subject:message-id; bh=Gdo90UdOw5JDNcbBc6CTpgqBoS99tJWdzzhKt47HDkg=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWS+nxkaMinl/6P42P3bc0Qj3v7nk1G4YbGg/rEse+BPv 7e7BNgWdJSyMIhxMciKKbIc/8+9a0bXl9T8qbv0YeawMoEMYeDiFICJRDExMmwV0vIK89sWnHjX Y4WN3O+gaTyvmP0m2koKTvi9YNORsocM/wPkn2xoM0q8N63lWvLNy/m/speGuG7LLGiQ1I6bVSB dxgQA
+X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpHQdA7C50V2WjNrdYcp7feV5ukgxJf+vMNEcp0P1SGEow@mail.gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7E5CC80015
+X-Stat-Signature: o336wf1oq3d78prqzafrpck63cxqkjbp
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 385C5180016
-X-Stat-Signature: 6yxn4p4g6bdbcippotkf35n5so8jh47w
-X-HE-Tag: 1777310141-308934
-X-HE-Meta: U2FsdGVkX1+rgT/Fm/01JCBWX1g/MY5APJ346Tgf7Ic60Sx9nDO9zjEAibgxLwZog1XRYN3q2E+jo5A/fD/phoLW4zzQgyk8ZbMNvTcvEgX1C7iNd/2Q+dOZGglUkvR5WPqQgnmX73WT8YVre7vjgLXljXGfBD3k/9/8WULmRjTWabs6W2V2Idf4NnbjL2Kds7rZqHmVovT5fM3bFH6ZKoThaXofZO3rMvzZQzLJULtAYm9Odx4hY80/CsaImNpWs6VjxJLNhaZcrxMLQp2yNMU4Pdzk4rZfUseNhu46rwx256mmPA0L0uNrgWobhBX6TrF+uV3yOikDmb2eS1cFhWUL7VVP+6a6aMQQVBXkx+aPjITi05GMEd7rqSbT9QWJsM6Q3EP00hGu7DE/WLNwCftY9TQ2keqUIp7TfNtmzZEnv/OpOx5vX6LHyTnUzOKPsh/lJtxzjuQ0A3moK8veVWR7AfxnGHs6FNokQgoWN8uEIL2Xyf0b7vJXYZPQ72F7r8CYc/u81VD3e4+O+jQJUco4yPd4Fr0bkBMVlxCN2R0NNofLNqXsH+5jegq+T52Fe69cqBXXiDUFBAmS4fnUuiCVYq8R2j0bBmz5froEGocnv2APXwDtQxT1UAROaoFGf1dNrYtvYfsN1RVJDga1+0kfipAZq8G6HQ58X4DLZS8C63gkha5RZkGgApnMP7PnTlhrnj8oOaywwFge60JMBilLVskXoTaU1l/72AqOXWUhrHWvvknL3PhI73iXJJ63H4g+aYyTHx3KyL3ZtzlS/Ah0oTsK+qisPtmYK+VZkJQT9vM+r3GsXNvWwwq+EwpoL5wnsbToOa3zaw8xl3z7djrHo/AQ59ypUFD88JCklSG1RQ7QoWfIzyvQQN/lzNUN6QYGFndDnIXGaIv5RUoQ2zTMgAQKnNY9Q5i66gYQ3/Ulli13NU3VOtbveUrwgfs3q8LIPIOUAu7DBPZ/bsn
- xgAIUBax
- 5QHcpOI6MOHckPuFDzKGQuNYQ0/G365Ed+8QnvqTZTvP51m+cCqE1k4muKKe1ZSdSDS7i0Culb8Yklj7CvZ7rfPvDof++0ipIfGHBFIDUYIYFLGNjtBAz04JhXzxeH44OIvSvKXfppTea1DKN+Z8q1AH4FQMS0LHmfiEVr5OF1Ijd5rWGxjHIS+K67X/lhafQtqLKGD0TlvpzcUmKNSVau4LN8LAbKC2ced256KbpnCHdRuI/apH1FAHN2katXCNY41tHUkvbWZERof7lFzBGuB9K7LAK1Ak9iyDuvIfTGb6xGI2TAKFziM/Widfu4IkNon3kVqz5XUmwEbZ5jHACaj5D5ZSv+pWKU5UN1I6A3jep57STMaWX/1haXYX4KW0oRKlqTlxvc70W+VFaw09r7xyml6R4H1xDmLYTxJAYHTpTZdUMymdYAndxmw8ngGOnGnh6xiGnaZUoE5nzsvfGr8Sw6fvTxeQksM7n7U4WjTI6yCTNzMOI85RiUnf9MiFdRhtymbCPUWcjULsq6IVZDdpP9MOLtzIavwJMxrfLPDd99sb0juEy9RzJbmy9cf1aOxITNkn6zq09VF3aBZKQctxS8w==
+X-HE-Tag: 1777310220-574018
+X-HE-Meta: U2FsdGVkX1+dnzFHu6V6UAIHhqOQntuPMCfUHdDnkvSDMHuu24zaNwpvRx98wun45sen1QxzvRKKUeiPHR0/vi9tE4D0QjgqHZnQA1kJLLDQ/lkJGndWca6ovdNvBf6wX58FX1nUq4notvl+b7eVBirKStk7KBwmD4+mRl8U14hzNV4BDTpSJV5oXdyVt2cuz4yYjpjIaJy9htQdVXA6WESrOKOHsKay+BdpI0Fos7jZ1+UsTGU1jUSbwktRD5R83Dkh02iEIrN72l+/+LPL0I6in5qsB5uodXicZ+TU9X5owWhftc+qpfC7rthIHy+Cov0DgkFxxD5G9jBOdx0qhTFM9iid4lB9GNbPV3XzA8UdBAe+ds6MawKVIGupsNWZtzqCx2tqIkQCAv2MYIv7SyRS4/01nviaKmOpBOcPXI0UpHWUNucxMEDrgaJy4i6U/iCO9WWRnbBCNjO/YggaxzlD5h8e7lDrOnPAJpHp/p/hjn1lTkgglImuly+j2H6FvmIAVmBPCzaiQzgXBksZDSaBjsNYHhMg8rgAT46j9GAtbqnwPmiOzfpz8gR49F1HQZeEiL3m3BGh0jOfQ8arBrFt2g/lb7315EbgERTPW/wVvv+eeHkfnUjw15uwGkJZo6BldfZJ8qgha3473bWf2jnFD8KzEkTbUdzfrCQ7soMJYKL41UM0O88yvDN8FvRdCPqqh738Tc6HisAqiK0PG31d4jjZ5VF+iiaoQikIZLqpqveqg1/FDR5RkgSr5BcfAav5T6KiQIKLANYm9BAYvN/9Mv+iYp59SMoqIV75qCjy9IcxUVhWOWeDqgI4ZZX4dOcgR0S//Uq8XmG9zwcUKKzXlFrj9Qi2bMCITBT2RAS2UGukdyEosQSY2bWpkr4Is+buvg4t991zx4+GllfxGp3nv9QsX0UtJ76RTIJ82vzc0ylRZRjcKj0xVocfkIj3xQsQ7cFwulr1J9eeM6O
+ kS4za18z
+ i7x7Y0fPndVkiDLVirtNRwD5ypH934LMgmzuY0E8jGlyKWbIG0HyYy6R0uEbSjItksUxrzppxntGLDwUn+QFIPSOpvIDKhD1gRf+cs/GIoBsXWTwgIckUOy5wppLNxm+mCsoWFHXsUdJH3jqFwNtb6QCpHD+fKaH3T+hVp5AJYFh66jTYEJCqjUnoVvxVxBXZQj2V3fxBcGEOPtQ7JjN2uhUWVXCH/eJfs0MQ1UsE1kEetk++oHKsrTQsEBiSV2Zv+rfzxzZfzgXyVelE//WMDn+U9UVpDdl+OGrtg8cyvX/TJBAeT7fvNyYyOS5x7JIgMvvc91CbCj7DEw4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,105 +136,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 27-04-26 09:48:28, Suren Baghdasaryan wrote:
-> On Mon, Apr 27, 2026 at 12:16 AM Michal Hocko <mhocko@suse.com> wrote:
-> >
-> > On Fri 24-04-26 12:15:18, Minchan Kim wrote:
-> > > On Fri, Apr 24, 2026 at 09:57:16AM +0200, David Hildenbrand (Arm) wrote:
-> > > > On 4/24/26 09:51, Michal Hocko wrote:
-> > > > > On Tue 21-04-26 16:02:38, Minchan Kim wrote:
-> > > > >> For the process_mrelease reclaim, skip LRU handling for exclusive
-> > > > >> file-backed folios since they will be freed soon so pointless
-> > > > >> to move around in the LRU.
-> > > > >>
-> > > > >> This avoids costly LRU movement which accounts for a significant portion
-> > > > >> of the time during unmap_page_range.
-> > > > >>
-> > > > >> -   91.31%     0.00%  mmap_exit_test   [kernel.kallsyms]  [.] exit_mm
-> > > > >>      exit_mm
-> > > > >>      __mmput
-> > > > >>      exit_mmap
-> > > > >>      unmap_vmas
-> > > > >>    - unmap_page_range
-> > > > >>       - 55.75% folio_mark_accessed
-> > > > >>          + 48.79% __folio_batch_add_and_move
-> > > > >>            4.23% workingset_activation
-> > > > >>       + 12.94% folio_remove_rmap_ptes
-> > > > >>       + 9.86% page_table_check_clear
-> > > > >>       + 3.34% tlb_flush_mmu
-> > > > >>         1.06% __page_table_check_pte_clear
-> > > > >>
-> > > > >> Signed-off-by: Minchan Kim <minchan@kernel.org>
-> > > > >
-> > > > > As pointed out in the previous version of the patch. I really dislike
-> > > > > this to be mrelease or OOM specific. Behavior. You do not explain why
-> > > > > this needs to be this way, except for the performance reasons. My main
-> > > > > question is still unanswered (and NAK before this is sorted out). Why
-> > > > > this cannot be applied in general for _any_ exiting task. As you argue
-> > > > > the memory will just likely go away so why to bother?
-> > > >
-> > > > I think there was a lengthy discussion involving Johannes from a previous series.
-> > > >
-> > > > That should be linked here indeed.
-> > >
-> > > How about this?
-> > >
-> > >     mm: process_mrelease: skip LRU movement for exclusive file folios
-> > >
-> > >     During process_mrelease() or OOM reaping, unmapping file-backed folios
-> > >     spends a significant portion of CPU time in folio_mark_accessed() to
-> > >     maintain accurate LRU state (~55% of unmap time as shown in the profile
-> > >     below).
-> > >
-> > >     This patch skips LRU handling for exclusive file-backed folios during
-> > >     such emergency memory reclaim.
-> > >
-> > >     One might ask why this optimization shouldn't be applied to any exiting
-> > >     task in general. The reason is that for a normal, orderly exit or just
-> > >     pure kill, it is worth paying the CPU cost to preserve the active state
-> > >     of clean file folios in case they are reused soon. Preserving cache hits
-> > >     is beneficial for overall system performance.
-> >
-> > This is a statement rather than an explanation. Why is it worth paying
-> > the cost? What is different here?
-> >
-> > >     However, process_mrelease() and OOM reaping are emergency operations
-> > >     triggered under extreme memory pressure. In these scenarios, the highest
-> > >     priority is to recover memory as quickly as possible to avoid further
-> > >     kills or system jank. Spending half of the unmap time on LRU maintenance
-> > >     for pages belonging to a victim process is a bad trade-off. If speeding up
-> > >     the victim's reclaim by avoiding LRU movement and evicting cache negatively
-> > >     affects the workflow (due to immediate restart), it implies a sub-optimal
-> > >     kill target selection by the userspace policy (e.g., LMKD), rather than
-> > >     a problem in this expedited APIs.
-> >
-> > Your change effectively boils down to break aging for exclusively mapped
-> > file pages when those pages should have been activated. All that because
-> > the activation has some (batched) overhead. You argue that the overhead
-> > is not a good trade-off for OOM path because those pages are exclusive
-> > to the process and therefore they will go away after the task exits.
-> 
-> I think Minchan's argument is that mm reaping occurs only in special
-> conditions (under high memory pressure) and for a very specific reason
-> (to free up memory and prevent system memory starvation). Therefore
-> priority in such conditions should shift towards more aggressive
-> memory reclaim instead of normal aging. I can see both his point and a
-> counter-argument that this might cause more refaults in some cases.
+A lot of copy_from_user() and copy_to_user() perform copies of small
+fixed size pieces of data between kernel and userspace, and don't
+care about partial copies.
 
-The way I see this is that the standard memory reclaim under a heavy
-memory pressure would likely encounter those pages and aged them
-accordingly already. So this is effectivelly racing with that process
-and makes a potentially opposite decision.
-I suspect that a lack of memory reclaim, as implied by the other patch
-(to deal with clean page cache), is the reason why this one makes a
-difference in these Android deployments.
+copy_from_user() and copy_to_user() are big functions optimised for
+copying large amount of data, with cache management, etc ... This is
+often overkill for small copies that could just be inlined instead.
 
-Unless I am completely wrong and misreading the whole situation this
-might be very Android specific change. The question is whether these
-side effects are generally useful for other worklods. So we really need
-much more explanation of the actual behavior after this change for wider
-variety of workloads.
+What makes things a bit more tricky is that those copy functions
+are designed to handle partial copies in case of page fault. But among
+the 6000 callers of those functions, only 2% really care about the
+quantity of no-copied data that those functions return. All other ones
+fails as soon as the returned value is not 0, returning -EACCESS.
+
+So first step in this series is to introduce variants called
+copy_from_user_partial() and copy_to_user_partial() which will be
+called by the 2% users that care about the partial copy, then the
+original copy_from_user() and copy_to_user() are changed to return
+-EFAULT when the copy fails.
+
+Then the second step is to implement copy of small fixed-size data
+with scoped user access instead of calling the arch specific heavy
+user copy functions.
+
+Patch 5, can be split in different patches for each archicture or
+subsystem, but let's get a first feedback and agree on the principle.
+
+Christophe Leroy (CS GROUP) (9):
+  uaccess: Split check_zeroed_user() out of usercopy.c
+  uaccess: Convert INLINE_COPY_{TO/FROM}_USER to kconfig and reduce
+    ifdefery
+  x86/umip: Be stricter in fixup_umip_exception()
+  uaccess: Introduce copy_{to/from}_user_partial()
+  uaccess: Switch to copy_{to/from}_user_partial() when relevant
+  uaccess: Change copy_{to/from}_user to return -EFAULT
+  x86: Add unsafe_copy_from_user()
+  arm64: Add unsafe_copy_from_user()
+  uaccess: Convert small fixed size copy_{to/from}_user() to scoped user
+    access
+
+ arch/alpha/Kconfig                            |   1 +
+ arch/alpha/kernel/osf_sys.c                   |   4 +-
+ arch/alpha/kernel/termios.c                   |   2 +-
+ arch/arc/include/asm/uaccess.h                |   3 -
+ arch/arc/kernel/disasm.c                      |   2 +-
+ arch/arm/include/asm/uaccess.h                |   2 -
+ arch/arm64/include/asm/gcs.h                  |   2 +-
+ arch/arm64/include/asm/uaccess.h              |  30 +++--
+ arch/arm64/kernel/signal32.c                  |   2 +-
+ arch/csky/Kconfig                             |   1 +
+ arch/hexagon/include/asm/uaccess.h            |   3 -
+ arch/loongarch/include/asm/uaccess.h          |   3 -
+ arch/m68k/include/asm/uaccess.h               |   3 -
+ arch/microblaze/include/asm/uaccess.h         |   2 -
+ arch/mips/include/asm/uaccess.h               |   3 -
+ arch/mips/kernel/rtlx.c                       |   8 +-
+ arch/mips/kernel/vpe.c                        |   2 +-
+ arch/nios2/include/asm/uaccess.h              |   2 -
+ arch/openrisc/include/asm/uaccess.h           |   2 -
+ arch/parisc/include/asm/uaccess.h             |   3 -
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/kvm/book3s_64_mmu_hv.c           |   4 +-
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |   4 +-
+ arch/powerpc/kvm/book3s_hv.c                  |   2 +-
+ arch/riscv/Kconfig                            |   1 +
+ arch/riscv/kernel/signal.c                    |   2 +-
+ arch/s390/include/asm/idals.h                 |   8 +-
+ arch/s390/include/asm/uaccess.h               |   3 -
+ arch/sh/include/asm/uaccess.h                 |   2 -
+ arch/sparc/include/asm/uaccess_32.h           |   3 -
+ arch/sparc/include/asm/uaccess_64.h           |   2 -
+ arch/sparc/kernel/termios.c                   |   2 +-
+ arch/um/include/asm/uaccess.h                 |   3 -
+ arch/um/kernel/process.c                      |   2 +-
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/include/asm/uaccess.h                |  29 ++++-
+ arch/x86/kernel/umip.c                        |   2 +-
+ arch/x86/lib/insn-eval.c                      |   2 +-
+ arch/x86/um/signal.c                          |   2 +-
+ arch/xtensa/include/asm/uaccess.h             |   2 -
+ drivers/android/binder_alloc.c                |   2 +-
+ drivers/comedi/comedi_fops.c                  |   4 +-
+ drivers/dma/idxd/cdev.c                       |   2 +-
+ drivers/firmware/efi/test/efi_test.c          |   2 +-
+ drivers/fsi/fsi-scom.c                        |   2 +-
+ .../amd/display/amdgpu_dm/amdgpu_dm_debugfs.c |   2 +-
+ drivers/gpu/drm/i915/gt/intel_sseu.c          |   4 +-
+ drivers/gpu/drm/i915/i915_gem.c               |   4 +-
+ drivers/hwtracing/intel_th/msu.c              |   2 +-
+ drivers/misc/ibmvmc.c                         |   2 +-
+ drivers/misc/vmw_vmci/vmci_host.c             |   2 +-
+ drivers/most/most_cdev.c                      |   2 +-
+ drivers/net/ieee802154/ca8210.c               |   4 +-
+ drivers/net/wireless/ath/wil6210/debugfs.c    |   2 +-
+ .../intel/iwlwifi/pcie/gen1_2/trans.c         |   2 +-
+ drivers/net/wireless/ti/wlcore/debugfs.c      |   2 +-
+ drivers/ps3/ps3-lpm.c                         |   2 +-
+ drivers/s390/crypto/zcrypt_api.h              |   4 +-
+ drivers/spi/spidev.c                          |   2 +-
+ .../staging/media/atomisp/pci/atomisp_cmd.c   |   8 +-
+ drivers/tty/tty_ioctl.c                       |  14 +--
+ drivers/tty/vt/vc_screen.c                    |   4 +-
+ drivers/usb/gadget/function/f_hid.c           |   4 +-
+ drivers/usb/gadget/function/f_printer.c       |   2 +-
+ drivers/vfio/vfio_iommu_type1.c               |   4 +-
+ drivers/xen/xenbus/xenbus_dev_frontend.c      |   2 +-
+ fs/namespace.c                                |   2 +-
+ fs/ocfs2/dlmfs/dlmfs.c                        |   2 +-
+ fs/proc/base.c                                |   4 +-
+ include/asm-generic/uaccess.h                 |   2 -
+ include/linux/bpfptr.h                        |   2 +-
+ include/linux/sockptr.h                       |   4 +-
+ include/linux/uaccess.h                       | 107 ++++++++++++++----
+ ipc/msg.c                                     |   8 +-
+ ipc/sem.c                                     |   8 +-
+ ipc/shm.c                                     |  18 +--
+ kernel/regset.c                               |   2 +-
+ kernel/sys.c                                  |   4 +-
+ lib/Kconfig                                   |   3 +
+ lib/Makefile                                  |   4 +-
+ lib/kfifo.c                                   |   8 +-
+ lib/{usercopy.c => usercheck.c}               |  22 ----
+ lib/usercopy.c                                |  66 -----------
+ mm/kasan/kasan_test_c.c                       |   4 +-
+ mm/memory.c                                   |   2 +-
+ net/x25/af_x25.c                              |   2 +-
+ rust/helpers/uaccess.c                        |   6 +-
+ sound/pci/emu10k1/emufx.c                     |   4 +-
+ sound/pci/rme9652/hdsp.c                      |   6 +-
+ sound/soc/intel/avs/probes.c                  |   6 +-
+ sound/soc/sof/compress.c                      |  12 +-
+ sound/soc/sof/sof-client-probes.c             |   6 +-
+ 92 files changed, 269 insertions(+), 288 deletions(-)
+ copy lib/{usercopy.c => usercheck.c} (73%)
+
 -- 
-Michal Hocko
-SUSE Labs
+2.49.0
+
 
