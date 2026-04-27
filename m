@@ -4,92 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E0D9FF8861
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:44:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A53AFF885E
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:44:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9E1F6B008C; Mon, 27 Apr 2026 06:44:06 -0400 (EDT)
+	id E4C606B0092; Mon, 27 Apr 2026 06:44:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4DD06B0092; Mon, 27 Apr 2026 06:44:06 -0400 (EDT)
+	id DFC986B0093; Mon, 27 Apr 2026 06:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B63EF6B0093; Mon, 27 Apr 2026 06:44:06 -0400 (EDT)
+	id CC49D6B0095; Mon, 27 Apr 2026 06:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A11E36B008C
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:44:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5B796C046E
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:44:06 +0000 (UTC)
-X-FDA: 84704000892.01.4D06EF5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C0789140002
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:44:04 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K8qaMwJC;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B65C06B0092
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:44:26 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57B81160108
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:44:26 +0000 (UTC)
+X-FDA: 84704001732.25.0608721
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 81AC5140006
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:44:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tbbiq4OO;
+	spf=pass (imf09.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777286644;
+	s=arc-20220608; t=1777286664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7TbutU5ZwoGRvmAgJqQ0DEtGQomyedCE5ty8Rp4BqQQ=;
-	b=S189nDD7NW66Mnjl4FSCW5NgS+1hLDntk7RPkefB2GC1n15HRZix4YBjCso7i3tGM4hvuo
-	5GQeCjNzLR3ir8Q/m3obHSPo5f9uQV4lJxbXkraWZswN19lv7uy3V5r5IYTqkdgMAUUTom
-	JYzQJDxEe3OFT200ZTf6+z86OEMIy3Q=
+	bh=YLyi6UMyXzyzssvNXLBZCUu5db8XbKMKcT77r6O2Ecs=;
+	b=HKbL0wOVsSR6YW2D4No1Yq9yOL1bp9mvy9kk3VkpcWJs/JD+HPmBqb3YlsE7Kf954rwi6l
+	UKCqe65Sikp5mnbAH53t6Mdbw9xT9Tc0q5n8L1GE1uP495nF/ISe2gjhA2/x7zWPxmyxv3
+	BeGzukKFnNnT/q2nW2pCRzXXKi2ctPU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K8qaMwJC;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777286644; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tbbiq4OO;
+	spf=pass (imf09.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777286664; a=rsa-sha256;
 	cv=none;
-	b=FaJROpZ5tQKxmiaYkUN+IwEdcZn+LPj+/5WdtHif6phdN4jnYe2iHPVWEj9D6udyhUS616
-	m0E0WNx6OClbSLq/Ern8YFyXlVz0WhyJEG2l9txTud3DF1UrphMwcl0fV23twp/YV2uqrK
-	dqNX7H2OvIUyraZ4TcfXFboxERE6LIg=
+	b=v2xO2/VbWBTrDPlQS9BgzjGkRXHJ6V4LPrpuzSSTzN55jQhwx3zZcsiqceYvotbZNcxUWO
+	if8Xq38uWGvqhqhGO7p/hWsL59Ut322LlnAe8+KJvPwbPADN5rDkd/Q4BgrP2W35oru4bz
+	pe1S1nGyLGBxAuUcmXC9MhNSH0VlPZk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 05EC160138;
-	Mon, 27 Apr 2026 10:44:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500D9C2BCB4;
-	Mon, 27 Apr 2026 10:44:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777286643;
-	bh=iTndbkVHwjqibIZVTSPWbo8ojcxJAy0mB2LeI5+NXD8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K8qaMwJCaqiC/yQFukTnoCCKBEdcWHxwZ2CKVJKGiGXAeCJT49g4amyjQTrZv6yJl
-	 EeazLQ2ZXtADk4bUag8sm3blu2HWaiT8O/wPFYsFl6WlK17luWwBc2wQTEmq+YJV9v
-	 YPk4oUIeYEmjNT79i47KevFsVW5wSqODNbJm+d2k=
-Date: Mon, 27 Apr 2026 03:44:02 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: shakeel.butt@linux.dev, syzbot
- <syzbot+7d60b33a8a546263da7c@syzkaller.appspotmail.com>,
- Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ljs@kernel.org, surenb@google.com, syzkaller-bugs@googlegroups.com,
- vbabka@kernel.org, Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [syzbot] [mm?] WARNING: bad unlock balance in do_wp_page
-Message-Id: <20260427034402.096cb95de92bec15becc78bb@linux-foundation.org>
-In-Reply-To: <f0ab0c7a-c597-41a8-92b3-4424b12b1b1e@linux.dev>
-References: <69edca15.170a0220.38e3f1.0000.GAE@google.com>
-	<20260426034938.db29d74982a8eb8463f8cf3a@linux-foundation.org>
-	<e7187a21-7114-4f42-bf8b-90d6e6b54fa2@linux.dev>
-	<20260426105532.43768b24a42744f1b52fdff2@linux-foundation.org>
-	<3591c663-a4a9-4c22-97cf-b58b2e7d8a41@linux.dev>
-	<f0ab0c7a-c597-41a8-92b3-4424b12b1b1e@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+	by sea.source.kernel.org (Postfix) with ESMTP id 93EF9442AB;
+	Mon, 27 Apr 2026 10:44:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937E7C19425;
+	Mon, 27 Apr 2026 10:44:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777286663;
+	bh=wEZzX/A7QNfRsGWK+DI75VRDYHn1jWOu+XIau8CO8QY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=Tbbiq4OObSm25+yVdglw28OVx3RNX5mmLt1Lkc0QhNyLo6UrJAOBCsIlK6ojjbVnB
+	 mLTxKLIaMrCDPI/Hkkp2VsVGDEM7tU62rpllVSdXGjsXntCbuD01dOcGZkIs1JMxmP
+	 N+t/6bAI0EZxZ/PIw56ZQaRJyHbDZ+JOpGOTJMn/wfmLA/5/rQ1Bw7c8WI9qv/qsTZ
+	 rc2zl0JIdnMNni48uO4Uj9jSc2C9pYPVUrZYLHzeLTgi4f4r+0y1cDZa1mnANQ7ORb
+	 x2rvMBK8qyVJxCu2Fng6Uefb6qQYw1sYimts7xCeqAsG5P/Iw0BLXzJRRWjjzdUyYp
+	 xgsAwpyvyIYaw==
+Message-ID: <bb418f9a7bfcabc3070b412c745c5b6456d592b9.camel@kernel.org>
+Subject: Re: [PATCH v3 2/4] mm: kick writeback flusher for IOCB_DONTCACHE
+ with targeted dirty tracking
+From: Jeff Layton <jlayton@kernel.org>
+To: Ritesh Harjani <ritesh.list@gmail.com>, Alexander Viro	
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+	 <jack@suse.cz>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew
+ Morton	 <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka	 <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Mike Snitzer	 <snitzer@kernel.org>, Jens Axboe
+ <axboe@kernel.dk>, Christoph Hellwig	 <hch@infradead.org>, Kairui Song
+ <kasong@tencent.com>, Qi Zheng	 <qi.zheng@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Barry Song	 <baohua@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie	 <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, Steven Rostedt	 <rostedt@goodmis.org>, Masami
+ Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Chuck Lever <chuck.lever@oracle.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org
+Date: Mon, 27 Apr 2026 11:44:14 +0100
+In-Reply-To: <qzo1s6a4.ritesh.list@gmail.com>
+References: <20260426-dontcache-v3-0-79eb37da9547@kernel.org>
+	 <20260426-dontcache-v3-2-79eb37da9547@kernel.org>
+	 <qzo1s6a4.ritesh.list@gmail.com>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mfrb9x7dgpsak4zbi4zo9zdkccptaqne
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+MIME-Version: 1.0
+X-Stat-Signature: rfbout1db58eiba11ac3uhfw7gwsb9ws
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C0789140002
+X-Rspamd-Queue-Id: 81AC5140006
 X-Rspam-User: 
-X-HE-Tag: 1777286644-142948
-X-HE-Meta: U2FsdGVkX1+fS92rSF+pvinG/hrkkiabyB7gHwXfoylH1e+QauC1vH6Cx/I1sxvFTOEqEPe1NkA4WiI4reURkf01DSgF7dZhclJENePGD/t/5zLNnrRu6sC1y/IQbominvOv5UlIIcKdZSgXib2qPW+mUQI1TUS/fViKJ2Tkui95c4gIxR6lwSudPFs8DW4OIAvGjMkaJYcuyDR13XaX6WV/aRbwtYvCOM5ZOHx6O626/AT0cRo5z0MDbK39IJv8mXGSXNxM+8scvoCqBrMQIQvtJpIbk6dyckQDbZ/3XtAGRKPtxfS3mz/Um0e71EuE/XHQVuvsWbkqhKKLb1yro84aNMKgvpkRvRRICq8EGRq4ILCRPZJTL8lO5MVpYTTTNAIkQ7Trol8p+zjZxgbQYULRp8my45N9r8wE5EKwkQ/nVv2Z70Lj7bSBx+PK/YC1nzz0PuRwhuvRAZ1G/ESAICfsQys3+C17W21E2SwJE9jgaW6TqLg56Xa6rIMxe4ZuCPV3+zdQODSwVGiq2jA+jjfj3odGlC7EtXQ2O9g1rAwUuZOc4CvXmnOJvYrxJV9wbUnSy4WQnW+DAJlvc+QP1I4ZZB3d8lXwOxgWsNg8weU+iL1hJOt0ylQxJWc+zzrO/Xft5M9EDqNy3+/XO4kHCEz683kHgrQeQ7SWOv43uI/BY/a8xhe1Me0JRgyeKBKb8v3Vcbfr8S+dRomuvQVR/Q57zjl3df92/tlXSmelK8jzJONIOmG99f3NUt6lyKB+dScM+ojSFQhozNrqq94aHO0TRMihUjM4eojQ5UqXn1XBg7l5Bc3DJZ+Vr+QzdX6kTEaHXZF3mXuqiWNseSZUnHJcTQbFYCpWRshjWiKkp+KXkqptkqztA+WpD0C6Yv9UKfMbMArvWnD7zh+SOTxbQAvohuptH2ego9DYqCALHw3bt+zeYE58IXboD7ZOqoUzua4CkWCk+QKX8VdpOgs
- tSSbrAoO
- jE2QNmC+NjMCSCF1JF3VdD9+DzyfaWR2dHuiU+uKUk1CarImwkHdN0xugUkwE7it7j++2TxkG5p76APiqC7H6mB/uNNsVbpiMA/iyPsNNlC0lEBU4AqZQkgxlw0vwI79i1PZ3t9px7g7GgZxpTV2hh0RRbVbPldUicqcDuBKSTUaNq67d0NCA+SQsXHKG0adRPJrE6aauy3ui765cZNyrj6Sp99OBllEY7zTAI8KKPfTpVRgDvE7tbsvq1ALqIkeJARuByToUO1hV+xEglCQfrSUCjXSfzNOt0GuDtRYH2afZYTPsX6b8DqLhi7gPM5Pv41lio4FRWDn2jcGzyQZyufDe88kYPPMbzKLOhW6wNow5T68sn8yDn4iurc0BUCzfbb/j8+58DgUYoWz0kAcFit8edIxC1SYuehskcSThfCyWZvd7krPwoLnvtKDYZz4VkvfUOIWT9pajM2DUWeh3dOUE3c+9cGK8jm51BzhcjZCeH3BxhG3oOJQCzA==
+X-HE-Tag: 1777286664-228248
+X-HE-Meta: U2FsdGVkX1+bhBuTjECZ4RlaaRqtZzWM9Rrzc21SrLX2ljQEVo72HJljbQS9y8TIY0EmjHXHyseHnLhfODTcd5Q3nxefqZqWGsf6CKnUxP6/633oqbRtBWgj3rH41NbmDjYdHsXjbjYbFWJ5OlT5wSVUy1/nGFVFCbJP0HTbwIrKsi1ywVB5WpGliSUb7Wy65wjIB/2AAhTQV87YypQ/Gu6tPodcgKRaLERXjoDakeXmZpjedz5HSHkhPPn3xy/6gAKbtUAX1kGMLD8ScAXVewWUyJcD3S0tvYSTunR56PDdDlf4J6HMCV9AuScUcJ8EdF90/1vcc/eZnauPxm2BlI3d2v+PIE1h3jO+ZCPNNrB3x0f6y3D2ag5SKig376/tRtp57NCWLgloW9yXbGY2dPT6AKTFK8qVFwock5LoktixzmQGLEZak1aIfXfFe5Brbw+uuydKw8hENOuJeUdMnJVAvXS2XNglpeq3ja7Lj3TcW8T7YV4PgUk8+Y00j8BUHE1V0iJjCLn2RXlWv55rs679exQZO7O4BOeypS0en5/eYtcdMNoI1Uo/cUa0OSIZ2oLJ2O2ZMzRSwZ51VMjx9hh2GfsRjBcB0ZbKSrZJd6LBm4PKkEDXnxghMJTPoljcNQGziqGXVLEJ/X71ZosEHp88OXyvVD+fHB+EXpqZpnUS5WgCnAxcFNyawxoUIF6lgkc1vfRk8/tCoBq1oO0r0QAj+tB6MW5AMHkHL8GvkX/5xbBMlQzJIZZvI/YnBbaxqDe/E0wvygKtJdhP8VABWOj3sGlZNaLf+XPrhmj3EG0WOo3oq5dTyuKQ97PkAR/7CEOScb1Dcoycsdg1QFaQJKuI+cUIAYVvUCOzlSLbKjnCWt0ss2owmQvVsjGdf/jb1LZyrlnn9V28O/o4KGgVGvcAmlWNmDhW+F1vnJyN0+/OxTchtsvUR1OtiAd3xrs4WtH4PExlB4zeb97JI9q
+ 7x2nzYS9
+ i/zqAHQHGCE6ZcSCncgRwnamIQV77XxgtAR+K6+HlBgI6DuZq23wxbweIsGCbBWzh/Lql0sYJQ46veN1j5AyImTHk9DmLROtuq5Pw6b4I1SuknazMcMS0VaP4j4m7Cea+HdOqWR4OIqVIrY8B3et4WNPGbU01ijcxOyVqiW2mT40bPeTVgfQ7IaVCmzZ/v+hzoyfm9oqmUSE2bvwJX/oHjHboDto40ezHEuvrbJ/+LRSeZsyuPQ091OGqRTGjrDJCpTUptDRZpk23byJRD5RuHFQjBea8XEMALkqpz9/oAkrLtF3+cRm35bd1sDPxASHbuVzfucaELNjumCT+YI57s85RjNpH/5gTY0u5P4Ly+Tl1AgM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,60 +184,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Apr 2026 17:43:38 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+On Mon, 2026-04-27 at 04:01 +0530, Ritesh Harjani wrote:
+> Jeff Layton <jlayton@kernel.org> writes:
+>=20
+> > The IOCB_DONTCACHE writeback path in generic_write_sync() calls
+> > filemap_flush_range() on every write, submitting writeback inline in
+> > the writer's context.  Perf lock contention profiling shows the
+> > performance problem is not lock contention but the writeback submission
+> > work itself =E2=80=94 walking the page tree and submitting I/O blocks t=
+he writer
+> > for milliseconds, inflating p99.9 latency from 23ms (buffered) to 93ms
+> > (dontcache).
+> >=20
+> > Replace the inline filemap_flush_range() call with a flusher kick that
+> > drains dirty pages in the background.  This moves writeback submission
+> > completely off the writer's hot path.
+> >=20
+> > To avoid flushing unrelated buffered dirty data, add a dedicated
+> > WB_start_dontcache bit and wb_check_start_dontcache() handler that uses
+> > the new NR_DONTCACHE_DIRTY counter to determine how many pages to write
+> > back.  The flusher writes back that many pages from the oldest dirty
+> > inodes (not restricted to dontcache-specific inodes). This helps
+> > preserve I/O batching while limiting the scope of expedited writeback.
+> >=20
+>=20
+> Yup, so, we wakeup the writeback flusher, which will write those many
+> "number" of dirty pages. Those dirty pages written by writeback, can be
+> of any type though, can be DONTCACHE or normal (non-dontcache) dirty
+> pages. IIUC, writeback doesn't distinguish between them while writing.
+>=20
+
+Correct. This was the approach that Jan and HCH suggested in the
+responses to the last posting.
 
 >=20
-> Alright, it seems I have successfully reproduced it:
-> (The reproducer is attached at the bottom of this email.)
-
-That's a lot of code.  Thanks for doing that.  Maybe there's something
-here we can put into selftests/
-
-> >>
-> >>> However, in a production environment, this is practically impossible.
-> >>
-> >> Can you expand on this?
-> >>
-> >> sysbot isn't a production environment ;)
-> >=20
-> > Rebinding only works when the hierarchy is completely empty. This is
-> > generally not the case in a production environment (e.g. when systemd
-> > is used).
-> >=20
-> > BTW, it seems rebinding is about to be deprecated:
-> >=20
-> > cgroup1_reconfigure
-> > --> pr_warn("option changes via remount are deprecated (pid=3D%d comm=
-=3D%s)\n",
-> >  =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 task_tgid_nr(current), current->comm=
-);
-> >=20
-> > Also, it appears the current memcg subsystem assumes that
-> > cgroup_subsys_on_dfl(memory_cgrp_subsys) cannot be changed at runtime.
-> > (Please correct me if I missed anything.)
-> >=20
-> > If we can get a reproducer, we can try the following fix, or simply drop
-> > rebinding altogether?
-
-We'll want something which is applicable to 7.1-rcX please.  Removal of
-rebinding sounds like something we'd address in 7.2 or later.
-
-> >  From 6ae41b91339625dd7bf0f819f775f26e78171a73 Mon Sep 17 00:00:00 2001
-> > From: Qi Zheng <zhengqi.arch@bytedance.com>
-> > Date: Mon, 27 Apr 2026 11:20:21 +0800
-> > Subject: [PATCH] mm: memcontrol: fix rcu unbalance in
-> >  =A0get_non_dying_memcg_end()
-> >=20
-> > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> > ---
-> >  =A0mm/memcontrol.c | 30 ++++++++++++++++++++----------
-> >  =A01 file changed, 20 insertions(+), 10 deletions(-)
+> IMO, what we could also include in the commit msg is why is this above
+> approach taken? IIUC, that is because, by writing NR_DONTCACHE_DIRTY
+> pages, it still reduces the page cache pressure and still reduces the
+> amount of work that the reclaim has to do, even though some of those
+> pages maybe non-dontcache pages, in case if there was a parallel
+> buffered write in the system.
 >=20
-> With the above patch applied, the warnings are gone.
+
+Good suggestion. I'll add that.
+
 >=20
-> If no one objects, I'll submit the formal fix. Or should we actually
-> just remove rebinding instead?
+> Also should the following change be documented somewhere? Like in Man
+> page maybe? i.e.
+> Earlier RWF_DONTCACHE writes made sure that those dirty pages are
+> immediately submitted for writeback and completion would release those
+> pages. But now, in certain cases when there is a mixed buffered write in
+> the system, those dontcache dirty pages might be written back after a
+> delay (whenever the next time writeback kicks in).
+> However for RWF_DONTCACHE reads, it should not affect anything.
+>=20
 
-I suggest we just fix up current -rc please.
+Looks like DONTCACHE is documented in the preadv/writev manpage. Here's
+the current blurb about writes:
 
+    Additionally, any range dirtied by a write operation with RWF_DONT=E2=
+=80=90
+    CACHE  set  will  get kicked off for writeback.  This is similar to
+    calling  sync_file_range(2)  with  SYNC_FILE_RANGE_WRITE  to  start
+    writeback on the given range.  RWF_DONTCACHE is a hint, or best ef=E2=
+=80=90
+    fort,  where  no hard guarantees are given on the state of the page
+    cache once the operation completes.
+
+I don't think this verbiage is invalid after this change. Kicking off
+writeback is still just a hint, like it was before. We could mention
+about how that I/O can compete with regular buffered I/O, but it seems
+a bit like we're adding info that will just be confusing for users.
+
+> > Like WB_start_all, the WB_start_dontcache bit coalesces multiple
+> > DONTCACHE writes into a single flusher wakeup without per-write
+> > allocations.
+> >=20
+> > Also add WB_REASON_DONTCACHE as a new writeback reason for tracing
+> > visibility, and target the correct cgroup writeback domain via
+> > unlocked_inode_to_wb_begin().
+> >=20
+> > dontcache-bench results on dual-socket Xeon Gold 6138 (80 CPUs, 256 GB
+> > RAM, Samsung MZ1LB1T9HALS 1.7 TB NVMe, local XFS, io_uring, file size
+> > ~503 GB, compared to a v6.19-ish baseline):
+> >=20
+>=20
+> Can we please also test parallel buffered writes and dontcache writes?=
+=20
+> Since this patch series definitely affects that.
+>
+> BTW - adding these numbers in the commit msg itself is much helpful.
+>=20
+
+To be clear, this only affects DONTCACHE, not normal buffered writes,
+but I guess you're referring to the fact that DONTCACHE and buffered
+writes can compete now.
+
+Can you clarify specifically what you'd like me to test here? Are you
+saying you want me to test parallel and buffered writes together at the
+same time (i.e. make them compete?).
+
+I should be able to do that for the local benchmarks, but nfsd's iomode
+settings are global and that won't be possible there.
+
+> >   Single-client sequential write (MB/s):
+> >                        baseline    patched     change
+> >   buffered              1449.8     1440.1      -0.7%
+> >   dontcache             1347.9     1461.5      +8.4%
+> >   direct                1450.0     1440.1      -0.7%
+> >=20
+> >   Single-client sequential write latency (us):
+> >                        baseline    patched     change
+> >   dontcache p50         3031.0    10551.3    +248.1%
+> >   dontcache p99        74973.2    21626.9     -71.2%
+> >   dontcache p99.9      85459.0    23199.7     -72.9%
+> >=20
+> >   Single-client random write (MB/s):
+> >                        baseline    patched     change
+> >   dontcache              284.2      295.4      +3.9%
+> >=20
+> >   Single-client random write p99.9 latency (us):
+> >                        baseline    patched     change
+> >   dontcache             2277.4      872.4     -61.7%
+> >=20
+> >   Multi-writer aggregate throughput (MB/s):
+>=20
+> Can you please help describe this test scenario if possible.. In above
+> you mentioned we are writing file_size as 2x RAM_SIZE. But your
+> multi-client tests says something else..
+>=20
+> local num_clients=3D4
+> +	mem_kb=3D$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+> +	client_size=3D"$(( mem_kb / 1024 / num_clients ))M"
+>=20
+> Also the multi-writer case is spawning parallel fio jobs, and then
+> parsing and aggregating the bandwidth results instead of using fio to
+> spawn multiple parallel threads... which is ok, but a bit wierd.
+> Why not let fio do the aggregate bandwidth, and latency calculation
+> instead?
+>=20
+
+That's what I get for asking Claude to roll a testsuite. I'm not that
+well-versed in fio, but that makes sense. I'll have a look at reworking
+it along those lines.
+
+> >                        baseline    patched     change
+> >   buffered              1619.5     1611.2      -0.5%
+> >   dontcache             1281.1     1629.4     +27.2%
+> >   direct                1545.4     1609.4      +4.1%
+> >=20
+> >   Mixed-mode noisy neighbor (dontcache writer + buffered readers):
+> >                        baseline    patched     change
+> >   writer (MB/s)         1297.6     1471.1     +13.4%
+> >   readers avg (MB/s)     855.0      462.4     -45.9%
+> >=20
+> > nfsd-io-bench results on same hardware (XFS on NVMe, NFSv3 via fio
+> > NFS engine with libnfs, 1024 NFSD threads, pool_mode=3Dpernode,
+> > file size ~502 GB, compared to v6.19-ish baseline):
+> >=20
+> >   Single-client sequential write (MB/s):
+> >                        baseline    patched     change
+> >   buffered              4844.2     4653.4      -3.9%
+> >   dontcache             3028.3     3723.1     +22.9%
+> >   direct                 957.6      987.8      +3.2%
+> >=20
+> >   Single-client sequential write p99.9 latency (us):
+> >                        baseline    patched     change
+> >   dontcache            759169.0   175112.2     -76.9%
+> >=20
+> >   Single-client random write (MB/s):
+> >                        baseline    patched     change
+> >   dontcache              590.0     1561.0    +164.6%
+> >=20
+> >   Multi-writer aggregate throughput (MB/s):
+> >                        baseline    patched     change
+> >   buffered              9636.3     9422.9      -2.2%
+> >   dontcache             1894.9     9442.6    +398.3%
+> >   direct                 809.6      975.1     +20.4%
+> >=20
+> >   Noisy neighbor (dontcache writer + random readers):
+> >                        baseline    patched     change
+> >   writer (MB/s)         1854.5     4063.6    +119.1%
+> >   readers avg (MB/s)     131.2      101.6     -22.5%
+> >=20
+> > The NFS results show even larger improvements than the local benchmarks=
+.
+> > Multi-writer dontcache throughput improves nearly 5x, matching buffered
+> > I/O. Dirty page footprint drops 85-95% in sequential workloads vs.
+> > buffered.
+> >=20
+>=20
+> Nice :)
+> Some explaination here of why 5x improvement with NFS compared to local
+> filesystems please?
+> (I am not much aware of NFS side, but a possible reasoning would help)
+>=20
+
+I suspect that it's because of the "scattered" nature of nfsd writes.
+When the client sends a write to nfsd, we wake a nfsd thread to service
+it. So, if there are a lot of writes operating in parallel, they all
+get done in the context of different tasks.
+
+My hunch is that this I/O pattern (writing to same file from a bunch of
+different threads), particularly suffers from the DONTCACHE inline
+write behavior. The threads all end up competing to submit jobs to the
+queue and that causes the performance to fall off sharply.
+
+Thanks for the review!
+--=20
+Jeff Layton <jlayton@kernel.org>
 
