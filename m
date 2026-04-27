@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C7DCFF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:19:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A7DEFF886A
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:19:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C59A76B008A; Mon, 27 Apr 2026 13:19:02 -0400 (EDT)
+	id D6B8A6B009B; Mon, 27 Apr 2026 13:19:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C30D36B009D; Mon, 27 Apr 2026 13:19:02 -0400 (EDT)
+	id D41D46B009D; Mon, 27 Apr 2026 13:19:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4C346B008A; Mon, 27 Apr 2026 13:19:02 -0400 (EDT)
+	id C58A36B009E; Mon, 27 Apr 2026 13:19:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A3DBD6B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:19:02 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6CDD91B7DAE
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:02 +0000 (UTC)
-X-FDA: 84704996124.21.32CDA82
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8B1E1140013
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kdO2kRaq;
-	spf=pass (imf26.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B6BB36B009B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:19:14 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 823EAA025E
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:14 +0000 (UTC)
+X-FDA: 84704996628.25.DE320D7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CB9854000A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lp9wELlr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777310340;
+	s=arc-20220608; t=1777310352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mhZ9NMxuum/7eEE1gQi0nXMq4NB/M40iUHyNchfsiT4=;
-	b=bzpnWJXQypeEkdTuh8/Gdz2rNmrJkxs2ZlSMUu++KjqX1gKBSYBSqNPenC7bxr5ZiCJNyJ
-	BcqnDbLKbTmOxWdZoEPscdpdJnl+7peNYFiF8Nx6dRhH4DBp8RooRXuQFKlscZsc6I+RMl
-	YWtWXBBR1wCBxzj+Gg41cecT1pD+Gec=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kdO2kRaq;
-	spf=pass (imf26.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777310340; a=rsa-sha256;
+	bh=pZNMFYuU8CchD1nM5e7lml3XtY3zMVnrOrvqbhM+lqI=;
+	b=dGEAbVie/RKIDd7Hn8N0f+D+YLubtBybN5ILIBC4VZs3fX63LqbpyXf1UgEQ0/IzoqmCTP
+	56RxJqD3oO7vLVleLdfFjIURnW5WaFO+hK9wCSDpSfDHzp2wXJQYEJwfuOlumD4b01gMFr
+	+K0BCytDFFCNCWT0bFnJt+QglWqb40I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777310352; a=rsa-sha256;
 	cv=none;
-	b=23mVBgiGVu1KGgtqc33E3ocyMuF0mY76US/pLrskjacxi4Aj+qbhF0Id1KPyIITcZ/lN5J
-	D9UhYB4bO+34ZV5th6JmmnI7VY6sTho4BYISjhn239PE3sZJsCA09nLRU/9/Qtmnm6KGdh
-	iy1uZYWca28ANNYFgan8LbGnhGiXL0g=
+	b=lT/cRqCJ0fT12828JvAuxDAfc/xfjbOuE/eYAUVYrsH+Onfr05EIjqaVKNlwWo1ASH+IhY
+	S1MRX6wPUZYHXo6h7K/6+oKmRNKCXBhvlPLhT/bXfHsCZ5d/Y4Y6zwvaXWVjOahlBR4MFV
+	cZYuG6DnZNi2ZDCppqpa2lQ4lvZuScc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lp9wELlr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9368940C54;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5077960139;
+	Mon, 27 Apr 2026 17:19:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAFFC2BCB4;
 	Mon, 27 Apr 2026 17:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C90C2BCB4;
-	Mon, 27 Apr 2026 17:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777310339;
-	bh=VVuQn2YnZFi2JH9uh9hmEqXb1BpygsXabSyFGnhBvmI=;
+	s=k20201202; t=1777310352;
+	bh=vbZIj5I8a11ig9c375SeIMkNInKGe+jckYb8HPag1tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kdO2kRaqrKnrRzE/uOUoSc+QuIvBLF9bEcfUYb9jTJLWJk0AT883/0gLUkpYyvhxW
-	 JwKLSaa6O8znPG+ygzo4nQLM8J0f65SbAuU342P7t8CFNHOEuyufyC86uU6TKB6BuB
-	 gSew3oyOMPJ8ALphDrpzU/JPmVzf88NlkSTCpSsq0dGpC1oXnkppqU6so9I0ayHunG
-	 vmD6szQq9NnauXryTPXCD0GLKF95gnwZ47owOPgIM468cdafyYqaGorVn/T0ZUPF41
-	 utCUjd396YBehKkYMEmrRy4GP6QkmxuYFD7L2LBro+x9SzGKxh5BvzwrXlX1jpWNJG
-	 /RZq8/R9DjgcA==
+	b=lp9wELlrvJvoeuCK0/zMI5UANnrsQ+T4se/gBOunN8iQDrEi1RstW5G65/9vUEPmI
+	 U9UXqoktuU7EViGdT+8yzDZHjl2N0E5vd9veY8uQePuAD9x0oGHf4CotQwSmAD24go
+	 gSXTECesL9+kQmgNOk7myjSgr8UboLxcnh/OrEADTLSIqRqZRx4YwXDl6QWc3wVNsO
+	 sB/2ZwfKCyhos7Vj9aXXCgNggtmoXoIYLpWXmI9TjsLctEcOG8w3vDT/K6+fVh16nS
+	 /UcGgkCV5vp5qC1VRJeMqVPGsaV7+wscOAZaxlqKS8j4DsLjsIu1iQmtuFIX3tL+zm
+	 kvFBNXQR3j5iw==
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
 To: Yury Norov <ynorov@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -113,24 +113,24 @@ Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
 	linux-parisc@vger.kernel.org,
 	linux-sh@vger.kernel.org,
 	linux-arch@vger.kernel.org
-Subject: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
-Date: Mon, 27 Apr 2026 19:13:48 +0200
-Message-ID: <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
+Subject: [RFC PATCH v1 8/9] arm64: Add unsafe_copy_from_user()
+Date: Mon, 27 Apr 2026 19:13:49 +0200
+Message-ID: <5b09e58a84c9edcfe5724db5cd57e45d96a96bfa.1777306795.git.chleroy@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1777306795.git.chleroy@kernel.org>
 References: <cover.1777306795.git.chleroy@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2390; i=chleroy@kernel.org; h=from:subject:message-id; bh=VVuQn2YnZFi2JH9uh9hmEqXb1BpygsXabSyFGnhBvmI=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWS+nxljeGSBfXj99HCNy2WTVFXXC9z/Hmi+//aE1/MbC +50nw1Q6ChlYRDjYpAVU2Q5/p9714yuL6n5U3fpw8xhZQIZwsDFKQAT2djH8D+e3yYgNP/F6xtd z9QNXjIccVycwR574E38S3tWp2uq95Yy/M9xKJ2hYJCUJV9391rVwmlfl7x6GzD19bqwZeyVdgF fZ3MAAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2498; i=chleroy@kernel.org; h=from:subject:message-id; bh=vbZIj5I8a11ig9c375SeIMkNInKGe+jckYb8HPag1tw=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWS+nxmbKDOhb/vkF5+62Iv+nzi0lmWmkWf+tSO3HK9yP D89hV+LoaOUhUGMi0FWTJHl+H/uXTO6vqTmT92lDzOHlQlkCAMXpwBMJCKWkeGFnFP5dUbGE1cO pXr18eg3ndoc9ubDcl2tYxbdt9o1nmkyMvQuDCp+FV4TvfDP3c6+r/YFCyvUNTZlcrea/2SZ/OM dBwcA
 X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8B1E1140013
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CB9854000A
+X-Stat-Signature: kaeob33r1uk18qmh83wufbyfhpgq1fqs
 X-Rspam-User: 
-X-Stat-Signature: ugyudif19617t6sep11ey3pn8zg8cxfh
-X-HE-Tag: 1777310340-202164
-X-HE-Meta: U2FsdGVkX18uh0d7/FypXHXoVa6tjb1TNPZfWMY1Wio2hr7ybA1yRUzqdfJwftmldN/+6t9ctvnWthFkv1Y4IIyGzN6mWuwTNeWLII+C+gbb7t5fLov4RRqO2ensOQUQ7SzmVRiSpbQceDbIUZ8GswubFI62ABJHmWS/fNzum5A6IHLvU5HEgTxdAxtA7CttljXnpttNAO/KlYOv/MkeeViSgBkmjBQkCi8ZN6u9vDgCIDm2bDSLBHnfA2PD2MqEuuzoFVQwT2jsPVieIA0xrVxSqkXG+aJdIvjotmsdRiH3/66WByrnSBRTVrz/FIur9AkdEPSEZswci21wzYbpAXr0J3/651s6f4h5PXS3pjRUIdfLudRj4t8Hum1n8emmenwpU9r0K2JnPwf8l4iJI516WtQjvXzWa2ZgU0dbGEgOaiqiU9nhgK0Ui47L1c5mYj6t713fJEazPCcpM7l+fm/yHTdpptX7uhkbrUdRanBely62N/8VJOUngfiXJXNLgQY+MUWIYmoVRUrKsi5BhxC9PBBad7FVmxjnCLr0nCISjOn6NO+F1kUCY7/Ejxh/98G6L66ME3qwbEFKHAJt/FPK7ehFL2dEJzAfVdET7Xt7jvY6c3RgPRbCLFWDCw1qVHnDej/FAf5+vE9UPsG7XMDxFxvLxUuhmtyLPR8tvJR+98iORHLCqAdreDU1X7bUo1NeonvFUXc97zYvxXtfn78TFfM120XeqfdGK+VopzNELk2BalPt985Z1Ry2kkTro1kUIHWRPx129xBZ1U/aEz9637Yv2pvDExlc1H6G9Zrz9y4EGm3tbY8b2SYqyEmJMmUf9OZamUdgpCqQ1sTQ5ArCJUB/wC4nzuiQVpabtr+E4ART3EE1OTgBj3blrAwrkmqK9HQ7zn69P7EeoNAwxvHlomALPimsu60lc4ytnORZAie1uN2x+xZ4CBmg3fHq4wZFnFG/7E10qlApV7V
- MpwmGrjr
- 2AnnvVOCwoo9iNIrgyBgDm0S8KEgDo8r8uUjXO7WfV95qH1xuP/NTur6PWdB0UnWU8avMesCHEg1lODAdwOAI6pxE+TjA5iDlVjjZgeYr97S6g78+KxHH+JO1D33EdmaSqWSoF9x6a5XzOFwaXb6FEFHEuMBrzOzPY8etPEbgT1ASuEeT3/eA5G3FV3nDLsStF/s8slddsCvvWMHyRUyyZMyVdhIQ5HZVQ6mgSnsNBgrpToDupNWw3crBwocEG7Kym0bLsliPVc25dLW4YSiJmLAf2ArSRy/bkM2df6kloHUxDTMhs3KWfcH+bEvkUTJU0HWGja2iA7/6Sl1GdDkiCUJr9JOqVirwpNad
+X-HE-Tag: 1777310352-21866
+X-HE-Meta: U2FsdGVkX1+5k0Z5qjrQ3JqIBgb4A55VpjLN5LCLjStffnjozAblxP0qHy9iHuSuJpaROgiYWcsY0xymJVcBm2QhMqsbzGDTjACsq2PPH2FnwP6L8eri1knzFmeqRYnQML+J6rykcaE1xmwX8w9d4lBgf9CYzLpU7iK91pYGOUD2tjd7i7hbR4vIc5SxZFG5LUuiGVhCa+sezY25BNhPv7REU+nUgblBkZlTxZ0xzbr8VyeffEiFMFuMm4jZtQOapVG/IRQGrdda1fE46BmYXQJQ5hVw+TrwJAMKcgK0wCWXBMrojuF7MgJx7QBMSfUB4wYSENxUIlrdLkstZLL7/QZhvqVX1DZQOJl0nJzJDNAMuBOJICmj2sLdI3MsQFEVJJuiH7XLVtLmmRcsZa9XQpQdmcbB9XLE6u18SBArX0F4Vgmgx1tIjpuMAdhXlat3lyt+zV+gDHjqteXtkyYjrQ11ZDnJPbVyoBZJbHowFfqO5uzvN0eSixhR8fr44+ybZuYuaKmoL5STzElg5ErueAwKvCGC0GcoQ0MyOwJcOrhVccJ41gc/2aTUWGTPZuexcS9x4TNNZyTu4purmMuOfFGXTXaMRei/5gEYaAxYEVwzIvTABdyeyIKrAvE36fnJaKsAEp8rXvKqEPZ77fy1PB8JTsFj9SrnlcNzlgFPmmeJbsLeNn7oztXUupn1biPuJS/D68QpW3FcLP8L48fW08/vWd+iBjaQlZ0sNrKeq/9r3+nBqHidguLZEZV3vSRSqOdlZclc73EOpklW0Rq/7nMu0vV3nlIn3GHgMo5QcNoQyt15m9YmbTDYAl1HU+S7mdjInFIj/fzEz1BORCVnhc0RiroUk4Bi5WdahUZBEmNQBT53hCx4DZNdwp4O0BOghB7ORrWZssEpJYX7NLZlYSKaIpY3h235vhrkq0gqtCJAESYSeMjV2D4O/LcCuEOi2RD2ixoCEUo+6Besmwj
+ 4ciS6lSQ
+ z8R7Zh6g1luNIosNL/TyHL2CdLN0Wf7YU7dGXeFUY7IW6kKPXfcq3cWi72ZnKl5GlvJZVe30gGzPV8t7F8XKtn/Vvg4u5u7A6nCc3PP019LRXDvFq0sa8ghwb+8nRMguCIX/VJA9PjinO9EOzCQBCONtZsbbblOejZkIwi2zn6GBgMXY0rfZ11ozPsWwf2+i0nThi+QtbYXLua8bvbVWt7pB7Z9DJPhdpvNoLdZUbcJnJIUk9cdEGC+zok+BiDWwRpkRzPmLwZs2Za0XgBJ+FEdF5pjIBfU+PffggBDIGZKu1lyrzdb2ymUZX6/vSh/ksEkvVOHC42OwYIIJ6MoRITHpMud+1l6UXlaJT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,14 +144,14 @@ Add it.
 
 Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 ---
- arch/x86/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
+ arch/arm64/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
  1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 3a0dd3c2b233..10c458ffa399 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -598,7 +598,7 @@ _label:									\
+diff --git a/arch/arm64/include/asm/uaccess.h b/arch/arm64/include/asm/uaccess.h
+index 1e20ec91b56f..adfdb52cd82b 100644
+--- a/arch/arm64/include/asm/uaccess.h
++++ b/arch/arm64/include/asm/uaccess.h
+@@ -437,7 +437,7 @@ static inline void user_access_restore(unsigned long enabled) { }
   * We want the unsafe accessors to always be inlined and use
   * the error labels - thus the macro games.
   */
@@ -160,7 +160,7 @@ index 3a0dd3c2b233..10c458ffa399 100644
  	while (len >= sizeof(type)) {						\
  		unsafe_put_user(*(type *)(src),(type __user *)(dst),label);	\
  		dst += sizeof(type);						\
-@@ -611,10 +611,29 @@ do {									\
+@@ -450,10 +450,29 @@ do {									\
  	char __user *__ucu_dst = (_dst);				\
  	const char *__ucu_src = (_src);					\
  	size_t __ucu_len = (_len);					\
@@ -193,7 +193,7 @@ index 3a0dd3c2b233..10c458ffa399 100644
 +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
  } while (0)
  
- #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+ extern unsigned long __must_check __arch_clear_user(void __user *to, unsigned long n);
 -- 
 2.49.0
 
