@@ -4,138 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20399FF8850
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 03:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 167A9FF8850
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 03:35:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6233A6B0005; Sun, 26 Apr 2026 23:10:43 -0400 (EDT)
+	id 2EC386B0005; Sun, 26 Apr 2026 23:35:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D3386B0088; Sun, 26 Apr 2026 23:10:43 -0400 (EDT)
+	id 29CE66B0088; Sun, 26 Apr 2026 23:35:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C2446B008A; Sun, 26 Apr 2026 23:10:43 -0400 (EDT)
+	id 1B3A86B008A; Sun, 26 Apr 2026 23:35:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3418A6B0005
-	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 23:10:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B5AC21406D5
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:10:42 +0000 (UTC)
-X-FDA: 84702858324.17.077A72A
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C7982140003
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:10:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bQk+Cqcr;
-	spf=pass (imf23.hostedemail.com: domain of haowenchao22@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777259440;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AF396B0005
+	for <linux-mm@kvack.org>; Sun, 26 Apr 2026 23:35:18 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8EDC11606F6
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:35:17 +0000 (UTC)
+X-FDA: 84702920274.08.4DBBB67
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 573C3A0002
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 03:35:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RiX+CxxK;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777260915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KM+OtwEwd97Lcv7g7hL+Q7aqQp8IkPF4SNqpVzFRcpI=;
-	b=zC9pLRyNVhaHfi8aMyOKoXLsqlLs7mS5pZWySgiCZm9jIJg8Nsa32bo1MlkyM1/askCwqx
-	5D+DiABUfQAFCy+koECg2W6JT+JSvpp7mQrtfK9U0yQ2IEP1SZdthlyi+UNgYQumqZonXn
-	MJw8ydEPw7IFGQePLjw+KIKn0Fj5IgU=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bQk+Cqcr;
-	spf=pass (imf23.hostedemail.com: domain of haowenchao22@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777259440; a=rsa-sha256;
-	cv=pass;
-	b=ypHzVjVznt5W5JW+PWbCjwu4f+IDIwuYYfeQYEnPo0CsIK+/LvBOvkoIQwVCAyAAZWwVCk
-	oZ+e2MvM5E3531DQmtAyG8a2TrTKW8wMuhfcz1v/+KoIrpXUFGaNzQ0oO5/9xHpsYZoRg6
-	THpby0yLr7l6Z3C8s4BevjT2zaPSGxs=
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-651b4d09141so12796646d50.1
-        for <linux-mm@kvack.org>; Sun, 26 Apr 2026 20:10:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777259440; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DCCmFid7rU8B9IhR272Thp4gaiiDTXDmlm1sY5RZsIWKso0yCjOVRVis00818MnWiu
-         9ptip9Fur/MWOezSOGytykemWs5XGjmW3HBYHsgIlIlN4v8rjyULRmB3N7iH5+M6Wmub
-         WkiTHJH82TapTT76ESr3/DWkQcu/TKBDHTKyvTXfsTr5pXD8TKyp1i3aWff+r8S3CFp5
-         KeDXGtC1j1OIh7T9ZQ3DoUMRXpc6HlqrUnEOLVAWbQc5ep2iMwnd0Dehs8TlAhxwmy58
-         u8aR+eP6yrYGVFX7mjcsIQze6nWDvku+MRqVyvypRSjZAKR3qYAmTQM2VuwLhn+Lf87T
-         3yBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KM+OtwEwd97Lcv7g7hL+Q7aqQp8IkPF4SNqpVzFRcpI=;
-        fh=dn/gYQJkggnvx2r7qK1TdfPIJStT2w3ROPUbDEc91Jw=;
-        b=Tce6ZFpuMw9hna0A0yWMFLjESDE1geepix1F5EZxLLFH3ie8lLrZNSnYMbTQXPltYw
-         Qvu+zoHC8FHt2G9r3S2XuNbBv2/qPNkcCczU65/txCk779oX7xUt2UeosU3bGIciO6qX
-         6XLS9tdeTMyyZ94f3p/4b0YID7tSC3BL/0OcBR1o+YeMywbrb9SPtrnCcGxKF9hRiP3X
-         lD6qy4POcwF66bOfCSsNcSvUXf7Kq5hTVBp8oY1mSYmOt+9F5Me5f2bjsjnK5OGbqj1l
-         EmPhE8Ct1WZegvFs1akfTc02V6KvY+rYkAHjKN2tJRAdNzJwIvqtDzE5ZaqmfYj6dzGj
-         gtyA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777259440; x=1777864240; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KM+OtwEwd97Lcv7g7hL+Q7aqQp8IkPF4SNqpVzFRcpI=;
-        b=bQk+CqcrvQNGH5JzGgh+YkbViI7SbU0aqhuWU5xRhPkAytzhfqBwyuQ6t0OigXkbJr
-         JCqxBc3hwSI14M3MOe+EUbwQOD6UB71oL2YVUT8tuJ59HIEQqcsq2kjKpNoT6NNl1AiF
-         bnjrhGvCbsVtXQ1I6Pio7cmLPDZxX/jFwBvLv/pXIryIXqVM8l0KuPySofKmBleNgMay
-         5lOhD2O04iUmMlvF2Mr922gFhjOjJsmOOsrgDLXiWxKpgW1N3Qe7EeWo4E76rtXIXW2O
-         dyoXDJr8qbh6cbTuvMscjZRwHli/OsYfXJS37bFqyrPVRgs3eBLgbY4qmY90xB2ygp0F
-         M8hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777259440; x=1777864240;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KM+OtwEwd97Lcv7g7hL+Q7aqQp8IkPF4SNqpVzFRcpI=;
-        b=fuAnxgDzhRWbPTHtDz8S/yZP+RkUMoXXqYBMWOGh/vMqm4LhAaWPIa2zs8o8A9QA62
-         SmMEkdI1F9CR3fj00u8l/UtsOcHi+sYUFwbmx4B8btDmcepS8UNga4BOkVK8Xo9KlPrq
-         eZbTd3CjpMyE4terW4+fpmuNdkBs35RKwTuRbKX4YKBOZgIL25uKgQsmohAoTzI/lZKa
-         KCspSpcWcexWa3ezryW9vFQ+WpMz3zY0lGbEKtQHzNbwLTtTe+XIj2alF46mj8874mUd
-         XQmVgk5ciZnwbuVUXmkPLS2LkK2XPuovZzmjfInhqt7x+Fi3HZqnEsYouBzzIG2KX7hI
-         4Pjw==
-X-Forwarded-Encrypted: i=1; AFNElJ/THs7KucZ4viLbFqBh/DrLCBQYWgqNiBj/19/hCzVhBI3zz2hUfH8JnjJm/mHB+yawTtFN4Vcm9w==@kvack.org
-X-Gm-Message-State: AOJu0Yy6xlSX5hphQognHCjj3Kb83R0Hrru7nSEnZWh6amt/u3Wf8yq4
-	ceIX7P6wIyj+P9QxBM/voJ3FNWDDto0vcbxfo0FDHR7QDMhE37wOhYfPNa20ZcyRsN9m9INWt/b
-	tK0W5YKKmHABUhv9BQUKr5dn41OpfKbk=
-X-Gm-Gg: AeBDieuCEZy+M/Uo3fLQ4TcGSoNxgRv4qE2EJJ4SuLd0/X9v+wG/Aqhdj6oQ+6lq5vJ
-	CxJxp2VErTxyfiatVs48iOrnEXi7O5nxDk210JVo8oIqkvW9uOh6XAVLD3nqBuXMRDWceib0YSV
-	pP6FzKY/aWxQE1swqqIJbxlrmnkwsEwSoqyTm2Op9s9OKZBb2+SNnub7z51yTqdATW3btNNxp6f
-	NgM8qk+G3GYHVxGNWRHuwBiTS5iRa7m2hm61dTkRh3G9mcDuRO/WhE0wiZsj/WTO1asGSjf+5gR
-	45sxvl4xDX4lYNVDmXg=
-X-Received: by 2002:a05:690e:b81:b0:651:c221:9649 with SMTP id
- 956f58d0204a3-65311aa1c92mr26554121d50.19.1777259439835; Sun, 26 Apr 2026
- 20:10:39 -0700 (PDT)
+	bh=ZyE1SZctZFUZEjn39pcjfbhX1FfFnz6sHZ3o5/6Vu8g=;
+	b=sRePBYEd8rTnlyIXpJDaeJLVUFyskX4CGHykBb6Otp2o8I51S9WcDOOl3P8AHti8LOEfGn
+	E6A1FdDZDsQoY2l4ofDWDeYeR8jHLBBfe8y8pYNn8L/0UWtmfXslqfZ8vjpZRvFPfsWAyN
+	xGThHjgi2Gu/Bo9vb2DYLvMx/7Z2PSw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RiX+CxxK;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777260915; a=rsa-sha256;
+	cv=none;
+	b=VgAoRxdenJ5sSxyBhZPd+Bm0riwvEj0O1Yh6rxULRx5kX6tzqxuQB1JoRQCcdlB6Z7uChJ
+	4sfWmshVqwHHn0hUKpz4HbuPNlCQeBu8AKgiyGRsv9hIn6j/zPTYs8Q/b8/tsG1yywXOZk
+	H7NXLJINGvbW14pzlgwcbt6FPckp7vw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B42651684;
+	Sun, 26 Apr 2026 20:35:08 -0700 (PDT)
+Received: from [10.164.148.37] (MacBook-Pro.blr.arm.com [10.164.148.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 77A683F763;
+	Sun, 26 Apr 2026 20:35:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777260914; bh=dpoz9Br5gfXY9p/k+gIvqj33uh1nKLNMMWdZZ4iAm60=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RiX+CxxKVDl7Rb4MNf49jz/6t05hRkytgOqO+xc2+t+f11crdaEumCECCXRTd43AY
+	 InZMBcZiQG5/XIcJ0kZTkNqYfxbik2UHF3kkTr13zeAtpwslDXRvplwYLq0o1Dg2My
+	 K2YzBzVjMSVn65AogUa5fm3mwX0rf4mgaQhjGojE=
+Message-ID: <91e38f4d-652a-486f-aeff-6b955b43c193@arm.com>
+Date: Mon, 27 Apr 2026 09:04:36 +0530
 MIME-Version: 1.0
-References: <CAOptpSPs-1UrEa8AHg19e590=SiV6bpnex7gCbif8=aY7BtpuA@mail.gmail.com>
- <20260426085017.166935-1-xueyuan.chen21@gmail.com>
-In-Reply-To: <20260426085017.166935-1-xueyuan.chen21@gmail.com>
-From: Wenchao Hao <haowenchao22@gmail.com>
-Date: Mon, 27 Apr 2026 11:10:28 +0800
-X-Gm-Features: AQROBzB9YuhfVPY5XmYPGQmtYvK6q1PqYnlzHDncpFTPb3tZG54wX9J7FqwHpiI
-Message-ID: <CAOptpSNgA74W4SL-AEJNk4UVrabvaP58cs25qwYa+N-6C9OVEg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap
- release path
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, axboe@kernel.dk, 
-	hannes@cmpxchg.org, minchan@kernel.org, nphamcs@gmail.com, 
-	senozhatsky@chromium.org, yosry@kernel.org, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, baohua@kernel.org, 
-	haowenchao@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] vmalloc: add __GFP_SKIP_KASAN support
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: arnd@arndb.de, kees@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ akpm@linux-foundation.org, david@kernel.org, urezki@gmail.com,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, tglx@kernel.org, usama.anjum@arm.com,
+ mathieu.desnoyers@efficios.com, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Ryan Roberts <ryan.roberts@arm.com>
+References: <20260424130157.3163009-1-dev.jain@arm.com>
+ <20260424130157.3163009-2-dev.jain@arm.com> <aeu3LU2X2P-Ue9ut@arm.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <aeu3LU2X2P-Ue9ut@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C7982140003
-X-Stat-Signature: djnxqfhzr48xm5sdp9f7afrc7tx4az65
-X-HE-Tag: 1777259440-833788
-X-HE-Meta: U2FsdGVkX1/01XRnB3WZH7nqtSwCxC8qOKSRgpeLvX4BsQ0ai2/Cn8WfGDxoPSoN/rZsyQq3liC6KBkc4t5xIK7mWAAreDr/rsOw6MjUf8atYNjPQdhgRXqcXFafnQebBwe/HeDxYMoUE/y8A8o1fwlvlulNMBwmZFcZ+MtL/TN9ickrEKt/mKu7D1ajaiCzxc3Ni+LTaprTTn49gUQOiVADvxiBrs/Wj0wy0DZVjoDScVnsRL2k0YEy/6eeokXjAv01tJ5UOQSfmnZ8H/Y4VCGXZrpP0K1B3rhqHwcp/+YzHyO+PBT3Mxna5jJ/yeSiZ7nutt9sqCU9I71EGM7ShWmRpdmo/TADEct7Z0B6lUR60/PuDpkXdJnYsg2qZ8AjbEFA1pLNcKw40EQxnr+7oNMrs3OauVjJLvjY5kujSZ3z3ntjo4e/6pX/YQkLxoA2Tq1pdhe9hJP+9oS2haskmEr+inIkCI5hSVQo/aaD7fhJhFA2OC5fFGNKGDZzr7C9NiSlYip4qiPKuLomxViUnEV+scQWTAFq1cwz0NY5WV7YC5BKwxn2smIilUFsT05aIglwR3dEA46nYvWB1DIfn3Dmmwj2wpeo2eRyBsPFFlORsDtbd9ahgXY7poHwlLZlnFWHdBg6W+vMq6NtfZyG1WTcaJ84l59COpg0ZZLz2C0qPgObLDc3RqVSkGXRfHXwVg9kKgMN3hjhq0xwu7Gm8g30WyNnkzQXI8207C5zjv45/RJKOQLgejHzI1NJzpLO4hj09hdfSw+dJ4rSLJ2Urx5ZJmeWxxUYdLmH+g5yPPJ4bHBcwWXYPvTCpsQh28Lvd42sxihS8+wTNvtVN5wefVrCZHgB+URg1KEqgCEsSV/JhPp0jpF/zKVyyLeLk8wNI9ZgmpVR5GDakESOkk6+NNMlgghpAQArWjENUniuvKm3pRRNiSPPMcJKjOBgXIQRGZRQNBiWORfgIgvZI+n
- b2Bo1f7M
- TcQ1lDzDeZV7rcJqbeGdk2/4T8853tRi4qlGKxrc4QoJ+z5n0/AoIdjD3XS1dELqRdukaTaSpSpBu0C8yj3wcNxB+UyB5Sxp/EU+ySH9xPm9JmmnP3Cvr6kluBTd9hqlCOZ8NwuTxC+Zwe17bk9CbvLeW+4xSSZVoymB6xbcEuxxWRZXlEQN1tzmxaCgB10/HOGLv2wfFWofaGAuNvxmj1ZrpbDDbHyvU3A4ktgC7Ue/DAT7534aP2fkTeTVL7KrNEWpEp4Hj4uK7S06m5OXTroWUycg95bS+A9NnLJEZAiJi2GBavOguA8e5Jz3db80NqmLm3wEgvT3Q7h0qx0GxVG6BvHvpI4rpPWda2WN12kLKh/i6oSp9kTCHd/dXe2r7pibMPgqZedJ7gRJOBX4PmjBr8b/kGSSQiQMtcy6StFhvB5YqUQi7Wku9io8rWQ7EbfvBDRk8eZUZRq+Zm69I1BnWBHqWel1nwNw6A4Ui0lEq+X4GILyPR9b6Iizac1plbCzDd5aPUviW8ppca7gXosnNOoHJG0MmKhgH
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 573C3A0002
+X-Stat-Signature: fpajsx6y3it5p8iu6xetite3p3xtjxjj
+X-HE-Tag: 1777260915-643650
+X-HE-Meta: U2FsdGVkX199+KeLBm3N7E9y9u8xP5MeM02vikBDwpdJ8vdFv+kvErvUy3Y53wE+wPKLcGP8qrOdjqQuRSMihB/4Czof8gu8Tzf6rx0qAUYjpb/kkt55zrQjfx0nu2/RrqpbbP6agi1JJcq2YJAYS95WNbJPBORkfaSY/EyubTNFExwbPEKg1IPJZcH2UuakIRcH7q7+vIgGMKhq4Yyiw2G8Sv4fiBWKFvnxZ5zI1Tk3oinLOs9idtfGwELQed5Us3usUpqHHSQY6+NAccC587+nxX4+0mAjfyVDxvd656XDtFbBSDqyT0qkSGQfa9CaKR0ejvIdcKCftzUPsHz7FoC2TQxgC8OFf67g5Pz/yUiG0xhJbrAsYYD0nKuKGmvfkTF07qyjUPvJS5NobkIFoVQjY3S9YqB+z8fH6qU1xslZVxE50NUPdJKNOo5/VXv0dcguKA/t4qpO7PAkReke7PVpoEyJ9URXeohvo5HBPUs8DaLVhiKwKpWGQD2NDHZJiRfkywBB3wQit5ZLaL+2Oo0woDj0uk3BNB0mlz8gx1kmLFnstDf0D7pKAKa2/SMxs/FAn5rK/8Zj3XUUmouwP66F1AE2TrblebaeGgZOE1zrXiHI/lGIutS+I1kTgxLD0Jy8PT/2s93D272d0xwmN8vkDoYn7ilSa1bTPozQ3TrNj1E6tRhLXxomWVrnm3oJlYgxNakkCHsUhSuRRIwV7TLlI6Q2haHwCFV4bJ5+BzLvucuTEtY9OIzN2nVIXd4MnsV84tji0SJ1jSUOgkF4wsf/XMglVFVbhO6AKsXCHOPrPQINwU1mai+nBIGuN3SdVXlsQy48mnBS2GF2uIx9abHzWVwkqfs6PKwh4KsBrFTTZzjMVETXVx/lHX7cGdTjQWYwzGuPvWP/qb6UBHn4Pw98fHjMJwv2M1N9fprsw/wy02DQy5YZpSXaDMejN+5hTwnCGVQHzS3NKVMg2Vp
+ bD2mlE/q
+ ugP/InaYvxXchtBL6TYa06L3KRIMRqapIRG+auXcp5GQv+lTS2lyyNMRCTzVYo+CcKIGfeql5sDZmWTjQ82PaWjD4zLy65dMuZpG/QfUFdcNFfkSprUsyrnWBaZxqhXOAe24pKvcBP4kyvzzNtLNSEaftkIoj0qPwHboEYo85QvvqcuN2KtbszZ/OUi1EI420a6tmU9Cdt3dqvQ12ta2haPdMnjpWDD34C0vDL5+fowUatj9C+2YYYbqnomKQCpOhyqgfWHpQqyGk53Ozu0V/nPaW5F8tICrfx9Wm4nv2bHGeElM5iQhbxr0h12t677luNjZMFCtRdpuMp2rCYXVp+E/4JSyHp9lG/JXsPdt+v4Rg2+mBcYfbaVtL59vtkk9Pg/6y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,101 +99,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 26, 2026 at 4:50=E2=80=AFPM Xueyuan Chen <xueyuan.chen21@gmail.=
-com> wrote:
->
->
-> On Sun, Apr 26, 2026 at 12:13:02PM +0800, Wenchao Hao wrote:
->
-> [...]
->
-> >2. Per-cpu deferred free with lockless buffer swap
-> >
-> >Defer zs_free() to per-cpu dynamically-allocated buffers (~2048 entries)=
-.
-> >Enqueue: one array write + WRITE_ONCE under preempt_disable =E2=80=94 no=
- lock,
-> >no atomic. When buffers full, schedule a drain worker; overflow falls ba=
-ck
-> >to sync zs_free().
-> >
-> >Drain: allocate a fresh buffer, swap it in, reset count. Since
-> >the producer stops writing at count=3D=3DSIZE, the handoff is
-> >race-free without any lock.
-> >
-> >Pseudo-code:
-> >
-> >    /* enqueue - hot path */
-> >    def =3D get_cpu_ptr(pool->deferred);
-> >    if (def->count < SIZE) {
-> >        def->handles[def->count] =3D handle;
-> >        WRITE_ONCE(def->count, def->count + 1);
-> >        if (def->count =3D=3D SIZE)
-> >            schedule_work(&pool->drain_work);
-> >    } else {
-> >        zs_free(pool, handle);  /* fallback */
-> >    }
-> >    put_cpu_ptr(pool->deferred);
-> >
-> >    /* drain - worker */
-> >    for_each_possible_cpu(cpu) {
-> >        def =3D per_cpu_ptr(pool->deferred, cpu);
-> >        if (def->count < SIZE)
-> >            continue;
-> >        new_buf =3D kvmalloc_array(SIZE, sizeof(long));
-> >        old_buf =3D def->handles;
-> >        old_count =3D def->count;
-> >        def->handles =3D new_buf;
-> >        WRITE_ONCE(def->count, 0);
-> >        /* now drain old_buf[0..old_count-1] */
-> >        ...
-> >        kvfree(old_buf);
-> >    }
-> >
->
-> Hi Wenchao,
->
-> I suspect there is a memory ordering issue here:
->
-> def->handles =3D new_buf;
-> WRITE_ONCE(def->count, 0);
->
-> Since there are no explicit memory barriers, we cannot guarantee the
-> order of these stores. If def->count is cleared to 0 first, an enqueue
-> might end up operating on the old_buf.
->
-> This race condition is more likely to be triggered when the size is
-> smaller. Perhaps we should consider using smp_store_release() to enforce
-> the ordering?
->
 
-Hi Xueyuan,
 
-Good catch! You are right =E2=80=94 there is a memory ordering issue betwee=
-n
-the handles pointer swap and the count reset.
+On 25/04/26 12:02 am, Catalin Marinas wrote:
+> On Fri, Apr 24, 2026 at 06:31:55PM +0530, Dev Jain wrote:
+>> From: Muhammad Usama Anjum <usama.anjum@arm.com>
+>>
+>> For allocations that will be accessed only with match-all pointers
+>> (e.g., kernel stacks), setting tags is wasted work. If the caller
+>> already set __GFP_SKIP_KASAN, skip tag setting of vmalloc pages.
+>>
+>> Before this patch, __GFP_SKIP_KASAN wasn't being used with vmalloc
+>> APIs. So it wasn't being checked. Now its being checked and acted
+>> upon. Other KASAN modes are unchanged because __GFP_SKIP_KASAN isn't
+>> defined there.
+>>
+>> This is a preparatory patch for optimizing kernel stack allocations.
+>>
+>> Co-developed-by: Ryan Roberts <ryan.roberts@arm.com>
+>> Co-developed-by: Dev Jain <dev.jain@arm.com>
+>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> 
+> Co-developers need to sign off as well. See submitting-patches.rst. Same
+> comment about your SoB as on patch 3.
 
-I'll fix this in the next version by using smp_store_release() /
-smp_load_acquire() pairs:
+oops I forgot, I'll do that.
+> 
+>> ---
+>>  mm/vmalloc.c | 20 +++++++++++++++++---
+>>  1 file changed, 17 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index b31b208f6ecb3..c94fcb2725b6b 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -3939,7 +3939,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>>  				__GFP_NOFAIL | __GFP_ZERO |\
+>>  				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
+>>  				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
+>> -				GFP_USER | __GFP_NOLOCKDEP)
+>> +				GFP_USER | __GFP_NOLOCKDEP | __GFP_SKIP_KASAN)
+>>  
+>>  static gfp_t vmalloc_fix_flags(gfp_t flags)
+>>  {
+>> @@ -3980,6 +3980,9 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+>>   *
+>>   * %__GFP_NOWARN can be used to suppress failure messages.
+>>   *
+>> + * %__GFP_SKIP_KASAN can be used to skip unpoisoning of mapped pages
+>> + * (when prot=%PAGE_KERNEL).
+>> + *
+>>   * Can not be called from interrupt nor NMI contexts.
+>>   * Return: the address of the area or %NULL on failure
+>>   */
+>> @@ -3993,6 +3996,10 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>>  	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_NONE;
+>>  	unsigned long original_align = align;
+>>  	unsigned int shift = PAGE_SHIFT;
+>> +	bool skip_vmalloc_kasan = gfp_mask & __GFP_SKIP_KASAN;
+>> +
+>> +	/* Don't skip metadata kasan unpoisoning */
+>> +	gfp_mask &= ~__GFP_SKIP_KASAN;
+>>  
+>>  	if (WARN_ON_ONCE(!size))
+>>  		return NULL;
+>> @@ -4041,7 +4048,7 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>>  	 * kasan_unpoison_vmalloc().
+>>  	 */
+>>  	if (pgprot_val(prot) == pgprot_val(PAGE_KERNEL)) {
+>> -		if (kasan_hw_tags_enabled()) {
+>> +		if (kasan_hw_tags_enabled() && !skip_vmalloc_kasan) {
+>>  			/*
+>>  			 * Modify protection bits to allow tagging.
+>>  			 * This must be done before mapping.
+>> @@ -4054,6 +4061,12 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>>  			 * poisoned and zeroed by kasan_unpoison_vmalloc().
+>>  			 */
+>>  			gfp_mask |= __GFP_SKIP_KASAN | __GFP_SKIP_ZERO;
+>> +		} else if (skip_vmalloc_kasan) {
+>> +			/*
+>> +			 * Skip page_alloc unpoisoning physical pages backing
+>> +			 * VM_ALLOC mapping, as requested by caller.
+>> +			 */
+>> +			gfp_mask |= __GFP_SKIP_KASAN;
+>>  		}
+> 
+> This playing around with some of the GFP flags meant for metadata and
+> the actual page allocation gets confusing. You remove __GFP_SKIP_KASAN
+> early from gfp_mask, add it back here. You might as well just remove it
+> when calling __get_vm_area_node() and we won't have to figure out why
+> it's added back above.
 
-    /* drain - worker */
-    def->handles =3D new_buf;
-    smp_store_release(&def->count, 0);
+Okay I'll do this.
+> 
+> The __GFP_SKIP_ZERO flag is meant for the page allocator and used in
+> this function later to actually tell kasan to initialise the memory (not
+> skip this). __GFP_SKIP_KASAN, OTOH, is used to actually tell both
+> vmalloc() and the underlying page allocator to avoid tagging. I wonder
+> whether it would be better to have a VM_SKIP_KASAN flag instead and
+> leave the GFP flags alone.
 
-    /* enqueue - producer */
-    count =3D smp_load_acquire(&def->count);
-    if (count < SIZE) {
-        def->handles[count] =3D handle;
-        smp_store_release(&def->count, count + 1);
-    }
+Lemme reply on the other reply
 
-This ensures the producer always observes the new handles pointer
-before it sees count reset to 0. Will include this fix when posting
-the formal patch series.
+> 
 
-Thanks,
-Wenchao
-
-> Thanks
-> Xueyuan
 
