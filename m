@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 476CAFF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 14:50:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D75FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 14:50:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F2486B0092; Mon, 27 Apr 2026 10:50:23 -0400 (EDT)
+	id 4E9A86B0093; Mon, 27 Apr 2026 10:50:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A2C16B0093; Mon, 27 Apr 2026 10:50:23 -0400 (EDT)
+	id 3FE026B0095; Mon, 27 Apr 2026 10:50:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8927A6B0095; Mon, 27 Apr 2026 10:50:23 -0400 (EDT)
+	id 250486B0096; Mon, 27 Apr 2026 10:50:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 798EA6B0092
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:50:23 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E55D48D35F
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:49:46 +0000 (UTC)
-X-FDA: 84704619972.09.6824DBA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 075476B0093
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:50:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A016FC142D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:43:43 +0000 (UTC)
+X-FDA: 84704604726.12.1B01623
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 25762C001A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:49:44 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="C/1RKnHQ";
-	spf=none (imf22.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id EE48F80006
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 14:43:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="BLOa/aPa";
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=none (imf02.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777301385;
+	s=arc-20220608; t=1777301022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o2vkZ5y2qzYA8iDKm7xA23S0ULNqG/MU/Wg90CpRlXE=;
-	b=xzaP89zl08M9nMxNjvVRFMDT1xZEOFRWkQNeOrZlPbxCGwAfpX1piotAgubEhrI9LOJCEm
-	J263UJzS/BVceJE1OZk48EgSb+2oDWRjCAgysQAaaO2/yGTnGSvyyZOqHtzyvWxP5dhbvu
-	A+CqCqqABTiWi4h+PWjuk4RCAnl5FiI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777301385; a=rsa-sha256;
+	bh=f4zHSFMRCDIOzJvASvG53//nYdaZVKmO6GM9qNfqLSI=;
+	b=AfYYzVB4OZbvbaBfV0dVRMi+nWQeHIF/xIB3YogqlRuuZhDHAvDt7OTc7eTBeF9d5t//A3
+	pr+b2nuhIXaJ9Qn4PuK9Dk155D9wpyUzgCs1rNN9D1tYY6I5tVUbaD8WNiGTL8IU9j+kck
+	4dG/ATZRnto17e4P2/4YaysHGCMGSMQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777301022; a=rsa-sha256;
 	cv=none;
-	b=erC4jZ3jkOykMZsGLacaZfM8tTjWrmL9k3sNohUcvcVBE3o5qNcFrOJxe2H5TosLtx9I6+
-	vFYtK7yIGCbMD2bjajZ8TreZ64Nter/dzQMzNiFrukmOwOcNNmP/6BAztpX4eZrh41hgsA
-	/x3OopSHy3GKkN5MnttBUh0B2pp9MJQ=
+	b=OKmQlNOKv+Bbqq4kdi7wY8Nw2yxnbylJqE+fqhklqU+HDKgnygIbyFM4ONOvDlf+76S1ta
+	63GIL73X/m02EQ50YPUgcwMW43u4pHCAs7WxHMZMxoXxoP7RyTDrotVRDosHliAR2a0NcM
+	KvXUA4/OoEu4zpSCXLIR2Fuoy72vGIo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="C/1RKnHQ";
-	spf=none (imf22.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="BLOa/aPa";
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=none (imf02.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=o2vkZ5y2qzYA8iDKm7xA23S0ULNqG/MU/Wg90CpRlXE=; b=C/1RKnHQJ6cE7e0H0oYf278wCF
-	Vv46Ir52iXcfmt1pWngYUoMRBu2uwl7EeJUUbB1Avgq3gBnGU6vNG3kKEPCvLYZnUzaLbHdtz8OtH
-	Ed6s1e2huhHvR7Uncot4hDG3aJ8OxNT2HgElFQ6pRlZQcUqUZyNZ44tGASC5MujhwAMERW4YxNbsr
-	qaCUAvXQ2foyNmU1FAQQ6IrkbH81zY7LuSTgwh/f9ZKKvjR+Ol5FePUE8+bU7Pd7fh06yqhmIc8mH
-	lwUcagqd3QcoAwYIB2XQQxR/DlSxfqSHU6HPt3CPRmRrCeh28bW9oPiVd0Yd61ZoPCcdwQ4Ep35Tj
-	tmG7Ah9w==;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=f4zHSFMRCDIOzJvASvG53//nYdaZVKmO6GM9qNfqLSI=; b=BLOa/aPa6STWM/QAkpwF2fJs0q
+	0JjOWwgFJWIw6s+11hZ1BJRkwezP6zIglOWogLDCNZz7Qj+rbjP0xEUUpOt7qKQC8nps51h+KmpKc
+	aLL7UWtNr4yLW/D1e7ISuAmjj1a5leMJH9bgiDjTVNJICALMGV2OdhZDWGzSFSemoQupQzAsM/KNS
+	rGtphBvHvnbEwxDLfIV1d0Tst4GZfA3ecDCE87kaQOvpC9XZoqe62DvymnlyIinez28hlwOxlk28P
+	8ssdbmdpsYo9QfLgT6nqWmHpYj/+C0hZagB4IbjhKfI2A4LkXfmdz0vZBv6n+pFpeBQBp6mWDxqgO
+	o2UwBOkg==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wHNHI-005YaE-0a;
-	Mon, 27 Apr 2026 14:49:40 +0000
-Date: Mon, 27 Apr 2026 07:49:34 -0700
+	id 1wHNAj-005YIa-39;
+	Mon, 27 Apr 2026 14:42:54 +0000
+Date: Mon, 27 Apr 2026 07:42:46 -0700
 From: Breno Leitao <leitao@debian.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kernel-team@meta.com, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v4 2/3] mm/memory-failure: add panic option for
- unrecoverable pages
-Message-ID: <ae93PTScNGzxo7aR@gmail.com>
-References: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
- <20260415-ecc_panic-v4-2-2d0277f8f601@debian.org>
- <6b505601-747a-0812-7544-63a8ab3cffce@huawei.com>
- <aejlg62nxcF_5g2v@gmail.com>
- <c1517ad3-91d1-2ea1-efa7-0f29415d513d@huawei.com>
- <aeta8Ifvmqi6-E8w@gmail.com>
- <5e05384e-740e-b374-2370-01f96d1dac9f@huawei.com>
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett" <liam@infradead.org>, linux-sh@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 3/3] mm: remove page_mapped()
+Message-ID: <ae91ogo90bSDFNPC@gmail.com>
+References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
+ <20260427-page_mapped-v1-3-e89c3592c74c@kernel.org>
+ <20260427062137.48739e6fa6e550f1f0e8ff48@linux-foundation.org>
+ <06218a87-8346-40b4-adf4-dc494b5f1293@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5e05384e-740e-b374-2370-01f96d1dac9f@huawei.com>
+In-Reply-To: <06218a87-8346-40b4-adf4-dc494b5f1293@kernel.org>
 X-Debian-User: leitao
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 25762C001A
-X-Stat-Signature: ns8ykdtc6hiexud1w4yck7n4fcnoqro3
 X-Rspam-User: 
-X-HE-Tag: 1777301384-583334
-X-HE-Meta: U2FsdGVkX1/nV7h7dzta0qLGXgiNM5b2azBq/MR4PXpLsVU0GhHelCmDTB7pAWpepxboab93vJmWuBCr37d4m6L9tbV3OLOhLsBZk8+KVoMk31m0scZaWIEUvaurD2P8VwOOGeS4V8LbXtEW/Q9mcEFbYqetp9fryVpexuVRp7STmuVn/fgPjmypqIiCf0pRHn2iwcsrmD9NjU47Ayz51iqTZphBNFjHKr77N0gTjIVouMSE2eHVL1rP8a8t32dDB4QslKHzX06PVLpHMR/3VhBKRbT4hiIAm/YQ5HwaAUFqmmY/A1CtabwQLRCKEMHRJxOsXv4Vk6dTzqnUrVVjy+ElSmKsInSRsHpfSfzeXMn6dOU3VH300A5ta3CBpauAc/hfDfaSZKEgHheogxGbY+XOaSeNR3k6f8J3KTDYX1wqCmtOVXP/05w8xPmbpY3/+Uqpx2meGASwri9VUznZ/wrzBc09r9Ti2ECHUehAUvXaZnpDZvkidQ1/8UwMxy0+CBYkIWa8/mIZazki4hoGd7jcuisYYt607EpN5w6bHwf/GXiE5ddv7zq2VR3ft9HydayhPzaGLvs1QUiEmDyazLg5KAlcxXdTDHURvkGntQaYYUnDDQgoKOcfXj6tJ/ZsfSS20esGRmn6ZAKqlP4TGwGZVGdZF8Sf87SwXAkC0bBggAXEEnAnmAUMImsiGgXc10/BxjP7M3fqaR8JeE1xGucwxpIAvu8Wl4K5KXkVrO9ThBO/k4XHWHtYEAY30IkWQeY0fIWwV6C1ViMKv/jff2nwV8Tu/t7Fptjxh4c1qwrWnRwt8BH8waDH/oDBosHwFidrTBnQADyg9DhkX6HsFKl2cigs/d4fw3QBBskcVyKJi4ZAkTOeMDtAfSkNR2wXR1a+VayOwkJDcSUtJzW/vxmcb9g4TmVdlnDVxfiCnJ/HKpxH40EptCtbXiYn5/mFWWYCKm3h1CKKNDFjk2g
- s3/vNlIc
- WVCcLv8baWIstDcO/bqbSDmZcGK1kQ9GCxrlE5+ftbajxFYEebGV5iGwdedo0q0aBNAHwqkHCzsRAuHh6DOjBLvwnCHxkhxqgPevSbLSq5HbZGqRCTGe7rlsqBoMTh1MmG+j4MPuszCaZA1kAuQvDIMhtBdQfmdvOIycrRHYRe5nraWm0MNyLl9LClTi0oZWpkLG6Q5XJs01TtoR4eBuveFncX7tgusQl7F5MwF4ObOSih2cwudVC8xVOGxwgIFCzUkcMkaeGnNCFnGYTpeb/o0611n3OHSZDkakY0Il37AOsmzQ=
+X-Rspamd-Queue-Id: EE48F80006
+X-Rspamd-Server: rspam04
+X-Stat-Signature: rsh9zx3czqwk97dwfki49gekwu8zbdb7
+X-HE-Tag: 1777301021-444083
+X-HE-Meta: U2FsdGVkX1/VBjHYe5b/jmqi9mrGHm95Yt/zrjcec/iRnl8Ys+BIXeGfimT6cy6SJAITa0wUnakBvs778afIsl2vaSNtZlvlvjGXkHoCXKTn6q5MYQAuE12bX783Jyv0lV9RfBeQpmOynOn8GeFBQQbpHyXNkWEeO27Cgc49kXcFFDcUSm08Tk7laMp5g6by67JB7Hg2emIFH+gXBoiFpmUlpjELa7SU2bTdEYhQI0Y7Hfl5ST8MNkPoT2miTjnkA3c81g51v81Y2MrZfHDA2w1MiHiUdZ0C/q1GS4xKzUe93De1cSV0tiuELxr3UfqkEDQAni/jVwYWO0QviNc2EgoZS4HqfUZQ/xWDPnZPBfc4fSHEatz833pp8Rax31IiLr3a7fUzEvNfbfgjWnM/OMKdsi/KN52bE2rqGaNsF99s1VY2o9EIDIWQB+Or2GhT/eJMuulhEHkQ4t8L2Lsy/J5oxoYdQJg/3VnsNsEjuE/zq+vqXMh1wqaOTBi2k37JK9s+x1QuDgWdqx49L/DRiBDNa9rJbbVFC4bBhex9ALAr9Z8hWJ5UakIBkNOcoGOt4Co7jKoFr9m63FYNEpfTXFSf/9EZZTa1AEwq3H4kw9inNYarUxeahuoW10PRDoJqduvKmF+DN9wPkN54kF4TmCMc5mkpk38oxFC/6KS/ARVDeTOrpQejRzm7v9SI+446zBlOawF9gI5i3tH7fxBEFnXVuIpXYxpFQht1iI/hWSOw7i7jFId/gciBOr9XXPUdjjrnkOzz6mSuY43xLltq9fvH6WOElLIKCupMKJI1HFc7QYm1OJi6+ohRd9/uEAsnSJimj1kpg2jUI+OZbwZM/bCb7Wqg6eVLX/Z00cZsaFtCB68nDqvNQSI8gbBgP0AOo0P+kQTIoMv6RYOOZmMhQnqQvpzWlOMEl/Gpg/d3+1bj9gs5vryhE0OxU4UuEsk3mZ7Nz9A6V28C5n2JQSS
+ PWRZu5o1
+ g05rN9HlQql3LCytCa4XXzvgWf1KJRId0kp9lEfIkDjja9ZFHU/CJN5GgJcbg3wR6VK+edmK6mjny94Ot3H6/b2X2agxY/SHhz3SYaRKmHF1Gu1nSeW0DC2uVqqvaV1RLuoFwPBfYu3OUCLVOySgYhIM+CEaQyoY7h0XDg/ezb24OLvvnvsv0WmkCN5KlnEem/IVOuG++h7a/V6vkCL+UlfvTR9eV7vCvRzgxvLJsPL1j1pV5pj79LUYn4VQs6Psm2snR0YVmeWQZBWqI/UQj3VK3kPu3LhGs/K4b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,69 +105,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 10:44:55AM +0800, Miaohe Lin wrote:
-> On 2026/4/24 20:01, Breno Leitao wrote:
-> > On Thu, Apr 23, 2026 at 10:38:19AM +0800, Miaohe Lin wrote:
-> >>> are you suggesting I drop MF_MSG_KERNEL_HIGH_ORDER from here, or, document this
-> >>> will not hit userspace pages?
+Hello David,
+
+On Mon, Apr 27, 2026 at 03:23:33PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/27/26 15:21, Andrew Morton wrote:
+> > On Mon, 27 Apr 2026 13:43:16 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> > 
+> >> Let's replace the last user of page_mapped() by folio_mapped() so we
+> >> can get rid of page_mapped().
 > >>
-> >> No, maybe we should rule out or document above rare case if I'm not miss something.
+> >> Replace the remaining occurrences of page_mapped() in rmap documentation
+> >> by folio_mapped().
 > > 
-> > Good catch. A buddy page being concurrently allocated to userspace can
-> > briefly satisfy get_hwpoison_page() == 0 && !is_free_buddy_page(), and
-> > that page is recoverable via the standard SIGBUS path — panicking on
-> > it would be wrong.
+> > This broke Breno's "mm/memory-failure: add panic option for
+> > unrecoverable pages"
+> > (https://lore.kernel.org/20260424-ecc_panic-v5-2-a35f4b50425c@debian.org),
+> > which added a new page_mapped() call.  I made the below adjustment to
+> > Breno's patch:
 > > 
-> > The page allocator can't filter it out either.
-> > 
-> > check_new_pages() is gated by is_check_pages_enabled() and is a no-op
-> > when CONFIG_DEBUG_VM=n.
-> > 
-> > For v6 I'll try to rule out the race inside panic_on_unrecoverable_mf() so
-> > action_result() stays unchanged:
-> > 
-> > 	case MF_MSG_KERNEL_HIGH_ORDER:
-> > 	p = pfn_to_online_page(pfn);
-> > 	if (!p)
-> > 		return true;
-> > 	cpu_relax();
-> > 	return page_count(p) == 0 &&
-> > 		!PageLRU(p) &&
-> > 		!page_mapped(p) &&
-> > 		!page_folio(p)->mapping &&
-> > 		!is_free_buddy_page(p);
-> > 
-> > 
-> > A buddy page being allocated must transit rmqueue() → prep_new_page() →
-> > post_alloc_hook() before the caller can use it. Each step either bumps
-> > _refcount or sets state we can observe (PageLRU, ->mapping). cpu_relax()
-> > lets that remote-CPU progress become visible before we resample.
-> > 
-> > A genuine non-buddy high-order kernel tail page stays unowned across the
-> > recheck, so the panic still fires on the case this series targets.
-> > 
-> > The window is much narrowed now, not eliminated — I'll say so in the changelog.
-> > 
-> > I also added a selftest that enables the sysctl, injects MADV_HWPOISON
-> > on a userspace anon page in a forked child, and asserts SIGBUS (not a
-> > panic). I've been running this in a loop for hours, and I haven't seen any
-> > false positive.
+> > --- a/mm/memory-failure.c~mm-memory-failure-add-panic-option-for-unrecoverable-pages-fix
+> > +++ a/mm/memory-failure.c
+> > @@ -1353,7 +1353,7 @@ static bool panic_on_unrecoverable_mf(un
+> >  		cpu_relax();
+> >  		return page_count(p) == 0 &&
+> >  		       !PageLRU(p) &&
+> > -		       !page_mapped(p) &&
+> > +		       !folio_mapped(page_folio(p)) &&
+> >  		       !page_folio(p)->mapping &&
 > 
-> The userspace anon pages are already allocated. Those pages are in a stable state.
-> So your selftest cannot test above window. Or am I miss something?
+> If we have a folio, we should really lookup the folio once. Not 4 times.
 
-You're right, the test doesn't directly hit the race window. By the time
-madvise(MADV_HWPOISON) runs the page is fully owned by the process and goes
-through the steady-state SIGBUS path; the buddy→user transition that the
-recheck guards is already over.
+Why 4 times?
 
-What the test actually proves is the negative: the recheck didn't break the
-common, non-racing path — i.e. a normal recoverable userspace page still
-returns SIGBUS instead of panicking. It's a smoke test against gross
-regressions of the recheck logic, not a reproducer of the original race.
+> Breno's patch likely needs some love. :)
 
-Reproducing the race from userspace is hard because the window is
-microseconds wide inside the allocator.
+Would something like the following give it all the love in the world?
 
-If you think this test doesn't bring any value, i am happy to just drop it.
+ folio = page_folio(p);
+ return page_count(p) == 0 &&
+        !PageLRU(p) &&
+        !folio_mapped(folio) &&
+        !folio->mapping &&
+        !is_free_buddy_page(p);
+
+Thanks,
+--breno
 
