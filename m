@@ -4,91 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41ADAFF8860
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:34:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9FA0FF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 15:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 690696B0092; Mon, 27 Apr 2026 11:34:40 -0400 (EDT)
+	id 4BEFD6B0088; Mon, 27 Apr 2026 11:36:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 641036B0095; Mon, 27 Apr 2026 11:34:40 -0400 (EDT)
+	id 496746B008A; Mon, 27 Apr 2026 11:36:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 557366B0096; Mon, 27 Apr 2026 11:34:40 -0400 (EDT)
+	id 3D3646B0096; Mon, 27 Apr 2026 11:36:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 45DCF6B0092
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:34:40 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DE7CC413E4
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:45 +0000 (UTC)
-X-FDA: 84704677932.30.793E1EA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 124C5C0009
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:12:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uCWPs2TM;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C1B86B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 11:36:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC58B93B7B
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:43 +0000 (UTC)
+X-FDA: 84704735766.16.42D8133
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 540F81C0022
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:35:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pHbEkGn1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 3S4LvaQgKCGQCTFD+IKVIQQING.EQONKPWZ-OOMXCEM.QTI@flex--ardb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3S4LvaQgKCGQCTFD+IKVIQQING.EQONKPWZ-OOMXCEM.QTI@flex--ardb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777302764;
+	s=arc-20220608; t=1777304141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vJistnFWnDMgPen+vzENlGukE6NrPtXcqWX8OD67mjA=;
-	b=dIqMKcfmW9KNHy/YdGox/dP2nTNFMT56kdBdCLs/WsR9BJQ5hQBf00TyzaywT91NaxKWaC
-	gfNFskX8JS/tyqhm4AcNODVP/ih7ZKxv/Pb1es8Gxf0/q471wzacylQqwBqpn0wBmjHlwU
-	YLrICIfSu8GrI0otITdJDMHOboN8scI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777302764; a=rsa-sha256;
+	bh=Fih3i4e18PfvVXsOqO+51UGmMLaCoh2lR+Igb4mepcc=;
+	b=VY/S4ZUvoql8I09XgVkAHHl7qNEbtQeZpkLEQ6kppd8SUNPK6MvXUsbba7owNtq6mkJyBS
+	YzFGML/7chUlWyVIKawATCe6qMd5oZdN2ZGjY5F8UePuYTp1yhKzO84DdzeLwzbv6Q8EYm
+	excoRMuJt7PkFOAYmW/QMVCegFcHUMI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777304141; a=rsa-sha256;
 	cv=none;
-	b=ei8K3jsGsuDLm2n1hdw5ZJLp8pQgkO/bTYy6AAQoIlWvMONGdolsIl/dbZFxzB/POuudUP
-	ZO076Ep99Ip288DJWeo7f0hTj6Dr9biDt1pr9LMVeyxKYef0Ji8v+2qBFeATivyNaVfdub
-	KQkrTuewQogM5XBGXJKWOCbIjFVm1ck=
+	b=PndwlC0AaTlYvr/1h3ThylXhhhXmr+sdflBd1PtIYSKA32og34qJtKKFkrHiginBkMGNFy
+	Y87ya8RYLnZfEdyUXd6F6pjXxZfU6S3eeDBwZbVhDlnQ68SoxC5eYJFR7So1+2KVb07dIA
+	KE/MyDp4jsD6rZ6P75Ujbl0BOPZErAM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uCWPs2TM;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3E6BD60154;
-	Mon, 27 Apr 2026 15:12:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ABBC2BCB5;
-	Mon, 27 Apr 2026 15:12:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777302763;
-	bh=K+t0IBDIG7HXVVaXmRTS++wFYmoNTkKzAJmGYrkNPTI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCWPs2TM/QVNIYTw3lP/RHTzg9Yz1/1Cw+itnweALv+X3+zIaJmnxAIV3CfP0ylGr
-	 svSJBCH8uK0Rfec9YrmuFCfVNHPzMol7N8ZXJP6Op3aMBy4vOp6vtb1o90yy7m0niQ
-	 Altnn9BQKqlSSArXo3TKY7TuTdTNzXo4chdh5jXCGQGIWTq/lIoum56JO33rbOn/2k
-	 GsNUvZUoBmwpPoM/+8QFz1G6GA7HgIK93xeLTNFGFSjA4cXUznXdALQrFnfuwN7T0Q
-	 cm4eQ9yaDgxEq43NC05eahxFbXliBobfzw1mcZby+epevwhB1Ax+ZsGLMXruVsSnQy
-	 008KXxX35ngMA==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 06/10] mm/damon/tests/core-kunit: test pause commitment
-Date: Mon, 27 Apr 2026 08:12:25 -0700
-Message-ID: <20260427151231.113429-7-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260427151231.113429-1-sj@kernel.org>
-References: <20260427151231.113429-1-sj@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 124C5C0009
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pHbEkGn1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 3S4LvaQgKCGQCTFD+IKVIQQING.EQONKPWZ-OOMXCEM.QTI@flex--ardb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3S4LvaQgKCGQCTFD+IKVIQQING.EQONKPWZ-OOMXCEM.QTI@flex--ardb.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-488f973ddfeso76715095e9.3
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:35:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777304139; x=1777908939; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fih3i4e18PfvVXsOqO+51UGmMLaCoh2lR+Igb4mepcc=;
+        b=pHbEkGn18wNntwQT479EqxCZvhMkrZG1beVHCnOzm8s2AWWe8cVcsGw4uAv0/sGU0k
+         pYie+aQStUfWerYThvRe3z6C9rd/Cmg84m4F+T5LKubpfWLXHPniAr6Ue8j9jeikjT1A
+         9+52jRqcbzecZFMDFSB5cQFz5xHpbT0FsY/wFf5YZmxQdaracAW0wzvqAxmoPwt27K3N
+         I0GHfhF54zjAz8uI9/iZz6mfWnsF/zDRe0uh6JTixM46hUAWezr2g4SGhbKYYLb19zGS
+         rgXxnO1av5tHPDfPC/uY1oXrSEzdcEZzU2q/eYin2ejUISfxqS9hrGzKMHyEfXCciQiN
+         OKkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777304139; x=1777908939;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fih3i4e18PfvVXsOqO+51UGmMLaCoh2lR+Igb4mepcc=;
+        b=rvlvFaFgK1xYuviLAhrYbjSAyYiLkw+JQo9arB8WjK01OaZ1INLA1Lw4TwTryOwSoi
+         FcnSv7L0xzD9p/Y5orFnEeuZerQks/9tzMd4Il+3PAmwOkm52hgc4FVGOBEKgTxR6QsV
+         gylHaDZGp+cBiDt79ESyOlt+FIWj5QzYR68eRrj0QwW2v4WE+g33Q38tUy9p+Se3xVFv
+         XKIOJdZqarWYJJvdz9owwm7zHZqvWrsKkhJn1vrEHdp4cCWCEoP2CUa1N0cUlB6bKNPf
+         YdxU+qoycbGfJN45zBLnS49x7JmkX0uYVzmX2jRkYUoxxIlttJxtKMwHN1HbwVLrgQpl
+         2H7Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9lOQ+pFp63vViTUU5iWjjjFRpSDu1UQruHHR0Z39q8rj/JzOfOBsKOptLDbGpHPsAqSfIMFJAvNw==@kvack.org
+X-Gm-Message-State: AOJu0YyJQNYi5YgCYbH+XK4VWWWVWyZMWOTNJQ+jKKERRPNAWcZpsTw/
+	VJS/E2ABkbpU7LoE20Wr/jrUhgPMf/yWnEIdLe/3bNPPziKfuwjTz9W4tXxf7czDV34UnOcdKA=
+	=
+X-Received: from wmok24.prod.google.com ([2002:a05:600c:4798:b0:485:3a48:d6c5])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:a30b:b0:487:4eb:d125
+ with SMTP id 5b1f17b1804b1-488fb74dff1mr437765065e9.9.1777304139320; Mon, 27
+ Apr 2026 08:35:39 -0700 (PDT)
+Date: Mon, 27 Apr 2026 17:34:22 +0200
+In-Reply-To: <20260427153416.2103979-17-ardb+git@google.com>
+Mime-Version: 1.0
+References: <20260427153416.2103979-17-ardb+git@google.com>
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=973; i=ardb@kernel.org;
+ h=from:subject; bh=h7ZYPXsk7x8qiYN5Bb4ArPGJm788B+DXEeUwDjC4Hlg=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIfN9E2OMr//DSScOyewrtDKSTj2pNjs54uXG3/nW1/QLW
+ jXW+t/rKGVhEONikBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABPxecnwP+a5BK/ZucVOeU81
+ 7jYvnbjm7Q/9FoVaDcW+23MP86w91sLwi+mK+4lU2YQl89dJGK4S/TllWwHHxeqs1PkRZyUC700 14gQA
+X-Mailer: git-send-email 2.54.0.rc2.544.gc7ae2d5bb8-goog
+Message-ID: <20260427153416.2103979-22-ardb+git@google.com>
+Subject: [PATCH v4 05/15] arm64: mm: Remove bogus stop condition from
+ map_mem() loop
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
+	mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Liz Prucka <lizprucka@google.com>, 
+	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 540F81C0022
+X-Stat-Signature: ybko5p6wnkzfezu93xjqdpnoryq8eof6
 X-Rspam-User: 
-X-Stat-Signature: ojg71iw5hxuknjzohaw991u46qyu8uyw
-X-HE-Tag: 1777302763-491984
-X-HE-Meta: U2FsdGVkX18jGdY70vRrLRleVaCHmPZd/yW9IuPgFdWNmJZUOaOa+ACwjBa+nSv1c9Lhn6nUtz/vB1lrVNQB3rlSwqgDPLCM+QUmgp1bBqsZ7/gNbk29+FVKJVIBrVRSggIII3SkMneQ6tofypz5NHtZTmhVrqXHyRoZLMP4ejfFNZRL2WKUJud1r7pF4PT29qz7bWsZHEo3LpMrgybDBBe6/evKQIFqt3ba06dcfBzJb1/YWGhAzknKwrK4rQsVtcYXC97y0Rn2S+MynhcrU6UEdRSezYmcH9KjYxlTpQW6RQdnKRvwp+xCjuWzNFjvyn0yU1eVlQUegxUqvjL9UdHAFTO9BZpdq2QEgtCAXnEanzlUJDfir0lKFVJjmvr/8FA8+ZiQMlF2lJZfMa0LkLWyJw3FxkukC/Hjd6n0H4oQlLSh6ByM7XHIB0gkddpcLcWFz2H+n/L2tAg8Nifm9ctypKvu1aC5FcVzH4bWlw+LWTwkxgSHmmB5i88HpVSycFiSO8UEdvWeVE7Wv8vesGxUtitjGBJlgYetqmbql4VUwC7xJPt+HDH2Os1gBsH+IXe/FKNjXZWVZz8+TAfMB6rZUFFz82GoSeqbAkMURyYpCiuv0JZhdiSzdBLMOscaEyAiUZ9zUoUII0c8w+MYVTam+edGIp1JNGCrRVdUE3Jq3hVOdPIA/XzS4rpZCu2JJ6FzhvZiIa59LDhUJ6wXw+7rcRrTR2oEGbpBMdcxglL2ZkYCSEXClIVc0jTGmEYUm5wNp3BJp/9RYsRwy/1ulbP6sRn0CFn0VmjyhvQ08zLU0hYxVucn1g6wmIPBMGbeqKUxbbEfxwqvKEjmKaL7pVQUaZ7pNzJbije8RSB36bIVIs7hliGi7ONSXRk5bfQIBWXzDqURuiFjZfOdlfYmX9/mNyZ3itlnuP+w9EnGVGpx1r9lDUJDcVN95XHEGXONdD8qWLvLzZlJ6hAcWTA
- Ikm6qXc2
- qHNFwUokik6wSSzL40+5CMuPCVGIP7AUkcdP5+gXuca4B1zc0ugPDdGeMx49zTsVVgUj4GsFJwSEpFTEZT87XyFOj7gQkQwZrRcubyFJlo4kuqw5imGLdrC46frSq1wAhLLQc1fhTIQpmMyW7qKnw5zqAhC6IQNQSlr95yfTMDRu0hzKQTkolKfimjcXhv87MsQbmQtXZgBsWJshw4AMC5gazfTsBb/5KD51vEqDprPaDz1A=
+X-HE-Tag: 1777304140-201927
+X-HE-Meta: U2FsdGVkX18FYqhORLXYK+s1Ez0/XXkFkDb3H3l/ffeP/Iw4igUgpsN6TZYsuBA3ge5fHGt/z56T94JI58I55MfwX822kdH3uy5pbonzdMpyvQBTISkqvNSpxMVzJyW5Cl7dc6s5bAjq9vZBI1byX3z6bt3saz427P0g6mWLim8At3qTp3aKBjcx+R7SOKET5RGE8v+dKBNQNde6qDpgN6vmI55NY2mEhDruPl9gTimrNEl3FUMeEsGX7ATFf/rZD1u8ilyz0tAXBZ8YVDC/x23omdEcgFdYA9Q5lNhcnBAcvFIqTobIl78wVYkjpLOEdaj/ld4vVyXaO1IvTCGqcE98zApeOoBBL35mSXi+BApfzGkwPjGBYyj6dmetnL1/GZ/+VeX/mp/1yArcCPe+RqbXxpWFNPzKJEh85uiO3zm2RZR1IvbFL4EdASN69ZHcZU+JFKuPeuLYM+wqyEnwZXCOgHSX/RYM8ihA0OELeWJRdv3SACcfxJINLn9Ug3DTyCDJNwZuvfxFd7xIWCh20DfRbsFCXIHZMw6SMigALLkADbyHwMphAKlCT4ty8xE8ra35ONgPbFamXg3vPPuuqIWaPYAoOfQrB3zYsSH4tU/Gi+NXH/zsfctNWqEYrlKFSbRaFNGO4CLxmW/HP1g6GNGbL+AYq5A3fEM0I3EBrZFiHaJyF9M7PppmokGIFK0lcjzsIWosDxHooe6GoIrU9gts5tQJ5H4BuAZA1TNwJSVTZg6O8A0FduLwBPSumXY8V3VJbFeq05BPjnn9gBTVa1+ic3aiHobBnv4S5vcs/RQ048lOx6rqvl4dWL8A7GF4SK5xp4hLYUCr4atAP4JCTO2cKUzeBVFZ9A3PL/RCNqaHWqJhonzmEh7PqsL5b3gOvwV6uiHo29G2rcuTiMNOh3Yw3FEdnrjUS0Uw3dpsetqJcedpyelBakiWz7nOpGPGbk89AqFzvzXphvCg1nL
+ cKgf74Vk
+ /Z8prDqGD6nulQ0FRbADMTHfgfvbpny/DmN4oAGapjEJT4mALXIbL0z+nqw/bNizQZ7tNhZas4wwWBJbjvMjNsuPmA8So6UhtLDAnur6DhtlosQFxpUxt8db8eS+fSD0SQd/ISpw4Xt3gGV7TXH0yxa2MHKSEy2Tiw3fN+LMp4qTQuYsyiHqmlxXmkZgCpeyHABfzWojyRIi1sGXE7/ETP+MEWdBhLNt/Ei/fQk+iDIafB+QIORrn6asfFfidIrcnRvx1qmacTjntZgbgXqBJyyQa33Amhjv1Yc44x5dk4NoZjGJ3KwFz/LaH80tRHvRjRm2U6vsZ1s8S+beQCdnqQD304nU7Atp7PqFDVqev6Wh1mCA4JsZHz7NvgYsE++VCo+JSB8S1mO9UMdn4msW5Z4dT//1l7qct4dh7Rzk63PrSfhU6FJhLlE1ASpDHZXAy3yKKMzFfm/CATg4WFgBn2EC+Y3mtZA/27/J+ES0LB6uDa5/sPILEvoXq5c4nlhWyxyTkfaV+xjPQyrCLcvjNXJGzHwAbdSiaHzAF8Mq93U0zcgdZHTSFb42jqFCyvG2G9MOACsDem5QpTEuKHtfB8+2hnBAuAibu/2l784U93vElLFvHk7SdKNrXuTaHjqCAUbJrmQb+EIN8QbjgD7j/esI3hWjvGDh4zjJtWqfXxL3U8JY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,29 +119,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a kunit test for commitment of damon_ctx->pause parameter that can
-be done using damon_commit_ctx().
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
+The memblock API guarantees that start is not greater than or equal to
+end, so there is no need to test it. And if it were, it is doubtful that
+breaking out of the loop would be a reasonable course of action here
+(rather than attempting to map the remaining regions)
+
+So let's drop this check.
+
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/mm/mmu.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 9e5904c2beeb2..0030f682b23b7 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1077,6 +1077,10 @@ static void damon_test_commit_ctx(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, damon_commit_ctx(dst, src), 0);
- 	src->min_region_sz = 4095;
- 	KUNIT_EXPECT_EQ(test, damon_commit_ctx(dst, src), -EINVAL);
-+	src->min_region_sz = 4096;
-+	src->pause = true;
-+	KUNIT_EXPECT_EQ(test, damon_commit_ctx(dst, src), 0);
-+	KUNIT_EXPECT_TRUE(test, dst->pause);
- 	damon_destroy_ctx(src);
- 	damon_destroy_ctx(dst);
- }
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 005844e521bd..bfbf3fe0d1be 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1177,8 +1177,6 @@ static void __init map_mem(pgd_t *pgdp)
+ 
+ 	/* map all the memory banks */
+ 	for_each_mem_range(i, &start, &end) {
+-		if (start >= end)
+-			break;
+ 		/*
+ 		 * The linear map must allow allocation tags reading/writing
+ 		 * if MTE is present. Otherwise, it has the same attributes as
 -- 
-2.47.3
+2.54.0.rc2.544.gc7ae2d5bb8-goog
+
 
