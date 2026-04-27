@@ -4,133 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D0CFF886C
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:19:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91096FF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:37:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D43F86B009F; Mon, 27 Apr 2026 13:19:27 -0400 (EDT)
+	id D0FF26B0098; Mon, 27 Apr 2026 13:37:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1AE96B00A0; Mon, 27 Apr 2026 13:19:27 -0400 (EDT)
+	id CC0976B0099; Mon, 27 Apr 2026 13:37:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C316A6B00A1; Mon, 27 Apr 2026 13:19:27 -0400 (EDT)
+	id BD6DF6B009D; Mon, 27 Apr 2026 13:37:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B2E676B009F
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:19:27 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4540C87919
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:27 +0000 (UTC)
-X-FDA: 84704997174.19.9D93122
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8FA3CA0008
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:19:25 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k8kV5Zhk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id ABAF26B0098
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:37:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3B6B51601D7
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:37:05 +0000 (UTC)
+X-FDA: 84705041610.08.02BF977
+Received: from out203-205-221-233.mail.qq.com (out203-205-221-233.mail.qq.com [203.205.221.233])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D01CA40006
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:37:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=WSzzdu5t;
+	spf=pass (imf07.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.233 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777310365;
+	s=arc-20220608; t=1777311423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h3Z/nVyoovIhD0EOyurWXqapA3Ve0yAERyRow/fU/M4=;
-	b=8XoQKhWJWzEwIrZVnV8JWOavmms38VsfXqj04d6tmn9yAW13c+GGOKR2vrM7HACT6lvgG7
-	wir8riTy6JOtzQoBO5fSLaoj1qAd2kUjcVWDfT8/+W0e2wvK2iYo8RBxeAJW/s7MdgXvg5
-	nJrCWVdHGL2ByVqg6urM4mJcvIc5y+A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777310365; a=rsa-sha256;
+	bh=PP94l61ktUAdCfnTosXBLrQQI5dFNrQT1AgczBpp/Vo=;
+	b=M5N2tKzunfpfFWd/bxZA/j+qBdjgx/jNyXXwlMsOQ1aWepfO1yIHvE2dqnGwG8mRwwa7q6
+	7M7JErICrJAG5YZgUTfZqt8lS2qyQcn7NT8f2xWxTzorH9ECCzQlV5WO4yOh1UQBULtSE6
+	6+9eCcBD8RB4oAg2vqa0z7r6ydJD7F0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777311423; a=rsa-sha256;
 	cv=none;
-	b=pkQIO0IZQApXR1BemijBw0hcNNum6y8bSJR4GDym7L30AhvfXvdNHcngPM50N3sLs98uaf
-	gyUgUrxNktnRSAw0xVNPASGDQ+unUzfDhoGgckV7zypVmV9fjb9+XMK21D+RSvD6Dtw+4M
-	eyygWoQaFCI8Rfjj7G+1FYotnsniKqU=
+	b=C63n5kmWTI4g/YItNquzZXLM22PREkkFVY+b4vMrKzAVDN0r70ksfWDtHCWR2rdn624tGt
+	3dJe0OnywWFjb8hxhV0HIQJqGj91KlBCzc6z5xZlcV324/ZvjSj868joYgl3eH13gGHXa9
+	7zXYrzARxl2BhIj3pVVwa5sh015UAxc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k8kV5Zhk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 180046024D;
-	Mon, 27 Apr 2026 17:19:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25EEC2BCB7;
-	Mon, 27 Apr 2026 17:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777310364;
-	bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8kV5Zhk7HZbxy8X7mxqUL5UgTTJPPuuLtSKHKOe5PwbIiNodL9/7ESxRbcOMv4dB
-	 NN/pd897F5mMQZv6MW+RM/3mikWvqmJGQCtupbd6YHiobStaCQu79RRkwt3Bs1rL/A
-	 WmXtcy3vIzgejB2MGSu6MrKJ33itreKKdFlemNypyCUExoUHGXA1bHbqFqaNX4ujdd
-	 iXZiXWTV/w69yfgs2V8e+zdWAilhhtsvDDxzPIT8CbbievjXPmrPwVloE5aoqLKmYP
-	 ca2+sf92YJQm2mLHcpyNlGd6mMQP6QhUed6Hx8vk/CloBjO7tSgz4fayv+CeXka+Fz
-	 NwGM6tvALNVmQ==
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com,
+	imf07.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=WSzzdu5t;
+	spf=pass (imf07.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.233 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1777311419; bh=PP94l61ktUAdCfnTosXBLrQQI5dFNrQT1AgczBpp/Vo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WSzzdu5tPrw3odt4Qk0QOT8gjWl2yp0+j2RUklpezwHq7WPagHzKKZoivipyuW28h
+	 7AFhMvxtbeZxxwEgq16zg4igTQPpp9AfvcInY6H4ioe+McrMIWK1JyPh1LBPnxIH0l
+	 WGsq/xvvVXqEVMbjQDUaNt0+walWfeN4g/eek8rA=
+Received: from node68.. ([166.111.236.25])
+	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
+	id 9391448C; Tue, 28 Apr 2026 01:36:57 +0800
+X-QQ-mid: xmsmtpt1777311417t96kki4yo
+Message-ID: <tencent_0714B5E66F3D7447C26FC82CA0B8E29E3F09@qq.com>
+X-QQ-XMAILINFO: NT7uTz3cNku2cexzM5GuVauNym8iEH5o3rHHWZRmDHTS86RLpSLvm9SfnpgZHc
+	 H8VF6tu2VrGeKVOsYVATZQwATwq1P796Wi82RyOZHt4lT1hJ3JVhFoCMDGGlpo/4EvUj84WrAP8R
+	 eV4LvnIQy7d2Zt2ccxeWQKFzD7WHtgsVj4EC3XysgjR3f2C8atES3t7Nb3/WtkZpAOMHgu86x3aO
+	 0S3dXQBblmFxGGQ/CU5/igWK+a+PiebcZuSGxqncSo/bFFyJfjdUjiHRdaYZnL3SFZKLcc8/2k1U
+	 ogPj/wbCQmPiQbiidvplqxdu6SyXmJH4SXN+Euffm2rriSs5ftqPMETSNCNt+ASoIQ01vodaPpB3
+	 3sSkLKnH8OtP0WQW3BjufnBboNdIVZISjjYG2x30QfptyrzEL4WQlP6bmb5mcUnjDhU+VboFPRyb
+	 MQPrIb92oOWv55d+BrfNeNvU6G8qaZM1xcXFmKTUsEI0rVaiQwoOlpwu/Lqh2c8vxnWBzwyiaRFG
+	 S4oiWxB3ZIDD5qw/3YCzoVl5PC5w1DwnxZu8OwEeiZZ2QkIyDtgltnBrIulUXIYrbAKgialDoyeH
+	 09Lnfm7cprRnqgDjMZaFgRdwMbooap9jAhPlXMIZB8ve4TOj6+6Qcn66pYMd7jZRMkLzBIUJbQTK
+	 aNIjJGMr1ul1fiYqJIac/X3TI86wp1/tWfSkTdjdLuZN4lmSZs/cAyCyGvw0t5CoxKhRtFgKo1JE
+	 sf7lmNspYPPrP6yFQNFyck96mYF7JhTmOdiDCTXytJk5JRzuPlb0oW9H57KEkcNW6vP5we4aSHZR
+	 F+CZyry3X+gRJXVASgufF954ZcrSx6PnH/Y7lpn6svAokbBLOa0Ttv30CyvgCW6aoJveCoqAuN1W
+	 W+q5UJZTIfvzIF3qqeHv5C9aCvpsAd1AXM07zUXXYaX18m5PiL8An8rOsYI0QogB2Pc52H7cbUVv
+	 5Ct3y8QBk6ImMkH+f+T1DG3dwt1dlJPO4COrg9vfqlkSQVU0C/U4VAdCGqvQTssAUJs/yrh3958C
+	 42ZeEUOaJBZFpKlPkv
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: fujunjie <fujunjie1@qq.com>
+To: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-x25@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-arch@vger.kernel.org
-Subject: [RFC PATCH v1 9/9] uaccess: Convert small fixed size copy_{to/from}_user() to scoped user access
-Date: Mon, 27 Apr 2026 19:13:50 +0200
-Message-ID: <8780eb2ef80575931a339e5225bc80eb13e9be6c.1777306795.git.chleroy@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1777306795.git.chleroy@kernel.org>
-References: <cover.1777306795.git.chleroy@kernel.org>
+	linux-kernel@vger.kernel.org,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Haoran Zhu <zhr1502@sjtu.edu.cn>
+Subject: Re: [PATCH v2 0/2] mm/filemap: tighten mmap_miss hit accounting
+Date: Mon, 27 Apr 2026 17:36:56 +0000
+X-OQ-MSGID: <20260427173656.883899-1-fujunjie1@qq.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <tencent_4EDE373816615C46CFD48A6EF3B61E232308@qq.com>
+References: <tencent_4EDE373816615C46CFD48A6EF3B61E232308@qq.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3638; i=chleroy@kernel.org; h=from:subject:message-id; bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWS+nxlr/n9yu2DE7uwkCZGbl0uCp6Y1JLvZTPpz+P/PY xNqPMoaOkpZGMS4GGTFFFmO/+feNaPrS2r+1F36MHNYmUCGMHBxCsBE9HwZ/ns82Ho9PV2Q+7Pp 5fqvs6O/v3YN+3EgL+Wk4b/co1rlkZ8YGVZxmDl7XFiUcmPSTPW14WGSHT6/1u4pcTY2cjD0U7P bzAkA
-X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8FA3CA0008
-X-Stat-Signature: agwdrpz45gq866r3udokkdccbwn5ofwy
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D01CA40006
+X-Stat-Signature: muoj99fsjuumwb8gen4r9eucg9e39obj
 X-Rspam-User: 
-X-HE-Tag: 1777310365-672777
-X-HE-Meta: U2FsdGVkX18lMGlajTssOt5+X91TUFPVz1DPnLRfTaXo2uqdareyRd1+KUZPyYLzVziNN98fRSvJAbKfnoPCn0C0L3kxZZAO62Ck1ZRqSdJX21VmjoI0LS9MDnE8vyoj+nqooYomM2fAGgII0EDC0RhTDeyAlAigtteAUyWGmisXq2jyMHwace0m6KwRNPlRZ5rVS3L1CVj0Td5EAojmkmPpwkiYDnCPTbvoY80A/OtHjDXO2z+VczCLP0EQ9IypZJHuaKPbmHsVPy+A0nZY3y90D1ph8KqGMS3ns8wL5E0LZP2cOGJykV3OkvT6fhEv9jtVgcbck2TfTHebk5uYiZOcKmJKC+cl+YNT8xpVL1FyIaUlNsJKBILy4fT+jjMICI0Z9yMYh0EzF5cg6YIVOsOfAjGm6PaqNCLarC9wk0k0Y2oeUFHzqoOMNxbDUT6BF9PBmtJMndjrHHr/hZlBmE28ZVXXDkuXlCMSt7ZhhtpVyibk4pCNw4lrUuHGkTRHtJ9ltNhbtRZElPPHbAdf+5rUFqxezXdO/hEZ5L0enCKVujon8JIRXpFf4dgUxGw7ceW1+XlfK1ayC6oPffwm7jEGvnjkQmZC1LXVP+mHY0Dkap4Jzxp+dPQwRqbKImWvnECuFvVEh3o+YKDD2/4BLZ7P/k5M/ijHSpXRh/+wba5VbyG7hgWIqQ7jRNStxPlGbJwi4r9Ud4ZMXAp79NWG8PaVPYQzsoq5DiTTDRJP8uRQAMbjsUHyMcHnY0DWYpvxzvQwOu2JTs4kbV987oL47+df9Yn6gE+hNBmXeelkCxsdRdLxBzydd/MFBDPkBYbm59/R+hz1sRJUY1sYfXtDjg8KLqjSWgmK33rh++cU/ymlDbnARobl7pjjg8gAZpGlKS537NuklkYMhLNRUly9AydAsX+mPH61Fzy15nnqI2hnZUedN15nsp/nV1XZS6eSvBYOuvoju527fTK22kj
- 60ByIHlq
- ZKOt+L9Cj/5m0aYrQicpBKyuEL6dseWIJsAatPPhoyrfmjoAUAu25mWonFqRgFtMt9XoHHpfHuLOC6K2Z2gXIDnvNHGFmFfqNV0TNinxHs6NKPUptHwAgcH8bRfWdR/ml/i+D/VDmrZtKJcXRS1en8U9+P+yQ2r1nIWzS20JYnSbezMddRXVgzJoweKqmgZtqbbg034GSRa25FfLOUG82ksgtG3tmlcwRApiAfIIHtsQjJ+RmrzTmcd+/6a/zctPx/SfUDSjPicJH6gc47GRjtVRl7QhWemwT/PTWxYOHHVwqFPx3lEFimRe+UlMfjwqEejY+QI3wWxTvGoXaQstNgU4ZpwVMsXv1QrgQ
+X-HE-Tag: 1777311422-663369
+X-HE-Meta: U2FsdGVkX1/KG5HJhGsd81OAhRI+oIRvNj1JRS4Ss90eIHjLWWuDdkAyqTFePZbhp9tEWEqq0KtwcwWeaWg6i7Pnc7rWk7LT2vII429htqZQ7V6xEPgRE5GAfGAZ+/cLYRsl5/r5gEEc9LbqpF6VGDtE/CP5yCSjiYWjc3f5gXHmvjZoH3fR+IudkZJaDbw7DtMwcRVKPeRxFD2nqz3qHOYBXj2a3eHedE7ND2Cs0fwWmsyroaUK/vNyh2UzMYBbJi0Ib5dsMayzVcJmVNDk+KJOL5xCcMbOPDgm+qmMXJmz7pX97/mv8juxsG9WujsqDukJr0sjgFr1YGyKdaQzgxqECYvWWWcwNj4oXGvEnQrY/3mQ2W8OruVDLReQOp70LRAu38xYgJ9jo+5hiDmW4wEndTb4kExrSf1SkXEbCPF/oJ89HYusiu3b9HdZlxThyNv2CVhz2NT5yoN2wMAR154Q4+Ti3GdA/EEMs+T88by7Yl1SMudHBw0cPVVQJnc85zMqZGfhcNn32q8YEq5kciTAV1iCVzkLu/RcaRXSVa4YpNGB9iMvoman1Pv9DJGAskuIbR8EI6qXu6FdQY+VkHFO5uOjcd/OaalmfHwQxeB8yds90ZBOOvatC+spfbrrKqwpFkV8tdO/9gC677mGC2em5EyJ+bJxdDxHQ7ySFxyF39eU0hGNieG5RrHW88VNGD6gDgGEs8g0l+Z5lL17ZQ2g0cNms5zEUso6YMrcOvB3kF1ts1/yUM0u41e1QcRH0uxutNSTo4o/4NJmVi+vwbjReb/Xqt3AivkD1eLsrRF/gEFhziVti2DCfqNHrpzb3o5nfQmdfpgg6Na0Bvi1T2t1dhn3IixpK5bEGENl+qGmznT3cpYXfTAL/czl5JiJ3CjwPNcApNByxubTWKIqUy9mgDPUNykmNiaEb7JZ3MJx+jc9Dbcw4FlCgW/qH7YAcVNvqhqL2Y4Qpt3GCpX
+ EF9at22Q
+ VAETFQhmW8iJsDSJS1+LsZBXvJLuYsc1W81HDsFo4UfJxwNr5fWZEfjPlc9fp6FCqWQsSnUnvShcYLdAJVscCZkrjhF/JoFLNFz+bCwicM1LgCCov8Z5JC90GGNpucbyCYYj0IUeV8UdvG7p/EgUMGMFRh4bLKZBmn7CNCD90xHBOUtriveRfuZMAVcwbZw4rgPrHQjazJeBp19y/J0ULtmoZrbjKVLVoHxQrsCsGfJCfeSwjhBn1N7bPp+mXASjs/QafkypUN2znsdw0aMjapijHzAS4Ka4NdpKQCFs/vMPIG2Mn4URfTHkSyxNUtJSNCM5SQIKAz+9SJV9WReFmz3Z3tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,111 +107,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-copy_{to/from}_user() is a heavy function optimised for copy of large
-blocs of memory between user and kernel space.
+Sorry for the broken threading in the v2 series.
 
-When the number of bytes to be copied is known at build time and small,
-using scoped user access removes the burden of that optimisation.
+It looks like my outgoing mail path rewrote the cover letter Message-ID
+after git-send-email generated the patch references, so the two patches
+ended up referring to an ID that is not present in the archive.
 
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
----
- include/linux/uaccess.h | 47 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+The patch contents are unchanged.  I'll make sure to avoid this problem
+in future revisions.
 
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 33b7d0f5f808..3ac544527af2 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -50,6 +50,8 @@
-  #define mask_user_address(src) (src)
- #endif
- 
-+#define SMALL_COPY_USER		64
-+
- /*
-  * Architectures should provide two primitives (raw_copy_{to,from}_user())
-  * and get rid of their private instances of copy_{to,from}_user() and
-@@ -191,6 +193,9 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
- 	return res;
- }
- 
-+static __always_inline __must_check unsigned long
-+_small_copy_from_user(void *to, const void __user *from, unsigned long n);
-+
- extern __must_check unsigned long
- _copy_from_user(void *, const void __user *, unsigned long);
- 
-@@ -207,6 +212,9 @@ _inline_copy_to_user(void __user *to, const void *from, unsigned long n)
- 	return n;
- }
- 
-+static __always_inline __must_check unsigned long
-+_small_copy_to_user(void __user *to, const void *from, unsigned long n);
-+
- extern __must_check unsigned long
- _copy_to_user(void __user *, const void *, unsigned long);
- 
-@@ -215,6 +223,8 @@ copy_from_user_common(void *to, const void __user *from, unsigned long n, bool p
- {
- 	if (!check_copy_size(to, n, false))
- 		return n;
-+	if (!partial && __builtin_constant_p(n) && n <= SMALL_COPY_USER)
-+		return _small_copy_from_user(to, from, n);
- 	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
- 		return _copy_from_user(to, from, n);
- 	else
-@@ -239,6 +249,8 @@ copy_to_user_common(void __user *to, const void *from, unsigned long n, bool par
- 	if (!check_copy_size(from, n, true))
- 		return n;
- 
-+	if (!partial && __builtin_constant_p(n) && n <= SMALL_COPY_USER)
-+		return _small_copy_to_user(to, from, n);
- 	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
- 		return _copy_to_user(to, from, n);
- 	else
-@@ -838,6 +850,41 @@ for (bool done = false; !done; done = true)					\
- #define scoped_user_rw_access(uptr, elbl)				\
- 	scoped_user_rw_access_size(uptr, sizeof(*(uptr)), elbl)
- 
-+static __always_inline __must_check unsigned long
-+_small_copy_from_user(void *to, const void __user *from, unsigned long n)
-+{
-+	might_fault();
-+	instrument_copy_from_user_before(to, from, n);
-+	scoped_user_read_access_size(from, n, failed) {
-+		/*
-+		 * Ensure that bad access_ok() speculation will not lead
-+		 * to nasty side effects *after* the copy is finished:
-+		 */
-+		if (!can_do_masked_user_access())
-+			barrier_nospec();
-+		unsafe_copy_from_user(to, from, n, failed);
-+	}
-+	instrument_copy_from_user_after(to, from, n, 0);
-+	return 0;
-+failed:
-+	instrument_copy_from_user_after(to, from, n, n);
-+	return n;
-+}
-+
-+static __always_inline __must_check unsigned long
-+_small_copy_to_user(void __user *to, const void *from, unsigned long n)
-+{
-+	might_fault();
-+	if (should_fail_usercopy())
-+		return n;
-+	instrument_copy_to_user(to, from, n);
-+	scoped_user_write_access_size(to, n, failed)
-+		unsafe_copy_to_user(to, from, n, failed);
-+	return 0;
-+failed:
-+	return n;
-+}
-+
- /**
-  * get_user_inline - Read user data inlined
-  * @val:	The variable to store the value read from user memory
--- 
-2.49.0
+Sorry for the noise.
+
+Thanks,
+fujunjie
 
 
