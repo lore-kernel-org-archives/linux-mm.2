@@ -4,136 +4,237 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EECC5FF8867
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 20:34:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 596A6FF8873
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 20:39:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FFF16B0095; Mon, 27 Apr 2026 16:34:53 -0400 (EDT)
+	id 803A06B008A; Mon, 27 Apr 2026 16:39:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D81A6B0098; Mon, 27 Apr 2026 16:34:53 -0400 (EDT)
+	id 7B4536B0092; Mon, 27 Apr 2026 16:39:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EE6E6B0099; Mon, 27 Apr 2026 16:34:53 -0400 (EDT)
+	id 62EBB6B0093; Mon, 27 Apr 2026 16:39:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 402116B0095
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:34:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD6D6C159F
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:34:52 +0000 (UTC)
-X-FDA: 84705489624.14.89FEA82
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B30CB40007
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:34:50 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=WDnQIBBd;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F68D6B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:39:52 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 023C41A026D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:39:51 +0000 (UTC)
+X-FDA: 84705502224.22.028CD3A
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010019.outbound.protection.outlook.com [52.101.193.19])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9B4A1140002
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:39:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=citrix.com header.s=selector1 header.b="mXaS/4S2";
+	dmarc=pass (policy=reject) header.from=citrix.com;
+	spf=pass (imf26.hostedemail.com: domain of andrew.cooper@citrix.com designates 52.101.193.19 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777322090;
+	s=arc-20220608; t=1777322389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DhWqUuRS27TshBWv94CX8/aDWOniyA7iNM1Yxs8Y1bU=;
-	b=xcPVR3WWrJVrKpaqW/O7HfAhy6yvQ5tHy3MeZQhLQdjY3ha+4Eg8aQv03j2ylDz8i2lEh1
-	EOZQG+OMK63g98fZ/JgAsLv38cvFWj6h1exDdyf6QjkFtdLGteC/kqST19CsGSxq6/AbVe
-	9KSoTJlkuPuEQUcnBvP3FH/eGJWfH4E=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777322090; a=rsa-sha256;
+	bh=587KSE/mBHlcC1zyB/ZzV6dcer4yy+VvGcgD8lme/jE=;
+	b=4z7R6BlRbJ4xopPJkFxlIR/3Y6IlaFIEp2lH+n52eZBYcvWSA9DJpA8OROvJAqFPD8ELqN
+	ejLC3d8AbV8/fpL0M0Fv8OsS0irtgKy2PFCYe8rnHhVaK/9FcDggRKpOJ9ydBgrIoorHMQ
+	2Ehxd4zDjvvLnkG1cUYrxLcXFI+FRig=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777322389; a=rsa-sha256;
 	cv=pass;
-	b=JfgJb+HE0rEwvSTcQwzDE2U1kL8tDEEMDcRwN0ETGduQ5h8Y5rZKzhqMqtagJUwZCpwiOZ
-	sIhnePl7rKsDXVwX6UdzcgJ7kPpzeBubM/GCaWeTercQQIPpG4nYq29v6/K9z9EBDgkknr
-	Y0ea9iFVv8xy3SPpB5KPqnCTHiPpzP4=
+	b=DXOFSSK14Uk3U64jDzxWG6arwqWeTlZ3dReSam3NMn3XJEvpQmpwC4v2SYr0csYoUpiaWM
+	x838sgSQSb47uNRIUO6tre7IVCR5vB53eha2a9wMmpwVwBN1TV0gY1MyZ6tWSIXc7GNrqB
+	kqnCMgjZspIeOp8XXCNdQEDLlkcPzLY=
 ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=WDnQIBBd;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50d6b393d60so166381cf.0
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:34:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777322090; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bqrli2oQJBSora4s5eKVJ2eamBsWKU6Ck7ve0wbjn/2DKroYOBkTacNXq6yh7F9j/o
-         3IZh1jvia6l09FVHZikmKSVEnxwlgqTRFN1HsOulflQa8L9j4HCtLnqlyW6445sLVwVL
-         67x7YE7+MRJZF4bJ10NY6iPHpt9HlAiyBiB1iQeQEBr/HqTHBf2HymWplxlomQT9R4YT
-         OZvYVTn1qMAGY6DB4JfP/3W6P/FnDTQQnHNOk2CKNsjaQUeCMTIf+C7HKh4o9NH6BpjI
-         u6p5hpEVA232MsbnCjugUP7Kj0uq8UH2OSzGM2CMuklrqAg9tMRPmGRCtGOA2wJypoHg
-         lTgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DhWqUuRS27TshBWv94CX8/aDWOniyA7iNM1Yxs8Y1bU=;
-        fh=P0qAIsnOc8Swxlkcq968SOD0bhy1lT8Qjw/d23wJSMc=;
-        b=YcrRm3K/6t8ZarRj7VhaV9TLwRjJuD7Kaa0zAtEzF3rS5qqqZ3i/JWUfjEzKt3Pnvm
-         ldu2D/qZTLDJrqtsLK7YPbQt/zXGgz0N7gbTPtM086TRZ/znrgYPHkh8x6giKfTa25gK
-         oYx9MKIDk18bAMBBMDYqcg/zFJV8ZRTuz6/eDpRQWPG/YA+l5pSR1PhGQHJKgBnBZD4k
-         m07vRtVwFzVqPvVeonNKw6bjsU87FQ6on8EB/036XOwsGv4c3UPRRH3rdzJiViEndnQQ
-         0gZ6m9ViI1ANzKAaUIvT0EqRJZ1Y6tFYs6Lq8XS8UvTIZWU7Qj8rAR9bU39+6hn9DRrP
-         Y4RA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777322090; x=1777926890; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DhWqUuRS27TshBWv94CX8/aDWOniyA7iNM1Yxs8Y1bU=;
-        b=WDnQIBBdYZOCcyT0qeJINdKipqCacGggyBzjeQ9vPmdFDZOZ7NpvaIXd25TO4UOegz
-         R1Qs1LIgf+lfy8MxY+x/NKzwsdicICnUsVeKqwVMA0w33mAtiVs/cIkN4I+VVjJf6OAQ
-         zbn9DQvLn8PnlKjcT1v9IVNVHiYgihZnzXxQEPIp60L6WA2znzofHdtNRUqnMuRNUygr
-         Hq2cVUbHKowLclBTOWSYtCRlGEMMao7OnioshNK9Ls3fE8AJi73nnR9CZjfTZYHSrbjZ
-         wVLXGiCJJjy4SCY+o+7D+DLgSaQXYOmj+R8VaW7O+HGSYooJsEgfzRizFCARA1f5Fusm
-         36Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777322090; x=1777926890;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DhWqUuRS27TshBWv94CX8/aDWOniyA7iNM1Yxs8Y1bU=;
-        b=KN2TTXZfsJlZRYW+3c27j/dpE/rRQiStgXQAK9Q1Cu3PlBm0wVuxBjHNod30qdQEsh
-         BwNdkFgnE2885PtRnR7sG2apAjn+4lnfuEUz6eTDiMVbJuhu1pqRT++ILy+XOkHwvQ/w
-         hEjzqQigamsZvKbgcV+ltCagOvOK37nRDC+xgCB5rWoiJN2feDyWcQ3Qj1eGyQWRBHKr
-         Og6FWoJMb1Mdocb/rVVxgqRqGQ/ftVE0g3Et9/gvBX1NY4Lbj8hncsbhCPCeD183mSIg
-         2T2VrG+HvrlIFVBgj/j6PcgttApKrhJ9NXMfmjxaw4pj2SsaE1XrbYq3cLqyLpXEvcKr
-         afhw==
-X-Forwarded-Encrypted: i=1; AFNElJ+EKtX4Itd8fW+cwSP6eRBdh1CSWaLW+XJMcWxzXFzLuJu5LVijlu9D31Awi/m4FNXdN06J//tSrg==@kvack.org
-X-Gm-Message-State: AOJu0Yz+dcJOEiFBbGosR+iEKtutiBg4+bMDPxA9Pc9RQBaW7zEqqY9V
-	IvVRrKJQpEEMF12jqqWy70cDpqOX9naGMnn6GLn0JaCJdgA8tsnIMHe9obcg0lXOLvNLFxen2Wf
-	vyTz19QRKo4J3c5DLmL33ftUxsH7LPDblk9BcQZTz
-X-Gm-Gg: AeBDietZW4JF4DnTCugnCphD8oUyB19Qiy0Dsf5L493QkchpkZkRsR1JbbArTqOQFXk
-	c5XxNXNV+rLm6GO2EBu5fH7z+8ZrFzEw73yWHqBLzXkyHIgAAisAIaRN959jOx9Np0ZdNH5bxvc
-	QzOMSVxtRo5TuLQczBPyRBRrR+Yt0T+2YxY18626n9rYpAgavEHJ9F3uscS6I7+zYpvX/YVI8HR
-	1ZvLSd5R9sUdMUquwoJpRH8V3+/BDRcZs7u96i8KiG9eUtI28ih6uAQYXCABNoYRC62yY6ep2AM
-	oyTTRcnv7NHiNTsZBoyXPq6566s=
-X-Received: by 2002:a05:622a:8d0e:b0:50e:595d:164 with SMTP id
- d75a77b69052e-5100cbeb145mr3380701cf.8.1777322089076; Mon, 27 Apr 2026
- 13:34:49 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=citrix.com header.s=selector1 header.b="mXaS/4S2";
+	dmarc=pass (policy=reject) header.from=citrix.com;
+	spf=pass (imf26.hostedemail.com: domain of andrew.cooper@citrix.com designates 52.101.193.19 as permitted sender) smtp.mailfrom=andrew.cooper@citrix.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oUh77Y8MYJlZhKjg7cr9IZMNNqrz/rZ2qa3tNEc+fec4C7Ju2THcWJblbVnRaqWsvyoKQu+dUhBVNp4GpuLjmVm37rB1bK2CCCYDLT4BzK6PrU+SzNHI48mXeHIxXZZ1yckmz04lu6d99FmaPs4HZMLrAY6IoHyP3tghy99Mz1KEnbJuD4AsUgTBdf48+3RcVVgHji2YBIDA5Qvt/o6jqudWrz+L9xONlDtcVp5UYCJO+vJGt1BvCEOiHbDs8Q8H7qSmSnmE5EFe5fDVwFzrriTXjJgTDZFTAjlIDkMhLoj8cX3ZD0mM4vhMDH5j+EBD1cgIeMa5/5R7wZRZN3faMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=587KSE/mBHlcC1zyB/ZzV6dcer4yy+VvGcgD8lme/jE=;
+ b=JBSBPDWe2m0PUXgGc7whO81nXvxcarqS1U4Y+X8CQYCyQDQp+k4PTYxZYzV+P7o8uGNnzVqUd8ZSEiYQ/X29Gg7jV3JZdkFRu+SLujKDNw5PQ66DfWoCR3smuF4XOShj5DAgGaeS69ZUB2th02krtSFErSEjyLtujddPS1MOz3p/oh4aeeg2pXQXOID0eUQwz4WqzzPzCNJ1VT/xa19Ags3nCGgINqRiR24y1CZmhyqxt81o5jZYYKSWtuFkGu8/MzSQWt7aXGQeUe2HjZ28NR0imAc46B0gAucQ5+9ruoMJw7ZVD1v2RP/rIj8FC5uO9FnXzXmU7m2QSDQXx6aPSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
+ dkim=pass header.d=citrix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=587KSE/mBHlcC1zyB/ZzV6dcer4yy+VvGcgD8lme/jE=;
+ b=mXaS/4S2ySUjjDWZ0IHnYqwUL9esfa44nwOyfeA3PSxmst6DepNPBSqa3gJjLITYVh03D8R5fmbdXIH3RhlOIPFr37oRxRWcMHUeKl83DVTcXJtcDCT6AgU6UejcOMBE1V143s18p1Wly9dN8WRFl0AoPR/HJoB+cbQxLS8VlD4=
+Received: from IA1PR03MB8288.namprd03.prod.outlook.com (2603:10b6:208:59e::6)
+ by PH8PR03MB7197.namprd03.prod.outlook.com (2603:10b6:510:25d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 27 Apr
+ 2026 20:39:41 +0000
+Received: from IA1PR03MB8288.namprd03.prod.outlook.com
+ ([fe80::b5ee:28c6:e04b:5599]) by IA1PR03MB8288.namprd03.prod.outlook.com
+ ([fe80::b5ee:28c6:e04b:5599%3]) with mapi id 15.20.9846.025; Mon, 27 Apr 2026
+ 20:39:41 +0000
+Message-ID: <f54c3c2b-33da-42a0-80b7-0f6615d930ce@citrix.com>
+Date: Mon, 27 Apr 2026 21:39:33 +0100
+User-Agent: Mozilla Thunderbird
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ David Laight <david.laight.linux@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
+ Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, dmaengine@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-wpan@vger.kernel.org,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
+ linux-usb@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-fsdevel@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [RFC PATCH v1 2/9] uaccess: Convert INLINE_COPY_{TO/FROM}_USER to
+ kconfig and reduce ifdefery
+To: Yury Norov <ynorov@nvidia.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+References: <cover.1777306795.git.chleroy@kernel.org>
+ <9fe875d2f55af59c12708336c571a46038528678.1777306795.git.chleroy@kernel.org>
+ <ae-tVFVfx72oCC_i@yury>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
+ 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
+ 6+ahAA==
+In-Reply-To: <ae-tVFVfx72oCC_i@yury>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PR3P250CA0028.EURP250.PROD.OUTLOOK.COM
+ (2603:10a6:102:57::33) To IA1PR03MB8288.namprd03.prod.outlook.com
+ (2603:10b6:208:59e::6)
 MIME-Version: 1.0
-References: <20260421230239.172582-1-minchan@kernel.org> <20260421230239.172582-4-minchan@kernel.org>
-In-Reply-To: <20260421230239.172582-4-minchan@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 27 Apr 2026 13:34:37 -0700
-X-Gm-Features: AVHnY4I5Wx2UawYOebex5DxQ-pCvX_szKcR7n0x14TYqFsbSSMINsoQ03bpahTg
-Message-ID: <CAJuCfpFK+qatN_vHArEKOYe+LRHQG0e3inJrzVdz-mABi-BSTg@mail.gmail.com>
-Subject: Re: [PATCH v1 3/3] mm: process_mrelease: introduce
- PROCESS_MRELEASE_REAP_KILL flag
-To: Minchan Kim <minchan@kernel.org>
-Cc: akpm@linux-foundation.org, hca@linux.ibm.com, linux-s390@vger.kernel.org, 
-	david@kernel.org, mhocko@suse.com, brauner@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, timmurray@google.com, 
-	Minchan Kim <minchan@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR03MB8288:EE_|PH8PR03MB7197:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c641edc-eb50-4bae-eff2-08dea49d1bca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	9FY6m28LCnvy2YkNWJMU+RNswXX+UwdsQPdASIMzD4ybDBQF2lnqvw7QSZPd4BDHC6544/xGvr7GB2IBHK0xFm5TP97Q4B1LLrSYLufDx/SF+LLyKnRdZAhIUZNWvNg0Xs5VZ3Y96fvuQgvPSnPxAQkGJsp8+l2efbhOxHp/BdR2lVMpM++TBM4+FCcwak7FFBclmvyZjFF5YMn4tZiem79sc1Btt0cKEs8JPf9TGbKnDGPH/J9Y8EhC24T8KX1ItZRFFeXIU+G6K9NRUWxxrH7jD+OpsX4eWEXPyZJBnTOAua4918teYDpsYCArRx00EqYolosDciYnyZHCFXIVcvwB1j6VfSrJBdoJr9q4FR6IUGHdUZwHvSFkcMyhayrOK9wwb9KMjU6gnMokNDgilgm1hbCSR7oay+ZI0URVG6m2aFFU+eEEPwwe3PGIMvwNRVkUwpwiTyWxaqEmuwLDdZ0Qzn670vzddOnAl8EWaxRrUT6cmlQ/tvguQHMpnV2hNmfeyZUAZ3+5h41r/ERZCpoFCQ5C69bfEUQcbYKr9ym2osWQa1/n5l0sqiSYk/6JECxxCxmcHamWHf7LNL/hcXOMsg/bNvRMqStPCAohY+6JZNi7L0Ar/b4V3ZLBFmWPdpbmlnjlxOXg/5Kda/Bbg+FvpEqD1RRP+5yqOU3Vj/50V74AdZePk80A+r3os1lE5a/QEOkr6z00c3SGyd8xmkOuMWHXsMLEY/YVFSHzUb8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR03MB8288.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MTdZYld2cGR3RFV6NUZRcm9jVXBRMlhvSlN4K2xTZ1Bkdy9GUWlHTVh6VGxr?=
+ =?utf-8?B?by84cnBsbmVBUzVEaHhsSXFjVEdycnJOcmQwb1JvWE1QMW1Ma2JMWnhXQ3A1?=
+ =?utf-8?B?YU9lV0ZORHllTDZtSVBKQ3RlMnp6dE5LNEhwNE5mL2hJMlZCVk9ZbkRtSDdn?=
+ =?utf-8?B?K29mVGpIY2JkOWpVWnIrYjNyNHh2VFlDdzhadjc5bFJTUDMxbkJQSDZUWit1?=
+ =?utf-8?B?bHNwY2xuWjZWOGNGRVJ0NHl3cEJnN3FmeXlmTVFtTkw0WVFlNkZqTk8zYkda?=
+ =?utf-8?B?RXRsR2VPRHZTaytHeUNYN0l1UkJXV3RxZTA3WStCaE5ObUMxWW4rSmVIb3lj?=
+ =?utf-8?B?Mzh0aXFtSnJ2R3Q3YVBIYVpCSlFjYXR6bGhweXFka0U1TlNOdkxrMjRFK1ZL?=
+ =?utf-8?B?Y0ZDYmFPa1I1STMzdEVSN0dySDNuRlp2U0hiUmZ1ODVCaWtaTlRwVG56ZGhP?=
+ =?utf-8?B?NmpMWWQ3TUlCaVR0ZHBNRkg2dm5BdUtPV1YrcTJyTFpLNXVFMkVqYzk0Y1ZD?=
+ =?utf-8?B?ckIrT0dCc21rdzk0UURPOW41YTRFbGtXeVM1N0VqWEJIWTJEdkFnQjR3Wjlm?=
+ =?utf-8?B?NnZxRkZ0MkFlTjg0SUV5dDVLZFQrN1paTUdzeE51enZYMFRjUlZtODdaOFZy?=
+ =?utf-8?B?a1VFMnNYd1Nac3RWZkUxWlJsNFoxM2g2djFzZW1sM3NJZFd2ZS84WnF3RnJL?=
+ =?utf-8?B?alZQck5OcVdXeklCMkY2WXBOMTM3WEUxSGovdXNwQm9XaDlhRWVFdmdXaEcx?=
+ =?utf-8?B?QUovaFVUQnE5cXY5QUlzWnFjZDNLOXNHKzBtTTRkNVZOK1J2cldwL2dkdnlH?=
+ =?utf-8?B?VWd1YkwzWTZHaWZnb0RrUStuZm1CT2VxM1JoYjladkFVb1M0YlpveS9QRndL?=
+ =?utf-8?B?S0R3VnZTMC9EUzRxb0dodm02eHNKRFdDT1hmWlM3U29yN2ZWOUxBVXJDTHlS?=
+ =?utf-8?B?NkZDRWNnWVEyczlBTC82MUcvM1pKVldDZGgrWkZOU3VnRlh6OHpwQ25ra2Fj?=
+ =?utf-8?B?RjlHMmE2T3VLWUZyRytIR3pqWVdUZWVMSmx5Z1FZTXl1TFFORTNFVXFheFQ2?=
+ =?utf-8?B?WmdlS3F6SnRzbEpzUTZGdkhzRHdpbGVBYUZOZHoweTFsV3ZyZ0swRFhNT3hm?=
+ =?utf-8?B?dWZSYzhCblRHS3BUdzRxRktBZVFpOGplZExETEwzTEVlbktWaGxsYlkySFk4?=
+ =?utf-8?B?WHltVy9EYTVRRktUQWFxSGhNaExjemNLY2YzT1ByaUtEUkhvZWIzaWJVL0Yy?=
+ =?utf-8?B?M3ZoamIvMkpzZTJRSGJWSkdxV3N1c0EwSzFGMU1pNnJmdDJ0OW9sQTdkLzRS?=
+ =?utf-8?B?YWZZRG9WR0loTzFFQy9lL0N0NWxaOFpiYnhXZjdIaFVoenBwMEpFY3VsU2pN?=
+ =?utf-8?B?dUprK2lLRHVEcHpCQklJT0hycSs2K2MrQWNVdFltZ2NPUjFRUU9wakV1QkJa?=
+ =?utf-8?B?YzNKN2FGTnlBUU4yZUdOTTIxd3hpNVFaaytwN3Z4cmhJT2xIVmFIbzdQU2Za?=
+ =?utf-8?B?YzBDOFFld3BCRTB3elU3MWRiS0lkRGJNZ0dvcDR0blZlL0FIYTRLMTJidisz?=
+ =?utf-8?B?T1RQZFM2NWxTcVpJUlpySTdZWFExTlozOTlJTUxqQUgyRUlpM3F4OVdVeDk1?=
+ =?utf-8?B?UmlmaFliTGxkTzB4NmxEVlZUZjdzWUJINzdBWlo3Q3B2cGJCbmoyK2V6K2Jj?=
+ =?utf-8?B?ZlBiVDJHMTY5cGdmeWlvbENXM3diVXN3elMzUEluL1pJY3owUWRmektKaE1Y?=
+ =?utf-8?B?bEpwendKKzRtMVZieHhZamxMK0QzL2JHb3NzYTVvUjZwNjZOREVaWXpwTVNO?=
+ =?utf-8?B?aGdyL2lwZGxoM0Y2b2w1MlhzRVNzUitBVjNTbGJlRkRGZElGV2tXUG5OWmpw?=
+ =?utf-8?B?NmhHYStiK2JsTDlzU0VoMEhRTXJpSVg0T2czNzlrcUlKL2hvdkdFWkhqalF5?=
+ =?utf-8?B?Z25wMitPVGhOMXNJc3J5WFIyRnBqOWttTUg3WTUwNW5HYlZTYmxNTEpVVUU5?=
+ =?utf-8?B?dTFqR1pRMTAvWHFHUFozRHlMdmJUQS9NUHdsQWoxRHRtZUZIdmx4SzNEQkhm?=
+ =?utf-8?B?dFRzTmtvdkZEMS9Ib29YbHNRZmVMZ3dnVWlrWmJMK2tEems3RUZSdGtVZjNB?=
+ =?utf-8?B?eWUweitoQTRvcnBiQnRZSlhSeG9oa2U3MER6NTdyWWY2VE5VazNycmp2YWd4?=
+ =?utf-8?B?T2RCQjBPSVZFL1dMQiswMm95WE5XMkxuMEZnVGt4dmhncWgzb0tuTWhDYWs0?=
+ =?utf-8?B?Uy91T0hVSFpNQS9VSDJsSHNFN3VBR2R0eUI4NkFaTmVRb3JjcXBRWFYrSlZ0?=
+ =?utf-8?B?MVI2V1daUUxINW1OeXdLelV0TDlEYWZKWnZ1TWdZSk5tNS9wVkIyY2d3TGdV?=
+ =?utf-8?Q?Z28RZNN4T+YLRj6w=3D?=
+X-OriginatorOrg: citrix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c641edc-eb50-4bae-eff2-08dea49d1bca
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR03MB8288.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 20:39:41.7379
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7P/OK4nVkYKoOZOPceJ7mFnHteXT+or/VZsK1G7zm1+pF+DiXElHabbIzD2P/Aa25ppayHLm/G+R8tVFazmqVeDsv153yTNZHilISIGWHks=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR03MB7197
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B30CB40007
-X-Stat-Signature: tcpa4ixxdjepbnq5spbuqt6uubh87bdn
+X-Rspamd-Queue-Id: 9B4A1140002
+X-Stat-Signature: 1ir6gckbeaq5ejhfaqhnbkkqpjjkx6i3
 X-Rspam-User: 
-X-HE-Tag: 1777322090-960824
-X-HE-Meta: U2FsdGVkX18hacGR2Z5NcaUkvzd2umVlE5W6FHHGPgjKGm35qkOzWnJkDwcmur37jpl2durFlpZxnbMECjik/1t8Fr+f1pix+3M5qVSMh3JJPeDwGmAtivO+wB7v1x7wNu77woV4jzyZDbIG7tWZ3cCdnF9IVMlUI5V5zV48NhtHwvYsT9PBVzPtrFmQTIg9QumxVj8BjrXXQ5kuoaSpM1iiMDaO4za0tlCWlXitoWYlFcD15BfG1Nb9p//psvHI35whAk1hoFfGk4C0mV8fAGTxuV1L3JPsF3Q7Bclv5FMD9FqPUbU3ldW0HVZ4Fs5EQtn4GM6xMAPCnrLe24QXM8wQoajsuD+91BaEYa73qBQtZAGZm5HaFyGs6G0qrLuQjYkKYoH5aSDXdQ8zyK1lPdqNRFtNlSfSl3R2YzaI1IR50rCBV4pkchqO1BIW+Yy48eFA0bQxPDLM7g1eC46prub76awa31qnTI6Gqt8+GdJce3b2AKIcw0ESrxs5Fj1ABPu4P5Yj4eiycmHfezXnIEN28pNXFCW/COCFx+590mwtSRyS0D5O5SeM7bA305Z6jCi+w7WbzvLa/+m2TgB/e4SICojNUTdiFirHxlc9AUmkUEno2peh5GqqDp/VgLBPKohC2x7MKRFpKkKKmlp5xFCZBJi6ucpoaLPk4PzVOYd4kS7NZmnEQE4cYW/Zv/em5r2z/URplYVqEdR7ANJLU9XZvtvSv5G0Wun6xwPIG1wdWEMbToeSM5b2oDz7gN1HM5jY+8hxTeYP3/hW+y9TbIseLnqZTlf8+vXbn+bZFceHPjyMdZzFo6qtKIzeIEs8rOBp45WdYj9jEvxFsSjB6Mk7zXjS/IN7cdFkYoV/mESFWBrYXHaRm0ka8XYvc+T0ffpfevpVJStvWxwEGe/ic4DX3STvwT/ACV96oI3lJcBjqPD/0tHjJ49vUUeacqUxTfBes7mpsGPYCUM1N32
- bYCwfczt
- HDL0dldIWJTNsUGwa5fIf+24zM1ReHyPPnpblO2NcRVw+VyUL5X8QPN2IdSdBZ5y0sw1DpXrpEDsmfEKWva8I6/HRCXfv9nfT1K96sku+X/f4ogqmklg0ykiwceOLkebQ9jq92IE6zRE32qVn4eIVISh0epi8zkJFhqHrAWd90rYubIqZJz+OROWfrXTbgpbgvRGk9ciOVTpslP5oXzTpw6OqT6V1Pj+W5TMXXMRHtuJQsMP0lQr5usTSo2JWQ58hU/E47dPP9TuGFk0thXjqE/NSx0FH7nxsEXo0o/7ARNIXgK+Ov2shZZnHOU73T/NDpWhS9ywryiZkNnjr+psx713gzQ==
+X-HE-Tag: 1777322386-482557
+X-HE-Meta: U2FsdGVkX18+43sKhwBxbgwFvUorJ9+fXmPWwY91jmqYgRPDRtwoorTC6HrWfhWrYh4W147MxFS6+VzufCTEk1NeZU6Yuh2JghQeeAPu2h6yrBY0uVBAkXWUfSM+8VNcCJ915cfUmATcrmNH0uuYHbX6thpyV6CV6Tp4TSAIfNOgRXgSH+5wWDhIxSkJcKpqaPI1HBY9tejNAl3niRPtscDzH4wsSSYiYdzynoNQG+bVN+XWEWfn/y/pOCGzMY9cKq6yoA5TQqOnHh59+2ws0a1JjyEAn+W3KFhCgAJBkt7gxkL+mTWGewlC9sBOqZb2ynAREQ2NJ1aNF8x4qFpOG/MIuVydEUY7RblAoXdi4Z3s5k0fjxJtKDPia905tbe19g+3qyAw5J9yCnRJ0Vk6ogIz6PTMLT6AEprPZj+MjkM/m1JLQN6U52aNc0x9nICSN5ZLQ7qjV9sLja11w1vEob8p0la+9TocEolEB5FujNUc3Uv8D9K7X1L5q92APxaBcLlVQBwNrSGkVIVlx+Jo7Slo/a7gw3g0Au0Xqpr6MSaie8bHG2qL9I1PBPikXXnz06VUIHbBD/1PoBAXN3nMKsKgFilmD9IftgA0zhYrv2zhMfvUy8FycqemndIx6fwYN/aRvG2boOZjOHrODAJGMW/bl/Xo7PsQzonlXasnsmx2xP1Ii79NXmjpblAPyLbU8/mLVakitX0m0RE56zXimgPfqyqDmthLks+WJbQksGq+bxGU4yOeCzXmqFssoKk19BIRrymHxETi4IAvYFYnsmt4Renglw95k+XOIEXDjvQtSh03/kcCBM81uvBy+/4FY2JLYkhXEmZXX6DPYmq2ZVcao7nYEzW4l/4bEwkizEI+oX56ttI1cWUAoETCrCQhWHU7jc/m13v4cND0o1aP9fQfbGW4c6xFKHOUF8/42hntkXDngWsk9OGFkMfiF3YE19/zGI5a8fV5sS8+ErH
+ /AlGS3vj
+ Nc7l9hYVSjnvsdFFbbvVgALIt3OuVLIHREyHp3UxnEBdMebAbOXZw1MVpatn9OP2yHLAXUPjd2lAI3IH9tfIWDsj/EbShI5t6/rqFbVmKBwlp7pwQ/ACHrgwKu1J+byz8MmlJ16LoNVTZnT6Cm6cBZThNq+U0EQtRg1fSlUfZpKCdew/LrHKS14Ca6ZvvZU4fetqAksOmQC42lHhkABUxORmuKAcTuc+CNdkhOL8id7vFMD9+cGmtsuZDsUryzaZDLwM4BJyQbobcDM5yuvCi1AzHQIo+HHayXEAvkzBtDALybCxrhj+vVqfzpeiwNvtfniV580S318wKLzTPhzd/1iq5X/TU4FlwQt0xeiawdE0EsA0oWAHAdGtQdNsS8I72PBZFD1s7kNyjvgTOoeuQgyff1MQS9/iGk1lKWvy9xi6w1//9RhhRs+/aDVRVGmVs/Qkna9nQ1Pigp8tAeW6sbID0kX+VxOsbVaIdgB6XNR8PcPYD7TsEiDOzmvHkBDoGPvQaZY6qbROhvod8r0jNenjf/Yz6zw07hJsWooIe6zjcTKk4/T6s9xLM74Ustw62lvocYqqC430g20S95+bKFx4tpXCGz52/hhSG1YMHzhsZObbLC6FXi3P3rAJNj7k0nxH44MbD1BLwh60pDrRX6X/u9tLBJV8FWL+xF8Q8bBOEQHgX4U8Knk9hqqkwzG+vJMrrphTTtVyzfvdD3CnTmy20Tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,227 +242,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 4:03=E2=80=AFPM Minchan Kim <minchan@kernel.org> wr=
-ote:
->
-> Currently, process_mrelease() requires userspace to send a SIGKILL signal
-> prior to the call. This separation introduces a scheduling race window
-> where the victim task may receive the signal and enter the exit path
-> before the reaper can invoke process_mrelease().
->
-> When the victim enters the exit path (do_exit -> exit_mm), it clears its
-> task->mm immediately. This causes process_mrelease() to fail with -ESRCH,
-> leaving the actual address space teardown (exit_mmap) to be deferred unti=
-l
-> the mm's reference count drops to zero. In Android, arbitrary reference c=
-ounts
-> (e.g., async I/O, reading /proc/<pid>/cmdline, or various other remote
-> VM accesses) frequently delay this teardown indefinitely, defeating the
-> purpose of expedited reclamation.
->
-> This delay keeps memory pressure high, forcing the system to unnecessaril=
-y
-> kill additional innocent background apps before the memory from the first
-> victim is recovered.
->
-> This patch introduces the PROCESS_MRELEASE_REAP_KILL UAPI flag to support
-> an integrated auto-kill mode. When specified, process_mrelease() directly
-> injects a SIGKILL into the target task.
->
-> To solve the race condition deterministically, we grab the mm reference
-> via mmget() and set the MMF_UNSTABLE flag *before* sending the SIGKILL.
-> Using mmget() instead of mmgrab() keeps mm_users > 0, preventing the
-> victim from calling exit_mmap() in its own exit path. This ensures that
-> the memory is reclaimed synchronously and deterministically by the reaper
-> in the context of process_mrelease(), avoiding delays caused by
-> non-deterministic scheduling of the victim task.
->
-> Signed-off-by: Minchan Kim <minchan@kernel.org>
-> ---
->  include/uapi/linux/mman.h |  4 +++
->  mm/oom_kill.c             | 56 +++++++++++++++++++++++++++------------
->  2 files changed, 43 insertions(+), 17 deletions(-)
->
-> diff --git a/include/uapi/linux/mman.h b/include/uapi/linux/mman.h
-> index e89d00528f2f..4266976b45ad 100644
-> --- a/include/uapi/linux/mman.h
-> +++ b/include/uapi/linux/mman.h
-> @@ -56,4 +56,8 @@ struct cachestat {
->         __u64 nr_recently_evicted;
->  };
->
-> +/* Flags for process_mrelease */
-> +#define PROCESS_MRELEASE_REAP_KILL     (1 << 0)
-> +#define PROCESS_MRELEASE_VALID_FLAGS   (PROCESS_MRELEASE_REAP_KILL)
-> +
->  #endif /* _UAPI_LINUX_MMAN_H */
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 5c6c95c169ee..730ba0d19b53 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -20,6 +20,7 @@
->
->  #include <linux/oom.h>
->  #include <linux/mm.h>
-> +#include <uapi/linux/mman.h>
->  #include <linux/err.h>
->  #include <linux/gfp.h>
->  #include <linux/sched.h>
-> @@ -850,7 +851,7 @@ bool oom_killer_disable(signed long timeout)
->         return true;
->  }
->
-> -static inline bool __task_will_free_mem(struct task_struct *task)
-> +static inline bool __task_will_free_mem(struct task_struct *task, bool i=
-gnore_exit)
->  {
->         struct signal_struct *sig =3D task->signal;
->
-> @@ -862,6 +863,9 @@ static inline bool __task_will_free_mem(struct task_s=
-truct *task)
->         if (sig->core_state)
->                 return false;
->
-> +       if (ignore_exit)
-> +               return true;
-> +
->         if (sig->flags & SIGNAL_GROUP_EXIT)
->                 return true;
->
-> @@ -878,7 +882,7 @@ static inline bool __task_will_free_mem(struct task_s=
-truct *task)
->   * Caller has to make sure that task->mm is stable (hold task_lock or
->   * it operates on the current).
->   */
-> -static bool task_will_free_mem(struct task_struct *task)
-> +static bool task_will_free_mem(struct task_struct *task, bool ignore_exi=
-t)
->  {
->         struct mm_struct *mm =3D task->mm;
->         struct task_struct *p;
-> @@ -892,7 +896,7 @@ static bool task_will_free_mem(struct task_struct *ta=
-sk)
->         if (!mm)
->                 return false;
->
-> -       if (!__task_will_free_mem(task))
-> +       if (!__task_will_free_mem(task, ignore_exit))
->                 return false;
->
->         /*
-> @@ -916,7 +920,7 @@ static bool task_will_free_mem(struct task_struct *ta=
-sk)
->                         continue;
->                 if (same_thread_group(task, p))
->                         continue;
-> -               ret =3D __task_will_free_mem(p);
-> +               ret =3D __task_will_free_mem(p, false);
->                 if (!ret)
->                         break;
->         }
-> @@ -1034,7 +1038,7 @@ static void oom_kill_process(struct oom_control *oc=
-, const char *message)
->          * so it can die quickly
->          */
->         task_lock(victim);
-> -       if (task_will_free_mem(victim)) {
-> +       if (task_will_free_mem(victim, false)) {
->                 mark_oom_victim(victim);
->                 queue_oom_reaper(victim);
->                 task_unlock(victim);
-> @@ -1135,7 +1139,7 @@ bool out_of_memory(struct oom_control *oc)
->          * select it.  The goal is to allow it to allocate so that it may
->          * quickly exit and free its memory.
->          */
-> -       if (task_will_free_mem(current)) {
-> +       if (task_will_free_mem(current, false)) {
->                 mark_oom_victim(current);
->                 queue_oom_reaper(current);
->                 return true;
-> @@ -1217,8 +1221,9 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsig=
-ned int, flags)
->         unsigned int f_flags;
->         bool reap =3D false;
->         long ret =3D 0;
-> +       bool reap_kill;
->
-> -       if (flags)
-> +       if (flags & ~PROCESS_MRELEASE_VALID_FLAGS)
->                 return -EINVAL;
->
->         task =3D pidfd_get_task(pidfd, &f_flags);
-> @@ -1236,19 +1241,33 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, uns=
-igned int, flags)
->         }
->
->         mm =3D p->mm;
-> -       mmgrab(mm);
->
-> -       if (task_will_free_mem(p))
-> -               reap =3D true;
-> -       else {
-> -               /* Error only if the work has not been done already */
-> -               if (!mm_flags_test(MMF_OOM_SKIP, mm))
-> +       reap_kill =3D !!(flags & PROCESS_MRELEASE_REAP_KILL);
-> +       reap =3D task_will_free_mem(p, reap_kill);
-> +       if (!reap) {
-> +               if (reap_kill || !mm_flags_test(MMF_OOM_SKIP, mm))
->                         ret =3D -EINVAL;
-> +
-> +               task_unlock(p);
-> +               goto put_task;
->         }
-> -       task_unlock(p);
->
-> -       if (!reap)
-> -               goto drop_mm;
-> +       if (reap_kill) {
-> +               /*
-> +                * We use mmget() instead of mmgrab() to keep mm_users > =
-0,
-> +                * preventing the victim from calling exit_mmap() in its
-> +                * own exit path. This ensures that the memory is reclaim=
-ed
-> +                * synchronously and deterministically by the reaper.
-> +                */
-> +               mmget(mm);
+On 27/04/2026 7:39 pm, Yury Norov wrote:
+> On Mon, Apr 27, 2026 at 07:13:43PM +0200, Christophe Leroy (CS GROUP) wrote:
+>> Among the 21 architectures supported by the kernel, 16 define both
+>> INLINE_COPY_TO_USER and INLINE_COPY_FROM_USER while the 5 other ones
+>> don't define any of the two.
+>>
+>> To simplify and reduce risk of mistakes, convert them to a single
+>> kconfig item named CONFIG_ARCH_WANTS_NOINLINE_COPY which will be
+> We've got a special word for it: outline. Can you name it
+> CONFIG_OUTLINE_USERCOPY, or similar?
 
-I don't quite understand why you need to mmget() and prevent the
-victim from calling exit_mmap() here. As long as we successfully
-mmgrab'ed the mm, we can safely proceed with mmap locking and doing
-__oom_reap_task_mm(). Victim can execute exit_mmap() in parallel with
-__oom_reap_task_mm(). In fact that's even desirable! I remember a
-recent patch that used mas_for_each_rev() in __oom_reap_task_mm() to
-reclaim memory in reverse order so that exit_mmap() and
-__oom_reap_task_mm() can start from opposite ends of the address space
-and converge in the middle, working concurrently.
+You can't swap the "in" for "out" like this.  "out of line" is the
+opposite of "inline" in this context, while "outline" means something
+different and unrelated.
 
-> +               task_unlock(p);
-> +               ret =3D kill_pid(task_tgid(task), SIGKILL, 0);
-> +               if (ret)
-> +                       goto drop_mm;
-> +       } else {
-> +               mmgrab(mm);
-> +               task_unlock(p);
-> +       }
->
->         if (mmap_read_lock_killable(mm)) {
->                 ret =3D -EINTR;
-> @@ -1263,7 +1282,10 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsi=
-gned int, flags)
->         mmap_read_unlock(mm);
->
->  drop_mm:
-> -       mmdrop(mm);
-> +       if (reap_kill)
-> +               mmput(mm);
-> +       else
-> +               mmdrop(mm);
->  put_task:
->         put_task_struct(task);
->         return ret;
-> --
-> 2.54.0.rc1.555.g9c883467ad-goog
->
->
+~Andrew
 
