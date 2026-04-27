@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34856FF886D
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:17:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C41AFF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 17:17:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FA986B0092; Mon, 27 Apr 2026 13:17:16 -0400 (EDT)
+	id 689F36B008C; Mon, 27 Apr 2026 13:17:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D2316B0093; Mon, 27 Apr 2026 13:17:16 -0400 (EDT)
+	id 63AA96B0093; Mon, 27 Apr 2026 13:17:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C2B16B0095; Mon, 27 Apr 2026 13:17:16 -0400 (EDT)
+	id 529B86B0095; Mon, 27 Apr 2026 13:17:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B2786B0092
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:17:16 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0A3FC140186
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:17:16 +0000 (UTC)
-X-FDA: 84704991672.22.DFD7645
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1328EC0017
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:17:13 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ccnzw+ca;
-	spf=pass (imf28.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 3DCB36B008C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 13:17:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0CCE41601E4
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:17:35 +0000 (UTC)
+X-FDA: 84704992470.06.FC95012
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5912F8000C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 17:17:33 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iZa57++f;
+	spf=pass (imf02.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777310234;
+	s=arc-20220608; t=1777310253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BPNbmpE378SDR0albN3uUkse5xd3MAMC7j8Z5wC8tqY=;
-	b=Tcf5qHICxwA3Ub9tDjDQp/HnXU1JC56zqJWWpq5Mwr/Xg63PUd8e+FIcbfRxyMcp21ZYM0
-	T8xuxAiMZiZsKgRDbAcH04EPhib9Yf8RZXuhTbuoYvaKD8UdRcHhM3NYgqwzB5YGuNh5Tr
-	8PbENowDXx/RbuNNSxbwoi+gN6zlNrg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ccnzw+ca;
-	spf=pass (imf28.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777310234; a=rsa-sha256;
+	bh=WBLQd2pnjKhdodnW2i8UCMLWkT3XEMzQeRPL3EsBmDE=;
+	b=zFq8MUIOA70OGF3mWm5OFjSiSI/F81+EUAqy39Bw03/UQxBQLgGM257orugJm/PqISabQB
+	fYctDsD/AzvAgx1m8zEPOMv7IjK6EP90QaQ9f/Kv15duQnPeOFBI8G/oCGwrnHoUDqpEwe
+	MerfxQFCHYugPBYOQa7cyHOzs1RuTs8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777310253; a=rsa-sha256;
 	cv=none;
-	b=FEiIIcDX96yYVXRjd/j6a3hp/svvLzVMJKClQP8s3LjmuUaslK0VPArwHsoxQDv4c9GMAi
-	VofQ+mICurYwbE2tUdocHi2zPwZ5JcCNRmdbKuMfV+HqjP/CjxNeQJb5D85mFd0HN2XLOZ
-	VdmICk3/4rHA3RDRxpX/OH1DdPdIRPQ=
+	b=npEdTGS3XOANiZCCQS5flzKrp8FmhqmkwwtCFG5gviyOirZ6Ro8167TkcpoM2Xc2nGP8is
+	wfkuHTqUj0jXQcMPFIxk34gZbuKhjLs2+wNhSl6KbxQUSy7R2KhjnIZITo35PI1dNfpPPu
+	UHFa5g+zj/PgX3ws3nUK0QEdsgfbHjY=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iZa57++f;
+	spf=pass (imf02.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 12679437DE;
+	by tor.source.kernel.org (Postfix) with ESMTP id A0A196015B;
+	Mon, 27 Apr 2026 17:17:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEAAC2BCB5;
 	Mon, 27 Apr 2026 17:17:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC974C2BCB5;
-	Mon, 27 Apr 2026 17:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777310232;
-	bh=745VKRe61Lf8afs4o89V2mPmcfGcqMzEwAyCkwUFzR4=;
+	s=k20201202; t=1777310252;
+	bh=2A3pp34TaOBrBLCc7n3D/0VUADnJLMBU+ywYlmILDq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccnzw+capg6i/qeCJEEZZnJkaeh2P8NEABjGdQ84B8/8ElHQuhaIfwHK4KyIZjuzW
-	 fShA2udW2NQ0Ct7kJfcn/Kb043ljqkq7hTjPsRqwiNPGH9FmgvMogRNjEATWGrG26g
-	 6zW5qtX0OAMj+t+S60HkjDsyGYMrisyc3m/7o9VPvVvQnsaPOrT5y+ZTzyh8Xto7fx
-	 AWFGU9d3c0Mo3tNoddRUR02dQmZ5LMWSNNkmTWtszo39IueJ4zsAp4+3T5NcIhGntz
-	 oVxgjUbjxhRTuJF8KweLMZaWvhi+rfu1/RR3XrUIQOPEazAae4t8SpoXJ0czDjJbhT
-	 7qOjNG8l7cqnA==
+	b=iZa57++f4J+GqwvmN6cOlz8Y1H7GNDryi4ZRD+CJk+hBQU7Iobf+tE7/GXYinO2zm
+	 iEth1up0MDkLOAxzQiz5mqcfHR3P06TXmSl3XzIFaDPQuFHo3UkJmapo/kW88jy3aQ
+	 3aznlfwGIxcYhdaW4V5tVjatVhcyAHWEKfRp+CGH8zAHmw+dzciaz6iCaNPprV57bn
+	 8osxBss4ioepFyLm+2kR+UIAIIrgH8FbX9Dl39gcSvCHEwtnH4JUk+pOBX2jvh7BG3
+	 7M8Bd9CW5MVAHSPSRYqg08B9eeC3kSJm80fJ6QSe91ed2+rsgDjp3uvvAKjOOY8v3a
+	 6k1/LUiGGTPUw==
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
 To: Yury Norov <ynorov@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -113,24 +113,24 @@ Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
 	linux-parisc@vger.kernel.org,
 	linux-sh@vger.kernel.org,
 	linux-arch@vger.kernel.org
-Subject: [RFC PATCH v1 1/9] uaccess: Split check_zeroed_user() out of usercopy.c
-Date: Mon, 27 Apr 2026 19:13:42 +0200
-Message-ID: <a6d39afb167871e0459946dfd6b28bc994ae3c81.1777306795.git.chleroy@kernel.org>
+Subject: [RFC PATCH v1 2/9] uaccess: Convert INLINE_COPY_{TO/FROM}_USER to kconfig and reduce ifdefery
+Date: Mon, 27 Apr 2026 19:13:43 +0200
+Message-ID: <9fe875d2f55af59c12708336c571a46038528678.1777306795.git.chleroy@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1777306795.git.chleroy@kernel.org>
 References: <cover.1777306795.git.chleroy@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4389; i=chleroy@kernel.org; h=from:subject:message-id; bh=745VKRe61Lf8afs4o89V2mPmcfGcqMzEwAyCkwUFzR4=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWS+nxmtvkzq83WmyICs092/GNmylHyYwx1uy/R0rjqso Tc19NiJjlIWBjEuBlkxRZbj/7l3zej6kpo/dZc+zBxWJpAhDFycAjCRrBxGhr1T21lnr9ow8bLw mlcX9LlDfR53LmTbs/fCv2dGAh23RTkY/gpGWFpU+sbMuNm2suHwI9OT2xZsfrLc1dbD4+idxHd 72DkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=18999; i=chleroy@kernel.org; h=from:subject:message-id; bh=2A3pp34TaOBrBLCc7n3D/0VUADnJLMBU+ywYlmILDq0=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWS+nxl942rk7qV/z0wpsopc/EjgrOKra6+/qq3zDzp1o 3Cx5MQvcR2lLAxiXAyyYoosx/9z75rR9SU1f+oufZg5rEwgQxi4OAVgIuKajAx/ndKvMf5+vP6+ 0DUOzaI/8u977T8/tn8jYyzy8FHU4dqzDP9dp5oyP1vg/Kml4FbUFMnSvxpN1/NNNGPF159+JNd bVcIDAA==
 X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5912F8000C
+X-Stat-Signature: iz3uyemfbhd6tghqtea4zpewnytffyms
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1328EC0017
-X-Stat-Signature: 46n59eyhcd5iuryesfmrkosag17yo7ng
-X-HE-Tag: 1777310233-606233
-X-HE-Meta: U2FsdGVkX1/QqRWJaBXcBjg7+cdrzNuywBpoiNiLdEufNzItfc/WmytTbgX5g+HyJYRWuUECnMZd6iYmDGOtiJXzPqTy8SAOCBRVcDGO7tZAc+scC0DK2Xo3B3H+/1xUaUyMW9krRWcNDh9PVXVx6+4kYiN8QgUGYJ6VaaUuksIS5nlkgsaTiXzuCCfIq2U93LRQosRROnDQJqL18bs4yuS2XWX1TdbdA9wlw+lUF7ABx1sM4Lul9ILXfKKEis6bfFbIJ0RBGK4IRw5CBxh45wjigYWKS/q3G0w90pix/gDUq/svyp/UfwUCQ/oiPhZfmLpIES2LR/ASOmdgiWUunaYI5F7DO4HhQHolmlqroiqnAKQ6lNtoiPR1rxUAita5KFbpfiylRtUsBhHNBY2jPN36EyjwlWj8fENCGQjqq7eBbpPYkVptZyOs5oY1GUU2N0jY10Q3RNrQUVpWHlnxDggoWvk59OUblXj7sbh1o00WwDGLHYC4G7K7Pwyf7mnGxKw9gZ43RY3j/SOQEW3yj7wtkSn91AbAq/olQZ9F+0RxpsPiXxNgVs5Tu618WPJxPMWlz/P6+5wefVWdAUwXCF5St/KhRTg5zBk1W8VwwVuaxsEK16OhnUxnZPAnUBVqA2E9Re7R5WN9yns36N6qqzNSIA3tBWvndwyu5qoDAqDt3ip1GtwpI4mPyF6vkF8CWWHzcDSdLPIWzmQ+W+H1Q7M2BXLpjDQuARvRwHjkgYz2KY5TrGWbG1p+5COJBvuXiCgfi1c8Hz+l+MI9ZDz9OXYrQFYUKL22AXxgMmrfo5lHeWemCtaoJrXwKsiiW4dyi4xUcxmVlLClq9QKZp1KkkmoEDjKpLdaFj1YaRzATbPPG3N0ycKbXVouPOBAi0l4yYhIqdXp3HBXq6aFNqPV97eGMIAUNos9b9wpbg/VuMW7+vTEU9Kkxq84qHfDEcX/tgPVKJGchtjhPBk4Mqc
- wCRnKASE
- MbPGEhUAS56FuPEPjm8phAqWS95atC+n2qliomZx23JDynqAi2rErffJQufLObV2l65TVKtMZt4qoaClkMT+36q8oS/aQyBNqJpRQueZhLZhwhGprSrefMH/5ABIYzD9H8xBTQQbase/dbBIe7ka238G7x1g6jEx74O5Wc7MSOhDA4ifjGA6tJAn5QxgA6Ozi5GSmEjSVm3feHfvWXQ+8oSgO2zEzWQvUP6ODczbKeUGvduB9kT4tpGAD43sxjEPw9QvpWutHrILZ0o0hOqoXV5ldsr4ckBLPB+1xtK0Zq3Uh20oM/HjgxP9pKKO0vWj8IP0uXNDMy2nuI6t5FfchOschdav7T0mJpSKxUG5AuY5Q2D/OaHSk2BR/weAOQyu9o+GU
+X-HE-Tag: 1777310253-791957
+X-HE-Meta: U2FsdGVkX18H1Chr4lTKQgPqMcrR0YpUcBSDrjEyw+Ifw1WTzg8JYaajdi5xvIQ7C9xczlWCkDhb5gpneNPEJRLFzrhD7vB5SXg/n0ayQYSd61UmtlFwKCUng6YN6s8tE/zY6347/Ad7A8CVU6Cf4ML9DSU6NO76NS7TkpfOf+RjrLJGYIhMerj2R1LzjsGqE2EgKl7rtxytRWx35z74ma+fS7gf3POwec3LskHHkyClyPRhx77WXumw77o+XXAZ5G6ErBEYD8IfhuIzMjcgh9HLXl+x6S5ihQb8d129wsdYbi9hkRtZK91C/0YytC1STZGltYMtm5bxcYwiIz9bAh6OaJTMYxYCeChqucOXLgCpMVERDs0d4EDown7YbZnwueMASRttZqQha/uL27KuUTKHyWwHtSpoCnRu/SDozBdPvTOYtKoesLpvy0ZQbPHHxJlPrPfCMUB0fqQFC83HDyn6IcaLsZEhQhgN7KwsUS+49/VJU52TxzW20ssRMVnlnUCzxpNy3brWa+bHP1ogopXt9Fciq08E77TzAyte7+rJn9oHxI7WfHIKjMAUJdYKmilPljjbFcELJsdIZYqHIMqHjKbueZx6vbpWWHpNYUJ3qG1rxsrY9WKg+H8+BmUdVdihJSffQYytWhwQeLCPTZ19mKkxEwsaLFWfcqFWHOXkPdTrANnPpwId54KzJF2gEKTegSORSaLY/AP14RwIl0B2tk8ZiHNzNC9UymZUfNxsCKbzF5EQAa8FJgBbe2xmCwxJKTN7zbYmzstinSMKfuovIQNbjs7Ya8kqqw3+7DcoGd60FXs21aN2311LYdGUu4T54zXKjO9J2VxP5vXfqmqAuceSxu4H1Sw9fjDrj+d/2Fxqg9WFMA+ayp/wMHxqTQR2CdRv4Gk+FQ887P2MF2tdFtQxWgH3l3bHSUHDYMWb5lVddIULluYnqxIN6i4DJ3fNIWTLBgKClnhhscL
+ MFkrZsuO
+ 1pwJdTyUfJUk8E1yeczqU7CoZIdxzw1iwDDDyfH6H/jqpbPyW8ZJ8pJeUMAXAH0inxWHcn3qv0LtOf9fDBv3bZdCOhefvu97bo2ke//BtnMzoN3JjOA1c4LbO1toW+6qpfKzx0H1SP5JSFtgqBHKQgN3ODiP8g/S7VWtsjWdudl85snzgOFOM7m51FP6yR8c2r7y27ti4fu1GsyMUJQEJi5alx12nedHKMl5r0eBP11I72qtXYakhPoOslUNwmLqsV+fBfkXocjBfm4Fkq5UoV/kyqH+i5ybnOFq9vTzDl1W7oTK1Z9yi4VltAujFlkPt64YqfN6O9ahXrwWDHILBpCMaVHKaMwaG8coZRPAP9Oamp8prGpJQSNTIUbsudllpdGnW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,151 +138,498 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Until commit f5a1a536fa14 ("lib: introduce copy_struct_from_user()
-helper"), lib/usercopy.c was containing only the out-line version
-of user copy fonctions.
+Among the 21 architectures supported by the kernel, 16 define both
+INLINE_COPY_TO_USER and INLINE_COPY_FROM_USER while the 5 other ones
+don't define any of the two.
 
-That commit added function check_zeroed_user() into the same file.
-Move that function into a new file named usercheck.c, so that next
-patch can change usercopy.c build to a conditional build.
+To simplify and reduce risk of mistakes, convert them to a single
+kconfig item named CONFIG_ARCH_WANTS_NOINLINE_COPY which will be
+selected by the 5 architectures that don't want inlined copy.
+
+To minimise complication in a later patch, also remove
+ifdefery and replace it with IS_ENABLED().
 
 Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 ---
- lib/Makefile                    |  1 +
- lib/{usercopy.c => usercheck.c} | 22 ------------
- lib/usercopy.c                  | 62 ---------------------------------
- 3 files changed, 1 insertion(+), 84 deletions(-)
- copy lib/{usercopy.c => usercheck.c} (73%)
+ arch/alpha/Kconfig                    |  1 +
+ arch/arc/include/asm/uaccess.h        |  3 ---
+ arch/arm/include/asm/uaccess.h        |  2 --
+ arch/arm64/include/asm/uaccess.h      |  3 ---
+ arch/csky/Kconfig                     |  1 +
+ arch/hexagon/include/asm/uaccess.h    |  3 ---
+ arch/loongarch/include/asm/uaccess.h  |  3 ---
+ arch/m68k/include/asm/uaccess.h       |  3 ---
+ arch/microblaze/include/asm/uaccess.h |  2 --
+ arch/mips/include/asm/uaccess.h       |  3 ---
+ arch/nios2/include/asm/uaccess.h      |  2 --
+ arch/openrisc/include/asm/uaccess.h   |  2 --
+ arch/parisc/include/asm/uaccess.h     |  3 ---
+ arch/powerpc/Kconfig                  |  1 +
+ arch/riscv/Kconfig                    |  1 +
+ arch/s390/include/asm/uaccess.h       |  3 ---
+ arch/sh/include/asm/uaccess.h         |  2 --
+ arch/sparc/include/asm/uaccess_32.h   |  3 ---
+ arch/sparc/include/asm/uaccess_64.h   |  2 --
+ arch/um/include/asm/uaccess.h         |  3 ---
+ arch/x86/Kconfig                      |  1 +
+ arch/xtensa/include/asm/uaccess.h     |  2 --
+ include/asm-generic/uaccess.h         |  2 --
+ include/linux/uaccess.h               | 32 ++++++++++++---------------
+ lib/Kconfig                           |  3 +++
+ lib/Makefile                          |  3 ++-
+ lib/usercopy.c                        |  4 ----
+ rust/helpers/uaccess.c                |  2 +-
+ 28 files changed, 25 insertions(+), 70 deletions(-)
 
+diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+index 7b7dafe7d9df..65e533cead6b 100644
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -11,6 +11,7 @@ config ALPHA
+ 	select ARCH_NO_PREEMPT
+ 	select ARCH_NO_SG_CHAIN
+ 	select ARCH_USE_CMPXCHG_LOCKREF
++	select ARCH_WANTS_NOINLINE_COPY_USER
+ 	select FORCE_PCI
+ 	select PCI_DOMAINS if PCI
+ 	select PCI_SYSCALL if PCI
+diff --git a/arch/arc/include/asm/uaccess.h b/arch/arc/include/asm/uaccess.h
+index 1e8809ea000a..e8b161b37a03 100644
+--- a/arch/arc/include/asm/uaccess.h
++++ b/arch/arc/include/asm/uaccess.h
+@@ -628,9 +628,6 @@ static inline unsigned long __clear_user(void __user *to, unsigned long n)
+ 	return res;
+ }
+ 
+-#define INLINE_COPY_TO_USER
+-#define INLINE_COPY_FROM_USER
+-
+ #define __clear_user			__clear_user
+ 
+ #include <asm-generic/uaccess.h>
+diff --git a/arch/arm/include/asm/uaccess.h b/arch/arm/include/asm/uaccess.h
+index d6ae80b5df36..7280c162bb71 100644
+--- a/arch/arm/include/asm/uaccess.h
++++ b/arch/arm/include/asm/uaccess.h
+@@ -616,8 +616,6 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+ }
+ #define __clear_user(addr, n)		(memset((void __force *)addr, 0, n), 0)
+ #endif
+-#define INLINE_COPY_TO_USER
+-#define INLINE_COPY_FROM_USER
+ 
+ static inline unsigned long __must_check clear_user(void __user *to, unsigned long n)
+ {
+diff --git a/arch/arm64/include/asm/uaccess.h b/arch/arm64/include/asm/uaccess.h
+index b0c83a08dda9..1e20ec91b56f 100644
+--- a/arch/arm64/include/asm/uaccess.h
++++ b/arch/arm64/include/asm/uaccess.h
+@@ -456,9 +456,6 @@ do {									\
+ 	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+ } while (0)
+ 
+-#define INLINE_COPY_TO_USER
+-#define INLINE_COPY_FROM_USER
+-
+ extern unsigned long __must_check __arch_clear_user(void __user *to, unsigned long n);
+ static inline unsigned long __must_check __clear_user(void __user *to, unsigned long n)
+ {
+diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
+index 4331313a42ff..d010d7eb47bf 100644
+--- a/arch/csky/Kconfig
++++ b/arch/csky/Kconfig
+@@ -40,6 +40,7 @@ config CSKY
+ 	select ARCH_NEED_CMPXCHG_1_EMU
+ 	select ARCH_WANT_FRAME_POINTERS if !CPU_CK610 && $(cc-option,-mbacktrace)
+ 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
++	select ARCH_WANTS_NOINLINE_COPY_USER
+ 	select COMMON_CLK
+ 	select CLKSRC_MMIO
+ 	select CSKY_MPINTC if CPU_CK860
+diff --git a/arch/hexagon/include/asm/uaccess.h b/arch/hexagon/include/asm/uaccess.h
+index bff77efc0d9a..4bf863217636 100644
+--- a/arch/hexagon/include/asm/uaccess.h
++++ b/arch/hexagon/include/asm/uaccess.h
+@@ -26,9 +26,6 @@ unsigned long raw_copy_from_user(void *to, const void __user *from,
+ 				     unsigned long n);
+ unsigned long raw_copy_to_user(void __user *to, const void *from,
+ 				   unsigned long n);
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+-
+ __kernel_size_t __clear_user_hexagon(void __user *dest, unsigned long count);
+ #define __clear_user(a, s) __clear_user_hexagon((a), (s))
+ 
+diff --git a/arch/loongarch/include/asm/uaccess.h b/arch/loongarch/include/asm/uaccess.h
+index 438269313e78..72a04ac88549 100644
+--- a/arch/loongarch/include/asm/uaccess.h
++++ b/arch/loongarch/include/asm/uaccess.h
+@@ -292,9 +292,6 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	return __copy_user((__force void *)to, from, n);
+ }
+ 
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+-
+ /*
+  * __clear_user: - Zero a block of memory in user space, with less checking.
+  * @addr: Destination address, in user space.
+diff --git a/arch/m68k/include/asm/uaccess.h b/arch/m68k/include/asm/uaccess.h
+index 64914872a5c9..20e249a6ad07 100644
+--- a/arch/m68k/include/asm/uaccess.h
++++ b/arch/m68k/include/asm/uaccess.h
+@@ -377,9 +377,6 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+ 		return __constant_copy_to_user(to, from, n);
+ 	return __generic_copy_to_user(to, from, n);
+ }
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+-
+ #define __get_kernel_nofault(dst, src, type, err_label)			\
+ do {									\
+ 	type *__gk_dst = (type *)(dst);					\
+diff --git a/arch/microblaze/include/asm/uaccess.h b/arch/microblaze/include/asm/uaccess.h
+index 3aab2f17e046..3355f541e12a 100644
+--- a/arch/microblaze/include/asm/uaccess.h
++++ b/arch/microblaze/include/asm/uaccess.h
+@@ -250,8 +250,6 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+ {
+ 	return __copy_tofrom_user(to, (__force const void __user *)from, n);
+ }
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+ 
+ /*
+  * Copy a null terminated string from userspace.
+diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+index c0cede273c7c..8714caefbac8 100644
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -433,9 +433,6 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	return __cu_len_r;
+ }
+ 
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+-
+ extern __kernel_size_t __bzero(void __user *addr, __kernel_size_t size);
+ 
+ /*
+diff --git a/arch/nios2/include/asm/uaccess.h b/arch/nios2/include/asm/uaccess.h
+index 6ccc9a232c23..46d7312a1c96 100644
+--- a/arch/nios2/include/asm/uaccess.h
++++ b/arch/nios2/include/asm/uaccess.h
+@@ -57,8 +57,6 @@ extern unsigned long
+ raw_copy_from_user(void *to, const void __user *from, unsigned long n);
+ extern unsigned long
+ raw_copy_to_user(void __user *to, const void *from, unsigned long n);
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+ 
+ extern long strncpy_from_user(char *__to, const char __user *__from,
+ 			      long __len);
+diff --git a/arch/openrisc/include/asm/uaccess.h b/arch/openrisc/include/asm/uaccess.h
+index d6500a374e18..c84effde867a 100644
+--- a/arch/openrisc/include/asm/uaccess.h
++++ b/arch/openrisc/include/asm/uaccess.h
+@@ -218,8 +218,6 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long size)
+ {
+ 	return __copy_tofrom_user((__force void *)to, from, size);
+ }
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+ 
+ extern unsigned long __clear_user(void __user *addr, unsigned long size);
+ 
+diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm/uaccess.h
+index 6c531d2c847e..1dd6a1dd653f 100644
+--- a/arch/parisc/include/asm/uaccess.h
++++ b/arch/parisc/include/asm/uaccess.h
+@@ -197,7 +197,4 @@ unsigned long __must_check raw_copy_to_user(void __user *dst, const void *src,
+ 					    unsigned long len);
+ unsigned long __must_check raw_copy_from_user(void *dst, const void __user *src,
+ 					    unsigned long len);
+-#define INLINE_COPY_TO_USER
+-#define INLINE_COPY_FROM_USER
+-
+ #endif /* __PARISC_UACCESS_H */
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index e93df95b79e7..6816f402fe3d 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -187,6 +187,7 @@ config PPC
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+ 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if PPC_RADIX_MMU
+ 	select ARCH_WANTS_MODULES_DATA_IN_VMALLOC	if PPC_BOOK3S_32 || PPC_8xx
++	select ARCH_WANTS_NOINLINE_COPY_USER
+ 	select ARCH_WEAK_RELEASE_ACQUIRE
+ 	select AUDIT_ARCH_COMPAT_GENERIC
+ 	select BINFMT_ELF
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index d235396c4514..492b920c1a51 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -88,6 +88,7 @@ config RISCV
+ 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+ 	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+ 	select ARCH_WANTS_NO_INSTR
++	select ARCH_WANTS_NOINLINE_COPY_USER if MMU
+ 	select ARCH_WANTS_THP_SWAP if HAVE_ARCH_TRANSPARENT_HUGEPAGE
+ 	select ARCH_WEAK_RELEASE_ACQUIRE if ARCH_USE_QUEUED_SPINLOCKS
+ 	select BINFMT_FLAT_NO_DATA_START_OFFSET if !MMU
+diff --git a/arch/s390/include/asm/uaccess.h b/arch/s390/include/asm/uaccess.h
+index dff035372601..2e0472c20da0 100644
+--- a/arch/s390/include/asm/uaccess.h
++++ b/arch/s390/include/asm/uaccess.h
+@@ -30,9 +30,6 @@ void debug_user_asce(int exit);
+ #define uaccess_kmsan_or_inline __always_inline
+ #endif
+ 
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+-
+ static uaccess_kmsan_or_inline __must_check unsigned long
+ raw_copy_from_user(void *to, const void __user *from, unsigned long size)
+ {
+diff --git a/arch/sh/include/asm/uaccess.h b/arch/sh/include/asm/uaccess.h
+index a79609eb14be..0cd75308e6d3 100644
+--- a/arch/sh/include/asm/uaccess.h
++++ b/arch/sh/include/asm/uaccess.h
+@@ -95,8 +95,6 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+ {
+ 	return __copy_user((__force void *)to, from, n);
+ }
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+ 
+ /*
+  * Clear the area and return remaining number of bytes
+diff --git a/arch/sparc/include/asm/uaccess_32.h b/arch/sparc/include/asm/uaccess_32.h
+index 43284b6ec46a..e01f43c6421c 100644
+--- a/arch/sparc/include/asm/uaccess_32.h
++++ b/arch/sparc/include/asm/uaccess_32.h
+@@ -190,9 +190,6 @@ static inline unsigned long raw_copy_from_user(void *to, const void __user *from
+ 	return __copy_user((__force void __user *) to, from, n);
+ }
+ 
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+-
+ static inline unsigned long __clear_user(void __user *addr, unsigned long size)
+ {
+ 	unsigned long ret;
+diff --git a/arch/sparc/include/asm/uaccess_64.h b/arch/sparc/include/asm/uaccess_64.h
+index b825a5dd0210..62ee0b074fec 100644
+--- a/arch/sparc/include/asm/uaccess_64.h
++++ b/arch/sparc/include/asm/uaccess_64.h
+@@ -231,8 +231,6 @@ unsigned long __must_check raw_copy_from_user(void *to,
+ unsigned long __must_check raw_copy_to_user(void __user *to,
+ 					   const void *from,
+ 					   unsigned long size);
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+ 
+ unsigned long __must_check raw_copy_in_user(void __user *to,
+ 					   const void __user *from,
+diff --git a/arch/um/include/asm/uaccess.h b/arch/um/include/asm/uaccess.h
+index 0df9ea4abda8..1e14260c7f0f 100644
+--- a/arch/um/include/asm/uaccess.h
++++ b/arch/um/include/asm/uaccess.h
+@@ -27,9 +27,6 @@ static inline int __access_ok(const void __user *ptr, unsigned long size);
+ #define __access_ok __access_ok
+ #define __clear_user __clear_user
+ 
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+-
+ #include <asm-generic/uaccess.h>
+ 
+ static inline int __access_ok(const void __user *ptr, unsigned long size)
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index f3f7cb01d69d..c1e58d8c6864 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -143,6 +143,7 @@ config X86
+ 	select ARCH_WANTS_CLOCKSOURCE_READ_INLINE	if X86_64
+ 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+ 	select ARCH_WANTS_NO_INSTR
++	select ARCH_WANTS_NOINLINE_COPY_USER
+ 	select ARCH_WANT_GENERAL_HUGETLB
+ 	select ARCH_WANT_HUGE_PMD_SHARE		if X86_64
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+diff --git a/arch/xtensa/include/asm/uaccess.h b/arch/xtensa/include/asm/uaccess.h
+index 56aec6d504fe..f9e1623a7be9 100644
+--- a/arch/xtensa/include/asm/uaccess.h
++++ b/arch/xtensa/include/asm/uaccess.h
+@@ -237,8 +237,6 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	prefetch(from);
+ 	return __xtensa_copy_user((__force void *)to, from, n);
+ }
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+ 
+ /*
+  * We need to return the number of bytes not cleared.  Our memset()
+diff --git a/include/asm-generic/uaccess.h b/include/asm-generic/uaccess.h
+index b276f783494c..fb33a71fd24e 100644
+--- a/include/asm-generic/uaccess.h
++++ b/include/asm-generic/uaccess.h
+@@ -91,8 +91,6 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	memcpy((void __force *)to, from, n);
+ 	return 0;
+ }
+-#define INLINE_COPY_FROM_USER
+-#define INLINE_COPY_TO_USER
+ #endif /* CONFIG_UACCESS_MEMCPY */
+ 
+ /*
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 56328601218c..bd1201c81d94 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -83,8 +83,8 @@
+  * with that.  They should not be used directly; they are used to implement
+  * the 6 functions (copy_{to,from}_user(), __copy_{to,from}_user_inatomic())
+  * that are used instead.  Out of those, __... ones are inlined.  Plain
+- * copy_{to,from}_user() might or might not be inlined.  If you want them
+- * inlined, have asm/uaccess.h define INLINE_COPY_{TO,FROM}_USER.
++ * copy_{to,from}_user() might or might not be inlined.  If you don't want them
++ * inlined, select CONFIG_ARCH_WANTS_NOINLINE_COPY_USER.
+  *
+  * NOTE: only copy_from_user() zero-pads the destination in case of short copy.
+  * Neither __copy_from_user() nor __copy_from_user_inatomic() zero anything
+@@ -157,8 +157,8 @@ __copy_to_user(void __user *to, const void *from, unsigned long n)
+ }
+ 
+ /*
+- * Architectures that #define INLINE_COPY_TO_USER use this function
+- * directly in the normal copy_to/from_user(), the other ones go
++ * Architectures that don't select CONFIG_ARCH_WANTS_NOINLINE_COPY_USER use
++ * this function directly in the normal copy_to/from_user(), the other ones go
+  * through an extern _copy_to/from_user(), which expands the same code
+  * here.
+  */
+@@ -190,10 +190,9 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
+ 	memset(to + (n - res), 0, res);
+ 	return res;
+ }
+-#ifndef INLINE_COPY_FROM_USER
++
+ extern __must_check unsigned long
+ _copy_from_user(void *, const void __user *, unsigned long);
+-#endif
+ 
+ static inline __must_check unsigned long
+ _inline_copy_to_user(void __user *to, const void *from, unsigned long n)
+@@ -207,21 +206,19 @@ _inline_copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	}
+ 	return n;
+ }
+-#ifndef INLINE_COPY_TO_USER
++
+ extern __must_check unsigned long
+ _copy_to_user(void __user *, const void *, unsigned long);
+-#endif
+ 
+ static __always_inline unsigned long __must_check
+ copy_from_user(void *to, const void __user *from, unsigned long n)
+ {
+ 	if (!check_copy_size(to, n, false))
+ 		return n;
+-#ifdef INLINE_COPY_FROM_USER
+-	return _inline_copy_from_user(to, from, n);
+-#else
+-	return _copy_from_user(to, from, n);
+-#endif
++	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
++		return _copy_from_user(to, from, n);
++	else
++		return _inline_copy_from_user(to, from, n);
+ }
+ 
+ static __always_inline unsigned long __must_check
+@@ -230,11 +227,10 @@ copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	if (!check_copy_size(from, n, true))
+ 		return n;
+ 
+-#ifdef INLINE_COPY_TO_USER
+-	return _inline_copy_to_user(to, from, n);
+-#else
+-	return _copy_to_user(to, from, n);
+-#endif
++	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
++		return _copy_to_user(to, from, n);
++	else
++		return _inline_copy_to_user(to, from, n);
+ }
+ 
+ #ifndef copy_mc_to_kernel
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 00a9509636c1..a2e07d4dd2bf 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -68,6 +68,9 @@ config ARCH_HAS_STRNCPY_FROM_USER
+ config ARCH_HAS_STRNLEN_USER
+ 	bool
+ 
++config ARCH_WANTS_NOINLINE_COPY_USER
++	bool
++
+ config GENERIC_STRNCPY_FROM_USER
+ 	def_bool !ARCH_HAS_STRNCPY_FROM_USER
+ 
 diff --git a/lib/Makefile b/lib/Makefile
-index f33a24bf1c19..7c0334d7675b 100644
+index 7c0334d7675b..f4d577910671 100644
 --- a/lib/Makefile
 +++ b/lib/Makefile
-@@ -59,6 +59,7 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
+@@ -57,9 +57,10 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
+ 	 list_sort.o uuid.o iov_iter.o clz_ctz.o \
+ 	 bsearch.o find_bit.o llist.o lwq.o memweight.o kfifo.o \
  	 percpu-refcount.o rhashtable.o base64.o \
- 	 once.o refcount.o rcuref.o usercopy.o errseq.o bucket_locks.o \
+-	 once.o refcount.o rcuref.o usercopy.o errseq.o bucket_locks.o \
++	 once.o refcount.o rcuref.o errseq.o bucket_locks.o \
  	 generic-radix-tree.o bitmap-str.o
-+obj-y += usercheck.o
+ obj-y += usercheck.o
++obj-$(CONFIG_ARCH_WANTS_NOINLINE_COPY_USER) += usercopy.o
  obj-y += string_helpers.o
  obj-y += hexdump.o
  obj-$(CONFIG_TEST_HEXDUMP) += test_hexdump.o
-diff --git a/lib/usercopy.c b/lib/usercheck.c
-similarity index 73%
-copy from lib/usercopy.c
-copy to lib/usercheck.c
-index b00a3a957de6..15b0d9a18435 100644
---- a/lib/usercopy.c
-+++ b/lib/usercheck.c
-@@ -2,32 +2,10 @@
- #include <linux/compiler.h>
- #include <linux/errno.h>
- #include <linux/export.h>
--#include <linux/fault-inject-usercopy.h>
--#include <linux/instrumented.h>
- #include <linux/kernel.h>
--#include <linux/nospec.h>
--#include <linux/string.h>
- #include <linux/uaccess.h>
- #include <linux/wordpart.h>
- 
--/* out-of-line parts */
--
--#if !defined(INLINE_COPY_FROM_USER)
--unsigned long _copy_from_user(void *to, const void __user *from, unsigned long n)
--{
--	return _inline_copy_from_user(to, from, n);
--}
--EXPORT_SYMBOL(_copy_from_user);
--#endif
--
--#if !defined(INLINE_COPY_TO_USER)
--unsigned long _copy_to_user(void __user *to, const void *from, unsigned long n)
--{
--	return _inline_copy_to_user(to, from, n);
--}
--EXPORT_SYMBOL(_copy_to_user);
--#endif
--
- /**
-  * check_zeroed_user: check if a userspace buffer only contains zero bytes
-  * @from: Source address, in userspace.
 diff --git a/lib/usercopy.c b/lib/usercopy.c
-index b00a3a957de6..7a93f56d81dd 100644
+index 7a93f56d81dd..d2deb4b0a3c5 100644
 --- a/lib/usercopy.c
 +++ b/lib/usercopy.c
-@@ -1,14 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/compiler.h>
--#include <linux/errno.h>
- #include <linux/export.h>
--#include <linux/fault-inject-usercopy.h>
--#include <linux/instrumented.h>
--#include <linux/kernel.h>
--#include <linux/nospec.h>
--#include <linux/string.h>
- #include <linux/uaccess.h>
--#include <linux/wordpart.h>
+@@ -4,18 +4,14 @@
  
  /* out-of-line parts */
  
-@@ -27,57 +19,3 @@ unsigned long _copy_to_user(void __user *to, const void *from, unsigned long n)
+-#if !defined(INLINE_COPY_FROM_USER)
+ unsigned long _copy_from_user(void *to, const void __user *from, unsigned long n)
+ {
+ 	return _inline_copy_from_user(to, from, n);
+ }
+ EXPORT_SYMBOL(_copy_from_user);
+-#endif
+ 
+-#if !defined(INLINE_COPY_TO_USER)
+ unsigned long _copy_to_user(void __user *to, const void *from, unsigned long n)
+ {
+ 	return _inline_copy_to_user(to, from, n);
  }
  EXPORT_SYMBOL(_copy_to_user);
- #endif
--
--/**
-- * check_zeroed_user: check if a userspace buffer only contains zero bytes
-- * @from: Source address, in userspace.
-- * @size: Size of buffer.
-- *
-- * This is effectively shorthand for "memchr_inv(from, 0, size) == NULL" for
-- * userspace addresses (and is more efficient because we don't care where the
-- * first non-zero byte is).
-- *
-- * Returns:
-- *  * 0: There were non-zero bytes present in the buffer.
-- *  * 1: The buffer was full of zero bytes.
-- *  * -EFAULT: access to userspace failed.
-- */
--int check_zeroed_user(const void __user *from, size_t size)
--{
--	unsigned long val;
--	uintptr_t align = (uintptr_t) from % sizeof(unsigned long);
--
--	if (unlikely(size == 0))
--		return 1;
--
--	from -= align;
--	size += align;
--
--	if (!user_read_access_begin(from, size))
--		return -EFAULT;
--
--	unsafe_get_user(val, (unsigned long __user *) from, err_fault);
--	if (align)
--		val &= ~aligned_byte_mask(align);
--
--	while (size > sizeof(unsigned long)) {
--		if (unlikely(val))
--			goto done;
--
--		from += sizeof(unsigned long);
--		size -= sizeof(unsigned long);
--
--		unsafe_get_user(val, (unsigned long __user *) from, err_fault);
--	}
--
--	if (size < sizeof(unsigned long))
--		val &= aligned_byte_mask(size);
--
--done:
--	user_read_access_end();
--	return (val == 0);
--err_fault:
--	user_read_access_end();
--	return -EFAULT;
--}
--EXPORT_SYMBOL(check_zeroed_user);
+-#endif
+diff --git a/rust/helpers/uaccess.c b/rust/helpers/uaccess.c
+index d9625b9ee046..01de4fbbcc84 100644
+--- a/rust/helpers/uaccess.c
++++ b/rust/helpers/uaccess.c
+@@ -14,7 +14,7 @@ rust_helper_copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	return copy_to_user(to, from, n);
+ }
+ 
+-#ifdef INLINE_COPY_FROM_USER
++#ifndef CONFIG_ARCH_WANTS_NOINLINE_COPY_USER
+ __rust_helper
+ unsigned long rust_helper__copy_from_user(void *to, const void __user *from, unsigned long n)
+ {
 -- 
 2.49.0
 
