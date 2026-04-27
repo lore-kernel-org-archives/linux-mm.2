@@ -4,118 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C21FF885E
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:58:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3AA0FF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 10:58:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C7D26B008A; Mon, 27 Apr 2026 06:58:24 -0400 (EDT)
+	id 1B7656B0093; Mon, 27 Apr 2026 06:58:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29F9B6B0093; Mon, 27 Apr 2026 06:58:24 -0400 (EDT)
+	id 18F0B6B0095; Mon, 27 Apr 2026 06:58:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18F436B0095; Mon, 27 Apr 2026 06:58:24 -0400 (EDT)
+	id 0A5156B0096; Mon, 27 Apr 2026 06:58:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AD526B008A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:58:24 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CC7EF1A013B
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:58:23 +0000 (UTC)
-X-FDA: 84704036886.07.1642184
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B91E4180003
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:58:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fPsSMVCu;
-	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F2D586B0093
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 06:58:51 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 91290120158
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:58:51 +0000 (UTC)
+X-FDA: 84704038062.29.43A0F2A
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B4D4BC000D
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 10:58:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sj91+h2F;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777287501;
+	s=arc-20220608; t=1777287529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T+uzZ4Mj8ZwiBYWjZvhmHYqnD9uPtTE64Ztq2V+yfjY=;
-	b=2//6xfCtGaTA+pc5xxeoG0pjHe9Kdmfiep/GGHDOjZKW8fi+EFbFRAS5cEH9AXjQTmk6Pa
-	y74Gw8SZ1ujUUmuIGxry85dStdDZuZE4DJlEskoqlBZ8fh5v/corAUby4b5iXZdSbrjKyQ
-	sCy/ATi9AGJv3BRpJrqPKG6d866VB1U=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fPsSMVCu;
-	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777287501; a=rsa-sha256;
+	bh=mC/SUXF6qmjl4I2YmUCpIFnBd715RpusDKL8gxRM2m8=;
+	b=oQY2JB7phPM5Z1AKSsh+JTIR9X8YtQ/N44rJiqPwwPLZKJsDmibaU6dEeHFx+1UsfmBBh4
+	lCzeGAPyybOjTl1BYU6irNd8fzc9w4c1XBi8VCXCw9Bqa4aUAmL+ha0KktejK7TbT/x7BX
+	gE4T6/OmZ3KxDBtdlUIhSm0zivcpJlQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777287529; a=rsa-sha256;
 	cv=none;
-	b=uExPwXl67qgExp1beDjXOnRgW0pLo9+KX85OZ7BnGlsD3jsM58cxRup3dSFWC4FaTjubMV
-	0QJXGa3IXLvLhAQGvPve13x+zSQFGHtZzb5OP2eKAWMNlG+DQgilb35W8i6/Qe6VG8dVFp
-	rnZMoyfgwr9nGOv9JRKYH40NvWwban8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9EF944456E;
-	Mon, 27 Apr 2026 10:58:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557F2C2BCB4;
-	Mon, 27 Apr 2026 10:58:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777287500;
-	bh=t2cvbxJeTDwpCmvc7MQkgIGux4ZS9uBTx03M6Wy4SuA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fPsSMVCuxI5PtoZIjkgjLoKlREiZSRv8t/UUmX80SNeLScaSi+GPzoki//Za+3sJp
-	 d8wrCeDf/6n+bDsJBllKJJ69G21bZDb9Z/eEbNe4LOcUX0rhYlPHMMg+vlnoiZRYOt
-	 jGgalDJk00cBxzwhpQAHanvsfIj9SRQh6z6l0JVX8edw0DZ2gWURdhJMmyWvQX73Yj
-	 D1y0Lo4kFcksqbqKU3/6/LqTpEgFc0c6DGLeJ2AeZF9RktAaFFbDCl+sLJBKkGDTlb
-	 OxnVp7cUUIF6UMW/Td/xVC1cE6iaKIPpy/WRjILb1bV4NggZS/Eb4uFE2cHJtRI3WB
-	 NhUzSkpTU01hA==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 771CEF40073;
-	Mon, 27 Apr 2026 06:58:19 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Mon, 27 Apr 2026 06:58:19 -0400
-X-ME-Sender: <xms:S0HvafF4r7Tferxd0CzVeZyXBZNJSzKMd7AKMfe6v9QDuBfcXNou6Q>
-    <xme:S0HvafYFAEL0PzO7IeOqfzXr_EpNuUgi2L_V5ROqK0NLuLnwbD6uyj2RoD43ulIuK
-    AngytfQ9IrdLuRvJ99H5rUjsr_pl2432Sdi8yF1DwvYN6DXiFfzTg>
-X-ME-Received: <xmr:S0HvabxlQ07_eWVn-0A12U7CE8XIaDAjaNxNaa_WRv3PebqteEasbb9AH1Gyuw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejkeehudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeeuieejieffkeehfeffffdtkeelfeelhefhfefhudehjeehvdffleeuvddufefgkeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
-    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
-    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
-    grmhgvpdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    oheprhihrghnrdhrohgsvghrthhssegrrhhmrdgtohhmpdhrtghpthhtohepfihilhhlhi
-    esihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehushgrmhgrrdgrrhhifheslhhi
-    nhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprh
-    gtphhtthhopehlshhfqdhptgeslhhishhtshdrlhhinhhugidqfhhouhhnuggrthhiohhn
-    rdhorhhg
-X-ME-Proxy: <xmx:S0HvaZSwa4p1QDeQOOd_hZJU1Ebl6mk2o2WJeRQhnX1xQKcJ8dRQNQ>
-    <xmx:S0HvaQKQr2SdxWKU35KA4ROH2UUACcbXyNouW2HPipAHxwdh3Lz0rg>
-    <xmx:S0HvaYUtbNoduIyoR7x7Njd6_VvAHVKuhrV4GdtGZ3bJKn7QV9tTeQ>
-    <xmx:S0HvacShCwcw0NAaGNKlA9GgxXCdX0qvXiZi3b9gFRWU7fAKx5eGxQ>
-    <xmx:S0HvaYB-cu5MN6CwYh_5lF4gy17pEDhEM9H9IQgfgNFVAIEGANU7DPn2>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Apr 2026 06:58:18 -0400 (EDT)
-Date: Mon, 27 Apr 2026 11:58:12 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org
-Subject: Re: Large memory allocations at LSF/MM
-Message-ID: <ae9AHWvXUTuoqlfA@thinkstation>
-References: <aepANOFKoA4jn8NN@casper.infradead.org>
- <6cc83a53-4392-4925-9187-d682b60edea8@arm.com>
+	b=PEoFpN8rCsqb3ZO8UQuzApTN4W93jb/sozRlYi9uFRwGcT5yZ60l2SiKW1uNJLOGjSnXU3
+	03GvIdv8VLr4eC8LshmdC1FHWjaRVrnzT3YmLI/ysisbXOm3mEVvyoUrmuJRCpVLwWNwtJ
+	VUJKoFXvtZrJM9lNFw8Y71uhKsRskWo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sj91+h2F;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <93cab3a3-1a67-4ac0-a818-f333d8017bc7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777287526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mC/SUXF6qmjl4I2YmUCpIFnBd715RpusDKL8gxRM2m8=;
+	b=sj91+h2FCn6FNfkkxcVlMhdGDID905wb6k5PpVtes3BGCdCrQDPp/vXU+amHHWxaeF/Nak
+	u8EDm/WFOVn3PvlJF6yeIYWeu8YT+q4Tm+g6N0lnrAc1xqRxnXkhl9hkMOhfvHF+qQGx/j
+	syfIfRAlYok9/6+Cc8WoRf+2Iy+48Q4=
+Date: Mon, 27 Apr 2026 18:57:52 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6cc83a53-4392-4925-9187-d682b60edea8@arm.com>
+Subject: Re: [syzbot] [mm?] WARNING: bad unlock balance in do_wp_page
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: shakeel.butt@linux.dev,
+ syzbot <syzbot+7d60b33a8a546263da7c@syzkaller.appspotmail.com>,
+ Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ljs@kernel.org, surenb@google.com, syzkaller-bugs@googlegroups.com,
+ vbabka@kernel.org, Muchun Song <songmuchun@bytedance.com>
+References: <69edca15.170a0220.38e3f1.0000.GAE@google.com>
+ <20260426034938.db29d74982a8eb8463f8cf3a@linux-foundation.org>
+ <e7187a21-7114-4f42-bf8b-90d6e6b54fa2@linux.dev>
+ <20260426105532.43768b24a42744f1b52fdff2@linux-foundation.org>
+ <3591c663-a4a9-4c22-97cf-b58b2e7d8a41@linux.dev>
+ <f0ab0c7a-c597-41a8-92b3-4424b12b1b1e@linux.dev>
+ <20260427034402.096cb95de92bec15becc78bb@linux-foundation.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260427034402.096cb95de92bec15becc78bb@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B4D4BC000D
+X-Stat-Signature: e8mwwe1uxhm7jp5wazy3bg6e5qnrmqm8
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B91E4180003
-X-Stat-Signature: yy4n5qyh3dmm5863gac8ks3ecchjsmwx
-X-HE-Tag: 1777287501-518301
-X-HE-Meta: U2FsdGVkX1+DwRfZ8y1Kho1FyjmeMfCNveARVD2+OG//bCBNTq0McEKdtbY+Gg5/dW8aPYACDJbipEQQbSvLgJ4q1ea7HZXRSt62IZo21bcEyrDe8gvGMZuIIYKMEZmZQPHW0D7bGReb5IdpT3bW6e/MTVfANgkBJMiOYMKT2j8fid1SyE2HZSDfDyHk3qvh3Tac+inAk7jfto1QxJeG2UY6CyaDqBrGv3cw5dLy695Poi17WFVBJcmW1Hct57jyYIi9ecTCLXTOpkWIx5f/B3/7+ga1bY1osiWXfe/czkJKQaJcDwWSxYN0Gb/YNzwWOhByIZlz6YHjSxA/vT8pgKpsfNvpzUI6A8Qo/SRahXafqHlxUss4stc9a6Z870sc/BqpCj/BIQAZjzb/NdG1dHWM8C+dP+jzqU/VtXjtP92Yl09o5wQsUsli6Ix810IRktNiP9oXqSGRG8vXxu0t23FZh+F7umfsSGNknPgIZkHD6al0FJvyMATb83kZjBhv7ssCuGIOzE/k/MhVJhu5JFhv1MfY00cT3fMmO7EaHOUJ1WbhkNL8PDeUooVg+10RbhJ91r8DsUp4K/vdcJ4yl4wkWGzx9d/rGVWTgfNaACEAs74WWCW8vxRHzRXDeI84Am9v/R0ZqB6hT2N6s3g3bajqTiSoug2zjyaZPzIQo/+TAHvOARaJsZjE8NKNpQjEshy9Wgw7BvvIuV5PD2W6RR/Z73Te5pJH/m6pejDTcO1dZD/EXIeVjqtrKuZCO9/4Sa+3dhcXKxAO4W3OpGVCOYbK/hYB2nJeZb5AF6hl4ltAoSA6eU4arwetetkVyBoUzrb9H5hBsKUl8emTTSFqnjGzHmFe3doXjNAqRG3M+WtyEubl2fMjsXITH+pGntQ1eA9z3zN08xg4nR+M/vCa6LG1FBpjc/OSKfbXDPyilRoSRqdtFgbx5tnoMmCU13a6MjPCY/4JmxsFHnxaRNV
- xLhhanV2
- NjhB+sKtVYl1yq5W5KM4T5VocIvdiGt8XR88S5aMrKMTWRKnEBYMoNnMFvc+LxDup4BUXR/7kLwXIHw01hnnz1EZsfxICvy6GIacVApUdQ3Lso/mUI3kEabiLjt2lStden/iK9e2YEL7hTaiR7BRZdQmldtxgPGqZzk+lO6G3HZo4Y7J9fBopb3inKwxazqiz4UHTSwhjIblJGQjnomzVaEKVsuL5kIXCMJ+cBqj9kQCS00GfHrspqqJFFfMIk3jft6gs6qr4uklOhSqOpHD4DvA8Xg==
+X-HE-Tag: 1777287529-317594
+X-HE-Meta: U2FsdGVkX1/6rRl6A3Z11NfweGVmF+uxhEm1LbfFhAqVsK8pSP83x/hXb190aDjb7sQKM8nWJJXVIL3CLMOTiezks7xN+d36dWIw6UsPXWGeFvZ4Ph9RW8k2PEcg5GmOwHTtjjZM6hHQ3NIvOztDaOrfPvPrj1UexZTe2DTr/2xqvETv+iyRiZ+7l8Gg1DThMIGNZXkB5Af/v2LBWgDyaZFPbmbdQwAXQGP3jjmjrvRHbvSd+xseigjqFa1FkBfNEmtXtiMwQuLYfDoSTZqMPNizUaJ26wqvMTl1YKO4X3VTB0Sbg8T0SD9wyhDjserRvPtiA/tfneAFSTe6BnYoYUXPVbv0Ak6ApwzkPBezaKebhmbbBA9SHYUIMnWovX8U2LL1siRdepHjs6RzGVfFNzcDm2rribhgk/eM+jL3USwEqU7TgxoFaHdQCHwvO1d86eFtnx+vNkLfHVHYxH6e/2p9AAf9Wz0H8D/MB+RKr+/k/y/MhEfiBtqbU8q/b75kGEHpitINb5FuQfqX2CmeJNkPBIbafCuBnR7ZiMV/4Mu9nfkir2PXW7FZaedkvIPKPmXqF7m6D7UWfocLEWHnFPNb9QkhfNClfT4M01jXGZZAeDLyXeSEmzjNLre8J3T5FQQ4Tn/I83MGPirNLaXwi+syzrTOKmMymfoQChzoVcB1Su9M+JD1GAKIH5F55gEzG4JcSKZeb6DSpiWpJH+32Nk1QJRSwdskKiuTrCnkg3iVY9N1pKx5jBnQYi5M1l8TfveX6K2FkS3e1jw0pIm9kmt5hPnb+RP5gVZSwsklFmBrgFtlBGzU9lZXTDqluy/0xSLsQpEUhQVU+oCM9nP0K+DdXk8Zt/i8G6Odxtm7q/3mTkaidBgcis4ZaphDtTyDPVvB8E968HXAwUJ/aHZwlteKOZcn16VslraRXKxTdQPE63PayhiAwx3G1fpkai7HIkYYndDjHhMkDlmpDEG
+ RkHci45M
+ E1+hnOJ+EFILsFlTlGxvgo74tzimNU0JX6YH3vvXtzrI/SKI5XqfPNooyfyUw65adhk44Okry2vLtuEwgY2Nee8dCgbZihMbK2uJlbCXS1t4zUajrbtUZ533B29eDvNuEnzrYCO2IcrwrGRRLBiYuXcwscEEUHjdfVwdbvwZTUZtaJdKSCCeR9RELjVNzWAUv6ku5qcG4jfLgbNb5lmLXjanC4k3Hm5U3xg9D7AFco/I4bCgyVyYw4u8necwZMQzunPKJqXj9HgbEUxvSSs0MDTFDHLaYbQWiHE0Hco3nkJcjer3Ga4FIO1ZMndfx5IMiHVHRTfUUTaOmZq5ec/H7y/GJGgYH6p7TTkz2sju954NSu82btptPJNJp8i4DVtFmPfBw+BDlEJjt0AMTZaLpNckr9/Xm8RWq4f4Ao1LyxcfoFP3YI8fYcxKo9o5ml00Zhxm942KeFy+uBo9EaJBHJFkFuWnBG7XCKWSP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,23 +97,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 11:46:51AM +0100, Ryan Roberts wrote:
-> On 23/04/2026 16:52, Matthew Wilcox wrote:
-> > We've had far too many proposals for the MM track this year.  In an
-> > effort to squeeze in as many topics as possible, I've currently
-> > scheduled your three talks into a 1 hour timeslot.  I think there's a
-> > fair amount of overlap between the topics and we probably can get a
-> > decent amount of conversation going here.
-> > 
-> > If you feel you need the full half hour each, let me know and I'll
-> > try to come up with some other way to squeeze something in.
-> > 
+
+
+On 4/27/26 6:44 PM, Andrew Morton wrote:
+> On Mon, 27 Apr 2026 17:43:38 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 > 
-> Thanks for squeezing this in and sorry for the slow response. Yes I can make it
-> work in 20 mins.
+>>
+>> Alright, it seems I have successfully reproduced it:
+>> (The reproducer is attached at the bottom of this email.)
+> 
+> That's a lot of code.  Thanks for doing that.  Maybe there's something
+> here we can put into selftests/
 
-+1. We can continue discussion outside of the session if needed.
+If we are inclined to drop rebinding, then perhaps it's unnecessary to
+add selftest for it. ;)
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> 
+>>>>
+>>>>> However, in a production environment, this is practically impossible.
+>>>>
+>>>> Can you expand on this?
+>>>>
+>>>> sysbot isn't a production environment ;)
+>>>
+>>> Rebinding only works when the hierarchy is completely empty. This is
+>>> generally not the case in a production environment (e.g. when systemd
+>>> is used).
+>>>
+>>> BTW, it seems rebinding is about to be deprecated:
+>>>
+>>> cgroup1_reconfigure
+>>> --> pr_warn("option changes via remount are deprecated (pid=%d comm=%s)\n",
+>>>               task_tgid_nr(current), current->comm);
+>>>
+>>> Also, it appears the current memcg subsystem assumes that
+>>> cgroup_subsys_on_dfl(memory_cgrp_subsys) cannot be changed at runtime.
+>>> (Please correct me if I missed anything.)
+>>>
+>>> If we can get a reproducer, we can try the following fix, or simply drop
+>>> rebinding altogether?
+> 
+> We'll want something which is applicable to 7.1-rcX please.  Removal of
+> rebinding sounds like something we'd address in 7.2 or later.
+
+Got it.
+
+> 
+>>>   From 6ae41b91339625dd7bf0f819f775f26e78171a73 Mon Sep 17 00:00:00 2001
+>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> Date: Mon, 27 Apr 2026 11:20:21 +0800
+>>> Subject: [PATCH] mm: memcontrol: fix rcu unbalance in
+>>>    get_non_dying_memcg_end()
+>>>
+>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> ---
+>>>    mm/memcontrol.c | 30 ++++++++++++++++++++----------
+>>>    1 file changed, 20 insertions(+), 10 deletions(-)
+>>
+>> With the above patch applied, the warnings are gone.
+>>
+>> If no one objects, I'll submit the formal fix. Or should we actually
+>> just remove rebinding instead?
+> 
+> I suggest we just fix up current -rc please.
+
+OK, will do.
+
+Thanks,
+Qi
+
+> 
+
 
