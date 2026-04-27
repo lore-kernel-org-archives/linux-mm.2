@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D9EFF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 19:41:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03D9FF8867
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 19:52:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7AAD6B0088; Mon, 27 Apr 2026 15:41:53 -0400 (EDT)
+	id BDCC36B0088; Mon, 27 Apr 2026 15:52:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D52216B008A; Mon, 27 Apr 2026 15:41:53 -0400 (EDT)
+	id B8E3F6B008A; Mon, 27 Apr 2026 15:52:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C68C36B008C; Mon, 27 Apr 2026 15:41:53 -0400 (EDT)
+	id A7D886B008C; Mon, 27 Apr 2026 15:52:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B655B6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:41:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D0E08788A
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:41:53 +0000 (UTC)
-X-FDA: 84705356106.14.4D911BA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 910B06B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:52:56 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDB83120261
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:52:55 +0000 (UTC)
+X-FDA: 84705383910.22.6301847
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A362D40011
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:41:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YJ2sQPBU;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0FDA5180010
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:52:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fCf1Y2V8;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777318911;
+	s=arc-20220608; t=1777319574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RfWloz2XC6CSxIMv7SC2/DE0S0iPXt3bkVqtfGx3NlM=;
-	b=o+XCBa5l9KJbiod3PJSrO9sxWJ3Wry/3tzM0fYVF2Apr1xOK4IAcl/lBMK43+6VHb+pbMH
-	jSDzzl7UbZvFCAEIZmhdi4LA9c7melG9Kfv5lybzXH869gs83yMX10MHf2/021fb9QE1kB
-	wBxaRiUu1guSWBSarrdR9e2uphlWs6E=
+	bh=+1MinzOkQf21FDABsDvLvVtAgNhY/1yvhhcqjDHdxAY=;
+	b=kbzg3YLI557nErsdtec3f9qOchBZkGpPSj9TzsNzgNZT3Lt4IQpe6e0/ZTAzICrmeSndAQ
+	XXydF5fdd6f5eQLYeEUkUMdWaPQKgc3m+58/gZqiRF9Q29PisNSKNdgkar0NWN0yyYGZ9N
+	iQcOPNHYTQWpo1EdnefnzxqJk95fZbE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YJ2sQPBU;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fCf1Y2V8;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777318911; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777319574; a=rsa-sha256;
 	cv=none;
-	b=6Wb9Rhj52TD0MhzjnVPsEOBLar45zKtt48Yh0LxqnkFVko0HqdYoNB4s+ypaPGzctEOPO9
-	egnN4MAbNB4VKXQR/0AJ0Hudi9eU5lUC6YzOj8w9wIcrqqFRMtw0KRWPpc9HZ4PNlH3zn0
-	TmykVnSujpLIz0srItLJ+bLzgOdhqRE=
+	b=xBBe+nUfcL+WvTWKnpCtLtjGPIlbmCL6llWgArq4mlUfp/FlJnkjS8d8Idbwz7LyHcWhyF
+	lT0iXZBIveq5QAxNPXWaopmtRHTxYxgtQf1W7wH0WsE+pDbAQsC6IoAU8bTpk68rHsxt0o
+	fNZrrYTM7N9SNGmiQRXXh5T5uzX7qLQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 77FA743BC9;
-	Mon, 27 Apr 2026 19:41:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D844AC19425;
-	Mon, 27 Apr 2026 19:41:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0088443D6F;
+	Mon, 27 Apr 2026 19:52:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD5EC19425;
+	Mon, 27 Apr 2026 19:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777318910;
-	bh=jqHLqVhMq+si5t6zdmANYEG+sciG4MaJhOm7qVM3/XM=;
+	s=k20201202; t=1777319572;
+	bh=nMUs3j4oRfS4xN/aXfAYDXvvR+JDwFyrHxatlmxxLsE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YJ2sQPBUIylRzAo3mxf6Nhm724kU65Z9v+W/MDzEsLK94GAuVoZhPwwWZCXj5Il90
-	 ylbki6bnVxWgs89zBNMtLu6rhC0K0vCojZYgJd/+kyOP74CwyHwQX46D6ybpo0QAsy
-	 oQCJGNTLEnyIrzPcfcN4gcLvxRKVqIE5E2NEV+lUm3Bcf2BRAVes0TDuq4IF/Ob/wq
-	 dAQXlAYNZmAjK+1TRurBmgbmdfvRX160CR8pq/uzHTcTsgWMhZKAMruNFvOCuPw6/q
-	 emV3S/kESWt7U6fOJogxNMJytyjLj7geapaYIZf4rvYKepFWg8R9Y3FuGNn6+hNAT7
-	 j3h4J0KO+Hqsw==
-Message-ID: <06c7e6a7-60af-480e-afd9-700e985ca2ba@kernel.org>
-Date: Mon, 27 Apr 2026 21:41:30 +0200
+	b=fCf1Y2V8QS100Le+B2nUjSCjkbs627LHV9ITFoSou0A2UiR/U2RXRmlx7xPk8o+8L
+	 Fj8jFWNSru/FORmZhoW5Oal7Fayc8nchcPyzea/nNzoF9IMMybxX1ZwroQo9yUwACw
+	 RLllrNFicdFtA5UGwjJRsTFenbGJIy1t1AREfwiVvgWW1He/rvADKz9mXr7jve5hiZ
+	 dBcYIzYY6c84KaZq3b/o9akK9X0ksD5ozMzFbB+r/KnxwZAjSb2J4u7PSjqELjtV6x
+	 hEB87RPq16WmuaV/WNRfX6s+EF99MyWg8BSElbKLd16gODJelbsf/WjdyUai7dXc0D
+	 xDQ+5zTITabJQ==
+Message-ID: <c82a0b73-67ff-45e6-a792-e610b35a5b2f@kernel.org>
+Date: Mon, 27 Apr 2026 21:52:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v16 02/13] mm/khugepaged: generalize
- alloc_charge_folio()
+Subject: Re: [PATCH 7.2 v16 03/13] mm/khugepaged: rework max_ptes_* handling
+ with helper functions
 To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-trace-kernel@vger.kernel.org
@@ -91,7 +91,7 @@ Cc: aarcange@redhat.com, akpm@linux-foundation.org,
  will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
  ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
 References: <20260419185750.260784-1-npache@redhat.com>
- <20260419185750.260784-3-npache@redhat.com>
+ <20260419185750.260784-4-npache@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260419185750.260784-3-npache@redhat.com>
+In-Reply-To: <20260419185750.260784-4-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: r7r9ym9norbpdsbzgfxqzwwi77yhwg1r
-X-Rspamd-Queue-Id: A362D40011
+X-Stat-Signature: 9gu7cg38f8idgyxpihtodw91aickfze8
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0FDA5180010
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777318911-977210
-X-HE-Meta: U2FsdGVkX1+4IOiqJgiPgacRobg/VPUE1tiuw4qDNwelcF4gjnHZIFRFn17jcUvSDvVKOX6zxZpA89CuebFIRdxzanJ65pZAv+oEDvhAxqV/vZw8mMX0oJiSpbBEXHJnhGP7r6w/G6xf21pttl1InSWAtyg+1HzzzEDqiJNkldXfHspsym5OE9TjoPx4T/CMQm7LlwnWsNBlNAgbfgyj/YR9+RDOgRt6tk+ZihfcLLOPbod1Ta29NlFqvTRPShvfdxwFa15PP/PFyAtVdjLcPPo3ufbQ60vN4biVHih+KvNBRbwrEl700p88GiC/VYh1q0RqDgUQslmmWpXiKC/5hJXxxzuVNq32SwSSN5pxBiVGntAimL8UFNm3xHIBw9VqQs5muAaqgOBh2m7EueSuArTLWqdCfERSd8DUDGmcDJsNW5p6G95z+qN49jKp4vHag2d0hHXRN8u4SfslX6Lp43ozvw8sqe2Aos8BIcx24HsneEd3QXwfyo4BQOron7KE85s+saC8gJ924fo1394AfvVqX04KkvIZsvTTDxBER6T0t/krwiaNIwJm6L/VkwX7VStIh1Z/4MNEVBMIg8m0ebfI+6UC+wFTQ3giofxcF5F+HhBJws21bAA7FVWDSElj1zjC/kMqzJ4Rj4+4scaRJdr5FmlfBUNaAKNYV1sh6CGbAdxW5XWIpgZjnEj6CJDUD5sS0I6UsMbhsM8feWnAZUG5GebMMFFUe1o/grTzaeJBt+xAQvCB2WVrtPHQsZikaKbtZindmXlsFTxKpV66Rvi19FKgtiTSJq62Do6U3HL1/TqsqaRlcN23Mwk9TrMwp5YD1HBTJFNCyf9sRmlQFyeq/wBsFLf+BL3Ny2l/rkpTkwgcB6j8FRYWyRQBoPJyBs6volMNcNIW3cd8Yff/ygUoY6CwOzQJDc3RCXFBuDvPo2vYCNpOwXhGlpddBJIkPiXokWd6ho2KTYO57MP
- vyKqWzaC
- exMKIhxxVve4tFak+ZoYChGpk0jfDGjL7KEXzMTZobCnxit8FobaUpsm+78bpg4AxWTXkA5TP6nUPGEyT07jzPOJ1JA0PQDvQ9swepfhkey/TOEXkQmZ6l4dZAHY8d48sL1I1oYlLO1dinzLj8vxheBa/t/FvWL64d+Mioselnq71RmeRslYJUqKAyujmlUMu3tg6tBDJlVFOovVngwcFfeNS2DF2H5KJnhl9YZfeBGrZVCN+RbV0PhXAhtdGgR0Q3nFzLAKjxgotOXfifEydNA4A4/HrLAfPON0EZE7mnEN3Hwo5li7fVxBqnJ1dt3SEV5bRXJrxdzjFvWV9lnE7Bsgh4hlLKCN20q46tdumszE1SLUaLy87mD4Xkj95gt4IY3n3c9sIx8cWOdgG8/17hg3FcFJUAm11JU9iNBh9EWsXJfclzysZ7zZ9A/BJG9Mx5h02hV/D7j/u3YnmYKp7T40p6qNAaZIh989U6GEDdeuV8mfl7ry1U5r9xExhcpdUXcZiiJgrwXqg54Z2ViTGWUDcHToYauD4Y0KVHsYMm8neM88=
+X-HE-Tag: 1777319573-356448
+X-HE-Meta: U2FsdGVkX18D/rI/kWinP3m4R2XYSDd1UpHui9qrO4aX1HVfZXtMAWXgcNqaEHMoZfWQkzzSFDeq9brZZIlwDmUc3YubABFNHvyYaBIKAyOxgVoGsf/XlMosaGW21wXbmG8Yul3z2NjNbSEeB/Ix47nXlIbTVBJ7ds3JVxAMlwhBctahVj3o9sQMmvCgWQ+lOXZvs3cuHR12cJcGipzclZOcF54Navkg+34A3WSMXB3vjWaCdJRvn7OKn0s1hLOeZSlo9U0VaFE/1qt4Os0lt1/DpWA5XQoXZTSONHBcNhoSM/BfY7GAzz6zU9G09cM5oHDaogPd4qEaJie9CuK98xB8q/ztP563rxL6JJTKMEKxDE8ScVkanvYOFjaq/Z9Esh2FLL1ZMlQikYMsJ1eIQHvA4/4xfcuuiaUdlA/iB7xoOLnbJsvYLggmXCgmulBnwnigtlRGwfKUY2JkH2nyFjDv4QHYqhauxXtd1Lm75XAAmbA8mRAcyll96+00wHLqjEgSLJkUM7O3f/z2I6mgBV72foSwnJP7pzvwR6ZP05oj30yD+ZESwzaYYtmsjkfFWRuRHlLPSsG3YSFQOE6J46tEXvRFeoL3JRi1efYWZlYOtHVtq8bV/T4KgPR8jP72isfgvn0v/R5yDpyzQdUuZIPkxdwmCDZBVYMzOu3C/UgoXjCZ+BKoEBcIcSOxAk+IENLnAQaRrfBlmez7gcJAqzbn/KR256ZHDNzk3EyVEkZ05h5j5hCxnopBdaAFoRJTQaGzlRPPP7Mde4sk5SE6DvTsAX0AQSNtKwUusIAIShHFgARS3Fui+KN+jk9R+41/9IJgA1nVWrzRGCEZ5onTntRDMqT7WHl9nxAiepivW31FIDthbtGopCkWpAU5P/ho1DkFpi69JP356cwS+UVMO+O2WeBr120HaT8daj0Yvr/1ZtpzlzJuJZ4iQhk7NYwCn00GLVAMgrYrk4HSwk+
+ 4/xxqG7a
+ ez6ZgBRxObSIaFbtmvSyANhfSgW8kvossuV6wz07ZsrNvBfYfDJWSVkwpR728A+bXsmNC40ppF2uRa3b3VVh+WNqA37ei9aB3w9q99fmpHrOaSPv4Ahd23jeYni11SgmwMJbCAqXj0ox84goH1jdyemSZFS5FeMW34nkkFWXQ/a60jaucf4e/qjVPy/kKIYqH/TlNFKXfiyugjqQ7U2wjgX+Rws4JY9TaxZeaqMJbG9QZuqOKOHJtOGYJA4qn4Vqi47R+Zi1ulT71jf9pMLBC2/q+t9o2IZsGnt0PZMBhZk/j0A5/3BZfBS1rMNWALYuGhi8VTmKM6itm2wLDSBTaySzaQ5JQKZUwhTMPMbEHsuaHNAcy/9PCIGtWWWgSCNc8D4d/F2W4RsFEm1gGxRff7lsUQM3HgE9xP0a1ajqNVnw15m0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,25 +157,168 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/19/26 20:57, Nico Pache wrote:
-> From: Dev Jain <dev.jain@arm.com>
+> The following cleanup reworks all the max_ptes_* handling into helper
+> functions. This increases the code readability and will later be used to
+> implement the mTHP handling of these variables.
 > 
-> Pass order to alloc_charge_folio() and update mTHP statistics.
+> With these changes we abstract all the madvise_collapse() special casing
+> (dont respect the sysctls) away from the functions that utilize them. And
+> will later in this series to cleanly restrict mTHP collapses behaviors.
 > 
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Co-developed-by: Nico Pache <npache@redhat.com>
+> Suggested-by: David Hildenbrand <david@kernel.org>
 > Signed-off-by: Nico Pache <npache@redhat.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/khugepaged.c | 114 +++++++++++++++++++++++++++++++++---------------
+>  1 file changed, 78 insertions(+), 36 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index afac6bc4e76d..f42b55421191 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -348,6 +348,58 @@ static bool pte_none_or_zero(pte_t pte)
+>  	return pte_present(pte) && is_zero_pfn(pte_pfn(pte));
+>  }
+>  
+> +/**
+> + * collapse_max_ptes_none - Calculate maximum allowed empty PTEs for collapse
 
-Your SOB should come last, the order represents the history of this patch:
+empty PTE or PTE mapping the shared zeropage ? That should be clarified also below.
 
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Co-developed-by: Nico Pache <npache@redhat.com>
-Signed-off-by: Nico Pache <npache@redhat.com>
+> + * @cc: The collapse control struct
+> + * @vma: The vma to check for userfaultfd
+> + *
+> + * If we are not in khugepaged mode use HPAGE_PMD_NR to allow any
+> + * empty page.
+
+Not completely accurate due to uffd. And it's not really "empty page".
+
+Is that information really necessary for the caller? I'd suggest you drop this
+here and instead add a comment inline above the "return HPAGE_PMD_NR;".
+
+> + *
+> + * Return: Maximum number of empty PTEs allowed for the collapse operation
+> + */
+> +static unsigned int collapse_max_ptes_none(struct collapse_control *cc,
+> +		struct vm_area_struct *vma)
+> +{
+> +	if (vma && userfaultfd_armed(vma))
+> +		return 0;
+> +	if (!cc->is_khugepaged)
+> +		return HPAGE_PMD_NR;
+> +	return khugepaged_max_ptes_none;
+> +}
+> +
+> +/**
+> + * collapse_max_ptes_shared - Calculate maximum allowed shared PTEs for collapse
+
+"shared PTE" is not quite clear.
+
+"PTEs that map shared anonymous pages" ?
+
+> + * @cc: The collapse control struct
+> + *
+> + * If we are not in khugepaged mode use HPAGE_PMD_NR to allow any
+> + * shared page.
+
+Same comment as above.
+
+> + *
+> + * Return: Maximum number of shared PTEs allowed for the collapse operation
+> + */
+> +static unsigned int collapse_max_ptes_shared(struct collapse_control *cc)
+> +{
+> +	if (!cc->is_khugepaged)
+> +		return HPAGE_PMD_NR;
+> +	return khugepaged_max_ptes_shared;
+> +}
+> +
+> +/**
+> + * collapse_max_ptes_swap - Calculate maximum allowed swap PTEs for collapse
+
+We're actually checking non-present page table entries (anonymous THP collapse)
+or non-present pagecache entries (file THP collapse).
+
+I wonder if there is an easy way to clarify that here, at least in the
+description (confusing name can stay unless we find something better).
+
+> + * @cc: The collapse control struct
+> + *
+> + * If we are not in khugepaged mode use HPAGE_PMD_NR to allow any
+> + * swap page.
+
+Dito.
+
+> + *
+> + * Return: Maximum number of swap PTEs allowed for the collapse operation
+> + */
+> +static unsigned int collapse_max_ptes_swap(struct collapse_control *cc)
+> +{
+> +	if (!cc->is_khugepaged)
+> +		return HPAGE_PMD_NR;
+> +	return khugepaged_max_ptes_swap;
+> +}
+> +
+>  int hugepage_madvise(struct vm_area_struct *vma,
+>  		     vm_flags_t *vm_flags, int advice)
+>  {
+> @@ -546,21 +598,19 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>  	pte_t *_pte;
+>  	int none_or_zero = 0, shared = 0, referenced = 0;
+>  	enum scan_result result = SCAN_FAIL;
+> +	unsigned int max_ptes_none = collapse_max_ptes_none(cc, vma);
+> +	unsigned int max_ptes_shared = collapse_max_ptes_shared(cc);
+
+These could be const, right? Or will that change in future patches?
+
+>  
+>  	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+>  	     _pte++, addr += PAGE_SIZE) {
+>  		pte_t pteval = ptep_get(_pte);
+>  		if (pte_none_or_zero(pteval)) {
+> -			++none_or_zero;
+> -			if (!userfaultfd_armed(vma) &&
+> -			    (!cc->is_khugepaged ||
+> -			     none_or_zero <= khugepaged_max_ptes_none)) {
+> -				continue;
+> -			} else {
+> +			if (++none_or_zero > max_ptes_none) {
+>  				result = SCAN_EXCEED_NONE_PTE;
+>  				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>  				goto out;
+>  			}
+> +			continue;
+>  		}
+>  		if (!pte_present(pteval)) {
+>  			result = SCAN_PTE_NON_PRESENT;
+> @@ -591,9 +641,7 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>  
+>  		/* See collapse_scan_pmd(). */
+>  		if (folio_maybe_mapped_shared(folio)) {
+> -			++shared;
+> -			if (cc->is_khugepaged &&
+> -			    shared > khugepaged_max_ptes_shared) {
+> +			if (++shared > max_ptes_shared) {
+>  				result = SCAN_EXCEED_SHARED_PTE;
+>  				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
+>  				goto out;
+> @@ -1270,6 +1318,9 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+>  	unsigned long addr;
+>  	spinlock_t *ptl;
+>  	int node = NUMA_NO_NODE, unmapped = 0;
+> +	unsigned int max_ptes_none = collapse_max_ptes_none(cc, vma);
+> +	unsigned int max_ptes_shared = collapse_max_ptes_shared(cc);
+> +	unsigned int max_ptes_swap = collapse_max_ptes_swap(cc);
+
+Same question here.
+
+>  
+>  	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+>  
+
+
+In general, LGTM. With the doc fixed up
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
