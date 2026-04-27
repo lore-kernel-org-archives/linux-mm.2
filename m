@@ -4,130 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5C92FF885E
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 08:40:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AD8CFF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 08:45:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AB9A6B0005; Mon, 27 Apr 2026 04:40:17 -0400 (EDT)
+	id A66E96B0005; Mon, 27 Apr 2026 04:45:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15BE36B0088; Mon, 27 Apr 2026 04:40:17 -0400 (EDT)
+	id A17736B0088; Mon, 27 Apr 2026 04:45:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04B726B008A; Mon, 27 Apr 2026 04:40:16 -0400 (EDT)
+	id 8DF616B008A; Mon, 27 Apr 2026 04:45:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E2AF36B0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 04:40:16 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 83E118C4A9
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:40:16 +0000 (UTC)
-X-FDA: 84703688832.09.C9670A2
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6112F180004
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:40:14 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nj+KaZoT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dZpnDmyN;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qQIp1vvF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MnJWARvn;
-	spf=pass (imf24.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 790456B0005
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 04:45:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 11CD61A07A2
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:45:53 +0000 (UTC)
+X-FDA: 84703702986.26.9DFB7E4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	by imf18.hostedemail.com (Postfix) with ESMTP id CCD361C0004
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:45:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=WJbcAplo;
+	spf=pass (imf18.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777279214;
+	s=arc-20220608; t=1777279551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UReiR8tBfbqAEvNOviGNvtVyvBhm/HcNLTCRksGYy3I=;
-	b=Z2SHE/Cq+8abDZjfx5I2pYHIe41C7Lkgj40qpeGn5k8JivMXDr8KyA1djcUlYEnMvlOf54
-	zUpIlHW6c/5FDdG8pA0a3xWzix2HTP0OVpNbDYQcZ8HI66c9kUYc2FKjxhanfnfhMxdupS
-	BIZ3gZvM4o3Ny0hqsPtpLAU6C5A3cXM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777279214; a=rsa-sha256;
+	bh=enlPWmXbCXiBTtPjtrqyyDQhH4YVYS+iBt6pkMFkQHE=;
+	b=Dc4jdXh6Mr3amCIEHJr2b0ShawAw2LcUzxgtWEvEU+X8c3DaelSCzVOvdB4AXSKODtcSZg
+	5JxesX5UjGdN97uM1cTXBArcskV1k8wGOXXeIPlc22lP6eRxP/o4bgVjpMrhZ6wkY505D8
+	ZmmUMrO360iBUZ1ZM56fUAByUR5Vkus=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777279551; a=rsa-sha256;
 	cv=none;
-	b=0svAkhodgpFBUAs0hpUjJuJGbWuInfUm0EWfabovYx30X8ccDoASrkQ8JzH8wtS91IjpSn
-	IHwvtADpryr0SYbwwMY9+QWUuEgd722ftahsm/sXGoPJsl92+qwiUOjpCQCo90lRk4qGgx
-	IsGFBCUurPTBZgBnTonHPIzIPYq9bhY=
+	b=nUF7II3tm2tHyuSPnirPWEap2lzpODTV3I46Dkz3igTj0+4EoFyD2vYWaLs0dj7QaeZx1U
+	XYpjyqGEPU5+S0jsiqC3mslyHBoS8GiIYkmG1xxp4X0na94LSdtWM3sVEDOZUgXMVjIiAw
+	XlAy4/MY/TKGTilAJH7rCBF2W6s/nfs=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nj+KaZoT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dZpnDmyN;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qQIp1vvF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MnJWARvn;
-	spf=pass (imf24.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D7F695BE62;
-	Mon, 27 Apr 2026 08:40:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777279213; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UReiR8tBfbqAEvNOviGNvtVyvBhm/HcNLTCRksGYy3I=;
-	b=nj+KaZoTa9/GluQ+DtQMok6+GUWJi1tSIzfND7q2L8gk5IOcF7ADSICLODzq2/HDwKHuR1
-	mwc1neZ6DMk57ngllZ7J3GsnGDuJaFGnXJZ0HQFjQArUVjpiAXBGWtiiQJzf0Aprw9pw5N
-	2LD+fRuQSktgzxdecdWzeEGxtd9RFV4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777279213;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UReiR8tBfbqAEvNOviGNvtVyvBhm/HcNLTCRksGYy3I=;
-	b=dZpnDmyNL8/pfI3pY1ODk1TSRuRBxiFsZiMCHy0UXtV95kCKLZQh6EeZ6uQZBb5ZUpQmYW
-	qR31hY14RmsYwTAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777279212; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UReiR8tBfbqAEvNOviGNvtVyvBhm/HcNLTCRksGYy3I=;
-	b=qQIp1vvF6IRXxs1zMpZogcXfT47UPQX2tZrk9tFoSjC8cRwLBVKntuH5EvgsK37aSYBEGv
-	fFFW0tgJuYgGLmcuiyI9LdRRmpJ1LvQxtG9m0j4Jp0VEOgP4Wok1DScnpFZiS36ADkjn1P
-	4ruWkvqy6PhyJcGkIo6TtKDeuL6m21w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777279212;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UReiR8tBfbqAEvNOviGNvtVyvBhm/HcNLTCRksGYy3I=;
-	b=MnJWARvn4BQ8RqANKFlWJgXcRF03Fl+yplpj549cRVqodgRw5qXhJQGw5EPljgVL0wb/aR
-	BlINi6ltNAnZqMAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6BB04593B0;
-	Mon, 27 Apr 2026 08:40:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BQwYGOwg72n7JQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 27 Apr 2026 08:40:12 +0000
-Date: Mon, 27 Apr 2026 10:40:02 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry
- accessors
-Message-ID: <ae8g4jipQxQZRe6E@localhost.localdomain>
-References: <20260427052000.196402-1-agordeev@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427052000.196402-1-agordeev@linux.ibm.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6112F180004
+	imf18.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=WJbcAplo;
+	spf=pass (imf18.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A23A04E42B2E;
+	Mon, 27 Apr 2026 08:45:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6D3D9600D1;
+	Mon, 27 Apr 2026 08:45:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4E94B10722389;
+	Mon, 27 Apr 2026 10:45:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777279546; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=enlPWmXbCXiBTtPjtrqyyDQhH4YVYS+iBt6pkMFkQHE=;
+	b=WJbcAploUg0VmF8Pr+sfgdotkcsE+3i3sOgj0VN9GILZjM/dn7k2l6yEnDFaLgNnsHB2ke
+	rIiFoGiqvbcbZUtxKswbsaRljyz+xXTtAxqH/KKDTh71KwOwbOw8l/vQCMnSwhlcMo4xCC
+	xoIgVMfDds0upX6YXNRrk8BNT5gtD69tE0EPWoJGdDPyPEFVH4WSMc76pnmesP3PyyGxoi
+	WSBqZVZb+deNlGfh7SjsbGBSVzPwbj+XpuWgjdaPkUDHoOr+AiZQXiqXcxWBxKDn39Kuzf
+	8xtuEKI55YCnUaxvGQOliOLdPRRmK0uaNRPXrzMWGxybldX6FdIJZBopPxlCjQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 27 Apr 2026 10:45:34 +0200
+Message-Id: <DI3T0IKVGW9X.KVYWOQJN3PCI@bootlin.com>
+Subject: Re: [PATCH RFC bpf-next 0/8] bpf: add support for KASAN checks in
+ JITed programs
+Cc: <ebpf@linuxfoundation.org>, "Bastien Curutchet"
+ <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>,
+ <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <kasan-dev@googlegroups.com>,
+ <linux-mm@kvack.org>
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+To: "Ihor Solodrai" <ihor.solodrai@linux.dev>,
+ =?utf-8?b?QWxleGlzIExvdGhvcsOpIChlQlBGIEZvdW5kYXRpb24p?=
+ <alexis.lothore@bootlin.com>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
+ <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "John Fastabend"
+ <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, "David
+ Ahern" <dsahern@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+ <hpa@zytor.com>, "Shuah Khan" <shuah@kernel.org>, "Maxime Coquelin"
+ <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
+ "Alexander Potapenko" <glider@google.com>, "Andrey Konovalov"
+ <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
+ Frascino" <vincenzo.frascino@arm.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+ <71fb19ff-6dde-43f4-a0e9-5c8cf2ba4ed4@linux.dev>
+In-Reply-To: <71fb19ff-6dde-43f4-a0e9-5c8cf2ba4ed4@linux.dev>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CCD361C0004
+X-Stat-Signature: xmbgpa3p9mbb5xeuy1miuaikh3gcfhcj
 X-Rspam-User: 
-X-Stat-Signature: 5sny9oj187g7qyqoksa11r5sqeuuayhm
-X-HE-Tag: 1777279214-477257
-X-HE-Meta: U2FsdGVkX19VZJjehlhd3vUKlJaeU6MnjtE/XpU5wfKjqBtWG1KGFD4QpGGlE0B9hKFMc6Neg17T+CWLsi3ViDU0jmOvr9Zc1vIQZrTNf4y8PvKwCtCxR4KzsGRwIvp+DW5t5t+1ng12sH3+mjRbfdEK3195sqyF9FophMXOTP3cb7+6wVblWW8UxPsuLtAUTTZ8qIL68SbZc8E3237ajWuFM/++RJMHVsfe75anSKKMSDsgY7ZHA3RHfFFJTwLFh/p9SbYoA4rSJY1EPRYHZdyWQbSxdoc44szyxp4YtwPUfEHGe8peKOp9vMELMLVPGYjoxYCJR2JZ0WKaEvi4WHw8/6u6AoW2VT0gNG2zYeHMXeniY8fJOuWOXyRfKN+fISgeY8zaDQDzg1lsPBdxhvHLmenTkQtrDraA4EiunHO7KAuSfqNCxiVfHIXQGZemuCm4fjPcd6UG2zYd8ivLM+I2Sc7vVPinmRnx0h7fbzPNaZz9Zgrpfapj046Br/+HeCV+OX7WjwqGB839n8OvlvlzhPsT+yVQiWDBDYM6sBpruiL4botbEKuM+2x+DQcXUCtaQJKVJs6OFEUiAh68wd2OqDtbjoRtBerXsjfqT2qfSaHj0u42uasmvZfr0JsWpsuQCOoSdmNgNdlj2iyFJRKaq7MN4AXRpupUkOSV8qGLC1AFuft7NNJZ9WBm2IJR8Ny+Kj57wkTCdnfJlktZB+kZ7qe/AxSAEFmeObR1M3CKsFBYM4KaAvnI643CIF6sOp6s3v6Bed8J2DJLg4svY1/GlNBlKRFJiAs+XmDzgMJ3vjGT50YT6+sbX53yHR8VbWqnG+aQG04mw77UpRL+PDcVCL24oQ3zMU/Ef0gVLyFFEpvzo9r/Ky3q8nTeT/MIctTNcnhD9Ia6UntGgwe7NAUvj+IyzBACJiEWgPZwOOjArJv+fivQHAiO8lHDWDzhMIh0apBFMWfdxOR0Fi/
- hv/NrXaB
- ocb+bR6k+QiPpdKH9wpXTpE2vY8DoVr9+CLZN6uISKD2aO710HBb3GLWiHJ4u+clnCm4Fy8lubh3PUdoWBds8EPTvbCKwT4Kr2/29cZXtW30stYtkmB78XJ/+T/d46m5WGkFmq0astwkeEO0otyoUGYRLv0p8Qs6EyVUU2P5JbRdiGAHJxRv1jFm9z5zl6GnD2P0m5xx4rOzy7EoRf7/IgHFq4zRIN/xC9lQtN/hLYccXhzCPGJxom+cBHucLBS0grEMCJmRZFKBxPb+6Yh0RtaVQZElnMNvpKnWmS1o1BpUsjC9y+1XLEgEZTr9/rBtTUK6JKtl/Q20KrlQ=
+X-HE-Tag: 1777279550-278994
+X-HE-Meta: U2FsdGVkX182joeKsQUwQ2lUvu2RXLOycbaM+dq4tHA5wr7OabWCswx+lOfP4RoTOZxMgyUZA3YuoP1lLy6OpXoOXrvYxHAaRedSgzjhQb5anqzGK7pQLHjIrRp+ZJU0yyS6S7ufPAiAR0YsbNN374tK0teK6RTB/MeYVvzI7YCf8N2z0/iz6nED00qLs6taUsYSShKsMrXjfn09TH7Ie29YwJtcd1Z62Ol2DirdA9GMXQot98S4aFfrmTOqfq8zdadd1kVWyZjt0pbeYPPJoMKOWu9n0zv32qvoMrNSqQUNLNtEXr5mcGrTsKOMz7Qe28hM4EEcmYhCD4EsAEXGF0wLIVQfMPEqgq+6IER8CjObfeCfsUoT62URmoEpaarrzEV9HqZxIfOaZSU00/q7UwHOudZCzUkuIaExb86y6EUalegiOwL1eNXO3aGrodUU2fsio94yVWpl3aCHOg3TPVGvC2K82Aurz9nT9qGjkKM8EgNjBIt44KYvEwDA8n/xYmFJpbueBWmIC4+yFn6f5IgH1nIatE61yhHhk8uY72n0i3IGE3evQaHwWrWMC6wVe+yTSHW4v05ISfi3+W5QC+w974HMFSTnT5/o/DR+tRAV71uZnIzPtbK84DXpjhM5X8z0zX6/g6wKeCKspHm7W4lnVM2wt/22GSAJC5sIoyPybcReZR5NGHGcoJwyAMa+ZXyh42PF2zte6UAshoxKnlSn8bawOtb09z4cjzx1YwJ0vea6OprB9YSZ1Ya4oqMzZXjoCDbzRxef4HBP+A3YzH0Hm8tmzfl0UNxIdS+cPJK60+G1LPTElPpApisavqCAFxWAkf700l6ly/4Ndh+nZpSx2LEmjWj2bt4punXBq/+YR4x9xsEsopeGQXYo1OfTWAvsSJ7GZn2u0Ko5qJ0RkmQu4eGdtTU+I+odHUGWvdd9KOAsJJtazdVkC+doW2dI0FnRKMubbrTGEi8Dimw
+ 8t1zhq0Y
+ PSOyK1Qu+8M5giVVojJ7QpQJc/+edXrUwio5RcNH6C9JFrSaFKJwCZvmtIxCI11WU+/RXtz+mxzzxy2ssyovMWBBIFryPk5KRHxFvKtThBazhVqmSOCvBlB2i/PmdhnMAXrpA/GLNDOaE4zZSv9vkY1Ot9lCgENi67/kevxH0TaEgHL2eoWzc/7YfqMnYC0Q9ixLph7xi+mIa6+dO5LPO0xxFHMrTx76S8aCJi5W8ivq9/rHuufmnggMjWG/x8y2uDzzaF/gkBQHmG8tCLsyojBW0n9YXxEgWDpwalYWj7zpgTDsfzUr2JnK+Ar1G3FOWT1sd/Grwp7/hhAFI/1tMLgqoSr6dFh46hTjslH+o9azL7ocVCFfD4pF2VtqL84zAZ3ExGuQ4rw+uQoKQjF+OiSat/cgZXutlOlMgEf9Q1cakYg4yCRCO08rOtR7JlhmiTw9c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,33 +121,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 07:20:00AM +0200, Alexander Gordeev wrote:
-> Convert pgtable direct entry dereferences to the corresponding
-> pXdp_get() accessors. Use ptep_get_lockless() variant for PTE
-> reads when no lock is taken.
-> 
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> ---
->  mm/page_vma_mapped.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index b38a1d00c971..a4520bb10d2a 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-...
-> @@ -317,7 +317,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  				goto restart;
->  			}
->  			pvmw->pte++;
-> -		} while (pte_none(ptep_get(pvmw->pte)));
-> +		} while (pte_none(ptep_get_lockless(pvmw->pte)));
+Hi Ihor,
+thanks a lot for the review and help !
 
-map_pte() might take the lock if PVWN_SYNC mode, or am I missing something?
+On Sat Apr 25, 2026 at 1:10 AM CEST, Ihor Solodrai wrote:
+> On 4/13/26 11:28 AM, Alexis Lothor=C3=83=C2=A9 (eBPF Foundation) wrote:
+>> Hello,
+>> this series aims to bring basic support for KASAN checks to BPF JITed
+>> programs. This follows the first RFC posted in [1].
 
- 
+[...]
 
--- 
-Oscar Salvador
-SUSE Labs
+>> The series is marked and sent as RFC:
+>> - to allow collecting feedback early and make sure that it goes into the
+>>   right direction
+>> - because it depends on Xu's work to pass data between the verifier and
+>>   JIT compilers. This work is not merged yet, see [2]. I have been
+>>   tracking the various revisions he sent on the ML and based my local
+>>   branch on his work
+>> - because tests brought by this series currently can't run on BPF CI:
+>>   they expect kasan multishot to be enabled, otherwise the first test
+>>   will make all other kasan-related tests fail.
+>
+> AFAICT this can be trivially fixed on BPF CI side, we just need to set
+> kasan_multi_shot for the VMs running the tests. I will do that, your
+> next revision doesn't have to be and RFC.
+
+Sweet, much appreciated :)
+
+I've started receiving some Sashiko reviews on the series (likely thanks
+to some of your actions), I'll take a look into those and prepare a
+(non-RFC) v2.
+
+Thanks,
+
+Alexis
+
+--=20
+Alexis Lothor=C3=A9, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
