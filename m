@@ -4,140 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81954FF8868
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:28:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4ECEFF8860
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 16:30:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A88146B008C; Mon, 27 Apr 2026 12:28:51 -0400 (EDT)
+	id 5F5F86B008C; Mon, 27 Apr 2026 12:30:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5FB06B0092; Mon, 27 Apr 2026 12:28:51 -0400 (EDT)
+	id 5CE4F6B0092; Mon, 27 Apr 2026 12:30:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 976766B0093; Mon, 27 Apr 2026 12:28:51 -0400 (EDT)
+	id 4E42C6B0093; Mon, 27 Apr 2026 12:30:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 87B8C6B008C
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:28:51 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 82B89A1729
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:15:16 +0000 (UTC)
-X-FDA: 84704835432.16.317AD8C
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5259B1C0005
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:15:14 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C2216B008C
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 12:30:26 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E7B1120C37
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:23:14 +0000 (UTC)
+X-FDA: 84704855508.26.17FCC46
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id EE5B41C001F
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 16:23:11 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BBglNgnf;
-	dmarc=pass (policy=reject) header.from=google.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kmlXj2LU;
+	spf=pass (imf21.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777306514;
+	s=arc-20220608; t=1777306992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FC6WaYfu1DAc73+NQ7e2JKxP2obY8GrSWpPpAtjERwY=;
-	b=BKaBaoau/a5kkl36fyKlhZ56DhCqsASOrTRNk3xVXJGzN0qpheD3aiEr6QfPOnaDekNdzj
-	4Je/5uzcAYmb/mU6h9sm3HXnhYen3Yke7O4Qs7PyKl6xabySWqqWXiunt7XZ6yg5aw3ycP
-	0FHTN9t1fopK7JvgePTOHLblpi6MAuU=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777306514; a=rsa-sha256;
+	bh=206Fh4X3dDRStaXDm8n9sC400Cq7S/zIhUvs0OOCjSY=;
+	b=qcgSmi3ObL5dmbwP7L3eweI5PRV1CgZMBYT8sn9RfOgUqZr2pzVQm90nU0XOm5WrkI0R+u
+	WirkJF9l5UByqSyoemgFDLsEW1IcjRa6nL+aLSxwvfrMaGSScfjPm99vEyif52QP+EEcdE
+	pYb16ck2YvBJ12BhV415KoW/xDB6pyg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777306992; a=rsa-sha256;
 	cv=pass;
-	b=LffxQxI8AYHum7H+3Rs3RHc3VfG4Mj7CmktQtSveIvutBwWhQ9gorPNxAdhEVVjDZD9Y9i
-	eaHHN1hyINgs+yo1oyAxmA4UGks03vMqdnJlTFhrcpfb+kfzyXEq76sOF7P9XdCQsFrfEA
-	ceQsuImhBhBDFpMe5ci8bK41jrDiMNI=
+	b=PZ7XiDx+ALxYOD1G+7zYS74x7HbiQbGhuZzfWCSKplesXIzb5TMkPhZwqGKhNIEBVV/ZtL
+	RApCN9HHTHLB3NCf8ZOsYW+ecvFmyESIVJjfMxpFdTZ7/X4M7QsyPOJfANXgEBqqjHarz6
+	fgqdknz4qGyDR2jDSAvrcefC3igg2dI=
 ARC-Authentication-Results: i=2;
 	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BBglNgnf;
-	dmarc=pass (policy=reject) header.from=google.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kmlXj2LU;
+	spf=pass (imf21.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso88847a12.1
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:15:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777306513; cv=none;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso409065ad.0
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 09:23:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777306991; cv=none;
         d=google.com; s=arc-20240605;
-        b=ARGevwWBoBRH0nlwxLrdC97mXkioB5K2B+PCJ6OzNaAiN5tY/PXJB9M3Qnf8XJWRuH
-         bumQlFQ6IoiiZsdfri5kmLwtnPu6uGkEg9ci6ZuKuurHMRqMrpa2NhdqUAKSNDIhQjek
-         Qy7XxHKbX1NVOA45WFfcSss1dOYdznRD+L5ILH3ND1CCzuHOp1e/rW2bgZwEVribZNi1
-         V/7NZk0Ai40zMHpyFe4Rxhj+UTlcG1cq6cHcsPAL74hXP9CvExyXEsOXei4f4cg/LJSc
-         C2oeUsRsJv9LEmYqDUZ39B6d8EekBQTn90S8jeO9ibVBJ4gXmd9lx4eFrTKxKyB43/ex
-         xkVQ==
+        b=gupQ2dCZJ3b48Fve5HnIo6yudDCd/m65/YqCnwyJt2ffyvUcawNLRXNS4u/relDCKV
+         JpwSzYyqDqieedWt0X5ot//8YLg+hbkRJvaeY/G1mMhCOeG+N+LZE7B5Zjdsc3ssNcAo
+         MM7FXNpkJtRDwtMC8mVbTVcMLf8PjnR5/17VutolWQxe4n1yItcGe7IQvetHtr65h/W4
+         ZLxtL0e2gveKzh2QnGQa754NS2qkFrn1ye1isTfe7zvGzk9zUWQtM8EeRjZ3OhzpjEN9
+         xWO47pHTwumjYMCJq4XeR0enZcvSXW6ZP12Wc2QXT3uuBu0th+0saiaypliVqWTtVHzH
+         Vdkg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=FC6WaYfu1DAc73+NQ7e2JKxP2obY8GrSWpPpAtjERwY=;
-        fh=/ndX37FbounDPw9CPWWBXjVndUciWZnp9YrepdFVHbo=;
-        b=Iw9hnsWJz16p4ylvnQTayHMPV3F4PRg0jBXrGO9EADWtACI8Is1IUnxiAbwBiLneW0
-         e6kJB0gJwSsaDv9uvztERF3vgMobdaXNg2KJPAL43kwQhw6JWg+tYN5FCSoJoMWbgsaQ
-         RmIoj+WECkiPFWdp1TLhswRADm+4P9nAhkvoukuhZrcU2uDSV/LUMGGm7MQEMKaulgSq
-         lAJzKNgNo1oOZJpjtln31fv/57NJaF8M8LfhGuXuayCHUOhT7x1y/YoCwgqlBAhApWZO
-         ImFbi8I6t76I1toQD5o1bm6vmQaNLIQZaDVhst4bccv/O+N4ry0DaF8zW/t09J6rMM7N
-         Oo0Q==;
+        bh=206Fh4X3dDRStaXDm8n9sC400Cq7S/zIhUvs0OOCjSY=;
+        fh=+TNE74Pa0FhkEdNgRCYTBL26OLVvlf4PaH0I/wEeBAo=;
+        b=d6Prbh0W2Ds/5JNx7SRP1jRoaJekMqS6H90NjBAAlS2b3gOBlr4Bc4R9YkfjnkxyDG
+         fepscTIiAFUausLMnTP/JTFGTutV/Rblpzij1X2FUxuF+w1/mkuyQNxSeH/BLrj7ZgDG
+         0U+89P0RnoOEz21QOMx/7lngbMlqLeiWs/Acnirw9oFiGtvCkyXdW9qGB/fievivYFAE
+         Qp8eZAFxGxf1Yl6uR53T/4DW2CSG6H7+oPgjRHB5D8FFcMCxw23PUdk3qPsG+2W3tl1t
+         dYJPV1wvtBWWU0hnPH2kkyx9N8IXbFKsjXJNPWzoNEiEIbIavcSgPq32tx6KCmgxj0h3
+         0wyg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777306513; x=1777911313; darn=kvack.org;
+        d=google.com; s=20251104; t=1777306991; x=1777911791; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FC6WaYfu1DAc73+NQ7e2JKxP2obY8GrSWpPpAtjERwY=;
-        b=BBglNgnfphd5n1y1EvYvlOtoTf0p3ljRRZTfADWtnSadfrsrP+timPHsyqfQv7u0Gs
-         rfl8bTlILzPQHBD664/D7tio94hDWPXGOy+qsYpxOBpsBslREs0iX1wmnxK8pOAykvLt
-         kFCJEOa9K9+t3/O8MxxsLFEohn3zGLDaZaKlsS+0ExFHlhu4FqkExE1nmHyT+VlMKt9Q
-         ztH3FKQuaE9TIDHZTdCpCI4sJvwXZtdI9OcXTbLyQIq9+0YQ91ib1/EP/vtQFYP6UJhj
-         DC2/M8PVVjB9Nc/CArdNA3Gu+0oXqAWsJqZF04hDviYIVbpLvRT8zlNdZ72rgkbFWjLP
-         mz0w==
+        bh=206Fh4X3dDRStaXDm8n9sC400Cq7S/zIhUvs0OOCjSY=;
+        b=kmlXj2LUEnVFE9h6pSFRziojRTojFi3nvn0L37MCwNyP+/D38I5plsbwyxx9//LrCQ
+         1tasJcFjDwOb/60fRXPXCW341FqMcegUxMp7guQd/PqaExwDVIdtzAOCNgChsHhPgONo
+         7tVAweFHbKx4SZJdSn5QwN50feiPqF8Vpd+nvcqJkGiPG3QKlD6qVZBs8Tkj6GehimXu
+         Fgz7Shjy2BXrCChi/JUfeG+4S04KqGg4Ph4TTLsTti8Rl02Eb/zUNunBcaFtBSxO9rvL
+         azpH2U+uh4+OC+MufoZF3TN1L7KkVWkDQUg8TAERbsb3fWDTr0ZLrhLxtu39KYy/TRzw
+         T4hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777306513; x=1777911313;
+        d=1e100.net; s=20251104; t=1777306991; x=1777911791;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=FC6WaYfu1DAc73+NQ7e2JKxP2obY8GrSWpPpAtjERwY=;
-        b=YAMKYym2qEXKxbTkcJqioTe+a96ryYAU9BD8j87avK4xpNLnsAOUPYyuSVmHHth3+J
-         cP+qcEkakX/Fn1ywqDX5tTGitDUgmJYM1sx9BHSKEae/u/5DVyRcyin/4iSSJBKTzcBf
-         nAOixYi2C9+eUglkGtSvUgczhizNSjzOe6ncs8VG6fpsfm0CGoF8fBjSgmQeRmEct2v8
-         7eYOAsCV6XMGqw2fFLeM75x8vg//NKul4TpodoJyhFvpU32IaVXJ2kFHUhohusweac8s
-         aAeGi+uPL+MkpTZHFKmhx+lo9avpOhTOi1Y8yx1QSwAUZ9QiplO2Y+DJ86Fxfq4L+w0d
-         1Egw==
-X-Forwarded-Encrypted: i=1; AFNElJ91bjBzUcM6ediAbpxkdAh6xmL+d22dqpyWX9Xw8xhqxM1Lh/PuEHmW7ymoeq5a4aTQsKZOhO0urg==@kvack.org
-X-Gm-Message-State: AOJu0Yy7ml8H1kJKS2wLtDy31qUqxp0xWocsCCgHZFaVxW+iHyKxEXhx
-	iaAjoYUQiRB/lyax3rfQqfL2iqhFcNhD68CdPO+BqtvAU1YgghCEdTDWue6EtBua6nai3SL1sGA
-	bw7ZiDWQQAWPKxiO7t4gGyXMLVQBJWp0rngHrPKyY
-X-Gm-Gg: AeBDieuz/j7gdC12QZbX9l6/Ed73GYPhnMaG/ZLVS5K8SL1FG9TzkXxF+8nNMg4DTQ5
-	nF5amh9luW26C7bmMu3WJ5itg/wD+i3kqgeYxo2vgT3ehU5WPn/UvBo7oDU7XcIlDlktBGSwL78
-	9GiEcH8lUf+X2QkAN4JujDGdrH1/RMEHlnlJbTq6ukPzgKgUK64crbFRCC7WKZ4u+qdVhWwfYGy
-	Z0P6kBd/P3I6/FkJ396iRRisaea+ErbkLMY9KTj53t4VGg7yAKznFytmcTEXP0Ys4fW6gnF+Ytv
-	nJJnnthFPj77eRdfBjXckp2taUA=
-X-Received: by 2002:aa7:c7cb:0:b0:668:c2b6:9fa2 with SMTP id
- 4fb4d7f45d1cf-679b626daf3mr211a12.7.1777306511908; Mon, 27 Apr 2026 09:15:11
- -0700 (PDT)
+        bh=206Fh4X3dDRStaXDm8n9sC400Cq7S/zIhUvs0OOCjSY=;
+        b=SCb6MGKNA0IL7u+7W/7Tr89+7qwD/h8aC8A5T+HL6GxC7DEqy9oc4hVqKrBGvqULtf
+         Q8vgqvn4jATH7BsMwr+ETMy8r+zBcL8NA84BqydzLrekkWM54GkOnt1qLLLw6r3eMClZ
+         /ENuO8qEYHLbD7m3hiIJNnILtFpOUWChkCCzPbtLTuSt9RBYyDc9BLvE4rgPYtvBJE+V
+         kO9orAA3ykaBt4UPq1x1WRlLqI1thZINkavMwIeboEGj8paIIV7jjl9wLa4loGCnKYRN
+         8wUVgUti+aIoGv4Mnw8Z5I6YG2IqYZIa8B84YJXqt67KI2wVTAtdJBIfPZvPTmWOWHjP
+         J1yw==
+X-Forwarded-Encrypted: i=1; AFNElJ/5KUU7mPM98AcFuei+ucGJ4pVFXK7lVg8g/bWIgxc0x9de1+nusVqoF7FFnwGXVDgV+ouKfaQp3Q==@kvack.org
+X-Gm-Message-State: AOJu0YyZ4ddKE1B5uX06sfWpvZjuZ/KkYGNIpUIQuNYLHl+CxnS/LQHe
+	kcfo7Th3G8kRiXWrDGXGP+lv3PNcccMJ1ZLgXI5ghTamW3fzW7kI6OmvN9f6/vP7+2bY/2U/Q/0
+	QqzrOJaNNhN/ppoy/TEH6k0gqzv/qgEpY5aPDV7dm
+X-Gm-Gg: AeBDieuDEMZBXcZlh3Wo/AjRGe6KQ7coU7rU9dKk5WYTSmMDXsbXL+byHUf7G+ZvKOC
+	/SYbZnoSvyYgXRyNoAyK7YPkCrimOMm8V2jhQxIINmdsutzniEwiP56FEasaAf1M+D5nF8HpN8K
+	GfHk8FbSftssJBHr0G4LR/Wl3m6NNMBRRJIQpIshihRe2yOFWclZcIK17/rw03wVogfFTXqp5Iq
+	zqwa4eWJktHQewan2pTwupk4vQQ3phYsOx3UMJARm2bkKI0PQvaJaoBZYHpjJaMm10MGPzuMIp0
+	/7zrO2xNt3uunXkCxTnX1VUlchKpeGBa1omQxRRt/HQV3rbDz0tKMCgraQ==
+X-Received: by 2002:a17:903:c05:b0:2b4:6529:7bae with SMTP id
+ d9443c01a7336-2b97a4e7ca7mr51125ad.17.1777306989849; Mon, 27 Apr 2026
+ 09:23:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260413223948.556351-1-minchan@kernel.org> <ad3ldU4DZxga_J2L@tiehlicka>
- <ad6c0DN7AGoOQ_Iq@google.com> <ad9AXVYxWCkHmh6J@tiehlicka>
- <aeAeqoJ_acUAza8D@google.com> <aeCHvYOKP1exBBns@tiehlicka>
- <aeHRLv834FCAQlQ8@google.com> <aeHdGf7XDjvOES1V@tiehlicka>
- <aeagUxlju40rvkYQ@google.com> <aenPV9ewKAzRF2Vg@tiehlicka>
- <28c3ae9f-c974-454c-b8ed-ba0ba0a5706d@kernel.org> <CAJuCfpEGCvuaQ43W4_bPjpoiYgmEspxV78-U4dkA2bcjfxCyFA@mail.gmail.com>
- <dfb0e367-894e-4230-98f2-8e5bc554d293@kernel.org>
-In-Reply-To: <dfb0e367-894e-4230-98f2-8e5bc554d293@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 27 Apr 2026 09:14:58 -0700
-X-Gm-Features: AVHnY4JJxxmzA7sgWEjze6mLmBwQ76JQRoThS_bkstQvwBhzT7IsmyirvQcqKK0
-Message-ID: <CAJuCfpExF0V-f5WT-N-77S+P6TwQfgaJGY+TeYpQy_j_tT0_mw@mail.gmail.com>
-Subject: Re: [RFC 0/3] mm: process_mrelease: expedited reclaim and auto-kill support
+References: <20260427030148.653228-1-fmayle@google.com> <c7f94ce6-1dfb-420a-b073-d86abeff1f76@kernel.org>
+In-Reply-To: <c7f94ce6-1dfb-420a-b073-d86abeff1f76@kernel.org>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Mon, 27 Apr 2026 09:22:57 -0700
+X-Gm-Features: AVHnY4I1vyG5MhQpN8fAKqxOe-avfjBnum1jR3fQl3SDDHUoZnLZAP_N2GaXCNE
+Message-ID: <CAC_TJvcM11got-LcMo24OTN8uXa01oVvUX6HmVvrWMJWVSgEzQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: limit filemap_fault readahead to VMA boundaries
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>, akpm@linux-foundation.org, 
-	brauner@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	timmurray@google.com, Johannes Weiner <hannes@cmpxchg.org>
+Cc: Frederick Mayle <fmayle@google.com>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>, android-mm@google.com, 
+	kernel-team@android.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5259B1C0005
-X-Stat-Signature: pzh4jxbjfbe5x1tepoc8n5ahngrpz7tk
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EE5B41C001F
 X-Rspam-User: 
-X-HE-Tag: 1777306514-645157
-X-HE-Meta: U2FsdGVkX1+TXCYyCHoA8ZfD7mR/rg486kYJJ5za/tuA/0PSjsc4YbryEOddIFgFs6By7YBH/55U2ffe4eV7MAiP81YBNQVGjiWTaJeGqf6y4RCHJrtXSfJlHBCIQCJQRaPiRVFjmUecyeV61DUxdHPBrgoLy7+5vNKVR1/EjJcGhryN4qAUUWDpBuGvDH3AjIFMrdqY0ERZwmc6Jkg1+l/T08zu6m/z7q5glH+/OJYtlXpnt/ejWYrlNJgpwuHhdmtxZPaOJ4SjyaTRuydSP/LxQQBHo23Csr2GvlOOBl7amMpQRSJoo+QkJzpaDxpwonayqiOjIhB+xYiNzFO16fxgJGNQD+xr1u7WiDLbkqFCX/IpkLCD4dQUU/1htMQezjCf7+1GEEEcSs1mW+duivu6Z4EPyLWZcuj3AJezk6TGpK4hqnBBe+6Rux0D8ubPW3r2R2r7LmdV54gOl2YD5dHTCbRyZW8DHwH49qj69BMwcNBenxof8G7naukGLoYSD5Nf8/jENsE+yrtdq8XkkWHRDGs+zXa74uwOZ+0Tmru/oXUil+kUiq4VHigwNYA3XtUJbL+K26+mYg3FVrg1R9RdKdZpg2I3hkrJAZ+UgP4t/w0Ny4sU3iIyqM+RD44hUIUPXLvI7ZQ/S3FhqqZux5H+g1aDfTKlwYRJvO4uKkspt5P+LqP30Yirkn2cgnddjlP6azoII3t9bfn2ECbglXSCbd7I8pKE6JvCt7ALh2zo1PTdgw5Bk1JCMoGLu6Qu0S5mLYcS2SJ20Cri/mrmdbM95qOTz4QMiAfcGed3dxeO3fdRYPaDFvN0unHMdXR8a94l67wUjxtbQ/v4QEoMLHX5dYcNOGh2GHmPfOedDrAQDsnFAneC94PNbRuwYIEJtdD7nKVIuw9RbtJ1gdjKQT4Kosvbfn03UNcedAbIAbeUiu2Krn7o6OrIKYMVsw/XPU7KHh44HVi1VLd150F
- ekb7iAUL
- 5LkpEwa//zhzFSR2fInkUBUUUkImdYjdbSXDXBV3oz6qOsrreuvt7cISHlOBdQ0GGdfTjv7MmA1kWnVypaJa2gIcKDGI2SjSCTkUR6pFp2K1F2ITUMKCvb8FXEbQn9jhgsPZxyxDTlA2QXBn/aWoPL0E0cgIUs+yYkjYJracUzcJ02iX4SzICOh/XZpEA2FZaAPPCR/UWmj4uDOgKuCFd9IRY3m9lo4AG5T+Xu9LVornHZLEq6+vGTCz3B8PKtbxzoqxWIMMPQm6IGyaYj+N+svP9ZAlt5MW+v/qAIRaXnEdJlwzwZk9wmLA00g==
+X-Stat-Signature: 9mm6dpdttjy6tkqscnp9hrnwmyeg1zns
+X-HE-Tag: 1777306991-958336
+X-HE-Meta: U2FsdGVkX1/OW1o5Q6jonxxqBEPhrZF0RirZ4xo9xSzA1KjEERqn9gZDifHO6FlfihtHRhFGvFGx2tdTTiPGeEm1w2SOuJcjiEIq0FSs3thPkO5+6uDjRlAdaHfscBNA+9PM9Q97EwjwVPsLbDEAkzX5RvXYRYqUtZKg2US03XITVmNje7LC9BwExscdjTWd7rmYffDeUzR33dMo89sgXUfDVttj8wNElDoBzfwfPBdojJS+OgrMk0CnW27MgwatX1LMgkQ2z1Wu5ZCrCzQfWzHkmwiDNBTNRXTN9X6N6eEB0zqpyKrmoe0spBn5/qS9FZ594yDADGqjNOt8ZKXjVGNfcZbytRRn5OYWnS3PXWpgbGJPjshjoTjc/aAxfYdPQ8pkKO2I+6oE/8j3UqMGqBrR0avwDDDamDvHdSckrvuDphYC3+O/O2YTe+wzPdn8+EocSAw0AoXA3k8pu9sNkMUDXQcpiOodSC6NSo+XsTgPf/iK0EGCcIm1EqcBvcpjRzifkPSkZgsrXAoxSjq123A3NgPXPUZC66B+7vTvOWtgf3uNQvR7Vlyv6stfBdJmn2iNXZ91e573Z5kuqcEFxtGb/pPRLbBG/4gFf75twTAO7jrb2JINliHAKlSTzfYK3MuLwwlDzuAKn9qaEHT3CZIiQqBezYvBnhAtR13pGPCxiAAvT67l+VgvNHF6Gq28M5+DhQMzTS8zNbfvVK4T4fDTXFDHY33jQ+tLVkSCQy0yMukve7cubdjzZzs/7COVt+5QVOoqL8uqlbcYlgeFu1UgZbWef4pfoK33nj6+tPT7SIzVQCL8Z3mLdPZi5Vrve3Y1yb2F9NkhB04lFfD5guXjPgPPeRdUeSWzTECs1KN4xDG7f87LNAl0EUrt2RdE/YFtaSXfKD4Rv4Q9gnh4kP6xmD3D029ly/KZGMqSbeQfxXI6b8zME6WqqORtiOmoErH6EejIU1lg0QEM8fZ
+ sqxozzGY
+ 6BDKso2b3yhocyotuGc2Il7w2PP8K8Q2mhF6YjwnXuXbLa59dAeM9y5lXY4XC50+ecudE+kBe2UVQpgYOhWYZiLNLoNilGLV/Vk1PX+nB6wJs39wEWXNzN3/bsqaOrJOlbX04ktagx/d5TffO7Wk69TE7lcpHpsS3rf34J7BsXOwA253zLe6752E0lhph0xR6IuU+tFUkwXiH5XPjGotExgQNCVKP2RYbmRqKLXKmjDh0nFCTWeJT9o7jsgN9YCbb/pQ70HwsBfdh0WLgTjN+xfPuAI9e5m0Ku40WCh92rU9FZu+WWEyWYWVhbrg2XOkvtX9+q1Why6y1MJZhxy7zGcAW91MlX7ncUYApEpQRiWBuvdhV5xyeEl+HqMqqbSAVa/midSTnm6SBCDc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,68 +143,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 12:41=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
+On Mon, Apr 27, 2026 at 5:41=E2=80=AFAM 'David Hildenbrand (Arm)' via
+android-mm <android-mm@google.com> wrote:
 >
-> On 4/24/26 00:36, Suren Baghdasaryan wrote:
-> > On Thu, Apr 23, 2026 at 2:50=E2=80=AFAM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> >>
-> >> On 4/23/26 09:50, Michal Hocko wrote:
-> >>> [...]
-> >>>
-> >>> This is a very creative/disruptive way to do a memory reclaim. From a
-> >>> user POV I would much rather see clean page cache reclaimed before my
-> >>> apps start to disappear. But this is obviously your call and your use=
-rs
-> >>> that will care.
-> >>>
-> >>> Anyway, I still maintain my position. I do not think it is a good
-> >>> idea to drop clean page cache as you do not know whether there are ot=
-her
-> >>> users.
+> On 4/27/26 05:01, Frederick Mayle wrote:
+> > When a file mapping covers a strict subset of a file, an access to the
+> > mapping can trigger readahead of file pages outside the mapped region.
+> > Readahead is meant to prefetch pages likely to be accessed soon, but
+> > these pages aren't accessible via the same means, so it fair to say we
+> > don't have a good indicator they'll be accessed soon. Take an ELF file
+> > for example: An access to the end of a program's read-only segment isn'=
+t
+> > a sign that nearby file contents will be accessed next (they are likely
+> > to be mapped discontiguously, or not at all). The pressure from loading
+> > these pages into the cache can evict more useful pages.
 > >
-> > I'm very much familiar with these issues in Android and really want to
-> > find a good solution for them. IIUC, this RFC tries to address 2
-> > things at once:
-> > 1. handling clean private page cache when reaping memory of a kill vict=
-im;
-> > 2. addressing a race between kill() and process_release() when
-> > process_release() can't happen before the kill() but if it happens too
-> > late after the victim passed its exit_mm() then process_release()
-> > fails to find the mm to reap. This defeats the purpose of
-> > process_release() call because the actual memory (released by
-> > exit_mmap()) might not yet be free and a successful process_release()
-> > would be very beneficial.
+> > To improve the behavior, make three changes:
 > >
-> > I see these two as separate issues and I'm not sure combining them
-> > into a single discussion is a good idea.
+> > * Introduce a new readahead_control field, max_index, as a hard limit o=
+n
+> >   the readahead. The existing file_ra_state->size can't be used as a
+> >   limit, it is more of a hint and can be increased by various
+> >   heuristics.
+> > * Set readahead_control->max_index to the end of the VMA in all of the
+> >   readahead paths that can be triggered from a fault on a file mapping
+> >   (both "sync" and "async" readahead).
+> > * Limit the read-around range start to the VMA's start.
 > >
-> >>
-> >> IIRC, Johannes raised in the past the we cannot predict the future.
-> >>
-> >> For example, if an app gets OOM-killed, wouldn't we usually try restar=
-ting it,
-> >> re-consuming the clean pagecache pages we would be evicting here?
+> > Note that these changes only affect readahead triggered in the context
+> > of a fault, they do not affect readahead triggered by read syscalls. If
+> > a user mixes the two types of accesses, the behavior is expected to be
+> > the following: if a fault causes readahead and places a PG_readahead
+> > marker and then a read(2) syscall hits the PG_readahead marker, the
+> > resulting async readahead *will not* be limited to the VMA end.
+> > Conversely, if a read(2) syscall places a PG_readahead marker and then =
+a
+> > fault hits the marker, the async readahead *will* be limited to the VMA
+> > end.
 > >
-> > Sure, we can't predict which app the user will use next, so when
-> > killing we usually kill the least recently used one. That's a
-> > reasonable strategy in most cases.
+> > There is an edge case that the above motivation glosses over: A single
+> > file mapping might be backed by multiple VMAs. For example, a whole fil=
+e
+> > could be mapped RW, then part of the mapping made RO using mprotect.
+> > This patch would hurt performance of a sequential faulted read of such =
+a
+> > mapping, the degree depending on how fragmented the VMAs are. A usage
+> > pattern like that is likely rare and already suffering from sub-optimal
+> > performance because, e.g., the fragmented VMAs limit the fault-around,
+> > so each VMA boundary in a sequential faulted read would cause a minor
+> > fault. Still, this patch would make it worse. See a previous discussion
+> > of this topic at [1].
 >
-> That makes sense. As long as other apps you open next won't need the same
-> libraries etc that you just evicted.
+> I agree that workloads that do a lot of mprotect() magic likely do not de=
+pend on
+> readahead optimizations.
+>
+> But I'm sure we'll learn quickly if that is not the case :)
 
-True. However shared libraries have a high chance of being used by
-more that one process when we kill a background apps. So, while it's
-possible that we might evict a page from a library that will be used
-shortly after, it's more likely that pages from such libraries would
-not be private to the victim. Again, all this is probabilistic and no
-ideal strategy exists without knowing the future. All we can do is
-optimize for the most likely scenario.
+Hi David,
+
+There is already this limit for the exec VMAs, so perhaps these use
+cases are in fact rare enough; but we'll need to see ...
+
+https://lore.kernel.org/all/20250609092729.274960-6-ryan.roberts@arm.com/
+
+Frederick, could we also now remove that logic (EXEC mappings)? Maybe
+in a follow up patch.
+
+For this patch: Reviewed-by: Kalesh Singh <kaleshsingh@google.com>
+
+Thanks,
+Kalesh
 
 >
 > --
 > Cheers,
 >
 > David
+>
+> --
+> You received this message because you are subscribed to the Google Groups=
+ "android-mm" group.
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to android-mm+unsubscribe@google.com.
+> To view this discussion visit https://groups.google.com/a/google.com/d/ms=
+gid/android-mm/c7f94ce6-1dfb-420a-b073-d86abeff1f76%40kernel.org.
 
