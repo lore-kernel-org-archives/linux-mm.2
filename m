@@ -4,95 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB702FF8862
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 08:00:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40B35FF8861
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 08:00:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00F1D6B0088; Mon, 27 Apr 2026 04:00:25 -0400 (EDT)
+	id ABDDA6B008A; Mon, 27 Apr 2026 04:00:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F29756B008A; Mon, 27 Apr 2026 04:00:24 -0400 (EDT)
+	id A95466B008C; Mon, 27 Apr 2026 04:00:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E65E36B008C; Mon, 27 Apr 2026 04:00:24 -0400 (EDT)
+	id 9D2BB6B0092; Mon, 27 Apr 2026 04:00:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D857A6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 04:00:24 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 87A0E1607C1
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:00:24 +0000 (UTC)
-X-FDA: 84703588368.05.466EE30
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A8D261A000D
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:00:22 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNZsVs5d;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EE286B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 04:00:35 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 34FFF407AD
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:00:35 +0000 (UTC)
+X-FDA: 84703588830.13.E139CA6
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3299680008
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 08:00:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=k+BR8hWJ;
+	spf=pass (imf30.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777276822;
+	s=arc-20220608; t=1777276833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PuZQxqHroHOLffHYEMi3Pfqn5+RFbjA73RJP47DZNxg=;
-	b=bixBQaciz2XFhAVwXAe22C8tacNnhySl49x5lsUevX2Dn2okWmd+bQRH2Plu8hwlHwrAC6
-	wSyadyaQCdlfPeTYpafYgo6KVpUXueXvhu/RkUh+DrZsL9yXMt+JxpEWhAvXiK4n1lvFDJ
-	/SnNulkkscAAL95XhFZcWNLR18WHyyo=
+	bh=E1agXD7b5W0N2QWieFR5z79SW86Ra7sItI1ww9VJ+fA=;
+	b=188a3DYMjOjySCJW6tQRTSaglCrl+4YjDoBXBEUwOClIGzsRcLw3idLc9UQjlnE42ZbeWu
+	hDKhwTRUazXV5cbCG068i9MkEgyiSQ3sNRcx5OhVZijscax+TJ8YDHQ0stSbpcj1rRCWvl
+	lYtDJx1S8Z4dwFZyBBtzuZYRLJIuQIQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNZsVs5d;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777276822; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=k+BR8hWJ;
+	spf=pass (imf30.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777276833; a=rsa-sha256;
 	cv=none;
-	b=70IesHYVG9ctC8m/MaxpgsdTZ3QeKcdiUU/sNAmZaB2lGpD17irWBeFwuPwvxofXIz7fDN
-	p+Qi2I56QAcDmOQUUDYdSxmA7CKE2fZz4aJMNN18125eG1gzNe+rCiEf+5uiKEeHlX0/wP
-	gqzyltLRN508UnqQp/x9XDG2RnoiOL4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91CA642D73;
-	Mon, 27 Apr 2026 08:00:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDABC19425;
-	Mon, 27 Apr 2026 08:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777276821;
-	bh=6lSQYBY2+IuLHDfyeYcIQP7M9ufPZ8ri79+137pQ1+w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vNZsVs5dlJ6IIUwPClc7UZHRymQhjIiYtz4kz7lvFmHQK3+4MOCMw8gtFBpQFAy+c
-	 HLiRM0b1nxo6h1KtTqewlfvqG92VW6laNBiW4JdS7lf0apSF9XsJ+6jgf4HGTHsnLB
-	 FV2HKV1iVmhhpvKUPno4SpNZXdAektVWSB3+CntNHeor54MMpLDARIaAHT/ZtYf+6P
-	 /fv4A+8woGTR4scKjC6Gqh+idMLufSrwNEy8xxZRTkBQA2GzO9RVyUt6ZTsYFIv/fe
-	 2rEtyeSGu74o8HZDeVjqdvh3Dyd8AGTmbxAj2QnFT4hlQkZuF7/w4AbYrSR0mryuTH
-	 w1r1neGMuyw7A==
-Message-ID: <c3f7b8e4-85ae-4e80-bb02-a7b205cec88e@kernel.org>
-Date: Mon, 27 Apr 2026 10:00:16 +0200
+	b=3pjrC+TFIO0pMp1Y7Is9qzecwdxWeCRb8GqtrXAzQi5Hnsbh7L53PuUkg47QguNixGCScX
+	Ea/aYU6ZF7lgGJhO+FhlFIrYQLjn3shKF/KrA8uxnbLr2ym7arAaBPUOUZAJpFJFvRrq8q
+	Wl+yge4vL4V3QfYvJnl3nj/lr2aBC7w=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1777276829; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=E1agXD7b5W0N2QWieFR5z79SW86Ra7sItI1ww9VJ+fA=;
+	b=k+BR8hWJGHL2xIBr78q74aBhmZYgFHu7s8tIZELFTNPXpZzhxioyUCYpwi1uwnu5oFtb4v7fjzs+p4eQ8ylHgWhmfN4Ky99PSGQrjjD7VNdYybXJgFww5lw+jIp9KrdCL8Ybp1jupNESBfy/+VneDjYcQDmSZVebcx5RwlYnzII=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X1l4eLU_1777276826;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X1l4eLU_1777276826 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 27 Apr 2026 16:00:27 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Sunny Patel <nueralspacetech@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
+ <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,  Rakie
+ Kim <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
+ <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/migrate_device: fix pgtable leak in
+ migrate_vma_insert_huge_pmd_page
+In-Reply-To: <20260427063729.17294-1-nueralspacetech@gmail.com> (Sunny Patel's
+	message of "Mon, 27 Apr 2026 12:07:22 +0530")
+References: <20260427063729.17294-1-nueralspacetech@gmail.com>
+Date: Mon, 27 Apr 2026 16:00:25 +0800
+Message-ID: <87bjf4x27a.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes v2 0/2] mm/page_alloc,slab: return NULL early
- from *_nolock() memory allocation APIs in NMI on UP
-Content-Language: en-US
-To: "Harry Yoo (Oracle)" <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A8D261A000D
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-Stat-Signature: g5aihwqgaiabhbmyq3uzou53mnj1uzwk
-X-HE-Tag: 1777276822-169950
-X-HE-Meta: U2FsdGVkX1+clT8DqM/8CMTEGOPuSZhl8fOs2H5PMy9EWT7g7FGf42lWEHAMokmkBXeor5haTGY+PlqXqS2EASTgfi3UZBIASeSeLU1hM11x/3nEGG2jtQR1lxgbEhcp4cXH9DxF0dlv2bungb6Bxop5bTfyNXDZ2gdTHWHQVNQKsfGcfvLyX/5xNVKY4x3BqhlHM85HiKe6kiv/4SaVmnEtCF4N1LI20io0+eaK8mnsCJ4elYrK/3FDW8kbmV08LGKRZroQHYXD7n5Tzo60I57EPe/+u52kIbUcHYAxxexC0FVKduMkGcj5bCCeH1jcLBQw9fj6HGtwTSN3UGPKTm4cWCUsOIYnsPP7brN2BRJEd7HI1Vod4+yEqXXHFThggrjm+iF/ko5ZFiQyFq5+wt+n4vfHbC48sMptG22eK3FZHw9F0FTruhiuRMKuXxf3jygm8h8BQSkwulrz6rAzOAVFkuKJ9Cgqpzv//Jm+FvkZIL3yjhcTnfiCgzWDP5xNf/VHtA5qirPvcoXUcbBfn/5TGPHzLbG8T1R9A7MNevvJBMb3Tm4SxObhPBxzDOkjKj34bGy15DlyA1T+ua9Ds06ojPXDV+la+l5MbvMkGtFpHolgA3Dx1XXJWTQ0irs0ZfMrDdH2APvFi5aq+D4WxbMc6EIYcB2SkL/d2zhWEGHD/FDkqlTaG0RA4lA3pCZsx01QER31X/J5yNeZH4Tdui4FBVS5NWL4KyYmJe5un2Td9euKqligkD8BP+JxgHyaQ0l1TZxSIucy9CsboM7M72SKxgT2MejMSxx+/s3CAfDDubIBr/5pgWG/h9+g0zXerDytgg923q8T5RPKPgeHPppoiO8dU/uoTYP/+z+7yrdapjIq89FPtBTqCU3ZwIjDZonEL29zlupysQ4d+FsnXbeJHVVfrc49BELQMl+0gCdJn2yHU6gfxSYBT8TdXce608a4wV98lYQjuoOryKJ
- HiSTXC9Z
- uvZ3pKbt/cXz5YmqtzmEQtC6443sb2dSxz4dC12VBAPqLL15nzyzYugxTxnkjCUh3T/QK6ZHv8RIR52JTNkD68QSBX+ZuxRCsFfuqO+lvjxC9s0mVAtgp/30D0VX12pncWjDePhFZg+oXTETontVFJoc/ETWpmt0bidOowxQt5qA6+f4BYiNQt/+oU2qrXuW+Ldc3zQoh1vatjfQA3V3gDQIYN1FYvGRn0dmgdSMfSIL+i3YWabs42co/cgYjJY0fJOdlYB3mrv+PAaH+6ji/0TUedL3G5fcNXHE/h0k8twK86MM+gHiV8oX6V2VOnThp8OK8hePKhfI10cs=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3299680008
+X-Stat-Signature: kiob5j345te9ysta3neuj76injkthw44
+X-HE-Tag: 1777276831-439064
+X-HE-Meta: U2FsdGVkX19kEiSVDuYlj/VOnRKa7ya7P9wXzcoWXCu5+LVgSj03GGBQGcJ1uOAmJK8a737n6+epq3JGQoBqnXAKpwcqO2bd8/GlKreVgsArDQy+tlRvyjZbGGitwERZ+PoiE143QBBR1Nr1qlsnQfMYppati8/w05xz1NVucOQ1+Zm2L8j1eX2p9XS4NEX/P7uA1Y6KjAh1fiGnxDgv106qb1h48rmCLSQPyrtmPETKr26YlUEs/VZf7+3fyHcJwDxg1TVrF6w9CZodreEgjCHPyAy+UmXiOGUzrr+L9PwhfXoL0aIfoJSqzAmnNhHo9Xmx9jPJTNoMeSQU5jrNgh/6T3tjuW5W8lKHRpFTX6oWD18CQE73TN3FCLhva+AADrlRPLf56/oxUXuRS+XYYuyGJX3+q9JcWWdST5wJ/W3gVRPhGcj/qzd0l2Lb5W8ZSzZES4ToRKzL2NdoVSwKprayqLPFqIHzLl6F3Qwj1Dg4DkozhYzbPSKJmNGoJvWX5ZaaFW7LD8BD8C5k3W4ACTI9onY9JLNtL0Jk/wODKmuZ1n4e/kT7bGcM9QsLnXiCZnakD0gspPddy2U1K7ZjMBF31zlz/CYPc+c8P7S0yJE4aMecWNoycRjjMrBeTMJ/xKVZaZ1DsDD8zg6u5yflI209mQ5QLoOacfed1hWhsSYEcUAcloI+7s3qMvFChhMORIePxrOMY72UfYaifOpxPTTofX9UZdlfKvMqmorVeWXwXwUoGNxH7/x9rczXo+RXPXAm5VcnkiNVjEw3TZbZu1VYfc6cSTS9VN4r/sYAOFZYTpUaN1yPpA45RyMkediDwgUORj1yGO2+OnTiBB8jAUr/wV4PkpNgYENt9mcXu8qFaDGqMUa1NVNGNs/9vg7ciRQBFoLVmuCKED/+ZWbByIgYIvL5yYSYwTUt/PSe5GvJxRwfkgQTuWc7QE2fiIIkJrh5PS1etPbNeKlyVYH
+ eIYjIzva
+ D7XiQvl819fEUunyCIPYCzITkKMUkTujZ24BlbmKYfGgOJoVpcf3WdfgKeH/vLE/8bgVJrKN+X7AW7YxIuDA6NscNcx9LZ6NiUNWh+V7BbRkF2UWLdGW1UnCqg4tWnuidGVK/dBR8uskLikZmjcY189JG6pJuWn2sXsw/mUMYugpXb8jJnAxxml1ZVpf1zZDRc5g6LPLA5wELFNo093cuBuDhnImhdNPuBRxT0Aka5DJV0/lqcprtJZdodvRIcY/io46e8I95uBXmVCHk2dHyN4FSt+fYfzLxlMXpHK+218qczIWaVm4rjadqSaeuHk+2xhTnwc4VdtFW41QoJWv8mrp/v4XLZMdBRj/FXVxvKKA+hb4Y6jNCs5Xz6+Xr3xYK0K51K/bTGqkATd3ycH24AjHGO9jGi+n6QWxB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,64 +90,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/27/26 09:09, Harry Yoo (Oracle) wrote:
-> Due to my mistake, V1 was sent twice w/o proper cover letter and
-> Cc: stable. Please ignore V1. Apologies for the noise. 
-> 
-> Changes since V1:
-> - used b4 to send patch series (w/ a proper cover letter) instead of
->   my broken git send-email script (Thanks Vlastimil)
-> - added Cc: stable to patches 1 and 2
-> 
-> On UP kernels (!CONFIG_SMP), spin_trylock() is a no-op that
-> unconditionally succeeds even when the lock is already held.
-> As a result, alloc_frozen_pages_nolock() and kmalloc_nolock() called
-> from an NMI context can successfully re-acquire the lock that the
-> page/slab allocators are already holding (no deadlock because it's
-> trylock,  but leads to e.g., allocating the same page/object twice and
-> causing use-after-free).
-> 
-> It was discovered while testing the new kmalloc/kfree_nolock() test case
-> in the slub_kunit test module with CONFIG_DEBUG_SPINLOCK=y on a UP
-> kernel.
-> 
-> Patch 1 fixes alloc_frozen_pages_nolock() and
-> patch 2 fixes kmalloc_nolock().
+Sunny Patel <nueralspacetech@gmail.com> writes:
 
-Thanks. Given the problem exposed is in a slab kunit test I think it's
-better to handle this in the slab tree. The page_alloc change is small and
-should not cause conflicts. So I've merged both in slab/for-next.
-
-> Note: As pointed out by Vlastimil Babka [1], in theory a kprobe in a
-> locked section could trigger the same issue. However, fixing that
-> involves a non-trivial rework (e.g., inventing a new spinlock type) or
-> introduces unnecessary overhead for all spinlocks on UP (e.g., let all
-> spinlocks check locked status on UP).
-> 
-> Given that BPF tracing on UP is rare, and it's even more unlikely to
-> trace a function called from the memory allocator within the locked
-> section, this patch series addresses the issue only on NMI contexts
-> (which is rare as well but now covered by the new test case).
-> 
-> [1] https://lore.kernel.org/linux-mm/af3a7fa9-b368-4ffd-964d-9e4fcba863a8@kernel.org
-> 
-> Cc: stable.vger.kernel.org
+> When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
+> to a PMD check failure, the pgtable allocated earlier via
+> pte_alloc_one() is never freed, causing a memory leak.
+>
+> Add a pte_free() call in the unlock_abort error path to release
+> the pgtable before returning.Also included before goto abort in the
+> folio check path.
+>
+> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
 > ---
-> Harry Yoo (Oracle) (2):
->       mm/page_alloc: return NULL early from alloc_frozen_pages_nolock() in NMI on UP
->       mm/slab: return NULL early from kmalloc_nolock() in NMI on UP
-> 
->  mm/page_alloc.c | 5 +++++
->  mm/slub.c       | 4 ++++
->  2 files changed, 9 insertions(+)
-> ---
-> base-commit: ba24da38a519dfcff8cce3f3f2726d7b159a4d75
-> change-id: 20260427-nolock-api-fix-bd056911e68e
-> 
-> Best regards,
-> --  
-> Cheers,
-> Harry / Hyeonggon
-> 
+>
+> Changes in v2:
+>   - Added pte_free() before goto abort in the folio_is_zone_device()
+>     check path. The lock is not taken at this point so goto unlock_abort would be incorrect here.
+>   - v1 only fixed the unlock_abort path, this version fixes both
+>     leak locations.
+>
+>  mm/migrate_device.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index fbfe5715f635..7e132196856b 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -840,6 +840,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>  	} else {
+>  		if (folio_is_zone_device(folio) &&
+>  		    !folio_is_device_coherent(folio)) {
+> +			pte_free(vma->vm_mm, pgtable);
+>  			goto abort;
 
+goto free_abort?
+
+>  		}
+>  		entry = folio_mk_pmd(folio, vma->vm_page_prot);
+> @@ -893,6 +894,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>  
+>  unlock_abort:
+>  	spin_unlock(ptl);
+
+free_abort:
+
+> +	pte_free(vma->vm_mm, pgtable);
+>  abort:
+>  	for (i = 0; i < HPAGE_PMD_NR; i++)
+>  		src[i] &= ~MIGRATE_PFN_MIGRATE;
+
+Although I prefer guard based memory freeing, if we stick with the
+original error handling, I suggest following existing style more
+closely.
+
+---
+Best Regards,
+Huang, Ying
 
