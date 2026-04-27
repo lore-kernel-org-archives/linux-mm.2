@@ -4,86 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2A9BFF886D
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 19:37:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D9EFF8868
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Apr 2026 19:41:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C5F56B0088; Mon, 27 Apr 2026 15:37:16 -0400 (EDT)
+	id D7AAD6B0088; Mon, 27 Apr 2026 15:41:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276F66B008A; Mon, 27 Apr 2026 15:37:16 -0400 (EDT)
+	id D52216B008A; Mon, 27 Apr 2026 15:41:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 165C56B008C; Mon, 27 Apr 2026 15:37:16 -0400 (EDT)
+	id C68C36B008C; Mon, 27 Apr 2026 15:41:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0379D6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:37:16 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB51CC1673
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:37:14 +0000 (UTC)
-X-FDA: 84705344388.18.87741EF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F11D9A0009
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:37:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EfhmJXK2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B655B6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 15:41:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D0E08788A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:41:53 +0000 (UTC)
+X-FDA: 84705356106.14.4D911BA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A362D40011
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 19:41:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YJ2sQPBU;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777318633;
+	s=arc-20220608; t=1777318911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+ZJhxAM8DPa8vp8t87QF9QL5q2j+uyPSw0NwqkHxhOY=;
-	b=a0eRqZZj3FuBBz/jh0ZPlHL4Of3nZR6p+DE8w8rLUinhFcCeDXJbWACuinGTOBMcl3lz39
-	jXM0RoY7DykR/xXJTueIjvnoXeVOMcAn8q3JnS2xKd5NaU2/57XgTcpv11ZL9hP48TNyOP
-	t5/bOLg1E5h+LIXS7ZaXYJWgisM/LXs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777318633; a=rsa-sha256;
-	cv=none;
-	b=bkOdKCyhJjY+Zn1a/lF38qHuJItZbaxV5XffNGr3C4hbhw5NIzTbjAsOb3r1wkDbCqE6nF
-	i6Ud/XwF0Zb0FQsH/Yi8XyWW4l5OiOlsowh4uFq9wgIuua7fuRNFaPseQ/kJaIappE43bO
-	itI/kzbPFTEHDYtDkXk/I68yUxEnL7o=
+	bh=RfWloz2XC6CSxIMv7SC2/DE0S0iPXt3bkVqtfGx3NlM=;
+	b=o+XCBa5l9KJbiod3PJSrO9sxWJ3Wry/3tzM0fYVF2Apr1xOK4IAcl/lBMK43+6VHb+pbMH
+	jSDzzl7UbZvFCAEIZmhdi4LA9c7melG9Kfv5lybzXH869gs83yMX10MHf2/021fb9QE1kB
+	wBxaRiUu1guSWBSarrdR9e2uphlWs6E=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EfhmJXK2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YJ2sQPBU;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777318911; a=rsa-sha256;
+	cv=none;
+	b=6Wb9Rhj52TD0MhzjnVPsEOBLar45zKtt48Yh0LxqnkFVko0HqdYoNB4s+ypaPGzctEOPO9
+	egnN4MAbNB4VKXQR/0AJ0Hudi9eU5lUC6YzOj8w9wIcrqqFRMtw0KRWPpc9HZ4PNlH3zn0
+	TmykVnSujpLIz0srItLJ+bLzgOdhqRE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E54A60138;
-	Mon, 27 Apr 2026 19:37:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73861C19425;
-	Mon, 27 Apr 2026 19:37:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 77FA743BC9;
+	Mon, 27 Apr 2026 19:41:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D844AC19425;
+	Mon, 27 Apr 2026 19:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777318632;
-	bh=sYmKObJMhnp7jy264AilvXj9lD+eqjDwhHG7MFsMTtA=;
+	s=k20201202; t=1777318910;
+	bh=jqHLqVhMq+si5t6zdmANYEG+sciG4MaJhOm7qVM3/XM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EfhmJXK2MOebbFDynHs0e6ErEa+rR2fV5oPwMls7eMi5DhkgqFFrMxyutV36q8HmK
-	 jSOorctS20K28WCUspXTRYb6tn6OjdGbIrPSo/Oq21tzGBI1fVdXH29EPZAw5RHoke
-	 DDQQzzqBy+mYBUVQFpdpoTNB/XeWlNDii5FuiXObRKRN1CxRqGeg22rkLk+vtIdxoK
-	 34seLrxMRA/Xg++UkPSqlQ6X/KUl4EX6WlLr+aGuczFFTAYeOp/UN5KEL8U7y+j+Wc
-	 c9PtR7/0VgsfXri/FktT7d6SBqQxteh482P1+7pQVyl/LS/tn12GXvHgprGuk8/hbM
-	 7VZxkVldOZhPw==
-Message-ID: <36d82055-67f3-4c29-a605-a9848a28f7cb@kernel.org>
-Date: Mon, 27 Apr 2026 21:37:02 +0200
+	b=YJ2sQPBUIylRzAo3mxf6Nhm724kU65Z9v+W/MDzEsLK94GAuVoZhPwwWZCXj5Il90
+	 ylbki6bnVxWgs89zBNMtLu6rhC0K0vCojZYgJd/+kyOP74CwyHwQX46D6ybpo0QAsy
+	 oQCJGNTLEnyIrzPcfcN4gcLvxRKVqIE5E2NEV+lUm3Bcf2BRAVes0TDuq4IF/Ob/wq
+	 dAQXlAYNZmAjK+1TRurBmgbmdfvRX160CR8pq/uzHTcTsgWMhZKAMruNFvOCuPw6/q
+	 emV3S/kESWt7U6fOJogxNMJytyjLj7geapaYIZf4rvYKepFWg8R9Y3FuGNn6+hNAT7
+	 j3h4J0KO+Hqsw==
+Message-ID: <06c7e6a7-60af-480e-afd9-700e985ca2ba@kernel.org>
+Date: Mon, 27 Apr 2026 21:41:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 4/7] mm: add page consistency checker implementation
-To: Sasha Levin <sashal@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
- corbet@lwn.net, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- skhan@linuxfoundation.org, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sasha Levin <sashal@nvidia.com>,
- Sanif Veeras <sveeras@nvidia.com>,
- "Claude:claude-opus-4-7" <noreply@anthropic.com>
-References: <4b961a07-b72d-4c8a-ab49-23f61ed12b53@kernel.org>
- <aeuC6TJ4XowazVZj@laps> <aeuFnuiYDBjttEKt@plex>
- <12985b32-88b3-47ab-8292-2e0ec6f5fbae@kernel.org> <aev-DS4YTp5soVPd@laps>
- <3146ebcf-5649-44a7-aa21-163bf404c42b@kernel.org> <aezt96xgz_qyf4d-@laps>
- <f910969d-1071-4174-bd42-da45cb6f9749@kernel.org> <ae9ucgtCNf0JQtGu@laps>
- <c50aeb03-538b-4dca-9a81-ab84bc19a333@kernel.org> <ae-xXHUGfDiFcBUk@laps>
+Subject: Re: [PATCH 7.2 v16 02/13] mm/khugepaged: generalize
+ alloc_charge_folio()
+To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: aarcange@redhat.com, akpm@linux-foundation.org,
+ anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
+ cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
+ dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
+ jack@suse.cz, jackmanb@google.com, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
+ Liam.Howlett@oracle.com, ljs@kernel.org, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
+ shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
+ thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
+ vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+ will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+References: <20260419185750.260784-1-npache@redhat.com>
+ <20260419185750.260784-3-npache@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ae-xXHUGfDiFcBUk@laps>
+In-Reply-To: <20260419185750.260784-3-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F11D9A0009
-X-Stat-Signature: 5k555r1gii51zhrk54a86duuus1o6mfw
+X-Stat-Signature: r7r9ym9norbpdsbzgfxqzwwi77yhwg1r
+X-Rspamd-Queue-Id: A362D40011
 X-Rspam-User: 
-X-HE-Tag: 1777318632-821295
-X-HE-Meta: U2FsdGVkX18z0FPwT2X5Zn5dADifjaHLYz0vQQDrg4DJMumNUqRHQaPL1qcbujjgajW/HSSzL2DpNqe+l0UczSFXEYE8+1w2diaPCUMVQRwXkMbWTrV4KsfVk3H7OjsDC7cUffTPDS9OzOZnLznhgeji9V8ADh7aiVTjewJAQ2UPCmg1m4P/OQauJa3k0FUEYyX/Z5dc5QsvqmLX+dOH1PMAJbMrvm8UKnPEIWVKrNE8LAOJJfzvWiA7y1rEgMwg6aFz9lvAEkXALeos79mpxv+g5pls1u/rcj5W7bN+fTZCxTWTv1ptkozJmoOU3ZF8gg7tL5gW2SC2AXnPeDS2YtwkF4EWKuut2kfA+ENGKrvqdIS7EXHeHEvS4JubtZKtXooh/+tsQrz4Wwmh4EHQU/NhbqLPhSyNp6BSiiHrBeu7/0URhRNSrfPZqFWl+Mc9QCIpPLb0l3RWpOkm+8CQZZgy4lLgfqY0K7VJt1wJQLGC5KRx8/CXrm5G5XthhwcC8xOu83lmnOIvl18TAg6iudeJ59U/zGoRlit9EwuYhrVtT4hfrnkph07KLx2wFg2oh+FiEzLpeHa8E341w3oGHcVgHpm55FDxTGpHljNmYV3CAKyFs760aY4iZumVjJtInymaAQUh57sVAMGDr8GYdJoGPP67jqXyvdo1D9cORSEiKqBAX03kh9JUnotOiitd9ugK0V9ur4WDJ6+hqwlMSte97GCUywo/XPjFBgj8Bq6hQwp4pRTd6ZGHDa73BWj9g01YXJvnzFiboqdv5O3VEBTq18ZiBx6ARa/becM/Y4uadbXo9dPdLkhGATatHiyLoZnIWvFdn4mNGJzKBDBw+rrdYdRGnbzmLjG22/zLz3KJLsCHaOcxcyDf6hhZRblzKopMTTw7xOXhDobUnfElAtVtKY+2HsTn4iSvG3XiMC5Gp9eOF/3rNsGKNfHsem9bLbL9DsxiJhBanjzdGjn
- NMTUdk2C
- OAeGuNPE9PYyAZHutJ8YoguuPxuxuwuofon0ueD9dOACBZiFvMfuFYrjXcPKrskyZNmwhGmASV5HOxN1480jwybfiza6Ursg2dsq9Q819SwIoqrMxdjnXaAe8eMG1mer678uRu2U+B/0ajZT3gRDimkDGjD5aPoT5n0ot35EpmyAYrqvehIl2SMci9YKQE1Xyfk3ab0VZP1UBXpdg+ax27oQtupB58q583Anqrr/tCLD5pwofMnEOZ6zOUPembRKu2WAQHyuqvAp+49SXn0rveiB+iw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777318911-977210
+X-HE-Meta: U2FsdGVkX1+4IOiqJgiPgacRobg/VPUE1tiuw4qDNwelcF4gjnHZIFRFn17jcUvSDvVKOX6zxZpA89CuebFIRdxzanJ65pZAv+oEDvhAxqV/vZw8mMX0oJiSpbBEXHJnhGP7r6w/G6xf21pttl1InSWAtyg+1HzzzEDqiJNkldXfHspsym5OE9TjoPx4T/CMQm7LlwnWsNBlNAgbfgyj/YR9+RDOgRt6tk+ZihfcLLOPbod1Ta29NlFqvTRPShvfdxwFa15PP/PFyAtVdjLcPPo3ufbQ60vN4biVHih+KvNBRbwrEl700p88GiC/VYh1q0RqDgUQslmmWpXiKC/5hJXxxzuVNq32SwSSN5pxBiVGntAimL8UFNm3xHIBw9VqQs5muAaqgOBh2m7EueSuArTLWqdCfERSd8DUDGmcDJsNW5p6G95z+qN49jKp4vHag2d0hHXRN8u4SfslX6Lp43ozvw8sqe2Aos8BIcx24HsneEd3QXwfyo4BQOron7KE85s+saC8gJ924fo1394AfvVqX04KkvIZsvTTDxBER6T0t/krwiaNIwJm6L/VkwX7VStIh1Z/4MNEVBMIg8m0ebfI+6UC+wFTQ3giofxcF5F+HhBJws21bAA7FVWDSElj1zjC/kMqzJ4Rj4+4scaRJdr5FmlfBUNaAKNYV1sh6CGbAdxW5XWIpgZjnEj6CJDUD5sS0I6UsMbhsM8feWnAZUG5GebMMFFUe1o/grTzaeJBt+xAQvCB2WVrtPHQsZikaKbtZindmXlsFTxKpV66Rvi19FKgtiTSJq62Do6U3HL1/TqsqaRlcN23Mwk9TrMwp5YD1HBTJFNCyf9sRmlQFyeq/wBsFLf+BL3Ny2l/rkpTkwgcB6j8FRYWyRQBoPJyBs6volMNcNIW3cd8Yff/ygUoY6CwOzQJDc3RCXFBuDvPo2vYCNpOwXhGlpddBJIkPiXokWd6ho2KTYO57MP
+ vyKqWzaC
+ exMKIhxxVve4tFak+ZoYChGpk0jfDGjL7KEXzMTZobCnxit8FobaUpsm+78bpg4AxWTXkA5TP6nUPGEyT07jzPOJ1JA0PQDvQ9swepfhkey/TOEXkQmZ6l4dZAHY8d48sL1I1oYlLO1dinzLj8vxheBa/t/FvWL64d+Mioselnq71RmeRslYJUqKAyujmlUMu3tg6tBDJlVFOovVngwcFfeNS2DF2H5KJnhl9YZfeBGrZVCN+RbV0PhXAhtdGgR0Q3nFzLAKjxgotOXfifEydNA4A4/HrLAfPON0EZE7mnEN3Hwo5li7fVxBqnJ1dt3SEV5bRXJrxdzjFvWV9lnE7Bsgh4hlLKCN20q46tdumszE1SLUaLy87mD4Xkj95gt4IY3n3c9sIx8cWOdgG8/17hg3FcFJUAm11JU9iNBh9EWsXJfclzysZ7zZ9A/BJG9Mx5h02hV/D7j/u3YnmYKp7T40p6qNAaZIh989U6GEDdeuV8mfl7ry1U5r9xExhcpdUXcZiiJgrwXqg54Z2ViTGWUDcHToYauD4Y0KVHsYMm8neM88=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,55 +156,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
->>
->> Thanks, but I fundamentally don't understand how RAS capabilities interact here?
->> We have mm/memory-failure.c for a reason :)
+On 4/19/26 20:57, Nico Pache wrote:
+> From: Dev Jain <dev.jain@arm.com>
 > 
-> We do, but self driving safety requires way more than the current hardware can
-> provide.
+> Pass order to alloc_charge_folio() and update mTHP statistics.
 > 
-> I'll point you to https://dl.acm.org/doi/10.1145/2775054.2694348 , which
-> researched these issues in a datacenter environment (so no sun exposure,
-> temperature controlled, designed to avoid electromagnetic interference).
-> 
-> "We call a fault that generates an error larger than 2 bits in an ECC word an
-> undetectable-by-SECDED fault. A fault is undetectable-by-SECDED if it affects
-> more than two bits in any ECC word, and the data written to that location does
-> not match the value produced by the fault."
-> 
-> [...]
-> 
-> "A Cielo node has 288 DRAM devices, so this translates to 6048, 518, and 57.6
-> FIT per node for vendors A, B, and C, respectively. This translates to one
-> undetected error every 0.8 days, every 9.5 days, and every 85 days on a machine
-> the size of Cielo."
-> 
-> [...]
-> 
-> "Our main conclusion from this data is that SEC-DED ECC is poorly suited to
-> modern DRAM subsystems. The rate of undetected errors is too high to justify
-> its use in very large scale systems comprised of thousands of nodes where
-> fidelity of results is critical."
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Co-developed-by: Nico Pache <npache@redhat.com>
+> Signed-off-by: Nico Pache <npache@redhat.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-Yes, I read before that ECC is insufficient to detect certain bitflips.
+Your SOB should come last, the order represents the history of this patch:
 
-But I don't understand how this patch set here is going to move the needle in
-any reasonable way?
-
-You have your magical self-driving car algorithm.
-
-Bitflips can corrupt your algorithm, your data, the kernel image, your user page
-tables, your kernel page tables. Even a pointer to a bitmap :)
-
-... and we worry about the state of allocated vs. free pages.
-
-Please enlighten me!
-
-> 
-> The passengers you've mentioned before would be excited if they knew how high
-> the bar is around their safety :)
-Heh :)
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Co-developed-by: Nico Pache <npache@redhat.com>
+Signed-off-by: Nico Pache <npache@redhat.com>
 
 -- 
 Cheers,
