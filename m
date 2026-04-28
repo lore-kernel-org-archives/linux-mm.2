@@ -4,105 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 838A1FF8867
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 01:13:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E0F1FF8864
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 01:30:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED2FF6B0088; Mon, 27 Apr 2026 21:13:04 -0400 (EDT)
+	id CA2196B0088; Mon, 27 Apr 2026 21:30:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA94B6B008A; Mon, 27 Apr 2026 21:13:04 -0400 (EDT)
+	id C52A16B008A; Mon, 27 Apr 2026 21:30:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBEDE6B008C; Mon, 27 Apr 2026 21:13:04 -0400 (EDT)
+	id B68406B008C; Mon, 27 Apr 2026 21:30:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CDDA26B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:13:04 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 922991C0585
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:13:04 +0000 (UTC)
-X-FDA: 84706190688.18.84AA069
-Received: from out203-205-221-242.mail.qq.com (out203-205-221-242.mail.qq.com [203.205.221.242])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E267314000E
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:13:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=UGWG3Oc3;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf26.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.242 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A6A1F6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:30:37 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23D2F1B9175
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:30:37 +0000 (UTC)
+X-FDA: 84706234914.30.5140F85
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 564EA1C0010
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:30:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=bLN2dIHy;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au;
+	spf=pass (imf21.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777338782;
+	s=arc-20220608; t=1777339835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TNukEp4Dwl+Oqc1T43hxrWXMq55wH2a1IStVIx5h5BU=;
-	b=Z8tpW/dJix4V8tX3PGZh67l3HSIJJpuniKWHT1De4b4m5aLSAMykCA40sJGK58+hsotes5
-	jFg+sCwNZX3qF4bPmk7zYXfApm6PV4QPYL6cI49yFFtd1pKNdm6MHGM3AoLOJkCXJFyfIP
-	0DamciCuapdW+snxmzW4f2oVv6Udc0w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777338782; a=rsa-sha256;
+	bh=xPGXCR+/vRkMXnOHF77K390YQwg7XtFDEASdQ5ggF8k=;
+	b=tK6KCNr78W7i+XUkdOWIsKSQXWDMktBa+GKUlN2QyjPFaBz4W3Mp/ExlsxNYIN/gtoblLP
+	+eGQYEmlEkyOCon08i8nrLsHRJcXYOj0ZC+EbWb9MmyctBabY6kp2HJGXS0AjPQ5DPIekT
+	NLGGULEudRgJUBy2W5n8HJpnwytUz6w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777339835; a=rsa-sha256;
 	cv=none;
-	b=wH2LfXBBkq7jFMJt6Uz8HeYLNW1fq0JNjGG/lHoYJpLVCg6qDzwWGoh/Wb/pxLveXAE68w
-	f5ekeGLwRBSzcxf8BOGgF+CkL5Dy4edUm270JVX+eryKdxKDUlmMTbGEzQDPAshBjDu9tE
-	XXVOdPiWzpgYoVb7r+lvBfl03T5/hjQ=
+	b=aIVYRO9RIL+4cy4qXGPeXnuuX7qhuFX8zBy1xJwncnB+h5FTD7IvYn5os3VlzbaS3oaB2S
+	+Tj1wKmLboLGgYIDVM7uVnakU+PHtOBw88c6R7EY5y6y3uf9l/QWuBnyYVpgXHfGfJO1dd
+	GofOaCjOMrh19hHbJQIE9BBXZvLjyF4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=UGWG3Oc3;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf26.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.242 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1777338778; bh=TNukEp4Dwl+Oqc1T43hxrWXMq55wH2a1IStVIx5h5BU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UGWG3Oc30SsO1zquk3Oaj5qOx9LwKsuRD+FfbxQ64Q3lnYQJQb7C30I5DnMyYWcfM
-	 2PCBmRcoWBL6rbHKUnlbrwXHkIePwJm2QTppzXfkH09ZDcI7pT7QWgWDa5l1wsuVAM
-	 4NOZkGnxNXKHpl1xAO7aUfZ2soQtTuSwUAmn8k3o=
-Received: from [10.46.141.45] ([36.112.3.68])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 3380C219; Tue, 28 Apr 2026 09:12:56 +0800
-X-QQ-mid: xmsmtpt1777338776tlo703va3
-Message-ID: <tencent_6B7B248CE4DD2C5B4471193F7B295ACC1F0A@qq.com>
-X-QQ-XMAILINFO: OeGSc/E1+fkZieFR4/4fnYbmy1HnY6cKD5MsG73FjmptXN344R/7b9ihhpBgX8
-	 BdQWw6ukUuKmJadJm/42i5R4V2iVWPS6PgwZHXXgo2/h7iZqEk/Px9KFotn8NjeqkmfAmT8MNUCL
-	 RB5lIojFgQ4nQ/GbKhdc3HtThIE4uERTcD3uWXuiDugy65MAVNaCKPELqF2onG9kJbwZ4yFhB6xI
-	 bN261YjvNuq85fnz0u+YnkOb0MmHXBpes8GlkTJr7CWYq+HnE7PVrNl7TSW6qWC5nu6nxB5pGhJv
-	 cAq+fv5GaojZ3ANi/SX0n0h8bNKaf2gXOykjwbsF5JWTY8GxlPhrKobMOqUUhWJXi3YEmuM/tVRJ
-	 3zkQOqt59wiJYLTpzZADq4sgOGykHichHbSaWtt/Qwm2GJv4poDvmAkq2vzzfhg03mbqt1k0cxZw
-	 ezgbLXURMVBRqVS7dscMYNZANHdkhcfpiL38KWdxL7gAAx9cFCDloSVGoUblGgGyUv2pCAtSTk36
-	 CS5nn+PJSYXQaktGsyfdCZHbWYEso/vx9vkP1xLiSWpclR1+gaG/XwVH6RuzXnZGjWiXHsSzkEh/
-	 DXLf7vLPpbXGQpY/KvgXBZfTc7O5O+efeWaYzQxqj57a1SDmoIpfJRggYrXIdaTp5iJKgBH9fiqy
-	 RtpdD7lUfDl6mso5e7+0eeF36v3XQBFOnWMy7Ar23pqu7geWIUr7wFTGIOoItR5VhNCbZNkt+Ut0
-	 3HkMNVCBqISTbUOLh5firDmxNyw5kTPLVrjpTmecQ/SjP39o3XH0TwMFZpAYThdfTFUd/uiQe+ep
-	 KXrzliejf3ZUpf07vKLphlKfZLYs0VPSo1s6/09HT5mQ9saEvE7tX8J5etIlxJj2nfPl+cOROD/H
-	 FH5MF5ZRnTSTCjrRSg7IfgCS5CasIRpus3AhgZrfADNPceZnN+z+jOHbRbxd14GbaNDUBdWume5A
-	 NGrzhI4NmEOQbf4Mez+wpTu+naWaiNqZ+8VqKx+i/lHt+uAGqqJZgyLt5zdghTtuW+dBijy5Aoiz
-	 K8mCE/6Qq1GtzU48nDkcseidwGkYKwpB3MnDV/yVH3/MLDkL4scfH1CTljvaBVb5yLRWRQxvExu0
-	 qyqPj0DMMi7ZEg7R8=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-OQ-MSGID: <0d3230ce-1609-44b8-80c4-2e325e9817e8@qq.com>
-Date: Tue, 28 Apr 2026 09:12:56 +0800
+	imf21.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=bLN2dIHy;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au;
+	spf=pass (imf21.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=xPGXCR+/vRkMXnOHF77K390YQwg7XtFDEASdQ5ggF8k=; 
+	b=bLN2dIHyFKBSnRnfmJuZbuRO4Ldw29XV2Vy5dJAkXCx6DlBFlFk+LzqoD8Vuh40851Djw4vl01C
+	dmAHRaR+VSxERx9RosbUPvDBnFKl9XbarnKcU9yLEjTafE7Ch68PyPUdQRdpSOAkT23Csz8gwcq0r
+	yWJdwSLXsyQeCEdWc5X2B6YdNubaMedUmBl0BChVV0rU+B3MxXQasGAF0uuhpej1Amsh5i4fjnMTd
+	W57Z+wAoosfXqER3zpAXbeWT9TMwEO22u7MEtcFUX8I2xHODaD6uUqQS2By3649ZbsGg2enUROn8D
+	ypW7JEfJBmxUUa8jWIyfxMsYQEMd6KUCAxcA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1wHXGx-009MBU-0l;
+	Tue, 28 Apr 2026 09:30:00 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 28 Apr 2026 09:29:59 +0800
+Date: Tue, 28 Apr 2026 09:29:59 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.com>, Harry Yoo <harry.yoo@oracle.com>,
+	Hao Li <hao.li@linux.dev>, Thomas Graf <tgraf@suug.ch>,
+	oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
+	linux-mm@kvack.org
+Subject: Re: [linus:master] [mm] c6307674ed:
+ BUG:sleeping_function_called_from_invalid_context_at_mm/vmalloc.c
+Message-ID: <afANly2Br1kIBPOs@gondor.apana.org.au>
+References: <aedvSnhOGM_mauYP@milan>
+ <aehdcxC14ycvY481@gondor.apana.org.au>
+ <aeh2Ii9CxtgfsX_p@milan>
+ <aeh_2WwIb8nAIcy2@gondor.apana.org.au>
+ <aeiHkG7X_dieMdw5@milan>
+ <aemTW8yiAe6y1tsQ@gondor.apana.org.au>
+ <4e269fb1-cd6c-46ca-ac2a-168ce9fd06fe@suse.com>
+ <ae9wFZp7dS8QF8br@milan>
+ <6cae0418-eabe-4864-b87f-b1f953de06b0@suse.com>
+ <ae-MdIOcSkfphbHM@milan>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/filemap: count only the faulting address as a
- mmap hit
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Roman Gushchin <roman.gushchin@linux.dev>,
- Haoran Zhu <zhr1502@sjtu.edu.cn>
-References: <20260427165751.746502-1-fujunjie1@qq.com>
- <tencent_949F3B157FE71D3C7247AE6FAE2C5AB82809@qq.com>
- <ae-tkz6qe1zFmXVj@casper.infradead.org>
-From: Fujunjie <fujunjie1@qq.com>
-In-Reply-To: <ae-tkz6qe1zFmXVj@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae-MdIOcSkfphbHM@milan>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E267314000E
+X-Rspamd-Queue-Id: 564EA1C0010
 X-Rspamd-Server: rspam04
-X-Stat-Signature: x7esfb33db5ioxouba1x6wp3z1d15xx8
-X-HE-Tag: 1777338781-392143
-X-HE-Meta: U2FsdGVkX1/+BPK4HfGMvUoQBCoyA9/4+L4V3K/WfJUBDYUrOwb5v6OYqiz8Xz+g+lz+HUpC2DYETL6PcOpjFAD5dnpChQFyIgc+94X1ijTZiWIiPUaZalfJR8CSdmYqVqGM3Sm5wYwDkgMHlN8FExfsw+3/CZhIX7GH1lzNlVkJDbOSBNY+9MCgSucvIyZd83J7ah2vxRwvVRrFNdmREMedqN1DKdcvUDQA54MF1pOOpj8L8H82i2lUee4WIQX1SFKjeL8guC25MLqGVJ2ej1JdZGiFY3lbfYvY1cm5fsCD8EJpIvFrndgxo1id+AYtpEuuC4Zgu1u/bSm4x6AAe4GI+DFrIuOHKPw2f9sq5LkbCoa4bJxAVKBp+2dUIHZbdDV7o/aKyu+R3VHov93HnRVlKJ4RIo0p3a3hZv7K+6LToDkbHrGMyyvNseEr2F3HsxYJsMQUqICH/M5olHMieQ8BD1nacSpifQp7Pe/j3AxelGf9gYvD8icFjebWnAATIyKo6zchPRO0v4hJeDKZrKva8ZPC6qN31Z5QSuGThSnH2aN9uLWJA/gs6ao2rEkEtdslyyFH3jU3gPZK8diInliLLowQ0SKy9g+8HdQ0+fkweWo+MVY1whvW95Ua+gkgTD5Mdvz94TgwWGzZFzJrLVEz3F+xKdwjjpJ3cnFtMYiYkYXYxvVXC3DfF4x1b1o3GdPI+Jd36feDkFS8viY5DqXkMtKwdVkXmlrPLHX0Z/LT4GsgSltHQ7v7cUR/0aO1qB8eDGyJ43/VWLiHYHJXnUrVH/jTE3g+a2cXZzKe8uDdf5qcd2Tuyo4moChF2NjOE1T4rWUHMrxf3jpjIKFQMlCG9sI8VEDng2u9q0AR/FnSJFlnvLvLje4tZZSqZNzAaKx9OYd8U9nujmcrj71BbOnl0IfgUG3U9HkWS9usBORd0lgh6Vt5VsAQo8T7zg2lKu/L9PRhhGYDOIqlGra
- wyDKu29I
- dWiR1NyaG0Dv4NlM9s/nky9+zzvEUV7wMR+nd5O5fV7y8Rs086SQtrQfEwZbfb4sAMLr7v+keFYLJIpkLgUuKqcCsV0dVnvUgV86v4Au6DcEyqfOOf27pjIleDc3wG9Zkh1lxdh7akLNnfODdWGZiXpGr/zkMo/+HjCLM9zBKSSiK1VvjpGpNFwePbISr5sk0oD0nk7Ld5pXTZpfE7sMxBQe2ZnpZY3/MM3uaOYVB/5Of5GD4sPEpZPjjIB7V35okbSdUzHTh0Ujcxtl/di+A4E1/m/D7w2Xk5r1DxPyLbe27gxYGCyvjhjKlivX494oLzGYPpuCJ1Gd7bSpyihn1HP0Dve0TMe240XuK
+X-Stat-Signature: rmim1krq6r4u8a57uhteakn1bqu5qbfu
+X-HE-Tag: 1777339833-902813
+X-HE-Meta: U2FsdGVkX19JBRRDfLSOMko7cOxVzBZo9FQ8mDhsWSZraEfWYkjHOM8UwtZbXkFGFCeCUAk0e79j+tjvy1DqqSj3uB3iHs1qEpeGGSGq5VDn5JPDa0pAFF54Y+RDIBcEd8fpuvfO+RcnX7v9sr7wVFXCJvRgdGBQkJNEdat71H2tFxvI7ebXcIl6jsPjJR5Y8aJ07l5iQbHpnhp5lnAiFvb4jqFH1ERlifwFl6+tlgMR5lXyf7gxCdwBhMM/bJbNqu6Q6io0tYEkuWoDGKmI8tJIHMIlW2JXr51O/DOdGgY4VBugySwxzptOJ97mKb6yrbzeq59uH4kdFo1cc5lGQENO91y7zALK2WVCGb7crFlQlXK2cNb2m6OTKS4Czlv/5TmPlMQtLk1OT1RQ3m4QcTLVlkrCmkb5OzuppZMlxJJruQqlCiMtaQaprO786mn1Y6rHyGuuPuydVPB8HH6E4wloiaDyhmJbdMTWwM5wgiKszYgIxOdujCerRNcCH1N3aRQmHk6U7zkYJe+ZdnxwwqoehXR0NqIaV9npt1g1h/C19d42kxvYg+AXpL0hEcPhbFDMb1Buyj3iQx/CNPMZ9BkqrWpp+LF62eatDikF8khMiwo7VZ4aK4MEVgbKuPsuL67aFIHKAEXferU3DHuN5Tsyc0GLjbpONt05LD+TRyfVLLdGasXeoytnJKYkh2wTHVXXhOhk6p50M34tDCA0GB/0jlzZv/EkzOFSpewpwXWBQf8DA5zcX608dlckDZjJxQdPZ0n0ayiD/3nUclVxAPgVmN5TWQ3oJQyewB68THuQsHOmm6UrCTRzwfpn2CY4iI++z3nvJdBb0LIZqmI4+Ew0J6BhtJ1d/YIVf/P5PlpGIKuPSQzdP+sH7nMB1wNLsXuSkQFOnhtJn9Q4k2H+urvBRA1cpu0HIj7emeELIYuC81ufbJhTc04eCo4+BPhuYaTcu0n4+l02BWGtF51
+ hdQdac+Y
+ dsmo8wBnpA6xRtSoLb36sP6kxNSR3z4p6U9dEpc7upJNSccFul/h1FvPf1cS4wIGLvwELdcvnhhY0D7LaQa88MrH+MMmVot5BR7Gmr1149VWqeZXl4n/hDH6aS49RfLpfGFXMicbgR25UrpnRaBw9HGqnvS+32eMP1BeBYUXqHbqvOkh5SYeYHl7Ija8XKnhko9wENzukl0Wc8zQQxbAME8yj/jrXw/PiF6BfaJjlAUsK736jypLy0kmJxCk8p2ELTEjiBJFKVlErdJLA1FJ47lbQh1/KQiCiKu79gAfh3blgZm3Qsn8NCF5WGbQaDKTk7gINGLttdRm3WgVs8cBIVQi1JvdtWgHT09ms8880bGWTiGG3NvazQBwdb7PedPQMcrOW5vsHXxyeXERkKOXnkale2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,37 +106,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On Tue, Apr 28, 2026 at 02:40, Matthew Wilcox wrote:
-> On Mon, Apr 27, 2026 at 04:57:50PM +0000, fujunjie wrote:
->> -		/*
->> -		 * If there are too many folios that are recently evicted
->> -		 * in a file, they will probably continue to be evicted.
->> -		 * In such situation, read-ahead is only a waste of IO.
->> -		 * Don't decrease mmap_miss in this scenario to make sure
->> -		 * we can stop read-ahead.
->> -		 */
+On Mon, Apr 27, 2026 at 06:19:00PM +0200, Uladzislau Rezki wrote:
+>
+> Like below:
 > 
-> I'm sad to lose this comment.  Why not move it to ...
+> rhashtable_try_insert()
+>   rhashtable_insert_rehash()
+>     bucket_table_free_atomic(new_tbl);
 > 
->> +		ret |= map_ret;
+> the patch for rhashtable.c can look like:
 > 
-> here?
-> 
->> +		if ((map_ret & VM_FAULT_NOPAGE) &&
->> +		    !folio_test_workingset(folio)) {
->> +			unsigned short mmap_miss;
->> +
->> +			mmap_miss = READ_ONCE(file->f_ra.mmap_miss);
->> +			if (mmap_miss)
->> +				WRITE_ONCE(file->f_ra.mmap_miss,
->> +					   mmap_miss - 1);
->> +		}
+> <snip>
 
-Yes, that makes sense. I'll move the comment there in the next version.
+If you want to send that as a submission you can add my ack:
 
-Best regards,
-fujunjie
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
 
+Alternatively, could you send both patches to linux-crypto and
+I can push them through my tree.
+
+Thanks,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
