@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B875FF8875
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:32:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E89A8FF8875
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:32:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 038496B00E9; Tue, 28 Apr 2026 19:32:05 -0400 (EDT)
+	id 6059E6B00EC; Tue, 28 Apr 2026 19:32:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2BE36B00EC; Tue, 28 Apr 2026 19:32:04 -0400 (EDT)
+	id 5DC716B00EE; Tue, 28 Apr 2026 19:32:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E686A6B00ED; Tue, 28 Apr 2026 19:32:04 -0400 (EDT)
+	id 4F3A66B00EF; Tue, 28 Apr 2026 19:32:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D91946B00E9
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:32:04 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B02DD1B98ED
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:30 +0000 (UTC)
-X-FDA: 84709548420.27.BA2DF78
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 412DF6B00EC
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:32:14 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB7158D36B
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:36 +0000 (UTC)
+X-FDA: 84709548672.02.5206051
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9E42E14000D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:28 +0000 (UTC)
+	by imf23.hostedemail.com (Postfix) with ESMTP id B916814000D
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:34 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W8pncTb4;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MhCaGfkS;
 	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777418728;
+	s=arc-20220608; t=1777418734;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=75x+8S8qZQoCmwPts2AAX4ANA0QRA1MNkI7cGgDmZHU=;
-	b=wlqKwzPVkk5HZHd5LR3OcR+mOh7aFBiPBvl6W59rXemskNQPM+bVr8+31/DJy/CyWuwgfd
-	Y0/k9mKB0tfkw2yrLG3sOR2cgpqRtiPbUQKULN99ZAL/MZXRUlabskg8tUhmeoDgy9vJTv
-	KDRgigCiWmoLz8SCGVOMe6wbEszxNgg=
+	bh=9CWELMWi2PT/ZgfyQlX/nk78CZTG6z354zaSV5z9XC0=;
+	b=qwGARLevvV30Y5qVXtZgEpjdolZ4UjFdnXzLQvEQMtTPlXAu6CFV4HgCFOn+ltQTWuw80Z
+	cwXI6x9QaY5E9MVIJNnlgY1qeZWqv6lU3fViu7syiCwVi6dioF+fyz6KVoM55k6pFim4CK
+	coqyVppVC06EWUrhx3Njk7JbsFGK7B4=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W8pncTb4;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MhCaGfkS;
 	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777418728; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777418734; a=rsa-sha256;
 	cv=none;
-	b=IOcojcSPl37vDKHBDDe0PR3lcnvRAnT3rm2uI2E8ioSGb9J8NHglY9Vorm63euk1SLxoQX
-	oA+qR0bjHOMw/EkXX/D6g91ZfGUFIsADEqTLgIFZSespj0kwIy/g5pCrMrGRCEsIcaMap3
-	kgmQULTwaTYtp3EFloZm7AvxCg3ZqRk=
+	b=mvidZ9kRII+uo1QtOj387vDb1cWRxYg7UkVT8BbMG2De0aeAVbiKWCUj/vr2gA2Gh3ZO+b
+	qbgfch1Z+vtOFBAI1Cb+HKMu0bnEVSyljwk0H11++DuiLXwlYP5BAVNrXswb77maOivfOb
+	4q6kDAtqU2sd61cxrMVITVLc7i1G1nI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1DCCC44A1B;
-	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B965CC2BD01;
-	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 30831444BA;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0307EC2BCC6;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777418719;
-	bh=rNUDxIq4jocmrgka0xACOy4J+7FhQChrkTScBEODUyM=;
+	s=k20201202; t=1777418720;
+	bh=oaMCVr675WJC546KIj/mKMjwWvZZUtAMLOTjcjvW/Zg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=W8pncTb4nLGXOQIg/AbT8tPfnXyr4fV2xlWx5bkiBt4wzW/EjiMc+LvDmmTHajzLQ
-	 QGzqtcaheA3pvhTQ4bta0mkA3Z9+XXs5DbUD4PlfYSZjQpvLwAVIxSr6N252jQKBdG
-	 1yITawUkm+Gqb3OgA+x96dabaqqsccP4+Ha4h8TBzTespC66nWFnmEvPOmN8k5tB6o
-	 K5bzx3TAnuWKydpPd25cIWQ/XeTeBK6z0x29RJqj98WbxZYNihK7eYAfLg7m1jcin3
-	 wg6OLRT2mI3TyUjRotxwUQn98uyXLM44DBpZYMFZE8S7EI7roN0tK0ww5TZlU2VK6Q
-	 RSwQfn+5aKOeg==
+	b=MhCaGfkSo2e0Gx1wfvAoSnhHc+4VT5ecU+eVZ/vtVAio4FyMM1MQiJebO9BrKagrC
+	 DXFx/CFhL29aDunYDYpfewVQ3Kcm5C9Vh7vOJz0jPyoVWSJZNei979sHo2FU3779B3
+	 hszG4qs2ZssVUAIRRtom2lCQ7Z2wlpWgWCu1NSbAUI0jxS+AA/iWUbTsIudcE45TNZ
+	 D60St3rZWyjumZDKxD5ICUOu2qr4AFy7V2LZnz+K4/8xHEt85g2jq/ncUHu5qyd4Bw
+	 TXikXygO7GVg6BtIGG0h7yZTfG+2wup58/Qn9FtZU9jP11vqtSHkI4ioSSsTep+J3z
+	 x/DFudyL0eO7Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7BBCFF887B;
-	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB594CCFA13;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:14 -0700
-Subject: [PATCH RFC v5 19/53] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
+Date: Tue, 28 Apr 2026 16:25:28 -0700
+Subject: [PATCH RFC v5 33/53] KVM: selftests: Add helpers for calling
+ ioctls on guest_memfd
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-19-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-33-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -107,11 +107,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2855;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=5522;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=KMLYlEABtckw6VyhRdQRr8/Kzmu2l2xzD5HnouJ7iBc=;
- b=Jdi0ySmNlBkaIZQdwgtEYnczV89YWoO2Ir7hJXSA4n679Me76AJw98eYvvPwl09ungXW2s/Zt
- eaJYqHbxH9XBwPJMgCmoAOHf5xnz8ExWUkcQJXoNn8SqghToUKggEeC
+ bh=Zmzepwj0e0uEpvYD+9DInZXExTZ0/J8Xq30KnpI8mbA=;
+ b=WLwccZvFc1hCrzmS+LvCeTiboGB43iB+VTrZ0c3nbl0lNS6dz2+yJAg8q+WpCndvJ8J5zsEhY
+ wuhBVOSWSDFAaKh15J/o5yGY/95Y172ex+GGyvsxHevl9jj/bJCUyV6
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -120,12 +120,12 @@ X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9E42E14000D
-X-Stat-Signature: nx5pb7qzt16sauyesx9i9to4pgeymqa8
-X-HE-Tag: 1777418728-575285
-X-HE-Meta: U2FsdGVkX18laQzpb38Oh6HNiShoRXDwKdMMg+rFtxk+xVxQ72PMvWkQh2LO21tXvMicuiMGcV08ji4puE7xr01YNrELmn6NeZmSiyJ8yD10CZaLBmlEgfxoc/E90yEvCtdqsPBlJ0ka+JJu0rG0X0mfRkirnnBHjX7u10/870Z1Q6AM/+IjBLzfy0HYefSb5si0gLeYl7Qjlybm4/leq9i/hn5Z692OY2uQo1n/SCvrZoPjMG2VfGuARBAQpUz9/C7iHxtsypwv0Svc9b6s+7R7YMGiAKU6P94xgEg+J0U6ya0HF3STfCJgMlOUgdutaGdDSVYu+3J77L8Gnm2+tgo0eodW1uLok9/RdMLSHJaULHm383uXB4LNh/cC/GD6wOQDAMkIn8tcMzNEaG8iz/rcoug09FlmFkGaKFMZgQky7G43oGhhHYztWf0G3/j3g3ntChC49SUD4o3F8HoGR/8te7Mpe1BoGQrz8GoohXF6rh1fytJWNd1bOICWw3LqwukxSgCBNDSfGZ6shZgq89s2NSaEtSdsFtl9GdJANmZM4VB+yL8zxke/aA2+FtqShKfnvoL7ARlNev8ZqGwZkai9ruPqvtlSuDTnLdTN/BOihbT4NgZjvypOY91xlTrdfPKyjspsxvECQL0LR6eLG+V5EFup04NqcDSlHbkQtudHGLVnnOAMfE9jQWhEyYVNKALgx5LenZlDXgRaKjn9cphte9RYrwl2sPiR8Z6MPWRkeo0DcvO6tVn83CANnBwn4Xg2m7ALdWnZmpk2TwHo9AIPEBY+lKbN8JEvCPaTf7qWfFqB0bFREHsgymAg/vZYUCm4sZB30Vz0FYriFTa7g59NF7cgTk6VPBcyMQxmM1HPwQ8HuiHIbTNpJYlZ2/5EIAMbkqEk2vpa76IVMXs7nQrm3PpVLcTg7BPgpRYAVSWpQXo/Px2EkFYEBRaPpOw8WbDCX6/4LyYLTAdefu3
- t9sHlGho
- fSWs0hibmFTiMMH27nZZvIuOnF5KP51unDbCv6Nc/fTeCpbS/xibJrqJfrST5s5e4A8WR+RmJBklCCCtdWW/m6quoBOc90IlI8N4gIJel4Qls5E14tGXII9aL6l0dzAdgLW3kcZOfVxQv27TuEAms9wLJkPAcb4MmKQvGR5OfZl02+DA4sr7p5bHQO4wwtIRaX2CWs2B7ZC9tqcPors+nouYbe4kAmyrKXik2Q92e5nx0tcAUR8eu60QY0q0h1UueFPf4/Jmn8eu0dznBGamkVZzsNyHLyt7eXcTEHFyerzPEWofoRs85Zog5vVnNwCdGoLjVp44b6ebxcutoYIm3vixpT9vcga0TBcY2c57j1MRizH0F0dgbesfEr+pGO4Zt8Vr2MGjFXcrm1cxxLljofRqaveOXLsQan51m
+X-Rspamd-Queue-Id: B916814000D
+X-Stat-Signature: mwipcxkkk3weyrhfokauxmg7zx8gq9wq
+X-HE-Tag: 1777418734-802082
+X-HE-Meta: U2FsdGVkX19rDrFx5QT4bPl0cRnei4mGU7DOAG7o2LPWbQ5u35oZJS5pH5S6UW21zj7t+C1zvHY2ZoV0V0yws/NnKIoeMgunAVeeF0aKM6uvFcWZYan0xtqA0kFrG+sMXHPfYcpqEd36szYhyux9xw2OTXif5ZgGjnrPUZzfDbcvfNbCYe+GbgV+o+TQkYRrnz3/HVQt2DD3Pm9CD+Vnh41bwC7fKEuyLt+OruaFO8w2eCWcSna5s+RS6n+eOY1iqEht3Dh728YMV1vz2PBj7ZN4L4aAL2m+QJ8ppJKaBz+AzTzx7OvhqSfzyOilHv72N/nmOAz9HfMugPRNcqAp4+bcFnUOH3fqgzkBuc+0A+sr2wJG+iE/1m56GhZYEenUPUaE4bmicIgSIaPRV6pNqY67rKap8InbHfqaB3ILd0E4DuPLXvyKY+zvmqRcAmW7aLkJACtXA1uFCQwTS/Vc1SUIzbFzF/PVeJ4u63zubNHFwU15U8edmRdpuvdpK/VlrmhukE6yCrU5fPrfbLAmpcXsx25jcvJI+PZ+kilqzIk0E+8QwMyALUhNmW2a2qJvnHl2BGK50cxD9qz5JzDkVJfx3hIptus+nMO59Xt0Jld9GYCRsduWWGBmylIAepBbfpaGaVyYDFQsNgabkHeeAcIKPwW3JVRv4nRoA9Wy7YZ4w92MqQX6iiG0ecOP2FwkcXBPw8G4exuHimJdOdRdjX4F7VUAIfTqblWKvS/ApGQndq2swTS5NU3V3XfLcf/dK2J+5MOnejq5DTjSyU5dmzv4EfzgRxcBhhKStot98foFd1knBD0H/XISXNeY3MUrREkM6WwEzlkGdCvisEpqLzawlwpcBn7XoZF4L2OL1lBr6a+fwfYjAKWt2zI5Y46+trc3BMFntd/kEuNSCRJnyMUs3cyZf06I5NXd6gW569pWk2lKwaWyDxhWxzPfKJaDNRQ7GOGmSWgSV0tr9AO
+ 0q1dGtdZ
+ 7GbxteBCwWNiWzZGV0X8To5F/9qCQwh0mA/4Pmhai8ODJL2zEtKT+ZyHj7oivWRhgqY3mW+SKEJbBPLMnOtNHKeeLNS2pW7zniG9TEe5dGMz7ZR+h87ejsfgMxSy8ExTYpDgXQ8uHHtjQBa/zs46CJ/qWwK7kDq7r36qhOBTs6/756e8UodE+71UHLifRf3qB11tyuObXxYWTdO4QMkUCUkdfkjjgcEdlUnVdFbkWKxFcEhuvmTlY8QUL5m1aklKoV+t/17viZ7cs9BS11zFPa3AIlg3KbHI135BCXs3uNuH4iq1LkgJ8D3C9+lRwj5nHqfleFBmWjHOhw4+6PkRBkcvSogTaQ2KgdRDJPwB7Uoqm8lEbqI27bx82LjOHCi76wrcEYl2e1V2KqSlcCFQATm8lTrREs3xaEd+ARINkdhUtfbMLLa0uyaLFGNyq68pPC1AdHBZqvrTa2Aupbpjc+3tBkQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,78 +135,165 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Sean Christopherson <seanjc@google.com>
 
-Make vm_memory_attributes a module parameter so that userspace can disable
-the use of memory attributes on the VM level.
+Add helper functions to kvm_util.h to support calling ioctls, specifically
+KVM_SET_MEMORY_ATTRIBUTES2, on a guest_memfd file descriptor.
 
-To avoid inconsistencies in the way memory attributes are tracked in KVM
-and guest_memfd, the vm_memory_attributes module_param is made
-read-only (0444).
+Introduce gmem_ioctl() and __gmem_ioctl() macros, modeled after the
+existing vm_ioctl() helpers, to provide a standard way to call ioctls
+on a guest_memfd.
 
-Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
-that might use vm_memory_attributes.
+Add gmem_set_memory_attributes() and its derivatives (gmem_set_private(),
+gmem_set_shared()) to set memory attributes on a guest_memfd region.
+Also provide "__" variants that return the ioctl error code instead of
+aborting the test. These helpers will be used by upcoming guest_memfd
+tests.
+
+To avoid code duplication, factor out the check for supported memory
+attributes into a new macro, TEST_ASSERT_SUPPORTED_ATTRIBUTES, and use
+it in both the existing vm_set_memory_attributes() and the new
+gmem_set_memory_attributes() helpers.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/Kconfig | 13 +++++++++----
- virt/kvm/kvm_main.c  |  1 +
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ tools/testing/selftests/kvm/include/kvm_util.h | 98 +++++++++++++++++++++++---
+ 1 file changed, 90 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index b6d65ee664d0f..8b97d341bd33f 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -82,13 +82,20 @@ config KVM_WERROR
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index fb54694e6568b..62d917a2d2b19 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -392,6 +392,16 @@ static __always_inline void static_assert_is_vcpu(struct kvm_vcpu *vcpu) { }
+ 	__TEST_ASSERT_VM_VCPU_IOCTL(!ret, #cmd, ret, (vcpu)->vm);	\
+ })
  
- config KVM_VM_MEMORY_ATTRIBUTES
- 	select KVM_MEMORY_ATTRIBUTES
--	bool
-+	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-+	bool "Enable per-VM memory attributes (for CoCo VMs)"
-+	help
-+	  Enable support for per-VM memory attributes, which are deprecated in
-+	  favor of tracking memory attributes in guest_memfd.  Select this if
-+	  you need to run CoCo VMs using a VMM that doesn't support guest_memfd
-+	  memory attributes.
++#define __gmem_ioctl(gmem_fd, cmd, arg)				\
++	kvm_do_ioctl(gmem_fd, cmd, arg)
 +
-+	  If unsure, say N.
++#define gmem_ioctl(gmem_fd, cmd, arg)				\
++({								\
++	int ret = __gmem_ioctl(gmem_fd, cmd, arg);		\
++								\
++	TEST_ASSERT(!ret, __KVM_IOCTL_ERROR(#cmd, ret));	\
++})
++
+ /*
+  * Looks up and returns the value corresponding to the capability
+  * (KVM_CAP_*) given by cap.
+@@ -418,8 +428,16 @@ static inline void vm_enable_cap(struct kvm_vm *vm, u32 cap, u64 arg0)
+ 	vm_ioctl(vm, KVM_ENABLE_CAP, &enable_cap);
+ }
  
- config KVM_SW_PROTECTED_VM
- 	bool "Enable support for KVM software-protected VMs"
- 	depends on EXPERT
- 	depends on KVM_X86 && X86_64
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	help
- 	  Enable support for KVM software-protected VMs.  Currently, software-
- 	  protected VMs are purely a development and testing vehicle for
-@@ -139,7 +146,6 @@ config KVM_INTEL_TDX
- 	bool "Intel Trust Domain Extensions (TDX) support"
- 	default y
- 	depends on INTEL_TDX_HOST
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
- 	help
- 	  Provides support for launching Intel Trust Domain Extensions (TDX)
-@@ -163,7 +169,6 @@ config KVM_AMD_SEV
- 	depends on KVM_AMD && X86_64
- 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
- 	select ARCH_HAS_CC_PLATFORM
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_PREPARE
- 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cec02d68d7039..ba195bb239aaa 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -104,6 +104,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
- #ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- bool vm_memory_attributes = true;
-+module_param(vm_memory_attributes, bool, 0444);
- #endif
- DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
++/*
++ * KVM_SET_MEMORY_ATTRIBUTES{,2} overwrites _all_ attributes.  These
++ * flows need significant enhancements to support multiple attributes.
++ */
++#define TEST_ASSERT_SUPPORTED_ATTRIBUTES(attributes)				\
++	TEST_ASSERT(!(attributes) || (attributes) == KVM_MEMORY_ATTRIBUTE_PRIVATE,	\
++		    "Update me to support multiple attributes!")
++
+ static inline void vm_set_memory_attributes(struct kvm_vm *vm, gpa_t gpa,
+-					    u64 size, u64 attributes)
++					    size_t size, u64 attributes)
+ {
+ 	struct kvm_memory_attributes attr = {
+ 		.attributes = attributes,
+@@ -428,17 +446,11 @@ static inline void vm_set_memory_attributes(struct kvm_vm *vm, gpa_t gpa,
+ 		.flags = 0,
+ 	};
+ 
+-	/*
+-	 * KVM_SET_MEMORY_ATTRIBUTES overwrites _all_ attributes.  These flows
+-	 * need significant enhancements to support multiple attributes.
+-	 */
+-	TEST_ASSERT(!attributes || attributes == KVM_MEMORY_ATTRIBUTE_PRIVATE,
+-		    "Update me to support multiple attributes!");
++	TEST_ASSERT_SUPPORTED_ATTRIBUTES(attributes);
+ 
+ 	vm_ioctl(vm, KVM_SET_MEMORY_ATTRIBUTES, &attr);
+ }
+ 
+-
+ static inline void vm_mem_set_private(struct kvm_vm *vm, gpa_t gpa,
+ 				      u64 size)
+ {
+@@ -451,6 +463,76 @@ static inline void vm_mem_set_shared(struct kvm_vm *vm, gpa_t gpa,
+ 	vm_set_memory_attributes(vm, gpa, size, 0);
+ }
+ 
++static inline int __gmem_set_memory_attributes(int fd, loff_t offset,
++					       size_t size, u64 attributes,
++					       loff_t *error_offset,
++					       u64 flags)
++{
++	struct kvm_memory_attributes2 attr = {
++		.attributes = attributes,
++		.offset = offset,
++		.size = size,
++		.flags = flags,
++		.error_offset = error_offset ? *error_offset : 0,
++	};
++	int r;
++
++	TEST_ASSERT_SUPPORTED_ATTRIBUTES(attributes);
++
++	r = __gmem_ioctl(fd, KVM_SET_MEMORY_ATTRIBUTES2, &attr);
++
++	/* Copy error_offset regardless of r so caller can check. */
++	if (error_offset)
++		*error_offset = attr.error_offset;
++
++	return r;
++}
++
++static inline int __gmem_set_private(int fd, loff_t offset, size_t size,
++				     loff_t *error_offset, u64 flags)
++{
++	return __gmem_set_memory_attributes(fd, offset, size,
++					    KVM_MEMORY_ATTRIBUTE_PRIVATE,
++					    error_offset, flags);
++}
++
++static inline int __gmem_set_shared(int fd, loff_t offset, size_t size,
++				    loff_t *error_offset, u64 flags)
++{
++	return __gmem_set_memory_attributes(fd, offset, size, 0,
++					    error_offset, flags);
++}
++
++static inline void gmem_set_memory_attributes(int fd, loff_t offset,
++					      size_t size, u64 attributes,
++					      u64 flags)
++{
++	struct kvm_memory_attributes2 attr = {
++		.attributes = attributes,
++		.offset = offset,
++		.size = size,
++		.flags = flags,
++	};
++
++	TEST_ASSERT_SUPPORTED_ATTRIBUTES(attributes);
++
++	__TEST_REQUIRE(kvm_check_cap(KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES) > 0,
++		       "No valid attributes for guest_memfd ioctl!");
++
++	gmem_ioctl(fd, KVM_SET_MEMORY_ATTRIBUTES2, &attr);
++}
++
++static inline void gmem_set_private(int fd, loff_t offset, size_t size, u64 flags)
++{
++	gmem_set_memory_attributes(fd, offset, size,
++				   KVM_MEMORY_ATTRIBUTE_PRIVATE, flags);
++}
++
++static inline void gmem_set_shared(int fd, loff_t offset, size_t size, u64 flags)
++{
++	gmem_set_memory_attributes(fd, offset, size, 0, flags);
++}
++
+ void vm_guest_mem_fallocate(struct kvm_vm *vm, gpa_t gpa, u64 size,
+ 			    bool punch_hole);
+ 
 
 -- 
 2.54.0.545.g6539524ca2-goog
