@@ -4,99 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E919FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 06:57:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C21FF886F
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 06:58:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 872116B0093; Tue, 28 Apr 2026 02:57:01 -0400 (EDT)
+	id 36BA16B0088; Tue, 28 Apr 2026 02:58:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 823036B0095; Tue, 28 Apr 2026 02:57:01 -0400 (EDT)
+	id 343586B008A; Tue, 28 Apr 2026 02:58:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7113C6B0096; Tue, 28 Apr 2026 02:57:01 -0400 (EDT)
+	id 2592E6B0093; Tue, 28 Apr 2026 02:58:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 61AF76B0093
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 02:57:01 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E43DD1B9412
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:57:00 +0000 (UTC)
-X-FDA: 84707057400.24.AD8C5EB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3B5D7C000E
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:56:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rhDcpnNh;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 101966B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 02:58:49 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F4B6140440
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:58:48 +0000 (UTC)
+X-FDA: 84707061936.23.B4FB51E
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 82365180008
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:58:46 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.45 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777359419;
+	s=arc-20220608; t=1777359526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pN8lwMEMUKE6fLRDbfBi5SwwXfSZd6/phLXUVKiAbUY=;
-	b=xrBT2mVqjKgaew99lGvbH5TUm0dB2csP9otnKzXorr4sEcY8VMxPA3dGgVfW4WwNMq8ixs
-	vndp747DTVSiB+ajPxKAn4JdYTrmQJWGhuTDIR6aHO5euhRFrgoR6udBcKGoooijng8qao
-	M/PWeCRtK3UY+FWlPcmavN/J/u2yjsw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777359419; a=rsa-sha256;
-	cv=none;
-	b=EAmPDPX5di1EDkOzxIHgXFcwKQU002cgT6CbWVXMJGixqSJYeIsSm3k2OtbJXCHy58DnL7
-	vimfc1q4G5QJizjc0WdowxTKJiKoUPtzykNJRe1TNSybiK4aBWGHTLjKeLJqS9v0E7aIi9
-	oNM8wNPh+en0fvn1VrgQC8/EtpfJLBU=
+	 in-reply-to:in-reply-to:references:references;
+	bh=1PF3j+sY6VDn/b3XG1Y7Z+9M+AzE58WOK8UHU23nNvI=;
+	b=PURQp742FM6tp46t2Oq7mRNOzROUSJRvwIhPUh/CAHs42DQSh+B8bVqb8x+G8RwMyftu9Q
+	+MURrqtZbuu3ZNMJyY8OelZ37+i+5vKVzMtvyuDiuR2wJJduhu1EWVrPLEaeuqotct/AdX
+	80xgRMgh2N9hQkVqyAWww1i/SiaEBRY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rhDcpnNh;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A9B2437AA;
-	Tue, 28 Apr 2026 06:56:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9236AC2BCB6;
-	Tue, 28 Apr 2026 06:56:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777359418;
-	bh=1V4TENqnFf/Ppcn/URrmHTYv7JS1tp4lOcKYXeX/qQw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rhDcpnNhXg3VFM3rIQ8P9HEfk7yNT1kNtmGQA//PASZJYF5qFVLU3rJQKIjHPMvMe
-	 HNf+ZqUWVIec+QOX6efzQXIJgyVTzJ3SajalcZfX9oSShcsx1S6liBquLNTUSEkPWh
-	 4Cyc/D7lLdtCoLQMQXAl64utOCjpMSIyeJ8zLhZtFS5/mgoy0dRpWXclxIvDKnysUq
-	 SpCE7vcf08EM3C8UiLJLQfn69JGz6zNVXPFlXdd3w/0cNuTpygcfyKvh5PaIqr59MO
-	 bLVRmTTn9+akih5Vt7HEV1f7qS8w3zDaa2o4t4+vuoIOLVGu4TF+GObYA5jWj8WQ8M
-	 JqMpETW6OQY+A==
-Date: Tue, 28 Apr 2026 08:56:48 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 09/49] mm: panic on memory allocation failure in
- sparse_init_nid()
-Message-ID: <afBaMEBoR_35Fblc@kernel.org>
-References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-10-songmuchun@bytedance.com>
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.45 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777359526; a=rsa-sha256;
+	cv=none;
+	b=fg+dHRvyobuh34c85kdtdfqOfILmfwEBQUgKjvyYDlNyHy4DkKwiWTRzwNkhbKmVE9wYF8
+	2+cBUp3VNh1zpYbDILcuCCvH5hfeAR7JNBwKYmgRf25CURELYnCeKe2BWlXYDncHkmDWo1
+	PYQo8+3/t/Aqsu/V93tHTx6yxdNXQOo=
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-94de68feaf4so5529426241.0
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:58:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777359525; x=1777964325;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1PF3j+sY6VDn/b3XG1Y7Z+9M+AzE58WOK8UHU23nNvI=;
+        b=bWgUleIWMK75MVlvBlatFXBdJLkZdmFSFv+JHI1Wpamp4dosc14MNVTF5WrBCWKFLR
+         oIs7N/0xViifsDHuDeqMJYMdReBKFS5nj0C1irxs2rqFRkCzOO+bqlL+3pRGXBz8poOL
+         5RWPjQcTqFeghov+RVHBvgf5H/Q6PCNRiV+JE+hb4O9wwPzufa+ZeDO3Xx7tMfUww8Rv
+         2zWFqMmG9lWaU7drDULe+9af/NNzGfh5kdXCDhyfT/83Wg1tXfaq4BVzAAPFzzNOeAvR
+         5/Vhq3F2iJPuzFrI9ZylP19QccFLJjvbuA00++5G3RNPzEkvHZ5gg41Fi095tDszZ3KW
+         CD2Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8n3pdyqf16DGuRIcIT9rZu0GpAGcfzqg2hTL09Fg6CTITsipQM4hLoFk3iIOCinvFNw6TF4OsDLA==@kvack.org
+X-Gm-Message-State: AOJu0Ywf3Qv6gz5rToTIYd1eAMDYP2CdHnH2dwtkyiIkvLYlZ525VfGy
+	NN/CBJ1S3P+o98qzaIH8gKtrVBcRHnq21kgvNgTBAt91sIjdEkW5zGA9IsFfqBkWwfU=
+X-Gm-Gg: AeBDieshxnGHCNT+iNS3rI9mudBb5Fw4VPvC8B3U7WsEn9HkjUSGIK7v5ckyZZ4i89O
+	dtW5cxwD5/xsXIILNdFAUSDCxouQUN8IkOsP5H4IRV4gIQ+Lji/H1esCj/5vqDnf/WzkAE6O3a0
+	d2Ncsjz0wkPwTxuswfwGosyUOo9tZjkgOkMs5yqlBySwKEK79mP621hak8YtA9C7U1J7a7sQcaT
+	KqOkJYo8jrRHOuutWtt1tLTFFB7INzjcyOs3bONpl+xEWLgMcgiCT2fnwtbz4SKnucopyLzGHut
+	vij0O8BYAksoUUkmGjEC8TivEfjml872yxJJ1ECBtv15mq8GhDRSwh3JvQUv2LwEG73yEDjI04h
+	oV4ChTI7BNXqqv/zBBOT53g/EoZbRA331Y93WzsxRUtttQsZaGcTXRxOcKKUoENI0sxrbn7z3hH
+	g2Zsn9V/y8R3p1W0/jtuRQKxpDPtkr9HC3pqvOU0SisxyztStjODWvRqSYlTQq1WMbJXkCrUI=
+X-Received: by 2002:a05:6102:3f05:b0:605:17b8:16dc with SMTP id ada2fe7eead31-6280afc8fa9mr575269137.20.1777359525469;
+        Mon, 27 Apr 2026 23:58:45 -0700 (PDT)
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com. [209.85.217.48])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-627f802dd30sm812100137.11.2026.04.27.23.58.45
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Apr 2026 23:58:45 -0700 (PDT)
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-628086439b6so342231137.2
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:58:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/yP3HTp3xKV6kHcxLlfdqtPkkb3e3wKO9U1bpRyR7TlLkJErmMD+QAZk8cZb7a82Di/FQ25iTexw==@kvack.org
+X-Received: by 2002:a05:6102:950:b0:607:7991:8edd with SMTP id
+ ada2fe7eead31-6280a8c5705mr640942137.19.1777359524824; Mon, 27 Apr 2026
+ 23:58:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260405125240.2558577-10-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3B5D7C000E
+References: <20260427105810.23761-1-pbonzini@redhat.com>
+In-Reply-To: <20260427105810.23761-1-pbonzini@redhat.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 28 Apr 2026 08:58:33 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUvehWeTwdN1czjvv7OjGsu_XaaYS1R6Tg557mDqP+fSg@mail.gmail.com>
+X-Gm-Features: AVHnY4IUbWltZt4Nuljx-hPEgpXnbRcqSixeYk6RCQC_1EScDCPPRIuQFIAQkWQ
+Message-ID: <CAMuHMdUvehWeTwdN1czjvv7OjGsu_XaaYS1R6Tg557mDqP+fSg@mail.gmail.com>
+Subject: Re: [PATCH] mm_types: remove references to s390 gmap
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	linux-m68k@lists.linux-m68k.org, "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: og8z3cc4ccujt7txur4wfi6pyt7k4bkh
-X-HE-Tag: 1777359419-898154
-X-HE-Meta: U2FsdGVkX19Lfp11OV6HPk0Gw5NOxpn2bSiIO+Mp9sJad1zwW7uOKUIZd2AYeK+TiY+kKQXh2kS42JeHwtO0q988rS1rA5+FZB+uD05ZCP8/MOZIrFkUCY0tgdes1ieYOHtzCDPGYsQJXmqQ0n5VCKVzhUppfUH9Em0m+wVaUvaJ6rF3A2L9i2kgPfGU3Wufo3ObOYTvZzLzCPjgHFV6njim8G/2htcHFU6bxlGNGM5JsPRGWzIrHqNt7+jnBKWdGRzZ3UVAeHlvaItKxTfRrPRbzMIMmNXc3Z3UxodknD0BYjB+o+ytGmxrcEOhBnm72DbEYk6kI0E9VQK0LUftglbPWabu6koICJdoAb62/FEF30VV9D7lzCiQ0Z2OaW654jJmpK3mS6zbW0jthB2HXwpUq69YYyTQPecf/Wv/ijGCJ2LIAAIefHv9WZwbS42rp9oZnJooGFkGFKVi2H0ZD3MOvBkcZFDCzXvqOJWjNw9EcfZ9iXmUoZ7BWGezbQhmRzZdMvdemDuGzmvED/YF+xMaDVC7qvYnyneOaRc/mCZlwzi1Ra8zT2ZJ7Un36U5lUfgrwceaQXG9iEqL/UWt/kS+SKlxoYxhROtHW4Cqg2LK125uzvp/tmE2vqP5j5tXBGaLbKbj4DcUvBhqqy9Ntd4esgsYphOvpQPDV+B5yHEXneV5OVzGqOJ0/QeWRUwIX1Jaat4i9wflEvOu5SPhIM/6S7eBCyxdZLy5a8xaXVoqQoCCVX4KxONY7eEBq6IgyGsNJsqMeas4kzhbjzWDr6BzkOglI325k6AUvz0xQuV68V7bDEHyVXtPXNKKcSDtGAIylzi8gndcG9dv7FYxDQSQwmvvqmCGel2yXaqLcbsZtBRHaTu5yZ2S0M6yCQ6qF1IzsCSOTbxRz0nuFZP1QYIEMrL+BDw646l7EnS6ybpjU6h5Nh4YZGKC4fvNymQtky8i11Qq8YKVQcXAuEY
- 860GOmzA
- /asMVBjEWnfE/8uJPonM/hIsjDvsUlkGIE35cBF4kgpjpljQUlibBvPlX1KvtHS34ghHUQr3TkVRA2OUSTcdCjO/hqVlrV+V85K1+HjUgVhuyqaSaBl1R95rSrbFZUv1oCZdhm1M7dnJPgoQN1L9DrCL87hccSyPHHxiv4THZSSgK8ZGZORHxwoulFfBgBRJEwOGNmfO8dcUcwDFJixE6o2Y1MrBUB7SX8xehWBDnBhcfzSLZyJ+fpuBsVA7sE6mSpoBLkyw7wCevMIbw8B8alfl90eq5iVuPzG17E4wiqxZPreRhtLJaSvRV8LhIVO14u6yuPmZ056gNFBSG04rv78LiNetGOuQDPBF6
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 82365180008
+X-Stat-Signature: w9ndfuzqgapiofdrsi4ft5471tqasg7n
+X-HE-Tag: 1777359526-948599
+X-HE-Meta: U2FsdGVkX1/v0FrgW+WFuBKKvy9xMJrmhac3ZV4kBFxi05w+gIixAvsxixL+NnQt2KAYyj5x1fSENfl0JWaIH5+1R9TdYVpUtzTL77sCmZQhvs6/fBPJ4kDyfalx0mlSvxBC2lESFWMqQqVy1mrnhhGt/rqpOImLZBOeSm18W/yDEIru3F/gqpBVOx+LhGPgLnZHpDOuS5+4sLjb4h+kdcejLQOiFboTHIun8ORAwtwVHTPx+4aa1CVNARLlM71Mizg2/u3EeY64TgKwZl81+nlc1SKTtbjmRxCXtszI+r/lnmNCiLkTM5Xh5upwHE1TS8AWGiEYbYQid0ntdUo44t51JyUWkxePpAREEiTEvAmfhzggAr4N2/2gr1RPsH+gmS3Gdr2DeKxm68uOSAiRKDXC/kZHpYamQktsGCtynTiePM/VaN5NkFJGyqwJtLRwQoVtdBmK4E32ZtujS2WSACj5SYpN8EICz+uQEvyHAreOvqxO7GuRpLwaCB+H9Kos1Pd7vQjawvrQL9tijYepSMP0vxpdUR8q8eU4qWd+W/kZbvjAcbrO2gBkfbMWo/yyTrKuZ6QM6zEIkYFDm/30OaiX84j/CwMhKmRQKs+gvXn4lT3zAY106SbUP+Z0kq1QhX6tLWyEhdt2XDIursnULbG/kxsp8h1SSX0IdEhBVHOzWfk23YKvX9drfKCusTFLrua0S83Mg7VoBOkPLOCsB3rrVF/1E33OoOPP+NM9/JT01I/VzqoJMszYVjWB3L4ZN23J65M1lO/dvyRk9cqJv3YgXHERB3abkWSSaRif0DDxFxBPQmwECZFIK3z1doJrBFmlMhbFawTSyoP9hlrkp/6p9QgP2J1qd2fub4KBexnWG7HcheP4QoS02afrj0fmu7jqnUYWZVfNRuiaisevqa+psacl+Ztpy3QqJ3rghFWDfYWC8fKovn8GmeTScLK2L3jow7TEkn5TEn7etwX
+ Bner55zR
+ d0jmgLgN3hBN6Y8vSQzVRFcPdlttAu/vwKXAOd5d3NTo8iAFlCPGc7nHE7t84XFYR6qz+M/AuXgzSB+638UzOeNRCEFLJilNGs6fWhqaL+21eOHFOXkNsWmbQOzlTAgpKvOfbk344XEUmEWrVppq+IKNJXq+NtLmyjt11Xy/DWJHQAIOBv8aojYkReQB/J7C/I+nPBa6hU71YyrSd7FZhrQafAw3JUXYGFjLGAPnYENq6HMazx+mT+pnog7UsUyfCEsCmq80hXSGfvc6+Jog3msKeGbiPFXSGFUIqlQrttBM4v8b7XGwS2RsdLnS3bIfzxd/91B2WwfMC5YM/Ih17Z8fSiwsS3+c3AIpqHkJKNCPMS6ToI3lW0EDWL5xKOLqkfT2o8W7BOr8E2MV4S0IrgPtX2cRTLq+50mP1CrF1TmXCvjTYl0opduApafM/HvaqqD3SHQ+cAnb5xe86+1SjVCLBGLtOnmYmBihoaU1DiXid71rZKZx9gkSj6kHd95jugkHZQIr6a0pRZnNG7N7ts8VwMCEr3hFq0kSRdnrXf94oe34=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,107 +111,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 05, 2026 at 08:52:00PM +0800, Muchun Song wrote:
-> When vmemmap pages allocation or usemap allocation fails, sparse_init_nid()
-> currently only marks the corresponding section as non-present. However,
-> subsequent code like memmap_init() iterating over PFNs does not check for
-> non-present sections, leading to invalid memory access (additional,
-> subsection_map_init() accessing the unallocated usemap as well).
-> 
-> It is complex to audit and fix all boot-time PFN iterators to handle these
-> partially initialized sections correctly. Since vmemmap and usemap allocation
-> failures are extremely rare during early boot, the more appropriate approach
-> is to expose the problem as early as possible.
-> 
-> Therefore, use BUG_ON() to panic immediately if allocation fails, instead of
-> attempting a partial recovery that leads to obscure crashes later.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+On Mon, 27 Apr 2026 at 12:58, Paolo Bonzini <pbonzini@redhat.com> wrote:
+> s390 does not anymore use special struct page for its shadow page tables.
+> The honor of giving a special meaning to pt_index is now m68k's, so
+> rename the fields and adjust them for the desired type.
+>
+> Cc: linux-mm@kvack.org
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>  arch/m68k/mm/motorola.c  |  2 +-
 
-> ---
->  mm/sparse.c | 37 ++++++++-----------------------------
->  1 file changed, 8 insertions(+), 29 deletions(-)
-> 
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index effdac6b0ab1..5c12b979a618 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -354,19 +354,15 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
->  				   unsigned long map_count)
->  {
->  	unsigned long pnum;
-> -	struct page *map;
-> -	struct mem_section *ms;
-> -
-> -	if (sparse_usage_init(nid, map_count)) {
-> -		pr_err("%s: node[%d] usemap allocation failed", __func__, nid);
-> -		goto failed;
-> -	}
->  
-> +	if (sparse_usage_init(nid, map_count))
-> +		panic("The node[%d] usemap allocation failed\n", nid);
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
 
-Please consider using memblock_alloc_or_panic() in sparse_usage_init(), it
-would simplify the code even more.
+Gr{oetje,eeting}s,
 
->  	sparse_buffer_init(map_count * section_map_size(), nid);
->  
->  	sparse_vmemmap_init_nid_early(nid);
->  
->  	for_each_present_section_nr(pnum_begin, pnum) {
-> +		struct mem_section *ms;
->  		unsigned long pfn = section_nr_to_pfn(pnum);
->  
->  		if (pnum >= pnum_end)
-> @@ -374,16 +370,12 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
->  
->  		ms = __nr_to_section(pnum);
->  		if (!preinited_vmemmap_section(ms)) {
-> +			struct page *map;
-> +
->  			map = __populate_section_memmap(pfn, PAGES_PER_SECTION,
-> -					nid, NULL, NULL);
-> -			if (!map) {
-> -				pr_err("%s: node[%d] memory map backing failed. Some memory will not be available.",
-> -				       __func__, nid);
-> -				pnum_begin = pnum;
-> -				sparse_usage_fini();
-> -				sparse_buffer_fini();
-> -				goto failed;
-> -			}
-> +							nid, NULL, NULL);
-> +			if (!map)
-> +				panic("Populate section (%ld) on node[%d] failed\n", pnum, nid);
->  			memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
->  							   PAGE_SIZE));
->  			sparse_init_early_section(nid, map, pnum, 0);
-> @@ -391,19 +383,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
->  	}
->  	sparse_usage_fini();
->  	sparse_buffer_fini();
-> -	return;
-> -failed:
-> -	/*
-> -	 * We failed to allocate, mark all the following pnums as not present,
-> -	 * except the ones already initialized earlier.
-> -	 */
-> -	for_each_present_section_nr(pnum_begin, pnum) {
-> -		if (pnum >= pnum_end)
-> -			break;
-> -		ms = __nr_to_section(pnum);
-> -		if (!preinited_vmemmap_section(ms))
-> -			ms->section_mem_map = 0;
-> -	}
->  }
->  
->  /*
-> -- 
-> 2.20.1
-> 
+                        Geert
 
 -- 
-Sincerely yours,
-Mike.
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
