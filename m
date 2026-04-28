@@ -4,91 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D1AFF8868
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 10:05:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A204FF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 10:06:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B83F56B0088; Tue, 28 Apr 2026 06:05:19 -0400 (EDT)
+	id A4D196B008A; Tue, 28 Apr 2026 06:06:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B34BC6B008A; Tue, 28 Apr 2026 06:05:19 -0400 (EDT)
+	id 9FD2B6B008C; Tue, 28 Apr 2026 06:06:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4A9E6B008C; Tue, 28 Apr 2026 06:05:19 -0400 (EDT)
+	id 93A306B0092; Tue, 28 Apr 2026 06:06:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 96E9B6B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:05:19 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F26CEC1E22
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:05:18 +0000 (UTC)
-X-FDA: 84707531916.28.D8932A1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 60362120005
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:05:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="vG/WzYHv";
-	spf=pass (imf29.hostedemail.com: domain of andi.shyti@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=andi.shyti@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 86E506B008A
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:06:08 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4374CC19F6
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:06:08 +0000 (UTC)
+X-FDA: 84707534016.08.80A890F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2D9F61C0010
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:06:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJzDj8L5;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777370717;
+	s=arc-20220608; t=1777370766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pc9V1guAjpY6hcCWkEhlDkaJeXpZ9rqyatqPfyRc7ws=;
-	b=nBjD+QOKrVD1IbsCd8Q1NBvvxYW9gtDSor9psp09J+O+Q04g/DN3UFGPQMWyxxsatf1WN0
-	FV7FhvpPjZJMH92WGPUx4bCOMGpCX47A1J7LGRTl9M3KXoB6V4wqdSaxXSQuMzPMxEILp1
-	JPwzcvIVmOvZKtNdWKcLs3ZFXLckAik=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777370717; a=rsa-sha256;
-	cv=none;
-	b=hOQKLqSq+Fx6JZ/q+Gr/EQPQ9SA59RIjgCzhxfsPkjRUwPLDAVX5JZ5sKbbyEkatxc7b/a
-	GXk1AzW0ArDJUnpJzWwLRsNRgCz6060Z9EpiHmIy3Hmhb9bdPOS2g3ut1rXWL2IlGpLoAj
-	Q+yyDGluR+r6qUbtLG90cvVH8nGMgGE=
+	bh=cm2CCUK9Vy1tdhvoAXUcIuQ7lza4eisQbA2cYHF9+hM=;
+	b=JMqAzs/Gd/EIey0+S/WTiVKg3Ct+D5tauxORjFka4hj7eEX42mFqHMq7UGpvK8+awhDI5P
+	M8upJg4/BE4DmJaElznnp1GffSp3/RGrwdzoPi33JwFBb7pyFInRegQwJzmbDxm/Vgv1pX
+	+WbaxqZpFjaxBbmKsD/xTUP4vjUJfvw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="vG/WzYHv";
-	spf=pass (imf29.hostedemail.com: domain of andi.shyti@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=andi.shyti@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJzDj8L5;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777370766; a=rsa-sha256;
+	cv=none;
+	b=mLqQSZ6HHmUSGTka+s0bAlbdeGS5+04DmYKSkmsYcyUI8O+9QIHSbgm1gbLQ/lWqa4zLFg
+	kmhDh5nxgQXe0ygYEGb520qEGOLrMoemavRFx1NrQt6b3Lg8mjF5fd5DV/rhgHF9JIIS2e
+	GxSseoS12Ff2/UXsU023AC8EguaKnh4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9E07F60141;
-	Tue, 28 Apr 2026 10:05:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB50FC2BCAF;
-	Tue, 28 Apr 2026 10:05:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 00D8744965
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA248C2BCFB
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777370716;
-	bh=PMHKsltO7uhCWPnxhy5s2BeEnZwPfjveCg8V9/Ctj0k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vG/WzYHvsXBRMAmai16ySAgggPZGU8MpWPAZWv9sWPMFTh5ERt2inEMiDdtoi/aR4
-	 FI++YsyUaj2kd1OSC6Dr0o2A7MlUN9vgoI4RIeYUl3oVe8MHcTtGBJYGHNxb2eI3gg
-	 zdjTpZBT8Li0oVvjexA0TrDsq9jnKiEsOQS7LrG2vnMM1hPMaP8aufj0UWcPvH/DaU
-	 3WB5kHhF4+IDva8AOB/bnULOD/+AIOYZ+RYK9RJMUqYSV4u7y0BWh3aSgFz+VXCPtv
-	 Cd79m761OIkHPLDloZQUgdwQVv9YA+cfPqOIMcvXUEFTl5et0xcJHHtxxcLtKUxvfE
-	 ZmmnsWVZV3kmg==
-Date: Tue, 28 Apr 2026 12:05:13 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] mm: Introduce zone_appears_fragmented()
-Message-ID: <afCGGC6MUi1m-Ej5@zenone.zhora.eu>
-References: <20260423055656.1696379-1-matthew.brost@intel.com>
- <20260423055656.1696379-2-matthew.brost@intel.com>
- <afCCCuLglfi70Tgq@zenone.zhora.eu>
+	s=k20201202; t=1777370764;
+	bh=cm2CCUK9Vy1tdhvoAXUcIuQ7lza4eisQbA2cYHF9+hM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mJzDj8L5BSAAysJ71f0nJHzksqR0AW+KYoQLRM5iwA96n+RBCHZxCCOQsbWt6lD95
+	 Ys5WxLME4zyiMQEcEIH4RkkWQKHm0bMjknkoytSYHKzhR/Mz/6dTjF2blQE1GFQ/Z3
+	 uSxSFPu7r3ciCOwao5tiEizf239lqXFpAjfQzyNzIBWQlrWUfVJyhuvTFkiM4WqqsE
+	 LC/4PxzUyaDrArS3DAzvSAFPC08w5Pn7Q3aGGsLlTRC14b9fB0ooBwHNrkJr3KCwQz
+	 WSz2EgjgNX/2LsACp7Ks80nehKVI1eMcRUNz0ctasDDvBgV0+vt/cBZC1ZdMQZMvG2
+	 2J6mCZt0WA4HQ==
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8eae9229110so1511394885a.1
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:06:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+Tsz1T39oNAIQr1H+QhoPuvlr9rcvRYD2Qg4Ehj5Rf7QWWuHgz31ZLRc2c3POZcUkS8n7Zz5zGYw==@kvack.org
+X-Gm-Message-State: AOJu0YxiN1q6DVkrTFQgQ9QqVXcoPXpUjpJ9blTWb2KuJBn6rTWOT6VY
+	z8U7PlpT2f6TiUBbH4Jl8YZtQVbIug79s8MIBzDgo6kGHFwFNxRjVD89t1o1Px8Hv/QOyUWBN1W
+	ce63GmufL1UfWlY7POCvJtmEtVcU5VcE=
+X-Received: by 2002:a05:620a:2808:b0:8ed:e1d4:1644 with SMTP id
+ af79cd13be357-8f7d6c49f3bmr289925985a.3.1777370764070; Tue, 28 Apr 2026
+ 03:06:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afCCCuLglfi70Tgq@zenone.zhora.eu>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 60362120005
-X-Stat-Signature: brnk9bgiaz43hd1ixcshxackj75jazbz
+References: <20260423034917.8234-1-baohua@kernel.org> <ec08f25f-1049-4fbd-8a87-0df135a867be@kernel.org>
+ <CAGsJ_4wn=o5ZCNPGguCCk=19iYZr1V9Jup0NdRUKXySsKfD_4g@mail.gmail.com> <17a3bc38-0d97-4316-b2fb-02a91202c504@kernel.org>
+In-Reply-To: <17a3bc38-0d97-4316-b2fb-02a91202c504@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 28 Apr 2026 18:05:52 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y6_G5BPZKs3Mg3s2ygxGh1o22GX_3wEsM5hs7WX_cOhQ@mail.gmail.com>
+X-Gm-Features: AVHnY4IwxVYPFGGD97fFpKRbwZhRzR1g23i1gWoOd9B3I-Zb9WvjfNOjUuwrW1U
+Message-ID: <CAGsJ_4y6_G5BPZKs3Mg3s2ygxGh1o22GX_3wEsM5hs7WX_cOhQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/huge_memory: Fix outdated comment about freeing
+ subpages in __folio_split
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Youngjun Park <youngjun.park@lge.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2D9F61C0010
 X-Rspam-User: 
-X-HE-Tag: 1777370717-31858
-X-HE-Meta: U2FsdGVkX19W5JL7Lb0S5+siWTY8JJzBFPZOwjiv9bPweJ0chustY2UwoC4W7cTFOm3qXdSZMDfuDK03jifloksxp9I145cnvy9U03NpFSr1xGyYsvPkEZkgD61SCQgXHXtXS7XHFS9BsnIJ4FF1R+NDv3iM+raU1f2w+N8ywpQNp+wVYXP0tMDEgRXxkDzYibnK2LBHGVqVc58BEej/+z+pIxwBYoFaM3ux905F9fZzmMkQBsSgCQ//jncgdfI80BfdSqqhrjfI6DhOJIU/wyPhznNFgHkbgTvpYE725ci5EtcuwVtFIc5hVcwJ1fIeU9zOhmx3Hqul+Wc8Gb1+xFZt7VJX8Ns2GT/T12XRyqreeZjdcH3jau192INc6XfmaaMlbVhjGEeUUrjgKUKTOPK8qAvoQUmqcix+E1bOyJpdG8ChK2c0CZSLmcL0Lm3Iel2xUQRKnVQ+KGd0xKk+ftmQzPwxE3H4AYIUzXXVGJMAiivIsWIsdgjb+ESQ5zyA7GaNAMdl/a2MusLOP6Xh0uvgYuKQMs3655osBSdWJqgZ78duUDBMv9VE1P3AO0M7SuZ9hVzeka0xXUSVVAdao4k1qq8izllmdttGTxTS8/kaTj6Iccz9DDkKxverORd8WGvRgpa7tebXfEqZJxlZJw37kEoJ8iKopArLB+v6X+rl0i+iwEVC7Wk1TEZEdZRJhE0ZOHzha/malGtr2eaZs039CYC5d9Tsv/YnijcgguQ482sdG8UOt24UY73EeA97p7/zElDfJw2+ZzHPVaHo5DSFKH3kMq9TB1Wp5y2KsVdRt/QmeRQ/S/QfnnFXazylyum1ZNpaWTgKvK1UPTB1BqPntMUbiMBfP+h8TPZRlArq7yKDhEcW6IrH1FgvtELS40y7C1USHVzluYTZNdtHYhxSP0Er7FsNijDAU4Cxf1PEeakUTeXgwh4b357WE1+C58x3tum/K0k1Z1nguV0
- tqg07TLr
- VwCnZYleH6NlbQlnkYjPRbRBTTjk3bPZUjJCW9iEUDNZU1Z5EJeXF/0wbgPzAU72krM+kYJxTA1cP0WJvtA3SBKAzB4kb2gYlNghNE1RjwSFtCS9PS1zOl4oyYMuj1a/Y6hvUMAWZA1CZyIArRcJJMYwc+94GA9W9+d7agHBhvp0NNXxwSXUZFcpSQxwx8a+LFk4OI7cJ+VCrXXrRJkcuZ5QR0fAtsaCfQJ54iGpo1dLSQsx11/WKTwZvndx0KZfnuxngT9WFuDHUrIA=
+X-Stat-Signature: raxdtgzrptw5r9n6pdgjqoiegwarnikw
+X-HE-Tag: 1777370765-377125
+X-HE-Meta: U2FsdGVkX18ovnSPllEvPDqiMdZeOJm5jCeZvtKTMlPbZy9PrmePlmMPgmzwXStqcRUE9Qsb+oTVaI5gtmO3YeweL9h6Tx34+cWMLrh1i3rKlZQfwkvpsn3WC4pxoHXHt9xMw5+nDCk3nLx/NV/1nKOQdwdZWpPQGSv4+iBP6l4iijybPkhtXKVLurOBSxW/t740ree5Yg5tD6vGqJ/cAOi3o96C9CncGxvKld3/KwHLbZT15CGb7DmEsqs3i+0QJyN3fySHIosxrYyIJhJe0R8XiNGJV/RBuutSlcnFIyoatV5Vs3iUIPB3FVlHoRjpEx8eXIGaGPlmvMPfOEsy/1od2JUXxCTWaGnxOU576mLV2WXmpch+w/gFKft+ZMqLmqWOqUZqdDnbgW8xdbMco7wX0dDrtgBI2391PVqcvbaWlOYeLNbbxkcaR0FwJwTYVpvzuKaQiyIWJUdkQIxlZsFN/uvE4rxa5ZC8/LX3bGkQJOEoHO1fjyV4GZbxXtGjvZMQgKjUQUBEjy4um43JKai0W42znGAljbZ35TE8dJJgmYkW1VSjGsvjTjcxFpRR/jO20Cdg9LqvX91BszqzEw23qDYYVKiwoIidAhwZY15XoXAGklgILQyuGnJOg3coJJt+L9yP9gFs+ZHFmMdMYF84VNznC1BD5dusmoDxUJ7Qs+2zqowkcv5tjdGG4xS5DhldQtQGYQjgphrGAbEku2ysindzRKz2wivrGdfOLci2l//kP1UEmbkVpksvBNJCoSrbW7qGxg8srrAhRJdRhot3s+KwkFF3HV9Dc5gDVGsvdmnzw2tmoPEI9nXEs9bf0l8qWCl4GCA2+angjV4B4ojL2qYQ067sBBhrODnUz8Umhm4z6pxzWImD+/kXuGHvcNWDCMArgNOEZEflp8hc/Mf2O0XwoG9oD+fAOev8euI2EbOXeCWfY2calAoCNteaFJJLzmI1qGDIIlJafsk
+ Akbqx0Yr
+ h5q88Fiej30luvSMMrQR4nVh9okT63sD4yp951c1CNAwJ2LcxAIw3rQTm6LsaYw8hV+aNsADGF+cjMqNMweB/OVhSjSe8ZWvIn8hX4WL0ZFV5xQYruaudNqOjL1gw1LvW9+iWX7DhUWH3RE0CQCS4DF90OY9HAyqxFC16Jdk/M1xC/9aV2j+Iu+gzx/eZS95w/ZvKtTVx0FG0Im3gRAyNXulwySoou8dmdv066310q1Xmerl1sCukEXKoWblSdyGyJYc6iHW0P/2q6k2PemFif0qiVBMsdp7wka9+qR2yTOd6I/ED7woRZ9FMfye0kH+U6AuGJBzwjJT7lNAc7m063qss1mKoZNipx07A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,14 +110,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > +	if (zone_page_state(zone, NR_FREE_PAGES) > high_wmark_pages(zone) * 2)
-> > +		return true;
-> > +
-> > +	return false;
+On Mon, Apr 27, 2026 at 3:42=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 4/26/26 22:42, Barry Song wrote:
+> > On Thu, Apr 23, 2026 at 8:36=E2=80=AFPM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 4/23/26 05:49, Barry Song (Xiaomi) wrote:
+> >>> The comment appears to be outdated. First, add_to_swap() no longer
+> >>> exists after Kairui=E2=80=99s commit b487a2da3575 ("mm, swap: simplif=
+y folio
+> >>> swap allocation"). Second, partially zapped folios are now always
+> >>> split before folio_alloc_swap() to avoid extra I/O, following Ryan=E2=
+=80=99s
+> >>> commit 5ed890ce5147 ("mm: vmscan: avoid split during
+> >>> shrink_folio_list()").
+> >>
+> >> Not necessarily. We have some scenarios where we have partially-mapped=
+ folios
+> >> not detected as such as of today (with CONFIG_NO_PAGE_MAPCOUNT).
+> >
+> > Thanks, david! would it make more sense to add =E2=80=9Cwhen
+> > CONFIG_PAGE_MAPCOUNT is enabled=E2=80=9D at the end of the
+> > sentence?
+>
+> Better to phrase it in a way that doesn't even require these details :)
+>
+> Do we even need this detail in the patch description?
 
-P.S.: If you want, this can also be written:
+What about:
 
-	return (zone_page_state(zone, NR_FREE_PAGES) > high_wmark_pages(zone) * 2);
+The comment appears to be outdated. add_to_swap() no longer exists,
+and the explanation of why we need to call put_page() after
+splitting could be made more general.
 
-> > +}
+Best Regards
+Barry
 
