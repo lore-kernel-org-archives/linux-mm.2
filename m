@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECB62FF886D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:43:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59680FF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 645F26B008C; Tue, 28 Apr 2026 16:43:01 -0400 (EDT)
+	id C14586B0092; Tue, 28 Apr 2026 16:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61D8A6B0092; Tue, 28 Apr 2026 16:43:01 -0400 (EDT)
+	id BEAB76B0093; Tue, 28 Apr 2026 16:43:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 533886B0093; Tue, 28 Apr 2026 16:43:01 -0400 (EDT)
+	id B00366B0095; Tue, 28 Apr 2026 16:43:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 424006B008C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:43:01 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E07694044F
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:00 +0000 (UTC)
-X-FDA: 84709138920.04.5CC0586
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D72D6B0092
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:43:07 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C23C8B8CA
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:07 +0000 (UTC)
+X-FDA: 84709139214.14.F656FFF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3912980003
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:42:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FlakYzFG;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7D31EA0003
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XumDcMVz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777408985; a=rsa-sha256;
+	cv=none;
+	b=mHJ/S4Ii7bHk/85090zAByLOEhja1PsQeN5FkWnpP2ISNq1aSiBfX4ZK9nmArOamH43U8J
+	NAT9TAnKCAnrB/DqBGWsgxaeO75Q0g+YxtY2BVpjFIL3FwKWbHfX6IOmW8Ba7sZ9G5Kijk
+	PHnUcHX0LH5ekOIhUmWZhue+GhAYbOg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XumDcMVz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777408979;
+	s=arc-20220608; t=1777408985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aPhewVopcZgyuNnvZor9eUMfbYUXNp7puYe2VCiWTAc=;
-	b=eY3juAmdhc9ruMXtqJ1vE0yS9gAdsAWjUmOczt7AzBDjePphBZM1p1bxzj6Tj1NwrY0uCT
-	jzApy9OFL8L9M9YDdQaoXhK5tSDIOE5gJqZ3yUMRr2i1uIpcWX6OTNlUSpgu8TtfKdQI+F
-	cWE9UDf2Kc4ed8LRdJS4MI5YJ3bEcKU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FlakYzFG;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777408979; a=rsa-sha256;
-	cv=none;
-	b=kFDh3A3X25Hm0ex7gSiBabrzqQrKcobjAm/mShmeS3COkAhLweUa4g0+VF9yGp/VrMuIDP
-	TNcDmEWoLMLLpXRiNqHwIYfuqISgTfy7BCaAyHRV6FydA9R4X7OFG9VJ9r5R56uJxNFXRN
-	FrjunvdnpD5fwIoLGmDoR/zMB+SlZWU=
+	bh=0NcWRhg4rjaKPFQxBxxInrggXExh/g7FiUuwUnc80ek=;
+	b=zefU87fLPDiRKq372ueBepFwUr3Sjww+DVOCJ+U5ytx18e8LhUk4tQVxxach63auy7ljc5
+	p38rST/ioF45wEtRnz1DnuCWDZ/hBjLfDTdip+e8gIH4d5WHDIo2WWXml7jd4j5btOfKnT
+	JN7GBXov9yG98+csuSdgKYX9Z2DSdrk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E15FF42A2E;
-	Tue, 28 Apr 2026 20:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4119C2BCAF;
-	Tue, 28 Apr 2026 20:42:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 79128408B7;
+	Tue, 28 Apr 2026 20:43:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE4FC2BCB7;
+	Tue, 28 Apr 2026 20:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777408977;
-	bh=9Wa6cmQ8SR+FAIiSEI++oU+tCSCF1FiRlP76nYdhufU=;
+	s=k20201202; t=1777408984;
+	bh=gbVKoM4MIVVO1d1uh4/TMxtNfLZkzsd0Lj1SU7TW/GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlakYzFGRiVmn0uV4gIwdSBEOWZkQoAdQSVzm/1V6MlS/ZqTqb5SIDMHqBjY1+40J
-	 8HEnx0nNE4umIeaMl7XnC8OMFE9S07ldbrhokMGfvPLF29zW6dfzzd0ggUKfT/pIHk
-	 dKH//u72yXeZhMQ5L7hVKQziZdKfzaKJCD87y7AmeAMnhTunWQ2o/j6FxVtrsW6HKP
-	 dnNoVueV/JfBBgSNlrYmJheNe5nRwJN6Qkrx710AbfSMr1zk3oEm1V1ltKnclL+nK7
-	 akJQ9C55LTnO3cN32mS3ww0r5mVaGm18NVren62WP7pKY3v9wTsEkqJj4mZn17rKTC
-	 qgYQgPCQXxbWw==
+	b=XumDcMVzgxhC8x7yeu67yd4mcOlveUMWkL8TW3aonrdHfKYvP5i+qhJ3qZnVImkEV
+	 cxnQbpV4KkqEeMYqbl6Ly5shuemW5JZDUVV1koqcVRwDkJbAf6H4acEWIB/PMZzpU/
+	 R/ecz53cklHv4Mv+h3YleugbD5HpHfUzEUIso5OwSmbqc7AVjJ4OczGI34cNVXAHgF
+	 FSW2ELRf075BvHbxGOc5KFpsY/gJjBEvQ8KDP6oCCcUBVKgNuDd//1V1zzYu/ovdym
+	 d3Lr19hVyOyyX2N/cbWFDJMqldhuerEO901JC5oeA4EYTffEZE3j5gT1Jm9KNQFHoZ
+	 OjbP0lgDZpaHQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -91,22 +91,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 01/54] selftests/mm: hugetlb-read-hwpoison: add SIGBUS handler
-Date: Tue, 28 Apr 2026 23:41:47 +0300
-Message-ID: <20260428204240.1924129-2-rppt@kernel.org>
+Subject: [PATCH v3 02/54] selftests/mm: migration: don't assume hupe page is TWOMEG
+Date: Tue, 28 Apr 2026 23:41:48 +0300
+Message-ID: <20260428204240.1924129-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260428204240.1924129-1-rppt@kernel.org>
 References: <20260428204240.1924129-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: k8n3neiyxuq1hkpe6sgn6nsnprcgrg81
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3912980003
-X-Stat-Signature: arua5baqydbo4aznhtiawn55d9o4tz1o
-X-HE-Tag: 1777408978-531193
-X-HE-Meta: U2FsdGVkX18hVEMh9gJAfDY+qCTXU4ZssAdqJ1SaMBI3+V6JMiEXlv5PTlXz2n1Ne7jKExAGDzEHdxJ46ckc/iQZlYVsY/k1Wr2cnnc77cbc5Y4zodeNTGs0kS9wmSLCxN4lr+yA+hdVwVsDaPHprwUhNCtlQh0xU7bBiA4XSKArLQ3iiw0GyRQaqnp47AgqQf4VeBwbDFA2jEVAAdpkTTXIsfpZPdTu6dg8AmnXsVw282GaYAl+tCpE/OcwREorx15TB2siJ0S1MFCm/qfs0CgMIqCEj8Wsoj1A+ywHM1xY7a/cqMPKN8/i0qZ9jOCH7XQYSG4XJcv0/IVcf+YqcxmaOOTNsUmL1V4pLfWEIz3TC4TS+2fa/xg19h6ZzMZZeSJyOTkjmri/UcB2rSysbl+VWMqXiXOSoIIrqZ4XfJEiMFpjbcUbxGdQsLpB6S/05WVlw+z25NYMeuBKiG6lxn2k2tRtg0SwT3Lc9+BY528bc5DAyQVgmto4RZaRuQ5vSpJ6hVh5ZZYhz6pStJRZMfRB+AKYgwUeowxi9de8jplWesqNaFlhANfCs1c3z4I8YtpMDNrxW3cf3m9QNeLqAFJaCgsxY5i2qdzctW+A6OsdO/FtamYf7rjjRP6B0rYiALDk+nZoe1kM37VjPFWg5B41fS+qNdEIRQY5OalPsMx+bweZg4f+ZzyhvBZhcrBQqD6wlzoSZnnWCimQs99J/YmL7l3+2B2fGewrMaylKUIvHILYh8za4CDL5PlzoVbrp1+e+My/SJhy80+Y7Wea0MUZ2D9Ph22+GXT/vk9yqImne2FX0R7lD4lKOahfDGTOdgyepv/2tF/4ZDVtP+jyc/pDOTpKHBijiKLaUodtSeIeHvNWMNFUtKzLH/6oiIOo5NZvh75j2aCo1hVRHEwBeS9OaHNZjwwXf0VooFrw8I+TgMVX2yS8dwOdaq4x0JxsZ7V5tMIyIolULQY6bdD
- VswMZr54
- H+meGkh+ZOIS2r24pZ67CAb6k/9lbNkYGR98Kv3ujw6jOUmV0Rb+QQ2w0B6C/aBIw1f38Wpfdul6kSdowYT1M9C/SQu+SSv761yEC8kN66lBmSI0cmJKpkhQrNFd90avZjtsmP8inzQJWOgs047h4uViRmOUnU0KQtgSeDG4UEa9I9yNgYLeAnlPEO/SkGWVUNAsPqYLzpYhuiSr3lNxJN0ZMrev0oRqdIf2UWGXPhZbPYcgwfFFz4TUVgdPwS/bL2Co1x+YWtQJpFBdwYbj/WLtPVDmx2//5YOum
+X-Rspamd-Queue-Id: 7D31EA0003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777408985-21151
+X-HE-Meta: U2FsdGVkX1+GgAuNV7bx7p2iS2QsIJBbS1lfsKuDfPtR0rXOWX4mGo/MIsa4ZQTgV3i+JT+C0GuWkDZv6V63z8AbwSPYRk+HJLMDu3ae7ulwobyKm+xmD31Q8iQIKX6VNF0A46j30VxsWMu7aodky7BziFA3+yFkgf7aHjS1+xPOHgGCZxnpHZsywHE6WENJy6d41PKdmdFMXN9O+ZjgxzAzL8uEqVaGSFyGjCvBCvbjtJlGGRoqXkVEXHloAfXj43HvZpTjQmg79XcvSP/NqxQfCcM1wNkVkZ4nxlGTdW+bES2C0An03h3acJZRF2TjeAGKP0qvfHdgL0pKVuJz6YCp/29kg+s1RLRZg0fDrajmlMpjfFby5arnjH/OyJtzMAyKtRp31+xR4uCeM7debsXv7DRqnmy0/gDKbrC86Zbn0jffVcGrL9WlCPuaghVUbCL824knKqaL2OQXCJrqCUVOneOqC8YJsAne4XFv0Ha1RqJrQj3Y8aWuMaivdvy6764qHij1ONA2sUmJrTQyL1KzpRPSKR9N5RyUkhWSQvrHbB+OvP3zpze19ikhXhcu1iFrasB7mNjhsaRVzOYcwdf3aUBmRH5anIYlb9XWIwMl3iMUAMn2EpuGkN7QqtfWQTWvPxyzSb4qdEacQNL96Byq85RuK9dPjIkGCETAnY8iwcreSU4Osn+7FGDJjnpYmlQkIi8l6dOIoSAcgSswbGzGPzFq47hGhRNk0A8BKdN/+9ZRRf08nCufA0Vuv79eJ6hO5nG3jumiJ/wFgFLMcjwGPXAm8cBcLVtv54CdWsm0Sx+zu0GgDnCtc/fQEIWmYPXANGYa8HFmywUMl7Ht63cYKtdKh2PPH/FhK0jxX/WtIaJVPNgryLv3211tAOQwmkj05zue2sxbCSyBgmlJ/B+VuUT3sn9Q2dzKuOcQ2jq8N/yVSSZzf2b/K+ojSiiwRh0nlF7IcQjxalDlF9V
+ oIhq081j
+ 0yn/CdfgGYZ+nQhDy1z+l0bJLbA5vaz4CV/ywq6mq1srY8tiU+CWI7WejcAVKNfkuxeUvHDw6+5YKegrRxj8IXnIaUrfW28nb6sJ4TcjDEDI58B+yx42ZrLeHICzFh7ExMrwtEnH/eKScG3LlPIWz1hSHRf8GOd2Vp1SfDDOLiRuDUhGdqTzpqkkYEzdqEr40ap61KOMMJqeRNoUQrWX3mpjkYKW0dpwditKAR7f7m4c91k2pHOO3oRZwyGbQKfEFyJwt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,50 +116,138 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Access of poisoned memory causes SIGBUS, which terminates the
-hugetlb-read-hwpoison test prematurely.
+migration tests presume that both THP and HugeTLB huge pages are 2MB.
 
-Add a dummy SIGBUS handler to allow the test to continue regardless of
-SIGBUS.
+Add dynamic detection of huge page size with read_pmd_pagesize() for THP
+and with default_huge_page_size() for HugeTLB.
 
-Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/hugetlb-read-hwpoison.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/mm/migration.c | 44 +++++++++++++++++++-------
+ 1 file changed, 32 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-index 46230462ad48..6bbf15f78061 100644
---- a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-+++ b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-@@ -10,6 +10,7 @@
- #include <sys/statfs.h>
- #include <errno.h>
- #include <stdbool.h>
-+#include <signal.h>
- 
- #include "kselftest.h"
- 
-@@ -261,6 +262,11 @@ static int create_hugetlbfs_file(struct statfs *file_stat)
- 	return -1;
- }
- 
-+static void sigbus_handler(int sig)
-+{
-+	printf(PREFIX "received SIGBUS\n");
-+}
-+
- int main(void)
+diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+index 60e78bbfc0e3..7e547d945e1a 100644
+--- a/tools/testing/selftests/mm/migration.c
++++ b/tools/testing/selftests/mm/migration.c
+@@ -184,22 +184,27 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
+  */
+ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
  {
- 	int fd;
-@@ -273,6 +279,7 @@ int main(void)
- 	};
- 	size_t i;
++	uint64_t pmdsize;
+ 	uint64_t *ptr;
+ 	int i;
  
-+	signal(SIGBUS, sigbus_handler);
- 	for (i = 0; i < ARRAY_SIZE(wr_chunk_sizes); ++i) {
- 		printf("Write/read chunk size=0x%lx\n",
- 		       wr_chunk_sizes[i]);
+ 	if (!thp_is_enabled())
+ 		SKIP(return, "Transparent Hugepages not available");
+ 
++	pmdsize = read_pmd_pagesize();
++	if (!pmdsize)
++		SKIP(return, "Reading PMD pagesize failed");
++
+ 	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
+ 		SKIP(return, "Not enough threads or NUMA nodes available");
+ 
+-	ptr = mmap(NULL, 2*TWOMEG, PROT_READ | PROT_WRITE,
++	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
+ 		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
+-	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
+-	memset(ptr, 0xde, TWOMEG);
++	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
++	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
++	memset(ptr, 0xde, pmdsize);
+ 	for (i = 0; i < self->nthreads - 1; i++)
+ 		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
+ 			perror("Couldn't create thread");
+@@ -215,6 +220,7 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+ 
+ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+ {
++	unsigned long pmdsize;
+ 	pid_t pid;
+ 	uint64_t *ptr;
+ 	int i;
+@@ -222,17 +228,21 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+ 	if (!thp_is_enabled())
+ 		SKIP(return, "Transparent Hugepages not available");
+ 
++	pmdsize = read_pmd_pagesize();
++	if (!pmdsize)
++		SKIP(return, "Reading PMD pagesize failed");
++
+ 	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
+ 		SKIP(return, "Not enough threads or NUMA nodes available");
+ 
+-	ptr = mmap(NULL, 2 * TWOMEG, PROT_READ | PROT_WRITE,
++	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
+ 		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
+-	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
++	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
++	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+ 
+-	memset(ptr, 0xde, TWOMEG);
++	memset(ptr, 0xde, pmdsize);
+ 	for (i = 0; i < self->nthreads - 1; i++) {
+ 		pid = fork();
+ 		if (!pid) {
+@@ -256,17 +266,22 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+  */
+ TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
+ {
++	unsigned long hugepage_size;
+ 	uint64_t *ptr;
+ 	int i;
+ 
+ 	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
+ 		SKIP(return, "Not enough threads or NUMA nodes available");
+ 
+-	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
++	hugepage_size = default_huge_page_size();
++	if (!hugepage_size)
++		SKIP(return, "Reading HugeTLB pagesize failed\n");
++
++	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
+ 		MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	memset(ptr, 0xde, TWOMEG);
++	memset(ptr, 0xde, hugepage_size);
+ 	for (i = 0; i < self->nthreads - 1; i++)
+ 		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
+ 			perror("Couldn't create thread");
+@@ -281,6 +296,7 @@ TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
+  */
+ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
+ {
++	unsigned long hugepage_size;
+ 	pid_t pid;
+ 	uint64_t *ptr;
+ 	int i;
+@@ -288,11 +304,15 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
+ 	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
+ 		SKIP(return, "Not enough threads or NUMA nodes available");
+ 
+-	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
++	hugepage_size = default_huge_page_size();
++	if (!hugepage_size)
++		SKIP(return, "Reading HugeTLB pagesize failed\n");
++
++	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
+ 		MAP_SHARED | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	memset(ptr, 0xde, TWOMEG);
++	memset(ptr, 0xde, hugepage_size);
+ 	for (i = 0; i < self->nthreads - 1; i++) {
+ 		pid = fork();
+ 		if (!pid) {
 -- 
 2.53.0
 
