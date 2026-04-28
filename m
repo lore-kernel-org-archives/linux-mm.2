@@ -4,84 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05753FF885D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 09:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44454FF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 10:01:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27B906B0088; Tue, 28 Apr 2026 05:59:46 -0400 (EDT)
+	id A1F1C6B0088; Tue, 28 Apr 2026 06:01:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22BFE6B008A; Tue, 28 Apr 2026 05:59:46 -0400 (EDT)
+	id 9F6556B008A; Tue, 28 Apr 2026 06:01:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 142826B008C; Tue, 28 Apr 2026 05:59:46 -0400 (EDT)
+	id 933886B008C; Tue, 28 Apr 2026 06:01:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 025F06B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:59:45 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A31D940561
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:59:45 +0000 (UTC)
-X-FDA: 84707517930.03.C8DE9F6
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AA9F61C0004
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:59:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AgmJ4X1D;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 852326B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:01:30 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14DE91B95CB
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:01:30 +0000 (UTC)
+X-FDA: 84707522340.29.CAD448B
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2B9594001D
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:01:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mUBcIS+V;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777370488; a=rsa-sha256;
+	cv=none;
+	b=ePjRJmDI7wD0hat44/Bxw1kBqieU6HsZMh6iMcugfB1DDa7DNLf2kkJSO0/CxOIE/2ykHr
+	Urg6PXSJmK9A6hZCy7TBn9S5SxuUHcmf8dcVXjrad/oRDd5SOKIoijmDDK6Mr1VbF77Hk9
+	dBdOMuwmzqVpWQely+y0zydiUd5q+Aw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mUBcIS+V;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777370384;
+	s=arc-20220608; t=1777370488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MiTyaQb0gH/enfcQNGJbMNOh9xViBgr4r/Sr0EX4sgQ=;
-	b=Qy6QJgI3RssfV9onc+X2e5aiuLeYubdJRT/m8EtRdSoIVJdtPXu0nb5mQj3lwSqAr11Wo6
-	6SzwoE7QOqMyJ7duw1fc8yweZZt06K2GhTTSqOen8Fq+gOn3+BMkZzoJKsSw2WhJA2qPCQ
-	m53RlPmmDO/V6WTmlO1e+gQO/987p2Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777370384; a=rsa-sha256;
-	cv=none;
-	b=G/vbpJNe1bPi6AClKUhLCWOKs9UznIvjxwLQl3wBAlNmHnZDiNiKkbm/nVTk0Q5ekZaQTx
-	J5bfi0sgIpLgkQqlXwrqTM+aFkATwW9V0vlgOC99zhwtLyfOJltIjT5G2Dlq7SFMox+5MV
-	ZsBuiF9j0vZdtO6Y5IuGN+ahAHQa6IQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AgmJ4X1D;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 28 Apr 2026 02:59:19 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777370381;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MiTyaQb0gH/enfcQNGJbMNOh9xViBgr4r/Sr0EX4sgQ=;
-	b=AgmJ4X1DAE/4K8J4aGBiJGCx4ShRw9Yk4yo1Nm9esDzMbomO1CMTEJ/p/pLVUlLgcw5JT8
-	XV2Z30hj2JKnllRiwYLkUE5OtVei/iU193jyjAmZqF+ab+HCajouQKbV7RBj6tp8BVGw2H
-	G/eCcKQG4Qs6/d568nEW6YW5nqIjA8Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, yosry@kernel.org, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH] mm: memcontrol: fix rcu unbalance in
- get_non_dying_memcg_end()
-Message-ID: <afCEgUMqhLvrYJe7@linux.dev>
-References: <20260428030621.94470-1-qi.zheng@linux.dev>
+	bh=6QQkVdRIZwiZco7V8KN8H23FWv9G8K8ad5vKyiX7w88=;
+	b=DqW5Faepju1A+ye//rEGzIVGNYvifpzWuufv5JPUs0R3o9CxxnTtBDu9SoWKrJO2RUuSfL
+	dtsPjd2Kk1xpozhGKPyNfN5OO2HIsYPa2pozHS3jjoGPVfp3hrUUhxjrRlvZNIwvkCfEU/
+	PN3+r6AAq3H8raDNUKfHDMHoXqJ/hJ0=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ad9a9be502so69699835ad.0
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777370487; x=1777975287; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6QQkVdRIZwiZco7V8KN8H23FWv9G8K8ad5vKyiX7w88=;
+        b=mUBcIS+V/qBQMudGfqdG5PqZXSxhmeRIiSz/051d71CPpdLVpfkJJkuc8dBx87IgQA
+         djTa9AKVmEcV/MQkpyHfkNAnaSq6QgO7XxHTduDANyhLtB1Y61Sx1i7RdCdvKPNtdSNS
+         UnPq1Y1PBqlz1ggowuGs5+6cPvysFYXIBN5UIORzSscnbAWMp0rEcl8ADK33PzjDPUaV
+         gbKSBckxw1KkHufm179DhsUprSAScDQGcI5eX1WSC1VvORukwwANkSSyDWgazHArbz4J
+         R+uO/ZmIn6z2Sw7r335Cx/qHivLcDbN4Gh0a0fUmQbWL95XHvy5ThGpZrbUWC1VHq1Ya
+         KkRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777370487; x=1777975287;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6QQkVdRIZwiZco7V8KN8H23FWv9G8K8ad5vKyiX7w88=;
+        b=QCbwSNCSLA/hj/VGx8bNfTMAwabcs13QqLTr0E47Vl21mQOMiGH8E3lAIb3IR/KQPu
+         1DyJ6HLRLvGG/RQDjoWddFi7XnU+eHACk7co9kVlnkhhZSPaI552pAfNyfvaGwVOxLT9
+         4ZjWxsPYjau9Lul6h1RFzwqiN7/pEnQDT+q1Mhowe3N5Yd4NqwsN2Nix6Nki+aT+t+wg
+         QjQ+3oM0ke66LD1i0uMHDNaymtvlo3bguAhSEkuI4H8uLJcS/tPWbtVwuhM3grVQoJ/P
+         bBsej2gPIhgYzxnjT24ZPaxi+Pk+lWRNS3cNta9/hpQBiSh5xBCxhC7RGbRBIuAjcETF
+         MPUQ==
+X-Gm-Message-State: AOJu0Yws+eR2ZEWbLLBPKhpHJH1+Xy03Zl5/95AQaL4IZM7jpKqbQdPG
+	6tjHxe8zXqHuOaTzs7tGn7hEdgdHLkp8opFCLG2HXREQtU+G2PAkgPlX
+X-Gm-Gg: AeBDieudWja/iLkyz93wNdd5h4MUPw5Nyf5N9xnsuZDAZKWXZLFRYG+mkEhZx4SnjnW
+	1VBJB+gcgAFsnGJ66qaLyOqsWLf+B8lFSJawQZZn2PpwhJ99/FKZM0ewv1M5fqKOcnNDyQEgiWN
+	f+Go0ebJt57Rps/hAvnZf3kKlrKMnXLmqnjoiKhQ89mLDIwVII5h6T9HVSk88cBcDrivPPbfNwU
+	4TfrHZxC+8T6ynxYP3BS6/ABwLlCXRum51SyrjqlxblrH/mawZWjf8jn58TXWHYciIKXs5JFeGo
+	oCzJlgEHPW/JCCRsD1mXtp9VwRZ9khpkhVXtnakCJBgZbVGxCCp2cMQiKdPqE390pxkLNeZxbx2
+	6vD45zspogopmQnoGFrpLSZdsEwH4huulXRSkzk95KzuIVPFCx7TgV/oPHAp+n+SLNZK16bBCSk
+	4loy0oXIJiV1HRCJAKzfgOvIUtkH5L2d9i33+YJGvT
+X-Received: by 2002:a17:903:1904:b0:2b2:4fcc:2687 with SMTP id d9443c01a7336-2b97c47e638mr27098785ad.31.1777370482430;
+        Tue, 28 Apr 2026 03:01:22 -0700 (PDT)
+Received: from vini ([2401:4900:8fca:e7b6:f223:6319:a79e:7616])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b97aaafc9asm21801265ad.34.2026.04.28.03.01.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 03:01:21 -0700 (PDT)
+From: Vineet Agarwal <agarwal.vineet2006@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vineet Agarwal <agarwal.vineet2006@gmail.com>
+Subject: [PATCH v3] selftests/mm: khugepaged: initialize file contents via mmap
+Date: Tue, 28 Apr 2026 15:30:58 +0530
+Message-ID: <20260428100058.62554-1-agarwal.vineet2006@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <3abf09d8-a98e-4f1b-b8d9-77879a8a2733@kernel.org>
+References: <3abf09d8-a98e-4f1b-b8d9-77879a8a2733@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428030621.94470-1-qi.zheng@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AA9F61C0004
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1671sic7ys1q8y94mihfcbjyp5ii3ksg
 X-Rspam-User: 
-X-Stat-Signature: 5cx4uiehkqpxb6giodtf7ybcet3qqdxr
-X-HE-Tag: 1777370383-620756
-X-HE-Meta: U2FsdGVkX1/b967cO7dR43Y1CJZENjdeO4IG1YLhK0HnzA0OwaemQAXUPQdeqsNW3hBMqToeUq/4Zm83Q8IITrdBjME3Gw5tUyuAhEDHH8L2qmgrM/y/saB6gVfygnuDWlQYjbDIXV9OmWHzl1sqnE/hvXBNys3+/zCR5yY6cA0DvOw5UQOYs1+okODdc4rAbQnn5R0vfeqKTAhD7wCZ7uMDfnkzM7jS+mfIkostmFiptPbp4lCOaULlojwcrDeGCONugTBkZBw74MjD6LJ6VIE11uMmBd8lEszZEQ0CyH4mL8hWny4qFYjJmm2zH1WkadTcpkPFIgBRk8IsLu2VTkYLze/klyh/dWB4vEbsfMHn/9ORHVEOfp32JbWVSdchGmKYmsrJ+vxIu+dX2jrONphUNtWi7u4l9H9ckzls6296UJ1pK17jUTi4vX1U/cS7vvKYvidKwFisLcAI+z0//2noghsS/qWeLjgKhrocfzwf7tw9fjIyjGnlUBFj18+J/nX22eAL9mOaDbYKDyPA98lLvu7KT67vtbrzXLObMHOfHEq+Ir3TirlxMc4Hh8ia5YPyIKS6GFU4ItIYc1eF2WpT8TFmtNapy62aFteqxu1doo3mXZ+f2cg11r7gqIfhS31KTrfeCPItu3FtbxeT4kr7NtkGGD4rfWjNRAHQ4nHf4zKJdh0e1IA7DQlkh5HvdqC79A8lGIOO558LnU68LdA/Gpr4Kg6INkL+VIaYvNG2vK8+yBdQwsO2gpaJLsJ4Rn75iKmINGAht55bLm8pTlC4J1VC4qKZ3YG5cgjKv9V/jeKPlnBdDXch0D+N149xsrgBVtUJkWCp/S95UEL2STNQaOUVBeuhKELc0fVtozhxxKEoO3TE/+vszN3S15Wsp+tN0IKpHG33SjDjn/Z13ASpWsmV4ccZs6YRYVCT7ZPbRytQVikVAv/yJHknl1wwIf7BGMluqerMWdt8RiQ
- Rmmlu21E
- SAmJmOcf/7dmw/NwqJ8Eniknhhf3g3NltgV1HqSXzMQYZbxc+7wT1GOLaG3FeVINc1pBm63DomR1U1clS74bql4nJeXMIEISrW3H3Jo6wuExXUs2L3pdEDyhtWk7PDGdMsT6j4FFgCR0lElWEDmWtoUaDoJasFvcvHWTFasFv2yqb/qMSWR/FbDN89BLZuKvTApn2BhCZEWwiNXPEHzb4dYLd69k/3z8XrAZF9T7jb1TXqLEvL0jmS5HBSkz1zZcAR8C1NSh/yNJqoiFulDLamEAPPnAOj2X7g0M7YbnxYsnHRuV8KcwWdB/wGnI4Nxf0gbkT
+X-Rspamd-Queue-Id: 2B9594001D
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777370487-390815
+X-HE-Meta: U2FsdGVkX1+5lw12d0RoVHdiIl8RfyQeRLq66YnLpzc98dXCNHGxy09OnnJYYpE/Gu5+KhuY4H4m8TR3l8VActfM6P3jY9aSTcMW6gFTWJoCQ5Mpx4zM5CcatKI2GB4/lw/hqBF8AUlIgs7cf+VTEl+jqgXsIpywPKgW7XUlZf9ojp3fSkevyJOCTFVRgitlGlnScwnI1NSchnBJ6KB65+1gMM+LREbh8YgFGCbrJYNtls2xPqZqyJWOfeGJyMjBi6CQeVrpntU2546JOTwGMgePiYDUfR4YOdx2SItbxReSarnM7pl0yvfhoHlRe/P6/41bCyU+BiXuzO4UFXTU8pukwlLfjSGz8ZbEtuzNZ8wgWBDqShch9aNG0+qCMRGAEjQT4ZGCcq7QSA/rcGvhBVQlPpWe1UbJn/zZ/z+6si4Prom+9oPaR7dAY2dXqGdc43rBeOdbDXT1WDy4ImHYgf07QBnvdxWZX0aaIOO3KAeCNhJI91/WWybeAjmxABUA5KXze4SRI/ic0AzQjU+mVcYoCXNE+kJRDh+8hFXk0siR35tE3PGA4+MNcdAl+EIbP7ArgS/OnZyI2ayfcXuJs7QDdmC4gyZ6FX7RzWgwzVDYg6Pzh+ktt0OXD6rhmii80qeiq+fmWPUq3NbOq6+WyzOyZGRxwC4W5G7bKsfzJpJ+1dBgDM6hKJcM2Rt+Z8sfoiOUUQ0efiPAMngsYvJcBo3wIBujyRW2N+ZdiwZmb7jIBaISdqDK+f/KZY4sLSKu/Ug62+LP+L+J692snBMWQ+8hj5RkAxIZajSfGwF+hDKJbWucsdcvmmVhPt1m28smgim1USCvKOGepoIn81ZMcpOIOGQ22YFD+oDkyLrgOiOPgSWHPS0D4KYUj9/Q8iAwmQ8m69N/pW8dzTL4s9J2aOz0qlVv2qTAY/7i/PUBWkjH8xkp80v+ZdHpfntn4SPK/D+EloVXnYgslR04KsI
+ rUlI65iS
+ g4wPf+VPIlYKG7QUaqbkGg/PdWkTdvnSJyw1AkEHSIX9LRXfI0wmevgyYfAjGLaGIJLHoEU7Cjg/kUX1HTOgMPfc+y8Bys60qIgQa+lAMDV9zQ0Bp2XQGxywjU2jwXsF/086R0akSn3++swS1hBYpel1dv9jCYUaoDWx5JcQ5Z5twNNEXraaD84zEl/erayl7IWKaSqJR/ehPMIs6cB43KiNKLo8milQm/gab4R78YhBIie0svwTE82PcPSdPhlda2AijN0iRSQXfAKuxo4s/ZG0POjpCC1tkCQhpamiUE8X6pX7pDqkV5a8EonG/6G906xo6HE3N+XDexaoWgkBwHTEAsuyQuLub9F6KQe4jf5PmVBXCxLCbVSmCsZ/2oHt5Y0pzU4c6mkIotfNpt8NmXCaHppvZWSNMhVhWASbuxDCyGHtlMevMfUcoAUGGiX6trbkS9dhiNWQuv8s1xAbtG1kb+i/GvPRgmYA7Ny8nsp71M1mFTL8S+pCo7sHBKL2P2QGtnmkfQQcHbqNVr9z775kFVxeqpyObJ1KjhFA2Io8j/Oo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,117 +121,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 11:06:21AM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> Currently, get_non_dying_memcg_start() and get_non_dying_memcg_end() both
-> evaluate cgroup_subsys_on_dfl(memory_cgrp_subsys) independently to
-> determine whether to acquire or release the RCU read lock.
-> 
-> However, the result of cgroup_subsys_on_dfl() can change dynamically at
-> runtime due to cgroup hierarchy rebinding (e.g., when the memory
-> controller is moved between cgroup v1 and v2 hierarchies). This can cause
-> the following warning:
-> 
->  =====================================
->  WARNING: bad unlock balance detected!
->  7.0.0-next-20260420+ #83 Tainted: G        W
->  -------------------------------------
->  memcg-repro/270 is trying to release lock (rcu_read_lock) at:
->  [<ffffffff815f57f7>] rcu_read_unlock+0x17/0x60
->  but there are no more locks to release!
-> 
->  other info that might help us debug this:
->  1 lock held by memcg-repro/270:
->   #0: ffff888102fa2088 (vm_lock){++++}-{0:0}, at: do_user_addr_fault+0x285/0x880
-> 
->  stack backtrace:
->  CPU: 0 UID: 0 PID: 270 Comm: memcg-repro Tainted: G        W           7.0.0-next-20260420+ #
->  Tainted: [W]=WARN
->  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
->  Call Trace:
->   <TASK>
->   ? rcu_read_unlock+0x17/0x60
->   dump_stack_lvl+0x77/0xb0
->   print_unlock_imbalance_bug+0xe0/0xf0
->   ? rcu_read_unlock+0x17/0x60
->   lock_release+0x21d/0x2a0
->   rcu_read_unlock+0x1c/0x60
->   do_pte_missing+0x233/0xb40
->   __handle_mm_fault+0x80e/0xcd0
->   handle_mm_fault+0x146/0x310
->   do_user_addr_fault+0x303/0x880
->   exc_page_fault+0x9b/0x270
->   asm_exc_page_fault+0x26/0x30
->  RIP: 0033:0x5590e4eb41ea
->  Code: 61 cc 66 0f 6f e0 66 0f 61 c2 66 0f db cd 66 0f 69 e2 66 0f 6f d0 66 0f 69 d4 66 0f 61 0
->  RSP: 002b:00007ffcad25f030 EFLAGS: 00010202
->  RAX: 00005590e4eb8010 RBX: 00007ffcad260f7d RCX: 00007f73c474d44d
->  RDX: 00005590e4eb80a0 RSI: 00005590e4eb503c RDI: 000000000000000f
->  RBP: 00005590e4eb70a0 R08: 0000000000000000 R09: 00007f73c483a680
->  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
->  R13: 00007ffcad25f180 R14: 00005590e4eb6dd8 R15: 00007f73c4869020
->   </TASK>
->  ------------[ cut here ]------------
-> 
-> Fix this by explicitly tracking the RCU lock state, ensuring that
-> rcu_read_unlock() in get_non_dying_memcg_end() is strictly paired with
-> the lock acquisition, regardless of any runtime rebinding events.
-> 
-> Fixes: 8285917d6f38 ("mm: memcontrol: prepare for reparenting non-hierarchical stats")
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
->  mm/memcontrol.c | 31 +++++++++++++++++++++----------
->  1 file changed, 21 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index c3d98ab41f1f1..38f48a45b7ae5 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -805,12 +805,17 @@ static long memcg_state_val_in_pages(int idx, long val)
->   * Used in mod_memcg_state() and mod_memcg_lruvec_state() to avoid race with
->   * reparenting of non-hierarchical state_locals.
->   */
-> -static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg)
-> +static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
-> +							   bool *rcu_locked)
->  {
-> -	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> +	/* Rebinding can cause this value to be changed at runtime */
-> +	if (cgroup_subsys_on_dfl(memory_cgrp_subsys)) {
-> +		*rcu_locked = false;
->  		return memcg;
-> +	}
->  
->  	rcu_read_lock();
-> +	*rcu_locked = true;
->  
->  	while (memcg_is_dying(memcg))
->  		memcg = parent_mem_cgroup(memcg);
-> @@ -818,20 +823,23 @@ static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *me
->  	return memcg;
->  }
->  
-> -static inline void get_non_dying_memcg_end(void)
-> +static inline void get_non_dying_memcg_end(bool rcu_locked)
->  {
-> -	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> +	if (!rcu_locked)
->  		return;
->  
->  	rcu_read_unlock();
->  }
->  #else
-> -static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg)
-> +static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
-> +							   bool *rcu_locked)
->  {
-> +	*rcu_locked = false;
+file_setup_area() currently allocates anonymous memory, fills it,
+and writes it into the backing file used for collapse testing.
 
-We don't need to set rcu_locked to false here as we don't access in !V1 build
-option.
+Instead of copying data through write(), resize the file with
+ftruncate(), map it directly with MAP_SHARED, and initialize the
+mapped area in place.
 
-With that fixed, you can add:
+This simplifies the setup path and avoids the need for explicit
+partial write handling.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
+---
+ tools/testing/selftests/mm/khugepaged.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index 3fe7ef04ac62..57ca4224bd5a 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -369,7 +369,6 @@ static void *file_setup_area(int nr_hpages)
+ 	int fd;
+ 	void *p;
+ 	unsigned long size;
+-
+ 	unlink(finfo.path);  /* Cleanup from previous failed tests */
+ 	printf("Creating %s for collapse%s...", finfo.path,
+ 	       finfo.type == VMA_SHMEM ? " (tmpfs)" : "");
+@@ -381,11 +380,21 @@ static void *file_setup_area(int nr_hpages)
+ 	}
+ 
+ 	size = nr_hpages * hpage_pmd_size;
+-	p = alloc_mapping(nr_hpages);
++	if (ftruncate(fd, size)) {
++		perror("ftruncate()");
++		close(fd);
++		exit(EXIT_FAILURE);
++	}
++	p = mmap(BASE_ADDR, size, PROT_READ | PROT_WRITE,
++		MAP_SHARED, fd, 0);
++	if (p == MAP_FAILED || p != BASE_ADDR) {
++		perror("mmap()");
++		close(fd);
++		exit(EXIT_FAILURE);
++	}
+ 	fill_memory(p, 0, size);
+-	write(fd, p, size);
+-	close(fd);
+ 	munmap(p, size);
++	close(fd);
+ 	success("OK");
+ 
+ 	printf("Opening %s read only for collapse...", finfo.path);
+-- 
+2.54.0
+
 
