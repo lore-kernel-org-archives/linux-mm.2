@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C02FF8864
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 00:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC4CFF8864
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 00:45:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA8256B0088; Mon, 27 Apr 2026 20:39:25 -0400 (EDT)
+	id B71F56B0088; Mon, 27 Apr 2026 20:45:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A80436B008A; Mon, 27 Apr 2026 20:39:25 -0400 (EDT)
+	id AFC0A6B008A; Mon, 27 Apr 2026 20:45:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BBD16B008C; Mon, 27 Apr 2026 20:39:25 -0400 (EDT)
+	id 9EAC56B008C; Mon, 27 Apr 2026 20:45:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7826B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:39:25 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D3D816038D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:39:25 +0000 (UTC)
-X-FDA: 84706105890.04.79E63C6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 84DD5A0004
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:39:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JOzL7rJW;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A3996B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:45:06 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 172BF160379
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:45:06 +0000 (UTC)
+X-FDA: 84706120212.25.9B60930
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 86D942000D
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:45:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qbuZCbob;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777337104; a=rsa-sha256;
+	cv=none;
+	b=exp/thpIph1qe+mdwNTTiqhIDloUR6oKnafpRoVWEsn2CnIeqDWQDKz8WNCbQCIxAirpXJ
+	l5eAJKUcPsGDnxXbs/cm0myCOpgF+c/nzcc4qvG0cO4YGN6on/wsFwI1HzwrRnze/3f2RF
+	KBTT8UoIpWrcZKnNRu2vfdZMpBweyg4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qbuZCbob;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777336763;
+	s=arc-20220608; t=1777337104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zC7uqNXHvphg4Pvu2ADo8+9HUBEt/3129Ijd4e22vzM=;
-	b=jQixwkJnU9HQ3KyNJNeOaZ+3WH4vsOHWO6ynYm+dbl3G960VFaMzPpWEE5sxALgY2hAV5Y
-	o0UR9wUhFr5NOHcUL1sMHpMzTFj1F7MJzKqKASswYAFG336GKuEooh8B38du93JNhZEAB4
-	u/HUanLNuZ2nEvUdbGEUEQ8BhmRh4Xw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777336763; a=rsa-sha256;
-	cv=none;
-	b=GyXFzRivwwBaAXdo/+sU9l4ONqyBrUjdSF1cCUxAWNlk5IntHuSbTY0t2DrpBmktsp6B9A
-	Beydl2uW4XVXhd5LSYnH8TSQdtT9a02a2aSecNbXtj0mzrtXsgiW6eyMhytVPTYMq87Wdd
-	ZcRlpH1OoFtmrY0zTA0ePAJOxlLlhpI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JOzL7rJW;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=942CyMg01ue9iAYNLY3dTp268w0h9+Dvm2V+XEV/B4k=;
+	b=5jhpNZyRm7zQLrqirW28+E0EGoEEXoNLZEuEsDv97FAik6wvFmrkmMeQOtS6cE0R2h4t9V
+	DkfBI1eikDFJfRKdyetChXM6uSMmcXjweMVzIVGXMJRorZRDY0u0h5A+mDv6Hgx7yosJy7
+	pyyVJdj6Qey6Vu2HowDCbE0kw1PXOH8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B9E740A52;
-	Tue, 28 Apr 2026 00:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FADC19425;
-	Tue, 28 Apr 2026 00:39:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DE92A60121;
+	Tue, 28 Apr 2026 00:45:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58CD6C19425;
+	Tue, 28 Apr 2026 00:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777336762;
-	bh=lRGNhb+u6wBJ03S0QzqJb4wpYWidPN3/P13uPg4Nhv4=;
+	s=k20201202; t=1777337103;
+	bh=w+KfGykqmSbSQkq+ww/Klt27t8J2MFRZ7n8ybXamOSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOzL7rJWl+2wyYZ09VlxfZyK/+M+21lzd9PIsBeoDZu0uOoEyOF0YAN1eicTp6fdw
-	 9Gi44kbatTRAhZsN/3dUIQ8y6y/ygSVm6Uq8ivBw/RtCeznkTFoc4xd8tk1D3FdfAM
-	 w2SywQ/jcRr8kFYC4xF6YaA8P9ouQNx7M4cyd674CMufhXzV8GtoJAnq8XG3kOvpSh
-	 +hRfYk6Uky6dAfUyQy7rVrLi5xsQ0C/VBugQKTdOzbHOf8inS5wfnbWx02Oo/nYsvQ
-	 c43bGHS0GQY4edI710wsdR5Dt/MS6OokYNOeyNMUY7QU4aDRSxERNG6cSzC7IM9dQC
-	 cEm2mHrwGyhPQ==
+	b=qbuZCbobFcgQmoszya8nZwxi/D0MTMxubAn3oSkBpHjOFYonPA0Slj+Pk9KwquUhq
+	 wjaiSnVxBymgzpLgYL2oKD9OiejRMWwEXCZjmO3bDT7g0zG6/oBt8tCyq1NWm6sF+1
+	 11YAf8mC2/pqtwLk/sGPPbrzM4WKmT5nYN1CmUco+nQ9JAvlyVjS/pFjOTWbFRMt2T
+	 utjRoXzSrjSDLR3uH4KZuZVa9BLHCRIiDwtnRoz72eY/blwe2vuF9N0MuU84lXpQP6
+	 nsy4vcH+gJgTjA2oo3C4t1leZm0aFuf05TdOpxtlKRH4QxovMA5XB2ArvNo36xhK6s
+	 XpD3eQD3KLjvg==
 From: SeongJae Park <sj@kernel.org>
 To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 04/19] mm/damon/core: commit probes
-Date: Mon, 27 Apr 2026 17:39:13 -0700
-Message-ID: <20260428003914.113299-1-sj@kernel.org>
+Subject: Re: [RFC PATCH 13/19] mm/damon/sysfs: implement filter dir files
+Date: Mon, 27 Apr 2026 17:44:54 -0700
+Message-ID: <20260428004454.113463-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <c09f7c82-88d3-4870-9805-f22394b08583@huawei-partners.com>
+In-Reply-To: <666090aa-a679-4ce4-b66a-a5bba8284268@huawei-partners.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 84DD5A0004
-X-Stat-Signature: 5iuufcf9dxxsdzi5y5hbwcrq6awh5q4g
+X-Stat-Signature: weg7snkjj398c9u66s1f1qyu53g8ybez
 X-Rspam-User: 
-X-HE-Tag: 1777336763-842877
-X-HE-Meta: U2FsdGVkX18sezLt+imM7slpLLWmoC2D7NXYcu4tJdGE3F8ghvU7jqh8RIGeIS4wNHw7zmCIue8g5Ijleq1z+RjTqurdJALbKtEeGoVmTBEsOZs3+GYNtSeFzDuYKJRAJiepMElWY2ZbGxkRfHFZrsL+Ty440MH2zshTYqfxPpwVI9l+yKaBI6X+Ge7S9pqwRKZyCsGQOH4u1HIfvo899iP5tZ0SXTyj45Q/FJ3NwSEevViCFzP7gyU23ZDksKwDIXWUCgVAIAYl5KAhC3+hCM5S5vv34ypGH1paBydFYvJR0Nbs96TrZ8dshiX+5yZcwy/i2Ix3V26YVt2Mwv00gzfeudPUVQ94vzblb3+arC/6vlHZTSfWpffE1Sd0UuBdALsZg87eHg06DevtFIJWzTOuG4PHsdXSdoC3FIwSRLjm6pyGdoTiNzwTY2VUab2UyzRwyHJekZ+/xIFKJT2bJi1G42sgO/gro2D79ERW1vS8nPwRE1LVERsGrhyzysY/NGOrQtwBEgZFOcD1KCwgaBq2MtuqRYifsE+iPyFbRMC8ft/Ftl3gBUHajCLUJVm3oEyKXWLkA0m8pdcTKjJvwp81tPDXWHJHTJAB5uUZ3ALU08/awXXUqdlTmIYXZD3bBJohuhtXA8e3K5hbOweoYfEsMWkr1HeSYNR7+QgJ4OV+jxP3P14xp5CY9097aCnXBbJnDLNBj1D4G492umWPIcsdRq86MENFsuimdU9BJ473fW9hm7l5ZCy2CMGBqrnDMYVcY4x5VxBQb1oDhfYfLYbyyVhPpcF6JzeJmBcFZ5Ds2qnXq5LJUI3X9sfeHQ3OjB41pJITrCXezwKdPfmnepkAFECfwiLIT3xIRh/C5EOtYPj4e09/foyJ33zUF6gPOhyCyDUpGxDhoavQQxDJ8A0AYghpFW6SSbPgOzNPo4vJqb2yfdsHB6zVt9OyqeI6dvIbLdR93gO7diuO6oR
- j3E2vu0E
- Uwvzx3RH1ACybisFj5L1SRp31oX5wOSsEMOVFvLZ5NlrUHVZo4T53okgnW+eFo+A57ZLfBCNV03sFDbHn5fNhPvGRxCvL641wxcEstmGiAh8rgGbFnUAcfl73Gc8odxa1rM0CdV/18SUWQd6KZnTcEYT8BH3Z9GcKLoJSEEu0uSBu6PEHL6TDZmeK73L5lykYTw1ya590E3gc+xqUc5yuOPrkQjPG88yH0+vZq8sin1hZwhUadreEtJmvzQ/NKSYVWb5Tb+Er7R2WbBn/CsyiXhL9NNerpXB+fHV4
+X-Rspamd-Queue-Id: 86D942000D
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777337104-942430
+X-HE-Meta: U2FsdGVkX1+mNlsbCJdQkprGfnK/DMxq+q4Fxc1rgeNzkjbh/xwMZPO43AULXO83s0Tt55drTWCGjfS5kMDhoF24bquUrXYOA3bc9U072xESkXphmf1gKhyrBopXkbzFhfI0xOgrGeWCW0wLv9CyFk6VhLwKlCm2DHYPb6EjIKjRIKYzSV9U/yJR3mHBi2QI0tLiysJ8khJlXnKpje7hbQwleLuWL255I2nOzBqHiFARMEV1bCpFqXxAf8cQ4MCkwceuUfhlIvD1RdjRQIGNWyj1sBk5Dj2+BsaN2NKaonp2p1N4iYeYGk2RU/yOoXdnIZEns0XGDP99CoqxQEbsU3KGVhW8YTf8vEi551I2rBJShlsUphLVfPWdyrg95PT4jN9uYwOK4FBQwrUQXrt7GKWzo6n8AAwrcyvF/ekELTXDUsUebvppNeybfw+JXDiCe5bVEGIqnOLjJ+rcRdHG9vbyvFTK+gbwo2oSTLM8ncl961euAg6SX3+RzCzvoGdl/3J1GNCp/hc0ysuTIGWRBjTGnH98gotHYj/kijYTAKUrppHl7Kwvl3rvzs4W5daRtvJtCgNetgGTrz7+yWnUvYvSmY50KvjwsWd870L6/39jI69lH8gn9RelQW/wR1sYW7++5E9g6/nBKdJaIH5NDpe7mACwDllTqcQ3gSivcbrJlCJKR/8SsTnK1xXgqdAUvOBMOkfseKVcIZkV/p0VqGgSIjMtUoZzTAoV729lRjPx3+npnbfLD2C57kpNZWLGwST9qEwJvArCi8nhUOoMWxNJoG7ChdAq2QkxzLsAD7L5XGt8371yLxQ+G+QVK4AM4tRQxLFLw8xaWlDbPHtWF90PymuTrFXnRKZTyrQvlenmgHXO7ru4yuXW78zipeSHY43P7n6maZ+CX0sFmcXwzECZk+Kwka9C/2MoDbCH+xaXF0y/MgfxfMsLmwV1nnIncVLknv7fmUh9wGEJq7n
+ G5otf9fs
+ opXiXdlhf02pYqCBD6Cl21AkAlI1iQVVPqh+vBO9Qc1E6zKyNqRqnGgLeCOIhgRuPk3n5cIcffG284i6V8P7VAa3OKP5ZSsS2xbs2ljs077605WF8S82E43y5U2Krj5KPmyBS2LbIUH+KA0IInuSqXyMpkhg6/jsGBTjt1aWGg0TkfC/PyQ1I2HJ9GN4FR6lpCgbVvkDbNMsW4GNCxTFcl/vU7agV/kSXm4ODUwnAWv1H7av/9cWbUs3SVcvB84RHRVjcsLZ/oZfs23wTXO1kr9+bPnz7IEcWU0x1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,78 +93,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for reviewing, Asier!
-
-On Mon, 27 Apr 2026 16:21:19 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+On Mon, 27 Apr 2026 16:24:10 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
 > 
 > 
 > On 4/26/2026 11:52 PM, SeongJae Park wrote:
-> > Update damon_commit_ctx() to commit installed data probes, too.
+> > Implement sysfs files under the data probe filter directory for letting
+> > users to configure each filter.
 > > 
 > > Signed-off-by: SeongJae Park <sj@kernel.org>
 > > ---
 [...]
-> > +static int damon_commit_filters(struct damon_probe *dst,
-> > +		struct damon_probe *src)
+> > +static ssize_t type_show(struct kobject *kobj,
+> > +		struct kobj_attribute *attr, char *buf)
 > > +{
-> > +	struct damon_filter *dst_filter, *next, *src_filter, *new_filter;
-> > +	int i = 0, j = 0;
+> > +	struct damon_sysfs_filter *filter = container_of(kobj,
+> > +			struct damon_sysfs_filter, kobj);
+> > +	int i;
 > > +
-> > +	damon_for_each_filter_safe(dst_filter, next, dst) {
-> > +		src_filter = damon_nth_filter(i++, src);
-> > +		if (src_filter)
-> > +			damon_commit_filter(dst_filter, src_filter);
-> > +		else
-> > +			damon_destroy_filter(dst_filter);
-> > +	}
-> > +
-> > +	damon_for_each_filter_safe(src_filter, next, src) {
-> > +		if (j++ < i)
-> > +			continue;
-> > +
-> > +		new_filter = damon_new_filter(src_filter->type,
-> > +				src_filter->matching, src_filter->allow);
-> > +		if (!new_filter)
-> > +			return -ENOMEM;
-> We should bail out here. If we return an error, we have already
-> committed some of the filters already. If there is an error, we
-> should remove any fill that was already added.
+> > +	for (i = 0; i < ARRAY_SIZE(damon_sysfs_filter_type_names); i++) {
+> > +		const struct damon_sysfs_filter_type_name *type_name;
+> Can we move this declaration to the top of the function?
 
-The cleanup will be done by the caller.  That is, damon_commit_ctx() caller
-should destroy the ctx when the return value is imposing a commit failure.
-
-> > +		damon_add_filter(dst, new_filter);
-> > +	}
-> > +	return 0;
-> > +}
-> > +
-> > +static int damon_commit_probes(struct damon_ctx *dst, struct damon_ctx *src)
-> > +{
-> > +	struct damon_probe *dst_probe, *next, *src_probe, *new_probe;
-> > +	int i = 0, j = 0, err;
-> > +
-> > +	damon_for_each_probe_safe(dst_probe, next, dst) {
-> > +		src_probe = damon_nth_probe(i++, src);
-> > +		if (src_probe) {
-> > +			err = damon_commit_filters(dst_probe, src_probe);
-> > +			if (err)
-> > +				return err;
-> > +		} else {
-> > +			damon_destroy_probe(dst_probe);
-> > +		}
-> > +	}
-> > +
-> > +	damon_for_each_probe_safe(src_probe, next, src) {
-> > +		if (j++ < i)
-> > +			continue;
-> > +
-> > +		new_probe = damon_new_probe();
-> > +		if (!new_probe)
-> > +			return -ENOMEM;
-> The same as before, we should bail out.
-
-Ditto.
+Unfortunately other parts of sysfs.c and sysfs-schemes.c including
+operations_show/store(), type_show/sotre(), metric_show/store()  are also using
+this pattern.  I'd like to keep the style consistency, if I'm not missing
+something and you don't mind.
 
 
 Thanks,
