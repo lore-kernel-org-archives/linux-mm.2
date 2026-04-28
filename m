@@ -4,101 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A42FF8868
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 13:09:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48CA5FF8868
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 13:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56EDF6B008A; Tue, 28 Apr 2026 09:09:08 -0400 (EDT)
+	id B13456B008C; Tue, 28 Apr 2026 09:09:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51DC36B008C; Tue, 28 Apr 2026 09:09:08 -0400 (EDT)
+	id AC3E96B0092; Tue, 28 Apr 2026 09:09:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45BC26B0092; Tue, 28 Apr 2026 09:09:08 -0400 (EDT)
+	id 9DA616B0093; Tue, 28 Apr 2026 09:09:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3486A6B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:09:08 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EBC321B7090
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:09:07 +0000 (UTC)
-X-FDA: 84707995134.02.6EDC2AC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 31AC0A0019
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:09:05 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DC206B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:09:39 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1CBE5C03EF
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:09:39 +0000 (UTC)
+X-FDA: 84707996478.01.917E194
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 22084A000E
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:09:36 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e4JN5naQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777381746;
+	s=arc-20220608; t=1777381777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4nqivCc2PRJMXKSuCzKBaD7+S/jHJk0M6k+CUV6NswQ=;
-	b=4DXSyFqUvQdkdeQqdR189IyBBXXwGf9nRoyUAdP1NoFUp2MMZMZFv+mlmAq3HrC6ZeW9O1
-	tPhp2NI/wzjFMBFrH8a3N1lbttsIZ2+6A0Pn9jx3mpjru0IbeVDPG5yrP9mVLZ8l8C2LZp
-	MU0dmja0wjm4+Z6YDB9VdXetDkbSIfM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777381746; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rVCrypK48GiO3JHRTZBgwpbtpNOWzqQSv3/LRtYIj34=;
+	b=VzueK7MLdLPxdEx5Hf5tOF1lbu387VcUouJEBUc+10xB39u0y4wA40tJX/ExbEFVZilDFI
+	uY3sGM8wpKFV4/NYZgHTAkryDcaK0GormarfDQO8Zw05t4ZJlFA53EWruizvufRz9sxEPo
+	bDeLxTk7ozrX2dVTQHhqRAvZk+yI4GA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777381777; a=rsa-sha256;
 	cv=none;
-	b=H61WEStymC4mMrYKQSmmhF5JCDpxCGUutY+uTnA77AFzZgodFZ7xgMYVLUi1zx+KTiwMVb
-	n5kXA6NDfNB4AkYrK5Mfg1yfJ2rmAoZRglx1LYcDKG5K0IHaPQQtaIfvB3afUtW+cOlnj3
-	BVpF7E6DKWY/owDFRZcoFNnjBF3M/D4=
+	b=FMjCweUU94AApHRD4j4WoAHi+0k9ANPcw1Lkw8r9hzoz20EPMj9TGbGMNukCzYNC330rcm
+	nzAUcsO/LVCzfIoNcZFpwGtTMp6XYK8b/s05ioAqhS+BKXeHyCUa9yKVaSSeKaDpi7fIU0
+	m6NSgdHZzPq3vwsvhwWHAOSq8L5TIgE=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e4JN5naQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6AEB861119;
-	Tue, 28 Apr 2026 13:09:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F66C2BCAF;
-	Tue, 28 Apr 2026 13:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777381745;
-	bh=y5Wj2Mshp/u7h62ACdtB57U1YInb0w7gkuhwEVUSYGA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e4JN5naQJ+TlVk6mBeIiP5kBgPhrbIsfSTf/vPhjQnRELi7dpfbVtB7ACoelq3Jap
-	 1zY46otM4NN1WLpNBlVPTdA1TzJh35tO9otOfRJTFL5s+h3VbR7VadwmoPQCR6XGDP
-	 NgYZ1g8KA7kTtq1YHu3G1h0OjgQTnJnYjtx3FVNrvmuSvvNrcGXPeZQoBB292gh4Ie
-	 hxyYVQSqY8X2a4YFRViC2EZb1IZyWUPFLf44FM8zPleXw3gUUQQ0msO05RFejgRbgY
-	 9F6sK+FnOIcDgn5tr9dN6HAJhet4K1gOT/1BuGP0IGaTdVie8lwjqKQv4pqVuwZ/gB
-	 l29nT7E3K7OXQ==
-Date: Tue, 28 Apr 2026 15:08:55 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 09/49] mm: panic on memory allocation failure in
- sparse_init_nid()
-Message-ID: <afCxZ5vYDeAlzTK2@kernel.org>
-References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-10-songmuchun@bytedance.com>
- <afBaMEBoR_35Fblc@kernel.org>
- <9FD13495-58E8-4183-AAC0-48E50A694ADE@linux.dev>
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g4gjy05mKzHnGdy;
+	Tue, 28 Apr 2026 21:08:54 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id D452940571;
+	Tue, 28 Apr 2026 21:09:35 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 28 Apr 2026 16:09:35 +0300
+Message-ID: <2d2415b3-d7e8-4b8d-aaad-c4fd27eb18f8@huawei-partners.com>
+Date: Tue, 28 Apr 2026 16:09:34 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9FD13495-58E8-4183-AAC0-48E50A694ADE@linux.dev>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 31AC0A0019
-X-Stat-Signature: 513b987ijym88q553xjckxqb1ywmya9g
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 02/19] mm/damon/core: embed damon_probe objects in
+ damon_ctx
+To: SeongJae Park <sj@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20260428003559.113178-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260428003559.113178-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-HE-Tag: 1777381745-883946
-X-HE-Meta: U2FsdGVkX18QQNTTDGdKVb+a69T/n8qPlCih5pDZfbp/XQDm0o+js+rQZeaWBsYMCmqGqydHXYeqcombk/i08iP3DeYwAmryuQirICQ5/+gv+E+6OPEv7PaE/u6psz3UiVMgfmdA3csSYH8j7F44TKqFV329+Muezd2+a7VWr30w6Uq9nakVOIY2PDxqbx0fU8ZV2/67HF10U9j0rvax/a6Wb5PmqIFLSasPDIFWDAXnR5otQJfWiZDOWUjuUHuUUNCkJgT5jN4qg+mesRWjIM6tBbsg3LHHFtLvaUaLmcC3lXA4CLxxVqlQDF+B8ZE2jskVXtTQU/KwXzEbG9CxgffsGMHTqtiTAu/UlIILgmM/hT8Q7oLlo8uZLhc7yWbmvDvOx6+31FQ5UOI435OC0OwuXwK0+yZAeaFoAyQa9BAZrZrLHZ/LZZrN6mFe7KE4YYDhBh29W8mBEI/DpPWzzvKOzXmvoblDbn/tyQroR5MVyDiOhTvDe54/FHEKpcCqhJH99yWq7bCPZmKQ2k1F5L+aMkAyJGCAkEk9coIHcjbFKSJISPpyp2zSBbKwM6fjiXICF6XdIfb1FlquNiRByhbEsVox4g8Osr9oIvidEaZiFG1w+fMTjPPP/5RTRshUuwTCInGE7hOGmPjWUcs55SAYleEnJkfsd9k1A+n+zn+KXoEMcaBzy37MNeDOTXvYaLzQ3VZdNYPApLUJuEGilWNyo515uvW5dOOSaXVYsJoleJKFUuNqjbTwaWzTVbEOPqnl1Bni2J5tb1MXcyvJeOzbqoONv+e1DoPRDQDl03kZaM4wKfoNXukU0lChli/JuecwBOnOPVSv4mM069tAyMJgY5mmMUvBxEPy+mcy7w7rDlE1w+qvun0PQpw4s1bFXZCIzweQXeb3/RZ/SjS6jyVf9kZUDqVkrQMkY53NI+vTuJKjEGuRr3RfxLHhsAVGNJTfZBHrllUfzKglzJh
- MnH1kE+L
- YE2eYFEdtzpBN1iPTdbaIfipuWw5s7zondzQBp5acfhuMchKDhaGIiz2jvlhevJWUwdmxheW7Pn6DrpuqlpIgc71e02JCN7sGJWrmoQK8m+FzTH3SbcXdjGu1xm/MbglXXWjuTk73a1ab7lA15Tn6RXsEDpSiHdAjQJBnQBuWAghCK+XjXwbjrGHVTeTwuYR9migtSKj6L5AQC4+4LZu1EcnTgPfhkqviEw/fxDMFVBF8lpf0lnOKpqc2F4WVH4oTj2jAZe76sSLfsaYjrNdR6Di38+oOCSuoMp3xz3Aj9+nn2Nnjv4RdWbohaAtVzZt0yI+yOedLO4w4oUKAr7LIksdoWYJ4lCiNfkAa
+X-Rspamd-Queue-Id: 22084A000E
+X-Rspamd-Server: rspam04
+X-Stat-Signature: jboueckqojpf3hi67x5uxegadgi1z3ou
+X-HE-Tag: 1777381776-811496
+X-HE-Meta: U2FsdGVkX1+cSBW+SXLXzthw+DejtrNUD827Hxg46M4N0tfMRNzIpHZU1PhougaM0TM5WhNHc7WuxjBlFS2Ze+QMCGZqaNNZwTqcUqcV3hsTKzbjsCGgmSJjIW6Oiv/l5dm0562ulKv7TDIEIKOWg8y22Ux+a2te5iXU0/hGpINhPBxldDFKgLIiTojCvmxhvYXZnm+4Ipn8Sg0k+YoSLbbD8weZ5NZIBkRW+UAlZVM/zOksVv48kL9aKAyF6zsgueeX3eiZlup65k5QqXfaRNdl0yjYTV8o4i/k5hL7zaftYZUhxyniJ/sBYws2l/AGmYHVMSAsE8ntDkZH7P51o23Yo8CFAHxbBscjSeW5YU8N8nDnYsjw9Rj5yZB5uqfTxg5CTKn1lBk4abv1nzHvCLtbzPM0QyGI8PEJwBfU2JqYih3N9OyRSdrduts2PR+ZVabuzBhi7t2aMqFtbu0D1uNoBcNYR1ZUmvi7kN9PDayXWjLsn0cigcD1r1d6Q6BZyKSyG3UCZ84FlbHMgmLUxXTt3pX3eS8iqI+CwU36bI/fsjN8afJjf5V7UBBSKv6cStallipk4JZ+JexS++guB0sFlxG1BDXD8TShGFTaMHZpUMgPNlIcjTOGDpy8W2wYH7K6UbirCHav5veBuALTYZnuDiJZVzT955zD26po1mt65tcLbq0yauXUgYTFbKpc77PWcvS19wgVWfUTgRxmWKCU4OyCmD9QsqA/yfPsB3lHpLSFZAVOPnY8g5+sP0kgxOianGvASIQzowsiCM+DJaONq36bCeEjXpFgnkPQ9G31G7ph0YckFDM8IQkObD+HiQi5/jnAD6VzhsCo1IGo43W/WOgu75ZEVSIe4ja+t13/nL0DMaR+Tk8vrGMBRPy3RfSOCKAFzLSQcEe9JPpA2gSf0t9+IG+FVeRM/rKp6asH7emvJpPaHeUm+DlIdnrhlgJ9uCc+Y5JdQ6fWf1Q
+ sN9wYW4Y
+ Mgn/EZFIB0QmZmP+26AJ7/BnXHe9341WoiOB9JN/O/x+DMDGoRCPLHcgwRfs4FEG4DQaNlAeopSnhSZ6eNwkbrIsexVj+fxblFHXiqVvB1OE4qMroh4J6FBEiOSkuEwln1OmjdQGbKC+JnIYL1mLz+UkBjjeWVWIEaDJ5dqw/fEeALojSzREeQT9qCvyOe3SESvK5HrFa+xGuA6i/kgSgkgcuDXV6wySXh4lb/K5YiSDlLTYP8rmJY/xQi/jzp+l5GvGq2RlA7XYkCNZYSUhSgtx3UYsmAqVHYTQcewqmT9bhYxy2/QtYzKH9zcq0oEXIwKRoQ88VDDfAjykA6tvsiwtt1C1iIzMmafi/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,71 +92,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Muchun,
 
-On Tue, Apr 28, 2026 at 08:13:05PM +0800, Muchun Song wrote:
-> 
-> > On Apr 28, 2026, at 14:56, Mike Rapoport <rppt@kernel.org> wrote:
-> > 
-> > On Sun, Apr 05, 2026 at 08:52:00PM +0800, Muchun Song wrote:
-> >> When vmemmap pages allocation or usemap allocation fails, sparse_init_nid()
-> >> currently only marks the corresponding section as non-present. However,
-> >> subsequent code like memmap_init() iterating over PFNs does not check for
-> >> non-present sections, leading to invalid memory access (additional,
-> >> subsection_map_init() accessing the unallocated usemap as well).
-> >> 
-> >> It is complex to audit and fix all boot-time PFN iterators to handle these
-> >> partially initialized sections correctly. Since vmemmap and usemap allocation
-> >> failures are extremely rare during early boot, the more appropriate approach
-> >> is to expose the problem as early as possible.
-> >> 
-> >> Therefore, use BUG_ON() to panic immediately if allocation fails, instead of
-> >> attempting a partial recovery that leads to obscure crashes later.
-> >> 
-> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> > 
-> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > 
-> >> ---
-> >> mm/sparse.c | 37 ++++++++-----------------------------
-> >> 1 file changed, 8 insertions(+), 29 deletions(-)
-> >> 
-> >> diff --git a/mm/sparse.c b/mm/sparse.c
-> >> index effdac6b0ab1..5c12b979a618 100644
-> >> --- a/mm/sparse.c
-> >> +++ b/mm/sparse.c
-> >> @@ -354,19 +354,15 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
-> >>    unsigned long map_count)
-> >> {
-> >> 	unsigned long pnum;
-> >> - 	struct page *map;
-> >> - 	struct mem_section *ms;
-> >> -
-> >> - 	if (sparse_usage_init(nid, map_count)) {
-> >> - 		pr_err("%s: node[%d] usemap allocation failed", __func__, nid);
-> >> - 		goto failed;
-> >> - 	}
-> >> 
-> >> + 	if (sparse_usage_init(nid, map_count))
-> >> + 		panic("The node[%d] usemap allocation failed\n", nid);
-> > 
-> > Please consider using memblock_alloc_or_panic() in sparse_usage_init(), it
-> > would simplify the code even more.
-> 
-> Hi Mike,
-> 
-> Should we add a new function like memblock_alloc_node_or_panic? Because
-> we want to allocate vmemmap pages on the same node.
 
-Heh, I missed the nid part :) 
-There are a few _node_ or _nid_ allocation helpers in memblock, starting to
-add _nopanic for them would be overkill. Let's keep panic()s at call sites.
-
-> Thanks.
+On 4/28/2026 3:35 AM, SeongJae Park wrote:
+> On Mon, 27 Apr 2026 16:18:14 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 > 
+>>
+>>
+>> On 4/26/2026 11:52 PM, SeongJae Park wrote:
+>>> Let damon_probe objects be able to be installed on a given damon_ctx, by
+>>> adding a linked list header for storing the objects.  Add initialization
+>>> and cleanup of the new field with helper functions, too.
+>>>
+>>> Signed-off-by: SeongJae Park <sj@kernel.org>
+> [...]
+>>> +static void damon_del_probe(struct damon_probe *p)
+>>> +{
+>>> +	list_del(&p->list);
+>>> +}
+>>> +
+>>> +static void damon_free_probe(struct damon_probe *p)
+>>> +{
+>>> +	kfree(p);
+>>> +}
+>>> +
+>>> +static void damon_destroy_probe(struct damon_probe *p)
+>>> +{
+>>> +	damon_del_probe(p);
+>>> +	damon_free_probe(p);
+>>
+>> Why don't we inline list_del and kfree here instead of calling
+>> damon_del/free_probe?
+> 
+> I want to hide the fact that we are using linked list.  This abstraction also
+> makes it easy to control the calling paths of the data structure manipulation.
+> Meanwhile, smart enough compilers could inline these if it helps.
+
+I see your point. It make sense.
+
+> 
+> Thanks,
+> SJ
+> 
+> [...]
 > 
 
 -- 
-Sincerely yours,
-Mike.
+Asier Gutierrez
+Huawei
+
 
