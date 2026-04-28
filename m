@@ -4,128 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A27FF8875
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:33:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DA31FF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:34:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F6AE6B00FA; Tue, 28 Apr 2026 19:33:25 -0400 (EDT)
+	id 98A7F6B00AF; Tue, 28 Apr 2026 19:34:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A64A6B00FC; Tue, 28 Apr 2026 19:33:25 -0400 (EDT)
+	id 93AE96B00B3; Tue, 28 Apr 2026 19:34:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 370A96B00FD; Tue, 28 Apr 2026 19:33:25 -0400 (EDT)
+	id 82A476B00B5; Tue, 28 Apr 2026 19:34:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F10C6B00FA
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:33:25 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 260BE1A05C2
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:40 +0000 (UTC)
-X-FDA: 84709548840.09.3E733FF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0E2A310000E
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VVOYp38t;
-	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D6636B00AF
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:34:00 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA4E11C0CE4
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:33:42 +0000 (UTC)
+X-FDA: 84709569084.28.9AFF6E4
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BB1D7C0008
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:33:40 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=N9Xfzx+n;
+	spf=pass (imf22.hostedemail.com: domain of 300PxaQsKCHYUWeYlfYsnhaaiiafY.Wigfchor-ggepUWe.ila@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=300PxaQsKCHYUWeYlfYsnhaaiiafY.Wigfchor-ggepUWe.ila@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777418738;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1777419220;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JsEUA4XhZAQSMjIqhNHdmznB/ktQmpZ3oDn6XqRR1o0=;
-	b=sMRmiQ8cdq1Im4Fbsa/RTyWYTp/sBVKoA7SICDSzZiYwd5kAKmaQLQlJfEm0V5kKxP725Z
-	YlwB/Yr/TxgXMpVIdkxGCFGoONjG68gy4SS+xbV8+zUPLgchE9XVWPZBnPejt5mP9XwXzp
-	jJxX0QQM8emuShOKDo6AxNZbcEzRcLk=
+	bh=/ZczNi69+WMKOJksOctcu51kanJpEjkfDW1oXPOUGF4=;
+	b=RjVXFuXTcUxchJhF2Ona1jhZIEUbRnsd+JoRRD4JbYDw9SIJz2luLtYAEs4XJaW5cQI4yY
+	p86hDv2j2vs+pKa14SQjzQDvnSJH64TgHJREduEnrvFHonyWoZu82ddE73mVI3DwcXajvW
+	OiELfx35uHKqPB6SwyVFa85hdEVuukY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VVOYp38t;
-	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777418738; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=N9Xfzx+n;
+	spf=pass (imf22.hostedemail.com: domain of 300PxaQsKCHYUWeYlfYsnhaaiiafY.Wigfchor-ggepUWe.ila@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=300PxaQsKCHYUWeYlfYsnhaaiiafY.Wigfchor-ggepUWe.ila@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777419220; a=rsa-sha256;
 	cv=none;
-	b=C3iw2AqFY6a/sZ3UPMazPqpynXCENAlHZ0n5KP/jZ57kJqCzFziZ/F2SQMzWAU2xMHSGNR
-	h5amyM42pR8wWZ9zKb+VIUpIhtSd+sGWFSGsASIs2MBRrvFD3ToO4LvGAHxTV/yoGhVsnM
-	/XZ7TOSje2uvgU0NGv4Tvvtv7fW9u54=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A241344AF6;
-	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7D419C2BCF4;
-	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777418720;
-	bh=wdLoj8HH8Ns1xI8zoSpP1xSUU4YJ7JLqU9N7Wg1Hrz0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VVOYp38tDjUKY+lrdJC7aR7qz8kMFuqNZpBLzDkfG6IRhjfGsPWMpGGOHl4z77Rk6
-	 J3sdvSPB7VUnU3vCX73wAaYDp8rsUodfc5LsB5r3/xVF35wBkBwJcdV/6FQupgtdBG
-	 9Dn2XHEnTEfFJwAhaB20qXDXWUib5ZRhAtXzht1S8HQQj30ZPQ/K4MpmejzrX631UB
-	 e4zHW2BxJtZii/IbBildVt5eTcQYlE1nc+mchzY3WalFToQBLRkP/W8Y3S9eP+ToWv
-	 F5tQ9t/R1HNRc7sW2MSpPYUGLV787DrXs0Phn0kbDwl+pyRiUZzDhVf81fSZbuAebl
-	 ifs0Ft1NbLapg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7229AFF8875;
-	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:34 -0700
-Subject: [PATCH RFC v5 39/53] KVM: selftests: Test that truncation does not
- change shared/private status
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-39-d8608ccfca22@google.com>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
-In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
- ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
- shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
- aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=1978;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=Bf9VYURnTgb4TwvCJyU5mwma0raoYBRglUIu1BddfsA=;
- b=Sy3fBvTvGT1l7P1754XNGwhnHr5V9qJNv9e3LC5taI2eQg7S9WzmF2LhNSMc6bbYXC5UjP7XV
- g61CrfU/Av3A6d5LctiXFLDMlkZ9ifHKNPN3O6xFeLM86WNKXhjnss1
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+	b=g5jgMKkl27urE869Ec9sw3c8AKgP75bo20V6idjy08QlORix6cYvgBnpEGdHuhacE9Ke58
+	ffp57GmsjcL3yXqJr3nE6yCpYBqYjOEiIfYEf8rOxjzB9PydM4UgGDsHIfKaZgO4hLWzHl
+	+6bhQxb8LXDMMkRqh4sNFtRBaCdgk9I=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35d9278587bso14388647a91.2
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:33:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777419219; x=1778024019; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/ZczNi69+WMKOJksOctcu51kanJpEjkfDW1oXPOUGF4=;
+        b=N9Xfzx+nQYzQ6QnpcEFbqupEtKUkoYq9qR0H8uwcpTdu50HUOlh+RXMrYM5co22r8E
+         CdZqJihRkGxAbzSdZFqIkXZdUjZn2bqrCL3SpsPsqNKIvqvucU5hWa2PiIK7uJC2rhAI
+         1grmfybiuSyK2PsCQdsUiZGKn9YohqLmSNhYAoy6AEuHnkcsxPM59XgEYuWVc+We8RBX
+         4eTMKkxwEd4f6C4NdfVpPdkpXMfbXXfnhBgiIaef6F1aMOjyCU98eKd9j1Bym6M6rpq4
+         9TZ8mt7QpuZ9SZhkuWeDilGgO1tQ5rdIIfcutqbceFflPMfFN5bBfPRltp94c6GNPZxK
+         QPrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777419219; x=1778024019;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/ZczNi69+WMKOJksOctcu51kanJpEjkfDW1oXPOUGF4=;
+        b=d2714cjY+NYC89XWIR9et3RZ6BLZfvRSXc+0Sery63H8C7g2brW79O4SYxR2lXCgdc
+         9wrdaW/rGDMz6elB3BGKwYNcHpXU1jv8QV/qXN/fv1Rvl0QkrR5V3w9DYHrWitn57OA9
+         6ouUH/okp3iaR2hGbtD0/3OtbjFXOclldz3f7rEwtyYJv8OOutcJe6nOL0V43gQZg1Ii
+         pttENM2ackNiXuvKJCLvlSCgJVDZ+o7o+X/VNlfSJEIMCMHtQ666NHDU5B82dbm1ZBa5
+         DA2dSMklMuu3b74HOKe7Ep+58kmDofN4seGGGXkZMWslCyyTXptn2+4X/QOEbfi3qkQ7
+         3fIA==
+X-Forwarded-Encrypted: i=1; AFNElJ/XUlynv10oWcFAnQSEA50ojFDR46SYYnAGAyHmV6pa66A84XX5gfGcoH/zdg9vyF6Ip2tntzSyCQ==@kvack.org
+X-Gm-Message-State: AOJu0YzerP3ZaU0QjzAHgUmgbhEY+5qm8sHVfiDwyi7FN7ra1hGTZxlf
+	HO/R2kxS1STOy79pihrP9XDa8mar0rhU3HBJPYX9DM42jI3AXS53TTAi41FyJiw7SUGZanucfW4
+	rm9rxl73xYE0vGpk74jG5ObkSbg==
+X-Received: from pglr36.prod.google.com ([2002:a63:5164:0:b0:c76:a2d8:308a])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:3d20:b0:398:9820:f6cc with SMTP id adf61e73a8af0-3a3af654fdemr1435167637.55.1777419219029;
+ Tue, 28 Apr 2026 16:33:39 -0700 (PDT)
+Date: Tue, 28 Apr 2026 16:33:26 -0700
+In-Reply-To: <cover.1777418884.git.ackerleytng@google.com>
+Mime-Version: 1.0
+References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com> <cover.1777418884.git.ackerleytng@google.com>
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <8ab73dc90c83af8dd30af3fe531fa68ee1cb4b96.1777418884.git.ackerleytng@google.com>
+Subject: [POC PATCH 6/6] KVM: selftests: Test content modes ZERO and PRESERVE
+ for SNP
+From: Ackerley Tng <ackerleytng@google.com>
+To: devnull+ackerleytng.google.com@kernel.org
+Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org, 
+	andrew.jones@linux.dev, aneesh.kumar@kernel.org, axelrasmussen@google.com, 
+	baohua@kernel.org, bhe@redhat.com, binbin.wu@linux.intel.com, bp@alien8.de, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, chrisl@kernel.org, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
+	forkloop@google.com, hpa@zytor.com, ira.weiny@intel.com, jgg@ziepe.ca, 
+	jmattson@google.com, jthoughton@google.com, kas@kernel.org, 
+	kasong@tencent.com, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, mathieu.desnoyers@efficios.com, 
+	mhiramat@kernel.org, michael.roth@amd.com, mingo@redhat.com, 
+	nphamcs@gmail.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	pbonzini@redhat.com, pratyush@kernel.org, qi.zheng@linux.dev, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	rostedt@goodmis.org, seanjc@google.com, shakeel.butt@linux.dev, 
+	shikemeng@huaweicloud.com, shivankg@amd.com, shuah@kernel.org, 
+	skhan@linuxfoundation.org, steven.price@arm.com, suzuki.poulose@arm.com, 
+	tabba@google.com, tglx@kernel.org, vannapurve@google.com, vbabka@kernel.org, 
+	weixugc@google.com, willy@infradead.org, wyihan@google.com, x86@kernel.org, 
+	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: x7ruo8jtqy5hqc96ugnbc593ct6shnh1
+X-Rspamd-Queue-Id: BB1D7C0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0E2A310000E
-X-Rspamd-Server: rspam06
-X-Stat-Signature: e5z35igdsac9ntued45ftngydqx8c3q9
-X-HE-Tag: 1777418737-581683
-X-HE-Meta: U2FsdGVkX1/yZJIGSA2y0JU9EJlReBGPnhE5Ati14IvhSAzAWRFGYqFVdOc1pTNvbOQee4wMu3/CrJFp6bXd1xK0FLZPdH3tzoTs4yH4JKDXT1cKIEO98nR9+tRxXjC4C6Zjp6iYyzhqY14Ek6GrTgFjOL4FZ8CMgXjjTMfWCF6z+21F/NkrhAiLGmXBRvsZFrJOyNNEG82LlDcyWGl6khDWG6ycK3S+MtmnZ2Rg1LMa0Axy0BITrcyv/XVRFSTkaRMDQm3A2MD59h8A+J6lRIwO9wn4oDqY+7UG9hvuQjG2mvehOw1gHnpcjQ93gSrXFUFvLfz+LJraSKWmGKCa+pZzJOh8cPoZqTZQXg9vYwgqz0RjIYAxlLUo7xLGebA0w4g4hhizSNq5GGVL3n6fXFCHZV8FbIgwCPlievMZineq5kJlNpZH795wxu3TqY5N/GKxdZWjbwzXFTjcNcuGYSD81QhPhbIJtvl+/14rNJnEqKWqR0xyN0Dbpm02AY+1SaO7wsgwfdM0aDH7hBnzF4H8dJpU2v5/VwrAd1oE7YDJruoLfUiUSGvB9p517iG+c9oo/70iC/AbgE9+NHLapap9EMHzkH9OZ0G5/4tUSYDCNKyCE29SAvIbKSwauDigpXvhpFBfpEshLri2s6w2eZYvu7/SfNONyC0YLr2lj558x3586Fnhb0kVLkVMDTU/6gamQP0ie/7ulJGon1RP8OkPlnO289C0jIJ5wB33fL89EMZT83/P3msriHFw2ujra4joiPugviA0I653RjEG3c5pf3Af7EuS55o1z9OydRA5VjH9fDyZ3vz5MvH+LEbDcj5WCzQXBzLeHymac0PzuMl93FyTbRiN97Gy76ZQ87RhuP9QgGW+CYqa4GCI+owSzGcRSaYELmRt9uPLTayZ2AVezCY2yYiEbheenL89ufyvCZXDiFKu6e7sWm74N3aTQbeiyf6kHnkq/lYAOmg
- jFVXEJZ0
- 7tklI+ws2ZgrxFoUTmKpP4ofE4jb4O79UxSjA5qCrOB1kxtc6M9R/B6eIgl/wQTabbjtR7jFULrt4pbrFZWRQ/gZKxOmBFXyviVOVqkkQ6Z/yVHHA6nzynD/yLV7DMBTqVrHRdGYvKGbTFHZNWV+s+xUf04WwvRBVGaR2vLnlDP8KlDrgKI7NcIO13wImXrbOrZvZco0OHgzhu1HqBk4WjpGvGoinvkAkMvu4ld9Eo9XToW3jdDZAum+sOnyo70a/SwwTj54IR+bKMcj8pXQ4ohbLLL5dVQC9lLG0PiQypDHTZEETVqw07GsVh4RdwzEv3Ct21f4MJKpkzXHZdy743W1bwE293rSsCdqfozaqoBrC2JPax0vp4YjKgRB8ComlapsgdwTJ7oz2+SQUBnrIsFqisnv773aiekqh5i4SQuf6JohhgfQezhtmUOWPpkQI+KRnMeYXVQS7mL0=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777419220-320430
+X-HE-Meta: U2FsdGVkX18SCMZY9Jgenb1O+8LN+Oz7c+9iZNl+cwcQWzQhVp4KAG5J9GboPvscWh8B+M4UHWWLUfahHW8pj+7KA5ZAlKVg431PCg2vWEHi1CwhboisQ+XyNy/TPQzK7tcp2kBCTdHuLx8JsjQ1Ns6838cjAei0ez9Kg28STiJxaVlVfmXHMAhaOClupOu/Jx02E4uQqGN/Rg8NdwTeV0EQBGgG4pHf9UkFfW4CGa8KadrbkMR+qxfZwG7my3IlifStqeJnK2uK4/kP1W1AFR2vBEwmgKH+CD3MQqRgqopneSshij3O4+BT91F9qqwpfyE1vx48mxu8cJOcfLWRJKax8ZiKeZyqzUBajIG2wkvOzcH+/5jD+ZNGzgSZNa31NPdKkJ4oFsRDPEQrD6rBzJQXs7rBRqsOH3kf0S1fXADxFI/uXPk6RIfuK4t4zXC+0Gvi8YazZ9hhjynQAMRGVcZdPyq8va3aPsN9m/SKB49UOilzLrn7uL2+HKzyLpGPjwCT2ybFoLmPjlKbM0Tq+Mywx3t3MX435NERoxUqgdVVgs7CjBriWNcCtn0hhZqxl/krSx30PPLnA7lDyfumsGhChGd0ujtAZFqkIP2/rSbE99ypr3VoWnN/ZlL9DI78FyysDF0uPdGeDKZ3n/Vp+g5EoOjf7MFG1PEFz3LvYdIjN8Y1WfqqhwA/XwhqoQ5F85/2JLsNRF7VcAnMw0ZF9R+T0cb/8a76kMWs6FriXyfH317xSpbtzeBpY43tG1rIIRYXma3Rkae/x5sfQwACmZsP5hiJdFo0AOXJesK6wNk5E3XYNsoiDNfM8o6vGt/CdZftIXNPpNDA573pDqXTUt61GwgI53zxZ1oVdS+BXo/AWS2lGzjzhcgNrzBI5sBj4lriLfJtLWpOzq1Tc18AY0DOasug8xUzUpHGBeDDwT6Y4edKl53sKUwFdJpfIc2/fSsOufFEbvfq1kjZUuO
+ O2mFyuKr
+ H742Q84cZHvCoJ+aNDv92HBCEv64rVXELsUtcdM0+LLwSdoGZgKivOFdZtaNU0i0YaLP3UZNF3VuMM7laM/9ksEwmE3hlzY4nKhJlw+AOEA94MdeNSmwQhmZTrAgk8IRwXcwsrEYP2QpRHFkTejdYLtMEcMaQ9+CC4l3EYpaxMHSWvfqXPctrBoHEI3eaOVGzw59fL/643v8iMkIXnIUzUwfkY7GVkSthquradlDlOqK0gMNBvZFfGH8KtvG+++BjZ4EjcjDF1ZA7uAoD1iLC0P3ju8Ib8b4vpdQpBwcJLI+ob1EJ6mzsKrGTagA5+OZ+4vrcWzUKol1JAJjkJHjjpqT0B+INSJC7boF2LsAawlpBVDbWTvxA5gCFYOkY7wLVxsdJwj60vzq2bzyrkPQ5zszTOue7IfDBc5rKpX0+i1AJujW4M+2Ra5uHhLu7hB7yPh7N+ZgLX8xBsjMDRiilMK0zCfRSiMVSYC2Oo69tkUEs/LNPZ9hT4zt8HKz1sBYilqSxgkQNUABa6BKlu0k3D+b9jpPzoYmq1dLqcKv6M7SJpJ33/WaptH3urxE9GQUmEunApU+D+ZJpx9K0XgeA6ihbPIT9yprxv9rQDYoSaNfyVnd/F2r3NHPFe+cctcAm5gVZ0d8WFy177osoY2chyzwAZReqJ8RIHhy1g36Arh+8FF3Is+4Fp+ehDve64Rt2Y6Sk1jN/Suem1l0qB8z2uly26jMb23Q+GTuOtfLwjZIh0K/Wk0BTfb/Swwbx1sCTjNcvXmCTXpiIiyk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,59 +127,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ackerley Tng <ackerleytng@google.com>
-
-Add a test to verify that deallocating a page in a guest memfd region via
-fallocate() with FALLOC_FL_PUNCH_HOLE does not alter the shared or private
-status of the corresponding memory range.
-
-When a page backing a guest memfd mapping is deallocated, e.g., by punching
-a hole or truncating the file, and then subsequently faulted back in, the
-new page must inherit the correct shared/private status tracked by
-guest_memfd.
-
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../selftests/kvm/x86/guest_memfd_conversions_test.c       | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ .../selftests/kvm/x86/sev_smoke_test.c        | 47 +++++++++++++++++--
+ 1 file changed, 44 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index 2312592c4076b..8dfbf3630cec2 100644
---- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -10,6 +10,7 @@
- #include <linux/sizes.h>
- 
- #include "kvm_util.h"
-+#include "kvm_syscalls.h"
- #include "kselftest_harness.h"
- #include "test_util.h"
- #include "ucall_common.h"
-@@ -320,6 +321,19 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
- 		test_convert_to_shared(t, i, 'B', 'C', 'D');
+diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+index 86f17e59e9392..7a91a113c4fb7 100644
+--- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+@@ -365,7 +365,26 @@ static void guest_code_conversion(u8 *test_shared_gva, u8 *test_private_gva, u64
+ 	vmgexit();
  }
  
-+/* Truncation should not affect shared/private status. */
-+GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
+-static void test_conversion(u64 policy)
++static void vm_set_memory_attributes_expect_error(struct kvm_vm *vm, u64 gpa,
++						  size_t size, u64 attributes,
++						  u64 flags, int expected_errno)
 +{
-+	host_do_rmw(t->mem, 0, 0, 'A');
-+	kvm_fallocate(t->gmem_fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0, page_size);
-+	host_do_rmw(t->mem, 0, 0, 'A');
++	loff_t error_offset = -1;
++	size_t len_ignored;
++	loff_t offset;
++	int gmem_fd;
++	int ret;
 +
-+	test_convert_to_private(t, 0, 'A', 'B');
++	gmem_fd = kvm_gpa_to_guest_memfd(vm, gpa, &offset, &len_ignored);
++	ret = __gmem_set_memory_attributes(gmem_fd, offset, size, attributes,
++					   &error_offset, flags);
 +
-+	kvm_fallocate(t->gmem_fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0, page_size);
-+	test_private(t, 0, 0, 'A');
++	TEST_ASSERT_EQ(ret, -1);
++	TEST_ASSERT_EQ(offset, error_offset);
++	TEST_ASSERT_EQ(errno, expected_errno);
 +}
 +
- int main(int argc, char *argv[])
++static void test_conversion(u64 policy, u64 content_mode)
  {
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
-
+ 	gva_t test_private_gva;
+ 	gva_t test_shared_gva;
+@@ -409,6 +428,21 @@ static void test_conversion(u64 policy)
+ 	TEST_ASSERT_EQ(vcpu->run->hypercall.args[1], 1);
+ 	TEST_ASSERT_EQ(vcpu->run->hypercall.args[2], KVM_MAP_GPA_RANGE_ENCRYPTED | KVM_MAP_GPA_RANGE_PAGE_SZ_4K);
+ 
++	/* ZERO when setting memory attributes to private is always not supported. */
++	vm_set_memory_attributes_expect_error(vm, test_gpa, PAGE_SIZE,
++					      KVM_MEMORY_ATTRIBUTE_PRIVATE,
++					      KVM_SET_MEMORY_ATTRIBUTES2_ZERO,
++					      EOPNOTSUPP);
++
++	/* PRESERVE is not supported for SNP. */
++	vm_set_memory_attributes_expect_error(vm, test_gpa, PAGE_SIZE, 0,
++					      KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE,
++					      EOPNOTSUPP);
++	vm_set_memory_attributes_expect_error(vm, test_gpa, PAGE_SIZE,
++					      KVM_MEMORY_ATTRIBUTE_PRIVATE,
++					      KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE,
++					      EOPNOTSUPP);
++
+ 	vm_mem_set_private(vm, test_gpa, PAGE_SIZE, KVM_SET_MEMORY_ATTRIBUTES2_MODE_UNSPECIFIED);
+ 
+ 	vcpu_run(vcpu);
+@@ -419,7 +453,12 @@ static void test_conversion(u64 policy)
+ 	TEST_ASSERT_EQ(vcpu->run->hypercall.args[1], 1);
+ 	TEST_ASSERT_EQ(vcpu->run->hypercall.args[2], KVM_MAP_GPA_RANGE_DECRYPTED | KVM_MAP_GPA_RANGE_PAGE_SZ_4K);
+ 
+-	vm_mem_set_shared(vm, test_gpa, PAGE_SIZE, KVM_SET_MEMORY_ATTRIBUTES2_MODE_UNSPECIFIED);
++	vm_mem_set_shared(vm, test_gpa, PAGE_SIZE, content_mode);
++
++	if (content_mode == KVM_SET_MEMORY_ATTRIBUTES2_ZERO)
++		TEST_ASSERT_EQ(READ_ONCE(*(u8 *)test_hva), 0);
++	else
++		fprintf(stderr, "test_hva contents = %x\n", READ_ONCE(*(u8 *)test_hva));
+ 
+ 	vcpu_run(vcpu);
+ 
+@@ -441,7 +480,9 @@ int main(int argc, char *argv[])
+ 	// 	test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
+ 
+ 	if (kvm_cpu_has(X86_FEATURE_SEV_SNP)) {
+-		test_conversion(snp_default_policy());
++		test_conversion(snp_default_policy(), KVM_SET_MEMORY_ATTRIBUTES2_MODE_UNSPECIFIED);
++		test_conversion(snp_default_policy(), KVM_SET_MEMORY_ATTRIBUTES2_ZERO);
++
+ 		// test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
+ 	}
+ 
 -- 
 2.54.0.545.g6539524ca2-goog
-
 
 
