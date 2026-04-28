@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B2F5FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF20EFF8875
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:30:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3FFA6B00BC; Tue, 28 Apr 2026 19:29:59 -0400 (EDT)
+	id 3922E6B00DB; Tue, 28 Apr 2026 19:30:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E18186B00DB; Tue, 28 Apr 2026 19:29:59 -0400 (EDT)
+	id 368B66B00DE; Tue, 28 Apr 2026 19:30:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D061B6B00DD; Tue, 28 Apr 2026 19:29:59 -0400 (EDT)
+	id 27F5B6B00DF; Tue, 28 Apr 2026 19:30:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BEA1A6B00BC
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:29:59 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6853B120B56
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:30 +0000 (UTC)
-X-FDA: 84709548420.10.1ACFFF2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 177EA6B00DB
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:30:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1598A0926
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:27 +0000 (UTC)
+X-FDA: 84709548294.09.1636CF0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3D91C20011
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YXmpiXZL;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id D2DA4140004
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tSugz+H3;
+	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777418728;
+	s=arc-20220608; t=1777418726;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HWJyTuMRVnulfLTRNylKoR3xD9GL/Ka8HKFVPDGP8JM=;
-	b=gKh1esiC2s8Qy8uYs0KeBjY7YTsZCrMP+v/eEHZgqEZBpEbYzSyryLqftsRkT5NGln/Xf0
-	SZRy+iMlxf7jMM8xBSGDrlxDRnKo96cvX2oe+bqXwH0u6rVG4Cbhdh4r2ssW8grVaaY7Vs
-	BW3UymTxKVRzPoumcGeEsRH4AyVSJ3Y=
+	bh=MZa4vCmRdMiUoA3bu4ixURqa+6UWxvsTyeFmbvJuvYQ=;
+	b=FbnWMhCJ5f90NAqBDfP2B2a7jjteFEKRQvGRN1srUIs958XVamZDs/h8SJOhduIMwayC6t
+	m/AuJV4dgbvXCyNRvl8MfkV/ICTWTcXEqR1uVer7Zu+TFnLeFBCFKrPIfImU0duyjxSLrT
+	VU410jQ4hW0hVXvRXvMjw5Hm93u2wOE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YXmpiXZL;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tSugz+H3;
+	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777418728; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777418726; a=rsa-sha256;
 	cv=none;
-	b=pK+cHb4u1Z1lueSUtF7Nbn6UUKb8RLJgpVC3Z7An2a+JWHm/ckkA1Ne54HURzk1Wf3VYt7
-	VPcQmvVmw5deIdsaxMEuhvnGKtgR/KA6TGPpHh84inqRoS8uXCc0Aadb9zN3xzhLYbzzeX
-	nzm802WJ3V3gRVrt7FNVOutX+sXVEiU=
+	b=QWnrNrdMMzgHGKfILLtnYi77vjFqIkr5rH1SfzGShz7f33JD0k4M49Y0zhltGtoB6anrfY
+	b0X+56feULLl/3Mku48b0CmJxEOZpw9OkCCm6lDcxW6/BlDpFy+RmMeuLQDzHsX5/7KJuF
+	zbbZvxcEibUE/4vI/yxvblKnK2QPF7g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1470F44A0D;
-	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DF52DC2BCB7;
+	by sea.source.kernel.org (Postfix) with ESMTP id B39D64445D;
+	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 60803C2BCB7;
 	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777418719;
-	bh=McDOUCm+isas7jiICyN0E5ubUDEjWu5iEe+R8RHc0CE=;
+	s=k20201202; t=1777418718;
+	bh=HhJ8C2ULYSnKpU02/tGXtPPTADB2EfVQtqS/uHVIzYg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=YXmpiXZLWXXFdTN57fmIKCnVspLN0ZD8E1nxFJf7RMGgP8ejDB6T9YzrWSPvUl+La
-	 niZ5r28LHje+vjo+sbC5WxKMmYzGgy6wlJnrEOeQ2X/9+9CO9ovDxp+hzWlm3ww5qh
-	 jkDAOiuSY7mNcMh+XE02D5bdR3yAtsmL7/KUA+QkWEXFhZjBzdb3mLqs6J+d0Xvzwc
-	 gwCgagS+aBw4NQ96FNEa83BPcBtGHUpkeiY13dvaAgypBi9aBRQv2zZhyXBlRXWrM3
-	 ULkXOhe6Rk/u26192tjuIposMG467TQ4XS0r9GtXv/ameZszFygIhPqVFZrYM98EB1
-	 xppN74Be0NkvA==
+	b=tSugz+H3r/bI8vLM/FsW49w2uoH13PWHVcTzFRtrZgLmztYlbaddalMvd/GPTH+OA
+	 iybcJYb2OEuzlGIC6yNJfTEkpiT83ARkUZ2JPgi2lXgvwhA8MqYV3aQ8sUW1X83nPU
+	 C5w0QpKbTOd/Fs6e787e59kCqffkVfninVVTqOK+iY3ZxBzCmQ1Tr93k/WviiOttt6
+	 ta4n3L6M7bOsywGHXUMUzRNqlaLjeH7/a/Yx5K5BtO4VQp2asnw4k5AnF80Iul28GE
+	 xW/Z9ZjMM9oUrbE4k3Y89z0drmZzmP/JwrfdMCuUFnHGJa73yQmhc2IMaiV2HlM7PO
+	 U7mb5V9fIagpQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1E1BFF887E;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FFC5FF8875;
 	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:16 -0700
-Subject: [PATCH RFC v5 21/53] KVM: guest_memfd: Introduce default handlers
- for content modes
+Date: Tue, 28 Apr 2026 16:25:10 -0700
+Subject: [PATCH RFC v5 15/53] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-21-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-15-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -107,11 +107,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=3682;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2931;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=bExntzDH4eJvOXiKEEI4Mzgx/0x0zxgpmzImhSYoC1o=;
- b=PNbqwo9hcIQwsAQRGjQHX21H24S4wh3bsXFlO6MkquX+OHrZREiPkkpErhDiU7/NBi84pETDV
- vHMROayf7h/AC/UbqBdSyOejE+v/B0mVu0oQwwqp5Kacfunrp/JDX78
+ bh=bFm4QUlwLsCLqMqV3YPlW4ZQKVQMPLtcpdDZUrpsyS4=;
+ b=jnKXP7vtqQUPCENWxWAGbQ0dyHE7F1LL90NmrM8GuZj1v4CE7P3RePJ10i1Bn0oSZ+kBtpsLM
+ 59D3dWe3a+IA5MdRKM63mYMm4SKWGoeTvHRJZSGf2oiZZKLmvyKMBTn
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -119,13 +119,13 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D91C20011
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ka8zre98hrgufprmxufhf93cmi7w55hf
-X-HE-Tag: 1777418728-814371
-X-HE-Meta: U2FsdGVkX18i9dr62Duhl6Km1g328X7BfY6vruLCpeXu/SdQg8pa+LrI9UpHRjFlipqyCzW+NpOd4syzmdrVXjt1vCrp9m28k9CKHD3u42q81KcoJsg9GzNxH/4wT+ZclKrLmqX3EpIH6o5lMpmkOpVX73ehWWnDMHIJjOEiZzwDsK24SDPI9AkA5eARFaVfCbnHxgwOI22X7ppSbwSbSRN9E96Ip2D960iW0Is1WufxzEwzdfFCNMrshcaChgD6eTn+yn4F76gd8E6KdB21l18ZhtxQJy3Fod+GDHvNCjNTmPY/kNlDNALGxvDqjXGNnx5Cg4y0SNkgy/orvFIS0YI9+HVhKAYQjP2fOEa2qfVgA+fqGnr210gPiJ2h6XpNyIy5RlpCInsQt2ce+r933KciudrjpsLx/VfFVFIX+Lt+NFlzfxn68podSoFgqF8cue98VZ4YSEoeGfDliiWlUAi+DQ2lTwLvOAgVLjTOvFBzaxe2hMpjpTLjr6YjARi7H2tDcinMRX8p0GmlikzGxYRORvn8iWvdFFoKZ7IPBretitMlf5wpQJJghAk0PNir6mj/5nkaDk9W/IZ6GdsBRA0mSJh1uEjgWu9AD+aXOMGNrWVv0eIG489c2A2wovMIimXnFZsvcNuoTT5jjYuWPGr4dSnU2/hvCmzGvoYFbCKJYArXOuY9ub4OE8U7XXBtkeYQ6YbnVPvvpzQ2rL+ollg2YKFb3IFDryIZT6Ozy7qM90GJRh+T9r/zsunrafaVhP4WVQHUkSgOz2Hf8a2Qc5JFKX8KassiBzgS0YjaMDuomi6hfbVIlJM8tNjtZ0qoK4Iq8IwAqmBFdao97bv/Nnu7wO9yZPyIt0n8/P5wslUAX22C4Z4PjfpWZnEAp2agghOkC/R3uIxhRcLJCnd3ikhgFUIFgn7J+8LJbvcx1Mh/h08sGWZzqry2klHDUt3RlCAMP3OVVew8EP4vnIh
- R1JtBEOA
- ZFMDK7waH2CUOlum8MUsEsEABb9qdZdfaAFcH3nFbsvKpavWYiMJgDMvn3sOiDOJm8h6+6q/qSYzcRZd7xKhWE0WVEBk7WguUKKvPy2UwshWc5Z+Iu1EtGl9O05TVMyHDCiVWFc3xrZyiO+RAYM9dPdTSy2f+cS6c1D5KXoFB2nszEivCT4x/ABDW/iGV1sjhtO/ICoBdZ8ny+a4sdhHQdeQ3DN9/1yrbeJntzyAvSchnH+B6QMA8qea5VhJl76zZcRdztvaNJmSEMEKI5DZteAPAV77BxtZxsxF619C2wmxxt47uZoKOoU++MODmPH7sCjzycDQZjjMnG7tv82SIFlT05jBeHnEOyAJ5lKGdyPeO86p4TVuEQZS2bCaUjFALvqLx17XPVJhkGqFmn4saz0QO9ZMZM/a3P8Wtdd+V2OiL+iarWuKAbOgIrKrcu8tOgmXUGCiJDRGlv59VZXGXesAAWg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D2DA4140004
+X-Stat-Signature: 4z4x7z85me455t4hce1jmoh6u9ybinye
+X-HE-Tag: 1777418725-27638
+X-HE-Meta: U2FsdGVkX18EKZUm+/vX0PACZ/zVPntuPyh2dJgo1hsnodxj5ssqKza3TvAj00Z6GTuZUmENJIgorr3yYnQVAGmes5DrR1y1gfwQl3mVfJG0wcwV6DEmt8t+rzYTGDWmQSbxIzb0SUZVaZACBZfv0XvW2FShr8jTpkEW9IIwFIcXQFE1QZVNSrhea6+sz8k4P1oGWmnnYuelbO0nPW2Uy09juO/C0t6hvf+6ujLtGpUn/AivBCx1Vm4/usUfjY676uOym4d5HDDoUK2Nl7KHAPCx5QTZdg7LEYen9fjFF6SK4uyYoVXWSntYBDTxx031sB0wSzvl3QEuTAQaBbOZKzU2BAsuuDPglK482MoKMY5mrGNtB/a8YzxSXtIN/lpNfjK6ctymOuNwXPISh/i3ZM4Cm+2j6I7zzTs5S4j6nJu6/3ApMb77N854qABfx4qlYHw0ms9PIMYwU2X20/X2ozx/W/q9x+fTNotju3XTAYffRHyJJ6sNpPJVrm2yPxaRjhF5GsIQFI+9VqJfpiXjB1tYeRCrND7a1JM0EPYM/hrUdYtjCk3JagHREDe1xKqClKThyfOgqCO8rZymuiGxnaq27ZajcIC4RK4lXLXijCyDzekzHL5t9cm/SEK3HMlC5dW+3vgQeomnGutX+8dYlv2Aav1FzKcAHVC7i8PT6RBJib1UwnDkXu3dB7tb3POr9nWjE/VhKE0GCcf6aO5a0JBxSHw4Vmv823lO3B43ZQnn+CSzG1GqVKqsJcG3Hl4j4T4DkEO2mK1sEH6aWCDc8VPr7sg7s4YtLYFhJFQKK0k0tm8HQ8NZCWR8kVdFzWZsZSBRPCI4i6dpFNyMXpukfQ3z/HJt+x6pBgEQYOlGpZbJtswEe6thLqa9ioehXGa8ECLiI99SHU24ErqBhPUZ3PdEZvsQepYZNNdlRAokH30jehlF7td94cZlRq/Z2CXs7gPEmpF4v+Ae21OTdoP
+ d6wGEP4e
+ 3YGa1CSc9gZxQ8HBsI+Ca4jnYvrcwibjvs+UUj2nSujoQD/7DsytY/kC/gvp5fPvJBkEMTQ3Z2g9ZY21zxFv1DRTZcSSQFQYDwCMju/wwi5mAdmjSXRkVNsjiJ/QFZZw4IZVhJESbbnnO6HfL7psqkCF5Hh2cCVw/ShHbYKMJUdmiEj9/hna+Uvz5v+oo8Rx9f9iy8o8Kg5j29UGtSI9DidcS65qhkDxSA6rG9tYrSwGxZ1vKZ6tcGmgqP20TKIFD7TZOtz5IjafuOJ6M930oHiYIfphriUEwbHHsGMIwejLk3Ahut/t+s3HmmoArePSUJAIFIHO0wUAW2viUVRiO0DNHgbdL5wAmmmGwrvU+6KXQXwvQ+2JsATITvbZ/yyoWeDqwbHvCk7Xkmv7BxY/pMZzhizj7/UyvFa99AGAG2elgG5u1QGl3CT+2CINon6excGmsBZ0YJ5rbPb+irIM07rgebrxVVqeDtFs79JaiJjKgVvieXo3MkilVyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,121 +135,93 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Currently, when setting memory attributes, KVM provides no guarantees about
-the memory contents.
+When checking if a guest_memfd folio is safe for conversion, its refcount
+is examined. A folio may be present in a per-CPU lru_add fbatch, which
+temporarily increases its refcount. This can lead to a false positive,
+incorrectly indicating that the folio is in use and preventing the
+conversion, even if it is otherwise safe. The conversion process might not
+be on the same CPU that holds the folio in its fbatch, making a simple
+per-CPU check insufficient.
 
-Introduce default handlers for applying memory content modes, which
-different architectures should override.
+To address this, drain all CPUs' lru_add fbatches if an unexpectedly high
+refcount is encountered during the safety check. This is performed at most
+once per conversion request. Draining only if the folio in question may be
+lru cached.
 
-These handlers will be used later to apply memory content modes during set
-memory attributes requests.
+guest_memfd folios are unevictable, so they can only reside in the lru_add
+fbatch. If the folio's refcount is still unsafe after draining, then the
+conversion is truly deemed unsafe.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- include/linux/kvm_host.h | 12 +++++++++
- virt/kvm/guest_memfd.c   | 66 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 78 insertions(+)
+ mm/swap.c              |  2 ++
+ virt/kvm/guest_memfd.c | 18 ++++++++++++++----
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index f9ea95e33d050..458bad0083c37 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -741,6 +741,18 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
+diff --git a/mm/swap.c b/mm/swap.c
+index 5cc44f0de9877..3134d9d3d7c30 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -37,6 +37,7 @@
+ #include <linux/page_idle.h>
+ #include <linux/local_lock.h>
+ #include <linux/buffer_head.h>
++#include <linux/kvm_types.h>
  
- 	return flags;
+ #include "internal.h"
+ 
+@@ -904,6 +905,7 @@ void lru_add_drain_all(void)
+ 	lru_add_drain();
  }
-+
-+u64 kvm_arch_gmem_supported_content_modes(struct kvm *kvm, bool to_private);
-+int kvm_gmem_apply_content_mode_zero(struct inode *inode, pgoff_t start,
-+				     pgoff_t end);
-+int kvm_arch_gmem_apply_content_mode_zero(struct kvm *kvm, struct inode *inode,
-+					  pgoff_t start, pgoff_t end);
-+int kvm_arch_gmem_apply_content_mode_preserve(struct kvm *kvm,
-+					      struct inode *inode,
-+					      pgoff_t start, pgoff_t end);
-+int kvm_arch_gmem_apply_content_mode_unspecified(struct kvm *kvm,
-+						 struct inode *inode,
-+						 pgoff_t start, pgoff_t end);
- #endif
+ #endif /* CONFIG_SMP */
++EXPORT_SYMBOL_FOR_KVM(lru_add_drain_all);
  
- #ifndef kvm_arch_has_readonly_mem
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
+ 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 85e8b3a981307..b0e4bb554cdf3 100644
+index d8bdb51c50cf0..18dec87dd4baa 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -693,6 +693,72 @@ static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end)
- static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end) {}
- #endif
+@@ -8,6 +8,7 @@
+ #include <linux/mempolicy.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/pagemap.h>
++#include <linux/swap.h>
  
-+u64 __weak kvm_arch_gmem_supported_content_modes(struct kvm *kvm, bool to_private)
-+{
-+	/* Architectures must override with supported modes. */
-+	return 0;
-+}
+ #include "kvm_mm.h"
+ 
+@@ -608,18 +609,27 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+ 	const int filemap_get_folios_refcount = 1;
+ 	pgoff_t last = start + nr_pages - 1;
+ 	struct folio_batch fbatch;
++	bool lru_drained = false;
+ 	bool safe = true;
+ 	int i;
+ 
+ 	folio_batch_init(&fbatch);
+ 	while (safe && filemap_get_folios(mapping, &start, last, &fbatch)) {
+ 
+-		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
++		for (i = 0; i < folio_batch_count(&fbatch);) {
+ 			struct folio *folio = fbatch.folios[i];
+ 
+-			if (folio_ref_count(folio) !=
+-			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
+-				safe = false;
++			safe = (folio_ref_count(folio) ==
++				folio_nr_pages(folio) +
++				filemap_get_folios_refcount);
 +
-+int kvm_gmem_apply_content_mode_zero(struct inode *inode, pgoff_t start,
-+				     pgoff_t end)
-+{
-+	struct address_space *mapping = inode->i_mapping;
-+	struct folio_batch fbatch;
-+	int ret = 0;
-+	int i;
-+
-+	folio_batch_init(&fbatch);
-+	while (!ret && filemap_get_folios(mapping, &start, end - 1, &fbatch)) {
-+		for (i = 0; !ret && i < folio_batch_count(&fbatch); ++i) {
-+			struct folio *folio = fbatch.folios[i];
-+
-+			folio_lock(folio);
-+
-+			if (folio_test_hwpoison(folio)) {
-+				ret = -EHWPOISON;
++			if (safe) {
++				++i;
++			} else if (folio_may_be_lru_cached(folio) &&
++				   !lru_drained) {
++				lru_add_drain_all();
++				lru_drained = true;
 +			} else {
-+				/*
-+				 * Hard-coding zeroed range since
-+				 * guest_memfd only supports PAGE_SIZE
-+				 * folios and start and end have been
-+				 * checked to be PAGE_SIZE aligned.
-+				 */
-+				WARN_ON_ONCE(folio_test_large(folio));
-+				folio_zero_segment(folio, 0, PAGE_SIZE);
-+			}
-+
-+			folio_unlock(folio);
-+		}
-+
-+		folio_batch_release(&fbatch);
-+		cond_resched();
-+	}
-+
-+	return ret;
-+}
-+
-+int __weak kvm_arch_gmem_apply_content_mode_unspecified(struct kvm *kvm,
-+							struct inode *inode,
-+							pgoff_t start,
-+							pgoff_t end)
-+{
-+	return 0;
-+}
-+
-+int __weak kvm_arch_gmem_apply_content_mode_zero(struct kvm *kvm,
-+						 struct inode *inode,
-+						 pgoff_t start, pgoff_t end)
-+{
-+	return kvm_gmem_apply_content_mode_zero(inode, start, end);
-+}
-+
-+int __weak kvm_arch_gmem_apply_content_mode_preserve(struct kvm *kvm,
-+						     struct inode *inode,
-+						     pgoff_t start, pgoff_t end)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 				     size_t nr_pages, uint64_t attrs,
- 				     pgoff_t *err_index)
+ 				*err_index = folio->index;
+ 				break;
+ 			}
 
 -- 
 2.54.0.545.g6539524ca2-goog
