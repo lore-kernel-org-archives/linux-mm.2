@@ -4,93 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D799FF886C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:37:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07EF1FF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:44:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 731526B0088; Tue, 28 Apr 2026 04:37:19 -0400 (EDT)
+	id 280CF6B0088; Tue, 28 Apr 2026 04:44:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E21A6B008A; Tue, 28 Apr 2026 04:37:19 -0400 (EDT)
+	id 231806B008A; Tue, 28 Apr 2026 04:44:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F7E66B008C; Tue, 28 Apr 2026 04:37:19 -0400 (EDT)
+	id 120316B008C; Tue, 28 Apr 2026 04:44:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 510546B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:37:19 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECBC51B94A4
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:37:18 +0000 (UTC)
-X-FDA: 84707310156.29.71E8195
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B1CC740007
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:37:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c0dpP7Hg;
-	spf=pass (imf27.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F39A16B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:44:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 972A7140516
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:44:17 +0000 (UTC)
+X-FDA: 84707327754.20.79E4DAE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DAFFBA000F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:44:15 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2Uwil36;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777365855; a=rsa-sha256;
+	cv=none;
+	b=O5haARloTu0abRIIp6Va+Uo9OUNLPr4/oypOm3CSg49cthoJWs1enUyXCX20kdyJ9EnNZm
+	vzrQWEhdpGvNMjNkXp2/HqmPH3R3JJKO0SXJo0aLcc2QLwra1ai17ISrlS+RQUOpH0oAYU
+	JiirHty9yk9TwzSaddhTZzouAKa9o1Q=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2Uwil36;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777365435;
+	s=arc-20220608; t=1777365855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=myH3QOIFz0y2hknBNFxgLWJcfHd2Xwb17shw2Tk83v4=;
-	b=XjIFYOvKMuFlYMNjJljGliziUeFD1kt27qjEIB51hIDmMDD4qzow6BKI+d4JYDOXDcfK1g
-	t+2LPzqcmRWzZc6P/DP/MI6RtAq4npXXTVrmoUTnOY5N99Nuz/XcIFIAS2gchUs7St9dCV
-	P079WQUuHBNDmd8b5UnJI+YVT/Vid+E=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c0dpP7Hg;
-	spf=pass (imf27.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777365435; a=rsa-sha256;
-	cv=none;
-	b=xJkNJa1WER8NAB4wDkIxvBux02KT75z16i+5or8FKZO7S3/E/KYKdAdZNZezs9oifiSEFM
-	PLregDD6RIGDeQjkQk5rd+or3HBUOCArzuDu7Zve6kUpWD9B0/TFdeE4L20tjVEGvAaZ0b
-	s8eoBi1iCUEDdQ4/RyhKCWRA4WQtG3M=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777365430; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=myH3QOIFz0y2hknBNFxgLWJcfHd2Xwb17shw2Tk83v4=;
-	b=c0dpP7HgfFGKLpB3nC8dqF8ECTViQSdBko6BVwsog6umbc+Tdru+hlO5mmjw89srBSqgs/ThxKM4GRjnFN3EXollXAyRjAXmLMu81EIyx0N8+I6AZTJ9L7vepsTTjrIas22gUAF9i9A09xeHVJlfl3FXkTsa75x06TLhigBbe2A=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=feng.tang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X1txRAC_1777365428;
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0X1txRAC_1777365428 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 28 Apr 2026 16:37:09 +0800
-Date: Tue, 28 Apr 2026 16:37:08 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Liam.Howlett@oracle.com,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	Christoph Hellwig <hch@lst.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-Subject: Re: [PATCH v3] dma-contiguous: setup default numa cma area if not
- configured explicitly
-Message-ID: <afBxtIdWqv8pD8YE@U-2FWC9VHC-2323.local>
-References: <20260428060550.7167-1-feng.tang@linux.alibaba.com>
- <6dd52f8b-7092-4d02-ba24-f8b55409b7b6@kernel.org>
+	bh=0WpvDXSZJhPreIx6/Ai4XdHqTtkxshvLhvVzUL3yXQg=;
+	b=pzX1mRJ3jyY0Zt/2VG1hA4XvAOg8CFTU/mHeAD6L18t9VbCKOmSbhwVsXHdPSwSeEij9iA
+	Vw/z3a4vWZ/VdWc843BTQKrFbNlbk+LOXeTONG4te34pFFl36wOR4l+I4jVYAYTcDdQTOP
+	kpHRoXSm06kUmc6GvJznMwscLNtUEzM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3B25260142;
+	Tue, 28 Apr 2026 08:44:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3281C2BCAF;
+	Tue, 28 Apr 2026 08:44:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777365854;
+	bh=yMSXc7aH8lsOC9DhmK3iD6MCAykaqWenDw41A4QK+rc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=L2Uwil3663RAVPzrHsG1iITO92pHRr0NbnlB8CCbCA1NWUA1xllzeBN1sNKNrcb9D
+	 YJPEaayeukzAMh0iX4cR2pCid+jxETJUrV/EZ4cT73E9ODzXtXqBpwST67/1zQz2Ve
+	 V+ezBwuEH4jhne7Zz6l5SidpD0jxAgY0n52iythXyWiKs98PSEsDlgyshSiTZ9izds
+	 QM8yTldC9W8tSy/8P9Lm0d1r557rD+i7cv0EPHQvEdPWH4RSwVfKbDdEeDl8nOdV0Z
+	 jIzKZ871PDXoBW1fSPbaQAN72yn5DnhTTVzjm9Y4hPJCrkn38ARi4/n4d9a7LY9gF7
+	 qtgZpYsfDFw0w==
+Message-ID: <9e2b2c8c-a03f-4c26-9039-ae64c848bc52@kernel.org>
+Date: Tue, 28 Apr 2026 10:44:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6dd52f8b-7092-4d02-ba24-f8b55409b7b6@kernel.org>
-X-Stat-Signature: cqkof8dc7fbbu6f98erj7pfzwu4p9jyx
-X-Rspamd-Queue-Id: B1CC740007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
+ page_mapped() in arena_free_pages()
+Content-Language: en-US
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
+ "Liam R. Howlett" <liam@infradead.org>, linux-sh@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>
+References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
+ <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
+ <20260427051758.e1b714a4b567917971920eaa@linux-foundation.org>
+ <CAADnVQJ9JXrtAnFgE8UFK=W1GDeT6T6Wi5zB7g0AfRjU8M4=bQ@mail.gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <CAADnVQJ9JXrtAnFgE8UFK=W1GDeT6T6Wi5zB7g0AfRjU8M4=bQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: u8ciqeign17oh6geiuomib3qr7h6pxdu
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777365434-43289
-X-HE-Meta: U2FsdGVkX1+8jsyqZLKOr5xJRyS75JXQEdCVuyyRPXvSbYhHytIvhbFTcAAr8ii4f/6kg7cE19GfSjMU9One+rJpwktE2MP2qolSKQYPQZB7EBaNuY8dMuA3wRCw0GAH/Lv1ylKQrKKhkYvknBvB8huIk69ThSS2bSiIaSwjxlC7T9hrax/xJrPZ0ZxTcS74xke2Xd/idz9vYaLTZGx1T5ZZrY6gmQHU2XkftF1Gj4mIUM54ncXmjaBAzbOdawg5/XqdhPbPtRvGW4R9kI+yP1MsIBHIPNQRliNtByMS6NR1vqBD9gNkywlWFJA6MBDr9WFYDk2+kID/wPvqVVscjkkMHyKwfHiL4hG9duhw/M3mZp7Pmnv0CEwyNZTcFaJAbs9HY1so5QAconkE1KAQK1X7lzm8pjHlR6b9COvy3TNvEzl9nPBq4QiWWcsahkSk4ZUzYBMUyT6uwmHf9fgk8pCEZtK2sfe9ryp9c+39TC57lfc1/MAuXe38YQwgvUx6pcG5bNpzAfVpqD5yPxzDyNyaXQS9YrgHr1fjYfi06bFzgvap2sR1ulT4qpjOeGyYvF0B4dfQOntzgSxr91P4sE2j555B9L5KrrvUH9Evtn2VimmK7pVJl15VmYaqJAc6XX84DrhDhtSku3d2aWRhdJKH2bxoZBSpaq5PGiZKSlGlectaoHhWcsngtsjwXDDpBasKzOrd4ZVeXaHzo2OOuCkvjD7Rqivqf4LyIzyLu7f+4AwPszAVxgu3vL+BRSkLgAfjO7L/+IJGnwsu1s8zIj6RlpdXSgTqy51WPYW3wQiek6dWWQtf/NstZjH17i6kU8yWf21bw04Mewwwnjm2BSfEOGuEbmvk4Vj7RPQoGzuKtej5exuV4AWSmyCQh51cGNCtrUaUalV5TtT2JQomIxTA1ax93kM8ajytbNUCPu/n11jiRTMC6fSJapM/IVIwhaIJfERoUUdEuAFda5q
- /nN3kcsa
- lwjaMy7PP/mV/VXsri74kRA/lO+o8z7AVjkxgIen/JvOAnuH+MFpSLRBA+iJv78godoblI/l/3XlI6e4l+d3uMjXddzbG8E3PJrL+EEB0C5UyD2QckUHY4NFOYsVt2bsZ+D/z8585RHCwE2xkjeMwej9Egcsm4Cc5iw5FJRojJbfJOkBX40aH1yEf9zWlLzVRCUIlWH1MEC48B9wfRIkibPw8u8W4bN2SPyAPndqHpO6/T5CcHap7fvMEdaIwMi+KAjLXwb5sq1Qf0u55+EtPMxNrqZVRiT7t8ViFQUKA2tajlNTG7jGJxd5cqdjDE7XISJ2+qxjOd+hG4JsJR/EPnDVoxs2bbqg4u6gNXR89MjkSvzTNUWh03a4AiTuiUJbFpcbsgv8u3zPFpsp17n23wChaJw==
+X-Rspamd-Queue-Id: DAFFBA000F
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777365855-459671
+X-HE-Meta: U2FsdGVkX1/7BYylfQVXRpAyrQViGdMeQeskrjZgwEDWuvl7kxL5eGq11QAvW7y+j6TWp0hnx1RbV3zre5W/wxG9780pZLn0rFJrems929BFzzOOKDXj75RdUx3H7ISzlLgBle0kBgu9g3mLlDRY3AukBByQrX+f0kS+vTV9PBqqCvmFWz1Paddrm+RFFn851bXTCybqRgjXn6zvPMsR8nA//57qdhnAyYdar/otaOGGb6EEYJWMoTFu3jFs9+hpsCxikFAhijHntevEMSz4Aasg4Eilx5yl1ZnpQhAe9glW0l37Y/miKWT82/e/nB6lixCCl9TlhROADiAk1lCsJu/XZoP0anpqt7f0Z1x8DWXqHOjGL17zuQyqD50gE7Ogw8Yt4Z5Q+MLEHaG0PNBoDaVAOkoKc3sxRySSwM3YLIRs00GwRj8ysUK0fXoISK8p7zwekgLDjVPsF6/uN553+TVo7ZM/4vrbm2oNLFFSE6a9e7jsVt3UMso77bdvBygCTun3alSNFUT6OE3t9SkZKf8TzaWjk5OlmFGn2LLzm+35riSusSRCB9PtMZsoT5Lgd9Yk01qzINUmXzjvRKP2Gwik8ti4YnvUqPRYHVj/G1qrcvmuoCFR/9FIJ5gDMZpIZM/EYX5bSx8nr+uLOpAnN2vx81cqQITXEZlaKi35+fHsET2B9f0JbvDIVekJJZIn/4E8eRnoAsNhaCVV/FoRWk7UVe6qeIijfv2tRw+rI+/rJQ6Zq4tsgHILmRkcuyitQZq3QOtdUUn1aVnO3QsBv4HBdS2UvYxMrMf4sh6CsaTfQ5/1uBdvAnGB0WoCysrXlRPyWZuGGcVwJR7D2gkZ14qk2Sn8d8kC0c9cZIDhMQipPhdRbxbzBpVobxqsDfsvuT2d1PqMkfR2EFP8rH66e9NSKZ7cR7Fd73CuBsNjIYPiDxFKoPUXUXv0wn6T4NrkgxNeI/Y5bod+J1HWfst
+ PnsMCSl+
+ K7GUb6nfrcmCV4aRjZTYohIS9k80tdZT17T+iYHTMoUdcv8SSQQQPmij1OHP5ppDWtyBdSlkGh9DJyTJp+QRYYrKpx7KlQjARaPJ4MwHqFI3Bvz2BMCJJfw5tLx6yuFQ/P9eKahEq/xxGzPQ44hWlAwcnBMFjZwLWn1FXAI6fdcJ+/BF2qQ+pFN7FeiLmIH3aHS1S1jMjVktdKBjiOXtk/+890cpVdeAbIX+7vjPe/xXHJOcA4O2qDX++r81NxoG1h0OHNfZUmMY9CXIuGv7/TMI+8z4QmK4gkbV68NAlCYfQjcQ0oPJ0ElftCCdQ7IWZU0l/4WwC1l4Sq5rbMq6gVMqQ55Z+KbRGCyfBVIVSKnls+YwicHfw81Y6X9okKl1HmoVc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,140 +111,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
-
-Thanks for the review!
-
-On Tue, Apr 28, 2026 at 09:52:15AM +0200, David Hildenbrand (Arm) wrote:
-> On 4/28/26 08:05, Feng Tang wrote:
-> > There was a report on a multi-numa-nodes ARM server that when IOMMU is
-> > disabled, the dma_alloc_coherent() function always returns memory from
-> > node 0 even for devices attaching to other nodes, while they can get
-> > local dma memory when IOMMU is on with the same API.
-> > 
-> > The reason is, when IOMMU is disabled, the dma_alloc_coherent() will
-> > go the direct way and call dma_alloc_contiguous(). The system doesn't
-> > have any explicit cma setting (like per-numa cma), and only has a
-> > default 64MB cma reserved area (on node 0), where kernel will try
-> > first to allocate memory from.
-> > 
-> > Robin Murphy suggested to setup pernuma cma or disable cma, which did
-> > solve the issue. 
+On 4/27/26 17:00, Alexei Starovoitov wrote:
 > 
-> That sounds like the obvious approach to me.
+> We cannot carry the same patch in 2 trees.
+> Sooner or later it will create problems for linux-next
+> and issues during merge window if more changes
+> are done in the same area.
 
-Indeed. We also gave some of them to the reporter once we got the report. 
+Agreed.
 
-> > While there is still concern that for customers
-> > which don't have much kernel knowledge, they could still suffer from
-> > this silently as some architectures enable cma area by default (not
-> > an issue for X86 though, which set CONFIG_CMA_SIZE_MBYTES to 0 by
-> > default) for most Linux distributions.
-> 
-> Okay, so on x86 it is not silent, because they don't even have a default CMA area?
+> The only way to share a patch between trees is to
+> create a stable branch and pull it into 2 trees
+> then sha will be the same,
 
-Right for default kernel configs.
+Yes, but...
 
-In kernel/dma/Kconfig:
+> but mm tree has its own way of doing things,
+> so this patch needs to stay in mm only and if no one
+> should be touching adjacent lines :(
 
-config CMA_SIZE_MBYTES
-	int "Size in Mega Bytes"
-	depends on !CMA_SIZE_SEL_PERCENTAGE
-	default 0 if X86
-	default 16
+... this should also be fine even if that happens. Mark knows how to resolve
+(and report) trivial conflicts in linux-next, and Linus AFAIK also prefers
+to resolve conflicts to other workarounds.
 
-config CMA_SIZE_PERCENTAGE
-	int "Percentage of total memory"
-	depends on !CMA_SIZE_SEL_MBYTES
-	default 0 if X86
-	default 10
-
-> > 
-> > One thought is to follow the current cma reserving policy for platform
-> > with 'CONFIG_DMA_NUMA_CMA=y', that if the numa cma (either the 'numa cma'
-> > or 'cma pernuma' method) is not explicitly configured, set it up
-> > according to size of default 'dma_contiguous_default_area', while
-> > skipping the numa node where the 'dma_contiguous_default_area' lies
-> > in, this way the default behavior of platform with one NUMA node is
-> > kept unchanged.
-> 
-> So, the kernel is configured to have a certain CONFIG_CMA_SIZE_MBYTES size, but
-> you go ahead and multiply that by the number of nodes? Sounds wrong.
-
-Yes. I thought about that, and didn't have good solution, and used this
-given it's on a multi-numa-node machine, which may not be too bad
-regarding memory usage.
-
-Robin did concern about the memory usage for embedded/small devices in
-v2 review, and we change to v3 to not affect them.
-
-> 
-> The whole proposal here looks rather hacky.
-
-I agree :)
-
-> Wouldn't a default for e.g., pernuma_size_bytes make more sense, that users can
-> then overwrite on the cmdline?
- 
-This sounds good to me, if no objection from others. Maybe default 64MB
-or more. One good part is, all these setup is under protection of
-CONFIG_DMA_NUMA_CMA. 
-
-> > 
-> > To get the node info of cma area, add some helpr funciton and setup
-> > in cma code.
-> > 
-> > Reported-by: Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-> > Suggested-by: Ying Huang <ying.huang@linux.alibaba.com>
-> > Suggested-by: Robin Murphy <robin.murphy@arm.com>
-> > Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
-> > ---
-> > Changelog:
-> > 
-> >   since v2:
-> >     * setup the numa cma are following default cma, while
-> > 	  skipping the node holds the default cma (Robin Murphy)
-> > 	* add cma_get_node() help and related code
-> > 	* add reporter info 
-> > 
-> >   since v1:
-> > 	* don't use the original way of adding alloc_pages_node()
-> > 	  before trying default cma node (Robin Murphy)
-> > 	* setup default numa cma area if not configured (Ying Huang)
-> > 
-> >    v2: https://lore.kernel.org/lkml/20260423095243.14239-1-feng.tang@linux.alibaba.com/
-> >    v1: https://lore.kernel.org/lkml/20260414090310.92055-1-feng.tang@linux.alibaba.com/
-> > 
-> >  include/linux/cma.h     |  1 +
-> >  kernel/dma/contiguous.c | 14 ++++++++++++--
-> >  mm/cma.c                | 11 ++++++++++-
-> >  3 files changed, 23 insertions(+), 3 deletions(-)
-[...]
-> > +extern int cma_get_nid(const struct cma *cma)
-> > +{
-> > +	return cma->nid;
-> > +}
-> 
-> Why do you have to store the nid instead of just looking it up from the base_pfn
-> in here?
-
-My thought was 'struct cma' already have 'nid' member, and when CONFIG_NUMA=y,
-it may be useful to save the 'nid' info instead of NUMA_NO_NODE for the default
-cma area (cmdline like cma=XXG@YYG could make it on different node)
-
-> 
-> Also, what is the expectation when the ranges would span different NIDs? (is
-> that possible?)
-
-Per my understanding, it won't. There is a cma_validate_zones() to prevent it
-from crossing zones.
-
-Thanks,
-Feng
-
-> 
-> -- 
-> Cheers,
-> 
-> David
+The shared branch would IMHO only truly be necessary if bpf tree itself
+needed to base something off on this change; for resolving trivial conflicts
+it might be an overkill.
 
