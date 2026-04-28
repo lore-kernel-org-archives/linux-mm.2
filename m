@@ -4,145 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC01EFF886C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 21:12:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16042FF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 21:38:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB0116B00E0; Tue, 28 Apr 2026 17:12:45 -0400 (EDT)
+	id 4773B6B00CB; Tue, 28 Apr 2026 17:38:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E60FE6B00E2; Tue, 28 Apr 2026 17:12:45 -0400 (EDT)
+	id 428696B00CD; Tue, 28 Apr 2026 17:38:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D68716B00E6; Tue, 28 Apr 2026 17:12:45 -0400 (EDT)
+	id 316776B00CE; Tue, 28 Apr 2026 17:38:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C5AFA6B00E0
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 17:12:45 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5674D1A0475
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 21:12:45 +0000 (UTC)
-X-FDA: 84709213890.17.A58D9DE
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4533C1C000D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 21:12:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E8D06B00CB
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 17:38:04 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE3921A045C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 21:38:03 +0000 (UTC)
+X-FDA: 84709277646.14.828DC1B
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6F4E01C000F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 21:38:01 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EmHsGiPI;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777410763;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=BKpyABXY;
+	spf=pass (imf21.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777412282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y1c0hsfQ1G9nhDHLSFuAkEDbfJtF8fRH5TAPVGQIJWY=;
-	b=kfaNzMPiuRd8MbPEEMGNVSfAHy1BpDJ/nMOJf+Ar03Z0+ZzEKfuwHEM/jV2eqyY+ipYcpI
-	DO95yCMll9VJOXe3gY+TupGVoeuAitdcem/tfFK0N83HnUBAaVusfKr/X07S7AMrtxldyf
-	Py0nFnJ7UYeNWNmWgCTXpQcUnaQc6O4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777410763; a=rsa-sha256;
-	cv=pass;
-	b=C3NNmbKNW9cOdmHxYeWltcWqTI2ctixYoQ0mgYlDo3n0/ev4AOTaJPdIw9KtZrrp4iGd7Y
-	AAkDYrq7olLvrvBKk6TlGhXzBbzHeI8Fxwmn//J+nOcAXegJ6A9TXjV4aYSSAuMJaDYmAR
-	aIn2PfDL/gNlxX2YUN7qh1QxANEmrNg=
-ARC-Authentication-Results: i=2;
+	bh=m2SIkG8G4dme99QjBJF700FHzCmI2Nw1YXi++Sm72C8=;
+	b=c+IRZR8w5+XlsGHQPpNXq/kREEBGHKfo8XHkOhkOd3Z0POu1p8DRRrXyEmVfRJ1U+6W40P
+	yEANgxQntQlfrwKmOaMqjVGxIrZrNTr1fleSNoCP+KXxSiEnLhnW9lPSn+yls0dRmsZqC+
+	zc4yT0OTCewqMN5d66fF3BOFiZ6SQNY=
+ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EmHsGiPI;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38dd575bca3so2573761fa.1
-        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:12:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777410761; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Vyy9gm6MpqsjOhao6L1U8Q+Ml2pZKSCZYMMQJYLHYoHXTYIz247bMCaTX509Zv7dCm
-         eIGJwUoc4xztK2E8D/9f31SzqGwWqwYNhhRh9vbcGkjGckh0mYSk1Gz3tlDoaz1aGbGk
-         RmM9D/g1vG/HqdFPG73nwufLrsT4TpBlSuyqTMJu6KeFk78FsD/R6kJuOaXbilwApJP7
-         lrDi+o659GhhS2Ux8IAkXLcp6VuLhH534dTEddq7Wd9AitV0pCDnbFD5VViQQNEZPghe
-         F5FdAk9gntj1TeG0RTKCXknO63KeGlDMH9M22ciWLTaJIWCsvZ1aI2xgRLYVpkvA2Mrk
-         6wQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Y1c0hsfQ1G9nhDHLSFuAkEDbfJtF8fRH5TAPVGQIJWY=;
-        fh=cgQVoDJG7R3qKOHHbS1xUMM7Cqt8Eo0Mb4ajCB3uePg=;
-        b=dv5wCHS3KMeCYdlGfgaaHE8i21u4Z97tfXqiOxOpJ2BDj32qPT9and1rvxLS5iYB8i
-         RHbt3o1zaMBQ6xy3subVICY2ulxyXCELxgGYegRkHiL9Ud29gBrA6TSQSMDuFv5q7aZo
-         vXtkKlZHSbzr7jEtXoOvS4NNnu6AJEh8VEuVv9eXx1p0augxX4ZeN3fSQf6yj6GkZ4l3
-         GjX8DFKN+VSuIT2+eysn7E5taOwiGYFklDc/ZzTzAtPyyecyzq3GTIQXhgjjDCZIO7Dm
-         4BNTnRwtXKdgBs1kKJ4kjvWY/GmXVdyY+5lgFB/LR/8qUPewVRH1txJXCPqt2M2E72g4
-         OOFA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777410761; x=1778015561; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y1c0hsfQ1G9nhDHLSFuAkEDbfJtF8fRH5TAPVGQIJWY=;
-        b=EmHsGiPIZ4/PF2EtFSc9otWFIeaxbLn/U8sHmraE+Jiw2pOF9M8jTAzIwIhqZzSZ9K
-         dPImz/OYDbGE0voxhCU+K2wg2FxhtOWbI612y+ebm38MfTZVmFDu2z/eKr+Pd5rtuF7t
-         QJwb9HOJKYx5dE67zJS/Wrq1xURSxCC+UgkkQILUNJpYxKIgUA4W5LbEVHI/B0NhBlgv
-         9EyjpTIrfdf1tkYgD5qwFWXnKuNoQEOK04qnslcE0uroL2HLrACZyYwN3LpH83nwDvd8
-         ApgIR5MW8eWfViXPuEfnt9i6ltowBHMV1V2mqA143DaMADVdxHDwB7wJQBRB9/xqmoJy
-         da+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777410761; x=1778015561;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Y1c0hsfQ1G9nhDHLSFuAkEDbfJtF8fRH5TAPVGQIJWY=;
-        b=g9lUELVT9dM1AcFnTgopIzZ+rE0m0GVUNBCAvu7JtpkJ1P28Ef2MykUtPPbeT8y15m
-         XLIIE+VgvX338Kx0cA0SM4ZqR6Ts9ualMT+JoZR7krreh3WMb9WCn8Ehc1EJdMwNU0P6
-         QPKvvpkdHaeWOps/XNikn3KufPPHy3m+VTEQA+VZeWfboWN3+wrN30tMsEMj8LHahrfV
-         zDTlnp5RzKPxe4+nxXBGo6vjAMi4zsPJADTIq8nrVUKOD02NBuF7xdR6zE9yVwr9VMj0
-         Harg7ZPlgMXONjisbATA82Y0lIepKZ9g5QRK76QbZwb453DQSl3pWXdXls/vjKw+izKx
-         096A==
-X-Forwarded-Encrypted: i=1; AFNElJ+v7wlmfIu0RG4DyMio0IDs5Csmym8n0FVAKjs8FsSGGDiv7dgEaz6HVZI4yQ+VtxOTx86SQaGZjQ==@kvack.org
-X-Gm-Message-State: AOJu0YxSMwa7TCFvYIpBFgTcm/XbLtPRKFkm4IDl8MeIzXem1zorwbYH
-	bwBoXT4NhgJf0n4rnpEjFl138Z3HxYJrEwucauMe55AHiNGH5BXAPn/JPWEzFfTgFlADYZzXX6n
-	P7xeBlnOYsjM3Cgapg+ZUNhDBtcHQIvS0VbeDi3gN
-X-Gm-Gg: AeBDievzicWtM0t+7BtCM3AfEuKxyE6kjXxaY5TA2CYbuPGjsNQ/SHnd+1OGZKcvBmK
-	tmOnFjmVrv6XSF7ba87MUTqbk5BB8hdd3uvEsCceU782FrwWUWKfPvwM4KnK3KNcqL29qesx8RT
-	pbiot2e+EguwKBROk9n4VUiSifx8qXZLn9VCQVsaJZ5KNlBVNnDJsbZ4gSZeSQld/459AmKr+gF
-	X5EliYifW5F1T9EkgUFRWmNM8v65gzdNovpN6h/VNFhc64CkcC4IBdDm/XtRzCLA6uvYtg9cwAs
-	XdvBF5eRzDKMKRZa48lj7sZbxeXJJA==
-X-Received: by 2002:a05:6512:1390:b0:5a3:4692:61ce with SMTP id
- 2adb3069b0e04-5a74a32f180mr148152e87.1.1777410760874; Tue, 28 Apr 2026
- 14:12:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260423212316.3431746-1-dmatlack@google.com> <20260423212316.3431746-3-dmatlack@google.com>
- <20260428201231.GA3885809.vipinsh@google.com>
-In-Reply-To: <20260428201231.GA3885809.vipinsh@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 28 Apr 2026 14:12:13 -0700
-X-Gm-Features: AVHnY4K7jpha36hMRH-mQGhZech3LSC3uUxVbVP_4PPgBDawCFAtuaz99Nxadcw
-Message-ID: <CALzav=dfLtdrPhkBkGwHpDAWUBMHnbGPccwhy1__doziNVZQJQ@mail.gmail.com>
-Subject: Re: [PATCH v4 02/11] PCI: liveupdate: Track outgoing preserved PCI devices
-To: Vipin Sharma <vipinsh@google.com>
-Cc: iommu@lists.linux.dev, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Will Deacon <will@kernel.org>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=BKpyABXY;
+	spf=pass (imf21.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777412282; a=rsa-sha256;
+	cv=none;
+	b=iI4IJQ9Wc/IcfWgdvEhighIo5cCbzHEUlJgIJBvBcOPovLVmaPWki51iYhPD85A/0eSCMl
+	QXjvY3OtyUORqoHIXDpa0VShfEyXf9hfBe+VrWvoGBf6zSqNDeim8Qv+ZVkeU0HqvOOaNQ
+	4/+0BYz0eVvMO6uo32LLJwFmObrM6wE=
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4CDAD4E42B64;
+	Tue, 28 Apr 2026 21:37:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E94DD601D0;
+	Tue, 28 Apr 2026 21:37:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 049BC1072939F;
+	Tue, 28 Apr 2026 23:37:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777412276; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=m2SIkG8G4dme99QjBJF700FHzCmI2Nw1YXi++Sm72C8=;
+	b=BKpyABXYUA3W1yBGbOawA4h4lg+xP/ujDg9fnM/GDmfVvQtFe4V86zv2jRnYLbIW85egeu
+	gzsW7by84jCsCEyDe38rcP0G9Lu0O5PyhiJVlX1VH0lqEiLpLLVqCPQ6zb2WFjm+11Eb5Y
+	n8RhoTuzI6NlP3mUu2V0iIjtY0wmrD64vrUUDjJFf8c9e/GfSIul/+IfTbDMPsSiDwMCw7
+	iSMV2XUHFoLSDmaAwdjiKsMThFnyCYBB9t0d5djhof0yNcYWt/373RotXiqc8RA8Tj6M7F
+	lFivzfSQqW2W19Ln1HG5awMplQ6C4gwNMrAWCyzv+PL9twiFGEXnUYVU/us/rQ==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4533C1C000D
-X-Stat-Signature: 6hdw513ojcuji8ck3hq1j5uta6twzsfm
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Apr 2026 23:37:43 +0200
+Message-Id: <DI5429HR7UGP.IJHX75ZB16AZ@bootlin.com>
+Subject: Re: [PATCH RFC bpf-next 2/8] bpf: mark instructions accessing
+ program stack
+Cc: <ebpf@linuxfoundation.org>, "Bastien Curutchet"
+ <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>,
+ <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <kasan-dev@googlegroups.com>,
+ <linux-mm@kvack.org>
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+To: "Ihor Solodrai" <ihor.solodrai@linux.dev>,
+ =?utf-8?b?QWxleGlzIExvdGhvcsOpIChlQlBGIEZvdW5kYXRpb24p?=
+ <alexis.lothore@bootlin.com>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
+ <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "John Fastabend"
+ <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, "David
+ Ahern" <dsahern@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+ <hpa@zytor.com>, "Shuah Khan" <shuah@kernel.org>, "Maxime Coquelin"
+ <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
+ "Alexander Potapenko" <glider@google.com>, "Andrey Konovalov"
+ <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
+ Frascino" <vincenzo.frascino@arm.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+ <20260413-kasan-v1-2-1a5831230821@bootlin.com>
+ <7dd64547-25a4-46de-a896-98fcec04468e@linux.dev>
+In-Reply-To: <7dd64547-25a4-46de-a896-98fcec04468e@linux.dev>
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspam-User: 
-X-HE-Tag: 1777410763-481501
-X-HE-Meta: U2FsdGVkX19JE9hXMWhJxSGSv04px1wToO6RP2xK0ZGS7fJP0hCHEgGu48bAI8qmLml0SQhsXKTgPDLaHhQi8nnsPmr//Xza1jBYRJwjXAaxW8vTLUCAdwjrSVSsYbxWTHrPYEoaYUjTwowHUXmyEovh9BUYlctIE9zjfwy3H4G11mZryPdasNvn9P733uDf8aOForjhxqT8wekrjT7uidckQE9fWAvl0n2F/765/Qa5g+hjw+7mnuhossPLcFtcH0iVYIe3JW0mOu7D1P3RCJEG75a7Coag8ToNXpxHpSGa71y1ef58w5+W5ESTdjm6J5kqcnRUwfYO8TuGjPv1oyHf38tmizkkJAta/hmBsdiEj8qdZazaMxKjCiK9Z8jM23TdDfbQkhTa61ycAOSGCu5S9RcQ8GWHfUkWWy1VKw9ntE7O0mPuNLZ+gk56Y8Imt41VpHeMMPhC483Sj5VRZ8UmtCRBcoY5tKa0sbD4Se9LPotGjrxDOQXhrcKbGT9Y9TcWDwwIfUYRqgIe9LicsbJniIHW2/PBhza9fLRfYzu8wl4NWxpn4QwtthK49JDL+ehOuByQNSjWuR0UT3byLls6qasXjlAwIfql5pDc9LYJDTj1BHcKPQLpq+RZFENp4cycuHCfIS1u+JgqFRhXgQ5w+dKl4CcktTN+i8tw3IEuEnCZ92mOXI72KP6IqRQPVnYMvYStxfW0olVPnf0MUjAWdp6k3Nki299JHHxQCGkZ3rlK6z6/rDdCPPz0dYnLM2eUzUBms5QzzGwsfB0UcM6cDBkkDSEiO+hPgib3ATJVYeCw0lW+LIvhuFYrthSuJ/DEsLguu7bv2HiHQ7AclFiDmUavbcJTw+xQClBlQKDpUydmA7a7tul15cPSvrxiLDK3SdlRK2Ctk5/CSJnR7g6Ay1h76RSEbD25H0FXOmRWMYRHQcwIVNtBTADX37iCexCkOX2i/fLiTf2qQPp
- 4CbT6VQX
- ErYIuyfFaY4t9tvcE89lOVofauV/3LOm9wnVYpXw9ji0ZWUr3CgIHTbGucoYjX9yyQCiUVA09ZES6IqwXu6kddAKnkMmxkXuabZwrTCSoY7s/L0uYjVTJX1PxdHKwx4afKpcyLZ8Nf2dmoNSWQm/7HvHxuZ4AzgCISolftbi3tiqoLSfc4b9aROgZgEZkQMryyLlBiY5umd0kogTN3HbOg34DUS1wPcjLumQQsllO6cDIrPgU+jjdZxO1E3ZFLWp7rmlpQCrfaAX4OdU=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6F4E01C000F
+X-Stat-Signature: asm334ufgcmoi71r8zhneedu5ximia5z
+X-HE-Tag: 1777412281-508482
+X-HE-Meta: U2FsdGVkX19gcgNU2xBsDED8FE+yu/8mu5elZqhuOG9HRuXNggeiTcG77Mfdkpv7VpIIIo9neV9Q3amURO0wwPIaQflncDr8jrpxxWLDam8qp2lWakQ9HKGciQi2id/ac5LadAQRY0gm7lzaQJIymHZCiajw4/Gy6D0dHdbyX1yEUkppf8IKs/GvbqpWmc3doBc3ekNCS3Ljvul2DaUneievVmXSXLHiUAHPLBS8/w99+ghIZiLqThm8P8W5uPl4uqBjIvjDpJ0hfxRA0OxbyRRWWIDIziRMUDkPP+EIDFc5CoifkVNOz6fStzF6T0DeWRTh3MKAly2rrN6HppzQjDBgA0ratmuPi1sdxIjU0QzInTpc9TlX1qQeazvxps924T61ckYfpEP1ZQxEksilP+srvXE2+uPK9xNXJums0ocWxZI+7JJaQPXvW9wWVFz43dXk1Krew13PPG2xyt2wEAfP1Ke0V7rRVqHlzzf6duMtuJ1NSOJySMl8sQmW6I7RYdfdzIa3BqEUHrLYBlAwPmHq+Uvv8qGcbqiyUrtQpgJyVzSvXxRyJUdDXWJo2eWGpUI9Mn3VD1QJ6S4t9rXxxFm+HHzBG7fzSW6bxgBfYtPQJ/WHWAcnn0nhicP6tsV7A6kE8vyKtacG64RCa6pG5GlWy1os1qGf8Vxqs4Rpyd0cfxbv0MDqHrCzNzhkhbznkcApDuwCBq0azhV6KrlA2+wcCWrKPL+RucGJGHqQsxgrYvsK4K94ksft4OOg4L5PEW1CSs1jyumTzU12WvUZv90eXTbMU6wknNhcnbbkUhY3yhQP8RDZ/wYF06TJrZEUsnLNDl9CETLDrJkAcCWAvFrYYy1DCjoPUdbNuJ8shSlq5m4xF3t1HilVra1W0Usz4D13yHWtoRqQ7REGiFybCoiWXcqK2MByilM090PFTyqS2ru0xQlhpMTRWJn2K4Nn4csK1072CohyH1w/2WZ
+ yy/80z3Y
+ cF6UGgDfTU4YcdskI5Wv8qVIIhqUXNtv59gOrLQs7bdEiNcMLMQp49JftKqU6QtgJG9NoEuPZEnBK2T2gWgLC3jB7g2pxmqEHG0Pd/l/JVLUNNGb5Qw3hgJcmSw8xE2SzcD90jvSYDm4ahjobLVUO8RAbXi3qH9TPkVndC/hNZK2UVE2EvspTxsCV9EWmedn+o8EMPzpR4dGdgBnPlYRfPW5ZtoaCWIZBKsFujCaBL9+bn+Ad/KOJRCwTY1MNHVBdm8t7KODCCVHD96BFfbrSFJqTG18qp7L3P8aJSk98ARb1EJnZyc+Xw8qmU+G5mDYLfR1lzK9evhz8bV5oYmpWFO/pgXcPUybjmYDfre5h6Pq8yc9//oDUSRySN+5Q9IPpnQy94BgHdOTAy2iJ4oxVEW+SlqpDn3k2Tszry/DbR6wFgt2RskvXD4RXueRP0f33AjT3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,92 +122,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 1:20=E2=80=AFPM Vipin Sharma <vipinsh@google.com> w=
-rote:
+On Sat Apr 25, 2026 at 1:18 AM CEST, Ihor Solodrai wrote:
+> On 4/13/26 11:28 AM, Alexis Lothor=C3=83=C2=A9 (eBPF Foundation) wrote:
+>> In order to prepare to emit KASAN checks in JITed programs, JIT
+>> compilers need to be aware about whether some load/store instructions
+>> are targeting the bpf program stack, as those should not be monitored
+>> (we already have guard pages for that, and it is difficult anyway to
+>> correctly monitor any kind of data passed on stack).
+>>=20
+>> To support this need, make the BPF verifier mark the instructions that
+>> access program stack:
+>> - add a setter that allows the verifier to mark instructions accessing
+>>   the program stack
+>> - add a getter that allows JIT compilers to check whether instructions
+>>   being JITed are accessing the stack
+>>=20
+>> Signed-off-by: Alexis Lothor=C3=A9 (eBPF Foundation) <alexis.lothore@boo=
+tlin.com>
+>> ---
+>>  include/linux/bpf.h          |  2 ++
+>>  include/linux/bpf_verifier.h |  2 ++
+>>  kernel/bpf/core.c            | 10 ++++++++++
+>>  kernel/bpf/verifier.c        |  7 +++++++
+>>  4 files changed, 21 insertions(+)
+>>=20
+>> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+>> index b4b703c90ca9..774a0395c498 100644
+>> --- a/include/linux/bpf.h
+>> +++ b/include/linux/bpf.h
+>> @@ -1543,6 +1543,8 @@ void bpf_jit_uncharge_modmem(u32 size);
+>>  bool bpf_prog_has_trampoline(const struct bpf_prog *prog);
+>>  bool bpf_insn_is_indirect_target(const struct bpf_verifier_env *env, co=
+nst struct bpf_prog *prog,
+>>  				 int insn_idx);
+>> +bool bpf_insn_accesses_stack(const struct bpf_verifier_env *env,
+>> +			     const struct bpf_prog *prog, int insn_idx);
+>>  #else
+>>  static inline int bpf_trampoline_link_prog(struct bpf_tramp_link *link,
+>>  					   struct bpf_trampoline *tr,
+>> diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+>> index b148f816f25b..ab99ed4c4227 100644
+>> --- a/include/linux/bpf_verifier.h
+>> +++ b/include/linux/bpf_verifier.h
+>> @@ -660,6 +660,8 @@ struct bpf_insn_aux_data {
+>>  	u16 const_reg_map_mask;
+>>  	u16 const_reg_subprog_mask;
+>>  	u32 const_reg_vals[10];
+>> +	/* instruction accesses stack */
+>> +	bool accesses_stack;
+>>  };
+>> =20
+>>  #define MAX_USED_MAPS 64 /* max number of maps accessed by one eBPF pro=
+gram */
+>> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+>> index 8b018ff48875..340abfdadbed 100644
+>> --- a/kernel/bpf/core.c
+>> +++ b/kernel/bpf/core.c
+>> @@ -1582,6 +1582,16 @@ bool bpf_insn_is_indirect_target(const struct bpf=
+_verifier_env *env, const struc
+>>  	insn_idx +=3D prog->aux->subprog_start;
+>>  	return env->insn_aux_data[insn_idx].indirect_target;
+>>  }
+>> +
+>> +bool bpf_insn_accesses_stack(const struct bpf_verifier_env *env,
+>> +			     const struct bpf_prog *prog, int insn_idx)
+>> +{
+>> +	if (!env)
+>> +		return false;
+>> +	insn_idx +=3D prog->aux->subprog_start;
+>> +	return env->insn_aux_data[insn_idx].accesses_stack;
+>> +}
+>> +
+>>  #endif /* CONFIG_BPF_JIT */
+>> =20
+>>  /* Base function for offset calculation. Needs to go into .text section=
+,
+>> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+>> index 1e36b9e91277..7bce4fb4e540 100644
+>> --- a/kernel/bpf/verifier.c
+>> +++ b/kernel/bpf/verifier.c
+>> @@ -3502,6 +3502,11 @@ static void mark_indirect_target(struct bpf_verif=
+ier_env *env, int idx)
+>>  	env->insn_aux_data[idx].indirect_target =3D true;
+>>  }
+>> =20
+>> +static void mark_insn_accesses_stack(struct bpf_verifier_env *env, int =
+idx)
+>> +{
+>> +	env->insn_aux_data[idx].accesses_stack =3D true;
+>> +}
+>> +
+>>  #define LR_FRAMENO_BITS	3
+>>  #define LR_SPI_BITS	6
+>>  #define LR_ENTRY_BITS	(LR_SPI_BITS + LR_FRAMENO_BITS + 1)
+>> @@ -6490,6 +6495,8 @@ static int check_mem_access(struct bpf_verifier_en=
+v *env, int insn_idx, u32 regn
+>>  		else
+>>  			err =3D check_stack_write(env, regno, off, size,
+>>  						value_regno, insn_idx);
+>> +
+>> +		mark_insn_accesses_stack(env, insn_idx);
 >
-> On Thu, Apr 23, 2026 at 09:23:06PM +0000, David Matlack wrote:
-> > +int pci_liveupdate_preserve(struct pci_dev *dev)
-> > +{
-> > +     struct pci_ser *ser;
-> > +     int i, ret;
-> > +
-> > +     guard(mutex)(&pci_flb_outgoing_lock);
-> > +
-> > +     ret =3D liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **=
-)&ser);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     if (!ser)
-> > +             return -ENOENT;
-> > +
-> > +     if (dev->is_virtfn)
-> > +             return -EINVAL;
-> > +
-> > +     if (dev->liveupdate_outgoing)
-> > +             return -EBUSY;
-> > +
-> > +     if (ser->nr_devices =3D=3D ser->max_nr_devices)
-> > +             return -ENOSPC;
-> > +
-> > +     for (i =3D 0; i < ser->max_nr_devices; i++) {
-> > +             /*
-> > +              * Start searching at index ser->nr_devices. This should =
-result
-> > +              * in a constant time search under expected conditions (d=
-evices
-> > +              * are not getting unpreserved).
-> > +              */
-> > +             int index =3D (ser->nr_devices + i) % ser->max_nr_devices=
-;
-> > +             struct pci_dev_ser *dev_ser =3D &ser->devices[index];
-> > +
-> > +             if (dev_ser->refcount)
-> > +                     continue;
-> > +
-> > +             pci_info(dev, "Device will be preserved across next Live =
-Update\n");
-> > +             ser->nr_devices++;
-> > +
-> > +             dev_ser->domain =3D pci_domain_nr(dev->bus);
-> > +             dev_ser->bdf =3D pci_dev_id(dev);
-> > +             dev_ser->refcount =3D 1;
-> > +
-> > +             dev->liveupdate_outgoing =3D dev_ser;
-> > +             return 0;
-> > +     }
-> > +
-> > +     return -ENOSPC;
+> I am not sure this can be done unconditionally here.
 >
-> Since it is executing under a mutex, and we already failed
-> 'if (ser->nr_devices =3D=3D ser->max_nr_devices) check above, will we eve=
-r reach
-> here and return -ENOSPC?
-
-Yeah I wouldn't expect to ever reach here.
-
-> > diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
-> > index 5c0e92588c00..5b4c8d9e462c 100644
-> > --- a/include/linux/kho/abi/pci.h
-> > +++ b/include/linux/kho/abi/pci.h
-> > @@ -23,19 +23,20 @@
-> >   * incrementing the version number in the PCI_LUO_FLB_COMPATIBLE strin=
-g.
-> >   */
-> >
-> > -#define PCI_LUO_FLB_COMPATIBLE "pci-v1"
-> > +#define PCI_LUO_FLB_COMPATIBLE "pci-v2"
+> It may be possible in different states to have different pointer
+> types for the affected reg (PTR_TO_STACK in one execution path and say
+> PTR_TO_MAP_VALUE in another). And if set uncoditionally,
+> instrumentation may be skipped for legitimate targets.
 >
-> Just curious, why did we change the version here?
+> Maybe reset by default in check_mem_access()?
 
-Because a field in struct pci_dev_ser changed.
+Hmm, ok, thanks, I missed this subtlety. I still need to dig in there to
+make sure to really understand how the verifier handles those states,
+but if I understand correctly your point, I guess that just resetting
+the "accesses stack" flag at the entry of check_mem_access is not
+enough: it would make the final result depend on the order of the states
+being checked, eg:
+- first state being checked result in PTR_TO_MAP_VALUE, no flag set
+- second (and final) state being checked result in PTR_TO_STACK, flag is
+  now set
+- if no other state: insn ends up being (wrongly) marked to be ignored=20
 
-> It's not like just
-> previous patch is working enough to perform a live update. As the config
-> is experimental, can't we just keep it PCI-v1 for the whole series?
+So unless I am misunderstanding things here, the question rather becomes
+"for this specific insn, is there any state in which the accessed memory
+is anything else other than PTR_TO_STACK". The flag could just be
+inverted (ie set to true by default), and reset by any state resulting
+in something other than PTR_TO_STACK.
 
-What is the benefit of keeping "pci-v1"?
+Alexis
+--=20
+Alexis Lothor=C3=A9, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-I think it makes sense to follow the rule we set which is to update
-the compatibility string in any commit that changes the ABI.
 
