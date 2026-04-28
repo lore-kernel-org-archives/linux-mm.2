@@ -4,88 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A105FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77531FF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:37:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FA086B0005; Tue, 28 Apr 2026 15:33:40 -0400 (EDT)
+	id A9B4D6B0005; Tue, 28 Apr 2026 15:37:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AAFF6B008A; Tue, 28 Apr 2026 15:33:40 -0400 (EDT)
+	id A73276B008A; Tue, 28 Apr 2026 15:37:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8998F6B008C; Tue, 28 Apr 2026 15:33:40 -0400 (EDT)
+	id 988C06B008C; Tue, 28 Apr 2026 15:37:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 76F616B0005
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:33:40 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D27814044B
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:33:39 +0000 (UTC)
-X-FDA: 84708964158.01.040E214
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1496516000B
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:33:37 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZ8aABjZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 87C506B0005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:37:09 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49AFA1601B3
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:37:09 +0000 (UTC)
+X-FDA: 84708972978.02.2BCFF0A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 71608100013
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:37:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAHXisBD;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777404818;
+	s=arc-20220608; t=1777405027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IdWcdkfbQtgOrK5kRPxuP1O1GqT9/q1+MX844+UNjXQ=;
-	b=wwXacG2FvQ14mMVWMUq/6Ixl3rq9c0UUg2SnA6HDVmHR4IIty79+6yZ8XMuJcRMhhRH0yk
-	7AvefJ7uv11OtudaXdCimSQzdI8tNzsUgc0uClbp6JQs+vEWpPoPapWQbc4cs+495kPpiS
-	OloPf49xJUXBQNRLvsOh8ZtuLmHN6wk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777404818; a=rsa-sha256;
-	cv=none;
-	b=M5I2SSlNdKKxwDv53iOLn17wehsT75JB+ne76ufPHpRm3h3SfuxI9bt1SOStdwAeE4/yy5
-	wJL050rXACNfrsCXNPV4p4ys55xfHoyGadRhQUXzwYqD76w8LgWdAhhQ1tLDykl05YVbUp
-	DJX7Ldw+Lze2w/d6BTIqrEhMXLtBN6o=
+	bh=4QYm9+Ytvf6jMe8JtOxqIDP+QdPMNzfUubkQxlSs1G4=;
+	b=3mL8GYKq/3EFeUTz81c49NUu7TTquFq+aTB1GBblFt9v1giBf1o3ybE55V129Q5Uttu97e
+	K9B9E7JunPbjBb4a+nwGcGwM4NV6BG/2xtfmoZWrcuib6YhTNketbmnOoESfS/kRp8VQ+c
+	wylznUuWhf1dMY09+/8kDPPifwWtTDc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZ8aABjZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAHXisBD;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777405027; a=rsa-sha256;
+	cv=none;
+	b=ZdalYfLUR2E3UuaaR0knFnraywQf6KQikfUqIDPWfrBQMgpQ9DB283+cYXdDrN8h0QDwTg
+	sxdiO1/zVHpa5Xw9zqtkoQ10nLDpbCt9xDVVFQOBFYEB80bfB1S+a9J5fWhEIb/Ii8LUat
+	UhCvkL+FPleXhqXEgH5VXMBzQraRl9Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 669BA6111B;
-	Tue, 28 Apr 2026 19:33:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94407C2BCAF;
-	Tue, 28 Apr 2026 19:33:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 43B9640C09;
+	Tue, 28 Apr 2026 19:37:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2A2C2BCAF;
+	Tue, 28 Apr 2026 19:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777404817;
-	bh=VLzZDlhUCjBp/Nb1caKL1anemS6oS0IdafC7tiw5lCI=;
+	s=k20201202; t=1777405026;
+	bh=wTu5YsK9WMfcrNfXAKqKVRZWZd07LCagAS8tZcofwKQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LZ8aABjZLZBoaIB3KNlFtnaAYmCmmIx6F9Ms4tI8qpSPUWLLveN5TmiQgm+48wZRW
-	 J/BWRiGsWEeAOSgZ5JHuK+pffj68Ehj+5sqr8mfte2FL9CK47tt7A7sxB6u5au+b+f
-	 EwsmzWuUg+o1u1Uq/O8YUysyqnSiSD5BsqaNzB5HANxwoIcTOmjHLyEy6zQBTSf04N
-	 3zU/gZsZUZJc6KX5wSOn+4pcZnPAH5wtwIyxXombYbOY2VEyTEFfsoQYFVZw15Fum1
-	 2PZFiVS9T8OPv7B9Imad5MJ6DdnCzt7ZpuzOwbpDwQEhPH73wT71V0Az1SPH7bKJjR
-	 eJTN2+QmB5Mbg==
-Message-ID: <da60cc10-53ae-4f09-948b-c8c9f42d822e@kernel.org>
-Date: Tue, 28 Apr 2026 21:33:22 +0200
+	b=oAHXisBDzimhXI17wnijGsm4Kj3KwqSSO3NGUOdLz+1w/SMlJbxfKDEcFUM+LzsFH
+	 yXZvH7lyhU+H/wQ7YtPQU6R1mIluNmEQJfGAQhC03AFHfmzoYgeIaRcCv5U+NIU77Y
+	 xDivJB30dZqPvS+pEFcaZmZrUhsmIEtM4HoaWdZqXxZoTaVYXBUMhB/U9n4GQarLcq
+	 SBzJOAhGGVluqLFboRvbHyctyXlY2waiys128tJ5SLSt+OyOM4Rn6Acxvrqj7z5pvQ
+	 VljWqC1Oyjx0aGmqK2NgPK1nwwoZ3j4gsd0WUlN8K1CtgK/AzhuDQu4KN6pq6NFeYs
+	 foSUkoiGRL5OQ==
+Message-ID: <a0e86e22-5e5e-4000-ac74-a8a1b2f16997@kernel.org>
+Date: Tue, 28 Apr 2026 21:36:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] Accelerate page migration with batch copying and
- hardware offload
-To: "Garg, Shivank" <shivankg@amd.com>, akpm@linux-foundation.org
-Cc: kinseyho@google.com, weixugc@google.com, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com,
- rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
- rientjes@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
- dave.hansen@intel.com, hannes@cmpxchg.org, jhubbard@nvidia.com,
- peterx@redhat.com, riel@surriel.com, shakeel.butt@linux.dev,
- stalexan@redhat.com, tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org,
- aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com,
- djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260428155043.39251-2-shivankg@amd.com>
- <cca382ca-861e-4bfd-a628-45a5505b8b31@amd.com>
+Subject: Re: [PATCH] x86/mm: fix freeing of PMD-sized vmemmap pages
+To: Lance Yang <lance.yang@linux.dev>
+Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, rppt@kernel.org, jgg@ziepe.ca, baolu.lu@linux.intel.com,
+ akpm@linux-foundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ stable@vger.kernel.org
+References: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
+ <20260428132025.86657-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <cca382ca-861e-4bfd-a628-45a5505b8b31@amd.com>
+In-Reply-To: <20260428132025.86657-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1496516000B
-X-Stat-Signature: 3k67wikk9173munp1qd1scf1pw54skej
 X-Rspam-User: 
-X-HE-Tag: 1777404817-842252
-X-HE-Meta: U2FsdGVkX1/PF43q440wSjs7ahs/9wForISjfUiyZKqCTvRA2HqyEp3D1WRtLE+eSbNaNcxIr3DYRHUfd0hiUw43Lx3z3LVb1O3j9AqDI4pJaEflexYAr55PSFsKHhBhiMMaNm20bXCBpr9AYcxiWbhW9X7OPbRh3zmaBF3T55Ckrgsq3ZVS2GD+cSvRnSOJR8QKX+4gvfCW8VplbpL6LFpqJcXppIr0MRvFqddb2uQOSEKkETEs1fjye8webXbGjdmnSxGdZ8FGOFUeG/b4VBeUOIH624xpLd9+wTgcrzIE1Yy1x1dpWDpSkFcnzc1s6rwII1U68lQx3LH9yeKR5b1H79H8KRU2yXmGcjIQtXjxhAwfA86ovfpI34tnSSrnJwkskCVfMdfAUuLA5Qq+9QXvwGI1mgSsqRXsu651X12kJkyU+OX3uJ4uirEJWBXmFEZEBG76VkV3x4r+AQESV1okSBFDiBYJXeMHFbEgAKczzX34Nk99Ebr1w/tUINBDHfl4tkLw042SfmTeOBHxNvWSQkM4VUA4wkbACUWV1bjRL/h9qDMkQdsyeqx2c3EoqdBr4qap4ocNjq7Aviz8d85sGRi4TIZO/1o3wR34joH4GLhWFjRCHMa+VljATQZfBD3tBxquuqpPvHWNA9I2Fjjn8xAfFwX+BMH3srZNVhcolxbQ0vclOdMM9uiIxqemM9ZYSj+zVsTepKFbwNeegvk9TP/3+fjb4Ta7JAkIKZtCwUGDVBRV/+8A+HcLMgsskvruhfm1tyvuhm1w5B86VDua7SR8vVxPIJYD+W9BKSy7Y6+L59Mo156fovBtokDR6LuKTW6dV3LRfdG0N/cuX7I1uCdUnodLUPHpPkX0C8KLWAcfDnvq7moGBP0DdJMxY+MF+uEEeHG+NFCJKBjqvFa2IwUkHwB0enRAwkVzqeyi6xMh1LFPcHLFRG/eYL2WhrH7hbi+Ad/UTBCdOzc
- W7P2uQje
- sbXXrqKZhN04/Vq6RTIY8TEs0UGuX3iz51PLHuJn/F6rMHE+eFyHwA19r2y9RXpRcS20v5sGZcz3a6VczXdIa2o5BVtvvy/ho5zpWJvgwiiwUkD+iRkXoR8Fjk63E9h3k9u+pRIgKIEO49vr6V147R3/yG9Y9fjTJq/UU4jig2esP5qQePbopwPZfvYSso6RxR+pUKwaLaPCIlRTnMftSyWtz/txIZlofpiuCoMLUjK4KFAhbMztJVVNJCGpSuJs8pDeYE5P95Q93fPecUb6OOoSB5o1AJ9eTEZH2QcspZjXd288Bp+dQmRUmFSojVgGJFSxvQxbClvfIkTk=
+X-Rspamd-Queue-Id: 71608100013
+X-Rspamd-Server: rspam06
+X-Stat-Signature: qqpnayrz835rb3tcgs4z8duhfsmfmbe3
+X-HE-Tag: 1777405027-571919
+X-HE-Meta: U2FsdGVkX18SdUd/Zdpa2O9gDj3CSW1vuMTmTI9NJSdwqJ1FSn1XdewLCyqpSdOLus5uueF7DlDAfUS2EVL8eW06Xc9gc4cIaMm2Ue0Z/Mm7/RA1dKKCFwDLUA1ZKsVDPpz6D/4a4OPIKZN5FeAe/9Ys1W3CJaT+ib+tKvCmxa3PD4wCZau+f2OjELhiwRRf8T2//HApNju3JmrFoIGTAvKNdNlUONuTDHngH3bKiq6yk4jjVinwbRZi7NzXGVUMU00+Tiz7PSt0BxAqHtM5pNeUcdF+HBH7vgABU7nVnYJIkznzzpNVJqX5xJvFnZ0n0ayw6DOhAsdbp2SCBRkknXHQmlVJtb9uKGCiGrmXFXI/rWvffKl7K/x8FB5KAqqFrJ7gUN8AGQdQ9f7jDfEjeksT9hS+kXwcd/Z5WtzW9HOjISmDlr0oI5kOJcA/FLOvocy7n0ldTNKpKDZHtYh2/al4bCnP6hGKl5kb7KiwQFQU9sjk70FQmjErCFyr82X1XlO6I6C3vT+WmQvFK1orb/B7KBWXTWPgeLxOQgS++E69YsA4ymTziC6HmI1ZAMi7uSO7nlCPDgH6Wo3yHF7eBPKLu8F3XspyyHuz8enVWo97ty6SUGHcOcsBkHyJUuhLd4z+S/cOtrInK6OgqJkRNsGTyxv0qol2ZV/t8jEbOpXiGqNGFR8ULxtGrmcbT3vE2LbWugJ1ksYQJfF/J8T6SwlvNsYAXTuAr0oxi4IZhhCk/KQdhGHB+Zh+lWfCjtRfFEcEb/MplpKC6wkZtAeRVsNPvsokbzyj1TksTXB+iahxlwYRkqwT1fjGDkmgnE2rweKBaW4ZgbTFTC7nXLayQ7hJJvj64wooDAUO1N41JIiSZDY/G1Nlyn4STMPHwNkTbqlcKYOVvt9jXEH8vSbNWeVazq6HGsJSQJI046wbD2BPeq25w/OzHAXYtsKrmCagpyB5fCF6z74t01tOraW
+ 3KNbPIe1
+ aEXhzAaEL/7ZFgh40N1TLv12mJEpNiLxO3CD8ofvM++bOKx1g6zwWNH9+ifIIPCfCXWLyKDdXNBj4ZjerA1RC35TMD9GBLA8HVJ3HZgK3lc1CRCFIm268lbKurJcJKXF/gz6CEucIpHFExyn0nRUoAwX+s1mWA0yHXzPCMvmLW3GBPslPooNabbyRaAubY/i3oP/rExUcFwuWC78zcu+l5pbJmRKrJAUvKsl9bBgrvmf98ZGVrvvQMRR9Hf561pmwlKxzBaQto5yxfRhBJKdFn0zef3BF5E6Je3Ce
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,23 +141,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/28/26 19:11, Garg, Shivank wrote:
-> Hi all,
+On 4/28/26 15:20, Lance Yang wrote:
 > 
-> Apologies. The subject prefix should have been [RFC PATCH v5 0/7].
+> On Tue, Apr 28, 2026 at 12:29:36PM +0200, David Hildenbrand (Arm) wrote:
+>> In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
+>>from freeing non-boot page tables through __free_pages() to
+>> pagetable_free().
+>>
+>> However, the function is also called to free vmemmap pages.
+>>
+>> Given that vmemmap pages are not page tables, already the page_ptdesc(page)
+>> is wrong. But worse, pagetable_free() calls
+>>
+>> 	__free_pages(page, compound_order(page));
+>>
+>> As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
+>> except for HVO, which doesn't apply here -- we will only free the first
+>> page when freeing a PMD-sized vmemmap page, leaking the other ones.
+>>
+>> Fix it by properly decoupling pagetable and vmemmap freeing.
+>> free_pagetable() no longer has to mess with SECTION_INFO, as only the
+>> vmemmap is marked like that in register_page_bootmem_memmap().
+>>
+>> While at it, just wire up the altmap parameter for remove_pte_table().
+>> Also, the indentation in remove_pmd_table() is messed up, let's fix that
+>> while touching it.
+>>
+>> Note that we'll try to get rid of that bootmem info handling soon. For
+>> now, we'll handle it similar to free_pagetable(), just avoiding the
+>> ifdef.
+>>
+>> Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>> Reproduced and tested with a simple VM with a virtio-mem device,
+>> repeatedly adding and removing memory.
+>>
+>> Found by code inspection while working on bootmem_info removal.
+>> ---
 > 
-> This is the fifth RFC, as mentioned in the cover letter, but I
-> missed the prefix while formatting the patches. Please treat this
-> round as RFC v5.
+> Cool! I just reproduced the leak with QEMU pc-dimm memory hotplug as
+> well.
+> 
+> Without the fix, nr_free_pages kept dropping after the hotplugged memory
+> was removed again. With the fix applied, it stays stable over repeated
+> add/remove cycles :)
+> 
+> Tested-by: Lance Yang <lance.yang@linux.dev>
 
-Ever since I switched to b4 for patch management, the quality of my life improved :)
-
-$ b4 prep -n SERIES -f mm/mm-unstable
-$ b4 prep --set-prefixes RFC
-... add patches
-$ b4 prep --auto-to-cc
-$ b4 prep --edit-cover
-$ b4 send  --no-sign
+Thanks Lance! I'll wait a bit more for feedback, and then resend v2 with the
+"nr_pages" simplification.
 
 -- 
 Cheers,
