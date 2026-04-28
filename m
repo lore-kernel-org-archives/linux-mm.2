@@ -4,95 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3999FF886D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:38:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 697BAFF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:43:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5946C6B0005; Tue, 28 Apr 2026 15:38:16 -0400 (EDT)
+	id 8A8F66B0005; Tue, 28 Apr 2026 15:43:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56CB26B008A; Tue, 28 Apr 2026 15:38:16 -0400 (EDT)
+	id 85A4B6B008A; Tue, 28 Apr 2026 15:43:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 482556B008C; Tue, 28 Apr 2026 15:38:16 -0400 (EDT)
+	id 770266B008C; Tue, 28 Apr 2026 15:43:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 37BCF6B0005
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:38:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD134C163C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:38:15 +0000 (UTC)
-X-FDA: 84708975750.30.A7A18D4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 045C31C0005
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:38:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dZCd33P9;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 69A006B0005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:43:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 07D461A03FF
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:43:25 +0000 (UTC)
+X-FDA: 84708988770.14.14F88CD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5362D100007
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:43:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m2BplrKd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777405094;
+	s=arc-20220608; t=1777405403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=usJgC4r7W4jplC1bxHQ7WWalUBOWBHLcnL6pbbiOd/g=;
-	b=KHqHAhsL8PAWOK3eJLQ5zIUQxjfX2EZOu5bohA4ngDdhwLGNhIU2L7GZoq/aIH792V3OJr
-	VbhtxJENUrTIUh5NiGIaUc2aazpWwyjYFHjAu5dod0ViLHmGbAOs4XJF1fhuJSh7sxijoc
-	lLHNU9ZWls9i9bd+HbA3O09+p53fel4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dZCd33P9;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777405094; a=rsa-sha256;
+	bh=r1SIam/UzUzWzReV8qPmdwwBPQt4Mh8U1tg/RPmWvik=;
+	b=yUF0EF1+3uj8v1SYISHbw8M6bE27itIMJgRGWJY51DwTygboIZHs5fOUURreHXA7f6ogsc
+	dh9Hq8p7rLtCYOoZS956AGxdcKsZSuCVlqbCun3ZRmQxVe7VQvYsnu1DCCXcXtbXmjdOZY
+	KLTmu0eI3Hl6/7LIX9FkF+fmAaxE/TA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777405403; a=rsa-sha256;
 	cv=none;
-	b=ndq67P7FayVIHLjFpiy3ekNLfFhA/74S0x97sr35DxhfPhjy5/ykIwg3uhmaQHEXknfH8a
-	jJYcxL7/EwxCnFNg8M1Y7JdtWaYuuoqhr2QLS0Fca22+o1m4MqfCa8jiToepdii0NMeMtM
-	N3lJl0z4DdJUZeGlo6po/qeCYP37xYM=
+	b=VcFKOzpXmWiimP0mH5NV4FdabFY0afmGLktSujbtK/TCh7Kwv6cKgJLlbRRWnIoOvbUIYA
+	o7B13yP4iU98caBbMfuIX44OUbOQJgeL9kUWWH1Wl8DgOhxr1j7uYaZbMgyXzAMK48NQcB
+	AbeN7e4qGrnaAHBemnQ6L1p4Qg7KdxI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m2BplrKd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1D4A4437AA;
-	Tue, 28 Apr 2026 19:38:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5267C2BCAF;
-	Tue, 28 Apr 2026 19:38:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A223D61145;
+	Tue, 28 Apr 2026 19:43:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5C8C2BCAF;
+	Tue, 28 Apr 2026 19:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777405093;
-	bh=EvIkYK52K0rLotm9PNd5ZD8pkIHIf0w1KVvAhcPh19Q=;
+	s=k20201202; t=1777405402;
+	bh=Xs1yYmR71d9Lw39gplast2MaWotUBYysL6c6C2w0ZGY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dZCd33P9zFZ/aTLdNx5zcMFUPzSh4b0lZ+a1mfBhbwCILbKGz0K2boJQfav48xKB/
-	 6F2nMJLICFuha/ubYI84SQoTqmNy2U5Vsi8qHMeHTBF39g/LWUAg17DOxRA1/b/RYu
-	 hBH7+wytalclrQx7utPSQ9NFAgEvOlFJzuQLW2Y7bXI9pMkHRJ8HtyFkCl6XRTsxu4
-	 iE/T1vbwocE0jkt5RM6PdmPGt7V0Ul0Ygifl4eNmAYI9JmOWhUsmfdcFwAFejg8Azg
-	 jcZZzPv9YeSd3h8L8UtNOjDjjaa9CkzBe6+BH6XW9ArW5MckWihBVWGU81rriLHhKY
-	 UTBdWnUm2HJ7w==
-Message-ID: <92d8f449-682b-441a-bb4d-4a2b9299a5a3@kernel.org>
-Date: Tue, 28 Apr 2026 21:38:01 +0200
+	b=m2BplrKd3H0rONOi+g5VlqO9HezNy/LOKviHgnDH/vDHEn5PJZ6hEO3kjdVJbd8F0
+	 12HM+00rdQHHiYDYWwStSy7lXyjKl0u7f11izMqwVFEVwHVqluQch4LEsVr0GMGo5l
+	 a0FdIL5/wXGdjnKswlu7r6eYWlis/DyF8sjcVaeQjk3deIN3O4eNiNtd2pDg2jOO/g
+	 6ofL1MwlwsDN1jPf1cO94xayrw4715osb2yg3zEQQlLEUv/E1sOoxJvylhg7vGms6a
+	 vCqmXe3JJGz3WdAm21UZDuNaEk9mhtg9DeTV6j7dthSqFWi/M0LMln78sJPVDMm+29
+	 Ya/vLAPF1X1YQ==
+Message-ID: <5c2fc6bd-b4ab-4706-a0b0-df8350094fb4@kernel.org>
+Date: Tue, 28 Apr 2026 21:43:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
- page_mapped() in arena_free_pages()
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
- Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett"
- <liam@infradead.org>, linux-sh@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>
-References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
- <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
- <20260427051758.e1b714a4b567917971920eaa@linux-foundation.org>
- <CAADnVQJ9JXrtAnFgE8UFK=W1GDeT6T6Wi5zB7g0AfRjU8M4=bQ@mail.gmail.com>
- <2b2eecf0-72f9-4959-9663-c80e3cd0c517@kernel.org>
- <CAADnVQJp30BhhB6N3-GxtYmMpaMTaYvGcK9R5=8PxWD6qEXJhA@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/memory: update stale locking comments for fault
+ handlers
+To: Aditya Sharma <adi.sharma@zohomail.in>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-kernel@vger.kernel.org
+References: <20260424092217.263648-1-adi.sharma@zohomail.in>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAADnVQJp30BhhB6N3-GxtYmMpaMTaYvGcK9R5=8PxWD6qEXJhA@mail.gmail.com>
+In-Reply-To: <20260424092217.263648-1-adi.sharma@zohomail.in>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5362D100007
+X-Stat-Signature: z5icszu3u1de3698s5ob7mpu6ysfcj11
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 045C31C0005
-X-Stat-Signature: di6u4o3tz4r5prdydjymafmhw3atudu3
-X-HE-Tag: 1777405093-776934
-X-HE-Meta: U2FsdGVkX1+YPD+smxoVH6sGNjjlXGGJTEzWRfmtW2kBBKi82Ds8MQFNXqrJtv1DDJMv76I8J0RYdabR96rfVgbiJR5Rfgg+m33vUg154W76C7+ZR9+xW2/efJeccOLNN7X9gGt76TXrnuW/y9xLO6C9REeJSPqPuYaCskadBkmvRqPuj3KXukt93HOPhvTgyiRK79+wO9qiLZTlLhcyMzX1M8Kd+te7N8vc3ruI1TujXZ4fkWwlsVrzOLk/kz8xKYZajXdJjlXn9lKKgLSvO7dvHu3/g2U8JcacEA3JB+hVTwnrQCfdAdQUOQCcPnHmwkS5A0lnllPpo05POMp11/JK8VtiO/c7r0O3KT7/CjAFciuiNlpYACgxCvdKhMMAdmuAXQt47n7UIpmm5YXzj3zN+mm/qyNVXWCou9AP7rdBWlEVuLckrZgb7UXwfWbIORdQMG7Gid4++r91r6iTkFbw7qlU9lWujSPxvKFzdeMCmOAh52vjuiORVYPk0jvHI0wPiRFYLlp+ArJonRLWq5KVwRdj7oHYCHA1uqAQVrExGQTKseTiMWdgPVh4pdhuNJlqsJj7jg3yXF+dayxiq7m67AKZhQkBzdozAwwLW78omP+9RFcbjBfumXwGT3fOMbzXf7FbESgh9ITdu+h7OQggK3jezhnovLZRem8MBQMvBaehcs2u89BEXUqysffvuG/qWCyNraqkKiQmqDIhinKVZ+6whIAfXjlZ01/wbXkEiGNXTAgMxyZi1EjnQSLNfDqGNXQra2jm4L1ypol23BcmguIDRlMckGf9Fp9ER2Kq6WX7yraNs40yUdGXU1O5qsl57Gt+hd+Eu2ijG5DWU1FpM7XU1BphGCWE1gr11oIKVbff+fz/R3n9Ij/oajeqq38+n36deqMJ/nGWVvX/8CLBcbggH7GHImzaLXDipP5hvTbBmNxAU+j8V49YY/e28gyXRh5zZz/4xPlE+4A
- 1iF7CE+E
- fQXq9DBhU2Nh9xs9AEW5Ux753+pXJp5r/e/QQN27X4KzAQze+rHxc1Gm1DPFukEJKwcOOBN/96MedwYzszWVFv27PON0V23IGqSvQlfpyj6yrKdhW51LXsOuz5NNsWQ4yrtu7EiZ2pdcEIzJdstI+VyefAlmiD2x4xVT2KO0qXaV+PzCTyifkRLsF1mycP3mSOaDxiOS16Jw13iyP8i4wfI58QMV1sv+08LMQdlv25AoXbOGNU7z4y/CP5HgTl4VKfItpFMENHPrHBGAIKvLfSTFKxtu1Zp0lQFYZ88qRpiv4AZGErSF+7b3EI4CJwtHUx9nY8DIULvqjvazbOGranjE1QtbS/FtFRKyCz8ltv0EIP6OBSAYiKg2jQNfUqWz4seyWY8Bsf6hI1PO2REjXlzRB6iUHEv/oZaKqexZmVCqoGmdpcJ56kKSUBJZpS6MkJXf/xvRvj97OFHC7dDsy8QJF/NUs9ZcA+z1r4/imUv982mU=
+X-HE-Tag: 1777405403-179325
+X-HE-Meta: U2FsdGVkX18fiZ5MlpHCSjjVNPVDum0NwppO+6dtTmi/UqFjDzaPBG7E38xNYtueKbC8P0ESLKjWOBFeDzz+19vE4Y7qrc18dm4fiu6CAGsdmfKuoPXBPwjQx4suD6/Ogf66qbneNtD54LWhN7SgGKcoYNcgglKsy/TrYeyZa5F6QBmdKsZyGy1pTA+Z2IJU4mq3/DmqdKGyqX6yixh4gqof7YNbVtwjqifQ12GSTQ7A66Houk9zqo4EwjeHjjKL3gAxxI1fZ1SOrTsz1cbIOWqqKnKBlk71m52lNSTTwbCnasylufAK9HUMvIyLu6lqcM0cuhYgzR300k51DR865edtKCqtYIUnkDv3BJL2HzcJMVv2Cr228dcChga5lgFaadzkFw+mgorId1vzvfsdTyQGeXppkceHiewwmBajbiKmshSohtTPf7FiLZmG6B+sL/AhVp/TdFolKBFW5QtCVGaEVhvOiY6WqAWoOyEgSnm+Vdb3TJX0GtYt8cI1y3x04NlGFMOALZuGi7CxO+TVxSlmiKgyT3mvVSD9+s3U5MNhvmq/mrfHlQp3dFDIqmlpc5mXTsM1LTTOUqqv70Cdm+OQYw5ALvCttb4IokHW5kBemoz3XXJw5Og+3MCkk5zzdsI6j7D6ubFf+ti+QafJm1/xd//WAe6WUoD9BYbwmM1S8FPD3nzw6iZfwFcT7X0Ku0TFL9qSPjcoK9cj0GRYinRkK1NV7qswOP/DBzUeziA+DJmRysPRv9BxnD13e0Fv5rUEtCZahjiLZZtw4XX4QmqthO4JQ8J9pyiABDld8p5+c5rMWkv8VxIZjDK3DIkOJEfpoyTQheSZyJRuYYtxgF1VPKBDtqaa+dgwBu0t6x+KN5BZ8V+ocRb/7Fgrg0/oUBxJrqY81rr8mnfyJNGfimEjbpY2OudlOWKpVk9LtF1vZePzBL1H1hczojs2C6ALHgxYMHr5KecYcOIrFNC
+ dU27J/cm
+ VdyUI2CWoUEaA7YnpSRIjEwCx3fyZvb8XvLxanO9TZtTamZBGdPZ026E6iOX3l9OemBUTi6EryPmy2VDIZVHDGO21op5OfeYq/8GPgThEwVzimZoQpm//kOasnE7h7IjejzavNsCTLO6UdZBtCq5Mcr6wj4asumW3fH8G4jMb5CXIE3tUjt9PyVqEN+A9ig3n5SJYGZcC0UrkJD5SH7VyRKpdAys3qCA1oSQDcO9R660csnbgnoziKFQmVQJzHbwWRpnOA4T5RuRVXchyAmsPsLp/Ew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,33 +139,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/28/26 18:58, Alexei Starovoitov wrote:
-> On Tue, Apr 28, 2026 at 9:16 AM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->>>
->>> We cannot carry the same patch in 2 trees.
->>> Sooner or later it will create problems for linux-next
->>> and issues during merge window if more changes
->>> are done in the same area.
->>> The only way to share a patch between trees is to
->>> create a stable branch and pull it into 2 trees
->>> then sha will be the same,
->>
->> As lack of stable trees was raised a couple of times in the past, once we're
->> done with a transition to a fully git-based mm-next workflow [1], we should be
->> able to provide stable trees.
->>
->> [1]
->> https://lore.kernel.org/r/20260421094216.8dfe14a8c62f2420fa5aace1@linux-foundation.org
+On 4/24/26 11:22, Aditya Sharma wrote:
+> Update the comments for wp_page_copy(), do_wp_page(), do_swap_page(),
+> do_anonymous_page(), __do_fault(), do_fault(), handle_pte_fault(),
+> __handle_mm_fault(), and handle_mm_fault() to concisely clarify that
+> they can be entered holding either the mmap_lock or the VMA lock,
+> and that the lock may be released upon returning VM_FAULT_RETRY.
 > 
-> Ohh. Thanks for the link. Full git sounds great to me.
-> Reading the thread it sounds like you guys want to explore
-> your own way of managing the tree.
-> If there is interest we can share during lsfmm
-> how net and bpf trees are maintained from git pov.
+> Additionally, make the following corrections:
+> - In do_anonymous_page(), correct the outdated claim that the function
+>   is entered with the PTE "mapped but not yet locked". Since
+>   handle_pte_fault() unmaps the empty PTE before routing to
+>   do_pte_missing(), the comment now correctly states it is entered
+>   with the PTE unmapped and unlocked.
 
-Yes, I was planning on reaching out either way, talking at lsf/mm would be great!
+Yes, that is correct.
+
+> - In __do_fault(), update the stale reference from __lock_page_retry()
+>   to __folio_lock_or_retry().
+
+That as well.
+
+> 
+> Signed-off-by: Aditya Sharma <adi.sharma@zohomail.in>
+> ---
+
+Thanks!
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
