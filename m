@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0820FF886D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:43:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADACDFF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:43:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 312F16B00A1; Tue, 28 Apr 2026 16:43:40 -0400 (EDT)
+	id 201356B00A2; Tue, 28 Apr 2026 16:43:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C2576B00A2; Tue, 28 Apr 2026 16:43:40 -0400 (EDT)
+	id 1B13D6B00A4; Tue, 28 Apr 2026 16:43:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D9016B00A3; Tue, 28 Apr 2026 16:43:40 -0400 (EDT)
+	id 0C8306B00A5; Tue, 28 Apr 2026 16:43:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A4EB6B00A1
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:43:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B0F0E1C06CC
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:39 +0000 (UTC)
-X-FDA: 84709140558.14.8164E81
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1A35EA0004
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MFRVWxxU;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EE1256B00A2
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:43:46 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 86624140403
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:46 +0000 (UTC)
+X-FDA: 84709140852.23.ED5F8B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CDD1280006
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mwWAMGYD;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777409018;
+	s=arc-20220608; t=1777409025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/WM9DW8Uqa5mm/l4IsSAZjpRr6J5bOZmuTzlMQt6578=;
-	b=iJFHxfnU6OESmdua30ITAL7S6EIZd3Dgi/ogZ0UZyYBnu7ydo9e84YltriDr/5fufPzZAu
-	LvMQrox+btfoe/0p8083FLRWFI2XWqGZwZ2p2jcXnRDs4AbetGk+ROV6S+QU3/P6oaOrpz
-	l8KUKrA6OM7yryc9gUljAebHYGGDDfI=
+	bh=dEZdkzLZL3vueHy0++UssNjCusJ5F53FLGhcSfBSdYI=;
+	b=A2g9QS8TXrP2ZpFSPh05f5OPHm/GWiOga8Z3g6eHW8bI7qUNhWCZ0ZITJ4C5WZs7g6xker
+	Hzpe8mbEp82p2+trobHsDjm7yPtYtvk9qSuYphuDH9ZN0Vg/Hk6QH8I9qCfnPu1UY87IhF
+	9Ew6Klpder4JHnOtxKJcmcecJMND5Ag=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MFRVWxxU;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mwWAMGYD;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777409018; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777409025; a=rsa-sha256;
 	cv=none;
-	b=ChZfG+G75jz/oCd1nveyla1nBZht4iVlTmNzgP8/HF2by3vP2BAIQ1adDVopw9HAvqoC18
-	qVGzvgLuO/kaQEH4JPUtIFAYmL4aKWROhikHBYzEAJh4vCXp/x/yyGppLvpXa+KyChHmdo
-	p8JbO9g3TSV9xqHvhJHcBztrWjkwbck=
+	b=q+T8wfhNmCPLDWqCI7aSi68uLNt1PmgWaInqGj1jiOdytJ9cIFDMKklrgdxsKNbVONZHk8
+	eOiiQwqc0vXR76HYMFTHjJHi4QNlcoAxy/aYC184am4u8B/V2+fpMzZStUxCPeWKfO/4cp
+	0MGPwUwIebLitJY9xVGBFo4TzOHFO/c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 896A061334;
+	by sea.source.kernel.org (Postfix) with ESMTP id E8DEF43FE5;
+	Tue, 28 Apr 2026 20:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB26C2BCAF;
 	Tue, 28 Apr 2026 20:43:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9BDC2BCAF;
-	Tue, 28 Apr 2026 20:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777409017;
-	bh=9sC3778jKyDFz3Hjf8iXiNoDRSWAhHT+f8fPth7IqjA=;
+	s=k20201202; t=1777409023;
+	bh=dLU/bCwt/eyA3PPvWB4ap77KznBqGFR0SnU6xHYGFcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MFRVWxxU2l48pg7KdlcATzh/BQ7El7mawJuXdhfzSUId5u/FV3ENpGrpXoVv/S/5e
-	 diGcw13XfZ66wO6iK6hu/nz+PFGHcwnt5Yh9Kz8cgkfNZUENMDb/9cXjrvfidS/0En
-	 Q9CsEbrpDu2gG6VRAai5UYV/lv4uWDvGC1kM/eG6mUfifvB+4vsxxt79dAdTkvoO+w
-	 UBiE5Xg01xGq0XKss6X4SfkdurzI9BbwHtB04Jn+VmOmuutfi75GehlCP7x5cR+v0f
-	 csq7HGnKd78f9EibARdiq0bwCYC+gXAK2lSpyAw75v7VpnTjcNibWt59VaCe8g3kKA
-	 zzSHvWYTm+k8Q==
+	b=mwWAMGYDBm1/30LXf/9ytrjyyByqvvFyPg5pEzATYztnQDEwJ9Zw3n0dj9e1frT4Y
+	 PXNluZ5vLoTN5VWyN9Ou5WDvkwCsY7/jaLg2GJVZf/9e03WI5umRW00q5YZ9gXs1wh
+	 eC3boZrlA2bezEuyOsRjLh4VuMeAhsm9RGnzbMAEGegMZ5s86t4+egl2etx4Tmdt4o
+	 eSFiMrMAVRmJhEDjIv1I3yK5LR0DxJ4qvdQ81ZNPZ7Uxg0xApN8eEa0MN09FENMHn5
+	 5v7WZ/XTutw2g2y4LDlGtWY2WeIYLmIe3tRMYciuthDi0wX2SMowhWrnI61sYaJdIA
+	 MUSUOGb9ULIsA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -91,22 +91,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 07/54] selftests/mm: rename hugepage-* tests to hugetlb-*
-Date: Tue, 28 Apr 2026 23:41:53 +0300
-Message-ID: <20260428204240.1924129-8-rppt@kernel.org>
+Subject: [PATCH v3 08/54] selftests/mm: hugetlb-shm: use kselftest framework
+Date: Tue, 28 Apr 2026 23:41:54 +0300
+Message-ID: <20260428204240.1924129-9-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260428204240.1924129-1-rppt@kernel.org>
 References: <20260428204240.1924129-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CDD1280006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1A35EA0004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: u414oor41eqgt8uwknd4b69houcx8osn
-X-HE-Tag: 1777409017-752596
-X-HE-Meta: U2FsdGVkX1+7T3mIldTlVU2D+P0/UwzCH5UawMrOXDqXoSFo1KVF31R9UwsQTYWPJDw4/wV+9a/0xHJ/DJWlIlvvjrycOKEJzJjkuVNUOxz3pHxTtcnzZF9RM29V0scDk16HcqbLxwHg4/kHfhoLD61qDMWRndV0huZzh9SJvEOWo+dxdOFKlyofaSgKfS0kCddRVQL6uaExNqT5l+1bvn8Q8U0Hr7nWqmx3kKQzs4j0rW2AfiipxkDzrlWjnQ6FLuT51gJhFP0rDBBTSCGQ8MPOK11qERn0M/AslcN0Uyg0GUs/lFp0YUwqj7FjHMmOBuAuUeHqcADXDkoN5ZxseV0jCFtyWVe0hGPR9iNXjtnUM4M/mU+/FUGmNxpF5/+qzi2GPpla+cBxQ8jC9scgD8Zpoi79EBwAfb9EnYgDFOvObAYCstiET2K6ayLY0wm2yJjMopywNUJS0jm4Ibp0f7cXMLAvfDujmhw2yQEZZj1xIgvWtVuXUN4u5EdgTwk9aGyBWEHAmF5oRB6K2vynfYeMUcpdHw6CJEQ+nKGjp7YOGZXwEqSed0Um6k4mTFRKAq23jxJaQPCuh7CZ8VzC3HRVKqNi3vfoaz3E4q2EMu6VFnqYiXLmFEVQauEIM9Xau+Zf/9WYlz9m/jdLO1l0fB1qt7UtQg6CIbwup5M8sD35U6BtrMgOuQ3UqIDzU6980YI9D9y2x6B5ahN1nSTcKCBcL8rLtKyJZGK41h6+0NLsrX02h4p0s+u/+bMobbu9z045p4gLrE/Ze1eIsveCcadeKrH3ky/mtAKPM6NR8KxuvYVgX9v/buCr/unN4ZzQc8fFyZoWQGD5fDhu/aCGBHY4+i2g+Px/bISUbDmZAGoBE4bgId6L1tlizDhSrBpBcUqkDBMUze9EYFT9qTXWgR6xtK1u7S05OQl9XK/uxIpeb8lV6GJLTvDIVf4NtSZyOVruKfCTsbBr6wLVyh7
- QSdDoNsD
- K7jhIRqNjNDoyU+NxQ7ELKo/5zyAZbHeiSTN8jDcfYpy2cW928cUQl4IG+mA9l2kX6YBJQbZ94EcZ1zr+pnZiBb9yf618AbyBuUqIzSm30So/a7tGaJVHjE/2Kv7RR53qIB1YZCM6l0KO5E76JI3aunODMxze53gseuJVVzXclO7noRNQnTqqu8SQOh7BxWovzSlrpRRt9ORarSOGMfNXIDdz4A9AuXucPJTYkVNFBLqIs7TRHrYVJ3L1tt9K+wCnhmA+
+X-Stat-Signature: zbf95g38zpaqruerqwx6jbqquhram6pu
+X-HE-Tag: 1777409024-597912
+X-HE-Meta: U2FsdGVkX18giucc3kNFZHlJU/RLyw3UrYgGbsErzzQMHXpaIK5uelKx7kZ+/Kpma/SGIe5bv7Q8ChOcwxzMvaEOCMZ9MGy4nbW4jsUhwEWG/fqbWp9wNHZIScDZinqnqEf5CWZ86d/JgKS6or1lQRhkDsa6Vw5HgDd8unmJ87OSR8RRmk+ABEw1Fcpszzn3zXMYzPlBm9Ee+Fc+b9Gp0YaXiQE69YNBRXOBMJW8aayQSmTmNgQHcYOvkshEIvWyTy2WtM1RVj4SnHhaTLdNP6i93eE/E6WoJMnE4ZN7yDz9qQY3V6AoIgLVqJGbnW+Ngb82I0aZU7JeQ9fN9CM+A/HYwv+8MPyurcWE6V0i5F9DrfZN55tbkzo2TfzSGXop4M0T3VoT/3TAcCzn1EgHpdMChnoJmkLeWv48ItQ+l9XqExJ1oWCG/AiIdxUf1bf6Jjm3kqx5DV4ZGvjuVNn6YnXRuu/yPDYNRqtKtqz9eUKZ4TN5Cfke0mt1IwWKcc/ahIDH7M9YkmRO/RhCYhyXJ6lBEbxtHa66JxrCV+nq8bS9I1sXbjVRgZxhJXjw7mnFHdpqBb1fohDW5xzRzsgNJkNW9AeznpKunGTqjspa/vt7wHsiAvRgViJEAzXnOKJj6pjcbeluHOHhwJ+tmOmGtESmvSqwpL8e8/cYhgZY/9lHQTQ4CByitjMw9Cuf0yFNSut6XsQwtC9IIly0bIlfwq1mDj8U8IEFG/Hw3nMtRCCgLiMC946TZ7E/nwMz+VKk6+/KByVZEXiO5Zjv8KP3oNkl7WoovlfvLQDM849bwmDFzhjbPrabV8DwAlcYmSLfV1s255Pdj4OHgbCP4+gt/tIoBrUVoEIFGPLpkG6VLLuc0P+ycNDc9OVx5vBlnIz67NfFmPYY9kZt77cCuytt4C9/AljpxNJkLX3zYgssPcqmc+kBLKgbpvJrsJX0TWhf5Tw12fzdSauBykDgGMM
+ NjlZ/MHt
+ RQu/871fMmPTcdW++bgZC9DMV8yQULME5NpqwxZ08zyLOm80LdCzN4JGdyLEO5ajukqv1Achmr53jLMRt52eoKpuL06bClWHvezKgBie8J+mRxAP33WVlCrf/T/7a9pNXF7hnOPxNMoB5PYVYSHBL9J4ViQmkqznNiePOByezykwlY2yjO7vnnA2hQVtvuD9lnsNgVEi6J5iFXvZ5/0KAuwKadu42nwC7lQ6JX7HKx8QjcDSaSAxbVCYJvTHQR9vy5fHsPaFBuGYreIIw+ewko+7h+MmPCZekeVwHh5PH5mskxjNO2S8G5xOT+ZDOJQdl3B3o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,149 +116,98 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-hugepage could mean both THP and HugeTLB these days.
-
-Rename hugepage-* tests for HugeTLB to hugetlb-* to avoid confusion.
+Convert hugetlb-shm test to use kselftest framework for reporting and
+tracking successful and failing runs.
 
 Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/.gitignore                     | 4 ++++
- tools/testing/selftests/mm/Makefile                       | 8 ++++----
- tools/testing/selftests/mm/hugetlb-madvise.c              | 2 +-
- .../selftests/mm/{hugepage-mmap.c => hugetlb-mmap.c}      | 2 +-
- .../selftests/mm/{hugepage-mremap.c => hugetlb-mremap.c}  | 2 +-
- .../selftests/mm/{hugepage-shm.c => hugetlb-shm.c}        | 2 +-
- .../mm/{hugepage-vmemmap.c => hugetlb-vmemmap.c}          | 0
- tools/testing/selftests/mm/run_vmtests.sh                 | 8 ++++----
- 8 files changed, 16 insertions(+), 12 deletions(-)
- rename tools/testing/selftests/mm/{hugepage-mmap.c => hugetlb-mmap.c} (99%)
- rename tools/testing/selftests/mm/{hugepage-mremap.c => hugetlb-mremap.c} (99%)
- rename tools/testing/selftests/mm/{hugepage-shm.c => hugetlb-shm.c} (99%)
- rename tools/testing/selftests/mm/{hugepage-vmemmap.c => hugetlb-vmemmap.c} (100%)
+ tools/testing/selftests/mm/hugetlb-shm.c | 45 ++++++++++++------------
+ 1 file changed, 22 insertions(+), 23 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-index b0c30c5ee9e3..9ccd9e1447e6 100644
---- a/tools/testing/selftests/mm/.gitignore
-+++ b/tools/testing/selftests/mm/.gitignore
-@@ -4,6 +4,10 @@ hugepage-mmap
- hugepage-mremap
- hugepage-shm
- hugepage-vmemmap
-+hugetlb-mmap
-+hugetlb-mremap
-+hugetlb-shm
-+hugetlb-vmemmap
- hugetlb-madvise
- hugetlb-read-hwpoison
- hugetlb-soft-offline
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index cbda989f6b6a..a6955660a806 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -63,10 +63,10 @@ TEST_GEN_FILES += hmm-tests
- TEST_GEN_FILES += hugetlb-madvise
- TEST_GEN_FILES += hugetlb-read-hwpoison
- TEST_GEN_FILES += hugetlb-soft-offline
--TEST_GEN_FILES += hugepage-mmap
--TEST_GEN_FILES += hugepage-mremap
--TEST_GEN_FILES += hugepage-shm
--TEST_GEN_FILES += hugepage-vmemmap
-+TEST_GEN_FILES += hugetlb-mremap
-+TEST_GEN_FILES += hugetlb-shm
-+TEST_GEN_FILES += hugetlb-vmemmap
-+TEST_GEN_FILES += hugetlb-mmap
- TEST_GEN_FILES += khugepaged
- TEST_GEN_FILES += madv_populate
- TEST_GEN_FILES += map_fixed_noreplace
-diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/testing/selftests/mm/hugetlb-madvise.c
-index 5b12041fa310..898cc90b314f 100644
---- a/tools/testing/selftests/mm/hugetlb-madvise.c
-+++ b/tools/testing/selftests/mm/hugetlb-madvise.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * hugepage-madvise:
-+ * hugetlb-madvise:
-  *
-  * Basic functional testing of madvise MADV_DONTNEED and MADV_REMOVE
-  * on hugetlb mappings.
-diff --git a/tools/testing/selftests/mm/hugepage-mmap.c b/tools/testing/selftests/mm/hugetlb-mmap.c
-similarity index 99%
-rename from tools/testing/selftests/mm/hugepage-mmap.c
-rename to tools/testing/selftests/mm/hugetlb-mmap.c
-index fa886ec148c2..9f5ea8d6d656 100644
---- a/tools/testing/selftests/mm/hugepage-mmap.c
-+++ b/tools/testing/selftests/mm/hugetlb-mmap.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * hugepage-mmap:
-+ * hugetlb-mmap:
-  *
-  * Example of using huge page memory in a user application using the mmap
-  * system call.  Before running this application, make sure that the
-diff --git a/tools/testing/selftests/mm/hugepage-mremap.c b/tools/testing/selftests/mm/hugetlb-mremap.c
-similarity index 99%
-rename from tools/testing/selftests/mm/hugepage-mremap.c
-rename to tools/testing/selftests/mm/hugetlb-mremap.c
-index b8f7d92e5a35..1c87c39780c5 100644
---- a/tools/testing/selftests/mm/hugepage-mremap.c
-+++ b/tools/testing/selftests/mm/hugetlb-mremap.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * hugepage-mremap:
-+ * hugetlb-mremap:
-  *
-  * Example of remapping huge page memory in a user application using the
-  * mremap system call.  The path to a file in a hugetlbfs filesystem must
-diff --git a/tools/testing/selftests/mm/hugepage-shm.c b/tools/testing/selftests/mm/hugetlb-shm.c
-similarity index 99%
-rename from tools/testing/selftests/mm/hugepage-shm.c
-rename to tools/testing/selftests/mm/hugetlb-shm.c
-index ef06260802b5..de8f5d523084 100644
---- a/tools/testing/selftests/mm/hugepage-shm.c
+diff --git a/tools/testing/selftests/mm/hugetlb-shm.c b/tools/testing/selftests/mm/hugetlb-shm.c
+index de8f5d523084..0f70b1a50b6b 100644
+--- a/tools/testing/selftests/mm/hugetlb-shm.c
 +++ b/tools/testing/selftests/mm/hugetlb-shm.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * hugepage-shm:
-+ * hugetlb-shm:
-  *
-  * Example of using huge page memory in a user application using Sys V shared
-  * memory system calls.  In this example the app is requesting 256MB of
-diff --git a/tools/testing/selftests/mm/hugepage-vmemmap.c b/tools/testing/selftests/mm/hugetlb-vmemmap.c
-similarity index 100%
-rename from tools/testing/selftests/mm/hugepage-vmemmap.c
-rename to tools/testing/selftests/mm/hugetlb-vmemmap.c
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 61b450032af8..b9e520194634 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -282,18 +282,18 @@ run_test() {
+@@ -28,9 +28,9 @@
+ #include <sys/shm.h>
+ #include <sys/mman.h>
  
- echo "TAP version 13" | tap_output
+-#define LENGTH (256UL*1024*1024)
++#include "vm_util.h"
  
--CATEGORY="hugetlb" run_test ./hugepage-mmap
-+CATEGORY="hugetlb" run_test ./hugetlb-mmap
+-#define dprintf(x)  printf(x)
++#define LENGTH (256UL*1024*1024)
  
- shmmax=$(cat /proc/sys/kernel/shmmax)
- shmall=$(cat /proc/sys/kernel/shmall)
- echo 268435456 > /proc/sys/kernel/shmmax
- echo 4194304 > /proc/sys/kernel/shmall
--CATEGORY="hugetlb" run_test ./hugepage-shm
-+CATEGORY="hugetlb" run_test ./hugetlb-shm
- echo "$shmmax" > /proc/sys/kernel/shmmax
- echo "$shmall" > /proc/sys/kernel/shmall
+ int main(void)
+ {
+@@ -38,44 +38,43 @@ int main(void)
+ 	unsigned long i;
+ 	char *shmaddr;
  
--CATEGORY="hugetlb" run_test ./hugepage-mremap
--CATEGORY="hugetlb" run_test ./hugepage-vmemmap
-+CATEGORY="hugetlb" run_test ./hugetlb-mremap
-+CATEGORY="hugetlb" run_test ./hugetlb-vmemmap
- CATEGORY="hugetlb" run_test ./hugetlb-madvise
- CATEGORY="hugetlb" run_test ./hugetlb_dio
++	ksft_print_header();
++	ksft_set_plan(1);
++
+ 	shmid = shmget(2, LENGTH, SHM_HUGETLB | IPC_CREAT | SHM_R | SHM_W);
+-	if (shmid < 0) {
+-		perror("shmget");
+-		exit(1);
+-	}
+-	printf("shmid: 0x%x\n", shmid);
++	if (shmid < 0)
++		ksft_exit_fail_perror("shmget");
++
++	ksft_print_msg("shmid: 0x%x\n", shmid);
  
+ 	shmaddr = shmat(shmid, NULL, 0);
+ 	if (shmaddr == (char *)-1) {
+-		perror("Shared memory attach failure");
++		ksft_perror("Shared memory attach failure");
+ 		shmctl(shmid, IPC_RMID, NULL);
+-		exit(2);
++		ksft_exit_fail();
+ 	}
+-	printf("shmaddr: %p\n", shmaddr);
++	ksft_print_msg("shmaddr: %p\n", shmaddr);
+ 
+-	dprintf("Starting the writes:\n");
+-	for (i = 0; i < LENGTH; i++) {
++	ksft_print_msg("Starting the writes:\n");
++	for (i = 0; i < LENGTH; i++)
+ 		shmaddr[i] = (char)(i);
+-		if (!(i % (1024 * 1024)))
+-			dprintf(".");
+-	}
+-	dprintf("\n");
+ 
+-	dprintf("Starting the Check...");
++	ksft_print_msg("Starting the Check...");
+ 	for (i = 0; i < LENGTH; i++)
+ 		if (shmaddr[i] != (char)i) {
+-			printf("\nIndex %lu mismatched\n", i);
+-			exit(3);
++			shmctl(shmid, IPC_RMID, NULL);
++			ksft_exit_fail_msg("Data mismatch at index %lu\n", i);
+ 		}
+-	dprintf("Done.\n");
++	ksft_print_msg("Done.\n");
+ 
+ 	if (shmdt((const void *)shmaddr) != 0) {
+-		perror("Detach failure");
++		ksft_perror("Detach failure");
+ 		shmctl(shmid, IPC_RMID, NULL);
+-		exit(4);
++		ksft_exit_fail();
+ 	}
+ 
+ 	shmctl(shmid, IPC_RMID, NULL);
+ 
+-	return 0;
++	ksft_test_result_pass("hugepage using SysV shmget/shmat\n");
++	ksft_finished();
+ }
 -- 
 2.53.0
 
