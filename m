@@ -4,117 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16042FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 21:38:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D04A1FF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 22:12:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4773B6B00CB; Tue, 28 Apr 2026 17:38:04 -0400 (EDT)
+	id C72BB6B00B9; Tue, 28 Apr 2026 18:12:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 428696B00CD; Tue, 28 Apr 2026 17:38:04 -0400 (EDT)
+	id C23536B00BA; Tue, 28 Apr 2026 18:12:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 316776B00CE; Tue, 28 Apr 2026 17:38:04 -0400 (EDT)
+	id B39306B00BB; Tue, 28 Apr 2026 18:12:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E8D06B00CB
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 17:38:04 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE3921A045C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 21:38:03 +0000 (UTC)
-X-FDA: 84709277646.14.828DC1B
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6F4E01C000F
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 21:38:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=BKpyABXY;
-	spf=pass (imf21.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A2EB66B00B9
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 18:12:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1D6038B900
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 22:12:57 +0000 (UTC)
+X-FDA: 84709365594.22.97F6A57
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5B6F240002
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 22:12:55 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XNpnAMES;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777412282;
+	s=arc-20220608; t=1777414375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m2SIkG8G4dme99QjBJF700FHzCmI2Nw1YXi++Sm72C8=;
-	b=c+IRZR8w5+XlsGHQPpNXq/kREEBGHKfo8XHkOhkOd3Z0POu1p8DRRrXyEmVfRJ1U+6W40P
-	yEANgxQntQlfrwKmOaMqjVGxIrZrNTr1fleSNoCP+KXxSiEnLhnW9lPSn+yls0dRmsZqC+
-	zc4yT0OTCewqMN5d66fF3BOFiZ6SQNY=
+	bh=P38o4ftQzrV1YAuvv/5sD3orfSdL//VwRgFJ+EWZsmw=;
+	b=tHDVz3zxEfy+To3eSH7x5IFh/CW/O4wpdkL3xoLFaRALm6LHkrQMNP1jYFdG36FyLFQyl+
+	c9WGNU0dxGQPWplC8DGpNWuD+bTQZI6OGtvDxEix2+18uU1M2gX9kKnbGsg89/rYM6jnxf
+	liEudb1NqDDbPaTtixE6QJeJCkCpH+o=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=BKpyABXY;
-	spf=pass (imf21.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777412282; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XNpnAMES;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777414375; a=rsa-sha256;
 	cv=none;
-	b=iI4IJQ9Wc/IcfWgdvEhighIo5cCbzHEUlJgIJBvBcOPovLVmaPWki51iYhPD85A/0eSCMl
-	QXjvY3OtyUORqoHIXDpa0VShfEyXf9hfBe+VrWvoGBf6zSqNDeim8Qv+ZVkeU0HqvOOaNQ
-	4/+0BYz0eVvMO6uo32LLJwFmObrM6wE=
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4CDAD4E42B64;
-	Tue, 28 Apr 2026 21:37:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E94DD601D0;
-	Tue, 28 Apr 2026 21:37:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 049BC1072939F;
-	Tue, 28 Apr 2026 23:37:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777412276; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=m2SIkG8G4dme99QjBJF700FHzCmI2Nw1YXi++Sm72C8=;
-	b=BKpyABXYUA3W1yBGbOawA4h4lg+xP/ujDg9fnM/GDmfVvQtFe4V86zv2jRnYLbIW85egeu
-	gzsW7by84jCsCEyDe38rcP0G9Lu0O5PyhiJVlX1VH0lqEiLpLLVqCPQ6zb2WFjm+11Eb5Y
-	n8RhoTuzI6NlP3mUu2V0iIjtY0wmrD64vrUUDjJFf8c9e/GfSIul/+IfTbDMPsSiDwMCw7
-	iSMV2XUHFoLSDmaAwdjiKsMThFnyCYBB9t0d5djhof0yNcYWt/373RotXiqc8RA8Tj6M7F
-	lFivzfSQqW2W19Ln1HG5awMplQ6C4gwNMrAWCyzv+PL9twiFGEXnUYVU/us/rQ==
+	b=jL5Too0sxnc0i9dwYxnHRXLZTqH5mcxpKLE5nxx9zaCXNiW9S5PhiCJHaTMLQxMyMsXktc
+	eA2qI7D6+m5e9oPmFNa2ED+0Lpu2VoQMAVOIiUdrlM6jsp2PwXIv+Cyx94LXwwS20wNg0Q
+	ebkFtXozSwsnxZPQPga3i9UFc/Gu6LA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 82D916111B;
+	Tue, 28 Apr 2026 22:12:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB121C2BCAF;
+	Tue, 28 Apr 2026 22:12:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777414374;
+	bh=kkg+9dj6Kg2m+RboFcKUDNE4w+XzBqWMxSts1BhV6I4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XNpnAMES5OC4zofWEQ9KsfRL5J+zTlmIOclCucf7XWL26Ni9y2W9YOCHeIz4luJxW
+	 6epdhnr0Ye6sH711e47Tlb8kS31HcY0e+SY+dZqW8c30qVDfqDpzZUDcKjrQCHSjD5
+	 IFOoeMtYNvW5gut/7PMoK6wqunXzLTWN86Q4Xl3w=
+Date: Tue, 28 Apr 2026 15:12:53 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, yosry@kernel.org,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2] mm: memcontrol: fix rcu unbalance in
+ get_non_dying_memcg_end()
+Message-Id: <20260428151253.bdfb08401ebb74c438df0e52@linux-foundation.org>
+In-Reply-To: <20260428103108.45719-1-qi.zheng@linux.dev>
+References: <20260428103108.45719-1-qi.zheng@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Apr 2026 23:37:43 +0200
-Message-Id: <DI5429HR7UGP.IJHX75ZB16AZ@bootlin.com>
-Subject: Re: [PATCH RFC bpf-next 2/8] bpf: mark instructions accessing
- program stack
-Cc: <ebpf@linuxfoundation.org>, "Bastien Curutchet"
- <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>,
- <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>,
- <linux-arm-kernel@lists.infradead.org>, <kasan-dev@googlegroups.com>,
- <linux-mm@kvack.org>
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-To: "Ihor Solodrai" <ihor.solodrai@linux.dev>,
- =?utf-8?b?QWxleGlzIExvdGhvcsOpIChlQlBGIEZvdW5kYXRpb24p?=
- <alexis.lothore@bootlin.com>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
- <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "John Fastabend"
- <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, "David
- Ahern" <dsahern@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
- <hpa@zytor.com>, "Shuah Khan" <shuah@kernel.org>, "Maxime Coquelin"
- <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
- <alexandre.torgue@foss.st.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Alexander Potapenko" <glider@google.com>, "Andrey Konovalov"
- <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
- Frascino" <vincenzo.frascino@arm.com>, "Andrew Morton"
- <akpm@linux-foundation.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
- <20260413-kasan-v1-2-1a5831230821@bootlin.com>
- <7dd64547-25a4-46de-a896-98fcec04468e@linux.dev>
-In-Reply-To: <7dd64547-25a4-46de-a896-98fcec04468e@linux.dev>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5B6F240002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6F4E01C000F
-X-Stat-Signature: asm334ufgcmoi71r8zhneedu5ximia5z
-X-HE-Tag: 1777412281-508482
-X-HE-Meta: U2FsdGVkX19gcgNU2xBsDED8FE+yu/8mu5elZqhuOG9HRuXNggeiTcG77Mfdkpv7VpIIIo9neV9Q3amURO0wwPIaQflncDr8jrpxxWLDam8qp2lWakQ9HKGciQi2id/ac5LadAQRY0gm7lzaQJIymHZCiajw4/Gy6D0dHdbyX1yEUkppf8IKs/GvbqpWmc3doBc3ekNCS3Ljvul2DaUneievVmXSXLHiUAHPLBS8/w99+ghIZiLqThm8P8W5uPl4uqBjIvjDpJ0hfxRA0OxbyRRWWIDIziRMUDkPP+EIDFc5CoifkVNOz6fStzF6T0DeWRTh3MKAly2rrN6HppzQjDBgA0ratmuPi1sdxIjU0QzInTpc9TlX1qQeazvxps924T61ckYfpEP1ZQxEksilP+srvXE2+uPK9xNXJums0ocWxZI+7JJaQPXvW9wWVFz43dXk1Krew13PPG2xyt2wEAfP1Ke0V7rRVqHlzzf6duMtuJ1NSOJySMl8sQmW6I7RYdfdzIa3BqEUHrLYBlAwPmHq+Uvv8qGcbqiyUrtQpgJyVzSvXxRyJUdDXWJo2eWGpUI9Mn3VD1QJ6S4t9rXxxFm+HHzBG7fzSW6bxgBfYtPQJ/WHWAcnn0nhicP6tsV7A6kE8vyKtacG64RCa6pG5GlWy1os1qGf8Vxqs4Rpyd0cfxbv0MDqHrCzNzhkhbznkcApDuwCBq0azhV6KrlA2+wcCWrKPL+RucGJGHqQsxgrYvsK4K94ksft4OOg4L5PEW1CSs1jyumTzU12WvUZv90eXTbMU6wknNhcnbbkUhY3yhQP8RDZ/wYF06TJrZEUsnLNDl9CETLDrJkAcCWAvFrYYy1DCjoPUdbNuJ8shSlq5m4xF3t1HilVra1W0Usz4D13yHWtoRqQ7REGiFybCoiWXcqK2MByilM090PFTyqS2ru0xQlhpMTRWJn2K4Nn4csK1072CohyH1w/2WZ
- yy/80z3Y
- cF6UGgDfTU4YcdskI5Wv8qVIIhqUXNtv59gOrLQs7bdEiNcMLMQp49JftKqU6QtgJG9NoEuPZEnBK2T2gWgLC3jB7g2pxmqEHG0Pd/l/JVLUNNGb5Qw3hgJcmSw8xE2SzcD90jvSYDm4ahjobLVUO8RAbXi3qH9TPkVndC/hNZK2UVE2EvspTxsCV9EWmedn+o8EMPzpR4dGdgBnPlYRfPW5ZtoaCWIZBKsFujCaBL9+bn+Ad/KOJRCwTY1MNHVBdm8t7KODCCVHD96BFfbrSFJqTG18qp7L3P8aJSk98ARb1EJnZyc+Xw8qmU+G5mDYLfR1lzK9evhz8bV5oYmpWFO/pgXcPUybjmYDfre5h6Pq8yc9//oDUSRySN+5Q9IPpnQy94BgHdOTAy2iJ4oxVEW+SlqpDn3k2Tszry/DbR6wFgt2RskvXD4RXueRP0f33AjT3
+X-Stat-Signature: ip6wmzmbgkxy5fbigbju8uzhm9aokno5
+X-HE-Tag: 1777414375-824661
+X-HE-Meta: U2FsdGVkX1/3/kCBWb3l0to8znqaYUb86rOyhNq/YkRWG5Kw4gSiUwTcIJE0YsNTX2/V1tSY9NqgwydHU+xDSEgOLZiQF5YeS9ETItwLAG6pdTnq+SIFypsKWtb4hwgVR35YTJpSDBvkS91+duA3nEHeN/GbT21bceXUqaOy7Mi8aeYh2gwXL1qc0jnB9CS0f5xdngmyTM9mwxxSXPGQq3tC40P+RPWWyHMbbDNw/MPAQW9P/As3jsYLBNorE86r2tsrt9U7BXoZ4Ht5A2+ca12oLN3HdE3KDzJC6FQpGKBbN+PX4JKG3Etaq4NnVTJLFSTrp90mCyXsp0j26EvvLdGAPDk9Z1K/O+uIgxlkxKZyfClccQ0MLgqc+ZLjUp/zvjqX+ZTagBmlWhvybnLpUFoUsjgM1QAi21u50cAISG/sD4kocRJquNr+mDtSXjC9+pEj6srUcHx/mmN6+QSD1Q7/Lsp3puwjuj4fnKLBaqr8WWK37bqG2IUmVQR1EVYXkc7nT/qBrqlOfRXt7SpPko1W+jE4eJke1xesIQQV1XCixjShWCoaymDiSH43vVIGMBdmcaN8QQN2XesW1vHTQ9xawniVbOchh9Rq2H7x8CNed71XQEf66cAOWJCWmP4NGNtszaNZCQ8f4RfMLE8pefvUlle3KZt5QbGLj+AnJKnviBMDnNpnbZ2AmTys0hugS7l03QEfjaQHxW2/dd/wsAgexstHFTqD5R7QlKhk564u0RuChaciAI5VFgrblsklGC4RRC/oLCcUTW29tTga8W1We1BeaBoZW8LNOsFl0rEnCt6xjVNI7e2HJB6qp3iu8G/+7xTcyoY+x77GJmVB9ylObpzRNurOj8nRKV+YBdzXk+vqBPz3zy/mfxdB/FFlO+zIFlodFDJt+fBU9uY/6T7e0q6t9B95m35W5jlWlwgXpcFZI+cwnjEoP1fuhgdALmmlG5BxdrI5/TNgTLN
+ m683Ox2O
+ rH3PzVMfa6fPW/FYHEzbSOtbplCBm3jv8AiWbdQIhiVaHuj4N7teqBIWDe75jngibz3ZUOxuP8bQDPSXj2ossHIV4ONtra9eHoUH+DYpcGKiIXsRH2K6oSulz3qHwADgFlJJqX99VEQvkqG7qaXLKLXnPVqvZyYQH2M0A4PQFh5E+GZZyO4aNOQgoltV0q87RrnE9FU9hZiVq36oxnIOLP4BU/FjY1/ygqGvRMy6T84J8mpt/cZtEcQRA/p98Cuv26TDsZdDC5BmhXEUI/XdjTtvQKmiYywPWH8uCCl1d8nc2DKvtKMIUzUGzk6BEzEgju4dpqS1rdVY7v6bR6g7ueyhNRYnLrx2b+k3A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,137 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat Apr 25, 2026 at 1:18 AM CEST, Ihor Solodrai wrote:
-> On 4/13/26 11:28 AM, Alexis Lothor=C3=83=C2=A9 (eBPF Foundation) wrote:
->> In order to prepare to emit KASAN checks in JITed programs, JIT
->> compilers need to be aware about whether some load/store instructions
->> are targeting the bpf program stack, as those should not be monitored
->> (we already have guard pages for that, and it is difficult anyway to
->> correctly monitor any kind of data passed on stack).
->>=20
->> To support this need, make the BPF verifier mark the instructions that
->> access program stack:
->> - add a setter that allows the verifier to mark instructions accessing
->>   the program stack
->> - add a getter that allows JIT compilers to check whether instructions
->>   being JITed are accessing the stack
->>=20
->> Signed-off-by: Alexis Lothor=C3=A9 (eBPF Foundation) <alexis.lothore@boo=
-tlin.com>
->> ---
->>  include/linux/bpf.h          |  2 ++
->>  include/linux/bpf_verifier.h |  2 ++
->>  kernel/bpf/core.c            | 10 ++++++++++
->>  kernel/bpf/verifier.c        |  7 +++++++
->>  4 files changed, 21 insertions(+)
->>=20
->> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
->> index b4b703c90ca9..774a0395c498 100644
->> --- a/include/linux/bpf.h
->> +++ b/include/linux/bpf.h
->> @@ -1543,6 +1543,8 @@ void bpf_jit_uncharge_modmem(u32 size);
->>  bool bpf_prog_has_trampoline(const struct bpf_prog *prog);
->>  bool bpf_insn_is_indirect_target(const struct bpf_verifier_env *env, co=
-nst struct bpf_prog *prog,
->>  				 int insn_idx);
->> +bool bpf_insn_accesses_stack(const struct bpf_verifier_env *env,
->> +			     const struct bpf_prog *prog, int insn_idx);
->>  #else
->>  static inline int bpf_trampoline_link_prog(struct bpf_tramp_link *link,
->>  					   struct bpf_trampoline *tr,
->> diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
->> index b148f816f25b..ab99ed4c4227 100644
->> --- a/include/linux/bpf_verifier.h
->> +++ b/include/linux/bpf_verifier.h
->> @@ -660,6 +660,8 @@ struct bpf_insn_aux_data {
->>  	u16 const_reg_map_mask;
->>  	u16 const_reg_subprog_mask;
->>  	u32 const_reg_vals[10];
->> +	/* instruction accesses stack */
->> +	bool accesses_stack;
->>  };
->> =20
->>  #define MAX_USED_MAPS 64 /* max number of maps accessed by one eBPF pro=
-gram */
->> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
->> index 8b018ff48875..340abfdadbed 100644
->> --- a/kernel/bpf/core.c
->> +++ b/kernel/bpf/core.c
->> @@ -1582,6 +1582,16 @@ bool bpf_insn_is_indirect_target(const struct bpf=
-_verifier_env *env, const struc
->>  	insn_idx +=3D prog->aux->subprog_start;
->>  	return env->insn_aux_data[insn_idx].indirect_target;
->>  }
->> +
->> +bool bpf_insn_accesses_stack(const struct bpf_verifier_env *env,
->> +			     const struct bpf_prog *prog, int insn_idx)
->> +{
->> +	if (!env)
->> +		return false;
->> +	insn_idx +=3D prog->aux->subprog_start;
->> +	return env->insn_aux_data[insn_idx].accesses_stack;
->> +}
->> +
->>  #endif /* CONFIG_BPF_JIT */
->> =20
->>  /* Base function for offset calculation. Needs to go into .text section=
-,
->> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
->> index 1e36b9e91277..7bce4fb4e540 100644
->> --- a/kernel/bpf/verifier.c
->> +++ b/kernel/bpf/verifier.c
->> @@ -3502,6 +3502,11 @@ static void mark_indirect_target(struct bpf_verif=
-ier_env *env, int idx)
->>  	env->insn_aux_data[idx].indirect_target =3D true;
->>  }
->> =20
->> +static void mark_insn_accesses_stack(struct bpf_verifier_env *env, int =
-idx)
->> +{
->> +	env->insn_aux_data[idx].accesses_stack =3D true;
->> +}
->> +
->>  #define LR_FRAMENO_BITS	3
->>  #define LR_SPI_BITS	6
->>  #define LR_ENTRY_BITS	(LR_SPI_BITS + LR_FRAMENO_BITS + 1)
->> @@ -6490,6 +6495,8 @@ static int check_mem_access(struct bpf_verifier_en=
-v *env, int insn_idx, u32 regn
->>  		else
->>  			err =3D check_stack_write(env, regno, off, size,
->>  						value_regno, insn_idx);
->> +
->> +		mark_insn_accesses_stack(env, insn_idx);
->
-> I am not sure this can be done unconditionally here.
->
-> It may be possible in different states to have different pointer
-> types for the affected reg (PTR_TO_STACK in one execution path and say
-> PTR_TO_MAP_VALUE in another). And if set uncoditionally,
-> instrumentation may be skipped for legitimate targets.
->
-> Maybe reset by default in check_mem_access()?
+On Tue, 28 Apr 2026 18:31:08 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 
-Hmm, ok, thanks, I missed this subtlety. I still need to dig in there to
-make sure to really understand how the verifier handles those states,
-but if I understand correctly your point, I guess that just resetting
-the "accesses stack" flag at the entry of check_mem_access is not
-enough: it would make the final result depend on the order of the states
-being checked, eg:
-- first state being checked result in PTR_TO_MAP_VALUE, no flag set
-- second (and final) state being checked result in PTR_TO_STACK, flag is
-  now set
-- if no other state: insn ends up being (wrongly) marked to be ignored=20
+> Currently, get_non_dying_memcg_start() and get_non_dying_memcg_end() both
+> evaluate cgroup_subsys_on_dfl(memory_cgrp_subsys) independently to
+> determine whether to acquire or release the RCU read lock.
 
-So unless I am misunderstanding things here, the question rather becomes
-"for this specific insn, is there any state in which the accessed memory
-is anything else other than PTR_TO_STACK". The flag could just be
-inverted (ie set to true by default), and reset by any state resulting
-in something other than PTR_TO_STACK.
+Sashiko review
+(https://sashiko.dev/#/patchset/20260428103108.45719-1-qi.zheng@linux.dev)
+is correct.
 
-Alexis
---=20
-Alexis Lothor=C3=A9, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+mm/memcontrol.c: In function 'mod_memcg_state':
+mm/memcontrol.c:881:9: error: 'rcu_locked' is used uninitialized [-Werror=uninitialized]
+  881 |         get_non_dying_memcg_end(rcu_locked);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mm/memcontrol.c:874:14: note: 'rcu_locked' was declared here
+  874 |         bool rcu_locked;
+      |              ^~~~~~~~~~
+In function 'mod_memcg_lruvec_state',
+    inlined from 'mod_lruvec_state' at mm/memcontrol.c:973:3:
+mm/memcontrol.c:952:9: error: 'rcu_locked' is used uninitialized [-Werror=uninitialized]
+  952 |         get_non_dying_memcg_end(rcu_locked);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mm/memcontrol.c:944:14: note: 'rcu_locked' was declared here
+  944 |         bool rcu_locked;
+      |              ^~~~~~~~~~
+In function 'mod_memcg_state',
+    inlined from 'mem_cgroup_sk_uncharge' at mm/memcontrol.c:5392:2:
+mm/memcontrol.c:881:9: error: 'rcu_locked' is used uninitialized [-Werror=uninitialized]
+  881 |         get_non_dying_memcg_end(rcu_locked);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mm/memcontrol.c:874:14: note: 'rcu_locked' was declared here
+  874 |         bool rcu_locked;
+      |              ^~~~~~~~~~
 
