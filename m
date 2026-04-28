@@ -4,79 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77531FF886D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:37:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3999FF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:38:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9B4D6B0005; Tue, 28 Apr 2026 15:37:09 -0400 (EDT)
+	id 5946C6B0005; Tue, 28 Apr 2026 15:38:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A73276B008A; Tue, 28 Apr 2026 15:37:09 -0400 (EDT)
+	id 56CB26B008A; Tue, 28 Apr 2026 15:38:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 988C06B008C; Tue, 28 Apr 2026 15:37:09 -0400 (EDT)
+	id 482556B008C; Tue, 28 Apr 2026 15:38:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 87C506B0005
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:37:09 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49AFA1601B3
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:37:09 +0000 (UTC)
-X-FDA: 84708972978.02.2BCFF0A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 37BCF6B0005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:38:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD134C163C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:38:15 +0000 (UTC)
+X-FDA: 84708975750.30.A7A18D4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 71608100013
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:37:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAHXisBD;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 045C31C0005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:38:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dZCd33P9;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777405027;
+	s=arc-20220608; t=1777405094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4QYm9+Ytvf6jMe8JtOxqIDP+QdPMNzfUubkQxlSs1G4=;
-	b=3mL8GYKq/3EFeUTz81c49NUu7TTquFq+aTB1GBblFt9v1giBf1o3ybE55V129Q5Uttu97e
-	K9B9E7JunPbjBb4a+nwGcGwM4NV6BG/2xtfmoZWrcuib6YhTNketbmnOoESfS/kRp8VQ+c
-	wylznUuWhf1dMY09+/8kDPPifwWtTDc=
+	bh=usJgC4r7W4jplC1bxHQ7WWalUBOWBHLcnL6pbbiOd/g=;
+	b=KHqHAhsL8PAWOK3eJLQ5zIUQxjfX2EZOu5bohA4ngDdhwLGNhIU2L7GZoq/aIH792V3OJr
+	VbhtxJENUrTIUh5NiGIaUc2aazpWwyjYFHjAu5dod0ViLHmGbAOs4XJF1fhuJSh7sxijoc
+	lLHNU9ZWls9i9bd+HbA3O09+p53fel4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAHXisBD;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dZCd33P9;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777405027; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777405094; a=rsa-sha256;
 	cv=none;
-	b=ZdalYfLUR2E3UuaaR0knFnraywQf6KQikfUqIDPWfrBQMgpQ9DB283+cYXdDrN8h0QDwTg
-	sxdiO1/zVHpa5Xw9zqtkoQ10nLDpbCt9xDVVFQOBFYEB80bfB1S+a9J5fWhEIb/Ii8LUat
-	UhCvkL+FPleXhqXEgH5VXMBzQraRl9Y=
+	b=ndq67P7FayVIHLjFpiy3ekNLfFhA/74S0x97sr35DxhfPhjy5/ykIwg3uhmaQHEXknfH8a
+	jJYcxL7/EwxCnFNg8M1Y7JdtWaYuuoqhr2QLS0Fca22+o1m4MqfCa8jiToepdii0NMeMtM
+	N3lJl0z4DdJUZeGlo6po/qeCYP37xYM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43B9640C09;
-	Tue, 28 Apr 2026 19:37:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2A2C2BCAF;
-	Tue, 28 Apr 2026 19:37:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1D4A4437AA;
+	Tue, 28 Apr 2026 19:38:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5267C2BCAF;
+	Tue, 28 Apr 2026 19:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777405026;
-	bh=wTu5YsK9WMfcrNfXAKqKVRZWZd07LCagAS8tZcofwKQ=;
+	s=k20201202; t=1777405093;
+	bh=EvIkYK52K0rLotm9PNd5ZD8pkIHIf0w1KVvAhcPh19Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oAHXisBDzimhXI17wnijGsm4Kj3KwqSSO3NGUOdLz+1w/SMlJbxfKDEcFUM+LzsFH
-	 yXZvH7lyhU+H/wQ7YtPQU6R1mIluNmEQJfGAQhC03AFHfmzoYgeIaRcCv5U+NIU77Y
-	 xDivJB30dZqPvS+pEFcaZmZrUhsmIEtM4HoaWdZqXxZoTaVYXBUMhB/U9n4GQarLcq
-	 SBzJOAhGGVluqLFboRvbHyctyXlY2waiys128tJ5SLSt+OyOM4Rn6Acxvrqj7z5pvQ
-	 VljWqC1Oyjx0aGmqK2NgPK1nwwoZ3j4gsd0WUlN8K1CtgK/AzhuDQu4KN6pq6NFeYs
-	 foSUkoiGRL5OQ==
-Message-ID: <a0e86e22-5e5e-4000-ac74-a8a1b2f16997@kernel.org>
-Date: Tue, 28 Apr 2026 21:36:58 +0200
+	b=dZCd33P9zFZ/aTLdNx5zcMFUPzSh4b0lZ+a1mfBhbwCILbKGz0K2boJQfav48xKB/
+	 6F2nMJLICFuha/ubYI84SQoTqmNy2U5Vsi8qHMeHTBF39g/LWUAg17DOxRA1/b/RYu
+	 hBH7+wytalclrQx7utPSQ9NFAgEvOlFJzuQLW2Y7bXI9pMkHRJ8HtyFkCl6XRTsxu4
+	 iE/T1vbwocE0jkt5RM6PdmPGt7V0Ul0Ygifl4eNmAYI9JmOWhUsmfdcFwAFejg8Azg
+	 jcZZzPv9YeSd3h8L8UtNOjDjjaa9CkzBe6+BH6XW9ArW5MckWihBVWGU81rriLHhKY
+	 UTBdWnUm2HJ7w==
+Message-ID: <92d8f449-682b-441a-bb4d-4a2b9299a5a3@kernel.org>
+Date: Tue, 28 Apr 2026 21:38:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/mm: fix freeing of PMD-sized vmemmap pages
-To: Lance Yang <lance.yang@linux.dev>
-Cc: dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, rppt@kernel.org, jgg@ziepe.ca, baolu.lu@linux.intel.com,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
- <20260428132025.86657-1-lance.yang@linux.dev>
+Subject: Re: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
+ page_mapped() in arena_free_pages()
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett"
+ <liam@infradead.org>, linux-sh@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>
+References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
+ <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
+ <20260427051758.e1b714a4b567917971920eaa@linux-foundation.org>
+ <CAADnVQJ9JXrtAnFgE8UFK=W1GDeT6T6Wi5zB7g0AfRjU8M4=bQ@mail.gmail.com>
+ <2b2eecf0-72f9-4959-9663-c80e3cd0c517@kernel.org>
+ <CAADnVQJp30BhhB6N3-GxtYmMpaMTaYvGcK9R5=8PxWD6qEXJhA@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +139,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260428132025.86657-1-lance.yang@linux.dev>
+In-Reply-To: <CAADnVQJp30BhhB6N3-GxtYmMpaMTaYvGcK9R5=8PxWD6qEXJhA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 71608100013
-X-Rspamd-Server: rspam06
-X-Stat-Signature: qqpnayrz835rb3tcgs4z8duhfsmfmbe3
-X-HE-Tag: 1777405027-571919
-X-HE-Meta: U2FsdGVkX18SdUd/Zdpa2O9gDj3CSW1vuMTmTI9NJSdwqJ1FSn1XdewLCyqpSdOLus5uueF7DlDAfUS2EVL8eW06Xc9gc4cIaMm2Ue0Z/Mm7/RA1dKKCFwDLUA1ZKsVDPpz6D/4a4OPIKZN5FeAe/9Ys1W3CJaT+ib+tKvCmxa3PD4wCZau+f2OjELhiwRRf8T2//HApNju3JmrFoIGTAvKNdNlUONuTDHngH3bKiq6yk4jjVinwbRZi7NzXGVUMU00+Tiz7PSt0BxAqHtM5pNeUcdF+HBH7vgABU7nVnYJIkznzzpNVJqX5xJvFnZ0n0ayw6DOhAsdbp2SCBRkknXHQmlVJtb9uKGCiGrmXFXI/rWvffKl7K/x8FB5KAqqFrJ7gUN8AGQdQ9f7jDfEjeksT9hS+kXwcd/Z5WtzW9HOjISmDlr0oI5kOJcA/FLOvocy7n0ldTNKpKDZHtYh2/al4bCnP6hGKl5kb7KiwQFQU9sjk70FQmjErCFyr82X1XlO6I6C3vT+WmQvFK1orb/B7KBWXTWPgeLxOQgS++E69YsA4ymTziC6HmI1ZAMi7uSO7nlCPDgH6Wo3yHF7eBPKLu8F3XspyyHuz8enVWo97ty6SUGHcOcsBkHyJUuhLd4z+S/cOtrInK6OgqJkRNsGTyxv0qol2ZV/t8jEbOpXiGqNGFR8ULxtGrmcbT3vE2LbWugJ1ksYQJfF/J8T6SwlvNsYAXTuAr0oxi4IZhhCk/KQdhGHB+Zh+lWfCjtRfFEcEb/MplpKC6wkZtAeRVsNPvsokbzyj1TksTXB+iahxlwYRkqwT1fjGDkmgnE2rweKBaW4ZgbTFTC7nXLayQ7hJJvj64wooDAUO1N41JIiSZDY/G1Nlyn4STMPHwNkTbqlcKYOVvt9jXEH8vSbNWeVazq6HGsJSQJI046wbD2BPeq25w/OzHAXYtsKrmCagpyB5fCF6z74t01tOraW
- 3KNbPIe1
- aEXhzAaEL/7ZFgh40N1TLv12mJEpNiLxO3CD8ofvM++bOKx1g6zwWNH9+ifIIPCfCXWLyKDdXNBj4ZjerA1RC35TMD9GBLA8HVJ3HZgK3lc1CRCFIm268lbKurJcJKXF/gz6CEucIpHFExyn0nRUoAwX+s1mWA0yHXzPCMvmLW3GBPslPooNabbyRaAubY/i3oP/rExUcFwuWC78zcu+l5pbJmRKrJAUvKsl9bBgrvmf98ZGVrvvQMRR9Hf561pmwlKxzBaQto5yxfRhBJKdFn0zef3BF5E6Je3Ce
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 045C31C0005
+X-Stat-Signature: di6u4o3tz4r5prdydjymafmhw3atudu3
+X-HE-Tag: 1777405093-776934
+X-HE-Meta: U2FsdGVkX1+YPD+smxoVH6sGNjjlXGGJTEzWRfmtW2kBBKi82Ds8MQFNXqrJtv1DDJMv76I8J0RYdabR96rfVgbiJR5Rfgg+m33vUg154W76C7+ZR9+xW2/efJeccOLNN7X9gGt76TXrnuW/y9xLO6C9REeJSPqPuYaCskadBkmvRqPuj3KXukt93HOPhvTgyiRK79+wO9qiLZTlLhcyMzX1M8Kd+te7N8vc3ruI1TujXZ4fkWwlsVrzOLk/kz8xKYZajXdJjlXn9lKKgLSvO7dvHu3/g2U8JcacEA3JB+hVTwnrQCfdAdQUOQCcPnHmwkS5A0lnllPpo05POMp11/JK8VtiO/c7r0O3KT7/CjAFciuiNlpYACgxCvdKhMMAdmuAXQt47n7UIpmm5YXzj3zN+mm/qyNVXWCou9AP7rdBWlEVuLckrZgb7UXwfWbIORdQMG7Gid4++r91r6iTkFbw7qlU9lWujSPxvKFzdeMCmOAh52vjuiORVYPk0jvHI0wPiRFYLlp+ArJonRLWq5KVwRdj7oHYCHA1uqAQVrExGQTKseTiMWdgPVh4pdhuNJlqsJj7jg3yXF+dayxiq7m67AKZhQkBzdozAwwLW78omP+9RFcbjBfumXwGT3fOMbzXf7FbESgh9ITdu+h7OQggK3jezhnovLZRem8MBQMvBaehcs2u89BEXUqysffvuG/qWCyNraqkKiQmqDIhinKVZ+6whIAfXjlZ01/wbXkEiGNXTAgMxyZi1EjnQSLNfDqGNXQra2jm4L1ypol23BcmguIDRlMckGf9Fp9ER2Kq6WX7yraNs40yUdGXU1O5qsl57Gt+hd+Eu2ijG5DWU1FpM7XU1BphGCWE1gr11oIKVbff+fz/R3n9Ij/oajeqq38+n36deqMJ/nGWVvX/8CLBcbggH7GHImzaLXDipP5hvTbBmNxAU+j8V49YY/e28gyXRh5zZz/4xPlE+4A
+ 1iF7CE+E
+ fQXq9DBhU2Nh9xs9AEW5Ux753+pXJp5r/e/QQN27X4KzAQze+rHxc1Gm1DPFukEJKwcOOBN/96MedwYzszWVFv27PON0V23IGqSvQlfpyj6yrKdhW51LXsOuz5NNsWQ4yrtu7EiZ2pdcEIzJdstI+VyefAlmiD2x4xVT2KO0qXaV+PzCTyifkRLsF1mycP3mSOaDxiOS16Jw13iyP8i4wfI58QMV1sv+08LMQdlv25AoXbOGNU7z4y/CP5HgTl4VKfItpFMENHPrHBGAIKvLfSTFKxtu1Zp0lQFYZ88qRpiv4AZGErSF+7b3EI4CJwtHUx9nY8DIULvqjvazbOGranjE1QtbS/FtFRKyCz8ltv0EIP6OBSAYiKg2jQNfUqWz4seyWY8Bsf6hI1PO2REjXlzRB6iUHEv/oZaKqexZmVCqoGmdpcJ56kKSUBJZpS6MkJXf/xvRvj97OFHC7dDsy8QJF/NUs9ZcA+z1r4/imUv982mU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,57 +157,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/28/26 15:20, Lance Yang wrote:
+On 4/28/26 18:58, Alexei Starovoitov wrote:
+> On Tue, Apr 28, 2026 at 9:16 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>>>
+>>> We cannot carry the same patch in 2 trees.
+>>> Sooner or later it will create problems for linux-next
+>>> and issues during merge window if more changes
+>>> are done in the same area.
+>>> The only way to share a patch between trees is to
+>>> create a stable branch and pull it into 2 trees
+>>> then sha will be the same,
+>>
+>> As lack of stable trees was raised a couple of times in the past, once we're
+>> done with a transition to a fully git-based mm-next workflow [1], we should be
+>> able to provide stable trees.
+>>
+>> [1]
+>> https://lore.kernel.org/r/20260421094216.8dfe14a8c62f2420fa5aace1@linux-foundation.org
 > 
-> On Tue, Apr 28, 2026 at 12:29:36PM +0200, David Hildenbrand (Arm) wrote:
->> In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
->>from freeing non-boot page tables through __free_pages() to
->> pagetable_free().
->>
->> However, the function is also called to free vmemmap pages.
->>
->> Given that vmemmap pages are not page tables, already the page_ptdesc(page)
->> is wrong. But worse, pagetable_free() calls
->>
->> 	__free_pages(page, compound_order(page));
->>
->> As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
->> except for HVO, which doesn't apply here -- we will only free the first
->> page when freeing a PMD-sized vmemmap page, leaking the other ones.
->>
->> Fix it by properly decoupling pagetable and vmemmap freeing.
->> free_pagetable() no longer has to mess with SECTION_INFO, as only the
->> vmemmap is marked like that in register_page_bootmem_memmap().
->>
->> While at it, just wire up the altmap parameter for remove_pte_table().
->> Also, the indentation in remove_pmd_table() is messed up, let's fix that
->> while touching it.
->>
->> Note that we'll try to get rid of that bootmem info handling soon. For
->> now, we'll handle it similar to free_pagetable(), just avoiding the
->> ifdef.
->>
->> Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->> Reproduced and tested with a simple VM with a virtio-mem device,
->> repeatedly adding and removing memory.
->>
->> Found by code inspection while working on bootmem_info removal.
->> ---
-> 
-> Cool! I just reproduced the leak with QEMU pc-dimm memory hotplug as
-> well.
-> 
-> Without the fix, nr_free_pages kept dropping after the hotplugged memory
-> was removed again. With the fix applied, it stays stable over repeated
-> add/remove cycles :)
-> 
-> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Ohh. Thanks for the link. Full git sounds great to me.
+> Reading the thread it sounds like you guys want to explore
+> your own way of managing the tree.
+> If there is interest we can share during lsfmm
+> how net and bpf trees are maintained from git pov.
 
-Thanks Lance! I'll wait a bit more for feedback, and then resend v2 with the
-"nr_pages" simplification.
+Yes, I was planning on reaching out either way, talking at lsf/mm would be great!
 
 -- 
 Cheers,
