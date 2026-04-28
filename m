@@ -4,113 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F516FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 13:32:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD24EFF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 13:41:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6079D6B0088; Tue, 28 Apr 2026 09:32:23 -0400 (EDT)
+	id EEEF66B0088; Tue, 28 Apr 2026 09:41:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DFC76B008A; Tue, 28 Apr 2026 09:32:23 -0400 (EDT)
+	id EC6736B008A; Tue, 28 Apr 2026 09:41:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51D3D6B008C; Tue, 28 Apr 2026 09:32:23 -0400 (EDT)
+	id DDCB16B008C; Tue, 28 Apr 2026 09:41:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DC896B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:32:23 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF86FA016B
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:32:22 +0000 (UTC)
-X-FDA: 84708053724.04.6AC4B53
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E4F3D180004
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:32:20 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=H8qspGt4;
-	spf=pass (imf24.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id C8D056B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:41:36 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8513712016E
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:41:36 +0000 (UTC)
+X-FDA: 84708076992.27.F5596F9
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 249CAC000D
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:41:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=bqtKGOP5;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf28.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777383141;
+	s=arc-20220608; t=1777383694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3byBSOEgzWp/7f2Lr/jllR3/Q+AIHH06pprc3xCjkns=;
-	b=bJS1ZJC/j1cj4288/wAnqYjBYod4VJ4ustW3G6AYpcPfwwrqD+aroKq/cLTRU7dJq9iCRP
-	Ph+/L0bpiJQfbKSPQ3r96fwJPUzdCCKL9TKsqTWlaK0WWwSaDtDUIvyIgoxokFw+i9zi6B
-	XbZl29ggp2TELOK4A3iPrx11S+bmn0E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777383141; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=V6dtIaTvbG8kHNlcuTrpQlv4YvEPbNRPpSEHmCm4a4E=;
+	b=F8gxmGX2Pjwdj4SDvFrWLOD2183cWT4KWkvv63850TgmLUAN9P8LuA0eRHZDcDgxzOrgut
+	ppqbT5dU0t0vxhhVNMLVklNXgue16Bj7la/HXzRtkuRDEMpeh7Nh1HNs9e7aJ7E+Weq0Li
+	tyou07HB4aLndHPkV5ImKbMItIU+Tgw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777383694; a=rsa-sha256;
 	cv=none;
-	b=XeAfmrLwyWKFhccem1pixGYhwlJcQYCu4uFDDRnKjLeA6+7xPBTYt7t+Q8I555YHW7gpP3
-	7mKiH3DBUNeNmitUMbj1KF2hgU4Lv2lnORA5cqZTGitSZRflhMV1rE9JAAeBD/EspGM8lQ
-	VtNEd0m/5UcR4e13lRzL9NY5Ea4OngU=
+	b=jkUahTOFJIAFnANM/FMhn2dIJZlGV6rjSX8I+GpVdR9+EY3Yn2DKnTuI45uaQ43d3UoXtw
+	KBsQ4QEK6pBHAprDeqlY8JV2EsqVWG8wGf8ZrXcF4zypavAPEIKaHUOXXjGOkuRarPNXoT
+	jFsPH3dbS/dxbSoDXlB/4UJc1c+KQQ0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=H8qspGt4;
-	spf=pass (imf24.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82fa8d6425bso4434527b3a.0
-        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:32:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777383140; x=1777987940; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3byBSOEgzWp/7f2Lr/jllR3/Q+AIHH06pprc3xCjkns=;
-        b=H8qspGt4XhAz9t/cWTk7mok4XcJA4qCTf0rFLhtte5Jk/6Vga4JXYzvunH9Gu4I2Ya
-         EPl6GbJZEDwb+KbZQOl/fewcCeAuzeF+xI0R5PzJsdWS8CenLSL255Cqk9Cd7J1ftMVE
-         Tvoj/qG4DYsEDmWnfEAVYGi+v/ZA1Pr42hKwMAQXpLEUxukf3FuKxjrVbRVmsWuu+Aa1
-         uIGjNSvcNBSki0qeUCTQU8al6XY7RE/Z519c486+/vwjhBMBIeo8AItwHBz4+KN8xwm7
-         rwqLuLQRkC5xHbv/yLsdVH+leIgMj7MzkcrWCdsnksDleU6tVuOTaqZsz0YvNW7iqJLB
-         TJ3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777383140; x=1777987940;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3byBSOEgzWp/7f2Lr/jllR3/Q+AIHH06pprc3xCjkns=;
-        b=RAzPVp/eqJ7fExjRM5xFmYIMoJTw3OxckNksaukvHIV/uzjdsztQQscGKUQmmcTErH
-         lpYno7T++nZlD7FXSDknMW7UMaql+5Z4nIjh3CTdR7QDDBAqkmtSmfZXbBIa6JCmVRlA
-         gQ0WcLA07NOh056VkUqv+opt++XQjihP9aTaOsz3sRO6GoyDG23sAc9WdyO3Qi9ThhO1
-         HVW8Kb3DkdFoUB861rbwHfnAjDpUsqQXWcbZlNaK3wUzk/dukTC8BM15Ld9LyVD7/kfa
-         cUie+L0QVJSKVgWo9YJhViy3xyeuroOrzRZn5J5c6UX+6LRV1lJG4p50rpLzbh9JkcRh
-         A9zg==
-X-Gm-Message-State: AOJu0Yz/lAfX7y0y8F6omHWzFHCPY+DUj3akgWMiWlRD9lrsq9AZxnku
-	uYbaU2bHNirRTws2Ez9Xy71Cg1/Psu2BXb4VQq6oJ1avC0JcVRghnCOM
-X-Gm-Gg: AeBDievTYoMb5P6d0QcjKf/lHAxo0R4exQZTnCBsrWhDkrATIRKwL6bIncohoXE10ca
-	pNZgFf6p3x7pHSiG/SHZFoxTgDCJB4o5zW2b0XhCIInYirPdcAbYonsRJyJrp+s+URq/hOTwhbD
-	wxEQ+iNntHJfgr1sri9EPkblPEsVuypbb4aS6BCKtizkglbjQumweeR1X10k/Ieb+sUqB4HQ4cm
-	zDKb0esbE+9RzxG9V0ydopMfEInZvhZGUQZZCbJHilKVvqvf2evmBg0jOTSf9YQRSKfzfQG2MtD
-	ikWSCrPBaA55iuH7k/FGojyPZLvz1hmFA+M28eKjx/dUKQdbOHcy87L67Fqc3mAI1duMq1Yp32v
-	DSWMqqdi05EbK6R6GtxNnzAYXQjMSQUSBVKXah2IRzuLL9VFiO7AqNQ9KthmndDAdG5v+xTNGx3
-	4Nmn2JnWfLRS5arM7BWTIOS5sthQJvhBkf0H9jDlGC
-X-Received: by 2002:a05:6a00:1802:b0:82f:bd8:70eb with SMTP id d2e1a72fcca58-834ddb5b988mr3067266b3a.21.1777383139525;
-        Tue, 28 Apr 2026 06:32:19 -0700 (PDT)
-Received: from vini ([2401:4900:8fca:e7b6:f223:6319:a79e:7616])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834dae2027bsm2914609b3a.16.2026.04.28.06.32.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 06:32:19 -0700 (PDT)
-From: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	shuah@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vineet Agarwal <agarwal.vineet2006@gmail.com>
-Subject: [PATCH v4] selftests/mm: khugepaged: initialize file contents via mmap
-Date: Tue, 28 Apr 2026 19:01:38 +0530
-Message-ID: <20260428133138.88802-1-agarwal.vineet2006@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	imf28.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=bqtKGOP5;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf28.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 31D14C79E0;
+	Tue, 28 Apr 2026 13:41:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1777383692;
+	bh=V6dtIaTvbG8kHNlcuTrpQlv4YvEPbNRPpSEHmCm4a4E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bqtKGOP5PM05ry5CtpcM6JwZwXvsc1Nid+SzBNnvadJGEG1J3oIJQ2e/JH2DvC/X7
+	 z35tO8Di/OLbLYTVbK/Q6vHgtk5VnMYdP5kOtsQKGpafJg4OjuckiA35HaJmYRcA81
+	 xpvKLdkAWnDp/TfEbtkvN5YZ9TxcHv/KQ3t+00xY=
+Date: Tue, 28 Apr 2026 13:41:31 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: dan.j.williams@intel.com, Vlastimil Babka <vbabka@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 1/8] mm: use zone lock guard in
+ reserve_highatomic_pageblock()
+Message-ID: <afC5C6fylF4AsITV@shell.ilvokhin.com>
+References: <cover.1772811429.git.d@ilvokhin.com>
+ <cf489e5e79f5e9ba450111ee655d9924fe7a1620.1772811429.git.d@ilvokhin.com>
+ <20260306095336.a79fcc869a7f6d2b2e97501b@linux-foundation.org>
+ <20260306130052.7da8eab3@gandalf.local.home>
+ <ce0e53e4-52e2-4e56-889b-adb01ede6fe7@kernel.org>
+ <20260307131641.GX606826@noisy.programming.kicks-ass.net>
+ <aawxpQDPpqX2k5z8@shell.ilvokhin.com>
+ <20260309164516.GE606826@noisy.programming.kicks-ass.net>
+ <afCS4d4YccQFtvpi@shell.ilvokhin.com>
+ <20260428114721.GV3102624@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E4F3D180004
-X-Stat-Signature: m7311xykjawn1hupcfatxoeyhba7siku
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428114721.GV3102624@noisy.programming.kicks-ass.net>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 249CAC000D
+X-Stat-Signature: 3z9meuezbeigj96rrbp6hnyo619ngs5o
 X-Rspam-User: 
-X-HE-Tag: 1777383140-171466
-X-HE-Meta: U2FsdGVkX1/+SEzTswX/c2u1BNo0gELSL0rXkbpxzk4CgzQ0XqxrnVfDfoohpPlWcTlUPoeLI+NB+BLLQSySZUo/41mvy6jjRltLMcciid0MKmx/1S7AxiFI1pRV9ZFSSaVIZyhKIX6lJMzXrMw6QXMMk7p3PxBdPwoHq4PGE37VL+LhMXA7NG36Ok10aNrML3S5Ss0m4+VBwb9GvmJuXiEVhfwWIg2AdXea46og664Qh394Yl4jNA5kUev+sf+1ZJtQqB/2Kl6hf0wGa1ufV4xXL3UGEaiqd45g7AIFTbTyEygWcN5Ydd3PVX0Jg1cNxU4CkoeoTjZu1WHl8MyLs8s8rEF0dxhPkTKe3It+SaHGfZ9b+43RJH2/cweIUvnA/9ZXdO6ADuiDL+qhrqAgLfv1ahUguPcGWUIpXdo7/F48GrL1nErgxNdHIViduWDWKzH56YElDwEeZ1WaulX8fYhMykuNX51Ptx67QiMO9Un9TVyB1nVqKAa2pUC2WfPZvJxYSLPy396d22P1oXv2HB/VP2dIJBW7DYAqzRNf5nMN2VcxnQ2GpWHfgm7hugYh1YLkl3Od5VFLsQw0GpxnzlEGT8096z4+b9xxYlCcuxMbaKrSomE0qEmhmiS4P2+t4NoaBNka4LWW6X+Rseh+O09f7GymZ2OT7TYZzw1dmYH0xt+PekUpulxH0B7IVN0n7ndnYXctBMCgYg6SeZz1IlAfWdAQCoqdCou0I1xQxV7Txr4AdoU0NWI9ywSIB1zGPiqnho3UB5Uh/OVvDxgAipGyvoMqvFVXTc+2CqcFAhAa46KM8oD7LWZXs78mdS9QAl7yPuM3tZXrmpWhDeK+zwhpxAs3c+/lk+TCuql1/xVVPsaHY2weriZMza05cHcDdBg3LFbZyyl0BC380/+afhLasVo1O97JNpYfI9X0sdLnPmNGSjcwH3mGl7piZNl1Jdtd2O3lJcCrWuuobK5
- NptZwdaO
- FdytEQky8+oSgZ7DIEFI08uHViy0wMXOUjnEQQI2pjQmKh31361oyYSTKZo1Ort8Gw3RZjrKsZ60iIdnke1bDW+5awPVQWvP6oCuqjfL6PW3c9KP4tkFxsoe3Vt9JSJyoZvtT0qxmPPH6zXgLi/W6hwp18DtuP+Dx6mV6j5agwaIq1lXr/LT5+y4iz0kbwfpz9Fl+K/OuAEgqIVckIffSYym2b1L7v2MKwUe9bVV4FYH4nUGKQnJsH00CgXV6DRtt0kD68v9Zjt/ARIHsc60jga1MLEIe090CHxImrxGwtR+DO9DKhMhHL6TRXsXQmnxMnDcSIn1k1F84Hezz3DeSaqeVbkuqACAEi77Wrk1tvXuY4PnW7MwNEhppZVYBkCtIvZmXMp7iAQptvNTSIjZNrocaXFm1pGUgqsluXObMuVB8Pz0OpUaNUE0cPJh21IDI+7MW76IvqJxxd6vNN/yV3NtmAsTIN2PBUXN6HiCpY/ljf+cOeRARbSSBDZZ6BUzX33oG43Dm7/ba26ZQD6zbYAvK9M4sKlxfRIqWJ7NRR1pOBF8=
+X-HE-Tag: 1777383693-271130
+X-HE-Meta: U2FsdGVkX19AIEMIHsrunjBjxfgOYI2qBnJsrEtjAlqzmtjy79m85Px3w7/xTAI9W4tqDcUgLoIxCG6DYdayqkGF6zA6XO5YYrjtBUVuffdj8juXu8xQ+tbxJVfoiw4nC/DtSuGuJ5kPiyQJ+e/yaSmSgFxhU/quFxzLZa3uo/ckpGCQAvOjAWjTL/IJrG5ZU8PtZ1zlj0d+Z6qR2abQ/l1PkRIhgoWojFdDwQru4V8Aa/QkgoSzAPqrhzA+XAi4BeeoqgrAOxoVc7EvKe5tg7k8FuCbP5aeFXzQgeUzdVfXcAfeVPv40lJlKu7eODbSFvDjT3DfUBSAkvU6Nmi41FTBE+JTpPhJkpb7SpLM2q5xTQQPAgQlxeIMDgbxoqFDJtOcTiJpeznc9pOM5tSAfsQK2EZJDZWX5lDCY1XKZTmcHMSAybKxjXQl1gz97+6veX6jtsaM/iFtJE0JaSHZLwENnjifSvIPpaUglfiz/ZnLXPE2JQpKymIi3lOIY1KM1yimF05Ax1YOIjOf/JoExUZ1FpisYmMn927CmjKtryv9/kpRq9w6UdwXqC9jQ9ne2REdzQ0CrZuaZaaA/7qev8He008to1igt+FWUc2MQ7sMAvk3Yp6XEV5VCeaZAgfS5XkcuTO58BNG7gZlE/PTEpY03TnR/6S5TDedBho+wWO2PXG3slcG9wd/1Ga1bAtEFPactIxF+t6O3Osz7DI2JG7WEXvZMIg08pc1HmXnSxmp7AvqWKhRwwkvO+i+WM8pIGUlM6emImHRtXmhIT/AZxBVGSjUlO3ur7PybUAaJzUicIAdbPnjE08vWLgVjiukHWgqidsHAGIQfKACYWfKTFIQ73f3fY3ek2oESAdO5sc5osQf22bmU2+fvU2XEIAICeIofL/hpQQKtJTEhy/YiA7j00w4cbCZkjVEfgmns+w/AshfH0aNtc81gzj+FXwvyTU+CYvoM7SvKQdrK3J
+ 8AfSGeV+
+ pbUtm8ECmjYpU4Np8OD8PymMVXExNzJriw+iP+bjMXRgsL2Xa39agqcnv0S0Uu707AMk8niwR1qUgLqbpaKMmbkHL6QjIaUNrxK/PBvI5/IljdMv5JSPV1NRaYHl9Ov2vBA0w6uFKtZqhL2Y7xs1zmdaH0cv9OqlUDvQuULClajXtIkFYxNY+7K/IO1I0PA7mEKBssdVIQZOTEn52UtlSMbLOrtM/GBsS0/6cYZj78ReBVP+2k9b3FP2yHVhz6NFMZ2bJ/X9l3BnXjhVpCtBJvbRGRUeaTqlS2+yEYH+T/AOo6Xzixm8g3Nu0jaTErC/8FxsTRQkE6Ou5Wi3bUDgbgq6qT0qgkVQCjjLvsvp2H/DfCEA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,52 +107,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-file_setup_area() currently allocates anonymous memory, fills it,
-and writes it into the backing file used for collapse testing.
+On Tue, Apr 28, 2026 at 01:47:21PM +0200, Peter Zijlstra wrote:
+> On Tue, Apr 28, 2026 at 10:58:41AM +0000, Dmitry Ilvokhin wrote:
+> 
+> > I re-tested my original patchset after rebasing and can still reproduce
+> > the regression (though smaller). It appears to depend on compiler
+> > inlining decisions: in some cases the compiler is able to deduplicate
+> > the cleanup path across multiple return sites, while in others it is
+> > not.
+> 
+> I'm confused, all this has __always_inline on. And the compilers should
+> be able to track the assignment of the variable and eliminate the test
+> themselves if value-tracking excludes NULL.
 
-Instead of copying data through write(), resize the file with
-ftruncate(), map it directly with MAP_SHARED, and initialize the
-mapped area in place.
+I'd expect that too, but seems it is not the case. I was looking at this
+patchset rebased on top of the mm-stable build with GCC 16 with
+defconfig.
 
-This simplifies the setup path and avoids the need for explicit
-partial write handling.
+    https://lore.kernel.org/all/cover.1775654118.git.d@ilvokhin.com/
 
-Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
 
-v3 -> v4:
-  - Restore unrelated blank line removal
-  - Restore original close()/munmap() ordering
----
- tools/testing/selftests/mm/khugepaged.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+$ ./scripts/bloat-o-meter /tmp/bloat-gcc-16/page_alloc.o.before /tmp/bloat-gcc-16/page_alloc.o.after | grep -v UNIQUE
+add/remove: 24/24 grow/shrink: 2/1 up/down: 232/-193 (39)
+Function                                     old     new   delta
+free_pcppages_bulk                           577     601     +24
+free_pages_exact                             153     169     +16
+unreserve_highatomic_pageblock               608     607      -1
+Total: Before=42366, After=42405, chg +0.09%
 
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 3fe7ef04ac62..6e929a484a1b 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -381,9 +381,19 @@ static void *file_setup_area(int nr_hpages)
- 	}
- 
- 	size = nr_hpages * hpage_pmd_size;
--	p = alloc_mapping(nr_hpages);
-+	if (ftruncate(fd, size)) {
-+		perror("ftruncate()");
-+		close(fd);
-+		exit(EXIT_FAILURE);
-+	}
-+	p = mmap(BASE_ADDR, size, PROT_READ | PROT_WRITE,
-+		MAP_SHARED, fd, 0);
-+	if (p == MAP_FAILED || p != BASE_ADDR) {
-+		perror("mmap()");
-+		close(fd);
-+		exit(EXIT_FAILURE);
-+	}
- 	fill_memory(p, 0, size);
--	write(fd, p, size);
- 	close(fd);
- 	munmap(p, size);
- 	success("OK");
--- 
-2.54.0
+I looked at free_pcppages_bulk() generated code diff and got the
+following differences (only relevant parts).
 
+[...]
+
+- mov 0x20(%rsp),%r12
+- mov 0x28(%rsp),%r15
++ mov 0x20(%rsp),%r13
++ mov 0x28(%rsp),%r12
++ test %r13,%r13                       ; guard NULL branch
++ je 2ba6 <free_pcppages_bulk+0x246>
+
+[...]
+
+  add $0x30,%rsp
+- mov %r15,%rsi
+- mov %r12,%rdi
++ mov %r12,%rsi
++ mov %r13,%rdi
+  pop %rbx
+  pop %rbp
+  pop %r12
+  pop %r13
+  pop %r14
+  pop %r15
+- jmp 2b8b <free_pcppages_bulk+0x22b>
++ jmp 2b90 <free_pcppages_bulk+0x230>
+  mov $0x800,%eax
+  jmp 2af3 <free_pcppages_bulk+0x193>
+  mov 0x1c(%rsp),%edx
+  mov %ebp,%r14d
+  jmp 29ae <free_pcppages_bulk+0x4e>
+- data16 cs nopw 0x0(%rax,%rax,1)
++ add $0x30,%rsp                      ; epilogue is duplicated once again.
++ pop %rbx
++ pop %rbp
++ pop %r12
++ pop %r13
++ pop %r14
++ pop %r15
++ jmp 2bb9 <free_pcppages_bulk+0x259>
+
+So, NULL check is not eliminated and in addition compiler couldn't merge
+two almost identical epilogues here. I suspect the function calls
+between construction and destruction (e.g., __free_one_page()) prevent
+the compiler from proving .lock is non-NULL across the scope, but this
+is just speculation, I am not a compiler expert.
+
+> 
+> > Given that, I think we can go further than just removing
+> > __GUARD_IS_ERR(). It should be possible to eliminate this branch
+> > entirely and simplify the cleanup flow.
+> > 
+> >     https://lore.kernel.org/all/20260427165037.205337-1-d@ilvokhin.com/
+> > 
+> > Reposting here to increase visibility, as several people involved in
+> > this code have participated in this thread already.
+> > 
+> > Any feedback would be appreciated.
+> 
+> This would require very careful audit of all the current users, it's had
+> this behaviour from the start.
+
+My thinking process was the following: the constructor doesn't check for
+NULL either, so if something is passing NULL to begin with it should
+already crash in constructor not even reaching the destructor.
+
+The only case when we'd need the NULL check in the destructor is if
+something changes .lock to NULL after construction, but before
+destruction.
+
+This can't happen:
+
+- The guard infrastructure provides no API to clear a guard after
+  construction (no_free_ptr()/retain_ptr() only work with __free, not
+  guards).
+
+- guard() creates an anonymous variable via __UNIQUE_ID, so user code                                                   
+  can't reference it to modify .lock directly.
+
+- CLASS_INIT() is the only macro that allows bypassing the constructor,                                                 
+  but it is only used for fd_prepare in include/linux/file.h, not for
+  any lock guards.
+
+- Conditional (_try) variants have their own destructor via
+  EXTEND_CLASS_COND() that checks __GUARD_IS_ERR() and returns early
+  before reaching the base destructor. They are not affected by this
+  change.
 
