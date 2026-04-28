@@ -4,98 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C66FF8873
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 07:06:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90100FF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 07:11:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54BB56B008A; Tue, 28 Apr 2026 03:06:39 -0400 (EDT)
+	id E054F6B008C; Tue, 28 Apr 2026 03:11:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 523396B008C; Tue, 28 Apr 2026 03:06:39 -0400 (EDT)
+	id DB6686B0092; Tue, 28 Apr 2026 03:11:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4604C6B0092; Tue, 28 Apr 2026 03:06:39 -0400 (EDT)
+	id CA5776B0093; Tue, 28 Apr 2026 03:11:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 356246B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:06:39 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D37898BE5E
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:06:38 +0000 (UTC)
-X-FDA: 84707081676.08.4973CEC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 20EE320012
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:06:36 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YHP11C4p;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BB0816B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:11:29 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B76B1B95B1
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:11:29 +0000 (UTC)
+X-FDA: 84707093898.02.72F98AE
+Received: from mail-m82132.xmail.ntesmail.com (mail-m82132.xmail.ntesmail.com [156.224.82.132])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A4A06C0014
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:11:26 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf22.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.132 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777359997;
+	s=arc-20220608; t=1777360287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ugKPT3dFXN0JQbPmNQ4wIwkZSWZLGY/HgU+sxJALhB0=;
-	b=hQuWkw6xke+nMJ3Pt5r5700ttXESCZw00oTg9QkjmSb1QjePko0Ut8Av5U+wx2gXlILmRy
-	l+tAvhvIV1NdaFjo0qYq2bTHPrCyihKAZY5C2j1J4POv6sOEqyT9WxNqIwS2XjKhaxvRYb
-	In/gCFSG09KkWY87mJHrWA5W0pGHNPo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777359997; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=gceHwzJWqo2C4WNisjVj6YoHT6j8CbgtSe3Y2exj3zU=;
+	b=UBEHV9XffOG0IUl2UG5KN6KalCSnAm44n3M3O+kzYGDQ77BBB4rpzhdDPXhRn7vI+7KGQ5
+	nh9GU6g+IZTDNcpt8A5opphB+uzwwaEh74AY7Ztef8wF2TnXFQyMmzr4C1kOSXY5JejNXK
+	Zx6hdoMb7smvyKKEEandDue7oPbJh5k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777360287; a=rsa-sha256;
 	cv=none;
-	b=vhcVperDq19vsAKcevv6jUP2aQ0pXTlq1F855d29xk1FnqoXxgGAN+kKBvmp7rFMH9x+3d
-	xSy67FodSCeGz2DEJv+SQHuQcy6uqTMPL/eNrsHZOCpDBPBIwhV867q+301poq4qrOEsfn
-	deubW3uxsr5EmQsJK3Ug8ii2P640NYE=
+	b=u0oU4nhIXwHuxWtqLbc/ls2fQvrH7S2giiJtPzr0DUer4TTz3PVj6Rt6kY6pyqakNtvo06
+	EnOzQr7c1lC2UvOYzPXeh6vfsrJuDYIHuoFzIU1Z49Ymts69EvsZszOmSNsUSLYi4GQZ6U
+	nEM1vdcI96AZG4Ab36R5t5127nC1AmU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YHP11C4p;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A87A41AF5;
-	Tue, 28 Apr 2026 07:06:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6B5C2BCB6;
-	Tue, 28 Apr 2026 07:06:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777359996;
-	bh=AmZrrVrVvG/hI74hQkTxsZH0QSUjw9p1a/uNen2G+Ek=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YHP11C4pRdasJf8eSkFixOJZscPHF3WGc1114N0tgEsBPJ41Xd0z6h9TjAFYnbvJM
-	 6y8Wf+ohZ5wiNa0HQkT7ae1lo345jSHffVXCEOCCoRBCT5GpReFRA9X1M71HtFJvif
-	 P17JyJzUyh8L8A2gSfyGDFLC0cOB+EAkIBe4ctFiXmd7ySQsCFQ0tPNHTyjQqHyvSE
-	 QC+Dn3CN1GUu2FBGysCWCgwEC5OV9JpLUbiC9jdgbFEEtkzn24mKdzqu86utR2iMkO
-	 PMRH5C3TOy9b/2AdjexXKjybnzLB5eFGdshOg490dVsPabUWLRggSLBL6eWPkkuC+6
-	 5D2C2UsDkrI0w==
-Date: Tue, 28 Apr 2026 09:06:26 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/49] mm: move subsection_map_init() into sparse_init()
-Message-ID: <afBcckUTQt-7xPPN@kernel.org>
-References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-11-songmuchun@bytedance.com>
+	imf22.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf22.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.132 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from localhost.localdomain (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 197b492f0;
+	Tue, 28 Apr 2026 15:11:21 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>
+Subject: [PATCH v3 0/4] mm/page_owner: add filter infrastructure for print_mode and NUMA filtering
+Date: Tue, 28 Apr 2026 15:11:08 +0800
+Message-Id: <20260428071112.1420380-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260405125240.2558577-11-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 20EE320012
-X-Stat-Signature: dq5tbjfhp4ptrddhddkfydwu6hyjupm7
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9dd2ed9f030229kunmb0c223f1156eed
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCGEtMVkoaSB9KSx0ZSBgdQlYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
+	lPT09IVUpLS1VKQktLWQY+
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A4A06C0014
 X-Rspam-User: 
-X-HE-Tag: 1777359996-631764
-X-HE-Meta: U2FsdGVkX18ARpzSZjfMVR9Qgx5BI4TmyzFFJDk0J8lhTdT1vJ2SyMClcz9X/KI+OJC7X5sUh6VKjTslZHwpFyAbxmHjEQX7smQGyT8XRGK3qoi9wt5L986p4jl8PqP6gtuDKUCkwOP98Xhv4DMmJCGKezLcgLbwXk7bxzaM7lh1uE6HfcKUQCEmrmhXEVldT3H+iGuUyu+admcDGpD+HmnT3+fBm3OaQkjZFU1rSX/k+TrnnC/HhYtBPdlD7FuxChlzGleJVq2TsuLQgkcTbvO4dYH28QHBGsTAdMWN3cf0KSCR/7ycXP2JxJhZiSPQ4iuE1Pr3U0mCl19jCdPn2vFCSclii/VcHArr29XFpGf49ddtNxGcgo22vknMyl8hMJsqR9R2kT7fYPKH3HnIp9sPcOWMAof7Yh/3v2imJ1/LBWqyTXzxkrNcmYxsQvgO/ahF4xx3mV/EYArdUTCafbVO28fKcvvS581Xe/j2hEfQyTdmxhFPWV/mI4BsQtz74snjuLnl9XKhLQHqsmjHE8GQq+CNkzqdFsrgj/auLvuv9Jl49ovcCJrm+cJYOuubvW06hmFXeo9C2WJcwimxfVTaNBEPMcTz4ct3MoOfdyMt6BkTgRlFy7NawKV022UyHMxcqc0JcQkdXN5C+m82QESzTqY0KuQMW7ZizvDcgnwNk9YbJFptFd9oD1vgL52xfahxIUg6x/xqEuW3Dz4b0TBy41Y3rtO02nkTvcMTctUN3yBmZzlAvrKLvRbUGrYlh5kqrj94gOcifcPFMgbcAzFjzMuiS1GPMduvwdPWTRHjah+BniK5FLfoA6K0P+BXOMrQZFAa6/mEO4Bbbh25sF/x5DOwAcaOcy6/+Q6kQgTfNBBijgFcY1mkZVWx+JE0/AiMKephLEeeksh5Gypo8SsLlnjaLdAveXM0VYqyjWsH5VDxj+Xg0erSRHxgsv7Ej4BieRPk6EizElwigIG
- AcnjGKQc
- TCQpmRRbM5IHA+X/1m1UjawEBEgaQWk8ORCfHwSkDJ3v3VloYy/yYV+GIWgxGMPCCljkziR1JAklsrgnhUAynebBmt4N2tkDUskestUTvXWDIVD8ZJ5vD70pQeNmu30Q60G+puM96zzPH8dpAOCdTQRfwAb9kdkAFP+L0fmDmWob3DcutrbrnKtJxVJlE9689/g8DZIndVugVjSJz0l4bFGszENlmhYk5hLTkkaAUKKvBMOuO+k4Q7k8ss6FBtAKbqAK2r3zcP/eBCiZ/3ECLbOiyyEmL8C+UxJDgpLVB4SGR/Xt8KdaRtN9McA==
+X-Stat-Signature: sp3yztgsek6iwumupmbam939tez47zp8
+X-HE-Tag: 1777360286-433687
+X-HE-Meta: U2FsdGVkX1+TJXUPEfKs434Mw84DCta8VK1Wu7MDBezExAm6P/YfrW7PZIrQlxMm09o+FcsShFuvWiwxPEpSNb5Qtw4mSkfcRMf/VgXBf5Pl2JEpGsmFHwTcqebGqOlWdcvPyeni1Z1rm49cJkss81HkdwXvzdYhhk0x80c7NNjyOGROgeGw1bpm9Qt8ZD3gWtZMJlV4nkqiwxivzNUyDUiMGTbKuH4nGzXJxRjBCpDk6rkPmxklcq7tMGoA7tpUSswDQVTYDY8Ye5qdDP/bT7jlvUOQUQ4VyItT3EQQkvU25VecPjJQ4bucWRfSuSDSIuE/ewXp80+8QY2hIhW5kjk9QtecbhZDUNzbdBoXNlPyI1OSb4rTX84/OdpwPuYodB0zf9eTDVO9t9QcX833HlhxjaVIO2CMPqJwKJus1+tyFZMK1YzXer9+gqXrSRtiFBimMMai9GapVHU3vvbg/2H9p+WjXZ8OxkT1dp1wMyuLQNUnwExhLYW4BfAHrUmsCQO95ew489C0KAlrwzHrs5Qx+y+ptIb8/g+paaakKaWkYt2QcLWISLKQxMRHWzCfy4m8QpoawNTFX/vmRN10+h3pNFpVUY2d8GyQD086gKmzrQ8GqKyZiiWtAyg5XpdBUhR9cC+cA/XA6Qx7I6YZNr81amSH1NCYGFZOqWbsQS9LSfds38dJrkaiEBvneoLBV8n4XG1Dc8CJVMBRJyjC26PckRXSchlu6xdurzeYjjrYityaivIH+gD4/sczEQZAu3/TCRiEJAAyUobp3HmLK/EKTyhpk7DBCLPmj4OwlBvE9EUSSq8iasFaKG3QyNocM9Z0YlhdUSNEPesgQjfKDX/8iBylYqClhKnbB2KaCI1PqkYQq1QdPxx7ryO/E2Jy8zsyoMe0l2RwtcdSoQc8GcYQhzypclMNjyhBodogmeoe8fWezZp3F2/qUlgyf+8uYwo1Cg/yZm1eMP6GfTv
+ BBbQw9lm
+ Fqoh4NTVx9xPOCA3v5ehFBKWAi3TAbkbw4dtZrOenyjS6trOQYb1Xnctkf6dQZK0/uhNZHz3yAG/CUFIzvK/OaGRqRxmG4+8INr9AP2rXC5Vu38aizyiRGeR8rhISLy1JqX/9A6DspJApM8E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,113 +88,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 05, 2026 at 08:52:01PM +0800, Muchun Song wrote:
-> Move the initialization of the subsection map from free_area_init()
-> into sparse_init(). This encapsulates the logic within the sparse
-> memory initialization code.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+This patch series introduces filtering capabilities to the page_owner
+feature to address storage and performance challenges in production
+environments.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Changes from v2:
+- Remove READ_ONCE/WRITE_ONCE for nodemask_t (fixes compilation errors)
+  * nodemask_t is a large structure (128 bytes) that triggers compile-time asserts
+  * Direct assignment is safe for this use case
+- Add comment explaining input length calculation formula
+  * 6 bytes = ",NNNNN" (comma + 5-digit node number)
+- Simplify "-1" check using kstrtoint() instead of dual strcmp()
+- Move nodemask_t mask read outside PFN iteration loop for performance
+  * Avoids 128-byte structure copy on each iteration
+- Add documentation for filter features (patch 4/4)
 
-> ---
->  mm/internal.h       |  5 ++---
->  mm/mm_init.c        | 10 ++--------
->  mm/sparse-vmemmap.c | 11 ++++++++++-
->  mm/sparse.c         |  1 +
->  4 files changed, 15 insertions(+), 12 deletions(-)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index edb1c04d0617..d70075d0e788 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1004,10 +1004,9 @@ static inline void sparse_init(void) {}
->   * mm/sparse-vmemmap.c
->   */
->  #ifdef CONFIG_SPARSEMEM_VMEMMAP
-> -void sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages);
-> +void sparse_init_subsection_map(void);
->  #else
-> -static inline void sparse_init_subsection_map(unsigned long pfn,
-> -		unsigned long nr_pages)
-> +static inline void sparse_init_subsection_map(void)
->  {
->  }
->  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+Changes from v1:
+- Renamed 'compact' to 'print_mode' with enum type for better clarity
+  * PAGE_OWNER_PRINT_FULL_STACK (0): print full stack traces
+  * PAGE_OWNER_PRINT_STACK_HANDLE (1): print only stack handles
+- Changed NUMA filter from single node to nodelist with bitmask support
+  * Uses nodelist_parse() to support "0", "0,2", "0-3", "0,2-4,7" formats
+  * Uses nodemask_t internally for efficient multi-node filtering
+  * Output uses %*pbl format (e.g., "0-2", "0,2-4,7")
+- Improved memory handling in nid_filter_write using dynamic allocation
+  * Limit: (100 + 6 * MAX_NUMNODES) to handle worst-case input
 
-I side note: we might want to split out mm/sparse.h and also move some
-declarations from include/linux/mmzone.h there.
+These changes address feedback from v2 review:
+- AI review tool (sashiko.dev) identified READ_ONCE/WRITE_ONCE issue with nodemask_t
+- Andrew Morton requested documentation for filter features
+- Input length calculation justification
+- Code simplification using kstrtoint()
+- Performance optimization for mask read
 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index a92c5053f63d..5ca4503e7622 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1857,18 +1857,12 @@ static void __init free_area_init(void)
->  			       (u64)zone_movable_pfn[i] << PAGE_SHIFT);
->  	}
->  
-> -	/*
-> -	 * Print out the early node map, and initialize the
-> -	 * subsection-map relative to active online memory ranges to
-> -	 * enable future "sub-section" extensions of the memory map.
-> -	 */
-> +	/* Print out the early node map. */
->  	pr_info("Early memory node ranges\n");
-> -	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
-> +	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid)
->  		pr_info("  node %3d: [mem %#018Lx-%#018Lx]\n", nid,
->  			(u64)start_pfn << PAGE_SHIFT,
->  			((u64)end_pfn << PAGE_SHIFT) - 1);
-> -		sparse_init_subsection_map(start_pfn, end_pfn - start_pfn);
-> -	}
->  
->  	/* Initialise every node */
->  	mminit_verify_pageflags_layout();
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 0ee03db0b22f..b7201c235419 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -603,7 +603,7 @@ static void subsection_mask_set(unsigned long *map, unsigned long pfn,
->  	bitmap_set(map, idx, end - idx + 1);
->  }
->  
-> -void __init sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages)
-> +static void __init sparse_init_subsection_map_range(unsigned long pfn, unsigned long nr_pages)
->  {
->  	int end_sec_nr = pfn_to_section_nr(pfn + nr_pages - 1);
->  	unsigned long nr, start_sec_nr = pfn_to_section_nr(pfn);
-> @@ -626,6 +626,15 @@ void __init sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages
->  	}
->  }
->  
-> +void __init sparse_init_subsection_map(void)
-> +{
-> +	int i, nid;
-> +	unsigned long start, end;
-> +
-> +	for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, &nid)
-> +		sparse_init_subsection_map_range(start, end - start);
-> +}
-> +
->  #ifdef CONFIG_MEMORY_HOTPLUG
->  
->  /* Mark all memory sections within the pfn range as online */
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index 5c12b979a618..c7f91dc2e5b5 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -424,5 +424,6 @@ void __init sparse_init(void)
->  	}
->  	/* cover the last node */
->  	sparse_init_nid(nid_begin, pnum_begin, pnum_end, map_count);
-> +	sparse_init_subsection_map();
->  	vmemmap_populate_print_last();
->  }
-> -- 
-> 2.20.1
-> 
+Problem Statement
+=================
 
--- 
-Sincerely yours,
-Mike.
+In production environments with large memory configurations (e.g., 250GB+),
+collecting page_owner information often results in files ranging from
+several gigabytes to over 10GB. This creates significant challenges:
+
+1. Storage pressure on production systems
+2. Difficulty transferring large files from production environments
+3. Post-processing overhead with tools/mm/page_owner_sort.c
+
+The primary contributor to file size is redundant stack trace
+information. While the kernel already deduplicates stacks via
+stackdepot, page_owner retrieves and stores full stack traces for
+each page, only to deduplicate them again during post-processing.
+
+Additionally, in NUMA-aware environments (e.g., DPDK-based cloud
+deployments where QEMU processes are bound to specific NUMA nodes),
+OOM events are often node-specific rather than system-wide.
+Currently, page_owner cannot filter by NUMA node, forcing users to
+collect and analyze data for all nodes.
+
+Solution
+========
+
+This patch series introduces a flexible filter infrastructure with
+two initial filters:
+
+1. **Print Mode Filter**: Outputs only stack handles instead of
+   full stack traces. The handle-to-stack mapping can be retrieved
+   from the existing show_stacks_handles interface. This dramatically
+   reduces output size while preserving all allocation metadata.
+
+2. **NUMA Node Filter**: Allows filtering pages by specific NUMA node(s)
+   using flexible nodelist format, enabling targeted analysis of memory
+   issues in NUMA-aware deployments.
+
+Implementation
+==============
+
+The series is structured as follows:
+
+- Patch 1: Add filter infrastructure (data structures and
+  debugfs directory)
+- Patch 2: Implement print_mode filter
+- Patch 3: Implement NUMA node filter with nodelist support
+- Patch 4: Document filter features
+
+Usage Example
+=============
+
+Enable print_mode and filter for NUMA nodes 0,2-3:
+
+    # cd /sys/kernel/debug/page_owner_filter/
+    # echo 1 > print_mode
+    # echo "0,2-3" > nid
+    # cat /sys/kernel/debug/page_owner > page_owner.txt
+
+Sample print_mode output (showing handles only):
+
+    Page allocated via order 0, mask 0x0(), pid 0, tgid 0 (swapper),
+    ts 0 ns PFN 0x40000 type Unmovable Block 512 type Unmovable
+    Flags 0x3fffe0000000000(node=0|zone=0|lastcpupid=0x1ffff)
+    handle: 1048577
+
+    Page allocated via order 0, mask 0x252000(__GFP_NOWARN|
+    __GFP_NORETRY|__GFP_COMP|__GFP_THISNODE), pid 0, tgid 0 (swapper),
+    ts 0 ns PFN 0x40002 type Unmovable Block 512 type Unmovable
+    Flags 0x23fffe0000000200(workingset|node=0|zone=0|lastcpupid=0x1ffff)
+    handle: 1048577
+
+Testing
+=======
+
+Tested on a system with multiple NUMA nodes. Verified that:
+- Filters work independently and in combination
+- Print_mode output correlates correctly with show_stacks_handles
+- Default behavior (filters disabled) remains unchanged
+- NUMA filter works with single node, multiple nodes, and ranges
+- Code compiles without warnings or errors (allmodconfig tested)
+
+Example test session:
+    # cat print_mode
+    0
+    # echo "0,1-2" > nid
+    # cat nid
+    0-2
+    # echo "0,2-3" > nid
+    # cat nid
+    0,2-3
+    # echo 1 > print_mode
+    # head -n 100 /sys/kernel/debug/page_owner
+    [Shows compact mode output with handles only]
+
+Future Enhancements
+===================
+
+The filter infrastructure is designed to be extensible. Potential
+future filters could include:
+- PID/TGID filtering
+- Time range filtering (allocation timestamp windows)
+- GFP flag filtering
+- Migration type filtering
+
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+
+Zhen Ni (4):
+  mm/page_owner: add filter infrastructure
+  mm/page_owner: add print_mode filter
+  mm/page_owner: add NUMA node filter with nodelist support
+  mm/page_owner: document page_owner filter features
+
+ Documentation/mm/page_owner.rst |  55 +++++++++++++-
+ mm/page_owner.c                 | 130 +++++++++++++++++++++++++++++++-
+ 2 files changed, 182 insertions(+), 3 deletions(-)
+
+--
+2.20.1
 
