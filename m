@@ -4,93 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A73F8FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 14:16:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C461EFF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 14:21:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 208526B0093; Tue, 28 Apr 2026 10:16:57 -0400 (EDT)
+	id 1255F6B0093; Tue, 28 Apr 2026 10:21:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DF986B0095; Tue, 28 Apr 2026 10:16:57 -0400 (EDT)
+	id 0D7256B0095; Tue, 28 Apr 2026 10:21:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11D866B0096; Tue, 28 Apr 2026 10:16:57 -0400 (EDT)
+	id F07736B0096; Tue, 28 Apr 2026 10:21:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 011556B0093
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:16:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBE4EC053D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:16:56 +0000 (UTC)
-X-FDA: 84708166032.10.0248C49
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E2C754000A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:16:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=N9PsyVWZ;
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E01EB6B0093
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:21:45 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E268A0199
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:21:45 +0000 (UTC)
+X-FDA: 84708178170.29.722911F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9ACF316000C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:21:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c9H9FwcE;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777385814;
+	s=arc-20220608; t=1777386103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=drgZBvdgFovUmyn0F4YsFW+A4FlyUejDfNRWxc71Yvs=;
-	b=w4vQ5DJlIP4P0sV+B6fYQkXU1Ez+i2elUhFwUry3xtu7MGvIdj62IlHIxOBUhBFaWlXPof
-	k9hKXSwT2F/I4AOn3qxTCiOKdMcThzXIUJZhaselTEQhGTFsffe8YLajrsoVOGSqd91cn7
-	FUjpiz+TjVzGkdQ1ZIN4uuJizczRE2A=
+	bh=ET8/NknTsJHtlMuALnNbw/uEqBaIhaD5BUUYg26v3ks=;
+	b=vfrOXfltiDWZzqrCmQDwl1BPFEln3Grls3+6ODRBGO7IVoXg0MpCmKhwye0e54DnJAzxbW
+	iiN9lkFDr9+R+Jf5EKdhwYo9kajUXvEwLc6gLPm+G8vJMCT5ZXwfIuy0/kOFzI6IU4xwc5
+	LQ+o1iMTMkAWD8tkk5idXngTarTUbOA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=N9PsyVWZ;
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777385814; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c9H9FwcE;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777386103; a=rsa-sha256;
 	cv=none;
-	b=L8KFiuuCIHiixf8uRWr+gctITZRZSPU03ikP6WAiQo6utw8TFqRgRFr0b7/cadjkS5vUyO
-	ka0rZIcMwlNmkreIDzldmYEpfyqUw94rYyQhCaK+su5oA8ZPfaUyuG1bxPbRmnydNMiVwW
-	5Uw8Nm/dvvqKb+owyAA/64051mJCWr4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B03D15A1;
-	Tue, 28 Apr 2026 07:16:47 -0700 (PDT)
-Received: from [10.57.63.26] (unknown [10.57.63.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B3763F763;
-	Tue, 28 Apr 2026 07:16:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777385812; bh=oVrjIdlZ5Ebhd/IWkU1FIsmJ7nMiw5cvbtJC65flWy8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=N9PsyVWZb9ZJ4M1SqH3xQYLnoSiZIX8Z3lJsZWaSwJBJW9JuJqRJAqdYLmCJDIOoE
-	 +6rp3bcWLVPNuxuJnN1AV3qfoMKZVRHdgluQweWZSdfqaUSNbDYhKI/zxfpTj6tJ8j
-	 FWC1eGlcCi1Fw2SoBRVyxLOvdlknS60k/xbkGuLA=
-Message-ID: <802ca264-a849-4c66-a27c-db6fa9915711@arm.com>
-Date: Tue, 28 Apr 2026 16:16:46 +0200
+	b=fPKYU8QKQNUx86HPEOz+g+cKjxBQynh0dUUISmoVQCsAurqZcWdA6tUoss/d7/oalJbRRD
+	c/Guu+snRT9L4N1DYtjCJqV5Ic4s3Vq7c9xqBqh0RonD5w5luYQmGLuPgaW0m2EZ6L1yGo
+	NQXaPnzexPUelEwTAN30bwpws7EGxxI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8BC7542AB1;
+	Tue, 28 Apr 2026 14:21:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B87C2BCB5;
+	Tue, 28 Apr 2026 14:21:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777386102;
+	bh=zYVr8VjRbDUPgxlcymb8HZk4CGyioa94jSwOemrqBLw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=c9H9FwcEdAxOnQCSMarBmTDc8SNRisq4zOckB6tC4rJsL32rMdeoCFb/DZnNAKLs3
+	 GBOCYFnN9wmzc98CPsH2+6m8W8qWk9PpdOwSTk3D6s1vhKAOo/R6xh2XvaqNZinC4h
+	 CKJG+XOcIifLl20IEDbA31eNEkA3Tboj8sr8+1BwClljDiBm/+4/tP16ClJvQJ2rIM
+	 2IJYOrAJqVP8VGP4tJl1f70OJs/m3dAYSb/xtuzDSr1prt9xtcVOdh3Y7TU/NEmZpc
+	 66geo97S8vgKEhMo3mRA1cQyZnt3lBlM0+s4D7VqfRYmQ5npGc87zORxeEF/oA5s+H
+	 KpmKolqt3iZ/w==
+From: SeongJae Park <sj@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Cheng-Han Wu <hank20010209@gmail.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 2/4] Docs/admin-guide/mm/damon: fix 'parametrs' typo
+Date: Tue, 28 Apr 2026 07:21:31 -0700
+Message-ID: <20260428142132.125055-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <4b36424f-218d-46eb-88d2-a25f146fb792@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/15] mm: Make empty_zero_page __ro_after_init
-To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
- mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
- Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-19-ardb+git@google.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260427153416.2103979-19-ardb+git@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E2C754000A
-X-Stat-Signature: 8atgi3ipugyg61udf59be4jei64u3685
-X-HE-Tag: 1777385813-537234
-X-HE-Meta: U2FsdGVkX1+OO41Ce+7Fg3vk+7bpZolzjKYOiiZKSMshPPCrrMW4orD3erCG7ZRDaK6EH0gKIIoH5nshF0rKK5uVsSWwfgE7J4lC12QlGcvT7U8O/TqDHz3LD4246mCuDA9r1BZrzbhJyDg9KDsALl4wsa8Cet14t8xDbD4JfGPoTIkTqEJXPzV5f55LSRWY+EJFvJ2kL2l1mVMXO9J4/prWUfZKBlx5iIbb6kO97gUu9pIsNmQc50jWJzbfMINOvVQ4bWXhNmfQ/WkDPX7p5eN1g2g636F1auhwRIYVY67WP+FuAdzgWjd7/ayEcqn1dskyyon0VO4a385Xjvh7yGmGnUPpzhKPCLodDUnqqLUgVTgLPgRhOCCf0UciDdVKQAVAo+Ie2tQNaIPYMA4HNggulWXYWzpfanWwWTTIllQGZ3uB/PJr6OMmeyj+SJBC5ynpx1eLXDy0x4B3R7YA8NX0+LOsixyHSpAbo004JrGfJ0YFHihyIlG+oKHaSH8zOa65ZuhX6HlcqCt/kNN6zOt2mkofSgch5gQIiYZx0tUASFYKgVwjOaUynSqsD7BNnSRos2mLFVYXzgzBUU2dFJvVSYR9Omx14BaFDezGyoFdI03NfNkYwAP2CwngXu6DBAuIiAy4ircIVGKSGps8PJIbU6k5JxEVyD+O+CmA1HLBZq+n8EbvDMmHBzF9W4M8vMQvnS6YVfGPzZc3JVuWw9y3lIlQIHz79pqg7MHV/ojZUVe7AQNMsCpXOULfdKkMLgKdrDdHB2PJuidW6j6HmkAHIMxBVhPWlkIi2NonTdpNi/NFHeQZeY6VY74XBeeN8zRM/+syWDHiodJ/fTfojnCh3jBPohXNeCYUPsEx1nVMVeSfi9H6cYZ+GyB/kfz/h2OXGYPIjf/e7aEZeVtbqa2OPDC+MUnrM7PlXDvaa5K/ROlz3i+Z7sNvu74EbTd8mU212trYomzy0JUACaE
- Y+mtgSek
- bitU/enzvsOaS12LuxIgyPsll+7uVuFxyr5hrsDfN0DfgAd4MmY0+7HMBLaCWU/OKFdHfYVH5HMIk0uVwqboNnI+7P/hTwLTNCUuuv/69FFSEPGzEw+/lTC476Dd9RNnv82432NB/9aNBmj72t1ppFhfSLnmQH6FTNpHn1QnrVJMiAj8SwR0mZqVy2RQBXbgfAv7qZ+gd0q2BWnLEAJqP5NUqhy17IDfjED1BwssXPFEbLG4rfAaPQOy2127TDr6G4+anZbw2cExJ5jvtP4JZX2ehfKt3c1B3J1SIXSDxXf1R0/HjQlVjMUQNzLrcyFm93MVAlbH1Qp+sw52Ox3De1pG2aYcQtte6ILXGktg/hLIOONGZK+X59ugF8fRRSThrzpkbd+iRK9xBzLE0u6XEf+briOYXFqvnagaQs2HCj9UyaHZcG/uN4TxO3w==
+X-Rspamd-Queue-Id: 9ACF316000C
+X-Stat-Signature: gm8c7mdkk3q1mm7b3wuhe8kzx1gmwmyf
+X-HE-Tag: 1777386103-778736
+X-HE-Meta: U2FsdGVkX18n0IKqJaqEVZp0UNu7Wpl+N2OvFU5dS+dE6y5HhmT3VKRFkVkG0sNOvtoGCwmNaPEhVwlIOBi2g1KRL680Iq5nmkMlVSNDFgg32i1aIweoSkEixdON/oVjNIViUPCXMEDZzRru8wDi0l2IWtz6GOcbnzzHdMOtkOks/bQOntfFI7t/8uX6uwK6qrQmRcLiDH5uFZ4tSqaBkK8LssWNd29rvCHqMEPpqTBtXOsqF40Lk2+PXsFbiYRTb3bG/sjkozO0tnyJ/TYQPmSS+e0CFLnTHJDvt0+SNzsriWPOu/9GI5BQcYE4c9b71CROLTpjcV845ZE5r166UOnlkUGYLr7wfW5iSzM+QRmiI9BJH8UDK/8ppKnML30aPnsE+jWXV7a7Ude5rhae5YsGPYWQ++WYUFQL8EQIa09LtI+pxgRVrbcjiB7u2UaLpwYdvPjekiioAiORN+LG6iOTzn1lABIerIpGJwHUXWa5BPbhOo3XoM786ekXehqXAeumO/Z3Xs0oSMQih8cMl+j5Kp/Eze3PCOO0yvuUgIfS+z+88T2jxFOVKPhUJJVOGGL/wnRGiIlo6LWOeqGHDuJdtIkNmPBdkuSm6oGNQ6HKYI32cNMqFCuEHVhhrTnMD78fvnHPpm9fZ/gs1+LnEnM4PxbmBZ7/aVzTeXP2bVDOn0L7iFV471UqxbbZiMYaFj0hY1sCbZut0Rv1tW401FaHe8RNgemMlkfP6Hgdi2HFxSLpFY+zn9hCUNM5a38etWtH3MhValncFkI3KE7ot1crgX7wYlCObo7y5TBAlSWis4gVRr9WvFxjYohVXlMOoKGDgmRGRm2iPeO2EI1PV2ou7DiFSdXYnhnxbOpRGUXQOEigc+nEQmnz3PmtYVxMz3nLMW62MJyu4wjZ99PfhEtTFDgQq1k9Fcl+mjknSxHANiOfXPGp6GM28Y00mcvsUjRxkF+dwCVndgV8qM8
+ 3fp3DLFH
+ sEALrcdb3v1dLUhsTGgXOvGijVnNKmdWe9FZAJpDPA362NlpR+ul/eNg8PvlaKEiJe+9kB2qs2hfsQGh/nf9JXGv/J4lOCz2JB84U6QcwCwLtO64Ig5rHqn/KblDMMvdGwI9l6NoB+I+5hEqkKvzBR4FFsU+6KGmScdb2ilZ0QPSMo7JnsdiMQIdlY1XtwFvyqDybfUC827/RmBk+eMjYiTjd5XoUKR/RfEhsQ1C31uKa3w8lAYmqqHncraQntmaVaWUv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,38 +103,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27/04/2026 17:34, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
->
-> The empty zero page is used to back any kernel or user space mapping
-> that is supposed to remain cleared, and so the page itself is never
-> supposed to be modified.
->
-> So make it __ro_after_init rather than __page_aligned_bss: on most
-> architectures, this ensures that both the kernel's mapping of it and any
-> aliases that are accessible via the kernel direct (linear) map are
-> mapped read-only, and cannot be used (inadvertently or maliciously) to
-> corrupt the contents of the zero page.
->
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+On Tue, 28 Apr 2026 09:38:02 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
 
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> On 4/28/26 01:39, SeongJae Park wrote:
+> > On Sun, 26 Apr 2026 16:16:15 -0700 SeongJae Park <sj@kernel.org> wrote:
+> > 
+> >> From: Cheng-Han Wu <hank20010209@gmail.com>
+> >> 
+> >> Fix the misspelling of "parametrs" as "parameters" in
+> >> reclaim.rst and lru_sort.rst.
+> >> 
+> >> Signed-off-by: Cheng-Han Wu <hank20010209@gmail.com>
+> > 
+> > Oops, I forgot adding my Reviewed-by: tag.
+> > 
+> > Reviewed-by: SeongJae Park <sj@kernel.org>
+> > 
+> > Andrew, could you please add the above my Reviewed-by: tag?
+> 
+> Since you were sending that patch along in you series, there was (as it
+> must) already your S-o-b tag and that's stronger responsibility than a
+> Reviewed-by, so it's redundant to add it :)
 
-> ---
->  mm/mm_init.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index f9f8e1af921c..6ca01ed2a5a4 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -57,7 +57,7 @@ unsigned long zero_page_pfn __ro_after_init;
->  EXPORT_SYMBOL(zero_page_pfn);
->  
->  #ifndef __HAVE_COLOR_ZERO_PAGE
-> -uint8_t empty_zero_page[PAGE_SIZE] __page_aligned_bss;
-> +uint8_t empty_zero_page[PAGE_SIZE] __ro_after_init __aligned(PAGE_SIZE);
->  EXPORT_SYMBOL(empty_zero_page);
->  
->  struct page *__zero_page __ro_after_init;
+You are right.  But, not having R-b tags that I provided on the review stage of
+patches gone makes me feel odd and bit confusing.  Also I made a weird tool for
+checking DAMON patch review status that doesn't understand this situation
+well...  Maybe I should fix my brain and tool, but if it doesn't bother Andrew,
+I'd still hope to have the R-b tags on the patches.
+
+
+Thanks,
+SJ
+
+[...]
 
