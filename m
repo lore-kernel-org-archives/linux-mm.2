@@ -4,159 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1374BFF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:23:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F8AFF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:42:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D6046B0005; Tue, 28 Apr 2026 16:23:27 -0400 (EDT)
+	id 6BA926B0005; Tue, 28 Apr 2026 16:42:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AD3E6B008A; Tue, 28 Apr 2026 16:23:27 -0400 (EDT)
+	id 66B396B008A; Tue, 28 Apr 2026 16:42:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 675EE6B008C; Tue, 28 Apr 2026 16:23:27 -0400 (EDT)
+	id 55A966B008C; Tue, 28 Apr 2026 16:42:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 56E136B0005
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:23:27 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 17AC212022A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:23:27 +0000 (UTC)
-X-FDA: 84709089654.04.5E61D66
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012070.outbound.protection.outlook.com [52.101.43.70])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4192A40002
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:23:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HsBZ81al;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777407804;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 419C86B0005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:42:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DBDD7120210
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:42:53 +0000 (UTC)
+X-FDA: 84709138626.07.4EBEA2A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 578204000E
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:42:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AxxsxWOC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777408972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fh5tEkbivEcdfgpPAvLSDyqAHzNlQDUORSP5a8hME7I=;
-	b=SouOR+v6LHTgAANr+qeSDFdYN18g+XFZVica1X9hVNQqpYFFqnwJlvz8smpCf7MPKNwv1l
-	af81cQHnvfVuRd+Fk5P9+aYpI8+YZKIW0cZBkdiSrviPykQ1i/i71JXAvSVPo4N+iTx/JS
-	1ChyZURXC52XZtT1RgSXjivo+b9hMBY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777407804; a=rsa-sha256;
-	cv=pass;
-	b=Gi+SzzRNw53z908sg0F73VpJ6zp2/U1mxLXnEFefd6UnQ9pNs1FCgEDB1Slx7RYHDvfy8b
-	4dXMd4+vcEt0Kee6osisuKGP9X9kWwZusqWM+JlshZta0OM+k3Kjz8oYiuxF2wFm2QAYzH
-	nWuo9GKr1HbP0bBV0lq/PkjGGHjfufM=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HsBZ81al;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dewtJuYTyO4dAFh22RWEUmS9RRWKo+LJjZDfQ7VHjeMGxLL2eRKZPBKZ8iA0ktG07OK/cOgPT/FmZSIkf9msoZ5xpUSLPWrhqSAOXRUVofjZPduDMxtLGOx5wDCxN1mMOz1jypb+OPH+h7PC1Djtf1WXwl6GT+4VaIHcBlEXvQgAkM6gZXAkWXw6kTNpwx83okdMvBa8DXaG6THLsY2Mb8cavtXYVwx1qHVWIT0kMO2W8qZkovWV0ogRQ9MOQgh0frS58I2K5q8rTPSjXZxmF2zlTZfKVDxxm2cSQ/2OwgW6baGB+E6sPuudQs1vCbsF3XYZeAEsTFx9Cg0YRhfLNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fh5tEkbivEcdfgpPAvLSDyqAHzNlQDUORSP5a8hME7I=;
- b=id5ffuSGkhfb4fogzsd6TTVjpiGAl06K3czN+LqSyaJCX7Sh0AiRqTcb39isxH/+EwE8xZQ2AWhO4clfSy007bOqtt+24HlAYzycABzTHNgSoEicOgow2Dk1acsJs7FG/qSFynHsEp+uLGelxTkab6sZ83ZU/qO0w5ixd95Ov2vQ06kegnFVNkrhK4jBryJLZvQbd7HgM2QB5awHIWlJ1afkM4oFb1TOAtt5rtOyAh9uxzYdds14IJ2mG/Tn45PjDNCPqornBr3MJ8WRSuuZ/e3GI1sFEKf+iREqldw3QYW66T2EZYru1wgy+nqlpTDaGBoac0DZvea4tgE6/jc+pw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fh5tEkbivEcdfgpPAvLSDyqAHzNlQDUORSP5a8hME7I=;
- b=HsBZ81alHLlr5B/WRFVqR6ucrjEoJYagT1TPyiBN0eGYeKjBmEtM53baovIB6e3E/FVd14n0WiEIjU/a3WdGmdIODfakDuoSvo8hP0vTkAf697PQdkJ40z+UNdYKhhIf68z7RsbkZanV15Dv8fUcpP16C44EAft7PpP1C9fdy9FKHE1HNBPin7yp6cMFND7k0atkbTx7lD1aviWpdVNqoJugCzjUhDZUXTi6fP9M8Gj709vRekbuilutwHAWNAzTZPk8n0UClzyqDK6tiZSvl94eq50KoEKCehIPTAuHPJpH0m3YQcFk2D8yVxeYTf8VHz9zb5EYr6W/9GMgFmg+/Q==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DM6PR12MB4417.namprd12.prod.outlook.com (2603:10b6:5:2a4::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9870.16; Tue, 28 Apr 2026 20:23:19 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 20:23:19 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Vineet Agarwal <agarwal.vineet2006@gmail.com>,
- <akpm@linux-foundation.org>, <ljs@kernel.org>, <shuah@kernel.org>,
- <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4] selftests/mm: khugepaged: initialize file contents via
- mmap
-Date: Tue, 28 Apr 2026 16:23:17 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <8D71AC0C-A10D-4B1E-B5B9-606422E0B99B@nvidia.com>
-In-Reply-To: <83EFF919-7A84-4773-8C16-C51C15C3D987@nvidia.com>
-References: <20260428133138.88802-1-agarwal.vineet2006@gmail.com>
- <583F8EE1-5C49-4250-A24B-0D73372E3864@nvidia.com>
- <95714cec-205e-4b56-b8ff-9afaf9408020@kernel.org>
- <0FA813EA-5EFA-482F-B8BF-FE65D4169C44@nvidia.com>
- <b4fad2c6-f2c1-484e-b6a1-97e763a39ba8@kernel.org>
- <83EFF919-7A84-4773-8C16-C51C15C3D987@nvidia.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BLAPR03CA0052.namprd03.prod.outlook.com
- (2603:10b6:208:32d::27) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=EUGJJqNnKd68W2HM2pqHRqySWrlm2jVXCvU7htT4X8o=;
+	b=iIOqh3xVO9gtbJ1NxBVuCZ52RN6Z4sbINUfuKEXtOiHTmphYG6SNIoilzBr4CXSNMxhz1k
+	nTCDaushQJn1kCpQgEhHyFdCJ2tR6/tUpHHIoDrEuoAZFGyp9CvzIyTyLUaBjXtBbQroHa
+	Achylna1eGTKlBGv3k80Qh1SRdS5dMg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777408972; a=rsa-sha256;
+	cv=none;
+	b=bJAw23JfhT/+UNFcipByS8HMi4+dtpMcmfuSCQDBOjaDTsIDEz5QMp+txrGv5JsLIvJbhR
+	XeQpWPaAEuY74iufuavvOPyJhg9NHO8dJ8h4UYlk7aUYl4n5XTfIA0dbAMwxlkmq+DoM5w
+	2yrrh6yfz5FIXMKD3Y3+E3IUreeaiDY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AxxsxWOC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8391B61119;
+	Tue, 28 Apr 2026 20:42:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223A0C2BCAF;
+	Tue, 28 Apr 2026 20:42:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777408971;
+	bh=InHJJsNDXhcLEmF2wKCCqojIV89V59WutBjl+yrAS8s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AxxsxWOCidFnfVWYn2nEl7uZIMMOmhH6edN0If5hl2lPPRXn6DsBHYlzOm5IM7IuN
+	 j6fSxQ+V/Aw0hTLjR7kFjFQYn8kdvoMIkOVBUjX8eBh59BSOaywNwq+9z1vWxXia7c
+	 A2KnSKmsUze5yPa/ZRKu1Cb3YKszNw5jJp+RTaKsvRWLohP100MVlqetu8Ca6Q0hIW
+	 8MHWX797lpaUUW/ffnyWFyT9OBHcWzRxDvNmYOF6lgp9XRq64OP3imQlZVhT/sovHZ
+	 GSNzw5Er3ktrgcmg4rVtX86RxHya6lDNYbhgw2iqQ0vS1CXK71Xk5w/FBDokgcqxgg
+	 HQ0QU2Smuf0sA==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Luiz Capitulino <luizcap@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nico Pache <npache@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Sarthak Sharma <sarthak.sharma@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 00/54] make MM selftests more CI friendly
+Date: Tue, 28 Apr 2026 23:41:46 +0300
+Message-ID: <20260428204240.1924129-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DM6PR12MB4417:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a2f72b3-2522-42eb-bc5e-08dea563fc89
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	t3U3dYjXRY/ZF3/pgM5dZ2OYD+LC2eUeG+aCHx0s//KiQ/m05a85dD4+9ZYRWKiekTM1pQLzd3LaOFRh7SJqN7J4EdoOB8KQ5sw1CxgF4aUpjeSX6iLv4MQYTEdVxV9YP+pZA2esX/1bVs0/lmqmD8aimLU7+qrs0LAjPGs0HRNpnuIQiWXOuICMk/sx2affDi31wzuRGsWxpgQSPy9JnFo+rVH1Ucz9ZxQKYFjQh2EaZPqp57EVIcW15Un1lqQ450dBb/56uJoqjPK2zuBLk6S0sbgcifnPusyujBnHeUOt0smLrGbuiWb6z4buah7LWXrHWBeOnn9IHXMq67pBmCHCg8F8yyjp+N09obMflEYX6IaSXbgoflk/NCrMGS5MOzmfW4Ds2pxoMt5FkIvSChxA3yuWK+xv8zFXN3i92j5aJ+8AQt3ODHnn/Wcpu4leUgKVwYtu8QSnqyZ62F8hBDyNaYGeEEZ9DmoGhKPCSX2k8o511PW8vY33SAeKFc3qb65WA6QPMyIwQ5n9Hx6b4xHFEuwWRgTCmTAersG/eTRJWDuiAvMpz5AyAf7TSr2QZaOBBCH4YFOnK0LI9zqCJVxwUTGFK+nlj1hGSrFBt0HJIbDkKTb0aAZPeEzBrxPK+ET0Z0kocwaMyp/CNvlPXMQ0A/zL59fzcRl7/QllK9zEzqaK3xTropw2UvtnTl4ws7BLg0B9hGWNveAUTu+DEzS738zw02Q7L0pSJUFVUBo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/0eKCArtxCY0Dr9QtGQrl0oMyvYnJ6hX3v63gpNWnS+uyJq9Yp457T/w2i05?=
- =?us-ascii?Q?eQwFbbvmxzh+nK1Z2m2GpBADlioGy+tLcuhl1baF4cb8U9jgLdqd5r72aVtt?=
- =?us-ascii?Q?oTih6eV5jyD5yV0dseZ3v+p1HSu2HbL1bQ3y6N1nmsRq0Db0c+TvBvLSPy5V?=
- =?us-ascii?Q?iPu2M6aK3UNiQLFOTvaopkwiwWQlSBEjLzeC2fQuSs9Cnskvtpg7uyN47OCB?=
- =?us-ascii?Q?ghfNV+96GmyCFZaHUPNJ5bf6/1/7ReWaqPXX/3o+lmwOvy+g0kq5Ykj6TRMf?=
- =?us-ascii?Q?S7hLrHlZV9Rl6616PJO/exqTvKX+M62ycpcelIBJvXUEbvETxMj/Zh1ERiEj?=
- =?us-ascii?Q?jCUsdtemsD8Nek63RE4tdzfGDXkY27OPxMGgRNHx+DOlRCpwAkCQVzGKVUmx?=
- =?us-ascii?Q?WIenCoS7zqQFevoQ39GRiku9Ktg+00ky0scrc+I/63ndCHd7MVvlNG/lMFDX?=
- =?us-ascii?Q?4anq8G9rNaTGm2L4zj55bqQSorNBgYib8blSWqSRb8LUR5DPVIp4TY/sR8rf?=
- =?us-ascii?Q?VHgXlTd/Xv1ZBK1K/yCu07eqvfa+3FJ2EsuVPkCyOe0kAu/d/aheC8sO0e0F?=
- =?us-ascii?Q?NBReAnEyZhlu7dHavxb128u4aZ9jrcfBZraDm4Xb7FGB1DbZFZJtKWD4O2Pa?=
- =?us-ascii?Q?B4TiXMwYvVSVJGukK1J8Cf8aVF2mYpUUHmvdE3F9iHtxPsno2h/xgbIClQy5?=
- =?us-ascii?Q?nDkbobdnUBy9xj0zzG0T6QkHMiJw0fWahV4pm1MHQC1HttZDDrFsKTewX9tS?=
- =?us-ascii?Q?OJoWOv1yR+HEzmqDCrwCZ8m3DjRrRq7pKNGyqOVkv98JyWzClsuQOxiGWa/h?=
- =?us-ascii?Q?cZZ3JegLKLoVeaaaWVQqGKABcJFGoX6nNSkRed7PSKR9C00061w2XM2AjoTp?=
- =?us-ascii?Q?0FB3KS+fgEG7smpa0D9TBCFhIGN1KSC6g3x2qUS4Nv5ftQqAgJWa71PRS6s5?=
- =?us-ascii?Q?NwnjRXb9RtIyG6J0MPmCopudCjom07EVP72G9+xP0I2itUsg8ZOuPlcN/me9?=
- =?us-ascii?Q?H6d9yDWC/njrT3FA/FcX0mdf84UhEcXC45RDIo4DfiFetDWaMvpzAaac06xi?=
- =?us-ascii?Q?nTkK1uuy1pevhS40WIwb8EsJHQQS38JjymWi6YOlzMTEiAnym3dKWvdRjm3v?=
- =?us-ascii?Q?qkZrC48DLLr0RVr9XNRTLCTa7J7hbwJ6/LLlxkF5I7LhE7cDi8D4uYFpx1fh?=
- =?us-ascii?Q?czzqj9N9TMz0XfY2aWaWkMgCmxfuBOcyFDRnHgwmqhCZajiXcftDkbWOcowf?=
- =?us-ascii?Q?njZJL1oJvFOu0S3f9LPgnX/CDEMUOhV4F0lxRqL3M5r7KHiGKpADFNIcqktY?=
- =?us-ascii?Q?EUXztD5OWG7mRwabKZtxqXT6ZGPIDgOyP8ixJveo1K/OxiB5NnoyYprZyPVl?=
- =?us-ascii?Q?QuqhDcXu9JEyq9cn6rA2xdURMZsoAZTL3uIKirhAnUJDA9UAKLHY9INgNDGQ?=
- =?us-ascii?Q?Z/I23SqwK1lxzSyDNYWs7AMBu5UxxBLFxawoq+O1w1+YngZ0YpVuNoz8T4F2?=
- =?us-ascii?Q?ep7/Yw7Ry0RRQHTVvceX+0byanLJYta130hpDqdni7cFgqdXTpU4xCLRVItT?=
- =?us-ascii?Q?24hffnamKjei7wrRPzM+1lE7I+yLojKk5gqETCZ87Ke+I9TOa5CxRpTFpOsh?=
- =?us-ascii?Q?g2QaWXiy+T+DmS6gLAXcCEh5uJsKcB6qrGNoohOp+zBQ0jYdTAeyjmNaTLSE?=
- =?us-ascii?Q?dR1VQo8kJDrz+skQBlRwxw3aCoJ+840WHtDeMDjqadPXMLtO?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a2f72b3-2522-42eb-bc5e-08dea563fc89
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 20:23:19.1710
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JI84xAL+i8MVIEnYNa/sSiTWfX928lzYV4MG3bwE9PTBLiXlNX7gCoSKOpvuCyxj
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4417
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4192A40002
-X-Stat-Signature: hr9yu6j3miym6dnh3h5xmi8h7km1zhno
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1777407804-893570
-X-HE-Meta: U2FsdGVkX1+Gp/C1xl+0CrPoZ/G9vl8LakCoO7O/EqxL1Eqqc46KsOt5WozRlJWzKqgMZWq9MNf3Uc0mfCCwllrA5T/PXAM/bDKNcRevZbvipRSOabXHXWKpiNHKNYKLdJDd+1S5LAIqBo387iu2Aw9KqJO0DcGWnzQzyNe6rubrVquIACYVwQFSk6M6PWHRecF/T6+mEVRkbWxdxr/RKfRbInxIKFkI45WZRfxWaf63ix3vCUaN9YGIjSUaJdCO4vl/sNWEo09lP3ay/stCg8DhgWhndenfWD3I1wseT5YEZujVLZogvAUjm0BRTLDNp0lbDAHVyaaGDDoopY9mfob05y9+Svn2lvgLc6tsNCsEo5XVLweMg7j2hZDxmlvcKvnsrswVl6o4zq2N1TeWGR9yZ0NB4Ca44ftntskl99BJXrhWZeCdi7nreJWs2mrci6GAxgQ5Ogx11a2x6DRIgthtlE9o99id/1gKTLahBCzhn1oiX6QNno5ZorCvfk9mo4H6tiyOIgynaNhCpQ6dp5fLAWYtGXgUAj2O13nyY9CeaLokym/mOOMhN/OOeLWb2Wi8N/iOBFM9P2+rRred1P90T7jXQJ5ZWGMxXa5jJjW0L2IaupqlxvvLsfXcONdPcCMjRYuRCXdLen1OEhkKXk8ucpHCIhHmLl24rW/mN6IFpHA82wbMU2SN1KwqX8VqqmRSheMB2tIu0llU1sV6TaWwKmUHq0Xj2KMArL1lByR5MoQDo7lwKgusAoK2V+KLz5hHAwQWspymHhHzcxpMaO66JgmVhcN2RHETqccnA9FrbXuJ83/xObtdb/qklWi3oMmg1qLq4zfmlmsAs4NPKyPRLib04wXxFP2513ZLHOWY6cpia+1qSFssaIJxw2Ae+X2iIzuazyz4AKIKfVNr8OP/G9SpZiI5YO8DEV2LZY8vSMQEDv+zU7/PrhGD/VFJvN2SSr4aNwNW/K8UWti
- SA/2D8+E
- TjGSg/9gE9gsUUcgdrpPG2afufLhhtf3X10O7vye21AG3PGisHVeXN5E6zwJ6SsvzVcdYCnmSvfSQd/cfzx6NBYGICkpr/rUNQ3xGf8D4i452W48hj0a9cbK7gigv2rbWJk1lixTRgQIdD9KYBtETPthpQjEGCiIw8Fnx3hccsa9s/hchXckdmUdLgftKaog8Kt37o6B3NDF9OzRPNm1EIiNRoR8s+m0X/eJubgksTDqqkx9M3fFgLBt/DfAsU+r9A+Zr7o/81RYHvOcEIkNXNJXL6rl/3PK5I3iL2+Ym/WahdAgDEmEc7bwKHIZ9/6qjVZBv4tDZj2bK2VOdTnhKUxUZlKrfGbO+9tieMhMFcTL++i4gcTu8knHsO3lP+phgVI4uZO3O2zVpSCo=
+X-Rspamd-Queue-Id: 578204000E
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ck6mugeccqsrswcbhmrkpuwum5fgmows
+X-HE-Tag: 1777408972-332446
+X-HE-Meta: U2FsdGVkX18Dbqb3Jyuklt5C/eSIoLpKQDAromYDYObksf4G/G3HvpXDio+FaBc7PGNxaplHt6ccBI+ezYlZtytUHizxAsbKG2C7bXr+jC2lJ5sVcwHbpe+XC9NjVh1EIjy8fumjC6xgnZdHGZENJhL1Wp2XDcF9kHGXjzOEwAhX6lMphYpEEWfIIIskXrqaddcElb9ePmw5+U1wzVo+whSThhh/4SxnlCrg8k1m8C2gnHxd3jKWBSx73oAl0Ny+7ABMs79oUf5gLNsajHrcW95tGE2WdfsJ6Czq+Pr/tqza2r5TQ7ST22dzAYm4EQ5AYR9+hhbyjyQwOhZhk4ISdSK+LO5zinGd+793/FSMdZY37hcukxm7i/MFDBJ7xTuBdWMxe3dZqgmQ9ujgf/OLu4eKRgSeeJNJLKXrNwS6xAitbEFlTCyEWKY306jEltvqqU0JqrOGuYttOmv2hcvLCEM459a0N+2ZrBeDDvJslnWAmRj7o+aGUIFOL4gCRhK2XQiq5yK5L/mDq+Uqnql5kVA7gSG2T+PC7jmP7jX0hfpMnOOywLoJJc+miN4CX+Wn90T+OSDoRtXuhXKZ1dg+DQN1OK+iRk+N8hnsEATWnRArzhQqAOkHelXVMOoBeSJTh+wO+GZVTfCmdhVtRwXkJrrd0rqYgq6ulrp2udNz7DCkRPOQV4ZflLNWHn2GM8V22G0yK+mEgVUpLcpB9SIhg9OZQ1o7qyY0/cvn7mfAq0QMzBF6MdfOfscBeewFBoAevt8/qU6qjdhdeL8Ls5mvU6x8l9SC4kHF2bmWj8IYxLVIux0lDCnE0CE5EAzfOnminCh9caWmd5gsdmlmv7kHkef440bhEe/1LK/yRcVXlTJdtS0SDx2gXmHNG4VNueCZZN0Z2Tr1UFHaBVg69Fun2jaPvv6prPiMb5s94lFSZzRrpaPlzVNAck82fUteZUgLCijERBINKo9mFF4n8CN
+ 3sW/n4LY
+ wWjzlTmCVSoR9GJK1qWWN2ZMLM5myiyAK9NO4OdYGnN5XAARzmFXNFyqigr3PrubYRSz/d65M6u2+qTumXCShNYpXIh7QSNupBupTl1RDxrzqo1DnvdTN+rgAwEoaNs3TVtf4y6dGaBtbQ3/BeW+gpkQa3ClgE6dGYrWc7Pj4xrUWmXhs8JsSE+U2rwb2tcEw6+kiit0DvLBqQMQKIDgvGbLSVHjmS00wMecUYN50NxeJOUU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,39 +112,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28 Apr 2026, at 16:22, Zi Yan wrote:
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-> On 28 Apr 2026, at 16:19, David Hildenbrand (Arm) wrote:
->
->> On 4/28/26 22:17, Zi Yan wrote:
->>> On 28 Apr 2026, at 16:07, David Hildenbrand (Arm) wrote:
->>>
->>>> On 4/28/26 21:56, Zi Yan wrote:
->>>>>
->>>>>
->>>>> This patch breaks the khugepaged test for READ_ONLY_THP_FOR_FS.
->>>>>
->>>>> When I ran sudo ./khugepaged all:file ~/ on ext4,
->>>>>
->>>>> collapse_max_ptes_none (khugepaged:file) fails.
->>>>
->>>> madvise() still works? Is it maybe because of dirty folios? (but that should
->>>> also be the case on write ...)
->>>
->>> I asked codex instead.
->>>
->>> Basically, mmap(MMAP_SHARED) makes the written folio dirty and the folio
->>> survives the later drop_caches. Adding msync() fixes the issue.
->>
->> But why doesn't the write() make the folios dirty? Or are we running into some
->> race condition where the old code just worked by chance?
->>
->
-> The fd is opened with O_DSYNC, so the data from write() is transferred to
-> disk when write() returns.
+Hi,
 
-And the folio is clean.
+There's a lot of dancing around HugeTLB settings in run_vmtests.sh.
+Some test need just a few default huge pages, some require at least 256 MB, and
+some just skip lots of tests if huge pages of all supported sizes are not
+available.
 
-Best Regards,
-Yan, Zi
+The goal of this set is to make tests deal with HugeTLB setup and teardown.
+
+There are already convenient helpers that allow easy reading and writing of
+/proc and /sysfs, so adding a few APIs that will detect and update HugeTLB
+settings shouldn't be a big deal. But these nice helpers use kselftest
+framework, and many of HugeTLB (and even THP) test don't, so as a result this
+patchset also includes a lot of churn for conversion of those tests to
+kselftest framework (patches 7-19).
+
+The series break out:
+patches 1-5:   small fixes
+patch 6:       merge of hugetlb mmap tests
+patch 7:       renaming of hugepage-* to hugetlb-*
+patches 8-20:  mechanical conversion to kselftest framework
+patches 21-27: extension of thp_settings to hugepage_settings to also include
+               HugeTLB helpers
+patches 28-29: add helpers for setting up SHM limits in hugetlb-shm and
+               thuge-gen tests
+patches 30-52: integrate the new APIs in all the tests that use HugeTLB
+patches 53-54: drop HugeTLB setup from run_vmtests.sh
+
+v3 changes:
+* add patches that fix cleanup of fork()ed processes in migration test
+* drop MADV_REMOVE changes to khugepage test
+* properly setup memfd for non-default hugepages in hugetlb-mmap test
+* add forgotten hugetlb_save_settings() to hugetlb_setup()
+* fixes for ksft reporting
+* rebase on v7.1-rc1
+* add more tags, thanks everyone!
+
+v2: https://lore.kernel.org/all/20260418105539.1261536-1-rppt@kernel.org
+* fix hugetlb mmap tests to actually test file mappings
+* increase maximal tests number in khugepaged
+* add tags, thanks everyone!
+
+v1: https://lore.kernel.org/all/20260406141735.2179309-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (54):
+  selftests/mm: hugetlb-read-hwpoison: add SIGBUS handler
+  selftests/mm: migration: don't assume hupe page is TWOMEG
+  selftests/mm: migration: make nthreads represent number of working threads
+  selftests/mm: migration: properly cleanup fork()ed processes
+  selftests/mm: run_vmtests.sh: don't gate THP and KSM tests on HAVE_HUGEPAGES
+  selftests/mm: merge map_hugetlb into hugepage-mmap
+  selftests/mm: rename hugepage-* tests to hugetlb-*
+  selftests/mm: hugetlb-shm: use kselftest framework
+  selftests/mm: hugetlb-vmemmap: use kselftest framework
+  selftests/mm: hugetlb-madvise: use kselftest framework
+  selftests/mm: hugetlb_madv_vs_map: use kselftest framework
+  selftests/mm: hugetlb-read-hwpoison: use kselftest framework
+  selftests/mm: khugepaged: group tests in an array
+  selftests/mm: khugepaged: use ksefltest framework
+  selftests/mm: ksm_tests: use kselftest framework
+  selftests/mm: protection_keys: use descriptive test names in TAP output
+  selftests/mm: protection_keys: use kselftest framework
+  selftests/mm: uffd-stress: use kselftest framework
+  selftests/mm: uffd-unit-tests: use kselftest framework
+  selftests/mm: va_high_addr_switch: use kselftest framework
+  selftests/mm: add atexit() and signal handlers to thp_settings
+  selftests/mm: rename thp_settings.[ch] to hugepage_settings.[ch]
+  selftests/mm: move HugeTLB helpers to hugepage_settings
+  selftests/mm: hugepage_settings: use unsigned long in detect_hugetlb_page_size
+  selftests/mm: hugepage_settings: add APIs to get and set nr_hugepages
+  selftests/mm: hugepage_settings: rename get_free_hugepages()
+  selftests/mm: hugepage_settings: add APIs for HugeTLB setup and teardown
+  selftests/mm: move read_file(), read_num() and write_num() to vm_util
+  selftests/mm: vm_util: add helpers to set and restore shm limits
+  selftests/mm: compaction_test: use HugeTLB helpers ...
+  selftests/mm: cow: add setup of HugeTLB pages
+  selftests/mm: gup_longterm: add setup of HugeTLB pages
+  selftests/mm: gup_test: add setup of HugeTLB pages
+  selftests/mm: hmm-tests: add setup of HugeTLB pages
+  selftests/mm: hugepage_dio: add setup of HugeTLB pages
+  selftests/mm: hugetlb_fault_after_madv: add setup of HugeTLB pages
+  selftests/mm: hugetlb-madvise: add setup of HugeTLB pages
+  selftests/mm: hugetlb_madv_vs_map: add setup of HugeTLB pages
+  selftests/mm: hugetlb-mmap: add setup of HugeTLB pages
+  selftests/mm: hugetlb-mremap: add setup of HugeTLB pages
+  selftests/mm: hugetlb-shm: add setup of HugeTLB pages
+  selftests/mm: hugetlb-soft-online: add setup of HugeTLB pages
+  selftests/mm: hugetlb-vmemmap: add setup of HugeTLB pages
+  selftests/mm: migration: add setup of HugeTLB pages
+  selftests/mm: pagemap_ioctl: add setup of HugeTLB pages
+  selftests/mm: protection_keys: use library code for HugeTLB setup
+  selftests/mm: thuge-gen: add setup of HugeTLB pages
+  selftests/mm: uffd-stress: use hugetlb_save and alloc huge pages
+  selftests/mm: uffd-unit-tests: add setup of HugeTLB pages
+  selftests/mm: uffd-wp-mremap: add setup of HugeTLB pages
+  selftests/mm: va_high_addr_switch: add setup of HugeTLB pages
+  selftests/mm: va_high_addr_switch.sh: drop huge pages setup
+  selftests/mm: run_vmtests.sh: free memory if available memory is low
+  selftests/mm: run_vmtests.sh: drop detection and setup of HugeTLB
+
+ tools/testing/selftests/mm/.gitignore         |   4 +
+ tools/testing/selftests/mm/Makefile           |  13 +-
+ tools/testing/selftests/mm/compaction_test.c  | 113 +-----
+ tools/testing/selftests/mm/cow.c              |  29 +-
+ .../selftests/mm/folio_split_race_test.c      |   2 +-
+ tools/testing/selftests/mm/guard-regions.c    |   2 +-
+ tools/testing/selftests/mm/gup_longterm.c     |   3 +-
+ tools/testing/selftests/mm/gup_test.c         |  12 +
+ tools/testing/selftests/mm/hmm-tests.c        |  24 +-
+ tools/testing/selftests/mm/hugepage-mmap.c    |  78 ----
+ .../{thp_settings.c => hugepage_settings.c}   | 286 +++++++++++--
+ .../{thp_settings.h => hugepage_settings.h}   |  75 +++-
+ tools/testing/selftests/mm/hugetlb-madvise.c  | 209 ++++------
+ tools/testing/selftests/mm/hugetlb-mmap.c     | 145 +++++++
+ .../{hugepage-mremap.c => hugetlb-mremap.c}   |  13 +-
+ .../selftests/mm/hugetlb-read-hwpoison.c      | 123 +++---
+ .../mm/{hugepage-shm.c => hugetlb-shm.c}      |  64 +--
+ .../selftests/mm/hugetlb-soft-offline.c       |  45 +--
+ .../{hugepage-vmemmap.c => hugetlb-vmemmap.c} |  46 +--
+ tools/testing/selftests/mm/hugetlb_dio.c      |  15 +-
+ .../selftests/mm/hugetlb_fault_after_madv.c   |   7 +-
+ .../selftests/mm/hugetlb_madv_vs_map.c        |  22 +-
+ tools/testing/selftests/mm/khugepaged.c       | 380 ++++++++----------
+ tools/testing/selftests/mm/ksm_tests.c        | 182 ++++-----
+ tools/testing/selftests/mm/map_hugetlb.c      |  88 ----
+ tools/testing/selftests/mm/migration.c        | 152 ++++---
+ tools/testing/selftests/mm/pagemap_ioctl.c    |  13 +-
+ tools/testing/selftests/mm/pkey-helpers.h     |   6 +-
+ .../testing/selftests/mm/prctl_thp_disable.c  |   2 +-
+ tools/testing/selftests/mm/protection_keys.c  | 130 +++---
+ tools/testing/selftests/mm/run_vmtests.sh     | 177 ++------
+ tools/testing/selftests/mm/soft-dirty.c       |   2 +-
+ .../selftests/mm/split_huge_page_test.c       |   2 +-
+ tools/testing/selftests/mm/thuge-gen.c        |  80 +---
+ tools/testing/selftests/mm/transhuge-stress.c |   2 +-
+ tools/testing/selftests/mm/uffd-common.h      |   1 +
+ tools/testing/selftests/mm/uffd-stress.c      |  44 +-
+ tools/testing/selftests/mm/uffd-unit-tests.c  | 110 +++--
+ tools/testing/selftests/mm/uffd-wp-mremap.c   |  12 +-
+ .../selftests/mm/va_high_addr_switch.c        |  42 +-
+ .../selftests/mm/va_high_addr_switch.sh       |  41 +-
+ tools/testing/selftests/mm/vm_util.c          | 133 +++---
+ tools/testing/selftests/mm/vm_util.h          |  15 +-
+ 43 files changed, 1424 insertions(+), 1520 deletions(-)
+ delete mode 100644 tools/testing/selftests/mm/hugepage-mmap.c
+ rename tools/testing/selftests/mm/{thp_settings.c => hugepage_settings.c} (60%)
+ rename tools/testing/selftests/mm/{thp_settings.h => hugepage_settings.h} (55%)
+ create mode 100644 tools/testing/selftests/mm/hugetlb-mmap.c
+ rename tools/testing/selftests/mm/{hugepage-mremap.c => hugetlb-mremap.c} (94%)
+ rename tools/testing/selftests/mm/{hugepage-shm.c => hugetlb-shm.c} (57%)
+ rename tools/testing/selftests/mm/{hugepage-vmemmap.c => hugetlb-vmemmap.c} (76%)
+ delete mode 100644 tools/testing/selftests/mm/map_hugetlb.c
+
+
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+--
+2.53.0
 
