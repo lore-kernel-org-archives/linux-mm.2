@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48E0BFF885D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:04:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C7EFF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:12:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 552B56B0088; Tue, 28 Apr 2026 04:04:38 -0400 (EDT)
+	id EFC676B0088; Tue, 28 Apr 2026 04:12:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DCE96B008C; Tue, 28 Apr 2026 04:04:38 -0400 (EDT)
+	id ED43C6B008A; Tue, 28 Apr 2026 04:12:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CBE86B0092; Tue, 28 Apr 2026 04:04:38 -0400 (EDT)
+	id DE95D6B008C; Tue, 28 Apr 2026 04:12:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 274C36B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:04:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E8BB6404AA
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:04:37 +0000 (UTC)
-X-FDA: 84707227794.03.B03BAE4
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CCA4C6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:12:24 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 52F15140450
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:12:24 +0000 (UTC)
+X-FDA: 84707247408.23.E95774C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3977340003
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:04:36 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XppfAnHz;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9A182140002
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:12:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V1Qzz8ak;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777363476;
+	s=arc-20220608; t=1777363942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nrUGJpgULI863dIwiwLky5llXkDBpDdAraUXNsE63yg=;
-	b=GVXFGI8ViM+j8lf6SF//Ghnfjt89LxwBFxno0B3Gm6S/mrOLZxFdGDlCZV0+iUqDuuFxbi
-	Ivrtq5ron32p1UU/Yo3TeBdx7nltYUfLkH07sIWoUqUAWxtiOc7BQeStdz+PaxQ+8mE9YT
-	q4fQuS3ig4AUu0uXchTizKenP/RKlKQ=
+	bh=bTd1w+HxHrlfh65+PDYw4gWV6Vm3+knn9EDmVl65wVQ=;
+	b=HEUPSDX9j5l7F4QfZlWpddJfIAdydcjb8NHhgOGau1xsDwjmaP0XxPziIvkN30OpKRwxQ4
+	p9EPVsNZZm8SE4w2dOy5Gp8t/C9b57h7lznqnT2tL0RtXDFfJYzM71NvmKUBS3dOmmu7vF
+	p6laCBU5FcPpIxYZJZU+kF5HETigS1k=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XppfAnHz;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V1Qzz8ak;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777363476; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777363942; a=rsa-sha256;
 	cv=none;
-	b=aLRucon4X1U7s0TSDLqsCTbyjBOUzQrQsf3/O4HQUU7XoCspMpxUOUKirARdJwerRVXLUb
-	iToJLSBPtDLXc+Pj+JTMwA75+250ZnQBaDx2elOXOFndPFAatgGuiX30AAmzdhgBM3lOBE
-	rJNOq91F3cgU4Nn5fJ60P/+Dd/zbNyE=
+	b=4Zq7i40J8lcvYlBa0cfch+8in0s9yXSdTO3J0F2q4h7saZMGiLamZQCxS44LWFYPFeUy6z
+	CBlx5Bqf0g9xZK+cuvuM0jS36bFw938IV/kOayYlqIw0QDdK1h1gkwvpuxKSh2RE2CVDQ3
+	S6hI6C7kze4u8UyVeM3FoIPqh3jt6QE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 574A36014C;
-	Tue, 28 Apr 2026 08:04:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4168C2BCAF;
-	Tue, 28 Apr 2026 08:04:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DB0C960141;
+	Tue, 28 Apr 2026 08:12:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776F0C2BCAF;
+	Tue, 28 Apr 2026 08:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777363475;
-	bh=NtmIbjTbL8hS7vDBEGYOIeztzGgTPC9MZsx2eECcozo=;
+	s=k20201202; t=1777363941;
+	bh=wWWSdK4kqaTeuEWEsFP+Ws///SZc85DrBERApaGTlys=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XppfAnHz8MngFNTO2myVmeJ9/Oj2+/bCYRyj4mB900QrbG+dlkM5fWAW8Fg13lzUj
-	 PFpSAXHkl5PUM9jVWjIVQ/MnIrvHJQUo3zhAj8FPw370qIkBr6xC017NzJoYajllmH
-	 LXefxywCZ+Gsuff+chuFLBSjkY4RokZ8ARycGMnSz5pfHkvFz5zIRpIUHxVFJtmp9q
-	 nb/hEpovJGyhAXWSQp8/gaVDZYE+nkvnV2pJlZHBnIt04rz4A2tQ8jsGorQgQc1lw2
-	 /oyaMaQkDXhkcv8A4mh0Ws8wysE3wRfGaE8BL1nraNFpdSGhH/JckeHzO78cYx0Ta9
-	 x56ZMyQqzSYUg==
-Message-ID: <3abf09d8-a98e-4f1b-b8d9-77879a8a2733@kernel.org>
-Date: Tue, 28 Apr 2026 10:04:30 +0200
+	b=V1Qzz8akwmKUrJKZDa3ABXy2/zDM4ePMvZenwIU0WMpcDE3Ch8xofqBUsbsYxkW1s
+	 Y2sg/oP94KjlL6HMg1u4LE1RmXL416fCHXvqY7lpDWCYbhYAIL7vwD2cBYg4KEYaZ1
+	 cbRPt+LVcun+IvD4lmPR1oQSMi/oM2NKGU1osgrH/+jMm/HC28tB3MJrVXzgqCQh/P
+	 YOkcdjDVrNrq0KB21iVsuN+l2zEcf0Vkp+nLHMFFMLsKl6C/bfnzMOebIYNSgaQJhB
+	 jKXI30eZVMXJu62cRwYI2dXU56Vr7RKjsLHziZHvQV4xJB/iasVz3Ji4dsuuf9y91Y
+	 XS/CQ4jAWHIzg==
+Message-ID: <014f3c0a-7c6f-4f64-95cd-b7b69d804880@kernel.org>
+Date: Tue, 28 Apr 2026 10:12:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: khugepaged: handle partial write in
- file_setup_area()
-To: Vineet Agarwal <agarwal.vineet2006@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, shuah@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260428062322.20417-1-agarwal.vineet2006@gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Using BPF in MM
+To: Roman Gushchin <roman.gushchin@linux.dev>, bpf <bpf@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, Vlastimil Babka <vbabka@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ lsf-pc <lsf-pc@lists.linux-foundation.org>,
+ Daniel Borkmann <daniel@iogearbox.net>
+References: <7ia4o6j4c5y1.fsf@castle.c.googlers.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260428062322.20417-1-agarwal.vineet2006@gmail.com>
+In-Reply-To: <7ia4o6j4c5y1.fsf@castle.c.googlers.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3977340003
+X-Stat-Signature: 1nc3uu5596uuxpruigg9mk1hb8dx8tda
+X-Rspamd-Queue-Id: 9A182140002
 X-Rspam-User: 
-X-Stat-Signature: 4xhnf7az8uagrocq4jrdy178dk614rue
-X-HE-Tag: 1777363476-228981
-X-HE-Meta: U2FsdGVkX18EWCNzfHONZxRejp2Nyb3aO/rVM6DlBhFzJAw1grn9Lj8VzKJfqADpMtUhbI9WeKPUf7RjyVEc/e7gIw1kDRfaBhZQ2x9RSJAfmhuL4qCp9S1SVizlyS9e3fyEYPnM5CzSDjNwb57PXma+G44/na99Hf0BUCkv53AcIUnSXvRJn9wAgmqJyJmKd0YHFB77kvBRbOAp9S/aq/LTfxEL7bX0H/4B56euXD0cMABETObJWr2+AcHhc7FqbKx+xf044qeysqYGAPhQpSEKPA5ulL+UKVZwC0ChegVBkJBpeS25y+4DFTgOJfh659DOnakOt9Ck0SbObT/3mIHEmJ3sn01rfXOV/Qf2PBPNfMP3yV4/IHlQEX/LM4ET3dM1z29J+adrLefdHfuiYdVo/9OcaE1O+vQrhKZ9Q1bZbvaQ4j+OWZp+/PU5ji8fyIcUKtb5pDphu9i1LrwAc3QegfZXkrJArB/cwnL6J46AA/+gabcmVD17+Wi6h7q3Yn0TRgSdZTNauktibHKDOMRFWza+K8+PzI0jvGTM0uM5bZsUAHPYXkSONtoYLfj+WYsUoSL/uYXRDFm7MFoaDcFh6UzxmXOYmyoBSQij+QRKlS5NwDpbyjw/wnKk2DiMCUzMYmX9PykraITyvQnJ0bBmeYmkU0I71r+Le8nhvK/skltc8LiEL+om2QXbFNz3LRB1fyh3zvXfRR7kFEE2xer0gPWZVOe8j1R/bu/QnoEcbL3GcdrQdKaNwxQN2MohqKjCVx3ALI91QC180zbAgGxXY4pt7Lj5gwVADaELejykPQcL9Pqvknk29N0p9bif9VxWQA7gpq2thi1N8JDbKkx7u0l9lW8O70maWtxaP+bDnM8nPTQlMag7Wsat0/XnOaH9EV7I2gUQt7pMRZZR9PSHcUOEd+KjEJgbGqqjkfoHuSU1z4xfW301eiaU3Z1SiFCkzOh8z9Lx0N5fPq+
- LZtD/ZfM
- vpDfngYVwP5R4RfueKMf71AZ14iqw4JBJze+Y57WqrB1zYeKn59CynGagN8ilFFOXMj9L4hnoMcYoQSjLf5HLRyLoFXqK0FhQUyuaOw718wLsKJGR2odpefCa51ITI93wVIki9L/vrdXC0q39TLy+vLbvJeSz4IZOyBKkNC3/HQWYZ/o+G4e3YUcYaWhP+Vb9Y/B3KWsMg28RE9aLSKYqxFLyeJEpD1Lu8hRWFIn0vd4mP7PajbYSr944b2HRfrtfhDFkd/54twjmcLSvwT/wQ0iGwgH4VISvD3YwaXHvmytdRCAENGFvQ1weNEDQ2h5uuYwQ7bZPX0pNLy7k/uDdtk7Uph1K0jWCH84GNFRe/67vVFkn7vqD6V27U2iJMria6FSjm7Vm5XN8n+Q=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777363942-545118
+X-HE-Meta: U2FsdGVkX18yOW8PUwiREqwE6ls04lFCDhnTQIJDZX8MhR2DwuK+krFfPTAegt/MH9NtUEd+4DNzzf4F9Yqcf9npcn+uLo4qNj5lGQ56nMqdJz7bBzv18/As0oWlCL+EoGK+J3gC8k/Q/N5XRjL+M0OlGXSAvO7cJDiCtcxlPCPjN1s0d272UzyVsM//enVRnMQoAdLO+MNiwLF/pdQQ+yM6ADm+QPXsfCwSmR5S/1q1pBHarsvaUZGue03MMwvWvtnIkbBBpidoW2lhPcMp7bvmxMOkUQnGLKuFYBEMIfKse/8eas+cqApUF1F+jDetSt8sRt7pNUlRJmL6MQjq5IIdoGC/QubCWKH+6dA/o+ADpm8n0tf+GrIoPQWXZ2Jq6avO2eka5yGEylyRAcXN4w4r/+7Ne99+3clUizn5ZBR6udBSWm2hxw7ZP/BvpFw0zHfMtS989V/z4+uQJjqD9hfTlAY6jeHOub6o849mG768g4erQ/7+87aWY90TJHEWu4Ql37NGSMia8ER4zCuOD9peFU3iWBz8+Vw73PEaN63nj89dDft+WIoGjlRf3HuwKIwwdLPW5CVB6MtbMiiJPl7TbElLokb+y3XWgPb3EFaRfaO3Ec59e28UIFOIBq3SZy9JfgYH+D2AfarFt+ecjip3F3rODx7mSiIT+uhf1LlzeoLGPd+JntIIDZM4w7g9asaz+fUqhJ1xNUXyfAqHf99Jyn2erwss6mHeF8UQnhJc/EXnNq/IBndA0EOIeZqlqAhwzwk6WeUaYPWcPbi4htWjclxsjPt+VCm/59u6ymTmd8P3Ms3FrOKx345pRGCNwkZtisCgK+X9Bowa67u9+G0BCnlZFcWP/v2XOazx28ZlUFvA64Ft7juWeTa8z+9xCQrC0WmVD7uy099+kZKDJBumuqEou2hq+QAruhTJwnUzK0dp2SiucsmC4PORCgkN0sR88P28H3xg23/yCuP
+ mYn3o+y2
+ VQj7CLq4NZ0NxMxRTRtGpRWXGqmj9T+k4qUfT6DFaeKcpuSCDhK/7igirlt+OW0GtVz5MIORvsepBgq77kQ3Pia+7RekCZfcqJ2I9tz8oHh6tBM6VezY1E6rX/rytnq74pN763T/uGnTke6OILdlJFS6902Fh9OeyZt3+dbNh1LkmVEGeZ5GJ86o7SCNguJcb5Zk97NfAuEEaWITYN0Ycf1brxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,79 +140,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/28/26 08:23, Vineet Agarwal wrote:
-> file_setup_area() writes initialized test data into the backing
-> file used for collapse testing, but it ignores the return value
-> from write().
+On 4/28/26 01:57, Roman Gushchin wrote:
+> [LSF/MM/BPF TOPIC] Using BPF in MM
+> ----------------------------------
 > 
-> If write() fails or completes only partially, the test continues
-> with incomplete file contents, which can lead to incorrect test
-> results and make failures harder to diagnose.
+> Over the last decade, BPF successfully penetrated into multiple kernel
+> subsystems: started as a feature to filter (out) networking packets,
+> it captured its place in networking, tracing, security, HID drivers,
+> and scheduling. Memory management is a logical next step, and recently
+> we saw a growing number of proposals in this area.
 > 
-> Handle partial writes by retrying until all data is written and
-> abort the test if write() fails.
+> In (approximately) historical order:
+>   - BPF OOM
+>   - BPF-based memcg stats access (landed)
+>   - BPF-based NUMA balancing
+>   - eBPF-mm
+>   - cache_ext (BPF Page Cache)
+>   - memcg_ext
+
+There was also the BPF THP control.
+
 > 
-> Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-> ---
->  tools/testing/selftests/mm/khugepaged.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
+> There are some obvious target which haven't been covered yet:
+>   - BPF-driven readahead control
+>   - BPF-driven KSM
+>   - BPF-driven guest memory control
 > 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 3fe7ef04ac62..c13f06758750 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -369,7 +369,9 @@ static void *file_setup_area(int nr_hpages)
->  	int fd;
->  	void *p;
->  	unsigned long size;
-> -
-> +	size_t remaining;
-> +	ssize_t ret;
-> +	char *buf;
->  	unlink(finfo.path);  /* Cleanup from previous failed tests */
->  	printf("Creating %s for collapse%s...", finfo.path,
->  	       finfo.type == VMA_SHMEM ? " (tmpfs)" : "");
-> @@ -383,7 +385,19 @@ static void *file_setup_area(int nr_hpages)
->  	size = nr_hpages * hpage_pmd_size;
->  	p = alloc_mapping(nr_hpages);
->  	fill_memory(p, 0, size);
-> -	write(fd, p, size);
-> +	remaining = size;
-> +	buf = p;
-> +
-> +	while (remaining > 0) {
-> +		ret = write(fd, buf, remaining);
-> +		if (ret <= 0) {
-> +			close(fd);
-> +			munmap(p, size);
-> +			ksft_exit_fail_msg("write() failed while preparing test file\n");
-> +		}
-> +		buf += ret;
-> +		remaining -= ret;
-> +	}
+> Despite a large number of suggestions only a relatively small feature
+> (query memcg statistics from BPF) made it to upstream.
+> 
+> It looks like using BPF in the MM subsystem comes with a set of somewhat
+> unique challenges and questions to be answered.
 
-Why are we even using write() instead of just mapping the fd and writing to that
-area?
+[...]
 
-diff --git a/tools/testing/selftests/mm/khugepaged.c
-b/tools/testing/selftests/mm/khugepaged.c
-index 3fe7ef04ac62..a77f753ccf38 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -381,9 +381,10 @@ static void *file_setup_area(int nr_hpages)
-        }
+I think you are missing one of the most important points: Unclear ABI stability
+guarantees.
 
-        size = nr_hpages * hpage_pmd_size;
--       p = alloc_mapping(nr_hpages);
-+       p = mmap(BASE_ADDR, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+       if (p != BASE_ADDR)
-+               ksft_exit_fail_msg("mmap() failed while preparing test file\n");
-        fill_memory(p, 0, size);
--       write(fd, p, size);
-        close(fd);
-        munmap(p, size);
-        success("OK");
+One the one hand, we are told that there are no ABI stability guarantees, and
+that we can change hooks (add/remove/modify) any time we want.
 
+On the other hand, as soon as there is some ebpf program out there that we
+break, you can rest assured that there will be trouble.
+
+In the area of THP, where we don't even know which hooks we will need long term
+and how they would look like, that was one of the reasons why the BPF THP
+control was rejected.
 
 -- 
 Cheers,
