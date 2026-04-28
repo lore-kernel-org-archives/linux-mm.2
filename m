@@ -4,146 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65116FF8868
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 11:57:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 752D4FF8868
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 12:04:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A30ED6B008A; Tue, 28 Apr 2026 07:57:10 -0400 (EDT)
+	id 906A46B0088; Tue, 28 Apr 2026 08:04:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E1596B008C; Tue, 28 Apr 2026 07:57:10 -0400 (EDT)
+	id 8B5076B008A; Tue, 28 Apr 2026 08:04:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D0806B0092; Tue, 28 Apr 2026 07:57:10 -0400 (EDT)
+	id 7A3A76B008C; Tue, 28 Apr 2026 08:04:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B55F6B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:57:10 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3AE4816057A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 11:57:10 +0000 (UTC)
-X-FDA: 84707813820.25.DE8E16C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 62B92140002
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 11:57:06 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RvD9bT6w;
-	spf=pass (imf23.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B0216B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:04:50 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1731340105
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:04:50 +0000 (UTC)
+X-FDA: 84707833140.05.02259E8
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0E38E100014
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:04:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dGeQjQdj;
+	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777377428;
+	s=arc-20220608; t=1777377888;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AgBBjKG/PS5Dz1DwpETM5k/BFvsOUmL0XkfBNTKeCf4=;
-	b=2JxMaU2XlxwGilDEifFg5xiwm4UhfUrpm/2XXxxoHaSvQyk5duaDUg5LfWqUWml7Qs8R5R
-	L8PweJnSseSfWdT4BOJNAsTIAiNJ6yJQfP8QSQtywDX/adiaZovIsKRXe38QzE6wk74bF8
-	GGtnXOcQy+3WyhhaQFXm35LM/Nh8DJM=
+	bh=C8ao8CvWAerDIeNFQGwuEph7L8QgC5GvfoBjZJNskVw=;
+	b=CX5ik/FJ9/N1tyf7U6hpcVmCMLNPMFcAqADIXi8OQvBzQ3wRhcaob1pogz3xnitm+jZuUQ
+	pJQ26Hn0xJlTxmPyKY+kZd3ne/dD+Cx2drOZZNK64BLQvTwVlAF/wlo0SNYRlWJJTV2P3M
+	xU3ZICemiBPEHSyVEzL4IQWj8JpHSzs=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RvD9bT6w;
-	spf=pass (imf23.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777377428; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dGeQjQdj;
+	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777377888; a=rsa-sha256;
 	cv=none;
-	b=U2XiQjJpMRD7IGsbmmcNF4m1CxAXWoZ9imYjbdMVXa7TN4s1Tc9ipVyyt5+8ET7td6bMoA
-	1jpfW71KkdqP0fcf/RuQuO1BN4pMxuOSbhkWur3jzwNMAvC2Om5xFHfebEFRA64I/LGw+o
-	mLtUmJFkKw5yulFtVK87uWIx5vsEXbc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777377425;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AgBBjKG/PS5Dz1DwpETM5k/BFvsOUmL0XkfBNTKeCf4=;
-	b=RvD9bT6wn8/5HU6Dc1sIYgs5dZLPywAa50NumtznAJxKJTxIX08FiD24owOxyhmILjK8ZJ
-	Dd+evUe9ffLENjtrSR7KHTHasFBY7AhahX2S6jmQIyrTYpo6WbSmzcWbXVR91XipSlKBs4
-	tACxAya7qvhW3yPHRe7exZxcQOiaGVo=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-303-398bvOnMNV2_zQmSLnmi-Q-1; Tue, 28 Apr 2026 07:57:04 -0400
-X-MC-Unique: 398bvOnMNV2_zQmSLnmi-Q-1
-X-Mimecast-MFC-AGG-ID: 398bvOnMNV2_zQmSLnmi-Q_1777377424
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8a8ea3f1becso193673856d6.0
-        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:57:04 -0700 (PDT)
+	b=4qIZ5b21bUYFoiy8SrIGN85lKCSYMHfpsNbf2wdFflcS9EFiff9o46nxTu4u6Y2qQ1sH1H
+	BbATBwvvOB4ly445RF8cvgI731AglUeK+u72D21MdsMQa9HyVnUn62Zv2H8o6sSl81GGf6
+	xYbm5dBsXIaRIQ5Uf0x1Q+MQ7qsGTsU=
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a3d1561e38so9315815e87.0
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:04:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777377886; x=1777982686; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C8ao8CvWAerDIeNFQGwuEph7L8QgC5GvfoBjZJNskVw=;
+        b=dGeQjQdjQ+x0CHPqOrnJ9MFB8OVCoKVCITb8q54zHMa1xIKVJIzeurI2XVAEOFC9Zg
+         6/UoteuXGnJXJivJaCQknFSgX98MPAODq6DmO8bXQmI9nVpfsuE5O95n9tQ+WkNH3YJq
+         9Q21SiqDgLWRGsIAedmgeL3nRZ2vDaS40S3cVXAAaYj5uI8G/19BAnAALhpilk/oDqOf
+         vZvdQK7uNgE4DS/3GfWfaIMksvQQbgOIs29I5cRwqItVFy9eGGY+JL4b3aH/POSib+B0
+         mCIOhubFZN5fbEbq1wDSPrTKk/CQSNtq/LPdC/GT2ZZNwc/x30vN02q7hW1KWefyiUA3
+         vMgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777377424; x=1777982224;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AgBBjKG/PS5Dz1DwpETM5k/BFvsOUmL0XkfBNTKeCf4=;
-        b=hMeY9pRMNicKGmrWzoejVGv+R+4Lp+XevCYTswiNfxsntEKoPIxR1+Va0iiBK6hh8L
-         9gKIuqGny1w9KIJ34jS5AAPTLpMrEQ36cIZu9QtAw9WIojR/o/ds3J04F+B+exDcP9Yx
-         HA4EjTEUw6zVJh57gTdl8kXebMAyfbJd+IzV4s9/sLdrgrJj7ppH5Rm+XASZqjs7cOVN
-         qndx1D1+zn9bNzaezoMvQX/GL+4KnH1mX41Gc9oGnydB8IND2kd2VM+ZjbCDEyvVmXx4
-         i17sEGPbjRYYLdyHCW1Q4MAoZ7rEY9rx9KyPoPa1YQU6Jw43u3OQ1x7hNKVLGAsvbbOS
-         epYw==
-X-Forwarded-Encrypted: i=1; AFNElJ+fdA3nNyaXV+HIFM6t4AHqu+GpXTRyqaL/BJAOkHLeARMPvF41m2RYrvf5dqzhaSd0Rdv0Y1N+JQ==@kvack.org
-X-Gm-Message-State: AOJu0YwpmDrxpqhujI1lZE+ufsUgErdoonl0AKBKtJJ7pG+PHMvpHfK8
-	oFi/C8xT2kxKP+hk5oWvfzgxoAGKTQlWEq8166xK+GhWIwu2Z7xz2RE2V+M6aK1H1Ki16euKb4D
-	jezx119eEDiaBaOzf3ebE3dDMY45p5iD5kTWaJTq6NcqMtHieIxKp
-X-Gm-Gg: AeBDieuPF2v02QVdSBfKWTfTZeeCOhypzKenOzzuYAEOAcXOL/11cMxuEpb+hxfGLU+
-	m/brzo/6+LM4Zt+oApw90UWjexEpx2FrZeWcYtpgTEV8R5aVJ7RyOG71B99MYdOMthMJb5oXSnm
-	M4JknmdD9aY7m3eP3KSsza8mIhU17uusQAnNppYkP2PsKN7s44xOpkU3r61g28xYYYR4hXAhcVF
-	iomHvQVSTt5lLDTKmwpahkDxr7e7GOl8ee6fBvFtUKgoC2m2Ius0yNF26NA73o8vbu1d4GPEh0/
-	Q0fgR+mrWg/WR28pGoGEV0PfgHcBApsdgMW80EhnccB6jz/OYPm3pN5H0J95ddRcb67E1h5MlB/
-	lecDldlIgBiuUSas7W7gIaTtPyzfWtgAjHf4jQlhOE9W/QvPcZ/miu2oX7WDg7qT9/qnjf77y2F
-	8uhkg+U8xSrGQiljt5LvwCxag=
-X-Received: by 2002:a05:6214:311b:b0:8ac:ab31:0 with SMTP id 6a1803df08f44-8b3e31fb96dmr42764046d6.40.1777377423785;
-        Tue, 28 Apr 2026 04:57:03 -0700 (PDT)
-X-Received: by 2002:a05:6214:311b:b0:8ac:ab31:0 with SMTP id 6a1803df08f44-8b3e31fb96dmr42763486d6.40.1777377423235;
-        Tue, 28 Apr 2026 04:57:03 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b3e2956a8bsm18295396d6.31.2026.04.28.04.57.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 04:57:02 -0700 (PDT)
-Message-ID: <09847e2f-0397-44cc-b517-75bffa7124e2@redhat.com>
-Date: Tue, 28 Apr 2026 07:57:01 -0400
+        d=1e100.net; s=20251104; t=1777377886; x=1777982686;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C8ao8CvWAerDIeNFQGwuEph7L8QgC5GvfoBjZJNskVw=;
+        b=OIOAGtx+AsOQVrL4g9ZgUuW5UzyJiSN9hO4l/ymNkL9iMGf7GcBB74CmIUtfoY3UwG
+         H4D+0idyTlTLLzfbjNYP9gf0N4KTbyfZ+UqQ5TElFJdIhMryN/TIUv5LE8YLAG5MuKAN
+         ZSSllLziy9XfLLx6e81g7EUpMeP6EbBEDfDF8/axHy105MsIDZQpmS4vbyM5X6x0mxBn
+         P39GMbGlb218A3K0dHj2vtq56j9l1W7RdAfzHfy965w2wbFW6CvpRWbLrhkx7gJMdMLC
+         RTd/DEsRUTvXT6UlQBHID9dH24eO+bqh9x+1oHSlz6Hwk4WBemUuZead40RNu0e12YrF
+         o0Rg==
+X-Forwarded-Encrypted: i=1; AFNElJ//f6uNfEcq7SvJ85cXRU9P9ehxZeQoquJhNrKNTRIpddnCp1asXO04q4S+wsiQhmltnG1y0wuTjw==@kvack.org
+X-Gm-Message-State: AOJu0YwF4MC62wpf2QDbDiPQX0uw9gexLKQZFhFb329iZSToH9HaDU6o
+	yQlmwA5o9H1BhwT9P9sPxEtU5RBkQwepzc/32kfXe0Cb4IQxtNRYpH1a
+X-Gm-Gg: AeBDietZPg5NDeOmAp0ok36NPsE22PWRi1kiml5Nq7aeVth/5tZSwOikD/dvJpNLNju
+	Lm2PCZnDUHBInoA08wek+F83jeuDlxEPsI4MnhJ4WRe+P7UCQCqzhiKe1oxTuCeKj5m+VUBbMwz
+	feEXWA7dExwac9cmVPcbWZhAULuK4Sabu+stiz3MPLnFJrosTWaVx7KrhjwKUDtq2hcCp5z7iIV
+	ZHnv6oY82wwhxzriSZIWiC8tcLKLHrTwWGjuNQxCj7tctuoK8bmIixfjDh/KzNuBn/Kk1MEy1dp
+	5NwpPvXsJwQPjrwxdzVAIRWBCkaDSC8pnCIRO65Q7s6EgDQlwoWUXOjTL6+sNgpXD4KyyK+HGMK
+	h75evRn5lJh4VxjN+O33oIgNIo1p4Xq458ZB0Kwt/WZX2a1d68c0wkNSW+QMQV7C1Vb/ZqpdDN0
+	2DgqoFsrO9ZA==
+X-Received: by 2002:a05:6512:2256:b0:5a4:1a2:1d39 with SMTP id 2adb3069b0e04-5a7464108a0mr1125592e87.6.1777377885750;
+        Tue, 28 Apr 2026 05:04:45 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a7463f5e38sm572663e87.52.2026.04.28.05.04.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 05:04:45 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Tue, 28 Apr 2026 14:04:43 +0200
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Vlastimil Babka <vbabka@suse.com>,
+	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+	Thomas Graf <tgraf@suug.ch>, oe-lkp@lists.linux.dev, lkp@intel.com,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
+	linux-mm@kvack.org
+Subject: Re: [linus:master] [mm] c6307674ed:
+ BUG:sleeping_function_called_from_invalid_context_at_mm/vmalloc.c
+Message-ID: <afCiWw1Wb9zDBdOV@milan>
+References: <aehdcxC14ycvY481@gondor.apana.org.au>
+ <aeh2Ii9CxtgfsX_p@milan>
+ <aeh_2WwIb8nAIcy2@gondor.apana.org.au>
+ <aeiHkG7X_dieMdw5@milan>
+ <aemTW8yiAe6y1tsQ@gondor.apana.org.au>
+ <4e269fb1-cd6c-46ca-ac2a-168ce9fd06fe@suse.com>
+ <ae9wFZp7dS8QF8br@milan>
+ <6cae0418-eabe-4864-b87f-b1f953de06b0@suse.com>
+ <ae-MdIOcSkfphbHM@milan>
+ <afANly2Br1kIBPOs@gondor.apana.org.au>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 43/53] selftests/mm: migration: add setup of HugeTLB
- pages
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Donet Tom <donettom@linux.ibm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
- Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Sarthak Sharma <sarthak.sharma@arm.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-References: <20260418105539.1261536-1-rppt@kernel.org>
- <20260418105539.1261536-44-rppt@kernel.org>
- <a8510cbd-4a30-460c-b870-a250ceb8a522@redhat.com>
- <ae3v1cyMLbcvJtYW@kernel.org>
- <67d7b067-97a8-4600-a9a6-46f3e797ffed@redhat.com>
- <ae-UCVba16jg3-gR@kernel.org>
- <0e2ef2c0-d74e-4aff-bba0-6dd91dbd4e41@redhat.com>
- <afBKJn_EjaTAe4A-@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <afBKJn_EjaTAe4A-@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: X-tW5paGSSh4gW8fuHjMXtEShikSqsNlfpXHpX5nqe8_1777377424
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: o8zfcxfbxoyta1dwxh386awks9m3yqxf
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 62B92140002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afANly2Br1kIBPOs@gondor.apana.org.au>
 X-Rspam-User: 
-X-HE-Tag: 1777377426-286339
-X-HE-Meta: U2FsdGVkX19lSx3ZFyHOYgNFA7Ajzk5EJoo1C75avlsWaFybvq7KeLDT1ZTfse/L/IRSkveISYi+fkSZBXKON+n9AJNo+fGuMk2os/LVOaitagJljuR2odQkvyt6BzBR3I2UeproCyb0fth55mcWRvU2g5qwcpBm7hsnB6b2yuwiCHhPDn8UrR35OTLrOwfkQkBZ4EfMALlvsR5KfdDZzOqnmzWLXiU3HNeoqg9AeA96WD//v+lqbbCHGPUsypUVBsXb/EEByZ3C6vOHutP2BugtjjjK86lXT1KN56bSyFr604M37FmtubapbL4iyccufovgYs4zf09/ZGnm1HJmd1Am1qT6GD9T89LZ0raIxwzFuruN4dsNDgCPZL5/uZlK3ffT29fu46/0NfdNt0lpH7DSYedLmZjYeBPstQ49rMXVbwHBj9IMLd0mgED28Hn/UjQRM4Tj36nGR8yLX63708KjB1OE0hv3L02vTByZ3zNuW39OeJsUIJRaG+iZNvm1hji+TNuWG0MlyPr7mJ3hiX1Vol9DP+R0BZFNMdcLPs0iI5hu2fH6E0qhv6XKfKeBPeuLsbvjAfxGei5/Z51ravTximmp+5C5dQS1eVAY3mja/HB7Lan6r9ciSzGeAMhFe6DSRQjX/qRt0ZZISzDWpgBREoUN4fcTPaNcVQ77Rr3cCLr9LJUw15kl1OAzopJ+cHgKxQKBDIYb86NUc+PtBYPf7SZoyAluYO2vkHI5vdjGVV581OwlBAllPRx56/CarudcNZnbjDtiGSD3MrflhIcsECcJ2q36VFGXUjt/M4fHG8IIgwivwnJY/fiULOWEHR3RtaJ/8ZZjSASLTIa9OeZsskH100Tny1sFyrFNEcvv0bLWOV6S5LfRUuFQOttwiTgGVFBcfSHDKvGWhc85SiEpLkxwYGz2N6IdL1QMFtJMfJHrXKSY65WZx6ui4DNAjjLbXk1fzn+cEsaehD3
- NrRQPRC6
- k0YpVy8aXNdcgtdVyGgVXtLjLSQccpzEF6zvS6smYnwaKtdRigvWntpGgsMgD9U4uGTgarj1tmvK11xE7OTi/fzivR763t0jjOeTMHhmTai+ebNeb1fA6Qu6iy0auiLyvSyzeMFFuB/15BkflBWoUPLHMwDzl8d/90Kv1hd7YIqJnlT3pIbSLOzWzJ5rTiNkb/qv2WJX0HAVVleeC7eWt1agvITAF0UVzfiyU5wcbWjD9g4xj9JBcz+EvekRfJ8cC4UMZNEe5dnQ1IXsJbq6xMbrDHF7et2KmObpDY7cf3UvyEbVXG+tV1j8TdeogM4RcAEd+wLtB6eqQa6dpetyoT7PnWxjPrWIcZReiz57WAHLLY30QUClW1dtSNxaFwGkLnV3FXmpXumw306X5MN0on/TvTfUYWm7HTzz/0b3fpT8N90dwPqh2Hdef/oFOeXxFcauaGHItrel5y+E=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0E38E100014
+X-Stat-Signature: yadstpdftzp8p6ywhx4bmrbnozymsepj
+X-HE-Tag: 1777377887-697837
+X-HE-Meta: U2FsdGVkX1/454fvzeWGCmHbdQWIRHJZ9FHM67930shfLllERlnkxyeyBdvncKn4Y7E0JQyF4Z+8LRxqa+wLL2lkq4UbBgGrVN4mHUZ1mmENlYPAKj3jfVQ98RyrZH1Nbji7gm1O4dL48J7MjJZUUSseP//kP9mODl4KcAGouZzWR/31uq/c5aIYnLEioUyvsv1MNHqyVNPZloH+J4nNoPoVfnreffPwwFyXI0wMmvdiEQ+0uTmi3YwBEqeeXteBRzD9CDMPhjWqpD6sJLdolbssHDgnRyMRKLwI7c92iMqquXeWRpGi304OOfLj/Q2B9gZwWRxqJUEPFI2ZwMaOMhdRoYwYO/oT2U/xCiQwuySmHs2yz3GXuFo4lejdCGu0e36GUyjun2M1puHVT37KUQP3U291FfL0SuZfWTVOfKUQcyb7OX/vdvPHmJzY0bYY0o9opM0vdW17kPoHm2e86tVBEf3XApi5lY6v57vEdn2yn/ERsQgPcjV2J1LopWpjVTbeaQiRzxthWVyH7RFYHjXtMgJ1xsFJooUrze0ZqhnbA0w1w8ht33F4KhqM5E1lqFMA5qwcPamGCQY+QWdzY/roUW9HDXSUV75/9701LStW2sFJrH7GnWogu9pzWqPBOZRa3jdsq6Dp0hfShYOUiy5eMvPhUJaigIlbT0qS6MsnkmHdCKGiqhnuOCybCp5ZUOUvPsw2npffH+qH7ysySe3HtNcGqx90kKYRGVyt9ZNJwPRU1QRTEwjq9FIUjEOgueuxIa64q2aS7OMSYSt12jemlrGk4vvB9Jy2de33oWymw1aNppS9FboXoYpgDuMfB+MrKZxoDupBjftAbN7XnOg28r5+6V0Dpb71ax93phV3/NOG+PdwUUJaAa7jIulQg2hw8kfV2cENt+gnGmoIro1dB32dSy75kIfrgHKmrfnxLJz4lpTCQfATet7G5I/rqr9m08w0jfOCzDCtZ1H
+ ae2xETsj
+ fbblzDaMoEWZmkUrexA7bxxq9n1XJ2rD7zJsZM9UWEgYYlfPxnKehZErikRzAYtfjl55xHkYSdhcFQggKqbwtOGh71/rOTDbKV43CLFiFb5FjWMnDTPHs5eGrE5N0Us6jy7Jbiw6Ri3HOgfkWVFqOZEyiKkqAtjtRpLy4AtqqOoxQS2gm+TVuuGQTOMx5ratHWkcQsvziDAYiiGrFy1Q0meJFrAvONY/CFcu1q6Nun7hMej8Df4TwTuEUO8eg6ez2nGnMuWoLfNfUFsHyIJLuDQtK46qcDgbV/CiKhfDOUEbrVkq5ipjb1BU/1aFyN2Lw7Yab/6F7pRB8H1rffJGQqruf/B8G0SAjO2uOlhVsnPPISQK5ty/9ItM0obE4D1yNCJMXWkplOz0R3jQo4LaqlaQh55MfP+Bg8M9c3D+dCKR8mSTOKTgpdF+1veVYvWv8StWbKNgM54H8/XzLmX/BnIHg7bxYFYvLfgZE1meXIRpbrg2V5hkoDrRM8qQC+9333s6WGLOUX5SdKEqE7QUHVx7cDd7rixLkPvuZE8F3V92YylFq2WNhzPdrmv0a6qlIWZlOnJ3udRZ3BIw60Nu3TiuTKha7pG/ltgxjoXf6Q6VqqujUc+7x9ea25+kIp1TAZaDD29ZUyO4RRaHeVAzu3o+lOhkrvNkSETQXvyDCbc4FHNTBE9BOUi371XNCfTo7IVBZwI6hgtd6J2XfQmF+JOsClx/Ok/Lt/2ajranNelC1Myg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,44 +135,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-28 01:48, Mike Rapoport wrote:
-> On Mon, Apr 27, 2026 at 01:19:07PM -0400, Luiz Capitulino wrote:
->> On 2026-04-27 12:51, Mike Rapoport wrote:
->>> On Mon, Apr 27, 2026 at 08:56:27AM -0400, Luiz Capitulino wrote:
->>>> On 2026-04-26 06:58, Mike Rapoport wrote:
->>>>>> And there's another issue: when running the migration test individually,
->>>>>> private_anon_htlb gets skipped. I guess it's because the previous test
->>>>>> is restoring the HugeTLB state:
->>>>>
->>>>> It could be.
->>>>>
->>>>> I pushed the updated version that has the fixes for both zombie and
->>>>> signal issues:
->>>>>
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=mm-selftest/v3
->>>>>
->>>>> Would be great if you can test it in your setup.
->>>>
->>>> This works! Both issues are fixed: the migration test completes w/o
->>>> hanging and when I run it individually all tests run.
->>>
->>> Thanks for confirming!
->>>> One last question: should we munmap() the mappings in this test? Though
->>>> I understand this goes beyond your series goal.
->>>
->>> We could, but the tests _exit() anyway as a part of kselftest_harness, so
->>> it does not really matter.
->>
->> OK. Just to clarify that I meant exercising the munmap() path, not that
->> we're not freeing resources. But if we know that _exit() is sufficient
->> for this, then it's fine.
+On Tue, Apr 28, 2026 at 09:29:59AM +0800, Herbert Xu wrote:
+> On Mon, Apr 27, 2026 at 06:19:00PM +0200, Uladzislau Rezki wrote:
+> >
+> > Like below:
+> > 
+> > rhashtable_try_insert()
+> >   rhashtable_insert_rehash()
+> >     bucket_table_free_atomic(new_tbl);
+> > 
+> > the patch for rhashtable.c can look like:
+> > 
+> > <snip>
 > 
-> exit tears down all the mappings, but the code path is slightly different
-> than calling munmap().
+> If you want to send that as a submission you can add my ack:
 > 
-> We can add munmap() calls there, but let's do it separately from this
-> series.
+> Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+> 
+> Alternatively, could you send both patches to linux-crypto and
+> I can push them through my tree.
+> 
+I will send out to the linux-crypto mailing list.
 
-Agreed.
-
+--
+Uladzislau Rezki
 
