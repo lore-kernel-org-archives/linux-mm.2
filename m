@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48E31FF886D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:45:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33A5CFF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:45:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A40636B00BC; Tue, 28 Apr 2026 16:45:12 -0400 (EDT)
+	id 9CB946B00BE; Tue, 28 Apr 2026 16:45:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CA2D6B00BE; Tue, 28 Apr 2026 16:45:12 -0400 (EDT)
+	id 9A31E6B00C0; Tue, 28 Apr 2026 16:45:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E0576B00BF; Tue, 28 Apr 2026 16:45:12 -0400 (EDT)
+	id 8B9F86B00C1; Tue, 28 Apr 2026 16:45:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BA9A6B00BC
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:45:12 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C762C0AE2
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:45:12 +0000 (UTC)
-X-FDA: 84709144464.02.CA5829E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9D8C41C0013
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:45:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nitaGYyg;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B62D6B00BE
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:45:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A1F4A03E6
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:45:19 +0000 (UTC)
+X-FDA: 84709144758.03.F88AB04
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 452621C0014
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:45:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FIabE277;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777409110;
+	s=arc-20220608; t=1777409117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W1RGvY0kHAmoYq099jdMzseF+ot3kjEXyNpqiT3gqPM=;
-	b=uPJWDbxmN+jcjjeak4C+N6khwgeqRe5mAyT0SmkUGgMTGB+HndzpNaSG3ZwueqpaV8wuYF
-	7ernmrlISIgUnnQohknKJYJH2emzYlCWf14iirPN4dgQ8deSBLi4jeWlSALJVnuZQTVML7
-	qhx+ZuqBQinLPxXVgyawaBePuQmeVdw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nitaGYyg;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777409110; a=rsa-sha256;
+	bh=PJtpkvGLgpby5UP16H02CV/wWR2YNcPhcSEIbP8un/A=;
+	b=ucBZLi/RYJ/0H5xmgw/zletmultPUC/c+Ns+oCiZzLEakzPTDhLxYGHL3942YfFNzqF/fq
+	OD262EWdE392A9I7e75f24lcqXaoCLSuSBO2IZTgiFM3b7ZL7/jyi9RT/7xquivw9Acmpy
+	w/gavqvmh5R+IfF69BkcY06k/5rodYA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777409117; a=rsa-sha256;
 	cv=none;
-	b=zOw1aEWS0tNyMI4MG/INME2QbA0hNWGjzAMsYgcT5xbR2yKl1elJOCuhGjzQm0DBvW67Xw
-	uVMKMhuU+YX/QeDIiP4KW8kIfH+ORxsxL/Wvzy/HC6R0D8HbK3hkq6Kj10i0p+SGgmkItZ
-	sDJbLYtb8Yd2rr0tutSrq0Hgm3+SzqY=
+	b=vs1YUN7VwsO86xx+Gqr4+mJI+UWvl8TdG1pjw8WejENIOdOc9Ydr0x3VIIKZWd4XB8UB70
+	CGM+epC+cDYm/05NdNdFRjsxrLiycA6GqyPA96/G4n2sFYKhQwIquQfFzRHKYFAZsYfNJc
+	W2fHfWsx5eULAirmMnW8h846jHt9TcA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FIabE277;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1097E61119;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F559402EA;
+	Tue, 28 Apr 2026 20:45:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E26C2BCAF;
 	Tue, 28 Apr 2026 20:45:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABACFC2BCAF;
-	Tue, 28 Apr 2026 20:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777409109;
-	bh=gVU+NxBS58ndkAl4KdeNWT7uSAZiwRivKfRFLz7HiUI=;
+	s=k20201202; t=1777409116;
+	bh=yl3DcYUkZRaQ+ub527Rq2rXetVK21fIqVTn3MxdOY9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nitaGYyggSlLWsIVkpEsoRkkTis2eaPVf9ZfYRijDkozg64rpFStEVydukPk21Zlu
-	 Qw34ZYsAvetVYaLuB9sLrAep8WNmRplx0USdAHSy6ymmd9nN9VyELgmveo+EtFZNvR
-	 xxMsaFAxLZ6JluCihJ6hM7KuxjpNDlPwBHXEYRrpvUBendqWrfRNrAK/jSM0mOgcLw
-	 RTfrwIK82UjcD7FTHqtBLDyLGCW39/TpsZIBDYbcjDveRYfUAZEAGs9icb6Cejsse1
-	 GYUaR7AkWyzYO/UItvFjauGu4tLeKMIAH2Aq/Fen7KAsouItEEiFDL5CjS6fysgf1z
-	 NG8icHfoXfmOA==
+	b=FIabE277dGFIjWcvHSAVIpZbuctjYJFAbzAIaEigMZxuR3ljO7MZoCjpMjhS1g7EQ
+	 SV3Sm+KvI6HooC/VafcbPTWNRzpRkyLosLeOi5pXjbWJIwv5sbZxkKXlouIDTCvF6x
+	 4vNz5GYHJIBMYWvIuoVJCGzqb0k9yjuc+UEFTPZwGIDCHLg1U6X4p9bihlgABpvLvM
+	 TsmU5nv2hfgRXyeMd6Do4BA3JPJ3deD2A7EexpcnYjLHbmXVQtmYJHQmPbcmFovwJq
+	 5XgEKo6VZBYmffm2rKJePrVLD561D13IdFLAboj5lcCyxZdBsdpCBH0XfvWINjAYVz
+	 hdRM/w3fxxodg==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -91,22 +91,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 21/54] selftests/mm: add atexit() and signal handlers to thp_settings
-Date: Tue, 28 Apr 2026 23:42:07 +0300
-Message-ID: <20260428204240.1924129-22-rppt@kernel.org>
+Subject: [PATCH v3 22/54] selftests/mm: rename thp_settings.[ch] to hugepage_settings.[ch]
+Date: Tue, 28 Apr 2026 23:42:08 +0300
+Message-ID: <20260428204240.1924129-23-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260428204240.1924129-1-rppt@kernel.org>
 References: <20260428204240.1924129-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 452621C0014
+X-Stat-Signature: aqqjwjuk9js6nypwfdmioab7fy5rhpxs
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9D8C41C0013
-X-Stat-Signature: hjtemdi1sxtgtsg1m11hh7csaapzjczc
-X-HE-Tag: 1777409110-769927
-X-HE-Meta: U2FsdGVkX18ahWxLDUrZYSSk0jugMBqmt2/lM+gEQXRz1U6WX6gqTAmOrSpiTtHG+7OMnu5t/4ARj7jOsD4XXQM+7x+Y3ZoZIhi6e8p2XkzGUdFdZNV6rm5DDg+rArKQ5G6zfT0HpvjNe1PjS50HdlDfgInNsgCkgKCSGsyE8fUk7zxHB68s3wn37KyQzd39wH4WvQd7XdIW1w6PVFFerx28gHYnfiVTEsmsBKzyXUUqudi79wQXbP280IEWiOJqJHUwsz9tHI4w+hBmMiVJ2yRb7VH4pCzx+jo8Ou5SScSLQnYuyBN4GEXJPwN+ROFspFpCEG3wH/2sOOOwRuNKEh0QhWNCxkHtFerYhCN6g5qHQFEp3TqwB80jBdlth5ZuZ3HnTFbN/jFInquu2Ok2chi/c7SFWD3gs+uCoItQHOW843STkZif2iXQc0zzJmv9zoNDmWyxexn5GGCZFQB8gjcNOQkkk6+CRMHaJRwY0Bh15wU4bqxSUTtY8YbO+f8aHhMefI8WBWcQCri1ckulOqqOlWrbmjfdqX130BgaS5XzuaDKCQ44mHNDAo/7K4lEeZSrbXvISszkDH6pZflb30PCbP5jxZnlj4VejnetRy7kuBMFzjvyM/pHEu53iOM7PgMsVcNdv36gtxk7kVL1QEt5tWgpdv/7XSGJrx1RfoR50FJlfJfB80oggl+uL4Kaf2Y4MgOgEVDH0nZHbpUUqxA3wtxKCCrG2Ap0qoNgwq18S1Ru3SU+71OHELROdtshacoWxO0bjGqpAlFpwZ3l+XfcxblHdxfbhpKlamXBNd0PRCRre4YOraIMnqvbjJvvhVMFazj91T7jpjDAI/4R9Ncm2o/rzlgegCEJRKv5n265lkwJfZG5GVjGzeS+pQ+qE2BNqvAIkmvdFeYwdWY/s7OIs4mAgzjEcWUlkrVw0eId0oeJdKz89x0Z/ZHreku3A0SQCftgXIznaq9KlNC
- GXCRmf65
- Q03nJ94OG59PVzyUFXnCRFNv70xxMO4Xwn4FMVzxeaONtf8o9kiAtC23nPauxKm7AIkUcGB5LWVgF2G5mOawWtkD8uUFZ9xEQt/yHqA1vEJAUwObhws31dv5HG0Qucyml9PuFkiielL2KwDyrApguRvvwTPFvwEQmof09O4kBoTdYVy2ZWKA8WbeJCUHw8JEbPcveCcMQkRvgeSo69cspOggNziYKDrmI5jFS7tIv5wfwtl/OUaGOtYCPqMKFNCIBCU1AjEnxdtQ7EOaRyYWhu4tlQRf9gxDTZvOi
+X-HE-Tag: 1777409117-688812
+X-HE-Meta: U2FsdGVkX192cGvyxB01eIMBJIyFviil27g7JmnmM6UaNRR0NeY+UkoxqR+1A+pT7xrwVpueU8wedDyRu62cii6T/ep99/sudCTpumbVempoOwlgiQXDNOWjUSGU5A/R7os86GCI0ceHSlwqVb4WmZ5ppsnw6hL5MAjzH5e/Os65BXP8fBjBXHjgKEIqHyvvv+/AV0onM3LPlNYWLjk+t+qKYf7JHyh91IbaFzDWSQfh4L1ZXJW3F4F9T+PG1Wlhwd5RQG0Y7Wzi3kUbdyaNJ1qJB1UGsWKuiIDmSzfBklMHfuv2Rld03DJtijySuknlwdQtdVGQGrsS5b4NGfv30e8+b+2SJrGgfjRCwUoHtBA75UtX8LLXR24GEeX9nE/CwN/k5XYDCkR3hfAykymoMPlYioNLnFJYFCBcXuEEGDaAdopNaEoB3tdAebzTMzhHXXpYt332QKB0aRuhjGTroENb+8OG4Ulu54g84N4HyL/v9HNdr1p50kM6JntCNSqYZY0Acj1aYzmhfbs9KQK+oYgi25lo0nFYdEqKbkIm7X4XyItOlhQNkehIOHPnmg5SOSOItS4kGHIAj1FGSzVz0sH9aubcqGnyaHw62F4W9YTgE/BD1ykwxq8HOlGOC2gSHgcMrxjUVabJZHtwWk6qDlgi1IwYqwO+u+cxnFH6kv+/z7lxON2khiRjV5x/Q7LZHFGJoBCuXl+o/bYY2er66oEazbGGJoqssdN0xx5rPkpp+Rsht0oN9uI2pdlyFG/zQJdgBHvYgTK6y1azdOOhX7QMsGIQwH3YnUAb42Ecv74RvT91JVD6KWXs/c4XyNmB9ZjWL/Sayv3nviL4h7MLHBsvHmB1Y9DKzrnqh9Q0fIMYeJktZfKj1a2w0yb0a67heVxh0DoiRtFYfuHPc5Ruib2mSV/vQPfYN5MIX5j14ecN9IFC55lbzfWjYsKl6A65RkWu6tUo/Ri4DPQOlmG
+ tdcu3oyd
+ OLORTOJGi1rRFTphEIbyFMe4aEbiCBZhPtUNPx43rShE+hEDVRqKyd9adViDEZbvIMp4c5Z153aBxjtt/j8o5pvT4OXDl9nYsxQ/tNCz5u09No5qqNJVwWLgVAEh/s3Vw2PJZkKPG1m0gBnCFTPmT3w9vk/xjRORquR8c6IBfY/URIH1KoxRNl6ITFcy5xN8c4QquzrGd+l3qATHSbYIIWafVR18gB1JenaPX5D3A5ka8uKr/GXAvbG2qiozVqCG+IySL3GzmVbJkfEGCpylivpgr5o7CNhJOiKM3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,288 +116,206 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-khugepaged registers atexit() and signal handlers that ensure that THP
-settings are restored regardless of how the test exited.
-
-Make these handlers available for all users of thp_settings.
-
-The call to thp_save_settings() installs thp_restore_settings as the
-atexit() callback and makes sure that signals that kill a process would
-still call exit() and atexit() callback.
-
-Update child process in tests using thp_settings to use _exit() instead
-of exit() to avoid altering THP settings in the middle of a test.
+... for upcoming addition of HugeTLB helpers.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/cow.c            | 21 +++++------
- tools/testing/selftests/mm/khugepaged.c     | 40 +++------------------
- tools/testing/selftests/mm/thp_settings.c   | 28 ++++++++++++++-
- tools/testing/selftests/mm/uffd-wp-mremap.c |  4 ---
- 4 files changed, 39 insertions(+), 54 deletions(-)
+ tools/testing/selftests/mm/Makefile                           | 4 ++--
+ tools/testing/selftests/mm/cow.c                              | 2 +-
+ tools/testing/selftests/mm/folio_split_race_test.c            | 2 +-
+ tools/testing/selftests/mm/guard-regions.c                    | 2 +-
+ .../selftests/mm/{thp_settings.c => hugepage_settings.c}      | 2 +-
+ .../selftests/mm/{thp_settings.h => hugepage_settings.h}      | 0
+ tools/testing/selftests/mm/khugepaged.c                       | 2 +-
+ tools/testing/selftests/mm/ksm_tests.c                        | 2 +-
+ tools/testing/selftests/mm/migration.c                        | 2 +-
+ tools/testing/selftests/mm/prctl_thp_disable.c                | 2 +-
+ tools/testing/selftests/mm/soft-dirty.c                       | 2 +-
+ tools/testing/selftests/mm/split_huge_page_test.c             | 2 +-
+ tools/testing/selftests/mm/transhuge-stress.c                 | 2 +-
+ tools/testing/selftests/mm/uffd-wp-mremap.c                   | 2 +-
+ 14 files changed, 14 insertions(+), 14 deletions(-)
+ rename tools/testing/selftests/mm/{thp_settings.c => hugepage_settings.c} (99%)
+ rename tools/testing/selftests/mm/{thp_settings.h => hugepage_settings.h} (100%)
 
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index a6955660a806..a1d103b38485 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -186,8 +186,8 @@ TEST_FILES += write_hugetlb_memory.sh
+ 
+ include ../lib.mk
+ 
+-$(TEST_GEN_PROGS): vm_util.c thp_settings.c
+-$(TEST_GEN_FILES): vm_util.c thp_settings.c
++$(TEST_GEN_PROGS): vm_util.c hugepage_settings.c
++$(TEST_GEN_FILES): vm_util.c hugepage_settings.c
+ 
+ $(OUTPUT)/uffd-stress: uffd-common.c
+ $(OUTPUT)/uffd-unit-tests: uffd-common.c
 diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
-index d9c69c04b67d..6abdcb30aba8 100644
+index 6abdcb30aba8..4321f4208fe3 100644
 --- a/tools/testing/selftests/mm/cow.c
 +++ b/tools/testing/selftests/mm/cow.c
-@@ -202,7 +202,7 @@ static void do_test_cow_in_parent(char *mem, size_t size, bool do_mprotect,
- 		log_test_result(KSFT_FAIL);
- 		goto close_comm_pipes;
- 	} else if (!ret) {
--		exit(fn(mem, size, &comm_pipes));
-+		_exit(fn(mem, size, &comm_pipes));
- 	}
+@@ -29,7 +29,7 @@
+ #include "../../../../mm/gup_test.h"
+ #include "kselftest.h"
+ #include "vm_util.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
  
- 	while (read(comm_pipes.child_ready[0], &buf, 1) != 1)
-@@ -333,7 +333,7 @@ static void do_test_vmsplice_in_parent(char *mem, size_t size,
- 			;
- 		/* Modify page content in the child. */
- 		memset(mem, 0xff, size);
--		exit(0);
-+		_exit(0);
- 	}
+ static size_t pagesize;
+ static int pagemap_fd;
+diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
+index ff026f183ac7..7ede4793c778 100644
+--- a/tools/testing/selftests/mm/folio_split_race_test.c
++++ b/tools/testing/selftests/mm/folio_split_race_test.c
+@@ -25,7 +25,7 @@
+ #include <unistd.h>
+ #include "vm_util.h"
+ #include "kselftest.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
  
- 	if (!before_fork) {
-@@ -480,7 +480,7 @@ static void do_test_iouring(char *mem, size_t size, bool use_fork)
- 			write(comm_pipes.child_ready[1], "0", 1);
- 			while (read(comm_pipes.parent_ready[0], &buf, 1) != 1)
- 				;
--			exit(0);
-+			_exit(0);
- 		}
+ uint64_t page_size;
+ uint64_t pmd_pagesize;
+diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+index 48e8b1539be3..feb50b415f52 100644
+--- a/tools/testing/selftests/mm/guard-regions.c
++++ b/tools/testing/selftests/mm/guard-regions.c
+@@ -21,7 +21,7 @@
+ #include <sys/uio.h>
+ #include <unistd.h>
+ #include "vm_util.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
  
- 		while (read(comm_pipes.child_ready[0], &buf, 1) != 1)
-@@ -645,7 +645,7 @@ static void do_test_ro_pin(char *mem, size_t size, enum ro_pin_test test,
- 			write(comm_pipes.child_ready[1], "0", 1);
- 			while (read(comm_pipes.parent_ready[0], &buf, 1) != 1)
- 				;
--			exit(0);
-+			_exit(0);
- 		}
+ #include "../pidfd/pidfd.h"
  
- 		/* Wait until our child is ready. */
-@@ -956,7 +956,7 @@ static void do_run_with_thp(test_fn fn, enum thp_run thp_run, size_t thpsize)
- 			log_test_result(KSFT_FAIL);
- 			goto munmap;
- 		} else if (!ret) {
--			exit(0);
-+			_exit(0);
- 		}
- 		wait(&ret);
- 		/* Allow for sharing all pages again. */
-@@ -1347,13 +1347,13 @@ static void do_test_anon_thp_collapse(char *mem, size_t size,
- 		switch (test) {
- 		case ANON_THP_COLLAPSE_UNSHARED:
- 		case ANON_THP_COLLAPSE_FULLY_SHARED:
--			exit(child_memcmp_fn(mem, size, &comm_pipes));
-+			_exit(child_memcmp_fn(mem, size, &comm_pipes));
- 			break;
- 		case ANON_THP_COLLAPSE_LOWER_SHARED:
--			exit(child_memcmp_fn(mem, size / 2, &comm_pipes));
-+			_exit(child_memcmp_fn(mem, size / 2, &comm_pipes));
- 			break;
- 		case ANON_THP_COLLAPSE_UPPER_SHARED:
--			exit(child_memcmp_fn(mem + size / 2, size / 2,
-+			_exit(child_memcmp_fn(mem + size / 2, size / 2,
- 					     &comm_pipes));
- 			break;
- 		default:
-@@ -1911,10 +1911,5 @@ int main(int argc, char **argv)
- 	run_anon_thp_test_cases();
- 	run_non_anon_test_cases();
+diff --git a/tools/testing/selftests/mm/thp_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+similarity index 99%
+rename from tools/testing/selftests/mm/thp_settings.c
+rename to tools/testing/selftests/mm/hugepage_settings.c
+index f38ba8a27b30..87ecb309b430 100644
+--- a/tools/testing/selftests/mm/thp_settings.c
++++ b/tools/testing/selftests/mm/hugepage_settings.c
+@@ -8,7 +8,7 @@
+ #include <unistd.h>
  
--	if (pmdsize) {
--		/* Only if THP is supported. */
--		thp_restore_settings();
--	}
--
- 	ksft_finished();
- }
+ #include "vm_util.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
+ 
+ #define THP_SYSFS "/sys/kernel/mm/transparent_hugepage/"
+ #define MAX_SETTINGS_DEPTH 4
+diff --git a/tools/testing/selftests/mm/thp_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
+similarity index 100%
+rename from tools/testing/selftests/mm/thp_settings.h
+rename to tools/testing/selftests/mm/hugepage_settings.h
 diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 2f0baa2321ca..ef3b6464ff3f 100644
+index ef3b6464ff3f..7563d7600ce7 100644
 --- a/tools/testing/selftests/mm/khugepaged.c
 +++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -72,7 +72,6 @@ struct file_info {
- };
+@@ -22,7 +22,7 @@
+ #include "linux/magic.h"
  
- static struct file_info finfo;
--static bool skip_settings_restore;
- static int exit_status;
+ #include "vm_util.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
  
- static void success(const char *msg)
-@@ -92,25 +91,6 @@ static void skip(const char *msg)
- 	exit_status = KSFT_SKIP;
- }
+ #define BASE_ADDR ((void *)(1UL << 30))
+ static unsigned long hpage_pmd_size;
+diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
+index 752a2c0d06ab..fb355f869401 100644
+--- a/tools/testing/selftests/mm/ksm_tests.c
++++ b/tools/testing/selftests/mm/ksm_tests.c
+@@ -15,7 +15,7 @@
+ #include "kselftest.h"
+ #include <include/vdso/time64.h>
+ #include "vm_util.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
  
--static void restore_settings_atexit(void)
--{
--	if (skip_settings_restore)
--		return;
--
--	ksft_print_msg("Restore THP and khugepaged settings...");
--	thp_restore_settings();
--	success("OK");
--
--	skip_settings_restore = true;
--	ksft_finished();
--}
--
--static void restore_settings(int sig)
--{
--	/* exit() will invoke the restore_settings_atexit handler. */
--	exit(sig ? KSFT_FAIL : exit_status);
--}
--
- static void save_settings(void)
- {
- 	ksft_print_msg("Save THP and khugepaged settings...");
-@@ -119,12 +99,6 @@ static void save_settings(void)
- 	thp_save_settings();
+ #define KSM_SYSFS_PATH "/sys/kernel/mm/ksm/"
+ #define KSM_FP(s) (KSM_SYSFS_PATH s)
+diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+index 76e380b74658..0212cd5bde6e 100644
+--- a/tools/testing/selftests/mm/migration.c
++++ b/tools/testing/selftests/mm/migration.c
+@@ -5,7 +5,7 @@
+  */
  
- 	success("OK");
--
--	atexit(restore_settings_atexit);
--	signal(SIGTERM, restore_settings);
--	signal(SIGINT, restore_settings);
--	signal(SIGHUP, restore_settings);
--	signal(SIGQUIT, restore_settings);
- }
+ #include "kselftest_harness.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
  
- static void get_finfo(const char *dir)
-@@ -844,8 +818,6 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
- 	ksft_print_msg("Share small page over fork()...");
- 	if (!fork()) {
- 		/* Do not touch settings on child exit */
--		skip_settings_restore = true;
--
- 		if (ops->check_huge(p, 0))
- 			success("OK");
- 		else
-@@ -857,7 +829,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
+ #include <strings.h>
+ #include <pthread.h>
+diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
+index ca27200596a4..d8d9d1de57b8 100644
+--- a/tools/testing/selftests/mm/prctl_thp_disable.c
++++ b/tools/testing/selftests/mm/prctl_thp_disable.c
+@@ -14,7 +14,7 @@
+ #include <sys/wait.h>
  
- 		validate_memory(p, 0, page_size);
- 		ops->cleanup_area(p, hpage_pmd_size);
--		exit(exit_status);
-+		_exit(exit_status);
- 	}
+ #include "kselftest_harness.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
+ #include "vm_util.h"
  
- 	wait(&wstatus);
-@@ -882,8 +854,6 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
- 	ksft_print_msg("Share huge page over fork()...");
- 	if (!fork()) {
- 		/* Do not touch settings on child exit */
--		skip_settings_restore = true;
--
- 		if (ops->check_huge(p, 1))
- 			success("OK");
- 		else
-@@ -906,7 +876,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
+ #ifndef PR_THP_DISABLE_EXCEPT_ADVISED
+diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
+index bcfcac99b436..c426c4636ef5 100644
+--- a/tools/testing/selftests/mm/soft-dirty.c
++++ b/tools/testing/selftests/mm/soft-dirty.c
+@@ -9,7 +9,7 @@
  
- 		validate_memory(p, 0, hpage_pmd_size);
- 		ops->cleanup_area(p, hpage_pmd_size);
--		exit(exit_status);
-+		_exit(exit_status);
- 	}
+ #include "kselftest.h"
+ #include "vm_util.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
  
- 	wait(&wstatus);
-@@ -932,8 +902,6 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 	ksft_print_msg("Share huge page over fork()...");
- 	if (!fork()) {
- 		/* Do not touch settings on child exit */
--		skip_settings_restore = true;
--
- 		if (ops->check_huge(p, 1))
- 			success("OK");
- 		else
-@@ -966,7 +934,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ #define PAGEMAP_FILE_PATH "/proc/self/pagemap"
+ #define TEST_ITERATIONS 10000
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 500d07c4938b..cc99294bdd5a 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -21,7 +21,7 @@
+ #include <time.h>
+ #include "vm_util.h"
+ #include "kselftest.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
  
- 		validate_memory(p, 0, hpage_pmd_size);
- 		ops->cleanup_area(p, hpage_pmd_size);
--		exit(exit_status);
-+		_exit(exit_status);
- 	}
+ uint64_t pagesize;
+ unsigned int pageshift;
+diff --git a/tools/testing/selftests/mm/transhuge-stress.c b/tools/testing/selftests/mm/transhuge-stress.c
+index 7a9f1035099b..8eb0c5630e7e 100644
+--- a/tools/testing/selftests/mm/transhuge-stress.c
++++ b/tools/testing/selftests/mm/transhuge-stress.c
+@@ -17,7 +17,7 @@
+ #include <sys/mman.h>
+ #include "vm_util.h"
+ #include "kselftest.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
  
- 	wait(&wstatus);
-@@ -1260,5 +1228,5 @@ int main(int argc, char **argv)
- 		t->fn(t->ctx, t->ops);
- 	}
- 
--	restore_settings(0);
-+	ksft_finished();
- }
-diff --git a/tools/testing/selftests/mm/thp_settings.c b/tools/testing/selftests/mm/thp_settings.c
-index e748ebfb3d4e..f38ba8a27b30 100644
---- a/tools/testing/selftests/mm/thp_settings.c
-+++ b/tools/testing/selftests/mm/thp_settings.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <fcntl.h>
- #include <limits.h>
-+#include <signal.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -15,6 +16,7 @@ static struct thp_settings settings_stack[MAX_SETTINGS_DEPTH];
- static int settings_index;
- static struct thp_settings saved_settings;
- static char dev_queue_read_ahead_path[PATH_MAX];
-+static bool thp_settings_saved;
- 
- static const char * const thp_enabled_strings[] = {
- 	"never",
-@@ -298,12 +300,36 @@ void thp_pop_settings(void)
- 
- void thp_restore_settings(void)
- {
--	thp_write_settings(&saved_settings);
-+	if (thp_settings_saved)
-+		thp_write_settings(&saved_settings);
-+}
-+
-+static void thp_restore_settings_atexit(void)
-+{
-+	thp_restore_settings();
-+}
-+
-+static void thp_restore_settings_sighandler(int sig)
-+{
-+	/* exit() will invoke the thp_restore_settings_atexit handler. */
-+	exit(KSFT_FAIL);
- }
- 
- void thp_save_settings(void)
- {
- 	thp_read_settings(&saved_settings);
-+
-+	/*
-+	 * setup exit hooks to make sure THP settings are restored on graceful
-+	 * and error exits and signals
-+	 */
-+	atexit(thp_restore_settings_atexit);
-+	signal(SIGTERM, thp_restore_settings_sighandler);
-+	signal(SIGINT, thp_restore_settings_sighandler);
-+	signal(SIGHUP, thp_restore_settings_sighandler);
-+	signal(SIGQUIT, thp_restore_settings_sighandler);
-+
-+	thp_settings_saved = true;
- }
- 
- void thp_set_read_ahead_path(char *path)
+ int backing_fd = -1;
+ int mmap_flags = MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE;
 diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
-index 17186d4a4147..516c35d236e1 100644
+index 516c35d236e1..9d67b11c2f28 100644
 --- a/tools/testing/selftests/mm/uffd-wp-mremap.c
 +++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
-@@ -368,10 +368,6 @@ int main(int argc, char **argv)
- 				       tc->swapout, tc->hugetlb);
- 	}
+@@ -8,7 +8,7 @@
+ #include <linux/mman.h>
+ #include <sys/mman.h>
+ #include "kselftest.h"
+-#include "thp_settings.h"
++#include "hugepage_settings.h"
+ #include "uffd-common.h"
  
--	/* If THP is supported, restore original THP settings. */
--	if (nr_thpsizes)
--		thp_restore_settings();
--
- 	i = ksft_get_fail_cnt();
- 	if (i)
- 		ksft_exit_fail_msg("%d out of %d tests failed\n",
+ static int pagemap_fd;
 -- 
 2.53.0
 
