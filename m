@@ -4,79 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 016C2FF886D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:46:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C30E4FF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:51:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FF616B0092; Tue, 28 Apr 2026 15:46:08 -0400 (EDT)
+	id D97A76B0005; Tue, 28 Apr 2026 15:51:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AFD36B0093; Tue, 28 Apr 2026 15:46:08 -0400 (EDT)
+	id D48056B008A; Tue, 28 Apr 2026 15:51:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 578296B0095; Tue, 28 Apr 2026 15:46:08 -0400 (EDT)
+	id C37D66B008C; Tue, 28 Apr 2026 15:51:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 472056B0092
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:46:08 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C8051603EC
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:46:08 +0000 (UTC)
-X-FDA: 84708995616.11.C5724EA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3100D40006
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:46:05 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ik8AqnBV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777405566; a=rsa-sha256;
-	cv=none;
-	b=ryIExJIsPhTvoactfPfTfaHQLkZmc2E33TqTW3PPjfzflA5P0aqROp1AfIoIFjI/UDMtVZ
-	gFTOZWaiH1ZmAqEdPIRVdLNGOMntuzph4mjxeAuk/brx/RFKrL77G5r6biairQiieX+e1k
-	hKjYtyHIl5lRmmufxuzc+OgwdAF44+o=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ik8AqnBV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE8646B0005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:51:19 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 578AF12024F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:51:19 +0000 (UTC)
+X-FDA: 84709008678.22.5D4335B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 99D5F160002
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:51:17 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nm3/Up7F";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777405566;
+	s=arc-20220608; t=1777405877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hcmGTlHTFKCdrFxrhE+m2ydPFAjMTxdTQd5mmv5nnhM=;
-	b=RX0xjvP8xZS61yh/olalqPKAiMLLGNeikqBwwfKBWtYNQhLDkaab8JDDLRi9VeYpy2DcD1
-	Lsle69FaocRx/mkMbH09RGBDDhTwTtyXWptHvlmJajWRTCyHh7E4rqJj0Z4JNR3Pg2TmRD
-	j2Nk4kiv3S2JidBfK+QKbjr+IxnD7/Y=
+	bh=N5ioFK0mHY9Ys4LHm2ud15cUW/kDvfazRIYlH++roFY=;
+	b=rn0MR8nWr8dimIWQB4YV++yZwUQBXeZ8VAWTN4SSvLNtAZg7+LdHlbs+hPX6t1e2ce10kg
+	fu4LweJ5R6OXCk3Wt1Wm0Nq9dD895Z1kxDkb7TZopVYdluJz4LB+AUXsCVJ8Mo5WnJEYgo
+	kHWTvovtuZA9E3x2p+8RZqqHGKsC/Xw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777405877; a=rsa-sha256;
+	cv=none;
+	b=XSN/qqquWhGGryTdBP4K1CrR52B0WEkbRXmEXuYwzYLv6V7eueOkbOBiuc8amjvlAzdeWe
+	PEbRTT1I7g4ce5+4awnVnTnYeatvO/59akz1NUXZMZvjIy9Wk9iO+N2ZAzQnMKtQXStlN2
+	lvw6MIGl7P1BE1MPRmc6euXxnXMh3I4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nm3/Up7F";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 287AB41A5D;
-	Tue, 28 Apr 2026 19:46:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6B5C2BCAF;
-	Tue, 28 Apr 2026 19:46:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EC5E161145;
+	Tue, 28 Apr 2026 19:51:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA90C2BCAF;
+	Tue, 28 Apr 2026 19:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777405565;
-	bh=yvm5AAW8pWe+hcrCUl/s0FLrh+xzKGKcVtjKj0e9BOU=;
+	s=k20201202; t=1777405876;
+	bh=Nhfmyw9bPmtRKlxPV1In2mC53XW8ms1qpcByR8ySSaY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ik8AqnBVEniWxz4gB+Db0JUp63he0UIJizJ+2MIrottcKhFRnNIhICcF7fZYkOTLT
-	 CkghgSUxL+v5S8q7MdGMtKP0YjSBbTlje+3MaZgwaqY3sxmf8BcLxNtIyUngHjf5wU
-	 p6rZEuKr0hDBjEwMBgrw6ZsZWJFxgvVv5i9eh+tY07iXVNWMNUdWfXx3dZvxGp/JLv
-	 XplyZYFhpqE3ivl15eC9v4gizmathKxxt7/qBOUJ2juHfIxO8X7BJEUQ62YoqM1N6o
-	 OxAy1fbz4I1nFX0IaT3Q9vG5/iRxE8/kKgem3VJbjxNSBSfVvzP84rS411M9fDIKwC
-	 U80q4+bXXrHzw==
-Message-ID: <5f45cc59-d71f-409c-8cfb-6eba23b0a447@kernel.org>
-Date: Tue, 28 Apr 2026 21:45:59 +0200
+	b=nm3/Up7Fte+HsSj4Zi+YOwznbJD7iPvMtnYo665KKkx6dWJcE7Gzd0pPiMSQo+jK4
+	 jne31Wtcxx5AG8x5gUZVH9V8RjxMZw7APbTvdkucjJW3hbn/Kxv2fYWn4d4iNwidcq
+	 oxgP3xyTt8eJTpuPlhI6M7N8t55F9QFPaHEBiZMxlU5purCnr6aeQmlod1arAb7qyT
+	 TejgemR812N9nuTYeJuBNAVDkdX15SepZsM2cm3UB+os/1GK6MzazI8reQvK4XdYJx
+	 2vglztBGG3fVOstGGeKmJzZujOc0herLstlCzqy++2TxoMjnhbtu7LcpirMLnVykhl
+	 0WusTNZOxXBdA==
+Message-ID: <3d1a6b5c-f3bf-462f-879a-cdb5b60868ac@kernel.org>
+Date: Tue, 28 Apr 2026 21:51:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/gup: cleanup pgtable entry accessors
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>
-References: <20260421051754.1691221-1-agordeev@linux.ibm.com>
+Subject: Re: [PATCH v4 02/15] mm: Make empty_zero_page __ro_after_init
+To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
+ Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-hardening@vger.kernel.org
+References: <20260427153416.2103979-17-ardb+git@google.com>
+ <20260427153416.2103979-19-ardb+git@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260421051754.1691221-1-agordeev@linux.ibm.com>
+In-Reply-To: <20260427153416.2103979-19-ardb+git@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: b6dnjotxt7txtuirwcea3y3qksa9yn98
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 99D5F160002
+X-Stat-Signature: dmuqhpcgip7aogkj6b6ub5ggu6nne8sh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3100D40006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777405565-520759
-X-HE-Meta: U2FsdGVkX1/mLv58aBDXu6nEtiOMBFuQfA4jCOEy0Wgs8T0KEU6x0RQqWPQmLWH40ZeHlvXzV3ONgBLZ7VVZ+6w+FgnN5MO6Vtk5ZrpaCvJwRq/gz1nlEKChEuzsDO5NfiMdlUTNlvnJAbjV3AigV9G7dVX7yqoRGL+jF1FFF9YN2lMmd8xFQl51fiB1PVROOd6v0C0jZnIXDX81IgCA5sIFtFU34qKKRGeaHjziX/5VFKfMP6k9hvnJk969pSLuN1KuRq4jm9XAFMFHQw1MgiuY1Ib+9RZSS9cc78nJbZAmnMvXhomTageauZXrdxRUxv4Hu3PdfYDJXEWvLswzBnPBCIjNLQ9m6jJcF6mR/XEs0vtRj0QUmmIy3ZC4reTnz53TL6CNbr6DbnaKKyrF+gezT2/Dz+tep7mB7vNGivt+Sz7yYSCd3L5I8xJ/ip29DqyW1M121/UIYYt7MvaSWctZGaqoFlc+E6rjzUM5aAvlW4p9KX9AEoW5HgdWCdhrOqM+8qRQ/ub8BmaTghRFwTXu8iAcDtSdptjzLbH437HtvG/ifnYzoKGhpq9QATOWcX1B+0lbkAdZJR4Hk9brjXyC1J/cZqFxxMcVAbOZ37jgsNN4DIxMFTSNAjeEsNUWHR93THULwDZPgSSYUEPpq14JTMEKAH8Wsalacqb4zW6Nq4/FxYBgo0aJGEWq4mMAPrlTclZV10CuIVGzUJ8Dfm8V4MRr63FeT5HzB7UDJuovQQw9AWEipI0Vqq8n4lBJ+9a82M24YBgXmsbKhMQi8AiAR9iIsGJvtduwErWt/IrB6m8HN/wISCX7bExlVyJvq6x5Yj5dcuYFIkimlKlt+b5xbUbT19JYwQzeIR+kVMtmHbvYvv1qUFWLSI9FT+D0Z+yLukHTVOhf0RHPMRlnWju2ySBaVcBL/IOV/dvBBK+ox3gv5TLHuPDivWW1fFZn8ijJX7pXNfWOMM00GgD
- MESd2Cph
- SQ+337Zc6xUujDxlO+N0dyw6MqNtwbF0f7samkraKrnvrDasVdd4qZz8h6QvQvuKTel/tr+z99tI48/RPzPx+ucseRwDKJtTqa3XivS7Jj4SJUqu9++42h1LivDod5fYfhhFX2kuCTSHgBW8rsgxmWGGBcajSWvf4TxLJjTOLhjuJDQUVyk3ynvGdmr0Y6QC7eQgNyXQhS6k2ZvzPXGe3iNbbhzcnn+95rR8gzObp3lpSf8WDD/9y9gMaw0qSvxV8+cytauXby7cKlrMhGB6bGIX32g==
+X-HE-Tag: 1777405877-507372
+X-HE-Meta: U2FsdGVkX18wEGrWewboU2pPs8bjHV1czxOAtddbZbe/Yxygp+3Rw7v55hXw4vIbPt3KTBrei0KGxYKf7FGY3iShebjiRMCXlfrL9Ir+Y21YBBtPXeNAO20BQwVfROEhfV9hgUK0O1H0AebpsVJ2jXhW7NzFfLWTCJ/ZJ0GboDrno/s6Wp3xebvalhm9i+6bmGeZnlL0e0IOIA6dDEKI3qP2V9VyesX/ZrIrmFteUM6gud+iUu6yf0EtiCftLL1O4oQE5XpQtDe4RjMyEWxV43RcBP5myvDRhuKGoxlefcgFLD6Ml5M4dgvbT2Q90iVPmkMU9ibIWqZQL0PzQHl2OY+rp4ycOj38BITYR26DaJXb3uIxx78OdaE4e7SPhgfQJdyVSy75W2SDxVKN7wtsReP7XK5lgSE5JhwMkhuxEutAUhvq/JWsQW/oo5BelUdjdr1Nhjv4BP/dysPOdOr05feXj3W3pFHZd4O+C6qi/dVcQGkY+vfnkDWmphRfIUEsxMbPrL4W5BVAVLQABEAm8MnoEkGI1fgCY1zBOHvmlzRRoilIG5tqpFPvUsKw1HTlJjg5F9f84i4ZWk0VfJ6kUkFdXu18gM0T+H6/XwhatWg0MXHAqbedD7r7OFINoCdJGGkR8TEERAPtwH7dv08XDZV4/USoI1BBvTrKCDwuN6W4JD1xXjAALvZruVES+HZazs1yH/YGMA1R84GOVWoUF+uaK0E+AP7VblQhKSMpZgTXT1+Y6CpRKFzGvwKk1dHCGUJeU7v1O+ub3c17h058I81TtEDEUbIusHWcKfo19zBJ+6ZfDcaZxDHo/G+vT8v1AUQMMUeJEZRFq+Kt8h2JrfT2Bh5QCHVEvOgbOKXN3H/m3S46V6/RgrKol0KP0a829frFpJWf9Sig5Dn6ji5gC4KRd630ThcZqQnD+NvCt1xeJzr8rzQKhejwI5CjmFizrFQpASuoAq0DbZNGUCD
+ ovZUCU99
+ 3H+rm4nFo508onCptE6xIkEDPgzXPHiUfa7iB1l3NZYK+0OMHEbzrr9vo8tkx////js5f/GlpmbqHkwn7jz4tB67I72uIBS7DdIfpwlJRdPvvZZhj91HYidOJtcqx90kA0bMEDW2YrliZZIx9b6Q5Vxk0hcv0/VMDJNJpFG4IkaiqliYAIOgscGRCNKuITEdFKJKleHI0Y1soRegY3NSZpO9FG7uY3cdwkvxmlcjRrTnoZwpxxYttU6HNlMK0O0oaeoP/6j9j8DxnvMqaZegCDYT30s1BNNaMUNZXf4iMvFrT7Q/qQJxDdGCg/E1GvgxD4mVUSyIEVpRxClY0QmvSUda/ozyfJlrZ91jOSV7rB/rF/MFwoE2/4f8UvylzT1V+8xK7wH5sVwnXbIaBKYbsVwyZRA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,61 +144,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/21/26 07:17, Alexander Gordeev wrote:
-> PMD and PUD entries revalidation has the same semantics as PTE entry
-> revalidation. Convert the remaining direct entry dereferences to the
-> corresponding accessors.
+On 4/27/26 17:34, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
 > 
-> The PTE validation in gup_fast_pte_range() is inconsistent with the
-> prior value acquisition in the sense that it drops the lockless
-> access semantics.
+> The empty zero page is used to back any kernel or user space mapping
+> that is supposed to remain cleared, and so the page itself is never
+> supposed to be modified.
 > 
-> Use the lockless accessor not only for the PTE, but also for the PMD
-> validation, which is likewise inconsistent with the prior value
-> acquisition in gup_fast_pmd_range().
+> So make it __ro_after_init rather than __page_aligned_bss: on most
+> architectures, this ensures that both the kernel's mapping of it and any
+> aliases that are accessible via the kernel direct (linear) map are
+> mapped read-only, and cannot be used (inadvertently or maliciously) to
+> corrupt the contents of the zero page.
 > 
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 > ---
->  mm/gup.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  mm/mm_init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 8e7dc2c6ee73..236450feea9a 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2865,8 +2865,8 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
->  		if (!folio)
->  			goto pte_unmap;
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index f9f8e1af921c..6ca01ed2a5a4 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -57,7 +57,7 @@ unsigned long zero_page_pfn __ro_after_init;
+>  EXPORT_SYMBOL(zero_page_pfn);
 >  
-> -		if (unlikely(pmd_val(pmd) != pmd_val(*pmdp)) ||
-> -		    unlikely(pte_val(pte) != pte_val(ptep_get(ptep)))) {
-> +		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get_lockless(pmdp))) ||
-> +		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep)))) {
->  			gup_put_folio(folio, 1, flags);
->  			goto pte_unmap;
->  		}
-> @@ -2942,7 +2942,7 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
->  	if (!folio)
->  		return 0;
+>  #ifndef __HAVE_COLOR_ZERO_PAGE
+> -uint8_t empty_zero_page[PAGE_SIZE] __page_aligned_bss;
+> +uint8_t empty_zero_page[PAGE_SIZE] __ro_after_init __aligned(PAGE_SIZE);
+>  EXPORT_SYMBOL(empty_zero_page);
 >  
-> -	if (unlikely(pmd_val(orig) != pmd_val(*pmdp))) {
-> +	if (unlikely(pmd_val(orig) != pmd_val(pmdp_get_lockless(pmdp)))) {
->  		gup_put_folio(folio, refs, flags);
->  		return 0;
->  	}
-> @@ -2985,7 +2985,7 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
->  	if (!folio)
->  		return 0;
->  
-> -	if (unlikely(pud_val(orig) != pud_val(*pudp))) {
-> +	if (unlikely(pud_val(orig) != pud_val(pudp_get(pudp)))) {
->  		gup_put_folio(folio, refs, flags);
->  		return 0;
->  	}
+>  struct page *__zero_page __ro_after_init;
 
-In general, LGTM.
+I am no expert on BSS etc, but from what I understand, we'll still get zeroed
+page-aligned memory. I don't know if there is any other impact on not having it
+in bss.page_aligned. I assume no
 
-I do wonder, though, if we want to switch to pte_same/pmd_same/pud_same while at it?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
