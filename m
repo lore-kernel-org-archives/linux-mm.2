@@ -4,106 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9307EFF885D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 11:20:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D14FFF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 11:20:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE0EE6B0088; Tue, 28 Apr 2026 07:20:39 -0400 (EDT)
+	id 7D7216B008A; Tue, 28 Apr 2026 07:20:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C91306B008A; Tue, 28 Apr 2026 07:20:39 -0400 (EDT)
+	id 787746B008C; Tue, 28 Apr 2026 07:20:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B80046B008C; Tue, 28 Apr 2026 07:20:39 -0400 (EDT)
+	id 6C5676B0092; Tue, 28 Apr 2026 07:20:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A8FCA6B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:20:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 56A911C063A
+	by kanga.kvack.org (Postfix) with ESMTP id 5A11B6B008A
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:20:41 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2BC7C1A0585
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 11:20:41 +0000 (UTC)
+X-FDA: 84707721882.24.F2505E2
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4A6C1C0010
 	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 11:20:39 +0000 (UTC)
-X-FDA: 84707721798.15.57D3FED
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0F1B8180008
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 11:20:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of segher@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=segher@kernel.crashing.org
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ouFfKrgt;
+	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777375236;
+	s=arc-20220608; t=1777375239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wVlN3F/adnpU3EbVMRovr5PQ7UzNKrgvugpJLXSzjvA=;
-	b=Ld3qeMKcEoN64lZfKbtnNNOAIHvESJHu4Owxltevcz0z3PPwS+u7B3LBeyZ1Ly5uVC1YrR
-	y8ip4LW15Vi937am7opBCbNe7Y50q1U0MBKYZQJBiDR7K2H4HTyI/0wvv+bJZ3383yPiXO
-	9vqb40vH+ZO/Nc1iZoGD0fJ4OUFPZC0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777375236; a=rsa-sha256;
-	cv=none;
-	b=HH3RpoDSpWQA2k4HMJke6MW2sN5pfIBMsKdIDmuU0iLnqLXt+yrmwZ4xSuny4xCyn2CjsP
-	rD9qWboTx+PYelY23aEFtLFJ9/4syICjvja3MA5Q+IOadCRxnRuU62AnWXo6q/gAd1Br51
-	vZ2tx5izrxUATej+rqhReSvNirnm/m4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DZRrlNftEWSaYkPlYuyXhwwlyx7ubbXUhvki06OMnS0=;
+	b=KAeHqXwmMDMjAS4ZESBoyeyQFoTnRhLs2hFB4LZXajeyCubw+X0G3VJd5bptpfg2fHYnyG
+	42Jo2SkBst4HOYbhdiAFzGkwbx73TgerGL+i87tqLGEj+BwETa+vyW/Jwfr40TxaSWWhSs
+	2gM2ussbxsW0qhfgW6BXDVciQADg93w=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of segher@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=segher@kernel.crashing.org
-Received: from gate.crashing.org (localhost [127.0.0.1])
-	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 63SBKIxF1057213;
-	Tue, 28 Apr 2026 06:20:18 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.18.1/8.18.1/Submit) id 63SBKHXo1057211;
-	Tue, 28 Apr 2026 06:20:17 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Tue, 28 Apr 2026 06:20:17 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Laight <david.laight.linux@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
-        Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-        ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-mm@kvack.org,
-        linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@vger.kernel.org,
-        linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
-Message-ID: <afCX8WlnEFUei1y6@gate>
-References: <cover.1777306795.git.chleroy@kernel.org>
- <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
- <ae-j2_QirCySZD02@yury>
- <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
- <ae-2yLWSGnfeTvh1@yury>
- <CAHk-=wgPrLy0FR3sEWBYQuNAac1axDASYMnTuPuxEU0WytzL7w@mail.gmail.com>
- <ae_jeJLlVWjJ4sOY@yury>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ae_jeJLlVWjJ4sOY@yury>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0F1B8180008
-X-Stat-Signature: b143eodtd1iqh4u3ubk9hiy11okiiq3p
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ouFfKrgt;
+	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777375239; a=rsa-sha256;
+	cv=none;
+	b=ho4povXSouT6hOd9bXG+bx9ULhbHlfe4a34AwA/sqqvnv25Xx5T9xNadxy3+UM5/kjOXpb
+	QZt6zrZanWzTk2wFE3s04CYwNMzoZdfZPunqp3aFq10ugaAZ2+OpGnp0/rU/0lORHYxd61
+	JSBqC+YwR2487+jGxBVtqoVXRkH2jzE=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777375236;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DZRrlNftEWSaYkPlYuyXhwwlyx7ubbXUhvki06OMnS0=;
+	b=ouFfKrgt/mJqUG5kM3lCytRYJiFU1dwYzJobXtg/Bm5vhjQnLD8Gq0EKE4L1LJ0bOgU+u6
+	O37+6087Dyg8tyYOC+FHSwuGIrtG9YbBCGuvp0KgLCkdsVlmAuhWovFj4T9CADc4y+eOy0
+	v+frVy954rFZDXsCOy7HwrWa7R87LSU=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v2] mm: memcontrol: fix rcu unbalance in
+ get_non_dying_memcg_end()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260428103108.45719-1-qi.zheng@linux.dev>
+Date: Tue, 28 Apr 2026 19:19:55 +0800
+Cc: akpm@linux-foundation.org,
+ hannes@cmpxchg.org,
+ mhocko@kernel.org,
+ roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev,
+ yosry@kernel.org,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <794DD00D-D6A1-469D-89D9-66FA972D0661@linux.dev>
+References: <20260428103108.45719-1-qi.zheng@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: gtndn9ygxebmdit3d7fpkxmsmxh9b3dr
+X-Rspamd-Queue-Id: 4A6C1C0010
 X-Rspam-User: 
-X-HE-Tag: 1777375235-710086
-X-HE-Meta: U2FsdGVkX19t5tDvbAjlxQLycs7LZuJW+atE4SQqmpatzdDYO/j+FnxGE8rDuip7V3EdPQcS0YX5i338fLmGtUQIIP4AC5hcrasTqMPHlmArQaYbuX8sCjDmXVs3PLHpuVlXF67DRc+T311EwR7dg7xxGL9gkxX8+rTHv0dBOw08DBW2BLtgBWPoh+vwCyi7MmIC0eTv0DfwYA8/ZF2oIdBuFHSO8uwS65yxh5nwtq+7MvUZxo1NA7jWRdVU3SJP2XL0fh0826dEs3A7Xy3bdk6SVm/Di9i7BXEllEFSJy1BK/gMs+V17tkC/7SVGx7hDWGsJnx4MaHXZysj92GTFfueEDVLRnGo/L0SSHju20eaa5yKBsT0FRuH6XzVWCdWJ9Ln7k1IwiHfBq5TNrxZxl840iP9byYSEXAfxoLlKMXeQTch352ztezGX5QQJ7VeXYP2rrBElNqWAdmkAx2PXMPBL5kDJy6t++s91BZVVFhU+StPW1A0J8j207U9f71lGe/nO2UWFXyPfDnlNHM8o+b+55diolOmPh+cWLxTbSMO+9FSV0tkc86lpwnYSoLEp/DNgRCSSXiXzLt8FTgRX4aMShWmCAnqRqCWurPD5kNhSqXOJGFxO9dCn62s/qMHi2fsGHZAQMNQ/HzOsSghAL0k7Oc7qH2nVZX3z3XGVr37kSWP+0rxEMYL3jcXRex110loaNlNYF/nAZ8anesazIavo1BmLJiVFxG53kCYvoX78F5v+faTdaCXhQd4SnG2d64u8XjCWgKtRZE4x3+ykDHSCa6Cpb0XSSnlj2cAY+xYLh1YeGwb1hsNw1dTPWlhKzdFJ/71+7MOC5fhN9VzVAGM3jmZqxEc0zqOd5JXUXEeYfXbFJeu53NeP2ROkwwyahenf5S3GhwmxwCAJzVI3Yjkqx5GfyFNRlYhsMWG7fR823t0J+ajb583fXQ+xLm97IRV4UpWU22N1nHjXz7
- ACqosjKN
- OuGoocEr2R65NMJA0Np328FUjQb5iRUrmASSAeC6evZSsP9VdZlGQwMNUUXX62sGjFwsYpASTtOpxH1kK7MXvDQaeikoSJ3jNtVN0ilELLEF45l6w1hZeDpYzFVq9GIJBnP6tQ1c24zA6v95DezLaDl/xoq1b4roQGYl3S4Xdy01Gywtb0dk+FPxV4pnA0Bl1Z5xc3kx5Wc8P/UnTtoo8jx7w1Q==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777375239-393665
+X-HE-Meta: U2FsdGVkX1/IYuVVmR4NCj2pOXDo+EkEquHrEGAe9JjyX/heeatsRCHtJ+IVdhkAl33bktTFngw1p9j1C8cCr1dRB0PJwzUrfZ3uMiyEWMW23nv4Nz7JzcPowsw4iGo1c20+3Zc/bz/nLYZMBihO4Z8ifXGUK8CMkTAz588Ovz+Hv5fLYPAdk1x1pE0BnXcNXzK/3mbgU88nSqwHZaB1RQN69tEFF1ZrXg2ouoTN3TdpV2lFUeBiGIKl9lAVnAdc7s6MKlnyz4wkvVDSUZ2Rxsyx/MIb/J6aWIrTNQeFDv4eB2xfNaQLigTkTV4rR8R7BdSMCskAX7iti2lGw5ACSreV7nUTpikJ7dfwLEnHDyMD/QNoojgDxtDIY5nTnk6ySHNp95VazGjc3lcgyLEvzP3U/449fAlt48R8OsF/xIH5BBK942jBnQM0VIObJvHmWei8546BXczXPpTVGl5Z/tLTXR3r3YNtWRf/XiJkti9F7gRNncigiL3wBXlEyX0jEvCpjgHAAbRzOKjQlsgNl7DPRKr6FbPKQbCMRE8oC/r4hI/nI0sZrwN5Zs1h18sn03sAtvKYye17CLj56VVKth3aeCfggOlJFt0A12pE2Gxk33BwYfPN7dgHqgLzFNOZCRMC73oFg9ZRjIbnH9flnEPR791A09xgaa2URbCM/6BVVVdi9MOTZc0Dk0/5X6M2cLQP4efHDKoT+C7rXHMJQ6bgPgssyH09p/EWHWzjJws0vXU/PYAq8DBFIXjtLbgss6fMMm19yAto7rjVXbRYRWRuZAAjbhK+RKFMCKyrmvYkdW4TjwVFxWvne2B8+bbeVnJ3S+50Q4E7IxI5GSIHklFZb7MqmHHNp8B5NK5aTPQH9tODAFGVOdXyvN+mAbP8GkPWl+VKi2xgPb/EKEF13Fvz3U7ap5bameyK8B1dp7ygLw+kojLasZx0+pe6mV9ZpV8/y7DFNK37TAsVI+0
+ IWRKSyvC
+ 3pkSwm4d2hmgmWg6B2+EwPNLO9NIDPSGE66LDNTAVWxybdJNn1h3PsDsv8Osv+PeaA+kiWPBL6tg9v36cT+3A2LTIyEML7oXcudpPGegZtBCeLtXggixiBKQgjW7FdXc+0Fh+ci1AL0FexO7oqYVXBXOrdrtPRgA2YHyRMG+KvASP2NBOc8bTLKOWKWdvLUahwExXy1NyfLAet2d7tIXB3hzl4+bSfpML9iNjSex108FxXq5rcNQYJIvtSybFJYtBHePOau/hW+2yV7Rgi/U2TDnwj73pMC2xILWGJ+AilYf8vQa9iUJgDoAgFZ9fKcXRcixVssI2TBVTIjykUtDrSGzQrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,42 +98,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi!
-
-On Mon, Apr 27, 2026 at 06:30:16PM -0400, Yury Norov wrote:
-> On Mon, Apr 27, 2026 at 02:52:05PM -0700, Linus Torvalds wrote:
-> > On Mon, 27 Apr 2026 at 12:19, Yury Norov <ynorov@nvidia.com> wrote:
-> > >
-> > > This is what Linus said when added x86 implementation for copy_from_user()
-> > > in c512c69187197:
-> > 
-> > Note that some things have happily changed in the six+ years since...
-> > 
-> > >   That's partly because we have no current users of it, but also partly
-> > >   because the copy_from_user() case is slightly different and cannot
-> > >   efficiently be implemented in terms of a unsafe_get_user() loop (because
-> > >   gcc can't do asm goto with outputs).
-> > 
-> > now everybody can do asm goto with outputs.
-> > 
-> > Yes, it's disabled on older versions, so it's not *always* available,
-> > but all modern versions do it. And if you care about performance, you
-> > won't be using an old compiler.
-> 
-> The minimal GCC version is 8.1, and asm goto with outputs is supported
-> since GCC-11. That would brake the build, if we just switch to using it
-> without "CC_IS_GCC && (GCC_VERSION >= 110100)" guard.
-> 
-> Is it worth to maintain 2 version of the function? I don't know...
-
-GCC 11 was released five years and a day ago.  The last GCC 11 release
-(that of 11.5) is not even two years ago though (but there will be no
-more!)
-
-So it would be not conservative at all to require GCC 11 as minimum now,
-some people might even call it a bit aggressive.  But in a year (or
-maybe two) the lay of the land will be rather different.
 
 
-Segher
+> On Apr 28, 2026, at 18:31, Qi Zheng <qi.zheng@linux.dev> wrote:
+>=20
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>=20
+> Currently, get_non_dying_memcg_start() and get_non_dying_memcg_end() =
+both
+> evaluate cgroup_subsys_on_dfl(memory_cgrp_subsys) independently to
+> determine whether to acquire or release the RCU read lock.
+>=20
+> However, the result of cgroup_subsys_on_dfl() can change dynamically =
+at
+> runtime due to cgroup hierarchy rebinding (e.g., when the memory
+> controller is moved between cgroup v1 and v2 hierarchies). This can =
+cause
+> the following warning:
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> WARNING: bad unlock balance detected!
+> 7.0.0-next-20260420+ #83 Tainted: G        W
+> -------------------------------------
+> memcg-repro/270 is trying to release lock (rcu_read_lock) at:
+> [<ffffffff815f57f7>] rcu_read_unlock+0x17/0x60
+> but there are no more locks to release!
+>=20
+> other info that might help us debug this:
+> 1 lock held by memcg-repro/270:
+>  #0: ffff888102fa2088 (vm_lock){++++}-{0:0}, at: =
+do_user_addr_fault+0x285/0x880
+>=20
+> stack backtrace:
+> CPU: 0 UID: 0 PID: 270 Comm: memcg-repro Tainted: G        W           =
+7.0.0-next-20260420+ #
+> Tainted: [W]=3DWARN
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 =
+04/01/2014
+> Call Trace:
+>  <TASK>
+>  ? rcu_read_unlock+0x17/0x60
+>  dump_stack_lvl+0x77/0xb0
+>  print_unlock_imbalance_bug+0xe0/0xf0
+>  ? rcu_read_unlock+0x17/0x60
+>  lock_release+0x21d/0x2a0
+>  rcu_read_unlock+0x1c/0x60
+>  do_pte_missing+0x233/0xb40
+>  __handle_mm_fault+0x80e/0xcd0
+>  handle_mm_fault+0x146/0x310
+>  do_user_addr_fault+0x303/0x880
+>  exc_page_fault+0x9b/0x270
+>  asm_exc_page_fault+0x26/0x30
+> RIP: 0033:0x5590e4eb41ea
+> Code: 61 cc 66 0f 6f e0 66 0f 61 c2 66 0f db cd 66 0f 69 e2 66 0f 6f =
+d0 66 0f 69 d4 66 0f 61 0
+> RSP: 002b:00007ffcad25f030 EFLAGS: 00010202
+> RAX: 00005590e4eb8010 RBX: 00007ffcad260f7d RCX: 00007f73c474d44d
+> RDX: 00005590e4eb80a0 RSI: 00005590e4eb503c RDI: 000000000000000f
+> RBP: 00005590e4eb70a0 R08: 0000000000000000 R09: 00007f73c483a680
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007ffcad25f180 R14: 00005590e4eb6dd8 R15: 00007f73c4869020
+>  </TASK>
+> ------------[ cut here ]------------
+>=20
+> Fix this by explicitly tracking the RCU lock state, ensuring that
+> rcu_read_unlock() in get_non_dying_memcg_end() is strictly paired with
+> the lock acquisition, regardless of any runtime rebinding events.
+>=20
+> Fixes: 8285917d6f38 ("mm: memcontrol: prepare for reparenting =
+non-hierarchical stats")
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks.
+
 
