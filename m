@@ -4,318 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35C85FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 16:27:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DCAAFF8868
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 16:34:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D8026B008A; Tue, 28 Apr 2026 12:27:12 -0400 (EDT)
+	id B3BC46B0088; Tue, 28 Apr 2026 12:34:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 589706B008C; Tue, 28 Apr 2026 12:27:12 -0400 (EDT)
+	id AEB566B008A; Tue, 28 Apr 2026 12:34:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 402CB6B0092; Tue, 28 Apr 2026 12:27:12 -0400 (EDT)
+	id 9DF766B008C; Tue, 28 Apr 2026 12:34:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EB0F6B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:27:12 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C15F71603DC
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:27:11 +0000 (UTC)
-X-FDA: 84708494262.16.BFB8604
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010028.outbound.protection.outlook.com [52.101.69.28])
-	by imf03.hostedemail.com (Postfix) with ESMTP id EB5F720012
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:27:08 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=HC5SaI20;
-	dmarc=none;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.69.28 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777393629;
+	by kanga.kvack.org (Postfix) with ESMTP id 86D6B6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:34:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B72F1603B1
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:34:41 +0000 (UTC)
+X-FDA: 84708513162.09.EB60389
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4C7B9140004
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:34:39 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kkXNWJ7/";
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777394079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Ww3rMVFVCESbkNYlfhduIl3KcVpeXojhIB9Dy7bdGg=;
-	b=vo13l0cx1V/Uu/2AXbq8yXm77YJmz2/hx4AU9V1YXo4ix2j+QLhyyVrVc3qSohykwUiecv
-	X1HFu1cZfeUn42sRz/FfMZEZEator9h4i81u+gNT3K88KpEUJ04XgGfCt76rgkfHjAZaPJ
-	GWQO5wa+gNf/vrn4wTyJ2z/9ZA1gBuM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777393629; a=rsa-sha256;
-	cv=pass;
-	b=tfz/Y/ECSSDkeVi8PoYMo6hAeR+48lGldz3vdR9YNeNIfztaB2EzxFRc7B6JZCcPSSr6wl
-	rqlJcdz8Z/Qyy7nrw+pSxxZqR6HuF29rtqWw5QLPN++scNawUL8WMT8HKUfeJNjtgD9ljk
-	KqPXh1VDus6f786ZO7vyI+lb72VqjTU=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=HC5SaI20;
-	dmarc=none;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.69.28 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UxYMXwWTW4zb1QsFuyoQrTHJnsUhHxVP7BD4tjOnv4tB64w9Kg2A5EdQhQ2D91tbAYfR1GdsTTUGIUg8eoeEx5/SzNygCwJEAA3hyiYIcTQtz93YuBHYj5BBjD4LrI69o9vNnSqkM0TWzLYVsUSFGMOauvRxzc/fS4IzhIEx7gW7c+kfVV2PMQuHc6H/Dtl1fknoERVGjhB5YN0U+ms39XAUGejZtWlcr+QbR1ZhptX5TtKGc3h8Uw1W33bQs/X92mfaJIpWv7crTRVk71EhVxsLx3WwHsghob8UviMKnwJgGRVYDwufdNpivS/o2Fh/OmE/OWZvhvHIoNxTx5H2Gg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+Ww3rMVFVCESbkNYlfhduIl3KcVpeXojhIB9Dy7bdGg=;
- b=eN0mvJGkfT+d4yp3ze5S10aVDX1QhKF83hT7YsWcNmte3XuImRH0XEkCJ1Gb4cPxHG8k2AiREVXBWC3KeXR1Cbwhs8NI9wOdVXgVT4+/Xkh/nJKoerUvsMnvBshJxmJL/c7d4LPKYm8hzmLHIKEnKjJwc/6Y6TqbvOddzq27hi+9zoh+T6mfMctSvKgK44rXQE8MHrdoWRrBmKH13CosxiIfCaEHSSeusQsBiVdrZoc50j0ZwPbeEBXsoFDcJrzi26lKSESoF8kVDJt8tGmfqk/mY4EQSILZqButGkN+ar2SsK7+3qodOJaQnf9cigBQ3l6xs4OSUo/G4RrLzfDtCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Ww3rMVFVCESbkNYlfhduIl3KcVpeXojhIB9Dy7bdGg=;
- b=HC5SaI201ITeqNkG6K00qF3Q2S52XtVIN4kKsLWLu1mnMGNf/O+Xhi8AHsNBuJyCEgf6yj6PPCq5uuAgZ+7b2YX75S6BuTbesQDcWx4rALEybQeBjFIDu+GpW6JVtTe+HHCCRI5L1XjJarihsRcbW69BwTmZuPPG0mqKmgxqVpg43eEGWkOdGzzdEacvcVQlToRi3WQlMdAfpK2LO9Du7DWicmvwVjMoGnN9FqDrB2odBy9gS8M1dPrbXDFApXMATesWjKHfrbmXE1bYiaDD6/F9wnMfomuMWCwRxQGXgHMzuF43LIIe2SaQcQlA6xcCJ1S7zBwnymjMSSZF94TuhA==
-Received: from AS8P189MB1752.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:39b::19)
- by DU7PPF6FE197BF0.EURP189.PROD.OUTLOOK.COM (2603:10a6:18:3::ad5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Tue, 28 Apr
- 2026 16:27:03 +0000
-Received: from AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
- ([fe80::69fc:c4d4:200b:e4b4]) by AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
- ([fe80::69fc:c4d4:200b:e4b4%7]) with mapi id 15.20.9846.025; Tue, 28 Apr 2026
- 16:27:03 +0000
-From: Yunseong Kim <yunseong.kim@est.tech>
-To: bagasdotme@gmail.com
-Cc: 2407018371@qq.com,
-	Dai.Ngo@oracle.com,
-	Liam.Howlett@oracle.com,
-	a.hindborg@kernel.org,
-	ada.coupriediaz@arm.com,
-	adilger.kernel@dilger.ca,
-	akpm@linux-foundation.org,
-	alex.gaynor@gmail.com,
-	alexander.shishkin@linux.intel.com,
-	aliceryhl@google.com,
-	amir73il@gmail.com,
-	andi.shyti@kernel.org,
-	andrii@kernel.org,
-	anna@kernel.org,
-	arnd@arndb.de,
-	ast@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	bigeasy@linutronix.de,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	bp@alien8.de,
-	brauner@kernel.org,
-	broonie@kernel.org,
-	bsegall@google.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	chenhuacai@kernel.org,
-	chris.p.wilson@intel.com,
-	christian.koenig@amd.com,
-	chuck.lever@oracle.com,
-	cl@linux.com,
-	clrkwllms@kernel.org,
-	corbet@lwn.net,
-	da.gomez@kernel.org,
-	dakr@kernel.org,
-	damien.lemoal@opensource.wdc.com,
-	dan.j.williams@intel.com,
-	daniel.vetter@ffwll.ch,
-	dave.hansen@intel.com,
-	david@fromorbit.com,
-	dennis@kernel.org,
-	dietmar.eggemann@arm.com,
-	djwong@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	duyuyang@gmail.com,
-	dwmw@amazon.co.uk,
-	francesco@valla.it,
-	frederic@kernel.org,
-	gary@garyguo.net,
-	geert+renesas@glider.be,
-	geert@linux-m68k.org,
-	gregkh@linuxfoundation.org,
-	guoweikang.kernel@gmail.com,
-	gustavo@padovan.org,
-	gwan-gyeong.mun@intel.com,
-	hamohammed.sa@gmail.com,
-	hannes@cmpxchg.org,
-	harry.yoo@oracle.com,
-	hch@infradead.org,
-	her0gyugyu@gmail.com,
-	hpa@zytor.com,
-	jack@suse.cz,
-	jglisse@redhat.com,
-	jiangshanlai@gmail.com,
-	jlayton@kernel.org,
-	joel.granados@kernel.org,
-	joel@joelfernandes.org,
-	joelagnelf@nvidia.com,
-	johannes.berg@intel.com,
-	josef@toxicpanda.com,
-	josh@joshtriplett.org,
-	jpoimboe@kernel.org,
-	juri.lelli@redhat.com,
-	kees@kernel.org,
-	kernel-team@lge.com,
-	kernel_team@skhynix.com,
-	kevin.brodsky@arm.com,
-	kristina.martsenko@arm.com,
-	lillian@star-ark.net,
-	linaro-mm-sig@lists.linaro.org,
-	link@vivo.com,
-	linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-modules@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	linux@treblig.org,
-	longman@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	lossin@kernel.org,
-	luto@kernel.org,
-	mark.rutland@arm.com,
-	masahiroy@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	max.byungchul.park@gmail.com,
-	mcgrof@kernel.org,
-	melissa.srw@gmail.com,
-	mgorman@suse.de,
-	mhocko@kernel.org,
-	miguel.ojeda.sandonis@gmail.com,
-	minchan@kernel.org,
-	mingo@redhat.com,
-	mjguzik@gmail.com,
-	neeraj.upadhyay@kernel.org,
-	neil@brown.name,
-	neilb@ownmail.net,
-	netdev@vger.kernel.org,
-	ngupta@vflare.org,
-	ojeda@kernel.org,
-	okorniev@redhat.com,
-	oleg@redhat.com,
-	paulmck@kernel.org,
-	penberg@kernel.org,
-	peterz@infradead.org,
-	petr.pavlu@suse.com,
-	qiang.zhang@linux.dev,
-	rcu@vger.kernel.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rodrigosiqueiramelo@gmail.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	samitolvanen@google.com,
-	sashal@kernel.org,
-	shakeel.butt@linux.dev,
-	sj@kernel.org,
-	sumit.semwal@linaro.org,
-	surenb@google.com,
-	tglx@linutronix.de,
-	thomas.weissschuh@linutronix.de,
-	tim.c.chen@linux.intel.com,
-	tj@kernel.org,
-	tmgross@umich.edu,
-	tom@talpey.com,
-	torvalds@linux-foundation.org,
-	trondmy@kernel.org,
-	tytso@mit.edu,
-	urezki@gmail.com,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vdavydov.dev@gmail.com,
-	vincent.guittot@linaro.org,
-	vschneid@redhat.com,
-	wangfushuai@baidu.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	wsa+renesas@sang-engineering.com,
-	x86@kernel.org,
-	yeoreum.yun@arm.com,
-	ysk@kzalloc.com,
-	yunseong.kim@ericsson.com,
-	yuzhao@google.com,
-	ziy@nvidia.com,
-	Yunseong Kim <yunseong.kim@est.tech>
-Subject: [PATCH] dept: update documentation function names to match implementation
-Date: Tue, 28 Apr 2026 18:26:15 +0200
-Message-ID: <20260428162614.786365-2-yunseong.kim@est.tech>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <aTN38kJjBftxnjm9@archie.me>
-References: <aTN38kJjBftxnjm9@archie.me>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: DU2PR04CA0057.eurprd04.prod.outlook.com
- (2603:10a6:10:234::32) To AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:39b::19)
+	bh=AcbBRyVqleAXVWqL9J9o2fKR7j527Ai/VehBITW3+po=;
+	b=F1AU3pDlQNYwbR9w7y2pT7RHXrrlVJ3WHItfAFPlS1wj86hynIJkpMCtPDpu+0xP540pqC
+	Fi6p/2U9cANK8D2N5EhYVZ+bNWeiNZwjHwoGMKdSa41hV8DONZ8ZqDNF2rnfg/6VCCVhN5
+	9sRcH7klvfBgsCYZn3PzMuVp2rYy/jM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777394079; a=rsa-sha256;
+	cv=none;
+	b=5VgBgu5d7qOCBtwemCaD2xKA4R24WbJQRxYzFMyo4Vlwn6A/PahvXtlyPyFzCWpaN4CCkV
+	zsQ0MOotAIs00CoMFOqkjT6PxU/D7g0E6pRAbJIGUQEst9pOXk3ydDT8mH6iTycqSERV8a
+	oEJXTgGSreqVwqCTSAG4H+E/ZghOGlA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kkXNWJ7/";
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1614D4183B;
+	Tue, 28 Apr 2026 16:34:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DFBC2BCB5;
+	Tue, 28 Apr 2026 16:34:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777394078;
+	bh=SSGvX5eori06RTcAd+RFUFXSIFrU8pgQCr6sM0Zzku8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kkXNWJ7/M92XbIIqnCuSwyLr03O6/AkVzdoi51qjOyTquwaczjPVNNy12MGWk6Spy
+	 u0ZCafMK5PDn2oPazYAk/LGZJybB3Bd/1QlSHWEnjdpDvRpFnj+Dlx6imHk6kmRj2W
+	 GmtdGnpMa40At7JPZUfzH5PbQeT8wxc5sijxivhr9ls2A3CGyX862g2P9luWNVByyz
+	 +vcqvRyI/R7zUU4xbykN0lMFXJwa/DBYQWMkhRzJ1Zz0ap1BJpPahRn8CylVj6ZKkJ
+	 oN1OFD/eEvVZqaAJtm/5BUCTOuAsmVApZyoJO+2mkrEd0UcXOPjvWARBVm4r3r7+li
+	 pSJVprhHvq2jw==
+Date: Tue, 28 Apr 2026 18:34:30 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-sh@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Rich Felker <dalias@libc.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 00/10] sh: remove NUMA and SPARSEMEM support
+Message-ID: <afDhluTA6ERvGugQ@kernel.org>
+References: <20260413104649.852228-1-rppt@kernel.org>
+ <42a4c6c1-762f-449f-9d14-3eb0fa02b94f@app.fastmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P189MB1752:EE_|DU7PPF6FE197BF0:EE_
-X-MS-Office365-Filtering-Correlation-Id: 24ef4166-f10b-4680-89f8-08dea542fb08
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ZrBrcEqsBxWaUtIkXBuaZbiJkK9T5hpQaWEJenFKgDIBh6LrXwWxkyLRJH1vf4sr5zaPWTzey3hnne3VTwhRcxxajiKakAhXivYPo2g4XlUdNm7fGZXcF78ZP34FvcYEqv9CYMVn6pIhJ+gXPPL69jFIxnu8Tld32UK8Gxd71d8EcxG1rBvCLk/45b55qUy4OJygtEZ/t477YXSPOTsvzdQ8z/ANM8X01HY9GGWvjzYMWHLdKv+a34GtB6DE67wWNazWVD2pv0OLmgXR60cqQId/p7xGpeNMcWhL3BYwrLVrgJ+V+f/35BwSUeN6Q6z7NZgIWuBFU79mhlK13giRF2ot65ymf4NtY6IRHobog38B6tXLRPtuJoY520bmhHuPbwV84dxn5Hts0Ho3xepGc650awz9Oe+vK//oKqYgcKSsrbSb8okgfww9Qk4Jo3V2cgq2OiaG8pbFTvkWqzJTsYO71pq3FQqLRmFKH8/0ShJqW1UZJYVw0pqslhPHCuKwUx+UmU0Mk7tCrKh6h7wIvV1GjMiTlt1d/3SE6p97PaxuaEgI9apsXW8h85aaCGcyXi6E1tHAiAZaRZt44JB9QmNJBB4WEaZcf5p0ig0+7iz+o/o2soO4COJM9yAQTk+F2rGoqMlyt2G4iFSaGNGAfkPDcWqrZFyh8V/ld2hO9WAZd0T2C0etisEzEiiSFYtx368RxXq08NgemHMnrEpRZcTZ3zWe0GjGaDHUkt8wo8Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P189MB1752.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?91lmgw6PEF3mTxhj5DqxcL15nmLUTHzQFIuHDYIUWoBFqaq+zm8el+evrjdn?=
- =?us-ascii?Q?28UDQtpT9yMQl/4XvNpKrehMmjAJv9Sv06+FzCWMe3UH/3RLjmX72RZB0vhT?=
- =?us-ascii?Q?uk4lmif8aByQ3rDvrf9NInOdoEqEHnYtAyhwkYwyI1Nx+1TJrPqhDnxuVRpk?=
- =?us-ascii?Q?ZSeu1m2jm0XUDXHoSe+YitRU9kLjswco1ZtUcQwKLR3RCq5AXJy6IL90BVkK?=
- =?us-ascii?Q?bvRrGITo8It7tx06lZpCQanDaFJ15Px/eQ/7MS7lh98Vs1F5fif17yAr/6eO?=
- =?us-ascii?Q?mxKZjPZVl2Hy6xLJCNxxKJ914rtvTUARnDXbnOBcUyfXwdT4lWw9pNuQlH2B?=
- =?us-ascii?Q?Co6c5czkVD2bG6l1OVDFTHjzroTXMRCoOPDjTvSIJkTpL6QKgC8JEB96BQwG?=
- =?us-ascii?Q?a4FfmfSsicuXtzk11YYEKedZnuxf8vRNhXBUPY2tttFDv8/07HGLxXI4RQMk?=
- =?us-ascii?Q?7DwXCtza1Rx07hRCucCpJrN5UPwnNoCRUrrM51ilSH/h5QNQ40nXo5R98Ndj?=
- =?us-ascii?Q?0C2p8wQr0crqrXiZ1O4ycyAJ5d2ztkOseAHyB2+UMUr/mhL2GEem1Jh79U7v?=
- =?us-ascii?Q?4wxUz+3HBJspZBgccLAg2b+hkv54Q6hiXrfGcfr/PgdxHxKsKLY9dUULN2mN?=
- =?us-ascii?Q?9Wrx7oSuyqrA17QZ8JlJ9qZC6BnK+mJZDv+uvE4+Z/Fy/w3NFfvA6mUIDRmb?=
- =?us-ascii?Q?xreACR6m0rirPMF03dVrreoM+EWueapkk7x2GNLywR5mqikiRaCA7v+xNPmW?=
- =?us-ascii?Q?lEeDpHNh3IQaP3en7zooZnBg0JRQfvSo7WteU32/b9v7fDqiID2Dk2Qbvmcb?=
- =?us-ascii?Q?qgpwU8QBW0lsiyDdB5RQjETR0tfOxSSKBHQhaikCScpcTfmT7AassI9mo8df?=
- =?us-ascii?Q?6r7z4Cy00m3cD3KfzL54WaRsD/jLUr5IwRgE5bPCfBXWQ+DSWSLwFb1If6Q4?=
- =?us-ascii?Q?+XW8twg73C4YKlaE59jX6i60Kc0ECEknZwJefqO8n1xryCKMF+jguOgm3a/p?=
- =?us-ascii?Q?HCzF7Has/7RJW2j06k4oiZhcknZ51J9YGm44jBtvV58AXifV27DtookFdCSw?=
- =?us-ascii?Q?b7AI7xBNgosz47FWC8tHwMPw2zUdTJchuIG6I8XC3WQswZh73akCdp1RY9CL?=
- =?us-ascii?Q?EyxfXpSSWBMTwwkRI1OjYVsxzK14cZ69mWQ7tDZCsu/UTF2dDWyXjwqMqIRY?=
- =?us-ascii?Q?AZAY4BSPVq+Jf/DqjUU6V2u4AYVkwo6HteAXHdgIL+OdXvmCCW/sqlHV93nC?=
- =?us-ascii?Q?Lft+jRNp8ER49Q1ol0SuwJZBrndRZ0mDcqvJYzkhIe/BIVMk+XevvBmuKXbM?=
- =?us-ascii?Q?rjh7SjXVQ4LzcyjloG7PWe9ChgjpZKWY7E2SrQ3iLAhQJE26f3EV/RRJpwD1?=
- =?us-ascii?Q?zje3l86FJW4KOKGNQ7lRjeQX/W9BV6da016hiAyvi/wBTQR7JORi8MeiMxIX?=
- =?us-ascii?Q?KgF+v11h/9wcFra4DuO0IUGJlO9BbTTAcHM+I5Rngoc6pSiljdD1CZc3Fy3j?=
- =?us-ascii?Q?K+2dJGvfIannhR/K1qnUOVwuqSX7oi8Gzt1KJFBjSQqGzt5c0mdcv0C7jLqX?=
- =?us-ascii?Q?xtm5znIZ13MienE9ICAHRhO87N1G2tvs22yrzi8rEXjgo8EEBu8Hl3HS4hbh?=
- =?us-ascii?Q?SVhWyWfgQfd8jaHowzNwmhBhzAZB2c0CfbxxY+qYh/fDLryznsybdO7P3fSy?=
- =?us-ascii?Q?m6hyBEaNJXry1TVAjUZmvRaBunN96OEkbL9EJelsHAOHz0ZuLGc+lH89G5y+?=
- =?us-ascii?Q?+okl/obTCA=3D=3D?=
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: 24ef4166-f10b-4680-89f8-08dea542fb08
-X-MS-Exchange-CrossTenant-AuthSource: AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 16:27:03.2904
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kt3ldRAB6jTICdoR8HAa2yj+Tdv/0cT0k0yKTjliKpO5aSo52R1DNrgIjXb36qyHw7G7gL8UZwLChVuUFUNobw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PPF6FE197BF0
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EB5F720012
-X-Stat-Signature: xkxtxpfytdioax5g6qqxgeao1cf9kbmi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42a4c6c1-762f-449f-9d14-3eb0fa02b94f@app.fastmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4C7B9140004
 X-Rspam-User: 
-X-HE-Tag: 1777393628-775980
-X-HE-Meta: U2FsdGVkX1+50SmAOPvELfpxWB2FXBz55p0LX5MPh6SUbQk1TJVQTxJSclUsKFvN0xBON4e8LCRtQiP+ssjepqDyjQn/8biPEbashmTY7x5OxeGunZA9SRh1GLXup2+1UQNVREilvO323lKyL21uxE1l9grkPlXXp7ITQmzU1QGUm7wKnEerEA5iyoD1n8GTG0UlNtkJizacKhmnyjKJ2PeISKK0VPSGuUUbSs4woRqxKGkICTkHhNRNd5hFMNqC3aJvIWzzRK386K+9WdpTbmhg3CcbQBL7hA/bd6s4oGWDyRZo/yeQxZ8QMbWbYPS9GNHr722dUQ+K3Sr6PE3OoYxLha1IPefAdNA/N1XId9YawCoRxULmQ8tS1+XevNySy+3+EDq0O18r3Ln44qEB6e0zgq5Fh4e45NNGhBWr8K7g1YtaqhjhfsV/Mk55zsqOZbIdzBf3DJE4E0Nu1tFHY4aR6OI7zhgfmoqI9CTnauv/t4mXFC9uGXxosAKjFWgjyhZKyq/OKqpXGfcQgNgZpDfrQiY5nAkwR1+vM6O2rnuvLngkWdvOMY1tmxK9mxdZsl+H7Chta3E0ne7SJRuBNF5BOYT7uO5RY+iJyKhMnrgvqaYyEeRRN12qoRqyIrD1ihZbjqy9UgLRuP1WZJL7YAGgN+XfoXtAsY5LELTY2N0wFv5MZ9YqNurA5mhiV25bQC8DY2zgv8hLsvETmDITHuYmWrHOTpHRuuHCZt/Otwxt7sg0ufAEnrKsFKFfz62udhqrqzYqflohd0TyXoe/W5AsmPqAJlc32MktoLSdzm0F1fFDqK5VwSONvki/ev5QNNVAOxQostpsQrwCIk+B5YdzmWRO744ebQUS+65QFrwc8D+dCGq7MCXZA5GdlW1CY+u+ib7hlE9fpzu4K25MyA3QD6cQMyyw7e71dY5GDPurXBa9JRKJ+GB/XCnDMKW/rvzXffHVPdtauRTHGGW
- b0CzfgEV
- JumAj7yb9DKCE1KsS2pNzR5UnppQjtfLriAtLncoQcaXvQQcUWvy9VWC1AOxab0juVHpZz1RPu7foPZ6mOuWhX9IlAFH15sQDViaZlNcLuCz+4tgvE+9aMvBysUgOqZE9tvoscemb2pzmJmyBSLtHFKlk2h8eyEZKvOQ8InY1dMykp7Lz7v9m675+wceqcNTt/LZJ0JFXboXs+dcNgAz59/FdMuJsTy55DR/RjMMXsiwdSGueEzE1UoCpzpwpTi/KNHfUpPuj7GjqieZqBthcojBEz2yt9Lc+rfXW/5CPLffInVAqxUqObqEpiDxhzsgzGwMwcaoHCdKYEdxt/Wen7P32Dfj4N0FobOSSTOpZbLYGM9zGti189H0LnagaEDN3W36wvpenliKmNJGnuayL7TDHxXldYZ8oP1XV0mdAdJomtZLyHfXopEPNUeA1aZ0gyG10pSJ79yY2vin5rPlvx1Osui0QrgyAaa1wLLkRWAMpitNFNzkqh8tIqeSsde6bZzxLumsR9JBlxcwpn41368VG9w==
+X-Stat-Signature: 37r4qt96714f8xg7ow7eq7uf3d9wfhji
+X-HE-Tag: 1777394079-306688
+X-HE-Meta: U2FsdGVkX18/8br5iceFHglrbywwTDwrkBacED4Wro8L9WB4XwKO3PQ5FL0nzGxx9sFtkdf05tKKmcwIFJvgGK0AsYH1HI7EEFVlUdZp+Jx6BWxYnUfiYobYvwLHkl8BI1vy9H3KCjd36DAxTJ4kuOcmSEV0U8CuLqEkhlgRiy4WZK5sClfsVbmxuUHbh0e9UrlxJOu5lwchwWA3UgUWKc0n9CfyhYAh4qI0UkkPMjP1XWGQM7UxFdoAVDJ2gyITLODds0zGn+JBov0ztiL9eWDiVubwz+JHplSwVb3BrMhsfe9Sn2WtMst/jQmkAVFvsc1Lx6L7bYtLcwkd4IXmTh8qtWVUcCFtU9J0E1YVIqY9UX/Eq3RRFW2OHLcWnMBSaCe1DqjqEb4kiRo15VE+OqfqBNC1BRkhgdBgVxKcW8D3eI5C8uqk5KyHnO4Lr/KWpikz0vnf7QYXupcXOmGFGmLtCrRwqXmk2+uy0JkbG/s6t2ZQi79MRNVVKvR3nzHu/j5oqTotytsUYF4kjG+c8NvtIS2reApzLWYH57uL9sMCQ4kTeUHZzr7m199IU8s33PxB+MXsiORqJqI+Dq1ER+xxUNQ0Sq9PkhW3DASYWQHFst4cnyf14ISkSPOngS/qWlC/v3qYqLGJyRa4deruZ8gS0fNURRPw9qKA4i2vvhmbtaaQejT7uFKnMT7DCRrPCmoejqqqjO+fTLAz7iZ8ipmIW1sz/2n+eF9q+WvDicWEW2KpH8WYSOp9kUllieiIrH3Pp+/eEBpCByInodQ4OufZ00gZFR2E+UWndX0ip1SipOuCRjW9GaRKzPlGSPajm932Tlsb348kdj9WPSfyYPI+FgCJF19cnw0o+pEES6EYzyKxn0EIebIYTVsDbt67EY9aylF1vvNj1e1MppsPko615+ckNvP8rW4XGxiLiGKDkvG12X5fExan6FMAjTGAQlJz/a4So1Lu4mcJ6Id
+ +jQMk7Sr
+ w5HLQa+rqUfszGVnCNML8zVH1HnqdTy0pmFFId3ZtqX7azQdM82yWzlsrdbmK8aTMSj9mpV603gCCHSui2uWQ4RBHgITOW0hXkxH/yvoqRU8afn0EpHu5+ENmEM6OFCf62fvhOfVlsJNeTX7xKvTCNaQBxej573h+dYMmYVIZtyEByhoSzQnkzNjDNvOe/JoXN95x5SJneM8GfJnH1gIrJJJBu8vVDZoNmCEr2NtPg1q45UZvSuB8mFdiTTASDoD0ZB8R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -323,42 +94,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Synchronize function names in the documentation with the actual
-implementation to fix naming inconsistencies.
+(oops, missed that earlier)
 
-Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
----
- Documentation/dev-tools/dept.rst     | 2 +-
- Documentation/dev-tools/dept_api.rst | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+On Mon, Apr 13, 2026 at 01:14:49PM +0200, Arnd Bergmann wrote:
+> On Mon, Apr 13, 2026, at 12:46, Mike Rapoport wrote:
+> >
+> > NUMA support for SuperH was introduced a long time ago by commit
+> > b241cb0c885e ("sh: Support for multiple nodes.")
+> >
+> > 	"... for boards with many different memory blocks that are
+> > 	 otherwise unused (SH7722/SH7785 URAM and so forth)"
+> >
+> > In reality, this added 128K of memory on sh7722 and sh7785 and 256K on
+> > shx3 at the expense of all the NUMA related code in the kernel.
+> >
+> > For build of v7.0-rc7 with defconfig and the same configuration with
+> > CONFIG_NUMA disabled, bloat-o-meter reports difference of ~76k. Disabling
+> > CONFIG_SPARSMEM on top increases the difference to ~94k. And that's only
+> > overhead in code and static data that does not take into the account data
+> > structures allocated at run time.
+> >
+> > And all this overhead has been there for nothing for almost 8 years
+> > because since commit ac21fc2dcb40 ("sh: switch to NO_BOOTMEM")
+> > those additional "nodes" could not be used by the core MM because the
+> > maximal pfn for ZONE_NORMAL was cut out at the end of the normal memory.
+> 
+> I had looked at it when you asked me about it last year, and I can
+> confirm that agree with all your findings and the resulting patches.
+> 
+> Whole series
+> 
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/Documentation/dev-tools/dept.rst b/Documentation/dev-tools/dept.rst
-index 333166464543..31b2fe629fab 100644
---- a/Documentation/dev-tools/dept.rst
-+++ b/Documentation/dev-tools/dept.rst
-@@ -97,7 +97,7 @@ No.  What about the following?
+Thanks!
  
- 			   mutex_lock A
-    mutex_lock A <- DEADLOCK
--			   wait_for_complete B <- DEADLOCK
-+			   wait_for_completion B <- DEADLOCK
-    complete B
- 			   mutex_unlock A
-    mutex_unlock A
-diff --git a/Documentation/dev-tools/dept_api.rst b/Documentation/dev-tools/dept_api.rst
-index 409116a62849..74e7b1424ad5 100644
---- a/Documentation/dev-tools/dept_api.rst
-+++ b/Documentation/dev-tools/dept_api.rst
-@@ -113,7 +113,7 @@ Do not use these APIs directly.  The raw APIs of dept are:
-    dept_stage_wait(map, key, ip, wait_func, time);
-    dept_request_event_wait_commit();
-    dept_clean_stage();
--   dept_stage_event(task, ip);
-+   dept_ttwu_stage_wait(task, ip);
-    dept_ecxt_enter(map, evt_flags, ip, ecxt_func, evt_func, sub_local);
-    dept_ecxt_holding(map, evt_flags);
-    dept_request_event(map, ext_wgen);
--- 
-2.53.0
+> Two very minor points:
+> 
+> * It looks like you left the 'config SYS_SUPPORTS_NUMA' symbol
+>   in Kconfig, which no longer does anything, so this should probably
+>   be removed in patch 9 along with the lines that select it.
 
+I think it better fits patch 1 that removes CONFIG_NUMA, patch 9 is about
+SPARSEMEM.
+ 
+> * It appears that after your series, RISC-V is the only remaining
+>   architecture that supports NUMA in 32-bit mode, which I think
+>   we should not allow as a configuration, given that this would
+>   run into untested code and no hardware exists for it.
+>   Apparently commit 4f0e8eef772e ("riscv: Add numa support for
+>   riscv64 platform") intended this to only be for 64-bit targets
+>   but did not add a Kconfig dependency for CONFIG_64BIT (or
+>   CONFIG_SMP, which was added later).
+
+I can send a patch to RISC-V for it.
+ 
+>         Arnd
+
+-- 
+Sincerely yours,
+Mike.
 
