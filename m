@@ -4,93 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55AB1FF8868
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 14:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F413FFF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 15:02:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71B126B0088; Tue, 28 Apr 2026 10:48:43 -0400 (EDT)
+	id 1FF636B0088; Tue, 28 Apr 2026 11:02:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A5016B008A; Tue, 28 Apr 2026 10:48:43 -0400 (EDT)
+	id 1B0286B008A; Tue, 28 Apr 2026 11:02:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56C2A6B008C; Tue, 28 Apr 2026 10:48:43 -0400 (EDT)
+	id 0C7556B008C; Tue, 28 Apr 2026 11:02:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 400946B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:48:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8BC76A02EF
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:48:41 +0000 (UTC)
-X-FDA: 84708246042.06.D9158AB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B2BD240006
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:48:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="HNS7/b+X";
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC4D76B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 11:02:55 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 836BE40374
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:02:55 +0000 (UTC)
+X-FDA: 84708281910.18.46BF8EB
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C2200180013
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:02:52 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=ak+VUQrE;
+	spf=pass (imf24.hostedemail.com: domain of "prvs=571396877=dipiets@amazon.it" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=571396877=dipiets@amazon.it";
+	dmarc=pass (policy=quarantine) header.from=amazon.it
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777387719;
+	s=arc-20220608; t=1777388573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FAcLhmwdtXq9Ax7hxdP2rGfLhuvDVkoYKvcmcZ6XxP4=;
-	b=k9zznOaPHanPtiBxJp3wiqt2U841R/wekTdutuW6WJOuQ2hVPaCi/J7maZYl9Vf168jGTe
-	UP/UvtYL2XQJWdMcNyk9oeBLZmexfdsTBixexej5m1EV+hH/zDbdKUgHnNoDQDAwvf2cIq
-	dffc7Qmtd2AgiAg7qaf9dkkl8mO++98=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777387719; a=rsa-sha256;
-	cv=none;
-	b=sbPdYRmgoyrLhbIzYyLvE54jcG32J9oa0X/z08u6PujZU7ieEm8krPM9V7dTIO1u0Y/GfQ
-	NaB9BTxOheHD9XCPxNhzybyRLZwhA7aB9UpylFdpDs+JWWgJashldYbrkf34og2dgEaWaJ
-	vrlUJo7YzIVL2FZMi+/GBmY4mP0/rVQ=
+	bh=iR5dhkcHU5VCBpUITHDa/CgQ+skWyHmfxA70XA8Ykuk=;
+	b=VHy5M2M6cS40V2jX+HYdoqqAfxu+2x+ITqZcZH3GsdAMkPv4oOpZjEtWeZ36PE1TRzFjDp
+	OnIY3WSob3/FM1wfLwMrlmdu7okXX4Yi7cBswjj5LJVaFvkkPxotKLjBqoEoxYNCIr4M5v
+	DmKQi18DtdeZHAPt6NXTs8ycPwwKphE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="HNS7/b+X";
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4FE6B43EA0;
-	Tue, 28 Apr 2026 14:48:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97411C2BCAF;
-	Tue, 28 Apr 2026 14:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777387718;
-	bh=fl4uPnTzPtt7hgrrDvSXu3usBjSgMiPtMXIsK626XNs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HNS7/b+XCNrPLUcOE8F74Z3u6L0t/ABy5MsW/bWl3De+y631/5mG2Sr9RMq2naZ4Q
-	 oezo2lNAPYgOn2Mi/NyKyuwdvSz+Y4tvLNY1XWpcgTDooYql4J/q5E471TYxLxfrrG
-	 i7HzdoUPkZkRE8WjK24HiUoR2P0eORdhoZerDlzc=
-Date: Tue, 28 Apr 2026 07:48:37 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, Brendan Higgins
- <brendan.higgins@linux.dev>, David Gow <davidgow@davidgow.net>, David
- Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Lorenzo
- Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
- <rppt@kernel.org>, Shuah Khan <shuah@kernel.org>, Shuah Khan
- <skhan@linuxfoundation.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, damon@lists.linux.dev,
- kunit-dev@googlegroups.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH 00/11] mm/damon: introduce DAMOS failed region quota
- charge ratio
-Message-Id: <20260428074837.5fb02e0210ebabf160506a80@linux-foundation.org>
-In-Reply-To: <20260428013402.115171-1-sj@kernel.org>
-References: <20260428013402.115171-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	imf24.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=ak+VUQrE;
+	spf=pass (imf24.hostedemail.com: domain of "prvs=571396877=dipiets@amazon.it" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=571396877=dipiets@amazon.it";
+	dmarc=pass (policy=quarantine) header.from=amazon.it
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777388573; a=rsa-sha256;
+	cv=none;
+	b=R3H1jdaI9LjwBYhhh730mfPaAUx3wzHBWHuBZMrcRvZRBaH/TKY94tG70PpxRpawPVhJaT
+	8VTJoFaUPnfD1kiDfcDNwajKjswusjHRvRvRyf4iOlB7M43hO27uVCF8lObKSJIaSb29bc
+	sYVrcDpKImkEW66kIJmcPZLYalzYpzU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
+  t=1777388572; x=1808924572;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=iR5dhkcHU5VCBpUITHDa/CgQ+skWyHmfxA70XA8Ykuk=;
+  b=ak+VUQrEzfs92ZI+wtT6iGDmkdBXD8rryTDBWO2D2/pLZRfxogZqmZBD
+   ieZvH+lfFP9N6gWSTLScC9mkd+XD8XKExLVpzFvvhXauf858Jocg728Hj
+   /Od3Zd/t3whHksYklzURh+9Vuhq6Ew6wmlkaz6HHYjPu+uDFuNGIouic6
+   y3T97FLF4JicQqck2YFdiNywHjc9LPAgnr2lHmlkqrDfor0v4ds0btcaO
+   YOQ7S2gnwtAwYP2xSe+ZytBnYAmlHLpi4/HiCN55AWlN0NI2sRul40G4A
+   oTt50gfDJe/8WYKlrqqrp+wg7xgbOGAOfyw2k7P9OabSEqYh1zuJAzFBD
+   w==;
+X-CSE-ConnectionGUID: S+NRVQ54ScmBWO36YfRgMA==
+X-CSE-MsgGUID: Q3INsoH7StqcMg2azulpcg==
+X-IronPort-AV: E=Sophos;i="6.23,204,1770595200"; 
+   d="scan'208";a="18387508"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 15:02:48 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:19298]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.57.50:2525] with esmtp (Farcaster)
+ id bf7d9290-f8e5-4068-a080-26b327ef5529; Tue, 28 Apr 2026 15:02:48 +0000 (UTC)
+X-Farcaster-Flow-ID: bf7d9290-f8e5-4068-a080-26b327ef5529
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 28 Apr 2026 15:02:47 +0000
+Received: from dev-dsk-dipiets-2b-fa1865ee.us-west-2.amazon.com
+ (172.22.139.101) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Tue, 28 Apr 2026
+ 15:02:47 +0000
+From: Salvatore Dipietro <dipiets@amazon.it>
+To: <ritesh.list@gmail.com>
+CC: <abuehaze@amazon.com>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
+	<brauner@kernel.org>, <dipietro.salvatore@gmail.com>, <dipiets@amazon.it>,
+	<djwong@kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-xfs@vger.kernel.org>, <stable@vger.kernel.org>, <willy@infradead.org>
+Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
+Date: Tue, 28 Apr 2026 15:02:38 +0000
+Message-ID: <20260428150240.3009-1-dipiets@amazon.it>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cxztt8nw.ritesh.list@gmail.com>
+References: <cxztt8nw.ritesh.list@gmail.com>
+MIME-Version: 1.0
+X-Originating-IP: [172.22.139.101]
+X-ClientProxiedBy: EX19D044UWB003.ant.amazon.com (10.13.139.168) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B2BD240006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: naughfs9ryfkq13dyoh66cqudxdy3npf
-X-HE-Tag: 1777387719-661568
-X-HE-Meta: U2FsdGVkX19/gR5hb+iQ+uDbAg52kzrfNVxU92DwSe4eKSVrSDAgwby+7kkcx1Vrl7/L8elQ7gZLXxQWcULAC2FejuYZ3525psjz1Zh8OK79DQ8sXmMSlrI6faR2e6ZOxI9zXi0KUJ83fzeW6Qq0rY/WPOLi3NGrukRUFAPNpANSiwyewzFOMMSQByuYD4r8kWGGxdixfHZnkYVlUlGqyMhJvikDabBVuCNj1X7WQSnkAduBAujDGqGhTF1psnW4dQJ1QLqa2OyTg8KBrUooRlcFGeZlluCNaF4TVNciQ7ENogs6Al+Bl44fgQRJGY2+95PnYGYq18k4ssPpduT82XHCs4UTtscgPxFO/Hw4AVfVl6M0Ogumv4/XhKPmYcu8VCoa9AkGNl+NEEQjylgx2ynYr3oPBXYtw4Cl6SLTNvPVAPVYWC5r8D/Fdn9ilCNYRcGzyMDu9SXYMorFqU/BGMFHykHn5hTCeLPB2fCsgOnDLFib05vgzIV2OcESOCjRw/M/MMaQMKz3de7wcZQ3ZAbmGlS6pvfl4fUJ+YGmocwwiSd+saTbIYprbBC+nsbbjG+yJQLObrnqLlt6ZmFlTghlR00STPp8vdwTfiWYKy1Rq66jtMYm9OWLpkJ0lzvvRw55g+OF+1GB1O+1eWDtU9rfw1fyDj6U8hyIHtz0DKchuEW1GuyDA6IzoxOCN2hBIbNkQqifxdji5FlHSbAUvgVi2pD4/kRV/3ucrK479a20SfuNOrmsGt7eLIKvG33z0O82TVnlRYuFa5q1qAf0Iue8DbRYWo4LDa2Fv5+XVRjcie84PZ5sPxCinmgitihqSMzby7mpw+0RFX2O+Pq4al5ihlx2NXRkHR17bGg6orRG3oP6h2XcN06fLNvZEg6FNhK1eO3FF+2Xgg40T9v9mSGx8giHN4B0cd54hj9ZZDsYEnB5OvbvqLr84OxWzCng9mtwpUj6N/bScrQFjkG
- qbgkCuM1
- BzSi4oiwyV8TCRK6Z1jypK2jRTTMNoHo7jS42CYpV+wEUIvbt5Sl/RjKZ0LT+WtheJIVTdG6s3Zk2ceni39vdw4RqQzhbeM7ioGykO1kL0e12dp8D949zpuYxKjovEdikULD/Ro+eHubAxeCVeGhMqjzytvZ7zEvfANAhubcFnK/QUJSLF9SvlB2J8n9OO+j/WbRkXuicjm+9v/+dlH0wpr4M8lpAZ5jNTqoZDsn14nLrH0LHbJJ24288PehC13NKoByGhx4tauWh0nslJrdTdqida72tYrTeQBAtO7Rxe9t3uUAxR4CVHC+hsXIHmarIJNAZah1rNQfbJXs=
+X-Rspamd-Queue-Id: C2200180013
+X-Rspamd-Server: rspam06
+X-Stat-Signature: cgpauhy1drsbknwthwhwtq4n1fw4kxfj
+X-HE-Tag: 1777388572-252618
+X-HE-Meta: U2FsdGVkX1/l3X98EsAtNbrxQNxh7ZA2HpGr3ZdN96kenZCpiL1cNxcoEJLKxtGkOC66XReweznOai4cA6yx60O/LJskA1Sl3w9c75vk0TRyFOklwWucqM+9fpRhdsxEbTvvXDJ8caXPl6RaY05V4bapJVwGWSy+BOFb8B7exi3fCuscCu3rXhUe9yu+jiwo4UaczFNvlCm5xJoX16h2SY4JzE+lJpodaDc/gCCWZhZ5dA415YiXRkrLenDLu0ojtuRN9XIEpRBeUTV7ZomHyzjts1s3qRYIKyPjbyc2XkoETa9BfQfPcWwv0HDP6OR1md+QBZL5ZyCqw+vtbuSVkgLdi2nyRRXXbD4YiVuy1M8fUPDAVeKq6YK6Rlf1MPJQpPfSxoWfPWfaxOz2ppElC80eWYet6xfsrc1Lj2ywOzffIO44HDVGxcb/ln8PYuVVYhuhrYFjAsEO9u3DQ9vRG40V3ux8lKSnWHf38LVIC3naDMSZ4CcQBzAm6HqQ3LBp/c8ZzDmyctlks6oZpPqBabB7OIJAT0yk4ZNZFd7V6AVQLv/Yo1/TAG9QIUj9t1NUf5beTlxgS9l+LYPkJJkIfjPzKSFuqTgLArEc8OBc5jG7wk0Ry9sJUQOQHVOQrNjCM9ER363Xfg4Ldliekw3D0jKvOs57sfMIQPGzQuU2AR4zuLAT1eGzxGI6/fY/M1SHSe9G9am9JX5FlK3DCdXpkkRv7e5I+sWIprdxicrhi8/S90L2wgXP19u6vyXCuVC6rEipEORisw7lrUOhZACTZ0Ufw69DLB5syBOX0gzO2gLjO+dlyA+V80CIJFTuLfoFaZqLE9V4QqUCYFvRLGwJOebrAF1dDDzHfuO4CKwtjUBNtpiHDlEuCQH5m5zPJY8LQKNarBlG3CdsH7wtBYfSwG9s9IRF7MN8tz70HSsmA5cBOMbj4M2zXI3dSoSZO3aKGeHXtDFoLXjByCH/Tb6
+ tSyWuqy7
+ zVWzkjT2UolRDLSiybSx8QU8EwjcYAAx97mmOJ+a9U/5kYMm0DG7YxM7DL4FyhjazaxK45npxKnkOcTEJYvFGpKfkSXNujy0XkX15x9BSXfrHTMn9RTRUifHlnKLJLQusN1l1VJA4LJ1hTywoPgEYNU2pK2UtKNmwGCjTmsuJ8YKPdPhSbOdV9nsB3o5DorJBYVitGYmuwtsCsWy8jd8bHSAO/PfrjRoSGJb16WLJJ6cY1BgHdBADpcZ7mKBnzTOMOlfWk7OZppUSUIMLpOk3XJ8dV5Ac6bX1Ab0FL8FKpLk/Q6kPvJl1HqmqW6CwHEDb0h8akI8NnVuG4BV2VfUPKfHEAiWZTPvULr9dBZM5n7MyG2u28gANeK2ik4xDhmACqNYXsaN2dfDB56wLE1YvwQEeBEZYumNu/ZPEmcnWryfo5jI3YI5T5ukXBgkmZXMjHsHD13I07uOuK7Kbu3yNntK0xHptQi6ULLsdbyc+uazuCqpQsHwGRAluWLbrrF7I3BodxZ2bUiYf/A4WLwK4edP2URrZdneU4pujb9Hxjg3rdaDkFpzQ67lZHFBRL5bsF5ZC83KUxG25onFqNUblODn9zyuPY7bzG8xAPik1gd0Vn9bAaLlVGkHu/575abDb445WAioATRBjeyMoIbxwbPu9iaRq5zrjeWp00DWNYx8UV8xkWxF4Ymd6ELLOPKOO8lrhkQJ1kX7K27A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,16 +115,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Apr 2026 18:33:49 -0700 SeongJae Park <sj@kernel.org> wrote:
+T24gNC8yMS8yNiAwMDo0MywgUml0ZXNoIEhhcmphbmkgd3JvdGU6Cj4gQWxzbywgZ2l2ZW4gdGhl
+IE1haW50YWluZXJzICh3aWxseSwgQ2hyaXN0b3BoLCBEYXZlKSBzaG93biB0aGVpcgo+IGRpcy1p
+bnRlcmVzdCBpbiB0YWtpbmcgdGhlIHBhdGNoIGluIGl0J3MgY3VycmVudCBmb3JtLCB0aGUgcmln
+aHQgd2F5IGlzCj4gdG8gZ2V0IGJhY2sgd2l0aCBwZXJmb3JtYW5jZSBkYXRhIHdpdGggYm90aCB0
+aGUgYXBwcm9hY2hlcyAod2hpY2ggd2UKPiB3ZXJlIGRpc2N1c3NpbmcpIGFuZCBmaXJzdCBnZXQg
+dGhlIGNvbnNlbnN1cyBmcm9tIGV2ZXJ5b25lLCBiZWZvcmUKPiBwcm9wb3NpbmcgdGhpcyBhcyBh
+IHBhdGNoIDopLgoKVGhhbmsgeW91IGZvciB0aGUgZm9sbG93LXVwIGFuZCB0aGUgYWRkaXRpb25h
+bCBjb250ZXh0LCBSaXRlc2guCkkgbWlnaHQgaGF2ZSBtaXN1bmRlcnN0b29kIHRoZSBwcmV2aW91
+cyByZXF1ZXN0IGFuZCB3aWxsIG1ha2Ugc3VyZSB0byAKbGluayBiYWNrIHRvIHByZXZpb3VzIHBh
+dGNoIHZlcnNpb25zIGluIHRoZSBmdXR1cmUuCkhlcmUgYXJlIHRoZSBwZXJmb3JtYW5jZSByZXN1
+bHRzIHRoYXQgd2UgaGF2ZSBjb2xsZWN0ZWQgb24gb3VyIGVuZCB3aXRoCnRoZSBwcm9wb3NlZCBw
+YXRjaGVzOgoKCnwgUGF0Y2ggICAgICAgICAgICAgICAgfCAgICBSdW4gMSAgIHwgICAgUnVuIDIg
+ICB8ICAgIFJ1biAzICAgfCAgIEF2ZXJhZ2UgICB8ICUgdnMgQmFzZWxpbmUgfAp8LS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLXwtLS0tLS0tLS0tLTp8LS0tLS0tLS0tLS06fC0tLS0tLS0tLS0tOnwtLS0t
+LS0tLS0tLS06fDotLS0tLS0tLS0tLS0tOnwKfCBCYXNlbGluZSAgICAgICAgICAgICB8IDEwNyww
+NjQuNjEgfCAgOTcsMDQzLjg2IHwgMTAxLDgzMC43OCB8IDEwMSw5NzkuNzUgIHwgICAgICAg4oCU
+ICAgICAgIHwKfCBQcm9wb3NlZCBwYXRjaCAgICAgICB8IDE0NiwwMTIuMjMgfCAxMzYsMzkyLjM2
+IHwgMTQxLDE3OC4wMCB8IDE0MSwxOTQuMjAgIHwgICAgKzM4LjQ1JSAgICB8CnwgUml0ZXNoJ3Mg
+c3VnZ2VzdGlvbiAgfCAxNDcsNDgxLjUwIHwgMTMzLDA2OS4wMyB8IDEzNywwNTEuMzAgfCAxMzks
+MjAwLjYxICB8ICAgICszNi41MCUgICAgfAp8IE1hdHRoZXcncyBzdWdnZXN0aW9uIHwgMTQ1LDY1
+My45MSB8IDE0NCwxNjkuMjQgfCAxNDEsNzY4LjMxIHwgMTQzLDg2My44MiAgfCAgICArNDEuMDcl
+ICAgIHwKCgpPbiA0LzIxLzI2IDAwOjQzLCBSaXRlc2ggSGFyamFuaSB3cm90ZToKPiBJbiB0aGF0
+IGNvbnRleHQsIEkgd2FudGVkIHRvIHVuZGVyc3RhbmQgeW91ciBzZXR1cCBhIGJpdCBmcm9tCj4g
+bWVtb3J5IGZyYWdtZW50YXRpb24gcGVyc3BlY3RpdmUuIEFyZSB5b3UgdHJ5aW5nIHRvIHNpbXVs
+YXRlIG1lbW9yeQo+IGZyYWdtZW50YXRpb24gYW5kIHRoZW4gYmVuY2htYXJraW5nPyBPciB3YXMg
+dGhpcyBwcm9ibGVtIGhpdHRpbmcgd2hlbgo+IHlvdSBydW4gc2ltcGx5IHJ1biB0aGUgcmVwcm9k
+dWN0aW9uIHN0ZXBzIG1lbnRpb25lZCBpbiB5b3VyIGNvdmVyCj4gbGV0dGVyPwoKQWxsIHJlc3Vs
+dHMgd2VyZSBjb2xsZWN0ZWQgb24gZnJlc2ggQVdTIGluc3RhbmNlcyBhcyBkZXNjcmliZWQgaW4g
+dGhlCmNvdmVyIGxldHRlci4gUGF0Y2ggWzFdIGhhcyBiZWVuIGFwcGxpZWQgb24gYWxsIGluc3Rh
+bmNlcyB0byBhdm9pZCB0aGUKb3RoZXIgcmVncmVzc2lvbi4gVGhlIGluc3RhbmNlIGhhcyBiZWVu
+IHJlc3RhcnRlZCB0byBwaWNrIHVwIHRoZSBwYXRjaGVkCmtlcm5lbCBhbmQgZW5zdXJlIGNsZWFu
+IG1lbW9yeSBiZWZvcmUgaW5zdGFsbGluZyBhbmQgc3RhcnRpbmcgdGhlClBvc3RncmVTUUwgYmVu
+Y2htYXJrIHZpYSByZXByby1jb2xsZWN0aW9uIFsyXS4gCldlIGRvIG5vdCB1c2UgYW55IHRvb2wg
+dG8gZnJhZ21lbnQgdGhlIG1lbW9yeSBpbiBhZHZhbmNlLiBDb2xsZWN0aW5nIAptZW1vcnkgbWV0
+cmljIG9mIHRoaXMgc3lzdGVtLCB3ZSBub3RpY2VkIHRoYXQgfjQwJSBvZiBtZW1vcnkgaXMgdXNl
+ZCBieQpQYWdlVGFibGVzIHNpbmNlIFBvc3RncmVTUUwgc3Bhd25zIGEgbmV3IHByb2Nlc3MgZm9y
+IGVhY2ggY2xpZW50IGxpbWl0aW5nCnNpZ25pZmljYW50bHkgdGhlIGF2YWlsYWJsZSBjYWNoaW5n
+IGFuZCBmcmVlIG1lbW9yeS4KClBvc3RncmVTUUwgd3JpdGUgcGF0dGVybiBjb25zaXN0cyBtb3N0
+bHkgb2YgOC8xNiBLQiBkYXRhIGJ1dCBkdXJpbmcgCnRoZSBkYXRhYmFzZSBjaGVja3BvaW50cywg
+YnkgZGVmYXVsdCBldmVyeSA1IG1pbnV0ZXMsIGl0IGZsdXNoZXMgd3JpdGUtYWhlYWQKbG9ncyB0
+byBkaXNrLCB3aGljaCB1c2VzIGxhcmdlIGZvbGlvcy4gQXQgdGhpcyBwb2ludCwgdGhlIHN5c3Rl
+bSBhdHRlbXB0cyB0bwpzYXRpc2Z5IHRoZSBmb2xpbyBhbGxvY2F0aW9uIHJlcXVlc3QsIHRyaWdn
+ZXJpbmcgdGhlIHJlZ3Jlc3Npb24gYW5kIGZhbGxpbmcKaW50byB0aGUgc2xvdyBwYXRoLCBhcyBz
+aG93biBieSB0aGUgTGludXggcGVyZiBwcm9maWxlIGJlbG93OgoKICBgLTAuMjYlLV9fYXJtNjRf
+c3lzX3B3cml0ZTY0CiAgICBgLTAuMjYlLXZmc193cml0ZQogICAgICBgLTAuMjYlLXhmc19maWxl
+X3dyaXRlX2l0ZXIKICAgICAgICBgLTAuMjYlLXhmc19maWxlX2J1ZmZlcmVkX3dyaXRlCiAgICAg
+ICAgICBgLTAuMjYlLWlvbWFwX2ZpbGVfYnVmZmVyZWRfd3JpdGUKICAgICAgICAgICAgYC0wLjI2
+JS1pb21hcF93cml0ZV9pdGVyCiAgICAgICAgICAgICAgYC0wLjIyJS1pb21hcF93cml0ZV9iZWdp
+bgogICAgICAgICAgICAgICAgYC0wLjIyJS1pb21hcF9nZXRfZm9saW8KICAgICAgICAgICAgICAg
+ICAgYC0wLjIyJS1fX2ZpbGVtYXBfZ2V0X2ZvbGlvCiAgICAgICAgICAgICAgICAgICAgYC0wLjIx
+JS1maWxlbWFwX2FsbG9jX2ZvbGlvLT5hbGxvY19wYWdlcwogICAgICAgICAgICAgICAgICAgICAg
+YC0wLjIwJS1fX2FsbG9jX3BhZ2VzX3Nsb3dwYXRoCiAgICAgICAgICAgICAgICAgICAgICAgIHwt
+MC4xMiUtX19hbGxvY19wYWdlc19kaXJlY3RfY29tcGFjdAogICAgICAgICAgICAgICAgICAgICAg
+ICB8IGAtMC4xMiUtdHJ5X3RvX2NvbXBhY3RfcGFnZXMKICAgICAgICAgICAgICAgICAgICAgICAg
+fCAgIGAtMC4xMSUtY29tcGFjdF96b25lCiAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgIGAt
+MC4xMSUtaXNvbGF0ZV9taWdyYXRlcGFnZXMKICAgICAgICAgICAgICAgICAgICAgICAgYC0wLjA3
+JS1fX2RyYWluX2FsbF9wYWdlcwogICAgICAgICAgICAgICAgICAgICAgICAgIGAtMC4wNyUtZHJh
+aW5fcGFnZXNfem9uZQogICAgICAgICAgICAgICAgICAgICAgICAgICAgYC0wLjA3JS1mcmVlX3Bj
+cHBhZ2VzX2J1bGsKClRoaXMgaXMgYWxzbyB2aXNpYmxlIGluIHRoZSBpbnRlcm1lZGlhdGUgUEdC
+ZW5jaCByZXN1bHRzLCB3aGljaCBkcm9wCnNpZ25pZmljYW50bHkgZHVyaW5nIGNoZWNrcG9pbnQg
+dGltZSBleGVjdXRpb246CgojIE5vcm1hbCBleGVjdXRpb246ClsyMDI2MDQyMS4xNDE1MDVdIFtJ
+TkZPXSBwcm9ncmVzczogNjYwLjAgcywgMTM4ODI4LjIgdHBzLCBsYXQgNy41MDkgbXMgc3RkZGV2
+IDE2Ljk4NSwgMCBmYWlsZWQKWzIwMjYwNDIxLjE0MTUxNV0gW0lORk9dIHByb2dyZXNzOiA2NzAu
+MCBzLCAxNTE1MDUuMSB0cHMsIGxhdCA2LjcwOCBtcyBzdGRkZXYgOC4zMDgsIDAgZmFpbGVkClsy
+MDI2MDQyMS4xNDE1MjVdIFtJTkZPXSBwcm9ncmVzczogNjgwLjAgcywgMTY2NTU4LjcgdHBzLCBs
+YXQgNi4xOTAgbXMgc3RkZGV2IDYuNTM3LCAwIGZhaWxlZApbMjAyNjA0MjEuMTQxNTM1XSBbSU5G
+T10gcHJvZ3Jlc3M6IDY5MC4wIHMsIDE0MTI2Ny4xIHRwcywgbGF0IDcuMjQ2IG1zIHN0ZGRldiA1
+Ljk1MSwgMCBmYWlsZWQKCiMgRHVyaW5nIGNoZWNrcG9pbnRzOgkKWzIwMjYwNDIxLjE0MTYwNV0g
+W0lORk9dIHByb2dyZXNzOiA3MjAuMCBzLCA1NDExOS44IHRwcywgbGF0IDE4Ljg5NCBtcyBzdGRk
+ZXYgODEuODE2LCAwIGZhaWxlZApbMjAyNjA0MjEuMTQxNjE1XSBbSU5GT10gcHJvZ3Jlc3M6IDcz
+MC4wIHMsIDU1MTg0LjcgdHBzLCBsYXQgMTguNTY0IG1zIHN0ZGRldiAxMi43MjksIDAgZmFpbGVk
+ClsyMDI2MDQyMS4xNDE2MjVdIFtJTkZPXSBwcm9ncmVzczogNzQwLjAgcywgMzczMzQuMCB0cHMs
+IGxhdCAyNy4zMDIgbXMgc3RkZGV2IDI1LjA2MCwgMCBmYWlsZWQKWzIwMjYwNDIxLjE0MTYzNV0g
+W0lORk9dIHByb2dyZXNzOiA3NTAuMCBzLCA1MzM4Ny42IHRwcywgbGF0IDE5LjI1OSBtcyBzdGRk
+ZXYgMTguMzEzLCAwIGZhaWxlZApbMjAyNjA0MjEuMTQxNjQ1XSBbSU5GT10gcHJvZ3Jlc3M6IDc2
+MC4wIHMsIDQxMjQ3LjMgdHBzLCBsYXQgMjQuODA1IG1zIHN0ZGRldiAyNC4xMTYsIDAgZmFpbGVk
+CgoKT24gNC8yMS8yNiAwMDo0MywgUml0ZXNoIEhhcmphbmkgd3JvdGU6Cj4gQlRXIC0gSSB3YXMg
+Zm9sbG93aW5nIHRoZSBvdGhlciB0aHJlYWQgdG9vIHdoZXJlIFBSRUVNUFRfTEFaWSBwcm9ibGVt
+Cj4gd2FzIGdldHRpbmcgZGlzY3Vzc2VkLiBBbmQgZnJvbSB3aGF0IEkgdW5kZXJzdG9vZCwgeW91
+IG1lbnRpb25lZCBbMV0KPiBlbmFibGluZyBUSFAgb24gdGhlIHN5c3RlbSBtYWRlIHRoYXQgcHJv
+YmxlbSBnbyBhd2F5LiBBbHNvIGl0IGxvb2tzIGxpa2UKPiBlbmFibGluZyBUSFAgaXMgdGhlIHJp
+Z2h0IHRoaW5nIHRvIGRvIGZvciB0aGlzIGtpbmQgb2Ygd29ya2xvYWQuIERvZXMKPiB0aGF0IGFs
+c28gbWVhbiBlbmFibGluZyBUSFAgZml4ZWQgdGhpcyBwcm9ibGVtIHRvbz8gRG8geW91IHN0aWxs
+IGhpdAo+IG1lbW9yeSBmcmFnbWVudGF0aW9uIGFuZC9vciBzaW1pbGFyIHRocm91Z2hwdXQgZHJv
+cCB3L28gdGhpcyBmaXggYWZ0ZXIKPiB5b3UgZW5hYmxlIFRIUD8gSXQgd2lsbCBiZSBnb29kIHRv
+IGtub3cgdGhvc2UgZGV0YWlscyB0b28gcGxlYXNlLgoKV2UgaGF2ZSBydW4gbW9yZSBiZW5jaG1h
+cmtzIChhcyBiYXNlbGluZSkgd2l0aCBQb3N0Z3JlU1FMIGh1Z2VfcGFnZXMgb3B0aW9ucwoob24s
+IG9mZikgcHJlLWFsbG9jYXRpbmcgdGhlIHNoYXJlZCBidWZmZXIgbWVtb3J5IHdpdGggInZtLm5y
+X2h1Z2VwYWdlcyIKKH4yNSUgb2YgdG90YWwgbWVtb3J5LCAyTUIgc2l6ZSkgYW5kIFRyYW5zcGFy
+ZW50IEh1Z2UgUGFnZXMgKFRIUCkgb3B0aW9ucwooYWx3YXlzLCBtYWR2aXNlLCBuZXZlcikuIFBv
+c3RncmVTUUwgcGVyZm9ybWFuY2UgaW1wcm92ZXMgb25seSB3aGVuClBvc3RncmVTUUwgaHVnZV9w
+YWdlcyBvcHRpb24gd2l0aCBwcmUtYWxsb2NhdGVkIG1lbW9yeSBpcyBlbmFibGVkLgpUSFAgaGFz
+IG5vIHNpZ25pZmljYW50IGVmZmVjdCBvbiBQb3N0Z3JlU1FMIG9yIHN5c3RlbSBwZXJmb3JtYW5j
+ZSBpbiB0aGlzCmNhc2UuCgp8IFBHIGh1Z2VfcGFnZXMgKyBwcmUtYWxsb2MgbWVtIHwgVEhQICAg
+ICB8ICAgUnVuIDEgfCAgIFJ1biAyIHwgICBSdW4gMyB8IEF2ZXJhZ2UgfAp8LS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLXwtLS0tLS0tLS18LS0tLS0tLS06fC0tLS0tLS0tOnwtLS0tLS0t
+LTp8LS0tLS0tLS06fAp8IG9uICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgbmV2ZXIgICB8
+IDE4OSw0MTggfCAxODcsNzY0IHwgMTg4LDIwNyB8IDE4OCw0NjMgfAp8IG9uICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgYWx3YXlzICB8IDE4OCw4MTMgfCAxODksNzk4IHwgMTkwLDAzMiB8
+IDE4OSw1NDggfAp8IG9uICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgbWFkdmlzZSB8IDE4
+Nyw0MDUgfCAxOTIsMjM0IHwgMTg5LDIwMSB8IDE4OSw2MTMgfAp8IG9mZiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgbmV2ZXIgICB8IDEwMiw2MDkgfCAxMDksMzk0IHwgMTAwLDg2OCB8IDEw
+NCwyOTAgfAp8IG9mZiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgYWx3YXlzICB8ICA5MCwy
+NzQgfCAxMDMsODMxIHwgMTAyLDUxNSB8ICA5OCw4NzQgfAp8IG9mZiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgbWFkdmlzZSB8ICA5MCw1MDggfCAxMDMsODU1IHwgIDk2LDU3NCB8ICA5Niw5
+NzkgfAoKClsxXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA0MDMxOTE5NDIuMjE0
+MTAtMS1kaXBpZXRzQGFtYXpvbi5pdC9ULyNtOGJhZWVhZjQ4YWE3YWU1MzQyYzhjMmRiOGY0ZTFj
+MjdlMDNjMTM2OApbMl0gaHR0cHM6Ly9naXRodWIuY29tL2F3cy9yZXByby1jb2xsZWN0aW9uLmdp
+dAoKCgpBTUFaT04gREVWRUxPUE1FTlQgQ0VOVEVSIElUQUxZIFNSTCwgdmlhbGUgTW9udGUgR3Jh
+cHBhIDMvNSwgMjAxMjQgTWlsYW5vLCBJdGFsaWEsIFJlZ2lzdHJvIGRlbGxlIEltcHJlc2UgZGkg
+TWlsYW5vIE1vbnphIEJyaWFuemEgTG9kaSBSRUEgbi4gMjUwNDg1OSwgQ2FwaXRhbGUgU29jaWFs
+ZTogMTAuMDAwIEVVUiBpLnYuLCBDb2QuIEZpc2MuIGUgUC5JVkEgMTAxMDAwNTA5NjEsIFNvY2ll
+dGEgY29uIFNvY2lvIFVuaWNvCgoK
 
-> TL; DR: Let users set different DAMOS quota charge ratios for DAMOS
-> action failed regions, for deterministic and consistent DAMOS action
-> progress.
-
-Add, thanks.
-
-As mentioned provately, Sashiko claims to have found things which it
-didn't see in the RFC.
-
-	https://sashiko.dev/#/patchset/20260428013402.115171-1-sj@kernel.org
 
