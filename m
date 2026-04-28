@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DB84FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 14:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69FD6FF886F
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 14:28:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A50246B0095; Tue, 28 Apr 2026 10:22:20 -0400 (EDT)
+	id AF32C6B0088; Tue, 28 Apr 2026 10:28:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A266B6B0096; Tue, 28 Apr 2026 10:22:20 -0400 (EDT)
+	id ACA876B008A; Tue, 28 Apr 2026 10:28:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 963616B0098; Tue, 28 Apr 2026 10:22:20 -0400 (EDT)
+	id A07BB6B008C; Tue, 28 Apr 2026 10:28:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 856036B0095
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:22:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9377A6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:28:06 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C8741A01A5
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:22:20 +0000 (UTC)
-X-FDA: 84708179640.01.FF5EBB0
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 86B2B4000D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:22:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kkTKQMnK;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf01.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 306681401BE
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:28:06 +0000 (UTC)
+X-FDA: 84708194172.01.3F8AAA7
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 229A6120003
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:28:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cBCToJLH;
+	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777386138;
+	s=arc-20220608; t=1777386484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W0Te1SqwkV5UqcpbbzTNHO6gbbaHS7L3dF8jXDrZ4q4=;
-	b=Nb0topBAmdb2iqjLnEfYhwUeP7WSkldyc9YodfHr3tSUYWPrwQ6/HvX/ycxNzE7tnYPP1x
-	pgPezy6faW/uP91WfX+7qxxfkUNEqqBWHnZpv/ZePisp0mdwegvlqud3SD2yjomi1AZP6t
-	KVj0qjHE0sB36d9TMKE8vb1cLPvXWcU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777386138; a=rsa-sha256;
+	bh=PiEnJcTNbxsAumPO2OZH+Ow1oDrEEEtJ/EFaM5ozQlo=;
+	b=6WevOxSgRg00Md8okRXwH8V80vAIJCdFX/l1EvewFHpYf7IL+S6/ex0RB80v7kFYI84Bh6
+	phDQLN1QEq/gM+umx2Unt4rKC+Em2Vg2rGfN3PpqNfVHfSkIexHLQBOe8vzXNmo4aETINo
+	DDfWgrPmxFQFBUWaT0ObWAwuqxyzebI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777386484; a=rsa-sha256;
 	cv=none;
-	b=QmeDfBwuATeXMwFJUAQOLtXjOwwiGrbefj3jGHmGs/q7ZWEalWC+uKbG+rQi+0AS1Ty30K
-	BYujgGAw0fmQHbCQrmdD7Twx7Cjp2erC4ep7Tdt/78er+Z9emx7CzydJHhsAI32+mpvDYG
-	ZZdJYhQGPWroY8tf9czzDROUNUHraxI=
+	b=jpYLmY4iPY8hdkotusyLDwakwAPpklxA95FkHHuUlcLzDPIe7l+dqqX9mzpQW57M8KaeSW
+	2TRBUVFPmUinJji9DI1WOao6GMfzSf1rvoPxRF0jCRXT+XNing7WMwDPuSBqFdiDYZZEsn
+	Byl81yDsLfxp7hBdr9VwDPYyWhqpVB0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kkTKQMnK;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf01.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cBCToJLH;
+	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=W0Te1SqwkV5UqcpbbzTNHO6gbbaHS7L3dF8jXDrZ4q4=; b=kkTKQMnKwtrXqCNKc0z1+J1ku5
-	Ms8qXs30K3/sdRV7uij5DXh0HTcXn9L9KT4sPPzRw/gsCgl00XoeLU77f+Nu/s2Nlde0dc/O+kmYN
-	LgNhv27w1UFREraZJOEsjQ+VlDjYcXRo7tzlBvzY2y1s5VjOqobTOrpHYZh7c3TGPSQDMBB6KHqu1
-	Kd4KJhznO7F35fQpihg4H4pQXFoDr+/6HKC6UNbelBYV+pFJANHJLZdqWoXQMN/gjd4vPLbxhyd2I
-	W2No7s7hRvN36oog2fI0qb290Nkw71zvIEs5Oqsm2CGwt7cshYriElYDM9O3I5kmeHBgDZ/dtpdCP
-	T2CELHZw==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wHjKB-00000001dTc-28ed;
-	Tue, 28 Apr 2026 14:22:07 +0000
-Date: Tue, 28 Apr 2026 10:22:00 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 0/6] mm: Fix vmemmap optimization accounting and
- initialization
-Message-ID: <2sdehw5xhmw6fufvdhztlfbm2zgjycj74jstxhqkmxwtyu4unc@nxrx77iwmep4>
-References: <20260428081855.1249045-1-songmuchun@bytedance.com>
+	bh=PiEnJcTNbxsAumPO2OZH+Ow1oDrEEEtJ/EFaM5ozQlo=; b=cBCToJLHGf/nayhl59IKWbgDCf
+	UOpNDiFO37WIHMkTWckaGz23+qygbQenyzYOr2FLwhtlFQ3cjQ9Ub+TQrTrKujajH1ceyt2stZNH+
+	JqhjVDdQ1MYxZ8IKPxRoDVtEllQkh8olSv+0PI6W4TczPwyi6Iei8ESjSCRow02YTVewPEn5wO93X
+	XxiijRIujo2EA6wfaJdWvULuSWgu1Blktir7ieuZT0LLxlvec6r7a6QtSWnS54bthO1i74BGKgHFZ
+	pCHkzewoFnLr0+aynOCB+A+bDYp40Tq9UmYYFCPQuFlFoduAYeaUVjiIFdkBO8N4RYflVcY3sURUs
+	bQ5Hb50A==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wHjPt-00000003xHz-2C9B;
+	Tue, 28 Apr 2026 14:28:01 +0000
+Date: Tue, 28 Apr 2026 15:28:01 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
+	lsf-pc@lists.linux-foundation.org
+Subject: Re: [Lsf-pc] Large memory allocations at LSF/MM
+Message-ID: <afDD8VYvPNepzadc@casper.infradead.org>
+References: <aepANOFKoA4jn8NN@casper.infradead.org>
+ <6cc83a53-4392-4925-9187-d682b60edea8@arm.com>
+ <ae9AHWvXUTuoqlfA@thinkstation>
+ <9cecea5d-9377-4d90-97c3-0cd8b2f77b35@linux.dev>
+ <616cb4c1-ca1d-4e37-a92e-b8f6f675bd3c@suse.com>
+ <ae9heafyGwN3ctUe@casper.infradead.org>
+ <ecf66354-6ec4-42c7-9f08-a95f403b55a0@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260428081855.1249045-1-songmuchun@bytedance.com>
+In-Reply-To: <ecf66354-6ec4-42c7-9f08-a95f403b55a0@linux.dev>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 229A6120003
+X-Stat-Signature: bi9qzn7yw4fh3um6qabspuacg9bjm6ch
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 86B2B4000D
-X-Rspamd-Server: rspam04
-X-Stat-Signature: ouk9yzojc15e49p49bt7xekgfk687nu6
-X-HE-Tag: 1777386137-674068
-X-HE-Meta: U2FsdGVkX1/iXix5+ixQILd7FBfWQ/ShXIDTmT8lKp3ugB/Modo2yEw6G9hBfJd0E2agcBjsqOqWKSbUv5Z0b83Yv9nedb4GwzE0CLV6TJb4IBdPnk/cBIy5KIym634qciF7zqOXJo9MNCF56LfSxNdlJ9R69S6tw7u7ty194LscjpJP2MPN04qSAe1U2RvGQI6/UkVGZWbJlRsROeRjKFZXslwa0MYfQFFPKRgu3i5dbeyQ7hIMAlAyZwN0+z0FtRvIhkG9lvpRJyGkAD1lqunA+wwuoF0ZkYTCSNkmfEpWfZigodlkjgEu+frk78XsqShNhB70umQXACMsB4SAbOArY+O4EKcm1d19FRJ4WPMnh3ySUpArUQ0n8DZptMen9GbuSyKb6Cw5QpkhTNNf798zmSaks79Haug1eoMkkw/jxxgdRTz3hYw4pABMvCze74ThUTw+cij9X7zhFsXnCzXedyPFnma0VflYTwIgxMJixcEZmsWQjHrMfPQS0r4rH/qEM67JngJLSoEnYMCV1rQG6dA071W8+BTLCitAdDduIm/z1ke5ljBy9i5Sf6v2xtnKH24DSTFFHWztA9uvaxpR/Emyfxssxj693u6pExxhjWlOss2OGnM2onvdVC68JA4X9ETUWk0/bu9XfX/5Z8iY8CYyefOQO2ToYP0QklI4BoJOzCC5+HA8hBKuX+q8tU0sMdO2JSAbkVcAtGhrXtVBhBWDFQyJDSfz1S9dpo7YbBHRAf2G5f3OIYAUQQy5jMfEwLW3Gji0uCXHsKAMB6k8ThqDJIhevYedVYphgbLJr8O1B+11o85P/VDv4E4+pZNEgAUxqNsxE18faTE4KCT/h+VmQWatYwRJAUaxyjYZxHcWOWSuwT8KPV5gnWAXUGNDU8sJHjTi75RW4Nejc+iG1nG56435Lg5LWLnLb12gHGJ5yMcGRk5F2Acya+CxMBCSh/iUJ0Bb+pxYoby
- iYM6c9Y0
- jIIg4XYpHfPP9tdlGtuoyPtnSOS+1tHSfZ2ccp2DA7G8ydUlHcgEnG/nOWdY4xTUxK+86/iyoQ+sC1S93zOX79LKdCF1w+mUIJKBSTNLXpblqH1e7vXUthC7+MACEwu20dCpsLE3Nqk1wcKB950/p1x581X9EmDWzdTgKrN7wchQbsFokI/ETRBGkaLUVvynn0QBfQm+QZkrVwP3N1BP0eR7LVSYdkNLJMoKJhmHWp+r8Eg9YyDIVlJJseYdq8QU8Zdi7tAzv853G0anaHAcaT0MZiRmqIa9rafG0PYghnH5cWAZnZPgKJ/6DdtP8IcLu6qSvmjaq2SdzfL7F1ynjkhHlOw==
+X-HE-Tag: 1777386483-998589
+X-HE-Meta: U2FsdGVkX1/QsTpTC/KQO7caypo2Fy7xwBXgNlXBF5R6J/bDIczFdH91lO6x817clIcAjV/QLI26UMb2GDIwi897kpcLoyXz/Nw2RY0c8CBN+a+hkrBHK5Jku8Mft3ld5AquH/ESfiOsh6LsO9kOIqpaAdSwsB3xsGOM6rU1NpGZMH4/3M6hDLK2e+JEWrqtp1SDTedqthP4MhBJqY29qkKG1292HGQsYzYrJt/MT6VqXSldSIv7QCriNqriP7Chzqpa4O5BkPjHDE2fluNAxyK3frar3Y39f8oT0IF2Y4smbHaz1ps2ahJEpxfYQf2E9v+lCNx2nTeh2acwTyvOBxoT9eLXghZBjEjRBaeLnVlWFJXFaDRJ1LciKjIb0iUAvjuDInrPVZyxgMeoCEUrvDZwwJ1jvoiT2nB6dg30+a6W5jN6mBmjdNqH7gVXlkUSz7X6Wp/HBQGYXxzYwLcnoI9gqLvpuzc9qNLX6ui7heJzXTS6iRHXoGozHgpVzHq8yfT7vhRA2/itJpxnOkI7xP2Wli+5w3eMcrie9VBrPWXYCEiqz8yWd9lNk8P7BQQ4+O619XBlOagH2YonC6P3AA+yzvEkhP6QriHMpdhd1EADYYTy4MIgLt1wtP4jqSVtqOJisJoOTBAIywGYgq6Yykl7KF+uijPn7k3nkVNjX08fVRScrNr34t3Cyjj+Kk2OV8xhoOHtAlmH2HLPB98Y+o7g5hXKzI+YVJpBtbWw4UyXmzWN3tLNac3FwNBh9tU45W8flGKHFmj2Ob/k+Gfgm2VZ1U01I6r21av8taSQ7Z3YnD1hYjzm7/CdhnzeVYu9QA1hlTG8l3UPzLKkLKRZkYJH3MkH/QaCh6P2Frq8uCzCOLBn+xtCmPuRaKZ3NtHxh6Mem6Z4n3fFI/qiHsulxijje5OaJFN9or2ao3sCRnrAV+iEumADEuCK1T1dgx3gxfRxWenCwpKiAfUWicR
+ oFPbLRPF
+ /ecmtduLjxOZQ3s1aqspqs6oMpeSAqErrviPjXfL5q+aN8XSZqYwss/jLTsZZNbN3/Av5myIg3AqZdMNkswNmH9R/qOsFONg8+WUsSHtOKUbSG1FFz78rRssntnsrElspcuLyMhq2ur56lLeZZuPkHwQDP+hpGoNYibvV36keTRYn5sjJLDAzfN0g2tLBTA7cR3uzh7ziUX3DsmNFuXOxvSPUQ+iks4D/vPXQorgOexa5qcUgdy0rIZnkTFragO6usfROGu6y/deWCbQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,61 +95,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/04/28 04:18PM, Muchun Song wrote:
-> The series fixes several bugs in vmemmap optimization, mainly around
-> incorrect page accounting and memmap initialization in DAX and memory
-> hotplug paths. It also fixes pageblock migratetype initialization and
-> struct page initialization for ZONE_DEVICE compound pages.
+On Tue, Apr 28, 2026 at 03:07:43PM +0100, Usama Arif wrote:
+> On 27/04/2026 14:15, Matthew Wilcox wrote:
+> > On Mon, Apr 27, 2026 at 02:35:45PM +0200, Vlastimil Babka wrote:
+> >> Well meanwhile we managed to extend the session to 1:30 :)
+> >>
+> >> ICYMI:
+> >> https://docs.google.com/spreadsheets/d/1mGEdDrWskp7Ua91jGXzquQGinorcD58DAVXhOiRp2Gg/edit?usp=sharing
+> > 
+> > Sorry, I meant to follow up with the good news that we found some more
+> > time.  If you guys want, I can split you apart into three separate
+> > topics, or just leave it as a Hydra session.  It all feels pretty
+> > connected to me, so maybe keep it all the way it is?
 > 
-> Patches 1-4 fix vmemmap accounting issues. Patch 1 fixes an accounting
-> underflow in the section activation failure path by moving vmemmap page
-> accounting into the lower-level allocation and freeing helpers. Patch 2
-> fixes incorrect altmap passing in the memory hotplug error path. Patch 3
-> passes pgmap through memory deactivation paths so the teardown side can
-> determine whether vmemmap optimization was in effect. Patch 4 uses that
-> information to account the optimized DAX vmemmap size correctly.
 > 
-> Patches 5-6 fix initialization issues in mm/mm_init. One makes sure all
-> pageblocks in ZONE_DEVICE compound pages get their migratetype
-> initialized. The other fixes a case where DAX memory hotplug reuses an
-> unoptimized early-section memmap while compound_nr_pages() still assumes
-> vmemmap optimization, leaving tail struct pages uninitialized.
-> 
-> Changes in v8:
-> - In patch 4, move VM_WARN_ON_ONCE(nr_pages > PAGES_PER_SECTION) to the
->   top of section_nr_vmemmap_pages().
-> - In patch 4, add Acked-by from David Hildenbrand.
+> For the 1G THP, I think might be good to keep it separate? I feel
+> like there were many different paths proposed on how we can go forward
+> and that work isn't applicable to the other proposals? That said, I am
+> flexible either way, happy to go with whatever works best for the group!
 
-Thanks!
+I can split yours off into its own session and keep the other two
+together for now.  I feel yours fits better after the other two, so
+I'll give you 12:30-13:00 and leave the other two in 11:30 to 12:30 for
+now.
 
-Acked-by: Liam R. Howlett <liam@infradead.org>
-
-> 
-> Muchun Song (6):
->   mm/sparse-vmemmap: Fix vmemmap accounting underflow
->   mm/memory_hotplug: Fix incorrect altmap passing in error path
->   mm/sparse-vmemmap: Pass @pgmap argument to memory deactivation paths
->   mm/sparse-vmemmap: Fix DAX vmemmap accounting with optimization
->   mm/mm_init: Fix pageblock migratetype for ZONE_DEVICE compound pages
->   mm/mm_init: Fix uninitialized struct pages for ZONE_DEVICE
-> 
->  arch/arm64/mm/mmu.c            |  5 +--
->  arch/loongarch/mm/init.c       |  5 +--
->  arch/powerpc/mm/mem.c          |  5 +--
->  arch/riscv/mm/init.c           |  5 +--
->  arch/s390/mm/init.c            |  5 +--
->  arch/x86/mm/init_64.c          |  5 +--
->  include/linux/memory_hotplug.h |  8 +++--
->  mm/memory_hotplug.c            | 13 ++++----
->  mm/memremap.c                  |  4 +--
->  mm/mm_init.c                   | 47 ++++++++++++++++-----------
->  mm/sparse-vmemmap.c            | 58 ++++++++++++++++++++++++++--------
->  11 files changed, 105 insertions(+), 55 deletions(-)
-> 
-> 
-> base-commit: 39704f00f747aba3144289870b5fd8ac230a9aaf
-> -- 
-> 2.20.1
-> 
-> 
 
