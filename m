@@ -4,110 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F413FFF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 15:02:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5AB3FF8868
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 15:08:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FF636B0088; Tue, 28 Apr 2026 11:02:56 -0400 (EDT)
+	id BA5736B008C; Tue, 28 Apr 2026 11:08:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B0286B008A; Tue, 28 Apr 2026 11:02:56 -0400 (EDT)
+	id B7C826B0092; Tue, 28 Apr 2026 11:08:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C7556B008C; Tue, 28 Apr 2026 11:02:56 -0400 (EDT)
+	id A936D6B0093; Tue, 28 Apr 2026 11:08:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EC4D76B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 11:02:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 836BE40374
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:02:55 +0000 (UTC)
-X-FDA: 84708281910.18.46BF8EB
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C2200180013
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:02:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=ak+VUQrE;
-	spf=pass (imf24.hostedemail.com: domain of "prvs=571396877=dipiets@amazon.it" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=571396877=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 946906B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 11:08:30 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1BE6440360
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:08:30 +0000 (UTC)
+X-FDA: 84708295980.28.BF36F61
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 78D3012000F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:08:28 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nXGaUKMN;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777388573;
+	s=arc-20220608; t=1777388908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iR5dhkcHU5VCBpUITHDa/CgQ+skWyHmfxA70XA8Ykuk=;
-	b=VHy5M2M6cS40V2jX+HYdoqqAfxu+2x+ITqZcZH3GsdAMkPv4oOpZjEtWeZ36PE1TRzFjDp
-	OnIY3WSob3/FM1wfLwMrlmdu7okXX4Yi7cBswjj5LJVaFvkkPxotKLjBqoEoxYNCIr4M5v
-	DmKQi18DtdeZHAPt6NXTs8ycPwwKphE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=76yJM+wXEC2d5mRwOQlxYDZA3nH75Li/mgrd9t5SYk0=;
+	b=Ng/eBRQbL+ob9AMXhDm3iJJJpUv9eMswlntnovMxYMTGG1hlIlr/CEjRdUWR+Szd0Mmuto
+	PXB7ENaIWZmIsOul/Y6/urGVB28amxxhq5r4/HigkFvhNCxlfbnBmeMF2xSRjQbqQZGr9i
+	ck0dfrpsPProk8fMLKQ1PLyImfAYZGo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=ak+VUQrE;
-	spf=pass (imf24.hostedemail.com: domain of "prvs=571396877=dipiets@amazon.it" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=571396877=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777388573; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nXGaUKMN;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777388908; a=rsa-sha256;
 	cv=none;
-	b=R3H1jdaI9LjwBYhhh730mfPaAUx3wzHBWHuBZMrcRvZRBaH/TKY94tG70PpxRpawPVhJaT
-	8VTJoFaUPnfD1kiDfcDNwajKjswusjHRvRvRyf4iOlB7M43hO27uVCF8lObKSJIaSb29bc
-	sYVrcDpKImkEW66kIJmcPZLYalzYpzU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1777388572; x=1808924572;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iR5dhkcHU5VCBpUITHDa/CgQ+skWyHmfxA70XA8Ykuk=;
-  b=ak+VUQrEzfs92ZI+wtT6iGDmkdBXD8rryTDBWO2D2/pLZRfxogZqmZBD
-   ieZvH+lfFP9N6gWSTLScC9mkd+XD8XKExLVpzFvvhXauf858Jocg728Hj
-   /Od3Zd/t3whHksYklzURh+9Vuhq6Ew6wmlkaz6HHYjPu+uDFuNGIouic6
-   y3T97FLF4JicQqck2YFdiNywHjc9LPAgnr2lHmlkqrDfor0v4ds0btcaO
-   YOQ7S2gnwtAwYP2xSe+ZytBnYAmlHLpi4/HiCN55AWlN0NI2sRul40G4A
-   oTt50gfDJe/8WYKlrqqrp+wg7xgbOGAOfyw2k7P9OabSEqYh1zuJAzFBD
-   w==;
-X-CSE-ConnectionGUID: S+NRVQ54ScmBWO36YfRgMA==
-X-CSE-MsgGUID: Q3INsoH7StqcMg2azulpcg==
-X-IronPort-AV: E=Sophos;i="6.23,204,1770595200"; 
-   d="scan'208";a="18387508"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 15:02:48 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:19298]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.57.50:2525] with esmtp (Farcaster)
- id bf7d9290-f8e5-4068-a080-26b327ef5529; Tue, 28 Apr 2026 15:02:48 +0000 (UTC)
-X-Farcaster-Flow-ID: bf7d9290-f8e5-4068-a080-26b327ef5529
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 28 Apr 2026 15:02:47 +0000
-Received: from dev-dsk-dipiets-2b-fa1865ee.us-west-2.amazon.com
- (172.22.139.101) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Tue, 28 Apr 2026
- 15:02:47 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <ritesh.list@gmail.com>
-CC: <abuehaze@amazon.com>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
-	<brauner@kernel.org>, <dipietro.salvatore@gmail.com>, <dipiets@amazon.it>,
-	<djwong@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-xfs@vger.kernel.org>, <stable@vger.kernel.org>, <willy@infradead.org>
-Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
-Date: Tue, 28 Apr 2026 15:02:38 +0000
-Message-ID: <20260428150240.3009-1-dipiets@amazon.it>
+	b=gwd68oSahgNxyVEixbuUkWgMdSlpLlRc8ggtvg/nl9NTiADfA63ug06zmyAM6DuUY1b2Z4
+	hMyf3jy0XT13raxFCENfXFxmuajjnpg+KRsa9fDR3/PxKqJvNiYrFsXBagpHREz8lD1usF
+	CyzRrHGVtb98yOy5ZBZJuQZQg1y6KaM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D21C561338
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:08:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EC8C2BCB5;
+	Tue, 28 Apr 2026 15:08:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777388907;
+	bh=4quu3osxb83SGLE9dYlpfao+/2xbl3i6IE5Aw78wfNQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nXGaUKMNugVVxGYsvvYisN7aRNxQKQ/DSP9jO2aU8rjWLXBpYwWGeLEHl80+HX1vs
+	 ghqDgy1W+Xj7t0TGwiv39u6wbInBDy5UGeg3VK6Oh4y24L/V2V4lm+/3QY8Iv5KBMf
+	 8HEjW18gwWPgwSk4BCb64WAkhHSExoINHrpw0x/kQ03UWW33KLof79rtj5RN/Cst0c
+	 bCTmorQH5omvsmJ5nCOAcpB0SV99SV7qLne7K8uRmVeobcsu1+/0myb0lqFm9+JfOd
+	 a5M7jisClT6D4Wedoxnby7wYmEbLWfcpbaxr3VGNYwwtflg+47bPP0+7w2tuNOJUys
+	 3EEqFcbvnxF5A==
+From: SeongJae Park <sj@kernel.org>
+To: damon@lists.linux.dev
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: DAMON Release News Letter v7.0-rc1..v7.1-rc1
+Date: Tue, 28 Apr 2026 08:08:17 -0700
+Message-ID: <20260428150817.125575-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cxztt8nw.ritesh.list@gmail.com>
-References: <cxztt8nw.ritesh.list@gmail.com>
 MIME-Version: 1.0
-X-Originating-IP: [172.22.139.101]
-X-ClientProxiedBy: EX19D044UWB003.ant.amazon.com (10.13.139.168) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: s5wcg81cjrw9c6fy7dh8y4y7qge4irp8
+X-Rspamd-Queue-Id: 78D3012000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C2200180013
-X-Rspamd-Server: rspam06
-X-Stat-Signature: cgpauhy1drsbknwthwhwtq4n1fw4kxfj
-X-HE-Tag: 1777388572-252618
-X-HE-Meta: U2FsdGVkX1/l3X98EsAtNbrxQNxh7ZA2HpGr3ZdN96kenZCpiL1cNxcoEJLKxtGkOC66XReweznOai4cA6yx60O/LJskA1Sl3w9c75vk0TRyFOklwWucqM+9fpRhdsxEbTvvXDJ8caXPl6RaY05V4bapJVwGWSy+BOFb8B7exi3fCuscCu3rXhUe9yu+jiwo4UaczFNvlCm5xJoX16h2SY4JzE+lJpodaDc/gCCWZhZ5dA415YiXRkrLenDLu0ojtuRN9XIEpRBeUTV7ZomHyzjts1s3qRYIKyPjbyc2XkoETa9BfQfPcWwv0HDP6OR1md+QBZL5ZyCqw+vtbuSVkgLdi2nyRRXXbD4YiVuy1M8fUPDAVeKq6YK6Rlf1MPJQpPfSxoWfPWfaxOz2ppElC80eWYet6xfsrc1Lj2ywOzffIO44HDVGxcb/ln8PYuVVYhuhrYFjAsEO9u3DQ9vRG40V3ux8lKSnWHf38LVIC3naDMSZ4CcQBzAm6HqQ3LBp/c8ZzDmyctlks6oZpPqBabB7OIJAT0yk4ZNZFd7V6AVQLv/Yo1/TAG9QIUj9t1NUf5beTlxgS9l+LYPkJJkIfjPzKSFuqTgLArEc8OBc5jG7wk0Ry9sJUQOQHVOQrNjCM9ER363Xfg4Ldliekw3D0jKvOs57sfMIQPGzQuU2AR4zuLAT1eGzxGI6/fY/M1SHSe9G9am9JX5FlK3DCdXpkkRv7e5I+sWIprdxicrhi8/S90L2wgXP19u6vyXCuVC6rEipEORisw7lrUOhZACTZ0Ufw69DLB5syBOX0gzO2gLjO+dlyA+V80CIJFTuLfoFaZqLE9V4QqUCYFvRLGwJOebrAF1dDDzHfuO4CKwtjUBNtpiHDlEuCQH5m5zPJY8LQKNarBlG3CdsH7wtBYfSwG9s9IRF7MN8tz70HSsmA5cBOMbj4M2zXI3dSoSZO3aKGeHXtDFoLXjByCH/Tb6
- tSyWuqy7
- zVWzkjT2UolRDLSiybSx8QU8EwjcYAAx97mmOJ+a9U/5kYMm0DG7YxM7DL4FyhjazaxK45npxKnkOcTEJYvFGpKfkSXNujy0XkX15x9BSXfrHTMn9RTRUifHlnKLJLQusN1l1VJA4LJ1hTywoPgEYNU2pK2UtKNmwGCjTmsuJ8YKPdPhSbOdV9nsB3o5DorJBYVitGYmuwtsCsWy8jd8bHSAO/PfrjRoSGJb16WLJJ6cY1BgHdBADpcZ7mKBnzTOMOlfWk7OZppUSUIMLpOk3XJ8dV5Ac6bX1Ab0FL8FKpLk/Q6kPvJl1HqmqW6CwHEDb0h8akI8NnVuG4BV2VfUPKfHEAiWZTPvULr9dBZM5n7MyG2u28gANeK2ik4xDhmACqNYXsaN2dfDB56wLE1YvwQEeBEZYumNu/ZPEmcnWryfo5jI3YI5T5ukXBgkmZXMjHsHD13I07uOuK7Kbu3yNntK0xHptQi6ULLsdbyc+uazuCqpQsHwGRAluWLbrrF7I3BodxZ2bUiYf/A4WLwK4edP2URrZdneU4pujb9Hxjg3rdaDkFpzQ67lZHFBRL5bsF5ZC83KUxG25onFqNUblODn9zyuPY7bzG8xAPik1gd0Vn9bAaLlVGkHu/575abDb445WAioATRBjeyMoIbxwbPu9iaRq5zrjeWp00DWNYx8UV8xkWxF4Ymd6ELLOPKOO8lrhkQJ1kX7K27A=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777388908-434650
+X-HE-Meta: U2FsdGVkX19s7yDINRlHPSSZBihyLILm7eId+qRjZFvcn5dDU1durnpLGguRoQvZzUKyTHdIMvCxYO7EMm5KIOPvaQsmZQdxW+El/XeGA5Ne8ut5oV0c/kgLBoLBxD4YxtBVdtoPA5cCqKwqd72Fau/zmfaujI5G8qz5bM0CCzKSiJTaBAhNvs1Z6U4Pdy0S6+trTNS69GiBfOFLLIfUe09CeqHp5kx25Ah7TC8hQSFE4tjXLRJv/znMTufnSZ/naF2DKJTKEk6p74RlaBzdkyDNCt6rfM4ARIE9d6Huk8PieLehI4XGK2pl4jPwOcJdZqe+eoEMIqcli/zTWiwZMpDjpAKBazi2ANS2Suez3zuggmvqPljH05SOzJ5sV5q4JoZMitya5fhBjRYuJRuAYqMOmtg7fZge0B3Lfy1r/u4HzdGoHvdy9SP2+PSlKe4ip32RaXo2rIwuIzbyhUo2NDTUtqFhW3+APHZtRm21qnNzLFCs9HKUqVsbTW0KBvQJOVztOaopZAA2w2uN3R3wFuBkJn8T+oikBpnIge8VrgRsxfOYLYqOMpq0LxkPVvhwflBLB9+wT+e1NVUnzmpJ+oq0sHWdTL094hjWajrfF20HVgWCIhXyf9yHTEkW2+z+Im85Many9xZ7romhDwuDcWOkEeJcOJSZ4opPXiuyfNSz7MDcjkSQ6vSycBX5lswZI4zvXbcQ13TiCg/bSERxfY7gvOUeYD6+kNKjk+qqlf5NUSMdlvqCaEPMJeLTcd91zR64Hucmhi9ZNOT5c0mZRG/k7ClTfgWAA8HdxUZ2M/UR2tGC3N7221stvgFo1t3MVltZvfDdMKJH02vqpcmB5fN1InCtcJCmGL2at/q/Sliil2bp5T/ffBeiEkqkpp/fxDF3cgkmtGT+futzSbu5wMPOb8A50xMMe33yEgm+40RPiPGwAkfvpx+7fx9aPqfbsVJU4HIhAxRn9VsQ2Mu
+ 4Cf3gfAb
+ gZ5IFFy7zdUpShWBRk5lYEfIVujgj5cwlJsyFUN7OJnW+YcskcXdsBGk1wKw6YA5ngKTUrG+ag9MzMdCWAIq8Li5kje8d2d8/1CCi64I+9c8GqEQKfb7AWBwiCK9cUyVr5FDmOzzL9CUOyzy2OtVHTp8OxOZYfD6RdvZYznPiUmo7OFF55/EWlRNI+3Ezi2yWKctQZGGWzIfTOn9l/z2Kw9pE5csd7HBx3NhEQvrfQr8EzIX8tAzHvSxgoucavogIhDZjPNHJT/2eRQheCrN0p4xRkr5+KT3orJCUelKrKyxzlyZY4eO6BRGTMY2DsNp3Yrq9DOGds4BpQXlMWhyZPp6vtC2Zwa609Sg0p2BBQDAqic1nicip4ugei2d83DjL2WgyZa3NZ0J+wY7w4Qqi7UVkwitdD17I7miltLxxbM/4bg9ZFFpnG1qcEvc3WYvyCl8ahYdNnVcuvUKFVyk5aMIqqAcP5yel1ideqYDwupUw1TDpOOiAZrFEGUwyzGtOLmhTmSKwvJgHlPfZdUHYjIK27ypbJnk3hbcXNlgo04bL6gwkpE/zSxFtKdOSkFwgWu1DIKFfiBJ/r7su9N5SD1dfF1AcyCES3rHRblyErrZw6KsE85oeMtrAycpeTkELP+Ps3CUoYrhHs2+RxFCvanTe6U8QGOH13ToSy0T5Z1Gk9qthrT2xxsin+bg/t9mJBDFpa5uH3hNgarbTpIVKIlcDbNFEzMTrtim7a2H6CzHHsc6X18Hy5twV5Vhf0/2eXeDG7GWu4/CqvqpE4Rq7IM5eL06xEHH1UUDYsZQn8Detof36XUi1LKTHwQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,118 +89,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-T24gNC8yMS8yNiAwMDo0MywgUml0ZXNoIEhhcmphbmkgd3JvdGU6Cj4gQWxzbywgZ2l2ZW4gdGhl
-IE1haW50YWluZXJzICh3aWxseSwgQ2hyaXN0b3BoLCBEYXZlKSBzaG93biB0aGVpcgo+IGRpcy1p
-bnRlcmVzdCBpbiB0YWtpbmcgdGhlIHBhdGNoIGluIGl0J3MgY3VycmVudCBmb3JtLCB0aGUgcmln
-aHQgd2F5IGlzCj4gdG8gZ2V0IGJhY2sgd2l0aCBwZXJmb3JtYW5jZSBkYXRhIHdpdGggYm90aCB0
-aGUgYXBwcm9hY2hlcyAod2hpY2ggd2UKPiB3ZXJlIGRpc2N1c3NpbmcpIGFuZCBmaXJzdCBnZXQg
-dGhlIGNvbnNlbnN1cyBmcm9tIGV2ZXJ5b25lLCBiZWZvcmUKPiBwcm9wb3NpbmcgdGhpcyBhcyBh
-IHBhdGNoIDopLgoKVGhhbmsgeW91IGZvciB0aGUgZm9sbG93LXVwIGFuZCB0aGUgYWRkaXRpb25h
-bCBjb250ZXh0LCBSaXRlc2guCkkgbWlnaHQgaGF2ZSBtaXN1bmRlcnN0b29kIHRoZSBwcmV2aW91
-cyByZXF1ZXN0IGFuZCB3aWxsIG1ha2Ugc3VyZSB0byAKbGluayBiYWNrIHRvIHByZXZpb3VzIHBh
-dGNoIHZlcnNpb25zIGluIHRoZSBmdXR1cmUuCkhlcmUgYXJlIHRoZSBwZXJmb3JtYW5jZSByZXN1
-bHRzIHRoYXQgd2UgaGF2ZSBjb2xsZWN0ZWQgb24gb3VyIGVuZCB3aXRoCnRoZSBwcm9wb3NlZCBw
-YXRjaGVzOgoKCnwgUGF0Y2ggICAgICAgICAgICAgICAgfCAgICBSdW4gMSAgIHwgICAgUnVuIDIg
-ICB8ICAgIFJ1biAzICAgfCAgIEF2ZXJhZ2UgICB8ICUgdnMgQmFzZWxpbmUgfAp8LS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLXwtLS0tLS0tLS0tLTp8LS0tLS0tLS0tLS06fC0tLS0tLS0tLS0tOnwtLS0t
-LS0tLS0tLS06fDotLS0tLS0tLS0tLS0tOnwKfCBCYXNlbGluZSAgICAgICAgICAgICB8IDEwNyww
-NjQuNjEgfCAgOTcsMDQzLjg2IHwgMTAxLDgzMC43OCB8IDEwMSw5NzkuNzUgIHwgICAgICAg4oCU
-ICAgICAgIHwKfCBQcm9wb3NlZCBwYXRjaCAgICAgICB8IDE0NiwwMTIuMjMgfCAxMzYsMzkyLjM2
-IHwgMTQxLDE3OC4wMCB8IDE0MSwxOTQuMjAgIHwgICAgKzM4LjQ1JSAgICB8CnwgUml0ZXNoJ3Mg
-c3VnZ2VzdGlvbiAgfCAxNDcsNDgxLjUwIHwgMTMzLDA2OS4wMyB8IDEzNywwNTEuMzAgfCAxMzks
-MjAwLjYxICB8ICAgICszNi41MCUgICAgfAp8IE1hdHRoZXcncyBzdWdnZXN0aW9uIHwgMTQ1LDY1
-My45MSB8IDE0NCwxNjkuMjQgfCAxNDEsNzY4LjMxIHwgMTQzLDg2My44MiAgfCAgICArNDEuMDcl
-ICAgIHwKCgpPbiA0LzIxLzI2IDAwOjQzLCBSaXRlc2ggSGFyamFuaSB3cm90ZToKPiBJbiB0aGF0
-IGNvbnRleHQsIEkgd2FudGVkIHRvIHVuZGVyc3RhbmQgeW91ciBzZXR1cCBhIGJpdCBmcm9tCj4g
-bWVtb3J5IGZyYWdtZW50YXRpb24gcGVyc3BlY3RpdmUuIEFyZSB5b3UgdHJ5aW5nIHRvIHNpbXVs
-YXRlIG1lbW9yeQo+IGZyYWdtZW50YXRpb24gYW5kIHRoZW4gYmVuY2htYXJraW5nPyBPciB3YXMg
-dGhpcyBwcm9ibGVtIGhpdHRpbmcgd2hlbgo+IHlvdSBydW4gc2ltcGx5IHJ1biB0aGUgcmVwcm9k
-dWN0aW9uIHN0ZXBzIG1lbnRpb25lZCBpbiB5b3VyIGNvdmVyCj4gbGV0dGVyPwoKQWxsIHJlc3Vs
-dHMgd2VyZSBjb2xsZWN0ZWQgb24gZnJlc2ggQVdTIGluc3RhbmNlcyBhcyBkZXNjcmliZWQgaW4g
-dGhlCmNvdmVyIGxldHRlci4gUGF0Y2ggWzFdIGhhcyBiZWVuIGFwcGxpZWQgb24gYWxsIGluc3Rh
-bmNlcyB0byBhdm9pZCB0aGUKb3RoZXIgcmVncmVzc2lvbi4gVGhlIGluc3RhbmNlIGhhcyBiZWVu
-IHJlc3RhcnRlZCB0byBwaWNrIHVwIHRoZSBwYXRjaGVkCmtlcm5lbCBhbmQgZW5zdXJlIGNsZWFu
-IG1lbW9yeSBiZWZvcmUgaW5zdGFsbGluZyBhbmQgc3RhcnRpbmcgdGhlClBvc3RncmVTUUwgYmVu
-Y2htYXJrIHZpYSByZXByby1jb2xsZWN0aW9uIFsyXS4gCldlIGRvIG5vdCB1c2UgYW55IHRvb2wg
-dG8gZnJhZ21lbnQgdGhlIG1lbW9yeSBpbiBhZHZhbmNlLiBDb2xsZWN0aW5nIAptZW1vcnkgbWV0
-cmljIG9mIHRoaXMgc3lzdGVtLCB3ZSBub3RpY2VkIHRoYXQgfjQwJSBvZiBtZW1vcnkgaXMgdXNl
-ZCBieQpQYWdlVGFibGVzIHNpbmNlIFBvc3RncmVTUUwgc3Bhd25zIGEgbmV3IHByb2Nlc3MgZm9y
-IGVhY2ggY2xpZW50IGxpbWl0aW5nCnNpZ25pZmljYW50bHkgdGhlIGF2YWlsYWJsZSBjYWNoaW5n
-IGFuZCBmcmVlIG1lbW9yeS4KClBvc3RncmVTUUwgd3JpdGUgcGF0dGVybiBjb25zaXN0cyBtb3N0
-bHkgb2YgOC8xNiBLQiBkYXRhIGJ1dCBkdXJpbmcgCnRoZSBkYXRhYmFzZSBjaGVja3BvaW50cywg
-YnkgZGVmYXVsdCBldmVyeSA1IG1pbnV0ZXMsIGl0IGZsdXNoZXMgd3JpdGUtYWhlYWQKbG9ncyB0
-byBkaXNrLCB3aGljaCB1c2VzIGxhcmdlIGZvbGlvcy4gQXQgdGhpcyBwb2ludCwgdGhlIHN5c3Rl
-bSBhdHRlbXB0cyB0bwpzYXRpc2Z5IHRoZSBmb2xpbyBhbGxvY2F0aW9uIHJlcXVlc3QsIHRyaWdn
-ZXJpbmcgdGhlIHJlZ3Jlc3Npb24gYW5kIGZhbGxpbmcKaW50byB0aGUgc2xvdyBwYXRoLCBhcyBz
-aG93biBieSB0aGUgTGludXggcGVyZiBwcm9maWxlIGJlbG93OgoKICBgLTAuMjYlLV9fYXJtNjRf
-c3lzX3B3cml0ZTY0CiAgICBgLTAuMjYlLXZmc193cml0ZQogICAgICBgLTAuMjYlLXhmc19maWxl
-X3dyaXRlX2l0ZXIKICAgICAgICBgLTAuMjYlLXhmc19maWxlX2J1ZmZlcmVkX3dyaXRlCiAgICAg
-ICAgICBgLTAuMjYlLWlvbWFwX2ZpbGVfYnVmZmVyZWRfd3JpdGUKICAgICAgICAgICAgYC0wLjI2
-JS1pb21hcF93cml0ZV9pdGVyCiAgICAgICAgICAgICAgYC0wLjIyJS1pb21hcF93cml0ZV9iZWdp
-bgogICAgICAgICAgICAgICAgYC0wLjIyJS1pb21hcF9nZXRfZm9saW8KICAgICAgICAgICAgICAg
-ICAgYC0wLjIyJS1fX2ZpbGVtYXBfZ2V0X2ZvbGlvCiAgICAgICAgICAgICAgICAgICAgYC0wLjIx
-JS1maWxlbWFwX2FsbG9jX2ZvbGlvLT5hbGxvY19wYWdlcwogICAgICAgICAgICAgICAgICAgICAg
-YC0wLjIwJS1fX2FsbG9jX3BhZ2VzX3Nsb3dwYXRoCiAgICAgICAgICAgICAgICAgICAgICAgIHwt
-MC4xMiUtX19hbGxvY19wYWdlc19kaXJlY3RfY29tcGFjdAogICAgICAgICAgICAgICAgICAgICAg
-ICB8IGAtMC4xMiUtdHJ5X3RvX2NvbXBhY3RfcGFnZXMKICAgICAgICAgICAgICAgICAgICAgICAg
-fCAgIGAtMC4xMSUtY29tcGFjdF96b25lCiAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgIGAt
-MC4xMSUtaXNvbGF0ZV9taWdyYXRlcGFnZXMKICAgICAgICAgICAgICAgICAgICAgICAgYC0wLjA3
-JS1fX2RyYWluX2FsbF9wYWdlcwogICAgICAgICAgICAgICAgICAgICAgICAgIGAtMC4wNyUtZHJh
-aW5fcGFnZXNfem9uZQogICAgICAgICAgICAgICAgICAgICAgICAgICAgYC0wLjA3JS1mcmVlX3Bj
-cHBhZ2VzX2J1bGsKClRoaXMgaXMgYWxzbyB2aXNpYmxlIGluIHRoZSBpbnRlcm1lZGlhdGUgUEdC
-ZW5jaCByZXN1bHRzLCB3aGljaCBkcm9wCnNpZ25pZmljYW50bHkgZHVyaW5nIGNoZWNrcG9pbnQg
-dGltZSBleGVjdXRpb246CgojIE5vcm1hbCBleGVjdXRpb246ClsyMDI2MDQyMS4xNDE1MDVdIFtJ
-TkZPXSBwcm9ncmVzczogNjYwLjAgcywgMTM4ODI4LjIgdHBzLCBsYXQgNy41MDkgbXMgc3RkZGV2
-IDE2Ljk4NSwgMCBmYWlsZWQKWzIwMjYwNDIxLjE0MTUxNV0gW0lORk9dIHByb2dyZXNzOiA2NzAu
-MCBzLCAxNTE1MDUuMSB0cHMsIGxhdCA2LjcwOCBtcyBzdGRkZXYgOC4zMDgsIDAgZmFpbGVkClsy
-MDI2MDQyMS4xNDE1MjVdIFtJTkZPXSBwcm9ncmVzczogNjgwLjAgcywgMTY2NTU4LjcgdHBzLCBs
-YXQgNi4xOTAgbXMgc3RkZGV2IDYuNTM3LCAwIGZhaWxlZApbMjAyNjA0MjEuMTQxNTM1XSBbSU5G
-T10gcHJvZ3Jlc3M6IDY5MC4wIHMsIDE0MTI2Ny4xIHRwcywgbGF0IDcuMjQ2IG1zIHN0ZGRldiA1
-Ljk1MSwgMCBmYWlsZWQKCiMgRHVyaW5nIGNoZWNrcG9pbnRzOgkKWzIwMjYwNDIxLjE0MTYwNV0g
-W0lORk9dIHByb2dyZXNzOiA3MjAuMCBzLCA1NDExOS44IHRwcywgbGF0IDE4Ljg5NCBtcyBzdGRk
-ZXYgODEuODE2LCAwIGZhaWxlZApbMjAyNjA0MjEuMTQxNjE1XSBbSU5GT10gcHJvZ3Jlc3M6IDcz
-MC4wIHMsIDU1MTg0LjcgdHBzLCBsYXQgMTguNTY0IG1zIHN0ZGRldiAxMi43MjksIDAgZmFpbGVk
-ClsyMDI2MDQyMS4xNDE2MjVdIFtJTkZPXSBwcm9ncmVzczogNzQwLjAgcywgMzczMzQuMCB0cHMs
-IGxhdCAyNy4zMDIgbXMgc3RkZGV2IDI1LjA2MCwgMCBmYWlsZWQKWzIwMjYwNDIxLjE0MTYzNV0g
-W0lORk9dIHByb2dyZXNzOiA3NTAuMCBzLCA1MzM4Ny42IHRwcywgbGF0IDE5LjI1OSBtcyBzdGRk
-ZXYgMTguMzEzLCAwIGZhaWxlZApbMjAyNjA0MjEuMTQxNjQ1XSBbSU5GT10gcHJvZ3Jlc3M6IDc2
-MC4wIHMsIDQxMjQ3LjMgdHBzLCBsYXQgMjQuODA1IG1zIHN0ZGRldiAyNC4xMTYsIDAgZmFpbGVk
-CgoKT24gNC8yMS8yNiAwMDo0MywgUml0ZXNoIEhhcmphbmkgd3JvdGU6Cj4gQlRXIC0gSSB3YXMg
-Zm9sbG93aW5nIHRoZSBvdGhlciB0aHJlYWQgdG9vIHdoZXJlIFBSRUVNUFRfTEFaWSBwcm9ibGVt
-Cj4gd2FzIGdldHRpbmcgZGlzY3Vzc2VkLiBBbmQgZnJvbSB3aGF0IEkgdW5kZXJzdG9vZCwgeW91
-IG1lbnRpb25lZCBbMV0KPiBlbmFibGluZyBUSFAgb24gdGhlIHN5c3RlbSBtYWRlIHRoYXQgcHJv
-YmxlbSBnbyBhd2F5LiBBbHNvIGl0IGxvb2tzIGxpa2UKPiBlbmFibGluZyBUSFAgaXMgdGhlIHJp
-Z2h0IHRoaW5nIHRvIGRvIGZvciB0aGlzIGtpbmQgb2Ygd29ya2xvYWQuIERvZXMKPiB0aGF0IGFs
-c28gbWVhbiBlbmFibGluZyBUSFAgZml4ZWQgdGhpcyBwcm9ibGVtIHRvbz8gRG8geW91IHN0aWxs
-IGhpdAo+IG1lbW9yeSBmcmFnbWVudGF0aW9uIGFuZC9vciBzaW1pbGFyIHRocm91Z2hwdXQgZHJv
-cCB3L28gdGhpcyBmaXggYWZ0ZXIKPiB5b3UgZW5hYmxlIFRIUD8gSXQgd2lsbCBiZSBnb29kIHRv
-IGtub3cgdGhvc2UgZGV0YWlscyB0b28gcGxlYXNlLgoKV2UgaGF2ZSBydW4gbW9yZSBiZW5jaG1h
-cmtzIChhcyBiYXNlbGluZSkgd2l0aCBQb3N0Z3JlU1FMIGh1Z2VfcGFnZXMgb3B0aW9ucwoob24s
-IG9mZikgcHJlLWFsbG9jYXRpbmcgdGhlIHNoYXJlZCBidWZmZXIgbWVtb3J5IHdpdGggInZtLm5y
-X2h1Z2VwYWdlcyIKKH4yNSUgb2YgdG90YWwgbWVtb3J5LCAyTUIgc2l6ZSkgYW5kIFRyYW5zcGFy
-ZW50IEh1Z2UgUGFnZXMgKFRIUCkgb3B0aW9ucwooYWx3YXlzLCBtYWR2aXNlLCBuZXZlcikuIFBv
-c3RncmVTUUwgcGVyZm9ybWFuY2UgaW1wcm92ZXMgb25seSB3aGVuClBvc3RncmVTUUwgaHVnZV9w
-YWdlcyBvcHRpb24gd2l0aCBwcmUtYWxsb2NhdGVkIG1lbW9yeSBpcyBlbmFibGVkLgpUSFAgaGFz
-IG5vIHNpZ25pZmljYW50IGVmZmVjdCBvbiBQb3N0Z3JlU1FMIG9yIHN5c3RlbSBwZXJmb3JtYW5j
-ZSBpbiB0aGlzCmNhc2UuCgp8IFBHIGh1Z2VfcGFnZXMgKyBwcmUtYWxsb2MgbWVtIHwgVEhQICAg
-ICB8ICAgUnVuIDEgfCAgIFJ1biAyIHwgICBSdW4gMyB8IEF2ZXJhZ2UgfAp8LS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLXwtLS0tLS0tLS18LS0tLS0tLS06fC0tLS0tLS0tOnwtLS0tLS0t
-LTp8LS0tLS0tLS06fAp8IG9uICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgbmV2ZXIgICB8
-IDE4OSw0MTggfCAxODcsNzY0IHwgMTg4LDIwNyB8IDE4OCw0NjMgfAp8IG9uICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgYWx3YXlzICB8IDE4OCw4MTMgfCAxODksNzk4IHwgMTkwLDAzMiB8
-IDE4OSw1NDggfAp8IG9uICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgbWFkdmlzZSB8IDE4
-Nyw0MDUgfCAxOTIsMjM0IHwgMTg5LDIwMSB8IDE4OSw2MTMgfAp8IG9mZiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwgbmV2ZXIgICB8IDEwMiw2MDkgfCAxMDksMzk0IHwgMTAwLDg2OCB8IDEw
-NCwyOTAgfAp8IG9mZiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgYWx3YXlzICB8ICA5MCwy
-NzQgfCAxMDMsODMxIHwgMTAyLDUxNSB8ICA5OCw4NzQgfAp8IG9mZiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgbWFkdmlzZSB8ICA5MCw1MDggfCAxMDMsODU1IHwgIDk2LDU3NCB8ICA5Niw5
-NzkgfAoKClsxXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA0MDMxOTE5NDIuMjE0
-MTAtMS1kaXBpZXRzQGFtYXpvbi5pdC9ULyNtOGJhZWVhZjQ4YWE3YWU1MzQyYzhjMmRiOGY0ZTFj
-MjdlMDNjMTM2OApbMl0gaHR0cHM6Ly9naXRodWIuY29tL2F3cy9yZXByby1jb2xsZWN0aW9uLmdp
-dAoKCgpBTUFaT04gREVWRUxPUE1FTlQgQ0VOVEVSIElUQUxZIFNSTCwgdmlhbGUgTW9udGUgR3Jh
-cHBhIDMvNSwgMjAxMjQgTWlsYW5vLCBJdGFsaWEsIFJlZ2lzdHJvIGRlbGxlIEltcHJlc2UgZGkg
-TWlsYW5vIE1vbnphIEJyaWFuemEgTG9kaSBSRUEgbi4gMjUwNDg1OSwgQ2FwaXRhbGUgU29jaWFs
-ZTogMTAuMDAwIEVVUiBpLnYuLCBDb2QuIEZpc2MuIGUgUC5JVkEgMTAxMDAwNTA5NjEsIFNvY2ll
-dGEgY29uIFNvY2lvIFVuaWNvCgoK
+Hello community,
 
+
+This news letter covers DAMON features that landed on the mainline, and misc
+events that were interesting to me that happened in v7.0-rc1..v7.1-rc1 time
+period (2026-02-22..2026-04.26).
+
+The news letter covering the previous release cycle (v6.19-rc1..v7.0-rc1) is
+also available [1].
+
+Changes Landed On v7.0
+======================
+
+All changes that were landed on v7.0-rc1 have successfully landed on v7.0.
+Read the news letter for v7.0-rc1 [1] for the list of changes.
+
+Changes Landed For v7.1
+=======================
+
+During the 7.1-rc1 merge window, 67 DAMON patches have landed via the MM pull
+requests [2,3].  Introducing a few of changes that could introduce non-trivial
+user impacts.
+
+New Features
+------------
+
+In the merge window, below user-visible new features are added.
+
+    commit 8719c59c4b928: Patch series "mm/damon: support multiple goal-based quota tuning algorithms".
+    commit c63067e8b0849: Patch series "mm/damon: support addr_unit on default monitoring targets for modules".
+
+The first series extends DAMOS quota auto-tuning to allow users select the
+tuning algorithms.  Together with the extension, a new tuning algorithm, namely
+temporal, is introduced.  The new algorithm is expected to be useful for
+user-space control based deterministic DAMOS utilization.
+
+The second series extends the support of 32 bit machines with physical address
+extensions for all DAMON modules.
+
+Internal Improvements
+---------------------
+
+Below two significant internal implementation improvements also landed.
+
+    commit e7e1a26b8ddf0: Patch series "mm/damon/core: improve DAMOS quota efficiency for core layer filters".
+    commit b1029f29eb1d5: Patch series "mm/damon: strictly respect min_nr_regions".
+
+The first series makes the core layer DAMOS filters be more practical.  Due to
+the impracticality, complex DAMOS use cases were recommended to use multiple
+DAMON contexts as workaround.  With the series, the workarounds will hopefully
+no longer be required.
+
+The second series makes min_nr_regions parameters strictly respected.  This is
+expected to be useful for more deterministic fixed granularity monitoring.
+
+Statistics
+==========
+
+Putting simple statistics for the last release period.  Tools other than git
+that are used here for getting the numbers are available [4,5] at GitHub.
+
+Number of DAMON Commits
+-----------------------
+
+Nine DAMON hotfixes have landed on 7.0.
+
+    $ git log v7.0-rc1..v7.0 --oneline --no-merges -- \
+	    mm/damon include/linux/damon.h Documentation/mm/damon/ \
+	    Documentation/admin-guide/mm/damon/ include/trace/events/damon.h \
+	    samples/damon/ tools/testing/selftests/damon | wc -l
+    9
+
+Sixty seven DAMON changes have landed on 7.1-rc1 during the merge window.
+
+    $ git log v7.0..v7.1-rc1 --oneline --no-merges -- \
+	    mm/damon include/linux/damon.h Documentation/mm/damon/ \
+	    Documentation/admin-guide/mm/damon/ include/trace/events/damon.h \
+	    samples/damon/ tools/testing/selftests/damon | wc -l
+    67
+
+The numbers were 7 and 66 for v6.19-rc1..v6.19 and v6.19..v7.0-rc1.
+
+Contributors
+------------
+
+In the time period, eight people made 73 grateful DAMON commits on the Linux
+mainline.
+
+    $ ./lazybox/version_control/authors.py ./linux --skip_merge_commits \
+            --linux_subsystems DAMON --since 2026-02-22 --until 2026-04-26
+    1. SeongJae Park <sj@kernel.org>: 58 commits
+    2. Josh Law <objecting@objecting.org>: 7 commits
+    3. Liew Rui Yan <aethernet65535@gmail.com>: 2 commits
+    4. Asier Gutierrez <gutierrez.asier@huawei-partners.com>: 2 commits
+    5. Jackie Liu <liuyun01@kylinos.cn>: 1 commits
+    6. Vineeth Pillai (Google) <vineeth@bitbyteword.org>: 1 commits
+    7. qinyu <qin.yuA@h3c.com>: 1 commits
+    8. Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>: 1 commits
+    # 8 authors, 73 commits in total
+
+The last line was "12 authors, 75 commits in total" for v6.19-rc1..v7.0-rc1 [1]
+period.  The number of contributors has bit decreased, while the number of
+commits has nearly not changed.
+
+DAMON user-space tool (damo) also got a significant amount of changes.
+
+    $ ./lazybox/version_control/authors.py ./damo --skip_merge_commits \
+            --since 2026-02-22 --until 2026-04-26
+    1. SeongJae Park <sj@kernel.org>: 123 commits
+    # 1 authors, 123 commits in total
+
+The last line was "2 authors, 337 commits in total" for v6.19-rc1..v7.0-rc1 [1]
+period.  It means still a high number of changes are made for the user-space
+tool, but the number has significantly reduced in this release cycle.  I think
+that's mainly because I was busy for hkml-Sashiko integration, Sashiko-found
+issues and LSF/MM/BPF preparation.
+
+Mailing List Traffic
+--------------------
+
+DAMON mailing list was quite busy.
+
+    $ hkml list damon --since v7.0-rc1 --until v7.1-rc1 --collapse \
+            --stat_only --stdout
+    # stat for total mails
+    # 1098 mails, 152 threads, 147 new threads
+    # 450 patches, 129 series
+
+The traffic for the last release period was like below.
+
+    $ hkml list damon --since v6.19-rc1 --until v7.0-rc1 --collapse \
+            --stat_only --stdout
+    # stat for total mails
+    # 440 mails, 111 threads, 72 new threads
+    # 223 patches, 43 series
+
+While the number of landed commits for the last two release cycle were similar,
+the traffic has significantly increased compared to the previous release cycle.
+I suspect Sashiko might have made the impact.
+
+Events
+======
+
+Listing a few events that happened in the last release cycle, and I think
+noteworthy for DAMON community.
+
+Sashiko
+-------
+
+In the middle of the last release cycle, Google-developed AI review system
+Sashiko has announced [6].  It turned out to be useful for not only gating new
+bugs but also for finding existing bugs.  As a result, more than 10 fixes for
+DAMON are made.
+
+    $ git log --author sj@kernel.org --grep "discovered" | grep "ashiko"
+        The issue was discovered [1] by Sashiko.
+        The issue was discovered [1] by Sashiko.
+        The issue was discovered [1] by Sashiko.
+        The issue was discovered by sashiko [1].
+        The issue was discovered [1] by sashiko.
+        The issue was discovered in [1] by sashiko.
+        The issue was discovered [1,2] by sashiko.
+        The issue was discovered in [1] by sashiko.
+        The issue was discovered [1] by sashiko.
+        The issue was discovered [1] by sashiko.
+        This issue is discovered by sashiko [1].
+
+Continued DAMON Development From Contributors
+---------------------------------------------
+
+Ravi Jonnalagadda from Micron continued their node_eligible_mem_bp DAMOS quota
+goal development.  By the time of v7.1-rc1 release, Ravi posted v8 [7] of the
+patch.  It looks good and almost ready to be landed to me.  This work also
+inspired the multiple quota tuning algorithm series that landed for 7.1-rc1.
+
+Asier Gutierrez from Huawei continued their work for making DAMOS more useful
+for THP.  As a result, Asier made DAMOS_COLLAPSE patch [8] merged in the
+damon/next tree.  Hopefully this will be landed on the mainline for 7.2-rc1.
+
+Akinobu Mita continued their work for extending DAMON with perf events for
+lightweight fine and fixed granularity monitoring.  By the time of v7.1-rc1
+release, Akinobu posted RFC v3 [9] of the patch series.  It is currently
+blocked for the general data attributes monitoring interface [10] that I'm
+working on.  Hopefully the data attributes monitoring interface will soon be
+stabilized and Akinobu's work will be unblocked.  This work also inspired the
+strict min_nr_regions respect series that landed for 7.1-rc1.
+
+Liew Rui Yan started contributing patches to DAMON.  It resulted in two
+hotfixes being merged into the mainline, and a few more patches that queued
+into damon/next aiming 7.2-rc1 merge.
+
+DAMON at LSF/MM/BPF
+-------------------
+
+In addition to the two DAMON topics [11,12] for LSF/MM/BPF that were proposed
+in the last release cycle, I proposed one more topic [13] in the last release
+cycle.  Thankfully all three topics are accepted and scheduled [14] for an one
+hour session.
+
+References
+----------
+
+[1] 7.0-rc1 news:
+    https://lore.kernel.org/all/20260228194805.97228-1-sj@kernel.org/
+[2] MM PR for 7.1-rc1:
+     https://lore.kernel.org/20260413214952.62836ac9df0eb348ee4aeb2b@linux-foundation.org/
+[3] Second MM PR for 7.1-rc1:
+     https://lore.kernel.org/20260418223823.b45ef6a83267fa886d182ed7@linux-foundation.org/
+[4] authors.py: https://github.com/sjp38/lazybox/blob/master/version_control/authors.py
+[5] hkml: https://github.com/hackermail
+[6] Sashiko announcement:
+    https://lore.kernel.org/all/7ia4o6kmpj5s.fsf@castle.c.googlers.com/
+[7] node_eligible_mem_bp v8:
+    https://lore.kernel.org/20260426003245.2687-1-ravis.opensrc@gmail.com
+[8] DAMOS_COLLAPSE:
+    https://lore.kernel.org/20260409150128.1566835-1-gutierrez.asier@huawei-partners.com/
+[9] perf events based DAMON extension:
+    https://lore.kernel.org/20260423004211.7037-1-akinobu.mita@gmail.com/
+[10] Data Attributes Monitoring:
+     https://lore.kernel.org/20260426205222.93895-1-sj@kernel.org/
+[11] LSF/MM/BPF topic for access-aware THP:
+     https://lore.kernel.org/20260211022845.68865-1-sj@kernel.org/
+[12] LSF/MM/BPF topic for allowing NUMA hinting faults to DAMON:
+     https://lore.kernel.org/20260218054320.4570-1-sj@kernel.org/
+[13] LSF/MM/BPF topic for DAMON updates:
+     https://lore.kernel.org/20260307210250.204245-1-sj@kernel.org/
+[14] LSF/MM/BPF schedule:
+     https://docs.google.com/spreadsheets/d/1mGEdDrWskp7Ua91jGXzquQGinorcD58DAVXhOiRp2Gg/edit?gid=1852749899#gid=1852749899
 
