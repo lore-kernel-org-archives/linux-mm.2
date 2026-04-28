@@ -4,94 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24325FF885D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 09:03:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B25FFF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 09:08:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 339F56B0088; Tue, 28 Apr 2026 05:03:31 -0400 (EDT)
+	id 90CB06B0088; Tue, 28 Apr 2026 05:08:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 310856B008A; Tue, 28 Apr 2026 05:03:31 -0400 (EDT)
+	id 8BDDD6B008A; Tue, 28 Apr 2026 05:08:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24D4B6B008C; Tue, 28 Apr 2026 05:03:31 -0400 (EDT)
+	id 7AD636B008C; Tue, 28 Apr 2026 05:08:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 146B86B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:03:31 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2087A055B
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:03:30 +0000 (UTC)
-X-FDA: 84707376180.15.50D8728
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A1ECA1C0004
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:03:27 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="jzW+RS/+";
-	spf=pass (imf18.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 69B6A6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:08:10 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 157F216051F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:08:10 +0000 (UTC)
+X-FDA: 84707387940.10.4E076C1
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E072E1C0006
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:08:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1cCZAQoR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xXWEmrhn;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1cCZAQoR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xXWEmrhn;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf20.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777367009;
+	s=arc-20220608; t=1777367288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ipahEW+GGYKoUkQjhbzDfkF4W3Q2W6HmS1nNqAHycr8=;
-	b=ybSblsgLld7FEFtQmzU/Nof0yOCSvDl6H5L4PcbO8NAB1rQ2grqzAbPS9yjR5n6U2zUviu
-	vGikZwXtf39XdglOb62AOhwlccVXUicZo+fueoue/sFbiaQk7jy4Y1naZsjcCfGxi9xZ+/
-	qcew2qGfF4MnecjJcqMWpzvCynAu/FQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777367009; a=rsa-sha256;
+	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
+	b=fzzuYUkYyyzQEMZbmjxYfEpJuhoBIlH+Eau/ahO0g9qfFQlHmCJ+AddaybZCJ2A42sFCxn
+	wg+onZpYyOh8C+Zkbfc65WMQesu1QADZm683XL5AJbW+2LXg/5BRMNccSKvKMbaZzBStSY
+	eVjyHJTyiofvFZhTA3xNuemYHNPCmCY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777367288; a=rsa-sha256;
 	cv=none;
-	b=2OWEDeFWziqrc4f/ru+LCMY+dvfjcl97gycDeLd5FJkwB8TrdlqFthO0vAX2KLZk3EOXfg
-	r/PFPFU7a1E3ErDsDMAU73N6Yb75yUo68mBcGcn1v6iaQUGAsrEi5vg8VbcAGBZtKgyDW0
-	foChqb+8qGZEWa5CU8ftqK5P5XJ254A=
+	b=k21qBlF9Zgm6Ag2RcrW/zI2o8Ak6FyRLBd+G7tlYw8ESiLh433xMZmEcGQiGsI9oaCNJ3n
+	rXic8v/P//zzUMS/RnyOEnDUSRcsQHPJA3ax/EGle8HSbItRjgRuOtJa/FDWvFP1Ume3py
+	0Tk7gSFv9Wmov5ih6IG/O2SZvBWdrqQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="jzW+RS/+";
-	spf=pass (imf18.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777367003; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=ipahEW+GGYKoUkQjhbzDfkF4W3Q2W6HmS1nNqAHycr8=;
-	b=jzW+RS/+QPw0ah3ql3B1IYAdfDhIlYIMbniWsHNHMtAL1DiHrUi26oZ1ZCxrENF9xp+Vb8wgW2biALSpYuBxU/VMwyRkMjlSM6c9athnZdfPibh19gB2/eFwMIdRqIaA7Rd+0m5jU95rSpyX6g3i6TBFUdS0DlKIx9Am7s156/0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=feng.tang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X1u5t9W_1777367001;
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0X1u5t9W_1777367001 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 28 Apr 2026 17:03:21 +0800
-Date: Tue, 28 Apr 2026 17:03:20 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Liam.Howlett@oracle.com,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	Christoph Hellwig <hch@lst.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-Subject: Re: [PATCH v3] dma-contiguous: setup default numa cma area if not
- configured explicitly
-Message-ID: <afB32MQG9vx_j9NP@U-2FWC9VHC-2323.local>
-References: <20260428060550.7167-1-feng.tang@linux.alibaba.com>
- <6dd52f8b-7092-4d02-ba24-f8b55409b7b6@kernel.org>
- <afBxtIdWqv8pD8YE@U-2FWC9VHC-2323.local>
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1cCZAQoR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xXWEmrhn;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1cCZAQoR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xXWEmrhn;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf20.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 40BB36A81E;
+	Tue, 28 Apr 2026 09:08:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777367286; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
+	b=1cCZAQoRRx5NF2kvJSPKgnH/J18umo8qqCqECuqhTE63VxfxrWE7MTGciczpUjG8R7xEIF
+	rzMhL1zInW7VMwY14BXqBYIySvHkLoW3Y4XXCGH45VOxuMa4/0G8XQuPQXYW01+sV/QgPp
+	FGaacetOTTI0GtUnMDxdW+O/Kid0+VA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777367286;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
+	b=xXWEmrhnZVZwZjmZPwV/Ub7Va0Iku6foqi7SkqJ7tB51KSM+Vx7pxwkyfVC00DWy/Oc20G
+	tL+/TQ3R5TA16dCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777367286; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
+	b=1cCZAQoRRx5NF2kvJSPKgnH/J18umo8qqCqECuqhTE63VxfxrWE7MTGciczpUjG8R7xEIF
+	rzMhL1zInW7VMwY14BXqBYIySvHkLoW3Y4XXCGH45VOxuMa4/0G8XQuPQXYW01+sV/QgPp
+	FGaacetOTTI0GtUnMDxdW+O/Kid0+VA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777367286;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
+	b=xXWEmrhnZVZwZjmZPwV/Ub7Va0Iku6foqi7SkqJ7tB51KSM+Vx7pxwkyfVC00DWy/Oc20G
+	tL+/TQ3R5TA16dCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DB8C1593B0;
+	Tue, 28 Apr 2026 09:08:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7okNM/V48GlKXgAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 28 Apr 2026 09:08:05 +0000
+Date: Tue, 28 Apr 2026 11:08:04 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Zhao Li <enderaoelyther@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/hugetlb: fix subpool accounting after cgroup
+ charge failure
+Message-ID: <afB49BIqmLL2RKHM@localhost.localdomain>
+References: <20260427145247.84157-2-enderaoelyther@gmail.com>
+ <20260428030712.66256-2-enderaoelyther@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <afBxtIdWqv8pD8YE@U-2FWC9VHC-2323.local>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A1ECA1C0004
+In-Reply-To: <20260428030712.66256-2-enderaoelyther@gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E072E1C0006
+X-Stat-Signature: uenezugie85x6fbisu4ofjihjeqrmfra
 X-Rspam-User: 
-X-Stat-Signature: efrmj9zec79anjysrg9xjodxz7kgrame
-X-HE-Tag: 1777367007-284940
-X-HE-Meta: U2FsdGVkX1/e936XwrSfTpT2wzNyZNtTRYtl9j5yQa6pzpIvxeRJp0ksiXykwbsqh0roKyTKQjjD2sTIcd+7DoIsdgYxsDIdYhK6IF9ZSq+yGJnkvEJb4Ud7pV0pgt6lj/r/dC9c48ac5KEMjP8xUI3A+zKVQ4SMCIuepPHELtCcyUdTUhiW1yL9F1TPJp7pvRpXR6I+TTyAd3BxfXkfrfH4MRiOXTRv/woyytbN3Hi8UvmrG2Bo8+7KDYX6HF/mw7W6VlSuP2ElugqidsDHXWS/11VsVhUMmlEwh65pDZLXEOW4F7i0vxKTIfheeBEGmXS+OuffKUdQ60UBD0oqOHhFSCp+SzRbeqsM82KImtu+StDW1HyBZ2ICi4SVdYYjPlaXqThPDZm3x8xq0nJ5xlv1XeW39aOhifD/o9JzDoL4uzn+OoVmfQUOlzU5wAa+bTRx2aVqlgLiAi1zDtbddOp0wVucBXvzUn9ONZhnIPTD9fYfULabFXT6kfoXB7cTS4P3sGFM4psNNcnTz+r2rJiOezIbIdV3h7qD8iWnAGVcj4myZwKSBGioD4ehTLEYK9WrSBpHk2u47MDWK1dqFkWNV6suQdBzN3K9h1CqrjhFQMnHyy08JXuLJpZr4+nwhDy8I3wvK9PvqTENyu55zyeFupqkpqQq1YEgQJR1UHQJ6sAIulKdDDseW0kAg8vi6WkLmJkF8Ag1mqXgDNLR//KHus2iOfIfi6ZB4mf68MJfm53XLyAXIn3zjhLk5v2966VlInbbB/AVnY4qShLMvEUFd1ZWmyvCGWrFA4le72FXk3dWt3hIH1jZkxaO8pX2Ng930yqJ4IT0hBexFhhix0aC2DbC9+DCiJZw5gBvEAwtaiZSm1a9g7Gx+iSDeuPvCLqCcsNYSomxrajF2TJcM71oqsXjBFnAdCrQrBpIzWLd67fsjkZrJ/zOxCm9yv43jmz2BSpES6nbcAjjD+i
- /YjYIbU2
- gm6up6PX3BRh3kOQKoUPbA2dChDJuW3ESkAztrii93b1erQ5rjlEJZgi92Hid/8YhiO6ASOflMus46P+GrxnqqrUyfVEWeLrs/Bgk36CFaaDtSD3hkq7GPPmSPeVNnS2lI6uTXuRDEtGu2G2U+Qm1SbdPPYH4RDtzPZlkeUMlcK8mzxrPNgBRrDJzpvuVosdVwMoUHAIfnHw67BbGMtij7K99yu2FvbxvVF21AhFL7Fud2YzdjDNNHFxDosQ4AvRysPHZFVq7X7VXjHV5wydbeeeZodt7OAFbjZdwk+mfjymnvcanM7xPRq2m+g==
+X-HE-Tag: 1777367287-354788
+X-HE-Meta: U2FsdGVkX19JfCKYWmfPKD0BXnbEZ5fLsS/pGxxtASnUsl6E0Og3pxYTZ2UmKRHzYT7mQ5YRYHthy0995+mub8H7j+QpcJjkT4CX7TJ0lXhMZzEFVbySpjoFcFgpRGSLDQsOeTK3/JxzzWiROAzylXy4JfihRajmfFwm0PPCJ8Sgb2Ly/qZu3pbgWUOgEqtQuEZigU9c9eetj0yhlB07Y+Ip9GFic+B2p2lrF4OcWpHVZ4dWFMyqMHUAf6/JSXrIQF3EtI051pcBH8EO/M4rygmOhSViGS6mx4nn+2UpO0EXkHSrQUBjbCCG3ndMByuO0jBvLC6ZcrxlNcX0pTyHIn18i4KZJNs5FWHPsiodyyIjJxVE588+Km3X+nJIbpaGmQv6sVCXklasiA0Qssz07UGjOac7n0Kfz5ricsbFReggVQuBDoBwsVUBEZ+CveSHknqvmcwFTEPdls+aFa8zUOlyCGcIIUnB/meSw7Iv4ankQEFoVwj6x3543D95EuzSNbOotVqGzgUsKU8T+vD1VXAhMstiQNHOkK8bziDYPgxafYfIfGvanlltRBiq6A5zj+nrL/jeClb/GxiJIvMJCcwESN96oXTJi1UQGjDeQxvL59eUaR42f+OX9aVY1XsERlLv7Pjf+7FESTGzv3SBtwbusbBESpW4AFGTvtYmEXYDNTby/e9NhPHt86ycN13f3GeEulFxv8mAN4+bd8zopssH0k1daC3aIGderBbWNuEbztkYFOTJ9csrlwYK5f9cJq96eQMdgsSHQ+y3ftUm9TuHgXaK1aO2CnLf+7IG5VE7xg8QIEZy9Lqk7heZVX/hjYIne8a7L2u8f/yN4VSF/GI7mfYQ3zxwEobbWln+f+bMjU2rsQHELxQPhVnc0BOngCXIXf/Pr2klDzn31Eg6hMhAHqvW6PPoOhjiDaifeOE3NfMDHkIGLSi2CKlg8v6ikh/PbjE1eb0THcjjqr6
+ LXRsTV3w
+ 4vmll0soPucBcI0ADhH/GT4ORijUzORTc9JcNKG1GJmbztpuDKVgQXp2L1F4Ec4RLD5fUfm1/3UlUWKPXHFrHTi14MFUuhcqJbi3Ckru5BstKlUyA9Ugz2NUh2hEBYCvgxxtOLAOCtCPuiujXumAIvC5iGhVEWKCGJjnKTS8av+GjiLEKkbGZp/XFAVk6azOq0imMSu84NNWmAHB+8mX2KoKd8Z7lm4uOHXVllYNdsCPhMXka1z4sYsd0znqRmvW4ZQO2CEA77rw4eAx85DLP41P8uf/dkDC5rSon
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,35 +133,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 04:37:08PM +0800, Feng Tang wrote:
-> > >  include/linux/cma.h     |  1 +
-> > >  kernel/dma/contiguous.c | 14 ++++++++++++--
-> > >  mm/cma.c                | 11 ++++++++++-
-> > >  3 files changed, 23 insertions(+), 3 deletions(-)
-> [...]
-> > > +extern int cma_get_nid(const struct cma *cma)
-> > > +{
-> > > +	return cma->nid;
-> > > +}
-> > 
-> > Why do you have to store the nid instead of just looking it up from the base_pfn
-> > in here?
+On Tue, Apr 28, 2026 at 11:07:13AM +0800, Zhao Li wrote:
+> alloc_hugetlb_folio() calls hugepage_subpool_get_pages() when map_chg
+> is set.  For subpools with max_hpages, that increments used_hpages.
+> If the later hugetlb cgroup charge fails, the unwind must undo that
+> charge even when gbl_chg > 0.
+
+I found that last sentence misleading, because we do not really care
+about hugetlb cgroup charge/uncharge (besides that being of the reasons
+we end up on error path) but rather the fact that we fiddle with
+subpool->used_hpages and we need to undo that when we rollback.
+
+> hugepage_subpool_put_pages() can also restore rsv_hpages if concurrent
+> frees move used_hpages below min_hpages between the get and put.  When
+> that happens on the gbl_chg > 0 path, restore the matching global
+> reservation as well.
+
+Well, that does not quite explain the problem I think, at least not clear enough?
+So the problem at hand (IIUC) is that
+
+1) if we took a global reservation
+2) and concurrent hugepage_subpool_put_pages operations made
+   used_hpages be below min_hpages, and so subpool's reservation
+   was incremented, but we need to increment the global one as well
+   otherwise the next time we pull a page from the spool,
+   global resv_huge_pages will be inbalanced
+
+
+> Skip the gbl_chg > 0 put when max_hpages is unset.  For a min_size-only
+> subpool, get_pages() did not change subpool state and put_pages() would
+> create a false reservation.
 > 
-> My thought was 'struct cma' already have 'nid' member, and when CONFIG_NUMA=y,
-> it may be useful to save the 'nid' info instead of NUMA_NO_NODE for the default
-> cma area (cmdline like cma=XXG@YYG could make it on different node)
+> Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
+> ---
+> Changes in v2:
+> - Handle rsv_hpages restoration when racing frees cross min_hpages.
+> - Skip gbl_chg > 0 put_pages() when max_hpages is unset.
+> 
+>  mm/hugetlb.c | 21 ++++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index f24bf49be047e..4065d66fdcb5c 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -3026,12 +3026,23 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>  						    h_cg);
+>  out_subpool_put:
+>  	/*
+> -	 * put page to subpool iff the quota of subpool's rsv_hpages is used
+> -	 * during hugepage_subpool_get_pages.
+> +	 * map_chg means hugepage_subpool_get_pages() succeeded above.
+> +	 * If max_hpages accounting was touched, undo it.  If racing frees
+> +	 * moved the subpool below min_hpages, the put path may restore a
+> +	 * subpool reservation.  Restore the matching global reservation too.
 
-One interesting thing is about the API to get nid, I initially worked on
-6.19 base, and used 'pfn_to_nid()' which worked well, but I got a kernel
-panic when rebasing to 7.1. 
+I would split the comment in two parts and place them within the block
+they belong, otherwise it sounds confusing.
+And maybe elaborate a little bit more.
 
-It turned out, latest kernel changed the order of default cma reserving to
-before the initialization 'struct page' (only tested on arm64), and
-pfn_to_page() will return NULL at the reserving time, so I changed to
-early_pfn_to_nid(). Storing the 'nid' could save the logic of chosing the
-right API in cma_get_nid().
+Subpools, reservations and hugetlb make a very head-spinning situation, so let
+us make our life easier.
 
-Thanks,
-Feng
 
+-- 
+Oscar Salvador
+SUSE Labs
 
