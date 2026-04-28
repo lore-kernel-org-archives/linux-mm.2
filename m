@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD959FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8210AFF8875
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:29:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6AA56B00D3; Tue, 28 Apr 2026 19:29:22 -0400 (EDT)
+	id EDC806B00D5; Tue, 28 Apr 2026 19:29:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7E526B00D5; Tue, 28 Apr 2026 19:29:22 -0400 (EDT)
+	id EB3C46B00D7; Tue, 28 Apr 2026 19:29:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A483F6B00D6; Tue, 28 Apr 2026 19:29:22 -0400 (EDT)
+	id DC91A6B00D8; Tue, 28 Apr 2026 19:29:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E7D76B00D3
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:29:22 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 268AB161362
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:48 +0000 (UTC)
-X-FDA: 84709549176.29.5CB41D9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CF6656B00D5
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:29:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D58314034E
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:42 +0000 (UTC)
+X-FDA: 84709548924.01.18C85D9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BBCBD20018
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V4vK3oO7;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id C7FD614000D
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:39 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a5SAxy13;
+	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777418745;
+	s=arc-20220608; t=1777418740;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4wyiUOhqA3JIJFPKSjxwuC3AXUySm4OeSQjCvu/ijCU=;
-	b=0uQ1f99NAwaSrQobw/jBaGBQ4kQf1PasPh6N6XEVGr8F/5/LYsHPzwOp66I6If0qxrdpGr
-	xXV2uU17XJoqX81dMhjNhUsVCGdF4YwrYlrpLdCiNatZe4WSzW0V9Itv4GbCPaHzYFF148
-	SoUDAY262r4HiMKaqop/c42kJWSWWbw=
+	bh=iXc3Ets3ZNo0wgA3JxiO6XBoVwzlx2pMvFuV2Ws4wa4=;
+	b=FX8CsrlbReqRdR9zPuRHC+8jUb1BIkw9RJ7DfmEai26Xie3M72YQj53oXdxALvN2i5kKmd
+	OYHI9OgAwtb4bNxttxWVt4pavxiiLGkzN3To1uX1kxgsMBqjmjitY2jMDMrvZp2u8EHhbt
+	EmvbFeWu6E6q3FGnjwKJK1btFuSkojg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V4vK3oO7;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a5SAxy13;
+	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777418745; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777418740; a=rsa-sha256;
 	cv=none;
-	b=QIESX7MpijOEcmfbWMQUVCM23yUuda5B1Qv3WV+SReVcQIbaPMwslVF0liTrIPaT/Wot5K
-	V4rvNFJuMOXSDo0JeqQv7zUZoXkHbgVXuzFHzcgKeDJryoHPJed0ihZM/QPjauyM7I4M/T
-	EBdMGD+LPFY2T0D/ZtSsCORDXdC7cAs=
+	b=pRcXE3fhbVkPOPluu7smli7qKhqSfc5B3UgGXpKbsPbI9FtS50QrviWOGOpxvegfnba+Xm
+	SGLVC3jET+6FGECZykk479VtWolcFEDbXXWb7B7a8cauk7a0abUql4Suq9gtU50Yv/Bu8C
+	aUM47tceTX+R+bs3XnVlX/ElLOWOdTw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8C45244BB4;
-	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 66ED0C2BCC9;
-	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DD6324472D;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B7725C2BCC4;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777418721;
-	bh=77AfCyy0TZKZY8M+m/fRDXWBuiG8frWm/87F2tNKLKU=;
+	s=k20201202; t=1777418720;
+	bh=IkAEdxgFQSCePcOD0KI1OLzhhzwrFCotUetQZ59Ws/c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=V4vK3oO7RZ8jWuVqNxCJtfzBIxG/R2HLeirUs3CLmcnHv1X9IOMHxf4kDdf2GuXva
-	 rxQpgkML9qbn4RnJ+4CshDhGBWO/GJYRX3GLkagI3BmRBFK301S5kP4u1a0U2gsxsc
-	 lamT7spts5F9EofouwKNOuFiztv4vo6ZniOlUkiDx1lx8lMByB8aOzmDANxOvRW2l8
-	 YVma+UnjjdFwjacCIpagTYwZdj4bNKpKX1fgXIV4MElAuLkCDTKkL0OChyr0CkvcK1
-	 AXrYN9R3oWKBf+HnvjQCU4mq3TBLN09EvcIGWSXOhIyhAwAoiMoof2821G44rksz93
-	 44WbRxAJd8K7Q==
+	b=a5SAxy130HMQEbD8PsBjsAfQVJ8v5McxRo1t0frjQsvW+fhm/mdth96pFJvKEw5km
+	 iFXSxPCCSbFwmHfgHuAXjGfzRcO7nmJ187/MjgpGpD2YeMMcP1lXBvyN/GVhoJJvG7
+	 7lvDBH5ysmzlD/sV6xntrX4TBgtzwUDPGbe+spSBoXTMzmGENv8SZ/SgkSRyhEDqU9
+	 +whyviMabBlg+/7saH6ETlKbn+Dd62+XH/AZIEF3rwGBM6i4llNXNcuZGW9+egxZET
+	 ZcQ1n7xhxAb/XkzsEwWJvw8nYbCYXL16h4IBnnqlqYGKpwaohzHfHUXmo8G1KbjnsZ
+	 hM3C6FdqJ66Ng==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CAA6FF887E;
-	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD820FF887E;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:44 -0700
-Subject: [PATCH RFC v5 49/53] KVM: selftests: Make TEST_EXPECT_SIGBUS
- thread-safe
+Date: Tue, 28 Apr 2026 16:25:37 -0700
+Subject: [PATCH RFC v5 42/53] KVM: selftests: Test that conversion to
+ private does not support ZERO
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-49-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-42-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -107,11 +107,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=5282;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=1307;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=0FRAfF/jF5XXL7xhsrzKptfhFbdK2TYEtnUzquHFP9I=;
- b=qB3KieSgkAM8PqZhU/SxTptXaG604bVeELOKgLnMk0D44YFLH7hxE/g/9rLtr6RzQc1o9AIji
- Nnjk8PoXK40B4kU/M3q2Rau4Wd7tkPFGg+1iSJJ3/lZUn81V9Jpmdxb
+ bh=1/xHeFjZTWhRZczDGwQ1Jx9lj8BRoFI4Rw461HTrIgs=;
+ b=9CgTbYMxC9JsFpzII614O+d7fbdprDVtfo6d7D8lw8ni08UNZgZcln0uVEjpkx6k04MiPFJfg
+ QxJe2dg02RkACTOyS3Hdd2KOFVsbBQx6ftQ808D36NvFDwoR9KUB/VQ
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -119,13 +119,13 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BBCBD20018
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 339hbgj91jekqamu75wzb3xpyy6ymj9c
-X-HE-Tag: 1777418745-810692
-X-HE-Meta: U2FsdGVkX19PzbsNcHROp2P3fCGAY2MPt+6rTCj+9rhF7L0tc/pC8sjRT7HtV5YPQLIK2CNLuKV7V8ZLjd8CQM4UGLBRe8XYTMkw5YzI/V4y675bXOUxW1gZzIf5pFwfO0065NiVADlqM/+gyZ4TI96r4Z2JNu5kucjK7r2RR1BZnaatbxWzqGZt/nmeEy0N5F71ohbaWsLhiAuO+kVgoXvPeEjtJIrp0f/eKj/2rCXCgLZNZ+E90ili39ivE0sAy0B6zNSLsN1qb5tLKAcMYc42oX1ho8VnAZxkQPzD43hgX9F/6jUI9kxlG4ZUA5qkrnnyEU+/fEj9nVN7jfHxRpvrVHvPcUMg0IGI0huIxbKf5Ph3TvClMQs74Ky+2JSd0zSZaljdy9eaXZVTbBgNWvhAFuBVIBvVPGAgIffSVth/qIRP0R2fQtyUjWq+0mEQtYOvWfxAHIoC9dRyMhdOznyxqjejPPU2HmV9rUUccToMH+RkZGaqNZAE1rMtd1LkPYiqGw/ULk7bqfglxA2NFlY/u7fu1TNYUISZayL2Iv9DPdBJRSitjkajeeJ2gLcBMNjR2ZdNGtXrBjQVmhx2KGAIjsA07bwGGnP4qKaiHPcAoWMX3bw/TWiCgLjt6oJAPQqpqXkYcQEuQw8C+HfFt//mEUL4nNzjuz/d2UhoH1qkQK40G2d1nA5C6X+/e4e2VO/YDYU1GWLxhPueBvu2ygwRD7kBzLDhwNNuMSEr63W8KeiOf48MNpxasEuDFdxOxNCmdGnA0fYU6sCkjFbGcfpGxR6MOWjrxq0Xu4wLreGZeL92AuJCjgnHJkv3CwCMwefSs/oKng2uYCp4mdQhVnOYehfOfTNPQYf+haRZtXed7xRFEHmbU+15HyNjL4I/ewEOtCgGLcyPecfVuZdVcA5gdNFsy5MERmHzJODrgvRIzR/kGSH1c5LKBZeReayMC0vA46f+nqAA5dKn9da
- mHexEoQb
- 3vOWoZ44PnOTug3PVYUp133NFNNWA7masIKsV+cRLtRoGhJcFxuuxPWDNeRo9KisBDoxhUWmnzQTcy7qLU04gpgCFaNWhTOyK4bCuffJcI9As2S73hnsLXAk+snm5XkhanBALTn3wJR8Kn5k5Vxr+zC18FIL74bQF33saOiAKOasnrjtifbXHvQZ5/kljdEvDU+nx3nfRJx9gmD0o18ExeQNNj1G2ZOYduWuj5oFKCh8hm1CfemIMqfU8se17aFdHIpsnZKJvoohn8ggyQcQgPCItkbgOsXpPaIU+A2P7QMPTqWYGZ1z6eibv7Nh9kfxcg+CN+zS+vt3wE4/BdrIj9SWK4+l4YrylibcUqAlRUDmREhWHby0fXcldH1wfx3EWMCCWKX00fiNkFzx6ypa2c/5LfNd3VN2b2Qac3fKtlqXpV0LbyAtc0bagaCxBM/3SeYT6+w9BJ6lVkXyGLmTacDEdHg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C7FD614000D
+X-Stat-Signature: fp38yig9phmbetg86wwk7y9sbiakz1tp
+X-HE-Tag: 1777418739-16967
+X-HE-Meta: U2FsdGVkX191Vg8R6teL1r54hpBcRR4aHpGyY+ambDZp3+WMa7aEFFtvJcv0+PPl/1f9jNpePzfY0iMSxpkyE+AKd0KYSChpiDePRb8eyax1oe/6s4GBZubScRTYINVs7ZhXj9MSCDdD+DR9asY5/hrHf0q4pQEFnHrWgyWuwGdiyE7q37lfCX0kwHaC0l6ApZiep4skN1v/rFWdPaFt6QHgsBfuP4l6dRnWBeoUEIcHNuPRy5Xxm45oycfIxw3GUe5pEDVsHX3ZswiYkJEjbyRSMk3Nuln1DVeoVT9vdmcKDAusIqJZhq35Tkk7/OIzRlvxc13sfpICWO3cKNZFQSgs3Y9uhELCnJcrxpzWMo5Vxnn8wx3dqsbyvXmBH0S+wSmZ8YTROFfjAboFgUiHdvTAsdZcen+xFq+T8QIQI7LJB53atlqLeljMLkw4J1QMon+fmoBmz8WtxVZmZevdup1XsblYG3JHl/KZ++jKTQ8nset84ib7AftUCckNB+XG60ml2Dst3e8YS+RZwoy4o/6lpd9ial2joXOrbkVI6+ipAJeU0ubapRr7USubbpUrtjEsArqZSUwDtonrr5/g5ET8ZRaEnzA/BX7MUEH2Hob9MnbB42KEUB7AfmViwDB1i3pnlTnirYh4wM4LnEt0LJpBYLJP5xcQm9TrmhyXhuChv9VMJDexc/pZcmM9Brh2RQZPq9jSj3BKk4DmFDWbOzLiWT2Hl63ep6yDMQNOcxjE0f2x9vgZztulqgr60n1agrUB9dS3dtY46M4PlIuH8KWdDlm4J5y3zhViakNc1CACvZ5wRsqcgSJRR0tyoH5i0opAiWOv6RzzFZyBapIrtbQQnWhY66gaF0vN8t4ns1xR1n63V+whM/Fc5dL4XKi9lV49i/52Kwm8SzKkZloCdLOEfLuC3NaAwYZKgLH0/8IFXTWbiebG4p6sxBx8v3trLBuhIZi7M6ksIeQlZ6b
+ 3uF8w7Mb
+ /sS61u1CU50kiK4U17WErxquie//qa/CaVQUKdUplH9adYHxdsXPViH/Z+WnRUo4kd5HBVPnOsB8VIoZCDv6o3o022rMHlw80HjEvF0r9rhbBzp/GKfupoXU2mRj7GMu4GSrEgFcfjnABcUT9GJuIRXEukyKHb0mRxInydh3+MwntWQ7Lz/01qhPh86mChOb5vZ9MoeQaIOwtvgG2A7ceIsWeltjDaBqWCQ132+yYcB/Vix/andMua4gLlEpQKM6aXuM6lde5d3sV57ZE6qZvVBRiZQbISxaMT5SJ3IN0iQ2E2EbDI3e8XSwIpNF3X7FHb0J3lVaB3QfintKF1/E6sep+lRDJPnF3F3gXRUL/YavPZ2DB61n4GXlZK8o0sfCqbQA3yCMsbfqFrs6baKgyc+xfaV5xKRrylow3ckPdThm8ho75sxSrtyFsnVZMLdh17UPd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,150 +135,41 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-The TEST_EXPECT_SIGBUS macro is not thread-safe as it uses a global
-sigjmp_buf and installs a global SIGBUS signal handler. If multiple threads
-execute the macro concurrently, they will race on installing the signal
-handler and stomp on other threads' jump buffers, leading to incorrect test
-behavior.
-
-Make TEST_EXPECT_SIGBUS thread-safe with the following changes:
-
-Share the KVM tests' global signal handler. sigaction() applies to all
-threads; without sharing a global signal handler, one thread may have
-removed the signal handler that another thread added, hence leading to
-unexpected signals.
-
-The alternative of layering signal handlers was considered, but calling
-sigaction() within TEST_EXPECT_SIGBUS() necessarily creates a race. To
-avoid adding new setup and teardown routines to do sigaction() and keep
-usage of TEST_EXPECT_SIGBUS() simple, share the KVM tests' global signal
-handler.
-
-Opportunistically rename report_unexpected_signal to
-catchall_signal_handler.
-
-To continue to only expect SIGBUS within specific regions of code, use a
-thread-specific variable, expecting_sigbus, to replace installing and
-removing signal handlers.
-
-Make the execution environment for the thread, sigjmp_buf, a
-thread-specific variable.
-
-As part of TEST_EXPECT_SIGBUS(), assert the prerequisite for this setup,
-that the current signal handler is the catchall_signal_handler.
+Test that conversion to private specifying the
+KVM_SET_MEMORY_ATTRIBUTES2_ZERO flag returns -1 and sets errno to
+EOPNOTSUPP.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/include/test_util.h | 32 +++++++++++++------------
- tools/testing/selftests/kvm/lib/kvm_util.c      | 18 ++++++++++----
- tools/testing/selftests/kvm/lib/test_util.c     |  7 ------
- 3 files changed, 30 insertions(+), 27 deletions(-)
+ .../selftests/kvm/x86/guest_memfd_conversions_test.c      | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index c280c3233f502..6907b99fe564b 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -82,21 +82,23 @@ do {									\
- 	__builtin_unreachable(); \
- } while (0)
- 
--extern sigjmp_buf expect_sigbus_jmpbuf;
--void expect_sigbus_handler(int signum);
--
--#define TEST_EXPECT_SIGBUS(action)						\
--do {										\
--	struct sigaction sa_old, sa_new = {					\
--		.sa_handler = expect_sigbus_handler,				\
--	};									\
--										\
--	sigaction(SIGBUS, &sa_new, &sa_old);					\
--	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {				\
--		action;								\
--		TEST_FAIL("'%s' should have triggered SIGBUS", #action);	\
--	}									\
--	sigaction(SIGBUS, &sa_old, NULL);					\
-+extern __thread sigjmp_buf expect_sigbus_jmpbuf;
-+extern __thread volatile sig_atomic_t expecting_sigbus;
-+extern void catchall_signal_handler(int signum);
-+
-+#define TEST_EXPECT_SIGBUS(action)					\
-+do {									\
-+	struct sigaction sa = {};					\
-+									\
-+	TEST_ASSERT_EQ(sigaction(SIGBUS, NULL, &sa), 0);		\
-+	TEST_ASSERT_EQ(sa.sa_handler, &catchall_signal_handler);	\
-+									\
-+	expecting_sigbus = true;					\
-+	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {			\
-+		action;							\
-+		TEST_FAIL("'%s' should have triggered SIGBUS", #action);\
-+	}								\
-+	expecting_sigbus = false;					\
- } while (0)
- 
- size_t parse_size(const char *size);
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 29b3f4e9fb4a7..216d6e037153c 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -2269,13 +2269,20 @@ __weak void kvm_selftest_arch_init(void)
- {
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+index 13bbc361eaeda..922261ebaff96 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+@@ -488,6 +488,21 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(elevated_refcount, 4)
+ 	}
  }
  
--static void report_unexpected_signal(int signum)
-+__thread sigjmp_buf expect_sigbus_jmpbuf;
-+__thread volatile sig_atomic_t expecting_sigbus;
++GMEM_CONVERSION_TEST_INIT_SHARED(convert_to_private_does_not_support_zero)
++{
++	const loff_t start_offset = 0;
++	loff_t error_offset = 0;
++	int ret;
 +
-+void catchall_signal_handler(int signum)
- {
-+	switch (signum) {
-+	case SIGBUS: {
-+		if (expecting_sigbus)
-+			siglongjmp(expect_sigbus_jmpbuf, 1);
++	ret = __gmem_set_private(t->gmem_fd, start_offset, nr_pages * page_size,
++				 &error_offset,
++				 KVM_SET_MEMORY_ATTRIBUTES2_ZERO);
 +
-+		TEST_FAIL("Unexpected SIGBUS (%d)\n", signum);
-+	}
- #define KVM_CASE_SIGNUM(sig)					\
- 	case sig: TEST_FAIL("Unexpected " #sig " (%d)\n", signum)
--
--	switch (signum) {
--	KVM_CASE_SIGNUM(SIGBUS);
- 	KVM_CASE_SIGNUM(SIGSEGV);
- 	KVM_CASE_SIGNUM(SIGILL);
- 	KVM_CASE_SIGNUM(SIGFPE);
-@@ -2287,12 +2294,13 @@ static void report_unexpected_signal(int signum)
- void __attribute((constructor)) kvm_selftest_init(void)
++	TEST_ASSERT_EQ(ret, -1);
++	TEST_ASSERT_EQ(errno, EOPNOTSUPP);
++	TEST_ASSERT_EQ(error_offset, start_offset);
++}
++
+ int main(int argc, char *argv[])
  {
- 	struct sigaction sig_sa = {
--		.sa_handler = report_unexpected_signal,
-+		.sa_handler = catchall_signal_handler,
- 	};
- 
- 	/* Tell stdout not to buffer its content. */
- 	setbuf(stdout, NULL);
- 
-+	expecting_sigbus = false;
- 	sigaction(SIGBUS, &sig_sa, NULL);
- 	sigaction(SIGSEGV, &sig_sa, NULL);
- 	sigaction(SIGILL, &sig_sa, NULL);
-diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
-index bab1bd2b775b6..30eb701e4becd 100644
---- a/tools/testing/selftests/kvm/lib/test_util.c
-+++ b/tools/testing/selftests/kvm/lib/test_util.c
-@@ -18,13 +18,6 @@
- 
- #include "test_util.h"
- 
--sigjmp_buf expect_sigbus_jmpbuf;
--
--void __attribute__((used)) expect_sigbus_handler(int signum)
--{
--	siglongjmp(expect_sigbus_jmpbuf, 1);
--}
--
- /*
-  * Random number generator that is usable from guest code. This is the
-  * Park-Miller LCG using standard constants.
+ 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
 
 -- 
 2.54.0.545.g6539524ca2-goog
