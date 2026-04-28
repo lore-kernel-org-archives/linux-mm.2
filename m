@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 125B1FF885D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 07:31:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64520FF886F
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 07:32:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 793676B008C; Tue, 28 Apr 2026 03:31:33 -0400 (EDT)
+	id D13546B008C; Tue, 28 Apr 2026 03:32:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 743C86B0092; Tue, 28 Apr 2026 03:31:33 -0400 (EDT)
+	id CEB3F6B0092; Tue, 28 Apr 2026 03:32:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 632BA6B0093; Tue, 28 Apr 2026 03:31:33 -0400 (EDT)
+	id C01086B0093; Tue, 28 Apr 2026 03:32:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E2C16B008C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:31:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1AC711B95AC
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:31:33 +0000 (UTC)
-X-FDA: 84707144466.03.59025D9
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AF8DF6B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:32:52 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45F671C0535
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:32:52 +0000 (UTC)
+X-FDA: 84707147784.23.932E86B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CEBBC4000F
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:31:30 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CVnvaBDj;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8DBE71A0007
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:32:50 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KS7VVKWJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777361570; a=rsa-sha256;
+	cv=none;
+	b=O9ouVOgaphWEuyH6ed+qN5Zn1hjbnwGFX5hQNM4OpEGrA3YdJRdOpmqz//6YMcdwguCe0g
+	h1ohrtOzhf8IrAfub++4oNGSxnpodn9gW/v0gX0E+YJzRMugVA+ZVyehsFVXgtORDcnz35
+	U8Y3pOot7REz+KBrl6dZUIaZ8wtOeZk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KS7VVKWJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777361491;
+	s=arc-20220608; t=1777361570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WMWWXBt0H8FUH6gYap1afdCvnPjjFas3H4vg06N54js=;
-	b=0Mds4420EeVa7So9M2gDFIbCUkI+sqBErmmXpywQJddRQcpiTr8SDAcQgzTs5Ueyo4pC8S
-	1TWwiFSAPbg8rdeYUYEZcMHZyQ43cy56Xs8OOn6llw9+/2NStV7eyQcGezmPV5bpvkdJG3
-	Go0Hs/Y5G5/9seV7OsYpiNgQH2IYr1Q=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CVnvaBDj;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777361491; a=rsa-sha256;
-	cv=none;
-	b=XXy9DE/0qrlKLwIVIrROeymVsHt0aqBOFaOsCE+iLhiX6DTJOV52fIg5aqqI3iTLq8bPat
-	bzndEJWp60q9vbl3TBix8v+nKrdhKb7Jw2mTGhk3o2oJDj8rUKkkjlrebgexTDEEOt9Nzr
-	xM2QyFSj92oIhbFoKl1tiZuuYQkr+4M=
+	bh=k12cCujQ2Gzo3MspddaiLfy8AcAN7OgiJ75sz5W+vT0=;
+	b=00PGzJVQ45Jfl2vdyvoz12YjCaU3r1wwFrIb2xGjtjY5TBshth3TMGFwWQgHxZT4CjuI/Y
+	WQdqLpUs7iGe8QM1Sm4f+3XjY5A3VIktziVnBVibwsL15E+jEeqpnZbJTCSBKfy77ELp6n
+	Lj0EeQ7UZpfGIiQ7wEvwpk/5E00I9eI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8116840026;
-	Tue, 28 Apr 2026 07:31:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E87C2BCAF;
-	Tue, 28 Apr 2026 07:31:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 161C4444C1;
+	Tue, 28 Apr 2026 07:32:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE54C2BCB8;
+	Tue, 28 Apr 2026 07:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777361488;
-	bh=xV2f8Ehs2QX5rw4Q715j9yMyngPX6sqnJ8NY9F+asyo=;
+	s=k20201202; t=1777361565;
+	bh=bivJkrDnkum5vfxFBGBfafZmKUqFTGG/gO14qECezIs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CVnvaBDjTn1o/2v+QpYU3O6WYRNiAGm6NTsiljZtdtji+vqLHyVPkdVCxi4Iapy7t
-	 K7nq9Ja+qgzkDp1c2i9Cl1jy2e3n52hTs0YML53u33P6lUVheDejIwYxxLgcBph/k7
-	 UW23Rrs5VQPJrX0E1nR8rRESg1bZVPaAmABbWZcQNpW9cs80rCvI9vARmwviKhHPzr
-	 FwAki4R9DE7zxLfsAPqlOV9/xMkksNpCcSYybRwNPmbMv3lA1KHU7kC8wZRE6lkmIX
-	 iTSLl1NfNuhTXTvtmJLzoYc2maxXL2mhT1LsUE9fKOFytdhw0gJDZG642O5hI+GJZS
-	 uRyV/MwreZrtw==
-Date: Tue, 28 Apr 2026 09:31:18 +0200
+	b=KS7VVKWJYg+OP508UYe/zMGahM3pGjCvFKJNFgui6nFLKxhqcyUTWKExOOt/iPanR
+	 1kpLWf3iizL3uPEkGZDnNELXdYcSQmR2QOME22VyoIok8i+xmr0YrQ82VEzaqP4hSd
+	 kRkad5IRChKSJvPXOs9HjfC+HvNs2zfMj2hjHJXF8XzM/c51ES4I1dWBRptVLPgF9+
+	 J3JdUsgduxLtmu8U4FMz4gPuVsoijnN0Uc2lZZHHNSLm4EJlzt1Juucu6EAMcKT16O
+	 5IqdNjee3CXQ3PJCrp1Am+EErSqQV9mjC24edo3savF+AJDqw3zjJGobF99o8doFuv
+	 ZWBbcOfL84Xiw==
+Date: Tue, 28 Apr 2026 09:32:36 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -79,25 +80,27 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
 	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	Chengkaitao <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH 08/49] mm: Convert vmemmap_p?d_populate() to static
- functions
-Message-ID: <afBiRvBPx4Vm5ECs@kernel.org>
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/49] mm: panic on memory allocation failure in
+ sparse_init_nid()
+Message-ID: <afBilACQByFLa-hi@kernel.org>
 References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-9-songmuchun@bytedance.com>
+ <20260405125240.2558577-10-songmuchun@bytedance.com>
+ <afBaMEBoR_35Fblc@kernel.org>
+ <96DB49C7-A7C2-4F53-8321-FF4A4ECDFF95@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260405125240.2558577-9-songmuchun@bytedance.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <96DB49C7-A7C2-4F53-8321-FF4A4ECDFF95@linux.dev>
+X-Stat-Signature: amk9wzi8oxko166bzbgf4wageu6zmf8e
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CEBBC4000F
-X-Stat-Signature: ufezjg6okaq8rjokwq91ukfi8gydrg4e
-X-HE-Tag: 1777361490-832271
-X-HE-Meta: U2FsdGVkX1+XGeFEckqNoM2Ogf169E3aNd3C0LToHw+zX870pQjkHKhnReTgbCWpo5P10UTpEajUTrQN6FhJCmmiXHYGYO+FJWS36GwYcFGyrn0RWHmZuU2clCSi6OKQQW5drAZQ6ANG3AhmAc3XEih6J5ICMCPtx23FmCwR9C2KwoyfBISf1vph4tQvV+IbPN08Y3MlXY/a00hJt7sFkFWNSM8gFk8zwQ9or0wqDQPRX2nGCXtb3IrzI7Fcl9mwiDj4E0ZfzQqfvn5KBCn32taxWBaMZjWzeM71w3HmVTqbHHhgX77vHsx6V7oxRAVCBBuovxi4HbReu6frQfKQvc/a3M6B6bnT92VRVNv57+SXrdCY4UR2db6AioVoC9RCWwis+WFe4/hxTJl2KHFa/3Xh0Rwri5uJHKzpk1SAFqSUqDnAYKUw+VHF023fg2lwTFEbH4aCfg975oANnL8RpjWkacAYIHCdCXY/XsAjgEJiIPecyD00M+F0Z+4GukwDtLFwN8eJsAyYCv5WH9ulFsjIynrRhBZwjB5m/Q/y+ErgBc85/8QE3/n3GMBDWJofOZkjKjq5fBV49c6PMKD3wEyMe3+rjLyVNZKTK3krKJtwl2GCg6d0yTX425YnxzDydQTSbgNgM/AINlaVlvT/OeKWJ/VyRd42cszP3aHuQsa8MCyeZWe0llJFHQYgOIL6QhccfHoHgGkvTZymVMzDK8Qv6jcsPDeNXi/mXZcwbjT6m8iwc9Qw2L7c2YsCrqZCNkXWjuBkwXV6VsHloscZk4T8RTbEqrKBG7eFXPNjkFP0pMsOUXNr0+4omxOB7WN8h+14YqfKLiwyaL9uXGytw2JzBgXHq8ARJ7ymEKx+LxpHmlpZPULV/NY/vRjYhfW1ToconMdExVlSVUx3Qqc1fOvnturBru5lmwPauuPlomsKg7XiACHeB/pYFcjnnIYqi0p1PxDkCzfyklIpyNG
- hJB7tLHg
- T72mrq/ljOVEuLZQDxgemQqHRfc+KQpLIW7hEirjUmBD9EgdTKFNXE41vEX8zU8LPvlicL6XWqB22AvOaGDfokKEe/NbZ9qcgOcJFad+zTjsTJI3TXwM6D3Zgl+aSKEZYKv4h3hdf9XOiVRbIDL5exIO6N3WBNbrWLgoLMkayGioIWhucVRnBp5Zvy88RgtsL6o3J1gB3sKxvp3etzGzC2r6piXHBEdx0JgmKFz6W3T9ptqtRwexBcazGZWOLcHTFRLM5BI6YVLnfuqOBdui8L5CHfsnsJ7bHwgQYAgxm92kSgxyZKCFWs8ZqnZgWh19zQqbhG00/GWPXwI3ZVnrwb7jshN3JUQ4Aw6t7uqYmBkQMKy4xDsN/XgS5DWk7RqJAhwTFkFeLZReJuBM=
+X-Rspamd-Queue-Id: 8DBE71A0007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777361570-790545
+X-HE-Meta: U2FsdGVkX18Sng8vM70RftEY3iJ2lP9yluTSawosilDbPcCrvbye5QnUlz0MaFLUHJTRC702lzyDsAlpba63pjBibxcwqJCVchu2qDayFYaXbW8+lfz6DQWFtFkRiUnOSv3XOEV996KCb/ET+BnndQuEMeeUrDVEkj+p7pD1y28WCD2FA0idCK6nIc0n4q6GonZZsWp6iNHi2H4vYQDpLZgnkEgeWY3PcS9sha+UgMqwnxPWRE8puu/asK6g0BX/HZ5TNV19DI+Mn/1806yZkBE2niJrN+SIWyJd1nzC9DgfCIXPT7myjCjdEFT8rNSdRQq4jUphOoIl8uGdC1YkeGe3GvuwAwv+7gwx1g/BXrSajkej8z2dcAZV/1pd1UEln6t7kOCXYxx9FHNMXsTxm5fSvvPBC+VJQdwqaOTPxIVUdrJfxe8yfR7brIptd1xBnbd7G5+WFCN2C/drjofQQvnuLqOLx5ROWZiXZIFW1GtuCpwtrOKmxSFYyEt+U/ySshKQzaqBns8HTOjj6cQEzBa00slQUhoC63m9KyoTF+NDF8duc2cRTUllS8I5etr9R1Fa8EmKsUngCiqFOCkapVxFXeMfcKVJ0utHM9lr5bLxGIaDH+Gz0v+uLm3PvN9+GBBAGDP0/7zDfHGqBxom1rtgGkz1cK5yzqa4BB1x0XEq/w7XHvPOR+4Wuqw6HfBc3sU73pZo23gTZeEl+4BrN927tSfKI1zknhVcLQEG/7K83bMtOh6bA78O63+hsamXC+GQa6UK6BTwbbmZ8yLFW3/lP7/yOKzdGA9J6HEip26FFI3i7o7u77yUzf86epoadXxsNVVk2LIG9n++3t7RglhKLUGvqO9j6tryNjs/xlkgKfFkInl415jNi8KVSrLnXFOLmH0zIEe+cMstxDbYGiEARkamdT1SWPDWKeA8lwyvifnpoaNEl3pp/zenxdt75TwHSzKtbIKVvYwP4SX
+ VimsrjS+
+ oNBiT7IwP9sr+ylzejIHgNg9PVUGDhfNPRdqmQl61PFVtIXgw/GmuwTPCyzc1IHpzQFxARwO8BzQYohkJSBVooxElPOl+6g81juIV2dL/EKuqQDfMKw3b8gnHCLlQXZ5F7iF5B1lbIZ/fdJHXaX9EtInmt5DFIUTRpjRMmezBPcyG+Gmr6HtnBkaSudcKRsc+VXeQj2czTCeLXcA+GF7oQIBFqG+RZFXkuZhImQBLSHIT9bVbuqJ8/DtvqAW76uRP/KOO7KNQUFalmEWQTjABRZLvZMOD697f+mWYIwN8padzB/nqJ18NBaak7PfDZrecy+GnliaHei+i/sk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,91 +108,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 05, 2026 at 08:51:59PM +0800, Muchun Song wrote:
-> From: Chengkaitao <chengkaitao@kylinos.cn>
-> 
-> Since the vmemmap_p?d_populate functions are unused outside the mm
-> subsystem, we can remove their external declarations and convert
-> them to static functions.
+Hi Muchun,
 
-I think this is already merged
+On Tue, Apr 28, 2026 at 03:02:14PM +0800, Muchun Song wrote:
+> 
+> >> diff --git a/mm/sparse.c b/mm/sparse.c
+> >> index effdac6b0ab1..5c12b979a618 100644
+> >> --- a/mm/sparse.c
+> >> +++ b/mm/sparse.c
+> >> @@ -354,19 +354,15 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+> >>    unsigned long map_count)
+> >> {
+> >> 	unsigned long pnum;
+> >> - 	struct page *map;
+> >> - 	struct mem_section *ms;
+> >> -
+> >> - 	if (sparse_usage_init(nid, map_count)) {
+> >> - 		pr_err("%s: node[%d] usemap allocation failed", __func__, nid);
+> >> - 		goto failed;
+> >> - 	}
+> >> 
+> >> + 	if (sparse_usage_init(nid, map_count))
+> >> + 		panic("The node[%d] usemap allocation failed\n", nid);
+> > 
+> > Please consider using memblock_alloc_or_panic() in sparse_usage_init(), it
+> > would simplify the code even more.
+> 
+> Hi Mike,
+> 
+> Yes. I have several more updates for v2. Please hold off on reviewing
+> the current version to avoid wasting your time; I’ll send the new one
+> over shortly.
+
+Thanks for the heads up!
+I'll stop for now :)
  
-> Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
-> ---
->  include/linux/mm.h  |  7 -------
->  mm/sparse-vmemmap.c | 10 +++++-----
->  2 files changed, 5 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index bebc5f892f81..aa8c05de7585 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4860,13 +4860,6 @@ unsigned long section_map_size(void);
->  struct page * __populate_section_memmap(unsigned long pfn,
->  		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
->  		struct dev_pagemap *pgmap);
-> -pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
-> -p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
-> -pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
-> -pmd_t *vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node);
-> -pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-> -			    struct vmem_altmap *altmap, unsigned long ptpfn,
-> -			    unsigned long flags);
->  void *vmemmap_alloc_block(unsigned long size, int node);
->  struct vmem_altmap;
->  void *vmemmap_alloc_block_buf(unsigned long size, int node,
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index d3096de04cc6..0ee03db0b22f 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -151,7 +151,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
->  			start, end - 1);
->  }
->  
-> -pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-> +static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
->  				       struct vmem_altmap *altmap,
->  				       unsigned long ptpfn, unsigned long flags)
->  {
-> @@ -195,7 +195,7 @@ static void * __meminit vmemmap_alloc_block_zero(unsigned long size, int node)
->  	return p;
->  }
->  
-> -pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
-> +static pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
->  {
->  	pmd_t *pmd = pmd_offset(pud, addr);
->  	if (pmd_none(*pmd)) {
-> @@ -208,7 +208,7 @@ pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
->  	return pmd;
->  }
->  
-> -pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
-> +static pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
->  {
->  	pud_t *pud = pud_offset(p4d, addr);
->  	if (pud_none(*pud)) {
-> @@ -221,7 +221,7 @@ pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
->  	return pud;
->  }
->  
-> -p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
-> +static p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
->  {
->  	p4d_t *p4d = p4d_offset(pgd, addr);
->  	if (p4d_none(*p4d)) {
-> @@ -234,7 +234,7 @@ p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
->  	return p4d;
->  }
->  
-> -pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
-> +static pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
->  {
->  	pgd_t *pgd = pgd_offset_k(addr);
->  	if (pgd_none(*pgd)) {
-> -- 
-> 2.20.1
-> 
+> Thanks.
 
 -- 
 Sincerely yours,
