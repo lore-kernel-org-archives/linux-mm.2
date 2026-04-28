@@ -4,100 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66709FF8867
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 03:17:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41214FF8867
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 03:33:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FD246B0088; Mon, 27 Apr 2026 23:17:06 -0400 (EDT)
+	id 7D7996B0088; Mon, 27 Apr 2026 23:33:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D4D66B008A; Mon, 27 Apr 2026 23:17:06 -0400 (EDT)
+	id 788956B008A; Mon, 27 Apr 2026 23:33:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EAB86B008C; Mon, 27 Apr 2026 23:17:06 -0400 (EDT)
+	id 69EAE6B008C; Mon, 27 Apr 2026 23:33:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EEA56B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:17:06 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 833DA8B864
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:17:05 +0000 (UTC)
-X-FDA: 84706503210.23.29F44F7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B83AC40006
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:17:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JA+GnZnt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777346223; a=rsa-sha256;
-	cv=none;
-	b=DGSa6LogL+ThzfVXYKj47J9A37glu9QeEZZszoqoAUjLNHESw/ESt+PU1cAKOJTsHDuTAe
-	ezcANVpU5YzLYNpQp7Ps0dnVty/XnnSU2LGyBPSAOTqlIocGm8I5+nE+QLr8WkP+FqQqL+
-	ek4cvEi3Am1ALZlNzKLgN3nZhbbhjUw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JA+GnZnt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 59BA86B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:33:13 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DD01F1B91D7
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:33:12 +0000 (UTC)
+X-FDA: 84706543824.09.61FF458
+Received: from mail-m82107.xmail.ntesmail.com (mail-m82107.xmail.ntesmail.com [156.224.82.107])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 92A1B2000F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:33:09 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf13.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.107 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777346223;
+	s=arc-20220608; t=1777347191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qTEZ1HZ1PdRHfsgQndRbtsh7bY4hkpV65+GmJp+lBmM=;
-	b=L69aDffjUkjW3MOJv8sFXp1/XFdk75R1nQakQXeXUrC/rPiTrXTi+NaRx7pa/ILJVud+Zx
-	qH1s64qevcto0OP5MAPMduzL0N2R8uZXDTGptpmZhDKivdnuTtzJ9qAk6mQovxioM5b6dk
-	LpQP4ro7DXWnKLj4abZFbxBnBt3dK1E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D7D9B60128
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:17:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85236C2BCAF
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:17:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777346222;
-	bh=wyw3V0ckGkRkNnb1F5GXlIGScC5WOYDuhH9iKbweEj8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JA+GnZntI++ywISl//G2he7Sf6z4XhwDvYfIeWytJMGDUtt7AFq+ATNvlKhxKoe8B
-	 Q20DQweR0Sr0ZJ/FxFjdTPFak1zI9cbIUbNCLTIxkttzgPPRtx3RJp79PXJwd3vL/c
-	 WWnuQdXVIPE+1onllLCsElsUI0Zsr9l4Hoywtd5DQTDQ0txmMSLYbc/56wCuAzTjWm
-	 HBza8zLJfWcprz+RsA8HMPPbMgglwSyCzG9lOoCzKxdmtlbcu06d969/CT0MIXg/hm
-	 UAK5MEjflfvIQRmB1NG1cGO9gHmoP88eqUJXWY8rex6dcUOfnX48s/mXh6vcbuWptP
-	 j3pD/8Efe0d2g==
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8a08fa355a1so160094266d6.0
-        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:17:02 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyJRUGLQ90c9+zcrPCIUxOiDtvCxf1NfSiSxM7VOzVs7fibLcWJ
-	QGO7/ZRYLbcghGbQmO2tD3n95hR9hWR3JqylLHUHS5P12ittLyzXgYY704GXifrmnobfCO6IzV1
-	gaBoKPnkUNPYM6k8uTw8djHFbCVrXSE8=
-X-Received: by 2002:a05:6214:4a02:b0:8ac:a6f7:8a70 with SMTP id
- 6a1803df08f44-8b3e306a5a9mr25772956d6.22.1777346221843; Mon, 27 Apr 2026
- 20:17:01 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=YE7kSrpy77fetDHEUUJoOm72XJeeq7v9u5lN3aVuKE4=;
+	b=fMuIbket5kfkv0QXWBAA+L8T27+il5Eaajf8Ts2E+uXHXZRVji9QnxekiZXpSZ5LYT8tOE
+	LHtF832KpuxZJC2aoAthOJs9Rsp02Tg2nPgNFfVgxeZXKA1VT+dFXCQF+tpsZPzQarcRAw
+	uDu1sQM0Bt1sJs6GXTY5xODrD/QUBcc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf13.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.107 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777347191; a=rsa-sha256;
+	cv=none;
+	b=7kYQAxLnJIq5a7igf21iOja+Mw7EqrAtJAfsJNecT9DaqEfY0dMV76kRTcdUNkus6lSjmk
+	WnKPnneqmFX5KtK1VPuKjpj0gBRGqAsKakGe0atYfmQX5hqL6Kp4M3z7AkGLY+e4/ZPUcx
+	LC63m3lUpKyVDVcE+b9Wg+fKDFrHQ0c=
+Received: from [192.168.0.18] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 19787b34a;
+	Tue, 28 Apr 2026 11:33:02 +0800 (GMT+08:00)
+Message-ID: <7944d24f-f29a-43b3-918b-ce25e7bae520@easystack.cn>
+Date: Tue, 28 Apr 2026 11:33:02 +0800
 MIME-Version: 1.0
-References: <20260408025115.27368-1-baohua@kernel.org> <fb022a6f-0faf-4742-8934-8a7ffae806f6@arm.com>
-In-Reply-To: <fb022a6f-0faf-4742-8934-8a7ffae806f6@arm.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 28 Apr 2026 11:16:49 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zwrsrKt5NiuN-rYCqJiyjNdv=UssLuf8VCu8xZ+5sohA@mail.gmail.com>
-X-Gm-Features: AVHnY4KKjM_yWoA3CDFUcrhYL1bvm0dmk8-MpHN_PetdZebPEYEa2kPDHJNVQVA
-Message-ID: <CAGsJ_4zwrsrKt5NiuN-rYCqJiyjNdv=UssLuf8VCu8xZ+5sohA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/8] mm/vmalloc: Speed up ioremap, vmalloc and vmap
- with contiguous memory
-To: Dev Jain <dev.jain@arm.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
-	urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com, 
-	ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org, 
-	Xueyuan.chen21@gmail.com, jiangwenxiaomi@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 78ck594wr7mqjc558kd4k61hngjfsx66
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] mm/page_owner: add filter infrastructure
+To: Zi Yan <ziy@nvidia.com>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260419155540.376847-1-zhen.ni@easystack.cn>
+ <20260419155540.376847-2-zhen.ni@easystack.cn>
+ <12259EA6-2095-4F79-A7C4-E89DAFE9E8D6@nvidia.com>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <12259EA6-2095-4F79-A7C4-E89DAFE9E8D6@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9dd225c0b30229kunmff442fff147b25
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSBofVhofGR8dGRkaSRpLSFYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
+	lPT09IVUpLS1VKQktLWQY+
+X-Stat-Signature: j3tniqnchjrtb8gxh59p31pp7qsj3rda
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 92A1B2000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B83AC40006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777346223-120470
-X-HE-Meta: U2FsdGVkX19ZwdzDfKH/zmY17H5zxENSJTY0KLLkf/ebzeh7VVacNxPF0cy4LdSb2Ts3NF0xHzphf1uw4dlH6BO/dmhVMvTP0ouyGY9eOTzGvxie30/h6Ent71LI/sv2K4d4NNHJUK/cwf3MPMTlyNS5Dcpz1V9WzF3qf58Hk/15hVdcNblT3CPVvLrX4Aj22MAuQQIjZz2jN9ZLjhfNChxGcsMwP7RwgBLTF4vXHi68R/qHM/5coybtIc8XZwpQhraHoIvKxyFlcmogv/ER1P5lpsc68A+EQ1MPuX16Mty43f6cGncfBqTiriis4EZ1C63IGH9zT6jdZMeeGDe7IM/7hGmp7YOxDEChg29e0SJ9s4gLGx0zUfrUXLaLGj1z6e9+Ixp9m5U2wLEn8pVTzSqDazjAaT91462Eff1BkKgh+50pRo6M62gupEF5cdkWR6+8YmCo3xlpcBcVtVIMc8T1bZSDJ7P15mMJ+dD5XkzlZlbfm/MWAdisBM4eqKExxN72KujUa/opfTCLCNN3rrAlTDbDssBR8lhbWAI17EOn6EUjOGppX9RlnAqlN8bfc7n/jJOY6shb8bA/qsMkF1wcM5SeAEhkzC7HaM3kwvuOfS6VSDQJdF1/4J6abjSZP10j10j4iEQOjVd63RX/9b2lECaBziNeCzcIT61+RcUiMF6YDFsWdY/9b599GYIXulgbyqFgS2EtZlTQWDp0d3NGPPiNb/JzSEhNPp3m0Ybv3RSg/siuwZ3j9Snwxsd3FWPi7dDwgnBuKDlNtQtmjjny/n36nkjlSXpNmnTbubu9B/X0sdkmobdSaqwRfUU7ppNgUQ5sqYtrsUON+5GcaxXxgdQyv7mmc/kb80Ow5RL8zW7/SqasGVSW4rxanHB6qYHFHf/jPqxpDhp6vRoUMDSQn/e+NMUJSO0O+4GC5o9Le/GhxHqBXFAlsroMDVykCZNN89/8CxnT/qRP5dx
- L8WDfQt8
- skwsznEfwCzmCXCAdrrzarW4D3Shr4VjjPcQOuk7maAW5P/3rAASrh/9AwoXjI6q3/1HlMEsxoYL9t6kbP4zI7aOizGUOKHClDGqUC2YBgow02aVJ/Vii0esOjSoQeBCXpHT/q9NmKL15aHoJdpyfMGGMrh6BpaEEtRPYYiNmPcLZzVNM/B3D8/0RcemqsSmMy1oXMYFf9y2g6V/pMda6P+qOtp1xIqGlGrHvN7jVYXI7yickcyuYVo20MxxbdcxOIY+FZGPeF1ANEXsyO35ww+ia9IbKH5iMNczpjgu9VSxxsFRNLwn/rIdSZ5Hqt6s5Jwpc9hD8Ty45ZNFC891oNm4mhvbUkqm1djg6YfGlZjeWQ1NG5EXVsG5BZ841qZ8ssw77gCY+3Ly7evpNPjcSyjqyaBQcnPIR0qG6
+X-HE-Tag: 1777347189-903820
+X-HE-Meta: U2FsdGVkX183VnimcslGyPLjuf/HisMhaBASu8X92nB/KllNYIuYJEggTSobaKUOScqdCwaBOvkjkjdQX9/AgSGuHnQtPgb3HYjqhGRqkRFsuwWgEZT3XdI/31oa6NUTMuJp5vza3/NlYbKludaEs9eiBeQRX2fb4gnZBTlfF4C2gMQc2OsFIHh1Po9QE68hGr12Z5r9MwSjykIU8G9Y1sDRDaCbTzk+3PPJcJJBqGzaB72U20MsHIXkKO/SGvGXJvkGV4G71fYTk6ywkMOWsvwad862y7inOBnEHfaQIcw88TzG9mmcO5Nf/UcNPf65ZxqOynXkoU8HWA0SPzDnH3i5fNjgqZNAwt6xbKcVeaeG2qPr5RB27YD2+3d/229MXYMAPoeQa/3vJck/BwHJjCFv91WvBfzW1hyy7vHiC1jtuzH4t3c5qXCXpvRixQS+SaEQ+jOPg9JJvZoDcF31ixwuXrclGJO12YuYMR873znLQJNd3MMuerwn6EOqdUfRLfAYQPllcVev48/YhGIwYNx4PSWenIk1mleaQC/AwrTMJ5PmtzAsPJYv82agjVaOh5pvsjIagC75KTHEOAwcmsA9J8Sn5StI/cOXctOQTEpCVX+xaDdD5NrUXWPqTFq6jmNDIU820In1fmLX+TzyVYFPvw3/Shm0nq1rVzqmUFd18ftT9TdArclBE58u0Q8+EYLzehQh9MvKbR/Y0TpNF0ULWr9pfhmcEE+qa00mP78ey0w6yNsfQK1cBhUYm1FqKL92s3LiUVT8V8ix53W6ophc66XAG+ahyUysSAlMDTutEn2ZXrDcV4K2ML+q3eBlnwhc3/8RLXWbmdvMKULF/a6oFSCt5cFFsK/ZOHRfwmuGeoHr7ekTH8uI8onJxyrVrREa5cDiniRGFETQwasupraHCLzKR8oU0i1qM553g9lv+E1fMz75MXYYVVsdi201i9yDPLUaxerIhj9D9+a
+ KZWTsDlH
+ 3Nz5uTGACltqK8XlX1inZXqlFP/b3sdB0rE8/HfUaedzHrHm9Z5zM+RT/CWwJz+X19/60aiSTclKOdvOXJWUWA5ul2rKp7ol7JQL79OOjEVd8a0jY4ez8m7ZUWLQm8KvpgbBAzK8cNlC4VuKkoEz+YT2rqivExCIKSIpCYrhGrhCDt17tEVBzQhCrm20c1+Eywp+Aj8Vn93VfQ4qtxzCw5930ycL4UKl6GvuEkOnCcUtdMASSmHxLKtWSBPJgGQYLp8wtCVkxRoeZORA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,40 +89,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 11:05=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
->
->
->
-> On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
-[...]
-> >
-> > Barry Song (Xiaomi) (8):
-> >   arm64/hugetlb: Extend batching of multiple CONT_PTE in a single PTE
-> >     setup
-> >   arm64/vmalloc: Allow arch_vmap_pte_range_map_size to batch multiple
-> >     CONT_PTE
-> >   mm/vmalloc: Extend vmap_small_pages_range_noflush() to support larger
-> >     page_shift sizes
-> >   mm/vmalloc: Eliminate page table zigzag for huge vmalloc mappings
-> >   mm/vmalloc: map contiguous pages in batches for vmap() if possible
-> >   mm/vmalloc: align vm_area so vmap() can batch mappings
-> >   mm/vmalloc: Coalesce same page_shift mappings in vmap to avoid pgtabl=
-e
-> >     zigzag
-> >   mm/vmalloc: Stop scanning for compound pages after encountering small
-> >     pages in vmap
-> >
-> >  arch/arm64/include/asm/vmalloc.h |   6 +-
-> >  arch/arm64/mm/hugetlbpage.c      |  10 ++
-> >  mm/vmalloc.c                     | 178 +++++++++++++++++++++++++------
-> >  3 files changed, 161 insertions(+), 33 deletions(-)
-> >
->
-> Hi Barry, have you got the chance to work on v2?
 
-Hi Dev, thanks for the ping.
 
-Yes, I=E2=80=99m getting Wen Jiang (cc=E2=80=99d) to send v2 within the nex=
-t few days.
-The patchset is basically ready, but still under testing.
+在 2026/4/27 23:35, Zi Yan 写道:
+> On 19 Apr 2026, at 11:55, Zhen Ni wrote:
+> 
+>> Add data structure for page_owner filtering functionality and create
+>> debugfs directory for filter controls.
+>>
+>> This adds:
+>> - enum page_owner_print_mode with values for full_stack and stack_handle
+>> - struct page_owner_filter with print_mode and nid_mask fields
+>> - Static owner_filter instance initialized with default values
+>> - page_owner_filter debugfs directory
+>>
+>> The filter infrastructure will be used to add print_mode and NUMA node
+>> filtering capabilities in subsequent commits.
+>>
+>> Link: https://lore.kernel.org/linux-mm/20260417154638.22370-2-zhen.ni@easystack.cn/
+>> Suggested-by: Zi Yan <ziy@nvidia.com>
+>> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+>> ---
+>>
+>> Changes in v2:
+>> - Use enum page_owner_print_mode instead of bool 'compact' for better clarity
+>> - Use nodemask_t instead of int 'nid' to support multi-node filtering
+>> ---
+>>   mm/page_owner.c | 20 +++++++++++++++++++-
+>>   1 file changed, 19 insertions(+), 1 deletion(-)
+> 
+> The patch can be folded into Patch 2. Otherwise, these new types are not
+> used and page_owner_filter folder is just empty.
+> 
+
+
+Thanks for your review and suggestion.
+
+I kept the 3-patch structure mainly for clear functional separation,
+which also makes review easier. Patch 1 adds the infrastructure,
+patch 2 adds print_mode filter, and patch 3 adds NUMA filter.
+
+I discussed this with Andrew and he has already accepted the
+current 3-patch structure into mm-new for testing. Since he's okay
+with it and mentioned that bisection holes are acceptable in this
+case, I'll keep the current structure in v3.
+
+>>
+>> diff --git a/mm/page_owner.c b/mm/page_owner.c
+>> index 8178e0be557f..5884d883837e 100644
+>> --- a/mm/page_owner.c
+>> +++ b/mm/page_owner.c
+>> @@ -54,6 +54,21 @@ struct stack_print_ctx {
+>>   	u8 flags;
+>>   };
+>>
+>> +enum page_owner_print_mode {
+>> +	PAGE_OWNER_PRINT_FULL_STACK,
+>> +	PAGE_OWNER_PRINT_STACK_HANDLE,
+>> +};
+>> +
+>> +struct page_owner_filter {
+>> +	enum page_owner_print_mode print_mode;
+>> +	nodemask_t nid_mask;
+>> +};
+>> +
+>> +static struct page_owner_filter owner_filter = {
+>> +	.print_mode = PAGE_OWNER_PRINT_FULL_STACK,
+>> +	.nid_mask = NODE_MASK_NONE,
+>> +};
+>> +
+>>   static bool page_owner_enabled __initdata;
+>>   DEFINE_STATIC_KEY_FALSE(page_owner_inited);
+>>
+>> @@ -973,7 +988,7 @@ DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
+>>
+>>   static int __init pageowner_init(void)
+>>   {
+>> -	struct dentry *dir;
+>> +	struct dentry *dir, *filter_dir;
+>>
+>>   	if (!static_branch_unlikely(&page_owner_inited)) {
+>>   		pr_info("page_owner is disabled\n");
+>> @@ -981,6 +996,9 @@ static int __init pageowner_init(void)
+>>   	}
+>>
+>>   	debugfs_create_file("page_owner", 0400, NULL, NULL, &page_owner_fops);
+>> +
+>> +	filter_dir = debugfs_create_dir("page_owner_filter", NULL);
+>> +
+>>   	dir = debugfs_create_dir("page_owner_stacks", NULL);
+>>   	debugfs_create_file("show_stacks", 0400, dir,
+>>   			    (void *)(STACK_PRINT_FLAG_STACK |
+>> -- 
+>> 2.20.1
+> 
+> 
+> Best Regards,
+> Yan, Zi
+> 
+> 
+Best regards,
+Zhen
 
