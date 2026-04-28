@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DCAAFF8868
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 16:34:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FC9EFF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 16:36:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3BC46B0088; Tue, 28 Apr 2026 12:34:41 -0400 (EDT)
+	id 523306B0005; Tue, 28 Apr 2026 12:36:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEB566B008A; Tue, 28 Apr 2026 12:34:41 -0400 (EDT)
+	id 4FA566B008A; Tue, 28 Apr 2026 12:36:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DF766B008C; Tue, 28 Apr 2026 12:34:41 -0400 (EDT)
+	id 410646B008C; Tue, 28 Apr 2026 12:36:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 86D6B6B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:34:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B72F1603B1
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:34:41 +0000 (UTC)
-X-FDA: 84708513162.09.EB60389
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4C7B9140004
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:34:39 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kkXNWJ7/";
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DEBE6B0005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:36:27 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96CA3160321
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:36:26 +0000 (UTC)
+X-FDA: 84708517572.26.9C7BBF8
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BC15B140002
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:36:24 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bW9BrJEf;
+	spf=pass (imf23.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777394079;
+	s=arc-20220608; t=1777394185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AcbBRyVqleAXVWqL9J9o2fKR7j527Ai/VehBITW3+po=;
-	b=F1AU3pDlQNYwbR9w7y2pT7RHXrrlVJ3WHItfAFPlS1wj86hynIJkpMCtPDpu+0xP540pqC
-	Fi6p/2U9cANK8D2N5EhYVZ+bNWeiNZwjHwoGMKdSa41hV8DONZ8ZqDNF2rnfg/6VCCVhN5
-	9sRcH7klvfBgsCYZn3PzMuVp2rYy/jM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777394079; a=rsa-sha256;
-	cv=none;
-	b=5VgBgu5d7qOCBtwemCaD2xKA4R24WbJQRxYzFMyo4Vlwn6A/PahvXtlyPyFzCWpaN4CCkV
-	zsQ0MOotAIs00CoMFOqkjT6PxU/D7g0E6pRAbJIGUQEst9pOXk3ydDT8mH6iTycqSERV8a
-	oEJXTgGSreqVwqCTSAG4H+E/ZghOGlA=
+	bh=+Cr9IdcujjQrXcfxbwzSQNhzqsNG4ekgaxSa1GmQWbM=;
+	b=Hg4YtriLVPbI/u8ck2CahisSIIpl4ZV2UIS0hJULKCgUDCs8nLj5lG8U48USFLHBZ4T58n
+	9V+/CWVieDarBVXOKlbr9xagWx5rEOK46lzl+4xTTHC7IVoatHoxS+lvMroLZj6GjXF2ap
+	H6ucFZQrPjayRa04wi+ZFdFCi0jfhnI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kkXNWJ7/";
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1614D4183B;
-	Tue, 28 Apr 2026 16:34:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DFBC2BCB5;
-	Tue, 28 Apr 2026 16:34:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777394078;
-	bh=SSGvX5eori06RTcAd+RFUFXSIFrU8pgQCr6sM0Zzku8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kkXNWJ7/M92XbIIqnCuSwyLr03O6/AkVzdoi51qjOyTquwaczjPVNNy12MGWk6Spy
-	 u0ZCafMK5PDn2oPazYAk/LGZJybB3Bd/1QlSHWEnjdpDvRpFnj+Dlx6imHk6kmRj2W
-	 GmtdGnpMa40At7JPZUfzH5PbQeT8wxc5sijxivhr9ls2A3CGyX862g2P9luWNVByyz
-	 +vcqvRyI/R7zUU4xbykN0lMFXJwa/DBYQWMkhRzJ1Zz0ap1BJpPahRn8CylVj6ZKkJ
-	 oN1OFD/eEvVZqaAJtm/5BUCTOuAsmVApZyoJO+2mkrEd0UcXOPjvWARBVm4r3r7+li
-	 pSJVprhHvq2jw==
-Date: Tue, 28 Apr 2026 18:34:30 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-sh@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Rich Felker <dalias@libc.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 00/10] sh: remove NUMA and SPARSEMEM support
-Message-ID: <afDhluTA6ERvGugQ@kernel.org>
-References: <20260413104649.852228-1-rppt@kernel.org>
- <42a4c6c1-762f-449f-9d14-3eb0fa02b94f@app.fastmail.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bW9BrJEf;
+	spf=pass (imf23.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777394185; a=rsa-sha256;
+	cv=none;
+	b=arKUUaDPpCMV5lXamgktkQ9MUSfcXPhbq8gJXofIG1rZHqzqlwyvO44ErI9ORas7wbKgH3
+	39qLOKr+wkkfuULr9y/UMGJQGLe+hlcyOb7lkg8hYV+oXvXLUwIU61dEpEMzIFQJ+QKcDG
+	emSmI4RIXkQNH3pFERsuSyAPn0e9joU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777394181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+Cr9IdcujjQrXcfxbwzSQNhzqsNG4ekgaxSa1GmQWbM=;
+	b=bW9BrJEfiNRXw9wVleUkOQUycSgOVtGPI58dwQeqXqBz41YpAbRZ4sg8VMDlKaibWw0IBV
+	eJqFVMBloqZSmmiBwGcEMnQJJR5hLLG8y3JMYYiTH8H5kZVglYUQc+ggiR6rphQ74R2LD9
+	R9rEpP4qIplSronShsTcXldtmkNZjGU=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: bpf <bpf@vger.kernel.org>,  linux-mm <linux-mm@kvack.org>,  Vlastimil
+ Babka <vbabka@kernel.org>,  Shakeel Butt <shakeel.butt@linux.dev>,  Andrew
+ Morton <akpm@linux-foundation.org>,  lsf-pc
+ <lsf-pc@lists.linux-foundation.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>
+Subject: Re: [LSF/MM/BPF TOPIC] Using BPF in MM
+In-Reply-To: <014f3c0a-7c6f-4f64-95cd-b7b69d804880@kernel.org> (David
+	Hildenbrand's message of "Tue, 28 Apr 2026 10:12:16 +0200")
+References: <7ia4o6j4c5y1.fsf@castle.c.googlers.com>
+	<014f3c0a-7c6f-4f64-95cd-b7b69d804880@kernel.org>
+Date: Tue, 28 Apr 2026 16:35:52 +0000
+Message-ID: <7ia4h5ov6o0n.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <42a4c6c1-762f-449f-9d14-3eb0fa02b94f@app.fastmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4C7B9140004
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: hu5szdo1wdsm6eeedrgpb8hb8s3mbh1s
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BC15B140002
 X-Rspam-User: 
-X-Stat-Signature: 37r4qt96714f8xg7ow7eq7uf3d9wfhji
-X-HE-Tag: 1777394079-306688
-X-HE-Meta: U2FsdGVkX18/8br5iceFHglrbywwTDwrkBacED4Wro8L9WB4XwKO3PQ5FL0nzGxx9sFtkdf05tKKmcwIFJvgGK0AsYH1HI7EEFVlUdZp+Jx6BWxYnUfiYobYvwLHkl8BI1vy9H3KCjd36DAxTJ4kuOcmSEV0U8CuLqEkhlgRiy4WZK5sClfsVbmxuUHbh0e9UrlxJOu5lwchwWA3UgUWKc0n9CfyhYAh4qI0UkkPMjP1XWGQM7UxFdoAVDJ2gyITLODds0zGn+JBov0ztiL9eWDiVubwz+JHplSwVb3BrMhsfe9Sn2WtMst/jQmkAVFvsc1Lx6L7bYtLcwkd4IXmTh8qtWVUcCFtU9J0E1YVIqY9UX/Eq3RRFW2OHLcWnMBSaCe1DqjqEb4kiRo15VE+OqfqBNC1BRkhgdBgVxKcW8D3eI5C8uqk5KyHnO4Lr/KWpikz0vnf7QYXupcXOmGFGmLtCrRwqXmk2+uy0JkbG/s6t2ZQi79MRNVVKvR3nzHu/j5oqTotytsUYF4kjG+c8NvtIS2reApzLWYH57uL9sMCQ4kTeUHZzr7m199IU8s33PxB+MXsiORqJqI+Dq1ER+xxUNQ0Sq9PkhW3DASYWQHFst4cnyf14ISkSPOngS/qWlC/v3qYqLGJyRa4deruZ8gS0fNURRPw9qKA4i2vvhmbtaaQejT7uFKnMT7DCRrPCmoejqqqjO+fTLAz7iZ8ipmIW1sz/2n+eF9q+WvDicWEW2KpH8WYSOp9kUllieiIrH3Pp+/eEBpCByInodQ4OufZ00gZFR2E+UWndX0ip1SipOuCRjW9GaRKzPlGSPajm932Tlsb348kdj9WPSfyYPI+FgCJF19cnw0o+pEES6EYzyKxn0EIebIYTVsDbt67EY9aylF1vvNj1e1MppsPko615+ckNvP8rW4XGxiLiGKDkvG12X5fExan6FMAjTGAQlJz/a4So1Lu4mcJ6Id
- +jQMk7Sr
- w5HLQa+rqUfszGVnCNML8zVH1HnqdTy0pmFFId3ZtqX7azQdM82yWzlsrdbmK8aTMSj9mpV603gCCHSui2uWQ4RBHgITOW0hXkxH/yvoqRU8afn0EpHu5+ENmEM6OFCf62fvhOfVlsJNeTX7xKvTCNaQBxej573h+dYMmYVIZtyEByhoSzQnkzNjDNvOe/JoXN95x5SJneM8GfJnH1gIrJJJBu8vVDZoNmCEr2NtPg1q45UZvSuB8mFdiTTASDoD0ZB8R
+X-HE-Tag: 1777394184-714259
+X-HE-Meta: U2FsdGVkX19gHEESgqtC2mpUZnceWWslI287FXnzLZxy31kp6x3+ijgXpKamU/JvNPYieyb45LQdzqvRrTYnuT9pHYhiU5P35VUqtR7UZJaTMyBM6p9+nI1nOwsX0NGiN6QbGCtvRYJ8pAI1pRNrNcElHXW6jSTd9wBbuEDdebVWakseSHan4v6GkJTPmtG3etEICpZBn8RKF+NkyRTY/ya5XClc3JvJs4vjNma+4x6elCpFo6XRLhvRY5DpY510QIDQam8/bFF3iPbV8jRPMBn6LdEhGJRDghZYTy7zxMtB2XwlN+RF17gQpruYF1i/qtmIjs1BafZG6ntwI0C+gDY8d8MZ/ij0tJamZsiuE6d6l/NSzVubcRuwswbp7hy6pSYA6TXIJz8VxxQTM3+69LVfKm16IDV2Gu4mZt9Y+sRnHZdNCmyETbmBXVDU4HqeoPeebxGHn8R1JEDgqUsKBoxsrZ66Wd5b4gB8orrJVsrFgO9kCDIBBYL1bfUfgv11q356r5Zw43zyw22tudQvpxhDMlf3nQXqEc1Sut2lPliLvXSjbaNa4FIcjaaQY7SECzp23gIIt0mNgQyjc4rl4WSLF/gle2I5D1o27Q0R5IBOrWchdDNRfjKiSwtQdOgJCyyXEgCzCMRX7kNacOZbgUeaxX54eGaSu/ym52LONf7Lck3zPraLZlLAAWYC2lcPs7POJLmxv6I4cpgu/4W60E3FsooMEuNYX+eAz5LiOWjFjqT/wnwczJ7AAcXX80PPXzdeRVTBWTQpa3atvgvGY0Alw+7l2+7r9aLkfZXavGivz+r2iy5PbdajBFY1gxLlfdYbpU+wRs5l2tGO6kDpAujI3oznDj0kLkkvwg9s+zGi5idkqCdkbi4ObaWAShRVv571QvjbAk4y8bfWL3oImbiBSAGDfuI5+fC6zDO35pXmfQjhKeDxCTzSkM49d26OXSEypLpHh9SRJcpBXzo
+ 4m/oZjpY
+ MrU3h9fPtRFbM+Usl6LcGrr/pPkDKFG3eymbWBn0bk0WNV2LLz2Zdm0AtMU3/3gn00qp2PA5601lrWE9tPjRHsnEpj3mAo2UBloOPveaeyLQa7J8wQjSNW9tTYW02K2SvCdDCwErbjCmtgmuyf8itV31sEnAyjkm1B+Et
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,63 +90,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(oops, missed that earlier)
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-On Mon, Apr 13, 2026 at 01:14:49PM +0200, Arnd Bergmann wrote:
-> On Mon, Apr 13, 2026, at 12:46, Mike Rapoport wrote:
-> >
-> > NUMA support for SuperH was introduced a long time ago by commit
-> > b241cb0c885e ("sh: Support for multiple nodes.")
-> >
-> > 	"... for boards with many different memory blocks that are
-> > 	 otherwise unused (SH7722/SH7785 URAM and so forth)"
-> >
-> > In reality, this added 128K of memory on sh7722 and sh7785 and 256K on
-> > shx3 at the expense of all the NUMA related code in the kernel.
-> >
-> > For build of v7.0-rc7 with defconfig and the same configuration with
-> > CONFIG_NUMA disabled, bloat-o-meter reports difference of ~76k. Disabling
-> > CONFIG_SPARSMEM on top increases the difference to ~94k. And that's only
-> > overhead in code and static data that does not take into the account data
-> > structures allocated at run time.
-> >
-> > And all this overhead has been there for nothing for almost 8 years
-> > because since commit ac21fc2dcb40 ("sh: switch to NO_BOOTMEM")
-> > those additional "nodes" could not be used by the core MM because the
-> > maximal pfn for ZONE_NORMAL was cut out at the end of the normal memory.
-> 
-> I had looked at it when you asked me about it last year, and I can
-> confirm that agree with all your findings and the resulting patches.
-> 
-> Whole series
-> 
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> On 4/28/26 01:57, Roman Gushchin wrote:
+>> [LSF/MM/BPF TOPIC] Using BPF in MM
+>> ----------------------------------
+>> 
+>> Over the last decade, BPF successfully penetrated into multiple kernel
+>> subsystems: started as a feature to filter (out) networking packets,
+>> it captured its place in networking, tracing, security, HID drivers,
+>> and scheduling. Memory management is a logical next step, and recently
+>> we saw a growing number of proposals in this area.
+>> 
+>> In (approximately) historical order:
+>>   - BPF OOM
+>>   - BPF-based memcg stats access (landed)
+>>   - BPF-based NUMA balancing
+>>   - eBPF-mm
+>>   - cache_ext (BPF Page Cache)
+>>   - memcg_ext
+>
+> There was also the BPF THP control.
 
-Thanks!
- 
-> Two very minor points:
-> 
-> * It looks like you left the 'config SYS_SUPPORTS_NUMA' symbol
->   in Kconfig, which no longer does anything, so this should probably
->   be removed in patch 9 along with the lines that select it.
+Thanks, missed that.
 
-I think it better fits patch 1 that removes CONFIG_NUMA, patch 9 is about
-SPARSEMEM.
- 
-> * It appears that after your series, RISC-V is the only remaining
->   architecture that supports NUMA in 32-bit mode, which I think
->   we should not allow as a configuration, given that this would
->   run into untested code and no hardware exists for it.
->   Apparently commit 4f0e8eef772e ("riscv: Add numa support for
->   riscv64 platform") intended this to only be for 64-bit targets
->   but did not add a Kconfig dependency for CONFIG_64BIT (or
->   CONFIG_SMP, which was added later).
+>
+>> 
+>> There are some obvious target which haven't been covered yet:
+>>   - BPF-driven readahead control
+>>   - BPF-driven KSM
+>>   - BPF-driven guest memory control
+>> 
+>> Despite a large number of suggestions only a relatively small feature
+>> (query memcg statistics from BPF) made it to upstream.
+>> 
+>> It looks like using BPF in the MM subsystem comes with a set of somewhat
+>> unique challenges and questions to be answered.
+>
+> [...]
+>
+> I think you are missing one of the most important points: Unclear ABI stability
+> guarantees.
 
-I can send a patch to RISC-V for it.
- 
->         Arnd
+Totally agree, it's just not specific to mm and is not very new.
+Arguments about the ABI stability are almost as old as BPF itself, e.g.
+a quick search gave me a lwn article from 2019:
+https://lwn.net/Articles/787856/ .
 
--- 
-Sincerely yours,
-Mike.
+>
+> One the one hand, we are told that there are no ABI stability guarantees, and
+> that we can change hooks (add/remove/modify) any time we want.
+>
+> On the other hand, as soon as there is some ebpf program out there that we
+> break, you can rest assured that there will be trouble.
+>
+> In the area of THP, where we don't even know which hooks we will need long term
+> and how they would look like, that was one of the reasons why the BPF THP
+> control was rejected.
+
+Agree. And in my mind it's also related to safety/performance tradeoff:
+if we use very generic hooks/interfaces, it's easier to keep them stable
+and meaningful, but then it's hard to guarantee safety without
+performance sacrifices. Or we use very targeted policy hooks, then it's
+much easier to make them safe and performant, but they may become
+obsolete very quickly.
 
