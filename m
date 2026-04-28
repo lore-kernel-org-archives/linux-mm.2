@@ -4,135 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 522F6FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:51:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 597FFFF8875
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:54:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7A766B010D; Tue, 28 Apr 2026 19:51:46 -0400 (EDT)
+	id ABA496B010F; Tue, 28 Apr 2026 19:54:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2AB36B0110; Tue, 28 Apr 2026 19:51:46 -0400 (EDT)
+	id A43DC6B0110; Tue, 28 Apr 2026 19:54:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A19CA6B0113; Tue, 28 Apr 2026 19:51:46 -0400 (EDT)
+	id 90C5D6B0113; Tue, 28 Apr 2026 19:54:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ACF46B010D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:51:46 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BF5F6B010F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:54:09 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4212C1A01CA
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:51:46 +0000 (UTC)
-X-FDA: 84709614612.18.07C0681
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6730C1C0004
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:51:44 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nyKljRov;
-	spf=pass (imf21.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 46F4289791
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:54:09 +0000 (UTC)
+X-FDA: 84709620618.18.78839BB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 342A8100006
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:54:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ugdfpoNq;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777420304;
+	s=arc-20220608; t=1777420447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=in+mysCXNp4IJcp8wpKV/ePcsC7P4CQwStR4ajhF2Xo=;
-	b=SYpVElcUIqrV/br2vLqoubMtdTCa3ydlGVnUgvzGxYDF7bj7f78jebhstNcNe5jqJ9LYp9
-	YEtjASmaHp0zGUwtZ0agWeqgQT+U+2xldCM/mSvoi2yXm1Zd/4DSSLhlGSfu1MDyEXY4i1
-	lg9AdUgohlSip0vXjY51Rgh54NDaxXs=
+	bh=37JhNmJzLxzap3D9TGVaMRWJYU2uCyuE/O0k9zslYYg=;
+	b=l60fUqkakU1q8O2XIx+avnRoLm7MP41ki/oyL29Rt+DADbiDVkWEnFIDLgsIhAriSRzfnq
+	/94QY14rZmZuWWFAGmXBoTollAZzcVrTHoXJdJkPRPwF7s8fSrypYSZrjkoyp05gduJYaL
+	uvQfpR7JW6yZeUEVowyBjQ1t62wdxqg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nyKljRov;
-	spf=pass (imf21.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777420304; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ugdfpoNq;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777420447; a=rsa-sha256;
 	cv=none;
-	b=WaWRrrv3+uDX3IC/UiYH8ARwMH3rCXqtfId4cI3boTI7fK66nfl37/oUYpABrq8qaP+Xkx
-	6uy7e8CCDipPI3ZMpjC77ADEldjpRujjOc/cczbAln+cu9isYi9RD7taA1KMF0ATWxGpeM
-	nsKAYyI3vtqOfyvJTOqOKAaOMVIx4vg=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b45cb89f7eso74796485ad.0
-        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:51:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777420303; x=1778025103; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=in+mysCXNp4IJcp8wpKV/ePcsC7P4CQwStR4ajhF2Xo=;
-        b=nyKljRovUVWljkyVtbz4bWdF2aJQ4XQkmgl6raBe8uzFsWIHPWikFHYTAK4qQFe1yk
-         ZHTJMwSwrkrhUhZI3XiAcJlfLp+e426672PoROdCSmK6siceQs3I6VKp59gdku4RuUYY
-         3LrkU3vA+KOYMdjB+dCeJbtK7cv2Y0e3GJQB5VAj/AGCXl0p/PY4ig7HEkT9Q765/0ql
-         x2kv7bQLD6eO0+SYaMWAZBH/yww6T5jfZUfM14/7Eb02VgL5QrBvFrDMd6YpVxPHdtcC
-         0SHujvgF3nDngiWRVnlrjl+UDAcm+AmyfXB0XaWfv+gEF9qZcpuUStZdbhduCLrTJagw
-         XQwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777420303; x=1778025103;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=in+mysCXNp4IJcp8wpKV/ePcsC7P4CQwStR4ajhF2Xo=;
-        b=OXYhIFw0z/oG9taRH91OroXyWe48KknJvhGYqC3JW+NHHo1HEi/6Xk5KzGb2vHdh/R
-         N96HpnPBLR/C/WT0Wnd5X9Zvh9prcYAsepFdMARKtC6q29798FscyTkK6naiskPR6T68
-         cwyZl+W9AKSJ7M80lyWzpwsN8zAxHxDNHggpRkvyAoDAQwJ3VpKhlR6M4oGUTOl3xfAS
-         H1osb5MXwNRRh4m5WyKnPiVRFKRVDCzIWj4kZBmFb16kmsiEJtpZpvqvQIfq7hq1K/XW
-         +t5Dnx6nzbXMbvrbKG5KxU1G4cusUdeym1LHp0j9E6Pkfr88JHyj78+bPIzOOlJoR30f
-         eiCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/8ZbqRSnynOOwhIrp+8xfkfgw2TT6tTtp6vYRphDHmoMhjxOUgqN/oBWeny5IGnPR2a7WcmtjcoA==@kvack.org
-X-Gm-Message-State: AOJu0Yx7IYiHfqAShkaEH4iK7YnmsAwQT8LsEZEfYvU9eFuCUxTXt0D6
-	lGl3JDmSxAE2vXX2m0PA2l6OQWaJ/7hfyX2bTF8085UcUQNCxDWjaSFAiwnovVmxzQ==
-X-Gm-Gg: AeBDiet55zCXjSGgebfWKyNSdnErNESKtX/FN3gxJutzZao+dtlR4z5XshhQLVWTVFC
-	nnvKA7+TPM3zRE6dvh02qHI25Yyw4hcIfcwRk7XH/GdSKdBuNrpgFCj1Q59M3iJE2gmqISL53u4
-	CAJeSQwHHLPYCg5b2UAMzYbufdE7ZF5aVSPk/ra4SxcBNchPEllC02+iXTrjjmjy+3Ajlqw7S8u
-	NPGNyDSCDZC0qvde7P8s71WiqyZ+GO4Qg/1uxWu2a4QvDiuCnVjNdfruJpwgyMQjSTe2JAGv9vl
-	v6wEDRbUdTTnHlwlE2Loyjzb+nSXapKrNplAnGwklA/91wGzxcuOyuxpjmXnWG1LaVLVXbYkgfR
-	K7IWbCEUZm6jSQkKiq5j4EnHUCCaoDGuhmZBl7b4g85Csj5rx8LOiN5lUJrxhC9hl7rPbyX7U/Q
-	WkxUX3gWX1xq3gJ7BYoqq7np1VqyDo2Dn315S1RZGcqzayJ53hcvyrcZyUo6wHHzXXrb1B86s1J
-	7Cm+w==
-X-Received: by 2002:a17:903:a90:b0:2b2:65db:8c5f with SMTP id d9443c01a7336-2b97c4c8995mr46570035ad.27.1777420302688;
-        Tue, 28 Apr 2026 16:51:42 -0700 (PDT)
-Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b98859f629sm3480345ad.0.2026.04.28.16.51.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 16:51:41 -0700 (PDT)
-Date: Tue, 28 Apr 2026 23:51:37 +0000
-From: David Matlack <dmatlack@google.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: iommu@lists.linux.dev, kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Will Deacon <will@kernel.org>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v4 01/11] PCI: liveupdate: Set up FLB handler for the PCI
- core
-Message-ID: <afFICT9mSL1XG0v_@google.com>
-References: <20260423212316.3431746-1-dmatlack@google.com>
- <20260423212316.3431746-2-dmatlack@google.com>
- <20260428185242.GB3825533.vipinsh@google.com>
+	b=6bSxwEXn8DyEpggbucRznkEvq3jG+ow5DURYwIhL2rseVgExAbCFKUX7dAdMbODT47SZOT
+	hlivXbOPl2Jw5Cl9YGj9wZMU4J0dRouSXY2f0nJikk3tSTX3whi+q0EMzZPUTc1gP5q1Q6
+	ZA6PPLPEeCw9cg3H5uuPPJ4cePxzBHA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0C92D4446F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:54:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C34C2BCC7
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777420445;
+	bh=37JhNmJzLxzap3D9TGVaMRWJYU2uCyuE/O0k9zslYYg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ugdfpoNqOxbSflGH83HEj52AT2Fep+UNVIsD4PhSmXBQTbP3M/4uB6Go72MTQGv4h
+	 j70Qn+P4YNeYQG/6+5HL8LpruMB6KwXegfRwRIf4d85rcmEHkPSy0EQRaKxjIRVszM
+	 /r7Dkl+6AwjKsRvVUtb+hrTkzuGjH7hV8s9hOsiXt6Orrx17jyd9vA4f/WIqX4haCQ
+	 81eC41EaeLSKBvDi/lfU8Tm+/ktz8b5eEq0amXD1f00vSgY7gRMO8JIlx1iThxcgFG
+	 fUm8GM8l27nvmoYyFqxs9ZxN2qQvRj26t6IDlEFzFCYcmKCxRDosH3UWv8LR3pmtlo
+	 ner8WLqIuIOVA==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6764e36dc88so527427a12.1
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:54:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+8iDAS+MXD4ziLucB/en5NP4Bq2Pfq0cKC4W+Jo5IrljICiTYCE0CBRkDnUiPKOA2kSUvPGD+TVA==@kvack.org
+X-Gm-Message-State: AOJu0Yy0YTJTESmT6yM4NAT9Mx5/H8ZSVlnXLKWm5NXO7aoHLWKMYVSZ
+	4S6ftPR++aJCw2vIaZ1OxVMgOQqDX7AKpZfeRNlBW9r9CtwMwzNuje5gwSavwPkUVDPSUy7kKPp
+	/3HNSAgQ7tV264VxBK5FZ0rCP6EKoeZU=
+X-Received: by 2002:a17:906:d54f:b0:bac:6585:b02b with SMTP id
+ a640c23a62f3a-bb957dc60abmr42485366b.9.1777420443800; Tue, 28 Apr 2026
+ 16:54:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428185242.GB3825533.vipinsh@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6730C1C0004
+References: <20260320192735.748051-1-nphamcs@gmail.com> <aegUoOiUbjUAH5aT@google.com>
+ <CAMgjq7C53WRS5oYxO157mX7JxhfoPoi34k+taiKLrMah-b-iRg@mail.gmail.com>
+ <aektdlD4npMVThu3@google.com> <CAMgjq7DRrz4Hdy-s4y-C=3BmPt50LKOfdWjjf2mWmCybdRaJ4w@mail.gmail.com>
+ <CAO9r8zPvApgxKiVy5NhiWup_m57huF3MTuPvo=iq5kAxjRZC8Q@mail.gmail.com>
+ <CAMgjq7AGzBubCkmv7LubBjPLN1DzL472d4zUm+sGxo8ZptMgRw@mail.gmail.com>
+ <CAO9r8zO+tm2J0FRC64VKCYOSuKPXX8cQG7C07SwMWKoLiwoV+w@mail.gmail.com>
+ <CAMgjq7D1WXUHqAV1yuXvrUmEsE_m_+yx0mBq6teJhipx6mySbA@mail.gmail.com>
+ <CAO9r8zMk7xTi-Txmj1+Z9=250fD8HuMQFyT1iwjTW9coLXgqoA@mail.gmail.com>
+ <CAMgjq7A4+Sac9-CYkig1LFfEh5rq-4vLka8AXREei_m3svzJ7w@mail.gmail.com>
+ <CAO9r8zMv6oYvqXti8dFfQd79Nd_Yge5g-EjjjhsEWj44gwJ-qQ@mail.gmail.com> <CAMgjq7BZpU5K1xHyFiqpsjeFe6CZUouGY_gOGMwbkM2Duq-vGg@mail.gmail.com>
+In-Reply-To: <CAMgjq7BZpU5K1xHyFiqpsjeFe6CZUouGY_gOGMwbkM2Duq-vGg@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 28 Apr 2026 16:53:52 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPtPjzzrYh+SQXtuz4AMPU2p4UsUpJiH+zzfgtbJk_3Og@mail.gmail.com>
+X-Gm-Features: AVHnY4J58WjJG7OMVYnI-DgVQj_F4MJqBKFiql4nFlYgXLXGGwlZGWPk6tWBkMc
+Message-ID: <CAO9r8zPtPjzzrYh+SQXtuz4AMPU2p4UsUpJiH+zzfgtbJk_3Og@mail.gmail.com>
+Subject: Re: [PATCH v5 00/21] Virtual Swap Space
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	akpm@linux-foundation.org, Alistair Popple <apopple@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <bhe@redhat.com>, 
+	Byungchul Park <byungchul@sk.com>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@kernel.org>, 
+	Dev Jain <dev.jain@arm.com>, Gregory Price <gourry@gourry.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Lance Yang <lance.yang@linux.dev>, lenb@kernel.org, 
+	linux-doc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
+	Mariano Pache <npache@redhat.com>, Pavel Machek <pavel@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Pedro Falcato <pfalcato@suse.de>, 
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Suren Baghdasaryan <surenb@google.com>, tglx@kernel.org, 
+	Vlastimil Babka <vbabka@suse.cz>, Wei Xu <weixugc@google.com>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Yuanchu Xie <yuanchu@google.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Zi Yan <ziy@nvidia.com>, 
+	Meta kernel team <kernel-team@meta.com>, Rik van Riel <riel@surriel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: zizjdcfm5wfnuqamemtoz5kjjz4wnihn
-X-HE-Tag: 1777420304-81949
-X-HE-Meta: U2FsdGVkX19rbaqsMCzwxJxLIWedl2TA/NdeMsYXodUWETDO3r2dktJ4jRZSDS8khsEiMFZ+ABgQR7el/jAz2iKY7lNHu2NsUIpHNYZsB7VeWy7z5IdB7VAszb9U7A+uf8Q/IYeLBofiqlz74ZG0y21LaXkzueZCRi8mGtJ9kPHRCtP0DVAdMWPC68fWS8fzPILsgsT1hLs49Odr3tN4fhw1xpwAvMEydYwIO0MfnKwXWIls/a9Lg33IxyEwKLf4kHWKzOWm5eZSQm0sLLcC2Ww95pNahJ2uzHplKzqomisYD4hrAev6pxWT+p+UOddfw23YQFRCCto78f53Vuuoetf09z4sduVX4ZvK99UHMp6pWB+4TS5XrR1+b/tUU/FA1wT5vJnppdFg/xpJthg3QvnBvS8aHVymdNf9QIQe3B8fZZvbnGHKa6PdQutRAIz1YXB1wa9Ac8OspjmB9MEZzYzcBwErTf9OEa2bNbDrPBdWRHi4lBkL+vNP8TPJaTQkIBjMT9c2RwTq0BsFg/esQtIIDs+aU04wgXoUgFBZ8/iJIr4bzAeDNk/PdKKo893tNZw/SneofPlHhh9JcJ/NtRI+8bgeYr8DMRBaIex2tUESi3eUh5SiA4XLTTeNLUrBzwKlLJCUTV/boT26Z9Dobv53MNoo8dzjZ7Hz6JFUd5rwfpIkY5sJjJ1bgKJoFJhfXjX3NqcOL1B93hcqw7a35H0s/aecKfy1nkieLScha3+4me9ZUtmbIrd8W9gxHr8NGx0jQorLhr/EB6irZiP/ffGU0MdMO0tfEHd+ZzExD2Sls1EmWzSdUWGHI9o791aJ0F7Libx5QoqzeBLutQBrpxyrKiUimvsxrrRtg2oVm/r6UJH1nLuKgdcXjbk5eEU6fNWTKmzrX9eFZVdpVjEOC6+2rXTKzRSbgUBi2NJN3wB/hzKjEYZxC7/ec3M67d4DJgbd+SFInIlETe4IrTy
- OOU3VBfu
- urejCGiwSra8cTd/8DVzy1ZP4REFKVEoAEQzU3tSefDQkUJVxGWhJIBdsFPIqjQ8Doe1tOnPV/YwKHgmmkOHWeY8KUpCv5LPXFdsNgME3QuX7f7FKVPXDKjT57y7QL/UbhoVSZebzCU83ZLfBsKlsmluZLnm6CXSdKlrkG4r2rkr7kkP9gGivF1jfgv18KWEcGdkRQ2MZUuJM/sfS1QLkQJpAPX1VfcJ2YQouWI5kjBn1El9HcLT/7jAX0h7ZwyNqycXpmrwpi7KIglzIaZusGZ7l9cCFDY9zBxI5DMsVrU7uDttpGvY7o75r51Mf59CDdbaSHWTXRpPtCYnC51qoiieENq994l64Hu8KCTEKcl93JnY=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 342A8100006
+X-Stat-Signature: hs8dsohy5nw4tgkqgtwxogjr84jxy79f
+X-HE-Tag: 1777420447-631354
+X-HE-Meta: U2FsdGVkX18MWnw0wmSzHL8rVJ/3jWvLikO4ifx6PgHj+2jTn8UZ/NFzVKTu0tg4RTKUUA/P+gqFGPi0TrvJFi/nIDiYCOxs+wR6Ud6OI5DuDkwRp4OPW0EUNBxhbAd2fni7WdtWDsp3EMGSUWLuo9A8B7c2XNoalP/cvGZXQuXtRw4+N+YvthEql+WaqTsYeWO49cRNdQeIRoOc13Cu+pI8KCOcnnwgT5jWC2gT1np2DZZxyAFA/iPGuN88OPmA6hm1ShYJ6OHSNIYYAF8+HfLvOX+GBpPAaMi3Le4S0nMKoaNX6aIC/LH9Po4j68Dlu64xJuCzIq9gsLnDRpxXOL2Y/gApnvxlA5oR4u0JIo/0RNSssBhziP8cgeZgB3Gi59kN74sv5W66KUc+s1nOpgCowJxXx6dmUKL6PZDNrQwm7UB9HnX7b3v/3+VrDY6KO63LG7BII2waVrSPA2OYT/AjDfHkBQAOOGnQ1s4F8ibu0oarl2MCu00hJ/ZgN+Xz2mKVPKjd2ZmZchec+z7scBpDeIB+m8vtAAuumlWE4CeyVIeYuRz70jmP+oIGd46Kx6zHDhNOuBb58TsAGQHN90K2S5ODFUQEp9GUHgR3INM2ad3zU4tLXjezNVlyaOxlVl2BFD/aPxn+03AwA0dTfX5VpXkaR+3QHu0UT/YYouNs+IsBAeLmkCo83QbVGGOkvWPmMCYqyCIwAh7EUiwzfePpUkg9a5ISVSrAkuEkXG5UaX0GtBdOTriUGZxxgdMojM98d1EZav5uNhGK70px7GZERUEgZ4NbSbPMks4r8c8eSmSCjIv9g7Ljhr85BkGiBPFAl50k+TQml1pjmjtir0d8fIi3AgvCFjlA0ZxmvR5aJcmJRdG0ufGZ9DlEpBdJ2hKfT2pttZ8qQxycKJVvDa7u2611WiXxc6efpAcX7xiPCbDoczYCBk5WloaaUNB8E/WOuT6TCzkBVyIah6U
+ v4531Jf7
+ heIjLwpTdT4rva7FPB9WmfskYGX6AysWdbDkBDoozRxVJO3G/7AwfvB9rz33/zwdQpT7Zh2VTm+ZxT2ZMTolkfMDg7k4JAmI+6XEfXSo1SB0H0QkXz/lJ0W+Q1vC1xfoxL6Esip0bUnqfT+uBJPg3IDF8967W4EdoLNwVCOc11kyIClK3HiQDk1Bm7nx6geNAWi93nuuev+q2gQfAgrgQ1Bbf4tYtH5czyAAETKXlRk4g6sT6pbygBk24lu2eFdjOguLCbzpmnRDRuAwllIs5xZKsfcCCUOneVTkgYp1nQJX1J7hzEbK82EwZj/LgXL5cbMfezbp1TIRlwos5MeunwmrUDBB/JMh7AuCSIni6q9Gv8UEF+I3cRe1nGS6GUHI3N5fpAXkHIC4WdVEOwLWUgjrRiQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,71 +133,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-28 12:45 PM, Vipin Sharma wrote:
-> On Thu, Apr 23, 2026 at 09:23:05PM +0000, David Matlack wrote:
-> > +	pr_debug("Preserving struct pci_ser with room for %u devices\n",
-> > +		 max_nr_devices);
-> > +
-> > +	ser = kho_alloc_preserve(size);
-> > +	if (IS_ERR(ser))
-> > +		return PTR_ERR(ser);
-> 
-> Should there be a similar pr_debug() in case of failure to denote that above
-> "Preserving ..." message didn't finish, or, maybe just print one
-> pr_debug() after the error check above?
+On Tue, Apr 28, 2026 at 11:46=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+> On Tue, Apr 28, 2026 at 2:23=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Fri, Apr 24, 2026 at 12:52=E2=80=AFPM Kairui Song <ryncsn@gmail.com>=
+ wrote:
+> > >
+> > > On Sat, Apr 25, 2026 at 3:12=E2=80=AFAM Yosry Ahmed <yosry@kernel.org=
+> wrote
+> > > > Why >16 bytes? Do we need anything extra other than the reverse
+> > > > mapping? Also why do we need a double lookup?
+> > >
+> > > You will have to store at least the following info: memcg (2 bytes),
+> > > shadow (8 bytes), count (at least 1 bytes), and revert mapping (8
+> > > bytes, since you have to address a full virtual swap space). And some
+> > > type info is also needed. Part of them can be shrinked but still,
+> > > scientifically, merging two layers into one is considered a kind of
+> > > optimization.
+> > >
+> > > You need lookup the virtual layer, then the lower layer for many
+> > > decision making, is was discussed before to introduce more cache bit
+> > > or things like that and I think that is getting over complex, reminds
+> > > me of the slot cache or HAS_CACHE thing...:
+> > > https://lore.kernel.org/linux-mm/CAMgjq7DJrtE-jARik849kCufd0qNnZQs7C8=
+fcyzVOKE14-O+Dw@mail.gmail.com/
+> >
+> > I think that's where the disconnect is. You are considering these two
+> > separate layers, each with its own metadata. The metadata should only
+> > live in one place.
+> >
+> > If we only have swap tables in the virtual swap layer (with the
+> > metadata), backends do not have to carry the metadata. In this case,
+> > backends should only have a reverse mapping (if needed), and some
+> > internal data structure (e.g. bitmaps) to track usage.
+>
+> Ah, you are right. This is currently an intermediate state, that
+> problem might be gone if we unified everything.
+>
+> > This is difficult to achieve if the virtual swap layer is optional,
+> > because then the metadata can live in different places. This is why I
+>
+> But that's not difficult to achieve at all with an optional layer, and
+> actually will be achieved naturally without any design change with the
+> RFC I posted. Swap count / cgroup / shadow all stay in the top layer,
+> lower layer is "reverse map" only (the undone part though, it will
+> require to move the cluster cache from global to device level, which
+> is also required for YoungJun's tier or any functional tiering to
+> work, we may run into more and more detail issue like this).
 
-Hm... I guess there could always be more pr_debug()s but I don't want to
-instrument every error path. I could move it to the success path but I
-don't see how that makes it any better.
+But then you have to deal with the swap entries in the page tables
+potentially being virtual swap entries or physical swap slots, and
+IIUC in your design, those physica swap slots could end up actually
+having a redirection to another swap entry like virtual ones (e.g. if
+we start with one tier then add another tier at runtime). Right?
 
-> 
-> > +/**
-> > + * struct pci_dev_ser - Serialized state about a single PCI device.
-> > + *
-> > + * @domain: The device's PCI domain number (segment).
-> > + * @bdf: The device's PCI bus, device, and function number.
-> > + * @reserved: Reserved (to naturally align struct pci_dev_ser).
-> > + */
-> > +struct pci_dev_ser {
-> > +	u32 domain;
-> > +	u16 bdf;
-> > +	u16 reserved;
-> 
-> Should this be renamed to 'u8 __padding[2];' instead? This will allow to
-> just change the array length based on the need (0, 1, 2, 3).
-
-Sorry I'm not following what you mean here. What is the reason to rename
-this field and change it to an array?
-
-> > +} __packed;
-> > +
-> > +/**
-> > + * struct pci_ser - PCI Subsystem Live Update State
-> > + *
-> > + * This struct tracks state about all devices that are being preserved across
-> > + * a Live Update for the next kernel.
-> > + *
-> > + * @max_nr_devices: The length of the devices[] flexible array.
-> > + * @nr_devices: The number of devices that were preserved.
-> > + * @devices: Flexible array of pci_dev_ser structs for each device.
-> > + */
-> > +struct pci_ser {
-> > +	u32 max_nr_devices;
-> > +	u32 nr_devices;
-> > +	struct pci_dev_ser devices[];
-> > +} __packed;
-> > +
-> > +/* Ensure all elements of devices[] are naturally aligned. */
-> > +static_assert(offsetof(struct pci_ser, devices) % sizeof(unsigned long) == 0);
-> > +static_assert(sizeof(struct pci_dev_ser) % sizeof(unsigned long) == 0);
-> 
-> Nit: Maybe move this assert to be near to the definition of this struct,
-> easier to find it when editing the struct vs finding it later during
-> build.
-
-The combination of these 2 asserts is what guarantees that every element
-of the devices[] array are naturally aligned, that's why I put them
-together here.
-
-I can move it up though if you think it's better.
+>
+> Might even be easier that way, it's pretty close to the unified states I =
+think.
+>
 
