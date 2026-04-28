@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E704FFF886D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:43:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7157BFF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:43:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AA366B0095; Tue, 28 Apr 2026 16:43:20 -0400 (EDT)
+	id CAF506B0096; Tue, 28 Apr 2026 16:43:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 581936B0096; Tue, 28 Apr 2026 16:43:20 -0400 (EDT)
+	id C85DB6B0098; Tue, 28 Apr 2026 16:43:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 497E06B0098; Tue, 28 Apr 2026 16:43:20 -0400 (EDT)
+	id B9CDE6B0099; Tue, 28 Apr 2026 16:43:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 363906B0095
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:43:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D5D5A1C021B
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:19 +0000 (UTC)
-X-FDA: 84709139718.22.AE94AA5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AB4FB6B0096
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:43:26 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7704D1C06C0
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:26 +0000 (UTC)
+X-FDA: 84709140012.25.5666A24
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4805240010
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cAZE/WSS";
+	by imf07.hostedemail.com (Postfix) with ESMTP id E0EE340010
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZwvvUuOC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777408998; a=rsa-sha256;
-	cv=none;
-	b=8KbzNOVPmKTXGbtOsHs2KJNjrQ0rGwgzb1oHcqwg9H/5TiCNrpUhWZkJrWpJBGXhqAX3yL
-	f6N1tPnwuKdDR69r1jj9nClqc3ZP3sQ5t88/pklqrAf8/uzX+N/nAeAVpLPNePniySqKTw
-	xcD+oHgYgrb7pPuE39WC0ixfh8g8zEY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cAZE/WSS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777408998;
+	s=arc-20220608; t=1777409004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n3EqimJ/8x94574ZNlatJU6BZ1AXOW6kgaQfoTUACkg=;
-	b=hA8EApIQswxuNJuLlM+E62VWT/XV8M+44NMIlEgEWigcLkAruPJoEEjgPnAfiiSFdDpu9Q
-	bjnpwjcwYu+F517egKjSteVXS/BwWSkiYWonSdpfmv8OcLCz/Ehd9W/5VdGKe5ozvnLVYK
-	auyAftNozBp3vA/WwJKIIF5Lu7JbAbE=
+	bh=3HHTatSrX/E1NRUlbwJ9Tx1FoI84G0Q2QWeNK6Lnnic=;
+	b=0hFMAvp5WrLoZLyaSp0YpVx3P6X7AdC3mJIyrQFpDmj9TSHhE8wngSPXC7IKt9aemdi4Gn
+	fj66E+BkdW5hxuGPBPcZsBazyPqKTYfDfnOIZa0bXFfGVQ6UCwlL6IFFIJhcGB7DET+qci
+	bhOjVyo/nxiLGmtPsDmmNUYjecmAFgQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777409004; a=rsa-sha256;
+	cv=none;
+	b=aVlcaXiVxGjGH8hvBsjOFUMn9nY26+wL6jmMPcoInUFdUaA7aIl5mDZJ4z8H6IvrNrzjwq
+	DliHw+tyGic14vfP0Ew1LpUpIZ8Ou2gvPssrh51cQVVAvB04MeOMWkC7jFtUUaFBZIh2Lh
+	q8jyXE70hVdZpP2/+xZgwvJ+9NWtUus=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZwvvUuOC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C9BFF61335;
+	by tor.source.kernel.org (Postfix) with ESMTP id 61BFD61333;
+	Tue, 28 Apr 2026 20:43:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BCCC2BCAF;
 	Tue, 28 Apr 2026 20:43:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704AAC2BCAF;
-	Tue, 28 Apr 2026 20:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777408997;
-	bh=YVLuQpulE4IGKf3/7Seoz5g6EvCitjNNVoS1iFEVWZo=;
+	s=k20201202; t=1777409004;
+	bh=HP6NlM6bvsHL46OUqlPVamucjfq0ryG8JPKt7QsDS+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cAZE/WSSmQVOFRo/+tVPHTO4Sxp02oS/bYllLIpL3lw8OXLIQ0lrkt5dKHdUnkU2K
-	 CB5JaWg476OmEVmbtTJJypc7Zh4Zgk7N3cXU6tOpohf6UFC3voeUklGLT/UHIs4OS+
-	 XogWu2BK+VU2RnPNUMPRR7r+wBr7WM6HJIjGFaJKndndNqZJ2GJWoQdVUX4FAsbNg+
-	 qeQjiwJJSLqSjhx9+jWoW7DRC0s+prg3meLM4VELz/UUcnBWYulBwX8GQOmAJzMrFl
-	 oKpgMml6UiOmp5QC1W/wIIWZvh5QnAgv0e4TvuAcxmKagy8vYDR/SW4Hwt7whzzd0X
-	 8mzrcXpDGMMPQ==
+	b=ZwvvUuOCRb4mLONa62MF14/EHPDaEgwTSspNatxARqmMq9p7PjYJ4NgH0MV6SJiYq
+	 nJ2muU7549az2x13kF0bn39WJjyMhy5G8zKtabFWtSig1otK/YO4pgbWcWuXTcb2aI
+	 hNT1OjU+U71QwUqdO4Y2vfcmMjakL2zZoGWBT/QPqzcsDeT7/0aL/Ohlcqh6itR3ly
+	 LU33nqCupVcXYRzQGOdBQMdayd9YONVYEA6Wyo9eB5uC39TKD4/oCaqPDjIaBhbFKg
+	 Nr/AE0eOnFfq9U7eN9rWYZ5/Q0VxHQ4uVUgWUlZHb8T/m+L2qvWzZRmyk28qTcs2J3
+	 B9s9ySwwUgtFw==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -91,22 +91,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 04/54] selftests/mm: migration: properly cleanup fork()ed processes
-Date: Tue, 28 Apr 2026 23:41:50 +0300
-Message-ID: <20260428204240.1924129-5-rppt@kernel.org>
+Subject: [PATCH v3 05/54] selftests/mm: run_vmtests.sh: don't gate THP and KSM tests on HAVE_HUGEPAGES
+Date: Tue, 28 Apr 2026 23:41:51 +0300
+Message-ID: <20260428204240.1924129-6-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260428204240.1924129-1-rppt@kernel.org>
 References: <20260428204240.1924129-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5e9z95op6bfr7aoor3bfqxyiwntdnzoi
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E0EE340010
+X-Stat-Signature: y7fugfb35gbgp5r3wtdkemkjtkxy9qys
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4805240010
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777408998-122289
-X-HE-Meta: U2FsdGVkX1970nlzWaSgKL0Uk+t3HyMyovIUIqTkxbAC2cgb/GGif4f7lOlG3SMbRT9noDyxLhZKAvm7x1EiNQf/DMXYHKzrtFCOpx6+1eBp0qKItXBAQOjlfnh+xjxgd01GTzFhjqwxwU1cDQb7dVUP+CVKmoVZNI6FUwH+ZlXjS3/l25kD8gDi0npSrrIouTS3GjbWaXe7IUIUPFdCsEj2OpQkDfQy2b8qluTERLQdlUAsk0XM7pJJ9nDLD99ymzEPlqDppyeQjcsqkIYhmDxg1JVnY2gUDXT/rPLE+8XFUtJQ3nONdZ0WMKpxScKojudCFie6mjpjVFjysCpJWDvHGs1cQUPa/X4ML6VgOuNd2LYzow54Tx1QKquXC7/eUDvgo6/Gn/midjcjunQxGkAipjty9Siwz3MTxzBdNH5P/EBxiBCpbZhMBKWTm4sjN7GCYI0A5dcVgtvricSjRWu2hBihDm8jsv5r0JevkBvCOJLWWSlnfa5tKEa70pokfd1UapHDJaDJsYiX1hMMO2pxbpkpo1ea4ttZUkMoG2XWbO91COqBv7Cr2CY4gV7/5DckpC3ASO1ZgX0SZc5LfONajk131lq0cv0vCbcHr9tXKXDPN6+NxSjO5wLcKO63TnLXsJO6qWB8cOwRMcTDrVARi6+G6K8QtRlo9T8YTrVnIW75jx/B9m8ItdNubUNtOmdTnazwn2/K9LRyxjZes1T5GYexw4is93DJaAjuz54t+MZc8UvtOtThBIEsMCk1HPs6jXRi3wjLz1Y5NmHX5h5tn2Hoi+rTDQHS1il2qG9U064cjk88ClNbYZXOG4RLjPQxoU772nK/8VQR3ivYrKacgQMoAtVoedcoCyT+6BPVtIc1tzydR7zbMjz/BaJjxFAaIHFaoBLbxUeUDXykYIOFm/LCvg08XFIuIc0SwNG0f98iFAc+aX9XVch3SEmLvG1oQVX4F8re2/HHV/+
- r5kofZ28
- FcJ+Pu5XYy/N8KbWQKxpgbgriGPnBkgQ2lwf2XiPEx4A+6yU9DYXONPbizgIz15Eg2LR5TzhJ3MoamJlqXS1pAHAXIIZ1rhYk2FFaDFFzs6dEJCn3pgo59VsEj3K+3QQwxkV2q4wQgo3+h76swWIsg4GrGs5xaEK4moDOu6PSClmNnl8g0dO9LuSBMj5T3RfVKUlRTGuGsI3UHaTJ58KiFn992wtNZUaWyuCFbBqTaPNers+1KCy2fWs6vb9O36bTCg84
+X-HE-Tag: 1777409004-422346
+X-HE-Meta: U2FsdGVkX1/FQg+9YentCO8GeWKBZ/Ks+SLyT2iizYjx/IW/diYqSKQQp6wylm/HOpGZmX2UXhupIFoGKqO3HsNgYcZySShtqUScyRg1ifSZL4dLtuJ4RJCMCC9JIiFFzLMx0cH5+2iNMneTOuqOqwOTprATXPo8EssP5TY8w2m9CU8WT9QuhB+Axj2Pf17jYSjzx9LDyoc3gtNH+CFJUNRVSuQypSrJwElW+2SXbeu0bsjBaBAc2gW/7n0OabJcJeXJCA0rZk8gU1AkE4w4NfwUxXbO0URcl762nnOUwAohq/t+mQB8gX2Hd+iOcPH8X+NlwiXe3fC96MncxxP2XRG+Ew6iDRgYE0OOlVuWgBX3nYgu9cFNZvbvUi+rU74BhbaVs+JJA7s55iWgNJA4ABM436BHahS5u4CdjkzVsGRPM1T437BV14AuSSInVSDX9hrR+Jj66d0RcItarn/igqn2DzMzv7H5LWsqejc6yKHdaSlj2gsnYt2cRgVvWMkgiX5ga7XrmyMaoPxiYbHNmQ5P/TyKbh4nBozJ9wBwdCIs9ifCymB28mgA5BvomclYTPypWiXEBQBw6WUtyEQOIX5UNoOtm+aAQLmL2u2Dbbwp3jjhPJHYDSsVVnE499BULUKSOW4eMwyQx/VpQenJGHVZaLbgmaSkNJHdPtErKcLnrfYSUMClwUaoCO9PpbNyZsN8acGCGnNzf6MmELBwbkjvyysu8oL2ILxf0yg8wR+Iy2ZIW5NfXLKNDgjTF7M76wpvk3AnW7P4rnT5Nt2AFpR+b+9jlcYdsJUMIHP9WjwWoI7X2ldXtfmmc4HG4IFHpHwmoMS28WjokR8Wyhac2tJ0PR5RWFQo4vVK9TifLjRTUrDd1BazprwDDpd4vwTaAATpmfkjO+XcyIJdH02gMCDiW/0U5yR75d/+Z8rmXs6uSdB7mB9rXdSNJrmMIoI+gxl3XuCCLo6IQBpe9TW
+ qJ9hk0DY
+ 4FbtK/yulXktN00tCzaMONPxXBvdS5m7VzFVSCi1qQ4Q2mPs0NMfzFW9SKNSEcWKrZUrDyGTYl5yTCKKdYreQrXQmeFt8J+afvBtVeqzx3fOx9BKOkVnDjSEb+aV0bTyR+OgCH8mJxKKcN3pJrvEOr+DtH+X5kanOsJrNxdriRJCKllQzb5Ygh46QKOrZURf1Jl/M1t6+9sFfa1P1xP1Uam2QiYONlZJxBatZM29CTwUVSIhGO5L9LLYbfM99MxlM7NEW2G4YyabNvSyBkuXJLpWedQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,127 +116,57 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Several migration test use fork() to create worker processes. These
-processes are later killed, but nothing collects their exit status and they
-remain as zombies in the system.
+HAVE_HUGEPAGES indicates availability of free HugeTLB pages. It should not
+be used to gate KSM test that merges transparent huge pages or
+split_huge_page_test.
 
-Add a helper function that kills the worker processes, waitpid()s for
-them and verifies the exit status.
+Remove check for HAVE_HUGEPAGES when running these tests.
 
-Replace the loops that call kill() for each process with a call to that
-helper.
-
-The addition of waitpid() calls also makes sure the migrating process never
-exits before the processes accessing the memory, so it's possible to drop
-the call to prctl(PR_SET_PDEATHSIG, SIGHUP).
-
-Reported-by: Luiz Capitulino <luizcap@redhat.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/migration.c | 54 +++++++++++++-------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ tools/testing/selftests/mm/run_vmtests.sh | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-index 3630f2fb0800..76e380b74658 100644
---- a/tools/testing/selftests/mm/migration.c
-+++ b/tools/testing/selftests/mm/migration.c
-@@ -67,6 +67,24 @@ FIXTURE_TEARDOWN(migration)
- 	free(self->pids);
- }
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index d8468451b3a3..e2dc9ac87bfc 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -436,9 +436,7 @@ CATEGORY="memfd_secret" run_test ./memfd_secret
+ fi
  
-+static bool kill_children(FIXTURE_DATA(migration) * self)
-+{
-+	int i, status;
-+	pid_t pid;
-+
-+	for (i = 0; i < self->nthreads; i++) {
-+		pid = self->pids[i];
-+		if (kill(pid, SIGTERM))
-+			return false;
-+		if (pid != waitpid(pid, &status, 0))
-+			return false;
-+		if (!WIFSIGNALED(status) || WTERMSIG(status) != SIGTERM)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- int migrate(uint64_t *ptr, int n1, int n2)
- {
- 	int ret, tmp;
-@@ -160,20 +178,14 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
- 	memset(ptr, 0xde, TWOMEG);
- 	for (i = 0; i < self->nthreads; i++) {
- 		pid = fork();
--		if (!pid) {
--			prctl(PR_SET_PDEATHSIG, SIGHUP);
--			/* Parent may have died before prctl so check now. */
--			if (getppid() == 1)
--				kill(getpid(), SIGHUP);
-+		if (!pid)
- 			access_mem(ptr);
--		} else {
-+		else
- 			self->pids[i] = pid;
--		}
- 	}
+ # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
+-if [ "${HAVE_HUGEPAGES}" = "1" ]; then
+-	CATEGORY="ksm" run_test ./ksm_tests -H -s 100
+-fi
++CATEGORY="ksm" run_test ./ksm_tests -H -s 100
+ # KSM KSM_MERGE_TIME test with size of 100
+ CATEGORY="ksm" run_test ./ksm_tests -P -s 100
+ # KSM MADV_MERGEABLE test with 10 identical pages
+@@ -493,16 +491,14 @@ CATEGORY="thp" run_test ./transhuge-stress -d 20
  
- 	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
--	for (i = 0; i < self->nthreads; i++)
--		ASSERT_EQ(kill(self->pids[i], SIGTERM), 0);
-+	ASSERT_EQ(kill_children(self), true);
- }
- 
- /*
-@@ -236,20 +248,14 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
- 	memset(ptr, 0xde, pmdsize);
- 	for (i = 0; i < self->nthreads; i++) {
- 		pid = fork();
--		if (!pid) {
--			prctl(PR_SET_PDEATHSIG, SIGHUP);
--			/* Parent may have died before prctl so check now. */
--			if (getppid() == 1)
--				kill(getpid(), SIGHUP);
-+		if (!pid)
- 			access_mem(ptr);
--		} else {
-+		else
- 			self->pids[i] = pid;
--		}
- 	}
- 
- 	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
--	for (i = 0; i < self->nthreads; i++)
--		ASSERT_EQ(kill(self->pids[i], SIGTERM), 0);
-+	ASSERT_EQ(kill_children(self), true);
- }
- 
- /*
-@@ -300,20 +306,14 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
- 	memset(ptr, 0xde, hugepage_size);
- 	for (i = 0; i < self->nthreads; i++) {
- 		pid = fork();
--		if (!pid) {
--			prctl(PR_SET_PDEATHSIG, SIGHUP);
--			/* Parent may have died before prctl so check now. */
--			if (getppid() == 1)
--				kill(getpid(), SIGHUP);
-+		if (!pid)
- 			access_mem(ptr);
--		} else {
-+		else
- 			self->pids[i] = pid;
--		}
- 	}
- 
- 	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
--	for (i = 0; i < self->nthreads; i++)
--		ASSERT_EQ(kill(self->pids[i], SIGTERM), 0);
-+	ASSERT_EQ(kill_children(self), true);
- }
- 
- TEST_HARNESS_MAIN
+ # Try to create XFS if not provided
+ if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
+-    if [ "${HAVE_HUGEPAGES}" = "1" ]; then
+-	if test_selected "thp"; then
+-	    if grep xfs /proc/filesystems &>/dev/null; then
+-		XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
+-		SPLIT_HUGE_PAGE_TEST_XFS_PATH=$(mktemp -d /tmp/xfs_dir_XXXXXX)
+-		truncate -s 314572800 ${XFS_IMG}
+-		mkfs.xfs -q ${XFS_IMG}
+-		mount -o loop ${XFS_IMG} ${SPLIT_HUGE_PAGE_TEST_XFS_PATH}
+-		MOUNTED_XFS=1
+-	    fi
++    if test_selected "thp"; then
++	if grep xfs /proc/filesystems &>/dev/null; then
++	    XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
++	    SPLIT_HUGE_PAGE_TEST_XFS_PATH=$(mktemp -d /tmp/xfs_dir_XXXXXX)
++	    truncate -s 314572800 ${XFS_IMG}
++	    mkfs.xfs -q ${XFS_IMG}
++	    mount -o loop ${XFS_IMG} ${SPLIT_HUGE_PAGE_TEST_XFS_PATH}
++	    MOUNTED_XFS=1
+ 	fi
+     fi
+ fi
 -- 
 2.53.0
 
