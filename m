@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 380B7FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:43:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E704FFF886D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:43:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3D0D6B0093; Tue, 28 Apr 2026 16:43:13 -0400 (EDT)
+	id 5AA366B0095; Tue, 28 Apr 2026 16:43:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A15496B0095; Tue, 28 Apr 2026 16:43:13 -0400 (EDT)
+	id 581936B0096; Tue, 28 Apr 2026 16:43:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92AE86B0096; Tue, 28 Apr 2026 16:43:13 -0400 (EDT)
+	id 497E06B0098; Tue, 28 Apr 2026 16:43:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8025C6B0093
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:43:13 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49368A0387
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:13 +0000 (UTC)
-X-FDA: 84709139466.08.FDE509A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 363906B0095
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:43:20 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D5D5A1C021B
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:19 +0000 (UTC)
+X-FDA: 84709139718.22.AE94AA5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B1E611C0010
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H+ZSn5Fk;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4805240010
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:43:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cAZE/WSS";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777408998; a=rsa-sha256;
+	cv=none;
+	b=8KbzNOVPmKTXGbtOsHs2KJNjrQ0rGwgzb1oHcqwg9H/5TiCNrpUhWZkJrWpJBGXhqAX3yL
+	f6N1tPnwuKdDR69r1jj9nClqc3ZP3sQ5t88/pklqrAf8/uzX+N/nAeAVpLPNePniySqKTw
+	xcD+oHgYgrb7pPuE39WC0ixfh8g8zEY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cAZE/WSS";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777408991;
+	s=arc-20220608; t=1777408998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kpu8Vlu4fDp0bTBKsIKkDn68woq4osNXuVf/SpEs4c8=;
-	b=30kbbqSJz30BBDkhJZZKjHhC7WSRnvSJyEVrKJtywEa4w4dq+CliyGsD8cxYoCNMBX+LSI
-	KjphCxZEwMvZHfI9rVcU/yZZRXDM3CRMVKtOgCtv3luHPGQsjjpLZ9bEe4aa4FcZRo8Bzf
-	OM0kD8OToIQE2WjTE0gv+biaTb6xWrE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H+ZSn5Fk;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777408991; a=rsa-sha256;
-	cv=none;
-	b=ndvmqHKPFOC5nawhhb+jN4oun6QZTmg0bXLNfsGbe8Z8OXpI1YGy70v5w9Z5n8IWSEWsxC
-	yc+fUMbB3MF4r2yEYEzj3LnsmTnq6oZrWoBOPtLcFQEUIHb+jacARHvXtmmM4NVJoAeEOx
-	s0dI1avxN7Q34Hvjf1X0uO96d+sNK2k=
+	bh=n3EqimJ/8x94574ZNlatJU6BZ1AXOW6kgaQfoTUACkg=;
+	b=hA8EApIQswxuNJuLlM+E62VWT/XV8M+44NMIlEgEWigcLkAruPJoEEjgPnAfiiSFdDpu9Q
+	bjnpwjcwYu+F517egKjSteVXS/BwWSkiYWonSdpfmv8OcLCz/Ehd9W/5VdGKe5ozvnLVYK
+	auyAftNozBp3vA/WwJKIIF5Lu7JbAbE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D23661145;
+	by tor.source.kernel.org (Postfix) with ESMTP id C9BFF61335;
+	Tue, 28 Apr 2026 20:43:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704AAC2BCAF;
 	Tue, 28 Apr 2026 20:43:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82F0C2BCAF;
-	Tue, 28 Apr 2026 20:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777408990;
-	bh=TjQ0p1EGbgPObHJ7eufAXRVft/JMHNsgzynJsyAX4Ro=;
+	s=k20201202; t=1777408997;
+	bh=YVLuQpulE4IGKf3/7Seoz5g6EvCitjNNVoS1iFEVWZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+ZSn5FkeimOUjEC4shA19METCOWCCCNxrqgbHDLaq0t9XqFo0tP262UcFd0MpiW/
-	 OOtplgxA8Bdd+HR+RPORL63i5P3FDdaSETgZvK9XilFcTfMRclX96S4l7d8cacLaGY
-	 TA5BQiLwSdqc10NEYKALV245BMw1CwarhoM992en3RBph0krphz2q0bjDdyHIAZQk7
-	 okMnvrClQMv+X+pjQ5i/SqyqpMrNO+pC3YSmfM1LyfvUMNYr2iYEkFIawQx2wD/HMa
-	 SNMHLtdo2w4hc+kEI+xEBEUaku6xaWZ+fpdGzMuj0LvecAMANcl07Rx3zrrd94WBqE
-	 MmNOcyenwZo5w==
+	b=cAZE/WSSmQVOFRo/+tVPHTO4Sxp02oS/bYllLIpL3lw8OXLIQ0lrkt5dKHdUnkU2K
+	 CB5JaWg476OmEVmbtTJJypc7Zh4Zgk7N3cXU6tOpohf6UFC3voeUklGLT/UHIs4OS+
+	 XogWu2BK+VU2RnPNUMPRR7r+wBr7WM6HJIjGFaJKndndNqZJ2GJWoQdVUX4FAsbNg+
+	 qeQjiwJJSLqSjhx9+jWoW7DRC0s+prg3meLM4VELz/UUcnBWYulBwX8GQOmAJzMrFl
+	 oKpgMml6UiOmp5QC1W/wIIWZvh5QnAgv0e4TvuAcxmKagy8vYDR/SW4Hwt7whzzd0X
+	 8mzrcXpDGMMPQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -91,22 +91,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 03/54] selftests/mm: migration: make nthreads represent number of working threads
-Date: Tue, 28 Apr 2026 23:41:49 +0300
-Message-ID: <20260428204240.1924129-4-rppt@kernel.org>
+Subject: [PATCH v3 04/54] selftests/mm: migration: properly cleanup fork()ed processes
+Date: Tue, 28 Apr 2026 23:41:50 +0300
+Message-ID: <20260428204240.1924129-5-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260428204240.1924129-1-rppt@kernel.org>
 References: <20260428204240.1924129-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B1E611C0010
+X-Stat-Signature: 5e9z95op6bfr7aoor3bfqxyiwntdnzoi
 X-Rspam-User: 
-X-Stat-Signature: fyowokckc1crsbut4diqhpy1szfm9ch5
-X-HE-Tag: 1777408991-116025
-X-HE-Meta: U2FsdGVkX1+nKs7nj6AcHK/0nlnFVALU8xSMBdAi1tRSpHiQ5sX1gKJ6i+03XoeEPmCL0eCsTrCKh4EpE5591Ox5tCY/gH9yWzfdoNebE/jMMOwmvxcJeIqxqfHw1Vv2YQQhH7a1i9rwLq48iUTWbXSzXwvJ94XdSVz0NMtXMMWCqcL/5nP2KGpUZ+iozEXJTTTYole60/C9N++3mEqwt3BAuBkCABzL6jROsaZtWoqq87I79Grximwo6tIyrCnIzj1Z0hWiZ5juRDV9HdNoabKQRAM7OTcgDknVyI9vet4ZWwcTTnWAQZ2TeGW+NQWjmUHJ+x60JKHgdEgy99Lm9I3NRTLp2Xy/SgmO0rHoQUjkA5AO5iXvRLg0OeXdOnwXRYe7r5vSCBEVZchM6ScM+Tr+ny9IexaMibJvHUp2BXftXetK4zHQWbclWh3XqbTX4xU+LOaX1X423fJq7YLBRDS86pyNEJSQuM+C/vdQ22KnZYD/8QVj1isARnngpIeb+DCzBewz9ry45Qqd4By+71RZm6BKveVr7Be4RUCQZk2X83hQE+6x2GL01S3SYmAm8seDKeZ46xrgk0Eo6wE67/T2CxnfWJYLVTd8TbajinJlG7O9JRBpTFzOmP3SNwQw4bj5yA0uqWGtZRMxrg4dvaSAEVpvevICjo4vSYLFOO3SHohPux4ywRGDpsWM94eTlJoydcOU5lEcUrz3VgdQtWWR67baskc8S9dP7IhbVpGySLNlXpk/cAJ7y98P+rCDIIukEW1YicM/OR3ZP5I/j5Uxedtai9GZBQDt+5+1crFXXEPKWgnINvEFFaa+E4Ls5K3qJs72pN6jGeP2ZgeMFoa9UYRRPV2aOn1RD0R36b8lMOk2IK+VXe5lujgaRJw1yal8C+qqWCY0mP3j/DGN/V0q0AAjxVEw0xwbUpjRxKtrsbLilJGmEMyeDA1OYlfm9HPTK0QjS3+gf45WTUA
- ZLRodjMM
- ChiA79aJjSQrXwF1n6CeveYr8iM7Pqj8FYlFd1YCiJp5mNoWhUZyub8L6L+WrcyFT8MYhDvYLQfWPpiXM/JpFXnL++R8vcf7Dr4b4c3JOcsD6jxjW41qMgkAiXvo1nmP1TiKRcVhT93IWEEgIgLPQPjS3amLs+i1ngtjnlOHdJSeGbiDrSnjzf5wlzy+YTVhP3582+8ZLpAXxo2/egnT4argfVfEinF1QdnW0EHbHUP37NVQ=
+X-Rspamd-Queue-Id: 4805240010
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777408998-122289
+X-HE-Meta: U2FsdGVkX1970nlzWaSgKL0Uk+t3HyMyovIUIqTkxbAC2cgb/GGif4f7lOlG3SMbRT9noDyxLhZKAvm7x1EiNQf/DMXYHKzrtFCOpx6+1eBp0qKItXBAQOjlfnh+xjxgd01GTzFhjqwxwU1cDQb7dVUP+CVKmoVZNI6FUwH+ZlXjS3/l25kD8gDi0npSrrIouTS3GjbWaXe7IUIUPFdCsEj2OpQkDfQy2b8qluTERLQdlUAsk0XM7pJJ9nDLD99ymzEPlqDppyeQjcsqkIYhmDxg1JVnY2gUDXT/rPLE+8XFUtJQ3nONdZ0WMKpxScKojudCFie6mjpjVFjysCpJWDvHGs1cQUPa/X4ML6VgOuNd2LYzow54Tx1QKquXC7/eUDvgo6/Gn/midjcjunQxGkAipjty9Siwz3MTxzBdNH5P/EBxiBCpbZhMBKWTm4sjN7GCYI0A5dcVgtvricSjRWu2hBihDm8jsv5r0JevkBvCOJLWWSlnfa5tKEa70pokfd1UapHDJaDJsYiX1hMMO2pxbpkpo1ea4ttZUkMoG2XWbO91COqBv7Cr2CY4gV7/5DckpC3ASO1ZgX0SZc5LfONajk131lq0cv0vCbcHr9tXKXDPN6+NxSjO5wLcKO63TnLXsJO6qWB8cOwRMcTDrVARi6+G6K8QtRlo9T8YTrVnIW75jx/B9m8ItdNubUNtOmdTnazwn2/K9LRyxjZes1T5GYexw4is93DJaAjuz54t+MZc8UvtOtThBIEsMCk1HPs6jXRi3wjLz1Y5NmHX5h5tn2Hoi+rTDQHS1il2qG9U064cjk88ClNbYZXOG4RLjPQxoU772nK/8VQR3ivYrKacgQMoAtVoedcoCyT+6BPVtIc1tzydR7zbMjz/BaJjxFAaIHFaoBLbxUeUDXykYIOFm/LCvg08XFIuIc0SwNG0f98iFAc+aX9XVch3SEmLvG1oQVX4F8re2/HHV/+
+ r5kofZ28
+ FcJ+Pu5XYy/N8KbWQKxpgbgriGPnBkgQ2lwf2XiPEx4A+6yU9DYXONPbizgIz15Eg2LR5TzhJ3MoamJlqXS1pAHAXIIZ1rhYk2FFaDFFzs6dEJCn3pgo59VsEj3K+3QQwxkV2q4wQgo3+h76swWIsg4GrGs5xaEK4moDOu6PSClmNnl8g0dO9LuSBMj5T3RfVKUlRTGuGsI3UHaTJ58KiFn992wtNZUaWyuCFbBqTaPNers+1KCy2fWs6vb9O36bTCg84
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,199 +116,127 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Fixture setup sets self->nthreads to number of available CPUs minus 1
-and then each test creates 'self->nthreads - 1' threads or processes, so
-essentially nthreads counts the worker tasks and the main task.
+Several migration test use fork() to create worker processes. These
+processes are later killed, but nothing collects their exit status and they
+remain as zombies in the system.
 
-Make nthreads represent the number of spawned tasks to simplify
-thread/process creation and teardown.
+Add a helper function that kills the worker processes, waitpid()s for
+them and verifies the exit status.
 
-While on it, make the fixture setup skip the tests if there are not
-enough CPUs or NUMA nodes instead of checking this in each test.
+Replace the loops that call kill() for each process with a call to that
+helper.
 
+The addition of waitpid() calls also makes sure the migrating process never
+exits before the processes accessing the memory, so it's possible to drop
+the call to prctl(PR_SET_PDEATHSIG, SIGHUP).
+
+Reported-by: Luiz Capitulino <luizcap@redhat.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/migration.c | 47 +++++++++-----------------
- 1 file changed, 16 insertions(+), 31 deletions(-)
+ tools/testing/selftests/mm/migration.c | 54 +++++++++++++-------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
 diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-index 7e547d945e1a..3630f2fb0800 100644
+index 3630f2fb0800..76e380b74658 100644
 --- a/tools/testing/selftests/mm/migration.c
 +++ b/tools/testing/selftests/mm/migration.c
-@@ -38,7 +38,7 @@ FIXTURE_SETUP(migration)
+@@ -67,6 +67,24 @@ FIXTURE_TEARDOWN(migration)
+ 	free(self->pids);
+ }
  
- 	if (numa_available() < 0)
- 		SKIP(return, "NUMA not available");
--	self->nthreads = numa_num_task_cpus() - 1;
-+	self->nthreads = numa_num_task_cpus() - 2;
- 	self->n1 = -1;
- 	self->n2 = -1;
- 
-@@ -52,6 +52,9 @@ FIXTURE_SETUP(migration)
- 			}
- 		}
- 
-+	if (self->nthreads < 1 || self->n1 < 0 || self->n2 < 0)
-+		SKIP(return, "Not enough threads or NUMA nodes available");
++static bool kill_children(FIXTURE_DATA(migration) * self)
++{
++	int i, status;
++	pid_t pid;
 +
- 	self->threads = malloc(self->nthreads * sizeof(*self->threads));
- 	ASSERT_NE(self->threads, NULL);
- 	self->pids = malloc(self->nthreads * sizeof(*self->pids));
-@@ -127,20 +130,17 @@ TEST_F_TIMEOUT(migration, private_anon, 2*RUNTIME)
- 	uint64_t *ptr;
- 	int i;
- 
--	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
--		SKIP(return, "Not enough threads or NUMA nodes available");
--
- 	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
- 		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
++	for (i = 0; i < self->nthreads; i++) {
++		pid = self->pids[i];
++		if (kill(pid, SIGTERM))
++			return false;
++		if (pid != waitpid(pid, &status, 0))
++			return false;
++		if (!WIFSIGNALED(status) || WTERMSIG(status) != SIGTERM)
++			return false;
++	}
++
++	return true;
++}
++
+ int migrate(uint64_t *ptr, int n1, int n2)
+ {
+ 	int ret, tmp;
+@@ -160,20 +178,14 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
  	memset(ptr, 0xde, TWOMEG);
--	for (i = 0; i < self->nthreads - 1; i++)
-+	for (i = 0; i < self->nthreads; i++)
- 		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
- 			perror("Couldn't create thread");
- 
- 	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
--	for (i = 0; i < self->nthreads - 1; i++)
-+	for (i = 0; i < self->nthreads; i++)
- 		ASSERT_EQ(pthread_cancel(self->threads[i]), 0);
- }
- 
-@@ -153,15 +153,12 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
- 	uint64_t *ptr;
- 	int i;
- 
--	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
--		SKIP(return, "Not enough threads or NUMA nodes available");
--
- 	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
- 		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
- 	memset(ptr, 0xde, TWOMEG);
--	for (i = 0; i < self->nthreads - 1; i++) {
-+	for (i = 0; i < self->nthreads; i++) {
+ 	for (i = 0; i < self->nthreads; i++) {
  		pid = fork();
- 		if (!pid) {
- 			prctl(PR_SET_PDEATHSIG, SIGHUP);
-@@ -175,7 +172,7 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
+-		if (!pid) {
+-			prctl(PR_SET_PDEATHSIG, SIGHUP);
+-			/* Parent may have died before prctl so check now. */
+-			if (getppid() == 1)
+-				kill(getpid(), SIGHUP);
++		if (!pid)
+ 			access_mem(ptr);
+-		} else {
++		else
+ 			self->pids[i] = pid;
+-		}
  	}
  
  	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
--	for (i = 0; i < self->nthreads - 1; i++)
-+	for (i = 0; i < self->nthreads; i++)
- 		ASSERT_EQ(kill(self->pids[i], SIGTERM), 0);
+-	for (i = 0; i < self->nthreads; i++)
+-		ASSERT_EQ(kill(self->pids[i], SIGTERM), 0);
++	ASSERT_EQ(kill_children(self), true);
  }
  
-@@ -195,9 +192,6 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
- 	if (!pmdsize)
- 		SKIP(return, "Reading PMD pagesize failed");
- 
--	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
--		SKIP(return, "Not enough threads or NUMA nodes available");
--
- 	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
- 		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
- 	ASSERT_NE(ptr, MAP_FAILED);
-@@ -205,12 +199,12 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
- 	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
- 	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+ /*
+@@ -236,20 +248,14 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
  	memset(ptr, 0xde, pmdsize);
--	for (i = 0; i < self->nthreads - 1; i++)
-+	for (i = 0; i < self->nthreads; i++)
- 		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
- 			perror("Couldn't create thread");
- 
- 	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
--	for (i = 0; i < self->nthreads - 1; i++)
-+	for (i = 0; i < self->nthreads; i++)
- 		ASSERT_EQ(pthread_cancel(self->threads[i]), 0);
- }
- 
-@@ -232,9 +226,6 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
- 	if (!pmdsize)
- 		SKIP(return, "Reading PMD pagesize failed");
- 
--	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
--		SKIP(return, "Not enough threads or NUMA nodes available");
--
- 	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
- 		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
- 	ASSERT_NE(ptr, MAP_FAILED);
-@@ -243,7 +234,7 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
- 	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
- 
- 	memset(ptr, 0xde, pmdsize);
--	for (i = 0; i < self->nthreads - 1; i++) {
-+	for (i = 0; i < self->nthreads; i++) {
+ 	for (i = 0; i < self->nthreads; i++) {
  		pid = fork();
- 		if (!pid) {
- 			prctl(PR_SET_PDEATHSIG, SIGHUP);
-@@ -257,7 +248,7 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+-		if (!pid) {
+-			prctl(PR_SET_PDEATHSIG, SIGHUP);
+-			/* Parent may have died before prctl so check now. */
+-			if (getppid() == 1)
+-				kill(getpid(), SIGHUP);
++		if (!pid)
+ 			access_mem(ptr);
+-		} else {
++		else
+ 			self->pids[i] = pid;
+-		}
  	}
  
  	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
--	for (i = 0; i < self->nthreads - 1; i++)
-+	for (i = 0; i < self->nthreads; i++)
- 		ASSERT_EQ(kill(self->pids[i], SIGTERM), 0);
+-	for (i = 0; i < self->nthreads; i++)
+-		ASSERT_EQ(kill(self->pids[i], SIGTERM), 0);
++	ASSERT_EQ(kill_children(self), true);
  }
  
-@@ -270,9 +261,6 @@ TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
- 	uint64_t *ptr;
- 	int i;
- 
--	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
--		SKIP(return, "Not enough threads or NUMA nodes available");
--
- 	hugepage_size = default_huge_page_size();
- 	if (!hugepage_size)
- 		SKIP(return, "Reading HugeTLB pagesize failed\n");
-@@ -282,12 +270,12 @@ TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
+ /*
+@@ -300,20 +306,14 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
  	memset(ptr, 0xde, hugepage_size);
--	for (i = 0; i < self->nthreads - 1; i++)
-+	for (i = 0; i < self->nthreads; i++)
- 		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
- 			perror("Couldn't create thread");
- 
- 	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
--	for (i = 0; i < self->nthreads - 1; i++)
-+	for (i = 0; i < self->nthreads; i++)
- 		ASSERT_EQ(pthread_cancel(self->threads[i]), 0);
- }
- 
-@@ -301,9 +289,6 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
- 	uint64_t *ptr;
- 	int i;
- 
--	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
--		SKIP(return, "Not enough threads or NUMA nodes available");
--
- 	hugepage_size = default_huge_page_size();
- 	if (!hugepage_size)
- 		SKIP(return, "Reading HugeTLB pagesize failed\n");
-@@ -313,7 +298,7 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
- 	memset(ptr, 0xde, hugepage_size);
--	for (i = 0; i < self->nthreads - 1; i++) {
-+	for (i = 0; i < self->nthreads; i++) {
+ 	for (i = 0; i < self->nthreads; i++) {
  		pid = fork();
- 		if (!pid) {
- 			prctl(PR_SET_PDEATHSIG, SIGHUP);
-@@ -327,7 +312,7 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
+-		if (!pid) {
+-			prctl(PR_SET_PDEATHSIG, SIGHUP);
+-			/* Parent may have died before prctl so check now. */
+-			if (getppid() == 1)
+-				kill(getpid(), SIGHUP);
++		if (!pid)
+ 			access_mem(ptr);
+-		} else {
++		else
+ 			self->pids[i] = pid;
+-		}
  	}
  
  	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
--	for (i = 0; i < self->nthreads - 1; i++)
-+	for (i = 0; i < self->nthreads; i++)
- 		ASSERT_EQ(kill(self->pids[i], SIGTERM), 0);
+-	for (i = 0; i < self->nthreads; i++)
+-		ASSERT_EQ(kill(self->pids[i], SIGTERM), 0);
++	ASSERT_EQ(kill_children(self), true);
  }
  
+ TEST_HARNESS_MAIN
 -- 
 2.53.0
 
