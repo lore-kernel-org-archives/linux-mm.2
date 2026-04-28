@@ -4,94 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F1D2FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 14:16:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6324BFF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 14:16:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BE7E6B008A; Tue, 28 Apr 2026 10:16:32 -0400 (EDT)
+	id CB6926B008C; Tue, 28 Apr 2026 10:16:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 895726B008C; Tue, 28 Apr 2026 10:16:32 -0400 (EDT)
+	id C8DEA6B0092; Tue, 28 Apr 2026 10:16:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D1FE6B0092; Tue, 28 Apr 2026 10:16:32 -0400 (EDT)
+	id BCB4E6B0093; Tue, 28 Apr 2026 10:16:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D8876B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:16:32 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5B4E1B720B
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:16:31 +0000 (UTC)
-X-FDA: 84708164982.07.C7FAD3F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8268B4000C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:16:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KZBlPQ1s;
-	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AB9C16B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:16:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B94C120183
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:16:43 +0000 (UTC)
+X-FDA: 84708165486.03.1CEED2F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9C7BA1C001A
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 14:16:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Y91yBWuL;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777385790;
+	s=arc-20220608; t=1777385801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XZEU/07GfSdYREJIL2rDIO5TdGrwyJUemGVRj3FT+T0=;
-	b=8RmVGWqFIlFyJEnpCuLkSEsXklSnhvtnqsJPaDEAzllrEFuwERArParvCDiO9+0vM7Lsiu
-	2ad8Blc19DE6EHQ4Fy30bL7ZZMrRGvVnnAhSWQAgG0wfnpaSC2dKGQY/jm/sfB4DioFG4g
-	TItcQl0CMOI2LE7mtrSJ6hRNUz3nLdY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KZBlPQ1s;
-	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777385790; a=rsa-sha256;
+	bh=XaYOz15wOGh+EB+moINtXBqa3/CyEdPhX4+cS85jwaU=;
+	b=KOFcRpYsLdRrANeLjO1CLW8lU5Lr5X9TlJWXY+InihbR8rC2dEcjeAeFxRvA2zzw4g6w0H
+	zkxmim5BDRbTYo6PtBIvk9Uw/Ycdc5C12Faa02+ye4eF5lSKXQepeM+fmr0tokKGxgiwhI
+	C9CAaksIXse83gK8XnP67WKSMqMJJl0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777385801; a=rsa-sha256;
 	cv=none;
-	b=z7twxRnzkHRVDcv5cBzNroq6AmU09w0hb/44exUcDaFjS517d1lXMVZ3MFeB/JYEpFLW2/
-	ldWZSG6Xcu70Urn/0xj6jn8xIKTC2QNA8wY/JstZvau6xYZusosR40AhkfyqKiEkogOtTb
-	+WEKLZPqE+yKyUmPnhagk9ItMCoL7pk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD7841C2B;
-	Tue, 28 Apr 2026 07:16:22 -0700 (PDT)
-Received: from [10.57.63.26] (unknown [10.57.63.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 48BFF3F763;
-	Tue, 28 Apr 2026 07:16:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777385788; bh=btCZZuKZwDHwegac4lZwAmmkykNullD5FLtTtCs4fM0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KZBlPQ1sPDbrJhxD9GJVH5ERW4UKB3ReLaGE3w6Rs7y5sqoZtBJxYyDPoySmzUimS
-	 O2W2ca7Bx0rNnlTgvtXYIkX9i8isJ3q6U5bEoSdMuy+joC8i+kcUX/Pz9lnXt+pwSX
-	 DREPzwlNeterBeiJ8pRPWspZwsPTrQUst6s1cJdo=
-Message-ID: <82091dd4-9d11-4054-89ec-99aadaeec7b2@arm.com>
-Date: Tue, 28 Apr 2026 16:16:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/15] arm64: mm: Map the linear alias of text/rodata
- as tagged
-To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
- mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
- Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-18-ardb+git@google.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260427153416.2103979-18-ardb+git@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xoyau4kkgfydzqsirf95txg1bwkpwd4t
-X-Rspamd-Queue-Id: 8268B4000C
+	b=P/D01lczWnAR7xpAit8jLMi9opk+EtB819QOIB4WISDvCQ57X0x5uXpUlhM9YC1gKYXWqa
+	D54tPA+DAOHMhE1fhJEGgX5MWdB6ylwG7MM1/wBxQJI1aUfyr7mXhxWOHjBtX+4xMrwThX
+	efO5Pt84lWfM2gbGXyx0+SC6dWsEOgU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Y91yBWuL;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1CC136132E;
+	Tue, 28 Apr 2026 14:16:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8300AC2BCB5;
+	Tue, 28 Apr 2026 14:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777385800;
+	bh=UattL/at57T5QqsU15Ijo7r8+bjYkLs0PoPIsDETnyk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Y91yBWuLlrROcgwR1CTvATWhhqa90vwmQzmigqGiL+94Xm2XlEyTabW11nUbxAsNM
+	 dJuk4dC12lxZhh9RDrcEPsGUO0Q7lTOOpsm8kNfGJO27C+8CMMIIfTiQeb63nv5N4j
+	 JF6DhqVGbIXv+3h2fKMZ1/54crN8gvbW2te4TSKg=
+Date: Tue, 28 Apr 2026 07:16:40 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] mm/page_owner: add NUMA node filter with
+ nodelist support
+Message-Id: <20260428071640.53b6f37e3a0b2d0ce520622e@linux-foundation.org>
+In-Reply-To: <20260428071112.1420380-4-zhen.ni@easystack.cn>
+References: <20260428071112.1420380-1-zhen.ni@easystack.cn>
+	<20260428071112.1420380-4-zhen.ni@easystack.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9C7BA1C001A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777385789-274322
-X-HE-Meta: U2FsdGVkX1/Wt/UYYFB4YdXs6Ez2eLVcyhRqBtXd4ih6TRKLKMnNvexImrjmceaXOoRquVB68qxz5LiHlb4LYtFbRjCtYWQeuSjlRVSYDhQN2+BOzIG6tj1H3TKwljYfkehcK5esEbKyKzVyFu7R7565qBq3tQfC0fo4ZlledJvLAgL8asDYcf+xRLGwNGDndRCuD7DCSMUAJa7D8KC22wRBJkjfo5FGd2jz29+YzQv6/GN3YAEVV358Cz7rZyz/BUKb+nM4Z2oMNFdi+ZnnuNE+Pv+u7LbEkhNnukVOeWlLyj1syLQC6ffz/u/fUOXF1ANaU/dmEY2coFpOCdbAXxJDFcPATO9MrOnhUrlkCBIq9wdoSO8u3yy6R2yqI9XKHqzql1/us3w5yC4hl8ATikelydstIeez599q4SGQPXYRm4MlOo008XIQmb2bd6/OhMpzRYRHO1MWOgJC1v6ySZPWn9OyPHWr1C4MZOUG/AT8lGCAYCw9Iod22/siB8bTX66iYaan6CEnh9eS2ZDdbQ5nqSZiq9v3YVn5TM4w0sZay4sgPYfdcQXbqVpLpwqkeFyLFmWw/kMcuqms9mdKC2BMD1AFUlNJ3agsuurL+Nb2swiULjnObtVRErErYbrGdnREUpQRi4hCFVT0YrS8mDppkR/6l8BiyuhHaIdFIBkv8l2c2D3CfmIoWC9HGSsE+qzyFavyHkiEep3862/Ghlz7y/B0dxdIm8RyMjSryhPoF3/teDvXfM8Glu2JkTUvlzokgRbk2a8JxDQkxn2jBlxMkKvNHv9ejOzpnrBKVPVlTlGv6khLOD2tT9ojtneb8FewStKudcgUondVSahtGf+k+/Z1chE5KxqZQVkcrtL4Sm2awGTS4GeclKnxpt5yTnoABNrc2GWkrg4A3xmvO2L+Z4E4bokAcrfet6+0y80TcvNXx2ePMMK+U/98BJCidmxx7312GDiKkgH2LcE
- SYkTgnsv
- jzYGnsQt132RmEObpi3oDSPdiGiBkel3qsJ6T86sXCjn9JH8POmhnL35B1wuXjoXThnzHanWwkcdb2Lhhj7WjUG29CdnentEQoQPmXKeN+pSVmHIWC5ze8Y7dwPxnw0VZ4FV0iSvwsdHyE4WhtbGnXhl6qAicQvfnmyYxfabHKd7OnPFzjmDA8bspM0DAT5F7i1RhAQbwldmYgEQhR2zvXAqOuhQ8lbrUVr8pjYyeEp57mnGEKSWBMEIboyI2DSmmWzSaN5Df7rWUOENEenC+bBB1WxWMKQfTy7ULoO7BgwhMtUVtKeG376mE7pxi3r3TkaQuuAebNVxQWUPXpvJbjT+SkLkAzLifucyF29H6t3MyssI=
+X-Stat-Signature: yujdwfgiujzykq7r7d6dk4sbdkxrhq5o
+X-HE-Tag: 1777385801-366213
+X-HE-Meta: U2FsdGVkX1+eRZfSCZjAGgG5RmWNaz8kpazCu8G1a7ji8qfzqXFtEB6xaDPxWluHOvUULR4Qj3Lm4mjs4PNswA+ZMwT1rfyPth4gTQKICqS+Hf+n9QEryW+uHKl+pHM6Zzu8TNyzf0+ABjDhEzA0YnEmnC1AE3A0ZZ61PwyAAEHVU5E4GN3OX66OQFYYpoxt/eu4tRmgqvCSLQxg79bAx/ABf4/KTZhfG+OSaw8mkgFdz9sxkWKe5yjqoQ4CbeMoTiRLe1wZc8M1QDcXFBtUwLPMUf9AghusecrsxaprrwO/A00eNBuHoygBuuNniVgGJd7/uKBAU229BJhFpYzJNXENEdtM2B7KHplj83ZtviMaylfe3oWKmTiXfmb06DrkOaXRgPXvP5ZghbScluY2pY5fop1NxcNOi+nROM9iTmERnizqmU4yQGKPPB8xeYtRpqoVW5RTaPwHopojZztw1wRUdGfj8ouhvdkMpvOtMlZxAyeCBNc2t3YBCkM2G2JCxqoYxl8SS73p/xiI5OwLcQJThIof6nbIMEnOPMHLMUPGJ3Fl/914BVhxVc7xKiKA3/LuZa7FwI3h3HnnBMODdSeh+k9Uj2y4pKjMgRy1bbIcdwHDh4P4E6LbWKkeeJtmOz3YtH+8iq1OgWBu5g8Dx3ybUcVLZUoBViBFdTOcfqddXVCueLG8+r7RJk+Z55VIKifh28fW7ScOxPMVuFtngCZKmak8tq/2MgJ7PzbjzgYrkFVW+7xDsmGnA//4IB0rwmqJak8l+uvwVTZ/kTjdi0FkOKfshTYdnuBOii0K2KA10PO2ggPYSdj3hj1RdcD+oGbOPoffw7jWMBFrJ1yGAgplZ/jev/vozVJ1mcmmrRrShCg03xq6zi6vtlYbCuT54lVXsu+K/x/Aw/wyL1q13HxuWAkf/oZWI+3mGhmnIfkdcPNcnxZ/Rr5AqFiKdSxAa/jbpT+vl0j7/+1dlMC
+ HxrYMQg2
+ qLDFg4RvwLTxAqy6P5plTviGKBZMbBMv4zhCbH+rk+9Y7NE6SH4u81ZtJOoKxt6r+RHdIaOtZ614NlXoOQhvha4sbpGtfb4CskmmCpn2pT/Yu3xcWmA6qsAI5q+YuT1UrSudJmJ7HIZvOJPnmbMlR2heO5sXO/UHTTD5IANGj3YOYbQqHWeOplbkuLM7t3QS2Q4A4s/b7BDb02F0DHXydWp8+9pZKs6Y6fEjuqbo+AwOiV3MeRL33M5H4xPkqbgsu5uxerzy+ncbQBmQ5inHplcTAUuXEcY5uojj5lWk6eXtx1gA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,42 +92,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27/04/2026 17:34, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
+On Tue, 28 Apr 2026 15:11:11 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+
+> Add NUMA node filtering functionality to page_owner to allow
+> filtering pages by specific NUMA node(s) using nodelist format.
+> 
+> The filter allows users to focus on pages from specific NUMA nodes,
+> which is useful for NUMA-aware memory allocation analysis and debugging.
+> 
+> Supported input formats:
+> - Single node: echo "2" > nid
+> - Multiple nodes: echo "0,2,3" > nid
+> - Node range: echo "0-3" > nid
+> - Mixed format: echo "0,2-4,7" > nid
+> - Disable filter: echo "-1" > nid
+> 
+> ...
 >
-> Before moving the empty_zero_page into the __ro_after_init section, make
-> sure it has the memory-tagged type. This is needed to ensure that
-> cpu_enable_mte() will be able to initialize the tags correctly.
+> +static ssize_t nid_filter_write(struct file *file,
+> +				 const char __user *buf,
+> +				 size_t count, loff_t *ppos)
+> +{
+> +	char *kbuf;
+> +	nodemask_t mask;
+> +	int ret;
+> +	int val;
+> +
+> +	/*
+> +	 * Limit input size to handle worst-case nodelist (all nodes).
+> +	 * Worst case per node: ",NNNNN" (comma + 5-digit node number) = 6 bytes.
+> +	 * Formula: 100 bytes overhead + 6 * MAX_NUMNODES
+> +	 */
+> +	if (count > (100 + 6 * MAX_NUMNODES))
+> +		return -EINVAL;
+> +
+> +	kbuf = kmalloc(count + 1, GFP_KERNEL);
+> +	if (!kbuf)
+> +		return -ENOMEM;
+> +
+> +	if (copy_from_user(kbuf, buf, count)) {
+> +		ret = -EFAULT;
+> +		goto out_free;
+> +	}
+> +	kbuf[count] = '\0';
 
-mark_linear_text_alias_ro() is called after all features have been
-detected and enabled, so do we actually need this?
+strncpy_from_user() was not useful here?
 
-AFAICT the lines that matter for cpu_enable_mte() are those, in map_mem():
+> +	/* Support: "-1" to clear, or nodelist format like "0", "0,2", "0-3" */
+> +	if (kstrtoint(kbuf, 10, &val) == 0 && val == -1)
+> +		nodes_clear(mask);
+> +	else if (nodelist_parse(kbuf, mask)) {
+> +		ret = -EINVAL;
+> +		goto out_free;
+> +	}
+> +
+> +	owner_filter.nid_mask = mask;
+> +	ret = count;
+> +
+> +out_free:
+> +	kfree(kbuf);
+> +	return ret;
+> +}
 
-    __map_memblock(pgdp, kernel_start, kernel_end,
-               PAGE_KERNEL, NO_CONT_MAPPINGS);
-
-It is probably this call that needs to be changed to use
-pgprot_tagged(PAGE_KERNEL).
-
-- Kevin
-
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/arm64/mm/mmu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index dd85e093ffdb..f084993024ab 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -1049,7 +1049,7 @@ void __init mark_linear_text_alias_ro(void)
->  	 */
->  	update_mapping_prot(__pa_symbol(_text), (unsigned long)lm_alias(_text),
->  			    (unsigned long)__init_begin - (unsigned long)_text,
-> -			    PAGE_KERNEL_RO);
-> +			    pgprot_tagged(PAGE_KERNEL_RO));
->  }
->  
->  #ifdef CONFIG_KFENCE
 
