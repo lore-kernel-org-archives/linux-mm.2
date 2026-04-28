@@ -4,132 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6579FF8868
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 09:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05753FF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 09:59:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 493E06B008C; Tue, 28 Apr 2026 05:52:41 -0400 (EDT)
+	id 27B906B0088; Tue, 28 Apr 2026 05:59:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46B506B0092; Tue, 28 Apr 2026 05:52:41 -0400 (EDT)
+	id 22BFE6B008A; Tue, 28 Apr 2026 05:59:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 383206B0093; Tue, 28 Apr 2026 05:52:41 -0400 (EDT)
+	id 142826B008C; Tue, 28 Apr 2026 05:59:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 231816B008C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:52:41 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B1D371C0967
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:52:40 +0000 (UTC)
-X-FDA: 84707500080.02.D167E02
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AED1740007
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:52:38 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=enWAr+FD;
-	spf=pass (imf27.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777369958;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 025F06B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:59:45 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A31D940561
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:59:45 +0000 (UTC)
+X-FDA: 84707517930.03.C8DE9F6
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AA9F61C0004
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:59:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AgmJ4X1D;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777370384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d0CkJoR8j2Lu8d3HAduK0D/uOBhQpU/AO08sHTN+Z2A=;
-	b=cqEmEQcRa1ioPEGdvf8x2JUL96tk6SrBNj+/LO7iMofu8FzwxeMI+cjehXMVDfcxg2nadV
-	ZVoCXYfBO4aUclDcrDw8rvdPKJBVo6htAx3hAQnM3PW/tpwLDqYhoFjdRIBOLdhDD8ASzG
-	xWjsHT5rqyRoYayNpGxvWSPnaZUS0hk=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=enWAr+FD;
-	spf=pass (imf27.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777369958; a=rsa-sha256;
-	cv=pass;
-	b=VGryDUMhPd+KE9c7271Aw/94yK8wiiZRIB/xKYZ57mEEx1zq7kEKTJbtJ/U4NYjQ6MgTPb
-	4mnFPsANvF0c5qg8hS4CPu9+aN13OBqTYHocCfv0/hPCTG6WmENyrlnvTY1iQQabZ9nMSL
-	OMOQ3DHkdr8dTmgrlJflHPEm8lypP+g=
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-610aadb2d9fso3620473137.0
-        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 02:52:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777369958; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Xv6+53v9nSRRqobAReulntYmYGLsdi+kywYgvM6bWEeQ1AwhOFJB8YOz53uRjTU1Cb
-         mA/PhE5oSYlNpiHtVXuZf3oC77wtgjsMxvyFx4NfabUnWb5ZzVuPI8rLIWfvSwu+Z2x3
-         7kxv6QC98lTzGMPKLUUsLwNzhsVU2/5NtQJomz++YDsDArFAm8I8z7mjGv2gedXogl++
-         q6x4fXAeLAOmN3T+2fXwC4A4w/JBzb4D2mUzqnwgvlqaUlVj4t8ZwIjzSuUK3qJ/t4it
-         QS527ToXvVhZOYe2zYswbgZul/b0kbutr/Rp56e8X9bfW7oZ1xypGjVkBL4Bej1w6uP4
-         d0mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=d0CkJoR8j2Lu8d3HAduK0D/uOBhQpU/AO08sHTN+Z2A=;
-        fh=1NmyW8LL0fSZsa6nDnyNcHjDy8fOH/Wiknx++/6ZtvA=;
-        b=WIpIkSKVtmr/7OK9yfgZJ7jE9UmIvr7EpjQ0Xe8MUrnOcurv6WTrysRVatejS7Sox2
-         5uRpNQg2vGJMjvlufYeW057Y1vN4b3siCtoVOHSr2BHvUkBTvUxqq8AdhHJdvICsgMEU
-         ypHnN0g8y5WthQBLR4/CnMTEve7z2+p5rCDlkhwICBHinyN60jtyCb6PopTGZ6QZiUsr
-         dKBKee6l4j5fbagdbgGtF72ox6xmz/rFY/zr++XUK67ZGxmi2GkvRO3+g/vYIBjPk/E2
-         CH0hJACk4xwGnHyh41SuBv2BlLIHdZlZBUApPxenEIESl7dwQN/XmG9esiC3y7gEinQF
-         Rpfg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777369958; x=1777974758; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=d0CkJoR8j2Lu8d3HAduK0D/uOBhQpU/AO08sHTN+Z2A=;
-        b=enWAr+FDW85wFy20StUJxqoffYb7DcFU1bfsEpv8HOnYhLVd8xbZbNTThCxSl8VGHA
-         W5v37i+ogojgxgGCoV5zXJaTUN0LKJYYT+Kb/DnzddLeXgut5Vu6kp2OzVSMqTA1vaN4
-         8ZFeYno8vCJn+aqbi0mP5ivTgJNR3YjwSYe4JBbLK54VUIdPMmRFUhK+3Es0NOfv0a6y
-         XYU0zJh1SgEVHCkmfLZ+r66JRdVQu6KZws2fkUrBV+RdgEAW1qk+aKZKvl1B4LgqnVtp
-         MPHGYPbTpQW1i2EvfTurgAerMzyzjCKKryKweE7/8D5oWqwrjqZrraDh6QuuxL7t7avA
-         Z1rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777369958; x=1777974758;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d0CkJoR8j2Lu8d3HAduK0D/uOBhQpU/AO08sHTN+Z2A=;
-        b=UZAlJ/pCj3GGXD3HQBwPuLpFSJTGsb0EL7EbTtNEGLr42COBJ64rGYGj5grrTwoYdr
-         k4s26RxfMZzAQSPm/MFmp+F8T1qzGieIB+htqMzT99pWaUv6tUJ3V5KX/t5hE0/MVB9X
-         C+OPw0wGOJ6CZplPmnKiF4KQz/sG7S6tkJ+zc0sSF6myX6DgJPwDTUHkyR8LHtW1T6Wa
-         KENDIMt8gW3qxgYf+0XUnYp58XFd5BxsQS32Jpwre/Fu8LNaPR/olTWuuMQLFsMl8YSB
-         gjfGhJilKPeZgdse1sMsfcQXFLxzFdvxALsinp6sodDWSHRyrhSw1gNCE1OzZfEawx5C
-         kxOQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8d+TPbdD63LE5CkigPgaUkoO5LiaIm3rS18SEA/x59e4MRBIbTucwVbi7SoadReszTBCP1U83sQw==@kvack.org
-X-Gm-Message-State: AOJu0Yw0KWixEH2VAB78mKg/jiW3e+rhnM4pHmRmuWEhjpAsF1qgWZNm
-	jP4NFuczBmcLwvZByUKq1LyRF3Pa6GXK82Cv/Z+qogmKESK4cJkAHEGoOe9Lw0z97pTHoxAXH8t
-	j1OmTzV9P8lljH9h+QlXn/SCgHheWb3c=
-X-Gm-Gg: AeBDieszAES2ipoldhx4vvJPs5il8NUq4J5mn6z45kohZjPK40dNukmRXhX7Qx4yz5f
-	jwKhETNZHVoRNALjOf2sOlDiN8cVRcry8rB2TH8xIe9PsEq1WoLgO8XgOABy/Jo9ai5k4CFEMAy
-	vUXOSyFBQ+eDPAbRW2if0rovGqlEUzDGFsfskVa+9UcPaMDz9KGzMY5cDtyrJ0hySZ54boN7lCo
-	zaW8+skd5zsfgRC8XhGdF0Yyg1bi1BVVm1VSvnBClqfXUqXp+msodP0bOecTX1ZxrqKG0iAX8bR
-	5Ac+aZK7lqPb5Bf2mkVY2AXLg/v7L92PWD6ul9v7n+jOMA7H303B
-X-Received: by 2002:a05:6102:1609:b0:60f:7499:9b6b with SMTP id
- ada2fe7eead31-6280bce0851mr590844137.29.1777369957596; Tue, 28 Apr 2026
- 02:52:37 -0700 (PDT)
+	bh=MiTyaQb0gH/enfcQNGJbMNOh9xViBgr4r/Sr0EX4sgQ=;
+	b=Qy6QJgI3RssfV9onc+X2e5aiuLeYubdJRT/m8EtRdSoIVJdtPXu0nb5mQj3lwSqAr11Wo6
+	6SzwoE7QOqMyJ7duw1fc8yweZZt06K2GhTTSqOen8Fq+gOn3+BMkZzoJKsSw2WhJA2qPCQ
+	m53RlPmmDO/V6WTmlO1e+gQO/987p2Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777370384; a=rsa-sha256;
+	cv=none;
+	b=G/vbpJNe1bPi6AClKUhLCWOKs9UznIvjxwLQl3wBAlNmHnZDiNiKkbm/nVTk0Q5ekZaQTx
+	J5bfi0sgIpLgkQqlXwrqTM+aFkATwW9V0vlgOC99zhwtLyfOJltIjT5G2Dlq7SFMox+5MV
+	ZsBuiF9j0vZdtO6Y5IuGN+ahAHQa6IQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AgmJ4X1D;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Tue, 28 Apr 2026 02:59:19 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777370381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MiTyaQb0gH/enfcQNGJbMNOh9xViBgr4r/Sr0EX4sgQ=;
+	b=AgmJ4X1DAE/4K8J4aGBiJGCx4ShRw9Yk4yo1Nm9esDzMbomO1CMTEJ/p/pLVUlLgcw5JT8
+	XV2Z30hj2JKnllRiwYLkUE5OtVei/iU193jyjAmZqF+ab+HCajouQKbV7RBj6tp8BVGw2H
+	G/eCcKQG4Qs6/d568nEW6YW5nqIjA8Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, yosry@kernel.org, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH] mm: memcontrol: fix rcu unbalance in
+ get_non_dying_memcg_end()
+Message-ID: <afCEgUMqhLvrYJe7@linux.dev>
+References: <20260428030621.94470-1-qi.zheng@linux.dev>
 MIME-Version: 1.0
-References: <3abf09d8-a98e-4f1b-b8d9-77879a8a2733@kernel.org>
- <20260428094356.60415-1-agarwal.vineet2006@gmail.com> <548dc617-ca19-45f6-852f-adebcf8d3a11@kernel.org>
-In-Reply-To: <548dc617-ca19-45f6-852f-adebcf8d3a11@kernel.org>
-From: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-Date: Tue, 28 Apr 2026 15:22:26 +0530
-X-Gm-Features: AVHnY4Ilq5PoEdZ0E15H1DyT0sO1YYnrXAYSWnfOq_ccLN9PWDcDTH_ZLW37Jtc
-Message-ID: <CA+rjy8dFQiqwiGT3Aa-=-ZaHDzeT_87ohEb7ti=Z-DxX2FvTPw@mail.gmail.com>
-Subject: Re: [PATCH v2] selftests/mm: khugepaged: initialize file contents via mmap
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, shuah@kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: multipart/alternative; boundary="000000000000f4fff0065082300f"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428030621.94470-1-qi.zheng@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AA9F61C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AED1740007
-X-Stat-Signature: a47z4o49pngbo3xu44bmr1ndt71b1a4o
-X-HE-Tag: 1777369958-628963
-X-HE-Meta: U2FsdGVkX18jqNI0CFbCaaGtEAl/VhmsFcQ2I7OJtFR6MGuNg7tktE7H2Q+CuLrkK16eQHuSlhq3SXNblbDk7ySqTrc/br/2R1fjVdiU2pd8YZ5OCbpmGifed6pO1FXm09VPuBpRw40Y4xKoAdygevgwwEEXl1lcdMH7K9Jq7ThByK7UxUNgcWmpGBqQB6DpvK0TrwE0696+Gg56HC2i0BdHJPamu0EVAWwBUnppdz2w4Mn0zZ/65svC3tsrPR8yGIwk7EM2zKF4UrkPFJqQY2hX4whoVKlLC/ell7DEHJ3lc2Hlc7gKfkbluFrKQsNDY/oJacFViurh/5AmKvQ0AVDQ1Uf5FYTLEFTtH6DmO3fMrqCFyx2GHcbOgyH7pgCMGfUT4YIxYLxo40RtS6o8VCIBsFFRvCSr6b3pyzSBfxGTSC8gMshZVVrtl2Bq+AMKqahV5D3pp4G8NxUBgiLzUXTKn3wPqgJnr7+VPFukFB3BPjZeFgDB6XKMBtfIDklXCZsFvZZtwgoVSUue83HEDC+euxECFf+pPazuNRUXLFKdPAJZnIidzfB3X1RbKYsKAfxMw1o2vYzB9yGhiaGa93VUj++nceMPKoTvHqQWleEDH/BNFJWjotv6wt5ucDLr57YGCWIYqdziGhJpPI9ZfT51jmDc1G2N4OHkAa4VXplBQrTGgrQx83yOHRSxGQ6hxOuzSQVoZ2bHS6m3bb3vX5YCN/7LVt8/86VraUVMhqfkdTTdafpCPnf0yU1EMo8rc/DMygxe+WGm4uogIEeWK3OkqomZQEhoMZdu3q9V28XHBkrkOr78GLz4fVz5FoyOHeJC27Fi806PLtB6sSiLepxifiJRtFOhz6zYP6Y256NzTkLGr8/rmBcLmQQJT12yfzv/3ULEHj/lmTzqyca5VYXjqh083hBRCMpLSMTLHeFQ4HVs08U5kRgbEavSOj+8fHGDP2ytnIoY88UrEVr
- cQAPVJ1D
- 70NJXeQx2Ehrks0MdEdDl679bqvgZ7JvywQaZCpVfJ+lhOh1k5ftcCFYH5v3/AHVf69acGf+9xC5EJkhIIshOAshBV4soPo2iVI0XJ/vG6NGZX2z+LDiG82UU1/kabB9kvEDwwLLCjJbR0je8fxKC3HHoDMnrn3BEvGt3gSnffHqTHWj10vFT6iLuw/9MhpqfqZW23miV9cSo3gp9MVFN+S5zMg0nee3i2e6PAi1wEECgEDSFhtzTTrn80svHJcrA+fJ32yaOJC+DwmOtwMwKkBuBksB2ql+NqQwfN+j7WrApDmo6DTZaNoBoQLx7xLiiMTZTpMCktRAE0t7kuC3wqKJCxh6D9r6j5t6b9au/fCpCIbgDigsOWB8LaYfHKfoV1M7W2TiT2FPNJwLVIAUDNUa5oFgRs/gjB+NnAAYw4/AKntc21Bx1O0QkcObR9b7F2XaLSM6ocVOsj9dgs/tujh1S+cMCmB3EXYDcWukU5Vja/IYQs6m5gYRJQUvuZ3i/GZfhy0NuIDlAVjdNk42YRYjzA8q0vr/yQHI/mo8oqFJ+uVYqb4HdNKnrfL/VRS1exSlugxF8VRH8o3w=
+X-Stat-Signature: 5cx4uiehkqpxb6giodtf7ybcet3qqdxr
+X-HE-Tag: 1777370383-620756
+X-HE-Meta: U2FsdGVkX1/b967cO7dR43Y1CJZENjdeO4IG1YLhK0HnzA0OwaemQAXUPQdeqsNW3hBMqToeUq/4Zm83Q8IITrdBjME3Gw5tUyuAhEDHH8L2qmgrM/y/saB6gVfygnuDWlQYjbDIXV9OmWHzl1sqnE/hvXBNys3+/zCR5yY6cA0DvOw5UQOYs1+okODdc4rAbQnn5R0vfeqKTAhD7wCZ7uMDfnkzM7jS+mfIkostmFiptPbp4lCOaULlojwcrDeGCONugTBkZBw74MjD6LJ6VIE11uMmBd8lEszZEQ0CyH4mL8hWny4qFYjJmm2zH1WkadTcpkPFIgBRk8IsLu2VTkYLze/klyh/dWB4vEbsfMHn/9ORHVEOfp32JbWVSdchGmKYmsrJ+vxIu+dX2jrONphUNtWi7u4l9H9ckzls6296UJ1pK17jUTi4vX1U/cS7vvKYvidKwFisLcAI+z0//2noghsS/qWeLjgKhrocfzwf7tw9fjIyjGnlUBFj18+J/nX22eAL9mOaDbYKDyPA98lLvu7KT67vtbrzXLObMHOfHEq+Ir3TirlxMc4Hh8ia5YPyIKS6GFU4ItIYc1eF2WpT8TFmtNapy62aFteqxu1doo3mXZ+f2cg11r7gqIfhS31KTrfeCPItu3FtbxeT4kr7NtkGGD4rfWjNRAHQ4nHf4zKJdh0e1IA7DQlkh5HvdqC79A8lGIOO558LnU68LdA/Gpr4Kg6INkL+VIaYvNG2vK8+yBdQwsO2gpaJLsJ4Rn75iKmINGAht55bLm8pTlC4J1VC4qKZ3YG5cgjKv9V/jeKPlnBdDXch0D+N149xsrgBVtUJkWCp/S95UEL2STNQaOUVBeuhKELc0fVtozhxxKEoO3TE/+vszN3S15Wsp+tN0IKpHG33SjDjn/Z13ASpWsmV4ccZs6YRYVCT7ZPbRytQVikVAv/yJHknl1wwIf7BGMluqerMWdt8RiQ
+ Rmmlu21E
+ SAmJmOcf/7dmw/NwqJ8Eniknhhf3g3NltgV1HqSXzMQYZbxc+7wT1GOLaG3FeVINc1pBm63DomR1U1clS74bql4nJeXMIEISrW3H3Jo6wuExXUs2L3pdEDyhtWk7PDGdMsT6j4FFgCR0lElWEDmWtoUaDoJasFvcvHWTFasFv2yqb/qMSWR/FbDN89BLZuKvTApn2BhCZEWwiNXPEHzb4dYLd69k/3z8XrAZF9T7jb1TXqLEvL0jmS5HBSkz1zZcAR8C1NSh/yNJqoiFulDLamEAPPnAOj2X7g0M7YbnxYsnHRuV8KcwWdB/wGnI4Nxf0gbkT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,196 +89,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000f4fff0065082300f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Tue, Apr 28, 2026 at 11:06:21AM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> Currently, get_non_dying_memcg_start() and get_non_dying_memcg_end() both
+> evaluate cgroup_subsys_on_dfl(memory_cgrp_subsys) independently to
+> determine whether to acquire or release the RCU read lock.
+> 
+> However, the result of cgroup_subsys_on_dfl() can change dynamically at
+> runtime due to cgroup hierarchy rebinding (e.g., when the memory
+> controller is moved between cgroup v1 and v2 hierarchies). This can cause
+> the following warning:
+> 
+>  =====================================
+>  WARNING: bad unlock balance detected!
+>  7.0.0-next-20260420+ #83 Tainted: G        W
+>  -------------------------------------
+>  memcg-repro/270 is trying to release lock (rcu_read_lock) at:
+>  [<ffffffff815f57f7>] rcu_read_unlock+0x17/0x60
+>  but there are no more locks to release!
+> 
+>  other info that might help us debug this:
+>  1 lock held by memcg-repro/270:
+>   #0: ffff888102fa2088 (vm_lock){++++}-{0:0}, at: do_user_addr_fault+0x285/0x880
+> 
+>  stack backtrace:
+>  CPU: 0 UID: 0 PID: 270 Comm: memcg-repro Tainted: G        W           7.0.0-next-20260420+ #
+>  Tainted: [W]=WARN
+>  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+>  Call Trace:
+>   <TASK>
+>   ? rcu_read_unlock+0x17/0x60
+>   dump_stack_lvl+0x77/0xb0
+>   print_unlock_imbalance_bug+0xe0/0xf0
+>   ? rcu_read_unlock+0x17/0x60
+>   lock_release+0x21d/0x2a0
+>   rcu_read_unlock+0x1c/0x60
+>   do_pte_missing+0x233/0xb40
+>   __handle_mm_fault+0x80e/0xcd0
+>   handle_mm_fault+0x146/0x310
+>   do_user_addr_fault+0x303/0x880
+>   exc_page_fault+0x9b/0x270
+>   asm_exc_page_fault+0x26/0x30
+>  RIP: 0033:0x5590e4eb41ea
+>  Code: 61 cc 66 0f 6f e0 66 0f 61 c2 66 0f db cd 66 0f 69 e2 66 0f 6f d0 66 0f 69 d4 66 0f 61 0
+>  RSP: 002b:00007ffcad25f030 EFLAGS: 00010202
+>  RAX: 00005590e4eb8010 RBX: 00007ffcad260f7d RCX: 00007f73c474d44d
+>  RDX: 00005590e4eb80a0 RSI: 00005590e4eb503c RDI: 000000000000000f
+>  RBP: 00005590e4eb70a0 R08: 0000000000000000 R09: 00007f73c483a680
+>  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+>  R13: 00007ffcad25f180 R14: 00005590e4eb6dd8 R15: 00007f73c4869020
+>   </TASK>
+>  ------------[ cut here ]------------
+> 
+> Fix this by explicitly tracking the RCU lock state, ensuring that
+> rcu_read_unlock() in get_non_dying_memcg_end() is strictly paired with
+> the lock acquisition, regardless of any runtime rebinding events.
+> 
+> Fixes: 8285917d6f38 ("mm: memcontrol: prepare for reparenting non-hierarchical stats")
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+>  mm/memcontrol.c | 31 +++++++++++++++++++++----------
+>  1 file changed, 21 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index c3d98ab41f1f1..38f48a45b7ae5 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -805,12 +805,17 @@ static long memcg_state_val_in_pages(int idx, long val)
+>   * Used in mod_memcg_state() and mod_memcg_lruvec_state() to avoid race with
+>   * reparenting of non-hierarchical state_locals.
+>   */
+> -static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg)
+> +static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
+> +							   bool *rcu_locked)
+>  {
+> -	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
+> +	/* Rebinding can cause this value to be changed at runtime */
+> +	if (cgroup_subsys_on_dfl(memory_cgrp_subsys)) {
+> +		*rcu_locked = false;
+>  		return memcg;
+> +	}
+>  
+>  	rcu_read_lock();
+> +	*rcu_locked = true;
+>  
+>  	while (memcg_is_dying(memcg))
+>  		memcg = parent_mem_cgroup(memcg);
+> @@ -818,20 +823,23 @@ static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *me
+>  	return memcg;
+>  }
+>  
+> -static inline void get_non_dying_memcg_end(void)
+> +static inline void get_non_dying_memcg_end(bool rcu_locked)
+>  {
+> -	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
+> +	if (!rcu_locked)
+>  		return;
+>  
+>  	rcu_read_unlock();
+>  }
+>  #else
+> -static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg)
+> +static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
+> +							   bool *rcu_locked)
+>  {
+> +	*rcu_locked = false;
 
-ftruncate() is needed before mmap(), since the file is created with
-O_TRUNC and initially has size 0. Without resizing it first, mapping
-and accessing the full range can go beyond EOF.
+We don't need to set rcu_locked to false here as we don't access in !V1 build
+option.
 
-You are right about msync() though =E2=80=94 since all pages are written
-through the shared mapping and the test later drops page cache
-explicitly, an explicit msync() is unnecessary here.
+With that fixed, you can add:
 
-I'll remove msync() and send a v3.
-
-Thanks,
-Vineet
-
-
-
-
-On Tue, 28 Apr 2026 at 15:16, David Hildenbrand (Arm) <david@kernel.org>
-wrote:
-
-> On 4/28/26 11:43, Vineet Agarwal wrote:
-> > file_setup_area() currently allocates anonymous memory, fills it,
-> > and writes it into the backing file used for collapse testing.
-> >
-> > Instead of copying data through write(), map the file directly with
-> > MAP_SHARED after resizing it with ftruncate(), initialize the mapped
-> > area in place, and sync it with msync().
-> >
-> > This simplifies the setup path and avoids the need for explicit
-> > partial write handling.
-> >
-> > Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-> > ---
-> >  tools/testing/selftests/mm/khugepaged.c | 25 +++++++++++++++++++++----
-> >  1 file changed, 21 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/tools/testing/selftests/mm/khugepaged.c
-> b/tools/testing/selftests/mm/khugepaged.c
-> > index 3fe7ef04ac62..f6e171e1da4f 100644
-> > --- a/tools/testing/selftests/mm/khugepaged.c
-> > +++ b/tools/testing/selftests/mm/khugepaged.c
-> > @@ -369,7 +369,6 @@ static void *file_setup_area(int nr_hpages)
-> >       int fd;
-> >       void *p;
-> >       unsigned long size;
-> > -
-> >       unlink(finfo.path);  /* Cleanup from previous failed tests */
-> >       printf("Creating %s for collapse%s...", finfo.path,
-> >              finfo.type =3D=3D VMA_SHMEM ? " (tmpfs)" : "");
-> > @@ -381,11 +380,29 @@ static void *file_setup_area(int nr_hpages)
-> >       }
-> >
-> >       size =3D nr_hpages * hpage_pmd_size;
-> > -     p =3D alloc_mapping(nr_hpages);
-> > +     if (ftruncate(fd, size)) {
-> > +             perror("ftruncate()");
-> > +             close(fd);
-> > +             exit(EXIT_FAILURE);
-> > +     }
->
-> Why is that required? We write all pages.
->
-> > +     p =3D mmap(BASE_ADDR, size, PROT_READ | PROT_WRITE,
-> > +             MAP_SHARED, fd, 0);
-> > +     if (p =3D=3D MAP_FAILED || p !=3D BASE_ADDR) {
-> > +             perror("mmap()");
-> > +             close(fd);
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> >       fill_memory(p, 0, size);
-> > -     write(fd, p, size);
-> > -     close(fd);
-> > +
-> > +     if (msync(p, size, MS_SYNC)) {
-> > +             perror("msync()");
-> > +             munmap(p, size);
-> > +             close(fd);
-> > +             exit(EXIT_FAILURE);
->
-> Why is that required?
->
-> --
-> Cheers,
->
-> David
->
-
---000000000000f4fff0065082300f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><p class=3D"gmail-isSelectedEnd"><span>ftruncate() is need=
-ed before mmap(), since the file is created with</span><br><span>O_TRUNC an=
-d initially has size 0. Without resizing it first, mapping</span><br><span>=
-and accessing the full range can go beyond EOF.</span></p><p class=3D"gmail=
--isSelectedEnd"><span>You are right about msync() though =E2=80=94 since al=
-l pages are written</span><br><span>through the shared mapping and the test=
- later drops page cache</span><br><span>explicitly, an explicit msync() is =
-unnecessary here.</span></p><p class=3D"gmail-isSelectedEnd"><span>I&#39;ll=
- remove msync() and send a v3.</span></p><p><span>Thanks,</span><br><span>V=
-ineet</span></p><p><span><br></span></p><br></div><br><div class=3D"gmail_q=
-uote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, 2=
-8 Apr 2026 at 15:16, David Hildenbrand (Arm) &lt;<a href=3D"mailto:david@ke=
-rnel.org">david@kernel.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
-il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
-04,204);padding-left:1ex">On 4/28/26 11:43, Vineet Agarwal wrote:<br>
-&gt; file_setup_area() currently allocates anonymous memory, fills it,<br>
-&gt; and writes it into the backing file used for collapse testing.<br>
-&gt; <br>
-&gt; Instead of copying data through write(), map the file directly with<br=
->
-&gt; MAP_SHARED after resizing it with ftruncate(), initialize the mapped<b=
-r>
-&gt; area in place, and sync it with msync().<br>
-&gt; <br>
-&gt; This simplifies the setup path and avoids the need for explicit<br>
-&gt; partial write handling.<br>
-&gt; <br>
-&gt; Signed-off-by: Vineet Agarwal &lt;<a href=3D"mailto:agarwal.vineet2006=
-@gmail.com" target=3D"_blank">agarwal.vineet2006@gmail.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 tools/testing/selftests/mm/khugepaged.c | 25 +++++++++++++++++++=
-++----<br>
-&gt;=C2=A0 1 file changed, 21 insertions(+), 4 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/s=
-elftests/mm/khugepaged.c<br>
-&gt; index 3fe7ef04ac62..f6e171e1da4f 100644<br>
-&gt; --- a/tools/testing/selftests/mm/khugepaged.c<br>
-&gt; +++ b/tools/testing/selftests/mm/khugepaged.c<br>
-&gt; @@ -369,7 +369,6 @@ static void *file_setup_area(int nr_hpages)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0int fd;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0void *p;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0unsigned long size;<br>
-&gt; -<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0unlink(finfo.path);=C2=A0 /* Cleanup from pr=
-evious failed tests */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0printf(&quot;Creating %s for collapse%s...&q=
-uot;, finfo.path,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 finfo.type =3D=3D VMA_=
-SHMEM ? &quot; (tmpfs)&quot; : &quot;&quot;);<br>
-&gt; @@ -381,11 +380,29 @@ static void *file_setup_area(int nr_hpages)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0size =3D nr_hpages * hpage_pmd_size;<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0p =3D alloc_mapping(nr_hpages);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0if (ftruncate(fd, size)) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0perror(&quot;ftruncat=
-e()&quot;);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0close(fd);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0exit(EXIT_FAILURE);<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-Why is that required? We write all pages.<br>
-<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0p =3D mmap(BASE_ADDR, size, PROT_READ | PROT_WRIT=
-E,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0MAP_SHARED, fd, 0);<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0if (p =3D=3D MAP_FAILED || p !=3D BASE_ADDR) {<br=
->
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0perror(&quot;mmap()&q=
-uot;);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0close(fd);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0exit(EXIT_FAILURE);<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0fill_memory(p, 0, size);<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0write(fd, p, size);<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0close(fd);<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0if (msync(p, size, MS_SYNC)) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0perror(&quot;msync()&=
-quot;);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0munmap(p, size);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0close(fd);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0exit(EXIT_FAILURE);<b=
-r>
-<br>
-Why is that required?<br>
-<br>
--- <br>
-Cheers,<br>
-<br>
-David<br>
-</blockquote></div>
-
---000000000000f4fff0065082300f--
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
