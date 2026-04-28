@@ -4,100 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A02FF886D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:52:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50984FF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:52:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E24C86B0088; Tue, 28 Apr 2026 04:52:00 -0400 (EDT)
+	id A55026B008C; Tue, 28 Apr 2026 04:52:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFD276B008A; Tue, 28 Apr 2026 04:52:00 -0400 (EDT)
+	id A2CF56B0092; Tue, 28 Apr 2026 04:52:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3ACB6B008C; Tue, 28 Apr 2026 04:52:00 -0400 (EDT)
+	id 942A66B0093; Tue, 28 Apr 2026 04:52:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C6DE06B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:52:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 677EE1604E6
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:52:00 +0000 (UTC)
-X-FDA: 84707347200.04.4F3FB16
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BCCA2A0002
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:51:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=s+aCq0AG;
-	spf=pass (imf15.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777366318;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 842246B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:52:32 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F73A8BBCD
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:52:32 +0000 (UTC)
+X-FDA: 84707348544.25.AB7C5D4
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B6EA61C000D
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:52:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=GJfyLHx0;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf21.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777366350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DF30WaXgLPexQczR9IVmne/D+PkK2gAY9qsZNS33OHI=;
-	b=yzC4FE8KU1UBHrswiTfH9QuqTQ42edbTuXqH1GWCBhdw6XUwicu3xWbxQlK40M453svnYk
-	LhBifCiJjGEt3r2+lo2ZUKXOeCacqwJ/tqMBm1czTcR9ZpG/FiQo+5rpt6bgtKFsoxOTU5
-	yjXuKBo/vd4GiNCS4v0EFO4vaAX1ruw=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=s+aCq0AG;
-	spf=pass (imf15.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777366318; a=rsa-sha256;
-	cv=pass;
-	b=cuJYjEm+kB/2o92JDFysYVbT0fSgjHTpse1bNM3a6zU+2+dmS/Pjxs5WcvIkJn3qZum6JA
-	lKzTmmy67yXmfkOb0Z3RG5mOCqAvNMsdK6tjF6YuChsPbSCS8/VNZQsSpJMwNNzgGBVozz
-	bQhLEcWgDPZgt8mh6hjo0M9MEpJGSNc=
-ARC-Seal: i=1; a=rsa-sha256; t=1777366309; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=V430eAGGjHxk9o5rY1sptIPiuxu+bRQ/KMwhnoqFchL8SAdW9XWp+lO1hjkt/NboqTDAg4+j2IY6mDspYaCE4xXRVgP2nRwDpOyhoXLd2DXz62dTjQoYzYatqWSIIOYop09ciGgCP+tB/TWYxA323H0oP/bkP2uRSEdHaFqU+uM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1777366309; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=DF30WaXgLPexQczR9IVmne/D+PkK2gAY9qsZNS33OHI=; 
-	b=Qo1Y/WVndzqKqO84i2NwPE4OikY+3bn3LDcrEQ0w+N1MirxxzydWUAumoSIK+jolTCaf0cjDelwa8nNwv2I/7wQwpQBYkrm+ZUQZRqPZvKNtdOCYDfnox8SIatKRm3yi5HUXm4rZyiCP/pidRiEBARfQbKdsFddEDLee4HLyPMY=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777366309;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=DF30WaXgLPexQczR9IVmne/D+PkK2gAY9qsZNS33OHI=;
-	b=s+aCq0AGVPHjeqDoU/IN5hYhfZcnnzmFVk2DVLkx07rebaiw+u3RHoLxME6Gy81G
-	B5Py3i9dsSLcF7LcLhAosZwyQy1rNTS3ReQ6eTz349yeMn97IReFODmIkS5FXjPEZUA
-	KGVMBkj7c8W9osqu8gvst/N//SaixwQwdKOUOuso=
-Received: by mx.zoho.in with SMTPS id 1777366307405215.0067515055872;
-	Tue, 28 Apr 2026 14:21:47 +0530 (IST)
-Message-ID: <c37426f7-5824-434e-9a95-fe6cecf6526f@zohomail.in>
-Date: Tue, 28 Apr 2026 14:21:46 +0530
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=e3sNHSEvdT5tHKgIgohZAf9cczsNpU7ZSQz8YQr/Ej8=;
+	b=mVqYTQzAJLDwTfQskwnl+e8o1Nz6HtjfY2gVrUp3qYYOEOHkgzlud9uKdupMYpuarZ3awn
+	IaMMuTD9PYnZR/M5k7xOY/lYqaUFFGgx7ulXYII+AyYLDynpfRcqPMjnyRjkX66tTausnd
+	VzfFYhFxjzQyfDqPiQO/dkm5TlMrrl0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777366350; a=rsa-sha256;
+	cv=none;
+	b=IrkTO5qjvWMQ+DEPr5FlA2IokNBxMvCQnlYAvUaB0FxooEeq61K9gJSjhUMVxwf3rP+OsY
+	J8Vjc+wVlasRhrxu05QmwXp9uxUwMr98sG0HPvkYGv/FqWSSazscpBZr8MTrD5L91QWYho
+	1dHt+ZYtxzob2dB8taOz60LAJR8KH5s=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=GJfyLHx0;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf21.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-36146ae9dd4so9375285a91.3
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:52:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1777366348; x=1777971148; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=e3sNHSEvdT5tHKgIgohZAf9cczsNpU7ZSQz8YQr/Ej8=;
+        b=GJfyLHx0C633vyn7VpvdtG5mnPJ03hvomY/7ny6kydKjMiODr0n5Zco5hoCjir2F7n
+         gx94qd4xE7evMYFdleBQ8AwouRCmpjClnXAY1wes5WE2eWZvZ755eT1mi4GKwFmrDNUy
+         pU7d3H3JtO2e7yWxgpks8rOgws5/vMmefGxS6xUrpufyS3QEa2Jx+uHgUJH68pEGaW8v
+         0qWtRZHeIazKnUGc8NLlgzkIbPIJw/dGcX7nRRhRSi/IF8sOvr2/1dgYfpi1NYE3UpiN
+         cHd/27e94EbD9gWoeJCdi53Sw3c444W5ud3+iYBdEsgDMhd64BLIu6VUlUHAasY/bihK
+         pqVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777366348; x=1777971148;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e3sNHSEvdT5tHKgIgohZAf9cczsNpU7ZSQz8YQr/Ej8=;
+        b=XfU1GGqbL2d7Uy7zFFdFNHh82crwEAHoIP6ovZnp848zn4hI5UNmhP79v0bKVhDFob
+         aojmOI+4JeufKkf3wKQe/hjA8YDCVI13cpqzU681YOS1BFy5lXIIWqETkQt+x07ZiA2H
+         TuL2ygGDiLj3kKOxoFgGwG2ZFUNlQ0lInw2mMaPBbqPHRaJLpuRHGGj/0ROhMgyi3QEC
+         ziYIS+BjEleiOKBk0AY+6mLvwpm65AWz/lyDi9hAU8S5RcD6OaIaABLehOYSwfMIOD+b
+         hshRIcvlYnvvylRzbmLejYd/DckNh63s69CGgsVPRcaFuonMGImW14jhJnO4mOQUwZow
+         pHyg==
+X-Forwarded-Encrypted: i=1; AFNElJ8kRL5ioWx3N+gpTKY6uornDqNM3b/6DHwSPyuUtX4o2CIRkM423VHwCeSO06G4+jDVZ/1w32fQ8A==@kvack.org
+X-Gm-Message-State: AOJu0Yy+36rsnoGvtKZWWaJ753o/jyCkh4J9DsmU7VabQYbjDokIMPwu
+	vbUShk+FnaKPEKVi7c/eWNJJj4MIbo3+xCcv1qRO8lg5Xd/0jp/jp1OFVvewZT0KBvE=
+X-Gm-Gg: AeBDievwT+pMh0IzaPgtJdr6toTHsMGEml0dG74SawkMx1MfnJqzcjILWyXAy9lpQ6W
+	wpb0bUeoji0p8Z/ShWW68NIhhv3MwoYzWYpJ/Ro00MT1BjOjsKa8z8ZXAw9ap5NBdfIvl050A6L
+	Imhkc1ahRlz3F9mSOep1MEco0j6MgJtPUPw6Zz2GWGNmXh+HhhgUv1+58x1atPls7cCHDb2osjB
+	g1jlDf4NTh0CjXgyA2v0mPDCxQ04qY1j2Juyv/CHCKVPabdhM6LhsA2PhSQ99UROTI1MslR53Ql
+	vPoqhiae8aV4bNnxWCCWb6yJovY66KY8jVTHEQgVlv3uLVz+ckqaj+ZEWnWlO9B3uKSJh4CeH39
+	+WkKNsJ8sdmROysFlKYKq/FIiOtTpTFBHFsF2lBL+FKRyjaUt3V5VN/dRUpajHMRIccX5Pt45dO
+	dc9grrEcNrQfX5Z+nMRm+K6G/PzQlC8YqDo04g43HlWyCp6SWxcJUScDs=
+X-Received: by 2002:a17:90b:2ccb:b0:362:ded3:bbcb with SMTP id 98e67ed59e1d1-3649204c801mr2305930a91.25.1777366348422;
+        Tue, 28 Apr 2026 01:52:28 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.103])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364902e7debsm2889080a91.15.2026.04.28.01.52.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 01:52:28 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Vishal Verma <vishal.l.verma@intel.com>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	Dan Williams <djbw@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	muchun.song@linux.dev
+Subject: [PATCH v2 0/3] mm: Fix memory block leaks and locking
+Date: Tue, 28 Apr 2026 16:52:16 +0800
+Message-Id: <20260428085219.1316047-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/1] mm/vmalloc: reclaim tail resources on large
- vrealloc() shrink
-To: Uladzislau Rezki <urezki@gmail.com>, Fujunjie <fujunjie1@qq.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <tencent_824873CD3C7F2A76CD237A308C00DF18580A@qq.com>
- <ae-O3URyANS-mkoV@milan>
- <tencent_54339C62C9BCA8C7ED48DB0D91451157FB06@qq.com>
- <ae-X0MTt6GtCssA2@milan>
-Content-Language: en-US
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-In-Reply-To: <ae-X0MTt6GtCssA2@milan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-X-Stat-Signature: rxyigxbq8og7u8dzgsphrsfx9q9ytyg8
-X-Rspamd-Queue-Id: BCCA2A0002
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777366317-431176
-X-HE-Meta: U2FsdGVkX18CXEQhd8RVtscctHXJf221v5lOaiv1pnBOLoRa83jZp8XE3sT7vwlM8PuA9O8qn6veH5z6Dng1u2YLdt6Zpg78M+WdQ6e5GM7TSLaM8CUrwACg/Q+v7sRTcnrbltbrynWRbjd8fdL61hS08ZzQF4tiaPVoG6uF5tKHcQ6oAemKyjMMtFbRt3TSzXOsB3JY9Cd49T5197Qt7h2SJRJCHbwjRVZuHqGyXRu6B7XAkBicZqOD9GWF1r0ElqHGZq85EQl6gLFrFABA3PPwBHlZnO83pKqd6efTlgnuRIaLbeRoLlccEpXr47DCzhedeJaJETH4MQDlM4HQz3BAfUvKNSLxGKXMhj35TEEEYgnVcROPVgUU/umkWfjz8Omo22/S/Bzwo+P1+rcrKKzGzGkTczJG//fd+caVSrhOuptDxq2lJvw1sU4uvZvdwDEuHZ1yljkhIdKNalyyaN0XVqlrzGaSKgxzz8/HxUtnTAm0yMRYRqoyD9k3Tx23eqRqjA2yQdTOUrLsHzGL6ZEMpa05vYtpl2WOzOX9GEKsuhAAqHgbQba8gXDOwUwi4ikXkGXc7F24zQLmiH3wyBg5FBau3fLzlMzMeGHTfwFJOoTEKNh2H+Sjb2kttt9/0smlnBos79X0MW9vpnFVNDyPm33ttTPFzP87w89yWXdqWVzcAkBQ1B6jTsiJXcTFwZcpiFjsdUv8qold/bfJv4R3Bm0BJk4eEojmQtHVUJPLBUKakxytCG46wg5ZAcwUMgavcFDPE8fwsCIZI+7XF4C+G0RbSZ5A0MntFUNCDLs1LbX/3L6uQgERxt7DK7Bmi/JnZk8Uur8VFREMDIIG37sSOtaxKCRqDUbLITmz00lqCcBB+EVo2nWFYeugd5Ysat3HxpB56ukscekrzV8zngga1Z2MA3+zRUE2/zVBNq524wJHOQe1GLiwEBKHsQy7Bf98zemqs1eFAa2dVQr
- +UOwHFIr
- 5RFuaW10aNLc71db3ZJgGcAer3XdFtJ3zyu6mevFAdkxWM8gGU0JtKPI6GYW+WR5xZYja0cRK7ot6uIIQDG4Sv06b3Wy56lui32pvdPCL3u3SrVKL3crgYnw5yh5ZglsBQfrgtWjm5M2HutPSI0SiiYF4MmkaKbReaLbhmYfUdbiIjtOl1OVe0crdbqgIvP/yRGsYivNW6NEK2nyThFmTrks7qLTA+yKwmrmb5aBcQ9+kDPfW+V1zHw1IkAXKX70JUavVA7175r2xKhsLBMYUwtZ1deIDkGuQ9D+T4fC1z6xeAhSitEqjrG7Nnw3pkOYjmqy/CevwWxpjaX8H2sE19yM7PcDbpyKczxxJfZoU0iNg+3k=
+X-Rspamd-Queue-Id: B6EA61C000D
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 8h3ps4reo3634do1yqdjdxgjfyu9dwyy
+X-HE-Tag: 1777366349-295932
+X-HE-Meta: U2FsdGVkX1+kJw0DH244JBw2OvSPpHhgVYX8LUt2UlG7HZqoMheLJiNhbl7aR7VfGNfZi//cZPldWLgWDYN/ybIoaLiwvo3yIcnqH95Ip03sPSgjfd0HgdztUEsXdmH1Sb2ntSgwaQ9A6SmLyw021uC0T8aCGA544y4UyjLOQFmed8BugJhSnRqgN0Vy5PRLT1YKtTq77woX4aNHCv9lNer09+t/aR11EChai53qLLUgtY/OoYHA9YK1da9/kYA8d3BCrJeTeoC9PT+len8CNUA2k+iea7wiOwb98xqEsvV9XRqzlCbHti1sVWJDdvnOnzKRJyuABT2QKyLo5PeqdyNmhWKPG8Vlw+Jbn2zw3+TTQ4stB2+1YtImI80GWB+WVGGQ2Se7BHkXH2iRM6INiAdts+/aXo70TWgRUO+sW6NO54ouVHdPcPXVR2eq5EpIWAyA1K75hEmZfPWJjJ1iARnFMFdPgRlMDf6hOz7OWzaTcuNHpsuQcezh7cXS7rn6wyfrcsj8kfeW6JXXuNRyq3fgVPdufzbLp4WAZM7FDZDHj8yXEq51m5bqTyYNDZ6Sh7wpQC8pJrY++3S+8GUB0i7HQ0QpCvkcenr7B4kEKGk+vAZlm8O6tUX5UtdY6XeWd+BbT9Z5OEaxd6sLaqiEREYXcl1SU8EuZYxYsLmsH7tzfBqNOuYQRNY4MSoIvHSG05Tjbh01RzpAv6nx2KfwvePOY/753PIJ52CrZWkxW6RVhD125taXr8pmfD4gTlBVw662I2+s14HWcMAzlteg6bTJ7m39Hd9X65JIHNUEzLbeQCp998ylL9gHTBaAYzjVodlH6aNdXqP8MFSrIoc++da6ivfRA22fvyBn6LYy7I75iqj2+3CoPlr3NX36u/2W9UnexutP1nW9o2vUYnmE8Drs7ZngiSLu3zMxCQvHaF5x0hirJPlTxmAFd91PgiD5P+kxkz2290l+9hEfiIx
+ q7ICXY+z
+ H3/JGUTNVJAOw+tVBgo1Npuo2UPj2j8/MOi7xDRHw055Qq4Ue80CBeW+kk5p9AudqPRjgq1JKVIwCs471y58QYpTy0foq3i0wusZvpMpWHa76dzdSoEXR2Gd3NKYxfi041mkzRP0KPPbyrchkJNnEWsdkUIJfUcgsk0qIW9e5daI6UUbV7FzyfCQbFsAPKrBx+XMPy0WLX0idlFO9wW/bm8wKTx7Yfw23P7gy2C9qAa15i9DqdU1UNkDLwQAvHrzuTPAXQv3KKcRtLf4oiqvlEra+tZRYuk71/qgE+jFUW8L46A3dM9nBjgUOa/RNsaGtEU130yFmXv/F/QrNyf34QE2FbU6KGWVK0cmY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,17 +128,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey Fujunjie
+This series fixes two memory block device reference leaks and one
+locking issue around the per-memory_block hwpoison counter.
 
-In my patch series,
-1. I am freeing at least a single page.
-2. Did not change the vmap area, only changed the nr_pages at vm_struct
-    and update the pages array.
+Changes in v2:
+- Add Acked-by from Oscar Salvador to patch 1.
+- Keep the series as pure bug fixes; defer
+  memory_block_get_by_id()/memory_block_put cleanup to a separate
+  series.
+- Add Reviewed-by from Miaohe Lin to patch 2.
+- Add device_hotplug_lock handling in patch 3.
 
-Rest of the questions are addressed in my patch series.
+Muchun Song (3):
+  mm/memory_hotplug: fix memory block reference leak on remove
+  drivers/base/memory: fix memory block reference leak in poison
+    accounting
+  drivers/base/memory: fix locking for poison accounting lookup
 
-Feel free to review or test my patch series and let me know if you
-have any suggestions.
+ drivers/base/memory.c | 18 ++++++++++++++----
+ mm/memory_hotplug.c   |  2 ++
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-Shivam
+
+base-commit: 7080e32d3f09d8688c4a87d81bdcc71f7f606b16
+-- 
+2.20.1
+
 
