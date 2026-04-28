@@ -4,141 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BCCBFF886F
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 07:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C66FF8873
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 07:06:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E73096B0088; Tue, 28 Apr 2026 03:06:24 -0400 (EDT)
+	id 54BB56B008A; Tue, 28 Apr 2026 03:06:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4A0D6B0092; Tue, 28 Apr 2026 03:06:24 -0400 (EDT)
+	id 523396B008C; Tue, 28 Apr 2026 03:06:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5FEC6B0093; Tue, 28 Apr 2026 03:06:24 -0400 (EDT)
+	id 4604C6B0092; Tue, 28 Apr 2026 03:06:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C6CBC6B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:06:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79BCBA040D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:06:24 +0000 (UTC)
-X-FDA: 84707081088.23.4BD053D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C59838000B
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:06:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aEyfOAJ0;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 356246B008A
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:06:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D37898BE5E
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:06:38 +0000 (UTC)
+X-FDA: 84707081676.08.4973CEC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 20EE320012
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:06:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YHP11C4p;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777359982;
+	s=arc-20220608; t=1777359997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mOJcoG3zvYmum0jODQCqWFsME7nvodkfLEQpQRn1UWg=;
-	b=MuTE7Ktn+7zLha0s4PQSzk94Z4jQYjuAQXJ0D3kzWqyRtOZD9LcGCTFlxYQFLUnw31ZpmY
-	Q60+F7zojsAAQBzmBURLqmqiWsu7CWJALQGPRhH97VihAkJRfnqvxVMkyRkcNmxSotg84z
-	iHRneqZivMSzmicILZWNIhMZzrT5sqg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777359982; a=rsa-sha256;
+	bh=ugKPT3dFXN0JQbPmNQ4wIwkZSWZLGY/HgU+sxJALhB0=;
+	b=hQuWkw6xke+nMJ3Pt5r5700ttXESCZw00oTg9QkjmSb1QjePko0Ut8Av5U+wx2gXlILmRy
+	l+tAvhvIV1NdaFjo0qYq2bTHPrCyihKAZY5C2j1J4POv6sOEqyT9WxNqIwS2XjKhaxvRYb
+	In/gCFSG09KkWY87mJHrWA5W0pGHNPo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777359997; a=rsa-sha256;
 	cv=none;
-	b=kuVeZzVcmOWaL6ntU+3GpEDVIjoM7Ayhhn3el3Wy2vaIJ/7g8G3CIsplZgIDX9NJCXrdof
-	Bc8aL/K4z62r1ZdeI1NBSfK41BSXIKuKO/YAOugjOtjY/4tyQ2M1v0/qqUchaZFZPxeNC7
-	AmOtXN1sx8d8GVwDGpN5cvrmbCgBtGM=
+	b=vhcVperDq19vsAKcevv6jUP2aQ0pXTlq1F855d29xk1FnqoXxgGAN+kKBvmp7rFMH9x+3d
+	xSy67FodSCeGz2DEJv+SQHuQcy6uqTMPL/eNrsHZOCpDBPBIwhV867q+301poq4qrOEsfn
+	deubW3uxsr5EmQsJK3Ug8ii2P640NYE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aEyfOAJ0;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YHP11C4p;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5815960133;
-	Tue, 28 Apr 2026 07:06:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765AAC2BCAF;
-	Tue, 28 Apr 2026 07:06:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2A87A41AF5;
+	Tue, 28 Apr 2026 07:06:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6B5C2BCB6;
+	Tue, 28 Apr 2026 07:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777359982;
-	bh=WMCSp2ANSc4rzWe/QHswbhY2Nx6MR99VRyVaYQXiNX8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aEyfOAJ0gD3wAl9oC0a8NTWIbaNvFiVVSppPD+t2m6hrhSKnzBmAIBcBWFxEJhM24
-	 moMFkwtxtrLzGEFreyfwnwjsGROFT2hMMf1wFHHKybyhXCJqTMz9Ox+RPVBkeUoxHc
-	 8ArQ8tN+CorcLAQVvwhsY2QQ3Wy+bk0kKfnEiK2L88LlOJmKHN253HUYT2HdtuVlB8
-	 DO5WoBc+LKdxkwHVV2JEyyZsvozErLyWDK49Vd7JGTqHJziEhrw+cora0uBHW3jgO6
-	 biWyUQ5XO9gsCKE8iMnRuQsxsdEbO9dzBOj1etJGvui47LAz/qkRaLXa5mpJZupysK
-	 qU2G9oVXQ6l2g==
-Message-ID: <b0243130-dd6c-4c9f-bbc2-7458aa0615c9@kernel.org>
-Date: Tue, 28 Apr 2026 09:06:14 +0200
+	s=k20201202; t=1777359996;
+	bh=AmZrrVrVvG/hI74hQkTxsZH0QSUjw9p1a/uNen2G+Ek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YHP11C4pRdasJf8eSkFixOJZscPHF3WGc1114N0tgEsBPJ41Xd0z6h9TjAFYnbvJM
+	 6y8Wf+ohZ5wiNa0HQkT7ae1lo345jSHffVXCEOCCoRBCT5GpReFRA9X1M71HtFJvif
+	 P17JyJzUyh8L8A2gSfyGDFLC0cOB+EAkIBe4ctFiXmd7ySQsCFQ0tPNHTyjQqHyvSE
+	 QC+Dn3CN1GUu2FBGysCWCgwEC5OV9JpLUbiC9jdgbFEEtkzn24mKdzqu86utR2iMkO
+	 PMRH5C3TOy9b/2AdjexXKjybnzLB5eFGdshOg490dVsPabUWLRggSLBL6eWPkkuC+6
+	 5D2C2UsDkrI0w==
+Date: Tue, 28 Apr 2026 09:06:26 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 10/49] mm: move subsection_map_init() into sparse_init()
+Message-ID: <afBcckUTQt-7xPPN@kernel.org>
+References: <20260405125240.2558577-1-songmuchun@bytedance.com>
+ <20260405125240.2558577-11-songmuchun@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/page_alloc: replace kernel_init_pages() with batch
- page clearing
-To: "Salunke, Hrushikesh" <hsalunke@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rkodsara@amd.com, bharata@amd.com,
- ankur.a.arora@oracle.com, shivankg@amd.com
-References: <20260422102729.166599-1-hsalunke@amd.com>
- <20260423041249.156eb95889696ccfaf23dca1@linux-foundation.org>
- <ef5ad58f-0641-4017-a199-defd25430bed@amd.com>
- <1253ca14-69de-418f-8f94-b08e8105e924@kernel.org>
- <f75e03ce-68d1-474a-9b85-157f73af48dc@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <f75e03ce-68d1-474a-9b85-157f73af48dc@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C59838000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260405125240.2558577-11-songmuchun@bytedance.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 20EE320012
+X-Stat-Signature: dq5tbjfhp4ptrddhddkfydwu6hyjupm7
 X-Rspam-User: 
-X-Stat-Signature: 9wphfa74kqzyfpcwgfon4bk81r99uqzk
-X-HE-Tag: 1777359982-66909
-X-HE-Meta: U2FsdGVkX1/vE+uxoUUuHr+sbi/L8bGSI7lbumQYoQyEE4YlpsLnhp3NM3h+NjkZM/sVHW0uB+Btwnvld4Wh3Hd8S1w9YKwk1vh+0zzCUjSc63mBmICqhaQ0TRGRC7ZB+7eFzRggGxckT5zj/BomKMNMVct/XU99SNzhIueHjtCj937Z4/PJXySde1hX3zwnroeGBQvL3heOT8Y6XIltNoi1nlL3CTq7q1u+gx42xpq87+SRzGVxRDhlQTgNdivjn5V1GPmvbkAJ3mgXHmpZneFTDf7IRL9JnEviUbhOz3AXywAfVJBLGMGicvatTQ8XxcKpRWWszETMLMEv95K1YtliCUyTmOlIxpv5EcPCjinBRDcN5/0sqz7HbVG4UduQEYtMvukmdo3THRMoNfNSG/wtLTrkmSNj2O2V1OR4o8RRXtaCijFxGJ9w83nCxqzCOns5RZj3f4WSIa8BpkeRab4mjn720egYtjTltzeJuXuk+QZG/uxncCn7BV8BXlaE6Mk/BX0hdhgC4YN+Xg4GSXm4eoUoS3TiXwaD/MaqU1ONXY1xdBW1rqVpfIylkyQ2MAymXGIe4sha80se1b7T9n5X33o3lw6O68YAXYm6fjWLu/rawzdS25AaOYtzXhWeoni3GDRlaTsb5KWrJ9YdA8nMHDe7FlcNYNPogRwD0/HDKjfHqRrtw5/xQHj6zwxbqLGaQSYHn7FGrzFnH2LPmvy/hNs0rq4eHijM2sT9xCgYfrqFc0T+TwYEBs8PzErdP9+AG5F1Q4tbpincLzkPhulV16mlMHANAPWsqQgfQA8YcAK2XY0ORHSIBpttpD2j+mjWgc9qdnCKgpuXSPiFNhV6cko2RZ343tr9tn4sdDViNebl0tOxjwnf1HeuVuzwNkcmbJRoFACZs+1oWtel9S/F3uSfZlg7/r2mdv29rS4Heoz2BfnNz+EAVATK+31j1D7ht06dByVNyLWL1Xv
- zJ/wRhio
- 1J0HVnMmycL8gRTEfwPXbvxZYP2GpQ9eFJ06rqyul3FBXfjBCA5vYouX90dle0NWzB5jgzBnJ2xXQFsEI5UZRkgy1YdaJDk7k9oHX0Q8C5JVAeqNE85GdZrqkS8qWrddRfJwJv0gADmudS6ESTLWcwXg06YRL5hjbb1dHwDAlUcD1+SoZ8PbkNIDgNS0YdJm/vC5xcfCQmjvz1y2Mj/uth0NfeUgeD7CNTtBqHX3JXt/c1lerJiehL2oJz8+deLFuaYnhnDcrMmha2YwgtRDWwOHjgguomidO+DQxPGbng4T0O73paSmmQ0Hkjg==
+X-HE-Tag: 1777359996-631764
+X-HE-Meta: U2FsdGVkX18ARpzSZjfMVR9Qgx5BI4TmyzFFJDk0J8lhTdT1vJ2SyMClcz9X/KI+OJC7X5sUh6VKjTslZHwpFyAbxmHjEQX7smQGyT8XRGK3qoi9wt5L986p4jl8PqP6gtuDKUCkwOP98Xhv4DMmJCGKezLcgLbwXk7bxzaM7lh1uE6HfcKUQCEmrmhXEVldT3H+iGuUyu+admcDGpD+HmnT3+fBm3OaQkjZFU1rSX/k+TrnnC/HhYtBPdlD7FuxChlzGleJVq2TsuLQgkcTbvO4dYH28QHBGsTAdMWN3cf0KSCR/7ycXP2JxJhZiSPQ4iuE1Pr3U0mCl19jCdPn2vFCSclii/VcHArr29XFpGf49ddtNxGcgo22vknMyl8hMJsqR9R2kT7fYPKH3HnIp9sPcOWMAof7Yh/3v2imJ1/LBWqyTXzxkrNcmYxsQvgO/ahF4xx3mV/EYArdUTCafbVO28fKcvvS581Xe/j2hEfQyTdmxhFPWV/mI4BsQtz74snjuLnl9XKhLQHqsmjHE8GQq+CNkzqdFsrgj/auLvuv9Jl49ovcCJrm+cJYOuubvW06hmFXeo9C2WJcwimxfVTaNBEPMcTz4ct3MoOfdyMt6BkTgRlFy7NawKV022UyHMxcqc0JcQkdXN5C+m82QESzTqY0KuQMW7ZizvDcgnwNk9YbJFptFd9oD1vgL52xfahxIUg6x/xqEuW3Dz4b0TBy41Y3rtO02nkTvcMTctUN3yBmZzlAvrKLvRbUGrYlh5kqrj94gOcifcPFMgbcAzFjzMuiS1GPMduvwdPWTRHjah+BniK5FLfoA6K0P+BXOMrQZFAa6/mEO4Bbbh25sF/x5DOwAcaOcy6/+Q6kQgTfNBBijgFcY1mkZVWx+JE0/AiMKephLEeeksh5Gypo8SsLlnjaLdAveXM0VYqyjWsH5VDxj+Xg0erSRHxgsv7Ej4BieRPk6EizElwigIG
+ AcnjGKQc
+ TCQpmRRbM5IHA+X/1m1UjawEBEgaQWk8ORCfHwSkDJ3v3VloYy/yYV+GIWgxGMPCCljkziR1JAklsrgnhUAynebBmt4N2tkDUskestUTvXWDIVD8ZJ5vD70pQeNmu30Q60G+puM96zzPH8dpAOCdTQRfwAb9kdkAFP+L0fmDmWob3DcutrbrnKtJxVJlE9689/g8DZIndVugVjSJz0l4bFGszENlmhYk5hLTkkaAUKKvBMOuO+k4Q7k8ss6FBtAKbqAK2r3zcP/eBCiZ/3ECLbOiyyEmL8C+UxJDgpLVB4SGR/Xt8KdaRtN9McA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,46 +103,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/28/26 05:55, Salunke, Hrushikesh wrote:
+On Sun, Apr 05, 2026 at 08:52:01PM +0800, Muchun Song wrote:
+> Move the initialization of the subsection map from free_area_init()
+> into sparse_init(). This encapsulates the logic within the sparse
+> memory initialization code.
 > 
-> On 24-04-2026 14:22, David Hildenbrand (Arm) wrote:
->> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
->>
->>
->> On 4/24/26 10:42, Salunke, Hrushikesh wrote:
->>> Hi Andrew,
->>>
->>> The idea was to keep it alongside clear_highpage_kasan_tagged() as its
->>> batch counterpart, but currently it is only used by page_alloc.c.
->> Right.
->>
->> Looking at init_vmalloc_pages(), I wonder if it could also benefit from batching
->> if we find that pages are actually contiguous.
->>
->> That would require looking up multiple pages at once. vmalloc_to_pages() or sth
->> like that. Surely, doing such an optimized page table walk could be beneficial
->> by itself.
-> 
-> Interesting idea. For the general case where we only have struct page
-> pointers, we'd need physical contiguity detection and a batched page
-> table walk as you described. But looking at init_vmalloc_pages() 
-> specifically, it already has the vmalloc virtual address which is 
-> contiguous, so can we just do following and potentially skip the 
-> vmalloc_to_page() walk entirely:
-> 
-> clear_pages(kasan_reset_tag((void *)start), size >> PAGE_SHIFT);
-> 
-> What do you think? would this simpler approach work
-> , or am I missing something?
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Good question. :)
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-That way you'd be operating on the vmalloc address range, not on the direct map.
+> ---
+>  mm/internal.h       |  5 ++---
+>  mm/mm_init.c        | 10 ++--------
+>  mm/sparse-vmemmap.c | 11 ++++++++++-
+>  mm/sparse.c         |  1 +
+>  4 files changed, 15 insertions(+), 12 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index edb1c04d0617..d70075d0e788 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1004,10 +1004,9 @@ static inline void sparse_init(void) {}
+>   * mm/sparse-vmemmap.c
+>   */
+>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+> -void sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages);
+> +void sparse_init_subsection_map(void);
+>  #else
+> -static inline void sparse_init_subsection_map(unsigned long pfn,
+> -		unsigned long nr_pages)
+> +static inline void sparse_init_subsection_map(void)
+>  {
+>  }
+>  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
 
-Is the vmalloc address range guaranteed to be writable at that point?
+I side note: we might want to split out mm/sparse.h and also move some
+declarations from include/linux/mmzone.h there.
+
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index a92c5053f63d..5ca4503e7622 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1857,18 +1857,12 @@ static void __init free_area_init(void)
+>  			       (u64)zone_movable_pfn[i] << PAGE_SHIFT);
+>  	}
+>  
+> -	/*
+> -	 * Print out the early node map, and initialize the
+> -	 * subsection-map relative to active online memory ranges to
+> -	 * enable future "sub-section" extensions of the memory map.
+> -	 */
+> +	/* Print out the early node map. */
+>  	pr_info("Early memory node ranges\n");
+> -	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
+> +	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid)
+>  		pr_info("  node %3d: [mem %#018Lx-%#018Lx]\n", nid,
+>  			(u64)start_pfn << PAGE_SHIFT,
+>  			((u64)end_pfn << PAGE_SHIFT) - 1);
+> -		sparse_init_subsection_map(start_pfn, end_pfn - start_pfn);
+> -	}
+>  
+>  	/* Initialise every node */
+>  	mminit_verify_pageflags_layout();
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index 0ee03db0b22f..b7201c235419 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -603,7 +603,7 @@ static void subsection_mask_set(unsigned long *map, unsigned long pfn,
+>  	bitmap_set(map, idx, end - idx + 1);
+>  }
+>  
+> -void __init sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages)
+> +static void __init sparse_init_subsection_map_range(unsigned long pfn, unsigned long nr_pages)
+>  {
+>  	int end_sec_nr = pfn_to_section_nr(pfn + nr_pages - 1);
+>  	unsigned long nr, start_sec_nr = pfn_to_section_nr(pfn);
+> @@ -626,6 +626,15 @@ void __init sparse_init_subsection_map(unsigned long pfn, unsigned long nr_pages
+>  	}
+>  }
+>  
+> +void __init sparse_init_subsection_map(void)
+> +{
+> +	int i, nid;
+> +	unsigned long start, end;
+> +
+> +	for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, &nid)
+> +		sparse_init_subsection_map_range(start, end - start);
+> +}
+> +
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+>  
+>  /* Mark all memory sections within the pfn range as online */
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index 5c12b979a618..c7f91dc2e5b5 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -424,5 +424,6 @@ void __init sparse_init(void)
+>  	}
+>  	/* cover the last node */
+>  	sparse_init_nid(nid_begin, pnum_begin, pnum_end, map_count);
+> +	sparse_init_subsection_map();
+>  	vmemmap_populate_print_last();
+>  }
+> -- 
+> 2.20.1
+> 
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
