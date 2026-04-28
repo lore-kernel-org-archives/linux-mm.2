@@ -4,113 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53892FF886D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:31:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A105FF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 19:33:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A3DA6B0005; Tue, 28 Apr 2026 15:31:10 -0400 (EDT)
+	id 9FA086B0005; Tue, 28 Apr 2026 15:33:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 254716B008A; Tue, 28 Apr 2026 15:31:10 -0400 (EDT)
+	id 9AAFF6B008A; Tue, 28 Apr 2026 15:33:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16A786B008C; Tue, 28 Apr 2026 15:31:10 -0400 (EDT)
+	id 8998F6B008C; Tue, 28 Apr 2026 15:33:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 036066B0005
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:31:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C4721B7F03
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:31:09 +0000 (UTC)
-X-FDA: 84708957858.06.66F952E
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf13.hostedemail.com (Postfix) with ESMTP id ADCD620015
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:31:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=TGq74CHL;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 76F616B0005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 15:33:40 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D27814044B
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:33:39 +0000 (UTC)
+X-FDA: 84708964158.01.040E214
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1496516000B
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:33:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZ8aABjZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777404667;
+	s=arc-20220608; t=1777404818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SAI8x2/bEv74FJXz3oAJzkvQVs+0CkcEMU6FT3AZkn4=;
-	b=5Uj6TIVlQ7cLPNo2PAVu3uJb3HDENd0RnrZy0wV4wWI0D2IoSRbDwpp7335JKCQcpvaC3o
-	/gwIIv5bTqMs58+OfSZE7hYM6+BT0P9QyyPwBuMcIt6YzmPFk0RtC/huTF1Vvcyj9eGFDp
-	3XSv0XzQnSEWU9h8k6TiTrV1SP/EQek=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=TGq74CHL;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777404667; a=rsa-sha256;
+	bh=IdWcdkfbQtgOrK5kRPxuP1O1GqT9/q1+MX844+UNjXQ=;
+	b=wwXacG2FvQ14mMVWMUq/6Ixl3rq9c0UUg2SnA6HDVmHR4IIty79+6yZ8XMuJcRMhhRH0yk
+	7AvefJ7uv11OtudaXdCimSQzdI8tNzsUgc0uClbp6JQs+vEWpPoPapWQbc4cs+495kPpiS
+	OloPf49xJUXBQNRLvsOh8ZtuLmHN6wk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777404818; a=rsa-sha256;
 	cv=none;
-	b=2X1CxPvkg8hV+fKaqsQLTyf5WpgMMEZEaAfRNLaGBc/KOHXecJ7xAf7PsTmRqDanyDjGPi
-	1dzX9l4El7mFOutmC9lGqS1pGsTBY//DD+74kvvU76MBfHvs6KPwG+2qGdj+adLj7Q1w4M
-	kSrvEeW22VnnvigvkB5j6mQ00R1ECzw=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8cbc593a67aso1071117585a.2
-        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:31:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1777404667; x=1778009467; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SAI8x2/bEv74FJXz3oAJzkvQVs+0CkcEMU6FT3AZkn4=;
-        b=TGq74CHL9dQvMzkMe3qG7ZadrBKCeIldp8qkqMl1ESPukAg8trALRNv64YE0FFfjRU
-         Cz+/T4cxIUeuU7ASXQ6vRPcKHuLomHfbceTVgJjUgbYucGbC8eftLPwcsFdP/KyMPWIl
-         u2DHuFn7rklDW9v/M+47rZP+Ai3pvbseBfMxnHNGdPIdGJ8pl5h+mzUSjWV1VpbiPih0
-         T7PhQor1RcwyKPqfSs7BDcRKdBhl4LlmY++vJ3TPghxAhlmIfFtAKRp0Qml0+80Y6mIj
-         OrphnmriWDcx5Hf+vFpnq1ISvRYND1raebC+cODdFqqwOuzdusLu6Ae5imfmyC6/atpV
-         +hLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777404667; x=1778009467;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SAI8x2/bEv74FJXz3oAJzkvQVs+0CkcEMU6FT3AZkn4=;
-        b=MCvY/5GC6WOSnurD+W/O2lah/BSu6ONfr0olH2rCuexniHEJcLsWZ8abWXuU5Uhfog
-         md1WnF2je6H4J1tzA37l1NfnG0+Otscs7U57pmf9Bb8S7kRgzt4LdR9Y3l+bNWZEB0nr
-         9CLXg/mAAhRQiOBxTxJaK+G59wLLUKnKmPj8e0fuGATuPM8wk9HQpZPZxzONptXEJLC0
-         l0xsE4Y3w93cpetJMF74cJR5XHiAm0lmfivJ1pw5C7pp7c2DLSmnaxsegixg+vUpLVLt
-         CH94aHR0IeVFcl+Vx3Smz9MGeH9xt123M+kYMIGrTPx6QTRMc0ovSzteyGe6oEBN0Ylv
-         8hYw==
-X-Forwarded-Encrypted: i=1; AFNElJ/Yjsx1OetZYP96zeKUQ4CYgAzfFiuCPksWKPcXriLv3NtZMpCcTbDynAtHtnNcfJCXm5NEHfQTnA==@kvack.org
-X-Gm-Message-State: AOJu0YymXL6jEHQ/65j35z8+0QSVWV5I4H0py32tA3aQ/DF3Bh0GMtvU
-	vFEvYPFYzADCUvu+x09vIUbjrg2ca+N6jMXHXu78d1TOpxCIMf562TULh0d4ciRXZuw=
-X-Gm-Gg: AeBDietTN/JRbd1cpl8vVrDh1mbdjA5qrSse6Bsz0CHsIF4PQAFa0eIFFRs08vB6UYc
-	7u7BOmEupll/XbKc8T41nHJyEI2f/puM1x0P3/UorzfdWoQumkwEP419iK5zFDKaULOhRFwpuAC
-	L58zGp+G4amwNjFReJ1ikUpcwA4o0KdsCcNE2yHdgL6ynz5qVvwj7BMrIlSYbK8alsYp9c9K4sv
-	S5jQ5/XXBxI6tpcP7fNuZ0P2m2xg9gjuoHqUSJYRoq+BtqL38s/eXIHOtZ7dovGAjWyJbhiQYoT
-	BzWLXcISTaiUH+QR1cuIb18HVpWZ0MBUjZrOQm/cO41k+tko/D0s+Y5BglLEl59GFBEQMTxwRBi
-	ZOwUvOZSbi43zgffWc/5gb5VHhXQ27f9lEEYHSbaoCisvVd+TkcTETtwEGTHcWCgOhSSPAdV5KA
-	0XalEtnt4QN+iaq89wMJwSp3ixappZgILTUslvNxkljESnWQ0egclVzN8M8E6TSg==
-X-Received: by 2002:a05:620a:46a2:b0:8cf:d62a:c81d with SMTP id af79cd13be357-8f7d9201d94mr664574885a.29.1777404666489;
-        Tue, 28 Apr 2026 12:31:06 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c85a8eb1sm260640585a.41.2026.04.28.12.31.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 12:31:05 -0700 (PDT)
-Date: Tue, 28 Apr 2026 19:31:04 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/6] selftests/liveupdate: add memfd tests
-Message-ID: <afEKfQ0GUNVJ76a1@plex>
-References: <20260404102452.4091740-1-pratyush@kernel.org>
+	b=M5I2SSlNdKKxwDv53iOLn17wehsT75JB+ne76ufPHpRm3h3SfuxI9bt1SOStdwAeE4/yy5
+	wJL050rXACNfrsCXNPV4p4ys55xfHoyGadRhQUXzwYqD76w8LgWdAhhQ1tLDykl05YVbUp
+	DJX7Ldw+Lze2w/d6BTIqrEhMXLtBN6o=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZ8aABjZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 669BA6111B;
+	Tue, 28 Apr 2026 19:33:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94407C2BCAF;
+	Tue, 28 Apr 2026 19:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777404817;
+	bh=VLzZDlhUCjBp/Nb1caKL1anemS6oS0IdafC7tiw5lCI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LZ8aABjZLZBoaIB3KNlFtnaAYmCmmIx6F9Ms4tI8qpSPUWLLveN5TmiQgm+48wZRW
+	 J/BWRiGsWEeAOSgZ5JHuK+pffj68Ehj+5sqr8mfte2FL9CK47tt7A7sxB6u5au+b+f
+	 EwsmzWuUg+o1u1Uq/O8YUysyqnSiSD5BsqaNzB5HANxwoIcTOmjHLyEy6zQBTSf04N
+	 3zU/gZsZUZJc6KX5wSOn+4pcZnPAH5wtwIyxXombYbOY2VEyTEFfsoQYFVZw15Fum1
+	 2PZFiVS9T8OPv7B9Imad5MJ6DdnCzt7ZpuzOwbpDwQEhPH73wT71V0Az1SPH7bKJjR
+	 eJTN2+QmB5Mbg==
+Message-ID: <da60cc10-53ae-4f09-948b-c8c9f42d822e@kernel.org>
+Date: Tue, 28 Apr 2026 21:33:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260404102452.4091740-1-pratyush@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] Accelerate page migration with batch copying and
+ hardware offload
+To: "Garg, Shivank" <shivankg@amd.com>, akpm@linux-foundation.org
+Cc: kinseyho@google.com, weixugc@google.com, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com,
+ rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
+ rientjes@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+ dave.hansen@intel.com, hannes@cmpxchg.org, jhubbard@nvidia.com,
+ peterx@redhat.com, riel@surriel.com, shakeel.butt@linux.dev,
+ stalexan@redhat.com, tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org,
+ aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com,
+ djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <cca382ca-861e-4bfd-a628-45a5505b8b31@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <cca382ca-861e-4bfd-a628-45a5505b8b31@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1496516000B
+X-Stat-Signature: 3k67wikk9173munp1qd1scf1pw54skej
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ADCD620015
-X-Stat-Signature: z35aoeju5ecoprmtmkk8tq9oqjatqs3e
-X-HE-Tag: 1777404667-601507
-X-HE-Meta: U2FsdGVkX19/9o4V8F8z+XZrWua52UJU6ST7sTnNfn0UBgd4/r1QQG3izGgMdULej4gJJm8XsAWCUV+X/5naBq4+n64t/CD2QhCOL1rrXbDtU1x3XvUbOd48ItRPLPRrfb1srBKxCRt8Sr9+Mk+2JOjsGdUak2Zw9X1y/15Jmfj5M7o4qGjNJ2scm5xlMAmG8KmJQJPbLZNAiJYCbVrBHfabe/6GPnzaYfJMooIc1/0ry1FRqvtTXXWoGfjQNYwVEM4gis7s6t7OiEDs7E0FNO04FSD3QnNoeRKGhrPe1K5hbMGmeBPVTFMPgzsj85pR1+LwwQZUYokY/yEeGHGTr8PiHqMwnZmMnbps0QCF1lgv3ucPwDwBBo4Bd70YqW5Ym8ATnMloNbl5kT1b3s3u3or6VW9+zlk4SdvGpBoJnKRH3dX2emRi638tT9ZGXRhuJop1kkZfi68Q9FkGOdX0oQEpCVDdOAEiLAORAk4Y8B8A58gwyx8oFsG3L1ZN/LGOcSlir8qowq6+uP3DXoB/TCfFdwYuhuhJaKIp9nskMh5tKezGJKYHVGIzGnLXBGGvGmtcp3N1yAQoBL7lCSrgC6paZ11jUUL8TNcUTffTnEqUXX6BybsGkiwa88hNHzvKBgpMFNlg7eiqelv9dhWPXZYDMPuheKMF5LSPW+nVVRkVLXfuCExg5NLyqPXi78C85jOTW/Hq3zN5jQs0rxP2mle3B0WziQxNfw7IuU4G5kKXSszZizPyR101Udm0bKHIsUH4Ow8tNZ/R+uTTl6+tvIzIdmnNXNdYKSOedZMVhJApRNRMv04z9hIOFhOx9DxV8NnxIOrVM4ZL4TGToWlfcVpBZ2u6FcbmXnOF5r0RTMeWkfk6exD5uSgk63NoeAaHklSnORRMK4WOzwnvZwQKdJ7bNBZYIxfitw3bY7odEDCNfMpIBLhjM/CkxlB5/Ibnv1RJRkV6ut1RpJ5GD4W
- +P8yga35
- k/TLZplSempjJVhx6BapZxRtWXy1bxmtFWIg+WleXVjpyl+WueQGn1n2K2daQeu58RkOSN32mQFLhFzN7FiJiw1bmnDkD4/IlL1FRmqHhVua6opK+MdXQKDEqq6jM3CXSteejlRfpTPERpCBBYC10FLsz99r3vdqMXLYJ3CFCKCwlXM4Bp85QbXZqAGfrTxPXf4wGzE5R6X8XS0YZO3b+9GM7fVcrahoCDEne/UAruOqo2w347MotPz5G1DITLyoWt36AXIGmrhWLaIbH0xJy6TUaguq53F9PbWa/JjYiJ0RS2hPAZE9WnTGnAmWQPYGBssBfrEAvHIt/26Ck7uG46lKh5hZCAb7hp1d+yDrDAgOQPy/AiKTHqo88WMIPqaXo/wAehiPCSxM2QkU=
+X-HE-Tag: 1777404817-842252
+X-HE-Meta: U2FsdGVkX1/PF43q440wSjs7ahs/9wForISjfUiyZKqCTvRA2HqyEp3D1WRtLE+eSbNaNcxIr3DYRHUfd0hiUw43Lx3z3LVb1O3j9AqDI4pJaEflexYAr55PSFsKHhBhiMMaNm20bXCBpr9AYcxiWbhW9X7OPbRh3zmaBF3T55Ckrgsq3ZVS2GD+cSvRnSOJR8QKX+4gvfCW8VplbpL6LFpqJcXppIr0MRvFqddb2uQOSEKkETEs1fjye8webXbGjdmnSxGdZ8FGOFUeG/b4VBeUOIH624xpLd9+wTgcrzIE1Yy1x1dpWDpSkFcnzc1s6rwII1U68lQx3LH9yeKR5b1H79H8KRU2yXmGcjIQtXjxhAwfA86ovfpI34tnSSrnJwkskCVfMdfAUuLA5Qq+9QXvwGI1mgSsqRXsu651X12kJkyU+OX3uJ4uirEJWBXmFEZEBG76VkV3x4r+AQESV1okSBFDiBYJXeMHFbEgAKczzX34Nk99Ebr1w/tUINBDHfl4tkLw042SfmTeOBHxNvWSQkM4VUA4wkbACUWV1bjRL/h9qDMkQdsyeqx2c3EoqdBr4qap4ocNjq7Aviz8d85sGRi4TIZO/1o3wR34joH4GLhWFjRCHMa+VljATQZfBD3tBxquuqpPvHWNA9I2Fjjn8xAfFwX+BMH3srZNVhcolxbQ0vclOdMM9uiIxqemM9ZYSj+zVsTepKFbwNeegvk9TP/3+fjb4Ta7JAkIKZtCwUGDVBRV/+8A+HcLMgsskvruhfm1tyvuhm1w5B86VDua7SR8vVxPIJYD+W9BKSy7Y6+L59Mo156fovBtokDR6LuKTW6dV3LRfdG0N/cuX7I1uCdUnodLUPHpPkX0C8KLWAcfDnvq7moGBP0DdJMxY+MF+uEEeHG+NFCJKBjqvFa2IwUkHwB0enRAwkVzqeyi6xMh1LFPcHLFRG/eYL2WhrH7hbi+Ad/UTBCdOzc
+ W7P2uQje
+ sbXXrqKZhN04/Vq6RTIY8TEs0UGuX3iz51PLHuJn/F6rMHE+eFyHwA19r2y9RXpRcS20v5sGZcz3a6VczXdIa2o5BVtvvy/ho5zpWJvgwiiwUkD+iRkXoR8Fjk63E9h3k9u+pRIgKIEO49vr6V147R3/yG9Y9fjTJq/UU4jig2esP5qQePbopwPZfvYSso6RxR+pUKwaLaPCIlRTnMftSyWtz/txIZlofpiuCoMLUjK4KFAhbMztJVVNJCGpSuJs8pDeYE5P95Q93fPecUb6OOoSB5o1AJ9eTEZH2QcspZjXd288Bp+dQmRUmFSojVgGJFSxvQxbClvfIkTk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,149 +150,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-04 10:24, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On 4/28/26 19:11, Garg, Shivank wrote:
+> Hi all,
 > 
-> Hi,
+> Apologies. The subject prefix should have been [RFC PATCH v5 0/7].
 > 
-> This series adds some tests for memfd preservation across a live update.
-> Currently memfd is only tested indirectly via luo_kexec_simple or
-> luo_multi_session. Add a dedicated test suite for it.
-> 
-> Patches 1 and 2 are preparatory, adding base framework and helpers, and
-> the other patches each add a test. Some of the code is taken from the
-> libluo patches [0] I sent a while ago.
-> 
-> [0] https://lore.kernel.org/linux-mm/20250723144649.1696299-33-pasha.tatashin@soleen.com/
+> This is the fifth RFC, as mentioned in the cover letter, but I
+> missed the prefix while formatting the patches. Please treat this
+> round as RFC v5.
 
-Here are few observations that I noticed when I tried to run your tests:
+Ever since I switched to b4 for patch management, the quality of my life improved :)
 
-1. The '-h' tells you nothing about --stage argument:
+$ b4 prep -n SERIES -f mm/mm-unstable
+$ b4 prep --set-prefixes RFC
+... add patches
+$ b4 prep --auto-to-cc
+$ b4 prep --edit-cover
+$ b4 send  --no-sign
 
-root@liveupdate-vm:~/liveupdate# ./luo_memfd -h
-Usage: ./luo_memfd [-h|-l|-d] [-t|-T|-v|-V|-f|-F|-r name]
-	-h       print help
-	-l       list all tests
-	-d       enable debug prints
+-- 
+Cheers,
 
-	-t name  include test
-	-T name  exclude test
-	-v name  include variant
-	-V name  exclude variant
-	-f name  include fixture
-	-F name  exclude fixture
-	-r name  run specified test
-	...
-
-2. '-l' does not work after you run stage1, do you keep /dev/liveupdate 
-open? That is not needed, we only need to keep session open.
-
-root@liveupdate-vm:~/liveupdate# ./luo_memfd -l
-1..0 # SKIP Failed to open /dev/liveupdate (Device or resource busy) device. Is LUO enabled?
-
-3. Stage 1 has proper [STAGE 1] prefix, but no [STAGE 2] prefix for 
-stage 2:
-# Starting 4 tests from 1 test cases.
-#  RUN           global.memfd_data ...
-# [STAGE 1] Forking persistent child to hold sessions...
-# [STAGE 1] Child PID: 245. Resources are pinned.
-# [STAGE 1] You may now perform kexec reboot.
-#            OK  global.memfd_data
-ok 1 global.memfd_data
-#  RUN           global.zero_memfd ...
-# [STAGE 1] Forking persistent child to hold sessions...
-# [STAGE 1] Child PID: 247. Resources are pinned.
-# [STAGE 1] You may now perform kexec reboot.
-#            OK  global.zero_memfd
-ok 2 global.zero_memfd
-#  RUN           global.preserved_ops ...
-#            OK  global.preserved_ops
-ok 3 global.preserved_ops
-#  RUN           global.fallocate_memfd ...
-# [STAGE 1] Forking persistent child to hold sessions...
-# [STAGE 1] Child PID: 250. Resources are pinned.
-# [STAGE 1] You may now perform kexec reboot.
-#            OK  global.fallocate_memfd
-ok 4 global.fallocate_memfd
-# PASSED: 4 / 4 tests passed.
-# Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-./do_kexec
-
-root@liveupdate-vm:~/liveupdate# ./luo_memfd
-TAP version 13
-1..4
-# Starting 4 tests from 1 test cases.
-#  RUN           global.memfd_data ...
-#            OK  global.memfd_data
-ok 1 global.memfd_data
-#  RUN           global.zero_memfd ...
-#            OK  global.zero_memfd
-ok 2 global.zero_memfd
-#  RUN           global.preserved_ops ...
-#      SKIP      test only expected to run on stage 1
-#            OK  global.preserved_ops
-ok 3 global.preserved_ops # SKIP test only expected to run on stage 1
-#  RUN           global.fallocate_memfd ...
-#            OK  global.fallocate_memfd
-ok 4 global.fallocate_memfd
-# PASSED: 4 / 4 tests passed.
-# 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
-# Totals: pass:3 fail:0 xfail:0 xpass:0 skip:1 error:0
-
-4. I also do not like that we now have duplicated stage parsing code in  
-luo_test(), perhaps we should add our own  test_harness_run() variant 
-that depends on stage, and use it in both current tests, and the new 
-memfd tests.
-
-Pasha
-
-> 
-> Changes in v3:
-> - Retry on EINTR instead of giving up in read_size() and write_size().
-> - Use O_TRUNC in save_test_data().
-> - Return the value of write_size() directly in create_random_memfd(). No
->   need to check errno since write_size() already returns -errno.
-> - Save errno before calling close() in create_random_memfd() to avoid
->   overwriting the value.
-> - Use memcmp() instead of open-coding the comparison loop.
-> - Return value of test_harness_run() from main().
-> 
-> Changes in v2:
-> - Drop LIVEUPDATE_DEV since it isn't used.
-> - Split luo_fd and stage declaration on separate lines.
-> - Split all 2-stage tests into helper function for each test.
-> - Fix wording and argument order when LUO_DEVICE fails to open.
-> - Rename verify_fd_content() to verify_fd_content_read().
-> - Advance buffer pointer in {read,write}_size().
-> - Add a check to make sure current working directory is not on a tmpfs
->   mount. If so, skip the tests since saved data files will be lost.
-> - Rename RANDOM_DATA_FILE and RANDOM_DATA_FILE_FALLOCATE to
->   MEMFD_DATA_FS_COPY and FALLOCATE_DATA_FS_COPY respectively. Also
->   update the file names to reflect this naming convention.
-> - Collect R-bys.
-> 
-> Regards,
-> Pratyush Yadav
-> 
-> Pratyush Yadav (Google) (6):
->   selftests/liveupdate: add framework for memfd tests
->   selftests/liveupdate: add helper functions for memfd tests
->   selftests/liveupdate: add test for memfd content preservation
->   selftests/liveupdate: add test for zero-size memfd preservation
->   selftests/liveupdate: add test for operations on a preserved memfd
->   selftests/liveupdate: add fallocate test for memfd
-> 
->  tools/testing/selftests/liveupdate/Makefile   |   2 +
->  .../testing/selftests/liveupdate/luo_memfd.c  | 355 ++++++++++++++++++
->  .../selftests/liveupdate/luo_test_utils.c     | 191 +++++++++-
->  .../selftests/liveupdate/luo_test_utils.h     |  10 +
->  4 files changed, 557 insertions(+), 1 deletion(-)
->  create mode 100644 tools/testing/selftests/liveupdate/luo_memfd.c
-> 
-> 
-> base-commit: 98ddd87f9704ef2fc837ec2ca38877c364d8dada
-> -- 
-> 2.53.0.1213.gd9a14994de-goog
-> 
+David
 
