@@ -4,88 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDDF7FF8864
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 00:48:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57396FF8867
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 01:11:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49B876B0088; Mon, 27 Apr 2026 20:48:41 -0400 (EDT)
+	id 5F58F6B0088; Mon, 27 Apr 2026 21:11:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44B9B6B008A; Mon, 27 Apr 2026 20:48:41 -0400 (EDT)
+	id 5CD5C6B008A; Mon, 27 Apr 2026 21:11:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 361676B008C; Mon, 27 Apr 2026 20:48:41 -0400 (EDT)
+	id 50BB66B008C; Mon, 27 Apr 2026 21:11:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 221B46B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:48:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A82918B65C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:48:40 +0000 (UTC)
-X-FDA: 84706129200.08.518132E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EF1CB40003
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:48:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mFGKJMYF;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D88C6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:11:33 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B445D403B3
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:11:32 +0000 (UTC)
+X-FDA: 84706186824.30.9523C77
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1FC2E1A000C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:11:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nx9cBZLN;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777337319;
+	s=arc-20220608; t=1777338691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fP7tVmFQ1Eu6+gTMecUpbwsmg7GDJp/MwFxGAVFqKss=;
-	b=Uk9kgmvuTgMz1i8guF1rjH22k1mZl5oLsCUAjpb93jVpqL44whC80UtUoac9uMmNsA4HHY
-	VoexvTkxuLWG6MUxrKg2vJ1V8OzXm/8gY4WIvRTLaKuUWl67ULJ16uJx4OaEOZUCyWNEqh
-	ePrlFGsry417dgV4Q9kAg6E9yMsNwlg=
+	bh=VYSoSKymAO3SSGJ8r7Giy/A3clf5qUlR8ykg0323Mfw=;
+	b=hT9R6N7W2/fBeQ6PSArIiUzrxdGPTVo04hfGQDY+mWxHaDKtbIoqMNLlgMeSjd19eBPB19
+	amVW4OoKD21Putrlu6edeVOWCER7sVJ4GebEGLuzyy3mOOJMYLX29thbbzo8U+7d0LGSyq
+	qcf/kqm0RqnGqN2xk9QFYo75kQXBM2k=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mFGKJMYF;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nx9cBZLN;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777337319; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777338691; a=rsa-sha256;
 	cv=none;
-	b=wmGc8PuXtpyem/1sUOqOwQRiXcC8qd9iUPzoDpE72w1/wAGeqRWO7ROW2dlNtykYo7JWqy
-	KoadzsrsHzkhak7Z8W1SvFDLbh4WLJZ/11mIEtoElr7ws9M+zSni6eMUIue2Rx2ePI5pny
-	u8VmXceT0BzUm81l4DM0UT+cNAy0MDk=
+	b=UtE1Sj1N2UwPA8gFsU4Oq2hXsc8QjgNF54BYqae2BcBfOTwLui6Ez1OfRoR/ygINLqPjky
+	X6sYSvyIPu70YktEqrZqsgIgEofN0Dsbjicnu14FL3RBrFLSlzVDCO1ZQJKyDjFvvCNWBV
+	0IQjSqNj8Ok0ln6reK7IxbJDfvI5KFc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CD35640422;
-	Tue, 28 Apr 2026 00:48:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647B3C19425;
-	Tue, 28 Apr 2026 00:48:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0172760121;
+	Tue, 28 Apr 2026 01:11:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F56C19425;
+	Tue, 28 Apr 2026 01:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777337317;
-	bh=pd3+iRU6SOVvmr/+JRNFN6pYsH/uGBTxvrVYDB0Q7bg=;
+	s=k20201202; t=1777338689;
+	bh=0chybH7wDbE+Yxx7fnZNf/D9EykYuOuLrNTgRV+W8is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFGKJMYFVziQKMOi80meVeeySNKwaUTXjvyviT6UdDxkWOqLrFnMdcukOaOItDaMy
-	 ust66S1yRSZDX/tiS4rqrs9wnVH++NFbYgUJp0Ja6YdzUGaDuNQRxVcLk1o/xB4Nsd
-	 4rTTgQAmkxJtmvBv3jUdXNLvQYcaF6GrwEO4k7MkLvn2kZpHPIukK4iBqYFpMSGhUu
-	 BtjiPcoY++PinhReoYmA6Dnn3As6wBORzSAlL0+lOWeeR4/Iuv644svs/SEqYi6sO/
-	 YVmPUzmKTody2Ygj3Htipw2A2a+7JTS/vQdF13y/6P4CKbS6V2+bV/BjzTo3fO6NIT
-	 suyhqNfHi8u9w==
+	b=nx9cBZLNU6RhYrZt7DSdNNRGo+eHDDen6vRfRUrjaDxGmSgWrkduggNJxgtpIIplu
+	 fx0fovQZzL6DiM2k+cAiBcH0xCHq4DskyH5bQ/nBG2aqD/HFgGKJMTkEVNZDpH7Gge
+	 OSkjdb70B0n6yWErKWNmS/3ng4MLp2bDgknxaSCN2M27nJmi4uCU1zagGb9dtJU4Rd
+	 L8hu4jswqM2SOqvI6kv58dp/UEQ6/q2ECDcw4QehFRkgXDmqN0oTQVqUu0mPDRyg+m
+	 N47Wlqs7hBkKtA3ORURRcEC/mGIInrNjmtuoVGHcdhYZW10V5eRDTi4lyr+54TcmvO
+	 6PLA2yEMWAkig==
 From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+To: fujunjie <fujunjie1@qq.com>
 Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 14/19] mm/damon/sysfs: setup probes on DAMON core API parameters
-Date: Mon, 27 Apr 2026 17:48:29 -0700
-Message-ID: <20260428004830.113597-1-sj@kernel.org>
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2] mm/madvise: reject invalid process_madvise() advice for zero-length vectors
+Date: Mon, 27 Apr 2026 18:11:18 -0700
+Message-ID: <20260428011119.113840-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <d08d7ffd-8d51-474d-bf57-887e09cf1b05@huawei-partners.com>
+In-Reply-To: <tencent_BB588C2CDED859A873093DAF28B2CC1F7B0A@qq.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: wwmektio3u9kb6mk3zmatz4r1ehayo13
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1FC2E1A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EF1CB40003
-X-Stat-Signature: akoaz5b4kq5cfppk9ccyu15y68guh6ey
-X-HE-Tag: 1777337318-70740
-X-HE-Meta: U2FsdGVkX18zxEDKjwClmTKJvK2BO1sCui2rISslsYhMbBPz+MIyhNNVDjtd9TN3LvfASCu8VLvi7ymqj/oMtvbw18vapCNhvf3oNsmii5SpIT06A5x6e0Hje2q3VSGsBK8aaalwvbUiScOCUOVUF+RzjOYMbflcCTGFBLb0y+JLDeNU3My4zaZAY1G3f8r6hRKaYT0LOxB+ZhQyIhjr9H7S5liagWf1VazKSzVCx9+H8FvzE7VAV+kz6H9y8T96YJuUnvBLhjy2ov3H6bXxAtDQ806244Tnz0R8G9zRAS+x32BBNz5XZUk1dkGqULrAqXNj0aGZMDxIWbAmZ0YwHgIboNQLY2VMwE7UeoTK2XVhFnjA49onywX74N7HaIBbF/nLCA5NqpitfO4uYJBNEFQzXBUFDxR0S1FXW99oXWWIi2JL619LzL7Bihe4agZC1CWDP/huvm51m4ZDytN6qnzmKY7BqNAnJZdxCScJBPak70E37RbUl4Vu7X/Cfp7cg2w1hqy6yjU1WFqWrwAM+T7qjhij3dH2DcgIbUUdvLrSM3U+Y0FxIGjZ0OM2p5NFo5dJqNbzg1AHUAC/qo4DbbxG/Q9XMOo3RlZVGsHN+oOD0sNdApB6iGEhAOkNspL2MHWrFfvbEHwhFtJ7NUdAekb5Cg6g0Dj2b85QziNTi5BbyJLQtx/66BziybqSGkmWOxPuaQFdrhxGSnv/vF0uljJIVyPyCbAEMxp2XX8y1pt2MlVYoaSiivBBhVdYyGTXgdhqathc7tnjvuccUB7CSBhzL3IYeRrxw5TJUmWmSRokPTafLch9d8+EwDNd5avA89iGzFA4egbyiVgUNDwBkTIJGM8FpyHepltNJ4BI+yx0OXN9o3sd3hBPbHFjKAdUs1SLQuUkbFYWgGkcgAv19ATMuX/VoK9jlkVSccF1abCN2np4d4AxRaVtZCx9scpPW0mRMhPQpY9xMsqWwa5
- FjpYLvTo
- fGCq4TGAx9JWFFjw/8bN0wsRqguFFuI+vzBTmWyAeE4w+aQOLR+cHQmDsMHVK2BQhelNalntW9LvVgLPsaGA01HBYYA9xKVwT6hKew164r8zYwJ1LbK6Gx+fgTVKEusnY/l0MsYpi8zi1nLm1IOI2mlJxgMC2x9TQym3nQsxHPd6Z79NLoF5ZHqFRQltGNI4mZSAZRNic4HEjafZ/5rmtdfKwkKMAsOLAwhsLQLuB7DMqh1jJw+4MXSS9VS/dFNDIJEI/DrZftXeN/soas2eP64P8DyMWVSHN8Q8Q
+X-HE-Tag: 1777338690-558046
+X-HE-Meta: U2FsdGVkX18Nw6VoF2Fa2MGe4rfjWrLJz7UbBOHV77OmjyaJ4k8+oGeo8AM8DIsej5drMdBmSuCIBWvuVR9WyPCqIjVDAs2KYm6Dwtf7+xeolKgHBhEjxthZgA4dk0CoeU5yQr+fZsBVm35onHjntYnYDi/3hTKSTYQCLJmuHYE+eIpQgh38UmKIR7eurnWpQaIBcEopXSg+O0gKv2j7EDITT0O1dqTznDkKPDyjY42STA0d3FM4LmnTJJwipsq2EdYxLl4MRVvVztXk0U30gd4wlTnixIisYC4NFw99G/uJ/bhZXyUbhwuUxeeC9BGBUWuuchp7TZtYGcpiV+TLc0tGIZtcJ2cWfPHeUnGObsytoWVMULvB5UtPlERFfMOkiDW73qapo8wMZudv+UmTEjEoKuGoDsfrflMc11CoUcTbfdKN2sk+RlwuVuw6xGCY6X2jhJE9DlvhXzOC2/TTWyP/zhGH3+j+v8kkejP0U4RyIP2CHffSDG1pxRLdzCQYOCDbw1lDyWTMKaegKnh/eQUArMC2zlQUz3vnYrDYJ+4J2dEu+6+UnAXTDj48nTtstaH+3N1/veythiGvYJlY83TiDIRdImAGM2xe9QcZbwgaA+PedZUSmzJlUP+qagtef0qpcVMYeKDcFhpmSg69xKrgWrlV4Qo+dMshijtxZTrlcqsPfvWRv1W/stOLgylTXxJ5BibDIM4U+TSXrmP3pkeB+KbFcogbe3SV8gcnCm9qRqJ7HjPiqh6KZpdkvCumP7zEzNHgm9b7yEavzz0JZ9vOeLgKBtWDpm91oZnW2V7bnlng/PpYjXrMmm9ppq7XYGC/dvnMk25b5LrPXsjCdINWWPqPaeEaOORNvqjAYYL9RzRPvfyhQbgMwVfOj+JEU7sgP7tf7sO4OkJRrHKI/fD9VY6HH7gutJfZUvi0HTKSrmFfx7yntvVKakMlV8JRv+HaSXTSMhLVKS2ajdj
+ BD7upTBr
+ kZf2V65GUhak0ZMBnIX+SYFH8kSpTIpDr9g5xUyNpGCVhc9wjxelIFMcv835okSGQdihxuRueY8kHT0eiaBgowq1jdziEChDE73EPkfP9hIDS83vFIfK+9lSyts5gsdeXkFofMubyP6RvTtYzJQBEKVF32woxjUTfaJtqwhS1iZN/VZ4W5LYMRrbVAS6fOFyytXQSqPy2iNLIoFccYt2FzXQPesJ3LYSp3Sgq3XwgEyAD3UhtScYDHhZgy3DlAptiRSPma34gPyRdgbop8Vvh4k7FvFDpdjwA2jADmLzSslcsPOo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,60 +100,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for review, Asier!
+On Mon, 27 Apr 2026 09:43:30 +0000 fujunjie <fujunjie1@qq.com> wrote:
 
-On Mon, 27 Apr 2026 16:25:12 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-
+> process_madvise() used to validate the advice while walking each
+> imported iovec. If the vector has zero total length, vector_madvise()
+> does not enter the loop and can return success without checking whether
+> the advice value is valid.
 > 
+> For a local mm, such as process_madvise(PIDFD_SELF, ...), the remote-only
+> process_madvise_remote_valid() check is skipped. As a result, an invalid
+> advice can be reported as success when the vector has zero total length.
+> This differs from madvise(), which rejects an invalid advice before
+> returning success for a zero-length range.
 > 
-> On 4/26/2026 11:52 PM, SeongJae Park wrote:
-> > Add user-installed data probes to DAMON core API parameters, so that
-> > user inputs for data probes are passed to DAMON core.
-> > 
-> > Signed-off-by: SeongJae Park <sj@kernel.org>
-> > ---
-> >  mm/damon/sysfs.c | 37 +++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 37 insertions(+)
-> > 
-> > diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-> > index 2e0b7eca6bcbf..8007961295d3d 100644
-> > --- a/mm/damon/sysfs.c
-> > +++ b/mm/damon/sysfs.c
-> > @@ -1855,6 +1855,40 @@ static int damon_sysfs_set_attrs(struct damon_ctx *ctx,
-> >  	return damon_set_attrs(ctx, &attrs);
-> >  }
-> >  
-> > +static int damon_sysfs_set_probes(struct damon_ctx *ctx,
-> > +		struct damon_sysfs_probes *sys_probes)
-> > +{
-> > +	int i;
-> > +
-> > +	for (i = 0; i < sys_probes->nr; i++) {
-> > +		struct damon_sysfs_filters *sys_filters =
-> > +			sys_probes->probes_arr[i]->filters;
-> > +		struct damon_probe *c;
-> > +		int j;
-> > +
-> > +		if (!sys_filters)
-> > +			continue;
-> > +		c = damon_new_probe();
-> > +		if (!c)
-> > +			return -ENOMEM;
-> > +		damon_add_probe(ctx, c);
-> > +
-> > +		for (j = 0; j < sys_filters->nr; j++) {
-> > +			struct damon_sysfs_filter *sys_filter =
-> > +				sys_filters->filters_arr[j];
-> > +			struct damon_filter *t;
-> Move the declaration of these two variables to the top of the
-> function.
+> Validate the generic madvise behavior at the syscall-facing entry points
+> before any vector walk. In process_madvise(), do this before the
+> remote-only advice restriction so unsupported advice is rejected with the
+> same priority for local and remote mm. Then keep the per-range helper
+> focused on address/length validation, avoiding repeated behavior checks
+> for every iovec.
+> 
+> Valid zero-length requests remain no-ops and continue to return 0. Add a
+> selftest that covers invalid advice with a zero-length iovec and an empty
+> vector, while also checking that a valid zero-length request still
+> succeeds.
+> 
+> Fixes: 021781b01275 ("mm/madvise: unrestrict process_madvise() for current process")
+> Signed-off-by: fujunjie <fujunjie1@qq.com>
 
-I have no strong preference, but because this function is not very short, I
-think having declaration here makes reading the code easier.  Also, this style
-is used in multiple places of sysfs.c including damon_sysfs_add_targets().
+Looks good to me.  I have trivial comments below, though.  Because those are
+really trivial, please feel free to add
 
-So if I'm not missing something and you don't mind, I'd like to keep the
-current style.
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+[...]
+>   *
+> - * If the specified behaviour is invalid or nothing would occur, we skip the
+> - * operation.  This function returns true in the cases, otherwise false.  In
+> - * the former case we store an error on @err.
+> + * If the specified range is invalid or nothing would occur, we skip the
+> + * operation.  This function returns true in these cases, otherwise false.  In
+> + * the former case we store an error in @err.
+
+Maybe we can keep the second and the third lines of the above comment
+unchanged?
+
+[...]
+> +/*
+> + * Test that invalid advice is rejected even when the iovec has zero total
+> + * length. A zero-length advice is a no-op for valid advice, but invalid
+> + * advice should still fail with EINVAL.
+> + */
+> +TEST_F(process_madvise, invalid_advice_zero_length)
+> +{
+> +	struct iovec vec = {
+> +		.iov_base = NULL,
+> +		.iov_len = 0,
+> +	};
+> +	int pidfd = self->pidfd;
+> +	ssize_t ret;
+> +
+> +	errno = 0;
+> +	ret = sys_process_madvise(pidfd, &vec, 1, -1, 0);
+> +	ASSERT_EQ(ret, -1);
+> +	ASSERT_EQ(errno, EINVAL);
+> +
+> +	errno = 0;
+> +	ret = sys_process_madvise(pidfd, &vec, 1, MADV_DONTNEED, 0);
+> +	ASSERT_EQ(ret, 0);
+> +
+> +	errno = 0;
+
+The previous sys_process_madvise() is expected to not set errno, correct?
+Maybe the above 'errno' reassignment is unnecessary?
+
+> +	ret = sys_process_madvise(pidfd, NULL, 0, -1, 0);
+> +	ASSERT_EQ(ret, -1);
+> +	ASSERT_EQ(errno, EINVAL);
+> +}
 
 
 Thanks,
