@@ -4,86 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2127FF886F
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 07:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7331FF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 07:16:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 504946B0096; Tue, 28 Apr 2026 03:11:37 -0400 (EDT)
+	id 495D06B008C; Tue, 28 Apr 2026 03:16:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48B866B0098; Tue, 28 Apr 2026 03:11:37 -0400 (EDT)
+	id 46D7D6B0096; Tue, 28 Apr 2026 03:16:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 355DC6B0099; Tue, 28 Apr 2026 03:11:37 -0400 (EDT)
+	id 3AB0A6B009D; Tue, 28 Apr 2026 03:16:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F1326B0096
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:11:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DBA151C0765
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:11:36 +0000 (UTC)
-X-FDA: 84707094192.13.FCEF07A
-Received: from mail-m82136.xmail.ntesmail.com (mail-m82136.xmail.ntesmail.com [156.224.82.136])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A2A2D160009
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:11:34 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.136 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 256DA6B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:16:01 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BDC76A0414
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:16:00 +0000 (UTC)
+X-FDA: 84707105280.18.AA173DA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1352E1A0007
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 07:15:58 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J7emyAvV;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777360295;
+	s=arc-20220608; t=1777360559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pZpdmFFUmrtk+Qa/nrznvPET8CgW/NRZvvuVITWpeWM=;
-	b=Ua+4GNBQ3xe3gnAfgHUW/rsiGK2MHSKFjGwehjOqaEQl9DKIE6W3EFDulG6qBFAIzFc24B
-	PYUxEvxD5tmCi57dvyTOxXmplZBZ6SoQLa+W+YC09tLlMI2IuFrfKVVN/1CVnhS/94djlV
-	l/GkhJZ/UIT7149Hr68B0VsAfR7KxEs=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b2nIdXZGtzZPRfGZ55biL1KoKrGDTk439ANvyPc2tGY=;
+	b=7vBQgK1f8WdEPdFSGUhTLhuk2brJBejsfeRRfGZFYRlg7RBww5ewl+56jDiiz5/UZnLcPX
+	Ea0Vt2m4vvnlpW6ZHCpJ7n+5HRoksY+Ws2z49B/43MvHGDNmLtpVL7PXhfXj7Du3WP7BtP
+	bC+sPxeAW/546QRB4iUXXZso0PdJrnM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.136 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777360295; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J7emyAvV;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777360559; a=rsa-sha256;
 	cv=none;
-	b=ksicMfi+NtNAj9uWqWQAHXPfPAsHzKAuYZWAk0ZP+swlNTn/xOOK8Dn8TEzl1yV58a3Hyp
-	4Mz7avLiKoJatd5jqtMyN216Xdg+Ku08RyCBQDC9hXFyqC7MalGotcI6XfXpUNwLtEvCuf
-	A8o7MlHX16tWt/+51ZcJ3miMKPjbzWE=
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 197b49313;
-	Tue, 28 Apr 2026 15:11:29 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH v3 4/4] mm/page_owner: document page_owner filter features
-Date: Tue, 28 Apr 2026 15:11:12 +0800
-Message-Id: <20260428071112.1420380-5-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260428071112.1420380-1-zhen.ni@easystack.cn>
-References: <20260428071112.1420380-1-zhen.ni@easystack.cn>
+	b=l1FSoPsY+NC+XFa/xD5kSUwZHYKGB6P8rZiLyLMJDVcOG7s/uQQsuoyGtgXTawqZhUaA7L
+	9qLKb+k7fy7JVp38yKW9kYKSnPcIyhspOVrqxNJiLz7jLZGsDWaXfwLX8qP2s444wkobb1
+	QphzGL3lHQHG0ER36mEPP/O7/hZp/8Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6EF4660133;
+	Tue, 28 Apr 2026 07:15:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B73C2BCAF;
+	Tue, 28 Apr 2026 07:15:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777360558;
+	bh=YiFruMllP7Hsn3RHqR+ow3axxP/rEMVw7OY4f6H0hUA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J7emyAvVkk5SF6YOCLb8Y6pqahYtojSzc7QFL7eGIX96o8UFPF7U8LVVpvE0x9Mk7
+	 Ty0vbdH2dMMfYs2hMMMhiZn/zWghIbN4G3dIE0Jl6pW7My2PDE+h1b25J8vIHXxvGP
+	 kfv7o1zD5vW7RJCpOIHOEMo49bkkt4KWfvYPK4a2u9AXIUAouI6uvxRYz1RxLIwebM
+	 JUjL7+O8rG78bTKN6CjujeXTzjkKsEdbigh7zQz37K4Jcens/Wi4hegeBHcLeKudHj
+	 7svjSLPqxKPID34kBHjSqsByE0hxRF2eFGqcsr+QIx6tzWdJ95jOHn8IGasqmiROzI
+	 PCudJwjRJIc8g==
+Date: Tue, 28 Apr 2026 09:15:48 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 11/49] mm: defer sparse_init() until after zone
+ initialization
+Message-ID: <afBepGBqlKTyOFob@kernel.org>
+References: <20260405125240.2558577-1-songmuchun@bytedance.com>
+ <20260405125240.2558577-12-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9dd2edc0af0229kunmb0c223f1156f39
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCTENPVkxNSk4ZTk5DGU1JHlYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
-	lPT09IVUpLS1VKQktLWQY+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260405125240.2558577-12-songmuchun@bytedance.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A2A2D160009
-X-Rspamd-Server: rspam06
-X-Stat-Signature: hhj3rbey3znasfndx7exzmaff7d7sz1w
-X-HE-Tag: 1777360294-26831
-X-HE-Meta: U2FsdGVkX18fSsyqB/JiUyNGOKdPZXUk7w1C7tNUTPvhlQesDvCrhw2+x1+mDf6xFpBL+pcxMagmbfnzhSXW7/fQOmEihRV9dIcAYd6049iQRYUEwjhyaEvyuvGGYcR+jN898nOouQbRdybpQe4EgOofoOp0idn/c1+5n8Z9lRgFxDw1RsK+dE+t4rDxVAu6QEjVk+eITmJurxkUsMey++ZyHIpy7cmPXwIU1TLFI1oxdfsge1DQMbDZOkPgZmlasL5Fg9zPsrhBN4xf+RsZ9/cgc6Wr9FLtXVCsfbUxQ9cd85UKCZ3+Z/qy+ExKndFrwYZzHF6ztf5POJdYzLCxiOHhBGJNxasrbIyD538K9jLxJ7I1ag1xjFC9r6Uv7R5FQoB5M3IIJzBz21vX9vioReH12GDFY9JfhabnXhlBTV/xvQZorS4JV9AnHJRHbyJSYzUMCek0LnqvMh32+VWXXIIZgKmI8WbWjGpT5Jo9Q/DYM0aYTDpwP45ql+j6UG8ojHctt3+H1qDfayRXAyMemI8ue8J5eNSuFZopCPOLU3yp6PC++4wQh8pdrte5VmfcTWjQmq4HezfBILWaCXnjWckYn1DqNAYdWz+BmSNJH3CsZEYWEK53VFcqH7K59CzaRPRYDJtrvP+3tbBnouKrPunM9YhDhPA9BKQjVakrNOTDwBjb4WzimPePQnrwo9L4RU5t0gU6f33MCI3frNOKMWk0pXEUWg0qKAvvIUnZixXGIIB6fm/UJ6wJI2TzccF5ujrmAMsWFj5iRTBUsoOdiF4qqsYFHvqVCzgmlj3aQWMka7LFYoLpPy+5ZsUbq2aL1jr07lt7ED6qdoeiG7xpd39+DGOcgT0mK40Dh3fatEJXdh+eOFuieQukczEiXVXKqPcvSumAmTe3rs4B/NGDsALxpqtqlwDgOXkD18N68CE87T2D/+e5xJMiMxedAqFZVtTgYrVsaYN+LzjtZws
- xZI2LMLU
- M5Zq9sri6is5iPlEMYDNEUgJs1Cf5fdS6gnkIv4jsmRuUDhRjeeFTlVa9dVcu0WE20fYl5/3CUHIXVTjZ5rOrQUF2pG6C75g5kRX+H9kHXBCPqDjKw7/FaQYEJz6iqAZSoRleIvUn+uiN2vU=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1352E1A0007
+X-Stat-Signature: usyh5ms4y5qmpy5munb46mjc3j5exng9
+X-HE-Tag: 1777360558-633060
+X-HE-Meta: U2FsdGVkX19aRM6CiGARZLCURB9StBPHlDq/9+WuRQOx59QNtVgcN/Ca/Fe4/E98CWd7YjETc2GJXj+RFrbuU5tHReKD+agKlr6KWk7+MLMx3eGrIQthtCptF/92z1lCDX/c8yZNKLC0TA3FLvymKgVI2jALtgE2MokBpUn3seAL4jS0Q9c+7yFRe1Ptwrx38JDeogJG6aCxobkPRjtvkNDbAjr/4pJlbViCjOl727MtkCLRcT8RN3CiWWmpt9NnVsh9e7JT2tGtECHp7hrcWcM0Y6H/jWMTZfa4MrSAi5sATO0qAX2fMpXh6as57Xapu2dIJV2h9r6yCXx0IBcOjHCWq5RThYcv3sT2teysBxUsnZTbBSzN06YvyDpulAvCR1eY4MwEPJfYrLE2l1nA3seXCBZYPc+P4/AuE6+AvjPPqiDVWDmku8nTrXPUD7P0iatzQywcl1rQnOurpeA9ZJZzScKFdKTqycUwc2nDrWnJeXmxpyw2n0hcmimzPLEYdhMpJUBMxUP+eQaZXRyNuo7xO5EqNb8JZpg5JJdw6L8YQ7OJ7dA3/XQWfN8YsSdJDIQUfp+xbSNqwPKLz1OVbMA0Ghr2A8ezJZpHGhgeNF/jHDHJMFvgWg2+cbiZZ7m8+PmWbbf6MPgmV+z213oRAZRus18CYFFINZ35w9elU22HB0DpM80HVh3O0l0wIkWmbkCKtPLOcBbmx3zPK7P0esdxUvNhCjucHrrrPWf6xRY8p/a+0LIjmylYrAu4xYnMSzwW3kVRiZL2U+JtPz9t5SUkbjZxZDyvJLJQlpgxvAJZBwedPy6vUgTKfgmoa6lbcBaziSyH/MH8Q/LWWm6aBk+s1rJFH+xSIdXIvwACBEJXZ5lXs4VQql82Yl7B02tmB39jEw+AGn8x6/CIugw4NpRZGb3VKGauBk3lOErsnPwHvWNy3uiZ/vlCD9EV4UN36PA4zfE4MgxQ6YZn9+H
+ qrmwVny+
+ 9E52+sfgRVHZTdpHLN//u8ooA0wqGGGyOtUF8O4NoSmZRHi0mvVLNx5UFShhDJ1luWOEd/eISrZCyokR+pKNkPwCraGzv8+mTN0oelBM/LL6AiWEdsVq4A7RYf5Ua7OKZcndtA1MI0YfXV2/Tx+xyfDNo4Eb8qhOfTXjKO6J4BpxtQrtP8bguZaayP7xnmWsvboJVUxvQgOZtqL9Hw0CDLmqWNuDaf/KsX5G7CHwK+c5LhveaJekEb0+b1h4pP0DjxMJt4YKXomPov/+jI5DfCP7lbIE7dEmJ37ca0UasuTi1t1sIYFvVwSlbCbfb92UcajBTbldZy4opuxmdkdAQoj1O6KuaMJ5+9Cwk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,94 +104,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add documentation for the page_owner filter functionality, including:
-- Print mode filter (full stack vs stack handle)
-- NUMA node filter (single node, multiple nodes, ranges)
-- Usage examples for both filters
+On Sun, Apr 05, 2026 at 08:52:02PM +0800, Muchun Song wrote:
+> According to the comment of free_area_init(), its main goal is to
+> initialise all pg_data_t and zone data. However, sparse_init() and
+> memmap_init() are aimed at allocating vmemmap pages and initializing
+> struct page respectively, which differs from the goal of free_area_init().
+> Therefore, it is reasonable to move them out of free_area_init().
+> 
+> Call sparse_init() after free_area_init() to guarantee that zone data
+> structures are available when sparse_init() executes. This change is a
+> prerequisite for integrating vmemmap initialization steps and allows
+> sparse_init() to safely access zone information if needed (e.g. HVO case).
+> 
+> Also, move hugetlb reservation functions (hugetlb_cma_reserve() and
+> hugetlb_bootmem_alloc()) to be after free_area_init(). This allows
+> hugetlb reservation to access zone information to ensure that contiguous
+> pages are not allocated across zone boundaries, which simplifies the
+> hugetlb code. So this is a preparation for subsequent changes.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>  mm/mm_init.c | 15 ++++++++-------
+>  mm/sparse.c  |  3 ---
+>  2 files changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index c7f91dc2e5b5..5fe0a7e66775 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -406,9 +406,6 @@ void __init sparse_init(void)
+>  	pnum_begin = first_present_section_nr();
+>  	nid_begin = sparse_early_nid(__nr_to_section(pnum_begin));
+>  
+> -	/* Setup pageblock_order for HUGETLB_PAGE_SIZE_VARIABLE */
+> -	set_pageblock_order();
+> -
 
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
----
+This does not seem related to this patch. Otherwise
 
-Changes in v3:
-- New patch to document filter features as requested by Andrew Morton
----
- Documentation/mm/page_owner.rst | 55 ++++++++++++++++++++++++++++++++-
- 1 file changed, 54 insertions(+), 1 deletion(-)
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-diff --git a/Documentation/mm/page_owner.rst b/Documentation/mm/page_owner.rst
-index 6b12f3b007ec..6261366d33fe 100644
---- a/Documentation/mm/page_owner.rst
-+++ b/Documentation/mm/page_owner.rst
-@@ -74,7 +74,17 @@ Usage
- 
- 3) Do the job that you want to debug.
- 
--4) Analyze information from page owner::
-+4) (Optional) Use filters to focus on specific memory allocations::
-+
-+    cd /sys/kernel/debug/page_owner_filter
-+
-+    # Print only stack handles instead of full traces
-+    echo 1 > print_mode
-+
-+    # Filter by NUMA nodes
-+    echo "0,2-3" > nid
-+
-+5) Analyze information from page owner::
- 
- 	cat /sys/kernel/debug/page_owner_stacks/show_stacks > stacks.txt
- 	cat stacks.txt
-@@ -238,6 +248,49 @@ Usage
- 				./page_owner_sort <input> <output> --tgid=1,2,3
- 				./page_owner_sort <input> <output> --name name1,name2
- 
-+Page Owner Filters
-+==================
-+
-+The page_owner feature provides filtering capabilities to focus on specific
-+memory allocations (e.g., by NUMA node). Filters are controlled through debugfs
-+files in ``/sys/kernel/debug/page_owner_filter/``.
-+
-+Print Mode Filter
-+-----------------
-+
-+The ``print_mode`` file controls the level of detail in stack trace output.
-+
-+Available modes:
-+
-+- ``0`` (default): Print full stack traces
-+- ``1``: Print only stack handles
-+
-+The ``print_mode=1`` output format::
-+
-+    Page allocated via order 0, mask 0x42800(GFP_NOWAIT|__GFP_COMP),
-+    pid 1, tgid 1 (systemd), ts 349667370 ns
-+    PFN 0xa00a2 type Unmovable Block 1280 type Unmovable
-+    Flags 0x33fffe0000004124(...)
-+    handle: 17432583
-+
-+To retrieve the full stack trace for a handle, use::
-+
-+    cat /sys/kernel/debug/page_owner_stacks/show_stacks_handles
-+
-+NUMA Node Filter
-+----------------
-+
-+The ``nid`` file filters pages by NUMA node. This is useful for NUMA-aware
-+environments to analyze node-specific memory allocation.
-+
-+Supported input formats:
-+
-+- Single node: ``echo "2" > nid``
-+- Multiple nodes: ``echo "0,2,3" > nid``
-+- Node range: ``echo "0-3" > nid``
-+- Mixed format: ``echo "0,2-4,7" > nid``
-+- Disable filter: ``echo "-1" > nid``
-+
- STANDARD FORMAT SPECIFIERS
- ==========================
- ::
+>  	for_each_present_section_nr(pnum_begin + 1, pnum_end) {
+>  		int nid = sparse_early_nid(__nr_to_section(pnum_end));
+>  
+> -- 
+> 2.20.1
+> 
+
 -- 
-2.20.1
-
+Sincerely yours,
+Mike.
 
