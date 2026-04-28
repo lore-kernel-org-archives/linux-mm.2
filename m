@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48CA5FF8868
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 13:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2AD4FF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 13:10:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B13456B008C; Tue, 28 Apr 2026 09:09:39 -0400 (EDT)
+	id 066E26B008C; Tue, 28 Apr 2026 09:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC3E96B0092; Tue, 28 Apr 2026 09:09:39 -0400 (EDT)
+	id 017096B0092; Tue, 28 Apr 2026 09:10:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DA616B0093; Tue, 28 Apr 2026 09:09:39 -0400 (EDT)
+	id E96D56B0093; Tue, 28 Apr 2026 09:10:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DC206B008C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:09:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1CBE5C03EF
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:09:39 +0000 (UTC)
-X-FDA: 84707996478.01.917E194
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D939C6B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:10:24 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CDA740183
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:10:23 +0000 (UTC)
+X-FDA: 84707998326.25.4DA74D1
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 22084A000E
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:09:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5356940011
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:10:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+	spf=pass (imf27.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777381777;
+	s=arc-20220608; t=1777381821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rVCrypK48GiO3JHRTZBgwpbtpNOWzqQSv3/LRtYIj34=;
-	b=VzueK7MLdLPxdEx5Hf5tOF1lbu387VcUouJEBUc+10xB39u0y4wA40tJX/ExbEFVZilDFI
-	uY3sGM8wpKFV4/NYZgHTAkryDcaK0GormarfDQO8Zw05t4ZJlFA53EWruizvufRz9sxEPo
-	bDeLxTk7ozrX2dVTQHhqRAvZk+yI4GA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777381777; a=rsa-sha256;
+	bh=SSKjumtC5UCqVi/WUq09F5Mn6HqLmTgkLof3IXXUakM=;
+	b=Ckd+laZt2tp76UJAYH45MO2LLxKuwY0lEiaiPZ8Baw/cWN1yz1Rdrb4lRcT+WyQTy01u/b
+	q+Ni8goGWYnRCT7f7lVJUdmUaf2u7hGNxy7DDxQSNijhEeFeSCIBr7Sb0d//tBYFFzzoXJ
+	vD0Yc+ggGpdus8PdXowueZFfx8Ccexk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777381821; a=rsa-sha256;
 	cv=none;
-	b=FMjCweUU94AApHRD4j4WoAHi+0k9ANPcw1Lkw8r9hzoz20EPMj9TGbGMNukCzYNC330rcm
-	nzAUcsO/LVCzfIoNcZFpwGtTMp6XYK8b/s05ioAqhS+BKXeHyCUa9yKVaSSeKaDpi7fIU0
-	m6NSgdHZzPq3vwsvhwWHAOSq8L5TIgE=
+	b=dhkg0T0CSepd1v5jb/9xOaGO/NtGC50QC3r1iKn8LKqjI/PDtBJlcllkaR1sSUSG3JYlyG
+	/RPfuWEVpbfZaGgxNuy92S4trtmhXjQm/6K++Unp+KRJr9Qt5K2WKXLfJLgALq5w+MNVZE
+	+8MLwGAgzHoQ3ELokaamxu6dUMnzeRs=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
+	imf27.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+	spf=pass (imf27.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g4gjy05mKzHnGdy;
-	Tue, 28 Apr 2026 21:08:54 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g4glW0psdzJ46bk;
+	Tue, 28 Apr 2026 21:10:15 +0800 (CST)
 Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id D452940571;
-	Tue, 28 Apr 2026 21:09:35 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 0F5AC40574;
+	Tue, 28 Apr 2026 21:10:19 +0800 (CST)
 Received: from [10.123.123.154] (10.123.123.154) by
  mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 28 Apr 2026 16:09:35 +0300
-Message-ID: <2d2415b3-d7e8-4b8d-aaad-c4fd27eb18f8@huawei-partners.com>
-Date: Tue, 28 Apr 2026 16:09:34 +0300
+ 15.2.1544.11; Tue, 28 Apr 2026 16:10:18 +0300
+Message-ID: <69c46d43-c283-4064-9347-817841e532e6@huawei-partners.com>
+Date: Tue, 28 Apr 2026 16:10:18 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/19] mm/damon/core: embed damon_probe objects in
- damon_ctx
+Subject: Re: [RFC PATCH 13/19] mm/damon/sysfs: implement filter dir files
 To: SeongJae Park <sj@kernel.org>
 CC: Andrew Morton <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20260428003559.113178-1-sj@kernel.org>
+References: <20260428004454.113463-1-sj@kernel.org>
 Content-Language: en-US
 From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260428003559.113178-1-sj@kernel.org>
+In-Reply-To: <20260428004454.113463-1-sj@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.123.123.154]
 X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
  mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5356940011
+X-Stat-Signature: zyp7z784bfqe745huyojb9see8yqj547
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22084A000E
-X-Rspamd-Server: rspam04
-X-Stat-Signature: jboueckqojpf3hi67x5uxegadgi1z3ou
-X-HE-Tag: 1777381776-811496
-X-HE-Meta: U2FsdGVkX1+cSBW+SXLXzthw+DejtrNUD827Hxg46M4N0tfMRNzIpHZU1PhougaM0TM5WhNHc7WuxjBlFS2Ze+QMCGZqaNNZwTqcUqcV3hsTKzbjsCGgmSJjIW6Oiv/l5dm0562ulKv7TDIEIKOWg8y22Ux+a2te5iXU0/hGpINhPBxldDFKgLIiTojCvmxhvYXZnm+4Ipn8Sg0k+YoSLbbD8weZ5NZIBkRW+UAlZVM/zOksVv48kL9aKAyF6zsgueeX3eiZlup65k5QqXfaRNdl0yjYTV8o4i/k5hL7zaftYZUhxyniJ/sBYws2l/AGmYHVMSAsE8ntDkZH7P51o23Yo8CFAHxbBscjSeW5YU8N8nDnYsjw9Rj5yZB5uqfTxg5CTKn1lBk4abv1nzHvCLtbzPM0QyGI8PEJwBfU2JqYih3N9OyRSdrduts2PR+ZVabuzBhi7t2aMqFtbu0D1uNoBcNYR1ZUmvi7kN9PDayXWjLsn0cigcD1r1d6Q6BZyKSyG3UCZ84FlbHMgmLUxXTt3pX3eS8iqI+CwU36bI/fsjN8afJjf5V7UBBSKv6cStallipk4JZ+JexS++guB0sFlxG1BDXD8TShGFTaMHZpUMgPNlIcjTOGDpy8W2wYH7K6UbirCHav5veBuALTYZnuDiJZVzT955zD26po1mt65tcLbq0yauXUgYTFbKpc77PWcvS19wgVWfUTgRxmWKCU4OyCmD9QsqA/yfPsB3lHpLSFZAVOPnY8g5+sP0kgxOianGvASIQzowsiCM+DJaONq36bCeEjXpFgnkPQ9G31G7ph0YckFDM8IQkObD+HiQi5/jnAD6VzhsCo1IGo43W/WOgu75ZEVSIe4ja+t13/nL0DMaR+Tk8vrGMBRPy3RfSOCKAFzLSQcEe9JPpA2gSf0t9+IG+FVeRM/rKp6asH7emvJpPaHeUm+DlIdnrhlgJ9uCc+Y5JdQ6fWf1Q
- sN9wYW4Y
- Mgn/EZFIB0QmZmP+26AJ7/BnXHe9341WoiOB9JN/O/x+DMDGoRCPLHcgwRfs4FEG4DQaNlAeopSnhSZ6eNwkbrIsexVj+fxblFHXiqVvB1OE4qMroh4J6FBEiOSkuEwln1OmjdQGbKC+JnIYL1mLz+UkBjjeWVWIEaDJ5dqw/fEeALojSzREeQT9qCvyOe3SESvK5HrFa+xGuA6i/kgSgkgcuDXV6wySXh4lb/K5YiSDlLTYP8rmJY/xQi/jzp+l5GvGq2RlA7XYkCNZYSUhSgtx3UYsmAqVHYTQcewqmT9bhYxy2/QtYzKH9zcq0oEXIwKRoQ88VDDfAjykA6tvsiwtt1C1iIzMmafi/
+X-HE-Tag: 1777381820-697019
+X-HE-Meta: U2FsdGVkX18BZOcI/3P9crembRi/hWcc2l2lOtk/920O9p0bhDaOqG/MamwaPMfj1v+NvqOWB/eihGglOdSkFNYUaJgnAb+rLZmdvfWao9vLZA5bqTs5z5hHr63Na6vFDsNdkhwbLoBhsvNqlRqEaX+pcA5qjE0vc+v/CybPFNjSzmrrdZwHcepBr1E0ZjLIF0Jc0etdAsQUcqxW3QX/jRRAkUuJ+aoBwz9S3S96BcayxVmwbPZXI2kh/bRhJZ2xA7bAmcWQYfeOOV9PBBjTwyA222qc+uoxHtQFfR2+GL0rINo3/ZA/bwH9RO5H2o1Y6l311Nk3Ex0Bc6yVGwtXkq9jCgplE1MRlydmUa/LnuG6YkuO6+atTm1c2dtHAALtt0cg+lhHTwEy6mS9ic9Fq3yQOvuF3rr0Pl984BW4Ku/5qRbrPcGw+4sKlnJuih+vlRCChETLk94BlHK7zZgv5nLHOJwWl9sitrdm4KvHEWphZKH0LDiHJ5HMaG792+79a3uMMjDZMijYGli9yqLtA/ADgbU9TQVYKXKwETTwmKqAm7N5xVBQs9z2oI6BmqxrojIEhyzSQ3iV0s1Vv0+nBvl5lN9lshTwWAwsFxPLw6P8GWjVh+JqH006cb3SWn9EBAdUbnEqPD2xpOLh3yA65Bhx2pMEODoenOEY8eX/dHFO93oEZ7QEqkLO7rG+h17jHUxeeDDjBLEd++gl+nbvG5xxw4DsbIrTxG/uI2QLuVxytw72dSf/FwkFPxER2L8q6Mk9pcQzG4ruahTlrBF42qTwdFGcMoOtAnfpHHDeOYrk1QqxcmZ1zyzWjej09tfAr3LkewuKKZTmJbTrd0nTqwvLL/Gu09YhRAjXJI32to0XpkS2vDbZwmJwMZ5M3NIUBpr1i3s1jbyA28tGGK3z23+YPBQqfHy/9RDhrtXKTwCZM70QI8uAwteigdRgAR/alYUnIaYtFBG5sieYLUE
+ 44AGgTA5
+ unlOgTvBZtfomD+G4v2tG94Lzvol4n039wuWs+uq+FpR7kWQQ/xv10VIgLMD97BvYoGM0mVKf3fVuPioILRyu9D9jkgScl5yXgojfc+alq3jKHzkPcBM4Rjpo8QMzcTEwiRa6L7FMAf43GPHKqoTxHFoOfCUC7pAbrMyJ4wgqWVqbMrWA4gCEAPmeud6XodZ/ZbEq6OZiq4LYU4RbgoIwrK3xwZsW6GkfPvch/bpuIR+iDgtpbdl4IiNwRMUXMN4b6j/L48//vMKYgR8F8SiDZ9MrFbcqH5Y2y0vzqA7qObOksFYt4B1+LHLwJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,41 +93,35 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 4/28/2026 3:35 AM, SeongJae Park wrote:
-> On Mon, 27 Apr 2026 16:18:14 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+On 4/28/2026 3:44 AM, SeongJae Park wrote:
+> On Mon, 27 Apr 2026 16:24:10 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 > 
 >>
 >>
 >> On 4/26/2026 11:52 PM, SeongJae Park wrote:
->>> Let damon_probe objects be able to be installed on a given damon_ctx, by
->>> adding a linked list header for storing the objects.  Add initialization
->>> and cleanup of the new field with helper functions, too.
+>>> Implement sysfs files under the data probe filter directory for letting
+>>> users to configure each filter.
 >>>
 >>> Signed-off-by: SeongJae Park <sj@kernel.org>
+>>> ---
 > [...]
->>> +static void damon_del_probe(struct damon_probe *p)
+>>> +static ssize_t type_show(struct kobject *kobj,
+>>> +		struct kobj_attribute *attr, char *buf)
 >>> +{
->>> +	list_del(&p->list);
->>> +}
+>>> +	struct damon_sysfs_filter *filter = container_of(kobj,
+>>> +			struct damon_sysfs_filter, kobj);
+>>> +	int i;
 >>> +
->>> +static void damon_free_probe(struct damon_probe *p)
->>> +{
->>> +	kfree(p);
->>> +}
->>> +
->>> +static void damon_destroy_probe(struct damon_probe *p)
->>> +{
->>> +	damon_del_probe(p);
->>> +	damon_free_probe(p);
->>
->> Why don't we inline list_del and kfree here instead of calling
->> damon_del/free_probe?
+>>> +	for (i = 0; i < ARRAY_SIZE(damon_sysfs_filter_type_names); i++) {
+>>> +		const struct damon_sysfs_filter_type_name *type_name;
+>> Can we move this declaration to the top of the function?
 > 
-> I want to hide the fact that we are using linked list.  This abstraction also
-> makes it easy to control the calling paths of the data structure manipulation.
-> Meanwhile, smart enough compilers could inline these if it helps.
+> Unfortunately other parts of sysfs.c and sysfs-schemes.c including
+> operations_show/store(), type_show/sotre(), metric_show/store()  are also using
+> this pattern.  I'd like to keep the style consistency, if I'm not missing
+> something and you don't mind.
 
-I see your point. It make sense.
+Yes, it makes sense to keep the code consistent.
 
 > 
 > Thanks,
