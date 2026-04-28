@@ -4,109 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F1C4FF885D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 12:34:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5C1DFF8868
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 13:01:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF11F6B0088; Tue, 28 Apr 2026 08:34:50 -0400 (EDT)
+	id 169A46B0088; Tue, 28 Apr 2026 09:01:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC7E06B008C; Tue, 28 Apr 2026 08:34:50 -0400 (EDT)
+	id 11ACE6B008A; Tue, 28 Apr 2026 09:01:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADD666B008A; Tue, 28 Apr 2026 08:34:50 -0400 (EDT)
+	id 0307C6B008C; Tue, 28 Apr 2026 09:01:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FE2F6B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:34:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3D71186984
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:34:50 +0000 (UTC)
-X-FDA: 84707908740.30.DC2C6B9
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6258AC000C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:34:45 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=oJqY9FNE;
-	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E827F6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:01:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7EC3040175
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:01:20 +0000 (UTC)
+X-FDA: 84707975520.23.C27B764
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A5A0510000C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 13:01:17 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MCUblZv4;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777379688;
+	s=arc-20220608; t=1777381277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zzMDEYzsulY+KHA1t1QmO1PLem7Ek0Kh2oljY0po6pI=;
-	b=OHWkAa8WZGBQVCo/YTsI4YB9wEKJw7bURtMrYMYWGQPW46t8Wa9YpEuW5bnZ05jA0Ke9Q1
-	dmKBfHzr4z3OnR1vY55xaDHuVXnhWRT2ScyoBaxBV4yywI4doIisr+44SMFuEkgwyffQSJ
-	7wWCQDoxRki87/KVJAUwLAs2zfVrG+M=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=oJqY9FNE;
-	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777379688; a=rsa-sha256;
+	bh=negfwoNXDI6U05SEcotaWCxTz8Wg+EbKFaqytch1ifo=;
+	b=p2CVdJm4ARi34vVbqaCd9+P8rzM1XwULWw5vVGShvKo9mcwDSnF/3mQg+usMa05F1QQkNS
+	8tQkVHMzhcYOPyBx27U8STYKvb10zEPD+EvEpW3qGgMnGv8AZumQXapVvnryQj0l7Wyiur
+	6aVygqBZadVQeh/9MCpVnKX8iTnhX5U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777381277; a=rsa-sha256;
 	cv=none;
-	b=1z3jUZJikhpWTyipBaglooTF1PrI5mJB8mPRzN+L4Na30V97LW2fUOgiscwdowSrdzo9n4
-	8RUgwGgMD618ylrAM6ziqpoe6gaNkFdxxnIq/pvAWI/XxQJbcr7zD+FgPukRZKGIVdZO01
-	iW0CDp7sk2Vv7FhO7FyYRCEuUnfI1Ts=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=zzMDEYzsulY+KHA1t1QmO1PLem7Ek0Kh2oljY0po6pI=;
-	b=oJqY9FNEiXJzrwtJNuU8JXsbp+zDI90/SwPURrnq1/rKozrLjwLmQKIY7Wz6VW9wYu7M+Wyv1
-	vHIBWPB1HzZkaR/9xd0tPokQaSrfDFVEwjIM1hReOC+Kk6CzY69vcorMt7+fpJbJXmnVFz+q2KN
-	Y2qzhTEPruTUvNcKbzV1s9Y=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4g4fpF67ZfzcZyN;
-	Tue, 28 Apr 2026 20:27:33 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id E716140561;
-	Tue, 28 Apr 2026 20:34:27 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 28 Apr 2026 20:34:27 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 28 Apr 2026 20:34:26 +0800
-Subject: Re: [PATCH v2 3/3] drivers/base/memory: fix locking for poison
- accounting lookup
-To: Muchun Song <muchun.song@linux.dev>
-CC: Muchun Song <songmuchun@bytedance.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Ying Huang <huang.ying.caritas@gmail.com>, "Dan
- Williams" <djbw@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	<linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>,
-	<driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, David Hildenbrand <david@kernel.org>, "Oscar
- Salvador" <osalvador@suse.de>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20260428085219.1316047-1-songmuchun@bytedance.com>
- <20260428085219.1316047-4-songmuchun@bytedance.com>
- <fae6e568-fbdd-e697-8ea4-b12c73750ec9@huawei.com>
- <68DFF29C-B3CC-4950-8A8E-7D42350939CA@linux.dev>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <3697dafa-7ff4-30d9-006b-860299421b63@huawei.com>
-Date: Tue, 28 Apr 2026 20:34:26 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <68DFF29C-B3CC-4950-8A8E-7D42350939CA@linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Stat-Signature: 84tt9tz91cyzzz9iq6csjzp4n3nhynt3
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6258AC000C
+	b=usdch9xnB39p1KuxKBfBYBNZ9mrpfSfSe+K3UU81DoYeO6txoCL4+6uuSUpI5MhAgqe+TM
+	bhGjMdN+xdeEq1R3KZa/2cylw5OFST1Jc9TLrC20UINuYHN54+oze+2b90yiDM6qTvxj6/
+	6Z2qmDKGS074UeAFqbEXrP+U2Ikm67c=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MCUblZv4;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D703361145;
+	Tue, 28 Apr 2026 13:01:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFD7C2BCAF;
+	Tue, 28 Apr 2026 13:01:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777381276;
+	bh=6dJQUEH+z2Cv8SxLL12FE1CYpvHAqBF/SiN0HelMoMk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MCUblZv43krP5yOYUlym9kKM7eTJ5bM8xgcUnmrf1e9hT8R8Bn/t1OZnZ/vyj/tHX
+	 qwop6mchfCVpVdrA8PpHsAdRbvRISNb5eGGyEux6i3i6U0LbuAEpNiSXiN8D8b3DB4
+	 NjTcwk0sXA65Gaw+pQV0yYrQhQfkoiMccPfmjB5Y=
+Date: Tue, 28 Apr 2026 06:01:15 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Barry Song <baohua@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan
+ <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
+ <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Chris Li
+ <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>
+Subject: Re: [PATCH] mm/huge_memory: Fix outdated comment about freeing
+ subpages in __folio_split
+Message-Id: <20260428060115.84c55bcf72315c01b86e0c90@linux-foundation.org>
+In-Reply-To: <CAGsJ_4xvXZVRO0-mXAWM7mH9pVH+DAYggDBG1+2x5iQ9mfDDDA@mail.gmail.com>
+References: <20260423034917.8234-1-baohua@kernel.org>
+	<ec08f25f-1049-4fbd-8a87-0df135a867be@kernel.org>
+	<CAGsJ_4wn=o5ZCNPGguCCk=19iYZr1V9Jup0NdRUKXySsKfD_4g@mail.gmail.com>
+	<17a3bc38-0d97-4316-b2fb-02a91202c504@kernel.org>
+	<CAGsJ_4y6_G5BPZKs3Mg3s2ygxGh1o22GX_3wEsM5hs7WX_cOhQ@mail.gmail.com>
+	<efcdb62c-54e9-4806-87a2-5729e3c1506d@kernel.org>
+	<CAGsJ_4xvXZVRO0-mXAWM7mH9pVH+DAYggDBG1+2x5iQ9mfDDDA@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A5A0510000C
+X-Stat-Signature: mo8iakoxha4wcz45jqaskz34cjzk1o63
 X-Rspam-User: 
-X-HE-Tag: 1777379685-664537
-X-HE-Meta: U2FsdGVkX18pgLe4QzeAzzJA+Iwey8uBi6lMZTgiCJ0aOih1RNz3QPVj0vujWYqv4nLRQj74p5nnMXO+CuEItN9X09vCw8jttnmzxW4xp02Akh39vHs5BnrnBn8mpPCJjLbSaaDUeB4lMNWktNRFLzgG4CPy41Izd2T9Ha9tytjWzCipL/nGhDeXnHgyAiqmSl/z9j8eiA5ws9Dn0vFc7nUaQTwN0FrEdI6kHrSD6X1Xy6RJPTYN+TO5QpeKHGyPsTP6XR2YtNF2oDRyjGSpo8M+uxY4CV14TrHs34R5GecOPEDaPH7wJm6u56SE5D398tZt7D87xks7MFs7h9h/TZXF7Og2gZcqPrQtj7hnFaUGCZ3qXxLkbrW2BFB6GYh1awueb9DHccRRhDjbDg/Jg/eVjFfjf2X0jDdkxXN+W+fjJNp7jUNhXyzhSTcCzCX6sg54ubXSmUIV7jJQTCTmAWiGEGAW8S6B9mIJS/JEyXaZIsupM52Y0uKGQ/dI03VzKxyFpIy+RhXGuEEi0/IbOFYNEvJv/hg/CSKweAE1v1sWu4NXFuhZI9q67bvyXHrsfAaLnHNEVnBCkPxZTXVp4XPFtXXPAdKOLdTUpElclBhXnXQ42Tzeqaroi+/dqLqfqRTu5Nz9irpRJ4IqjbmKqrNFynEQkAx5Hvepxk4rjvaVYOp0XNiSMJsL15MdOhp9Cm623ucCPEfTvGphB7nuMj0FsVza12C2RbMgsocEOoQ4y4cDP2VsIOLEGGtlbJ2V9ZmieObd+OH5tvOTDXDZM1JbYd6jMAkpqgyctiUwUOhFc7xvI6Iqal7PHNrZS3olp6RHToMxJWG0fuJlvJM8LCiqDa4p38RwZQb0U/vYiaQmSerXjtgSyqfhawp3ytFovoZV4kKql/h7bQoX1el19kp7ncdyiBAfbL0Kogm48rdT9SHMKnyu+LO2Zp1V48op6zMM5R+4tpGnPG+qU7J
- RMnXI8D8
- Y5KePHcUqIhToFtvEgjjsG3voFtMRoksvwMksRT2g9GydUiH9bRoOV3hANVyX9xtaAKOIkUCh2t/R6URWXxJdRYPpn/SOGkg63nGi5jfKWLIH2muxYI4R19oEx+A5YrXeEjUiYVPzCvdPL4wACkJtaxOAKgSsMr8lcln2Qx+z/by5BjxE9n2B/woIskjClQkRwSNmUajf4+UOmC/JkGz4XGQa4mc4Rao6htfVlB8KwufcZqZEb8AGMoPdYnNx+/v+yw8es9y9YTxzOYfxYbcsSDZX15oIrIllHfXK8+M7838Dxw3zxCbnJLRmOJ0H2hL5DEAeXLUfq2B+QhElMPrLa7bieUDrcmncvZPUZ9pq/2lC6vqT0e/bCkGstBrtg/GhYWiS10TXn1Znc4V3Z8GK1PtWkKOZSbiGhT5mSLhIGkhAN+0=
+X-HE-Tag: 1777381277-465682
+X-HE-Meta: U2FsdGVkX1/8Jk2IdpwURi0uO1pWUJf0wM1ZUhYQbZUnrKTxSBZ4fqRLw87GvR7KL5FVAlWyF2RZLjjkTFol5FsI581L/L8nEGBzLox3Lgn4wSQ36vvwE/enOwsnwaZ1x2Hj+DzpZb2or4N526jweRgC7QhjSMn2J5RebWku5rI5tq5qQI9RJhKmfBtc7SO86Eob4slylMSZ6KLSX1xJ7TP38v67GBF1O8DQ4ALRVRFc+13ke3d/or94+r1oej7i9whrc3g2Zx2Go9r35gtxpI7I+fwIVWac2XO6KPS2nUEAs+lKOZBjM58pYrQfFKIN4oplTtR5c8mmuXfWwsu2fxI7yxn+xsz0LwAZGSkc7eaRpale6qpkxfZOfnfdDj1kPemOj9Ftf1MfdIp2mImegZ6jlFwLpVpeXFYbfnKnSuIeUdBBVr7e8HgTnGitWti53V+EtMWhfXaYsrIaSssVnziIFhf1QwuTIyS4zwIjmPO7GuYI3GY4dFTW9WPPoHyZjbs+ZD0rtSelt+hRZ1g0J26+NdCnRsirAv2iPsaiPQsnJFArSY1OcAigBa4D+NreEAHB6n5F1LnQw1/0kymELsfSiWf5u4wMSAQroFAZF5m9WV/jC3BUcB7uGt92SF5cGQjdi5vyiq/RIbpdvmymyQXezzL8Uy149XZFQWwei0j8OJjI0FLTVty5VwaEH5iBzsiLSxx1UaVKW2yvwmgVoksYsgdgRUs1eVpt3deStBe7s43/Jw3KC57o+6jNErWIurVJWoehYbFI+fSBg7feQa+iFbKNnXstEcAjqJbyVwd0V+jIaB4jRkNlMW+eIDHGQcTOJSazslVs01KcIqyZWYMmH+S73ME5pcPQbDR6xFT3qH7ThcOq/PU/U3nfJlu0VQdyRyZV3NLjmw5lmmMP514k3d++BdD9N+GEmt+8zzXUCCfkDKQeZDWG8bUr8W5dlAfGYUezpJPyB+XRNci
+ PWJsR26o
+ ps/lthPo6NvDzW02tPjRA/GPsahZ4EDLl/gF2TPo4FcDF4Bea6/AKSNg4LHTJh2PLWSpDkLbVOTkqzFtoDISjpVTR+NMC6lJLAr3g2kKnz2HVfgdzDrLAEi1VfpgL5baJyHz9j+g8GItENWFqJ9g9kdbPCYP5o4dJWNBrN7teWvEDuyQCVSI/w/jBP9mv7A4XyfdnSKLKTx52N5IY9l7NZ6CSPPEVDMaJFGQ8dzQHmH7B4p84bOZLo6MQ6qbjoXgwzVJz+TCIeM9aF19MDw5lSZS9v9MKYQ6M6ITAZ17DjTwrEYHsQ9cK6vSpq+wVCsaanEGwHotXxUxTgRILAwGb7qC4gITmsUUtPZdOpph1mdKfFICjIHENNq65efAicaODx3S6QBAayO7HppAIEK+s6hCKKlfVjeUK/tkUsP8XcNqe6EZcsViafXE3kO8KL6yhZDNYU0pnW88B9l1IINxRaVpSxo1OxZ32l48w49GWwy2rQMxu7oZKoyf6KuGyDVd1BUPA9eQCEU/mbAAtKXLJtRUw1h4AhO4KtGTh3XgHpFDz701JAip4JwK9Jis0YbxiZ7M4447xKlBuebERxbQ4VZhGtgc32bEy/SsVISal9CpmsKW0XqCe7c0AseoRrYAJWWUmQPmAcYNiROKVnqq5Af31iAJBrDLH6vk12vvZedqph/ikzJz0DXQ1lw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,60 +103,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/4/28 19:40, Muchun Song wrote:
+On Tue, 28 Apr 2026 18:32:40 +0800 Barry Song <baohua@kernel.org> wrote:
+
+> On Tue, Apr 28, 2026 at 6:08 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+> >
+> > On 4/28/26 12:05, Barry Song wrote:
+> > > On Mon, Apr 27, 2026 at 3:42 PM David Hildenbrand (Arm)
+> > > <david@kernel.org> wrote:
+> > >>
+> > >> On 4/26/26 22:42, Barry Song wrote:
+> > >>> On Thu, Apr 23, 2026 at 8:36 PM David Hildenbrand (Arm)
+> > >>> <david@kernel.org> wrote:
+> > >>>
+> > >>> Thanks, david! would it make more sense to add “when
+> > >>> CONFIG_PAGE_MAPCOUNT is enabled” at the end of the
+> > >>> sentence?
+> > >>
+> > >> Better to phrase it in a way that doesn't even require these details :)
+> > >>
+> > >> Do we even need this detail in the patch description?
+> > >
+> > > What about:
+> > >
+> > > The comment appears to be outdated. add_to_swap() no longer exists,
+> > > and the explanation of why we need to call put_page() after
+> > > splitting could be made more general.
+> >
+> > Jup :)
 > 
-> 
->> On Apr 28, 2026, at 19:37, Miaohe Lin <linmiaohe@huawei.com> wrote:
->>
->> On 2026/4/28 16:52, Muchun Song wrote:
->>> memblk_nr_poison_inc() and memblk_nr_poison_sub() call
->>> find_memory_block_by_id(), which requires device_hotplug_lock to
->>> serialize the xarray lookup against memory block removal.
->>>
->>> Take device_hotplug_lock around the lookup and nr_hwpoison update so
->>> the memory block cannot disappear between xa_load() and get_device().
->>>
->>> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>
->> Thanks for update.
->>
->>> ---
->>> drivers/base/memory.c | 10 ++++++++--
->>> 1 file changed, 8 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
->>> index 6981b55d582a..f76aee29e9a5 100644
->>> --- a/drivers/base/memory.c
->>> +++ b/drivers/base/memory.c
->>> @@ -1228,23 +1228,29 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
->>> void memblk_nr_poison_inc(unsigned long pfn)
->>> {
->>> 	const unsigned long block_id = pfn_to_block_id(pfn);
->>> - 	struct memory_block *mem = find_memory_block_by_id(block_id);
->>> + 	struct memory_block *mem;
->>>
->>> + 	lock_device_hotplug();
->>
->> memblk_nr_poison_inc() and memblk_nr_poison_sub() are both called from memory_failure() context.
->> I'm afraid if memory_failure() is triggered while lock_device_hotplug is held, it will lead to
->> deadlock. Or am I miss something?
-> 
-> I am curious is there any place where memory_failure() is called with holding lock_device_hotplug?
+> Thanks!
+> Hi Andrew, would you like to make the change in the
+> changelog, or would you prefer that I send a new version?
 
-Sorry for dumb scenario, I was a bit too presumptuous. But there might be another possible deadlock:
+This?
 
-remove_memory
-  lock_device_hotplug <-- first called here
-  try_remove_memory
-    remove_memory_block_devices
-      num_poisoned_pages_sub
-        memblk_nr_poison_sub
-          lock_device_hotplug <-- deadlock here
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Subject: mm/huge_memory: fix outdated comment about freeing subpages in __folio_split
+Date: Thu, 23 Apr 2026 11:49:17 +0800
 
-Hope I'm not mistaken again. :)
+The comment appears to be outdated.  add_to_swap() no longer exists,
+and the explanation of why we need to call put_page() after splitting
+could be made more general.
 
-Thank.
-.
+Link: https://lore.kernel.org/20260423034917.8234-1-baohua@kernel.org
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Youngjun Park <youngjun.park@lge.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/huge_memory.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+--- a/mm/huge_memory.c~mm-huge_memory-fix-outdated-comment-about-freeing-subpages-in-__folio_split
++++ a/mm/huge_memory.c
+@@ -4190,11 +4190,10 @@ fail:
+ 
+ 		folio_unlock(new_folio);
+ 		/*
+-		 * Subpages may be freed if there wasn't any mapping
+-		 * like if add_to_swap() is running on a lru page that
+-		 * had its mapping zapped. And freeing these pages
+-		 * requires taking the lru_lock so we do the put_page
+-		 * of the tail pages after the split is complete.
++		 * Subpages whose mapping has been zapped may be freed
++		 * earlier, but freeing them requires taking the
++		 * lru_lock, so we defer put_page() on tail pages until
++		 * after the split completes.
+ 		 */
+ 		free_folio_and_swap_cache(new_folio);
+ 	}
+_
+
 
