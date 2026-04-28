@@ -4,93 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41E43FF886F
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 06:06:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73C92FF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 06:10:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B0AA6B0088; Tue, 28 Apr 2026 02:06:58 -0400 (EDT)
+	id C98986B008C; Tue, 28 Apr 2026 02:10:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 761DD6B008A; Tue, 28 Apr 2026 02:06:58 -0400 (EDT)
+	id C701D6B0092; Tue, 28 Apr 2026 02:10:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 677CD6B008C; Tue, 28 Apr 2026 02:06:58 -0400 (EDT)
+	id B86026B0093; Tue, 28 Apr 2026 02:10:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 53C4B6B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 02:06:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9319A1B94E8
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:06:01 +0000 (UTC)
-X-FDA: 84706928922.08.ADF21D1
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 208C816000C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:05:57 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LTuKEVkg;
-	spf=pass (imf08.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777356359;
+	by kanga.kvack.org (Postfix) with ESMTP id A7DFE6B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 02:10:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68EDA140443
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:10:36 +0000 (UTC)
+X-FDA: 84706940472.19.CB86976
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011030.outbound.protection.outlook.com [40.93.194.30])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 841B1C0010
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:10:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Vf8uFh7j;
+	spf=pass (imf22.hostedemail.com: domain of shivankg@amd.com designates 40.93.194.30 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777356633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=UENmXrqV0minNvWhiDn/Fu3Vfd0TFiYhyAFS9+hB2Pk=;
-	b=znW2/r39ApUEoLdIbRCZfZ7HXjOVOuW5nVEbfn6D8krLroF1tZir7TiyNDBSc0g+TIYLBD
-	9osaljlFnJQ4ZPLDPkYPSIAxpaWyMTxLBPv/soAjc4k3L9EQi2piN7nKNetDkdcOLm8jRQ
-	VO7bvSH0bJHvoY/ZwnxmODOb2YBlBuI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LTuKEVkg;
-	spf=pass (imf08.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777356359; a=rsa-sha256;
-	cv=none;
-	b=hxuxIug7jgKgGW/XDi9E/a3aFn/tkAn3mRKsN+YRYOMRNly0vDPMxSDnrVnVk/nIbpI1fk
-	7P9lyji2T3gbb1nEojC0BRkxapxg1hSAgvmZfCe9SW6/wVakXcFTkfEWp8DsXKNNm21nWn
-	FGSnVA6YSQqheWfXnUMypVaxhZSNpU8=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777356355; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=UENmXrqV0minNvWhiDn/Fu3Vfd0TFiYhyAFS9+hB2Pk=;
-	b=LTuKEVkgrlno0kttPhZ4WAm9D+V9V6tQ/RstMHhIQQ78/H76gBDqvENFYCaadlKIduDlQxunEcoATgLYZdfJGyG+WDpOciOXk1uTGgs7UGTir3hv6fzkPEgr4FeC48gHlrfmRh89y9mLZQ4bRnu3Wjzx8qpPag2ZYFhJNnuJUSU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=feng.tang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X1tYxNo_1777356350;
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0X1tYxNo_1777356350 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 28 Apr 2026 14:05:51 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	Liam.Howlett@oracle.com,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	Christoph Hellwig <hch@lst.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-Subject: [PATCH v3] dma-contiguous: setup default numa cma area if not configured explicitly
-Date: Tue, 28 Apr 2026 14:05:50 +0800
-Message-Id: <20260428060550.7167-1-feng.tang@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bqORCVo1QtToIAMda9Mfgj7ZIuHJh6GLPTChW2g05rI=;
+	b=UU6NqHj9wiXYd+PkG9DlkU3g+vjaS4kVAW6z6e9JkLhuS/isc+pMV6uDVd6FS2K9HsNoVg
+	NOo8tXRgM0OpN5vxwzWtey+fxUmK/Q92DkUWAaXTz+FEZZSUNlniIZfkuXJ+aIJ6xwWHeO
+	qlMU6cTjRyimKUbSZ0j+osDrALjlIVA=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Vf8uFh7j;
+	spf=pass (imf22.hostedemail.com: domain of shivankg@amd.com designates 40.93.194.30 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777356633; a=rsa-sha256;
+	cv=pass;
+	b=WhsAKp/EkL82+qcspvEeR2mXV5GxXKmXE3gsOHdmKbkVnWuEgIYBp/OZtlfDnqbcU0DHSn
+	a416l6cW8RPQbJray3DP3DG3clsvtboZuWGvrwvPkFSazm8JWogF/OjoyCUhyC5Txmi50n
+	yuQ6S8NYTnFkloZZFRRui5Aqjvw6sgo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yywW4e58hvY3SjUlCSDGgbsyFiihwp7G7mUYc5fH98fRFqqGS45FNqxhus6kgbRFVRw0XMhc9hIc4FfDSUa9yI6wuadnRY1ivoFpRsq9iozW3Xb2SkKrbRYJxdj/mvDYkUbjmi7bk7wNIEuyyYvEgo/NGwE/03VHidTG9UNM/ZDPUl9W7y5ifs1ciTvmWp0dpArEYmeI/s/zaiUEH9Ng6d/oRqEdlrvXdtq4Kz6STmWo2nU7L8UgyOubm/X68KAEwRkiNLexQ39NRdS7yu1x6Ds+ZTavSTFDeolL0I/OA7+Da9yRyJaZsrrxIvH9s5+cYR0sIxJRIj0cKd5szO1QuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bqORCVo1QtToIAMda9Mfgj7ZIuHJh6GLPTChW2g05rI=;
+ b=E8zInLawMEYN2pi3DRtG7vEFa2q6M0h8li3TuDX44wGwok9ORt4hWcsw1K4f9ftfGs64Tzd1r9cfuHA3teUIXvuMRgxhE6iI3ornkLnlRocgKvNolmkjDoEkr5bfsQ5ePgz9IMg35aUndX8RB0U6JdH728aCavrWb9TdAvDTO+X65nfzC0maakwr3INmPeKfcW1vE8bUIxJ6uwQtaeVLWdL911Ms31dV9exWkFzLuIaiEwqZFvAfIvDsdmjIl04yeEmE1yBO0BmyLy36E+ql9S01tVIFd9+cz+wLWa0Tn1NnHIf6xobguZsj+8QZpzq/wcj1/17IWXnmWHJ+n/YSvw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bqORCVo1QtToIAMda9Mfgj7ZIuHJh6GLPTChW2g05rI=;
+ b=Vf8uFh7jOSDFKN9H+834wbwYAckm6wfiLPEbKkiJfjfNEVVIadkCTYdvo22GEvvKn4TWrPMGnJPmBwMBmFhVSGhXcRye61Z7p8SX31SwJdnSjE99IRBU1YttX9Tdvd/zzSjsAi50WDpd8hIv8LB5URt7eDBGMQZzxFTxr4kmwNs=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by PHXPR12MB999234.namprd12.prod.outlook.com (2603:10b6:510:3ce::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.17; Tue, 28 Apr
+ 2026 06:10:29 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%4]) with mapi id 15.20.9870.016; Tue, 28 Apr 2026
+ 06:10:29 +0000
+Message-ID: <3d8895b2-f238-4c5d-a159-39dabad0f153@amd.com>
+Date: Tue, 28 Apr 2026 11:40:22 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/migrate: rename PAGE_ migration flags to FOLIO_
+From: "Garg, Shivank" <shivankg@amd.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, willy@infradead.org,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260324190706.964555-4-shivankg@amd.com>
+ <20260324122443.0488fecde3e3183856903afa@linux-foundation.org>
+ <03f36534-60ce-46fb-b999-dce1a6edc647@amd.com>
+Content-Language: en-US
+In-Reply-To: <03f36534-60ce-46fb-b999-dce1a6edc647@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4PR01CA0078.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:26d::13) To BN9PR12MB5259.namprd12.prod.outlook.com
+ (2603:10b6:408:100::17)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|PHXPR12MB999234:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1ff13486-aa51-44bc-0443-08dea4ecd91b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	nkc+zAN///nj5pOkhaZ0PUNEL1NWjMhL0mymtj01x5DAQdzCQ/HIy/7yHmhHdAqt3GKF/9wn4tPE7zc8pHI8+PfjF8StrTRKyoR3xehQJojf4ma3Jg2VdJ0KgI8zoS11OZ6P+G+bb6VAk/Cpv2x2MtKR+OYG058T7iDTgiUteL3Lk6bs/OGs3nUqM0HHOiH2PhyGbmnLxM5k78srrSWeEEJEbVxbZEJFcMkDIAlIzTlLE3jCGPUh9xEx+fa8UyJfNsudR8iQyEn6VfR8GxkdUFSwUsLMHV2GrwdNEHR5je7Pwbw0vqnsQyQIijuuK0qSUDz+uWR7OgGofX2qh2jr3GJgofpWyiv5Clr5kG2t28P7siExRoQP5BZsLH/sifx1vQ95p+AC38UZZ6v1ae5LaCp4B8dejojurQ2zUgvrJdAcWdRPq6k1/2GCQwLhKgM6GoPHQ6ZxeeOY3b8Rnw9RwLbkuItMtc0MjbxXpDZp5FTE8jQD7UHl2KpyEEKciPZMyBTom25tYTtVd8wTvCKzWSo5vxDgHGMmr2cWCuCN3EeySEcxC9QLvUPhCvpB058N4IRGYpEgMam9MgNCJu25tIyQyIIAiRigMysGVh0Rcx9jSTxTKQTy5Cm7eAHCKgwj2LZ7GEhn5S4XOeSsBvoypFDbJ9M7DmQpTvI78o9h1rl7s/1ll0YUrUJHLIIEvn7tq+6ElPAwyabFoul6jVTDPTBzfQf1mo0OeuIjFNrCC40=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K3AySVhtUUVRSlNsSVl3bFdmK216eDZQRmVlWmJQNXMvbnN2Q1dPZEJhalpl?=
+ =?utf-8?B?MkR3Sk41RVhCc0tINGMxRmJhR0lBUXVnRHBOMCs5YmZFc3BYamtxd04ybisw?=
+ =?utf-8?B?MHpqSW1aL05XMEhIL2ZGTEw0dGFTY0JPWk9tQlBHUUMwUEdLd2w0emVEeHNO?=
+ =?utf-8?B?UytWRlpEdzhhbHZyV2loZG9VbCt3K3BQUTgzZzArVDgwWisvMGVIZGVQOTc4?=
+ =?utf-8?B?OHpnaTZmeEZzWndJNGkzS053RUJ3ZDNKUEcyaGpPTkoyelJURHl5ak1PQkZ3?=
+ =?utf-8?B?QXA4RFRCRDFqUHlhNEFNNDBld0lqOVBYOW9BWUZ1UFpUZWNVbk1yM3dUQXhB?=
+ =?utf-8?B?MjkxMXNEeGswUnhsU0YvSGkzMEFXV29PYWFOUXJuK0pWQWdSdlppU05wN0dD?=
+ =?utf-8?B?UFMzVHBDYUdNQnBtcHZCVFNDQkE2VHpOMmdDMTNWZDZFRndralMza0k1eUVl?=
+ =?utf-8?B?MWZQVzlIRTAyQlY4Yy9nUVBSM2phd3crbUtJd2JLNFR6ZTcraE5NeFhIei9N?=
+ =?utf-8?B?a3EyZXVFNllVK2RNVCtrUm1HcFIzT0hMRldkaFVZUjZybFM1Wjh3MCtJYTMz?=
+ =?utf-8?B?OVMwYTkyZWVTS0JDdXltamhaaC9KNFNDaWNObkt1YStabnVjUjJxL0xLRmZl?=
+ =?utf-8?B?UFBoZ09RR0xUSVc2cldkZHNsaTJMRHVjRVVzUXVQeTBsRVFDdGFLSnljb083?=
+ =?utf-8?B?bjhwL3RlR3JrTlVFU0RlUEs1ZUY4YitmTUhjalVkd3BWWm16UGd1Si9XVzdY?=
+ =?utf-8?B?ZHlYK0xKZDcrckdZNUhhaTExaEFmN2JkL0h2WVpIWUYxU00zQWliM0tNVUJG?=
+ =?utf-8?B?OXhldVVNQXI2TnlvaXFxRDhrNHRWbFB2RS8xMUM5WnVsSEkxNHl3bkxBU2NR?=
+ =?utf-8?B?czZ4U2NvbGlLN1R2V0ZqUzVnbWRrOE1Yb1ppSlhZZ015NlRkdXhKSzI2STFG?=
+ =?utf-8?B?Y2hCd004eTEwNUoxcDRmNlMrVmZ3QWRyMFk1NlBhWVd1S2xZS1l2UGVyWWww?=
+ =?utf-8?B?WGhaUW9PUUd0Q3lkM3Z0THRaaXBPVW5Sd1ZIM09zcTRLWUgxUG9heURqaVVJ?=
+ =?utf-8?B?enU2ZWx1YTJQa3ZBRWdkTWFDdlE3dld4M2dBQ0xoNzJOLzNwMTZNc0tWbnFp?=
+ =?utf-8?B?VlAzWVczeStlQmJZTWRmdjE3Q2tRbVU3YUVnVzgwckNwdDVmc3hoN3V6MjJr?=
+ =?utf-8?B?ZzVuTzhxNzl2LzVJbXJvci9BRkY4QTdVNU5yR210eHBkQkpEeVBMVzlwR0pG?=
+ =?utf-8?B?TU92aWtrZnVFcUtiRmVkSXluWjNWclhDOEhSTlZ5NHArRXlwakJsaU9sbG5N?=
+ =?utf-8?B?dTlrRkRjb1I5Uk9qSjh4cXFQSDBGcTAvUG5Eb2tiVEhiRHlxcUxRTVZkYWRj?=
+ =?utf-8?B?TVZkMXlzK3dpS1czOTZuK05EZTkrMGdmZlhnOW1lODdiR0VyQkxPemVIUFdQ?=
+ =?utf-8?B?NHMveVBxdmVlOHdSLzVBb2RFKzZsV3lpMGlUZXQ4WXVrVEpyaHZBcDgxOThT?=
+ =?utf-8?B?dmZUVDJGUmxYYmlqWHVBbW9DbU1STGtRN0hya3pRdGdsdWFWcVRMY3VhWXdL?=
+ =?utf-8?B?aFRkY3RpMXgybm95MmN3emdOaWlaeTJIU0JkcDZXd3BrYWwvNWt3MEF4OVBm?=
+ =?utf-8?B?WE4xVW1ZNlBOZGRvU2xocG1oQXMvWHZneUN4U21tQ055aUZjOTY0bENXSnRk?=
+ =?utf-8?B?Rlp3OHpyTW04WW1SNU5hY1RMQ0x2TmZFL21GbVdRRVdxSmx1bVcwWHBTaFo5?=
+ =?utf-8?B?dGtFYVU0ZlhtZXB4alJ6WWNteE9zaWU2ZXBPdHdjOFpKaHVXa3RHNXdza3pz?=
+ =?utf-8?B?RFJVZmdhTFhJMTJWcXV6TXpVVnVOVWlHc2pPc096QmRSRTJPVUpOOTFEdStV?=
+ =?utf-8?B?R1djbkdHZCtJQTEyaGlpNnl6SlJ3U0hJQm4xWDVZaFljbld4WG56OTJSNStE?=
+ =?utf-8?B?VVFueDZpRjhYQlo1eHZzSWxDYzliMC9JaVgxWFBYYlJjeUx2SmcxdHdBY3hK?=
+ =?utf-8?B?Z3JLL09VUDFwZjZTTDZkUTJiQlN4M2Z4RkoycWwvbFozcmlVK3BuZ0JoaE5S?=
+ =?utf-8?B?eTJ4cVpHMGwvbVRwbk5lVUt3amt2ZnNScjgwS3RybHBIQ0hjc0VCTG9VT2lr?=
+ =?utf-8?B?QjhrWldEU2VHcTNxSGRxZHNOZUdNelp4OTljcUNBbE9BSEVGYnYxVGxTcGZm?=
+ =?utf-8?B?OU1uZk1JZUd5dG5LY2VLT0F3eXQ1SGFLNTMrWG1TR25MQnZPNmlWSDNnUTNE?=
+ =?utf-8?B?TVZJcnRpcmtvbStYL1lVeUhudEoxR1Z6YTQyM3lkTjJ0ZmJXMmR2b0hVNlBH?=
+ =?utf-8?B?L3V1RlpkSkV1T3NwVFo1NTNIdldGTFg5MG5KaWkveTRZTk1pcGgwQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ff13486-aa51-44bc-0443-08dea4ecd91b
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 06:10:29.6170
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0vEwGBU3RW/IlyrghIzCgSQUJB4j84sRqyg28MHterWHhXm2pGHkd1jnobdupYi92qAfMk+eEKl0onoVhRTaww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PHXPR12MB999234
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 208C816000C
-X-Stat-Signature: 3nfh8xtupqg53ej357ksdwxrydokz4x7
-X-HE-Tag: 1777356357-149171
-X-HE-Meta: U2FsdGVkX1/nUpFU0h5VzYJ0patOmpwvFeIxAqvqWlW98tDHwGjSDGzeSD1QbPClrIKIkZQCgdvH9IFEOS7Agy2EQD5pXb+7bQMkfiSqM32dc2PFPfLopY0b6WxrIKL7UggyMSkRO4BRwM0C/rvyhEuKPcUGSUilg45m+Xu5Zt67m8G8vc98yLs1ASP86xOT6qg/OkeN3tNW+MXxT0/z6qmk5Z1dgrAs/Nahh2VPe9d4VAs67cPjrgcdUlm0axY+C+xmIOK8pir3YNHKmgHDQIjre4fSPfya2FnbIDdtqnZShPyzfkr+9gCd+23nY3bUy2Qa89fNWiyrRSUmQfsoWNixcCLSpjrfynm8AR51JR53MzO0H8eO+y0Y1y3dCWJP+bnuel+9csx6qWoWkPbJaHjG0wk1XzULSofZRObk7Wx3Wn9t7WQkr1+h05hNDqYBZMoes4Z0YjEttkxkFMfD0Z9OZyyJJVeNqMBm22LX1TujK++NFz8JpWZrAf+Fy4nWmFdyFoYvGO08ZwR8NC7OK990yaojWpMwNlbx5skhqEvru0ZvF8/WJFKs0Lq0355jhnxFAw/JnjhGUnG4BMkMBISYqZ6ZACxWnbJkOkYmsVSAW7g0SMi1kHyNOjjS+NEoSze+cpJdPfVCyUkVBUX1s7V2Uo4BaAUa3sdvIwazlV2x1nfUlVrSZIRg+a+3MJsMHGIpR/TRUUvwpCY5gfw7u0WeFo+a0aWL5+e9GRuAWGmK15X4rbe13X1F0xsr+ri863mR/6HvFoQ33cAEIhDYNIUgQjThk4QNVNsuJd5z59SBwPDXIqvXewuXLBtxBMwASu/kbGhkjZhqftLkv92jZ0tfQykF2OVOCSiU3ibIbWV4s0KBdcHhP0Uh2wtN8Ruej6GJ/DchaZ91mvAtTCSLcnNHgN0yu/PyoiGRNRBdiHbHzGBi8VtHFFcT9BzjDouGGCFh4EtHJmCqEmY4wd1
- aNpvlOI/
- 7PUfwJAL+cCxKoufU/daGNLhR68FGA1e7NvdDklyUOAmQ4y0DsfW1KXzLwOKM0V0zXsARWvQZ7One2LHUw3mL4r1mSZzTE8rJZh/pxpGpnznh9olpQWe9x4JAYCP5gZwkBjcWI91ONIj7FcCgzlwHwi/fNPU93FthxEbyeWYDnUXuaSmcoS4hLTppH6dGUu8bMK7KWUQbQJi6mq/5Yuj/vbDSoREdZ6BFrKMbP0dZm1boSWRm1J5EIETBje9O7iyQ+0E21gkmE3wdGmYu6ndZkiRS3f2tCL57wz1h43RpIZQ70nUBk0oRRGzxAEPMB0Tyon37doyZ/E6umIYbs7LN9wDOt56gHAthEzkKKvuwScgY0sM=
+X-Rspamd-Queue-Id: 841B1C0010
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 6hu4dqtouhgkqfppate8k5i9r44sgjca
+X-HE-Tag: 1777356633-556810
+X-HE-Meta: U2FsdGVkX18vSeHIluPhic9kJBP6OTwawhsrIIc5MpNdkOwKZXh1ViXT8u0yqT4Yi0va2TR50VIyei+MOAi1KpN0Edg2MIkb03HoGSlIFccF4Fg8LqUz61EKcO2qT2aQbOYFUrAB4BRWpX2zihHpgDyzTTLW7sI1EyJOHdhV4qtxx/x7srezxgrTRcxhOSh3d/Er0fOAM4OL+vTMsp4dxuF5iLfFUtS4hCNSxqMPJ14D88i5AIwNaYle8i4olRVBp6GjacgM+laJmbDRl19G80yyrTflhZbEgGuvl2x9WIayYDuJaT3YiVof9RQNky/hc9N3uakzUPk5jZS2Dam204HMkyGDB4UCXftL12tnATsaT+BfUmR6vdKmlXVr8VSbdg8H+NDFdFBGc+G4LmUy9TpE6EsUBLZjfUt/aIQfsJ+0zlLij2C7GvqwB30/HyMm7cd3tImONEOWmnOPrVUfyzgCYBPeFE/xryOg/37/Nzz3wH6peEo8/bSNLM4Ayu4fjOseSUgPEDOE5WDneqeZ24TeINVbJmJhZX1+gTANKl4Nl8GcDXXPMlUe1HNvKp0zj+Nb3jWs9FazJU6xR29hA+zsFl792oMlQ9Bs7OBqHprH1UBUkk4YYVNLyKlxQ9+14Auc/XPRQufgXOZ97OG1vvkMgtEziUw+Pkh+dM5FL515bGVqIRzB4fWRJLClFr/4MDMJaplls7pGtskMEvPU8vMHJx+WZhRllunCJJx5oZKFXEtwufU32cgUqIbVo89GfulleIZMN64xCtYaM4azhTeqC/xPNZpF4mnfg3WJkWkuIAa3sUcRHfHfVKYet2nLJeD8mp7X32yjYDRqRQtDGF2/z7QsfaAAItTv2qXFr7L25ppo42E6XqJlLqR6zAEBvH5b1ClHhgi34cFbASJjwGtlpEbOT74p9iFWRD5kvoUaHdekqcbL0MSIHWJi0SeJ31NysL05mOMCXvmhDNW
+ mbgEAj+I
+ x8plDu7+4PQhMR3iuIsFeUFZzud2eXyxAXK1yalocMHFEMd8/vhG/SZNsFa1vu0Esca/Q/bulYpR89wnUsCDA8RgbU0UC1/CmoXKAJotxrbkVJheLNvI26fsh+IFMMcKAndTmzjh5I86VCU7P2SrWsHcwKB4Ya8dKUULi6TWuMocIi7tzbODIljvLtijLTmgtsxafflOZ/LdgZ07pUnTZgs46U7h30lh13cZhOnaiSOk9JTF3j5p5KxXFkOE0EG2/PWLx9qlBJW7lNiHYvqL5XAxQgYS6Hp/7Qq0e0ZRhqOq6kfMSAYrHrALUORbFWnTaSDPWp5kYAz+Fu9BFyETeKg8BINrFz2CoJYhaMinuDmPwP03zupqtLxQrRXmz+VjlgGQQTmiCJUeaG20RiD6ZmAK0/cO6GHkHCND5UusOqehUuqLOufyypcvQlNR1luSDM7c6rL0v6RYsOV6wt44gkguv2SQ61EgsqLzRc3lbpf3OHuhoD0gk+me3RTo7IIuj5HTirUUBf+D1VS3pQ2OLCNaqrrehNIMCyxI/Cm9pDNeROjM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,163 +176,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There was a report on a multi-numa-nodes ARM server that when IOMMU is
-disabled, the dma_alloc_coherent() function always returns memory from
-node 0 even for devices attaching to other nodes, while they can get
-local dma memory when IOMMU is on with the same API.
 
-The reason is, when IOMMU is disabled, the dma_alloc_coherent() will
-go the direct way and call dma_alloc_contiguous(). The system doesn't
-have any explicit cma setting (like per-numa cma), and only has a
-default 64MB cma reserved area (on node 0), where kernel will try
-first to allocate memory from.
 
-Robin Murphy suggested to setup pernuma cma or disable cma, which did
-solve the issue. While there is still concern that for customers
-which don't have much kernel knowledge, they could still suffer from
-this silently as some architectures enable cma area by default (not
-an issue for X86 though, which set CONFIG_CMA_SIZE_MBYTES to 0 by
-default) for most Linux distributions.
+On 3/25/2026 11:08 AM, Garg, Shivank wrote:
+> 
+> 
+> On 3/25/2026 12:54 AM, Andrew Morton wrote:
+>> On Tue, 24 Mar 2026 19:07:09 +0000 Shivank Garg <shivankg@amd.com> wrote:
+>>
+>>> These flags only track folio-specific state during migration and are
+>>> not used for movable_ops pages. Rename the enum values and the
+>>> old_page_state variable to match.
+>>
+>> eek, sorry, I have a finger in the dike, trying to slow things right
+>> down now.  I'll set this aside for consideration after 7.1-rc1.
+> 
+> Thanks for letting me know.
+> Sounds good, no rush at all.
 
-One thought is to follow the current cma reserving policy for platform
-with 'CONFIG_DMA_NUMA_CMA=y', that if the numa cma (either the 'numa cma'
-or 'cma pernuma' method) is not explicitly configured, set it up
-according to size of default 'dma_contiguous_default_area', while
-skipping the numa node where the 'dma_contiguous_default_area' lies
-in, this way the default behavior of platform with one NUMA node is
-kept unchanged.
+Hi Andrew,
 
-To get the node info of cma area, add some helpr funciton and setup
-in cma code.
+Gentle ping on this :)
 
-Reported-by: Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-Suggested-by: Ying Huang <ying.huang@linux.alibaba.com>
-Suggested-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
----
-Changelog:
+Thanks,
+Shivank
 
-  since v2:
-    * setup the numa cma are following default cma, while
-	  skipping the node holds the default cma (Robin Murphy)
-	* add cma_get_node() help and related code
-	* add reporter info 
 
-  since v1:
-	* don't use the original way of adding alloc_pages_node()
-	  before trying default cma node (Robin Murphy)
-	* setup default numa cma area if not configured (Ying Huang)
-
-   v2: https://lore.kernel.org/lkml/20260423095243.14239-1-feng.tang@linux.alibaba.com/
-   v1: https://lore.kernel.org/lkml/20260414090310.92055-1-feng.tang@linux.alibaba.com/
-
- include/linux/cma.h     |  1 +
- kernel/dma/contiguous.c | 14 ++++++++++++--
- mm/cma.c                | 11 ++++++++++-
- 3 files changed, 23 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 8555d38a97b1..acc9ecdf28e1 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -26,6 +26,7 @@ extern unsigned long totalcma_pages;
- extern phys_addr_t cma_get_base(const struct cma *cma);
- extern unsigned long cma_get_size(const struct cma *cma);
- extern const char *cma_get_name(const struct cma *cma);
-+extern int cma_get_nid(const struct cma *cma);
- 
- extern int __init cma_declare_contiguous_nid(phys_addr_t base,
- 			phys_addr_t size, phys_addr_t limit,
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index 03f52bd17120..ae6d856c5559 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -136,6 +136,7 @@ static struct cma *dma_contiguous_numa_area[MAX_NUMNODES];
- static phys_addr_t numa_cma_size[MAX_NUMNODES] __initdata;
- static struct cma *dma_contiguous_pernuma_area[MAX_NUMNODES];
- static phys_addr_t pernuma_size_bytes __initdata;
-+static bool numa_cma_configured;
- 
- static int __init early_numa_cma(char *p)
- {
-@@ -164,6 +165,7 @@ static int __init early_numa_cma(char *p)
- 			break;
- 	}
- 
-+	numa_cma_configured = true;
- 	return 0;
- }
- early_param("numa_cma", early_numa_cma);
-@@ -171,6 +173,7 @@ early_param("numa_cma", early_numa_cma);
- static int __init early_cma_pernuma(char *p)
- {
- 	pernuma_size_bytes = memparse(p, &p);
-+	numa_cma_configured = true;
- 	return 0;
- }
- early_param("cma_pernuma", early_cma_pernuma);
-@@ -221,6 +224,13 @@ static void __init dma_numa_cma_reserve(void)
- 					ret, nid);
- 		}
- 
-+		if (!numa_cma_configured && dma_contiguous_default_area) {
-+			if (nid != cma_get_nid(dma_contiguous_default_area))
-+				numa_cma_size[nid] = cma_get_size(dma_contiguous_default_area);
-+			else
-+				dma_contiguous_numa_area[nid] = dma_contiguous_default_area;
-+		}
-+
- 		if (numa_cma_size[nid]) {
- 
- 			cma = &dma_contiguous_numa_area[nid];
-@@ -255,8 +265,6 @@ void __init dma_contiguous_reserve(phys_addr_t limit)
- 	phys_addr_t selected_limit = limit;
- 	bool fixed = false;
- 
--	dma_numa_cma_reserve();
--
- 	pr_debug("%s(limit %08lx)\n", __func__, (unsigned long)limit);
- 
- 	if (size_cmdline != -1) {
-@@ -312,6 +320,8 @@ void __init dma_contiguous_reserve(phys_addr_t limit)
- 		if (ret)
- 			pr_warn("Couldn't queue default CMA region for heap creation.");
- 	}
-+
-+	dma_numa_cma_reserve();
- }
- 
- void __weak
-diff --git a/mm/cma.c b/mm/cma.c
-index c7ca567f4c5c..3bbfafeaf6c1 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -54,6 +54,11 @@ const char *cma_get_name(const struct cma *cma)
- }
- EXPORT_SYMBOL_GPL(cma_get_name);
- 
-+extern int cma_get_nid(const struct cma *cma)
-+{
-+	return cma->nid;
-+}
-+
- static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
- 					     unsigned int align_order)
- {
-@@ -511,7 +516,11 @@ static int __init __cma_declare_contiguous_nid(phys_addr_t *basep,
- 		return ret;
- 	}
- 
--	(*res_cma)->nid = nid;
-+	if (IS_ENABLED(CONFIG_NUMA) && nid == NUMA_NO_NODE)
-+		(*res_cma)->nid = early_pfn_to_nid((*res_cma)->ranges[0].base_pfn);
-+	else
-+		(*res_cma)->nid = nid;
-+
- 	*basep = base;
- 
- 	return 0;
--- 
-2.39.5 (Apple Git-154)
 
 
