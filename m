@@ -4,147 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0F6DFF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 05:37:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0693FFF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 05:40:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC7076B008A; Tue, 28 Apr 2026 01:37:23 -0400 (EDT)
+	id 4F4886B0088; Tue, 28 Apr 2026 01:40:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D77096B008C; Tue, 28 Apr 2026 01:37:23 -0400 (EDT)
+	id 4C9D56B008A; Tue, 28 Apr 2026 01:40:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C65886B0092; Tue, 28 Apr 2026 01:37:23 -0400 (EDT)
+	id 3DF5B6B008C; Tue, 28 Apr 2026 01:40:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B4BE76B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:37:23 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C168A8C076
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:37:14 +0000 (UTC)
-X-FDA: 84706856430.28.CE92394
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CA1F74000F
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:37:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ljwpku2y;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 2BC8B6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:40:44 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1C381C07C1
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:40:32 +0000 (UTC)
+X-FDA: 84706864704.08.57BE659
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D143640003
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:40:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s7wNHyF1;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777354632;
+	s=arc-20220608; t=1777354831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ndD+iHZxX3CNabFMwdIpE4GSLp7El9jd4QHq1xamc/c=;
-	b=o89gSz3QQkX1+43hManYyQ/42PgTvkwFYvI5aznybH7jdb5i5wNo9gF6NA8M5TY1KSJOtx
-	0Yh5H1QPIv+DZtCeJYuyJYOEIzwsCUROMHy+jvK8xYfyG3gliswSJhGbMw+QopMn0GaVoC
-	toXoBS46EJCxMNMcz0t9VJqzZIt+z40=
+	bh=5fS0zxAHdlDELmGXk903zvG9jRUodb1AElMUZcYvUB4=;
+	b=NhShM4i8qPMNDZus4SSYu1P2KYHm7pAwVNFQhp8736uhnarqwqP1pARPChNpAK0LY6TEKx
+	sLvRy3pJOSQd0QspCi16XVJTZe3a8vtMEjD0TbECO0/YxZ9cjv6fbkuBAYaJlkDaqVhmIi
+	ZRdR849P7icv1XuDxBXdPsTuoo2jQKo=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ljwpku2y;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s7wNHyF1;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777354632; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777354831; a=rsa-sha256;
 	cv=none;
-	b=6yNHzVpKAT0OwQud863EzXzYYxYzH/meo+Twsqs3cbRdlQsC7T7Me0cJlUi1btyh6r53Vp
-	NISuq1QTvaNJCb4K8dzm0aB+bdx+SOump6liqQwJOwqSIC4hAfYOh4oRljfgcNsKy/tK2P
-	DPAwJVchhcrFIepOJDsPdZhzH5hI3G0=
+	b=L4LeXoncJOfp+F/jYDrNEbEY7XNCOEwNDnYcDwvprGIoMz4PfL6Df/Lux1qW4LyrMhDf6Z
+	tYI4eVcVfY9H2zDxiyEsHXJFDdpNlaeFzACYRB40hAt61JdTbT266JVYfDivZJq2a6e5oj
+	iN9rTB60rlTk1UjGhxrg9tIfewsQM+s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 034AF60008;
-	Tue, 28 Apr 2026 05:37:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41145C2BCAF;
-	Tue, 28 Apr 2026 05:37:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A637940292
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:40:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AB5C2BCB3
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777354631;
-	bh=35j+qmt6iWL15WfQJe5Xfl8qePbfDGAdSt+9hvpfQxM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ljwpku2ytv1a51/lWJ0in9sBUOvx/MFmaVm2lPWSgv9iXQ5Y5hi97v5lXatAQMj+o
-	 M6v48RpZX+/yodaSIkctR7XFA621nSVRkUAHLndGlPCH/3+0raZFnmvzHx6QFrbUSW
-	 MY2nLUR0beFVJYiZhHeXViYGYrVhJqildv0ZoE5dhL7L/xaz7W4ZNKOYDsAGmVW63b
-	 OBYu3z+Z+i9ktOYlazQVUXbybAFNByZdkO1qb2CjKEvkk9cyFBQIJt9meREV7C2c4Q
-	 pi2MNJfmfmSD0V3v0rlTi2dKaJpC9vRYnsWEHGQFNmGUTXSaHRe4IbR4Mphemz8+Vq
-	 ZokFl+wxATNAA==
-Message-ID: <06d11ed8-8532-4748-8ce2-6715c4665dc5@kernel.org>
-Date: Tue, 28 Apr 2026 07:37:00 +0200
+	s=k20201202; t=1777354829;
+	bh=ACDTs+nzKnqc5cb5UacIuhCf4JsteW4a1h8Qd9UWrmo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=s7wNHyF1mmeg8BMRTiy1fge0uR38oPB9AO7yb/JHrL0fmCj9rjKyN4R1pYmij6P49
+	 NpSt/+nzelOPGQ85n3zNIzKAVZs9zINWgiQETB65Rt3R9B8MOYmAlJiDodzhKJBUey
+	 mjouxP196IsgpgyiZ8efcgH96XdEou6ty9Y0Sm8oPxKXFuHRme05IGQIDVUBoaBaCJ
+	 65xkTY52HUygugPpMaxpFXIpn+w8oZ3xswj8ICpYjhAH+kjPBeMPn8AVh5bhCoC5M6
+	 QS4OwzExxr0VUjpc5mDQlG8AAQGiZyHarRSHy89rrLWd8zFOzksqbWi2CgcmBw7d72
+	 2pQKrhlkqU5+g==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8eab809593cso951177685a.3
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 22:40:29 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyV6KBxvkwNtlliy2GmBZiCUlr5eWNtyPtBsxMqhdiMK2tnUInN
+	rBYwGzGEuYrPRGpMDNo1P3w8avziFDz3wG9K8wUnuRwQ2OLYF+4Z9l5A9KA2pD6uXgbgg6Ik3Oy
+	iiY6AvxQk1m27WbOIhyqod4ii5DccIPM=
+X-Received: by 2002:a05:6214:449f:b0:8a5:fced:6af2 with SMTP id
+ 6a1803df08f44-8b3e30a71e6mr29479776d6.38.1777354828735; Mon, 27 Apr 2026
+ 22:40:28 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: remove page_mapped()
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
- <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
- "Liam R. Howlett" <liam@infradead.org>, linux-sh@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, Ryan Roberts <Ryan.Roberts@arm.com>
-References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
- <97192ac3-643d-4393-87ef-53a9f3ddaf95@kernel.org>
- <CAADnVQ+t549-aWEXq=ZUN79H-M=std3-Q8w3fU+dyNhF7mNjyA@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <CAADnVQ+t549-aWEXq=ZUN79H-M=std3-Q8w3fU+dyNhF7mNjyA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6389m1aa1643natqhy8bsxege3tnaehn
-X-Rspamd-Queue-Id: CA1F74000F
+References: <20260418120233.7162-1-baohua@kernel.org> <20260424045334.ce9801ecd7a077bf3d5e4ff1@linux-foundation.org>
+In-Reply-To: <20260424045334.ce9801ecd7a077bf3d5e4ff1@linux-foundation.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 28 Apr 2026 13:40:15 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xMuBnQs3My21nvSCwLMGDb+StjmdhmbbfrO_EwOdEjRg@mail.gmail.com>
+X-Gm-Features: AVHnY4JJ_k2LizkUk9OcUzg4WVIgapayHXHbEYmFC1zBPjUul_qnqvXDc_yu0QM
+Message-ID: <CAGsJ_4xMuBnQs3My21nvSCwLMGDb+StjmdhmbbfrO_EwOdEjRg@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: Use folio_mark_accessed to replace
+ folio_set_active in PF
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Lance Yang <lance.yang@linux.dev>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, wangzicheng <wangzicheng@honor.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Lei Liu <liulei.rjpt@vivo.com>, 
+	Matthew Wilcox <willy@infradead.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>, 
+	qiaozhe@iscas.ac.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777354632-152601
-X-HE-Meta: U2FsdGVkX18nPtdgPBg4nYs1YOCMShsPANqCy+gOSvfr7T2519kk55Eb4RIpE/ofTksp8TWRkDGbHT9kFHr1p/Hn+DqyV8qmcp3RySUTQdoRiMHIDKlKT6FTMnU7Tz2QfaoLmpeFF4JQkG54rwo3gBaKm0qLmfCktk+T2ML1rCpUENHAryfuArcYPBWtkHlxujocOTNNJL0wMk+lKvoXtxG6KuWM6Bls0BfNGVxbNaeZpMDfJFCumvPrxV6zhwfP5NoePWSsvE82V+kWZlHbsYCqMbxs7q7zARF6ezt2xG1arhsvx1gxsUBiurM/6Lg+v7POwZvdU+aWObVIU1KmHcO1dghxwNmIhTm4soCGe3jznGpvZmSMT7wk4g7/7x/J9fLjobeOUJ59LaXfPOuyw2GMWNRxwd9G+eMoju9nZstG0EMSDE+63Sw6zpmuMK3/3tM6PHctA4Re8/zcWplaZNkr7DxlENKi/BgbP5Y7RxfYPNTk0udCMuQow90Q0YToRJMpTcdgpLpTgjb/ujYyg9y9MzZ5usq2OR5+/quSEq/euLP3ZN3pjzgsXHIfFRdygbkiUegXL5262HSOWaW5YqBh1csvL7DZSkMVgH9itFe/GWYymKDH7bIbw7f8VktJND1QPjccZk4dT64rEy2LsSyFYT+ajpPJhz1OTmJKikZoalhcFJJM9A6+zuGMa6hmq6vMP9hHJftc2xDBfRdx1ofI2cQ7yRZeSZcWeW3ubMdmhZSgjlFFWAnNo03k5gTw+tASBcJd+U5IVtxXQItcXN4XkypXKTWFnKYs5B9WB4cekVuvbqRHd2wgJqkzaWBhhyDvfV6pd44SGa5LKV+OF8LifBCO4H7SNtcKFhiE+AtpGqFELjETWDSOH7meJ8fIAqBSwFycWoGqvISt4Q4+ZifPzduASByeWWe4AHmgWb4ECgysswrLpz1klTJLYpyMxxNFtH4a+BjiKSMG1Az
- HLyilZVK
- EIfHrTkklcEZ2BmWXgDYvqzmeS8erkHuoP779UXMKFTYY5T7bej8XU2g4EMtXcPiBCp63Th980wGdhTltqM9wFCQWyKjXeoBFSFGsK9+skhqdAyjZkosJaMC+lgT7hOCOu+2eHBacuU3mUMM6spvlgYsdBNyk5xW43oM6md+YMIJ8JMuK+JHOsZ2hwLnb0oKP3a/emArPH2RZQsly2EC8vUUA4yTOBSpKjcjQEsO2bQeTFRK4mLEXe2ptJMV0DELOMfk9bq1VF2BzhTAR3XCakZgPrMfFmDhgPtwcmFpOP8NsXvqTMXy6ZjRYROZGra+/8SE2LxUxFp8elXINjRXRI2SZbZ8kQZlQeqbITR18ZIOBgZYKY2Tctj23TVssfAIuYeA/7de06kwA+XGdm2rO7mfjEC5CjtEXmv6JW2W+lPeXzF0=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D143640003
+X-Stat-Signature: 8hpyryhneepfr7o4x18ab4rwappc6cnq
+X-HE-Tag: 1777354830-741249
+X-HE-Meta: U2FsdGVkX1/ED6NI3hNm3XGGD7mAQ+LelohnPynjgSqIhgKn7haCBqeH8qhJ/t/D/RgrmvnUsqdWIZT1S6bEJzR8+CH00agegYv9vw758OHqe0C4/g98ypfIoUa86J+3cQyBtENTDGEKzdbyzRjMBTiVYvJnWfVggy3cHtIh1t7xTm5nSAwwbI/Q9T3fDpx3ILJ8OC+g5YXlqyAJt8d457GpLIWvK1f64u4iMG/t2iOoOUrzZLaViVesr4TiLDaoYCcnho0cK9lWYddrwdc1ctfWy/S6R5R70DnvbOwuJWU+o+Zmfgb/mya9uRmGarecnjiC94qgyXQuNeLiVFSi8km5fA3rKvvGA0EuqV+GaYzp9hD0Q88pTDrq7rR7zqrQ3O9QKaJzrQ7yhj3OZlfA3h+N8xsw+fSZTuW1Ub05z55Rh8WEDZ1nPnTNmylGi5GVC6lOeMcQnh9fkaXknIsYhl8eDRKvGMhXrA4gUku5L2rrJV+wcweIO8xQGJdAoNzkcLIImPFTQcdJQ2tNbA++VgiNeZ2+Xup4FvEggO7V1r7bIsIOI8xt0Layb9xkqJUE50sAYmxvcDC0f4S0HVdNlPrLo57HGymWogafqnx8wBTTIFHXFF72wNXZWr1/yS1H9JYzu5vuPrDzazhEO95EkK8sV/v5chj+BUosvieIC5TbjWlAX3xSGCVVCPj2qTzXgcJtnFDCMhZ46EmKYViBKsoC6ZqWlUfUzGPTnTMZxc96sGLAGpi2bXOjF+pYO39/rIcNQtB5HaVUhv4I5XCsbPasqS3yo2wH7w7Zli/2oOekQOr83IombaprPHlnnI3my7w737jeVqVFZ1TtQzutYVAsxhDn2T/yuVaB9KtSdydXo0KNXSJoQV51aMIUedakP+WbwGSqKDzNr1GZ5j4jAi0oslErT7qSMCSko6giU0Zvug8FT2O5TTgDD24nAlyz/ZER0YOIw/iI/vVyy2x
+ 4cr8NrI/
+ n20QAOINN1rLnIMWMr8TZJ5TuCHKVnusIskaWvadmSfzU/ZzjiyTueuo7BEtURPg1GVi7RdU3ce4SQJi+ckv8d8AsJ4QAFHPAxVM1WxkMZwXiNWraBAR69WSWEmQkVc57DCEyY9dGR14jCW/Kae3k/llV12wGGx6bg5rSZeoneG9WqEPBSsrs2XSOtPWHQxDUWJ9Feap2SMZJCRTbaj+GajozGS/37kLtdbkhal+PXYg4wOes3rOkgTrhevlwe4UFVkM9GglHv0auVS7OUkUNjnn2+0OioYCPNXDatVOURWGr7Zs2W0kDIpD7hPkoPG/iy/CWDJ5+gr9V94bN9b4rvna2zCf7i+ez3AZlyGKxXYbrcZCXJez/r4EBOUv3rLPgskzQl1Kmmdp2OIDNJVqQBQcpvcIKiMreWyvAWMEPD1sbg+96akxhFXA3rFOaS/sy3P/T31G5qao+IDpj4xhv43Ys/k5p21uhx8k0QnlO/NG1QbY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,67 +108,384 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/27/26 23:38, Alexei Starovoitov wrote:
-> On Mon, Apr 27, 2026 at 9:59 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 4/27/26 13:43, David Hildenbrand (Arm) wrote:
->>> While preparing my slides for an LSF/MM talk, I realized that I did not
->>> yet remove page_mapped().
->>>
->>> So let's do that. In the BPF arena code it's unclear which memdesc we
->>> would want to allocate in the future: certainly something with a
->>> refcount, but likely none with a mapcount. So let's just rely on
->>> the page refcount instead to decide whether we want to try zapping the
->>> page from user page tables.
->>>
->>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->>> ---
->>
->> I scanned AI review and I think it founds something that is not related to this
->> patch.
->>
->> We use the page_mapped()->page_ref_count() check as an optimization to avoid
->> calling zap_vma_range(). We must be able to call it even without that optimization.
->>
->> Just like the bulk zap call earlier
->>
->>         if (page_cnt > 1)
->>                 /* bulk zap if multiple pages being freed */
->>                 zap_pages(arena, full_uaddr, page_cnt);
->>
->> It talks about concurrent "munmap(), unmap_region() executes unmap_vmas()"
->> racing with our zap_vma_range().
->>
->> Looking into the details, arena_map_mmap() calls remember_vma(). We reject
->> mremap and VMA split. arena_vm_close() removes the VMA from the list. The
->> arena->lock protects our VMA list.
->>
->> So in zap_pages, the VMA cannot go away. If we find a VMA, ->close could not
->> have been called yet.
->>
->> In vma.c, we call remove_vma() after vms_clear_pte(). So after unmapping the
->> pages and freeing the page tables.
->>
->> So munmap() can indeed race with zap_vma_range(), and the page_mapped() check
->> would not have changed anything about that really.
->>
->>
->> @BPF folks: does BPF take anywhere the mmap lock in read mode before calling
->> zap_vma_range()? It should do that.
-> 
-> Yes, but do NOT.
+On Fri, Apr 24, 2026 at 7:53=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Sat, 18 Apr 2026 20:02:33 +0800 "Barry Song (Xiaomi)" <baohua@kernel.o=
+rg> wrote:
+>
+> > MGLRU gives high priority to folios mapped in page tables.
+> > As a result, folio_set_active() is invoked for all folios
+> > read during page faults. In practice, however, readahead
+> > can bring in many folios that are never accessed via page
+> > tables.
+> >
+> > A previous attempt by Lei Liu proposed introducing a separate
+> > LRU for readahead[1] to make readahead pages easier to reclaim,
+> > but that approach is likely over-engineered.
+> >
+> > Before commit 4d5d14a01e2c ("mm/mglru: rework workingset
+> > protection"), folios with PG_active were always placed in
+> > the youngest generation, leading to over-protection and
+> > increased refaults. After that commit, PG_active folios
+> > are placed in the second youngest generation, which is
+> > still too optimistic given the presence of readahead. In
+> > contrast, the classic active/inactive scheme is more
+> > conservative.
+> >
+> > This patch switches to folio_mark_accessed(). If
+> > folio_check_references() later detects referenced PTEs,
+> > the folio will be promoted based on the reference flag
+> > set by folio_mark_accessed().
+> >
+> > The following uses a simple model to demonstrate why the current
+> > code is not ideal. It runs fio-3.42 in a memcg, reading a file in a
+> > strided pattern=E2=80=944KB every 64KB=E2=80=94to simulate prefaulted p=
+ages that may
+> > not be accessed.
+>
+> Are you able to suggest any workloads which might regress?  And test
+> for those?
 
-In general, do NOT talk to me like that.
+I don=E2=80=99t have a specific workload, but I can imagine one. For exampl=
+e,
+a workload with readahead, where all readahead pages are mapped and
+all folios also happen to be hot. In this case, placing them into
+active generations at the readahead stage might be beneficial. However,
+this patch would not lose them either; it may just require a more
+folio_check_references()- PTE scan to confirm they are truly
+accessed before activating them.
+
+>
+> > Without the patch, we observed 12883855 file refaults and a very low
+> > bandwidth of 58.5 MiB/s, because prefaulted but unused pages occupy
+> > hot positions, continuously pushing out the real working set and
+> > causing incorrect reclaim. With the patch, we observed 0 refaults
+> > and bandwidth increased to 5078 MiB/s.
+>
+> Wow.  And that isn't a crazy workload.
+
+Right.
+Readahead is mainly for I/O performance, but it does not necessarily
+mean those pages will be accessed or become hot. On a memory-limited
+system, promoting readahead folios can be very harmful.
+
+>
+> > For those who want to try the model on x86, you will need the
+> > following in arch/x86/include/asm/pgtable.h.
+> >
+> >  #define arch_wants_old_prefaulted_pte arch_wants_old_prefaulted_pte
+> >  static inline bool arch_wants_old_prefaulted_pte(void)
+> >  {
+> >       return true;
+> >  }
+>
+> Can you propose a patch?  We can at least toss it in there for testing
+> while we think about it.
+
+I can include this RFC after this patch in v2. Right now only arm64
+supports fault_around of old PTEs; it seems all architectures were
+disabled due to an x86 issue in commit 315d09bf30c2
+("Revert 'mm: make faultaround produce old ptes'"). It was later
+revived only for arm64 by Will.
+
+I may reach out to and engage the x86 and RISC-V communities for a
+revisit. I actually have Zhe Qiao testing it on newer AMD and Intel
+platforms. With sufficient memory and no reclaim pressure, mapping
+fault_around PTEs as old still shows a small UnixBench regression, as
+below. However, I doubt this is significant, because under memory
+pressure, reclaiming the correct folios is likely more important than
+the hardware access flag cost, offsetting the HW AF overhead.
+
+Alternatively, we may need some self-tuning logic to detect memory
+pressure and decide whether to map fault_around PTEs as old on
+platforms where HW AF handling is costly?
+
+Thanks to Zhe Qiao for the data below. Cc=E2=80=99ing Zhe Qiao as well.
+
+AMD Ryzen 9 9950X 16-Core Processor:
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Kernel A: 7.0.0-14-generic =3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Kernel: 7.0.0-14-generic
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Test                        Index (avg)     n  Iters
+----------------------------------------------------------------
+dhry2reg                      111703.38     4  [0,1,2,3]
+whetstone-double               34170.80     4  [0,1,2,3]
+execl                          15312.25     4  [0,1,2,3]
+fstime                         59662.58     4  [0,1,2,3]
+fsbuffer                       72696.42     4  [0,1,2,3]
+fsdisk                         31885.47     4  [0,1,2,3]
+pipe                           61432.48     4  [0,1,2,3]
+context1                       15438.23     4  [0,1,2,3]
+spawn                          16349.47     4  [0,1,2,3]
+syscall                        38748.50     4  [0,1,2,3]
+shell1                         24710.05     4  [0,1,2,3]
+shell8                         20207.05     4  [0,1,2,3]
+----------------------------------------------------------------
+
+  Valid tests: 12 / 12
+  =E2=95=94=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=97
+  =E2=95=91  System Benchmarks Index Score: 34045.39         =E2=95=91
+  =E2=95=9A=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=9D
 
 
-As I discussed recently with Ryan, we should update the locking requirements for
-zap_vma_range().
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Kernel B: 7.0.0-custom-test+ =3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Kernel: 7.0.0-custom-test+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Test                        Index (avg)     n  Iters
+----------------------------------------------------------------
+dhry2reg                      105061.82     5  [0,1,2,3,4]
+whetstone-double               33945.03     4  [0,1,2,3]
+execl                          13992.70     5  [0,1,2,3,4]
+fstime                         59037.77     4  [0,1,2,3]
+fsbuffer                       72465.12     4  [0,1,2,3]
+fsdisk                         28388.05     4  [0,1,2,3]
+pipe                           64047.38     4  [0,1,2,3]
+context1                       15322.56     5  [0,1,2,3,4]
+spawn                          16020.58     4  [0,1,2,3]
+syscall                        40669.70     4  [0,1,2,3]
+shell1                         23514.32     4  [0,1,2,3]
+shell8                         19393.55     4  [0,1,2,3]
+----------------------------------------------------------------
 
-I assume friendly BPF folks will take care of fixing this.
+  Valid tests: 12 / 12
+  =E2=95=94=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=97
+  =E2=95=91  System Benchmarks Index Score: 33159.46         =E2=95=91
+  =E2=95=9A=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=9D
 
--- 
-Cheers,
 
-David
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Per-Test Index Comparison
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Test                         Kernel A       Kernel B       Diff %
+----------------------------------------------------------------
+dhry2reg                    111703.38      105061.82       -5.95%  =E2=AC=
+=87
+whetstone-double             34170.80       33945.03       -0.66%
+execl                        15312.25       13992.70       -8.62%  =E2=AC=
+=87
+fstime                       59662.58       59037.77       -1.05%
+fsbuffer                     72696.42       72465.12       -0.32%
+fsdisk                       31885.47       28388.05      -10.97%  =E2=AC=
+=87
+pipe                         61432.48       64047.38       +4.26%  =E2=AC=
+=86
+context1                     15438.23       15322.56       -0.75%
+spawn                        16349.47       16020.58       -2.01%  =E2=AC=
+=87
+syscall                      38748.50       40669.70       +4.96%  =E2=AC=
+=86
+shell1                       24710.05       23514.32       -4.84%  =E2=AC=
+=87
+shell8                       20207.05       19393.55       -4.03%  =E2=AC=
+=87
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Final System Benchmarks Index Score
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  7.0.0-14-generic                       34045.39
+  7.0.0-custom-test+                     33159.46
+  --------------------------------------------
+  B vs A                                   -2.60%
+
+
+
+INTEL(R) XEON(R) PLATINUM 8575C:
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Kernel A: 7.0.0-14-generic =3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Kernel: 7.0.0-14-generic
+  Prefix: 24-300s- (24 threads)
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Test                       AvgScore     Baseline      Index     n
+----------------------------------------------------------------
+dhry2reg                   87226.50     116700.0       7.47     4
+whetstone-double           29323.70         55.0    5331.58     4
+execl                      12638.17         43.0    2939.11     4
+fstime                     84223.20       3960.0     212.68     4
+fsbuffer                   56491.22       1655.0     341.34     4
+fsdisk                     34570.90       5800.0      59.61     4
+pipe                       45941.97      12440.0      36.93     4
+context1                   20177.08       4000.0      50.44     4
+spawn                       9498.88        126.0     753.88     4
+syscall                    29181.70      15000.0      19.45     4
+shell1                     21060.58         42.4    4967.12     4
+shell8                     17669.08          6.0   29448.47     4
+----------------------------------------------------------------
+
+  Valid tests: 12 / 12
+  =E2=95=94=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=97
+  =E2=95=91  System Benchmarks Index Score: 335.36         =E2=95=91
+  =E2=95=9A=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=9D
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D Kernel B: 7.0.0-custom-test+ =3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Kernel: 7.0.0-custom-test+
+  Prefix: 24-300s- (24 threads)
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Test                       AvgScore     Baseline      Index     n
+----------------------------------------------------------------
+dhry2reg                   87607.90     116700.0       7.51     4
+whetstone-double           29092.33         55.0    5289.51     4
+execl                      12318.00         43.0    2864.65     4
+fstime                     85738.35       3960.0     216.51     4
+fsbuffer                   57621.05       1655.0     348.16     4
+fsdisk                     33608.60       5800.0      57.95     4
+pipe                       46320.38      12440.0      37.24     4
+context1                   20450.12       4000.0      51.13     4
+spawn                       9579.15        126.0     760.25     4
+syscall                    29563.43      15000.0      19.71     4
+shell1                     20073.10         42.4    4734.22     4
+shell8                     16946.05          6.0   28243.42     4
+----------------------------------------------------------------
+
+  Valid tests: 12 / 12
+  =E2=95=94=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=97
+  =E2=95=91  System Benchmarks Index Score: 333.55         =E2=95=91
+  =E2=95=9A=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=
+=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=
+=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=90=E2=95=
+=9D
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Per-Test Index Comparison
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Test                         Kernel A       Kernel B       Diff %
+----------------------------------------------------------------
+dhry2reg                     87226.50       87607.90       +0.44%
+whetstone-double             29323.70       29092.33       -0.79%
+execl                        12638.17       12318.00       -2.53%  =E2=AC=
+=87
+fstime                       84223.20       85738.35       +1.80%
+fsbuffer                     56491.22       57621.05       +2.00%  =E2=AC=
+=86
+fsdisk                       34570.90       33608.60       -2.78%  =E2=AC=
+=87
+pipe                         45941.97       46320.38       +0.82%
+context1                     20177.08       20450.12       +1.35%
+spawn                         9498.88        9579.15       +0.85%
+syscall                      29181.70       29563.43       +1.31%
+shell1                       21060.58       20073.10       -4.69%  =E2=AC=
+=87
+shell8                       17669.08       16946.05       -4.09%  =E2=AC=
+=87
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  Final System Benchmarks Index Score
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  7.0.0-14-generic                         335.36
+  7.0.0-custom-test+                       333.55
+  --------------------------------------------
+  B vs A                                   -0.54%
+
+>
+> > --- a/mm/swap.c
+> > +++ b/mm/swap.c
+> > @@ -512,7 +512,7 @@ void folio_add_lru(struct folio *folio)
+> >       /* see the comment in lru_gen_folio_seq() */
+> >       if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+> >           lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
+> > -             folio_set_active(folio);
+> > +             folio_mark_accessed(folio);
+> >
+> >       folio_batch_add_and_move(folio, lru_add);
+> >  }
+>
+> lol, I was expecting something larger ;)
+
+Yep. I usually prefer small patches if they can resolve the problem,
+which would make our lives easier :-)
+
+But we will likely need a 2/2 patch for refault activation, as
+discussed with Shakeel and Axel.
+
+Thanks
+Barry
 
