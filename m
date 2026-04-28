@@ -4,102 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E635FF8867
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 01:35:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B55EFFF8864
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 01:57:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 667BE6B00A9; Mon, 27 Apr 2026 21:35:28 -0400 (EDT)
+	id C53726B008A; Mon, 27 Apr 2026 21:57:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 618AF6B00AA; Mon, 27 Apr 2026 21:35:28 -0400 (EDT)
+	id C04D06B008C; Mon, 27 Apr 2026 21:57:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 555116B00AB; Mon, 27 Apr 2026 21:35:28 -0400 (EDT)
+	id AF3786B0092; Mon, 27 Apr 2026 21:57:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 44A3A6B00A9
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:35:28 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E480403C7
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:35:28 +0000 (UTC)
-X-FDA: 84706247136.28.85B5718
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5D280140004
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:35:26 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=apaXZdz7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 999EE6B008A
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 21:57:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33C3C896D4
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:57:33 +0000 (UTC)
+X-FDA: 84706302786.11.9B71897
+Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BC12718000F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:57:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=lMI77BP8;
+	spf=pass (imf06.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.153 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777340126;
+	s=arc-20220608; t=1777341451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kSO/dAsfRgYO5GG3tNqdYXtT24wa/cdQvMrivIrkHtE=;
-	b=xz0kHo87dFnVaGMIUvA70D76dOAmgyPGSZ6T7aiNaiAP8ViPJwp5YxYFZruahRn06KwW67
-	dWGcMVrV7YhMQDVygds3wSb3xUoK/aDKFWXCOxpaWR2zVOLosC0hg7U/q8qpzheGA2U5d5
-	nR4d3oK44PZnyCW/N/UkdN0zwvT9xbQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777340126; a=rsa-sha256;
-	cv=none;
-	b=KxvM7sX2F6K3/TYW/g2SEskb9EA7ETWVR3YojK0bgF4AjqN5C/U75ri8B18AffrU21CtDp
-	H0/+fE4yagAwM4trEKJxTgYl2JGaohXuETBBg05jsPH/6ZRltk62zx2V+cuIEYTKrEFUG9
-	6Pa8u1c/n3ILF1wZqNLcoIp0GwG/h30=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=73mUVB0SU1+y2tdFcAaGVu6KuNfJfyDpo9D8I7WdLQA=;
+	b=TI9WU0RdVfSnl1y6HpQYz+pAjD1qonQZ2fiDiqOnrDfIcJ1TsQzxPmCF/6yODyFKWj8j2K
+	d9PpV9NRGHX1t3bpCn6RmqVrTNFXkqaqBHhT4n7RSNnCraRHC5RgQCixADxsbO/BVzPC8w
+	zNuyJB/H2ohpU0G8MnqXWDMQ+jQhRuI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=apaXZdz7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DE5886012B;
-	Tue, 28 Apr 2026 01:35:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8582C2BCB7;
-	Tue, 28 Apr 2026 01:35:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777340125;
-	bh=gvVpoMVTCKgQNZqCzuDTpGYLUAXAmkhJCAZl9bSLC2E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apaXZdz7Lo2XfVzFBh2pOJN8MiF7jLtWmbtx4vwLQFO/5F6/GXT02Vm91BDuKu3kH
-	 iKVeVfnaEYTS99C5Rvsls/ltcbLCkuwqqvV/H3v6HEoJjrXMcJiL7wIpiI/3a8HKAA
-	 8f72G27nB9hMUqGj4nPSOMh4v5e3BvXNWtqMqp21Odd7W+7Xa9mvWLTcRzooOJt3Fm
-	 L9nAdOV04pJ5/V4y8oDEPE6z4gvhB7u1Rs0GlT+AYy5yyDCLnY2ax7B356uGdX4Tl2
-	 xCLWgnzyjnZMpGwjig0XD/DBDKyi6Z9VSgVrPY7OlLIm64MxwTi6/SCU+eNOzceH0g
-	 gohVvaIH3fI1w==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: axelrasmussen@google.com
-Cc: akpm@linux-foundation.org,
-	baohua@kernel.org,
-	kasong@tencent.com,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
+	imf06.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=lMI77BP8;
+	spf=pass (imf06.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.153 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777341451; a=rsa-sha256;
+	cv=none;
+	b=LUU21Fe+av4LxS88+3PT1eeA3Z8ypnDIOu0XlubHPWi8oak9V+U/cmYe8fqGck0bT7PDS7
+	3T/KmcmOXnlTXjr/Wgf7CCKg5r3zOuoSqL44eZDOnRidwZU2/ft4n/o7SXnn95godziONn
+	QrRNUssAWNCZSYpcW9YA6uZhvA4Hivg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1777341446; bh=73mUVB0SU1+y2tdFcAaGVu6KuNfJfyDpo9D8I7WdLQA=;
+	h=From:To:Cc:Subject:Date;
+	b=lMI77BP8cwH48F+SgHOs3WTTSzuhBNHFcXhQAvNDbSH1EH7CoWXVLMGz4OCKdwsHZ
+	 xoenKNMUNumObkheDO2cEixOR+f2Ts/Bs93EbV3SodWIfYdnLZJ9oXrSWtb6zYttDA
+	 Kpu4td+zvGDfJE+fYsBfMb06yxIWayYuDLZOJWIg=
+Received: from node68.. ([166.111.236.25])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id E5690EDA; Tue, 28 Apr 2026 09:57:22 +0800
+X-QQ-mid: xmsmtpt1777341442tcrjydyx6
+Message-ID: <tencent_AA501E9A238337BD167E5C2ACF948A1AF308@qq.com>
+X-QQ-XMAILINFO: NnYhxYSyuBnL4+7omke2R7OZlKh08Uyt8A9dZq32a3ObS0LilS+sUOt1LczsON
+	 8qrI+J7UEV3CrsQxN8AwVwGeQRsrJX394YCDA5H5Xj0DqwOuQ2j+B0iyMEp9vSoaTigXZvAIvh1f
+	 uBwL7PZw5C0gELWVXCUwqrxYZq8gfy0bTYgM6Sd5KdDcH1ZY7L/t1DeY1YispKrFupAyvED9MMgo
+	 6y716L6WniRi052xDEbsrQLv/krlEAZhxhTT68m0Cj1gdQP9ezbO4OvPXc1pbDoO/Xd76QSHeEei
+	 HfGIOGiqK3G6r9sZWLuPUme+fYG+aGToZHGqF4PC4BvhtL/rMj7SW9+TBAkUEKH+3xxqPEYaVQCT
+	 pwTqdO1jeXbFVTba/0VKAxc68JTRQHOZR8q+FuIvdyxwKOZrwoWjc5V8n+ZkTVNAUrrQ9ptU6kiz
+	 5paslM9tTVOzWqv5DcF1IqSjV2cLIXqXXnH8sdnmR4wUXe2BVjIGb8NYQCRqL1xFhDPFBN+QREf1
+	 OmJ56qT2m3cTyY8r1AxNERUEs4y+5PLDrWFRHcnKwv5MuCMo/XUl/+P82wHWCyk5TJ4v1whUV8iK
+	 vOjjNKY1wArQGbsCxR1LGbF1qstBvB6EjKqNjttU+xgkrxg5+U4l90ylrP0PHhVhASsZxKS4Iert
+	 g2jso76V28FaEWZ/aILsvzi1qEQFT9suq9aUZysMNEhN1vIZuzeSPdceXjsIFweYuRJUtn65J9tL
+	 CNAwtY/C8ZbsN1hmlqtQsx7R9quppvPRFdnLj6P1GOW7cQZrWATIBjVapm8L7zENDXD7GdOvsn/C
+	 8JOdrEb0F0OWMWBykaqGtVERvlvZRgMKwmP1eL3hBNEOxisnfgH/+HHpInsFSJnHfldmDxM6vXGB
+	 6hSciyk+h+L45se6bczXfDjpuY7Ryky1Xl1ZMyRNq35BOtHySjeP3221SyECm3Nm5k90RiIxQJnJ
+	 9TKBk7V85D42TDs+qzGzTsVWGPpItpVdaC1ufVpOQFDighPtI4N0Hfyqx/CCJUxK1MPT6/e4e00w
+	 PzB+q5VYqtQOkMFobRfBI5RwJyX9ZMKcAwCx5T9uMzsIKq+rbj
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: fujunjie <fujunjie1@qq.com>
+To: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	liulei.rjpt@vivo.com,
-	pfalcato@suse.de,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	will@kernel.org,
-	willy@infradead.org,
-	xueyuan.chen21@gmail.com,
-	yuanchu@google.com
-Subject: Re: [PATCH] mm/mglru: Use folio_mark_accessed to replace folio_set_active in PF
-Date: Tue, 28 Apr 2026 09:35:20 +0800
-Message-Id: <20260428013520.47417-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <CAJHvVcjH+BS306KKOsFcVKkbmkj0aKXtfpuFy+SVYKE4PQmVQw@mail.gmail.com>
-References: <CAJHvVcjH+BS306KKOsFcVKkbmkj0aKXtfpuFy+SVYKE4PQmVQw@mail.gmail.com>
+	linux-kernel@vger.kernel.org,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Haoran Zhu <zhr1502@sjtu.edu.cn>
+Subject: [PATCH v3 0/2] mm/filemap: tighten mmap_miss hit accounting
+Date: Tue, 28 Apr 2026 01:57:22 +0000
+X-OQ-MSGID: <20260428015722.2592705-1-fujunjie1@qq.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D280140004
-X-Rspamd-Server: rspam04
-X-Stat-Signature: tc1egju3hx41amuybck8khgoe5ndkcwk
-X-HE-Tag: 1777340126-296829
-X-HE-Meta: U2FsdGVkX1/L7/yj5z92SL/OSKXftL73evbOpJcjRrufPs3JAq2a+8NC5VAndvvNuQNUFfXFHzQ+oUG/0dR/p2GMph+RWOWVdHUiMyLWbgs/5UjbP2lKOOkZVFNo5YrjFcRjRO/L1PajNaLTICtCHLaN8uz/5Aw/4R+LgVKYd7Xow79KCiHgjIalMuk2XJHosNB5TB10UG4Ufd28dPopw9uPjkJCrjYWxexCn+TxCyCZ9nmbGcGxClO0P5n2p9hOdlQu9en6tABYNWu2IRWqwZSRE7natyzd+1Sn1LwWb2vlVUxwK6Pb8QtL4EZ9G53M60EZwPsozMu83Ku9oD5RW0gjMFH4kpnuVb2hkNeMhhxzUIXBFoIUcoUWVc9uCocuSZ/vftGPGAPWrF5h5buHkc+Yg4aI9eiY/xrKOKHrS128Dc52/lCBTK/9+IZgkh6asen9WRES68TA2n2biOakVYMy5+OkpPgzF4Rl5BKn9qLxcDFldxufJTZSCUkUK3lNyO5LuufB5wg/GXc48Iu9NB+dTaWkk1BVvydQBEhEMA/RBjnpFzIlNau3iZX7ubcXk0TRKdH/Tf67/Ihel8EAwqZRHpn3O/PfjYvOE2LxUK3K9yKB6CLen3cJTLMMg2cZSh5H/+NbslxGgx8UOBPLwp3oiTQ8HdRtxMppFJG1pu6LFsFNgMWA2cW7A48dCUR3rjUpjCkC1dAyEGNZdOyOYZSzFoeq+cWGRfSldV9Xs2H/YBqqU8/Mnr9RhG9gdEwPKmw6lkFcoKS24Hz7pm7ALvhZs+aorF73k9ruA8QAkGKqgVTOZOry26Xts/IAyA1ZuqFtg0uPamV0NXrOpKQC/OvZkS9bWpkL8ya9p05UDfu0qhUaqOMfDqq3eCnzehBlk5kIeHQOursyBy+B7Go0TLLHzYUikHKCiIhhHVksg0pS2VQxo51AngUsIrZHd4Ahy1S6mkAwyAurbWK/nT/
- mnMNc1E0
- wKCCD7vQj7u2lAEmlbKCqpRCVAVg/jkYncIrcRJb+fNRtYeEf6AVU3m68OK4pveTepfr86f5R7mz9esA5lBOHT9huU9yWuCrSoa8zg5c1NN1pVDSq0JdHlQIz/SZFqb/jB7idkP+Ql7KkJLYpZJUQ3PLbtDiJU9GHcZ2XC7FX2W62vtT/7AGGGIRZRQgsF8vzL3Lh02kntnyv9E62BmDOaYwuUhdmNzfAFNKSM4VqJ7dSkjNzMMpeVxjMlkKIoN6CnmViI3aACvNXNw+atgxz4hirb+D6WJlOPHwf2iayA9i+Yfq0wn3HCqgpIEV7Uu7cUXNa4y/xXlEcgWBcJCFw96Ka8blEiNj576ALw5ML/puGAm9Pyc9EUc1WXCQ64OdPZrR6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BC12718000F
+X-Stat-Signature: u6ei9t77f33c1ex7uy7o1iedkmwb4inx
+X-HE-Tag: 1777341450-990243
+X-HE-Meta: U2FsdGVkX190kozuuqYjXd4nMd14Lk/uc57EtQ/xWWlcLAG+7RM11j3+A+HQrH0ZQjMaykaOr7ZCmvNGMDP7afGzZocYHv7JSxShc6A8zIrpRZY0K2p1UryeVhd0zcpdeCDceNFn4ADKXu2UBnj/Axk4Fsl2VyAzVToSdgbmM8dMQbTlmkiE+Szr/taPG3C7wv9H99JHGL41tKuNM40Qx8QKuXBmZAJtnUy31oMBu7f4YiKqzCP9N8rjXG1d5IuGwjYIBEczzfDDGmF/dDt/sREmwmfM0Y5cqxWjgYUin2VA6zFNst/aLzOrohP4ZpVpTtH11wTWPZ4WRsboP8gDLlQE5NXEJ92gWccFWD6ZEn0+6koFFrF57uplvS0B43RB/fMg4yJyNwOMPrpTqAxtAZj4cUzqWKcfI4yxocUaXW+vAyBbl6qJ5iivPtG27PPxqq28HQr4E4QLdFRLMmoR6yvJ9BoyX9QcFDJw4nl5htsp00IM/QvP7xbhqY7dJYLkngNtM1heQIpUwqR+HAeMdDzcxxzoh3MtThxW7iYp67MfoSRqARSIhawbnpzgNDJxQwL6uSHYoQXzDLaGhTODZuKAgCpykaBfMtBV4Jq8nSa4i+Ofb/S9xAJe0vQPhi6RencOfiKBscjdFmjjfnHKRXXK4KSrCZIDPzon+ueAKlZc+Jzo8HnS0J8Scd9dZCNcjnIsSaA101FwdDEHHXLPdQ9E6QBroPaazWK3NciQmm8AfMny7zhlb3qXzxPMsNFhBIuogVsW1DLhKqaMdsUFgNLJUgt35uuRWr8P3hjAc+wosgB/WtU/zy1mrQj352k9sf4bYWXV1Sv3leZhPM1DOnw+COq8iO0cfjIN/wqWMug0m0ZzlheiYjYNyIHNKYZaZ7Jjp6Dgf1axTB7l7oJidIEkfqBX94rEg9ThspGRiebktRl9BGBSRn7zjrRdpaCBG9DhY5/H/njbdPALPHe
+ AzXdLqRd
+ o6xSF2Rzl7e1H6K8iFUpBvFuT71CU0iLtXNW1apgHn8L/oZHU7amg5rc75LTmbMNMzHYhPELzVTKXGtH/h8lb20RMX1E7MxjQBnsi1dJSNIz+Xpmucl/tHQxvWbHbYFRXIgQ1NtXSD1B+bk8qneVlR126HwMJScXmdad2GRvZi7YZpInovqzCiZ3OSCoMeyK022vI3eBoYX9SmgHpFimTMynmYdymtdRz5ZubsJl5W+FimP80NWLtVq2d2NdgBTpj7fXssGhVV7OjxEuxux4Owbw7t7fwt4N6vFa3QBY+85XhX+vVWmosKZeJ1/Doq5dZcnuiJUgVlzZe4qk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,111 +105,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 2:23 AM Axel Rasmussen <axelrasmussen@google.com> wrote:
->
-> For what it's worth, I agree with this change in principle.
->
-> In production we set fault_around_bytes to 4096. That setting is
-> surprisingly load-bearing (i.e. if I change it, even at a small
-> experimental scale, I expect workloads to notice and complain). So I
-> don't think I have an easy way to test this change under production
-> workloads.
->
-> Like Andrew said the workload in the commit message doesn't seem
-> unreasonable, and the benefit is large.
->
-> I guess the workload that would see a downside from this is one that
-> heavily uses readahead pages but also generates many "one-time-use"
-> pages instead of maintaining a "fixed" working set. Without activating
-> the readahead pages, does it lose some of the readahead benefit
-> because they are pushed out?
->
-> About the Sashiko comments, the tier bits being cleared doesn't seem
-> that problematic to me. However, the WORKINGSET_ACTIVATE counter issue
-> seems worth fixing.
->
 
-I am considering something more reasonable than simply
-"fixing" the counter. Right now, MGLRU unconditionally
-treats PF folios as WORKINGSET_ACTIVATE_BASE and neglects
-other folios entirely. I am thinking of a better approach
-that detects true recency. In the active/inactive case,
-this is refault_distance < workingset_size.
+This is v3 of the mmap_miss hit-accounting change.  v1 was sent as an
+RFC.  The accounting logic is unchanged from v2, but patch 1 now keeps
+the workingset mmap_miss comment near the new accounting block as
+Matthew requested.
 
-In MGLRU, we might detect whether reclamation occurred
-within the most recent one or two generations. I am
-queuing the following for testing:
+  - patch 1 limits fault-around hit accounting to the faulting address;
+  - patch 2 stops FAULT_FLAG_TRIED retries from decrementing mmap_miss.
 
-diff --git a/mm/workingset.c b/mm/workingset.c
-index 07e6836d0502..8b552b3d7e37 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -271,10 +271,11 @@ static void *lru_gen_eviction(struct folio *folio)
-  * Fills in @lruvec, @token, @workingset with the values unpacked from shadow.
-  */
- static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
--				unsigned long *token, bool *workingset, bool file)
-+				unsigned long *token, bool *workingset, bool file,
-+				unsigned long *gen_distance)
- {
- 	int memcg_id;
--	unsigned long max_seq;
-+	unsigned long max_seq, distance;
- 	struct mem_cgroup *memcg;
- 	struct pglist_data *pgdat;
- 
-@@ -286,7 +287,10 @@ static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
- 	max_seq = READ_ONCE((*lruvec)->lrugen.max_seq);
- 	max_seq &= (file ? EVICTION_MASK : EVICTION_MASK_ANON) >> LRU_REFS_WIDTH;
- 
--	return abs_diff(max_seq, *token >> LRU_REFS_WIDTH) < MAX_NR_GENS;
-+	distance = abs_diff(max_seq, *token >> LRU_REFS_WIDTH);
-+	if (gen_distance)
-+		*gen_distance = distance;
-+	return distance < MAX_NR_GENS;
- }
- 
- static void lru_gen_refault(struct folio *folio, void *shadow)
-@@ -294,7 +298,7 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 	bool recent;
- 	int hist, tier, refs;
- 	bool workingset;
--	unsigned long token;
-+	unsigned long token, distance;
- 	struct lruvec *lruvec;
- 	struct lru_gen_folio *lrugen;
- 	int type = folio_is_file_lru(folio);
-@@ -302,7 +306,8 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 
- 	rcu_read_lock();
- 
--	recent = lru_gen_test_recent(shadow, &lruvec, &token, &workingset, type);
-+	recent = lru_gen_test_recent(shadow, &lruvec, &token, &workingset, type,
-+				     &distance);
- 	if (lruvec != folio_lruvec(folio))
- 		goto unlock;
- 
-@@ -319,9 +324,11 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 
- 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
- 
--	/* see folio_add_lru() where folio_set_active() will be called */
--	if (lru_gen_in_fault())
-+	/* If the folio was reclaimed very recently. */
-+	if (distance <= MIN_LRU_GENS) {
-+		folio_set_active(folio);
- 		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
-+	}
- 
- 	if (workingset) {
- 		folio_set_workingset(folio);
-@@ -442,7 +449,7 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
- 
- 		rcu_read_lock();
- 		recent = lru_gen_test_recent(shadow, &eviction_lruvec, &eviction,
--					     workingset, file);
-+					     workingset, file, NULL);
- 		rcu_read_unlock();
- 		return recent;
- 	}
+Patch 1 also follows Jan's implementation suggestion: the helper
+functions no longer propagate a mmap_miss variable, and
+filemap_map_pages() updates file->f_ra.mmap_miss based on whether the
+helper mapped the actual faulting address.
+
+mmap_miss is increased when synchronous mmap readahead is needed, and
+decreased when filemap_map_pages() maps folios that are already in the
+page cache.  The decrease side can over-credit hits in two cases:
+
+  - fault-around installs nearby PTEs even though the fault only proves
+    that the faulting address was accessed;
+  - after synchronous mmap readahead returns VM_FAULT_RETRY, the retry
+    can find the folio brought in by the same miss and immediately
+    cancel that miss.
+
+Current evidence comes from a local KVM/data-disk microbenchmark using
+mmap_miss_probe, with an 8 GiB guest, 2 vCPUs, 8192 KiB read_ahead_kb,
+cold page cache before each run, 1% of the file accessed, and medians of
+3 runs.
+
+mmap_miss_probe mmap()s a prepared file with MADV_NORMAL and then
+touches one byte at selected base-page offsets.  The access order is
+random, sequential, or a fixed page stride.  The harness drops caches
+before each run and samples /proc/vmstat around that access loop.
+
+The 20 GiB case below is a larger-than-memory file case in an 8 GiB
+guest.  No separate memory hog was used.  The 4 GiB case uses the same
+8 GiB guest but keeps the file fit-in-memory.
+
+Each case used a fresh temporary qcow2 data disk, seen by the guest as
+/dev/vda, formatted as ext4 and mounted at /mnt/mmap-matrix.
+
+Each result is "pgpgin GiB / elapsed seconds".  "pgpgin GiB" is the
+delta of the guest /proc/vmstat pgpgin counter, converted from KiB to
+GiB; it is used here as an approximate block input counter, not as
+resident memory or exact application IO.  "Elapsed seconds" is the
+wall-clock runtime of the whole mmap_miss_probe access pass, not
+per-access latency.
+
+For the 20 GiB larger-than-memory case:
+
+        workload       before                after
+        random         223.377 GiB/101.293s  1.010 GiB/4.790s
+        stride1021     204.214 GiB/97.557s   204.208 GiB/108.086s
+        stride2053     409.584 GiB/193.700s  0.970 GiB/3.685s
+        stride4099     406.452 GiB/134.241s  0.975 GiB/3.499s
+        sequential       0.212 GiB/0.050s    0.212 GiB/0.057s
+
+For the 4 GiB fit-in-memory case:
+
+        workload       before              after
+        random         3.987 GiB/1.960s    0.980 GiB/1.221s
+        stride1021     4.002 GiB/1.838s    4.002 GiB/1.851s
+        stride2053     3.991 GiB/1.835s    0.811 GiB/0.985s
+        stride4099     4.001 GiB/1.836s    0.819 GiB/1.037s
+        sequential     0.056 GiB/0.013s    0.056 GiB/0.018s
+
+The 20 GiB setup also has an ablation.  P1 is only the faulting-address
+hit accounting change.  P2-only is only the FAULT_FLAG_TRIED retry
+filter.  P1+P2 is the combined accounting change:
+
+        workload    variant   result
+        random      baseline  223.377 GiB/101.293s
+        random      P1        223.268 GiB/98.481s
+        random      P2-only   223.257 GiB/100.091s
+        random      P1+P2     1.010 GiB/4.790s
+        stride2053  baseline  409.584 GiB/193.700s
+        stride2053  P1        409.584 GiB/197.645s
+        stride2053  P2-only   15.722 GiB/5.485s
+        stride2053  P1+P2     0.970 GiB/3.685s
+        sequential  baseline  0.212 GiB/0.050s
+        sequential  P1        0.212 GiB/0.046s
+        sequential  P2-only   0.212 GiB/0.050s
+        sequential  P1+P2     0.212 GiB/0.057s
+
+After the v2 implementation refactor, only the final P1+P2 shape was
+rerun in the same setup.  The numbers stayed in line with the v1 P1+P2
+rows above:
+
+        workload       larger-than-memory case    fit-in-memory case
+                       20 GiB file, 1% access    4 GiB file, 1% access
+        random           1.010 GiB/4.383s          0.980 GiB/1.088s
+        stride1021     204.216 GiB/105.601s        4.001 GiB/1.783s
+        stride2053       0.970 GiB/3.760s          0.810 GiB/0.908s
+        stride4099       0.975 GiB/3.410s          0.818 GiB/0.870s
+        sequential       0.212 GiB/0.060s          0.056 GiB/0.016s
+
+This does not claim to solve every sparse pattern.  The stride1021 rows
+are intentionally shown as a boundary: with 8192 KiB read_ahead_kb,
+file->f_ra.ra_pages is 2048 base pages, and synchronous mmap
+read-around uses a 2048-page window centered around the fault, roughly
+[index - 1024, index + 1023].  stride1021 is 1021 * 4 KiB = 4084 KiB,
+so the next access lands inside the previous read-around window.  About
+every other access can be a real faulting-address page-cache hit, and
+the other half can each read about 8 MiB.  For about 52k accesses in the
+20 GiB/1% run, half of them times 8 MiB is about 205 GiB, matching the
+observed 204 GiB.
+
+---
+v3:
+- move the workingset mmap_miss comment to the new accounting block in
+  filemap_map_pages().
+- no new performance run; v3 only moves a comment and does not change
+  executable code from v2.
+
+v2: https://lore.kernel.org/r/tencent_4EDE373816615C46CFD48A6EF3B61E232308@qq.com
+v1: https://lore.kernel.org/r/tencent_3F158B17AE85E73945C5F97D8F8A918F9B07@qq.com
+
+v2 changes:
+- split the original patch into two patches;
+- move mmap_miss updating back into filemap_map_pages();
+- drop the mmap_miss argument from filemap_map_order0_folio() and
+  filemap_map_folio_range();
+
+fujunjie (2):
+  mm/filemap: count only the faulting address as a mmap hit
+  mm/filemap: do not count FAULT_FLAG_TRIED retries as mmap hits
+
+ mm/filemap.c | 63 ++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 32 insertions(+), 31 deletions(-)
+
+
+base-commit: 1b55f8358e35a67bf3969339ea7b86988af92f66
+-- 
+2.34.1
+
 
