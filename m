@@ -4,86 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C90FFF886F
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 04:29:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B1AFF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 05:32:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 804D26B008A; Tue, 28 Apr 2026 00:29:55 -0400 (EDT)
+	id CD4C86B0088; Tue, 28 Apr 2026 01:32:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B5006B008C; Tue, 28 Apr 2026 00:29:55 -0400 (EDT)
+	id C84DB6B008A; Tue, 28 Apr 2026 01:32:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F2B56B0092; Tue, 28 Apr 2026 00:29:55 -0400 (EDT)
+	id B9A936B008C; Tue, 28 Apr 2026 01:32:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61C396B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:29:55 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC4C58BA3D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:29:54 +0000 (UTC)
-X-FDA: 84706686708.20.E95500C
+	by kanga.kvack.org (Postfix) with ESMTP id A73426B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:32:28 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ABC8FC1A73
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:32:27 +0000 (UTC)
+X-FDA: 84706844334.03.DB25A2C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 67898C0006
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:29:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TnmVEeVf;
+	by imf29.hostedemail.com (Postfix) with ESMTP id E800812000F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:32:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y32+BYhp;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777350593; a=rsa-sha256;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777354346; a=rsa-sha256;
 	cv=none;
-	b=594Ggu5MHFqx/yBtRYUesjvPbbsDPHyYkxvvu5DF1ZiTT0n9/kddaXcpK5BRJL3ByNQgOP
-	6f+sjknbDHthJrccvDJJj3vJt2zDS4YrpmjPgOw3ARRpFHVHya8V3yMEF81P9qVJoxKIBX
-	K3zZ9SqTeGKy71NFec8Rb8uMgA4OIjQ=
+	b=6+c3zGztDbkmNJPu7cbhuzowxco1/dt0GN9y4A25mMeFdsAmTxO4avRUHKSFjwswgvZA3L
+	J90Tz4eWzpTdyRlQOfyb6C3BvpbMHsk/Pq51nylxbf6kJPKf7KF2I8mx0Hju4qJzn0ZZNN
+	YFK7OeKLlOiU+6R6Z5Ed5N7E3cs7DWo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TnmVEeVf;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y32+BYhp;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777350593;
+	s=arc-20220608; t=1777354346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=MqE5r5j1uTrJHGZ6qmXmR2/ka7z+i2TFurZc6KgvvaY=;
-	b=0egNno66P1mJkYlFj2Vcw4yPu3C5FeEqd2UZrdSA3siPJUfsiq/lxnP/JUiJbMG7SKWkvB
-	iEZ35HfYojivoqgdujHPHzIsKybe2R6Laf4yYu8qkhbcSVsTXKkLBMRbOccAShNCfbMMmM
-	Umn9SV+paEb5LxYvTiGuhRi1KfO1zAE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kJcYF3d4ByNazZ5C3G1/MwnassoXu+gZ3iu++UL6/PQ=;
+	b=hl5dF0NqlEdNL+MnK4D16GrjSFqzQ5IdEHWy36qoiwUFOZQ+EjmQZtorJvLUxcpUb77T9O
+	FgKifAklN3zp3oTcwPYujKgCoNLvXBt17zq1m7kgHdtYVZNlcy3gtPDHQyzOZ0vxJVF0hQ
+	96KvI+9AE9PQrGJnE+q6/M3SD2J07FI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5CEDF439C9;
-	Tue, 28 Apr 2026 04:29:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE875C2BCAF;
-	Tue, 28 Apr 2026 04:29:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 725CE40B6D;
+	Tue, 28 Apr 2026 05:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726BCC2BCAF;
+	Tue, 28 Apr 2026 05:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777350592;
-	bh=sdIOuHzeJtaYTP8u5YUojhpsDYOu9rOc+EK4UXxTHwc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=TnmVEeVfdPMWYtEMpVKc4rO5BMoxGjEjOZe3LrCEuY4l4WfQ32Vd3S3bInDxlz2Zn
-	 oxWi1aONRu+pSfqpzu+f3HpKbj9exi9PKoCjh37w/vLkFYKhpGQ7paLuojm0M03tcp
-	 TzX2cO0QJUkBgtsANS28MED6xeWDnTSPzKZiryzNnMBtMBGXrI/hFl+g6DKrL2Eiyw
-	 SE2PQValF7fQ9LwaEaRI4J38kdHGGvkrjc6ilCAX4BFQKL/ombDI5z5ALK2iGMfwTV
-	 QPHMVH/2c0HoZepJeNufwnGMG8DgOOSsPMj8MElyvbXpKD0KfCagrEeP+4jyZBF88A
-	 WnW1bUp7wNRjg==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 5 . 16 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+	s=k20201202; t=1777354344;
+	bh=HXD3NULaiKxP74Y+lFSieag6CvNY1MZpZgOjWe+R1wI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y32+BYhpLkxAHA/bcgUTxiieuu1PslsbFU/zMUGy8nYTLlt9Q+6I/aWw3gMqC7B5F
+	 ycCTxavHvZSv6DdBlLhahS5KZLrp3/OE6UwdxJEzIecc7w1CqsWZJL91T7yycgCkV8
+	 VcSyCH0G52eeV8a/EZrTsGYU7lJJPnf/7vKsDDnaiDTEZ4qaul+xQuW8LZ69qVZpeC
+	 4S/lS1HdjtPO5yOeE034coqTBFlpmBicZlq1OKjj4BaiEYNo1jMpqyd28oWSEImC/O
+	 vuA6RnMCpEaomMVvK1fzP3uNSvEt6nGmKl0MZUzmydiNZcW52zm8iTJLMsORgF+MFc
+	 QlfCYsUDeRWOQ==
+Date: Tue, 28 Apr 2026 07:32:13 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Luiz Capitulino <luizcap@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Sarthak Sharma <sarthak.sharma@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: make charge_addr_from aware of end-address exclusivity
-Date: Mon, 27 Apr 2026 21:29:40 -0700
-Message-ID: <20260428042942.118230-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+Subject: Re: [PATCH v2 31/53] selftests/mm: gup_longterm: add setup of
+ HugeTLB pages
+Message-ID: <afBGXcA-BeH_KUWN@kernel.org>
+References: <20260418105539.1261536-1-rppt@kernel.org>
+ <20260418105539.1261536-32-rppt@kernel.org>
+ <0d52f348-5f4c-4480-b854-6b73ca5ae294@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pwk31ghi8gxwosqu65ff3uxxkcj4bdsf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d52f348-5f4c-4480-b854-6b73ca5ae294@redhat.com>
+X-Stat-Signature: kotfeqoeypmqywcmwwp3ucz1exuyp734
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67898C0006
+X-Rspamd-Queue-Id: E800812000F
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1777350593-259010
-X-HE-Meta: U2FsdGVkX1+ZPRv9/YgCzqkypW2gUIRBKld4CpXCLg76allAoIJw3pcbM0OqS4IHkbLiTJFglpoOYMhZHZb3xekEPs+6Sr5/w0MYiGYsUIlztoBOovuEqeiYLUDG6lL2kDLv4FsmoMqax26QgyKYm4jrDR+HAcu7lS2hC2zLHBfO7UPT1uxa/t18xeC8DufidO47WeHySdXadWQ9TOMlUKhB34JIN3Z+4Yc1upcE5wOuQpijYXRt02UaUbtk9yJPpOQfY5HOG3L5RwSOxpMU8mlQnSf4gaHttbbehSl97R27k+qmO+f2xEoZwE/oPhyNbXcZJ+XIO2sP40iX0E0nQJhv2I7Uya63w945HyLJkiPsDlPv7ILy/XpTirVVf7oPxZ2Z9qaMfjPu3tR8gmq+vxmucGEZpm0l3o2zvNZWzifEGHQyKRiDaXrBM3WLNoU/kSHq7PXMys92QzMCBYbhVjv0q+ToTmAzscG8fLM/wkYLPQNtEpTpq4t5IGEOVvwQ/LTKJ74LChsVhYxankaY9oeLHTHcQB8V680JO3D+5ISQ1rDNYR+LCtdooccCSCRbwX2oeFSqHZoNhd7B+GuRgG7zE6BWy9ae7EqgR6qwFE5aApvNLMjefAFxyu1G+922Dz9UFAucEcm/L5fEV5L40uNaNrG+W+zxS+43W0j8miEyv5T6EMPAF7sf6e9eXZv1Na5tGW3cVjySLNW47Ev7o627xN95k8J9Yr0nnzGr0gp/slckge2bhm5DszVZ51w/Dg44J0wwZcYdWQ/H7/X9yk9KJPy7MBoFrFR2m6vd0stFBIsb81i3gD7F/fkPJm1/YKLTWze7BkDF5AJguQlXIGLVlXGTmSEkBkSZvLaa1Rq59lwFtVIrL9P7Xw8Ji/+yMDupT3wI1G/Fluwwqh/bXJ4/frJt0w+n1Gz9+Wjz+5oqW1Q/tNDLhCLDYKK/SEGvlcy36bqSFWXW+xkhSYo
- NMMyk5cM
- 6vspmA7QNlhS6CkqynGEQl8A81Z7E6HxT+r+0mVL6mRMHKMuyZugB4jRRqnJ5Nn1HNH2EZF/828XaAYEOaqpLiSd7494jIycos2VMseuLjzFHELm7SkU0iUDjH4rHh7bNBRZpymAYRW6wVcZD/Gr2Q5GgLAWNA0yW2tHQB7fUS+lZnrc+OO2ge0d7DkipUwZEwsONaObx0VatUZbSbn3Sc4nW+/IFxCB152LN19sJ1qKHd6thRqMoak6d9P/QPr7qWLNiCWTOG6JsI04PgfpDWDpHlg==
+X-HE-Tag: 1777354345-175642
+X-HE-Meta: U2FsdGVkX191RLPMpdlQ5y4uhN159AO2myQDaFJQLDb+obj74KIwgMEcUe7x5aMeY0JH6Drqt8znRmm7pYVX4SOhqq08ixDGCTF1DyWfr4+bPkn200z8DZDYdxY83VyfQiE9FMapoqN2UjndP2aaGGqG6WtDLyVkVcrT4LxQrt58AboH/dcbzxHHaBXjS9viQJJFVn9JtdEn62+C+86M2LZAT2xqUK67iIBn9jZQyI31o7Ir+onClWXjlCUiTSIag3QgfCL5sXollx9T5VQFZhZESmYVcFXtnev8LIcfS9jAqBD57wOzaPwe5Fo7Zf+yzTNFsk71kL8bZct7sZt9IqWf4hc/ug392NTIGrU+rR4eq4vqQsRUNCawA3p+FSMulIzvrc+fj2uQPg8LGGnaa6PMRjUmEzYRf/xBmQ1HC0nQICZvYto+RSwDl9cTOTPnTF71kDdLXpc75+bjzS/7x1fMGZaAOI7yckT6F4uUYA1L5ugSKVcU8/Ho7I7Z0qifEpPLwesdXsOENy7XqSMmo2Abr6EA+5cU4/x7Ai/kqUbdneReS2r7WYqwlQy6RzO9Puy+nx0Y2yDhfTK+skOc+v9OXd5ozqJbJb38q7zfQoP2xKNNBof03DbIzopyIqCUTja5bGZR4JWhmNTiy28Kn5iwuaXKsEp1ospE9OStNt0eM7eJGf6r5zm0MPXDPRTGObEeDYm6lAXNrrFNAIgGSL2GImOzDPnDy8B1zAjeDChMgagwSlPiqnZn69aKro+YykIYhRt5V8vGRsFpYe1/GxUMr41NjxGfCj+QzFbGW1hq8yKLwfJBa3DrJ8fCy1qDCbC2h7gsVDdio69MWzcdSY7CN1ZBMMX2QWwriiN5bmAaiUhB7madGdY6wzhB788avO8YsM0xF79I+X5lAPKu5jQHjXxOFiZu9ctQzCw2F23dXwyWcqmQTlvh66CfgukuWR8f2/Ld9DeCQDXZzmk
+ DMyM5ukN
+ XxRWcSbCiwY6vIHhGIRBbjoXR7yYexoRDAM/r4w4bl0dEdw63vOjLyP0zoNRB6ZLE4r6Su8QcIsJzoYpEkb/Red8PJ6vlSKvElxqzAgkHGL+Zu+UrA0iU6zWyxr/VSCN/V4z/G+UKpc+GK6Hkl+krbVIVv0OHt3hmVE8kgh7qPAglTOiCWPgEqMTJfhgnaAVZ+vkw0QIVbMDhpnUibli0gZfT54K60UbYM/oJUk/dzmTUOpAHXHXSO8g6pZAZsO9CTOTxQArYWlTjqIFkLKgyghHuVpOHt9hGu30HrFHzk+D2VzqsmhgsSUDCEpPTaf6VzikiUNC6id3eVbk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,39 +109,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON region end address is exclusive one, but charge_addr_from is
-assigned assuming the end address is inclusive.  As a result, DAMOS
-action to next up to min_region_sz memory can be skipped.  This is quite
-negligible user impact.  But, the bug is a bug that can be very simply
-fixed.  Fix the wrong assignment to respect the exclusiveness of the
-address.
+On Mon, Apr 27, 2026 at 04:10:23PM -0400, Luiz Capitulino wrote:
+> On 2026-04-18 06:55, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > gup_longterm tests skips HugeTLB tests if there are no free huge pages
+> > prepared by a wrapper script.
+> > 
+> > Add setup of HugeTLB pages to the test and make sure that the original
+> > settings are restored on the test exit.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >   tools/testing/selftests/mm/gup_longterm.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
+> > index ab4eaf4feb7c..6e1de12bf28c 100644
+> > --- a/tools/testing/selftests/mm/gup_longterm.c
+> > +++ b/tools/testing/selftests/mm/gup_longterm.c
+> > @@ -510,7 +510,7 @@ int main(int argc, char **argv)
+> >   	int i;
+> >   	pagesize = getpagesize();
+> > -	nr_hugetlbsizes = detect_hugetlb_page_sizes(hugetlbsizes,
+> > +	nr_hugetlbsizes = hugetlb_setup(2, hugetlbsizes,
+> >   						    ARRAY_SIZE(hugetlbsizes));
+> 
+> Are we missing a call to hugetlb_save_settings()?i
 
-The issue was discovered [1] by Sashiko.
+Yes, we are :)
 
-[1] https://lore.kernel.org/20260428032324.115663-1-sj@kernel.org
+> If yes, should we do it in hugetlb_setup()?
 
-Fixes: 50585192bc2e ("mm/damon/schemes: skip already charged targets and regions")
-Cc: <stable@vger.kernel.org> # 5.16.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yep, will add it there.
+ 
+> >   	ksft_print_header();
+> 
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 278594847cf94..37c9a40d0577b 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2107,7 +2107,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 		if (damos_quota_is_set(quota) &&
- 				quota->charged_sz >= quota->esz) {
- 			quota->charge_target_from = t;
--			quota->charge_addr_from = r->ar.end + 1;
-+			quota->charge_addr_from = r->ar.end;
- 		}
- 	}
- 	if (s->action != DAMOS_STAT)
-
-base-commit: 986c714ac6faa9750e15ccaec72ff2823c96a5c6
 -- 
-2.47.3
+Sincerely yours,
+Mike.
 
