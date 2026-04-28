@@ -4,86 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D957DFF8873
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:06:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA133FF8873
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 20:07:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 067DF6B0005; Tue, 28 Apr 2026 16:06:01 -0400 (EDT)
+	id 3ED356B0005; Tue, 28 Apr 2026 16:07:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F34BC6B008A; Tue, 28 Apr 2026 16:06:00 -0400 (EDT)
+	id 39DB66B008A; Tue, 28 Apr 2026 16:07:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFAFA6B008C; Tue, 28 Apr 2026 16:06:00 -0400 (EDT)
+	id 2B38D6B008C; Tue, 28 Apr 2026 16:07:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C838C6B0005
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:06:00 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4C679140397
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:06:00 +0000 (UTC)
-X-FDA: 84709045680.26.D506275
+	by kanga.kvack.org (Postfix) with ESMTP id 1AC256B0005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 16:07:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD5D31B8CA1
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:07:32 +0000 (UTC)
+X-FDA: 84709049544.11.6C05EDE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7382E18000A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:05:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZTIpM6yO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 240CDC000E
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 20:07:30 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k9/Dunt7";
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777406758;
+	s=arc-20220608; t=1777406851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dsMGeykKWZhC9ONB+MyQNfMWXIcvfeAFiKgekfHXIRo=;
-	b=2lPpgkP4k9L2fha8ZKFoWbVQ/SRSZ3zasRc+u12Kbbo9ApQ+zvFc8aZyVf4j9qrRvb/Iq9
-	MgPVgq+sgFGWefd1ee9t/k6zT76p37BkNNqUDL121Vb64KIvAEY+tudfVdf2qW9FVl12la
-	YFoeEFbc5dYuDK+/cn3AL/ElQeQCQSg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777406758; a=rsa-sha256;
-	cv=none;
-	b=JEiamQrEvN5sDw4f6qyt9uuycb3ao6RlqgsGR9dt5Lq1XyqUEGsrmAoeKKJQNPfL6WwpVm
-	UyWOCnZNjpF15pb8KJuVUC//RYblNKAn7PT8+LiSRnDKLY52VMlM+h54yMmtGTFy/FLkZ1
-	KjTFngZNRaASzck+M/sAkF7yMbi5la8=
+	bh=2utE80mK5/wfcidAaIpmdLr81noNhGMmz1yfhQVit+Y=;
+	b=KfBctmNVFlrpn6Kzl68Pe24glJf+NKmykFn1T5oI3A0GGzpvGxLL2GKoF9wqu8kt4u7wix
+	/Co5/ubE2LZ0b9l48L8yBxBsF0LRmtw2Z8d7888BHCdjIV0fBjvtL+i82FdADJY1KBdZlT
+	qXlivfjl+NHxaSTlcuKB1Vz2nml+IbU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZTIpM6yO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k9/Dunt7";
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777406851; a=rsa-sha256;
+	cv=none;
+	b=XFRAZOv6/5c1Z0EE4oQz9MucHf8wGVWWjXDAc94WzLg+T+AQuFQQHjy5+Lxo74t4pZxYew
+	XjkyhSzVffyGHG6tfx7AkR2av3+PooVhI74pr3zncHgWQvDmFXtSwfxcOBuw4y4qd97Uwr
+	mk+/hBrTwWRSpzJWgmJ+HoHRv6HyNbE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C604F61119;
-	Tue, 28 Apr 2026 20:05:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5FEC2BCB3;
-	Tue, 28 Apr 2026 20:05:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 849916111B;
+	Tue, 28 Apr 2026 20:07:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D551AC2BCB3;
+	Tue, 28 Apr 2026 20:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777406757;
-	bh=i6VL9rEPIzlOa7TBHegHrUm94Rx4pZDl6vJEPIECtVk=;
+	s=k20201202; t=1777406850;
+	bh=CpG2G0CkYYwtxDyS8y/mKZjk8hOvOMceUBlVzLtz0Aw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZTIpM6yOYwOhkfetphTYo6eCJ+EpjJaVIwaao3v6nme2uV+NzAwO7SMUJozXHNL3l
-	 1Vmp2aOdajQFrM/XQXdT/h7R4nh3B9DTfnKrpRnAJ3fhTxkuEzP/SNTDhkwfbdObpW
-	 KKxTRdFQpFSxYHOP7DlSddNjdK43eAoLoVjULXzvYzhSyLzARXH1zCLpTaWPwLU4BL
-	 h6VesQ0phLHTeXd4cLvoNd4OFJiCCCSi4YUxFIaW9FEX+12MFD+DffbUmWm9HgWhIK
-	 LbD00pGmgbj4TyOk5gHMq5MLwM9N6InVOKOgQaJyaMYm97FPvJmKv0bg/m3LQa3FJR
-	 wJ+RC1HIT/RDQ==
-Message-ID: <8b29da5b-e260-4b77-a640-8abb447291d1@kernel.org>
-Date: Tue, 28 Apr 2026 22:05:49 +0200
+	b=k9/Dunt7IXgUmC11DR58JuO5JNeGsdW7H6CzNQhXKBo7m9TGzwml19W1/eeeAOC3j
+	 wMpOaH2RWxhmEphWdeFwkaGbdmlVn0qHHpObdAAWHSrva4hD5hfRXkSsrpWtYPIQwy
+	 TvAr5O5Wr05OSSUnHqOI9+MCuU+aMtfGVG+yO9tbr1t5b2suMi7EbJDI4HZcLUViR5
+	 pbfqyc500IYGtBavFZzaINSg7JzBA9v1WZRhSg/Q+ahhc203Fqush7Y0MaOug1e7eg
+	 w6LrvZFOzN4VpKgHK347Ptzo5u3YSy+Pkc6hi6jCuMXyQ7CQiY3Ao4oEVTjijP/Zkg
+	 KcUMBDjSfzINw==
+Message-ID: <95714cec-205e-4b56-b8ff-9afaf9408020@kernel.org>
+Date: Tue, 28 Apr 2026 22:07:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] mm/process_vm_access: pidfd and nowait support for
- process_vm_readv/writev
-To: Alban Crequy <alban.crequy@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Christian Brauner <brauner@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Alban Crequy <albancrequy@microsoft.com>, Peter Xu <peterx@redhat.com>,
- Willy Tarreau <w@1wt.eu>, linux-kselftest@vger.kernel.org, shuah@kernel.org,
- Usama Arif <usama.arif@linux.dev>,
- David Laight <david.laight.linux@gmail.com>
-References: <20260428122826.339550-1-alban.crequy@gmail.com>
- <20260428122826.339550-2-alban.crequy@gmail.com>
+Subject: Re: [PATCH v4] selftests/mm: khugepaged: initialize file contents via
+ mmap
+To: Zi Yan <ziy@nvidia.com>, Vineet Agarwal <agarwal.vineet2006@gmail.com>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, shuah@kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260428133138.88802-1-agarwal.vineet2006@gmail.com>
+ <583F8EE1-5C49-4250-A24B-0D73372E3864@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260428122826.339550-2-alban.crequy@gmail.com>
+In-Reply-To: <583F8EE1-5C49-4250-A24B-0D73372E3864@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7382E18000A
-X-Stat-Signature: gnkgd3rh7ss5bishgd9b3r7wps7y8pdg
+X-Stat-Signature: t4wayfd4e5ext8t5t3s5431y91kdo1x5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 240CDC000E
 X-Rspam-User: 
-X-HE-Tag: 1777406758-717174
-X-HE-Meta: U2FsdGVkX19WVocI+2T9V2MkpxOrmFlEeX/pHtw/ynwO5jbi20bJM1VlZLBzf+CZqtwwyzAKoPYPTL5z9fldyk2eqPxd3booRgXJ5Jb1t+5Ti/DskZF9xObaiyaDnqYUHwrpwLv/DKAIrLn52avFCfPCyB6q05+L9R88FavVoi8zRk5g28/bhGpYneUknfwo4Ll3LgKOqufgkZcm7md0D+FbTURgctx+Sba2Zk/A4mAb5a7Y9eeBOq4fR/3oxMlnlnKyrhY3M2BBdTgDzraed/QKPxExmkE0D9Ouh0tNVhUcme76Ho4SZtmUzlT3GYfaK2fMuHQBxnAt08bb6tnzCl/p/5ePQwcfWTl6H2V4yxN0FWuOCKQj0chImQTXN3QzvHB7BHdeBvIBltKk1hbsKO3ImdhnCu5276DSy7UC/fyTgYafw14qM4Aho99LEsH0C5ZXE1jB320uvYQ84xxNlVc22cgicezdfkfTb67BY375duABHS+i0akmSm9EsEfLIy1is28gb2k5x7K4iYk8RKNx0lsdtBv6KDD6mPhsU1Hf5TWYttKeyW1ZQSJ3pZfwpU3zXcubLcp0NhVn2z77A51cTIuk9dFdXM+BOD48le/hB36f87jGrBDpTFbaP3I2+E7jZvkDvWZgMoNi7PbX2dBbX3HWAxUNu8xJW8/8PpFZ1Yk/FMaomODF9ng3P0BSvfT9Q4Rvx8X1yOAeNLQP8vPbXUc2tUq6r1kEl7wSHQON3uv4OZ3GKk7xapcELLJWY87hNppFmJ1B8nc+c0muCEZgg1pO5kqLmaHJ+hOddJmCfV4+H5CMJj5GeS7+MrufptmexKOTql2MzldOA1xO7cRWdUMeXYMWtIlaw1UUrxJwIJ4phQLOWV/fYQXqhGk2LXxiYQtFvX2dFOhS8A+yKmXfhiCD84OXoPKxtzpSxWzU53vJVARaMoUVGboIw0yUI4mjBjkC3wIZ7GXitp8
- QS31zlSn
- NhQQtUlYPQzWa9fSIU1BqE/P4pZ2FNp2g1s9fRumacwkDZq+8LJXOYkj+G/JWIwtIK7CYZksd7At0ht1I2c3eE7VJTdiWYu9Kxqk9hSra2Hg7Fkd16MYEW18o61NDk/c6T0x/6BrO3HChcfjtqGTNFoSn675tGTCqNa1vT+tF6jCDeNZIKDYufO6djYlxog8ytT0xYFVolGrAjp6F4779kWAkIxVu0BbYsQk10TDvy+JsapGfKm32FPG7ntF6r+UnEtSHfMy5CLXrDQzLHdptgHdH7aAoJeHddcHugXuN0snFeFOzBsuG8fpOX5/2HkD8wwkcnNkffc2UNKe1T3kQm2zfXkP9s/YXe8RLq9lJpQr8pZ/dsZc0UUVptzG1jf+HShNdNCBlENMhmsFuUHnvbhS84Q==
+X-HE-Tag: 1777406850-366312
+X-HE-Meta: U2FsdGVkX18nF2sitCITTTL2hXCrWpZZor6iVPyftlpTKwXoPDFNs6K/PiJNuvzMw5d4H3UzX30l4b82TpeGlT8XCZPbHtj/RsZpzheni/bHm66nNUxKN4f3XjqkonaCPCwZe+FjUNVrak/Ht8cC14nhSg38a/H851vtWQypIjpc3ZSYutb+oonWkAO/2YWOfaGKuhI15c8YYiqfuk9MSZkr1w8bDC6FP4e1G5qujBynQ1qFNuJibrJCdOCpNdBSHRaiKOISBAYfXmjSKX3EBoaqrlkjKvTYpsIMLwlhkQAFLC1udTrgLPHi0OrYzpbVeUqiK5je2Y81MPcozoO86XtxLYz90FMocKH4W0DuHtHVa/8vrfrzaD74x5hmpYwa3A0vNj9at0040jLg1Jooyqupu2G52BwWbZb3hZhBpn+9UYAEWQkG6opkXQFdzbJ+iCfZ0pNG4/dfpU2XBRui52Iti99chyUdmOPMt+gXrypOxl/lob1rLAFxv0tyHcEZSef7kuSayZ+Hjs8kp2KL8cfcl0OZNp8sKvy/qHuz0fQPzZCYM21aqYgjdnh3jh3NGsIqoBazHdR7ffsqZ+dEiVSQZvD11cQvkr8qhhCWKaIfUtwxV8Q19qWAOuIXKJC6+VuDJ9KcoPDn/uc22qedJFvZokniAcmS5k8fcvADc+WDGwVD0Oxw/lhksCg+FYzdKuB3DqnkjABWF++SoiUK1td2sViwak4QdCG+GX0H5Q4rEvnH+EEmprHnTDyNcnBKLJ1SULhOhIXw8Rn2WQHF6T7/qQvkZxorAYuQTMSqYclWQtx4qe8QaNHar6RsEoEHLreQbA8WgGZfkip6eCQFczRsQnLBeBDkvNza+NN5MNaVJD3CzsQAWDdhguRhFog0pE8UkuRV0ulKSPUvpDQ5ahLqqXIq3V73oBhS31xDmkSkumryA5XDxn2c5dmzM6nOPVL4rWC5TtUPNXjeXe+
+ JbuMNjbl
+ W3n4O97eMknqiZcggqs59kXyPJvMKOdYqjZEWpCQMu7/Fcc40g+/KuZwQD7xnFgnX98gtHnKGQDGd/i0zVe/Lwz7nZnFVumkkpioKdRyQ0CsRzn4GVZ6S8Ljitoc4K+1A+GcBRsWYE3QJ0KrHdMRVr0YzCaJWfu1snZMw/Tv7K3uKWib/+l9XkSlU0qzPNPMqMH5dL9ZOq6ssznGSj0WUc8xKFlFfphtj5QwHreQsJ7hdPwbWJxh1T6cVTYRRcai6iuYHxa0coYqKqlBab404PzUUS/E4DZ/+O7/91RAJ42+gDVQHmvj2/0q5ahnUdrRwIIAG99pNgJPBXmesTVNyaP56peI4HYKQqeQ8KDKHRLuFh5DkBeo80oxt/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,197 +140,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/28/26 14:28, Alban Crequy wrote:
-> From: Alban Crequy <albancrequy@microsoft.com>
-
-Hi,
-
-some more smaller comments. Overall, LGTM.
-
+On 4/28/26 21:56, Zi Yan wrote:
+> On 28 Apr 2026, at 9:31, Vineet Agarwal wrote:
 > 
-> There are two categories of users for process_vm_readv:
+>> file_setup_area() currently allocates anonymous memory, fills it,
+>> and writes it into the backing file used for collapse testing.
+>>
+>> Instead of copying data through write(), resize the file with
+>> ftruncate(), map it directly with MAP_SHARED, and initialize the
+>> mapped area in place.
+>>
+>> This simplifies the setup path and avoids the need for explicit
+>> partial write handling.
+>>
+>> Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
+>>
+>> v3 -> v4:
+>>   - Restore unrelated blank line removal
+>>   - Restore original close()/munmap() ordering
+>> ---
+>>  tools/testing/selftests/mm/khugepaged.c | 14 ++++++++++++--
+>>  1 file changed, 12 insertions(+), 2 deletions(-)
 > 
-> 1. Debuggers like GDB or strace.
+> This patch breaks the khugepaged test for READ_ONLY_THP_FOR_FS.
 > 
->    When a debugger attempts to read the target memory and triggers a
->    page fault, the page fault needs to be resolved so that the debugger
->    can accurately interpret the memory. A debugger is typically attached
->    to a single process.
+> When I ran sudo ./khugepaged all:file ~/ on ext4,
 > 
-> 2. Profilers like OpenTelemetry eBPF Profiler.
-> 
->    The profiler uses a perf event to get stack traces from all
->    processes at 20Hz (20 stack traces to resolve per second). For
->    interpreted languages (Ruby, Python, etc.), the profiler uses
->    process_vm_readv to get the correct symbols. In this case,
->    performance is the most important. It is fine if some stack traces
->    cannot be resolved as long as it is not statistically significant.
-> 
-> The current behaviour of process_vm_readv is to resolve page faults in
-> the target VM. This is as desired for debuggers, but unwelcome for
-> profilers because the page fault resolution could take a lot of time
-> depending on the backing filesystem. Additionally, since profilers
-> monitor all processes, we don't want a slow page fault resolution for
-> one target process slowing down the monitoring for all other target
-> processes.
-> 
-> This patch adds the flag PROCESS_VM_NOWAIT, so the caller can choose to
-> not block on IO if the memory access causes a page fault.
+> collapse_max_ptes_none (khugepaged:file) fails.
 
-What is the expected return value to user space if we run into this case?
-
-And in the same context: Will you send a man page update? :)
-
-> 
-> Additionally, this patch adds the flag PROCESS_VM_PIDFD to refer to the
-> remote process via PID file descriptor instead of PID. Such a file
-> descriptor can be obtained with pidfd_open(2). This is useful to avoid
-> the pid number being reused. It is unlikely to happen for debuggers
-> because they can monitor the target process termination in other ways
-> (ptrace), but can be helpful in some profiling scenarios.
-> 
-> If a given flag is unsupported, the syscall returns the error EINVAL
-> without checking the buffers. This gives a way to userspace to detect
-> whether the current kernel supports a specific flag:
-> 
->   process_vm_readv(pid, NULL, 1, NULL, 1, PROCESS_VM_PIDFD)
->   -> EINVAL if the kernel does not support the flag PROCESS_VM_PIDFD
->      (before this patch)
->   -> EFAULT if the kernel supports the flag (after this patch)
-> 
-> Signed-off-by: Alban Crequy <albancrequy@microsoft.com>
-> ---
-> v3:
-> - Fix ERR_PTR handling for pidfd_get_task(): use IS_ERR()/PTR_ERR()
->   for the pidfd path, matching process_madvise() (Usama Arif, Sashiko)
-> 
-> v2:
-> - Expand commit message with use-case motivation (David Hildenbrand)
-> - Use unsigned long consistently for pvm_flags parameter (David Hildenbrand)
-> - Add PROCESS_VM_SUPPORTED_FLAGS kernel-internal define (David Hildenbrand)
-> - Keep (1UL << N) in UAPI header: BIT() is defined in vdso/bits.h
->   which is not exported to userspace, so UAPI headers using BIT() would
->   break when included from userspace programs (David Hildenbrand)
-> 
->  MAINTAINERS                     |  1 +
->  include/uapi/linux/process_vm.h |  9 +++++++++
->  mm/process_vm_access.c          | 34 ++++++++++++++++++++++++---------
->  3 files changed, 35 insertions(+), 9 deletions(-)
->  create mode 100644 include/uapi/linux/process_vm.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2fb1c75afd16..0f6ce21d6235 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16786,6 +16786,7 @@ F:	include/linux/ptdump.h
->  F:	include/linux/vmpressure.h
->  F:	include/linux/vmstat.h
->  F:	fs/proc/meminfo.c
-> +F:	include/uapi/linux/process_vm.h
-
-We try to sort this alphabetically. Sometimes we failed. Likely this should just
-go to one more line up.
-
->  F:	kernel/fork.c
->  F:	mm/Kconfig
->  F:	mm/debug.c
-> diff --git a/include/uapi/linux/process_vm.h b/include/uapi/linux/process_vm.h
-> new file mode 100644
-> index 000000000000..4168e09f3f4e
-> --- /dev/null
-> +++ b/include/uapi/linux/process_vm.h
-
-Thinking out loud: the c file is called "process_vm_access.c", should we name
-the header like that as well?
-
-> @@ -0,0 +1,9 @@
-> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> +#ifndef _UAPI_LINUX_PROCESS_VM_H
-> +#define _UAPI_LINUX_PROCESS_VM_H
-> +
-> +/* Flags for process_vm_readv/process_vm_writev */
-> +#define PROCESS_VM_PIDFD        (1UL << 0)
-> +#define PROCESS_VM_NOWAIT       (1UL << 1)
-
-Should we use BIT here? I see some usage in other uapi headers (e.g., tcp.h)
-
-> +
-> +#endif /* _UAPI_LINUX_PROCESS_VM_H */
-> diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
-> index 656d3e88755b..dacef50be0be 100644
-> --- a/mm/process_vm_access.c
-> +++ b/mm/process_vm_access.c
-> @@ -14,6 +14,9 @@
->  #include <linux/ptrace.h>
->  #include <linux/slab.h>
->  #include <linux/syscalls.h>
-> +#include <linux/process_vm.h>
-> +
-> +#define PROCESS_VM_SUPPORTED_FLAGS (PROCESS_VM_PIDFD | PROCESS_VM_NOWAIT)
->  
->  /**
->   * process_vm_rw_pages - read/write pages from task specified
-> @@ -68,6 +71,7 @@ static int process_vm_rw_pages(struct page **pages,
->   * @mm: mm for task
->   * @task: task to read/write from
->   * @vm_write: 0 means copy from, 1 means copy to
-> + * @pvm_flags: PROCESS_VM_* flags
->   * Returns 0 on success or on failure error code
->   */
->  static int process_vm_rw_single_vec(unsigned long addr,
-> @@ -76,7 +80,8 @@ static int process_vm_rw_single_vec(unsigned long addr,
->  				    struct page **process_pages,
->  				    struct mm_struct *mm,
->  				    struct task_struct *task,
-> -				    int vm_write)
-> +				    int vm_write,
-> +				    unsigned long pvm_flags)
->  {
->  	unsigned long pa = addr & PAGE_MASK;
->  	unsigned long start_offset = addr - pa;
-> @@ -91,6 +96,8 @@ static int process_vm_rw_single_vec(unsigned long addr,
->  
->  	if (vm_write)
->  		flags |= FOLL_WRITE;
-> +	if (pvm_flags & PROCESS_VM_NOWAIT)
-> +		flags |= FOLL_NOWAIT;
->  
->  	while (!rc && nr_pages && iov_iter_count(iter)) {
->  		int pinned_pages = min_t(unsigned long, nr_pages, PVM_MAX_USER_PAGES);
-> @@ -141,7 +148,7 @@ static int process_vm_rw_single_vec(unsigned long addr,
->   * @iter: where to copy to/from locally
->   * @rvec: iovec array specifying where to copy to/from in the other process
->   * @riovcnt: size of rvec array
-> - * @flags: currently unused
-> + * @flags: process_vm_readv/writev flags
->   * @vm_write: 0 if reading from other process, 1 if writing to other process
->   *
->   * Returns the number of bytes read/written or error code. May
-> @@ -163,6 +170,7 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
->  	unsigned long nr_pages_iov;
->  	ssize_t iov_len;
->  	size_t total_len = iov_iter_count(iter);
-> +	unsigned int f_flags;
->  
->  	/*
->  	 * Work out how many pages of struct pages we're going to need
-> @@ -194,10 +202,18 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
->  	}
->  
->  	/* Get process information */
-> -	task = find_get_task_by_vpid(pid);
-> -	if (!task) {
-> -		rc = -ESRCH;
-> -		goto free_proc_pages;
-> +	if (flags & PROCESS_VM_PIDFD) {
-> +		task = pidfd_get_task(pid, &f_flags);
-> +		if (IS_ERR(task)) {
-> +			rc = PTR_ERR(task);
-
-This could return -EBADF or -ESRCH. We should document both in the man page. (or
-decide to always return -ESRCH, dunno)
-
-
+madvise() still works? Is it maybe because of dirty folios? (but that should
+also be the case on write ...)
 
 -- 
 Cheers,
