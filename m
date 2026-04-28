@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A93E3FF886C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:52:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA205FF886C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:52:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 218396B0095; Tue, 28 Apr 2026 04:52:42 -0400 (EDT)
+	id 2B4756B0096; Tue, 28 Apr 2026 04:52:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EF6F6B0096; Tue, 28 Apr 2026 04:52:42 -0400 (EDT)
+	id 28C526B0098; Tue, 28 Apr 2026 04:52:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12CD76B0098; Tue, 28 Apr 2026 04:52:42 -0400 (EDT)
+	id 1A1E36B0099; Tue, 28 Apr 2026 04:52:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0527C6B0095
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:52:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BCD791402DF
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:52:41 +0000 (UTC)
-X-FDA: 84707348922.20.A9FF01D
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E52694000A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:52:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=czQ5szsu;
-	spf=pass (imf17.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B9DA6B0096
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:52:47 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C0A6E120516
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:52:46 +0000 (UTC)
+X-FDA: 84707349132.27.CBCF366
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F006080003
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:52:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=aOjg8wgQ;
+	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777366360;
+	s=arc-20220608; t=1777366365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jiF95cax3V5L6nJjgrGO2oz2uPDfmL3HpmR2wC0cXHA=;
-	b=7GLF4Yu/OCINuphHD/GH9Ot//2egcwWJlXV5KGqfMEPoBYpOM/XHlr+5PPZ8zIphYZ9h/l
-	g/vwcWoTojzslEyEkT8X9lGGt2umsThSgArsDW2uyI7eJb6Iv3n5tg8HNJef8tlAyEbrTA
-	g9KG5tLT88SPhzLsByAyy9mgEzZ3dFM=
+	bh=MSJ/Zlq/U4yHk19v3uYTHivwFzozYncFCgI5ZpuZJfE=;
+	b=4mBAXgN5Kie08/swO70HO8w10YIkfGilDv9rWHEcYBDjm1lYDhkC+eH3kIQIKCI7OkZJSc
+	Jx9Jzs3ranTPwntlyaskmV1NBFCbhiqNEDX8y4QE5JsLbxFNAbP4KykX/jueii5ItOGanp
+	L7seMahmrsXZ2TntEexWeyEoMaIxHSE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=czQ5szsu;
-	spf=pass (imf17.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=aOjg8wgQ;
+	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777366360; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777366365; a=rsa-sha256;
 	cv=none;
-	b=kJ+UU35wHC8OO1DfnsvIgKNlDeDNIntfi1rE+pYjPGiVeHBms5Gwue+el+W4RTWo1EwA0X
-	5DwDM0ZnfQfcHkGKmdy4UccqqY0IGcKQxCJTIm3PcNJD2nOivQk4meS+txM+HMaH8lpwWD
-	hTrpOJKFHZnyS8SgtZhEFMM98iWlyFg=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35da2d35eccso7596911a91.0
-        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:52:39 -0700 (PDT)
+	b=Xqjd3IOsyv4KP5exkJUlROOlnZ+1zQCoaEykxzP4ZeVQ9kDtJQqV26J7NvJbltm08Dz8P2
+	uW59hM8jKEKvLt2Y2DkxwR5N2IOyrHxVVkXBH6trq2qJevG6kYn647HBQ1rYg9Bm6zCNFi
+	McrQhqoX+iv4KX0p8l8AQD/Iq0xBR9A=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35fc0d7c310so7242159a91.1
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:52:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1777366358; x=1777971158; darn=kvack.org;
+        d=bytedance.com; s=google; t=1777366364; x=1777971164; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jiF95cax3V5L6nJjgrGO2oz2uPDfmL3HpmR2wC0cXHA=;
-        b=czQ5szsuQ48XYV021AOJ5olzyY/fFzkJtdStjQS7GvYucU6jlAtGNnHj4AHwEx2NpS
-         7LCLdeaEtjC991yHb10Kew2fpd3S5CG0dXZTxYfvF+QnS1aI0C8YpmMQTiEFwxi9keUc
-         YHcScYwHBB2J//i41709ZMAR+5y0uldXVOhen6XoVDu+XP5mqs7ACqU+EDFIQVdpij7c
-         AncU+DushFJg7oGIAJqiGYumiUL0O+aNW426PcfnpkAMokVYNKWDGmEtgJxwevMW/NUE
-         5lrXAUW2QU05MpRnHJZt57o/75mZbCd76Fa2lS23kCltbp2ShrZ08amWkyLER2P4hCdB
-         fXRQ==
+        bh=MSJ/Zlq/U4yHk19v3uYTHivwFzozYncFCgI5ZpuZJfE=;
+        b=aOjg8wgQKRM8Wb9XNUsXboCauqg1iWjgSFCEQAP7CJuNEyqY1olr8r6f7Ad/edvEIW
+         XxPnnt+v9JRdxXD28jacKgUnS0WlrWSUbUrHu41YJinMNaRE1dk8b2BBawyC28if5v80
+         KClCHdp0H6VIuH66cM8qjtzmQDsOQIBPt4FVPwiCp/nEuLGwAQ2U0nnB0MwpAkhNAsSz
+         mSEWEttxaocXUhS3SmvvdKs5eiv7OmlMiZ19TTvdNj+rA6eqiSSLfAOuTq1ifocvizX0
+         GbTEVUsyP16yrKRpJYWfMFfWnZFE7bjAWrGFjkoZ72JQ8+3EsRz5ZjZCoAsCchnY26+F
+         28KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777366358; x=1777971158;
+        d=1e100.net; s=20251104; t=1777366364; x=1777971164;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jiF95cax3V5L6nJjgrGO2oz2uPDfmL3HpmR2wC0cXHA=;
-        b=SFGKMvda4XSkOyzHmFmOHq5+Mt0Qr+m1XY9ctFqnzHvWSqufJGH3Grkj0cGXDNXJYp
-         2+E3166yseYrCyeJ0KCiFd1D29TSsOwx9FP54AiPhAzyE8CpKZBD5E3B0cw1EVfiDzyG
-         elmvfo+Olm8X5ZIwpMSInjAiZb7R2HbFfMtlJf+hlxkfBvZs+wouqeh+3PRb1AaUJNBc
-         naAV7MP+kOxJMEPZjdrp8vbGpiKMxRi4ov3pkLPZVbM2OFbI0fJGmoF/0o8fboRz1CZ4
-         N6oin79VSOAosKsiww/+DGZ8XC+sVxG/xcKrlE+wj7V1dDEZA24zJ7NRGBxP+KoBO3/b
-         F29w==
-X-Forwarded-Encrypted: i=1; AFNElJ9Z5P4+XSH/FOD9C3u7eYy+KorjYhDIR77QiikHgPg604CmQDyypDmyMTKd3fnyqPqxK6p2dBUeEQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw9gN1tfj+37zU9GhWDoHMxrKJyLmzVsziY1PE1mKvvSRDO9ToQ
-	xYHsb3PHDSML1Ky857HW3kRL+Uty1WLr1GDRLm0tEuNFaqOZI0tEoeo9niBs3c1CD6E=
-X-Gm-Gg: AeBDiev1pwmzwmVyxSwKkqMaS42iTn9Dml0NMzxRHy1ojN8C3heSvYm7PQnieshTKyX
-	ol4AZgAQnFUQ8rN1Qj2+e1U0ytpfqj6DeQznZGkiCmDNVD4TtvuMERIVAbhQlQf8Ioq4Wh9mwj+
-	ZjQpdYhyhVe45lJzbHjBUlx1rSqUbrip8ZqqA37+sQLME0HrIhqHGolnaqkOdqBCWfadn/jDwMb
-	nwKMoaA6w2IliJV3NOpTFczLYvkgrMLA7CNxpS1UpNzV5gpz5PrxQIgh8mgTOJ6GnZpRLZgPZnX
-	64hihoGppStOaCDMhV325wW3nJvQeVfL9DSceGc80kD+pf8VrZjSbDfECH+Uc9CoyBjBOOUryzB
-	PzuOcuw8KxpKDqrHh4wdgZozhE5+94pupwHwcD7dlJwOmOqVHBNkOjbWrrouJ2ZHs83aRQXnAum
-	tbn2t6QnwzUpIENBdiALxnrEBkJVxYuJP9nN85P+OG2DIS9lqAeX4vlSI=
-X-Received: by 2002:a17:90b:554d:b0:35d:a380:6d1a with SMTP id 98e67ed59e1d1-36491f89850mr2386051a91.2.1777366358483;
-        Tue, 28 Apr 2026 01:52:38 -0700 (PDT)
+        bh=MSJ/Zlq/U4yHk19v3uYTHivwFzozYncFCgI5ZpuZJfE=;
+        b=E7BNRxmYP1SpVz1BFcPu9GqmHZrJ8js5aYExnNTQdKi4JR1I5c8og+0ZC5t/5+bNZ2
+         PH8nwjFzgvxpZpw/Lj5DW+NuWIEQbVuFiOjoebNkIlaiqI9dbqXA6Gn+zn9NCgqzJGBI
+         WKFfRJbeyXUNudj16HsgWmirAo0zPec5g1673PMj2jDzUJi5Gsve84DLVZv/SprL+Z0l
+         ztCIc1NKFKUj2mdA4RauVnF8qhVF/O8ZPB2cO0jRRQPrbuLPYv4y/jLNAVkpun2Fx0N5
+         KoXDDuYF25jA4+u0viQDo3TP2EoIdAH5Xh3xrGnY+spVpn9KOTmDunW939AOMPipyxSB
+         bbrQ==
+X-Forwarded-Encrypted: i=1; AFNElJ93d/2X/QTBQTSHI1DOaPot4WF0xp8jwhvWx/shqI6VPXM7gGJHh27scQ1cmccWZdu1sPVrAp925Q==@kvack.org
+X-Gm-Message-State: AOJu0YythGDzjZL8yuUFLuzamALzdE43Z0Y/gkIbLVNiBX0kcG1fs3Yh
+	mqD0nW4oFRI1YH8gGy7d88SCzgXOL5MFCoofspcHJUUs6A3wgiE9GTxm4uqF+zcmC80=
+X-Gm-Gg: AeBDieumSv77fEKvMEdmYfDy0/UmQC1a/nUWsaHCQseRfOujn9JtjERB+yCf5b7J3t4
+	BxLdIlp07259tfSEpq2EOh4p4qHOibexidfBtpRf9uxMpkeel8b2Q6qYd8V8ZAo66i5b3wvtCnG
+	gXYlbHD5V8HQAY0Pz/vF4o5LnlqjcZMz0+zjUZnLUZ2tfYQViHY1MHBR1B7QG44v4I01t+E/xlz
+	N4YvF/AyIOvfJwf9WNNo/WbKICbv7kJ1YVymikRkRchcMNPuJ4SNzP+LqyMKEWvLpC3ZcNWvY1l
+	fYJz193x4waDmT9bhThJSX5vTd38vhmq/Csb13NLwYePOaqxE29vMoLCM5zUkRo4kmlqt0/og3L
+	bXjYub4oRvpXBlAqlx9ixz4QTtFanFXkHja5KhjABQgZsFwfg+z6QK3jJdS1j2E92ajeKmLEd/U
+	e4u8J6we4U4eIx1a5LKcjVgew5sOizS3HsJ8go6AG3f/I+ogJNUFjhhl8=
+X-Received: by 2002:a17:90a:fc4d:b0:35b:e4f8:7cc5 with SMTP id 98e67ed59e1d1-36492068746mr2311671a91.25.1777366363725;
+        Tue, 28 Apr 2026 01:52:43 -0700 (PDT)
 Received: from n232-176-004.byted.org ([36.110.163.103])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364902e7debsm2889080a91.15.2026.04.28.01.52.34
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364902e7debsm2889080a91.15.2026.04.28.01.52.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 01:52:38 -0700 (PDT)
+        Tue, 28 Apr 2026 01:52:43 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: David Hildenbrand <david@kernel.org>,
 	Oscar Salvador <osalvador@suse.de>,
@@ -109,22 +109,22 @@ Cc: Vishal Verma <vishal.l.verma@intel.com>,
 	Muchun Song <songmuchun@bytedance.com>,
 	stable@vger.kernel.org,
 	muchun.song@linux.dev
-Subject: [PATCH v2 2/3] drivers/base/memory: fix memory block reference leak in poison accounting
-Date: Tue, 28 Apr 2026 16:52:18 +0800
-Message-Id: <20260428085219.1316047-3-songmuchun@bytedance.com>
+Subject: [PATCH v2 3/3] drivers/base/memory: fix locking for poison accounting lookup
+Date: Tue, 28 Apr 2026 16:52:19 +0800
+Message-Id: <20260428085219.1316047-4-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260428085219.1316047-1-songmuchun@bytedance.com>
 References: <20260428085219.1316047-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ng9gu1z1snydqzspjmwmx6mbxj1t8umz
-X-Rspamd-Queue-Id: E52694000A
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F006080003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777366359-707840
-X-HE-Meta: U2FsdGVkX1/TuiA37vemwNwvORxAkTRyRwQpG8o+AVEYgDIu8gQPKxkfvivubbh154XtaWDimyxkELLSv9Wr6ttxGWNCeKg8diBwkXnsFqYh5U9YaSZXqRpuf5793XbT7Bd6WnN+ts1h1v7ChlalLwtqi2qtDZFKKKdFg21JCIvx2r2wAO0DDoWSpX4Zq73XbP/nU4ermwf20pOhQVQJ0H/8FO87hGTjt2+oPrQRwg876BvadLZzqlDpT3pHm2GiM5xkG1qWG2XxdgM2WpBJrk5/sPTlq4UrjiF/FiSnpTxfDRh7zqk5bSOk8y8z3IaaCt3oX4IvbFGY73mKd8FrNeAJVGQr9+tv0fL3pVkwl6wiB4hBcGtr38QXlTJbDHue/s2r7kqeF4wtKKdqms/1U6L3ozvhtlRg2G3VvxulmSlYtAMTb5m3gsqYAwbYk7bvegfFUHtsDbtxUa+ympLrlffTqrPitR47SixpmmpOz1bI6VnlIqvl2UmSQBN8TIK+OCwbTk1Fjx0YNP0dRXee+zwwoXFf/t1RYKYyKfEhwYsZdCAp8h5nSkpjgzBXxLDxzFvkYkGUMGw/gMrLAQX1y7ZQOXnbQt2yTvLrpDXhT2UyZqThilTPXuZlM0pZt+fqSnP3PhmQfygg9AJIpqFecMaLLFOAXy18rrJI5STkz2kT5XAFbM8Pufnci+WYzoTkkH+kS491x/o5j+XpgON8erhe0Mb4YHw6/Ts+rir31DhPv6r/aHEZbeYiapLvD8agtqrXGUCrxR9sc6aIfk47ZIUd8Dx5d6T3p5HeZnITO3bMo5HqLshnLb4heWWvKvv7KQ5sh8af+y1HkkNgvf498llBFsBKSrcJWLVc1K99ej/iTbwUwd5th3AMq48FqjN/GBkBMYzE0d2o0yS7afvX3jF1eimefE1f1rIXVQxWICvL2X818t11VuKUs9+abmxtXrs0OFfxlf8DaXtu+7u
- BMnlB4tK
- si36tyqiQDz7rqENOfJnMS+S4k0GzVWU/j6YxNHosGnVWyoQd28Q4B4ITsTmuLqFFJp/TPDn/KpYjc/v+3jaHEh/sAddglg237lSgXi+WQGODuJGLHMOXL/4bKqyhPi0XSbT7SrAtzPZRqKB7IWQLm4ebG/E6ZrKtoYVXh7eMYEeNqIwuKJJbq2sEeXNGQrzD3xLLFOaG7VWc6vq8mrdd/tJft4oQnTUqnMnbCaASm7ittljS6QqjDundfBv2qeWDqBFhnQkHtC3kNt/4qaRc+BarImkzw+6nfSVgOTFLzU9okPSDVRfGa27SB6TMrhzor6DljwlJr8zniaW9Hfafuc6usU+/Cgfe8V1TPRhRAYIrUvsgXNPw2Q6pRdO3C1iUIxlG96ptfCNzLUPastYY3CEILwRbs3nL6mP3w4Wd4BTq+64=
+X-Stat-Signature: pcd8xeagugndsxzu7dgythe39jcamm9m
+X-HE-Tag: 1777366364-387272
+X-HE-Meta: U2FsdGVkX19fdAEUsDX0ZtbMzDI4tq1KZdyfu1I7l0SolQ4YrxxtaSjONE0vS4ltSE/5rqsZjd7oQzdsMpgMH7N6yXlfAD07Pny9ZaSm5kra6qKXsizzOj2iujmpMu3y9kU7s1Y47j2eE0VP16q5dFNotlzhWcFaeRj8c9T9UrDhHzy0SlLaNeK7I3ke1dpxeUQKvKmGb2WvsHULaioGm4sCONL+hAs5807AC/HUtIp0Y9k4UvxC7LATM8jAQ16yKtA1nQPRRSbq8dCpKgtk2zRVzPw3E9/B6LnWM6hcrEQYsbkIOS2P43X0BWu1LG2DrM/5gct9Zyi/aItyzRdw94RhIxyWESjSVFxszhq/5y4C6XkQzXrwxOZt55tWSrqg0RdnWHOl91l6q7pBBPvQKxbJMNbxZD+88W+e9FxQgfo3DMCUqKeStvhR8AJRbJ/rkKcFMeAisrDJABfRbj09FNR0S9zVt6cN3eSyG1VUqUd365q6hqRdaETW8MzG6llWUlZsuebDe26io9DoVBad1InrlBRHh79vAJq9J/uv58yxtMMCPN0aC0HAAIltX8XQ8H8MFyb2iO6l784HwHwapqs99g9P3DV37H7FmdoJJg2S4djBYE33xMLC8jsNql0daDKBf149fPdlMF4V2TfyUL+5BTHN/qfMVNwHH8X9jTc29v1GqbVAtIb8b+3wVIAbXkLIwxSOYS7JiJR9EufPUVteU5U/7aSzJigjWm2PXBPptT+Lv8ohAMyBKGB6LgNrMT+/mKPBzgQaWLh7ts83JQrUK1fLzN93jhXnoPL6QsCj+cYMPsJLYUZYKXbiN9S6hztNwPrd29wYe6k7ytKdTpCtbm/K33+sAhm2aBIS+6lZEuCl1AY0X3F/gv5ITaHF1pNx7GAql/R5dBwieaSmFRrrTBd6wnV2oyoxmmYA6LUg+7f/43GF+nSBb6wnsDFYT+iMta7Jb4s5B2dMDjr
+ db6zxVPH
+ fNslJYZsGMCZqw9/3eJqp5OJWeP4JLnR6sHl3NtTe3TkjHSoIunOlLDSMFXLLON3Jm/ee+X79p2ZxB5+Icfk8imqeS6z6kLQbxcJEqq24puonn33aNoWz0x8fEF4UhW6kZA9XvJQouxZMVDtPhVVbLI98f8aEWsy94TDbxy882MyeXQZluZo/zV4s5hWcIXc6TUqnVXVnyU7oYFZyMKo5LuglpXQJcn9LbhHda6EOiJajddMDRmgAiDOtL2djHwmFeZERk1ogRh0NnLCF4YNVzLWdCA8cwt4t3Qr6lDz60W+5NHOT5IafwLS5T0pXIslkhlT/MNLVgLigQESKn0+m6q0HxWjm7PpoWEfz3btx/IygpOo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,51 +132,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memblk_nr_poison_inc() and memblk_nr_poison_sub() look up a memory
-block via find_memory_block_by_id(), which acquires a reference to the
-memory block device.
+memblk_nr_poison_inc() and memblk_nr_poison_sub() call
+find_memory_block_by_id(), which requires device_hotplug_lock to
+serialize the xarray lookup against memory block removal.
 
-Both helpers use the returned memory block without dropping that
-reference, leaking the device reference on each successful lookup. Drop
-the reference after updating nr_hwpoison.
+Take device_hotplug_lock around the lookup and nr_hwpoison update so
+the memory block cannot disappear between xa_load() and get_device().
 
 Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
 Cc: stable@vger.kernel.org
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 ---
-v1->v2:
-- Add Reviewed-by from Miaohe.
-- Add device_hotplug_lock in the next patch.
----
- drivers/base/memory.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/base/memory.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index f806a683b767..6981b55d582a 100644
+index 6981b55d582a..f76aee29e9a5 100644
 --- a/drivers/base/memory.c
 +++ b/drivers/base/memory.c
-@@ -1230,8 +1230,10 @@ void memblk_nr_poison_inc(unsigned long pfn)
+@@ -1228,23 +1228,29 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+ void memblk_nr_poison_inc(unsigned long pfn)
+ {
  	const unsigned long block_id = pfn_to_block_id(pfn);
- 	struct memory_block *mem = find_memory_block_by_id(block_id);
+-	struct memory_block *mem = find_memory_block_by_id(block_id);
++	struct memory_block *mem;
  
--	if (mem)
-+	if (mem) {
++	lock_device_hotplug();
++	mem = find_memory_block_by_id(block_id);
+ 	if (mem) {
  		atomic_long_inc(&mem->nr_hwpoison);
-+		put_device(&mem->dev);
-+	}
+ 		put_device(&mem->dev);
+ 	}
++	unlock_device_hotplug();
  }
  
  void memblk_nr_poison_sub(unsigned long pfn, long i)
-@@ -1239,8 +1241,10 @@ void memblk_nr_poison_sub(unsigned long pfn, long i)
+ {
  	const unsigned long block_id = pfn_to_block_id(pfn);
- 	struct memory_block *mem = find_memory_block_by_id(block_id);
+-	struct memory_block *mem = find_memory_block_by_id(block_id);
++	struct memory_block *mem;
  
--	if (mem)
-+	if (mem) {
++	lock_device_hotplug();
++	mem = find_memory_block_by_id(block_id);
+ 	if (mem) {
  		atomic_long_sub(i, &mem->nr_hwpoison);
-+		put_device(&mem->dev);
-+	}
+ 		put_device(&mem->dev);
+ 	}
++	unlock_device_hotplug();
  }
  
  static unsigned long memblk_nr_poison(struct memory_block *mem)
