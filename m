@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEE5DFF886C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:19:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AE30FF885A
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 08:19:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BF646B008C; Tue, 28 Apr 2026 04:19:13 -0400 (EDT)
+	id A4ACE6B0092; Tue, 28 Apr 2026 04:19:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 196C66B0092; Tue, 28 Apr 2026 04:19:13 -0400 (EDT)
+	id 9FB8B6B0093; Tue, 28 Apr 2026 04:19:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D40C6B0093; Tue, 28 Apr 2026 04:19:13 -0400 (EDT)
+	id 9391F6B0095; Tue, 28 Apr 2026 04:19:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 01E156B008C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:19:12 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9B2348BD55
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:19:12 +0000 (UTC)
-X-FDA: 84707264544.15.81114E7
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C17FC14000E
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:19:10 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=DPkDM4ij;
-	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 872376B0092
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 04:19:17 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2DA041C0290
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:19:17 +0000 (UTC)
+X-FDA: 84707264754.30.6ABF705
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 57F8E2000F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:19:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=W8CmbgIx;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf03.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777364355; a=rsa-sha256;
+	cv=none;
+	b=qX1i7p69FbfuLRj06lrRFL+F4bH668ZqZHCC3SrY2A0L/VqHmjJ4NNh21Dry7BfJOMcxmq
+	21zh9zbsRHC8VEItvowadUuCi4dzzV6k3epXCIF4L0h5/uXueQ/oKDGheEWTF6u89qZib7
+	JLfw1Bq/CzXsAx57N1KIu1HPfcMyF8U=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=W8CmbgIx;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf03.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777364350;
+	s=arc-20220608; t=1777364355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Odp+99JHCbpwHHM6ds3EE8rv22wzvZDnJ+uzSMS+VHA=;
-	b=lh4jciAqiB2O1a31RwnC/bEwakSgTXLQEA/4TrAQ8zCm78hBFsnyJ4bJcGyNYaAdOkPbUb
-	zr8ijZ3dCgMyh8fqOyc8Kbuo+DKRdxVOqQvfYIrnKmgLpDbaDdP5v2/eGfW1qI0XKJD0ww
-	P45bTBpSW1+m8WUh0IpTIUH7kH+ZBmU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777364350; a=rsa-sha256;
-	cv=none;
-	b=lK5h+2O27B/FIFla9qh5HMU/E1LcEBod/977qx5KJaEwc1lcgWiQhXkzUYWQkxOKd28F0G
-	RFxyFmjFJ6VB+i/KCP7rIBwtd0wMVQ79AFaetOGtM70poyowZvgwdmWkDFFybGwRzMKBb3
-	YMw2GW1ZY0gSY1fVU9WVEgCpqj5UTZc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=DPkDM4ij;
-	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-35da8d037a5so5265755a91.0
-        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:19:10 -0700 (PDT)
+	bh=HM345nkBQh5gaxmYsV6Qr69X0RaLtEwieY1kCbsL1/U=;
+	b=YU1wyJ/nL9v5d3PvvzTwbsEqEn2hYVHm124mEtuvNo16CmvDKcSUCwt/UsjAeAb7mVH6Cm
+	m0abk6rvI9CIVGXyrlnIT/2d8ZZyjanqLns4Bgb7yTr3PBSoY3ThZGrYYI4NTebwAhzPut
+	bRR1NeyupGuakO6m3Mhz+4gBBsXx6AM=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35e563b0ee7so5314349a91.1
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 01:19:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1777364349; x=1777969149; darn=kvack.org;
+        d=bytedance.com; s=google; t=1777364354; x=1777969154; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Odp+99JHCbpwHHM6ds3EE8rv22wzvZDnJ+uzSMS+VHA=;
-        b=DPkDM4ijG4PVR+jV7E8/LyMdkP7SMoGmVydx/QjVH17VZo8b09Uax640gaD41/v+bI
-         TR5IPgxX/XvV6ZTSQiZxAB3mpGJhf25eWqjLa0FxltQlTnJf0dbeX2y8JOnZRyU55EnW
-         /ZB91jKQTA1Ny2whiGFLRdhAG5aElSsJ92lAhYPl5KhiCpKKANeFIxInQmULzkE+/iZU
-         gJRDuuBisowTGWBgDg0ijcOykLadGSJ1+ge1FtfJLpSnGKuP+N++NFcrPfFl8lpAmxDR
-         9CpKGGu4/4GuyuazkwPhUrry7ej8SeO3hcdo9Jwk31o6cTI6tqGtysNdt2Hm3T0hUj6D
-         BgtQ==
+        bh=HM345nkBQh5gaxmYsV6Qr69X0RaLtEwieY1kCbsL1/U=;
+        b=W8CmbgIxMqdbuRcAUkClo/oQVdp+RO/afrn8s3J2ki3LIILE6WWpJVli+G8DUXrD97
+         Ax3LNIxoarKQOa99gPeQzBrGawIYxxL7KhadCQS+xvCy5d1Ku34dT70x9tEtfNxop5BO
+         T0/VoqAIVTUFUte5/OKHJ7Ph3pCURSwl2vFezoxtwiWbcThbSx5zZyqD5yJJSuIgZZJR
+         Yjl75DG2e+iax7YDqt13HuUIva2thWrWGNa3Jo0h8yEDWXelDe7R/t3ZPL/jA0MmITBp
+         JMLpmoz/PtN7YVTaSfMlhFO88U6kaM2PSdWyKx9RiHoGtyruc3WSzThVAl+Dhgwss1wg
+         mBlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777364349; x=1777969149;
+        d=1e100.net; s=20251104; t=1777364354; x=1777969154;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Odp+99JHCbpwHHM6ds3EE8rv22wzvZDnJ+uzSMS+VHA=;
-        b=kvaAkSLCeWIRN8R7EyPFMbwtFAqq05cW+QY6/GhN7XUxrbupumz+j1FC/WT9lO1QAi
-         XANSLRBN0c15tVaRgdEjAAUKwB1/T7zvWFm2YpMDkyDxCYcNnMgtuynbpezqbnsautta
-         hjxOM741dv3KZLApoXkLdx+F8RvAPrlS9zJedYGl19EEAiqgzLQOg7G/MD3r8gqbfXCI
-         Z3LpoVduWgNxAKLibcCf+qVSOsaaZxyQtdOrumZwy5mO2GCtbeja7hIM4eYTaUr7TPyf
-         YR8K53gMWWanTjG9V3RaQ526mKtqTY/5b3hqps5xto31N1Uxj6INDrsaZ8qJ/XK2wTvG
-         xAxg==
-X-Forwarded-Encrypted: i=1; AFNElJ+jKVz35XYTFPOgaXFdPk3uAnshdEyNRDYBvr0WrlRQZ5QrMGtHJYETLO4U5pLenILYCsDtEMDlKw==@kvack.org
-X-Gm-Message-State: AOJu0YxtqKJ8t8Vu/cPDkJCFfbwuENBTlSbRxkMLswJEyagWA/xye2zx
-	b+cmADaACwba6gEeBLqlMxPqDtkQuBtAj3wA6Gl5uAcR/MFY3iORuYkSqFZ7lcPLzi8=
-X-Gm-Gg: AeBDiesTDfrfZX5Eirvjr+K+foZbfNsaeV/3tX044L6edlM2Xku6UBmuXyran+GfAHu
-	5OIG18GlHBWgtyiCJB9YNlqDtvhWlbIjCCES1hWl1Zhsz+PrMJY9V0cSxXWoz/1ZiFvFWJ9wIrt
-	SekUFWTBF6zq7REVBUARlvOOadFitMXqd6MHjnxVTlxIK1iqGfyLvak3Wy8AbilnEHduDhbVRkT
-	OHPZw5BroGpEBH3wCbwx+jqppueRTNZMl2l9C4bV6fe7hkfpIMB1DsVBL8Ao0YHGhrKYl2w45WA
-	5mF5Sbt10wvwxXEb/s/ICBNKhVMH4rcoeYlHPi0D50lEa01ExIxZS7G9Go32/eocrfyJ07ZRkfR
-	rmTY9B8ZO4n8tiPXPcZsgz4iOgbMGfoqteF6C+8e4yvUXUKKjpquQbHqoKW3JPmYJ+zXeHIbqDG
-	wtlv35dff4DVv9uYjF8puj5NGknSHldKNECgX9AADxhmxw1Ei9JcZcbAA=
-X-Received: by 2002:a17:90a:d64e:b0:35d:8fdb:4f26 with SMTP id 98e67ed59e1d1-36491f89e50mr2246840a91.1.1777364349228;
-        Tue, 28 Apr 2026 01:19:09 -0700 (PDT)
+        bh=HM345nkBQh5gaxmYsV6Qr69X0RaLtEwieY1kCbsL1/U=;
+        b=sLKQDcZtiv5YtoAj+Hi++5nsJHbrJ90Fe59waVSUt4BjR6tK49L/GbTjFtJQG82Pf0
+         +IE872f5g69/eWzzvQSdgOI1YLwdXfxDCSXbbkSpmwmEqCnV7eAOcCmPY1ZFyavAark/
+         FcXW8a8vda2Jgt6W3OiP8Zq4XOtEGMRVs7OZ9Hfj6YcNUT1GL6TxyKOqj8K5ZynQbV6m
+         eGCUfvmu+ixFQN5hcwJLvfqIEjK5k2VYDVbzJASjvUYsBpRhmDjzW3JfY518+yQIJt8a
+         4pGffVGH4vyk+bpOezW7IQVDE2eDI9vMJRIhHlm2cFT8UQtzlROnspsPQryiDY4R/Wxz
+         gwmQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9lR3uC4XPILRrHptuATI+C+Ahg/6+H4qYdpXbrMMnHYBXg5hIi1Z8iPAm78SJcRr9RjYLDdWSb7w==@kvack.org
+X-Gm-Message-State: AOJu0YzAVkhrURkFVfcuRlN2SyA5YzO1QhNNNHbV7ZfFTJd/OnbLKRp7
+	Mu2bBvyZUMptvYQJqSwIkV6uN2AnLabHm/UhWsu2+p7iel+BGt4a1/S6LBt6HasvjUI=
+X-Gm-Gg: AeBDieu2PpdiK6PMeb2twzc4wLv1FaHswDQUU+C25meiOswA2FCJSB1YfEoh4/8PkNu
+	b1f/tuvx01qj2gPO9QXbuBD5PRuUruQq2T4FF53/rVogRxR/macpBdyuuzxarEq5oVpSSdhlWMV
+	IHkaRtTniz6G87BoMt1L/sSC4aRlhRoCyB1lU+eTeXgcqNRBGYDXDjjzIGBfuNPvzV7YUQbMmfV
+	NpuTkWnDxyWOjJWxw9tloG3sKRq0tWgrImKqGVk+PiUFUsr6Pxnda8Q0v5B4ef12DbKIuQFj1ZH
+	hyt/4G785gT8ryXAuNtiHm0MfxSdLLwmZR+PHWEXbvpBpKUADGGUCmWy+8hjtG40PhEkKGrAgsS
+	dumviJtRvhRvCA8hW6Lpx0tpXOVLnXL7W1dkwTZHVE7xWFTiDwtTPCAqelmK8CJj54Gx8OtjrAg
+	mZhDSP6VV/StQiaSCe/W8ml9ztSRa94EwvBphK10kb4OrxAvsxI/1lWXY=
+X-Received: by 2002:a17:90b:5804:b0:35f:b230:5889 with SMTP id 98e67ed59e1d1-36491ccd608mr1594024a91.6.1777364354086;
+        Tue, 28 Apr 2026 01:19:14 -0700 (PDT)
 Received: from n232-176-004.byted.org ([36.110.163.101])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3649003650esm2181356a91.8.2026.04.28.01.19.04
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3649003650esm2181356a91.8.2026.04.28.01.19.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 01:19:08 -0700 (PDT)
+        Tue, 28 Apr 2026 01:19:13 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -112,22 +112,22 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v8 1/6] mm/sparse-vmemmap: Fix vmemmap accounting underflow
-Date: Tue, 28 Apr 2026 16:18:50 +0800
-Message-Id: <20260428081855.1249045-2-songmuchun@bytedance.com>
+Subject: [PATCH v8 2/6] mm/memory_hotplug: Fix incorrect altmap passing in error path
+Date: Tue, 28 Apr 2026 16:18:51 +0800
+Message-Id: <20260428081855.1249045-3-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260428081855.1249045-1-songmuchun@bytedance.com>
 References: <20260428081855.1249045-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C17FC14000E
-X-Stat-Signature: o1jt7wy11zrgft57qiyh1tt6rug9zkoj
+X-Stat-Signature: padfem9chusi8wszqtzesdni91mcwrm8
 X-Rspam-User: 
-X-HE-Tag: 1777364350-35475
-X-HE-Meta: U2FsdGVkX1/89RFQqYXyb+Nzd1wMMHanT6A2j41CAeJIcl+8Wmt4iuzpx0K8LsPEYXu6286k+NuVdUNjxnn3k22WHhBQd0aTuH/oPcpTI3UUY8sG6T1cYcZuRX+Kw3B9uvODQD1mLSYcCFPxI2KB5/4OZlH97njAjxsw9sdv88HrrvYXwDsWCi/k6KqeVarY4wETzkjdkiRnHSkIL9OsJ0QTVBZGeiQazOVaG6NXbtCSdjgYfiIiQpEnAYSLXfUV1FPThBzD3w3s8qN1f/Esk4bgSEFFS2fwm8BEJm9xq2ca+f2cTZhlV/irlp73qMuZ9euFFN1TS5ZCi1fod0j+OUGjxT1PYWaMs+0LUkZrPq/XfLBX6mqo4fR74ySFth/xKluyxzxUFlxLL3T24encl8cuoeQHlT4oGx8mPk7yXMa8uqwRwimjYyOj4mgeIWmmagiORdRKhAFjLOuIRR7W+RnukKeQNPYpeEy1IMSHeW6hCcqKGSWaiZnHfNlqP5MG6NVzWTQIDxPsPkXICxONfb1b50hXMJCTCfjFxE9tdTdWs4/ygHZPQQ2YFgDnWPDvpa/vAn4NnJ/VnzGKcNrW5hHt+RKD3DtbF6gOtaa1PpFpwirJsI5ruKH480Gv7IsvnjTId4LFVC3IPPQojQ0DixdzTu5yLl2qJSKwwmEQxJXrPiSgv/+qOTka4zUOy8FAbhJOkK85SPtr5cLFE3jWJP5/MFqamVLdo6mSwTsdpvCm71+e1h1K9kadn/Wcc0HFe4od6hXJ4gRY1LPwp5tjnY54ioidgwEMB6CC27QG1ZLOMQVmNtwLjsarIf6SytugjkSKnGfTrCLbmbe3+UWNIraHg8zZNsRyFfnpOepyfAcIdE/BdduChPvUYKkN2f0GdpXDgms8RWgc6dnIwJngJJx7GU+tOKGFP9YoS/KI4xHv4GHFRcJe0PZPZSP7GeoHE5tjT/eBRHiHQ0mJVh4
- ZrrO9s/w
- DUT0LiBkXepyOnAcEktxv2iNUgxfaxQcWdDBPlvI26AS71g5u7hwRQPE6UdgyIDxl6cLzvrly4iUFOyv1HLG17HKn8mZiBN4XhN5HXDFv+Lx8dcMvB2iMEVK7GfjjWbXF7AFkxyTysnPS9EvLTKMeEuw4TL+iKN2j+p+GOLLzwbfiO/j63wI5ZPuckNUtQqlv68zdFwXC7qr/cRkDv/A6/TxL/VvC8DofXGYS3pJMCIJxKUwtdkDfANwnPO2k914TW/VpTqDnFyien7UtdEgtiI5cuVxkD8fSIEah/ThmzviDqV6yEX525sfl5orT6UtAPoBmSC/Reg90JIU=
+X-Rspamd-Queue-Id: 57F8E2000F
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777364355-405273
+X-HE-Meta: U2FsdGVkX1+IHxOzIle+ie0cMP69of2yDvKRJ1rUYxArEI9cuy217rkc5iBZy7ctSKUO2lu/xgqtttFcsvqM1zgnEv/IS4ZT3h95I5r+Zp+w0egigkwSVwi7rHoLq1iidLAs3pRezbM/P4zzV/y4NE5ElRMtHHaodddX1mz6S+48be0c3vA41H5yyGNtD+wE5qg409guPwDNuegze05Lx1jZ8+SgGvaeHaM12HsJqGs09Lb0tUrd/FCfIXajc45VMsmY2Mpfe3zS+w5WrykHKjp2FjeAZQ39RHez0HdozlQck/GxLoPqR2HPtoHC+N+Jml1wq0MObKr1KwmsV8diaFE37q3vcJnL129CIusC5PuzzvB12FqrXPcw+fEKaJoOwbiVtIjo09rdXH3Jq+JgNlJLfFxguXPaw9sSU81qS5gcWTAJsSsBGYRdEk/W+glGANbQ2dxAF8ID/Oo3xN2NCQb9fpqfukBrKADMVTJIsJWrMON3g/kduLVoXP92EqlxyY15+I4BLkoZEG2DxiwriGiw54dP30Gz1sLF4JC0QvlYudgDgm4F23/Bpq52qeBbhKgAvCiEU884pt9dW2ssxJ53MRcOI6aqixD4bd78R79778hZkgySqWLIIQ6oMZ4vsKMwoNmX+q+tBmEgsa1GR97No/zrZ52o4887NgCVUEteXZORYUjJyuRC1TyS7vMNCCYw8mQP5sEWKX0Fd+5tmiS6brZHnpReE8+ZIgOmZXz3TKis3TpD6AXlCPMxMc4Dx4lsIKoHclL0omqirQNzZY6Bplr2iO9UQ1UBS4zFo5/nW7XhRuTKANhVEbUwbCC4rivaUFUwHXCOuVaH037o6Bzp56Pb8itCifaXNRTof/FJ/CY9jP/x/3h1+AuWrwpv8FRyHmIQAdWn+iabfP0JwbIbZtUMLyk1u6kTqncuezXoBuaEUOARuCgPE1lCY2JzZw46/sRj8l2Z1bUhNjw
+ BxvcI85a
+ KsAlLzORf48HrcCcwh3yvoVssnxR24vHNl+GjNWEe/IDn9Su9hyjhfBySWQs3nL9KK/WVJU2gBtpw/R4L00nPZn6wQHZB6N1WjiXXoiDaByHTlfNRxygQzdBAjo/94j/o9SyLpTug5mzJ3BcJ3v2zu6uKAoyaerQQHjF+RqP16c/cYGoU4a4vDKE7CvmnUEy3uqKGdLpRLzVtpeQXR6kWGZCaJkWNm7emzZfANk7wyAXVoM2x3+SylVy5s6eU/23ajmwafkU/+foMk6f8ISm8Sm9XoCNfX1E79kuyo6ExtkqGPLGNEGdPNeMcWs97JQbgco9e53XItF8jFsF2wOAMm1xR6vUygIN3ku347H62KfW1pyjFLmjZEXAEqDcpECrGNj41
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,97 +135,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In section_activate(), if populate_section_memmap() fails, the error
-handling path calls section_deactivate() to roll back the state. This
-causes a vmemmap accounting imbalance.
+In create_altmaps_and_memory_blocks(), when arch_add_memory() succeeds
+with memmap_on_memory enabled, the vmemmap pages are allocated from
+params.altmap. If create_memory_block_devices() subsequently fails, the
+error path calls arch_remove_memory() with a NULL altmap instead of
+params.altmap.
 
-Since commit c3576889d87b ("mm: fix accounting of memmap pages"),
-memmap pages are accounted for only after populate_section_memmap()
-succeeds. However, the failure path unconditionally calls
-section_deactivate(), which decreases the vmemmap count. Consequently,
-a failure in populate_section_memmap() leads to an accounting underflow,
-incorrectly reducing the system's tracked vmemmap usage.
+This is a bug that could lead to memory corruption. Since altmap is
+NULL, vmemmap_free() falls back to freeing the vmemmap pages into the
+system buddy allocator via free_pages() instead of the altmap.
+arch_remove_memory() then immediately destroys the physical linear
+mapping for this memory. This injects unowned pages into the buddy
+allocator, causing machine checks or memory corruption if the system
+later attempts to allocate and use those freed pages.
 
-Fix this more thoroughly by moving all accounting calls into the lower
-level functions that actually perform the vmemmap allocation and freeing:
+Fix this by passing params.altmap to arch_remove_memory() in the error
+path.
 
-  - populate_section_memmap() accounts for newly allocated vmemmap pages
-  - depopulate_section_memmap() unaccounts when vmemmap is freed
-
-This ensures proper accounting in all code paths, including error
-handling and early section cases.
-
-Fixes: c3576889d87b ("mm: fix accounting of memmap pages")
+Fixes: 6b8f0798b85a ("mm/memory_hotplug: split memmap_on_memory requests across memblocks")
 Cc: stable@vger.kernel.org
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Oscar Salvador <osalvador@suse.de>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/sparse-vmemmap.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ mm/memory_hotplug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 6eadb9d116e4..a7b11248b989 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -656,7 +656,12 @@ static struct page * __meminit populate_section_memmap(unsigned long pfn,
- 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
- 		struct dev_pagemap *pgmap)
- {
--	return __populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
-+	struct page *page = __populate_section_memmap(pfn, nr_pages, nid, altmap,
-+						      pgmap);
-+
-+	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
-+
-+	return page;
- }
- 
- static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
-@@ -665,13 +670,17 @@ static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
- 	unsigned long start = (unsigned long) pfn_to_page(pfn);
- 	unsigned long end = start + nr_pages * sizeof(struct page);
- 
-+	memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
- 	vmemmap_free(start, end, altmap);
- }
-+
- static void free_map_bootmem(struct page *memmap)
- {
- 	unsigned long start = (unsigned long)memmap;
- 	unsigned long end = (unsigned long)(memmap + PAGES_PER_SECTION);
- 
-+	memmap_boot_pages_add(-1L * (DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
-+						  PAGE_SIZE)));
- 	vmemmap_free(start, end, NULL);
- }
- 
-@@ -774,14 +783,10 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
- 	 * The memmap of early sections is always fully populated. See
- 	 * section_activate() and pfn_valid() .
- 	 */
--	if (!section_is_early) {
--		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
-+	if (!section_is_early)
- 		depopulate_section_memmap(pfn, nr_pages, altmap);
--	} else if (memmap) {
--		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
--							  PAGE_SIZE)));
-+	else if (memmap)
- 		free_map_bootmem(memmap);
--	}
- 
- 	if (empty)
- 		ms->section_mem_map = (unsigned long)NULL;
-@@ -826,7 +831,6 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
- 		section_deactivate(pfn, nr_pages, altmap);
- 		return ERR_PTR(-ENOMEM);
- 	}
--	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
- 
- 	return memmap;
- }
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 4426abb05655..e3352284f635 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1469,7 +1469,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
+ 		ret = create_memory_block_devices(cur_start, memblock_size, nid,
+ 						  params.altmap, group);
+ 		if (ret) {
+-			arch_remove_memory(cur_start, memblock_size, NULL);
++			arch_remove_memory(cur_start, memblock_size, params.altmap);
+ 			kfree(params.altmap);
+ 			goto out;
+ 		}
 -- 
 2.20.1
 
