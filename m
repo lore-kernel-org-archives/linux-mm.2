@@ -4,128 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B25FFF885D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 09:08:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BC7DFF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 09:14:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90CB06B0088; Tue, 28 Apr 2026 05:08:10 -0400 (EDT)
+	id C70996B0088; Tue, 28 Apr 2026 05:14:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BDDD6B008A; Tue, 28 Apr 2026 05:08:10 -0400 (EDT)
+	id BFA426B008A; Tue, 28 Apr 2026 05:14:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AD636B008C; Tue, 28 Apr 2026 05:08:10 -0400 (EDT)
+	id AC3326B008C; Tue, 28 Apr 2026 05:14:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 69B6A6B0088
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:08:10 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 157F216051F
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:08:10 +0000 (UTC)
-X-FDA: 84707387940.10.4E076C1
+	by kanga.kvack.org (Postfix) with ESMTP id 9522B6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 05:14:06 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3649B1B960F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:14:06 +0000 (UTC)
+X-FDA: 84707402892.24.88B717B
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E072E1C0006
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:08:07 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1cCZAQoR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xXWEmrhn;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1cCZAQoR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xXWEmrhn;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf20.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0CD9612000E
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 09:14:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="SfSXql6/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=63pBZFqr;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hhYoRYt0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o8agQQ+W;
+	spf=pass (imf29.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777367288;
+	s=arc-20220608; t=1777367644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
-	b=fzzuYUkYyyzQEMZbmjxYfEpJuhoBIlH+Eau/ahO0g9qfFQlHmCJ+AddaybZCJ2A42sFCxn
-	wg+onZpYyOh8C+Zkbfc65WMQesu1QADZm683XL5AJbW+2LXg/5BRMNccSKvKMbaZzBStSY
-	eVjyHJTyiofvFZhTA3xNuemYHNPCmCY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777367288; a=rsa-sha256;
-	cv=none;
-	b=k21qBlF9Zgm6Ag2RcrW/zI2o8Ak6FyRLBd+G7tlYw8ESiLh433xMZmEcGQiGsI9oaCNJ3n
-	rXic8v/P//zzUMS/RnyOEnDUSRcsQHPJA3ax/EGle8HSbItRjgRuOtJa/FDWvFP1Ume3py
-	0Tk7gSFv9Wmov5ih6IG/O2SZvBWdrqQ=
+	bh=Oa54dygvQ7e1WMzBvT0E6vQ7uFcWNMOK0rSl80PUuQ4=;
+	b=TYWw2wghONvL4GpMsODPfNEnQM4TSVLfrQoGp3pr3rCzEcVQKO7xv2pYXZm6J0X2CtVu+O
+	c42RnT6HRRhYgACDRoMyB4GDEYEYUChJOLfHEqtO1jLbDoZNaYx7I8w3XXUnU/nHmn+FPp
+	HW8LrtVyALQHuzrH9x3U7wUFrMsbWZ0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1cCZAQoR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xXWEmrhn;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1cCZAQoR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xXWEmrhn;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf20.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="SfSXql6/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=63pBZFqr;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hhYoRYt0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o8agQQ+W;
+	spf=pass (imf29.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777367644; a=rsa-sha256;
+	cv=none;
+	b=U2tmQ+5vZ/ofctqsHYQ/t7nnHExsTANy07Rc63Zr193+JPvNCH8+SDYDWWIqJ3iJgAduR5
+	zoBlqo2XxkC+aKSmIaeOi2YNCBLYMzNTEeM1R/FH4oib7oBzJGWcj80IRQKWczuX3gVFW3
+	Mjbh1z6VQiaWU3BHtB8tbEHj0VLjwvI=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 40BB36A81E;
-	Tue, 28 Apr 2026 09:08:06 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0DF286A7E7;
+	Tue, 28 Apr 2026 09:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777367286; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1777367642; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
-	b=1cCZAQoRRx5NF2kvJSPKgnH/J18umo8qqCqECuqhTE63VxfxrWE7MTGciczpUjG8R7xEIF
-	rzMhL1zInW7VMwY14BXqBYIySvHkLoW3Y4XXCGH45VOxuMa4/0G8XQuPQXYW01+sV/QgPp
-	FGaacetOTTI0GtUnMDxdW+O/Kid0+VA=
+	bh=Oa54dygvQ7e1WMzBvT0E6vQ7uFcWNMOK0rSl80PUuQ4=;
+	b=SfSXql6/ADqv1mmrAcvNAD2fVa/7oNjp5KqdI0gurwAhE655uJA/ACz6h8PkXmB+Qz2pss
+	DkJQe1O3wstOno4e/pTYxj0egdoQvBqWXgj4sTTORzMgME515sMG7mA3B9maWgF47BmdVq
+	fjBez3/Ky2HJWa07E9EZFtTOZSpytdA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777367286;
+	s=susede2_ed25519; t=1777367642;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
-	b=xXWEmrhnZVZwZjmZPwV/Ub7Va0Iku6foqi7SkqJ7tB51KSM+Vx7pxwkyfVC00DWy/Oc20G
-	tL+/TQ3R5TA16dCw==
+	bh=Oa54dygvQ7e1WMzBvT0E6vQ7uFcWNMOK0rSl80PUuQ4=;
+	b=63pBZFqru3aPfGK4CMZNXrthBm5ESnZqWt2FXDgufav1luqClxSnCPXdr7nxd+1EtyXO8s
+	d7itJdzH0EJ2LfBg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777367286; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1777367641; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
-	b=1cCZAQoRRx5NF2kvJSPKgnH/J18umo8qqCqECuqhTE63VxfxrWE7MTGciczpUjG8R7xEIF
-	rzMhL1zInW7VMwY14BXqBYIySvHkLoW3Y4XXCGH45VOxuMa4/0G8XQuPQXYW01+sV/QgPp
-	FGaacetOTTI0GtUnMDxdW+O/Kid0+VA=
+	bh=Oa54dygvQ7e1WMzBvT0E6vQ7uFcWNMOK0rSl80PUuQ4=;
+	b=hhYoRYt0FdBOl15l/k6ZYXGkFGP1iiCETZvpRPatgdFGu+MzVu+BAu03SM5Yzeo6TtT0xN
+	3vDC0MoXOMmdbtLp8cJBHIkbXdimTbs2+BEFvC7bPbF96SlVkqRlhRrmud5x8ZY/BYY0U8
+	ry4Y5vddJ1Oo/Sh5RlR0FsY1msxsq00=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777367286;
+	s=susede2_ed25519; t=1777367641;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+PLcPEDXVXa0sOl5og5Impq8NYwy8sl9J86BGnNXg6s=;
-	b=xXWEmrhnZVZwZjmZPwV/Ub7Va0Iku6foqi7SkqJ7tB51KSM+Vx7pxwkyfVC00DWy/Oc20G
-	tL+/TQ3R5TA16dCw==
+	bh=Oa54dygvQ7e1WMzBvT0E6vQ7uFcWNMOK0rSl80PUuQ4=;
+	b=o8agQQ+WsbKPzMbJZEsSG9vfXU8liYCM1F3jCjGCfKXBPmj0Yk510OWOnEIKJh0HPs0His
+	VgoDB+99ImRVu9Dw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DB8C1593B0;
-	Tue, 28 Apr 2026 09:08:05 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 34833593B0;
+	Tue, 28 Apr 2026 09:14:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7okNM/V48GlKXgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 28 Apr 2026 09:08:05 +0000
-Date: Tue, 28 Apr 2026 11:08:04 +0200
+	id xl1PCVh68GkSZAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 28 Apr 2026 09:14:00 +0000
+Date: Tue, 28 Apr 2026 11:13:58 +0200
 From: Oscar Salvador <osalvador@suse.de>
-To: Zhao Li <enderaoelyther@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/hugetlb: fix subpool accounting after cgroup
- charge failure
-Message-ID: <afB49BIqmLL2RKHM@localhost.localdomain>
-References: <20260427145247.84157-2-enderaoelyther@gmail.com>
- <20260428030712.66256-2-enderaoelyther@gmail.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	Dan Williams <djbw@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	muchun.song@linux.dev
+Subject: Re: [PATCH v2 2/3] drivers/base/memory: fix memory block reference
+ leak in poison accounting
+Message-ID: <afB6VueAvlhMSb7Z@localhost.localdomain>
+References: <20260428085219.1316047-1-songmuchun@bytedance.com>
+ <20260428085219.1316047-3-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260428030712.66256-2-enderaoelyther@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E072E1C0006
-X-Stat-Signature: uenezugie85x6fbisu4ofjihjeqrmfra
+In-Reply-To: <20260428085219.1316047-3-songmuchun@bytedance.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0CD9612000E
 X-Rspam-User: 
-X-HE-Tag: 1777367287-354788
-X-HE-Meta: U2FsdGVkX19JfCKYWmfPKD0BXnbEZ5fLsS/pGxxtASnUsl6E0Og3pxYTZ2UmKRHzYT7mQ5YRYHthy0995+mub8H7j+QpcJjkT4CX7TJ0lXhMZzEFVbySpjoFcFgpRGSLDQsOeTK3/JxzzWiROAzylXy4JfihRajmfFwm0PPCJ8Sgb2Ly/qZu3pbgWUOgEqtQuEZigU9c9eetj0yhlB07Y+Ip9GFic+B2p2lrF4OcWpHVZ4dWFMyqMHUAf6/JSXrIQF3EtI051pcBH8EO/M4rygmOhSViGS6mx4nn+2UpO0EXkHSrQUBjbCCG3ndMByuO0jBvLC6ZcrxlNcX0pTyHIn18i4KZJNs5FWHPsiodyyIjJxVE588+Km3X+nJIbpaGmQv6sVCXklasiA0Qssz07UGjOac7n0Kfz5ricsbFReggVQuBDoBwsVUBEZ+CveSHknqvmcwFTEPdls+aFa8zUOlyCGcIIUnB/meSw7Iv4ankQEFoVwj6x3543D95EuzSNbOotVqGzgUsKU8T+vD1VXAhMstiQNHOkK8bziDYPgxafYfIfGvanlltRBiq6A5zj+nrL/jeClb/GxiJIvMJCcwESN96oXTJi1UQGjDeQxvL59eUaR42f+OX9aVY1XsERlLv7Pjf+7FESTGzv3SBtwbusbBESpW4AFGTvtYmEXYDNTby/e9NhPHt86ycN13f3GeEulFxv8mAN4+bd8zopssH0k1daC3aIGderBbWNuEbztkYFOTJ9csrlwYK5f9cJq96eQMdgsSHQ+y3ftUm9TuHgXaK1aO2CnLf+7IG5VE7xg8QIEZy9Lqk7heZVX/hjYIne8a7L2u8f/yN4VSF/GI7mfYQ3zxwEobbWln+f+bMjU2rsQHELxQPhVnc0BOngCXIXf/Pr2klDzn31Eg6hMhAHqvW6PPoOhjiDaifeOE3NfMDHkIGLSi2CKlg8v6ikh/PbjE1eb0THcjjqr6
- LXRsTV3w
- 4vmll0soPucBcI0ADhH/GT4ORijUzORTc9JcNKG1GJmbztpuDKVgQXp2L1F4Ec4RLD5fUfm1/3UlUWKPXHFrHTi14MFUuhcqJbi3Ckru5BstKlUyA9Ugz2NUh2hEBYCvgxxtOLAOCtCPuiujXumAIvC5iGhVEWKCGJjnKTS8av+GjiLEKkbGZp/XFAVk6azOq0imMSu84NNWmAHB+8mX2KoKd8Z7lm4uOHXVllYNdsCPhMXka1z4sYsd0znqRmvW4ZQO2CEA77rw4eAx85DLP41P8uf/dkDC5rSon
+X-Stat-Signature: ccaa81um4d78jztp4eazup6kw6g7ajwn
+X-HE-Tag: 1777367643-414308
+X-HE-Meta: U2FsdGVkX1/QekR7qfhAYdYomJhjgeW7Yl//KGA9JJ7SOmNu3WedqeOEgrkPrlkN0JS2BNX25BV6sZ4/g7AZ863S0Jsh3/kKU6UVP5We6HuC9tkVNmtPZ0DI83Zgvygm+EDnATbB2hlMWC8bz9Omf/45RMCiAOdCh6+T6Uz2o6xkvmCkJJmDa8m3PDje+TDc5ax4lGrEFLuu67jZaiyMqIc8yNSYdbQIR7RC5463l35CsYvPGJ656nLS/bOtylfmWlnVVvGMAbf9LSI/G8Pr0Rj9GoIEKanX+xuPQje7nl3MuxDyTOcvflFdJMDVEzZzp3OuldWZiMhx+tDJNIq2rMfm+KMTnA9VMD1SN5v0cIRhDME0H3neoE+RJlqSFtxGk+ZMhPr2EE2vsWEiRkNB2O3KOH+GtwFESIObyScXhumiiSQ3Dj8TpQKjpbL+pchLWTa2yAsX3TDtu/hUUgPyDXsqGfTkb7bpI/XEv4JOzUUkC5BWJOOuY45WL7QMg7I567QS2lkxAh/hB/E3NrPNNcI3uXt8vf/7Oyl4hpD/dPxcz8kzoQ7RYjTbwZDdJ4CTZuD3RX3UYKoBWZ5wT6/GNUy5BuG0gIfoaiGyYoy25qLpNW3KKH7NQTREJKay0MuoyBV6No9N1cdbpqaJ4pUZ19TLXe4afDRnrlYnGse9gQLGz5xDfrb2xmWKMhS2bIhwoHTIL3G7ly0UHsnLRC7J1DryOu3aHGCHddTV1hW2OfSo/ts2gW/AZyvNHLkxYygqRmW/fiQGi9iuFRmCwcmyi2NNcRHutFycz6+pMWHz3DmiZSvI+ztKBfLQe1uywg6n9pmcmqXikLNeB69YR0Eic7h9DbFlanf+7jahxiWo+V/PixjBlJYDpwgzWuAFU9p5MZvFjwPbmEEiJWS8Vh9iZB0wZeb+MdcmKbNRJbVbA4O+GIvYqlof5lVleHEhfa94VT3dw61PXZGkYh5QAzB
+ gC4gHOU0
+ /aggTQXSU4dEpzhpPUNXNhVidGVUES+zSyPtWTn3QR+74G73U38/TsYCM3ZRIseCz7O0bemgJqtwDgOuoBfQSZYCsOx+yzoOCP57ZcxgI26VgvM81a5tIb2tUe1CfLYO7m7BlNoGcIU4hzaTczcp6O+EJdIdSyz1bqf01xrZW42VQTGiHZoBO2wcbWC7RWPUNXNarWlLskcGjQcD5yLLnr2EKMGlJPGQRmganTW0FnzLRTkUOVHGkzImflxms2tKHmaFjTaHu3vL2FtiLPiwzLWVxAw97oCpX9rajeJvt3PTwEIHV3kWQJf5TBrgOhvilncXMiqNO+ZYg/KIF2y1oHYWOL0HbSuyUCl0P+CGZbAgWAeK7zGtosYXwnOgzT9kMIQEsrpFsJTCqvwmJnweFplSD6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,68 +141,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 11:07:13AM +0800, Zhao Li wrote:
-> alloc_hugetlb_folio() calls hugepage_subpool_get_pages() when map_chg
-> is set.  For subpools with max_hpages, that increments used_hpages.
-> If the later hugetlb cgroup charge fails, the unwind must undo that
-> charge even when gbl_chg > 0.
-
-I found that last sentence misleading, because we do not really care
-about hugetlb cgroup charge/uncharge (besides that being of the reasons
-we end up on error path) but rather the fact that we fiddle with
-subpool->used_hpages and we need to undo that when we rollback.
-
-> hugepage_subpool_put_pages() can also restore rsv_hpages if concurrent
-> frees move used_hpages below min_hpages between the get and put.  When
-> that happens on the gbl_chg > 0 path, restore the matching global
-> reservation as well.
-
-Well, that does not quite explain the problem I think, at least not clear enough?
-So the problem at hand (IIUC) is that
-
-1) if we took a global reservation
-2) and concurrent hugepage_subpool_put_pages operations made
-   used_hpages be below min_hpages, and so subpool's reservation
-   was incremented, but we need to increment the global one as well
-   otherwise the next time we pull a page from the spool,
-   global resv_huge_pages will be inbalanced
-
-
-> Skip the gbl_chg > 0 put when max_hpages is unset.  For a min_size-only
-> subpool, get_pages() did not change subpool state and put_pages() would
-> create a false reservation.
+On Tue, Apr 28, 2026 at 04:52:18PM +0800, Muchun Song wrote:
+> memblk_nr_poison_inc() and memblk_nr_poison_sub() look up a memory
+> block via find_memory_block_by_id(), which acquires a reference to the
+> memory block device.
 > 
-> Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
-> ---
-> Changes in v2:
-> - Handle rsv_hpages restoration when racing frees cross min_hpages.
-> - Skip gbl_chg > 0 put_pages() when max_hpages is unset.
+> Both helpers use the returned memory block without dropping that
+> reference, leaking the device reference on each successful lookup. Drop
+> the reference after updating nr_hwpoison.
 > 
->  mm/hugetlb.c | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index f24bf49be047e..4065d66fdcb5c 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3026,12 +3026,23 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->  						    h_cg);
->  out_subpool_put:
->  	/*
-> -	 * put page to subpool iff the quota of subpool's rsv_hpages is used
-> -	 * during hugepage_subpool_get_pages.
-> +	 * map_chg means hugepage_subpool_get_pages() succeeded above.
-> +	 * If max_hpages accounting was touched, undo it.  If racing frees
-> +	 * moved the subpool below min_hpages, the put path may restore a
-> +	 * subpool reservation.  Restore the matching global reservation too.
+> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
-I would split the comment in two parts and place them within the block
-they belong, otherwise it sounds confusing.
-And maybe elaborate a little bit more.
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-Subpools, reservations and hugetlb make a very head-spinning situation, so let
-us make our life easier.
-
+ 
 
 -- 
 Oscar Salvador
