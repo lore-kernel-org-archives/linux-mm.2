@@ -4,103 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 400A2FF885D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 12:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1109FF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 12:27:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4B956B0093; Tue, 28 Apr 2026 08:13:55 -0400 (EDT)
+	id 248E76B0088; Tue, 28 Apr 2026 08:27:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A22676B0095; Tue, 28 Apr 2026 08:13:55 -0400 (EDT)
+	id 1F9B06B008A; Tue, 28 Apr 2026 08:27:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 938CB6B0096; Tue, 28 Apr 2026 08:13:55 -0400 (EDT)
+	id 0E9546B008C; Tue, 28 Apr 2026 08:27:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7ED1B6B0093
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:13:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1809C12012D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:13:55 +0000 (UTC)
-X-FDA: 84707856030.11.52380B2
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2C76C100007
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:13:52 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="liGzZ/6l";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777378433; a=rsa-sha256;
-	cv=none;
-	b=AM/ST/UzZO7O3lO7QCZhKPGIBAj5yHYjNopK7K/DqacEIqmyKP/OgEwI/KJOSd2DxKv/16
-	7J/p4Q7GkiiWP4PNg0S/HZnNaWPgawormlS+oD+4AtXPxQf0e2rE/qeM0YL8+W6lgh2pHl
-	T98tLYgmBXKqD4iQKhj/CKwwZV9fFlA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="liGzZ/6l";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F159B6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 08:27:35 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 927241B5A2F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:27:35 +0000 (UTC)
+X-FDA: 84707890470.02.D31FF80
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E5F2A40004
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 12:27:33 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtFCNgTA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777378433;
+	s=arc-20220608; t=1777379254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gMW0yphc9+JTsHgjuPXzpOHRe/+uClvfXBtsydm1QXs=;
-	b=uCyVrvRKMReGdVBj8/hRsnodkWu8zjv/X2mQlfEdsXWQpWZi96czzJ69+qIgkpAG4qI5M8
-	gfZNExxJ5mTziGEmsqT4Jme/Eq9kgWzUqO8Dwhh3LGZ13vfCIcuWIhZ/Lyokth1rAZ6y2a
-	8beeZD8XTrUXPhc2SiWZTS6qZARBN+A=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777378430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gMW0yphc9+JTsHgjuPXzpOHRe/+uClvfXBtsydm1QXs=;
-	b=liGzZ/6lcet38vVzKBuQrY39X3mLjaXryapTkWCkNSiDT8ppz7dunF9bMsRawPXG5pxkR5
-	FhcWht8cZvdRPdpyR1p4MmEuMLHcB8c/dHAcKROxBElmkdgDF2smPjKbTZo6pmhUkCtZar
-	glo2vu8yjY+mQkvZGqqftuaAu0NP3vQ=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH 09/49] mm: panic on memory allocation failure in
- sparse_init_nid()
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <afBaMEBoR_35Fblc@kernel.org>
-Date: Tue, 28 Apr 2026 20:13:05 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com,
- joao.m.martins@oracle.com,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9FD13495-58E8-4183-AAC0-48E50A694ADE@linux.dev>
-References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-10-songmuchun@bytedance.com>
- <afBaMEBoR_35Fblc@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: n5qzdczja8hucf3himc3yjz5opneq8t1
+	bh=J+nw3VMRR8gk+12f/ytlqVALMzBItCfI1AiNwTibeto=;
+	b=ZyrB+Y34eVOyX9rVVDbW5NZQl6eEMFfTgw7A1cofVYxN3RXpDj14lFffyGbz2PPsgvZHU/
+	zB76Anye5ZbwtP6ASj2YYLwz52CPDLTiDdqwewHMJC/eg/RYPT7U9nX86nLhuHDcMGFOcQ
+	dHL1I5cLWFH+n6OMCDz9B4eOSJY+hLg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777379254; a=rsa-sha256;
+	cv=none;
+	b=aHxTpuJJJUpgcc/WM6Wslt1y94ECJaF+5PmeoRjvp2fLXzOx87tStzaoufcfvz5Q/9iMjy
+	VvRpEaAaMeBNwVURmtHTmFZpE/jySww4F/ZDUhXeh2zpIwWUphi7UFoFYdRkEjQrX7/9yB
+	mM05IkLJALNM2Pl7ttylFo0dcKw+QHk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtFCNgTA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AC82A405F6;
+	Tue, 28 Apr 2026 12:27:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0504EC2BCAF;
+	Tue, 28 Apr 2026 12:27:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777379252;
+	bh=oXW2BuxDEEJJgDVSv85Sq/XrKA16JupO5CMfYwPGdtM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TtFCNgTA2p/mjwznidoIND1qLBGVv3UQduA0gVwAsewf5q1TlbcO5jwTODxHc5JoN
+	 h1RCw0V5QVuBkeotKfTgdSjuW5CO2ySjpRm4tI+y7L7FuAqaa7Dp9QQ69H7u8Ehn7i
+	 IC7yJnJQPhLrycdgF17ueA+2wox7S8UIsB00pQqIZomyw2wX/EU2MWDh84xmHzN0sV
+	 DJ7XTFv3JBHxH6uuIy352oeNt9n8HWU1MprKg+AIjkg/gVuoVf2oa5dWa2tLl2fAmA
+	 c0QmFGBXbzw9Lt5wv4wdPuEWr6Ri4UVEuxyRnGA4fOBleln596cayCqahje7lwUg0V
+	 cLm2ZHZXfE+BQ==
+Date: Tue, 28 Apr 2026 14:27:23 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Liz Prucka <lizprucka@google.com>,
+	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v4 02/15] mm: Make empty_zero_page __ro_after_init
+Message-ID: <afCnq17NWvM4T4vC@kernel.org>
+References: <20260427153416.2103979-17-ardb+git@google.com>
+ <20260427153416.2103979-19-ardb+git@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427153416.2103979-19-ardb+git@google.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2C76C100007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777378432-539518
-X-HE-Meta: U2FsdGVkX1+sRrWRHtS09lAUki56/iqb6fen1XN0pVTCZ8RS2Hp45E95K3RHXArOS/X/l5O2bu5/LjR9RdGU0weOVSngJViJkQPmdw5cpCyBvN2u65SPua3s/YupPfzMCV8v0oYDfV2QJJAHcBu7fLRt/MbnvbebHRpEusM6ODxbuKMI2Nkph0WulhMUryQ695I7cTWad3OZLQDRD1IBv8i9zBBeNaDWiYu+kN9QPZY7K1SFXrz9txIJdiaPjsCZIS+4Y0t/U2VlZxg2YML5gonDE+vzRqoO0bq3SamscQdts4JUUEdrljS+uNohgUr1ob8dfSOTzshviw6HgXrEwmvRaHyRcl6cRxydeWuJbjAdTwnEopx8WUXsHzSNOH+YkAFB7itEF8OxnM6ywZi5+q8U2XWxLsWdkwRgVMFXdAnMrDooT1JFENKhdJzu7M1ASf2Z/oMnLXU82bL8wmEIi3RP5i8rC3lro3ldo4/G9i6K5vIG4rPvvlAAqfvV6E++vlI8/2tV2ilR5vjbe6U8YJmnMf7f/r4+Hk0PjO57F4nQXeRgGSpMm1Mcu1HunOF7zSPo8ocsk4gDpJIFDtdH2PEe8YNdJvydmf2A35dNz5Y44HTMPqxCxQOkCwhJF0a6C0myUnPkWnob3DFtY2Vuqm6B6dmGFlC0fDqXYACjJH+MY6JcBVXjtui+xCzwiesqpli+Fcco6zPaqPieXdTu8l84Pz0g2DmkS7X7hxoJF8gDW/m70RHuh64YmwlyDyBaFj6YY9nTowl+IER0XkoqBDW6zowM2xWKxKIKA9xaGJYFp4gjBqpKPGZHuUwdy20JPEcu3dHXvf4zJQTXxDVXZNcXKkA1lW+d1ZCxl3uxK6MeuiFK5j2Q7ErnKOv8X3lf8tUI4hGhWq1hM8T9DyMr+WsNTd0J2jdgpWziqoLOQvo71Z3rPeQTX+Pd2fGPQ3HX0RCCj12vWczzRuOS67g
- DM5Oh1pw
- Xz755hXp10RN9O8VZrO3vs85uXiMhNCWAo2AuYOR4ZUyDSKkR1IuH+ZEOGfK2rLP1NDzN633neEcV9sAkwUunHxD9vN0fiCyoCn0J8XR0SC0HJFS3fleWf9OfHX724+uBrWSS34ppHTG1FKT2SLKe8Zmubuek28spL9/N3DEpI1XI4poNLT5PgMxGe63i4sD/1tatCSWiHDeJZ9wPnDxGBKxMg563uggu2Msc7U9qIwCsyauc5FvaUcITb6o18fifj9lDi7odMghIFmawQqOn8pPiarxDIm3Iqe5vRwwxewisSbSzm4O+X9DupqNWCgFkjO4yrZlEwZ6Cvg0=
+X-Rspamd-Queue-Id: E5F2A40004
+X-Rspamd-Server: rspam04
+X-Stat-Signature: krupbw53ujccbia55mw4gndsd6zjowdq
+X-HE-Tag: 1777379253-68157
+X-HE-Meta: U2FsdGVkX1+o0Jtb+bBGFnpR+pR8X2Ahfoia++oPmfoDGr3WyCCDzdte16Vi6xd+7EQbklij0NzU5rPezBObwrhanLs5ioz8puMYRdKO1wp/xtAJmEPI5CS+xN2nC0QOg29L9BEOC49wzFSAvD4p4dnS/PjEutU/01d0/btW5WYUXF4wheOxvmJZeI3xC5Cfacjp2JIjZBRVc2M8rpIiHyUDmh4yuQdbgmZLm0jIXXWSo8TIawxzzzXCV57A+bMhvdU8062XSbrTWZFLdWR8mAKLIt3dyB5QNqPnGUcK1EZT6g+4Oe9IcoRUAG9MoVd0b6n6RuPTqixruvjE/wUWuNx9l5bDZTiq6V2LgKUsgFg7ArqfyEgvroNDvr9BMap5s68vcOKAH3tJ1DgWzdccXPAf9gFC56X4HRJv62lcjWst7zLM9ELj0EsPfmxd2CiQpmSSlCELHeeD0UilH6s93Ps75iagIhZPn6JeSt9vhQxsCULZJJP/HHhHRv9sfJKvCqjQ0R5K1l2nIFDQp/Nsc/dclIqPp+SWV7fPgSG3JnrIbHEcc2rLWR3SZwWMVhp6OwjPOFG6vtirPZy8v7skJ+DdZCMeApeSf4RMTS+N5EvVzGJ1NyfIOgCkHz07B9ARGyySzzF3sPJJfhifpLgdifZMztdKkkzzC5GLxgJEFXNl0i/7srH5OZN5la58BnXoYkB3Ec5GlktCpg6FN+r17lIQLjJ9UTSl2oRrUYsV2iU1TrlgNMqGwhW4LHahXiYKiGBPuS2CnioD9lmV5S4rMjzPnGg1j0lD755OKf3jaVvdoOYWn+CJE/jLtRhhurBk6EJ7//Cv7X/5MK3HzSq3wueks845bTsb9U7sououGbJpAcXc+KliJnTEgDMruG2CZj/yo7luWdAincOhygb0hQuIWmcD92gz/tYho+YW3Qfr29rdbm5HLiPAeNbKvQlPnC4qNLINS3s+ULYW6v/
+ bpLm7Igp
+ 5t+/Piy96Nmf45n+OlvMPj4KFdtO31f9CWdIr1ZOUI9ejPIDSTOBttBXwLr+OP7E6vUkQyGUcbLAu0ObbFso69VGDJ0/aCepxNTDRqOoIu/X53Y243RyVqSdNv0jF467+uAxKzZMuzllDclz/OipOxa9GUya7dBV5TcpF3HK/CYSNBLeJNX0AydF7Wt4IX6y6nKikjEySPGrA54yUOZQW6sbisQpjusaO9HuJNvwdnvZsTMhX0ipVlvfDkSQm3zOk/PVZzwWBhObpMKbgURxrZqu/jYqH8y+6SvylaSCNwDbd+GVU8VGsRbJkvbUS/g8JyQ6G/k3bArp7RQBH7T25wdR8LXQJXzGmmMUND+XfqYpdjVGeeysz/x/YBGZhlrM3xAtngOVyT5F1gktGKp6TZYk5Mw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,71 +99,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Apr 27, 2026 at 05:34:19PM +0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> The empty zero page is used to back any kernel or user space mapping
+> that is supposed to remain cleared, and so the page itself is never
+> supposed to be modified.
+> 
+> So make it __ro_after_init rather than __page_aligned_bss: on most
+> architectures, this ensures that both the kernel's mapping of it and any
+> aliases that are accessible via the kernel direct (linear) map are
+> mapped read-only, and cannot be used (inadvertently or maliciously) to
+> corrupt the contents of the zero page.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> On Apr 28, 2026, at 14:56, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> On Sun, Apr 05, 2026 at 08:52:00PM +0800, Muchun Song wrote:
->> When vmemmap pages allocation or usemap allocation fails, =
-sparse_init_nid()
->> currently only marks the corresponding section as non-present. =
-However,
->> subsequent code like memmap_init() iterating over PFNs does not check =
-for
->> non-present sections, leading to invalid memory access (additional,
->> subsection_map_init() accessing the unallocated usemap as well).
->>=20
->> It is complex to audit and fix all boot-time PFN iterators to handle =
-these
->> partially initialized sections correctly. Since vmemmap and usemap =
-allocation
->> failures are extremely rare during early boot, the more appropriate =
-approach
->> is to expose the problem as early as possible.
->>=20
->> Therefore, use BUG_ON() to panic immediately if allocation fails, =
-instead of
->> attempting a partial recovery that leads to obscure crashes later.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->=20
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->=20
->> ---
->> mm/sparse.c | 37 ++++++++-----------------------------
->> 1 file changed, 8 insertions(+), 29 deletions(-)
->>=20
->> diff --git a/mm/sparse.c b/mm/sparse.c
->> index effdac6b0ab1..5c12b979a618 100644
->> --- a/mm/sparse.c
->> +++ b/mm/sparse.c
->> @@ -354,19 +354,15 @@ static void __init sparse_init_nid(int nid, =
-unsigned long pnum_begin,
->>    unsigned long map_count)
->> {
->> 	unsigned long pnum;
->> - 	struct page *map;
->> - 	struct mem_section *ms;
->> -
->> - 	if (sparse_usage_init(nid, map_count)) {
->> - 		pr_err("%s: node[%d] usemap allocation failed", =
-__func__, nid);
->> - 		goto failed;
->> - 	}
->>=20
->> + 	if (sparse_usage_init(nid, map_count))
->> + 		panic("The node[%d] usemap allocation failed\n", nid);
->=20
-> Please consider using memblock_alloc_or_panic() in =
-sparse_usage_init(), it
-> would simplify the code even more.
+> ---
+>  mm/mm_init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index f9f8e1af921c..6ca01ed2a5a4 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -57,7 +57,7 @@ unsigned long zero_page_pfn __ro_after_init;
+>  EXPORT_SYMBOL(zero_page_pfn);
+>  
+>  #ifndef __HAVE_COLOR_ZERO_PAGE
+> -uint8_t empty_zero_page[PAGE_SIZE] __page_aligned_bss;
+> +uint8_t empty_zero_page[PAGE_SIZE] __ro_after_init __aligned(PAGE_SIZE);
+>  EXPORT_SYMBOL(empty_zero_page);
+>  
+>  struct page *__zero_page __ro_after_init;
+> -- 
+> 2.54.0.rc2.544.gc7ae2d5bb8-goog
+> 
 
-Hi Mike,
-
-Should we add a new function like memblock_alloc_node_or_panic? Because
-we want to allocate vmemmap pages on the same node.
-
-Thanks.
-
-
+-- 
+Sincerely yours,
+Mike.
 
