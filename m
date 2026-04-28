@@ -4,96 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04501FF8864
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 00:17:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF08DFF8867
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 00:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2216B6B0088; Mon, 27 Apr 2026 20:17:22 -0400 (EDT)
+	id 371886B0088; Mon, 27 Apr 2026 20:33:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D2156B008A; Mon, 27 Apr 2026 20:17:22 -0400 (EDT)
+	id 3493D6B008A; Mon, 27 Apr 2026 20:33:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E80D6B008C; Mon, 27 Apr 2026 20:17:22 -0400 (EDT)
+	id 285886B008C; Mon, 27 Apr 2026 20:33:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F299B6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:17:21 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F7B01B861E
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:17:21 +0000 (UTC)
-X-FDA: 84706050282.04.77498B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1A1AD4000C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:17:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y53ki4zJ;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 152CF6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:33:25 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 981ED1A039D
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:33:24 +0000 (UTC)
+X-FDA: 84706090728.01.AEE5CAC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E5F761C0008
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 00:33:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W3jmgxmj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777336403; a=rsa-sha256;
+	cv=none;
+	b=iVPB8zYNjQv3JUygo7m8ceMjIJ0BnI+NXBgWkB4sLuHlm7l9xYQexJYgk0iIgyDx/V5gGx
+	lOgBmjwpWsY/py9thEJKf+txyYSUDhZ9JX/1pGBSVCXDH1Ocl123+le0m/vUGTFwaam27n
+	3R4jQDIOlKwN9Qr1mXhVRkWpdZSmIHo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W3jmgxmj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777335440;
+	s=arc-20220608; t=1777336403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zhjl+GKx0k/XE1VI9kKHmR5/tcsvu3NiZEt0hGNeFS8=;
-	b=8FRa/qdtHKzJRCYfa2iqVYc7MEtLGu/7NzvbEK0apcLupkBeYn2BZPVpfALjTzrPZW0Cp/
-	+heNdRYhKl5fyrJTzx4VH8CgsjaW5bMIgRBjMeYds6osFT6zofwj+rfIKW4nySCwAYnMS2
-	1VE5Itx/7XBN3TZOdY9SPIYV6ghMOus=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y53ki4zJ;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777335440; a=rsa-sha256;
-	cv=none;
-	b=lAQHBYbKZiJIYpQEbOBa32Ca7AOIRbhxMiwfn5z1emCbjod7TsZie7+bvnhsxx3TvcVUGL
-	whFwXHhVVXoK6RfrOiBbb0i3t+071tYKRvLFkRivdzE9qQppcjOSQwPPyk0bZyxgoJfzCr
-	32u0qcLIRwadVeQAJOxkw7OduiSH5iM=
+	bh=/bC+fZB8sGMmX0/gzU5FkhSeWEYSFhrpFlPHucRK29g=;
+	b=XtRjhuCQbhgRik/SsbsfyxcPJ0LPhLJuGpgosO+Q/jNEANvPsGPbxksxIfPyYkIxniiqHg
+	zdE6okhWtLOD4f8bhOlgoh0X6X5iw+4c5Xoh+L5+c3FQYm9hO6aDONqYlX6Be6R//PItis
+	TIab2Q17Z5NR/uFNbSC6urJzyySeDCI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1045760121;
-	Tue, 28 Apr 2026 00:17:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35481C19425;
-	Tue, 28 Apr 2026 00:17:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9BE8A4084C;
+	Tue, 28 Apr 2026 00:33:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5E4C19425;
+	Tue, 28 Apr 2026 00:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777335438;
-	bh=I+XvYRGSfHu9oMRa139qcOeamu3DjoTukAn+yztBlLc=;
+	s=k20201202; t=1777336401;
+	bh=ZcdrUd8JxPkWJLg3gCpjoRkvfIkDc4Y0TOh/l4kL4Cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y53ki4zJYdMxBMLfhfsQFpV6wGt3v5oI5UYC01gnSmOhxFd3eSPx/WOYFokaekv93
-	 y8pkuPdgGil5IA5H39ufdlsFYl+uy291YVGO4FGVfmCbeibmpYHSH+eOJvQigOwZE1
-	 WRylEwcqGjPmE6aVbkG5YzuVMX1HuDHHpVTtmZWep276JG/jWjkPH4aOJOdlTy4ej9
-	 I/2axOtWf2K8rz/pEBxjuEUAGJ4iAoGEOVziBeGaACCL0mndKRzmcxJ7VtRmNMwRmk
-	 hJsoiRC/AAiDfwvWUTQfKBkXLIRzSJSq/GrHa75A6U44IEVff+Cy3zzpFKz6ri2ZRz
-	 vNlFxifeRylcA==
+	b=W3jmgxmjb5NsMB8nfzuMsp69890MkKukIXm/8fmi/oAu9/3CXkSuiXwt6PDYr0gZf
+	 7fZ75Myat0x/3+Qgzk5m718sTFdDuSv+vQKMSlrXX5rtosbKcHZ6p66XoWH0KBNQz4
+	 Mx39vjSDGQkzTkbLelRE2IvPFwZDZWQJIeJFo5tGEF0DcqEXfNVppjoXLU8wUk41Qj
+	 IN1Hynk2iSKbZyrz7+rbQsGOv960XvAHG1pEJ5lXeNUa2ObV+UdIF0g6P1mzkSBRqa
+	 2a0VvJrHZenwNu8kYf5JBAb+BaCTYppN0dzLpVPwU8MXCysmCUsbsFdTIdwW4YtxWf
+	 YgwsXKhj6cm4A==
 From: SeongJae Park <sj@kernel.org>
-To: Luiz Capitulino <luizcap@redhat.com>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
 	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] selftests/mm: run_vmtests.sh: fix destructive tests invocation
-Date: Mon, 27 Apr 2026 17:17:08 -0700
-Message-ID: <20260428001709.112783-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 00/19] mm/damon: introduce data attributes monitoring
+Date: Mon, 27 Apr 2026 17:33:11 -0700
+Message-ID: <20260428003312.113061-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <214fd9e4-5398-4c26-859e-c982c2e277c3@redhat.com>
+In-Reply-To: <14036b07-413e-4dcd-a363-e7f834d85da3@huawei-partners.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rxbi9imx7e9rek11iofabeugigtuesw6
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1A1AD4000C
+X-Stat-Signature: wyo14mf95ugj86rs57fjzcyr77k3zgin
 X-Rspam-User: 
-X-HE-Tag: 1777335439-307199
-X-HE-Meta: U2FsdGVkX18JF3IG4+KzjTUBSeCnEJLMA+u1mVIgDNz4oyBXTitEpr/6pNjigVGTh2tWS7SL0cHEJO9awd/JYJThPyY0nXI5raza0Eg/IoOOO7e3RQ0jONUG8F/uu4EGPUKrr5MFuNRp8omlgwkX3UMgClZbnQf/opzV2PwCc+wbREkdYqTnvPZ88lYRLV28oXJzN+rh5Y/QOzYFJVwaYRmwvxPe3osyjINYQkx97lBC5GkEcTbJSAi6LW4VhDECo5V7MwWK5Qk5u8B4j5ggkVGBgSZB06TGhza/P4a4mi4+M62fK7OQk6eM3Jpdig2HW0+wa0Al4CbvDeyK1ijLjJDaCu1eMj3Pa6KRWbIzLl9LGnCQ/7HNSgwUeG33KWM2kxkP7afOJyTycfwp/YpKOEO24HMENWvLHACR9KzwUrZkXm9hQiIS6GArowUZ4FWXuaWOW4+ATxMMTmm06YlL2L6lo9dfVORIUkRdVGpcQ/ttmv8amvO6nptlGtZ4+hMSYemkHKVBpD7tH4gpvNu8GQfeiPVevIeYJtI66rsjwHCUAd9fR+vGRDLBRv9YWeapgcrasfVLG1GKjnmZO9W1A2833S0Q/YvHO0fApsS5Zj/1ED65e156uUbt/PzT9FvM5sWuIz5YDmP/RhvfjllHdiweUS2npM4K+sEU95qtIvNm4VtFwSF0YEnY22Jwn6EXKw8O/CBQ19PiKoFf10GHXNCUvg/bNv8niA5r2KleIhR0vIeakICe7Gr2uXGszvLoiw9W9xC8/fbm9ZraSoLvatItReBocI6rQuW+fR5FhwDipA59IMre5UB7qZz2LzD5AGPN8BX9M6Lgx0MwM0W+M66ynP1+yRZwRgM5uo7beqVAG5lkOX9OHO+jJJZ3x3l/la7Fo3wjP1d7hGIcNerWXq6e7yDFJOZvl/+okLa+n6pZXAxVP/EB3fO0XI8ccCq/E27eRQVKJJx9p2JS7C2
- tEdymVdN
- ufUJ2tFuVYpIDrFFzf4GoOBns7u9hilL0Pf13DXMazfx0F6OVX3IUqKKvOybkTPuhwsFdSLoDNqQ0F/OXQrQJCu6fTPnxN1UZetcRb+bbX+r74YIFf67H7SAGsEdlVj151ctPWfJfT/ucNUabImCCYOyDzDeODedfdFgonpBzVrHlVpvupBGr6B+BfzpCeA2asO3X7VlK/ZTQEML5vUBqtvp7jyL2elAmY2ofVo4zXqNidnNRRA/1iGwvOFhK6fkIChlFFEUsL6gtRYy3/3ihUtUi1yI6wlkdmqGL/7G8+dcCM8c=
+X-Rspamd-Queue-Id: E5F761C0008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777336402-526100
+X-HE-Meta: U2FsdGVkX1/N7afGPnd7PtEwbLkFMUL69WvKHnYFR/+2MNDoTeEW4ChGbuUEhPOJoKhbu+NLmz8sEZ0Q7So1QB+See3UGXeLTRdO/25Y6ta/W1GGbq2Cwe5AaGeG8+Cgv0NEZ3Sd0ycKMiJ9Qfa99QcS0CeM+iaTVAy6EJHb8ObzydewkTRC2HC1eb9sETUSzVG89hQgCPosvi1tz779H7QZ2cBlLQR8HTpcTZh/sTRZKxqsCt2d+MVKVH9cn3xCDYcRi3DJM/oWPUKCuc7zjMR69cL4tO4nx6SXjWrzUDYjWGI/cqU3g//X4EosBaaWQQCNsUmHeo+g4Tq14DhkFgOyiiw2mwnkSpETpPkXdW4HqxSx1ZQIwWHitCySKuDqABmTkORZCSIBJDWtL1wKuvdXlmu7sxHUC/r7tnQkLiw7VayiCKgkOqAA1koUy6TMgIHKhpwv/5KvF+nmW/PfLmnfOBKfDgf4dkAJx+OlqTNi77B8pJyS9AKaIGNSTFrk8zD+KdId4ohjSMvr9TSSPHG2HB2BvicVY8oBRBCJoa8YTqmmQeJMHutmskmz6ZX6hbkQ/XlP0pftlHuZF01fxaRAdk+zSj6Lctf8p+cmmOBYXZCMHiOgHmUoCHoZp1UibqdrAMB5q/VCybbqPvp1L+E+TbyeFOJCKuojP6v6dnkgrA0M4gBuH14rpfmdI1l+Y/S+Bi+G5J3nZUK7lu1XEkgvErRVPyCST06wSRbvYnA/KPzLYV5prdpHluhkNGi0vfFG3cimdE/SmkcggyqF1PCj8b2CCxdUsslb6z1MWbKT8LeDO3wbWbKC1EBeWVoSJlCU+YTq8kILbqgcU/M4tcu7QyqaCzeRIc0F2LV+bTFofTrODYpjgEFeTq7GrchTttYqPnihamj5XZinPBCkZnT/vRdYsa0VuNKy9ItcHPycneUSPQtTGU6bSRqv5P+Rx/33wfJrvgQMiHG3dKI
+ tkrd8nuq
+ R1tfUUHbNnSLiRIn0FhVlwZWBmqI/BehyKXWKMpENIrvAY2TGAhv3m47SMMB/izMavJ2uaod5cL65cjsnMNgUfo0+e4icbayvRICb6+OMuYCa2JMyX2LhGyXGiGraa6f2EctqdOm+kUls2lEruJ4V0GsJNZ7UIBijw7xCaQK04keYtWXf/C1I4KN0qrnG2SkMaOt8C2RUewNtKhDtebyD8rlguLg0d8VyURebL4keA52VfIRmnkQZ6DlW9tGON4Q9+RrrLo2fMpr0FQxsBngH38bX+8jVwGwj72Qg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,18 +109,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Apr 2026 12:03:51 -0400 Luiz Capitulino <luizcap@redhat.com> wrote:
+On Mon, 27 Apr 2026 16:16:07 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-> Destructive tests should be invocated with -d command-line option, but
-> this won't work today since 'd' is missing in getopts command-line. This
-> commit fixes it.
+> Hi SeonJae,
+> 
+> On 4/26/2026 11:52 PM, SeongJae Park wrote:
+> > TL; DR
+> > ======
+> > 
+> > Extend DAMON for monitoring general data attributes other than accesses.
+> > This is for enabling light-weight page type (e.g., belonging cgroup)
+> > aware monitoring in short term.  In long term, this will help extending
+> > DAMON for multiple access events capture primitives (e.g., page faults
+> > and PMU) and eventually pivotting DAMON to a "Data Attributes Monitoring
+> > and Operations eNgine" in long term.
+> 
+> Very interesting. Looking forward to seeing this in upstream.
 
-Nice catch!
+Thank you!
+
+[...]
+> My main concern is about potential pollution of sysfs. DAMON is already
+> complex to set up, with a lot of knobs. Adding more configuration options
+> may make admin's job more complex.
+
+You are right, ther are a lot of knobs for DAMON.  Nevertheless, each knob is
+simple and independent, so easy to scale.  We also provide user-space tool for
+users who still want to use DAMON in highly customized way, and DAMON modules
+for users who want common purpose usage of DAMON with minimum tunable knobs.
+
+I believe the beginning part of DAMON usage document [2] is explaining this
+point.
+
+FWIW, I'm also working on DAMON-X [1] for making the modules based appraoch
+just works for more use cases.
 
 > 
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+> Do you plan to support this extension in damo user space?
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Yes, I will!
+
+[1] https://lore.kernel.org/linux-mm/20260307210250.204245-1-sj@kernel.org/
+[2] Documentation/admin-guide/mm/damon/usage.rst
 
 
 Thanks,
