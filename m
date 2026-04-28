@@ -4,78 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1C24FF8868
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 10:07:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E0FFF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 10:08:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25FB46B008A; Tue, 28 Apr 2026 06:07:43 -0400 (EDT)
+	id AC8366B008A; Tue, 28 Apr 2026 06:08:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E93B6B0093; Tue, 28 Apr 2026 06:07:43 -0400 (EDT)
+	id A4F736B0093; Tue, 28 Apr 2026 06:08:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D84D6B0095; Tue, 28 Apr 2026 06:07:43 -0400 (EDT)
+	id 93DF76B0095; Tue, 28 Apr 2026 06:08:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB1AA6B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:07:42 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 99892140542
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:07:42 +0000 (UTC)
-X-FDA: 84707537964.12.F3388D1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E701120006
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:07:40 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NY22Njy5;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 824116B008A
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:08:12 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 308388BDA8
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:08:12 +0000 (UTC)
+X-FDA: 84707539224.16.90B9B77
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 57382140005
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:08:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UpkOmwTX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777370890; a=rsa-sha256;
+	cv=none;
+	b=NiaMVpQ7RncVtHbHPWS+WW9j1Ao/nz1FSCHBSnCT0vidmE5igBoBItAQiOyajIF6IbUNzq
+	ez+Py6kcorFHi9UpOM02vFOJzO1DHYaLwOTEC73fzbNcHEdIbIwQbOUo8w0Rk3DpzZwt/c
+	r7q5GP2HSWdGO2ucCklaWLY5SZS11ac=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UpkOmwTX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777370860;
+	s=arc-20220608; t=1777370890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RR7FfFkP/gfr2MBST/nZx797sxi+R24IgrKvn1/Vtbc=;
-	b=RChSXZX22EPxamQEkm36I44aIkm0jdut0rt+pq+c7b9RCiedDmZ94leDsxaGQKgL1+1/k3
-	u2s7o943vv6lh5dnU11e8FdeekaxWFzRasoP/1K/xeqqGP4MzDkvnd34arYBqTRr/7iXMC
-	eV1V29J5+QA/0MF1QoKibxecT3/nzxw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NY22Njy5;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777370860; a=rsa-sha256;
-	cv=none;
-	b=oIFpmwCWhZDW446n2O6FajOgPRtzBoqkZeORI73cpcEoxn3uo1volQ+xT4BtOlQ/kFEXfU
-	8Nn09KDzwAeodD57r9P33KBVSpFWLp7kbWjPDGMKrJxnsWkx8SBBO6rWheNA6S5dG1stCn
-	d3LXOXyHB+KQbaMkQI5WuwlNvLl1Q9A=
+	bh=UvVQdBAVjavdwvLpAjpIewXRTyTR+mkiHWdkSiWTP5s=;
+	b=Hd+wxdBLMF4gAhkCXFNocWT+sKZfSDBziCA7AxtoOiYbQMgGdJAcXnPFpi4Xe4xttbEp+D
+	Bo5Pe2IvK9WfJzfOMc6LDMpeD7d+8M8fcFQcvOx/Fr6dAz4D1Gq5S2S5SpLvEvW5x0/6bq
+	WxrrZ5vVKecvHChOUlHMTCWn2mmrZzM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C5DA60141;
-	Tue, 28 Apr 2026 10:07:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB894C2BCAF;
-	Tue, 28 Apr 2026 10:07:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 58D4942A5C;
+	Tue, 28 Apr 2026 10:08:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4186DC2BCAF;
+	Tue, 28 Apr 2026 10:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777370860;
-	bh=we5RUTtK9BBrAx6WOi8PWHN82eXXZYUIrgpPPhKr5yc=;
+	s=k20201202; t=1777370889;
+	bh=8yvkGGRtIy0oyO/syDglzFwyey/iXlrN4D86Bw334v4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NY22Njy5Q5KdvpVPewa/YRTnvi9owrLVBDACvvAwqjrcc1inXnRJDvTYNfJ/CaPMi
-	 g+soSXkNpHK32TgY2YDOWww6Rs26KRPvQ07I0q/oxo/6LvZMGGvulfak5zAN1wMEDy
-	 6ZxxnJM6e9PbiYw/xnqDeC3PR3ZewkC35mIfglVmPXg7D5aveR50qIrifvuTMCdA+4
-	 EFUM0r6WkaNO28Tt9WtaMmV+lkJKLc+jfB/SVTqRf5oW1Qpo863r78sYuVTECQ6NHb
-	 J014Du9XlPcz/YhNcBy0ZrImxZbXYo5S4Fh7Y+xDJ+/sDQW0ZEPAlEz2yO8fPiDC5E
-	 i3gOAZnWEsCqw==
-Message-ID: <5b1defae-fa59-4088-96cd-d769ad475907@kernel.org>
-Date: Tue, 28 Apr 2026 12:07:35 +0200
+	b=UpkOmwTXJV7cTvfePw0uw8QhiMjqCBnMCUUBagR0jg4u62hHPYwu+E1BN7hLN/sRe
+	 dC6kecqF72vK9j98ol2MbRpk8OEXOTZIP1UgDiWcYcHdcAtSE1KvvowKXRq1PsJEO3
+	 9VYRT5LeFoICdsXCRkl21cKGbweEbITslxPtj6GDarQEbbTV+G2nZ6jTLoyGQeUnV0
+	 NlzPMuHxjCDZvwvVTWMos3G4OgdkuJgnKaUf7KGazZXHWvmYHpkDzmabQQQikV6uLS
+	 vP+R8ad0n/ookQmqfbg0gP/y8ZwQxKN6chraoEEFG8ZCiyjCCJBY2YGEOyusZCLDqG
+	 jwIo5P/bVv7Fw==
+Message-ID: <efcdb62c-54e9-4806-87a2-5729e3c1506d@kernel.org>
+Date: Tue, 28 Apr 2026 12:08:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] selftests/mm: khugepaged: initialize file contents via
- mmap
-To: Vineet Agarwal <agarwal.vineet2006@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, shuah@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <3abf09d8-a98e-4f1b-b8d9-77879a8a2733@kernel.org>
- <20260428100058.62554-1-agarwal.vineet2006@gmail.com>
+Subject: Re: [PATCH] mm/huge_memory: Fix outdated comment about freeing
+ subpages in __folio_split
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Youngjun Park <youngjun.park@lge.com>
+References: <20260423034917.8234-1-baohua@kernel.org>
+ <ec08f25f-1049-4fbd-8a87-0df135a867be@kernel.org>
+ <CAGsJ_4wn=o5ZCNPGguCCk=19iYZr1V9Jup0NdRUKXySsKfD_4g@mail.gmail.com>
+ <17a3bc38-0d97-4316-b2fb-02a91202c504@kernel.org>
+ <CAGsJ_4y6_G5BPZKs3Mg3s2ygxGh1o22GX_3wEsM5hs7WX_cOhQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260428100058.62554-1-agarwal.vineet2006@gmail.com>
+In-Reply-To: <CAGsJ_4y6_G5BPZKs3Mg3s2ygxGh1o22GX_3wEsM5hs7WX_cOhQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 94ir4rmtz4w4t8jebsp1kbfap88wkke9
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E701120006
-X-Stat-Signature: itkkcnn6ie3skd775m9b1qwacmhoo7hg
-X-HE-Tag: 1777370860-210025
-X-HE-Meta: U2FsdGVkX1+k4j5yd8/TNw7VxCNNa0HxKXOpYtwp+1S8C3NEQGLDjZ8kEgqiymhBHNOfJ5IJXbR8vvv5YKo7GXmL0YFEq8dCnYmmhBmqWP3NKgjztI2lrIOFBQSbX9KHaPAaPBRnobzylpzzOaqEWBC3xnHW2oa0hreqES5y+Gusc3iK2iQgFhZ0ceAMfvB/ndAKYe/vY7D3NTBQFPDO/cLg6xCtqhypz0HN+4eUMsS2bMn3LFRWtfwF1z/4O7BVEpRc2b3WW3GE7QVTUoCxWroEzL/xJKzXDAjlYHjE94zBzV+SvgWzHSeVUmALWxCtxLhPrbwjDzO8cqKTOf4FcMSroB4C5927jGH0Nj1W4nUEB282+xpe5kqycYAJfUTsuixaf09Bl3Fl9wEyiLsYFajJlP7neSWqZlPDPe42bpK+Sb7JNiQVu+upsvaLwiGnaxAFmrNosIvKclmi8FOIISW5Yiv4AzZi5TvFaEqhUeF81DLd2BhUkUHaFU95FvIxVfOsDoX9+WZ6WhNIPFZHQL7ZDrAnYIu0paPD/kq6cFwpJrP+kC7kyZyItGo764QdUjC5yabA+9KC8ogjaAyG6Bull6wjr8Z151T1Am9bs+Vi5uvcQzl4GKg323B8v9aXuTFCzfAd8Zq8ix67RWKqgy2VzhRc/5/BgyVIRCT9BVburRjY5MkYOqNWqB+6iSATlzz1Ywjl3dITLnjcgCKiAqosuW2UXxQYfVuSU5NygGcu5qCMKO2ib3aCWXjWCrMrN8PHtVk7ikHX7zPMuctCyF+uH4JP23qoqF7C95WU2pObhhd2MyHm3RCnf3/O7m6E+8nVCVgMPrWSX4Nf6sgcxrL058zZp/h4Ym2DH/8UkiGxLNdY5RAK9M7C08i6qz+yGAQr4MARIZW/SBQkUtQndaXlsXcq3cthOB8+QtJMtouoc9miBrgiYypTQN1KHvOYAqJmPHr7Mf9cf/Y1oaZ
- ykKzfpix
- E+qBkED3oC9lSjrFOWshx+tcc6f86q0JpD8dyrx5DBmq120XpjqRbkFlqsZV5iMunXiN5QmgZl2HkdgkWOUrapANecb3edgyqqV+hg6ZsMH+9jZcqZXW+yGEHhfKWxnjn6g6xquFic+H/EaA8Do5KhxZRKbJlelTUwN6ymq00s/C212AH4+FwMLFRFx88hxBCpt72CByCEvxD79nGqFZiJIHj0lkMd2pcv4lPOuu6TEBwwuZi/4btFQ8JfOmtzrSv3OTSs4HWb/rXphIrqaHcbpAxtQB4qgXFd34wm+6TvcIrfgBo7IqhJzfIEG+j1wiR1eGMlONns8UO9mFn/1eo+kYnnnGvvwaMUsxZ
+X-Rspamd-Queue-Id: 57382140005
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777370890-865901
+X-HE-Meta: U2FsdGVkX18ud9ouiYInqPiTdai6e7YddgyElBGwcEtkpLXVPjWWZxAouYzmkEgfg+sCQ0WdVgjIeWS1RPpriGOJKNR4KtmigOGMVRLJALmvvOGDtNIWDlzPyitSJCKXhHTl6nrTCAnLs9HgJr4xokQ6qhGUfsZFXKMCjgBvgegbRaozMbiLR5zrgBNwxSMz+4zJTrdSq8QuNlnq35xpnjXXfljwaM8kjp7jFQUkAI9t2N+dAdyy97uSk+UmDSnZTmaFc8UubdWY66F4LwjPpkvcO2Q8fZfiaAqxHm1v8OvZwBibyuUHnQX76NiIwe8hKkVm+Rohjgj8FYGgo4LMhH/TjnFHCY063G+iNL6KAXJwFkQ2Rysm7doovH9D4br2y7KTIElT+/G/LvHjDKsblfPP6P00/XFm+cHMG0tEvjOqKi3tJKtF1gDYEF/RUYBSn7bZEowKzb2jieOKWl7uc/Wx9m8JO3suTUbHqFvSBYRYohhfyDktoiL5fgc7PXvSTV2UF/ucQcCJX6cvSkZZIlGyZCx4PgdJCGOrO9BDknEc0YA7x1RD0mAASKHjcd3/z6Yk5NOWxAvU86yr3aAo2y9k3ioiqolqmNrABP6Y/onhwr+TMrCgL23F32Rj42+l7gJDtqHDZsQjbneCvXJouzqmS/Qxst6WsVSklbxmgl6OtA7l/4bABK3YwV9JEuT+QAVNCZCZYIQsdFGinzfTD6uSYJH2GroPSG//CBQ72t7O2e3WvJM6g3upW6AoSNU96pyaM7buFvPCGBPkv54QDd3GVpAqcaSCSzkJIhxRpkshPZyAJAGUrnq8FhlojLYpnOJA1dRSxTydvp5aYZ7PhWns/RoQOkLSbvYYMzchZIAGyHWET7TLcbYwJe2362aBlfibY5Sbuw2ff9QYvIql1GXUaoDGVrHuC2rT4k8QMmLBq0qofjj3yh/UJtghMqxfs8MdK/VZVPj4A5mnL7f
+ 2hWPdQto
+ fqlxjEYQy5v2rktavO7r+oVWYXmMaPnXHfZsZ06eb/XGlXiF9UP3qs2OEAdX8YQupcO8omxEdM7t/IXOmN1jWliUPCHQyj1FXQRZdw1o8wOkZkEyXFiTlTRCv4PK0Au4xs6XLRxYSdy8bPTcwSxTVv2saIwo8ZYdpOJNAqlKhT2rbunh7LxT1IGcab7g3J+wIkeIgfthHogEQjaq3k91nxPtKueLRf5zLm75cljrB+5pZo4p3Te8haaVbRx2KH1Gs01rA/8zFAFlHdo6gOBUnTsRYBWzDZqxIHyLemxuhDYeFlWNo7j9t9aPC4VbIPdlO04ShLaCStWaEmrVzkvGWcmQmXRKNAq/yf0Xs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,71 +149,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/28/26 12:00, Vineet Agarwal wrote:
-> file_setup_area() currently allocates anonymous memory, fills it,
-> and writes it into the backing file used for collapse testing.
+On 4/28/26 12:05, Barry Song wrote:
+> On Mon, Apr 27, 2026 at 3:42 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 4/26/26 22:42, Barry Song wrote:
+>>> On Thu, Apr 23, 2026 at 8:36 PM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
+>>>
+>>> Thanks, david! would it make more sense to add “when
+>>> CONFIG_PAGE_MAPCOUNT is enabled” at the end of the
+>>> sentence?
+>>
+>> Better to phrase it in a way that doesn't even require these details :)
+>>
+>> Do we even need this detail in the patch description?
 > 
-> Instead of copying data through write(), resize the file with
-> ftruncate(), map it directly with MAP_SHARED, and initialize the
-> mapped area in place.
+> What about:
 > 
-> This simplifies the setup path and avoids the need for explicit
-> partial write handling.
+> The comment appears to be outdated. add_to_swap() no longer exists,
+> and the explanation of why we need to call put_page() after
+> splitting could be made more general.
 
-
-Please
-
-a) Wait a bit longer before you resend.
-
-b) Don't send as reply to earlier revisions.
-
-> 
-> Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-> ---
->  tools/testing/selftests/mm/khugepaged.c | 17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 3fe7ef04ac62..57ca4224bd5a 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -369,7 +369,6 @@ static void *file_setup_area(int nr_hpages)
->  	int fd;
->  	void *p;
->  	unsigned long size;
-> -
-
-Unrelated change.
-
->  	unlink(finfo.path);  /* Cleanup from previous failed tests */
->  	printf("Creating %s for collapse%s...", finfo.path,
->  	       finfo.type == VMA_SHMEM ? " (tmpfs)" : "");
-> @@ -381,11 +380,21 @@ static void *file_setup_area(int nr_hpages)
->  	}
->  
->  	size = nr_hpages * hpage_pmd_size;
-> -	p = alloc_mapping(nr_hpages);
-> +	if (ftruncate(fd, size)) {
-> +		perror("ftruncate()");
-> +		close(fd);
-> +		exit(EXIT_FAILURE);
-> +	}
-> +	p = mmap(BASE_ADDR, size, PROT_READ | PROT_WRITE,
-> +		MAP_SHARED, fd, 0);
-> +	if (p == MAP_FAILED || p != BASE_ADDR) {
-> +		perror("mmap()");
-> +		close(fd);
-> +		exit(EXIT_FAILURE);
-> +	}
->  	fill_memory(p, 0, size);
-> -	write(fd, p, size);
-> -	close(fd);
->  	munmap(p, size);
-> +	close(fd);
-
-That change is not strictly required. We can munmap() after close().
-
-Apart from that LGTM.
+Jup :)
 
 -- 
 Cheers,
