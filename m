@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B1C9FF885A
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B676FF8875
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 23:35:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7697E6B0108; Tue, 28 Apr 2026 19:35:11 -0400 (EDT)
+	id 82C7E6B010A; Tue, 28 Apr 2026 19:35:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71A2B6B010A; Tue, 28 Apr 2026 19:35:11 -0400 (EDT)
+	id 7DD856B010C; Tue, 28 Apr 2026 19:35:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 608E86B010B; Tue, 28 Apr 2026 19:35:11 -0400 (EDT)
+	id 6CC6F6B010D; Tue, 28 Apr 2026 19:35:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 491006B0108
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:35:11 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF31E1C1241
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:43 +0000 (UTC)
-X-FDA: 84709548966.17.443098D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5777F6B010A
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:35:16 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E46311C16B7
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:42 +0000 (UTC)
+X-FDA: 84709548924.22.DEB774D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C8CE940003
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HcXbivY7;
-	spf=pass (imf27.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8F1B610000F
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:25:40 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L4evB6Kh;
+	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777418741;
+	s=arc-20220608; t=1777418740;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VEJ5aY8O09MpG7oLrzrjujBlbJBcdaeNzbyKlRHgc4o=;
-	b=laqvSb5+pLV+9K13R8t8v9SVK2EHR1VhMbb1MEgfWlDoEczuwbZxxgS+7QRap6APxvXjmi
-	aZDAQyhm5DaFBBSSDg0b5gBzzRZwRD6LwzTj2E9UYCdo4v7cfqt7uRfljynLdgEyrJzgJp
-	UErp1qnKJaYn8VemG/TqvDaVx/Q81x0=
+	bh=kE+ggsdMpczVbWl9MwZki+R+Yc2IjdnWHD2HmRzraWM=;
+	b=n1PwdmOFg6nmhZRnx6Pzu3y/Nu/RxQosL9PMezZdQ1OR2fUyTijSVkvu1v5Gu4TfqVpji9
+	yi1zJ/SpwyDp7SFMHIK0LBR5/21sbBfMClXpDzCDwvCHdE9lW7tfJMIj6oaPGUGO7+3BbU
+	GuWT6t1nfoQIaII+fVTrOBdWFFrMzGQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HcXbivY7;
-	spf=pass (imf27.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L4evB6Kh;
+	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777418741; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777418740; a=rsa-sha256;
 	cv=none;
-	b=V1Dd1G3dNkPsZCRRp85/ZV8AIk417NWNnveMchhd6a768wqr/iedZv8Agrjfq6z1JaFwzv
-	CGdd7xS1gZD2Ew0Zo5UtjMK88UIFLm2vdeMy0P6BE7o/aTzVbAq3qiPhH9UKjZkdt/VIM5
-	/RhKaxgFYJFC622o1ApJcy7MV30RHN0=
+	b=Xhi+eFssUEL5+rMFbpo10VlZXXyfMcRfMcQzlOuDGGU1kupg/yy9boob+wRtMovfkShXlP
+	V+W6WpTopZxmkjUJP1bLdkWbfvD+vqZEwmG0TBkbjglTumeQ3xsFNLv4shOfY7IAu1c3ZV
+	belBq34BwjRBi6uIL60QHDMbsjL2hzQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1049F444EC;
-	Tue, 28 Apr 2026 23:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DDA05C2BCF5;
+	by sea.source.kernel.org (Postfix) with ESMTP id F118544B2C;
+	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CB638C2BCB7;
 	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777418720;
-	bh=Vgze5D+bN0AcyWszSG1YlA0S2f1gEtod7TQDybNpW/k=;
+	bh=fi5qoarFijE2lWp5XxDoESzLwDXl1eAEmD22R/fPyIs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=HcXbivY7zdv/RmF1UVmwhwUKKrjRdHI4Pitvra7t/6Sr8tS0A7tyunNzyMPwnwdRV
-	 NZJmyGLoA1nSGDuCm6QPXSuHgfTrMv36avF+EcQe/UPPrfralU+t57Ny6qFLfUJXJV
-	 7gq0aZ8pSdlm2k2tvfK34LKR5LzCkgxKmKGzU7LMxOTHJKZiHosi/JRdd8DI+fPpjK
-	 q2zE2/eTZjQMkpg7v+55vBlah5Xqtua7lNusx2XZJ5trpGKEu1yc2bMMha1J0F6wm5
-	 KC3OO4ja5fK8B+J7GV8W8GTjIoN5aRrcgcGLsNdBe8V03ZMpgInh1RPc4GckwbKFnI
-	 lhUfIiTaYjfyw==
+	b=L4evB6Khg1O5ByRuDGL14styXW8AJIiKNKNXoWZY9e310k/C1vn/SFuMfURWGVPFa
+	 gmcf5CnqjWieP74atQhouofZc1jF9je/jvHIb2aj1JJzmii3hehhvgLLnm5sj0brlu
+	 dbs1VTzi6/6YkWGIV7yKlsstePw0fGeyRcvtCTvXNaPoq9KPmTdISzS7P1goc8gLUS
+	 G8OhlMs7Y38okfdUbOYcZt5aQ31hutAwW3ekCzM/0Z+Xak0kDlDBY1XWhlNWJQqq7t
+	 gMFsCtoXPdhd8zTHv/g8h6xFzjf1B4Oex42GzYC+1o16QTkAzhBve/XweR6s1j956U
+	 AuOFKb5gEIM6A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4581FF8877;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1014FF8875;
 	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:39 -0700
-Subject: [PATCH RFC v5 44/53] KVM: selftests: Test that not specifying a
- conversion flag scrambles memory contents
+Date: Tue, 28 Apr 2026 16:25:38 -0700
+Subject: [PATCH RFC v5 43/53] KVM: selftests: Support checking that data
+ not equal expected
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-44-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-43-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -107,25 +107,25 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2091;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2851;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=Avy1yjuj5TLXjW+gFYQvsB+PRbonfW+tVbhN8u3NZik=;
- b=fb9rZViAfwmrwJD9SGoXVoob6TT9WaSRJ4Wrr/TWhXnHc57g7FFxpcP7viuqXx3r+qwjvVnmr
- KXKhGbWj4CZCYiavrYR0ULbUfm3YqEoUTcfGzy/jE7G4hkJglBe7CP0
+ bh=7gz8kf/n4ixOaF8MVfsAM6UcG2xye98XFNb81uX9/Q0=;
+ b=K0nhoHtw+bHDcFt0NTXB9H8IY5KufQrx9yXWXRDB44IJvZWG6vgqoP88UFkyWNZSvMMA4sjKx
+ IeEHazMTIeLBYKybYfkuwhPvhexJMT5hxbaymArE73yb7zsZfD59Xn1
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Stat-Signature: uhztq3qscee3djuoaberjakjhc7onnma
-X-Rspamd-Queue-Id: C8CE940003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777418741-66920
-X-HE-Meta: U2FsdGVkX19JenIuKWpcsFDKBp6Qt+NnU4w7SWNBJb5olV5CayjgK970nVF1T+QFiOQj4NVEG1siSlHuknCOD0y4oBoYEjJmwaqEVjM1LYRYkp3vCUaqIAem/v6Q0pP7XhPcIJiyfZ5pNacmcLXIi/ORA5/2325lnFuO9qSCRBtxu8TEznBnC+N4/gNGGYagYkWqd0rFFKPdm2hHdvRX5wqVyncXS6yzDCvb34t1IxOZgtiPdocwnSP93KYLuO0grhGXY3LSDyC7v4VR+sHQ8Ws04KdrMxLCjGJ/sPi42iBBxnU1drrnJZt7Nzn9bk24QLAmkU7xxriLGBMc9SnqH0Ux0kClnTxCwv16E/otiRQMcXCWiaQyXEGZgq9M5tkUQqMCRIDTJEEmlh/ltvUIeem0VlLaUmEFNdxcTKyqufapt0LF1ayqFdnIaDKAnxqvQEoQnrC0NFRTYLym7rBgoVcUzUeVH+7EV1ICWof+Xbp4OmLCcITPgAEDPJwYGu2DeKe7srt4mQF4+tdg0xHyZ/LSFlqMtDuxKE6l2H0SjB0zXGoDkikUVXgM5QRphJ/fsNroouxeJg60vBz45dOnOsetVZxqUq//IiXEyY+Us8rngIjYxswXo1q7w74Wvk7zQWJDTQitO/W4ShxfMoPlaXrwPT8ZiqzTib87P/ddGLJS6706ua93Kp9vyjRNISLzTDhxa5puqPIFSyOkBJlcQ7FJsHhEJtA2KXo7uvS0rW6mTw8rWwWVqNXoPD/6FewQgycf0Y9afIeOvkC2FVSaUrW25yMDLsI3kKj9EzkkqyBUhVcOSf8D0zSw+UwM/+iKu9T5ZY6RIs3j/dQAb+ZvlwDD9CuSJ4wpZA20TqLGvoA8oKh0FKity2ZCWgooUGb1whylGuRD0Au4YGrfoz4TbHL7wN2+V0GcpVJx8RI1Ac9a+Gn6tXZuRy1Su9u6wc5Cbpxg9LYTQLM8mUgQI1d
- SeTwqnpA
- g7/ZOVufpY+nfN6EdvTv9Mr8s4PUjsjFBznD6YCJ9TGwGYaCydat1uAadGOeV0L6ZAas2N2SR+sksixo5Q3xjSjpbR4WKVOV2SKRuIjwte9k6xCQpO5hq2wZLR53S/v7Rc6O/1iNbM7IB/5wyH1pD4QazBR37l+zHvTEAs992mRcDdWmo2mtsmFnMulePPcD4Z94/t4/xfQXcphAsoe7/vy86dHaOQXE5pNbPzZWgGX3CMiaoLYGN3z6qnegATPQyOL0Kxc31KXJb3zs+4/qv6Rr+aSyummd13UdhjljzzbaQycnL4fwyMA7rY8587QMa5Kv8N8zi5f0WqOOqRvMKO509bmWtu33TydAZJLEuUL+zf04ikmPmWJZMG0qqGqxfvWAlOEpVkP1rnWJK7FYoQMP6ZHICIqdi3W/s
+X-Rspamd-Queue-Id: 8F1B610000F
+X-Rspamd-Server: rspam06
+X-Stat-Signature: resapg8dkc9bzo9inx4a8ybexzrap3ha
+X-HE-Tag: 1777418740-751120
+X-HE-Meta: U2FsdGVkX19MIEHom+PELM0Uep4M9tqn4DWRFlHRB55MLmo7NukZQSREzxzjWQZS3Uy5Bf0HKmUWGEph6AhESShNZQ0CepvMkoQvGg+Pab9mN4Zs5isXFbvLTZ5+w0LeVHx64+mIQl9sR38o+7XX7lFdXaraenSzHkqV9K3x/pBtHr064ypqBTsnMVtRkpcI8jjUsZD8wjM22RhaM+k/Qu+GcJnVh2CH6lbWoiNvzB/hY5UAsWHovs8huUV+ab0GXvQj4oQUgrfQjUYXLzFkkxietvQETeBNwmNToIUEMlW/aI/Sc2xDdBU88AVgVhT2tcyK07W5xhjefmD9fWvrn4SA+W8PJwMWQfiDDBJPLzytXPBTxXjIrcoih895YuhJzmxxvvhf1CPl/svm6nC5sCTRSZcyqRWUsW+OH3sS1FoyJobBJ0Tnhe97AoFH8z3ruGKLhr0VllDjmiJz0UD21dfQAWUYegRmUz9ePGdbA/XOYi+Lwcf/qSPCnwvRbka284vU+IWgYvbfuA9VDTjBmbUUNRWpctdyGgQleTSYMHqWUehB92SOOxXUeHypyq7TE2UXJh7QN0UcpZRd6cRXorDs6xOYq5ddkptao1gIFmP60BrcfjnrY5/0NlfzrDB/E6m7SsHpz5W6vMB5jjgQp+pd87saKTlqbE6AbrGRF83WuAGWUDVKWk6Pc6MivEWtRHZ1pU7imKU9zNqTCJDG6xmjNqnk3CsgvaPc4Ow8BZ1lkATfwnH6wqNwaLjP/5jSDOz0skIxCYBwzE1JmjiORyYZL9ODOkCA14B8NATFjXQzr6a+1RAoONVc0xjDUWI0Snm2+npV31z0bRq9dn4fm6MNabR91Gez3iPPSjvTDJh0IeSi0wcZxO3uda17MVLMuwC8mIgoFUxDLQKXUjSxzavNTNnl8CXo3AV5LhAx5KXyj8xCE3KOTmzRP5M+N5Xhn1alNKdOKivLrIeWBLT
+ e7lFVehj
+ hgOODi9sPmiq9786yAV6/nWRVWdxMRMrUNl+0oR+52fTN7bhjjwmgmQSu3MCPgDBt0lRZTwFSeqGsBDrrOrDYUysEnAMJlwtmH+yU0GsxQPRvuAWSzbdEYhssSorm0oas9iGMahT2hVPOS4BvfPZnqCKFEuVexUWhPoP7NX5tmPjSePvut1/4+f7vNRHPrUty8Ncj7OcZZcAw+L1PvWypr7Pl1yqIPHf58Eyr9NnnmqSyehO7w4l6yY8Reu86FWlzhcQ+Gi2qvGc/pOC8KFnVNA5tFbah2WOqQl0IEN8ciHLrdaVIP9rr+qltdShJ/dJIr/ftZM53EShCO9Kip7QFn7V9ghYN9N7xka+fc3CbJctOMkrx3JJtNKny/iwEYAzH5pRf0PBEJqQjzW95WcxlPSt/q9Hin9SqpYzU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,58 +135,77 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When using KVM_SET_MEMORY_ATTRIBUTES2, not specifying flags for the ioctl
-implies no guarantees on memory contents.
-
-For KVM_X86_SW_PROTECTED_VM, this mode is implemented by scrambling
-contents of converted memory ranges. Add a test to check that the
-unspecified conversion mode was handled in KVM by checking the expected
-behavior, that existing memory contents are scrambled.
+Expand run_guest_do_rmw() to support checking that data at given pgoff is
+not equal to expected_val. This will be used in a later patch that tests
+that memory contents are scrambled.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../kvm/x86/guest_memfd_conversions_test.c         | 28 ++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ .../selftests/kvm/x86/guest_memfd_conversions_test.c    | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index 57adb6d84a053..f4705dc700879 100644
+index 922261ebaff96..57adb6d84a053 100644
 --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
 +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -512,6 +512,34 @@ GMEM_CONVERSION_TEST_INIT_SHARED(convert_to_private_does_not_support_zero)
- 	TEST_ASSERT_EQ(error_offset, start_offset);
+@@ -137,6 +137,7 @@ static void __gmem_conversions_multipage_##test(test_data_t *t, int nr_pages,	\
+ struct guest_check_data {
+ 	void *mem;
+ 	char expected_val;
++	bool assert_not_equal;
+ 	char write_val;
+ };
+ static struct guest_check_data guest_data;
+@@ -146,7 +147,13 @@ static void guest_do_rmw(void)
+ 	for (;;) {
+ 		char *mem = READ_ONCE(guest_data.mem);
+ 
+-		GUEST_ASSERT_EQ(READ_ONCE(*mem), READ_ONCE(guest_data.expected_val));
++		if (READ_ONCE(guest_data.assert_not_equal)) {
++			GUEST_ASSERT_NE(READ_ONCE(*mem),
++					READ_ONCE(guest_data.expected_val));
++		} else {
++			GUEST_ASSERT_EQ(READ_ONCE(*mem),
++					READ_ONCE(guest_data.expected_val));
++		}
+ 		WRITE_ONCE(*mem, READ_ONCE(guest_data.write_val));
+ 
+ 		GUEST_SYNC(0);
+@@ -154,13 +161,15 @@ static void guest_do_rmw(void)
  }
  
-+GMEM_CONVERSION_TEST_INIT_SHARED(convert_mode_unspecified_scrambles)
-+{
-+	loff_t error_offset = 0;
-+	int ret;
-+
-+	test_shared(t, 0, 0, 'A', 'B');
-+	ret = __gmem_set_private(t->gmem_fd, 0, nr_pages * page_size,
-+				 &error_offset, 0);
-+	TEST_ASSERT_EQ(ret, 0);
-+	TEST_ASSERT_EQ(error_offset, 0);
-+
-+	/*
-+	 * Since the content mode 0 scrambles data in memory, there is
-+	 * a small chance that this test will falsely fail when the
-+	 * scrambled value matches the initial value.
-+	 */
-+	run_guest_do_rmw(t->vcpu, 0, 'B', 'C', true);
-+
-+	ret = __gmem_set_shared(t->gmem_fd, 0, nr_pages * page_size,
-+				&error_offset, 0);
-+	TEST_ASSERT_EQ(ret, 0);
-+	TEST_ASSERT_EQ(error_offset, 0);
-+
-+	/* Same small chance of falsely failing test applies here. */
-+	TEST_ASSERT(READ_ONCE(t->mem[0]) != 'C',
-+		    "Conversion without specifying mode should scramble memory.");
-+}
-+
- int main(int argc, char *argv[])
+ static void run_guest_do_rmw(struct kvm_vcpu *vcpu, loff_t pgoff,
+-			     char expected_val, char write_val)
++			     char expected_val, char write_val,
++			     bool assert_not_equal)
  {
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
+ 	struct ucall uc;
+ 	int r;
+ 
+ 	guest_data.mem = (void *)GUEST_MEMFD_SHARING_TEST_GVA + pgoff * page_size;
+ 	guest_data.expected_val = expected_val;
++	guest_data.assert_not_equal = assert_not_equal;
+ 	guest_data.write_val = write_val;
+ 	sync_global_to_guest(vcpu->vm, guest_data);
+ 
+@@ -191,7 +200,7 @@ static void test_private(test_data_t *t, loff_t pgoff, char starting_val,
+ 			 char write_val)
+ {
+ 	TEST_EXPECT_SIGBUS(WRITE_ONCE(t->mem[pgoff * page_size], write_val));
+-	run_guest_do_rmw(t->vcpu, pgoff, starting_val, write_val);
++	run_guest_do_rmw(t->vcpu, pgoff, starting_val, write_val, false);
+ 	TEST_EXPECT_SIGBUS(READ_ONCE(t->mem[pgoff * page_size]));
+ }
+ 
+@@ -207,7 +216,7 @@ static void test_shared(test_data_t *t, loff_t pgoff, char starting_val,
+ 			char host_write_val, char write_val)
+ {
+ 	host_do_rmw(t->mem, pgoff, starting_val, host_write_val);
+-	run_guest_do_rmw(t->vcpu, pgoff, host_write_val, write_val);
++	run_guest_do_rmw(t->vcpu, pgoff, host_write_val, write_val, false);
+ 	TEST_ASSERT_EQ(READ_ONCE(t->mem[pgoff * page_size]), write_val);
+ }
+ 
 
 -- 
 2.54.0.545.g6539524ca2-goog
