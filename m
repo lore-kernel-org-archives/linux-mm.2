@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DB12FF8864
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 03:07:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66709FF8867
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 03:17:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62C636B0093; Mon, 27 Apr 2026 23:07:52 -0400 (EDT)
+	id 6FD246B0088; Mon, 27 Apr 2026 23:17:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DCE56B0095; Mon, 27 Apr 2026 23:07:52 -0400 (EDT)
+	id 6D4D66B008A; Mon, 27 Apr 2026 23:17:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CFEA6B0096; Mon, 27 Apr 2026 23:07:52 -0400 (EDT)
+	id 5EAB86B008C; Mon, 27 Apr 2026 23:17:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BD186B0093
-	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:07:52 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B74C6403DE
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:07:51 +0000 (UTC)
-X-FDA: 84706479942.14.3E47F77
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 06699140002
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:07:49 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="C/5E07o5";
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EEA56B0088
+	for <linux-mm@kvack.org>; Mon, 27 Apr 2026 23:17:06 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 833DA8B864
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:17:05 +0000 (UTC)
+X-FDA: 84706503210.23.29F44F7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B83AC40006
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:17:03 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JA+GnZnt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777346223; a=rsa-sha256;
+	cv=none;
+	b=DGSa6LogL+ThzfVXYKj47J9A37glu9QeEZZszoqoAUjLNHESw/ESt+PU1cAKOJTsHDuTAe
+	ezcANVpU5YzLYNpQp7Ps0dnVty/XnnSU2LGyBPSAOTqlIocGm8I5+nE+QLr8WkP+FqQqL+
+	ek4cvEi3Am1ALZlNzKLgN3nZhbbhjUw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JA+GnZnt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777345670;
+	s=arc-20220608; t=1777346223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2vXopIJ6bPk662tpRo3Ap6e3dMCysOxObD7QwuYgogQ=;
-	b=iEGcV3AyX8TeSceAKHwVg4YpyWnUdRnz0BMEiLw73jBmT8uzdnzAn7ZQp/dk7td6LIKDjZ
-	yt5rIgUehzdZlega1NJDoUHh99p5VEar3AcwW3HJ4PQZyhTyUtd91vFo5Os74IyCP0hdo8
-	EzPgiCyCQ6Aih6ndNcistuMvSWWryAs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="C/5E07o5";
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777345670; a=rsa-sha256;
-	cv=none;
-	b=h7Mrn5jvTKfl53OHRWGOg8e13/jHpdskUH/0r8IYHOpGfZ4L4gdbRKCQRTxGdegmyLUhIE
-	Oiw25LiuoptnVKiK3GQvtIFFt6SO49wuyWK0wGoK2K3O2udHIDT7GOVZz1yW7m0AySxd3I
-	mZaPZR7yb8vBXo1CDY6RjJEJ1/oq0wU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777345668;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2vXopIJ6bPk662tpRo3Ap6e3dMCysOxObD7QwuYgogQ=;
-	b=C/5E07o5KiPNvUDDPwfcoQfRHgs0MPRxYOsiz1uT98cUtj9eTQ+M0ttLj5Kxz2Dgtk4gwp
-	RRX23JimIv/ai2vaf6MzFF3Ay9b+EfH+GUA/vJT9zukxqblzZr0ooQUNluCSyBPA41EZmj
-	Kxm64LA+1MLQkxlloBVSIsdmz+xsQYA=
-From: Lance Yang <lance.yang@linux.dev>
-To: leitao@debian.org,
-	david@kernel.org
-Cc: linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v5 2/4] mm/memory-failure: add panic option for unrecoverable pages
-Date: Tue, 28 Apr 2026 11:07:21 +0800
-Message-Id: <20260428030721.51274-1-lance.yang@linux.dev>
-In-Reply-To: <9d365395-051a-436b-9017-352ebc889770@kernel.org>
-References: <9d365395-051a-436b-9017-352ebc889770@kernel.org>
+	bh=qTEZ1HZ1PdRHfsgQndRbtsh7bY4hkpV65+GmJp+lBmM=;
+	b=L69aDffjUkjW3MOJv8sFXp1/XFdk75R1nQakQXeXUrC/rPiTrXTi+NaRx7pa/ILJVud+Zx
+	qH1s64qevcto0OP5MAPMduzL0N2R8uZXDTGptpmZhDKivdnuTtzJ9qAk6mQovxioM5b6dk
+	LpQP4ro7DXWnKLj4abZFbxBnBt3dK1E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D7D9B60128
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:17:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85236C2BCAF
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:17:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777346222;
+	bh=wyw3V0ckGkRkNnb1F5GXlIGScC5WOYDuhH9iKbweEj8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=JA+GnZntI++ywISl//G2he7Sf6z4XhwDvYfIeWytJMGDUtt7AFq+ATNvlKhxKoe8B
+	 Q20DQweR0Sr0ZJ/FxFjdTPFak1zI9cbIUbNCLTIxkttzgPPRtx3RJp79PXJwd3vL/c
+	 WWnuQdXVIPE+1onllLCsElsUI0Zsr9l4Hoywtd5DQTDQ0txmMSLYbc/56wCuAzTjWm
+	 HBza8zLJfWcprz+RsA8HMPPbMgglwSyCzG9lOoCzKxdmtlbcu06d969/CT0MIXg/hm
+	 UAK5MEjflfvIQRmB1NG1cGO9gHmoP88eqUJXWY8rex6dcUOfnX48s/mXh6vcbuWptP
+	 j3pD/8Efe0d2g==
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8a08fa355a1so160094266d6.0
+        for <linux-mm@kvack.org>; Mon, 27 Apr 2026 20:17:02 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyJRUGLQ90c9+zcrPCIUxOiDtvCxf1NfSiSxM7VOzVs7fibLcWJ
+	QGO7/ZRYLbcghGbQmO2tD3n95hR9hWR3JqylLHUHS5P12ittLyzXgYY704GXifrmnobfCO6IzV1
+	gaBoKPnkUNPYM6k8uTw8djHFbCVrXSE8=
+X-Received: by 2002:a05:6214:4a02:b0:8ac:a6f7:8a70 with SMTP id
+ 6a1803df08f44-8b3e306a5a9mr25772956d6.22.1777346221843; Mon, 27 Apr 2026
+ 20:17:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 3h63qnhusn84hd3epcaps39pn41nfubn
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 06699140002
+References: <20260408025115.27368-1-baohua@kernel.org> <fb022a6f-0faf-4742-8934-8a7ffae806f6@arm.com>
+In-Reply-To: <fb022a6f-0faf-4742-8934-8a7ffae806f6@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 28 Apr 2026 11:16:49 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zwrsrKt5NiuN-rYCqJiyjNdv=UssLuf8VCu8xZ+5sohA@mail.gmail.com>
+X-Gm-Features: AVHnY4KKjM_yWoA3CDFUcrhYL1bvm0dmk8-MpHN_PetdZebPEYEa2kPDHJNVQVA
+Message-ID: <CAGsJ_4zwrsrKt5NiuN-rYCqJiyjNdv=UssLuf8VCu8xZ+5sohA@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/8] mm/vmalloc: Speed up ioremap, vmalloc and vmap
+ with contiguous memory
+To: Dev Jain <dev.jain@arm.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
+	urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com, 
+	ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org, 
+	Xueyuan.chen21@gmail.com, jiangwenxiaomi@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 78ck594wr7mqjc558kd4k61hngjfsx66
 X-Rspam-User: 
-X-HE-Tag: 1777345669-346481
-X-HE-Meta: U2FsdGVkX18lbKTyxNipPA6MQwZtTdrjD8aDXm30YfeTiUmhS3X1vLOD07dEiaj9HKh0J7Z0Tg3zeCUXNNnrXrHQOvOK9g0zPiYpoov7aSYQHCi0sriwXpII47UDZjkt3eY+99+b9tsu3YzeaG7yoClvSQckSr3aconATnBWolk3joJhWCVek6YtO+cKfTA3ABzqrEDQAIPGn+nlYfykjzDgqfzx9AWgWLzZDVBt0Uwbuvo1NFk2b4r8usJA5kpYzEgnhTV1rSGX2LrW6zTJQ+MuR7Zs5B5AwM0BMm8VgHAHQJmoTt4J7/gNCLGG77C0si38T/TMREG/s6poiNxjbit57OiZxzsRqI7sheL6KMe9ImLhTx8B3XJCGURI+AbpfmCInpc6xFyYKis8Ept14YUz5maDMVo/dHjpPoxGvfVY3y9axK90eqIEYtOcRrJmZLWMUd3+gE7k2Kbu0FCFP2al40fIjXhRV2St44sz1JPkvGrh5oZcRIMgqIdLfNEtHCVFlfgdeLqM4zTd6wEYR3bbh4lxyhfSXzry9AA4aMVhShavJnM4CJrV9bvtD0nIc2qFmS59aLOd0ohkeB2lMJRULdq81GZmPeLSUY/1z99WXn7Dn6wpSdPE+THz98evRfJaTEpU6uzU0LkjXccbtA8NhNeYdsn6OFu3iJywZCC9P3G0GJr6BSIt54zP/qTEJM0OYq5taFOxqmyI92BKWmYlhk+cQ7HzsO9wezrkCKPDUpJulApVVgkkimCVRUum0KJ5kjAPioJJxDTAYm1no2IEns0wAr0+wgpwUmyFqLmoceIVSxw+okhu8kGNxXY9m63qzHQhVVgJPqS3n4l2j8f7T5xIjDjdUaZd9/eWE/gjDGnEQq2fJj2Dj/58Xu0cIe22H6AwftZuh5XcO6icr7Koj+FWznDGkxaeN2Aen3+QoSB3Qrzb6pdKYd59mTrhVkuKrhJnOr+gD1TNKFq
- Bsem95IJ
- M2h4LRm79egbdlYMXYGYAL7jrihUeGCqcei8XJkVSFRhScw8Z3QBIG4PvNjF06cyBd0p1EQ1CwrIoitU8DRryv9nQqRrpKDcrZhHjadWa++xmAa4Tav0YnazhJXPOsNMpxYtjWg6P/hplC0sfDiSUSuM3A81P9mGPd+TMDO9FlPC4IHNbabKGjVs3KwH95Ytgz+kwt6Z7SF3OHwpbbW74BNG4YwOcwN18mGIbnEpJgYvT8Yl2x9eaZvIkpoczn4ERL1Wg2n48oEBgps4vrL/FQPGEPw==
+X-Rspamd-Queue-Id: B83AC40006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777346223-120470
+X-HE-Meta: U2FsdGVkX19ZwdzDfKH/zmY17H5zxENSJTY0KLLkf/ebzeh7VVacNxPF0cy4LdSb2Ts3NF0xHzphf1uw4dlH6BO/dmhVMvTP0ouyGY9eOTzGvxie30/h6Ent71LI/sv2K4d4NNHJUK/cwf3MPMTlyNS5Dcpz1V9WzF3qf58Hk/15hVdcNblT3CPVvLrX4Aj22MAuQQIjZz2jN9ZLjhfNChxGcsMwP7RwgBLTF4vXHi68R/qHM/5coybtIc8XZwpQhraHoIvKxyFlcmogv/ER1P5lpsc68A+EQ1MPuX16Mty43f6cGncfBqTiriis4EZ1C63IGH9zT6jdZMeeGDe7IM/7hGmp7YOxDEChg29e0SJ9s4gLGx0zUfrUXLaLGj1z6e9+Ixp9m5U2wLEn8pVTzSqDazjAaT91462Eff1BkKgh+50pRo6M62gupEF5cdkWR6+8YmCo3xlpcBcVtVIMc8T1bZSDJ7P15mMJ+dD5XkzlZlbfm/MWAdisBM4eqKExxN72KujUa/opfTCLCNN3rrAlTDbDssBR8lhbWAI17EOn6EUjOGppX9RlnAqlN8bfc7n/jJOY6shb8bA/qsMkF1wcM5SeAEhkzC7HaM3kwvuOfS6VSDQJdF1/4J6abjSZP10j10j4iEQOjVd63RX/9b2lECaBziNeCzcIT61+RcUiMF6YDFsWdY/9b599GYIXulgbyqFgS2EtZlTQWDp0d3NGPPiNb/JzSEhNPp3m0Ybv3RSg/siuwZ3j9Snwxsd3FWPi7dDwgnBuKDlNtQtmjjny/n36nkjlSXpNmnTbubu9B/X0sdkmobdSaqwRfUU7ppNgUQ5sqYtrsUON+5GcaxXxgdQyv7mmc/kb80Ow5RL8zW7/SqasGVSW4rxanHB6qYHFHf/jPqxpDhp6vRoUMDSQn/e+NMUJSO0O+4GC5o9Le/GhxHqBXFAlsroMDVykCZNN89/8CxnT/qRP5dx
+ L8WDfQt8
+ skwsznEfwCzmCXCAdrrzarW4D3Shr4VjjPcQOuk7maAW5P/3rAASrh/9AwoXjI6q3/1HlMEsxoYL9t6kbP4zI7aOizGUOKHClDGqUC2YBgow02aVJ/Vii0esOjSoQeBCXpHT/q9NmKL15aHoJdpyfMGGMrh6BpaEEtRPYYiNmPcLZzVNM/B3D8/0RcemqsSmMy1oXMYFf9y2g6V/pMda6P+qOtp1xIqGlGrHvN7jVYXI7yickcyuYVo20MxxbdcxOIY+FZGPeF1ANEXsyO35ww+ia9IbKH5iMNczpjgu9VSxxsFRNLwn/rIdSZ5Hqt6s5Jwpc9hD8Ty45ZNFC891oNm4mhvbUkqm1djg6YfGlZjeWQ1NG5EXVsG5BZ841qZ8ssw77gCY+3Ly7evpNPjcSyjqyaBQcnPIR0qG6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,63 +105,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Mon, Apr 27, 2026 at 05:49:28PM +0200, David Hildenbrand (Arm) wrote:
->> +	switch (type) {
->> +	case MF_MSG_KERNEL:
->> +	case MF_MSG_UNKNOWN:
->> +		return true;
->> +	case MF_MSG_KERNEL_HIGH_ORDER:
->> +		/*
->> +		 * Rule out a concurrent buddy allocation: give the
->> +		 * allocator a moment to finish prep_new_page() and
->> +		 * re-check. A genuine high-order kernel tail page stays
->> +		 * unowned; an in-flight allocation will have bumped the
->> +		 * refcount, attached a mapping, or placed the page on
->> +		 * an LRU by now.
->> +		 */
->> +		p = pfn_to_online_page(pfn);
->> +		if (!p)
->> +			return true;
->> +		/*
->> +		 * Yield so a concurrent allocator on another CPU can
->> +		 * finish prep_new_page() and have its writes become
->> +		 * visible before we resample the page state.
->> +		 */
->> +		cpu_relax();
->> +		return page_count(p) == 0 &&
->> +		       !PageLRU(p) &&
->> +		       !page_mapped(p) &&
->> +		       !page_folio(p)->mapping &&
->> +		       !is_free_buddy_page(p);
->
->I don't get what you are doing here. The right way to check for a tail page is
->not by checking the refcount.
->
->Further, you are not holding a folio reference? If so, calling
->page_mapped/folio_mapped is shaky. On concurrent folio split you can trigger a
->VM_WARN_ON_FOLIO().
+On Mon, Apr 27, 2026 at 11:05=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
 >
 >
->Maybe folio_snapshot() is what you are looking for, if you are in fact not
->holding a reference?
+>
+> On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
+[...]
+> >
+> > Barry Song (Xiaomi) (8):
+> >   arm64/hugetlb: Extend batching of multiple CONT_PTE in a single PTE
+> >     setup
+> >   arm64/vmalloc: Allow arch_vmap_pte_range_map_size to batch multiple
+> >     CONT_PTE
+> >   mm/vmalloc: Extend vmap_small_pages_range_noflush() to support larger
+> >     page_shift sizes
+> >   mm/vmalloc: Eliminate page table zigzag for huge vmalloc mappings
+> >   mm/vmalloc: map contiguous pages in batches for vmap() if possible
+> >   mm/vmalloc: align vm_area so vmap() can batch mappings
+> >   mm/vmalloc: Coalesce same page_shift mappings in vmap to avoid pgtabl=
+e
+> >     zigzag
+> >   mm/vmalloc: Stop scanning for compound pages after encountering small
+> >     pages in vmap
+> >
+> >  arch/arm64/include/asm/vmalloc.h |   6 +-
+> >  arch/arm64/mm/hugetlbpage.c      |  10 ++
+> >  mm/vmalloc.c                     | 178 +++++++++++++++++++++++++------
+> >  3 files changed, 161 insertions(+), 33 deletions(-)
+> >
+>
+> Hi Barry, have you got the chance to work on v2?
 
-Right! Maybe we should not try to make this decision in
-panic_on_unrecoverable_mf().
+Hi Dev, thanks for the ping.
 
-By the time we get here, we only know the final MF_MSG_* type. The
-real reason why get_hwpoison_page() failed is already lost.
-
-Wonder if it would be better to split that earlier, around
-__get_unpoison_page()/get_any_page(). That code still knows why
-grabbing the page failed, either an unsupported kernel page or
-just a temporary race we cannot really trust :)
-
-Then the later panic logic can be simple: panic for the stable
-unsupported kernel page case, and not for the temporary race case.
-
-That would also avoid trying to guess MF_MSG_KERNEL_HIGH_ORDER here:)
-
-Cheers,
-Lance
+Yes, I=E2=80=99m getting Wen Jiang (cc=E2=80=99d) to send v2 within the nex=
+t few days.
+The patchset is basically ready, but still under testing.
 
