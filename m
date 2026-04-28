@@ -4,86 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03721FF885D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 10:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD3C8FF885D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Apr 2026 10:32:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CDA76B008A; Tue, 28 Apr 2026 06:31:36 -0400 (EDT)
+	id 4F7366B008A; Tue, 28 Apr 2026 06:32:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47E6A6B008C; Tue, 28 Apr 2026 06:31:36 -0400 (EDT)
+	id 4CEE36B008C; Tue, 28 Apr 2026 06:32:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3949E6B0092; Tue, 28 Apr 2026 06:31:36 -0400 (EDT)
+	id 40C376B0092; Tue, 28 Apr 2026 06:32:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 281F76B008A
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:31:36 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B9652A059D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:31:35 +0000 (UTC)
-X-FDA: 84707598150.11.C12516F
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D467240002
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:31:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VPcuSwBQ;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 2EB526B008A
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 06:32:56 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E34861A05A5
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:32:55 +0000 (UTC)
+X-FDA: 84707601510.27.C8C3792
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1311C40008
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:32:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oBBmWcVC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777372294;
+	s=arc-20220608; t=1777372374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=GfD44pvjIJQiloqBwDkzUp2PEMv63WqNX+o/AM5Jdnc=;
-	b=iIlMEE1hJsCM1VNM8+vGhKXtPk9sRoFRzOiscAxjRmrtMvJQgcIhrMUH2Xzqta6gM97MvT
-	obW80kZEF8GvLa+Vmx6/IFebc32LPHElHkPqLpouaBOP16g+Kh+76+eytkWb+CvNMCHeuF
-	K2YbRxFkh6hMbGDnp59VSNncjHK3biA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VPcuSwBQ;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777372294; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9CQxtBSs3Cczt2GVApBi4vYYXNbkMfBw+Ph1x+xFWOQ=;
+	b=RG7M/tYqqGGlgEDW/cGG2zzLW0yGQrT7ie5BvyNjiaHHqwTWCXU8ahJDAYTmOMMFrPA220
+	A8zavo1CA/7H7cmrHl8YSUR+ZaVmSXA1gTBGofHZXphquA9O+i1BFtCIjFCeRytDZbfIAQ
+	SUNYvt0MN7dw1HYDTuk8zAISsJQHRdo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777372374; a=rsa-sha256;
 	cv=none;
-	b=thNsIuNcSb/Hg3EqcDiKkzvYVQblrMzk0bZF4E+DHI1SzpUOZ6+Zsep9klW4SuCr7QNJ5q
-	aoJaYCMqowA7aTUENnUncY0E/S0hdUV04Ny24Y4z3F4b8UIPg2Svw/VYwzrrF1xy9ZstuM
-	guEz3Ln1E4pz4qqL7YC6hd1Ia6ZsIyQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777372291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GfD44pvjIJQiloqBwDkzUp2PEMv63WqNX+o/AM5Jdnc=;
-	b=VPcuSwBQvNR3K0qe6XdIc2exAZLvcygNpypa8DFTdzkJhnd8Jn1wWbqnSooLVIJwjdvrp3
-	g+qSW5heuurHzYUsJtRmcPy3OtNwMVL/UitrMBd7lXT40ymkElYnTjqEV/RltQE72mFhak
-	obmj/4CKJzwT4/n/uwgdXo2NebuFA4o=
-From: Qi Zheng <qi.zheng@linux.dev>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	yosry@kernel.org
-Cc: cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v2] mm: memcontrol: fix rcu unbalance in get_non_dying_memcg_end()
-Date: Tue, 28 Apr 2026 18:31:08 +0800
-Message-ID: <20260428103108.45719-1-qi.zheng@linux.dev>
+	b=FSrhgb2cczOd+a9TbR3MO/wKZohXJhNpaWKVWbiBAthuKAWyG90m/7wSHGdmsI4F0fmGje
+	pSOKUysQeEGF/Cqa2wVD74bO6hIoJTl5MyRzHmSuuinAJbOEyTNuKvNoRlDWSHOv0nuQpt
+	FtUAd5PpD1EmBKymwVRbU5pV467zfGk=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oBBmWcVC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6DC2660142
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:32:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25920C2BCB7
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 10:32:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777372373;
+	bh=9CQxtBSs3Cczt2GVApBi4vYYXNbkMfBw+Ph1x+xFWOQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=oBBmWcVC6KzKC4xRiIVG2oJYjMQSgQsyCNmdUNzhE7qXtNAu+cQLHX08rN37MC97t
+	 8Tjh7gop+mloG6QnMhjAT3qlLu17BCmNV28Mp/5Dxq6GU6UW3awAG00ajiUicIUwU6
+	 rwXq7h70t/nex1ewUf0fCQOeQ2fSFbpoNwXqByex4+IB3ReZid9izkVXRPra8opbaq
+	 aNZQZ8XAY10DSZBRdW95lbZfkklUVZGh2H/AVsx0UrNNr3E3Ni6frWkTkCMik1j0M5
+	 tn8SHBTYsDULM1WPYc4i9ASHhvRdo7lRPaSoqzLULx9Zgrg79GnmrMtp4IJ4hA87kt
+	 bM/PtFbBzrPtA==
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8a068db9989so112571396d6.0
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 03:32:53 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwnfEo7CpVHiBWfjTif4Q/xUJupafOBa8uWf8YqsO4ewaqfQtYa
+	oY/jMRHJspa3szB61X7Ao0TD8mf0k/r2Soi+16QEXtiSPvbrFxLfdKUbNvmb3gzEz+3a1JSbABL
+	N4FkL2nffwd01TqZ+eqgQA4M7lTIY0wU=
+X-Received: by 2002:a05:6214:29e1:b0:89c:ceaa:872c with SMTP id
+ 6a1803df08f44-8b3e32d3832mr30001106d6.13.1777372372433; Tue, 28 Apr 2026
+ 03:32:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ub6rry8ecrouhrqydt7ksrbczh66ptz8
-X-Rspamd-Queue-Id: D467240002
+References: <20260423034917.8234-1-baohua@kernel.org> <ec08f25f-1049-4fbd-8a87-0df135a867be@kernel.org>
+ <CAGsJ_4wn=o5ZCNPGguCCk=19iYZr1V9Jup0NdRUKXySsKfD_4g@mail.gmail.com>
+ <17a3bc38-0d97-4316-b2fb-02a91202c504@kernel.org> <CAGsJ_4y6_G5BPZKs3Mg3s2ygxGh1o22GX_3wEsM5hs7WX_cOhQ@mail.gmail.com>
+ <efcdb62c-54e9-4806-87a2-5729e3c1506d@kernel.org>
+In-Reply-To: <efcdb62c-54e9-4806-87a2-5729e3c1506d@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 28 Apr 2026 18:32:40 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xvXZVRO0-mXAWM7mH9pVH+DAYggDBG1+2x5iQ9mfDDDA@mail.gmail.com>
+X-Gm-Features: AVHnY4KbOrnYIKBewsa-Btt8RDB_21xarBFqTw0olz6fx5r1g_RM2NylEZzpZRQ
+Message-ID: <CAGsJ_4xvXZVRO0-mXAWM7mH9pVH+DAYggDBG1+2x5iQ9mfDDDA@mail.gmail.com>
+Subject: Re: [PATCH] mm/huge_memory: Fix outdated comment about freeing
+ subpages in __folio_split
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Youngjun Park <youngjun.park@lge.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777372293-20009
-X-HE-Meta: U2FsdGVkX18ShoNJe0lXi7BbwQXYGcELk2534u5JKV5z2iOEqNTNMX4z1wg+DxB5yCWdIz9LrNAJx6byUCG+XCCt0BTO3LyeL5pWh6D4BOAsFvm8hM0tQii0NlIElHpP9A80vxgn54vA8SjuyghoK6eiN4O0qGX0AVRy2ZqzekJeYZ4TvILTfMr0bzzpZ+2VliHnowosEpt0iQj7V3CvXxGK15XG3eaVgfqdjekFPFo2iA0lF6V17IbL8Peu5iI8i2LOVfa6ce+L4pUIUw1vJWkqGQ905ow7fR+2s1FBGlu/Tl+kjPmyef+7DtqBZDOzwBeJOia2Hyk9lk8tnGhjJjZiCe9t2ws+jTJsOCe6qCLPcM6CEpCEaPrsk5/C/brwqX7I0oqU82nOOtpqrOy9wyAmPZq8IccOE6GMSXVZeK6jrZa4U94EnKfiL+JSqw94GB0jUBWzD9gwcgaHabBMrW4zWp89S2NzhN7DRC/eegeyjN6HHjC30ETSjcgeXonHkfW9DSgM2pu0gMnuzVGHoZ+OKmw16ZtU703FrVk64gtoRc4kdEO1CnC4064ZwHimPB0F/ic/jRJLlHcUrOXPmXphrIZyImWHrZ8se7IFa3TieTNzt94aeHZp4/cmoqH3zaKbcO2dl5nh323q2L6G6NrraNFoPHUfvTETSI8LsTxzfajg4dS8vpLHoBXBjFnP0GkoRw/ITMZcsnf9Oo4AaTvP4H8/loHfSK9KOPLzki/SHlYG8OEqwLXFy1cYaUfznCdxkpQrAjhgJfIoTBdrK76MT3pHUDPfA5f1gEXbhOwg+fHo2GjVq1D/SOnzWU2hBlmr03aIW18F8iof3VfdCr8WekPn64Fn52INOxg2I01uIRgjqL3L70DZ6v9jsk7pQAufGIosv7Q/E/sgZ7Ip2ZUPUkZQTfYyC/N1qTfwhX6OCWuEL7ulupSAwBk6vPXHkjLoDG/u6KNCofOTgaS
- z4lMkO59
- GV6AU8W3FeMfzBME4nkcC4/4Ht153kXgChSPdgX+dbDPtN18AETVqUiZbZ9fZedQOJcxwrWhTwV9xP7ILgc7U92rk17WZ2+enVtbqB4vg5dRbBYd9094N6To+tcgKunBcaFIN0s08R62fT38wC3DotdYqQEBmWnRbSGrKeNUBYxgZFfn4Ti1Fz/mVtXcz2ds8Hum50zLW5C/9jyIna7Jeqg3iawB5lO/jcDIK+Ta5a+j2zO1bwVGhoQRCekNrFI19oAPJ6SJjYofHPTg+1mhuGDFJIXQ5E3jtZGwdf4lIWhjbndZGcGGJ28p5mA==
+X-Rspamd-Queue-Id: 1311C40008
+X-Rspamd-Server: rspam04
+X-Stat-Signature: eucdi96iyg4d8hu8yenqq4e1z6wpxeas
+X-HE-Tag: 1777372373-251079
+X-HE-Meta: U2FsdGVkX1+bELKccvrcRNKQcI+oXTRtEnueKhI6zkmDWEgBFg59Bw9oLqrMgcIGxe96zpMP7P+6E83mLOUpCaH4lKwv2lvMi2QiXZhYlTQXFka3/QhXKXmifdAPrcbFuBfaOkGt3GVnpU0KIY7WNaGEzhS5ZJoLqv4VA8KEuW/de0taDq6yTLrVXrlFeepgb7z8h74Vm1pG9X+6h8FSe4SPZgVK1dxB3Q4/amzsHCzHKwjjOiRObpygABGMdq6/6BqFJVt9FVzKJomvvIo9ICIfYS2yuGXxW7yEC/NzWuW6ZZZMHuu2mo4m6lyU4wTNjIX5VwQyF+LHHHMqS5VjrShBBdNi04Ahrqe1TmcNC8QjbuGuvSHrZpx0uVJW7nmUJVhq0aSwu8xrX2VeAVNUg3mC/BdCJdYWgJeN8r08STY5+DkQw2IwnWUMyY/7QPSIzCTMbggDlVDynwr6OZnb3SG1nwIp4Vu6TNtr/VsN2HNVlyExE0j0dRZwFjwqNskxqDN/5tKYg3dkhIKM0rGNFcTk0LNEoxhwEpwda6r6CrCuVPHVS67Vy6IkLdBt0t5Y0Uh6SeQNI4ps9c84Zgt/q5B8xGpTV6+ipRe/0I/JXVxo4fZUGVv2fyyKuAHq6vo5H18ulp0MMRbwbnWAaC8dDN9SufmlFFz/Z1pnOwadXB/zntJW97OUdVhZUswAhqdnj7q/cxjdbnZvU+vjxUpR2OJPgt3wV2f9yrSKUihJ11pG7/p7WGMDATAO7MKW5ZHjfPOk3ZfqCvW2vw/FhzKoc8bvvztLgCrgDiadRoejcbHUW0qMAG94jaSY7n0AIB3UrlWAj8A9H60MaSPDA9H0EGyNoB6lvstzNWoRiH2Iu+ptfuHesWz09FFkRHPTKqxTca0cOtloEJoVOQQoI06X+laZ0FJfV/ijkph+N7prYXAnOYyeX8x9WVhj1NmH3FlasDsdcBnNzaZ8UdYalf+
+ aCsnIK6y
+ 6R6W2L6e2ZSnSxwcqcsRSshZfHW4oFa55dKIJ/+U+iYAnNvXxaAtuPA4C5FrFe5fEBTdZBnTZn9PAgbQWcio0KyLRfbsmnJ9zfhNDKUOh/sf7hzP8slr7yJdXknUlKvWKc0hTqWE+6j/Oyva9yD+w1zAhsWnTZXwREaH84FL3rM1E8G2dUX79/6AdaqYx0zUroZ1I5sJcIIW9MB7ad+AklmMdnn/7fw8KP7RRVxjGWZBNNU0jZ8y5Ue1tewLeXAFThqE2J7Dk+EJviovP9wT2K5/Wl1/uRJ/lyZUo2zRhpGkYy3S+P7Vxvh9uJzRuXDiHCaCN/9dhJn8QpP6qjjVKrZZS4ET9bgCQJ85r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,160 +111,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+On Tue, Apr 28, 2026 at 6:08=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 4/28/26 12:05, Barry Song wrote:
+> > On Mon, Apr 27, 2026 at 3:42=E2=80=AFPM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 4/26/26 22:42, Barry Song wrote:
+> >>> On Thu, Apr 23, 2026 at 8:36=E2=80=AFPM David Hildenbrand (Arm)
+> >>> <david@kernel.org> wrote:
+> >>>
+> >>> Thanks, david! would it make more sense to add =E2=80=9Cwhen
+> >>> CONFIG_PAGE_MAPCOUNT is enabled=E2=80=9D at the end of the
+> >>> sentence?
+> >>
+> >> Better to phrase it in a way that doesn't even require these details :=
+)
+> >>
+> >> Do we even need this detail in the patch description?
+> >
+> > What about:
+> >
+> > The comment appears to be outdated. add_to_swap() no longer exists,
+> > and the explanation of why we need to call put_page() after
+> > splitting could be made more general.
+>
+> Jup :)
 
-Currently, get_non_dying_memcg_start() and get_non_dying_memcg_end() both
-evaluate cgroup_subsys_on_dfl(memory_cgrp_subsys) independently to
-determine whether to acquire or release the RCU read lock.
+Thanks!
+Hi Andrew, would you like to make the change in the
+changelog, or would you prefer that I send a new version?
 
-However, the result of cgroup_subsys_on_dfl() can change dynamically at
-runtime due to cgroup hierarchy rebinding (e.g., when the memory
-controller is moved between cgroup v1 and v2 hierarchies). This can cause
-the following warning:
-
- =====================================
- WARNING: bad unlock balance detected!
- 7.0.0-next-20260420+ #83 Tainted: G        W
- -------------------------------------
- memcg-repro/270 is trying to release lock (rcu_read_lock) at:
- [<ffffffff815f57f7>] rcu_read_unlock+0x17/0x60
- but there are no more locks to release!
-
- other info that might help us debug this:
- 1 lock held by memcg-repro/270:
-  #0: ffff888102fa2088 (vm_lock){++++}-{0:0}, at: do_user_addr_fault+0x285/0x880
-
- stack backtrace:
- CPU: 0 UID: 0 PID: 270 Comm: memcg-repro Tainted: G        W           7.0.0-next-20260420+ #
- Tainted: [W]=WARN
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
- Call Trace:
-  <TASK>
-  ? rcu_read_unlock+0x17/0x60
-  dump_stack_lvl+0x77/0xb0
-  print_unlock_imbalance_bug+0xe0/0xf0
-  ? rcu_read_unlock+0x17/0x60
-  lock_release+0x21d/0x2a0
-  rcu_read_unlock+0x1c/0x60
-  do_pte_missing+0x233/0xb40
-  __handle_mm_fault+0x80e/0xcd0
-  handle_mm_fault+0x146/0x310
-  do_user_addr_fault+0x303/0x880
-  exc_page_fault+0x9b/0x270
-  asm_exc_page_fault+0x26/0x30
- RIP: 0033:0x5590e4eb41ea
- Code: 61 cc 66 0f 6f e0 66 0f 61 c2 66 0f db cd 66 0f 69 e2 66 0f 6f d0 66 0f 69 d4 66 0f 61 0
- RSP: 002b:00007ffcad25f030 EFLAGS: 00010202
- RAX: 00005590e4eb8010 RBX: 00007ffcad260f7d RCX: 00007f73c474d44d
- RDX: 00005590e4eb80a0 RSI: 00005590e4eb503c RDI: 000000000000000f
- RBP: 00005590e4eb70a0 R08: 0000000000000000 R09: 00007f73c483a680
- R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
- R13: 00007ffcad25f180 R14: 00005590e4eb6dd8 R15: 00007f73c4869020
-  </TASK>
- ------------[ cut here ]------------
-
-Fix this by explicitly tracking the RCU lock state, ensuring that
-rcu_read_unlock() in get_non_dying_memcg_end() is strictly paired with
-the lock acquisition, regardless of any runtime rebinding events.
-
-Fixes: 8285917d6f38 ("mm: memcontrol: prepare for reparenting non-hierarchical stats")
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
----
-Changes in v2:
- - remove unnessary rcu_locked setting under !CONFIG_MEMCG_V1
-   (pointed by Shakeel Butt)
- - collect Acked-by
-
- mm/memcontrol.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index c3d98ab41f1f1..eb55bace9f8c3 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -805,12 +805,17 @@ static long memcg_state_val_in_pages(int idx, long val)
-  * Used in mod_memcg_state() and mod_memcg_lruvec_state() to avoid race with
-  * reparenting of non-hierarchical state_locals.
-  */
--static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg)
-+static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
-+							   bool *rcu_locked)
- {
--	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
-+	/* Rebinding can cause this value to be changed at runtime */
-+	if (cgroup_subsys_on_dfl(memory_cgrp_subsys)) {
-+		*rcu_locked = false;
- 		return memcg;
-+	}
- 
- 	rcu_read_lock();
-+	*rcu_locked = true;
- 
- 	while (memcg_is_dying(memcg))
- 		memcg = parent_mem_cgroup(memcg);
-@@ -818,20 +823,21 @@ static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *me
- 	return memcg;
- }
- 
--static inline void get_non_dying_memcg_end(void)
-+static inline void get_non_dying_memcg_end(bool rcu_locked)
- {
--	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
-+	if (!rcu_locked)
- 		return;
- 
- 	rcu_read_unlock();
- }
- #else
--static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg)
-+static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
-+							   bool *rcu_locked)
- {
- 	return memcg;
- }
- 
--static inline void get_non_dying_memcg_end(void)
-+static inline void get_non_dying_memcg_end(bool rcu_locked)
- {
- }
- #endif
-@@ -865,12 +871,14 @@ static void __mod_memcg_state(struct mem_cgroup *memcg,
- void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
- 		       int val)
- {
-+	bool rcu_locked;
-+
- 	if (mem_cgroup_disabled())
- 		return;
- 
--	memcg = get_non_dying_memcg_start(memcg);
-+	memcg = get_non_dying_memcg_start(memcg, &rcu_locked);
- 	__mod_memcg_state(memcg, idx, val);
--	get_non_dying_memcg_end();
-+	get_non_dying_memcg_end(rcu_locked);
- }
- 
- #ifdef CONFIG_MEMCG_V1
-@@ -933,14 +941,15 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 	struct mem_cgroup_per_node *pn;
- 	struct mem_cgroup *memcg;
-+	bool rcu_locked;
- 
- 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
--	memcg = get_non_dying_memcg_start(pn->memcg);
-+	memcg = get_non_dying_memcg_start(pn->memcg, &rcu_locked);
- 	pn = memcg->nodeinfo[pgdat->node_id];
- 
- 	__mod_memcg_lruvec_state(pn, idx, val);
- 
--	get_non_dying_memcg_end();
-+	get_non_dying_memcg_end(rcu_locked);
- }
- 
- /**
--- 
-2.20.1
-
+Thanks
+Barry
 
