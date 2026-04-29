@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18BD8CCFA13
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E9EDCCFA13
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:54:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82BBF6B008C; Wed, 29 Apr 2026 09:52:42 -0400 (EDT)
+	id A50326B00A4; Wed, 29 Apr 2026 09:54:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8032A6B009D; Wed, 29 Apr 2026 09:52:42 -0400 (EDT)
+	id 9DA846B00A5; Wed, 29 Apr 2026 09:54:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73FAD6B00A1; Wed, 29 Apr 2026 09:52:42 -0400 (EDT)
+	id 8A1E46B00A6; Wed, 29 Apr 2026 09:54:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 67CF56B008C
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:52:42 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 10C401402B3
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:52:42 +0000 (UTC)
-X-FDA: 84711733764.23.584AD04
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 75AE56B00A4
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:54:22 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C13C61C02F3
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:54:21 +0000 (UTC)
+X-FDA: 84711737922.11.42B8AEC
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4F1EDC0002
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:52:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HgLY0Rjc;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf11.hostedemail.com (Postfix) with ESMTP id E58854000E
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:54:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lLNh2XYt;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470860; a=rsa-sha256;
+	cv=none;
+	b=l9cs49YdXrKHQBLu3YfPoim+K/dsuhG/x2U4arNpYTYwUXGARAXH/L37PWKTRmHEQ8lT0G
+	x5y4FtRiL0wV1/uk/qtTdedSjyFtPyGz4s3W+qRZ/rTtespj9xgTfUI4EwiZTTwnaJyRb+
+	w2zyBihbPvkWEUBzbK46Ud7lZ7Vb4cE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lLNh2XYt;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777470760;
+	s=arc-20220608; t=1777470860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lm1+A0qDgefDwn4bp/M3ryUm2rKD42TYqLTCfsQDJ2U=;
-	b=iJRDwgn47x7MGdotUVweEIq0BO98Ps7iYkzBL3Z/ykVQmNm50VBvb9M0No9qDUFscKyIMO
-	W+C5p/da6qX26pxgDblsB1gyXDYxOmk8ZpUvppeUkpdktzRk4Yb2NFvqtkQtZOTQixTy7b
-	oEfRCqBKhKpn90gQ/t4eZAHWM4utFNA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HgLY0Rjc;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470760; a=rsa-sha256;
-	cv=none;
-	b=MQ9Wx+WGetOrsXLq8hDn7xB1q9ylMshS+XwGi1DT0mc65I+2EpGjfmhSMm0Q4uo5cvGypN
-	MAjABZ9xc3JIaxeTMGWoaGiJ2qdE0NShw6s6n5MM0fuq0SmHjDWFHID+xg29mLrK5AMlcx
-	KPaxZD4ApeWs5grIFzQRaB0fK6UwRnQ=
+	bh=MeNtVCMTSI6Jd/skjzStvD5kEk+oINwTN2fN2mcs9C8=;
+	b=wvCSijaDDHh/Y8gur0tJj4UO+tNXykcQNGbclQ0QPFF3DelW2YkbxvX5KEGisD5IvMk4Vi
+	Joa/sp48zDk6hqwSkabEtOIvawkTUpcjVdiHigmPx37BlI6XkT0DGqt+XvYxsiQn+JjaVX
+	07Dbw84InsDaQz6rqBm0c4ffgO4Wm6Q=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A548C1C01;
-	Wed, 29 Apr 2026 06:52:33 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52FA11C01;
+	Wed, 29 Apr 2026 06:54:13 -0700 (PDT)
 Received: from [10.57.62.76] (unknown [10.57.62.76])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D42303FB90;
-	Wed, 29 Apr 2026 06:52:35 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F2ECF3F62B;
+	Wed, 29 Apr 2026 06:54:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777470759; bh=s0tgitch6tjt2iSC+ew5SbhvP7lh6LqBU7/+wo85gzU=;
+	t=1777470858; bh=op0PGB2RSdfIzNdbBTKjY7j2TmI/0VCoEC8J4z/6BVM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HgLY0RjcX26UI051X7p0jTvCIxdqYVMTsc8814Yedfgp0bzVK7UFbv8tvL3cLRx6u
-	 iDWC3D+nLEDNCb2TZLk5lDi5Udldgc4oVV5EETWkYfWURPnuXnXWyavWHFha+ew//E
-	 2S5LwNp+WnBIoW+zr84x3BSUsI6BHHiVLKyfK5Og=
-Message-ID: <382872b6-748b-41de-b3f5-728964bbd82a@arm.com>
-Date: Wed, 29 Apr 2026 15:52:33 +0200
+	b=lLNh2XYt3BMVorNa0t/pHJR9WnAZJGdKKJRuZrRL2Jw8zDzv5mKfd13eRZgUo18bE
+	 tqtHwaRW1y1Rq98Fcuu7NWuGV5fJNqwm1VBkGihwLn/V3T5pbJSZ3ik7FdjZyT+94f
+	 jNf+YT+GlUAHbAAaM5w0hBAoSnAbx/LjM9mIo84I=
+Message-ID: <a8740f95-e167-48ae-ae65-97c6701d9c94@arm.com>
+Date: Wed, 29 Apr 2026 15:54:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/15] arm64: Move fixmap page tables to end of kernel
- image
+Subject: Re: [PATCH v4 12/15] arm64: mm: Map the kernel data/bss read-only in
+ the linear map
 To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
  mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>,
@@ -78,20 +78,20 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
  Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
  linux-hardening@vger.kernel.org
 References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-27-ardb+git@google.com>
+ <20260427153416.2103979-29-ardb+git@google.com>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <20260427153416.2103979-27-ardb+git@google.com>
+In-Reply-To: <20260427153416.2103979-29-ardb+git@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: iz8tkqpkok9d5n71z4thfef6gnhf3oug
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4F1EDC0002
-X-Stat-Signature: oikj3jfhzs6d7roqnojs9g9d93hkptae
-X-HE-Tag: 1777470760-107388
-X-HE-Meta: U2FsdGVkX18FpsahcBJWytmcVqRvQfunfkYEMIr6s+1LBbgoO/L4sfsW3BvrCuapEXeWUTd2QAOpyiCcjJEssm+kiU5OXnK39Q9E+QGCIY2nD+M6SpH1nquX6x6P18+p+RWA8maJJ7mWmNjZi5sPIxY4TSUMMaSJHmOegvx/7ILAwe/anoz1F1N1jkCNs14EQNAkmWKDIVlBKSkfP8Od14fiCMtANLLBrITXrXJWbdEBwTOtp2FOwwBsb1ZyHKhBXvNfFyZ58Nfx9+TZS40LL4On2A/yDlYhduNUbXdTtVed6eWsRQft5ByM0NT+Ic4l5Tax3fSQyPUDXetLJWcX8RdDlk1GssDT+DXmvUD+vPIn6PaWxX6nrtUb+5BAowK5kg5jEJSPsfiMk64YY+Qkyx/63R5c76DXS2OgusDBDu/nPgwqI0CxFqdF497ALnD4me5VoZPFSMsWeu+jjllHzOyrIdcR3nTENQbNMUrv5OC7+hKTWLpedOoWp0ZaSFeZKb72m89V+S02THrpqW3urh6fpkYr0EYBXf0fsrDUHNzu8dwTSvCO+aB48ZXTSUybFStJLy90c+c3iQNRrxN1x/VwcESDaQ+8fMpZlgpBGaaAkj4hnJ3iI//gklFcqQp5hpb8ra/UlBQ39eCgO6TIpMqryyJeLJNvnEU9WNOjLHu2ThWIwg+3uctFJa2qlvFAIn6UadpAC39vbk4yjS/2uO14h/CDdtsNSilSEb+tIsaqcbK6jOnbqB0lBFKtcSyrjMCY2Iy2zx4Z4UKYHqfZBWWmAoUaDxDms2QjdNXDeFqGPyJ8iwRFkI/ldyjEW+Y7UdPe/TadBJRKUpc1eigk3rdiiQ1q548rk2YA5DedJYjPDF4PoUykc3yT9rI1a0I4UjO438xOH7OOeZzDMEOC4Guz4m/J4LQTOA1bWLfcFiH0jv3nhelLQvjXZqzFaACDz7xvelKJVNrdsLwXoOz
- kFPOWLhu
- 9R1Y4haw1hExyGU6H4x571OXQhYNLeQN7AQl6pKWvZjTzk6gPaIRo5DaaNwWlT/eGuELge4XnE7WecjR+nyTsWLWHCjTvXSUaG34zC+bHmeb27401kin5QSp2Knt070ILV3p5IV9+fCSpbZXTr+t829eZb7egjSpB243+D1bGa2WgHG5pknRFAXjEjLt6f1faPr190b7ILhatxt4XPV6dacgRReY4hlrw6dTu26QjWqMgIQGKcPNH4PtjIDtQ5YwXN1B+ZKsQcPgn0NgQD2c9l760fvSfhKQhtKp0POSPfv9xVypFK8rN9/PKeRrN9xVqV6dykkvlJmvxx+IfizKLa2tSdyEtaaNLFoKF6TcJDPBGCDYY7qS0PuFNmuMpLcJEC+RbPaAQQJqe2xY=
+X-Rspamd-Queue-Id: E58854000E
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777470859-588653
+X-HE-Meta: U2FsdGVkX1/o5kf3tqzHZpblgjn3ll8dCUBZHfXxNzX5ZqAxnjVGcblGg012yOiQ/wYrmynP8qghcAJW/RFUBantIZUiyvkn+2Uli34O+7wogHebOO6Aqb6ltg89/+OOvOcBGAJjzPYNYVJtW0XElBIv6nL13VH5iL1cAebh90xdXYK12Oqxx7qsUjn9WiLoZMGx7mtcHVJrGXdMfY3c4pgULiQbjCDhiVke9tF9feuTOT5t96mRKtmCNZW/ChS97BvNbXy3d0ldNz2jYYn5EsCQT3xQ6TgV8Q4T5t4mmSqsKV5Vy5QhYb+Oz27qvpjzqa0KJcQ3nydC+y2lc1Y6fHjkpV1rDVJMhVAfCOLi3Q5lXAWTVIduux6l03mQO2NgMOACnP6MkcwvwsYV16IuCfyK4HV3JSgtNJjWIcV5DRDwKuYBLClUi1UJY9aiZ5bUakJc9HnZ03cletxisYK/yh/zVpsveBa9b+fiF8GWqUUh7Xm8/vmlq9L0U13ZQUA/rrNjjfz3ZS8ELGhjp9L0gJjzG3vIM5VhyZwfWVgB7juudyRtsHVZIr5vRr93YWQiYj1S2Oy6bZ5+rr5cdEGKGDCcx++VaNjvj+wV7md+is34MrgzGlMfGK9sydJ+Zo8lgXb9IZ05kZDMyHEPRfpPCCeZUx7+7QPSUrcg7GVOeZYCkKoxxcEOh1a5pMwx7qu7Lzh0EO19G776W0FSnUoEUHBBW/D5tEChYnzqKdcaGSs8bfszjlCmMg3kWk0K6ftw34yfcG/GrFp16SIdFprgCf4G77rQx2QJ0yjbv3qWtdspDCmwjR4ndZcWslANkj3CGNUZctndzRpRjjn2dQPofBUD0Datj00EFyAiO3Sl/dImfnKnPq9m9O6V+lCtnMGbm2qsxUKY+xUL0fM6EapbxPn+dlg8EH2WPtX4Nk/JOzWpuKbKIrxQHPE6uuX3jfn/iNz+Wdu4dT6tJ9ehfH/
+ S+Q7Pn1b
+ G4jjoUlBT4o1E8hUjNTC4L+TNd2lohW3c+/YKpeY03RsHb1rekbmSYlt89hrfsn8FOODosR1h6apes+2VIWAOOFwoV9CWXabDdjomPhY6tjdMS6DkOWFq+J+/JvrfJ+TtW3mxBATSB6+wWrg68mutdo8pqTzo0HIS67L6RhbUcVvtA+LQYETzQbCPRHD6HPiqKGEm8ynxUPb5d1nh+8XgI9e0JBvXDRfhO/fD5/b00hiKUHsCGGH5mMBfQRwP6HLcg0CU1jKwSFWla0/1wqrXjx43tp9snf+e60YKcEs3ujv/hLxCbSS7POSjzujicICLQpBb2ck6V2NjJg4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,56 +102,90 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 27/04/2026 17:34, Ard Biesheuvel wrote:
 > From: Ard Biesheuvel <ardb@kernel.org>
 >
-> Move the fixmap page tables out of the BSS section, and place them at
-> the end of the image, right before the init_pg_dir section where some of
-> the other statically allocated page tables live.
+> On systems where the bootloader adheres to the original arm64 boot
+> protocol, the placement of the kernel in the physical address space is
+> highly predictable, and this makes the placement of its linear alias in
+> the kernel virtual address space equally predictable, given the lack of
+> randomization of the linear map.
 >
-> These page tables are currently the only data objects in vmlinux that
-> are meant to be accessed via the kernel image's linear alias, and so
-> placing them together allows the remainder of the data/bss section to be
-> remapped read-only or unmapped entirely.
+> The linear aliases of the kernel text and rodata regions are already
+> mapped read-only, but the kernel data and bss are mapped read-write in
+> this region. This is not needed, so map them read-only as well.
+>
+> Note that the statically allocated kernel page tables do need to be
+> modifiable via the linear map, so leave these mapped read-write.
 >
 > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-
 > ---
->  arch/arm64/kernel/vmlinux.lds.S | 5 +++++
->  arch/arm64/mm/fixmap.c          | 7 ++++---
->  2 files changed, 9 insertions(+), 3 deletions(-)
+>  arch/arm64/include/asm/sections.h |  1 +
+>  arch/arm64/mm/mmu.c               | 16 ++++++++++++++--
+>  2 files changed, 15 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-> index e1ac876200a3..2dca18574619 100644
-> --- a/arch/arm64/kernel/vmlinux.lds.S
-> +++ b/arch/arm64/kernel/vmlinux.lds.S
-> @@ -353,6 +353,11 @@ SECTIONS
->  	__pi___bss_start = __bss_start;
+> diff --git a/arch/arm64/include/asm/sections.h b/arch/arm64/include/asm/sections.h
+> index 51b0d594239e..32ec21af0823 100644
+> --- a/arch/arm64/include/asm/sections.h
+> +++ b/arch/arm64/include/asm/sections.h
+> @@ -23,6 +23,7 @@ extern char __irqentry_text_start[], __irqentry_text_end[];
+>  extern char __mmuoff_data_start[], __mmuoff_data_end[];
+>  extern char __entry_tramp_text_start[], __entry_tramp_text_end[];
+>  extern char __relocate_new_kernel_start[], __relocate_new_kernel_end[];
+> +extern char __fixmap_pgdir_start[];
 >  
->  	. = ALIGN(PAGE_SIZE);
-> +	.fixmap_pgdir : {
-> +		__fixmap_pgdir_start = .;
-> +		*(.fixmap_bss)
-> +	}
-> +
->  	__pi_init_pg_dir = .;
->  	. += INIT_DIR_SIZE;
->  	__pi_init_pg_end = .;
-> diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
-> index c5c5425791da..b649ea1a46e4 100644
-> --- a/arch/arm64/mm/fixmap.c
-> +++ b/arch/arm64/mm/fixmap.c
-> @@ -31,9 +31,10 @@ static_assert(NR_BM_PMD_TABLES == 1);
->  
->  #define BM_PTE_TABLE_IDX(addr)	__BM_TABLE_IDX(addr, PMD_SHIFT)
->  
-> -static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __page_aligned_bss;
-> -static pmd_t bm_pmd[PTRS_PER_PMD] __page_aligned_bss __maybe_unused;
-> -static pud_t bm_pud[PTRS_PER_PUD] __page_aligned_bss __maybe_unused;
-> +#define __fixmap_bss	__section(".fixmap_bss") __aligned(PAGE_SIZE)
-> +static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __fixmap_bss;
-> +static pmd_t bm_pmd[PTRS_PER_PMD] __fixmap_bss __maybe_unused;
-> +static pud_t bm_pud[PTRS_PER_PUD] __fixmap_bss __maybe_unused;
->  
->  static inline pte_t *fixmap_pte(unsigned long addr)
+>  static inline size_t entry_tramp_text_size(void)
 >  {
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 1a4b4337d29a..9361b7efb848 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1122,7 +1122,9 @@ static void __init map_mem(void)
+>  {
+>  	static const u64 direct_map_end = _PAGE_END(VA_BITS_MIN);
+>  	phys_addr_t kernel_start = __pa_symbol(_text);
+> -	phys_addr_t kernel_end = __pa_symbol(__init_begin);
+> +	phys_addr_t init_begin = __pa_symbol(__init_begin);
+> +	phys_addr_t init_end = __pa_symbol(__init_end);
+> +	phys_addr_t kernel_end = __pa_symbol(__fixmap_pgdir_start);
+
+Using fixmap_pgdir as an anchor seems a bit arbitrary... Couldn't we use
+__bss_end instead?
+
+It could also be helpful to add comments in vmlinux.lds.S clarifying
+which sections are RO/RW in the linear map, it's getting pretty
+difficult to follow.
+
+>  	phys_addr_t start, end;
+>  	int flags = NO_EXEC_MAPPINGS;
+>  	u64 i;
+> @@ -1155,7 +1157,11 @@ static void __init map_mem(void)
+>  	 * of the region accessible to subsystems such as hibernate,
+>  	 * but protects it from inadvertent modification or execution.
+>  	 */
+> -	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
+> +	__map_memblock(kernel_start, init_begin, pgprot_tagged(PAGE_KERNEL),
+> +		       flags);
+> +
+> +	/* Map the kernel data/bss so it can be remapped later */
+> +	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
+
+Maybe I'm missing something obvious, but considering patch 3/4 couldn't
+we directly map the range RO here?
+
+- Kevin
+
+>  		       flags);
+>  
+>  	/* map all the memory banks */
+> @@ -1168,6 +1174,12 @@ static void __init map_mem(void)
+>  		__map_memblock(start, end, pgprot_tagged(PAGE_KERNEL),
+>  			       flags);
+>  	}
+> +
+> +	/* Map the kernel data/bss read-only in the linear map */
+> +	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL_RO),
+> +		       flags);
+> +	flush_tlb_kernel_range((unsigned long)lm_alias(__init_end),
+> +			       (unsigned long)lm_alias(__fixmap_pgdir_start));
+>  }
+>  
+>  void mark_rodata_ro(void)
 
