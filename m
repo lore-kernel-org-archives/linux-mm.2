@@ -4,101 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 670BAFF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 08:40:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F4C2FF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 08:42:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A1636B0088; Wed, 29 Apr 2026 04:40:43 -0400 (EDT)
+	id 8A3BE6B0088; Wed, 29 Apr 2026 04:42:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82A9F6B008A; Wed, 29 Apr 2026 04:40:43 -0400 (EDT)
+	id 854446B008A; Wed, 29 Apr 2026 04:42:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 718FC6B008C; Wed, 29 Apr 2026 04:40:43 -0400 (EDT)
+	id 76A286B008C; Wed, 29 Apr 2026 04:42:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D9ED6B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:40:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F40A31203F6
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:40:42 +0000 (UTC)
-X-FDA: 84710947566.04.1969845
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1A22D4000A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:40:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=QGGT58+v;
-	spf=none (imf07.hostedemail.com: domain of BATV+a0270c4eccc79b12c2b2+8284+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+a0270c4eccc79b12c2b2+8284+infradead.org+dwmw2@desiato.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 623006B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:42:50 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1DF6FC1385
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:42:50 +0000 (UTC)
+X-FDA: 84710952900.23.FF30BC3
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf12.hostedemail.com (Postfix) with ESMTP id ACF4B4000E
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:42:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RUMX91KS;
+	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777452041;
+	s=arc-20220608; t=1777452168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SVmAKi5V93OWkp1Vf2W2JhdvXzpDzJyBKN3WZchnTrk=;
-	b=spafIrZ09eZYyukBxybAOj1b4tHf3oSLe/SkdPgKiqEbCtF2aOz4rw9xzw4CMM2HhsoaD9
-	NBXzdx0ZNWGtOc/Q0nJQBolok7A6uL5TqSNcG/giMZYhXZvQZlckvpKAhOG3KGBd0BJeFg
-	AhKnIF7oUaKHOClyNv1mnuYmR9AJmcI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kHHye3OD5C3a9QpoeBC/kUEHYAfNMmW71MhL7O0n4Fw=;
+	b=gqrXUnOPJYYoGWmR82hIikMJQ+Cy0ZcpilJ8tv0FYYQOiH+lXhIwm1/LiO/1Y3+WUKxlA/
+	7PAIrS6msmeXveUiaZTX0LshsqxzG06G2DBkHGqjlSdry7fY6T2wCZC50YV+bTozzS2Xy8
+	I5My2BWbu2npG/CccYx9C3a5l4UkjlI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=QGGT58+v;
-	spf=none (imf07.hostedemail.com: domain of BATV+a0270c4eccc79b12c2b2+8284+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+a0270c4eccc79b12c2b2+8284+infradead.org+dwmw2@desiato.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777452041; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RUMX91KS;
+	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777452168; a=rsa-sha256;
 	cv=none;
-	b=3DE6rHY/EYlEopYfLo2CbwOT3SBaHmzDuC/LYAEX96GGVkTc0QukTy80ENgEjacIZjKjbX
-	wxvR0c9GTQ380ejDOc8tDJB6EOQwPxlbwaj/uR/Fqt3kyN5znp3tkUN1BiZyXC6wWvArfe
-	UrSeQvMErO5t7ZG5BZck74KtqtS1ayI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SVmAKi5V93OWkp1Vf2W2JhdvXzpDzJyBKN3WZchnTrk=; b=QGGT58+vEMU7jXtLT77Kn88sYh
-	7f7RV1cYAnXXBjiawF74Qy1Yy0SreODfVQL0uRWWc84bo5YkyFRLyVDt1dUHw3Gul6/P7C1eRL0S+
-	1uV6DUra4A1BMdbZi04wH3Q2GXjSsW9H/YBObbaiUM8TdoaUPnRH5do+zSZo4yqB2HQarK7QKSyzX
-	KTXi8qxVGOSrwLuFS/i9fE6J7Ht4i+ncwpeGcEQeYepDespphwWqbiMU2KICEaxa3bmPey9ftStMi
-	D+TdOx1SEll8PuJrrOwxCWmtd3WoNRfcVyce+Iixxzp3Gyay0bmxjTH5xdj7Rg3neNuJ1ScIZDTtO
-	pWxuTo0Q==;
-Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wI0TA-00000004tAV-3dUq;
-	Wed, 29 Apr 2026 08:40:33 +0000
-Message-ID: <cd0ae5795cf14a7b20c90840b0a3eba7db160e72.camel@infradead.org>
-Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
- Live Update
-From: David Woodhouse <dwmw2@infradead.org>
-To: Alexander Graf <graf@amazon.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>,  linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, kvm@vger.kernel.org,  linux-mm@kvack.org,
- kvmarm@lists.linux.dev
-Cc: rppt@kernel.org, pratyush@kernel.org, pbonzini@redhat.com,
- seanjc@google.com,  maz@kernel.org, oupton@kernel.org,
- alex.williamson@redhat.com,  kevin.tian@intel.com, rientjes@google.com,
- Tycho.Andersen@amd.com,  anthony.yznaga@oracle.com,
- baolu.lu@linux.intel.com, david@kernel.org,  dmatlack@google.com,
- mheyne@amazon.de, jgowans@amazon.com, jgg@nvidia.com, 
- pankaj.gupta.linux@gmail.com, kpraveen.lkml@gmail.com, vipinsh@google.com, 
- vannapurve@google.com, corbet@lwn.net, loeser@linux.microsoft.com,
- tglx@kernel.org,  mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org,  hpa@zytor.com,
- roman.gushchin@linux.dev, akpm@linux-foundation.org, pjt@google.com, 
- "Petrongonas, Evangelos" <epetron@amazon.de>
-Date: Wed, 29 Apr 2026 09:40:32 +0100
-In-Reply-To: <b52e7d0a-4275-48a0-850f-6ceccfd5204e@amazon.com>
-References: <afEwWZksU0Fw61oT@plex>
-	 <b52e7d0a-4275-48a0-850f-6ceccfd5204e@amazon.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-27DSEmjFaQEg/jRgqRXu"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	b=4rhD3+NE8P6JMiZq9mQNXRIeCknh8uSa7naHvjYll4+B0MFCejZciCfzoq+3g0npDBPxT/
+	cZvv5HKfD04CCmyep+7b5cBAjJXHdxofrRZGnCmb8ZQ+jl6pwOdn+E6HiG3PjtRgZ77CgU
+	ec1/biuiW3tUEm/GZbFt++SidTjfCSI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777452165;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kHHye3OD5C3a9QpoeBC/kUEHYAfNMmW71MhL7O0n4Fw=;
+	b=RUMX91KSTk3uaUQrNPKok1v0sYN/1C6TvYdMHB3ULoMGrn2LCss8ED4STcddVBt1uEjWRl
+	fs2O2EQA6gSn3ixhwkHo15lOeRnPKdpg7bgHck0DIIXdlp9WULZ5ELvkhMv/5Of1PWrNAI
+	8A4hL++CkWq+hBqzpF7+a0s0VtLuw/c=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH] mm/memcontrol: hoist pstatc_pcpu assignment out of CPU loop
+Date: Wed, 29 Apr 2026 16:42:16 +0800
+Message-ID: <20260429084216.186238-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: o3sisqgdz8hx84gzx3kpraetycq57ihc
-X-Rspamd-Queue-Id: 1A22D4000A
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 99j1996b1uphujs5n1bmdp1jnsqhoz38
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ACF4B4000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777452039-215319
-X-HE-Meta: U2FsdGVkX1+fS4OlcQTQvpzcNwYSqziaufW7xAB5SQAjkpzJL1bdKEb7tYT9lZS+gKXKfTRKPIyLxjQIWBtE7mjNXEHFfFGy6oNu4MYLozkZq47tQDSpvyfSgDPdXE5BH6Rh6VkY6ACc5z8FTuRbWiZwTky0XhcNEZ6H3KpXItboEAljkYP4RRorqfNBvQYyz7ZYza/XHXy8G7g4mLlexPhJx4MdInr6r0PwtAVw7j4HCwPRbJ5jCDLC7LgyvRYepXNTq7sxukLl/FaaF+DpEMXtPUDb2tb76YMjpj2fXtnAY+SBJ3YgIGtATQ13uMwe15crMgMWcaT1CEGjJa7UB+pirpt2s3HkxdJuICPQ3+6UbgaQBDLlgzD9uOFM84U1f1RVmOvkZ1Jpy+kYX3RohmakcaYtuzvnwA2V8Y+C87/AUA7QXVkVFIF4mQU8/b/6ENrg3d1F6gB4In10OHWWR8mZ79eOEqOrDucpE+nfpXJgApOgYRMRNdFwZyLL/d15yG8ahqXRk2ChuNCWC/Ew64i9W47OQ2L2r1wOhlLIjFugr1P5LH9NOG9idGw3ssvDJe/ylMCPitvpsS9evDAoUEOGIqHyk6UG7sNJCm1OT/F3Ls0SxozH9kKhM32H1l92LS7UG3Rktm1M7WPTYRe6i20gQGZ5m7x0hDcI62Mz8KnIVfHAOSo6bYrOrcCSUsLB64LJhf/Pgc6QWwn2d2KCUaYSbdY8cVVzNqgoY4OXpfcJcbJYHq1rqq/jp9ohDkON2/GAInLFaUB7671nqEgTPs4KkkbxvO2zQCiG1dbupOABqxvML4JEisI3osyOjO6r5e7tLYpqJH8te4G8lkWX3G4Weuquc4uO2JkSzUXhgyZjU8wc1mMiGxAs+wmVME952OqUi/KcZmz3494J/ZfO6gea0Qivft7erDqdKb6BsSzqNYBZIjqgbD9hGedK8NBHV/YyW3aT7d8qdksz1vd
- YmPQZzi3
- pCAZyGaM3tdW7jbwPGGx7BlClfx9Z7HiKzXd7fMAVPAqcnDOiwdRj2lNbvhUIOlX72XxlNK1i1Xv6IruN6UWXazg3t0QzlYyzqInEFAzwjRBYigjiH/Dp8u2l+KAavVHJXf16UWWDk6ySaVCDpJCrlKaZaAaImKvQ3Rhzo6MdfrehdmJlcBD9VNjquB6nUbT6Hlr/D06Hx9fxvWBylSFkEvNqxCFZv38bjUdwQWRUeeNbJrh42Kv2p7vszuiW+zrHhdAKu7D5MLHQTBH5RD25kLu4OuTanxdZT+9wt6wQJUKrwjSaCPQfJFQy6T4NeVfI/mx4LVkBkylXPfg53gtdEo7QyZ1GwYCxd1giLkVUZIbVm5HN1AIKGFa+KESunCinAuoeWvXvXnW9GkPHAVAHpUkHQftFry7hReJSMlAKy3z+A/lyCi8F6tz3WYsW0FQ2HSYGCT8bRSajARq7l8ifHSspv0cpPgc0I1xhQhE7+drkkSjC22RnfZr9FD5pPemdZnWdEPV/B9yMTWe2tcauAIDY0qaIm66os1hBbz+S6b7IAdoStJVJKAEhbQonNmTcbIPg3hFtdUeYOn01znf7fF830QUQnSLgJAQdXKWvnw2gCiuaEBEI+BFq74zh7XtnWsWoucSY3mH+BbVVQYFdC0RLDCX+BUxSE190tC6Xh6HsI8kStKHS0UVYU4tiqlNL337bPqK+MzaMSGbeyeSTMiPPMrSQjdavwJyQGbbHFozuTA50N4UZZxFBww==
+X-HE-Tag: 1777452167-127948
+X-HE-Meta: U2FsdGVkX18KNA4lXOco5Sqj/joJ9JXCkj88ZrYQo6Uqab3k2opHfbd3BHX9R3CTPblpxEzCEKWcz57UaG9LX/BHtDTIyYb2WR9Iq6oMzDkWBYUZpTZX+MKO4d2VqItCpCa0Fu5M3A2QtliVx2GhHzou3Dog3fZFx/jg0rGqCFe2WR8Mks/l6xZZe/2EE7ABW45u4tViAdEfvB80/NLbXT9gVIKs9wMZJMqCQy+Gc4Xc3R0ZR8crANPjjq5JPz6CUgoIgKbCQoBbU+c4wXBgnDYD7FHEpDBDNd8eHeSXqSDuZmp7RIBVPaje43pQrdPJB5xM2VgX4+pZ+CZ6ZQRsEyf852JXllDx95B81Y1KeQdlg/LILE8M85kBy0qtlVm88G4LSWS2p7Ms5B8jOo2uQLpq2U/tKRK2a4+kdZDAwUfnZ4+P02VQt9ykJ+hMS5u5xLEo3gNEsVzxYqHcx5vXHlDVDY11G6Wtl6rLC/Qu9u27LcdbQa2/M6xN3cxHlHdrDdS8Me8uR8v7/g8QczYG7PZngd5h2hoJuFmYYgBbmJENuYd2cbEO8DoXF5kgPhubHxqHDU+iM7qSPZQcXkF9Zy5t/OGY2qnRTS9ClW9MfJOCP/Nol6wvR1bUgj9HLyLUoHfGd83Or5bHzox/khVUlsTtRzjvvDEb3+H5CvlXrRxwLtgzuLb7e8yN9KT2N9Nt7G7NToEB8ya/jLKOAdOrtA2nNvqzNBchNL4xollJ7qNMd8K1zhNeNtTRpxJJGsB/9PX8Cmv09qF1J4e3epsqckWBatwXx2xkcm28IkN9BXs35x9mhXAHtcNuUbzLlcCNf8dBKf0gFQg5N4IAzVJB5WiZJRjfw5dQ1B4u8AsPzqNUV5cThp+aaMRZB6Nn909Ms1OvL9zTa3piNMvN93/7p1Hucuw3fbwo7r02cYiv3hL4P0DK0BE1gzLEgpaMVUl3nj+8Lg/DpZ5NwY3uLoB
+ MgIe2D+1
+ YUBhGM8Tn7MvI54bb1amURqtmNVFf9kQPZvHXRiXO74QW54XVyvy6g32gE9w27FOG8+unPu8cMDRv65aU0gs4zee8UBUqe8K/cBF+0+EPoBBqH7HxSxGmdn0HAZMdqYTkIVCADCuHImdwrIyxyDh+hbFHY0WCZcMmBMadkgA8Jkn/nZzqRoYBq5v0ALsOhQQsky7OjLKdhy5ns2blHGtvGdTWv7V0YTIh+7+I49aOjCHOwqBP8B9gB99pjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,137 +90,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Hui Zhu <zhuhui@kylinos.cn>
 
---=-27DSEmjFaQEg/jRgqRXu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In mem_cgroup_alloc(), the assignment of pstatc_pcpu is invariant
+with respect to the for_each_possible_cpu() loop: both the 'parent'
+pointer and 'parent->vmstats_percpu' remain constant throughout all
+iterations.
 
-On Wed, 2026-04-29 at 10:13 +0200, Alexander Graf wrote:
-> I would prefer we only attach the whole caretaker and all of its=20
-> specialties right around the point when live update happens. Why keep it=
-=20
-> dangling and active forever? That way you can also late load the kernel=
-=20
-> module that contains it, so you can be sure it's an up to date version.
+The original code redundantly re-evaluated the 'if (parent)'
+condition and reassigned pstatc_pcpu on every CPU iteration, then
+repeated the same ternary check 'parent ? pstatc_pcpu : NULL' when
+storing into statc->parent_pcpu.
 
-"Why keep it dangling and active forever?"
+Move the single conditional assignment of pstatc_pcpu to before the
+loop, resolving both the loop-invariant placement issue and the
+duplicated null check. On systems with a large number of possible
+CPUs, this eliminates repeated branch evaluation with no functional
+change.
 
-I've always wanted to tie this to address space isolation.
+No functional change intended.
 
-The only way to truly stay in front of the constant stream of new
-speculation vulnerabilities has been to just make sure there's nothing
-sensitive accessible in the address space at all. Hence all the work on
-secret hiding, XPFO, proclocal, etc. =E2=80=94 and hence the occasional
-researcher finding their shiny new (5-year-old) vulnerability and being
-confused when it doesn't leak anything *interesting* in certain
-environments.
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ mm/memcontrol.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-I'd like to see the inner KVM_RUN loop switch to a completely separate
-address space, in which there's a kind of caretaker which can handle
-the bare minimum of interrupts and timers and the most common exits,
-and which *relatively* rarely has to come back into the real Linux
-address space.
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index c3d98ab41f1f..4f4a60e57a08 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3993,11 +3993,10 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+ 	if (!memcg1_alloc_events(memcg))
+ 		goto fail;
+ 
++	pstatc_pcpu = parent ? parent->vmstats_percpu : NULL;
+ 	for_each_possible_cpu(cpu) {
+-		if (parent)
+-			pstatc_pcpu = parent->vmstats_percpu;
+ 		statc = per_cpu_ptr(memcg->vmstats_percpu, cpu);
+-		statc->parent_pcpu = parent ? pstatc_pcpu : NULL;
++		statc->parent_pcpu = pstatc_pcpu;
+ 		statc->vmstats = memcg->vmstats;
+ 	}
+ 
+-- 
+2.43.0
 
-And once you have that caretaker running in its own address space...
-why not just let it keep going while Linux does its kexec?
-
-
-
---=-27DSEmjFaQEg/jRgqRXu
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQyOTA4NDAz
-MlowLwYJKoZIhvcNAQkEMSIEIOV4bcsC85R6/8aGhggbxQwYYv/voLwMooiHGdLIknK4MGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIALSvd+9bzRGGK
-hO+y0ODW59RoxP0arW+kgHv9QL9vVARTKovarCFZHwOJUYTneMae4qrREpalZzG3G15jtuQIip/A
-wSHpKtFgPIHoyAgCJnjz5CWbmkj/Pz8oSudNvp3Kww7Q510B3LODD2ul04N3rvHuwb6b0ZDC3BN0
-TT3v1MEdsR/zxr1esyYwlnDJxaGlR4l+R/ZsTIOLBk/brLREU6DmYpMC8Z2KCH3iu1XvR2kFMM0Z
-apGEjuI51EPO3B9FqscYOQcquN2QJlRIrYfBMovcqCcgPFnzvmOai+miX/MDBAS3YeXqOtgcKa6p
-utG3+sKxacSt14ckj8+KLFbeQXWRFega1155UQwu8gfXGav3e1rxs6ekit6JyAt+mPCXFwgBrZAN
-px4LfloG67Cg6aAJnI6fGAX3NSi8enNKf0dVJAdANESSWl6HpMbaeHEd7UiWUa74lHNlXhzzDfb+
-LXBat/YGE9RYVUmXEX0CqSTHwjMW8KNYNm0yxKm1jdFfFVIEPeMJ4dUWYP4LHIXpDy1jQDYLR7JC
-XsjTXX/wKZqQQD2QUqGGgtyae8C0kV2fTKWUvhIvY09BSOowALjHZ1DXRIP05qKieC4l9Nx2jZOT
-p+u3tDqBNkTmkKCV1FoGzsAEfKlDN2sbQ1m3j0QWPW9RBB2TeqK3Uzq14XuUR+gAAAAAAAA=
-
-
---=-27DSEmjFaQEg/jRgqRXu--
 
