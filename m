@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F7DFF887E
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25767FF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:57:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72EDD6B0088; Wed, 29 Apr 2026 10:56:57 -0400 (EDT)
+	id 5A99A6B009D; Wed, 29 Apr 2026 10:57:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7061C6B008A; Wed, 29 Apr 2026 10:56:57 -0400 (EDT)
+	id 5810B6B009E; Wed, 29 Apr 2026 10:57:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 648CD6B008C; Wed, 29 Apr 2026 10:56:57 -0400 (EDT)
+	id 495F36B00A0; Wed, 29 Apr 2026 10:57:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 525F76B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:56:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02B6D1A02E4
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:56:56 +0000 (UTC)
-X-FDA: 84711895674.16.6EB1430
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 385976B009D
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:57:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E03B11A02E6
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:57:27 +0000 (UTC)
+X-FDA: 84711896934.01.36BD3FC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 483C21A0015
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:56:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aFmOTWUC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1E30DA0004
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:57:25 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZT7h2jKt;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777474615;
+	s=arc-20220608; t=1777474646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aV5ezDpfAzaj+HhnmXIFAIrHyvrm6mpa0CGHaWLzs9o=;
-	b=GQ36KL4DlrusUOjNIyTGzklTcsvsdtV0Pavd6xbOtZzNVYv54y8Sey36HGXk7xpOmLnaY7
-	XgA8qeM6CTD4kRam2Qiery2DMwSBzgO5uGu8ytlANdHfz8vXAmuf7+b6oB+Vx5c3TOZAc6
-	Eh/cbpkQZUFgos8AtPshb3JFBmcqBhw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777474615; a=rsa-sha256;
-	cv=none;
-	b=Lb+5cHa7IrtrL5fxq6pBASGP4eVXXqEllP5vC5PQ1fw7k9HhNqjUNVZl4V8nqmvyUklhHy
-	6AryrsD85JhG6AXVknwZFK5yd+YsXeurlNYKyrPsQPI3m0UIRYqp9fK6Kr6QU+p18wEKZ7
-	pqjU72INOByYqHugeqof7fSI+qewz1g=
+	bh=Xy/Uh10sx0c/Gp/UeCsZzKWC1uMjC8AZ7vAnmTqmRlM=;
+	b=oGZUsfcLMhBAu2RMBuQyEmCDs11NfjNskPsnuACZmwA1fyg7KCWiBktp2rSeAQLoZqPWrH
+	CS1tXc6Webx6/0PORmciwN6AcOfgLlX3T3amAq1C1cdszVzpvr1+Lf7W5HFvXq08rfhb0R
+	5XthXnKxyYpe5fihgAzi4RPkgEZLVO4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aFmOTWUC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZT7h2jKt;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777474646; a=rsa-sha256;
+	cv=none;
+	b=tF6LxwOBTnA1Rm1Y8ODHr4H+mAZjokqxje2pyawndAsSBS03hEe2nc4tgJBluLt4XTTrNL
+	D6gnoex+UJYMOKPuY+dcEAfDDPzKf+6FnKppK2cxtBD0u8JrlC6Njox6/WCIDc1d6YRd1r
+	tjjCHYWUdUcDqTw7CzK7iDJRa7LDZ7E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AD1346024D;
-	Wed, 29 Apr 2026 14:56:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A78C19425;
-	Wed, 29 Apr 2026 14:56:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777474614;
-	bh=O+4e7sz9Xcv4F2XUvuUxUbUs3ZS/nCd2chQb2PuT9Ec=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFmOTWUCMYaO+P/jLi9PbVuQQj38Tx18wZNxwKEH57iZMOnJBCWRifAjdYjXZeCtP
-	 eeRyFvOQ8T/5hQYertXDk2/Iv2By4abwxg+AZdRZe/jKNVYF+xsMjTFW4JtZoV+ba0
-	 Qb7PgbUwN43cXD7vIXCJcikaxLwxBtJjV2FsgIwzgUvjqSwpw4lYnWKqeRlGOZ/i3R
-	 JgqjIH8YQo2ixTLZIzNtFhoX70PYCJIi35mdYilkH2qlWdW7SVAxW+LyM5H2bp56JF
-	 MIdwUsGgUD7LXJojE6rBD6FanBw3TWOQjMsyfli50WO50J+7vtgxiVje8f2Ka5OuaK
-	 8vokQBK+MukXA==
-From: SeongJae Park <sj@kernel.org>
-To: "zhen.ni" <zhen.ni@easystack.cn>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] mm/page_owner: add NUMA node filter with nodelist support
-Date: Wed, 29 Apr 2026 07:56:44 -0700
-Message-ID: <20260429145645.80675-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <f09a287b-87e9-4701-afe0-929363937fd8@easystack.cn>
-References: 
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 483C21A0015
-X-Stat-Signature: go8jcqx87rawej7f93dtkriwq45qjpx3
+	by tor.source.kernel.org (Postfix) with ESMTP id 89BF560138;
+	Wed, 29 Apr 2026 14:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D175CC19425;
+	Wed, 29 Apr 2026 14:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777474645;
+	bh=NlNJ6ZE1PtVHQsujI8aiMe4rB+6XsGkXf8RSunRrXUI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZT7h2jKtezIYqQe+ESZxeDe1Z3QaoB2gaXbMeIPypYqY+hjd31tIw/88Ipnzt94/M
+	 vSWqGo4F+8jJCNVmxIe8O4Ydv5j1TPp1ez6ix3/6ErT4+WIMDGEcXYWZcy0x0dVTcF
+	 SLChFWxLI7k996tm7v3moitsx9QGpD7DRfSJPw7A=
+Date: Wed, 29 Apr 2026 07:57:24 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Vineet Agarwal <agarwal.vineet2006@gmail.com>
+Cc: david@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev
+Subject: Re: [PATCH] mm/khugepaged: return -EAGAIN for SCAN_PAGE_HAS_PRIVATE
+ in MADV_COLLAPSE
+Message-Id: <20260429075724.a97a964003f624e47d9c0a54@linux-foundation.org>
+In-Reply-To: <20260429140434.439456-1-agarwal.vineet2006@gmail.com>
+References: <20260429140434.439456-1-agarwal.vineet2006@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hriu6rdof4ekwmwssyjo98uc51w3riiz
+X-Rspamd-Queue-Id: 1E30DA0004
 X-Rspam-User: 
-X-HE-Tag: 1777474615-534176
-X-HE-Meta: U2FsdGVkX18TIOWrWoutIZeC/U1wfwX4VPNHzkqYfR7m9ob4julq5p8CIqD9UBS4CMizhw+CNIAvhEPfNS5RlJNYoTiEYQIbdl0UGPMD58vJGTYAs71vVxN4MVbb5bRuTafWs43yXNFesZ0Vm4K30EJkRqdeZTn5cvtSsfU0vNwuU35cFeZWWVmrx4w4POt6R5Qu39lSvEmz5nWDxdwXKfYTEkHLJNX2WvkFhEFr0lAvLK+xI9PWu3TpjS7SlSpr7cWcHCDS24Wx1HHwvlA9wcLX/c2HtmqSejlqiJ+4q3RfirxlWQeQCO2GcYTAAQQ+bSbJ+29vna+OT8AxXkaKANe7pD+rKTHbHRkcWIqUZwgEDxswbIkASqSBkUaO1kk9KY1bn7mc3Onk9kXjOINxxyjj8zLRfaJs1P9PlEe0tpS9Sus6aWfenuTve7OJSRJbDKuvZ6OAe+NzQ8lA+PN1A0aBll8xuTNr2ChdYfO9MCxpYCYtdSpTwJD+YORMM2Ik5Sr6hlYa9PiSabsHr2SBUfbrIpoecE68VjsTT32LtaZ/H5P6naIi/hEQ/rddq7MMK8yZqGEOxep55cFNMXVndZC/90eAX/rJofafzDgwHqcwSI5JpC8A/HshlJhA6TmNfzsv1BeOgfi8YSgAOIgl+SgAiQXbjtVHAO6ukL6J1o1XXKIfmN/YdSCywJ/S7TvFjJVRIh1V+t0HXn5bcvETC6U3vHi/qnd9ZIWeZmrUi2gLNYXAd+5WyN44QyjahmZzKKs+o+ZR3ZLihFt83R0wfgwtjMgnAC3JCIU7ldx8gyzisHdu+Lze++yYuNr2+G0nwNzDx7YgbvUs3G3a0yw4ZEYd9U6nmMl4rB35BDfxSTNU/4N++GNfYMehodLpK5LKCHjPFESwBD8ReIHXHw+Y/FQeU3JypIzRMNmSqrtG5qvYNjMHxRHLEKGVJNxO1ZNJwsxea+M4dIPR362uWQI
- NaWjH5Bf
- DHoP/1OD4qzapMIlmup11HlhL9TSkP0S0qvEEvuSIyk/T3N3rwfMQViuOrZS5V1muLQH/zp7G1Mn5Clmj7bXY79NUPg4GUxhd9ngKqqGJnebBpPTN9IcFPRgKeTUhKfDHBErwScUIOQpm1H7S4dc5Zt2M4Ukwx6YPQzds/xaWDML4itJyy16niCRkay4qiuPuFWc5rYwh2FmkBoRC+q/ynAcul2Na9aOqh68ay7jcXZ/7z1LG8zSjavZopY6Ccr7wNqUCiiCQLz8IB8oOMddc84bgotSrEfMbl3C9
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777474645-803021
+X-HE-Meta: U2FsdGVkX18s1Da5hDT3NOltICi1RI0y66QjyLaH5twKzG7euSff8a+diBCGAsNXrTI7wHKqqdpr84fHcdcNQ8jVke3SpfwG3OzPQiHuURT7P6BRTO8y7aKiivzeTQqTM46xBz56jdEKScTmgAZ3PW3L8XYkcPiGdD/5w5TH2q8gLUDkSxu8Tzn7NAkwqyYfOGxtZm61g/nxRD4Cr2lsq65iKQYIRKpr/mY743Lz3p9UNKiO2VBVcMK2eIem8IXicifz9FNjMRbqbESNky/MqzkBkmYvrOXlMc4uqSHfw1e1I4h+05qoKdfdoTr1otnI9cOGslY3f1LIi+OhltNBec5KVhPLa4hqaooxI8cgzJyQcQ4yPjVNsN3vgjPFpA+Cm75+py1Nhd21zCkWetxBiQ8k2Ardvbkn93sHJkhjKVY53MxKf2f3ejRRbC7VktLAKPufmEa7YBMirsODQlf1klvzvANQkctx0vlxTCSomfuQiY+vrwTKCsbfYzPi4ga78QFTgNG6dweVLW6n3OWNemDlr6aJ3gZDfwlQJpAWy03ORhLUTPI2VjZ1sRFOMdHRIqlaTFEZ62AOuZuNxQCy3wz+/vOhjp/p5XEdksWQR6YE/3tDDlqGJ85mBWBfRBk9ONZDh0OTbcje/ZSgfYhtQW7f+S+gh2NR7dncY4i8o7KVW73vx23DQCFX09x/F9ufnM/twMlBKbk+A0WmFbuVn5XdQ6Jyye+X+3jIB1etWSfh8/FCgEsNgkg3exrgtOpK2DBFqr/iq28FlCHwIQxqPbiOfVBpxmdcaS+Y5Q2gvCz8CISrOks9YjCzm8Bh31/YSRxyUaJRlvOxam7snIXU/S2l6jICMlTJ4qQZgycAY0PQDHe8yRNxuT1Per1svfX9d9H8t/8NEivt4pEjs7bxyMbLu4OinpPzCORG+8ABmxrr0fmNVM406m63fRz6DDQ3vdf7qbqF9XlA++RruTj
+ iSUbaURN
+ YgrcbNzVNRUB3+ygBXAMZWcjYVqZCVTPoiFMi3lhpjhYS+rGbFUCfCkHh/hEzJJn7lhYtnD/Cgx2JUb65MmmFvBt3NypnFiLHSO/i6kbRoi9oO+n3+iqWreCx0bc4Fs28EASEkHQYEqfFEZ6KF/doj5dSRNtg9IXgKb5DGQRFHDyl+urdXDJM6dgX+CoEs3Om7l/gJDKDEDbklEsBf6OVz774lJvy6V5LnzQwXI7c/s/WHxNh09fxHY95lfHzT/SNDnGore4os3dQ02JHgw4LlbcZ7tNllOvfhlaVyZ86OOlopXSP+T67ZRbPzFtH2jp7s2l3a9WkjNtcrFvMolkRhfBbpng1DolBYLLJHSK8Aco5TzKCgLVf07iHkha8vcRh7JyhitregflWB7U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,116 +93,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Apr 2026 17:03:56 +0800 "zhen.ni" <zhen.ni@easystack.cn> wrote:
+On Wed, 29 Apr 2026 19:34:34 +0530 Vineet Agarwal <agarwal.vineet2006@gmail.com> wrote:
 
+> MADV_COLLAPSE uses errno values to provide actionable feedback to
+> userspace. Temporary resource constraints are mapped to -EAGAIN so the
+> caller may retry, while intrinsic failures of the specified range are
+> mapped to -EINVAL.
 > 
+> collapse_file() returns SCAN_PAGE_HAS_PRIVATE when
+> filemap_release_folio() fails while isolating file-backed folios for
+> collapse. This currently falls through the default case in
+> madvise_collapse_errno() and is reported to userspace as -EINVAL.
 > 
-> 在 2026/4/29 09:28, SeongJae Park 写道:
-> > On Tue, 28 Apr 2026 15:11:11 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
-[...]
-> >> @@ -685,6 +685,7 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
-> >>   	struct page_ext *page_ext;
-> >>   	struct page_owner *page_owner;
-> >>   	depot_stack_handle_t handle;
-> >> +	nodemask_t mask;
-> >>   
-> >>   	if (!static_branch_unlikely(&page_owner_inited))
-> >>   		return -EINVAL;
-> >> @@ -698,6 +699,8 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
-> >>   	while (!pfn_valid(pfn) && (pfn & (MAX_ORDER_NR_PAGES - 1)) != 0)
-> >>   		pfn++;
-> >>   
-> >> +	mask = owner_filter.nid_mask;
-> >> +
-> > 
-> > READ_ONCE() was used for owner_filter.print_mode.  Should nid_mask also read
-> > using READ_ONCE()?
-> > 
-> The reason is that `owner_filter.nid_mask` is a nodemask_t, which is a
-> 128-byte structure. READ_ONCE() only supports types up to 8 bytes and 
-> will trigger a compile-time assertion failure for larger structures.
+> However, filemap_release_folio() failure commonly reflects temporary
+> folio state rather than a permanently uncollapsible range.
 > 
-> This was actually an issue in v2 - the AI review tool (sashiko.dev) and
-> Andrew both caught the compilation error with READ_ONCE/WRITE_ONCE on
-> nodemask_t, so v3 removed them.
-
-Thank you for kindly sharing the context.  Now I understand why READ_ONCE()
-cannot be used.  But, is plain load/store safe enough for nodemask_t?
-Shouldn't it still be protected against races?
-
-[...]
-> >> +static ssize_t nid_filter_write(struct file *file,
-> >> +				 const char __user *buf,
-> >> +				 size_t count, loff_t *ppos)
-> >> +{
-> >> +	char *kbuf;
-> >> +	nodemask_t mask;
-> >> +	int ret;
-> >> +	int val;
-> >> +
-> >> +	/*
-> >> +	 * Limit input size to handle worst-case nodelist (all nodes).
-> >> +	 * Worst case per node: ",NNNNN" (comma + 5-digit node number) = 6 bytes.
-> >> +	 * Formula: 100 bytes overhead + 6 * MAX_NUMNODES
-> >> +	 */
-> >> +	if (count > (100 + 6 * MAX_NUMNODES))
-> >> +		return -EINVAL;
-> >> +
-> >> +	kbuf = kmalloc(count + 1, GFP_KERNEL);
-> >> +	if (!kbuf)
-> >> +		return -ENOMEM;
-> >> +
-> >> +	if (copy_from_user(kbuf, buf, count)) {
-> >> +		ret = -EFAULT;
-> >> +		goto out_free;
-> >> +	}
-> >> +	kbuf[count] = '\0';
-> >> +
-> >> +	/* Support: "-1" to clear, or nodelist format like "0", "0,2", "0-3" */
-> >> +	if (kstrtoint(kbuf, 10, &val) == 0 && val == -1)
-> >> +		nodes_clear(mask);
-> >> +	else if (nodelist_parse(kbuf, mask)) {
-> >> +		ret = -EINVAL;
-> >> +		goto out_free;
-> >> +	}
-> > 
-> > Doesn't empty string input to nodelist_parse() clears the mask?  Can't it be
-> > reused?
-> > 
-> Yes, empty input (echo > nid) works because nodelist_parse() handles it
-> correctly. However, nodelist_parse() - which is implemented via
-> bitmap_parselist() - cannot handle "-1" as it's not a valid range format
-> and would return an error. The explicit "-1" check is necessary to 
-> support `echo "-1" > nid` without returning an error.
+> For example, ext4 returns false when a folio still has dirty
+> journalled data, btrfs returns false for dirty or writeback folios
+> before extent state release, and NFS may return false while reclaiming
+> filesystem-private folio state.
 > 
-> So the "-1" check handles a case that nodelist_parse() cannot handle.
-
-Thank you for kindly explaining the reason.  But, do we really need to support
-"-1" input?  Couldn't we just redefine the interface?
-
-[...]
-> >> +	debugfs_create_file("nid", 0600, filter_dir, NULL,
-> >> +			    &nid_filter_fops);
-> > 
-> > Why don't you use 'page_owner_' prefix like other fops, for consistency?
-> > 
-> For consistency with the other file_operations
-> in this module (page_owner_fops, page_owner_threshold_fops,
-> page_owner_print_mode_fops), I'll rename nid_filter_fops to
-> page_owner_nid_filter_fops.
+> In such cases, retrying MADV_COLLAPSE after writeback, reclaim or
+> journal progress may succeed. This matches the existing -EAGAIN
+> handling for SCAN_PAGE_DIRTY_OR_WRITEBACK and other transient collapse
+> failures more closely than -EINVAL.
 > 
-> I'll incorporate these improvements in the next version.
+> Therefore, map SCAN_PAGE_HAS_PRIVATE to -EAGAIN so userspace receives
+> retryable feedback for this temporary failure path.
 
-Thank you for kindly accepting my humble suggestions.
+Seems very reasonable to me.
 
-> 
-> Thanks for the detailed review!
+The madvise(2) manpage could be a lot more helpful here.
 
-Thank you for sharing this nice work, too!
+	EAGAIN A kernel resource was temporarily unavailable.
 
-
-Thanks,
-SJ
-
-[...]
+and that's it!
 
