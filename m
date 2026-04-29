@@ -4,91 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF916CCFA13
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 17:36:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56CC0FF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 17:38:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B559F6B0005; Wed, 29 Apr 2026 13:36:38 -0400 (EDT)
+	id A6CC76B0005; Wed, 29 Apr 2026 13:38:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B06576B0088; Wed, 29 Apr 2026 13:36:38 -0400 (EDT)
+	id A1DDF6B0088; Wed, 29 Apr 2026 13:38:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1C276B008A; Wed, 29 Apr 2026 13:36:38 -0400 (EDT)
+	id 934C56B008A; Wed, 29 Apr 2026 13:38:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FF4B6B0005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:36:38 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 408F91A0360
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:36:38 +0000 (UTC)
-X-FDA: 84712298076.13.433B2BC
-Received: from mail-ot1-f78.google.com (mail-ot1-f78.google.com [209.85.210.78])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 89671180014
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:36:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of 3o0HyaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.78 as permitted sender) smtp.mailfrom=3o0HyaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 852616B0005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:38:02 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1BC79140347
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:38:02 +0000 (UTC)
+X-FDA: 84712301604.01.72B3444
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D4C28A000E
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:37:59 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NhWTc2kL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777484196;
+	s=arc-20220608; t=1777484280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=jiHUm98BDxZ3jihx0YOQdOmpKJWU+yfzKGqWIOvP2+0=;
-	b=FacHin/4ZQe3M7QHb6TNE9qjOG4rQDe/ZLYF4tHxRVFWUMoJ1RpMCLOOl2KI5NwUUB40cJ
-	nwWo3FE4iVt/syxrZf5vJthoP+YP9TJpXSVs6cXDO+1PxbyfUiO62cyzxFOHOH9c7pMmsf
-	21lp/bk2acnLqTKQdxQM31hxyMPyak4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of 3o0HyaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.78 as permitted sender) smtp.mailfrom=3o0HyaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777484196; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NnM1NPkau1naLpsnPcmznKfyzqUKaZf4UoB5KA0mJD4=;
+	b=64RVI97j92tkCAAgGtkDjuLQ4GNpA7f9QVlJ3RxFIeREVci+hrfDmxviDCGyDaiUlUaVox
+	ICoiNcvWzD8bk9j8pjlZhJVmJAGxdSo2/9YEzYzOhev7TogqlbKERJ/OwKEMg7lT1XfZQx
+	NEInmO2k6Pmvucd5anQ7QvRAA1VOcIQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777484280; a=rsa-sha256;
 	cv=none;
-	b=J4mliZhNE9Y9zX4A1PxnUgRgLjJ0R8hewHEC+iaiDUqK5Rk3hIkrlr+ahCQ0y7TkhEwaXX
-	h4vIZfu3z6lwaceO81iWHXsgXGHPaHaY1px76IbpQDI8+kXfEVc10A6Fu8PI6J7VzH1P1w
-	GcYlFLfSsf1F8w3hgGLaBqU7kKTLzp0=
-Received: by mail-ot1-f78.google.com with SMTP id 46e09a7af769-7de75c9be06so244133a34.1
-        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:36:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777484195; x=1778088995;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jiHUm98BDxZ3jihx0YOQdOmpKJWU+yfzKGqWIOvP2+0=;
-        b=msq/HNNRUoRGQUofdC/g/fjkHX35EJzAIBjGcjMfr6vecpN9i5wI137F9rv+68Z85z
-         TysYZo1xwWKi+gDWyepxucYzxh6O58NQolVffdm17gLAlQrUH+xZ5ZfPdxCrM4wriAPo
-         j8VgI76AwU4fwuQfG3NzvNEIKkdcy23YTRNuIqi+xHIrBKAOsiNP8MWArkgbha/Q6EHC
-         qIxV3Asc23XSjNkJBdlw7k8ZMuf10MzJpj2yZFbi3GFYb/tgETtYqQPplqSobvtI2zBa
-         cyzBUWqzSBliwSr6R0lVkB1yjzTO7s1HXn++c4/BzhuQJDRuA8s/S+CRGoq9YHXbi6fH
-         l63Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8EWVD3w7qzdcWNcy1wtE8BuZJixcE/At1WPRa/d5jvMBeo264vyWlb5uRtFc/3QmLl2ZXP6yRThw==@kvack.org
-X-Gm-Message-State: AOJu0Yz1BzoURDcpbCaJ1mv8eRgsSKpsoUAzfi6wFUuTGj/1Pwrol+Lk
-	thIe7j7Jq3kHo1HMekBrp4gznYHLzFLR3wFf3RiQ6C4yXWWeE1te4RCejwCRPl1sb9QQN99cjQQ
-	nCCD98dQW5dGk0xXNO27/7hJmDxWk3SQmcCWZf7IeldGbII+xj0ewvC+Zbog=
+	b=VQVmvqQB3d2V1IMsc+upZOqNe32hypMf+hPrJQWCkEQs55S7jQJ5RFTJ5fAxiq6fk+xfan
+	27/twki3J8L01k8Ye84+PauXKHj/CXPQTnsa8SaTYEG47i30IbFpJDQIX+QLUcjWnAOSl7
+	TdWG4lptb0XEz/LqD25N66C8Aduy62M=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NhWTc2kL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B28A243F77;
+	Wed, 29 Apr 2026 17:37:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C9CC19425;
+	Wed, 29 Apr 2026 17:37:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777484278;
+	bh=vfvNLdQCP2QhgLDeoKvh1hjaGJlPfVJ1+fo5Yn6Jecc=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=NhWTc2kLqISC5cwpSaPxT08oZAR2+Ea2mdTwaAtC7zfURsVmZFc5zYzcXqeODPoMT
+	 GfLpls0zUnpArSFmLXmZZxEe6rMgSWJXOYLv6cGvbDhYy6FMYhtIlpMU4KBUubq0MG
+	 nb9IORFEQRoWwqut9t+ISmzEiL0RAO7cg0BxgUeLjfl6lppK/6Yaa5f/dnBPqVNmF0
+	 ynDULK1FvJNJ2jjAL2d3Np7Ix9i6mD/mpOi+kJIZB+f9KgWJAZrFOsgpcy3N8sSJbU
+	 0a3eQI+pvfcmfprB8bguLRFdvz/SStQqI697+nnKZDepWjxQl3yRmbI07PelexrSYM
+	 e3nVc53WtHTfw==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 17A57F40068;
+	Wed, 29 Apr 2026 13:37:57 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Wed, 29 Apr 2026 13:37:57 -0400
+X-ME-Sender: <xms:9UHyabil4gFIhI35RxQ22UuSNHNUkw9Gl9vB9hejUQPNihaezXAeVg>
+    <xme:9UHyaS2zkp-hVMCSov8m8UGYssLiK3_6M3qyfK4l3l_D1CjpRGZmC909PkD83E_Fi
+    eSKrvH9Eu7cVaZTPiq9OolwN5mpRfGrLbWaGcLNzr8EpoLZ_TZaN7Y>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekhedtiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhguuceu
+    ihgvshhhvghuvhgvlhdfuceorghruggssehkvghrnhgvlhdrohhrgheqnecuggftrfgrth
+    htvghrnhepvdeuheeitdevtdelkeduudetgffftdelteefteevjeevjeeiheefhfejieej
+    fedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrugdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeijedthedttdejledq
+    feefvdduieegudehqdgrrhgusgeppehkvghrnhgvlhdrohhrghesfihorhhkohhfrghrug
+    drtghomhdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegrnhhshhhumhgrnhdrkhhhrghnughurghlsegrrhhmrdgtohhmpdhrtghpthhtoh
+    eptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehkvghv
+    ihhnrdgsrhhoughskhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhgrrhhkrdhruhhtlh
+    grnhgusegrrhhmrdgtohhmpdhrtghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhm
+    rdgtohhmpdhrtghpthhtoheprghruggsodhgihhtsehgohhoghhlvgdrtghomhdprhgtph
+    htthhopehlihiiphhruhgtkhgrsehgohhoghhlvgdrtghomhdprhgtphhtthhopehsvght
+    hhhjvghnkhhinhhssehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghvihgusehkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:9UHyaWgQb1qiAVaJjoQmSh7-aME5apWDBmmct_h1ZbRpaWqUF1O1ZQ>
+    <xmx:9UHyaTU2aUe7OQDYsiV3OM63w4dVKA3wC2sabKazPUG70HBRWQ_JEw>
+    <xmx:9UHyaftUUZf1dvcEHx9i6fPR6mCODp2HqXCW28kYfGqXHQNunaTWHA>
+    <xmx:9UHyacZvo8qjSYr5_Z8113kMxB2VDyho27deuIeQoZQVj8k6BrOasg>
+    <xmx:9UHyaY4XbJ-nGJxGfmQQyDaIGs8Ez_hlo6t2c5K8X0b_4QYOsYPSyMkH>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E9C20700065; Wed, 29 Apr 2026 13:37:56 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2908:b0:694:99e1:62fc with SMTP id
- 006d021491bc7-6965cb5bffemr4338246eaf.41.1777484195616; Wed, 29 Apr 2026
- 10:36:35 -0700 (PDT)
-Date: Wed, 29 Apr 2026 10:36:35 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69f241a3.170a0220.3c4978.0005.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING: bad unlock balance in finish_fault
-From: syzbot <syzbot+8caf74f5399ee2d5212b@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	shakeel.butt@linux.dev, surenb@google.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Date: Wed, 29 Apr 2026 19:37:36 +0200
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "Kevin Brodsky" <kevin.brodsky@arm.com>,
+ "Ard Biesheuvel" <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, "Will Deacon" <will@kernel.org>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
+ "Anshuman Khandual" <anshuman.khandual@arm.com>,
+ "Liz Prucka" <lizprucka@google.com>, "Seth Jenkins" <sethjenkins@google.com>,
+ "Kees Cook" <kees@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "David Hildenbrand" <david@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-hardening@vger.kernel.org
+Message-Id: <5279ea66-0e31-4f53-ad76-4fd8ebc012fc@app.fastmail.com>
+In-Reply-To: <15555e9f-65ab-4811-b20c-8ada90bdc9d0@arm.com>
+References: <20260427153416.2103979-17-ardb+git@google.com>
+ <20260427153416.2103979-30-ardb+git@google.com>
+ <15555e9f-65ab-4811-b20c-8ada90bdc9d0@arm.com>
+Subject: Re: [PATCH v4 13/15] arm64: mm: Unmap kernel data/bss entirely from the linear
+ map
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D4C28A000E
+X-Stat-Signature: h8hx6ing844wqoo8hh54jdsjsji49x6h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 89671180014
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5rmqdwirjbd1nck7336ixte4dbrctyxa
-X-HE-Tag: 1777484196-692679
-X-HE-Meta: U2FsdGVkX1/A/eboru7EhfMeZEvMvaKAXrF9tTOpdVy5f/ORyR5KDtXNsPeQ5iCu8KV0gcwOFCN4ypdweNCJuVERQMalQjmpdi+ljVJy1nGDn4DyBiopm8BKrnueL+MtPy03jhSNnMtTn+/7zblUCpoq2J7/3hQ7RrjPtZlIeU0/jj8BSV2Ei6+CyFWv05EKDVgWHrfXiaMJhTiPVNmeztUq1OR8nPTkznpktv9EUR23YCNCF9XhR2hP/RSl6eGV31IegO4fDAHepbgoBGa5GyyMTQfUmvaXu1hmNX0tlwpNbWt8H80vnFVmCRisMqlNO5msiRHL7WLi7fzsDlUjzLR0iiXW2iXA4yKD7SFOqmyFs32ffy+ql4M4LlkCGDtA9pInFBffcMaoNTMX0spKaq2P4PaU8vN3KeJ8x5KFKHPCtDBnR4bWSpZ4q53tQncQaDhhclaZwZRh3jF4zkbwxa5T6Kd1PRzi6dWf2r0tN37lfMxvJ089uW7opeH1iqdEAS3ZTIJXd1M+oapXnIuv/aVq0VjrH2wm4CT6/0aWsBVBMW/xDtYuczlj7vqX//8y0R3jxu3KC34a5eHHNcyriqkyO5Vkk7/eU434geh78v9Tb2GIAFa4LdoYcD88Ug0Qm4h/ixA+AYukZEcjTJ+IqXPmwdaDUKDpGQuWFQq3gmj4/1nla7VHWuYyUx1VnRD2ctAtwnzpMS0fbV1ROoQHRftdzh7w0E+2huew4hgj9GxVycjJoukBQ2pbjTiB3VnVesh0v2KzPY1/J95llc6TYxKJnP/Eotw2cgUhUHPUTdXC+7xA3WVXVLHDo6o/XSB++l8kHRD8ajZFWSRY+PvadQBWmTvpfAeF0ZZXhDw9i4p0CBZ1AAoGmA/dvQvObWl3YHV8MuTZHAd7vxrlD7/WuBlMr4+Hu33uMG4t4NLnp5mVji09Hb/tGmwBJjfTgqPwEvy91xUoX+JNZ4X8La4
- AH3VpXEh
- frNzAkBj83anhJKToVFwvA1Ja8oAIs+3gHPmQzXlmsyEd+uL4BWSOAaQOAkA+oQ8Oc5HtHfzUGF7iZY7Sso+qVFYtQciWDEB1NFGRq8VGnnqST1s+YdVwk0BOXy7NN2Pd3pWSQz7P8yzfrz/os3zDrsOYIflVzZ4wb7eZZU3VdIi+sRm+2Rr1yJXaGsVr4U2uHcSdIRiqbeaDk7EkxEE2kocCKsTCxGx5qOCrolk5U/6P1ZRQWfAmLPMIp20KSFSLDPTsKrI3wAk0n3MqTyQkwS/tJZLqIzRRc3u1sZdaF71IdeUuNabzNTdF/XUafV9ju6J4d4GEk3QwgLHSn11DHour0WqGZ+vrN8VKSLKbvfbQ5NGL0RT0qWwB4su4O9rsto/cp3lNwErIxEWBZlQpwyzq9eCUVq0cCaX3Y307OsWK09UM89HR8RHCw55IslM81Ot0BrvhK1q8SZrxy3VbudYgyBqqorTDfofC/3FDyd8QoZCZEEiH3tejuJR18EXXPIUPwsqOcSusfugBPCfsMoQ1iqAnqGsGus5MTwm9NLAkXFbsSw0PcwN6tcOdUGANf9zCRsRW/aoYUJgrdMMNtG/V7lxaJ6RCi6sFV/flZdVUKpHQGzzZuec6qJ5lK7e9ReJ219TGJ28kwxwbbP8VketvHmJ/KBXZO3BpaeHNY4LfL7r6tIMbhLIszG6tP8yVPPLF5AaXrlxsqbtUG6np53Jn0h2OiVlMMjvaWxGTmRBUH/2V/2er12GftJiLK2xwKOzwbbqOfJER0RwL0uUqYERnX1zNpHcZ3zP5x+dg7S/vhEoJZXhA7KTLAzsjmHIHqPSS48iV1e8Oer7/yjdHkx8KNtr2pz9RniE8HvtCd4sS6fGj82za+qWWZ9T6ZbbRfc1WntPWV4gm6uV6tAKKsLb+hOTrH54UcClstSo2BMtOI36xmoW0K1f/Yyi0CjVAYiBil2kJtYz031NsbBMVKucIPu1p
- baSfQQz5
- Eatqq9caxD89ibw120IoiroDJ4eaHYfHJf4xj0UaTAuaGwTeea0WrwYv1ZMd9batJsbsbEdIQDTUfbWPfxQiiEBON5ahUVmRu+Db5StiKF7dKxQP8NPKr5eQ53MuTlwjMSptOnls8idnu2r01M5WlZLb22cqbmmeeVEoHYN3JtYC0nn3s2RHPoGWSNhBl0DA0W86qwGDrksnc/JFrb4Ll5o2nsc2YVlr59z+RyaMpcrBKlaRe7pzkitNpO51/WnAJtO32sGZqhtU3iei8ig1awrCJrQt9hzq5qt7CRL0u4IRyelW5OvETy1aAZ+JU2DbzV5m14HLc4ginbLmqFa+1HNZdRdGENrWwgtm/eYM0OJwzlhp4BDtsYWCBVnd22Xld2dNfG67Jl7CoDl4G2aEQ7Hxw8eE0WyP7d67+EugPu1IGCY2V5srA4D52WmLLW4fhvUWlsBVAwa8Kh9QcR34PqJXXx/AnxZz
+X-HE-Tag: 1777484279-488197
+X-HE-Meta: U2FsdGVkX1+WpSfxiy8Rq57NSCsw1qn+GBR7PcMhd/BpY74IftEtIgiHtcYq1sOsKbAYq3dnRb7KtaOs5dTzfz9p2rieLxU9EIWihdKLDYa9PK4Xkz2kFRdyH//WuzY5gsby2dFo3yiBhi+xd/uotJXUWsnw37mwtjnhQYjSzzhHrEdefyFwWVny7o2p8TL71e3DGUTeuZF4I5lYthHv/6DxpGeID7B8hp2/sNdHB4R+PvVVOZHrG5RZwjMIMHXurh0ErILYT0XbG4uYyLg3IOQQU1/zqnXDk3uY/H2LePJP/Wb5Fg5kRJlbIlzfAW2NCPNxs7K9HpmnUUErj0lVXomUdirp5LAWTDz3ahe8uEQb26mV0LkqFdDcg8KO0ARAqzmZph2SpDOb9aDEbqf+1W/bry5A9pqE9Qm7WvLpBZnPT2Ev4Omeo+8tnR4pGBTAQ5dkPauH3oGha4GDKFE8saxuA+72KoZQ572PN/wSpS5RtFDR09NiUY9a4vHVHh4egtOj71sWau3EIuu4N/G4Yg0FJQaSPZj0+Ec3eKXGUVkdAy1haZP68bsgKOj0sVi4EC0uMxHLv9Bgmt0QTsonEXAAavBaU4Nqy6RjftN21cCn1ohsPUg8Zy6PRlkgeI8gkxTNPfC/GHEV+qr7HfQxiCfRo+7J6uQnWdN+WZfuAuHrl8SmNL7ubrvK7L5VMllEGuge1ick8Rl4mVetncE22RMTPh6ao7PxiFHa5dgACzlWbiQQddS8paoBEiL3tTh0zflc6QMogde0VbBzM2gMaLsa6N145GgE9iKOT+P9/2PkiNuBmPBSZ8E/4becY4UVVcen1u2NMxLC2mlPnPD2bYt38qnInU518/tkqgDG6NkhymcucqQDai359bSl3rF52nZ9ANIXiXfkUG+fwdb9omP8dCgEcFv4Oo+fYs7CEuCs6f1u4TwvPScPpZz/Rn1unpagwO00RISIqs7cwf/
+ MKrdgOO5
+ joYXzAOE3PyhouPg1ct9czuSSoh1UIZbvml016BrCf7CD7EJsouOKbii3+nlYvj+jNDYF/5HTpYGQbs3KBxtR6ExjmrYaqD59GxyHKQIhSbQDUFPEVXsCKhtVcslrzoTy152oNVVjkWqTg63qJtOtE3W3BK8Vl8pCNEF21Hm0WIlIc70UKaexTH6CmA60wVwy9mb+l04H0/6RC0yEDUngNWADw+zJOYhOsUexbvmA7o6ubkzAjOWD3XjpSehGIvSq7qvQCdlrQj5BFSes+kcFOcQdd1n4GVLF915bwuIS+FYZ3UcmxLKBSTJL+4U2hvgDn9ay5OAdN4iw7I8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,135 +137,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    897d54018cc9 Merge tag 'fbdev-for-7.1-rc1-2' of git://git...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=158df1ba580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=59da38148f3a3d24
-dashboard link: https://syzkaller.appspot.com/bug?extid=8caf74f5399ee2d5212b
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-897d5401.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/20848bcda8fe/vmlinux-897d5401.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2351a3d1bb73/bzImage-897d5401.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8caf74f5399ee2d5212b@syzkaller.appspotmail.com
-
-=====================================
-WARNING: bad unlock balance detected!
-syzkaller #0 Not tainted
--------------------------------------
-cmp/5659 is trying to release lock (rcu_read_lock) at:
-[<ffffffff82595f6d>] rcu_read_unlock+0x2d/0xb0 include/linux/rcupdate.h:867
-but there are no more locks to release!
-
-other info that might help us debug this:
-1 lock held by cmp/5659:
- #0: ffff88803accd848 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0x11d/0x590 mm/mmap_lock.c:310
-
-stack backtrace:
-CPU: 2 UID: 0 PID: 5659 Comm: cmp Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_unlock_imbalance_bug.part.0+0xfb/0x106 kernel/locking/lockdep.c:5298
- print_unlock_imbalance_bug kernel/locking/lockdep.c:5278 [inline]
- __lock_release kernel/locking/lockdep.c:5537 [inline]
- lock_release kernel/locking/lockdep.c:5889 [inline]
- lock_release+0x28d/0x310 kernel/locking/lockdep.c:5875
- rcu_read_unlock+0x32/0xb0 include/linux/rcupdate.h:867
- pte_unmap include/linux/pgtable.h:117 [inline]
- finish_fault+0x8ed/0x1400 mm/memory.c:5763
- do_cow_fault mm/memory.c:5935 [inline]
- do_fault+0xff2/0x1750 mm/memory.c:6029
- do_pte_missing mm/memory.c:4550 [inline]
- handle_pte_fault mm/memory.c:6411 [inline]
- __handle_mm_fault+0x187d/0x2a00 mm/memory.c:6549
- handle_mm_fault+0x36d/0xa20 mm/memory.c:6718
- do_user_addr_fault+0x5a3/0x12f0 arch/x86/mm/fault.c:1334
- handle_page_fault arch/x86/mm/fault.c:1474 [inline]
- exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1527
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-RIP: 0033:0x7fd47fe2aff2
-Code: 0f 60 c0 66 0f 61 c0 66 0f 70 c0 00 48 83 fa 10 72 76 48 83 fa 20 77 12 0f 11 44 17 f0 0f 11 07 c3 0f 11 47 e0 0f 11 47 f0 c3 <0f> 11 07 0f 11 47 10 48 01 d7 48 83 fa 40 76 e7 0f 11 40 20 0f 11
-RSP: 002b:00007ffcb5d4bcd8 EFLAGS: 00010206
-RAX: 00007fd47fb30068 RBX: 0000000000000004 RCX: 00007fd47fb326d0
-RDX: 0000000000000f98 RSI: 0000000000000000 RDI: 00007fd47fb30068
-RBP: 00007ffcb5d4c0a0 R08: 00007fd47fb30068 R09: 0000000000000003
-R10: 0000000000000812 R11: 00007ffcb5d4c188 R12: 00007ffcb5d4bd88
-R13: 00007fd47fdffab0 R14: 00007ffcb5d4c140 R15: 00007fd47fb31000
- </TASK>
-------------[ cut here ]------------
-rrln < 0 || rrln > RCU_NEST_PMAX
-WARNING: kernel/rcu/tree_plugin.h:443 at __rcu_read_unlock kernel/rcu/tree_plugin.h:443 [inline], CPU#2: cmp/5659
-WARNING: kernel/rcu/tree_plugin.h:443 at __rcu_read_unlock+0x235/0x5e0 kernel/rcu/tree_plugin.h:430, CPU#2: cmp/5659
-Modules linked in:
-CPU: 2 UID: 0 PID: 5659 Comm: cmp Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__rcu_read_unlock kernel/rcu/tree_plugin.h:443 [inline]
-RIP: 0010:__rcu_read_unlock+0x235/0x5e0 kernel/rcu/tree_plugin.h:430
-Code: 74 11 c7 45 58 01 00 00 00 bf 09 00 00 00 e8 c2 6f da ff e8 9d ff 22 00 9c 58 f6 c4 02 0f 85 dd 02 00 00 fb e9 57 fe ff ff 90 <0f> 0b 90 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc e8 54 76 88
-RSP: 0000:ffffc90003a27b28 EFLAGS: 00010286
-RAX: 00000000ffffffff RBX: ffff888029db4a00 RCX: ffffffff81e7b7ae
-RDX: 0000000000000000 RSI: ffffffff8def8e2a RDI: ffff888029db4ec4
-RBP: ffff88802bdd4980 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000012 R12: ffff88802bf53d40
-R13: ffffc90003a27d58 R14: 0000000000000001 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff8880d6579000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fd47fb30068 CR3: 000000003585a000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- pte_unmap include/linux/pgtable.h:117 [inline]
- finish_fault+0x8ed/0x1400 mm/memory.c:5763
- do_cow_fault mm/memory.c:5935 [inline]
- do_fault+0xff2/0x1750 mm/memory.c:6029
- do_pte_missing mm/memory.c:4550 [inline]
- handle_pte_fault mm/memory.c:6411 [inline]
- __handle_mm_fault+0x187d/0x2a00 mm/memory.c:6549
- handle_mm_fault+0x36d/0xa20 mm/memory.c:6718
- do_user_addr_fault+0x5a3/0x12f0 arch/x86/mm/fault.c:1334
- handle_page_fault arch/x86/mm/fault.c:1474 [inline]
- exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1527
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-RIP: 0033:0x7fd47fe2aff2
-Code: 0f 60 c0 66 0f 61 c0 66 0f 70 c0 00 48 83 fa 10 72 76 48 83 fa 20 77 12 0f 11 44 17 f0 0f 11 07 c3 0f 11 47 e0 0f 11 47 f0 c3 <0f> 11 07 0f 11 47 10 48 01 d7 48 83 fa 40 76 e7 0f 11 40 20 0f 11
-RSP: 002b:00007ffcb5d4bcd8 EFLAGS: 00010206
-RAX: 00007fd47fb30068 RBX: 0000000000000004 RCX: 00007fd47fb326d0
-RDX: 0000000000000f98 RSI: 0000000000000000 RDI: 00007fd47fb30068
-RBP: 00007ffcb5d4c0a0 R08: 00007fd47fb30068 R09: 0000000000000003
-R10: 0000000000000812 R11: 00007ffcb5d4c188 R12: 00007ffcb5d4bd88
-R13: 00007fd47fdffab0 R14: 00007ffcb5d4c140 R15: 00007fd47fb31000
- </TASK>
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+On Wed, 29 Apr 2026, at 15:55, Kevin Brodsky wrote:
+> On 27/04/2026 17:34, Ard Biesheuvel wrote:
+>> From: Ard Biesheuvel <ardb@kernel.org>
+>>
+>> The linear aliases of the kernel text and rodata are mapped read-only in
+>> the linear map as well. Given that the contents of these regions are
+>> mostly identical to the version in the loadable image, mapping them
+>> read-only and leaving their contents visible is a reasonable hardening
+>> measure.
+>>
+>> Data and bss, however, are now also mapped read-only but the contents of
+>> these regions are more likely to contain data that we'd rather not leak.
+>
+> That sounds like a good rationale but I wonder, is there anything
+> stopping us from unmapping text/rodata as well?
+>
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+There is the zero page now, which may be accessed via
+'page_address(ZERO_PAGE(0))'. Also, anything that dereferences page tables
+(like /sys/kernel/debug/kernel_page_tables) will expect to have read-only
+access to swapper_pg_dir.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+>> So let's unmap these entirely in the linear map when the kernel is
+>> running normally.
+>>
+>> When going into hibernation or waking up from it, these regions need to
+>> be mapped, so map the region initially, and toggle the valid bit so
+>> map/unmap the region as needed.
+>
+> Doesn't safe_copy_page() already handle that? I suppose this is an
+> optimisation to avoid modifying the linear map for every page, but if so
+> it would be good to spell it out.
+>
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+Uhm, good question.
 
-If you want to undo deduplication, reply with:
-#syz undup
+When hibernate was first implemented for arm64, we had to bring back the
+linear alias of the kernel image, and when I started working on this, I
+hadn't realised that we have safe_copy_page() now which should take care
+of this even if the linear alias is invalid.
+
+However, if I remove this handling, things breaks mysteriously, and it
+is a bit tricky to debug so it may take me some time to answer this
+question. In any case, I will address this in the next revision, and
+put you on cc.
+
+>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+>> ---
+>>  arch/arm64/mm/mmu.c | 44 ++++++++++++++++----
+>>  1 file changed, 37 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index 9361b7efb848..a464f3d2d2df 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -24,6 +24,7 @@
+>>  #include <linux/mm.h>
+>>  #include <linux/vmalloc.h>
+>>  #include <linux/set_memory.h>
+>> +#include <linux/suspend.h>
+>>  #include <linux/kfence.h>
+>>  #include <linux/pkeys.h>
+>>  #include <linux/mm_inline.h>
+>> @@ -1040,6 +1041,31 @@ static void __init __map_memblock(phys_addr_t start, phys_addr_t end,
+>>  				 end - start, prot, early_pgtable_alloc, flags);
+>>  }
+>>  
+>> +static void remap_linear_data_alias(bool unmap)
+>> +{
+>> +	set_memory_valid((unsigned long)lm_alias(__init_end),
+>> +			 (unsigned long)(__fixmap_pgdir_start - __init_end) / PAGE_SIZE,
+>> +			 !unmap);
+>> +}
+>> +
+>> +static int arm64_hibernate_pm_notify(struct notifier_block *nb,
+>> +				     unsigned long mode, void *unused)
+>> +{
+>> +	switch (mode) {
+>> +	default:
+>> +		break;
+>> +	case PM_POST_HIBERNATION:
+>> +	case PM_POST_RESTORE:
+>> +		remap_linear_data_alias(true);
+>> +		break;
+>> +	case PM_HIBERNATION_PREPARE:
+>> +	case PM_RESTORE_PREPARE:
+>> +		remap_linear_data_alias(false);
+>> +		break;
+>> +	}
+>> +	return 0;
+>> +}
+>> +
+>>  void __init mark_linear_text_alias_ro(void)
+>>  {
+>>  	/*
+>> @@ -1048,6 +1074,16 @@ void __init mark_linear_text_alias_ro(void)
+>>  	update_mapping_prot(__pa_symbol(_text), (unsigned long)lm_alias(_text),
+>>  			    (unsigned long)__init_begin - (unsigned long)_text,
+>>  			    pgprot_tagged(PAGE_KERNEL_RO));
+>> +
+>> +	remap_linear_data_alias(true);
+>
+> It's really hard to know what this does without looking at the function.
+> How about mark_linear_data_alias_valid(false)?
+>
+
+Sure.
+
+>> +
+>> +	if (IS_ENABLED(CONFIG_HIBERNATION)) {
+>> +		static struct notifier_block nb = {
+>> +			.notifier_call = arm64_hibernate_pm_notify
+>> +		};
+>> +
+>> +		register_pm_notifier(&nb);
+>> +	}
+>>  }
+>>  
+>>  #ifdef CONFIG_KFENCE
+>> @@ -1162,7 +1198,7 @@ static void __init map_mem(void)
+>>  
+>>  	/* Map the kernel data/bss so it can be remapped later */
+>>  	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
+>> -		       flags);
+>> +		       flags | NO_BLOCK_MAPPINGS);
+>
+> Might be an obvious question but why do we need this?
+>
+
+set_memory_valid() only works on regions that are mapped down to pages.
+
+
 
