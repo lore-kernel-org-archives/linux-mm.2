@@ -4,136 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF35FFF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:47:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E22CCFA13
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:51:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CC716B008C; Wed, 29 Apr 2026 09:47:27 -0400 (EDT)
+	id 7670E6B0093; Wed, 29 Apr 2026 09:51:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27D536B00AC; Wed, 29 Apr 2026 09:47:27 -0400 (EDT)
+	id 73E506B009B; Wed, 29 Apr 2026 09:51:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16C896B00AD; Wed, 29 Apr 2026 09:47:27 -0400 (EDT)
+	id 67C9F6B00A1; Wed, 29 Apr 2026 09:51:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 074086B008C
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:47:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC33E140273
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:47:26 +0000 (UTC)
-X-FDA: 84711720492.23.049A7FA
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5FEAC180013
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:47:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=CNZ694g+;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AB636B0093
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:51:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03B981C0198
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:51:47 +0000 (UTC)
+X-FDA: 84711731496.28.BEA3FCF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 02018180010
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:51:45 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gX6jMWWv;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777470444;
+	s=arc-20220608; t=1777470706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rOMQ6tII+w8eM+1uscKo4u6a8wS/+ZJZoe0f7koUOJM=;
-	b=fcqXayo+6K/jVNlA3fGBTYsBaIPHVgxyHwsrtWCCsFAAaE0PQ1khdBYpgAah5YXtf2wIYX
-	REqANPP2LVvjs3ZK0QyW2FCwOlXmYYERE/YXQjD7Hkv73bWY3wBF+76+4i7biUEnwq7Uxr
-	kls4gzKOZVVNneeKRT1u/lSGxI+QcVw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470444; a=rsa-sha256;
+	bh=zqk/vbnimW0wuDYnJIfvubH6gxgbLhYzeZKE1huaELw=;
+	b=0acJGFkc9CwE5xp2lo8U+2fjbvxnQzs5eooszFE4WVoe+t7RkRPm1aGg5tsSECqbHIbZK4
+	fyHY/gkPg8jbazK7w9Y8K0ZhJLYoSe8DBRuTLfKN4sm9AgBVbU+M78Acabf5NHsusjvyM5
+	F0EvsnVcWk8BiMcAoRsypi4rKRuJDt8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470706; a=rsa-sha256;
 	cv=none;
-	b=t1beiVpLgYYxRUkmqfCq4XduiNkZEZrbQpo8ey4YjpuDFiM4SFdHFu9jEc2XmLVJYNPBhj
-	1b5G4NXDLjeO6FEyjIsepGfOVV9hNwOLgQzHeu0XZazCvS+bRuautn+H1gs3LcTBlx9vUR
-	o5dgZYzwQaiRE/9ZvAPs1kHPNkbN1os=
+	b=Qi7rc0YiYVJrQeTUxNXzsiQOyfmZq2dHJPGtXoLSOludROHhgwFJgRbYpG7IauwXrp4V+Y
+	RyipcFlfN1F91QhMDEuj7Yeg/fYAZfDzgXnCvj6018JNa6CsAAqlwGh5A6KEOH8B39YOw0
+	DjTxERUbuqWsnIqHa1gmK3226MsmTcw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=CNZ694g+;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63T4ZTsr1694171;
-	Wed, 29 Apr 2026 13:47:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=rOMQ6tII+w8eM+1uscKo4u6a8wS/+Z
-	JZoe0f7koUOJM=; b=CNZ694g+lx5Ew32q5FKyxrU3a3d0qvQt4rV+Ypd6d1X+q4
-	s2HHxrzNN0odYWHZreznFG0prK/1o2U2F0rxQudEGlQvvW7nn9l2TGUK11ASI9C7
-	YgZXkJ0gQXDEIT+TKhrjpFyhqqZmnOzPuxv1sAqgtQh06J6BlUZ4uJ3h1jD/hsGc
-	e5zlCAdXO0aCAZluv5yZRjz2fpVPWdOgjIxJSRYKwUZuiq6r4tmqla7oAJdNpEaW
-	Xjst4GMxaBcKtG0AZVXQJIo0zUdg5uzj3fxT1YKx1DKOi4BlcYxHX9InLRHptWnt
-	KTc1cMI/MjetQ9OOPfq05+PPyk6IhQsPbdikwhwA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drnb5arpb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Apr 2026 13:47:21 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63TDdIjW030500;
-	Wed, 29 Apr 2026 13:47:20 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ds7xqemu7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Apr 2026 13:47:20 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63TDlGYk35324172
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 Apr 2026 13:47:17 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DB56E20043;
-	Wed, 29 Apr 2026 13:47:16 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ABAC720040;
-	Wed, 29 Apr 2026 13:47:16 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.52.215.75])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 29 Apr 2026 13:47:16 +0000 (GMT)
-Date: Wed, 29 Apr 2026 15:47:15 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Lorenzo Stoakes <ljs@kernel.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry
- accessors
-Message-ID: <f3140daa-9a7d-440e-a448-35aa8797357a-agordeev@linux.ibm.com>
-References: <20260427052000.196402-1-agordeev@linux.ibm.com>
- <69c4c12c-7cdc-4a17-9eb7-6fb1a61f9834@kernel.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gX6jMWWv;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 45D0E2574;
+	Wed, 29 Apr 2026 06:51:39 -0700 (PDT)
+Received: from [10.57.62.76] (unknown [10.57.62.76])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 88EC53F62B;
+	Wed, 29 Apr 2026 06:51:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777470704; bh=9ELD/DjcFqzDnlav/KpHjVLh1+VYuwo61V/4bESQjnU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gX6jMWWvzRfAvmOAyHfw3oN8bG5OkDuYdKN3FuWWM6nhaa2QUnNyeU/dyUa3NlDBi
+	 VXs6MpNaq7hopQBIK1wh64NZPzPhrdUFDqsIC1BKYJuqTwtkmHUbCfAApjLUnpBUHb
+	 gwlcI8mEEm00HYzB+UqwukBUQ6gsicOZH89qCdnE=
+Message-ID: <8a315ca2-3754-4a66-990e-55b85191aa6e@arm.com>
+Date: Wed, 29 Apr 2026 12:54:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69c4c12c-7cdc-4a17-9eb7-6fb1a61f9834@kernel.org>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=AqDeGu9P c=1 sm=1 tr=0 ts=69f20be9 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=j5aMtUXh0naQkGdsk6gA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDE0MCBTYWx0ZWRfXxTSLyxKf6Pf8
- KNJ4rpP3Syi3oag+YKwk2Awq0cKPIrlvQRSHdzQTbeh8Q7+KoS2b+6HBEHa5H7lnQvExaY0Nrx0
- uevRDFwpfxCIba8sG0GOWAgPBMRx6xMSD0lNsaf6BIrg9H/45oNt82xpQrzFf8KFTPtEP1AnK/V
- sCRL092IemCs/GOOUIP0XsCiubusBVz5L6NAK1+dAgkWAC7uPB/O8tsPT4IBhF+ugi63H97hCf1
- IirZAWGGdvH7RW0veIlzaEdq0gN8CrRCNSu/FWoKPkXkfcatIQ3jif0uY4pixVvyZcB+5eha7e/
- TVh3KwJiQ4mccDPASbBftAkKi44/MGwjNOrxJpITyVqjz/SJ4QTejhmU0RbU/cZ3YeKRNd7GW3I
- kRdRVtuMV+4zq5820dckDRlgBJf7IGzgLmgeewbRj4rGfSNNKZXmtPJuXC45/1uPEkQqR/3m2dw
- 23HZBNYyFad76jUnRAA==
-X-Proofpoint-GUID: yrv26ZzoKgHOt5QRWgP9HHSlaVzGQMv6
-X-Proofpoint-ORIG-GUID: yrv26ZzoKgHOt5QRWgP9HHSlaVzGQMv6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-28_05,2026-04-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 phishscore=0 suspectscore=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604290140
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5FEAC180013
-X-Stat-Signature: eqzicugwschh5rpyd1nhor9gycoknrca
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 11/15] arm64: mm: Don't abuse memblock NOMAP to check
+ for overlaps
+To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
+ Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-hardening@vger.kernel.org
+References: <20260427153416.2103979-17-ardb+git@google.com>
+ <20260427153416.2103979-28-ardb+git@google.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260427153416.2103979-28-ardb+git@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 02018180010
+X-Stat-Signature: 8k86d8kuh9tbxwj7caxue5ja1kggjr3u
 X-Rspam-User: 
-X-HE-Tag: 1777470444-301607
-X-HE-Meta: U2FsdGVkX19ZP9cd/k9tGUpWVqlSVAAcaMkaI2fbuTV4e1Zq57kAWvZq3+TGxYJqFLDax7BCD+e3dv0HTTBXHs07K0IfNyf+YQWia2DyEtPLCWhQIW5fTRsIWMD2QLgxQVhwGFNicI5DEESEStip3tDCyTcJuYwymYpVWf8OygURTfk1CR9s+LZVJJsZYdpcWwVTtB1+rKavm4s96tjPVJ5OWCk795kC2FTx2m1MdgbLErwcPsNtRAzHhlC5/ozBWV8fWGikWt1f2qUDIX8+L7+2vJLla58KRv5v6hA0bzfmfvGUvBKnQEmkjYMDlCRetVw09/M1jhD959BZJwESPX4sdyj1YSMSrDpg7O9R+nN2F6apXIUZAJZbI189DZqpNJV8bKIh4uESY+e6qTCSUb3I6ylxLQfBRGYd1alv8vvKjwBWz5DTNKCOcQ/fVecbOT+yjZzZQCgvfiU3zkxL+vG4aPXD4JF7BiXyqURSX9PJONOqA39PlRPuXhcGdY7JmHZo2awMlCKEyPV3xozn+a/HdhvLKL/+BJQpejHe8/a8vRnmaCeCbjyAQnHDkyhNrHIlmPbWM6BifE2PxdIpHOAx3oEPLfKd3M3Z0nzaCyBWbiSsVrgworeEZJFlz4w4uECq1QQda0Id4WwvGogeF5/YHn/NPWrifrW8eHTLGxCpEazC0/nVmSTHiPtybwMWg495ELvlu1+BSZuuTzKrppzknSNSYcoodv47SKMWI1qWOfkBVgrbFwIhDm1jK6924bXvTXKxQkDn5u4xK2YKGQrTlihuUqV1NEWcHHtQXvSuhCr1Xh3AkRf7613TzBtsOWDUraoeDABn4G8JFP5KD/VQKate+Es8GqWkQZwWTyhmj/6wJSwfrhier26jLyl+xkumcLoCA6BYrMR7ElunhGwuiaWsqKpUuFJmNFLndoCQrgYSV/mLMeH6bVXPUdCrnAdwr2xDIUYuVzqSMZV
- EdYOPKIB
- 6beeIRSbPPuPtVXfkN8eUY/fklP6KAvwCbSbOzSb6stw5VYNcgOqQNLdmVPCXgPpSZ2t6vFnYX2JbMc6bNDnRlkSBIvv/Ebp8yO9jQKYx2Sv5yoEmoR03kGea9rYL4Gu+92pICgxxdhKRU6TWmw3v84lyudC9sM7ehaxb1wX11zBEyk2nrzXGceDfBoDl/JD+JP6AkuyB8e29T5TzyeG9YFx9OrWM8cQiuuuLljTE22500Tb04nPoix0J/8RDoSBmxFka3umquV09nbyS0LQDPQ6GqFVoO3ZsiGNjySmFkfFSqqG7Hng5h9lp4G1AqYnmwtkvwuXA/Ekl35/QVR7SvPj1UeIqCaQg7DrZ2FtjPjfGFQRqAzxJJYpwzleAklhtdIm2
+X-HE-Tag: 1777470705-120666
+X-HE-Meta: U2FsdGVkX1+t2fYb6fP7m1GYTHWUlD/dPUyTUpE2hBaZfgsOXdURM0du/H5/jZUUT1URrgIFcGwPgYpkBzQcwt+iI9td+r56NkWVXosVVBJFQXbA1Xbk0MbGlSDWfC3Be+C8EjIYH4TuFd/qIzJQLIbhwJ9my/Ju2JxDwmeZuhhZ0yjBFmPGBpOP2+xhXJDf/ZvmRFwsYiRsKnYU65al/EWuGVaokPjT2FD3LmUo8z29sQZOpx4aEoqZ9d/2aM2wGvAJG2dOktm5RohyuR6tn9TmCPvBlm6qGU9vjM7nX76L8VV+iJwbx2LWSf7MbXunXy7uOoyL/H2xkaUPaX3r9EWUPtwX7nmPbzc4dQ75B/zO8hvfZH8R4Ubc2v9Asb2XH3rgwipGFmvfSUdV4vTnD44vPzSQ3VoMB4nwE8k7SmM7MgrAyZk9zOSo+pmC2W26ry08NN44gfy7bmNi+F2/5GdFYUGkAi1BtU8UYbdDLlOrvltELUKIajn/iaYU7xgm7Z9LHH9twnnea8H4T/NYn0xgqDyoCqp0opil1KfDZHUsx160/1gvsYA657v9K+s68cvM3/xviLUhq/V+AUxFlF3Yr1yTZiaRu2S3DMmtN60/FuudFs2Mk2U5bLYuIZDx63G4+w35YGqqNNqKmZ+8VBpL3/uFhizEoKNLtRwGIduTVt2LtNyHXc3ZkXEFwHiNmQ4vG+nuBahjvMLBpvdy0MC6gPEer3WBgD0eU/kiyOmb4hO6OyEp3Qlw4mfXopr6E/vX3RfCmHeqHepcVDm3qwUEosQ8KAlb+U69Ok67aOFuUUK+cqfkeBolpT+1BiMfFgt4FhHcJH2nOlOOH47T70u1b8KtflKIQexoMlYgzDoFYVZ9A7zdzSwSZNfUdNk0dYyo9nhQnaZSN0/vZBaYmXEdPSPVpvQC1brUARPlx3sRqXDTPMjydZPO2+w72a4f0SrZj+LUjLIR1/dTx83
+ HdejrbFp
+ ivNKtDGzSm/sUvmuv7Axk+mAUQbpKZlgdWp1o9qUiAPF+NWd1VA1obzmJcGDXKyjp2o83G26EjnlQ0SyBdSgif6KSfV60O6EOtCiVrxwKvv4Gp2j+tbHvUNp/6Wy06ExTF2cxTOLt5W3f2tysdkt+ctlxvL7SGllGv1Ll+h6TQZLB6nwl/00jem+sh+/KdXrAEkbGlLT1ulv+O5j0Qti02I6OpPmtQth7XHat8nr50S8huTx+JuV/i8G1frTdQ3ay8iy6dPHVAsiMv9YiDy890vo6/m/R4IuNj0qR+UJqWytNt+h0YN8aubxY4PfScoC7TXbnLJYrdr6YbYI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,72 +99,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 11:02:50AM +0200, David Hildenbrand (Arm) wrote:
-> On 4/27/26 07:20, Alexander Gordeev wrote:
-> > Convert pgtable direct entry dereferences to the corresponding
-> > pXdp_get() accessors. Use ptep_get_lockless() variant for PTE
-> > reads when no lock is taken.
-> > 
-> > Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> > ---
-> >  mm/page_vma_mapped.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> > index b38a1d00c971..a4520bb10d2a 100644
-> > --- a/mm/page_vma_mapped.c
-> > +++ b/mm/page_vma_mapped.c
-> > @@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
-> >  	if (!pvmw->pte)
-> >  		return false;
-> >  
-> > -	ptent = ptep_get(pvmw->pte);
-> > +	ptent = ptep_get_lockless(pvmw->pte);
+On 27/04/2026 17:34, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+>
+> Now that the DRAM mapping routines respect existing table mappings and
+> contiguous block and page mappings, it is no longer needed to fiddle
+> with the memblock tables to set and clear the NOMAP attribute in order
+> to omit text and rodata when creating the linear map.
+>
+> Instead, map the kernel text and rodata alias first with the desired
+> attributes, so that they will not be remapped later with different
+> attributes when mapping the memblocks.
+>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/arm64/mm/mmu.c | 24 +++++++-------------
+>  1 file changed, 8 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 5e2348b15783..1a4b4337d29a 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1148,12 +1148,15 @@ static void __init map_mem(void)
+>  		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+>  
+>  	/*
+> -	 * Take care not to create a writable alias for the
+> -	 * read-only text and rodata sections of the kernel image.
+> -	 * So temporarily mark them as NOMAP to skip mappings in
+> -	 * the following for-loop
+> +	 * Map the linear alias of the [_text, __init_begin) interval
+> +	 * as non-executable now, and remove the write permission in
+> +	 * mark_linear_text_alias_ro() above (which will be called after
+> +	 * alternative patching has completed). This makes the contents
+> +	 * of the region accessible to subsystems such as hibernate,
+> +	 * but protects it from inadvertent modification or execution.
+>  	 */
+> -	memblock_mark_nomap(kernel_start, kernel_end - kernel_start);
+> +	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
 
-(*)
+Is it now necessary for that mapping to be tagged? If so, it should
+probably be called out in the commit message.
 
-> >  	if (pte_none(ptent)) {
-> >  		return false;
-> > @@ -219,17 +219,17 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> >  restart:
-> >  	do {
-> >  		pgd = pgd_offset(mm, pvmw->address);
-> > -		if (!pgd_present(*pgd)) {
-> > +		if (!pgd_present(pgdp_get(pgd))) {
-> >  			step_forward(pvmw, PGDIR_SIZE);
-> >  			continue;
-> >  		}
-> >  		p4d = p4d_offset(pgd, pvmw->address);
-> > -		if (!p4d_present(*p4d)) {
-> > +		if (!p4d_present(p4dp_get(p4d))) {
-> >  			step_forward(pvmw, P4D_SIZE);
-> >  			continue;
-> >  		}
-> >  		pud = pud_offset(p4d, pvmw->address);
-> > -		if (!pud_present(*pud)) {
-> > +		if (!pud_present(pudp_get(pud))) {
-> >  			step_forward(pvmw, PUD_SIZE);
-> >  			continue;
-> 
-> Wasn't there a problem with folded page tables, where we would no longer be able
-> to optimize out the folded page table accesses?
+- Kevin
 
-Ok, that is a different topic. I actually tried to resolve the lockless
-issue(s) in (*) while the direct dereferences just seemed to be relevant
-to go along (similarly to the GUP patch).
-
-But I would rather resend ptep_get() => ptep_get_lockless() fixes for
-this patch.
-
-Would it work?
-
-> I thought we discussed ways to resolve that. Let me dig ...
-> 
-> 
-> -- 
-> Cheers,
-> 
-> David
-
-Thanks!
+> +		       flags);
+>  
+>  	/* map all the memory banks */
+>  	for_each_mem_range(i, &start, &end) {
+> @@ -1165,17 +1168,6 @@ static void __init map_mem(void)
+>  		__map_memblock(start, end, pgprot_tagged(PAGE_KERNEL),
+>  			       flags);
+>  	}
+> -
+> -	/*
+> -	 * Map the linear alias of the [_text, __init_begin) interval
+> -	 * as non-executable now, and remove the write permission in
+> -	 * mark_linear_text_alias_ro() below (which will be called after
+> -	 * alternative patching has completed). This makes the contents
+> -	 * of the region accessible to subsystems such as hibernate,
+> -	 * but protects it from inadvertent modification or execution.
+> -	 */
+> -	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, 0);
+> -	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
+>  }
+>  
+>  void mark_rodata_ro(void)
 
