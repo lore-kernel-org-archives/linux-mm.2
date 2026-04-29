@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AAF4FF8864
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 07:34:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D116FF8864
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 07:57:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B25046B0005; Wed, 29 Apr 2026 03:34:18 -0400 (EDT)
+	id 860836B0088; Wed, 29 Apr 2026 03:57:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD60A6B008A; Wed, 29 Apr 2026 03:34:18 -0400 (EDT)
+	id 8115C6B008A; Wed, 29 Apr 2026 03:57:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12B96B008C; Wed, 29 Apr 2026 03:34:18 -0400 (EDT)
+	id 74E2E6B008C; Wed, 29 Apr 2026 03:57:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E8AF6B0005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:34:18 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2663F1BA100
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:34:18 +0000 (UTC)
-X-FDA: 84710780196.28.46380E2
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2F1A08000B
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:34:15 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="X2/PZY4O";
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 63D746B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:57:20 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 416DD160734
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:57:19 +0000 (UTC)
+X-FDA: 84710838198.20.DF6CEB3
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2F80714000D
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:57:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tu884VDN;
+	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777448056;
+	s=arc-20220608; t=1777449437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zIL8K56S9npqUxHnLTScIQqWnQWfossAlk/lIWVrpJQ=;
-	b=y6nz6fZEb4hwuq62ehhAR2SeiKNu4WxVt8GScXiqwTuMU+EWpulpV9tM1Hwo2joaywilGq
-	tXBm7eMKKP9KBXE5PMO/SFaZdPObuwvhEozpq8T1EBeZekskDJ1+QZ9fNI9hwFhods6R20
-	GvyTgAg5vBQTwYs2qnJ3gWHNYzDibeY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="X2/PZY4O";
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777448056; a=rsa-sha256;
+	bh=PPTQwN6FHCEM1yLuNFwiLgAzpEKdINGGfUZaIfMV9DE=;
+	b=7YJaYN0N5scuAWnnAqAGomscqggnOyDijuEMY5gVtvVSAH9O2V6jw5upFMdwJFtfHiXS2M
+	Uk69QWhVtrM70yy1N2wfOU0HrJRmKwraMDFwPnr2sPyb3UR3JtzDkPK/5Sl48KcdAPB54C
+	xGy1wgzaj1iryf4iUdIvbS6ZJg2BpPk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777449437; a=rsa-sha256;
 	cv=none;
-	b=xK8JxCWIVfGvfNSnvHZ1DWBtwJdN82sALbKLl0HkSxrOaqxa5HxeCzSpKH2Th0RGHCD1IR
-	fac4+WXDQfYAjA/SV2C4/+INOsrMzCpqJEZMBSFDaBYvbIrhmwTELzzndKs+g0PGNq4UqH
-	u+3k81D9Tzhq/ZKaf5oqAYaNYphdv08=
-Message-ID: <aa3937bb-7f06-4136-ba36-ce4a06acf80a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777448054;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zIL8K56S9npqUxHnLTScIQqWnQWfossAlk/lIWVrpJQ=;
-	b=X2/PZY4OO8j6f7/nd4NAkS2hw/5/L+G2uU77o9zwSFWubg7WJkk6AhLQ1/hineBbZbA8gf
-	pE8sIk+WiwgXei0G93BbFX7fz8OAFoP2uokF3JIWmypGqq3QXykeTI9ToN/XxehiWx6S4A
-	XMphNyFcOF309w9G+DXJKYEoPP1GrD8=
-Date: Wed, 29 Apr 2026 15:33:52 +0800
+	b=WpBnLIscFvfJL3H+cpNXBlLveLHuiKooplyIvhpHUR/CvfgbivpSB57RF9ehQ2rXGnUfg+
+	fr7si7+GePDvUGI7Dj6xOcHqEdHX67D/7bzPJVFqBtCwWtI1HZJdlUJ7GwgbMASVgJarU/
+	Ed3iDS1IVseIYOn4YTMDd0EjIJhnq9k=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tu884VDN;
+	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D5982574;
+	Wed, 29 Apr 2026 00:57:10 -0700 (PDT)
+Received: from [10.57.62.76] (unknown [10.57.62.76])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC0283F62B;
+	Wed, 29 Apr 2026 00:57:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777449436; bh=PPTQwN6FHCEM1yLuNFwiLgAzpEKdINGGfUZaIfMV9DE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tu884VDNcnff9i319agoWfbHCU09dt7nv52tTghEcTpUmoE/TLPT0pXCWMeWZK+hR
+	 5tZo5fr795P2mHfGf0u5pH2d+gOGMhuK62mkoBPTbQE/fpcwqBc2rXrefL8saY2apM
+	 vGNABGXJYLp2iVd9jeWXE4aOkG4vyKK3pzyrtv+I=
+Message-ID: <1ba0b6ce-3e71-45f7-a3c8-cdc5aadcaf27@arm.com>
+Date: Wed, 29 Apr 2026 09:57:10 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH hotfix] mm: fix pmd_special() fallback to observe
- huge_zero
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>, hughd@google.com
-Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, dev.jain@arm.com, liam.howlett@oracle.com,
- ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, npache@redhat.com,
- zhengqi.arch@bytedance.com, ryan.roberts@arm.com, surenb@google.com,
- ziy@nvidia.com, linux-mm@kvack.org
-References: <e7cbc92b-ce9d-432a-ae5b-c8715dcd922f@kernel.org>
- <20260429065743.67054-1-lance.yang@linux.dev>
- <ea1453a6-14c9-4334-ac7e-2758586393b2@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <ea1453a6-14c9-4334-ac7e-2758586393b2@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2F1A08000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/15] arm64: mm: Map the linear alias of text/rodata
+ as tagged
+To: Ard Biesheuvel <ardb@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
+ Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-hardening@vger.kernel.org
+References: <20260427153416.2103979-17-ardb+git@google.com>
+ <20260427153416.2103979-18-ardb+git@google.com>
+ <82091dd4-9d11-4054-89ec-99aadaeec7b2@arm.com>
+ <6f514d91-c8ce-473f-8383-f3b9a4cc2f7a@app.fastmail.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <6f514d91-c8ce-473f-8383-f3b9a4cc2f7a@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2F80714000D
 X-Rspam-User: 
-X-Stat-Signature: skz7ytgkdmyutwpmxyeumpzn4stxapwf
-X-HE-Tag: 1777448055-727118
-X-HE-Meta: U2FsdGVkX1/YYBB3SlS9CifjUBML6RueLuhahjZO5wgulrAvj1EX2cyXqAGKnENoofCaaUDsRKEIs6pAeF53wh2wJ8oU6WNkRgfsl2mF/bebmMlG8RtKdWr/NcaUq05MHnm4fkuFznipXDzKP+8I3/4gjKzCRXp/gDp6HaWzbNhWDVS6GncHkHpK8QsmiyNYuRmvGloMnLd/LF4KD8UpHF1N/vdDht9krWEN7+hC7qL4fS+dsIQeidruLPz9PFYrzF6/W49+B+UJHn9kk8PMyio+6qWWVLBGDIig3XYgOg58YSMxiSfatz9XH9OqjCvAqfG+gJ0oltTo65U5PKwmqzfSHeVF2jdKpkEOXnt1AgUk/8J2e0wqe7HZsZXlZdlMEC45n4eff9j3C5e/BqXCgcCPX/RnNwn2RD8Ap2FRA5Ry4ZTNghhox8eRdsQMQhoU5eLgYjzZWWhe/xJBXUbPvbxXvoz7GIjzgbe0Jelm4rXQO9LSWDyyrUmr46nJS2NrWyhGyZl5uBrNXOITQ29I5vgixkSqjj5IxXOllcKbblvIkAqZYmgfYTop2E9b7GY+fxtda+MyCr46yQtPKV96ezu5Y/0zqnLDbWxnVGSolpxJeb0LJ256aybqPl8c2jkGKC32xOwL0T3qAa8KkwDLqB0v0JY9ql5FnCMW/f0fql93NZv/m1D5sp/CgAy7+kaGRGlRxfM0YJ0+NPsGyMMO0VKPZKc+Ge534TR6nm3vhAqeDKeZoFDk3/xpYbRhe0fMXP5uu7s/VdXuW1yM/xSMEo4T9KWoGg7qlRxn4+IqfT76bOmBaReACNyNgFY4AV0jrCWgZKVxnnKfxuS0W1MeHcAPviFV1MllvogSOuuBluB+swmDT8F0+5rbsDpLkV2B1XfKs8chVnqmlOacicIZ++UF6NfyrQRAkO3Nr/YbutIt50Is233TPJ/A7mDB+b/p542tvyC8qfQIXLTRMIJ
- cuZ7/SDO
- SX8svRpLW85QhKMpij+BPPNJ9UgKOgxJccXXa1AjDUcdihMdHGXAZGOP5NMttPdXOCM+YRw9MGY6YEjnX91EGMP2R8wUjXmIakpc4er5zWziHuzEnNynVjaMMXdB/aFrIxe5/5G2v0KRn6QWIxnY0ZXNitRlep559pzk/1xL3HdBVgP3QoFOEbeye9wK6f6jukbu6goF3B2W2Td1kT0YxStIqvqADKPWYrmdM2kpxm1lhC5iqWx8bSYwAK7LgGfcfldY5
+X-Stat-Signature: owrbm48yf35wq99apywhz79x5m9dntdb
+X-HE-Tag: 1777449436-153707
+X-HE-Meta: U2FsdGVkX18QKXhD/O8ER7fASwCL5jfcPbA74QvPvqsIISJoauMlm7IQv9s53kzrmRSLy8IujVFo4NKD8qwDVR0k2V8TTLime0l4MGt6Dpsg8VCECYTip4UrYgzl2iZT+S2ouiP4dP3SefnHzGc+EXVGTyFfcVmgb4YLOJmp/ruwDJYOAFrHCCfo5lD0vbH4TNxcHZDwWDDMVA56bGZX6zL2So7FMpmpR2/3oXN9aroTZATVJGA0xcDh1g8dj25Kh+rG24YrP4hXQWzAhV9O4nUDQEDK8V5FFbHB8exa620VzEHMJ5p12Zarwy+/Wt7LlSEBRlGRHT+YOb6tPvpnV6NLFrCoaweP5EvpexdXuz8Dn3fdUIMX631oayotW+g31QM0/B+nN/C+3bTjVxhJ2zbEPoGwXRpbSBRe0arHLrs6+mKIJRFglf/TQ0L/XfQ7QoHKPpk4Xaghc416Pwukt95y7DTWbILYDplZuUyHPzb6DQHlph+9YZ/F7D+kBWy6YVbhL9ShtTtZehVJmlm2GJac3gfDV4a4Uti+ZNu78+mimC9haJXZS8f5S+tJozPgHzZ+MxtQedoifPBFmAPCDPyUHpeJSrdWxPIHupRmUkamz1mIz0LDYff5k+NGPpM/YjbquMJWu9nwEkySCarwHg9xK4+2HlN3CLzGbyq+Ki4NryDkzTBD1pAGj7osPd5C05Jxut6tzKS3kWG92w1D4+0HGDvP6sBIrrSfZgvdPLYpsMY6W2z/4YfWGrpah8C6gt4R2Dth72TRL58dUHNlS4iig1dX/n5gnPIJmTUhLufjNle8jkaE/G46e7wkWBUyhzVkzwp2IcRDGX1i0TpMCMBrh0OwI5NhtehYqWUXNs/7fUoB4YcqHXtMn9kWqtj58rhhvQyUOm0FFIfTeWq/SABCu/FqoRvtIxx8W/qBJ/hrHA6m1AdoOofNl/Q3NPUbncAR/hT4fk60khO49sP
+ twPTdeJF
+ 6x3JFsdC8SPQz+XxH3RusK3+C4UZeOWHwwiyAAWKVoboRFQItm9Nn12PuGp9tSTyZ1Fcz3qMq5D5Fqx8DvERjjJsoekMvPHGpHLErx8OGHZLjCG0e3mh9M6gISKk3gBQ6AeW05m9jQyLlbYog/OvWLrp68yqS0aZvO4GQVa6apZrsRXcp6e/z0THX+Uy/9kStdqrMtPsMUsXBL2PY5O4AoFM0K87aO01psghVWNI06oZOXycaiTpstZpgYvpy6nZHdqtd2+asGCr21nKke0SKdcSOBoDEwYouxQ8tQ2rtAhj478wKYMDQJwfefmsrCH2y533inif4De9X1uzH0pIOuoJqIN8MMgLIWAO7CovrfyLyGno=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,145 +102,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/4/29 15:14, David Hildenbrand (Arm) wrote:
-> On 4/29/26 08:57, Lance Yang wrote:
->>
->> On Wed, Apr 29, 2026 at 08:12:55AM +0200, David Hildenbrand (Arm) wrote:
->>> On 4/29/26 07:54, Lance Yang wrote:
->>>>
->>>>
->>>> Good catch!
->>>>
+On 28/04/2026 18:23, Ard Biesheuvel wrote:
+> Hi Kevin,
+>
+> On Tue, 28 Apr 2026, at 16:16, Kevin Brodsky wrote:
+>> On 27/04/2026 17:34, Ard Biesheuvel wrote:
+>>> From: Ard Biesheuvel <ardb@kernel.org>
 >>>
->>> Likely it should be
->>>
->>> 	Fixes: d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge zero folio special")
->>>
->>> Because vm_normal_page_pmd() would return the wrong thing.
+>>> Before moving the empty_zero_page into the __ro_after_init section, make
+>>> sure it has the memory-tagged type. This is needed to ensure that
+>>> cpu_enable_mte() will be able to initialize the tags correctly.
+>> mark_linear_text_alias_ro() is called after all features have been
+>> detected and enabled, so do we actually need this?
 >>
->> Right.
+>> AFAICT the lines that matter for cpu_enable_mte() are those, in map_mem():
 >>
->>> But I am surprised that we didn't run into the
->>>
->>> 	VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn));
->>>
->>> earlier. 	
+>>     __map_memblock(pgdp, kernel_start, kernel_end,
+>>                PAGE_KERNEL, NO_CONT_MAPPINGS);
 >>
->> The history seems to be:
+>> It is probably this call that needs to be changed to use
+>> pgprot_tagged(PAGE_KERNEL).
 >>
->> 	2025-09-13 d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge zero folio special")
->> 	2025-09-13 af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
->>
->> After d82d09e48219, vm_normal_page_pmd() still had the explicit huge
->> zero check before returning the page:
->>
->> --8<---
->> struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
->> 				pmd_t pmd)
->> {
->> 	unsigned long pfn = pmd_pfn(pmd);
->>
->> 	if (unlikely(pmd_special(pmd)))
->> 		return NULL;
->>
->> 	if (unlikely(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP))) {
->> 		if (vma->vm_flags & VM_MIXEDMAP) {
->> 			if (!pfn_valid(pfn))
->> 				return NULL;
->> 			goto out;
->> 		} else {
->> 			unsigned long off;
->> 			off = (addr - vma->vm_start) >> PAGE_SHIFT;
->> 			if (pfn == vma->vm_pgoff + off)
->> 				return NULL;
->> 			if (!is_cow_mapping(vma->vm_flags))
->> 				return NULL;
->> 		}
->> 	}
->>
->> 	if (is_huge_zero_pfn(pfn))
->> 		return NULL;
->> 	if (unlikely(pfn > highest_memmap_pfn))
->> 		return NULL;
->>
->> 	/*
->> 	 * NOTE! We still have PageReserved() pages in the page tables.
->> 	 * eg. VDSO mappings can cause them to exist.
->> 	 */
->> out:
->> 	return pfn_to_page(pfn);
->> }
->> ---
->>
->> So even if pmd_mkspecial() was a no-op and pmd_special() stayed false,
->> we would still return NULL there.
->>
->> Then af38538801c6 moved the PMD path into __vm_normal_page():
->>
->> ---8<---
->> struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
->> 				pmd_t pmd)
->> {
->> 	return __vm_normal_page(vma, addr, pmd_pfn(pmd), pmd_special(pmd),
->> 				pmd_val(pmd), PGTABLE_LEVEL_PMD);
->> }
->> ---
->>
->> For CONFIG_ARCH_HAS_PTE_SPECIAL=y, __vm_normal_page() only returns NULL
->> for the huge zero PFN if special == true. On x86 32-bit, pmd_special()
->> stays false, so this can now fall through to VM_WARN_ON_ONCE():
->>
->> ---8<---
->> 	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
->> 		if (unlikely(special)) {
->> 			if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
->> 				return NULL;
->> ...
->> 		}
->> ...
->> 	} else {
->> ...
->> 		if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
->> 			return NULL;
->> 	}
->>
->> ...
->> 	VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn));
->> ...
->> ---
->>
->> So my guess is that the warning above became possible after
->> af38538801c6, IIUC.
-> 
-> Yes, I think you are right about af38538801c6.
-> 
-> What about the following then as a temporary solution:
+> I see. I guess we should probably update both, no?
 
-Nice, that works for me :)
+We could, but would we ever access the tags in data mapped read-only?
+cpu_enable_mte() needs tag access to zero them, but AFAIU it's really a
+special case that is only relevant to the situation where the data is RW.
 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 199214f8de08..bf447c8b2f57 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -684,7 +684,9 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
->                  unsigned long addr, unsigned long pfn, bool special,
->                  unsigned long long entry, enum pgtable_level level)
->   {
-> -       if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
-> +       if ((IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL) && level == PGTABLE_LEVEL_PTE) ||
-> +           (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && level == PGTABLE_LEVEL_PMD) ||
-> +           (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && level == PGTABLE_LEVEL_PUD)) {
->                  if (unlikely(special)) {
->   #ifdef CONFIG_FIND_NORMAL_PAGE
->                          if (vma->vm_ops && vma->vm_ops->find_normal_page)
-> 
-> 
-> We could wrap the check in a fancy helper.
-
-
-Cheers,
-Lance
-
+- Kevin
 
