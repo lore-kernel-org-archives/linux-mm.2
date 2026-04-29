@@ -4,111 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45FFAFF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 08:28:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 670BAFF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 08:40:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8409F6B0088; Wed, 29 Apr 2026 04:28:31 -0400 (EDT)
+	id 8A1636B0088; Wed, 29 Apr 2026 04:40:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F1EE6B008A; Wed, 29 Apr 2026 04:28:31 -0400 (EDT)
+	id 82A9F6B008A; Wed, 29 Apr 2026 04:40:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 706A16B008C; Wed, 29 Apr 2026 04:28:31 -0400 (EDT)
+	id 718FC6B008C; Wed, 29 Apr 2026 04:40:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EB6F6B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:28:31 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A89781BA121
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:28:30 +0000 (UTC)
-X-FDA: 84710916780.17.4EEAD4D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D3CDB40008
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:28:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bI9NqMP9;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777451308; a=rsa-sha256;
-	cv=none;
-	b=osQ4NADV6DIh8LITJXAJgk3yBZnWfv+NhFe5WokzFpT2iP/kbLbm7eLR3s/nx22CnnvDjx
-	P8VIVEXapLZz7DJY2oSQduKCmqDMQEDi7CByT4vt50k40c5pZYDu1nbDZ6JzznzKSCzmeS
-	i6jm56lXjqDk12wLmIvqL88YYWbllSY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bI9NqMP9;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D9ED6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:40:43 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F40A31203F6
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:40:42 +0000 (UTC)
+X-FDA: 84710947566.04.1969845
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1A22D4000A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:40:39 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=QGGT58+v;
+	spf=none (imf07.hostedemail.com: domain of BATV+a0270c4eccc79b12c2b2+8284+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+a0270c4eccc79b12c2b2+8284+infradead.org+dwmw2@desiato.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777451308;
+	s=arc-20220608; t=1777452041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8m+8sVnmaYHkTa9+PFXFunu3jSY1eXSkR2qKEpxhJOs=;
-	b=3U2nKJl3xfyP3/171uDGh/gtbYRvuXjFFHMlec7oE7mde/8K+mnDUPxx50MqFe3NWOUB40
-	RzElkCby1d2OG2mOxq/4jOeLrxOG4/0HZSExFGZdpiADWnYePL5U6h3xkrY5+kAG0zVrOS
-	xwcR9AAGiKT4sFXMlySXZpnOPHf1SBc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777451308; x=1808987308;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cOxa4CgWhjet1z2EeEEdLVqhmu6YFrkVnG4ZICWRr0M=;
-  b=bI9NqMP9hWMJ9N2drZ1XYGth0GXh5dtF9A6zro4K3PtrGkMQjHdeanEv
-   PY+6QWgs06a+6Y/gN2hJ4XOQTTCzlMnuX99yE3FKRtIBRpy66DG486lRl
-   wQmDMgtycrtqAVX3cm2A8vlY3E1XrHIEeg0CH/uq6F+K/jp7eKPCz4/rS
-   Ofuka2bO7v43RT+BLjVYfWXhaVB8ohJDPKtigOyt6AqDODg9pcp9twHn7
-   nuYuaB+ktxvMbrPexZJZ2jrL//c4yQSeiaTtj1sCKYVEqoP5BlcHfI9PQ
-   ty6GHswpOQ19ZLoMn5PRS60OVajYpKQWN+m2D9V0FRAK1PXoiJP9Be2JI
-   w==;
-X-CSE-ConnectionGUID: YX5CQjaQSKqjuu9G9h6iZg==
-X-CSE-MsgGUID: txKzh3yqTlyVkMZoRGzOMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="65905228"
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="65905228"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 01:28:26 -0700
-X-CSE-ConnectionGUID: 8mkmh+WgT9iotp82+uPsdQ==
-X-CSE-MsgGUID: XnmKZAYmTgyF33Wn7Sdevg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="227692057"
-Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 29 Apr 2026 01:28:24 -0700
-Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wI0HM-00000000Ap2-3WbZ;
-	Wed, 29 Apr 2026 08:28:20 +0000
-Date: Wed, 29 Apr 2026 16:27:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christian Brauner <brauner@kernel.org>, Thomas Graf <tgraf@suug.ch>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH] rhashtable: give each instance its own lockdep class
-Message-ID: <202604291646.noNYgx5i-lkp@intel.com>
-References: <20260427-work-rhashtable-lockdep-v1-1-f69e8bd91cb2@kernel.org>
+	bh=SVmAKi5V93OWkp1Vf2W2JhdvXzpDzJyBKN3WZchnTrk=;
+	b=spafIrZ09eZYyukBxybAOj1b4tHf3oSLe/SkdPgKiqEbCtF2aOz4rw9xzw4CMM2HhsoaD9
+	NBXzdx0ZNWGtOc/Q0nJQBolok7A6uL5TqSNcG/giMZYhXZvQZlckvpKAhOG3KGBd0BJeFg
+	AhKnIF7oUaKHOClyNv1mnuYmR9AJmcI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=QGGT58+v;
+	spf=none (imf07.hostedemail.com: domain of BATV+a0270c4eccc79b12c2b2+8284+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+a0270c4eccc79b12c2b2+8284+infradead.org+dwmw2@desiato.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777452041; a=rsa-sha256;
+	cv=none;
+	b=3DE6rHY/EYlEopYfLo2CbwOT3SBaHmzDuC/LYAEX96GGVkTc0QukTy80ENgEjacIZjKjbX
+	wxvR0c9GTQ380ejDOc8tDJB6EOQwPxlbwaj/uR/Fqt3kyN5znp3tkUN1BiZyXC6wWvArfe
+	UrSeQvMErO5t7ZG5BZck74KtqtS1ayI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SVmAKi5V93OWkp1Vf2W2JhdvXzpDzJyBKN3WZchnTrk=; b=QGGT58+vEMU7jXtLT77Kn88sYh
+	7f7RV1cYAnXXBjiawF74Qy1Yy0SreODfVQL0uRWWc84bo5YkyFRLyVDt1dUHw3Gul6/P7C1eRL0S+
+	1uV6DUra4A1BMdbZi04wH3Q2GXjSsW9H/YBObbaiUM8TdoaUPnRH5do+zSZo4yqB2HQarK7QKSyzX
+	KTXi8qxVGOSrwLuFS/i9fE6J7Ht4i+ncwpeGcEQeYepDespphwWqbiMU2KICEaxa3bmPey9ftStMi
+	D+TdOx1SEll8PuJrrOwxCWmtd3WoNRfcVyce+Iixxzp3Gyay0bmxjTH5xdj7Rg3neNuJ1ScIZDTtO
+	pWxuTo0Q==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wI0TA-00000004tAV-3dUq;
+	Wed, 29 Apr 2026 08:40:33 +0000
+Message-ID: <cd0ae5795cf14a7b20c90840b0a3eba7db160e72.camel@infradead.org>
+Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
+ Live Update
+From: David Woodhouse <dwmw2@infradead.org>
+To: Alexander Graf <graf@amazon.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, kvm@vger.kernel.org,  linux-mm@kvack.org,
+ kvmarm@lists.linux.dev
+Cc: rppt@kernel.org, pratyush@kernel.org, pbonzini@redhat.com,
+ seanjc@google.com,  maz@kernel.org, oupton@kernel.org,
+ alex.williamson@redhat.com,  kevin.tian@intel.com, rientjes@google.com,
+ Tycho.Andersen@amd.com,  anthony.yznaga@oracle.com,
+ baolu.lu@linux.intel.com, david@kernel.org,  dmatlack@google.com,
+ mheyne@amazon.de, jgowans@amazon.com, jgg@nvidia.com, 
+ pankaj.gupta.linux@gmail.com, kpraveen.lkml@gmail.com, vipinsh@google.com, 
+ vannapurve@google.com, corbet@lwn.net, loeser@linux.microsoft.com,
+ tglx@kernel.org,  mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org,  hpa@zytor.com,
+ roman.gushchin@linux.dev, akpm@linux-foundation.org, pjt@google.com, 
+ "Petrongonas, Evangelos" <epetron@amazon.de>
+Date: Wed, 29 Apr 2026 09:40:32 +0100
+In-Reply-To: <b52e7d0a-4275-48a0-850f-6ceccfd5204e@amazon.com>
+References: <afEwWZksU0Fw61oT@plex>
+	 <b52e7d0a-4275-48a0-850f-6ceccfd5204e@amazon.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-27DSEmjFaQEg/jRgqRXu"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427-work-rhashtable-lockdep-v1-1-f69e8bd91cb2@kernel.org>
-X-Stat-Signature: ip9osax3i73hhsmka6pd7rordo6zf9cs
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: o3sisqgdz8hx84gzx3kpraetycq57ihc
+X-Rspamd-Queue-Id: 1A22D4000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D3CDB40008
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777451307-428983
-X-HE-Meta: U2FsdGVkX1+S/aNfDGT2CdbBCsQYBwJyd0xWH46oHQQ72jOWlmDL53VExQZd1Gf9ZqXhkBz0e4sCErxJVJ97dOEt7osE6/OjT4/dnXdI+g5Q+3E/IWwnQvD/DdqLuXtbj8eTTftkSfkoGCGT6QFNEJ6kJTATzwxixT7mXIhxyNP4HQlecnkl/oXTWf2RA8YdxiR9JMMzz93qrNGtMdiPeuNmEzMWdBK4YRVhWZdkboBDqAyIUfU8DMVe+2anGk7wh2wTIeM41OydIyOIgwHwK0Q2uOfGxKUHpSytEaAZnj0Hq7l+XhB5lBh2sJiQb1meBDlRVpzIqvAJg93nhDepsjdW7jm+4803zGXT0UaEsMZSBqi293j8rN1f8PDs+DMr3v4E74LX1ERGo76cJG7eqbPeKjc0U/GzO9aoHC6uhmXhqBYYJhZnydchBklzt9JWogjHISCnfhemMer5yqaUZdPrmytEtrTW9w650SjAWHNBa8L+1YZIUCoF9YGIyoIefHZ9G9hrfm25pY2mx4K/UbA8T7P2BwSu9qITFc9cWHMnmy67vvutM9WVl0tHxcvgZIVGZ65SygRdVGB/vVlJXbjeKvM/eJIgYP1LMuvOgIUa8EgZQANE8W2mZs9Qy3jLThFs9BYtI11tUntvznpVgCWxGfZ9dv2pEnENLyRAb8fKtnnMx5+rJK3qbNLg2kJ09VMI2DW8h2wga4AB3HHbp6w4jCn4Rw0WuEY3ZonKO3kO8OqiqSoLKxOXMHTbz5UTLwUlKNlLpd/1fuhhNkXjDednmz0J5PlPKoIiZ1vjMPgIVFGGFUpcVguiKJag4pK3ofYtkcYh8G/3yiUV+ujQhUjjJSVXy2wcvI2Xo4dyTuEZVShmhhvD1VUsCkHwmQiSI1zUoqGfljesjF8C8KrPLj0KC5SHcFLUyxc1GCYyWcxGvfN9gIvt27rTptcKnPfia7c7N8XHturbXIviNHx
- GF1N67US
- iErEOWsSuJ8p/wb8E3sjT4OzddFaLugiobDRWmiWXpD96b+VAH7nC5yYc1WUfAlvfH03H3f2Bn5ZHt0n4pemkCMWkB4Ekq5jKZSghBhU4V1ldho/3xJHaJB6HSwoGhCGzkVu0FlxBEYR+UiKb4ghfW5paIWB0BJmjnCx+yfNJmpVe6PcJJwcW88LU3FWgmQW44KGdbHm4Vgy0ADh0DuSIQO14mXNzEF7PtpUWTmEfw5x/w+OXVe9amGoHFNyPVxe3WM9efyH73qZDxPfmQ3ey2hyb02I5etYAyWJUQ20mrScO+Fo+uRf9gXi+Tmd5DqOupIHj+06XXt8baiD1ZIRf3Aq8Eg72m1rv3ezRyaRrLot8dzNRNOvoRAhleBnUh7EC6oiiH21oIv7Po+GDzAKyMnXKar7FCez/iDr83XZ3ck42A24=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777452039-215319
+X-HE-Meta: U2FsdGVkX1+fS4OlcQTQvpzcNwYSqziaufW7xAB5SQAjkpzJL1bdKEb7tYT9lZS+gKXKfTRKPIyLxjQIWBtE7mjNXEHFfFGy6oNu4MYLozkZq47tQDSpvyfSgDPdXE5BH6Rh6VkY6ACc5z8FTuRbWiZwTky0XhcNEZ6H3KpXItboEAljkYP4RRorqfNBvQYyz7ZYza/XHXy8G7g4mLlexPhJx4MdInr6r0PwtAVw7j4HCwPRbJ5jCDLC7LgyvRYepXNTq7sxukLl/FaaF+DpEMXtPUDb2tb76YMjpj2fXtnAY+SBJ3YgIGtATQ13uMwe15crMgMWcaT1CEGjJa7UB+pirpt2s3HkxdJuICPQ3+6UbgaQBDLlgzD9uOFM84U1f1RVmOvkZ1Jpy+kYX3RohmakcaYtuzvnwA2V8Y+C87/AUA7QXVkVFIF4mQU8/b/6ENrg3d1F6gB4In10OHWWR8mZ79eOEqOrDucpE+nfpXJgApOgYRMRNdFwZyLL/d15yG8ahqXRk2ChuNCWC/Ew64i9W47OQ2L2r1wOhlLIjFugr1P5LH9NOG9idGw3ssvDJe/ylMCPitvpsS9evDAoUEOGIqHyk6UG7sNJCm1OT/F3Ls0SxozH9kKhM32H1l92LS7UG3Rktm1M7WPTYRe6i20gQGZ5m7x0hDcI62Mz8KnIVfHAOSo6bYrOrcCSUsLB64LJhf/Pgc6QWwn2d2KCUaYSbdY8cVVzNqgoY4OXpfcJcbJYHq1rqq/jp9ohDkON2/GAInLFaUB7671nqEgTPs4KkkbxvO2zQCiG1dbupOABqxvML4JEisI3osyOjO6r5e7tLYpqJH8te4G8lkWX3G4Weuquc4uO2JkSzUXhgyZjU8wc1mMiGxAs+wmVME952OqUi/KcZmz3494J/ZfO6gea0Qivft7erDqdKb6BsSzqNYBZIjqgbD9hGedK8NBHV/YyW3aT7d8qdksz1vd
+ YmPQZzi3
+ pCAZyGaM3tdW7jbwPGGx7BlClfx9Z7HiKzXd7fMAVPAqcnDOiwdRj2lNbvhUIOlX72XxlNK1i1Xv6IruN6UWXazg3t0QzlYyzqInEFAzwjRBYigjiH/Dp8u2l+KAavVHJXf16UWWDk6ySaVCDpJCrlKaZaAaImKvQ3Rhzo6MdfrehdmJlcBD9VNjquB6nUbT6Hlr/D06Hx9fxvWBylSFkEvNqxCFZv38bjUdwQWRUeeNbJrh42Kv2p7vszuiW+zrHhdAKu7D5MLHQTBH5RD25kLu4OuTanxdZT+9wt6wQJUKrwjSaCPQfJFQy6T4NeVfI/mx4LVkBkylXPfg53gtdEo7QyZ1GwYCxd1giLkVUZIbVm5HN1AIKGFa+KESunCinAuoeWvXvXnW9GkPHAVAHpUkHQftFry7hReJSMlAKy3z+A/lyCi8F6tz3WYsW0FQ2HSYGCT8bRSajARq7l8ifHSspv0cpPgc0I1xhQhE7+drkkSjC22RnfZr9FD5pPemdZnWdEPV/B9yMTWe2tcauAIDY0qaIm66os1hBbz+S6b7IAdoStJVJKAEhbQonNmTcbIPg3hFtdUeYOn01znf7fF830QUQnSLgJAQdXKWvnw2gCiuaEBEI+BFq74zh7XtnWsWoucSY3mH+BbVVQYFdC0RLDCX+BUxSE190tC6Xh6HsI8kStKHS0UVYU4tiqlNL337bPqK+MzaMSGbeyeSTMiPPMrSQjdavwJyQGbbHFozuTA50N4UZZxFBww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,33 +106,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Christian,
 
-kernel test robot noticed the following build warnings:
+--=-27DSEmjFaQEg/jRgqRXu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[auto build test WARNING on 6596a02b207886e9e00bb0161c7fd59fea53c081]
+On Wed, 2026-04-29 at 10:13 +0200, Alexander Graf wrote:
+> I would prefer we only attach the whole caretaker and all of its=20
+> specialties right around the point when live update happens. Why keep it=
+=20
+> dangling and active forever? That way you can also late load the kernel=
+=20
+> module that contains it, so you can be sure it's an up to date version.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Brauner/rhashtable-give-each-instance-its-own-lockdep-class/20260428-182539
-base:   6596a02b207886e9e00bb0161c7fd59fea53c081
-patch link:    https://lore.kernel.org/r/20260427-work-rhashtable-lockdep-v1-1-f69e8bd91cb2%40kernel.org
-patch subject: [PATCH] rhashtable: give each instance its own lockdep class
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260429/202604291646.noNYgx5i-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260429/202604291646.noNYgx5i-lkp@intel.com/reproduce)
+"Why keep it dangling and active forever?"
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604291646.noNYgx5i-lkp@intel.com/
+I've always wanted to tie this to address space isolation.
 
-All warnings (new ones prefixed by >>):
+The only way to truly stay in front of the constant stream of new
+speculation vulnerabilities has been to just make sure there's nothing
+sensitive accessible in the address space at all. Hence all the work on
+secret hiding, XPFO, proclocal, etc. =E2=80=94 and hence the occasional
+researcher finding their shiny new (5-year-old) vulnerability and being
+confused when it doesn't leak anything *interesting* in certain
+environments.
 
->> Warning: lib/rhashtable.c:1030 function parameter 'key' not described in '__rhashtable_init'
->> Warning: lib/rhashtable.c:1030 expecting prototype for rhashtable_init(). Prototype was for __rhashtable_init() instead
->> Warning: lib/rhashtable.c:1104 function parameter 'key' not described in '__rhltable_init'
->> Warning: lib/rhashtable.c:1104 expecting prototype for rhltable_init(). Prototype was for __rhltable_init() instead
+I'd like to see the inner KVM_RUN loop switch to a completely separate
+address space, in which there's a kind of caretaker which can handle
+the bare minimum of interrupts and timers and the most common exits,
+and which *relatively* rarely has to come back into the real Linux
+address space.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+And once you have that caretaker running in its own address space...
+why not just let it keep going while Linux does its kexec?
+
+
+
+--=-27DSEmjFaQEg/jRgqRXu
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQyOTA4NDAz
+MlowLwYJKoZIhvcNAQkEMSIEIOV4bcsC85R6/8aGhggbxQwYYv/voLwMooiHGdLIknK4MGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIALSvd+9bzRGGK
+hO+y0ODW59RoxP0arW+kgHv9QL9vVARTKovarCFZHwOJUYTneMae4qrREpalZzG3G15jtuQIip/A
+wSHpKtFgPIHoyAgCJnjz5CWbmkj/Pz8oSudNvp3Kww7Q510B3LODD2ul04N3rvHuwb6b0ZDC3BN0
+TT3v1MEdsR/zxr1esyYwlnDJxaGlR4l+R/ZsTIOLBk/brLREU6DmYpMC8Z2KCH3iu1XvR2kFMM0Z
+apGEjuI51EPO3B9FqscYOQcquN2QJlRIrYfBMovcqCcgPFnzvmOai+miX/MDBAS3YeXqOtgcKa6p
+utG3+sKxacSt14ckj8+KLFbeQXWRFega1155UQwu8gfXGav3e1rxs6ekit6JyAt+mPCXFwgBrZAN
+px4LfloG67Cg6aAJnI6fGAX3NSi8enNKf0dVJAdANESSWl6HpMbaeHEd7UiWUa74lHNlXhzzDfb+
+LXBat/YGE9RYVUmXEX0CqSTHwjMW8KNYNm0yxKm1jdFfFVIEPeMJ4dUWYP4LHIXpDy1jQDYLR7JC
+XsjTXX/wKZqQQD2QUqGGgtyae8C0kV2fTKWUvhIvY09BSOowALjHZ1DXRIP05qKieC4l9Nx2jZOT
+p+u3tDqBNkTmkKCV1FoGzsAEfKlDN2sbQ1m3j0QWPW9RBB2TeqK3Uzq14XuUR+gAAAAAAAA=
+
+
+--=-27DSEmjFaQEg/jRgqRXu--
 
