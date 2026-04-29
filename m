@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DB1FCD1297
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:40:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C718FF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:40:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFAB56B009F; Wed, 29 Apr 2026 09:40:06 -0400 (EDT)
+	id 866626B00A0; Wed, 29 Apr 2026 09:40:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAB276B00A0; Wed, 29 Apr 2026 09:40:06 -0400 (EDT)
+	id 83D4E6B00A1; Wed, 29 Apr 2026 09:40:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC10C6B00A1; Wed, 29 Apr 2026 09:40:06 -0400 (EDT)
+	id 6DF376B00A2; Wed, 29 Apr 2026 09:40:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A62996B009F
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:40:06 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F9FE1A0203
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:40:06 +0000 (UTC)
-X-FDA: 84711702012.17.4C4EE37
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D4396B00A0
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:40:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B1398A89E
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:40:08 +0000 (UTC)
+X-FDA: 84711702096.27.B24FEBD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 40569140019
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:40:04 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CVvITovv;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 503BE4000D
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:40:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LJb8v1/h";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777470004;
+	s=arc-20220608; t=1777470006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/xb8++MFWWbutidJn3V0p20dgH6WcuZ7SlXr7qIYnqo=;
-	b=FSL5s1HAB3mLr68NNIDnnOpzwBNM0pNZMMiJqyDmF0WpRBS/6RDJBe2sWtYa4+yGlzm0ra
-	+2iIAghLwWkqpavHc5JAn9bTzW3+l6scFRqvgMXYPhBDybdLvKGMk8UUZlNJvxey6YsCUl
-	GFejuvgVOZH1nWQTLEzix/z5bdRDGDA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470004; a=rsa-sha256;
+	bh=u11kOx0qSgfZ3Lz8QmF+bGDRYmL355hw50UAdmG9kDg=;
+	b=haUx6W4+L8Dpwjhf9xmt3Mu6DeDw0XOL0YuQeFE65BFyvbXQ/BNr1bWToQubhJr7s4lI3N
+	KYRp4ong5m2hlWYC2c0cimHSqKBguVDf2dSue9HyXZ8XjkUTpxrhZSu4lgGJ6ocVkjpMrX
+	WPh0ervQmuTioNQ0wcXk+LYhdOkh32o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470006; a=rsa-sha256;
 	cv=none;
-	b=sH7pAW0EGMs/BITY5nBVgw7XGigBjnDp++Qi0pKm7y7MVba2v+LVJ0cvl0xOZe/NXAZMsO
-	dSZNrUJ3Hsle0FpX2JamfTvvycU/AhErmhSuN07zkpke9YFtDGlw6RHXZwHELmvXehs4Rc
-	zm30eBMZxMG9oGPFaPrY2klHLCp1K/c=
+	b=71IMJ5WKSJyKGOp8P4UqE5oMOGJEiie1C81ezCSdotbOKJhavTjzvfaTtkXiBiiqeCHw8i
+	01rudmREZx2teKXO/prBSi8AVfUfbkFjwPtWPl/HUwkGt1dd1t63fHrV8LnOKjKZTAU1Le
+	yfJ2W04NfG42YtJezD7S/GHtGMnsHtg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CVvITovv;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LJb8v1/h";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2AD74442F9;
+	by sea.source.kernel.org (Postfix) with ESMTP id 70F9B44516;
+	Wed, 29 Apr 2026 13:40:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E00C2BCC7;
 	Wed, 29 Apr 2026 13:40:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E45BC2BCB8;
-	Wed, 29 Apr 2026 13:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777470003;
-	bh=7g0JJiONXBOw45AyCeb07Wo1XFWVqN+yfQgV92Bji6Y=;
+	s=k20201202; t=1777470005;
+	bh=IHiLzF9pidNOJYX260CdZehqWF3kTGgKyTVeh/Y6T5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVvITovv0rPTsRIckne33fhWAqIvJ6CkT/vfyng+WOTzPKF2ue9p2YU9OD2nkxcFG
-	 fth0V8NRUAtRGk8QRFXdp6fCF0L7vLSEBo0jOV3YoKh8HmxQfbxUNlrg1qmzWSRMat
-	 4T6MZ03v7IWk6RQx8JLhpmMqvHA8ch14S6AuBok4JO/g0NKI3CacRHxV8AqZwp+160
-	 mcyN3E3n4S4kbrcwE9RDz+/Mv0Ia/q2QMomCmePKcGpUTX6omL55T356NyAODrmIry
-	 yVR+XcutobkssLARvkmMLlnPWEU7gDkM7fR6AqyiRkvGmHrGhyVX11rqttaKEc6k4Z
-	 a07k8GPJUfwjQ==
+	b=LJb8v1/h5ggsVkAcUDM2gHnjHQ5ZNE0SkWuM9Do3bFIL7WSg0SOVEX9YJi41meDtW
+	 WDuCxpnW1ljTV4ZAzRiTYeb4aV1SO53NetPnmiFEtkGbbdzjrUHdqt8iqzBVjm4kYJ
+	 z6q4T81iMtJ0NcpENL7TtU2ziJ1fZiHso9lukIiW9FlbT5yBye+sMUbQl8j66fDora
+	 l9oZNpH6BJsiIKywHvuBPnF2GVkJmsHpis0yi/N5YYk9T+/eYKeXqrsPQ8zvsRbQ75
+	 5mFGzhI/QYT/AI6wMNzyyrUGs5SJAzzY1ZO0Qv31MGqTtAumGT+b0IeZ805JEEr4hY
+	 5gajINmizwp2A==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -76,22 +76,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 08/12] kho: add kho_radix_init_tree()
-Date: Wed, 29 Apr 2026 15:39:10 +0200
-Message-ID: <20260429133928.850721-9-pratyush@kernel.org>
+Subject: [PATCH 09/12] memblock: introduce MEMBLOCK_KHO_SCRATCH_EXT
+Date: Wed, 29 Apr 2026 15:39:11 +0200
+Message-ID: <20260429133928.850721-10-pratyush@kernel.org>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
 In-Reply-To: <20260429133928.850721-1-pratyush@kernel.org>
 References: <20260429133928.850721-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 503BE4000D
+X-Stat-Signature: yix5hojkxgeeakkstq4594whkbanh9bn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40569140019
-X-Rspamd-Server: rspam04
-X-Stat-Signature: qy6ynd6dyi3e7bw9cx73qshkn96wsr5h
-X-HE-Tag: 1777470004-634709
-X-HE-Meta: U2FsdGVkX18RLg1rdzlMQXVRyuI2b0o8u00Oz4Dm3IpJ6htl+md/yupLweJNoIg0Pf8PB7g7caRpJk2USNuI6e2E8ZUSyW76pooLgul7nPPLsXhXJAeQWamE4CkdqFaFNp2Qts4Hw6bJxGAejgtire55w6PjsHOANyqJ+HsAdL8akchG3fk5bKU2tcmwihcmalYu1S7bAwKniHKxZ2gBbB00fjKQFkWmPCE/I2/PkAYrAinpaiDaYfVDO2JEogK2DvV/bw5k5ZgW4azojWAITttxWxCPaYZ9ATw5PhoGx+7tvX/rCd/3iwesKkKd53uJcnuxmOh9eqnTHTHRfSgdoHd3mtfdnQW6IqKmi4Zfe7+P3vQJkOr0avTEGqnbTTdShtLOU3+FjFA6NvmSCkbOqb2Ss8LFvYLBJhyJ4N1yOjk0y536lOq+V/65DjVM+f4l6Q/8fG11pFRHzfrFdpJzRlzlSF6cxkHYo1QePhdYwGE+Ahp0SCzteo1iFkJkw6UPYnHBc2vL6uYo/rK9qqqTYU7SyQczMQ/YBtgWx/be0qGGakGhLf7MRCEnVQsUxPAfymNtJ7dlYhktX+W8wc5MNmESDDmyVDAfyRs0kUS6Jbs1Ae69exV4is3x7dBzkuK530bsP3r6mQW5cgtmaxpX0Eh877QmDsNQkj1Eb+JN7BVG7ysHXOniGac0gamg3jSIM8GHC/7E+VceljBePlea+Cu/fKW5adJxkRON5DQ3sV+QPYMdZrKITG+vbQvgJgcKeM6HEYTGX7u0hdsm2J9x+TwIkDD8z3cSNRnBQEsEc6HZkI/FBV4I7zp98TfmibpiXBo5GYU7tyAsZXoHDqKcr4Vm1lA3PwgWseu9tat+969MnrkDyc9IVBIf7HvMs77xZouicuBE/5OVExnzgmRUeXfFyt+wD/qQp8rF7QJ67SRe3EUtM/TL5xE5SxLU3p+zuPWF9GyJ1DzPTef5ZMz
- +zhNB1YL
- DsKtGyDbredpXz9pDTqSC7oMRiyALl4YbpaYPZE6k4QCSdMdhpEACf8MKTrRxDVlkhCI+b0J8xEpNUyOP9Y6XlHrhaF3inyTvYiuvtXHqPWegrox/9shWmiMwwqacBLu3OTJIgFqaiVn7MzKl/z8MsfeaCSdcpqSRoMMEDPtp3/n/2upwv9vDJVhYHiP5lGRrbx+ltgdiNRMm9fImS/v73ziXN/1EB5ruWCHStEDoREmpOn9jRQtMXb1ZPw==
+X-HE-Tag: 1777470006-405670
+X-HE-Meta: U2FsdGVkX1+86nuYuooJ94m+ldh1QBJNbEsLwm/bHsNbsJIWlY8q/8JfQgkZN58c858sx5iwoxzJRLCJQ4Noq9JyIUlG73wtQJtF6hV0OGSyfC8/6ZKuJKlkhiKcGtCCyyTKAAIsd7Ut7ZJWZ9NKYKskherXq3X0nImJvPl43ir28xtRf8RPBN2sbvKbtsMp/th6m6hshWGk/HJpVDoGJIhLaPuigP/WdnoX2kojTADStuvRj0OrINnfuG4zQkFJaZP77GvFsDekl+MuAAtMNt3qdq925B23RoOD3Is4EZzqB1hvlwwZeKfp3QyTazX2jV8uQOYpa2fYiOyd5BB5l0OpKwwPf0NxFRkLlRyAvpyF5rwaIkDkrvr0CQosE0599wOJfoL+IBvEUXd99WBATqRUejbQEGAwybUYMRKcF5OlCmxJrzkRTnRR7iCJfodP1AmgCc6WMK8QReew7aohu0pw60I4fe0znBETn3arDJr6zbBtgrjpW3ebaHDX9fYLF5pQsRhXGfnGQvGkoylPCNmAtFWdzBzsi20JvPMTRWQdRDl3M9PF/HggSWpk4z+cgDxP5WLtnsNGGrGAlXUia8cS3RXO1QvsiKVDHMkcdti5ubhvZOlTpOTZozxamyCBai7FWnICxS0jNqlHiLPKCJDXWHB6CPAciYQ1mPQi/VPnbMnmqAFTQs0HfKJOOB6/2PpcP6ZH9ug2BRhae5AWO540SmgOaCAfEfv4jEOx5iThNyP/v5m4V2/Xr8f0ihN301o7vbbzAl9k7GmR+I1/LRviOV+SBMRihifLvAYZ5QJRBS3I26MiU4SXaZF9RB5QWV1K1NMMDTMF/F5QAe3NAbjcM8DPEALDkURpkcqAX7eugVLKD0hxVMhgRs8efRO+gQIgHfvOyZ9QMgEJ28zn17WsIwJbMCedScOIw25lGqN5GXcE7uv3U1mTG9qVsUyJTXFlXdiMXOrV+Hr/P8k
+ MfYGi/bN
+ EBOioPhW+w4/09iGiU57t674r6JBW14FeRrBSSD7LyPoong9pHxzVyg3nPuZ+exlsHiL/8SeIH0Qs8OYyF4EXpWUS9oPToUvw1CR4NR6J2+6n2b0cndMbqns//l/nuBDn+n3Mx0WbfalW0F8/V7fMl5l2r+L5U82FdkCGmuQ1kFKHnBBssm4pL6qyYrXCeHrxwmNhvFJ6SWogVet7MXpmW7TMYPr6J3gsQ09BqEF6IG2hjrdDWXzZLHBd0Jg9FP+J0h07kwfS3lJI7Z/hgn9NdXQzBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,98 +101,150 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Move the initialization logic of the radix tree into
-kho_radix_init_tree() instead of having users open-code it. Makes the
-boundaries cleaner and reduces code duplication when a new user of the
-radix tree will be added in a future commit.
+In the upcoming commits, the KHO will learn how to discover free blocks
+of memory by walking the KHO radix tree. It will then mark those regions
+as scratch to allow memory allocation in case scratch runs low.
+
+To differentiate the extended scratch areas from the main scratch areas,
+introduce MEMBLOCK_KHO_SCRATCH_EXT. Use it when choosing memblock flags
+for allocations during scratch-only. Teach should_skip_region() to check
+for both flags before deciding if the region should be skipped.
 
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- include/linux/kho_radix_tree.h     |  7 ++++++
- kernel/liveupdate/kexec_handover.c | 37 ++++++++++++++++++++++++++++--
- 2 files changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho_radix_tree.h
-index 617395a6647a..c0840ecb230c 100644
---- a/include/linux/kho_radix_tree.h
-+++ b/include/linux/kho_radix_tree.h
-@@ -54,6 +54,7 @@ int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key);
- void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key);
- int kho_radix_walk_tree(struct kho_radix_tree *tree,
- 			const struct kho_radix_walk_cb *cb, void *data);
-+int kho_radix_init_tree(struct kho_radix_tree *tree, struct kho_radix_node *root);
- void kho_radix_destroy_tree(struct kho_radix_tree *tree);
+Notes:
+    Checkpatch complains about no space after MEMBLOCK_KHO_SCRATCH_EXT in
+    the declaration, but doing so makes it nicely align with all the other
+    numbers. Mike, if you'd like I can add some whitespace.
+
+ include/linux/memblock.h | 10 ++++++++++
+ mm/memblock.c            | 41 ++++++++++++++++++++++++++++++++++------
+ 2 files changed, 45 insertions(+), 6 deletions(-)
+
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 5afcd99aa8c1..4f535ca4947a 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -51,6 +51,9 @@ extern unsigned long long max_possible_pfn;
+  * memory reservations yet, so we get scratch memory from the previous
+  * kernel that we know is good to use. It is the only memory that
+  * allocations may happen from in this phase.
++ * @MEMBLOCK_KHO_SCRATCH_EXT: same as MEMBLOCK_KHO_SCRATCH but was discovered at
++ * boot time by finding gaps in preserved memory instead of being passed from
++ * previous kernel. Does not get passed to the next kernel.
+  */
+ enum memblock_flags {
+ 	MEMBLOCK_NONE		= 0x0,	/* No special request */
+@@ -61,6 +64,7 @@ enum memblock_flags {
+ 	MEMBLOCK_RSRV_NOINIT	= 0x10,	/* don't initialize struct pages */
+ 	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
+ 	MEMBLOCK_KHO_SCRATCH	= 0x40,	/* scratch memory for kexec handover */
++	MEMBLOCK_KHO_SCRATCH_EXT= 0x80, /* extended scratch memory for KHO */
+ };
  
- #else  /* #ifdef CONFIG_KEXEC_HANDOVER */
-@@ -72,6 +73,12 @@ static inline int kho_radix_walk_tree(struct kho_radix_tree *tree,
- 	return -EOPNOTSUPP;
+ /**
+@@ -157,6 +161,7 @@ int memblock_clear_nomap(phys_addr_t base, phys_addr_t size);
+ int memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t size);
+ int memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t size);
+ int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size);
++int memblock_mark_kho_scratch_ext(phys_addr_t base, phys_addr_t size);
+ int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size);
+ 
+ void memblock_free(void *ptr, size_t size);
+@@ -304,6 +309,11 @@ static inline bool memblock_is_kho_scratch(struct memblock_region *m)
+ 	return m->flags & MEMBLOCK_KHO_SCRATCH;
  }
  
-+static inline int kho_radix_init_tree(struct kho_radix_tree *tree,
-+				      struct kho_radix_node *root)
++static inline bool memblock_is_kho_scratch_ext(struct memblock_region *m)
 +{
-+	return 0;
++	return m->flags & MEMBLOCK_KHO_SCRATCH_EXT;
 +}
 +
- static inline void kho_radix_destroy_tree(struct kho_radix_tree *tree) { }
+ int memblock_search_pfn_nid(unsigned long pfn, unsigned long *start_pfn,
+ 			    unsigned long  *end_pfn);
+ void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 01a962681726..79443e004361 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -182,7 +182,7 @@ static enum memblock_flags __init_memblock choose_memblock_flags(void)
+ {
+ 	/* skip non-scratch memory for kho early boot allocations */
+ 	if (kho_scratch_only)
+-		return MEMBLOCK_KHO_SCRATCH;
++		return MEMBLOCK_KHO_SCRATCH | MEMBLOCK_KHO_SCRATCH_EXT;
  
- #endif /* #ifdef CONFIG_KEXEC_HANDOVER */
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 29479534f65d..1a04e089f779 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -305,6 +305,34 @@ static void __kho_radix_destroy_tree(struct kho_radix_node *root,
- 	kho_radix_free_node(root);
+ 	return system_has_some_mirror ? MEMBLOCK_MIRROR : MEMBLOCK_NONE;
+ }
+@@ -1178,8 +1178,9 @@ int __init_memblock memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t si
+  * @base: the base phys addr of the region
+  * @size: the size of the region
+  *
+- * Only memory regions marked with %MEMBLOCK_KHO_SCRATCH will be considered
+- * for allocations during early boot with kexec handover.
++ * Only memory regions marked with %MEMBLOCK_KHO_SCRATCH or
++ * %MEMBLOCK_KHO_SCRATCH_EXT will be considered for allocations during early
++ * boot with kexec handover.
+  *
+  * Return: 0 on success, -errno on failure.
+  */
+@@ -1203,6 +1204,23 @@ __init int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size)
+ 				    MEMBLOCK_KHO_SCRATCH);
  }
  
 +/**
-+ * kho_radix_init_tree - initialize the radix tree.
-+ * @tree:   the tree to initialize.
-+ * @root:   root table of the radix tree.
++ * memblock_mark_kho_scratch_ext - Mark a memory region as MEMBLOCK_KHO_SCRATCH_EXT.
++ * @base: the base phys addr of the region
++ * @size: the size of the region
 + *
-+ * Initialize the radix tree with the given root node. If root is %NULL, an
-+ * empty root table is allocated. If root is not %NULL, it is the caller's
-+ * responsibility to make sure the root is valid and in the correct format.
++ * Only memory regions marked with %MEMBLOCK_KHO_SCRATCH or
++ * %MEMBLOCK_KHO_SCRATCH_EXT will be considered for allocations during early
++ * boot with kexec handover.
 + *
 + * Return: 0 on success, -errno on failure.
 + */
-+int kho_radix_init_tree(struct kho_radix_tree *tree, struct kho_radix_node *root)
++__init int memblock_mark_kho_scratch_ext(phys_addr_t base, phys_addr_t size)
 +{
-+	/* Already initialized. */
-+	if (tree->root)
-+		return 0;
-+
-+	if (!root)
-+		root = kho_radix_alloc_node();
-+	if (!root)
-+		return -ENOMEM;
-+
-+	tree->root = root;
-+	mutex_init(&tree->lock);
-+	return 0;
++	return memblock_setclr_flag(&memblock.memory, base, size, 1,
++				    MEMBLOCK_KHO_SCRATCH_EXT);
 +}
-+EXPORT_SYMBOL_GPL(kho_radix_init_tree);
 +
- /**
-  * kho_radix_destroy_tree - Destroy the radix tree
-  * @tree: The radix tree to destroy
-@@ -1445,9 +1473,14 @@ static int __init kho_mem_retrieve(const void *fdt)
- 	const struct kho_radix_walk_cb cb = {
- 		.key = kho_preserved_memory_reserve,
- 	};
-+	phys_addr_t mem_map_phys;
-+	int err;
-+
-+	mem_map_phys = kho_get_mem_map_phys(fdt);
-+	err = kho_radix_init_tree(&kho_in.radix_tree, phys_to_virt(mem_map_phys));
-+	if (err)
-+		return err;
+ static bool should_skip_region(struct memblock_type *type,
+ 			       struct memblock_region *m,
+ 			       int nid, int flags)
+@@ -1236,10 +1254,20 @@ static bool should_skip_region(struct memblock_type *type,
  
--	kho_in.radix_tree.root = phys_to_virt(kho_get_mem_map_phys(fdt));
--	mutex_init(&kho_in.radix_tree.lock);
- 	return kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL);
+ 	/*
+ 	 * In early alloc during kexec handover, we can only consider
+-	 * MEMBLOCK_KHO_SCRATCH regions for the allocations
++	 * MEMBLOCK_KHO_SCRATCH or MEMBLOCK_KHO_SCRATCH_EXT regions for the
++	 * allocations.
+ 	 */
+-	if ((flags & MEMBLOCK_KHO_SCRATCH) && !memblock_is_kho_scratch(m))
+-		return true;
++	if (flags & (MEMBLOCK_KHO_SCRATCH | MEMBLOCK_KHO_SCRATCH_EXT)) {
++		bool skip = true;
++
++		if ((flags & MEMBLOCK_KHO_SCRATCH) && memblock_is_kho_scratch(m))
++			skip = false;
++
++		if ((flags & MEMBLOCK_KHO_SCRATCH_EXT) && memblock_is_kho_scratch_ext(m))
++			skip = false;
++
++		return skip;
++	}
+ 
+ 	return false;
  }
+@@ -2799,6 +2827,7 @@ static const char * const flagname[] = {
+ 	[ilog2(MEMBLOCK_RSRV_NOINIT)] = "RSV_NIT",
+ 	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
+ 	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
++	[ilog2(MEMBLOCK_KHO_SCRATCH_EXT)] = "KHO_SCRATCH_EXT",
+ };
  
+ static int memblock_debug_show(struct seq_file *m, void *private)
 -- 
 2.54.0.545.g6539524ca2-goog
 
