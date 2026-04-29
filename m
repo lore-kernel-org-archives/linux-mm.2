@@ -4,132 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D398CCFA13
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:09:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02997FF8873
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D25E16B0098; Wed, 29 Apr 2026 10:09:13 -0400 (EDT)
+	id 08C6B6B0088; Wed, 29 Apr 2026 10:20:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD6916B0099; Wed, 29 Apr 2026 10:09:13 -0400 (EDT)
+	id 03D5D6B008A; Wed, 29 Apr 2026 10:20:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEC986B009B; Wed, 29 Apr 2026 10:09:13 -0400 (EDT)
+	id E95446B008C; Wed, 29 Apr 2026 10:20:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B1C916B0098
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:09:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B6C51201AB
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:09:13 +0000 (UTC)
-X-FDA: 84711775386.18.3D19ED4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5B80810000A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:09:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GvkrbslP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777471751; a=rsa-sha256;
-	cv=none;
-	b=zRcQwu4TCpdRfMCmKGUTwu/Lji46/sTdtxbHDQaRYI1w141AWy9hZi+3AGrvCpN1Bxf+y3
-	q6kwo5htHH2zfRdsQJBjVlyV3zky2hC62xcQaM0xxiDDlRbJNPZxDPiSIhpyu/uw5ySWq+
-	RaoWHChNmN0L9yns5v/1M8kgn5i/Z8k=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GvkrbslP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D78B36B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:20:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 746461C00DC
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:20:22 +0000 (UTC)
+X-FDA: 84711803484.26.64DFE62
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3D78840003
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:20:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=cAPLVnUU;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777471751;
+	s=arc-20220608; t=1777472420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=teX1RfIUw+W1+NoFC7Q+/kP3AclaoiM1mcX9824uRhQ=;
-	b=pKdUoRPZsj7Xgcdm3EzaqEq43aCTl3RVfqZBj7loMibIaEel71SgW/SJvdPgMZOb+hC6BM
-	992ufXl4kh7XiuyMBz0qMjywnQKIJnXHYJ1rla/o3BKYdRc5+NJG53fXhGXujR7FfBLvRl
-	3RJMK7Pjt5KKjMHYAL3Y/+6y3vFYxMM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A331C60138;
-	Wed, 29 Apr 2026 14:09:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D44C4AF09;
-	Wed, 29 Apr 2026 14:09:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777471750;
-	bh=MyPkCw4jiFzhBkwRoZCQ5vZDCBPFzZNsYDO5Ul8+pDM=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=GvkrbslP/xhdKJvHpqOyen0INL8SLOmZNu6E4wYpQdza02dOyBb3PBmTle1kQ/33p
-	 Vt919aGM/B+6kb26JcRM2kKyMjjzaZFtJB7fenpPCNK05hEmwhgWo6pw9S8DL+tBxl
-	 ngFCz4B7AcO53hXHQ+qdsSRdjCJiu676D5OUIT8yZ3BvOGyDn/k/8VOic8a+Oas+Ck
-	 9a6DqRZa/yUvikwYhd6028WYPsOTF5VX0OkNvv01rLSUp0mu0yv5mZdR+g9yYYNYAu
-	 fmofb4WU6OVnLbR3kjAClZ/ej+ePosGPDdQbalAovib3P7c3axIb31T+05CW0Ko1OU
-	 QrNulooYd/eRg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C7AF0F40072;
-	Wed, 29 Apr 2026 10:09:08 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Wed, 29 Apr 2026 10:09:08 -0400
-X-ME-Sender: <xms:BBHyaegzIbsF-36lyYjViSyRSbWG03AfdMOlRVyxm2zRLO_jWi6maA>
-    <xme:BBHyaZ1dNGfn8xUgJn5iF7rJDtBrPWiw-FGV1Vdgd4VBs3SKgQDr7rZPNFVuuzD_z
-    g1AY688QHCx20U-NPxM_c4SC9ZI7n_LKFh-K2QL4WUTZl6CDT6vaRc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekgeeigecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhguuceu
-    ihgvshhhvghuvhgvlhdfuceorghruggssehkvghrnhgvlhdrohhrgheqnecuggftrfgrth
-    htvghrnhepvdeuheeitdevtdelkeduudetgffftdelteefteevjeevjeeiheefhfejieej
-    fedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrugdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeijedthedttdejledq
-    feefvdduieegudehqdgrrhgusgeppehkvghrnhgvlhdrohhrghesfihorhhkohhfrghrug
-    drtghomhdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrnhhshhhumhgrnhdrkhhhrghnughurghlsegrrhhmrdgtohhmpdhrtghpthhtoh
-    eptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehkvghv
-    ihhnrdgsrhhoughskhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhgrrhhkrdhruhhtlh
-    grnhgusegrrhhmrdgtohhmpdhrtghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhm
-    rdgtohhmpdhrtghpthhtoheprghruggsodhgihhtsehgohhoghhlvgdrtghomhdprhgtph
-    htthhopehlihiiphhruhgtkhgrsehgohhoghhlvgdrtghomhdprhgtphhtthhopehsvght
-    hhhjvghnkhhinhhssehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghvihgusehkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:BBHyaRjbJpfo3Sp2bx_kbAgIBsznqF-7o2l8YvD3KVKbNBxsKgDoMw>
-    <xmx:BBHyaSWjBLyZpyeGWlwyvH7noyRiDot0fPUFzM4D8_UA7Hm1H4OshA>
-    <xmx:BBHyaStXnm6Tst5HguJgmDEkVJO6WSz_MgFXe3fHquwDnJ6GJCHxtQ>
-    <xmx:BBHyaTZ-pErfCj9Z36BHMOK4XbgWHcaHgvtLC0GhgQMZfK5Wtgxvzg>
-    <xmx:BBHyaT7dF4IIVlcesDLk5ihBXcH9ZhuVpxtkNa4meQGsB6_8ezuitEWf>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id A10BF700069; Wed, 29 Apr 2026 10:09:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=/uKxyX+iEimJhDYjcnVskQWcBP1D05m3UcJyhDoPSQs=;
+	b=XlUjpvgmUTWU5KUAh1VAArzQatWsh6WNHgXrSNIGZPHyO0P9DQ5GEv9hDk6YQyJG01tpqE
+	gg7xvrTYN6u4UCzX7mM+HZewJe7vO5yyNsEm8zUdjLIOtLMqATP/jMNjlOPlWZI4Kfs1j4
+	zObLb+Tr6cJjqDlM4AQMyBnEIXBYlHU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=cAPLVnUU;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777472420; a=rsa-sha256;
+	cv=none;
+	b=Y8260SwaBwy0uq2w9LdOiHwfTaH60v2ND/Swtc8B5MWiXYJFNtQpUBzzzTV0HHuIO3MKC0
+	2v/72uoVHmSipzCCPqqFM0F844QIo1X6aa7MFINgf8a+sM70Vs66+BpUb715DmEzEosJK5
+	FPBAzeECj6PacJbbThSjRIesPz+hO7I=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D62C71BCB;
+	Wed, 29 Apr 2026 07:20:13 -0700 (PDT)
+Received: from [10.164.148.40] (MacBook-Pro.blr.arm.com [10.164.148.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B17F3F62B;
+	Wed, 29 Apr 2026 07:20:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777472419; bh=yu/k00bXF4IsrPajU5vK3oy2hwcnNad/5yhRTlK/Gv4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cAPLVnUUUAxNAGLsklYDcy5M5RAmUPtK0z2SgAS1C/tR0Zsh4UH4fBdR1Of0pldGd
+	 Ka/2ZlaOVUpOQnmDWA3lpc7HUXMV4qcVsk82Z+Jm7wVCAwXxJO28XKZoc5FBLA9k+F
+	 ITbDbvj6ky77TH/+gIvvJZiBmcedKkQUW428qTAE=
+Message-ID: <70b44146-4549-479f-8d31-b40a8e747c60@arm.com>
+Date: Wed, 29 Apr 2026 19:50:05 +0530
 MIME-Version: 1.0
-Date: Wed, 29 Apr 2026 16:08:48 +0200
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Kevin Brodsky" <kevin.brodsky@arm.com>,
- "Ard Biesheuvel" <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Liz Prucka" <lizprucka@google.com>, "Seth Jenkins" <sethjenkins@google.com>,
- "Kees Cook" <kees@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "David Hildenbrand" <david@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org
-Message-Id: <5e0a87ad-50d5-420b-ad5a-c2882a619b35@app.fastmail.com>
-In-Reply-To: <21a547ae-7121-4cd1-b203-4d8182eb7cc9@arm.com>
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-32-ardb+git@google.com>
- <21a547ae-7121-4cd1-b203-4d8182eb7cc9@arm.com>
-Subject: Re: [PATCH v4 15/15] arm64: mm: Remap linear aliases of the fixmap page tables
- read-only
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/khugepaged: return -EAGAIN for SCAN_PAGE_HAS_PRIVATE
+ in MADV_COLLAPSE
+To: Vineet Agarwal <agarwal.vineet2006@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev
+References: <20260429140434.439456-1-agarwal.vineet2006@gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260429140434.439456-1-agarwal.vineet2006@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pbhd9ja1cmuuxfosas4cfxjo15zw6saq
+X-Stat-Signature: 33rs6751tbp94mccs8hh75fuqzd9cmni
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3D78840003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5B80810000A
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777471751-108782
-X-HE-Meta: U2FsdGVkX18MjkWREvnf4htxxOFG19DYMcKAS2fCUWcP+UllTnVzsooJ/UoylKdKQpPa8lznMitPnjCse/U3mtshX+CH+QttsF1CJ9A1BtteuXAhB+aHji46Z3Yg2LrQGKPiZlSngxgzfYqwxUrhZE2qY/uNy+dE4A3fMi9bYhhReYI8SG7IhIeXYK4Ua/BTEHBENz6a6RdQds06XTY3SvpHG1TnnN29C+MfiVVvd9jlzYsyLvsMP0pqsy9qqra9/xCu2YMAZ4TXCpB0ManuK7IE8DnmmyYRyN+YzOKjRl2FthpD6GExe/LKd9lVlGw8VSG9TxsJBk8WA0rON9GTc0X5X1QuyoVW6I9RZAVL0d+4DwNaGwkHeZniiHa+OWhMdTuVRKFDTg9uAbpoW937Hyl9IQ0w5JiSZ2IlG2x5+PpJersWMEiflC4lCYjU6jUC99BeUSvCwFKqwYHZ81ygUKVVD4k++hEQ3UHPpCoRl2Ue12nWK5E0oTTaN78tNKtzffzVWOHRcpJeQUht74TyGCQpr0GlDp5qANsv94vngmQgh1QeQ49uOTMAD9nXojlVmKtgYWQ0R3q01NRYS+qEdjkOfad1g7ya7q+OQZdrBRrp0cHFsYl/hp0skAr2umuaztD5dr/r3SJglZsWAbGvbqEDGx2DkD1zilrhAfucqWQQ4wt128eW+i1w6M0F0ejDXzxKcvCFOGwCuU1F2xO+Fepy0jAtqa+RCeyXfsNBcaTTEtm+TnK+i7bhG0Eru20FlpKyQbYQ9NDethIKyrdxsv9uWUqJVYZ98JLVO7X4Lj6jwWsQgYw/uEFAg3SahOm5s93l58Iu6W9tF3uIa0AvWuuCuEwVdV9RTRdQIFyZoYNpUvPP6603vrVwFVsAI+PlM4H/be0DcCl0XwaiClVCH25HP2pSB1sD/HKZnb8ZKigvYA6DJ1rFatt0N9uAUKbj1X5C9icLuQFv/D2Jjqr
- AQcnAD+j
- fBpDQQCVl9AboDNUuTtmJ0MFMCtDwiqwcDeUBibml34yynk6SJd+EGTF/NMbe25xWEHIYaQ8PqHqBpeWlfG2yqQtfYWwPt9YL1npsPgCPJQWeW89fX8Y1IaUFy+qulWrkpAVeWwWY25DklTOcgirR4CVNKxOTDFxyr0CDxmEjCdYzSIZ2WUfrm7LDVC7cfxyplC/S6p7kRonYjPoEnQIwnfVroTGhzjY9hiqn3HXWalFPqHTBOA7cevvoMdtSWupMnTzqOyAJV7p8OgA=
+X-HE-Tag: 1777472420-216163
+X-HE-Meta: U2FsdGVkX186q5EVFpsq2qw4sah8JCj58FVfBSNp55HZX3Wcs8U0wqZ5ks1aoOllsOaRw6yI1jnp7eWJniRimiFYbN57vkOVaiKRwhjpGAhSg2OQmgUhxzexcjwYYFUHW0J11EKkUjhSUj8oLykGXnknjqIaqsUeoZBuAcoqiZpUEBfxL5fWe7yQYd1s3MjLkcgieMgxapkwPjmXeDvmnxoSrNouZqkoNVqYhumDUfK8nTHoh9WQkBd4v5IvWONLAFv0tZ+RAioY3p9W4hcrD24Y9VhbjyUnAEGpuRT3eocDiQp6TUiwGMio+vu9fcKGzQDhoD4V1Ea8mzAU5EOuivkVjpqRJWs0nAd6V0cwY3XXI44MJcBZV6GIeJ2l30vGYCzg5fqJGEjse/onPS+0tjxOpxABS9p4+8rbuRTH+KR/nFSbPqz8IOVNJ2CkNqH+6xha9amLSVVGQbrzo3rZzA7uVggV5tFlztx7t6c94yWvgMUu6ZQl1kRC9EmLkB0ZTfJSIQFUJc1gJWoXJZ/qIKb+7AvCuC1c+Tu8wD5VPhB7w/jj4syi6a0Xv9Qdkl/CcrhENXz3pxPSRB/7iBvIQrXfCi515hYDkOr27DzksGfgVkqbPTLCmvrwwBADQ4vwFwTv5wAGowFPQC1be8gaEYQPBvjZL7HCvz3JWj82gSIJzsv5MembqfabbmD9xyKbYBnnCADICYOezSiYJG2maacGmUEdLppu+5zNRi9GTMn76FvgVo+PoYIbe5lhs5tZBjeAMBudPoP1dq8BsShtRV95PUgpMgBqyof8i/OT2flch6H6Yp9FcI9qC8FQphLMkSpIjz1IYfcuX98ZDMSeEwQvlPN3yLgFMrh7R2gFCOR8XKXIwHJCYsIz9p6UDrVhsRnr48WxgGdG5p4e4BLtfj5dVh6TLHDABWOlV6PM0KrRPSgJ0AgMjy1Hra+ZTI26MlMJWlg7PN+w9hiZb44
+ 0amx/VSF
+ b3Cq+H+LZdtLI8qWVWhv+3olkV9K3E35LB5q4Flw6b6PytZeI3YS6mxFWvlsgfuwafwbvlsVaG9vxfeWHwaUVgB36j+FCZwqZdL669QSCRWPLLLonFS3Wb6p8VL4W2JidDdC2gJRRNe7/i2FPAmng+8uo06Ump0W6w+Rz3VcAA2LfyduEW2+8az2Q69pRFhuA4uA84CRuGOySAQQsniJNyKLSC2RYaZi/F/Eag1+FGjMKFFCdGR/OzGYFvfEY5aoBu+g2HyVSRb4EgKY9b/aW0wlUR3D+3MlEf31vtxZMzqdCVSD3JraKmuab6D/JeSkJ37mdBs4hv04nabtyIWGcDQ+FkMDtmOi7/iEyruZzaM8wJOH43vircg1xPQjfJbWkCyyJ5xH1Z4WvBkmkxY23II9NGlCj6tBxFGKBuasiwy9tiLduUDZ7oHkRDTf0OOqfsRrZ4vRIrHw5NJQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,27 +93,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ard,
 
-On Wed, 29 Apr 2026, at 15:57, Kevin Brodsky wrote:
-> On 27/04/2026 17:34, Ard Biesheuvel wrote:
->> [...]
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 84d81bae07a7..e76fe5b0c5fe 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -1076,6 +1076,11 @@ void __init mark_linear_text_alias_ro(void)
->>  			    (unsigned long)__init_begin - (unsigned long)_text,
->>  			    pgprot_tagged(PAGE_KERNEL_RO));
->>  
->> +	/* Map the fixmap PTE table at __fixmap_pgdir_start R/O in linear map too */
->> +	update_mapping_prot(__pa_symbol(__fixmap_pgdir_start),
->> +			    (unsigned long)lm_alias(__fixmap_pgdir_start),
->> +			    PAGE_SIZE, pgprot_tagged(PAGE_KERNEL_RO));
->
-> Is that definitely just one page?
->
 
-No it most definitely is not - thanks for spotting that :-)
+On 29/04/26 7:34 pm, Vineet Agarwal wrote:
+> MADV_COLLAPSE uses errno values to provide actionable feedback to
+> userspace. Temporary resource constraints are mapped to -EAGAIN so the
+> caller may retry, while intrinsic failures of the specified range are
+> mapped to -EINVAL.
+> 
+> collapse_file() returns SCAN_PAGE_HAS_PRIVATE when
+> filemap_release_folio() fails while isolating file-backed folios for
+> collapse. This currently falls through the default case in
+> madvise_collapse_errno() and is reported to userspace as -EINVAL.
+> 
+> However, filemap_release_folio() failure commonly reflects temporary
+> folio state rather than a permanently uncollapsible range.
+> 
+> For example, ext4 returns false when a folio still has dirty
+> journalled data, btrfs returns false for dirty or writeback folios
+> before extent state release, and NFS may return false while reclaiming
+> filesystem-private folio state.
+> 
+> In such cases, retrying MADV_COLLAPSE after writeback, reclaim or
+> journal progress may succeed. This matches the existing -EAGAIN
+> handling for SCAN_PAGE_DIRTY_OR_WRITEBACK and other transient collapse
+> failures more closely than -EINVAL.
+> 
+> Therefore, map SCAN_PAGE_HAS_PRIVATE to -EAGAIN so userspace receives
+> retryable feedback for this temporary failure path.
+> 
+> Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
+> ---
+>  mm/khugepaged.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index b8452dbdb043..58f55115d7d8 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2808,6 +2808,7 @@ static int madvise_collapse_errno(enum scan_result r)
+>  	case SCAN_PAGE_LRU:
+>  	case SCAN_DEL_PAGE_LRU:
+>  	case SCAN_PAGE_FILLED:
+> +	case SCAN_PAGE_HAS_PRIVATE:
+>  	case SCAN_PAGE_DIRTY_OR_WRITEBACK:
+>  		return -EAGAIN;
+>  	/*
+
+https://lore.kernel.org/all/4ab54ae0-2607-443d-8698-788d8e951bdd@arm.com/
+
+I had mentioned at that time, other error codes may fit the -EAGAIN
+(or something else) definition as well, for example, probably SCAN_TRUNCATED.
+
+Could you please audit other error codes as well?
+
+Anyhow to your patch here:
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+
 
