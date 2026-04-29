@@ -4,80 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D9B0FF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 06:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFBFFF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 06:24:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68C106B0005; Wed, 29 Apr 2026 02:13:03 -0400 (EDT)
+	id 257906B0005; Wed, 29 Apr 2026 02:24:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63D376B008A; Wed, 29 Apr 2026 02:13:03 -0400 (EDT)
+	id 208606B008A; Wed, 29 Apr 2026 02:24:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52B926B008C; Wed, 29 Apr 2026 02:13:03 -0400 (EDT)
+	id 0FB706B008C; Wed, 29 Apr 2026 02:24:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 429606B0005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:13:03 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C056D402C7
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:13:02 +0000 (UTC)
-X-FDA: 84710575404.09.E60A69C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D61454000D
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:13:00 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uUr3y9ph;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F1ED56B0005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:24:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6810E8C12D
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:24:13 +0000 (UTC)
+X-FDA: 84710603586.26.15B27A0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A37F2180003
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:24:11 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="l1AF5oK/";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777443181;
+	s=arc-20220608; t=1777443851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8CKeFIhbxyLN1HmhgD0lGku0qszHyE0iHhGb06/UsXQ=;
-	b=8Rp/vak/Kx/pMrqNVG77CmSgXu1ovxyO4HldDaFvM3KfcdbZKed9R9/fwGCOGZC+umVkgm
-	xtRtJBsdlSzJStG+LZncvYUWwlnBHop2PDusw3wmB6yYFu88I6WDlqeOlU6D/x1A/q/Y9S
-	qhfZh/9r1Y++3++nF6X8S/XhnlJkJvk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777443181; a=rsa-sha256;
-	cv=none;
-	b=5E+ctwvnOjxxHQIrsyYkfdaqxK9AmUGEzd7OQpHrdxWusSiQXrMcTdkETb9UR8pfNgkat5
-	wmRilHwOPkvoPEuVc++BSZDK4I4Xz5a1gEiMbuWXx+QKvQ1G2CM7T4jkVos/OA5D0JoeIY
-	M9q5hT+pqaSfFiTm/oUtf7EoWYtxHM0=
+	bh=ZI5B0Kq064gr2UpHVa/cd6iiCvYDn4emyX/k3XaXGBc=;
+	b=5UXeej4LfxyTz+WZJ/a1BnKr9cX6/QxICCanU7uNkdAiYtV6llUMMMTWDhQi6dXu7mcbYx
+	mr+nMSalxHb05XdeC4fYkAT5bX/9t7rzpW/rOrJELZOwFIQh2HqRmfvbHTI4TC5VSl2/YE
+	lsxyGLM1X4kOqWzshIKMAZE1K46sv5k=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uUr3y9ph;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="l1AF5oK/";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777443851; a=rsa-sha256;
+	cv=none;
+	b=2YzAGlTrCBbZIbIQtf9PTZMOMnA8KiddrFfbq70vITjWAZnaLQ1xmbnUHnAwtgz5kbHmir
+	QFBZo+BTjAwms3JRHOKfdqOljspjzHdRWWYuJP+QXxXJp4ZJb6+l0i2eLRcnbMQMDPRSeL
+	/BiqtiWAN8lZg+mo/J365LuygselKwI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D6556438B2;
-	Wed, 29 Apr 2026 06:12:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AD8C19425;
-	Wed, 29 Apr 2026 06:12:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F348160018;
+	Wed, 29 Apr 2026 06:24:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFC8C19425;
+	Wed, 29 Apr 2026 06:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777443179;
-	bh=xZa8k9fky7Ud+r6bs3yOKVp9CCZDmGO9fFO4lmRkXtg=;
+	s=k20201202; t=1777443850;
+	bh=s+ymMav/zVV2SJ+TT8pbk15gl8mNj7o6Akyk3HmVUfs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uUr3y9phDo822hbAIS7QxCaW0+64MhkDdMXRtC2QnDwcw7VR21QwVcXF/3vyRk/UW
-	 k2vBpNMjbaCHvK9MjLiC6dAWWoD53uocTMzq4fln3zAbX4lPKc/eRY9sNjp/CNK3Ua
-	 KeXUzf4HdDHWIrADViwyQar8ZYOhX4ilPBmayvVlW5XVWvQTgH1tPSwY8PE7YHV0F3
-	 6tjYmvXq5kiMqHlUOC1OzrrAbXrqB4jRAX3tsJoemB69wKewgfMlZbSJAAgRje4+sw
-	 Xt2OTYLGvj1Z77PXZS8ZwEQDQfZzkXfu4ExbROgaO3fIGZ33I8GxNT8ko5NSMfeJ4A
-	 Gb3+ovAjIXsag==
-Message-ID: <e7cbc92b-ce9d-432a-ae5b-c8715dcd922f@kernel.org>
-Date: Wed, 29 Apr 2026 08:12:55 +0200
+	b=l1AF5oK/Ad1oKm+XDPVJGXhbnsF6R/VJ6vaENlzRCqrRU1VLmBozvcWGa4mmif8T1
+	 mNtmvsN+ZRHdbXq6CwaEcpT9hdZ8RSL7Iht1u+iLrZYUszoZHZ980Qdmx098gdV4xe
+	 nEsRGS7lGiZ3ICaIvBFe+UOJYsF2BWe2S4wPiE8NzUmxm9m9/D7VQsApcMsyDqKPWm
+	 fdWQeclN/77TgkMlp/zJDa+fyETJGhDeXI+7cU2Gp+9260l0CcK1v9INgvtrmObUW5
+	 r0rv3KpqTvm9KY4afKXCsWnGSVW7Et3KioIZbvBewJt6f66oFu6BH/JGzLPZcN5Ia1
+	 CUWSjw2HqiHTA==
+Message-ID: <1c8a5cf4-e6e0-40da-b1e9-83f41a8b3f7a@kernel.org>
+Date: Wed, 29 Apr 2026 08:24:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH hotfix] mm: fix pmd_special() fallback to observe
- huge_zero
-To: Lance Yang <lance.yang@linux.dev>, hughd@google.com
-Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, dev.jain@arm.com, liam.howlett@oracle.com,
- ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, npache@redhat.com,
- zhengqi.arch@bytedance.com, ryan.roberts@arm.com, surenb@google.com,
- ziy@nvidia.com, linux-mm@kvack.org
-References: <74a75b59-2e13-3985-ee99-d5521f39df2a@google.com>
- <20260429055447.9220-1-lance.yang@linux.dev>
+Subject: Re: [PATCH v4] selftests/mm: khugepaged: initialize file contents via
+ mmap
+To: Zi Yan <ziy@nvidia.com>
+Cc: Vineet Agarwal <agarwal.vineet2006@gmail.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, shuah@kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260428133138.88802-1-agarwal.vineet2006@gmail.com>
+ <583F8EE1-5C49-4250-A24B-0D73372E3864@nvidia.com>
+ <95714cec-205e-4b56-b8ff-9afaf9408020@kernel.org>
+ <0FA813EA-5EFA-482F-B8BF-FE65D4169C44@nvidia.com>
+ <b4fad2c6-f2c1-484e-b6a1-97e763a39ba8@kernel.org>
+ <83EFF919-7A84-4773-8C16-C51C15C3D987@nvidia.com>
+ <8D71AC0C-A10D-4B1E-B5B9-606422E0B99B@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260429055447.9220-1-lance.yang@linux.dev>
+In-Reply-To: <8D71AC0C-A10D-4B1E-B5B9-606422E0B99B@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D61454000D
-X-Stat-Signature: haah8eruacbd33d8cjo5q5xaczbm3qb5
+X-Stat-Signature: 1wj6qkt7hqmpei7md8bmjdrogrhqsfyg
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A37F2180003
 X-Rspam-User: 
-X-HE-Tag: 1777443180-467839
-X-HE-Meta: U2FsdGVkX19E78dIa4gZ07kMs4np5ayOnpKKaMfwYZt2XNPYnGGnzKrvYViAZm8+8xgXqdhkqbl1kyeCVXkbnlFaPuWIX0T17VnVdiycWnd9EskK1xwCZXgdPDvyDY3lGNve1TeeMuiVMV6m/89om4CKQ6/rotVGXbT74TPrMdGTTDlYa4Use7YNm3BZUtXIkItJZ2laAh8Y4THw/Ixd3bQEYPpFLat7295dGnTaBgIBDyurM/e1HJb4BdhPq0XBfD+rK8uXdPE6DiYqwsk/hvYdFMcckj00LSfWHo9AgRjYTjgMT6JaRpSABVrb99REgjH4AEGO8HYfgjyIl1eZnm1MtljPwch6wB/MZwzG6F6ikLSn/xL/PYBUt2p9c2iI0l6cd9p/CUqofajTo6RmyqhgzeqQfS8QcduFD1jt5z/2Vtab2OTWSOXJn7lGPQ47ihu/tO/T0vJo31wFmcNj7yQg5irIb/ksHwJoYnBHasvzHSxRQuktLIutDAvIKNFe+4XpakxBI1652lXawl3+lieHyOi2+PTl5LbJskwgkhetWrq+FHCBg4UAI9epuAMULDGfPWZpzx/QLyqdHlrZQSop1h3vrLAN88hVliXUB7z8vZz3znxJ7DLJERv1AFAtI6pe+iWL7kxaxozRtVOjCuIVOqEMQXmOxLG/ajT+Rklg7JZQNYwQGoQ/W0afMqE6QtwC4XDs3x4mwGFB/KDJJhSfEqqxIMNGvgsy2KDZSce6CGascPO2JC9/3yUou1f4EkLWudunJP0QwYfozf6RhAc20G7eB0zCF8xvBerdD619jY0yPhxNxGrzLDk1GhIOEsXXdaXb8s1RUD6faQHvtPChb5RvyhLI9cBgk5RN9MlIZ6KVtfs9jBlQfGKt2zOcte5/tdACoYBim5iRtQstsvNLlhSjPdmtfBj/DUAOrJf25Xm+HcruWdJJY+LIQ4raxovdZyJt3R7uXUThLvq
- NVzss8v6
- GQKd6eroQr6KKG9zid9Et6Pnm8+qKSzjcyimuBk3qoTHa0TDWQ3cywH/npZ2WYgQYD3CV3nhM0lgxVOJ45tJfNLNOCRPrgCQ2uOJkBjQsxOW3GwY+WZ/NG2zU/J+668FGsHHuVqVKIO7RX3cHlXR6L+jBU3phCemfZRAR/ZvQQ9y8LYCIifbWhe9H8TqZM9uG6Hl++ebiXPN+NkYeYpqAi6FQz2vzDEcqdoh1ajTRxmxKytOea1EaCPOr2n8tSmZkz/9KZtgKv9l1VXSBdkuyM9nh9sPrIdaxN7LCcRYkSZXTkEMn1lvYZB6dCWrSzMZ8N/xs/NFB+4h4fOI=
+X-HE-Tag: 1777443851-960850
+X-HE-Meta: U2FsdGVkX1/CgPUwB45UjKAgQX0VBS5AilFlLDwXHv9TGm8t0Uky51zfUzLK+Ca2ZBzqKfA+hlSToI8OZZ40nVZk+Ik2FStZSJwbpLCOuDy8tN/6ije25BWitxxckkOmOH4v+dW3O2/j07+Oe8rIz+dnMKLQxDgNS/+TUOo6lFjCVrqeYo9Y/CJhUXsidEyOhB72NLTD4LZV2Q9SV1lYAgmjO7XNXp9bpXYwRA1ZWTG6jx8FaduordXCO542VEOrqgOoEAl2NdZO0Pb6VqmXqCV5YYIZM3rE1JWaBie6RKIga7K7vT/gNnwWSgg43z63QXoBhdtQeSRmrgPJNJMpz1fAsm5es5VNUyshAD0XtQLdAXiGsDHUt6fNNP8aQW2uQLCnoVgvPdgu++TxHV4w+7i+6IPptW9Pr/1qg50O3Z7je7I39chaLqZL5ad631NKh+LaznQ5t93SkVxrEIXNESZxRJQ/fH79dTFG/OTvwgLK4N+w4oIAcNYzXmdZL9t4YMXREF7gAm1FVZM/SxbEpJdkHt6ZQxlFepz+jBemxzaVv+OFUxOANFCp7Z5+Ah+nud1vNyJB+3deIdj2yyKXPGH327CM+ofeqLW64kMeZPOPbuI9CBllcg5RODY1Nsw7r44ly0flz/D1ona+O1DJPJLC8wx0gwTegfrnzZmxQXuuaM1En4xoLsMn9uFd+SccbVIJ91skoY9WxMFoGe2d4DTq3uxROO/7whD32Bu5KQhwWx/smz0B2KTaqBzu9TOjdBx9IjNZhJRBl6wmFIyF816LsTTkgdMFhXWqmf3G7U3f3d22Glt1+YUoQKfXLRSTsTULvGENOgL22lsJdS6fnL1lJf5L5YWc6AN+DqJ9ITkXwZVZnF6CxVEgSaZgK8TFDMxJ86hUZVEbl8BrXPHQRGwcTQjuHde4EmQZnXt339KGmT4SR11xoj0tW7oYquntCA45fSOQTZCjlNfTyws
+ SvxfMBPG
+ iOvofPPBD0O2BUNC3iUYiKyGaRTIb4+ZQpMircO4aEJfD6b1Wr5C2yzQCd79RmoA1OZUkpCzuh3ylxw4ogEdwQ2XFRPpNDlLinzVvvAjYHihx1w1FlBG+3vtSKAY2ya9P5Qw94p9Y15/oSo6UKAdmt+Y0jB2OE4bt6IOpoqrxuK9EPl3IY/f4w8xOxhPbxC3n2IUGJXfquLMrXp+gzWpW4aqaRtV/thpkqq/skIcoHeLKoVk9LLNvDKX2HWpYytJWkVEppaDlE4OjW/7umwqOmMcYWkmPqf1PNGr81ASbCVxu2pVoJMkRJHo0xHiqszqJfBN0havzAAPZf/g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,102 +145,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/29/26 07:54, Lance Yang wrote:
+On 4/28/26 22:23, Zi Yan wrote:
+> On 28 Apr 2026, at 16:22, Zi Yan wrote:
 > 
-> On Tue, Apr 28, 2026 at 10:08:37PM -0700, Hugh Dickins wrote:
->> On x86 32-bit with THP enabled, zap_huge_pmd() is seen to generate a
->> "WARNING: mm/memory.c:735 at __vm_normal_page+0x6a/0x7d", from the
->> VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn)); followed
->> by "BUG: Bad rss-counter state"s, then later "BUG: Bad page state"s
->> when reclaim gets to call shrink_huge_zero_folio_scan().
-> 
-> Good catch!
-> 
->> It's as if the _PAGE_SPECIAL bit never got set in the huge_zero pmd:
->> and indeed, whereas pte_special() and pte_mkspecial() are subject to a
->> dedicated CONFIG_ARCH_HAS_PTE_SPECIAL, pmd_special() and pmd_mkspecial()
->> are subject to CONFIG_ARCH_SUPPORTS_PMD_PFNMAP, which is never enabled
->> on any 32-bit architecture.
+>> On 28 Apr 2026, at 16:19, David Hildenbrand (Arm) wrote:
 >>
->> Add CONFIG_ARCH_HAS_PMD_SPECIAL?  Perhaps; but I think it's better just
->> to observe the huge_zero pmd in the fallback version of pmd_special().
+>>>
+>>> But why doesn't the write() make the folios dirty? Or are we running into some
+>>> race condition where the old code just worked by chance?
+>>>
 >>
->> Fixes: d80a9cb1a64a ("mm/huge_memory: add and use normal_or_softleaf_folio_pmd()")
-
-Likely it should be
-
-	Fixes: d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge zero folio special")
-
-Because vm_normal_page_pmd() would return the wrong thing.
-
-But I am surprised that we didn't run into the
-
-	VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn));
-
-earlier. 	
-
->> Signed-off-by: Hugh Dickins <hughd@google.com>
->> ---
->> include/linux/mm.h | 2 +-
->> 1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 0b776907152e..3b02ac43bcb7 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -3422,7 +3422,7 @@ static inline pte_t pte_mkspecial(pte_t pte)
->> #ifndef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
->> static inline bool pmd_special(pmd_t pmd)
->> {
->> -	return false;
->> +	return is_huge_zero_pmd(pmd);
->> }
+>> The fd is opened with O_DSYNC, so the data from write() is transferred to
+>> disk when write() returns.
 > 
-> Emm ... feels a bit odd to me ...
+> And the folio is clean.
 
-Agreed. But it could be a temporary fix until we fixed up relevant architectures.
+Ah, I missed the O_DSYNC. That makes sense, thanks.
 
-> 
-> On these configs pmd_mkspecial() is still a no-op, so pmd_special()
-> would no longer really mean that the PMD was made special :)
-> 
-> Could we handle the huge zero PMD in vm_normal_page_pmd() instead?
+v2 actually contained the msync. So I assume we could then drop the O_DSYNC.
 
-That adds unnecessary checks for architectures that properly implement pmd_special.
+Note: there is no need to close the file or munmap before the exit on the error
+path.
 
-pmd_special() should be fixed longterm on architectures that support THP
-and CONFIG_ARCH_HAS_PTE_SPECIAL. It should not be glued to CONFIG_ARCH_SUPPORTS_PMD_PFNMAP.
+The following works for me
 
 
-arch/arc/Kconfig:       select HAVE_ARCH_TRANSPARENT_HUGEPAGE if ARC_MMU_V4
-arch/arm/Kconfig:       select HAVE_ARCH_TRANSPARENT_HUGEPAGE if ARM_LPAE
-arch/arm64/Kconfig:     select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/loongarch/Kconfig: select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/mips/Kconfig:      select HAVE_ARCH_TRANSPARENT_HUGEPAGE if CPU_SUPPORTS_HUGEPAGES
-arch/powerpc/platforms/Kconfig.cputype:       select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/riscv/Kconfig:     select HAVE_ARCH_TRANSPARENT_HUGEPAGE if 64BIT && MMU
-arch/s390/Kconfig:      select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/sparc/Kconfig:     select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/x86/Kconfig:       select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+diff --git a/tools/testing/selftests/mm/khugepaged.c
+b/tools/testing/selftests/mm/khugepaged.c
+index 3fe7ef04ac62..5862a3213840 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -373,7 +373,7 @@ static void *file_setup_area(int nr_hpages)
+        unlink(finfo.path);  /* Cleanup from previous failed tests */
+        printf("Creating %s for collapse%s...", finfo.path,
+               finfo.type == VMA_SHMEM ? " (tmpfs)" : "");
+-       fd = open(finfo.path, O_DSYNC | O_CREAT | O_RDWR | O_TRUNC | O_EXCL,
++       fd = open(finfo.path, O_CREAT | O_RDWR | O_TRUNC | O_EXCL,
+                  777);
+        if (fd < 0) {
+                perror("open()");
+@@ -381,9 +381,21 @@ static void *file_setup_area(int nr_hpages)
+        }
 
-arch/arc/Kconfig:       select ARCH_HAS_PTE_SPECIAL
-arch/arm/Kconfig:       select ARCH_HAS_PTE_SPECIAL if ARM_LPAE
-arch/arm64/Kconfig:     select ARCH_HAS_PTE_SPECIAL
-arch/loongarch/Kconfig: select ARCH_HAS_PTE_SPECIAL
-arch/mips/Kconfig:      select ARCH_HAS_PTE_SPECIAL if !(32BIT && CPU_HAS_RIXI)
-arch/parisc/Kconfig:    select ARCH_HAS_PTE_SPECIAL
-arch/powerpc/Kconfig:   select ARCH_HAS_PTE_SPECIAL
-arch/riscv/Kconfig:     select ARCH_HAS_PTE_SPECIAL
-arch/s390/Kconfig:      select ARCH_HAS_PTE_SPECIAL
-arch/sh/Kconfig:        select ARCH_HAS_PTE_SPECIAL
-arch/sparc/Kconfig:     select ARCH_HAS_PTE_SPECIAL
-arch/x86/Kconfig:       select ARCH_HAS_PTE_SPECIAL
+        size = nr_hpages * hpage_pmd_size;
+-       p = alloc_mapping(nr_hpages);
++       if (ftruncate(fd, size)) {
++               perror("ftruncate()");
++               exit(EXIT_FAILURE);
++       }
++       p = mmap(BASE_ADDR, size, PROT_READ | PROT_WRITE,
++               MAP_SHARED, fd, 0);
++       if (p != BASE_ADDR) {
++               perror("mmap()");
++               exit(EXIT_FAILURE);
++       }
+        fill_memory(p, 0, size);
+-       write(fd, p, size);
++       if (msync(p, size, MS_SYNC)) {
++               perror("msync()");
++               exit(EXIT_FAILURE);
++       }
+        close(fd);
+        munmap(p, size);
+        success("OK");
 
-That's a bit of work given that only arm64, powerpc (64), riscv and x86 (64)
-properly implement pmd_special().
-
-
-So I think Hugh's patch here makes sense for now.
 
 -- 
 Cheers,
