@@ -4,89 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88037FF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:24:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E9E8FF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:27:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEC276B0005; Wed, 29 Apr 2026 10:24:58 -0400 (EDT)
+	id 94A566B0099; Wed, 29 Apr 2026 10:27:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC3E06B0099; Wed, 29 Apr 2026 10:24:58 -0400 (EDT)
+	id 8FB586B009D; Wed, 29 Apr 2026 10:27:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E01236B009B; Wed, 29 Apr 2026 10:24:58 -0400 (EDT)
+	id 811326B009F; Wed, 29 Apr 2026 10:27:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D1E3F6B0005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:24:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A00D14029A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:24:58 +0000 (UTC)
-X-FDA: 84711815076.23.3150454
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D29E540005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:24:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jp9dPk3M;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777472696;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 72F586B0099
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:27:44 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 084BCC10F2
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:27:44 +0000 (UTC)
+X-FDA: 84711822048.10.964569F
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 14FC9140009
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:27:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y4Q3urOh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf26.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777472862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oU9QFXFcPvDnOm50j3Pr9oOfENDvi06AH/MQcGw529s=;
-	b=BX6RNGTA4f67VnL7UaBnM+9xb6V9C3k+SSNpb0env7Wf8nfzl/W20QqqoihnZ8GzajAihG
-	z78bL3fFa8DdlMNx+VnCbJbAX49SsfQa8d9ziyynmNayihlcG/khQ73d7/ynCY5s6K35l/
-	6WMWzGzRVyyxaqSFa93LQLRcGQG3/Xk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777472696; a=rsa-sha256;
-	cv=none;
-	b=rQMmNc03Io7MyGrUbvl2megpnlEJwQ5aY13sVtj8X/K8KsXfRVbfCVuTmmi8QSAJ15+Hjk
-	jfh/gNO/j5Mz4Kd7L9i4GvmZRsxryyQCSSfa4lp31/X0lHokZSXn43YYmei8z28vuhVOhN
-	gPUsnK2mth1iEzSG4hydlcBHCjh6Y0I=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jp9dPk3M;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4392260139;
-	Wed, 29 Apr 2026 14:24:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA85C19425;
-	Wed, 29 Apr 2026 14:24:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777472696;
-	bh=aCaYorBUSCF6eWCfONlb1C+1m2mXwLSU1/j5XLbpFYc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=jp9dPk3MOO+POyRPioFKm05l2fptu95ogwNuQm9g78vurqPNdFM+sJUhiBcUJ8tkd
-	 wvPGOxSftrc5G2i+yHJaP/prNYYB1cmZGe3lY5S0ZqOG+sPjQ+LZzz5aKwwZ0pGDtg
-	 qLMAzqmfCleA1b/q2FmLg3pHQrzamRwCm5FEuJIprZ8w907bcrsaoufQGgcUVUW/UL
-	 cKEq47JXfnO5Kw51LsM6/alYX3PcWaxjr48iUAt9YyUE6NLSHcJAzjC9A+xp4LfEzN
-	 1IdTssoGKiDtR1zCyLgeL1Jq4eKjptOwHqFUu46BJZ4GXpFR4+l/IdARlvrDB6+Rcy
-	 T6mprKJI2BU2g==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: luca.boccassi@gmail.com
-Cc: kexec@lists.infradead.org,  linux-mm@kvack.org,  rppt@kernel.org,
-  pasha.tatashin@soleen.com,  pratyush@kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 1/4] liveupdate: reject
- LIVEUPDATE_IOCTL_CREATE_SESSION with invalid name length
-In-Reply-To: <20260423234753.3873095-2-luca.boccassi@gmail.com> (luca
-	boccassi's message of "Fri, 24 Apr 2026 00:44:20 +0100")
-References: <20260423234753.3873095-1-luca.boccassi@gmail.com>
-	<20260423234753.3873095-2-luca.boccassi@gmail.com>
-Date: Wed, 29 Apr 2026 16:24:52 +0200
-Message-ID: <2vxza4ul4zez.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=urfi6N/NcYnik0gp5xxDi2Nhfk8E7h+SxSQ7FJ8O9t4=;
+	b=3wMB2JZ74C7vHbOnQIq8856jEkc6SgLyNVYtM9nOrAdJvVQvGJ7ZFCMy5sWdySZZgUJ/6M
+	rXH2ycgX3+jmV3Oe9NjK6ggFuxrn7VDzxbrDds9WAQZZOBI8U71o8MP/EzcU7DZUz1Pr22
+	Ip3/yCYisQa0o7gxJl8S2o2jAgQLn9s=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777472862; a=rsa-sha256;
+	cv=pass;
+	b=Tui4ci9GLStqi0XbPzR5udNVULu9PIHP++LqmrX9VldiAwjskZwV87qhRYqunOYytDPcYI
+	zfSVdVFLVlEChOwAJQYxnaBTMvYuZcE4d4nEGVVg2uLOmW5yy2MHB1rqzLIoFYJt9oVZWU
+	GZzon5IRxCGRowvebH/OylOPk9bx+jM=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y4Q3urOh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf26.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-651c7ddf514so11807616d50.1
+        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:27:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777472861; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SrExeolW/LFlL99mW81j4O+K1j73Z6bt1eWHTQVN1+sa42KJh/6QzWDWkcskbPa1FT
+         xyl+k7ocIrl1qDX7wsCthgHrZp0neVxqAxatSu9TV9ra6Ux9zULVRjvvbKJozkz4Tn9b
+         Z7X7Ri/eg6tvGFUxA1gQEtEOslwfBo3uuZQTrEns7OSHygwnARi1bMYfUJWXKVcRjBpf
+         ApNb6K94mULFf9qtkwVV19F4GItJO/vJJ9aJrC/XBySEjc6HYKoA0fEixKp9lbKa1tFm
+         P1V8GjeZjz6gbxtArjNH95zdlE/JDM4VHyRLHaAOgTwCRnRBHKNT2MCkGi+EtFUYi8Pi
+         vteA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=urfi6N/NcYnik0gp5xxDi2Nhfk8E7h+SxSQ7FJ8O9t4=;
+        fh=64xrWwj7+5iogxzR4+DFZQpw9Oh+hj+aO1JKT5GtlCQ=;
+        b=F1L+kTTXMonxq/z+KNHeu+PUH6izm/4kw9n8BRmvg4pZhc5Iijbk7dhsTFebFZf0sC
+         rVxtMikhdJ8y2UA1dWN/4T6imkwRD+D+dsDDiXi06m/TmUaXN5ObRMYSWGRdduYVqTsw
+         vQrqq5fwwqPDaZOdmJ0Gt2c7IyEZ2q5Bw3nmotiMrSW+F6qnaCkXRGf3LnG3Ej0wUft2
+         stL7GVljA1TGVfKfn4WVFhHCVNuJNYk74Z8zJCRc48uvieBG5UaEbdCAt4ZboHs370cp
+         ADiEx8UfhmK9Pm2P0K65k5RU1vXJKIQvoEWFxHPX8iX2g1tbHE8rbXx7vQOKwSyHVMf5
+         zOxA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777472861; x=1778077661; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=urfi6N/NcYnik0gp5xxDi2Nhfk8E7h+SxSQ7FJ8O9t4=;
+        b=Y4Q3urOhnfgwUB77VEc/pbpXhG042GHaGVBPF1W/0L2LI7OFcV+qvHM8D7KM3rRQly
+         Q5jJ5/r/argLZaEHp/0rgbMDpoI9u3k/gjYxHGpTdtYRGPDOuj5DGcBDjUZiJLmuehM3
+         LWc6+aq3KBHwxj2pudHqUyOGmAhR7lVGbLoznZi8Mf4HKYdew2h2lfLBlPLFUsPrpF1p
+         6ePBvNYOp1JeCigNwY9f/s/bN5Kot7LqpGqT09yzwJUm0Fqr0a8EbS1Ob5im2PNcxnbb
+         gQMPmZAWd63q50Z/JYVQcEoSRP0lcDrWXS5Lih70i8UtOLou/1zRnZKorHn+ftCE8rVj
+         CBnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777472861; x=1778077661;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=urfi6N/NcYnik0gp5xxDi2Nhfk8E7h+SxSQ7FJ8O9t4=;
+        b=Yiub5SGhykyyfKaQRN/jctmu8OI3ybw//BAeWrG2S7jUSyZXX7wbXOBG3rrRpS87bS
+         ynjiJ98Cy1TCIWYIaEvWc9+u1RU12tFsdYhG8AUZbIR4xgXCy7mS/Mnpu8+4ZIKTpr8J
+         n4bxuTbNSJ1zbNPpC9PbyMr5UO7Y5XS3JKK4nqMwJxjfftfRHq+i4h1UxZDQOUQ00Y8N
+         IoRYt4/BKVmf0VyAH4t2UA3jixuMyA5z9JIU47vwyoiB4hNFVBq3tRysNtpovbK33zO9
+         eYqUluta26872agqEYzNXgjQnsB0kDaQ19FN6VuhlmK6yfIA5CMJezy13NzyLfcxKUzw
+         FsYQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+vnT9QzPb2wKoyxesT76+Ps27JWd5ATdLL+6/DZWAYKH75/4bBzfpw6gkmgbBCwWgnTu/ZKtfqVg==@kvack.org
+X-Gm-Message-State: AOJu0YycvR9w5FuzTGrabHx2kzZRuniDnJ3MG7n3cTxUQHsJo7Ezfr26
+	YnRaZSAyapU5ZPCBzUwRduQaNMmLbnNxE6V9c7ZuVbylDzN0+ThSh3AVAOryJYPbeHCypI/QCzR
+	v3F8DujxlkFc0H+a0cZcmw3fSh370tPU=
+X-Gm-Gg: AeBDieusT3Vw60e0Ke+1Ng5wbR6akrTRKq3DkcqgeE7103LgKyz1+GtrN6+WCDze4Go
+	TH08jlKA9z6UehCRoqHcupnomJxeuNZrWQViyt2q2Ew2C3Dp58J4f/nqh42mQamDC1zyUEMisS4
+	tnHwaYsBrXijgE2y2pYPEmnVGE0pUkh0FY5lmjo+Qn4ZPMlGqfjKPZJcDS1MpY6nzmv4vkEycFS
+	ZXONYImcUylDhgAf1KbFsOgHkwOdDEFEzZo0qiYctmpbQ2nkhRQuki7ZPNl+jma0BaHkTwVKx/C
+	qbfqd7fuJxyg7wNurq+sQHn3ju+fhoapgzPCYriGBa/7NJUHML4G
+X-Received: by 2002:a05:690e:d58:b0:657:4633:b67e with SMTP id
+ 956f58d0204a3-65bfb71052bmr3498954d50.46.1777472860977; Wed, 29 Apr 2026
+ 07:27:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260423234753.3873095-1-luca.boccassi@gmail.com>
+ <20260423234753.3873095-2-luca.boccassi@gmail.com> <2vxza4ul4zez.fsf@kernel.org>
+In-Reply-To: <2vxza4ul4zez.fsf@kernel.org>
+From: Luca Boccassi <luca.boccassi@gmail.com>
+Date: Wed, 29 Apr 2026 15:27:27 +0100
+X-Gm-Features: AVHnY4KDQcGvvdIXjoWZ1u9FJ9qEcoYuCaptNj3DGjOjhzukA6OesM9rXYf4ACw
+Message-ID: <CAMw=ZnRY=XyQjvTeFwQ6JaVz-f-YVVvcyix4-tCEVjx0whMsPw@mail.gmail.com>
+Subject: Re: [PATCH v10 1/4] liveupdate: reject LIVEUPDATE_IOCTL_CREATE_SESSION
+ with invalid name length
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, rppt@kernel.org, 
+	pasha.tatashin@soleen.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 14FC9140009
+X-Stat-Signature: guhrr7q8cfkw966uqp9t4f77iojmfi1f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D29E540005
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 7wkmiah6b8eexunqjnj3q8b3adamgtzn
-X-HE-Tag: 1777472696-737770
-X-HE-Meta: U2FsdGVkX1/ezOh49Oam5k5Ti6UGWtmoqrUAL7JnSvk4FztA6Nwtt5LkQ1F7eMVGlcweNzi9r2L9PjJMXW2KgZqvDREcIL+hd9OvDIoRBorPOZETKuDbRPtXRyqaPDHlSF8YTb60aIyQRbZsrMZoWx23y9RRmuYgZehsWyF2ZBhJ6f2dFWnp7k3E50Wg3o+NLaSTATw4dS/vmwwFvb7ibmaFOGMu6iK1as/aIugVGh3UBVkRVS35HHHB+RpE6A3AfqTa9i+md/CBTUx2EgyMwhWmX+lkVENz6bSP+Fe7P9WbCSEOa/4q4zkvw08YopTKhfGu72vpBRq92kS13uNidMKpO6+Vqy6lwt05PUCOsQ6GZ+Rxt+hnC9YgqUh+gcDmTj2zQRdS+zv5iZ2/3gRLkn3DOcHv9Tp8Wot3ii2P4y2fDtJRW7fXPPYIG63Zzf5xeKX1qabuMa2/iwl67xc+/Twe0BOvA1Oea9Rr6q//an6K931riHiTV/pFUMB+e/VwKaLX70TabY6Gt/tlSEAiisB1zm95yqS5alxQSAV5kSueZmsKLBd9OFuXmdTOLnV1v6ZYj8DaEtzYhxfYpYIDUTBU6ERZH0q61gUltG7o5rEeR3KHyXfWiCZPH+Zw420Msk7vsyBhNWkUW5AFuwB7ezly7Yw9L46uHefZNPBaKpRqitCu4lwd9x01sJeqXUQSd3CdnjYXlryF9DFFN+OW2emka+TQiINpAbyW30gl/wbXh6/R9aARyxYFLGqGLEvenmrgwuN4tW2hP4XvGhpELYciYx4dn/3GZ/1EtCh/ZejupaY7Gvf6CjkwKm0tT0f3jMBKvIdLdA6voMjaEmFV+Kqhv68JrUc8H6ssfQQgxfescAkidKoChhmnfrOKj8cEfVDOBFO1Fj4gYqlgO93/L1+mE6+PtfIUqf1e2FUiGmT9HgCQ9x2wyyPeuOlpBaTbjqRGrnHPtmPRnTA1F08
- 6t9w3b9o
- one09aU8taA0C6Den0i+1Sq1Q5gV11m8jeJh7MLr8lFZhj5a/Kgk9KbPdQ6fbsthhdM415MrvKs8vIqJeyXL8yyDebIlQsE5B9Hz3zVNy5h06EzvXfcsYVdbI552GZzZHv9GJOAFo+4gSxAB/2idQabA9qmEfNLLc5gqO2TdFP3/HWQZ5IInjgmVAwUF58s39NFEnnImWtnLNJDMAWDgIAOIb0da8a09rIQ8R8BtMsGYsi3mFqRF86AqCuVIqcb/5oGHbO6nqW4a3ZVxSvhTKBVAPg5TfWmzvMoGMGLPnJifNptTtnpkC5AwMi2bgucHJW1/x+5CU8tE5uxaP1BMcKPZoWroeBaxjQzs+sRuaKVrUPui6PXzU/18EnyzInUk6FU7Z+RRHbDP69xw=
+X-HE-Tag: 1777472861-168019
+X-HE-Meta: U2FsdGVkX18SmpY/sy3fp5MTOhQ9PxFcHPRtuVkrcDc5D7R3FRPm/Ere9Tn9u0bcEdyh01blQ9RpswDsuvBE0gn1S2YAuqUbPksySFCoHaHN/R+fRQPXTpveVFw2CFJZ9z5caHqGbpH8hiykQ/JFNh+8zxv/Bu1bp4vTywn1H9hc07yDHqp1bXBfzhKnMPuDtv9GMlK0W65VP0cIGxVpiRmBnuHUvqJM3D5867sjAJOMpHLo9jPntXMtVuGmhEvDjVp1IBHGmGSHCN41X8vpCgJzES9FyTUcdXvINXvwiFYJV0lAc/YDGsFM/IRcgLJYKt4nv1E1mDoHx1jLioHd5gs+PCuxJGC6Whf3INMpbvPKA21S/ZYGavK6FmfgkluxV6dhbNsDxHQIPbivSW2KTf16Y6uxJS5OVv+ZZb4C7upt9KjJcSfFUdIQEJVy4aTkhPQFsXABnoncKVqGARoe3Ne+ADkMVKdx9WpraMUmGDTgbQptYOVQXcKv11Cn5ytGKrynbvhl2GJU9GKetwnarE6zqQNf1IIV75i7Iv3En4/kL/yRSM0xV0IWGkaCOZLBIKjZRNSOsgu7WHM8zEA/Lrrgt3XwxkeogzXULq2Q3/7n85NVWN7F0gtpwzO6wlbliktIJJRTkFk2lUP0pmj6uY751evP4q4OsCZe3bxwspmZB11DMA/6PZIx5Lv7GYD22fSXA7dKfCaeCHd3M9tpi/U8i8yR7UDivHTwlQX3tMPFukpSOh0D3AnNxx2o9DMNn1qkfhUR1+aSvpSArCE5nVqDNtuLrDchpF3tVTjCqYle/BrCV9BifK2PKjuvK7rq/2qo5pnyvWjymZ9ppGse9QzQhRNlO39w3/JqJw3CY4y076lUz1xrUehF87Ca9wh9SIezNVMGe+dkAmYAfvV6FF4WGbpaefnMojWq1nccVLSPbx+8UMYkuhYdpjMqv9AKyQAWLCEZsgwNG0qfR08
+ n73Kh37F
+ uWm1S4et0gEiJPacJ+G3vWKVku/f7HFV/9bj20VSSTNXOTSTsSPXBlqS0uTw6ZomD2kmsj7vwJ/6TmsZx/j7Za3yw9qB1GPGgi2WWU88YjBIx1kjHYsEp2OfMP5VcouxNnwnbEdq8k6NDtNGTMdDO0W2nff37GmfTDBXG9bC2uuuUPQfK6Ixx8KmB3uqzxOMQmS9dNNF8Yqb1Pno4ZO5Ix+E5/E5wDR1ptG5X39bFVc6wIN73rFk7NIM/koLJdXuF6HNk7KSFRQ0mnWbzK4YBSqPhNHHs8NPYOqg0Fs6jOQeSHYLzQFyqYfWSs2l5VppqiCkoJFDjiiUG85X1lhACfMJ+kiDeYkRgztWN3oKQiSigkq1vkuwS/vTfwfabWKgQGTXxrPVWs6TpilSPQ31KT/9mRNFQcrIOEvicsO73kSjm+Hmj3xPu9x/E0EOnkpBBV38tetd28ufgFC83jRXnlZn2DpL7wgM6LjjPsQcnrtMwQ1OBByAhdT3fYyZjlv3Y1DKy9SpMsP6oZ2qrensHhcNjoYuGO/3R8hhFNkYLeInMaW8/3O+qEg43r8ESUd1/cpCXSTdCLgZShZM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,26 +137,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24 2026, luca.boccassi@gmail.com wrote:
-
-> From: Luca Boccassi <luca.boccassi@gmail.com>
+On Wed, 29 Apr 2026 at 15:24, Pratyush Yadav <pratyush@kernel.org> wrote:
 >
-> A session name must not be an empty string, and must not exceed the
-> maximum size define in the uapi header, including null termination.
+> On Fri, Apr 24 2026, luca.boccassi@gmail.com wrote:
 >
-> Fixes: 0153094d03df ("liveupdate: luo_session: add sessions support")
+> > From: Luca Boccassi <luca.boccassi@gmail.com>
+> >
+> > A session name must not be an empty string, and must not exceed the
+> > maximum size define in the uapi header, including null termination.
+> >
+> > Fixes: 0153094d03df ("liveupdate: luo_session: add sessions support")
+> >
+> > Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+> > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 >
-> Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+>
+> Cc: stable?
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-
-Cc: stable?
-
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+Yeah that would be good, can it be added when merging please?
 
