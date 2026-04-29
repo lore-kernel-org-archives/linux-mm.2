@@ -4,138 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E33FFF8864
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 03:32:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA264FF8864
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 04:12:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 745C86B008C; Tue, 28 Apr 2026 23:32:19 -0400 (EDT)
+	id B54386B0005; Wed, 29 Apr 2026 00:12:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71DF56B0092; Tue, 28 Apr 2026 23:32:19 -0400 (EDT)
+	id B049B6B008A; Wed, 29 Apr 2026 00:12:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 633D26B0093; Tue, 28 Apr 2026 23:32:19 -0400 (EDT)
+	id A1A7E6B008C; Wed, 29 Apr 2026 00:12:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 51E6B6B008C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:32:19 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E23E016065F
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:32:18 +0000 (UTC)
-X-FDA: 84710170356.30.4E9E1D8
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A3A1414000E
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:32:16 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J/dkKNIg";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=obUrxMTS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J/dkKNIg";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=obUrxMTS;
-	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 94CC86B0005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 00:12:52 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4EB0C1C0E32
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:12:41 +0000 (UTC)
+X-FDA: 84710272122.16.6A87427
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A8E9CC000E
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:12:39 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OWV9Zwqj;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777433536;
+	s=arc-20220608; t=1777435959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
-	b=wRQ23eZH+PoxzyB9X8rlEgZ578tmVwOyb0UK/bduKrp9LNkPgjzadtT8eyzX/tzEL5wLZG
-	qampMyChyNIj7Igr+HFbd1Tb4zAvSUwi7NGEpOT/4VY8BAT3uyqbmnWotRGr6vx9W8BuE8
-	ola8JTlJbh0bg5Kni5U+/p13DKPwN6c=
+	bh=/aS26p9ME17M+48kDYAv/DQVkMZMl6qXayGdu7srQNY=;
+	b=LhOJnrU013y2WHRZRomaDAN+OW2+lLg3ZAYhLkgWnIioKvJ6+cbgLul7eGnawLW53O1SzY
+	e4iHTMng3u292o42RbxKZFiDMplQgk2om1j1DJRi2m+cuvl4I17oOz4J8dip37uNopcRId
+	2yK9oH1f+/7m6fzZrBe1VynIdlAh+aE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J/dkKNIg";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=obUrxMTS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J/dkKNIg";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=obUrxMTS;
-	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777433536; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OWV9Zwqj;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777435959; a=rsa-sha256;
 	cv=none;
-	b=BwDbOXTfmY5Tbmb00Pd28hhyZlnKBeVBe418hBr3/RJ4dy3AuKtq9020NQpj6axCQ9BtY0
-	jYJUvNk7OAJP0IOkc1zS+Qo42ZIJ/G5c5rHwuYZ9zzEat7jzef9ywMu6e3e78NxTfffiU6
-	noSz2MaPBvtL5e36Ysv1hqh0eAPNCA4=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A20135BD4F;
-	Wed, 29 Apr 2026 03:32:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777433534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
-	b=J/dkKNIgu8elcZhN50GVIHmLaBzgpquaed+/7P9TFJ0ZEmYS3TFEtzzfaTZ8KeRtuLVZwY
-	nxO8fPhAdCR+CjUEz9GeK1i5FGDoDeyvu2soe9hJvOTYz/TtzWbe+MVa3442vF6vPzrkAT
-	jSf5emQugyis6e3yy3P+UjcHtYvaKm8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777433534;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
-	b=obUrxMTS9ky/k3/KdLdMB9aby5iIFa91VEaGnFhAXWMk5Hi389z0e0gW6NXRK5q02XPyk5
-	h65N3bwwPBI36eAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777433534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
-	b=J/dkKNIgu8elcZhN50GVIHmLaBzgpquaed+/7P9TFJ0ZEmYS3TFEtzzfaTZ8KeRtuLVZwY
-	nxO8fPhAdCR+CjUEz9GeK1i5FGDoDeyvu2soe9hJvOTYz/TtzWbe+MVa3442vF6vPzrkAT
-	jSf5emQugyis6e3yy3P+UjcHtYvaKm8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777433534;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
-	b=obUrxMTS9ky/k3/KdLdMB9aby5iIFa91VEaGnFhAXWMk5Hi389z0e0gW6NXRK5q02XPyk5
-	h65N3bwwPBI36eAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5BC4593B0;
-	Wed, 29 Apr 2026 03:32:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id U2WdKb178WkeKgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 29 Apr 2026 03:32:13 +0000
-Date: Wed, 29 Apr 2026 05:32:12 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ying Huang <huang.ying.caritas@gmail.com>,
-	Dan Williams <djbw@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rafael J Wysocki <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 3/3] drivers/base/memory: fix locking for poison
- accounting lookup
-Message-ID: <afF7vI_fNXs4mCVA@localhost.localdomain>
-References: <94F5B89A-008A-4EDB-920F-31B4895C2699@linux.dev>
- <c6e1df1e-be5e-2468-d46e-453985ba1e79@huawei.com>
+	b=lhP/JUIDUGAfqAbogCvtvzd5ZXhP0W7yu3D0y/wWI4tOO8rfAOqMxv/cRccHifokhMs683
+	UTjAJW8ExfSD3sXm3v4uPkjh3ZDRMNKEXOC0hhhuW1jlfqv2xwbpSBTE4FRlK+O+qsPhjz
+	+/ExTOYenPV44AvurRXVr3JXV9ch/tU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D4DD6444F0;
+	Wed, 29 Apr 2026 04:12:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91620C2BCC7;
+	Wed, 29 Apr 2026 04:12:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777435958;
+	bh=tLnMMWyWOb5JWter/hkS9/BroYtAzNu6DanZ/dgc7BI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OWV9Zwqjp6SCQsoS8qqmQHNRel8GAHCYcF5lV7VFcRdPqRxvyktNufhT1B9y81cht
+	 Nh6OekIufSS//qGawwe1wlVuDt0OSUCcptCmhOCHMHY1k/FeIaoJoTWSc6kmXmq8/S
+	 hyeY1RQs2v8avPKP1ej2D2hh3DRxNhs8kIs5ktxOtmMLaqnc/RrO9rMtgJCZHronXT
+	 T4kR5fK9jjjF2qNZTlzE9iZwmAQCzWyrGUkzpAhsGyJQHx1c4XbqiyvMt+ZKVP2X9X
+	 xWWPIH4GBpqKo2BnJjv4ZQUvOx5+7/5x0u1pNrSNJIOxG4vV1/lXEbeHLwtfQi5Lyi
+	 VIDXo6MDVIL6w==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 5/7] mm/damon/stat: use damon_set_region_system_rams_default()
+Date: Tue, 28 Apr 2026 21:12:27 -0700
+Message-ID: <20260429041232.90257-6-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260429041232.90257-1-sj@kernel.org>
+References: <20260429041232.90257-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c6e1df1e-be5e-2468-d46e-453985ba1e79@huawei.com>
-X-Rspamd-Action: no action
-X-Stat-Signature: ic9px4x3kaocms3mryzbecsuk1mdhzrs
-X-Rspamd-Queue-Id: A3A1414000E
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777433536-877932
-X-HE-Meta: U2FsdGVkX1/SKQO1DQNk8usV3KUM7gLEAnuxD/mS8nul0KtzDvcTqMH5Oc+QS2DE+iAS89D0MY4UbCI+g96bjJuodJkdv6x0jQMN9GQ6Sxji2ZzfDyML1QHYmSkIGeizSX7ktIkJIWi/Jh38BtEEkzVDD3DdxcGEGSS/RdIi8Xv117pWhq73k7u0XxfRVZAIa6RVpMW9YzgmuGzA61mbfGsdCgisIi8rJNu1l41Bezn8jznGcfDr9mIBiZlciERcdvk4fdx7j6hG0pJHC6HN2ZW9GYQUiSDXPX4zw4h5554G+ih7MiqOFkuEbFB/fS2xKRm5IsXxr91X/ykqfyGDu1EI7d6La4gUFiybWiY7iXrwGLsK2vc5DouWlY2zM/360GY7ay3FRzTTQuwQBA9MS6hPazq7ST+H/JOA80F/1JPxG/RZIF4iqb3uQulHlFIZ3Z8k7CnxIztkrajmtsAfGouep8DFF+uQbfk/71DplXHxWvJ2Nfr7M66M6GaT8cX4tXgWH16oEWCB30V79FSjA6LfZua/hbQ4KGdxBKrVjMwirL36tLBMWZj6gz8+hNVR4teo59BOrnlQz3G9MwbfD88ubzIgKseAdh+FEJOQoaC8VhVUo9cM1YgCZS/4Ba/Qvwl/ywwq6x3jF4ZY3eOQumH3HqCEPwSBMuuVx3nZWmlq8jcVFq+EaagNdy5n1GxdssCTFSxSANAgcjSYrPqkhZPExbqoVtlrnKmFXEhwpgVEZfnV21h9Mny8s2zswaSKq9NSWW6Bm8yG5/fCUQAF8E2Yl5o8bUUlee34GKRk/0c/VLJjfbOjYvAhr+eW5+mriuQo18RowaYvedTBdpXk/bucFEAjyuMMtQG9wVTlOLa/YLKU6WNGuegscsFZ9Je3Bh2uvGwU45w/gxHNU7VqY0ZPQz1BJYqExpgIIcRUnJuaSyJeI4DSmc5fDmC8gy5keQJh/9twrSa0YPU85O0
- zjogswyB
- VJjrzqsC1m1tiltdp+AQpqqxhrnYv4xpHFgrtNF/vlLwIxgmutHKyljLrAZeCEMmDX6wAKxB2MHdDzQfBT9uj02OMUC97Or7GnxbzAQG54N7fRJxNYKbiWskIrG+QaXSWIB+U3FvBhvBNkIrAoAoKbb7+ICpqFGkKrVXPT5qM8xnFFoSIb3ubLN4lvvzws6Dl1SDeDeNZBkK6pf7QuYfvNL8EE1vN4O3zA603/IcGrQ70Wr26o6sLUD1NJ27vXSI8OXyVCS6JHvg5ixBDcHong/6DD40l5C+XTDn70BFtWO1dXnsDEShJIL+9A+TpRLlUBmIQuj9C08njRy0=
+X-Rspamd-Queue-Id: A8E9CC000E
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 37iz7q3dbhok6kebq5i3ay1sb3r86bm4
+X-HE-Tag: 1777435959-311937
+X-HE-Meta: U2FsdGVkX18t4kqDyjRtugCEfpQ5iKzrxuSwPTEDbQ6OaXzSBK76xYwQB/d681avmmLQ8KSlYnyLLqx5ahPHksr36ay8FP8vd/0IfAqwDAGWg1p1nP5Bxy+ob71GmZ7ARmBlApooO54/tLy7rhPz97NAYUwVI0YqVcCLgfEvm6S4iEq2MCTwlZdrwdwCj5ZxxTgKVCFi9/P90OXZHu0dx40iuRTwcAgtFg4LF6lgN0TUlOPCHOyz5OP7bmFYQXodnd1Hqmd1NhQ++2Be+o/Exzh2Q27H1xe1jsR6Ako6cG4BDoyWv4qS5mnTdhRUWmG/mvBFZl7mWiV/XELw5CpTqPvZevdDogTHkXkEkccZfSx3o3R8s48Y/gbDpEAdIs2b3qzLXUxJ8F3dUcPFGbxr9KgzLT13I5r1OhMtf9y6XCTQa2/6RpdVqwCTFZ0MJnBBLpdB4vkmyBBK8cYWTNuTgoKNM6PUe4YcYQuZVe+D+NBUOrie82E2u7XV2omx9IhpiLFtVixDI862S5DntEhNmfAwKQCknDkogL5dhjVoLv1ujqQGZrAYfLVnqpAKafonxuJ4s2oPTKJGfwN5j203oM4D5mUkgZBMTX7blsjINYJToJRDSvWPLH/CdVB7ENIhaoxvx/Y1rCEK7LJ61GTFBDkvPX8wih1it0F/Z45z57l7X1lfAu0TBQi5uQMVm8QwQcv//Q1vsxJkNSi4TMmzBU31eLnRiGLj9MEWM33isOXKT4LVq6imqiWjAd8NE5sWp+RDpkc5XkPjYKcBKeVNIaGSSuuXhVzhNF3AijAffrpFXPA7aFuDTz9msw1eGDNEju+Dt7s84DFZCuhfDRihVuphTpSeR986ima6OLYuoH3kDiUcp558cE2CpCQx3RXxsaOJ2oIPXjdgFVPN3eWOMV8d3Er4GAKfuUKohyp8mXrWd6bKjQreN876dinHY3PcBXxVB8Ib3aGQAUw0Qxx
+ fZKngv4I
+ sKh90SIkUlz9XCieJeWqXiA7ja4NY7YmgJeTNtITlCWVO5GUgnAI7C2YCs99ZkDjsNcC0rcwGwlAVUJW/yyKjWzP+x/oLsogwYXdOBRWrNkt8OKNNAom4CTXYegahAd9urPF+Zu7hUlqaTctPae8zMxx22LIbsBQnD5qmZpuqXx0B/dwC/WPwwMX7e4e4+yyKHrd7jCWeYik8LEmWupFKZhCiDPBYWjoRrY5dgMAY5INDFHugs6S9lSPIZCTgfWBdF0FxtlwNEuXGvA50PsQC3NwM3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,19 +92,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 29, 2026 at 11:08:51AM +0800, Miaohe Lin wrote:
-> Right, I missed that. Thanks. But I'm still worried that there might be potential issues.
-> For example, this function could be called while lock_page is held. Acquiring lock_device_hotplug
-> while already holding lock_page might cause problems, though I haven't seen any specific issues yet.
-> Also there might be some other potential scenarios that haven't been considered. Hope I'm just
-> overthinking it. :)
+damon_stat_set_moniotirng_region() is nearly a duplicate of the core
+function, damon_set_region_system_rams_default().  Use the core
+implementation.
 
-lock_device_hotplug is a mutex lock, and we already take other mutex locks while
-holding lock_folio in other paths, so I am not sure I see what should be special
-in this case.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/stat.c | 53 +++----------------------------------------------
+ 1 file changed, 3 insertions(+), 50 deletions(-)
 
-
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index 3951b762cbddf..f4d3203e92639 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -148,59 +148,12 @@ static int damon_stat_damon_call_fn(void *data)
+ 	return 0;
+ }
+ 
+-struct damon_stat_system_ram_range_walk_arg {
+-	bool walked;
+-	struct resource res;
+-};
+-
+-static int damon_stat_system_ram_walk_fn(struct resource *res, void *arg)
+-{
+-	struct damon_stat_system_ram_range_walk_arg *a = arg;
+-
+-	if (!a->walked) {
+-		a->walked = true;
+-		a->res.start = res->start;
+-	}
+-	a->res.end = res->end;
+-	return 0;
+-}
+-
+-static unsigned long damon_stat_res_to_core_addr(resource_size_t ra,
+-		unsigned long addr_unit)
+-{
+-	/*
+-	 * Use div_u64() for avoiding linking errors related with __udivdi3,
+-	 * __aeabi_uldivmod, or similar problems.  This should also improve the
+-	 * performance optimization (read div_u64() comment for the detail).
+-	 */
+-	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
+-		return div_u64(ra, addr_unit);
+-	return ra / addr_unit;
+-}
+-
+-static int damon_stat_set_monitoring_region(struct damon_target *t,
+-		unsigned long addr_unit, unsigned long min_region_sz)
+-{
+-	struct damon_addr_range addr_range;
+-	struct damon_stat_system_ram_range_walk_arg arg = {};
+-
+-	walk_system_ram_res(0, -1, &arg, damon_stat_system_ram_walk_fn);
+-	if (!arg.walked)
+-		return -EINVAL;
+-	addr_range.start = damon_stat_res_to_core_addr(
+-			arg.res.start, addr_unit);
+-	addr_range.end = damon_stat_res_to_core_addr(
+-			arg.res.end + 1, addr_unit);
+-	if (addr_range.end <= addr_range.start)
+-		return -EINVAL;
+-	return damon_set_regions(t, &addr_range, 1, min_region_sz);
+-}
+-
+ static struct damon_ctx *damon_stat_build_ctx(void)
+ {
+ 	struct damon_ctx *ctx;
+ 	struct damon_attrs attrs;
+ 	struct damon_target *target;
++	unsigned long start = 0, end = 0;
+ 
+ 	ctx = damon_new_ctx();
+ 	if (!ctx)
+@@ -230,8 +183,8 @@ static struct damon_ctx *damon_stat_build_ctx(void)
+ 	if (!target)
+ 		goto free_out;
+ 	damon_add_target(ctx, target);
+-	if (damon_stat_set_monitoring_region(target, ctx->addr_unit,
+-				ctx->min_region_sz))
++	if (damon_set_region_system_rams_default(target, &start, &end,
++				ctx->addr_unit, ctx->min_region_sz))
+ 		goto free_out;
+ 	return ctx;
+ free_out:
 -- 
-Oscar Salvador
-SUSE Labs
+2.47.3
 
