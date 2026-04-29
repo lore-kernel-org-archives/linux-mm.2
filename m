@@ -4,133 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38B03FF8864
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 07:58:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9489AFF8864
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 08:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EAFF6B0088; Wed, 29 Apr 2026 03:58:42 -0400 (EDT)
+	id F1C1F6B0088; Wed, 29 Apr 2026 04:00:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1EB6B008A; Wed, 29 Apr 2026 03:58:42 -0400 (EDT)
+	id ECCDA6B008A; Wed, 29 Apr 2026 04:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D71E6B008C; Wed, 29 Apr 2026 03:58:42 -0400 (EDT)
+	id DE2486B008C; Wed, 29 Apr 2026 04:00:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 804726B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:58:42 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 196FC120605
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:58:42 +0000 (UTC)
-X-FDA: 84710841684.04.356F32E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1DB6A40008
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:58:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="B/9DmbHe";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D1B726B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:00:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EF871C00EC
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:00:46 +0000 (UTC)
+X-FDA: 84710846892.15.E960112
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 78D7B40013
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:00:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=fUak6XHb;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777449520;
+	s=arc-20220608; t=1777449644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kTK3qGUH+aUg0IddMUS22SwIVSfAhQliFGGy5MXuCIA=;
-	b=rsRhMfyNkZkhJdP9PYOX89NgUh3NGynQKK2pieVLV0Fu07NIf3eHL5pLciKJkFOUuaxxPY
-	ybil5f0Tiz2yHKd6fBEEwjHaCEDusRjJyFf5af5IWSSef8SsCGLycskCpXuhvqom32Npfy
-	xb8GVfjFsdSwAA51UD8XHvjt+czZyn8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777449520; a=rsa-sha256;
-	cv=none;
-	b=p+Osb3XVg8QzPwARTGOxz5GLiLQ970ghww7NHaea9rKBqo4yWD77yw3m5i9cQx1+1f9FJG
-	VtY80YDDr+cXo0SWrVgc+Ent3CqXqK1hJhBGlVr3oHMv3zaKOxkkTQq8qaLWP9G/4Ei30v
-	XY28IObtCqeFKRCydOs2tzc0CBA0GGI=
+	bh=sKt07qcPF1NidEM1dAs7s4kLamhrOjHwcNAU0l78/qI=;
+	b=U7f+whGKRUpR3eodeLwSh2OkyZYW7x72HbR2+NmxGANzHcIAspBuHlvQTF1bQZSRTa6Iqv
+	dmDjPPDK08ElDI3CWl0yASS6SeTiBHCL5/SCqjfiopR9TxWnp+WilesszlO4o5oWvA2xwS
+	In9YubPdt43I3OuNWA/npDN7C9D3m70=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="B/9DmbHe";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48CBB61119;
-	Wed, 29 Apr 2026 07:58:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C462C19425;
-	Wed, 29 Apr 2026 07:58:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777449519;
-	bh=kTK3qGUH+aUg0IddMUS22SwIVSfAhQliFGGy5MXuCIA=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=B/9DmbHe9Zx3tx4XoFCLnlVKMDd5o3tkJbuhE+zeQksaqLVZhAkAGI/sqJiERpslr
-	 lnbMnYoUKe68v+IIY+uCqJTykHJmuRiU9c2//F/nKax1RGdwnqVSxNLJKthyDljx1M
-	 +DGloNRAxTzgSaHb7C12gqPiW04yftfesGO5neQC3iCgfMOAY+eX4EAnEXUWdHTXJ0
-	 QOFW45zX0nzYI5Wwc+jKwjpNqpVqPku6ACup69zrRhgkiHO/qSbr5CyNU95diMEZEw
-	 FoiT9p6QeLPHjB0nykiMdfXnMyeidkoioVRDol7NOI33gqnxMOgxl524EaW/kGtNa2
-	 3F717YoAZ3RWA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 90CB5F40068;
-	Wed, 29 Apr 2026 03:58:37 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Wed, 29 Apr 2026 03:58:37 -0400
-X-ME-Sender: <xms:LbrxaRqGdWmZ1tX1KnyB6z_EAWRwBySpqD3hiG1Lo4ytAygqDaNxsA>
-    <xme:LbrxaedIDIWTyrLDlpTj5w2tFIbr_WTR4bhpVqHPO1DIj8Fa15tZsSDe2hf12-5bw
-    UjwiBKB7JN4GUcSRRzXK1zE0RcZKJ59uMLNRxH6b5BLlovsKmZkd1Y0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekfeeltdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhguuceu
-    ihgvshhhvghuvhgvlhdfuceorghruggssehkvghrnhgvlhdrohhrgheqnecuggftrfgrth
-    htvghrnhepueetieduieegkeejvdehudeiheettefgtdeugffhjefghfeftdelhedvheff
-    hfdvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrugdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeijedthedttdejledq
-    feefvdduieegudehqdgrrhgusgeppehkvghrnhgvlhdrohhrghesfihorhhkohhfrghrug
-    drtghomhdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrnhhshhhumhgrnhdrkhhhrghnughurghlsegrrhhmrdgtohhmpdhrtghpthhtoh
-    eptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehkvghv
-    ihhnrdgsrhhoughskhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhgrrhhkrdhruhhtlh
-    grnhgusegrrhhmrdgtohhmpdhrtghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhm
-    rdgtohhmpdhrtghpthhtoheprghruggsodhgihhtsehgohhoghhlvgdrtghomhdprhgtph
-    htthhopehlihiiphhruhgtkhgrsehgohhoghhlvgdrtghomhdprhgtphhtthhopehsvght
-    hhhjvghnkhhinhhssehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghvihgusehkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:Lbrxafro3OLUJNn86b6FPikqswzxctD_qpKHOBFuA9DZhcKtzOUQ_w>
-    <xmx:LbrxaV-YWVHHjDOZlHgCdDgRvlcSeqdJVX_MH-xN6eHuRh5wuIuzOQ>
-    <xmx:Lbrxad3clLUDIPOx5_C_ayrmhCBYPJ4hIbqjYZRoneS28njVdlaMZA>
-    <xmx:LbrxaQBX0Zm3uKvCFB7fkOXwyBIPWXewzXr4On1MI0BtIGYvq9iYyg>
-    <xmx:LbrxaUCnLYkPVEumERG95cJ0uQUbH1yPaoNj4X0h-KiukPgc15xcscqs>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 6D702700069; Wed, 29 Apr 2026 03:58:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=fUak6XHb;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777449644; a=rsa-sha256;
+	cv=none;
+	b=axZ+qE/5bJYgvEE6Fgm3ezDHeQ6Io9GTcupR35TLQ0sOjhYgoRAWa3AtgCnTizVAnAA/+2
+	OWZFgRmzKQNCR+4uC/euy4SnLvKtDevP1paWBl6AZc6m3KfUMWYybxdQW0mCvmyanVdaQM
+	TRw49P6KRf3avfDQPFOqBO9DHp7JfXA=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4836d9d54f6so18108345e9.1
+        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 01:00:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1777449643; x=1778054443; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sKt07qcPF1NidEM1dAs7s4kLamhrOjHwcNAU0l78/qI=;
+        b=fUak6XHb4hWk3Ov51GP87aQgpicJ1UiEMUt8D/Foxmpi9I6DLHrSC6kAoh7AhoBMV8
+         5vPvCBvw0wZOY2kAE6JZkCAgp1toexS6y6dyk83F0zHGB/VyA2mYtxz9f0aryeLkNISM
+         iPAm3nQO/h2ZjoTtAtTIdkyqp8KwpyjUGPSNpa5/1M484zhJ2zsQjz7RgstNYbqSaVuz
+         nIm13+1yoTDzsI9iJ8fUzj083apljtM+jqfFFu/uQy2R/ZjrkFxBnp603xdou/7zEWj2
+         t8ghDAEJN62/sXLssprdXKu2CA94WIhP87ORhGkM7EGy41HNdW8lKFmoNqOUVebixadI
+         9DjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777449643; x=1778054443;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sKt07qcPF1NidEM1dAs7s4kLamhrOjHwcNAU0l78/qI=;
+        b=TvGRMOMPyP6Bcj54exOUikRklPKnmreY7cXPS4lH8MN9z4/F3QvpteXfSBS0MsSQWF
+         1BE3kCaqMsiICTxFjHPC8Zo/8dABRMsz4BzWQLJQvSUkYMqIgOHA1IlvW8rtj1eSSKjX
+         AkAVCk70Biip648sqjssGD6/4UZjkQ2rpfmX9onWnTRtHIVo7HigYZLDwxdlzyTKuYz5
+         DIyyn4ySY+czoqXBpvRXCiJvrtWksTeuZLhT/kcb/Ap8UszRrK0R/IYkVFvHoSvA33Bi
+         /We5A5WtexrlBTPftl3Y/nO30slBpFVXEy20Ydvc6kCMVPeu9MLZv2OQBUwymOr5R/48
+         ozpw==
+X-Forwarded-Encrypted: i=1; AFNElJ/J5goE3R9BtIpAIE6nfS5f4+P8Ea+95e3GLmMGslLq1IJg33mddFIsY5QmMsdeqSXbPf5im2rWjQ==@kvack.org
+X-Gm-Message-State: AOJu0YxsY5OshyEg2gqzVveIwDJn1CX7+XkZI0BtQbbjJTaidx+iQxkw
+	ekoUM1cQymVHaYdSADVrqYJwRodyT5zRkjnA2efIH5BMcMEnaJoXTIu6ZHicbnj1dt0=
+X-Gm-Gg: AeBDiesdy6K4YeR9iLDw364aniLTaFJs6pEmZh3y4Z8MF/Yjd87xPZ7AqOXwHuOfX3j
+	ToKMdUdwBBqDTwghdBEtn3dvka8KcviTGiv2Obj2gnbyLrCdeC9RtrAVf9xt/UesjZgiIokFSHk
+	5EuzMx98QK83+8JY4acRf4ItYPfSMrd2jD+TJ3zjahMwZQFbPb3Fj2lqD6RpoqkzWS1os78aD8u
+	j3G1x5xCOGWPAHMCZAI4vHj8JabI1g9rf9v0tLY5GOIUlXFcMv5dFG7NwmYY+nQUBxvRvNNffbv
+	BpyRCmU0r/40UVdbFOJ8qDyEyx0X3IFt20JNCPdwDm+YUhjgF5AfjoP7BcI7aBEkasvRD1JRZZn
+	N/67f+qIlAELGrgh5FJfTYS6t5RkyERf+x6ZCDbDmRN/P+/T8OmSrxF0EGV8dFwkFdtiWcqcZ+6
+	m7g6PoQnQghjPnGILRxvu7M6rlMGaOtAsa8wi5cJOiGcPFwP9OTgPaX7tV2iCMs9WIwAvB
+X-Received: by 2002:a05:600c:3acd:b0:489:e696:127d with SMTP id 5b1f17b1804b1-48a76f82973mr58572165e9.5.1777449641184;
+        Wed, 29 Apr 2026 01:00:41 -0700 (PDT)
+Received: from ?IPV6:2001:1a48:8:903:1ed6:4f73:ce38:f9d4? ([2001:1a48:8:903:1ed6:4f73:ce38:f9d4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7c303c3bsm18098475e9.7.2026.04.29.01.00.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Apr 2026 01:00:40 -0700 (PDT)
+Message-ID: <78978a11-8345-4b84-bef7-90d17f4c581c@suse.com>
+Date: Wed, 29 Apr 2026 10:00:38 +0200
 MIME-Version: 1.0
-Date: Wed, 29 Apr 2026 09:58:17 +0200
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Kevin Brodsky" <kevin.brodsky@arm.com>,
- "Ard Biesheuvel" <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Liz Prucka" <lizprucka@google.com>, "Seth Jenkins" <sethjenkins@google.com>,
- "Kees Cook" <kees@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "David Hildenbrand" <david@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org
-Message-Id: <e0f0052b-b28c-41ad-8a82-18cebe5141e4@app.fastmail.com>
-In-Reply-To: <1ba0b6ce-3e71-45f7-a3c8-cdc5aadcaf27@arm.com>
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-18-ardb+git@google.com>
- <82091dd4-9d11-4054-89ec-99aadaeec7b2@arm.com>
- <6f514d91-c8ce-473f-8383-f3b9a4cc2f7a@app.fastmail.com>
- <1ba0b6ce-3e71-45f7-a3c8-cdc5aadcaf27@arm.com>
-Subject: Re: [PATCH v4 01/15] arm64: mm: Map the linear alias of text/rodata as tagged
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1DB6A40008
-X-Stat-Signature: g9nymfy4uhp81t1tbrshzq984kckmx7n
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] Documentation: adopt new coding style of
+ type-aware kmalloc-family
+Content-Language: en-US
+To: Manuel Ebner <manuelebner@mailbox.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org
+Cc: Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org,
+ workflows@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mm@kvack.org
+References: <20260429070759.309110-3-manuelebner@mailbox.org>
+ <20260429071445.309733-2-manuelebner@mailbox.org>
+From: Vlastimil Babka <vbabka@suse.com>
+In-Reply-To: <20260429071445.309733-2-manuelebner@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1777449519-310853
-X-HE-Meta: U2FsdGVkX19ApbntaKfmiRUhdbp1bgpzc/erE5vKjoWYaZ6VFEyXzEeROVEDI5EgO1wd7LPp8k97M1dxdltsK3157E4v+aUW10dARZ42hMtTjUr6AxQpiWfPTWdVTYQGobBN3VGBjslvt6puQg0kCvPQOS6tAL/Bh5EsuWSHQ62FB8EIh9YrYEpih9hIyJ2Ho+1p73WWMhSrYRN3RhiXXo1VC+JPWOBvGCn6qTNuw/qtZiHL3L4ZLUtlupRrKqvwn74Moye1gTIQW4Cj5mwYMDIBsEf0PfxdqMJSvmLungUJpyD5YaqYwdkr9AMs81Ay/vk8zKhDkE4PjJBUVRhaAsAVcmgZQyA05RlsRHwt0Jw6L2tCExnsK30ZGS3ExsmETOxsrt8N6jwr0s7FwqJBDQTY/KELFwvIVsxphJq6HiT7Bzm8FRGBQsIAKw+pL3jrlqn6iY5US18yQ5z9mNIZBk2BVZpOnIhouEliI1ndBoLLV1Z1I/rYwL+A66WqXptdDaBteGtUSxsjHzUDZ4mu0DJa58JKqrcxQpqOLmUfqQuLeibKqvnpfq/37wjiVPwqQ5b03uwmM6d0s3BeUrsXY5NBjARSTOPtLqXklXSInFdvQCikNOOtaigWiX4uxUA6IFuekJ2sFddxj0pUOQ59qZJQgmHIq6H64SiJ/2UYfYofUkboZMKbXyfa70GaUnXej8yex7qGH936TFKpV9F81OJSpJLO82RMojz4T8u5gXz3qw+xBfCnEwwImlq2XxU7P/jD3Rh5VPg2KKj+/TRmUqomXhI7JXDSmdnBIe33SmAkVH3dQJ+ruGsJ/0Ew3WA5Uyugs6LVLV26hHFp+MEUVuOhnKq5f3Kwi86czsyMeYGWvCOORmPTkkWY/AsVPWKo+kI+FZnPIshM2Lts6/Mk/Ycamp/gv6YjiTgIekLSivijXyfahW8m73LueuUoJbrf9Q7Mirigf2iUaYU3t1n
- 1t3Q7LZD
- Jkf+TvCpPsOXyn3UUKUYAgmtq0bNCSs2W20ijZhN+6/MQil2pDv0c4tshN1n3zJqVkwcY2GQ/hYiwnizEeRnFBtBhUILzsmCQZF2zHcjRKI/aw25MN/55LGZSK5Tir7w/BEKbgSn//vwnSq0w943jowOBtwaXM/u5C541KR2iF8UYYpDwfzaQTFe/XH6YTxg8YZm+Lv5XwW1O5UEtA7HA5dG9sKvPMHpJFT6hAzxmzMH9y/P7yC1Oj3sCjVcedwFkjD/qMxQiacqUsQqnPfl793aiuu8MtBSx1CzGuHjLYr4voW4SVJOwQXQCcs8/NlmdSgvS+Qitro6n26Uyk0Uu5P30+A==
+X-Rspamd-Queue-Id: 78D7B40013
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 16fumx5rpfnxy55ga5yeacuiu8e8jbgu
+X-HE-Tag: 1777449644-499948
+X-HE-Meta: U2FsdGVkX19FvhUEDTBP/HUvkt6Vc57Cxgt3/Z2P54wWWtkxjLP6YindZRkXOyEzJraLjFurvuv+w9yTh+yfl8z1H5NsqLm4rWwk5TosvVMiRAvHh2sCf5+ZVSAVhcKPWqvShyB4qVWbawQlvXBNbsK+xTclfMZ6pETg6hZDvUvuJ3HdOyi1/Cn8tUdAUhF1tp9K/HfFldjASvoiP9NwemoieSzS66y95oqg6BEml03k+ZwmTNHbH1TECivH0x+vxorg2ekeK4q2dZS6H2Du6KR83otEB2kOLbKIUL6RbgOaszAhqe5M/NVUaCPRrMLqN9Jc3I5T3T/0hVsY0db0GIpOm3cW+DUiO5UqeLR0CugmJCPzVvrNqb3TW7MuvEbLNLGE5RJ/gVQsv+x3vYGAw0+mQmUajcELYglKszs2Q3MjfFu205Uyz8okD0QqA7fcV6+KuGuX+PRTzDYeBt1gRAvCogTjz5fanCgoWROI9WeFz0+Dgyh1uCM+SfNN/Sp2j83jwO75VGGQAyDQZWVbzMRP5olKxfWRLvdDVt93VsTrsWhqhruRLKAwhVCXh7cPSoNODyk1K+7zLueCafY7TQXDPAq0BCWJFVo0RJkfU9RyfVARUsPlRI/fO21fe42Gbo1pGDsjUoQ8ASnJbIXL547DQHblOmX+9U0KTy0rNMFCKiQ9IoO7fevhn7yG8nuXA4G2xKsj+m+DOUtyHDCl0K+tbUQIM5LsyyamGZ2KQa+AcP1pID8QhyIX030UZvoG22ymeXw/aLDGRA0C683uzzcwlkzhABcxe5ARwER6jYY1wvRNV4uQIyj89OfDAdc/MvYZX49Xh1gwZdU9XQ2o134OQ0gNCOU2rwLwEHzSe0zWBZ67KGVgNDcKBYyHTqLCLI/s6R6kB/TOnvUmKAW4ZWtSlbNdxwadNLEoKNj3X6v6R6dd4GZIYm+kkJHZqUXnj5tEnLq2cQLU9rD23Mu
+ Kr3sXMom
+ 7flj9DzpRtjy3rRwrGnS+sPlNEQQSY25ZkEB6031MuBuImJDao423QoWEX0PPruKZtcXXVvQ8ciKTT8trvl745xq1IHQWXp51m30caIlJP+qm6xmQn/IfLrHpyCol1DQbPJvbBGflaNguSaLQlxB3QZcwglR62/0h+2BbzSrjdvFF+GclGLkFgE29tNvBplPwNxvHG68koR7z0abirICAXGpFK7aohpUYeKv3/iUpHL5uEoyvEFGtVRPr1Nkpp3xmtvm6l88cLs+ziUl85LIjv80cMeYRXVF3wckQnZ/DydJoYg+p6wf2wC2Hhg9LAfSCPXLwtI223xblza2vZAvRrrKUOu3NVM5vrjuc+T0E60+9/XK6nAVIQAfPwlkvAL5u1wl2lXuXjEfAHy5dkmGLOGIvTe6LKpjAgNZKl3Qf4S+vUesBfLegL4vx+QpJ3DBI0ltG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,41 +125,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/29/26 09:14, Manuel Ebner wrote:
+> Update the documentation to reflect new type-aware kmalloc-family as
+> suggested in commit 2932ba8d9c99 ("slab: Introduce kmalloc_obj()
+> and family")
+> 
+> ptr = kmalloc(sizeof(*ptr), gfp);
+>  -> ptr = kmalloc_obj(*ptr);
+> ptr = kmalloc(sizeof(struct some_obj_name), gfp);
+>  -> ptr = kmalloc_obj(*ptr);
+> ptr = kzalloc(sizeof(*ptr), gfp);
+>  -> ptr = kzalloc_obj(*ptr);
+> ptr = kmalloc_array(count, sizeof(*ptr), gfp);
+>  -> ptr = kmalloc_objs(*ptr, count);
+> ptr = kcalloc(count, sizeof(*ptr), gfp);
+>  -> ptr = kzalloc_objs(*ptr, count);
+> 
+> Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
 
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-On Wed, 29 Apr 2026, at 09:57, Kevin Brodsky wrote:
-> On 28/04/2026 18:23, Ard Biesheuvel wrote:
->> Hi Kevin,
->>
->> On Tue, 28 Apr 2026, at 16:16, Kevin Brodsky wrote:
->>> On 27/04/2026 17:34, Ard Biesheuvel wrote:
->>>> From: Ard Biesheuvel <ardb@kernel.org>
->>>>
->>>> Before moving the empty_zero_page into the __ro_after_init section,=
- make
->>>> sure it has the memory-tagged type. This is needed to ensure that
->>>> cpu_enable_mte() will be able to initialize the tags correctly.
->>> mark_linear_text_alias_ro() is called after all features have been
->>> detected and enabled, so do we actually need this?
->>>
->>> AFAICT the lines that matter for cpu_enable_mte() are those, in map_=
-mem():
->>>
->>> =C2=A0 =C2=A0 __map_memblock(pgdp, kernel_start, kernel_end,
->>> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0PAGE_KERNEL, =
-NO_CONT_MAPPINGS);
->>>
->>> It is probably this call that needs to be changed to use
->>> pgprot_tagged(PAGE_KERNEL).
->>>
->> I see. I guess we should probably update both, no?
->
-> We could, but would we ever access the tags in data mapped read-only?
-> cpu_enable_mte() needs tag access to zero them, but AFAIU it's really a
-> special case that is only relevant to the situation where the data is =
-RW.
->
-
-Right, that makes sense.
 
 
