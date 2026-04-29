@@ -4,88 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1892AFF887E
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:52:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F7DFF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:56:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41A796B0095; Wed, 29 Apr 2026 10:52:42 -0400 (EDT)
+	id 72EDD6B0088; Wed, 29 Apr 2026 10:56:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F25A6B0096; Wed, 29 Apr 2026 10:52:42 -0400 (EDT)
+	id 7061C6B008A; Wed, 29 Apr 2026 10:56:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3302A6B0099; Wed, 29 Apr 2026 10:52:42 -0400 (EDT)
+	id 648CD6B008C; Wed, 29 Apr 2026 10:56:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 204B06B0095
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:52:42 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3CE4C1202BB
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:52:41 +0000 (UTC)
-X-FDA: 84711884922.03.22A7BEB
-Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6E1ED40002
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:52:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 525F76B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:56:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02B6D1A02E4
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:56:56 +0000 (UTC)
+X-FDA: 84711895674.16.6EB1430
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 483C21A0015
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:56:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aFmOTWUC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777474359;
+	s=arc-20220608; t=1777474615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ugLM90Y7kk2DtlyF/mpf/bYg72pvvzvli6x4UgzHxtM=;
-	b=UrAB2B1y/ZO+uCMYGedXDSO5TwJi/fPNIeUPr+AxaPSAOOOLf7DKR2AY8Y7ru/vzxkF3ph
-	H4IlXip3aFSXa1aZkqH455KQeSFqHFfzyf6s2D8pZMB+j7dhtIYk921moGQS+wbIng2lCl
-	zot33mrAgyZvBNoJ305Zowh3g9veRok=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777474359; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aV5ezDpfAzaj+HhnmXIFAIrHyvrm6mpa0CGHaWLzs9o=;
+	b=GQ36KL4DlrusUOjNIyTGzklTcsvsdtV0Pavd6xbOtZzNVYv54y8Sey36HGXk7xpOmLnaY7
+	XgA8qeM6CTD4kRam2Qiery2DMwSBzgO5uGu8ytlANdHfz8vXAmuf7+b6oB+Vx5c3TOZAc6
+	Eh/cbpkQZUFgos8AtPshb3JFBmcqBhw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777474615; a=rsa-sha256;
 	cv=none;
-	b=PjzGRzCcr4q29G0J70VLCdkov0mkx+rDPL4R7g6kAR+mbzLZbdHcRICfg8vyHtCjIuzH3p
-	ujV+SQVnOepi9YuUpddjQyxUShEmmj0fpABg4lKvi3KE+k9HodXh3ZNhIu4/OupRkygDLn
-	s3BHf3X5Sa5ioT0pwtEIjKw8uAiwHj4=
-Received: from omf06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B933C1A0313;
-	Wed, 29 Apr 2026 14:52:32 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf06.hostedemail.com (Postfix) with ESMTPA id A344B20011;
-	Wed, 29 Apr 2026 14:52:28 +0000 (UTC)
-Date: Wed, 29 Apr 2026 10:52:45 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: SUVONOV BUNYOD <b.suvonov@sjtu.edu.cn>
-Cc: akpm <akpm@linux-foundation.org>, vbabka <vbabka@kernel.org>, linux-mm
- <linux-mm@kvack.org>, mhiramat <mhiramat@kernel.org>, mathieu desnoyers
- <mathieu.desnoyers@efficios.com>, linux-trace-kernel
- <linux-trace-kernel@vger.kernel.org>, linux-kernel
- <linux-kernel@vger.kernel.org>, surenb <surenb@google.com>, mhocko
- <mhocko@suse.com>, jackmanb <jackmanb@google.com>, hannes
- <hannes@cmpxchg.org>, ziy <ziy@nvidia.com>, david <david@kernel.org>,
- vishal moola <vishal.moola@gmail.com>, corbet <corbet@lwn.net>, skhan
- <skhan@linuxfoundation.org>, linux-doc <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH v2] mm/page_alloc: trace PCP refills and PCP zone lock
- usage
-Message-ID: <20260429105245.192e67a8@gandalf.local.home>
-In-Reply-To: <1453063691.2584758.1777433513691.JavaMail.zimbra@sjtu.edu.cn>
-References: <20260425091335.346504-1-b.suvonov@sjtu.edu.cn>
-	<20260427060142.131055-1-b.suvonov@sjtu.edu.cn>
-	<20260428142335.3bca0166@gandalf.local.home>
-	<1453063691.2584758.1777433513691.JavaMail.zimbra@sjtu.edu.cn>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=Lb+5cHa7IrtrL5fxq6pBASGP4eVXXqEllP5vC5PQ1fw7k9HhNqjUNVZl4V8nqmvyUklhHy
+	6AryrsD85JhG6AXVknwZFK5yd+YsXeurlNYKyrPsQPI3m0UIRYqp9fK6Kr6QU+p18wEKZ7
+	pqjU72INOByYqHugeqof7fSI+qewz1g=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aFmOTWUC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AD1346024D;
+	Wed, 29 Apr 2026 14:56:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A78C19425;
+	Wed, 29 Apr 2026 14:56:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777474614;
+	bh=O+4e7sz9Xcv4F2XUvuUxUbUs3ZS/nCd2chQb2PuT9Ec=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aFmOTWUCMYaO+P/jLi9PbVuQQj38Tx18wZNxwKEH57iZMOnJBCWRifAjdYjXZeCtP
+	 eeRyFvOQ8T/5hQYertXDk2/Iv2By4abwxg+AZdRZe/jKNVYF+xsMjTFW4JtZoV+ba0
+	 Qb7PgbUwN43cXD7vIXCJcikaxLwxBtJjV2FsgIwzgUvjqSwpw4lYnWKqeRlGOZ/i3R
+	 JgqjIH8YQo2ixTLZIzNtFhoX70PYCJIi35mdYilkH2qlWdW7SVAxW+LyM5H2bp56JF
+	 MIdwUsGgUD7LXJojE6rBD6FanBw3TWOQjMsyfli50WO50J+7vtgxiVje8f2Ka5OuaK
+	 8vokQBK+MukXA==
+From: SeongJae Park <sj@kernel.org>
+To: "zhen.ni" <zhen.ni@easystack.cn>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] mm/page_owner: add NUMA node filter with nodelist support
+Date: Wed, 29 Apr 2026 07:56:44 -0700
+Message-ID: <20260429145645.80675-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <f09a287b-87e9-4701-afe0-929363937fd8@easystack.cn>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/gO+H3IUx7sVHTPg/bx8A4FuIpjf3S24k=
-X-HE-Meta: U2FsdGVkX1+bnbMuIeHV/UgJRUTOQxB6W5jOfn2Q0Tl/AkipVunZIoaSus3NWsVFId/CmDr8sy/VbnbG0pb/aIuMKsaKG1AeCyOC/v2A6T77ZyfIyT6VlTgf3ir5WFPnCzA+5p/LxM4uwNTx/t9CpfKW/bnRveONJSermvPB4/FoeRuVsFOmIgHwKUpLPtgfbLZj+FDkjYxsu7bchL/K2FcDIAq3ncdRKe8Dfc+R7VOLqVpUjNNDZEZfuuPD0rvxQsRxH0kK+nHQXABXhdOHwXmrCMyxfmtNcdCIC/XtQuEAHr5n76QSzc3c63+1BK6s
-X-Stat-Signature: hkat18xezybbqk5dyxadixumtmrtrta1
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6E1ED40002
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 483C21A0015
+X-Stat-Signature: go8jcqx87rawej7f93dtkriwq45qjpx3
 X-Rspam-User: 
-X-HE-Tag-Orig: 1777474348-817918
-X-HE-Tag: 1777474359-612947
-X-HE-Meta: U2FsdGVkX1/h7/+ECKnml6lStwuUprOHAdgrVqW6j3n6xe57WltA63E/4hibCA3ho/gsMhklUrEv6dBqR0SllUaZO0+OC4LH7kKeqEY6OyGa27K/+pGKapHAGDsfKnTz7Xu9+YKJcI7tzJIV4NPQvC+Yr+3Oe+HhdcHioNfrufoPUqNl7/b9/6GkpAB/Y0UEeLqmReDZKi0aODyquyOGehgdPYp0voTbJI9s2InaP0iqZQEM/BOspT9rm5AAgSK+bsScPEQsVCDsiIMAO0ggVULyiCuYbFOtbPTzGdiPbjp2xEDNK8YpyPEO/WefCMfEa9gOXMEwgNyrR1jdUTgGCKMokv+2A1vGyN9sHINF4cmchjxrSaXcUISXTkFN5pIQMZHKcn5vI36CYzfCEvDxMxnbjSdZDNq1DW/QYjcUsQN7KIj/7xgyg5OmzYg3c/1g21lkLzQeXwKPn1T6VSXIzNcv7nSQH9JZMRDo9bzwvy8dc2GxgffOukVh8NxoeIPTtK2RHRiv5bqOzwOTawKX9mZKUgQqD7JXA4eCy27Aw3AS/Tz/z9DxwEZHRCpiWMWIVT4HHRExrc5ujrqKsihX1187w4dKrCYpgqgEnhekNnESG5xJGrMqWGZ2UOdFXE4MdlKmcJoG0a0K8u5mSx3HTVbBAuKkF5bWjw9Ou6/Q21bQ9tnLn8EPkFPyS46kYvGE4EgIXs5AlUGxa4IRvA+VKFTNVB4vJpHBcL2tDqheACKjEU1mY7x1W8wskCSf+ZF+57QRwqoL2ntw+6oyhQRKyzF//h+jJoBSlG+EPiFgIMO7oDR191rcJ6ovAWH1PbOa9CtvRnlrP+6vsAC32HHGrrZxyHG+w3BPObz1V9yiHjTM204bOQDEKVxfjvetrGTK3GrS2A8xUTGN5fGtKaizDzz7oYU0htRjiz0LU9YaJaBdMhnlragXSLhUFTwgrIDmKW6nw47DGLmCES/+I4i
- NTKgAlKW
- UvijOtYx1riK6MCodfuvICiStI8GCV805vRB+WO9ggUBpkBQ=
+X-HE-Tag: 1777474615-534176
+X-HE-Meta: U2FsdGVkX18TIOWrWoutIZeC/U1wfwX4VPNHzkqYfR7m9ob4julq5p8CIqD9UBS4CMizhw+CNIAvhEPfNS5RlJNYoTiEYQIbdl0UGPMD58vJGTYAs71vVxN4MVbb5bRuTafWs43yXNFesZ0Vm4K30EJkRqdeZTn5cvtSsfU0vNwuU35cFeZWWVmrx4w4POt6R5Qu39lSvEmz5nWDxdwXKfYTEkHLJNX2WvkFhEFr0lAvLK+xI9PWu3TpjS7SlSpr7cWcHCDS24Wx1HHwvlA9wcLX/c2HtmqSejlqiJ+4q3RfirxlWQeQCO2GcYTAAQQ+bSbJ+29vna+OT8AxXkaKANe7pD+rKTHbHRkcWIqUZwgEDxswbIkASqSBkUaO1kk9KY1bn7mc3Onk9kXjOINxxyjj8zLRfaJs1P9PlEe0tpS9Sus6aWfenuTve7OJSRJbDKuvZ6OAe+NzQ8lA+PN1A0aBll8xuTNr2ChdYfO9MCxpYCYtdSpTwJD+YORMM2Ik5Sr6hlYa9PiSabsHr2SBUfbrIpoecE68VjsTT32LtaZ/H5P6naIi/hEQ/rddq7MMK8yZqGEOxep55cFNMXVndZC/90eAX/rJofafzDgwHqcwSI5JpC8A/HshlJhA6TmNfzsv1BeOgfi8YSgAOIgl+SgAiQXbjtVHAO6ukL6J1o1XXKIfmN/YdSCywJ/S7TvFjJVRIh1V+t0HXn5bcvETC6U3vHi/qnd9ZIWeZmrUi2gLNYXAd+5WyN44QyjahmZzKKs+o+ZR3ZLihFt83R0wfgwtjMgnAC3JCIU7ldx8gyzisHdu+Lze++yYuNr2+G0nwNzDx7YgbvUs3G3a0yw4ZEYd9U6nmMl4rB35BDfxSTNU/4N++GNfYMehodLpK5LKCHjPFESwBD8ReIHXHw+Y/FQeU3JypIzRMNmSqrtG5qvYNjMHxRHLEKGVJNxO1ZNJwsxea+M4dIPR362uWQI
+ NaWjH5Bf
+ DHoP/1OD4qzapMIlmup11HlhL9TSkP0S0qvEEvuSIyk/T3N3rwfMQViuOrZS5V1muLQH/zp7G1Mn5Clmj7bXY79NUPg4GUxhd9ngKqqGJnebBpPTN9IcFPRgKeTUhKfDHBErwScUIOQpm1H7S4dc5Zt2M4Ukwx6YPQzds/xaWDML4itJyy16niCRkay4qiuPuFWc5rYwh2FmkBoRC+q/ynAcul2Na9aOqh68ay7jcXZ/7z1LG8zSjavZopY6Ccr7wNqUCiiCQLz8IB8oOMddc84bgotSrEfMbl3C9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,43 +100,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Apr 2026 11:31:53 +0800 (CST)
-SUVONOV BUNYOD <b.suvonov@sjtu.edu.cn> wrote:
+On Wed, 29 Apr 2026 17:03:56 +0800 "zhen.ni" <zhen.ni@easystack.cn> wrote:
 
-> Thanks for reviewing Steven,
-> 
-> >Why this change? It makes it much harder to understand.
-> >
-> >The above is not a normal macro. Ignore any checkpatch warnings about it.
-> >The proper way to do the TP_STRUCT__entry() is to make it just like a struct:
-> >
-> >struct {
-> >	unsigned long		pfn;
-> >	unsigned int		order;
-> >	int			migratetype;
-> >};
-> >
-> >Thus, the macro should be:
-> >
-> >	TP_STRUCT__entry(
-> >		__field(	unsigned long,	pfn		)
-> >		__field(	unsigned int,	order		)
-> >		__field(	int,		migratetype	)
-> >		),  
 > 
 > 
-> Yeah sorry for the formatting issue, will fix in v3. Any other concerns?
-> What do you think about the introduction of those tracepoints themselves?
->
+> 在 2026/4/29 09:28, SeongJae Park 写道:
+> > On Tue, 28 Apr 2026 15:11:11 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+[...]
+> >> @@ -685,6 +685,7 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+> >>   	struct page_ext *page_ext;
+> >>   	struct page_owner *page_owner;
+> >>   	depot_stack_handle_t handle;
+> >> +	nodemask_t mask;
+> >>   
+> >>   	if (!static_branch_unlikely(&page_owner_inited))
+> >>   		return -EINVAL;
+> >> @@ -698,6 +699,8 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+> >>   	while (!pfn_valid(pfn) && (pfn & (MAX_ORDER_NR_PAGES - 1)) != 0)
+> >>   		pfn++;
+> >>   
+> >> +	mask = owner_filter.nid_mask;
+> >> +
+> > 
+> > READ_ONCE() was used for owner_filter.print_mode.  Should nid_mask also read
+> > using READ_ONCE()?
+> > 
+> The reason is that `owner_filter.nid_mask` is a nodemask_t, which is a
+> 128-byte structure. READ_ONCE() only supports types up to 8 bytes and 
+> will trigger a compile-time assertion failure for larger structures.
+> 
+> This was actually an issue in v2 - the AI review tool (sashiko.dev) and
+> Andrew both caught the compilation error with READ_ONCE/WRITE_ONCE on
+> nodemask_t, so v3 removed them.
 
-It's a basic tracepoint and nothing unusual about it. I only watch over how
-tracepoints are created and some use cases and make sure they are done
-properly. But the introduction of tracepoints in other subsystems are up to
-the maintainers of those subsystems. They are the ones that know what is
-useful or not.
+Thank you for kindly sharing the context.  Now I understand why READ_ONCE()
+cannot be used.  But, is plain load/store safe enough for nodemask_t?
+Shouldn't it still be protected against races?
 
-In other words, it's up to the MM subsystem maintainers to decide.
+[...]
+> >> +static ssize_t nid_filter_write(struct file *file,
+> >> +				 const char __user *buf,
+> >> +				 size_t count, loff_t *ppos)
+> >> +{
+> >> +	char *kbuf;
+> >> +	nodemask_t mask;
+> >> +	int ret;
+> >> +	int val;
+> >> +
+> >> +	/*
+> >> +	 * Limit input size to handle worst-case nodelist (all nodes).
+> >> +	 * Worst case per node: ",NNNNN" (comma + 5-digit node number) = 6 bytes.
+> >> +	 * Formula: 100 bytes overhead + 6 * MAX_NUMNODES
+> >> +	 */
+> >> +	if (count > (100 + 6 * MAX_NUMNODES))
+> >> +		return -EINVAL;
+> >> +
+> >> +	kbuf = kmalloc(count + 1, GFP_KERNEL);
+> >> +	if (!kbuf)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	if (copy_from_user(kbuf, buf, count)) {
+> >> +		ret = -EFAULT;
+> >> +		goto out_free;
+> >> +	}
+> >> +	kbuf[count] = '\0';
+> >> +
+> >> +	/* Support: "-1" to clear, or nodelist format like "0", "0,2", "0-3" */
+> >> +	if (kstrtoint(kbuf, 10, &val) == 0 && val == -1)
+> >> +		nodes_clear(mask);
+> >> +	else if (nodelist_parse(kbuf, mask)) {
+> >> +		ret = -EINVAL;
+> >> +		goto out_free;
+> >> +	}
+> > 
+> > Doesn't empty string input to nodelist_parse() clears the mask?  Can't it be
+> > reused?
+> > 
+> Yes, empty input (echo > nid) works because nodelist_parse() handles it
+> correctly. However, nodelist_parse() - which is implemented via
+> bitmap_parselist() - cannot handle "-1" as it's not a valid range format
+> and would return an error. The explicit "-1" check is necessary to 
+> support `echo "-1" > nid` without returning an error.
+> 
+> So the "-1" check handles a case that nodelist_parse() cannot handle.
 
--- Steve
- 
+Thank you for kindly explaining the reason.  But, do we really need to support
+"-1" input?  Couldn't we just redefine the interface?
+
+[...]
+> >> +	debugfs_create_file("nid", 0600, filter_dir, NULL,
+> >> +			    &nid_filter_fops);
+> > 
+> > Why don't you use 'page_owner_' prefix like other fops, for consistency?
+> > 
+> For consistency with the other file_operations
+> in this module (page_owner_fops, page_owner_threshold_fops,
+> page_owner_print_mode_fops), I'll rename nid_filter_fops to
+> page_owner_nid_filter_fops.
+> 
+> I'll incorporate these improvements in the next version.
+
+Thank you for kindly accepting my humble suggestions.
+
+> 
+> Thanks for the detailed review!
+
+Thank you for sharing this nice work, too!
+
+
+Thanks,
+SJ
+
+[...]
 
