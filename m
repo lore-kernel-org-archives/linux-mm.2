@@ -4,94 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29674FF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:40:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F155BCCFA13
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:42:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A7A96B00A2; Wed, 29 Apr 2026 09:40:15 -0400 (EDT)
+	id 695546B00AC; Wed, 29 Apr 2026 09:42:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57F556B00A3; Wed, 29 Apr 2026 09:40:15 -0400 (EDT)
+	id 646BA6B00AD; Wed, 29 Apr 2026 09:42:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F86F6B00A4; Wed, 29 Apr 2026 09:40:15 -0400 (EDT)
+	id 5352F6B00AE; Wed, 29 Apr 2026 09:42:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BE6A6B00A2
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:40:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E71A2140274
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:40:14 +0000 (UTC)
-X-FDA: 84711702348.28.D1F97CB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2E70D40002
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:40:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jOI2WwuT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470013; a=rsa-sha256;
-	cv=none;
-	b=edWKZc2wIHKk1yZd0izEVfKr/QRFSiISaIq1xdqINB1HEihNryJSIlmTFkH4qxHt2NKnr5
-	BwEKwJZ90a/28CeISUVaPuPXVjS58IrctgUYrAV52RXAwwwAU8Cn/24AuP333UlTIfIr3x
-	pZOLt3XrFGT6vFQGhikyyakNavuHvfM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jOI2WwuT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F5BC6B00AC
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:42:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0946A022A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:42:36 +0000 (UTC)
+X-FDA: 84711708312.16.AFEF7A6
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0087680012
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:42:34 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=eFcst+dO;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777470013;
+	s=arc-20220608; t=1777470155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Db16u/o8Bl9R3A+gUowH13nNiAOqM6eGtUya+uogmHc=;
-	b=GT+jp9BgOs69q174pZw1l7/sohwSDo05Fj087nqSFDwhOWbGR7kP8BAg1hXjSAY0yjbxzM
-	LwDNYAZCSn+PlzuW3sh5yX+LCW+vWHCooa3V1JcfUlpnwjPNckPd1rWVFuWs2OBvaO2dBK
-	5o8MSNxH3CrldkgWaxrUHKGB81mdenA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59A61442AC;
-	Wed, 29 Apr 2026 13:40:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2C0C19425;
-	Wed, 29 Apr 2026 13:40:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777470012;
-	bh=LU55tlcL/y5Dvw2CMKDLuxBuqllrlC4je9HKT4siEk8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOI2WwuTUXT2dH3dciuVs5qQuyVHqmJNVUXJRlNurMr4RX0gyj4zxKIhZrOzCxaXf
-	 PAmGuruB1l9XDdcCwTALDN6OaZiPz6XmYXakHUrh8dU9o19yMdRacl7acevPpu+AwS
-	 ypmAG/C84+iiDatEdM86DKP+Drbw8FjjFtbPdGPG3DBahsp5BKvz7U5qDyD1aqk773
-	 F53HFBD2W95qGohKSv5mo949+LDrOGFCq3x53gn7KM7UTPdD6cpXqvJxw3mbf3mtyK
-	 9GiC/GJfcmoXyX02ITWyEZl891R8WPzYbo/fuaOVroftoIf9Kid1g7TVQpTRs18xko
-	 Oexn/U5s7VlEw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Miu <jasonmiu@google.com>
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 12/12] mm/hugetlb: make bootmem allocation work with KHO
-Date: Wed, 29 Apr 2026 15:39:14 +0200
-Message-ID: <20260429133928.850721-13-pratyush@kernel.org>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-In-Reply-To: <20260429133928.850721-1-pratyush@kernel.org>
-References: <20260429133928.850721-1-pratyush@kernel.org>
+	bh=jZN8aaKgJ1Zzt3TUYPWuZx8THycU/Bmtyi8+XL6pyqc=;
+	b=f+FOeZYDRJV5BUZocyTp8mPlQbbfqwoJP980qF7avzm9H8g8B5rj6pQSm5XeuMjp0dSMlF
+	yu6NgOYU8oz9i+t1S0PyAgXB85MAqZBU8SPhSyOG/1AjlCkCYY19FZFaE2nuxnv8buFP6U
+	9IqhMavRvzopUDGQetLsV17o8aqVogY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470155; a=rsa-sha256;
+	cv=none;
+	b=r7wZ8SjTfehiYedkCO+5vO0sC3UfQT5YRrRFIVjH2kAcRCfoBpMVo8JFWLH9EFBQqM48h+
+	+Q2vfgHzc1AzE3gBIP4RzPMQDPWy3wWAbrRn/GI4p2/4axA2yNbTJm4JvZGBaOARbhx1yJ
+	BnxzmT7ZizfbG/3BRFKDEL5bPXUZ+60=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=eFcst+dO;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so217918115e9.2
+        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:42:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1777470153; x=1778074953; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jZN8aaKgJ1Zzt3TUYPWuZx8THycU/Bmtyi8+XL6pyqc=;
+        b=eFcst+dOqDg4sy7Ry3R4q2bCGxcbFvPipIF8UZcwP4UJuQOUA+E/0stxzLZbNp+Lz8
+         iteQ3eeviajLgrS30ovDqq/MY6Djb6+8qmxeVNi9bRMI0u8NLCdK/zv/4KmV1f/ZdSJ3
+         cy9CWTmIhxQ75KUY9s7eE7fA0xCYoAoBEpYphSwW9PXT++VRgYaVr0cKKbIorfZRSWBP
+         evu7TGsgWV8OyvAylZ2AuA3ssk9wB06gr544Plp8U7GofzoqnvLTHjF97H3w2dorKe6p
+         cGfTqbygODmUmmvB+7+fuGavjd+HVmZPjYL8LLCnzXm0jLgnVIeWUcX55rM7mZtTwE7K
+         YfUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777470153; x=1778074953;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jZN8aaKgJ1Zzt3TUYPWuZx8THycU/Bmtyi8+XL6pyqc=;
+        b=QpVWrwlAkc5OW2f9pnYaOktmd4Lcq/WEZE4cz19iu+cjDv2qnft6KCj0GXFvJ8itHA
+         4cL2jZJreB9SXFBYJX83CK86JV1Y1UoVoremb5Rkej1Ld60hxtP5yIKcI7urgg4fxXqo
+         C0h0hTbBiEK+9AJaKcv7d/x3K8Gq9j8q7luVQk0Gm8qNxY/6lU5M+sbHmkNmmFOVoKMN
+         Xta+f/ccnO3A/puCQgnOs8/oP0sfUztFtWP82kCBhCsVON6i/XlkCbzDknR0zV6jZO16
+         mhCZGe5A8D0FPf7M49AOkVrX3FJygn4dgD+MVu32tFgdkDTyxMd5WXTEeBEZayqOEKn+
+         llKQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Apq6+cwx9yTJ2EGOemyslGlFLPXur2rVSRWMCfOhnmsaCEExtrJyWy+cmrRFwQ3STh++FkUHg0A==@kvack.org
+X-Gm-Message-State: AOJu0Yzrkg3dUwQDQToDmZPzvVR2dB3iZO7gpovYYuAe+pih0Y3fR9Yi
+	+Y9cQ8/LWHINVr6RbQB3C3vGo5lYYX1Q3KCGdInbzBd563cYVJhRNP2mbVjCVu+EozI=
+X-Gm-Gg: AeBDietYfbkbhvuQL0BtXm9aRnkriENE0orgh1tAaH4v98woqYY9RFJAdFaIwu3HJBN
+	EkxqLzxmCfJJnae+BYeY4gMjG3rFJQASSTytNi7wm+cf0dOrEZ03KY6YIf0Mpsnk8ElFyGwSPcE
+	RBEBIPiSmok9E3OyIudaoDhuyCdkf5WKQakavpj7EJUxMWqaUsd5rxLLKDwGEd/53gLP82FAaj0
+	hyOgC0KAn7R9SvVH3d9+anykdny3MqNK69xspCwExXGL/EzVqBzCy925aKAT6/q8R4uiA4Uae7n
+	VXHQIMh7xHDSOS0ohDSYGoaJqq9W4DfyhJDSpOYulKr1YEV/h50vWj9WMIGXcOjXHbNTbO4+SEh
+	cED8ZCIQAdgk5s6KizNL3s9MWGj4YXWv28ovfSh0Y9S79Lp0gMqXWhlhCCVf8PbOXlJLpdkVlyo
+	vAKKhpOyZVyq9uSgCaCc4uWLvuVy7OQ23eRwqoT6E=
+X-Received: by 2002:a05:600c:4e4b:b0:488:be58:bb5b with SMTP id 5b1f17b1804b1-48a7b547375mr70345885e9.24.1777470152259;
+        Wed, 29 Apr 2026 06:42:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F ([2a00:23c8:67a7:3101::e3b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7bc79ab4sm59981745e9.9.2026.04.29.06.42.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 06:42:31 -0700 (PDT)
+Date: Wed, 29 Apr 2026 14:42:28 +0100
+From: Gregory Price <gourry@gourry.net>
+To: Arun George/Arun George <arun.george@samsung.com>
+Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	damon@lists.linux.dev, kernel-team@meta.com,
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+	dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	dan.j.williams@intel.com, longman@redhat.com,
+	akpm@linux-foundation.org, david@kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
+	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
+	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com,
+	gost.dev@samsung.com, arungeorge05@gmail.com, cpgs@samsung.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <afIKxG5mJZE6QgpR@gourry-fedora-PF4VCD3F>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <CGME20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0@epcas5p1.samsung.com>
+ <1983025922.01777297382206.JavaMail.epsvc@epcpadp2new>
+ <ae_i9IlIndumJWN3@gourry-fedora-PF4VCD3F>
+ <1891546521.01777455002601.JavaMail.epsvc@epcpadp1new>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 78ad4uf6sg9w9zxqu5wrpqc1sbdxmpc6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1891546521.01777455002601.JavaMail.epsvc@epcpadp1new>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0087680012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2E70D40002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777470012-1353
-X-HE-Meta: U2FsdGVkX18m2ktkA6PHm6wsWajcd7K1gNc/L3yt61bcOk9Fa1ja/RAdhrxL86FNVlpZxhTyVlrjfjFNAYkSprrohXLDScIcVgsTgSiBwreE9QYRSQghTyjLFIzLX+Cr2HVik0sAC7ClD0HtNaewbi0xgNgWr1Z1g6FhDSyqorGD89HBwxcAKWP17xrHwXqKcCraTMSu3G5KrznL7SjW4iRkEYUNwJb6jQWnZD2Ve4N7PSw2nHJikSTmEwOmpGc+WgmeWIripk9ZuuSeRcALsd7roMoVIfAk9/dwNsclaNXvZ2kkDnK390r63ul+ozMiYKuFxGnSBjWgNql2jDhpQye1AO93yhST35ULiKpggiRANkqSsDkoNFYAWpExJ+BT/gueiW0CEOlDuKA+jYnZCAcLJDNTT7y0QhKUrlGtbr2tRIAjPq2lRZyslMvT3QjuEYrRKyft39+Osu/ktiMPF4bwoPqjBjcm7LAqnpswtN9VuarfNMqW9BFcQDQdfvEzN0s9dxTDmN0dLyfxhNXH9ptmwuFPX63DWGEv3X2DPzzyW3psFTSOJk9sYaK+h/OlCuYpxPTAu07cuwsCmZ1LkMfZwRFwdhgsDBgXF20uenpMG6LU+8qNtc87fgWRLSn6pFQIaFzj6yB7edCoCFibKrl/SVNjMT4xX7N/XGQqkHP22ZiNSI9pN0BT210cPD3/kv9u7ETK9203wcdHvLLitE7oxVDS3gJY1iSAVixKPbOGtiUEF7Dka93aeeV0NPEA6zmnweWBfWaDA4qD43COAPpVxkfEwUerRSkuUGbWdJTmbkmgFU+GT8FsAcmHmm8U4mhaOZ1cYvubuXKiULPpe5TGlKur7LpnBxifi+OWOP3NMI555L192vUBMZq9e0DoaOZQWw7K7Qir+EfObi+nGnvCvigBKIoKp+QXljB0xXQfq69cHHGtQ4eVFXpHoyB3RRe7TqY8Yb8u9WOZoqJ
- QhGs6A/f
- wWhxbruxbBhFoZZx/xhq4/p9qQ2S5bdzDParXPmRIuLXNrncR7VlHVNqEVbI34fYIvoimyXOmTGP/ut32V1A8L6SoDfr6X7IX77ul+r0766PXKxU7W4zu4JfWnq8oczN72Rl2crsZIrhw2w7KM3aautEskGgalt4jx3AR7Tf9nA/OGy3kIyD5UjaM68MITTTZV8l6FsMpKDqD7uJpotfAIZrvhhORBRhBtVYt/BlT8jjcET8=
+X-Stat-Signature: 6swgqjcsajr9tx37zwy3nthyozmripmp
+X-HE-Tag: 1777470154-854129
+X-HE-Meta: U2FsdGVkX1/zlnKLwtrHXaurOf3ekuC7V3sGRKCd6ojJRF190Z4+UOjuEvTOS3zAYAQpFX3QEk5OE6ihJtIGUpYHeK3Vdj8pHBI2QTGnU6x2pkFniKF4rCgk06f2F8rSXd73hLrNgrqXtpcDm7+BfE7aFB973Sts1xKkSioX6kxoEO+irk/ezm03qEK6JLOnQcYQGLEKgR9w/7+u/dZYUiS8/ULRt44dQZJQ5/7fKlLJbgt08sK9eyhXNy3T8ZPSMX701wiiIzoLlzRff2v1EYNRqyeAMx87ASpFIem6cIq0ScPWtNxpBOOlIYKMCJB789J6bgDwetulzETYzClkH14bhbpg3fw1v2LM2P2JbxMdE79RCgNiPPYjm9Jqy4rmdap/sI2uznBz/BFrRwy+u/ql7VEh5TOzmswQuCn8zdXxP4w94kbAncHNWJjYS/I9Fbb8y959CXS8Lsw/09STbZEBn5qVyK3M0Bf3m2JP5RRvLtTfimuho2zzUJJUARBdNMKQ6wsk1gNtsFvbmWTGJBFpkLTuVE75+M5XBAXD9tFe/yeOTjQthq1deoUwH0aGdsfIBr26JVNvNqUP3nrgd6m7E78JYRRJhtIRP2CKF5mHnSUMekwm5QZmGLuLVvmPE1C+OZkLMuHi7Eso72+5KYaqEsBnQmgMZh5ivIYhaKo1Z4nUGVThRs3dqsqwgTHPzk172zKGFODNk8HlDX4BA9csqJ72To/GKLbDQpB8pTKzNZmmIJJOHAfrsqLsxH5msoQL4x5M8nzNYPFRuxYv5qf0aktCeM6R/Mk1E62YgwgqKpq84awtO7wSsMZbOZ8FV2/VrwnUy74+vKTzI9dROhnYbOGIH/YTAoydSzWnBDG4cpW23OUXYRa+jpPPyQVb4OmX+nbm3bAJNA69YEYI5Qb/hbqm4CwVMkH8LILZ46pPGHqSNNEp6X3TEGPyJqqEiJK4BB2VHHZuNoJZzXG
+ Zv0ns7y9
+ omM4d+E0rO8kP+CtT0gZwWdIXab+hy4uHuxqdSpXm8mwjJWLFjje9/wfflpMI6VZLwf40nkFsrJvqxYeDib/QlyylBHdYrpd1Za4cpKCYzqlPp9uHscJ1/Ga0ViQMuDn9FfB495qqM9hHQFIj2JxfQOTvA+DGa+SBDk2gwLGK2cnJTnLzaHAEyuDFF9POqz5g08IwCO3d4lRQ7E3rn6a2kt5bEy8nWK6VnZjt/K5MaJIdlz6Mor1ob3UbSmJD6BT65LP0nOBGeKMXJ4FXe/CPxffI1UB0xzf3jm4gSxrH4SZ5fWXT5djQvXM5WLOSNO4WIkMklMyQ9IhDBhmqiS3k+Vci/y/fFfK1r44L9VCxj9WgKhHuFDSuV8PXyAMEdUuJ4hp/I/3z/7aaBvXUBhkTAK0JCYP2mQdQSpfH7xhHyAIdEWpR/N+qXAap7Xn5WHAnTjUo8yR05FdDFwcmx4MAkzyLzBNRb/LFPPIAEXJarvF2eote44ife4xcqukVVmZ349T7FsZMWqp0mTXtqDEvfMmHWQhPZYJS3bESSo+vkVofsjs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,303 +148,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On Wed, Apr 29, 2026 at 11:45:26AM +0530, Arun George/Arun George wrote:
+> On 28-04-2026 03:58 am, Gregory Price wrote:
+> > On Mon, Apr 27, 2026 at 06:02:57PM +0530, Arun George wrote:
+> >>
+> >> Any particular workload you are targeting with
+> >> this (which can tolerate this latency)?
+> >>
+> >> Any deployments you think of where the goal is a capacity expansion
+> >> with a compromise in performance?
+> >>
+> > Primary use cases for us are any workload that benefits from zswap -
+> > which is many, many (many, many [many, many]) workloads.
+> > 
+> A curious question please. If the primary use case is swap, can't we 
+> handle this problem statement by re-using the zsmalloc allocation classes?
+>
 
-Gigantic page allocation is somewhat broken currently when KHO is used.
+I'm using swap semantics for allocation ("demote + leafent") but otherwise
+on-fault rather than removing the swap-entry, we leave it cached and
+replace the page table entry with a read-only mapping (if Read-fault).
 
-Firstly, they break KHO scratch size accounting. RSRV_KERN is used to
-track how much memory is reserved for use by the kernel. Since
-alloc_bootmem() calls the memblock_alloc*() APIs, the hugepages
-allocated also get marked as RSRV_KERN.
+If there's a writable budget, and the node is under that budget, we may
+also allow upgrading the read-only page to be writable (at which point
+we would reap the swap entry).
 
-Allocations marked RSRV_KERN are used by KHO to calculate how much
-scratch space it should reserve to make sure the next kernel has enough
-memory to boot when it is in scratch-only phase. Counting hugepages in
-that blows up scratch size, and can lead to the scratch allocation
-failing, making KHO unusable. This will show up when huge pages make up
-more than 50% of the system, which is a fairly common use case.
+This requires careful reverse-mapping in case there are multiple mappers
+of the same folio.
 
-Secondly, while not supported right now, huge pages are user memory and
-can be preserved via KHO. The scratch spaces should not have any
-preserved memory. Allocating hugepages from scratch (on a KHO boot) can
-lead to them being un-preservable.
+Since otherwise the allocation is just alloc_pages_node(), and the fault
+patterns differ from typical swap - i didn't see the need to overcomplicate
+things by cramming the logic into zswap/zsmalloc instead of just making
+it its own vswap[1] backend that sits in front of zswap.
 
-Introduce memblock_alloc_nid_user(). This does two things: first, it
-instructs __memblock_alloc_range_nid() to not use scratch areas to
-fulfill allocation. If KHO is in scratch-only mode, allocations will
-only be made from extended scratch areas. Second, it removes RSRV_KERN
-from the allocation to make sure it doesn't mess up scratch size
-accounting.
+vswap makes it easy to writeback a cram page to swap in the case where
+the device is over-pressured and we need to make room (close the node,
+disallow new cram entries, writeback existing cram entries to swap).
 
-To reduce duplication, introduce __memblock_alloc_range_nid() which does
-exactly what memblock_alloc_range_nid() used to do, but takes the flags
-from its caller. Then make memblock_alloc_range_nid() a wrapper to it.
-This lets memblock_alloc_nid_user() re-use most of the logic without
-causing churn to update all callers of memblock_alloc_range_nid() and
-adding yet another argument to it.
+[1] vswap: https://lore.kernel.org/linux-mm/?t=20260320192741
 
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
----
+> A separate size class can be reserved for non-compressed pages in 
+> zsmalloc. And this interface could be used by zswap, zram etc. (We have 
+> been using this implementation for testing btw.). This does not require 
+> additional book-keeping or buddy allocator.
+> 
 
-Notes:
-    Checkpatch complains here about the alignment of arguments of
-    memblock_alloc_range_nid() with open parentheses. That can be ignored
-    since the code already was mis-aligned, and for good reason.
+The other reason not to overload an existing mechanism is because these
+devices (that i've seen) cannot provide per-page compressability stats,
+and so it would end up just looking like a bunch of either
+uncompressible capacity or unknown compressed capacity.
 
- include/linux/memblock.h |   4 ++
- mm/hugetlb.c             |  19 ++----
- mm/memblock.c            | 138 ++++++++++++++++++++++++++++++---------
- 3 files changed, 116 insertions(+), 45 deletions(-)
+That makes it harder for those components to reason about what to do
+with their normal software-compressed capacity (for which they do have
+that data).
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 4f535ca4947a..c7056cf3f0f2 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -160,6 +160,7 @@ int memblock_mark_nomap(phys_addr_t base, phys_addr_t size);
- int memblock_clear_nomap(phys_addr_t base, phys_addr_t size);
- int memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t size);
- int memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t size);
-+int memblock_reserved_clear_kern(phys_addr_t base, phys_addr_t size);
- int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size);
- int memblock_mark_kho_scratch_ext(phys_addr_t base, phys_addr_t size);
- int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size);
-@@ -431,6 +432,9 @@ void *memblock_alloc_try_nid(phys_addr_t size, phys_addr_t align,
- 			     phys_addr_t min_addr, phys_addr_t max_addr,
- 			     int nid);
- 
-+void *memblock_alloc_nid_user(phys_addr_t size, phys_addr_t align, int nid,
-+			      bool exact_nid);
-+
- static __always_inline void *memblock_alloc(phys_addr_t size, phys_addr_t align)
- {
- 	return memblock_alloc_try_nid(size, align, MEMBLOCK_LOW_LIMIT,
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index f24bf49be047..5ba393b0a581 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3049,26 +3049,19 @@ static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
- 	if (hugetlb_early_cma(h))
- 		m = hugetlb_cma_alloc_bootmem(h, &listnode, node_exact);
- 	else {
--		if (node_exact)
--			m = memblock_alloc_exact_nid_raw(huge_page_size(h),
--				huge_page_size(h), 0,
--				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
--		else {
--			m = memblock_alloc_try_nid_raw(huge_page_size(h),
--				huge_page_size(h), 0,
--				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-+		m = memblock_alloc_nid_user(huge_page_size(h), huge_page_size(h),
-+					    nid, node_exact);
-+		if (m) {
- 			/*
- 			 * For pre-HVO to work correctly, pages need to be on
- 			 * the list for the node they were actually allocated
- 			 * from. That node may be different in the case of
--			 * fallback by memblock_alloc_try_nid_raw. So,
--			 * extract the actual node first.
-+			 * fallback by memblock_alloc_try_nid_raw. So, extract
-+			 * the actual node first.
- 			 */
--			if (m)
-+			if (node_exact)
- 				listnode = early_pfn_to_nid(PHYS_PFN(__pa(m)));
--		}
- 
--		if (m) {
- 			m->flags = 0;
- 			m->cma = NULL;
- 		}
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 79443e004361..504b5b0c8af7 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -178,11 +178,21 @@ bool __init_memblock memblock_has_mirror(void)
- 	return system_has_some_mirror;
- }
- 
--static enum memblock_flags __init_memblock choose_memblock_flags(void)
-+static enum memblock_flags __init_memblock choose_memblock_flags(bool user)
- {
- 	/* skip non-scratch memory for kho early boot allocations */
--	if (kho_scratch_only)
--		return MEMBLOCK_KHO_SCRATCH | MEMBLOCK_KHO_SCRATCH_EXT;
-+	if (kho_scratch_only) {
-+		enum memblock_flags flags = MEMBLOCK_KHO_SCRATCH_EXT;
-+
-+		/*
-+		 * Scratch can only be used for kernel memory, since user memory
-+		 * might be preserved and thus can not be in scratch.
-+		 */
-+		if (!user)
-+			flags |= MEMBLOCK_KHO_SCRATCH;
-+
-+		return flags;
-+	}
- 
- 	return system_has_some_mirror ? MEMBLOCK_MIRROR : MEMBLOCK_NONE;
- }
-@@ -346,7 +356,7 @@ static phys_addr_t __init_memblock memblock_find_in_range(phys_addr_t start,
- 					phys_addr_t align)
- {
- 	phys_addr_t ret;
--	enum memblock_flags flags = choose_memblock_flags();
-+	enum memblock_flags flags = choose_memblock_flags(false);
- 
- again:
- 	ret = memblock_find_in_range_node(size, align, start, end,
-@@ -1173,6 +1183,20 @@ int __init_memblock memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t si
- 				    MEMBLOCK_RSRV_KERN);
- }
- 
-+/**
-+ * memblock_reserved_clear_kern - Clear MEMBLOCK_RSRV_KERN flag for region
-+ *
-+ * @base: the base phys addr of the region
-+ * @size: the size of the region
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+int __init_memblock memblock_reserved_clear_kern(phys_addr_t base, phys_addr_t size)
-+{
-+	return memblock_setclr_flag(&memblock.reserved, base, size, 0,
-+				    MEMBLOCK_RSRV_KERN);
-+}
-+
- /**
-  * memblock_mark_kho_scratch - Mark a memory region as MEMBLOCK_KHO_SCRATCH.
-  * @base: the base phys addr of the region
-@@ -1532,37 +1556,11 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
- 	return 0;
- }
- 
--/**
-- * memblock_alloc_range_nid - allocate boot memory block
-- * @size: size of memory block to be allocated in bytes
-- * @align: alignment of the region and block's size
-- * @start: the lower bound of the memory region to allocate (phys address)
-- * @end: the upper bound of the memory region to allocate (phys address)
-- * @nid: nid of the free area to find, %NUMA_NO_NODE for any node
-- * @exact_nid: control the allocation fall back to other nodes
-- *
-- * The allocation is performed from memory region limited by
-- * memblock.current_limit if @end == %MEMBLOCK_ALLOC_ACCESSIBLE.
-- *
-- * If the specified node can not hold the requested memory and @exact_nid
-- * is false, the allocation falls back to any node in the system.
-- *
-- * For systems with memory mirroring, the allocation is attempted first
-- * from the regions with mirroring enabled and then retried from any
-- * memory region.
-- *
-- * In addition, function using kmemleak_alloc_phys for allocated boot
-- * memory block, it is never reported as leaks.
-- *
-- * Return:
-- * Physical address of allocated memory block on success, %0 on failure.
-- */
--phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
-+static phys_addr_t __init __memblock_alloc_range_nid(phys_addr_t size,
- 					phys_addr_t align, phys_addr_t start,
- 					phys_addr_t end, int nid,
--					bool exact_nid)
-+					bool exact_nid, enum memblock_flags flags)
- {
--	enum memblock_flags flags = choose_memblock_flags();
- 	phys_addr_t found;
- 
- 	/*
-@@ -1631,6 +1629,41 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
- 	return found;
- }
- 
-+/**
-+ * memblock_alloc_range_nid - allocate boot memory block
-+ * @size: size of memory block to be allocated in bytes
-+ * @align: alignment of the region and block's size
-+ * @start: the lower bound of the memory region to allocate (phys address)
-+ * @end: the upper bound of the memory region to allocate (phys address)
-+ * @nid: nid of the free area to find, %NUMA_NO_NODE for any node
-+ * @exact_nid: control the allocation fall back to other nodes
-+ *
-+ * The allocation is performed from memory region limited by
-+ * memblock.current_limit if @end == %MEMBLOCK_ALLOC_ACCESSIBLE.
-+ *
-+ * If the specified node can not hold the requested memory and @exact_nid
-+ * is false, the allocation falls back to any node in the system.
-+ *
-+ * For systems with memory mirroring, the allocation is attempted first
-+ * from the regions with mirroring enabled and then retried from any
-+ * memory region.
-+ *
-+ * In addition, function using kmemleak_alloc_phys for allocated boot
-+ * memory block, it is never reported as leaks.
-+ *
-+ * Return:
-+ * Physical address of allocated memory block on success, %0 on failure.
-+ */
-+phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
-+					phys_addr_t align, phys_addr_t start,
-+					phys_addr_t end, int nid,
-+					bool exact_nid)
-+{
-+	enum memblock_flags flags = choose_memblock_flags(false);
-+
-+	return __memblock_alloc_range_nid(size, align, start, end, nid, exact_nid, flags);
-+}
-+
- /**
-  * memblock_phys_alloc_range - allocate a memory block inside specified range
-  * @size: size of memory block to be allocated in bytes
-@@ -1782,6 +1815,47 @@ void * __init memblock_alloc_try_nid_raw(
- 				       false);
- }
- 
-+/**
-+ * memblock_alloc_nid_user - allocate boot memory for use by userspace
-+ * @size: size of the memory block to be allocated in bytes
-+ * @align: alignment of the region and block's size
-+ * @exact_nid: control the allocation fall back to other nodes
-+ *
-+ * Public function, provides additional debug information (including caller
-+ * info), if enabled. Does not zero allocated memory, does not panic if request
-+ * cannot be satisfied.
-+ *
-+ * If the specified node can not hold the requested memory and @exact_nid is
-+ * false, the allocation falls back to any node in the system. The allocated
-+ * memory has no restrictions on minimum or maximum address, and does not count
-+ * towards %MEMBLOCK_RSRV_KERN.
-+ *
-+ * Return:
-+ * Virtual address of allocated memory block on success, %NULL on failure.
-+ */
-+void * __init memblock_alloc_nid_user(phys_addr_t size, phys_addr_t align,
-+				      int nid, bool exact_nid)
-+{
-+	enum memblock_flags flags = choose_memblock_flags(true);
-+	phys_addr_t alloc;
-+
-+	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d %pS\n",
-+		     __func__, (u64)size, (u64)align, nid, (void *)_RET_IP_);
-+
-+	alloc = __memblock_alloc_range_nid(size, align, 0, MEMBLOCK_ALLOC_ACCESSIBLE,
-+					   nid, exact_nid, flags);
-+	if (!alloc)
-+		return NULL;
-+
-+	/* User memory should not be marked with RSRV_KERN. */
-+	if (memblock_reserved_clear_kern(alloc, size)) {
-+		memblock_phys_free(alloc, size);
-+		return NULL;
-+	}
-+
-+	return phys_to_virt(alloc);
-+}
-+
- /**
-  * memblock_alloc_try_nid - allocate boot memory block
-  * @size: size of memory block to be allocated in bytes
--- 
-2.54.0.545.g6539524ca2-goog
+> So write-control part need to handled in the specific back end driver of 
+> private pages while the allocation control is a generic front-end sort 
+> of, right? (Ex: zswap cram back end for compressed devices case.)
+
+
+write control is handled by the OS in three ways:
+
+   1) No file memory (no page cache)
+      We get this for free using the swap semantics
+      This prevents buffered i/o from bypassing page table controls
+
+   2) User allocations only (or at least swap-eligible only)
+      This prevents catestrophic system failure if the device fails
+
+   3) Page table mapping control (disallow direct writes)
+      This prevents uncontended writes to compressed memory by the cpu
+
+
+allocation control is handled via private nodes - the driver which
+hotplugs the private nodes hands that node to cram - and cram is now
+aware of that capacity and will use __GFP_PRIVATE to allocate from that
+node.   Removal of the private node from the fallback zonelist and the
+lack of __GFP_PRIVATE in all other paths prevent normal buddy allocator
+users from accessing that memory.
+
+> 
+> Great! I believe "writable budget" could be an interesting idea which 
+> can solve the 'bus error' sort of scenarios due to device not capable of 
+> taking any more writes. The write budget could be replenished using the 
+> control path and writes will not go ahead without the budget available, 
+> right?>
+>
+
+Write budget is simple
+
+budget=1  (up to 1 page can be writable
+   1) swap 1 page ->  cram alloc 1 page, put VSWAP_CRAM in PTE
+   2) read-fault  ->  cram upgrades VSWAP_CRAM to R/O PTE
+   3) write-fault ->
+      a) if (writable_cnt < budget) { budget++; mkwrite(pte); }
+      b) else:  normal swap semantic -> promote to normal memory
+
+The catch with the writable budget is we may not always be able to catch
+all frees of the vswap pages - meaning we get zombie pages in the vswap
+tables.  But this is ok if we run a regular kthread scan the vswap entry
+list to reap zombies.
+
+This also gives us a great place to TRIM/FLUSH those pages to release
+the capacity without zeroing them.
+
+
+Meanwhile - use ballooning and a simple shrinker to dynamically size the
+region to respond to real compression ratio.
+
+
+All said an done - you get something close to zswap but with R/O
+mappings for all entries, and optional R/W-mappings for administrators
+who know something about their workload and can afford to take the risk
+of some amount of capacity being written to uncontended in exchange for
+performance.
+
+The writable-budget is a risk-dial:  How much do you trust your workload
+to now spew un/poorly-compressible memory?  The write-budget is a direct
+measure of that. (so take P99.99999 compression ratios, and you can make
+a good chunk of that writable).
+
+~Gregory
 
 
