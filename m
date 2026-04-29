@@ -4,101 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 177CAFF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 03:32:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E33FFF8864
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 03:32:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 437346B0005; Tue, 28 Apr 2026 23:32:05 -0400 (EDT)
+	id 745C86B008C; Tue, 28 Apr 2026 23:32:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E8F26B008A; Tue, 28 Apr 2026 23:32:05 -0400 (EDT)
+	id 71DF56B0092; Tue, 28 Apr 2026 23:32:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FF516B008C; Tue, 28 Apr 2026 23:32:05 -0400 (EDT)
+	id 633D26B0093; Tue, 28 Apr 2026 23:32:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FEE26B0005
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:32:05 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4585A16065F
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:32:04 +0000 (UTC)
-X-FDA: 84710169768.06.DBE68A0
-Received: from smtp186.sjtu.edu.cn (smtp186.sjtu.edu.cn [202.120.2.186])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 25255180007
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:32:00 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=sjtu.edu.cn header.s=default header.b=XmwAK8XQ;
-	spf=pass (imf16.hostedemail.com: domain of b.suvonov@sjtu.edu.cn designates 202.120.2.186 as permitted sender) smtp.mailfrom=b.suvonov@sjtu.edu.cn;
-	dmarc=pass (policy=none) header.from=sjtu.edu.cn
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 51E6B6B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:32:19 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E23E016065F
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:32:18 +0000 (UTC)
+X-FDA: 84710170356.30.4E9E1D8
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A3A1414000E
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:32:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J/dkKNIg";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=obUrxMTS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J/dkKNIg";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=obUrxMTS;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777433522;
+	s=arc-20220608; t=1777433536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/+sdw592FIeT19LKU5z1fSyh4Xe6Zu/7CnkS/siXefo=;
-	b=SxBnuy++scy3oUulP2JSCBTtttwk7JAXhD+lJUaufpeqI81gWNmMi4rhaaOczKeGfKZPLY
-	4rx0NP3S0I3T9gLZlT4YU4VUwXwootjPTO/LI21zlIG16mVVJeYQYMSBcdBos8qXjh2KZI
-	rEl/o42aM2MhFwZxsA4DsnRQ6KyafUs=
+	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
+	b=wRQ23eZH+PoxzyB9X8rlEgZ578tmVwOyb0UK/bduKrp9LNkPgjzadtT8eyzX/tzEL5wLZG
+	qampMyChyNIj7Igr+HFbd1Tb4zAvSUwi7NGEpOT/4VY8BAT3uyqbmnWotRGr6vx9W8BuE8
+	ola8JTlJbh0bg5Kni5U+/p13DKPwN6c=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=sjtu.edu.cn header.s=default header.b=XmwAK8XQ;
-	spf=pass (imf16.hostedemail.com: domain of b.suvonov@sjtu.edu.cn designates 202.120.2.186 as permitted sender) smtp.mailfrom=b.suvonov@sjtu.edu.cn;
-	dmarc=pass (policy=none) header.from=sjtu.edu.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777433522; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J/dkKNIg";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=obUrxMTS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J/dkKNIg";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=obUrxMTS;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777433536; a=rsa-sha256;
 	cv=none;
-	b=H3E2WmJ9Q8BaR0zvzwpT5WokiZL+VaIMBf5RoiT1pdeufSoZPhcslyMkTK3amMeVPoSf8Y
-	siFSjHHrxAV6LjXH4Z9E0wvJGyEMVBbebsbK3AeCX4DpFnDdNzuVFEaMPsYIZaDy6WkBB4
-	lKGR0IHYJ4AEpLJ9+IaMvuSQdNW3HIQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sjtu.edu.cn;
-	s=default; t=1777433515;
-	bh=3jHDHOMfGUaLJeNyd8AGnvQsgJYSoBnA0Hacsg+XNBA=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=XmwAK8XQSISth0tOijGltJaSz9+ZC9hVRSIMSlRDfRV+D/Jfuzpu3ycfyPx+embyF
-	 X0uyror0u5ADZPc+aoOw/GE0sqR2Ce0eflfNthorf2etLEEqMsgIhbm8jHCgCpikt2
-	 qoL8XQaDAgzHgkijOqREANnzGVI/MeMQzYbmQbON19fwrevd843kmHiIEvVje/KZGn
-	 dh6cFjOQG6I1BUS8mP7QLWFOt18ZJ23PotT0v1wXoboV0eaGc/0B3t4EyWocLlIKeR
-	 mSgTzRy+ql3tiFi9uieT7rDAHKgCaR/CBCZiPVH3BsVLJkPuFmqfE6ECMQFDEt1zOx
-	 o112qzo0hmzlA==
-Received: from mta91.sjtu.edu.cn (unknown [10.118.0.91])
-	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id 23BE72FF4E5;
-	Wed, 29 Apr 2026 03:31:55 +0000 (UTC)
-Received: from mstore137.sjtu.edu.cn (unknown [10.118.0.137])
-	by mta91.sjtu.edu.cn (Postfix) with ESMTP id A3E4037CA5F;
-	Wed, 29 Apr 2026 11:31:54 +0800 (CST)
-Date: Wed, 29 Apr 2026 11:31:53 +0800 (CST)
-From: SUVONOV BUNYOD <b.suvonov@sjtu.edu.cn>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: akpm <akpm@linux-foundation.org>, vbabka <vbabka@kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, mhiramat <mhiramat@kernel.org>, 
-	mathieu desnoyers <mathieu.desnoyers@efficios.com>, 
-	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	surenb <surenb@google.com>, mhocko <mhocko@suse.com>, 
-	jackmanb <jackmanb@google.com>, hannes <hannes@cmpxchg.org>, 
-	ziy <ziy@nvidia.com>, david <david@kernel.org>, 
-	vishal moola <vishal.moola@gmail.com>, corbet <corbet@lwn.net>, 
-	skhan <skhan@linuxfoundation.org>, 
-	linux-doc <linux-doc@vger.kernel.org>
-Message-ID: <1453063691.2584758.1777433513691.JavaMail.zimbra@sjtu.edu.cn>
-In-Reply-To: <20260428142335.3bca0166@gandalf.local.home>
-References: <20260425091335.346504-1-b.suvonov@sjtu.edu.cn> <20260427060142.131055-1-b.suvonov@sjtu.edu.cn> <20260428142335.3bca0166@gandalf.local.home>
-Subject: Re: [PATCH v2] mm/page_alloc: trace PCP refills and PCP zone lock
- usage
+	b=BwDbOXTfmY5Tbmb00Pd28hhyZlnKBeVBe418hBr3/RJ4dy3AuKtq9020NQpj6axCQ9BtY0
+	jYJUvNk7OAJP0IOkc1zS+Qo42ZIJ/G5c5rHwuYZ9zzEat7jzef9ywMu6e3e78NxTfffiU6
+	noSz2MaPBvtL5e36Ysv1hqh0eAPNCA4=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A20135BD4F;
+	Wed, 29 Apr 2026 03:32:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777433534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
+	b=J/dkKNIgu8elcZhN50GVIHmLaBzgpquaed+/7P9TFJ0ZEmYS3TFEtzzfaTZ8KeRtuLVZwY
+	nxO8fPhAdCR+CjUEz9GeK1i5FGDoDeyvu2soe9hJvOTYz/TtzWbe+MVa3442vF6vPzrkAT
+	jSf5emQugyis6e3yy3P+UjcHtYvaKm8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777433534;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
+	b=obUrxMTS9ky/k3/KdLdMB9aby5iIFa91VEaGnFhAXWMk5Hi389z0e0gW6NXRK5q02XPyk5
+	h65N3bwwPBI36eAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777433534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
+	b=J/dkKNIgu8elcZhN50GVIHmLaBzgpquaed+/7P9TFJ0ZEmYS3TFEtzzfaTZ8KeRtuLVZwY
+	nxO8fPhAdCR+CjUEz9GeK1i5FGDoDeyvu2soe9hJvOTYz/TtzWbe+MVa3442vF6vPzrkAT
+	jSf5emQugyis6e3yy3P+UjcHtYvaKm8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777433534;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DkMuz1cS2oVApSEm5t+gykE+rAqHJofwoAD6Cia1xhQ=;
+	b=obUrxMTS9ky/k3/KdLdMB9aby5iIFa91VEaGnFhAXWMk5Hi389z0e0gW6NXRK5q02XPyk5
+	h65N3bwwPBI36eAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5BC4593B0;
+	Wed, 29 Apr 2026 03:32:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id U2WdKb178WkeKgAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 29 Apr 2026 03:32:13 +0000
+Date: Wed, 29 Apr 2026 05:32:12 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	Dan Williams <djbw@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rafael J Wysocki <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 3/3] drivers/base/memory: fix locking for poison
+ accounting lookup
+Message-ID: <afF7vI_fNXs4mCVA@localhost.localdomain>
+References: <94F5B89A-008A-4EDB-920F-31B4895C2699@linux.dev>
+ <c6e1df1e-be5e-2468-d46e-453985ba1e79@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [116.230.222.59]
-X-Mailer: Zimbra 10.0.18_GA_4835 (ZimbraWebClient - FF149 (Linux)/10.0.18_GA_4828)
-Thread-Topic: mm/page_alloc: trace PCP refills and PCP zone lock usage
-Thread-Index: SvFI4TNgE4VbTb6G/aV24V6dHLhS6w==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c6e1df1e-be5e-2468-d46e-453985ba1e79@huawei.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: ic9px4x3kaocms3mryzbecsuk1mdhzrs
+X-Rspamd-Queue-Id: A3A1414000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 25255180007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: idj88cicijismw7y8mhohsxw74fqo5j1
-X-HE-Tag: 1777433520-65072
-X-HE-Meta: U2FsdGVkX1/C1NyNb3qfZnx3jO4HuOTabZNHTsaoLgAbRpFqCHNwMwYVdFHEC9WLiE1sTThT3Uxyxeb+qkloN7nVmmSEZwRQRSGZYdV4V4+gCeXrWh5DyFBCfNe1uWrHXjxbSe7G4yEcT6n5EdxyVt205096bJzDkFXPe9qolssKdwM+t/BUZj9skUVWbpmly38Y1aG8Fw6J+cbgQQdc0UX/HD3rUr8Y8lGCfCIty4WqDsR91wAh60nIVUl0wxQcFsj4fJm8ifFFuNUAsKmoVfdnFYfl73Eo9N2XcsL5toLGSij7wHP4BW1BA4clZYGIm/FUzoOL8PlsNG7ZoYoV4seu0SF38+wVX7NlRijvHOHwL+lacqWQPn+t602qWdEOzSIq8wRJkhjugxvqj3mj0tj9VwfKfmrC04iIklNznf7ff48e2bnZFls8jYCWpf9KGuDlcVFzoFXoy+LLy67aaTZxhC9guytHhOQU04n3MxvkJLNPUaU913ACXZETUVAeiyZid9hynxURrr/qRGCixuiTKjcSfPl7NcjLM13UJCHUQ1UHikz+g821RVFik9pbj49XTqa1oSTOVDpReJg2kxSllGrzcR+C3nZZJgrdk1RC1IpQAlkoQrOA2PH9i0snAwLtajnz6LiY/SkoXMtAApEb2uRZ3EkUmN4ADo4woJyFlLAmmGprvB2x0qP5/uPPGu/+h0RKhgxG0ONmRZVgmsxdel2e2vHqor/tM63hFPYNuH9mpcqaKxmLcBq+pi+v9nmrkgYMKsn7Kj8C/0620NEHx7KVpOpIOlpeVI3ncsX+WekLkBL1EPkPjW8lz7gulIjcrbAmdeRNFHEStdkyYq1xTXj/6yGEuYXAcBnmeIkNOfUhhfMR5tPl7XcHH2DaRFoplHktu9iOhqDg6//B9qDx4dIIynZWcOTS23EeHV4367d/CffW8ZpujrGoRHhqDoy8NgFBtQ6bTzL5BIR
- xZeaPucB
- hesINIxGy5/2UXqoHrVO5llHVVNqw3hsRu8FjHo8cHnIscr3g38moIZTLWQXBmbFSu3ED5F8n9M/oaCdGv98sZVwssjjRf3/wJKc7oVsaf5952H2CbPl4FoEzrWxdzjCy5SE5rdjCBj1ltFK6LcJRyvjEEXTO2REvKlnL6B2PT466QnsM5Ju3qDYzOE5v/zcQwG+l4FWWsOqKCDebhqar8tvW2szaYQuNKMJDctBsrT2YW1GL28qicymQ3svRl/IIzVKQODCPaS+ranIdueKtyx40unSs8VLj7N38m1RGMLWcXbbCQ1i1cZGBLWdPc1mKtlfmiP0KAYjfv5TdZVI6IDMwg6ZPcZacip0MJ9tTz1QA4tnXDiawLBaGzdwB5xkKukEt6uy+Ejh0nY6j5ngDsOxlFsKN8lRxMFfGLjwgUiNQZi4dSbzV8rwbAoqbMrs3MulXruD7WksTBxSmp1xqTbwTGnYuUIOaAA62
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777433536-877932
+X-HE-Meta: U2FsdGVkX1/SKQO1DQNk8usV3KUM7gLEAnuxD/mS8nul0KtzDvcTqMH5Oc+QS2DE+iAS89D0MY4UbCI+g96bjJuodJkdv6x0jQMN9GQ6Sxji2ZzfDyML1QHYmSkIGeizSX7ktIkJIWi/Jh38BtEEkzVDD3DdxcGEGSS/RdIi8Xv117pWhq73k7u0XxfRVZAIa6RVpMW9YzgmuGzA61mbfGsdCgisIi8rJNu1l41Bezn8jznGcfDr9mIBiZlciERcdvk4fdx7j6hG0pJHC6HN2ZW9GYQUiSDXPX4zw4h5554G+ih7MiqOFkuEbFB/fS2xKRm5IsXxr91X/ykqfyGDu1EI7d6La4gUFiybWiY7iXrwGLsK2vc5DouWlY2zM/360GY7ay3FRzTTQuwQBA9MS6hPazq7ST+H/JOA80F/1JPxG/RZIF4iqb3uQulHlFIZ3Z8k7CnxIztkrajmtsAfGouep8DFF+uQbfk/71DplXHxWvJ2Nfr7M66M6GaT8cX4tXgWH16oEWCB30V79FSjA6LfZua/hbQ4KGdxBKrVjMwirL36tLBMWZj6gz8+hNVR4teo59BOrnlQz3G9MwbfD88ubzIgKseAdh+FEJOQoaC8VhVUo9cM1YgCZS/4Ba/Qvwl/ywwq6x3jF4ZY3eOQumH3HqCEPwSBMuuVx3nZWmlq8jcVFq+EaagNdy5n1GxdssCTFSxSANAgcjSYrPqkhZPExbqoVtlrnKmFXEhwpgVEZfnV21h9Mny8s2zswaSKq9NSWW6Bm8yG5/fCUQAF8E2Yl5o8bUUlee34GKRk/0c/VLJjfbOjYvAhr+eW5+mriuQo18RowaYvedTBdpXk/bucFEAjyuMMtQG9wVTlOLa/YLKU6WNGuegscsFZ9Je3Bh2uvGwU45w/gxHNU7VqY0ZPQz1BJYqExpgIIcRUnJuaSyJeI4DSmc5fDmC8gy5keQJh/9twrSa0YPU85O0
+ zjogswyB
+ VJjrzqsC1m1tiltdp+AQpqqxhrnYv4xpHFgrtNF/vlLwIxgmutHKyljLrAZeCEMmDX6wAKxB2MHdDzQfBT9uj02OMUC97Or7GnxbzAQG54N7fRJxNYKbiWskIrG+QaXSWIB+U3FvBhvBNkIrAoAoKbb7+ICpqFGkKrVXPT5qM8xnFFoSIb3ubLN4lvvzws6Dl1SDeDeNZBkK6pf7QuYfvNL8EE1vN4O3zA603/IcGrQ70Wr26o6sLUD1NJ27vXSI8OXyVCS6JHvg5ixBDcHong/6DD40l5C+XTDn70BFtWO1dXnsDEShJIL+9A+TpRLlUBmIQuj9C08njRy0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,31 +143,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for reviewing Steven,
+On Wed, Apr 29, 2026 at 11:08:51AM +0800, Miaohe Lin wrote:
+> Right, I missed that. Thanks. But I'm still worried that there might be potential issues.
+> For example, this function could be called while lock_page is held. Acquiring lock_device_hotplug
+> while already holding lock_page might cause problems, though I haven't seen any specific issues yet.
+> Also there might be some other potential scenarios that haven't been considered. Hope I'm just
+> overthinking it. :)
 
->Why this change? It makes it much harder to understand.
->
->The above is not a normal macro. Ignore any checkpatch warnings about it.
->The proper way to do the TP_STRUCT__entry() is to make it just like a struct:
->
->struct {
->	unsigned long		pfn;
->	unsigned int		order;
->	int			migratetype;
->};
->
->Thus, the macro should be:
->
->	TP_STRUCT__entry(
->		__field(	unsigned long,	pfn		)
->		__field(	unsigned int,	order		)
->		__field(	int,		migratetype	)
->		),
+lock_device_hotplug is a mutex lock, and we already take other mutex locks while
+holding lock_folio in other paths, so I am not sure I see what should be special
+in this case.
 
 
-Yeah sorry for the formatting issue, will fix in v3. Any other concerns?
-What do you think about the introduction of those tracepoints themselves?
-
--- Bunyod
-
+-- 
+Oscar Salvador
+SUSE Labs
 
