@@ -4,95 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E0FFF885A
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 01:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B71B3FF886F
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 02:12:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 451B96B008C; Tue, 28 Apr 2026 21:39:13 -0400 (EDT)
+	id 71CAE6B00B1; Tue, 28 Apr 2026 22:12:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 429766B0092; Tue, 28 Apr 2026 21:39:13 -0400 (EDT)
+	id 6CD166B00B2; Tue, 28 Apr 2026 22:12:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 366786B0093; Tue, 28 Apr 2026 21:39:13 -0400 (EDT)
+	id 595A96B00B4; Tue, 28 Apr 2026 22:12:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 22B1C6B008C
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 21:39:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE2B6120516
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 01:39:12 +0000 (UTC)
-X-FDA: 84709885344.01.111C811
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0F67640005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 01:39:10 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rf1nhXdY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777426751; a=rsa-sha256;
-	cv=none;
-	b=ti4BQn7gPul5NtvKgTjpCYf82X15fadytkdsJEF9JCa1uIgB16un/S0gWiF9q6OMFztOAZ
-	orPYavH1mV9Xm+1RN34TB+Y0DFo62DPpPVeCkAac5yFb58kOlGp7JXyNsWOfYPR4bdoSQo
-	8wyBcvHN/Ev6fP9ARHL7SHI3UFIuk+w=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rf1nhXdY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 472E16B00B1
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 22:12:48 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BEC6FC1EF0
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:12:47 +0000 (UTC)
+X-FDA: 84709969974.10.0FE0B3B
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DF6161C0009
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:12:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ryoyxHFg;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777426751;
+	s=arc-20220608; t=1777428766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9BoEF5GA5qi/kF0ERLQDSATIAV5brLnhfed7LwEqZRA=;
-	b=hMlAYX27wkPlxY0ZhiSQz4afNix7nez9SDEllpdhERzfCZNepUkueAg00ARIdZ/58DkIIa
-	1E3fV260qPqMjqdk3DOwPkJFcGVSfTAvKmnT44PnaJURkN38kXB0CE/sxcoVIcpp4c4boq
-	IZVdxbga6JnHCgiAqXbASlnzW5HoEqk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 68C5860180;
-	Wed, 29 Apr 2026 01:39:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF71C2BCC4;
-	Wed, 29 Apr 2026 01:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777426750;
-	bh=NuKdDMXxMHFfADUrXSz37+tncEQGzkzv+UR6zBbTJQE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rf1nhXdYaZuPNSDKEjrXwSowqcANaZsvJDB4tbwF20WzWrEDsJaewE+jJp7uzGObs
-	 t/sSX9iRxGSYdjF5Oeoi1IhPsoAjK0Qn8swXcJXLAt/89Wx7On7VNq3T8+doULmLPn
-	 0OnGVmbdKvs3oSvrROP9bFT+hlGbcQhgjYkHK9WgNDXSWe2PI7nbuRllHXeqwhrLKT
-	 h9Hq8S+pU5BTXzEtIGftQuKjL1AbG2j4bJP25gvvDNphft0c9UjVC+fk7o/XT4D0GO
-	 bT3AClZL13UsNc6yHPWBHPegnWW4yhwRHeMHqGjR3RRsyVIzEyTvSMSeUsUUtvmGbg
-	 UJ6CLy9HgqFuQ==
-From: SeongJae Park <sj@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	"zhen.ni" <zhen.ni@easystack.cn>,
+	bh=gb86gbMzt9jqdkC6Pg+jFx+1pGimSrMPX47wwwBWIUI=;
+	b=kam5//s19rw1gZPxF2dzXTdM2B6yrHzmyYzuKSZ5MWRmxzh4vkmkZ/SxSp2h0/DE4Yhh1B
+	X5Ev4Hs0m2uFPaFNSyo+Ye6vk+mp2/kb7RWWm8fItUiLINZKJbooBIDqKRjVA7nEgLU7k5
+	QA/cKP8fppBRf2pyVwCTK6z1Cy8HwGQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ryoyxHFg;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777428766; a=rsa-sha256;
+	cv=none;
+	b=KuZcPkwmByC6yfz1axx/v/Heu232sXsQyhDDh1aCl7BECtCK8IqDCYyzs8U83NxCoXx6I9
+	+gfQaCd0RvZ3taItVx9Clb+5x5wrwDesB5xTRLRLXx0/mk6VERxE17jl/4YhBWUT5Iif1r
+	oHdySx2p2H+Oxk8JPL34EakMz5ocgWU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777428760;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gb86gbMzt9jqdkC6Pg+jFx+1pGimSrMPX47wwwBWIUI=;
+	b=ryoyxHFgF4ft/HwNv0YIZ5eyaC7WbzQMelfouaMIeTKSI1JNdp6OnjnOFqR6RymBSgWF5Z
+	S49OphuCAdTDZWfvdYQuGVglYjzhMoqdkwHtppsyWKp8NJI2wEBRUAHI6pz0vAxA3kRUJU
+	HfvI616NHH7lDY/x1SHogkiF8bs6BZg=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	rppt@kernel.org,
+	jgg@ziepe.ca,
+	baolu.lu@linux.intel.com,
 	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] mm/page_owner: add filter infrastructure
-Date: Tue, 28 Apr 2026 18:39:01 -0700
-Message-ID: <20260429013902.89104-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <F8F8A2DA-CC65-491B-B69A-2716186D0495@nvidia.com>
-References: 
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH] x86/mm: fix freeing of PMD-sized vmemmap pages
+Date: Wed, 29 Apr 2026 10:12:24 +0800
+Message-Id: <20260429021224.39916-1-lance.yang@linux.dev>
+In-Reply-To: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
+References: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r5grabza4zk61pubd936kjwkomg5o7tb
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: cbmjrahd7at7xcf3qgjrsdkjt5drhfh7
+X-Rspamd-Queue-Id: DF6161C0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0F67640005
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777426750-358316
-X-HE-Meta: U2FsdGVkX1/wIvTr+qDnuy6aX6y8m+PF+ysfc+5RwvSmVfYn3uY2zcQr5Zd9TjarwcJNd79vScj5N8fa7hxb2DJzjy9ZAhHUffnTx+niCojPQKhSmZDs2ZAOdpwxROKQrkAXWwo4EXgG/ep2sJMe4YYUkEdR1A/jlOdhV2Ekxxil6GcrvjuDPwuyozPlpTig9gvq2j0HEgLLp+KJZvsnYNIOpM3o9p/YQvDdT5Gxl1WK6dYeH5pZE14HZCIqVLucdMkr5bokWeDreLIwgTWCJIva5ZuomjHplC1m/IHpyUXASJ40rKsMR4WnU4MFY0HVAelFp6afRMRXU1SwVaSILZ3EuQIsB2tCzlRNLgoxMN7fcDTAmNrhSnCmlP0cb7j7ypYCN7pes/xD1r+GlbRcWfbyCgGUx93tmzFDRjFTk1d3aKEK5uKcBwaDFzasbPKqEDGVtGDqFk6Lg0qfNZE7s4kbQg0rnV6pmpKnJ1OYXBqIC+4FT8/+6gX5lvCbwsmcaoK3BQCwUtIHCJsHlkKBf0gkhs3odsmdMfpB05eWQYvRBGlw2kodVsVMIuyfmWCfs/LNXq8FtT0osLS8BBl58hpiDfpivyjJwBePg3OidVVnNQ2ZJQP5UzCGSoYU8zN5J2PL8BpSwtHmbLhKM4WrPsiedmkUUWfzt/WVYE7sDJclb3o5WV+Uyo5Uf66gq9CbtDMlNyZ3EgnszsevzFgRst6Ti60pkIJe8aA33ZBgiSDKX/4K2Gw99F1qKpeto8DLEStScZzNkejvuhnhq6NSy5d/l4JT6yC3NaCvHYDqyKP4tb1/Hr/WMfws4EuvyMVT9Aww79SNNsdxr5fCsqLuWEW0dhegaD/HMVeM1Df2UifxRJhM7Yt0UrLuqzT8Jul7j+igNjC9ZvK/XijClLVQtxYDZDJkGD54M5zIGWeZNMHYwjLDv+Tvg+r8pf3Uuse0YLTH1fz2PQFVTvux18Q
- Gl8Dkk5H
- wvkmscKgOWdGcE1b9mHX1KXg8Svj84UmT2VJu/Rx6Vc4Or7pv65HZEeBADTGvtJdHzbCBrWkWDg+V5afJtSoqKBhFCkQEjZuoSFuksBHjoYMWsN4X3eRTImTCGdpKrIlz5X5jEncLm7yt6c1UR07YgwX+ijRuaj4dxSygV3MgRaTpBJnBENBaxryTSnb80tTZmAaHZAbgINFdnDAfKQtNTs/38BqszHKB3iecUgBW96w/8vcQ7LV1ZO6zi8pJ7734Dw2VrZ28Em0o9Qm4h0jzzRgmS3VrWd43h/wgEdG8eIwvjum4xq4JGwhWIk8iMKWYZPhWqzFfd/xQth2CUUctx4/gPQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777428765-172394
+X-HE-Meta: U2FsdGVkX1+c+K9h+d1qDkBqh0cEEkssdk/FAvSwjm9Di6i4hiK5XCqjCnUPRB91A7icq5HRgPuZbHaP0g/F8fqBDj2ExP5vNb3hA+mS3hRhjBkWr7DdkmDkvrmWxH3gB1MbOk/wrjrOeg5dHMuE0J7edbcevb+2oCysidRkgLIxkK6r518ED9K4Mf6NHlkyIsKRogNCO84LADy51u5zTLk+oYW3HIeRQcdsBB+OybxOD/Quwwdz/Cpinsc0xUYURhCQWEd4MgVmxSNYc0e1H2q24K1i03A5wsiU+hF1/o+m3uYS618//QhFXLLqutII1Acc6eC5vOVItjdgslNaXp9nmv9ewSnLsUz/FoHRpukg4l/6fx9HVZ3En0osvsnnuWEGICscKtQupkzSTuf3q6MgNylfJLbQlKaWEswsKZ3vcUdrf+atelkN6LNams+SObfdgEpFoBKz3jAB1xQQE4yziLazE4mAJUBWEQG/UN/qiiJFMr7WgdJCFENubCCGwX1F63uK8GlSvr2xmeorCMgmzJQKpgCPMoC8onW7vvlQx0Gbe4s4wyYgmdY0JW/oECg/3g95RCXAe6BEVnITMEGLyIAJSwfNVFC80br48MffHS5VBL6AO2D2uCMAwMX3T6eHnJ9wOJxk143Pg2iL3zgb4ezoyj33zn4pISscc6KErI1gLK0ZTkAuF9zWoe2EbOw9AlN3usYB5S2xh5xOmONRXOsai6zkvA0sCKxFCSoKtHvwCdNuXxRnOO4sS1KlkEMnj5Q5ab6mpFvUcYWeYgA2icMBYNmJDu0Pe9gaWzRnC1ZQ+1JwZmxRBaBK4rk6ANtZma+0sZBcMwDtpFhxE/spSCPpjCHavkR7Wf2AfBSlDic/f7WcA4NYOr6m6PNEpI+txTzQlTWYA65CZcVZQmkJfwjoYTvV310itq3gp4db3YNUldynRKfp6x5C+Izf5mSIKkoIf2e/Hm1iF9e
+ aisdggwG
+ lwx2gXUyuLKmQzbaLEQHZ0OGBMB65NXXfpOXbPdxDoKCGVGatK3Lx4WuRMnGQrlG7WA3leK55n6gB6FbDrbFNOGnLKj/TJIiLG4HcHJOeWjMjKUhrY0v5Qztm3TJAG2trOpsyxFEiMjB+dolq6SIzKLFMoh+ClNESjCyO90iTGN67rTx3RaFiSlZcdmJOfU9TTMb85mw4Il51jky8repL183XHMpPQbVweOJEjAQasbJSbuE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,59 +102,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 28 Apr 2026 09:13:03 -0400 Zi Yan <ziy@nvidia.com> wrote:
 
-> On 27 Apr 2026, at 23:33, zhen.ni wrote:
-> 
-> > 在 2026/4/27 23:35, Zi Yan 写道:
-> >> On 19 Apr 2026, at 11:55, Zhen Ni wrote:
-> >>
-> >>> Add data structure for page_owner filtering functionality and create
-> >>> debugfs directory for filter controls.
-> >>>
-> >>> This adds:
-> >>> - enum page_owner_print_mode with values for full_stack and stack_handle
-> >>> - struct page_owner_filter with print_mode and nid_mask fields
-> >>> - Static owner_filter instance initialized with default values
-> >>> - page_owner_filter debugfs directory
-> >>>
-> >>> The filter infrastructure will be used to add print_mode and NUMA node
-> >>> filtering capabilities in subsequent commits.
-> >>>
-> >>> Link: https://lore.kernel.org/linux-mm/20260417154638.22370-2-zhen.ni@easystack.cn/
-> >>> Suggested-by: Zi Yan <ziy@nvidia.com>
-> >>> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-> >>> ---
-> >>>
-> >>> Changes in v2:
-> >>> - Use enum page_owner_print_mode instead of bool 'compact' for better clarity
-> >>> - Use nodemask_t instead of int 'nid' to support multi-node filtering
-> >>> ---
-> >>>   mm/page_owner.c | 20 +++++++++++++++++++-
-> >>>   1 file changed, 19 insertions(+), 1 deletion(-)
-> >>
-> >> The patch can be folded into Patch 2. Otherwise, these new types are not
-> >> used and page_owner_filter folder is just empty.
-> >>
-> >
-> >
-> > Thanks for your review and suggestion.
-> >
-> > I kept the 3-patch structure mainly for clear functional separation,
-> > which also makes review easier. Patch 1 adds the infrastructure,
-> 
-> What is the point of adding unused code in a separate patch?
-> Patch 1 has no functional addition and should be part of Patch 2.
+On Tue, Apr 28, 2026 at 12:29:36PM +0200, David Hildenbrand (Arm) wrote:
+>In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
+>from freeing non-boot page tables through __free_pages() to
+>pagetable_free().
+>
+>However, the function is also called to free vmemmap pages.
+>
+>Given that vmemmap pages are not page tables, already the page_ptdesc(page)
+>is wrong. But worse, pagetable_free() calls
+>
+>	__free_pages(page, compound_order(page));
+>
+>As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
+>except for HVO, which doesn't apply here -- we will only free the first
+>page when freeing a PMD-sized vmemmap page, leaking the other ones.
+>
+>Fix it by properly decoupling pagetable and vmemmap freeing.
+>free_pagetable() no longer has to mess with SECTION_INFO, as only the
+>vmemmap is marked like that in register_page_bootmem_memmap().
+>
+>While at it, just wire up the altmap parameter for remove_pte_table().
+>Also, the indentation in remove_pmd_table() is messed up, let's fix that
+>while touching it.
 
-I agree.
+One thing I'm not sure about is passing altmap down into
+remove_pte_table().
 
-While I was reviewing the v3 of this series, I had to move between the patch 2
-and patch 1 to check the value of the print_mode enum.  Having those on single
-patch will be easier to read for people like me.
+Do we actually know that a non-NULL altmap means that the vmemmap
+backing page came from that altmap?
 
+On x86 we still have in vmemmap_populate():
+
+	if (end - start < PAGES_PER_SECTION * sizeof(struct page))
+		err = vmemmap_populate_basepages(start, end, node, NULL);
+
+So for smaller-than-section vmemmap ranges, even if the caller has an
+altmap, the backing pages are allocated from normal memory. But with
+this fix the PTE removal path would now call vmem_altmap_free() just
+because altmap is non-NULL, and would not free the actual backing page,
+IIUC :)
+
+Maybe free_vmemmap_pages() should first check that the backing page is
+really inside the altmap range before using vmem_altmap_free()?
+
+Hopefully I didn't miss anything :)
 
 Thanks,
-SJ
+Lance
 
-[...]
+>Note that we'll try to get rid of that bootmem info handling soon. For
+>now, we'll handle it similar to free_pagetable(), just avoiding the
+>ifdef.
+>
+>Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+>Reproduced and tested with a simple VM with a virtio-mem device,
+>repeatedly adding and removing memory.
+>
+>Found by code inspection while working on bootmem_info removal.
+>---
+> arch/x86/mm/init_64.c | 43 +++++++++++++++++++++++++++----------------
+> 1 file changed, 27 insertions(+), 16 deletions(-)
+>
+>diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+>index df2261fa4f98..8d03e44a7fb9 100644
+>--- a/arch/x86/mm/init_64.c
+>+++ b/arch/x86/mm/init_64.c
+>@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(struct page *page, int order)
+> #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
+> 		enum bootmem_type type = bootmem_type(page);
+> 
+>-		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
+>+		if (type == MIX_SECTION_INFO) {
+> 			while (nr_pages--)
+> 				put_page_bootmem(page++);
+> 		} else {
+>@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(struct page *page, int order)
+> 	}
+> }
+> 
+>-static void __meminit free_hugepage_table(struct page *page,
+>+static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
+> 		struct vmem_altmap *altmap)
+> {
+>-	if (altmap)
+>-		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
+>-	else
+>-		free_pagetable(page, get_order(PMD_SIZE));
+>+	if (altmap) {
+>+		vmem_altmap_free(altmap, 1u << order);
+>+	} else if (PageReserved(page)) {
+>+		unsigned long nr_pages = 1 << order;
+>+
+>+		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
+>+		    bootmem_type(page) == SECTION_INFO) {
+>+			while (nr_pages--)
+>+				put_page_bootmem(page++);
+>+		} else {
+>+			free_reserved_pages(page, nr_pages);
+>+		}
+>+	} else {
+>+		__free_pages(page, order);
+>+	}
+> }
+> 
+> static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
+>@@ -1093,7 +1104,7 @@ static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
+> 
+> static void __meminit
+> remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
+>-		 bool direct)
+>+		 bool direct, struct vmem_altmap *altmap)
+> {
+> 	unsigned long next, pages = 0;
+> 	pte_t *pte;
+>@@ -1118,7 +1129,7 @@ remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
+> 			return;
+> 
+> 		if (!direct)
+>-			free_pagetable(pte_page(*pte), 0);
+>+			free_vmemmap_pages(pte_page(*pte), 0, altmap);
+> 
+> 		spin_lock(&init_mm.page_table_lock);
+> 		pte_clear(&init_mm, addr, pte);
+>@@ -1153,25 +1164,25 @@ remove_pmd_table(pmd_t *pmd_start, unsigned long addr, unsigned long end,
+> 			if (IS_ALIGNED(addr, PMD_SIZE) &&
+> 			    IS_ALIGNED(next, PMD_SIZE)) {
+> 				if (!direct)
+>-					free_hugepage_table(pmd_page(*pmd),
+>-							    altmap);
+>+					free_vmemmap_pages(pmd_page(*pmd),
+>+							   PMD_ORDER, altmap);
+> 
+> 				spin_lock(&init_mm.page_table_lock);
+> 				pmd_clear(pmd);
+> 				spin_unlock(&init_mm.page_table_lock);
+> 				pages++;
+> 			} else if (vmemmap_pmd_is_unused(addr, next)) {
+>-					free_hugepage_table(pmd_page(*pmd),
+>-							    altmap);
+>-					spin_lock(&init_mm.page_table_lock);
+>-					pmd_clear(pmd);
+>-					spin_unlock(&init_mm.page_table_lock);
+>+				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
+>+						   altmap);
+>+				spin_lock(&init_mm.page_table_lock);
+>+				pmd_clear(pmd);
+>+				spin_unlock(&init_mm.page_table_lock);
+> 			}
+> 			continue;
+> 		}
+> 
+> 		pte_base = (pte_t *)pmd_page_vaddr(*pmd);
+>-		remove_pte_table(pte_base, addr, next, direct);
+>+		remove_pte_table(pte_base, addr, next, direct, altmap);
+> 		free_pte_table(pte_base, pmd);
+> 	}
+> 
+>
+>---
+>
+>base-commit: a2ddbfd1af0f54ea84bf17f0400088815d012e8d
+>
+>change-id: 20260428-vmemmap-ab4b949aa727
+>
+>--
+>
+>Cheers,
+>
+>David
+>
+>
 
