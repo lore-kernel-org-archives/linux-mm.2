@@ -4,69 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79DFCFF886F
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 03:02:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B75FFF886F
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 03:03:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C491E6B009D; Tue, 28 Apr 2026 23:02:32 -0400 (EDT)
+	id 7B6D76B009E; Tue, 28 Apr 2026 23:03:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C20646B009E; Tue, 28 Apr 2026 23:02:32 -0400 (EDT)
+	id 78DED6B00A0; Tue, 28 Apr 2026 23:03:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5DAE6B009F; Tue, 28 Apr 2026 23:02:32 -0400 (EDT)
+	id 6CB826B00A1; Tue, 28 Apr 2026 23:03:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A93336B009D
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:02:32 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2C4008C16A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:02:32 +0000 (UTC)
-X-FDA: 84710095344.11.776144E
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 51B9780006
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:02:30 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nUKX6miB;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 605FD6B009E
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 23:03:32 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC9BC1605ED
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:03:31 +0000 (UTC)
+X-FDA: 84710097822.03.7C3D431
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 147D3100006
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:03:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DGEDJbIp;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777431750;
+	s=arc-20220608; t=1777431810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xAptSnBmp9h9N12mhZQEdxJex9G2kRMi+UwodffAKNw=;
-	b=BS5sIqJ2sVfqYLsuoegF3pg7giihRXX8g9T68Mev9QLeppSLa2Uj9l09NDT/SWgyXiaAWC
-	WLDIRcktXiXiXOLTSxR9mBdk74qOI1fUsGeEFQBuZcaajhqZjNiVP/OOQQNpakPPQa8iyK
-	W07aOPSVK+fdsGbf/5QetG0aYWe7VSI=
+	bh=rVdIF5xMMbMuztmqCdOg6Gne4HRwdJsr6QDFaBOJNgA=;
+	b=lKgK3sIcoBShM2YgpJWdx5gF0RAHi56UbgeAXt30TNyuyp1rzcyX8Qvoq5ESOQNKoQpa2A
+	SrCY8iZqkatj6kKbpwxEK5BVtWuxxF8l900tYn7w+2J2i1vIy5bp6g9uJzOTU4rtmHg72i
+	+kq8WEbJKl9Bueyz/i8qH+8QkBfDoec=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nUKX6miB;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DGEDJbIp;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777431750; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777431810; a=rsa-sha256;
 	cv=none;
-	b=Z5AcmqtgkbZiyr1fM3Tsw5X23qDbMppYWod48gUSHNcZgRsNsCMdUTP3am+xfv+Jztpf5u
-	1R9NcHG1HbdsIz0SkrEtKdCcmWiIQiUxFJWC2QSTe/Ddp+UKf274ZNTUQblxTQB9PkvU9u
-	Jzh/8LhoadUtX0v3A+xKw36YWttS3LY=
+	b=J44XfbxfHvYbAamEKlegKIE7twoGgZ0391aEJh+JNdT7mURvI/xLo0vHSFr0vq0MppKHfi
+	YHMaNM5gg/eSzaDPuInAd3VxrPnbp4OgUuyUKDr/2EW3lr8uRkNb59r49yvoCyDHfuMMDz
+	ARrCR6LlQTXQAB77nCH6ixh3jGuB/QI=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777431748;
+	t=1777431808;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xAptSnBmp9h9N12mhZQEdxJex9G2kRMi+UwodffAKNw=;
-	b=nUKX6miBABkPqJTWDSe3nzmfIfQo2Vwx4KnKafK/tN9cODk7otB5prJfru7ieBqJdxxlRV
-	8z0o0dwhC7ungjhgBrC8noRgvfZ/g4DM7YVbaKB0AQyBNgeDDmuX9Cg/avGVnCjQE3aiPX
-	NFUPD7RRWZxRYLlyVhPJShq70PfUdZI=
+	bh=rVdIF5xMMbMuztmqCdOg6Gne4HRwdJsr6QDFaBOJNgA=;
+	b=DGEDJbIpy7JGrpJ59uRvmyWQ/+oc4LxI28LHP8B9Ra69Qv+7lS7boZ1Xzep4QMP9B6i/OW
+	BFhKEhdpsJ6o+T2i8BGqENxPbqRMQh1DnhZg2CUpl2lTelQMthpw207HvXyrmA10mtWizu
+	UQzVlpvn0F4A0q5MBdSB0nfKcttgSTE=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH 12/49] mm: make set_pageblock_order() static
+Subject: Re: [PATCH 11/49] mm: defer sparse_init() until after zone
+ initialization
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <afBe_CQ0RtmT3xhK@kernel.org>
-Date: Wed, 29 Apr 2026 11:01:39 +0800
+In-Reply-To: <afBepGBqlKTyOFob@kernel.org>
+Date: Wed, 29 Apr 2026 11:02:42 +0800
 Cc: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>,
@@ -86,20 +87,20 @@ Cc: Muchun Song <songmuchun@bytedance.com>,
  linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: 7bit
-Message-Id: <2DE2FBA9-6D7E-4DDA-8B11-E844EB42E574@linux.dev>
+Message-Id: <DB04EB19-B371-497D-B2D3-C8564B127CD0@linux.dev>
 References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-13-songmuchun@bytedance.com>
- <afBe_CQ0RtmT3xhK@kernel.org>
+ <20260405125240.2558577-12-songmuchun@bytedance.com>
+ <afBepGBqlKTyOFob@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: z1jhhu9fmij3geue4yafxkw9dt74ygjk
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 51B9780006
 X-Rspam-User: 
-X-HE-Tag: 1777431750-477367
-X-HE-Meta: U2FsdGVkX1/to6PegbimP5XRfK5JoCeunaWaI827TfM8HqyEFQrhgAx4rx/DJ57Xl7QBF5earR5BqMvoWeiqxaaaKFprrQYoa/A5+a/j/KZ90rf4f7c5plcJxdLi65Q5Jz/2mbMg0oiPhM2h8nXAaoalKWeG+4UNbCyPEaHe/kMWW1qZ3l7LWvLIUvNFJRiS+AOOP/WNcdoEKmYJh2VYEDFe4hDm1vdAM7ASM9nsMlbHIyEBW61eDH5os1p8B+bUC60yPBB0trMX1hT948bJc91tsT95hv0BbgoAWdispihZCeRNIQrS/dUyYfqhXOoHgscIMtph8NsXR0ulijQobiSy/QwmrZK5B3WIth5hOam5nnNq9+57FFkD0L1BNvxFo+b2/uIXNcWAJIOPxWJNqgT3Pj+KsSjO8xnB3eX3hv6xG6zFwyT9f1VRchn7+k/V9s0/rWb98mMvn+AOKlLlZ0H9ZvFLTFIz2kxXC7u3SkV/y5bKwfOoyPxOSfvZIJYc8zkJW/nLCckEUXV0Jett6kDUVybIFKxP5nBnb5Vy62QsolzKO46jQZso7NxBpEeBM5CFJDwNkBDmjLNtLNybb3HAZzlT1LRRn4z8nKQQ7/60qFfo6kfbGtc26lKypKCUH7DQWuKFFBykXPsyQDxl7arRlpa6QT0514vd/pNUrozPZ04HaRrUKbUdqheT7EKwHZBkF0vHhizXlUG5MREX1pNrnN4b7eKgSeGW0NON4epKAxS1ACDXvmyGCy7wTvlDZFXp5Ul6nANsyIMgZDeqjqma9FSS8DmKYFQR1EchCyhQNzZdj/KY3X8kuIydhIZv3Az5I9phziWtCOldTLjgbTkqZIYtEPHbFsOZKYEOHyV0HGyS49NpUnosDMSKZX2jjd/qsIBWVpPgeeTLWkpVMd10nPWgts0pSXkvEWosbx7PgaG4r0kP+8ot9Dwku0MGwybQgI217c551nua8Wh
- FDwerLeW
- hhh6wMGIhXh0cZyeMt/MdYv/Xt26IYt9+u+KiYxuWAoFzyavVagqO1xgnzPoRV2KsDayfG+7HgW25YFtMUu190CDhPYA7R3TP4wNwmuYXLyi27nDYvKZtEc6AnHfQH6YuI6Mt1N+NxSHjuhVmmaX8/2VRJ1zW06TBIRZjdmjL62v+Mql/+pSZakKrsIqwCeX8qndnHDMt6Vd+sOTPhrwovTWXMYxhF9cPnu6nSgDnxTpjWJFRN5C2QzGDXFN1wggM8c/B5oy4zzfXqBMprTMhhQ8Qq3uPk7i2ZYxXqV29jpyXMGUcJBJVql0FvonahoIeBs8AUc9g7RBKRLA=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 147D3100006
+X-Stat-Signature: bqwsyszjf6wpsh8e6jzz5zhmqt5p4zra
+X-HE-Tag: 1777431809-191181
+X-HE-Meta: U2FsdGVkX1+1P3UyZkBJ6z+0gWkE7rsmuRGPbEctSiFwDpB63ql3rvJyXtAIr0B2280R/YqWwa91p3RBFUKGkXNZmYqFBPDVCTQqgIY2RZDyWd4WPGoY6LTdVbP+VPq/It6WpJlJr9Q733XZnemrdWjXiFpqesfL2/W48S20WZTGG/ywdII7SdODxiXEBuzgpWTKecc+lb18RzsjIOi0JELhxRu34qd/243+D5zopkFCGJwYVTUaTRYrECmZjEAkqDYDu6qNYV+17cM75nJwCznkHQeR2E/DBJrjzflbIUZ/E3FvcSz/YtDf4MYJYgcx+5gu5zNMcF19WnJ0QKJOkk7ZwEKThfW5m32Fc6So/EDUMPMKeYYUU/7LYWtSa4Awqxl10/r3kQIUpATLzVUqXDUTzfiJ10OTgD4HJCBwyPZQtNZkN0KdFsVKFInCYqi1wvcvVmRxZLw5BGYIH7KDs1BU+ANC5yxaoU6CQKKoUt1gUiLk84W6SPyzMk1nYj0QozCbvBtALfn9Jg9rpKTJF2FuB+1Bt/jnEjPX8mqBa/GxJCKA7QCEG/DxEljJVWyWGotUw0e46n6d6Jp8yiGx7Sz7fK5IaEj/tNAq7AceEyNhjCEybV7GjT+ch5AwlLxdoA09eU2JjVOvXagOVS1kYbd6tCBF4EXcaSqMhcV9eGPuAEzYJoNKvBlTSPCn0jcFW8lD4u6jtqP4R/ZVcCH0ZL9+xqaGof0/NAFwpZUK1hR9okIqirM76JNWAmhdLr5x0GrR7hl9lMLlR1jaI5rdo3k2un93CD95DNJpBQ5ahtyIIvxj33FVKmfqXa56faR1nwjEX1rO6kg1bs2EIupt3NxAluFAzD2kQyU1zaja5/3i+F/ge0e9s77nrTAHwLKrfzyMbJxttHRl8osJvVtxLhefa7Ixbq2vfEW8x9mXenzSN4mKSiAV0YThAni/RfBsX58z57PV+FyTUfXIozI
+ 0P29fI00
+ arA5yLFPliO+1AXuJaQyxThlTG68m/d0dEOwzqCgCzwyOEkWlRZ+VaOwkPFQRYK8kMB989Ki9u5J5fZ1TwHEcE2nv8tWSI401fyArpZVZahNuPf2CQh9GPsbIjQszEAWNmaRMB/EuoC5YR4zvMVWMdqGsj9h8EU3r2zAd3qc9tVB5BcF6CF1SaaxlewX5R3pm3vbwDCjRkGZ6yTZDCUQHviWjUn7Ctbk4TYBrqDNr1Q3v7gEU2pGq3m0AlCWoQ8FSRLNXPLI5Ze9xEDLIA/20UDuAGCWcxcfb92F0nNxT53Pc+P7C3ontc8+oWnp4FUbljPLnYRf1+vi9FJI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,32 +110,64 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Apr 28, 2026, at 15:17, Mike Rapoport <rppt@kernel.org> wrote:
+> On Apr 28, 2026, at 15:15, Mike Rapoport <rppt@kernel.org> wrote:
 > 
-> On Sun, Apr 05, 2026 at 08:52:03PM +0800, Muchun Song wrote:
->> Since set_pageblock_order() is only used in mm/mm_init.c now, make it
->> static and remove its declaration from mm/internal.h.
+> On Sun, Apr 05, 2026 at 08:52:02PM +0800, Muchun Song wrote:
+>> According to the comment of free_area_init(), its main goal is to
+>> initialise all pg_data_t and zone data. However, sparse_init() and
+>> memmap_init() are aimed at allocating vmemmap pages and initializing
+>> struct page respectively, which differs from the goal of free_area_init().
+>> Therefore, it is reasonable to move them out of free_area_init().
+>> 
+>> Call sparse_init() after free_area_init() to guarantee that zone data
+>> structures are available when sparse_init() executes. This change is a
+>> prerequisite for integrating vmemmap initialization steps and allows
+>> sparse_init() to safely access zone information if needed (e.g. HVO case).
+>> 
+>> Also, move hugetlb reservation functions (hugetlb_cma_reserve() and
+>> hugetlb_bootmem_alloc()) to be after free_area_init(). This allows
+>> hugetlb reservation to access zone information to ensure that contiguous
+>> pages are not allocated across zone boundaries, which simplifies the
+>> hugetlb code. So this is a preparation for subsequent changes.
+>> 
 >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> mm/mm_init.c | 15 ++++++++-------
+>> mm/sparse.c  |  3 ---
+>> 2 files changed, 8 insertions(+), 10 deletions(-)
+>> 
+>> diff --git a/mm/sparse.c b/mm/sparse.c
+>> index c7f91dc2e5b5..5fe0a7e66775 100644
+>> --- a/mm/sparse.c
+>> +++ b/mm/sparse.c
+>> @@ -406,9 +406,6 @@ void __init sparse_init(void)
+>> pnum_begin = first_present_section_nr();
+>> nid_begin = sparse_early_nid(__nr_to_section(pnum_begin));
+>> 
+>> - 	/* Setup pageblock_order for HUGETLB_PAGE_SIZE_VARIABLE */
+>> - 	set_pageblock_order();
+>> -
 > 
-> The removal of set_pageblock_order() from sparse.c should be moved here as
-> well :)
+> This does not seem related to this patch. Otherwise
 
-Will do.
+Right. I will move this to the following patch as you suggested.
 
-> With that
 > 
 > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 Thanks.
 
 > 
->> ---
->> mm/internal.h | 1 -
->> mm/mm_init.c  | 4 ++--
->> 2 files changed, 2 insertions(+), 3 deletions(-)
+>> for_each_present_section_nr(pnum_begin + 1, pnum_end) {
+>> int nid = sparse_early_nid(__nr_to_section(pnum_end));
+>> 
+>> -- 
+>> 2.20.1
+>> 
 > 
 > -- 
 > Sincerely yours,
 > Mike.
+
 
 
