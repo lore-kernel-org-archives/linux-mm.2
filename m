@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48D8AFF887E
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 15:31:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04B0AFF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 15:32:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE47F6B0005; Wed, 29 Apr 2026 11:31:57 -0400 (EDT)
+	id 6ED5C6B0098; Wed, 29 Apr 2026 11:32:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A950E6B0098; Wed, 29 Apr 2026 11:31:57 -0400 (EDT)
+	id 6C4906B009B; Wed, 29 Apr 2026 11:32:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 983B36B0099; Wed, 29 Apr 2026 11:31:57 -0400 (EDT)
+	id 5B4606B009D; Wed, 29 Apr 2026 11:32:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 899A26B0005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 11:31:57 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3161F1C04B3
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:31:57 +0000 (UTC)
-X-FDA: 84711983874.11.C37193C
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010007.outbound.protection.outlook.com [52.101.56.7])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6091FA000A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:31:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EfBQURmv;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 489446B0098
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 11:32:11 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D78511C016F
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:32:10 +0000 (UTC)
+X-FDA: 84711984420.05.2154310
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013013.outbound.protection.outlook.com [40.107.201.13])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D7AB01A0007
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:32:07 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="dZOtrz/J";
+	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.7 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777476714;
+	s=arc-20220608; t=1777476728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sVfr/2s2cblfcwXqm1gm6FaLLK8qes0/WkQi56AxgkA=;
-	b=Q/5t3VbeVwEl2lQ3As6hOfS/F1CogOIV2VwlM6ERJ3HBOR68FhaH1D6RUw2GJafeBe6iz0
-	EgYJyG0EUzzOKVl4p7KLh/eWPhfaQ2xAnyiTz4imSqcF2GRI16EBZyGYHhIWbWVoOgFMgZ
-	ZYjcxnK/wXbttfkJE5gzVVmE6HtP8FY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777476714; a=rsa-sha256;
+	bh=u14BzMTXOtdjVUVuelexl69vYDmW9ZMAahmapfjiZOE=;
+	b=59VJ+S0vQDH2d1ddzm2ikL9q9Lw0tuuRnBCoLxBCf6B5dR0Pf0ecFjKdbQyiZ/33Hrz1pA
+	qauN4JdlJqW9/7OcFV+6qmQ/AlXgjCq7F/n94OnIIFswyjzYlbZIc2PVSpNBZ3hjzBa8+0
+	iaIO9syPvwJh0JyUk3XHJ2Bs6SLR3z8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777476728; a=rsa-sha256;
 	cv=pass;
-	b=BJHQGrO8rEaOoX5VlpHHFIePvqH8kzD0LVH7r/FsukGW7O9hPm4ue79ALhI1B3LcYbbs5x
-	F8BvopDQxbW2JBGF8MVkm5O5EtnLTdOaMqnXBuBt/s09X2uT7bzhvRs6sqT1yzOTokMs8u
-	AStfse0tshjEboO0q0/iciUL3njpkpw=
+	b=nsGpUobUxbByegFYyzeqDeT28pknZE5acQElhDLaGys81Gf8uHZycwlZ4LVkLoiPUwjYwv
+	bsGPuQviinVTBUWZwQOtIwKLLP8t5fGOb8bVMGQwPpePnRuEvvrK/zxqrRnsXdE1jCro+C
+	jjLX8tBOj5C9CJAEzVUgP0p1ynq4D1s=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EfBQURmv;
+	imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="dZOtrz/J";
+	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.7 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qGzK5QR1iaBzR2mBPF0u0vKopkMUAGKySNqXKZWeamoTaNfU363O/dy02tgMZmu2VbUdsCsne6jbe8rtBo6oSvTu5rf6f9BAQsoNWoHIHZ9T3tWGYd39nJOUgsDPwSH4jWzgnU4fBXzO3+HqV0IwOhfo3aC2LN8szVOYfQJaXDneQwE4sxJL3wJB84G72R82Az93TeaQ6sltw7EyUM3fc0zlXs5U57tzY0pVVnvSS11uENrjrXtUSkHxEpQbWLVSdpPCs6TckjfW7yXTXbgWstv/uno2pazMzcyHcyAU9j7fEN66dMTUWdbY+nDz9Kd5ozu6rwrQrjETCx2vDs2V9g==
+ b=etuZhMA4Rnx9SBIt0qVISUJY2jHDfH0yXTkQoqVVnOoxRUpgUgKG28n/G9YCFX72h+HZ5VAySBSqFa4NvgTfcdxpiwBjaYgR1NR0t40YKfllHnA6FosPFryCiLTbhaA0WWdwkoiYq3sYSzUgQZjC6xUa51C7h4L1Ne5iuu/FKf2g+v+/76Go80dIDE8rP6uvyYGgFIx7+XldWpEdaL307z2BPJ5Pi0pHtlM5rl+Lk3x/bcfqsH1QLsD9SLEw9q8cpdVos+ZGzUaWl1h1Y0JvnnisQMZiqvoiiZgRwkjXikw98sXQNdhrlqywyovt6Kh1egL6dHVoC0EIGD7slHHQrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sVfr/2s2cblfcwXqm1gm6FaLLK8qes0/WkQi56AxgkA=;
- b=CjosFomyDeZ41DHE76o/R4ejtxM7DAB9hLsxmUhky8j0QL5O3NFieaJ1/6sQ4N6yP5XPBl8FRW78xXlnBd1IhNXH72jVGrNHTpz9ELG2PD6D1woWaz+qC8Gd0oHLMQBiz1gbFwMC/TvcOzVuTz8xHfp2H0L3h+lev6GscmQtcx6IclEdWrQoeSezLyiiSEECfdavDIi+nW/0g1y0D/zkA1RAKR7ixPKpZWmVWIdmjmd6qaFU9tBl5zg9Ao0ONgbuGA7NfJqmy5ZVdpvmK90kUlDbngoa3GAvKAHqSxO4xD31+u4rSCOlhurNT8WABQrvbQtKKiWUISku+o6pAOqFiA==
+ bh=u14BzMTXOtdjVUVuelexl69vYDmW9ZMAahmapfjiZOE=;
+ b=RuUlYNQipEr1wdp021f5SHG9RAZaCmvLSOClODi4/5GeKd3vEMVAu6ZAdJzmn7YKfHeaB4JilwIqCFWoN0VHdD9P/nJwC57q+HiLEsIkMY6GSkCXUel3GxWLmws7EKb+piW9kKkzS+VV7LtWCfCSx5ZUTAxmds4gi9uHZrvmQQly09KGWECTSc7/xtc0z77xSA0QI9qjVeBH080QYq9Pvix15Sfg7SmVtDlL5nmiWsfUffglbuWR7G2zqymwIYfPICi40KYLvlSZbWEBi5SflAls98/iOw7q7iVcOqgS8qp3egLnI+JyBuC15pU37fJaPHOBSGvF7R2oGCKzWQIG1w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sVfr/2s2cblfcwXqm1gm6FaLLK8qes0/WkQi56AxgkA=;
- b=EfBQURmvZI3XO2oazazTK6LxjQtwcUbZ8n4Q9yMzNfvQiahbcP8fYE2/vsx3Jx1psVsbbzjdMLTtAYjMmmTJ2E0cEf5+5+spRjSvhuLn1FgQYLDmD3x3Bpd4fwGMHVFY5oIlig32RF39lqfA0xJe75CRyqIUEWFirdH6Qxap1G51pxL6fTbQem+3LPcDMhD92s2ctwK1/ei/w6BdzfMGKqm5Czbq9vY8cQSg4YGLy8hAI7+yWE180mKUpIAxifYdjXd8clHCHYpDKdSCD/lW7bq9E4bwol3HrK1a6sTAJKM/hx0lMgbEq0zCqnBXujOqeZ5dMIoPWWBKPFtpuEUu/g==
+ bh=u14BzMTXOtdjVUVuelexl69vYDmW9ZMAahmapfjiZOE=;
+ b=dZOtrz/Jp7rU0uCi2rIVeB8p5TYOtGKW3Oq2HKdw/WwwCGv5Z88qkqQvN0QNW8bI0cxY/QazQV9dRH5QPvS20FkZ5xxsljZQvX8mDDW1g5r1sM0ha4yPdjrPBdyOOfXTWoEbi6RjVyXjK0UBQoLFjLCK1eHCQc9Z79Ncik1SPwDLKM0bERJZ35qvr+5GeJVQs6iW+Bq/j40WAFwQ2er3I+ew1uZIHoFP2h1maNHKsdYGLbvGqx4cQFsyDMEE/h4nl2jKRFLqokO7iwDiiA3abg2QXmS/NEtj8gYb/8USAiAIQogytKHuE0DBu8S6xM+Q+6wymjpLJFMQmk0AqTCKUQ==
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
  IA0PPF12042BF6F.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bc8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Wed, 29 Apr
- 2026 15:30:29 +0000
+ 2026 15:30:12 +0000
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9870.013; Wed, 29 Apr 2026
- 15:30:29 +0000
+ 15:30:12 +0000
 From: Zi Yan <ziy@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -104,79 +104,79 @@ Cc: Chris Mason <clm@fb.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v5 04/14] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check in hugepage_enabled()
-Date: Wed, 29 Apr 2026 11:29:14 -0400
-Message-ID: <20260429152924.727124-5-ziy@nvidia.com>
+Subject: [PATCH v5 01/14] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Date: Wed, 29 Apr 2026 11:29:11 -0400
+Message-ID: <20260429152924.727124-2-ziy@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260429152924.727124-1-ziy@nvidia.com>
 References: <20260429152924.727124-1-ziy@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: DS7P220CA0037.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:8:223::30) To DS7PR12MB9473.namprd12.prod.outlook.com
+X-ClientProxiedBy: DS7PR06CA0009.namprd06.prod.outlook.com
+ (2603:10b6:8:2a::28) To DS7PR12MB9473.namprd12.prod.outlook.com
  (2603:10b6:8:252::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA0PPF12042BF6F:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a0785c6-456b-4b77-3974-08dea6043ea6
+X-MS-Office365-Filtering-Correlation-Id: f329f1e3-cc6a-41ea-c0c1-08dea6043471
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	hnP5P7LGQQ1kI43zOanOgGXMZMMWdovqwl9Dhg4PEWO1QrNj3Yww1vAJbUdENzwI+5AuRRh2qHy2uzfuYaLhSVDA37cl3uUa8gkGMWNigXaBC0vTOziysbsGXcJPDK8iSzRy0g2y41nXwSbDHZGshx69Gc32LHamLeI4QOvZiVXv/dEkMX98qJ/ggL8z/9oioK+KhErtoxsKYQwWeJBYAH+efyu0lC4zmDAFRJOhMMzGt4eLyBjlp03ykjhggMuBM6Ylay9wKg42+pxA7i1LlqS91avAc6ZHBlMuawrQSoHmAwHwn2udxLPog8gwuQJsKeYuLel2RDwBxY5MHf4rf4Rqy0h9s7frlwe6TCy5tbOgWfPgXS5jhOpt5mpZbxxMh2yEC4DEpB7oJkwvPdI+DYM5v5q73HxVLs9gT/4mX3/K9qCLhsddGKEkWzRyCJgeTRCo4+omtF4GnAC/4UPMGoBYRbhZc9JyPpPQb+Nowetv1KsSjS2KjnAOMCxq36VhMe813hTuElvRsHrdwlPEHwvNAByvuud1bGnLLf1V3aPEmkWFnbjy3F5pS0FmaAAOTtvEemN0HkrLSfS+SBQQtcrQFvaSO1TWYlD9NFxWsGG624E00Lp7vid9UGw+x+b5X5BZNQD8Mpj6jHHt18+uKgqmwuED2l+JvaoL546qTSxOCcCsUlBUzlVaU/PE0jkn1H3EhEOG1h06OHkwdQcK2ClC/OV525NZ6ofjVYAkHC4=
+	oBeE7Yn24kPgQWmwKMuIosvcKdPLrKHmd6HM/Iut5QTglgsJvEqIy1T8x9RK9ROEojrerjeoQwNEp2PIpvZUiW+mg8SMv/9Z1xDuBtyiPSz127tvcVrNQnXpqdc54t8ZMaJNyyajUSgzDsUZdiH96S3CCSN/Iiq+o3+IGu87w0nVbBODbOqTxdUZdcZf/0Ays3GVN9xk1cKukbVuQ0yrXOrRNNOZXZRm53YaRrKDrwGAaTnViClMaYfv3kDK7KKC44cZFQ7lWa6KmEwEYt6kuBoE9rUYf7v9pVZLUbzHlZEU4dhlyegQKk+R9NQPY9tVvvSImJDAXh7HOIchpCWHlHUsTpTf2G/ZlQvH0djblcmPJmN3pElJRfc7vNEU8EJfHs9X4jpNGnMICTlM2dNJtaL69w1FPgdTw1fMDl5T8Z6RCDCUH15VwNW6XHZO5LHJQDerLAY8dYP4tknujB03q1qmbpeAFJpSTAZOkaQs8wSih+p8t402H8H7tYrmx/b7K6HOyXn0nabGtj02fPSCv0/6TzMxg1Zi3cAWSrzIiB0pwygAfb1kdBTYOhL6zvrd+sX9i5H5N+Fl442Q5FGKwonL5dq27g3shaUVqEhrcr2PQ6BC9oRA4GmSOPmkVciOOx1+M4BrsbrlnN2nj40SuBRcpZgIBKSus1vaT5eNgoKfR05eye4wTx6r9A8Uxkr/7s/KG2h3Fy5Z8b7hCYYT/0vjdds63uYwNQq79AV6GQY=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yEsFjBeb3e0MeaAkV3g24pKL50cPPthVjf4+JFDUMfhVG396W0iczQwM7xT2?=
- =?us-ascii?Q?Du6Mzh1hklLm46QJJuzxPatlRYofxbuVV0wL1Be3Qj6YFLqqFuTnh/NDVoXA?=
- =?us-ascii?Q?0XKfTycCvDBB4Uszlgy82dGY6Ox5nxU/bEj/OftmUVZIepnQ9kZJxLZIXKfo?=
- =?us-ascii?Q?8oXgrcVKCoaDybxxww2bC4q9IkFceNcm1CDA6NQwQPLigA4p+HpRIhOgQZDj?=
- =?us-ascii?Q?9qryK6FHbqh9IKE2s8mgp1ImfslOESS+8M77JEP2F0MjNZuDnt4wcBG0CUVq?=
- =?us-ascii?Q?AAmIifxoAQ8ENYXzVjVrVcY5n6bns2dduxi1FdPmwMxSq1zQeHqPhbbDraMn?=
- =?us-ascii?Q?s7T0G0hLTXDN3D9tzRlRSBfr9eQF9vg3N3MWOs9LSUhkHYjy23JbDn0QJkAS?=
- =?us-ascii?Q?nYIiTZ5u4AyeVHAwTEap7qTWeo7Pa/dCZ9kuFRGeUWQShcoWfsc7qo1kKoeu?=
- =?us-ascii?Q?qwohceqUIvw11lrX3r8obj69owA5VpL11usQAq+GA2bEEzBU5l+xcx+fgj+/?=
- =?us-ascii?Q?dz9cdTs9XCQhatq+hwbWzZZdY6uF/EmbgUnwED8B8+eqZjvZLEcao59dvvdX?=
- =?us-ascii?Q?1J44JcgnSFUC1UaIizbeKhFSqefSW0+NBW/M3KJ3MFOiekPV9qwyVbBWaSGd?=
- =?us-ascii?Q?vXigbZTgNk6+YZbsfRiZGYro+Mz0zx4YR8hh6uOqJuPaCfhOk7eNUlF6vp71?=
- =?us-ascii?Q?/N98I0x573sREa6H/s2ySpy/inaYd70KfBdUPdkgtBBZBwPTfSXi8lNBo+PX?=
- =?us-ascii?Q?CkPLMpr2GKzTHojaJscyZimKzxwZoMrKnhsUDovhUENJ/xNNBoXv5gJbdJ3H?=
- =?us-ascii?Q?Gzs3FgvTPqjzFc1JvNXOYH/e7WQU2GQFYC/2swbWhKUeDrIJVeHy/Hz3yo2t?=
- =?us-ascii?Q?6SVKlQ1kRHm0IeVREcyCE4skN6rgBQt0UFROCzgaTDWwW03mtWxioU03Lss9?=
- =?us-ascii?Q?u76K6JahrOUnt32Q8WE08B9Zidr+v+1jGmPYFGi4SWTvPa8yM+vhCk3ZLVgP?=
- =?us-ascii?Q?PI0n/+WtZs4A1xrm+h/hhApPXdMjB3RWXhRTpW+3OPBUAAQmFYbH6eMsAODW?=
- =?us-ascii?Q?IRAOICJe2ABIMyBHDEzzQTAATs9/iTQlo/1E2BLeP0mOBQyBN6PfufH1pSvn?=
- =?us-ascii?Q?7VZK59yMff59cnDLcXjQn0R62epm38pCRYB+GC8oYD28L6veA2Fn0f4hQn2D?=
- =?us-ascii?Q?PiGzV7DI+E6r+AwTFhYEtozvFswvhbBONDkPdQCNbwxAX0kCqJ3xHd9ioJ43?=
- =?us-ascii?Q?DjUfJidPdkZrHFxqT+aKSLk+I9OigRHb5QkABwur1wvj79yYLLnUats9F9zt?=
- =?us-ascii?Q?Yb9rCCKXeVm+f85p9IzJUAPD5KmZp/tr3PQoWQBfrjA/67LNeiurWF+h2hsO?=
- =?us-ascii?Q?8Dz5i2Yz73EZaGRN8LJ7nlGSNS28iRtRKu3Y1T/gQmXIqH6i7tKsZMooA2ew?=
- =?us-ascii?Q?4x3GqPZBR5YnU8Gm9k9/733gKqlhVl9o2jpwto1+H4qIFG/N4jrAlDbx209G?=
- =?us-ascii?Q?vhjC166LIXxYWcCklfnw4hOkuOW/yM8lBe1nlWbR7hex7Zi/qbV2ipeMN7qf?=
- =?us-ascii?Q?B+R8BnCmF1XuiHuswLCAQVERC0ny0n3AtIeyNCSK65qv0L59iCbNA2c3twOi?=
- =?us-ascii?Q?KMqpqEPuos/dxRmCEPvuSpoXT2bNRH4hMMkIJgLDOaAeUK5fMP5FTzlGr6Ce?=
- =?us-ascii?Q?B16nsDgWrf9htSB3SBhLmHdujzL3np5WTLv3M+7PLuXx+7eT?=
+	=?us-ascii?Q?xJVQZkFkj/ecCdCWhwvPFB3rLUsub8huRtX2RzacQYte5nCT7pqwY+cH8eCE?=
+ =?us-ascii?Q?bJsEKVh2vIkbMgARuZbh8ZFD8CwmCTaV2M5HysoYYRxyKAJcftL9pkyb0BHQ?=
+ =?us-ascii?Q?Jo9pgJF/V0TvS77xts37XZQvqr9EheCrkEhqtmANdSoSjoeL3sry5HxKic7n?=
+ =?us-ascii?Q?K7fPgjl1g07eymk2r213zCd7JrvxTr2u5EHSTCWl5infk+htf/snCrPbO+1E?=
+ =?us-ascii?Q?EhzTtDXMGeo1f03Iygt5Tbesb3zgft31DS2PASCR4xoNO6tOPp4PZHqXKPpd?=
+ =?us-ascii?Q?bl/+BzK/WcDirMsyBxKNi5eI+CWoSekJQr92OJ3K6ebEWeIrF4hPmUPFxhud?=
+ =?us-ascii?Q?rhSB218ENNMswOjFMWPujk6wHYFjVz33QmPT7fy/FsQKUHqkceHoGCkI/nD3?=
+ =?us-ascii?Q?0zl8cMY5OH08eOAudAZdbCa7Amo5rlOpYmcyNKQ1jQRoZxUnZrnaGeixeAcs?=
+ =?us-ascii?Q?yRimRFTQTSQg2JYaZd4/0hHNrkIVzWsXPryF38spPkCkHcL0pi2pNFHWvh7Y?=
+ =?us-ascii?Q?Dpuj+oH0XfaV9NueLI13ltcrrIcfRy1s7u4Jhl/Hyc289RnkLaBf7DN5cO/i?=
+ =?us-ascii?Q?tjatBGcli+op/oobnPjtTFlPJDG3GnAduTx49hW7l5tkGCDjEY++YQpmvQye?=
+ =?us-ascii?Q?9k3PWm8ooIuDWfZP4NVRlt7ury0b2NanLMP68I18kncZOg60GiBiFPI+Hsds?=
+ =?us-ascii?Q?7eC8uhASP/gHIHxq7Euhso5WLzkjtVZZY5bq3qGpdmGzRQBr7GydjCOxMvy5?=
+ =?us-ascii?Q?FZvSy18aG76XGufpEw38quAwQ1ACpSUNHIuCuF5mzGCblxrmqQ+DVPeaplV9?=
+ =?us-ascii?Q?pytNEolAIAl8r4de1bhENkW8WrjS9lSqcNBqVn8Mk96cARThaeSd1JxZnxji?=
+ =?us-ascii?Q?EDDvcwTZMf3thVKDv2XXPrN88Aw/VUOuOPvdu1M5v8g/gzgXm+oPPI7YXNV0?=
+ =?us-ascii?Q?wZ2hPJvBVMxXcEFsGjtxqbu3vkGMur8iUMtBZx2WK5IrbZR/q4TIcbTr7NkC?=
+ =?us-ascii?Q?wjae15WDVZwGJmvvxpNsYuqcqnRB2yItLqFJAHYxW8YchW2JQCPeHJ0tLYNd?=
+ =?us-ascii?Q?Gjfe/iRUY8MUzj7hgY+2zGTYkF3oVWwLoUYL5G+ifs/I1Vdx3lKf5L0uOsQG?=
+ =?us-ascii?Q?rlBrlcPqNMzfjp7YHvxT/F9OFs8TWBiXer1fhXqKYyorpDDIUupTpy8buRxh?=
+ =?us-ascii?Q?KIq7TB/nONBkAwpFkZHdxmPB7fG2Af+y+pTZ3uodI9Arg0k9d+zd3TkcoKnm?=
+ =?us-ascii?Q?+6ibCgD+A8pdxV7J/zI/8DnivQvKvzAi9EoqWNWmyW62WavmCHlztUSh+349?=
+ =?us-ascii?Q?dFXhX+79fYmiSczitq2TSP/+pzFlWy7ndDJ5nhqWv7s/vUQuOMDG+8upbKVD?=
+ =?us-ascii?Q?UZS27GwD6Cv+jB3mdDDjV+DduBtJsxxKcM8RTLui6HgeFMSWYocUK6Rw4orz?=
+ =?us-ascii?Q?GAIx8XjNWZO/gXH6ugIbPm4rtZBxCKGNwbhkOAxHOPDQ9lYJzLFYo9xG5cZB?=
+ =?us-ascii?Q?U6FwnOx+Udrw9FxunbXd2bLJG/Sa0sXne5wRQ6p31pvlgC+CsMsPWEq6KtrR?=
+ =?us-ascii?Q?EEhibib5H+3K73gEp5dG8nDTUJ7YloLTU48UwIa8qAbPhavmqkx+ocVIWfbR?=
+ =?us-ascii?Q?qeOYrvJOwhRZkJMrebP/DE/8aLkj+lpR+x0ZtzxFO0RROzlf8DcsfPPSAFUr?=
+ =?us-ascii?Q?GWcKKTiGXrf8c0MEEz9Ua0Fifru/5lrRfvNLTqIx3zbbp7f9?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a0785c6-456b-4b77-3974-08dea6043ea6
+X-MS-Exchange-CrossTenant-Network-Message-Id: f329f1e3-cc6a-41ea-c0c1-08dea6043471
 X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 15:30:29.5408
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 15:30:12.4631
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PqPFFdIk0vaEzkD/c8FMwSSiuGc1Us2cVp3TQZf0AvCx5tTAmD5H3fivNpqnJPNx
+X-MS-Exchange-CrossTenant-UserPrincipalName: QIOTvo4eKi2R+PJcOCynBHy249Crs1SWu2o8089ASEi3/ccCLXShq92qN3fyMuXL
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF12042BF6F
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6091FA000A
-X-Stat-Signature: zboznso7ebxig875u718y8s6qaf1fwd9
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D7AB01A0007
+X-Stat-Signature: hqxgee9abb538ijgnmt1bgqmh5qj5fk8
 X-Rspam-User: 
-X-HE-Tag: 1777476714-51444
-X-HE-Meta: U2FsdGVkX18nq9HSuq/FaUV7UuWa3ihaBrrM3FjkLZwB4rrNQsGz1sO5LhXMoZFrpT7CDxjJb3xDSYFsntcpMJkNtZDBasgAYFujbzjW1B9Vh0EfAxiiw6fhxxImhcnbFvcAW16y0xp4I9P6wltps/Q9hdaXKVM8amdthIM/8N/CkEjmq5Yx2CcQZeqLGzD1W6a/d9ExHsoLtFO0gs3Y7KnJa3duTtUkWMc9Lxwh5AWNNVnPvDph0i86kyNUeJlOp5AbwtJ11XNxPO3kcBe6a9Nwl1UMuHML/jn/p95sBtLDUV2pdDlDER4cfMbU19CsRrSdwmoFGBNBxtOIOaEUC2nqNf8ziBnGE1h0zETIr8mtr5R3VECVwX1kDeHXPEnCNBwMeuQcwgf1Wry8tkkuKJ2Cf2n5mnihKHOxGdM5ew4z6kZCN+WgK6try5+AmF+2o8YxC87cmyyeNJDj+nDsHRiBRklKRTiU/n7gLvq99UckjFAm79c8wjqUsi5+p1YVFhJI1UCfhg94j64tSw23Q/7f3GO6jfkI81qOtyYNM0tHlJVZSreGqAzMTDYKbXrMklXL1vvKSovMRdnHuAnnp69CplEgvNi7jK0Pw4wG2jz01OkoKFQL1MF7NQoSr8QMrlO/OjoG8nfA0dH28Mqg+5dDQTMto+F5nzJcz1Ufar/wWT0GeQcIX5//DsrINw08/FrNborjOv5iwf233XfHMnwZBNfaGzO6Fz5qxonfO3hNFV/YY5OzJ9X6D3XAw/kltBCGktBbXIWmOIAixKRfo8GX+9o/Nz1R5SB3WwVAxx2E/kmStd/nPmzNfX+nkAMesS3DXLnCqZoLyCkG+gOcarePe4mKHyhS0UKhjy/AsmVgOAcjX52ZQIxjpmJ5ql/KCUdw+yawqL7rspXW0Hv41pS00f2738JseH3q63o4hccY098Q5kKPPPlUqrG2Y9rqBm3Wtn+2tXwIxxyMM4m
- 9iF6l6K3
- J8LLDrsn+qpil4v3w99u4/RYLFUxINLhREpMtwc6m9Vdic/+HcY4p30zQ3N11peRr7GdlltvHGs0oTw4uN62HR6TjbRqjyuq+6MWtBH0GRuG1Csmu3xkhos7dJrgcF+EhkZCNxi95N1AJnU6Wsj6dhnWwQcq6JaabyfP9d3Dvbnt3y3642vPKMegSe+nhVrv5qzOxjJHJ6qtN+n4X/75L+wGMoy8SWprwlp+91vO5xRNF9G8zS4nZMI3hJ+iCwXIg9AEKwOkP3e4KmL65i7wsGTB7V0zJ75XjFBbhV9SYgSnEsx+LG4Q2uzZCiYqMDs4A3C58HQ5PfOj2IUA9POOgGPtbxDFmIMyuER9TpG5JaBfXcfPATqgTdkzymENm9evmrnQ1ymbSp0m4t2SMdZGG1hoyBqP764osWAlqJmqVJ9L1sOQpOKbRRLFuPw==
+X-HE-Tag: 1777476727-750824
+X-HE-Meta: U2FsdGVkX18dl4LgYH0Zb3UIBy9uIl/5M94SjpUpbTKtMnSPMkCAA2LF19Qtfefy8qNzJveiWZqVaXSkX7gqtyjuz0sXQX0LTxWcWTD9/cP21gTMT4ZDvbJwPkRvIh2KvPthnq29XuWsoD0u5Gniqf18MhtdL2s4fUk7FOU3hpG20cYTbXRmDS296EsJggdSLtjPQyELmJhLlDOU8Nd/23RvYWyatSBMpxpQcpyvmy/Zeseq3S3xi/YHebD7fNAHKN+ymAWf5F2CW+/iXPBPvMz6RR+QFCb3YAeQgeap8vg3KLJuDrw0YtsA4Nl1Lf81CfbrIweDT3yAWCoIczBTB+zJ1RTbAhsp13rUXTY5yzMFIyWDkugLOoO2gNsJrJRunaMqT3kkURjR4z6uGrpqVXx4a+gKnqphh4SLgqQ+PUgL6Zn/TV4xjCuNGh9R1Y9H3YxlOTB/Ds3XYihL1NhdzSxwuDA16d024juj1PPla9P/DXjarJjm6bSuxaeIXg/X3ZDYA8V+7v7z5/RvqCjuxhE41iuudjZjn0uzPG+VfiPL7SGiL5VZ8I/dSxi6gOHPIRoa/9QZg0XAH8wy0QHL0bfFd/YXWaFLWt2pIjab0lYw3j8dQzq0vY+xJ4eC84QpmLGLtOGVj6mPdMRk3y1WRknP/PubMWYaQ/1IYRawKodHjYk0pZTKVCAfO7fO4Qrudm6SjlRsFOfEK2b4lrf6o2NWeVFDwjs14VWwGVkitFojeSie+quTw0y0UVZ2AeK1bxbfRGEIwmVJZShol7eD3COtW7FnHEQqEuglxlySy4MuRpseQ/ZHJPPnRZmojcMYwMnYpMxcog4KZuvzA08uJEI522y3nd6NW1u6lYozEgsPXuCdW3juo7Q2rEugzHdwjKwTyq/B11ogZXlDZJpTmngNHe9nAdDmogUnKvcmGWCmz+WCvhlpH05TYqsse4LlRaf0VW5hDEZLFGL2jcu
+ OxyBqS+R
+ YV1qdcCYDFLhQkGSd7v/vxAQyrvzI+zbZK1tTUAxNAAojAzxFPb3OGxeg8ucx1ig6bUcrI9ENzq31nyxWLIJUOuOjagiNAfjtqIclwDxLOIEmPTIMaTfJdKaUOAuR1JGTJmW7cIu4L8ueNDHzb/LCB/NzmKUvjm1KZfpmxtk5bJwW4mm3K1hcqVNMBPquIp9GAp3EXSGQnvi1I4aBQkGKLdsJ5YiSredL2kebieWyehpRupMcmxWlSZiXvJe0dW6WMSLY8Eds0XrNVESLi2F9phnwWSRJ6C2+0DYejresDz80pz9RViJ0OLTpvNo237K3KnwRXVvVzouzhDdM1/DPDbstNKkJDqoNHWcKNcruhVkf2zi/pCrQsfVy1Xzc3kZZ49K9IpPzPrVsCBT7jCHb0MBqPsFR4lE89OO4u+OubplwMxWDFAc8xU+BZ0WJipBk9HHne5Wp+IozrLrPpPFGUidYs1yHbHBSAoZsXuWESmw7RMM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,84 +184,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove the READ_ONLY_THP_FOR_FS gate and khugepaged for file-backed
-pmd-sized hugepages are enabled by the global transparent hugepage control.
-khugepaged can still be enabled by per-size control for anon and shmem when
-the global control is off.
+collapse_file() requires FSes supporting large folio with at least
+PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
+MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
 
-Add shmem_hpage_pmd_enabled() stub for !CONFIG_SHMEM to remove
-IS_ENABLED(SHMEM) in hugepage_enabled().
+While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
 
-Clean up hugepage_enabled() by moving anon code to anon_hpage_enabled().
+Add a helper function mapping_pmd_folio_support() for FSes supporting large
+folio with at least PMD_ORDER.
 
 Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/shmem_fs.h |  2 +-
- mm/khugepaged.c          | 26 ++++++++++++++++----------
- 2 files changed, 17 insertions(+), 11 deletions(-)
+ include/linux/pagemap.h | 26 ++++++++++++++++++++++++++
+ mm/khugepaged.c         | 10 ++++++++--
+ 2 files changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-index 93a0ba872ebe0..acb8dd961b45c 100644
---- a/include/linux/shmem_fs.h
-+++ b/include/linux/shmem_fs.h
-@@ -127,7 +127,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
- void shmem_truncate_range(struct inode *inode, loff_t start, uoff_t end);
- int shmem_unuse(unsigned int type);
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && defined(CONFIG_SHMEM)
- unsigned long shmem_allowable_huge_orders(struct inode *inode,
- 				struct vm_area_struct *vma, pgoff_t index,
- 				loff_t write_end, bool shmem_huge_force);
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 71209a72195ab..d6971ada8f199 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -524,26 +524,32 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
- 		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 1f50991b43e3b..1fed3414fe9b8 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -513,6 +513,32 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
+ 	return mapping_max_folio_order(mapping) > 0;
  }
  
-+static inline bool anon_hpage_enabled(void)
++/**
++ * mapping_pmd_folio_support() - Check if a mapping support PMD-sized folio
++ * @mapping: The address_space
++ *
++ * Some file supports large folio but does not support as large as PMD order.
++ * If a PMD-sized pagecache folio is attempted to be created on a filesystem,
++ * this check needs to be performed first.
++ *
++ * Return: true - PMD-sized folio is supported, false - PMD-sized folio is not
++ * supported.
++ */
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
 +{
-+	if (READ_ONCE(huge_anon_orders_always))
-+		return true;
-+	if (READ_ONCE(huge_anon_orders_madvise))
-+		return true;
-+	if (READ_ONCE(huge_anon_orders_inherit) &&
-+	    hugepage_global_enabled())
-+		return true;
++	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
++	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
++
++	return mapping_max_folio_order(mapping) >= PMD_ORDER;
++}
++#else
++static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
++{
 +	return false;
 +}
++#endif
 +
- static bool hugepage_enabled(void)
+ /* Return the maximum folio size for this pagecache mapping, in bytes. */
+ static inline size_t mapping_max_folio_size(const struct address_space *mapping)
  {
- 	/*
- 	 * We cover the anon, shmem and the file-backed case here; file-backed
--	 * hugepages, when configured in, are determined by the global control.
-+	 * hugepages are determined by the global control.
- 	 * Anon hugepages are determined by its per-size mTHP control.
- 	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
- 	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
- 	 */
--	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
--	    hugepage_global_enabled())
--		return true;
--	if (READ_ONCE(huge_anon_orders_always))
-+	if (hugepage_global_enabled())
- 		return true;
--	if (READ_ONCE(huge_anon_orders_madvise))
--		return true;
--	if (READ_ONCE(huge_anon_orders_inherit) &&
--	    hugepage_global_enabled())
-+	if (anon_hpage_enabled())
- 		return true;
--	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
-+	if (shmem_hpage_pmd_enabled())
- 		return true;
- 	return false;
- }
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index e112525c4aa9c..6808f2b48d864 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2235,8 +2235,14 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	int nr_none = 0;
+ 	bool is_shmem = shmem_file(file);
+ 
+-	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+-	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
++	/*
++	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
++	 *
++	 * TODO: once shmem always calls mapping_set_large_folios() on its
++	 * mapping, the shmem check can be removed.
++	 */
++	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_folio_support(mapping));
++	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
+ 
+ 	result = alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
+ 	if (result != SCAN_SUCCEED)
 -- 
 2.53.0
 
