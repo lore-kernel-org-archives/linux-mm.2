@@ -4,131 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 070EDFF8873
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 21:23:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2FDFFF8875
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 21:41:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FFF96B009D; Wed, 29 Apr 2026 17:23:21 -0400 (EDT)
+	id AA0066B0088; Wed, 29 Apr 2026 17:41:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B0B96B009E; Wed, 29 Apr 2026 17:23:21 -0400 (EDT)
+	id A50BA6B008A; Wed, 29 Apr 2026 17:41:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C6466B009F; Wed, 29 Apr 2026 17:23:21 -0400 (EDT)
+	id 966566B008C; Wed, 29 Apr 2026 17:41:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BAF36B009D
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:23:21 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC1861401D7
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 21:23:20 +0000 (UTC)
-X-FDA: 84712869360.20.08E4CC1
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EBCD6180004
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 21:23:18 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MO1xwi1c;
-	spf=pass (imf24.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777497799;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 82C8B6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:41:47 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 38C861A027C
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 21:41:45 +0000 (UTC)
+X-FDA: 84712915770.17.3A896C6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E84B6A0003
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 21:41:42 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="gtFP/9KM";
+	spf=pass (imf15.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777498903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iD+JgyZ1kFui708npPl3N3ndnfNMh1rEfRmYOE4MJj4=;
-	b=Ajoy7aw6suEbU3YDWsf60tFWugbDpRdF+tZfYVq/W/4pn0N+lGdctLKULMnsCTxOBURJT2
-	JCHl8JCuGJtpmdJ2spaOQpUFl9jQtwwPm7ddKRpccwL1c32Fe9wCRn3Ps0HKVlHhjAeLr3
-	LCdAUwbwjjzuJBTWamzbMAwPLsyw0X4=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MO1xwi1c;
-	spf=pass (imf24.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777497799; a=rsa-sha256;
-	cv=pass;
-	b=xGJE99PofjE4cA0R2bBLWeORhrgtJbI4TobSl/IbZCyVvT7kbqnumlyAqXgBWbrkLGx6D4
-	xlQCE2ahoAW2xBmeBfpmMc1/VGjo8mPZlg7Db1x2P2BSKoI0+wgP7sQ7EMSK1WOpQT9x5u
-	HLj7h0iB0vKzAszyhJ3BF/gWxExRRBI=
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-651c366f7efso248430d50.1
-        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:23:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777497798; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KGsAWUzVdm1f+i1LMN+iP2tHhv3ApIV6qwlxMF0pXAzV2GO7WZYEtEUdz/yWFvIaG4
-         f9X/nIH2AB3l0rJclRHX4NwyigPmB3DygrED4ozlLmCUMZ8pGYlWnmo4h4Tj4Qhc8ttW
-         SLysPF1f4LK/ZSEQYAOIsRwR+rbUb9WmggvSAV/KfUlSCA1UMzXaFP1ibP/ytFAIzUf4
-         vt7NVMdJKz9tiy/7J88FGr3+nbv/y5wY5htDrrHEF0XOpZs+O5KNpssuQGmzQ1C6GDzs
-         kUCEUTNiryHR74gDvuACKrjzHv4JvzmwKOI0c5X3SnxLRGINeWFragI9oP5yg0TV0YFm
-         I+AQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=iD+JgyZ1kFui708npPl3N3ndnfNMh1rEfRmYOE4MJj4=;
-        fh=/BCk806OV0HfW/1QYI5NKaB5+e81Ue7z2IP3CxajZk0=;
-        b=SN+J8xMpcRqJQ2Vmti9vqD92wZcGOw1SgI6jy9obUztL8Jpe+b0oOp7QGZm1SRwO6x
-         dRSBiaN0P0dDo9+XTbxffVZD1217Z07dVSLKINiBxij/i1sD0cqfigQYYJoTApez+CeR
-         WBJUisApRFm3mwPMSyjZp+HRl5WrmPMrQDeyxkR3uweOnTU3csGXkXBYNqEhBNe5BEJe
-         grZqlnLWZlqesGfr+6rtfmPGO0E7j5mnYEdlDYywA4mqVAze+Y9T8fb2ub2dM7ErEpx/
-         cYKmBXEYpQO1hbA0W+LHzy+lcLpAe3rAlQmLnhiGcLy9R1rY9wQkhq2Zy7rPKhH9J3aT
-         LiSQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777497798; x=1778102598; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=iD+JgyZ1kFui708npPl3N3ndnfNMh1rEfRmYOE4MJj4=;
-        b=MO1xwi1cDDDyKZb9AA9I7o87b1rPwLkdhw1ldCXISQ6WnDqDWWeeB/nbxUvzXT9TYj
-         LYQZb4RSwB2tgCwC4RHmEQMUctgoiXU/dzGSRfhFGXQBzP/uOIdxZmTTKMzJoJxrGHet
-         4BDGsT/8AbBBlFMHMLKsX1VQ5Ml3Ud0ZASqy+9rYrPal+OzZLFJGyfA/KBTIqOZaUei9
-         5ZtR8MwGZdfpjSTRHDlvHpgLT0lD0+ITN1wDR50nVu5mtGUTCubVtiHzqf0qbPNDJIN7
-         RDNBUljNT8ENLLGOenUMWeGUH1lUHIWRjtAEaaN8+YtFvuQzNYIGuY4Nv4M9vrYD+dzv
-         uWxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777497798; x=1778102598;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iD+JgyZ1kFui708npPl3N3ndnfNMh1rEfRmYOE4MJj4=;
-        b=EpJ7ydsDNP83eTxvF2y7RarslO7dShYrfFCtmTlWtaTcGS98RyRJ4z59fgqCaON3iE
-         m3s6MGNV6PmjSpQQhfL3jGzlIGb5fDU1lvBpr0f8R60QdUvAS85OYaE1qeuiXPnaXmDI
-         KnO+1aBK7843z5DpDApVlXXNrryuQNW92v5fHhoBRE5JVZkOiBIAwe7hj3jQflXszZjs
-         0zrYBHa74c3nNhhBqR82iZo7vK5BI7Y8WCGCCATrNY5+RnhxE4jtAv49E/ReEf25PEXA
-         PRvpjc0ajtfw2O9Um6/c6mEPcZISW2i65ugj0b1ydRweSOsFudJZJXQn5vG9UV2wZjxT
-         Fblg==
-X-Forwarded-Encrypted: i=1; AFNElJ838YWpuqlK1SbAJUmZAMy8AxpFTlAwdfP6jgpMHXUwQJdClMLMzQGvZizFS/T2nHGOzkpt9ua0+w==@kvack.org
-X-Gm-Message-State: AOJu0YzUQbM/Egp0untLgpL8+hD/u0DPsP2j3xz4PuY+0HS7aG36FoOm
-	qzZ2SpHJ9F4IjdV+P2TtihlECz4L5OaQjwBmpOQcw5JYlSH3aYo1x3/56Dmy9QBNTzmDC0uotXQ
-	egWMKJxvR6sp1XrX4A+J7XGgKwqZJQr0=
-X-Gm-Gg: AeBDieu9YN55ApR0lJktWS1RPbPqN9eDUgYZiK9gEIVOBBRVgZobIWVhOCDITh747rn
-	MSaGNFjgy889OiSXxjWm0z1Iis7ylOb4I1nWxewHWdbR80Ye5dTFotgUrlvESWfkHrAvt9Z8ZF3
-	7oGGgX8r1R0g4gQzH5hI0b6yG5Zn4cGACVD36UlqnVgmSA2XwPGUvv1AnHF93pUHRJuoSYnRR+L
-	eLiTIdYBhj6u9AyyoQkXrSGPb9sxQh42CSTuxq3LTD3g52i6J6miz3qePd/mO2I74gdUf/53ZO6
-	FNcWf7naPmG6AWILjVftVh+d9BtIyd39VuoJr+tBkh/uvWLkA44dkU+ukUqXdKo=
-X-Received: by 2002:a53:d059:0:20b0:657:e42c:ed01 with SMTP id
- 956f58d0204a3-65c18f47ddfmr17777d50.50.1777497797960; Wed, 29 Apr 2026
- 14:23:17 -0700 (PDT)
+	bh=VLMGfClPswcI0gsxCTX5OwwaVtVPt+QfEvaeTz/tYgE=;
+	b=3IeRz+QJtyz2XHQopicIVk8gmNX+N9cr5M7Mtsi6dZW029wcEGeSwL6KATDUTnSojNO4rg
+	aQ9UPU1mF94JCIUA0mmG4PEZZ4v+nAbdeOP3KTdRDbszH9lg7j/Z3LPvbn9S6ksIzOs/Bb
+	GbUet+XL94z/SobdKRYMZsW8J6oFUr8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="gtFP/9KM";
+	spf=pass (imf15.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777498903; a=rsa-sha256;
+	cv=none;
+	b=l1AsVMq9y0kl54UTKu8bVi4QhIFu6zkvIjOIg+r8laTHw0gN/XAa2mb3KaVLusHBWjZ6rk
+	xFHOvRCos6asVgFhROGoaSrqh1vh/raf5tag4umAmiu6HizR3lQeBNbbg9lOikzhGp95wf
+	q7VM4N6xmpohF8ukHtdQVDzOj5HLWTA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 32D6B6024D;
+	Wed, 29 Apr 2026 21:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802A3C2BCB3;
+	Wed, 29 Apr 2026 21:41:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777498901;
+	bh=XOibkyLy0IVe150xVr58dFt6tHTML3fQOpFxcRHSscg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gtFP/9KMtfCIdMN59rmE+GGWQgKK6XalKGSYNc8W+mO5uIwxVSZmWUJmSYDnqKXiD
+	 0Vwz44wcQfX/oIfgjgTnDcKDMBCCIuFYec4HbGobONXFWKtFcx0vDyXWId5wODvW9p
+	 RiypTm+y98UiIOc5Ul+X0IOV8GXyD7gliZBZu0aE2hAXXmRPirHJpNRVrE2Hn3bmQ3
+	 Gq4KedknY1j3/fBtOXTwuFigYB+VMX2t3NnHDKue2TlmTq4P1pa6fwzJqIOvEzpKsN
+	 lrBVsdDuILaUED1pLifUwWYEPntH/Pt3ifDNRpLDPu48T3dR4dJeJhTaf09xYk6Uh0
+	 oi++eFuWQ3e/Q==
+Date: Wed, 29 Apr 2026 14:41:40 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+	akpm@linux-foundation.org, hca@linux.ibm.com,
+	linux-s390@vger.kernel.org, brauner@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, timmurray@google.com,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
+ exclusive file folios
+Message-ID: <afJ7FPkNK6cxUxSe@google.com>
+References: <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
+ <aevBRh08X4UTMUj9@google.com>
+ <ae8NT0tLt7eBmH6j@tiehlicka>
+ <CAJuCfpHQdA7C50V2WjNrdYcp7feV5ukgxJf+vMNEcp0P1SGEow@mail.gmail.com>
+ <ae-Zu-VAzAA7SdLa@tiehlicka>
+ <ae_roPR64e6sY_fN@google.com>
+ <afBaJLLFigkdszov@tiehlicka>
+ <afFco71vwmpQy3pk@google.com>
+ <afG-4hq7Hr62Uu6J@tiehlicka>
+ <7f98f461-62a7-455d-a7a8-cb8928465946@kernel.org>
 MIME-Version: 1.0
-References: <20260423234753.3873095-1-luca.boccassi@gmail.com>
- <20260423234753.3873095-4-luca.boccassi@gmail.com> <2vxz1pfx4yxk.fsf@kernel.org>
-In-Reply-To: <2vxz1pfx4yxk.fsf@kernel.org>
-From: Luca Boccassi <luca.boccassi@gmail.com>
-Date: Wed, 29 Apr 2026 22:23:07 +0100
-X-Gm-Features: AVHnY4Ivtpx7aa0gXmToc851I5UQ09wVjAcX9BsvF4cWKvg3LGIFCeYqlWO3iFc
-Message-ID: <CAMw=ZnTbAZh0t3djk7F49z8fDRZLMtPbBVchh_rJAq9aQ41H7Q@mail.gmail.com>
-Subject: Re: [PATCH v10 3/4] liveupdate: add LIVEUPDATE_SESSION_GET_NAME ioctl
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, rppt@kernel.org, 
-	pasha.tatashin@soleen.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7f98f461-62a7-455d-a7a8-cb8928465946@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EBCD6180004
-X-Stat-Signature: jh87znqw1upeba5x95mxxq46mqosxzx4
-X-HE-Tag: 1777497798-308579
-X-HE-Meta: U2FsdGVkX185TFEM6HejiiZdmWeijACbO7rVxoGu8cP/2cTlKK+HS4GKOUaAb+8DkICQlJQu5waXkIg5087uXS7Yj6Z2nHNSWagM5/3jCHZLQY7UaIm4NxLLGEXZWwHhOkVvcFXwgf4uuiWAGXPygHzWjGOb6jHMFZAsOZvGlzFjS/aWIvrxq+g/GMQnUci4js6PhGkD/Ld/Uyv15CH/rTkpAGHW9TIPXX+2C5SEHT4q5/U+B3qHH/e+e93NPLG4JmM1czs1Ne/s+hjqw6eBvCfIyuAHDeEJwNYMc/HGOnGtywrTzoOmY4P0XjUPaN5l1k40aoicWb6myGQwvKWXozMZS0R6PbusZZgzhnt0zEP9plaFROOZol61LVm+w3ht50lQPdmP9GavnxSxJSoOHZgJa7zX+b+LtMIKX4ihku60UsSa141ohuCtcqrVcJwdHrH5r14EYp19VsfqtJV4e7g3/uSNZ6yVQ/lGVNgm2CRdCt70gy5mZtTkBFW+yBJukPxwsKviNoWYA/GAiBFc4wxhXNBUwWzSe+TmrE+gibLJ5LGHFkEjAV0RE53H9MkkCtaSGx3rruD1OiarzuGANXNTLTqqUtIaZTvSle6alAdQtfUfFQlYsVsPOQtRoaEIfgSPGyc/frHoKXrstnF5ArD76geg+HYjYUIipP5mS7AkMCzieuqKECejWsHOl6TlCZZIlMahhr7xhEzeBm3DWBasRupXHg6Wmhozx4PGJ3xXv2Jfgh0nOEn1SpFWqh8GThCG6CROp7NqIcXhsUAhYDWaU4w91DzpY6nTK+lcctwlQkvYI1JO8IseiTvzYJOsz3VyF8+d7prPp7VkaVnuXgFi+TRELq6AvK8/nSOIJbNYirapxvPHMElX8SvsZtWemQRIQNqkOZKTu3t8EhmRFN5IvcYQ8pti57Ra5B/J8mMpICr+eso7VQ8tpZiUzLtYxvHsrbeHtylVbyo/XW7
- jveoNoPG
- 0L86dJiSN6dqy0tsWyGokxiOI0OOnw1OUdCnLekbs40pR80xtaiL0jlYOBLvbzxKusJgQ0CQptepk/a082YnejrIlJfiyk4UHZlAzw2v8gw/lygpsELi8cB1xAvTMxuKEtnWV8RZSHGkObRoqAiZCH+urKQUL6DM9GZvpTb+OOky1q77PgFkNMWWV7VQbBH3iCsikxMHDhp8F8hAupDhlFNG1x1rruXtAvrGCCMPEVPpar3N5xlCq05YunImmlnh27a7hOI24Zz3AEhvvYV1JrkFCFCZDWSVQ85jCvGlyRLz8+Wg/f/Cpqoc8gScAHK8Wh9utQ0t3gn/zLWnGMwc68SxxXFH8to+kHVVgtk9QXFBDEc9c9bCd2rBnH+omHoDJLTJhOXrGE3CWO4LYFgC8/GeuGKDg/f3piLcYuJRASfKuKJ/E/xFPDDj0yE0HaSO5sKKypU+JAqK6rrMrQTssW1T3uGU/hh9y4qbUR4ipCjjz4qQnW9mv4gkcI4wnuXYXYyUSa6kwUDgh06NKRQ8WC7YsqCQau2af1SmHcdh3Jv1+Vx8XXGKc6tVFR2mdJqi0GzHQXM5Lo/Yqmgw=
+X-Rspamd-Queue-Id: E84B6A0003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: z1c46y4cc6jfbokbmjsa9c9qr6jf169u
+X-HE-Tag: 1777498902-465363
+X-HE-Meta: U2FsdGVkX18cieC4zbKuKQccylK96KP2SG/rn3yYZxvNuISgfb1l7AOKaiZi7V89eXhU1qxPhUJPY+eqrtlBkQPhfjuzslbGuPEPqQiL118sfF1LVDKUr2akDXv5DxSfjGuVYZHdYmzN0oiTKqjUOXy62IvMVf/KBJtiEfHcY+R5/CLywyS6Qu0RM4yqq5Au9UgthZ1y7VE17g6LB6dn2F7C7Ey1NqAL7ilf1U8+XuwLYfmYMGCSmLP3aGtdkZed7+cLy8fJhazxja0SUbnpTLO+tW1e3e7yuTrFkG82KfqdeKI1mhcr4yq+1g5MFCls9xq0fKU+vLTMEE+S/7367ACjPvcQ1O19mOfhX9kp6Gym+kOYeesHjt9awc8QY+5q2Ttp0aY95J+I5rEjF2v1ku4po3hHzpUaUZSmHKgpN8SuI2nTDBvrpz1fnwqG14Q3jX8cEwMJ5nTLAAD407ZPZtQ3bGUZA58cb3/obYXqiyAdIap7kYPzv4fW1CxZ9EKLjVUtM1p6lPPdDDQOXzKUu4mZN9Uym4v2Ts25Fd/IRhZOeuYAQppNAJDwXdZSV+x2Km5QmQnLUb2xw4lW3dfr2Vok1yVNBqidJQBYmyWWCVhYjB1mr9SGlmcKIlsf4pvruKfPXPpH/0OPYlNWeSc5F01uTRDF5b/vkREtW91ch5UXfGjvRKI+ZevWIgcGHkMnxzd5FcbapUpbkStkaseDH4x3TJ1PhG5tX2ovvy3u4I2vsRRLJ2gT2eyJzeJEURui6gtWGzKb4yMFeYQlzLmbNyap3aiEEQIOdRdiki7mU6HE9PUmhY53w+VRxjKVHELxxY87hHqeUqYftpcGHX87DJC0GKwaisdm5ZQai2RBxrHQ/7FQmNnM69XnTfjJgYI8xASfqEdlWmBucA3HC5SIvuqvBveiDhzTKJjOsQLkJsuSQbHT9B8MeAhM8hNdBaFfveiXmEbtLgcC2lJbgqj
+ nEovqXwQ
+ +vs0GMYzjNR6FGhBeMuAOiV9K0RYKZRSzOmYkatPpc4sQQcUtfmRvgzS0iDbzTXRfnBpaeI8N7YBwjnH4MDeNmUbwAs6JXx5BQYm1X/2lUor7T/4lUO+pI1XRMpgXe4KUMoxq7MN+sZrKISKaJeC+SlCfewAdSIirL9xSJ6j1taeIL7njvNZ1Sth4TuSgW8iUD9XnH78MWITmxfSUjktBVjRoezrIVtigZhhpUdGojRmZU+N6uPIPloN03cQYB57aeyqvq94wlUzpRBBbLAQFAiFD89X40VZ/33CPqQeWRzQMe8sDZq1SbGnto97PTW9WsBqZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,57 +103,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Apr 2026 at 15:35, Pratyush Yadav <pratyush@kernel.org> wrote:
->
-> On Fri, Apr 24 2026, luca.boccassi@gmail.com wrote:
->
-> > From: Luca Boccassi <luca.boccassi@gmail.com>
-> >
-> > Userspace when requesting a session via the ioctl specifies a name and
-> > gets a FD, but then there is no ioctl to go back the other way and get
-> > the name given a LUO session FD. This is problematic especially when
-> > there is a userspace orchestrator that wants to check what FDs it is
-> > handling for clients without having to do manual string scraping of
-> > procfs, or without procfs at all.
-> >
-> > Add a ioctl to simply get the name from an FD.
-> >
-> > Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
-> > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >  include/uapi/linux/liveupdate.h | 21 +++++++++++++++++++++
-> >  kernel/liveupdate/luo_session.c | 13 +++++++++++++
-> >  2 files changed, 34 insertions(+)
-> >
-> > diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
-> > index 30bc66ee9436..3a9ff53b02e0 100644
-> > --- a/include/uapi/linux/liveupdate.h
-> > +++ b/include/uapi/linux/liveupdate.h
-> > @@ -59,6 +59,7 @@ enum {
-> >       LIVEUPDATE_CMD_SESSION_PRESERVE_FD = LIVEUPDATE_CMD_SESSION_BASE,
-> >       LIVEUPDATE_CMD_SESSION_RETRIEVE_FD = 0x41,
-> >       LIVEUPDATE_CMD_SESSION_FINISH = 0x42,
-> > +     LIVEUPDATE_CMD_SESSION_GET_NAME = 0x43,
-> >  };
-> >
-> >  /**
-> > @@ -213,4 +214,24 @@ struct liveupdate_session_finish {
-> >  #define LIVEUPDATE_SESSION_FINISH                                    \
-> >       _IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_FINISH)
-> >
-> > +/**
-> > + * struct liveupdate_session_get_name - ioctl(LIVEUPDATE_SESSION_GET_NAME)
-> > + * @size:  Input; sizeof(struct liveupdate_session_get_name)
-> > + * @reserved: Input; Must be zero. Reserved for future use.
->
-> You need to enforce this in luo_session_get_name(). Otherwise some
-> userspace might try to get clever and stash some data here. Then if we
-> ever put something else here it will break that userspace.
->
-> With this fixed,
->
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+On Wed, Apr 29, 2026 at 11:09:55AM +0200, David Hildenbrand (Arm) wrote:
+> On 4/29/26 10:18, Michal Hocko wrote:
+> > On Tue 28-04-26 18:19:31, Minchan Kim wrote:
+> >> On Tue, Apr 28, 2026 at 08:56:36AM +0200, Michal Hocko wrote:
+> > [...]
+> >>>         DESCRIPTION
+> >>>           The process_mrelease() system call is used to free the memory of
+> >>>           an exiting process.
+> >>
+> >> "Free the memory of an exiting process" implies all memory, not just
+> >> anonymous. User cannot know it will free only anonymous, and I am trying to
+> >> make it work as intended by completing a symmetric reclamation path.
+> > 
+> > Page cache doesn't belong to any process.
+> > 
+> > [...]
+> > 
+> >> >From cf292f8f8ead8df9161aad342c36633ffa90257f Mon Sep 17 00:00:00 2001
+> >> From: Minchan Kim <minchan@kernel.org>
+> >> Date: Tue, 28 Apr 2026 16:39:06 -0700
+> >> Subject: [PATCH] mm: process_mrelease: skip LRU movement and expedite clean
+> >>  file folio reclaim
+> > 
+> > I will let others to discuss this. I maintain my position that this is a
+> > hack for a very particular use case and you still seem to not explain
+> > non-Android users of the syscall. Anyway, I will not repeat myself here.
+> > 
+> 
+> One thing that got lost in the thread here: this code path is not
+> process_mrelease specific?
+> 
+> We seem to end up in __oom_reap_task_mm() also from ordinary oom_reap_task_mm().
+> 
+> There, we unconditionally set MMF_UNSTABLE to then zap_vma_for_reaping() where
+> memory can be "reaped".
 
-Sure, fixed in v11
+After updating my development brach, I see zap_vma_for_reaping now.
+
+> 
+> So why is there "process_mrelease" part of the patch subject at all?
+
+While __oom_reap_task_mm() is indeed shared with ordinary oom_reap_task_mm(),
+I added a boolean parameter (try_evict_file_folios) to isolate the
+optimizations in recent patch.
+
+-static bool __oom_reap_task_mm(struct mm_struct *mm)
++static bool __oom_reap_task_mm(struct mm_struct *mm, bool try_evict_file_folios)
+ {
+        struct vm_area_struct *vma;
+        bool ret = true;
+@@ -556,12 +556,14 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+                                                mm, vma->vm_start,
+                                                vma->vm_end);
+                        tlb_gather_mmu(&tlb, mm);
++                       tlb.try_evict_file_folios = try_evict_file_folios;
++                       struct zap_details details = { .ignore_access = try_evict_file_folios };
+                        if (mmu_notifier_invalidate_range_start_nonblock(&range)) {
+                                tlb_finish_mmu(&tlb);
+                                ret = false;
+                                continue;
+                        }
+-                       unmap_page_range(&tlb, vma, range.start, range.end, NULL);
++                       unmap_page_range(&tlb, vma, range.start, range.end, &details);
+                        mmu_notifier_invalidate_range_end(&range);
+                        tlb_finish_mmu(&tlb);
+                }
+
+In the current patch, ordinary oom_reap_task_mm() passes 'false', so it
+does not see these side effects of broken aging and file cache eviction.
+
+The optimizations are strictly active only when userspace calls
+process_mrelease() with the PROCESS_MRELEASE_REAP_KILL flag.
+(I believe OOM killer is ultimately target of the user but didn't want
+to introduce side effect until we can conclude for the direction).
 
