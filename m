@@ -4,77 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81989CCFA13
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 18:01:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D9B9FF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 18:01:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED5256B0092; Wed, 29 Apr 2026 14:01:32 -0400 (EDT)
+	id D9C9B6B0005; Wed, 29 Apr 2026 14:01:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EACA46B0093; Wed, 29 Apr 2026 14:01:32 -0400 (EDT)
+	id D4DAC6B0093; Wed, 29 Apr 2026 14:01:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC2F96B0095; Wed, 29 Apr 2026 14:01:32 -0400 (EDT)
+	id BEE326B0095; Wed, 29 Apr 2026 14:01:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CC5B86B0092
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:01:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67EB34036B
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 18:01:32 +0000 (UTC)
-X-FDA: 84712360824.29.A1F81AB
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A9EA76B0005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:01:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 646B21602C3
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 18:01:39 +0000 (UTC)
+X-FDA: 84712361118.12.587A809
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AF9E640022
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 18:01:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 601C940007
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 18:01:36 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CvYCDdqp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k4qN3aKj;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CvYCDdqp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k4qN3aKj;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777485696;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cklHMklyuItTZV8ao77zjF0U5CZlwBoE5/zLT3mlMFU=;
+	b=REMdcpDadWVjQCc6UyRO4PvSFUDdiX24j4QGe8pzfLjgJgjdQotTVZkW6mWRxRhB0aXEAe
+	GB7VLQLlcLS1cspKmMc3xTUxyLyfX38rheLWd/8jDleAXDEMBSSUqGNnrXp9uZOWijUl5y
+	8ZPN1TQRWSXbRGn0v/UzVHY/6wKYH+k=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CvYCDdqp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k4qN3aKj;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CvYCDdqp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k4qN3aKj;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777485696; a=rsa-sha256;
+	cv=none;
+	b=PodInjpacnWBChw4VI1YNmKhrkdNdTUWYla97OTf3+y+oEAkiVb1mbR/Uq934vitLufpQz
+	geN02BG7x+QjDhg0UYUq0lCfTkMuTjJwn+jikSHW4EIFmg5eZsdz97LcRPGnP0AlALHm6N
+	/N0GKq8LX2vN4kY2fWhVMlGgtXjpxsw=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1B63E5BD5F;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 269E65BD69;
 	Wed, 29 Apr 2026 18:01:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1777485673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cklHMklyuItTZV8ao77zjF0U5CZlwBoE5/zLT3mlMFU=;
+	b=CvYCDdqpvzHqpz2CdBqdHqqOJvGOBCQikaWV/6+iJrKt04keMqXZq0HYu/CVngOCiz3lYJ
+	otybJ9y69h4RqGmEBtps77mTpiQeOl9DyrrgU94u7Xm+VLYhgiv8opMCvZkxOTrgBGRm+h
+	12CRgek6ZcEAedLC0+qOJ3yoZ4GAjS8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1777485673;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cklHMklyuItTZV8ao77zjF0U5CZlwBoE5/zLT3mlMFU=;
+	b=k4qN3aKjrfCgc04jBjoeWs8I1KDD5NlcFheP+LM8oMy49tfRhS03N9BfTf69kre49B01iS
+	SvKEIFAcuTcRPXCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1777485673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cklHMklyuItTZV8ao77zjF0U5CZlwBoE5/zLT3mlMFU=;
+	b=CvYCDdqpvzHqpz2CdBqdHqqOJvGOBCQikaWV/6+iJrKt04keMqXZq0HYu/CVngOCiz3lYJ
+	otybJ9y69h4RqGmEBtps77mTpiQeOl9DyrrgU94u7Xm+VLYhgiv8opMCvZkxOTrgBGRm+h
+	12CRgek6ZcEAedLC0+qOJ3yoZ4GAjS8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1777485673;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cklHMklyuItTZV8ao77zjF0U5CZlwBoE5/zLT3mlMFU=;
+	b=k4qN3aKjrfCgc04jBjoeWs8I1KDD5NlcFheP+LM8oMy49tfRhS03N9BfTf69kre49B01iS
+	SvKEIFAcuTcRPXCw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0E15C593B2;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11285593B3;
 	Wed, 29 Apr 2026 18:01:13 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1VP+AmlH8mnSOwAAD6G6ig
+	id LtDRA2lH8mnWOwAAD6G6ig
 	(envelope-from <jack@suse.cz>); Wed, 29 Apr 2026 18:01:13 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id B3185A0B58; Wed, 29 Apr 2026 20:01:04 +0200 (CEST)
+	id C2E23A0B77; Wed, 29 Apr 2026 20:01:04 +0200 (CEST)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-mm@kvack.org>,
 	Matthew Wilcox <willy@infradead.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 1/4] fs: Avoid inode dirtying on last iput
-Date: Wed, 29 Apr 2026 20:00:51 +0200
-Message-ID: <20260429180056.29598-5-jack@suse.cz>
+Subject: [PATCH 3/4] fs: Add throttling to deferred inode reclaim
+Date: Wed, 29 Apr 2026 20:00:53 +0200
+Message-ID: <20260429180056.29598-7-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260429174850.18223-1-jack@suse.cz>
 References: <20260429174850.18223-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4387; i=jack@suse.cz; h=from:subject; bh=SSEDyQSsnTljBuZkH4G76XXlupHO6EhbkJWul7NRrlc=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBp8kdYM83n7MKMaejGcSupGo8FHCBBGMrASXZnR /A+BdOTtneJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCafJHWAAKCRCcnaoHP2RA 2cmzCADB6U4KLmNFroc11BkAzf28Dd0hxbaEgGq9+otmvm/noWWNGMnyTwQT8b/ttGdMAtfZGoj oiQhYXDjd0Ld9tW6oPld5JxLiaVxZC+X13RS1i6WtWKDiIb/UvGAoEpKQujmxAxRV3vtJJXHnP/ ra06nnfsBY4ULOuYHYYKh2/UZAGCEv1m2QXqyv0N5H4fvOBeObTGvvPov97ZeL3dwetdMqjjk7R SeoOItISyUzrTWfPlpKADPWoXeS6GLXX8JPfMvNtcNWoye4VDPlyU9X1Rh4wxpNBQzHdQdl36kt VYYW1w/GDuf5G0pQcXSOROuBqUIbuzNd5OUzXTQU6M4sJ/pZ
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7925; i=jack@suse.cz; h=from:subject; bh=gsWzr+H1ymTOyBF3QVYLRNhN+/vGEl5Nzp/a3LYbOlQ=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBp8kdag706q4HDCNkOexUtc77pH3FYK1VOsHkZ4 UU3n1wCkX2JATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCafJHWgAKCRCcnaoHP2RA 2Z+ZCACKGQXldhrF1YN4QvqGicFOR2Xgx+RpXCQ4+8ucHwiHmzGJZUklNN9VjIz9+K4wfZ/u5HS vw6qBigtVLZ9hy5CiKcayhfyupef39C06zMpDK6UsLuzXNM4IFq8fegp9PYgYVvHLPUzStS1uJX qUIFA0cNogFooKozQHBjK0M5NwNKT/bVMSQD0m1ZyoxJPklSOkIoLZ9XlOtOYr9Kjd3ONwh2P1E e2XN8g93pPnvas9unvyu6M0tm6Xxi0famIzlm0RhESTjYxKzYyEXesjqSaOQ504cGLn8u6C2Vhh jHPiLZgcz+DHi2YtQPyPO+F0MEIUOd5Xtce0IReamQUmpNee
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AF9E640022
-X-Stat-Signature: gyu1a873igutmgefxc9ocomumtq7utqq
-X-HE-Tag: 1777485681-929092
-X-HE-Meta: U2FsdGVkX1+zqxcAyeQ39nRQimuXh7Ab/yMjybKy+rrLRN7G8YpLY0CJYak/ahT9POrcIbm29rm69UjA2pFpY1JyrdiqhxG9tR5aKSnSdIiaWIg5pvVzTIrfqYilCfbU/adFSXJGHaowM+XGVv0SS9XebqurG9007oxftKw4PjAKV34RzbJ/fldQquQxRgeZnCirHLP99uw/KtTqUs9HTLzx6mJhjPb071MzTXuxfRjwyGNgVqGfOPkq82okMEsvRrxXtvS/jWrHEnCCs27GSOZCa0qkN4RaR/5Tuo2aa0285lVBCOYBvN0h8rvlDPW9lnf/vnkul/u4ZGOl+egTi1Kjnwa/YVuCToGeRst0cy9y+PvaUB6vd5mJlhAgzeh+reBbq3nWtc9KSSqOA1mtmDg5bKPglCFGbHl7d9d2yys0Rfv2yt39thEQ4xWxFvBoS8zTL8fBBX6OhKBsvNvC76l2xFwMm/qs0RcMpJKK3v+9QCwmELjKHnKA8OkZJJnMVO4CMyV+u/cGCc53l0xpSeE78UpaYdNelhWrwWlTad3OwrXseFKck1HPo7a0tNd4RJ1avBupKKt+KSb3Zuv/cmpEIxE/Zkn3y2ra1Aldd/Xk/AkV7V7qI1tykOIFkdbKaZkdf6AiUAnvxUszwsQFLy0qBYyM5O386gKXcc+V5jldvFOXjKGNLyHuKe6wJypi6k+/Hfc0JU8cCdM3W63XIIE1WoJJegoZSYCYFs2uuvXm0MpnFf8uTyyE8zl84IznBmSDvH4DhtaFX3zO9FvW2fwA5LDHuMBg5x2O+aGBiUZMt23DbJqdqMdjILVlBQZeUOUpS0Db0vCMcGe337Y4JeAG7v0IFaz+jAcMzER3Au3TT1wpUbcE9sgNkC+VI3OneDkf81B5Jn7F01mI95n3VG8fFdQKYp5selRxypt40LIAx5fDknOB/XBLJ0fOVkxub2pD7JKmhEkHXV21ZAR
- dO388sJQ
- F4oQIkDMCqOzoFGXBZuZlWrjDAjku4x3J1zOVh60ZtDyb+IfxgQUJmsrU8dH/yCdeZEdNNc5KblwZgrs65HXwj/x0QUdjF/7WbaTr1YdTYhlYpl7hAUJlLMB07n5E5XXiXGN8jXgupm0s9PfoXVbmbRVYPOUhnENJCQvbH19QxHaHEodd6dfy51OyUXTtF7544UQ9lDwNCChn1Nl5aEBWn/gIX0kXFxTtesL3izoJjXi2DOBm9AAQmX274ixKi/tcigGe6JQWKI5PxDOb9WT4iZLDX8Q3bXMY1tBar0GOJct1nBanWoxV8MIWkuRrRJbF6qQEw4CizM31m8RUOa6u+QzJGob7XzCQd3g7Z0px18MOamnJWxAzHczO7Ot+EW3oxUFCpTtCEJWXBcKg1sGqdvaPZ4qA4yYHfO7wCZoJfrhDzK7PGgZgR8Zm6mMu5rxMHRCdNXfeLc0LVifn3zixgdTNhk/ZPwW4hOuNV7JlgZJU1Ykm7oG8JPdtraIDAnSzRNxM
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 601C940007
+X-Stat-Signature: 61esjhjabrwfqq6sj3xmgh9d81kbmzmw
+X-HE-Tag: 1777485696-67725
+X-HE-Meta: U2FsdGVkX1//HXTqdauWxi+eMyvFOddaR/BWYV75f6Hvg1gaXBVAxBrPFD2Z99C4SdRdwvkW8AmoPsEzD2+eA6DLAlEkkIH9KkHhI0Qqbc7cfB+OXz5sg0ae5LuclTMygoO1f6Ox0zJ385KMLCY8h+EAO9QpM1/CZmh6EbsC2H0MBPgO5W93MrrcpQPLl4/aLXMWQEo8hcDPmFuFbDeqwym5icPzyWf15Qnb3mA1KH3fWLw8wfjWj/5wDBhaZj/v4/I8ANubVDZ7upvQ5boLss2K5TMproStn9z4ryORHuPYX0V/pnl5jzdOWHsxdarwWMSjv6KbTFDRnJpCw8k1GjSvrjs73+0CyXoxrxUah77rk5Qv080U4pTifLlMTqpQidjp9iumW3490AwxCXa0heiYrYJFGTWVikVm8GT38dM6FRWMJ15vQBTApY67I661DCjNIK/9vF3hTPbJlYAOtES5xkl6KMIs2iQTMboxNqUgy7kPmSSuWmSPVu+CpOMOjCDNXDkF46eahe59lsIoeqUmuz6+NrmtYaTpSqETIRHScDkwlrXyjNCeXRH7tjngLBKZSf9aSktte1uWkM8uWrjuB4AhUJQireXpo/9Cm2kzxw+4dEf0Cf25qOPjAAYHyN0e0tNJSN78p3SHi1/C5ZG7otGFnENXzTQSt31K56fki1rezSNTZ/8toqP/fNQCOac/rZkwSY5zAkUCDS4KFyTh6aHABrr9M2nYr+lTHJhhFQCOdoiVd6X/+lUTDEvVZUJDJ48HME3F4pMB27ZLauyPhxsB8OrbMAHmYZUBbNVEsno7nyJ918DNzN/P3bd207ifoDbgW4C0Yp6jpILo5jMrmDSJkLSTpnupq+aXo7aFCbYHbr1x/pZoRORBUl/HyneMfrhF9+x0U7BPfEp2NiRCFtbqdJCI7Lk9U5bLfrgQP3LJfNCC8LElQiwVMs5sSAy+xubEmQAuPsUGnlk
+ IJ1IWPbS
+ 4J/z61+3+zBLbIWyReIeK6k5rLbbGJJrYw3pOvpXaRBNoLr5m7qkYBp/btelscKF8oFE+F20ANLFFeUm8mJWLHQHw5gMebSybDZyz5XbT4slCYJ/W+OgQ9TYt7+znTP8t7EE/shR/oOXWGvgHdWoehIDO3ArAtys9mMhyFN1x1eNumT+VljUXRQo6sln6JMhKOpk1MxO7zfyeG42uEQaEbFYuE3l+DkCfcZwunkfpl64PZg0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -82,140 +138,255 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When inode has dirtied timestamps, we currently call sync_lazytime() on
-last iput. This is done because inode with any dirty bit set is not
-inserted into LRU and dirty timestamps expire only after many (12 by
-default) hours so these inodes would be sitting outside of LRU aging for
-a really long time. However this can result in doing IO and consequently
-GFP_NOFAIL allocations from dentry reclaim making MM complain. Sample
-trace for ext4 is:
+Deferring difficult inode reclaim from prune_icache_sb() to a workqueue
+removes the natural feedback loop of blocking tasks in direct reclaim
+until they make space for new allocations. This can result in the list
+of deferred inodes to grow beyond any bounds and possibly push the
+machine to a reclaim storm or OOM.
 
-prune_dcache_sb
-shrink_dentry_list
-__dentry_kill
-iput
-sync_lazytime
-__mark_inode_dirty
-ext4_dirty_inode
-__ext4_mark_inode_dirty
-ext4_reserve_inode_write
-ext4_get_inode_loc
-bdev_getblk
-__filemap_get_folio_mpol
-
-Avoid this dirtying on last iput by reshuffling unused inodes to the
-beginning of b_dirty_time list and clobbering dirtied_time_when instead
-so that they get written during next periodic writeback.
+Add a throttling mechanism slowing down tasks in
+mark_inode_reclaim_deferred() if the list of deferred inodes to reclaim
+grows over limit. We measure average time it takes to reclaim inode on
+deferred list and block tasks proportionally to that.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/fs-writeback.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- fs/inode.c        | 15 +++++++--------
- fs/internal.h     |  1 +
- 3 files changed, 53 insertions(+), 8 deletions(-)
+ fs/inode.c                       | 94 +++++++++++++++++++++++++++++---
+ include/linux/fs/super_types.h   |  2 +
+ include/trace/events/writeback.h | 51 +++++++++++++++++
+ 3 files changed, 139 insertions(+), 8 deletions(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index e1fbdf9ee769..acc27fbe4230 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2729,6 +2729,51 @@ void __mark_inode_dirty(struct inode *inode, int flags)
- }
- EXPORT_SYMBOL(__mark_inode_dirty);
- 
-+/*
-+ * If inode has dirty timestamps to write out, make sure flush worker writes
-+ * them out during its next periodic writeback writeout.
-+ */
-+void queue_dirtytime_writeback(struct inode *inode)
-+{
-+	struct bdi_writeback *wb;
-+	unsigned long new_time;
-+
-+	lockdep_assert_held(&inode->i_lock);
-+
-+	if (!(inode_state_read(inode) & I_DIRTY_TIME))
-+		return;
-+
-+	wb = locked_inode_to_wb_and_lock_list(inode);
-+	spin_lock(&inode->i_lock);
-+	/*
-+	 * If inode writeback is already queued or inode got dirty, we have
-+	 * nothing to do and we mustn't touch writeback lists anyway.
-+	 */
-+	if (inode_state_read(inode) & (I_SYNC_QUEUED | I_DIRTY))
-+		goto out_wb_lock;
-+	/* Written back while we dropped i_lock? */
-+	if (!(inode_state_read(inode) & I_DIRTY_TIME))
-+		goto out_wb_lock;
-+
-+	/*
-+	 * Move inode to the beginning of dirty queue and clobber dirtied time
-+	 * so that it gets written out during the next periodic writeback.
-+	 */
-+	new_time = jiffies - dirtytime_expire_interval * HZ;
-+	if (!list_empty(&wb->b_dirty_time)) {
-+		struct inode *first = wb_inode(wb->b_dirty_time.prev);
-+		unsigned long first_time = READ_ONCE(first->dirtied_time_when);
-+
-+		if (time_before(first_time, new_time))
-+			new_time = first_time;
-+	}
-+	inode->dirtied_when = new_time;
-+	inode->dirtied_time_when = new_time;
-+	list_move_tail(&inode->i_io_list, &wb->b_dirty_time);
-+out_wb_lock:
-+	spin_unlock(&wb->list_lock);
-+}
-+
- /*
-  * The @s_sync_lock is used to serialise concurrent sync operations
-  * to avoid lock contention problems with concurrent wait_sb_inodes() calls.
 diff --git a/fs/inode.c b/fs/inode.c
-index 6a3cbc7dcd28..276debcd3e20 100644
+index 448e3d7ee48e..fe39f96fbc80 100644
 --- a/fs/inode.c
 +++ b/fs/inode.c
-@@ -1975,7 +1975,6 @@ void iput(struct inode *inode)
- 	if (unlikely(!inode))
- 		return;
- 
--retry:
- 	lockdep_assert_not_held(&inode->i_lock);
- 	VFS_BUG_ON_INODE(inode_state_read_once(inode) & (I_FREEING | I_CLEAR), inode);
- 	/*
-@@ -1988,14 +1987,14 @@ void iput(struct inode *inode)
- 	if (atomic_add_unless(&inode->i_count, -1, 1))
- 		return;
- 
--	if (inode->i_nlink && sync_lazytime(inode))
--		goto retry;
--
- 	spin_lock(&inode->i_lock);
--	if (unlikely((inode_state_read(inode) & I_DIRTY_TIME) && inode->i_nlink)) {
--		spin_unlock(&inode->i_lock);
--		goto retry;
--	}
-+	/*
-+	 * If inode has timestamp updates pending, queue flushing them now as
-+	 * otherwise the dirtiness could be preventing the inode from entering
-+	 * LRU for hours.
-+	 */
-+	if (inode->i_nlink)
-+		queue_dirtytime_writeback(inode);
- 
- 	if (!atomic_dec_and_test(&inode->i_count)) {
- 		spin_unlock(&inode->i_lock);
-diff --git a/fs/internal.h b/fs/internal.h
-index d77578d66d42..7c8f452d28c6 100644
---- a/fs/internal.h
-+++ b/fs/internal.h
-@@ -219,6 +219,7 @@ bool in_group_or_capable(struct mnt_idmap *idmap,
-  */
- long get_nr_dirty_inodes(void);
- bool sync_lazytime(struct inode *inode);
-+void queue_dirtytime_writeback(struct inode *inode);
+@@ -941,6 +941,7 @@ EXPORT_SYMBOL_GPL(evict_inodes);
+ struct inodes_to_prune {
+ 	struct list_head freeable;
+ 	struct list_head deferred;
++	int deferred_count;
+ };
  
  /*
-  * dcache.c
+@@ -1013,9 +1014,10 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
+ 	WARN_ON(inode_state_read(inode) & I_NEW);
+ 	inode_state_set(inode, I_FREEING);
+ 	/* Inode will take long time to cleanup. Offload that to worker. */
+-	if (inode_state_read(inode) & I_DEFER_RECLAIM)
++	if (inode_state_read(inode) & I_DEFER_RECLAIM) {
+ 		list_lru_isolate_move(lru, &inode->i_lru, &lists->deferred);
+-	else
++		lists->deferred_count++;
++	} else
+ 		list_lru_isolate_move(lru, &inode->i_lru, &lists->freeable);
+ 	spin_unlock(&inode->i_lock);
+ 
+@@ -1052,27 +1054,58 @@ long prune_icache_sb(struct super_block *sb, struct shrink_control *sc)
+ 		if (list_empty(&reclaim->list))
+ 			queue_work(system_dfl_wq, &reclaim->work);
+ 		list_splice_tail(&lists.deferred, &reclaim->list);
++		reclaim->len += lists.deferred_count;
+ 		spin_unlock(&reclaim->lock);
+ 	}
+ 	return freed;
+ }
+ 
++static void inode_reclaim_update_stat(struct inode_deferred_reclaim *reclaim,
++				      struct super_block *sb, unsigned int n,
++				      u64 start)
++{
++	u64 end = ktime_get_ns();
++	u32 delay;
++
++	delay = div_u64(end - start, n);
++	/* Smooth delay updates with exponential moving average */
++	reclaim->delay = (63 * (u64)reclaim->delay + delay) / 64;
++
++	trace_inode_reclaim_update_stat(sb, n, delay, reclaim->delay);
++}
++
+ static void inode_reclaim_deferred(struct work_struct *work)
+ {
+ 	struct inode_deferred_reclaim *reclaim =
+ 		container_of(work, struct inode_deferred_reclaim, work);
++	struct super_block *sb = NULL;
+ 	struct inode *inode;
++	u64 start;
++	unsigned int batch = 0;
+ 
+ 	spin_lock(&reclaim->lock);
+ 	while (!list_empty(&reclaim->list)) {
+ 		inode = list_first_entry(&reclaim->list, struct inode, i_lru);
+ 		list_del_init(&inode->i_lru);
++		reclaim->len--;
+ 		spin_unlock(&reclaim->lock);
++		if (!sb)
++			sb = inode->i_sb;
++		if (!batch)
++			start = ktime_get_ns();
+ 		evict(inode);
++		batch++;
++		/* Batch stat updates to avoid excessive computations */
++		if (batch >= 64 || need_resched()) {
++			inode_reclaim_update_stat(reclaim, sb, batch, start);
++			batch = 0;
++		}
+ 		cond_resched();
+ 		spin_lock(&reclaim->lock);
+ 	}
+ 	spin_unlock(&reclaim->lock);
++	if (batch)
++		inode_reclaim_update_stat(reclaim, sb, batch, start);
+ }
+ 
+ static struct inode_deferred_reclaim *inode_deferred_reclaim_alloc(
+@@ -1091,20 +1124,65 @@ static struct inode_deferred_reclaim *inode_deferred_reclaim_alloc(
+ 	return sb->s_inode_reclaim;
+ }
+ 
++/*
++ * Size of deferred reclaim list from which we start throttling tasks creating
++ * inodes marked for deferred reclaim.
++ */
++#define INODE_DEFERRED_RECLAIM_LIMIT 8192
++
++static void throttle_inode_deferred_reclaim(struct inode *inode)
++{
++	unsigned int len;
++	struct inode_deferred_reclaim *reclaim =
++				READ_ONCE(inode->i_sb->s_inode_reclaim);
++
++	if (!reclaim)
++		reclaim = inode_deferred_reclaim_alloc(inode->i_sb);
++
++	/*
++	 * If inodes with deferred reclaim are accumulating too much, slow down
++	 * tasks creating them. This doesn't provide any kind of guarantee on
++	 * the length of the deferred list since lots of inodes with
++	 * I_DEFER_RECLAIM can be already present in the inode cache and we
++	 * have no control when they reach the deferred list. But if the
++	 * pressure on the deferred list is sustained, the balance should
++	 * eventually be established.
++	 */
++	len = READ_ONCE(reclaim->len);
++	if (len > INODE_DEFERRED_RECLAIM_LIMIT) {
++		u64 delay = READ_ONCE(reclaim->delay);
++
++		if (!delay)
++			return;
++		/*
++		 * Scale the delay based on how much we exceed the limit. Wait
++		 * at most 4x as long as estimated time to reclaim the inode.
++		 */
++		len = min(len, 5 * INODE_DEFERRED_RECLAIM_LIMIT);
++		delay = div_u64(delay * (len - INODE_DEFERRED_RECLAIM_LIMIT),
++				INODE_DEFERRED_RECLAIM_LIMIT);
++		trace_mark_inode_reclaim_deferred_throttle(inode, len, delay);
++
++		schedule_timeout_killable(nsecs_to_jiffies(delay));
++	}
++}
++
+ void mark_inode_reclaim_deferred(struct inode *inode)
+ {
+-	struct inode_deferred_reclaim *reclaim;
++	bool throttle = false;
+ 
+ 	if (inode_state_read_once(inode) & I_DEFER_RECLAIM)
+ 		return;
+ 
+-	reclaim = READ_ONCE(inode->i_sb->s_inode_reclaim);
+-	if (!reclaim)
+-		reclaim = inode_deferred_reclaim_alloc(inode->i_sb);
+-
+ 	spin_lock(&inode->i_lock);
+-	inode_state_set(inode, I_DEFER_RECLAIM);
++	if (!(inode_state_read(inode) & I_DEFER_RECLAIM)) {
++		inode_state_set(inode, I_DEFER_RECLAIM);
++		throttle = true;
++	}
+ 	spin_unlock(&inode->i_lock);
++
++	if (throttle)
++		throttle_inode_deferred_reclaim(inode);
+ }
+ EXPORT_SYMBOL_GPL(mark_inode_reclaim_deferred);
+ 
+diff --git a/include/linux/fs/super_types.h b/include/linux/fs/super_types.h
+index 00744ae5be18..533256892550 100644
+--- a/include/linux/fs/super_types.h
++++ b/include/linux/fs/super_types.h
+@@ -133,6 +133,8 @@ struct inode_deferred_reclaim {
+ 	struct list_head	list;
+ 	struct work_struct	work;
+ 	spinlock_t		lock;
++	unsigned int		len;
++	u32			delay;
+ };
+ 
+ struct super_block {
+diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+index bdac0d685a98..c0ae39b4dc7b 100644
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -879,6 +879,57 @@ DEFINE_EVENT(writeback_inode_template, sb_clear_inode_writeback,
+ 	TP_ARGS(inode)
+ );
+ 
++TRACE_EVENT(inode_reclaim_update_stat,
++	TP_PROTO(
++		struct super_block *sb,
++		unsigned int n,
++		u32 batch_delay,
++		u32 avg_delay
++	),
++	TP_ARGS(sb, n, batch_delay, avg_delay),
++
++	TP_STRUCT__entry(
++		__field(dev_t,		dev)
++		__field(unsigned int,	n)
++		__field(u32,		batch_delay)
++		__field(u32,		avg_delay)
++	),
++
++	TP_fast_assign(
++		__entry->dev = sb->s_dev;
++		__entry->n = n;
++		__entry->batch_delay = batch_delay;
++		__entry->avg_delay = avg_delay;
++	),
++
++	TP_printk("dev %d,%d batch size %u batch delay %u ns avg delay %u ns",
++		  MAJOR(__entry->dev), MINOR(__entry->dev), __entry->n,
++		  __entry->batch_delay, __entry->avg_delay)
++);
++
++TRACE_EVENT(mark_inode_reclaim_deferred_throttle,
++	TP_PROTO(struct inode *inode, unsigned int len, u64 delay),
++	TP_ARGS(inode, len, delay),
++
++	TP_STRUCT__entry(
++		__field(u64,		ino)
++		__field(dev_t,		dev)
++		__field(unsigned int,	len)
++		__field(u64,		delay)
++	),
++
++	TP_fast_assign(
++		__entry->ino = inode->i_ino;
++		__entry->dev = inode->i_sb->s_dev;
++		__entry->len = len;
++		__entry->delay = delay;
++	),
++
++	TP_printk("dev %d,%d ino %llu deferred list len %u delay %llu ns",
++		  MAJOR(__entry->dev), MINOR(__entry->dev),
++		  __entry->ino, __entry->len, __entry->delay)
++);
++
+ #endif /* _TRACE_WRITEBACK_H */
+ 
+ /* This part must be outside protection */
 -- 
 2.51.0
 
