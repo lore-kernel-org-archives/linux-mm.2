@@ -4,87 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D269FF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 04:13:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AC43FF8864
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 04:13:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CE6A6B0093; Wed, 29 Apr 2026 00:13:26 -0400 (EDT)
+	id 9CEE66B0095; Wed, 29 Apr 2026 00:13:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97EC36B0095; Wed, 29 Apr 2026 00:13:26 -0400 (EDT)
+	id 9A5E76B0096; Wed, 29 Apr 2026 00:13:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 894E06B0096; Wed, 29 Apr 2026 00:13:26 -0400 (EDT)
+	id 8E3766B0098; Wed, 29 Apr 2026 00:13:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DD216B0093
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 00:13:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 06C08A08B8
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:12:41 +0000 (UTC)
-X-FDA: 84710272122.03.8E984C4
+	by kanga.kvack.org (Postfix) with ESMTP id 81B526B0095
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 00:13:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9173E40904
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:12:42 +0000 (UTC)
+X-FDA: 84710272164.17.E945D1F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 56C5A1C0008
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:12:39 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=On4DAleE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777435959; a=rsa-sha256;
-	cv=none;
-	b=f5Gx0Sdq6NUblArwz/80B9r/IUxBgn5PRPVwbcDLoe7eYkLvYtcO4epGUnTIbeJZ42LHZQ
-	VvtURl9z6e7X4GKDDP9H8Za4ZHNbD+GgZQ6Ln+AnfVxOJesXCQQzyScaSipqDAHGra9EQ8
-	ZUU2etSkumAp6AW4S5a4jAk8reLlc4k=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=On4DAleE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id E16C31A0010
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 04:12:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="l/Ub3bsI";
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777435959;
+	s=arc-20220608; t=1777435961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a0QWU8FcJCJiMnEQirUceIVMc+tBT2yEJRa8nvRmAr0=;
-	b=itRGCwmm5KS5C59g5E04IbChfaEgyQvVJXzcBZwQppFRoGJSoMTPVCV0lNK6t6BpWSGdue
-	DPkpWoyJj7ZZcYNbhHzV8dMSr4kXCho6LauZ30uqyj9cEjVrng8p9OCGHIesKROSwxGmDb
-	TXgFvHuDv77uKDQIWQLrWb2hDq0odjE=
+	bh=50XXAvWtlAH9+S63yLiq/3pLDySCFL9dSo+9HptrSjc=;
+	b=rqfykTptI9h609Mt0etI96I5zaJHfDjhju2gORYJuaDvAW/UUWxwpLYFvVGa/1y7WcJ753
+	Wm5qKOKc5gpwCv+KCjH+PqGD1NlXJf/qg2JCH61KlERrWNQDjPpuRW76a1uPUiMwGL29/J
+	+UA+F7ciyHDV1epUbUV8Kb+Mdm+e0eM=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="l/Ub3bsI";
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777435961; a=rsa-sha256;
+	cv=none;
+	b=RP0xKdQVWUtYTDIXFfGIcCeV0IuUroXDTV2WDxh2/hHbbTJLLY85ZKCjkPC2gmSeql60HF
+	G+KTGjWEq3igNxG5CAPaw0yHw66qH8MCoyXF6Rz62KCmfcQnZcTYnrufJg/ghCFz2cCPzy
+	QqEFzybmoASrJuISDHA23UjoD+ZqiJg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 873D7444EF;
-	Wed, 29 Apr 2026 04:12:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40239C2BCB4;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8AFA944504;
+	Wed, 29 Apr 2026 04:12:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D1DC2BCB4;
 	Wed, 29 Apr 2026 04:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777435958;
-	bh=8jYx8KZ5p5GMU2eOGfXvJCf4Ua/nksXozWCmG0l4E4U=;
+	s=k20201202; t=1777435959;
+	bh=M+ZCKDs15omwhqSNEq9DSlBKj4hfJOQxX08s5GsHoNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=On4DAleEvzEblzRF0MfZsJJfDsA5lc6a6VvbWctwBhhMaR7JRPPqOwfKLyoKtTl2T
-	 aONJzcB/oXaoUjqOxrTAojdkxjdwWOULDFXcC0Mw2KmVFLKWiaVV+sca6oTM+BBY+N
-	 Q1XYQYzacmH6KI9j8AB3l1VApf6Vm+oeQ3bMs73ZGkkXbyhFJFeWa5bWFg+5dHH4N3
-	 vcNSrxC6u6TGv+CPF5bTImH82jucZWOUcycziOI6/d6BSuHxXT3MmP2P/sIrLEarVW
-	 719+xYSRV+31RrlCvNdc9mNSoJsJAuvrJqCUWkbAdJWDBZHEAMjnOcmnvoWXxHVqia
-	 zZXP712hKTrtQ==
+	b=l/Ub3bsI4oZq4qktJLPFghhfsWU/YqsnepWRznNQdTlnYZe4j+m98Qlp5Zc+7deiI
+	 pbu/d+QDsUFb5IekgG7Jf1Dv+THzn7tnFjbRF3gOnSYBP0XPRZVzVBsKSmnrzgfJRh
+	 YAnMFu4SLPnMna2xRj7nKEoxp3cpYt95ZJRw6DmNHelrggj1oQ1EwzoS/SUGPCjUkD
+	 moEcDkIabkGvKq4OGjtID2FsJTgVkRGd/mS+1G9EXhVceIiywg2pVS/CRbwBgLB086
+	 Z6oeETCFucNTQB7x4XJRCxESPF80BrzIGTKwAFJpuY0DsIDwDdRt3HZ/G1V4LaFxpI
+	 VPZUmYIsbwC+w==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 4/7] mm/damon/core: remove damon_set_region_biggest_system_ram_default()
-Date: Tue, 28 Apr 2026 21:12:26 -0700
-Message-ID: <20260429041232.90257-5-sj@kernel.org>
+Subject: [PATCH 6/7] Docs/admin-guide/mm/damon/reclaim: update for entire memory monitoring
+Date: Tue, 28 Apr 2026 21:12:28 -0700
+Message-ID: <20260429041232.90257-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260429041232.90257-1-sj@kernel.org>
 References: <20260429041232.90257-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8as5jzu8usx5iwkff8to6uqypmdzmunb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 56C5A1C0008
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777435959-33496
-X-HE-Meta: U2FsdGVkX18qoUC6MiY7E+87oEyucYNR8YBkzI/r6LetwGBY5WknjD0VGi1qrDg+VQ4684iD3QUCkwCidAtinh1HqY+AFACi69Ey6MkwP5Y9R7pqrvzGuLT/Lw5xt2DmHVDhz3jJonVJ2N18x8/zccZN0X8zamaPrOkj65fgp9wXA1vCAN/JY0NmDJfkusa42abECtsxoJV5RSFGwck7HkFXB8YWhNqyx50ULOT/tOT8fQHdPPl761/ZlRwaLXrdIlhHWNC7yRLq+5g6XlFIrse2E3gMWPBLp5nvRD1dBCq7ubRVQ1m+psPU4f9QC4Ozdnm8bAJYjnQMvxHFQJcYH7AfK57WJYhft8o0rE3UxD2W8WPaP+2/sc6ImEjAGNwT+4kXgr319Dzrp8YSvlGossO+YOXHeHjjosEWQa9m4YUKW8MZ5mqHmVUKLwDznoJd25esObY3OKbt4XuRWU/8tdU6CMjM5RjTkw36FXRDUhpszhoVoGvW0aofJ/PmoN0pO9Aqx5PFKTRF9VXV4Prp6ueChxmlEgcZE/qSn9FF8Tv3u4qNkZX5yf0CeIoWhfMSWjBuZOKDLHYCsmkeMloWK32MG2Gi4B4VrO67qh7MCPvZ2/kmI7K+KsBcwPy1nC5+Xn+YksmUx3ygXq1np793wds3uESYiMDZnig40EHzaV9ZgKD6ZmTWlbd1bx665WpD8o4vvCe4DKWW0hm6G/jCOQ92AAShssCjvUZ4FCGAxm1Vi6jtc3ioXWSoRCLSBCLiStw42Q4rG9CHc9KfmslrFF2e1u9e85PR0/rgHxjms52dQCsKUDuUH+hZvXxJ+A9ZY8vYN1lfxMtRyUrHtRRxvpQ3XvozXyUWeRavK59X/1VKZ8HGxek6IiKirX6BsPWrT8GYeejcqvh8SksykVMPlVD3oidUU3FiICHB1P7JCF6K+2Nfbo6C3ve9398wWKF5p8QAIo/dGaOjNfnQwVX
- llqaXGcO
- jB/h+99BfquMCKENw4zBtPG5CF8YCTj586bXwGDxMznSUi06ySJau8LawCHhnYPaKZGtb//5/TF59olcFp1rFRdTzbIIAxAXjTI7Q+F9kpHWaJrFqKDl38EKVNo5uILM9JKNw0omxHk1smEVNbnvyDbDCbakr48+PO99ECygvRRNfzPomi3wZ/hWLpY1uLbgJyM8xHEmgJgNjU2ZJ40NjYkjsDPDNzZzJ89Onkk+AsFJ2H8xGdKTg0vj0Ag==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E16C31A0010
+X-Stat-Signature: cawzz19ccmkprpkbdewi3pdsy6dh1waf
+X-HE-Tag: 1777435960-597711
+X-HE-Meta: U2FsdGVkX1/GmYTMfwxJnJSHrCjtUZA93l9zfwCXFFjcVEV90Ps2ZdVNjoMV/gnOSkesbvaImWe9vUXBsXLT9LHBlcKwqKs/dzGYt8GRqPnJn5VVYZnwNyJeBvhlNNt8RMzQMI4j3gEr7Yi1+85eeq77ycyi9A/8Fkz08uLYeR8oj/MdBb7lsMxt7sZOcW3aPNGvfidCh0UEN0aott8X8x1edMSzRXqPnHl5zTa2LaCUf/Ti+oYY5aTlj7A34F3A9z47uN8dpODUKVElA8s8gl/VX8S28FPtY/9SJWEFT8MHWNasv7E0w5PEnMqw2Zo2+brKKIKGn/oLv37V+EE/SsmCQUo99bClnuZx07uFTQA1/aye1VGaMcmPoAEDpubiOVUoWxY77iFYKjlVIe8tZ8GXFvsKc6fhScyegItkOgFXTussGxAVGWClfWYSotoOd4dZtIN2GdH7jF0UNtbVcJETWpHUvRTEWXIHrKeKjMwX/Jv9HDAyKTB7agDxlQDDzkpPa5G3w7bcKh1ET0PjXzvj7+b1+rsxvLWyuXUcOEbQuKnWBOeX74xKgb9C8pOkRipic/rSjN0AIslPE+Ywg28ytgkXpzpymf8KefxcNigwJjGXksYl88I1QKh7LoWFOdVt3CCM1Q7Ic+l/b75HjwXlo/+44FHL4kzVy/M1M1h4hKp1B/3zGbth3gU1sRmhHcYBf1BXNkd0jIZBZVoweUh7i6fksqC1h1ePt9LVkxBSZWOuGZPPPsBNLzjZKbUlyFLdMTSr4GvSLt8xIucjbhsLS6BhWjlUZpglR9PNA831K3EzJbfScpjY3enHaG9RtSlff7jf89MwBVAz4eIulJpkhv4IqdwVeeYDO8kTVvl+dGw4CWQEDr8k5BBzGlgGlDthGYdHaRHJ+0eygC3tJuvysXV5EV2V7bKWavUv2Ef4Wd/PY+onYhPTrO+hUWrtO4llt8EF6tgqC89QuEp
+ qBFwgNrP
+ q+IolpaqagLsjiugYjXS1+ya9X7coOxUFVCwkZnddIalmudKcd+2p38hESTXpLJP+QAQYk91XeAHdgpdUV1rva7Ihola3eYCOPkeMaPzCGj5VQi7FSI3pCTY9fSArY1rafnlgTA8z426Di5Wpe/DwzFpOC5ck6Bg+lkXsQ/6SxnG2aI+sc6m8RqK9yLP6Be2QaKoknNoLZ6Z2/bY5P4iG+HP32fzuVrAp6+dZlzW429uWlbHSYjre0NMlGPsAvjQ1AEm+M+IUjYo5kQnmzsiQNdPYzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,106 +102,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now nobody is using damon_set_region_biggest_system_ram_default().
-Remove it.
+Update DAMON_RECLAIM usage document for the changed default monitoring
+target region selection.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h |  5 ----
- mm/damon/core.c       | 64 -------------------------------------------
- 2 files changed, 69 deletions(-)
+ Documentation/admin-guide/mm/damon/reclaim.rst | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index f656908b2d389..c7a31572689be 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -1015,11 +1015,6 @@ int damon_set_region_system_rams_default(struct damon_target *t,
- 				unsigned long addr_unit,
- 				unsigned long min_region_sz);
+diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+index 01a34c215b66f..57ab8b1876506 100644
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -229,7 +229,8 @@ Start of target memory region in physical address.
  
--int damon_set_region_biggest_system_ram_default(struct damon_target *t,
--				unsigned long *start, unsigned long *end,
--				unsigned long addr_unit,
--				unsigned long min_region_sz);
--
- #endif	/* CONFIG_DAMON */
+ The start physical address of memory region that DAMON_RECLAIM will do work
+ against.  That is, DAMON_RECLAIM will find cold memory regions in this region
+-and reclaims.  By default, biggest System RAM is used as the region.
++and reclaims.  By default, the system's entire physical memory is used as the
++region.
  
- #endif	/* _DAMON_H */
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 980a31cd3498e..9f38deddcb30e 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3408,70 +3408,6 @@ int damon_set_region_system_rams_default(struct damon_target *t,
- 	return damon_set_regions(t, &addr_range, 1, min_region_sz);
- }
+ monitor_region_end
+ ------------------
+@@ -238,7 +239,8 @@ End of target memory region in physical address.
  
--static int walk_system_ram(struct resource *res, void *arg)
--{
--	struct resource *a = arg;
--
--	if (resource_size(a) < resource_size(res)) {
--		a->start = res->start;
--		a->end = res->end;
--	}
--	return 0;
--}
--
--/*
-- * Find biggest 'System RAM' resource and store its start and end address in
-- * @start and @end, respectively.  If no System RAM is found, returns false.
-- */
--static bool damon_find_biggest_system_ram(unsigned long *start,
--		unsigned long *end, unsigned long addr_unit)
--
--{
--	struct resource res = {};
--
--	walk_system_ram_res(0, -1, &res, walk_system_ram);
--	*start = damon_res_to_core_addr(res.start, addr_unit);
--	*end = damon_res_to_core_addr(res.end + 1, addr_unit);
--	if (*end <= *start)
--		return false;
--	return true;
--}
--
--/**
-- * damon_set_region_biggest_system_ram_default() - Set the region of the given
-- * monitoring target as requested, or biggest 'System RAM'.
-- * @t:		The monitoring target to set the region.
-- * @start:	The pointer to the start address of the region.
-- * @end:	The pointer to the end address of the region.
-- * @addr_unit:	The address unit for the damon_ctx of @t.
-- * @min_region_sz:	Minimum region size.
-- *
-- * This function sets the region of @t as requested by @start and @end.  If the
-- * values of @start and @end are zero, however, this function finds the biggest
-- * 'System RAM' resource and sets the region to cover the resource.  In the
-- * latter case, this function saves the start and end addresses of the resource
-- * in @start and @end, respectively.
-- *
-- * Return: 0 on success, negative error code otherwise.
-- */
--int damon_set_region_biggest_system_ram_default(struct damon_target *t,
--			unsigned long *start, unsigned long *end,
--			unsigned long addr_unit, unsigned long min_region_sz)
--{
--	struct damon_addr_range addr_range;
--
--	if (*start > *end)
--		return -EINVAL;
--
--	if (!*start && !*end &&
--			!damon_find_biggest_system_ram(start, end, addr_unit))
--		return -EINVAL;
--
--	addr_range.start = *start;
--	addr_range.end = *end;
--	return damon_set_regions(t, &addr_range, 1, min_region_sz);
--}
--
- /*
-  * damon_moving_sum() - Calculate an inferred moving sum value.
-  * @mvsum:	Inferred sum of the last @len_window values.
+ The end physical address of memory region that DAMON_RECLAIM will do work
+ against.  That is, DAMON_RECLAIM will find cold memory regions in this region
+-and reclaims.  By default, biggest System RAM is used as the region.
++and reclaims.  By default, the system's entire physical memory is used as the
++region.
+ 
+ addr_unit
+ ---------
 -- 
 2.47.3
 
