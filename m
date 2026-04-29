@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54948FF8875
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 23:22:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF2E1CCFA13
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 23:51:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EE0E6B0088; Wed, 29 Apr 2026 19:22:26 -0400 (EDT)
+	id 8533A6B0088; Wed, 29 Apr 2026 19:51:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69EA86B008A; Wed, 29 Apr 2026 19:22:26 -0400 (EDT)
+	id 7DC5D6B008A; Wed, 29 Apr 2026 19:51:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 566A26B008C; Wed, 29 Apr 2026 19:22:26 -0400 (EDT)
+	id 67C7A6B008C; Wed, 29 Apr 2026 19:51:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 400CB6B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 19:22:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C3F1120278
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:22:25 +0000 (UTC)
-X-FDA: 84713169450.10.7B0F401
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011049.outbound.protection.outlook.com [40.93.194.49])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 53113140005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:22:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=1WOCJc93;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DB566B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 19:51:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BCD5612021E
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:51:44 +0000 (UTC)
+X-FDA: 84713243328.12.5965F2D
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010024.outbound.protection.outlook.com [52.101.85.24])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6132E4000D
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:51:41 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ZmDttkTy;
+	spf=pass (imf17.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.85.24 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of Michael.Roth@amd.com designates 40.93.194.49 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777504942;
+	s=arc-20220608; t=1777506701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K1rJItAU+CKsV98tcrZ0BfK2zyiexu+0UrQC7zrCtbk=;
-	b=mJOan9tuHVZ4+Gxk+Pl3mv8fEXtahFLu1wL9sKD9gaiPc3CfrOGoNjWPUwBqKZb3FXgAG2
-	hEAViTiyn8yz750YEQIKnfDt8dxUXLE9j6F4qDSakDMd9V57sNHS2Ek7JDQwwMBz5T6Ep5
-	fyg/+J/3axSJMVesY5Rdc3FW4vzdYj8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777504942; a=rsa-sha256;
-	cv=pass;
-	b=h+uUVexTx0lSBbcBNAdKPkx8ZuA+AYY5NoVt61ngtOccNfTPzlLHLHKKm+wsLEan+s6Yy0
-	Dsz6vdfaoVrb45OKULOLC816TGPnwIF3ZhdH9IBpUXyM88vaca68lzgTtZQ1Ypy3slPKNN
-	4SaJe8y+WteIJ1DahdeVObl+afd/9HM=
+	bh=pzgml3/CIhemoYumDHOZSu6Wta3BAaZKnkuahnN2rT4=;
+	b=2FAGj+B6CCyldXRofix89BVpXYcj0rpPIQaNDV5z/uBcF3izlWsRlXG8esr50hOROTtxhT
+	I0u5dokZvIlzWp1S4A3nYj+mZ2h41dqCixs2L9vPQZ0FbVehqZiw5UO+f+JYJ7gbxyBDP7
+	oGmtjgpqmVbQ1UdlZMpQEODEDaOKdeU=
 ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=1WOCJc93;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ZmDttkTy;
+	spf=pass (imf17.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.85.24 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of Michael.Roth@amd.com designates 40.93.194.49 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777506701; a=rsa-sha256;
+	cv=pass;
+	b=Ae5vc9ChiDUsWdezES/x5PJtiVwqbak3fmrXftvOIg9Khje56WtZmZd4jptShyNOWHO4Ml
+	phRUTqLPEZU4aPus3Z2XrjPSkDSKhQ9zWRF6FkvJP3zwJ39bFVIwmMZOUIMgtq4zSUG4r4
+	Dbc3GBdYvO7EDTP7WuvBlF2buG7tkbE=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YjM5FP0LkDvOrZKevfESA+b6m3nkgZwsAmbkUQwTURoeE/14navYZIBgdgwe+deprXe9zrYA826Lw2m3fSk0/IugmsFLj6NsHaHfHFabB1WScRwaGPxo7wmvy4dd8xLDLoCtdO0dZfsLjk38fqpzGze6Cp2V+0OugRMFnQD5crPjFXKZirrWvgDczRyfC3Fn8fnBlVPC+dqDZOe77iLej24/X9TbGdNq0TyYReanvE2Y3XwGx48CqSbJW/RDDlvHWIJb9ZTzH6oMXPT2/iNKBatqDFxU/tQrkHjruebwob2dSS9yDUjFBJsBKj9zWdEp+18rwdwCwXH4ofM13U8lCA==
+ b=R/ASMFYR4sN7D7GWnglIW/VxnwAX5qZ1/Ev/3Q5lKGEXHh5v19pBq4tSyfNMjU00wY4zH0Kn/dOydpf3hlD7JqE4iMtvQGbYK0n0SeBKCXweGPCigyrIKzKIZvYodfB9vMVXqpXPfqvJxe4+mv9YVILqrFaUDM3RQIInRx+IQO8QpDBcEhyttN02eVg2H8Ax7Mslu2BcDsr1nRmuF41birIQ4qbDMoq9nMLV6117Un+vSyb+LJch2U9YwOc8flV9VgTseke00kf28XXswGUQgKsYz9U5bSWdwsCLlBQrKm95KWFFgnu40KV13hFlZ2LeUEscQok3EGA2jJs6J9hRRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K1rJItAU+CKsV98tcrZ0BfK2zyiexu+0UrQC7zrCtbk=;
- b=BlYx7LK4EMYe+6E1VfdT32jX/7/OrPf4+Q22ni8cZVLx6GxdXVZmPDpPyO+yMLuQ6Xi9P8g5+IYBqM8CYGqKJnM9GVAe16RDN2x2MSg2RFoBzQH1a7wn2oR545THkPVzUaw6WeiB18P4gAP4U7ylcWe/+T23e6PaZxy2bgmSX8+raPwu63mhJAzFRWQT9/f62s39eGA1cfAD72UgYLH2tMkBTwjTN0u3scbfEpIOVooBBcB/xqYFqUvhPKkFB/pt7LMRJo70FYNz0EUcSmXbQhQe8+Vsip6gGURHkqH0ZcP3AIT8sVzHyiYIsOktxCn+zqT1FT4RLafn6TSHtJ0Uow==
+ bh=pzgml3/CIhemoYumDHOZSu6Wta3BAaZKnkuahnN2rT4=;
+ b=ds7J3D2CJcu82RQQN5fRsEWYBrVM4waiZWWLZvLm5jjz27kUYlkYC1rL5XiwsVRZEceLXO8Mz+g6UGm+9i42MFaMiVAiNCLjRmJBODRRMeCYJKCVQ632SDVFWSJhuwWT+b41jByq+XGHHuw2b/U8CI+HIYawGe90QOraZkCXUx/yPCIqdqPP3gR14pJMsQCNL0EpwsOgoNkXw8YHDnaYGLu+PB+25Tz073tqK7FgihMmqlpSCprMmJ8mVZpJJHlXG2xtpqqRs7fMTD9RcoZYDrk5d/YR6toVE7zGiv2BE2y0UoVubdF4bvabPN4Irx8ndJ2bTETjZMdxNOKLtapGfA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K1rJItAU+CKsV98tcrZ0BfK2zyiexu+0UrQC7zrCtbk=;
- b=1WOCJc93RC7Ov/h52aevy6hzLbwUIt07Psejc8PeFUFVG6sDuhkZUoKlKbEaI/KsAjc2GN+SpU/4TjxFZLXpJMTijS9skT02R4DAFSelk+WFchdjeS4d7N8bJyQJs1pQj2kCLqvCl64HlSmGRKN9GbnvG81eJ8W9TPyuggKJBTs=
-Received: from DSSP221CA0008.NAMP221.PROD.OUTLOOK.COM (2603:10b6:8:3d5::14) by
- BY5PR12MB4275.namprd12.prod.outlook.com (2603:10b6:a03:20a::18) with
+ bh=pzgml3/CIhemoYumDHOZSu6Wta3BAaZKnkuahnN2rT4=;
+ b=ZmDttkTymoeVV4N9fJxL6lOuZjoDx2qZH1P6ofYXq8LBEfGYuIPl1IGYArnuayiHjr9tjFCHoaooG30lTok3ROeFdq61EQBdyD4SqbdujpwgKaObWTvGSJbKErEBSGRJNMjuyw6DRs0Vh59rHhr6iqez8bIPxDEBNqYW93h11UU=
+Received: from PH5P222CA0010.NAMP222.PROD.OUTLOOK.COM (2603:10b6:510:34b::11)
+ by CH1PPFD8936FA16.namprd12.prod.outlook.com (2603:10b6:61f:fc00::624) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Wed, 29 Apr
- 2026 23:22:13 +0000
-Received: from DS2PEPF000061C7.namprd02.prod.outlook.com
- (2603:10b6:8:3d5:cafe::be) by DSSP221CA0008.outlook.office365.com
- (2603:10b6:8:3d5::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.21; Wed, 29 Apr
+ 2026 23:51:29 +0000
+Received: from SN1PEPF0002BA50.namprd03.prod.outlook.com
+ (2603:10b6:510:34b:cafe::69) by PH5P222CA0010.outlook.office365.com
+ (2603:10b6:510:34b::11) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.30 via Frontend Transport; Wed,
- 29 Apr 2026 23:22:13 +0000
+ 29 Apr 2026 23:51:29 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -82,16 +82,16 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- DS2PEPF000061C7.mail.protection.outlook.com (10.167.23.74) with Microsoft
+ SN1PEPF0002BA50.mail.protection.outlook.com (10.167.242.73) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Wed, 29 Apr 2026 23:22:13 +0000
+ 15.20.9846.18 via Frontend Transport; Wed, 29 Apr 2026 23:51:28 +0000
 Received: from localhost (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 29 Apr
- 2026 18:22:03 -0500
-Date: Wed, 29 Apr 2026 18:21:48 -0500
+ 2026 18:51:28 -0500
+Date: Wed, 29 Apr 2026 18:51:13 -0500
 From: Michael Roth <michael.roth@amd.com>
-To: Ackerley Tng <ackerleytng@google.com>
+To: <ackerleytng@google.com>
 CC: <aik@amd.com>, <andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>,
 	<brauner@kernel.org>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
 	<ira.weiny@intel.com>, <jmattson@google.com>, <jthoughton@google.com>,
@@ -112,62 +112,57 @@ CC: <aik@amd.com>, <andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>,
 	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
 	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
 	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
-	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Jason Gunthorpe
+	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Youngjun Park
+	<youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+	<shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe
 	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
 	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-mm@kvack.org>
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for
- KVM_SET_MEMORY_ATTRIBUTES2
-Message-ID: <foi2zvv5qrfdcspnx4fstrvzl74m6xp6zrsw5omlbprxh4jrhx@vxnwk7fr46gu>
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
- <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
- <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
- <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
- <eiiecl7jvywvqb4drq7cchmcabcrdka25wxr77uavxqineeedm@rfcnhdz6xoxf>
- <3blpenhpvysb2ig7efegedx4v3flppl5ftnz6vhpqlatfk3ycn@vmmhs7mvjieg>
- <CAEvNRgGbMhkX310CkFY_M5x-zod=BDTiuznrZ0XvFPUK7weL1A@mail.gmail.com>
+	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH RFC v5 00/53] guest_memfd: In-place conversion support
+Message-ID: <x7n77snnvvukofo3slopl74c5tmlb2t2un5qy5fq6eb3d2xt7e@6a6tixg5mdfc>
+References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <CAEvNRgGbMhkX310CkFY_M5x-zod=BDTiuznrZ0XvFPUK7weL1A@mail.gmail.com>
+In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 X-Originating-IP: [10.180.168.240]
 X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF000061C7:EE_|BY5PR12MB4275:EE_
-X-MS-Office365-Filtering-Correlation-Id: 500d6850-0b33-4e80-aec7-08dea6462504
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA50:EE_|CH1PPFD8936FA16:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c3368c2-8902-4747-d925-08dea64a3b89
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|7416014|376014|13003099007|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|7416014|376014|13003099007|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	4W3BHvPVy/Ic1HuR9ncBNyMOhaVhm4Wn44a4OsHt4hwMszhl8iiAnwekV7Hkyotdd4ckEDPrFljk5gDj3XemwVhh2n0Kw9NUQFPFGjOK6HuTVWnsn8uvH/qeOUaxqdVorr7foHCdp/0D9ytJLoOfM7D1QOFO+VJNxaABiNq45USb8jzWHl4DbLsFCyLz6Qwjc1mV/Le29jGfzfAC4QiLGj9LQqvkoE+OPmCLrURSPBGwkbj+VNIv4UDXlO/vIR/oY/46VFlrHnGv+Lmsqx0MEbRBc0BncfsvYOPYfBtSx+2qa1X9ziTHs5Gamjpofwpb/f+7EFcAR4Y+aCACc59wNF/J8M1DNgFIulOkeSir93onh09pnVHzs/k6CTFL+2UvlyRI9Ez0VxWG6/XH8Vr2RO4ZcjuqUJAATu3EQ4L9jEADt4JDKMi7tiEmeuJqmZYj2rFYJZuDa6vF+2B+iZ8ymE14GfnTp6aRS2xoS8rKdXhYHRVlFhX2moGH8wGuatqWJJH1bXuXfIQW3S3lpcpz2s6s27abLSFgoc992GNyJJ6HxnnmVwlgMiwjj9Ist93glkuybvQ1xT3MY/AT3S/ULRrsxEHs1b+VDXNQb56uF9aZelSkk1SvvgHPBy+xXByTsNi0wZ1udCcqyO1wMyW98Wng3YsMaD+QmvgfmzRziayKoOLHJxjl/TE3s+b/U54/sZfaDpdmQBCj3f/lqjUyuE9dQXkD4V9pFyY6MaMTl/tbj/4StWKsbUkjD2ESawIe+dROogRrk9oizWpyMWwh/A==
+	MfGB1iyYxvTCPsQwl/eTQ4rWfpfuJqrslpGQi++WsYb8idqKkYrZgWAo1uluLWmBuwtL13rbRRfrntjRh2aT/px1g+j7TQS2vutkBlfW+YgJPdlYqAedGdclV9U+P4izYod//2lz2fjKNL5mlI+6J1LIfYzX4rdNV6+Mr7sLJ6Srtr/0uLdbYHivlDKsM54PGGDNTZQlipug0dEusZsh2MzIARNwagkxjFqiIFqVa+gnUP9WyBp7RmpO6ExgHT06ozQO+ie6H7CvXatz0D/wOeXYtbbH9dQOTaTTpI6L07rPccNl/SSJp4Ms3sny0o2PoivrDbWQqdOrT0c61b9ZKBdFWsiaFAcSDha+xcS+qpXXzSkQIy/q+exjl9K7dDeZOULnRsg8ftLWOKpjn84CLvS3TZLyyBPSlpDD9PUX9jC4x8bCJn7tTCYVORInmXjUqCFEUuEq79Y+/2mA/RbDsTvueqy0r9Bv7DydijrPnajswd02v4mmiaoxqgqT46Kdu2COa465kmmGd2B9p/y2dSwx7pmVP8dQqLcZ2x1FNLfzs5tAzKzqgYm+b18UZAcngiZxy69iqyDnTMdY0YRtmJ2kEz7h5nMa38QoY8dP3q1z4YGl3FICmgZO/N2baJ/kkduASn49uZLTdXsxHmpPjvuIPdw0LdUIgh532QWu/BleNaeVzv1jANNXEzee/0LgNSZIdZXsivbzA+xI1fw4gGGBUml7brCGd8qF/lec9AY=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(7416014)(376014)(13003099007)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(7416014)(376014)(13003099007)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	ggrMGTzSnPB829yb41d8c0xYIndsy10JUzvPV6QoRSM/L2fcN5nIQh73F35DTrHm1f9Q0+IN6YIyHJvV2CgnrMtf4tAo3WKjqWqviokKq+nuKgsGv4Hmqgn8Gruw+Mia1cl0YbD92ydSVz+mQWa0kBC98ZGb9mrkguOrZvU88LqxkZiAGoKIuJgzdnPfbsCBRydYeRLqgJuDb64mxR0czU0yoOd6JLpRWtIFcCgNUWpK71uFZUyNtCz+UAMPNn1Z+8Eug4ssjY1ilbc6WWaNYTYyNdPmCPRLtvJ0Rkwoty71UKsNuH/wZiim9Y/29UHRsGzg6qB/6o5mIkcH3n9MNaYGAHz3YA4qsIXGnOwLtfgdIS/ghGuhlH27FLJRzmiaXYDLfykFBGyfUtju1K5078TqlR9u85RCi0BkRhjN8cbhYDn3+ghifBt2SOp7+XLV
+	l9+7gjfyQDK4+iYTnufPFwaQrRf4/9X0oyBU3rycw7EfK0LiTWwvGqnaCyNte26lj9fkORqdCWchCY81Awx3Rl97E67k7QEcg6fAZ0iIMy+dZLzQnfkkhVuWJpI06oVj2nzkdfza8JNUv6R6wIHVqetJMaz0d2nNINLUFYlWMvlqcYLI8MaAcf+hWLlS1MkEftW3uO1Fq9jomiEjMpBwbpqFuZzYbjBiOOrASLBjO0ZGMqFa2LN9gLKZUNEUXzI9P5v8Kcxa8cD3i3Y/cKgm7bpVzcGO3AfwvNelXxADKeoDgN56DRJ5iBwQYEoALqcTwC5S32/0TZhmVIiC7GfrekxcIGXXAMGF3ld3OVt220aFmGzM6HcqnH+FCmzFCGWaEUiN2Vtg6gsrvEfpwajY1/CdzK/4xok/aG+2YX4Nd7q2fVTgI17iEsOSobeAFmtN
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 23:22:13.1377
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 23:51:28.9208
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 500d6850-0b33-4e80-aec7-08dea6462504
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c3368c2-8902-4747-d925-08dea64a3b89
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF000061C7.namprd02.prod.outlook.com
+	SN1PEPF0002BA50.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4275
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 53113140005
-X-Stat-Signature: mcyhxg7ttcbehrxaogttxepxwd9q14px
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFD8936FA16
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6132E4000D
 X-Rspam-User: 
-X-HE-Tag: 1777504942-140084
-X-HE-Meta: U2FsdGVkX19X0RzJJC88PekLNKsiBNmGCL3s3F/gks2fBi5AycB32na52lksljzap6B5YeYA2o3Z8SMN6Yw/p70Ewl/m/HYhN4Wa5YerMj1lj9MmR7P2oIYctM7jdhMqPePodgEQzbYosnlXw685L1tGN29/xYEHTKnBykcM+yPewcBDDTV0MHeWuSIRGLUX9HTtz4R7M1gVJFqJSmC772iw+LxCXoukCyVCHYOuJIPv5tG6C63GBGGSjGvzBufCN6nhflpK26GFBRzfAiCOtBAdjEUQ5JxzXjl2roC5YK7G946p61l/gtxLiVpBqDF+qMqgA7bvT6ym1wX6cvu8Cy8W+C5pRiWLlwaITXHdqapoH2WfCQwuitVpZK3qRJzuTdPQE7F19jap+en5F32vrCOyGwFZbhdY5RAwhxSovrFL9cGywm6NRWv5d+WkysfgPmFikb83AdFzF9EAFD743Krd3xZUBxxSR7izYerYtXyr4moVuiIseygfoVIMK7INHcvzKaS7H6i3n9vaqVh1D+Sz3G4dS1WnG/ubizphiIwxrxd1LSi2eNdaCOo85ALh5rGh5MkzbkjQCFGdpILEzmsg4D+3akrmBl6FrkbKvKMJu2q+rFZzWjQ2zDDq5QPujoMtXDeAPBm2OUFnE9F5YWp/gDs4VN3SZBJP84AbBop4fZG86vCjwSx0JOtQIjIY0ZUL6Oj1Nv1lyt86JBN0oZ39tDXtVchvGKkSPfjtPcdv1Oqu86UPZ6DJhOWu373e7Q+lpnEIo9dhY/XmqqRyVoOcxyCpHmIjqKR7D3H5ICmQBdnrp9GH4GytdUI/QGObeG9ybok7LAmFK/cjRfT6TQf7efK2dZR3PzcH4ScprM543Kz7YRlaYo3zXJrbP68lu/d8SkWOsbSL3ff4p/Mda+N+KujNrY2NUH/KkHq5MCavQ+85ZQVhWfZfKvOkjfmwgqVdmIIO1A9yuDbXkRl
- mnYvyH1f
- E1kelVwSKB/uXow/BFp512LdUDa0vdrjFs2EMX7IxiCNUEPryTwDbTm+nR2l9MOS0RhzxR/w6tfD6+l3pSSyn+H34B5R9wtTT9VnF3/uTNX/9wWnWkN21lzdjYngTZaL+7biJIAG1numt/56VtwNuvZ8w2j+CzKWhrCuq4kgbvXwx4IK/vk7KthY/DPZnZuPfod8yVyam1mpxMJWAfui2Eg9krh3XeIsrRKFbl/fTTQ9zonViGALjD0TQyaPDqoD7+63BGXahWf1YmC1d52aIdvB/EfWpVWtUTmDLH7w+Yx8EQMrbGKZy7pl7qoBvvLTNP0ogHXrREpxsX9HhpGkq2fb8T9i2hJIRveC6veJGLQ8uDWhE/tkRNgpMNrrNkMsFbbdORM0U5dYZ873DIOSc2zDjDQagrPRs6xieyemhrJblG+lbRj1Rvt5yF8IWC8i/DvEVnknGDDlP8TVrKPCuqkA7O+B3zew4cH5aFYIqRsuEnvuJLkNsNGEU6RkqNKAkdyQPh9UNFX5v0ocpcdsxqCKdVEKqnke4ETBK5F4GV1IAApZESLcuIxpbHxCoscgnFBvfI+52760KW00Td9Tt1fMWL1fZY2VuMjna6BxTDaFmFG7CWEQVPe0ISw==
+X-Stat-Signature: 54rgwyx8ym9jmstqcxn4p91kzpj95hdk
+X-HE-Tag: 1777506701-675891
+X-HE-Meta: U2FsdGVkX1/TJYDjDIHb0H28H3GWD60fUK6inrS0PardX7tzEXG1p2INNtSpfYUS+1zcXdXX03gjcHTNEd9VMNkMv/d4zrB5WraUudlybIuFUHkECSQInscr9jGPmUqvtsnn5FHm8Yqtepw67C1eq79ueLFNN3aqUklHhBNddvJgIu2WjGbokNqEkQzXAlUzswA0LAOSbq1pLGJHlTdPmnJYXKl923iV8ZIf3mp468SkvU7NwbdL+VChttAAKR4gxrGbTf6U9dCoqeeSqoKHNbRSgv13mf9H9yZNvdg41+Yz/9wOggWCxfxBGmmkgmeSENFO2MfkMwFdm2+pyGizbjsb0UF+iz6d8K1fZ3FZyH2k0WIxfgAzW4KSpJ677RdVw4mtCuG+4sB6nczH3HqpI4iOXc25Yn+gYacePN1lfMnUG2ecRpBnbNEqbSwuUHOI6c0NUZfw0O3rWwvQsIwLLLxs6fbnYMMA/Pl7ybYb++v5a5lg77dGa3m6p1Bs+Xi5FIhzDETHbUPnPVcNhV1lMAsNHpGRmSI5E8LyQGs/Bh3WwweB1cn0CuCZs3HDVcRyP/9JkAL0JuWs3p6jJ4Q5kLDYBHt+N8P9EVjGDIX5YWpBgd0I8eZ4vhM0YE735Rswtf6NxqTLPsw0Yt1qQoMb5gJ7V66oBRFuhiBoF+v0BVM28jaZQzCvZsAbS5H9qssFbt7pNKJNwkMH56RE4646083NJf3WlzGOg+18pmj+KCqvuUM5Xv8xIwDTUezFerB+yp4q4qPuBHrXEBQ7nn1DF/HccU/jK3E3SySCoML0eISrfPX9MTQ+szWQ0eKK8G/FweE/hmN1m1YKct8ipbX05P6+JFQiTSSENmyqFh76NJNQKYmc4HPSHvpyB2JcC+S0peX7K/y5dO6cWYEeD/hjjNvlwr0q3B6TtzePocAmXfWp+U18pwEUpSWgdrjy17GyEXf3IyHCnoqYl8Bi3Mt
+ /S+u70xX
+ WfDVnc0XqKJSoYR4rej0k9WW2Ht8Os09qiJIqiSne0o8+9fvhpcarAEcpTg9ZknQRvNGbrHp4spv5pyzCvGZonLxlLm7sUIQNp+5n/yVp7uYjE1RJZApp5/HltEvwpcstg/R96AYiVapDZNJEpAPonW9I0uIrTTAWXgxakeBSNDQbIXO6oOSL/FUvgADjlvsDh+halC8y6k1DLc4cIEkxCz0TdxqDRZURSmDlKQhJ5unrH5SUb4lr470+1O6yQUAsVKQkH8GR2kLOxNrtgE2XEQF204ZLkf3tsLP5X/VVms9/Ksis3mjKJnnogmFiBflwXT0VAHNt9WnbyFn3vs2naMgOAML/c62GgaoLWjOP3dmOQDexsXVTiacgdsKtndPwG+m598q9wlf44zfcr1vOx47YUHC9gfU8rFxVBRYYjKMSKnR9GAA1RWSQiJHNVystyYrl7b1xF4mKqfXFOQBtG90cXmw43AOitK7BKul44aGis6qFUyqhs0EJPFit2a/ul1UIaJS9uIk4e/tT7rMjD/blHEAIsWqrQC87T1yvwWjDhDyK7wDPDsLdSC4EqYNyqUy+2g+1AjOA5uDtP6aHsQDjfBDP4icmM2z6dJEkKGagjlfOPzpYkUF623GiLouAX9VJa1/aLY5c4WuP12FYWZfIYpMxpXYe3g/waKpD0VF/qADmHOCwhiRECnRoWWPmgRTlxOUctWYCY0/OyZGYmM1W2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,163 +170,284 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 12:08:45PM -0700, Ackerley Tng wrote:
-> Michael Roth <michael.roth@amd.com> writes:
+On Tue, Apr 28, 2026 at 04:24:55PM -0700, Ackerley Tng via B4 Relay wrote:
+> [Some people who received this message don't often get email from devnull+ackerleytng.google.com@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
 > 
-> Thank you for your patches!
+> This is RFC v5 of guest_memfd in-place conversion support.
 > 
-> >
-> > [...snip...]
-> >
-> >>
-> >> I also did some minor updates (prefixed with a "[squash]" tag) to advertise
-> >> the KVM_SET_MEMORY_ATTRIBUTES2_PRESERVED flag so it can be used by
-> >
-> > Though I'm not sure how we deal with it if SNP/TDX at some point become
-> > capable of using the PRESERVED flag *after* populate... but maybe that's
-> > too unlikely to worry about? If we wanted to address it though, we could
-> > have both PRESERVED and PRESERVED_BEFORE_LAUNCH so they can be
-> > enumerated separately from the start.
-> >
+> Up till now, guest_memfd supports the entire inode worth of memory being
+> used as all-shared, or all-private. CoCo VMs may request guest memory to be
+> converted between private and shared states, and the only way to support
+> that currently would be to have the userspace VMM provide two sources of
+> backing memory from completely different areas of physical memory.
 > 
-> Not sure how likely it is, but if SNP and TDX can honor PRESERVE
-> semantics after populate, I think we could implement support under a new
-> flag like CIPHER.
-
-That works, but it still makes things *slightly* awkward due to special-casing
-the PRESERVE semantics for 1 guest type vs. another.
-
-For instance, for the QEMU patches what I'd like to do is be able to
-issue conversions with the PRESERVE flag set, and it makes sense that
-when the function that handles that gets called (in this case,
-guest_memfd_set_memory_attributes_fd()), it asserts that QEMU
-checked for the corresponding capability/flag (via
-KVM_CAP_MEMORY_ATTRIBUTES2_FLAGS) earlier on during QEMU init time
-and stored that into kvm_supported_memory_attributes2_flag to check
-against later in cases where we try to use PRESERVE:
-
-  https://github.com/AMDESE/qemu/blob/1308d4bcd8dd8acd151243e96ff0be4098389b93/accel/kvm/kvm-all.c#L1655
-
-but that check is sort of incomplete: for use-cases like pKVM it makes
-sense to allow conversion+PRESERVE at all times, but for SNP/TDX we'd
-ideally have an additional check like:
-
-  static int guest_memfd_set_memory_attributes_fd(..., attrs, flags)
-  {
-      struct kvm_memory_attributes2 attrs;
-      ...
-
-      assert(kvm_supported_memory_attributes & attrs);
-      assert(kvm_supported_memory_attributes2_flags & flags);
-
-      /* SNP and TDX only support PRESERVE prior to launch) */
-      if (vm_type_is_snp_or_tdx() && (flags & PRESERVE))
-          assert(vcpus_not_yet_started_and_LAUNCH_FINISH_etc_not_yet_called);
-  
-      ...
-  }
-
-maybe that's fine, but there's just some asymmetry in the fact that
-the capabilities checks are essentially self-documenting/self-enforcing
-in this regard, except for PRESERVE+SNP/TDX where userspace needs to
-sprinkle some additional vm_type-specific logic.
-
-So that's why I was sort of thinking PRESERVE might deserve a
-PRESERVE_BEFORE_LAUNCH or something so the kernel can enumerate the
-support rather than userspace needing to read into the documentation /
-implementation to implement finer-grained checks/etc.
-
+> pKVM has a use case for in-place sharing: the guest and host may be
+> cooperating on given data, and pKVM doesn't protect data through
+> encryption, so copying that given data between different areas of physical
+> memory as part of conversions would be unnecessary work.
 > 
-> CIPHER can then be used to mean "do the encryption or decryption", and
-> for platforms not supporting encryption, they'd stick with PRESERVE?
+> This series also serves as a foundation for guest_memfd huge page
+> support. Now, guest_memfd only supports PAGE_SIZE pages, so if two sources
+> of backing memory are used, the userspace VMM could maintain a steady total
+> memory utilized by punching out the pages that are not used. When huge
+> pages are available in guest_memfd, even if the backing memory source
+> supports hole punching within a huge page, punching out pages to maintain
+> the total memory utilized by a VM would be introducing lots of
+> fragmentation.
+> 
+> In-place conversion avoids fragmentation by allowing the same physical
+> memory to be used for both shared and private memory, with guest_memfd
+> tracks the shared/private status of all the pages at a per-page
+> granularity.
+> 
+> The central principle, which guest_memfd continues to uphold, is that any
+> guest-private page will not be mappable to host userspace. All pages will
+> be mmap()-able in host userspace, but accesses to guest-private pages (as
+> tracked by guest_memfd) will result in a SIGBUS.
+> 
+> This series introduces a guest_memfd ioctl (not kvm, vm or vcpu, but
+> guest_memfd ioctl) that allows userspace to set memory
+> attributes (shared/private) directly through the guest_memfd. This is the
+> appropriate interface because shared/private-ness is a property of memory
+> and hence the request should be sent directly to the memory provider -
+> guest_memfd.
+> 
+> Tested with both CONFIG_KVM_VM_MEMORY_ATTRIBUTES enabled and disabled:
+> 
+> + tools/testing/selftests/kvm/guest_memfd_test.c
+> + tools/testing/selftests/kvm/pre_fault_memory_test.c
+> + tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> + tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+> + tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh
+> + tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+> 
+> Updates for this revision:
+> 
+> + For TDX and SNP, PRESERVE supported only before VM is finalized only for
+>   to_private conversions.
+>     + This allows PRESERVE to be used as part of the VM memory
+>       loading/encryption flow
+>     + Only support PRESERVE for to_private conversions (to_shared on
+>       populated memory on TDX would cause zeroing)
+>     + Relaxed constraints for SNP and TDX to allow NULL to be passed as
+>       source address.
+> + Dropped KVM_CAP_MEMORY_ATTRIBUTES2. KVM_CAP_MEMORY_ATTRIBUTES reports
+>   attributes supported by the KVM_SET_MEMORY_ATTRIBUTES VM ioctl, and
+>   KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES reports attributes supported bt the
+>   KVM_SET_MEMORY_ATTRIBUTES2 guest_memfd ioctl.
+>     + KVM_SET_MEMORY_ATTRIBUTES2 is not supported by the VM ioctl
+> + Resolve locking issue when kvm_gmem_get_attribute() is called from
+>   kvm_mmu_zap_collapsible_spte() by bugging the VM. guest_memfd memslots
+>   don't support dirty tracking, so the locking issue is not on an
+>   accessible code path.
+> + Moved guest_memfd_conversions_test.c to only be compiled and tested for
+>   x86, since it depends so heavily on KVM_X86_SW_PROTECTED_VM's as a
+>   testing vehicle
+> 
+> TODOs
+> 
+> + Perhaps further clarify PRESERVE flag: [8]
 
-It's all theoretical, but I'd imagine that *if* SNP/TDX ever added
-support for allowing userspace to write encrypted memory into a guest
-range, it would be something like:
+I made a super-long-winded reply to that thread, but to summarize:
 
-  - write plain-text data to corresponding GPA
-  - issue shared-to-private conversion with CIPHER (or PRESERVE) bit
-    set, which will then be augmented to make some sort of firmware
-    call to encrypt the memory with guest key and make it visible to
-    guest
-
-So, at a high-level, if host writes 0xbeef to shared memory, then upon
-completion of the converison ioctl, 0xbeef then be visible to the guest
-via encrypted/private memory, which seems to match the semantics of
-PRESERVE perfectly:
-
-+``KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE``
-+
-+  On conversion, KVM guarantees memory contents will be preserved with
-+  respect to the last written unencrypted value.  As a concrete
-+  example, if the host writes ``0xbeef`` to shared memory and converts 
-+  the memory to private, the guest will also read ``0xbeef``, even if
-+  the in-memory data is encrypted as part of the conversion.  And vice
-+  versa, if the guest writes ``0xbeef`` to private memory and then
-+  converts the memory to shared, the host (and guest) will read
-+  ``0xbeef`` (if the memory is accessible).
-
-So it seems like a waste to have to add a CIPHER that would essentially
-have the same semantics (even though the architectural implementation
-details are different), and then complicate the documentation of
-PRESERVE to have vm-specific behaviors that userspace needs to account
-for, rather than leaving PRESERVE as-is and adding a
-PRESERVE_BEFORE_LAUNCH that neatly encapsulates the specialness of the
-SNP/TDX flow without complicating the more generally-defined flags like
-PRESERVE that could in theory become usable by all variants in the future.
-
-But then that sort of has me wondering if PRESERVE should be
-PRESERVE_AFTER_LAUNCH (to cover cases where maybe SNP/TDX gain this
-ability in the future, but can only use it post-launch, where other
-architectures might allow it both before/after.)
-
-...but that seems to be getting into a more general issue of how we
-determine what is available before-launch/after-launch, so maybe instead
-of introducing new flags, we just have 2 capabilities that returns what
-flags are available at each particular phase, e.g.
+PRESERVE flag has different enumeration/behavior/enforcement for pre-launch
+vs. post-launch, and similar considerations might come into play for
+other flags, so to make it easier to enumerate what flags are available
+for pre-launch/post-launch, maybe we could have 2 capabilities instead
+of 1:
 
   KVM_CAP_MEMORY_ATTRIBUTES2_PRE_LAUNCH_FLAGS
-  KVM_CAP_MEMORY_ATTRIBUTES2_POST_LAUNCH_FLAGS
+  KVM_CAP_MEMORY_ATTRIBUTES2_FLAGS
 
-And then userspace can easily probe/lock down what it expects to be
-available prior to launching the guest vs after without any vm-specific
-logic, and we can continue to just stick with PRESERVE/ZERO. (and if
-we do end up need to further distinguish pre vs. post-launch behavior,
-this gives us some flexibility to handle that as well).
+where SNP/TDX would only advertise PRESERVE for PRE_LAUNCH, and pKVM I
+guess would enumerate it for both (or maybe just POST_LAUNCH?)
 
+That lets us keep the flags definitions more straightforward but still
+allows userspace to easily enumerate what exactly should be available at
+pre vs. post launch time, and give us some flexibility to detail
+variations in behavior between the 2 phases without documenting
+edge-cases in terms of VM types.
+
+> + Resolve issue where guest_memfd_conversions_test, which uses the
+>   kselftest framework, doesn't perform teardown on assertion
+>   failure. Please see proposal at [9]
+> + Test with TDX selftests. We're in the process of rebasing TDX selftests
+>   on this series and will post updates when that's tested.
 > 
-> Should we redefine the semantics of PRESERVE to be "ensure that memory
-> contents don't change while guest_memfd tracking is being updated" and
-> avoid making a commitment on how the guest should read the memory?
+> I would like feedback on:
 > 
-> The above update would be aligned with ZERO not being allowed for
-> conversions to private (because KVM/guest_memfd does not make guarantees
-> about the contract between the host and guest.
+> + Content modes: 0 (MODE_UNSPECIFIED), ZERO, and PRESERVE. Is that all
+>   good, or does anyone think there is a use case for something else?
+> + Should the content modes apply even if no attribute changes are required?
+>     + See notes added in "KVM: guest_memfd: Apply content modes while
+>       setting memory attributes"
 
-It's a little awkward here too, because PRESERVE is sort of making a
-contract between host/guest: we are providing trusted data to the guest.
-However, there's an attestation proces that allows the guest to enforce
-that for pre-launch and ensure we are following through on that
-contract. PRESERVE for post-launch...I'm not sure how that could be
-enforced, but I think this is further reason to allow pre vs. post
-launch flags to be enumerated separately.
+Looking at the example you have there:
 
-Thanks,
+  + Note: These content modes apply to the entire requested range, not
+  + just the parts of the range that underwent conversion. For example, if
+  + this was the initial state:
+  + 
+  +   * [0x0000, 0x1000): shared
+  +   * [0x1000, 0x2000): private
+  +   * [0x2000, 0x3000): shared
+  + and range [0x0000, 0x3000) was set to shared, the content mode would
+  + apply to all memory in [0x0000, 0x3000), not just the range that
+  + underwent conversion [0x1000, 0x2000).
 
-Mike
+Userspace would be aware of whether the range contains pages that were
+already set to private, so if it really wants to set the just the
+[0x1000, 0x2000) range to shared with appropriate content mode, it is
+fully able to do so by just issuing the ioctl for that specific range.
+If it attempts to issue it for the entire range, it only seems like it
+would defy normal expectations and cause confusion to skip ranges, and
+I'm not sure it gains us anything useful in exchange for that potential
+confusion.
 
+>     + Possibly related: should setting attributes be allowed if some
+>       sub-range requested already has the requested attribute?
+
+As it is now, userspace has that capability (to use finer-grained ranges
+if it doesn't want to re-issue unecessary/unwanted conversions), similar
+to above. And KVM internally will just issue kvm_arch_gmem_prepare()
+calls so that architecture-specific handling can deal with this case
+(e.g. SNP's sev_gmem_prepare() already checks if the corresponding
+attribute is set in the RMP table and just skips it otherwise). So I
+don't think we really gain anything but added complexity if we try to
+make gmem more selective about it.
+
+-Mike
+
+> + Structure of how various content modes are checked for support or
+>   applied? I used overridable weak functions for architectures that haven't
+>   defined support, and defined overrides for x86 to show how I think it would
+>   work. For CoCo platforms, I only implemented TDX for illustration purposes
+>   and might need help with the other platforms. Should I have used
+>   kvm_x86_ops? I tried and found myself defining lots of boilerplate.
+> + The use of private_mem_conversions_test.sh to run different options in
+>   private_mem_conversions_test. If this makes sense, I'll adjust the
+>   Makefile to have private_mem_conversions_test tested only via the script.
 > 
-> This way, all of those (ZERO, PRESERVE) will focus on KVM's interface
-> with the host.
+> This series is based on kvm/next, and here's the tree for your convenience:
 > 
-> This lines up for SW_PROTECTED_VMs too, since reading memory that didn't
-> change in the guest is the contract between SW_PROTECTED_VMs and the
-> host.
+> https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v5
 > 
-> >> userspace for SNP/TDX in the kvm_gmem_populate() path as agreed upon
-> >> during PUCK.
-> >>
-> >>
-> >> [...snip...]
-> >>
+> Older series:
+> 
+> + RFCv4 is at [7]
+> + RFCv3 is at [6]
+> + RFCv2 is at [5]
+> + RFCv1 is at [4]
+> + Previous versions of this feature, part of other series, are available at
+>   [1][2][3].
+> 
+> [1] https://lore.kernel.org/all/bd163de3118b626d1005aa88e71ef2fb72f0be0f.1726009989.git.ackerleytng@google.com/
+> [2] https://lore.kernel.org/all/20250117163001.2326672-6-tabba@google.com/
+> [3] https://lore.kernel.org/all/b784326e9ccae6a08388f1bf39db70a2204bdc51.1747264138.git.ackerleytng@google.com/
+> [4] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/T/
+> [5] https://lore.kernel.org/all/cover.1770071243.git.ackerleytng@google.com/T/
+> [6] https://lore.kernel.org/r/20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com/T/
+> [7] https://lore.kernel.org/all/20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com/T/
+> [8] https://lore.kernel.org/all/CAEvNRgGbMhkX310CkFY_M5x-zod=BDTiuznrZ0XvFPUK7weL1A@mail.gmail.com/
+> [9] https://lore.kernel.org/all/20260414-selftest-global-metadata-v1-0-fd223922bc57@google.com/T/
+> 
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+> Ackerley Tng (34):
+>       KVM: x86/mmu: Bug the VM if gmem attributes are queried to determine max mapping level
+>       KVM: guest_memfd: Update kvm_gmem_populate() to use gmem attributes
+>       KVM: guest_memfd: Only prepare folios for private pages
+>       KVM: Move kvm_supported_mem_attributes() to kvm_host.h
+>       KVM: guest_memfd: Add basic support for KVM_SET_MEMORY_ATTRIBUTES2
+>       KVM: guest_memfd: Ensure pages are not in use before conversion
+>       KVM: guest_memfd: Call arch invalidate hooks on conversion
+>       KVM: guest_memfd: Return early if range already has requested attributes
+>       KVM: guest_memfd: Advertise KVM_SET_MEMORY_ATTRIBUTES2 ioctl
+>       KVM: guest_memfd: Handle lru_add fbatch refcounts during conversion safety check
+>       KVM: guest_memfd: Use actual size for invalidation in kvm_gmem_release()
+>       KVM: guest_memfd: Determine invalidation filter from memory attributes
+>       KVM: guest_memfd: Introduce default handlers for content modes
+>       KVM: guest_memfd: Apply content modes while setting memory attributes
+>       KVM: x86: Support SW_PROTECTED_VM in applying content modes
+>       KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+>       KVM: x86: Support SNP and TDX applying content modes
+>       KVM: x86: Bug CoCo VM on page fault before finalizing
+>       KVM: Add CAP to enumerate supported SET_MEMORY_ATTRIBUTES2 flags
+>       KVM: selftests: Test basic single-page conversion flow
+>       KVM: selftests: Test conversion flow when INIT_SHARED
+>       KVM: selftests: Test conversion precision in guest_memfd
+>       KVM: selftests: Test conversion before allocation
+>       KVM: selftests: Convert with allocated folios in different layouts
+>       KVM: selftests: Test that truncation does not change shared/private status
+>       KVM: selftests: Test conversion with elevated page refcount
+>       KVM: selftests: Test that conversion to private does not support ZERO
+>       KVM: selftests: Support checking that data not equal expected
+>       KVM: selftests: Test that not specifying a conversion flag scrambles memory contents
+>       KVM: selftests: Reset shared memory after hole-punching
+>       KVM: selftests: Provide function to look up guest_memfd details from gpa
+>       KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+>       KVM: selftests: Update private_mem_conversions_test to mmap() guest_memfd
+>       KVM: selftests: Add script to exercise private_mem_conversions_test
+> 
+> Michael Roth (1):
+>       KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+> 
+> Sean Christopherson (18):
+>       KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
+>       KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
+>       KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
+>       KVM: Stub in ability to disable per-VM memory attribute tracking
+>       KVM: guest_memfd: Wire up kvm_get_memory_attributes() to per-gmem attributes
+>       KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
+>       KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
+>       KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
+>       KVM: selftests: Create gmem fd before "regular" fd when adding memslot
+>       KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
+>       KVM: selftests: Add support for mmap() on guest_memfd in core library
+>       KVM: selftests: Add selftests global for guest memory attributes capability
+>       KVM: selftests: Add helpers for calling ioctls on guest_memfd
+>       KVM: selftests: Test that shared/private status is consistent across processes
+>       KVM: selftests: Provide common function to set memory attributes
+>       KVM: selftests: Check fd/flags provided to mmap() when setting up memslot
+>       KVM: selftests: Update pre-fault test to work with per-guest_memfd attributes
+>       KVM: selftests: Update private memory exits test to work with per-gmem attributes
+> 
+>  Documentation/virt/kvm/api.rst                     | 139 ++++-
+>  .../virt/kvm/x86/amd-memory-encryption.rst         |  19 +-
+>  Documentation/virt/kvm/x86/intel-tdx.rst           |   4 +
+>  arch/x86/include/asm/kvm_host.h                    |   2 +-
+>  arch/x86/kvm/Kconfig                               |  15 +-
+>  arch/x86/kvm/mmu/mmu.c                             |  20 +-
+>  arch/x86/kvm/svm/sev.c                             |  18 +-
+>  arch/x86/kvm/vmx/tdx.c                             |   8 +-
+>  arch/x86/kvm/x86.c                                 | 145 ++++-
+>  include/linux/kvm_host.h                           |  74 ++-
+>  include/trace/events/kvm.h                         |   4 +-
+>  include/uapi/linux/kvm.h                           |  21 +
+>  mm/swap.c                                          |   2 +
+>  tools/testing/selftests/kvm/Makefile.kvm           |   5 +
+>  tools/testing/selftests/kvm/include/kvm_util.h     | 141 ++++-
+>  tools/testing/selftests/kvm/include/test_util.h    |  34 +-
+>  .../selftests/kvm/kvm_has_gmem_attributes.c        |  17 +
+>  tools/testing/selftests/kvm/lib/kvm_util.c         | 130 +++--
+>  tools/testing/selftests/kvm/lib/test_util.c        |   7 -
+>  tools/testing/selftests/kvm/lib/x86/sev.c          |   2 +-
+>  .../testing/selftests/kvm/pre_fault_memory_test.c  |   4 +-
+>  .../kvm/x86/guest_memfd_conversions_test.c         | 552 +++++++++++++++++++
+>  .../kvm/x86/private_mem_conversions_test.c         |  55 +-
+>  .../kvm/x86/private_mem_conversions_test.sh        | 128 +++++
+>  .../selftests/kvm/x86/private_mem_kvm_exits_test.c |  38 +-
+>  virt/kvm/Kconfig                                   |   3 +-
+>  virt/kvm/guest_memfd.c                             | 591 ++++++++++++++++++++-
+>  virt/kvm/kvm_main.c                                |  87 ++-
+>  28 files changed, 2075 insertions(+), 190 deletions(-)
+> ---
+> base-commit: 39f1c201b93f4ff71631bac72cff6eb155f976a4
+> change-id: 20260225-gmem-inplace-conversion-bd0dbd39753a
+> 
+> Best regards,
+> --
+> Ackerley Tng <ackerleytng@google.com>
+> 
+> 
 
