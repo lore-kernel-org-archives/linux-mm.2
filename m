@@ -4,132 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56CC0FF887E
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 17:38:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8092CCFA13
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 17:55:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6CC76B0005; Wed, 29 Apr 2026 13:38:02 -0400 (EDT)
+	id 331F96B0005; Wed, 29 Apr 2026 13:55:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1DDF6B0088; Wed, 29 Apr 2026 13:38:02 -0400 (EDT)
+	id 2E31A6B0088; Wed, 29 Apr 2026 13:55:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 934C56B008A; Wed, 29 Apr 2026 13:38:02 -0400 (EDT)
+	id 1F9726B008A; Wed, 29 Apr 2026 13:55:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 852616B0005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:38:02 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1BC79140347
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:38:02 +0000 (UTC)
-X-FDA: 84712301604.01.72B3444
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D4C28A000E
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:37:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NhWTc2kL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0ECDA6B0005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:55:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8C4EB8B583
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:55:20 +0000 (UTC)
+X-FDA: 84712345200.02.9C05B74
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C52F5140004
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:55:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Dgl1uRIW;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777484280;
+	s=arc-20220608; t=1777485318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NnM1NPkau1naLpsnPcmznKfyzqUKaZf4UoB5KA0mJD4=;
-	b=64RVI97j92tkCAAgGtkDjuLQ4GNpA7f9QVlJ3RxFIeREVci+hrfDmxviDCGyDaiUlUaVox
-	ICoiNcvWzD8bk9j8pjlZhJVmJAGxdSo2/9YEzYzOhev7TogqlbKERJ/OwKEMg7lT1XfZQx
-	NEInmO2k6Pmvucd5anQ7QvRAA1VOcIQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777484280; a=rsa-sha256;
-	cv=none;
-	b=VQVmvqQB3d2V1IMsc+upZOqNe32hypMf+hPrJQWCkEQs55S7jQJ5RFTJ5fAxiq6fk+xfan
-	27/twki3J8L01k8Ye84+PauXKHj/CXPQTnsa8SaTYEG47i30IbFpJDQIX+QLUcjWnAOSl7
-	TdWG4lptb0XEz/LqD25N66C8Aduy62M=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=Tkd2r+fplr6j5wNunBmLVKg4Yy8PVrvJL3EK3/WTm8s=;
+	b=DZulAsC9TuqNDK4BhRTdXAHtueCjADk8v6aPzxrlaLM0Gt7lA61Dy17Z+krUQUMXarGxZ3
+	D3WbDsCC24GfRRU2kODeG7CpFW7YCRuz00jLsLcCUzrR+uY1cQV7UQ56XkA8GHDhvsZm7m
+	Gvk+tHBV04FbdIU7h2WXlMOjqnCqUPE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NhWTc2kL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B28A243F77;
-	Wed, 29 Apr 2026 17:37:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C9CC19425;
-	Wed, 29 Apr 2026 17:37:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777484278;
-	bh=vfvNLdQCP2QhgLDeoKvh1hjaGJlPfVJ1+fo5Yn6Jecc=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=NhWTc2kLqISC5cwpSaPxT08oZAR2+Ea2mdTwaAtC7zfURsVmZFc5zYzcXqeODPoMT
-	 GfLpls0zUnpArSFmLXmZZxEe6rMgSWJXOYLv6cGvbDhYy6FMYhtIlpMU4KBUubq0MG
-	 nb9IORFEQRoWwqut9t+ISmzEiL0RAO7cg0BxgUeLjfl6lppK/6Yaa5f/dnBPqVNmF0
-	 ynDULK1FvJNJ2jjAL2d3Np7Ix9i6mD/mpOi+kJIZB+f9KgWJAZrFOsgpcy3N8sSJbU
-	 0a3eQI+pvfcmfprB8bguLRFdvz/SStQqI697+nnKZDepWjxQl3yRmbI07PelexrSYM
-	 e3nVc53WtHTfw==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 17A57F40068;
-	Wed, 29 Apr 2026 13:37:57 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Wed, 29 Apr 2026 13:37:57 -0400
-X-ME-Sender: <xms:9UHyabil4gFIhI35RxQ22UuSNHNUkw9Gl9vB9hejUQPNihaezXAeVg>
-    <xme:9UHyaS2zkp-hVMCSov8m8UGYssLiK3_6M3qyfK4l3l_D1CjpRGZmC909PkD83E_Fi
-    eSKrvH9Eu7cVaZTPiq9OolwN5mpRfGrLbWaGcLNzr8EpoLZ_TZaN7Y>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekhedtiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhguuceu
-    ihgvshhhvghuvhgvlhdfuceorghruggssehkvghrnhgvlhdrohhrgheqnecuggftrfgrth
-    htvghrnhepvdeuheeitdevtdelkeduudetgffftdelteefteevjeevjeeiheefhfejieej
-    fedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrugdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeijedthedttdejledq
-    feefvdduieegudehqdgrrhgusgeppehkvghrnhgvlhdrohhrghesfihorhhkohhfrghrug
-    drtghomhdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrnhhshhhumhgrnhdrkhhhrghnughurghlsegrrhhmrdgtohhmpdhrtghpthhtoh
-    eptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehkvghv
-    ihhnrdgsrhhoughskhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhgrrhhkrdhruhhtlh
-    grnhgusegrrhhmrdgtohhmpdhrtghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhm
-    rdgtohhmpdhrtghpthhtoheprghruggsodhgihhtsehgohhoghhlvgdrtghomhdprhgtph
-    htthhopehlihiiphhruhgtkhgrsehgohhoghhlvgdrtghomhdprhgtphhtthhopehsvght
-    hhhjvghnkhhinhhssehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghvihgusehkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:9UHyaWgQb1qiAVaJjoQmSh7-aME5apWDBmmct_h1ZbRpaWqUF1O1ZQ>
-    <xmx:9UHyaTU2aUe7OQDYsiV3OM63w4dVKA3wC2sabKazPUG70HBRWQ_JEw>
-    <xmx:9UHyaftUUZf1dvcEHx9i6fPR6mCODp2HqXCW28kYfGqXHQNunaTWHA>
-    <xmx:9UHyacZvo8qjSYr5_Z8113kMxB2VDyho27deuIeQoZQVj8k6BrOasg>
-    <xmx:9UHyaY4XbJ-nGJxGfmQQyDaIGs8Ez_hlo6t2c5K8X0b_4QYOsYPSyMkH>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E9C20700065; Wed, 29 Apr 2026 13:37:56 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-MIME-Version: 1.0
-Date: Wed, 29 Apr 2026 19:37:36 +0200
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Kevin Brodsky" <kevin.brodsky@arm.com>,
- "Ard Biesheuvel" <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Liz Prucka" <lizprucka@google.com>, "Seth Jenkins" <sethjenkins@google.com>,
- "Kees Cook" <kees@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "David Hildenbrand" <david@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org
-Message-Id: <5279ea66-0e31-4f53-ad76-4fd8ebc012fc@app.fastmail.com>
-In-Reply-To: <15555e9f-65ab-4811-b20c-8ada90bdc9d0@arm.com>
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-30-ardb+git@google.com>
- <15555e9f-65ab-4811-b20c-8ada90bdc9d0@arm.com>
-Subject: Re: [PATCH v4 13/15] arm64: mm: Unmap kernel data/bss entirely from the linear
- map
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D4C28A000E
-X-Stat-Signature: h8hx6ing844wqoo8hh54jdsjsji49x6h
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Dgl1uRIW;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777485318; a=rsa-sha256;
+	cv=none;
+	b=CkvcioFFCn++g9kB+qWmfgQk6/4gb5rEAYBY30TsHrPDUa47OwRNy980xqps7/C1W/miYt
+	Vy8My6qcs7cXmaOsdWernsNENbNIPafsGNk+R8wJVCLJQ7KI86BnZ36R6dD50dZlEGejEK
+	vvdBWpRHxl8ABUlowxhogO6OPYw1bAg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777485318; x=1809021318;
+  h=date:from:to:cc:subject:message-id;
+  bh=qES5wi9rHeFRKHA56944QIARsJl/dmyOMftYE0DrvjY=;
+  b=Dgl1uRIWCEQpWeGe7JIXqCyRf4D3ydiDBMzwEGHxQKyiiq3Rl7InzvCF
+   79fFuPOMsq36T47FdczJ41TrX0uBq8FCr/kyjbfi3M3FRKSNUDJ4qQKXX
+   6F1fld6T9h4oaDMa5YwcsAA71v7VzqjG6+DFN4cf5AnPTvrC05uQZmYoF
+   mXUXnr4DqNTMgIrmeC0MjPUTgCmbIpPTILk/X6L9WNK/h1PL52X9/0m4Q
+   d6gbvz9GFQG3pq4KVppm4IlAQbbikn9pVFW0f4xnJQNK941aUsAKs/eOC
+   mk61JZ29JK/KahMaMPFG6FmkdbZBtcxJy8bXQxD6mNW7vTSlpRPNN0sX8
+   Q==;
+X-CSE-ConnectionGUID: rtUZZif5Rcq6bAygsuy99A==
+X-CSE-MsgGUID: 24DwWY+uTMKrItdtYIFUmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="89884370"
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; 
+   d="scan'208";a="89884370"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 10:55:16 -0700
+X-CSE-ConnectionGUID: 3iiTamUzSy2ltJXGS6U1YA==
+X-CSE-MsgGUID: IwKwGggbR9qySSnG1HQVkQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; 
+   d="scan'208";a="236106649"
+Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 29 Apr 2026 10:55:14 -0700
+Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wI97w-00000000BKS-0GTU;
+	Wed, 29 Apr 2026 17:55:12 +0000
+Date: Thu, 30 Apr 2026 01:54:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD SUCCESS
+ 52dc268726a771d68839fb1e06e88b5157062a3f
+Message-ID: <202604300126.K1nrQFEC-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1777484279-488197
-X-HE-Meta: U2FsdGVkX1+WpSfxiy8Rq57NSCsw1qn+GBR7PcMhd/BpY74IftEtIgiHtcYq1sOsKbAYq3dnRb7KtaOs5dTzfz9p2rieLxU9EIWihdKLDYa9PK4Xkz2kFRdyH//WuzY5gsby2dFo3yiBhi+xd/uotJXUWsnw37mwtjnhQYjSzzhHrEdefyFwWVny7o2p8TL71e3DGUTeuZF4I5lYthHv/6DxpGeID7B8hp2/sNdHB4R+PvVVOZHrG5RZwjMIMHXurh0ErILYT0XbG4uYyLg3IOQQU1/zqnXDk3uY/H2LePJP/Wb5Fg5kRJlbIlzfAW2NCPNxs7K9HpmnUUErj0lVXomUdirp5LAWTDz3ahe8uEQb26mV0LkqFdDcg8KO0ARAqzmZph2SpDOb9aDEbqf+1W/bry5A9pqE9Qm7WvLpBZnPT2Ev4Omeo+8tnR4pGBTAQ5dkPauH3oGha4GDKFE8saxuA+72KoZQ572PN/wSpS5RtFDR09NiUY9a4vHVHh4egtOj71sWau3EIuu4N/G4Yg0FJQaSPZj0+Ec3eKXGUVkdAy1haZP68bsgKOj0sVi4EC0uMxHLv9Bgmt0QTsonEXAAavBaU4Nqy6RjftN21cCn1ohsPUg8Zy6PRlkgeI8gkxTNPfC/GHEV+qr7HfQxiCfRo+7J6uQnWdN+WZfuAuHrl8SmNL7ubrvK7L5VMllEGuge1ick8Rl4mVetncE22RMTPh6ao7PxiFHa5dgACzlWbiQQddS8paoBEiL3tTh0zflc6QMogde0VbBzM2gMaLsa6N145GgE9iKOT+P9/2PkiNuBmPBSZ8E/4becY4UVVcen1u2NMxLC2mlPnPD2bYt38qnInU518/tkqgDG6NkhymcucqQDai359bSl3rF52nZ9ANIXiXfkUG+fwdb9omP8dCgEcFv4Oo+fYs7CEuCs6f1u4TwvPScPpZz/Rn1unpagwO00RISIqs7cwf/
- MKrdgOO5
- joYXzAOE3PyhouPg1ct9czuSSoh1UIZbvml016BrCf7CD7EJsouOKbii3+nlYvj+jNDYF/5HTpYGQbs3KBxtR6ExjmrYaqD59GxyHKQIhSbQDUFPEVXsCKhtVcslrzoTy152oNVVjkWqTg63qJtOtE3W3BK8Vl8pCNEF21Hm0WIlIc70UKaexTH6CmA60wVwy9mb+l04H0/6RC0yEDUngNWADw+zJOYhOsUexbvmA7o6ubkzAjOWD3XjpSehGIvSq7qvQCdlrQj5BFSes+kcFOcQdd1n4GVLF915bwuIS+FYZ3UcmxLKBSTJL+4U2hvgDn9ay5OAdN4iw7I8=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C52F5140004
+X-Stat-Signature: etcahx5ya5ftk7so5z1qwgkeqfuywoq8
+X-HE-Tag: 1777485317-809224
+X-HE-Meta: U2FsdGVkX1+Z+XRJEq7PucMMB8aj3ywzPaoj603NcQRu7RQ7HbetRm9JcV+DvEs0r48BmsWdJlbtClNTLhXpU9KBwMj6sQAB6cB4iM6EbZuk3QK2M5Jg1cPtsMfo11EAssONj8m52PdvhC9dxMaxVwuGMdpx3kg8UGeH9YdQC80kaMIEDSwErUB0udex4JmUrP+Otrnukp5su/E7V9Xk+duGAEWDJjrqUaPBxGw1/EAglTpmbV8t5/wxanVSqcrdN9EkSK/U4QEH575i5C5NJk9N+olDTVehzEc+Iixwb0gtsfNMuImWINLaXxDlqr1/WnWWXzDVarDdCFA6zsc219mrh/gUV9JpNNS4HP6WchX4aiSX7639l1DBZ/lXe5bzjFbKatuU2BSVumXUXzOSdNk6vpeHT9Lpomoi5yQJxraG8yH6UUtevjjxKXOakphc0+hS6cj4YFv6rnn2yyYckUPYDa7mZ4PJMyPLtX/18qfeHFDe62fa4XA04lgKssk97SkkJLn6QZ6OEX+unUrVwGNPYYlAVHX6KWo2z/DlFlS6bH+L/sYbbK4lujflHQXBYkZ2f7+wylQPYRhbKkkaW6QSPC0usmjGN5ZZ+wMtr4snCYlE4//aebYmZI8xxJ+KdbgBUUCINpYvbB70nvNDKjk1EQqTsIFDujkp8qqdKw4rfx+bAkVykJRDZx7xaYUViumme/fqX2uL9nAx+wxcqAcpBpKl6ta+z0S5wY1OdqROqJR0xkpYLQTiqeSAnhA7cHffEGivX99Lw/bQJlm2Ju/V5T9H7RxyPPqi3+GfZDqXcxyvfCabOmVH2furUgs7rHK5YJdDIiwAqGv11hFA5Z22kzvKaKvFwTf/PBAapb/vVvTnlX0rH0U6WlJRLgNRRjD/R4i2zOTrVK3NSpFKN7gwiOprB21uJkOudTeN38p05cJrxV1ZcpPFcjy7flr9WT00QfonujRkQS2PA8f
+ MugVOwhF
+ aKWZQhcXCasr0hFhJA8Eaeo2vJi4/+SG/neQaJXp3EIjtqOk8C0dVWoHNSbmR+roYNGyi3cbQtdD3P1TYZK4l5Jj/iGvLOR4lv7EwHxo39rYQnWwENAXiN+v1n2sAJO4F2TvQ9+lXI4ybTnNpNyeDqRv5e3L/9W4VXjaq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,139 +102,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: 52dc268726a771d68839fb1e06e88b5157062a3f  flush dirty folio so that drop_caches can work
 
+elapsed time: 1162m
 
-On Wed, 29 Apr 2026, at 15:55, Kevin Brodsky wrote:
-> On 27/04/2026 17:34, Ard Biesheuvel wrote:
->> From: Ard Biesheuvel <ardb@kernel.org>
->>
->> The linear aliases of the kernel text and rodata are mapped read-only in
->> the linear map as well. Given that the contents of these regions are
->> mostly identical to the version in the loadable image, mapping them
->> read-only and leaving their contents visible is a reasonable hardening
->> measure.
->>
->> Data and bss, however, are now also mapped read-only but the contents of
->> these regions are more likely to contain data that we'd rather not leak.
->
-> That sounds like a good rationale but I wonder, is there anything
-> stopping us from unmapping text/rodata as well?
->
+configs tested: 93
+configs skipped: 2
 
-There is the zero page now, which may be accessed via
-'page_address(ZERO_PAGE(0))'. Also, anything that dereferences page tables
-(like /sys/kernel/debug/kernel_page_tables) will expect to have read-only
-access to swapper_pg_dir.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                   randconfig-001-20260430    gcc-8.5.0
+arc                   randconfig-002-20260430    gcc-8.5.0
+arm                               allnoconfig    clang-23
+arm                              allyesconfig    gcc-15.2.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-23
+hexagon                             defconfig    clang-23
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    gcc-14
+i386                  randconfig-011-20260430    clang-20
+i386                  randconfig-012-20260430    gcc-14
+i386                  randconfig-013-20260430    clang-20
+i386                  randconfig-014-20260430    gcc-14
+i386                  randconfig-015-20260430    gcc-14
+i386                  randconfig-016-20260430    gcc-14
+i386                  randconfig-017-20260430    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-23
+loongarch             randconfig-001-20260430    gcc-14.3.0
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260430    gcc-12.5.0
+parisc                randconfig-002-20260430    gcc-8.5.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                      pasemi_defconfig    clang-23
+powerpc               randconfig-001-20260430    gcc-10.5.0
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-23
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-15.2.0
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    clang-20
+sparc64               randconfig-002-20260430    gcc-8.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-23
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260430    clang-23
+um                           x86_64_defconfig    clang-23
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260430    clang-20
+x86_64      buildonly-randconfig-002-20260430    clang-20
+x86_64      buildonly-randconfig-003-20260430    clang-20
+x86_64      buildonly-randconfig-004-20260430    clang-20
+x86_64      buildonly-randconfig-005-20260430    gcc-14
+x86_64      buildonly-randconfig-006-20260430    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    gcc-15.2.0
 
->> So let's unmap these entirely in the linear map when the kernel is
->> running normally.
->>
->> When going into hibernation or waking up from it, these regions need to
->> be mapped, so map the region initially, and toggle the valid bit so
->> map/unmap the region as needed.
->
-> Doesn't safe_copy_page() already handle that? I suppose this is an
-> optimisation to avoid modifying the linear map for every page, but if so
-> it would be good to spell it out.
->
-
-Uhm, good question.
-
-When hibernate was first implemented for arm64, we had to bring back the
-linear alias of the kernel image, and when I started working on this, I
-hadn't realised that we have safe_copy_page() now which should take care
-of this even if the linear alias is invalid.
-
-However, if I remove this handling, things breaks mysteriously, and it
-is a bit tricky to debug so it may take me some time to answer this
-question. In any case, I will address this in the next revision, and
-put you on cc.
-
->> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->> ---
->>  arch/arm64/mm/mmu.c | 44 ++++++++++++++++----
->>  1 file changed, 37 insertions(+), 7 deletions(-)
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 9361b7efb848..a464f3d2d2df 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -24,6 +24,7 @@
->>  #include <linux/mm.h>
->>  #include <linux/vmalloc.h>
->>  #include <linux/set_memory.h>
->> +#include <linux/suspend.h>
->>  #include <linux/kfence.h>
->>  #include <linux/pkeys.h>
->>  #include <linux/mm_inline.h>
->> @@ -1040,6 +1041,31 @@ static void __init __map_memblock(phys_addr_t start, phys_addr_t end,
->>  				 end - start, prot, early_pgtable_alloc, flags);
->>  }
->>  
->> +static void remap_linear_data_alias(bool unmap)
->> +{
->> +	set_memory_valid((unsigned long)lm_alias(__init_end),
->> +			 (unsigned long)(__fixmap_pgdir_start - __init_end) / PAGE_SIZE,
->> +			 !unmap);
->> +}
->> +
->> +static int arm64_hibernate_pm_notify(struct notifier_block *nb,
->> +				     unsigned long mode, void *unused)
->> +{
->> +	switch (mode) {
->> +	default:
->> +		break;
->> +	case PM_POST_HIBERNATION:
->> +	case PM_POST_RESTORE:
->> +		remap_linear_data_alias(true);
->> +		break;
->> +	case PM_HIBERNATION_PREPARE:
->> +	case PM_RESTORE_PREPARE:
->> +		remap_linear_data_alias(false);
->> +		break;
->> +	}
->> +	return 0;
->> +}
->> +
->>  void __init mark_linear_text_alias_ro(void)
->>  {
->>  	/*
->> @@ -1048,6 +1074,16 @@ void __init mark_linear_text_alias_ro(void)
->>  	update_mapping_prot(__pa_symbol(_text), (unsigned long)lm_alias(_text),
->>  			    (unsigned long)__init_begin - (unsigned long)_text,
->>  			    pgprot_tagged(PAGE_KERNEL_RO));
->> +
->> +	remap_linear_data_alias(true);
->
-> It's really hard to know what this does without looking at the function.
-> How about mark_linear_data_alias_valid(false)?
->
-
-Sure.
-
->> +
->> +	if (IS_ENABLED(CONFIG_HIBERNATION)) {
->> +		static struct notifier_block nb = {
->> +			.notifier_call = arm64_hibernate_pm_notify
->> +		};
->> +
->> +		register_pm_notifier(&nb);
->> +	}
->>  }
->>  
->>  #ifdef CONFIG_KFENCE
->> @@ -1162,7 +1198,7 @@ static void __init map_mem(void)
->>  
->>  	/* Map the kernel data/bss so it can be remapped later */
->>  	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
->> -		       flags);
->> +		       flags | NO_BLOCK_MAPPINGS);
->
-> Might be an obvious question but why do we need this?
->
-
-set_memory_valid() only works on regions that are mapped down to pages.
-
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
