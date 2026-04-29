@@ -4,97 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 178F1FF885A
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 02:30:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF17FF885A
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 02:44:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64D706B00A8; Tue, 28 Apr 2026 22:30:32 -0400 (EDT)
+	id F3A6D6B00A4; Tue, 28 Apr 2026 22:44:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D6296B00A9; Tue, 28 Apr 2026 22:30:32 -0400 (EDT)
+	id EEB5C6B00A5; Tue, 28 Apr 2026 22:44:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49DC06B00AB; Tue, 28 Apr 2026 22:30:32 -0400 (EDT)
+	id DDB046B00A6; Tue, 28 Apr 2026 22:44:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 35A746B00A8
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 22:30:32 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC00A1405FC
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:30:31 +0000 (UTC)
-X-FDA: 84710014662.09.787DB59
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 050AFC0002
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:30:29 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=REKOUE9E;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777429830;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CD96E6B00A4
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 22:44:09 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 61D9012056E
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:44:09 +0000 (UTC)
+X-FDA: 84710049018.07.D635E1D
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 701144000A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:44:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jpHFoB0E;
+	spf=pass (imf07.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777430647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MWZbALr0HrmNzgjYbWhwVubSzNlQAWhMuIrGVyyObI4=;
-	b=ZWje+7m2b/ot6riTS6qj4sB/dgjq8QCZZryZ10kSIN+qi2Q2YYAZSyZNi5FTSvptbFYYPt
-	8nv7Cn5jCYYPVwD8E2fl8pRt8mvHC/bFTEoPk+vYeAncHtutsICG3Q9HYAT6S4u82cI2NK
-	lSg032n4QJtZFRMIsaSAcbClGJohKIc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777429830; a=rsa-sha256;
-	cv=none;
-	b=UTwZOgRmKcZJFooPnq5z51iYhFrkk5Hwitvmji3jfwfUuMGJHyuVAgCADl1uOO1+eXmjzy
-	t1SOXnJI+NeTMOcqjqT+b6V5cLlRPTSoG+kahxRZgobZdgCP7H0DoHNqS5RtVoz3EmhLEk
-	hLiRkWhuyypX45RVb25LKcWy7/92P3Q=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=REKOUE9E;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777429828;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MWZbALr0HrmNzgjYbWhwVubSzNlQAWhMuIrGVyyObI4=;
-	b=REKOUE9Et33cUnFrVRGJb+pgigmxP0NXNeSwlsNnbMPEvV6Rmc+K3EFV3uRu40p1SlfyWr
-	ZaTkwkajaXWhwKm3W+31KKI86oCsxH9QvCRd6u7mc1enKJJErIY2BWEn/gJZCRChIlcApj
-	VOl/40KvzGVSnzeGMwaN+yCewfVCkxM=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	rppt@kernel.org,
-	jgg@ziepe.ca,
-	baolu.lu@linux.intel.com,
-	akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH] x86/mm: fix freeing of PMD-sized vmemmap pages
-Date: Wed, 29 Apr 2026 10:30:08 +0800
-Message-Id: <20260429023008.61378-1-lance.yang@linux.dev>
-In-Reply-To: <20260429021224.39916-1-lance.yang@linux.dev>
-References: <20260429021224.39916-1-lance.yang@linux.dev>
+	bh=q+KoLGDSrHSIZG6+XblKTC21gPEBzNKAEyUWN1fUvUg=;
+	b=RSpEX9sz3j5I7cyVxpMrZUYY57nag/UoVZ8lSwPZfTBiD6/8KSN1nze3fBNVIlNLGwS0qV
+	aEtkJbY8gI0NmUW9cJxe9ySeyE7pvKurnkSIFwcBeX9GE2UlXZxMBTORgulDWIjNMoQ9GX
+	0OPN9AUWfM61krH4Gdldw7hM/uNvviE=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jpHFoB0E;
+	spf=pass (imf07.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777430647; a=rsa-sha256;
+	cv=pass;
+	b=c1IeDj0ZxD/hdhm1OwaTzzRzhWcTxY3AJ/QhBD5qIyihwRn0XfZ3hLoC80GL88QB0mPVSc
+	qjjwVEGSw7nmP4ImAPE8tsXqr/WOoWmu/1IeVWDdGkxgiigADnfWISEL47EKRxwS/2wi2m
+	WNrSiRj6FuG07CdIXgR+UpXLH/9yjTM=
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-7986e0553bdso119038797b3.2
+        for <linux-mm@kvack.org>; Tue, 28 Apr 2026 19:44:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777430646; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TlZLBuuJXd24sFa8yEJyK2UhbMWqjWfxPXUMbfo4zY1ne4zPs8pd8GDM8JXVJ+n5Ym
+         5xrmoOO3q20F3+Fiwfm4bZb2b5llcHXHrpomuZwgdnMj2emTPzl8FrfsROi3Wx70Alfg
+         Hk8pPXaKrB9knELS3bWysf8sIY2xc/EueOiLq1zTTV42h4dV9awQYZFYn/a9NtScG5P/
+         hvDUvPnNdSFgj2X4h7wEDjAh58PXhzQ5d7b26NwCSo7kyTqUP1vpA2Rm7iSGmfzFAfCR
+         ASuPsGXfAsQiOR1Q/OxZMsVsCIMLhWx3uHjZ5FkfHuqsQ+0UDTsNx5/X6FmhIqSiB4IN
+         MF0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=q+KoLGDSrHSIZG6+XblKTC21gPEBzNKAEyUWN1fUvUg=;
+        fh=vIPOUXYUdAmhZXvAvbZn0LQRS4FIJTCEGEvqYzwm6Hk=;
+        b=cSU2KN+4APZs1xLM1CRqExSkyWo7gA5cCCiHSUlP2LZlpov139lX/vvK7BmXy0CXkt
+         a98NdE1vADf7YAav/bF6op0XGxDcaDqAxViaPHMylUrcIuwKy6LCim9iYgkxCQ1ooa8p
+         QnoBuoFyh9OxluXnyJdPgtMEVi1hIi7IvE5/ZUQfLK0whqZdbOe6g/kFTVVY//5937Ty
+         s8Gyj1D+6IRAAPyhEsfUcd6a6YNI+oCHaRz6a675CEK/oZE1eHADt9LIjnrdZtbX08bO
+         HD9B8HrXq8wf/StO5EEE2UFoSeevqs11Nhbzpt/I9x0/h/DpxAeDf3bPBZDe46mNU096
+         U/ZA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777430646; x=1778035446; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q+KoLGDSrHSIZG6+XblKTC21gPEBzNKAEyUWN1fUvUg=;
+        b=jpHFoB0Ej6yIxMBysSMRA5UfQazX1oePsFwy3nY2t+iwUBF7CvOYY/0Ijb3ymyNQhH
+         +QeRiBGMmPYfqJgVTpWZ3jv+ACZ9vMkFMogS8KDsTQOaYMnNEgKfRYdVyLMyWAwQSoRp
+         TEFsiQiHgnvj9f2HttnWI9LYUXqDQp4YIfqDs9bcTx9f0kNzHmobd3/odT/SKCXUhDMf
+         Y5gYJzlH8WcQtjtw/2Y8jTVJ0XpiqEK4fPwGga3ouJnXaXYy7iLBmC1cUirP0wbkBSm9
+         5BfUHFK+h/PuKtRWIbw6nN++KLY+PDcrRpinVhKdYTFGTSc5Tt6RZMyO82vT+lU7P4bm
+         qhPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777430646; x=1778035446;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=q+KoLGDSrHSIZG6+XblKTC21gPEBzNKAEyUWN1fUvUg=;
+        b=JpkBvLVYszs5OttBRKxlfNuv3dgswpDoedRDctzAWOKtXsP1ezhGVlzjU/lWuljp0N
+         vNyRJSh5O9/443jC2YfLVnE2GpNRrALgAdtxtm08dGAnEbgxVd9vDpPq9fHyHyneSSel
+         Li2f9WXooNPJZP0L0ydS7YQsN4pxZ39ftPZV/lfEws3JW31zu+rr68VHHdv7crl+OINx
+         gRz/RCx/geUfMpCbSZIl9CsAfhblsDN7iDnX5mttCtnhMX8PfDZJ7wCeYGoz7/5MsbIo
+         TaksZuPNL92wmN8XIKryshDsw1Zxj7FDn7RF/tMfRHCn1nk8f8iDWyhDsM/+xyazoWAy
+         svMQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9dbpKHncQ/VUhtiIQ5PZy58/fOePojrOfrHTutcVqSgVcKsASqOwtG6/oYpQd4/9PepFd8mYSzuw==@kvack.org
+X-Gm-Message-State: AOJu0YwZFa6UlznvWl8b4hlNPOx6UJbzy3bjWrk0JVLHAtCwmTPsheyw
+	OqthL71klgg77LKlraV4LrxDSMNXpfgXBEc8PJtC1WFJM698tnlNJRtZapDIOQFqUFRyjQHbcZh
+	6PgwceAIWz6eIOt9G1KMTLvG4EceipVE=
+X-Gm-Gg: AeBDiesk86HIxafff2eLI7EeD4pwY1tMTwUPxJ6kYzNfRuxkh5FXfxLuUYrOEhAJjgF
+	ozLfrNzyK5oUMeAH82iINMdKTQqpZLYvuJOSuxnVzgSm5bfwAL2UOcIi8KJtzkSeOgZG8971qcG
+	ZBpEPxf3JA708/eKRm0vat8Fznek/74bC7P4bDwVAr9UMauBzhlANGWKN3AjMhOpO3wtKMnUG/G
+	vwxyiEk6wbOD1g/n3j0iT8/KU3MqI1d9G7k3IhxoIlHxUZDmXmm9MYAIWo4gQLaVwxuoAKMKVzR
+	VsvGfeGJKYgI77sGO7uoMn4R9mOnz11mS+YSYOkMgsepVEaGyK8=
+X-Received: by 2002:a05:690c:e3c4:b0:7b2:9347:7bdf with SMTP id
+ 00721157ae682-7bd1dab7ebbmr21814177b3.37.1777430646358; Tue, 28 Apr 2026
+ 19:44:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 050AFC0002
-X-Stat-Signature: yx9qfjcp98n1diyaabfumxzfgyadzzua
+References: <7ia4o6j4c5y1.fsf@castle.c.googlers.com>
+In-Reply-To: <7ia4o6j4c5y1.fsf@castle.c.googlers.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Wed, 29 Apr 2026 10:43:29 +0800
+X-Gm-Features: AVHnY4LELreyRpJUwIYExN_byZ7hf2FVYTBc2vbJPsf4Yl0K-6feZLhlmOKYcHc
+Message-ID: <CALOAHbDFvNLQi4xOBj2vvTng-vT+X42NtsCiuqHMt1PTpnxAyw@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Using BPF in MM
+To: Roman Gushchin <roman.gushchin@linux.dev>, Song Liu <song@kernel.org>, 
+	Petr Mladek <pmladek@suse.com>
+Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	lsf-pc <lsf-pc@lists.linux-foundation.org>, Daniel Borkmann <daniel@iogearbox.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1777429829-405281
-X-HE-Meta: U2FsdGVkX1+hOflAA/6h0e9Wwdqolq2gnJb1SSxJMonfxhfLckfSHIINXuWoB8ne48n8d51tQrqV8z3fo78xr1qwyebE7y8zPlTTpt+gHwItJoKBuT0UrBrMoKuUHZBHAxakd1SdhD1FVl5/gfGr2i0jwZpDEWi7RyLYnFWk+eRRpIO9bIK20fJvLJWd45Bw0/9ykdgkVhoTKiJpCxEseZX7sK1kGdx8nob5XUtep3y981V2XcYEJlBGptRzaOf7RTZWbd9Eqe52oK7HfEne8nXHNpzDGIc8ohoJnOWz1yDu6F/+wzToWby+MCoueHXVwX3YfC8VzvqR10QUY39FLAVMPNpXeZEHKKt/hruaxQpbsh8fXH0EAATGXNQACq9/xxSJWSbSa2hpCQ7cUbgp9od4QfXi1Zr23gws/V4iPG5+Di9v1duxomcaNMg33QlGA6TeamcFU/ZL8mBKVdwpEknouiWoTVBrAoGdp7qxcnENGPMtK4jkLX0V0OkbcQXXNyM0HltaVVGFVL+gU8MKN/vRxIoEYFWOwU01HXl9pCZ7njb5fVprCvNAQxCaeZ6gI7d/WJ+a7Go1IuJ6zZ4R+Pfi/ROZ4afOT3IMnfffTfUYz0DYUh08opnxqaKWiAjdqwYefPOLh8DeQ4sStxqOvoCaTIxM136dH/6zwQpgeG9iSGZtYGReWcwkeI34t52NtS2ze6AogNf3OBW1ViBLzlvl5C/Lm98wDY4c3Lt/86CX39PvlzLPXCr3KAtVnj/vOVz5zqXTGhk8jDYRXIo/o+5JSNF6OTwJPcMhsIL5Au4DYsCdsEpGVySDcFUCw8DbaHvgf2Bg9xrN9eDD+sILokcRKrG7Mrz9DlmNqN/6hEn5eHQeaiEzEGpqfXd88EK/qUSgrYqHH3u22INmjk01WBNupn9fg2YMmDb0mlnPgm2/Nwx81tKaU7bBNPOKGBBuqJmS9S2ux7kOwhYNlrE
- TFmyblpm
- vY1+kUd7pIEQYOdmvFHGM7irVL2hviYAffYyQtopa6nQgbD0vDoLbQLJ196qX6cr50itKk9sDjiHCOwCBEZTqQMve6F1XOU11kSZm47vwCYtCidNxiE9AL3H/7uwOMrV1DL+GIRCerN4U6IF6PEI5+ZHcL+jR/IUNyBIQEBGG3KolJ+aAwyGYdPpoQdyeW8BvLdGjK2IzheUk5OK88LtZgU4v6kUZq4C5kc3hwoX5l2YF0do=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 701144000A
+X-Stat-Signature: 7x5s9xdwgcnfxseyy9qhu9zkp7jd8sjd
+X-HE-Tag: 1777430647-952685
+X-HE-Meta: U2FsdGVkX195aZ90jN7rQiD/Wn8jD+9YW7K+57oSizoLjlrqGU710CEXjegs3igyWPC1c++2rJ0o5YY9hE+fc2fpBQd66/uvbPQyvqaScgsjN0qH4xOe1/gLjClMONLV1T9AUIiLncjGfkbPCpvqVbpdm11Y1dav/XteacMixt2UbCT0QS0545S6VvYaDpP6AkzSkT83sGFkIlcC7W+bqCHa1XUFTJ7jrGogYa/eTHL747kYN6jEC5GWNe74DprHIHD66v0wXg6gp1mwPw6HwKxFn61dOZgnBeXC4tP3GGiEXlybuEoaEHdcB7KeJD9mGv4wyf/rvciQq/VByvb7CrAiEvxfY90sazLaszh1Hx29/lGcfsJv4oahurX/cT8FklvtKqeclU3JVkbFTNn9RSoRh2rIMLvQ65kNJjnsbqjuZHodFMMV3pXpDlIgOGXl3+KqClUHsZczBLBVypnrrf1MDz+OV2rHh/rIQdMuATwFiLxC5U3jU+ltdRMkpdLwaOroSyZ6S/Wnmpc7H46vs1/ZEgS73t0HrKmVl893B5yRt7QifVOykmGlFUDJ2vv45bBbLlZhuEMau4UsofWPBZHeCDXWBZbggfDgmGh6gojJ1RxXvmwH297JYEQRWX79ipy/1Nq4Js1PWWwbHBTD1W+zgp1qqemLQdeocv+19HhOGbdaoT+kMtlhD3ZT1143ROO6GywwFiwc7sjhBzR19IPM2u7fCkqwGGdJV2+K7xDYABKEHHCTDdtzbR+4OoXrI6fZcBgXNqX5vmPxTvgeA5jJ49louT2JNrAlf00kbIWljZEUQFi6Dy+erMu7DL2BhhMps/NjpZty7PexpG9In5WQWqP3EaGFwxmsuAnb8m4CPNQiREvDFXT7it1bj0o7ZCd2VUPQUaTm8PgSiRP6vg/fMzltYXq06v/lrUCNX5ZMVjxn5ooyfiD7GslS+BKYgZfKEG+NpxiUhKSBra/
+ pZg1x9xX
+ NF2NHnwI+dUCH6Wct5R3o2ilko0njINf16qvK2oz/sFZQrFWqNUJ/ZYfQypexIIFV/9FDgtPBZMQ9SXyj1ZSRw8Gbu44j7/a3aqb5SiwKRUWawZVwk/iIWpiYl81hn5NtsezlvCTPgC6WAiP3mpEFt1GoQTGeYzYbRcVf2gG/WGl+BVRRMsUN5hzmBVzNfKfPX7lc9zrTKraS3Q82bOGuQpgQ42rPRObi3Spj1UX96PFUCqwgLYWXDk6mFTiCCT7gxiUWG6PobQHVSF2V+iyt0ZFYYgmoYCq2dJZXyEPQ0JFtMEFoM4LcffweeL4NtPWkdshYKL49Tp5CSUsmmga9Is51v+9TW1ucd6+TkF1Tjog+KF3OytW/KprItVZyJsYSwD3ClHSSQNg4MD0x0ysWarMEvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,232 +141,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Apr 28, 2026 at 7:58=E2=80=AFAM Roman Gushchin <roman.gushchin@linu=
+x.dev> wrote:
+>
+> [LSF/MM/BPF TOPIC] Using BPF in MM
+> ----------------------------------
+>
+> Over the last decade, BPF successfully penetrated into multiple kernel
+> subsystems: started as a feature to filter (out) networking packets,
+> it captured its place in networking, tracing, security, HID drivers,
+> and scheduling. Memory management is a logical next step, and recently
+> we saw a growing number of proposals in this area.
+>
+> In (approximately) historical order:
+>   - BPF OOM
+>   - BPF-based memcg stats access (landed)
+>   - BPF-based NUMA balancing
+>   - eBPF-mm
+>   - cache_ext (BPF Page Cache)
+>   - memcg_ext
+>
+> There are some obvious target which haven't been covered yet:
+>   - BPF-driven readahead control
+>   - BPF-driven KSM
+>   - BPF-driven guest memory control
+>
+> Despite a large number of suggestions only a relatively small feature
+> (query memcg statistics from BPF) made it to upstream.
 
-On Wed, Apr 29, 2026 at 10:12:24AM +0800, Lance Yang wrote:
->
->On Tue, Apr 28, 2026 at 12:29:36PM +0200, David Hildenbrand (Arm) wrote:
->>In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
->>from freeing non-boot page tables through __free_pages() to
->>pagetable_free().
->>
->>However, the function is also called to free vmemmap pages.
->>
->>Given that vmemmap pages are not page tables, already the page_ptdesc(page)
->>is wrong. But worse, pagetable_free() calls
->>
->>	__free_pages(page, compound_order(page));
->>
->>As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
->>except for HVO, which doesn't apply here -- we will only free the first
->>page when freeing a PMD-sized vmemmap page, leaking the other ones.
->>
->>Fix it by properly decoupling pagetable and vmemmap freeing.
->>free_pagetable() no longer has to mess with SECTION_INFO, as only the
->>vmemmap is marked like that in register_page_bootmem_memmap().
->>
->>While at it, just wire up the altmap parameter for remove_pte_table().
->>Also, the indentation in remove_pmd_table() is messed up, let's fix that
->>while touching it.
->
->One thing I'm not sure about is passing altmap down into
->remove_pte_table().
->
->Do we actually know that a non-NULL altmap means that the vmemmap
->backing page came from that altmap?
->
->On x86 we still have in vmemmap_populate():
->
->	if (end - start < PAGES_PER_SECTION * sizeof(struct page))
->		err = vmemmap_populate_basepages(start, end, node, NULL);
->
->So for smaller-than-section vmemmap ranges, even if the caller has an
->altmap, the backing pages are allocated from normal memory. But with
->this fix the PTE removal path would now call vmem_altmap_free() just
->because altmap is non-NULL, and would not free the actual backing page,
->IIUC :)
->
->Maybe free_vmemmap_pages() should first check that the backing page is
->really inside the altmap range before using vmem_altmap_free()?
->
->Hopefully I didn't miss anything :)
+We are exploring an alternative approach that leverages livepatch
+combined with BPF to modularize struct_ops-based kernel hooks. This
+allows us to deploy these hooks as out-of-tree modules without direct
+kernel modification or the immediate need for upstreaming.
 
-I played a bit with the following on top of this fix (untested):
+  https://lore.kernel.org/live-patching/20260402092607.96430-1-laoar.shao@g=
+mail.com/
+  https://lore.kernel.org/live-patching/20260416001628.2062468-1-song@kerne=
+l.org/
+  https://lore.kernel.org/bpf/CAPhsuW53pymgmFsHSkSwDvEAJ=3D+Rp2T102JYe4i9kg=
+dePpR=3D6Q@mail.gmail.com/
 
----8<---
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 8d03e44a7fb9..9a52f9424a07 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1028,14 +1028,33 @@ static void __meminit free_pagetable(struct page *page, int order)
- 	}
- }
+In practice, we first introduce the BPF hooks via a livepatch and
+subsequently attach BPF programs to them. Below is a recent use case
+from our production environment (though not MM related) for reference:
 
-+static bool __meminit vmemmap_page_is_altmap(struct page *page,
-+		unsigned long nr_pages, struct vmem_altmap *altmap)
-+{
-+	unsigned long pfn = page_to_pfn(page);
-+	unsigned long start_pfn;
-+	unsigned long end_pfn;
-+
-+	if (!altmap)
-+		return false;
-+
-+	start_pfn = altmap->base_pfn + altmap->reserve;
-+	end_pfn = altmap->base_pfn + vmem_altmap_offset(altmap);
-+
-+	if (pfn < start_pfn || pfn >= end_pfn)
-+		return false;
-+
-+	return nr_pages <= end_pfn - pfn;
-+}
-+
- static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
- 		struct vmem_altmap *altmap)
- {
--	if (altmap) {
--		vmem_altmap_free(altmap, 1u << order);
--	} else if (PageReserved(page)) {
--		unsigned long nr_pages = 1 << order;
-+	unsigned long nr_pages = 1 << order;
+   https://lore.kernel.org/live-patching/CALOAHbDnNba_w_nWH3-S9GAXw0+VKuLTh=
+1gy5hy9Yqgeo4C0iA@mail.gmail.com/
 
-+	if (vmemmap_page_is_altmap(page, nr_pages, altmap)) {
-+		vmem_altmap_free(altmap, nr_pages);
-+	} else if (PageReserved(page)) {
- 		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
- 		    bootmem_type(page) == SECTION_INFO) {
- 			while (nr_pages--)
---
+In one of our clusters, we needed to route BGP traffic through
+specific NICs based on destination IP addresses. To achieve this
+without service interruption, we applied a livepatch to
+bond_xmit_3ad_xor_slave_get() to introduce a new hook,
+bond_get_slave_hook(). We then attached a BPF program to this hook to
+select the outgoing NIC by parsing the SKB. Because the destination
+IPs must be adjusted on demand, a static livepatch alone was
+insufficient; the BPF integration provided the necessary dynamic
+flexibility.
 
-Thanks,
-Lance
+To fully support this architecture, several work-in-progress
+enhancements are being developed for both the livepatch and BPF
+subsystems.
 
->Thanks,
->Lance
->
->>Note that we'll try to get rid of that bootmem info handling soon. For
->>now, we'll handle it similar to free_pagetable(), just avoiding the
->>ifdef.
->>
->>Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
->>Cc: stable@vger.kernel.org
->>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->>---
->>Reproduced and tested with a simple VM with a virtio-mem device,
->>repeatedly adding and removing memory.
->>
->>Found by code inspection while working on bootmem_info removal.
->>---
->> arch/x86/mm/init_64.c | 43 +++++++++++++++++++++++++++----------------
->> 1 file changed, 27 insertions(+), 16 deletions(-)
->>
->>diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
->>index df2261fa4f98..8d03e44a7fb9 100644
->>--- a/arch/x86/mm/init_64.c
->>+++ b/arch/x86/mm/init_64.c
->>@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(struct page *page, int order)
->> #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
->> 		enum bootmem_type type = bootmem_type(page);
->> 
->>-		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
->>+		if (type == MIX_SECTION_INFO) {
->> 			while (nr_pages--)
->> 				put_page_bootmem(page++);
->> 		} else {
->>@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(struct page *page, int order)
->> 	}
->> }
->> 
->>-static void __meminit free_hugepage_table(struct page *page,
->>+static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
->> 		struct vmem_altmap *altmap)
->> {
->>-	if (altmap)
->>-		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
->>-	else
->>-		free_pagetable(page, get_order(PMD_SIZE));
->>+	if (altmap) {
->>+		vmem_altmap_free(altmap, 1u << order);
->>+	} else if (PageReserved(page)) {
->>+		unsigned long nr_pages = 1 << order;
->>+
->>+		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
->>+		    bootmem_type(page) == SECTION_INFO) {
->>+			while (nr_pages--)
->>+				put_page_bootmem(page++);
->>+		} else {
->>+			free_reserved_pages(page, nr_pages);
->>+		}
->>+	} else {
->>+		__free_pages(page, order);
->>+	}
->> }
->> 
->> static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
->>@@ -1093,7 +1104,7 @@ static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
->> 
->> static void __meminit
->> remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
->>-		 bool direct)
->>+		 bool direct, struct vmem_altmap *altmap)
->> {
->> 	unsigned long next, pages = 0;
->> 	pte_t *pte;
->>@@ -1118,7 +1129,7 @@ remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
->> 			return;
->> 
->> 		if (!direct)
->>-			free_pagetable(pte_page(*pte), 0);
->>+			free_vmemmap_pages(pte_page(*pte), 0, altmap);
->> 
->> 		spin_lock(&init_mm.page_table_lock);
->> 		pte_clear(&init_mm, addr, pte);
->>@@ -1153,25 +1164,25 @@ remove_pmd_table(pmd_t *pmd_start, unsigned long addr, unsigned long end,
->> 			if (IS_ALIGNED(addr, PMD_SIZE) &&
->> 			    IS_ALIGNED(next, PMD_SIZE)) {
->> 				if (!direct)
->>-					free_hugepage_table(pmd_page(*pmd),
->>-							    altmap);
->>+					free_vmemmap_pages(pmd_page(*pmd),
->>+							   PMD_ORDER, altmap);
->> 
->> 				spin_lock(&init_mm.page_table_lock);
->> 				pmd_clear(pmd);
->> 				spin_unlock(&init_mm.page_table_lock);
->> 				pages++;
->> 			} else if (vmemmap_pmd_is_unused(addr, next)) {
->>-					free_hugepage_table(pmd_page(*pmd),
->>-							    altmap);
->>-					spin_lock(&init_mm.page_table_lock);
->>-					pmd_clear(pmd);
->>-					spin_unlock(&init_mm.page_table_lock);
->>+				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
->>+						   altmap);
->>+				spin_lock(&init_mm.page_table_lock);
->>+				pmd_clear(pmd);
->>+				spin_unlock(&init_mm.page_table_lock);
->> 			}
->> 			continue;
->> 		}
->> 
->> 		pte_base = (pte_t *)pmd_page_vaddr(*pmd);
->>-		remove_pte_table(pte_base, addr, next, direct);
->>+		remove_pte_table(pte_base, addr, next, direct, altmap);
->> 		free_pte_table(pte_base, pmd);
->> 	}
->> 
->>
->>---
->>
->>base-commit: a2ddbfd1af0f54ea84bf17f0400088815d012e8d
->>
->>change-id: 20260428-vmemmap-ab4b949aa727
->>
->>--
->>
->>Cheers,
->>
->>David
->>
->>
->
++Song, Petr (CC'd for their expertise in BPF and livepatch).
+
+--=20
+Regards
+Yafang
 
