@@ -4,97 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC5F3FF887E
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:31:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F651FF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:35:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61CA76B00A3; Wed, 29 Apr 2026 10:31:00 -0400 (EDT)
+	id 782196B009B; Wed, 29 Apr 2026 10:35:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F34D6B00A4; Wed, 29 Apr 2026 10:31:00 -0400 (EDT)
+	id 732766B009D; Wed, 29 Apr 2026 10:35:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E2106B00A5; Wed, 29 Apr 2026 10:31:00 -0400 (EDT)
+	id 66FB66B00A1; Wed, 29 Apr 2026 10:35:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E2796B00A3
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:31:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDCD8402C7
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:30:59 +0000 (UTC)
-X-FDA: 84711830238.20.4E1EC5D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 555F06B009B
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:35:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F338B1A0143
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:35:24 +0000 (UTC)
+X-FDA: 84711841368.03.8F0DC5F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 44867120017
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:30:58 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MpHYf61c;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6315B4000B
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:35:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ptZVpwHz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777473058;
+	s=arc-20220608; t=1777473323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CozX5yN+C/Dj7zBL7UIdfLxCtT2GdXLK3PoM/jsywcg=;
-	b=g4Y/L44dLEJikH8oIyTXBacmd6N6Rae/syF55RjwBxT4tXXZ2GPYQlkbN9GuHM44odWPJl
-	+TScELCSzo6FgU8cI6Ry+qnVhtTSImTTJY9PCoj1vfYSt2ObbKp/2Uq83iztqwyyLxvlYZ
-	HjZVRTuNb3DcPnL59AeigDdLyKAIs0I=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MpHYf61c;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777473058; a=rsa-sha256;
+	bh=jSIY5dDrNGunAsVpp3zxMSKdhVEZ4kytC2UcFzQyNZE=;
+	b=kJXPha0jSXnQWbwWJ2un1YZFfB9LHYzLSHY3h87KhB7DHTAsWPfSE5nmK/Y+wi1ggxRLG5
+	DKjJSX6E6sKIzv8aNwq+8b7uxP8HqrQddA8pJysFKUPTMX8KvdYAomGa5ICFMpLdCQlrga
+	DWzKO6vfzLjV0pWe43lMeOJhWCXWbQo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777473323; a=rsa-sha256;
 	cv=none;
-	b=D84Ks1fQpBiigt5jX9RYyPHkAMncUTiKrGqEn4XBD3lz9OFWjJ9sLX9MvmpSvgF42a2POZ
-	hN21XXk+qleeqn8vVXhdibwlcW71Cc1TWkSgY0vNnh5o43jsvtNei+57OlGB4IsT7FygNo
-	mTD64yJPjHGSNOZS/2f4xUguR+jppKc=
+	b=4kE4r8IJ+hhqi/OE734/h56v/jGXlDdSAewEIspBhGrI7DLokim1XkdhyejWE1KyFnScOR
+	BuzsOQnzNay8zZV7eMgAwiG3mkczfsKLtiusMYLCPMBBrnsSaD/3vNvQN2ELbMyLgBMhRS
+	QcKnk7Na1e4U9VP9++W86oeszf4lfXY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ptZVpwHz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7363360138;
-	Wed, 29 Apr 2026 14:30:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC29C19425;
-	Wed, 29 Apr 2026 14:30:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D5B0860138;
+	Wed, 29 Apr 2026 14:35:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EDCC19425;
+	Wed, 29 Apr 2026 14:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777473057;
-	bh=25669eAlVbHfJezMpC/Kwl7iJTxvlFiobYXmEPt9Zd4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MpHYf61cRXlTqKuG9hB/u2iYXkA8SBvIMFOOsf3G0sfnfysZAiE5ds17hQr7DlAgS
-	 HueC9gbqtEKddsPOx0JqDzRNoAr3kMIqTP5Cm3n+iiqu3itGt5OzW4sFEYYDT9fbGG
-	 oyWPEswH2fz1o/FM4jKm7ZDtJeX4Cb9l7q5ty8aoGfurrUZWK2VJ8PE2dpHl7+TsAS
-	 7w/p5L0lNyzhLStv2T2YtckcMYHEa52p54jioXzrnre34meVIFLc358WJ95Hy+4Kg8
-	 dB66+tyPb7M1I3SJToJUdNjMGpRNVBwwQcCiPH+S+3XA4Oh+EjkQw15eFkMCURlA2b
-	 lmlhFBWZVad7w==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/7] mm/damon/reclaim,lru_sort: monitor all system rams by default
-Date: Wed, 29 Apr 2026 07:30:52 -0700
-Message-ID: <20260429143053.93890-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260429041232.90257-1-sj@kernel.org>
-References: 
+	s=k20201202; t=1777473322;
+	bh=qSqiep8Qpof8Q5a2J7V96rrIhl2L0+YtBJVeAPkOgcI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ptZVpwHzwAfEy8WKiAsauOLnmEzpAdjJx0/KDi6B4W9VvJ4Q+NzlGgJZndYsLxvqD
+	 3svf7hwcYqKHXjPXzMw/Dd+1vaSQt2FpcA6vn+4bVIyWxH5YD8YfqLFdH9Cf9CgTev
+	 YPNvRybNRUEE9y/QipyqO2ikeqckWgDnC3GXBRE4cJrmLN8AkseI4Ubq8P1TcjG4s6
+	 EqPU8NJiv4LSz9hEX6ST01ofgYwSRGu1X1jRTUBuGEmURTTi4StlMN3VjVjpEBJBIv
+	 WM88XgTcFERpvVgcB9V6Xyf4aHcYyijsO4pgGbWXFq5m/X8h7vVGys2IaGM+uogAgH
+	 pEyxrW0/85VsA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: luca.boccassi@gmail.com
+Cc: kexec@lists.infradead.org,  linux-mm@kvack.org,  rppt@kernel.org,
+  pasha.tatashin@soleen.com,  pratyush@kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 3/4] liveupdate: add LIVEUPDATE_SESSION_GET_NAME ioctl
+In-Reply-To: <20260423234753.3873095-4-luca.boccassi@gmail.com> (luca
+	boccassi's message of "Fri, 24 Apr 2026 00:44:22 +0100")
+References: <20260423234753.3873095-1-luca.boccassi@gmail.com>
+	<20260423234753.3873095-4-luca.boccassi@gmail.com>
+Date: Wed, 29 Apr 2026 16:35:19 +0200
+Message-ID: <2vxz1pfx4yxk.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6315B4000B
+X-Stat-Signature: p116pducoz187pqh94si7wgsczf3kp9t
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 44867120017
-X-Stat-Signature: dnf6jii4x4kyrejs13z5bt53hn97nrkb
-X-HE-Tag: 1777473058-779499
-X-HE-Meta: U2FsdGVkX19Du6HvWMIfbQedlFK7jiVlGTormoMEEunWYQB/tkV5XkkxpGp4+ewaG9ENMXmL49nBl3nPkCYfjwhDpTMRUslDgL1NL6Yd+7Q39IJSF+YsyK/rUlXZ9jMxB7eoAHCgg/waDycaXifp7thNNutihw++vOHQC1QDgF021JLXm1hD8Uzgvc+JqXWuOmu4TdKq67EUjw/uZeAeemnrSd5WtX2qAdD4Ov2OaZWOXlXSGp/uS7OHXQmP41CIoWv+/u/Eb9vJsI9iN5xtMgosf69Z15poT6KmaI1u/wDKz8KaR3rQyUMTcsvjvdThGUu1Dj49/E4JIzpDMePD3ZVCK0B8SP0b7GV/MXvfRrwgX1m7wHdAaynh4pstRz3dERnVnhkcF6n7vFXEu0dVDTWrxGR5RVi7pa/i/xevTXYjXaYUcl2QAYSYYxhAHYmRiOZ85YRsqXIlixmzY7cs3lFxUUU2gp2GYUWDTYR2Zi3QJRoNdIRuoONMAOu98L/YNFrzVLBVZB6ziucVpe2hYE8V0JuW7UfbXpOjZrGLRVO6Ff5lig/3eenTqjcj6372BhqvfiBRLgyF4ODH58Ftq7wFq9AHm5bi9dkD9JlldVy0WXunNbxyvlvL8C+3SL22xdslHpl9P7mIAZdKvXlld1HFJ4y4C+Ll5rsoaqAG6H/c1KtsMzKxEt9b9lqsoIFL3ddVyvMqTXhHvL1kojmevXnz4s5z/C0YQWX5RBXKJNPXGbNoB7F67R41zQGwdIKV9YDOgc7gRtfY8ZFcDdRunE5ZG2av1R7q9Nf0XZpBnypol1QhEcmrq/J2EBmdEu6fErbdVEdbKsZRLgBgrrwJ8Dnp7pbBFFh6Z9cSOsSfAcbYfgxRSyGc2WH4X3ZMtNuRDjrSMPTf1JgG23PTnjRY7yCwzb0Jyzqe6YkDH7K0ae0tCN+zZQLjgoZAg067CON+QycNHWiMJs20hvkR5JU
- fLXBJqsA
- 0Z/ySS0JIBHOuGYZcMBgUq3/ekNu9m3FwRIafOZ11Csrto3+rlQydHtUQBhuv1V4dHTbFTGRJhXoDF4Is64UOtUeF3wmnF0V65TXmXLYAlOcndtyU7CnOvpXCf1tY4S1PF7Qs1MBXIg2XfrPcjBwOdNxYNmcSkKtss3ES36KIXyIDJFV3z577MsuDy5Gkz808IbZJcEzouapq5pOFxYkj2f++u1CbLFKF6/w/bmxFswxXpueQ3lv9uSiUD/RBAruQ9oEyiQVVlC2TB0UEPGBAmSY1gg==
+X-HE-Tag: 1777473323-54854
+X-HE-Meta: U2FsdGVkX1/SJz5aZBc76RvNe/BWjy6yElwKv2APbmDNQgqPssEhcPIT2mRVkXwHJIaNlmuTmD9hXjHPKyKX0Vw/rQFinZC9VTg+oBWba5bmKpMHUjGEt5xQN9w1UoAL3sDJ2CwAiZ/fOssF3zrheogbNkOxPJbIRWXz73CFxaOxL1jN6RUbhdqGWgJBkxKgD0kNlyfSJSsGYTKoig6JWaD/zAKDCuvx8r+GnW6n9lw2HesS/IqfbP3GqGHwpS8TMz/xLMwnvwHhFSvKGAKGb1hcX7y1CGhvZ9iOukYW+0Lnmsnj9V9LQFeD1fx7bJE2e750gcApSUh0JKZzBNie9A183zHuPDI9aix2DY+TUPUXebswP+13x2RQv8FPh56A5aGKHBO1EmR7+CQ7LhwOUt4SY3+a40rS2eJeVmedCvSSwsWfQUe0L4Cax2PrXDe4TuY4YQWWYt445E6a9WLDOPQFBUEISOj2hqaEELLkrF3dV27EXBfRCI5c//B9djKQ2b7su61DHbrLPxaHlO4oRrLlW+ceABDFHjtpNL/7gsM2WcG5/xL8Cy5jh5apxBZMChI75w/AdvMT1PE0OMxV75gNLOQH5z1/XO0nUfC5spEeUdcTaVcyuh9iVwMy/J/kQruIvB/hG6/iwkDxsWs4jGpxGpV2WGIGb7ZK/ZMrdi2ZtW8CPGIyFaN7r3MmRwxX65d91SQIuwPect+I3aFLig8cEMff8gToQ13npjGhzBEwLyIG26uY3mBMxkfz1nk1SZfK6SC8aOrp+se2SchuJ8WQsBi95sgbrrsV1BeLtjY5OmU0Gy7R7WVVo93uxZDQNKCHKw6+M06511uNC7VwsX0v8uZyyYHfOqmtxGWLPfBK4ugGWRSRzdoJaTi0Y01e3bIR1T1YeAtf/PYy4sCy++pUSqWRWP/ofWqR1yH/c/ezSSRkgJoXUKLLfy4UkZgBAI/u8DeEqxdLL4oQ7/M
+ KkNn2D1J
+ 9BMvIR/XTRqczCiYsQn7jaPfijEZEDnk7s4ndlJgqfjIFAZRR5uNXsQOzNiZytRlrxFcRaHWhYu9BY+P18aUZuhPuSxecLffpyR+9d9JDGSG077G37PGmbXPjzN6MBT+v2N4Pgm6zcRGE3sPAGwKOe2u4flRANTTxjTuLZQXmN52twrrtI4LY7NayU2+a1ty2pmFpqNm539/7qplsROlM8C3hx+UEOF1Su+NfR456CySol+w1/JIBhw4ZxFbvof00fbmlAtOtpnPUmgSseDm9anif2aiwrzPS3chM0RaEH6sYM2QnjTr1k2ut4mzpb1ZT4kuYLH0T3ICHjMmNGC/c7JVFF4tVdtl+qp65JJb4MuNXWwdI0KTRpvkARozBHPH43UnCc5+M3iwtsQ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,42 +93,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 28 Apr 2026 21:12:22 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Fri, Apr 24 2026, luca.boccassi@gmail.com wrote:
 
-> DAMON_RECLAIM and DAMON_LRU_SORT set the biggest 'System RAM' resource
-> of the system as the default monitoring target address range.  The main
-> intention behind the design is to minimize the overhead coming from
-> monitoring of non-System RAM areas.
-> 
-> This could result in an odd setup when there are multiple discrete
-> System RAMs of considerable sizes.  For example, there are System RAMs
-> each having 500 GiB size.  In this case, only the first 500 GiB will be
-> set as the monitoring region by default.  This is particularly common on
-> NUMA systems.  Hence the modules allow users to set the monitoring
-> target address range using the module parameters if the default setup
-> doesn't work for them.  In other words, the current design trades ease
-> of setup for lower overhead.
-> 
-> However, because DAMON utilizes the sampling based access check and the
-> adaptive regions adjustment mechanisms, the overhead from the monitoring
-> of non-System RAM areas should be negligible in most setups.  Meanwhile,
-> the setup complexity is causing real headaches for users who need to run
-> those modules on various types of systems.  That is, the current
-> tradeoff is not a good deal.
-> 
-> Set the physical address range that can cover all System RAM areas of
-> the system as the default monitoring regions for DAMON_RECLAIM and
-> DAMON_LRU_SORT.
+> From: Luca Boccassi <luca.boccassi@gmail.com>
+>
+> Userspace when requesting a session via the ioctl specifies a name and
+> gets a FD, but then there is no ioctl to go back the other way and get
+> the name given a LUO session FD. This is problematic especially when
+> there is a userspace orchestrator that wants to check what FDs it is
+> handling for clients without having to do manual string scraping of
+> procfs, or without procfs at all.
+>
+> Add a ioctl to simply get the name from an FD.
+>
+> Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  include/uapi/linux/liveupdate.h | 21 +++++++++++++++++++++
+>  kernel/liveupdate/luo_session.c | 13 +++++++++++++
+>  2 files changed, 34 insertions(+)
+>
+> diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
+> index 30bc66ee9436..3a9ff53b02e0 100644
+> --- a/include/uapi/linux/liveupdate.h
+> +++ b/include/uapi/linux/liveupdate.h
+> @@ -59,6 +59,7 @@ enum {
+>  	LIVEUPDATE_CMD_SESSION_PRESERVE_FD = LIVEUPDATE_CMD_SESSION_BASE,
+>  	LIVEUPDATE_CMD_SESSION_RETRIEVE_FD = 0x41,
+>  	LIVEUPDATE_CMD_SESSION_FINISH = 0x42,
+> +	LIVEUPDATE_CMD_SESSION_GET_NAME = 0x43,
+>  };
+>  
+>  /**
+> @@ -213,4 +214,24 @@ struct liveupdate_session_finish {
+>  #define LIVEUPDATE_SESSION_FINISH					\
+>  	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_FINISH)
+>  
+> +/**
+> + * struct liveupdate_session_get_name - ioctl(LIVEUPDATE_SESSION_GET_NAME)
+> + * @size:  Input; sizeof(struct liveupdate_session_get_name)
+> + * @reserved: Input; Must be zero. Reserved for future use.
 
+You need to enforce this in luo_session_get_name(). Otherwise some
+userspace might try to get clever and stash some data here. Then if we
+ever put something else here it will break that userspace.
 
-FYI, Sashiko reviews and my review of the reviews are available on replies to
-this thread that Cc-ing only me and damon@lists.linux.dev
-(https://lore.kernel.org/20260429041232.90257-1-sj@kernel.org).  In short, no
-real issue that blocks this series is found by Sashiko.
+With this fixed,
 
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-Thanks,
-SJ
+> + * @name:  Output; A null-terminated string with the full session name.
+> + *
+> + * Retrieves the full name of the session associated with this file descriptor.
+> + * This is useful because the kernel may truncate the name shown in /proc.
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +struct liveupdate_session_get_name {
+> +	__u32		size;
+> +	__u32		reserved;
+> +	__u8		name[LIVEUPDATE_SESSION_NAME_LENGTH];
+> +};
+> +
+> +#define LIVEUPDATE_SESSION_GET_NAME					\
+> +	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_GET_NAME)
+> +
+>  #endif /* _UAPI_LIVEUPDATE_H */
+> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+> index 5e316a4c5d71..0bcf2def074e 100644
+> --- a/kernel/liveupdate/luo_session.c
+> +++ b/kernel/liveupdate/luo_session.c
+> @@ -289,10 +289,21 @@ static int luo_session_finish(struct luo_session *session,
+>  	return luo_ucmd_respond(ucmd, sizeof(*argp));
+>  }
+>  
+> +static int luo_session_get_name(struct luo_session *session,
+> +				struct luo_ucmd *ucmd)
+> +{
+> +	struct liveupdate_session_get_name *argp = ucmd->cmd;
+> +
+> +	strscpy((char *)argp->name, session->name, sizeof(argp->name));
+> +
+> +	return luo_ucmd_respond(ucmd, sizeof(*argp));
+> +}
+> +
+>  union ucmd_buffer {
+>  	struct liveupdate_session_finish finish;
+>  	struct liveupdate_session_preserve_fd preserve;
+>  	struct liveupdate_session_retrieve_fd retrieve;
+> +	struct liveupdate_session_get_name get_name;
+>  };
+>  
+>  struct luo_ioctl_op {
+> @@ -319,6 +330,8 @@ static const struct luo_ioctl_op luo_session_ioctl_ops[] = {
+>  		 struct liveupdate_session_preserve_fd, token),
+>  	IOCTL_OP(LIVEUPDATE_SESSION_RETRIEVE_FD, luo_session_retrieve_fd,
+>  		 struct liveupdate_session_retrieve_fd, token),
+> +	IOCTL_OP(LIVEUPDATE_SESSION_GET_NAME, luo_session_get_name,
+> +		 struct liveupdate_session_get_name, name),
+>  };
+>  
+>  static long luo_session_ioctl(struct file *filep, unsigned int cmd,
 
-[...]
+-- 
+Regards,
+Pratyush Yadav
 
