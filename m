@@ -4,179 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04B0AFF887E
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 15:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 094E9FF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 15:34:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ED5C6B0098; Wed, 29 Apr 2026 11:32:11 -0400 (EDT)
+	id 6A2426B009B; Wed, 29 Apr 2026 11:34:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C4906B009B; Wed, 29 Apr 2026 11:32:11 -0400 (EDT)
+	id 652B06B009E; Wed, 29 Apr 2026 11:34:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B4606B009D; Wed, 29 Apr 2026 11:32:11 -0400 (EDT)
+	id 542066B00A0; Wed, 29 Apr 2026 11:34:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 489446B0098
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 11:32:11 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FF4B6B009B
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 11:34:26 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D78511C016F
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:32:10 +0000 (UTC)
-X-FDA: 84711984420.05.2154310
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013013.outbound.protection.outlook.com [40.107.201.13])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D7AB01A0007
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:32:07 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="dZOtrz/J";
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777476728;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B09B54031A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:34:25 +0000 (UTC)
+X-FDA: 84711990090.05.CD58D11
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 49256C0015
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:34:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NSRnQGgA;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777476863; a=rsa-sha256;
+	cv=none;
+	b=xwg8W0NWvUhmpnjT5jjr2shEOYvArDCNEdEq0RYrL4NSsWHjhVp+m0GKDegSpt4NC/4im/
+	C868cQEapWcT8sGjoVnP10Su0zPH1eNDe2XkmnzDct1OVCdaW9itGMk6qLY9SfFiFERIGA
+	+kVUanimSRGu+YC7YkM5bPlkcxeF/rQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NSRnQGgA;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777476863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u14BzMTXOtdjVUVuelexl69vYDmW9ZMAahmapfjiZOE=;
-	b=59VJ+S0vQDH2d1ddzm2ikL9q9Lw0tuuRnBCoLxBCf6B5dR0Pf0ecFjKdbQyiZ/33Hrz1pA
-	qauN4JdlJqW9/7OcFV+6qmQ/AlXgjCq7F/n94OnIIFswyjzYlbZIc2PVSpNBZ3hjzBa8+0
-	iaIO9syPvwJh0JyUk3XHJ2Bs6SLR3z8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777476728; a=rsa-sha256;
-	cv=pass;
-	b=nsGpUobUxbByegFYyzeqDeT28pknZE5acQElhDLaGys81Gf8uHZycwlZ4LVkLoiPUwjYwv
-	bsGPuQviinVTBUWZwQOtIwKLLP8t5fGOb8bVMGQwPpePnRuEvvrK/zxqrRnsXdE1jCro+C
-	jjLX8tBOj5C9CJAEzVUgP0p1ynq4D1s=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="dZOtrz/J";
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=etuZhMA4Rnx9SBIt0qVISUJY2jHDfH0yXTkQoqVVnOoxRUpgUgKG28n/G9YCFX72h+HZ5VAySBSqFa4NvgTfcdxpiwBjaYgR1NR0t40YKfllHnA6FosPFryCiLTbhaA0WWdwkoiYq3sYSzUgQZjC6xUa51C7h4L1Ne5iuu/FKf2g+v+/76Go80dIDE8rP6uvyYGgFIx7+XldWpEdaL307z2BPJ5Pi0pHtlM5rl+Lk3x/bcfqsH1QLsD9SLEw9q8cpdVos+ZGzUaWl1h1Y0JvnnisQMZiqvoiiZgRwkjXikw98sXQNdhrlqywyovt6Kh1egL6dHVoC0EIGD7slHHQrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u14BzMTXOtdjVUVuelexl69vYDmW9ZMAahmapfjiZOE=;
- b=RuUlYNQipEr1wdp021f5SHG9RAZaCmvLSOClODi4/5GeKd3vEMVAu6ZAdJzmn7YKfHeaB4JilwIqCFWoN0VHdD9P/nJwC57q+HiLEsIkMY6GSkCXUel3GxWLmws7EKb+piW9kKkzS+VV7LtWCfCSx5ZUTAxmds4gi9uHZrvmQQly09KGWECTSc7/xtc0z77xSA0QI9qjVeBH080QYq9Pvix15Sfg7SmVtDlL5nmiWsfUffglbuWR7G2zqymwIYfPICi40KYLvlSZbWEBi5SflAls98/iOw7q7iVcOqgS8qp3egLnI+JyBuC15pU37fJaPHOBSGvF7R2oGCKzWQIG1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u14BzMTXOtdjVUVuelexl69vYDmW9ZMAahmapfjiZOE=;
- b=dZOtrz/Jp7rU0uCi2rIVeB8p5TYOtGKW3Oq2HKdw/WwwCGv5Z88qkqQvN0QNW8bI0cxY/QazQV9dRH5QPvS20FkZ5xxsljZQvX8mDDW1g5r1sM0ha4yPdjrPBdyOOfXTWoEbi6RjVyXjK0UBQoLFjLCK1eHCQc9Z79Ncik1SPwDLKM0bERJZ35qvr+5GeJVQs6iW+Bq/j40WAFwQ2er3I+ew1uZIHoFP2h1maNHKsdYGLbvGqx4cQFsyDMEE/h4nl2jKRFLqokO7iwDiiA3abg2QXmS/NEtj8gYb/8USAiAIQogytKHuE0DBu8S6xM+Q+6wymjpLJFMQmk0AqTCKUQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- IA0PPF12042BF6F.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bc8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Wed, 29 Apr
- 2026 15:30:12 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9870.013; Wed, 29 Apr 2026
- 15:30:12 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Song Liu <songliubraving@fb.com>
-Cc: Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v5 01/14] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
-Date: Wed, 29 Apr 2026 11:29:11 -0400
-Message-ID: <20260429152924.727124-2-ziy@nvidia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260429152924.727124-1-ziy@nvidia.com>
-References: <20260429152924.727124-1-ziy@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: DS7PR06CA0009.namprd06.prod.outlook.com
- (2603:10b6:8:2a::28) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=HuFfgBtz9KMV/pnRXnzflTopMd89eVVSakVY5rVzpsI=;
+	b=MX7ZOWA4RLDJ7mxj2BKxS8X5AuAgHp7XtuUMM1qeehJILJ7vOXXaOmHTTV288NuY7t2pH3
+	W3/tLiQJN+pOU/wQoxYcgapsEwihAfXqSof6eo8B0ZATVOC+iqfQKq8sv6UJHOD9lKbZ94
+	ufMiDZjVtzRVcJFoYJGPuevzw2YtOZU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777476862;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HuFfgBtz9KMV/pnRXnzflTopMd89eVVSakVY5rVzpsI=;
+	b=NSRnQGgAPouKTerh0XFGhrftVEpJfNUQFmXrB2tEo2IxXMsPDOWVZ1jd/nv4zNNz5QabDg
+	Yp3lO+7WIH8TuLFTbEsOgS6ArqNLMOGHMhyFMuMErXDLtSM+Cxjmr1WDNDf1FZB1bd5iO2
+	xTRGhWysX6R08djCkzHjjk5qyO10+6w=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-ETceGNZ7MdmBk35wH-dHHw-1; Wed, 29 Apr 2026 11:34:21 -0400
+X-MC-Unique: ETceGNZ7MdmBk35wH-dHHw-1
+X-Mimecast-MFC-AGG-ID: ETceGNZ7MdmBk35wH-dHHw_1777476861
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-652ddb428beso25111117d50.2
+        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:34:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777476861; x=1778081661;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HuFfgBtz9KMV/pnRXnzflTopMd89eVVSakVY5rVzpsI=;
+        b=LkymGE7Plv0l4wEtpvnGpqXxguI9nTID+AoYw27ret/4elU17A12xXR3UamR1juqbi
+         R+TGlchJHxJfLyZC3EFCmJqSuRPgYaFB6yFaAsU+JC4SSA1RSWbw2FImw1h8506b19aF
+         S7wKDsHdaek7IADqKXjupASbnwkwW7GADMlWsb6FxziEAe0H28jfDzdr3tV+x8n54dLb
+         KOVAnzdsQi78iauKPNtKqtb6oF6RHu120W8OvmSSfT0hnwmoAyqXqyn5ydwll2oGt6OM
+         86DINB0YGXvnzce8zucPno7UXTIrVnkPzH4ZmGMNhqQOfdxQIFR1X9u6RBwA37qn+FtP
+         o8Bw==
+X-Forwarded-Encrypted: i=1; AFNElJ+3cZrsS65a1K31i/1+fNAVHFo8rd/MhpSOF5Rex0J3joLVw1PdISFIqcmaieOy5XZ7kNQl8wU08g==@kvack.org
+X-Gm-Message-State: AOJu0YxMseCBM+cgVUJq/SwxXZols1NTjR6LhhniYGTNdzTeko9EjZpK
+	CPNl3E8ljDfNV06Ix6Oi91CxDB4FV55ri+NT8r96GUqOn5c8Fr1okB1c9I/UKvZf0W16U5CYD9S
+	0qH5WJA1i4jhXPKbvFK72VZWEvsHTWJjH8ggjt6tiaVfhL9kN13ELcucWiQGHV/N9Yq/dbKiB+Q
+	c67dvlT/ZZMXFgd/QWxw11bV+R/Rc=
+X-Gm-Gg: AeBDieswCQfNXnCenxXUPxjWQvjTsLr22PJmZyRbp90NUZD2RDLOvb1pk54+Zvj/8ha
+	1KTeVPkUSqjGIPcruHCU92J2Cl2IgI9bEnXbhW9lD1DPC2q7auwpHUxtASvp82X4BsH+dQ2j3Ja
+	dbuCNlOHNH/RLq2iM6WO9Ahx8PBa38LCsebjfub0Xyz/Am6myhmJlaO8hmTWvHJlPND8S/6FP2y
+	S3EsuJ5oEAISoLVI7BUrN4m/1dawqNbIwU0zbrd0i+MEoVx+c8=
+X-Received: by 2002:a05:690e:42d0:b0:654:4045:f40c with SMTP id 956f58d0204a3-65beee98103mr5731426d50.53.1777476860535;
+        Wed, 29 Apr 2026 08:34:20 -0700 (PDT)
+X-Received: by 2002:a05:690e:42d0:b0:654:4045:f40c with SMTP id
+ 956f58d0204a3-65beee98103mr5731328d50.53.1777476859542; Wed, 29 Apr 2026
+ 08:34:19 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA0PPF12042BF6F:EE_
-X-MS-Office365-Filtering-Correlation-Id: f329f1e3-cc6a-41ea-c0c1-08dea6043471
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	oBeE7Yn24kPgQWmwKMuIosvcKdPLrKHmd6HM/Iut5QTglgsJvEqIy1T8x9RK9ROEojrerjeoQwNEp2PIpvZUiW+mg8SMv/9Z1xDuBtyiPSz127tvcVrNQnXpqdc54t8ZMaJNyyajUSgzDsUZdiH96S3CCSN/Iiq+o3+IGu87w0nVbBODbOqTxdUZdcZf/0Ays3GVN9xk1cKukbVuQ0yrXOrRNNOZXZRm53YaRrKDrwGAaTnViClMaYfv3kDK7KKC44cZFQ7lWa6KmEwEYt6kuBoE9rUYf7v9pVZLUbzHlZEU4dhlyegQKk+R9NQPY9tVvvSImJDAXh7HOIchpCWHlHUsTpTf2G/ZlQvH0djblcmPJmN3pElJRfc7vNEU8EJfHs9X4jpNGnMICTlM2dNJtaL69w1FPgdTw1fMDl5T8Z6RCDCUH15VwNW6XHZO5LHJQDerLAY8dYP4tknujB03q1qmbpeAFJpSTAZOkaQs8wSih+p8t402H8H7tYrmx/b7K6HOyXn0nabGtj02fPSCv0/6TzMxg1Zi3cAWSrzIiB0pwygAfb1kdBTYOhL6zvrd+sX9i5H5N+Fl442Q5FGKwonL5dq27g3shaUVqEhrcr2PQ6BC9oRA4GmSOPmkVciOOx1+M4BrsbrlnN2nj40SuBRcpZgIBKSus1vaT5eNgoKfR05eye4wTx6r9A8Uxkr/7s/KG2h3Fy5Z8b7hCYYT/0vjdds63uYwNQq79AV6GQY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xJVQZkFkj/ecCdCWhwvPFB3rLUsub8huRtX2RzacQYte5nCT7pqwY+cH8eCE?=
- =?us-ascii?Q?bJsEKVh2vIkbMgARuZbh8ZFD8CwmCTaV2M5HysoYYRxyKAJcftL9pkyb0BHQ?=
- =?us-ascii?Q?Jo9pgJF/V0TvS77xts37XZQvqr9EheCrkEhqtmANdSoSjoeL3sry5HxKic7n?=
- =?us-ascii?Q?K7fPgjl1g07eymk2r213zCd7JrvxTr2u5EHSTCWl5infk+htf/snCrPbO+1E?=
- =?us-ascii?Q?EhzTtDXMGeo1f03Iygt5Tbesb3zgft31DS2PASCR4xoNO6tOPp4PZHqXKPpd?=
- =?us-ascii?Q?bl/+BzK/WcDirMsyBxKNi5eI+CWoSekJQr92OJ3K6ebEWeIrF4hPmUPFxhud?=
- =?us-ascii?Q?rhSB218ENNMswOjFMWPujk6wHYFjVz33QmPT7fy/FsQKUHqkceHoGCkI/nD3?=
- =?us-ascii?Q?0zl8cMY5OH08eOAudAZdbCa7Amo5rlOpYmcyNKQ1jQRoZxUnZrnaGeixeAcs?=
- =?us-ascii?Q?yRimRFTQTSQg2JYaZd4/0hHNrkIVzWsXPryF38spPkCkHcL0pi2pNFHWvh7Y?=
- =?us-ascii?Q?Dpuj+oH0XfaV9NueLI13ltcrrIcfRy1s7u4Jhl/Hyc289RnkLaBf7DN5cO/i?=
- =?us-ascii?Q?tjatBGcli+op/oobnPjtTFlPJDG3GnAduTx49hW7l5tkGCDjEY++YQpmvQye?=
- =?us-ascii?Q?9k3PWm8ooIuDWfZP4NVRlt7ury0b2NanLMP68I18kncZOg60GiBiFPI+Hsds?=
- =?us-ascii?Q?7eC8uhASP/gHIHxq7Euhso5WLzkjtVZZY5bq3qGpdmGzRQBr7GydjCOxMvy5?=
- =?us-ascii?Q?FZvSy18aG76XGufpEw38quAwQ1ACpSUNHIuCuF5mzGCblxrmqQ+DVPeaplV9?=
- =?us-ascii?Q?pytNEolAIAl8r4de1bhENkW8WrjS9lSqcNBqVn8Mk96cARThaeSd1JxZnxji?=
- =?us-ascii?Q?EDDvcwTZMf3thVKDv2XXPrN88Aw/VUOuOPvdu1M5v8g/gzgXm+oPPI7YXNV0?=
- =?us-ascii?Q?wZ2hPJvBVMxXcEFsGjtxqbu3vkGMur8iUMtBZx2WK5IrbZR/q4TIcbTr7NkC?=
- =?us-ascii?Q?wjae15WDVZwGJmvvxpNsYuqcqnRB2yItLqFJAHYxW8YchW2JQCPeHJ0tLYNd?=
- =?us-ascii?Q?Gjfe/iRUY8MUzj7hgY+2zGTYkF3oVWwLoUYL5G+ifs/I1Vdx3lKf5L0uOsQG?=
- =?us-ascii?Q?rlBrlcPqNMzfjp7YHvxT/F9OFs8TWBiXer1fhXqKYyorpDDIUupTpy8buRxh?=
- =?us-ascii?Q?KIq7TB/nONBkAwpFkZHdxmPB7fG2Af+y+pTZ3uodI9Arg0k9d+zd3TkcoKnm?=
- =?us-ascii?Q?+6ibCgD+A8pdxV7J/zI/8DnivQvKvzAi9EoqWNWmyW62WavmCHlztUSh+349?=
- =?us-ascii?Q?dFXhX+79fYmiSczitq2TSP/+pzFlWy7ndDJ5nhqWv7s/vUQuOMDG+8upbKVD?=
- =?us-ascii?Q?UZS27GwD6Cv+jB3mdDDjV+DduBtJsxxKcM8RTLui6HgeFMSWYocUK6Rw4orz?=
- =?us-ascii?Q?GAIx8XjNWZO/gXH6ugIbPm4rtZBxCKGNwbhkOAxHOPDQ9lYJzLFYo9xG5cZB?=
- =?us-ascii?Q?U6FwnOx+Udrw9FxunbXd2bLJG/Sa0sXne5wRQ6p31pvlgC+CsMsPWEq6KtrR?=
- =?us-ascii?Q?EEhibib5H+3K73gEp5dG8nDTUJ7YloLTU48UwIa8qAbPhavmqkx+ocVIWfbR?=
- =?us-ascii?Q?qeOYrvJOwhRZkJMrebP/DE/8aLkj+lpR+x0ZtzxFO0RROzlf8DcsfPPSAFUr?=
- =?us-ascii?Q?GWcKKTiGXrf8c0MEEz9Ua0Fifru/5lrRfvNLTqIx3zbbp7f9?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f329f1e3-cc6a-41ea-c0c1-08dea6043471
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 15:30:12.4631
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QIOTvo4eKi2R+PJcOCynBHy249Crs1SWu2o8089ASEi3/ccCLXShq92qN3fyMuXL
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF12042BF6F
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D7AB01A0007
-X-Stat-Signature: hqxgee9abb538ijgnmt1bgqmh5qj5fk8
+References: <20260419185750.260784-6-npache@redhat.com> <20260420142057.392263-1-usama.arif@linux.dev>
+In-Reply-To: <20260420142057.392263-1-usama.arif@linux.dev>
+From: Nico Pache <npache@redhat.com>
+Date: Wed, 29 Apr 2026 09:34:24 -0600
+X-Gm-Features: AVHnY4K58vxjzjxYUrb5dAGrEP1k6JdWhwO4Q7LKZOLVwPj1q4pvyOMwTkVSZu4
+Message-ID: <CAA1CXcDgFDcsx3-mrnFzNu3zMkinFtEKSv84VKepTihUuRPfKg@mail.gmail.com>
+Subject: Re: [PATCH 7.2 v16 05/13] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+To: Usama Arif <usama.arif@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	"David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
+	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	lance.yang@linux.dev, Liam.Howlett@oracle.com, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
+	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	zokeefe@google.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: oPPEq3rp6avH9jJjyCJb20ClEarPU5A6OXJvZLxzTRg_1777476861
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: h1fyzsb7a1reuga8ccgtnfi9f8swez1p
 X-Rspam-User: 
-X-HE-Tag: 1777476727-750824
-X-HE-Meta: U2FsdGVkX18dl4LgYH0Zb3UIBy9uIl/5M94SjpUpbTKtMnSPMkCAA2LF19Qtfefy8qNzJveiWZqVaXSkX7gqtyjuz0sXQX0LTxWcWTD9/cP21gTMT4ZDvbJwPkRvIh2KvPthnq29XuWsoD0u5Gniqf18MhtdL2s4fUk7FOU3hpG20cYTbXRmDS296EsJggdSLtjPQyELmJhLlDOU8Nd/23RvYWyatSBMpxpQcpyvmy/Zeseq3S3xi/YHebD7fNAHKN+ymAWf5F2CW+/iXPBPvMz6RR+QFCb3YAeQgeap8vg3KLJuDrw0YtsA4Nl1Lf81CfbrIweDT3yAWCoIczBTB+zJ1RTbAhsp13rUXTY5yzMFIyWDkugLOoO2gNsJrJRunaMqT3kkURjR4z6uGrpqVXx4a+gKnqphh4SLgqQ+PUgL6Zn/TV4xjCuNGh9R1Y9H3YxlOTB/Ds3XYihL1NhdzSxwuDA16d024juj1PPla9P/DXjarJjm6bSuxaeIXg/X3ZDYA8V+7v7z5/RvqCjuxhE41iuudjZjn0uzPG+VfiPL7SGiL5VZ8I/dSxi6gOHPIRoa/9QZg0XAH8wy0QHL0bfFd/YXWaFLWt2pIjab0lYw3j8dQzq0vY+xJ4eC84QpmLGLtOGVj6mPdMRk3y1WRknP/PubMWYaQ/1IYRawKodHjYk0pZTKVCAfO7fO4Qrudm6SjlRsFOfEK2b4lrf6o2NWeVFDwjs14VWwGVkitFojeSie+quTw0y0UVZ2AeK1bxbfRGEIwmVJZShol7eD3COtW7FnHEQqEuglxlySy4MuRpseQ/ZHJPPnRZmojcMYwMnYpMxcog4KZuvzA08uJEI522y3nd6NW1u6lYozEgsPXuCdW3juo7Q2rEugzHdwjKwTyq/B11ogZXlDZJpTmngNHe9nAdDmogUnKvcmGWCmz+WCvhlpH05TYqsse4LlRaf0VW5hDEZLFGL2jcu
- OxyBqS+R
- YV1qdcCYDFLhQkGSd7v/vxAQyrvzI+zbZK1tTUAxNAAojAzxFPb3OGxeg8ucx1ig6bUcrI9ENzq31nyxWLIJUOuOjagiNAfjtqIclwDxLOIEmPTIMaTfJdKaUOAuR1JGTJmW7cIu4L8ueNDHzb/LCB/NzmKUvjm1KZfpmxtk5bJwW4mm3K1hcqVNMBPquIp9GAp3EXSGQnvi1I4aBQkGKLdsJ5YiSredL2kebieWyehpRupMcmxWlSZiXvJe0dW6WMSLY8Eds0XrNVESLi2F9phnwWSRJ6C2+0DYejresDz80pz9RViJ0OLTpvNo237K3KnwRXVvVzouzhDdM1/DPDbstNKkJDqoNHWcKNcruhVkf2zi/pCrQsfVy1Xzc3kZZ49K9IpPzPrVsCBT7jCHb0MBqPsFR4lE89OO4u+OubplwMxWDFAc8xU+BZ0WJipBk9HHne5Wp+IozrLrPpPFGUidYs1yHbHBSAoZsXuWESmw7RMM=
+X-Rspamd-Queue-Id: 49256C0015
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777476863-162081
+X-HE-Meta: U2FsdGVkX1/Q9TQ9++6e1cO21v61bMFo5w2giPqXWvovDCR9sByWbtUmMPnf21U1xDb9itlInktR2tzcNCXJPx6mmVz0psV9O5ge1Euojy+TnnKYgK9npVaAhbFlFZp9wSRoRpWbSImJtH0XtDEqxxTStrC4ntsdUBhbyCv4d00M3ufblB7B7oXm7A4vLHq/hbAf2HIylc8bV02eNbspBMcyf8qsOYWgbEcK3rwrN951xcjRt+bW32FrnH0K+F46E33qULkHHZNgFU4Hc12WI+rbiV9A4n/XTrxFLdu1B/X6YBHSLhLm6kxdK2O/co1kOFgO0Q9YswZMhcOVVh2Y4XREQaXrAeJjFuER6WwfzNlP+1Ce3kNtVBaIJ1AnPd25+00Mfx5t/GH0zIJxHxjsXjnW1Ikv9sDT1uIPzpRx4Aku79i7KUjgjVnVCplyl6YwNZUqutqf8flb0PW6LeUy+nfUBCiOeQTqqEr/rfk7QZSGVlhNEXjV6bzQV1Zj09MfBtcTj1korB3s5LMH5iFmm0FWYZJBhkXs9qTTd4fQ7SHw3UOgO3XB46rrlwWD6Ed1Yoh4bYwc9YAWtqZPgKkDkTFju/2t5nL3+X5BWGp0s5cd04uU52YShP8+SrmQAP7IveRW46DQK+9pWBixl4cMigGeu7gc9RMLV6cWNF0BInKiipaLSE4rCgVQ2U1AHtXwedLoTC/ymaaEScBGEQMDW+AF6IKf+AZfYN/FSS8X+Qa0d4Zq8sYmcmrR7HcbUa4vk4kd6qurBNRQ0DzzHlb7DC6y9YuF/HUXcde4KKpsO4/cTi9e8N65A/471oINQpen7UrNjRfDNtZBcEW/yOx2JZnyCi4MgEPBQYv2YdUto46Mf8FQkM65GQnW7GnfOTDeCuIGQOiM/WNAoDYGTOlm/c5GGeUK4pvL73sjDOY4fTYsS1ai7vGgspmAGIyhffB3qB936He37ZjkeKYvNfx
+ CmLKIfxR
+ 4sk8Kxt3xoptFSqr77GpCU8rYWQjKJ5CVQA3k8V2SfmzEuufNceCfOSKMauqfeWZZs7Ttj8PWlTeZiqoqPSGA1BBR5snqCsQ//thffyS8/rDnFBdOVAcBm4AwhWExOxXPOnJsqelqUnPvc2hljjRk1xXO3CmoXlPd/D6skwTrTaLdpTcPaskraTP9its9Wvf5LdMuzMajURO6nPKLg8uyqVwvWlC//BQhifJIyRBFwy2UyiiMaV6PgipeZRzTxs8W61oFHz6e9PbqfZHYvobeVFZJTWBBE91eJhr9lqzF8Miwo6rhL21wEtogiXWtzCYz2oteQZtDYK8r5Gir0bvjrBruv6kDtimgwNDSKyfh15OPj1EEiJwaZD0Z5lO45cB7wYfa1v3I+ZKTLwiq7GhZzQtYb+bgQNbT5fNDuIBjljDZfna1Kl/WHzrG9G/sG4Jh93+FvQQvfiUgnAzgzGLAf3ZCxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,82 +142,342 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-collapse_file() requires FSes supporting large folio with at least
-PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
-MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
+On 4/20/26 8:20 AM, Usama Arif wrote:
+> On Sun, 19 Apr 2026 12:57:42 -0600 Nico Pache <npache@redhat.com> wrote:
+>
+>> Pass an order and offset to collapse_huge_page to support collapsing ano=
+n
+>> memory to arbitrary orders within a PMD. order indicates what mTHP size =
+we
+>> are attempting to collapse to, and offset indicates were in the PMD to
+>> start the collapse attempt.
+>>
+>> For non-PMD collapse we must leave the anon VMA write locked until after
+>> we collapse the mTHP-- in the PMD case all the pages are isolated, but i=
+n
+>> the mTHP case this is not true, and we must keep the lock to prevent
+>> access/changes to the page tables. This can happen if the rmap walkers h=
+it
+>> a pmd_none while the PMD entry is currently unavailable due to being
+>> temporarily removed during the collapse phase.
+>>
+>> Signed-off-by: Nico Pache <npache@redhat.com>
+>> ---
+>>   mm/khugepaged.c | 103 +++++++++++++++++++++++++++---------------------
+>>   1 file changed, 57 insertions(+), 46 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 283bb63854a5..ff6f9f1883ed 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1198,42 +1198,36 @@ static enum scan_result alloc_charge_folio(struc=
+t folio **foliop, struct mm_stru
+>>      return SCAN_SUCCEED;
+>>   }
+>>
+>> -static enum scan_result collapse_huge_page(struct mm_struct *mm, unsign=
+ed long address,
+>> -            int referenced, int unmapped, struct collapse_control *cc)
+>> +static enum scan_result collapse_huge_page(struct mm_struct *mm, unsign=
+ed long start_addr,
+>> +            int referenced, int unmapped, struct collapse_control *cc,
+>> +            unsigned int order)
+>>   {
+>>      LIST_HEAD(compound_pagelist);
+>>      pmd_t *pmd, _pmd;
+>> -    pte_t *pte;
+>> +    pte_t *pte =3D NULL;
+>>      pgtable_t pgtable;
+>>      struct folio *folio;
+>>      spinlock_t *pmd_ptl, *pte_ptl;
+>>      enum scan_result result =3D SCAN_FAIL;
+>>      struct vm_area_struct *vma;
+>>      struct mmu_notifier_range range;
+>> +    bool anon_vma_locked =3D false;
+>> +    const unsigned long pmd_addr =3D start_addr & HPAGE_PMD_MASK;
+>> +    const unsigned long end_addr =3D start_addr + (PAGE_SIZE << order);
+>>
+>> -    VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+>> -
+>> -    /*
+>> -     * Before allocating the hugepage, release the mmap_lock read lock.
+>> -     * The allocation can take potentially a long time if it involves
+>> -     * sync compaction, and we do not need to hold the mmap_lock during
+>> -     * that. We will recheck the vma after taking it again in write mod=
+e.
+>> -     */
+>> -    mmap_read_unlock(mm);
+>> -
+>
+> My understanding now is that the caller will need to drop the mmap_read l=
+ock?
+>
+> This needs explicit documentation at the start of the function IMO. I thi=
+nk
+> there are callers in later patches and its very easy to miss this.
 
-While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
+Yeah as David suggested I will probably seperate this out into its own
+patch. And add some proper comments to describe the requirement. I didnt
+even realize I had forgot to update the patch to describe this change
+(apart from the coverletter). Thank you :)
 
-Add a helper function mapping_pmd_folio_support() for FSes supporting large
-folio with at least PMD_ORDER.
+>
+>
+>> -    result =3D alloc_charge_folio(&folio, mm, cc, HPAGE_PMD_ORDER);
+>> +    result =3D alloc_charge_folio(&folio, mm, cc, order);
+>>      if (result !=3D SCAN_SUCCEED)
+>>              goto out_nolock;
+>>
+>>      mmap_read_lock(mm);
+>> -    result =3D hugepage_vma_revalidate(mm, address, true, &vma, cc,
+>> -                                     HPAGE_PMD_ORDER);
+>> +    result =3D hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=3D*/=
+ true,
+>> +                                     &vma, cc, order);
+>>      if (result !=3D SCAN_SUCCEED) {
+>>              mmap_read_unlock(mm);
+>>              goto out_nolock;
+>>      }
+>>
+>> -    result =3D find_pmd_or_thp_or_none(mm, address, &pmd);
+>> +    result =3D find_pmd_or_thp_or_none(mm, pmd_addr, &pmd);
+>>      if (result !=3D SCAN_SUCCEED) {
+>>              mmap_read_unlock(mm);
+>>              goto out_nolock;
+>> @@ -1245,8 +1239,8 @@ static enum scan_result collapse_huge_page(struct =
+mm_struct *mm, unsigned long a
+>>               * released when it fails. So we jump out_nolock directly i=
+n
+>>               * that case.  Continuing to collapse causes inconsistency.
+>>               */
+>> -            result =3D __collapse_huge_page_swapin(mm, vma, address, pm=
+d,
+>> -                                                 referenced, HPAGE_PMD_=
+ORDER);
+>> +            result =3D __collapse_huge_page_swapin(mm, vma, start_addr,=
+ pmd,
+>> +                                                 referenced, order);
+>>              if (result !=3D SCAN_SUCCEED)
+>>                      goto out_nolock;
+>>      }
+>> @@ -1261,20 +1255,21 @@ static enum scan_result collapse_huge_page(struc=
+t mm_struct *mm, unsigned long a
+>>       * mmap_lock.
+>>       */
+>>      mmap_write_lock(mm);
+>> -    result =3D hugepage_vma_revalidate(mm, address, true, &vma, cc,
+>> -                                     HPAGE_PMD_ORDER);
+>> +    result =3D hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=3D*/=
+ true,
+>> +                                     &vma, cc, order);
+>>      if (result !=3D SCAN_SUCCEED)
+>>              goto out_up_write;
+>>      /* check if the pmd is still valid */
+>>      vma_start_write(vma);
+>> -    result =3D check_pmd_still_valid(mm, address, pmd);
+>> +    result =3D check_pmd_still_valid(mm, pmd_addr, pmd);
+>>      if (result !=3D SCAN_SUCCEED)
+>>              goto out_up_write;
+>>
+>>      anon_vma_lock_write(vma->anon_vma);
+>> +    anon_vma_locked =3D true;
+>>
+>> -    mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
+>> -                            address + HPAGE_PMD_SIZE);
+>> +    mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, start_addr=
+,
+>> +                            end_addr);
+>>      mmu_notifier_invalidate_range_start(&range);
+>>
+>>      pmd_ptl =3D pmd_lock(mm, pmd); /* probably unnecessary */
+>> @@ -1286,26 +1281,23 @@ static enum scan_result collapse_huge_page(struc=
+t mm_struct *mm, unsigned long a
+>>       * Parallel GUP-fast is fine since GUP-fast will back off when
+>>       * it detects PMD is changed.
+>>       */
+>> -    _pmd =3D pmdp_collapse_flush(vma, address, pmd);
+>> +    _pmd =3D pmdp_collapse_flush(vma, pmd_addr, pmd);
+>
+>
+> For an mTHP collapse covering, say, 64KiB of a 2MiB PMD, the patch still
+> flushes the entire PMD via pmdp_collapse_flush and tlb_remove_table_sync_=
+one.
+> That triggers cross-CPU TLB shootdowns for ~1.94MiB of unrelated mappings=
+ on
+> every successful sub-PMD collapse. Probably acceptable as a first cut?
 
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- include/linux/pagemap.h | 26 ++++++++++++++++++++++++++
- mm/khugepaged.c         | 10 ++++++++--
- 2 files changed, 34 insertions(+), 2 deletions(-)
+Hmm interesting consideration, I believe this is neccisary from a GUP
+perspective as the comment suggests. Me, Dev, and David had discussed
+that once that this lands we wanted to play around with a lot of the
+locking and previously defined "requirements" to see what is actually
+needed. So yeah I think for now we leave it as is. Hopefully we can make
+more improvements in the future.
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 1f50991b43e3b..1fed3414fe9b8 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -513,6 +513,32 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
- 	return mapping_max_folio_order(mapping) > 0;
- }
- 
-+/**
-+ * mapping_pmd_folio_support() - Check if a mapping support PMD-sized folio
-+ * @mapping: The address_space
-+ *
-+ * Some file supports large folio but does not support as large as PMD order.
-+ * If a PMD-sized pagecache folio is attempted to be created on a filesystem,
-+ * this check needs to be performed first.
-+ *
-+ * Return: true - PMD-sized folio is supported, false - PMD-sized folio is not
-+ * supported.
-+ */
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
-+{
-+	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
-+	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
-+
-+	return mapping_max_folio_order(mapping) >= PMD_ORDER;
-+}
-+#else
-+static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
-+{
-+	return false;
-+}
-+#endif
-+
- /* Return the maximum folio size for this pagecache mapping, in bytes. */
- static inline size_t mapping_max_folio_size(const struct address_space *mapping)
- {
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index e112525c4aa9c..6808f2b48d864 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2235,8 +2235,14 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	int nr_none = 0;
- 	bool is_shmem = shmem_file(file);
- 
--	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
--	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
-+	/*
-+	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
-+	 *
-+	 * TODO: once shmem always calls mapping_set_large_folios() on its
-+	 * mapping, the shmem check can be removed.
-+	 */
-+	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_folio_support(mapping));
-+	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
- 
- 	result = alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
- 	if (result != SCAN_SUCCEED)
--- 
-2.53.0
+>
+>
+>>      spin_unlock(pmd_ptl);
+>>      mmu_notifier_invalidate_range_end(&range);
+>>      tlb_remove_table_sync_one();
+>>
+>> -    pte =3D pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
+>> +    pte =3D pte_offset_map_lock(mm, &_pmd, start_addr, &pte_ptl);
+>>      if (pte) {
+>> -            result =3D __collapse_huge_page_isolate(vma, address, pte, =
+cc,
+>> -                                                  HPAGE_PMD_ORDER,
+>> -                                                  &compound_pagelist);
+>> +            result =3D __collapse_huge_page_isolate(vma, start_addr, pt=
+e, cc,
+>> +                                                  order, &compound_page=
+list);
+>>              spin_unlock(pte_ptl);
+>>      } else {
+>>              result =3D SCAN_NO_PTE_TABLE;
+>>      }
+>>
+>>      if (unlikely(result !=3D SCAN_SUCCEED)) {
+>> -            if (pte)
+>> -                    pte_unmap(pte);
+>>              spin_lock(pmd_ptl);
+>> -            BUG_ON(!pmd_none(*pmd));
+>> +            WARN_ON_ONCE(!pmd_none(*pmd));
+>
+> Why was this turned into WARN_ON_ONCE? Would be good to add to commit mes=
+sage
+> what the reason is if it has been discussed earlier.
+>
+> The next line writes a PMD entry over an existing one =E2=80=94 that leak=
+s the
+> previous page table or PMD-mapped folio and can corrupt VA mappings. BUG_=
+ON
+> failed loudly and safely; WARN_ON_ONCE continues into the corruption and =
+falls
+> silent after the first hit.
+
+Discussed here:
+https://lore.kernel.org/lkml/c781ec19-724b-4c00-9ad6-56b9733cefa0@lucifer.l=
+ocal/
+
+But yes im more so on your side that id rather crash the system then
+warn if we are potentially corrupting things in memory.
+
+@lorenzo and @david can we come to a definitive consensus on this?
+
+>
+>
+>>              /*
+>>               * We can only use set_pmd_at when establishing
+>>               * hugepmds and never for establishing regular pmds that
+>> @@ -1313,21 +1305,24 @@ static enum scan_result collapse_huge_page(struc=
+t mm_struct *mm, unsigned long a
+>>               */
+>>              pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+>>              spin_unlock(pmd_ptl);
+>> -            anon_vma_unlock_write(vma->anon_vma);
+>>              goto out_up_write;
+>>      }
+>>
+>>      /*
+>> -     * All pages are isolated and locked so anon_vma rmap
+>> -     * can't run anymore.
+>> +     * For PMD collapse all pages are isolated and locked so anon_vma
+>> +     * rmap can't run anymore. For mTHP collapse the PMD entry has been
+>> +     * removed and not all pages are isolated and locked, so we must ho=
+ld
+>> +     * the lock to prevent neighboring folios from attempting to access
+>> +     * this PMD until its reinstalled.
+>>       */
+>> -    anon_vma_unlock_write(vma->anon_vma);
+>> +    if (is_pmd_order(order)) {
+>> +            anon_vma_unlock_write(vma->anon_vma);
+>> +            anon_vma_locked =3D false;
+>> +    }
+>>
+>>      result =3D __collapse_huge_page_copy(pte, folio, pmd, _pmd,
+>> -                                       vma, address, pte_ptl,
+>> -                                       HPAGE_PMD_ORDER,
+>> -                                       &compound_pagelist);
+>> -    pte_unmap(pte);
+>> +                                       vma, start_addr, pte_ptl,
+>> +                                       order, &compound_pagelist);
+>>      if (unlikely(result !=3D SCAN_SUCCEED))
+>>              goto out_up_write;
+>>
+>> @@ -1337,18 +1332,27 @@ static enum scan_result collapse_huge_page(struc=
+t mm_struct *mm, unsigned long a
+>>       * write.
+>>       */
+>>      __folio_mark_uptodate(folio);
+>> -    pgtable =3D pmd_pgtable(_pmd);
+>> -
+>>      spin_lock(pmd_ptl);
+>> -    BUG_ON(!pmd_none(*pmd));
+>> -    pgtable_trans_huge_deposit(mm, pmd, pgtable);
+>> -    map_anon_folio_pmd_nopf(folio, pmd, vma, address);
+>> +    WARN_ON_ONCE(!pmd_none(*pmd));
+>> +    if (is_pmd_order(order)) { /* PMD collapse */
+>> +            pgtable =3D pmd_pgtable(_pmd);
+>> +            pgtable_trans_huge_deposit(mm, pmd, pgtable);
+>> +            map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
+>> +    } else { /* mTHP collapse */
+>> +            map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd=
+_wp=3D*/ false);
+>
+> map_anon_folio_pte_nopf calls set_ptes and modifies pagetable, while hold=
+ing
+> pmd_ptl only. It should be safe as we expect pmd_none. But I think you sh=
+ould
+> put a comment about this?
+
+Yeah doesnt hurt. Ill try to clarify that.
+
+
+>
+>
+>> +            smp_wmb(); /* make PTEs visible before PMD. See pmd_install=
+() */
+>> +            pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+>> +    }
+>>      spin_unlock(pmd_ptl);
+>>
+>>      folio =3D NULL;
+>>
+>>      result =3D SCAN_SUCCEED;
+>>   out_up_write:
+>> +    if (anon_vma_locked)
+>> +            anon_vma_unlock_write(vma->anon_vma);
+>> +    if (pte)
+>> +            pte_unmap(pte);
+>>      mmap_write_unlock(mm);
+>>   out_nolock:
+>>      if (folio)
+>> @@ -1525,8 +1529,15 @@ static enum scan_result collapse_scan_pmd(struct =
+mm_struct *mm,
+>>   out_unmap:
+>>      pte_unmap_unlock(pte, ptl);
+>>      if (result =3D=3D SCAN_SUCCEED) {
+>> +            /*
+>> +             * Before allocating the hugepage, release the mmap_lock re=
+ad lock.
+>> +             * The allocation can take potentially a long time if it in=
+volves
+>> +             * sync compaction, and we do not need to hold the mmap_loc=
+k during
+>> +             * that. We will recheck the vma after taking it again in w=
+rite mode.
+>> +             */
+>> +            mmap_read_unlock(mm);
+>>              result =3D collapse_huge_page(mm, start_addr, referenced,
+>> -                                        unmapped, cc);
+>> +                                        unmapped, cc, HPAGE_PMD_ORDER);
+>>              /* collapse_huge_page will return with the mmap_lock releas=
+ed */
+>>              *lock_dropped =3D true;
+>>      }
+>> --
+>> 2.53.0
+>>
+>>
+>
 
 
