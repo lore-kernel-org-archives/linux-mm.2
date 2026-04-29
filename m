@@ -4,99 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81FDAFF8864
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 06:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D960FF8864
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 06:53:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E32816B008A; Wed, 29 Apr 2026 02:42:06 -0400 (EDT)
+	id B0FDC6B0005; Wed, 29 Apr 2026 02:53:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E09F36B008C; Wed, 29 Apr 2026 02:42:06 -0400 (EDT)
+	id AC01B6B008A; Wed, 29 Apr 2026 02:53:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D47146B0092; Wed, 29 Apr 2026 02:42:06 -0400 (EDT)
+	id 9B0D86B008C; Wed, 29 Apr 2026 02:53:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C38F96B008A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:42:06 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 309DE1206F1
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:42:06 +0000 (UTC)
-X-FDA: 84710648652.19.B38CA12
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A42F118000D
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:42:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HhvS+AEi;
+	by kanga.kvack.org (Postfix) with ESMTP id 894FC6B0005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:53:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3837714076A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:53:39 +0000 (UTC)
+X-FDA: 84710677758.09.C54ED2E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 58D321C0008
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:53:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B6o7uOCV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777444924;
+	s=arc-20220608; t=1777445617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5anGTXk/PsMhlOHri4Yu5fJKBgW4sb3Vyl+BDkX03wc=;
-	b=Sn+ufI/leaa2tZYld7pNdCnn8Gm0xAGdGbIBgCVV8GxBl6Y02J3c0S+McS3OwS5r6pMy5q
-	Obh8DqEa/OGdAy00/F0Lx/aZMpWc4/Y2wX3j4+UDhcQm31eq5MyzO1ZUqumst4cfpg4Ip7
-	t2HM7HQxYrVBfnhFlLp6EyMwuJGEfrk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777444924; a=rsa-sha256;
+	bh=mwtMkfT+6sltnF7j1cEJxZhmiEFv2uzDyIODaaF3YcE=;
+	b=5ECbnwOzSOZjbZGjq8MXj7gVsKmWUc3lV+RZ5YiC+xtvPAzE1yGNhT9HX+THpWD/OU15/2
+	Gk9yrW8Wm87uU9La9pRXISRhibkQ9Kd60ZPsFtbL9FaXuGSJMv0jl1ynFCyzp4zfYVQs16
+	l4x8o7zlhorMfR9AKKmzn/2qYz0fMfw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777445617; a=rsa-sha256;
 	cv=none;
-	b=OXyjWwGSEyj5Lxddun/5dqnp/N78Hv/JpeyE3hJP2z3Y5hNRnr1RezOJgq/VTsZlnmgReU
-	1SrD09J5yJtdYxcWfO9e8ayPzF9Kb4pK6x5H6QEboMMseEAnzWlpQTO7sRLiOvVylsCXkS
-	MLCEn5EMLULHOFgGUGo+jrNopguy704=
+	b=RGKo6uo/N5MM8RMY1p/jpL4RrWGZSCpFB/JPvo3srPwzd5Y8fxX1rMLq9RlHz51vXhTta6
+	9JWCZUBJlb3++Vi73b+THA+Vfa9c9300H+cVRNx+sHJfO0Sraa/p0PKkcPzCI2cptz/ak3
+	+Q7pTdW9HPOXPj8/Bh2orygzI1aIp0A=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HhvS+AEi;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B6o7uOCV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 18E0661119;
-	Wed, 29 Apr 2026 06:42:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD290C2BCB3;
-	Wed, 29 Apr 2026 06:41:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EF7E043E6A;
+	Wed, 29 Apr 2026 06:53:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70ACCC19425;
+	Wed, 29 Apr 2026 06:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777444923;
-	bh=zWqxAlu/ucA1P6KiKmx97UoqK35wwC2a8fv/LnXOx3s=;
+	s=k20201202; t=1777445615;
+	bh=ry4QTtQg8gXjbztYVBm6zJYokjTwMcboL55Qdm43+vE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HhvS+AEidghosFxYFCxxdeYV2TD2EthsWHUQvkDvugahuv/aLZPyEa4k69YelJi0G
-	 I/SpPotGYb+ehBYgUTx46f41fx74RXaOnHzFdU+4X0eoN0r3Mr+aKqFQuNdrdcF8wY
-	 A5NuVmKiDBrwafYcy3JNTmA9W9gUmuGY9RzXnH73wGaOrbQbMc5rlCjxXM/a90eRje
-	 +Xj3lD7I1TkhztOAjZhDhdffWkpa6SldLnbcXkgybnCK1+fT8xlAQG5NJp622XUyTt
-	 /W4qb0W3bIJZOgs/AkYMlbki1qEA/7PRiIFP/DjXhJ2Ph96QHMRTEtjmf0zmd7QF4G
-	 h0r1lNhnCgOUw==
-Date: Wed, 29 Apr 2026 08:41:53 +0200
+	b=B6o7uOCVUGVofvTMhOIRKEpYQrDDYTS40KrJjZi1lZcjCMWOmBvECYESWQWo2FVEm
+	 CHgBOcMLdJr+CPQ9pEgOcUNxvZ0eJonTtXQ1ivm9OO4VTt9xQrU7ffBl3GntJgk9jJ
+	 N6zPTFijjshuRS327HvfZssZt7OhHRanMs8zr0NXFlTvbmDSz/8t+Oyw/dxAIS5XBl
+	 WQz2fBkof+CazOSWappmrULhQbSwMfZfv4+C0djEyjZDHCHzmVU5jlOMGG2ggTX8jD
+	 evzy9JnKbuFXrAYVJ/RJPq6+lbLGkAdZW//k3DqHjytTypZiqpjWUR78XvjEllPR6y
+	 XUBdn9/v7X7gA==
+Date: Wed, 29 Apr 2026 08:53:25 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Alban Crequy <alban.crequy@gmail.com>,
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Alban Crequy <albancrequy@microsoft.com>,
-	Peter Xu <peterx@redhat.com>, Willy Tarreau <w@1wt.eu>,
-	linux-kselftest@vger.kernel.org, shuah@kernel.org,
-	Usama Arif <usama.arif@linux.dev>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: Re: [PATCH v3 1/2] mm/process_vm_access: pidfd and nowait support
- for process_vm_readv/writev
-Message-ID: <afGoMdq5vCKO8iaN@kernel.org>
-References: <20260428122826.339550-1-alban.crequy@gmail.com>
- <20260428122826.339550-2-alban.crequy@gmail.com>
- <8b29da5b-e260-4b77-a640-8abb447291d1@kernel.org>
+	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/49] mm: panic on memory allocation failure in
+ sparse_init_nid()
+Message-ID: <afGq5Qa21NOumdwp@kernel.org>
+References: <20260405125240.2558577-1-songmuchun@bytedance.com>
+ <20260405125240.2558577-10-songmuchun@bytedance.com>
+ <afBaMEBoR_35Fblc@kernel.org>
+ <9FD13495-58E8-4183-AAC0-48E50A694ADE@linux.dev>
+ <afCxZ5vYDeAlzTK2@kernel.org>
+ <408EDCB4-7F65-4595-BE44-E23300FBD397@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8b29da5b-e260-4b77-a640-8abb447291d1@kernel.org>
+In-Reply-To: <408EDCB4-7F65-4595-BE44-E23300FBD397@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A42F118000D
+X-Rspamd-Queue-Id: 58D321C0008
 X-Rspamd-Server: rspam04
-X-Stat-Signature: ydcbo89mcth9kxpi45suaxbi4gry9sf5
-X-HE-Tag: 1777444924-858588
-X-HE-Meta: U2FsdGVkX1+XzPGeomZLdVLzYvn/FyuihAhPFOGVzUgzlBjXOBn5zwwR3BAG//3KAwQ2bc6ciMkdW9bIEnWjtTpm3oIsY+mF/GPt77f/AbhEMor16DdUaWgpVm3Z5/9Id3df939Pk3zjVCDdXRUpJ0vdXfxJHPzSti4any+TQ2eodx9IGNbwurgAo5cdflVtX589hMJ9+lvuDf6IhytCi2JiyjB+pqicFVd4jbb4XOE6wlCdcdJ6Ru8f5ExAN0z2nGos1aXrKvb02WoppVhHYmUUPoASAEWj20tWKWf2/KLfB6YNzXPaxnnLwIQGTRuDtOVM3tCaZvMErursxBLqFn1GgqColaFaxVYWwce/IZVqu0UK5rn3XYOfIoDjkqwWMupO1NZGsXSZxM4ZuZ/jGF/NyILOiIrcyNEHvXqf7JPebK0HMrjOPYdlRKXO3LenIV+SpJyMwoRwFZV+z/NmjNxow16BMFQfdxuw70ogIE9LQnCDlEmuB5XXx5LSjuBek9/WoKeoucMigha4+cie+hiBarOOuL/H1OnHS42Fo4TkMXTDM7pBeE8K/zumLZfigph3wwRagydXm8YNnqKADtN8fj+MgwQugAMQI31jG/L7qCNkiCi7Mx65Zjg+2XDSjryq4SyZBExihEuRt7itAlK2KQQUWBL9XwfSu1kP3rHZrSGYG/PWyvymGEgqEXIlnmIpuXwJqxYYGCfWii1cQeIwU78gp1LLFU9TbbjyfpVINOHZhFN1W15KwZLCtXvopP5bTWU5Sxo6sP/RoM6Wgze/sMvOMisCpOYDDukPTTzRTebYHn1V7injonoo1ZhOXQtEd2fMW6BqEAPIAXE2VKi/anptNi3OIKJ6CPGDdebbGNNo613OFfyOEmzh5U+zmRKJGItKnHQFU09dkQBXD6Qd/Cy4SO5bR4iAin49gYiWK1wABWU9Mzxe+PqP0E8Q2tYAdY9/l4OOvKoIcb6
- xQ+40X9I
- 6iaL08CMsUJcWoqC5iGFnmJMZMVZUjgXqcCzqaDCIwj46XUOD9J1aHrd60nnphUsUe8YQGyGTAoXK1D4sabcqDY1WUVl+9tr4PlnEVjtRIeNHFw7ENQVRfasnRMR4YUJv56rKgnQarOgXQhhpb6dxBRlqicM+V3bRnYlwhw1FpRzbS9+OWG54M/pEXd+VK+n5OiUEhk8c6nBlMlnAYQLnu4l0qoEjO1Ryo4Jf4gAUcZ4dapGfaasPNnfNZIxK8rhQME5sx31xkeoblQ9OuQTcYZe8odnpzMNsqQhhUs3qIFyIBPMTanObVXAbBMUtIROMo+efEckGllu6HgCIsNunNcz9USRYGpqczJodCKTiVOXCwu7xJkqzK/dfk5bNjVwfKNHOsWCD7XVk6eY=
+X-Stat-Signature: bdk85o6gdaor41eprt9zjxzsrwzet939
+X-HE-Tag: 1777445617-23161
+X-HE-Meta: U2FsdGVkX19IrJ3W2ppU2QX8EkXtHLnU4PAbAUZokGJ3QazhZJ2K1hn0isuUM6UKi8mHNz367jvd0qITncPJ4sgDMOxTtunQ9NNxDqsnPVU4wyovvUdeM6QzOM+giCqZu1jkvI9dqV9j/gB9LS7I2qJMJYkr2BS7Ra+sQma8R5SQWtHctLH7FXGurzOGKly3zwYlTTYhybg+HWXkM40lvjXW3Zek0d3Hm5zAuqGfQisYqJCzBpDJPXCkkJg3jKaVYfa6TJb5zGNOsmQtmvkQU9MlmnJ9tp7rCWnzBqz1UZmEXFSKh0U8ZZKDV4WvTErnR40JvULxZytg5GjtxuYf3S/Z44BUn9kkbg2616SUwocLBnOu7BYn9wg3v4n/OnW6ySl2JxKMXquS7N2/6Sw29UAJa7CEHYgLXXZbLXtE5xq1nDH/ar8YpOqVNi/Gf0tXJcPK34mrtFCBEKx57sDj/GjjTIAIPJyw2WpaxVpoB4SeettpRe8BB69mn53aiu4Q3Lf82Jgs/rQfXYojhTXHc5PzxcBbXpN03vXmeXSNkpOalMv5NSOvDTKsHVVJQxCJPeXlxFLmJd6Uvb9xzvIqcKKoBvVjxAILSrytSSu7PhLvSswWDbcqGG7GnmTqVUtBGF5CTm3ocpChYb/u0EwcyJzUyJrn72mXYhR+DkYqOhp6dU06AoGNwr51Mj6Wtx4gOAu7oYkUOLvw+xcoOy3682yZeT0H04EBt7dqYpXs8o13KvErUYHmTqAbDkwqEcxrLtV7Eigh4P8KDFYRGZ1YuJlz0yQZdoE0wXdX2B8iYHE3qjk0QK7murXZpYuEi8VV3bXinuFlshxTdAhJqCECiuSMlr8k1kqPR+u2l1wWeU2aAwdN+dUKGcUBh+An2xZupDVuZRURv71O4wkB/c4apJ3xf/4dFrA+htrEsMHryoBo9Xq4P2YPfSrAI15f0+zXep9g146yY4pFp2uCEeV
+ zEhRzty/
+ CubTXmTKG68K4C8mE25RUOnaQCq8drqUAvnFO6A4C2pwZqXcikZlbvM0XAlce6qn2X73kSoD1pN6qc7iXP2hivKL4EWHg+PAC1cPvHZdYOKbU0DWr7QkO1UVgQxuWrhvNlsRTBh6i6NLDAU2OOdI9Wk8MPMDU0HGdk26sEhQK1sIrZxIUoxJSOY4502F5TwS8fj4N2Bdxqjh65x0WnKXrzoWSTj7QxBFvpI6656VQEf8Q2pAHUtNkiyYhpj/kLT6F9luc/5NdOxbZ4RxS+q90+Ue38xpXvGV1FSVi/f1S9BUIeYxT14KrdRenA06sGG3PevsutQY9eTKG/hg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,31 +108,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 10:05:49PM +0200, David Hildenbrand (Arm) wrote:
-> On 4/28/26 14:28, Alban Crequy wrote:
-> > From: Alban Crequy <albancrequy@microsoft.com>
-> > @@ -194,10 +202,18 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
-> >  	}
-> >  
-> >  	/* Get process information */
-> > -	task = find_get_task_by_vpid(pid);
-> > -	if (!task) {
-> > -		rc = -ESRCH;
-> > -		goto free_proc_pages;
-> > +	if (flags & PROCESS_VM_PIDFD) {
-> > +		task = pidfd_get_task(pid, &f_flags);
-> > +		if (IS_ERR(task)) {
-> > +			rc = PTR_ERR(task);
+On Wed, Apr 29, 2026 at 11:14:14AM +0800, Muchun Song wrote:
+> > On Apr 28, 2026, at 21:08, Mike Rapoport <rppt@kernel.org> wrote:
+> >>>> 
+> >>>> +  if (sparse_usage_init(nid, map_count))
+> >>>> +  panic("The node[%d] usemap allocation failed\n", nid);
+> >>> 
+> >>> Please consider using memblock_alloc_or_panic() in sparse_usage_init(), it
+> >>> would simplify the code even more.
+> >> 
+> >> Hi Mike,
+> >> 
+> >> Should we add a new function like memblock_alloc_node_or_panic? Because
+> >> we want to allocate vmemmap pages on the same node.
+> > 
+> > Heh, I missed the nid part :) 
+> > There are a few _node_ or _nid_ allocation helpers in memblock, starting to
+> > add _nopanic for them would be overkill. Let's keep panic()s at call sites.
 > 
-> This could return -EBADF or -ESRCH. We should document both in the man page. (or
-> decide to always return -ESRCH, dunno)
+> We can add a panic inside memmap_alloc() because it is used specifically for
+> memmap allocation. To some extent, this also reduces the number of places where
+> callers need to add a panic. What do you think?
 
-I'm for documenting both in the man page to let userpsace see what went
-wrong.
-
-> -- 
-> Cheers,
-> David
+Right, with sparse_buffer_alloc() and with this change memmap_alloc() can
+panic(). I like the idea.
+ 
+> Thanks.
 
 -- 
 Sincerely yours,
