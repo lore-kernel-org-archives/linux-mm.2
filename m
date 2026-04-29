@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 971EFFF887E
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 17:09:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19928CD13D2
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 17:09:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CB6D6B008C; Wed, 29 Apr 2026 13:09:21 -0400 (EDT)
+	id 734476B0093; Wed, 29 Apr 2026 13:09:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A3AB6B0092; Wed, 29 Apr 2026 13:09:21 -0400 (EDT)
+	id 70BDA6B0095; Wed, 29 Apr 2026 13:09:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E86666B0093; Wed, 29 Apr 2026 13:09:20 -0400 (EDT)
+	id 5D3636B0096; Wed, 29 Apr 2026 13:09:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D2A366B008C
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:09:20 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62F351B9549
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:09:20 +0000 (UTC)
-X-FDA: 84712229280.09.A2B57A6
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11020143.outbound.protection.outlook.com [52.101.201.143])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 821F7A0019
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:09:17 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=t+pHHE29;
-	spf=pass (imf15.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.201.143 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
-	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id 488C36B0093
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:09:29 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 14EE6A0182
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:09:29 +0000 (UTC)
+X-FDA: 84712229658.05.6F60992
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11020136.outbound.protection.outlook.com [52.101.193.136])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5173980011
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 17:09:26 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=NjnbyvhT;
+	spf=pass (imf02.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.193.136 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777482557;
+	s=arc-20220608; t=1777482566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v85j+0bGElAPFU2Bzo3PUorjiPwnDrfwlUjCFlrKqY4=;
-	b=upzcm4Fsvre5GCGg3IevKsno87DjECUOf87kLPMghTc4DVGXel5vRFmFb7c1vP4/CzXZCt
-	SGepE9z7JFHjLJC4xpFzdplNu4DlwJhpWk2DPH/kz4Q5qoJvw/czoIwMT4NwdIJn8kyHMz
-	bTummja9TcN1Asr/dd3QORftdFkp+uU=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=t+pHHE29;
-	spf=pass (imf15.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.201.143 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
-	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777482557; a=rsa-sha256;
+	bh=MxfzNhIjfExThWkgUt0zk8a+mQdo0RqgXJvKFp94lE8=;
+	b=ceNu046/wOFX3QvcZ0Hs55llBfk8M5rnI6Ya+QtioYsH/TL+nH2egwG9TtUB/N96notJ6M
+	lZcOllMJtsxoEMjf0zsEoS8TEzzFK0nhkPNmB2daWk9AtwEkq+mG9DFdDHwaa4EOR+0yqV
+	g6WBP7zC5XtwuewdMnPRnYB87sXdZ0U=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777482566; a=rsa-sha256;
 	cv=pass;
-	b=T7Sla58mUrdAVO+myXl3nj0H7xCiguBOs1ahAJx41eqCB8A6WSTOAgzEUkTmSBm/LyNV2W
-	3zBDaPuUF+6eT6u6ywUJaVS7oW13KMsZp+YOkV+Z5PQkJFx86CbAdZoRFBUuIfUvpUtOPN
-	eAc6D7710JHpumN0cUtLdTp7YkyyjwI=
+	b=Bb7Ux3r7gj8N4jEq4DjZwfB9ZArG3SsgNFF//GkdoAB7bmLm7wDrqrOy9NzunaNWee4m56
+	BkWewt/dIByD/UNzRdq/xbXSG5k2qQsG8v71fEEGS82kacDT9U5mX2ySwnfznenSub4nFX
+	wXiJN0GfVbLdKwMeF7O9BYXXHICWD7g=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=NjnbyvhT;
+	spf=pass (imf02.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.193.136 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CLc6mf/P7vMrpmo4B8chbW0WHB7MCpzjeJRpi8hSBmUAc0YaaHMiQVv7k5ytdW+NM/Q52omeiGW2JFj0SZw7X7FEHWSk/IvbqTvA918tL3gIwZUhUjattsqmgJ7qjT3sXXSgXvw70WLj5q74oBgJREhO7CmNc2CV4SY6zqtKldoYbhWmWiEVGdDUu9AvlVVwCMMwn197TCc6WhQkuJ1v3WVafV8w0LIPppsYRwYxN/jveBNLHLTEHEItRwDbYeJsYvpTaUj8YsX3ZW5tofonferOBxr4VFHrSNqjOyNWPFxYCOL4v/EZlms7uatftnhRzliYCK1qFV/h74kzBGkrIw==
+ b=eVV74fFWtTSoBFD3yS4qno5s30VFApeRnZRNOpXYKsGlFiF5/oAHk4X8y+P5r+SoN4KHaL6tyGlhYy7vHHd4eSVLiFP+ItKwhgwf2rLD+rHwMKINFpipDflZBNESvAEAZMFynNfWjX2B6CNT5B9aDvC2nJd5zatyB8uMGIEW69E1lPeIGyP//g1uWY5JcMeL4S0a4W42a6fc3Zp3QTmTsFuJIrYFhKN1/pL33cOJmu3kws+u05jrpw/sl54JO6OdD3Y5Msk/0BLcYizW9zU+wepip3+kCT8djG7bPTZIEG33xtpmuStIZ435cKQEHcZvFm38JeCPq9bqzJvyBpFwNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v85j+0bGElAPFU2Bzo3PUorjiPwnDrfwlUjCFlrKqY4=;
- b=D4mVJN4pgzuvZjKJ3W1av2/GUd2UH5ZKFEQWhvtS693tiiP8fOpEsuLNvwYfrDCe/r0e87XqQmdWA8U4FTCQV350ZzlFNEHxYJs07ZzGH3RFqLRI1WSkyqxePWML7hVk8fqC/6KQ7O9CRHOumH7foUsp4nbmS0r4nInspSE7ZXsQm2xuq60IxQXaWbnP1fqelyR4anmKoeWyqqKlylPwN0evTAzv13mgqiv9XO/4FZt5JpX5/gCTDVG++3tO8Yt98Xy2B1JWQ/5GRxttt3btnOXT7Ps82C5mIQdoTtjbCzo8D1d3Im1waFVOm4LI56j0spVdtwGeh2x8CUZArBfuIg==
+ bh=MxfzNhIjfExThWkgUt0zk8a+mQdo0RqgXJvKFp94lE8=;
+ b=R0mdbjOzDqLDO9SnJZ1KfmS3TWfp4XL24CNvAQhpfxhgD5wPNlBsso6G7gGvmlevAlvENSgXXR+WaOMPh39pjSZ1PBabkpzB/OsyGimJ2wAjZ4PRuilt7R6gFlyBcVXOgeOLQLtJL+r73g4ZDjeXArQrZvR4vrdMesD5L1449RZZAhIQyOoSzDLzRkYSG/myjomCq7B9zTtQwaUNQh21itQ8pWhaf7te+yoC/16Ej9G0BuSA5p7cL2OEH1P0xRDjxxGv6bNgfn+8ORRRmQAoFomVAr8Hwl4MB2rmSomKRJo6yx38JPH6nVL6ekipp8suZMiVxsBt1TvxnWeghcGfqA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -65,16 +65,16 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v85j+0bGElAPFU2Bzo3PUorjiPwnDrfwlUjCFlrKqY4=;
- b=t+pHHE29IBm9Pbley5mkml0G7ysVXHTVlvn+rBx12ar7Jj5+tGy9X/NcOLxUDDfbAh+0dIelhEkSGzyBy5WKZJy2Akjwi4awN9SO+53dZ60ByYVlfFYvW4upZWA1z9k8mH1z4XtLcYgI0VS31lfskdOG6eFCmH/Xv3WMCrB6/20=
+ bh=MxfzNhIjfExThWkgUt0zk8a+mQdo0RqgXJvKFp94lE8=;
+ b=NjnbyvhTG+3d7wedYjVJ4OJIGzUwW2uFf7IA+lSi1ItKNXmfZ+MV/BAbHahPnvaIp/WGIUv3LC4oZ9rE1f9GKBr4ZVzd0U+ecNhSyYxnzzEkmjpDHS4YPs5MBOToyvExcnq4xswkWTE/CKIckCCY6b30tbnJg4UAX5rIQjo8gUY=
 Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
- DS4PR01MB994309.prod.exchangelabs.com (2603:10b6:8:349::16) with Microsoft
+ SA1PR01MB6671.prod.exchangelabs.com (2603:10b6:806:18b::10) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9870.18; Wed, 29 Apr 2026 17:09:13 +0000
+ 15.20.9846.26; Wed, 29 Apr 2026 17:09:05 +0000
 Received: from CH0PR01MB6873.prod.exchangelabs.com
  ([fe80::46eb:64a3:667c:c1a0]) by CH0PR01MB6873.prod.exchangelabs.com
  ([fe80::46eb:64a3:667c:c1a0%4]) with mapi id 15.20.9870.020; Wed, 29 Apr 2026
- 17:09:12 +0000
+ 17:09:04 +0000
 From: Yang Shi <yang@os.amperecomputing.com>
 To: cl@gentwo.org,
 	dennis@kernel.org,
@@ -92,9 +92,9 @@ Cc: yang@os.amperecomputing.com,
 	linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 11/11] arm64: percpu: use local percpu for this_cpu_*() APIs
-Date: Wed, 29 Apr 2026 10:04:39 -0700
-Message-ID: <20260429170758.3018959-12-yang@os.amperecomputing.com>
+Subject: [PATCH 07/11] arm64: mm: introduce __per_cpu_local_off
+Date: Wed, 29 Apr 2026 10:04:35 -0700
+Message-ID: <20260429170758.3018959-8-yang@os.amperecomputing.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260429170758.3018959-1-yang@os.amperecomputing.com>
 References: <20260429170758.3018959-1-yang@os.amperecomputing.com>
@@ -105,68 +105,68 @@ X-ClientProxiedBy: SA0PR13CA0008.namprd13.prod.outlook.com
  (2603:10b6:610:112::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|DS4PR01MB994309:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8fdd8f7b-97f7-4146-8e09-08dea6120929
+X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|SA1PR01MB6671:EE_
+X-MS-Office365-Filtering-Correlation-Id: a0219fb9-afd2-4272-1b9b-08dea6120454
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|55112099003|22082099003|18002099003|921020|56012099003;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|18002099003|56012099003|22082099003|55112099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	XwNRQOFRFLHWla1qMXCZ5kbThZBPsQWVrSqqFMoNopJT7TU7gFr8uHnZRWkxn3vndk1lwjrUD6ejUs9k2Qb/1/snjv6uMXSmivjPeoQXZsRA8WI9Wf6aVV/N33LH9FR+4mbojAkO5U8paHQcx7+3W5nUxLPtITVSHAaJ4c61hDGn6YyDWgszxGloTt+CwT4lJhZlnH14yrfdpur9x09aBpy/QuebYqPN6mWJenaE3u8wwBbNnj6PfdSj/55TzcJmqjiBFjZ/1zqa95FUrEan9nbASo2tifhejrJ5Cpq2lzRYuaTE3WKyVYKzuCw6YXhsQDL+Z5ZzwdlqigCp7sdaUFV2QXPwvytlBehsiHqowu5Zr4Cea382GcobJ+WylNCUkoPcvaCOBh8KgQqGRXDU/HaGcDqLxGzbpE2HojNgH1/uCAPAgIF6WR5j5EuTNsrO5p9RHuMh2bzVI4qCYA24F9sCAJBa2VdEy1Ral+qazAOmHMg0g+unEUeTVmXb+5LhGxdbdWN7YaXrJvhV42LunAgXvcJ+dAuunmInuT2P2tIT6cVVNQdpXnLQkfLmzAONS/WMgYjZ0uks5aoYRxD2yp/wPFjurTE3solgohn6MsUM7z8n2o9N6W7jfc74ETWcOvGs3rfErF+ki6HQ8tB5a6W7xHbuqBdvumNwDrtId4TN8w77hc7x48wnJIm4HLjKwVCJKPJdQjCE/S5H6k7FcSAHUWPN4srW89lefCa6I4wxZDqHG8fL2vNi83n7Dct8r4PXRIbHAVPOzLth3DVzoQ==
+	oMlYUcGBvA/C4xbnuK/Nz3KnJeDqz12RmUepXa/6VIrxo+22D/yXvCqedOpFAE+JHx8JqKVW5Z6LjnvUCn6tSCUjOSRD0DQwxW0rYto2+JEVbPS7ysjgd48+wO3rtQtrIlaa3dJyOTRna+sm3S5mcBRH0P71pp3g2vs0kN82uaXveKBekZfikeDiSFRWsiFdEmqYxPuolQhsZ0otnIBYDPBAkRdtitc5tajpYZF4EmH5HsmqWh25qc4nw44wAQ/72o2sg7M6Ux2/zOkR0keSA2RgvW0Ff5jLJz6Z8J0Eg72dFzbSXbW1vVwdqDk4VMRgOVoO1loKz5bYaQpoiZLUKrvzGpk556Op0TP/+FArh1CBAsFXz8fMJIcADcUgy5jSt6X4NVbjuxsIYUpbKd+EtGmLq67l8MWGePkc+EXNBRjXeX7n6UfBYF5A2EoPmRf1EuJ4rx/H2KonTohy5/Xo3AUTHbcYdvnX8XS/CQNIUd/wcvglCxNScVaT0ic/pZGOie8xaBKtVqi3ExNlG8JKDuOCW1SDmfj+KI6+S2/1zHEiiC0PtpqJiyx2h11hkVss3MTNFZdwj1xUxa22+umDheYlYXGPOVA58SH3oh64vRU218ShhO9zOu8TQ0KQa2DYZJFmbBrNd8m9ZikAUmHugFMm7gl9YCLJE+7q0Ssd/y8GU8uabIRkESt6s5YCvGnLUxTiONNH3NkFBclPa7ufYlMyent365kPVzux1FXVdQc9vMN9v2Rk3EUDdAr2rSWV/fVpH2nudh4bInCVzyvkGg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(55112099003)(22082099003)(18002099003)(921020)(56012099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(18002099003)(56012099003)(22082099003)(55112099003)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?k+8+a4oPg7FwNxT9KWwuWAILN6JZnZmXAzWURihSzX5gOZWsGaTntVbhC3cC?=
- =?us-ascii?Q?pgyl3gM+YrYvNAvFTFMWI8H3CrGfkXVJhF+xGJLaJXm9+SlZ28I9UT5PdOdd?=
- =?us-ascii?Q?Z0uGlBBdpWjLPoU/woiLQ+WjdDfr5qcpDVK2581ubZKWe1TaeyE+mbeKeE+i?=
- =?us-ascii?Q?9M5p5hES2Yjzz2xoeo2cCMqfn4/0zxmTbht5FpLk5iiUsxz1bCkAuTt3eKRX?=
- =?us-ascii?Q?1UyEEOQV/xiCmZj81IV9yWZKdbubnV91DvEtuGwXhkR8ocvlcuSXYcEJK4y8?=
- =?us-ascii?Q?xnaLXyScq/5Bu2wI6oKAaDsgHUL4rli0pYQ8Uu6ap8yHYMP614mBFCYh0TBt?=
- =?us-ascii?Q?MtKtH+qhi/7Z1V3IfGQ2eid/E+enOxh3ZttZr3+Xh6mW3ADhtVi1UbhPbhsT?=
- =?us-ascii?Q?H1vjYhlex/M/Yh0W7T83bQg3x7aA05I6WgQh/2JeDOvCrwsH87+vysCtaTgv?=
- =?us-ascii?Q?HFYQI1j1r36WvlAXyqBtisMmR7mwriZnJE/s1sUljOpnsHYXZDZ832UU4v3O?=
- =?us-ascii?Q?4DF5kLE6WQFp03JMISu/etqWGkQsrQDPXzkkqOe4RYPLw/uVLp/1DUUuxLDX?=
- =?us-ascii?Q?DmSNgYlUrUCrYMBdyYS9hlzr646C6RZQnjpU8YFSVGsElRYqFx7hkSJbF/rm?=
- =?us-ascii?Q?n1EUG2NjM2d9HoOxhEw/Ku9eLosRr8Op770mRLwWoo3t3PDE2T4k+ekr7fae?=
- =?us-ascii?Q?YlA3wQ7sqmQu7c9oIUw6PoPOuVE/LHZG3A+mylNhk4nqHojyUpL1gmXEi0eg?=
- =?us-ascii?Q?DpieWXtB8i0lXzmCF7ikJmVxoLYas/XWaZMo4viA8zsNP/MmC5hosCT74rP9?=
- =?us-ascii?Q?AK7TKTafITIR43EnnJJa5JLPI37/Smqi1R2In9focarV/1mx6nW8f79xrQUr?=
- =?us-ascii?Q?Sr4vJMtJY37jssZKOE+mZScaUmoYvbWoN4fvYKcSvltmeV0e/mg6g9kfcUky?=
- =?us-ascii?Q?R9VKwO+Hzrns6Su2ulRWN5umu8pVuHDxPAF+SxJTXJPuHOO+tgWSsgp4Zxep?=
- =?us-ascii?Q?2/zdeo+sRMV/PyWSTzrd0hZxjQuGJwIciRciAB73L8E1EnvwpeaLlCcwcauM?=
- =?us-ascii?Q?t7v6jqHIEkNPVD5JQqUPzEex+/WkPhNu4FB97QD09dGKJniCI8LfC5VZNDRX?=
- =?us-ascii?Q?ZTY5J3iKCmMOjAww+W3W/hu6/RtLSCXUo4NVfCOGLMYtwoMDqUuRbYQApeL4?=
- =?us-ascii?Q?DMFk3QmaaVTDT9f7jIBki0OwRptQoFSXAgrypqWiQzwKxTSwXL3BKqzHaZ6E?=
- =?us-ascii?Q?Df3BIJPlKKPrW9jlrmtYaOXEVTYJKUS4RXfkkM9M4cJnbq2FqNpDEycFTW/K?=
- =?us-ascii?Q?X/z92MFY+GxfEjF2bnUxUDCryV25DLah8RHyopbEeHdKoItAZ7gin46RrCxt?=
- =?us-ascii?Q?hEn4DfTmQhy3qZcXdK9LRVaOgwKIEDYOqX+Ce5TAfDdhuk2NCWcw1lvQPZ82?=
- =?us-ascii?Q?yatC6R5dvtA8fzRVRN94koD15XDjgaSCSXyMM0olJGBqn5noh7+acZXki1qf?=
- =?us-ascii?Q?syb2Qz17eF1cSvZGYem8sRT9TXYux/gZ554k7O+3/WPSRS6c/13Q8mJyS51e?=
- =?us-ascii?Q?MA3G+ydPvwJYeWgk13DCPUNIPvWo0KODboVVQWESU/IPPaNUwj/0lEZKp71F?=
- =?us-ascii?Q?KGYcRonjI0DYPHZeVhCrnurdT1oGTmNGujpQnNcOvbG86EZcfny+2Ma9/qEZ?=
- =?us-ascii?Q?nTZ5GNrnB6GppkS8RJWrB7rhFJzqWkfQRcRqp47DZMpiVZYebFtYLa8Dnihd?=
- =?us-ascii?Q?e8N0RPsKJPm2wLlHE+tRvDYEVQKpgSQ=3D?=
+	=?us-ascii?Q?7C9rYz/hjIe8RMMnnFoAXNOTVP+4dJAd0wacNYefaja9WEGW1FII4iXNTx0p?=
+ =?us-ascii?Q?tJleopt75ckCpUONbu3e/WJBEAKO0N8SzHTMcrDwdcFuE3XuiGUWtoknmhV4?=
+ =?us-ascii?Q?9XpxB3Z9yZ6+dxBWySw+eErBbrKR65Tucbh1N2o+YGv21wmGXHucA/bAOUvR?=
+ =?us-ascii?Q?9DHeRmcSmdh/316i45+si4NP9yhJViFdKvbA+8YRHsVmEUPNHVuUKeZ+g4jI?=
+ =?us-ascii?Q?0p+tYi3jm/6Xjnnoj7sGZD4pDNnhvEEvU1VPw61CYbIUf7W27hBmS3+wKlZL?=
+ =?us-ascii?Q?GMhajOw70A58TQBSoJuygDq4DacyiUHMINKee6dG7EW2i7v+ZFUkc24oVV0b?=
+ =?us-ascii?Q?iGZWedAz0bw8V7QBMarg20JFtwFIG6hXY5DvJP0JNuAuvP/xhLHhqIaatmMU?=
+ =?us-ascii?Q?fQ6bzxL1YN7GQOlULFqm8zqjzxkEXUMVkXE/H9Ti+Pgu5hLockhX6mASXWW2?=
+ =?us-ascii?Q?9lyB4d4RRC1jAp90nOh8JVKGbocwBiepHFdNqZa1ae6OqIdTwinzXGTzH6Er?=
+ =?us-ascii?Q?ty4QlmUyC9HZ4j4YBL+GSJ5TAccELKbWRqm2wDJzxz0aWMFryJgEYyFqk/SS?=
+ =?us-ascii?Q?GQzh2Q1Ltlv425AfZisMz1tTyn9XBtdXykPRd8XxfyzAFKZ4lVhragjbp5Ck?=
+ =?us-ascii?Q?A0dEu6zTQAHV+7SfVj4f7Sxg0YV7GBOjd8aMFjXP1jl1AYC4E8d0QQHcNt4X?=
+ =?us-ascii?Q?Wcqii862bbdqbXimW//pRClhM9YH9a1geFutR16MiLC8KKj6wf3j73a2Ih4c?=
+ =?us-ascii?Q?m2hJjcHXkTKvdQuakv447NSAp9uQONB87iPp9nBocFXPJUwLvYcz6bxEXIYY?=
+ =?us-ascii?Q?4/gG5wALyPupjKH7YCqZ2p5bLa5kkis0SCWLXJUpzIMu94eZ1DTL4LQsujQN?=
+ =?us-ascii?Q?opAZ23Gj5EdquO3LNNa8eX/asLa8j0YuDP26Xwz5bTc7mFZvAuccclCm9GZI?=
+ =?us-ascii?Q?xTB6HceBZmSyNeGlvMQPzaFDi37MdXyWr9G/zyvbve/21TuUs/5sKsOQF3NE?=
+ =?us-ascii?Q?e7AItwqJvJR16HIblJxH2xn/WFRUWO3JovxBYj/Ne02R3K+Dn4AmRi7iaV44?=
+ =?us-ascii?Q?etcnbyqsJsMUCj2fJcf1lQSxFVk81CdT/5YOsMyH0SBHzpucDcxlgvpn61is?=
+ =?us-ascii?Q?aUdnIDy2htHGhavZei0a3963cbD0SDHO+4dnTTA+t0nCuoBgUeoTDPfSnxy6?=
+ =?us-ascii?Q?cbifjW0TFqDKHMebOf6yamQVEycjEmlQeLhFvdM7HU4CVL3zS01gYCPEgvoj?=
+ =?us-ascii?Q?4PZcoclRSoCbSA34bOmCfuYjYUg6E1p1i1Jq5FO0/KuCWC4QB+DPRgNn9pju?=
+ =?us-ascii?Q?8bvqzVIJ7uAT1l/goklR22B+Dd0CAHqSxA+b3FjdTGle+Mqgrda6Yy0LMLef?=
+ =?us-ascii?Q?cHeS+cXeK9oR3Ct8RKS5zBPp8vuUOgttgaOIBwpcdagDd31zYaPGYaPGDKDo?=
+ =?us-ascii?Q?lcIYOpC9+It3+UNuz9wK6H5C0Xw2O1gsRGLzV0gMlyWRwG8HKMKgu4Rc8x2B?=
+ =?us-ascii?Q?kriOiEx2GaxwM0ulczZCgdA5sskpWnQGfWVVVyqv9X+q7usytL6R/V9wfu+d?=
+ =?us-ascii?Q?H5zwOQuw8f2s14oiF2E6dq0e3s0NlypyA/zxYT6CobA+skTomPcoKB2cRSdl?=
+ =?us-ascii?Q?KHvQMrSHZERDY2ddbniPSkRPZiFIqk/7CGon/vhrr3XCt2qqdyVCSy+YCKPM?=
+ =?us-ascii?Q?ZmI1vWAxjYpeRo3oIm8dU39N0DjzXYGSMphNfc2Gm0ilNv49JFx+51r85J6m?=
+ =?us-ascii?Q?FgIgeCjKaGz9fUApAKlRl5wURfBJq2Q=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8fdd8f7b-97f7-4146-8e09-08dea6120929
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0219fb9-afd2-4272-1b9b-08dea6120454
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 17:09:12.7913
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 17:09:04.9141
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ml1/JDA1DYp03iX/ucm2NT/hOUje31qIK4dK0lzccd11/27Cvc0y+qp719r9l3qtZKvnFHpL+nMUmrhfLyjShLcnW9H6Bjey7rbX//FA8oY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR01MB994309
-X-Stat-Signature: gxu8rtbex77fpogkaxasc34wfr3y8edh
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 821F7A0019
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3zkdk+7WHtuuLCx6shVmewbuXSZJ5cWSgfOSPP56v0XIHmwCR61tEY5n3iFkeeixspNOIFV7X0hGC1iHrLatjqrk0pgsHu142fdbt+h0iLY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR01MB6671
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5173980011
 X-Rspam-User: 
-X-HE-Tag: 1777482557-4800
-X-HE-Meta: U2FsdGVkX186UwKys857vDKM5O7bAmVA3xHGcSYBSyp6no/OE/NVhr6mb6DKrWZTc0R56xvKSlN8Ghgkv8mUNj/3fHi0rKhN+D138ccswN74iYSao9bQe94kAcdeyuHDkbaS7prt1RAr46BkmZ5Lfx0CjM+s9UbhPnHg11hdW2rXRBkFFzuKEh9kBUrzxRwGxSth3YU7bizrjSejf4DSIiqUc7oWjtbGnBhZq+LlxElSX/fektSXfKEbGIgWq2qLwRq1j4qXFExpRd+vg60ZBk9d9GuCnwn6muODoBQMFVlURZC+p9h7XHuVczA+9Upg7Lgw/aU/jhl/FRghdHOX2dV1C24aFdgwQ3qXRd5dthf1eBwXZuURwqQ+S1vHZaSgq0s1oRzk0fSuUJed2wKdrSgthY+EfHl0t50NaPOwlJdYv25REjCNEOnWoODWh00BjDHvBWxfkkzKt2OcVsWV12dNE3uBALhvm7n0jOGJHoZQYs+ee3uWfP1P40rgqa4R04gz17TjOTE4KHdsR0J9ozRDxSp9j8sTKHK7mSM3x/wACmhhPe20L/BYhD1rNQv3/u6RcKbU6VEZZIsYNgTXyRBflma4rEpmNqpeep8QkazRVkqXmJEyQ2oFBHhi3ess0dKeaXpl74vEA0HKTzJzZ201eb/nFUAwRhHT2VQ4mEZ4H84/T5dDoHeyfMGOWT5ho3lw8nVMdCPTcWZEWjHIRyZjLhVUwpP04cl6gWPLyI4e9ZEwdn4EglcHyFtN9kytAjS7I74XwIfxZwR3iDlckMATc3vc6Vo7HZe1FGkJajGbflQX8cwqEYD5/m/aprYaF1hJnL7XMUIhpWNDQas5KcFRAO9/3bRQ9sVQJj1Tr/G9C9KwfW70D3dZRmfCfHi/uyHPgqP3zmNSoketQh1uTUq5EArtcu1IWF2w6IWo6+CUmqkfaVs7eRh7WN9lVu88S2CNEF41wIBfTxuiJhi
- TaQoAyv7
- 4bXQTalxHHkKqeH0jGwWdkJB/Hi7h5TvW58BgoFKjeYaEwH1ojjeXtBwvjQOE0ChhF4FXe6EEsntubLwBQn5YScVM+LQN4Q4B+jNwjxq9JP7lcF3eY9RUNfJM1m2oPOKS0nJj85Egn6Za9A3ZYOqK8imJosY+zSuNTJKMMOiHMDntOVga8hScsHIFQhVn4CfuJemp0TLPCsHBcflXd2wGxuy9iJM7kQyaBhVI8p7ZYsUmwn8HuTi4IpOQ6FPy+nFPR+uOHud2MEzfJh+wyBLg0pJI3hhWJsx3t6kXuWpuXRRSb1A+z2ZAvEHnq4zG/Q5j5836h8zw49VjQidn829wVB+zgrZ3fM+gyq8zGr61QBfUsAr2ynP1IN8usTu2gnfpxyTvCLczH4FcHH3bv2mLMdmSu782uD0y6cBxAPxkM0cdrZ6ZU0/y1Yi+VUzKwPMYzEW8VOSrU6MirGB0dd+/9FhLdXwlt4Dynp3YfpXuPtRwTOXItnjFWq3YGVbMAz94eoqj6REuuDVKd3LtDgxRUcVWpiqN8L95R+YE+4/xNba37rI=
+X-Stat-Signature: ztq15zg98f1byrt8ytk5hfwqd1tfp57i
+X-HE-Tag: 1777482566-877056
+X-HE-Meta: U2FsdGVkX1/P3YM1MIDVzZi6qB5moXmYGX0lwfb3/ert8kHK0GlA4QF8eP4V5yr/ZG2Lmmg/1A3ZgNM+GXs1BiNiYOh74gp/LXto45zZscCBNnJmHNnY9dME67es2Um8lxpJlyA9+bMDsIcqAzln72R1AbSpBM2NRe5rrv8qSzifshFehTiBOTGbuHvWZcK2A5KsoQ/uPtD8aATs63KkgxDDu+M3kE2Cc20ciY5YaO/7obpAK6A2tHs/GcO6eaNzUeXU8sQVVdy728tlMoxhlUwzO8dvKmvordvd16j0fOJnWPFNf9UOdxyMEAop/mobOT1fVEVmgDODVwGEkfY1uON8ndjWx3qG5JTv9zh9vJXGy55P/w0xtebTDeUlWS3WWQfxlqlmm65feKk5m1+0ozyiNJkzWZhtU8xjcsgJHUdC+ugI2Tf/NxAxwqAeYxYHiA91MoSs+tMIhrkJr3jYNP7GNbuS88veCGmW4WnI2EXeOozrHhoHoV2kZTbkPWsSDHTnEE9aNRMnap8ysSCb6Yd22t8hlNoY2yP9j7dpMyAIfyg/yPzbnJld0hxWd4mAjOYEevnIvu7PJpEQqEnM7u5nmw2Kw0MYnh9xlXBWGZKqZMogK4N1C1BnVWWiEmvNn2ds6D747foTLI2yXj19LDBssCrcMqocrRq0v4LPq6hZ98aeC50hZdUsjJcnGRs9EBEVi8FPAK0IfswJe2l9SfkdVnmaD2T9Vj05I9rpxWwFanGmyu/8wk5TGy1hgW1oC8jGyrEkMgtOh99sZE3wTGFn9+JUimrwBzw7toMZtPrQVqibF+pYO7Pb/bw4maxbbdLY1RDwdMrXQaprKYglH4pJR0hfxia4+BnaUlz2qssYXWTPU34RVGdETtf7R49wboV2xqMWXBZGLs3OZrcWWSk32ABWie4IoUfS5i27g7ZBHfHab9Hgo7cykRikBkHSjyu5HyIZMQcmDrEcPHY
+ Q+NdYJTO
+ 7lwIbcE25JDYGV2lGcmBPjC+v4W5kvZUcf4W5kE+nWeJT1K0S54hn2MNAk+EpBCog48yPVBPiWTIt5yYzANR5ALpRQQnY6BzG4qQXe2m5M6p5QKElSliQD5XjVsryeGY+/qqaSF+i04VyJN2iIT787SiavQeJfgSTt/RNlwvobDVtJH3R8P1VCvsrhRKj13TDpWDDfdU4btOuCM58Bmi5+dgw10HUKn6d9DrHvmZUC8N1ROGm2zWbiCaqwhql2Ci7+AMmSBeGs0o96l7I11Vv9cgXT1cuq06p5MajkqrVs2bV9BYgT5Bjo77tHCY5JqZ9smca+YpK5/MGp81x4uC/JF4fT2A3fKy1i7n9bv+sObh/0MitfMfZlXPaO48onYdWYSS3lz2UPDUZUFsfN9ZY/kUZfaQHdpmKf0mDjeRUxJ0XcwViU7vU7B1vUfptVxX8Yqm0+Yb7AbUKGt7RGy9HRRe/Jw6DAzdKg52jPo5gc7/x2aSDc4l5Y1+bhaTr9v1v9EIwvJYKS1LHiDzQq0CzaN4hARmAS6pCmm4VeWufA1ogWzY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,69 +174,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use local percpu address for this_cpu_*() APIs.  Because the percpu
-variable is mapped to the same virtual address, their address can be
-calculated by using __per_cpu_local_off which has same value for all
-CPUs.  So preempt_disable/preempt_enable is not needed anymore.  This
-optimization can improve the performance for this_cpu_*() operations.
+this_cpu_*() ops will use it to get the local percpu address.  It has
+the same value for all CPUs.
 
-Kernel build test on AmpereOne (160 cores) with default Fedora kernel
-config in a memcg roughly showed 13% - 15% sys time improvement.
+Also introduce pcpu_local_base, which is the base address of local
+percpu map.
 
 Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
 ---
- arch/arm64/include/asm/percpu.h | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ arch/arm64/kernel/smp.c | 4 ++++
+ include/linux/percpu.h  | 2 ++
+ mm/percpu.c             | 3 +++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/arch/arm64/include/asm/percpu.h b/arch/arm64/include/asm/percpu.h
-index b57b2bb00967..15db56f981de 100644
---- a/arch/arm64/include/asm/percpu.h
-+++ b/arch/arm64/include/asm/percpu.h
-@@ -12,6 +12,7 @@
- #include <asm/stack_pointer.h>
- #include <asm/sysreg.h>
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index 4caa6ebec12f..62afabf86ba1 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -825,6 +825,9 @@ extern int cpu_to_node_map[NR_CPUS];
  
-+extern unsigned long __per_cpu_local_off;
- static inline void set_my_cpu_offset(unsigned long off)
+ unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(__per_cpu_offset);
++/* Used to calculate pcpu local address, the offset is same for all CPUs */
++unsigned long __per_cpu_local_off __read_mostly;
++EXPORT_SYMBOL(__per_cpu_local_off);
+ 
+ int early_cpu_to_node(int cpu)
  {
- 	asm volatile(ALTERNATIVE("msr tpidr_el1, %0",
-@@ -153,19 +154,21 @@ PERCPU_RET_OP(add, add, ldadd)
-  * disabled.
-  */
+@@ -847,6 +850,7 @@ void __init setup_per_cpu_areas(void)
+ 	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
+ 	for_each_possible_cpu(cpu)
+ 		__per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
++	__per_cpu_local_off = (unsigned long)pcpu_local_base - (unsigned long)__per_cpu_start;
+ }
  
-+#define local_cpu_ptr(ptr)						\
-+({									\
-+	__verify_pcpu_ptr(ptr);						\
-+	SHIFT_PERCPU_PTR(ptr, __per_cpu_local_off);			\
-+})
-+
- #define _pcp_protect(op, pcp, ...)					\
- ({									\
--	preempt_disable_notrace();					\
--	op(raw_cpu_ptr(&(pcp)), __VA_ARGS__);				\
--	preempt_enable_notrace();					\
-+	op(local_cpu_ptr(&(pcp)), __VA_ARGS__);				\
- })
+ static const char *ipi_types[MAX_IPI] __tracepoint_string = {
+diff --git a/include/linux/percpu.h b/include/linux/percpu.h
+index dba050f5b548..e29ebd265087 100644
+--- a/include/linux/percpu.h
++++ b/include/linux/percpu.h
+@@ -74,6 +74,8 @@
  
- #define _pcp_protect_return(op, pcp, args...)				\
- ({									\
- 	typeof(pcp) __retval;						\
--	preempt_disable_notrace();					\
--	__retval = (typeof(pcp))op(raw_cpu_ptr(&(pcp)), ##args);	\
--	preempt_enable_notrace();					\
-+	__retval = (typeof(pcp))op(local_cpu_ptr(&(pcp)), ##args);	\
- 	__retval;							\
- })
+ extern void *pcpu_base_addr;
+ extern const unsigned long *pcpu_unit_offsets;
++/* percpu local mapping base */
++extern void *pcpu_local_base;
  
-@@ -251,7 +254,7 @@ PERCPU_RET_OP(add, add, ldadd)
- 	old__ = o;							\
- 	new__ = n;							\
- 	preempt_disable_notrace();					\
--	ptr__ = raw_cpu_ptr(&(pcp));					\
-+	ptr__ = local_cpu_ptr(&(pcp));					\
- 	ret__ = cmpxchg128_local((void *)ptr__, old__, new__);		\
- 	preempt_enable_notrace();					\
- 	ret__;								\
+ struct pcpu_group_info {
+ 	int			nr_units;	/* aligned # of units */
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 5148c5ccf9e3..17d0c2b0de5a 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -145,6 +145,8 @@ static unsigned int pcpu_high_unit_cpu __ro_after_init;
+ 
+ /* the address of the first chunk which starts with the kernel static area */
+ void *pcpu_base_addr __ro_after_init;
++/* The address of the first chunk local mapping */
++void *pcpu_local_base __ro_after_init;
+ 
+ static const int *pcpu_unit_map __ro_after_init;		/* cpu -> unit */
+ const unsigned long *pcpu_unit_offsets __ro_after_init;	/* cpu -> unit offset */
+@@ -3297,6 +3299,7 @@ int __init pcpu_page_first_chunk(size_t reserved_size, pcpu_fc_cpu_to_node_fn_t
+ 		ai->reserved_size, ai->dyn_size);
+ 
+ 	pcpu_setup_first_chunk(ai, vm.addr, pcpu_vm.addr);
++	pcpu_local_base = pcpu_vm.addr;
+ 	goto out_free_ar;
+ 
+ enomem:
 -- 
 2.47.0
 
