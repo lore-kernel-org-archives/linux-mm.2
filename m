@@ -4,88 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02997FF8873
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:20:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8913BFF8873
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:23:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08C6B6B0088; Wed, 29 Apr 2026 10:20:23 -0400 (EDT)
+	id EEAFE6B0005; Wed, 29 Apr 2026 10:23:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03D5D6B008A; Wed, 29 Apr 2026 10:20:22 -0400 (EDT)
+	id EC2576B0099; Wed, 29 Apr 2026 10:23:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E95446B008C; Wed, 29 Apr 2026 10:20:22 -0400 (EDT)
+	id DD7986B009B; Wed, 29 Apr 2026 10:23:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D78B36B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:20:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 746461C00DC
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:20:22 +0000 (UTC)
-X-FDA: 84711803484.26.64DFE62
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3D78840003
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:20:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cAPLVnUU;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CDAC66B0005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:23:47 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77508401FB
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:23:47 +0000 (UTC)
+X-FDA: 84711812094.12.4003B37
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 87DF01C0005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:23:45 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D+d91KjT;
+	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777472420;
+	s=arc-20220608; t=1777472625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/uKxyX+iEimJhDYjcnVskQWcBP1D05m3UcJyhDoPSQs=;
-	b=XlUjpvgmUTWU5KUAh1VAArzQatWsh6WNHgXrSNIGZPHyO0P9DQ5GEv9hDk6YQyJG01tpqE
-	gg7xvrTYN6u4UCzX7mM+HZewJe7vO5yyNsEm8zUdjLIOtLMqATP/jMNjlOPlWZI4Kfs1j4
-	zObLb+Tr6cJjqDlM4AQMyBnEIXBYlHU=
+	bh=eER2GCpD8B7GlhmETIiRKrTfvFHwkGHJ1zYSjhWxsec=;
+	b=TQXBeF9fYl5eQzncXCV/lRIH2TXTsTgMjpdba1i5OFmbc/Ilf3+oouf1MlPxsS1FlHZWCv
+	3WyTRr082s3XvS3oKLynD0BxHd6fKupd2CNVsgD7p36OO5Wn0u2caoAMQ1Su+VN4Ey8KEu
+	eUVIde8AmRPfpssaBviLbpzqLHTZ5Kg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cAPLVnUU;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777472420; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D+d91KjT;
+	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777472625; a=rsa-sha256;
 	cv=none;
-	b=Y8260SwaBwy0uq2w9LdOiHwfTaH60v2ND/Swtc8B5MWiXYJFNtQpUBzzzTV0HHuIO3MKC0
-	2v/72uoVHmSipzCCPqqFM0F844QIo1X6aa7MFINgf8a+sM70Vs66+BpUb715DmEzEosJK5
-	FPBAzeECj6PacJbbThSjRIesPz+hO7I=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D62C71BCB;
-	Wed, 29 Apr 2026 07:20:13 -0700 (PDT)
-Received: from [10.164.148.40] (MacBook-Pro.blr.arm.com [10.164.148.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B17F3F62B;
-	Wed, 29 Apr 2026 07:20:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777472419; bh=yu/k00bXF4IsrPajU5vK3oy2hwcnNad/5yhRTlK/Gv4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cAPLVnUUUAxNAGLsklYDcy5M5RAmUPtK0z2SgAS1C/tR0Zsh4UH4fBdR1Of0pldGd
-	 Ka/2ZlaOVUpOQnmDWA3lpc7HUXMV4qcVsk82Z+Jm7wVCAwXxJO28XKZoc5FBLA9k+F
-	 ITbDbvj6ky77TH/+gIvvJZiBmcedKkQUW428qTAE=
-Message-ID: <70b44146-4549-479f-8d31-b40a8e747c60@arm.com>
-Date: Wed, 29 Apr 2026 19:50:05 +0530
+	b=AJsObqOivsO0ZwVt0w31ScHci6v+YyCwOCNgPigGd7P5DMudkAvAhgFirbBXmgF6Os2nQ7
+	/uD1wS5NbacAoPvgkafGY1+D+7riKLGVok9DOKrwS9qJVeKpNGawlyVRArFNM568nu0lND
+	WLBB5EK9hdP1AIBjDJcpdsPCxYyH3gQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A6FB36024D;
+	Wed, 29 Apr 2026 14:23:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2A3C4AF09;
+	Wed, 29 Apr 2026 14:23:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777472624;
+	bh=1DoYAyGOTScVVD3GXpdNNQST/38xq+/hMaqnmr473Bs=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=D+d91KjTTrM+lBnQ44Qx5TmdF/ui8FYG7riluu2LEkceRos9M2RXCy/huWD2rHFbk
+	 UZ0bxWyoCYJBzLVkVf2ZhXbnpzm/XXLxEYS7qjdAvLnsraGoQZe9UKyJnTuJgT974q
+	 j+EkKT6u7bZ4J4CmzpGeolUiepyZgE/zABzHbergVuaLqEVNd6YD96dpQQzMP4Bzju
+	 gN2G1YFkAt6HF5fb0NF2fHHdLnzgbb/Eay7BLp+q3r+uTOMXWyP2eFu+ml06IRx4AH
+	 LHnKjiw12g7mYF/wPW2KJUDX1yM+xxwO5xeMlajk12CKWQlU2G3bYJsLxLi1zVDZ9R
+	 HLwOZtcL0ayew==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C6D6EF40081;
+	Wed, 29 Apr 2026 10:23:42 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Wed, 29 Apr 2026 10:23:42 -0400
+X-ME-Sender: <xms:bhTyaRuedy8IaKVEUb6zYplqea_IyrVJ49HkQ4RUPpdmpAElw4kXEw>
+    <xme:bhTyaVRnbbQOqYIc9uQZ-srPlIHJH6Ecz-9CNLTmo6l72SQrfGLC7rXy5RwNoSO5c
+    PfLjljA9mfzOFgztLYmln-dyEK2WRsD3kpgdEUY7fyEOc7nsh2YDdQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekgeeijecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhguuceu
+    ihgvshhhvghuvhgvlhdfuceorghruggssehkvghrnhgvlhdrohhrgheqnecuggftrfgrth
+    htvghrnhepvdeuheeitdevtdelkeduudetgffftdelteefteevjeevjeeiheefhfejieej
+    fedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrugdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeijedthedttdejledq
+    feefvdduieegudehqdgrrhgusgeppehkvghrnhgvlhdrohhrghesfihorhhkohhfrghrug
+    drtghomhdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegrnhhshhhumhgrnhdrkhhhrghnughurghlsegrrhhmrdgtohhmpdhrtghpthhtoh
+    eptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehkvghv
+    ihhnrdgsrhhoughskhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhgrrhhkrdhruhhtlh
+    grnhgusegrrhhmrdgtohhmpdhrtghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhm
+    rdgtohhmpdhrtghpthhtoheprghruggsodhgihhtsehgohhoghhlvgdrtghomhdprhgtph
+    htthhopehlihiiphhruhgtkhgrsehgohhoghhlvgdrtghomhdprhgtphhtthhopehsvght
+    hhhjvghnkhhinhhssehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghvihgusehkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:bhTyaYQqbQnVIvDQGr_EIyoNqMUxhwXG4G4jtXeNWeDmpwZFsfnQFA>
+    <xmx:bhTyaZ5UU3sOLPELciR1S3yUNipryJRU-wfpnldnvQeR7ny2GQoX_A>
+    <xmx:bhTyaS26ba8LHTkWKJhLTLhqgOLfm1ol0gbWKJiQ7XNXpSI0HVb3_Q>
+    <xmx:bhTyaWlPWrFeCV-JEl10S10qMtJqxcSJLGeaFD4PPzxewiMEq2oA5g>
+    <xmx:bhTyaYj-PQwy2tOxiSz7NljYKJXKPYJnt1JMl7HQF9Vpthrm4_c5Y-60>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 9D519700065; Wed, 29 Apr 2026 10:23:42 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/khugepaged: return -EAGAIN for SCAN_PAGE_HAS_PRIVATE
- in MADV_COLLAPSE
-To: Vineet Agarwal <agarwal.vineet2006@gmail.com>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev
-References: <20260429140434.439456-1-agarwal.vineet2006@gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260429140434.439456-1-agarwal.vineet2006@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Apr 2026 16:23:22 +0200
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "Kevin Brodsky" <kevin.brodsky@arm.com>,
+ "Ard Biesheuvel" <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, "Will Deacon" <will@kernel.org>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
+ "Anshuman Khandual" <anshuman.khandual@arm.com>,
+ "Liz Prucka" <lizprucka@google.com>, "Seth Jenkins" <sethjenkins@google.com>,
+ "Kees Cook" <kees@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "David Hildenbrand" <david@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-hardening@vger.kernel.org
+Message-Id: <1f9c1ca5-c15c-4a08-aa8c-cbe64f7f205b@app.fastmail.com>
+In-Reply-To: <8a315ca2-3754-4a66-990e-55b85191aa6e@arm.com>
+References: <20260427153416.2103979-17-ardb+git@google.com>
+ <20260427153416.2103979-28-ardb+git@google.com>
+ <8a315ca2-3754-4a66-990e-55b85191aa6e@arm.com>
+Subject: Re: [PATCH v4 11/15] arm64: mm: Don't abuse memblock NOMAP to check for
+ overlaps
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 33rs6751tbp94mccs8hh75fuqzd9cmni
+X-Stat-Signature: px7xcb8d3ct6bsbhhijpr9x3pmj7fzun
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3D78840003
+X-Rspamd-Queue-Id: 87DF01C0005
 X-Rspam-User: 
-X-HE-Tag: 1777472420-216163
-X-HE-Meta: U2FsdGVkX186q5EVFpsq2qw4sah8JCj58FVfBSNp55HZX3Wcs8U0wqZ5ks1aoOllsOaRw6yI1jnp7eWJniRimiFYbN57vkOVaiKRwhjpGAhSg2OQmgUhxzexcjwYYFUHW0J11EKkUjhSUj8oLykGXnknjqIaqsUeoZBuAcoqiZpUEBfxL5fWe7yQYd1s3MjLkcgieMgxapkwPjmXeDvmnxoSrNouZqkoNVqYhumDUfK8nTHoh9WQkBd4v5IvWONLAFv0tZ+RAioY3p9W4hcrD24Y9VhbjyUnAEGpuRT3eocDiQp6TUiwGMio+vu9fcKGzQDhoD4V1Ea8mzAU5EOuivkVjpqRJWs0nAd6V0cwY3XXI44MJcBZV6GIeJ2l30vGYCzg5fqJGEjse/onPS+0tjxOpxABS9p4+8rbuRTH+KR/nFSbPqz8IOVNJ2CkNqH+6xha9amLSVVGQbrzo3rZzA7uVggV5tFlztx7t6c94yWvgMUu6ZQl1kRC9EmLkB0ZTfJSIQFUJc1gJWoXJZ/qIKb+7AvCuC1c+Tu8wD5VPhB7w/jj4syi6a0Xv9Qdkl/CcrhENXz3pxPSRB/7iBvIQrXfCi515hYDkOr27DzksGfgVkqbPTLCmvrwwBADQ4vwFwTv5wAGowFPQC1be8gaEYQPBvjZL7HCvz3JWj82gSIJzsv5MembqfabbmD9xyKbYBnnCADICYOezSiYJG2maacGmUEdLppu+5zNRi9GTMn76FvgVo+PoYIbe5lhs5tZBjeAMBudPoP1dq8BsShtRV95PUgpMgBqyof8i/OT2flch6H6Yp9FcI9qC8FQphLMkSpIjz1IYfcuX98ZDMSeEwQvlPN3yLgFMrh7R2gFCOR8XKXIwHJCYsIz9p6UDrVhsRnr48WxgGdG5p4e4BLtfj5dVh6TLHDABWOlV6PM0KrRPSgJ0AgMjy1Hra+ZTI26MlMJWlg7PN+w9hiZb44
- 0amx/VSF
- b3Cq+H+LZdtLI8qWVWhv+3olkV9K3E35LB5q4Flw6b6PytZeI3YS6mxFWvlsgfuwafwbvlsVaG9vxfeWHwaUVgB36j+FCZwqZdL669QSCRWPLLLonFS3Wb6p8VL4W2JidDdC2gJRRNe7/i2FPAmng+8uo06Ump0W6w+Rz3VcAA2LfyduEW2+8az2Q69pRFhuA4uA84CRuGOySAQQsniJNyKLSC2RYaZi/F/Eag1+FGjMKFFCdGR/OzGYFvfEY5aoBu+g2HyVSRb4EgKY9b/aW0wlUR3D+3MlEf31vtxZMzqdCVSD3JraKmuab6D/JeSkJ37mdBs4hv04nabtyIWGcDQ+FkMDtmOi7/iEyruZzaM8wJOH43vircg1xPQjfJbWkCyyJ5xH1Z4WvBkmkxY23II9NGlCj6tBxFGKBuasiwy9tiLduUDZ7oHkRDTf0OOqfsRrZ4vRIrHw5NJQ=
+X-HE-Tag: 1777472625-612588
+X-HE-Meta: U2FsdGVkX1/gnMNz3RAjjZjHCCbz4VBKzoQhQgLiRhtxEifT9dQ4A5Nzeblly85xISQRM8Dn1BJis1qBv3hY1YERsIXWU+OHHw+bDBVqm9WOzu5HH+3G6BmybLsVDKJiszrk0qTJIA4DUxY6NqBKhXTOr4C6CS9mk6zfsVkCC66zMw8phj51VMQ12MyLGlV+/cqSDgtUFCiad2893ZaYSngIo2Ccg5TpllgLxe8rnAV6R6E4ouYctUR9+y1pSOlBeyxyP1ScUzUlYHcBs7Vc3w9Z+fQENED2+pNonyfzgwo4oiuOJbMrlebhvJBZkvQVxaQyBQlxBJvRx+1EZWCa1pbH+fWJPY1YfbYeRNQO5ibosXtg/8D4dt1PpybU+feCJpK0UQB7ALH7lkOCJkD29Zlf7R/2ZLifrxCF8FhdMwM5sVnA/1Pa4NzQTng/aomdibt25m3DnhPn2ZkM345X6M/yx+G/hyqf+gWSDzpviC44bD4DGCmXWx8udtVXR4u9jpRvgdM+R8l7e5Gq+dUQ3wfcGQ1Aa3ukJ4GdJUOxzEA4NUnT2xw8qd2/6rFXkMHHrEsHa8jbSkNAmHiSYSbdwHJSK5Ik5UsbCU1hBoQK/5tFDBVkOYPeywxgA821E+vjPLO2qqyUksefXMf1TrpkhUJAQwYmMJHeOGqiMuApUp7ZlVzv9kYawZyWUNm37NLul1rgYfbeBvNYTIhlsyGDNEsldXWeJpidqEnYQV0/I07gdB5CMuonTXoF85vPX7Q35q1ui6VeRZUeQRfqOy+q3Rl+7jVr/feTO30sMaWa1/raYJL6wLXDO7E3GaLpbyWH7OKUX8orBq9XLob7hAXElyyN4tw5gOgvXZjAnjVGI4t5TMmTTQmHarj7IMEfNUjMLX4aUuJR2cLoEIsvpVyQq+1ISdxEyEGIwczhwmdyCE7IoEddcbBEH3fBzrTrYJxNSiSKpdn7JvZdTtEIAEq
+ vZ69Ij9W
+ rVXNwE1GQX0POoncgzBXlqtAKuAMkyIOF42LsS69TwMtKJAZiuLe07ipK2Qb3vs63I5n7xFYvd5ktE8DL3+xuCxD8YqoA/DMWw/nXAn5eG8Ibtmgc6XO2luF2Ls8i7gOZjmSuOWRD5oLGotYCsCRokTE0nO3rIMUenHcRV58euzQISdXf2lYPZ3k7DP8ILB0TE8EN1qLOD0eQENp4YTc1L9SB1NERxO2JHtoOhybskWu6dHuU7JYyg/0JJn51zQiCXnsN9ExF2MTzB7FIt+sSoYL5xLx1yswOvRiQ+rek3EAoEhg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,61 +139,52 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 29/04/26 7:34 pm, Vineet Agarwal wrote:
-> MADV_COLLAPSE uses errno values to provide actionable feedback to
-> userspace. Temporary resource constraints are mapped to -EAGAIN so the
-> caller may retry, while intrinsic failures of the specified range are
-> mapped to -EINVAL.
-> 
-> collapse_file() returns SCAN_PAGE_HAS_PRIVATE when
-> filemap_release_folio() fails while isolating file-backed folios for
-> collapse. This currently falls through the default case in
-> madvise_collapse_errno() and is reported to userspace as -EINVAL.
-> 
-> However, filemap_release_folio() failure commonly reflects temporary
-> folio state rather than a permanently uncollapsible range.
-> 
-> For example, ext4 returns false when a folio still has dirty
-> journalled data, btrfs returns false for dirty or writeback folios
-> before extent state release, and NFS may return false while reclaiming
-> filesystem-private folio state.
-> 
-> In such cases, retrying MADV_COLLAPSE after writeback, reclaim or
-> journal progress may succeed. This matches the existing -EAGAIN
-> handling for SCAN_PAGE_DIRTY_OR_WRITEBACK and other transient collapse
-> failures more closely than -EINVAL.
-> 
-> Therefore, map SCAN_PAGE_HAS_PRIVATE to -EAGAIN so userspace receives
-> retryable feedback for this temporary failure path.
-> 
-> Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-> ---
->  mm/khugepaged.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index b8452dbdb043..58f55115d7d8 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2808,6 +2808,7 @@ static int madvise_collapse_errno(enum scan_result r)
->  	case SCAN_PAGE_LRU:
->  	case SCAN_DEL_PAGE_LRU:
->  	case SCAN_PAGE_FILLED:
-> +	case SCAN_PAGE_HAS_PRIVATE:
->  	case SCAN_PAGE_DIRTY_OR_WRITEBACK:
->  		return -EAGAIN;
->  	/*
+On Wed, 29 Apr 2026, at 12:54, Kevin Brodsky wrote:
+> On 27/04/2026 17:34, Ard Biesheuvel wrote:
+>> From: Ard Biesheuvel <ardb@kernel.org>
+>>
+>> Now that the DRAM mapping routines respect existing table mappings and
+>> contiguous block and page mappings, it is no longer needed to fiddle
+>> with the memblock tables to set and clear the NOMAP attribute in order
+>> to omit text and rodata when creating the linear map.
+>>
+>> Instead, map the kernel text and rodata alias first with the desired
+>> attributes, so that they will not be remapped later with different
+>> attributes when mapping the memblocks.
+>>
+>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+>> ---
+>>  arch/arm64/mm/mmu.c | 24 +++++++-------------
+>>  1 file changed, 8 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index 5e2348b15783..1a4b4337d29a 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -1148,12 +1148,15 @@ static void __init map_mem(void)
+>>  		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+>>  
+>>  	/*
+>> -	 * Take care not to create a writable alias for the
+>> -	 * read-only text and rodata sections of the kernel image.
+>> -	 * So temporarily mark them as NOMAP to skip mappings in
+>> -	 * the following for-loop
+>> +	 * Map the linear alias of the [_text, __init_begin) interval
+>> +	 * as non-executable now, and remove the write permission in
+>> +	 * mark_linear_text_alias_ro() above (which will be called after
+>> +	 * alternative patching has completed). This makes the contents
+>> +	 * of the region accessible to subsystems such as hibernate,
+>> +	 * but protects it from inadvertent modification or execution.
+>>  	 */
+>> -	memblock_mark_nomap(kernel_start, kernel_end - kernel_start);
+>> +	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
+>
+> Is it now necessary for that mapping to be tagged? If so, it should
+> probably be called out in the commit message.
+>
 
-https://lore.kernel.org/all/4ab54ae0-2607-443d-8698-788d8e951bdd@arm.com/
-
-I had mentioned at that time, other error codes may fit the -EAGAIN
-(or something else) definition as well, for example, probably SCAN_TRUNCATED.
-
-Could you please audit other error codes as well?
-
-Anyhow to your patch here:
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-
+As you've pointed out, the initial r/w mapping of the linear alias of rodata
+will need to be mapped tagged before moving the zero page there. So this patch
+will just preserve that, rather than remapping the region tagged explicitly as
+it does now.
 
