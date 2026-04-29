@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E9EDCCFA13
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37960FF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:55:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A50326B00A4; Wed, 29 Apr 2026 09:54:22 -0400 (EDT)
+	id 9B63C6B00A7; Wed, 29 Apr 2026 09:55:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DA846B00A5; Wed, 29 Apr 2026 09:54:22 -0400 (EDT)
+	id 940D16B00A8; Wed, 29 Apr 2026 09:55:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A1E46B00A6; Wed, 29 Apr 2026 09:54:22 -0400 (EDT)
+	id 82F2A6B00A9; Wed, 29 Apr 2026 09:55:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 75AE56B00A4
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:54:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C13C61C02F3
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:54:21 +0000 (UTC)
-X-FDA: 84711737922.11.42B8AEC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CDB56B00A7
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:55:33 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 12B604027F
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:55:33 +0000 (UTC)
+X-FDA: 84711740946.12.4596117
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E58854000E
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:54:19 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=lLNh2XYt;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470860; a=rsa-sha256;
-	cv=none;
-	b=l9cs49YdXrKHQBLu3YfPoim+K/dsuhG/x2U4arNpYTYwUXGARAXH/L37PWKTRmHEQ8lT0G
-	x5y4FtRiL0wV1/uk/qtTdedSjyFtPyGz4s3W+qRZ/rTtespj9xgTfUI4EwiZTTwnaJyRb+
-	w2zyBihbPvkWEUBzbK46Ud7lZ7Vb4cE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=lLNh2XYt;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id 448D2180007
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:55:31 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=pDgqQH2l;
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777470860;
+	s=arc-20220608; t=1777470931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MeNtVCMTSI6Jd/skjzStvD5kEk+oINwTN2fN2mcs9C8=;
-	b=wvCSijaDDHh/Y8gur0tJj4UO+tNXykcQNGbclQ0QPFF3DelW2YkbxvX5KEGisD5IvMk4Vi
-	Joa/sp48zDk6hqwSkabEtOIvawkTUpcjVdiHigmPx37BlI6XkT0DGqt+XvYxsiQn+JjaVX
-	07Dbw84InsDaQz6rqBm0c4ffgO4Wm6Q=
+	bh=CG8mxvp+9WMeIcWy1wftDi9ZvkCCuGPl8eEXQnOYotI=;
+	b=FQq5ROW6PSlFfykgzxNSDozECnkIey6ckTJrjdyVe4XIxESxG/d7vQJRAUpPFzxpOMWM7Q
+	qm60YGnIta7XLvQKWoaDVRkEfvscaKNae/VqVeexNZhvN2UlWnYLc4aPmad0GS9IeP38kO
+	D6oxs3L+9vO1UpKhsBfXvkXvlKA7kRI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=pDgqQH2l;
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777470931; a=rsa-sha256;
+	cv=none;
+	b=SZE/1jNR7ljPjIhY//BsgEbmQkZBzNn0kd3tpAIxFVUQci5pXhBrWsIxU6QhwXK0PFUUJD
+	61/d5WI1ztZJ+YgJZnDEAqQK+CZ+7Un5LKOxjJKfFud8chfckR+KdroZpeT8kXPo3UYnKC
+	k83vUl693JKai/WGT82PAKLN7DvDJZU=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52FA11C01;
-	Wed, 29 Apr 2026 06:54:13 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1778B1C01;
+	Wed, 29 Apr 2026 06:55:25 -0700 (PDT)
 Received: from [10.57.62.76] (unknown [10.57.62.76])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F2ECF3F62B;
-	Wed, 29 Apr 2026 06:54:14 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 974983F62B;
+	Wed, 29 Apr 2026 06:55:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777470858; bh=op0PGB2RSdfIzNdbBTKjY7j2TmI/0VCoEC8J4z/6BVM=;
+	t=1777470930; bh=ehd9yGlOl8LsUGnM+WAez4P4lcrk3w5tIJe9Kpk+AvQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lLNh2XYt3BMVorNa0t/pHJR9WnAZJGdKKJRuZrRL2Jw8zDzv5mKfd13eRZgUo18bE
-	 tqtHwaRW1y1Rq98Fcuu7NWuGV5fJNqwm1VBkGihwLn/V3T5pbJSZ3ik7FdjZyT+94f
-	 jNf+YT+GlUAHbAAaM5w0hBAoSnAbx/LjM9mIo84I=
-Message-ID: <a8740f95-e167-48ae-ae65-97c6701d9c94@arm.com>
-Date: Wed, 29 Apr 2026 15:54:12 +0200
+	b=pDgqQH2lzWITgRoVEmuoGdabiAmMhLaT1ZMfM7SIK+Rh2M+sx+YhDLMb9+m8i+pq7
+	 BFgHX04N0H1Pv832jzce4+t3UqetyKWkvzrjmPbNE0p5uIRsOlTJvPBunsdzPKcuNg
+	 t05wSL1xU4xlMdtgk5TP3EQUW4y2jooZdRDRcbsg=
+Message-ID: <15555e9f-65ab-4811-b20c-8ada90bdc9d0@arm.com>
+Date: Wed, 29 Apr 2026 15:55:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/15] arm64: mm: Map the kernel data/bss read-only in
+Subject: Re: [PATCH v4 13/15] arm64: mm: Unmap kernel data/bss entirely from
  the linear map
 To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
@@ -78,20 +78,20 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
  Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
  linux-hardening@vger.kernel.org
 References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-29-ardb+git@google.com>
+ <20260427153416.2103979-30-ardb+git@google.com>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <20260427153416.2103979-29-ardb+git@google.com>
+In-Reply-To: <20260427153416.2103979-30-ardb+git@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: iz8tkqpkok9d5n71z4thfef6gnhf3oug
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 448D2180007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E58854000E
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777470859-588653
-X-HE-Meta: U2FsdGVkX1/o5kf3tqzHZpblgjn3ll8dCUBZHfXxNzX5ZqAxnjVGcblGg012yOiQ/wYrmynP8qghcAJW/RFUBantIZUiyvkn+2Uli34O+7wogHebOO6Aqb6ltg89/+OOvOcBGAJjzPYNYVJtW0XElBIv6nL13VH5iL1cAebh90xdXYK12Oqxx7qsUjn9WiLoZMGx7mtcHVJrGXdMfY3c4pgULiQbjCDhiVke9tF9feuTOT5t96mRKtmCNZW/ChS97BvNbXy3d0ldNz2jYYn5EsCQT3xQ6TgV8Q4T5t4mmSqsKV5Vy5QhYb+Oz27qvpjzqa0KJcQ3nydC+y2lc1Y6fHjkpV1rDVJMhVAfCOLi3Q5lXAWTVIduux6l03mQO2NgMOACnP6MkcwvwsYV16IuCfyK4HV3JSgtNJjWIcV5DRDwKuYBLClUi1UJY9aiZ5bUakJc9HnZ03cletxisYK/yh/zVpsveBa9b+fiF8GWqUUh7Xm8/vmlq9L0U13ZQUA/rrNjjfz3ZS8ELGhjp9L0gJjzG3vIM5VhyZwfWVgB7juudyRtsHVZIr5vRr93YWQiYj1S2Oy6bZ5+rr5cdEGKGDCcx++VaNjvj+wV7md+is34MrgzGlMfGK9sydJ+Zo8lgXb9IZ05kZDMyHEPRfpPCCeZUx7+7QPSUrcg7GVOeZYCkKoxxcEOh1a5pMwx7qu7Lzh0EO19G776W0FSnUoEUHBBW/D5tEChYnzqKdcaGSs8bfszjlCmMg3kWk0K6ftw34yfcG/GrFp16SIdFprgCf4G77rQx2QJ0yjbv3qWtdspDCmwjR4ndZcWslANkj3CGNUZctndzRpRjjn2dQPofBUD0Datj00EFyAiO3Sl/dImfnKnPq9m9O6V+lCtnMGbm2qsxUKY+xUL0fM6EapbxPn+dlg8EH2WPtX4Nk/JOzWpuKbKIrxQHPE6uuX3jfn/iNz+Wdu4dT6tJ9ehfH/
- S+Q7Pn1b
- G4jjoUlBT4o1E8hUjNTC4L+TNd2lohW3c+/YKpeY03RsHb1rekbmSYlt89hrfsn8FOODosR1h6apes+2VIWAOOFwoV9CWXabDdjomPhY6tjdMS6DkOWFq+J+/JvrfJ+TtW3mxBATSB6+wWrg68mutdo8pqTzo0HIS67L6RhbUcVvtA+LQYETzQbCPRHD6HPiqKGEm8ynxUPb5d1nh+8XgI9e0JBvXDRfhO/fD5/b00hiKUHsCGGH5mMBfQRwP6HLcg0CU1jKwSFWla0/1wqrXjx43tp9snf+e60YKcEs3ujv/hLxCbSS7POSjzujicICLQpBb2ck6V2NjJg4=
+X-Stat-Signature: uekszw4zfrwjbqf8d6j6w7yhhyamer4i
+X-HE-Tag: 1777470931-300778
+X-HE-Meta: U2FsdGVkX1/cLRiCGXMo3IrRSsiQrAnyYEs1VmRA6sR1dzSNYdmZDCCOrkAMsI2OZw1Lw50+7u/iz6gtWSro9HPUL7ie/0zKGWlzTBkFqU/RWUgmpfJABYDblzkLl5l6x1vA+ik15X7plfZFSpUuOigo21xya1Fme5AYYFhyeEFdf/NVyKuockLw5FsZMCZTN00wXSMJF5r790qLJ0tSdbuRQTlFom7r20b2wW2Mq8F9BHTSiy7EL0oA7K3johiz9QiWYrsGMEY+qhU23bnwKYmnkehRl0ZfFR+RrAFGeaJcyZrUSwahG3oBK3ZHCEcBPDAmCX3ASMCuofhyZW3NiS919ObnlFJCo70mT04vO5mhJodPZi/mxTGoqDe4H16LqSmwmL1eV4wZlcZHhktgfOckL9uKKiB8fw9+vGgO7ZFKxPDFU5E3kwsnTU7Kg8B1JZqRfIxWbeCCbxb6l4H2hxtu5tLv2BIGYpahyPEuDQ+FpEOyceAGTBL9I7+4yZSBmbFLMRy8YE6rgGew1Y9fh3UaJSAzRLl8W9PKN920tCxAskt3+Xe1Kt1A19ya1DQJqkXzroj47C5zlGwb0bU2BzMvxRUBiJQ6xmnqHvd7R0ekLGFx7cE/g3DBU/FFmKecsqjjMestkNYObB7+IDTbaggYTpa5H+SFLJoyZ5xhixBr8vUo0seSTUI1fiMGcEj6tXws4rTsFXJr+0L7ab0taXds4VebSH7CIC7p7Wpf1zJEj1v+o4lp4wR1XUpxLxA04gljJO4VP+k+fRE+mUxkcNhjh8JGOt52fEksUcxVypewb7qciRTLzEDOgMydxKcUnE2fNYIf6rR2DyiKpQdCSRAoGaeii/icG9wOfwleESFIAa4M8T0aNfpFkgAYvtVG7mmbxlnuvPy1CzjdxfI7yxZaQAfyaRVcKe8B1M7izEWq8HYpotn/a1bOutoEMksFmDL9Av3QJaVklclQjaM
+ KdzayLkL
+ aDcI0lLGjn4Z2hWRmLNwrkGJnk76a6FPgWV0wWHj8NPxuYwMJ9XyQJrLFfv5tNWiJ58g4gA7UhU/W6lfjvznMBiIGVitybt/ONtE4CKwgJyMmv/EofpM5j5yYW80172Kay7NkTyPZ4boDjCh15Myob0pbNkdw4GHBBxTwpSWXCvCpVyVYy2s5Ey7FD+Z35dZh5GS1z1rFWQ6nSLnuj0fUlNKFriNzuwRhHiu9M569zrehogbyV+BXjDMVB75YXjp5xrf0qbaDtFFDEFMnvcnkSa4eXUW7WNFwv6Ch9ypkZ9xwzP8N76sq8lWqbXRXiJwKs1B+OIsHRl7UheTYVJDxeNcNNVkNxNt0E91HCTthq8Y5UX7mcdCHLgKbCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,89 +102,123 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 27/04/2026 17:34, Ard Biesheuvel wrote:
 > From: Ard Biesheuvel <ardb@kernel.org>
 >
-> On systems where the bootloader adheres to the original arm64 boot
-> protocol, the placement of the kernel in the physical address space is
-> highly predictable, and this makes the placement of its linear alias in
-> the kernel virtual address space equally predictable, given the lack of
-> randomization of the linear map.
+> The linear aliases of the kernel text and rodata are mapped read-only in
+> the linear map as well. Given that the contents of these regions are
+> mostly identical to the version in the loadable image, mapping them
+> read-only and leaving their contents visible is a reasonable hardening
+> measure.
 >
-> The linear aliases of the kernel text and rodata regions are already
-> mapped read-only, but the kernel data and bss are mapped read-write in
-> this region. This is not needed, so map them read-only as well.
+> Data and bss, however, are now also mapped read-only but the contents of
+> these regions are more likely to contain data that we'd rather not leak.
+
+That sounds like a good rationale but I wonder, is there anything
+stopping us from unmapping text/rodata as well?
+
+> So let's unmap these entirely in the linear map when the kernel is
+> running normally.
 >
-> Note that the statically allocated kernel page tables do need to be
-> modifiable via the linear map, so leave these mapped read-write.
->
+> When going into hibernation or waking up from it, these regions need to
+> be mapped, so map the region initially, and toggle the valid bit so
+> map/unmap the region as needed.
+
+Doesn't safe_copy_page() already handle that? I suppose this is an
+optimisation to avoid modifying the linear map for every page, but if so
+it would be good to spell it out.
+
 > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 > ---
->  arch/arm64/include/asm/sections.h |  1 +
->  arch/arm64/mm/mmu.c               | 16 ++++++++++++++--
->  2 files changed, 15 insertions(+), 2 deletions(-)
+>  arch/arm64/mm/mmu.c | 44 ++++++++++++++++----
+>  1 file changed, 37 insertions(+), 7 deletions(-)
 >
-> diff --git a/arch/arm64/include/asm/sections.h b/arch/arm64/include/asm/sections.h
-> index 51b0d594239e..32ec21af0823 100644
-> --- a/arch/arm64/include/asm/sections.h
-> +++ b/arch/arm64/include/asm/sections.h
-> @@ -23,6 +23,7 @@ extern char __irqentry_text_start[], __irqentry_text_end[];
->  extern char __mmuoff_data_start[], __mmuoff_data_end[];
->  extern char __entry_tramp_text_start[], __entry_tramp_text_end[];
->  extern char __relocate_new_kernel_start[], __relocate_new_kernel_end[];
-> +extern char __fixmap_pgdir_start[];
->  
->  static inline size_t entry_tramp_text_size(void)
->  {
 > diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 1a4b4337d29a..9361b7efb848 100644
+> index 9361b7efb848..a464f3d2d2df 100644
 > --- a/arch/arm64/mm/mmu.c
 > +++ b/arch/arm64/mm/mmu.c
-> @@ -1122,7 +1122,9 @@ static void __init map_mem(void)
->  {
->  	static const u64 direct_map_end = _PAGE_END(VA_BITS_MIN);
->  	phys_addr_t kernel_start = __pa_symbol(_text);
-> -	phys_addr_t kernel_end = __pa_symbol(__init_begin);
-> +	phys_addr_t init_begin = __pa_symbol(__init_begin);
-> +	phys_addr_t init_end = __pa_symbol(__init_end);
-> +	phys_addr_t kernel_end = __pa_symbol(__fixmap_pgdir_start);
-
-Using fixmap_pgdir as an anchor seems a bit arbitrary... Couldn't we use
-__bss_end instead?
-
-It could also be helpful to add comments in vmlinux.lds.S clarifying
-which sections are RO/RW in the linear map, it's getting pretty
-difficult to follow.
-
->  	phys_addr_t start, end;
->  	int flags = NO_EXEC_MAPPINGS;
->  	u64 i;
-> @@ -1155,7 +1157,11 @@ static void __init map_mem(void)
->  	 * of the region accessible to subsystems such as hibernate,
->  	 * but protects it from inadvertent modification or execution.
->  	 */
-> -	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
-> +	__map_memblock(kernel_start, init_begin, pgprot_tagged(PAGE_KERNEL),
-> +		       flags);
+> @@ -24,6 +24,7 @@
+>  #include <linux/mm.h>
+>  #include <linux/vmalloc.h>
+>  #include <linux/set_memory.h>
+> +#include <linux/suspend.h>
+>  #include <linux/kfence.h>
+>  #include <linux/pkeys.h>
+>  #include <linux/mm_inline.h>
+> @@ -1040,6 +1041,31 @@ static void __init __map_memblock(phys_addr_t start, phys_addr_t end,
+>  				 end - start, prot, early_pgtable_alloc, flags);
+>  }
+>  
+> +static void remap_linear_data_alias(bool unmap)
+> +{
+> +	set_memory_valid((unsigned long)lm_alias(__init_end),
+> +			 (unsigned long)(__fixmap_pgdir_start - __init_end) / PAGE_SIZE,
+> +			 !unmap);
+> +}
 > +
-> +	/* Map the kernel data/bss so it can be remapped later */
-> +	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
+> +static int arm64_hibernate_pm_notify(struct notifier_block *nb,
+> +				     unsigned long mode, void *unused)
+> +{
+> +	switch (mode) {
+> +	default:
+> +		break;
+> +	case PM_POST_HIBERNATION:
+> +	case PM_POST_RESTORE:
+> +		remap_linear_data_alias(true);
+> +		break;
+> +	case PM_HIBERNATION_PREPARE:
+> +	case PM_RESTORE_PREPARE:
+> +		remap_linear_data_alias(false);
+> +		break;
+> +	}
+> +	return 0;
+> +}
+> +
+>  void __init mark_linear_text_alias_ro(void)
+>  {
+>  	/*
+> @@ -1048,6 +1074,16 @@ void __init mark_linear_text_alias_ro(void)
+>  	update_mapping_prot(__pa_symbol(_text), (unsigned long)lm_alias(_text),
+>  			    (unsigned long)__init_begin - (unsigned long)_text,
+>  			    pgprot_tagged(PAGE_KERNEL_RO));
+> +
+> +	remap_linear_data_alias(true);
 
-Maybe I'm missing something obvious, but considering patch 3/4 couldn't
-we directly map the range RO here?
+It's really hard to know what this does without looking at the function.
+How about mark_linear_data_alias_valid(false)?
+
+> +
+> +	if (IS_ENABLED(CONFIG_HIBERNATION)) {
+> +		static struct notifier_block nb = {
+> +			.notifier_call = arm64_hibernate_pm_notify
+> +		};
+> +
+> +		register_pm_notifier(&nb);
+> +	}
+>  }
+>  
+>  #ifdef CONFIG_KFENCE
+> @@ -1162,7 +1198,7 @@ static void __init map_mem(void)
+>  
+>  	/* Map the kernel data/bss so it can be remapped later */
+>  	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
+> -		       flags);
+> +		       flags | NO_BLOCK_MAPPINGS);
+
+Might be an obvious question but why do we need this?
 
 - Kevin
 
->  		       flags);
 >  
 >  	/* map all the memory banks */
-> @@ -1168,6 +1174,12 @@ static void __init map_mem(void)
+>  	for_each_mem_range(i, &start, &end) {
+> @@ -1174,12 +1210,6 @@ static void __init map_mem(void)
 >  		__map_memblock(start, end, pgprot_tagged(PAGE_KERNEL),
 >  			       flags);
 >  	}
-> +
-> +	/* Map the kernel data/bss read-only in the linear map */
-> +	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL_RO),
-> +		       flags);
-> +	flush_tlb_kernel_range((unsigned long)lm_alias(__init_end),
-> +			       (unsigned long)lm_alias(__fixmap_pgdir_start));
+> -
+> -	/* Map the kernel data/bss read-only in the linear map */
+> -	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL_RO),
+> -		       flags);
+> -	flush_tlb_kernel_range((unsigned long)lm_alias(__init_end),
+> -			       (unsigned long)lm_alias(__fixmap_pgdir_start));
 >  }
 >  
 >  void mark_rodata_ro(void)
