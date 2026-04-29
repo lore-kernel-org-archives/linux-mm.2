@@ -4,88 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05237FF8875
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 12:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D890AFF8875
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 12:31:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED6096B008A; Wed, 29 Apr 2026 08:26:12 -0400 (EDT)
+	id 0D32F6B0088; Wed, 29 Apr 2026 08:31:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5F926B008C; Wed, 29 Apr 2026 08:26:12 -0400 (EDT)
+	id 083C76B008C; Wed, 29 Apr 2026 08:31:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4D576B0092; Wed, 29 Apr 2026 08:26:12 -0400 (EDT)
+	id EDBC16B0092; Wed, 29 Apr 2026 08:31:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BFEC86B008A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:26:12 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 640BC88E7D
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 12:26:12 +0000 (UTC)
-X-FDA: 84711515784.23.F54ADB8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 976D5180007
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 12:26:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="X+H1I/qj";
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DC4E16B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:31:19 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 62F9D401EA
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 12:31:19 +0000 (UTC)
+X-FDA: 84711528678.08.E396A83
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6F0E640003
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 12:31:17 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VQlCzalW;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777465570;
+	s=arc-20220608; t=1777465877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ugiIID9hUUulZs9g+1Af5VB92t9ln4vandehR4h7luI=;
-	b=l+wOSzwS/1w+OVKifqM78+ZxEo1CaGbVRjlQdi9MW74yhTdIKlQE/BECRUYy/03suSUjct
-	UNc64zW/8Osa0zE6L7JjUYUUyFQewDkEe/ZW3L4MSztEF8UPMeadeRaVaqF16SxvfvID1Y
-	kegxyp3qsXNxhnEV6wRPkUHWv0UniIM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="X+H1I/qj";
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777465570; a=rsa-sha256;
+	bh=5vrJRN4H7DA8knCNzoNtMFJ66bO9JZkjLzP1Byam1AA=;
+	b=XXbluEVGVhQ5Lex1JmN2DSFTCwnpGB/f1jpm9IfAScjZ24sLOhxSlJ8z2L1jlbaJoMBnr3
+	YCaGICMJ1/c7LVFnOOhHQG8M1PUHTt8bIrm1QXoZkVGp1SR81333+rBkynVV7xf2VFmIfd
+	FBtfpJM5kYOioDbmCypvXcfQ8gtqEHs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777465877; a=rsa-sha256;
 	cv=none;
-	b=FJ0hxSbMlFG6DuQ7NeY/Bb16Y6YzoTsRYm+axYdTcJRP9FBorxSvItlz0o+slK5zCzxlSS
-	hsnW0R5VFV20thV7z6sF9gmUOXeLPXPL4eE1zMpkXsuQ1o42gIYyLWACf8C+NVh6/VBfR2
-	XUnujiNJ9J092f6+fKhLAwhUfiLhEyU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 96B4A40633;
-	Wed, 29 Apr 2026 12:26:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A87C19425;
-	Wed, 29 Apr 2026 12:26:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777465569;
-	bh=XZdLG7NrTLr1gkaO2uQpheM8UanKy4xE7H3oI6Nz0L4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X+H1I/qj8goOLZtdjEVIxjRbAfxP0QCXilX+8kzOu/cnPJPFV/my/xCymwQHxhXlJ
-	 CkDLkdcssxPd70q/xWhX+8Vl9ijCfqVav6swEqy72PMZ6WcuEKd0f0qT63TDr7cZdC
-	 Yk74rfl80yWYBRWsPAfvA4ZBW2T+/caQmH8gE1Bg=
-Date: Wed, 29 Apr 2026 05:26:08 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH] mm/memcontrol: hoist pstatc_pcpu assignment out of CPU
- loop
-Message-Id: <20260429052608.b4787b75f11889919ff631ad@linux-foundation.org>
-In-Reply-To: <20260429084216.186238-1-hui.zhu@linux.dev>
-References: <20260429084216.186238-1-hui.zhu@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	b=cpPT+5FAg0w2Kg+JaHTffJH/XzuIZprDzTPLQeoYrQLX2o5QeUEQfgaoaVI5MrkjaB/ZDx
+	UtNrqU9o2nd+EKdB1iw4JBZXDp9niqVEy25fvB8AHb9Mo+U4TvhZIJHFcNrlT79NPVNjMo
+	koTF13bGMbCBV0ew0Bt0+R3VWNmmswk=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VQlCzalW;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C006E2A68;
+	Wed, 29 Apr 2026 05:31:10 -0700 (PDT)
+Received: from [10.57.90.96] (unknown [10.57.90.96])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B54663F836;
+	Wed, 29 Apr 2026 05:31:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777465876; bh=2pIojbJQg9tB5OJkbigs/SXblp/raktpEhuhy3g94i4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VQlCzalWyEWttNiubbfJ002pfiwZMF9cJ/bo1THuZmxTORIUhLTEjcl6kqRyB6sJx
+	 /4X6ML+SqxEJXwPD9h+y5al2/h2cdiLa4P0uQFXmsj8Hd22PEKtnFk3XYSnj+6ws4k
+	 EGG+QZeaCZ/hV2vHCXXnbjyVpxLb0eq+oGafyXbw=
+Message-ID: <9834200a-492c-4705-a2b2-e76cc0ba5392@arm.com>
+Date: Wed, 29 Apr 2026 13:31:10 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/3] mm: Free contiguous order-0 pages efficiently
+Content-Language: en-GB
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
+ David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ david.hildenbrand@arm.com
+References: <20260401101634.2868165-1-usama.anjum@arm.com>
+ <20260429103326.GA1743@cmpxchg.org>
+ <20260429050430.d86f01dbe731edc9fa932add@linux-foundation.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260429050430.d86f01dbe731edc9fa932add@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6F0E640003
+X-Stat-Signature: upremtay8egb9s4hwr6jsm19x7onqbsp
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 976D5180007
-X-Stat-Signature: b4t3yjk4jn6ws7k7rz7a5ju9xxp388tx
-X-HE-Tag: 1777465570-90451
-X-HE-Meta: U2FsdGVkX1+n/IXdd8xGvoSlCm23ziCrUSDFy1qBumSKtdgWpBvsJBwrAkJwwApCsBxwGkGEunW5b5t4ATWnplxiC1q/rgs5D2D4GJpN+JkIEYngrLwzpPA2YwLJLJsVTxi8Aqdv5YrsX/wElAIgTlGDBDtDqeNK36AEWoXm1qrDT4r6p6ThEQgH3IWv+ev0KFIzAB6nloS+a5aMQyjpkqh1YBDmaoNywOxWLJKALd9/reBlfvipoKDtvXyLe9yL3kkBxfZOYOOlrrKZJom0UoeLAp3ykUpubAaqg264z69sdrIaRrBdD2lw4m16velyrteJzIKJLDjriQKFlPZ7wfkU1trpvkL2HvcDTW1h+4JwsCxXP+YxQ+45MNpX30wc6G5FmEJ53+FUAFcvON4VwME0PDWCxrCJ5DkMayfQ51kp9GyPR7kjiHXANPCXlyoBKftZkEGruOv0yJ0siVXEB/Mv1P6/7dwag4ay3tSPH5ZaxEz7nGwnqThDN2IHPJlcwZ7WXfMGmLk8xgA5DJ0q62aZUtJucLha2CZRmcQ/nJSlJv16z99VJHwGvyHeuxzwMuOcML2uXe7anWCi2dUUcrNc3RSeYA9Rr1dMnIDe8BgivEy8srGnAGUf3wp0NUwpXzp5c/CrWT5qbnHSjUsmQR2EetCbgyTHi1+vzX+BDUD1t/4qdnMwzeYmXx8HgTEx48wKt1VD7we/0AWX0AXlUjzoTN/6rtGkchPwXXZTbxcr9ZPHBFQKDARwJd7+OvmsYOkdM7JFv0kRWt5Gkg5elK7Rw76OW81Vnt3RbCFSW2hCXBwLY4Fu8uDrvS6aU//a8yaF7bO3Ow2AHdSL9shp86wgQIKrIngcwhjiHnPDtQKRu8j2F9W385kFg6m0qLaqPZNB9bE4Bf70WdyVoS+lN98KgJ1Nq7dctMqgYlakBaZnEcGPngRGBYLBt8GaYPFxzlLuU4a9oIll1Fr5hdO
- gHF7fKI5
- L/NW0EebDdqu84wMUS6YBOLZtAZOGnTid0A9VSGvMc9CT7wANie6oeFl2NqlEXqVHijhbbMKW1WNWGMlfGVoEsKliUUjP+i74VKshHCDOOvVKcVMDiAHQLYofpCPlz3QzOrMUvPmnIG6K5wiuA7fr3jAFIw15GwlrI/hGMSsBv/gCqxNNQJd31FTeJhFQOSlxCxhpuUBAntNxHC1N6axw99v4i+6s6VAPYhr6du/wcioscKK+d5jIVFBZy8GfOc2mxPSaoU3oH0Fd2/evBd9Fe/6wXksCu6UeJFbkJ0uBA5kmBXc=
+X-HE-Tag: 1777465877-893014
+X-HE-Meta: U2FsdGVkX1/6oEkdfOiiq4d9nQc7HbFdhxfYWeKK5bF8yfsDxD/v+OrTEpJ1kA9ZL6C7P3rOAQ/Uh7j1kvRUdWu/d7/tpY4lcUWG/9Z0KkJ2DU6qFrkDr9GoaJ7uyiz5DoMZMW0WkOQJw2aChv3ppjT4uFO64Eat28kD5pK3qU1449znoVCaOURJY4qPmxTt744MlnQKBqeMb3tcz/yF+czoP9/JU+3TOaWFs7lXHCqa/D9odzv6xJXm4V0Oko6qzV1er/GAr1t//wNjmzgEtiPg3R2TvjeUBxNPLK2d7qezjomWaOcaoi8raeCNKGlszbgl6lf47o9WWiQ0Rwn+fAFZCO9Op9PdJllgZulGnmZdRkFJKFC0o0naz7gZQGO3OOkvyZPt8CXPFnfxS32EpfhW4/Vf3KlTk+w4egCUSNl5K3yl6xQbalgZZwhntaYwGo5VXI3ircZnlA6jJzf/pa/fV7tMf5cYgzDQoN+gTfHvskl5KUgXbMR51VxGtcSWJIxsU8apBA3gpQLRE9nEPcxCFD98Ieg+FlblN57iZ8eBUYMXOp9GX28PkAbJq5JBVGQkYVdrfcx95gZyJfPPjB3rIad9XpsrOoflBiWGlDIBKMPHchv8mBFAQ12hAz8+56qd47VLvBep1Gsmhp522pjNzJ1AMBuXvxFPD1kaM/9rI7IOKwbau29YrleXbhFUaZcgoM2GRIdKsKhu2utPnXZFRmw8mAhQu/TEorHuiv6CW+mwgesC1I4ZDcsyG070DSj9Fs0GL+KtOdLJ0jSST3AiKeR8+tqySID/4yIloIw5DhzmqlS6upiJRl/PSr2ivKW4yGkQACtV719qUnsJ5R1t2oOYk8KF+HGqA8f+sZ0h+PufATRNLC5GO/UdOveGxIwIDOHFbpQrS2GP38r44lOORiH3aTh+NYmJ2VJv5M8wn5m63QFPs84PowQzIsvvWP1GQWei0nlz0+Mfhav
+ T6eFO5Nf
+ 42Pp2OreAfr2uH+ZJ0smGMCbDc033JzkMpvpxZyKAI9daY2uA7VcZo3h0j9aAKnRva+Our9GCWRMZPrYKFWWEEyUE9J9YjNZ26cXoJRnjFbprJ4NixMLL4pE2jMC3NRAM4Gxah8G3NKPxVweCKvCbjsU4dT0W4Ehj8+bokRLLtIxTIzk7V/ScKU8j0VQLyJBGSBHDRo7CFxel/Pd95SIR2h4Q4jHySHZFcl2s1y70uLLkflm5crm9g1R5HAXjyfIkLQbl/9mDOtM1Usgp1OzsIeV4VsLM6F5lNbaz9YRhaa/4IYInCKdi8liiARlpa+K+kkh7lMLLYkOog8r65ClQBxQLo9RwFIW44owRb415mMCPoeM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,48 +101,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Apr 2026 16:42:16 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
+On 29/04/2026 13:04, Andrew Morton wrote:
+> On Wed, 29 Apr 2026 06:33:26 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
+> 
+>> On Wed, Apr 01, 2026 at 11:16:18AM +0100, Muhammad Usama Anjum wrote:
+>>> Hi All,
+>>>
+>>> A recent change to vmalloc caused some performance benchmark regressions (see
+>>> [1]). I'm attempting to fix that (and at the same time significantly improve
+>>> beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
+>>
+>> I think we should revert the original patch.
+>>
+>> The premise is that we can save some allocator calls by requesting
+>> higher orders and splitting them up into singles. This is a frivolous
+>> and short-sighted use of a very coveted and expensive resource.
 
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> In mem_cgroup_alloc(), the assignment of pstatc_pcpu is invariant
-> with respect to the for_each_possible_cpu() loop: both the 'parent'
-> pointer and 'parent->vmstats_percpu' remain constant throughout all
-> iterations.
-> 
-> The original code redundantly re-evaluated the 'if (parent)'
-> condition and reassigned pstatc_pcpu on every CPU iteration, then
-> repeated the same ternary check 'parent ? pstatc_pcpu : NULL' when
-> storing into statc->parent_pcpu.
-> 
-> Move the single conditional assignment of pstatc_pcpu to before the
-> loop, resolving both the loop-invariant placement issue and the
-> duplicated null check. On systems with a large number of possible
-> CPUs, this eliminates repeated branch evaluation with no functional
-> change.
-> 
-> No functional change intended.
-> 
-> ...
->
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3993,11 +3993,10 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
->  	if (!memcg1_alloc_events(memcg))
->  		goto fail;
->  
-> +	pstatc_pcpu = parent ? parent->vmstats_percpu : NULL;
->  	for_each_possible_cpu(cpu) {
-> -		if (parent)
-> -			pstatc_pcpu = parent->vmstats_percpu;
->  		statc = per_cpu_ptr(memcg->vmstats_percpu, cpu);
-> -		statc->parent_pcpu = parent ? pstatc_pcpu : NULL;
-> +		statc->parent_pcpu = pstatc_pcpu;
->  		statc->vmstats = memcg->vmstats;
->  	}
+I'm not sure it's that simple. First off, vmalloc has preferred to allocate high
+order pages for quite a while, it's just that the patch you're referring to
+makes it try even harder. So reverting the patch doesn't completely revert the
+behaviour, it just reduces it.
 
-lgtm.
+Performance benefits because those high order pages are mapped appropriately in
+the page table - i.e. 1G PUD, 2M PMD, (or 64K CONTPTE on arm64). So it's not
+solely about the number of cycles spent in the allocator; the HW is used more
+efficiently. vmalloc only splits to order-0 for the benefit of the caller,
+because there are some places that assume they can access each returned struct page.
 
-I expected this to make no change to generated code but it actually
-reduces memcontrol.o text by nearly 300 bytes (x86_64 allmodconfig).
+And all the order-0 pages of the original high order page are freed at the same
+time, so it's not like we are destroying the contiguous resource; it remains
+intact for the next user (well, ignoring that some will be freed to the pcpu
+list - this series solves that wrinkle). I've heard it argued that this approach
+is actually _better_ for conserving contiguous blocks because it's keeping the
+lifetime of all the constituent pages bound together and reducing fragmentation.
+I've never seen any data though...
+
+>>
+>> The buddy allocator tries hard to retain contiguity *if it isn't
+>> needed by the caller*. This patch actively works around that.
+>>>> The cost of recreating those higher orders elsewhere is shouldered by
+>> whoever actually needs the contiguity down the line. And that process
+>> is orders of magnitudes more expensive than we save here:
+>>
+>> We're saving cycles per page in the vmalloc path, and later spend tens
+>> of thousands of cycles per page to recreate the contiguity. Scanning
+>> PFN ranges, folio locks, rmap walks, TLB flushes, page copies.
+>>
+>> That's a terrible trade-off.
+> 
+> That's persuasive.
+> 
+> afaict much/all of this series remains useful after a06157804399
+> ("mm/vmalloc: request large order pages from buddy allocator") is
+> reverted?
+
+Yes; although the motivation for the investigation was observed micro-benchmark
+regressions due to a06157804399 ("mm/vmalloc: request large order pages from
+buddy allocator"), this series is still beneficial even without that patch since
+vmalloc will still allocate high order pages in many situations and so it's
+still beneficial to free them efficiently when the time comes.
+
+> 
+> What I'm not understanding is how significant all of this is.  Sure,
+> making many-page vmallocs faster is both beneficial and harmful.  And we
+> have super-focused microbenchmarks which demonstrate both effects.  But
+> how often does the kernel actually *do* this stuff in real-world (or
+> even real-world corner-case) situations?
+
+Afraid I don't have clear data on that. My intuition is that it's a real-world
+corner case. But significant enough to justify all the previous effort to map by
+hugepage where possile...
+
+Thanks,
+Ryan
+
 
