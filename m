@@ -4,82 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4A2FFF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 09:19:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E14DEFF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 09:24:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B24096B0088; Wed, 29 Apr 2026 05:19:14 -0400 (EDT)
+	id 119FB6B0088; Wed, 29 Apr 2026 05:24:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD4BB6B008A; Wed, 29 Apr 2026 05:19:14 -0400 (EDT)
+	id 0F1FE6B008A; Wed, 29 Apr 2026 05:24:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EA4D6B008C; Wed, 29 Apr 2026 05:19:14 -0400 (EDT)
+	id 007996B008C; Wed, 29 Apr 2026 05:24:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C5916B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 05:19:14 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A77FD1C10F0
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:14:34 +0000 (UTC)
-X-FDA: 84711032868.25.480C7E9
-Received: from mail-m82102.xmail.ntesmail.com (mail-m82102.xmail.ntesmail.com [156.224.82.102])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C8A56C0008
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:14:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.102 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E54FE6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 05:24:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 991CB9196A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:10:01 +0000 (UTC)
+X-FDA: 84711021402.20.DA814D0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C472D160012
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:09:59 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z+MvByLP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777454071;
+	s=arc-20220608; t=1777453799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wSqB6YhjcZ06N6Or3saPafRnUc8lRP6hzTf2R0QKHiA=;
-	b=WtlLs3rplDUGaSTw3mZURcL5rMdBV3JVJWVkfrmlhZoH73S02y7Tmbq/YMclntADwlRzaH
-	NNS8denyuyJnF6GfU4BbtTB6CaS0l+2IqxrZGB0fHgmwbvyu3rgh0F23u6vEkN+pVtXUtt
-	9qFd0wxbM4b0HglBqnxYyBl4rr+IECM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777454071; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=m5GumiqFIt/ECkKTfRRSYkr9aPUwrDRN0+fa5HLkUxU=;
+	b=r6W/M2njswh2BQJwiyqx1WMF9R/kKV3Kuh4V8MvdyIKVaUt6upNm+ABoOti5mIF8nyjY6u
+	swxetZBGL3ZuMNHOwDdk3y+fPab4wWnjetvwOBbiNuqsTx25CMfrAJb5kOBhuuiTqOA8Id
+	FoJ9xwtv+FMpshWBqJ8PkirXO6NFrY0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777453799; a=rsa-sha256;
 	cv=none;
-	b=07/jNnl22gQaD7vrIkF2kc5sTKWc8z2QMrBiEq996itS+xaS3dcxBBrRwO9anLRQes/yhb
-	C4Kj/H/reD7QTz6IutODTT/Xd+36KtsHAfFf8dd4NlEZSrnmaslxyIG18d9vGESF7q8GeX
-	2un7/55+rQ7sNWxNeuY1ZrvNe3kmQEE=
+	b=Tcmju8Jnt1ajWPqIuCmoHO2tVb16lI7I/5Qbs08/QjFhVAys+ltdG2dOvRAzoGc6f10nek
+	cqN2L5kgAxPPXMOy22P/Jig/51Udz3G/BKRt33fnBjngIa6btF8KXUpVJbXowScuPcx+6N
+	zf4i8FnG7WUeXgGvx5lCpcDTA45Awwc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.102 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
-Received: from [192.168.0.18] (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 198a320f7;
-	Wed, 29 Apr 2026 17:14:25 +0800 (GMT+08:00)
-Message-ID: <327ba94a-2d0b-4e2f-89d6-b261a6cfa433@easystack.cn>
-Date: Wed, 29 Apr 2026 17:14:25 +0800
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z+MvByLP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D49260018;
+	Wed, 29 Apr 2026 09:09:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CA9C19425;
+	Wed, 29 Apr 2026 09:09:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777453798;
+	bh=U+qtUGkVcFIOlc8S8UBttfIQrvSv8Unx0HYdPMMzu/s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Z+MvByLPCyLX3thXV7RgPBjsjmxkuAXCIy4GXER9SykX7CHrlgSjjUZyquB4KqDcp
+	 jE6yx5hmr/1rBMFnHAQeb4njCzfxnDS9Co6U2mZwBoMBNYEkTNvqPRNWu+Qd+DIyyr
+	 HWM4uamBtdonUqzUYZM5AzY8WIBP3Q6Gfu2ml4ehQ4kOOLyQgQeMAwj23hqJX5T/hE
+	 E2ZZlTeKtyQ10nWnUmrbLFCRU15KsZQIGtahN+iRUNNOFYYOepadE5UHGhl5Dd0Jow
+	 3SJ9urBDneMgL5mF0Cw1Z+3nieDQZ3O47aX5O/vbcVAbyuPItDIlozZqV+nz4/CdJG
+	 RXiuFE/4QctTg==
+Message-ID: <7f98f461-62a7-455d-a7a8-cb8928465946@kernel.org>
+Date: Wed, 29 Apr 2026 11:09:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] mm/page_owner: document page_owner filter features
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260429013514.88985-1-sj@kernel.org>
-From: "zhen.ni" <zhen.ni@easystack.cn>
-In-Reply-To: <20260429013514.88985-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9dd884a8000229kunm27c5ff541b2c74
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDHUMaVkNDTU9CTB5IT0JLTVYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
-	lOS1VKS0tVSkJLQlkG
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C8A56C0008
-X-Stat-Signature: nddex6b18t4wiqh5ffpgmx9mbxzsqcfx
+Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
+ exclusive file folios
+To: Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
+ hca@linux.ibm.com, linux-s390@vger.kernel.org, brauner@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, timmurray@google.com,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+References: <20260421230239.172582-3-minchan@kernel.org>
+ <aesg-sj6_VmXyqxb@tiehlicka>
+ <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
+ <aevBRh08X4UTMUj9@google.com> <ae8NT0tLt7eBmH6j@tiehlicka>
+ <CAJuCfpHQdA7C50V2WjNrdYcp7feV5ukgxJf+vMNEcp0P1SGEow@mail.gmail.com>
+ <ae-Zu-VAzAA7SdLa@tiehlicka> <ae_roPR64e6sY_fN@google.com>
+ <afBaJLLFigkdszov@tiehlicka> <afFco71vwmpQy3pk@google.com>
+ <afG-4hq7Hr62Uu6J@tiehlicka>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <afG-4hq7Hr62Uu6J@tiehlicka>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C472D160012
+X-Stat-Signature: fdj5pbrtq77qbzy3e1xdffudfeusi7e1
 X-Rspam-User: 
-X-HE-Tag: 1777454070-446092
-X-HE-Meta: U2FsdGVkX1/YEWjeBuhfxEe8CxQazAg1cuVO73yP5PcQZtqkqkxy36AB2A+TcDq8Cma1LieH2+M5iqN2/tdaqacaIcHGhK76A0NBIfqDBCchsd5mVTV6ppD9ocgbg9db27PFm7FtR/uGYqxDfNZB4+xAje8O7vW2eWBAIuiM0axnDRa/a7fZRkZPO/lnQzl6wKWJGjmZTrb/2vsItOzaMsOx0mYdHlgHAYZZIA4WzhbSmREra2nLtOORTO5u1uJnz53UK9DBPogxekC7SYo15dD0qRWs/g/W+pejiZyUVV87R2ELi8nfycLKSmAn58vcdHKQzpLx/LKPRXsGqQkc3sqUreeAEV8/aYq2GAgjNeuVlhN73s4Tf8p4FFat9ZRLOCiivJLM+UoZx8a+ffTJWovMRJydErrmBkHSzmx9Lat/C1OVIxFHKfBgbRhuJurggL7WZzSNzT9o4DZOoTfNOOJfLTkqs/8j9yYKAwMP7oZ1KYZsh1Wi42egO2vu+I3n1O3PYIews4BgB4X/Oaks5Kr8Y/ARQOwc4JdonFWEitDbIOgFbFCiedxuoQqQ18mNBAS8V4/xBMgEva87Yt5rgvBkhM/bWUZqQ4i2e9BudMlPFLnuNSWCmLTgjujNlqhnNCldNuNwP8UNNVnmb7oY8GUJbpTE9LilS++pG1guFcSfmm+Z/PFXKVsigPo74fz3yYrTRN8433SWSR26pxiY2G7s/51+NGXF7pQpIO1O+bY1RxgurPqzgbksA9vwbCWw8yXJ5fZfpygMx/4yy6WckD5CK6KfI8Jen2OleNMPJRIeySlfUPI5vt2jxCfnm/CfsGGvTkuOfCzEzwW7t6d8vIg/IMc93UF0IuVk1HxHz2bpLKq2aUuxA4iO6KY6Y6Q83uPWxYeejuys4/dUmYgQEgKohmaSFduQyORrpGolOhYMqOpNRUu1CfEpSs+0srLQyJ1R81i1N4SFPOrA1EV
- 1NX4KPYW
- oeGdq23Qw5w2cVk49b/FJSrx2MrWr4V5ni3fR974xL10OUMqkSK8404JnqqvGveSI5gGj8vNKdXibPKlDK8g9IVpnyuWXwD1iTZ+fOsmJCMA8qdi/hqsTVryf/Chjj3n1EnBXbpEmpTvUTAgbE5pM5Kw3PEzKHI+019+FaorqoAG4uEvk4562R4gxV2Hlq0HgVofs8EVD/bmG2kRAl5+QbdTCHCPtYp9wpVUz
+X-HE-Tag: 1777453799-302760
+X-HE-Meta: U2FsdGVkX1+s9Lm2Gt6vHFNkHhQSJJQAqpzy0p0hP+2YotFcSoYHTRIXn73lIE0yJBsj2OllEC7g5VzRexxfy29FmqY1F05/6PbbNEyDhNmWWh1mL6jlecHoaKyal5ZS7nItsEG8zWEB+qQ0WTDsmDSKyMLgXR0AJHeCq2mK5B57NMDqbKExsdXc5Cu9O6xG07//ABrOi63eRuRRUlatG5V3dDz/EO2IvNwz1IZ01qThq282GDtVApYukJc8lYZaFk1JEubq/bI7ro9ulMGVkc3nm4Q7cqWOBF53DvjkdFSiuapXGB+/qSnn7eATMUlg4k66FUOjNsNSAIHBVl/cCTQzwHsdsnWybT+hp4OlZGxEtZ0fvXKmK9E3nuPGFHzbdQxr0czI0kOPhjyvouf0nZK37o9v0vsV1KWzElqMiJvcmli/T7/ToimF/ALWuJg0czoj32dtTAYZfx0XX69HZqvA+8kpMmC3wUEsR/MGsi+YuagO4lxSuHubpXP7c/MrAQAw4a9AMO4AE0er8ptntJxo/P35DdCT1EhizR8aTV5gBh4S1o7R2wkI5kUTSx9EEW+rlJlTsRO0CmSxSgZGwpUbmamzlh1PEcZY2EeP7dqobFSkWOCT/IgF/KxQEk6hN8P5MZlsbkgXxThKKy0ZWMRRYFhyDZgPmpOxr/NmoaKHmxL7ed2eL0aZb0pJYZbMK9g2iPmkNZmXafkAohB3V3x120fB+FixFe9uZY0Ugy/BaAAESlRe2DklzVSsd8QtxGS82lguU09fSpT/4OiaKfCP8XVblid7tFeRJvg8iooln4W+mkCTSN9QHtUT1sLFJIBWpsPsTn/sLHMrwuGtBM9wYjYggtgg0X4nAdUyl5OJ08S0kpYVKuOvPG5Qs0itRliWWlL/0Z8YXHxxMK14u421TQMafS/uniV75xV1SZHAP5Jga6P8mu8jE1+MIjRXI+MbEI0/PM/pbIdeatx
+ HzORtL37
+ VsNlX1thN8p4Zl+svmXfhYsgVmTSK3zCBlKmf3MbbAPjhJUbQK/rsS+iSGtpZTSoJYtON0KcmJNTqW4df5rGtbn1E98ViGBqyQ5pM2+/hSCyg4tIfcoLIjsXsACoICjY06rLrseR3Qgyhq0mLv8dGfVcQV3BN3qZZ9Ad/UDOiGnXkWINohwNTu2/3cct7RrujjavCZXMlsGoM0wdsKyrIO+ugLSIf7KREIIIGrZ22dSPwPtxeSH9olWOW1bysIxzTh5TAo5VqR/aNxxgBh0CJk3Fz8Fbbgezxc9cURIfCE/Uiv/wx7xjylgIW4A/29UKvlUVZZz5UviXc0Hk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,118 +147,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/29/26 10:18, Michal Hocko wrote:
+> On Tue 28-04-26 18:19:31, Minchan Kim wrote:
+>> On Tue, Apr 28, 2026 at 08:56:36AM +0200, Michal Hocko wrote:
+> [...]
+>>>         DESCRIPTION
+>>>           The process_mrelease() system call is used to free the memory of
+>>>           an exiting process.
+>>
+>> "Free the memory of an exiting process" implies all memory, not just
+>> anonymous. User cannot know it will free only anonymous, and I am trying to
+>> make it work as intended by completing a symmetric reclamation path.
+> 
+> Page cache doesn't belong to any process.
+> 
+> [...]
+> 
+>> >From cf292f8f8ead8df9161aad342c36633ffa90257f Mon Sep 17 00:00:00 2001
+>> From: Minchan Kim <minchan@kernel.org>
+>> Date: Tue, 28 Apr 2026 16:39:06 -0700
+>> Subject: [PATCH] mm: process_mrelease: skip LRU movement and expedite clean
+>>  file folio reclaim
+> 
+> I will let others to discuss this. I maintain my position that this is a
+> hack for a very particular use case and you still seem to not explain
+> non-Android users of the syscall. Anyway, I will not repeat myself here.
+> 
+
+One thing that got lost in the thread here: this code path is not
+process_mrelease specific?
+
+We seem to end up in __oom_reap_task_mm() also from ordinary oom_reap_task_mm().
+
+There, we unconditionally set MMF_UNSTABLE to then zap_vma_for_reaping() where
+memory can be "reaped".
+
+So why is there "process_mrelease" part of the patch subject at all?
 
 
-在 2026/4/29 09:35, SeongJae Park 写道:
-> On Tue, 28 Apr 2026 15:11:12 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
-> 
->> Add documentation for the page_owner filter functionality, including:
->> - Print mode filter (full stack vs stack handle)
->> - NUMA node filter (single node, multiple nodes, ranges)
->> - Usage examples for both filters
->>
->> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
->> ---
->>
->> Changes in v3:
->> - New patch to document filter features as requested by Andrew Morton
->> ---
->>   Documentation/mm/page_owner.rst | 55 ++++++++++++++++++++++++++++++++-
->>   1 file changed, 54 insertions(+), 1 deletion(-)
->>
->> diff --git a/Documentation/mm/page_owner.rst b/Documentation/mm/page_owner.rst
->> index 6b12f3b007ec..6261366d33fe 100644
->> --- a/Documentation/mm/page_owner.rst
->> +++ b/Documentation/mm/page_owner.rst
->> @@ -74,7 +74,17 @@ Usage
->>   
->>   3) Do the job that you want to debug.
->>   
->> -4) Analyze information from page owner::
->> +4) (Optional) Use filters to focus on specific memory allocations::
->> +
->> +    cd /sys/kernel/debug/page_owner_filter
->> +
->> +    # Print only stack handles instead of full traces
->> +    echo 1 > print_mode
->> +
->> +    # Filter by NUMA nodes
->> +    echo "0,2-3" > nid
-> 
-> Nit.  Other parts of the document uses tab for the indentation, while the above
-> new snippet is using four spaces.  How about using tab for the consistency?
-> 
->> +
->> +5) Analyze information from page owner::
->>   
->>   	cat /sys/kernel/debug/page_owner_stacks/show_stacks > stacks.txt
->>   	cat stacks.txt
->> @@ -238,6 +248,49 @@ Usage
->>   				./page_owner_sort <input> <output> --tgid=1,2,3
->>   				./page_owner_sort <input> <output> --name name1,name2
->>   
->> +Page Owner Filters
->> +==================
->> +
->> +The page_owner feature provides filtering capabilities to focus on specific
->> +memory allocations (e.g., by NUMA node). Filters are controlled through debugfs
->> +files in ``/sys/kernel/debug/page_owner_filter/``.
->> +
->> +Print Mode Filter
->> +-----------------
->> +
->> +The ``print_mode`` file controls the level of detail in stack trace output.
->> +
->> +Available modes:
->> +
->> +- ``0`` (default): Print full stack traces
->> +- ``1``: Print only stack handles
->> +
->> +The ``print_mode=1`` output format::
->> +
->> +    Page allocated via order 0, mask 0x42800(GFP_NOWAIT|__GFP_COMP),
->> +    pid 1, tgid 1 (systemd), ts 349667370 ns
->> +    PFN 0xa00a2 type Unmovable Block 1280 type Unmovable
->> +    Flags 0x33fffe0000004124(...)
->> +    handle: 17432583
-> 
-> Tab for indentation?
-> 
->> +
->> +To retrieve the full stack trace for a handle, use::
->> +
->> +    cat /sys/kernel/debug/page_owner_stacks/show_stacks_handles
-> 
-> Tab?
-> 
->> +
->> +NUMA Node Filter
->> +----------------
->> +
->> +The ``nid`` file filters pages by NUMA node. This is useful for NUMA-aware
->> +environments to analyze node-specific memory allocation.
->> +
->> +Supported input formats:
->> +
->> +- Single node: ``echo "2" > nid``
->> +- Multiple nodes: ``echo "0,2,3" > nid``
->> +- Node range: ``echo "0-3" > nid``
->> +- Mixed format: ``echo "0,2-4,7" > nid``
->> +- Disable filter: ``echo "-1" > nid``
->> +
->>   STANDARD FORMAT SPECIFIERS
->>   ==========================
->>   ::
->> -- 
->> 2.20.1
-> 
-> 
-> Thanks,
-> SJ
-> 
-> 
-I will fix all instances to use tab .
+The only other scenario where we set MMF_UNSTABLE seems to be when we run into
+trouble during fork(). CCing Liam, I wonder what it would take to remove
+MMF_UNSTABLE from fork code now that we handle some memory freeing while
+aborting fork() "more elegantly".
 
-Thanks,
-Zhen
+Unrelated stupid question: would things be clearer if we could rename
+MMF_UNSTABLE to MMF_OOM_REAPING once figure out whether aborting fork() still
+really needs it?
+
+
+Back to Michal's original question: I guess the real question is the interaction
+with memory reclaim that would just collect the access bits beforehand.
+
+-- 
+Cheers,
+
+David
 
