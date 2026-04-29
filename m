@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB1B0FF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 15:03:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45269FF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 15:03:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16BC36B0096; Wed, 29 Apr 2026 11:03:23 -0400 (EDT)
+	id 934FA6B0098; Wed, 29 Apr 2026 11:03:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F5D76B0098; Wed, 29 Apr 2026 11:03:23 -0400 (EDT)
+	id 896B16B0099; Wed, 29 Apr 2026 11:03:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F26356B0099; Wed, 29 Apr 2026 11:03:22 -0400 (EDT)
+	id 6E86D6B009E; Wed, 29 Apr 2026 11:03:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E3C666B0096
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 11:03:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 82AD7C1615
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:03:22 +0000 (UTC)
-X-FDA: 84711911844.08.2F54217
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 525EF6B0098
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 11:03:23 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15D641B924A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:03:23 +0000 (UTC)
+X-FDA: 84711911886.23.BB44894
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CFA11C0003
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:03:20 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ape4TI7d;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6FDE820020
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:03:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F8xNUb+Y;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777475000;
+	s=arc-20220608; t=1777475001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=2CRlWYwcvL5VBSWIoIpbuCKnztY5Svkt/fnPPA5QrUo=;
-	b=J/0o8mnX93J0572sBFFEZXY23Nw+ypW0ghxgXNiXlpQ3y5Vk2ZZ2YsR1CLt5eIrEfZdjTp
-	R5QuJ/LN7O31I8HeJM2aK08j3qHhb9x/3FnJrSOJpEdbr7eYZLO0Yjn/x+MEX/vuEGd2tX
-	GNN0Rp35sF65nbSUewOoA34svd57YeI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ape4TI7d;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777475000; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cSrBLS16ihN7hcwmP32Z7k0nOk9oa84/KoxRo1Vr3j0=;
+	b=F4kiudKo8lERNUhCaqWAUvTy/7VXYZjvwbNQl3m08SEaFNlHQI4P3HYjo5VAq9GRw1j9R6
+	K1ad6xUTSPx1y8f5nhoR9Fd924g9GUVoHviGAO3nFm3NGyBoAFKysUOAAGtA81Uut0wh71
+	s0lAso5cpCdIcF8xMLwbmFw6KavN1k4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777475001; a=rsa-sha256;
 	cv=none;
-	b=wo13MCIDOjiiI6ZRRS5KdIk3ZrxpEGonKAY6vlP5zP3v7AqF5/uq6ghwcArfXj1niTi4kX
-	Dr53w76NVnzmeV1kAB7SB/xsHQrU3bMgi1cnf7KbBB7Lwv5uO4n6YJZaAjn0JiJQWjcxDY
-	5UtmzZ4xnfG5cRsgRRFDb+jMLFysVDY=
+	b=Ieup10CsaFDHzCYiPY1n3J0Eb/FTB77CYHdoX6Y+PRDf3WMccDXarqwm6aLmncCwsZYeRF
+	UbnFyKmDdJVVGIjRu/P5ItSTD0Hh7jd1FfhXv6H2C29oCQMbTE5j1cEISmBBvMQmpvEd3w
+	YReLMPS9/GBc2HTVie4lghlN1Nw5EA4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F8xNUb+Y;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4AEA16024D;
+	by tor.source.kernel.org (Postfix) with ESMTP id D3C9561141;
 	Wed, 29 Apr 2026 15:03:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF6EC19425;
-	Wed, 29 Apr 2026 15:03:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2479AC2BCC6;
+	Wed, 29 Apr 2026 15:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777475000;
-	bh=wHY7NZ09E2YAzVEs87LZ3Rdze2bK9PtC20hVAyMT/fE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ape4TI7dvLir+K3xFlQYl/KgbBgUzEQL3hP3X85XEpm/V92AN4y1fkJv1382y7kSu
-	 DjlQcQkQBUzL+98SjF2DJ7pHZmg1CoCjBDsNDOyfPUsXFUaHb0DJDkHOrFrz3IEwta
-	 NunRwOnns40QklKQ1QHzdKS8dQYWrM0b5RdVV+8J/UosmJUmYn1VC+RjadM5iU4pxU
-	 ZzHv9KSXgvQykSV9QCNxSoqVQHERRepdFEUvF5aY+vzf1kSQoB9qVaZmsGZML1JMQE
-	 d14iKo4UE2hyfU8chAD93vVrWETQQrV25fPVGjF9D5dmwUK9rVNPEnrMVs/5lvxC7O
-	 BCV7SZzDUFZwQ==
+	bh=hwZE1VaC9my0yzv0JuSOC0k//zHBRpDQJ1UQwVx4nB4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=F8xNUb+YUYwuFHOi1x9/UCnAPYXxKp48CpW28C9yujsX82Ka0wjmMHm+EppqL76yf
+	 +v8DRvdA2oetUWow0RTVbe1boIy5sNReql+Q6fYkstrihFAw8HckBL6E7mdLbNuBy8
+	 yY1KoZqGy+SFQpn2SY+whT5ZLLWtzx9qZlhWr0+98rbQo1PqFDLpOmtalD7GbUx6Nx
+	 QZiBlrO64F3Pz9x9FvDBMY4rsAL6jE5SogjqtSEWWqAd0D/G3V4a1T3Nq6iyr/bA3o
+	 9WCzhZJHKktSNvm2PEpsvnPnVbyAHVQx8VnI48bprUe3Yczp5elMEoCNROKFhMxUcc
+	 JqHqGzEmobUfQ==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -79,20 +79,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/2] mm/damon/sysfs: document filters/ directory as deprecated
-Date: Wed, 29 Apr 2026 08:03:04 -0700
-Message-ID: <20260429150309.82282-1-sj@kernel.org>
+Subject: [PATCH 1/2] Docs/admin-guide/mm/damon/usage: mark scheme filters sysfs dir as deprecated
+Date: Wed, 29 Apr 2026 08:03:05 -0700
+Message-ID: <20260429150309.82282-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260429150309.82282-1-sj@kernel.org>
+References: <20260429150309.82282-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6FDE820020
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CFA11C0003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: furkc5tceqbmpd4g1jdea3kkf43mzsfn
-X-HE-Tag: 1777475000-920117
-X-HE-Meta: U2FsdGVkX19NYL78muRfCgjXei4Rr4t1YLCIDJYI5dWiIN2aD3LtZHNJ/uwJhlmQ6q3jHUny+uXE0Ei5cajuMR+cKYmwkLxOrivOuZLdu89b/AF82m28NxfSzPILq4bNfrmAL7tlPCo5r+GKQFYPrKcm7+2mS0tpLJnfM4XwH4gi7u89SvgbrtO0K1/Rvx2wpzJLkKkE+oEkIO7TRY317+pTWGKDojkCbNo1XeYbOZNCx1giST5ejHw4O5mVgMxlU3ibXyirOR1MjW6FY79hukDm73beDg5/4iD2mv/IRAq20rKPLCmiuVCilvrHq2q2iAJq3XTjd+/nJ1u94Kp5gi4/bGD3j4Oym2d0SSZEkQM51BeRI9CcXgXSXA/BDS7C1uCRAs7C6Pu36e1JpSAhkQLnmBnr+WUmvOq//YKJ8L5BFBtP9xtiHCUFNhFbV89syamkscrxTn0Y4zFH4I2u2axt4feXe+klxA4U7SArmW72q+13usNVPuBb3qZpO/XgdMGDDiQEjJibN8B8xwCsax8PqrU6KOa4eaouicEse+BMlm8sS934uiVGqd08PLRBk845d5zn+Dk5L4um01xXaCbDGFUi7/wU9WSVSdPYMlDFVZEdLn6d0/GT1Y+cHAngiMDQfSFhLk4nGC8XPiITPkHi50yr4lQHmvxp6V26hx6ZJqSdFr4bhhiU928ESlUINFPXVhhHFefAs/8hEgXJHySbT8dibIvwlBXrNshFjLWVLj/AoYMHUooca2yZn40u8k+A+LJzNQGq1L7jyCfeWsxmALbl3TEHpKoCBcdfdJ+nRRD5GH8p80/nVXf14BhOhJdS/3okAU3OEw5iiWjjf5k0+ebXdATFnEuAQHynbtlAVOyWjyO31LxLTLhfNJVrPP52WQILFrlqLS23h8XH9PD9dICu6euLy+CqGWzNDYSULFljnllKlTX9beErPyzwMmhcEUIL98n+FTKABhx
- WAuDJ1B2
- VdclYUomzD5C8EZAl5IwIIiHtHRAHK7S+wIuPUJc6OXfQCZ4m0D4bJbb29N5yBD9LkzFCT02FDvSjrzS+ReA88FI9ZxQPZXXfW5cX+XgkhdvkZ6UKDsAMcoDdE0SRn4zzSTGe8DnzEGtrGWgAOB0oP+wz6y/QXW6MQvrJrZJdPeOec6iZPsEKe3hyfPsHFTnrakIWfV58G5XWvPjO4CAggrd51Ppym7CyPFNG/Z7c2iZjzqE=
+X-Stat-Signature: isu36ucfg34jy3hi1xow1nk1u6jti5ff
+X-HE-Tag: 1777475001-392785
+X-HE-Meta: U2FsdGVkX18wgsQDT1RXXZr3BZdTgLwdBWxZtm4HA1OzVSTSwgY8tQLuC+WPCo7xSGBnH0NUuX9wzP+4TE9wpGWT58axtcBhK7kNGwnmNDUKBiQ6/wX4eok3N9Q9dpNACqxrfHjJBah12nnHZUNg9Sk3N2SOJZfZQy1DRrKPpyI9FIRUPn7bj128BIPOje5JIFL5TXwM171wOQ4NSA/tKbswEAUuVFMXYwwuumibbB5YIcb3waf7uhY737ZsY+qW77USByCZz4PJZq8RMfL18Ci1Z2LYqnXZPdua1yJrqvGG4huw0RAHtG2kZNdh26EjHH58z0RAfo9YpknGfk/SDKb0oU3xGYWLx06llqquQH1NCqcVlzMdYpwN8+RImsRMkPy3T5B9GletpRrNgO16l1kTMRGcizk4/Cx2zPvI8QA6OdWjl5NiedNozLDGad1t5Y82p8AZPjz9yGp04f3Isxn+o1zGU2MwqS61UHIWDYTZ1FP5I3jp2TKjg7sMy+AYO7ZNxWOJ8uHHCQUgcmboDAaprvCgfzr+OhTZE8hYBuBCUPfyQHrvsrh6O7P4dLEla+nKBlulLiAou9ks1N4N2b/yje/e2CGMcNxjmovnjSehAietnD97qJqHZIZnDZSqL5p/N5xs3amyYsALhTq70oTEhfG0BT87gCPUI6Xbj0rzacEZcYy6bOWeQzzDeOwx4M9Q24Mo15+qK0NM3+DEqFZ64AyRVtFaRGUfV8WMXTTWiCut0ETAZ+34NfWfz06N0qtlbsn5u7OxvjS/RiF0r5hl4ToxHgyhJqgemGes4Tsw6lbDYC5ov0cvvBleI3+TKHNbeESApVE75ve8FXEsJWBkA5KlGQ0FxGxjRI9XcHeN+7KoAALt/geuS1jUYA18Vg8/2YwEpmbcB4+maf9RWAClwjzebenu7wBK6dan2yPGF7/d/lNOeS54j/cS2NNVDLGZZd4VUjUD3rgjLl1
+ 1Uxvj1N3
+ lZJCyUGU6d5AgJojlUMAXYLvxAc6AhPf9swOOVhrjf2VHQoWn8mdFitMDAwusGUq2K2L49Vmgog/377R5BJkcH2FJwXRqnRkuyHo8gRdXAta1/kuf7HrZZp6sPQYhfvuzyCHBIN8nC7VfsLqdpB0e1Vux3ZWnu2FalH8CYNgfFD108Wc05oS18G/X7RvB23hhLQOyyfOBtm7IDYuwfYV4RGSy4p0CHcoAwz1jxHCm6bLcB9o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,45 +102,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit ab71d2d30121 ("mm/damon/sysfs-schemes: let
-damon_sysfs_scheme_set_filters() be used for different named
-directories") introduced alternatives of 'filters' directory, namely
-core_filters/ and 'ops_filters/ directories.  Now the alternatives are
-well stabilized and ready for all users.  All filters/ directory use
-cases are expected to be able to be migrated to the alternatives.  An
-LTS kernel having the alternatives, namely 6.18.y, is also released.
-Existence of filters/ directory is only confusing.
+The alternatives of 'filters/' directory, namely 'core_filters/' and
+'ops_filters/', can fully support all the features 'filters/' directory
+can do, and provide better user experience.   Having 'filters/'
+directory is only confusing to users.  Announce it as deprecated on the
+usage document.
 
-It would be better not immediately removing the directory, though.
-There could be users that need time before migrating to the
-alternatives. There might be unexpected use cases that the alternatives
-cannot support.  Doing the deprecation step by step across multiple
-years like DAMON debugfs deprecation would be safer.  Start the
-deprecation changes by announcing the deprecation on the documents.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ Documentation/admin-guide/mm/damon/usage.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Every year, one more action for completely removing the directory will
-be followed, like DAMON debugfs deprecation did.  Following yearly
-actions are currently expected.  In 2027, deprecation warning kernel
-messages will be printed once, for use of filters/ directory.  In 2028,
-filters/ directory will be renamed to filters_DEPRECATED/.  In 2029,
-filters_DEPRECATED/ directory will be removed.
-
-Changes from RFC
-- rfc: https://lore.kernel.org/20260421044928.141388-1-sj@kernel.org
-- Wordsmith deprecation notice.
-- Rebase to latest mm-new.
-
-SeongJae Park (2):
-  Docs/admin-guide/mm/damon/usage: mark scheme filters sysfs dir as
-    deprecated
-  Docs/ABI/damon: mark schemes/<S>/filters/ deprecated
-
- .../ABI/testing/sysfs-kernel-mm-damon         | 62 ++++++++++---------
- Documentation/admin-guide/mm/damon/usage.rst  |  8 +--
- 2 files changed, 38 insertions(+), 32 deletions(-)
-
-
-base-commit: 97bd4e9ac10095f9b55f4a38d5d0757bc2a287fa
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index d5548e460857c..11c75a598393c 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -485,10 +485,10 @@ directory can be used for installing filters regardless of their handled
+ layers.  Filters that requested by ``core_filters`` and ``ops_filters`` will be
+ installed before those of ``filters``.  All three directories have same files.
+ 
+-Use of ``filters`` directory can make expecting evaluation orders of given
+-filters with the files under directory bit confusing.  Users are hence
+-recommended to use ``core_filters`` and ``ops_filters`` directories.  The
+-``filters`` directory could be deprecated in future.
++Use of ``filters`` directory can make filters evaluation orders confusing to
++expect.  For this reason, ``filters`` directory is deprecated.  It is still
++functioning, but is scheduled for removal in the near future.  Users should use
++``core_filters`` and ``ops_filters`` directories instead.
+ 
+ In the beginning, the directory has only one file, ``nr_filters``.  Writing a
+ number (``N``) to the file creates the number of child directories named ``0``
 -- 
 2.47.3
 
