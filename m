@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16914CCFA13
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 15:38:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C24DFF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 15:39:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B9BF6B00AA; Wed, 29 Apr 2026 11:38:41 -0400 (EDT)
+	id C00A16B008A; Wed, 29 Apr 2026 11:39:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76A3E6B00AB; Wed, 29 Apr 2026 11:38:41 -0400 (EDT)
+	id BB0D16B009D; Wed, 29 Apr 2026 11:39:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6330F6B00AC; Wed, 29 Apr 2026 11:38:41 -0400 (EDT)
+	id A521E6B00AB; Wed, 29 Apr 2026 11:39:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E56B6B00AA
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 11:38:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0DBE21B93B3
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:38:41 +0000 (UTC)
-X-FDA: 84712000842.22.2240A7F
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013020.outbound.protection.outlook.com [40.107.201.20])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3328F100006
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:38:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="M/pBDHtO";
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ADF46B008A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 11:39:00 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 728C2A0322
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:38:58 +0000 (UTC)
+X-FDA: 84712001556.04.9A73987
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011021.outbound.protection.outlook.com [40.93.194.21])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 757B21C0009
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:38:55 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=MKt9oURj;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.20 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777477118;
+	s=arc-20220608; t=1777477135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VzPEzaFT0PPo0m+nXKA/CE+C+L2BEl2OLWbZAP3NPks=;
-	b=BrY3FXvGz656f+lXyvjQfsx1yjMPVX/IFC1BlIadv/9f7zWuXDCdkCYImj1hYZYnaKwWLV
-	jvG27wRpZMzdasgRBx1vB3pxb/lxa4NALqiF3eUmmXdJ1jr3sFDy4zkdwtSByPyMjN/y4p
-	zOfDfLmYyF3Vz8sYHQJQlTTDYu2Zp5E=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777477118; a=rsa-sha256;
-	cv=pass;
-	b=DoZ2+4tJP9BkNvuEA3GTUianB4iSQKZ5UWwwDkImsdXkv3Wf/6sIzIJ7N9xtrlbdnWgnHF
-	nL72NPXi/Moxa4OhTwOCwCyxJ9QvO0zeu3PnM59qfXj6cEOenXfHrOlNnWqZ2n5q+T+P6S
-	HPtRpoY3M0FRPzO7Ypsnx75l3+UXz08=
+	bh=c8IGE9md+Wds3A5qgRUw9FsoDxobCxH++sKwWdjoMso=;
+	b=DqXWxvo5TcQyyCaytCdN4yXsX7UjCC1a2A1R837XP3WBcJDYI42X2n2ZD/xPInA8PBpbqy
+	7ofolyYLiiVdfkZaham/jyBS42bDs0SRxNicHiTFVcOhhjBIPga5uGuzS4BZX2/4N450QV
+	5fX4O8hUnFQlsRFiZfR7vxrtszuXPxs=
 ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="M/pBDHtO";
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=MKt9oURj;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.20 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777477135; a=rsa-sha256;
+	cv=pass;
+	b=Yn/CVgabY55k20rOPmM+gJEM9HzjiWomr6fVsMqI05DcCloYlI/wmyUsI+VHk0qx7BGJYE
+	3FwH3scTFXnRkPdC5mlXj5FLKvilBeaF1vllOr+LcxdId5r+fF9yJ8TpUkVCR8S/CJtAjO
+	0czPrrWESE+gFqW3HfHm8xH9eIi/gA0=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rawNT6VlCJEU4lxPqLLQBj0w4PC2X6nNZLYhuE2u3tUHSSXQ/Yj0jeOWNIBJnN2ZcpumnQf0hNEYvCfZpvPmoSn3anvi2iVhtJJ8Uqt25Z4oLbBvCcr6y+VlTnBge8xlLNyVy0AqhYfK+6OUgBrdDQ0mWBC4L6ZenIK6GErOCP54xFW/aRAW5d82baSf1G4lmRG0nb2pAPlvnCFKwaMal0nzlfouHdsQOWooUYRyX7IefQyp8nDoq4tk8VMmmQ5KboK0W8l1985XEmjLsC6memneL0y9HBcH7zcpkRji9cjzNihBkxZ4OFR/eQjBaiqUwFEh+krquX2pcVg3Vnfevw==
+ b=S2sO6R/s7Bs/fOpsHixOWRajC2j6QHBaS+z/VlHbFTTXLkdRnEuGtC4t1+lL8Zbpw9NHh/XSrAO08OysuE6gRp2ti/h8Wi31PjfNelS/IIY+x/em4cG5Ov9BVSvZrS5aRny9/BWn/cQhWnpVDk+Lc5eJPPAcsacMX7KULcV8IJLzmKehadtxoH/hu2iSyaah3lBiK+cr9WdDGiV9B60Z9dDHKjFZOnvpE+H95PA3g/MqiTdISlpVEZbQCRAri4nwpuK/m1tMA6FexqUoc03X+RAgU8NnHn25sbMnmEBn9IEWUGgWQTAAlrM5ItxnbBnJIlyADIVkuPD6DYCYoCByDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VzPEzaFT0PPo0m+nXKA/CE+C+L2BEl2OLWbZAP3NPks=;
- b=yQACSellH6k9QOygsNDMqaiZZqLOf08NeT++pKfVbpc1xpox4dcCGY44hFasMOKLfyDnA7RVFEOKC2VxtPOK75RqwIiUo2cPertmRYgs7JIG63u0ZG62UZYAI5nsvaRFMzh2KSQAbwTAIuZwOx7Aj9t63KlWCdU/n2zUq+mOpMTHMGqodRT7VE4aoguk6tnvK6uxA23h9If/N06xRZsOPlmK0ZFj6DBGw+cmZoRfqs1fubHt5th92lmodcwcTNlmgTwEISw64Cw/z4336r7m2PW5zcoraXwf6POKRWa6NckauuiaT54nktyYz8ZlWVSo60wvnGW1HCwRB+PHdppZFA==
+ bh=c8IGE9md+Wds3A5qgRUw9FsoDxobCxH++sKwWdjoMso=;
+ b=noR1yvkHh9Zw/ABdciPIWV0Wcmn6tNUSujA5LuDxYBvuEQ2phxx00lh06S0uAGrlYJ9I496QY6aMf/g/Z47QW6jqRLPSGeRHJUQa9yxUxjnm/l/2TOiS0uaIjNmRBsOpRlBaclOuVGgeEOvObRSC2ZcWLJkh9bINNM3Nkoqyu47XPRsJt4R/h1NphzdaR5eSlDSI3xGV5WawyUBU3V4X4gg7mYNSDHN/UZnGNFoPcmTSVbx4zt0qJejWyW0/sVlZfNblwA/+XlTD8WRuA3AUxOZuQ5TQzLDiRuW3g2OkKxHJkZ6XVJHhRFQqtBbVRP/TvTySPNZ8q/HrpUPd3TxWxQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VzPEzaFT0PPo0m+nXKA/CE+C+L2BEl2OLWbZAP3NPks=;
- b=M/pBDHtOQnhUSCDItQI/7bupszH9FnwGb2RtsRrd1gsuL9MHcGk+56hOoydtW27Rlz3MEgcgewh8/Z780e7AodWvd4J0FFRKPzSSE5HXESqk9aTkeERWd2MK8mlbPPAb5SlIxnlwHUF07GePe+Kcidmh1h83he8pBa/J85bayjFYBMaipmTldDRp0B/hNL/uiFA7fqpzghtfT+2cXkEjdiQ9Oe/4EiVPKSQug+lXQfK5nbivqucwVnsA4rMtVjnmAbkrh2S5pg7QUCqsX7x6Cs7XiNod/a4qHqCFWhQfkb060M39RCCvAZwJ6lNN4duOYsYMKNXNa1TDsyY022y1KA==
+ bh=c8IGE9md+Wds3A5qgRUw9FsoDxobCxH++sKwWdjoMso=;
+ b=MKt9oURjnHQ4uoLwzO0KJYVgRjhM/fFbE1MJzPyqXoUOe0FjDJKEmNDnoI+SNnEklWl4+QoyY3tyK1JbIejyNspZNYwmc0gj3cndy/xYu0lrI6zLs9YYk3KJlcuYBADAiJv0P1Zupns7WJRZUqkmGNtQ3t+Ag735S+keKT1Xyr3adsTRCarqlb52rsW81ABM+v4UYB0Rrt5Tr+WwyRUhJrO7cWc92RpyHio+2OdrYyB2874X/CM3W8zvgJinWLZyn/vt+G9B/8qMF3z5HyOifMUUojUROECzE0CbMiiDrLxL6aMuj3BMG8kQjeXG+XB2p6lfJ5qaqbsuOs9OU42DwQ==
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
  SJ2PR12MB8881.namprd12.prod.outlook.com (2603:10b6:a03:546::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.15; Wed, 29 Apr
- 2026 15:36:49 +0000
+ 2026 15:36:52 +0000
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9870.013; Wed, 29 Apr 2026
- 15:36:46 +0000
+ 15:36:52 +0000
 From: Zi Yan <ziy@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -104,79 +104,79 @@ Cc: Chris Mason <clm@fb.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v5 07/14] fs: remove nr_thps from struct address_space
-Date: Wed, 29 Apr 2026 11:35:30 -0400
-Message-ID: <20260429153538.727855-3-ziy@nvidia.com>
+Subject: [PATCH v5 11/14] selftests/mm: remove READ_ONLY_THP_FOR_FS in khugepaged
+Date: Wed, 29 Apr 2026 11:35:34 -0400
+Message-ID: <20260429153538.727855-7-ziy@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260429152924.727124-1-ziy@nvidia.com>
 References: <20260429152924.727124-1-ziy@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: DM6PR08CA0057.namprd08.prod.outlook.com
- (2603:10b6:5:1e0::31) To DS7PR12MB9473.namprd12.prod.outlook.com
+X-ClientProxiedBy: DS7PR03CA0011.namprd03.prod.outlook.com
+ (2603:10b6:5:3b8::16) To DS7PR12MB9473.namprd12.prod.outlook.com
  (2603:10b6:8:252::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SJ2PR12MB8881:EE_
-X-MS-Office365-Filtering-Correlation-Id: b14c9c58-1b73-4621-717a-08dea6051f90
+X-MS-Office365-Filtering-Correlation-Id: 313bf602-1621-42ea-c84c-08dea60522b5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|56012099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|20052099010|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	mSFRzH5dzUfX8RdrM12cQb8vDQ1gK3xE/dFV/grM1Uon6TRVtMRzT7ianEICsE5Cr6Bo0q4d7DgMGPCQ9j3ILBankJWzyI/Sg1vgkkxIkp1KewCKGSv1lL+wQ4IR1eIyOAusF4Xu/m2f9NK5HTCSts8xHDmORS0g/qBzi8QjJOuOJ/guTLYr+YOwAfITE1is02cJhTJECDek4u4P1vVHufLU1R/CPu/1JBAZ8qz77qB1vzB/sD2yvDmu8HrdMAKIUC8XYt9WY/PnzWHJAXM2gc2Qrzdn6OESyufh6T9dH0SncDRkVApTlK1WHnA1055mRIAaaS7lUUbkQc++r9YnBBdNRkNK0Hy+Yp1YAcRSqrgL3/ydFBpsXiGPcXvqErwkSab5gZ2ogb6gV+jt7PhVuJnVL5I72QEtqqD8efcbyYQv6tcO8/vPUY2NEZe9EaHHxU/bnwxdj0tzO+rBSXIbTCVLohB2ZHJyr4bAf2Qq2sdnswEXUa/XiuVUzG/fU+73Sso7a1uVwIPPLTq7Ddcknpi0ERi7S5U1JIc2rqH9LQPKWF+44BRPNXO0OPBJ/pMT/klV5JwHr25gCJTI5LK40ltAxRkmPI2MqqXGS40t7YgzbyvEzateLxNUFvtAfgyNF40YEUZHjwt2iDb7/zA8vjw1lIkh/PwuimTLF5bFyjEBJPIJW7lygZOmThn4W5+Eq9TVdv0d3Wf0bPi9yGHG3AtIDBQIVInZtFIu1fwmYts=
+	2ZuWc5faAETWi+ncVPkzws1fFemfdkyll6U1xRFbSLJ1YmjaUPLeuTV13u+MSQIggERpC0vW+uk6qFiVHmRFuGWiSQtZVvX8egIXT2Hg1zQwhTZNP+5HPNQoRfgSSq0i9Vss7OD5Kiukyqpn2k7EbCONYlVP5ioKvRclzefF6lE7dcUc4vvENIngA1xVprk9h8Ky/JmAScPB9Oxpz8/SWfMcL5HvIW5SY98jrQQUNZDuGsq3uPyxOhdhDI2kcQyn1YoD9ZdhffmdVWfXBS9P3vtr17gsgP2tTtNydc5GgABpIN2b1KH/oPtubWh5w5e+SFHbZDlUSqYl2FngAj8qER4vL+JDLf99yDYdGchcEwi+pZ0N0PwmZGrLeeeb5Ilil6cE5luSLsHbrL+Iz+o+VB7uxUB1mUtus1lNTe9LqrjyTBbecrFuEP76FZU4u6OheE75aRMrMJd/v+frHlDDJ4w4K1EG9bHCfjjHMDOo0XqqD+RYdcj4YIpXod5t1eli3H7ugviFCNyVjmQu6fbUxwxN8nK1f7QuRChymYr4zIr3xHnD7cCELRQhRBZMlW6IbSdkK+s8lCCsP2coCAIDi1wsZR1e9yqo+dKTQgwUAbyYGxRuLuYNYU269bDgmtC5f1KEyoqUVviVpXAiQ9RqyfBA1SVdvM6dm+KVFocvNHMBKQ48nmHvnwuTCL4Gc6M/IddpGBbQCo7K2d6HTwIZYI7ZWJfImG1jzKrwWJE7RqI=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(20052099010)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?30hBulo3zlLLhfwwZAB4OvnAy1YtxqiZYEhVF4++Qv0b9iDRxqHt9pmd/630?=
- =?us-ascii?Q?kJ/NUA1FNpig96YIhl0SbFbL8t3uMxA9BrtcCyy5C7fuXG2G53L96c6zy0J1?=
- =?us-ascii?Q?+IIianBRWk/dh1cAnQzcBqki9k6D8Lu5Mn7O0to759rvEY12VjaohSUJ6LqA?=
- =?us-ascii?Q?VSi2c9APlWaa4e14bvde8H9TMlIb9qmcRUFmtxjxKxfJpL0rjDRitezgGbDb?=
- =?us-ascii?Q?BMB1fNcGls25IQX/jL5eIAxzoYLxK/hwcy8RPq1BXQn7rWPpz4nIn5aNHOxT?=
- =?us-ascii?Q?cS1ra/mHGblUdlLjSd1vfbRG5u1z3V7pMYRXYyl6nxJziUvLsRimyq1W6bkt?=
- =?us-ascii?Q?AY3F81poYvFw3RI3QSBwxGqkp3yEABfoCSMQo/f7eW95Qrw9m+ATZ1WBSGRn?=
- =?us-ascii?Q?aTjsTqW4R4VY0/qZAPMuNEpK1CMY6mlV9tCOFnJnEGsyC1ErMRtpzWsV5jE+?=
- =?us-ascii?Q?opaTIy16/3BeGy/qO1FyHDrJqDhAflTP/meK14LmbJ3vcUVlOLu1Q3VoYxiV?=
- =?us-ascii?Q?8tJDvtFI2VKeYzel1yZpvjwyYfKPB9K3iDSP40qoELt87GricgfwL8uDvSGg?=
- =?us-ascii?Q?XORKPlMjsp65WOQX0S+BlSuT7eEa9KLGn9xvzLPIO7em5+svqlvkhP0+RWvX?=
- =?us-ascii?Q?Y61BdQOGc14ORcEZPpeeIiSxrIwvw/TKvs+U61bpIcvnscjL6rtMMuvx6hD1?=
- =?us-ascii?Q?+zOW7AzE+Q63PnWrSfR2ueOAF0z4hpW0kH+Zy37xATMTh3q2414rwVgd1cwy?=
- =?us-ascii?Q?bg5vFx9KsGDkQhF51aQ0QXVb19p0kpN40Ye2pVi4wQoqV9XQ2Vl2F02Nz8RE?=
- =?us-ascii?Q?AzAkbZtoquoar7z2KifU7uOV4ahMN4u5RiaUj3EdmtL2IBByffN0vMFQrh+1?=
- =?us-ascii?Q?MwFA9PFgZ65H45LJrFsFzLTW1gAXaRl1Gj1+PXTKU2kiwbRQCItnUUVx460B?=
- =?us-ascii?Q?QODCrSNvIBQ8q9I03ypgtBgyuDaFfLAZUjxdS98ZxcgkKgii3oQvZMeE70Zx?=
- =?us-ascii?Q?apIUu79pkfvejjJnebnkMAewOcM2SnxF9bsObJiYT/CASmASVHDPVHt0guMV?=
- =?us-ascii?Q?qfoxW/AbovhhBMH1Utj2Ylg3HsXQlG4L5bldLp/4zBGJr8V/RZh5SHDZLbTR?=
- =?us-ascii?Q?rQWs4BOE4wyYOdPUCpd/laxjlpfCa5/a360SzBi3ExP0RkbhIRwswUIUU59q?=
- =?us-ascii?Q?YHaVQYzQxgR1aoQYLlm+9D/Thv8tXYNOElk6LsfY5WaAHJ0r+wCcMTsdCwcV?=
- =?us-ascii?Q?orWwi5VCAJcnKbI7oPHetywW3f6VreAcqSIW01O86Oj5sW3SklzVGq593qxe?=
- =?us-ascii?Q?2fMyFa5HrXC+v97O663IaC4GooREsvlA0iMViES6Z7dvB7ETanS8AlTfz/Y9?=
- =?us-ascii?Q?F/fKgDcwt9caHMpa+tiB16fE4QPqGliYicDAbYbNdu7yYRw89daqPDzFx2ek?=
- =?us-ascii?Q?qhmfld11JSxnlTAVawQoQdhf8gjpU5VSlp3w6Vn6HYtkDRSLfyd1LW5qtKlb?=
- =?us-ascii?Q?pfttqjMQ0Nt3CG3n0R/5qzto1p6Y52oOhLqWnYdHjr4ewmX8mDKgMhpE44Z6?=
- =?us-ascii?Q?JkNteJwUlG5eztAC+WKayNFbUSRc8LgpFNRIm86qVVXY6QzCTuPys8Hjqu1l?=
- =?us-ascii?Q?jH7mTgHymJQ/StL4ZMBOwud86ZZWwdGQ0W9JnfphRx+VS4FzZUEPibhXrukW?=
- =?us-ascii?Q?BgLYgxVc7tYZjRbhlBvq7nHcTT80vC83xgXzK+8teaWx2SFb?=
+	=?us-ascii?Q?KZpR1KqrnDbckVXK8OAQM3GNNkZ7PvhFsQ6h36N7pculxxGAqDxqDajlZdwH?=
+ =?us-ascii?Q?NFH10NKdFfHmLughRAFhudpUPfdVoL9wMbJj2PYdCZ9P73ttVj0fRvq71hmo?=
+ =?us-ascii?Q?bTzOX5sSRwh6H5GwhziGNPkJETPXpIi+g4QNaDbq46HtQg37Sh7hmK+xv2h+?=
+ =?us-ascii?Q?XnphOUKknYhUPPhPUb6cxNbI6UwXFMq2P9cDpCqPRlXOF+4FRbQNxnImk80T?=
+ =?us-ascii?Q?EOh+iLO/iqQymX5fLVbK3zX0BdFTWNVlOS4CTX2TeSM7rdCwW0kz5qpF2ego?=
+ =?us-ascii?Q?c90f8z3vRn24hqBxYlvZ8QwmjbERVKUVzkr2RLp/AIDzUvxQHiNjwLbceW3P?=
+ =?us-ascii?Q?+RAgGgut7qUIGuGwgAukXEMj39+iA/gjSGDKKFLcFf5BKRmHVyO0oh/kAxYG?=
+ =?us-ascii?Q?/TPjyG4aXPG8CtAPCv8vsFjTXGLhOv30N1FtHrGuonDRy6PEjAWxIONQSuYn?=
+ =?us-ascii?Q?kkA9Dhpab1k2bbiT3ngnRdtee5vI2QIqbHsTQKtYAVTEkLmONrkDqF3A9pYq?=
+ =?us-ascii?Q?6bFaVWbkvHk8OKZY6P5jyX99O25+Jl5W7jUs3zV1jQB4//u6+CtOs8ug8psw?=
+ =?us-ascii?Q?nK4TF1uqHSJ3FD4DC0feg02zbmT2s4QxenWpasDRMCH1g/kkZoclZa2ZBhGc?=
+ =?us-ascii?Q?bMP3aVkwDoMuSVTbik80FurS9ScDU0pAfZxt8nJjrthXoK6brsceTyHqLc15?=
+ =?us-ascii?Q?R88OZ/v1zUJAnSM1XF8xosXEqaA4TVXySlM7HtWzYAFM3ZSeiLUdcbKGIDZW?=
+ =?us-ascii?Q?koVVqWQYpEpZ/rh+cchFMDeGpHLBzkdn4cP0JbSP7dQqjiVrKvL4hGyw289+?=
+ =?us-ascii?Q?SpWSIuuCnteEvIm8nyWBiRshPGfRBVax/d7QcTW91yrUc7PV4zYjsI7xga6R?=
+ =?us-ascii?Q?VpZdD+lkyhxIZe9A5/j959e0NwL9wPKdrbEb4VAS0ROfxPdZCzrr8RDoZab4?=
+ =?us-ascii?Q?iEtEDDA+e7rMnPXNj5SlSCM3W0jIf6ny10JImQWwx1H+j6DhoJIzbQSLSlyi?=
+ =?us-ascii?Q?C1wNyiVSSYpV9/2sNe6FaGCam+0lGCbZnt3RoRe6ba6TtumPEp00NG3mswLP?=
+ =?us-ascii?Q?+HkzI7WWbR+91D3rk4njNKT804Buf2qZz4ku/VcWAMUEDWqYeOyT1Mejf/hs?=
+ =?us-ascii?Q?sCuFtr2Ompq3J5rKHXDh9xTL6MNkp+ZhRZRCkU/8wCeKpYXZM5+Zek3ccvoY?=
+ =?us-ascii?Q?dbhdQT2VAkDF22TSdu8B34zqR+yZFvmD7L9wBolrSD2B/OlD6uc7rUysRxJJ?=
+ =?us-ascii?Q?ZVAwaZuIWtSrYmMMR7OdYhRalfaXS1egSk8m/10qzphp47mJ1XcHUx4TJNW7?=
+ =?us-ascii?Q?PXeqWdAnLBQLtVAiFcEG2KA7raNWamY7G54L/0bAfkPBT80gxgGwHw9bIbO/?=
+ =?us-ascii?Q?hFDeH4xtHS4txpjZ+dI9Z2OZQeJomB7tWFKyYKnkaUoqZSc9/d5mLuHYs3wW?=
+ =?us-ascii?Q?pNrk920mtQRdpyo7p3J7KT0/jvs+a8cXzT277e7TRSrB8/IbWYiDRu/Es6eM?=
+ =?us-ascii?Q?gWxbolo7KZM01qTchvlu/fADQuPxDGWgQWr1rtBZixztteVdED0aH/y0lvsj?=
+ =?us-ascii?Q?fVEUz9WM3qbCQwFfriytX19qyupEN17I395Qg0aVGIjE4UuLOQVVpL7yyzF/?=
+ =?us-ascii?Q?ybiX6eIMMSuWJaAQ4XZp1K+Wt3wGPvSNJpWDxrOVEcsCQxiy0mFxnWMAWksh?=
+ =?us-ascii?Q?eJPzzaw8yzzvyqdBCWUMn5n9cKxeIQtBxpY+07mm83S7EtwN?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b14c9c58-1b73-4621-717a-08dea6051f90
+X-MS-Exchange-CrossTenant-Network-Message-Id: 313bf602-1621-42ea-c84c-08dea60522b5
 X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 15:36:46.9035
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 15:36:52.1485
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pE0GEkRqKdbICyjeFgBjW4/ryafaY7zrbKKC6EaU383VaJSyJCoBi9MwscbbVZWY
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1NlGBrMFjyfgaEdEI1xUQ4trzJabkg/TI91zKu1TA4p+d4OsKemxaKD0ule2Cwt+
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8881
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3328F100006
-X-Stat-Signature: k4xzbu453e39e4gtrtk478c7j44co5ee
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 757B21C0009
 X-Rspam-User: 
-X-HE-Tag: 1777477117-121105
-X-HE-Meta: U2FsdGVkX1/IWpOJRdKTCeAB6gQXZdzi5V0kvbLHxMDQnWai/6IlPZ6DfcoosUR5bBOsP4mcun99XWTM1RGTbWXNvL876QZCnPHzL5rGe1NpSOEG7LxTiwjvDWPMx1a+NIIjd1SiYCi1WMqhjS5LqlOswT77ONt7zB5qCMkUZgWfIHsVnLITciAf4myMDof48xSTOWXVfjY9qzvR0V/nJrIEJAMEYThibME79LwxWw9fZEVGgRtw+pyeAmUb6jl45JhH5XIdZO3jae71624eJNPYtNc3KZ8xczda2Av9UlCmDAzWbqzBD7goN1FSOi1BBXGKf8pDuaQqKFXnAhkefKSyp7hXnSQVbyfIc42KAjHkQu6GdlJ+FtB91ekpVEZSMkPNw4is+tJ/2pISAsGTuGnuzvUKmwUJIpp2k2lllek3B7+vLHDRbvSnb6YCqH+ASulgo0KNrWQVHWMwZmPRzwaq35sr9KeYBXLN8qsZd5Lt18SPsD38BkK7DC0yNm598h+iaISIFXCAsITsyWXEINjIbnd9TlnbGrJu3gEcUDnFRDw+/YZgYo6yHigSJbcuZmFagIjFTJPVzZUYWvnwMSiDQTg3dcsdFwex5DJKYn3bKvF7mQDuJroXrewKRnoVGXniKsGBkMAJnjQjjn0U9jnRucC72j+ftAheOtLjDfRAcXydHbTXbVtlypg94nMV7jRh5hqkexFalYC5UBrn1O1ZGCt4D5m3+orvfGc5t7JvEptB5KLYCG8swFBwRWQHdpOfh3MKKGC4ROdG7SZ7UfKfjEmvSUVHkoSIYCgysjyLzI9QtoCGUYPDuYJxoXiEqjomYdngEDDQNbHbbfAiLxY3YG79wcy6QVQtM+1K1h5i+RQszhqEwfHukdfd8kSkdnG0gqaioPpr/Bs280+cJcXwS/3eAHik0wZKedwirYgFm8ZmhcDQYO8aSmQB6N91gjwmBw474siZsi2/pLy
- T6UW7ZKo
- VXytcfmOm4YqT1xbpOEEPGBT6kCmQSjvLDgq3bdmMB0QxGmrtHhKoqFy/Xx0wpvhVDhngayF+M6wMlVyCAxOUHO0gLDaveLIrdAUa3C5cGmibMUEUbiKXl8sNvtSNFP+wQm3b/yP5QJILbtGI53rqPZzjUXvmtLnnU2av6ZtrOvwavwvwCe/sQ5fL+SZeCqFH+aW6ODqD8dyG8xyYZrWQLPiQVf5TxmjBXb1zzlAzj2byKj2T+plsY9xhvIgy+9FlzmqJAXYyFAdVVTYhpvEPOcqI8rZ4k3AjJNsCP/nxZ0IzsRLsBNaQRdPH4be20ypP8OagV1Y1U3TuTqWfFOOhPn+DpGuctd9pgS7OMrPlrIB7eWjriNMNv9HjYbFQAw2HIGWW/bApHuNDVjLoTTEgkfJKIj6rmG3xiJEMsQB+YI17TXbiOUD0R336EaT2VqQw5k9PCzYmUcQUkY1HakS9csbpxVrLzmkvgqVxfwBMtjbNxjZqEGZyu98lWQDTc6gtNIwrbvaMPdEH5j/KGKDz6IU025XcGimCpDSh
+X-Stat-Signature: 87fc78gh3qxx5w1regzidjmxdmwcehfu
+X-HE-Tag: 1777477135-969454
+X-HE-Meta: U2FsdGVkX19tZy77CCuJgpaCT1eipIMnGTthkFeFxsTVhoiKX39u66C7xY3Zy20CLVRCmbneBUIUGsh2s9Ixlg8NI05D1ntBQJCd0SChq1XUyGT2SjqfddpD0uTn6o2GZEw2oWYuaagh/Ca9B1CImUrgkZZj9+d3i06WVbhwXvhAGusYl4mauDiLvOOPywv3C0RK1howXf6DTN1yaZQ2GKorL1d7y7es+byYJKqesZ+byYGd9Iu92F947Fe7jQFx7/+Cq6hwYOEX5iQZMRPgZa5dQ6kLJdbz8RmvxBconWf+dWr8tyeLrzO8YgZc0sKeUYkSvh4VFlEQqq/E3lbRYMivhg7ivH+XuPDa4OOTFKB/qRx6azqQm6kwF7uY3xFKZsLqMpjqY1eXuILWg5xFeBLJ4PLWYicXzEw+TUwJDYoj/RupqbeWSYeQ0nbeA7qpwOyHpW2DFfFMMA3fkMJA4XDWY/8aU/2WTtiJ1Mbd0Fa+7brkODkfboogCfyecoU8t+amyUMTl5JadQwo41dPIlWuij8L2AyNZi+ubgASHcEWaJnkScEU91ke5QTG3Wmb4SYV4kWb8/in4YGmIbhjwbpw1eYevIFPOpmlrkQsN02bwsVfT6P6qQoL/W19/xZxDcQu/EHEVdMznpFa350NPOOyBjzFeYdVnvBwpVWWEFwx+tflJ6mD2c9LrNd2+0waiYfOU253jOCCIJFcBH+TJhY52DX6U92dN1GJYz3HzOOKicPCUqw3ucA5jBasXYTQdaghg66phtsANoztORJ8i/IvQK1A/BHSWX/CrJy/UPUEeBGaez0gSnDQYGrv6lBIKlEdFpE5OxYVvzI+apQ6DyOGLkY7GAwortxauroWq97AhQr1ZHq4r2EqXWBQGmFleBdOypMhijKpZXCQfkMNHoLEwyTd/qD/20EJOZYYCcmDSPzAtdghOc1gIG7jLMFdjNytgKubycmkeA39K0k
+ +AgwYulr
+ fyGrl1uVNGJejw7eqrgvXW4uVN/Edy74nASbP36S5HH/2dVox0+jm+v6p1KUINlURlzYsF1XR5OxzofZrw7hBfTm8LoMY35IG1g91JKKOJCqsIjvwPyNX7GfhdYzjVyMsROg9A4IncFAQxotrfXH/RGuJEdKH3UYek0CpjFyicIY6778IL0Hkmo0UtU9ToUW8yfMjck307P1ruGpLvtcGlT3Eqw+q1kfBVBCaqwQO/4VlU+n6boFqYV486dd8V/CVo7aBr7FmR/P7ClGnrIFGEiQWeDPcfj3GdBxy3acldML+ue/fUDKbItI6Ub2wmlvhjpX8jUJgTN7Rwcw81F79wYpZMmHxdBsvdguDSxXjsbLxMlk33ViMNwWelPWFLm8jEJTeBhUKFFJbYRT0FOgU5aZyg8KXW9mB5b6nW9+qxrPjx2I6rJPPcmllMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,59 +184,344 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-filemap_nr_thps*() are removed, the related field, address_space->nr_thps,
-is no longer needed. Remove it. This shrinks struct address_space by 8
-bytes on 64-bit systems which may increase the number of inodes we can
-cache.
+Change the requirement to a file system with large folio support and the
+supported order needs to include PMD_ORDER.
+
+Also add tests of opening a file with read write permission and populating
+folios with writes. Reuse the XFS image from split_huge_page_test.
 
 Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- fs/inode.c         | 3 ---
- include/linux/fs.h | 5 -----
- 2 files changed, 8 deletions(-)
+ tools/testing/selftests/mm/khugepaged.c   | 131 +++++++++++++++-------
+ tools/testing/selftests/mm/run_vmtests.sh |  12 +-
+ 2 files changed, 102 insertions(+), 41 deletions(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index 6a3cbc7dcd28c..d8a6d6266c3c3 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -279,9 +279,6 @@ int inode_init_always_gfp(struct super_block *sb, struct inode *inode, gfp_t gfp
- 	mapping->flags = 0;
- 	mapping->wb_err = 0;
- 	atomic_set(&mapping->i_mmap_writable, 0);
--#ifdef CONFIG_READ_ONLY_THP_FOR_FS
--	atomic_set(&mapping->nr_thps, 0);
--#endif
- 	mapping_set_gfp_mask(mapping, GFP_HIGHUSER_MOVABLE);
- 	mapping->writeback_index = 0;
- 	init_rwsem(&mapping->invalidate_lock);
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 11559c513dfbb..bb9cc4f7207c1 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -460,7 +460,6 @@ struct mapping_metadata_bhs {
-  *   memory mappings.
-  * @gfp_mask: Memory allocation flags to use for allocating pages.
-  * @i_mmap_writable: Number of VM_SHARED, VM_MAYWRITE mappings.
-- * @nr_thps: Number of THPs in the pagecache (non-shmem only).
-  * @i_mmap: Tree of private and shared mappings.
-  * @i_mmap_rwsem: Protects @i_mmap and @i_mmap_writable.
-  * @nrpages: Number of page entries, protected by the i_pages lock.
-@@ -476,10 +475,6 @@ struct address_space {
- 	struct rw_semaphore	invalidate_lock;
- 	gfp_t			gfp_mask;
- 	atomic_t		i_mmap_writable;
--#ifdef CONFIG_READ_ONLY_THP_FOR_FS
--	/* number of thp, only for non-shmem files */
--	atomic_t		nr_thps;
--#endif
- 	struct rb_root_cached	i_mmap;
- 	unsigned long		nrpages;
- 	pgoff_t			writeback_index;
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index a6bb9d50363d2..80b913185c643 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -49,7 +49,8 @@ struct mem_ops {
+ 	const char *name;
+ };
+ 
+-static struct mem_ops *file_ops;
++static struct mem_ops *read_only_file_ops;
++static struct mem_ops *read_write_file_ops;
+ static struct mem_ops *anon_ops;
+ static struct mem_ops *shmem_ops;
+ 
+@@ -112,7 +113,8 @@ static void restore_settings(int sig)
+ static void save_settings(void)
+ {
+ 	printf("Save THP and khugepaged settings...");
+-	if (file_ops && finfo.type == VMA_FILE)
++	if ((read_only_file_ops || read_write_file_ops) &&
++	    finfo.type == VMA_FILE)
+ 		thp_set_read_ahead_path(finfo.dev_queue_read_ahead_path);
+ 	thp_save_settings();
+ 
+@@ -364,11 +366,14 @@ static bool anon_check_huge(void *addr, int nr_hpages)
+ 	return check_huge_anon(addr, nr_hpages, hpage_pmd_size);
+ }
+ 
+-static void *file_setup_area(int nr_hpages)
++static void *file_setup_area_common(int nr_hpages, bool read_only)
+ {
+ 	int fd;
+ 	void *p;
+ 	unsigned long size;
++	int open_opt = read_only ? O_RDONLY : O_RDWR;
++	int mmap_prot = read_only ? PROT_READ : (PROT_READ | PROT_WRITE);
++	int mmap_opt = read_only ? MAP_PRIVATE : MAP_SHARED;
+ 
+ 	unlink(finfo.path);  /* Cleanup from previous failed tests */
+ 	printf("Creating %s for collapse%s...", finfo.path,
+@@ -399,14 +404,15 @@ static void *file_setup_area(int nr_hpages)
+ 	munmap(p, size);
+ 	success("OK");
+ 
+-	printf("Opening %s read only for collapse...", finfo.path);
+-	finfo.fd = open(finfo.path, O_RDONLY, 777);
++	printf("Opening %s %s for collapse...", finfo.path,
++	       read_only ? "read only" : "read-write");
++	finfo.fd = open(finfo.path, open_opt, 777);
+ 	if (finfo.fd < 0) {
+ 		perror("open()");
+ 		exit(EXIT_FAILURE);
+ 	}
+-	p = mmap(BASE_ADDR, size, PROT_READ,
+-		 MAP_PRIVATE, finfo.fd, 0);
++	p = mmap(BASE_ADDR, size, mmap_prot,
++		 mmap_opt, finfo.fd, 0);
+ 	if (p == MAP_FAILED || p != BASE_ADDR) {
+ 		perror("mmap()");
+ 		exit(EXIT_FAILURE);
+@@ -418,6 +424,16 @@ static void *file_setup_area(int nr_hpages)
+ 	return p;
+ }
+ 
++static void *file_setup_read_only_area(int nr_hpages)
++{
++	return file_setup_area_common(nr_hpages, /* read_only= */ true);
++}
++
++static void *file_setup_read_write_area(int nr_hpages)
++{
++	return file_setup_area_common(nr_hpages, /* read_only= */ false);
++}
++
+ static void file_cleanup_area(void *p, unsigned long size)
+ {
+ 	munmap(p, size);
+@@ -425,14 +441,25 @@ static void file_cleanup_area(void *p, unsigned long size)
+ 	unlink(finfo.path);
+ }
+ 
+-static void file_fault(void *p, unsigned long start, unsigned long end)
++static void file_fault_common(void *p, unsigned long start, unsigned long end,
++		int madv_ops)
+ {
+-	if (madvise(((char *)p) + start, end - start, MADV_POPULATE_READ)) {
++	if (madvise(((char *)p) + start, end - start, madv_ops)) {
+ 		perror("madvise(MADV_POPULATE_READ");
+ 		exit(EXIT_FAILURE);
+ 	}
+ }
+ 
++static void file_fault_read(void *p, unsigned long start, unsigned long end)
++{
++	file_fault_common(p, start, end, MADV_POPULATE_READ);
++}
++
++static void file_fault_write(void *p, unsigned long start, unsigned long end)
++{
++	file_fault_common(p, start, end, MADV_POPULATE_WRITE);
++}
++
+ static bool file_check_huge(void *addr, int nr_hpages)
+ {
+ 	switch (finfo.type) {
+@@ -488,10 +515,18 @@ static struct mem_ops __anon_ops = {
+ 	.name = "anon",
+ };
+ 
+-static struct mem_ops __file_ops = {
+-	.setup_area = &file_setup_area,
++static struct mem_ops __read_only_file_ops = {
++	.setup_area = &file_setup_read_only_area,
+ 	.cleanup_area = &file_cleanup_area,
+-	.fault = &file_fault,
++	.fault = &file_fault_read,
++	.check_huge = &file_check_huge,
++	.name = "file",
++};
++
++static struct mem_ops __read_write_file_ops = {
++	.setup_area = &file_setup_read_write_area,
++	.cleanup_area = &file_cleanup_area,
++	.fault = &file_fault_write,
+ 	.check_huge = &file_check_huge,
+ 	.name = "file",
+ };
+@@ -504,6 +539,18 @@ static struct mem_ops __shmem_ops = {
+ 	.name = "shmem",
+ };
+ 
++static bool is_tmpfs(struct mem_ops *ops)
++{
++	return (ops == &__read_only_file_ops ||
++		ops == &__read_write_file_ops) &&
++	       finfo.type == VMA_SHMEM;
++}
++
++static bool is_anon(struct mem_ops *ops)
++{
++	return ops == &__anon_ops;
++}
++
+ static void __madvise_collapse(const char *msg, char *p, int nr_hpages,
+ 			       struct mem_ops *ops, bool expect)
+ {
+@@ -512,6 +559,10 @@ static void __madvise_collapse(const char *msg, char *p, int nr_hpages,
+ 
+ 	printf("%s...", msg);
+ 
++	/* read&write file collapse always fail */
++	if (!is_tmpfs(ops) && ops == &__read_write_file_ops)
++		expect = false;
++
+ 	/*
+ 	 * Prevent khugepaged interference and tests that MADV_COLLAPSE
+ 	 * ignores /sys/kernel/mm/transparent_hugepage/enabled
+@@ -578,6 +629,10 @@ static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
+ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
+ 				struct mem_ops *ops, bool expect)
+ {
++	/* read&write file collapse always fail */
++	if (!is_tmpfs(ops) && ops == &__read_write_file_ops)
++		expect = false;
++
+ 	if (wait_for_scan(msg, p, nr_hpages, ops)) {
+ 		if (expect)
+ 			fail("Timeout");
+@@ -612,16 +667,6 @@ static struct collapse_context __madvise_context = {
+ 	.name = "madvise",
+ };
+ 
+-static bool is_tmpfs(struct mem_ops *ops)
+-{
+-	return ops == &__file_ops && finfo.type == VMA_SHMEM;
+-}
+-
+-static bool is_anon(struct mem_ops *ops)
+-{
+-	return ops == &__anon_ops;
+-}
+-
+ static void alloc_at_fault(void)
+ {
+ 	struct thp_settings settings = *thp_current_settings();
+@@ -1097,8 +1142,8 @@ static void usage(void)
+ 	fprintf(stderr, "\t<context>\t: [all|khugepaged|madvise]\n");
+ 	fprintf(stderr, "\t<mem_type>\t: [all|anon|file|shmem]\n");
+ 	fprintf(stderr, "\n\t\"file,all\" mem_type requires [dir] argument\n");
+-	fprintf(stderr, "\n\t\"file,all\" mem_type requires kernel built with\n");
+-	fprintf(stderr,	"\tCONFIG_READ_ONLY_THP_FOR_FS=y\n");
++	fprintf(stderr, "\n\t\"file,all\" mem_type requires a file system\n");
++	fprintf(stderr,	"\twith large folio support (order >= PMD order)\n");
+ 	fprintf(stderr, "\n\tif [dir] is a (sub)directory of a tmpfs mount, tmpfs must be\n");
+ 	fprintf(stderr,	"\tmounted with huge=advise option for khugepaged tests to work\n");
+ 	fprintf(stderr,	"\n\tSupported Options:\n");
+@@ -1154,20 +1199,22 @@ static void parse_test_type(int argc, char **argv)
+ 		usage();
+ 
+ 	if (!strcmp(buf, "all")) {
+-		file_ops =  &__file_ops;
++		read_only_file_ops =  &__read_only_file_ops;
++		read_write_file_ops =  &__read_write_file_ops;
+ 		anon_ops = &__anon_ops;
+ 		shmem_ops = &__shmem_ops;
+ 	} else if (!strcmp(buf, "anon")) {
+ 		anon_ops = &__anon_ops;
+ 	} else if (!strcmp(buf, "file")) {
+-		file_ops =  &__file_ops;
++		read_only_file_ops =  &__read_only_file_ops;
++		read_write_file_ops =  &__read_write_file_ops;
+ 	} else if (!strcmp(buf, "shmem")) {
+ 		shmem_ops = &__shmem_ops;
+ 	} else {
+ 		usage();
+ 	}
+ 
+-	if (!file_ops)
++	if (!read_only_file_ops && !read_write_file_ops)
+ 		return;
+ 
+ 	if (argc != 2)
+@@ -1239,37 +1286,43 @@ int main(int argc, char **argv)
+ 	} while (0)
+ 
+ 	TEST(collapse_full, khugepaged_context, anon_ops);
+-	TEST(collapse_full, khugepaged_context, file_ops);
++	TEST(collapse_full, khugepaged_context, read_only_file_ops);
++	TEST(collapse_full, khugepaged_context, read_write_file_ops);
+ 	TEST(collapse_full, khugepaged_context, shmem_ops);
+ 	TEST(collapse_full, madvise_context, anon_ops);
+-	TEST(collapse_full, madvise_context, file_ops);
++	TEST(collapse_full, madvise_context, read_only_file_ops);
++	TEST(collapse_full, madvise_context, read_write_file_ops);
+ 	TEST(collapse_full, madvise_context, shmem_ops);
+ 
+ 	TEST(collapse_empty, khugepaged_context, anon_ops);
+ 	TEST(collapse_empty, madvise_context, anon_ops);
+ 
+ 	TEST(collapse_single_pte_entry, khugepaged_context, anon_ops);
+-	TEST(collapse_single_pte_entry, khugepaged_context, file_ops);
++	TEST(collapse_single_pte_entry, khugepaged_context, read_only_file_ops);
++	TEST(collapse_single_pte_entry, khugepaged_context, read_write_file_ops);
+ 	TEST(collapse_single_pte_entry, khugepaged_context, shmem_ops);
+ 	TEST(collapse_single_pte_entry, madvise_context, anon_ops);
+-	TEST(collapse_single_pte_entry, madvise_context, file_ops);
++	TEST(collapse_single_pte_entry, madvise_context, read_only_file_ops);
++	TEST(collapse_single_pte_entry, madvise_context, read_write_file_ops);
+ 	TEST(collapse_single_pte_entry, madvise_context, shmem_ops);
+ 
+ 	TEST(collapse_max_ptes_none, khugepaged_context, anon_ops);
+-	TEST(collapse_max_ptes_none, khugepaged_context, file_ops);
++	TEST(collapse_max_ptes_none, khugepaged_context, read_only_file_ops);
++	TEST(collapse_max_ptes_none, khugepaged_context, read_write_file_ops);
+ 	TEST(collapse_max_ptes_none, madvise_context, anon_ops);
+-	TEST(collapse_max_ptes_none, madvise_context, file_ops);
++	TEST(collapse_max_ptes_none, madvise_context, read_only_file_ops);
++	TEST(collapse_max_ptes_none, madvise_context, read_write_file_ops);
+ 
+ 	TEST(collapse_single_pte_entry_compound, khugepaged_context, anon_ops);
+-	TEST(collapse_single_pte_entry_compound, khugepaged_context, file_ops);
++	TEST(collapse_single_pte_entry_compound, khugepaged_context, read_only_file_ops);
+ 	TEST(collapse_single_pte_entry_compound, madvise_context, anon_ops);
+-	TEST(collapse_single_pte_entry_compound, madvise_context, file_ops);
++	TEST(collapse_single_pte_entry_compound, madvise_context, read_only_file_ops);
+ 
+ 	TEST(collapse_full_of_compound, khugepaged_context, anon_ops);
+-	TEST(collapse_full_of_compound, khugepaged_context, file_ops);
++	TEST(collapse_full_of_compound, khugepaged_context, read_only_file_ops);
+ 	TEST(collapse_full_of_compound, khugepaged_context, shmem_ops);
+ 	TEST(collapse_full_of_compound, madvise_context, anon_ops);
+-	TEST(collapse_full_of_compound, madvise_context, file_ops);
++	TEST(collapse_full_of_compound, madvise_context, read_only_file_ops);
+ 	TEST(collapse_full_of_compound, madvise_context, shmem_ops);
+ 
+ 	TEST(collapse_compound_extreme, khugepaged_context, anon_ops);
+@@ -1291,10 +1344,10 @@ int main(int argc, char **argv)
+ 	TEST(collapse_max_ptes_shared, madvise_context, anon_ops);
+ 
+ 	TEST(madvise_collapse_existing_thps, madvise_context, anon_ops);
+-	TEST(madvise_collapse_existing_thps, madvise_context, file_ops);
++	TEST(madvise_collapse_existing_thps, madvise_context, read_only_file_ops);
+ 	TEST(madvise_collapse_existing_thps, madvise_context, shmem_ops);
+ 
+-	TEST(madvise_retracted_page_tables, madvise_context, file_ops);
++	TEST(madvise_retracted_page_tables, madvise_context, read_only_file_ops);
+ 	TEST(madvise_retracted_page_tables, madvise_context, shmem_ops);
+ 
+ 	restore_settings(0);
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index 3b61677fe9840..854c5c3e3a6ae 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -490,8 +490,6 @@ CATEGORY="thp" run_test ./khugepaged all:shmem
+ 
+ CATEGORY="thp" run_test ./khugepaged -s 4 all:shmem
+ 
+-CATEGORY="thp" run_test ./transhuge-stress -d 20
+-
+ # Try to create XFS if not provided
+ if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
+     if [ "${HAVE_HUGEPAGES}" = "1" ]; then
+@@ -508,6 +506,14 @@ if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
+     fi
+ fi
+ 
++if [ -n "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
++CATEGORY="thp" run_test ./khugepaged all:file ${SPLIT_HUGE_PAGE_TEST_XFS_PATH}
++else
++	count_total=$(( count_total + 1 ))
++	count_skip=$(( count_skip + 1 ))
++	echo "[SKIP] ./khugepaged all:file" | tap_prefix
++fi
++
+ CATEGORY="thp" run_test ./split_huge_page_test ${SPLIT_HUGE_PAGE_TEST_XFS_PATH}
+ 
+ if [ -n "${MOUNTED_XFS}" ]; then
+@@ -516,6 +522,8 @@ if [ -n "${MOUNTED_XFS}" ]; then
+     rm -f ${XFS_IMG}
+ fi
+ 
++CATEGORY="thp" run_test ./transhuge-stress -d 20
++
+ CATEGORY="thp" run_test ./folio_split_race_test
+ 
+ CATEGORY="migration" run_test ./migration
 -- 
 2.53.0
 
