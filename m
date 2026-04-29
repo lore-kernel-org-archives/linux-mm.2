@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26343FF887E
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:30:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC5F3FF887E
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:31:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DA706B00A2; Wed, 29 Apr 2026 10:30:43 -0400 (EDT)
+	id 61CA76B00A3; Wed, 29 Apr 2026 10:31:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 864086B00A3; Wed, 29 Apr 2026 10:30:43 -0400 (EDT)
+	id 5F34D6B00A4; Wed, 29 Apr 2026 10:31:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72BCD6B00A4; Wed, 29 Apr 2026 10:30:43 -0400 (EDT)
+	id 4E2106B00A5; Wed, 29 Apr 2026 10:31:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E9356B00A2
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:30:43 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A3B71602E3
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:30:43 +0000 (UTC)
-X-FDA: 84711829566.26.408BD7B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E5B0F20019
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:30:40 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="uyCgDRP/";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E2796B00A3
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:31:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDCD8402C7
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:30:59 +0000 (UTC)
+X-FDA: 84711830238.20.4E1EC5D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 44867120017
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:30:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MpHYf61c;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777473041;
+	s=arc-20220608; t=1777473058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fq1GlMG9A+Z0F92cKJJviLR+aocBdIFtc2BEmaz5G0o=;
-	b=m0AWKgOGo5ONzoTiCxSznYKaTRR8xRAfEUYxet4GMT2gT4KeYGxiFu9gDhPzy24LXItknr
-	wTan54AlT5xEmDNpB/JSPUVC0Rr1+j8gZDDXInkV3azw+KUUkUJb7OF9gtU/eyZN2HPOAy
-	6oYckVQScLZy0FAlOWwd04wxZFulP+s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777473041; a=rsa-sha256;
-	cv=none;
-	b=lzKF9cSIO6Z9HLBJPj5Gsm+qiF6sSjfyInwWc1MpY+yyjneXqbfTsmKZl288EQ0xYGHyGD
-	LdC7bCjb4goCBEL3spd+sjPmZeGnBeJK64FhIwmGEBMkPUj0MSFBh/jfsQ5OYUCIkcEiTh
-	xLa+asf/aF/gxRP831u+EQXo/56c+GE=
+	bh=CozX5yN+C/Dj7zBL7UIdfLxCtT2GdXLK3PoM/jsywcg=;
+	b=g4Y/L44dLEJikH8oIyTXBacmd6N6Rae/syF55RjwBxT4tXXZ2GPYQlkbN9GuHM44odWPJl
+	+TScELCSzo6FgU8cI6Ry+qnVhtTSImTTJY9PCoj1vfYSt2ObbKp/2Uq83iztqwyyLxvlYZ
+	HjZVRTuNb3DcPnL59AeigDdLyKAIs0I=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="uyCgDRP/";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 82B5E1BCB;
-	Wed, 29 Apr 2026 07:30:34 -0700 (PDT)
-Received: from [10.57.62.76] (unknown [10.57.62.76])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE18C3F62B;
-	Wed, 29 Apr 2026 07:30:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777473040; bh=yYUcrffafPaOm77R9dKuGdogYVbwK0I1WaJfySVSriM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uyCgDRP/abTLDH1GF4bhkMX0G6Uck4hgIgyUBRuXB/drSr9g4g9bKGm5viIR9oygl
-	 cP56E8UqUoyxELCQIEk1OYF0wK9VrLrDWxYYc+nMmpWw8waMr9WI7BvBrp4N2WqRfM
-	 sg1QsRk3kKCYoyYwdAkATJHWTz8jmDVV0zK0xhLo=
-Message-ID: <2f5692d7-6589-4717-8258-f43d8227d74a@arm.com>
-Date: Wed, 29 Apr 2026 16:30:34 +0200
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MpHYf61c;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777473058; a=rsa-sha256;
+	cv=none;
+	b=D84Ks1fQpBiigt5jX9RYyPHkAMncUTiKrGqEn4XBD3lz9OFWjJ9sLX9MvmpSvgF42a2POZ
+	hN21XXk+qleeqn8vVXhdibwlcW71Cc1TWkSgY0vNnh5o43jsvtNei+57OlGB4IsT7FygNo
+	mTD64yJPjHGSNOZS/2f4xUguR+jppKc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7363360138;
+	Wed, 29 Apr 2026 14:30:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC29C19425;
+	Wed, 29 Apr 2026 14:30:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777473057;
+	bh=25669eAlVbHfJezMpC/Kwl7iJTxvlFiobYXmEPt9Zd4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MpHYf61cRXlTqKuG9hB/u2iYXkA8SBvIMFOOsf3G0sfnfysZAiE5ds17hQr7DlAgS
+	 HueC9gbqtEKddsPOx0JqDzRNoAr3kMIqTP5Cm3n+iiqu3itGt5OzW4sFEYYDT9fbGG
+	 oyWPEswH2fz1o/FM4jKm7ZDtJeX4Cb9l7q5ty8aoGfurrUZWK2VJ8PE2dpHl7+TsAS
+	 7w/p5L0lNyzhLStv2T2YtckcMYHEa52p54jioXzrnre34meVIFLc358WJ95Hy+4Kg8
+	 dB66+tyPb7M1I3SJToJUdNjMGpRNVBwwQcCiPH+S+3XA4Oh+EjkQw15eFkMCURlA2b
+	 lmlhFBWZVad7w==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/7] mm/damon/reclaim,lru_sort: monitor all system rams by default
+Date: Wed, 29 Apr 2026 07:30:52 -0700
+Message-ID: <20260429143053.93890-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260429041232.90257-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 11/15] arm64: mm: Don't abuse memblock NOMAP to check
- for overlaps
-To: Ard Biesheuvel <ardb@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
- Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-28-ardb+git@google.com>
- <8a315ca2-3754-4a66-990e-55b85191aa6e@arm.com>
- <1f9c1ca5-c15c-4a08-aa8c-cbe64f7f205b@app.fastmail.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <1f9c1ca5-c15c-4a08-aa8c-cbe64f7f205b@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E5B0F20019
-X-Stat-Signature: xm1q3erkubfonyw6u57rt74jm7pc4k17
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1777473040-739456
-X-HE-Meta: U2FsdGVkX1/8a45TlfLTzL73zLtZK4Qyz5AvRP99zAqqBAKR3Fn0U6/bArMc/AwMCVyOTYxTV0oGYZIYEkahj71qBASUTyZ4101pXZE8X/x85mRgip4uobALHKl+JDHmig2BxKUtx3BvBNLb0+TMQSM7MZ1Pyh0xkRSwgjnf8Y0H4ch8/Rf/fjuFgg0YKsA3nBqhHkWyqJ007SH9kkBmZq7QTd0fXMXuPxo9rkptfe+s5WjV3nN8CObiL1ZNWZ12aaPLOj4yKuGXknO8GPf+ZCEWd5TdiqTwDzHYBDE3Ltk5Qsw1RfEOTVM0nel5RLa8iUpJSzHj1SuOmtVf07U0ElSpAp974XFxNZVYKNgfL5C25U02LCjyX5FvhjYwV6+ouzBXSmyiSKSdr14IgE4IVypbKZiHYC+8RnvJ4/8dx+bcKubxfIwoU0sSba0FmcJ94RSgAVk7eMlD+MzK8B1IhNi7sgMfiu5OsDTnYeKDSVlUxkxgLFd3SUBqk6BfRNY+PClKvSqu0ZOV/C6KMRrAKecOfytknoBM+Paw6ZEpQsamOkfDfJzyrzdrac9xOU80E3uTvJ2F/+fjRTrJD4URCXkueP906ahMmLa4eQpTjd3ubp2e368ynLbXHGorT93P5OiRaxZX4jOo/LhIkvV4TTRwyLUC0kFe2tyfAunPARatBSuccer6OWKY6obumWPD6GqaC7HQ2B33n2lPQCfOP1AvP1Q1+aYvugodqKRlOI2MqTKl0PDDWd71NvNFBiyN6wLGLjYHyDKgbTLaKsS2TXSjp+S0UyKyTo66mRZnrz5QRvnEmlDJOFbjnJqvrboGjkBjDhyo3KmhOh13HYC0JjpxpycLj7roDWobb0NAqzVu3Rk7uuUsXUYb3NCJMw86G2nCnvG4AumrahzcN77y9Q1QENJyXTZmqVTd/zeExtTU961QrQkROm0u5jqh86doCepNzud7ACcXEiEclIG
- q5Qe4U5H
- sPCttdTEEqb9xXJnZhagE/ZRiShJFPZQIiINTh7ZriPiM7TVT+YquU3Rfu5kQJ7Muk9JeureDA4YDmayzgdpzwW81yddVEHMNKU2DQ1Y1/d9fcvlY4OwH+K6S+cfHz/AZCKgs83J/uR9Aoes00KQTKXu6adUO2cB3tcMihCJFwckoCbn3L05992nYnnY2WJjP1yu00whGMpiDNmfKqD6+/exeo/W4u7ITx+W3Jau5rz1c1DsD43I12Lt6algQVgDyfCy/o8G4mqQQ72VciLPQwj5V5pzbkXs7kzr0ZuTvgIhO+S5xDNpFEiP1BuYDBo2I6nciJvxJq4AAOqk=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 44867120017
+X-Stat-Signature: dnf6jii4x4kyrejs13z5bt53hn97nrkb
+X-HE-Tag: 1777473058-779499
+X-HE-Meta: U2FsdGVkX19Du6HvWMIfbQedlFK7jiVlGTormoMEEunWYQB/tkV5XkkxpGp4+ewaG9ENMXmL49nBl3nPkCYfjwhDpTMRUslDgL1NL6Yd+7Q39IJSF+YsyK/rUlXZ9jMxB7eoAHCgg/waDycaXifp7thNNutihw++vOHQC1QDgF021JLXm1hD8Uzgvc+JqXWuOmu4TdKq67EUjw/uZeAeemnrSd5WtX2qAdD4Ov2OaZWOXlXSGp/uS7OHXQmP41CIoWv+/u/Eb9vJsI9iN5xtMgosf69Z15poT6KmaI1u/wDKz8KaR3rQyUMTcsvjvdThGUu1Dj49/E4JIzpDMePD3ZVCK0B8SP0b7GV/MXvfRrwgX1m7wHdAaynh4pstRz3dERnVnhkcF6n7vFXEu0dVDTWrxGR5RVi7pa/i/xevTXYjXaYUcl2QAYSYYxhAHYmRiOZ85YRsqXIlixmzY7cs3lFxUUU2gp2GYUWDTYR2Zi3QJRoNdIRuoONMAOu98L/YNFrzVLBVZB6ziucVpe2hYE8V0JuW7UfbXpOjZrGLRVO6Ff5lig/3eenTqjcj6372BhqvfiBRLgyF4ODH58Ftq7wFq9AHm5bi9dkD9JlldVy0WXunNbxyvlvL8C+3SL22xdslHpl9P7mIAZdKvXlld1HFJ4y4C+Ll5rsoaqAG6H/c1KtsMzKxEt9b9lqsoIFL3ddVyvMqTXhHvL1kojmevXnz4s5z/C0YQWX5RBXKJNPXGbNoB7F67R41zQGwdIKV9YDOgc7gRtfY8ZFcDdRunE5ZG2av1R7q9Nf0XZpBnypol1QhEcmrq/J2EBmdEu6fErbdVEdbKsZRLgBgrrwJ8Dnp7pbBFFh6Z9cSOsSfAcbYfgxRSyGc2WH4X3ZMtNuRDjrSMPTf1JgG23PTnjRY7yCwzb0Jyzqe6YkDH7K0ae0tCN+zZQLjgoZAg067CON+QycNHWiMJs20hvkR5JU
+ fLXBJqsA
+ 0Z/ySS0JIBHOuGYZcMBgUq3/ekNu9m3FwRIafOZ11Csrto3+rlQydHtUQBhuv1V4dHTbFTGRJhXoDF4Is64UOtUeF3wmnF0V65TXmXLYAlOcndtyU7CnOvpXCf1tY4S1PF7Qs1MBXIg2XfrPcjBwOdNxYNmcSkKtss3ES36KIXyIDJFV3z577MsuDy5Gkz808IbZJcEzouapq5pOFxYkj2f++u1CbLFKF6/w/bmxFswxXpueQ3lv9uSiUD/RBAruQ9oEyiQVVlC2TB0UEPGBAmSY1gg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,55 +102,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/04/2026 16:23, Ard Biesheuvel wrote:
-> On Wed, 29 Apr 2026, at 12:54, Kevin Brodsky wrote:
->> On 27/04/2026 17:34, Ard Biesheuvel wrote:
->>> From: Ard Biesheuvel <ardb@kernel.org>
->>>
->>> Now that the DRAM mapping routines respect existing table mappings and
->>> contiguous block and page mappings, it is no longer needed to fiddle
->>> with the memblock tables to set and clear the NOMAP attribute in order
->>> to omit text and rodata when creating the linear map.
->>>
->>> Instead, map the kernel text and rodata alias first with the desired
->>> attributes, so that they will not be remapped later with different
->>> attributes when mapping the memblocks.
->>>
->>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->>> ---
->>>  arch/arm64/mm/mmu.c | 24 +++++++-------------
->>>  1 file changed, 8 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->>> index 5e2348b15783..1a4b4337d29a 100644
->>> --- a/arch/arm64/mm/mmu.c
->>> +++ b/arch/arm64/mm/mmu.c
->>> @@ -1148,12 +1148,15 @@ static void __init map_mem(void)
->>>  		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
->>>  
->>>  	/*
->>> -	 * Take care not to create a writable alias for the
->>> -	 * read-only text and rodata sections of the kernel image.
->>> -	 * So temporarily mark them as NOMAP to skip mappings in
->>> -	 * the following for-loop
->>> +	 * Map the linear alias of the [_text, __init_begin) interval
->>> +	 * as non-executable now, and remove the write permission in
->>> +	 * mark_linear_text_alias_ro() above (which will be called after
->>> +	 * alternative patching has completed). This makes the contents
->>> +	 * of the region accessible to subsystems such as hibernate,
->>> +	 * but protects it from inadvertent modification or execution.
->>>  	 */
->>> -	memblock_mark_nomap(kernel_start, kernel_end - kernel_start);
->>> +	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
->> Is it now necessary for that mapping to be tagged? If so, it should
->> probably be called out in the commit message.
->>
-> As you've pointed out, the initial r/w mapping of the linear alias of rodata
-> will need to be mapped tagged before moving the zero page there. So this patch
-> will just preserve that, rather than remapping the region tagged explicitly as
-> it does now.
+On Tue, 28 Apr 2026 21:12:22 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Right! I got lost in all the mappings :)
+> DAMON_RECLAIM and DAMON_LRU_SORT set the biggest 'System RAM' resource
+> of the system as the default monitoring target address range.  The main
+> intention behind the design is to minimize the overhead coming from
+> monitoring of non-System RAM areas.
+> 
+> This could result in an odd setup when there are multiple discrete
+> System RAMs of considerable sizes.  For example, there are System RAMs
+> each having 500 GiB size.  In this case, only the first 500 GiB will be
+> set as the monitoring region by default.  This is particularly common on
+> NUMA systems.  Hence the modules allow users to set the monitoring
+> target address range using the module parameters if the default setup
+> doesn't work for them.  In other words, the current design trades ease
+> of setup for lower overhead.
+> 
+> However, because DAMON utilizes the sampling based access check and the
+> adaptive regions adjustment mechanisms, the overhead from the monitoring
+> of non-System RAM areas should be negligible in most setups.  Meanwhile,
+> the setup complexity is causing real headaches for users who need to run
+> those modules on various types of systems.  That is, the current
+> tradeoff is not a good deal.
+> 
+> Set the physical address range that can cover all System RAM areas of
+> the system as the default monitoring regions for DAMON_RECLAIM and
+> DAMON_LRU_SORT.
 
-- Kevin
+
+FYI, Sashiko reviews and my review of the reviews are available on replies to
+this thread that Cc-ing only me and damon@lists.linux.dev
+(https://lore.kernel.org/20260429041232.90257-1-sj@kernel.org).  In short, no
+real issue that blocks this series is found by Sashiko.
+
+
+Thanks,
+SJ
+
+[...]
 
