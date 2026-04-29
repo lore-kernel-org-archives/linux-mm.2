@@ -4,132 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8913BFF8873
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:23:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88037FF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 14:24:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEAFE6B0005; Wed, 29 Apr 2026 10:23:47 -0400 (EDT)
+	id EEC276B0005; Wed, 29 Apr 2026 10:24:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC2576B0099; Wed, 29 Apr 2026 10:23:47 -0400 (EDT)
+	id EC3E06B0099; Wed, 29 Apr 2026 10:24:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD7986B009B; Wed, 29 Apr 2026 10:23:47 -0400 (EDT)
+	id E01236B009B; Wed, 29 Apr 2026 10:24:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CDAC66B0005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:23:47 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77508401FB
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:23:47 +0000 (UTC)
-X-FDA: 84711812094.12.4003B37
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D1E3F6B0005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:24:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A00D14029A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:24:58 +0000 (UTC)
+X-FDA: 84711815076.23.3150454
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 87DF01C0005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:23:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D+d91KjT;
-	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id D29E540005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 14:24:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jp9dPk3M;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777472625;
+	s=arc-20220608; t=1777472696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eER2GCpD8B7GlhmETIiRKrTfvFHwkGHJ1zYSjhWxsec=;
-	b=TQXBeF9fYl5eQzncXCV/lRIH2TXTsTgMjpdba1i5OFmbc/Ilf3+oouf1MlPxsS1FlHZWCv
-	3WyTRr082s3XvS3oKLynD0BxHd6fKupd2CNVsgD7p36OO5Wn0u2caoAMQ1Su+VN4Ey8KEu
-	eUVIde8AmRPfpssaBviLbpzqLHTZ5Kg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D+d91KjT;
-	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777472625; a=rsa-sha256;
+	bh=oU9QFXFcPvDnOm50j3Pr9oOfENDvi06AH/MQcGw529s=;
+	b=BX6RNGTA4f67VnL7UaBnM+9xb6V9C3k+SSNpb0env7Wf8nfzl/W20QqqoihnZ8GzajAihG
+	z78bL3fFa8DdlMNx+VnCbJbAX49SsfQa8d9ziyynmNayihlcG/khQ73d7/ynCY5s6K35l/
+	6WMWzGzRVyyxaqSFa93LQLRcGQG3/Xk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777472696; a=rsa-sha256;
 	cv=none;
-	b=AJsObqOivsO0ZwVt0w31ScHci6v+YyCwOCNgPigGd7P5DMudkAvAhgFirbBXmgF6Os2nQ7
-	/uD1wS5NbacAoPvgkafGY1+D+7riKLGVok9DOKrwS9qJVeKpNGawlyVRArFNM568nu0lND
-	WLBB5EK9hdP1AIBjDJcpdsPCxYyH3gQ=
+	b=rQMmNc03Io7MyGrUbvl2megpnlEJwQ5aY13sVtj8X/K8KsXfRVbfCVuTmmi8QSAJ15+Hjk
+	jfh/gNO/j5Mz4Kd7L9i4GvmZRsxryyQCSSfa4lp31/X0lHokZSXn43YYmei8z28vuhVOhN
+	gPUsnK2mth1iEzSG4hydlcBHCjh6Y0I=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jp9dPk3M;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6FB36024D;
-	Wed, 29 Apr 2026 14:23:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2A3C4AF09;
-	Wed, 29 Apr 2026 14:23:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4392260139;
+	Wed, 29 Apr 2026 14:24:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA85C19425;
+	Wed, 29 Apr 2026 14:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777472624;
-	bh=1DoYAyGOTScVVD3GXpdNNQST/38xq+/hMaqnmr473Bs=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=D+d91KjTTrM+lBnQ44Qx5TmdF/ui8FYG7riluu2LEkceRos9M2RXCy/huWD2rHFbk
-	 UZ0bxWyoCYJBzLVkVf2ZhXbnpzm/XXLxEYS7qjdAvLnsraGoQZe9UKyJnTuJgT974q
-	 j+EkKT6u7bZ4J4CmzpGeolUiepyZgE/zABzHbergVuaLqEVNd6YD96dpQQzMP4Bzju
-	 gN2G1YFkAt6HF5fb0NF2fHHdLnzgbb/Eay7BLp+q3r+uTOMXWyP2eFu+ml06IRx4AH
-	 LHnKjiw12g7mYF/wPW2KJUDX1yM+xxwO5xeMlajk12CKWQlU2G3bYJsLxLi1zVDZ9R
-	 HLwOZtcL0ayew==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C6D6EF40081;
-	Wed, 29 Apr 2026 10:23:42 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Wed, 29 Apr 2026 10:23:42 -0400
-X-ME-Sender: <xms:bhTyaRuedy8IaKVEUb6zYplqea_IyrVJ49HkQ4RUPpdmpAElw4kXEw>
-    <xme:bhTyaVRnbbQOqYIc9uQZ-srPlIHJH6Ecz-9CNLTmo6l72SQrfGLC7rXy5RwNoSO5c
-    PfLjljA9mfzOFgztLYmln-dyEK2WRsD3kpgdEUY7fyEOc7nsh2YDdQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekgeeijecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhguuceu
-    ihgvshhhvghuvhgvlhdfuceorghruggssehkvghrnhgvlhdrohhrgheqnecuggftrfgrth
-    htvghrnhepvdeuheeitdevtdelkeduudetgffftdelteefteevjeevjeeiheefhfejieej
-    fedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrugdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeijedthedttdejledq
-    feefvdduieegudehqdgrrhgusgeppehkvghrnhgvlhdrohhrghesfihorhhkohhfrghrug
-    drtghomhdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrnhhshhhumhgrnhdrkhhhrghnughurghlsegrrhhmrdgtohhmpdhrtghpthhtoh
-    eptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehkvghv
-    ihhnrdgsrhhoughskhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhgrrhhkrdhruhhtlh
-    grnhgusegrrhhmrdgtohhmpdhrtghpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhm
-    rdgtohhmpdhrtghpthhtoheprghruggsodhgihhtsehgohhoghhlvgdrtghomhdprhgtph
-    htthhopehlihiiphhruhgtkhgrsehgohhoghhlvgdrtghomhdprhgtphhtthhopehsvght
-    hhhjvghnkhhinhhssehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghvihgusehkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:bhTyaYQqbQnVIvDQGr_EIyoNqMUxhwXG4G4jtXeNWeDmpwZFsfnQFA>
-    <xmx:bhTyaZ5UU3sOLPELciR1S3yUNipryJRU-wfpnldnvQeR7ny2GQoX_A>
-    <xmx:bhTyaS26ba8LHTkWKJhLTLhqgOLfm1ol0gbWKJiQ7XNXpSI0HVb3_Q>
-    <xmx:bhTyaWlPWrFeCV-JEl10S10qMtJqxcSJLGeaFD4PPzxewiMEq2oA5g>
-    <xmx:bhTyaYj-PQwy2tOxiSz7NljYKJXKPYJnt1JMl7HQF9Vpthrm4_c5Y-60>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 9D519700065; Wed, 29 Apr 2026 10:23:42 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20201202; t=1777472696;
+	bh=aCaYorBUSCF6eWCfONlb1C+1m2mXwLSU1/j5XLbpFYc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=jp9dPk3MOO+POyRPioFKm05l2fptu95ogwNuQm9g78vurqPNdFM+sJUhiBcUJ8tkd
+	 wvPGOxSftrc5G2i+yHJaP/prNYYB1cmZGe3lY5S0ZqOG+sPjQ+LZzz5aKwwZ0pGDtg
+	 qLMAzqmfCleA1b/q2FmLg3pHQrzamRwCm5FEuJIprZ8w907bcrsaoufQGgcUVUW/UL
+	 cKEq47JXfnO5Kw51LsM6/alYX3PcWaxjr48iUAt9YyUE6NLSHcJAzjC9A+xp4LfEzN
+	 1IdTssoGKiDtR1zCyLgeL1Jq4eKjptOwHqFUu46BJZ4GXpFR4+l/IdARlvrDB6+Rcy
+	 T6mprKJI2BU2g==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: luca.boccassi@gmail.com
+Cc: kexec@lists.infradead.org,  linux-mm@kvack.org,  rppt@kernel.org,
+  pasha.tatashin@soleen.com,  pratyush@kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 1/4] liveupdate: reject
+ LIVEUPDATE_IOCTL_CREATE_SESSION with invalid name length
+In-Reply-To: <20260423234753.3873095-2-luca.boccassi@gmail.com> (luca
+	boccassi's message of "Fri, 24 Apr 2026 00:44:20 +0100")
+References: <20260423234753.3873095-1-luca.boccassi@gmail.com>
+	<20260423234753.3873095-2-luca.boccassi@gmail.com>
+Date: Wed, 29 Apr 2026 16:24:52 +0200
+Message-ID: <2vxza4ul4zez.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Date: Wed, 29 Apr 2026 16:23:22 +0200
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Kevin Brodsky" <kevin.brodsky@arm.com>,
- "Ard Biesheuvel" <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Liz Prucka" <lizprucka@google.com>, "Seth Jenkins" <sethjenkins@google.com>,
- "Kees Cook" <kees@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "David Hildenbrand" <david@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org
-Message-Id: <1f9c1ca5-c15c-4a08-aa8c-cbe64f7f205b@app.fastmail.com>
-In-Reply-To: <8a315ca2-3754-4a66-990e-55b85191aa6e@arm.com>
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-28-ardb+git@google.com>
- <8a315ca2-3754-4a66-990e-55b85191aa6e@arm.com>
-Subject: Re: [PATCH v4 11/15] arm64: mm: Don't abuse memblock NOMAP to check for
- overlaps
 Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: px7xcb8d3ct6bsbhhijpr9x3pmj7fzun
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 87DF01C0005
 X-Rspam-User: 
-X-HE-Tag: 1777472625-612588
-X-HE-Meta: U2FsdGVkX1/gnMNz3RAjjZjHCCbz4VBKzoQhQgLiRhtxEifT9dQ4A5Nzeblly85xISQRM8Dn1BJis1qBv3hY1YERsIXWU+OHHw+bDBVqm9WOzu5HH+3G6BmybLsVDKJiszrk0qTJIA4DUxY6NqBKhXTOr4C6CS9mk6zfsVkCC66zMw8phj51VMQ12MyLGlV+/cqSDgtUFCiad2893ZaYSngIo2Ccg5TpllgLxe8rnAV6R6E4ouYctUR9+y1pSOlBeyxyP1ScUzUlYHcBs7Vc3w9Z+fQENED2+pNonyfzgwo4oiuOJbMrlebhvJBZkvQVxaQyBQlxBJvRx+1EZWCa1pbH+fWJPY1YfbYeRNQO5ibosXtg/8D4dt1PpybU+feCJpK0UQB7ALH7lkOCJkD29Zlf7R/2ZLifrxCF8FhdMwM5sVnA/1Pa4NzQTng/aomdibt25m3DnhPn2ZkM345X6M/yx+G/hyqf+gWSDzpviC44bD4DGCmXWx8udtVXR4u9jpRvgdM+R8l7e5Gq+dUQ3wfcGQ1Aa3ukJ4GdJUOxzEA4NUnT2xw8qd2/6rFXkMHHrEsHa8jbSkNAmHiSYSbdwHJSK5Ik5UsbCU1hBoQK/5tFDBVkOYPeywxgA821E+vjPLO2qqyUksefXMf1TrpkhUJAQwYmMJHeOGqiMuApUp7ZlVzv9kYawZyWUNm37NLul1rgYfbeBvNYTIhlsyGDNEsldXWeJpidqEnYQV0/I07gdB5CMuonTXoF85vPX7Q35q1ui6VeRZUeQRfqOy+q3Rl+7jVr/feTO30sMaWa1/raYJL6wLXDO7E3GaLpbyWH7OKUX8orBq9XLob7hAXElyyN4tw5gOgvXZjAnjVGI4t5TMmTTQmHarj7IMEfNUjMLX4aUuJR2cLoEIsvpVyQq+1ISdxEyEGIwczhwmdyCE7IoEddcbBEH3fBzrTrYJxNSiSKpdn7JvZdTtEIAEq
- vZ69Ij9W
- rVXNwE1GQX0POoncgzBXlqtAKuAMkyIOF42LsS69TwMtKJAZiuLe07ipK2Qb3vs63I5n7xFYvd5ktE8DL3+xuCxD8YqoA/DMWw/nXAn5eG8Ibtmgc6XO2luF2Ls8i7gOZjmSuOWRD5oLGotYCsCRokTE0nO3rIMUenHcRV58euzQISdXf2lYPZ3k7DP8ILB0TE8EN1qLOD0eQENp4YTc1L9SB1NERxO2JHtoOhybskWu6dHuU7JYyg/0JJn51zQiCXnsN9ExF2MTzB7FIt+sSoYL5xLx1yswOvRiQ+rek3EAoEhg=
+X-Rspamd-Queue-Id: D29E540005
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 7wkmiah6b8eexunqjnj3q8b3adamgtzn
+X-HE-Tag: 1777472696-737770
+X-HE-Meta: U2FsdGVkX1/ezOh49Oam5k5Ti6UGWtmoqrUAL7JnSvk4FztA6Nwtt5LkQ1F7eMVGlcweNzi9r2L9PjJMXW2KgZqvDREcIL+hd9OvDIoRBorPOZETKuDbRPtXRyqaPDHlSF8YTb60aIyQRbZsrMZoWx23y9RRmuYgZehsWyF2ZBhJ6f2dFWnp7k3E50Wg3o+NLaSTATw4dS/vmwwFvb7ibmaFOGMu6iK1as/aIugVGh3UBVkRVS35HHHB+RpE6A3AfqTa9i+md/CBTUx2EgyMwhWmX+lkVENz6bSP+Fe7P9WbCSEOa/4q4zkvw08YopTKhfGu72vpBRq92kS13uNidMKpO6+Vqy6lwt05PUCOsQ6GZ+Rxt+hnC9YgqUh+gcDmTj2zQRdS+zv5iZ2/3gRLkn3DOcHv9Tp8Wot3ii2P4y2fDtJRW7fXPPYIG63Zzf5xeKX1qabuMa2/iwl67xc+/Twe0BOvA1Oea9Rr6q//an6K931riHiTV/pFUMB+e/VwKaLX70TabY6Gt/tlSEAiisB1zm95yqS5alxQSAV5kSueZmsKLBd9OFuXmdTOLnV1v6ZYj8DaEtzYhxfYpYIDUTBU6ERZH0q61gUltG7o5rEeR3KHyXfWiCZPH+Zw420Msk7vsyBhNWkUW5AFuwB7ezly7Yw9L46uHefZNPBaKpRqitCu4lwd9x01sJeqXUQSd3CdnjYXlryF9DFFN+OW2emka+TQiINpAbyW30gl/wbXh6/R9aARyxYFLGqGLEvenmrgwuN4tW2hP4XvGhpELYciYx4dn/3GZ/1EtCh/ZejupaY7Gvf6CjkwKm0tT0f3jMBKvIdLdA6voMjaEmFV+Kqhv68JrUc8H6ssfQQgxfescAkidKoChhmnfrOKj8cEfVDOBFO1Fj4gYqlgO93/L1+mE6+PtfIUqf1e2FUiGmT9HgCQ9x2wyyPeuOlpBaTbjqRGrnHPtmPRnTA1F08
+ 6t9w3b9o
+ one09aU8taA0C6Den0i+1Sq1Q5gV11m8jeJh7MLr8lFZhj5a/Kgk9KbPdQ6fbsthhdM415MrvKs8vIqJeyXL8yyDebIlQsE5B9Hz3zVNy5h06EzvXfcsYVdbI552GZzZHv9GJOAFo+4gSxAB/2idQabA9qmEfNLLc5gqO2TdFP3/HWQZ5IInjgmVAwUF58s39NFEnnImWtnLNJDMAWDgIAOIb0da8a09rIQ8R8BtMsGYsi3mFqRF86AqCuVIqcb/5oGHbO6nqW4a3ZVxSvhTKBVAPg5TfWmzvMoGMGLPnJifNptTtnpkC5AwMi2bgucHJW1/x+5CU8tE5uxaP1BMcKPZoWroeBaxjQzs+sRuaKVrUPui6PXzU/18EnyzInUk6FU7Z+RRHbDP69xw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,54 +94,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Apr 24 2026, luca.boccassi@gmail.com wrote:
 
-
-On Wed, 29 Apr 2026, at 12:54, Kevin Brodsky wrote:
-> On 27/04/2026 17:34, Ard Biesheuvel wrote:
->> From: Ard Biesheuvel <ardb@kernel.org>
->>
->> Now that the DRAM mapping routines respect existing table mappings and
->> contiguous block and page mappings, it is no longer needed to fiddle
->> with the memblock tables to set and clear the NOMAP attribute in order
->> to omit text and rodata when creating the linear map.
->>
->> Instead, map the kernel text and rodata alias first with the desired
->> attributes, so that they will not be remapped later with different
->> attributes when mapping the memblocks.
->>
->> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->> ---
->>  arch/arm64/mm/mmu.c | 24 +++++++-------------
->>  1 file changed, 8 insertions(+), 16 deletions(-)
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 5e2348b15783..1a4b4337d29a 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -1148,12 +1148,15 @@ static void __init map_mem(void)
->>  		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
->>  
->>  	/*
->> -	 * Take care not to create a writable alias for the
->> -	 * read-only text and rodata sections of the kernel image.
->> -	 * So temporarily mark them as NOMAP to skip mappings in
->> -	 * the following for-loop
->> +	 * Map the linear alias of the [_text, __init_begin) interval
->> +	 * as non-executable now, and remove the write permission in
->> +	 * mark_linear_text_alias_ro() above (which will be called after
->> +	 * alternative patching has completed). This makes the contents
->> +	 * of the region accessible to subsystems such as hibernate,
->> +	 * but protects it from inadvertent modification or execution.
->>  	 */
->> -	memblock_mark_nomap(kernel_start, kernel_end - kernel_start);
->> +	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
+> From: Luca Boccassi <luca.boccassi@gmail.com>
 >
-> Is it now necessary for that mapping to be tagged? If so, it should
-> probably be called out in the commit message.
+> A session name must not be an empty string, and must not exceed the
+> maximum size define in the uapi header, including null termination.
 >
+> Fixes: 0153094d03df ("liveupdate: luo_session: add sessions support")
+>
+> Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-As you've pointed out, the initial r/w mapping of the linear alias of rodata
-will need to be mapped tagged before moving the zero page there. So this patch
-will just preserve that, rather than remapping the region tagged explicitly as
-it does now.
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+Cc: stable?
+
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
