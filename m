@@ -4,108 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 027ACFF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 07:24:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1112FF8864
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 07:27:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B6B46B0005; Wed, 29 Apr 2026 03:24:28 -0400 (EDT)
+	id 2B6C96B008C; Wed, 29 Apr 2026 03:27:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08F686B008A; Wed, 29 Apr 2026 03:24:28 -0400 (EDT)
+	id 240C86B0092; Wed, 29 Apr 2026 03:27:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0DDB6B008C; Wed, 29 Apr 2026 03:24:27 -0400 (EDT)
+	id 109246B0093; Wed, 29 Apr 2026 03:27:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E0B496B0005
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:24:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5BA2F160705
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:24:27 +0000 (UTC)
-X-FDA: 84710755374.23.9967B1E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EEA026B008C
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 03:27:42 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 921A9C1E43
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:27:42 +0000 (UTC)
+X-FDA: 84710763564.25.C264B9D
 Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1E201180002
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:24:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=LV1JzEdS;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=IIDVJIer;
-	spf=pass (imf24.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id C6BFC40007
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 07:27:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=KZJmf8mi;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="Ph/AGL2V";
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf12.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777447465;
+	s=arc-20220608; t=1777447661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cLZGA+GoMQmUnCBWDiqt4bvKANNT1G+HMTcCqRQTHDc=;
-	b=kIBELz0FaL4PIoUhBRDqOEWeP2LtWuQ9hBnujxwggXDVgq5fiBTpIM3C5w/49dGWL0Q+GT
-	0sNZAsF5+gTohQOCHF6NrrFk1js7VeBWvoMEUs9cVD3OdxYOK6xDqyhq0BfyrCMKnootUU
-	Tf33TtMBIzTzjJ6D7cp98L6de7NPwz0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=LV1JzEdS;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=IIDVJIer;
-	spf=pass (imf24.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777447465; a=rsa-sha256;
+	bh=qyvqRSJSM73q2bj8SRnjn1jgWkm+YanSrvLR5MkSDLk=;
+	b=BRZoKjpZ4jkEKU4PDUdNETkbV8EOjeVPjDtafGgk/SyoyuCN6CjoPI57joUScq7SVYAD4W
+	TnJmhQB/B6fO6qYGV/wwJ2LzmAtwEnhxxCnmGijAJJEjF0ghj8wp7jFo6r+KbpIxh/dlzn
+	+sZqfURkXW/Y7w7wiemXgZYMdAzd1YE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777447661; a=rsa-sha256;
 	cv=none;
-	b=oqHazeu6LVFqZuLqiAqB6DOow9fMsUKZZF4NyhVPMdeJxnbAAa/n/NZ2C67tZRhOAYRDRn
-	EpmOxOgwuJockQAOifE8Ky/a4KSSjpY02z726VJ5iRyF0nE9BdanclEnqGnkVnk0DQgHI0
-	TM5w63T0poSbTEUWcgiCOE94x/sN+tc=
+	b=dWSS0daO450CZHlFkk2ZfUk1EH0EADVVcGjeavZ39hq0QPwFtOmylymQfyc6m3lzedgPQk
+	oWo62hh2VixbrWauZcft9OIDx23h/bCe0rXslXOGYn0F+aMJkIy+qkw5qzliF+NriryaxZ
+	/KtsSTceF1EwM5enTlZISqFhjFQeedc=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=KZJmf8mi;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="Ph/AGL2V";
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf12.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4g581y5gpBz9smP;
-	Wed, 29 Apr 2026 09:24:22 +0200 (CEST)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4g585l2TXQz9t4r;
+	Wed, 29 Apr 2026 09:27:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1777447462;
+	t=1777447659;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cLZGA+GoMQmUnCBWDiqt4bvKANNT1G+HMTcCqRQTHDc=;
-	b=LV1JzEdSj0StBn8WhdlLca46jP7oMK5XFb3p8eeT5zyDzdb4/aPbMx5Qdyv1e5+VOhm2yA
-	8uJSYTg2w/XDwOX6BNGszT+0HRL9Si0OPjDev/NHESaAAnCnqsNpeVCFVX6wCeFLuvQpE6
-	6WOBJFV+0t9ASpF1nzWGoZfIxIfjlS5Y1qhYFu8PTpaTVn+chlSYUbXICY7xS/Ye5yfXNX
-	nSxbvgwfWpfYKZhWUj4SH0dkMdOT67jBjD50FbyRVRBkpNDaWd4m0sNCwc0Bza5KesOzN4
-	yUuK+WacVrnzc6a+SdyZB4fP1+3IV0F0R1pKnikfyq18gfHYEQUEq3Dspr4lVg==
+	bh=qyvqRSJSM73q2bj8SRnjn1jgWkm+YanSrvLR5MkSDLk=;
+	b=KZJmf8millWJRx0w9oer0vD9Ui6ca81VwWTXAA30WK1rGq/2dNY7LxlVrS05PJu4FXtTBM
+	aofBbgOsQ16jDPbmdsh5tQ3JO/2IgVdwO5ogNmf57b42XwcnU/7StnvM9wMQIHrPXZnDPm
+	dDfEToYsFIBnuAio0Cl8nFj3k4pHO5BJRJZGIcZJB1hfNQm6HhxXSFsgnu/2JevHys8Tsl
+	l7PS4k6l3ZvR2j7h26/TScHhfaLHu/B/q9gM3y6f2k8/4f+j8+VBenazkInH0mYGISyV1M
+	a89Gs0eEK//0l7YJE86TdiC8BlbagOkVXBT1FlQr++vIATtWP9G4J0hBf92TaQ==
 From: Manuel Ebner <manuelebner@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1777447460;
+	t=1777447657;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cLZGA+GoMQmUnCBWDiqt4bvKANNT1G+HMTcCqRQTHDc=;
-	b=IIDVJIeryqFSNmcHYDo30TAn08Ymcsoz2iobD6qJowiBs64rt5mwwarsJ5Q6HR1SrsVder
-	chaq4pvCuqxsdXh/WjcHCywib1WmPcY6BcXoD7hek5PIBkBT2FTLaj5XjjNKAi2E36qx2A
-	0F6IkQH/3RMqu+rWwBwHNg93JkwVkjTl/wmA/+HtlLnG4YTgbCC4Dav1yXOzd4LfalX3PS
-	geq8Q4kENOfInic5/4Ga57q3Rz8cpK+p1f/Hrrhg466jUrT6A0drUlowdTLPOjfRd1gpmm
-	Y77Q1g4IE0VyrmUBRu4ptQko3bk1VcztIUZn9nGmWxkdy5RlOeIAiSb6M9DKUA==
+	bh=qyvqRSJSM73q2bj8SRnjn1jgWkm+YanSrvLR5MkSDLk=;
+	b=Ph/AGL2VBQ9Sqg8b37oLd04HHK3L0jfLdUIXiq76BjAN7Qiv7SeVYzxwWmW1XTk9uFGKEG
+	2j4N2RZB3LVajAxzxXL8GeWrpgxZI4Z/odt639rN8mtsN0M2NppScWeZ+tJ6I6rXNxnYV9
+	GozinWKyDqR5SSCU0EZ/L+Uvg/Am+ChGgNhCVfs0L6Vwfy1wODi+8FDUvmgTc9cV1pdJe/
+	n5NOAXTEoSZ2DJ/WImLAKl2iOu32MkcgVs8xbhG57v7OHiOu8ysnZnHR/bJu8AExnqoCNn
+	KoaSDSAzZuo6K+cWJQ+LrgJcEfKFfUtWDfteSnuCsqNIfR3dsedfI9c3Hcd+7w==
 To: Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	linux-doc@vger.kernel.org,
-	rcu@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org
+Cc: workflows@vger.kernel.org,
 	linux-mm@kvack.org,
-	"Paul E . McKenney" <paulmck@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Manuel Ebner <manuelebner@mailbox.org>
-Subject: [PATCH v4 2/3] Documentation: RCU: adopt new coding style of type-aware kmalloc-family
-Date: Wed, 29 Apr 2026 09:23:21 +0200
-Message-ID: <20260429072320.310817-2-manuelebner@mailbox.org>
+Subject: [PATCH v4 3/3] Documentation: deprecated.rst: kmalloc-family: mark argument as optional
+Date: Wed, 29 Apr 2026 09:27:04 +0200
+Message-ID: <20260429072704.311603-2-manuelebner@mailbox.org>
 In-Reply-To: <20260429070759.309110-3-manuelebner@mailbox.org>
 References: <20260429070759.309110-3-manuelebner@mailbox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: tg8wij6mm8gp4fotxfs97s8xd5ophxue
-X-MBO-RS-ID: 3f314db930c67e0afdf
-X-Stat-Signature: cjr34b1s5zy15bffcpji7yfjybyptsia
-X-Rspamd-Queue-Id: 1E201180002
+X-MBO-RS-ID: b04ec1542f739eb7150
+X-MBO-RS-META: 89orio9eoe4yn574r1rzwrwkhunkhbee
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C6BFC40007
+X-Stat-Signature: ru4wus5hdxbehc1kj16mioix3tkfptsf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777447464-817407
-X-HE-Meta: U2FsdGVkX1+z/usm6uN6tID/aK2eiiQOqmt5w4SSXAtayzaSBTmjD77VgrXd/QyejJ1I+yyEcgiODo3JlvATsvtv3bJq3P+fJ5I+R6R1+kTnf0D14Qe5Oy+4WbePgYIY3nXKmAwLxny+sLpmFQh3PQzCafrRsijliw6d4PvkbmFqxhqu3sjp2TzWFja0sKsiCwxhpwH+CCtbn9DByyrRPTZAf2pPrtRZED70w8jFlgUoGL6Io0Wm7h5X0D9PmgMqzHO7F4wa/qlMSsKG3RF1B6+bOePjvSpYfYEUoTcYcFsck6TotIfX3jG2B3lnwJe/6hgU9x5u/MD1h49//OAubR5QVvshtwAhXMNoXnqN1imCPAhy7beL1qxy/fOciiH20Spo1iLUwAJC5ywNJsoeAqCfpnp96PFuejd7xb49gdjvXgvIT9oC6zCKXW/VqEcdnUi8eMI8yC8qo3DJcfXKZe51iLO1o7Td/kCYEHNERieoVOFiwQ9KJGKj/u06Iuqvvo4b6p3eRETcwLtCszGRw97cZ5I6eWELHAbn+DK8V5yZ6domZ0B59iO+l41bKnQ//Dl61/Y8Po9YdMDM9et3LdNmC+MUT4hfS+0Z2UHMDQBk2w2v41kVL2OhuwMW75TlBuWKSrFqtxC8wlzprvIrOL1S04/sxGTDWoCg9wXrYX86wh5JBjGmQANPrSXaEhKZICLAWk2yD52uXRisBeOKJ92BSgT0LY0uCE/VFj28xROcDSb49AqR5VdVd2MpqH9CnyORwLpDSKdy/TXeMjyYMzvWLPKGS4ldd3EOIs4JBEVjQPJP1XP1bc+N/QmKBaFaTSU/gDiwlFQs1brzfVkcPU88ZEPJm5oUyPG0u79fKyy82n3RslLqkHun41I+N4l1IBECsHYyYP/dW8Skvs5w/7q+IH4cS1wwy9NGzEWlWc9Vj3n9XO62LhhWY07xZq3FUURzOH5HiIQluySxWZC
- Excngsts
- /j3NrU6j5HlWdUUzvqlvEqr9S5/62pwcbfgc7nJXwaaJPdyu1vqcQ/MAiPYndHiNcMqffbYdzcMLOPLoubigk0D4zqeDW9vqy2OSa3/bN5LlVDwkaN1sn7xAl+qrDEs4/6dSUxiXV/P0+JtMhc8y7dHF5W9ih94vhUHVpONQxb+DwspI3YnbnhWAKzF7vpuG5q2e1cijjW99f1vRY7G90tKxm7GnuLylebZ7b17PlOjxDkPpo7UEb2nvL5blsKajDhtc+veH3dwP3YjM8Mt6MB7FX4BGzTmOrJG6gAvXnbI1I5iOGhquHs9QvavBWORjr3xAh8+AXS6Qw8eE=
+X-HE-Tag: 1777447660-181150
+X-HE-Meta: U2FsdGVkX1/K3NM6/ET63Zg8U44FgZXkQtfi8VTavLBrkKTaxmLNuPWVlOwU0i/wk6O6T88G0EVOa53OUWOw+yTcYw+gtm+wgVFDgov8V5qV9t/G6i1yW1pjlRRbcmnS763y7c2vMtyuDd9pU0Nm8Om6KIzoXsyPwn6Tskys77OnDQOm7gN7agkQqAWCU9DnkJKxxPI8J0NF/YDAQ+5CL7/87DqO92rsH711cpjzdYDarrWyy+KbSvLb0df77p1f+I8X3XAorSxXd2KRMEoLoDx7HfsdDDSEuewcVOmnBqGfwABIB++StqQLMODh1Us4GSJC5/qe0WycfhghBGb/RMeBa5s3TRjop5zDLK6X1fDSU8kt1qNtnlB47houy8bjni+Q8+ZabfNhtiRVGfdS7otasofKIIbP9SzSyFIPekkNxZdhrGlZjpF6yqvSAtkQnnQxcAwFtsS296x8WMNe3v0J8o3gPLtt+Yii9Md+7GWxqZeGvul+GkLI8OiHFB0LDDsM4XjkljgANJYZulCmoVJBA4NuBMe4o3s4HkD1UIkxRePwcIT2GVUITY1mXXCjOQs5aZktmEmrfYQ72Kb1Fn+oP9388DOs+x9id96251c9UDeZIujI0iQB63uVGcV4scv9XibUwFtlyXYmYojaieXxbfnYN0sJgy7H+Ld6hFOtqQmamierz0ibX8gispFPnr2RvVVXE+eObdarRSJiRvzJ6qMBsrPHiSbKz1kAEWjAKD3vU18bVy/LZ72yMGwoSczF4dENR6WdUJBJflW3jM12hH7LexM361d/tCCHq0fkRA39371GaVSHH2Lf6zGn5wy90B5pxJ4ZFa6DKjTqw8O7YoA06RV40SjSNDFyRs3qH1ty9PVmWpeFH8o5pfPEm/Oa/AUIBoqYNI3IkPhcCwWgXtNOFdDmTJetxUYVHK4nwDplQyHWSkeTEoWPs9MaQZRdDL8d68zrfslKhGB
+ 6HHf+HFA
+ MoPL8z/LbgwRqF8e7YQgHuwwBNS6WjrS34ly7Xzlarov5WtjA7TMOeVIBvvjm3fzbiplmWq9yIhIKLOhTW2gT1Wyn1kCGZF3uazpJqOozJ5gbiHygdHxMGGwDYuwGdKlPuEJVguhTYqwYjxjU7WTXpC/2oGhREjzSvzS84Hx2/bSMqtk0/N06DTS6aVis74mOBXtxJ0G5n0qdD8MrDVOoO61gAra4FalzEexLFFIDE2xGiP6Iv2y8b+HEER6aViHP/BiWTtT8IJ9DIr9+GJMFv0kkse18NZpK7j/DINXtAr0zjT4mq5c/3IsPCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,90 +114,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update Documentation/RCU/* to reflect new type-aware kmalloc-family
-as suggested in commit 2932ba8d9c99 ("slab: Introduce kmalloc_obj()
-and family")
+put the optional argument (gfp) in square brackets
+add default value = GFP_KERNEL
 
-ptr = kmalloc(sizeof(*ptr), gfp);
- -> ptr = kmalloc_obj(*ptr);
+eg. ptr = kmalloc_obj(*ptr, gfp);
+ -> ptr = kmalloc_obj(*ptr [, gfp] );
 
 Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
 ---
-Acked-by see 
-https://lore.kernel.org/linux-doc/7a49fee0-09c8-4a48-9506-d9172ef024b0@paulmck-laptop/
+ Documentation/process/deprecated.rst | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
- Documentation/RCU/Design/Requirements/Requirements.rst | 6 +++---
- Documentation/RCU/listRCU.rst                          | 2 +-
- Documentation/RCU/whatisRCU.rst                        | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/RCU/Design/Requirements/Requirements.rst b/Documentation/RCU/Design/Requirements/Requirements.rst
-index b5cdbba3ec2e..faca5a9c8c12 100644
---- a/Documentation/RCU/Design/Requirements/Requirements.rst
-+++ b/Documentation/RCU/Design/Requirements/Requirements.rst
-@@ -206,7 +206,7 @@ non-\ ``NULL``, locklessly accessing the ``->a`` and ``->b`` fields.
+diff --git a/Documentation/process/deprecated.rst b/Documentation/process/deprecated.rst
+index fed56864d036..ac75b7ecac47 100644
+--- a/Documentation/process/deprecated.rst
++++ b/Documentation/process/deprecated.rst
+@@ -392,13 +392,14 @@ allocations. For example, these open coded assignments::
  
-        1 bool add_gp_buggy(int a, int b)
-        2 {
--       3   p = kmalloc(sizeof(*p), GFP_KERNEL);
-+       3   p = kmalloc_obj(*p);
-        4   if (!p)
-        5     return -ENOMEM;
-        6   spin_lock(&gp_lock);
-@@ -228,7 +228,7 @@ their rights to reorder this code as follows:
+ become, respectively::
  
-        1 bool add_gp_buggy_optimized(int a, int b)
-        2 {
--       3   p = kmalloc(sizeof(*p), GFP_KERNEL);
-+       3   p = kmalloc_obj(*p);
-        4   if (!p)
-        5     return -ENOMEM;
-        6   spin_lock(&gp_lock);
-@@ -264,7 +264,7 @@ shows an example of insertion:
- 
-        1 bool add_gp(int a, int b)
-        2 {
--       3   p = kmalloc(sizeof(*p), GFP_KERNEL);
-+       3   p = kmalloc_obj(*p);
-        4   if (!p)
-        5     return -ENOMEM;
-        6   spin_lock(&gp_lock);
-diff --git a/Documentation/RCU/listRCU.rst b/Documentation/RCU/listRCU.rst
-index d8bb98623c12..48c7272a4ccc 100644
---- a/Documentation/RCU/listRCU.rst
-+++ b/Documentation/RCU/listRCU.rst
-@@ -276,7 +276,7 @@ The RCU version of audit_upd_rule() is as follows::
- 
- 		list_for_each_entry(e, list, list) {
- 			if (!audit_compare_rule(rule, &e->rule)) {
--				ne = kmalloc(sizeof(*entry), GFP_ATOMIC);
-+				ne = kmalloc_obj(*entry, GFP_ATOMIC);
- 				if (ne == NULL)
- 					return -ENOMEM;
- 				audit_copy_rule(&ne->rule, &e->rule);
-diff --git a/Documentation/RCU/whatisRCU.rst b/Documentation/RCU/whatisRCU.rst
-index a1582bd653d1..770aab8ea36a 100644
---- a/Documentation/RCU/whatisRCU.rst
-+++ b/Documentation/RCU/whatisRCU.rst
-@@ -468,7 +468,7 @@ uses of RCU may be found in listRCU.rst and NMI-RCU.rst.
- 		struct foo *new_fp;
- 		struct foo *old_fp;
- 
--		new_fp = kmalloc(sizeof(*new_fp), GFP_KERNEL);
-+		new_fp = kmalloc_obj(*new_fp);
- 		spin_lock(&foo_mutex);
- 		old_fp = rcu_dereference_protected(gbl_foo, lockdep_is_held(&foo_mutex));
- 		*new_fp = *old_fp;
-@@ -570,7 +570,7 @@ The foo_update_a() function might then be written as follows::
- 		struct foo *new_fp;
- 		struct foo *old_fp;
- 
--		new_fp = kmalloc(sizeof(*new_fp), GFP_KERNEL);
-+		new_fp = kmalloc_obj(*new_fp);
- 		spin_lock(&foo_mutex);
- 		old_fp = rcu_dereference_protected(gbl_foo, lockdep_is_held(&foo_mutex));
- 		*new_fp = *old_fp;
+-	ptr = kmalloc_obj(*ptr, gfp);
+-	ptr = kzalloc_obj(*ptr, gfp);
+-	ptr = kmalloc_objs(*ptr, count, gfp);
+-	ptr = kzalloc_objs(*ptr, count, gfp);
+-	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
+-	__auto_type ptr = kmalloc_obj(struct foo, gfp);
+-
++	ptr = kmalloc_obj(*ptr [, gfp] );
++	ptr = kzalloc_obj(*ptr [, gfp] );
++	ptr = kmalloc_objs(*ptr, count [, gfp] );
++	ptr = kzalloc_objs(*ptr, count [, gfp] );
++	ptr = kmalloc_flex(*ptr, flex_member, count [, gfp] );
++	__auto_type ptr = kmalloc_obj(struct foo [, gfp] );
++
++The argument gfp is optional, the default value is GFP_KERNEL.
+ If `ptr->flex_member` is annotated with __counted_by(), the allocation
+ will automatically fail if `count` is larger than the maximum
+ representable value that can be stored in the counter member associated
 -- 
 2.53.0
 
