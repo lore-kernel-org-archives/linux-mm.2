@@ -4,114 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20C45FF8875
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 12:47:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21173FF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 12:49:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61ADF6B0088; Wed, 29 Apr 2026 08:47:10 -0400 (EDT)
+	id 869646B0088; Wed, 29 Apr 2026 08:49:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CBA66B008A; Wed, 29 Apr 2026 08:47:10 -0400 (EDT)
+	id 83FB66B008A; Wed, 29 Apr 2026 08:49:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BA156B008C; Wed, 29 Apr 2026 08:47:10 -0400 (EDT)
+	id 72ECE6B008C; Wed, 29 Apr 2026 08:49:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3871E6B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:47:10 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9FCC340149
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 12:47:09 +0000 (UTC)
-X-FDA: 84711568578.26.55EB528
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7C102A000C
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 12:47:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=baylibre-com.20251104.gappssmtp.com header.s=20251104 header.b=hWl6uIH9;
-	spf=pass (imf25.hostedemail.com: domain of aarsenovic@baylibre.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=aarsenovic@baylibre.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F1A76B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 08:49:48 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 16CAE89526
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 12:49:48 +0000 (UTC)
+X-FDA: 84711575256.13.990BCD2
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 387A91A0015
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 12:49:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ata+Ugt2;
+	spf=pass (imf19.hostedemail.com: domain of huangzjsmile@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=huangzjsmile@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777466827;
+	s=arc-20220608; t=1777466986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LGKOO4lpFnOw96SqYoA6Gz/B51JtRhqSbM4Rk15rzpM=;
-	b=SVeTPiebMFW5vz8BjEj8mOTMYQ2nrGbyRVlWlUmnUNaU4XPoAWG+7KJ6rPNLr9zi2us2NF
-	EPhDSP7jg0OUsI4trYCjRNUAXKMQvy/gdswx7b8Aaoa239dp02R8r62t0ooBq37jwJDvrf
-	HzkOuCyC7UXiWvYy3DoegxUVb802cKI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777466827; a=rsa-sha256;
-	cv=none;
-	b=zbSRfGuZXOvXjshNPfM0heRTe5pZHLrrqfcjjbmsnuBskCl0c/22YF6Q5FvD5zb+2QZG7L
-	WLPUYNrPGEXMi12ORAOLF/Kmp5gS2z8C3qv3ELHSjZBwFuCDbgXHpIXOUBXnIQq4yzq87J
-	HITvKHn8wMoPxtOvUN2XyRV9/Mlm+Jc=
+	bh=5bSR5azA7mGT2MIdoQg1s83NE5CNtJOIyCxYjmIHOvM=;
+	b=2tBdQIKzKo7p/5dYI04rPBhhl0Vc9O8dAbnSUgBsEiMiycj3vc88/Gq7z5IjEVwx9PP9XK
+	25aRnPzg02IdcgFpkxEXLzLg6jkdq+hH2z09bzt6IRhVQZra9vzcaU4Lg4mIbX2f7wOM8k
+	LYxPeRGF5F/hjOfasqNsqOgeYGw6pJk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=baylibre-com.20251104.gappssmtp.com header.s=20251104 header.b=hWl6uIH9;
-	spf=pass (imf25.hostedemail.com: domain of aarsenovic@baylibre.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=aarsenovic@baylibre.com;
-	dmarc=none
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4891cd41959so109087295e9.3
-        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 05:47:06 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ata+Ugt2;
+	spf=pass (imf19.hostedemail.com: domain of huangzjsmile@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=huangzjsmile@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777466986; a=rsa-sha256;
+	cv=none;
+	b=V9IPKXZPAl1MiPo+zgyzzvGAROj368n4GmdEa53FtavgZQpkkg5Bfm06NSnT2NeysFmRSr
+	2F/9UqZZ2YIAERUpANlQPZ1xykE6SjABl3+GU7aLsDKY1pkcMSmKjS8mnfDbrEjkUkvQjX
+	mC5ynUZlIkpgKLZiSCJAgAKCgCVKHIA=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35d99031e4eso8824819a91.1
+        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 05:49:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1777466826; x=1778071626; darn=kvack.org;
-        h=mime-version:message-id:date:user-agent:references:organization
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LGKOO4lpFnOw96SqYoA6Gz/B51JtRhqSbM4Rk15rzpM=;
-        b=hWl6uIH9peD5s2CMpbwN5Fz3E9dsrsqwyY9F/a09yC5siggpUeP0Q2eCTqYaSj1onJ
-         YFByb7+/JHrl/2xpqU9Q2flmIxLd7bj2FmaI0K9DFhx93EC1lDvfAjmnpiYNxSrWq5MW
-         Ly0qf6nzTEoonGfsWTptKFYmGnkSahejuLdX+1+ixS9CzOeLZ1NaQxhVVamedu70Nw6L
-         XcWvUWt+FcRPA9s+7wsSRG2gfI0LXmJmoBwYcuBEO6AhQ2ZjfT0Dtvu7hDM0NFVxyztx
-         OSFG+TG+bx9T/HxstngCa1GgX2omBLuLE95OUhMbxRimGZgu9IQEH1YPPvw7yxR3XWbA
-         tUzA==
+        d=gmail.com; s=20251104; t=1777466985; x=1778071785; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5bSR5azA7mGT2MIdoQg1s83NE5CNtJOIyCxYjmIHOvM=;
+        b=Ata+Ugt27QEKrC2MtBn4iVxNqT90lN7Ch5Hmg6AXN/rR2qfhCbsrNEDIArMopdkoI2
+         uUoT2aAwy/JO0cEKV/kylYnKPC0711JSvdDm+8OjkX3qk39xLR0fFNuyHl1mclpmNUjl
+         wnaJ86SyXathH5QFDu6KULhxU7zDpqAQk0t3hrtIE/5sHSqekdsEn8hdyTp/S439/xkT
+         RnU1HCSpsIqmpdEZ11bYnwV9Olj9o5CaIqdN37zHadg79SDoUnEcm9yDl2iiHcZW89eZ
+         d4mSsZ/oH0KwNcPWR/kQpLWSoGzfhjKs3kVTloZ4mZBNpUGWryKP0WxUymPF5WxLqTXr
+         s+jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777466826; x=1778071626;
-        h=mime-version:message-id:date:user-agent:references:organization
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LGKOO4lpFnOw96SqYoA6Gz/B51JtRhqSbM4Rk15rzpM=;
-        b=jPrZlxFUaWqlh5J4DEPywKFvSKwPjv18IR+R7ytQ6h7XycDdE+C5a6U39mqFQwLKHw
-         TwwTULVFBtN8gmrQC4KnVlHCZeZ1cXpxVsIdMs9tCrjNk6WjfgGTuDts8QMhne29MFR3
-         it08CPMPDnFhHJNxUNKm/LrE4tdsFbTZJSI2cROuTZd35nWZzldLTDx3NF6nk8VsEFsY
-         YBkShDAPp009ZTFPkayLULlqq5PhRDQZkJTbPnYYnbFlF64wi5lVC2Ndt5HApZ4QVBN0
-         1boCcvacjhVMYi8jmciZkcEQ4SDFttNAp7Ukv/Mkaxce/31QM+ZVZyO8FVJucbsJEvcq
-         4vOA==
-X-Forwarded-Encrypted: i=1; AFNElJ/091Q8IxGVsA18D5taVxdmaP32JgzZf66yZqZLHrg1rMRZW6/ofJtJkhxSeSaw8oDS3S6xI0yc9Q==@kvack.org
-X-Gm-Message-State: AOJu0YwEf60FhYEXwSx4gwTeskx7RMpvjlSzxjtR8fd9shS60xosGhjH
-	Ltof5Y67v420orzz12BVyrPGu8A1qGO92Q6moRdeFn4rnwVOqAPu2Qr50KtgscxTYJ8=
-X-Gm-Gg: AeBDieuT7NLK9RvCufxXmE/xyTdJnWAVplahLpSxP3NatTPjAPfUYivOU1qa+VC+16F
-	8XOuPJc875/eVKEzaRDBTtW3k2bNLGGllfYrhi3rsYtIHJrsjM7dG5A8kWSHs6dnQjPTpua21+c
-	9ayfG+IlwJMddIWSUxZLsbwiiMPsLyhZZLLQr8zZerecEpHAAMUl3PMBdwHz/mcZXnmw6iAbZQ4
-	WnroXy560/rvj81x/2U08a6Qm1BtOj55CTIe5JFiyUG+ECIReXeJNmNJUc2cD1w21X3t8Yjhq04
-	dFwhfDb5cksTRO/mkSLj7iTEb+8jsppNN/U6XbkLadxZjPM3nRVWA6tPH7NsYB7ixp+egxSyFof
-	VtzzaMqtemwamHr7dZwqPbx+aN9NDIc6fOk4cfZTVJchQ6taL6jSuz6EhIjaqK+aUVtmZclLe1N
-	yxZhiSKYDQirhybco669s5PwsLlmzbADguT/G1iK8=
-X-Received: by 2002:a05:600c:630a:b0:487:1fb4:7e1 with SMTP id 5b1f17b1804b1-48a77b0ee3emr144763825e9.22.1777466825067;
-        Wed, 29 Apr 2026 05:47:05 -0700 (PDT)
-Received: from bstg ([146.70.193.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7c32afd4sm18360325e9.36.2026.04.29.05.47.04
+        d=1e100.net; s=20251104; t=1777466985; x=1778071785;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5bSR5azA7mGT2MIdoQg1s83NE5CNtJOIyCxYjmIHOvM=;
+        b=ocdTe4Zdp2Ro3YLJl53onHL5qvhxULgcEyAZruiYWmUw5vTbRA0lJys/dRYcOIrrCK
+         BGm5INY/0hT7sawHdZOtmWzRbWzmDZcZsBCHU8s4EkSuJ3vgelq0aAhaygltRncXD0xK
+         c750PjRK3F+daEs2RJuURm4JWBz5D8w33dVOrTowwjCJr1oGWc0W+GTQNFO1F83crrus
+         zHXpqWEBmdYIdH1MYTMqjFUYi3fPHj0JSWg3CnyZVHm0/ZeIy+WktIbaSM/PBrpCIRt6
+         OOu0fetF2bxafal6pq3lqcGu8vjSWF6q+0IAvHoAVI6vKgSLprcgIDrmbAoohj2smyn5
+         b4/A==
+X-Forwarded-Encrypted: i=1; AFNElJ8r6JUPDFRK4BoHBjSBKWhhOsbX2JhQY16YJ8PLSxOFkBavkLqkH80+MoYez2zXD5iyKMjvgk41Gg==@kvack.org
+X-Gm-Message-State: AOJu0Yx8ysJo66yhRh9r9B/9bji04I5UhSuw7l+GuaWfc6KlFwjzP4PZ
+	xWm1ib9IWtQJigvoZ/olEDzmX5JWN5M+035uff3gouTLi9yVQewT5vEC
+X-Gm-Gg: AeBDiet2HWkFxW2OwNsNwh7rid5DKaNZGncq/rZdSxFjPBn34bKKku5R/cDGCS1U7rL
+	kM/hsmtT9uZI+nn1WFYzu9bTlod0RZq6OCC8CiUo3H7eV1kwXx1heoXRQF9/M4ct74B4NXc2WS1
+	rAm/DINGxkZZ2WXIYspYiUb1UKmFTsBPpbXEmPWqz2CuD+sHQ3YWOafM74amWwM3MeA9OooHKhf
+	AthQpsYy0WB4l2OWFukNggti1JIT0HdnurA+3pE75mFSnap+lCEcDtiJjVsz8EakC4anuHU1aeF
+	dpnHC/poaxgzI2yYWV8CehAMcSZYu14b5QagS1Ypr0+dt/krYQ5pmo/59qW/MYNmQvDT+54X0VC
+	keNJyWMQKICqzOzTGDZHIFDLhYqhBgLmi3+ou9S9FUfEN3nA56/0NC6/M0OyFFlK6AsF1xXkmnv
+	yFZKIC7ZFLYtvAjOiGBnFCwswVeBhyj2camnxq3fJshncHT7hCY3Mq+8dz7ENPolNUgseGR2U=
+X-Received: by 2002:a17:90b:4a8c:b0:35f:ba3f:e04e with SMTP id 98e67ed59e1d1-36491f9e5c2mr7752679a91.11.1777466984987;
+        Wed, 29 Apr 2026 05:49:44 -0700 (PDT)
+Received: from localhost.localdomain ([14.116.239.36])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364a2712b97sm1318509a91.2.2026.04.29.05.49.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 05:47:04 -0700 (PDT)
-From: =?utf-8?Q?Arsen_Arsenovi=C4=87?= <aarsenovic@baylibre.com>
-To: amd-gfx@lists.freedesktop.org,  linux-mm@kvack.org
-Cc: cs-tech-ext@baylibre.com
-Subject: Re: [BUG] Frequent hangs or WARNINGs when using heterogeneous
- memory with an AMD MI210 GPU
-In-Reply-To: <86ecjz2hhr.fsf@baylibre.com>
-Organization: BayLibre
-References: <86ecjz2hhr.fsf@baylibre.com>
-User-Agent: mu4e 1.14.0; emacs 31.0.50
-Date: Wed, 29 Apr 2026 14:47:02 +0200
-Message-ID: <86tssu0w8p.fsf@baylibre.com>
+        Wed, 29 Apr 2026 05:49:44 -0700 (PDT)
+From: kerayhuang <huangzjsmile@gmail.com>
+X-Google-Original-From: kerayhuang <kerayhuang@tencent.com>
+To: baoquan.he@linux.dev
+Cc: bhe@redhat.com,
+	flyingpeng@tencent.com,
+	huangzjsmile@gmail.com,
+	kasong@tencent.com,
+	kerayhuang@tencent.com,
+	albinwyang@tencent.com,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/swap: Add cond_resched() in swap_reclaim_full_clusters to prevent softlockup
+Date: Wed, 29 Apr 2026 20:49:31 +0800
+Message-ID: <20260429124931.452003-1-kerayhuang@tencent.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <aeuOuj5rHa6hgLga@MiWiFi-R3L-srv>
+References: <aeuOuj5rHa6hgLga@MiWiFi-R3L-srv>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7C102A000C
-X-Stat-Signature: u4fymr8ux7jo6k8t5iqmxsnbni88hb9x
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1777466827-429746
-X-HE-Meta: U2FsdGVkX1/3NbkYTv7g3CSzzJ7At+sN0G3Cc9weGJC8GFl6mGsibhMz3JWt0eoIaE1kubOR2wYH5jYKOFRCKrFN8sioEeL3w4vgObaYPlIJbX4htTGyzLAIS/lronLwV6SlkKEFc28I9EGb9NEiQqTT/Fdpqm+vcNP1llKLw7Rg/RJ0xNoVYWK6oNoL5+NttJDaVUyF+XwzeONHAC7sRlSMXxuzSvxblTaamOLi+qEqO6HCWGXtSXXRY6jb6eTwPMXuvtUtx6Cu020BXRtw93+2usfEagz0u3USewP5VvZDhsP23KnacZRyp+w189kVXsm1MKDlSOSH3GKK5B9DvmQyZKYDr04TnZrT45n6ihgeDGBV9qofvEM6g86dSbYLBu5QBtrDC8Um91Qyn8mOIrnFl2Oui3k9MHBhDPQVKow4slgrgjoZYnVln7rIymTrAjBkCNIsfNYvJu8LBZgidpLY+aqk6RQs4KvYjuCmyi1wCvPY2087/S8q6x81IS2CIK6rA84VZdpXWlBapv6xttnZ+2IR9EWO5U2IZGgA5Jg/izZkSclqYbrKHqQDT38w2Y3YcWNEhVA+MKbZTX8Agd1whZzV+AhWKD5AyGzQe7HZWGznjOWKOU+Y6vi+k6qTsVXUhBs3di6QTc5ehoJUPNKxqK1k12g8L5QTpbzmLJaImIOW7YP2LgY7tylsoM/O9Xqv44WQwDsPj7jupDRqe1mpFMg+MUz+BHz0pn2lHM9dTK1EzcHMq8uPP/zacoBq4KPHirpsx9OboJsBnClIMm8XsdLNjDXgWAuqp0hJlLhQZeZZODt+zC60IuGYmJz6YKKkg+tHY5krRtvqUG0lNtKrp2T5WYaTF/W7QFhzc497INZ24/sYDF0a2nJesfClzluAPkJ6EnZsx9ojOeslbl9cIlGN2hDQsaBaNct/CU56iE6GPFCFOMf5Ks+Vjd+r7Ydnyhj20IiqhqA0hAu
- F6AKMICA
- HPc+VwrmeLbz7E1CCYYtoDK+JAzecZm+Bt+IIbcXsH3i8CD5iTZHVCpWv6qMRzxL7VR7Qeqy2g9zLHhvaRg5z4AGSbIf/VMO2/syIqny69NrZrXOfNhT59Ub5cXPo5ltzAsbCTFTKJH5SEVIxq5qy2tulby6RH+ua66pY+X8B60Lc/CD6cyWyi7ZBW7nD2S1+ywOV0DFKXnIKbuAdpggLUd91SbK60kkaEpoXWaYBzavaU03VQMsR6jst5pfxjbP/05CI26ShV8E1AgjdH+qY9S45qXusWioF7xOqDErnAGBIZxO5+TbveD3jQOeDC76sLkM2O98+bQsh/CfimJwEZrLZgobk4Zc/QLELTtNtyNofgKuDnQphBTiwjQ1+Mstdm3fl2ETgup9I8U2QnC3utratG/0duzc1LWTR+EkFKGRlB/zIEEHdM6PdIyc1eJADc56GnNkV3GvAEOypciOU1i8EqEUIWlkJ45IIcI3y8IYPnEqnzb1otleMXiAWKMq137nnGW+0GZtAjTecfHPtKJbq828P48w2yq2zWwdUPj0QPOY7LJFbkwd3Wj7MUpqaQmfbcfpri4cbRAP9SwDAqshRbtqNvfRTxH8WN5mpJYFKy5PcXOarRBktE2Aor0Bv2bID20e7zICShCHFn+5ILdXIcfDE7SwhaIQH2pObTnMyCpPzKh8Nu+KG03m7eDw25is48FXokGGpnt3f2TYx+GUc9g+EbzeI+QxwTejfTBAtKGGamynSkojPXQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 387A91A0015
+X-Stat-Signature: 6bn3989mne1aa5iuuf8obrybn7qbjytw
+X-HE-Tag: 1777466986-753068
+X-HE-Meta: U2FsdGVkX1+YQe6cfXaDmYfP3mSt9O7BwdTEccALmz6ERwcKFWFEifWduUF7dcLRwMXFjzdAOsFC/0Gqp68v5FKfM+5i7vc3iTH9rMUlAqfh7wIQdwItFyRh8ArrSmFPeW96ZBYrfytHF4v+77KJUR6cfw6mj/rOk9iT0ogYef425ZoJQy8UU+2zLVXz9XtPZ04wtYNT7I9e7SS9j7SrWCPLczQ4KbtbqA81K4InLja1Tt+iLegZgxp1J0Ozk37PUbOq8ADNBmGA8ECa107O0nikN6bLIgDuzoEcrPZa6G01RSUhjz1CGKK3uUX550q+t9zITyuuLchB6dkb1n/CHEzkRDw1EpRx5HbYvwY4aSiXWSo18C4U/N4O8EufSoSAG4iEjATPaRQkZjhescL7ooKBFzbItolV6m3krV3a2r+nrePf0x0NYbJcAfa5/TxAmB0Nyzp2bPg9GammEO7d08brOFEe72tqorLkcDX4qRb6ZW+zzDkKKZKWAZILPMwd2Zna2jQvS03Nm6O193MDDCTLeyfoPIzHRCjb0srrqLFn8W89l1/gzDdZJtUS3STCK2lAPckA79FRuO9QKdbXTQlmW6UtHZ54PYxQUfV/us48OzrCcVHt9s7dMc19vbuMF++Ya41HUKW5Riop0ZLxrps/w836mLpMn8Ie93OW8x81eXGVXfs1xesDsOJ7fSw3htGPbzRONeaBUC+KkzunGVN3H+dc0fWsQIIy35LlvY+wp5iXtGhAjPZUk3IvPtcxMXBN9zZsgIgrcW457lFO4Us+osH+fd41/IGb8i0cjOlSxm3M+Q7gqUoBCNFLxR2aPXsYfc9QwS2yUeeFMru2mMwb1aQjZ7zwNYlqWDNGkIn6PvrNLRbb1Oz8errtX+NEqaU3inLIN+S2szdK1gUagsKaXT1G+rfFRfYD+3XRSx/11G29z20zOSF3E2AgFNHPJYz9dtAVmEoFfEXJSnB
+ fo8UMTC2
+ KBRXF4JUqj0dp4MYEfzra0qpbk7TZiJHOzLM4xYuNW2opaH4WFe9gkMQm7rPc/WUjRBs9hD+RX9crNjoBEThZD7dobOJ90d4uO6no5YT+L2Xboe8swEnKPurULW3ZfybUkoJUIRv1Mn8VYN/55eLvGjCiTHsZ4MvFCDDM+Yy6+uW6JuxJaQDGgg1WHe0Sl1rMkPA+c22NRE/ClL/wREyb9LACZtMUNXXz/IKaIdYGhRRfHe1IDvVLn7AG2BXxZz+9FZEBbqltkwZIkTo1tvP3cWxRC0ZkSc3Yj1T9CSFotGkihWqJXa9UnPQqSMLT0KsQF1Ul3ftn8Q4kZdhTM8PGy1WKC+6ypMe8P0uBO+gxdLX+rgbgzC9zXtZ7H3hgZyYr5BiwJgtOv2X2SO3uRKErz9XR+9yf9O0MtRnIzZQjzePfK9LSEsQyV8UQG8C4xjYu51+Zq6zAiquO/VOv9gBzu/OWGObnmrN2D3CCi1k/Vls40JRurZCMUruM4Lb/N24l8V8N1/XTNBcQB25NYDoCCuA9ssMsnnae4uRZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,146 +123,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---=-=-=
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Hi Baoquan,
+Thanks for the review!
+> Hi Keray,
+> 
+> On 04/24/26 at 08:37pm, kerayhuang wrote:
+> > Add periodic cond_resched() calls during large full_clusters
+> > reclaim operations to prevent softlockup issues.
+> > 
+> > Signed-off-by: kerayhuang <kerayhuang@tencent.com>
+> > Reviewed-by: Kairui Song <kasong@tencent.com>
+> > Reviewed-by: Hao Peng <flyingpeng@tencent.com>
+> > ---
+> >  mm/swapfile.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> 
+> Thanks for the patch. The change looks good to me, however there are
+> still small concerns.
+> 
+> For patch log, it might be better to provide more details, e.g did you
+> observe this issue in a product environment, or just a code exploring?
+> If observed in a product environment, what does the backtrace look like 
+> when softlockup happened?
 
-Arsen Arsenovi=C4=87 <aarsenovic@baylibre.com> writes:
+We hit a real softlockup in an internal stress test environment. 
+The workload was LTP memory/swap stress on a large arm64 machine, 
+with 320 CPUs, about 1TB memory and an 8.6GB swap device. 
+The system was under heavy load and the swap device had a large 
+number of full clusters. The softlockup was triggered during 
+a stress test after about 3 days.
 
-> We get this by running the following OpenMP program built for offloading
-> onto an AMD GPU:
->
->   https://gcc.gnu.org/cgit/gcc/tree/libgomp/testsuite/libgomp.c++/pr11969=
-2-1-4.C
->
-> ... built by:
->
->   x86_64-none-linux-gnu-g++ pr119692-1-4.C -foffload=3D-march=3Dgfx90a \
->     -Wl,-rpath,/opt/rocm/lib -fopenmp -O2 \
->     -DDEFAULT=3D'defaultmap(firstprivate)' \
->     -lm -o ./pr119692-1-4.exe
->
-> ... using trunk GCC configured for amdgcn-amdhsa offloading[1] and
-> executed as:
->
->   timeout --verbose 10s env HSA_XNACK=3D1 LD_LIBRARY_PATH=3D. ./pr119692-=
-1-4.exe
->
-> ... when the timeout happens (i.e. the program gets stuck for 10 seconds
-> and then, when 10 seconds pass, timeout sends a SIGTERM to a.out, and
-> results in the crash above).
+The backtrace looks like:
 
-I've now confirmed that it is possible to reproduce this specific issue
-also on bare metal, also with kernel 7.0.2 and ROCm 7.2.2 (using the
-rocm/dev-ubuntu-22.04:7.2.2 Docker image):
+  PID: 3817773  TASK: ffff0883bb28b780  CPU: 48   COMMAND: "kworker/48:7"
+   #0 [ffff800080183d10] __crash_kexec at ffffa4c1361e5de4
+   #1 [ffff800080183d90] panic at ffffa4c1360d5e9c
+   #2 [ffff800080183e20] watchdog_timer_fn at ffffa4c136231fa8
+   ...
+  #16 [ffff8000c4ad3cb0] swap_cache_del_folio at ffffa4c1363e1614
+  #17 [ffff8000c4ad3ce0] __try_to_reclaim_swap at ffffa4c1363e4bfc
+  #18 [ffff8000c4ad3d40] swap_reclaim_full_clusters at ffffa4c1363e5474
+  #19 [ffff8000c4ad3da0] swap_reclaim_work at ffffa4c1363e550c
+  #20 [ffff8000c4ad3dc0] process_one_work at ffffa4c136102edc
+  #21 [ffff8000c4ad3e10] worker_thread at ffffa4c136103398
+  #22 [ffff8000c4ad3e70] kthread at ffffa4c13610d95c
 
-  [ 1171.959571] ------------[ cut here ]------------
-  [ 1171.959577] WARNING: mm/memory.c:1753 at unmap_page_range+0x10d5/0x1bc=
-0, CPU#247: pr119692-1-4.ex/143761
-  [ 1171.959613] Modules linked in: xt_iprange xt_LOG nf_log_syslog xt_comm=
-ent amdgpu amdxcp drm_ttm_helper ttm drm_exec drm_panel_backlight_quirks gp=
-u_sched drm_suballoc_helper video drm_buddy drm_display_helper cec rc_core =
-iptable_nat iptable_filter vhost_vsock vmw_vsock_virtio_transport_common vs=
-ock vhost vhost_iotlb nf_conntrack_netlink xt_nat veth vxlan ip6_udp_tunnel=
- udp_tunnel xt_policy xt_mark xt_bpf xt_tcpudp br_netfilter xt_conntrack xt=
-_MASQUERADE xfrm_user xfrm_algo xt_set ip_set nft_chain_nat nf_nat nf_connt=
-rack nf_defrag_ipv6 nf_defrag_ipv4 xt_addrtype nft_compat nfsv3 nfs netfs o=
-verlay 8021q garp mrp bridge stp llc bonding tls nf_tables nfnetlink binfmt=
-_misc nls_iso8859_1 intel_rapl_msr intel_rapl_common amd64_edac edac_mce_am=
-d kvm_amd ipmi_ssif kvm irqbypass rapl wmi_bmof pcspkr ccp input_leds joyde=
-v mac_hid acpi_ipmi ptdma ipmi_si k10temp ipmi_devintf ipmi_msghandler nfsd=
- auth_rpcgss nfs_acl lockd sch_fq_codel dm_multipath grace scsi_dh_rdac scs=
-i_dh_emc scsi_dh_alua sunrpc msr efi_pstore ip_tables x_tables
-  [ 1171.959847]  autofs4 btrfs libblake2b raid10 raid456 async_raid6_recov=
- async_memcpy async_pq async_xor async_tx xor raid6_pq raid1 raid0 hid_gene=
-ric usbmouse igb bnxt_en ghash_clmulni_intel usbhid ast rndis_host ahci cdc=
-_ether libahci dca usbnet hid i2c_algo_bit mii i2c_piix4 i2c_smbus wmi aesn=
-i_intel
-  [ 1171.959939] CPU: 247 UID: 0 PID: 143761 Comm: pr119692-1-4.ex Not tain=
-ted 7.0.2-instinct-arsen #3 PREEMPT(lazy)
-  [ 1171.959947] Hardware name: Supermicro AS -4124GS-TNR/H12DSG-O-CPU, BIO=
-S 2.8 01/26/2024
-  [ 1171.959951] RIP: 0010:unmap_page_range+0x10d5/0x1bc0
-  [ 1171.959959] Code: 2e 2e 2e 31 c0 4c 39 b5 50 ff ff ff 0f 85 72 f2 ff f=
-f e9 b1 fd ff ff 48 8b 45 90 48 8b 53 18 48 83 78 48 00 0f 84 28 f9 ff ff <=
-0f> 0b e9 21 f9 ff ff a9 ff 0f 00 00 0f 85 cb fb ff ff 48 8b 10 83
-  [ 1171.959964] RSP: 0018:ffffce40ffc87920 EFLAGS: 00010286
-  [ 1171.959969] RAX: ffff8e18cb2ee900 RBX: fffff3333ffb6a00 RCX: 000000000=
-0000000
-  [ 1171.959973] RDX: ffff8e18de1b18c9 RSI: 0000000000000005 RDI: 000000000=
-0000000
-  [ 1171.959976] RBP: ffffce40ffc87a30 R08: 0000000000000000 R09: 000000000=
-0000000
-  [ 1171.959979] R10: 0000000000000000 R11: 0000000000000000 R12: ffffce40f=
-fc87b90
-  [ 1171.959983] R13: fffff3333ffb6a00 R14: 0000000000000001 R15: ffff8e18b=
-a912018
-  [ 1171.959986] FS:  0000000000000000(0000) GS:ffff8e57ac3da000(0000) knlG=
-S:0000000000000000
-  [ 1171.959990] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [ 1171.959994] CR2: 000070d717bfe920 CR3: 0000004169a48002 CR4: 000000000=
-0f70ef0
-  [ 1171.960000] PKRU: 55555554
-  [ 1171.960004] Call Trace:
-  [ 1171.960008]  <TASK>
-  [ 1171.960022]  unmap_single_vma+0x96/0x110
-  [ 1171.960031]  unmap_vmas+0xa5/0x180
-  [ 1171.960041]  exit_mmap+0x13b/0x400
-  [ 1171.960060]  __mmput+0x45/0x170
-  [ 1171.960068]  mmput+0x31/0x40
-  [ 1171.960074]  do_exit+0x285/0xad0
-  [ 1171.960083]  do_group_exit+0x2d/0xb0
-  [ 1171.960090]  get_signal+0x86a/0x930
-  [ 1171.960099]  ? kfd_ioctl+0x4ad/0x5c0 [amdgpu]
-  [ 1171.960563]  ? srso_alias_return_thunk+0x5/0xfbef5
-  [ 1171.960570]  ? __x64_sys_ioctl+0xbd/0x100
-  [ 1171.960580]  arch_do_signal_or_restart+0x3a/0x250
-  [ 1171.960608]  exit_to_user_mode_loop+0x8f/0x500
-  [ 1171.960618]  do_syscall_64+0x2cd/0x14b0
-  [ 1171.960626]  ? srso_alias_return_thunk+0x5/0xfbef5
-  [ 1171.960631]  ? handle_mm_fault+0x1e8/0x2f0
-  [ 1171.960640]  ? srso_alias_return_thunk+0x5/0xfbef5
-  [ 1171.960646]  ? do_user_addr_fault+0x2ee/0x830
-  [ 1171.960655]  ? srso_alias_return_thunk+0x5/0xfbef5
-  [ 1171.960660]  ? irqentry_exit+0xa5/0x600
-  [ 1171.960670]  ? srso_alias_return_thunk+0x5/0xfbef5
-  [ 1171.960676]  ? exc_page_fault+0x94/0x1e0
-  [ 1171.960682]  ? ret_from_fork+0x1b2/0x3a0
-  [ 1171.960691]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [ 1171.960697] RIP: 0033:0x70d718dab9cf
-  [ 1171.960704] Code: Unable to access opcode bytes at 0x70d718dab9a5.
-  [ 1171.960708] RSP: 002b:000070d717bfda90 EFLAGS: 00000246 ORIG_RAX: 0000=
-000000000010
-  [ 1171.960716] RAX: fffffffffffffffc RBX: 0000000000000003 RCX: 000070d71=
-8dab9cf
-  [ 1171.960720] RDX: 000070d717bfdb60 RSI: 00000000c0184b0c RDI: 000000000=
-0000003
-  [ 1171.960725] RBP: 00000000c0184b0c R08: 0000000040000001 R09: 000070d70=
-8000dd0
-  [ 1171.960728] R10: 000070d71902bc68 R11: 0000000000000246 R12: 000070d71=
-7bfdc10
-  [ 1171.960732] R13: 000070d717bfdb60 R14: 0000000031050b60 R15: 000070d70=
-8000dd0
-  [ 1171.960741]  </TASK>
-  [ 1171.960746] ---[ end trace 0000000000000000 ]---
+From the vmcore analysis, swap_reclaim_work() called
+swap_reclaim_full_clusters() with force=true, which sets to_scan to 1551 clusters.
+At the time of the softlockup, there were still 1427 full clusters remaining in the
+full_clusters list.
 
-I'll try the other testcase we had (omptests t-unified-* all running in
-parallel) later also.
-=2D-=20
-Arsen Arsenovi=C4=87
+I will add these details to the commit log in v2.
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 9174f1eeffb0..74a1e324449d 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -1054,6 +1054,7 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+> >  		swap_cluster_unlock(ci);
+> >  		if (to_scan <= 0)
+> >  			break;
+> > +		cond_resched();
+> 
+> Besides, is it a little bit too aggressive to call cond_resched() for
+> each cluster reclaiming compared with the old code? Do you consider to
+> make it gentle, e.g calling cond_resched() every several clusters, 8, 16
+> or other number decided based on your testing performance statistics.
 
------BEGIN PGP SIGNATURE-----
+I think calling cond_resched() per cluster is reasonable
+here because:
 
-iQEKBAEWCgCyFiEE/uKz0RP8AKMWLWBhUsKUMB6ixJMFAmnx/cYbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyXxSAAAAAAC4AKGlzc3Vlci1mcHJAbm90YXRpb25z
-Lm9wZW5wZ3AuZmlmdGhob3JzZW1hbi5uZXRGRUUyQjNEMTEzRkMwMEEzMTYyRDYw
-NjE1MkMyOTQzMDFFQTJDNDkzGBxhYXJzZW5vdmljQGJheWxpYnJlLmNvbQAKCRBS
-wpQwHqLEk4E4AQC5CgSws6LLnLmtU3wZ14OFUYn4xKYxLH2yciVFrXqTowEApQLv
-P1UbHsAtGhQ/xBW489cM7DN7aHXnRS4wSij/ag8=
-=mtuB
------END PGP SIGNATURE-----
---=-=-=--
+1) Each cluster iteration already involves scanning up to 512 slots,
+   and each slot reclaim may call __try_to_reclaim_swap() which does
+   non-trivial work (lock/unlock, folio lookup, swap cache deletion,
+   and potentially slab freeing). So the work per cluster is already
+   substantial.
+
+2) cond_resched() is a lightweight check - it only actually reschedules 
+   when need_resched() is set, so in the common case it's just a flag
+   check with negligible overhead. Therefore calling it once per cluster
+   gives a bounded latency without forcing an actual context switch every 
+   time. If we call it only every 8 or 16 clusters, the worst-case 
+   non-preemptible window can still become quite large on machines with 
+   many full clusters.
+
+2) This is a workqueue context (swap_reclaim_work), not a hot fast
+   path, so the slight overhead is acceptable.
+
+Thanks,
+Keray 
 
