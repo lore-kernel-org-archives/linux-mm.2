@@ -4,93 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C8D3FF885A
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 01:35:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E0FFF885A
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 01:39:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49A326B00C0; Tue, 28 Apr 2026 21:35:21 -0400 (EDT)
+	id 451B96B008C; Tue, 28 Apr 2026 21:39:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44B0E6B00C1; Tue, 28 Apr 2026 21:35:21 -0400 (EDT)
+	id 429766B0092; Tue, 28 Apr 2026 21:39:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 361D06B00C3; Tue, 28 Apr 2026 21:35:21 -0400 (EDT)
+	id 366786B0093; Tue, 28 Apr 2026 21:39:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 27F356B00C0
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 21:35:21 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B74511C0BFE
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 01:35:20 +0000 (UTC)
-X-FDA: 84709875600.05.529E38A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DDE0040007
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 01:35:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ehiW3hcK;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 22B1C6B008C
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 21:39:13 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE2B6120516
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 01:39:12 +0000 (UTC)
+X-FDA: 84709885344.01.111C811
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0F67640005
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 01:39:10 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rf1nhXdY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777426751; a=rsa-sha256;
+	cv=none;
+	b=ti4BQn7gPul5NtvKgTjpCYf82X15fadytkdsJEF9JCa1uIgB16un/S0gWiF9q6OMFztOAZ
+	orPYavH1mV9Xm+1RN34TB+Y0DFo62DPpPVeCkAac5yFb58kOlGp7JXyNsWOfYPR4bdoSQo
+	8wyBcvHN/Ev6fP9ARHL7SHI3UFIuk+w=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rf1nhXdY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777426519;
+	s=arc-20220608; t=1777426751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yFTUxqS63o9Sbc74QuYqPH5dkbR5Zlk9xcXHLLglMEo=;
-	b=elLe//7Rm7/vnxtZwf0clmW7a73aYpvkN/3gtP3z5Kt/W9UrAZF3MT30E1mG1G7PY6eSl9
-	IwGvkYXrkwlZsrG/fVXD0n/Y2fnxsbURcRzvAH6TWJCa1uRm0fL6ufrBuPvFXFlqO2Wj3N
-	jp3qI/ocdYezIc76TKpwfAFDvDRUcRk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ehiW3hcK;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777426519; a=rsa-sha256;
-	cv=none;
-	b=bhBkatXbCiSSBa9aWUKfmiU6mDHc5Fw+CWfBCwww3rxxY4hl1MKECXhtxF4+HAIY0+wclS
-	pvLOsYItdgLL+lvQlJ6P00z7UvNmjpJ9i9zXE5N0fuRCua13UxMODLvpL3rOO7EzRy9eRs
-	G3I4Zv+8Wo9jz1rWwcwn4E013s2k4gM=
+	bh=9BoEF5GA5qi/kF0ERLQDSATIAV5brLnhfed7LwEqZRA=;
+	b=hMlAYX27wkPlxY0ZhiSQz4afNix7nez9SDEllpdhERzfCZNepUkueAg00ARIdZ/58DkIIa
+	1E3fV260qPqMjqdk3DOwPkJFcGVSfTAvKmnT44PnaJURkN38kXB0CE/sxcoVIcpp4c4boq
+	IZVdxbga6JnHCgiAqXbASlnzW5HoEqk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C59AA43234;
-	Wed, 29 Apr 2026 01:35:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365A4C2BCB7;
-	Wed, 29 Apr 2026 01:35:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 68C5860180;
+	Wed, 29 Apr 2026 01:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF71C2BCC4;
+	Wed, 29 Apr 2026 01:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777426517;
-	bh=zsz09Fh4ZkNYvNa/EM9uqYuuGn5g3d5yHSgaE+HAkvc=;
+	s=k20201202; t=1777426750;
+	bh=NuKdDMXxMHFfADUrXSz37+tncEQGzkzv+UR6zBbTJQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehiW3hcK5usEjwMir539AUX6Ta8F9pPK4R5M2qPBBUKPcfTkXpSx8Ydo+DmZ3hVKF
-	 aL8W68NDTvx0Tzleh5WTNoMEQcRg7iDNm3hi5W1aRBjP1dAJA4IXGzIFWWk2m2Ug+3
-	 ORZH+CSE4ujGfTnglWseL4BYrtij933eKGtyrgKFn6+pJ2iF6FNrNGjp6s6ssAJMT/
-	 3BGNqmmZi1GRkrZez393niOPxbbo1IJCQ03qXRBDVdOSWNdHvNvi98cC9RFjZmdGJJ
-	 JvDfLvVhQ4LJy9m2EUtUJPtNBgoy3kLAxVHKwcPtlY00r8aDnmS4lbPMUSMyhKsa1g
-	 dQT98eXYqp6+A==
+	b=rf1nhXdYaZuPNSDKEjrXwSowqcANaZsvJDB4tbwF20WzWrEDsJaewE+jJp7uzGObs
+	 t/sSX9iRxGSYdjF5Oeoi1IhPsoAjK0Qn8swXcJXLAt/89Wx7On7VNq3T8+doULmLPn
+	 0OnGVmbdKvs3oSvrROP9bFT+hlGbcQhgjYkHK9WgNDXSWe2PI7nbuRllHXeqwhrLKT
+	 h9Hq8S+pU5BTXzEtIGftQuKjL1AbG2j4bJP25gvvDNphft0c9UjVC+fk7o/XT4D0GO
+	 bT3AClZL13UsNc6yHPWBHPegnWW4yhwRHeMHqGjR3RRsyVIzEyTvSMSeUsUUtvmGbg
+	 UJ6CLy9HgqFuQ==
 From: SeongJae Park <sj@kernel.org>
-To: Zhen Ni <zhen.ni@easystack.cn>
+To: Zi Yan <ziy@nvidia.com>
 Cc: SeongJae Park <sj@kernel.org>,
+	"zhen.ni" <zhen.ni@easystack.cn>,
 	akpm@linux-foundation.org,
 	vbabka@kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
 	jackmanb@google.com,
 	hannes@cmpxchg.org,
-	ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] mm/page_owner: document page_owner filter features
-Date: Tue, 28 Apr 2026 18:35:13 -0700
-Message-ID: <20260429013514.88985-1-sj@kernel.org>
+Subject: Re: [PATCH v2 1/3] mm/page_owner: add filter infrastructure
+Date: Tue, 28 Apr 2026 18:39:01 -0700
+Message-ID: <20260429013902.89104-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260428071112.1420380-5-zhen.ni@easystack.cn>
+In-Reply-To: <F8F8A2DA-CC65-491B-B69A-2716186D0495@nvidia.com>
 References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: r5grabza4zk61pubd936kjwkomg5o7tb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DDE0040007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 6ygph9zfbgs3wqgp3hit6zxktu7nzmri
-X-HE-Tag: 1777426518-430931
-X-HE-Meta: U2FsdGVkX1+woScGGK6LqZn1fwfK44XYJ2YZK8B4oLEiWvdBxxeE09SZbbU3UKCYB0QAoCYfwo+qvo6db6jW3exLRZ+lPtFi4xlJDyb/8Z1/vNUYTwQj+xKxWPioLE0SUBzvpWiuTpxRDGSnRXFNRmNi7pFLznr+mM+JtsDuOJL4Y7POAYmoZyhcRmgPnsXEqZAZgvGuHThGcOxh/j3e4d4BPml05RIc0yFond7iDRjPfWIe/NyW6odA7bMbbfsxQtz5MWf+Sj25pbueQx4CNUkdD5y7IcI2m8+rUDry1lAn85hfw1ZdxULGc10k0snJYJ+QHfwzKk/Y8vkmuMJvqnhJQ5ZZ2Bv/ivA6Dk0qMg0o2M5qa/PXMCtrLgA+O8+wdfip/WRy/oqzRmXDfHsA0nh5eJePGjv4Bs1Stm0OXVe3aPjePunyxzwknopVmWSvS8F0FRIJte2uxoTa/QliBsTczbqrj+77vvvtPPRbKc71kLn9QgcBiPRQ0tbdiRoSJjTQ6ljS9C7todYbpzPwCGW9sl+GEe4xoBh460OXa+FSgPTfStF7YXIQVa9+t+7qq5lh+lDePoEKdMx8IW/QagltiGCuZbXUmrzuJ9Uq5t81cDoMzFcvsocZw0Cw5PQrUVQ4jbHqH9vSlGjRMo+E1m6WytetiH7wODa9EYI+hymSYfC+EEA47zxPXzz5E2O4WkU2LnEg4UmAPZmzpZPGkkKA4zmJb+Oc8gHwgqIlYdMW8Il31/HaVg8evWoW7rVyGxRJnZgq48OI2iRCU9Rl2uklLnPu3GOhWSU7ExC3umc/BgGOzvy8ILR1WqjvtNU135YUSH+PTka6aRPRFPHYwo/Q+s52vxcV4iUhVs/75AMlY52Y2D2zTo138q4sn3BF1VHWWXJ2cbIFIdQgkKi0J7JJo6VZ/7L/vfXIIkIulwH18q5k+THWvnwyaGsqZY9u5lmr1WFadG4ihHWVA8Z
- ISko/BFd
- KY6ytnozqnocjWMJFxYkf6vb+KzRUw5zHiBSdqXQ966TgW+neZbf9cewU90J7Rumn3kP5TCE9UoA+Vakr7+Jj4akpNkVSWlhWMqPRdSA37zIg3lodK23Wh/pZoGY9o/GWID2AWeZNDIDiat2W7hz9VSCxtHw35ga3cs5VBKpA9uY1yg84P6cLkhmVmkHDy9WjgmJl7W4bfwtoA/JulNs6ep6+7LJgjS7KYqIdjMnZ/7ucwFkGrTGd19TE/gBZaAsu+2Ng
+X-Rspamd-Queue-Id: 0F67640005
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777426750-358316
+X-HE-Meta: U2FsdGVkX1/wIvTr+qDnuy6aX6y8m+PF+ysfc+5RwvSmVfYn3uY2zcQr5Zd9TjarwcJNd79vScj5N8fa7hxb2DJzjy9ZAhHUffnTx+niCojPQKhSmZDs2ZAOdpwxROKQrkAXWwo4EXgG/ep2sJMe4YYUkEdR1A/jlOdhV2Ekxxil6GcrvjuDPwuyozPlpTig9gvq2j0HEgLLp+KJZvsnYNIOpM3o9p/YQvDdT5Gxl1WK6dYeH5pZE14HZCIqVLucdMkr5bokWeDreLIwgTWCJIva5ZuomjHplC1m/IHpyUXASJ40rKsMR4WnU4MFY0HVAelFp6afRMRXU1SwVaSILZ3EuQIsB2tCzlRNLgoxMN7fcDTAmNrhSnCmlP0cb7j7ypYCN7pes/xD1r+GlbRcWfbyCgGUx93tmzFDRjFTk1d3aKEK5uKcBwaDFzasbPKqEDGVtGDqFk6Lg0qfNZE7s4kbQg0rnV6pmpKnJ1OYXBqIC+4FT8/+6gX5lvCbwsmcaoK3BQCwUtIHCJsHlkKBf0gkhs3odsmdMfpB05eWQYvRBGlw2kodVsVMIuyfmWCfs/LNXq8FtT0osLS8BBl58hpiDfpivyjJwBePg3OidVVnNQ2ZJQP5UzCGSoYU8zN5J2PL8BpSwtHmbLhKM4WrPsiedmkUUWfzt/WVYE7sDJclb3o5WV+Uyo5Uf66gq9CbtDMlNyZ3EgnszsevzFgRst6Ti60pkIJe8aA33ZBgiSDKX/4K2Gw99F1qKpeto8DLEStScZzNkejvuhnhq6NSy5d/l4JT6yC3NaCvHYDqyKP4tb1/Hr/WMfws4EuvyMVT9Aww79SNNsdxr5fCsqLuWEW0dhegaD/HMVeM1Df2UifxRJhM7Yt0UrLuqzT8Jul7j+igNjC9ZvK/XijClLVQtxYDZDJkGD54M5zIGWeZNMHYwjLDv+Tvg+r8pf3Uuse0YLTH1fz2PQFVTvux18Q
+ Gl8Dkk5H
+ wvkmscKgOWdGcE1b9mHX1KXg8Svj84UmT2VJu/Rx6Vc4Or7pv65HZEeBADTGvtJdHzbCBrWkWDg+V5afJtSoqKBhFCkQEjZuoSFuksBHjoYMWsN4X3eRTImTCGdpKrIlz5X5jEncLm7yt6c1UR07YgwX+ijRuaj4dxSygV3MgRaTpBJnBENBaxryTSnb80tTZmAaHZAbgINFdnDAfKQtNTs/38BqszHKB3iecUgBW96w/8vcQ7LV1ZO6zi8pJ7734Dw2VrZ28Em0o9Qm4h0jzzRgmS3VrWd43h/wgEdG8eIwvjum4xq4JGwhWIk8iMKWYZPhWqzFfd/xQth2CUUctx4/gPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,109 +100,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 28 Apr 2026 15:11:12 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+On Tue, 28 Apr 2026 09:13:03 -0400 Zi Yan <ziy@nvidia.com> wrote:
 
-> Add documentation for the page_owner filter functionality, including:
-> - Print mode filter (full stack vs stack handle)
-> - NUMA node filter (single node, multiple nodes, ranges)
-> - Usage examples for both filters
+> On 27 Apr 2026, at 23:33, zhen.ni wrote:
 > 
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-> ---
+> > 在 2026/4/27 23:35, Zi Yan 写道:
+> >> On 19 Apr 2026, at 11:55, Zhen Ni wrote:
+> >>
+> >>> Add data structure for page_owner filtering functionality and create
+> >>> debugfs directory for filter controls.
+> >>>
+> >>> This adds:
+> >>> - enum page_owner_print_mode with values for full_stack and stack_handle
+> >>> - struct page_owner_filter with print_mode and nid_mask fields
+> >>> - Static owner_filter instance initialized with default values
+> >>> - page_owner_filter debugfs directory
+> >>>
+> >>> The filter infrastructure will be used to add print_mode and NUMA node
+> >>> filtering capabilities in subsequent commits.
+> >>>
+> >>> Link: https://lore.kernel.org/linux-mm/20260417154638.22370-2-zhen.ni@easystack.cn/
+> >>> Suggested-by: Zi Yan <ziy@nvidia.com>
+> >>> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+> >>> ---
+> >>>
+> >>> Changes in v2:
+> >>> - Use enum page_owner_print_mode instead of bool 'compact' for better clarity
+> >>> - Use nodemask_t instead of int 'nid' to support multi-node filtering
+> >>> ---
+> >>>   mm/page_owner.c | 20 +++++++++++++++++++-
+> >>>   1 file changed, 19 insertions(+), 1 deletion(-)
+> >>
+> >> The patch can be folded into Patch 2. Otherwise, these new types are not
+> >> used and page_owner_filter folder is just empty.
+> >>
+> >
+> >
+> > Thanks for your review and suggestion.
+> >
+> > I kept the 3-patch structure mainly for clear functional separation,
+> > which also makes review easier. Patch 1 adds the infrastructure,
 > 
-> Changes in v3:
-> - New patch to document filter features as requested by Andrew Morton
-> ---
->  Documentation/mm/page_owner.rst | 55 ++++++++++++++++++++++++++++++++-
->  1 file changed, 54 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/mm/page_owner.rst b/Documentation/mm/page_owner.rst
-> index 6b12f3b007ec..6261366d33fe 100644
-> --- a/Documentation/mm/page_owner.rst
-> +++ b/Documentation/mm/page_owner.rst
-> @@ -74,7 +74,17 @@ Usage
->  
->  3) Do the job that you want to debug.
->  
-> -4) Analyze information from page owner::
-> +4) (Optional) Use filters to focus on specific memory allocations::
-> +
-> +    cd /sys/kernel/debug/page_owner_filter
-> +
-> +    # Print only stack handles instead of full traces
-> +    echo 1 > print_mode
-> +
-> +    # Filter by NUMA nodes
-> +    echo "0,2-3" > nid
+> What is the point of adding unused code in a separate patch?
+> Patch 1 has no functional addition and should be part of Patch 2.
 
-Nit.  Other parts of the document uses tab for the indentation, while the above
-new snippet is using four spaces.  How about using tab for the consistency?
+I agree.
 
-> +
-> +5) Analyze information from page owner::
->  
->  	cat /sys/kernel/debug/page_owner_stacks/show_stacks > stacks.txt
->  	cat stacks.txt
-> @@ -238,6 +248,49 @@ Usage
->  				./page_owner_sort <input> <output> --tgid=1,2,3
->  				./page_owner_sort <input> <output> --name name1,name2
->  
-> +Page Owner Filters
-> +==================
-> +
-> +The page_owner feature provides filtering capabilities to focus on specific
-> +memory allocations (e.g., by NUMA node). Filters are controlled through debugfs
-> +files in ``/sys/kernel/debug/page_owner_filter/``.
-> +
-> +Print Mode Filter
-> +-----------------
-> +
-> +The ``print_mode`` file controls the level of detail in stack trace output.
-> +
-> +Available modes:
-> +
-> +- ``0`` (default): Print full stack traces
-> +- ``1``: Print only stack handles
-> +
-> +The ``print_mode=1`` output format::
-> +
-> +    Page allocated via order 0, mask 0x42800(GFP_NOWAIT|__GFP_COMP),
-> +    pid 1, tgid 1 (systemd), ts 349667370 ns
-> +    PFN 0xa00a2 type Unmovable Block 1280 type Unmovable
-> +    Flags 0x33fffe0000004124(...)
-> +    handle: 17432583
-
-Tab for indentation?
-
-> +
-> +To retrieve the full stack trace for a handle, use::
-> +
-> +    cat /sys/kernel/debug/page_owner_stacks/show_stacks_handles
-
-Tab?
-
-> +
-> +NUMA Node Filter
-> +----------------
-> +
-> +The ``nid`` file filters pages by NUMA node. This is useful for NUMA-aware
-> +environments to analyze node-specific memory allocation.
-> +
-> +Supported input formats:
-> +
-> +- Single node: ``echo "2" > nid``
-> +- Multiple nodes: ``echo "0,2,3" > nid``
-> +- Node range: ``echo "0-3" > nid``
-> +- Mixed format: ``echo "0,2-4,7" > nid``
-> +- Disable filter: ``echo "-1" > nid``
-> +
->  STANDARD FORMAT SPECIFIERS
->  ==========================
->  ::
-> -- 
-> 2.20.1
+While I was reviewing the v3 of this series, I had to move between the patch 2
+and patch 1 to check the value of the print_mode enum.  Having those on single
+patch will be easier to read for people like me.
 
 
 Thanks,
 SJ
+
+[...]
 
