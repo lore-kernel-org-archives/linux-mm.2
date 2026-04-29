@@ -4,142 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E14DEFF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 09:24:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2B8DFF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 09:57:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 119FB6B0088; Wed, 29 Apr 2026 05:24:53 -0400 (EDT)
+	id D588A6B0088; Wed, 29 Apr 2026 05:57:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F1FE6B008A; Wed, 29 Apr 2026 05:24:53 -0400 (EDT)
+	id D093B6B008A; Wed, 29 Apr 2026 05:57:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 007996B008C; Wed, 29 Apr 2026 05:24:52 -0400 (EDT)
+	id BF7DA6B008C; Wed, 29 Apr 2026 05:57:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E54FE6B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 05:24:52 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 991CB9196A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:10:01 +0000 (UTC)
-X-FDA: 84711021402.20.DA814D0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C472D160012
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:09:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z+MvByLP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AFADD6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 05:57:17 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5633A3FB0
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:30:10 +0000 (UTC)
+X-FDA: 84711072180.28.FA15931
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2603A80002
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:30:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=f4Jz3rp4;
+	spf=pass (imf02.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777453799;
+	s=arc-20220608; t=1777455008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m5GumiqFIt/ECkKTfRRSYkr9aPUwrDRN0+fa5HLkUxU=;
-	b=r6W/M2njswh2BQJwiyqx1WMF9R/kKV3Kuh4V8MvdyIKVaUt6upNm+ABoOti5mIF8nyjY6u
-	swxetZBGL3ZuMNHOwDdk3y+fPab4wWnjetvwOBbiNuqsTx25CMfrAJb5kOBhuuiTqOA8Id
-	FoJ9xwtv+FMpshWBqJ8PkirXO6NFrY0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777453799; a=rsa-sha256;
+	bh=l2sErW9ifuxlN4x+Sne0CeYYbEJKHpiCBGf6vhcU2Jk=;
+	b=C1GjEQ6+jvwP3crgPH2D18mpPWWl2LUPfJjTA+57xG9aZddiEUqP8Ey6zFVVVhAr1wNX/Q
+	xLfC2AYxjW7FygUeWaDu9XsHumau/HT2QX2GlnnsEbQdA79hEnJ4PU1jbKiJAMJUAM2Lqk
+	f5T5AzQ21QvJQFXx5n4sPO7NEjl9VL8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777455008; a=rsa-sha256;
 	cv=none;
-	b=Tcmju8Jnt1ajWPqIuCmoHO2tVb16lI7I/5Qbs08/QjFhVAys+ltdG2dOvRAzoGc6f10nek
-	cqN2L5kgAxPPXMOy22P/Jig/51Udz3G/BKRt33fnBjngIa6btF8KXUpVJbXowScuPcx+6N
-	zf4i8FnG7WUeXgGvx5lCpcDTA45Awwc=
+	b=1rKHmm2aV2VzeXkN/HXIc1rtKbERXG9A/yVUf8ZkSB8seoF3IVGeopYea2YGdADURACJPy
+	0m+yFGkBenhBWhEsU2UCWs9mH1jlZlymUeuq0ojW1IdQuViLNJ3Z5IkpRWY0zQL9ltr60Z
+	bMiuiYWk7lVzr3XBxUWui4DrFOUCynM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z+MvByLP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0D49260018;
-	Wed, 29 Apr 2026 09:09:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CA9C19425;
-	Wed, 29 Apr 2026 09:09:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777453798;
-	bh=U+qtUGkVcFIOlc8S8UBttfIQrvSv8Unx0HYdPMMzu/s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Z+MvByLPCyLX3thXV7RgPBjsjmxkuAXCIy4GXER9SykX7CHrlgSjjUZyquB4KqDcp
-	 jE6yx5hmr/1rBMFnHAQeb4njCzfxnDS9Co6U2mZwBoMBNYEkTNvqPRNWu+Qd+DIyyr
-	 HWM4uamBtdonUqzUYZM5AzY8WIBP3Q6Gfu2ml4ehQ4kOOLyQgQeMAwj23hqJX5T/hE
-	 E2ZZlTeKtyQ10nWnUmrbLFCRU15KsZQIGtahN+iRUNNOFYYOepadE5UHGhl5Dd0Jow
-	 3SJ9urBDneMgL5mF0Cw1Z+3nieDQZ3O47aX5O/vbcVAbyuPItDIlozZqV+nz4/CdJG
-	 RXiuFE/4QctTg==
-Message-ID: <7f98f461-62a7-455d-a7a8-cb8928465946@kernel.org>
-Date: Wed, 29 Apr 2026 11:09:55 +0200
+	imf02.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=f4Jz3rp4;
+	spf=pass (imf02.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20260429093002epoutp0459abb6078236d1b7922c976b1042db95~qyehotRtY1912719127epoutp04T;
+	Wed, 29 Apr 2026 09:30:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20260429093002epoutp0459abb6078236d1b7922c976b1042db95~qyehotRtY1912719127epoutp04T
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1777455003;
+	bh=l2sErW9ifuxlN4x+Sne0CeYYbEJKHpiCBGf6vhcU2Jk=;
+	h=Date:From:Subject:To:Cc:In-Reply-To:References:From;
+	b=f4Jz3rp4k+M6bC+6TqlXloRnoElu8gbjEIiUIua1QviqkO+4RxEinkUKYJCggf8Hd
+	 FVrvtEGPb/OllLUxDO4vDE05M+R+UKBx6SqInb9CWkL+WMtxaQmXCaDix7f3d++h7o
+	 yAcy3bhNxsmOBqM5dvxXy58dF4C26cPcMyLnfNPE=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
+	20260429093002epcas5p409aa78c4d55a86cef067895205a1b2d5~qyehWqKUG3126931269epcas5p4T;
+	Wed, 29 Apr 2026 09:30:02 +0000 (GMT)
+Received: from epcpadp1new (unknown [182.195.40.141]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4g5Bpy4N4Rz3hhT9; Wed, 29 Apr
+	2026 09:30:02 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20260429061641epcas5p3c2d6063ba101e347c36ccfa050174482~qv1tDSpkV0853808538epcas5p3d;
+	Wed, 29 Apr 2026 06:16:41 +0000 (GMT)
+Received: from [107.122.10.65] (unknown [107.122.10.65]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260429061628epsmtip20cd5b871612ade998c9aaa11fb84dd9a~qv1gikvBb1891418914epsmtip2w;
+	Wed, 29 Apr 2026 06:16:28 +0000 (GMT)
+Message-ID: <1891546521.01777455002601.JavaMail.epsvc@epcpadp1new>
+Date: Wed, 29 Apr 2026 11:45:26 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
- exclusive file folios
-To: Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
- hca@linux.ibm.com, linux-s390@vger.kernel.org, brauner@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, timmurray@google.com,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>
-References: <20260421230239.172582-3-minchan@kernel.org>
- <aesg-sj6_VmXyqxb@tiehlicka>
- <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
- <aevBRh08X4UTMUj9@google.com> <ae8NT0tLt7eBmH6j@tiehlicka>
- <CAJuCfpHQdA7C50V2WjNrdYcp7feV5ukgxJf+vMNEcp0P1SGEow@mail.gmail.com>
- <ae-Zu-VAzAA7SdLa@tiehlicka> <ae_roPR64e6sY_fN@google.com>
- <afBaJLLFigkdszov@tiehlicka> <afFco71vwmpQy3pk@google.com>
- <afG-4hq7Hr62Uu6J@tiehlicka>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+From: Arun George/Arun George <arun.george@samsung.com>
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+To: Gregory Price <gourry@gourry.net>
+Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
+	kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com,
+	akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+	muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+	jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+	pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
+	riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
+	roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	zhengqi.arch@bytedance.com, terry.bowman@amd.com, gost.dev@samsung.com,
+	arungeorge05@gmail.com, cpgs@samsung.com
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <afG-4hq7Hr62Uu6J@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <ae_i9IlIndumJWN3@gourry-fedora-PF4VCD3F>
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C472D160012
-X-Stat-Signature: fdj5pbrtq77qbzy3e1xdffudfeusi7e1
+X-CMS-MailID: 20260429061641epcas5p3c2d6063ba101e347c36ccfa050174482
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0
+References: <20260222084842.1824063-1-gourry@gourry.net>
+	<CGME20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0@epcas5p1.samsung.com>
+	<1983025922.01777297382206.JavaMail.epsvc@epcpadp2new>
+	<ae_i9IlIndumJWN3@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2603A80002
+X-Stat-Signature: zeqwfkscgymemabbo9k5ebguu8qt747a
 X-Rspam-User: 
-X-HE-Tag: 1777453799-302760
-X-HE-Meta: U2FsdGVkX1+s9Lm2Gt6vHFNkHhQSJJQAqpzy0p0hP+2YotFcSoYHTRIXn73lIE0yJBsj2OllEC7g5VzRexxfy29FmqY1F05/6PbbNEyDhNmWWh1mL6jlecHoaKyal5ZS7nItsEG8zWEB+qQ0WTDsmDSKyMLgXR0AJHeCq2mK5B57NMDqbKExsdXc5Cu9O6xG07//ABrOi63eRuRRUlatG5V3dDz/EO2IvNwz1IZ01qThq282GDtVApYukJc8lYZaFk1JEubq/bI7ro9ulMGVkc3nm4Q7cqWOBF53DvjkdFSiuapXGB+/qSnn7eATMUlg4k66FUOjNsNSAIHBVl/cCTQzwHsdsnWybT+hp4OlZGxEtZ0fvXKmK9E3nuPGFHzbdQxr0czI0kOPhjyvouf0nZK37o9v0vsV1KWzElqMiJvcmli/T7/ToimF/ALWuJg0czoj32dtTAYZfx0XX69HZqvA+8kpMmC3wUEsR/MGsi+YuagO4lxSuHubpXP7c/MrAQAw4a9AMO4AE0er8ptntJxo/P35DdCT1EhizR8aTV5gBh4S1o7R2wkI5kUTSx9EEW+rlJlTsRO0CmSxSgZGwpUbmamzlh1PEcZY2EeP7dqobFSkWOCT/IgF/KxQEk6hN8P5MZlsbkgXxThKKy0ZWMRRYFhyDZgPmpOxr/NmoaKHmxL7ed2eL0aZb0pJYZbMK9g2iPmkNZmXafkAohB3V3x120fB+FixFe9uZY0Ugy/BaAAESlRe2DklzVSsd8QtxGS82lguU09fSpT/4OiaKfCP8XVblid7tFeRJvg8iooln4W+mkCTSN9QHtUT1sLFJIBWpsPsTn/sLHMrwuGtBM9wYjYggtgg0X4nAdUyl5OJ08S0kpYVKuOvPG5Qs0itRliWWlL/0Z8YXHxxMK14u421TQMafS/uniV75xV1SZHAP5Jga6P8mu8jE1+MIjRXI+MbEI0/PM/pbIdeatx
- HzORtL37
- VsNlX1thN8p4Zl+svmXfhYsgVmTSK3zCBlKmf3MbbAPjhJUbQK/rsS+iSGtpZTSoJYtON0KcmJNTqW4df5rGtbn1E98ViGBqyQ5pM2+/hSCyg4tIfcoLIjsXsACoICjY06rLrseR3Qgyhq0mLv8dGfVcQV3BN3qZZ9Ad/UDOiGnXkWINohwNTu2/3cct7RrujjavCZXMlsGoM0wdsKyrIO+ugLSIf7KREIIIGrZ22dSPwPtxeSH9olWOW1bysIxzTh5TAo5VqR/aNxxgBh0CJk3Fz8Fbbgezxc9cURIfCE/Uiv/wx7xjylgIW4A/29UKvlUVZZz5UviXc0Hk=
+X-HE-Tag: 1777455006-638171
+X-HE-Meta: U2FsdGVkX1+CchRmxWvLomRTYDH3Z2HU9DrLBPItGxBC9X46OgRhtOeLPSv2ygHn6pIcHHmdPtRuUdhcNI5reuCk+mLI3gVsUnGY5aBH2RZgP50MqXZIEkim1Xvm000cq6nuuWhrzRU5aJ2LQEC5riNTiznQtpDLHlCm7lRTPd3GWGpYXusbU78vU1DLHItC60cCASgJhUjXUW61UCd3IrVRlEh+6odSod78sCIViGPogaKkKeNur/fmjc2IvtjB8PKQPK4YRo/1HoTSMlF52uOlyIHJrya974WYpND/buIjCvB577XLk2xEnLqMbFnQW8TQqX7iBUwzSx1N/dh9KyxfbkvVNuvVc9dnFMI3efQnlJgDhsy11isY99nGySblUkJdrIQew0UTuOYN685ca+o3LF1muhjXFj/g+OIVUKmdHuIhYh19W8ygp7M9q7tNBud6ZPYfqLVzbHmWGxG+ik6E0Oqd7T0lYbIO0VUo9xYSX3RUjHcHqhQNlDB8C2/T0ry1fX0SCvmi37IBW7m0qZ+liVXVJ71QRt5U+eDYyVNjUU6iY7GwENVHrVabsKtd5CQ+imzB5rjwaDwyqXZhi7Uy1i0RbjVI722NrvNkzNBrtyGo+ZIfvBsA5OiVvrgwRlbDwoKwYs0XO/oycoyLgPLUJavSf6khKBZtxcGj69SgTdmuUdGbiO8wbrz1WI62egHlmCeyhPVU/16C55r1Vy1s9eNbwZoV8XoiwMZ+X0G9cIPJll94DCXhdr2wx19WVftK2ZnPaHb82D6B/V+LuN5rxUTiWIPGUGGMK3khdpdneMr0H52QpwuRtam+9zqolKKnpnXYCAjdX5cqoLiokN5NfOXW09SPzlTnLKhaJZSMlzlHfXPJ24/fAsifWi495FOHFer8fKDcGR+FVemXNYZXSlBxeZQYLA70ENE+MmPdzuOa9aWDxYFTf1CVrcymuSuUoM+gPjn05ejnLot
+ 5jx/4f5C
+ mtvjNZhaRV3plMq8jpGPTbvhlGP3/3SLTmfMX/+AcNsDuYO56xB5ixp/jWbMq1xVGS/DsXasMJ92Rjn5VniV+gx8UN5CVijPiNgzOQrvyQtUcxpJ3Le04W81ajbTAl4l1Kvi85Z1Y8+ln2Hwuwr9z1djWc1B1GF9fr5f2Z7KfzKXdZKsEkGq2WFgH32VTt3o1WY/6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,59 +138,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/29/26 10:18, Michal Hocko wrote:
-> On Tue 28-04-26 18:19:31, Minchan Kim wrote:
->> On Tue, Apr 28, 2026 at 08:56:36AM +0200, Michal Hocko wrote:
-> [...]
->>>         DESCRIPTION
->>>           The process_mrelease() system call is used to free the memory of
->>>           an exiting process.
+On 28-04-2026 03:58 am, Gregory Price wrote:
+> On Mon, Apr 27, 2026 at 06:02:57PM +0530, Arun George wrote:
 >>
->> "Free the memory of an exiting process" implies all memory, not just
->> anonymous. User cannot know it will free only anonymous, and I am trying to
->> make it work as intended by completing a symmetric reclamation path.
+>> Any particular workload you are targeting with
+>> this (which can tolerate this latency)?
+>>
+>> Any deployments you think of where the goal is a capacity expansion
+>> with a compromise in performance?
+>>
+> Primary use cases for us are any workload that benefits from zswap -
+> which is many, many (many, many [many, many]) workloads.
 > 
-> Page cache doesn't belong to any process.
+A curious question please. If the primary use case is swap, can't we 
+handle this problem statement by re-using the zsmalloc allocation classes?
+
+A separate size class can be reserved for non-compressed pages in 
+zsmalloc. And this interface could be used by zswap, zram etc. (We have 
+been using this implementation for testing btw.). This does not require 
+additional book-keeping or buddy allocator.
+
+But that approach will not give a generic solution and not available for 
+user-land anyway!
+>> And I believe the bear-proof cage might work in the normal scenarios,
+>> but may not work for all.
 > 
-> [...]
+> If it can't work for all workloads, then it's likely not general purpose
+> enough to find core kernel support and should seek to use the existing
+> interfaces (DAX and friends).
 > 
->> >From cf292f8f8ead8df9161aad342c36633ffa90257f Mon Sep 17 00:00:00 2001
->> From: Minchan Kim <minchan@kernel.org>
->> Date: Tue, 28 Apr 2026 16:39:06 -0700
->> Subject: [PATCH] mm: process_mrelease: skip LRU movement and expedite clean
->>  file folio reclaim
+I agree. That is a good point.
+
 > 
-> I will let others to discuss this. I maintain my position that this is a
-> hack for a very particular use case and you still seem to not explain
-> non-Android users of the syscall. Anyway, I will not repeat myself here.
+> You need two controls over compressed RAM for it to be reliable:
 > 
+>    - Allocation control (acquiring new struct page to write to)
+>    - Write-control (preventing new writes to compressed pages)
+> 
+> Private nodes provide the allocation control.
+> 
+> A read-only mapping, and guarantee that only memory that can reach
+> the device is userland memory - is the only way to control the cpu
+> writes from the OS perspective.
+> 
+So write-control part need to handled in the specific back end driver of 
+private pages while the allocation control is a generic front-end sort 
+of, right? (Ex: zswap cram back end for compressed devices case.)>
+> In the next version of the RFC i'll demonstrate cram.c as a new swap
+> backend that allows for read-only mappings to be soft-faulted in,
+> migration on write, isolation to ANON memory, and some optional
+> settings that allow a device or administrator a "writable budget"
+> which allows some number of pages to be made writable without migration.
 
-One thing that got lost in the thread here: this code path is not
-process_mrelease specific?
+Great! I believe "writable budget" could be an interesting idea which 
+can solve the 'bus error' sort of scenarios due to device not capable of 
+taking any more writes. The write budget could be replenished using the 
+control path and writes will not go ahead without the budget available, 
+right?>
+> ~Gregory
+> 
+~Arun George
 
-We seem to end up in __oom_reap_task_mm() also from ordinary oom_reap_task_mm().
-
-There, we unconditionally set MMF_UNSTABLE to then zap_vma_for_reaping() where
-memory can be "reaped".
-
-So why is there "process_mrelease" part of the patch subject at all?
-
-
-The only other scenario where we set MMF_UNSTABLE seems to be when we run into
-trouble during fork(). CCing Liam, I wonder what it would take to remove
-MMF_UNSTABLE from fork code now that we handle some memory freeing while
-aborting fork() "more elegantly".
-
-Unrelated stupid question: would things be clearer if we could rename
-MMF_UNSTABLE to MMF_OOM_REAPING once figure out whether aborting fork() still
-really needs it?
-
-
-Back to Michal's original question: I guess the real question is the interaction
-with memory reclaim that would just collect the access bits beforehand.
-
--- 
-Cheers,
-
-David
 
