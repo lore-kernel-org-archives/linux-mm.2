@@ -4,85 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75603FF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:07:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD09BFF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:14:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB2F66B0092; Wed, 29 Apr 2026 09:07:11 -0400 (EDT)
+	id EA7986B008C; Wed, 29 Apr 2026 09:14:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D63736B0093; Wed, 29 Apr 2026 09:07:11 -0400 (EDT)
+	id E58906B0096; Wed, 29 Apr 2026 09:14:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C52556B0095; Wed, 29 Apr 2026 09:07:11 -0400 (EDT)
+	id D74666B008C; Wed, 29 Apr 2026 09:14:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B238A6B0092
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:07:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7910B40214
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:07:11 +0000 (UTC)
-X-FDA: 84711619062.19.5211246
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6B816160003
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:07:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uOnPgzdr;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C81D46B008C
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:14:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C2AE160246
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:14:06 +0000 (UTC)
+X-FDA: 84711636492.17.99488A6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 79A661A0016
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:14:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4mPOguf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777468444; a=rsa-sha256;
+	cv=none;
+	b=xgJhkntHN2+x1nknJ+wjeOqoBkrtXy+w9SKkBMw0tMEoA1ypaoUNmI++TbYEjXN0FvPCzJ
+	g6swUG4kerPAzniEWaxxYxr0cYp4Ya3aurv+wT+Fkw/79EoGdBSTobsMGNrRuAKLA5xF+T
+	vyAZ6Os5Pg66qXxZkwl3Bp3t32yvgwY=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4mPOguf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777468029;
+	s=arc-20220608; t=1777468444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qLVykEX8popI3INkM/HClp0k/ylv5tR6pRXym/OVfIQ=;
-	b=ms9p11Ivnm/+PB766dx91mUub2VMXgNtvyUcSPkD4uE0BFfZ344RV/7XTNkUCsOw2KgsEu
-	AlETTIIf9qR+FCtQ2FbtATnjkfRpEK0Kp7J/qyTUzwIvaktwPnFVmm2XQmrgm5TD2ZkHWx
-	sAWy5Jx+XeYxAJxFuOgrmkMZTcp+4wg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uOnPgzdr;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777468029; a=rsa-sha256;
-	cv=none;
-	b=fwdetKwQ48lPoC3N5GesatHAjjtMtRd2ekjODc/RF4Jh0M7LMio5V1ZzIEtywWGC9Tx+wP
-	AbiAFBPhaeX5CpqjADlvWE1vuVGcTG4iqR5uDxw6uTKn984Ps8gjalfWl8PaVhSFT7td69
-	ftgy8w2xSA7SWvgEPSWbdEvy3uKpxlY=
+	bh=Qktm8NvvIx6866Ax9tK2/mGrZ80QkMhvnay6NYBD0x0=;
+	b=HA9ujdKLyOct7Jn8d0FAXoUPUWTskU7NL4R3LOXBubSOChDQX8YYO1aQv/6WTvyAKH9Z/a
+	Vul+v2XFCO2sFAHaImZdT9kdYACvZOv8708ZCLViOVLWW2ik8P1o9ET99dSx19GydqIZmP
+	pFcuAqiiD/wQ4uDk41qXFmKq3ppctHI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 794D240421;
-	Wed, 29 Apr 2026 13:07:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257FCC19425;
-	Wed, 29 Apr 2026 13:07:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D35C60154;
+	Wed, 29 Apr 2026 13:14:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4052C19425;
+	Wed, 29 Apr 2026 13:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777468028;
-	bh=9IfO9dFLl2+gw78r2mU9NKidJAmghJYd+xDub6xjhhw=;
+	s=k20201202; t=1777468443;
+	bh=Ln+lOviPC8lyDW1Zl7BSxk4DMjngJAfX53+OE8S4du8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uOnPgzdrHWG9XGxFAlE7PwEOLqA28j6jXgfXqrPhOS7vq1bxEqAJQ0eqtCieFP/85
-	 GkXWVi5SA9bycIydbMFOaIG5h5bR50xYDpML2lDf06EBxtniMdEp6rTPzNJb2k+Jvk
-	 D7SNIaNQGjeDOotsNfmlD6WXJq5kao101xfEdKJR6Uth4nwSZ2Y6M81oncVqfQ0MAK
-	 rFr+L2CfjYTe+g/IZKk0c8/RxidT/3LtXBYs3Px/VSuD4ljfeALNQIGNyWv4uFdFLH
-	 qi0Bl0L67pLH9A0JfKZxkD0BfWVcMEe2Z4LouPT401mCBzTKpOAOQ6LZp3scOMWcJ7
-	 ZjQ/OCuhZ1Ehg==
-Message-ID: <4a612d63-2838-40f5-ab67-79bf35dd3a56@kernel.org>
-Date: Wed, 29 Apr 2026 15:07:04 +0200
+	b=p4mPOgufJeMY1q3K5t4lY4ia227BGcQML437KJAShhLTaJE4dvY7JzvwA8ZSKOAjv
+	 U3RC8RR9jDPKYhcceCIZMp5zboMKNCio0KKszuU8A37WWML2XCXZsTL8rZjGP77QSm
+	 MJBqajJ7yUUOkboXc5Sdjjjz7PiEwKYO53J/8iiqanCfXwJqwDUWHBj1N5rD5ybZv3
+	 775EB4OU/J+2Cy1OKIRUpCM/LrxLxXrO3UcwiX50mnDokCPbiPUgLPTSD4e0hT0CQ2
+	 5thn/2pM38O+m1Mgp7kEV7WAg/LkjXc8LO4pkG5NbuFUVk6603ScyvrcQrpLwpFL8I
+	 vPCBxx61zcNaQ==
+Message-ID: <69bb12b1-386b-41e4-ac98-9d545818d67d@kernel.org>
+Date: Wed, 29 Apr 2026 15:14:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
- exclusive file folios
-To: Michal Hocko <mhocko@suse.com>
-Cc: Minchan Kim <minchan@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- akpm@linux-foundation.org, hca@linux.ibm.com, linux-s390@vger.kernel.org,
- brauner@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- timmurray@google.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>
-References: <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
- <aevBRh08X4UTMUj9@google.com> <ae8NT0tLt7eBmH6j@tiehlicka>
- <CAJuCfpHQdA7C50V2WjNrdYcp7feV5ukgxJf+vMNEcp0P1SGEow@mail.gmail.com>
- <ae-Zu-VAzAA7SdLa@tiehlicka> <ae_roPR64e6sY_fN@google.com>
- <afBaJLLFigkdszov@tiehlicka> <afFco71vwmpQy3pk@google.com>
- <afG-4hq7Hr62Uu6J@tiehlicka>
- <7f98f461-62a7-455d-a7a8-cb8928465946@kernel.org>
- <afHeXY-yeTwmURWh@tiehlicka>
+Subject: Re: [PATCH v5] selftests/mm: khugepaged: initialize file contents via
+ mmap
+To: Vineet Agarwal <agarwal.vineet2006@gmail.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, shuah@kernel.org
+Cc: ziy@nvidia.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260429115816.98824-1-agarwal.vineet2006@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <afHeXY-yeTwmURWh@tiehlicka>
+In-Reply-To: <20260429115816.98824-1-agarwal.vineet2006@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: jd4fiakf1e63j1ptq99xbguza3qs1966
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6B816160003
-X-Stat-Signature: iqyrapdco57f5rgzk3548qy4jpnzctmj
-X-HE-Tag: 1777468029-549450
-X-HE-Meta: U2FsdGVkX18Oim+Bqajfk027V0rtrWorUbaYyIKHtaZsbR7dO6BfFlXps5CZT5e65upx4DYYNYENru75NGx9bqyN4AnCNCLjO21Gqsixn20EJhGat0EPlDa20BPL0UgUuYsHnLbbV/RjILFY73/N7+etu2neXTOzCo6iRhLKkr5IEsSJKxSuDSYi/e287RUOtFfs1Cj8MXzaaBuvZFhP52w09/1Ec3KH6NbRxnHOG5c8lqM+kdlfi3JUo3sm4ru4Q/jkcgQCq4qW8G7UGVOKSEC8hLrXqI9UUAw5Lx9watTy+569s9rLdfUF1yo2VHqNaPb9TGWIvI6wx33PjJN3Brw/i75kNQ6CJdIa+epv1G2D13YFDbqMoA1fa1ZiEGSmbV1sG0BWVjEHW9zUQrGfIoYEjDE6K0pJDqO3Gpwk/LF1aefomFEW/yU0eBNqmIX7rmNY0zb5YDkY90HvpmDuiq3OKrJTXONFD9NOmQQgHA/YD8HGy40RFMLOKX1qQa0eqb0sweCQp0oVL59QaLUdIfOQptgXLR5daKfHM6n+8XyH8qfIiVYdKNXr28l8BoMDrlzwoR/GzVTtxxHB0Ljx6/HBEO/OMyJBpL5M7j820e+LGpr5xmNJoZk/rAexjubwyA/YZlFl8WH/PhKc3TiFHvs/tQEG1K9nbvoQED0VwdPV3g/RhmJJf+dfnInfG3ohhDDS4ohCOO7v9RavDxxr11/tUYGDK7oMzt5HGta/SHdt/Mai/GDT1AmBslFu0eiP+q2TY+rXShQz6eMSQmllgWMtQTkUcGQGbbRTnXISqHk5GsC6AgYJOnRJKwGGny8w6w/qprWwWuDWm4V31XNRupMmbCkDUJwCdDdBMii8pGzxDP1kRBACuIRv/D15NU+vQT6MeuilFcY/hR35b5MPZ/d2Dacq2uQjE/jzZINww6Yn3G1sMZcjpDPcVugNMNW1PDOgVqsz+xTNfqIq7Q1
- 95SPBR7d
- WG/9DvSBuowbNp40160WuIetklLCgPTAFWYg2IIarjYM6CVb8THjI5cVxlTuz9o8uk7MaM+Wf/XPdR1evzMSRpThchu3aezSWthB6JFu90c5E/5QYxzYyZxdeMPWTyKqHdNQ5cj0YZSH2BGJL9mODie/OxHFGqQ5g9EnBZ0uj/VI8wYHKX5WmdqurYu6I+2k7fIXnSMSb99fv46a+i3K+MAkGUspbgBJCrud7EaVbsJ6U6fOUGxn3SmGTBlVnEQvOg96DL6/1HVGOcV9uj9+GixjligwUIUiomNMEoAyAPiR/hxm8BgZ9BgZz2Q==
+X-Rspamd-Queue-Id: 79A661A0016
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777468444-585556
+X-HE-Meta: U2FsdGVkX1/QN7ebMQEthLX5NHb7M4EzRj1QwaU/RFAFFWERJ98Fz6VwoUzl3mMgmP37jONDrMv7ESniGwOXQ9ekDQXZ2Ahr7G8mDb6Zq5wSdVOTlRW/6qwInV48iMPH7dcvMZ8ZRwfCED4CKVkCMC4eWq6vbOCWrdcjGitE8u7eoFq+aKzNf9nFSsfLYOPGGwgwzKnhPOPquaUviiRMQKNUTiNxF8CxNPxg9UYPRXJSLMTqROB13yXggCRE7QNLFlbA0omWnKe4cEftTOGFN+E9YjfKsomaN0Y6B/GUA7eFuP3s1lwY2/hBIyergXj35FSBLMJ9OkGxI8vUXnJ5tgXcTvE68Pe9Tm5NhuxR8HsUS7oK8kF4yb9prws2uuNXGMcDbKYko2g+cFR4df2lE/IV0YzNgBDNBs+xlYGPfIB0J/XOCsud0o7qnAp1Qij917MGWFZncgDeeLYQSOzq3aZXa8IZ5a4fTQ7k0hlkD30VMmC/f4XapD2Gd/TVmtFFg2n/qP0R/TSIjGfed1pGq2YI9XZ6a5hRHBTFhQJxv9tRbE05genLdB62TpxTP8RebISCXiJY6v78S52bRQYlUmpof7YjCtyVVWBD6793DdMuRAfr0ErCPxvu5qAD3jXHny2oYZG+Iiecxlm/+3gRvZGi2B1VcAH/W23YZNBMgeLUcaodIXZxBFDvzqFLIt/uQhtscEnoxGlqShl00nuy7PcGsheWwZFgLyycg1HMx5SrB8LV+cFWXeTbUfnbcORYeZ6WhsI0F3igzITM0aMmtIkQi03HKnzbW0gBINW3+VVBvuAE2rnt+jmQhZz6dwzezOGb1m+e73HqKzg/ITP0xeHfuw1fczvB5TWF48qSX6tVjp0D9ndl36t1N2W6Y/BhexifLmTFpCUjIqH6TIc4mPZBB8rcywtAUlHKiNfeT/OrUnJGQuLzfG3hyhw50wfeiAoqv6CzSTS31VPdJUE
+ 0u87uJl0
+ KGpIjV9OhLsPgUkyinOwEXMnaLDPYBqdejV+yVKaIbxe58cerXM0Hced28pzITMsFCY38CPiQpFYToHRfNEYEspAks4iWjuHMh0wMgsKZGUP1geWvui8nhfLU3L9LsQB3tZ8nJ2k0sz034vMnSaaBV/Ah1JNIzAPuzo0FBCr7xNd/YjVE2pLP3i099ygrkprqd3nE9M3Fj0FtghyRW5tVgzp5R1knOPYRcAs5J0d/vE562leq1wzvWQGpyIulpQkCfj8eg9ZZmrDyKAAaLU4FaxCymXzWKjVFMMl6u2Flb3xnOu4RkZkn8MFHvAs6ityTWcUubQl3jAzg+yonF+FUE9XXxGsAZ4Xc5AePbalVgamMm07aAhv8r8W85OjJ5U/Fr7i8f3rm6ZHZtN8USn9Mf4MT8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,25 +139,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/29/26 12:33, Michal Hocko wrote:
-> On Wed 29-04-26 11:09:55, David Hildenbrand wrote:
->> Unrelated stupid question: would things be clearer if we could rename
->> MMF_UNSTABLE to MMF_OOM_REAPING once figure out whether aborting fork() still
->> really needs it?
+On 4/29/26 13:58, Vineet Agarwal wrote:
+> file_setup_area() currently allocates anonymous memory, fills it,
+> and writes it into the backing file used for collapse testing.
 > 
-> While the oom is the only current kernel user of MMF_UNSTABLE (in a
-> sense it sets the flag) the flag should denote that any page faults are
-> reliable because it might fault in a fresh memory and user would lose
-> the previous content without knowing that. Not sure MMF_OOM_REAPING
-> would reflect that reality better.
+> Instead of copying data through write(), resize the file with
+> ftruncate(), map it directly with MAP_SHARED, and initialize the
+> mapped area in place.
+> 
+> This simplifies the setup path and avoids the need for explicit
+> partial write handling.
+> 
+> Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
 
-We use it for failed fork() as well, but that's slightly different semantics (no
-real page faults ever made sense).
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Looking at the original patch here, using MMF_OOM_REAPING to modify zapping
-behavior would be clearer than MMF_UNSTABLE, I guess.
-
-But I see your point regarding kswapd interacting with this.
+Thanks! :)
 
 -- 
 Cheers,
