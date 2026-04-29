@@ -4,97 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B71B3FF886F
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 02:12:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9373FF885A
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 02:28:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71CAE6B00B1; Tue, 28 Apr 2026 22:12:48 -0400 (EDT)
+	id CB1C36B00A9; Tue, 28 Apr 2026 22:28:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CD166B00B2; Tue, 28 Apr 2026 22:12:48 -0400 (EDT)
+	id C62BB6B00AB; Tue, 28 Apr 2026 22:28:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 595A96B00B4; Tue, 28 Apr 2026 22:12:48 -0400 (EDT)
+	id B51126B00AD; Tue, 28 Apr 2026 22:28:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 472E16B00B1
-	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 22:12:48 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BEC6FC1EF0
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:12:47 +0000 (UTC)
-X-FDA: 84709969974.10.0FE0B3B
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DF6161C0009
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:12:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ryoyxHFg;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A74DC6B00A9
+	for <linux-mm@kvack.org>; Tue, 28 Apr 2026 22:28:21 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0A57A0584
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:28:20 +0000 (UTC)
+X-FDA: 84710009160.27.5C76B1F
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 37954C000B
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 02:28:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DZONtexw;
+	spf=pass (imf10.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777428766;
+	s=arc-20220608; t=1777429699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gb86gbMzt9jqdkC6Pg+jFx+1pGimSrMPX47wwwBWIUI=;
-	b=kam5//s19rw1gZPxF2dzXTdM2B6yrHzmyYzuKSZ5MWRmxzh4vkmkZ/SxSp2h0/DE4Yhh1B
-	X5Ev4Hs0m2uFPaFNSyo+Ye6vk+mp2/kb7RWWm8fItUiLINZKJbooBIDqKRjVA7nEgLU7k5
-	QA/cKP8fppBRf2pyVwCTK6z1Cy8HwGQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ryoyxHFg;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777428766; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=si4pob8Nbwk0h2k/iX2PC+8vOE1XCT4dxsoLSEJ3Y8M=;
+	b=Jw35X5tnIc9eTCGIdvvG2WPWG3DHVqDsNuR/cOpFx5BxiaCawi+5ccbGz5YXUHcC3UOXWs
+	U7dL8Y1sjJ1VIf9tRchlM+JiyXq14b7EloiB/ks0qLSwDF0vU2xKLcXdgZ80/jN+mmhSGs
+	Rf9wXwUD5ki94ekQd30hWIdd4lm0CYE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777429699; a=rsa-sha256;
 	cv=none;
-	b=KuZcPkwmByC6yfz1axx/v/Heu232sXsQyhDDh1aCl7BECtCK8IqDCYyzs8U83NxCoXx6I9
-	+gfQaCd0RvZ3taItVx9Clb+5x5wrwDesB5xTRLRLXx0/mk6VERxE17jl/4YhBWUT5Iif1r
-	oHdySx2p2H+Oxk8JPL34EakMz5ocgWU=
+	b=qxNfVwtBiseXHh6b0rotUZ6dfvy7uVjqyR2IRploiOCay5CRT4oCJTAYcF8Z76m4Q97hsM
+	pyWzOIY/18cDUWHtZTJEZ73MyQ8Cgy7WefFogZBADC3cmn4e7HILRsp4evIFZAzLzEWRph
+	6hi591Osa9NRyASmXwQqlV7RNxaVvPU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DZONtexw;
+	spf=pass (imf10.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777428760;
+	t=1777429697;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gb86gbMzt9jqdkC6Pg+jFx+1pGimSrMPX47wwwBWIUI=;
-	b=ryoyxHFgF4ft/HwNv0YIZ5eyaC7WbzQMelfouaMIeTKSI1JNdp6OnjnOFqR6RymBSgWF5Z
-	S49OphuCAdTDZWfvdYQuGVglYjzhMoqdkwHtppsyWKp8NJI2wEBRUAHI6pz0vAxA3kRUJU
-	HfvI616NHH7lDY/x1SHogkiF8bs6BZg=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	rppt@kernel.org,
-	jgg@ziepe.ca,
-	baolu.lu@linux.intel.com,
-	akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=si4pob8Nbwk0h2k/iX2PC+8vOE1XCT4dxsoLSEJ3Y8M=;
+	b=DZONtexwMlI2LaWNMKw6eoGZkZFSghxVyjxai8XC9nPgC8Zb9wKsho0YvNiZM7nISvEL/l
+	hQCJ0tstYaNkPFZcCD+aiycEKmt4GlfMswZCFfPAfVDZ923b/sVZixTss6FbzgAjyzpwIG
+	NDzg4Cy8jOtvKQR08EOaCF9/45jRn6A=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH] x86/mm: fix freeing of PMD-sized vmemmap pages
-Date: Wed, 29 Apr 2026 10:12:24 +0800
-Message-Id: <20260429021224.39916-1-lance.yang@linux.dev>
-In-Reply-To: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
-References: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH] mm/memcontrol: Avoid stuck FLUSHING_CACHED_CHARGE on isolated CPU
+Date: Wed, 29 Apr 2026 10:27:22 +0800
+Message-ID: <20260429022723.133833-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: cbmjrahd7at7xcf3qgjrsdkjt5drhfh7
-X-Rspamd-Queue-Id: DF6161C0009
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 37954C000B
+X-Stat-Signature: dg9mrhc5qm6spzj3p1nruttydze88551
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777428765-172394
-X-HE-Meta: U2FsdGVkX1+c+K9h+d1qDkBqh0cEEkssdk/FAvSwjm9Di6i4hiK5XCqjCnUPRB91A7icq5HRgPuZbHaP0g/F8fqBDj2ExP5vNb3hA+mS3hRhjBkWr7DdkmDkvrmWxH3gB1MbOk/wrjrOeg5dHMuE0J7edbcevb+2oCysidRkgLIxkK6r518ED9K4Mf6NHlkyIsKRogNCO84LADy51u5zTLk+oYW3HIeRQcdsBB+OybxOD/Quwwdz/Cpinsc0xUYURhCQWEd4MgVmxSNYc0e1H2q24K1i03A5wsiU+hF1/o+m3uYS618//QhFXLLqutII1Acc6eC5vOVItjdgslNaXp9nmv9ewSnLsUz/FoHRpukg4l/6fx9HVZ3En0osvsnnuWEGICscKtQupkzSTuf3q6MgNylfJLbQlKaWEswsKZ3vcUdrf+atelkN6LNams+SObfdgEpFoBKz3jAB1xQQE4yziLazE4mAJUBWEQG/UN/qiiJFMr7WgdJCFENubCCGwX1F63uK8GlSvr2xmeorCMgmzJQKpgCPMoC8onW7vvlQx0Gbe4s4wyYgmdY0JW/oECg/3g95RCXAe6BEVnITMEGLyIAJSwfNVFC80br48MffHS5VBL6AO2D2uCMAwMX3T6eHnJ9wOJxk143Pg2iL3zgb4ezoyj33zn4pISscc6KErI1gLK0ZTkAuF9zWoe2EbOw9AlN3usYB5S2xh5xOmONRXOsai6zkvA0sCKxFCSoKtHvwCdNuXxRnOO4sS1KlkEMnj5Q5ab6mpFvUcYWeYgA2icMBYNmJDu0Pe9gaWzRnC1ZQ+1JwZmxRBaBK4rk6ANtZma+0sZBcMwDtpFhxE/spSCPpjCHavkR7Wf2AfBSlDic/f7WcA4NYOr6m6PNEpI+txTzQlTWYA65CZcVZQmkJfwjoYTvV310itq3gp4db3YNUldynRKfp6x5C+Izf5mSIKkoIf2e/Hm1iF9e
- aisdggwG
- lwx2gXUyuLKmQzbaLEQHZ0OGBMB65NXXfpOXbPdxDoKCGVGatK3Lx4WuRMnGQrlG7WA3leK55n6gB6FbDrbFNOGnLKj/TJIiLG4HcHJOeWjMjKUhrY0v5Qztm3TJAG2trOpsyxFEiMjB+dolq6SIzKLFMoh+ClNESjCyO90iTGN67rTx3RaFiSlZcdmJOfU9TTMb85mw4Il51jky8repL183XHMpPQbVweOJEjAQasbJSbuE=
+X-HE-Tag: 1777429698-394001
+X-HE-Meta: U2FsdGVkX1+iKJOGUkuhdhM75R4z3eLFvt6yc1Wog7FE4YdsLJgXxl6vCGlxJ1kJWvNjodwMF5e6XUyF53O9lvECRfyAaRD5DZffuXENJ4HUPr6Z/KQGO5aY71RjfeRbpqqM3g/S13tkVn3QuPpYQQtAmIK+W+gkPQXwEMcSRFDIRkF7udxjIJ08jcpuYfhlA3G0in7TTaGZf8XkNvgSlqpLZLbaiyPhzd4kHdsA/tEX+JaTOP5WpndezSu9AHuBPPv+Jk/SM/j+Gg3meu4a9yonIyERflGHlQFc0ZV0yx433JPscyFyZ5UPRqooO2UbpNAjW8A2Xj2b3FegLf0FvQ7Pk/8K7TYoRlZgiPVAuWyPc2IvrLPG4QSsI8JedyCvzZDdjhXHlsMJkSN0NoAkPZQabDiWfMuibYCyWuXj2L3D/Q0cUvKPTuHe/qLRz4jpysvPfjVh5C0Xh70XMqZfrS0BD1vsGBOmcqoo87VTvqiZZuQacKHWV2SxeI/I9aMS1iJUEuVvLk82n41SstGEvtgkbMLXjJm59cb6aT0kkX9oZOGOMIu+0bCGpBedIJGRa+ahoHt4Xs897WqLfW+7ywUUnamfB3gq67wm7xdJwgla28+OjJ5z7F+SxTlxClmwukXUnPZhBFeNhImwLqiUKIKAqAr/K2H4DxG6+tbP9tLGNxLjKVqLV5/6Z+tkyC/LvnMzq9/NOPsrlKHIPaCE8ExhBGF0jOFUymsmNzccIO9IgriCnjpOYH61z1VSofiFqseCgpyNtFRybWkKqXiSyjciImgWDlq+XQtJ6imoCdyn5JFFcGY5sFCqtcqaGqjic1rgo/yR9TVdptChcMurw+mC7U6RRi7SYdDONT2i8qYiof7rZZw4sGRgb786sjnda3wb5Pvd/iOlA3MKC8T8LlsPlZZv5zOTq8K/nvFfEAEqfC6YxsUf0+tp3mzTyQF+epYRNaW4BEaYxZ5lkER
+ 5LEIVE1e
+ hTai6cBVB60B59JRzT1BBECEDYnEcJLZ3TceD97s4R2qBCq4tBC3gZHYCdPJqRDfmW5hBLHPI3Zfbe5AD5Y2scDoTHFh7oMp1jCsriMfQIoMPSTUMYLJOn3vCONI72aktGs94piTM2Yl6akj8+Y//Gdmcy3P6y7Jnhe4m3nPcHkkA4sSahjBCzST6ZkjBVwbEtwL0uCziEmujWkSuWA77Ss1v0vGTKZ6wcPDEFho73K3DjM2oITbyw/NDwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,179 +95,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-On Tue, Apr 28, 2026 at 12:29:36PM +0200, David Hildenbrand (Arm) wrote:
->In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
->from freeing non-boot page tables through __free_pages() to
->pagetable_free().
->
->However, the function is also called to free vmemmap pages.
->
->Given that vmemmap pages are not page tables, already the page_ptdesc(page)
->is wrong. But worse, pagetable_free() calls
->
->	__free_pages(page, compound_order(page));
->
->As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
->except for HVO, which doesn't apply here -- we will only free the first
->page when freeing a PMD-sized vmemmap page, leaking the other ones.
->
->Fix it by properly decoupling pagetable and vmemmap freeing.
->free_pagetable() no longer has to mess with SECTION_INFO, as only the
->vmemmap is marked like that in register_page_bootmem_memmap().
->
->While at it, just wire up the altmap parameter for remove_pte_table().
->Also, the indentation in remove_pmd_table() is messed up, let's fix that
->while touching it.
+drain_all_stock() sets FLUSHING_CACHED_CHARGE before calling
+schedule_drain_work() to queue per-CPU drain work.  When the target
+CPU is isolated (cpu_is_isolated() == true), the work is silently
+not queued, but FLUSHING_CACHED_CHARGE stays set.  Every subsequent
+drain_all_stock() then sees the bit and skips this stock entirely,
+so the entry is effectively pinned until something else on that CPU
+runs drain_local_*_stock() and clears the bit -- which on a long-
+isolated CPU may never happen.
 
-One thing I'm not sure about is passing altmap down into
-remove_pte_table().
+The original idea was to actually perform the drain from the calling
+CPU on behalf of the isolated one, by adding a lock around the
+per-CPU stock so that a remote drainer could safely touch it.  In
+practice this turned out to be intrusive: the stock data structures
+and their fast paths (consume_stock(), refill_stock(), the obj_stock
+helpers) are deliberately designed around current-CPU-only access,
+and retrofitting cross-CPU serialisation onto them adds non-trivial
+locking and PREEMPT_RT concerns for very little gain.
 
-Do we actually know that a non-NULL altmap means that the vmemmap
-backing page came from that altmap?
+Looking at the actual amount of charge that can accumulate in a
+single per-CPU stock, it is bounded and small, so leaving an
+isolated CPU's stock undrained for a while is not a real problem.
+The only real bug is that the stuck FLUSHING_CACHED_CHARGE bit
+prevents future drain_all_stock() callers from re-attempting once
+the CPU is no longer isolated.
 
-On x86 we still have in vmemmap_populate():
+Fix this minimally by clearing FLUSHING_CACHED_CHARGE when the work
+could not be queued because the target CPU is isolated.  The cached
+charge itself is left in place; it will be released the next time
+the CPU runs drain_local_*_stock() (e.g. after leaving isolation,
+or if the isolated CPU itself calls drain_all_stock() -- in that
+case cpu == curcpu causes drain_local_memcg_stock() to be invoked
+directly), and the next drain_all_stock() call is free to retry
+instead of skipping the stock forever.
 
-	if (end - start < PAGES_PER_SECTION * sizeof(struct page))
-		err = vmemmap_populate_basepages(start, end, node, NULL);
+Fixes: 2d05068610a3 ("memcg: Prepare to protect against concurrent isolated cpuset change")
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ mm/memcontrol.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-So for smaller-than-section vmemmap ranges, even if the caller has an
-altmap, the backing pages are allocated from normal memory. But with
-this fix the PTE removal path would now call vmem_altmap_free() just
-because altmap is non-NULL, and would not free the actual backing page,
-IIUC :)
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index c3d98ab41f1f..cee77b0a95f5 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2219,7 +2219,8 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
+ 	return flush;
+ }
+ 
+-static void schedule_drain_work(int cpu, struct work_struct *work)
++static void
++schedule_drain_work(int cpu, struct work_struct *work, unsigned long *flags)
+ {
+ 	/*
+ 	 * Protect housekeeping cpumask read and work enqueue together
+@@ -2227,9 +2228,22 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
+ 	 * partition update only need to wait for an RCU GP and flush the
+ 	 * pending work on newly isolated CPUs.
+ 	 */
+-	guard(rcu)();
+-	if (!cpu_is_isolated(cpu))
+-		queue_work_on(cpu, memcg_wq, work);
++	scoped_guard(rcu) {
++		if (!cpu_is_isolated(cpu)) {
++			queue_work_on(cpu, memcg_wq, work);
++			return;
++		}
++	}
++
++	/*
++	 * The target CPU is isolated: the drain work was not queued.
++	 * Clear FLUSHING_CACHED_CHARGE so that future drain_all_stock()
++	 * callers can re-attempt instead of skipping this stock forever.
++	 * The cached charge is left in place; it will be released the
++	 * next time the CPU itself runs drain_local_*_stock() (e.g.
++	 * after leaving isolation), or by a follow-up mechanism.
++	 */
++	clear_bit(FLUSHING_CACHED_CHARGE, flags);
+ }
+ 
+ /*
+@@ -2262,7 +2276,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+ 			if (cpu == curcpu)
+ 				drain_local_memcg_stock(&memcg_st->work);
+ 			else
+-				schedule_drain_work(cpu, &memcg_st->work);
++				schedule_drain_work(cpu, &memcg_st->work,
++						    &memcg_st->flags);
+ 		}
+ 
+ 		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
+@@ -2272,7 +2287,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+ 			if (cpu == curcpu)
+ 				drain_local_obj_stock(&obj_st->work);
+ 			else
+-				schedule_drain_work(cpu, &obj_st->work);
++				schedule_drain_work(cpu, &obj_st->work,
++						    &obj_st->flags);
+ 		}
+ 	}
+ 	migrate_enable();
+-- 
+2.43.0
 
-Maybe free_vmemmap_pages() should first check that the backing page is
-really inside the altmap range before using vmem_altmap_free()?
-
-Hopefully I didn't miss anything :)
-
-Thanks,
-Lance
-
->Note that we'll try to get rid of that bootmem info handling soon. For
->now, we'll handle it similar to free_pagetable(), just avoiding the
->ifdef.
->
->Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
->Cc: stable@vger.kernel.org
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
->Reproduced and tested with a simple VM with a virtio-mem device,
->repeatedly adding and removing memory.
->
->Found by code inspection while working on bootmem_info removal.
->---
-> arch/x86/mm/init_64.c | 43 +++++++++++++++++++++++++++----------------
-> 1 file changed, 27 insertions(+), 16 deletions(-)
->
->diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
->index df2261fa4f98..8d03e44a7fb9 100644
->--- a/arch/x86/mm/init_64.c
->+++ b/arch/x86/mm/init_64.c
->@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(struct page *page, int order)
-> #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
-> 		enum bootmem_type type = bootmem_type(page);
-> 
->-		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
->+		if (type == MIX_SECTION_INFO) {
-> 			while (nr_pages--)
-> 				put_page_bootmem(page++);
-> 		} else {
->@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(struct page *page, int order)
-> 	}
-> }
-> 
->-static void __meminit free_hugepage_table(struct page *page,
->+static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
-> 		struct vmem_altmap *altmap)
-> {
->-	if (altmap)
->-		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
->-	else
->-		free_pagetable(page, get_order(PMD_SIZE));
->+	if (altmap) {
->+		vmem_altmap_free(altmap, 1u << order);
->+	} else if (PageReserved(page)) {
->+		unsigned long nr_pages = 1 << order;
->+
->+		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
->+		    bootmem_type(page) == SECTION_INFO) {
->+			while (nr_pages--)
->+				put_page_bootmem(page++);
->+		} else {
->+			free_reserved_pages(page, nr_pages);
->+		}
->+	} else {
->+		__free_pages(page, order);
->+	}
-> }
-> 
-> static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
->@@ -1093,7 +1104,7 @@ static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
-> 
-> static void __meminit
-> remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
->-		 bool direct)
->+		 bool direct, struct vmem_altmap *altmap)
-> {
-> 	unsigned long next, pages = 0;
-> 	pte_t *pte;
->@@ -1118,7 +1129,7 @@ remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
-> 			return;
-> 
-> 		if (!direct)
->-			free_pagetable(pte_page(*pte), 0);
->+			free_vmemmap_pages(pte_page(*pte), 0, altmap);
-> 
-> 		spin_lock(&init_mm.page_table_lock);
-> 		pte_clear(&init_mm, addr, pte);
->@@ -1153,25 +1164,25 @@ remove_pmd_table(pmd_t *pmd_start, unsigned long addr, unsigned long end,
-> 			if (IS_ALIGNED(addr, PMD_SIZE) &&
-> 			    IS_ALIGNED(next, PMD_SIZE)) {
-> 				if (!direct)
->-					free_hugepage_table(pmd_page(*pmd),
->-							    altmap);
->+					free_vmemmap_pages(pmd_page(*pmd),
->+							   PMD_ORDER, altmap);
-> 
-> 				spin_lock(&init_mm.page_table_lock);
-> 				pmd_clear(pmd);
-> 				spin_unlock(&init_mm.page_table_lock);
-> 				pages++;
-> 			} else if (vmemmap_pmd_is_unused(addr, next)) {
->-					free_hugepage_table(pmd_page(*pmd),
->-							    altmap);
->-					spin_lock(&init_mm.page_table_lock);
->-					pmd_clear(pmd);
->-					spin_unlock(&init_mm.page_table_lock);
->+				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
->+						   altmap);
->+				spin_lock(&init_mm.page_table_lock);
->+				pmd_clear(pmd);
->+				spin_unlock(&init_mm.page_table_lock);
-> 			}
-> 			continue;
-> 		}
-> 
-> 		pte_base = (pte_t *)pmd_page_vaddr(*pmd);
->-		remove_pte_table(pte_base, addr, next, direct);
->+		remove_pte_table(pte_base, addr, next, direct, altmap);
-> 		free_pte_table(pte_base, pmd);
-> 	}
-> 
->
->---
->
->base-commit: a2ddbfd1af0f54ea84bf17f0400088815d012e8d
->
->change-id: 20260428-vmemmap-ab4b949aa727
->
->--
->
->Cheers,
->
->David
->
->
 
