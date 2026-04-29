@@ -4,90 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A06CCFF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:20:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5CB6FF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 13:31:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEE9A6B0088; Wed, 29 Apr 2026 09:20:15 -0400 (EDT)
+	id D147D6B0088; Wed, 29 Apr 2026 09:31:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9EA96B008A; Wed, 29 Apr 2026 09:20:15 -0400 (EDT)
+	id CEBED6B008A; Wed, 29 Apr 2026 09:31:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8D316B0092; Wed, 29 Apr 2026 09:20:15 -0400 (EDT)
+	id C026E6B008C; Wed, 29 Apr 2026 09:31:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B35566B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:20:15 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B1F8C6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:31:39 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 534EE40214
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:20:15 +0000 (UTC)
-X-FDA: 84711651990.13.B77A72D
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7CC084020B
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:31:39 +0000 (UTC)
+X-FDA: 84711680718.13.96D61EC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C2B4D80002
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:20:13 +0000 (UTC)
+	by imf02.hostedemail.com (Postfix) with ESMTP id B9BD480013
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 13:31:37 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="OqL/UlYT";
-	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gZyWwFsx;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777468813;
+	s=arc-20220608; t=1777469497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CiOY3ViJ/93eAEXSmta7qliTvJfCwzcjgAyKoP7d23U=;
-	b=R8FCTTh1JXH5kRfn0PoQSaJYN1GoUU7qSSsIxAdoZMee8rf0P55cW07vU5h/woA+PyjMXq
-	qTfRrixiRdRIzjFnLAJxt9pivDw1CKXilnMZBCWO/B0Ca+DSKxajfAU/njGLzOKiBxU30n
-	FKMk0pp7SI7nOMyFFNJRE6L1dJ392pA=
+	bh=Zuq/w3TaXff21OSey842+qhd0VBP6fb9qsimCqyBTwg=;
+	b=kVSPyTTS0wJrLVxOZ75NRdOMox43aYWEk8PHm47XS/fVX7cD+U9dIeZN2KLGZHwT+MxcOh
+	VxBkKWvaUt8jGTO56dPFNKlQ5wb9v/himY1v1O+eOWStC1OMNCRXHky/h4AH+SIHYy+qgY
+	qBmVURmtTubBXTZ/RWAvgzecIllPDPA=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="OqL/UlYT";
-	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gZyWwFsx;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777468813; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777469497; a=rsa-sha256;
 	cv=none;
-	b=AZQw4JK7gqQ7G87E9uTT7DavXWn9t/pIuOLPMVXLIma7pgPRC7DUJaa3Uq3X+6tvG8RNSU
-	5fiw2AaW8QxOeO3BO6+wKgAl7ZD4ZfmRs2Uc2hi2G79Q5BnDkZ8XrL8dIqcOqSFyfuIRjj
-	SPdOQ7P3IovfytjlbEvcPh2qcFCySXs=
+	b=RVOE1YvZTQTK6DZCMBfAZZyqc89eQ4oP6AZJn7BW7D+/zRPQ5fuozRj3dpi33PYeocnOQK
+	1+uIa2Pfr13CRNSWHdZudGDxPUd3MH1FpuswTVbq/aBHiNCddwSuGAiT6B/oHnx6wLFJQM
+	k33c9W2CjpWnS6V3KcU4x/TOEW6hVVc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1F39760138;
-	Wed, 29 Apr 2026 13:20:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4242AC19425;
-	Wed, 29 Apr 2026 13:20:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1276A60139;
+	Wed, 29 Apr 2026 13:31:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82326C19425;
+	Wed, 29 Apr 2026 13:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777468812;
-	bh=WBIKlOKETVqEtql1+Yzk/jj+FrWANtHnrA8WI+d7PWk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=OqL/UlYT8/yL8caVmjjltYa+hdLsEbO5IOitUCF+kl0IJnzAj6GolLqnmIfypQW9Q
-	 KCs+F+Q5xuGEMgJpE1zr5S+QJQQPQuZXj8ccA8vRfWVbmlBZ/ZgRaKMCeUDlJkOECv
-	 71cYfgXodQED7Z7WV+ngHFUSAKkJx4CyI+CdS7Ks9SsFEE4ZbpU8ZMLS7CGYoFvkqM
-	 rUzNVQYz5MEo/Q0x+6aR/QzST1yqEL8IMTwjUur00zR9fWoPMH52ECRpXrDD/BKfTS
-	 1NP1a3rfyjl4F6etV3UBIyFK+NHjsaT3lHIvLEJGi2j2w9HlvrQGdK8Dj+NVZQSjTG
-	 tAU23rb1hrrUg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
-  Shuah Khan <shuah@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Usama Arif <usama.arif@linux.dev>,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/6] selftests/liveupdate: add memfd tests
-In-Reply-To: <afEKfQ0GUNVJ76a1@plex> (Pasha Tatashin's message of "Tue, 28 Apr
-	2026 19:31:04 +0000")
-References: <20260404102452.4091740-1-pratyush@kernel.org>
-	<afEKfQ0GUNVJ76a1@plex>
-Date: Wed, 29 Apr 2026 15:20:09 +0200
-Message-ID: <2vxzecjx52eu.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1777469496;
+	bh=TyNwwgGZSaQ5uL41nEjLXgK8OXpxf8GlXcLnI51RXSw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gZyWwFsxbl9VO4ExQ7RswjDD98S4DYNllnrro2IpwpXiDJhyehCp3w1quVs6/vnj7
+	 BuicI92tEkOUJXDM0IGjZ2HKg1hUEdgGEOlH0JaJIKvKUINYb9omTyuI6mHU54X8kB
+	 YKeexiahHyt07jEM1tBa5j4kj9e45kU0AT5bl/6zZpHUxuotbiyZdtxZ9jA48Px9no
+	 mUK67MPxfltdVdqxioaOh2P1m4c2+FFmwtuim7WkcoG87/gNl3XHHVNqvuXl4Tkbxy
+	 39b2pcO3eCv/HQ0Ou5l/SvQ8Hm5QlOKCDIORxAdGzHIofWoOzz3AJPoyw8zmcgMry1
+	 UClQ96VFlf7Ww==
+Message-ID: <889e4186-9f75-45d3-bd9a-1c90b218a635@kernel.org>
+Date: Wed, 29 Apr 2026 15:31:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: ghcgf653a6zch61mh6ndz8xrxsp4wzeo
-X-Rspamd-Queue-Id: C2B4D80002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/madvise: preserve uprobe breakpoints across
+ MADV_DONTNEED
+To: Darko Tominac <dtominac@cisco.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+Cc: xe-linux-external@cisco.com, danielwa@cisco.com,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-mm@kvack.org
+References: <20260429131522.4049054-1-dtominac@cisco.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260429131522.4049054-1-dtominac@cisco.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ib77p8onmqppbdxywac4ijk3pwd8e6hu
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B9BD480013
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777468813-797368
-X-HE-Meta: U2FsdGVkX1/r03YWocUHUVPB3mJIMbnJKSivnyosNaP0cxHsojeIu6D87l4zVvXZQgv1lDQqG+V8qYAqEprdz/K2KOJDt1UU9uFaTgnjB/E8G/dDBhHhA0ug6h125WoeeSR3RD8O53GTAuAI+uiSK7otLE38Xbyw5WzhiMLHcyt2A//IXghFIMtGnhvrLUbj5kTFt3FyVQ4EFHQ0kZbWu9MLUqmmaWJXIFwoej1IP3Q3v+8K3neqAheggjn9fY3xaog1eFltBWC2WzakPnTBIxDPSLvRtxXYEGgTZc+J8bD9U4uGdEzKt3qtwccRcirAHPJQJZIyoTgUfm1wov35dWEMK4Utf2yYGknfG9Wv7I/7l5EWy6vhSTXn8MvxAuvHpBUUeiFDVU2fpghv4FNlCsl0dbCxIngS22yKAvD7hmDgyDSCJps+cbnvmkn00iFiiH61MMwPLWk2Ji0Goi6a+aBPnOcLoZokqXT43XwBqyQOHUr1Ad06f8k+f0TO4+qDTsXFSVLLz+Oa60Hkl57NbAEk+U/DzmIUqeYJ8flpt7m+KM5G7iurQT+cH9w6A+kjGSY9aTU+6Rly/xi4zFkq45vHo2Kz4b112/xsJbuuZO5sKjKHLGHeQjZkvFr8qD59evCPDQ4YIO+bz0C15+OXIu9BRb4FpEsPY/uw8XBJ+9onr8W620fHpJwC5p4J+iR9HVZzCOVAODiufjCyGh4e7EWEBIw57cRJHYiMAm0Tjv1+O4cYuOYATiCGjmrSK0uRRVVvK/yrM5apQ4huY5M8QHa4TK3c1FG1EpmkfyGFufWpJv0w8+kWRUaeewXvH9t6ayS97CUtzIGvYh5uFqFpqgeBZJCZQY+j7FPzxFY/SWStYqZzMD9fxnqiSf8vRV8kzxJuHp3wWnNaiafO1yXTKKtcBsaSKucDkVkmRE8HzPquy7s64X2qhwM7yNyNVgGhQwolM/gEMtHoeXBod5+
- PFYkKsIP
- V4cTbXRNd6GDqNHJSxB+Z0C2KTJOro/uiLG/33grbmk8XJXilOuSk0Ax+rTZMzMyAt7atNXYICws/sOdpeO9UPrWofkK7sGyIugfSzVoUgk1tNefEm7MTkvgaMf4SS/hgZd2VHfBvO+hcnGDQHBUF197ugj3DE5eJLZ9vALKwhutlbyAJSoO8otSwXSDZ72MiA1JP/rTJF3AA/AptGVpltLrYNqwDJyNHl3jIp06R9qacWKQ/PoFGfvbj2Q==
+X-HE-Tag: 1777469497-599846
+X-HE-Meta: U2FsdGVkX1/PHEGg+dJQnYL8zigO8Xb9A4q1UWAOOIvy4a6n7xfLen3Vlvzz1ox1rucLyu/8a/wb2MIhJ1iNRvkDUNDCD52IbVyZ2VYqfUX+36B/IbJaLEfjUXa8ig6nvfRA5y2fLATlek7IAbfY59+ENKNL/YfJXUfpZ1JTVPyNFEfsCO3NXTfXEf7ZKEqsIf3EzdYyrkzWmiPL7wLIeYgZ0Cw+td5gsgDHkcv3e+v3FAkbeBveolcjWnQujeItyS+ukq43lgnN6h2CV8w1wNIp/1rhiSHozpYaKrOdRW4E/Tt34zcyMjbg+qY1H9n2po7ZoV+q9NE/tZDpdrXLQXxapZ5I1sU3z1gyBLCLGLvt0NFJxXn1RzGmqAKcDu/r98mKYh5uq0SQHmM+dsPRLlBGlIun/LFHgu/1RrlC7D3tuj6A4TxB7N7Aolyiu3OHZDQHC7WAsW35BALQ67NbxAbqTw7rhmv1WkWlFwzoiJNqOdzusOQtaurA9OxffAEPkGX2r40SgXsTiS608QMQuoMibW8XXtWfKolbkewBixjtc4dv2SDejE98xGht97UXR77GL/5eNJRtgJO7sMRw4VWEoqXl4vR4+JD2JhGkHug8v/QtTOmz2FVoQLVh11atqg2MoDYKJ5wGGxZ0JIpvzBmciAdC6tJrOEvB38n/OY3L0ToZQ0fJwRMbPVkHQEuZ9C4xfTQPcK19yEDBW0N7Ej4ziZbzvdfGcCOkZYN+stWPor/u0jXvClr2wea1rsMrTjpDrZOtJr0oG5AcH1zafejbpNG4MEuBoBcGlPBe7J0vvKJudq067G43+ZqzCQxwqemcwuq/PYy3GicgS40i6nfvyz6wYWf4ae28PmZTRWKXkF9mkCbHQ3EN8bx7IjaLFb/oBk6C6rr3N8BYxErqJQuRXiojG5elM5dTG/fpp+a/gYEEtRoCSO5f4KqLxWNsYrzyuIicMsLZRQB3gUe
+ pepBfKxb
+ Ed6N33VYEY20a5/ZiLK3sH3c027gL+KmeYWCrX7GV8CQJujCrRPs1NxW8DP5QI4JtgYVSDa5tupTNAslsEZwC6N/0wVFCsPxzvDApuW49vUexjUQ7BsXKZIRXvPkmIdh2dKPDKf7jTdiZrxYm8Elwk17ExVqsLO+3hVbCk1P/RGN7KOwLIAbfyEeo3IHmzS3zJ3hKOJd/W5+EuiB+qpVXEFx4P3wA9t/DfkgOruQiAjXo+HrX8KQWsD/HIHgF5bY3XzeYV4OPgouWMXUgx4nC2K28no0B/K5Hk6INPNQCN4qjF3XHKzhjx/mkpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,134 +150,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28 2026, Pasha Tatashin wrote:
+On 4/29/26 15:15, Darko Tominac wrote:
+> When uprobes are active, MADV_DONTNEED can discard file-backed pages
+> that contain uprobe software breakpoint instructions.  Because the
 
-> On 04-04 10:24, Pratyush Yadav wrote:
->> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->> 
->> Hi,
->> 
->> This series adds some tests for memfd preservation across a live update.
->> Currently memfd is only tested indirectly via luo_kexec_simple or
->> luo_multi_session. Add a dedicated test suite for it.
->> 
->> Patches 1 and 2 are preparatory, adding base framework and helpers, and
->> the other patches each add a test. Some of the code is taken from the
->> libluo patches [0] I sent a while ago.
->> 
->> [0] https://lore.kernel.org/linux-mm/20250723144649.1696299-33-pasha.tatashin@soleen.com/
->
-> Here are few observations that I noticed when I tried to run your tests:
->
-> 1. The '-h' tells you nothing about --stage argument:
->
-> root@liveupdate-vm:~/liveupdate# ./luo_memfd -h
-> Usage: ./luo_memfd [-h|-l|-d] [-t|-T|-v|-V|-f|-F|-r name]
-> 	-h       print help
-> 	-l       list all tests
-> 	-d       enable debug prints
->
-> 	-t name  include test
-> 	-T name  exclude test
-> 	-v name  include variant
-> 	-V name  exclude variant
-> 	-f name  include fixture
-> 	-F name  exclude fixture
-> 	-r name  run specified test
-> 	...
+If my memory serves me right, uprobes can only be installed in MAP_PRIVATE fil
+mappings. Installing a uprobe breaks CoW by installing an anonymous page.
 
-Yeah, unfortunately that is a side effect of using test_harness_run(),
-which does not know anything about the options specific to our test.
+Not a file-backed page.
 
->
-> 2. '-l' does not work after you run stage1, do you keep /dev/liveupdate 
-> open? That is not needed, we only need to keep session open.
+> uprobe infrastructure does not re-instrument pages on individual page
+> faults (uprobe_mmap() is only called during VMA creation, not on
+> page-in), the breakpoints are silently lost once the discarded pages are
+> re-read from the backing file.  The probes stop firing with no error
+> indication, and the only recovery is to unregister and re-register the
+> affected uprobes.
 
-Oh yeah, I keep forgetting that is no longer needed. The main process
-closes the FD but the forked daemons hold a reference. I can clean that
-up via a fixture.
+Right. Don't MADV_DONTNEED uprobes, just like you are not supposed to
+MADV_DONTNEED debugger breakpoints/set data etc. :)
 
->
-> root@liveupdate-vm:~/liveupdate# ./luo_memfd -l
-> 1..0 # SKIP Failed to open /dev/liveupdate (Device or resource busy) device. Is LUO enabled?
->
-> 3. Stage 1 has proper [STAGE 1] prefix, but no [STAGE 2] prefix for 
+> 
+> Note that MADV_FREE is not affected: it only operates on anonymous VMAs
+> (madvise_free_single_vma() rejects non-anonymous VMAs with -EINVAL),
+> while uprobes only instrument file-backed mappings, so the two can never
+> overlap.
+> 
+> A concrete example is a userspace memory reclamation subsystem that
+> periodically calls madvise(MADV_DONTNEED) on file-backed text pages to
+> release memory. 
 
-Because stage 2 has no prints, all the prints are coming from the
-selftest harness. Those same lines are also not prefixed in stage 1. If
-you'd like, I can add a print beforehand that shows which stage is
-running. Other than that, I don't see what else we can do. I don't want
-to modify the selftest harness.
+It shouldn't do that on a MAP_PRIVATE file-backed VMA. It breaks the programn,
+including uprobes and anything else that breaks CoW in there.
 
-> stage 2:
-> # Starting 4 tests from 1 test cases.
-> #  RUN           global.memfd_data ...
-> # [STAGE 1] Forking persistent child to hold sessions...
-> # [STAGE 1] Child PID: 245. Resources are pinned.
-> # [STAGE 1] You may now perform kexec reboot.
-> #            OK  global.memfd_data
-> ok 1 global.memfd_data
-> #  RUN           global.zero_memfd ...
-> # [STAGE 1] Forking persistent child to hold sessions...
-> # [STAGE 1] Child PID: 247. Resources are pinned.
-> # [STAGE 1] You may now perform kexec reboot.
-> #            OK  global.zero_memfd
-> ok 2 global.zero_memfd
-> #  RUN           global.preserved_ops ...
-> #            OK  global.preserved_ops
-> ok 3 global.preserved_ops
-> #  RUN           global.fallocate_memfd ...
-> # [STAGE 1] Forking persistent child to hold sessions...
-> # [STAGE 1] Child PID: 250. Resources are pinned.
-> # [STAGE 1] You may now perform kexec reboot.
-> #            OK  global.fallocate_memfd
-> ok 4 global.fallocate_memfd
-> # PASSED: 4 / 4 tests passed.
-> # Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
->
-> ./do_kexec
->
-> root@liveupdate-vm:~/liveupdate# ./luo_memfd
-> TAP version 13
-> 1..4
-> # Starting 4 tests from 1 test cases.
-> #  RUN           global.memfd_data ...
-> #            OK  global.memfd_data
-> ok 1 global.memfd_data
-> #  RUN           global.zero_memfd ...
-> #            OK  global.zero_memfd
-> ok 2 global.zero_memfd
-> #  RUN           global.preserved_ops ...
-> #      SKIP      test only expected to run on stage 1
-> #            OK  global.preserved_ops
-> ok 3 global.preserved_ops # SKIP test only expected to run on stage 1
-> #  RUN           global.fallocate_memfd ...
-> #            OK  global.fallocate_memfd
-> ok 4 global.fallocate_memfd
-> # PASSED: 4 / 4 tests passed.
-> # 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
-> # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:1 error:0
->
-> 4. I also do not like that we now have duplicated stage parsing code in  
-> luo_test(), perhaps we should add our own  test_harness_run() variant 
-> that depends on stage, and use it in both current tests, and the new 
-> memfd tests.
+If it's using MADV_DONTNEED, it is damaging the application.
 
-Sounds good in principle, but unfortunately ends up duplicating a lot of
-logic in test_harness_run() that is not a good idea IMO. We should work
-with the harness not fork off into our own.
-
-I suppose we can refactor some of the logic there to split into
-functions that we can then use in our luo_test_harness_run(), but
-keeping the option parsing logic in sync is going to be difficult.
-
-And for the duplicated logic, I agree. I thought about cleaning it up
-but was feeling lazy... Well now that you have called it out let me see
-what I can do.
-
-[...]
+MADV_DONTNEED is not for memory reclaim.
 
 -- 
-Regards,
-Pratyush Yadav
+Cheers,
+
+David
 
