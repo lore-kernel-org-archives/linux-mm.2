@@ -4,127 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CF38FF8875
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 10:23:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B63F7FF8867
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 10:25:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4D426B0088; Wed, 29 Apr 2026 06:23:49 -0400 (EDT)
+	id 100076B008A; Wed, 29 Apr 2026 06:25:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D6496B008A; Wed, 29 Apr 2026 06:23:49 -0400 (EDT)
+	id 0B0CD6B008C; Wed, 29 Apr 2026 06:25:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89DE76B008C; Wed, 29 Apr 2026 06:23:49 -0400 (EDT)
+	id EE1CE6B0092; Wed, 29 Apr 2026 06:25:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 757B06B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:23:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B0B461204D3
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:22:36 +0000 (UTC)
-X-FDA: 84711204312.18.47C89B9
-Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 69EAF1A0004
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:22:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777458154;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hQnZQYLrTlNYy1jc1rXnnTon8LpqLdCTjRpZns17oGo=;
-	b=wk9g8JN69449PqKYA5zsXfCeZbs0nzvaXCMHC+7uXpPJyJi8mjkfAd6B1sTihcnxClGKEu
-	n4SV+PHY2jQVE3xrzVLN4GMI8AYX4nERH0OVJ6oIV++N9Oz8O35JGIbkeiEekDu1lbmMda
-	lUlpGFG78UjIOlH7tynQqWTLoLEeX9M=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777458154; a=rsa-sha256;
-	cv=pass;
-	b=jUJI1YiqnerbTHiYcNdi84cllk16pJrPe17O3nTXYOsYC7reWGtxDiXL+Og0EaZew35Lk6
-	gtqEl52WUkIUZavQwXzgZOqdyNLHqLkTXaQ7AvqeISSDcIyfB4feJy8pJPAs4jzJJvrON2
-	3Yi26ax9jBmon7hICRmtQ5JfclD0ZbI=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 804F2A0297
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:20:11 +0000 (UTC)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5E60A082F
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:11:50 +0000 (UTC)
-X-FDA: 84711177180.25.26807DC
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B9F9840012
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:11:48 +0000 (UTC)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777457509;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hQnZQYLrTlNYy1jc1rXnnTon8LpqLdCTjRpZns17oGo=;
-	b=zkC7J1KaIX1SywvNI2m5OdS5inlHpKM1HFszEI5PkdHZrpqDrC7Kr+OwUz3U1+fQ4SOO7M
-	i021KmJf6KvZpweiAvcllUxtbG62cAAuaML+fkxK5bVsw0zXvTkM74FNZoTxkeigly/YZ+
-	0WQt1WtixTvbWJ/7RcZnyeB4ijQ5f7g=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xEM+oNRW;
-	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DC8F96B008A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:25:39 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8176FA00B7
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:25:39 +0000 (UTC)
+X-FDA: 84711211998.05.EA1E8E3
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 223AAA0008
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:25:35 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=syDuJ2eb;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777457509; a=rsa-sha256;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777458337;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0ubnPqyEuUH+bb9tWP9+TOUp+n6C5onOR58LCuBDEiw=;
+	b=6+KFc9LEwzKx9e6cZO15QzhdE8ItsRnoYdgm5OmLL+qgFgeWYyvGTiBv1d05KHIUnePvAw
+	yvLDyYOZNmlpn1cOJCq5reHDLgly6SVB5bpqpsFsfEV49BwYBKuQarGlXBpaBizl5lfHRg
+	P/VwGrAN/QYJdOklHgUS3ErXfRERiiw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=syDuJ2eb;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777458337; a=rsa-sha256;
 	cv=none;
-	b=a5xj6drmIyrMFfcSOVyoWs+5LkioalZWsrY3HiytKQsfBnYnVC0BQnvPt4x17yaBdOKQHq
-	HU7FC+CkDFS5/ms02DCLfqPrm+CTNZzXjWBR16nkNILMznA7p+z7EX7zQVUhYulI+xUAIr
-	8OAFiYxFBKlXLR5A4rOchM/EmIovNRE=
+	b=JVyNPYuyByn9AW/TXEHnuA/PXDfun2j6tBbMDdFGlcXjfZU+BkpdhPd7QScEhUK9GiA9NY
+	S/tigSI2icTeq0trORys/S67mt9yReVB26mcGWYNKwUJ2b8efiOZ/eJjcnQVyh+wbuEKk5
+	3V23J1h75hsGcp1ltdU3j45zLTySrWs=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777457504;
+	t=1777458333;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hQnZQYLrTlNYy1jc1rXnnTon8LpqLdCTjRpZns17oGo=;
-	b=xEM+oNRWB3iEUl7EvR41PZcCxwM+tlM71BYBVb0m6mTHUTUlRsZy9GVgnWzfYDsO7wLdvx
-	qqqBFWU0yQ8IgsOppvyiVpGtZRPXqj5d1PS22xkgYBQtdQrPjdRNGC6Ec9FZq1PHvHQCTe
-	D5/aom5/W69PK8yAlF8NAp+unM5fxYc=
+	bh=0ubnPqyEuUH+bb9tWP9+TOUp+n6C5onOR58LCuBDEiw=;
+	b=syDuJ2ebh9z2sjffREH58o0aT6Ajjew8W5I8ReEUtvp2EQkdghmYv8iT9JcU1iX87oMIbX
+	D+xmbMoFNHgWVKDoL6XEe6kPFjJgAeA5FQrv1tK/6uUbSyjmFqItMdxDS/n3eJA5ihtrWC
+	pDy1LXDxeyfrSgRVjezaD0bM6Fa+Scc=
 From: Usama Arif <usama.arif@linux.dev>
-To: Muchun Song <muchun.song@linux.dev>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
 Cc: Usama Arif <usama.arif@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ying Huang <huang.ying.caritas@gmail.com>,
-	Dan Williams <djbw@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev,
+	Yury Norov <ynorov@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-alpha@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rafael J Wysocki <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 3/3] drivers/base/memory: fix locking for poison accounting lookup
-Date: Wed, 29 Apr 2026 03:11:33 -0700
-Message-ID: <20260429101134.1358607-1-usama.arif@linux.dev>
-In-Reply-To: <A3EF6D95-E3B9-4228-9AED-A7018ED494C5@linux.dev>
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	dmaengine@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-fsi@lists.ozlabs.org,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-serial@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-fsdevel@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-x25@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	sound-open-firmware@alsa-project.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-arch@vger.kernel.org
+Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
+Date: Wed, 29 Apr 2026 03:25:19 -0700
+Message-ID: <20260429102520.1617327-1-usama.arif@linux.dev>
+In-Reply-To: <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-HE-Meta: U2FsdGVkX18Uc3lpbA68o8YSs0QkGzhlkWAWDND1bBo2h4ue/7K93HQklET4znlr8/jAJ5LEGh2qmgzD9AdlJDUXI7TvGt/4rOmBOFLsCYRWke7efkE3JFkhwZixCJiGRgVMg6IsBqkP0A33NgeDARSivKNdplc8qyElZOUlrc3T7DowB0An1n963u14pztNu+hslMpGUkhJoriOoash+ZZYibGTOzkKfy3POmDf4+KKM9x98qHYP3MkXLocdITzoMaiH2KBNLNZMlU7gA/mpr+U9iJ2h1FxauLSz1R5YmifnYsv2ZKjnj1C/bZu5DxgR10nMSCY2hhPsM6sFdWCj7EfW0PPXaNVfTh8IEMEZ2tF0sTIgnU16V+EwOYxNsz8AllNkz2uiiEgRqtWnGwrk9r9VZYZv6Jta2OerqMGCUSKHG1syCtO1yVpyNIhcF/IFqxxr4xv0QifQtY+KXLNKbPbQEKn/qzYCErQd0xOMP56UdqrDwMi7fVJNG/NRKclUhaooSPzR7FoRKFC16cOQMqRwzDiIRAZer5GBuO3xnlf49QhFrh2jvv2Z9ZT7+rExxBs+Wd/6VTnvW5XWBA294ccYTl6pNRAbt1i/ffNIMqXXnAZMMSbWStyT4Bav20Yx5Rer5WJsyA0ENNEKfnZ+fMqrfk0ujziDj+k2R3KbqtSwnia3tPNgkfDHIZq+pFD8TXsB25QcUsyynnbtkPOf6bhD++RlOwGUVH6n7CmzVjMagCJseRxk+4RzFJcmsNEgtRW5XjJdfzcVKlA4h395H7Gbda7LeHrMHZzmqNBGsafmPCk+x8h1n4X7KWYDNghoQnMXhVr7rExd1guFCcksUsLueCzi6qAPMgfrEjr4mLCUtQwfUhdE/8ANsnpzUs0lXnik4PRiAhTTvHXqII0/XcFU16PuXWdsGvQBYYD6XF5aZN40V1TK8kxo99bZou+9x1ikMmtpC1VcFSYqtp
- 2j8orTUn
- URi4jmBhLrFCjgtK/+6J2joEF8iHes9vNCtQHSmfGjfuVhPMQaKbQV1fPhO8ifjkCJtz/uhjIFkw4pu5ndwHIpa/jEUqaf/qIK1FokYcPu4hvsjOq2Lal0S9lRxwhnM7qZMiJwv/dRLzNKip9/75diPbZHAMPa34tlAYzo1mnOfxRr2lMGbK8+y6KumI0t/D5mxu4RTR00i8DbDlL6n+7G4qon+b9IRt720IuBqD9x3Qa0j6ejF9Dr1ubCeFxrKnj5S4/36S6J+Rh6O1cB0aFMB/BOq89CSH5F4DrZKPazNW823EVtBqb6chRtOHkWcJ/m9P3j6X7RY1br6utGZiwGv56z1gNYqAk9WLq
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 69EAF1A0004
-X-Stat-Signature: ma97fnr6guby9hdtbk6zmidfay4b63zc
+X-Stat-Signature: nz186cnqw4adp7e7gu1u565muztqf5a5
+X-Rspamd-Queue-Id: 223AAA0008
 X-Rspam-User: 
-X-HE-Tag-Orig: 1777457508-338704
-X-HE-Tag: 1777458154-457503
-X-HE-Meta: U2FsdGVkX1+u6ljCBwXx1au6Np0yOkRmfR9Qqz7NxPbXHOtJnLwloIKkq81LJbvoVHYU9F3oZyxXH2iXofqDxHS3b/OntWb6vxsSnzWEsWAMoHktLQs3FE3X9Ub5PTdemWiXf0FMuXMMJtUaPPMDngx9mtA7Yi+e1nkREGC4sL37YkBV635nAPm7+yJDCJnZfHHQB7Nvt35LRwqQuj5aayEiWPcEqY5PQYIJCL5rTdftLGw3ollt3cXMwUhg6DlzmQIVT9QZ+g84UgytxWe5N6eYLTo2sNZvd/QWC00/KJwMPDUkAManT8/WABqscZggNP7ztmctEM4KghMBAgxYYyJqXxXSCL2Y72+IasXgdMFnQ0hXQ4/YP7ZqOzSJXh+OCAo+hAbw2oIH7YdPo+uvCsG4EPtAKv8PGD8ERUkEoAA7NXPGrVJUrkVt5nJ8j4G+Y2l79GCJ9N39GJrfOF7/BFNt5tPlIZfNQM+mgou3uPnKC+P8tIAIFtHCv+FCih7gbnkhToXUNETPnIUT1lbRdi7Bb3P9wE1wNluFiMX8ZoApUbhgLV8m3JcbyRLuxRzI1EInlYy7B78XFsSxz04U7AbhxS80UsdWPgnPuE0RTqAorTqglHU0aiL01wf6S0pLJn/o4tq0B2I3278lDPveeSyhq4ZV/feVE5Xoz4RriHIxOzAY2zFrnnR+2ma2Way/OEFtW7Pq5kigTiyNjeRX//iQND88mjwQ3l1UROiClBRQk7NFAFiYDD3jdfggYKteYtnzHem7/pey8+MHg2mheuRO9AEhNBZEG7NBfDwTMaV878eA7KR21xqNBLIfZCXSbD2uDCoZbb6t4tktY32T+4V+cAEFJLmbYolO+NYJY42KTLcbgTws01lktxhEa5KK3W6j+eY5CnL4IRd0mSP++9/ywomNriNpg4VnIJAEktF53KYQsLwrghnltUgoJL5AFq7C7X8ZwM2L2EDrLao
- DCm6r0ug
- muYpbxBpZJjmHYeYZa5EQlXg7IKzv+bWbJngs/+vs3se1AU6m4oYQnoQibEd+y0P8O5aJZrR0nZCGOk2fa6nDKA3757BsjL7VjDp2p4mZ2hii/v9F+zO7D3Fubn1UrX1NplS4MUaRtlTnxIeGp3sboAUBgkz/iXnveFsrEnfZpp79gpNosvMNLXKnWFV+NAWH/chPYZxNamJmqXv08FQWdkk7Ov2Wjxtw2P6sOJSSn+qdEo6qcUaPxmzWv4eoeeqPSOH/lBEGLS8/8VIoPlj3rTXnz4Rxo22GPI+w7374SmdgccyawXE/cvKE7JnGwEZ0mmfO9BSVzBrf4kA=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777458335-103334
+X-HE-Meta: U2FsdGVkX18lxFZJODhWQPkrAApNumTNiVYf1O2mAF7PgR+zpCDPe6bt694BA8+t/650s9CDMW3vulP58clV4wG594JQqH3FzmEuGYOLoeIusAFeLBcJZk9jSsLilg51NY0+V7upKUBczm6sqahYJGJe5gsk+gCBoop7LQFtFkzUehDGlc9KngLFURvS0FAnjFqkV1CxyiCkiM6JOS0fXJcD/uVJFZRf1bDLAG2RHhO3xMb4kSAqfsWhh60LD/oDkvZBiahAEkqyr7BBcctiyR6+4UZdkgAaZDsBi5kl/oEACFWQB/IIBIZzwhDdN0iWif50YOEY8SYPv1EVdUwPnpIwQqh55fg2xKGq+rzkeIEltQfGYIw/0G+0/NniixWwNVW1YJ63c762hPJUwW7yfGeSYZpN+Y4ZRo1z3IF6pR26hfOpX47AeHEafSYB3Jqg8WThsmXNQwIlxN47VFLfhAGv4KMBB4wunweP0z/NoxWjk7lFp+TzzaBcnFEQtS62yfbh2ha32aBx0nVZ3cJRHm/VFiD3ONJ2d5Ri0koKjN2tG0Z8Wc0ZRop0CROubx69/we8kGWyofsGOdyd+TkhVraU59bgj5EBKnt/zds/MbhaDfn8yP+gh4u2RohoCaUhOx/EJCDHJMGJllV0rx8yA2Ej++YntUDhFSof5JDjr2mTgvodiuQyWJCyfqTX0uH5ektbj//SNiA7oI7+5QTTYWRoYH60vREyjInKUdBzutmzCnCwpbIGUnyzWq8qrVNNI3MHWpllXPrzAW4ua5Ku0fuRB5F9klxInkPhDUEsTSVtHqBILB0Z0eeLdjEa12vD1CmwschqKAbBoLsdu04S1Brx2in9XwRD6TxNg15TDwmPjb3oqGLl272oUXnJ0gQ0EW/cviX7R74nlyuakSnrN4GbnR1leXKC3+CpSIP697w/H/PJ/oTs9bRHBAvKcrCLQ22fqAZjxE4fbaHy0Fe
+ V8eirOQB
+ 2YUA0tAmIF1Z5DVYx/leURSsBcVnnxPdQiH3mENLhbGXQOs0zdpG7KN/YFJBaDnCe1MWjQ/H3MzoGBioAr0wH+Yu9Iw7mHYAoxFNdqev/rzxRJqGa/EN5eq5qz/JE91b+aMHTW0Ps1nTdwdVnizHk7tC8cYoplmAB8Wuf1swPQYeqBkmgzNz2A4/0vN9RSqX0XATl1HZEvhxL3bcuBPsAa12S5gx2iUD7/qKMiA7El4sARerGnBclxvpE4PIyrYGbtPgg2fwELqhfgLuRhwor/sPZbkEjLcWmu0ncPe1eUPLHUDFW/pKGY51t3dByngSUNJlzaKFFZgyzGtYqzikAvWTiFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,39 +133,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Apr 2026 12:18:08 +0800 Muchun Song <muchun.song@linux.dev> wrote:
+On Mon, 27 Apr 2026 19:13:48 +0200 "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
 
+> At the time being, x86 and arm64 are missing unsafe_copy_from_user().
 > 
+> Add it.
 > 
-> > On Apr 29, 2026, at 11:32, Oscar Salvador <osalvador@suse.de> wrote:
-> > 
-> > On Wed, Apr 29, 2026 at 11:08:51AM +0800, Miaohe Lin wrote:
-> >> Right, I missed that. Thanks. But I'm still worried that there might be potential issues.
-> >> For example, this function could be called while lock_page is held. Acquiring lock_device_hotplug
-> >> while already holding lock_page might cause problems, though I haven't seen any specific issues yet.
-> >> Also there might be some other potential scenarios that haven't been considered. Hope I'm just
-> >> overthinking it. :)
-> > 
-> > lock_device_hotplug is a mutex lock, and we already take other mutex locks while
-> > holding lock_folio in other paths, so I am not sure I see what should be special
-> > in this case.
+> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> ---
+>  arch/x86/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
+>  1 file changed, 24 insertions(+), 5 deletions(-)
 > 
-> Hi Oscar and Miaohe,
-> 
-> I saw sashiko's report [1] related to folio lock and lock_device_hotplug.
-> Seems it is possible. You can correct me if I am wrong.
-> 
-> [1] https://sashiko.dev/#/patchset/20260428085219.1316047-1-songmuchun%40bytedance.com
-> 
-> We could fix this by calling action_result() without holding folio lock.
-> What do you think?
-> 
+> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+> index 3a0dd3c2b233..10c458ffa399 100644
+> --- a/arch/x86/include/asm/uaccess.h
+> +++ b/arch/x86/include/asm/uaccess.h
+> @@ -598,7 +598,7 @@ _label:									\
+>   * We want the unsafe accessors to always be inlined and use
+>   * the error labels - thus the macro games.
+>   */
+> -#define unsafe_copy_loop(dst, src, len, type, label)				\
+> +#define unsafe_put_loop(dst, src, len, type, label)				\
+>  	while (len >= sizeof(type)) {						\
+>  		unsafe_put_user(*(type *)(src),(type __user *)(dst),label);	\
+>  		dst += sizeof(type);						\
+> @@ -611,10 +611,29 @@ do {									\
+>  	char __user *__ucu_dst = (_dst);				\
+>  	const char *__ucu_src = (_src);					\
+>  	size_t __ucu_len = (_len);					\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+> +} while (0)
+> +
+> +#define unsafe_get_loop(dst, src, len, type, label)				\
+> +	while (len >= sizeof(type)) {						\
+> +		unsafe_get_user(*(type __user *)(src),(type *)(dst),label);	\
 
-Hello Muchun,
+Hi,
 
-You could end up in memblk_nr_poison_sub() while holding hugetlb_lock spin lock
-from get_huge_page_for_hwpoison(), right?
+Just wanted to check if src and dst need to be swapped? Same for arm64 patch.
 
-Lockdep would flag this as sleeping while atomic when acquiring mutex I think.
-
+> +		dst += sizeof(type);						\
+> +		src += sizeof(type);						\
+> +		len -= sizeof(type);						\
+> +	}
+> +
+> +#define unsafe_copy_from_user(_dst,_src,_len,label)			\
+> +do {									\
+> +	char *__ucu_dst = (_dst);					\
+> +	const char __user *__ucu_src = (_src);				\
+> +	size_t __ucu_len = (_len);					\
+> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+>  } while (0)
+>  
+>  #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+> -- 
+> 2.49.0
+> 
+> 
 
