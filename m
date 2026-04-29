@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D38CFF8875
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 10:01:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B38FCFF8875
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 10:05:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F33836B0088; Wed, 29 Apr 2026 06:01:13 -0400 (EDT)
+	id EEAC86B008A; Wed, 29 Apr 2026 06:05:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0B0D6B008A; Wed, 29 Apr 2026 06:01:13 -0400 (EDT)
+	id E74AC6B008C; Wed, 29 Apr 2026 06:05:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E20AB6B008C; Wed, 29 Apr 2026 06:01:13 -0400 (EDT)
+	id D15956B0092; Wed, 29 Apr 2026 06:05:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D48C06B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:01:13 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0EFAD1BB8A7
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:39:27 +0000 (UTC)
-X-FDA: 84711095574.03.B1D04BD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4B9D81C0012
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:39:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="loXD/LAk";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BCDC86B008A
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:05:06 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0BC1840F08
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:38:56 +0000 (UTC)
+X-FDA: 84711094272.07.E33E42C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 20A6B14000D
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 09:38:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gKiYX7b6;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777455565;
+	s=arc-20220608; t=1777455534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jV37fnUY1F/0CH8IWXSF3ZoqRdt89Tn4Eobn+EgB+BI=;
-	b=1xIR4oTAgtvUCaX+/6UyzmwhdS/vpNm1PzcalRQQ+gAq09wqZT3kkRDEDjV7/7C1IowERi
-	uGRI+Jd7YU6ZGfE0p0sOdRvsX6F1Cr/kXEHAhZO+Yo6MU60+nyO9UbRD7lJ9Mse5iazoUO
-	w/r6LOavzfzPF3EGZRYYxBarguUjA5o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777455565; a=rsa-sha256;
+	bh=VXk8ParAr7oBevUoyhDBW5r7N8Wp14Qz22GGZlUX5HE=;
+	b=qoz2bBLCiTlCm27TqIWbWiR2bEKl80jRJe+OuqJ4FkO1WHiN5+3nZbaUEo13T6oVc5VnWu
+	ksRDrZijk3cMXoM0RwP7PFDTpjVko9Y1Mir14sGAhSTT6DJ2Zoxc0GfDymF6U3RM9X0Bck
+	/rJ0oqHTQhsjtQn7JngWvKL2IHRbQZo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777455534; a=rsa-sha256;
 	cv=none;
-	b=hM/Pje969pGOTabwlq+lHQ2yxBvCqwpNTcC4xnuIn+CiUKJgqSFiOJw9vdWJHm94kBkfV8
-	lgquJLcuGEeVMgQUTNZ9WBCApK55oHAA71VAHYxjL1OJKnc+3o/Y+5BzCMChsNTIfTkAJ8
-	HoPObqqZ7FHreH/hMwcXikVx2EgVbqQ=
+	b=VF3eYuyDfh3rm6G11Jq47sQsSWHp5ZsKLPKyM/XayD4qTM8xUghPfht8ccExhcHu3MXGlr
+	x5GQYns9z6svk1RePz6RrHezlx1FuKLhYXcypqeKuLJTULeLt3ghtxi+dWCwW/36eaujHt
+	CPrYw1SOj9PuUBNT2PDlZ+J1ujdQsYU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="loXD/LAk";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gKiYX7b6;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A964060139;
-	Wed, 29 Apr 2026 09:39:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CDDC2BCB3;
-	Wed, 29 Apr 2026 09:39:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B6C0841E61;
+	Wed, 29 Apr 2026 09:38:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1183CC19425;
+	Wed, 29 Apr 2026 09:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777455564;
-	bh=66fFrly8kPdZfVWImwjO4XAExc1kJnamL1b/TCdS+L8=;
+	s=k20201202; t=1777455532;
+	bh=UYLe+Qx25A8v7VB+wy7G+C+L2zGH6z6ujt+Hu+Js9H8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=loXD/LAkpPNZMilT1kMYqKWAyh8xNZ5R4JxY1AG0XfFsCpz58u9ei0MuzrtHyWTDs
-	 WpweOeJ1aKqiu4NzrQauA7gtt/4VfdfH7+ZE0ClDpkg1i+nVWYiaQ0dfysjpqV9pso
-	 TzlWCRfBGl3/dSu4CbCLyfRnwIt+vGPOLOvbg6RQ9tnbnSUXsv0Now34SSHxe7VKrt
-	 xpYnkCk6Qwienb/SFwRi3qI81v1DWlmIwIKnl46G7KQHvDrMeUbxllnUB/y5ILUVAj
-	 wln1rDPD0AR04foLuYf9BCJqttcPELvA0gayDwC3ZrSwguep2abhSqwohYIYiwQYup
-	 y99O8gZpG13qA==
-Message-ID: <76d06c0a-fe5c-4d61-a091-919db2ace4a1@kernel.org>
-Date: Wed, 29 Apr 2026 11:39:18 +0200
+	b=gKiYX7b6+RorGZIiBdCqYmEa7Zz6HOBaHL5zOGCrGVQmwT+RLdEhDb8NVSyXluOcv
+	 NO8JQ//p6OigMgATtXwl3SMPKssufasLmmA50SiBgT3m2YUtaCsPjdhKijmBPkOKYC
+	 IMj8Vbgttha9sAlKcY0F9fgiklqvtX0pDTNMG8lrBEX5yqRgSEXvqIdIiBFGckBdIU
+	 wWt9W6vtPkaBuz/Ewq/HZdY0+U17u4yfjfR6pUpmgf0N9M9ioWzW/yM2cieyKmUqEk
+	 3Ms/Shg5vta/wND5c1sJvW1HbaOU5fS9X4qjMnhJUSCMmBS2nXMTpa4aO3A9epygBY
+	 BYOX6DiKiMh9A==
+Message-ID: <0a16c8dc-3155-4886-8aa1-2d7dd3e3e13a@kernel.org>
+Date: Wed, 29 Apr 2026 11:38:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] drivers/base/memory: fix memory block reference
- leak in poison accounting
+Subject: Re: [PATCH v2 1/3] mm/memory_hotplug: fix memory block reference leak
+ on remove
 To: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
  <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
@@ -81,7 +81,7 @@ Cc: Vishal Verma <vishal.l.verma@intel.com>,
  driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org, muchun.song@linux.dev
 References: <20260428085219.1316047-1-songmuchun@bytedance.com>
- <20260428085219.1316047-3-songmuchun@bytedance.com>
+ <20260428085219.1316047-2-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260428085219.1316047-3-songmuchun@bytedance.com>
+In-Reply-To: <20260428085219.1316047-2-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4B9D81C0012
-X-Stat-Signature: wag3gf37e4onttxgug393c8ng4jr571g
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 20A6B14000D
 X-Rspam-User: 
-X-HE-Tag: 1777455565-304671
-X-HE-Meta: U2FsdGVkX1+X8c86UifFNEynfSnm+ifNQDaspv6wCNF5avc4ORoFHQVYUwHhpgdhobR+MR5KQXuTM+D5MXBr3zxvmjKRrIqEseMk8No5p7dcoodvT3VvPOXfvLOJFOS9u6XZ2doTqke8zXiLr7+Aofhb1AClYHEAYVgr5J+tKYu3VH5oKYQiGMCLnN1oNlhwREABTrLWY0/+WT3u3iUqh6g5AQXZ94p6VkLK6kuQ1+s3RxKsma6BuQ/X5NZr70HEreV+UggNE0H9ImoylbWhgceMXP4ZpwyENFITgi/ft2HcwYpXkn+6OOblTWU9ANFJw8/cn81rc09olPZ9SCod+j8tMCnYIpzu0BECzCgrTkO9P3FzY9MCPgP3oJbdZsorhyMuoScnOrtZdgfshTCp9+ud9WoXoPep+bPxyv92pt5X6KFzvB1wFP1ckh8bIjjx2X0iLOON1O8Vgdd4OhyUsr65s0b8fDNroMGaK2eEgO42SSA9PQEUHN+XIKWXSHFiLSM47JgVAGo/fuxCF9IEf59Ti3eW4Tkc43eJxban6zGRP9oUTE6pjdMcrU7V8JFUpOO/Ro/rLEyFKP9H4vJi3VRAz3fKYTlCrk64Ikydx0wxqjMBgMPqFavymAz5GLBFppIpmCM4lEiLzA8O2303cmCNwwqy0UeLPHRWc+kjfflwJl5d9TEXTH2ValZXpcMLAE0eDONlMc7ANs0g4bTReCJtm88h6/UpC8gWMRWXH1DXDGCJayhyNd8MoCBBzX1BId01IhxWnD8aSJH4lmoy+O3JNfrb+txhNOvEi/r+Zg8enCrtPEG0/ZuABaOFSM1pqSVc7fPsTG2JoZo5h1gq4Mf3vOowSNWvAKJB3jfw067N1JWs6ssemcJzHNlwiNjkO+gOwuQJgXcr8MEZXp1zh9BRmBadj5TC5nT0PD3Bpi7TfkTzziKTjOB8pylWKr1swosvaRPPduomG+55e0d
- oV7tZQVV
- Er1aDa47EN8rdJIesFfMI3qTUpuuTJxKOZLDOIMmUg/tZCazuh8RCRF6g7/gzyPiXbs5LeOXjgu0zJZkFSMqVGOKqoOdOEtt41k4RIMXeqC4S5LVjSZkMFocib2txlbvUuL9GuY4FAzClw+QcJVa4ROBp9JGVLUBLzZfE2/5UCd6ckLlALdkQm26CqxIJeO6XbvEYvUA6/2kIbdjcOT+9GJKJXhQxTvXddDQ5ATKtSUvMqIsOWL30Xm4Dyn+NKL3bH5H57CQ4z31ye97WZ4espGuGhvreLJF01IM84UsJWdJBciJvCH1zgADujpOYlmfiYfU1Ubp1YiB3HOa8dC259DoG72BHRuHJMxqJuZNSZYiwGS7BWsF7CEm5btQxoqd3fhB1XrX3vzvTr8xTHRTVxSm6jA==
+X-Stat-Signature: ricifsemhxeysqhayrwd5bwt6zcy4pt5
+X-HE-Tag: 1777455533-457367
+X-HE-Meta: U2FsdGVkX19E/2Iz9Pov4ISTFlF5qsadjvZANQ4WjZwy73cyTloAdNSGXJX22wcURXppxJJJ2+8TEBuJjNacycp7w1Tu5GMnpQClgaWISAojMZY/kY3uWIORYrTDxh9NKox92ayiaj3aq0Jrxt46laDGBK+cAxl9rJ5UINjECBpEB4+XPkdWeXL6kTbj8rYOJKAnjJe3QJxeQpyyg73I0k/MPMx48hqQH98VXO658vgRhOsjVEUqo1HWoua1IZeOOQmGh9Dg+3nyX9NEHXQSd9EaJROAowS07zoTLJAy0LgsRot7myGsSdDc04OUQkq0AmcGVubeMqFapvxBLFf1Ho82icyCbk53EjdsS6mQHtkYon/tja5qDiExAWAOhvW/cw0BLlAOySK7WDNQN74EuO/Y4eUDdrA1Lfpbpc+Rl+1keUHi5ZQnkFhiecvpftzORjILzmtJOED3Cs1KpZC5hzwJK5hBuD2LlX9u9Usf/qKJfAUsdjxjWq+G7ojQV3H3fH+/YSmqtS4p1+jNHOtWrD6Cb0mV1MYACj6WqVGHF5JPz/R5C1LvJBgnkpYEnpglThwQ0rc58EIZncwQpiSAbCSYXgnyh+ps3vZKDlOkGdJwVOHkOczXwvDkH70LnXRzoc49t6H6A7V7C44Taa+hw1fHqs5IJaZubw9bGE1DpnUMEhFUz20ARK1ZnpMBqvhL5SWjU0lULKk6YL+l2iP5edx+VZUv4TZbhuFUXBo25m740sxCOT9fGxE/NKgc0cJNlK8bpUedIoQlFaohGO93uDSeriN8H/mENrKUSJoPjmOF1hdpeNpq203HUL88m4RkYL0oUECqvZe5OG+wvED+eKwzT5UjRqf6fnYXVLuJyBT2FG75WDUTFu8ee3Vm8A2D0HeBMuKmeJG94n8c+n1QOOM+bnBqJzD+ico5vPX3kRh6o4GAwMoCDtRxpWHZ0X1oW26LoEPyy+UZClj6r9T
+ kRVRHK7Q
+ p/ovItphrV5ZSsXAOyy8IfWTMWMDGfoOv+RToSvP1m3HRMwG6zwUEVvzvI84Pr0URpOdnkudEnpZbrDRtxF0kSxOCf29luc6EvEvmtBrBReru9eMVOXs2Jef7LqIFfr5r/yK0AIdAHU/BPREVjDSJbHZNYHi5b5bBb20KxckYdS8xo3TQ+Qz0zME5QDK2NIxu5FJeyZCkclveEJOuSFTn8HLeqACieTiHgQZNDv5yKiYOxrDBbb9wGQctaujwFofNb8Tp+ggNlzhPEldVdF7KqNSj5DhFZVR+VYUDIWrmoUqW6+dx46CVp70CO9W3GHXT3mucDtzCuF/aqhaNcESW+k3Qqy2pRCQbbLVzBlFkS0V6uAd16lTV22dUsWTUYVvQDFCE1Iz8vkkPSni9xYRvpF6wX9lFSET1U9dY1sjjjRXtwMQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,18 +147,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/28/26 10:52, Muchun Song wrote:
-> memblk_nr_poison_inc() and memblk_nr_poison_sub() look up a memory
-> block via find_memory_block_by_id(), which acquires a reference to the
-> memory block device.
+> remove_memory_blocks_and_altmaps() looks up each memory block with
+> find_memory_block(), which acquires a reference to the memory block
+> device.
 > 
-> Both helpers use the returned memory block without dropping that
-> reference, leaking the device reference on each successful lookup. Drop
-> the reference after updating nr_hwpoison.
+> That reference is never dropped on this path, resulting in a leaked
+> device reference when removing memory blocks and their altmaps. Drop
+> the reference after retrieving mem->altmap and clearing mem->altmap,
+> before removing the memory block device.
 > 
-> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
+> Fixes: 6b8f0798b85a ("mm/memory_hotplug: split memmap_on_memory requests across memblocks")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+> Acked-by: Oscar Salvador <osalvador@suse.de>
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
