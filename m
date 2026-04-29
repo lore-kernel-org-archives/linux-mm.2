@@ -4,128 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B63F7FF8867
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 10:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D0C1FF8875
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 10:28:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 100076B008A; Wed, 29 Apr 2026 06:25:40 -0400 (EDT)
+	id BB2606B0092; Wed, 29 Apr 2026 06:27:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B0CD6B008C; Wed, 29 Apr 2026 06:25:40 -0400 (EDT)
+	id B63046B0093; Wed, 29 Apr 2026 06:27:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE1CE6B0092; Wed, 29 Apr 2026 06:25:39 -0400 (EDT)
+	id A787B6B0095; Wed, 29 Apr 2026 06:27:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DC8F96B008A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:25:39 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8176FA00B7
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:25:39 +0000 (UTC)
-X-FDA: 84711211998.05.EA1E8E3
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 223AAA0008
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:25:35 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=syDuJ2eb;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 97DB26B0092
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 06:27:59 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C2C9C0146
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:27:59 +0000 (UTC)
+X-FDA: 84711217878.14.B6574D0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2B5454000D
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 10:27:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lV3ZV6Rw;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777458337;
+	s=arc-20220608; t=1777458477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ubnPqyEuUH+bb9tWP9+TOUp+n6C5onOR58LCuBDEiw=;
-	b=6+KFc9LEwzKx9e6cZO15QzhdE8ItsRnoYdgm5OmLL+qgFgeWYyvGTiBv1d05KHIUnePvAw
-	yvLDyYOZNmlpn1cOJCq5reHDLgly6SVB5bpqpsFsfEV49BwYBKuQarGlXBpaBizl5lfHRg
-	P/VwGrAN/QYJdOklHgUS3ErXfRERiiw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=syDuJ2eb;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777458337; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qiOMTcGyS8IKVHSdlEM9HXLBl7XABulEr7CELVvqhgE=;
+	b=56QvCcms6VYIJ/DxV3G9WPgI9DWirVZB/YTD47USFdYONdZwHoLLsm/n7vnOH8Qm/KviaD
+	ZIGG/AOIx86rjRT2GotVk+bF7nzsJ6R3TBWb/KLx5ilcS34Zmcq2w3HM03s+FP+Wlfmxk0
+	Ai9YIQ5NcQgWGxUp7hHGTkVZGdl9EWI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777458477; a=rsa-sha256;
 	cv=none;
-	b=JVyNPYuyByn9AW/TXEHnuA/PXDfun2j6tBbMDdFGlcXjfZU+BkpdhPd7QScEhUK9GiA9NY
-	S/tigSI2icTeq0trORys/S67mt9yReVB26mcGWYNKwUJ2b8efiOZ/eJjcnQVyh+wbuEKk5
-	3V23J1h75hsGcp1ltdU3j45zLTySrWs=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777458333;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0ubnPqyEuUH+bb9tWP9+TOUp+n6C5onOR58LCuBDEiw=;
-	b=syDuJ2ebh9z2sjffREH58o0aT6Ajjew8W5I8ReEUtvp2EQkdghmYv8iT9JcU1iX87oMIbX
-	D+xmbMoFNHgWVKDoL6XEe6kPFjJgAeA5FQrv1tK/6uUbSyjmFqItMdxDS/n3eJA5ihtrWC
-	pDy1LXDxeyfrSgRVjezaD0bM6Fa+Scc=
-From: Usama Arif <usama.arif@linux.dev>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Yury Norov <ynorov@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com,
+	b=F2loxx8VluXBwPkWiDFlnGDmE9dWWpDFwYiY1rk2ANokg/qVOkuZfIgMSdhs+HT/By+iWp
+	mHAb29ER00kxYkLc7duZo0NZ2ZgdpQPJ2H4eScGVG9NU37qXtWmPyUYf6kFBxCLCKGG5bt
+	OUeYcJQqvgnvvusrMxGJH7+FzjMZuis=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lV3ZV6Rw;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 624EE2A68;
+	Wed, 29 Apr 2026 03:27:50 -0700 (PDT)
+Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8C81B3F763;
+	Wed, 29 Apr 2026 03:27:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777458475; bh=UHBT6b3PQsNX4dbp5ITK6cbxzmXlXl+qSx4ZxL4OSG0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lV3ZV6RwQkLW3J5x4BqgxmN8ttA6LqRu1seHzAluQ2D86GgFtc5GbI7b9XjDWdz73
+	 xkqIUOdvTaSvS973Qpn1PvkS9DSsx8Lbq/E5SIWej91BFGVmRLCOAYh5YR/5PeqSR7
+	 z0Vnnh3LgeU5eIZHqFccKERW0haH/xk62312oiHo=
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	urezki@gmail.com,
+	kees@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	arnd@arndb.de
+Cc: Dev Jain <dev.jain@arm.com>,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
 	linux-mm@kvack.org,
-	linux-x25@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-arch@vger.kernel.org
-Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
-Date: Wed, 29 Apr 2026 03:25:19 -0700
-Message-ID: <20260429102520.1617327-1-usama.arif@linux.dev>
-In-Reply-To: <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
-References: 
+	linux-kernel@vger.kernel.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kprateek.nayak@amd.com,
+	tglx@kernel.org,
+	usama.anjum@arm.com,
+	mathieu.desnoyers@efficios.com,
+	linux-arch@vger.kernel.org,
+	ryan.roberts@arm.com,
+	catalin.marinas@arm.com
+Subject: [PATCH v4 0/3] kasan: hw_tags: Disable tagging for stack and page-tables 
+Date: Wed, 29 Apr 2026 15:57:01 +0530
+Message-Id: <20260429102704.680174-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: nz186cnqw4adp7e7gu1u565muztqf5a5
-X-Rspamd-Queue-Id: 223AAA0008
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2B5454000D
+X-Stat-Signature: w3r6kfz3xzgc9f6uzsqcknh9p73ot4ac
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777458335-103334
-X-HE-Meta: U2FsdGVkX18lxFZJODhWQPkrAApNumTNiVYf1O2mAF7PgR+zpCDPe6bt694BA8+t/650s9CDMW3vulP58clV4wG594JQqH3FzmEuGYOLoeIusAFeLBcJZk9jSsLilg51NY0+V7upKUBczm6sqahYJGJe5gsk+gCBoop7LQFtFkzUehDGlc9KngLFURvS0FAnjFqkV1CxyiCkiM6JOS0fXJcD/uVJFZRf1bDLAG2RHhO3xMb4kSAqfsWhh60LD/oDkvZBiahAEkqyr7BBcctiyR6+4UZdkgAaZDsBi5kl/oEACFWQB/IIBIZzwhDdN0iWif50YOEY8SYPv1EVdUwPnpIwQqh55fg2xKGq+rzkeIEltQfGYIw/0G+0/NniixWwNVW1YJ63c762hPJUwW7yfGeSYZpN+Y4ZRo1z3IF6pR26hfOpX47AeHEafSYB3Jqg8WThsmXNQwIlxN47VFLfhAGv4KMBB4wunweP0z/NoxWjk7lFp+TzzaBcnFEQtS62yfbh2ha32aBx0nVZ3cJRHm/VFiD3ONJ2d5Ri0koKjN2tG0Z8Wc0ZRop0CROubx69/we8kGWyofsGOdyd+TkhVraU59bgj5EBKnt/zds/MbhaDfn8yP+gh4u2RohoCaUhOx/EJCDHJMGJllV0rx8yA2Ej++YntUDhFSof5JDjr2mTgvodiuQyWJCyfqTX0uH5ektbj//SNiA7oI7+5QTTYWRoYH60vREyjInKUdBzutmzCnCwpbIGUnyzWq8qrVNNI3MHWpllXPrzAW4ua5Ku0fuRB5F9klxInkPhDUEsTSVtHqBILB0Z0eeLdjEa12vD1CmwschqKAbBoLsdu04S1Brx2in9XwRD6TxNg15TDwmPjb3oqGLl272oUXnJ0gQ0EW/cviX7R74nlyuakSnrN4GbnR1leXKC3+CpSIP697w/H/PJ/oTs9bRHBAvKcrCLQ22fqAZjxE4fbaHy0Fe
- V8eirOQB
- 2YUA0tAmIF1Z5DVYx/leURSsBcVnnxPdQiH3mENLhbGXQOs0zdpG7KN/YFJBaDnCe1MWjQ/H3MzoGBioAr0wH+Yu9Iw7mHYAoxFNdqev/rzxRJqGa/EN5eq5qz/JE91b+aMHTW0Ps1nTdwdVnizHk7tC8cYoplmAB8Wuf1swPQYeqBkmgzNz2A4/0vN9RSqX0XATl1HZEvhxL3bcuBPsAa12S5gx2iUD7/qKMiA7El4sARerGnBclxvpE4PIyrYGbtPgg2fwELqhfgLuRhwor/sPZbkEjLcWmu0ncPe1eUPLHUDFW/pKGY51t3dByngSUNJlzaKFFZgyzGtYqzikAvWTiFQ==
+X-HE-Tag: 1777458476-648102
+X-HE-Meta: U2FsdGVkX194CUshoLFPBnFVUWX2v7dIZsAUuIhZ3AqwVGj9mqZYj+foV47vI0C6Beilii65oEm9nChCKwognpO9UqmbeigZ1PtEotlFcp0fZPikQSAybAx55GzaujufK2dvFCdFlLs1YhpYD/BRK3n9a9PM1IIdSLdHNqwgcQOeTLdGicoVyO3GR0MHDST/xBZemOccCxFvw45cwciUmAbiCBPJi6JvZEgSNSmgCrXAn77Zss/TJPsrNE6YT0AGy6sQVvUOmTtFWJqJMI7echkRcatZILqpqG8pf9qJKrbRzIZEH2+U6aRSqG0v+X5xhKfcJ+vnBMC92QGcs8PBK5BhkvkRhUVOIA+3CQfxlyxLE/b1O9JUCmtKEz+a2G0bWyXXpJ4RgPvUWl1qCav1O/7CZYYLLQFKT6g1ta+qhs5xoja75hHY1f+tKla8Absp2+eByowhWAOuUqY0JkBC7OnnFNsjJtgpm3X1c9XZuVakmW2EULn7lHUdQrb96LftJKFDtD/R///D89RlR8WGRtOopqGjNbc0OJ8ty6r9RdPkqb8DBr6ppMZZs+5evvK8C8EBPFiJKRDv/v5u3cxF4irgnXI5dgeNU/UfyfmHzUy2/Cng745dY9H/fzkgcEGOcvjeVpaj1CJ8vB+nq/XJ+FL6i9R1Ttvtyan+A34Q1NYW5ur3RJWUz/mGxlcuMy64ELC1MDdxhB+6gaA3c4i5lXI2HX1zJIUo4maJTmAzJsEzIK5vVzTvQxihf6dIesRvdG+wLqKhqOUr3QZyF5yyXvHFKYh9IbAuuOGrj8bc8htG705ViZeMVSRk8bKrcBiWypH9iYnCGhf96iFnB1SFEqg0kPoFhb0Zz5rM67I6UJDBp2Qh8Bry19oBXkNAhoVgPFDB3vXWG2mcfMriHKWir1vmR38aLGgahYokR/TJrJXl5dU+SMb6dkzbk66noUUcDdgdi/hlkEm+IdunIKT
+ kYsT+CCE
+ CcS7224oX9sq1wYTDq44gW1mHWL9sia+SUp4bc7E64xZdro4lBftISPR07CnEAYD1WdShNBwx8Lkqv7EYfvAvLfTFFEtg47SrmA9j3J+vzhhRGfnf7ToHEIJMO7fFiDsAI6vOT61zMoa/CSslvJ37uf2JcASyC11S9NbDaAhM6ovulSKPx5PjT2HyZ2z4/Nx4rs9DM3BUUKVPtfKBnCevKPZ+/faPCbqtn1HY6K5gOfnZL92Pxtr7UUHTpIWUakx4eEdw4PVLIRN9SCxPzf7pRNW99c9Ylu7eHgoz1kKU6K2DjtlwojhY1XAIAkm5a5WwSX6zmyEHUo1O5zvou2PghpGeC02bZwSTwf6+NMpkswH93ZtLMQ/y6GDh1/cIbQzpWqK2EYm3YoPa5riRy2X3KHWAukAXLYL6gdVFae7AbJV5R0c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,71 +113,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Apr 2026 19:13:48 +0200 "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
+Stacks and page tables are always accessed with the match-all tag,
+so assigning a new random tag every time at allocation and setting
+invalid tag at deallocation time, just adds overhead without improving
+the detection.
 
-> At the time being, x86 and arm64 are missing unsafe_copy_from_user().
-> 
-> Add it.
-> 
-> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-> ---
->  arch/x86/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
->  1 file changed, 24 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-> index 3a0dd3c2b233..10c458ffa399 100644
-> --- a/arch/x86/include/asm/uaccess.h
-> +++ b/arch/x86/include/asm/uaccess.h
-> @@ -598,7 +598,7 @@ _label:									\
->   * We want the unsafe accessors to always be inlined and use
->   * the error labels - thus the macro games.
->   */
-> -#define unsafe_copy_loop(dst, src, len, type, label)				\
-> +#define unsafe_put_loop(dst, src, len, type, label)				\
->  	while (len >= sizeof(type)) {						\
->  		unsafe_put_user(*(type *)(src),(type __user *)(dst),label);	\
->  		dst += sizeof(type);						\
-> @@ -611,10 +611,29 @@ do {									\
->  	char __user *__ucu_dst = (_dst);				\
->  	const char *__ucu_src = (_src);					\
->  	size_t __ucu_len = (_len);					\
-> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
-> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
-> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
-> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
-> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
-> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
-> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
-> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
-> +} while (0)
-> +
-> +#define unsafe_get_loop(dst, src, len, type, label)				\
-> +	while (len >= sizeof(type)) {						\
-> +		unsafe_get_user(*(type __user *)(src),(type *)(dst),label);	\
+With __GFP_SKIP_KASAN the page keeps its poison tag and KASAN_TAG_KERNEL
+(match-all tag) is stored in the page flags while keeping the poison tag
+in the hardware. The benefit of it is that 256 tag setting instruction
+per 4 kB page aren't needed at allocation and deallocation time.
 
-Hi,
+Thus match-all pointers still work, while non-match tags (other than
+poison tag) still fault.
 
-Just wanted to check if src and dst need to be swapped? Same for arm64 patch.
+__GFP_SKIP_KASAN only skips for KASAN_HW_TAGS mode, so coverage is
+unchanged.
 
-> +		dst += sizeof(type);						\
-> +		src += sizeof(type);						\
-> +		len -= sizeof(type);						\
-> +	}
-> +
-> +#define unsafe_copy_from_user(_dst,_src,_len,label)			\
-> +do {									\
-> +	char *__ucu_dst = (_dst);					\
-> +	const char __user *__ucu_src = (_src);				\
-> +	size_t __ucu_len = (_len);					\
-> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
-> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
-> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
-> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
->  } while (0)
->  
->  #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
-> -- 
-> 2.49.0
-> 
-> 
+Benchmark:
+The benchmark has two modes. In thread mode, the child process forks
+and creates N threads. In pgtable mode, the parent maps and faults a
+specified memory size and then forks repeatedly with children exiting
+immediately.
+
+Thread benchmark:
+2000 iterations, 2000 threads:	2.575 s → 2.229 s (~13.4% faster)
+
+The pgtable samples:
+- 2048 MB, 2000 iters		19.08 s → 17.62 s (~7.6% faster)
+---
+Applies on 7-0-rc1.
+
+Changes since v3->v4:
+ - Sashiko noticed: https://sashiko.dev/#/patchset/20260424130157.3163009-1-dev.jain%40arm.com
+   Fix this by honouring vmalloc skip via GFP_SKIP_KASAN only in HW tags case,
+   to avoid unintended skipping in SW/generic KASAN.
+ - Instead of removing and adding GFP_SKIP_KASAN into gfp_flags, simply
+   call __get_vm_area_node() without it
+ - Update GFP_SKIP_KASAN documentation
+ - Put missing SOB by me
+
+v2->v3:
+- Directly skip kasan_unpoison_vmalloc() for GFP_SKIP_KASAN in patch 1
+
+v1->v2:
+- Update description/title
+- Patch 1: Simplify skip conditions based on the fact that __GFP_SKIP_KASAN
+- Patch 2: Specify _GFP_SKIP_KASAN in THREADINFO_GFP and GFP_VMAP_STACK
+
+Muhammad Usama Anjum (3):
+  vmalloc: add __GFP_SKIP_KASAN support
+  kasan: skip HW tagging for all kernel thread stacks
+  mm: skip KASAN tagging for page-allocated page tables
+
+ include/asm-generic/pgalloc.h |  2 +-
+ include/linux/gfp_types.h     |  6 +++---
+ include/linux/thread_info.h   |  2 +-
+ kernel/fork.c                 |  5 +++--
+ mm/vmalloc.c                  | 13 +++++++++----
+ 5 files changed, 17 insertions(+), 11 deletions(-)
+
+-- 
+2.34.1
+
 
