@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97A54FF8875
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 22:28:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96B8CFF8875
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Apr 2026 22:30:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2E016B0088; Wed, 29 Apr 2026 18:28:20 -0400 (EDT)
+	id DF5096B008C; Wed, 29 Apr 2026 18:30:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D05AB6B008A; Wed, 29 Apr 2026 18:28:20 -0400 (EDT)
+	id DCCE36B0092; Wed, 29 Apr 2026 18:30:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1C7C6B008C; Wed, 29 Apr 2026 18:28:20 -0400 (EDT)
+	id D0A566B0093; Wed, 29 Apr 2026 18:30:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AF0ED6B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 18:28:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BD5BA040C
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 22:28:20 +0000 (UTC)
-X-FDA: 84713033160.22.2D63B77
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 613358000F
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 22:28:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=W9PFJauS;
-	spf=pass (imf02.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C040E6B008C
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 18:30:27 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5602EC04AE
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 22:30:27 +0000 (UTC)
+X-FDA: 84713038494.18.6827AA1
+Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A2CD61A0011
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 22:30:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf19.hostedemail.com: domain of 3gIbyaQkbAK0flmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3gIbyaQkbAK0flmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777501698;
+	s=arc-20220608; t=1777501825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nNaeytT1WfkYlrb7aq4OM5BymIk3oCnk59yTBTmQPMc=;
-	b=xHkaupPTSt4e2EFP6/27ngd4K06vAOq7CzjknzOxr1fRr10mPN7vc4E2CmftjWbTDsyo0B
-	D3IFWgtThozXmPiVhM0gMJA++xE3n+8UlNR77xIwM9X/TNZZrAbYXOx7cW8ZRRFakuPfOi
-	ABiyl85nEll50ifrBNTzGCG/RsFEM1I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777501698; a=rsa-sha256;
-	cv=none;
-	b=JKTZo7XWcFuOPqFAQcmv9Qrri9X4zeA/LmMZqDloErhLcRq/ugsazDHEO821nPmbPjoKPN
-	CPh7yQe3n4eXUOs4cbPli/RtT6Qm1ouB81k06Ud2p1lIZcjcEZr8fb28+gv5TGZDQazE8C
-	jDo6EniJXgS2MnRLI1aV4xe3HWKBPLA=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=3HbGDe+FYuDBiqHxgjl3AMAvxH4rr+6wviRQfjDUxY8=;
+	b=bV61TmHx0Bzb9pTfYvPIBpYa9YN3g3TmNiGt7adAa/vC8j4TFGuTKw+JfwbxZVQLwGO8sF
+	z3t7uRiqj6WHr6muG3pTv7a0mWAbkMa5t1ZBdG5tebJixMG8T/B2Prf9llcO8n3SSRw1aY
+	lVKLd1M0ainNNJ7GQjGaXRAHZZqvH0M=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=W9PFJauS;
-	spf=pass (imf02.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-Received: from localhost (unknown [20.236.11.29])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B332D20B716C;
-	Wed, 29 Apr 2026 15:28:16 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B332D20B716C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777501697;
-	bh=nNaeytT1WfkYlrb7aq4OM5BymIk3oCnk59yTBTmQPMc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W9PFJauSunK2M1P7HpxoCdIEe/7dds3W8ifeRq+H+GIEPZIql+z+ll5f8Oi8pnA5k
-	 stF9yPMgyiXGStTt9LoWiMYlFXVCGkHR4jBbO6Qv+M68ZVMuno2zYfiGGjcdCd8LfU
-	 3eBJCFTPEacmBO2mKO6fT5KCiB/jVoL0/2gljJdk=
-Date: Wed, 29 Apr 2026 15:28:14 -0700
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
-To: David Matlack <dmatlack@google.com>
-Cc: iommu@lists.linux.dev, kexec@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org, Adithya Jayachandran
- <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex
- Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris
- Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, Jason
- Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>, Jonathan Corbet
- <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon Romanovsky
- <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport
- <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
- Pratyush Yadav <pratyush@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja
- <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Will Deacon
- <will@kernel.org>, William Tu <witu@nvidia.com>, Yi Liu
- <yi.l.liu@intel.com>, jacob.pan@linux.microsoft.com
-Subject: Re: [PATCH v4 05/11] PCI: liveupdate: Inherit bus numbers during
- Live Update
-Message-ID: <20260429152814.000005f7@linux.microsoft.com>
-In-Reply-To: <ae_SHCjNGrEPurzH@google.com>
-References: <20260423212316.3431746-1-dmatlack@google.com>
-	<20260423212316.3431746-6-dmatlack@google.com>
-	<20260427114745.00000656@linux.microsoft.com>
-	<ae_J2pRWFf5qjZXb@google.com>
-	<ae_SHCjNGrEPurzH@google.com>
-Organization: LSG
-X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf19.hostedemail.com: domain of 3gIbyaQkbAK0flmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3gIbyaQkbAK0flmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777501825; a=rsa-sha256;
+	cv=none;
+	b=hnsMp2+k4h9jo1RFY9d7kWRkL0vF+3apFo4aCMsAgVxyPOyVfmzQyGnUnllsv1sniwfPwe
+	FNhmcZ0vmotUbXVUq2xpWj27YS7cCYDGSpAEJCp69O4mrHCMSsGAdKh/M6zrAN6rgmObbZ
+	HOEBozyqQ5FJk16LvQjvEHZE3i1LCgk=
+Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-6966f1f4490so778903eaf.1
+        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 15:30:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777501824; x=1778106624;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3HbGDe+FYuDBiqHxgjl3AMAvxH4rr+6wviRQfjDUxY8=;
+        b=NOe9Yf/NCwvWsNF5k9cN3wSbYHOUKWj7Qmc2iOP4uPzd1Tj+7Xm263S/6megQioEes
+         xmXNchh+HusmA2FCHQtBUaOJsnyfYHAQAaqHfWQJ4n5TLPauNIyQc2brA/IlJrevQIaL
+         MjCIMpjobj9D4dsPxQt21/Y9p8jpJKqSXFaBfQpQxHZOWKa10Oq/sxEdWTDcp11jw1Yb
+         iISQfcPEOL88sSXmea6L56x4gEuL5B3q+ERen0DwzQs97FTGQ1oAH4xHafqIUdLKkHlf
+         cD/gX7T3jTMJpUP4JJJsRWoLTanPZkweoHa+srkjcS/zKVgzVdIuHpRxbBv5MeQZCcA4
+         Fk6A==
+X-Forwarded-Encrypted: i=1; AFNElJ/SbOaSVyjhalFeFRwdz92tVoQs1+aFArQ1AnKmiAz1iRocZ0OYSrTLZTrd/UVZt8OoNATmVABSXg==@kvack.org
+X-Gm-Message-State: AOJu0Yzn2UbZAoNU9vj1rLk6xWKjJPOqTzK79NJr0yYSY/je9Yff92MD
+	ranWib2bTOwheJDPFvNu4LWJkCJTm763BTJZWPYaKDGQIE2D8/B/p2qBmFULMShmYM1wtO3RGsL
+	zpoYeYzpEEO8Un1Rp5R8yqUCTi5iK3DmjzOyLT0vbwAYMA/uLgw/pe4J8ABQ=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 613358000F
-X-Stat-Signature: 9oswyzg4f8fpfj5oy4sgrshkugjjpt9g
+X-Received: by 2002:a4a:b684:0:b0:679:c55a:df0b with SMTP id
+ 006d021491bc7-6966a528262mr1726765eaf.37.1777501824660; Wed, 29 Apr 2026
+ 15:30:24 -0700 (PDT)
+Date: Wed, 29 Apr 2026 15:30:24 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69f28680.050a0220.11c491.0005.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING: lock held when returning to user space in do_fault
+From: syzbot <syzbot+4be30d1151ada9ad0194@syzkaller.appspotmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	mhocko@suse.com, rppt@kernel.org, surenb@google.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1777501698-177212
-X-HE-Meta: U2FsdGVkX19Qe0XuGPojvT3dUek/qOQ49f4oFW+x+5ZDbWmYtomk2MEiQXhYn7kilIuADRoTuvEaIw+esu6q4Ufbc7tnPBP9L+LWDxukSuW1LUmnna2qtgHM7xZC0b8+9tLOkIZh5mjCTYIwXOFPFRlldGFaMi5PlqgVSDyUONky6MRG/RMsBj6iJMs1V2VYJi3KegL11huthJk/tbn1YRWbXDnzr2Y6CVK8ZdpUg4IOCE/gOH5xWFIWPbPd1oxDLzzNiGM3UBuCSZeW2rganZJ0vNzCbB3f0LzNxz0t4rxIXPc/tSDfzTYmh+xVHbFWHlxNEqSA1mq6/LC6CoVXcZ1AJ1l1DnAgl3VZy6RjxbcoIdXw/W5ZoE3jPVtZXnQsylKv4Z211Kyabas8u56uNeAWb5L9QrBEo/60Um7rrCems/8iw2n0GibeuOLCytH4Q3cJ6JWJXBpt+tNPKJS9spCROsjBx9cS9o40xM+6VLOVaKkMXQaqHKzWUpHCBQg1oVksY5f2OJNzmbvFS0xzvU2SDZI/EKHsS/6rOGFJHNVzvdACfSdGR74PBxePF0T3I9opG7dmaizB0EbTa4xV2W5h1Ci+SgQQ/O+4/gMWG+Ftb961DPiER/U1WC1SeaF30NAKD5ESoUdVOQa78ykZJ3C8WY7SeftGy7Z5xwC+ct6jWyYLLHrNBakbFVZatBuHyjSBt6GNv/q/+TmpgtPJiHYHpeOZ2LnO9hcQR4vyKiHZgaR1hs3CvrvX4rnGNAVzEh9hIJAlrwqJOZuKxQYjKnjRmFjkqcDTXRMJXvmv+Nb85CdPS2LDBg+pF1wei8E8T93jVQma1nlIA+RrbS7/fTOLxOJzdMxIeIWOoQKreKD7MaZHYfzljIVwU4X7zCDZRdsAWqgxAzsyHY/uos05xCRVWhZOKDuzJwFoRGCAs4YyH5HY2KO2X9JRj5veTKTL+HvJVvEjFMHx3h5j5M1
- BcVleAi8
- fCJhdLTSeF4udfcF2x/xFOMnSYb/Z2yNBlXvXdz03e8eYYv2B0vRa64l3avjSvXwtoG4lpUS0XZJueAxwENzi9SFx/8rb2ZeDDT240m7BdL65KJd8IzX2XRfND0BC/+M/KD8QN4yDKJ7MH7xxO9DHoEoOtzyxzuXQiOHKsCvPXx6m2iV9cvwCY+2NSOFlXiRDgqN5Irr44uC4yCrR9rJyfxV4YmlyD6BqgiPF+Cag+e6WA0MsLWDBngZ+k/m7NvG8G82/XvF0j7XkN4jD1nSjUyTwkFVvgRtkh3EDYXAZi/b3eyGHlcS7tc5AdKhMQMolT/pXQnxceN8As4J9jIFmo2B40LZbn/wZ3yiyIZva7ffGix8YJKpZzSSoqF93UfNK7NzX
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A2CD61A0011
+X-Stat-Signature: qmgjz4ydiw9okitggbm3bunctmsagsze
+X-HE-Tag: 1777501825-781569
+X-HE-Meta: U2FsdGVkX19Hku8svnMJQjw4/QUaxvI+CaG7lVepTclqpwF8QSDiptemBAocCwRZw6K3WjZsMFv8vctv6ilU84cBMuPvz1kHHOyxEczv+doe5F4flvURQIaLGlZ85C7MOoyTqcMtC1XhDW2tqJYLnOCGkDCkYbVrWCGoOQ8B1UHkWSWzNaM2+lL69sIAr09YHHXGhq5FilpLkqADYJ0RfSzqS6c8FeRxYkS8h8YhiR/8lX2iL57YptDFx9nRWqE8Ntk5iWDrd6yAmvZKjvMxee2pCXVQSUZqUEKGacMdnVAgOyMDhdxpGgQB77ZD2tvxjGNnMqH2LGpLWA6cbmUVBOYdZhlsuD1scSZFlB46LwwBeWRWK23ynzU+G4DVQwx3kqGx1K8yZj1n+FM9/OcE/vzucKeGG+hoc/uf2G5J1TqmLsJqA2GBQHd/h20yUjoluutRO9j9iWUxmW2OsY0fyugc2V7zJg0FEsgn+i1klhtZbQR5c/sUHQ1s3M9YrAqNRKF/QxplXa+RAAaUH7AbmiBKQn3drkxrAvN67jo/CT0jEjpSCu0Mn7YYIHaEqYqI3g3Mf5f2fWDzRVQehC9+VDvX8jiHcJ+j41TgJ0dHL1onc+ikrk4CRraP6v9Ozr/M+GqxUThVN1uoysqPNcADI4kiowlf2CSfnV5hnq3tncfvwDSmdAETsFFm8RMhTSAQKBIHENX/kHi44DqDMucWdVAqsBBx8eaIpPCmR9svgMa10fHAyZMhNDI2JJLGbw2nNqxitllgebqzJEYSstvr6xzazqvY2937FKMCstufBRXdv/c9Suj63wB4qSzVLM1wo8DPP/O/YGHbwAOq+3XKrCSpWxy3WYQzEstkGr0PWNuNbK0ZyPtZbAJoDwc6Y7GNg4EGjdAnjv3XAZ7iwms69n6WBJklJX6Ckbu5ZQV7961SmdobCzzrcbYp2XiDbkl76Mjk+VYWPlEJfB95v0q
+ W1MwJZKF
+ YLO+V5aPMsE7LXACt4KbKeUg6NMhSczXS5L9njguk7fwe7hj0jA7lR3TZGjj75wEvAXonPE/S8WbiAIyR87/D2/xWIvXMIDgZp0dDHkU0BeVcB+AvbyzDkCcZ63psPtvICu38H5HWfQYoCyH70qebgayD4EltzV1MA/laIw2HnRZenBtX090+5d6oISz7WixHYHKo64pATWhHUSW/bv2cQ+EGqKtWczZxQtir0XfMTRagYynaG9dUGkQPJyxKIdil710Te9FLb4kAdVaWyvuzPrd6kgMlX7SWAULWljM8DWvyD8McV0+g4kKIKeB17mu+gubtm3/Ax2X5Z1IDblKZgWP0/b4esiMkkm/bSDmOw4SBdCMSRNS33KHvVNeQGTnNnupABZw0IEt6BrfpPvebjxrYhHK23H5/AjdmuGgxscqfcSzBO4sfpMa1hV7IrRmmxn2YPEzskv0xSpHkn/kuSpc+no0b41u+D+TSbh9UEUjAg5rrf/12lkYuw9NDbHbsJH0hKb29sjcJPL3S6Xx3xAf3KGzUxA2CDDh2Achcq2xPzDGyyEaZqO1C65LDlqEs2Tud8ndMsqtPy7He9oRWEuwretwEHllHF4RjCPiWANboRy8hQxj+n0vxuzUIx4U9srP6Qr1jTU6CYJQ3M3kzxIHUmFe7r+EM3gpd2MGoB5Q++hVrF5YDTTItpiJbcAFl48y4jCjryLhflXvp2EX4gLOFJEmmxawCCbh1C9uXK+jtyUYe3eSLE1Ks3ZblDtCvtmLd+oWsR/8dKO13Nb+rAY70tl09Z+/c7qcY2aurx4vjByE6V7w13d7R39kmaV1B5xY6Sxaq6MjlyqX25IE4MYsNySLWpgK5t41+oMbBhU+u4sJcDUrN3FuZhBfC6++jU17nhDXpZnKA1/fP5FqR6ifjRaZDmtbPG514c1d7m8BF2owLmO5wfeHnIYC09ICbs1ZkUG5HwyKxTOGhL5IaA4gSSSSh
+ MZszMrT8
+ rIusEi+4x1V3h1TILg3uqltbNsUddsvr/Uhja7f4LQ9QIWvDNB2xarEVYS+gYpufc7rvQRAEFQKM8LWWzkOtuqHGxIkXomdX9BC8OdD1TDVST4dZjupC00l+O7iW80tM4fRczNi2MiVblUO7LCtTexIiJwvy66lF4ft/Znon9NPVeGjx4+Z4gVJZ+X0WbgTzTIVV8uu31RfcswQc5E1ahdHb0dyaZt2jBY82VMRXGzWfm8iNO1iPvspzlPUFjhU4F21i9jhgrDvFR6EhYRJ66O4qdy+b5oHBF7hDYJ8+HNCiS/hXNTL8GX6Cu91Bto0eZ38cK1nDLB02uvuQoO64E2aZLX7NtWBHcEh+JCnE19N9yst+7io51wHhplmrs1XkHc+Q2bxl6phgpwx0fGRhFqxhH4YJtpd43O/5poISbG0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,295 +96,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+Hello,
 
-On Mon, 27 Apr 2026 21:16:12 +0000
-David Matlack <dmatlack@google.com> wrote:
+syzbot found the following issue on:
 
-> On 2026-04-27 08:40 PM, David Matlack wrote:
-> > On 2026-04-27 11:47 AM, Jacob Pan wrote:  
-> > > On Thu, 23 Apr 2026 21:23:09 +0000
-> > > David Matlack <dmatlack@google.com> wrote:  
-> >   
-> > > > To keep things simple, inherit the secondary and subordinate bus
-> > > > numbers on all bridges if any PCI devices were preserved (i.e.
-> > > > even bridges without any downstream endpoints that were
-> > > > preserved). This avoids accidentally assigning a bridge a new
-> > > > window that overlaps with a preserved device that is downstream
-> > > > of a different bridge.
-> > > > 
-> > > > If a bridge is enumerated with a broken topology or has no bus
-> > > > numbers set during a Live Update, refuse to assign it new bus
-> > > > numbers and refuse to enumerate devices below it. This is a
-> > > > safety measure to prevent topology conflicts.
-> > > > 
-> > > > Require that CONFIG_CARDBUS is not enabled to enable
-> > > > CONFIG_PCI_LIVEUPDATE since inheriting bus numbers on
-> > > > PCI-to-CardBus bridges requires additional work but is not a
-> > > > priority at the moment.
-> > > > 
-> > > > Signed-off-by: David Matlack <dmatlack@google.com>  
-> >   
-> > > > +	/*
-> > > > +	 * During a Live Update, preserved devices are allowed
-> > > > to continue
-> > > > +	 * performing memory transactions. The kernel must not
-> > > > change the fabric
-> > > > +	 * topology, including bus numbers, since that would
-> > > > require disabling
-> > > > +	 * and flushing any memory transactions first.
-> > > > +	 *
-> > > > +	 * To keep things simple, inherit the secondary and
-> > > > subordinate bus
-> > > > +	 * numbers on _all_ bridges if _any_ PCI devices were
-> > > > preserved (i.e.
-> > > > +	 * even bridges without any downstream endpoints that
-> > > > were preserved).
-> > > > +	 * This avoids accidentally assigning a bridge a new
-> > > > window that
-> > > > +	 * overlaps with a preserved device that is downstream
-> > > > of a different
-> > > > +	 * bridge.
-> > > > +	 */
-> > > > +	dev->liveupdate_inherit_buses = true;
-> > > > +  
-> > > This flag never gets cleared after the incoming kernel boot up,
-> > > what if the user does a manual rescan via sysfs? i.e.
-> > > # echo 1 > /sys/bus/pci/rescan
-> > > pcibios_assign_all_busses() will never gets called for this
-> > > device, and may hit this
-> > > 	if (dev->liveupdate_inherit_buses) {
-> > > 		pci_err(dev, "Cannot reconfigure bridge during
-> > > 		Live Update!\n");
-> > > 
-> > > So, maybe clear it in pci_liveupdate_finish()?  
-> > 
-> > I think we can allo wa rescan to assign new bus numbers once all
-> > devices go through pci_liveupdate_finish() by clearing
-> > dev->liveupdate_inherit_buses on all devices in pci_flb_finish(). We
-> > would need to hold pci_rescan_remove_lock to avoid this racing with
-> > such a rescan.
-> > 
-> > Now that you bring up /sys/bus/pci/rescan... I think we also need to
-> > set dev->liveupdate_inherit_buses in the outgoing kernel, to avoid
-> > bus numbers changing on outgoing preserved devices.
-> > pci_flb_preserve() should take pci_rescan_remove_lock and set
-> > dev->liveupdate_inherit_buses on all devices, and
-> > pci_flb_unpreserve() should do the opposite.
-> > 
-> > If we did all then then /sys/bus/pci/rescan can work like normal as
-> > long as no devices are preserved (incoming or outgoing). If any
-> > devices are preserved then dev->liveupdate_inherit_buses gets set
-> > to prevent bus numbers from changing during a possible rescan.  
-> 
-> Something like this? This is a diff applied on top of this commit.
-Below looks correct to me, but I have another question. How do you
-stablize PCI BARs? PCI BDF stability does not guarantee BARs don't get
-moved, right?
+HEAD commit:    892c894b4ba4 Merge tag 'locking-urgent-2026-04-24' of git:..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16d771ba580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=36f47f794f188364
+dashboard link: https://syzkaller.appspot.com/bug?extid=4be30d1151ada9ad0194
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
 
-> 
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> index fead478e8a04..b1b0a5b1a5df 100644
-> --- a/drivers/pci/liveupdate.c
-> +++ b/drivers/pci/liveupdate.c
-> @@ -120,6 +120,20 @@
->  
->  #include "pci.h"
->  
-> +/*
-> + * During a Live Update, preserved devices are allowed to continue
-> performing
-> + * memory transactions. The kernel must not change the fabric
-> topology,
-> + * including bus numbers, since that would require disabling and
-> flushing any
-> + * memory transactions first.
-> + *
-> + * To keep things simple, inherit the secondary and subordinate bus
-> numbers on
-> + * _all_ bridges if _any_ PCI devices are preserved (i.e.  even
-> bridges without
-> + * any downstream endpoints that were preserved).  This avoids
-> accidentally
-> + * assigning a bridge a new window that overlaps with a preserved
-> device that is
-> + * downstream of a different bridge.
-> + */
-> +static atomic_t inherit_buses;
-> +
->  struct pci_flb_outgoing {
->  	/* The pci_ser struct to be passed to the next kernel */
->  	struct pci_ser *ser;
-> @@ -141,6 +155,29 @@ static unsigned long pci_ser_xa_key(unsigned
-> long domain, unsigned long bdf) return domain << 16 | bdf;
->  }
->  
-> +bool pci_liveupdate_inherit_buses(void)
-> +{
-> +	return atomic_read(&inherit_buses);
-> +}
-> +
-> +static void pci_set_liveupdate_inherit_buses(bool enable)
-> +{
-> +	/* Ensure updates to inherit_buses do not race with rescans
-> */
-> +	pci_lock_rescan_remove();
-> +
-> +	/*
-> +	 * Increment/decrement instead of setting directly to
-> true/false so that
-> +	 * pci_liveupdate_inherit_buses() returns true if any device
-> is outgoing
-> +	 * preserved or incoming preserved.
-> +	 */
-> +	if (enable)
-> +		atomic_inc(&inherit_buses);
-> +	else
-> +		atomic_dec(&inherit_buses);
-> +
-> +	pci_unlock_rescan_remove();
-> +}
-> +
->  static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
->  {
->  	struct pci_flb_outgoing *outgoing;
-> @@ -180,6 +217,8 @@ static int pci_flb_preserve(struct
-> liveupdate_flb_op_args *args) 
->  	args->obj = outgoing;
->  	args->data = virt_to_phys(outgoing->ser);
-> +
-> +	pci_set_liveupdate_inherit_buses(true);
->  	return 0;
->  }
->  
-> @@ -187,6 +226,8 @@ static void pci_flb_unpreserve(struct
-> liveupdate_flb_op_args *args) {
->  	struct pci_flb_outgoing *outgoing = args->obj;
->  
-> +	pci_set_liveupdate_inherit_buses(false);
-> +
->  	pr_debug("Unpreserving struct pci_ser\n");
->  	WARN_ON_ONCE(outgoing->ser->nr_devices);
->  	kho_unpreserve_free(outgoing->ser);
-> @@ -223,6 +264,8 @@ static int pci_flb_retrieve(struct
-> liveupdate_flb_op_args *args) }
->  
->  	args->obj = incoming;
-> +
-> +	pci_set_liveupdate_inherit_buses(true);
->  	return 0;
->  }
->  
-> @@ -230,6 +273,8 @@ static void pci_flb_finish(struct
-> liveupdate_flb_op_args *args) {
->  	struct pci_flb_incoming *incoming = args->obj;
->  
-> +	pci_set_liveupdate_inherit_buses(false);
-> +
->  	xa_destroy(&incoming->xa);
->  	kho_restore_free(incoming->ser);
->  	kfree(incoming);
-> @@ -385,21 +430,6 @@ void pci_liveupdate_setup_device(struct pci_dev
-> *dev) if (!xa)
->  		return;
->  
-> -	/*
-> -	 * During a Live Update, preserved devices are allowed to
-> continue
-> -	 * performing memory transactions. The kernel must not
-> change the fabric
-> -	 * topology, including bus numbers, since that would require
-> disabling
-> -	 * and flushing any memory transactions first.
-> -	 *
-> -	 * To keep things simple, inherit the secondary and
-> subordinate bus
-> -	 * numbers on _all_ bridges if _any_ PCI devices were
-> preserved (i.e.
-> -	 * even bridges without any downstream endpoints that were
-> preserved).
-> -	 * This avoids accidentally assigning a bridge a new window
-> that
-> -	 * overlaps with a preserved device that is downstream of a
-> different
-> -	 * bridge.
-> -	 */
-> -	dev->liveupdate_inherit_buses = true;
-> -
->  	key = pci_ser_xa_key(pci_domain_nr(dev->bus),
-> pci_dev_id(dev)); dev_ser = xa_load(xa, key);
->  
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 09bab39738d7..abd8379b99cf 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -1442,6 +1442,7 @@ static inline int pci_msix_write_tph_tag(struct
-> pci_dev *pdev, unsigned int inde #ifdef CONFIG_PCI_LIVEUPDATE
->  void pci_liveupdate_setup_device(struct pci_dev *dev);
->  void pci_liveupdate_cleanup_device(struct pci_dev *dev);
-> +bool pci_liveupdate_inherit_buses(void);
->  #else
->  static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
->  {
-> @@ -1450,6 +1451,11 @@ static inline void
-> pci_liveupdate_setup_device(struct pci_dev *dev) static inline void
-> pci_liveupdate_cleanup_device(struct pci_dev *dev) {
->  }
-> +
-> +static inline bool pci_liveupdate_inherit_buses(void)
-> +{
-> +	return false;
-> +}
->  #endif
->  
->  #endif /* DRIVERS_PCI_H */
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index fa26f4170add..f94fa1fc76cc 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -1374,9 +1374,9 @@ bool pci_ea_fixed_busnrs(struct pci_dev *dev,
-> u8 *sec, u8 *sub) return true;
->  }
->  
-> -static bool pci_should_assign_new_buses(struct pci_dev *dev)
-> +static bool pci_should_assign_new_buses(void)
->  {
-> -	if (dev->liveupdate_inherit_buses)
-> +	if (pci_liveupdate_inherit_buses())
->  		return false;
->  
->  	return pcibios_assign_all_busses();
-> @@ -1409,7 +1409,7 @@ static int pci_scan_bridge_extend(struct
-> pci_bus *bus, struct pci_dev *dev, int max, unsigned int
-> available_buses, int pass)
->  {
-> -	const bool assign_new_buses =
-> pci_should_assign_new_buses(dev);
-> +	const bool assign_new_buses = pci_should_assign_new_buses();
->  	struct pci_bus *child;
->  	u32 buses;
->  	u16 bctl;
-> @@ -1518,7 +1518,7 @@ static int pci_scan_bridge_extend(struct
-> pci_bus *bus, struct pci_dev *dev, goto out;
->  		}
->  
-> -		if (dev->liveupdate_inherit_buses) {
-> +		if (pci_liveupdate_inherit_buses()) {
->  			pci_err(dev, "Cannot reconfigure bridge
-> during Live Update!\n"); pci_err(dev, "Downstream devices will not be
-> enumerated!\n"); goto out;
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 9a602b322e3c..dd6b26ca9462 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -511,7 +511,6 @@ struct pci_dev {
->  	unsigned int	rom_bar_overlap:1;	/* ROM BAR
-> disable broken */ unsigned int	rom_attr_enabled:1;	/*
-> Display of ROM attribute enabled? */ unsigned int
-> non_mappable_bars:1;	/* BARs can't be mapped to user-space  */
-> -	unsigned int	liveupdate_inherit_buses:1; /* Inherit
-> bus numbers due to Live Update */ pci_dev_flags_t dev_flags;
->  	atomic_t	enable_cnt;	/* pci_enable_device has
-> been called */ 
+Unfortunately, I don't have any reproducer for this issue yet.
 
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-892c894b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/80b0456697de/vmlinux-892c894b.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a3015c11e495/bzImage-892c894b.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+4be30d1151ada9ad0194@syzkaller.appspotmail.com
+
+================================================
+WARNING: lock held when returning to user space!
+syzkaller #0 Not tainted
+------------------------------------------------
+dhcpcd-run-hook/5670 is leaving the kernel with locks still held!
+5 locks held by dhcpcd-run-hook/5670:
+ #0: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #0: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+ #0: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: do_fault_around mm/memory.c:5850 [inline]
+ #0: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: do_read_fault mm/memory.c:5884 [inline]
+ #0: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: do_fault+0x8b4/0x1750 mm/memory.c:6027
+ #1: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #1: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+ #1: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: filemap_map_pages+0x1c5/0x2140 mm/filemap.c:3895
+ #2: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #2: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+ #2: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: __pte_offset_map+0x2f/0x310 mm/pgtable-generic.c:290
+ #3: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #3: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+ #3: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: lruvec_stat_mod_folio+0x76/0x2b0 mm/memcontrol.c:974
+ #4: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #4: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+ #4: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: lruvec_stat_mod_folio+0x76/0x2b0 mm/memcontrol.c:974
+BUG: sleeping function called from invalid context at ./include/linux/sched/mm.h:323
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5670, name: dhcpcd-run-hook
+preempt_count: 0, expected: 0
+RCU nest depth: 5, expected: 0
+INFO: lockdep is turned off.
+CPU: 2 UID: 0 PID: 5670 Comm: dhcpcd-run-hook Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ __might_resched.cold+0x1ec/0x232 kernel/sched/core.c:9162
+ might_alloc include/linux/sched/mm.h:323 [inline]
+ prepare_alloc_pages+0x44a/0x5f0 mm/page_alloc.c:4995
+ __alloc_frozen_pages_noprof+0x19a/0x2bc0 mm/page_alloc.c:5215
+ alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
+ folio_alloc_mpol_noprof+0x36/0x260 mm/mempolicy.c:2509
+ vma_alloc_folio_noprof+0xed/0x1d0 mm/mempolicy.c:2544
+ folio_prealloc mm/memory.c:1191 [inline]
+ alloc_anon_folio mm/memory.c:5282 [inline]
+ do_anonymous_page+0xb46/0x2050 mm/memory.c:5376
+ do_pte_missing mm/memory.c:4548 [inline]
+ handle_pte_fault mm/memory.c:6411 [inline]
+ __handle_mm_fault+0x1d2c/0x2a00 mm/memory.c:6549
+ handle_mm_fault+0x36d/0xa20 mm/memory.c:6718
+ do_user_addr_fault+0x5a3/0x12f0 arch/x86/mm/fault.c:1334
+ handle_page_fault arch/x86/mm/fault.c:1474 [inline]
+ exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1527
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+RIP: 0033:0x7fe544e18d34
+Code: 8d 34 19 49 39 d0 49 89 70 60 0f 95 c2 48 29 d8 48 83 c1 10 0f b6 d2 48 83 c8 01 48 c1 e2 02 48 09 da 48 83 ca 01 48 89 51 f8 <48> 89 46 08 48 89 cf 4c 89 e6 48 89 4c 24 08 e8 18 c7 ff ff 48 8b
+RSP: 002b:00007ffcc6945410 EFLAGS: 00010206
+RAX: 000000000001fe51 RBX: 0000000000000410 RCX: 0000564e7ee79db0
+RDX: 0000000000000411 RSI: 0000564e7ee7a1b0 RDI: 0000000000000000
+RBP: ffffffffffffffc0 R08: 00007fe544f51ac0 R09: 0000000000000410
+R10: 0000000000000004 R11: 0000000000000246 R12: 0000000000000400
+R13: 0000000000000410 R14: 000000000000003f R15: 00007fe544f51b20
+ </TASK>
+------------[ cut here ]------------
+Voluntary context switch within RCU read-side critical section!
+WARNING: kernel/rcu/tree_plugin.h:332 at rcu_note_context_switch+0x859/0x19c0 kernel/rcu/tree_plugin.h:332, CPU#2: dhcpcd-run-hook/5670
+Modules linked in:
+CPU: 2 UID: 0 PID: 5670 Comm: dhcpcd-run-hook Tainted: G        W           syzkaller #0 PREEMPT(full) 
+Tainted: [W]=WARN
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:rcu_note_context_switch+0x859/0x19c0 kernel/rcu/tree_plugin.h:332
+Code: c1 ea 03 80 3c 02 00 0f 85 9b 0b 00 00 48 8b 53 28 b9 01 00 00 00 4c 89 ef e8 a3 cf fe ff e9 1d f9 ff ff 48 8d 3d 17 e9 ec 0e <67> 48 0f b9 3a e9 99 f8 ff ff 48 b8 00 00 00 00 00 fc ff df 48 8d
+RSP: 0000:ffffc9000333fcf0 EFLAGS: 00010006
+RAX: 0000000000000005 RBX: ffff88806a63c280 RCX: ffffffff81edab71
+RDX: 0000000000000000 RSI: ffffffff8c1c1c00 RDI: ffffffff90db08b0
+RBP: ffff88802615ca00 R08: 0000000000000000 R09: fffffbfff21aeeaa
+R10: ffffffff90d77557 R11: 0000000000000014 R12: 0000000000000000
+R13: ffff88802615cec4 R14: ffff88806a63b240 R15: ffffffff90d7a8e4
+FS:  00007fe544cb7c80(0000) GS:ffff8880d657c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fe544fd3feb CR3: 0000000038dc4000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ __schedule+0x276/0x6820 kernel/sched/core.c:7043
+ __schedule_loop kernel/sched/core.c:7267 [inline]
+ schedule+0xdd/0x390 kernel/sched/core.c:7282
+ __exit_to_user_mode_loop kernel/entry/common.c:54 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:98 [inline]
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inline]
+ irqentry_exit_to_user_mode_prepare include/linux/irq-entry-common.h:252 [inline]
+ irqentry_exit_to_user_mode include/linux/irq-entry-common.h:323 [inline]
+ irqentry_exit+0x359/0x790 kernel/entry/common.c:162
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+RIP: 0033:0x7fe544fa2f32
+Code: 00 74 05 e8 c0 d6 fc ff 48 83 c4 10 5b 5d 41 5c c3 41 55 41 54 41 89 f4 55 48 89 fd 53 51 0f b6 07 48 89 f9 c1 e0 04 0f b6 11 <84> d2 74 07 48 ff c1 01 d0 eb f2 6a 1f 25 ff 7f 00 00 59 31 d2 f7
+RSP: 002b:00007ffcc6944980 EFLAGS: 00000206
+RAX: 000000000000076f RBX: 0000564e7ee792c0 RCX: 0000564e7ee82333
+RDX: 000000000000006d RSI: 0000000000000000 RDI: 0000564e7ee82330
+RBP: 0000564e7ee82330 R08: 0000000000000001 R09: 0000000000000000
+R10: 00007fe544ef7fe0 R11: 00007fe544ef88e0 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000001 R15: 00007fe54501e240
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	c1 ea 03             	shr    $0x3,%edx
+   3:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+   7:	0f 85 9b 0b 00 00    	jne    0xba8
+   d:	48 8b 53 28          	mov    0x28(%rbx),%rdx
+  11:	b9 01 00 00 00       	mov    $0x1,%ecx
+  16:	4c 89 ef             	mov    %r13,%rdi
+  19:	e8 a3 cf fe ff       	call   0xfffecfc1
+  1e:	e9 1d f9 ff ff       	jmp    0xfffff940
+  23:	48 8d 3d 17 e9 ec 0e 	lea    0xeece917(%rip),%rdi        # 0xeece941
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	e9 99 f8 ff ff       	jmp    0xfffff8cd
+  34:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  3b:	fc ff df
+  3e:	48                   	rex.W
+  3f:	8d                   	.byte 0x8d
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
