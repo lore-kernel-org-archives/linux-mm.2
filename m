@@ -4,92 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE88FF887E
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 01:10:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F79FF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 01:26:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9674A6B0088; Wed, 29 Apr 2026 21:10:07 -0400 (EDT)
+	id A1B206B0088; Wed, 29 Apr 2026 21:26:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 916BD6B008A; Wed, 29 Apr 2026 21:10:07 -0400 (EDT)
+	id 9CD1D6B008A; Wed, 29 Apr 2026 21:26:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8554E6B008C; Wed, 29 Apr 2026 21:10:07 -0400 (EDT)
+	id 8E3176B008C; Wed, 29 Apr 2026 21:26:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 741A16B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 21:10:07 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 00373140BCA
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 01:03:42 +0000 (UTC)
-X-FDA: 84713424684.13.5728903
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3033980008
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 01:03:40 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1h6EGEa;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C43F6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 21:26:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50CA2C24E0
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 01:23:48 +0000 (UTC)
+X-FDA: 84713475336.23.D39CC7C
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2E9D74000A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 01:23:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RPpmx5BU;
+	spf=pass (imf17.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777511021;
+	s=arc-20220608; t=1777512226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nie39FwUGzpvQQUteZWwz/0F11Lw2PD4zi/e1UDVHdc=;
-	b=jDkL1mZ7RlCvYk0mnP8GyS2Y+a4TgF7LoS1wZTs5pJ/zGjYG8Uq/b9jf8RqFiGmj/RE2Tx
-	E4YHRhoZ3cUpcBal7gMTI7b91bwlbDW/San98THyzsp6xzDci5DzH6RtitF+fW7GVY18m6
-	+pOrY6cVDtiv+duJOt0MIPmFoEKTfk4=
+	bh=1hGcplYVwQABxYlLF+wndCBgicnUwEbPp4jkVLwNR6Q=;
+	b=vuMievoIYdJyG5cB72+VQ9oe1C/b+wB3Egi8i8E/vOzD+JTgLtZR2ksUsNNpEthxVz9G8a
+	k7PtRRkR8j3VBEKIlfUiVXlplRE2sZqvK7BGSz3qBi9VzKzKl8jOoeOiUAkYkYfAsa53sc
+	S0ypei9iqRquiVJaYG+L9jA6LoHYiKo=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1h6EGEa;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777511021; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RPpmx5BU;
+	spf=pass (imf17.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777512226; a=rsa-sha256;
 	cv=none;
-	b=yy8Q3GGv6b3OMrmL1ygi0aML80a91mKd8sRyefjVjAs0X/v+foa2uBcBKMYk2I2XRfS/LJ
-	MfQkNIKaBzNP/Ti8xPVTfVvxxMH615LXLzWqtoETXnyIEypweRlLkhyPxUHIrXfsHOrKIR
-	yS5BR+v/tt/e6arxNFlRdj34drLVokM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38DF26024D;
-	Thu, 30 Apr 2026 01:03:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD1AC19425;
-	Thu, 30 Apr 2026 01:03:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777511019;
-	bh=6tv8sKnaOedjleOJpNkqRGOfecG2JG8qeIXOpU9VwVM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B1h6EGEaVDT7ULvhJRLe1vkELBRXpUhhBEnR6orlJ4zVndEeRaZvhYyQS2Y0WNM9a
-	 8dsnAFsSXGo5bdA6tHWpsgNaCEn8eROVpTtz7z6O3Hs2OuryAeo32JJpOGTkz6VlOH
-	 noEurSGE7vRjLKbbFKWCeVDb9aV3KQqZqM5OWYamlocO2ByLIxQ8AFApUDUY8cWBXl
-	 yEvQUxR66573S6eooZTz7/wXY7A/nu96m8GMsBw6oLYWNT7nrBqYEAg7TvXMVXBKjl
-	 Q/0dnMCin0uc9pp1L38f9kYPlJQrokXeRiyUCM3jHk95L1HxBm+dUbdEzbA1CrDx52
-	 wogvKy9OQQ5oA==
-From: SeongJae Park <sj@kernel.org>
-To: Manuel Ebner <manuelebner@mailbox.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org,
-	Kees Cook <kees@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	workflows@vger.kernel.org,
-	linux-mm@kvack.org,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v4 3/3] Documentation: deprecated.rst: kmalloc-family: mark argument as optional
-Date: Wed, 29 Apr 2026 18:03:32 -0700
-Message-ID: <20260430010332.114100-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260429072704.311603-2-manuelebner@mailbox.org>
-References: 
+	b=HwAcGVVWBOfRaK7KWAV1bRYetlR9fsUcx8dVLW74IJhALzDBslQFYQlrsxrrsyFo3e2YjA
+	yV/RD++Xtr94KOwUoj9Ce6VpD93I8iR9uFjc8yCgJKGQPWw2MF2X07jYxhPfQWO3leqSev
+	hCTTk25109JYc1Ge7F8rgtLY+eGE344=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1777512220; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=1hGcplYVwQABxYlLF+wndCBgicnUwEbPp4jkVLwNR6Q=;
+	b=RPpmx5BU4EAeJS+Kw9CUpJ22nQ4590c6YuDNDP1Q6Mil5NuQG9ER0f6VwDzOcmHsjGdNyl9W4oCu1Ah8fNDFWCAzoEChgDVBg9kb+lrW8NSuEjf6c1NEEdxqybTZoriDeO4WoNj5SClnAeHpc5s5GBfHb35EXClERC6v2Vh3mfw=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=40;SR=0;TI=SMTPD_---0X1zKUK7_1777512216;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X1zKUK7_1777512216 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 30 Apr 2026 09:23:37 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: akpm@linux-foundation.org,  david@kernel.org,
+  lorenzo.stoakes@oracle.com,  Liam.Howlett@oracle.com,  vbabka@kernel.org,
+  willy@infradead.org,  rppt@kernel.org,  surenb@google.com,
+  mhocko@suse.com,  ziy@nvidia.com,  matthew.brost@intel.com,
+  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,  byungchul@sk.com,
+  gourry@gourry.net,  apopple@nvidia.com,  dave@stgolabs.net,
+  Jonathan.Cameron@huawei.com,  rkodsara@amd.com,  vkoul@kernel.org,
+  bharata@amd.com,  sj@kernel.org,  weixugc@google.com,
+  dan.j.williams@intel.com,  rientjes@google.com,  xuezhengchu@huawei.com,
+  yiannis@zptcorp.com,  dave.hansen@intel.com,  hannes@cmpxchg.org,
+  jhubbard@nvidia.com,  peterx@redhat.com,  riel@surriel.com,
+  shakeel.butt@linux.dev,  stalexan@redhat.com,  tj@kernel.org,
+  nifan.cxl@gmail.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  Mike Day <michael.day@amd.com>
+Subject: Re: [RFC PATCH v4 4/6] mm/migrate: add copy offload registration
+ infrastructure
+In-Reply-To: <4652f10e-1993-4151-a0f2-1d1623de79f7@amd.com> (Shivank Garg's
+	message of "Tue, 28 Apr 2026 17:40:53 +0530")
+References: <20260309120725.308854-3-shivankg@amd.com>
+	<20260309120725.308854-12-shivankg@amd.com>
+	<87o6kdzeei.fsf@DESKTOP-5N7EMDA>
+	<70414c31-d928-41a6-89db-eeb0f34ec07d@amd.com>
+	<4652f10e-1993-4151-a0f2-1d1623de79f7@amd.com>
+Date: Thu, 30 Apr 2026 09:23:36 +0800
+Message-ID: <875x59w89z.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=ascii
+X-Stat-Signature: ggkmz8jnj5thkyyimr9qacrh5rs8k1jy
+X-Rspamd-Queue-Id: 2E9D74000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3033980008
-X-Stat-Signature: f6fzm8jsx3jhsbjoipt59pnhjbxgyn5m
-X-HE-Tag: 1777511020-42959
-X-HE-Meta: U2FsdGVkX18iZnVUutt5UKU4rnXBy7Pn0emPtD9iuXEDrCLGJJ5kts3c7gw/tHS/iEgHbp5Tt2pIFPuEsfclLszddo21MEz56D7ICsNMff2JkrRsAkE6sL9UNCC4T+090aHY1Q5hVnA7KXZHn2jY/9vs1SpYfLUsTsRLQ9aUJHk/6ZQbfSpcoR7D5YDioaRXqQMnfEqsviaoy65VVEcn/UBy74oK+A3ox79/o8X+bdrJJvpzWQcbJVPt8TyWsoq54N9nb9GFMIZOrz/gYkrDzIbVE83NUueWYkU+PEQTfrWx1V5IOa7WzU6do/GJbIfskTiRz0dE8jtAvXyGqrUVakwt+sCDc+E5zZnjFPyYpZc3N/OJaO89hdqkIo0QFttK884qVFEXbGtlERGcMG7zgS9i280QPA6/FTKyIKbysHOsR4rWwtPN1Bx2DG8pzIrT5LbBQeqBReQ2945xkMrWy1+sFO1Bagpu6t2P/8dRp5UUsrGa6TXqtcgLdww0URSnYjP0Ig5Od0IppYvVmetZEFcOjwcxIlQCKa+Nk9vb4p2Bo6o8x5zFk4yaMe6QagAJbMg/D7gCn30gWeFiYaZjVviRk0et1VjHpvDA912hJgXduaQ44y+uybC3C/Q0pOsyuRlNWvjr3DdCa/ox4WY0fxClRCWXfGJAwPDIX3bhpX7ZWYvVDTfk0QTcOqH0T9WPMQRei5GHVCeCcDmh6DxPFhjgJtKgKXg9eNwu8pztbf+1WDzenxziYheRnTbIV0JSVSRNTzzi+lFPuBa2qdjhWvWK1g2eSFW3jmDDpTSxQreGm1zn8bAsv8Kgov+eNitUus6hSA4dKFrIad1Scx1HI3chYJNwXBQTVkvu1zVn/V20MNL5zY+NMhMlc2esI1o+Cu5+RZns7XiBZFmhamaEhMflcYTHV0f+qb7g+yt4gaRFw19rYIVpViECkPM5LJOS/XGqRuhTv1T4mnBk9t1
- S/b+zD7F
- fv7Wj9YedfztAg2R0Ywniw2I38oILcsYhEuI4n2jW8z/HFd9pHizm1Kz0RvL7ZuazcPYpfTZwOEdmbvMBKa+VtEP3w7IAct7J8C60jfUqHDvPbALHXmHretCBexM8nQ9dYq/gw6gSxnwkVAQOcFeJp+3axdQ5sXYMqaJRuNAHp1YbZV+TrmKaAyGF1FzPUxwlMZvkYy88VdmcU0jzE1g21WzxvaF7PL8apI/kndYKFBTYO86dXOhqlxCTCeuL7sOkIxHCHAHhLTGdaBE+pMqT7Wzj7OOI+sUGGAPg
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777512224-470601
+X-HE-Meta: U2FsdGVkX1+jDUaSd9bfFrm+YS6S0cXQy87LEXJ8jQvwm4RUBYwKl2PpCsSoZptZGrKxyaKQyX2aMQNwdM1EKnOGvpCjEtA4nHyIbmSsum7Z79UpThLhnPNaF2WWHZ7FR7k/VNEm5sNBejYGmrngfBdkNaMwWJyQz09AIMOg7fgjI5QDmQZSohiSgcN0rdheJiHttDYJuMtMjiOtYs5X3VGtMyusCSxiUy+Ge6wYzjaB0E0pCdZFvxCwh3xV0fAg4+iE+9wM6QtbdG3K8+fDaLna4aOjdiFW/j2BLvXFTDiWJdJskOL7/C53HjpIUe0CFdmifbmPKtnBk4xNxPnmMJrWumiGm/IMApe2SMSdLSxqKxuT4a81kV/dpDminNRJOJB1r0DlARly5teS7blhu6+E3QS8/adzZHq5ZNLeoaphJ5dcSTtr/a5sxtaZ3c3wmTDt1Br/Bs02Kf/sY8zlzON44ZJc+oxZmdZDg4QLbVYfoUrv7BoFGCXJwNIHtMwjn+HfycHOWYhCqpXaviLd9b/omDpNYDnPs9zYYggaj1zjgxf06f7IbcG6TU0EsPY5v3CTsELPfkzncoksRCKkp69l/Z0+viAvrBeklkRb6rh5tk631EjxTDutWQciIj5OoxGYem/JMWJqd/uHmKLOWzVa/hSoa7ql+ytDJZE+g4HtdqKm0yZEUnF4Qp5Ix8L6iSIfIiEgiDQfX8JcqfybGc8KLp21HSQ5qgDJspunR2on0UwgIXVtKgX2isDD36WpNt5Niz+6nVwLrdDaATjD7NeLeVYhm5T2Ifax5G4JfJ0T8KnKxXmHfaghxlndordN3Qu179DnnHctaeBnts2Uf524btxu+xrIbPXdaBPVnFKHZnOEYiLzKrNoCBHyg5AMjsjFPGzxccaE+7ZTvTQMkv0qnSirHCxn8KzabazOif+ZZos/YW5hSxcrg+DPjjxgPKBQsV5RdUV8oWmcVob
+ 74f927Xl
+ sDHgaS8Ct9LwEzMDgBfbNfJeN2jKeY/8X5G6PsRzyLrUz87zoZ9y8SWnmD+DovDQMJp4kIiRrFGJCYoGe2VZSfEAcBXHz8QcO4UFB5HzRjiv1tatgPaVnZ71oeaIlpPNT9HZi92HBpgzOFOrBFn2eMLTjXC6z+doHiCjBqdcxojz4uUv5Bw5HUkxVroHLGxbzkW2cE4+6QyahresMr9unBIxq1cBWgDJWFHVpR3rpS6YeLIB2Eae8YDExhEOtHP8l03AcfyqSqJNrJgdYhzCmKLJCCudD+z0Ci49cOeGXETqvgBzTxDLgcL7xcAJ1SX/8eGkwsnM6NMilqjb/BXMY5XDFldqabGmHbpR13wAzYCj2husJxvAQpJOCPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,57 +102,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Apr 2026 09:27:04 +0200 Manuel Ebner <manuelebner@mailbox.org> wrote:
+"Garg, Shivank" <shivankg@amd.com> writes:
 
-> put the optional argument (gfp) in square brackets
-> add default value = GFP_KERNEL
-> 
-> eg. ptr = kmalloc_obj(*ptr, gfp);
->  -> ptr = kmalloc_obj(*ptr [, gfp] );
-> 
-> Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
+> On 4/3/2026 4:41 PM, Garg, Shivank wrote:
+>> 
+>> 
+>> On 3/24/2026 4:24 PM, Huang, Ying wrote:
+>>> Shivank Garg <shivankg@amd.com> writes:
+>>>
+>>>> Introduce CONFIG_MIGRATION_COPY_OFFLOAD, which lets offload driver
+>>>
+>>> Do we really need a new kconfig option?  IMHO, we have too many now.
+>>> Because we have a jump label already, the performance difference should
+>>> be trivial.  Can you measure the size difference?
+>> 
+>> BASELINE (offload=n)
+>>    text    data     bss     dec  filename
+>>   23577    1632      32   25241  mm/migrate.o
+>> 39202900        14159750        6502152 59864802     vmlinux
+>> 
+>> WITH OFFLOAD (offload=y)
+>>    text    data     bss     dec  filename
+>>   24444    2568      32   27044  mm/migrate.o
+>>     676      64       8     748  mm/migrate_copy_offload.o
+>> 39208218        14163942        6498120 59870280     vmlinux
+>> 
+>> WITHOUT CONFIG (always-on)
+>>    text    data     bss     dec  filename
+>>   24444    2568      32   27044  mm/migrate.o
+>>     676      64       8     748  mm/migrate_copy_offload.o
+>> 39208405        14163942        6498120 59870467     vmlinux
+>> 
+>> It saves around 5.5KB of size, when offload support is disabled.
+>> Is it meaningful savings? What do you think?
+>> 
+>>>
+>>>> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
+>>>> +extern struct static_key_false migrate_offload_enabled;
+>>>> +extern struct srcu_struct migrate_offload_srcu;
+>>>> +bool migrate_should_batch_default(int reason);
+>>>> +int migrate_offload_start(struct migrator *m);
+>>>> +int migrate_offload_stop(struct migrator *m);
+>>>
+>>> Why not naming the function migrate_offload_register/unregister()?
+>>> IMHO, that sounds more natural.
+>> 
+>> Ack. I'll rename to migrate_offload_register/unregister().
+>> 
+>>>
+>>>>  
+>>>> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
+>>>> +	/* Check if the offload driver wants to batch for this reason */
+>>>> +	if (static_branch_unlikely(&migrate_offload_enabled))
+>>>> +		do_batch = static_call(migrate_should_batch)(reason);
+>>>
+>>> Should batching based on "reason" be determined by the general migrate
+>>> code instead of the migrator implementation?  For example, if we only
+>>> batch copying for ASYNC migration, we should determine that in
+>>> migrate_pages_batch() instead of the migreation implementation.  Or am I
+>>> missed something?  If so, can you provide an example?
+>>>
+>> 
+>> My idea was that different drivers may have different cost/benefit
+>> profiles(e.g. setup cost, migrate batch-size, etc..) 
+>> 
+>> For instance, a DMA driver may want to target only bulk migration usecase.
+>> And a CPU-thread based driver can be used more broadly, without worrying
+>> about setup-costs.
+>> 
+>> But I agree it's premature with only one-driver.
+>> I'll move the reason check with target usecases into migrate_pages_batch()
+>> and drop the should_batch() callback. If a future driver needs different
+>> filtering, we can add it back then.
+>> 
+>>>>  
+>>>> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
+>>>>  	/* Batch-copy eligible folios before the move phase */
+>>>>  	if (!list_empty(&src_batch)) {
+>>>
+>>> Guard with "static_branch_unlikely(&migrate_offload_enabled)" first?
+>>> Better to define a inline function to shorten the expression.
+>>>
+>> 
+>> Sure, will add the static_branch_unlikely guard and wrap in a helper
+>> function. Thanks.
+>
+> Coming back to this while reworking the patch.
+> I think the static branch guard here is actually redundant. We already check it at
+> the per-folio classification that builds src_batch,
+> so when offload is disabled src_batch stays empty and the list_empty() check
+> short-circuits. I'll still wrap the SRCU + static_call into a helper at this call
+> site, as you suggested. Sorry for the flip-flop.
 
-I have a trivial question below, but because it is trivial,
+Yes.  It's functionally redundant.  I just want to know whether it can
+benefit performance (in a minor way).
 
-Acked-by: SeongJae Park <sj@kernel.org>
+---
+Best Regards,
+Huang, Ying
 
-> ---
->  Documentation/process/deprecated.rst | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/process/deprecated.rst b/Documentation/process/deprecated.rst
-> index fed56864d036..ac75b7ecac47 100644
-> --- a/Documentation/process/deprecated.rst
-> +++ b/Documentation/process/deprecated.rst
-> @@ -392,13 +392,14 @@ allocations. For example, these open coded assignments::
->  
->  become, respectively::
->  
-> -	ptr = kmalloc_obj(*ptr, gfp);
-> -	ptr = kzalloc_obj(*ptr, gfp);
-> -	ptr = kmalloc_objs(*ptr, count, gfp);
-> -	ptr = kzalloc_objs(*ptr, count, gfp);
-> -	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
-> -	__auto_type ptr = kmalloc_obj(struct foo, gfp);
-> -
-> +	ptr = kmalloc_obj(*ptr [, gfp] );
-> +	ptr = kzalloc_obj(*ptr [, gfp] );
-> +	ptr = kmalloc_objs(*ptr, count [, gfp] );
-> +	ptr = kzalloc_objs(*ptr, count [, gfp] );
-> +	ptr = kmalloc_flex(*ptr, flex_member, count [, gfp] );
-> +	__auto_type ptr = kmalloc_obj(struct foo [, gfp] );
-> +
-> +The argument gfp is optional, the default value is GFP_KERNEL.
->  If `ptr->flex_member` is annotated with __counted_by(), the allocation
->  will automatically fail if `count` is larger than the maximum
->  representable value that can be stored in the counter member associated
-
-Like 'ptr->flex_member' and 'count', why don't you enclose 'gfp' and
-'GFP_KERNEL' with backticks ('`')?
-
-
-Thanks,
-SJ
-
-[...]
 
