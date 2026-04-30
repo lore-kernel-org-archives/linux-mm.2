@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4062BCD13DA
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:23:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 579E1CD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:23:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C4C96B00A4; Thu, 30 Apr 2026 16:23:05 -0400 (EDT)
+	id 7016E6B00A7; Thu, 30 Apr 2026 16:23:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 727C86B00A6; Thu, 30 Apr 2026 16:23:05 -0400 (EDT)
+	id 68B6A6B00A9; Thu, 30 Apr 2026 16:23:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 579446B00A7; Thu, 30 Apr 2026 16:23:05 -0400 (EDT)
+	id 49FAC6B00A8; Thu, 30 Apr 2026 16:23:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 403C76B00A4
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:23:05 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 063EC877DD
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 331796B00A6
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:23:06 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EEFC6120159
 	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:23:05 +0000 (UTC)
-X-FDA: 84716346330.09.7BB0149
+X-FDA: 84716346330.03.957A5E2
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5C70340008
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:23:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=TeC3RpUV;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5E79A4000E
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:23:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=BoZodtr1;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777580583;
+	s=arc-20220608; t=1777580584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VMo4rj3YcXawZoSW/XqvtDg1E9Hlqa5dFOb9KR5T/oE=;
-	b=JCdQdf9jMY/5nDIljBfE2696Rghb7m7al1gTKijpdsxe4g87rwAPeClYF5OccpnmfBucHM
-	lfZwmPlofh/L3HwzUvAHumDGfnpuh6Pko/BZiWo25ZtIhFfMHa1Olin6fhFKQ14+214lZ0
-	QaG26NfsFBWhHSgvfM/MC3iv3WJDbyY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=TeC3RpUV;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777580583; a=rsa-sha256;
+	bh=Iau1uajHmWm3rM+qXHG8UrUzgUxSiM6Prt/eiG7YJr4=;
+	b=8YFlPBu1NOvGhKDj7SkKgxg8tVjWILHlEu/PMnyzEDLFjJcLlCfijaBcKvBy0s+kkpmUh9
+	jYtHceMz3vZZnPBGrX6wBPCnvfsVu/x/dYTnkHZ4n+PfoGXWs+pxfsE6Jis86ysP74BsCO
+	s3Bjhq1mASeEDKkgSCumLqduEP7Kxz8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777580584; a=rsa-sha256;
 	cv=none;
-	b=BupQLarZcYQHhBrtiHKBL2kU+HF6PaVoepcjtIPXfOkZHl2A/f/9hmof6Kz/N3EHsbDfmy
-	iTrySX3NPe1B+mSnwMmRBfQpJWHfdd4yqhq/Jv8d9PM05BrXfkfXHXcTULkQ0LecohPPGJ
-	Jv4V2X2OUk/pbdFMvq58OinVwHjSU+Q=
+	b=gKtQ/Z9C5+ns1JfimSQIriLKsL0NO9ZVl3eQJtFFayuFIPk7U+c2RPK1ps+a/1zfNU1O++
+	N9254bFKjSSBYYbsiMsTLhktIcFPbt/hauzY0oqJmV1jZswTdj9WnKSWcePC5zXYNu9Ox4
+	ydMqJ/MJkJGGRrD5TDKkC3Yt9ky7eEI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=BoZodtr1;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=VMo4rj3YcXawZoSW/XqvtDg1E9Hlqa5dFOb9KR5T/oE=; b=TeC3RpUVM1TFbTegpmOO5ftiVM
-	nLmJvwOQD+U1KjTxeI0x7cIKd5e9uKdQCu5C78Mixj7HUuqiOtdYOAi6RfOkhEZ1H8fPpsQkGF0b2
-	mmywS1a4lapRBtOGw4G2NUtdS3qGh+LA+aNmP1ieEOdVmIM0c1gdScO+5TrSW8i6bUygJtgNiJtVF
-	KWUUc1YzQmsZyIPXPTWDjneDlqgMkizyCDYI84wGnQy5E0qprnyoYeqcF4pcdxCo0V+Wk1GjfC/8t
-	+3ZB8iK6ibRC2Fyul6C+W+UOcEB8b3GyfP95gBrb5RvPYg6Gjw+hT50K5yBgmwFh8tjsIOAPUsKxr
-	UPOxlsbw==;
+	bh=Iau1uajHmWm3rM+qXHG8UrUzgUxSiM6Prt/eiG7YJr4=; b=BoZodtr1BzcAILrwsHeb1JWkMh
+	blWzOA7IiciiN6HZrQaXFcvKW9t6ZZKXcFiqmbr0sQY1IW7X8oUNsbgPfHByzQO2kRTayCJKlUFNA
+	ZjECZ49RJNKA5/T81whh/hsjPnwElaIJKVIQgEVU0Tp0RkSwthvVhV2WVAdozu5OmVvsL1GdL5yKh
+	jeeOmNl6RusaxAWpgL7cP5Rl7dRM7dVii+EvBt4wuVJFUfipHM/W6eTfri+LSfv50xSGWsopc7P9k
+	u3qype7v76M22UF83ayNNIHqqLafnubK4gn2z2PQ4yTHO8sj9AQKQM4im1Lm/UKMCWoHoCMMhqymp
+	AP9+De5w==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wIXuD-000000001R0-1oJj;
+	id 1wIXuC-000000001R0-4BcX;
 	Thu, 30 Apr 2026 16:22:41 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -80,23 +79,22 @@ Cc: kernel-team@meta.com,
 	usama.arif@linux.dev,
 	Rik van Riel <riel@meta.com>,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 39/45] mm: debug: prevent infinite recursion in dump_page() with CMA
-Date: Thu, 30 Apr 2026 16:21:08 -0400
-Message-ID: <20260430202233.111010-40-riel@surriel.com>
+Subject: [RFC PATCH 24/45] mm: page_alloc: targeted evacuation and dynamic reserves for tainted SPBs
+Date: Thu, 30 Apr 2026 16:20:53 -0400
+Message-ID: <20260430202233.111010-25-riel@surriel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260430202233.111010-1-riel@surriel.com>
 References: <20260430202233.111010-1-riel@surriel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5E79A4000E
+X-Stat-Signature: zw5u84sp1h44zwxpgwxkhqm1s7w51913
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5C70340008
-X-Stat-Signature: wjk9f93khddohudszsuqtxmtryeftzra
-X-HE-Tag: 1777580583-954913
-X-HE-Meta: U2FsdGVkX1+sNQzXMnvjs2AoCTKxT74BY68CbeC3Nzn3GMlldALgShx29FiJRMsS+bz9KVR5WbKecAdfHec/IBgj0mn0D9so2x4sDdZWOuGtA2HYr1StiJsTCCFzdEer8FngtaKp2MXc0inhlXY74f9Dmovsac27jHPCLGtqkKT687NSoUN9/EGaxagPZZi1WLqa4mC3VaG8goqVddeE8zmPn8ghuHeOZL3XUy1cgmdH2ysb10T3nMlDBZg3ROqQLKXgXG0g1BugH4RZxqtpC5QOHLPB8vTUlBZP7B8YKpr/8viQ/PbVcoICa/ZNIWK9TUaZcmfqbXgcw19nLCEHGMw5pIARTeVvB/ZlbyLxHhncM2m0GHDYUP9tgufmU0RssYYr8lutw5PoR9aMLEUga8hI+9HCH+3Fo26cqLhkzOU+h9hIfXCxhWHMa7ixV/HMnIHn3lCH3tugl3OCYqBQrwyt2dAXo0ksoOUrm0k4oEWoM2stAipUtMsMsjX5hUiQKggLPj4XnZpxuBiI5YrjGcJi0M4QsQnSIhwlaa1/gjGWCHXY7pRAFh8J5Tg2Wsy5dwflnx+HWcHy0pdislxZRFE0jQFaBmdkkZnW99NqhUVgk0auWQReOn2mwWrv9UzZazXhsyYAkr9BcM9wmLeT9jrJ41l6hSgCndsuRtyTetLiRA3bWR9INs/popf0qY1kf6tqS42lx9GaZ3wD7Vfvb5GnEfgA1MKUSvproKWTT47J8JJW9eqgvwGTelsdXVOTiOIHIhcVuzSMLmowdTwBhWWUfNqowfAskW7OzBoa0f0vzTQM793glK5Ba2+G8LTHCUOXobH4eqvF96WmfMJYTX27FXC9eUIV4X6AYXYMdTymHednK/3WQgLFL1DPqTVIRmNUvJlVkVJsdxILO91FQ2iSSip1yyBIThf5BzVY/i4ezhH6obI2DpPxy0SNvWioIMdvhyrgyObYY4cTjNO
- D27B8/9D
- zFHcgwvSTXjMAZcLFEbimvRIvXYtcdjdaufG9IFjyi4KW4oYXzhyvtcafS/VV14jjI6A2A9WsgGZFbNvtiP4VKYt49ASE4l6CSARouZHaQguhUr8BbvAkvT1NsBphKVQcBoTsZsOBE1nV0rCR1MeWwA/UUU+IT390PXtZ6tDWexKCjDSRzJbeSisJ4nda9oBdYhRCNY64MGV+4lFtNXLfQcKuNWJMNrwNXVBgtsuhU8X/n8F5ghtlXhhokXPcJQtWNP4+8HGe1QgXuYe+OIA9I0yAJ2Eh41CAI7wbprM0DsFNEZkOdM+EVHp/rtcOwj4LJbN9I+Ian4NsTlDWDYeNzlJ211E9kJ1AHJaMOc+e/Re60U6rqxfFrmnD+rFREpko2Quy6Bd5KvOwV2ocg6ED4ro4nxLhsR17BtTX
+X-HE-Tag: 1777580584-651716
+X-HE-Meta: U2FsdGVkX19E2VeRzVBbqtVJlHo3CCV8JXKIKEU4arm3gMZig90e+ThlgAl0Vwv9bwZo9Lknq6VnoQ9ky9jRMT5ZEqR0rn12pu3SAZg8lRYOJIfuz6Jc+5cg2pLTFYdLKIP2JZOplR7B3EXYp4Fb+o9JN6Fq3eEhFuVDaJslGX6AQxdce7k/rndZRvd2dxDmMMexXOsuwxqzDi4AVlm20oYjbVe+360s+Sr+EHuHF35jXG7OlUkPRJXHONBkW4q7qbcUaKsyF3q29/3BcCSsyodJvTNT3mBNozuvTRLoEUFNr5G+bFTurA/HXKcSeAn47uEX9LGqIXvSLfeWYxS+g3ykpuj4+JYhaRjEdqHHD+uu/kUBgCSstK8CkgfzkFEwWjlXi/s1+K9sSIRNPmpINzfHvUnAhcFUNqD8eiLbGruw8ni3koAJRk8FP2ND1EhEwRn0rUR3kq/sZ7oLwsDxEPRA7pzg3KxEw/UcKn+VpSFMDKRUNeLDklS5B+lZhtPTW/hiYTLbIygnxJfAGf+2LPgsr+bqhvSHMW3a5wOEfc9P1jbn21OJYpN8m9VgIZ4Zwp9Fy82dUcB/DH+01p6VAYxr1rTmf+Bqt11caelBvvZFrxrp0gWigfysqWGHNkgIaLHoLMGWcMs9dt27cwlrnRGG70LHnjg51PF8BQrNWbNt8qqNpxbt79fG3gsVPT7Lq4uqb7LALAMDcn1Rl2kq+bGfGvst/7INBJwfHlqYr2V/uflztfP8B0qHmw+RW/PGiLA9PbzXK17J/MUFBL0ZeverV3cSOgPqVDzU5B8BM7vKoRvz1lkxZFJYRNNMpUw8U4ARMoJ4yvkQbcWcfroguKsZzMdXGqpz6n2ugESSwfSfYleK+STsR1rCyzVHUYC/shTGpNa+it62mWifnnjvLZ0xr7vyhIQXb0EgMEVtGvsv7RxMd38xSGICaNJBoomF/RPzJxmpeFDgVgu/901
+ +HoP/cG+
+ w+eRxJqqgtOi8gyqmUr4Qev9a0EUnUl51RdtbWepYrjkUGopRebPc42P57r5qOEpQDHr0PYbDKiGqjFuyS2r+DRRBRV4t0/+oDXuguqD7xIMEWsFrfXtzQpysif4JbbwDny9pju0lhzB73uFfKGgRhm7tWMQ2PYjCwHv9Odq9ulv/RypWLvLFccFLz4S6w6GMhqPhh/QyDeyqPbTbHBtP5/Sn74xVs/LmhnG9LwEuO1QhKiMOJ58+08uK6Sb/jbytd6aAJjwnB0wzmZFNl+ti3a2jQuOC1wiwgxZ/AVwq4BK9EFnV/ACrEhge81lyOir0bebgU0dNF1vFYAaw6FW0IzIdGfAvGU9iWtn0r4cTok0F2T/Vl5Z+0LtTDKyXjnoF4vGL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,69 +104,313 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Rik van Riel <riel@meta.com>
 
-dump_page() calls is_migrate_cma_folio() which calls
-get_pfnblock_migratetype() which calls get_pfnblock_flags_word()
-which has a VM_BUG_ON_PAGE for !zone_spans_pfn(zone, pfn).
+Reduce tainted superpageblock proliferation with two changes:
 
-If that VM_BUG_ON_PAGE fires (e.g. dumping a page in an unavailable
-range, or a page that hasn't yet been initialized), the BUG handler
-itself calls dump_page() — which calls is_migrate_cma_folio() —
-which fires the same VM_BUG_ON_PAGE. Infinite recursion until the
-kernel runs out of stack.
+1. Dynamic SPB_TAINTED_RESERVE: scale the movable steering reserve with
+   SPB size (~3% of pageblocks, minimum 4). For a 512-pageblock SPB this
+   gives 16 reserved pageblocks instead of the previous flat 4, triggering
+   async defrag 4x earlier and keeping more headroom for unmovable claims.
 
-Guard the CMA check with pfn_valid() and zone_spans_pfn() so
-dump_page() can safely report on pages that don't have a meaningful
-zone. The "CMA" suffix is only printed if the page is genuinely in a
-CMA pageblock.
-
-Found by: dump_page() called from a VM_BUG_ON_PAGE in early boot
-hitting a page in an unavailable range, recursing until stack
-exhaustion.
+2. Two-phase targeted evacuation before NOFRAGMENT drop: when the slowpath
+   is about to drop ALLOC_NOFRAGMENT for unmovable/reclaimable allocations,
+   first try evacuating movable pages from tainted SPBs to create free
+   pageblocks. Phase 1 evacuates movable pages from pageblocks already
+   labeled as the desired migratetype (buddy coalescing). Phase 2 evacuates
+   entire MOVABLE pageblocks to create free whole pageblocks that Pass 2
+   can claim for the desired migratetype. This avoids tainting clean SPBs
+   in many cases where existing tainted SPBs have reclaimable capacity.
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- mm/debug.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ mm/page_alloc.c | 176 ++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 125 insertions(+), 51 deletions(-)
 
-diff --git a/mm/debug.c b/mm/debug.c
-index d4542d5d202b..e233520b009c 100644
---- a/mm/debug.c
-+++ b/mm/debug.c
-@@ -73,6 +73,7 @@ static void __dump_folio(const struct folio *folio, const struct page *page,
- {
- 	struct address_space *mapping = folio_mapping(folio);
- 	int mapcount = atomic_read(&page->_mapcount) + 1;
-+	bool cma = false;
- 	char *type = "";
- 
- 	if (page_mapcount_is_type(mapcount))
-@@ -112,9 +113,24 @@ static void __dump_folio(const struct folio *folio, const struct page *page,
- 	 * "isolate" again in the meantime, but since we are just dumping the
- 	 * state for debugging, it should be fine to accept a bit of
- 	 * inaccuracy here due to racing.
-+	 *
-+	 * Guard the is_migrate_cma_folio() call with pfn_valid() and
-+	 * zone_spans_pfn(). The macro calls get_pfnblock_migratetype()
-+	 * which calls get_pfnblock_flags_word() which has a VM_BUG_ON_PAGE
-+	 * for !zone_spans_pfn(). If that fires, dump_page() recurses
-+	 * infinitely. Call page_zone() only after pfn_valid() to avoid
-+	 * dereferencing uninitialized zone data during early boot.
- 	 */
-+#ifdef CONFIG_CMA
-+	if (pfn_valid(pfn)) {
-+		struct zone *zone = page_zone(page);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 9f4298fc2727..493db531b869 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2675,8 +2675,16 @@ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags
+  * fewer than this many free pageblocks, ensuring that unmovable claims
+  * always find room in existing tainted superpageblocks instead of spilling
+  * into clean ones.
++ *
++ * Scale with SPB size: reserve ~3% of pageblocks (minimum 4).
++ * For a 512-pageblock SPB this gives 16 reserved pageblocks.
+  */
+-#define SPB_TAINTED_RESERVE	4
++#define SPB_TAINTED_RESERVE_MIN	4
 +
-+		if (zone_spans_pfn(zone, pfn))
-+			cma = is_migrate_cma_folio(folio, pfn);
++static inline u16 spb_tainted_reserve(const struct superpageblock *sb)
++{
++	return max_t(u16, SPB_TAINTED_RESERVE_MIN, sb->total_pageblocks / 32);
++}
+ 
+ /*
+  * On systems with many superpageblocks, we can afford to "write off"
+@@ -2988,7 +2996,7 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
+ 				 * with few free pageblocks to reserve space
+ 				 * for future unmovable/reclaimable claims.
+ 				 */
+-				if (sb->nr_free <= SPB_TAINTED_RESERVE)
++				if (sb->nr_free <= spb_tainted_reserve(sb))
+ 					continue;
+ 				for (current_order = order;
+ 				     current_order < NR_PAGE_ORDERS;
+@@ -3552,7 +3560,7 @@ __rmqueue_sb_find_fallback(struct zone *zone, unsigned int order,
+ 					&sb->free_area[order];
+ 
+ 				if (movable && cat == SB_TAINTED &&
+-				    sb->nr_free <= SPB_TAINTED_RESERVE)
++				    sb->nr_free <= spb_tainted_reserve(sb))
+ 					continue;
+ 
+ 				for (i = 0; i < MIGRATE_PCPTYPES - 1; i++) {
+@@ -3601,7 +3609,7 @@ __rmqueue_sb_find_fallback(struct zone *zone, unsigned int order,
+ 					&sb->free_area[order];
+ 
+ 				if (movable && cat == SB_TAINTED &&
+-				    sb->nr_free <= SPB_TAINTED_RESERVE)
++				    sb->nr_free <= spb_tainted_reserve(sb))
+ 					continue;
+ 
+ 				for (i = 0; i < MIGRATE_PCPTYPES - 1; i++) {
+@@ -6588,9 +6596,33 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 
+ 	/*
+ 	 * Reclaim and compaction have been tried but could not free enough
+-	 * pages in already-tainted superpageblocks. Drop NOFRAGMENT as a
+-	 * last resort to allow claiming from clean/empty SPBs and stealing
+-	 * across migratetype boundaries. This is better than OOM-killing.
++	 * pages in already-tainted superpageblocks. Before dropping
++	 * NOFRAGMENT, try targeted evacuation of movable pages from
++	 * tainted SPBs to create free pageblocks for unmovable claims.
++	 */
++	if ((alloc_flags & ALLOC_NOFRAGMENT) &&
++	    (ac->migratetype == MIGRATE_UNMOVABLE ||
++	     ac->migratetype == MIGRATE_RECLAIMABLE)) {
++		struct zoneref *z;
++		struct zone *zone;
++
++		for_each_zone_zonelist_nodemask(zone, z, ac->zonelist,
++					       ac->highest_zoneidx,
++					       ac->nodemask) {
++			if (spb_evacuate_for_order(zone, order,
++						  ac->migratetype)) {
++				page = get_page_from_freelist(gfp_mask, order,
++							     alloc_flags, ac);
++				if (page)
++					goto got_pg;
++			}
++		}
 +	}
-+#endif
- 	pr_warn("%sflags: %pGp%s\n", type, &folio->flags,
--		is_migrate_cma_folio(folio, pfn) ? " CMA" : "");
-+		cma ? " CMA" : "");
- 	if (page_has_type(&folio->page))
- 		pr_warn("page_type: %x(%s)\n", folio->page.page_type >> 24,
- 				page_type_name(folio->page.page_type));
++
++	/*
++	 * Targeted evacuation could not free enough either. Drop
++	 * NOFRAGMENT as a last resort to allow claiming from clean/empty
++	 * SPBs. This is better than OOM-killing.
+ 	 */
+ 	if (alloc_flags & ALLOC_NOFRAGMENT) {
+ 		alloc_flags &= ~ALLOC_NOFRAGMENT;
+@@ -8688,7 +8720,7 @@ static bool spb_needs_defrag(struct superpageblock *sb)
+ 	 */
+ 	if (spb_get_category(sb) == SB_TAINTED)
+ 		return sb->nr_movable > 0 &&
+-		       sb->nr_free < SPB_TAINTED_RESERVE;
++		       sb->nr_free < spb_tainted_reserve(sb);
+ 
+ 	/*
+ 	 * Clean superpageblocks: compact scattered free pages into whole
+@@ -8720,7 +8752,7 @@ static bool spb_defrag_done(struct superpageblock *sb)
+ 	 */
+ 	if (spb_get_category(sb) == SB_TAINTED)
+ 		return !sb->nr_movable ||
+-		       sb->nr_free >= SPB_TAINTED_RESERVE;
++		       sb->nr_free >= spb_tainted_reserve(sb);
+ 
+ 	/* Clean superpageblocks: stop when enough free pageblocks exist */
+ 	if (sb->nr_free >= 2)
+@@ -9710,16 +9742,18 @@ static struct page *spb_try_alloc_contig(struct zone *zone,
+ }
+ 
+ /**
+- * sb_collect_evacuate_candidates - Find pageblocks for targeted evacuation
++ * sb_collect_evacuate_candidates - Find tainted SPBs for targeted evacuation
+  * @zone: zone to search (must hold zone->lock)
+- * @migratetype: desired migratetype (MIGRATE_UNMOVABLE or MIGRATE_RECLAIMABLE)
++ * @migratetype: desired migratetype (MIGRATE_UNMOVABLE or MIGRATE_RECLAIMABLE),
++ *               or -1 to find any tainted SPB with movable pages
+  * @sb_pfns: output array of tainted superpageblock start PFNs
+  * @max: maximum candidates to collect
+  *
+- * Find tainted superpageblocks containing pageblocks of the desired migratetype
+- * that also have movable pages to evacuate. Evacuating movable pages from
+- * these pageblocks creates buddy coalescing opportunities for high-order
+- * allocations of the desired migratetype.
++ * Find tainted superpageblocks with movable pages to evacuate.  When
++ * @migratetype is specified, only return SPBs that also contain pageblocks
++ * of that type (for coalescing within existing non-movable pageblocks).
++ * When @migratetype is -1, return any tainted SPB with movable pages
++ * (for freeing whole pageblocks via movable evacuation).
+  *
+  * Returns number of candidate superpageblock PFNs found.
+  */
+@@ -9734,20 +9768,22 @@ static int sb_collect_evacuate_candidates(struct zone *zone, int migratetype,
+ 	for (full = 0; full < __NR_SB_FULLNESS; full++) {
+ 		list_for_each_entry(sb, &zone->spb_lists[SB_TAINTED][full],
+ 				    list) {
+-			bool has_matching;
+-
+ 			if (!sb->nr_movable)
+ 				continue;
+ 
+-			if (migratetype == MIGRATE_UNMOVABLE)
+-				has_matching = sb->nr_unmovable > 0;
+-			else if (migratetype == MIGRATE_RECLAIMABLE)
+-				has_matching = sb->nr_reclaimable > 0;
+-			else
+-				continue;
++			if (migratetype >= 0) {
++				bool has_matching;
+ 
+-			if (!has_matching)
+-				continue;
++				if (migratetype == MIGRATE_UNMOVABLE)
++					has_matching = sb->nr_unmovable > 0;
++				else if (migratetype == MIGRATE_RECLAIMABLE)
++					has_matching = sb->nr_reclaimable > 0;
++				else
++					continue;
++
++				if (!has_matching)
++					continue;
++			}
+ 
+ 			sb_pfns[n++] = sb->start_pfn;
+ 			if (n >= max)
+@@ -9757,17 +9793,56 @@ static int sb_collect_evacuate_candidates(struct zone *zone, int migratetype,
+ 	return n;
+ }
+ 
++/*
++ * Evacuate pageblocks of the given migratetype within a range.
++ * Returns number of pageblocks evacuated.
++ */
++static int evacuate_pb_range(struct zone *zone, unsigned long start_pfn,
++			     unsigned long end_pfn, int migratetype, int max)
++{
++	unsigned long pfn;
++	int nr_evacuated = 0;
++
++	for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages) {
++		struct page *page;
++
++		if (!pfn_valid(pfn))
++			continue;
++
++		if (!zone_spans_pfn(zone, pfn))
++			continue;
++
++		page = pfn_to_page(pfn);
++
++		if (get_pfnblock_migratetype(page, pfn) != migratetype)
++			continue;
++
++		if (!get_pfnblock_bit(page, pfn, PB_has_movable))
++			continue;
++
++		evacuate_pageblock(zone, pfn, true);
++		if (++nr_evacuated >= max)
++			break;
++	}
++	return nr_evacuated;
++}
++
+ /**
+  * spb_evacuate_for_order - Targeted evacuation of movable pages from
+- *                         unmovable/reclaimable pageblocks
++ *                         tainted superpageblocks
+  * @zone: zone to work on
+  * @order: allocation order that failed
+  * @migratetype: desired migratetype (MIGRATE_UNMOVABLE or MIGRATE_RECLAIMABLE)
+  *
+- * Instead of blind compaction, use superpageblock metadata to find pageblocks
+- * of the right migratetype in tainted superpageblocks and evacuate their
+- * movable pages. This creates buddy coalescing opportunities within
+- * the pageblock, enabling higher-order allocations.
++ * Two-phase evacuation to create free space in tainted superpageblocks:
++ *
++ * Phase 1: Evacuate movable pages from pageblocks already labeled as
++ * @migratetype. This creates buddy coalescing opportunities within
++ * existing non-movable pageblocks.
++ *
++ * Phase 2: Evacuate entire MOVABLE pageblocks from tainted SPBs.
++ * When fully evacuated, these become free whole pageblocks that
++ * __rmqueue_smallest Pass 2 can claim for the desired migratetype.
+  *
+  * Returns true if evacuation was performed (caller should retry allocation).
+  */
+@@ -9779,40 +9854,39 @@ static bool spb_evacuate_for_order(struct zone *zone, unsigned int order,
+ 	int nr_sbs, i;
+ 	bool did_evacuate = false;
+ 
++	/* Phase 1: coalesce within existing non-movable pageblocks */
+ 	spin_lock_irqsave(&zone->lock, flags);
+ 	nr_sbs = sb_collect_evacuate_candidates(zone, migratetype,
+ 						sb_pfns,
+ 						SPB_CONTIG_MAX_CANDIDATES);
+ 	spin_unlock_irqrestore(&zone->lock, flags);
+ 
+-	for (i = 0; i < nr_sbs && !did_evacuate; i++) {
+-		unsigned long pfn, end_pfn;
+-
+-		end_pfn = sb_pfns[i] + SUPERPAGEBLOCK_NR_PAGES;
+-		for (pfn = sb_pfns[i]; pfn < end_pfn;
+-		     pfn += pageblock_nr_pages) {
+-			struct page *page;
++	for (i = 0; i < nr_sbs; i++) {
++		unsigned long end_pfn = sb_pfns[i] + SUPERPAGEBLOCK_NR_PAGES;
+ 
+-			if (!pfn_valid(pfn))
+-				continue;
+-
+-			/* Superpageblocks can straddle zone boundaries. */
+-			if (!zone_spans_pfn(zone, pfn))
+-				continue;
++		if (evacuate_pb_range(zone, sb_pfns[i], end_pfn,
++				      migratetype, 3))
++			did_evacuate = true;
++	}
+ 
+-			page = pfn_to_page(pfn);
++	if (did_evacuate)
++		return true;
+ 
+-			if (get_pfnblock_migratetype(page, pfn) != migratetype)
+-				continue;
++	/* Phase 2: evacuate MOVABLE pageblocks to create free whole pageblocks */
++	spin_lock_irqsave(&zone->lock, flags);
++	nr_sbs = sb_collect_evacuate_candidates(zone, -1,
++						sb_pfns,
++						SPB_CONTIG_MAX_CANDIDATES);
++	spin_unlock_irqrestore(&zone->lock, flags);
+ 
+-			if (!get_pfnblock_bit(page, pfn, PB_has_movable))
+-				continue;
++	for (i = 0; i < nr_sbs; i++) {
++		unsigned long end_pfn = sb_pfns[i] + SUPERPAGEBLOCK_NR_PAGES;
+ 
+-			evacuate_pageblock(zone, pfn, true);
++		if (evacuate_pb_range(zone, sb_pfns[i], end_pfn,
++				      MIGRATE_MOVABLE, 3))
+ 			did_evacuate = true;
+-			break;
+-		}
+ 	}
++
+ 	return did_evacuate;
+ }
+ #endif /* CONFIG_COMPACTION */
 -- 
 2.52.0
 
