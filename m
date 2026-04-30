@@ -4,118 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A389CD13DE
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 15:16:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB314FF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 15:23:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1F706B008A; Thu, 30 Apr 2026 11:16:23 -0400 (EDT)
+	id E66826B0088; Thu, 30 Apr 2026 11:23:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF6C46B008C; Thu, 30 Apr 2026 11:16:23 -0400 (EDT)
+	id E17016B008A; Thu, 30 Apr 2026 11:23:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E34386B0092; Thu, 30 Apr 2026 11:16:23 -0400 (EDT)
+	id D06B86B008C; Thu, 30 Apr 2026 11:23:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D2CE86B008A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:16:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E06C146BCB
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:17:04 +0000 (UTC)
-X-FDA: 84715423968.19.A2D737C
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5159F20010
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:17:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Fm/0FQRR";
-	spf=pass (imf13.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BB0756B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:23:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44ED1127783
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:39:03 +0000 (UTC)
+X-FDA: 84715479408.03.19F6BD3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 71612120005
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:39:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cBwzWdl4;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777558622;
+	s=arc-20220608; t=1777559941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aHo9iPjyCSduKMwgGnNHZX/dT+4HXSckBt2Ukm/+PI4=;
-	b=AmO/Xgy6Em4x+Gd2v7tNtRHAvRqkqzX2+0wbAi1HZcqZWk0oBCYmFRBZyjcdeeH5JUPRDb
-	t8XA/1I3iTtuFOKJP+82zmls8gW3mbhDJP3axyy+gmjBf9ZkOZmL5kT5SkaIHlnGZqiacM
-	uMolunL0Kk1Xbhyf6m7nwBGt9UXLDbw=
+	bh=soGB2dX3th9XM1/fd7+XetO33KxQdA/Bvrbxnnw/eac=;
+	b=026Mbbu11voo6I7BlwMryloZjMGEApox/wxjLSS4lcdk7u8w3mB5kM/g1m3PPhiTCfdUxn
+	BVOfWMKxyRj+FldgZVVjXwa+OgJkdXybcA/EtvJXOyhYZoNKu1/ytivGzcCSXIGd2kpcc/
+	+f/jeu3a1DaVQ5kZkaFHgGbpWYL7QLw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Fm/0FQRR";
-	spf=pass (imf13.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777558622; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cBwzWdl4;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777559941; a=rsa-sha256;
 	cv=none;
-	b=165vhDEqLGM61dLdSUK7LVNuKkueQI/XDjiP+LHf2HA+SjNKT3Z88HT999ufEYSaLpZRtq
-	l3LFHAJ2NIIP0t8xi8zOS2zQqA2ZdtQCjEepzfSwVeiZGeTk16U/ZU8QMKo/ek+tLytxsr
-	3fvVpZCE8yB6v31vfvWrHz/cRCfh7xA=
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c7358a7a8d1so564477a12.3
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:17:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777558621; x=1778163421; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aHo9iPjyCSduKMwgGnNHZX/dT+4HXSckBt2Ukm/+PI4=;
-        b=Fm/0FQRRI+ic+PT9/AsG9ynwYGs/h2GJEkbliOppSqDuOPNyrRgqvuPXgH6BNF1ln2
-         OG+i6FCC9KPvqL0dKlZHn2R/ic93nTEc4QmZALSdsuDSOYQVU6swOibIIREsSHuHF1A3
-         MvN5/pZT070RpxwWSwy452sy/rrxTk9gDDet9whh/Q9X9o70p5hp+ikjlxp3IVWeoSNi
-         pijL2svQwnrPnEG9PqpJXRjFD0DqvLshRK8lhEO51Y0CZq5OSJcqiSTFvq31UnZbuzHT
-         T1MCw6YIcJHzvTrt2Smzj157Ot1SPcjOa6vuQzqGPQDEpv2y/hZ2WZXRwT4JXkpJJURk
-         Tdfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777558621; x=1778163421;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aHo9iPjyCSduKMwgGnNHZX/dT+4HXSckBt2Ukm/+PI4=;
-        b=DW0jwxDEIFApG0zfZEulgmo9pgNzw2FPwhOk10hEwjAr8yiibtnad9CCnkDJhJC/6R
-         07Re1ghSz2f8bqocvmUAl619n6NCPTSJp+zaOyasNC5zoRX1aPHWYAUDcmpqi4qePA+C
-         9/D/qJC/6fgwzSU2H+EKYh8CeywTDCgAYbsZSvzTQC7VMCJhR3tmirztZ/MFdpUjRQ8X
-         oCPQ6Tjls+rCTeuGGuQgBaFd/fv6pqf3s4VUMBQcAisQA/LamEELGrPknIaMvwNPgkK6
-         Yz7/u+mccwp9cd2My+bRZz7DLo8CUvR7IRZeHNgXDOxD+sThCLP6dzUptL1Gpa/fVsdd
-         Zh7Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/7KPQy2YrpLQY3gWqUntAj2xVw8aInjWapfClTYvvdlSqvaGhDKnr8sIuDcNNF0o8wBmDOaOPzRQ==@kvack.org
-X-Gm-Message-State: AOJu0YwmQ+xvCipDEalm2BpxnV5cG6+c4+8I1Bkqz7DIcdbgPkXhBetT
-	y64/aTbon3P8MX5u2sqv2IPqaL6hCOarWX8Aqs2e/qNKkbkS5PrqBS9DvbwpqKakwno=
-X-Gm-Gg: AeBDiesXJBzFbtO9Fk5kJv9Z+xyTkQfCwGv2q9wqpKXGQjYPBwulu3lRtr6uo+gcL7G
-	xY4rTA2KcJnbMYcQhUQdDY8RbDhawRnZfMM8g/xiGK3x0c0rPkydlxsOMarPB7bCL+KKRaMw2tf
-	9sFnku1N4I1yIyNTzAZcjt3SylpQf+byGFxEIXeCLZsC8RoCHoHYxuDRwYpzvJrmsdYjXWSBxKm
-	fCT5izGzECJJkxit4hdzVvMvL6Yn47dOAlv8Ny/f1F4t95G2A2jQ3+4y/mZQMnUb7lO4T2ZjZ0P
-	UFc4ryJb1ciLTTdvzTvR836q4cm+DcXhJm5ilIbNtZgLmjQTZjVldEmVmIxmJLIhPx/2luUUGH6
-	mgewJq9i5QSmyJywKBmjZ2vUNKTfu4h6qSUWgZUVJuylp8pgEHUSTteIzk5DrDcNgQUdi/rJJy2
-	StLjHOr3iur5rXvjaQ1FbSczeVGAiLNlSUpIvOMxB1dDiyQmdnLN8=
-X-Received: by 2002:a17:903:3212:b0:2b7:a3bf:b2a0 with SMTP id d9443c01a7336-2b9a23054f1mr22891225ad.5.1777558620563;
-        Thu, 30 Apr 2026 07:17:00 -0700 (PDT)
-Received: from acer-nitro-anv15-41.. ([27.4.92.188])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9887ad80bsm57132495ad.37.2026.04.30.07.16.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 07:17:00 -0700 (PDT)
-From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: kvm@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	pbonzini@redhat.com,
-	skhan@linuxfoundation.org,
-	me@brighamcampbell.com,
-	"shaikh.kamal" <shaikhkamal2012@gmail.com>,
-	syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
-Subject: [PATCH v2 0/1] mm/mmu_notifier: Add async OOM cleanup via call_srcu()
-Date: Thu, 30 Apr 2026 19:46:39 +0530
-Message-ID: <20260430141639.10815-1-shaikhkamal2012@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CABgObfZQM0Eq1=vzm812D+CAcjOaE1f1QAUqGo5rTzXgLnR9cQ@mail.gmail.com>
-References: <CABgObfZQM0Eq1=vzm812D+CAcjOaE1f1QAUqGo5rTzXgLnR9cQ@mail.gmail.com>
+	b=kYZQR/rfy9S3lKGsH3W7mQBJ4ORaOynO9PDUUxiRPLoaavvprdrCs+DpWgwKdZ4l53IKY3
+	jK6bfuERRg4RI/0wSI5/8ACsDg9OqlqxkAblMkdwJ0gvuu4wZAFwGR7mS85fdzJbaIIYob
+	kjIffrd/VLwElQYQw7jVgseM6oNdQmc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 82ED960180;
+	Thu, 30 Apr 2026 14:39:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8E8C2BCB3;
+	Thu, 30 Apr 2026 14:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777559940;
+	bh=Gc0G/nPCLoAEXLQD+FtiMt3y+teazxkvZICdeWL4IwE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cBwzWdl4yUoKTWgksJJyhKfjlsm+HYb6h96SaWdcDFpiF7ClCSk4qAx1bTgq7rDa+
+	 FKoVjMnszAcDwbqPa0iVOyr41ESF7ZFkR5G9u07gp4LlWVCH9NiyGv3SsWmoWdcVxX
+	 xwDbu6eNe+rLQnb5bmxcgfrpBtPPAqMU9NCmIjMTRxyQcvZ4CV1q+80rQaGS+kCB91
+	 nMvtPIOaueYC+KE0Rx6vg0lc/Kea58oohq/4yyOWLEHBm2HrDWkybfShWaYDi4I3mb
+	 ggKnEZUOeN22zGA+0BNy8eRx0cNUOsva6ja+PAxJSVIkxaKm+Gn8N3umLqaRSJn3wu
+	 opFKU9opqxYlQ==
+Message-ID: <af21185c-3390-4566-bf28-ce79e13182dc@kernel.org>
+Date: Thu, 30 Apr 2026 16:38:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
+ exclusive file folios
+To: Minchan Kim <minchan@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ akpm@linux-foundation.org, hca@linux.ibm.com, linux-s390@vger.kernel.org,
+ brauner@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ timmurray@google.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>
+References: <7c7da8ae-cd39-4edf-b94f-c79ab85df456@kernel.org>
+ <aevBRh08X4UTMUj9@google.com> <ae8NT0tLt7eBmH6j@tiehlicka>
+ <CAJuCfpHQdA7C50V2WjNrdYcp7feV5ukgxJf+vMNEcp0P1SGEow@mail.gmail.com>
+ <ae-Zu-VAzAA7SdLa@tiehlicka> <ae_roPR64e6sY_fN@google.com>
+ <afBaJLLFigkdszov@tiehlicka> <afFco71vwmpQy3pk@google.com>
+ <afG-4hq7Hr62Uu6J@tiehlicka>
+ <7f98f461-62a7-455d-a7a8-cb8928465946@kernel.org>
+ <afJ7FPkNK6cxUxSe@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <afJ7FPkNK6cxUxSe@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: r4xzrpn3564q7z1rhrfamysqs89ympqa
+X-Rspamd-Queue-Id: 71612120005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5159F20010
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 7qutzxkcmozytb4pkuxd37bggihaahhm
-X-HE-Tag: 1777558622-984733
-X-HE-Meta: U2FsdGVkX1+rts3gy0wfMJtSFNBS/6kBDLqK++P3gDTC5qUydS49KQ/2wrSIHfxaPw5m309U2OCzZeM5Rj9PdLdcfEzbzzCeG1MQMc5Vmy9EqMSDaE5ywEYRr7VVhOAB07tcj/83M0hGl1cI+/Om1NpMUMaXuDoRDdYt7xiyZiJETCou4u7V7YQv1sKwy17VdI0CFd8qq+3X7sqhHBEeZ6HfCQqlylCNXx2FZMkM/r1s6jUR7sNO33ldZYDg8uFj1UZ2wIO5cL8bF+ypqyTsnfFyvWKsbTEMToiUJAHKX8FcusSVbRQ5XkOYzH4CrFNcuYKG81gn8twwQpqrpx8lIEVdwKkur7poHnMlPcUClyAQfbmO6SLWr8lkXdUP8Wwl75nOJ1whyT+TYgS6BwJg+F05vEn7qIoWvCVnA/jTeGBbG0gsH9j6T67hQ1iz5gTFCL7eRWR8o5sO58AjozKXYJUKOytYamMpx8TikfK0q90K1Imwl33CUKkfuTfFg63bkEC+yuYidM2ssgw91CZFGKxeLHOIfynbblGIGKYRR1qs25zAt7hk10SvOIFOgjkJVMEX3P8z5nRu4hTVG3YsLqnGYUna6Oj71xW5Lh1Ok90Gmch4S2as0cHBxUBvJVzGvZ2vA63fGySg+cWyN0zltqVJ+rmUIbzfCsFUkQzvMIg6Q7uFhnJNLoHtqK3Sxtb7WoraSOyx3xJn2rc4gkXdD/5MYv3blvKJ1Pm7ghhZp3uPHOTogj7Zs/UGlAKaolhXGQ4Z+6tnkS6dElQnYGUA08j+eFJ+QFhI9JA2B53BfSaB2JI70qKFkMFIkSM0mKx6WO1u09/vxchelf0aFv9ll+UnXgqL/5XMRkgFCUk0fCD6t9P+OgcRYlJwxoY8wAflkNpX3r+srw2pnc2LQvfP1smvswpEVpYxwp2UBh+SQ6trr8ZPd0XS8J9AZQxodx8xKVR36dsC/Iqykf5ufn2
- oMfRl3dQ
- Sm2zGFu9KU5sVpcqEXkZkH12iIJogmuNwim2a5qt/b5Ofm2V+9XPRJRNB7JS3QH/csNMkNuuwFdz52gVppm0YSueLsKv2r/I3/CJVJ36zKrT4m35AFPXy8+NIGD5lihY2FsjuynSBwJ/b0Vy1HlRPa9rmeiTlFsx+1y6H7JvekRja9G5+93G3UxOQRKIuxAXMyVqbTzQe51rfZZQiBKiAL/7YWndYeXxSFcUYiksMjPE1ipQ3EDN5Fo/BufypdIrJ1OIFzcifUAftY3/ERAnBESByQtrd9vUjpC2bef0rJITIWyMxG8LXynEzQOUkUToqrQU+kljDG+7ClUuLZd1TQtndmh3rW5HiWh5HVu2824eosEOCVYf1CO2PM2Uxcgn35Tz5cjNz+79GZkvatH10KD1tSa2U63j8KBAyDb6SR4K6VKfvEtiNa0CjzLF30skO9LomRRm/tZX2akUxu1V8Lxp1n8KyH8W4Py0kismBiwPNdcq/Z3eA5m3uB1SpKHTVKUA/sPe+BtF7sbh5Q6j6i/iro/yesVXdDu7XddZCEwE61GqhxtF0EI4/5afUDmuZ14uLxjWaRM2I3eSkbXWRdGN6T2KU1CkJnfZJyTYunRx1DE5DtYUCHW6X2mgIJNChDQTPQCt1j/dnDcXE93oTZ0nt7w==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777559941-481053
+X-HE-Meta: U2FsdGVkX1/iQySQyIdMc60lUbm1hfa73fHcZkGyqrFgrvQ8JsjdSJvi2AI+R6c2N76qkGpTJaSgD55DiWEH8eiie56wrSgysy0aVl7ka5+K5MlBcKK/9aabdXW14j72TzLDRP0HTx9Y84/ZuFilHR1+TL7O3ifyjde4UMJyNNgHSaHdbmd3sSbzEhyawRQtsqg16uqUYei1zS6Rnoc0cne8XlHyT/yOW/CUA8T6UGAboITiAfYXWlfusSZgFRHJJBFSzYfy95jta4P7cGxtpEYNAFEuACV7gisqnLftOBNr0eMiHAx27a5ocbOsa9AsCxSDSrGGgMkc36coVyjSavpkPTV1pSPCrfov/GvcEKnos10P3k9kU9wsOUa6f9nB5LkCPa4+iu7am2TOSDhxSwYc7xvCgn0bftqM3B6focEZMLI25NUsiI0D1/efs42IYtIJTPdBIR0MVwj64MhuYyTfdLtSrB93OYuLZtKgreyaY3xIykENawR4KaHSXqwIwF4PqzwDZgU5GUAmSxc+wn2PwNDDA31kwoK4Lbeq7/nDOTI7JjsDhUmjyiTFD59LM3PoEQexsglM/Std/Bac9x7RX0PRVn6ioOyza5u/BfGXdPzykT+oeaLXbD7yoXDx99HZ+mSQvP70ZyYMhACv8AWkfnJE9N0MwlT1G9Y7Zv5P4swEfk2hWp8aPZ+TY9pBB6Xq7hTMN1dtbzHyxFl2bIroBuBqfypL2xor2qmppZCdE4ymYAav5xwkdtiyksK1srIhnlV3yW6GIQWRx5MDc12/saYMeAtmXWBzq2Z2b3x6rkvwDV6Mqzto5oMlP10vitzsD6IryXdCnBtoi3bkiq02x0rn05x/KpS46LhsF39MNccDa5vVPTC/Kfbl+szHCVjWIVbD8PyJEPB4/NmHqOaA3oNvYB7Uw0TOsQH/AtD2lE7ZBlsBaf4e7PL6/jQ/K+7D0FOHsxSoRKuZuOC
+ YoZHVT91
+ YefxrOctHMIqlp3L6Y5+4JtRKMff26ExbgBYX4sMmJxZO3AYy0EkTwtoJKe8QYIxAV9XjfnEcIYo07KYd6glQmyb2DYI81EpHUmCjCzbqPIzh91sexFFqKMd5+3QEvbxcdHnLhDYR8qbytpNsPml5HSg1Cqi8ShRYs8E/M3MhNkd7lIZ4e4/sNobSo/xeD5OGwuhCWsDRJ9cWnT4Odmz3/l2BqfI5uUOcYC69a4wN2eJ1jUyRIhCWr33e4c9sQfTGAS8tOSw3mTgBZLfAhCTWXlAC6tpWygH9Xi288rUns3zLQDFZTGJWoh6RUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,102 +147,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series implements the after_oom_unregister callback design
-proposed by Paolo in v1 review [1].
+On 4/29/26 23:41, Minchan Kim wrote:
+> On Wed, Apr 29, 2026 at 11:09:55AM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/29/26 10:18, Michal Hocko wrote:
+>>> [...]
+>>>
+>>> Page cache doesn't belong to any process.
+>>>
+>>> [...]
+>>>
+>>>
+>>> I will let others to discuss this. I maintain my position that this is a
+>>> hack for a very particular use case and you still seem to not explain
+>>> non-Android users of the syscall. Anyway, I will not repeat myself here.
+>>>
+>>
+>> One thing that got lost in the thread here: this code path is not
+>> process_mrelease specific?
+>>
+>> We seem to end up in __oom_reap_task_mm() also from ordinary oom_reap_task_mm().
+>>
+>> There, we unconditionally set MMF_UNSTABLE to then zap_vma_for_reaping() where
+>> memory can be "reaped".
+> 
+> After updating my development brach, I see zap_vma_for_reaping now.
+> 
+>>
+>> So why is there "process_mrelease" part of the patch subject at all?
+> 
+> While __oom_reap_task_mm() is indeed shared with ordinary oom_reap_task_mm(),
+> I added a boolean parameter (try_evict_file_folios) to isolate the
+> optimizations in recent patch.
 
-The current OOM notifier path calls synchronize_srcu() inline from
-mmu_notifier_oom_enter(), which can deadlock on PREEMPT_RT when
-locks such as siglock are held. This series moves the cleanup to an
-asynchronous context using call_srcu(), allowing the OOM path to
-proceed without waiting for an SRCU grace period.
+Well, not in the original patch, that's what I meant :)
 
-Subscribers opt in via a new after_oom_unregister callback in
-struct mmu_notifier_ops.
+> 
+> -static bool __oom_reap_task_mm(struct mm_struct *mm)
+> +static bool __oom_reap_task_mm(struct mm_struct *mm, bool try_evict_file_folios)
+>  {
+>         struct vm_area_struct *vma;
+>         bool ret = true;
+> @@ -556,12 +556,14 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+>                                                 mm, vma->vm_start,
+>                                                 vma->vm_end);
+>                         tlb_gather_mmu(&tlb, mm);
+> +                       tlb.try_evict_file_folios = try_evict_file_folios;
+> +                       struct zap_details details = { .ignore_access = try_evict_file_folios };
+>                         if (mmu_notifier_invalidate_range_start_nonblock(&range)) {
+>                                 tlb_finish_mmu(&tlb);
+>                                 ret = false;
+>                                 continue;
+>                         }
+> -                       unmap_page_range(&tlb, vma, range.start, range.end, NULL);
+> +                       unmap_page_range(&tlb, vma, range.start, range.end, &details);
+>                         mmu_notifier_invalidate_range_end(&range);
+>                         tlb_finish_mmu(&tlb);
+>                 }
+> 
+> In the current patch, ordinary oom_reap_task_mm() passes 'false', so it
+> does not see these side effects of broken aging and file cache eviction.
+> 
+> The optimizations are strictly active only when userspace calls
+> process_mrelease() with the PROCESS_MRELEASE_REAP_KILL flag.
+> (I believe OOM killer is ultimately target of the user but didn't want
+> to introduce side effect until we can conclude for the direction).
 
-KVM is the first (and currently only) user.
+I'd assume we would want the same behavior for any form of OOM reaping.
 
-Changes since v1 [1]:
-- Implement after_oom_unregister callback in struct
-  mmu_notifier_ops as proposed by Paolo
-- Add mmu_notifier_oom_enter() to detach subscriptions and
-  schedule cleanup via call_srcu()
-- Add mmu_notifier_barrier() (srcu_barrier wrapper) so consumers
-  can wait for pending callbacks during teardown
-- Move call site from __oom_kill_process() to __oom_reap_task_mm()
-  to fix KASAN vmalloc-out-of-bounds observed in v1
-- Use hlist_del_init() to keep hlist_unhashed() correct for the
-  kvm_destroy_vm() detection path, avoiding use-after-free on the
-  stack-allocated oom_list head
-- Add KVM after_oom_unregister implementation to clear
-  mn_active_invalidate_count
-- Update kvm_destroy_vm() to detect detached subscriptions via
-  hlist_unhashed() and use mmu_notifier_barrier() + mmdrop()
-  instead of mmu_notifier_unregister()
-- Remove pr_err() on GFP_ATOMIC failure per checkpatch; the
-  trade-off is documented inline
+-- 
+Cheers,
 
-Testing
--------
-
-Developed and tested under virtme-ng with PREEMPT_RT, KASAN, and
-lockdep enabled.
-
-Test setup:
-- simple_kvm.c: minimal userspace program that opens /dev/kvm,
-  creates a VM, registers memory, creates a vCPU, and sleeps
-- CONFIG_DEBUG_VM-only debugfs interface (not part of this
-  submission) at /sys/kernel/debug/oom_reap_task to invoke
-  __oom_reap_task_mm() on a target task
-
-Test sequence:
-  $ ./simple_kvm &
-  $ echo $! | sudo tee /sys/kernel/debug/oom_reap_task
-
-Observed with patch applied:
-- __oom_reap_task_mm() completes
-- mmu_notifier_oom_enter() detaches the KVM subscription
-- call_srcu() callback runs after (SRCU grace period)
-- KVM after_oom_unregister clears mn_active_invalidate_count
-- mmu_notifier_barrier() returns cleanly
-- No KASAN reports, no kernel BUGs, lockdep clean
-
-Stress runs (20 iterations) showed consistent results.
-
-Reproducing the syzbot-reported issue
--------------------------------------
-The issue reported by syzbot is reproducible on an unpatched
-PREEMPT_RT kernel, triggering a "sleeping function called from
-invalid context" warning in kvm_mmu_notifier_invalidate_range_start().
-With this patch applied, the warning is no longer observed..
-
-
-Known limitations
------------------
-
-Failure of GFP_ATOMIC allocation in mmu_notifier_oom_enter()
-causes the corresponding after_oom_unregister callback to be
-skipped. The OOM path cannot sleep without reintroducing the
-deadlock this series fixes, and synchronous execution would
-require waiting for SRCU readers. Cleanup still occurs later via
-the normal unregister path. A mempool-backed allocator could
-address this in the future.
-
-[1] https://lore.kernel.org/all/CABgObfZQM0Eq1=vzm812D+CAcjOaE1f1QAUqGo5rTzXgLnR9cQ@mail.gmail.com
-
-Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-Tested-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-
-shaikh.kamal (1):
-  mm/mmu_notifier: Add async OOM cleanup via call_srcu()
-
- include/linux/mmu_notifier.h |  10 +++
- mm/mmu_notifier.c            | 123 +++++++++++++++++++++++++++++++++++
- mm/oom_kill.c                |   3 +
- virt/kvm/kvm_main.c          |  27 +++++++-
- 4 files changed, 162 insertions(+), 1 deletion(-)
-
---
-2.43.0
-
+David
 
