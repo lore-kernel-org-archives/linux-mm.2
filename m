@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CED57CD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB83AFF8864
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 440546B009B; Wed, 29 Apr 2026 23:26:18 -0400 (EDT)
+	id 502D36B009D; Wed, 29 Apr 2026 23:26:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 418106B009D; Wed, 29 Apr 2026 23:26:18 -0400 (EDT)
+	id 4B3BE6B009E; Wed, 29 Apr 2026 23:26:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3549E6B009E; Wed, 29 Apr 2026 23:26:18 -0400 (EDT)
+	id 3F0A26B009F; Wed, 29 Apr 2026 23:26:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 268376B009B
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:18 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE2171603DE
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:17 +0000 (UTC)
-X-FDA: 84713783994.16.2265DB3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4340310000D
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dlIOoBl7;
-	spf=pass (imf05.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E80E6B009D
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:21 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 023241A034B
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:20 +0000 (UTC)
+X-FDA: 84713784162.11.C74604F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5FDE140008
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cl9E+pNF;
+	spf=pass (imf04.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777519576;
+	s=arc-20220608; t=1777519579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uAxF4KvCzbgI60Y5PvtMWwmMnfgjdlih7s6XmrKXUiI=;
-	b=kEdiwIMsPuqdPZ8eAB9NTt/pkz01JsxSf7SzMKLSMS4KS9tqsl/knueVktTw9nQ00Igzqw
-	REhRXFqr2OFPwvrQkW73V5MacCzG4J08Up4Aji1smWGLVFDCPsjqk9bBOmOJ7vRuiq3tYW
-	tm5V2jamV5FnGInXAX1Rv+6tJWJGW+Q=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dlIOoBl7;
-	spf=pass (imf05.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519576; a=rsa-sha256;
+	bh=7WvD3pkBfro7vqBCJqoA01E1pLGAsEnAndZdLdIwXs4=;
+	b=cJDHGETOrviPuJ446sPZ1caROoZskeeQfXKec+W5RRPsh2LOp8LgzpzSgZBjzITHSJ7PE1
+	9BZFlBqlrhaj5vQJ4i1GLC7SLvNwJF31GA/swiopW4OrsksmKaU51OxQzVPYkqEYQrN2mg
+	i4ro7BADjfkL3iyk9FTXNWEMu8xlcOA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519579; a=rsa-sha256;
 	cv=none;
-	b=CkVMb4TkB3plDFHEPwWq5ansxg8WYhRDxvZEmWQUnC+OAkAOgF4ekgMoF29/EZwVoQdKxQ
-	qUu7bEQQoPixUzdfDTOCLI4SIQxlGMzh5XRVGj7zdtyERvYrQZA+SZ7J8u8U4FE6Dwn9ke
-	989CBLjk7z077QheSJU+4ni7yKnFRY8=
+	b=E/1gI32joZtreRM7JIJeihOqj+PlG/alAqAL/ONmcfuXG8y5m9EhN597Ffrbd19StkZeFi
+	22I5ZPVr2uPfNKBIXgSolfOOa4bAl36J59tWwOqghtCCPcoTGq/u8CD+jCXDHAgqBIt0ZO
+	39gmVObiqPfPQGRIx9fjNRvEsDeIU+E=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cl9E+pNF;
+	spf=pass (imf04.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B24796111B;
-	Thu, 30 Apr 2026 03:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CBBC2BCB8;
-	Thu, 30 Apr 2026 03:26:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 848C844587;
+	Thu, 30 Apr 2026 03:26:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68319C2BCB9;
+	Thu, 30 Apr 2026 03:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777519575;
-	bh=smOY6pVVDHq+6KTLdCSD+6r2J5A4soRjk1OnTI5ZlHM=;
+	s=k20201202; t=1777519578;
+	bh=47f6wiWNhzOqt1LxqL7cNkDmVIEiOhL3j+AXGV6BKtg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=dlIOoBl75hOEvwa9uZFaZ+vWlsAdTS39VaV4zcZr1mzQxorM426fS9+fb28XtX88C
-	 mIMu8bSZblyQBO31WlUqBz/lLMExGlKNb2t502quWMfL1IhwIaR/AD0zsN8a+NTHJ6
-	 zmf4ytfrdcHkQlThMspBfvMBQDI0tL1x8xlIkXHVW0gMUhTWpoTSTiWboBMAsfLejF
-	 xMSpymzn8EpJxwfu8ylIwFEzlUqynLBRHPUrG3gQLEWB71MSDyIjlXH8YvuULeIEX1
-	 QjYiMQ3POVX8oQTp1LZaq859UmwFqPiAefqkYOMchJ+U9DxQPoBfsXiabOdjSMuvQk
-	 U0dvV/7SEMN8w==
+	b=cl9E+pNFzygSkS9LU/raL18uAT2/mdwVF0PbOkbJFVE2UnECPe1iib5UKDbz/VFiB
+	 kCueQLkBhWbRQ6xkD5hfnrYJJitPDJ20v3dqbagbqe3Thwq9vPSamcXk64ppjOAWIM
+	 0Odo3lSTHVNjv+zUtbfeUXCXcL5YKfO8ee7DlMznTcjH2rfmNDqS9UPzFzFor/KH8a
+	 OLm6+qme5UNwIMLcImLlbQUQX7W7NQi3nQ/wDgUh9nvkufIp3vgnGETLL1SyXgrN2j
+	 hnqogKGfQLce6UWx/XmYM1y2W8pzY9O+AwA1F4QkZ2h7SpSwvzzeWdQj+1RDLx16Tr
+	 J5G98eNyx8p9w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E8D3809A07;
-	Thu, 30 Apr 2026 03:25:31 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9EBB3809A07;
+	Thu, 30 Apr 2026 03:25:34 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCHv7 15/18] mm/hugetlb: Remove hugetlb_optimize_vmemmap_key
- static key
+Subject: Re: [PATCHv7 10/18] mm/hugetlb: Refactor code around vmemmap_walk
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177751953040.2274119.2787096861157625411.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 03:25:30 +0000
-References: <20260227193030.272078-15-kas@kernel.org>
-In-Reply-To: <20260227193030.272078-15-kas@kernel.org>
+ <177751953329.2274119.9976334880562386444.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Apr 2026 03:25:33 +0000
+References: <20260227193030.272078-10-kas@kernel.org>
+In-Reply-To: <20260227193030.272078-10-kas@kernel.org>
 To: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  muchun.song@linux.dev, david@redhat.com, willy@infradead.org,
@@ -87,15 +86,15 @@ Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  kernel@xen0n.name, palmer@dabbelt.com, paul.walmsley@sifive.com,
  aou@eecs.berkeley.edu, alex@ghiti.fr, kernel-team@meta.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, david@kernel.org
-X-Stat-Signature: yp3bq7dsuz393k45ak7uxzbmmwp6kfxs
-X-Rspamd-Queue-Id: 4340310000D
+ loongarch@lists.linux.dev
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5FDE140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777519576-360487
-X-HE-Meta: U2FsdGVkX1/v9lUnIKMTUdy1gUsNx4rt9Mhb1C/cfDhLP0Nna9y8iY9JaVQSwmDds1E7QCY+YkvA7AlWT1/dARXYK1vEqN7MD6/UsIW5xqpn76Q0V6FSjygRNk0Cio+v/6vFHJgpXzbqnSQMQ/Kjc5mfOQbO8NWkIc7q9Xmq6BlII9c1CXz7CqJYwc4ZvKlqe5FOYnfFA+X+H+vaGPjGRShA3hcfs046+B8HfD0nbLewBPyE8lXwjmgNc8p/EO55hsvtGezQpl8Q0R4FyQSqgJfWJSreDgX5pjBAO7ti8hZ+gpryEUUIojpExIXrah0gHB71tdGDi0UYKZIoJbqQc/zvf/eCBoYgjsxAjdFgfB/gv+18vbrz5+mA5E5dBKsAHpAMpJ9/yhal7FR0EujpQZNbC304wLOmmKwGVDWt7i6MlD3gmpGqIC91Wa75u//z80Bd+4Sp3gqIeUoq837UD4B8Ei43H48wZrfWMImREhzEG1ns9eFP+RuOJX6R+AQWxKCvEMYWfc+b/XVSCL8Fb+q5D0ncw4ytGhuc721JNGdyre+ksYoo/VVDhkkzUykAC+1Vguq1Ryaz1VivMytri3wtHy/yxQfaF4OTrMyQIZU0wOvoHJjGlOLOTsSkb8jIW4LDS+4/EIzh5XlugERUfKTNJ91h4twZuHRNxAYqJA73exnEW+W2Lly5BM40ItXjsH4h6l8ntV/PDXzWd+aUHXr0vqKC5jXPzpdlGwkN85mgN4KkBibr6htRDXVmJBB6DaX6jdZ3tG+N0rMSc+CnxQBpQhILtSpVRII9ama6ru/v46exvteZp1gKkizVGEahxXjSIcEeOOFYvk5soah3kifrKbAggG2SbsWEKg7WISFb/hIY140jkoiBStzy4tzcrVcZOGTF7KK31CHCD9ngY68RTnPC7cMXtR98viDvxTTw4kr6IZuPNxoCxrqoBYW9QGUupLKxK23+lkJmX0T
- 796u7sb6
- Z/THEbHPPk+OIMSW8S5W8ajP592kIQ5tprF9aG6r7eCTUBWeYq+Y5Aq2dMu2JWH3yIH+HQFmnWEemd4tJx/p8vZZY/HAC14fqX/cl6BLxsk8IPbFHF1QoGhedFwzrvCIU9eQFExGCAB/DQiiMrKwdI/qa47zO4wWnTz8KvdlsouIXCRzH59cfmoUBGa5dF18H2gA91YK0BhPYpxtvTbDlE5GWW1sXMKPd+rQj15grzTrrXFQ+6PsOcMS/hgT1RCDev/Y5EE+zXgloHuf6JStLtb8yMm5BjJ3icocDik6D29MARRf1sCeuh8jHTL64T/WKQ5uHk6uimVG6rwuia2MwJnGb06q6FQsRQ4Lv7ZyV7+aNv5E346b+K+MhgyJ3LXJOX4MOLUcTnxpEQpmwYZI5ALVAP+fIpLzDFmMUa5cqyzix4PxH+2gsaUWlfx5i0YAdyqN36dmK5l9WjIIVyRXkOtzRRXdO7jMOxfsg
+X-Stat-Signature: 75aoiae3yrsatkxpuxjhkirkudcguj3w
+X-HE-Tag: 1777519579-725952
+X-HE-Meta: U2FsdGVkX189fWAqjZ8U7nEPQvvzRFoAEE+OgkcqTl62B2sEeJRc7N2mbrXI+Yd7bfy1hinNClyXAswSojGfP9JVVPpURnnBm8SAI856opf8Z+OMlfkfu4BwpOxQvnNPU8vtbC8C+saysNlOukuSXYdtcwDfkJb1ymaYBU84v8YZIv8xuafRyVu1lF3W5vEJ90PMFSDqMyBGTand3uG/zF/S0jBOtGnc3sjz4iI8rJ+ZwpK3uxP/5oThW0Z82gMIexpaZpKuw0lxhtz/S1Ap0AEbBa151xN20Jt4G7ZPFmI9CuAcEvcpHYI9u/Zh3hkI3cWJOPsHTXE/qaXmPvWYq+45NQDuWklu8ZD0KJ1HegCDrSvash4UiZjOn8ahfJsqSTR8eagiwiHvhZRC2WoAoa/bJAnIY6zp7gjvO5igQ2fD4jjxH2PO3OOJCACZCupGFdgIBnefDvZJfkfYlEYI8+Rv4zDPv+U3HtfblLE8IwLYkgHh/QdRw+jHbiW5kKyUWyar0hLKYDarUfgYFNaE0l6IZq5Sv61j+u7MulpVw1yK7N44GI/hIKNzXYFTJMZk3Fu+PtXJ5PPgNQRHm8diFZN5dbiAp+k9WPe2m+kphLNTzSv5js9BSFGo0XMD1/zHjjbWc6idp1RrS/0Oez2eQ4Z4me49PiQrZKKvcuP95Z9QpL8/GT0xztZxxFUFEVVPCrsWr2jGABzLSBiUS7N7gCf6dcE+fN3T6DQpx/2TBqIn0CIeUvDlLtUcvVi1mTR1gfUMcYwqep3TKPFjpAMC/GuDivr1eYODEK9DukVYGhosmhaD/F3AUN/perrJFtvZiqSc6QNgSL35dMHcyJaAo0zd3S3tiwSb3lNvzH6KnGgzP1KxwKfGFcf1VDxlqVrj0gUveF29ywuLvkOvkrzW6DbAKvJeHDOjYumdPqV0bOh8n7tPV0SiC0WVXpufh8rlmRRxHfYp+vTCe2NH6rf
+ MWCnNRa2
+ Te+t6IOSEbXPJ1SQYdy86AZBouCC60udrxE7/dvPrwcgfS/E+1vHnHFiWWjsZK2+2e81m10EyOny1MR34RKkj1j/ar9jCWeF3LsxBUvjYv2UoW4PHL8cbjbzPxPkJybsyDXpbqOW+lqfEtBHCig5S0ly5DLRayVifkVzZ0W62d++KG8bGAW2P1svdgXy6Bcxm9c9vOYJRuD5T3MpKWvG3oY+g5nPaib+VeqRYvO/Moac7/U+HY5YLYvK+8/oxT01HgTbEq65lEIAfDv2nBiCGfS2RIin1OUuAOOkhACVby1jcS6dlVe3cuwWCX1dLGaPD1TWqA4pKc9xQSVqxNbOtl8ZMNilkOF1ssE8gp6vJAhJRZKYOmdEOVQi44jKlVsnoLfTVdUOXBW1+n4e9gRdXwNL5WF86up1EMvu1C0pKh4gmwNTs2e+BlDINdcZQVhmEMPCH0snJkIG6cxZy8SXFnHaDPSUyASYSh3q3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,22 +107,22 @@ Hello:
 This patch was applied to riscv/linux.git (fixes)
 by Andrew Morton <akpm@linux-foundation.org>:
 
-On Fri, 27 Feb 2026 19:30:16 +0000 you wrote:
+On Fri, 27 Feb 2026 19:30:11 +0000 you wrote:
 > From: Kiryl Shutsemau <kas@kernel.org>
 > 
-> The hugetlb_optimize_vmemmap_key static key was used to guard fake head
-> detection in compound_head() and related functions. It allowed skipping
-> the fake head checks entirely when HVO was not in use.
+> To prepare for removing fake head pages, the vmemmap_walk code is being
+> reworked.
 > 
-> With fake heads eliminated and the detection code removed, the static
-> key serves no purpose. Remove its definition and all increment/decrement
-> calls.
+> The reuse_page and reuse_addr variables are being eliminated. There will
+> no longer be an expectation regarding the reuse address in relation to
+> the operated range. Instead, the caller will provide head and tail
+> vmemmap pages.
 > 
 > [...]
 
 Here is the summary with links:
-  - [PATCHv7,15/18] mm/hugetlb: Remove hugetlb_optimize_vmemmap_key static key
-    https://git.kernel.org/riscv/c/da3e2d1ca43d
+  - [PATCHv7,10/18] mm/hugetlb: Refactor code around vmemmap_walk
+    https://git.kernel.org/riscv/c/c0b495b91a47
 
 You are awesome, thank you!
 -- 
