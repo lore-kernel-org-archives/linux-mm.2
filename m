@@ -4,86 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E57C9FF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 18:23:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A254CD13DE
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 18:23:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D9C26B008C; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
+	id E65696B0092; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B18E6B0092; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
+	id DEF836B0093; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C7176B0093; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
+	id D04816B0095; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BF5A6B008C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BD0886B0092
 	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB001C0303
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:23:47 +0000 (UTC)
-X-FDA: 84716045694.07.E15BCB3
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E9C41A014B
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:23:48 +0000 (UTC)
+X-FDA: 84716045736.07.BC46562
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 99481140004
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:23:45 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cdiiuREE;
-	spf=pass (imf26.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 429B640014
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:23:46 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Qa8Jn1ep;
+	spf=pass (imf27.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777573425;
+	s=arc-20220608; t=1777573426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+QkHvuen1pxlKwjlFuTlSGQrT1I7ZUG9QOhCQKvrFvU=;
-	b=OfZ+W80s4LaXt+2Z0uqxShYg4UMD6v5IkG6yfvZyHtwnNM1iuM5EzdQDqy7TD2/xUzqPtb
-	Frs6uVPUpiwIzlaLq2rReqC3CWpjtfKSuFQtuNYOp06L9SuNUWsYiUAJmyIw5Hhz+X/kBF
-	RREzy6Bd472zyQyclu9sZGXdeD5rkKM=
+	bh=S/KWdKlKQczJErk+09cfrV9xYkG30E/YsEokv02NFI0=;
+	b=Frd3Z4jQHmGg+L03PrtY5kq4qB+d8GasIb8D/yQ5G4BDoUhIcDkUK6aUcrjt/X4YHQcSN7
+	kXfN/lZ9F7KuXBnYtlAIrtSG6MxnhMcBj1GkndeOsuO2jhLaTcYAMFb3LQ+6UNFukQy+xb
+	+TRZ122Xzr0q4jWY4gczRmf9rSWGuQs=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cdiiuREE;
-	spf=pass (imf26.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Qa8Jn1ep;
+	spf=pass (imf27.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777573425; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777573426; a=rsa-sha256;
 	cv=none;
-	b=GbcFj7qtNeCnGSSdo/MePGZzYJHAi3rLJY/bCEr7h05mPGRJV+GdZAyh3B0bA0g8HhH0+z
-	gf4DgfZczag+q9rz7KoKfIj5Zv6w199VIkP1RFjq0wj0JGyHj/mJbjJxf2mbrXXW8C9lH0
-	3JF3PQtCTEzDeDmIXHjyfssPLyZ9+hA=
+	b=NnQhwCwbHb9HfOj/bZITj6mWHyDc70Jm0ARoKLwBLcpOan0m2y/bINIlGbT0846VQmcF70
+	nQr0m2/l2TRKYDBFZAM8BhcBFhPcf34Px9Oo7LsyAs8JBfFtJvqbDePKTbD1Njg+UcRHHF
+	1fRh5i7PV5e6uG1OCHRb0Hw8BjrS1zQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1777573426; x=1809109426;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=k3yJgH8D791bhoAFURbddfZvHGIe58qtd5P3zc3tVfk=;
-  b=cdiiuREEhrMemMHaZf6c20/PEZ1hODIFPaPGrfnyycFqamFqt775EeH9
-   RNZ19oBALDzZzeQh+rTncNTzqJyk7GDYM77AeR/CKuBz/W+uogdMdOszJ
-   6s9hZ+HzxHnhP9D2DNR04Av9XVWfl49Sf8fHAIpFJcsyw6Q4SjIY1WdTz
-   R13cz8khOVFxOfrmu8m1ZpGPLV9yFgEvUaKJW9RJpQ1qf01xAocCn6isl
-   VkE4FaFG1zcC7Bxkip8siEKKh/gJzDFZdPDY1nz8w3slAS6a+rsPP91GG
-   7R0hzCXCeNzDLmCmoeM1j+gqbs7VCGU1yVWbq3Ep1R97rwVgl6xhNOzmm
-   g==;
-X-CSE-ConnectionGUID: 20Bc30TUTimKRMfbeiE4Ew==
-X-CSE-MsgGUID: 4MXyltN/Qq2nqlOvw1JabQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="82388991"
+  bh=GHkxm0wYYb4SrQQJzp26BvqDgj5d1MTHLdsthOQOpLE=;
+  b=Qa8Jn1epO1/ON2poLV4g8yx59p9/ayCw5Xptfwq76ZxWEPGw7Y/tBnm4
+   EUwojfXcurLe7CQ3UeYIAKN9mFKeA5S87VDBQj7KdKyYkA/HCfwVhQJbF
+   xCnd/oPFEFOnhPb+jOT/vSU4J3NXk30NOwKAKk3ny64gRs9EH8yygOmsK
+   yafD0lCGs2mSw7ITW7+3WkLV/d8D1zKx5c85OZ2IQIGGTZvwtgLQbFwDZ
+   oust8UykpoV/o58l8sf9fGcOTl9kPuDwYShgU2/z+TRSduyb12emwOelI
+   6GEDA5iirJ8vcMacnkNI2rHTEM1jUZJ+t6avt9e7THWLwk4Hw/IxG40Qn
+   w==;
+X-CSE-ConnectionGUID: haWwJZIvTUuPh/8HKYu8GA==
+X-CSE-MsgGUID: qqNDtqFPRFGtnSbRdVL86Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="82388995"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="82388991"
+   d="scan'208";a="82388995"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
   by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:23:41 -0700
-X-CSE-ConnectionGUID: jJTzPlxCR6aSMAAmZ24yxQ==
-X-CSE-MsgGUID: CTLX63CKQDWyf1HT8KbPfA==
+X-CSE-ConnectionGUID: j8ntlywORQaX6R++juekDw==
+X-CSE-MsgGUID: VDeEfBTvQ664s14Kaz6mMw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="231532217"
+   d="scan'208";a="231532218"
 Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
   by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:23:41 -0700
 From: Matthew Brost <matthew.brost@intel.com>
 To: intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
@@ -91,33 +88,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH v3 1/6] mm: Wire up order in shrink_control
-Date: Thu, 30 Apr 2026 11:23:30 -0700
-Message-Id: <20260430182335.2132382-2-matthew.brost@intel.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 2/6] mm: Introduce zone_maybe_fragmented_in_shrinker()
+Date: Thu, 30 Apr 2026 11:23:31 -0700
+Message-Id: <20260430182335.2132382-3-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260430182335.2132382-1-matthew.brost@intel.com>
 References: <20260430182335.2132382-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m7k1mam331wj3dyngg8wedk1qmqtw91q
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 99481140004
+X-Stat-Signature: 1ry79mi3cq7infyjnkyygummhbf1b3rf
+X-Rspamd-Queue-Id: 429B640014
 X-Rspam-User: 
-X-HE-Tag: 1777573425-926031
-X-HE-Meta: U2FsdGVkX1+Z5fJZ3m98aOctwf4EbOaY8cRT/OFSdnwRPvkUk1uLnvCV/D4YFkHIoNV6D2rgYLxwnCUB0qRNt2hplxxHBdEEBXriUqvDePWxYD3UqVN3i/LxfIWxPytMFuE3Ht/dtfh9tH6E92wCX2P5T4LWSRS23Z+sCdPMaJqNwOt3KuEqViOXWFe+jCx/e1c3kgrKjZOK46Cyt9qylUKRum1DldpLR9tZ7Awq0sC6OUYE8sq6hzQaOdqV2Td3nFVlGPX4NN1wcTT/nL8YhdvheW+tAPrD40EYLP/dfylSCEdesJoquT77K53m6Kv40uVRO/cmytUsTiuN+7fHSl2cvVxt4zGSfWe7Z+PX4i2hfiz0pMfRwg9/pmezUfWg1/BHaF9gsOuoFkuBid8i/nEnZbmEUY0cL9VuyZjGJTFylIr3gpa6X7SPmVy3NHnsrXaIWHteMxL8AD6er87ASDtJ8cRNhsEOna/MYHIsWZhWOWUnjT+YBXPr9h3T+dnidjvP6tEBEAi0IJHm2sVycw8WBapZ1v4zXAgccB1COp+d94JAr14ZiMUyAA+sY1rfG2JhKzJ2LTWsbgBKZq3qFshiBToOz9J6H1pjgfnLTR0695F0+sf6h73da3WoVuv2yBS3fX0Qc/tZ1iaWTtYPx7cwNTDcaXN7X5dHnP4DNtrVDGRZZJxtizQPOwPQ1AS+4TMyiZUrmklrkRAvtVNnpXlpsD4slsj20eSFFgJ6vEG/ZY3PqXXEO226jE/r1081S5uDLWeiEm/rnR+XEKrZxRMxNCK3dUdxeK1dozfxiitr9/BjVkJgW1tWZ8xc0E/lSD+t2hp1i1BSYO3AB43XcpIVdvG43DxWq4NP8DJ4KED6NkMzVasKefZW8fEu1V0SK5J2CoQZnN253m9D9qZO1SfyR5SVbeZ1YXNsXXUqqO4gW2fUB50Z1dXOgmlW4QeHGhR46pS4xhBFR8sKm1S
- 6/2BCI1k
- oXYbGRvWsDAvw7BR/Usd44/CBSqlzxmxW/qwXbrYZ6RVn8tK61qd4RfiC5wSIjnOwaNKXXk/Dfsv9PONQsUmCtQb14F5T/2ttzuQIG9BOdzFZ73M9ReCvRU2uu1LRNiwWAcqx0djp+O+2O1PobrsaBeKARAROxRrQ95Mh/QQ3+IskCmfgn1CGJ0qqV4jH7dkp+bZudAmnbiy8TslBIztpu1FLiCkrVFDIFUuxLnJshjogDEpxzHXt4UrHe//RnSv/yOQQ2DlCHGfqcKTEzwyTDgyFBWMXpDw3/vuC6ZRHyDOeLc5SPz/rcM8nRAcLbCpnz7EVz/uYLkFUpFvwXYR9eB0/E5khF7K96zats6rBT9QhCupFvN4u9JqqNkGXdHFBKep80uRXH2rvmPIzQk4F5GvhqBuQGRN+wKN5F1hGsvRQHaq6H0cOB8KxQjeepNR+aJWes/4qS/eSn5vpssXbK5Ji/V8/GP8XOCjpcCX2w+yi53uRgpx/XIC6bUPgBqInXryADCN3oEzPGeudY7oRvooJy3jXh81iRLViwSpW4/lMo5tHiXvFIPSBFEy8G0f7LY41KPLHjoXX91TjA2Mk3DmXQqgLAswzqCssZAcJrO8a/eepuulRBi1UsunvIJcngIfzo9QThIAXWuwkgLFrb4dDWpUYbTACs9CK5/A3Ic9m2fg=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777573426-286681
+X-HE-Meta: U2FsdGVkX1+mrR6gHqhWzZ+sUjFjhec5MJHwoHFd2kggO6IYVdNFrexgma9Pvz8jbcC5TemrTbZe6zVxwwkHW+bGQZ/It4Q4AFVTM3bk22ex7yGjveHrcpey6PY0hQI9noHsD95Uh/L11Svi6DVsnyLEJlkaYwm+YoKL9I0E9EzTF9a1JKsVCqeqIgM6AzkZ7tgHPzsdip3FRt7RjUEceV0UQI+n8p2mHu2rl9eS0zTFILoFGYkVXigJ8M3gG40p46qwAS2+xEG76XnPZ8DUd0jXGOfrrdXhFPJbykTTp9Bb99j5FJx3mQmeAWfb4I/s3zhsESqap5FG/75DoPkZsssUroykrut+HnLMip/Lhl65GqbksA8x4qylJR8eisuzVbfg8BPV8BLEsrcbGQ8hA6l3OOsBMBmW/goSb9E58fUxfSU/uz/yWeFEGMdXn8jOF5tpo4QjGK6gqI4OpeEwoBTiC/9O+7fw2p64MOUikqwdocC8pnuUIdDlxkGigryLLFRXS+GINf5QqRBba4m2dlmPikYMgCi+u6PW22e5Uh6ykCO7zwgTQpFwewKiSfXbB0X+XKO95BWol2rdCKob+ELtfaO4P+mFreyG8H754vwPP7m68VmnSiCdkg073BF0bD06m32DEhJdXJf5Ys64CuAM8tCJskee+DFhuxIzXD2FsE3WJPas0xeV22gTtLDq3/xylvbb61HvDJqCG4paCY56gm9JKWhvU6GJ+Gw5hGNUQF6TVFdKkw3rEAl8bwv0r3sxJUEMWLpTMrJcsROMSu14Qa5XcCVTAusWxPvc0Z28rv3ZZGzWM2ecXdQQBD/sAc4fpsVLRiQT6MERvg4mZVo56kjNqQgrGNR+X3hMc4+cIgodTMMTb1M1kFT8CmJFbsV8CoYl+l35jxhWOPGkvcQozyhQsxII2EQoDDF5x+Ui7Hj7QYNpBvVMEk90dtm6HBfiKWPtNkYXBZ1xvC1
+ mMMfc3Ds
+ UG27/tGoEFGv6fRAmfGEzBAIrReMef7TulN5Lacs7xiq42T4tNUgze3yunrf9xzrbajMMKHrTgu1e1LC0Ihkwb0wwYHqWrVUkEHQbKFLrWzxA3d3krvLqVGx4kN68M8DqAZuKHU82O2tz1+8leaAhLYcZjMzXXltD/wclTtBECmLOdmuyTd44wZHGgDZ35l4qVt4Sedq68/f5ttf8n+1CQjhfZ1a+hitsmp4m3SVV8LK7ArinXEq4tdNGYkt+3VZCKHYx/YoTJHvK77TtLD/Lsbodlp+FrMOa4wVOTQ0eqFqfKCrxMYcOP4bftCJjk/1o4MmjH0sHMviiPPP8QwVqZaHxL2fe/pjIeV6L/PC6uhoonkvoq0Y7PSdd9Q41DcosizxxHfkyVfn21xOXQRhDuiE1vzeOKxtP94TxQxrEmS5alaqOcFiv2Kv2yrQs3kR7WHSrAEr9Fq1noFHC349h9D46OKZxTboM319DuwGS4bMFnHhsDSWqYFiqrGsQHvLtSDKE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,18 +114,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pass the allocation order through shrink_control so shrinkers have
-visibility into the order that triggered reclaim.
+Introduce zone_maybe_fragmented_in_shrinker() as a lightweight helper to
+allow subsystems to make coarse decisions about reclaim behavior in the
+presence of likely fragmentation.
 
-This allows shrinkers to implement better heuristics, such as detecting
-high-order allocation pressure or fragmentation and avoiding eviction
-of working sets when reclaim is invoked from kswapd.
+The helper implements a simple heuristic: if the number of free pages
+in a zone exceeds twice the high watermark, the zone is considered to
+have ample free memory and allocation failures are more likely due to
+fragmentation than overall memory pressure.
 
+This is intentionally imprecise and is not meant to replace the core
+MM compaction or fragmentation accounting logic. Instead, it provides
+a cheap signal for callers (e.g., shrinkers) that wish to avoid
+overly aggressive reclaim when sufficient free memory exists but
+high-order allocations may still fail.
+
+No functional changes; this is a preparatory helper for future users.
+
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>
 Cc: David Hildenbrand <david@kernel.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>
 Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
@@ -144,142 +140,41 @@ Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: Mike Rapoport <rppt@kernel.org>
 Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Wei Xu <weixugc@google.com>
 Cc: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org
-Suggested-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- include/linux/shrinker.h |  3 +++
- mm/internal.h            |  4 ++--
- mm/shrinker.c            | 11 +++++++----
- mm/vmscan.c              |  7 ++++---
- 4 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
-index 1a00be90d93a..7072f693b9be 100644
---- a/include/linux/shrinker.h
-+++ b/include/linux/shrinker.h
-@@ -37,6 +37,9 @@ struct shrink_control {
- 	/* current node being shrunk (for NUMA aware shrinkers) */
- 	int nid;
- 
-+	/* Allocation order we are currently trying to fulfil. */
-+	s8 order;
-+
- 	/*
- 	 * How many objects scan_objects should scan and try to reclaim.
- 	 * This is reset before every call, so it is safe for callees
-diff --git a/mm/internal.h b/mm/internal.h
-index 5a2ddcf68e0b..ff8671dccf7b 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1759,8 +1759,8 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
- void __meminit __init_page_from_nid(unsigned long pfn, int nid);
- 
- /* shrinker related functions */
--unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
--			  int priority);
-+unsigned long shrink_slab(gfp_t gfp_mask, int nid, s8 order,
-+			  struct mem_cgroup *memcg, int priority);
- 
- int shmem_add_to_page_cache(struct folio *folio,
- 			    struct address_space *mapping,
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 76b3f750cf65..fb23a338fb22 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -466,7 +466,7 @@ static unsigned long do_shrink_slab(struct shrink_control *shrinkctl,
+---
+
+v3: s/zone_appear_fragmented/zone_maybe_fragmented_in_shrinker (David
+    Hildenbrand)
+---
+ include/linux/vmstat.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf782..1ad48f70c9d9 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -483,6 +483,18 @@ static inline const char *zone_stat_name(enum zone_stat_item item)
+ 	return vmstat_text[item];
  }
  
- #ifdef CONFIG_MEMCG
--static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
-+static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid, s8 order,
- 			struct mem_cgroup *memcg, int priority)
++static inline bool zone_maybe_fragmented_in_shrinker(struct zone *zone)
++{
++	/*
++	 * Simple heuristic: if the number of free pages is more than twice the
++	 * high watermark, this may suggest that the zone is heavily fragmented.
++	 * When called from a shrinker, aggressively evicting memory in this case
++	 * may do more harm to overall system performance than good.
++	 */
++	return zone_page_state(zone, NR_FREE_PAGES) >
++		high_wmark_pages(zone) * 2;
++}
++
+ #ifdef CONFIG_NUMA
+ static inline const char *numa_stat_name(enum numa_stat_item item)
  {
- 	struct shrinker_info *info;
-@@ -528,6 +528,7 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 			struct shrink_control sc = {
- 				.gfp_mask = gfp_mask,
- 				.nid = nid,
-+				.order = order,
- 				.memcg = memcg,
- 			};
- 			struct shrinker *shrinker;
-@@ -598,6 +599,7 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
-  * shrink_slab - shrink slab caches
-  * @gfp_mask: allocation context
-  * @nid: node whose slab caches to target
-+ * @order: order of allocation
-  * @memcg: memory cgroup whose slab caches to target
-  * @priority: the reclaim priority
-  *
-@@ -614,8 +616,8 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
-  *
-  * Returns the number of reclaimed slab objects.
-  */
--unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
--			  int priority)
-+unsigned long shrink_slab(gfp_t gfp_mask, int nid, s8 order,
-+			  struct mem_cgroup *memcg, int priority)
- {
- 	unsigned long ret, freed = 0;
- 	struct shrinker *shrinker;
-@@ -628,7 +630,7 @@ unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
- 	 * oom.
- 	 */
- 	if (!mem_cgroup_disabled() && !mem_cgroup_is_root(memcg))
--		return shrink_slab_memcg(gfp_mask, nid, memcg, priority);
-+		return shrink_slab_memcg(gfp_mask, nid, order, memcg, priority);
- 
- 	/*
- 	 * lockless algorithm of global shrink.
-@@ -656,6 +658,7 @@ unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
- 		struct shrink_control sc = {
- 			.gfp_mask = gfp_mask,
- 			.nid = nid,
-+			.order = order,
- 			.memcg = memcg,
- 		};
- 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bd1b1aa12581..a54d14ecad25 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -412,7 +412,7 @@ static unsigned long drop_slab_node(int nid)
- 
- 	memcg = mem_cgroup_iter(NULL, NULL, NULL);
- 	do {
--		freed += shrink_slab(GFP_KERNEL, nid, memcg, 0);
-+		freed += shrink_slab(GFP_KERNEL, nid, 0, memcg, 0);
- 	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
- 
- 	return freed;
-@@ -5068,7 +5068,8 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 
- 	success = try_to_shrink_lruvec(lruvec, sc);
- 
--	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
-+	shrink_slab(sc->gfp_mask, pgdat->node_id, sc->order, memcg,
-+		    sc->priority);
- 
- 	if (!sc->proactive)
- 		vmpressure(sc->gfp_mask, memcg, false, sc->nr_scanned - scanned,
-@@ -6170,7 +6171,7 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 
- 		shrink_lruvec(lruvec, sc);
- 
--		shrink_slab(sc->gfp_mask, pgdat->node_id, memcg,
-+		shrink_slab(sc->gfp_mask, pgdat->node_id, sc->order, memcg,
- 			    sc->priority);
- 
- 		/* Record the group's reclaim efficiency */
 -- 
 2.34.1
 
