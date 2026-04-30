@@ -4,131 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53ACECD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 18:25:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE9F6CD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 18:31:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 911D16B008A; Thu, 30 Apr 2026 14:25:26 -0400 (EDT)
+	id 23C876B0088; Thu, 30 Apr 2026 14:31:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E8236B0096; Thu, 30 Apr 2026 14:25:26 -0400 (EDT)
+	id 214646B008A; Thu, 30 Apr 2026 14:31:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FF166B0098; Thu, 30 Apr 2026 14:25:26 -0400 (EDT)
+	id 1033B6B008C; Thu, 30 Apr 2026 14:31:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DD3E6B008A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:25:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 050901C0063
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:25:25 +0000 (UTC)
-X-FDA: 84716049852.07.A353694
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 26C23C000D
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:25:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QSzBFntA;
-	spf=pass (imf28.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 015856B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:31:57 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9D0BD160137
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:31:57 +0000 (UTC)
+X-FDA: 84716066274.03.05985E2
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 327844000A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:31:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i+XmagGk;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf11.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777573524;
+	s=arc-20220608; t=1777573915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eSG/yM4Jbprzjr8hlewRTOp1V59hFoclV98ulyGviIc=;
-	b=aXmfX8tbxHQgZ3x5PxvYOmfquUspYxmtz0Wj9mCxRhrKpUOhUoxwwMGwwGcl2BMOB68lnP
-	c3r1KGasywJOiiEHVKDN/cUjSH/V5YpJNDT5Djyg95WL+mmEBbrSe1penBgzppiBn5YgGL
-	/DO9QKx4ayVTT0UjTjkLYZoGLVPQdDU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QSzBFntA;
-	spf=pass (imf28.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777573524; a=rsa-sha256;
+	bh=TbGELHrPLFOQhp06QpDsqTx/eZpkTPeNIqqLpkLs2KU=;
+	b=oKlYxVi3tt+1Px02BaQOXZpj0NDs4HOz4RsXIC26eG0QI++cnJewHE21JIjfPdXuldug6L
+	jLTlWTApk4EktfePSDwyNPlg2BXBXW4EsJrY/PV1dRy7FBBlXYt40MU1VvgjNrsb8bH0Qd
+	DYA/0UO3AghZOJ7T0mODutHj5EtUiOY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777573915; a=rsa-sha256;
 	cv=none;
-	b=ksfC8PoZY/CpH5CuKOyeD7ty6g7ghCpjObbRc0hYtzUTpebfIL5qsAKZNY0tak0EMpxoQm
-	UP2KQmO1EZ5kQSEuZErRfY878Id31ZSsmmhMwbJBqqWrx2vqyKzErOg9VMIBSayCXadwbr
-	+vGv0SdHdm4uSzftHXl3BPDMjkHPZ40=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b46da8c48eso18945ad.1
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:25:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777573523; x=1778178323; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eSG/yM4Jbprzjr8hlewRTOp1V59hFoclV98ulyGviIc=;
-        b=QSzBFntA21XE2feUJZlGEPrMbarlC/fdHlvpV94XhXupofOWjNBLCV9QatZO/uKjb+
-         VobCzh9N40y5/dVpkIwCsa30vdNJlTCWbJVbf10Ve/bJ8iFNU9asMhnYtNHaIe+YjB0v
-         jdr9q5Irx57NvJ2JVQhpkKb9gBQP/FHp1DISmwx8FjnTt6DtcUoDwTtPU9p5K86rZJFR
-         n04SIHGo/ebG1xdjXXe13LGp6E/gjBBGXZ1qbkkggTUxh3Az0J+4QsuSyyNpi7B8o/BN
-         KQnibJrCKIx3JkFBUozcNIFzD01qBij0HDSQQnbZ0MRPoxFyjA+u50pIkZhRqnAcbJf9
-         tCVA==
+	b=vzgt7o7Ubp2gmHq/m/gSiixQ2GmHRuGps/BRgLwsSa211ZcfG9nSqXgWccmlyUf9/zd3sT
+	/T2Vpn5hzEoXJPXC33qud37ki6u4Y7gZsq243SG1w2an0neKpzoqjoWJPgefXaYDM5MN4f
+	EWWAdBHiB7+j6Se1LLhZluRj1AKNzmo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i+XmagGk;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf11.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777573914;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TbGELHrPLFOQhp06QpDsqTx/eZpkTPeNIqqLpkLs2KU=;
+	b=i+XmagGkY4ZRAA7aNAF7hS9oXIMBoyUIzgdNwhFvIsvdA7c4bSWQWwywkAawqoY6SE9UuA
+	GBVBeUuMAjZEi8wt5L9COW0Bksh1tLk7a1Hd7wLAdHxh69LAC22eNSyYGLJS03stUOnLgf
+	OlyilqfsQUGLDvaNSzZA7oGL2QHgFkk=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-626-9em7sxKhO0CHWCMf-FN8dA-1; Thu, 30 Apr 2026 14:31:53 -0400
+X-MC-Unique: 9em7sxKhO0CHWCMf-FN8dA-1
+X-Mimecast-MFC-AGG-ID: 9em7sxKhO0CHWCMf-FN8dA_1777573912
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-6546ccc8989so2432463d50.0
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:31:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777573523; x=1778178323;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eSG/yM4Jbprzjr8hlewRTOp1V59hFoclV98ulyGviIc=;
-        b=UEGZiMm0vajvyK2axsUXrFumA0SpIJfrZ9l2UTguFCRmgAJEe/pFK3vWFbMXnAUL68
-         sE4yRqEd8p7oGbCXYrKP3DPOY/utHDFy+BRjZ6L430ceoActpEbfqUlrdh0TbK4Q9z7C
-         CSlT+UO7vy/6t0YnRAaqIgJ4gLSabIhPZD6Jka8tdaowD7yeQRBSW/10lwEQFsXtKqIs
-         GnEAVhSTKXdjtGS+B08spl20x/ckFm6yG2nVOX6PPdYC58L5dpJJLdN545JceMi6Vgyl
-         CHbFz95sDBXZktr2mxoeM2aRYKrhu+7z8OzuUWu/nty3jCpV0VZb0+/MQ3uItb3R21RN
-         f4mA==
-X-Forwarded-Encrypted: i=1; AFNElJ9P1ThU+dzOk+Dktr4wN8qy0hWa/zhfNLEI6xdLWUC5vgobSLM46bf4jXz2b9o5myqtf9675ylHFw==@kvack.org
-X-Gm-Message-State: AOJu0YyD4BslW1x1G++cmt+vFFdpYcExJ8dnE3w6CRt8LitPglDse4xq
-	kRuKWm1eV1YMl/HlWK/sO+KcZwcsOWACNQ4PeawJo21RYeQ9uqBSj7BTu1jcAaBAxg==
-X-Gm-Gg: AeBDiev/c4By5Z4tkZNuEo4kLphdjgtqxoZFN7kg5nsIFlJIEvalo7n0vBcTmTVzy2T
-	FTeAX0Z5b5NSzvwp6Yp1d3Kw1u6dPAQbXTKjX8VC2F4gKe6jUPCqPBHP3REJ9iAWmolmBe+LgKh
-	LA7SDcgdsFm9RxSNLn6B96vmsfK3wzIk7d6iO9qpkqMDMQqEjOUFnml0LwbYkSsnRuN46U9FDHV
-	8RWwKswfLKKVHmvK5hmMKnveNOnZXWPNbv20PcXdco6CIBceTPxVe527UMG2N7ceQRJxProDCOo
-	dwqr8cpWyIsjZ5RkWIxYI7xuLRMCHR0B4HoBxmNTnZIRyDyhfdI2R7SQfablq5RVDoUB//m+lhM
-	xXUAeQO7rSBk56efbq+GGyr4gRJ52RaMepVoKR0NxepP3mXEqPLmCyfB+TzG4es1PVlkVZQhggJ
-	BXwy0Gk7hM1nFS1bOJL+ND0gEQvdyD8D2XBF4wTJdtMC6RrsqVdNSaVjjGWexXvBY6kZsK2fuU2
-	FvpkkE=
-X-Received: by 2002:a17:903:2a8f:b0:2b4:6153:e541 with SMTP id d9443c01a7336-2b9ce26a5dcmr69445ad.3.1777573521791;
-        Thu, 30 Apr 2026 11:25:21 -0700 (PDT)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7ffbcaa477sm278266a12.31.2026.04.30.11.25.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 11:25:21 -0700 (PDT)
-Date: Thu, 30 Apr 2026 11:25:16 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: iommu@lists.linux.dev, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
-	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Will Deacon <will@kernel.org>, William Tu <witu@nvidia.com>, 
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v4 02/11] PCI: liveupdate: Track outgoing preserved PCI
- devices
-Message-ID: <20260430175916.GA13902.vipinsh@google.com>
-References: <20260423212316.3431746-1-dmatlack@google.com>
- <20260423212316.3431746-3-dmatlack@google.com>
- <20260428201231.GA3885809.vipinsh@google.com>
- <CALzav=dfLtdrPhkBkGwHpDAWUBMHnbGPccwhy1__doziNVZQJQ@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1777573912; x=1778178712;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TbGELHrPLFOQhp06QpDsqTx/eZpkTPeNIqqLpkLs2KU=;
+        b=FI2dNv6xy49M4HIfXnF3T2zYTC754mFMJ+BYtIDk9tEMpWNSPbVlzqkCBOCly4cslA
+         e5SGCTXb/XpYTvOVuqXg4W/Bq96EPGFGcI/sCP6sMsOFKydZ3hVttWIh+effiPvvK0xz
+         P+cHwKqI/F2x/W5AAH0dskihZciAZhSeU5QkDbfsGJCEnfQVtjECvdaFij4T+Nx3Ptic
+         p12nF+ND46bogqJ3OieBFwo4sor5u/OzbOQkHeA3Ht4kdovXh/j8sKmEDi8LVKVQonlC
+         PAtNgYXWeoB9/G3n2RgGdmH6A9VhBIftMNeXyoUjZpc8rlfxGWwa7lZH15GsDk0xOWQb
+         lrsA==
+X-Forwarded-Encrypted: i=1; AFNElJ+ZZ7WjELcWy0YEHYjEdEZhZtDPMQwAnRbXdFhWaFitI6dYifeiJGq9W4LJhQm9uFzNcm4mAvONwQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy/XWLQA9kDrwa+doWmIi+YFqvfLS3dAIY/jR4JAK4utC0aYdyy
+	MzJCaZ129hpsfaMMjigZVDEDYeTNiRqKM0YJuAv3gK2d7Nz78FAZJ8xlKCSB99tcikiTEY19V4X
+	XUuNJr/8hLAvdpj8iCQYXl3Zbuo0oRYikqhmVdAkFc5WGxEav9AeB
+X-Gm-Gg: AeBDiet62sfybrmBA6CXPTCJwv9Nl3jqyo9kdNEXxwYFtBWNDBQAG7TDlUjh/+3PKHq
+	EcLKNRv6b/H7wxRwXdjcecY6vdTYwhJD7Qs9zLCBOFs4wxk6wJPA/bYl4WmV3IJTgu+qeugP/xa
+	TNtkgFW0T3zkA10aeRgZVS/71cfcU3/mhyBIH/FoUFNyPFYSEboKRXdufHnhKFoCz9BDHxrpfK6
+	hWo+aC/JGASIVrtOpq9L7uI9y14iMzzblA1ZhHoNRvXE34OK6HV4kzR5weQA4KvIKTx9Tmy4xpn
+	S0J+B8dCHIslrEFS59nOjpqJnWBASttuY+17o10EMq9WlYOyGbz7YfeSwXiDtUbdpsqJfGy2k75
+	S+I42P4uJTP2J8QMx/eUZSWOi+mJmaoOch4m1VeZbTVrq/i6i/K/cBOmlUuInZQtg7wop3rruuu
+	3+yrKX8qSVsU7uGV4f/DOyZ88=
+X-Received: by 2002:a05:690e:b48:b0:65c:1f97:2c36 with SMTP id 956f58d0204a3-65c1f972f36mr3030224d50.4.1777573911941;
+        Thu, 30 Apr 2026 11:31:51 -0700 (PDT)
+X-Received: by 2002:a05:690e:b48:b0:65c:1f97:2c36 with SMTP id 956f58d0204a3-65c1f972f36mr3030035d50.4.1777573910300;
+        Thu, 30 Apr 2026 11:31:50 -0700 (PDT)
+Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b3ff343daasm27187316d6.21.2026.04.30.11.31.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Apr 2026 11:31:49 -0700 (PDT)
+Message-ID: <2f443474-4448-462e-bc1e-55bc657d70ba@redhat.com>
+Date: Thu, 30 Apr 2026 14:31:48 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALzav=dfLtdrPhkBkGwHpDAWUBMHnbGPccwhy1__doziNVZQJQ@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 26C23C000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 27/54] selftests/mm: hugepage_settings: add APIs for
+ HugeTLB setup and teardown
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
+ Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Sarthak Sharma
+ <sarthak.sharma@arm.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+References: <20260428204240.1924129-1-rppt@kernel.org>
+ <20260428204240.1924129-28-rppt@kernel.org>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <20260428204240.1924129-28-rppt@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: YM5KR75Nchb29Exb0w7N6RBnUhswJSJlSoglsxaUGfI_1777573912
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 327844000A
+X-Stat-Signature: 96gky617zck83px5xnwaacqsnrsi7koj
 X-Rspam-User: 
-X-Stat-Signature: j7njz4abo1nj3ig7dsjhb7gqdqoougpb
-X-HE-Tag: 1777573523-455808
-X-HE-Meta: U2FsdGVkX1+Gyppvv+oE5lffB5d4GQ+3iRbvtUIt8CPZDa1UdkzXmtXaFoqgVwbI2DPU/KWS1l2xilBrHaJFFwuqUk8AORKG75gHeZ5e8mCCCj9M9jN+8qxIrZG1YDGCBHRyVDaAGzCorfapSV/u113iR+LQI03DKscGxPE+Mi9pRQcCYJBle0MvKh2/0fLdYTpCZA5f3aUVd7j4meYO3lotmcBjDzG5Wfi0YDl9ZWDjmJUurB+liCEm8KDGbdVZyc3IUc/kaie7XMBMby8khPvvhGmjzpFGRn/NlbB67kWPz0jzRRmoOD0uUPFFmxhWYPO10wsn5nWf+9fndUnwGup3CitesrAPKEA2JSyaPy5JfYSSLAcLv1V7lMCHiBBWAo1BHEp6V4/H9ik5GqBYwOUxZM7MuI+ItMITY+HQ9k3BPz/MHhZtQ6ZDhH+uPd7ij3O2tZY6KDcZ1HO/VCksHECaW6TPIBQhTi/0AXBHcx5uD84g9ENJLUcVs5EOeRJK8gL49c5sxuFuXBnelCDUzfUceS2ZwnRcTNqGXEkK+gHhx3uzyWMDF075pFT4BK5X/4ImEw/J1BYj2IYFcT3UBRj00Ra0+I0o70XvodQ3YMEleszPKb5r3mOBG8tI0GAU6HdaJOBiUtbEqviZgjUr2/9oriOdDdV+9ZMeJadUYBWajSEMlR5Z65kBnIBwBiRhGZZd8TMf0tnd1V/FWu/+IXluZBfIRUjIHUH6oW6UgLsshsifMMibMt2E1aobu0EcDRQbqu/GV5NN4MH5L+ANuqYQF2Xc5Z1giDWcblZC8RlY8R6gaQeuKUMD8+2da+CwZvnQVwQ0tOJws3IHED3Q+3P3ENnSICJWYzRCJttiXJBNy2KhXIr0h9OAaHygiyv3c5Wh8kDnjwe4rPw9ODGJOa5Hrdm/IBYzfZ7V3vzkrqR9xwWWKX9DwvUn6L+oqf2XrwTNxfQE9HNDhtYgpjh
- 7O+wZHiE
- foYwWjiGy9pSb+kEoC5rjbuhidCA/GJqYPhNVC+yhzcbuJQZSNwhQrQ/pFVHVL+WHEKZLWnQdP4IKM8pmff59YFaqy5VHWW2bdMSizWWAchGVZF7rOMX6SNZdCc3o2ajxsiTJbv3pgTYIqaTKRlI1gn9yiAa0mo5LoXit2TuNzEstuFFa0oNJtdREIQmd9ZjmVmJIXFmrMrhKfUvi+yZ48lJ12GFTe2I55lLseIQRN9nkbwTpbu9gJTga8GXvoq3wE0KDIWdpztXDuGK/NLaCwL8FzNeA2geEVU0OeDspAddHbT5YctHfZOli0MvXMTqdyA4q6lxT+qnwNd6y0Krzlx/v/Pv61asEhFbkG3oUEhs3xJOzTvCIEfLu5Q==
+X-HE-Tag: 1777573915-69699
+X-HE-Meta: U2FsdGVkX1+IXIEczdoiG7Rcywme706oqjYZ18+JqoujCQYaMUKP6DQJ4jJPANTfhRW+GwFcW7tjaGjDJM8DB0YOCxtwRUldDI4V3DhcCnhQvmq+oRzxfKnrVAozfPAqXzXfT1KOwUy8tWXK6/KOJ32NUxKcf4L5K1uEt9SwkAJIu1FBqOe/idpej734hdG5NMV/0V6JwQD5enhE3HXFBcJKqZDiAqztTy8UKi+O4JWzcPLlvcFkIf9c802UuRr3uwt8Y48VDrkPrm2Qej+JaX9dJiIVPCKwpSkheSqXYru/8AaxCogVbJMiNdHHybdYI9QuAvlcmZewM5HYtUh7Al4Fz89aNvLUMSsPnYQWeKsvXzXWVREMimFe379H6gOzwRlipKM4CKc0zL0YDR7gOGCKUBinyH80uIMryF/NC7BNeZRRgju07+kyf/QSiKCX/Tm6m0LBY6fiUadDcOKzB7XuMu9ofNqEaMt29PHn91/vwFGzL1Hmzot0mr7glriDOL5Nzwrg3trKWHl42dYvdtAUA4NtuVCSTOFOKA/OBzm3zK5dJc+ddDwT/oRg5gNHMv+uYBV2BPsa0SAMm+LtozFBDiExEuBw/hw74AGs/CWfMm+2EBImwflWiuAA4IN5qgDUEWAN5lb8/TMeLbKGJ+1iTmCPRDo1+u1zzXXXmI2oGDc572Mi+tQ924w74px7YJwS4BZ1ICBUT5ZXOftlteQ+LqE9Tqbd+ZxQsfeQFN2EcuRvwn0iVaXS5D1XGUXTOCME7z8mFU7KBjgvfNSPapdS4dyZgjC0TrPGEvhxnAuvVvRtf1UnVBOIp6K6d4MeKi+wvWp+klE7YR68Urq52NJtL/PcDRI6QQQswfdr4LSGxMhNhOZ1pVOWVXLU4ejYVvVzX+ZjB3MAnuk9K91rKwz87BjEIFPcAhXGukD2aQ5UyCDztC72vQzm4j4TvQfuCwMRmbNrUedlWqn4No4
+ OB+WQUfx
+ 76KJYjKfi1ejGu8WKDcHWh0+WspLoUnnbXwb8NNIAJzQlotnJz5b2o7RFDwJQDP1avO88+hVGiEUt1EsOsasAEgg7ppGGv2Io0qZtue0TtQ1za9C+I+Zc+VHmF/Zse6t6OPldc6E+2r235JWiPAqxc0fCr/WKlcPesGxjupKPNOXfxN3frr1oBm5fD33CjPb5NpoTirwPz28HESAWh7l5rsvkOih+PfKwzGFtkiuRgw2V5x0NAsSd8MlqbG+ua9XWxa1Ifcrj1HIzujrgTBbRop29/UjP1dCcBFQAft7R4SFyUzcJ5JsQ8j77GlUl0XeKOMUEXWxnG5bckz9lmY0/S7p6IK2a09k/oiOYq0dNwM2Ra8Vwly1n5ZOn1iQs7/PfS0TjqgKwG7z1tgr7huKzMRekwkTN0xERJXZr0uuvnRx3VD6SRy7LuaI6DaPD+tW3mngUl73WXU9tw8NbqKrDQpFQO7FBY81AbSOkKrEZs7yE5LevWJFVN+mTNxJ6FzKqSxk1t2sSKQvNkBttCUXm0FKWhZSqUX+gAq8O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,99 +145,335 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 02:12:13PM -0700, David Matlack wrote:
-> On Tue, Apr 28, 2026 at 1:20 PM Vipin Sharma <vipinsh@google.com> wrote:
-> >
-> > On Thu, Apr 23, 2026 at 09:23:06PM +0000, David Matlack wrote:
-> > > +int pci_liveupdate_preserve(struct pci_dev *dev)
-> > > +{
-> > > +     struct pci_ser *ser;
-> > > +     int i, ret;
-> > > +
-> > > +     guard(mutex)(&pci_flb_outgoing_lock);
-> > > +
-> > > +     ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **)&ser);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > > +     if (!ser)
-> > > +             return -ENOENT;
-> > > +
-> > > +     if (dev->is_virtfn)
-> > > +             return -EINVAL;
-> > > +
-> > > +     if (dev->liveupdate_outgoing)
-> > > +             return -EBUSY;
-> > > +
-> > > +     if (ser->nr_devices == ser->max_nr_devices)
-> > > +             return -ENOSPC;
-> > > +
-> > > +     for (i = 0; i < ser->max_nr_devices; i++) {
-> > > +             /*
-> > > +              * Start searching at index ser->nr_devices. This should result
-> > > +              * in a constant time search under expected conditions (devices
-> > > +              * are not getting unpreserved).
-> > > +              */
-> > > +             int index = (ser->nr_devices + i) % ser->max_nr_devices;
-> > > +             struct pci_dev_ser *dev_ser = &ser->devices[index];
-> > > +
-> > > +             if (dev_ser->refcount)
-> > > +                     continue;
-> > > +
-> > > +             pci_info(dev, "Device will be preserved across next Live Update\n");
-> > > +             ser->nr_devices++;
-> > > +
-> > > +             dev_ser->domain = pci_domain_nr(dev->bus);
-> > > +             dev_ser->bdf = pci_dev_id(dev);
-> > > +             dev_ser->refcount = 1;
-> > > +
-> > > +             dev->liveupdate_outgoing = dev_ser;
-> > > +             return 0;
-> > > +     }
-> > > +
-> > > +     return -ENOSPC;
-> >
-> > Since it is executing under a mutex, and we already failed
-> > 'if (ser->nr_devices == ser->max_nr_devices) check above, will we ever reach
-> > here and return -ENOSPC?
+On 2026-04-28 16:42, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Yeah I wouldn't expect to ever reach here.
-
-Will you be removing it or want to keep it just in case scenario?
-
+> A lot of tests require free HugeTLB pages. Some need just a few default
+> huge pages, some need a certain amount of memory available as HugeTLB, and
+> some just skip lots of tests if huge pages of all supported sizes are not
+> available.
 > 
-> > > diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
-> > > index 5c0e92588c00..5b4c8d9e462c 100644
-> > > --- a/include/linux/kho/abi/pci.h
-> > > +++ b/include/linux/kho/abi/pci.h
-> > > @@ -23,19 +23,20 @@
-> > >   * incrementing the version number in the PCI_LUO_FLB_COMPATIBLE string.
-> > >   */
-> > >
-> > > -#define PCI_LUO_FLB_COMPATIBLE "pci-v1"
-> > > +#define PCI_LUO_FLB_COMPATIBLE "pci-v2"
-> >
-> > Just curious, why did we change the version here?
+> This all resulted in a huge mess in run_vmtests.sh that sets up some huge
+> pages, adjusts them later and restores some of the settings if the stars
+> align.
 > 
-> Because a field in struct pci_dev_ser changed.
+> Add APIs that allow saving the state of HugeTLB and setting up the desired
+> amount of HugeTLB pages.
 > 
-> > It's not like just
-> > previous patch is working enough to perform a live update. As the config
-> > is experimental, can't we just keep it PCI-v1 for the whole series?
+> Saving the state also registers atexit() callback and signal handler that
+> will ensure restoration of HugeTLB state.
 > 
-> What is the benefit of keeping "pci-v1"?
->
+> Since many tests use both HugeTLB and THP, the atexit() callbacks and
+> signal handler are restoring both.
+> 
+> For kselftest_harness tests that run fixture setups and test in child
+> processes add a constructor that will save and restore settings in the main
+> process.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>   .../testing/selftests/mm/hugepage_settings.c  | 178 +++++++++++++++---
+>   .../testing/selftests/mm/hugepage_settings.h  |  30 ++-
+>   2 files changed, 183 insertions(+), 25 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+> index 4ae7332b5e1b..9d31b53dbc67 100644
+> --- a/tools/testing/selftests/mm/hugepage_settings.c
+> +++ b/tools/testing/selftests/mm/hugepage_settings.c
+> @@ -306,31 +306,12 @@ void thp_restore_settings(void)
+>   		thp_write_settings(&saved_settings);
+>   }
+>   
+> -static void thp_restore_settings_atexit(void)
+> +static void __thp_save_settings(void)
+>   {
+> -	thp_restore_settings();
+> -}
+> -
+> -static void thp_restore_settings_sighandler(int sig)
+> -{
+> -	/* exit() will invoke the thp_restore_settings_atexit handler. */
+> -	exit(KSFT_FAIL);
+> -}
+> +	if (!thp_available())
+> +		return;
+>   
+> -void thp_save_settings(void)
+> -{
+>   	thp_read_settings(&saved_settings);
+> -
+> -	/*
+> -	 * setup exit hooks to make sure THP settings are restored on graceful
+> -	 * and error exits and signals
+> -	 */
+> -	atexit(thp_restore_settings_atexit);
+> -	signal(SIGTERM, thp_restore_settings_sighandler);
+> -	signal(SIGINT, thp_restore_settings_sighandler);
+> -	signal(SIGHUP, thp_restore_settings_sighandler);
+> -	signal(SIGQUIT, thp_restore_settings_sighandler);
+> -
+>   	thp_settings_saved = true;
+>   }
+>   
+> @@ -399,11 +380,31 @@ bool thp_is_enabled(void)
+>   	return mode == 1 || mode == 3;
+>   }
+>   
+> +#define HUGETLB_MAX_NR_PAGESIZES 10
+> +struct hugetlb_settings {
+> +	unsigned long free_hugepages[HUGETLB_MAX_NR_PAGESIZES];
 
-I don't see any benefit in keeping v1 or changing to v2 as well.
+It looks like we don't actually use this in the API or maybe I'm missing
+something?
 
-My reasoning is that before this series is merged, there is no real need
-for versioning here. This is first series which is introducing PCI
-liveupdate. It is not gonna be that someone has merged patch 1 only, run
-its kernel and then kexec to next kernel which has patch 2.
+Otherwise, the API looks great to me. But if you allow me to bikeshed :)
 
-> I think it makes sense to follow the rule we set which is to update
-> the compatibility string in any commit that changes the ABI.
+I think I'd do:
 
-Okay, this is also fine.
+struct hugetlb_state {
+	unsigned long nr_hugepages;
+	unsigned long size;
+};
+
+struct hugetlb_settings {
+	struct hugetlb_state hstate[HUGETLB_MAX_PAGESIZES];
+	unsigned long default_size;
+	int nr_sizes;
+};
+
+Maybe for the future...
+
+> +	unsigned long nr_hugepages[HUGETLB_MAX_NR_PAGESIZES];
+> +	unsigned long sizes[HUGETLB_MAX_NR_PAGESIZES];
+> +	unsigned long default_size;
+> +	int nr_sizes;
+> +};
+> +
+> +static struct hugetlb_settings hugetlb_saved_settings;
+> +bool hugetlb_settings_saved;
+> +
+>   int detect_hugetlb_page_sizes(unsigned long sizes[], int max)
+>   {
+> -	DIR *dir = opendir("/sys/kernel/mm/hugepages/");
+> +	static struct hugetlb_settings *settings = &hugetlb_saved_settings;
+> +	DIR *dir;
+>   	int count = 0;
+>   
+> +	if (settings->nr_sizes) {
+> +		for (count = 0; count < settings->nr_sizes; count++)
+> +			sizes[count] = settings->sizes[count];
+> +		return settings->nr_sizes;
+> +	}
+> +
+> +	dir = opendir("/sys/kernel/mm/hugepages/");
+>   	if (!dir)
+>   		return 0;
+>   
+> @@ -427,11 +428,16 @@ int detect_hugetlb_page_sizes(unsigned long sizes[], int max)
+>   
+>   unsigned long default_huge_page_size(void)
+>   {
+> +	static struct hugetlb_settings *settings = &hugetlb_saved_settings;
+>   	unsigned long hps = 0;
+>   	char *line = NULL;
+>   	size_t linelen = 0;
+> -	FILE *f = fopen("/proc/meminfo", "r");
+> +	FILE *f;
+>   
+> +	if (settings->default_size)
+> +		return settings->default_size;
+> +
+> +	f = fopen("/proc/meminfo", "r");
+>   	if (!f)
+>   		return 0;
+>   	while (getline(&line, &linelen, f) > 0) {
+> @@ -479,3 +485,127 @@ unsigned long hugetlb_free_pages(unsigned long size)
+>   
+>   	return read_num(path);
+>   }
+> +
+> +bool hugetlb_setup_default(unsigned long nr)
+> +{
+> +	unsigned long size;
+> +
+> +	hugetlb_save_settings();
+> +
+> +	size = default_huge_page_size();
+> +	hugetlb_set_nr_pages(size, nr);
+> +
+> +	return hugetlb_free_pages(size) == nr;
+> +}
+> +
+> +unsigned long hugetlb_setup(unsigned long nr, unsigned long sizes[],
+> +			    int max)
+> +{
+> +	unsigned long enabled[10];
+> +	int nr_sizes = 0;
+> +	int nr_enabled;
+> +
+> +	hugetlb_save_settings();
+> +
+> +	nr_enabled = detect_hugetlb_page_sizes(enabled, ARRAY_SIZE(enabled));
+> +	if (!nr_enabled)
+> +		return 0;
+> +
+> +	if (nr_enabled > max) {
+> +		ksft_print_msg("detected %d huge page sizes, will only test %d\n", nr_enabled, max);
+> +		nr_enabled = max;
+> +	}
+> +
+> +	/* If HugeTLB is supported, request 2 HugeTLB pages of every size. */
+> +	for (int i = 0; i < nr_enabled; i++) {
+> +		hugetlb_set_nr_pages(enabled[i], nr);
+> +		if (hugetlb_free_pages(enabled[i]) < nr)
+> +			continue;
+> +
+> +		sizes[nr_sizes++] = enabled[i];
+> +	}
+> +
+> +	return nr_sizes;
+> +}
+> +
+> +static void __hugetlb_save_settings(void)
+> +{
+> +	struct hugetlb_settings *settings = &hugetlb_saved_settings;
+> +	int nr_sizes;
+> +
+> +	settings->default_size = default_huge_page_size();
+> +	if (!settings->default_size)
+> +		return;
+> +
+> +	nr_sizes = detect_hugetlb_page_sizes(settings->sizes,
+> +					     HUGETLB_MAX_NR_PAGESIZES);
+> +	if (!nr_sizes) {
+> +		settings->default_size = 0;
+> +		return;
+> +	}
+> +
+> +	for (int i = 0; i < nr_sizes; i++) {
+> +		unsigned long sz = settings->sizes[i];
+> +
+> +		if (!sz)
+> +			continue;
+> +
+> +		settings->free_hugepages[i] = hugetlb_free_pages(sz);
+> +		settings->nr_hugepages[i] = hugetlb_nr_pages(sz);
+> +	}
+> +
+> +	settings->nr_sizes = nr_sizes;
+> +	hugetlb_settings_saved = true;
+> +}
+> +
+> +void hugetlb_restore_settings(void)
+> +{
+> +	struct hugetlb_settings *settings = &hugetlb_saved_settings;
+> +
+> +	if (!hugetlb_settings_saved || !settings->default_size)
+> +		return;
+> +
+> +	for (int i = 0; i < HUGETLB_MAX_NR_PAGESIZES; i++) {
+> +		unsigned long sz = settings->sizes[i];
+> +
+> +		if (!sz)
+> +			continue;
+> +
+> +		hugetlb_set_nr_pages(sz, settings->nr_hugepages[i]);
+> +	}
+> +}
+> +
+> +static void hugepage_restore_settings_atexit(void)
+> +{
+> +	if (thp_settings_saved)
+> +		thp_restore_settings();
+> +	if (hugetlb_settings_saved)
+> +		hugetlb_restore_settings();
+> +}
+> +
+> +static void hugepage_restore_settings_sighandler(int sig)
+> +{
+> +	/* exit() will invoke the hugetlb_restore_settings_atexit handler. */
+> +	exit(KSFT_FAIL);
+> +}
+> +
+> +void hugepage_save_settings(bool thp, bool hugetlb)
+> +{
+> +	if (!thp && !hugetlb)
+> +		return;
+> +
+> +	if (thp)
+> +		__thp_save_settings();
+> +	if (hugetlb)
+> +		__hugetlb_save_settings();
+> +
+> +	/*
+> +	 * setup exit hooks to make sure THP settings are restored on graceful
+> +	 * and error exits and signals
+> +	 */
+> +	atexit(hugepage_restore_settings_atexit);
+> +	signal(SIGTERM, hugepage_restore_settings_sighandler);
+> +	signal(SIGINT, hugepage_restore_settings_sighandler);
+> +	signal(SIGHUP, hugepage_restore_settings_sighandler);
+> +	signal(SIGQUIT, hugepage_restore_settings_sighandler);
+> +}
+> diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
+> index 57fbf2f57e13..d6a1b4e5f734 100644
+> --- a/tools/testing/selftests/mm/hugepage_settings.h
+> +++ b/tools/testing/selftests/mm/hugepage_settings.h
+> @@ -6,6 +6,8 @@
+>   #include <stddef.h>
+>   #include <stdint.h>
+>   
+> +void hugepage_save_settings(bool thp, bool hugetlb);
+> +
+>   /* Transparent Huge Pages (THP) */
+>   
+>   enum thp_enabled {
+> @@ -79,7 +81,11 @@ struct thp_settings *thp_current_settings(void);
+>   void thp_push_settings(struct thp_settings *settings);
+>   void thp_pop_settings(void);
+>   void thp_restore_settings(void);
+> -void thp_save_settings(void);
+> +
+> +static inline void thp_save_settings(void)
+> +{
+> +	hugepage_save_settings(/* thp = */ true, /* hugetlb = */ false);
+> +}
+>   
+>   void thp_set_read_ahead_path(char *path);
+>   unsigned long thp_supported_orders(void);
+> @@ -97,6 +103,13 @@ unsigned long hugetlb_nr_pages(unsigned long size);
+>   void hugetlb_set_nr_pages(unsigned long size, unsigned long nr);
+>   unsigned long hugetlb_free_pages(unsigned long size);
+>   
+> +static inline void hugetlb_save_settings(void)
+> +{
+> +	hugepage_save_settings(/* thp = */ false, /* hugetlb = */ true);
+> +}
+> +
+> +void hugetlb_restore_settings(void);
+> +
+>   static inline unsigned long hugetlb_nr_default_pages(void)
+>   {
+>   	unsigned long size = default_huge_page_size();
+> @@ -127,4 +140,19 @@ static inline unsigned long hugetlb_free_default_pages(void)
+>   	return hugetlb_free_pages(size);
+>   }
+>   
+> +static inline bool hugetlb_available(void)
+> +{
+> +	return default_huge_page_size() != 0;
+> +}
+> +
+> +bool hugetlb_setup_default(unsigned long nr);
+> +unsigned long hugetlb_setup(unsigned long nr, unsigned long sizes[],
+> +			    int max);
+> +
+> +#define HUGETLB_SETUP_DEFAULT_PAGES(nr_pages) \
+> +static void __attribute__((constructor)) __hugetlb_setup_default(void)	\
+> +{									\
+> +	hugetlb_setup_default((nr_pages));				\
+> +}
+> +
+>   #endif /* __THP_SETTINGS_H__ */
 
 
