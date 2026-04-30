@@ -4,81 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6846FF886F
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 22:42:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43E1FFF886F
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 22:50:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8450A6B0095; Thu, 30 Apr 2026 18:42:02 -0400 (EDT)
+	id 6071E6B008C; Thu, 30 Apr 2026 18:50:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F5EF6B0096; Thu, 30 Apr 2026 18:42:02 -0400 (EDT)
+	id 5B8076B0093; Thu, 30 Apr 2026 18:50:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70AAA6B0098; Thu, 30 Apr 2026 18:42:02 -0400 (EDT)
+	id 4D00C6B0095; Thu, 30 Apr 2026 18:50:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 58AFF6B0095
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:42:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD67F40204
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:42:01 +0000 (UTC)
-X-FDA: 84716696442.24.41CB072
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C7666B008C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:50:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CF3C816029C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:50:14 +0000 (UTC)
+X-FDA: 84716717148.16.EC7B347
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2BC09C0009
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:41:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KtQf8hxz;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf02.hostedemail.com (Postfix) with ESMTP id C031580003
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:50:12 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aUY4HkFZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777588920;
+	s=arc-20220608; t=1777589412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=AhXspHVJ0aPjrnDzi5apJ/Np+ujm+YlrRt2IOonH3TU=;
-	b=Bk/Hb9Qy0qHsJBeEX7RNfGMasDoUW0BDRiNyIPlRVC2hUfePCcxUVoKHtLMn3yUHgZqxhd
-	9ui60yJyrmUF2/GTufi1VSl1w8DoCsxKofAJxR20LKJxiNiHbxiXWNI6JuzuRnL6yVJODG
-	tTmsQc7eABGDEjxxwBqBgPdOgZRq7W0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KtQf8hxz;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777588920; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nyIAHMCO2XSEKhIrNQWe82Ob3aOc1tSJG1laNn5OlYg=;
+	b=nG3ptk+kgnRkmO3YyV+fZWOeFnVoQwsUjdAfgrvx3o+2hlPJWRhun7nFHuwCkpOcWM5eAO
+	TSF3LDB78qIlrbXQCfvAuDY2QRzO5tZUVERp8XxRpb2Y3sUMYLDKPOnmzhYoN4+hm2hfZX
+	UuyKwrsCjITwSZfupDH2DRVZBqMUu+E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777589412; a=rsa-sha256;
 	cv=none;
-	b=QjRXQJPV8s20uNxuu1MfDyPm6yuAjZmeIepzEuNzCvpnaLjl6OXmTe8E/ggDAgaZf0URe9
-	kRd/kt/nxeG4kzx1z20xOXTx9NQDUeSeRBYE5IjWRpdftsPCQ2JmgRxCjIEbA6x1c0Nw6I
-	G5lcdW4W1P14TtQViVrsMzs5LdtVZNo=
+	b=e8tOIP84cHw01ngcmoX2ZIIBwGgCDKNYvn+0CPW7AhEGtSuyP/+Ho65d6058xKesd3UhFb
+	t9tHTQyjSvdkf8wTxfxqGg5I2rtuTtqTEgT6SW/IyyN1pKB20UYs585CK7gYMcIcte0R0K
+	iR/ypM7Vd8MmnUnStf3peLqmvWqQ44M=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aUY4HkFZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F040843676;
-	Thu, 30 Apr 2026 22:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B469EC2BCB3;
-	Thu, 30 Apr 2026 22:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777588918;
-	bh=Zpkg7ICr3kV+8T36Pv6VLyLhBdhfgU6eFlshvNHL7Rk=;
-	h=Date:From:To:Cc:Subject:From;
-	b=KtQf8hxzxa1umru6qOYk1rwl6aZUk6ARl9uDyc6Uf7f+OBGRBprCukpvBRpZmzbDC
-	 eBKFgZOxuadaPBjMhUmzQ4bLXRJs5WE39YL0UDuSvbb/ldBbqoxUXjmT6AUXgxCj0e
-	 dVmVDJvJxLLbrh7ksjQxdSvYSTmtbThpxZ3caF4I=
-Date: Thu, 30 Apr 2026 15:41:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hotfixes for 7.1-rc2
-Message-Id: <20260430154158.4739147fd0129804c9e6766a@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: oqry9qcx5yobzu5ntx5u7seemxegqco7
-X-Rspamd-Queue-Id: 2BC09C0009
+	by sea.source.kernel.org (Postfix) with ESMTP id C62034182B
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:50:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B6EC2BCB4
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:50:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777589411;
+	bh=EwR29NH5HVcLbVvA5ViI57mAmHT3DBCHHsLg0gf7Cic=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aUY4HkFZ3F+KafBZ6OIkMxG6Y2Y8JS0FkY2PwkYxuTz+cVn9fSvKKE2YQdKg2spvh
+	 6raIIT0c0G0ePpmsghCC437gEyvayr78D6J+ZfDO9V5YQtSzd7Q49Txdj8sCrPwiGv
+	 nTorLwZPDzKzXj1JaDy4b8bZiPOPzaVu0F5DU33VbFYiekEHXoBc+YKL6EanXCk8OI
+	 2OlcfkYa2d//mAOSPB/KGJLahibeY8cRf9qyJuPV45PMMgigulWUS5oBj2Z3DThLd1
+	 cE7b5V3TuSZpd3XhhW1dCSSU04W9vcgqB90ZMKhk38hlUlzHFYKkCiSFrBZzOaF+BI
+	 gOTxmKJ2LTVbw==
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8a093c784b0so12551856d6.3
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 15:50:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/cVbvTW7hwXwFDJT4HqxzeXMHpAI8N+BJVAGp3ZunIuwB40H6siMAWar1KPHYwjZXHyduT4Mgfkw==@kvack.org
+X-Gm-Message-State: AOJu0YylG1hEem94R5v89cofTH9WV8QRdO02SKFG1E7OkUMRA/kvcQH/
+	BW1u51S0fJBRbG9KRES+bd3XeEP0ccHlJH7l4ZXrY8XECxRx4IBjyklemu4AaKUjVhVnpvWfko6
+	5S0txcQcioZyPAUmrtg8Mx+XyXMeGMaE=
+X-Received: by 2002:a05:6214:3f81:b0:899:f092:9da with SMTP id
+ 6a1803df08f44-8b3fe7bd179mr81439146d6.28.1777589410935; Thu, 30 Apr 2026
+ 15:50:10 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260430040427.4672-1-baohua@kernel.org> <afNM-gIqxpyJ6ro7@casper.infradead.org>
+In-Reply-To: <afNM-gIqxpyJ6ro7@casper.infradead.org>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 1 May 2026 06:49:58 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+X-Gm-Features: AVHnY4LNqeENq1Hu8yfE3Ha6l6qy4pcPzLhOvHSM0QbVepERNdbmRODWwcwvH-c
+Message-ID: <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org, 
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de, 
+	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
+	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777588919-705200
-X-HE-Meta: U2FsdGVkX193ULbixyP/uzojQk5iPRHJoKauuGFosRij8YtK9661KiW7+q1PYDB/jRuUGg2mKV1yMeJZ/8PE10olUHqlRDv/HtkkjFnw0kt+hCe2lZkGdW4Xdw961cFv8ZZRezyFcmSIQdJ8o/hJRabQtRMriS3ZDnSV0qnxzeKeTkWD95c2CExVKGIV9Gk+hNcbfhxMFTniTwGMss0KIRWyZSRJulCcY0QcbsnQ28dtLU+jl3bG3wj6tr6IN+quBIHgEeo4lG0U3N2K2Difq18lLpRZkHa5f1wcGaq5CEHGSKYyc7k2rLSWj+aYg4DwfGrHQBFWtLi57CxJgAENaV/cBUvZwVUyhp2Pzn9zMZuLVSHfATW8w8EZjKXNSi8yyejus5o4t/CGczOGHVxocqOc9V55VH57S4XIvQeiYbjEthQNtFtEf6d3iRLfMgHs9ixDFwljsaOA92z1pLLbuU3P5YmXo9sc55L90va3a7TDYiP8MzICJXk/wlGGDBVb//BmRRemMmw+gCDr58/WRqz4fiiUv/oUN+oGCZxJbgLR47P57XHwtpjunGlQMUBJ/WT0dPXwmgj/OTV1IRvO0MWXE/5yOP+R/ytZF5fhAPIZl1efe+Bv9HXco9kckIz8B2xmHJVMGXnZog5JvC8BVZBAus6X2Adp8B6NQX5gPyp+QZgLn2sUrdkZtV1f6MI1mhK+f1ET8kud7mHZkf6BQm7Z1fXC8Hfy+GIw1sqSMwSwY38pUoOUrs15qO+AF1GtNtNv64tEDkauLRuVXmBAvAHZz6vv6r+cOWOGoamKaCJb8Ebpw9wegUBw4SjW2wfujAQ83LdwFZnNkdPgeMpB5v2mtd78LwZbT4bp+gjxDSazhz7o7QM1GNjtcOEsfdGjTkM4qt16WNykay0Ak7o/zfwNQnAQI7RolH5SI064wQyueXNHxLqkngmYRC3DoRtOG60sKfY1Xijbp7JtYIN
- NG3I+Tg5
- RzdWQHd3yu0nnl8fi/woh/gTBx76TzYY3ZeT8eTeL6yOBpj22Lp1hUrdoY+7UOlGndljqchoNeqsjCPNWMCkF7lk2y8f91Np0vbu/leBtEKxl5NvM3KlThh0gu4yKP5VD4kt2SHG6eYHPa05OsEYldpbUVctEZVjN+Kw25CqYQijBKdntpPZHPzYXUfjgwrYgBWq8Or1xwFpr8J0GLPzvuMz73UZykW5iZNdtWjvsBlnpMCBvQHYTXsNfrH8G8ZXRhOpgUY1NUTryHEQ=
+X-Rspamd-Queue-Id: C031580003
+X-Rspamd-Server: rspam04
+X-Stat-Signature: bbrahrsjnxth1bsfe6b3kk979xo7wtzz
+X-HE-Tag: 1777589412-711990
+X-HE-Meta: U2FsdGVkX18iapIO5UzEB4kHxALD+f5tfGQ33ss72fYP+1sja3sAd5ON7TBhboPOb0vqRuKY+nkz8qXWgeNyQx0EnGD6tHCG3+iQT8DyMbAwmxHbqljlIarIh5+Q8aWNpMS+cNRDIOdJa8/tIiHAoWY4c6qsRYX+YT7UKREqSgiyY1zyAqWophPMczFR04NA+XdnToPx+3IB+ZD4n8CRZK0twJ58efiWc713wWK1RE3TS35ar9JvmG1mRUb/3X8MtZY6t1ifOW/feGKD5/WyWyHdhxNu39thFNhpIxVuDDDQscRCO4p4H/a//rRxtoS3EpBaIHCSk+WhOFqBir+MUT7lQTekkYuNOat2qCn1FDPlVqdo4SqPEBdKgVKzloIw3BVpVOPVx8ivVoUE220j80qapQ8GqP6JjH29h2p9hAB23m1b/kbMR/bXqcvPfz+27Mf9JqGY5CAFqJmyRO5USi1BLiDE+5oiO2mmR566YxD78DnOCpQ92t6UEYH66LT9i0Vdos09gDhDhKqdM9rHMMZ/3cbxhRt5DCULiwuttS6hdG6BKaUm5XIDWuWEMhme1QTHVnePYIyuWfjBVHlYcgBQElNhaAouUPMXVEmAhTWHVhZHjqbSpvV5/l0BLQNmYCx3cHGBckY29FDqPL82cHCFke1U0yc2VE8GrUjOsqFwrCtWj4NMrPkDrFxyj30iOUvfrAXggkWfiNBr3+xRlN5vKTGzB6oF6GE98gvmtdM42Wn++dLKQ3rTQu3zof0t+oXG6s9R2HZXcgqeOArsx8DL7RTI+E/0yF5HkuQxTwDpSP70rivWbdWRXN9EV7lalIqyqtqPGu91DatqvW1pI/N51azLmyHIYS5MGPdPCszmT9IpbqY9BLlAvNtMS308Mb0MvlfQcGIHDZzl1Y4eIObP/tEJMdtsyJkV8bkGZmT2tVbY+bkO3QQcBGBu/wxfo6hYF9iWz/RCxGu/JY4
+ 009JyIMr
+ ideS9w37DqVifR5ek33WLcZ2y0jMt5pr+FxXO1DviEIrUwZDGrzRaKr7okOLDjKBJHN6ZqyGG8dZkrMV7uSbTmRNfhD59bYF+mw7b5Bt0ZdVMaSc1VHD8CBbWiCJQ3pX03bnUZE4ToPBQdCVl2RwRlI/ZILqwXnSrBaLb269BSyXzOGUwy5Z7QMCXIFEmeRUciBWaEEXjIc3ZSfhhwC1jLGFjO2x2epq/4jxTKtWRMkjOf+ZKJ4y4S/M6jY8J/TRRxpEz8B2zjaCXlRsms64PwI8asuE5wAH1/r3ArxvugDcctVfMIvEXPZrUe0e/2s9WzDyrEOrCY1g/q+fjEdBI31KI7cssM2DnSXI+WoXzPbMYQbSmUglACkZMFC8EONAkdFucGF7TRS0e8GhA7nOTv7IpE10tmX6vFK464i/EF/29xWJpPhlpOmiD698g89qm1WlVgHaLoNnFcoT4ZblO4bLu1XUc3LaRdJoYWmrc1dCAtR3wmmQndJmdvaekCtrrHFE7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,106 +111,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Apr 30, 2026 at 8:37=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> On Thu, Apr 30, 2026 at 12:04:22PM +0800, Barry Song (Xiaomi) wrote:
+> > (1) If we need to wait for I/O completion, we still drop the per-VMA lo=
+ck, as
+> > current page fault handling already does. Holding it for too long may i=
+ntroduce
+> > various priority inversion issues on mobile devices. After I/O complete=
+s, we
+> > retry the page fault with the per-VMA lock, rather than falling back to
+> > mmap_lock.
+>
+> You're going to have to do better than that.  You know I hate the
+> additional complexity you're adding.  You need to explain why my idea of
+> ripping out all the complexity now that we have per-VMA locks doesn't
+> work.
 
-Linus, please merge this batch of hotfixes, thanks.
+Yep, I know you don=E2=80=99t like the added complexity, but I would rather=
+ prioritize
+user experience over simplicity. Let me try to explain in more detail.
 
+1. There is no deterministic latency for I/O completion. It depends on
+both the hardware and the software stack (bio/request queues and the
+block scheduler). Sometimes the latency is short; at other times it can
+be quite long. In such cases, a high-priority thread performing operations
+such as mprotect, unmap, prctl_set_vma, or madvise may be forced to wait
+for an unpredictable amount of time. For example, if low-priority tasks
+trigger page faults and issue low-priority I/O, a high-priority task
+requiring the write lock may end up waiting for an unknown amount of time,
+depending on the block layer and filesystem behavior.
 
-The following changes since commit 254f49634ee16a731174d2ae34bc50bd5f45e731:
+As a result, high-priority tasks are exposed to unpredictable I/O latency
+introduced by many low-priority tasks that may generate a large number of
+page faults.
 
-  Linux 7.1-rc1 (2026-04-26 14:19:00 -0700)
+On Android, latency in certain tasks can significantly affect user experien=
+ce,
+such as interactive threads. Priority inversion is particularly problematic=
+ and
+should be avoided, especially since we have no clear bound on how long we m=
+ay
+have to wait for I/O from other tasks.
 
-are available in the Git repository at:
+Meanwhile, priority inversion can propagate through a long chain: a writer
+waiting on I/O from multiple concurrent page faults may end up blocking oth=
+er
+writers and readers as well. A long-waiting writer can also amplify
+mmap_lock contention, which we still rely on in many cases.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-04-30-15-39
+2. VMA sizes can be highly uneven: some VMAs may be very large while others=
+ are
+small. We used to have many reasons to release mmap_lock when we did not ha=
+ve a
+per-VMA lock. Since VMA sizes are not uniform, those same considerations ma=
+y
+still apply to the per-VMA lock when a small number of VMAs account for mos=
+t
+of a process=E2=80=99s address space. I recall that Suren also mentioned th=
+is[1].
 
-for you to fetch changes up to 99ebc509eef52675ae5bae86aa2a53e15594e4a3:
+So I would prefer that we hold only the per-VMA lock and avoid retrying the
+page fault when we are reasonably sure that I/O has already completed and w=
+e
+are only waiting for short-lived conditions. Uncertainties in the block lay=
+er,
+filesystem, and GC behavior, as well as latency-induced priority inversion
+chains and potentially amplified mmap_lock contention, can significantly hu=
+rt
+Android user experience.
 
-  mm: memcontrol: fix rcu unbalance in get_non_dying_memcg_end() (2026-04-30 06:13:20 -0700)
+[1] https://lore.kernel.org/linux-mm/CAJuCfpFVQJtvbj5fV2fmm4APhNZDL1qPg-YEx=
+w7gO1pmngC3Rw@mail.gmail.com/
 
-----------------------------------------------------------------
-20 hotfixes.  All are for MM (and for MMish maintainers).  9 are cc:stable
-and the remainder are for post-7.0 issues or aren't deemed suitable for
-backporting.
-
-There's a 2 patch DAMON series from SeongJae Park which address races
-which could lead to use-after-free errors.  And a 3 patch DAMON series
-which avoids the possibility of presenting stale parameter values to
-users.
-
-----------------------------------------------------------------
-Breno Leitao (1):
-      kho: fix error handling in kho_add_subtree()
-
-Dan Carpenter (1):
-      mailmap: update entry for Dan Carpenter
-
-David Carlier (1):
-      mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()
-
-Joanne Koong (1):
-      mm: start background writeback based on per-wb threshold for strictlimit BDIs
-
-Li Wang (1):
-      MAINTAINERS: update Li Wang's email address
-
-Liam R. Howlett (1):
-      MAINTAINERS: update Liam's email address
-
-Lorenzo Stoakes (1):
-      mm/vma: do not try to unmap a VMA if mmap_prepare() invoked from mmap()
-
-Marco Elver (1):
-      vmalloc: fix buffer overflow in vrealloc_node_align()
-
-Mark Brown (1):
-      selftests/mm: specify requirement for PROC_MEM_ALWAYS_FORCE=y
-
-Pasha Tatashin (1):
-      liveupdate: fix return value on session allocation failure
-
-Pedro Falcato (1):
-      MAINTAINERS: fix regex pattern in CORE MM category
-
-Qi Zheng (2):
-      MAINTAINERS, mailmap: update email address for Qi Zheng
-      mm: memcontrol: fix rcu unbalance in get_non_dying_memcg_end()
-
-Sang-Heon Jeon (1):
-      mm/hugetlb_cma: round up per_node before logging it
-
-SeongJae Park (5):
-      mm/damon/sysfs-schemes: protect memcg_path kfree() with damon_sysfs_lock
-      mm/damon/sysfs-schemes: protect path kfree() with damon_sysfs_lock
-      mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
-      mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
-      mm/damon/stat: detect and use fresh enabled value
-
-Sourabh Jain (1):
-      MAINTAINERS: remove stale kdump project URL
-
- .mailmap                           |  5 +++
- MAINTAINERS                        | 30 +++++++-------
- include/linux/maple_tree.h         |  2 +-
- include/linux/mm.h                 |  2 +-
- kernel/liveupdate/kexec_handover.c | 21 ++++++----
- kernel/liveupdate/luo_session.c    | 15 ++++---
- lib/maple_tree.c                   |  2 +-
- lib/test_maple_tree.c              |  4 +-
- mm/damon/lru_sort.c                | 85 ++++++++++++++++++++++++--------------
- mm/damon/reclaim.c                 | 85 ++++++++++++++++++++++++--------------
- mm/damon/stat.c                    | 30 +++++++++-----
- mm/damon/sysfs-schemes.c           | 24 ++++++++++-
- mm/hugetlb_cma.c                   |  1 +
- mm/memcontrol.c                    | 29 ++++++++-----
- mm/page-writeback.c                | 16 +++----
- mm/userfaultfd.c                   | 12 +++++-
- mm/util.c                          | 26 ++++++++----
- mm/vma.c                           |  3 +-
- mm/vmalloc.c                       |  2 +-
- tools/testing/radix-tree/maple.c   |  2 +-
- tools/testing/selftests/mm/config  |  1 +
- tools/testing/vma/include/dup.h    |  2 +-
- tools/testing/vma/include/stubs.h  |  3 +-
- 23 files changed, 262 insertions(+), 140 deletions(-)
-
+Thanks
+Barry
 
