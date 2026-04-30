@@ -4,135 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC1C8FF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 11:38:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E020FCCFA13
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 11:58:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 638826B0099; Thu, 30 Apr 2026 07:38:09 -0400 (EDT)
+	id 9FF186B0088; Thu, 30 Apr 2026 07:58:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60F766B009B; Thu, 30 Apr 2026 07:38:09 -0400 (EDT)
+	id 9B0276B008A; Thu, 30 Apr 2026 07:58:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 525766B009D; Thu, 30 Apr 2026 07:38:09 -0400 (EDT)
+	id 8EC9A6B008C; Thu, 30 Apr 2026 07:58:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 407AD6B0099
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:38:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E85BBC0372
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:38:08 +0000 (UTC)
-X-FDA: 84715023456.18.0D870FC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 07F20140010
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:38:06 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fqsPm/rK";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7B5B46B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:58:05 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1AE211B89DC
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:58:05 +0000 (UTC)
+X-FDA: 84715073730.22.00FEFA7
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 67ED5120002
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:58:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lkBRgshz;
+	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777549087;
+	s=arc-20220608; t=1777550283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VImvNkLnmKjIPFDRdC1LUC9wjAT1Asb3g0SlBW6myr4=;
-	b=Vdw5eRQMvavIh/3wMnqcRRWXw9keIyIzsV9nlL4shSC8awvfsXwejjab2uK+nuZo02SfzW
-	PuF+cVXF7eV47tu4yczs46zo/+6H74dNjRHb+0IKvemLhAX5exZXT15JHYnQZI/GWUESOK
-	3tH4Qbrb937DBNgwcghNZ98Mi3jiYZ0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777549087; a=rsa-sha256;
-	cv=none;
-	b=XQ/ySuwczRn4+anl/alD+MhQrINmcvcTJT9e/gDGLT8GWhXGSMoCh2v6LY+bpj3XPAWu8I
-	9ii9LSwKtcS7V6bODYCk/PFj1ztp2RnOcq+nvc3YOraaS37s++u4TIwZrzDFwwcfSLx6zk
-	l+XtStqTouMAIDHgXuCdP3+JoQrs4mE=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=rueCD1ZsgcCsQQilyqi458mm+zVO0hUPiotgswNp7CE=;
+	b=m4hD3QmQzqKUyadpgrppIzL8k2xkWEJCvCIPwr+P435XJtwwiJWFFjg1WL3m2RtK+NC5XG
+	BJXb7SlujdqH+CR/M07NFJlSlfPTMac0AkT/8IedjFzAU4wmZ8Rx4tDB7egqgYo9NcsH2g
+	LalGQjep9ZcRDM7KMZ3NdLOU3NTqzlc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fqsPm/rK";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 172EA406FC;
-	Thu, 30 Apr 2026 11:38:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D60C2BCB4;
-	Thu, 30 Apr 2026 11:38:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777549086;
-	bh=pdTtFTvRthhjTyLnstPF8Gjyp9WZtjRHT+8bsADDfQs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fqsPm/rKBAqvXQoV32YglHso24WGilNTSccNOexAFSTCJarqJCupiBRZa2mEA5Oam
-	 G3huydp2vrKXxy5YNxNXVScLV2HeUjKZjnz/7oBdOSrR3YDh4LnR0o5YzrmHJa4bCM
-	 MqjbDHn2ravvfE4EfTb4Q3jDiW9Ie8wVRuwUV40X3byWEYCzgs8UUPzEoelSVZxh2b
-	 wnTM0jjLDkpJ5ceSM6H72sOdUG/FN2MZU5uP3yhocis7BoCie8xKKg5ty+AgYBdegn
-	 8TsaY133uEBqX08D1YKHMxaIAm4Zqb68wTsB9dtC6froCE79VuefMzN6ZZDFGAPKVa
-	 ZakioZ4idttnQ==
-Message-ID: <d5f17a01-4504-4a7b-b58d-c183cedc37f1@kernel.org>
-Date: Thu, 30 Apr 2026 13:38:01 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] userfaultfd: merge fs/userfaultfd.c into
- mm/userfaultfd.c
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Peter Xu <peterx@redhat.com>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260430113512.115938-1-rppt@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260430113512.115938-1-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 07F20140010
-X-Stat-Signature: orhwy1imohkwrkgfnwmt9c67hu31fubh
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lkBRgshz;
+	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777550283; a=rsa-sha256;
+	cv=none;
+	b=RFQpM0NhMHeYwrONUPFuqA56zpI0MtnAe0c+6koxf8Gt21kbheYmX984otQNSuR3I8boNb
+	3LnOkBICj3/0RBbzFO4hwHIP4JWJH72E068AkaN4gsz/6oFIgbbGeXjhHtXAz8J/oCA/BO
+	NTdjznknScVF7u01v8zryzySvbJ5hOw=
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35d90833cacso633777a91.2
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:58:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777550282; x=1778155082; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rueCD1ZsgcCsQQilyqi458mm+zVO0hUPiotgswNp7CE=;
+        b=lkBRgshz/lQfJw7eZp4hZgmAZ+0PtGU5C9Z5hHUYFhEkacTM5KAsBFxPjFAa1OPYa5
+         PN1mB9GD/PgRgskA4a3mUkpeK7F+WlU+28w4wTg+NBy00Cax+qs9JI54qYnkYXNoIQkM
+         rjUZ/UJjC2La6qHwLRYTRPSBweyjiaK0t9vtMiRzVcQG/NjBpjG5iuo2/dl4O4XwRCfd
+         OLTWlp78JLWPXse1QCiC+CHSXXxhi111Vt+GwKNJP3VdL7MJIe75ztFCn+crRk6TT3/q
+         VzHXXFekaPmymSrG4PEA1qAU4PKRgleP8QnA6uCENKzhtLpkm1EOI07rbEC5JjCmVDmB
+         4tEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777550282; x=1778155082;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rueCD1ZsgcCsQQilyqi458mm+zVO0hUPiotgswNp7CE=;
+        b=eyflwzoZ2vrv6G9b4k6ZjztdzEdULG6a7h+fj8Dtw26dXUXpKDb/QOj8QYLVz74W2+
+         WZEm2VuWx0i2YaFd26fNTmwhsnKCsLD6/nkv1j85QBNwulxgEFN3gYDaGd70Q0hRDJGP
+         zQUZaEhw131ZDaGXqWWY+Y1nvVm2GVqz2hlymdJ1I+0e5CsQD7vvO5t9zGkZuXF6bSv+
+         0B/2SZQb1sJiVvYPUdEbgFuL/6TesMkf1Mv0j+bH/D2NWqZjhT9G2hMFC53/S+49MPct
+         E+6efA1uXIml6S+2lsI/aR6aManb9Q2A4Nanj2ysILISAWqou5c7FxNFiLibPTBuwbxu
+         1IZg==
+X-Forwarded-Encrypted: i=1; AFNElJ/mkNLGGbDpq6hoG3qVttuovOjYgNDSccVoA3jJuWv1yR0xB7K6JzAUHCmZLhH0So7GxRgoxrnxRA==@kvack.org
+X-Gm-Message-State: AOJu0Yz6s6BnXhR0Wi+vkZZxzjbcJz9EDh1x4R0SKz9oWrKNA59i/gt/
+	L8Jnjs7TumI5HFUTzWp29sxDJO7Ex8WPXWV40wc82vDSI6h5CWpGCf2u
+X-Gm-Gg: AeBDieup+sK3dD+aRIVUZZ+IKYCIr6V6aSA+wXOcZ20mL8KikNlQGyNHGDG1T7SZBtG
+	wGvre/7MpwFnlU9zOjTrMbBWjcooZnoDwDXtnNdFtPm3siGALrCEohzz6CYwdkuMffgi72kA8fD
+	6BAyJbyusXMxYD1KGWK44f5+mc/8IHzIitwmekgxdPVd5uvh+785HGysJwHFAcr/aVQNTQpB6+P
+	4vAbhOrV27EyWX5ZG0a4QmDN9fcrCpMgHZpc/K/QYbXj+/6+zlfzQSyOs32vuU9i2b6mKSX8LVj
+	Yeg1nMmJ5A5vmtjSjWfx1lTT8g+U7QlbI2CN/ti1F7xyLYSuoxRuiPFSM7j2z4YgU+z4HuBohqi
+	IAYrC3i10o+swoA8O1mX+cE1C0ENgZYEZUsvKpBVs2Zer35Yon0TPi/IAi1S9EPoYpuO0DzbFas
+	gJYqYpKrMOe/VNJawDfAtV1NbmHHNqIO4m
+X-Received: by 2002:a17:90b:17cc:b0:364:919c:b52f with SMTP id 98e67ed59e1d1-364c30ff32fmr2632823a91.24.1777550282152;
+        Thu, 30 Apr 2026 04:58:02 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364bdf2aa41sm3638926a91.4.2026.04.30.04.57.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 04:58:01 -0700 (PDT)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Cc: Amir Goldstein <amir73il@gmail.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, lsf-pc <lsf-pc@lists.linux-foundation.org>, Gregory Price <gourry@gourry.net>, Bharata B Rao <bharata@amd.com>, Donet Tom <donettom@linux.ibm.com>, Matthew Wilcox <willy@infradead.org>, Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org, Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Subject: [LSF/MM/BPF BoF Session] Numa-Aware Placement for Page Cache Pages
+Date: Thu, 30 Apr 2026 17:03:37 +0530
+Message-ID: <h5ossmwe.ritesh.list@gmail.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 67ED5120002
 X-Rspam-User: 
-X-HE-Tag: 1777549086-694233
-X-HE-Meta: U2FsdGVkX1+WcVl30aEQXgYtEUON50FvqI9cnJ+hVPnQEn+YLg6uovYC0b8uFYfM+4otdDyh2aBWE+jUGUXUUeg0oY2ESPwT0gzZ2z67aT9Paszdi8L245mAChC3oRi373zFveA6+FpO6/VH9AOlfjSqr3tlu4T/MjF0YQgs0NhrKR2SE0cd7RCFd8l3fBFGZyd260OwGV7L3CYJrpUaTzygQzApAI4HHKgz4m3PikmK0cvIldq+urAgz3gnUeJ5G8RR11nUA1zQRXjQp1v7F+c4KTA+VH8KEcdiZYIIjzKuTN6Ta3w+hudHV/La0RrMKri/9icS5Ej6TRL/6pMu9bBiD+Lbydu7RCIFc1Fdkzmi2zpMLJueAbL1RVSCk3Ru+HfS597jWQcDbUHmT3HBwfXns95eqVZNjcIQYUSVw2w9LFNFfBMHqOi8og+9OBkwH7jVWygEIDgBVO5ME8coXT4DDstpCG/3OLcinnUudECmsGYrrdZZgIpeRMZXSEWftS6y0RBB0MT+ZqPZrWiFCwynecGb0Pn+m0HHJHj4axpju0rTA9n7Db+Y3FKxIohvFGo0fDnvLbd9DocTQRm4mSnw0aBKVV5DCmxobkVDOoDivGLHAx3ku3qFGWT46zIFSD/osTFEoHntaGiMnqDXatUVU64rDq4gjc5jrsMQNYjPjUN9HBcB78sl5WWAwDd4Iul8TDWyQE+j2mJtq2zfcMg2F3OEmHiv7cHVzu/+5ofA7eE69sg/8CrOyjKLakZgf7FLNUlc2Q4fTDjSSUG0pYu7v3tdzTyXXu7zeV3Vj/eI063qdtt/gHiwyYC2UzDRV8gI97ASsccT9B280xdd+vqURC68c3tb0hvubFqhg/+Wd3Q94k72exWOSDowYIHIPahtbaFLugeqQAxsyU/C389NRUiBebBEGU2nd4BhyyofpExzCwgSA08xGKlBsipwr03UscMQAJU0P/Sxwf6
- zb1/Q9YD
- CLt2Rcgk6lyRnAvdpiw74nKOS4WTlLAtzaDzc/r8zomtBIeX5FRPCwmUto+J5TAVK78XEEc+IDcXMKR6UURXvPrawXnHOABp5CoH/319CeujzyzAzW9nsByPEQEkahRfeqPARcTAA/OBAzxE2MBkFm6oNmNxIbq3gTCmPPda4erJ1VtaTLw5AASoJap9E4lWIZOn9929HgkjNNptUvvIM5ifA/3E/NYPR618IW1SFv8kujuc1iySfmbM/9935jIro3Tf6zyZSDwlIYIf4X0hnq2NW8aJePeuijFlSt9wKHAMrAvlqU/rkqAJzsg==
+X-Stat-Signature: pokyuqj8mzm5fjsgg95bd9k5nuacbx5x
+X-HE-Tag: 1777550283-941472
+X-HE-Meta: U2FsdGVkX18tAtFFPJi6TUl1StFgDTsaGlKVaxERkZTfUUDoX9BT1xCzmblLRyNwPEwJ/dPWbOnKBu9tGcaCPn1TU9CXcZAZ5KY52uo9EsF1KXx14DV/x5zJ6iJ9sHJuadCh69QtTV7Cwf1M8KJUtK6WjraP0VQvmJDZOuGcaF3nSqG8ibpjc9eCG/ZkBcTqknZAuTPeXs778YOGeT0ec7rezU4nAOkVQrd+ZgP+xy2O/LaIZ9RhpwURILDJeO4dHUn/gQw2tn/TDHnZ0iggpglkL1jTli9+r9S5RImgOReTQDtWXgTPTaU5xeG2ckHdl68NRT/Ioed4zKYgCbqCV49yO5Mk6HT6TnZGryoyff0JHATFYfxL2E8hkTybD8n5pg0mJwczk3EJ0vvWhad1dT+leJAT/s3kXG6zFtQyAJNBdbveLPhDLiArbcazSY9FLVkz44xDqVkTo4CSB8zVvYue+4OZGELAjZTaslTvhr07yiS2RQpM68UVR4a/S3LeykmTy323pyykbDFQV4jjOjyVXdzG8kAszTD+FNnK93wual7qXoBwFiQ6FGXyKxUAPUCIVxxntNGgHxsukN6O6P4wFZDFnfwIa/isYPfjTze79ZLZhiyFxcWXb3FlWXU+fr15A2AOck3w+/CuWuIrrwcSytITwOBn/KISYDv7m8Z7IZ04ml0Hd/q95P8bHYNsfzogzgSPJSzJ/iWrEWoZKMym0RJzoh774agXSJUvKa4CgV75nOB8W6FsXQY1u8v1pJgEqWX0bk+LrBw2Ejwz6vfdKGITRL+TWlHfxCCwrQzSPK9AvnYZ8MvDwpMv4Tfrfo7ttxYS81Na2Bx9Gyl3UcM4/k2ZL1yQ43eGKQaEiHLh30n/VpHVGNvUUFEajLQpgiOqa1CewxduOfnTDhycbMOFIgKfHla/XXepb+wHcXt6MPT2SSwptv/hWBHTcUZOLDHvXdBPd5xx/IA4WyR
+ Y/t4a+h7
+ pr1Rx2NrCN/X8GyZs5ys3jTrOvoa69TTHZ0ajbNkAhuLba6O+oF68iqYJa6yTAvBfc1OM9hjZ/J/atzP1MjUlNRchS8encrLModTCO/r2F1MevQDgTc4b2+S82ES6Q0D5RcZpLir+XlGWNigxoCK0fQjdbuAzhG3ZSjLwZ2wCCuSv1g80V9erkAxQAXoK5aURRnwlvGcfH6ZgKRyAfu1Aiqivy0mhtiKw34ZM78RhkfU1dlrkAy4kCTUNvDCPdRe3LoBDhbS51X7R3UWPWyzDPWkMb66WSUJd6LHnKDN7AHCQWOUJwy6U822TMHj1y334mnI/kHzwMfeQCCajcirwuGTvgNR7scWRQs9CKA2b2NJHk7mMOYNOXq9sUC3cH1UxeR/e5/SsQdCKtxW65bwIlYmCG3IpFhFe45Fl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,18 +108,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/30/26 13:35, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Hi,
-> 
-> These patches merge fs/userfaultfd.c into mm/userfaultfd.c and make
-> functions used only inside mm/userfaultfd.c static.
 
-Yeah, makes sense to me!
+Hi All,
 
--- 
-Cheers,
+Amir insisted for this :)
+> IOW, bring the Hallway session into the room, so that other people
+> can participate and we can use the hallway time for gossip and
+> stuffing our faces.
 
-David
+So, since we might have few slots available in FS breakout sessions -
+here is something that I was hoping to have a discussion with you all
+in hallway. However, I thought maybe it will be a good idea to initiate
+this thread here, to see what do you think about this.
+
+
+Linux already supports memory tiers and there are ongoing discussions around
+promotion of unmapped page cache pages, which lets kernel do the right thing
+for userspace page cache pages on a tiered system.
+
+v6.17 added support for per-node global reclaim via
+/sys/devices/system/node/nodeX/reclaim, which lets users perform per-node
+reclaim of page cache pages. We also already have interfaces that let userspace
+define the lifetime of page cache pages, such as RWF_DONTCACHE and
+FADV_DONTNEED. These are increasingly useful because locally-attached DRAM is
+a costly resource and we don't want unwanted page cache pollution there.
+Userspace, sometimes is in a better position than the kernel to know the
+workload's access pattern and whether it makes sense to drop page cache pages
+once the I/O is done.
+
+So the question is:
+Do we need a userspace interface for the placement policy of page cache pages on a per file basis?
+
+Note that we do have per-task placement policies like set_mempolicy(), but those
+are too coarse and don't help if userspace wants per-fd control. mmap+mbind()
+doesn't reach unmapped page cache. shared_policy per-inode works for
+shmem/guest_memfd but not for other filesystems (I think so, but I maybe
+wrong).
+
+So what I would like to discuss with others is:
+
+1. Is there a need for an interface that allows userspace to do per-fd page
+   placement and maybe per-fd page migration?
+2. Are there applications that need such an interface or would they benefit
+   from it?
+3. Even if applications may not need this today, should kernel developers start
+   thinking about it now, before users start abusing some not-well-defined
+   existing interface. e.g. the story of echo 1 > /proc/sys/vm/drop_caches,
+   which became a production workload tool despite never being intended as
+   one?
+
+Let me know if people think that this discussion qualifies for a BoF discussion at LSFMM?
+Or do you think it's a bad idea altogether, if that is the case - Then
+please help me understand, why so?
+Before starting to jump on the implemention of any of this - I would
+like to gather feedback on what do others think?
+
+-ritesh
 
