@@ -4,103 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B3B9CD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 17:08:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43E76CD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 17:17:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 764376B008A; Thu, 30 Apr 2026 13:08:45 -0400 (EDT)
+	id 799D86B0088; Thu, 30 Apr 2026 13:17:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 715496B008C; Thu, 30 Apr 2026 13:08:45 -0400 (EDT)
+	id 74CD86B008A; Thu, 30 Apr 2026 13:17:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 603CA6B0092; Thu, 30 Apr 2026 13:08:45 -0400 (EDT)
+	id 660D46B008C; Thu, 30 Apr 2026 13:17:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 49B6F6B008A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:08:45 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CB83120A10
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:06:56 +0000 (UTC)
-X-FDA: 84715852032.04.49749F4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 707604001C
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:06:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="E/aLqins";
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777568814;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5739E6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:17:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D638A1601B6
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:17:54 +0000 (UTC)
+X-FDA: 84715879668.24.7AF82D7
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6BD6A4000D
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:17:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Em+EeYYJ;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777569472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TjUFaS1qY1CEJctxUMvCMcTxX4DRqy0Z0sZeIlYR/u4=;
-	b=AZjnqCgn+iuHugW/E33hGpzXtAG1SzCPdogYmNjrOaRTIb3LF1VWcVfthoM597K16dUMIj
-	nRO8N+XPsM1ypDB/V5Kq9W2CmvD1VlLZfWn1UmthFGMy95niM7uQto2F3OeqHzzW2VGcJn
-	7zD8hJkQrsfsPOj+LgGyUV98vUnVd8c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777568814; a=rsa-sha256;
-	cv=none;
-	b=YTp+xtrCKNE9ggG12luQyywxrRDEKB+4phzcAITGZZAQ1Fjbjppz7EbUgEQ67WHb3ZjnMu
-	6xee/XVrYz8yWRhlZbRNpLVAM/vstC2D78RxGuG8JB0v+BcNJNfUQgnH2b53XKM0KpMBZO
-	J0ONbK4YM0Vb2CO/2vtnNAwyC4W8/60=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="E/aLqins";
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1828441579;
-	Thu, 30 Apr 2026 17:06:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8DAC2BCB3;
-	Thu, 30 Apr 2026 17:06:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777568813;
-	bh=dPdHfPCW7ng2kSeVyDlMheharmDFRf8Ia5tgN1rIr7g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=E/aLqinsRaz6E+em9mmxb/ZmPZKQBFN0qzUWyMQ1WmwBpvNArlPyD2O/izyCgrhZt
-	 eIXJpUB4ekDjPDZGqtXXWplC89vsNKrkO432KF7hiOdDOWgT0wQBFrIjP5dx7wxAhL
-	 q+74f9XyxQvN8KdY0JZ3Fac04I5MqQ/RxFaIL/wPBDm8G/Ge3ilJTrCeacwiyGTX0t
-	 KTrSXj2Mjq/KHwqqNkcbGDJTcEPN5qX1tqx64v2waZGOELXhsWRVRRMg0luurIZx/L
-	 4CbIQD8kOgp35xgTgEmFcZyE5Bn2vIr6wPy+iQuaoCrMpta0JHLuKgmLuFkaOPOoYQ
-	 dGcLQS5WymL1w==
-Message-ID: <59b3dab5-3341-46dc-851a-419790eaf403@kernel.org>
-Date: Thu, 30 Apr 2026 19:06:48 +0200
+	bh=ERNXVyDvvdjB/y52CiMZ1JT+Mz59b+WRrRXJvJ9Eofc=;
+	b=SMmRWDhGmUN/HX2CL6bUwAfSKRFCj08eNi188XIbzVBwlyUxb3Q8pWoB4/WdJalAHmoy5h
+	tf8S9pc8vOna+UtUyuCLhIRox1aiIpXtBYx9XsuTYB7B5E1KL1MjSZkhSAHRhvlpb3iWXt
+	AqwWrqHkfHg802xyIY3PWS/MdvoTSac=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Em+EeYYJ;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777569472; a=rsa-sha256;
+	cv=pass;
+	b=Q8D3WeBon5HG6TgU0nIJFroFST8jCg9gODh0+rGEMqTjmm3S2mcbXYf7IheIPuJSF27ruA
+	f2HeOJD43nVEdp7EB8EArjgArJ+Lvg4FVkqQ/MzuXIVNJ87JKBvYgSgp23NgsZx5AZMjCe
+	f3nptK59BHnZ1l+1/gmLpRLeet3I2Eo=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50d6b393d60so34211cf.0
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 10:17:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777569471; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YHxutcef4iDcoj39hIp9YU1S7JIlRyZJ3leS3izYGnMHSBfosY+H4F83vhTOZhfqG2
+         0wX812sTlHvWyfl6NNEZbqJQJOyYyRAjQSFhBkg79ATsSWoiKiMeSTK+pJH90xXffw8E
+         RFIE2Xu7doVnAz7Bj5ngDPtXypul0vulrtpf71m9NPq3gjrNyGTtFOG+e7SP4PAlDeAY
+         5l/Fhh+XVrVCmwwMj7SgdbSlo0AlGIOZhGCM+Yw2yWLOFIhm+KyPHJNhyE+OOmWwo4gL
+         QbywwIwZHCUCGIUcIvYYGJW9jwpZ1UN3BhRayKzmWESKcLdyKFTANtgPgUFEq8bULkqG
+         /CHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ERNXVyDvvdjB/y52CiMZ1JT+Mz59b+WRrRXJvJ9Eofc=;
+        fh=I63hLfFsQuSBCsJHisif2EMUJnb8GP6eVTb5mN36J7Q=;
+        b=VMK/2pJ2EMY9allxKlj73jArAgg2l74jiDPuxP22AFCCPQiKJ7jrOvZ7C4WEsMaw5N
+         MaMyNwhnpWUOEovpzKe4zIDxS6I/jdhZCJQF1m21ke79tMq+501a9ov+pw9gTC2vsYJn
+         l1pdWAISriqcllgZGheHr8+PPedZH38lbM3rgk7eA0s/tLlu44LFPpeoEuOXxjyyVVaj
+         LyxcF1Pa5Ne+YQQCtuCSHzoD8y1HONhFhNLdtxvJeg9PoiQEvhKxbTe+nY1coXFjKDhL
+         iI3+bKJeTL4h46CqYcDkh2GHu6/vwAPgK4ptjQ2wGHoWb2NcAkqQjRSnHRl65SSaM2M6
+         d0+g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777569471; x=1778174271; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ERNXVyDvvdjB/y52CiMZ1JT+Mz59b+WRrRXJvJ9Eofc=;
+        b=Em+EeYYJZQqlUVDHkJPYH5HK7z0w6Cn+N/fgU4Oj+esU/ivYu4OdsQ7JAN2cYom7Fc
+         9yQI638YNM4I99Ofu69C5NkYbRvHU2M+tGqRbG0Je4e7P6Rv5B+fI1CPJZv4FxSu/Pra
+         37ztMgIrMOv/2athbV8bvvwyCXWL1bsUWEsi7HY8z4u07KxvkYrWS0jYKHvghCdxzcmw
+         x/YqSlVBg5RwxG00rV4VRjhClLHy4i5mAxudn03xpYH5gkjWseDpPxwW7nz+G4v7O6or
+         2OgxHKe0Us+z32cQg1mLRPx3/SByk0igVa4/JzFO+/e0aDWfL3pRpEImUOMeoZkmkcCX
+         ieUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777569471; x=1778174271;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ERNXVyDvvdjB/y52CiMZ1JT+Mz59b+WRrRXJvJ9Eofc=;
+        b=JNiqNpQ2lqMB0Rf3l5Dg8FanV36umDDtrG8DLItlIazzn+shX8tGVDRhTwuLU6veuo
+         TelAggunRVS8NtlraSfkWdHlOfUM30NnLTOtjQZswx67PUXppK7mSzYeG8jGPebIb2r6
+         s6QM93wlNrpgqlNWF2BQ7ybjoE1qbiEsPzlbOPpt3Wjuje1IWXDDkT68EQy9MFiYkzwp
+         ZewobO3/NVDnFqHFsMXmt86DKv9bw8FZ1EBbN45lDVYh46Ec2e8MaRj+Oa1z/gqTaHok
+         cM08tnvpSYuNpFf1mn7F1VZuk0EeNSlZ9uFgW2H0+l6UF9dSXyLsQhe7f/Jks/HACs0j
+         LFUA==
+X-Forwarded-Encrypted: i=1; AFNElJ//H7jx67a14qatVdJYZzKUjC3OrxrfyDJ6gnkWcaXcw9N9qCUSFvtqefcrlGri1qZ5ZYxAb8bbqg==@kvack.org
+X-Gm-Message-State: AOJu0YwFwZCBhvvlfuz1RA152PUVgzFinGFuv1lQoEniOyMM0YAvJYRr
+	mWATI0k3B9tO65SVPLuqUZQLhQXyGedjAc8cce2a2FPMxX/NqWvoF1W7XGIIDbPYwh55U26zY9Z
+	AQoP+PYCM1kc13RN74+XsX7ctM14fFkdzZmyKD63h
+X-Gm-Gg: AeBDieukrr9UdR5dCJboOS/jeIra4idHP0o7fzdpE+8Nb6iV0xOKki2bb+nP9AYtStO
+	DHdP5AszmLEF7gPk90M0ERUkyDFJ6PcfY3eLW55MnZC1e2NvJ1BRB2ZaD+suVSfHfZPfFk/tgw6
+	S17AB67a/ph9sB2ooCkFE78N6wgZqKUh2wMKiP+w8T7OrL3PIOWTXBy8dOzUAcTaCNNbML/f4M0
+	48ZfJI465cPguShk2C1/ccSxhiPv6HV1IX1fx9qxfguCv6PzNWfq6G6yl6/9J7g3kQVfDsN6qAl
+	xkri0HplbhkxJqXX1gS+xs/M9yd5XthbLRS9MPZJ2P8C1ApdmNNL/zRT7Bo=
+X-Received: by 2002:a05:622a:aa06:10b0:50d:edb1:6bd1 with SMTP id
+ d75a77b69052e-5103d3bff9emr7701cf.13.1777569470571; Thu, 30 Apr 2026 10:17:50
+ -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm: Introduce zone_appears_fragmented()
-Content-Language: en-US
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>
-References: <20260423055656.1696379-1-matthew.brost@intel.com>
- <20260423055656.1696379-2-matthew.brost@intel.com>
- <76191a17-18bf-4e9b-9ab5-dc9a48abfabb@kernel.org>
- <be42059924cde9bb16a087ee2a5abb0b9d850d68.camel@linux.intel.com>
- <aepuNL2fwp47P1Wi@gsse-cloud1.jf.intel.com>
- <aeqbe/9YRKNyYuWY@gsse-cloud1.jf.intel.com>
- <291406b26b8badf2e565996515931d9ebe50208f.camel@linux.intel.com>
- <a1252167-63a1-481b-9f1d-2a7bae7a3b6c@kernel.org>
- <afLCwHaPZMu/dxqY@gsse-cloud1.jf.intel.com>
- <f4324084f3808b9a42b87ec27bef7fe920dde9ea.camel@linux.intel.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <f4324084f3808b9a42b87ec27bef7fe920dde9ea.camel@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 707604001C
-X-Stat-Signature: m45oj5cg9tgzb3u77mcoxipt4z7ygqnh
+References: <20260429181954.F50224AE@davehans-spike.ostc.intel.com>
+ <3ce3f304-12bf-4e1f-b85c-11fa5832a0e5@intel.com> <afMOmZ2FjAPQ_0ug@lucifer>
+In-Reply-To: <afMOmZ2FjAPQ_0ug@lucifer>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 30 Apr 2026 10:17:39 -0700
+X-Gm-Features: AVHnY4KXVESitPZjVUC0UUUVb5Q9D8GlbIClFxRqJjjjioyCwWKOSk_hVnR447w
+Message-ID: <CAJuCfpEF8VTAErMPCLnv-y5Hzo0JBpGs=L_dNfb=5C3enp2_dw@mail.gmail.com>
+Subject: Re: [PATCH 0/6] mm: Make per-VMA locks available in all builds
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Dave Hansen <dave.hansen@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka <vbabka@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: hqcw7n9aujigjnk3tuna79s7poyaqfbu
+X-Rspamd-Queue-Id: 6BD6A4000D
 X-Rspam-User: 
-X-HE-Tag: 1777568814-889681
-X-HE-Meta: U2FsdGVkX19d0arGk6uWaOsXHtLZyk4NpPXSoH84+oHzlAASO6lhPzTvhmmPku0p15/ID4rwtIvQ++0dtAMg+8jq9rVZX1DQm/8RDjHah0UNHhU7x1W9KVdP0cRMX9JkmtMKFudSzBHQ6WdTEu7pPQjhnI8muG6tjfxq+xG6fTswMdpckRtXov6lHsIcjJc7aBHFya6HyJ9PxTiOpseT2kgAvFEc5x2Gq/dx/ftP6je5ga24X+bhvF+qUkxY/dHPCGfjTgbk55Ud9tqqx2JdtB6BPPeSgqhP74GqMLCdp8VQ4mdgjbXuR03LYVHHcjWl7yi9MvIeI58N1VxLEi5oz1rmS/Ti8u8O1s642mglzgWAuXvtrWBUaeJ2qbm9EWoJ1bpxYjgOVfO3JYyTk2Ef2vGvG3lRjMD98yrQeTS228tZ0wtFSiC6s7JUhZoH9aoh0amLpghnfOfQfgYheQYi8O7hyZHmECBV28luObOCCUFK1SpBOl+uwzSBHZ5LXG5/HtD07NbifOM96NlHhSSiowD6HzKQM2nN6mzrs/BFV6IJ9SerJdihNsGc3YeNgP75ikKnntp+f0xLhD9mbalq2fL8KIJY0+tZqRAxAdAprW7bUNwv1AyMoIZikxtganfa0tSLbAL0DeU+XRKYPzQPgxiEQ+z+c37s6JpaIqfKIhowxz4F4S93I+BV2pZr2UN3GySFobSpjYgX+6u6xUKOEtjmNISz5hOCZ0USEkshhlKlNH4Is1ICQJYQCk7fLYh4SNGVxT3JwSgHSrFTSG1fjvZe2uQkYKYRDCm9UMvjhugVIkuUCE0YzMDUbC00gzVzDCsp8XDBLacXqooUNEeqjZNLy3DEsyZ7/6t+/EZeOy/lTWtynMtclYesauhTt2uuy47X7//4rV93G5RrFFU11RUv2e/ogn5a1PZKZdFz1H/eWGUjFoUxutPGJih5fWw5BlehotGwpjkvZ4lA94Z
- weWQYmYg
- llhUflwzkIB8OQ5xS3iQyMFRjAC6eLmgChtvRv8RjFyEN1UjlPA34gx0dlKw8dOQ60P5fRPIgRAp0zB4+/lpl1VX1Nx8sjqYgXih0xG9m5HxjgBzGp93zrtKh1k+S31F8F+acD9+cTAepEYQWg/EslU/TZXl/L8E9wQX3Btr//cZooK29KzmhBPRY8WFmfN22t9PKO/rPgHvZ5+DbGorBDimUr6AmArSRTvbbgGmx6s95aSlcUaKSawJCf9bVO86EeumkLLQfwfmx9NyMlehNPojQ7kZiGLn/QuWi0lNcrzny5s2FtfXV6bO4m+wV3BTNM76Dz4ZCB339EPM=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777569472-606750
+X-HE-Meta: U2FsdGVkX1+3v3O6vFjvaFd6EcpgF6VX1B3o/ydIAs2Grtt9r7HO1tT7TBP3XnkNNVVIk5uGCablWlTHXvCQKXSQOeh4yydjldO8zvJ5iWWbfBAm8VNx1kjghVrm0wyDlH9Fr6pFxmagX4fkFFWYZHvkhMpiJZilImKGrtRBrZlEyKS8adlH3FIHFIg20yj0KpLwc+qO5NDT2vOqz6bwu2lPQo9p83Xy8RnEcs9XwA/dGXsYKamfmjogsFajuaKBS2Jgu2lhwXOjVHMnoQLYm+f2noaARcEcESKr+RW5CbQQ9kiuQo/jCPwyhJhsIuQ9+zUtn2anAZ7gPDFQyI5S953u4DARXYax2wCYVVFcJTWzVdFunahkg3D8v7yfrLPkSKEyiOebahApmNIV35LtcLfGr8KS2OmWQ0hf4Ss8bl+dC5YU3G8KsyHFcEtUgpfDGTgMoTy5Z3jPDX81+SpvTI2Y6ocRFzNL271i0P+cgZgwlTV1FbYV21v0SCJcw8Cima7r4l2MGSzBZv/6mzXt8SRLu9FueApX/nmoN8Zloees/TWZwU4YvMLvg16mhT4QLEY9f+L6jsWDFva0J4Wxc4Xg/ifUI6mL+sRPXFOzAEKDbMIOguv1u8caX+IMzUSo6Hf4Yr0o9TNtwET2EQnDlkbYk+3WHEHUyHbMug52qrCEUwDiraQRSHzgzU11Bhv9Nqa9VrqGWiC8sIPX9Z+4nB5x9lZEfwaf1hVQTzykuYXR2tpAecCJvje432WPin4cjzi/aXx0KiQpQIZR6ht0bGAOUUDFeUFQgEtJz4cznRTCWTnSPP+l7accUKyst1NydGgQXO//Lrzwf2RP1F29+MU+GzcsdzJb7GmSbz/S+dV+rnfzBSCKYgIW03X0HLrtWnh6Rd/xfxDv/HBbR8jjTe9+GB5plsmvOjLrYqrxUeBinZy/hnYPBy4zSGkkoEwYZs08pPgVqo5VdWbLfJS
+ bIXKKaaW
+ +fCXJu3HCVyYdDzXbfdYf9Kyoa3AOcNbGOnD/tFY2v8c5bE3/tDYAoHe4Zs1pDdUKSYXCrZ9i8eKX9kOZEHxQdaumlYcipf8WqX83wXtC1nXyPKY8XNY1oEFDFHxP14uZFIX0iAWW+M4zxkbPFUZENkS5lWU1t1qIMJ5sQfwXSTU0uF74gTTgem1EAljJ/V7dRiDfdemO2Nfhhi7lnHgkSLSD17SRxQucxhBYwDK3mLG15Gj1muYUa5dSuZyOyV6CyCd4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,48 +141,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/30/26 09:47, Thomas Hellström wrote:
-> On Wed, 2026-04-29 at 19:47 -0700, Matthew Brost wrote:
->> 
->> So again, I think starting with wiring order into shrink_control and
->> this helper is a good place to start, as it fixes an immediate issue.
->> 
->> Let me know if that seems like a reasonable direction.
-> 
-> +1 for wiring order into shrink_control, and possibly also the priority
-> as mentioned in an earlier email.
-> 
-> However for cgroups-aware shrinkers, The number of free memory in a
-> zone might not be an indication of fragmentation-triggered reclaim at
-> all, it could be the result of the cgroup hitting its memory limits.
+On Thu, Apr 30, 2026 at 1:11=E2=80=AFAM Lorenzo Stoakes <ljs@kernel.org> wr=
+ote:
+>
+> On Wed, Apr 29, 2026 at 11:22:28AM -0700, Dave Hansen wrote:
+> > BTW, this is *ENTIRELY* an [RFC]. It's just not tagged properly.
+>
+> Was going to say :)
+>
+> Not going to be able to get to this until after LSF... :) Likely the same=
+ for
+> Suren also.
 
-I'm not sure I understand your concern wrt cgroups, but some hopefully
-relevant (and hopefully not wrong) points:
+Yeah, sorry. Trying to wrap up all the urgent stuff before the trip. I
+might be able to review the patches later this week before the
+conference starts, but can't promise.
+Thanks,
+Suren.
 
-- fragmentation is a zone-related property, not cgroup
-- hitting a cgroup limit doesn't wake up kswapd nor go through the usual
-reclaim/compaction paths, it's a form of direct-reclaim-only
-
-So I believe it should be easy to recognize when your shrinker is called for
-memcg shrinking and not kswapd and thus it can't be happening due to zone
-fragmentation but must be due to memcg limits, and then you probably don't
-need to check zone_appears_fragmented() at all.
-
-> So I think if we can solve this with a combination of GFP flags,
-> plumbed-through order and plumbed-through priority, that would be
-> ideal.
-> 
-> Thanks,
-> Thomas
-> 
->> 
->> Matt
->> 
->> > 
->> > 
->> > -- 
->> > Cheers,
->> > 
->> > David
-
+>
+> Cheers, Lorenzo
 
