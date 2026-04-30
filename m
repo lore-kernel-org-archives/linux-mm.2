@@ -4,102 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 612BAFF886F
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 07:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA69FF886F
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 07:13:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 789026B008A; Thu, 30 Apr 2026 03:08:57 -0400 (EDT)
+	id 2AD1A6B0088; Thu, 30 Apr 2026 03:13:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 712656B008C; Thu, 30 Apr 2026 03:08:57 -0400 (EDT)
+	id 25DDA6B008A; Thu, 30 Apr 2026 03:13:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D9F96B0092; Thu, 30 Apr 2026 03:08:57 -0400 (EDT)
+	id 173566B008C; Thu, 30 Apr 2026 03:13:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 481556B008A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:08:57 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8762404C3
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:08:56 +0000 (UTC)
-X-FDA: 84714345072.11.9753795
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 96510C0007
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:08:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of maobibo@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=maobibo@loongson.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 03CFB6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:13:02 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B6218BBA9
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:13:01 +0000 (UTC)
+X-FDA: 84714355362.22.F68D7E4
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9179E4000A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:12:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fdBDf2sv;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777532934;
+	s=arc-20220608; t=1777533179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wvBROOKiwSywWTWeQ5yb4upXZHRGZw1nxVW/gMo8cpk=;
-	b=VnCV6/9dyB8jRqo4G0OHcPRH7pi0cHNz8omXy8c+i5OxnBouenTwz3GIGDodhhsDtr1mvi
-	gc/g9RF4opakRqM6NokBocCuR9gVqw5AIghx1b7a6u5/5qXCnhivBkM8JffLJMTZ0k2FAS
-	8eNwJZvMkRE3waIWyVgRkYYT3+A0zRc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777532934; a=rsa-sha256;
-	cv=none;
-	b=ZXAI6WMsHkNJ00xY4cyT2JBQIsPzMBtFsBjFhBMvw8dj7rFfa0BCtJGxnBYkQhwiBUP4NJ
-	lQsMpMScrSVCbMhycRRnBFGPvSUX0Pwd7adZubplKinJgRRU96XD5ILjuMpywjImpFMKmZ
-	CV0W3oM+vAmxJRo/2Jcxs6fQCy51PAs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Gr6kV2S8/pIIk5nQOyl2HyoYuX7aTD9lGss4TIfvIBo=;
+	b=4coQcyqWLkog2yVpOuO3z6fvXnfvdkz7ALPP/b5JH+MMfGiARQySvGr8DeXiBM7eLRCpNX
+	6ibtATEDUw+AiBXS1cYRnTg9P2ln14BoMTwVjK28uDDQ3cMq5cg2uMnpINU5B8rdcgAZDR
+	y/IVdgPSVO9pHtTuPFDvQQ+mkHwmaDs=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of maobibo@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=maobibo@loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxX+v6__Jpl2kFAA--.18221S3;
-	Thu, 30 Apr 2026 15:08:43 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxzsLy__JpuPJ3AA--.31891S3;
-	Thu, 30 Apr 2026 15:08:34 +0800 (CST)
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fdBDf2sv;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777533179; a=rsa-sha256;
+	cv=none;
+	b=GYrTmu6y2Dnl1m8B0YBPihxvZ2fDF+Ew6HToel1BT1BEy/d8EMaMlOEtajMyyy/lgcY7Nc
+	layJJ+Xz/5oh1wx+ovbzvAIjaYaJdXtZI78IaxenDPcznKjKoxD4YObcwNUN1l9xR3/U7J
+	0I55ZhRhXMTxVbJjPId1vShmaLXhXk8=
+Message-ID: <9bbd24c9-35d2-481e-95cc-459696221ad5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777533177;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gr6kV2S8/pIIk5nQOyl2HyoYuX7aTD9lGss4TIfvIBo=;
+	b=fdBDf2svHXrLC/3tVDKmwK2VODqqQ/i4sqxbhyouF3IAcbgY4qOaK5KkdytUNT9VICYPEp
+	BgyS5bMsDpGOHW1YAhfbPdkWUFtFj7gTV9rHmKTsphwx0OwKyyk20d35sPdc/KKC3KEhmH
+	IFxifgIGZfqY69y1+ScDw924Mv+PxpA=
+Date: Thu, 30 Apr 2026 15:12:33 +0800
+MIME-Version: 1.0
 Subject: Re: [PATCH] mm/huge_memory: skip huge_zero_pmd in
  zap_huge_pmd_folio()
-To: Lance Yang <lance.yang@linux.dev>
+Content-Language: en-US
+To: maobibo@loongson.cn
 Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
  ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
  npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
  baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <e3f542dd-f22b-fc8c-b376-72ab5909b6c8@loongson.cn>
  <20260430070217.39679-1-lance.yang@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <6cdeb3e7-c399-4ead-e809-44e3d4d84bc7@loongson.cn>
-Date: Thu, 30 Apr 2026 15:05:41 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
 In-Reply-To: <20260430070217.39679-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxzsLy__JpuPJ3AA--.31891S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxAF1rCr1UXryUJFy8Xw4UJrc_yoW5Cr45pF
-	yUGFn0kr48tr9rJw1Ivw4Uta4FywnavFy5X343Kr4rZFn0yry2grsrGr4jkry0gr4rGF4S
-	vF42vasavF9xt3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
-	6r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUtVW8ZwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jOeOJUUU
-	UU=
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ik61ozafzue65gd8oawu3fce4ei34rrm
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9179E4000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96510C0007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: u99wdfqp5aepp7obhk6nw7xrah3nwxmz
-X-HE-Tag: 1777532932-178444
-X-HE-Meta: U2FsdGVkX19t2jM4MlF7z5BXEK1II7AQC5azjs5VFu5v6DmxzOzfUAc1EfF3Zvu5rzvT1AN3ISrh2szVSJpZMZrD8o6V6ynf/fgezU+j09PNW05YWiSprIraOQbu5Ure2U+OBKT/y/8oNQVzQWhDwjMtcVMI83cUwWHOp29fnJyw2qyVoF8Je+bPSuWeg+o0/KiAasyQOyHjaxp5Wkbao0O3Xl+74QvnO02QfAtDPcwZ176ppJxxLBWORRxBQKnaVh0VaYYnU3XcsJ130JYiFVTi8PURAHPQ4lk/kI+nv75XKKgl5q1HkZQFW8hyGvsBecJUUfBBOfYFFrif83vACXCRPstoj4EUpOAmtjcdgz3vvREQR3TS5FocTcU5fUje64M7frzvVOLIGakdCU8bEcTrlnUQjIln03FMkbCZ6RdQDYMQilN7WPwyq48YsofPmLyUztcKKJji82w4W9X4hA+P312YzbHDDUU96uDORtpmK+CygDchXSFkJBWUH4iKZTHqycmd1jP3PuBfaBhGkZB9KPhFWeMNe7a2TE7U1no1dts6UTDABIlU2MxDxm2ayTG4VeAxXhH1XGlLLj4uKwu0tEi1vWauGS8HElz8/zUMMwHgRFomxj1AOs3LI6ma700UX5+f/w9k1vhi95K3L/jKw5L4q1FNFZXh1L33VXt8Woqiu+5TqksoWu3iCwt0d4gEnc7EA3c0Kf8gwCSOuzsK6jAwawK2FoqRtgwF2garX5YKZFGPDvCJNtvH+0iHBvWnDJ2y7Fq4hJoM4jYutzDqyp3JYx1/chkaUFzTJRNF/vJtmkrRbrkK3I3cZ/Zhgf/6Ig22UjQddhpc014m/Gp7CQQXHxr8lw7yafW5OdEvDQpZdSlPy3w42nmkQAt51TluN9lD9Nbs0jE7FE+cGOMsQfaqioCSm2lwMqgtM8F8KzTDFPQgkIDjGyKYjKoDtaA53aQuOb78qwUk9S1
- 3fA7Mwao
- wNexNbNCYAok55YY571X7f5iqUWOgFK5ZnJayIHoJlQT8QI54nPSfL9iLW4ekpv4wWLXky4wowgBwdg2wk766O9gB4lLBj8ZQSsS25eNQ8lsaS2Ckhf/SzfE7+0w9Fjp95nwB
+X-HE-Tag: 1777533179-41278
+X-HE-Meta: U2FsdGVkX1/SeLiECywIQxYeV3ZjJ0P1fkHAb3Bg3qNv3Is68889vvlCN1OD9kBJorZCxlY/nM6tdeYggnRNvwB4Sk1hfP8wJzQBjs/zKJxQSjSbO1HIiiejJHmxRoIROJ82tp3nLuY3B36OefsKYVd0OzbWR7GnWUJ4Dkl9AbUBaeKOvFF5ka+Z4aDjKMM1RNMuJMHzOK18urliKVIxv46DN9JqbXwTqQ5z1cFqlGzptpCVNIJTV8egCGPMR9jevkhkbqR0pQXE6JZ32dJW/Q2gTmEF45AzJFbGFXQklu77AN82gq8a5oH4goHgqMhQpHsv6DMu7Sv9EaKnuoY2x+5QRybkkf6BiRcpjE+lYECM/XHnShNjsyVY5NJzaH9Kl2HH0rYLRRnKjt22gv0nvIF+c9N8ASdR2JAPozaNwHAbDNe8OPh+J4EoxNU6aaF8ADCupTkGwT04KWXw9AoNz2NLYbCmvm3ogfqUqCDvdA4TxtzteuZFvkTV364lhk/HfK400k1HDWyOWhSzju16e86Z1EBfK2llE52oasjcxNis1bVzYyP1ouW2vWTAfiEC1voa7C4qcNcbaZ7WVbxsOwpuXHJ9tTRIFEq4cTrrlsLyK+p/1u8epl0xSriZpmcEwW5qFu3VtUUYGvodB4ptPyfYaKGgPJwuT0yqYg97W2GCWJuRigWCmYWnjrgcjPd6eMRLCa+x6cJDKn7EQwqRapis3jypgsETDILRlY61zQObeAdwX6txlM1aDiq9TYxBfh9oBrresP99vs+lG6/33LVPBqATxGt99948k5LDU2AshTs42tOMEEaRnp8ba5aHBXXRR55HrGxAq2Wl34uMOYDKntMHTMVQheF7o+sSVU737QI5GG/PShUqEh3RZypJcb1TNFAeWHOox4n35coTz5o59c5Lqf3VOVqpZti1cHRNUop4ABvko4yX4Yea7HYILTppQRrBCMP38vUALDl
+ C/BY4cuy
+ +Rbu5BuqLMVqlZQXiH8qLuHUXM/EDO3GSCeonYXjpRHsEyZnIZv6MCLomzOblhyfgLuJ/HkjdK7J1ZNV6KEAOFSZB3dBepAsJccxc3AhEc9VvSPWA7xKHRYLE/zJs+XMO66DSKzKMbnLVTTFb8STMOainNdAlSjWGD+zoUgUlV1XexmjhSCmigRH1VcNa7Rb0ezy4OlW0HZ2MWCZZWdM2V2Rbd2V/LkNYOBEZtz5lBTX6Qy1boOzq4KVshk/4JS+UxRPgZ4G61aaFPTALQQRTz9SomtUYImsXT/3j1e4C1HuJlBwx01S775E49aicWZMkbvjamnH0P4eERwk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,7 +95,7 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/4/30 下午3:02, Lance Yang wrote:
+On 2026/4/30 15:02, Lance Yang wrote:
 > 
 > On Thu, Apr 30, 2026 at 02:34:20PM +0800, Bibo Mao wrote:
 >>
@@ -173,21 +159,20 @@ On 2026/4/30 下午3:02, Lance Yang wrote:
 > 
 > 	orig_pmd = pmdp_huge_get_and_clear_full(...);
 > 	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
-Yes, it is. I forget the tlb_flush_pmd_range() calling in 
-tlb_remove_pmd_tlb_entry().
-
-So the fix solves this problem. And thanks for your explanation.
-
-Regards
-Bibo Mao
 > 
 > The later tlb_remove_page_size() is guarded by "is_present && folio",
 > and is for the normal folio case after normal_or_softleaf_folio_pmd()
 > return one :)
+
+Forgot to add:
+
+tlb_remove_page_size() queues the folio for freeing via mmu_gather.
+The shared huge zero folio only needs PMD TLB invalidation, not the
+delayed freeing :)
+
 > 
 > Please correct me if I missed something :D
 > 
 > Cheers, Lance
-> 
 
 
