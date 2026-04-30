@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6008FF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 12:37:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121AAFF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 12:54:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E8376B008C; Thu, 30 Apr 2026 08:37:25 -0400 (EDT)
+	id 5BE706B0088; Thu, 30 Apr 2026 08:54:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BF886B0092; Thu, 30 Apr 2026 08:37:25 -0400 (EDT)
+	id 572A16B008A; Thu, 30 Apr 2026 08:54:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D5096B0093; Thu, 30 Apr 2026 08:37:25 -0400 (EDT)
+	id 485876B008C; Thu, 30 Apr 2026 08:54:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DD146B008C
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:37:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6391BC0B47
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:37:24 +0000 (UTC)
-X-FDA: 84715172808.08.444AFDA
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C338DC0009
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:37:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OVEuy04Z;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 382596B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:54:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C2C814023C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:53:48 +0000 (UTC)
+X-FDA: 84715214136.14.3E187FF
+Received: from cvsmtppost30.nm.naver.com (cvsmtppost30.nm.naver.com [114.111.35.114])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4F12240002
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:53:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=naver.com header.s=s20171208 header.b=o1yye4r6;
+	dmarc=pass (policy=none) header.from=naver.com;
+	spf=pass (imf27.hostedemail.com: domain of knw0507@naver.com designates 114.111.35.114 as permitted sender) smtp.mailfrom=knw0507@naver.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777552642;
+	s=arc-20220608; t=1777553626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z/YmOm364MLgKTekAQcMcyvI8WeWgw/tah25yx/smkI=;
-	b=AObXCRe9bVbDFH3RvoqKBabGOkyb0BS0eT70zso6ypavElKYebPOK1k78QgqPQns3qs9N0
-	eu/z7vlWlKHWS7Rr7Ba9wcqVnSokCgbgpDo8uZ61Ub54p8tls9lWrJ4gUP/oYPTDsVNnyr
-	HeDXiUio5WO6mUOMintld8LsziikkGE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777552642; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=FkHLlUQFgSv8TzyefueBLdzmVyw6apzekzw85il9CmI=;
+	b=6IA1DeIhxqFWNikwkafZbCb46hbee2mT8V3+Y3hdgo+ejRuTfeINn7fR+rVy3H7aQcER9A
+	p/uLXscd2xRThkRQM30iaY3lLxO5biv8CEdGW9+qBfGPIicf9VPK4lvchateHVhVAbv7fR
+	9Z7WKQZxu6BuK1tzC8uSrcoVpz4e3zE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777553626; a=rsa-sha256;
 	cv=none;
-	b=qIlcC3AWPinSx3g1RQuA98+pSJDWyC2UB8QmPBjml8aT5rMmtGk+ry+aSP825bXapFM9zI
-	0JEyHSQmvHqdrnIJuW+h5MQ1w/G9JUp7l79vpdMuyKgvMbB+yWJb/svEELdf4lyq13Mv2w
-	mvhpp4B4kQv2PK7n/tU7bnv2A/irs2Y=
+	b=b6t9YvNel30MHyMEyGipmveRnz503L9xZIn8tHk+vJ8vo1igPzCKHJNBpkXsu2Cx54KsPO
+	67ezr92am7akws2E1jax8t0bk9f/DqxPDVBdyN40fCA76A/srNQ/RNCn2agnE/L2CDn5/C
+	3otp4LkakIcvtQ0sZj/iY6ywN+gvAMQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OVEuy04Z;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=z/YmOm364MLgKTekAQcMcyvI8WeWgw/tah25yx/smkI=; b=OVEuy04ZJAcBaKwk8cxrvq7Tt5
-	XT82G1jqIw0PkdnsdUVlw+7QCza/twzfpnsx2kAqSxg7PTBm0kBexRmE2xwQdNMnRyEnteCqgWzIn
-	pGkT+4EL2ASd9E3W3zW7yYDg3jwhiv9VQjK8KHyhy+eeJpz4dqkaLDP6PuXP1J2eRrmKWTk8F9tKW
-	CawTIBqH87INZkKlSIMhv2zjWwFJnSYo+4xe4HesOWqi4rik/G82R6PqrkV5YTcbPWHu29MwOaGgj
-	jzKa0vAXrEAUkOYciTPNLGggQqRFBNNvsXY3E40Q+hwIcMj9vZmSiwG6RsfdSJ+eO9OpzQbCzsngB
-	wKLRaGvg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wIQdn-00000007Dwg-0sn0;
-	Thu, 30 Apr 2026 12:37:15 +0000
-Date: Thu, 30 Apr 2026 13:37:14 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, jack@suse.cz,
-	pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn,
-	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com,
-	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
-	nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-Message-ID: <afNM-gIqxpyJ6ro7@casper.infradead.org>
-References: <20260430040427.4672-1-baohua@kernel.org>
+	imf27.hostedemail.com;
+	dkim=pass header.d=naver.com header.s=s20171208 header.b=o1yye4r6;
+	dmarc=pass (policy=none) header.from=naver.com;
+	spf=pass (imf27.hostedemail.com: domain of knw0507@naver.com designates 114.111.35.114 as permitted sender) smtp.mailfrom=knw0507@naver.com
+X-Originating-IP: 211.241.110.121
+Received: from cvsendbo015.nm ([10.112.22.33])
+  by cvsmtppost30.nm.naver.com with ESMTP id TlUpt52GSqGfeaoCPEZKjg
+  for <linux-mm@kvack.org>;
+  Thu, 30 Apr 2026 12:53:41 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
+	t=1777553621; bh=x7fz77AUp0fvNlRyefNDsTooR1pD3LHc8Uh0yxCJINk=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=o1yye4r6dzAkoyLm8Xv6i9qz4iAeeTaEVqLP6GXwOZg/+eXTnKVOYKfXYXaHoWCB/
+	 hFk0rjxZtbbb4grIvz9Dw/dOUdELkMYw1XtQHVccOK5LziOsbcGMPGcQfhgsYUUvFS
+	 1T6qWBHLEBkaqyS2iYTa2wOpADr0p/dg6pQ0x0IA6NXfdm3EgYZpSiQ393fvcmC3au
+	 vo7bO57OXoBk0Co9whuZJyD+xZcykx8EJfSxfJx97qci4mBly7N1iGheL1hPkqih0n
+	 ICEq5gvhNA9pjq7XBvFmG8ic755K1w1d2QIg1TMN+pNUIGVmrAe5E43KkL2lhuZEON
+	 XRYtI4VhBmmZA==
+X-Session-ID: EMVedqyGTkKlEEQxxYPLOw
+X-Originating-IP: 211.241.110.121
+X-Works-Send-Opt: BqnrjAJYjHmdKoUmKxJYaxglKBwYKBmm
+X-Works-Smtp-Source: emnZFxbXFqJZ+HmwKoUw+6E=
+Received: from localhost.localdomain ([211.241.110.121])
+  by cvnsmtp004.nm.naver.com with ESMTP id EMVedqyGTkKlEEQxxYPLOw
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Thu, 30 Apr 2026 12:53:41 -0000
+From: Nyunwoo Kim <knw0507@naver.com>
+To: Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nyunwoo Kim <knw0507@naver.com>
+Subject: [PATCH] mm/oom_kill: Insert newline for better readability
+Date: Thu, 30 Apr 2026 21:53:21 +0900
+Message-Id: <20260430125321.5679-1-knw0507@naver.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260430040427.4672-1-baohua@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4F12240002
+X-Stat-Signature: d89ji1qnpk45atwx6przxpd6csanfsg1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C338DC0009
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 5igxnwqm57saobypsczjnfog1mo19ui5
-X-HE-Tag: 1777552642-868833
-X-HE-Meta: U2FsdGVkX18W/aZZ8sJ7dlnw1j53LlDR/u5O/cLMp4jslL5y+miNZmAM0BjciiJiZhcAwsjG+GTQSQUY1KC476xFBlLfCQAOXj9Irf7OQkNvGPYtiNjrj4lviNJXf9XH2c9nNCcGmE0IWiMmqNgu1Dec7o58rF6xm0GUyYdnUtpFQqFsqdymJWN2XFmng/y1Q0Dr/Jr2ymmpUhv56DcRSdOPd3WdkwXPNt+Rfm0yCNiQQj6pGdwi30aYHNeaDowZkCmbQVm6E7il9ft+1VjKPB+g3GtsMINOyiKQ+Kn07IGUbw+F/4lKQjiY+isxweSzT7JiwhVO1uap47LcgVUqtHj/BXcy/WIcpDHjlvS46WP9A0oCvgrb8zYzSqQZ6DzwQfNEZaNkj+z3FMNBL6Zq1qhGpUsXeoEYjrSXRSBHdoL/FdtyjOVnzUTiZyEtzwDSf/OCHCdmJ4NAdciQYYYOl8EpLyv5dLNE4p662t1VCSPSBXHqqPVSuohCj66BIJFp30H6R9nI8UaZh9StAhYT27UnZwjmD83R3FFrW40DihPEnacHyLhsmpRiaAFnGvX4TmToNG9P/pXWm4jbTgud00kWLJ/BL2/v9qAlCXDB2OaJTAcJun0mecw5YlFPMmXysIVVfoo83nY6wzz2JzT0SZByy8df3htXgOC9SEjGB+zkTFLymCuaU83ALRy+EOHxeEckGxPToop1lv/BsdriW10R+6VP83G8GiJXtQpjamjZKmNu6XJR8Fxv2g5pIJKOqS/o2UbL6uQwC8R1lumpQ+jB8jK8NbWCsPVhcNImeq56+8bf4SXgU7LAYSGDZpSFRwifmRxFThKE+oZhsKqr/9AhcHVSGPk+Utgy+DpkTEqfm6EfVJDHI377NZPCw24DhnXfutNjPNUb60RKFj/JSBy7LgFqFcKznLHEHoeqCNh5qPIFqirsQpofO2dQ4dUf/OddsabD879ThN9NnKN
- AbdK//jo
- 2vAEa1s6eoJAHM7W9LDrEyoeuM/F1EzDlbzVn0eTXyqyPjIj3YWk9D4Q5cvah7z3fZbhz9DPG5H0nuhVg35U+GHMpkdrzb2oIj4Fv6HdpVICTHjv9EYdKtx9ka7rSjSiB+UuJeTECVjxi9BaGSgF5/2Z22Oj+hjGXWwi/vwnU6jvpRUTGZ2Gbd4S3HbH0T7yAY3IUV9IKq7GXpDnu+d/vv/tGsvCtv3eOq+Q8Z8ypd5U3BO0s2p5XtylWyFRoO37Vfrlwn0eHCeV3phFWaeAeufkkENb6X3qibeagjaNQVwa8EGCDR38cuo/0vIE1xZvNwFFRZZdK1TCtPhhRuO0Snae0TSjkAKoUaQkP95jXOmyKqXkdhX1WV4ye+w==
+X-HE-Tag: 1777553624-324309
+X-HE-Meta: U2FsdGVkX1+TcoQienKqIFqaI7RHpMYPG7OXJmq64NpSextnyyww3XR7td51YasQWCmgvzw3BW780jZtWTQmjc8n/cLXa5iCnPsn4b1vDh+HXqycK9MqLgg8ewFWY0zwKinRpO1P+Jk8ldAzFfx2zBeSN3yZH7bw40P9vMfGMmEHDaSM3SVpLUuq0eduBsOa54Jkh8lkGLjC/yu0b3+5WPFtqVWLUhlOWy6E9jCRDkJNKs3O8wEW+885VB8wonbYTpJEMgG1707QxKWEgysmPs2Z8kR65/QFBWZifGfQaeTV5ELLSCakfmV0el8SYKV8tl8yW9EhgTgM7gu4BoouqN0WungRLJZaFL6l3N25b9mryRdDyLPGpYdQvvPTtqMuwOVVtmm+2PMmyAZOjSy1sn1l376Hg2SjRDOLeXd/lHLvbB8R4IuBhed2sPPCSr9n9RQnmNdDb4OnIWiK6psG/IU0lfXarCattUUsBpRWIaznS+KXQQ38fgWK9e/mLmoeCN5Jhx0PI/StBRlVJ4X6KOUvpMj4c9qQO/ehgxm0VjBxsfonmektB2neRlDEbwI2035yDFpYDLtjy39g08W5tkrFgX7d6+wfv4zm5BVcqPvePf364ZNpTA5knApUgOdKmi/ZyvDqsvlEuY7sMRREpPdUZymlkYDvsOoQhg1zr7JQ3EQ2lapwWJzh9bVFuWOvK6hzt+vm+KlIqLGRnW1FEdVLAMJx2i5i2/LHJV2ZWJODRBgjiTarqeYdAmleFxdOwS8nDI0gDcVE0s4+nSW9LuTBAmoWn+VBckvkP/6TYD11ROoVyKfD2iWhXrgYukTZ0aShF3KjvSLAYmYbCoSGUha+x9vEMQ67dlFlGoppIOprewfeXGQPfgTulFCr5pnEKwYO9ch9L6hcZJoOdXhKRFArgrekE/uh2vjobym6Qx9EEf92IzxMbQpZ8Jy/nXoO7nJNuPz0ykuYZQNRk9f
+ 6AXzYynL
+ T/9YmV8MhwnpKHpJQMQ3QJV/yMViOv1cmOr7MpnnCNCsMsPEbl0aEoiTp5JyX650sTmv1sFLd35DvTnjhLXpf/Vk8bQgUYKNEv/GIfR4NvZzA6YEzISZVnvoEW0j14nMOudDp3o6xknacdcNgaMvdhiM4ZaAemW0dzWqLEhMAjI9I5B0jr58OtABxvPSk0gztYgJnk05r8oSKA+X1o3HWGdI/LlVnNX2Biz9X37wBZDAp5bMYRYasYdKn6vGgrjWay0CzAIdTCt9R7w5eE1JqfkUivEwABDCWA2ZeLdL0Pt5c4BABwUQ63qRANaI58JU4FW+LGBEWeGueKkAO01jtxUtTOs61OsFD8VCrlSg8IecNmZMMt2w0/Pu7jQu43fk9uh/KO0Y1cI8QGhMleDF37Lo332ynxS3Z2okLh6OM0oFLjho1D+InjiFywOt6wp10VH0ydyvcVZiPE1y/x/9X0GizzgwaNeJbIODRSYWy+1YSerwJYlG/9KrJ0cMXbd4ET7GKmDPSGGUVAvU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,15 +101,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 30, 2026 at 12:04:22PM +0800, Barry Song (Xiaomi) wrote:
-> (1) If we need to wait for I/O completion, we still drop the per-VMA lock, as
-> current page fault handling already does. Holding it for too long may introduce
-> various priority inversion issues on mobile devices. After I/O completes, we
-> retry the page fault with the per-VMA lock, rather than falling back to
-> mmap_lock.
+Insert a newline in check_panic_on_oom() for better readability.
 
-You're going to have to do better than that.  You know I hate the
-additional complexity you're adding.  You need to explain why my idea of
-ripping out all the complexity now that we have per-VMA locks doesn't
-work.
+Signed-off-by: Nyunwoo Kim <knw0507@naver.com>
+---
+This is my first patch and I am using it as practice to learn kernel
+development. If this has wasted your time, I apologize; it was unintentional.
+Thank you for your consideration.
+
+ mm/oom_kill.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 5c6c95c169ee..86a08deaa697 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -1076,6 +1076,7 @@ static void check_panic_on_oom(struct oom_control *oc)
+ {
+ 	if (likely(!sysctl_panic_on_oom))
+ 		return;
++
+ 	if (sysctl_panic_on_oom != 2) {
+ 		/*
+ 		 * panic_on_oom == 1 only affects CONSTRAINT_NONE, the kernel
+@@ -1085,9 +1086,11 @@ static void check_panic_on_oom(struct oom_control *oc)
+ 		if (oc->constraint != CONSTRAINT_NONE)
+ 			return;
+ 	}
++
+ 	/* Do not panic for oom kills triggered by sysrq */
+ 	if (is_sysrq_oom(oc))
+ 		return;
++
+ 	dump_header(oc);
+ 	panic("Out of memory: %s panic_on_oom is enabled\n",
+ 		sysctl_panic_on_oom == 2 ? "compulsory" : "system-wide");
+-- 
+2.25.1
+
 
