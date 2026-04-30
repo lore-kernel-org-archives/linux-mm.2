@@ -4,126 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE58CD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 16:43:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02CA8FF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 16:49:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E43166B0092; Thu, 30 Apr 2026 12:43:09 -0400 (EDT)
+	id 413B76B0088; Thu, 30 Apr 2026 12:49:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1A3D6B0093; Thu, 30 Apr 2026 12:43:09 -0400 (EDT)
+	id 3A2156B0092; Thu, 30 Apr 2026 12:49:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D30E06B0095; Thu, 30 Apr 2026 12:43:09 -0400 (EDT)
+	id 28B6D6B0093; Thu, 30 Apr 2026 12:49:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C3B8F6B0092
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:43:09 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 737C21C1E12
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:31:24 +0000 (UTC)
-X-FDA: 84715762488.29.4C90EA2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5A04D40019
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:31:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KRmXDL9z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777566682; a=rsa-sha256;
-	cv=none;
-	b=BGaQcUN61Io1fSnYoXrR7u5ypnvXO5bXrwppHzritFPGojePIjYY+lrWUpJ4lBBGBVDKQ+
-	KnpX/3NhmToTVmBr8bFjN8VrXM3rUefSeaSBV+t5CLKKdOYC7fS0BZPiw8xMK6faqFWO8h
-	R31d1Rc275Unj1zsXAC38wecDP7ea4I=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KRmXDL9z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 140206B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:49:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C98261209CC
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:33:04 +0000 (UTC)
+X-FDA: 84715766688.19.8061531
+Received: from mail-m823.xmail.ntesmail.com (mail-m823.xmail.ntesmail.com [156.224.82.3])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AD718C0015
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:33:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf10.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.3 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777566682;
+	s=arc-20220608; t=1777566783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2BMn/TR67Ibb4b98YidoYFIsOWU44F4wZ/90bwcO9Lk=;
-	b=3e64RHqYt6w6pYXuWXmGG/XYAOjBi3sAgXJ3XiSofCmJu0P5x1LGA2K2dg6Jf/XUi3+SsE
-	Sltbt9TjPHpo0HN77WYBYsfPnaSoBUTnuK/7/qe9sol6WyhIN8otwaxF1RQ/PI23oBSE4D
-	FRy8FHDtkGykYfY4EEG7GQzC/QmDt04=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F2B160142;
-	Thu, 30 Apr 2026 16:31:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84725C2BCB3;
-	Thu, 30 Apr 2026 16:31:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777566681;
-	bh=Iv3L3Fv5TuFbAQ5EIXbSziOPY2wPrIySdVhnScRHPuU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KRmXDL9ze57UFB5ftLNSelc0YBrUO2rMtLVtw/bYNdyzIvf68KSXsXLzfAprPSY1L
-	 9feOy7Ol3Bz5ZEgmBGa/ik9HWUX+f4BvgSQgzG1g1SzO4zhzG2HvxpHZy3zUhPlzVU
-	 uUYjHH/ddhG65Fnd7kBNIVTfD8fFGDw6RSp53P5kSp0Iaj9qdG97uaIsWlDMYhNYj0
-	 9aaszEJXP1OeCd+igZsJv3Kz8YoNzcss0SH0+oEn1SN9SDssrhCtlzw8fyF/e+EAQJ
-	 iy1cieG6sqqSTuyYEHxupkOH3YgEjfi16dHeZkpjXQ60BEt/x/VN29qUventbpL0mF
-	 DGqJbIilE+wUQ==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A8B88F40074;
-	Thu, 30 Apr 2026 12:31:19 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 30 Apr 2026 12:31:19 -0400
-X-ME-Sender: <xms:14PzacrrwtON1yjcKkHqjhYD5_ZyLi0uektR0gTruZ3RAu0alNWqDA>
-    <xme:14PzaQRsw_D1Rtc3w2KwhsZbBFWRBu1Wjpy7tBCyedKRjY-P8qqR3RbF7wVontDIx
-    yTx-1CW2hJt6PbojNxkZT7GtDMSYqi-Qr3PlRCA8HmXCxBxfmx0h5A>
-X-ME-Received: <xmr:14PzaWxbZ3k8n--2DJVyDupDgdj8iRHDm2z5c1RJMekfSEDPbHqHCvMDstSIfQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekjeekudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
-    dtvdenucfhrhhomhepmfhirhihlhcuufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgv
-    lhdrohhrgheqnecuggftrfgrthhtvghrnhepgeetuedtjefhkeeuiefgudduvdfgvdeiue
-    eigeehheehudetuedtkeelhfeihedunecuffhomhgrihhnpehsrghshhhikhhordguvghv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepgeeipdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
-    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
-    peiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:14PzaXgIkjN7mK-fjcY706fwrz34-Ahwp02JR4jen55dAGcmCdVQDg>
-    <xmx:14Pzaa-6tSttwWx5_yzu6zpee2_fEMQUz_YmR6HeBD9hIba83taKQg>
-    <xmx:14PzacPSNH9QdmMtow4Im83_MG0PzApP08Qypc6jwjNiSkI7XGyOwg>
-    <xmx:14PzaYp9tbkkl3MsmSVsT-k9R6f18Cpq29ks3ImM29YVih2hdMIrTQ>
-    <xmx:14PzaUeCoc1c_e-3GNtWQckdtgj4i48depaB46OtGpW4HRn9e3DmbxP1>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Apr 2026 12:31:18 -0400 (EDT)
-Date: Thu, 30 Apr 2026 17:31:17 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org
-Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
-	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kvm@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 07/14] mm: handle VM_UFFD_RWP in khugepaged, rmap, and GUP
-Message-ID: <afODmDGimJ4QUkkv@thinkstation>
-References: <20260427114607.4068647-1-kas@kernel.org>
- <20260427114607.4068647-8-kas@kernel.org>
- <afOCAZ-dTQiLFN0y@thinkstation>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=Yop29xIRoFCvVcrmFZ2dlcbOxMkkQWMntQKDNXZnuIk=;
+	b=IBvtD9rTvUwJp2SSe+cGB5F4DpVzvTMqrk6KNTuZxHvG7vKBlYh80WXjW1KZ0eVUT5PWT4
+	paoTTmB+FmjK/KiNjYMeWba+iZg2ZRA8wi7kYXgj8IOxJ81kOcrx2VU35lBtcIH0GK7s0R
+	vnkvBCwqXJCVxbZX1ftJoSF1vndYNGE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777566783; a=rsa-sha256;
+	cv=none;
+	b=Fhl/7ldLCtypIr6qlVpI54yO45iHJYhNX1lMwc3w16o1Fo4xHkVpdes52CR9kSbTm/1xkO
+	KQ1dNXdnniqifZczE3tZD3rdBJralc/0fg5eKXF1Pw+Nud+9lDMGHQCaRmXtWgi15kij0E
+	20dd5cHppvZSJZ0tx8hT//qiC8nOx40=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf10.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.3 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from localhost.localdomain (unknown [IPV6:2409:8a20:e24:8c24:8810:8f74:8c26:2])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 199a96d4e;
+	Fri, 1 May 2026 00:32:56 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>
+Subject: [PATCH v4 0/3] mm/page_owner: add filter infrastructure for print_mode and NUMA filtering
+Date: Fri,  1 May 2026 00:32:44 +0800
+Message-Id: <20260430163247.13628-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afOCAZ-dTQiLFN0y@thinkstation>
-X-Stat-Signature: 8s59ixb9dq8ftjj54cfaro9hdcfikz6p
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ddf3c7c1f0229kunm7d32d45d8a80
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaSB8ZVh1DHk9CHh4dHRlLTFYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJT0tCQUMaSUtBHklPQUMYSU9BQ0NKS0FDHUxPQUMYSU
+	1BSVlXWRYaDxIVHRRZQVlPS0hVSktJT09PSFVKS0tVSkJLS1kG
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AD718C0015
+X-Stat-Signature: xgbxfgi1xwb9wqpqf4844azkyxy1om15
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5A04D40019
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777566682-680943
-X-HE-Meta: U2FsdGVkX19XnGsgmnYbT+83BZjl9P2FMvdmKn+oYXPfamH2wL7D7U8bvguXfJz51oVUuDvP1TEiAu1UhwR8gu0/yhzklWsDIB6oQfI1FH8axMJM+j48fgfS+1aNon0xL0A4PiBMWHhtsL0F1pseV5/iUgWtQUPldM2TgxLHQHoEfonFqXNdsbZ4jzDD8vVPWeOmlU+eUBdsNuKNGschcNXBJ3Z9ypeUV+Mcyvu/cs53r3u3BL40bsULGhhkI+9Djrn16oz+axjsQmXTgM1XPRve0ktlD733Cp131m1CySSyye2Uvv2dhciBeqmxe+UqNJTwSF8ZPdBDf8tMdLe3Z8v1m6SxVkabZWnmJUrBMsExK2ry2QbsUtzRNtDmazVdWiI2axCPZQTJb3+x36dQSfcQx+RpFqQmssuGzPudPSFRwt0Ck1cfNVBaZsFi6h86v2lb/VSrjDxeKSrtTZW0e8+avQYRbyDfswxauA9JDcM8FohgxeK4StSHj3Ed7GpOfL2a7mGFf9bylnDH5ivZoqb9JxyjLfqGiV+A7/KM16jTgDlArdX/sEq54Pjo+w3y4YIO1p8sUZ6y8MIC4juyTzcFbQsvgr794JRXFwGXqQ1OPGf9/+UNd3qQnXpWDx8iPaBjme6mtYbvu1ix6hzqmFmjuP+RZmWuCFqof8JD5ubp6h01r4Ud1vz788XUTepy1XClhvm1UEsyGN0rQWkxj8oxK96Cy2MQh9DwTsoQIgP6m/ha9QFvIozQ9TQ5sHqMMCiuWLruJ3TpStLeAJ6OtIc0TdhVWL1U/4iXX3TiiASZCdlYFI//U+5q4Vvf/LZsyYbbhsufflCL3y16rBkB3y0KnJjIt9u164OmkQ4nfFxx7Vvz9raRVHmrg++/4yTIcq2eIcQI7iw76gggAiqUsMNE2w1uo1YF3RhoayCtvlAT5rdPXSCCd2bVIh7aDWoAcmVR9jO8Iqk+ASGyaak
- lfLQslZZ
- P3wgUua7D+bY5zLrbE+QQtSMQvx63uK7jzGvMmvRTfZ2Kd2Ts+6PQYPAowajKlomXTpRxpK8+4PIxHaMUKhHVBv/DNOw6C9Bcp7lPB9GwOFzCWOfCf1gqUvUcQpZnW/BDh6YYgcIN7f3IJmQGwQQf+PNReKLPx71V6Wit+LfcuvU8kA2rSjWGDoP37ffS5sl54AZdg/O7+V6HxsQ4AAQYvJddys8ykc5fFXtObjiaPekjXxN0CXMVSmUCA7rRQrx8DrPnhqIKo2gudnMIIz3RSioEm2mNoZCDpQE5x77u0Hce6Vc9x7ORhxQ5KGkkfgxji3PHkgxh3S59KJ8uYUCBp40rjD/oDEm97z+8bH05joSm+4XHQ+AnJifS0ew0vewyuf0tI5DIb84+MttwrP4h8GefLw==
+X-HE-Tag: 1777566781-284484
+X-HE-Meta: U2FsdGVkX18aXhYtsAa/PEDllt8w7YkLLzOjlzYy5VW+HJsqX+99/N4qucy0OMd6jqMG7C6yilKahqlp0hPu9Uw4FES0dmNLGd5vSsVgcN5IMxSBeF4Shjkwl3DOtVImRin0CG9WhnjFO3E51j5CELIDfxUoXhAGTt9upY8VfXU6pgyiV/m6XkIjjAilB1EGnz5N/3h+GoJHJWm7aB1UvcoBKsaMcZ9Qfzxiq31bhHUvoAN8m8/KlHthA3Aq2RKHbuqnyqtiKS8F40S8Q6GKC6VMwtScC/HTmY1FZkeEvL3pyltKCtrtn4cPHqcWx3+lR9yku+v9uZWs9uS4MHVby140DJvXBVWVq96CgsAKVnDOhcKwiko3JIPIn48pZg2fNBPW8Ey5T5CfN9ivZvKykjVl1gyCTmI2x5sWwqmVuroiSKokVquI3FhOIUJusSuOoW5zm9PWwsIC5pvFXfYKYwyYncaBMvWkOmiseHvagZX6QsX0EYKCmye9/S67fzKEPU7wlOZISXpQHTPJdbKwEgVa8XCU+38DCFMMXJSBQhhTkcjx3PfN2up3fmxhDU6IPreNlLN2Yw2TGrC5u0jj1Z5a2gek9oahdKYAz/6xE2ODVardVltx2Jli3imPUhScDKHwq7YbztSApzf5JaGSJwSfkPwZDk9JSuqbmNC9ECx9V6SZM72N717Mrq9Oy3scSfyuzTHHmu6winCXyC0mP3uALC/nvuRZCLsMuJckx4JQfqR5GYs8my/UuFJoKPVPp7dldEVP4bhweveXEf+ZvdmuwSSff/okc+YPdXkgYxRzfeDas7xpPpZO/lXsjnT0QLFWir20npn3tV45+tqcBnoVhFoZoyaQFvahBLNlcERrPC2bfXNeCdfLuZ8/3ZyYMdDK5zQuZUim7Q6cyaYmNaWkX17l/frqqEXKJhTpqFqMEitOm0x4k2PEbP2TaEI14YZ81x3mk/s4dSJzIaI
+ KdtxWZ9D
+ Ylp6jxToBczluHsPcacnE1/y/rUEenJ2kr06WSQfk5YFonlz6w9CWSeWpTK5KjmETM+FDMfeQQTzH+QFtms8MA5oeIig7Avji59A1Mo7TA6E+08MOdQyo5AuhTgxhUqOFRAgKfjyfHTxeOG8brs/dNcl4/N9zCJ7z78pcwPqGUUs0qcc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,127 +88,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 30, 2026 at 05:28:17PM +0100, Kiryl Shutsemau wrote:
-> sashiko.dev -- https://sashiko.dev/#/patchset/20260427114607.4068647-1-kas@kernel.org -- wrote:
-> > > @@ -1084,9 +1092,29 @@ static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
-> > >  		pte_t pte, unsigned long addr, int nr)
-> > >  {
-> > >  	struct mm_struct *src_mm = src_vma->vm_mm;
-> > > +	bool writable;
-> > > +
-> > > +	/*
-> > > +	 * Snapshot writability before the RWP-disarm rewrite below: when the
-> > > +	 * child is not RWP-armed, pte_modify(pte, dst_vma->vm_page_prot) can
-> > > +	 * silently drop _PAGE_RW from a resolved (no-marker) writable PTE,
-> > > +	 * so a later pte_write(pte) check would skip the COW wrprotect and
-> > > +	 * leave the parent writable over a folio shared with the child.
-> > > +	 */
-> > > +	writable = pte_write(pte);
-> > > +
-> > > +	/*
-> > > +	 * Child is not RWP-armed: restore accessible protection so the
-> > > +	 * inherited PAGE_NONE does not cost a fault on first read.
-> > > +	 */
-> > > +	if (!userfaultfd_protected(dst_vma)) {
-> > > +		if (userfaultfd_rwp(src_vma))
-> > > +			pte = pte_modify(pte, dst_vma->vm_page_prot);
-> > > +		pte = pte_clear_uffd(pte);
-> > > +	}
-> > Does this unconditional pte_modify() create invalid clean and writable PTEs
-> > for shared mappings?
-> >
-> > Without checking pte_uffd(pte) first, this blindly modifies every present PTE
-> > if the source VMA had RWP enabled. For shared writable mappings, vm_page_prot
-> > includes _PAGE_RW. If a PTE was clean and mapped read-only to intercept the
-> > first write for filesystem dirty-tracking, pte_modify() forces the write bit
-> > on while preserving the clean state.
-> 
-> Two reasons this is safe in practice:
-> 
-> 1. RWP cannot reach a backing that uses the clean-RO + page_mkwrite()
->    dirty-tracking pattern. vma_can_userfault() admits RWP only on anon,
->    shmem and hugetlbfs (the ones with vm_uffd_ops); regular file-backed
->    shared mappings are rejected at register time.
-> 
-> 2. For backings that *do* support shared writable + dirty tracking (i.e.
->    the ones RWP isn't enabled on), the fs sets vma->vm_page_prot to RO
->    precisely so the first write traps page_mkwrite(). pte_modify(pte,
->    dst_vma->vm_page_prot) would not add _PAGE_RW in that configuration
->    either.
-> 
-> > Hardware writes could then bypass page_mkwrite(), leaving the filesystem
-> > unaware that the page is dirty, and potentially causing silent data loss
-> > upon reclaim.
-> > Could this also overwrite other important PTE states like NUMA hinting
-> > or soft-dirty tracking?
-> 
-> pte_modify() on the supported architectures preserves _PAGE_CHG_MASK,
-> which covers _PAGE_DIRTY, _PAGE_ACCESSED, _PAGE_SOFT_DIRTY, and the PFN.
-> NUMA hinting is encoded in the protection bits, so a transient hint
-> state on a resolved (no-marker) PTE would be lost across this rewrite,
-> but that's just a re-prime on the next NUMA scan, not a correctness
-> issue.
-> 
-> > @@ -298,6 +298,16 @@ static __always_inline void change_present_ptes(struct mmu_gather *tlb,
-> >      else if (uffd_wp_resolve || uffd_rwp_resolve)
-> >          ptent = pte_clear_uffd(ptent);
-> >
-> > +    /*
-> > +     * The uffd bit on a VM_UFFD_RWP VMA carries PROT_NONE
-> > +     * semantics. If mprotect() or NUMA hinting changed the
-> > +     * base protection, restore PAGE_NONE so the PTE still
-> > +     * traps on any access. pte_modify() preserves
-> > +     * _PAGE_UFFD.
-> > +     */
-> > +    if (userfaultfd_rwp(vma) && pte_uffd(ptent))
-> > +        ptent = pte_modify(ptent, PAGE_NONE);
-> >
-> > For VMAs registered with both UFFD WP and RWP, could this silently upgrade
-> > Write-Protected pages to Read-Write-Protected?
-> 
-> VM_UFFD_WP and VM_UFFD_RWP are mutually exclusive per VMA. The combination
-> is rejected at registration time:
-> 
->   fs/userfaultfd.c, userfaultfd_register():
->         if ((vm_flags & VM_UFFD_WP) && (vm_flags & VM_UFFD_RWP))
->                 goto out;       /* -EINVAL */
-> 
-> and re-registration cannot drop either bit (also -EBUSY in the same
-> function), so a PTE in a WP-armed VMA can never satisfy
-> userfaultfd_rwp(vma); the new branch never fires there.
-> 
-> [ ... ]
-> > +        /* Re-arm RWP on the moved PTE if dst_vma is RWP-registered. */
-> > +        if (userfaultfd_rwp(dst_vma)) {
-> > +            orig_dst_pte = pte_modify(orig_dst_pte, PAGE_NONE);
-> > +            orig_dst_pte = pte_mkuffd(orig_dst_pte);
-> > +        }
-> > +
-> >          set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
-> >
-> > Could applying PAGE_NONE unconditionally to newly moved pages trap
-> > applications in an infinite fault loop?
-> 
-> No -- the post-MOVE access is delivered as a normal RWP fault. In sync
-> mode it goes to the registered handler, which resolves it with
-> UFFDIO_RWPROTECT clearing MODE_RWP; in async mode the kernel resolves
-> it in-kernel and the faulting thread continues. There is no loop.
-> 
-> The semantics here are intentional: a VM_UFFD_RWP VMA has the contract
-> that every present PTE is either an active marker or a tracked-and-
-> resolved PTE whose next access will re-trap. UFFDIO_MOVE into such a
-> VMA must keep that contract, otherwise the moved-in page would be a
-> silent hole in the working-set view. UFFDIO_MOVE has no mode flag for
-> "skip protection", by design -- the same way it has no flag to skip
-> WP arming if dst_vma were WP-armed (and the equivalent could be added
-> there if we ever decide UFFDIO_MOVE should preserve markers in WP
-> VMAs too).
-> 
+This patch series introduces filtering capabilities to the page_owner
+feature to address storage and performance challenges in production
+environments.
 
-Oopsie. 
+Changes from v3:
+- Change print_mode from numeric (0/1) to string-based interface
+  * Use "full_stack"/"stack_handle" strings instead of numbers
+  * Display current mode with bracket notation: "[full_stack] stack_handle"
+- Remove "-1" support from NUMA filter
+  * Use empty string to clear filter (echo > nid)
+- Use strncpy_from_user() instead of copy_from_user()
+- Rename nid_filter_fops to page_owner_nid_filter_fops for consistency
+- Merge patch 1 (infrastructure) and patch 2 (print_mode) from v3
+- Update documentation to match new interface
+  * String-based examples
+  * Tab indentation in code blocks
 
-I put it in reply to the wrong patch. It suppose to be for 06/14.
+Changes from v2:
+- Remove READ_ONCE/WRITE_ONCE for nodemask_t (fixes compilation errors)
+  * nodemask_t is a large structure (128 bytes) that triggers compile-time asserts
+  * Direct assignment is safe for this use case
+- Add comment explaining input length calculation formula
+  * 6 bytes = ",NNNNN" (comma + 5-digit node number)
+- Simplify "-1" check using kstrtoint() instead of dual strcmp()
+- Move nodemask_t mask read outside PFN iteration loop for performance
+  * Avoids 128-byte structure copy on each iteration
+- Add documentation for filter features (patch 3/3)
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Changes from v1:
+- Renamed 'compact' to 'print_mode' with enum type for better clarity
+  * PAGE_OWNER_PRINT_FULL_STACK (0): print full stack traces
+  * PAGE_OWNER_PRINT_STACK_HANDLE (1): print only stack handles
+- Changed NUMA filter from single node to nodelist with bitmask support
+  * Uses nodelist_parse() to support "0", "0,2", "0-3", "0,2-4,7" formats
+  * Uses nodemask_t internally for efficient multi-node filtering
+  * Output uses %*pbl format (e.g., "0-2", "0,2-4,7")
+- Improved memory handling in nid_filter_write using dynamic allocation
+  * Limit: (100 + 6 * MAX_NUMNODES) to handle worst-case input
+
+
+Problem Statement
+=================
+
+In production environments with large memory configurations (e.g., 250GB+),
+collecting page_owner information often results in files ranging from
+several gigabytes to over 10GB. This creates significant challenges:
+
+1. Storage pressure on production systems
+2. Difficulty transferring large files from production environments
+3. Post-processing overhead with tools/mm/page_owner_sort.c
+
+The primary contributor to file size is redundant stack trace
+information. While the kernel already deduplicates stacks via
+stackdepot, page_owner retrieves and stores full stack traces for
+each page, only to deduplicate them again during post-processing.
+
+Additionally, in NUMA-aware environments (e.g., DPDK-based cloud
+deployments where QEMU processes are bound to specific NUMA nodes),
+OOM events are often node-specific rather than system-wide.
+Currently, page_owner cannot filter by NUMA node, forcing users to
+collect and analyze data for all nodes.
+
+Solution
+========
+
+This patch series introduces a flexible filter infrastructure with
+two initial filters:
+
+1. **Print Mode Filter**: Outputs only stack handles instead of
+   full stack traces. The handle-to-stack mapping can be retrieved
+   from the existing show_stacks_handles interface. This dramatically
+   reduces output size while preserving all allocation metadata.
+
+2. **NUMA Node Filter**: Allows filtering pages by specific NUMA node(s)
+   using flexible nodelist format, enabling targeted analysis of memory
+   issues in NUMA-aware deployments.
+
+Implementation
+==============
+
+The series is structured as follows:
+
+- Patch 1: Implement print_mode filter with string-based interface
+  (merges infrastructure + print_mode from v3)
+- Patch 2: Implement NUMA node filter with nodelist support
+- Patch 3: Document filter features
+
+Usage Example
+=============
+
+Enable print_mode and filter for NUMA nodes 0,2-3:
+
+    # cd /sys/kernel/debug/page_owner_filter/
+    # echo stack_handle > print_mode
+    # echo "0,2-3" > nid
+    # cat /sys/kernel/debug/page_owner > page_owner.txt
+
+Sample print_mode output (showing handles only):
+
+    Page allocated via order 0, mask 0x0(), pid 0, tgid 0 (swapper),
+    ts 0 ns PFN 0x40000 type Unmovable Block 512 type Unmovable
+    Flags 0x3fffe0000000000(node=0|zone=0|lastcpupid=0x1ffff)
+    handle: 1048577
+
+    Page allocated via order 0, mask 0x252000(__GFP_NOWARN|
+    __GFP_NORETRY|__GFP_COMP|__GFP_THISNODE), pid 0, tgid 0 (swapper),
+    ts 0 ns PFN 0x40002 type Unmovable Block 512 type Unmovable
+    Flags 0x23fffe0000000200(workingset|node=0|zone=0|lastcpupid=0x1ffff)
+    handle: 1048577
+
+Testing
+=======
+
+Tested on a system with multiple NUMA nodes. Verified that:
+- Filters work independently and in combination
+- Print_mode output correlates correctly with show_stacks_handles
+- Default behavior (filters disabled) remains unchanged
+- NUMA filter works with single node, multiple nodes, and ranges
+- String-based interface works correctly ("full_stack"/"stack_handle")
+- Empty string clears NUMA filter
+- Code compiles without warnings or errors (allmodconfig tested)
+
+Example test session:
+    # cat print_mode
+    [full_stack] stack_handle
+    # echo stack_handle > print_mode
+    # cat print_mode
+    full_stack [stack_handle]
+    # echo "0,1-2" > nid
+    # cat nid
+    0-2
+    # echo "0,2-3" > nid
+    # cat nid
+    0,2-3
+    # echo > nid
+    # cat nid
+
+    (empty - filter cleared)
+
+Future Enhancements
+===================
+
+The filter infrastructure is designed to be extensible. Potential
+future filters could include:
+- PID/TGID filtering
+- Time range filtering (allocation timestamp windows)
+- GFP flag filtering
+- Migration type filtering
+
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+
+Zhen Ni (3):
+  mm/page_owner: add print_mode filter
+  mm/page_owner: add NUMA node filter with nodelist support
+  mm/page_owner: document page_owner filter features
+
+ Documentation/mm/page_owner.rst |  61 ++++++++++-
+ mm/page_owner.c                 | 180 +++++++++++++++++++++++++++++++-
+ 2 files changed, 238 insertions(+), 3 deletions(-)
+
+--
+2.20.1
 
