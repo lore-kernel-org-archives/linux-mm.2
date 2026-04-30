@@ -4,103 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E020FCCFA13
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 11:58:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D01FF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 12:10:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FF186B0088; Thu, 30 Apr 2026 07:58:05 -0400 (EDT)
+	id 7EF636B0088; Thu, 30 Apr 2026 08:10:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B0276B008A; Thu, 30 Apr 2026 07:58:05 -0400 (EDT)
+	id 7C6006B008A; Thu, 30 Apr 2026 08:10:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EC9A6B008C; Thu, 30 Apr 2026 07:58:05 -0400 (EDT)
+	id 6DD136B008C; Thu, 30 Apr 2026 08:10:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B5B46B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:58:05 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1AE211B89DC
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:58:05 +0000 (UTC)
-X-FDA: 84715073730.22.00FEFA7
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 67ED5120002
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:58:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lkBRgshz;
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777550283;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=rueCD1ZsgcCsQQilyqi458mm+zVO0hUPiotgswNp7CE=;
-	b=m4hD3QmQzqKUyadpgrppIzL8k2xkWEJCvCIPwr+P435XJtwwiJWFFjg1WL3m2RtK+NC5XG
-	BJXb7SlujdqH+CR/M07NFJlSlfPTMac0AkT/8IedjFzAU4wmZ8Rx4tDB7egqgYo9NcsH2g
-	LalGQjep9ZcRDM7KMZ3NdLOU3NTqzlc=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lkBRgshz;
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777550283; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B8F26B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:10:01 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E5FD188631
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:10:00 +0000 (UTC)
+X-FDA: 84715103760.21.26DAC28
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8CC6E140011
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:09:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=YaQNUCCD;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.49 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777550999; a=rsa-sha256;
 	cv=none;
-	b=RFQpM0NhMHeYwrONUPFuqA56zpI0MtnAe0c+6koxf8Gt21kbheYmX984otQNSuR3I8boNb
-	3LnOkBICj3/0RBbzFO4hwHIP4JWJH72E068AkaN4gsz/6oFIgbbGeXjhHtXAz8J/oCA/BO
-	NTdjznknScVF7u01v8zryzySvbJ5hOw=
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35d90833cacso633777a91.2
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:58:03 -0700 (PDT)
+	b=JU0mqDQQNFTl4DAhJi7WbUYfDpozKb2jf7V4IgiySaTCkmpbd75aRUYwz0nwyzoh1lCoU4
+	p9CKWX1l0DYdzO78KKjdieyt2aB9RD/kLmWxmh5yT7KLG1ckP8yD4L3L7woJS4IWGPmnT0
+	mEXTbC/V2ihv/IBEiWBuB0VCNNmNb+U=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=YaQNUCCD;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.49 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777550999;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BM5KrwxlYL2yWx54/IrxJMUv0ov8gisDWiwFBM3mToc=;
+	b=P7aeBFgwy/Hm+PSyMwu0i4zW0Kp9SHANcVPJb33vYnTWEuHaur+b8yLhqz67AgXBbtD5Fd
+	3tpPrqsjAHKQ8z+SRUmwR0Y4PrE6eyeB8gfI2DAVR9hC5vxbjBLN7T93NF9qyMs/7c3uf+
+	zbmEom+xjpljFmmUdPZb5afntBUNocA=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4891c00e7aeso7561945e9.2
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:09:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777550282; x=1778155082; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rueCD1ZsgcCsQQilyqi458mm+zVO0hUPiotgswNp7CE=;
-        b=lkBRgshz/lQfJw7eZp4hZgmAZ+0PtGU5C9Z5hHUYFhEkacTM5KAsBFxPjFAa1OPYa5
-         PN1mB9GD/PgRgskA4a3mUkpeK7F+WlU+28w4wTg+NBy00Cax+qs9JI54qYnkYXNoIQkM
-         rjUZ/UJjC2La6qHwLRYTRPSBweyjiaK0t9vtMiRzVcQG/NjBpjG5iuo2/dl4O4XwRCfd
-         OLTWlp78JLWPXse1QCiC+CHSXXxhi111Vt+GwKNJP3VdL7MJIe75ztFCn+crRk6TT3/q
-         VzHXXFekaPmymSrG4PEA1qAU4PKRgleP8QnA6uCENKzhtLpkm1EOI07rbEC5JjCmVDmB
-         4tEQ==
+        d=cmpxchg.org; s=google; t=1777550997; x=1778155797; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BM5KrwxlYL2yWx54/IrxJMUv0ov8gisDWiwFBM3mToc=;
+        b=YaQNUCCDwv6U/J4YHOLJTOV82nhvoUNM0UnGtU4fsgYiVIvPU6tc/rbNXKzDv1VKfy
+         z7URPIa8i/rebHfu0yVgJZ6dZ8bwbnUAhCJ0HrhmQIl/eilQabuPXjJ7gzGE4FfRWpX2
+         ITlplgldIswP45xysnckpXCsgNo3Cs51C6qCYgVArhMy++Is+hrZSroWliSDqcyaPixb
+         AtiUu2eX03ca2YZOXBJTd0u+j6CorzopYTUawbsCi6hfq3+uS/Mn7WY5DCIVnOjJGRZR
+         mDXjvLF55gAjvlIltW9GDps89RaYs9ind2JkCOBS+33CTcc69rLH8tbwI81aemA2xo4p
+         ZMJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777550282; x=1778155082;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rueCD1ZsgcCsQQilyqi458mm+zVO0hUPiotgswNp7CE=;
-        b=eyflwzoZ2vrv6G9b4k6ZjztdzEdULG6a7h+fj8Dtw26dXUXpKDb/QOj8QYLVz74W2+
-         WZEm2VuWx0i2YaFd26fNTmwhsnKCsLD6/nkv1j85QBNwulxgEFN3gYDaGd70Q0hRDJGP
-         zQUZaEhw131ZDaGXqWWY+Y1nvVm2GVqz2hlymdJ1I+0e5CsQD7vvO5t9zGkZuXF6bSv+
-         0B/2SZQb1sJiVvYPUdEbgFuL/6TesMkf1Mv0j+bH/D2NWqZjhT9G2hMFC53/S+49MPct
-         E+6efA1uXIml6S+2lsI/aR6aManb9Q2A4Nanj2ysILISAWqou5c7FxNFiLibPTBuwbxu
-         1IZg==
-X-Forwarded-Encrypted: i=1; AFNElJ/mkNLGGbDpq6hoG3qVttuovOjYgNDSccVoA3jJuWv1yR0xB7K6JzAUHCmZLhH0So7GxRgoxrnxRA==@kvack.org
-X-Gm-Message-State: AOJu0Yz6s6BnXhR0Wi+vkZZxzjbcJz9EDh1x4R0SKz9oWrKNA59i/gt/
-	L8Jnjs7TumI5HFUTzWp29sxDJO7Ex8WPXWV40wc82vDSI6h5CWpGCf2u
-X-Gm-Gg: AeBDieup+sK3dD+aRIVUZZ+IKYCIr6V6aSA+wXOcZ20mL8KikNlQGyNHGDG1T7SZBtG
-	wGvre/7MpwFnlU9zOjTrMbBWjcooZnoDwDXtnNdFtPm3siGALrCEohzz6CYwdkuMffgi72kA8fD
-	6BAyJbyusXMxYD1KGWK44f5+mc/8IHzIitwmekgxdPVd5uvh+785HGysJwHFAcr/aVQNTQpB6+P
-	4vAbhOrV27EyWX5ZG0a4QmDN9fcrCpMgHZpc/K/QYbXj+/6+zlfzQSyOs32vuU9i2b6mKSX8LVj
-	Yeg1nMmJ5A5vmtjSjWfx1lTT8g+U7QlbI2CN/ti1F7xyLYSuoxRuiPFSM7j2z4YgU+z4HuBohqi
-	IAYrC3i10o+swoA8O1mX+cE1C0ENgZYEZUsvKpBVs2Zer35Yon0TPi/IAi1S9EPoYpuO0DzbFas
-	gJYqYpKrMOe/VNJawDfAtV1NbmHHNqIO4m
-X-Received: by 2002:a17:90b:17cc:b0:364:919c:b52f with SMTP id 98e67ed59e1d1-364c30ff32fmr2632823a91.24.1777550282152;
-        Thu, 30 Apr 2026 04:58:02 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364bdf2aa41sm3638926a91.4.2026.04.30.04.57.57
+        d=1e100.net; s=20251104; t=1777550997; x=1778155797;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BM5KrwxlYL2yWx54/IrxJMUv0ov8gisDWiwFBM3mToc=;
+        b=jppdJhIJohvvGjo/clusJmiULCLBRUIQQQhdkItvVl2A/a4WulalpN7xQ9VMXoatiT
+         jFuasga6bciWaeKiOjV2blGJe+nt0RG/181S78ihkeTQC95++abbG61Bu6JcQv1qLElX
+         B5dVJOIjQ0JhJfDanKOLsf0wUxZVzD8KEjXYsnnidm24hyI3Ndolz4cPNBHgpsqqoZ1A
+         AenWgA3oyc1W6H1dmKkwtaD0jShVkE4LgN5RzBZmEyxXH/fikAcwmPoDV7YYnXZ2lhw3
+         oFVKmgjL8y0Pw3atFmmXBXVMRvWLm2i57NGohd1zEuJ5H13ak1tIvjAqZBiGfHpBc1uF
+         4GDQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+EYFDPRt4rBZJi52jZkbqK2rvMOMWuFuXo96qlE92KcOQaqphek53F12RZ+6P+S7NJ0YWK6W8NkQ==@kvack.org
+X-Gm-Message-State: AOJu0YyZo8twSyajrDJ80J2CbIlwcy6afMXnW4BdUqOUO2WheWnato/o
+	itYz+d++RncVmZso5cQIXB4IJxPViqv5/C307Q4xWsy+oNr/7jXdWPogys+QxrF7B4Y=
+X-Gm-Gg: AeBDieuHiPcI+9aMRScxqGnZZyjZWWNYlQ6WN7a3zbaJMxH7c9ihQQDudmTcHnRDqH6
+	lJ/Zo10FBKsZ8tUGHJnbYRQumMa3PfxqixGdeuS1ZRAcXrTw+QL5s6l5rP183KCkCyV0QWcBKZj
+	/cv4hdDvpQgNNQEa3kPAqOeM7hi1gy/sTtbrarZPPwNhdkqihA7/xkzsMxNX080mrSjnIB2nMFH
+	E1KYCeqMGIfoCBU5aWsOcD74TsY3r7MpOjFYvZDkdAGVwCqxiQOUidpCThbbcQHqxi0J60QpHnL
+	UDTPRR+9i/PdL9/l0Ag9RwVsFALA8QAlgjmgjQ9hZ/4IOMs1hw6pSIzEMjCzjJ51x8/26ptqG+R
+	Qjvi1U+i2YkBNP5xqwUHiWSLKa3dX1f+Gwp5HgrVvZ8FKDLruBKRvfuNvf7YhSk8Fvyqk0lMYQf
+	jfOvpq8vyM4StFuZJIMMgKR9dHcQ==
+X-Received: by 2002:a05:600c:5254:b0:486:fbdb:b718 with SMTP id 5b1f17b1804b1-48a8445f451mr47883195e9.25.1777550996490;
+        Thu, 30 Apr 2026 05:09:56 -0700 (PDT)
+Received: from localhost ([2620:10d:c092:600::1:2d86])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a824f9f0dsm58153455e9.15.2026.04.30.05.09.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 04:58:01 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Cc: Amir Goldstein <amir73il@gmail.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, lsf-pc <lsf-pc@lists.linux-foundation.org>, Gregory Price <gourry@gourry.net>, Bharata B Rao <bharata@amd.com>, Donet Tom <donettom@linux.ibm.com>, Matthew Wilcox <willy@infradead.org>, Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org, Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Subject: [LSF/MM/BPF BoF Session] Numa-Aware Placement for Page Cache Pages
-Date: Thu, 30 Apr 2026 17:03:37 +0530
-Message-ID: <h5ossmwe.ritesh.list@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 67ED5120002
+        Thu, 30 Apr 2026 05:09:55 -0700 (PDT)
+Date: Thu, 30 Apr 2026 08:09:50 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muhammad Usama Anjum <usama.anjum@arm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+	Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	david.hildenbrand@arm.com
+Subject: Re: [PATCH v6 0/3] mm: Free contiguous order-0 pages efficiently
+Message-ID: <20260430120950.GA1738@cmpxchg.org>
+References: <20260401101634.2868165-1-usama.anjum@arm.com>
+ <20260429103326.GA1743@cmpxchg.org>
+ <20260429050430.d86f01dbe731edc9fa932add@linux-foundation.org>
+ <9834200a-492c-4705-a2b2-e76cc0ba5392@arm.com>
+ <4ff3d230-d48d-4a9c-aac8-30a7b80c4775@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ff3d230-d48d-4a9c-aac8-30a7b80c4775@kernel.org>
+X-Stat-Signature: ci8dqh7tbnx7ggio4jkffosp5jx3qfgk
 X-Rspam-User: 
-X-Stat-Signature: pokyuqj8mzm5fjsgg95bd9k5nuacbx5x
-X-HE-Tag: 1777550283-941472
-X-HE-Meta: U2FsdGVkX18tAtFFPJi6TUl1StFgDTsaGlKVaxERkZTfUUDoX9BT1xCzmblLRyNwPEwJ/dPWbOnKBu9tGcaCPn1TU9CXcZAZ5KY52uo9EsF1KXx14DV/x5zJ6iJ9sHJuadCh69QtTV7Cwf1M8KJUtK6WjraP0VQvmJDZOuGcaF3nSqG8ibpjc9eCG/ZkBcTqknZAuTPeXs778YOGeT0ec7rezU4nAOkVQrd+ZgP+xy2O/LaIZ9RhpwURILDJeO4dHUn/gQw2tn/TDHnZ0iggpglkL1jTli9+r9S5RImgOReTQDtWXgTPTaU5xeG2ckHdl68NRT/Ioed4zKYgCbqCV49yO5Mk6HT6TnZGryoyff0JHATFYfxL2E8hkTybD8n5pg0mJwczk3EJ0vvWhad1dT+leJAT/s3kXG6zFtQyAJNBdbveLPhDLiArbcazSY9FLVkz44xDqVkTo4CSB8zVvYue+4OZGELAjZTaslTvhr07yiS2RQpM68UVR4a/S3LeykmTy323pyykbDFQV4jjOjyVXdzG8kAszTD+FNnK93wual7qXoBwFiQ6FGXyKxUAPUCIVxxntNGgHxsukN6O6P4wFZDFnfwIa/isYPfjTze79ZLZhiyFxcWXb3FlWXU+fr15A2AOck3w+/CuWuIrrwcSytITwOBn/KISYDv7m8Z7IZ04ml0Hd/q95P8bHYNsfzogzgSPJSzJ/iWrEWoZKMym0RJzoh774agXSJUvKa4CgV75nOB8W6FsXQY1u8v1pJgEqWX0bk+LrBw2Ejwz6vfdKGITRL+TWlHfxCCwrQzSPK9AvnYZ8MvDwpMv4Tfrfo7ttxYS81Na2Bx9Gyl3UcM4/k2ZL1yQ43eGKQaEiHLh30n/VpHVGNvUUFEajLQpgiOqa1CewxduOfnTDhycbMOFIgKfHla/XXepb+wHcXt6MPT2SSwptv/hWBHTcUZOLDHvXdBPd5xx/IA4WyR
- Y/t4a+h7
- pr1Rx2NrCN/X8GyZs5ys3jTrOvoa69TTHZ0ajbNkAhuLba6O+oF68iqYJa6yTAvBfc1OM9hjZ/J/atzP1MjUlNRchS8encrLModTCO/r2F1MevQDgTc4b2+S82ES6Q0D5RcZpLir+XlGWNigxoCK0fQjdbuAzhG3ZSjLwZ2wCCuSv1g80V9erkAxQAXoK5aURRnwlvGcfH6ZgKRyAfu1Aiqivy0mhtiKw34ZM78RhkfU1dlrkAy4kCTUNvDCPdRe3LoBDhbS51X7R3UWPWyzDPWkMb66WSUJd6LHnKDN7AHCQWOUJwy6U822TMHj1y334mnI/kHzwMfeQCCajcirwuGTvgNR7scWRQs9CKA2b2NJHk7mMOYNOXq9sUC3cH1UxeR/e5/SsQdCKtxW65bwIlYmCG3IpFhFe45Fl
+X-Rspamd-Queue-Id: 8CC6E140011
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777550998-988525
+X-HE-Meta: U2FsdGVkX192MgRXKSoQuGhusZ/hQXAvy8Mcfsfqsg1xrSBl9xM55VKwn/HL8CDWHS8iNIKi6HFLnQqXY8MsNKX3Q/hBLKlQUOcMUslXYjJ0Y9fyUHnTUVWK5k2BRAZjD9Md1EGzb8HE4vT4P4Vbma4JsiyWAp+1PV08Ak/m4yIv9pbOdiydULOZfo4+4UaBc/rDGaKfHM2k3OffSFqANFLJ82cHSP49ptPrgUzRyKdPGe2tzuPtbWDq0sFiZGmM0v3GSLAamPLiaXrxQ8kgXZOyuoVOClBHCFWZGjF/nwwDC8L5ej8r25ljH/49m4i4FWEZzc9H9NIRUhDTPAsEm9JT1eeqkP10Asa/k1B4S73S9zz2TGICqHnGlIeLAvcZdLngy6qXBY7mK8ZIxjV1aYOULtQe+oCfp1iFYs2qIT2a5rqpVYqk8ITUJ+YhsiHnUcuidPXKSs+9i4z372WVz3Zw5oyZPX8ikSg1NrZ7YIuCnwml55xh3sTRoIFyRKUdk/80ropNPg0dVcfutL/pgahpf0qnzCoEjsJEK8h1fu/S+sizt/rT9YRSw6ezs6TkE4PC9HkTT6FjRL6Dvb6XN90Nu/b/F/2wHqOL4ZjRJHapSWPtsu7J3tl4GPfRYQ5oP/CH8Qf1YObkVbwYyPBperphaZ0RLhfFwHL6qjqNnz5ZDVnmMeQWFYopk8dxiqwbnRkP57+cUNnC8GEMIRlNkKlnL716mwZyzCz3aHLDViibExboPR75hGhvrE3YGPjt3Z++z5/21n+hN7iyTDKQRVACiFe5VALBtNYjbhOSkQonIGbKvNXcTSA93pxcVpXXIgYZPVSAaWd+qFxEB0+zwPi+MZobGq2ypr2Lolm2tSGLDadziXdrXcWYR+Y4XKTslQmr16K9jbFYsWt1JWlMIO963kSSsySaUgnvy59Zyd64r5BMTZ6SPcqxJ1mM06jtJSMoOrnx/ZmzE7jXGQS
+ S9a9ibN2
+ dijebEFN7bS6AIlXHXi5rKifRU7YoEBt7d/VD7rJHmJXoxuk7aK3qEYY9z4Cu9gVZgDfnjNS0fgD+PdAnYiwfuB1uChPQYletTaI1OCDyW2WUhDiSueT2aXZ2eHnHebiXOyOVq5hXSJxUd1PjWuNV7U6L6W82Ewq7AFVL5hCrFFY7l55ua81wsIFseiR1lwkTrBJLffUaGX0LyZMPZoebEfjyWvmZL3eHcYhR8h5QfjNDGfWjZc4CXCz5JBMRZ07zYdH4oynX/9PS4YkiP50dt5WCa7/L82aRlY7dQqQ9qyffwBsstxoexBPRGQyBaLEjh+pOUvj9AxfK6el2DqWCOA63UtyHHtePWuGlAmfzqqRUerX4bPeWJ46aWb/zCqCro+JKKyaG1ODwKiWV2p1gAWHZZy6p6nrY1Psu4jDAMQXEFTuBFrrWqOLh8OPRyQCvrLrm4JV6G65qM0S/7DOWvgHs5Mbp1AvTQNevbXp9lOenZHzgVkfMNUbXRSKwtb/Tm/Gi86YW7i6T1X4ivt7VE8mBWmtSGQTQaRgp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,60 +133,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Apr 29, 2026 at 03:04:16PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/29/26 14:31, Ryan Roberts wrote:
+> > On 29/04/2026 13:04, Andrew Morton wrote:
+> >> On Wed, 29 Apr 2026 06:33:26 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
+> >>
+> >>>
+> >>> I think we should revert the original patch.
+> >>>
+> >>> The premise is that we can save some allocator calls by requesting
+> >>> higher orders and splitting them up into singles. This is a frivolous
+> >>> and short-sighted use of a very coveted and expensive resource.
+> > 
+> > I'm not sure it's that simple. First off, vmalloc has preferred to allocate high
+> > order pages for quite a while, it's just that the patch you're referring to
+> > makes it try even harder. So reverting the patch doesn't completely revert the
+> > behaviour, it just reduces it.
+> > 
+> > Performance benefits because those high order pages are mapped appropriately in
+> > the page table - i.e. 1G PUD, 2M PMD, (or 64K CONTPTE on arm64). So it's not
+> > solely about the number of cycles spent in the allocator; the HW is used more
+> > efficiently. vmalloc only splits to order-0 for the benefit of the caller,
+> > because there are some places that assume they can access each returned struct page.
+> > 
+> > And all the order-0 pages of the original high order page are freed at the same
+> > time, so it's not like we are destroying the contiguous resource; it remains
+> > intact for the next user (well, ignoring that some will be freed to the pcpu
+> > list - this series solves that wrinkle). I've heard it argued that this approach
+> > is actually _better_ for conserving contiguous blocks because it's keeping the
+> > lifetime of all the constituent pages bound together and reducing fragmentation.
+> > I've never seen any data though...
+> 
+> Right, that's what Willy has said: allocating+freeing larger blocks, especially
+> for unmovable data, reduces fragmentation as a whole. And that theory makes
+> sense for me in the context here.
 
-Hi All,
+Do we have data confirming that it works out like that?
 
-Amir insisted for this :)
-> IOW, bring the Hallway session into the room, so that other people
-> can participate and we can use the hallway time for gossip and
-> stuffing our faces.
+I think the missing piece is that as long as we still *do* have small
+order requests with mixed lifetimes, they will punch holes and cause
+fragmentation. Large requests need to clean them up, which is
+expensive. You can of course make the argument that it's really the
+small requests that are the source of the cost. And I would agree ;)
 
-So, since we might have few slots available in FS breakout sessions -
-here is something that I was hoping to have a discussion with you all
-in hallway. However, I thought maybe it will be a good idea to initiate
-this thread here, to see what do you think about this.
+But adding higher order requests right now surfaces that cost. We've
+seen that everytime in real workloads: THP, the large page cache
+requests, and now vmalloc. They all increase compaction rates, cause
+failures in higher-order network atomics etc.
 
+I do appreciate it's a chicken and egg problem. But I don't think we
+can justify regressions from now until there are no more small(er),
+fragmenting requests.
 
-Linux already supports memory tiers and there are ongoing discussions around
-promotion of unmapped page cache pages, which lets kernel do the right thing
-for userspace page cache pages on a tiered system.
+So we should still require some form of amortization story when we add
+larger requests. It's not accurate to say that they pay for themselves
+right now.
 
-v6.17 added support for per-node global reclaim via
-/sys/devices/system/node/nodeX/reclaim, which lets users perform per-node
-reclaim of page cache pages. We also already have interfaces that let userspace
-define the lifetime of page cache pages, such as RWF_DONTCACHE and
-FADV_DONTNEED. These are increasingly useful because locally-attached DRAM is
-a costly resource and we don't want unwanted page cache pollution there.
-Userspace, sometimes is in a better position than the kernel to know the
-workload's access pattern and whether it makes sense to drop page cache pages
-once the I/O is done.
-
-So the question is:
-Do we need a userspace interface for the placement policy of page cache pages on a per file basis?
-
-Note that we do have per-task placement policies like set_mempolicy(), but those
-are too coarse and don't help if userspace wants per-fd control. mmap+mbind()
-doesn't reach unmapped page cache. shared_policy per-inode works for
-shmem/guest_memfd but not for other filesystems (I think so, but I maybe
-wrong).
-
-So what I would like to discuss with others is:
-
-1. Is there a need for an interface that allows userspace to do per-fd page
-   placement and maybe per-fd page migration?
-2. Are there applications that need such an interface or would they benefit
-   from it?
-3. Even if applications may not need this today, should kernel developers start
-   thinking about it now, before users start abusing some not-well-defined
-   existing interface. e.g. the story of echo 1 > /proc/sys/vm/drop_caches,
-   which became a production workload tool despite never being intended as
-   one?
-
-Let me know if people think that this discussion qualifies for a BoF discussion at LSFMM?
-Or do you think it's a bad idea altogether, if that is the case - Then
-please help me understand, why so?
-Before starting to jump on the implemention of any of this - I would
-like to gather feedback on what do others think?
-
--ritesh
+And the small cost reduction in the vmalloc alloc path does not offset
+the externalities of consuming contiguity, not by a long shot.
 
