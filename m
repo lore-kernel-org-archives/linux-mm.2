@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02A31CD13DA
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 766CCCD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:23:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7AD46B0096; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
+	id CAA2C6B0098; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A826E6B0098; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
+	id B470C6B00A0; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 775056B009E; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
+	id A5C056B0096; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 401656B009D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 861AE6B009D
 	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 085EA1C009C
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3C4931201B7
 	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:22:58 +0000 (UTC)
-X-FDA: 84716346036.26.E624BD1
+X-FDA: 84716346036.06.BDF92DE
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4EFC180007
+	by imf10.hostedemail.com (Postfix) with ESMTP id 77F2DC000D
 	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:22:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=YOvCBOn0;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=LZ3Mp2Rk;
+	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1777580576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,38 +35,38 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6QlCxWH+Y7W9QsBlG/iTMnUBj0keGEMtOuPZJKk1hPQ=;
-	b=OsBS1JQK2Jc/FapAZKJDIZiISuSBMH7ICgTLl+QsQt5lsT6itUwGjm+G2cM5MXIUHNW1mL
-	Kk2eJpSwcXglotoTvdJJj/7GSRUQaT9zv3ncnUNtzSm6LirCVxlXwTivZiwHIPV7ld9TJ2
-	joiS+2yY3nnJSEIs3PJNYZCBHSn3Ko4=
+	bh=bvJR6jADuhi4ZKfJmoKhmK09ThLzUdL6AcjJWqeIwjM=;
+	b=b3221h6RVT+ZC37nAo05H607qBzNtLc/qz/OJuVIyIeGLxsV7qT2W1akwHyUy37ycXyMFN
+	SafiL2BztSwDNNePB1mjjHKq6MOo9p8cMxWzmsZ/HGyVaLgOB8ttkPVv0LyCcJXuEeWk25
+	qokhTzwZzDfDH3SOjQUi/Z5xdGoFcgE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=LZ3Mp2Rk;
+	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777580576; a=rsa-sha256;
 	cv=none;
-	b=5xNQvCB8OQsbKF8tEUALQlaB94Uks+PH4I4es4c5U4VPc4sfakh8XiJm8200E0dKFXMmKF
-	b8vunCYOYS3FBzQFMsOGR23FGb/YxkL/FcoWkpSnObXX5fM9gQ/RPH9n/cwF1RP0RTXt4W
-	HCbkop3wXf3EMfGMiNrByN3SPZyHJOM=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=YOvCBOn0;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	b=ioa4VT4TnMgHp3cOvglUm0ZEnMwSQAmZM6gOsuOD3H77DzkFPbyUU13GD6D4WyvH4aWbri
+	t13e/MHymawBbHlSeVv1Lb392/VNorJrDW4Vw5TFivKwSwcyJWBpGHeKTTJ7NfbHlDm8bd
+	bdzQ8x2R4S7sSg0LTa/LBgZ4Y8iS4U0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=6QlCxWH+Y7W9QsBlG/iTMnUBj0keGEMtOuPZJKk1hPQ=; b=YOvCBOn0/Z9zKbBcuslksNs0pY
-	NC7KreDKPX+ruw5dKlBiUiRjpyw2hePSWp7e4JeyyA47RWV570IVvgILwoUbLIs6eH7WOYD2ggfR1
-	HvswcaW+B1C7OiPN8OV4V0Y9Jn7fozGpejYSuPadWCJGupg0vqOKC2KOKhM57aVXfNBmsRB3U3tm1
-	BSzK5e6vIDkkq1npK5srjK+uvY5yha2+uH/a8PgX6Vhu5Yx1DJgsLtkFXKDL/uDWsPJRR6XzhwwCb
-	zDc771zbMmrX93TzTX5FF3yf/64rK9jJX9Y+YkEv294YzzGQGAwU9dk6Q2e18IPVgPgxeKJbw32Cn
-	RccK2hGg==;
+	bh=bvJR6jADuhi4ZKfJmoKhmK09ThLzUdL6AcjJWqeIwjM=; b=LZ3Mp2RkDyhYWiG8D7LPMiAzgx
+	OkOSO8vXWFAB6ri9E4jUwfiBc+rnMeLCJ/omx64T+errsk1yQE7znGkj0+5EH6PR3EL7RTCFLAmvx
+	TUGYz6Y/w0CrxszAcCTWA9m/OiJqtE2LNrfwogrgdVHVQHYKDLruC5EgmjCT866pImb1aQRrl5uZr
+	9bFM6wn4nxq2WT/rBCx5Fzq1ECDmH+kZWyU2djI4wxTihrLFOcC0zkqMuRoGzLMchkcCLuVVyhKzl
+	lcd7qZ6x+sYjCXpy2qMEFiTSPVLusNaPpSKQAticLr2vxjmz92qNrOEwj8xe3/NDDnK+5fdoxQXBL
+	4BasYx7w==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wIXuC-000000001R0-2BX0;
-	Thu, 30 Apr 2026 16:22:40 -0400
+	id 1wIXuD-000000001R0-1zDA;
+	Thu, 30 Apr 2026 16:22:41 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel-team@meta.com,
@@ -79,24 +79,27 @@ Cc: kernel-team@meta.com,
 	ziy@nvidia.com,
 	usama.arif@linux.dev,
 	Rik van Riel <riel@meta.com>,
+	Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	linux-btrfs@vger.kernel.org,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 04/45] mm: mm_init: fix zone assignment for pages in unavailable ranges
-Date: Thu, 30 Apr 2026 16:20:33 -0400
-Message-ID: <20260430202233.111010-5-riel@surriel.com>
+Subject: [RFC PATCH 41/45] btrfs: allocate eb-attached btree pages as movable
+Date: Thu, 30 Apr 2026 16:21:10 -0400
+Message-ID: <20260430202233.111010-42-riel@surriel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260430202233.111010-1-riel@surriel.com>
 References: <20260430202233.111010-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4EFC180007
-X-Stat-Signature: 667riwd9bzduyuanxy3hg319im4pq7an
 X-Rspam-User: 
-X-HE-Tag: 1777580576-14428
-X-HE-Meta: U2FsdGVkX198FmgVR5/OsLn+GII/ZL4SUS0Dv+YSauIM6KajVqZg6O0tHnsCJaztTqc6qY33Bjlm2tGTUtqc2S4CnaG36SyU35rrVK9JdgDp5/1SqH6GsY48x0QO6AWYschLtNPvjCCczUC2LQ3gpQ+7pRtkU90wPRYY/s/UrDsLK/dqT8R1rnSSROs58DKPqAkA8luuHrjEKkxEAtZvT+pft8oHTkMPURq5fvOrLjR/eIRp+R44Noz+SNZraKXKsYLtFxa1XVJFYPN2IvXSSJFBuIw63CqaJy7CU5Z//UoX7B1NPf2Rk4pRuUpClYIRWlJ+ltYT+nWNdb7fkWkh+7ABKeM+glwAWc99CzH/8k76OepZpJkuqSYq0kEte6mQPKVQBDa9NUFlNWKLmRgeCvplDgf6RjY6jJIW8G/6nXDLHwc2E7ATWoZtR00K6MrVq058aoHFIxG69BgBnOlcpkJDOpDwaDROeDrY/CGiwzu5j4yndwAd/6D6Kq/t4rez7UYgl8GM42tiuya6xiOr3fBkyujV81jJPnIeriLUXjpdXset0WwKOTmk7ifKIH8RQqfTUhY5CvBUMGyv5J9zBlRVVEd618RDZN8mqb9zd7XHISxeLPL2ntR72vQZaoql/soR1MykpGLMbJqKXy9FgFXOSU+yz8oK7r5G4fgVpwN0UM1vgofrZ+5K2p8Y3zKFl2PyW3dAa/rTs46y/ZbzMIlDnrXWO3Y+72+m661zUnaBDSs/YR2vDwJ81v8657ooErbYnjnw0Jfn7X6Vp4hgRLPpmMAT0Qq1luvhZ1VAAHMWqn9200aMPDGUw+YEV6dFb0rZkCXeO4njqPQUanlncbcm2qjRwbACFCUFs1uCF23jE1GUozPw9z0HZqcw4r/X69eGKcLCCwMHI6YcCwXOf9l9yKofZALZQxae9h9udXs0b45TzhI/8T4m+2OJLxk/9izBMY1cl5LibQb01VH
- XKO1vHu8
- w2l2ipT7avQV3jZEk3Wll/hy9k0AnonJLPWyb0jxGP1PyNd7UgoeqdF6xZQM+gW5NKlovb4uhNizYgwDbxUlHAzIXfakHKsPOEzdTeQhPiaRU316cMWZHVKS6/7u7B4zhFJeECPhYyWsrVqgUyundmLi3Kk1DpOB3n9goqt6PhF8WW0vsfpLHHqPG7yhsviTHsMMtiNnthgDViNNbTN2ZuUV79xk29t5isqkBGvw6jRtInH/RciNqo7k7F01czo4q7dYiV1Fx8/6b945ybZ+5nSCxqfxynx9UcbLx3EpmbySiCBW7LFsU+I9hReYBdh39wd2cVO2WKObBlPVXN5wMZmf33F3eiHrCsnD0n9kNRPjTyKeNb6f8/1Idj60zJlLr5s0oAcxEVdZn0FEWZB6rvb2UyZ80k1vkTlDK
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 77F2DC000D
+X-Stat-Signature: 1a3qf3mnpouus7woiq4ui8bkmcqxpgm8
+X-HE-Tag: 1777580576-813927
+X-HE-Meta: U2FsdGVkX1+aI1DNf75zqaPbVrLg2iDAJ58XOhGDoE02SpXAqUJuFcOYh9hGdHSrUlmIUyY5le1Uov2smyfjguVOzS+jNRqJuPOIVAx8za+Rv49W7OLN1HrNqJPmYZAdZBSIlUsDMsXpJx8A7Cl6X19kyx2//tBehkOL3rxJC/LoUjIFkZM6UdPNOBZHVpylX6e1w16PtnO7WGrfgvxQ0OjFFp1Xr2cVOp/G0by58qZVB1ibKT5ydXUsRVz3bbGCO9n1HnzSM/CQnhhCZXs0J6nmcfEZJZxpzi0WHvRxaQuI2Jqei09u+4vRmdSkMlsFf2p45c32TlypcuIgx+48ZtjfsZOAElxIdjBEAD2rnory7QDZwt/l4PZPe+U60fXh/LvgXoY+Yiz974xY8Zt4jZYpVi96xsrFtyXfc/EsbpE1WgQodDLGRCscy2LF6xltTiclBvwo/EWwalt/ORye7uMmm1ScoC1DCM4m8tKRlpOFqjguF4kTg0aje5/1zklhgwm3/t0kqXIPvOp0PpRzuZxRNes/q+tpnrnFIO2CjfGY6VYB98okgGXEMhGYmU+d+kZmRF04K43WPs7DPzCqBR1I6/cPrUI/l8gINyS7XfhPw0hTtLyfaL+W3e3JhlWRQ4XEiTkVe3U7+BbD0qg20eUso50yqFM+gVpALnM9EvF2rkSa+NHZyTBcwXj70gUv7NUlOEJVNwjqYctsPItnO1FKtq4X0b4MTpbA7tw6XUNdGy+DivA8aW5sf4Qkf2C1KjRNwSNtAp/9pvg4nEfEPMyq7qylKHQJW99LntJN6RpvDFC8redZ8iiUwPtXf07UtySsdZFs8nc1RICU+UkMG3KgwZ8HDTai18xUb18aqsntL8mPy/9PyA1z41yO5GMxugd9q9s/QdJ/6tsZJsKG4PfhZi5o1WrNdriKM1ZYw+A8MPee+5VeIq7A3bZaqnWdeNNl+b9qTa0EgiEslSx
+ rEU+sc3I
+ 3/sDjspK0upU13+EYpj8QO5tRiysKud7t1zzvet8vn9PHNUjeKhnnHoUwKaRzskJhjIWEgcO37gv0NP/f6csL+Vi5LFyEXBR6LrbGrcVvtHw36o9MWJhugK30d6GsobZ/XHEUbIjhF+iu0yrjiqvBvD+gCAQ7lpFhZ2GCIF9qtB40bzEhfp9WT0pDEJY0hZUX18LbLrVmM4vLNezfv9NY8UfcT0ODA70Ap8xDUGzYWbhQT5eEEjzDLEE2BAuSigp9gVcV2Osz5tX/3qFsiO618rsTA/ALLEilHC9fDM4jjp/51dEbWJKSQGgOpn0QPK6UigfMS61CFPP9QDyuJ0FLEecpsPLFn0g3JdiHik3FVBZN3QYbNkxUg9xn1kcggJjwqcADL4tzUrhYzr/lenIA970VU5HTH1xTZ9xJHAJRGNMyx0M4Qi5X5P5d8FVDEk2SLTej48S2oVS1SiYfgdXchmcmLvVtIw43RHmT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,60 +109,307 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Rik van Riel <riel@meta.com>
 
-init_unavailable_range() initializes struct pages for memory holes between
-memblock regions.  It receives a zone ID from its caller, but that zone ID
-is simply the last zone processed in memmap_init()'s iteration — it does
-not necessarily match the zone that actually spans each PFN in the hole.
+Extent buffer pages allocated by alloc_extent_buffer() are attached to
+btree_inode->i_mapping (the buffer_tree path), reach the LRU, and are
+served by the btree_migrate_folio aops in fs/btrfs/disk-io.c. They are
+migratable in practice once their owning extent buffer hits refs == 1,
+which happens naturally as tree roots rotate. The buddy allocator
+classifies them by GFP, however, and bare GFP_NOFS lands them in
+MIGRATE_UNMOVABLE pageblocks. The result: every btree_inode page we
+read in pins an unmovable pageblock from the page-superblock allocator's
+perspective, even though the page itself can be moved.
 
-When an unavailable range straddles a zone boundary (e.g. a hole between
-DMA32 and Normal), all pages in the hole get tagged with the wrong zone in
-page->flags.  Any later page_zone() call on such a page returns the wrong
-zone, which can cause accounting confusion or crashes when code assumes the
-returned zone is valid for that page.
+Add __GFP_MOVABLE to that one allocation site (alloc_extent_buffer's
+call to alloc_eb_folio_array). Plumb the flag through
+alloc_eb_folio_array → btrfs_alloc_page_array as a `gfp_t extra_gfp`
+parameter. All other call sites pass 0.
 
-Fix by looking up the correct zone for each PFN in the hole.  This is init-
-only code running once at boot, so the per-page zone lookup has no
-performance impact.
+Three categories of caller stay on bare GFP_NOFS, deliberately:
 
+  - alloc_dummy_extent_buffer / btrfs_clone_extent_buffer: the
+    resulting eb is EXTENT_BUFFER_UNMAPPED, folio->mapping stays NULL,
+    the folios never enter LRU, never get migrate_folio aops. Tagging
+    them __GFP_MOVABLE would violate the page allocator's migrability
+    contract and they would defeat compaction in MOVABLE pageblocks
+    where isolate_migratepages_block skips non-LRU non-movable_ops
+    pages outright.
+
+  - btrfs_alloc_page_array callers in fs/btrfs/raid56.c (stripe
+    pages), fs/btrfs/inode.c (encoded reads), fs/btrfs/ioctl.c (uring
+    encoded reads), fs/btrfs/relocation.c (relocation buffers): same
+    contract violation. raid56 stripe_pages additionally persist in
+    the stripe cache (RBIO_CACHE_SIZE=1024) well beyond a single I/O,
+    so they are not transient enough to hand-wave the contract.
+
+  - btrfs_alloc_folio_array caller in fs/btrfs/scrub.c (stripe
+    folios): same — stripe->folios[] are private buffers freed via
+    folio_put in release_scrub_stripe.
+
+This change targets the dominant fragmentation source observed on the
+page-superblock v18 series: ~28 GB of btree_inode pages parked across
+many tainted superpageblocks on a 247 GB devvm with btrfs root,
+preventing 1 GiB hugepage allocation from those regions. With the
+movable hint, those pages now land in MOVABLE pageblocks where the
+existing background defragger drains them through the standard
+PB_has_movable gate, no LRU-sample fallback needed.
+
+Suggested-by: Rik van Riel <riel@meta.com>
+
+Cc: Chris Mason <clm@fb.com>
+Cc: David Sterba <dsterba@suse.com>
+Cc: linux-btrfs@vger.kernel.org
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- mm/mm_init.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ fs/btrfs/extent_io.c  | 69 ++++++++++++++++++++++++++++++-------------
+ fs/btrfs/extent_io.h  |  4 +--
+ fs/btrfs/inode.c      |  2 +-
+ fs/btrfs/ioctl.c      |  2 +-
+ fs/btrfs/raid56.c     |  6 ++--
+ fs/btrfs/relocation.c |  2 +-
+ fs/btrfs/scrub.c      |  3 +-
+ 7 files changed, 59 insertions(+), 29 deletions(-)
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index f3751fe6e5c3..b3f83452de72 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -848,9 +848,27 @@ static void __init init_unavailable_range(unsigned long spfn,
- {
- 	unsigned long pfn;
- 	u64 pgcnt = 0;
-+	pg_data_t *pgdat = NODE_DATA(node);
-+	int zid = zone;
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 5f97a3d2a8d7..7e28e4a876a0 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -626,24 +626,33 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
+ }
  
- 	for_each_valid_pfn(pfn, spfn, epfn) {
--		__init_single_page(pfn_to_page(pfn), pfn, zone, node);
-+		/*
-+		 * The caller's zone may not match the PFN when unavailable
-+		 * ranges straddle zone boundaries.  Look up the correct zone
-+		 * so page->flags encodes the right zone for page_zone().
-+		 */
-+		if (!zone_spans_pfn(&pgdat->node_zones[zid], pfn)) {
-+			int z;
-+
-+			for (z = 0; z < MAX_NR_ZONES; z++) {
-+				if (zone_spans_pfn(&pgdat->node_zones[z], pfn)) {
-+					zid = z;
-+					break;
-+				}
-+			}
-+		}
-+
-+		__init_single_page(pfn_to_page(pfn), pfn, zid, node);
- 		__SetPageReserved(pfn_to_page(pfn));
- 		pgcnt++;
+ /*
+- * Populate every free slot in a provided array with folios using GFP_NOFS.
++ * Populate every free slot in a provided array with folios using
++ * GFP_NOFS plus optional caller-supplied flags.
+  *
+- * @nr_folios:   number of folios to allocate
+- * @order:	 the order of the folios to be allocated
+- * @folio_array: the array to fill with folios; any existing non-NULL entries in
+- *		 the array will be skipped
++ * @nr_folios:    number of folios to allocate
++ * @order:	  folio order
++ * @folio_array:  array to fill with folios; non-NULL entries are skipped
++ * @extra_gfp:    extra GFP flags OR'd into GFP_NOFS. The only value used
++ *                today is __GFP_MOVABLE, which the extent-buffer real-mapping
++ *                path (alloc_extent_buffer) passes when the resulting folios
++ *                will be attached to btree_inode->i_mapping (added to LRU,
++ *                served by the btree_migrate_folio aops). Pass 0 for
++ *                everything else; folios allocated by other callers stay in
++ *                driver-owned arrays, never reach LRU and never register
++ *                movable_ops, so they cannot satisfy the __GFP_MOVABLE
++ *                migrability contract.
+  *
+  * Return: 0        if all folios were able to be allocated;
+  *         -ENOMEM  otherwise, the partially allocated folios would be freed and
+  *                  the array slots zeroed
+  */
+ int btrfs_alloc_folio_array(unsigned int nr_folios, unsigned int order,
+-			    struct folio **folio_array)
++			    struct folio **folio_array, gfp_t extra_gfp)
+ {
+ 	for (int i = 0; i < nr_folios; i++) {
+ 		if (folio_array[i])
+ 			continue;
+-		folio_array[i] = folio_alloc(GFP_NOFS, order);
++		folio_array[i] = folio_alloc(GFP_NOFS | extra_gfp, order);
+ 		if (!folio_array[i])
+ 			goto error;
  	}
+@@ -658,21 +667,27 @@ int btrfs_alloc_folio_array(unsigned int nr_folios, unsigned int order,
+ }
+ 
+ /*
+- * Populate every free slot in a provided array with pages, using GFP_NOFS.
++ * Populate every free slot in a provided array with pages, using GFP_NOFS
++ * plus optional caller-supplied flags.
+  *
+- * @nr_pages:   number of pages to allocate
+- * @page_array: the array to fill with pages; any existing non-null entries in
+- *		the array will be skipped
+- * @nofail:	whether using __GFP_NOFAIL flag
++ * @nr_pages:    number of pages to allocate
++ * @page_array:  array to fill; non-NULL entries are skipped
++ * @nofail:      whether to use __GFP_NOFAIL
++ * @extra_gfp:   extra GFP flags OR'd into the base mask. The only value used
++ *               today is __GFP_MOVABLE, which the extent-buffer real-mapping
++ *               path passes when the resulting pages will be attached to
++ *               btree_inode->i_mapping. See btrfs_alloc_folio_array() for
++ *               the full migrability rationale.
+  *
+  * Return: 0        if all pages were able to be allocated;
+  *         -ENOMEM  otherwise, the partially allocated pages would be freed and
+  *                  the array slots zeroed
+  */
+ int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array,
+-			   bool nofail)
++			   bool nofail, gfp_t extra_gfp)
+ {
+-	const gfp_t gfp = nofail ? (GFP_NOFS | __GFP_NOFAIL) : GFP_NOFS;
++	const gfp_t gfp = (nofail ? (GFP_NOFS | __GFP_NOFAIL) : GFP_NOFS) |
++			  extra_gfp;
+ 	unsigned int allocated;
+ 
+ 	for (allocated = 0; allocated < nr_pages;) {
+@@ -695,14 +710,23 @@ int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array,
+  * Populate needed folios for the extent buffer.
+  *
+  * For now, the folios populated are always in order 0 (aka, single page).
++ *
++ * @movable: pass true only when the resulting pages will be attached to
++ *           btree_inode->i_mapping (the alloc_extent_buffer real path).
++ *           Cloned/dummy extent buffers (EXTENT_BUFFER_UNMAPPED) leave
++ *           folio->mapping NULL, never enter the LRU, and never get the
++ *           btree_migrate_folio aops, so __GFP_MOVABLE would violate the
++ *           page-allocator's migrability contract for them.
+  */
+-static int alloc_eb_folio_array(struct extent_buffer *eb, bool nofail)
++static int alloc_eb_folio_array(struct extent_buffer *eb, bool nofail,
++				bool movable)
+ {
+ 	struct page *page_array[INLINE_EXTENT_BUFFER_PAGES] = { 0 };
+ 	int num_pages = num_extent_pages(eb);
+ 	int ret;
+ 
+-	ret = btrfs_alloc_page_array(num_pages, page_array, nofail);
++	ret = btrfs_alloc_page_array(num_pages, page_array, nofail,
++				     movable ? __GFP_MOVABLE : 0);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -3067,7 +3091,7 @@ struct extent_buffer *btrfs_clone_extent_buffer(const struct extent_buffer *src)
+ 	 */
+ 	set_bit(EXTENT_BUFFER_UNMAPPED, &new->bflags);
+ 
+-	ret = alloc_eb_folio_array(new, false);
++	ret = alloc_eb_folio_array(new, false, false);
+ 	if (ret)
+ 		goto release_eb;
+ 
+@@ -3108,7 +3132,7 @@ struct extent_buffer *alloc_dummy_extent_buffer(struct btrfs_fs_info *fs_info,
+ 	if (!eb)
+ 		return NULL;
+ 
+-	ret = alloc_eb_folio_array(eb, false);
++	ret = alloc_eb_folio_array(eb, false, false);
+ 	if (ret)
+ 		goto release_eb;
+ 
+@@ -3461,8 +3485,13 @@ struct extent_buffer *alloc_extent_buffer(struct btrfs_fs_info *fs_info,
+ 	}
+ 
+ reallocate:
+-	/* Allocate all pages first. */
+-	ret = alloc_eb_folio_array(eb, true);
++	/*
++	 * Allocate all pages first. These will be attached to
++	 * btree_inode->i_mapping below (added to LRU, served by
++	 * btree_migrate_folio), so request __GFP_MOVABLE so the
++	 * page allocator places them in MOVABLE pageblocks.
++	 */
++	ret = alloc_eb_folio_array(eb, true, true);
+ 	if (ret < 0) {
+ 		btrfs_free_folio_state(prealloc);
+ 		goto out;
+diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
+index 8d05f1a58b7c..1a3631abe989 100644
+--- a/fs/btrfs/extent_io.h
++++ b/fs/btrfs/extent_io.h
+@@ -363,9 +363,9 @@ void btrfs_clear_buffer_dirty(struct btrfs_trans_handle *trans,
+ 			      struct extent_buffer *buf);
+ 
+ int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array,
+-			   bool nofail);
++			   bool nofail, gfp_t extra_gfp);
+ int btrfs_alloc_folio_array(unsigned int nr_folios, unsigned int order,
+-			    struct folio **folio_array);
++			    struct folio **folio_array, gfp_t extra_gfp);
+ 
+ #ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ bool find_lock_delalloc_range(struct inode *inode,
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index a6da98435ef7..fcd662203608 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -9645,7 +9645,7 @@ ssize_t btrfs_encoded_read_regular(struct kiocb *iocb, struct iov_iter *iter,
+ 	pages = kzalloc_objs(struct page *, nr_pages, GFP_NOFS);
+ 	if (!pages)
+ 		return -ENOMEM;
+-	ret = btrfs_alloc_page_array(nr_pages, pages, false);
++	ret = btrfs_alloc_page_array(nr_pages, pages, false, 0);
+ 	if (ret) {
+ 		ret = -ENOMEM;
+ 		goto out;
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index b805dd9227ef..eaf9508fcf1f 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4614,7 +4614,7 @@ static int btrfs_uring_read_extent(struct kiocb *iocb, struct iov_iter *iter,
+ 	pages = kzalloc_objs(struct page *, nr_pages, GFP_NOFS);
+ 	if (!pages)
+ 		return -ENOMEM;
+-	ret = btrfs_alloc_page_array(nr_pages, pages, 0);
++	ret = btrfs_alloc_page_array(nr_pages, pages, 0, 0);
+ 	if (ret) {
+ 		ret = -ENOMEM;
+ 		goto out_fail;
+diff --git a/fs/btrfs/raid56.c b/fs/btrfs/raid56.c
+index b4511f560e92..d8531a901535 100644
+--- a/fs/btrfs/raid56.c
++++ b/fs/btrfs/raid56.c
+@@ -1143,7 +1143,7 @@ static int alloc_rbio_pages(struct btrfs_raid_bio *rbio)
+ {
+ 	int ret;
+ 
+-	ret = btrfs_alloc_page_array(rbio->nr_pages, rbio->stripe_pages, false);
++	ret = btrfs_alloc_page_array(rbio->nr_pages, rbio->stripe_pages, false, 0);
+ 	if (ret < 0)
+ 		return ret;
+ 	/* Mapping all sectors */
+@@ -1158,7 +1158,7 @@ static int alloc_rbio_parity_pages(struct btrfs_raid_bio *rbio)
+ 	int ret;
+ 
+ 	ret = btrfs_alloc_page_array(rbio->nr_pages - data_pages,
+-				     rbio->stripe_pages + data_pages, false);
++				     rbio->stripe_pages + data_pages, false, 0);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -1756,7 +1756,7 @@ static int alloc_rbio_data_pages(struct btrfs_raid_bio *rbio)
+ 	const int data_pages = rbio->nr_data * rbio->stripe_npages;
+ 	int ret;
+ 
+-	ret = btrfs_alloc_page_array(data_pages, rbio->stripe_pages, false);
++	ret = btrfs_alloc_page_array(data_pages, rbio->stripe_pages, false, 0);
+ 	if (ret < 0)
+ 		return ret;
+ 
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index b2343aed7a5d..814e48003015 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -4046,7 +4046,7 @@ static int copy_remapped_data(struct btrfs_fs_info *fs_info, u64 old_addr,
+ 	if (!pages)
+ 		return -ENOMEM;
+ 
+-	ret = btrfs_alloc_page_array(nr_pages, pages, 0);
++	ret = btrfs_alloc_page_array(nr_pages, pages, 0, 0);
+ 	if (ret) {
+ 		ret = -ENOMEM;
+ 		goto end;
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index bc94bbc00772..23f6f780eab6 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -369,7 +369,8 @@ static int init_scrub_stripe(struct btrfs_fs_info *fs_info,
+ 
+ 	ASSERT(BTRFS_STRIPE_LEN >> min_folio_shift <= SCRUB_STRIPE_MAX_FOLIOS);
+ 	ret = btrfs_alloc_folio_array(BTRFS_STRIPE_LEN >> min_folio_shift,
+-				      fs_info->block_min_order, stripe->folios);
++				      fs_info->block_min_order, stripe->folios,
++				      0);
+ 	if (ret < 0)
+ 		goto error;
+ 
 -- 
 2.52.0
 
