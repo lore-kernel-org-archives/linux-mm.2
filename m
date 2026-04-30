@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C72BFF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 00:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61BEBFF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 01:08:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 051856B0088; Wed, 29 Apr 2026 20:58:08 -0400 (EDT)
+	id 6A3B26B0088; Wed, 29 Apr 2026 21:08:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 028E76B008A; Wed, 29 Apr 2026 20:58:07 -0400 (EDT)
+	id 654CA6B008A; Wed, 29 Apr 2026 21:08:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA83A6B008C; Wed, 29 Apr 2026 20:58:07 -0400 (EDT)
+	id 56A9C6B008C; Wed, 29 Apr 2026 21:08:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DD8346B0088
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 20:58:07 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B169FC254F
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:56:56 +0000 (UTC)
-X-FDA: 84713407632.25.92A0D4D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 42E4A6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 21:08:40 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C05771BA320
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 01:00:24 +0000 (UTC)
+X-FDA: 84713416410.22.BC8E4DE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 291C714000E
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:56:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T5O0uOFk;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id C1C2A20007
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 01:00:22 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H8++NKB0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777510615;
+	s=arc-20220608; t=1777510823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EazxW4e6oGHBwYfUsG1yPydjnWNC/W/b8dI3XNECX8Y=;
-	b=kNhqOMlUA+YIy0TbwH6DX3rfI5LBJnGcsX65pYLhuad/g5tBuJwMnBr3P5QuYGDjT2RdbK
-	XT3KKBLapqnJ9wIY4thhC9gytT+yUPJYnS+PpwHdobEklERD0kZBaAM3z9SZ+DFL6oZ+Lr
-	+2VSmon6w6iYUuxFBS0TnRI4PAhCdoE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T5O0uOFk;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777510615; a=rsa-sha256;
+	bh=mCokaaiijHtYDOccRoJOeAVP25EYT0Tme3ss2q8h1Ek=;
+	b=KILmsqaTMhlUiKXGgz7g0cNrciCwCrGyBga2tcfPcl6NvzaNOD6GNttQxf9pJ3BQcrt2pX
+	HnHX5G/0lIXAPGlr3V5vvKVcf1v4QxjLNFE5pm+OMBOiM09HS6viKmPhFwPpcjj44eOdKP
+	BT60kosfs5+HbehipLKDvk/RwelI2rM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777510823; a=rsa-sha256;
 	cv=none;
-	b=KoyYpAExyNY14Y/aMy1vGKQEp9uiT4vGFUBaE/nxM6Amz+V0JnNmfRK1Am3cbncvS+5RdS
-	Xb9WrbQY7GZM6+5pZRBp0c9dQBJ3Hzp8aHwZUwFP0Za/ZIR+ZC7Gk0CRERkYP+esnh+PiU
-	ST0l85X01HjLTIY+tOX3QWULQ/RpTbs=
+	b=Uv9msKOkMXLTmWw9Q6bxoWIsW4L9VCfIQV40t9Pd0E2vbQClpZgOnLHZ68l4LJz+QkbdUr
+	U/AmC/EP4Hg6x7M3o5okU+OkNwFCEjbfGZM2KE4YecFXeDsJHhGNIc+YSPkPv9SDJ3TmWT
+	ST9QD0s8rorq7KgxDz6ybSLcojcJDvA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H8++NKB0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 247116024D;
-	Thu, 30 Apr 2026 00:56:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A82FC19425;
-	Thu, 30 Apr 2026 00:56:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D6B86024D;
+	Thu, 30 Apr 2026 01:00:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDFCC19425;
+	Thu, 30 Apr 2026 01:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777510613;
-	bh=iKtlWudWf4yk0Lw+o/8AER/401ttw3Z21zzRCj0TtyA=;
+	s=k20201202; t=1777510821;
+	bh=wSFWxLyFmwkXCFlEqXdpW5aD9S/d9XFlVOX1pPmAbnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5O0uOFkB400nD6lpKCMSJhkVo3JAz+oQGI4I1AYyFmKnID7GhY3MajEdF+gonuiy
-	 kPw3kFuwGCWFPghkeNq74M1zRcFk70/Wo4/o9hspxulsq2lf7V/eTaRMy614D2ciUT
-	 IAteBdqdhamoTivv77BZCpUNVGVefsA3TcbX1UWAub8ExTz1cVkRlHIOyF3JyCtffL
-	 ZZKWYQGCVQcMiekKxKI6t7btxPXWVTxNPREnHs9RlP9iEvuvw4ro4J5bLri11gswva
-	 KopiZLOt598FQCTMPWZoYxukgy/SOJSb0nBoyZxHrk5qFfqRHf3Ihbah1Po8vp5z7O
-	 vxnlv/dNKN6Cg==
+	b=H8++NKB04PVoYU78Xho68s/d2aq4pwIy99pVtsI8OXDHx5luQL//4gQmPqP2fMJA9
+	 vRCzfpwUs1OkROvSO/XcudpFJjqJ39Ra64kLarQC/6l3IodxJUqcrfUr/AK+OJN49m
+	 BGHRXxwNcg0U0ccm7CoYlW+RLuIhkACKb/IJCtIkmW9x2KdvNjEj9YLOyD4o+6AKDI
+	 B53z36PpE+a6YdMVFY+pllqe7epGTOsbX/Kia4wEzMVVtjtIMFGUlhNV+e9Nkwl5sM
+	 uUPPgJcPCki5tj1/WihbxoIGi2+dCZWENwsyzTanrMHyudLJefh2RVOv7CblI4iPZe
+	 W8UFXOeJC6NXA==
 From: SeongJae Park <sj@kernel.org>
-To: Manuel Ebner <manuelebner@mailbox.org>
-Cc: SeongJae Park <sj@kernel.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: Manuel Ebner <manuelebner@mailbox.org>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	linux-doc@vger.kernel.org,
-	rcu@vger.kernel.org,
 	Kees Cook <kees@kernel.org>,
-	linux-mm@kvack.org,
-	"Paul E . McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v4 2/3] Documentation: RCU: adopt new coding style of type-aware kmalloc-family
-Date: Wed, 29 Apr 2026 17:56:45 -0700
-Message-ID: <20260430005645.113819-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	workflows@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 1/3] Documentation: adopt new coding style of type-aware kmalloc-family
+Date: Wed, 29 Apr 2026 18:00:12 -0700
+Message-ID: <20260430010013.113971-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260429072320.310817-2-manuelebner@mailbox.org>
+In-Reply-To: <20260430005333.113698-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 291C714000E
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C1C2A20007
+X-Stat-Signature: ptihc5g8setq11xkjkmru1ojs6gyy8p9
 X-Rspam-User: 
-X-Stat-Signature: ro8tccy6gej45xrmyi1aaucrr99erki9
-X-HE-Tag: 1777510614-529893
-X-HE-Meta: U2FsdGVkX19mGA8w9kTJCuH7KCTOxHnRtgOV+4WH2hpS/PFaSrUNgUyQT2oPWC4hY/4OmoX9RbAHUrTy1XYdHTuOJH9tDdfZWqoyUE2fsUM/MTJa/nvx1qN7AT92W/Cr+PXIcMFXoD7BAFlOL4m2XFnX8IAcLYZtVGtcWS4+MAx+tibY6QRFDEgVsoXbnwYFUH6F0+j+3iv/iAyA4Lp4Ctt3QTBNT2WneBKBZh4Xji/zE8EtAUjP4IrEVrWKgFYtCawIjiJPmj28VLo3HJ/Z8WaBTxxa5Pk2YpPAKAw8uNv1m0+CrrWeitg+TDFMGh3cOTpJl47j5KdBoSLcW+S4hbZ1wthyoy0CXApsXTRFMd8tFCYEp6uEI5xfeajmya1OoynSuBnXD7VSqewG81/OUMGpr5dexwWUMigrfJ2+LCCrOOvwSIuaGIlfm6D5WSNWub/WexUx+lUeR29QOcmpXp0Mc9QLIWTIuUoaNSI/l+qOfQ+ucXd5xXvO9t1ikzypxy/rB1R+dAvLVNzqrPjSyU2h2EyOZdFtsQstlyWL/8SUPt19dY2mluiZGzrh39Jdgew02cn6838w8SznSlFHV/7FuL+iKAD97gquebQ/O5ytQ+KtA0Di2O5Em0Zc/bcXLYfWjrc4/Ilp9775jyDCvpsSC4Je6tzpGkZVVS52kO8WuD98/cm/13NvzknUsvPtXzvoq11bkXnPjNKbyJs/vyPWJpRoM2u6j+Jn/csf1Uo6IGhPaS9lwdEU5rviql5LwoqHAXjigyO1fc72VqqJaWEZGhKjXV1moRq/CprW6/SsKXHuhNwvler24Q/xWd61soQR6YxdDFOu5tL2koOF6tLd9eso/nRVpdTcKOPhNu1hBnsRb9EpcypOgxe9X7KbLGzVArgR5egryz63nQGybvoGL71McKLzPlXMvzoqQxwoUFfWDtVor41bPh/boOg8JoVVuJAp7rfWJkDByze
- D11x1oYs
- tKPgw/9GYE8oqzg1R50kVb7A/lCSFQvUowKM9ZmP9LqBAFmBtBeOLj/gqNy4SC+9hpHHnAFizR4ExlGdlKCTVYwdSVI1epbzmNYrQkpSCfvIdTQ3Sy0gtcSudGUXGsQSJOsLaer5+md4tqfe2w5JQcttEiWTIMGZYk59RcNtncaNXQRjVYA9zdYZ3Ey8SG79Cz+59A0Twv4kr5qdh7Utou3S26BPY463VPswHM0t3EEBGaI9SykYqvx7trdGLCVVW21CbKR8ifL3pWjVok91HwnrKSOa12GXDgbhI
+X-HE-Tag: 1777510822-455184
+X-HE-Meta: U2FsdGVkX1+baXzngl0AA7a+Oygj4aU5Q4stTE1CfViKRxbaSbfnRNsSlF7Kpy+oNQ2ATdolvFvwLasicId3dsSsAdECRsTXNSKnGxHFnShqdfTvW7fkmERvGX7HSK0Ox+XNOrs5mvSe4ztiYNrdxe/YVlxK5CJ58ktOQWKLjaMdgN1RNLMRUu+B5Dd22AXmHBi4rPBE2YOlv2BcCFr32gBOB1tMHrsAlbg1k16j3GEgC3E2n8W2LyVVczJT5gq2G4SoDsQSqYb8/uikpsqlZXnTwYiDAE5q3aujgZzgI63isDtEACG3qghGIZZfCyA1YzngW11bABNkC+mxeZQG1X8zuTJROCjoXfOAUtySNHCGzpNzBj4urrHfMoP/TH1GBZrRZ3uBdtkdTdHdit6YWgBBJq+2+73K9njmQcfSuICDkYOizw4Fp/hHPb5HwaBH5m1ENr6TZlekpRDqkrR980TWazh22JPP2PIjoGK6HW/xNrfk0zLvFDbFYVmgZWK4CF65CJYi7IyNLFFVNlHH523ipbRJz5QUTzkaqVc4vUGVBtOZP4MH9N7F+xlSHx8mvYO9kZnsMMaxtNQu77NipVdKVYqpxZU+cGAPYnI57FaKiNlqDioSUSAnqtcXRrRBlEJwz3yONNjBv3mzBiK6oXrkOZEfb5h9ZwNCU1nBHgExVknaks2gDP8PMgXpnLmIK0bERMD10S66cnraoUEC4cYQ91KKCeE5jrWT5c6QyyGPUeAw1Nwt9n6Q6C2ICwzna7y3Vxezpiw5cI+1Uyu/1T5/Syv5r7l1fT+2HvdP9LaE/lglQK8Ev8u1Ct+8exVm8Rricks1t+sJqjwqEfJ52MmQiPCyr3pAIOSvQdL3aIAcOI0IkXxS+832PjaVN1AIPm/I7fD7offX/C2sjwgzoK4MmDiEL5uaKAjNJ9DxKdzqIxhaNYZfTaf4lVQIJr0xtTYc5R7ag2t3jP7kQdk
+ f6ZDn9v9
+ XoSeuezcFFGmRDrdUZD8FJrYZ919O6D18eCoO+gmvsyDwUBO+vUmWd8q1Re0fPLxlDc8s2dxaOZNUTF1vkFdOXCEukzMq6WNTX+ubnItKejKcCdGMbzTfm/sf7057N4fF+k/iIdy1Y8i6ACYD3k1tBet0GcqZBuavFJpeF/1s7KKyNTjb/gJ6H18rME7xAOlCJvItHuh5b2Y3sbV184730ns0FmxpT1zHc0uwvgHVk8MTgloj1M4/92ijx9uNI1m/I6iSIWY2OGOtR0t26ZNYtu4s97eD0nQwvAhQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,24 +98,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Apr 2026 09:23:21 +0200 Manuel Ebner <manuelebner@mailbox.org> wrote:
+On Wed, 29 Apr 2026 17:53:36 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> Update Documentation/RCU/* to reflect new type-aware kmalloc-family
-> as suggested in commit 2932ba8d9c99 ("slab: Introduce kmalloc_obj()
-> and family")
+> On Wed, 29 Apr 2026 09:14:44 +0200 Manuel Ebner <manuelebner@mailbox.org> wrote:
 > 
-> ptr = kmalloc(sizeof(*ptr), gfp);
->  -> ptr = kmalloc_obj(*ptr);
+> > Update the documentation to reflect new type-aware kmalloc-family as
+> > suggested in commit 2932ba8d9c99 ("slab: Introduce kmalloc_obj()
+> > and family")
+> > 
+> > ptr = kmalloc(sizeof(*ptr), gfp);
+> >  -> ptr = kmalloc_obj(*ptr);
+> > ptr = kmalloc(sizeof(struct some_obj_name), gfp);
+> >  -> ptr = kmalloc_obj(*ptr);
+> > ptr = kzalloc(sizeof(*ptr), gfp);
+> >  -> ptr = kzalloc_obj(*ptr);
+> > ptr = kmalloc_array(count, sizeof(*ptr), gfp);
+> >  -> ptr = kmalloc_objs(*ptr, count);
+> > ptr = kcalloc(count, sizeof(*ptr), gfp);
+> >  -> ptr = kzalloc_objs(*ptr, count);
 
-Shouldn't 'gfp' parameter be kept?
+Forgot asking this, sorry.  Shouldn't 'gfp' parameters be kept?
 
+> > 
+> > Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
 > 
-> Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
-> Acked-by: Paul E. McKenney <paulmck@kernel.org>
+> Acked-by: SeongJae Park <sj@kernel.org>
 
-Other than the above,
-
-Acked-by: SeongJae Park <sj@kernel.org>
+My Acked-by: is still valid regardless of your answer to my trivial question.
 
 
 Thanks,
