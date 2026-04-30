@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C66FF886F
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 04:05:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66674FF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 04:05:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 120146B009F; Thu, 30 Apr 2026 00:05:12 -0400 (EDT)
+	id D06B56B00A1; Thu, 30 Apr 2026 00:05:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F70D6B00A1; Thu, 30 Apr 2026 00:05:12 -0400 (EDT)
+	id CDDAF6B00A3; Thu, 30 Apr 2026 00:05:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00C486B00A2; Thu, 30 Apr 2026 00:05:11 -0400 (EDT)
+	id C1AC46B00A4; Thu, 30 Apr 2026 00:05:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E44386B009F
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:05:11 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 910731B850E
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:05:11 +0000 (UTC)
-X-FDA: 84713882022.29.AA1D507
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F10ED1A0011
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:05:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HVHmp1Z+;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B19396B00A1
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:05:17 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66A99A0413
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:05:17 +0000 (UTC)
+X-FDA: 84713882274.30.E2C05DF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id ADC1FA0006
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:05:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uJyCN/cP";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777521910;
+	s=arc-20220608; t=1777521915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=91miQC+6ESWqee34eo4YVmoqoVtggz6DZAL6gngZUZw=;
-	b=hJ1jhCDADx74xBOcXJ94onoq5NhC2tG3jahB8Sf7TV+XL0G2k5hHi3YXtSxzostxRerCda
-	hnZe/yitrySx+pvfizbGAaKt4Ste6HDlI/iI0BgKsT/9teHxK5eR71IMVK7QU3CHKZkj2X
-	HXzs3jDRmqO3DKbEjeBaTMA99jD0Soo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777521910; a=rsa-sha256;
+	bh=AjOwhtb3aLC8dXcF5fdBlXdpp4mSyr4Dq8lBNuOOORA=;
+	b=xjWcImMw2cQHTA+oq80Jg1x1vO2GfQbgrhHuJbP2wImvk5KjTSMc0LAQLEYTeEt1DvzC0+
+	5WrXP5mHlvg36j8oxcpTWTCGhG6b2jELUKQUjvigbiR234UZdO0V/m/auegtrWSA0x/AHd
+	l4zswNrtQpBjXSiQmXuGVQMQkUWuQ2k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777521915; a=rsa-sha256;
 	cv=none;
-	b=3kGTEN7u6Fl2+Z0FQTgafciPYoTFFZdv2qKcsTPlzpp/nwIwAcWnE101jGyVM4CEV1fl43
-	X7ykdhaxfNfe4tyeif/GW7XoRMwxvDYmas4I5TmZRk73i0iQ8TDeSXGxRhTIzLpSv+jWah
-	W30KgbniCz+Y2Hdo/kuvYWa2uTpb13Y=
+	b=3eEtVVo+IwIetD7HG+mEH3IcCgjy/GXrzVEgyeFc5EBVTjf7Cv/xybivtxs32tsvlIbe2G
+	lN56VvvO5CSjmBYQtlK5s9p1xVznNw23T8LKkU0kPiizaAO9DxqfaNwIUuwUD7TZj5ro4W
+	dzy07xO3EhqHrkDUQCl+N/8ZOdXhCfs=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HVHmp1Z+;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uJyCN/cP";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 85F7B61141;
+	by sea.source.kernel.org (Postfix) with ESMTP id 953E9417E4;
+	Thu, 30 Apr 2026 04:05:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B00CC2BCC6;
 	Thu, 30 Apr 2026 04:05:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BA2C2BCB8;
-	Thu, 30 Apr 2026 04:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777521909;
-	bh=IOVfryRIB//G7TP35s/rdTIpoHZE33+XU/HgNFu89vQ=;
+	s=k20201202; t=1777521914;
+	bh=6MPYWPf1QbIXw7VCTkYtFV9yBQTJYYcQnuchAn2u66s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVHmp1Z+siadLb4Q4UHbDBBFXRgvKznPzVZgfJaZuDYbe4T7jnjjPpsDtJInwZIeE
-	 4+I5FPsV3n+vKdFvmZlaVSvEPy/79jVItKW9FKiSkpofZcGT8gtPXTdJbnuWCRBQ7C
-	 IotyNjhp+vK1JXwZXT1524wwOq3YNWA8MbefdUygDl892tC+sKqCeBWIognUzoFWBz
-	 1ZfPBOz5ggtDlvNtoxkZ97/ykVcs4f1SLEbGN/iXyxKX9lzWM6c+fEG+I0aotBh4/p
-	 pL2UOnf780mijkJBKnrAw7yfy8qSdrHqgtuQ3Q+6qcVgHDWif223rrlC6SFHrfHNEh
-	 uuxK+cvO1oYsg==
+	b=uJyCN/cPD0/zuU5TMG/FWh17eVTVcTCG22wyND+Ln22vdCzvScs+KeOLVG9RmOssZ
+	 jDw1d8PhCAGGbMI/IFgx4Z5EBNcmkVO03z+9/CJtVz3K4wxUxjDLHuhXQrygfZY0vj
+	 Mz9EPYWMtvXMUkv1GvrXcIXqYy7f2Nbz3f61nlophvJmqpD4ikN6UOlFyXJonZi3kU
+	 apK9iwjy49sl7fMM6lNjIBPwaa1bmY1pG/z4xtRWqVUh4kt9XKZhnZLwyhRWE61vDF
+	 fxzmTVdxergJndpikZIoTxLjBRYHAUamicyvLwT/yqUnIVLaZSAeOqCic0yYJ36c4O
+	 EWCGitvEei8LA==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
@@ -94,22 +94,22 @@ Cc: david@kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-s390@vger.kernel.org,
 	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [PATCH v2 3/5] mm: Move folio_lock_or_retry() and drop __folio_lock_or_retry()
-Date: Thu, 30 Apr 2026 12:04:25 +0800
-Message-Id: <20260430040427.4672-4-baohua@kernel.org>
+Subject: [PATCH v2 4/5] mm: Don't retry page fault if folio is uptodate during swap-in
+Date: Thu, 30 Apr 2026 12:04:26 +0800
+Message-Id: <20260430040427.4672-5-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260430040427.4672-1-baohua@kernel.org>
 References: <20260430040427.4672-1-baohua@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F10ED1A0011
-X-Stat-Signature: zezzec9mwb5upt19x355ecxatttehue6
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ADC1FA0006
+X-Stat-Signature: 346ezoreu49nd41h4txuq6yoqzhcqmw7
 X-Rspam-User: 
-X-HE-Tag: 1777521909-329689
-X-HE-Meta: U2FsdGVkX1+aS8wlmdOXZ3scDm+t6u7/CVSB+ixeWijQtORqd69zIC8cb6zVjBotbicWemlavx+fo/Ciim7AqEwOo/VJqfwG5KLln08cLnLXjIFrUWZc7qiRRfyh6ym/chw9nFStnDDmHZrWH7ttxSPrlTOJMhVrNH4LaHRfut3Hkit+0m/wIW5wkknxSKx1R5CUAl8ivHkkyMqJlvRr+JHWGn3e9ie3WO5svSLU1OqzLxH52xWTbdKOc1K/7RArXoVXlEOs9aS7uymeXVMLmzge4z4He4pH0ZJWm4+MbXwqHf926lcRyj2+70HV/EO/JWs6PlwzoAcuEwTwAL8m87wy5Szt+fhSvJ5IkbGiFy0z99i7XppSyS8sJncPgZoLOxyJiuIp0tGtkvO+cGl8d8vk+nqoA8jF0AkOjx9acMn8uT/K0UdeAEafwazAhtB1awDsVvRHf+BAuOL2Kb+xzFbL4Kt8xf/YUZR2OGWpj2esvliRScLJtAyPYPC5QB3ABuUHpUFsIVnQxFMuzKxm6+NjQfQh6ghz66cminw5ZAbnf03WKOlwR8AVDFVOfb0oQvB+KxSdyNXVYtLdsbKT0mF60N2MMiCgae7QDiAL/DZ8bQArrPed8/De+/FF+OBrrA4kJBhslg5rStr1jVBfrxpFbim7rnzg/vyxVM2n97JZvPAxbzvN4AoejYw2F0fYT2NbiJMnKUM7eBuskSsMcET1PvNZeRLYTi9Kgt0vVQeJE3DzGOKl5cPhQ+VlCqxDOWoXqjtBHmMejcyx2awjylXF/RZdw5N58BZ/c54UkjZWkOrMcIVE/bTXCT1L2O7ZKnrTjMjcMyECxPgqvBSZq8EPP3T/IeNxgjCuJvCeDMWsRjyQRUFoXwL6zTbSYBCU8iJRNb/r7R23pUImmggDw4AmnXj5xa8WtIW3mBv8blZnkpUNNf4aYCbfIPmB5/RY+3iZ44EsdoW2MxTpVgd
- fZGX7Y1n
- XPT+YfGPURy7QbGL7IdN6+WSg72aMgtsn+t2qy4l/9j0ChDSplTFDkLyLx0txY7wJ3z7aveEx4/1HSnsK2Bo4Mq2AuUe7nKLpaTkh/DYKQCXxB82Fo7OMITnhg7uFm2VQ+jjl27kuxRVZo+uHLyxBB7aNPMOw95D3gL3lR0eHxZoY3LpT6XdDrhjEYUT0RVJpBPpEgtfno4DnfH1VAA6DSJV41ETTaodDSV7nsNIUtuwpFXSVYToqKv08Ak8WoewpOxWAyj8sOX9k2RRu1n2JJbXNfHlEr5Mb8I3DzLAD7hVOTS5vdVK863iWJXzPsHeikPJr8HqRbPnTTpAOIp30/Dh6+0ktoghCEUYPlmBaybsjjYzolLanzTerAf/fiDlW5UB5
+X-HE-Tag: 1777521915-34784
+X-HE-Meta: U2FsdGVkX19h0cRx6UccKVDWG+pQ9vsUOcHRuZiEhv45tqIAe95zudES38TndX2Q366UqJ1BAo36RfD41m0+nbvuArhuEr+uaPs/Fdxg2h8q4TPb0k12ELF8geTS8sZ6YNWPikOuRRFfMHh2MJr0BVDiS1pH//oG2REbq8hBPyG3fpDG7XJi8FmckoXyfnaiVhBvbj9XqXKOe2O3wqIHEMsri2ZcynfVGNuX05Ai9YIuakgPaoCKhtdFhkwJ51yDAaBt9kfClt0GEXqn2IA4EFY9pXBfDCxFwwMpJ+ZcCMV/Q2j4DJ2DP0u+GyALdo4S78Vnog44a4SIYJemXl6EjzLmypTZbN2tw5zSnzOLp9DHp4zm3ytNmcvWIjurY4URB014l4lDF7blpM7NqtoRVKYnwnztDINuUjLSSegoyzVcpdswEnOh/zoC12RE9P+sNncFhrYuf0Z9MwawH+wnNws8paEcTuVX5BkWjUdYucHpUQ4Ca19c97J7GW5WH2sm87XsS7mrPnBjZGxx+i9sTWo0LO6Tul+vPoh8F3k6d4krdnTqK6RGifXlZ42ChUq2HBOeZ9+rima+5RP42G4CJzSBB8Hg1kYuIE62L+4JoGymw0wdYzIihZ/xWIGo6tUfggjJU4OfvhsyOe+hGOIylw03MvOt+9uBk6CAiKL8Jkba5XIKim9lrFRPNJ65tWxsDoui5DmTJgb580NOYUmjvdqJE/Toch0c3viQywKVngGI1/t6qq3rNtZ9461929Y3TY0mxJSpqUqLZ8JHEbWYy2/04O7D4plmVlKzgtw4kdB0+PoBRRg5fz+RHTG/1uyZxcbup/oeJObfwIUVHCsErInJ7wj8v5dynBgY8sFhQHcyD2HQ8w8mxUpOC8xN0Zaoq9Q6Es6VZnSqHci4wzqzCKEVuIavLwxC6C52mtTLKM4UIC5HlcmRXqwJmbBgFGR42R2LLGdxc49GR9Lsi9s
+ zLV5uf1m
+ JPP/yGlmVi9995+faigTQZI7T7I0vmTMy6xOTsqYXJKZr3/0SU41HBZG1duOxPi6IPmP+OuhsOYG63SB8so0wlh0gSfME0pyaHr/bOVQ10TGPxAuY71rc3kUOsqXlWVDoXUfqvCrn6qAJtiphBL+kr4hHzUbc7Ygca4bgzXUCY8tIB1ef7NFXUESewh2zNwVEv9AxVZFBVSsNSI9VFvxUFwcryqv/XwxZ0efOvc2iNZDZ56bPb2UWUmodvMM+cNYCQDHyyyDT49UvURoTh9Pa380sXI2rUzF0o8d4d/vk6X32Ie7EGpz8RNlMaN2csJIBKwxRT5VvpE1P+XTh+aj3qjuDr+wqfE5abKy1VKLd/txBVtU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,174 +117,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-folio_lock_or_retry() is effectively only used in mm/memory.c,
-not in the filemap code. Move it there and make it static.
-
-The helper __folio_lock_or_retry() can be folded into
-folio_lock_or_retry(), allowing it to be removed.
+If we are waiting for long I/O to complete, it makes sense to
+avoid holding locks for too long. However, if the folio is
+uptodate, we are likely only waiting for a concurrent PTE
+update to finish. Retrying the entire page fault seems
+excessive.
 
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 ---
- include/linux/pagemap.h | 17 -------------
- mm/filemap.c            | 45 ----------------------------------
- mm/memory.c             | 53 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 53 insertions(+), 62 deletions(-)
+ mm/memory.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 1f50991b43e3..500ab783bf70 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1101,7 +1101,6 @@ static inline bool wake_page_match(struct wait_page_queue *wait_page,
- 
- void __folio_lock(struct folio *folio);
- int __folio_lock_killable(struct folio *folio);
--vm_fault_t __folio_lock_or_retry(struct folio *folio, struct vm_fault *vmf);
- void unlock_page(struct page *page);
- void folio_unlock(struct folio *folio);
- 
-@@ -1198,22 +1197,6 @@ static inline int folio_lock_killable(struct folio *folio)
- 	return 0;
- }
- 
--/*
-- * folio_lock_or_retry - Lock the folio, unless this would block and the
-- * caller indicated that it can handle a retry.
-- *
-- * Return value and mmap_lock implications depend on flags; see
-- * __folio_lock_or_retry().
-- */
--static inline vm_fault_t folio_lock_or_retry(struct folio *folio,
--					     struct vm_fault *vmf)
--{
--	might_sleep();
--	if (!folio_trylock(folio))
--		return __folio_lock_or_retry(folio, vmf);
--	return 0;
--}
--
- /*
-  * This is exported only for folio_wait_locked/folio_wait_writeback, etc.,
-  * and should not be used directly.
-diff --git a/mm/filemap.c b/mm/filemap.c
-index a045b771e8de..b532d6cbafc8 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1740,51 +1740,6 @@ static int __folio_lock_async(struct folio *folio, struct wait_page_queue *wait)
- 	return ret;
- }
- 
--/*
-- * Return values:
-- * 0 - folio is locked.
-- * non-zero - folio is not locked.
-- *     mmap_lock or per-VMA lock has been released (mmap_read_unlock() or
-- *     vma_end_read()), unless flags had both FAULT_FLAG_ALLOW_RETRY and
-- *     FAULT_FLAG_RETRY_NOWAIT set, in which case the lock is still held.
-- *
-- * If neither ALLOW_RETRY nor KILLABLE are set, will always return 0
-- * with the folio locked and the mmap_lock/per-VMA lock is left unperturbed.
-- */
--vm_fault_t __folio_lock_or_retry(struct folio *folio, struct vm_fault *vmf)
--{
--	unsigned int flags = vmf->flags;
--
--	if (fault_flag_allow_retry_first(flags)) {
--		/*
--		 * CAUTION! In this case, mmap_lock/per-VMA lock is not
--		 * released even though returning VM_FAULT_RETRY.
--		 */
--		if (flags & FAULT_FLAG_RETRY_NOWAIT)
--			return VM_FAULT_RETRY;
--
--		release_fault_lock(vmf);
--		if (flags & FAULT_FLAG_KILLABLE)
--			folio_wait_locked_killable(folio);
--		else
--			folio_wait_locked(folio);
--		return VM_FAULT_RETRY;
--	}
--	if (flags & FAULT_FLAG_KILLABLE) {
--		bool ret;
--
--		ret = __folio_lock_killable(folio);
--		if (ret) {
--			release_fault_lock(vmf);
--			return VM_FAULT_RETRY;
--		}
--	} else {
--		__folio_lock(folio);
--	}
--
--	return 0;
--}
--
- /**
-  * page_cache_next_miss() - Find the next gap in the page cache.
-  * @mapping: Mapping.
 diff --git a/mm/memory.c b/mm/memory.c
-index 00ee1599d637..0c740ca363cc 100644
+index 0c740ca363cc..a2e4f2d87ec8 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -4442,6 +4442,59 @@ void unmap_mapping_range(struct address_space *mapping,
- }
- EXPORT_SYMBOL(unmap_mapping_range);
+@@ -4949,6 +4949,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	}
  
-+/*
-+ * folio_lock_or_retry - Lock the folio, unless this would block and the
-+ * caller indicated that it can handle a retry.
-+ *
-+ * Return values:
-+ * 0 - folio is locked.
-+ * non-zero - folio is not locked.
-+ *     mmap_lock or per-VMA lock has been released (mmap_read_unlock() or
-+ *     vma_end_read()), unless flags had both FAULT_FLAG_ALLOW_RETRY and
-+ *     FAULT_FLAG_RETRY_NOWAIT set, in which case the lock is still held.
-+ *
-+ * If neither ALLOW_RETRY nor KILLABLE are set, will always return 0
-+ * with the folio locked and the mmap_lock/per-VMA lock is left unperturbed.
-+ */
-+static inline vm_fault_t folio_lock_or_retry(struct folio *folio,
-+					     struct vm_fault *vmf)
-+{
-+	unsigned int flags = vmf->flags;
-+
-+	might_sleep();
-+	if (folio_trylock(folio))
-+		return 0;
-+
-+	if (fault_flag_allow_retry_first(flags)) {
-+		/*
-+		 * CAUTION! In this case, mmap_lock/per-VMA lock is not
-+		 * released even though returning VM_FAULT_RETRY.
-+		 */
-+		if (flags & FAULT_FLAG_RETRY_NOWAIT)
-+			return VM_FAULT_RETRY;
-+
-+		release_fault_lock(vmf);
-+		if (flags & FAULT_FLAG_KILLABLE)
-+			folio_wait_locked_killable(folio);
-+		else
-+			folio_wait_locked(folio);
-+		return VM_FAULT_RETRY;
-+	}
-+	if (flags & FAULT_FLAG_KILLABLE) {
-+		bool ret;
-+
-+		ret = __folio_lock_killable(folio);
-+		if (ret) {
-+			release_fault_lock(vmf);
-+			return VM_FAULT_RETRY;
-+		}
-+	} else {
-+		__folio_lock(folio);
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Restore a potential device exclusive pte to a working pte entry
-  */
+ 	swapcache = folio;
++	/*
++	 * If the folio is uptodate, we are likely only waiting for
++	 * another concurrent PTE mapping to complete, which should
++	 * be brief. No need to drop the lock and retry the fault.
++	 */
++	if (folio_test_uptodate(folio))
++		vmf->flags &= ~FAULT_FLAG_ALLOW_RETRY;
+ 	ret |= folio_lock_or_retry(folio, vmf);
+ 	if (ret & VM_FAULT_RETRY) {
+ 		if (fault_flag_allow_retry_first(vmf->flags) &&
 -- 
 2.39.3 (Apple Git-146)
 
