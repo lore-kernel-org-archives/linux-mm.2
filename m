@@ -4,103 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A4AFF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 15:04:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C48BCD13DA
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 15:06:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B15936B0088; Thu, 30 Apr 2026 11:04:16 -0400 (EDT)
+	id F114E6B008C; Thu, 30 Apr 2026 11:06:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9EB86B008A; Thu, 30 Apr 2026 11:04:16 -0400 (EDT)
+	id EC1D76B0092; Thu, 30 Apr 2026 11:06:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 966DC6B008C; Thu, 30 Apr 2026 11:04:16 -0400 (EDT)
+	id D88FB6B0093; Thu, 30 Apr 2026 11:06:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 82FF66B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:04:16 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C301BA7078
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:36:42 +0000 (UTC)
-X-FDA: 84715473444.27.191E3F2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id F2D4C2000E
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:36:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=By1fd0Wq;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777559801;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C38926B008C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:06:39 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01ADD105520
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:38:06 +0000 (UTC)
+X-FDA: 84715477014.28.E2E130A
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013021.outbound.protection.outlook.com [40.93.201.21])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 325FA4000D
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:38:01 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=tTdu6xXH;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777559884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gXcXzt8QrrvHb21Qwt0dDewieYK9uwdZ7cQ4m73F2gY=;
-	b=eMLnN0bIh/ofo1LhyixFu6CWpPzFoksgU7VH1JcEqnxoqdLqSeb+OTbJWQAJb73FxbR+pL
-	xsBvDANCZv/a0eFqoTBRl1nkUB6tKGUQuarjRpkgWKzz0B78PuHSAkqY9kwnXBF18VeKJ1
-	IQOtKZ1MPJa0nh55ZXiTj6Y3tW9MePY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=By1fd0Wq;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777559801; a=rsa-sha256;
-	cv=none;
-	b=i0hnkIjtRCtsAa823tSLlv1twdowTnVAOvNhPXn75VmXSL6vS/NGvOeo56dn+zmcAGl8EN
-	n0v05U9HyI/JoHUL5rfiL/2Jofq8/qK16GvZdVcPmATcGNeS3C0S05EIqtbrNQCPkZ9MVH
-	UPwZxZpOYs7PWvzck3GBTKD+cZVdU/o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D39534017E;
-	Thu, 30 Apr 2026 14:36:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901BBC2BCB3;
-	Thu, 30 Apr 2026 14:36:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777559799;
-	bh=as939qs8wfsBTGwXp3ewh6inHqVYfZy+nWQOmM5zTpU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=By1fd0Wq3wrNKuKqgvh96v2vhcfbQj3bGDgXXhGVNEIz0O0ePdbmHtVsxWnY21sT3
-	 Z7YVI17zupg5zfDfoNOYxv+96OeWMX1JcJlfxbsyhn8oYqssyCFk4zPMk+rdKVva1S
-	 9gc+XYWnuaHtRzS8gq+3AmQ8fZ1TBEs9TXJmDzdQgjjVaqdOtXSvcsETxUPAN56y3R
-	 hZkdz4ukPN1bdqH+Hy6MssE4QND7B2SYyfxtsG4IneoJocwAJtokbNITRzRC/CdD+J
-	 7EBRWBEYslY6iitGnu1nnQX/xH6xRYCgeyuozkC/6PZcwvNJuKWJfZ5eVnnuZYY5Uq
-	 4TXElpxlUlj2Q==
-Date: Thu, 30 Apr 2026 16:36:27 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Sarthak Sharma <sarthak.sharma@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Luiz Capitulino <luizcap@redhat.com>,
-	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 19/54] selftests/mm: uffd-unit-tests: use kselftest
- framework
-Message-ID: <afNo6xaWtlTofW4w@kernel.org>
-References: <20260428204240.1924129-1-rppt@kernel.org>
- <20260428204240.1924129-20-rppt@kernel.org>
- <89382a73-4b9f-422a-acf2-02f77e5bf547@arm.com>
+	bh=35m+pdl3AkQXKqZj00qBekl9EdjtBkhj8tRzVWShtFY=;
+	b=iod/VGHYmKIje9r5VJirgJrGLNsdt0WBcQzKT7LggEVJmkmo3BXTkambn3jd5SIFc+9J8F
+	cb6y2eZ/Yf5QxMDGGyqRb8hbXWCBXPxF97HOLCHcdm0xqht+tS8SY0Kqu4Jjn0l+4iZxHY
+	Xblc6kLmvN1ZkhrHhZXQECkqqB33thk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777559884; a=rsa-sha256;
+	cv=pass;
+	b=m0xIMM/axhB+TXZOPO4itxRTc2eCjDO064dy8kpGvCIPs8TaMdW++5QXBqGo/Z3AqqJHCZ
+	z9I116IIibmSPfniAWsGxLbHnAwRzUzgtaZH5c5F9zNBon2gBn++Ww4imkeNa8FsmSclbj
+	HJey4TpHZYSkWR6MWLmlAKUB2PCrvBA=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=tTdu6xXH;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yg2Sr8qmR7INuNUgd1vhzwahlUFF0HU58BaotvQYCNtS0uM15FBal3mqtVYzvkNTjx5tLEBoWaAb3ZUlKAvOYHaAqd4TCF3z3CCPdk5oVj85M2StAwt4O/9YBHl5O7aL1MWhnqWA3jonEI2v8kuoUXp12GxM7/1rSMB018WIUXjJg6xXU41wXVcUV5xrspx3WdA2A1P2aXI3fdcbwJeC/26OP6q+gCmP6xWLe6hiPi3XAvF/Y2YoRYGLifhOlmevlhUBE45MfjC9wyDTnsIGar2xufMlmp+ubV9RAqoncRL8vg8rEyhajvRlfHZ+uqfX+mK4fwQhGiFj0U5QMcU95A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=35m+pdl3AkQXKqZj00qBekl9EdjtBkhj8tRzVWShtFY=;
+ b=v/gyIitTmlH2W1biLskciBv5Wtym0sJApPF5y6tXkDdLK81a6uQIPO2Q8EkoSXR9lLzl1sGJj8lZYSexKK28tSQM8fmdYmyyA4NeWAriQxXJQADI4xaSrIx5rJrzPZ8D2viCJh5bqdmO/neZ2RORtj6UDlhGQV6f9U0uEjMbGFEwf5h2CY7o5i6lAR7zwMZrr4dIJ0SBHphLXcUgBS4653lKID3DcOEUXI3VKH1ZYCGuUn1zUjJW7y5Re7ifhnYlAG7XT/UhuqSV2+VGXuVqiTHZpqSg5XeHO/lM9iE178L3jwS6015AWVNoF0/kuMUwjFGEAT//YJLHWG9e3L5VfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=35m+pdl3AkQXKqZj00qBekl9EdjtBkhj8tRzVWShtFY=;
+ b=tTdu6xXHWwTSCOITuhutBsB71RUd9Ea3aft9Fkd/OedE76dONMUx8rcjTj4e8dwtB+W1CljTvXZMd81sFntZOiXZwNjpHSaoV8MN/vBxfBYo3rWEjMp8nih9c7/QFEsTve1gdVElkxREmHy3Twawg4KZrZ6VtUcnSdhkl0hkq/y8lSxA5LraZ/w/0vJeIN/Mpc4utseXvPpBeuS6IJVb4WBmSO4RpzFTktpqip34S4Tz3In30i/8seXNrbDPpjRoA5O8N30pMg99yBXmrhd9a2cZ+19ztinXK937pRqhI8DyHn+jtClsiyg0tuVpgcreb83uyCBkRBB8P/IfbM4CDw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ PH0PR12MB8176.namprd12.prod.outlook.com (2603:10b6:510:290::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.20; Thu, 30 Apr
+ 2026 14:37:56 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9870.013; Thu, 30 Apr 2026
+ 14:37:56 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>
+Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, <linux-btrfs@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH v5 01/14] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Date: Thu, 30 Apr 2026 10:37:52 -0400
+X-Mailer: MailMate (2.0r6292)
+Message-ID: <4C10A739-4931-4922-B2C2-245A610C0120@nvidia.com>
+In-Reply-To: <20260429152924.727124-2-ziy@nvidia.com>
+References: <20260429152924.727124-1-ziy@nvidia.com>
+ <20260429152924.727124-2-ziy@nvidia.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BN9P220CA0006.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:408:13e::11) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <89382a73-4b9f-422a-acf2-02f77e5bf547@arm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH0PR12MB8176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e483ade-89d6-4751-29bc-08dea6c6117b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	GH+NFB8Q0t113ErR7tBPi7T4PSXEdJnpkYX3DED1UBSjeZvrTE+qxIctCqI5OqK4twwlP+oxWJZe2V7vO01bS+P/Q15KoVIG5bKQ05VOy4Glvqa5f8vFj7gLLR5zad6/aN7GkuWJD+f+4QC7/odre47ox9sV2s+Ndye3FWGXtdtAUtvZP3Ojn3NmD7+AW+MsrHWvgpy5KRObh490lJIlsBmAHq3jc57O06JXpBx8MxuH2bdZ8HEbjwpsP45++TzJ/gWLvXkY7vt/1vEoBSo7SXtRClT5wCG2/Ab+UuHZmsvDFPp8cwrvOZHrDLOkZmIfVLmMDKkhhh9Boe72crnXqoA2ubg2SmubVvPwynyb3Bm9xI16KWfj1ghxysgktVS+c6PCBI+9lRtyDXvHdiu/MMggLwzMcAIcQtNHl5n7vTHH5j8mdGR4I7EIdchD4kvcnrm1kh3xixknm/NQRFTUiTyFVD6+Z14m5AEERia8kysqY4111iK7PeSH1Hqtc2XSMtJPghoX56HfKEgO/gLKFThL906inY5kmhRCAXshhicdukqAqKwclnfE1azd2i7mnSQvWwBA4x7k3y+dM1SegimWf91NDgkMkYZQvIP2PE8p1UdaeXj/FNncAQdfFXSR/H6UO2uFCazD9T00jwnzTwqwyuDYm+5ISP1ojFm4oIpIBw4C3OkB+u72WnX6XbZHiM4xgHhVgvCTJ7APFSRhJqhcOQz4DLs+bvZKBaRxhMg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+TAXsoU2u3U8CRLk7+B5lcK0qKUcDjCJ2Qvle/wo9VRKmKowgY1ji69LGrrJ?=
+ =?us-ascii?Q?q6/GqSodKAkbrS1bizapMGS62yJB6KoTw9xJxxTYIIc7icdT5ztgWmNaEmkM?=
+ =?us-ascii?Q?ebM3ihg5IBzFI7mfpoVJunrgdg5EvmX7KWO20z6alHM1q30rT3tErB7413dQ?=
+ =?us-ascii?Q?z3iokDXyGLfBUzJRjTHHw2MgD6qGv4Gk+I44bWWAfcXM9AvH1pTcu0T2i8pD?=
+ =?us-ascii?Q?Gfl3XaaNEo6RwvgBAKZGFiKuIwxEt8ZpRpFXMTWXj0UNFe1zCM4rPaNsB7zR?=
+ =?us-ascii?Q?WQC2rGDDvG/FRpkqcgH/+Sz2W0TFNUImBSl0dOIBhgvTx11hI6jEEuYB5DI7?=
+ =?us-ascii?Q?WwiuNAgccmCNgI1a9zGI8xBB9TVqZaaFmpZKymAD142BDbM2zXI8BncXgMIN?=
+ =?us-ascii?Q?/ZLOZUqm+kpdyddA5ReNxdQXg4kIOWoqhPy2xi+dyVwJ0X9VpXxEi+7dO6Vb?=
+ =?us-ascii?Q?FfZoZ8graoA9KLmU4ZBilP9zeinFORBLHkIH87ERM0M4vadpG/66r8qZX8/I?=
+ =?us-ascii?Q?ONlZJarbTUq5Qxy8P2GRKgRgQ72AhcGkO3Az0NEhJbF8Iz9TcerWQSsvx+U4?=
+ =?us-ascii?Q?R11dx18YMYF+eTHdPFWfLQpyDJMq8cWrLspNF7+POfiZ6GtbqsxswdwMFWhb?=
+ =?us-ascii?Q?CnEhhc0UnCQLgB04x9mhxro1819U1B1SoWCpKkGOStcZpnTPdIrvNXKaxF9k?=
+ =?us-ascii?Q?LRGT4sa8w7CVkOTKEIEtQGW/aeyhNNbAHf59nesMfzHVsfPdBW944oko72+r?=
+ =?us-ascii?Q?W8j/bhlG36o38xGFYH3bSRq3q48zyoVA/+wdETGUcgajmy1A50RZTDwnGZ8p?=
+ =?us-ascii?Q?YICYfrhgp7fJWDTojmKhYeTaQTiTLHhOUbBPv19JVt+cqwcBaeEyvjsqTAL3?=
+ =?us-ascii?Q?NA1jVX8mYJgw1p8nUFz6HKPj/gjYtK3K7mHY1aB+mjQxGw9Tf7m9uGMxl7c0?=
+ =?us-ascii?Q?UTjlGu7FFoSV0PiOqM4BEmmp8YXlFdXinYqmvM77+eHWngkcAsJZ8mlOu2uR?=
+ =?us-ascii?Q?KVUUiI/MfOFvJ5IIOUQAxmUfhfgFuiyljbpNL9WBKvSa3AX5g20LPwXfErKg?=
+ =?us-ascii?Q?nJdIACfDV8F1ChmyhSG5W2ftKSMYklbPfsgQwP4VBar/StphBrIRwqqVnvOd?=
+ =?us-ascii?Q?zhktZ6sFQ8e9ZxRZfNIFBda8mn7b+++qWYS4LH5pqb6xIiA5RlE4PJDEwL2R?=
+ =?us-ascii?Q?2NjZojhWQM50f1IjcgvH45OZ76cKDE57x0rxe+JSgSmYRnJNh9ka9lpth8xm?=
+ =?us-ascii?Q?dDj9LUdAhqBi/0hawiP95lendk9EBq2II0dMkRhYY0SXZqPVUSc//aIAxkKx?=
+ =?us-ascii?Q?qtt70QD7iCAM9ack9UwKVIQsB07v2QjF444jMPAmil9ljeHLD/mEtLZRYHIv?=
+ =?us-ascii?Q?PbHAh/tB4ra9E/lLCHQv+gqJp2jVxzNb3yb6jVNGcZ6dpjq4zvqU5bYoJBKP?=
+ =?us-ascii?Q?rUIZ30EM3qNa4tDt6OSzbaI7yDb7Ov506X+zvI9sEi8ZatBEWcr0/DPIU0uz?=
+ =?us-ascii?Q?Pu8ZtEbIDI/XDu1RKkKCzYlI2M9GnN2cNX7/Jbpyz4pJiwrGz/8JXUe40wpv?=
+ =?us-ascii?Q?dS861G1LT0tLn/L/cZr+riOjq2vDAEHOCGSQeWksfuRMGh9OgnmUOEjmYCLC?=
+ =?us-ascii?Q?K26cmQC7zdGTJxC0LGv5BcADGCj8MiP/ICNHbyIfiUf0Ejrqrte/zpFX4q/6?=
+ =?us-ascii?Q?q9pjNrPnLkde6lyLAcPO1DdDVTUo7CXW1EkIhmpCuQ7994tm?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e483ade-89d6-4751-29bc-08dea6c6117b
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 14:37:56.2981
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6O2BujI1rIQEfIBlugSnfP1Yc8LV7Icpt6LwjZTc2NXWDep/NHcfxBIpF+D9x2nR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8176
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F2D4C2000E
-X-Stat-Signature: 9qmd5x9ae1z4rxieiy1ht9jyx38dsd65
-X-HE-Tag: 1777559800-71665
-X-HE-Meta: U2FsdGVkX1/qgoJ3E4bpZro24XRBaUX6R7LeGYEouk3mNeS4KaiBfsj4QQ8Y5Q8J7isHTYNShorbiIzviotKsy430qEyADwFHo45/KmenZ0t7s+vxp9B7Cxr9FK5kJ9P/iZskuEGgWgDI3nm4NupAC+Dc3iRJoqtCBmgKDvCWn/P/qo6NgZcGOnP1Gnjv4zdDcAmizX/hsIBRT/a5w8E06F6ZQXrZ3rWugJuAKubvbaec6oldR5A6WJ2q5nfdMWfm4QREgRlc8jQT/tdBlQhAcIuj0nI5sEzdBCqIxwmu8E6ojz6hFuEy9GoReoKGRmFvFyT2EPgCldLV3NRuVYn+lR4sUwG89RqlLs/sSm9sbCWg9xYMglBIOPGyW0s2waUefPxzB6T1od86SQwMZyyP8XbLBFwKl5UAV7VMgz3du3K5hl9jdHsfoCsMszkZ95xnDjDIUT98CAi3DJ7TCjzgOri2q4XiCS35xTSZJzZHUoudIKOnnOe6tXtUbHjHok+aej/7Tirzf2vxvpl0agO6ueJvlYW8MeDJg54uvDh3jyqb87XjXKHbJKCAUIJWPBG/5PxSVmNAPuYioTg8GDb98QuzXnPRFHmBL6PqQBo7oDBnV0WptTCZQutCViFInCciVEWfnXnpW//OgCTXy4W1EfzerYKRLcDXw64Mvu+SyYF+3cLR/nvbe4+Wo8zn86gdpMCDuOszdCRQz+hypfl57uvgpw9+qgi7jotldlrEk9axQMoNPiT/cuRVyGbiQrhX9RPBLDgdX0910rjiM0LlbF7VvXaVXNgMLliTndaexFxrbVaqLA4m0wxbXF7nSRfgTV9HKGePbmylwE75LjEppNt7JieOK/M/oDsAscGn86DXPN7SKacIrAAFu9N6wsC+4KyC2l5bNQSY9vA/RzCAK7IhRsvajM0YGCGYeOorex2U4HHmiloQQhF00vTQUuS6bTxzCrEnlkswMuxTpe
- N2W6Wt0u
- 9YHIf51ir2ndmGpaQOzZgR5U2OaLxUcYBAD6H4ZdXbUGHHGwY+QvtRqO1n5QxjQljTEDmOssO+TIQP5NoEk1fn0F3yk7LrIuzygVuEzl4SrpciiGyvGPUaR93eCiJuAEUk7XKLVn5Aq11rDZVIdwo4j5eP8cWB7wDXVoreRzRTfuSZnkWul+KjBgavCyz3Wbch+G9L0zDKGZZkq1uSpYXynj7GNzP2HiSDOhdOyEN+aY52IBCtYoqlDF2zTFU4quM2ygY
+X-Rspamd-Queue-Id: 325FA4000D
+X-Rspamd-Server: rspam04
+X-Stat-Signature: umn4ookun6ynoafxro4jrpc1wwgkerzx
+X-HE-Tag: 1777559881-595070
+X-HE-Meta: U2FsdGVkX1+M2ryYvObFns6ViHgjVRYbMR9/oX3hsPY5whEeaHYzDFlR6JolOPvQkzDJLsn1yblCwZvwg6W8FPO9sV8iqsX8vtjK70SLLdeYUdmfJJcc9bFhN7QskvSE5ic8JCK99ArfAvitFuG12IDyc1hZwLYHH+ki51/JMKaWk3vYnlS2WuVtb0TakCKq0M6ub1A0Jgx5RIXR9s6JspRzyGxHLVYzPUfd3xlekQtI4R7G0LGdFievcgF2quFatjK4QnbFbnJNzNNxZFUrHciLNikavkhZeRKsXFP6+zKnnkvRe6g14uX7OlAUVWD6CYIj8i/XMHORKlg2t94k4Y3H05CYZZJhXoeAMHbyX71nLStaqgKqQrM1TkmD2JPgnuiPw25ysWNXhk/DQ3EzxH75ZN0WwkazcE0rImdX/4PKlQfaVOxMkD7ozmhQWb6cNFQcbhWzRlbLsG80o1YxY5xLOA3lvWyNaVSlWBUL4sBO3+gyO2b/ehggSyHCmAWj931CET64qIn2/mdIzSC0UUVbzioXi30ide9WiOsxqDmvoYDCR7sksey8JULCldhkCm6uAKiyAQRBqIQIdfeJ3dHpp12fZvyycEeB2EX+0pFjpwKeH33TtNB6VFOE5kT7ZCYSSg7A3EG09IIpyPlQssohGFZ2gM5k8CUjLlevLgdDBTJLq3DHb0T9HhyWLSaLmxgZFBffSLiqit+j3l55BhX51PmyapuwQtgaH/JwsVir65VVacHe+b8v53S8ZfvyXrMBX/x1SKIDZJ+qEyNzI6C7y9UYIE7MODs1Epzu47pNSjQ24jcGDnchR2tBnc0UOmfMkDeLvSjtaJmW9pgUneZdVAJjKnftSMiIrYhLoop8NfaeEQfVc8jfH6Zgd5ncPN26uVj84Dlv6gjrifRpY4V3UnpKL07W7wdajnXmEOV6Np41GrzAV7Gy2I2RvqKV2H+nB9E9kRiqduWuGHM
+ 6jjPy70R
+ 2fq03+vJ+zoIbdyC87PDDj05VudB27lWRMXGa21f2s84BXCa7VoL4LcXqG4UsyILTmsaOnvI/PwobVsJVXDLtSmHAvs09nKknzuXLzukYGVP2YZu/l1uqu9EpMHLudslwUjJr769VB6IAYuz0+RLUcf2SOKvdOGPWaW3NcHPQXWkK6/Tt9GFkcyBBawPM+YRcK3Sn5Mf/2uOYFPHSljnJ5K0QUpuQ0LWja3d5aHNH6vU3ic2E+MYLHwtmjLIWMheLdUMq/qqFaY13uJf1FiX/U8AOLV/fEwUZrUNcQWpnYJpIybVxU3zYoPAIK4pqWEfOnU7c2zhRqKYRh8SA2DnxcLWx9iXUOmbyTu6P3gF/0+aBBdambUjG80xpqRVMnZ+Gu3PHVd9e3X+4YyuMrFsjrPhNb8r+nNDSvrXIOx8gVuGaBP7vcyrQVKzyrSxYWIS8ZpRVTzGjqmc2XQo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,40 +174,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sarthak,
+On 29 Apr 2026, at 11:29, Zi Yan wrote:
 
-On Wed, Apr 29, 2026 at 06:43:53PM +0530, Sarthak Sharma wrote:
-> On 4/29/26 2:12 AM, Mike Rapoport wrote:
-> > +
-> > +	ksft_print_header();
-> > +	ksft_set_plan(uffd_count_tests(n_tests, n_mems, test_filter));
-> > +
-> > +	if (!test_filter) {
-> >  		has_uffd = test_uffd_api(false);
-> >  		has_uffd |= test_uffd_api(true);
-> >  
-> > -		if (!has_uffd) {
-> > -			printf("Userfaultfd not supported or unprivileged, skip all tests\n");
-> > -			exit(KSFT_SKIP);
-> > -		}
-> > +		if (!has_uffd)
-> > +			ksft_exit_skip("Userfaultfd not supported or unprivileged\n");
-> 
-> If has_uffd is 0, two test outputs from test_uffd_api() are being
-> printed and the third output is from the ksft_exit_skip(). Since we have
-> declared the ksft plan before this, we are getting the following
-> diagnostic line:
-> 
-> # Planned tests != run tests (67 != 3)
-> 
-> If we remove this if (!has_uffd) check, still all the tests are
-> individually being skipped with a "feature missing" message and the
-> planned tests are being equal to the run tests. So do we really need
-> this check or can this be skipped?
+> collapse_file() requires FSes supporting large folio with at least
+> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
+> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem=
+=2E
+>
+> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
+>
+> Add a helper function mapping_pmd_folio_support() for FSes supporting l=
+arge
+> folio with at least PMD_ORDER.
+>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  include/linux/pagemap.h | 26 ++++++++++++++++++++++++++
+>  mm/khugepaged.c         | 10 ++++++++--
+>  2 files changed, 34 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index 1f50991b43e3b..1fed3414fe9b8 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -513,6 +513,32 @@ static inline bool mapping_large_folio_support(con=
+st struct address_space *mappi
+>  	return mapping_max_folio_order(mapping) > 0;
+>  }
+>
+> +/**
+> + * mapping_pmd_folio_support() - Check if a mapping support PMD-sized =
+folio
+> + * @mapping: The address_space
+> + *
+> + * Some file supports large folio but does not support as large as PMD=
+ order.
+> + * If a PMD-sized pagecache folio is attempted to be created on a file=
+system,
+> + * this check needs to be performed first.
+> + *
+> + * Return: true - PMD-sized folio is supported, false - PMD-sized foli=
+o is not
+> + * supported.
+> + */
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +static inline bool mapping_pmd_folio_support(const struct address_spac=
+e *mapping)
+> +{
+> +	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
+> +	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
+> +
+> +	return mapping_max_folio_order(mapping) >=3D PMD_ORDER;
+> +}
+> +#else
+> +static inline bool mapping_pmd_folio_support(const struct address_spac=
+e *mapping)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+>  /* Return the maximum folio size for this pagecache mapping, in bytes.=
+ */
+>  static inline size_t mapping_max_folio_size(const struct address_space=
+ *mapping)
+>  {
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index e112525c4aa9c..6808f2b48d864 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2235,8 +2235,14 @@ static enum scan_result collapse_file(struct mm_=
+struct *mm, unsigned long addr,
+>  	int nr_none =3D 0;
+>  	bool is_shmem =3D shmem_file(file);
+>
+> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
+> +	/*
+> +	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
+> +	 *
+> +	 * TODO: once shmem always calls mapping_set_large_folios() on its
+> +	 * mapping, the shmem check can be removed.
+> +	 */
+> +	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_folio_support(mapping));
 
-Apparently not :)
+sashiko asked:
+Is it possible for userspace to intentionally trigger this warning via
+madvise(MADV_COLLAPSE) on an unsupported read-only file? Although in
+a later commit, modified file_thp_enabled() will prevent this.
 
--- 
-Sincerely yours,
-Mike.
+Answer:
+It is possible when CONFIG_READ_ONLY_THP_FOR_FS is enabled, but it is
+unlikely a kernel will be shipped at this exact commit.
+
+
+> +	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
+>
+>  	result =3D alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
+>  	if (result !=3D SCAN_SUCCEED)
+> -- =
+
+> 2.53.0
+
+
+Best Regards,
+Yan, Zi
 
