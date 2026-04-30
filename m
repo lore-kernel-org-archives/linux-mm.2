@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8366FF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 443BDFF8864
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B9A76B00B7; Wed, 29 Apr 2026 23:26:48 -0400 (EDT)
+	id AD0076B00B9; Wed, 29 Apr 2026 23:26:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26AC46B00B9; Wed, 29 Apr 2026 23:26:48 -0400 (EDT)
+	id AA8196B00BB; Wed, 29 Apr 2026 23:26:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A7E16B00BA; Wed, 29 Apr 2026 23:26:48 -0400 (EDT)
+	id 9E5036B00BC; Wed, 29 Apr 2026 23:26:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 08F166B00B7
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C23F21C0170
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:47 +0000 (UTC)
-X-FDA: 84713785254.15.B8DEFCC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 89BA16B00B9
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 493FD140323
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:52 +0000 (UTC)
+X-FDA: 84713785464.26.A3C066C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 37C9140004
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NG/keSn0";
-	spf=pass (imf27.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id AF8CEC000B
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:50 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qDZoBJBy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777519606;
+	s=arc-20220608; t=1777519610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6v0rUdgnzxiEmQVki0fjHoaNjayirc6nPjzNRAFlLsM=;
-	b=OdqACxFHFbbMAFUJurZiZW733Id1I0/vc4PkSMBxpqS7AaRqD5gQuAOuz1Wxsux96MH+tL
-	sAsLfZeZToAG0lXHtY0txP4IaxyX/nDuT/eBbS0Ze+UtkmnUnndPcoHlA+aNmKSOewD0Uf
-	epGregKEL+hBcpUGeNsHfnFnyl5Ai2M=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NG/keSn0";
-	spf=pass (imf27.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519606; a=rsa-sha256;
+	bh=25dJlTARsIRfkesN5Wf8bLjbZJM6J//LD8/Re6TixVo=;
+	b=bWF038/OLGmPNT8zZnF/VvNWLcEeorx2uagX7BqNyvaj1HYgbDgwU7K62AkSybMS2IQGsY
+	h16FnInxe1NRpg6K77EiI5inO0tt3DbNvgLaAt75Rwshyi333blZsig5LUt5APtttwAyp3
+	Ft8caOSDr+SL2au1L/A8+XwjdiYDNMU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519610; a=rsa-sha256;
 	cv=none;
-	b=gM7cX/rosdHUF4CMpyvqlun3JAg+PBEcb9cGyxSYJKDFE58XHozp8x9B1HQ9XdrLI3fefN
-	RnrE3hUwZBV+6J9HoIlKftltJggZaJf5i2fMXoef8CntXDXAM/NjGEyIe6sBH7NckFR2hs
-	0LDoI5W1x+ONSZI8DIyGv52IIiJlA7U=
+	b=gL79JlluWBC3BCtIQnWuaW6Xqv+Pz8DilGoicEutZlvD15sCB1bJWPQM76mGbK9Mq7uI3B
+	jvQ55wscyr0o/B0IGN4wllqmh2tzJ8D3KCqKmPzWFcmNNNE2MpUk3oGa8nldTOQr+o3JCS
+	/aukkD2XwscWODZrq7UPTMrrbXxaPD4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qDZoBJBy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BECBD6133D;
-	Thu, 30 Apr 2026 03:26:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BC9C2BCC9;
-	Thu, 30 Apr 2026 03:26:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3975A61420;
+	Thu, 30 Apr 2026 03:26:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F82C2BCB8;
+	Thu, 30 Apr 2026 03:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777519605;
-	bh=fhSNmqrG5HsEC/X36MILLZcbTZ/au30iHuph+y5PVBY=;
+	s=k20201202; t=1777519609;
+	bh=iFqroCI9QhrRjRPr6nqnuqqWoIPtsKBpJSs5D3LwRHU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=NG/keSn0FdCovg8MaqpF8Evbj/6L9DumthcIlwwxhgqo4krFVNquz8+s6I6cAbdTk
-	 F7gB7AFBovML2uNA08fug18O6ouheKOBf7t2Cnd7nzLWNimtDo+aiOW2df5uW2tRMT
-	 rjTagxlakUXzJK5UOaOgiNsPLEmBzI0SrCWLU0VLJ0JlqZw+7s1UFWYN+UsHMoS2Qd
-	 iECXbmORVBx8yix7TpNhGpQ4YIOkqqw/43+B09zOhAKOAI6t3lqj+2vCV+m4mWAT9q
-	 7VgoHD8YmgUg9LVrLh8uiVHBbs9Yxff6nj7MkquNCz6a+id9IgGedB0JwH8SAImjFL
-	 engiwcFkxaZoQ==
+	b=qDZoBJByuNsp58dPyZrm1NWzEP6bDZxrt4juzc1Ayrev7wPMACk+uUM41eKdHbD5s
+	 i6WA8mJHerklMdFyLbo0sLVn0Wn6JtNrrlu6qNz2XPV+xTwfEr2Ao33Ahz05lpp4G3
+	 NHYs0GmngPzMGLvWDKQZbDWIYnpWyiSQgC7r0FnDEL/o/BYqTsd2fj/qa5a5riwjV/
+	 qHReu8/iWe0Kzrh+UPBK8/K9grFHLk4eTC8pCN6N48Fw1G4diyvsMP/zpg6m8WwzEd
+	 Wuvzr7EgyEvnskXgDxRM78pQgyr7y7kHNbprI6MzT+kmtUllYIlaB8//LC96wQV7Xf
+	 WIQc8djoGzeYQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E0C3809A07;
-	Thu, 30 Apr 2026 03:26:01 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FC563809A07;
+	Thu, 30 Apr 2026 03:26:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCHv7 02/18] mm: Change the interface of prep_compound_tail()
+Subject: Re: [PATCHv7 14/18] hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177751956029.2274119.5996274092422873804.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 03:26:00 +0000
-References: <20260227193030.272078-2-kas@kernel.org>
-In-Reply-To: <20260227193030.272078-2-kas@kernel.org>
+ <177751956479.2274119.8317675820783174184.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Apr 2026 03:26:04 +0000
+References: <20260227193030.272078-14-kas@kernel.org>
+In-Reply-To: <20260227193030.272078-14-kas@kernel.org>
 To: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  muchun.song@linux.dev, david@redhat.com, willy@infradead.org,
@@ -87,14 +87,14 @@ Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  aou@eecs.berkeley.edu, alex@ghiti.fr, kernel-team@meta.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  loongarch@lists.linux.dev, david@kernel.org
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 37C9140004
 X-Rspam-User: 
-X-Stat-Signature: mnqhwk7bdi5iqwszh8qhaeyi7ej7g8j9
-X-HE-Tag: 1777519606-2839
-X-HE-Meta: U2FsdGVkX18/HJwmq/NIKUbqFB/5toTFro7qboQUBEY31A7GS4kxRdj03bNCIv9sZhjPnivKGmHSTQCh9YNLrfeB3anKQSqdlNQg0vehgJj0gTERE/eAzDXedn+uTmAENmP08GZq2/LdPKodt7hTBL8F/2JISrqmbcjDkn3ZyVEEdPEwes+zp+mjD1baymePN9gJEynsuxlIe2PrpFKtGHcISxo/P4It3kDvsjfP1tg/wMzGyoMpoQnb/Osf1GCbIjeC/L3nkAm7tRLxj68kiNUPTS48PVLvfX4YlzDTGMHplksd0oBUfqXSof8AhPpFrTHvcluHDjY/9GN8aDK7KgMdTgh6mKfsmfBYd/GuII/RBGnxY2e94WkXD9nwlKZJw8+HHAW7v8INoL6ckSPD5TQ31Vk2zRZxYnWPBmV8c2N/1VNQaCDC0lGUe/EHudi7s14geRyczpKJpi5bPqn5npqQebqjTnCg2KOxs2evPWckP9pRQ6UVAx+DSWRiupW8Ipt2p++WOxIz9Fp8jHexRI5KYZ6nqkAJdEzi0q9/A4/Iy/dZue+h5SF0k3dvnl2065urHVNmlxYUxWmO3GLducZaiCwMie/dERljKHsvuOEwsstR1tagYtXfR6YuzBNSuLwtIiun/VIFK/cSOgnvFehpCzKW3JoMnwjv3sS8Ud/VVu5rsikAOVrJgOHr+rJifodwAgEGRnyOrzcTlj0NkaMLurc65us8O7M7urYj2NI8GmjTemImvLiPF+jWMmQyqaEgOw9MIrmNHkubpXSpbPqWiOvmBkqUdWJ0AvAmXkK3RvPigbx28KCJpRbq43BVyeFFKg/+orjGSUTy6W7IqBa3XZr+4tKKXM9Vdeioit2sQbUNxjrUvJj+2xZPuj2rUpCjndUqg0uMVnD39fNsgeeci+wshuxkNPEHIxUP472lDAims6eHRNgyY+Qod6Jpw4a926AAZG1QFytj5V8
- axQgudg8
- qLBHABC9/sue3P/ZMnXxluv9dF/CPjOjznuvuypRs896hfdyd5dit+VjbHLs4/TDhJ2K8i3l+xWuHu6Wzvf6Q33enMlxLaojn+BMJF0+zIf+QDA4EAd7doZDXNm0KbAh7EWDpgy3vPTdDzZFu/KzBd/l0OPtH6u8zV8u7X3HRyNq4yVyKgUT/GRjJ/E/tHSRTycJjAg1dD5f3XILyudkKeMEzwBKQ2KlR6tkDcgUnBQ0JK76C/KZbVj+3m9JsAvIWHpZBw8QbV8YrA8A4SkUKneoRyO+RTIWZfmsKNIesH0l3Y3oGCzLyhwdgeghH6fNh8m0aJN5khJeuOyMRE0VYtZXd4aEqRnCzJikHUxMqGnVVusSQibYb+RpOGPWbrpJ/GOoeNzfOcEWR/bA28eTzJyKRkZasG/SaRI3Y2fNCcj5RPZ4uoAFH3c0MHRmakpABtG6Jl7E0Pzog5TLMt9MwqXf1SPmSMKpsfoxJ
+X-Rspamd-Queue-Id: AF8CEC000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ijbfszdx8mngkmqcwxcdgenwiajeaqwn
+X-HE-Tag: 1777519610-455621
+X-HE-Meta: U2FsdGVkX1/ue/qhuBfOIjPu1xkQYNIg1gN9VTgW4BJatfO4ABaq2ma/OaZW4n81mYgZhBqF8J8V3ZzP1oh/THRnKZRzxabZ5uyVtFs63a2Gg3znzQWdUR36fMgrjulbnl5LR0ncdUwmYIHi1szHGY++xDujtk9kh8uqXL6gllBy8aP+OfF50kmZdRJ9kEJ8vSayvH/wkqNO6sxjDQHlQ/2V+yiKEAw31uHuVfI/FbkGwgjVWPyEtbx/NT3GZkG5DZc06ESeZkiGwMHoHJ12NC+/S55TCmD73yEOZdr1Wg3BXjUvb7jcNbK4i0PrjMO+RdTIjkiEUkidZ2Yl7BKCQgAgdgHgXELQ55HR5+DdvdR93iRZzzx8wt/c/nLUEFP9aHkyDu85vXqSK4ebydXxza+v4e+KQGqZfdy/CSPnuVzg3mDbpN4raNV3xTi7oI20ELBYW+EOo5VxrbfKK3vAked/BzVJlrkMUgYbRgS1Oswhl1PGco3kIqSJOXWTeAe6grHgFNMViEKMQerpLpw/w4tMqjexkcdNgYs6IZIjvUsVwMi5UFuZrbNSrqExyg3EVtuBwSR29arelLMwRJsHCWE2Dl6o8EEr88agK6PI1Kmg3wyWChaXCgaxqMpe64eTD5MoGEXNSDtFe8H2RqAfg3Km0pVlJrBYq1VvCT7tZolEheyUXwyrEOv+NUres5mkMn/WDB7a1Kd6bRmwW/Gk/JfoSmNakLx6RBKvpiXirCY8DVPe/EmpIX2kyacF6AKunzhAaPzzPLgSShPM3SajfInZXYmJEYjSWINBxswgG/cQ0OsPsatrBh9gIfMfiI8iAeyeD7YnI+ZB1viPeFnoux5PIxztv8IfdKEBYC7ds0/77QlDT8leyMFHzeSoOcvTelHbphXDxV4/Jh0o4rO9YFTu9YPNLYZxWlBCVx7RXKghmV5/C7dk2Waq1ndM8XHBFc1Kqcy7NWXvXdLIe9g
+ 8xTC2/ct
+ +Zt0peJmYBrU87651nyO7wl83nTEWZsnHwNHzQS6aNTPnebA9n8HLDxSExQLAPuLo4S6GlBm/RXhpzTEsKSCSmePCk/B8NrVMDdqRz+aYM5ABkD+mki84NWqH9YBwy1lMRMqvWVnpNJMmnEJFRDsie1GUp00TCWd1lZWDhNUiuxOTut4TWzT6S2U3NnLQDkWA+Ke+vUwZiljhUXh+I3/t5h5+nXSCjX1KxDrxAArnUuwCKhLgs+dQbcsNeZgebGSOdkSAUvnzEGlMPpyU7GWTk4ugLVXMsTCnLHmpnRz9d+2GovSFfsYdz2110tZYb7gN7kGZZBmuVCKe2ZdQPPFEfyWDPEyiInn4OitHrG6DVpJrkfm9JtkkvSCLs0hg03b3qwMwxKUtS6cP16zBGtrsrr3iH9si90W0Ysvf5YgHKoRTrr2qfQpKwl87tebxGK32KSc0v5LP+Jt5/qrhJ/H0ZhKlugMtAaSXcqN5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,20 +107,20 @@ Hello:
 This patch was applied to riscv/linux.git (fixes)
 by Andrew Morton <akpm@linux-foundation.org>:
 
-On Fri, 27 Feb 2026 19:30:03 +0000 you wrote:
+On Fri, 27 Feb 2026 19:30:15 +0000 you wrote:
 > From: Kiryl Shutsemau <kas@kernel.org>
 > 
-> Instead of passing down the head page and tail page index, pass the tail
-> and head pages directly, as well as the order of the compound page.
-> 
-> This is a preparation for changing how the head position is encoded in
-> the tail page.
+> The VMEMMAP_SYNCHRONIZE_RCU flag triggered synchronize_rcu() calls to
+> prevent a race between HVO remapping and page_ref_add_unless(). The
+> race could occur when a speculative PFN walker tried to modify the
+> refcount on a struct page that was in the process of being remapped
+> to a fake head.
 > 
 > [...]
 
 Here is the summary with links:
-  - [PATCHv7,02/18] mm: Change the interface of prep_compound_tail()
-    https://git.kernel.org/riscv/c/f0369fb13619
+  - [PATCHv7,14/18] hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
+    https://git.kernel.org/riscv/c/01b1d0ffb6f7
 
 You are awesome, thank you!
 -- 
