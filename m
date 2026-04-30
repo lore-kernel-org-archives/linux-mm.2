@@ -4,92 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EDB9CD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 07:21:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06F7FCD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 07:38:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 815096B0092; Thu, 30 Apr 2026 03:21:38 -0400 (EDT)
+	id 2ACF76B0088; Thu, 30 Apr 2026 03:38:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EA726B0096; Thu, 30 Apr 2026 03:21:38 -0400 (EDT)
+	id 25DF66B008A; Thu, 30 Apr 2026 03:38:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 663186B0093; Thu, 30 Apr 2026 03:21:38 -0400 (EDT)
+	id 14C996B008C; Thu, 30 Apr 2026 03:38:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D1C76B0092
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:21:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDBDE140466
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:21:37 +0000 (UTC)
-X-FDA: 84714377034.29.003BACF
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2EC6E4000B
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:21:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf12.hostedemail.com: domain of 3_wLzaQkbACgWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3_wLzaQkbACgWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777533696;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 032CF6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:38:58 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B30A81A0498
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:38:57 +0000 (UTC)
+X-FDA: 84714420714.20.FD3B734
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C38C2140002
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:38:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bLv0Ot8X;
+	spf=pass (imf26.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777534735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=tj5be/vz078Ksw2i/CCD9yJb0B5aXAIaoedvEJnz1N4=;
-	b=6GZ/xSkv/PxqPpJzJHIwvjm2jaZzSSyfaAUxoqQR2oixV6T/4dlZCXHXziulW0TojGnNt2
-	JGU7/4YKrYfIiSNiJVPmpSpJvcHIPLbAfla+T8du3kxcroMoyW+uJvwTedJ2ynlvskKe9R
-	YUtg4q6mqhzanLmbnRKK+g+FP3wkhgM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777533696; a=rsa-sha256;
-	cv=none;
-	b=vWneE1dZhOO4hZ952tm4SgFU0l9R730SJiVS2ge8xzrnSugD/pr0HnoMTM4P2XJXCZyulQ
-	Obiw9wA/l/BiK3XAFbElB97X+xFmj1zyxUaeO5UGZr/z4MY9FxT63BYs6ote9kOfY1WgKO
-	UWcOnhamjJ/NVWugI/mgNbkvcaBwZFw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf12.hostedemail.com: domain of 3_wLzaQkbACgWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3_wLzaQkbACgWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-696307c7ee0so717501eaf.0
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:21:35 -0700 (PDT)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cXP0rjq6f9ivjYP+86z3oZz11J3Z1DaKAvZEEb/Awds=;
+	b=FbWDfnFGA7EABXqteqYQPJ4ZlRjlP4QBWjKhN+x6lAhnHlChiTqklfC+N8Mi8L7I2QObw0
+	COFGcdL55wVfaGj7uFiJ1oWdRIv2w8L8zEXQTyG961yce3+cITtUDfHKX+fyxlkYpdhgIW
+	dQ+hQ9HaWMbx4dQ1UvgMvMVY4trUSQs=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bLv0Ot8X;
+	spf=pass (imf26.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777534735; a=rsa-sha256;
+	cv=pass;
+	b=T3IAPJK+KKfln6XeQf0mZ1/lodmDP3WT6USO5UDjHa7mNzamMopPnx3Jou4cholFrF2WPH
+	z5gvGU9Kx7aMAzD3Kylv/9Xyg8S1EB1r8VXUX1Te3gl+z2GPFXJ7MMdthGSGpjDBbc/cFW
+	jkvQIx280FAsDfjLTo+P9w49H2Co1Lc=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7982c3b7dfcso6040457b3.0
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:38:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777534735; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kXcLatw8uBmtaN7mJAsQpvGws+EunOdkzGMzN2h0mPb2h8LIoso89lM3uJg/1k41Wr
+         80xS3liN2uLL1+ZHnRdaaaPJGqdqz9rT2Y67P4TFU5qfltbSHllwNnLnbwkTFfnyo1bA
+         ZQP09mfUUBDsQ3G4k63WD1DwUj9uDs1NPvbGzCSqe0JQg+RPcGaVkj53iWArRU2rVIWB
+         3RFyepL3R7IL5mXCFSzPy/AZ460NE/vrd8Jfnl/zg0qMxu/vexe/h11kiAgp+kDGtB1t
+         o29ZWJzlho4A3xdtThPrE9a+H+/+ppUcMNJHVYTUixXu/cxtGUIH/GroynhiNS6kErgd
+         c+aA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cXP0rjq6f9ivjYP+86z3oZz11J3Z1DaKAvZEEb/Awds=;
+        fh=IWsbPRsGDOq5DByMAzEdMl/HCiH93HiMbh0iHwn4a30=;
+        b=O9Ms5T5+jRCa73fcCZFFKGWU5sigpaieLoidMTJJoHX7ym/ZiDYuf4ZVtB6AubTwmx
+         nfYQD0jEKZAK4sxqBwWmmD4OpeckzAugX1/otDaK6oYmx9cAF+fsQUGci9ninwTJX1ld
+         bk7c1RyOQZfuUxzWrOecGV+ZQg/vrJSPgABUAE89nkoIRIhLIx5vyriQKBkjqRzUpHb/
+         Aqa0h8vj+/lMYB3h75o19ccP/8+hCJQvU7SMoAbpuwOqMm0FMD+LnN4vxR9O6GBBrZiu
+         eipw/+d6QofKiEWpLYFRnEb4jc/vv9GfQNfituWMeD8Mrilw6GPsVuzzeoRZgppxgr7W
+         8ENQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777534735; x=1778139535; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cXP0rjq6f9ivjYP+86z3oZz11J3Z1DaKAvZEEb/Awds=;
+        b=bLv0Ot8XVSTsWVFlP5I4iDXinC+YrwYTqAHqHJ0X7QzPhpna5FGwGi9MDVq9SQFNAX
+         9LWlqw6CfKBYU/emOM7IMkpgKXW8h7R3DIujFRadEtVRzZtShVVDu5gVUvpHkgL7soAX
+         np2HD+BOcfOjhA/+13OmBsBDFvAN8eu/lQ32sjw5vBmJT1pJUvn9Fpfll2WGkDgrfQBD
+         OSYvDg7zq3OdJvc6+2uLzT5iyRmrf+R4/t584hHbrb1Qi7bAXvZyl2+uiWzfCPhMvK2Y
+         WJCl2wHJfD1bjFY3KeYdBshkp4wa4GshaC0tt1FPCge939rRMSgMSz3afu9TdmUqMjH4
+         9//Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777533695; x=1778138495;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tj5be/vz078Ksw2i/CCD9yJb0B5aXAIaoedvEJnz1N4=;
-        b=GgOHL13Vn9YQK4ps3hvGMCYhdye99QiMOKrygWTEbO6JhH6bStPchMzo0qf6hyHTM0
-         corcxRAi/drJ/6bFmogBa+wbunSjwL+yogbA2mzIAuUic2IYhOTGz/c5KbQk0nunlBRK
-         yKT6LakBGGV4+oNsElog/0gKGUj8szlLxzi2BJpDK2kXHf+jbbwGOEEzvfCOLun0LGvX
-         OCBqYL40poXXym4cr7w64M/xb+GVMYy3XDnZqIvWonhKw7sc/7SPR/bGe6/jBqtd0Xw0
-         N4RsahV6Cmr/ySK445wCYRwiGdGX/v90dtx9Tlyne9duT79FuTVDsXXENMlHs3Nnib62
-         xtTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+gNa4YmiuptggQUZ5zCYTBeoSRhVcJCmYBkRXgkm9Mtx2yLO0gD2fvAd8q6aAez85HtFwak9jSrg==@kvack.org
-X-Gm-Message-State: AOJu0YxnXVgolLfKxb0VFei8AwEOlFNMTmog0z+Z4VMB2QWLvhyl712j
-	bg7j3PFQ3IB938FVFMCFuciZ40+D2j5h4dnMMK1O6wTr4el3nYMdhMd6BiePVtAmfkbk5wjBLx2
-	jEnIWoi80hMZi9WiCsl3vUZS+abV4wMmaFVv15pWLNtqXGOrnqS7OCASJKhU=
+        d=1e100.net; s=20251104; t=1777534735; x=1778139535;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cXP0rjq6f9ivjYP+86z3oZz11J3Z1DaKAvZEEb/Awds=;
+        b=mEwETS1OVCzYm0hWO6uhhMXtx7eRyDQ374E1vRxwt9DydoJXbx6JUV8uAZ9+4RRLDp
+         N1bC4ZOh0WrnJxXnEel3CE3RjHfP1QsjbxYmXYLvveqDRkfaQjUw8c08rkJMTFZdZm+D
+         Fp31bgJuwoXzuE3q+0dWT38MtJrUSIMwLoHO2xiWklo7OdGKyOvEQeRWqWU/zcBmwTh6
+         kFLxrKpMv2sTDp831GhHjy0TUKpfNV65VKHh5MhLVwvQLuTyKbWmXdyia4pdBAcYen9v
+         p8ZC3Xze/LprooshTMqLKaKbgZ5y92cqy76LTbX9pHPZzBW6+J7D79zajdBq5ZucWct0
+         feyg==
+X-Forwarded-Encrypted: i=1; AFNElJ/1Z0bR/E57wNdbnOCvd/j675igQu615dLYajQ0PTiIkP33K/PsQk3lky7yHs4yw3gGuQ0BKYnGdQ==@kvack.org
+X-Gm-Message-State: AOJu0YzY5hAYzOP3prQm6iRhgCxtHWtNsrn/2/SnHjBs12Y98Y6HbWfa
+	arw1a4+3xcOp2P3caMkIo3yNG8qESdhW3ql39mpUx3wJ376I7pw4/OdrqnzPHNLB+VOkj8hH1K+
+	DQiUw+NbjA5pbqR2rm5s/pEyHrjZYrPs=
+X-Gm-Gg: AeBDieuh5IkYhA+PlScXv4UnXbtSADWa2/BlzaaOhMsAoPB9tVXPFM3g55OIgcYPPAM
+	B9DgqIq52ZYAZCYc+srLeI+5ir8n/G3gYQ2OEON4duMaW59GbJML/hOdLgi047V8Yo5Xw53EgHG
+	mcIaDZp2T+rJ+ATOEGt0RsPpBonrwcaUcOBCvySBlmUGue7JxH4IREO6d6iXdJqOoqZRgf4PUJH
+	Ip3Z0U2gC0XTd2BT8VDKA6o4PgXRQRJOuDGE1bJQYRpNcGZk7CQnIke7vgQ2yGXSmMXEoCAX7kk
+	aomQQaNuDribR+9hECE=
+X-Received: by 2002:a05:690c:86:b0:7b8:8474:1a7f with SMTP id
+ 00721157ae682-7bd52a648b3mr16570207b3.37.1777534734687; Thu, 30 Apr 2026
+ 00:38:54 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:99a:b0:695:66d5:6a72 with SMTP id
- 006d021491bc7-6967a6254cbmr761567eaf.50.1777533695038; Thu, 30 Apr 2026
- 00:21:35 -0700 (PDT)
-Date: Thu, 30 Apr 2026 00:21:35 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69f302ff.170a0220.3c4978.0016.GAE@google.com>
-Subject: [syzbot] [mm?] [arch?] BUG: sleeping function called from invalid
- context in __tlb_batch_free_encoded_pages
-From: syzbot <syzbot+a169a27b0538ba43e5d3@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, aneesh.kumar@kernel.org, 
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	npiggin@gmail.com, peterz@infradead.org, syzkaller-bugs@googlegroups.com, 
-	will@kernel.org
+References: <20260421121616.3298845-1-haowenchao@xiaomi.com>
+ <CAOptpSPs-1UrEa8AHg19e590=SiV6bpnex7gCbif8=aY7BtpuA@mail.gmail.com>
+ <CAO9r8zOjugCwWqHP3zxXPmjp8TwpoROCjCqTZ_uxOBQwVqCWqA@mail.gmail.com>
+ <CAOptpSMQyyb+q-VJdJ0RzNkjaer1CTePM5WkwEj_7cAO4aUToQ@mail.gmail.com> <CAO9r8zPV=c9v4Ar7t+xPxyptSUPrs-shrumsz=hCaNa3anGgAA@mail.gmail.com>
+In-Reply-To: <CAO9r8zPV=c9v4Ar7t+xPxyptSUPrs-shrumsz=hCaNa3anGgAA@mail.gmail.com>
+From: Wenchao Hao <haowenchao22@gmail.com>
+Date: Thu, 30 Apr 2026 15:38:43 +0800
+X-Gm-Features: AVHnY4KrPoCOU1mZFCP1DSbJ1ZSteeXm91jd02ADS1dVFQY0nqpw-GDhCwDxV_A
+Message-ID: <CAOptpSMLLz0yzg99nkAp7rxO5RphTDU3Cdqd8020mysijN_Bvg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap
+ release path
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, Minchan Kim <minchan@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Barry Song <baohua@kernel.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+	Wenchao Hao <haowenchao@xiaomi.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2EC6E4000B
-X-Stat-Signature: 8myd5s1kggpnwbgfnkozhuhe7ewpqx7d
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1777533695-512360
-X-HE-Meta: U2FsdGVkX18eG19xcvPRo5xB9LZrnM7+2K3XzGofUkLjKUZ6PsC7YSsAjqNvDNkrD6+yCXxD3Z2qCUtlcFgnwft+sHqFZElP+KEdNDrl63KTRYimiZTrvzxWUFsP6KgkRM5Qr0Fw2nduByoga+Rew+uq2LZQdVdAYj1v7Z8yHMprEHPOIibwsHpDFO1cQ9JteV4/B0MbI1ipBEmaQg3BhT0P7vzUi4Ehy/82XNxE7CajE3gqDCCD9CwyHxHfL06ey2O5aRUT2KXm1qNFVOxJ/3F8jfnjJ2huCtRla5RyYgJb1NB4s02A9Z4eulhPNZvAFvTOok2AtArgTteUKFPef7mXTM4zb4VnH2bo7cbNdBwLsIVEoUIo99B8nLFHMdglTWxPGoSNFPDvZuJSHis/h0MiWouxoUfPDePr//uUSvwnr103DGEH1Ljbty1/+UfwvqIM3HRg6m9K7o92J3jFr/VAPnW3XlSVx9nTMZ70b8lrtfD6MrbzQwtPuuCp7a5zTwiwDJ8vKu6xo2ggOTkYMnMSKnQ/xOW9TSVvuQxGNjdecFqU9n5avl9oqfKRCHOKiXgvwgRbkUqi6YBZk9ka7niqRzX938PWpgFVea6aBnFB+KOGoxtdefdj/ZVIva8IIua5r0K5GspQBRKLMXFK162N0rAPXo0bpZ4FO6Hgl5f7ZSZMe7iyfWq0gGLks4g8K9DC8LYjD2BHAo9DIVJ+UAT0GDLWJ8B5KwNaI8fQC1unjD20QyFTYuAsEqWv6ynhwKtvfS15qxdao2B/4WVPNUFYKp3gZg0elkA3PMPALq4QbBlfkaZZOpnfrIfUXiJujDZ6Nj0rIf2yWQgaUm6mBM9YTmvQhY2hNsaoPHi+N4Hm+FYM0cUtBfOTAErq7XS8Goc2Pt5Rnm10l5IXUQBmixWjCnXSFqwoYnMPGJQhvWLvCKUOpK5EVqtg4tJcKQ2dlxAMLhjolskhe6VxTH1
- qGJTAFNw
- rEFfjdgnbeD77AyMokGpiLSWwFbmRDUNhCr7ZnSjNtRPq23ZlaHXQz4qtcYKbyTbYwI4Ye6r7KifRezpx4tbhzx72CjevOiheiiHvlYmuFJlTJGHRkAdMc/PNYhW90zj6ueuBtEZuc/W5kW1ozb1Mt+Hz+P6FfOby8dCPUkBZdjl7CDmbzU1RLXNkSDWkA48Tg0aJbX+o8cV0Sok1e78v8IckEW/U0UUtjOpMMX3EIF4+reyvf13dPg1hw9HXbU2heUz1DJTR86o/NNiXgG1oxC+64/GAST20sal1u42w6j309F20+9yerrryhIGPMqWO07CMO77jHJhh9/Pt/n3l4VmxpGMgiiB95J0uOltH1ywJ/OibOflnrAAZKeMrhgF5sPpqg7C9IMLXlOfqzfscWiH/j37SbCgtdVpLDICg4JTUKQ/oSy/qBwUgmwL72/25QZRPKkFjVZvZ8j7LDzV3G5LDPicgduBP6n/oaiDDy55k5sVK/TT81rIwZrvjSMLxGdRNpyBYv044i9huJt8cT6uv9V/2dVSsjYqnWU1q5glIB3gDISQ6bJW80S+dxYTUSjqQxUsQbhVXtfbltsCVg4TC9YwepOWvAtDUAsEEOvU1rC9WaFs9rWTtaypluj1gsDF2DG7DDHfoh/K5rPKdPl5GtOFpjXLbqD/8fZsgEs7zo8jIoW7HxDuUuUcibCgU1+XPPpLXtHHgrBXkIpcyRIu5bKm304rIjsKDrEY++Mb1SI86WbMrwgTWxMH6lihjyd/BapBjHBZM6B8b1CxQxP/FY4D90zMxK1DGkNlRlDJ5MvQ19JFxn/KIUx0j+mfaoPCx3cCu/Df56qXWb1IKknOWl6Es0fEFo5x+VT3FfEPLkaTJbIAhZGXGOhrsQmk33oJf9m/L4NXn+uNTklphtOhFKCOABEhYvPfp5+eQRUGRKM4YL13Nznw9DZWT3Tu3n7VPXnGlwPMQSQzXOFJ4u+bA3yKX
- H6YrDqQ/
- WaYy7LbFSC9mlw/iTt7ZTHQm6KG5jpgUQJ84o6hfVfTLr5ibLUDlVlGvINDbKmsJmXhUWDVt5jmxwKMOXauX6kLFbksrDCdv1EkQQdc7SnltUvEtkZQxL5Q2JGJyTsHTmVmA3tqs1YAYKFMUiTT6I71kw2uUguSiEOtm0XznXeWHNxDRuYrUFJtWOgAQaFpREGtUzx4kJqcle1dYEQoRidlPqih6lQ8mIiOS2gY4+aR0f8x7mGqEhX+Ov/moN52fCP31SwLlkYDDHmQEZAqMx6P+oa6EsYHk2LJWti8O1Qd4F40y4LBxNoDXPKVMCxavg6XWpFXLWWb2GH037sSBRNJ3BHR9ALNOvKBIabk4UhQPKc5Uqx+AcvjkdNKR9/3/upANFroWWK09kE6l+rjzqRuP/e925/56x1949Lz5xdUaQ0kij2heI6ekSjOX9jZn+a3dUs74GbSlhsP27X4Nuwayd6HstShl
+X-Rspamd-Queue-Id: C38C2140002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: p7e61j73zqcnmsfbos3q4ycm79u5yqsm
+X-HE-Tag: 1777534735-403175
+X-HE-Meta: U2FsdGVkX18J4n6nG5kM+cITHHQzvfs1Q526dNWwQ1/uPwve9sta1mdmwd2yUskn4bQTi81/IMqOVyiAJOVSQzwvzrqtuJIXOvEuu2RiwIW308fJo+s+JbmTMEZNYFIQBpJZd1L/CejOYMVwDH7Q+xvEMgLOTGK1a/tCZcDwq4oijGmO6YHcw0vLwaCBbXQaVi3cU5DY3nW44Gjk1yEiInlNShVOlkvY1JrQcoW8cPuo9LiKBdIJ3yu6eCScDCsFj3DMwrDAPL+4vJRDn6L7p8gZj5veB/2ipdVwXTJVnNo2SF0x8Oo9QAaz6i+ttXe0cb8iRmkUIEYF+V4R/SfmJJfRjI8quSU4ncqYN8S650fJolYXbAAFL23lsVaoFXca7gXhTlizkrmiEVPjPfK55MEw6PVx6QmaglAMsiETP4jZqsk6jV3Mr+QP4VvWLErgLqKXtXTRhO5nZZo0f80glv/QckR3GVBU4cDFhN3uNB/YBrAgtoOOsBCA9ep/ErtCpxhkHgf05O0T4t/oG/sfuAnwWCkHZH5CkWidaX3UgnnQBJrNRuV/op14bqjbq/APSJACZuJ1Qr+dYmhQr+wHtREupaTGzBOZOq1fkH+HIVfnZMsirUs4/p9S8ifZiZF8WQI2rxDmQwOOWOfEL7C/fnR7nHrg/VgsXsWuV4AqO7/rgdagqRU565NyCpQau5dETRiEVQu+WVJcdVbvSTSCF7uPZgJfxXpqjImsXpHE5Bup3JZ8vAvct568YA/8HIteznYUxqM9gLkrLV2t51BcS50YbWbst9BEL54bPjDCxo3H9IX4M1Hu79HkojZlFeZNiFRwXLpBFx3dbYxLrpaueGcCNXOGkARIDswfhjtwo9qa7dZD7JTnR/oUinBDKcpL9fEU7uGoit/nGQeJUZNtZm5gH0CIAWUknuuljv7a4f652WRf13N9/DZqSeFajqg4pGd9F4msd9/upMbtgd8
+ E75kKFd2
+ 4wZtBnYZB5Oe5OTi0BB/48eyXD5PvBAWQOM0udi2kleXf+qTzMtEO4Vm8v9qvGF0xItSYy4XtmlN2RVBkgRPL/t2815/e5syerlb1mpZJnZQctETX8vDy+igmzO3/Lhy3yTFxzakI5hMjpseHb00bj+mgEYLXc9kKqJ5UhGzP8dBH6wdh1X1w1anCEwcf/VsUSfAE8P55+H429EpBM0PjCyXFHbi8MCPZ0tNIQt/HQV3b1IzS1dSkcWjG54XOx0s0jVTc76UEu+t2Tbc9YLhpk4xoHueNLp7i1WTYAmg4IRGIEdJ63nVcl1K7wpXGFQhHHDeUMmmDhu27US41P2jcQlJyWYB0aUVUpCrolCpYNwqWN81+Wm6bMX+zskYXbT6n04N85awrnqVTrXM5n4SY8bfNXxdK654MMF08UmXOMYK3HAKI6caSQtv6pKQjCaicH+z/yN1btBj3E+JW0H/L1aOrqVDcACpLTXaNph8grKJO/EPAmunoPNKIHVL/ALDF6yGgl59oLhhP0j3bwwxTzlbSoQ6LsCgvRZSG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,125 +146,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Thu, Apr 30, 2026 at 6:44=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> > > How much of the benefit do we get with just these locking improvement=
+s
+> > > without having to defer any of the freeing work?
+> > >
+> >
+> > Hi Yosry,
+> >
+> > Thanks for the review. Great question =E2=80=94 we tested exactly this.
+> >
+> > With only the class_idx-in-obj encoding (eliminating pool->lock from
+> > zs_free, no deferred freeing), we measured on two platforms.
+> >
+> > Test: each process independently mmap 256MB, write data, madvise
+> > MADV_PAGEOUT to swap out via zram (lzo-rle), then concurrent munmap.
+> >
+> > Raspberry Pi 4B (4-core ARM64 Cortex-A72):
+> >
+> >   mode        Base       ClassIdx-only   Speedup
+> >   single      59.0ms     56.0ms          1.05x
+> >   multi 2p    94.6ms     66.7ms          1.42x
+> >   multi 4p    202.9ms    110.6ms         1.83x
+> >
+> > x86 physical machine (4-core Intel i7-12700, 2 rounds averaged):
+> >
+> >   mode        Base       ClassIdx-only   Speedup
+> >   single      11.7ms     9.8ms           1.19x
+> >   multi 2p    24.1ms     17.2ms          1.40x
+> >   multi 4p    63.0ms     45.3ms          1.39x
+> >
+> > Single-process shows modest improvement. With multiple processes,
+> > each read_lock/read_unlock atomically modifies the shared rwlock
+> > reader count, and the cost of these atomic operations increases
+> > with more CPUs accessing the same cacheline concurrently.
+> > Eliminating pool->lock removes this overhead entirely.
+> >
+> > This only works on 64-bit systems where OBJ_INDEX_BITS has enough
+> > spare bits to fit class_idx. 32-bit systems don't have the room.
+> > I'm still working on the compile-time gating to properly enable
+> > this based on architecture and page size configuration.
+> >
+> > > As others have pointed out, I don't want to just defer expensive work
+> > > without understanding why it's expensive and running into limitations
+> > > about why it cannot be improved without deferring.
+> >
+> > For the deferred freeing part: the class_idx-in-obj optimization
+> > addresses the multi-process scenario where concurrent atomic
+> > operations on pool->lock become expensive, but does not help
+> > single-process munmap. Deferred freeing moves the entire zs_free
+> > cost (including class->lock and zspage freeing) off the munmap
+> > hot path, which benefits even single-process workloads. The two
+> > optimizations are complementary.
+>
+> What is the extra speedup added by the deferred freeing
+> on top of the locking improvements?
 
-syzbot found the following issue on:
+The data I shared earlier was class_idx-in-obj only =E2=80=94 no
+deferred freeing at all.
 
-HEAD commit:    dca922e019dd Merge tag 'xsa48x-7.1-tag' of git://git.kerne..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11cd6b6c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=59da38148f3a3d24
-dashboard link: https://syzkaller.appspot.com/bug?extid=a169a27b0538ba43e5d3
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> I couldn't immediately tell by looking at this vs. the cover letter.  I w=
+onder
+> what portion of the improvement comes from the deferred freeing?
 
-Unfortunately, I don't have any reproducer for this issue yet.
+On top of that, we added deferred freeing in the zsmalloc
+layer (per-cpu page-pool based buffer swap + WQ_UNBOUND
+drain worker). With both class_idx + deferred:
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-dca922e0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7b447b1b93a9/vmlinux-dca922e0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/af7830f5dabf/bzImage-dca922e0.xz
+Test 1: concurrent munmap (256MB/process, RPi 4B):
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a169a27b0538ba43e5d3@syzkaller.appspotmail.com
+  mode      Base       Deferred    Speedup
+  single    56.2ms     17.2ms      3.27x
+  multi 3p  153.2ms    51.5ms      2.97x
 
-BUG: sleeping function called from invalid context at mm/mmu_gather.c:142
-in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5677, name: rm
-preempt_count: 0, expected: 0
-RCU nest depth: 1, expected: 0
-2 locks held by rm/5677:
- #0: ffff888022c20338 (&mm->mmap_lock){++++}-{4:4}, at: mmap_write_lock include/linux/mmap_lock.h:536 [inline]
- #0: ffff888022c20338 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x22c/0xa10 mm/mmap.c:1308
- #1: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 include/linux/rcupdate.h:300
-CPU: 1 UID: 0 PID: 5677 Comm: rm Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- __might_resched.cold+0x1ec/0x232 kernel/sched/core.c:9162
- __tlb_batch_free_encoded_pages+0x11e/0x280 mm/mmu_gather.c:142
- tlb_batch_pages_flush mm/mmu_gather.c:151 [inline]
- tlb_flush_mmu_free mm/mmu_gather.c:417 [inline]
- tlb_flush_mmu mm/mmu_gather.c:424 [inline]
- tlb_finish_mmu+0x1b0/0x810 mm/mmu_gather.c:549
- exit_mmap+0x454/0xa10 mm/mmap.c:1313
- __mmput+0x12a/0x410 kernel/fork.c:1178
- mmput+0x67/0x80 kernel/fork.c:1201
- exit_mm kernel/exit.c:581 [inline]
- do_exit+0x833/0x2a60 kernel/exit.c:963
- do_group_exit+0xd5/0x2a0 kernel/exit.c:1117
- __do_sys_exit_group kernel/exit.c:1128 [inline]
- __se_sys_exit_group kernel/exit.c:1126 [inline]
- __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1126
- x64_sys_call+0x102c/0x1530 arch/x86/include/generated/asm/syscalls_64.h:232
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9fc102d6c5
-Code: Unable to access opcode bytes at 0x7f9fc102d69b.
-RSP: 002b:00007ffd51104bf8 EFLAGS: 00000202 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 00007f9fc112efe8 RCX: 00007f9fc102d6c5
-RDX: 00000000000000e7 RSI: ffffffffffffff88 RDI: 0000000000000000
-RBP: 0000000000000001 R08: 00007ffd51104b88 R09: 0000000000000000
-R10: 00007ffd51104a20 R11: 0000000000000202 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f9fc112d680 R15: 00007f9fc112f000
- </TASK>
+Test 2: single process munmap (various sizes):
 
-====================================
-WARNING: rm/5677 still has locks held!
-syzkaller #0 Tainted: G        W          
-------------------------------------
-1 lock held by rm/5677:
- #0: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 include/linux/rcupdate.h:300
+  size      Base       Deferred    Speedup
+  64MB      15.0ms     4.3ms       3.47x
+  128MB     28.7ms     8.5ms       3.37x
+  192MB     43.2ms     13.0ms      3.32x
+  256MB     57.0ms     17.3ms      3.30x
+  512MB     114.4ms    38.5ms      2.97x
 
-stack backtrace:
-CPU: 1 UID: 0 PID: 5677 Comm: rm Tainted: G        W           syzkaller #0 PREEMPT(full) 
-Tainted: [W]=WARN
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_held_locks_bug kernel/locking/lockdep.c:6752 [inline]
- debug_check_no_locks_held+0x90/0xa0 kernel/locking/lockdep.c:6760
- do_exit+0x13ea/0x2a60 kernel/exit.c:997
- do_group_exit+0xd5/0x2a0 kernel/exit.c:1117
- __do_sys_exit_group kernel/exit.c:1128 [inline]
- __se_sys_exit_group kernel/exit.c:1126 [inline]
- __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1126
- x64_sys_call+0x102c/0x1530 arch/x86/include/generated/asm/syscalls_64.h:232
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9fc102d6c5
-Code: Unable to access opcode bytes at 0x7f9fc102d69b.
-RSP: 002b:00007ffd51104bf8 EFLAGS: 00000202 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 00007f9fc112efe8 RCX: 00007f9fc102d6c5
-RDX: 00000000000000e7 RSI: ffffffffffffff88 RDI: 0000000000000000
-RBP: 0000000000000001 R08: 00007ffd51104b88 R09: 0000000000000000
-R10: 00007ffd51104a20 R11: 0000000000000202 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f9fc112d680 R15: 00007f9fc112f000
- </TASK>
+However, this is not the ceiling. Profiling with perf
+shows that after deferred zs_free, zram_slot_free_notify
+still accounts for ~65% of munmap time =E2=80=94 mostly
+slot_trylock/unlock and slot metadata operations.
 
+To understand the theoretical limit, I tested an extreme
+version that removes slot_trylock from the hot path
+entirely (not safe for production, just benchmarking):
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+  size    Base     Deferred   No-lock    Speedup
+  64MB    15.0ms   4.3ms      2.3ms      6.50x
+  128MB   28.7ms   8.5ms      4.7ms      6.14x
+  192MB   43.2ms   13.0ms     6.8ms      6.31x
+  256MB   57.0ms   17.3ms     9.0ms      6.30x
+  512MB   114.4ms  38.5ms     33.0ms     3.46x
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+I'm exploring ways to further reduce or eliminate the lock
+from this path, any suggestions on how to approach this
+would be appreciated.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Unless otherwise noted, all data is from Raspberry Pi 4B
+(4-core ARM64 Cortex-A72, 8GB RAM, zram 2GB, lzo-rle).
+Test: mmap + fill + madvise(MADV_PAGEOUT) to swap out
+via zram, then measure munmap time.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Thanks,
+Wenchao
 
