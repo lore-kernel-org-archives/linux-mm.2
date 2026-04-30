@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13EC7CD13D2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 21:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A4A4CCFA13
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 21:36:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 786A26B0088; Thu, 30 Apr 2026 17:25:48 -0400 (EDT)
+	id 328D16B00B9; Thu, 30 Apr 2026 17:36:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7375E6B008C; Thu, 30 Apr 2026 17:25:48 -0400 (EDT)
+	id 2DA0B6B00BC; Thu, 30 Apr 2026 17:36:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6749E6B0093; Thu, 30 Apr 2026 17:25:48 -0400 (EDT)
+	id 1C8656B00BD; Thu, 30 Apr 2026 17:36:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AA176B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:25:48 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 032A5A01E6
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:25:47 +0000 (UTC)
-X-FDA: 84716504376.24.3434A01
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 08FAC6B00B9
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:36:34 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A990E120107
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:36:33 +0000 (UTC)
+X-FDA: 84716531466.27.E403128
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3592E40016
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:25:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=OEA4Tg8P;
-	spf=pass (imf01.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0647F1C0014
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:36:31 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=EhCHmZfv;
+	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777584346;
+	s=arc-20220608; t=1777584992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H0FRn2xh+tixze1ELPb+tnTxd8VoDsShkAhtmqJ4LXM=;
-	b=TFt1gn8pUYYPkQBzPlzdMRRjHac8daLSziqhoSoZ14IoQFaw09E753ChcjIBGPKbl7t21R
-	uT92s409X0NCv8xuS1pNCvzSVEjT9QBaG/3MNMDggdDEwEQenq6cI5DFk0xnv0Dw2+t0QM
-	Ts1w1m68dwm6pq577qfmyz4oOT1BoZA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777584346; a=rsa-sha256;
+	bh=zf9reZHgSHYNVIk6lg9DWjojuUVoE5Unv6DtuPNPWzM=;
+	b=DkVSCJxdmCBGL5IKkErLrZI12IU0hlYHveaesHl18z8ZS510VLM9HkQd4M5adjb8rmHuMc
+	PHbcXHItJ+dDvk3iSbOweQLZ7uMhUd/rJBnGU6U9mEnY66QqzTG72BQB8rVN7KajLrz/9O
+	tgQmwvW7S5fpmxySRQ+INAQ80tfqP7A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777584992; a=rsa-sha256;
 	cv=none;
-	b=xAy4GT8wOPCU+67nW0opfw1l3Z/o2aSiM0vNOJ+gmaZtH2WKhlCw6t/zBGxD6Kj3m9/7An
-	YeUFXJz5ruIFXEcLMTZutzHe+6PhOPstKtqOUmI8c5KyjIj7nEHat/HlfI5t8RbIRIY9GH
-	fs5P2IEmoIR2tvvdPOBzjKYBHJiZAiM=
+	b=Scb02TP5aDtAQKFI3oip9gHsaviTA/Awf0kWI8T8cmmyqENC+b5qRbhXWkH3ReE60Tj775
+	vG6h784uhPoajR1eHCr8cSbABFcO6nXfjTfgHAyr/v6s5eeNuu7L0V5iBwweyOLsCGP1W9
+	5F7wysAZomM7azQT/mFafLBQuSXMOjM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=OEA4Tg8P;
-	spf=pass (imf01.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=EhCHmZfv;
+	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
@@ -55,17 +55,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=H0FRn2xh+tixze1ELPb+tnTxd8VoDsShkAhtmqJ4LXM=; b=OEA4Tg8P7rvdTlLOnC7LFpoy/6
-	lsgPBlZCJ5hj0HO4wYvVFicRiv91aPUdPGGjgsb86mZ1U4ZECh+O00hSAYD0DYvK+Pyo8JReKwIix
-	WTNL/qkYRZZggAyMZOg57XxL/3p2ggFlF27KyAgKyHZorpJ45ZIpTObQuJGIb/YGU1Jd5z8And8vF
-	bM619+b/1pqt9ZS+KOMLyX6qqDJHHEB5Yf95rsNUCk/T66t7GO+SJTVwgglOJUcgPieA4EMMqXH6D
-	eI3s+bwNylnj85mvolE+Qe57EzkxeGLLamiqAzGkmX3wCXhsf/8uv4Ijkd85pstUjjcfQKaAoVNhp
-	pJPlTt7w==;
+	bh=zf9reZHgSHYNVIk6lg9DWjojuUVoE5Unv6DtuPNPWzM=; b=EhCHmZfvKOaoXulpv4/AskEX44
+	zA5DDsl31PJqXlxrNfGZWEZQ4YobqdVNx2cXAuCcXElgvvrWTlpxUgTHqJfpho4uVmYIhL5O05XY7
+	332gHM79S5LUKeKt/bJ/Kf/lmZdlGVVnQ0jPG7QzGME7PVT8RdKjZ38boZ7L/yNCjcUKaJZ69GbGA
+	WSozUole/i4geGl5o4BZoNt780GY3eKaIABybCSL1Ds+JT4yDoJTimPcIcegCZjNHdsU6yhFKgrqf
+	SE75y+YoWinxCKKRr2pjTwEoiICT8ehRyNup6JF9XLz6HDKJcgWr6rP8cxSIjvuLEuhzz7mVzYYWO
+	Tr5mGaFQ==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wIXuD-000000001R0-14Wj;
+	id 1wIXuD-000000001R0-0AjO;
 	Thu, 30 Apr 2026 16:22:41 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -80,23 +80,23 @@ Cc: kernel-team@meta.com,
 	usama.arif@linux.dev,
 	Rik van Riel <riel@meta.com>,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 31/45] mm: page_alloc: cross-non-movable buddy borrow within tainted SPBs
-Date: Thu, 30 Apr 2026 16:21:00 -0400
-Message-ID: <20260430202233.111010-32-riel@surriel.com>
+Subject: [RFC PATCH 26/45] mm: page_alloc: prevent UNMOVABLE/RECLAIMABLE mixing in pageblocks
+Date: Thu, 30 Apr 2026 16:20:55 -0400
+Message-ID: <20260430202233.111010-27-riel@surriel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260430202233.111010-1-riel@surriel.com>
 References: <20260430202233.111010-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3592E40016
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0647F1C0014
+X-Stat-Signature: 165muku1r3kc1nnh9nmpwkfuy115aoek
 X-Rspam-User: 
-X-Stat-Signature: ynntewadektt1ppb55rf8ofc96nn88ic
-X-HE-Tag: 1777584345-574327
-X-HE-Meta: U2FsdGVkX1+ZS0SthjGoEDu+tj6yn5MNmFo7GMCZPGu8N9Pu/SztRLM7ObBh4lgR4C5hF9/h6qtwRoWu589JeKWFVdEg3lBh5JRWsiXD0/ICAMDnTgDDgPWB1KwbNZYNzbnGCYvP9LkSub0Mm8UKvV2jXB6afs/H1JkNsPrvXNMw1LtW3zeV3mmbncW/B6+Uve/OJvpqA3n8DKx1cL4AZgUZrVqw9j3N5JzoYXZRGm8S1kbmq28Hx5SotSOhyKt1hfh1ajUJgDwvRs0+3lTJaT6dVWH1KCyEOEGKUrsGRMzzj3aEdsiT8LBI3LZ72SdfLSK0g6HJ527N7Vx3g1hID43GvNt7Hin4Gg+vfHmdxwAv+NWXK9ksvNcJZMPjBV1eGj2okQslnl152V+PW8j/ZeHQ3n7nTtO+yxAH8yQ8OUXz3844JBFB02VD+wNMsp+mZRCWQvI7gcsTAZU6vmRQ6BOUH7deeu3AHvUsM5VR09j40F+2amffFIm0XMNiKdUuli5GFBV3j6Wo/kjtFK08SiVgfGzzckFyJc5Eua3kgvemp+YNXLGaYQIeB2nozqw+1hf2IDDe1hE65wfGEg3phUw76vq5eTCLrHfqiww5mszFZhtcchJmb9HIz4MmlkLSE95MWT2xnE86cgkaXPJNA2vYRsqVGxHW0cZRFdGb6KM7+Iwm1rRpzD+D4kGHdhy6wASKd48+FApaf3IlFvbM7Gc89Fx9DanRGNX8P+jeQPMM6SRg+Cy/eCe/mwgfj7x1yuAWVLKBj0bGMQPEFoG6vFoTlOMTLK0uiJWqwg6JWycnP9cZ9p6+fnPxlT6i9qbcrMCOcG6BPzf37l9HTPTDVZUB2baXRmMl6yX3salnsrGJ71wUwYxdixutc18U60w1rFx6DDb/8YgYtKZFX/eer1lFVZKXGY2THjcwdskS2VBMDzS5Vv+G/ejxNMUHJd2ytDjn7c3adhm/A46vhKY
- nbyYB0J1
- f1LRTG7yWL8ZuFF1/O5l+uUlRJfi1kfPCSc7I5FJQRMowEd2VDHyqOibvCAK9Y5ZWOWAb2jM0UIT2fXncqBxieP6DpUjQ/CAx0hXOPhmg9TiongmqF0+lf3xAtqxepW946uNU1FZqH32cij8R+ejizjaEioSzkMWjZkuq8blhcuqI4rdc2+jhktlw+jDDwoNEglkmODDP57H5wfq+LEyFwazIC0VUlBrkXJCFc9jDSbq6338orr5GPduiDdAB4Zg6crzclr2dCc5zvsEHZf6hhYjmC8AG5ouOYpPewO2P7+EjZGHX5DVWBbFrrAKymBEXoz4QVmUEwvnGtfeWgoji1LtLgg3oeWCcKCR7XzJoaDiGB7YI4tIcluSMdiLP6Zch5qFX1kicOZ+X45xbKNwyMbwOubnneaRMoSoU
+X-HE-Tag: 1777584991-332259
+X-HE-Meta: U2FsdGVkX18ksDPdMyVLCdpVEDcS6mzS4uCap1E9Ik9xbx7Tw4iS3EDWApRdY6l5rMIQ4OXYXEl18kgb48YSGz03ttxG6NwsTCZhBSegbL+8Dmzf3pGp7YSF9mti+2+SzRHJ+1gq7xBS1WOnjNYcjhmQbHtixcGjfyJ+V47gMf1Zrc9spy5mjm/hzxUMwzPKCYIMwd+hbtQsz6+fERqsXNvUDUhywKapDmWoJX8haXF0GQc0KqM48UBtJJg0wGbuOrF7D0u+NqjQ0SmRmi6NGDfBafuLjLmhrbPPIccVrPa9JDGG8GvT2qUcklxwI5CqMNF86Zix55oc7w6pyFU265zaekP5+x29yEOmSQh8MOmwjKD6KwzA7/zNUZ9+YlTa/Z1ydCCEK1xcvTwMul/db0bgYZjx3mdrdDdIJL6zW27WH0Brs9hmM8tuqfmyDzcit36O6vbtbMiLaoSFQSO9pwEIwfRfab+XxxCx+t1im0KOWS//EcByxjTs6QhDsUKmdGDLlinY0uzA2NkJktUNANTwctJ0pLvoPK36tIfMmDrBCeGS5DEQFogmjo0eMlVMoVnsmfBRDqJVq29J673SPHZW2qXS3iaCnBFkA5BSjMVkzpMEVrNplTe0rqTcHJl4Q4Kb7dQTRebCX2uGDtUJLQke0xFm49yWznxx+byZp307YLsdH63T7BVPhwpO0YGOMsJ22jahWPYblRFXf9MZYhfqR4oub6SbDW5ammG3A/j/xH1k0rYdCljtwIjALI0X+/tJKfGcqo1fp6YTkQM1m6VnnY1wGoo7jBja58DwIxAWBYCTqZQWP2uljyMUtykh/iQp5WU7RrBtQ5rgp+M6nF56RFLo1MfDxkICfuozAFYFph4GhVO/6t6n9dAXS+qs/U+hP3zimWcGASVxm6ru7TowSii4O6IesbzwyVPzZ8ZzLjZ//SSfjweOjKihFG0Cqa9Kaw86sRt2Gxnxsf2
+ V6jDH1Z9
+ N+jez2g9VOvDjtz1PYaVkDicpQgnqyeyq2rL+S/quqDyEFsoO5w2UaBidXLf7Whwoy5MKdoQI3Rx8keViohM73DSnDrxa9KRewxW7dXdYIP6WOcvwS80mnh2NPCD+cK3tlJMngM5GcuLMYSnO4tlguJRQ/eWFJbO72tpm+QA4bGx5PphEZpE1H3Zx0fJFS7gcuz2LlXLD39ZsiHv0Hi0/XviJHq4Chcmd3r6nj4NhB+VDlQqA/sOU4Ikb0hpwcGugbD21qP4WikMzczHYF8BTnvkufg33O03D9dX9NSLpAoxNCRWKdTnnPJwDHPFM8pGmh4ME5PfeSogq0vYjj5KOk4NRXvBlq0FbziaIsnL7Nt7ej2e+eIDabqL1Y+LRXSg4DXLWrpNMNdKQ/CXUhe1mgOIK9VgTNTbo/YKD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,163 +106,264 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Rik van Riel <riel@meta.com>
 
-When pages get freed via __free_one_page, they're placed on the per-SPB
-free_list determined by their pageblock's migratetype, not the original
-allocation's migratetype. Slab-heavy workloads expose a structural
-mismatch:
+Summary:
+Inside a tainted SPB, free pages of UNMOVABLE and RECLAIMABLE
+allocations cannot be told apart by the buddy allocator's
+compatibility heuristic (alike_pages == 0 between the two non-movable
+types in try_to_claim_block). Once a pageblock holds in-use pages of
+both, any sticky UNMOVABLE pinhole prevents the RECLAIMABLE pages
+from coalescing into useful higher-order chunks when they drain back
+to the buddy. The PB's free capacity is permanently capped at
+order-1 dust regardless of how much of it actually returns. Sticky
+recl pages (active dentries, locked btrfs eb folios, NOFS slab) are
+unavoidable; the cost is paid in internal fragmentation.
 
-  - RECLAIMABLE pageblocks fill up densely with live slab objects (e.g.
-    btrfs_inode caches), leaving very few sub-pageblock free fragments
-    on the RECL free list.
+Two paths in the page allocator create UNMOVABLE<->RECLAIMABLE
+mixing today:
 
-  - UNMOVABLE pageblocks accumulate sparse free space from vmalloc and
-    raw-alloc churn — tens of thousands of free pages, all on the UNMOV
-    free list.
+  1. try_to_claim_block() relabels a partial PB whenever the 50%
+     threshold "free_pages + alike_pages >= pageblock_nr_pages/2"
+     passes. For UNMOV<->RECL, alike_pages == 0, so the rule
+     degenerates to free_pages >= 256. A PB with 256 in-use UNMOV
+     pages plus 256 free pages passes and is relabeled RECL. Both
+     PB_has_unmovable and PB_has_reclaimable are then set.
 
-Net effect: a tainted SPB can show 87,000+ free pages in metadata while
-having ZERO free buddies on the RECL list. A new RECL allocation walking
-__rmqueue_smallest's preferred-SB Pass 1 finds nothing, falls through
-Pass 2 (claim_whole_block on MOVABLE — but mov=0 in tainted SBs),
-Pass 2b (sub-PB MOVABLE — same), and reaches Pass 3, which taints a
-fresh clean SPB. Repeat per RECL burst.
+  2. __rmqueue_steal() takes a single foreign-type page out of a
+     PB without relabeling the PB. A UNMOVABLE allocation stealing
+     from a RECLAIMABLE-labeled PB sets PB_has_unmovable on top of
+     the existing PB_has_reclaimable.
 
-Add a Pass 2c between 2b and 3: for non-movable allocations that
-couldn't find their own migratetype, try borrowing a sub-pageblock buddy
-from the *opposite* non-movable migratetype's free list within tainted
-SPBs. UNMOV alloc → check RECL free list; RECL alloc → check UNMOV
-free list. The pageblock tag is NOT changed — page_del_and_expand uses
-the source migratetype for both delete and re-list, so the splits stay
-on the source list, and when our borrowed page is later freed
-__free_one_page returns it to the source list (based on pageblock tag).
-The "borrow" is purely transient: physical page goes to a foreign-type
-caller, returns to its native list on free.
+Tighten both paths:
 
-PB_has_<requested_type> is set via __spb_set_has_type so spb_defrag
-accounting reflects that the pageblock now hosts our type's content.
-PB_has_<source_type> stays set since other buddies of that type remain.
+  - Add noncompatible_cross_type() helper that detects the
+    UNMOV<->RECL pair (MOVABLE may still mix with either since
+    movable pages can be migrated out).
 
-Restricted to UNMOV ↔ RECL within SB_TAINTED — movable allocations have
-their own Pass 4 fallback, and clean SPBs must not be polluted with
-cross-type mixing (that's what the existing migratetype-isolation
-machinery exists to prevent).
+  - In try_to_claim_block(), require a fully-free PB
+    (free_pages == pageblock_nr_pages) for any cross-type relabel,
+    regardless of from_tainted_spb. The other-type bit inherited
+    from the prior label is stale on a fully-free PB (no in-use
+    pages of either type) so clear it during the relabel rather
+    than leaving the PB visibly mixed in PB_has_* state.
 
-Live measurement on a 247 GB devvm with btrfs root, kernel 397 (Stage 1
-+ simplified Stage 2a) at boot+7min: 12 tainted Normal-zone SPBs grew
-from 4 baseline despite the existing 11 having between 825 and 87,062
-free pages each, ALL on the UNMOV list while the workload kept
-allocating RECL btrfs_inode slab pages. Pass 2c lets those allocs
-absorb into the existing UNMOV-listed free pool rather than creating
-fresh tainted SPBs.
+  - In __rmqueue_steal(), pass a new SB_SKIP_CROSS_TYPE flag to
+    __rmqueue_sb_find_fallback() so the cross-type fallback entry
+    in fallbacks[] is skipped. Steal then falls through to the
+    MIGRATE_MOVABLE second fallback instead of single-page-stealing
+    into a foreign non-movable PB.
+
+The from_tainted_spb=true caller of try_to_claim_block() is
+unaffected because it hardcodes block_type=MIGRATE_MOVABLE. The
+claim_whole_block() branch (current_order >= pageblock_order) is
+also unaffected: it requires PB_all_free, so the PB is fully free
+of any prior type.
+
+Test Plan:
+Bare-metal devvm with the existing 4 stuck tainted SPBs (sb[2,15,
+36,51] in Normal). Build and reboot. Compare per-order free
+distribution in newly tainted SPBs against pre-patch baseline:
+today o0/o1 dominate, target meaningful (>10%) free at order >= 3
+in pure-RECL SPBs created post-patch. Watch for tainted SPB count
+growth past ~12 (3x current baseline) — the fully-free constraint
+on cross-type claims will taint fresh SPBs more often, and a
+runaway count means the cost was misjudged. Watch dmesg for
+allocation failures and kswapd CPU stays under 2 cores. Existing
+mixed SPBs from before this change won't unmix; the win is for
+SPBs created after.
+
+Reviewers:
+
+Subscribers:
+
+Tasks:
+
+Tags:
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- mm/page_alloc.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
+ mm/page_alloc.c | 111 ++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 85 insertions(+), 26 deletions(-)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index a72cb2da606d..f2db3dd86a84 100644
+index 67cc8165ab1f..ceb1284a63ed 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -2806,6 +2806,7 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
- 	struct page *page;
- 	int full;
- 	struct superpageblock *sb;
-+	int opposite_mt;
- 	/*
- 	 * Category search order: 2 passes.
- 	 * Movable: clean first, then tainted (pack into clean SBs).
-@@ -2985,6 +2986,90 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
- 				}
- 			}
- 		}
+@@ -3057,6 +3057,23 @@ static int fallbacks[MIGRATE_PCPTYPES][MIGRATE_PCPTYPES - 1] = {
+ 	[MIGRATE_RECLAIMABLE] = { MIGRATE_UNMOVABLE,   MIGRATE_MOVABLE   },
+ };
+ 
++/*
++ * UNMOVABLE and RECLAIMABLE allocations should not share the same
++ * pageblock. Their free pages are interchangeable on the buddy free
++ * lists (alike_pages == 0 between them), so once a PB holds both
++ * types the buddy can no longer tell them apart and any sticky
++ * UNMOVABLE pinhole prevents the RECLAIMABLE pages from coalescing
++ * into useful higher-order chunks when they drain back. MOVABLE may
++ * mix with either, since MOVABLE pages can be migrated out.
++ */
++static inline bool noncompatible_cross_type(int start_type, int fallback_type)
++{
++	return (start_type == MIGRATE_UNMOVABLE &&
++		fallback_type == MIGRATE_RECLAIMABLE) ||
++	       (start_type == MIGRATE_RECLAIMABLE &&
++		fallback_type == MIGRATE_UNMOVABLE);
++}
 +
-+		/*
-+		 * Pass 2c: cross-non-movable borrow within tainted SPBs.
-+		 *
-+		 * If we're a non-movable alloc and Pass 1/2/2b couldn't find a
-+		 * buddy on our migratetype's free list anywhere, but tainted
-+		 * SPBs have free buddies on the *opposite* non-movable type's
-+		 * free list, take one of those.
-+		 *
-+		 * Why this happens: when pages are freed, __free_one_page puts
-+		 * them on the free_list determined by their pageblock's tag,
-+		 * not the original allocation's migratetype. Slab caches tend
-+		 * to be dense (RECL pageblocks fill up; few sub-PB fragments),
-+		 * while UNMOV pageblocks accumulate sparse free space from
-+		 * vmalloc/raw alloc churn. Net effect: tainted SPBs frequently
-+		 * have tens of thousands of free pages all on the UNMOV list,
-+		 * invisible to RECL allocs (or vice versa). Without this pass,
-+		 * the alloc falls through to Pass 3 and taints a fresh clean
-+		 * SPB even though the existing tainted ones have plenty of
-+		 * unused space.
-+		 *
-+		 * We do NOT relabel the source pageblock. The buddy is taken
-+		 * from @opposite_mt's free list and the splits go back on
-+		 * @opposite_mt's list (page_del_and_expand uses the same mt
-+		 * for delete and expand). The pageblock tag is unchanged, so
-+		 * the page returns to @opposite_mt's list when freed via
-+		 * __free_one_page. Effectively a borrow: the alloc takes a
-+		 * physical page from a UNMOV-tagged pageblock for a RECL
-+		 * use, and the page cycles back to UNMOV's list on free.
-+		 *
-+		 * We do set PB_has_<migratetype> via __spb_set_has_type so
-+		 * spb_defrag accounting reflects that this pageblock now hosts
-+		 * our migratetype's content too. PB_has_<opposite_mt> stays
-+		 * set since other buddies of that type remain.
-+		 *
-+		 * Restricted to UNMOV ↔ RECL. Movable allocations don't
-+		 * participate (they have their own Pass 4 fallback path).
-+		 *
-+		 * Restricted to SB_TAINTED to avoid spreading mixing into
-+		 * clean SPBs.
-+		 */
-+		opposite_mt = -1;
-+		if (migratetype == MIGRATE_UNMOVABLE)
-+			opposite_mt = MIGRATE_RECLAIMABLE;
-+		else if (migratetype == MIGRATE_RECLAIMABLE)
-+			opposite_mt = MIGRATE_UNMOVABLE;
-+
-+		if (opposite_mt >= 0) {
-+			for (full = SB_FULL; full < __NR_SB_FULLNESS; full++) {
-+				list_for_each_entry(sb,
-+					&zone->spb_lists[SB_TAINTED][full], list) {
-+					int co;
-+
-+					if (!sb->nr_free_pages)
-+						continue;
-+					for (co = min_t(int, pageblock_order - 1,
-+							NR_PAGE_ORDERS - 1);
-+					     co >= (int)order;
-+					     --co) {
-+						current_order = co;
-+						area = &sb->free_area[current_order];
-+						page = get_page_from_free_area(
-+							area, opposite_mt);
-+						if (!page)
-+							continue;
-+						if (get_pageblock_isolate(page))
-+							continue;
-+						if (is_migrate_cma(
-+						    get_pageblock_migratetype(page)))
-+							continue;
-+						page_del_and_expand(zone, page,
-+							order, current_order,
-+							opposite_mt);
-+						__spb_set_has_type(page,
-+							migratetype);
-+						trace_mm_page_alloc_zone_locked(
-+							page, order, migratetype,
-+							pcp_allowed_order(order) &&
-+							migratetype < MIGRATE_PCPTYPES);
-+						return page;
-+					}
-+				}
-+			}
-+		}
- 	}
+ #ifdef CONFIG_CMA
+ static __always_inline struct page *__rmqueue_cma_fallback(struct zone *zone,
+ 					unsigned int order)
+@@ -3434,6 +3451,9 @@ try_to_claim_block(struct zone *zone, struct page *page,
+ 		   bool from_tainted_spb)
+ {
+ 	int free_pages, movable_pages, alike_pages;
++#ifdef CONFIG_COMPACTION
++	struct superpageblock *sb;
++#endif
+ 	unsigned long start_pfn;
  
  	/*
+@@ -3492,35 +3512,48 @@ try_to_claim_block(struct zone *zone, struct page *page,
+ 	 * allocations. Inside a tainted SPB the protection is unnecessary:
+ 	 * fragmentation has already been accepted at the SPB level, and
+ 	 * relabeling is much cheaper than tainting a fresh clean SPB.
+-	 */
+-	if (from_tainted_spb ||
+-	    free_pages + alike_pages >= (1 << (pageblock_order-1)) ||
+-			page_group_by_mobility_disabled) {
+-		__move_freepages_block(zone, start_pfn, block_type, start_type);
+-		set_pageblock_migratetype(pfn_to_page(start_pfn), start_type);
+-#ifdef CONFIG_COMPACTION
+-		/*
+-		 * Track actual page contents in pageblock flags and
+-		 * update superpageblock counters so the SPB moves to
+-		 * the correct fullness list for steering.
+-		 */
+-		{
+-			struct page *start_page = pfn_to_page(start_pfn);
+-			struct superpageblock *sb;
+-
+-			__spb_set_has_type(start_page, start_type);
+-			if (block_type != start_type)
+-				__spb_set_has_type(start_page, block_type);
++	 *
++	 * UNMOVABLE<->RECLAIMABLE cross-type claims override these rules:
++	 * once mixed, sticky pinholes of one type prevent the other from
++	 * coalescing into useful higher-order free chunks even after drain.
++	 * Only relabel a fully-free PB in that case, regardless of whether
++	 * the SPB is tainted.
++	 */
++	if (noncompatible_cross_type(start_type, block_type)) {
++		if (free_pages != pageblock_nr_pages)
++			return NULL;
++	} else if (!from_tainted_spb &&
++		   free_pages + alike_pages < (1 << (pageblock_order-1)) &&
++		   !page_group_by_mobility_disabled) {
++		return NULL;
++	}
+ 
+-			sb = pfn_to_superpageblock(zone, start_pfn);
+-			if (sb)
+-				spb_update_list(sb);
+-		}
+-#endif
+-		return __rmqueue_smallest(zone, order, start_type);
++	__move_freepages_block(zone, start_pfn, block_type, start_type);
++	set_pageblock_migratetype(pfn_to_page(start_pfn), start_type);
++#ifdef CONFIG_COMPACTION
++	/*
++	 * Track actual page contents in pageblock flags and update
++	 * superpageblock counters so the SPB moves to the correct
++	 * fullness list for steering.
++	 *
++	 * For cross-type UNMOVABLE<->RECLAIMABLE relabel (which by the
++	 * predicate above only fires on a fully-free PB), the inherited
++	 * PB_has_<block_type> bit is stale — there are no in-use pages
++	 * of that type. Clear it so the resulting PB is unmixed.
++	 */
++	__spb_set_has_type(pfn_to_page(start_pfn), start_type);
++	if (block_type != start_type) {
++		if (noncompatible_cross_type(start_type, block_type))
++			__spb_clear_has_type(pfn_to_page(start_pfn), block_type);
++		else
++			__spb_set_has_type(pfn_to_page(start_pfn), block_type);
+ 	}
+ 
+-	return NULL;
++	sb = pfn_to_superpageblock(zone, start_pfn);
++	if (sb)
++		spb_update_list(sb);
++#endif
++	return __rmqueue_smallest(zone, order, start_type);
+ }
+ 
+ /*
+@@ -3544,6 +3577,13 @@ try_to_claim_block(struct zone *zone, struct page *page,
+ #define SB_SEARCH_EMPTY		(1 << 1)
+ #define SB_SEARCH_FALLBACK	(1 << 2)
+ #define SB_SEARCH_ALL		(SB_SEARCH_PREFERRED | SB_SEARCH_EMPTY | SB_SEARCH_FALLBACK)
++/*
++ * Skip UNMOVABLE<->RECLAIMABLE cross-type fallback. Used by the steal
++ * path to prevent landing single foreign-type pages into a PB labeled
++ * with the other non-movable type — a steal does not relabel the PB
++ * so cross-type stealing creates permanent mixing.
++ */
++#define SB_SKIP_CROSS_TYPE	(1 << 3)
+ 
+ static struct page *
+ __rmqueue_sb_find_fallback(struct zone *zone, unsigned int order,
+@@ -3580,6 +3620,10 @@ __rmqueue_sb_find_fallback(struct zone *zone, unsigned int order,
+ 					int fmt = fallbacks[start_migratetype][i];
+ 					struct page *page;
+ 
++					if ((search_cats & SB_SKIP_CROSS_TYPE) &&
++					    noncompatible_cross_type(start_migratetype, fmt))
++						continue;
++
+ 					page = get_page_from_free_area(area,
+ 								       fmt);
+ 					if (page) {
+@@ -3601,6 +3645,10 @@ __rmqueue_sb_find_fallback(struct zone *zone, unsigned int order,
+ 				int fmt = fallbacks[start_migratetype][i];
+ 				struct page *page;
+ 
++				if ((search_cats & SB_SKIP_CROSS_TYPE) &&
++				    noncompatible_cross_type(start_migratetype, fmt))
++					continue;
++
+ 				page = get_page_from_free_area(area,
+ 							       fmt);
+ 				if (page) {
+@@ -3629,6 +3677,10 @@ __rmqueue_sb_find_fallback(struct zone *zone, unsigned int order,
+ 					int fmt = fallbacks[start_migratetype][i];
+ 					struct page *page;
+ 
++					if ((search_cats & SB_SKIP_CROSS_TYPE) &&
++					    noncompatible_cross_type(start_migratetype, fmt))
++						continue;
++
+ 					page = get_page_from_free_area(area,
+ 								       fmt);
+ 					if (page) {
+@@ -3765,11 +3817,18 @@ __rmqueue_steal(struct zone *zone, int order, int start_migratetype,
+ 	/*
+ 	 * When ALLOC_NOFRAG_TAINTED_OK is set, only steal from tainted
+ 	 * SPBs to avoid tainting clean ones. Otherwise search all categories.
++	 *
++	 * Always skip UNMOVABLE<->RECLAIMABLE cross-type fallback. The steal
++	 * path takes a single page without relabeling its PB, so a cross-type
++	 * steal would land an UNMOVABLE page in a RECLAIMABLE-labeled PB
++	 * (or vice versa) and create permanent mixing. Falling through to
++	 * MIGRATE_MOVABLE (the second fallback) is preferable.
+ 	 */
+ 	if (alloc_flags & ALLOC_NOFRAG_TAINTED_OK)
+ 		search_cats = SB_SEARCH_PREFERRED;
+ 	else
+ 		search_cats = SB_SEARCH_PREFERRED | SB_SEARCH_FALLBACK;
++	search_cats |= SB_SKIP_CROSS_TYPE;
+ 
+ 	/*
+ 	 * Search per-superpageblock free lists for fallback migratetypes.
 -- 
 2.52.0
 
