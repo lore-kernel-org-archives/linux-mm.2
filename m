@@ -4,80 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B2D9CD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 385D2CD1297
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B92D66B0098; Wed, 29 Apr 2026 23:26:07 -0400 (EDT)
+	id 9E5486B0099; Wed, 29 Apr 2026 23:26:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B43EA6B0099; Wed, 29 Apr 2026 23:26:07 -0400 (EDT)
+	id 9BD976B009B; Wed, 29 Apr 2026 23:26:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 993516B009B; Wed, 29 Apr 2026 23:26:07 -0400 (EDT)
+	id 8F9016B009D; Wed, 29 Apr 2026 23:26:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 864106B0098
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:07 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4971F16022E
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:07 +0000 (UTC)
-X-FDA: 84713783574.22.606E827
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7ED416B0099
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:11 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 44E911A0224
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:11 +0000 (UTC)
+X-FDA: 84713783742.12.E94C236
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9A145180003
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fVM+pktx;
-	spf=pass (imf24.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 925444000D
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=juZ89lUU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777519565;
+	s=arc-20220608; t=1777519569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KTi8iXJqgdS3jOvFqzqbkSZoCbi8rsF0sqMU/64bow0=;
-	b=2JYuFg5Q9hppbONwtCe/H1hTnDlBEpOc2CLQlWXcnpfYKlNJwCXtd6JKkUNuQ0w0CECP3u
-	jfpTdkNI3ZN5WKl3As5quSIzp7B/mZXSIzz9mDWFtxaSGJOTyKwWYxASwKp/QzqDbkHLiv
-	/uzvQ6LrgiIfeDnjLV2CLG+EaasMEGA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fVM+pktx;
-	spf=pass (imf24.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519565; a=rsa-sha256;
+	bh=nAkMS0ZZXpVpDwoF2mFprcRHCHlEnToRGAdKS0OEKbU=;
+	b=vLfHtrxh8UB5lg9Xc/bDOKkvZZ0+sX9o7+syx/nUbnuV8A2/JSx8fsK9GObKaV98h8UHzD
+	NobRV0nh5bmAnJpLKQO9+IisNIEMkXGP2gPLt9UFR3vAa2kjPj378jZ3973P7/7W4ze/S6
+	ziKTygtVjPk6DPN2TMKl8+25t67EZ6E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519569; a=rsa-sha256;
 	cv=none;
-	b=8ebEp+/wV/3NoQdA0RF6PXKENdG5IKIdE5tuBF40S1Z5rhI5XxkuvGoA56Dcg90deevYWs
-	Lei3D0e3qTUlyFzAvjie9dP7XzTDEpq1Auw5DNj7qdpc/YsgjZmrZ/B9f8RQSWOdXGSe/p
-	qCXRr1eCwD03v3mD6qoc6rhjd0idE9A=
+	b=48XlA6oHVkbqX3GRDnfjCwUhCKSaRMbmwJAtLfr0vEoe2ITFCJ2lTcKFNQQ3oW9GNwEW8s
+	FIguUG/3912FhjttOS5k2mLv+ufgjpBZUxkfjSuSjm0tAhDwz1iRATlwLCU/E20HM99abx
+	LJnRBJBOD6v7fRZNxVcxtIO2F8o/Q6k=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=juZ89lUU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB9524353E;
-	Thu, 30 Apr 2026 03:26:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7875C2BCC4;
-	Thu, 30 Apr 2026 03:26:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C5CC6445ED;
+	Thu, 30 Apr 2026 03:26:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64A6C2BCC7;
+	Thu, 30 Apr 2026 03:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777519564;
-	bh=u3YoJI6PJeGWY/+fiJtWlQKeltd3H2IlxE1eW7TcW1A=;
+	s=k20201202; t=1777519568;
+	bh=Mv9m+6QFE5X2BSGU25QtTcnJE8P+nH7SNS4s/QHDQxg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=fVM+pktx3qjd5wzp95nMpat78U+9GCLO9zfS0yJaFVt7LtrOzHwjQl5XYjgchazAi
-	 GzBT3q0NikQODltSrtECYbwuUtcf5M44X/Khc8VQHfC4kybRnJ1RLFmzq8TS24PfAR
-	 DTB83zl0VVO3hZ77nLDO3pxYU3IEFyM8xscIKtHOY4wmR/fE7dWT+mucmp8DqFeqYy
-	 zvpMTvGyKhHJqASghT9ckCceQKLSZtOW1vVXXjjPZSLK/8jUTGtyLepmQTw/JwD2xU
-	 viwJNWXaDMxcGK9hmTQbpKeZHcvviMpDn9u441MGWrPaIERXtZavQRgOd1S2RKPAaf
-	 7R0DVkVfCocLQ==
+	b=juZ89lUUjlVInyNLudhGL6gKUdYypOgVutLeQYu7+Zv9S1ojQMn1fsbg4/q8HA9kf
+	 uytXyHEjScBl37xivNSPE4ryJhsH6K+fNiVEE3Tibqd01DfSHLLdV6DIGHiyfLM0j1
+	 7lINbKqurIbK3kXn8ov3jBGtqjt9zr1HJOqGLUPQmNjzT4ay7v/AFZ6L1jO6UnQ4rh
+	 0keCg/YHJh/PxXoT6xU3vqXVkdyYSyavz0pn2sGolZ+WXuho12ORsn1aVio9mo8Pvg
+	 7/PlMZGkUL4uMfmMsq6/Hm8MqMlXxt9gGwLkoqjr+NZqDNUWGsEQTi8myDrLsVuFeA
+	 HFH46Dai3te4g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02DAD3809A07;
-	Thu, 30 Apr 2026 03:25:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CFE3809A07;
+	Thu, 30 Apr 2026 03:25:25 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCHv7 04/18] mm: Move set/clear_compound_head() next to
- compound_head()
+Subject: Re: [PATCHv7 03/18] mm: Rename the 'compound_head' field in the
+ 'struct
+ page' to 'compound_info'
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177751951954.2274119.3235115726287439195.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 03:25:19 +0000
-References: <20260227193030.272078-4-kas@kernel.org>
-In-Reply-To: <20260227193030.272078-4-kas@kernel.org>
+ <177751952355.2274119.4433106526683678449.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Apr 2026 03:25:23 +0000
+References: <20260227193030.272078-3-kas@kernel.org>
+In-Reply-To: <20260227193030.272078-3-kas@kernel.org>
 To: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  muchun.song@linux.dev, david@redhat.com, willy@infradead.org,
@@ -88,14 +89,14 @@ Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  aou@eecs.berkeley.edu, alex@ghiti.fr, kernel-team@meta.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  loongarch@lists.linux.dev, david@kernel.org
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9A145180003
 X-Rspam-User: 
-X-Stat-Signature: ax45ddj7ogfstwik6fonqaz7dfxggm1o
-X-HE-Tag: 1777519565-23344
-X-HE-Meta: U2FsdGVkX1/DPj3+5bH2y/4A5s4ZnV7z9FY1PYfSqj1TkvAzRkDNyVsVDtq6PwiKHnbMVP6Jt7cdgMC61NcYYMfzT29cXWIqCq/AzGJULWOfN9gq5Vst/h7MJyhpsEeLFQyydIU+qyo8QYEJVOWapzmdbN07tgAUBsKzTOgpvuKt77ZkqWPVk82uuVlO/Xt+F/UX3IWOnlJKhOAh40NRSJFlGDOlBERkORCOL7QTqqs+6PxqqzTjwUplKokHDfJYOMRvTK+0b4WSwLIaNczOlXCrw9ZLUwFc/pEPBfEKCsEuu07Yl1yJyM5a5VOE3R2Wsn2ZjSFaWawmAsXkEWLg8XvCMieNodhbsuO0VHO3NaEBJBuxi891sxau9c4oHWs9umuujkbIWZ6Y6a8s95tTpfimMyusnQX2BkgjWKniiZVx6HfkXzLNQUKsvN2vFJRwz8GxzJTA1ompvg8QtA8XyFb4WtSmpivmjDpkIALBpO734QhmFATSHotDuL6/OeGgNgW3A6mTjf2d3G6lciBj6mo1lkAAZH1skb/wNMjLDKnyDr1e7zIP+F74P2y3B+oq6d7/Xg8bT7i9MMUPlTzVdMrR3/r/acqbf8kh1Fs/Cepsn1uTD0TWTCoNtmBojg5PwBbu8zcNtMkimcO6QLqYgBp1oV4o5Chvpezn8OyZOp4shaBTEeyXwXHWjrHu9umY2z7o8k6qoyXVRJZvnvQknN2RHx7nRva4K+iHfw/O5n37zQeffOFJHuf8MO08GrZlWKf5ivmJbDtVwESJ6hjlc8FqI8ROlw92qyN26iogCiKurbxZpfcCBZemHC5RkyBYa6Z9hh7e9D6C+aTVP2MdqZfnlX+4d7rwMDp8LLzba3y9UnA26/1aX0XfLZQdJEvMtTwiVxRheLeNYjLDe0pW7Xoh5SVZMxSNdBFhF/1W0RJn/y9sf8En6uFanV0hwm9VhBGJvbei024EkTtPvPN
- 1Xt13Cbk
- C85QwDxkC0Qftlqa/HRe8E4Tr4KUEfpof8nv0sfO986S0Er69I348ldcNhWHF1vrO3YC8AxJMVLoYJtZ23guazp8WjD2gvUz6fpwryRtDHFvvelavJm6DEBMsa9be3/JxWxeakG1o7zT+SRQJtE7VlP82kmTKsGZ0bDUyPVsZCH0bdTtBFzFU93ZFp5tCGqMe//L+poCwycBOVNa6JBf9wPEzFRsEPKGU3N32db/zvHhhoWYzpxN1xZ+uAOnA+t2YQ7BxORR+CmH42qoevGlnNPfv6umdpyCypjlUte/ex0xa5MBo5rio7/fndClwTrmald9uAwZwmWpOYvIey5AEJY4FD5MVAjaGKpR2OtSAivWHupfrzlbt78eDaAbbYmWorQTJZcxAhgVYU+L0D29lSl+2EZPmagrET0iPwdvLq5ulmM8U60B4rjzFGWg9ehdRQA9AxH70sl8EvKzgZ4F5aoResmic7ccFbnTYUD2hDmOcyIUItqPawuupcm/ovrtb1tYg
+X-Rspamd-Queue-Id: 925444000D
+X-Rspamd-Server: rspam04
+X-Stat-Signature: epaeddtztzyt3kxeq8xzd1k6rhdhcu4k
+X-HE-Tag: 1777519569-718382
+X-HE-Meta: U2FsdGVkX1/CC7HhHAPh678hPv6HuvvEwE4aW67izOec1OC8KLZ1dCwh8+x7dzHWpuJbLmPe7/dzjv0MN12kI9mvVslPagXxLI9qNSkA3M+uKD4rFni97BtRiTQuq5patrkunC7eXH7Y/4eBiUPP5JB3xzO0jimr/DDEBo3FB5l+1eiDKS2qwh9P+u4m/KerDImp2IrwUm9NOCcgA6f3Eomdl1fGEY6O8DL2DbEsx0SXm/yejO0T05vLjuWVmJaYSU3Vf3MEN3hU35DfBtUviw5SskeQdZUOdJWy9rodz4vfJhIgfRuOzw5Eim4ws654sj5QCltDnS2xsGVIsbNHpFcozjOVejYyZsHfr6o+1c8sCo0+A8qbSuKRPnZkoz0ZyBQi3AqKnyj35QzZJwnbHAO80gOcJEFdl83i7TdSSafHtxDuB1MnzR+3ayUUuT3RqcDlwDWrDBsSXASYJuZLGt6Jy8yzvV2o6Xxr7n1Y+yScMyNv87j6vJYe4xw4Et2s1wb5gJ6E3sRL6t0XwgBhLxCaRcCmTZzBu8q9avksACpwrNDgyr+eEPcbrD3/yaChG7I3vsUcDQbTxp6Y0ETWkrrwDM6jd0e3hllYDg8FsAfdkRiQC2NAE1DEBSf7tqUuR6b6DNg6XkD+L4hS723DedmtcWd8u4UZYPJkDWopmg8ANm1KOn7Uot9UsXMazChURZDwxw8/C79unev6WBXBnjXWqHP7vcIfoMAhUZjFJkgzuNjCRxHYTdKSj9AtGSgUd3iKk6YwNNBbjt6Z+wZY2L+37Uq25qE7X8t2zI0+GUgTsI5N5TcYpYsigxnB8JvRmqCQ3CIuraay27qBwCIStv0kqFClPynTV+AjEH178nCAHTyTccf4E+eIQzA5lXYMbaktKwdraoWPwcjA1u2Q7wq1Ux07BGGoA4qCb3+taSF1L09vqKtVlWEHLgqiqz+FlD/+ergbcLDAqETZgyy
+ D5by3jBb
+ ppo7ki8REC8re7KwrSIiFGt4mVC2BoCtVCaAWPvsVgGv7pzVpH42lrFnRpm3gtbmzfJf6RBHmjhjA43/kmg/ASB6sKpG5q0h2dD1DphC/RpNxhh58A60p9tTwc2NP7o7GueIJwT1yy4vJJbe61mxG7EcXMgOwCcGontgXbBvS7HRl/DdFbBHLW+FUzju4IXd3/jXtlqGPUqWdgQLIvwOcXKUz2oXfjpGZBTbNYeqZg+k2/zfPdf54RdEZxzT1ZT5gOHuCspitZHnW35ZZS1nJDMPQz6aT39cnMCPtruo6QVOtgQJZqenvuNv8/FpOYK2fZhEYx+MugXhKjbAElgXVWXGfgWMNMTkNDeGtH9pqfiIJkr7/r+UfPXmW79cJaHYwMHy5m2BNjklTYTuhugkInF/adky+SevqSrpHJ94gTWnIdpkaRUfK0XXKXcBv4uuCmMBF6NpzrQ4YrxJnaSQdb3f6IdCD1vFPqXSk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,21 +109,21 @@ Hello:
 This patch was applied to riscv/linux.git (fixes)
 by Andrew Morton <akpm@linux-foundation.org>:
 
-On Fri, 27 Feb 2026 19:30:05 +0000 you wrote:
+On Fri, 27 Feb 2026 19:30:04 +0000 you wrote:
 > From: Kiryl Shutsemau <kas@kernel.org>
 > 
-> Move set_compound_head() and clear_compound_head() to be adjacent to the
-> compound_head() function in page-flags.h.
+> The 'compound_head' field in the 'struct page' encodes whether the page
+> is a tail and where to locate the head page. Bit 0 is set if the page is
+> a tail, and the remaining bits in the field point to the head page.
 > 
-> These functions encode and decode the same compound_info field, so
-> keeping them together makes it easier to verify their logic is
-> consistent, especially when the encoding changes.
+> As preparation for changing how the field encodes information about the
+> head page, rename the field to 'compound_info'.
 > 
 > [...]
 
 Here is the summary with links:
-  - [PATCHv7,04/18] mm: Move set/clear_compound_head() next to compound_head()
-    https://git.kernel.org/riscv/c/67c79a5af051
+  - [PATCHv7,03/18] mm: Rename the 'compound_head' field in the 'struct page' to 'compound_info'
+    https://git.kernel.org/riscv/c/d50569612c29
 
 You are awesome, thank you!
 -- 
