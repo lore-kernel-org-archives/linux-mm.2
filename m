@@ -4,146 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD8A4FF886F
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 07:06:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 612BAFF886F
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 07:08:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA4386B0088; Thu, 30 Apr 2026 03:06:58 -0400 (EDT)
+	id 789026B008A; Thu, 30 Apr 2026 03:08:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B54B46B008A; Thu, 30 Apr 2026 03:06:58 -0400 (EDT)
+	id 712656B008C; Thu, 30 Apr 2026 03:08:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A44B26B008C; Thu, 30 Apr 2026 03:06:58 -0400 (EDT)
+	id 5D9F96B0092; Thu, 30 Apr 2026 03:08:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 94B146B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:06:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1E8D9C1A82
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:06:58 +0000 (UTC)
-X-FDA: 84714340116.08.F87E2F3
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8E2F2A000A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:06:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ZOR5Dha9;
-	spf=pass (imf25.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 481556B008A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:08:57 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8762404C3
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:08:56 +0000 (UTC)
+X-FDA: 84714345072.11.9753795
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 96510C0007
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:08:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	spf=pass (imf22.hostedemail.com: domain of maobibo@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=maobibo@loongson.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777532815;
+	s=arc-20220608; t=1777532934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KVe1rkQoId2M0q+G7vAJ7I0Stq/EZ6R6Ou9i2ZV3qVc=;
-	b=ax09DeViLkz3A2QZyv5bqZvlGnG5EmF6uBI29c7FwQWk/8zXeuaLahMZufctS3FrmN3CQs
-	LB1xqIIQN4xph9BOyIJNAcZELpaRN5OyUIb+bcae/Nbku9oTs5O2HZpZOpNCch70y3S3Ya
-	r0hiTPJvESxn2LlfPbHOWFcyWJeQe9g=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ZOR5Dha9;
-	spf=pass (imf25.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777532815; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=wvBROOKiwSywWTWeQ5yb4upXZHRGZw1nxVW/gMo8cpk=;
+	b=VnCV6/9dyB8jRqo4G0OHcPRH7pi0cHNz8omXy8c+i5OxnBouenTwz3GIGDodhhsDtr1mvi
+	gc/g9RF4opakRqM6NokBocCuR9gVqw5AIghx1b7a6u5/5qXCnhivBkM8JffLJMTZ0k2FAS
+	8eNwJZvMkRE3waIWyVgRkYYT3+A0zRc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777532934; a=rsa-sha256;
 	cv=none;
-	b=EY5ntJlOvhmmgCWeQKyB2Fd5TceKF9bAmtxVoXDj2lnWHNDESIaPzdn5clji0LtZvQ4XcX
-	t7sp3dWs2LHgKQGJOv3Ys9BBiPHWow28ytJRyk6BgAL9+Ha94lcu3i9cLe16DepUE/O7Di
-	y0qHNgXfaHa5yk5wE3UR+BDlL7IXKJk=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63U0vCEP3558379;
-	Thu, 30 Apr 2026 07:06:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=KVe1rk
-	QoId2M0q+G7vAJ7I0Stq/EZ6R6Ou9i2ZV3qVc=; b=ZOR5Dha9BGwlY7odxoaWVs
-	kAKJGE84Tju3JmGXNugos9uVE/8hxwdKhvJbSBxaVREUWVvVaUWto3KfYCeagv0L
-	fPwMWEAyIN5QsXbjLyP1bTyMfrT3DYImdJqoaLjebee/S/pwsB58gJAQ06ND96nv
-	IOYl/X4tVrsSvlLLwJWsY6zYPjMCwVT7HckpUnEgdw/uno6TA7RirOtmAw8rkIeB
-	OJfiQmZzFqydld+Dad78rgsrRk55jdYQeAMZJjDQ9jmxDPSHMnqQbhFtPvUK/94U
-	wzhjmou0dcJc3za2knN1gzhJpb8s2Ub8lHwJZpP0FUU5u20iOYWxdpoad3ziOIOA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drn44xget-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Apr 2026 07:06:26 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63U6rn7f031286;
-	Thu, 30 Apr 2026 07:06:25 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds8xk9u67-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Apr 2026 07:06:25 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63U76OhR26018546
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Apr 2026 07:06:24 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0AD605805F;
-	Thu, 30 Apr 2026 07:06:24 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 12E2458053;
-	Thu, 30 Apr 2026 07:06:09 +0000 (GMT)
-Received: from [9.124.222.143] (unknown [9.124.222.143])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Apr 2026 07:06:08 +0000 (GMT)
-Message-ID: <32d03cb3-2199-444b-94de-ff34cf2d5315@linux.ibm.com>
-Date: Thu, 30 Apr 2026 12:36:06 +0530
+	b=ZXAI6WMsHkNJ00xY4cyT2JBQIsPzMBtFsBjFhBMvw8dj7rFfa0BCtJGxnBYkQhwiBUP4NJ
+	lQsMpMScrSVCbMhycRRnBFGPvSUX0Pwd7adZubplKinJgRRU96XD5ILjuMpywjImpFMKmZ
+	CV0W3oM+vAmxJRo/2Jcxs6fQCy51PAs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of maobibo@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=maobibo@loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxX+v6__Jpl2kFAA--.18221S3;
+	Thu, 30 Apr 2026 15:08:43 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxzsLy__JpuPJ3AA--.31891S3;
+	Thu, 30 Apr 2026 15:08:34 +0800 (CST)
+Subject: Re: [PATCH] mm/huge_memory: skip huge_zero_pmd in
+ zap_huge_pmd_folio()
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <e3f542dd-f22b-fc8c-b376-72ab5909b6c8@loongson.cn>
+ <20260430070217.39679-1-lance.yang@linux.dev>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <6cdeb3e7-c399-4ead-e809-44e3d4d84bc7@loongson.cn>
+Date: Thu, 30 Apr 2026 15:05:41 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v6 3/5] mm: Hot page tracking and promotion - pghot
-To: Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-Cc: Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net,
-        mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
-        raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
-        sj@kernel.org, weixugc@google.com, willy@infradead.org,
-        ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
-        nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
-        akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
-        kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-        balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
-References: <20260323095104.238982-1-bharata@amd.com>
- <20260323095104.238982-4-bharata@amd.com>
- <250e68f3-3664-4148-bfbf-52fd4230a3b9@linux.ibm.com>
- <ce8bf715-5e76-4c73-9523-8e7309821404@amd.com>
+In-Reply-To: <20260430070217.39679-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <ce8bf715-5e76-4c73-9523-8e7309821404@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 91BIh40wuEno1H4PmYjBoi4c67XxTQ0g
-X-Authority-Analysis: v=2.4 cv=Ft81OWrq c=1 sm=1 tr=0 ts=69f2ff72 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=6e-r1iUsFtuhjnILqo8A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: dyPF0tdCOfGRIY6TS_xnIayZTHdQJ6sc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDMwMDA2NSBTYWx0ZWRfXyLBLQs79Ttgd
- j8v0qdv4k+xEcJ06YVy+7P674P2JlZBNM7LTpyXeGE9HQ9Hj4/yTNjAZMNzCdwzIedREWKdmpbd
- +fhCCpOA6O3pH4X/TJGzK/Zd5wnFhXnP0O2ZfpaaeXTr5/WYKs1qLCWqkXWA4m4tCtaEzCvGYlV
- kuLG2VvOjZ1zT7xaJeUFg2ZYx3alx5DIgWO/uDCcIAupsSEBLJ2zikMPKHw/0u7x9nwMBXQWJ5L
- IrAH3YZwKIt0O/9EXOW0ODt7BptNIvAWoz/vataLrye9h8eYMTWfKOJHOc+QmG/mafUvmAm+pKL
- DkBotB0NmqFxCX5L4cf9boBnb6fHh+VQMfsTIANEKIza8akmM3hfXqCYYRvGLNoYa2UEQzfcR4B
- lgQZ02mlXyX2g7CvvcZ9aVTovX3jVy1WbQGXY1fWbZs0+dhveJqSiICeONQimcsaD2jzrzSZ+5r
- vuQNNzGbeushqt90ZFw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-30_02,2026-04-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0
- clxscore=1015 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604300065
-X-Stat-Signature: carzppqxjgfajqqftfimgsu4f7srfkee
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8E2F2A000A
+X-CM-TRANSID:qMiowJDxzsLy__JpuPJ3AA--.31891S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxAF1rCr1UXryUJFy8Xw4UJrc_yoW5Cr45pF
+	yUGFn0kr48tr9rJw1Ivw4Uta4FywnavFy5X343Kr4rZFn0yry2grsrGr4jkry0gr4rGF4S
+	vF42vasavF9xt3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
+	6r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxG
+	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUtVW8ZwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jOeOJUUU
+	UU=
 X-Rspam-User: 
-X-HE-Tag: 1777532815-960289
-X-HE-Meta: U2FsdGVkX1+7Jg94Wxpv2U3GAncIINBWAIe7wyhGLKZ7svYrUNKWwBAMoQKezNNMp1rPeWjxq/Kqc0uHaPBA+zx4SDmD3C71bJraQmi88d0Ls90rqe13EyeFBGNWLXTl9V2hZq/CCrlKUxS+5jSJyzsvmppmQzbM+GfrD1Xtwgz0nAV3muLFIXYQJ07JHiKYbrvSjRV8g+Pfr74T7XN9Hnpkf204HZp65IjqOOc+klseB9RXqztM25l0031WU7N0Zm46NAGFAe1ME085e92vk+3RiiXw5/+EzOQAHbB7znRQyqY5v9Sj8lyOJOZcJm7yOHe3aO6YYl7kfcrYqEEJuewo/51AwGYxmahowFoC4xROFf7pPs4q0qck9+J1y5n/Y2NsS9FlH7wy9aumHj+qxUN8i5V1NlnFtze7cXTJtZ1tAAAm1sAFU6of6QRKRft4/TaVotG3xG3o4bxG4/vjIoaifG0mIQPz2EJEtUM8YelbsHMzS/aE+5sX9h3U61ldj6Dy5bS+ZWEHOEg1S0+bjcw5wpwToeZktmhgnxCtFuvRJzbj8tfEBE8WddUQFV4nrD2wVNP6zJmk5OdGBCiSEYYUwuLml5wsnp98gdbNN+cU6QJxp56RofKM+QqMFWHlNrNLHwySstTs/LIEWD1WAG4SCvDOw8xIOA5aylKAx6T2iHJFSRAYkOKDOE0V728pPf/4/W3ChL7RtzMjKOgMFBep9EkWIFng1bAzrQrH9C6fihye+F8jUCG10YpramLY5BtMnlX3N2ZT2CdgUiMaL0jx5ian4eA0YBMV7C+f34H/DNwcFvVpjkl+osZTvykR841Kh3EX+kYTlCjYJAAV+mKdBaLyTbBSS1npaUCSJkwCLjMOKjCH3Mtky9I0aTA7FnuU7+JXTBobDUzV3p2E9KRH+Neovl0ez67DNUEzKzH0bc0wiUBXUZErtYr7JF0/4Z27IP0F/6WDelzYiiL
- gdxwlqp9
- WWZx4BVBvZRoYWnmiBSEQZ3iFPUmOdlb38rmvzSyXOzOuE1swDXQjGKNXpAxnJwzQ0L8Zvdub3eMTGTDyB3LBY7wEOLD5KQhOawC+wTHaXRwcLaRZLs1j3GZynpZXrC7g7iTnJvefhAnCFNNbSRGuDFY0gWAOQVrFAItSu6sm11nDk5w7qia5SM58RI9/qEjkHRFR30/FDlBSWKipf0dvOJF8KSpfd9SlIaYDY6j5EZOgZrQ2TDFmkitqOBxCS1U7zIDwAo4R4yv5MHDfCYrV9DQptBz5MtQYkbUAw1Pmp83ltzeGaHjdta7u6oQDp0LfwzlZNNmzrxTZ3Kw=
+X-Rspamd-Queue-Id: 96510C0007
+X-Rspamd-Server: rspam04
+X-Stat-Signature: u99wdfqp5aepp7obhk6nw7xrah3nwxmz
+X-HE-Tag: 1777532932-178444
+X-HE-Meta: U2FsdGVkX19t2jM4MlF7z5BXEK1II7AQC5azjs5VFu5v6DmxzOzfUAc1EfF3Zvu5rzvT1AN3ISrh2szVSJpZMZrD8o6V6ynf/fgezU+j09PNW05YWiSprIraOQbu5Ure2U+OBKT/y/8oNQVzQWhDwjMtcVMI83cUwWHOp29fnJyw2qyVoF8Je+bPSuWeg+o0/KiAasyQOyHjaxp5Wkbao0O3Xl+74QvnO02QfAtDPcwZ176ppJxxLBWORRxBQKnaVh0VaYYnU3XcsJ130JYiFVTi8PURAHPQ4lk/kI+nv75XKKgl5q1HkZQFW8hyGvsBecJUUfBBOfYFFrif83vACXCRPstoj4EUpOAmtjcdgz3vvREQR3TS5FocTcU5fUje64M7frzvVOLIGakdCU8bEcTrlnUQjIln03FMkbCZ6RdQDYMQilN7WPwyq48YsofPmLyUztcKKJji82w4W9X4hA+P312YzbHDDUU96uDORtpmK+CygDchXSFkJBWUH4iKZTHqycmd1jP3PuBfaBhGkZB9KPhFWeMNe7a2TE7U1no1dts6UTDABIlU2MxDxm2ayTG4VeAxXhH1XGlLLj4uKwu0tEi1vWauGS8HElz8/zUMMwHgRFomxj1AOs3LI6ma700UX5+f/w9k1vhi95K3L/jKw5L4q1FNFZXh1L33VXt8Woqiu+5TqksoWu3iCwt0d4gEnc7EA3c0Kf8gwCSOuzsK6jAwawK2FoqRtgwF2garX5YKZFGPDvCJNtvH+0iHBvWnDJ2y7Fq4hJoM4jYutzDqyp3JYx1/chkaUFzTJRNF/vJtmkrRbrkK3I3cZ/Zhgf/6Ig22UjQddhpc014m/Gp7CQQXHxr8lw7yafW5OdEvDQpZdSlPy3w42nmkQAt51TluN9lD9Nbs0jE7FE+cGOMsQfaqioCSm2lwMqgtM8F8KzTDFPQgkIDjGyKYjKoDtaA53aQuOb78qwUk9S1
+ 3fA7Mwao
+ wNexNbNCYAok55YY571X7f5iqUWOgFK5ZnJayIHoJlQT8QI54nPSfL9iLW4ekpv4wWLXky4wowgBwdg2wk766O9gB4lLBj8ZQSsS25eNQ8lsaS2Ckhf/SzfE7+0w9Fjp95nwB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,179 +107,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bharata
 
-On 4/27/26 10:54 AM, Bharata B Rao wrote:
-> On 24-Apr-26 6:27 PM, Donet Tom wrote:
->>> +int pghot_record_access(unsigned long pfn, int nid, int src, unsigned long now)
->>> +{
->>> +    struct mem_section *ms;
->>> +    struct folio *folio;
->>> +    phi_t *phi, *hot_map;
->>> +    struct page *page;
->>> +
->>> +    if (!kmigrated_started)
->>> +        return 0;
->>> +
->>> +    if (!pghot_nid_valid(nid))
->>> +        return -EINVAL;
->>> +
->>> +    switch (src) {
->>> +    case PGHOT_HINTFAULTS:
->>> +        if (!static_branch_unlikely(&pghot_src_hintfaults))
->>> +            return 0;
->>> +        count_vm_event(PGHOT_RECORDED_HINTFAULTS);
->>> +        break;
->>> +    case PGHOT_HWHINTS:
->>> +        if (!static_branch_unlikely(&pghot_src_hwhints))
->>> +            return 0;
->>> +        count_vm_event(PGHOT_RECORDED_HWHINTS);
->>> +        break;
->>> +    default:
->>> +        return -EINVAL;
->>> +    }
->>> +
->>> +    /*
->>> +     * Record only accesses from lower tiers.
->>> +     */
->>> +    if (node_is_toptier(pfn_to_nid(pfn)))
->>> +        return 0;
+
+On 2026/4/30 下午3:02, Lance Yang wrote:
+> 
+> On Thu, Apr 30, 2026 at 02:34:20PM +0800, Bibo Mao wrote:
 >>
->> Just a thought—could we check this at the beginning of the function, before the
->> switch case?
-> I am accumulating two stats here: How many hot page intimations pghot obtained
-> that are attributable to different sources
->
-> and
->
-> out of them, how many turned out to be actionable
->
-
-Understood. Thanks for the clarification.
-
->
 >>
->>> +
->>> +    /*
->>> +     * Reject the non-migratable pages right away.
->>> +     */
->>> +    page = pfn_to_online_page(pfn);
->>> +    if (!page || is_zone_device_page(page))
->>> +        return 0;
->>> +
->>> +    folio = page_folio(page);
->>> +    if (!folio_try_get(folio))
->>> +        return 0;
->>> +
->>> +    if (unlikely(page_folio(page) != folio))
->>> +        goto out;
->>> +
->>> +    if (!folio_test_lru(folio))
->>> +        goto out;
->>> +
->>> +    /* Get the hotness slot corresponding to the 1st PFN of the folio */
->>> +    pfn = folio_pfn(folio);
->>> +    ms = __pfn_to_section(pfn);
->>> +    if (!ms || !ms->hot_map)
->>> +        goto out;
->>> +
->>> +    hot_map = (phi_t *)(((unsigned long)(ms->hot_map)) &
->>> ~PGHOT_SECTION_HOT_MASK);
->>> +    phi = &hot_map[pfn % PAGES_PER_SECTION];
->>> +
->>> +    count_vm_event(PGHOT_RECORDED_ACCESSES);
-> which is this ^
->
->>> +static void kmigrated_do_work(pg_data_t *pgdat)
->>> +{
->>> +    unsigned long section_nr, s_begin, start_pfn;
->>> +    struct mem_section *ms;
->>> +    int nid;
->>> +
->>> +    clear_bit(PGDAT_KMIGRATED_ACTIVATE, &pgdat->flags);
->>> +    s_begin = next_present_section_nr(-1);
->>> +    for_each_present_section_nr(s_begin, section_nr) {
->>> +        start_pfn = section_nr_to_pfn(section_nr);
+>> On 2026/4/30 下午12:28, Lance Yang wrote:
+>>>
+>>> On Thu, Apr 30, 2026 at 12:11:20PM +0800, Bibo Mao wrote:
+>>>> when executing command "make check" with qemu software, there is
+>>>> error report like this:
+>>>> BUG: Bad rss-counter state mm:00000000972846bc type:MM_FILEPAGES val:-4096 Comm:bios-tables-tes Pid:27802
+>>>> BUG: Bad rss-counter state mm:00000000752180c5 type:MM_FILEPAGES val:-2048 Comm:worker Pid:27815
+>>>> BUG: Bad rss-counter state mm:000000009c2f6a61 type:MM_FILEPAGES val:-2048 Comm:qom-test Pid:27825
+>>>
+>>> Good catch!
+>>>
+>>>> The problem is that when application exits, rss counter is calculated
+>>>> with huge_zero_pmd huge page, instead it should be skipped.
+>>>
+>>> Looks like the same problem[1] we discussed recently.
+>>>
+>>> [1] https://lore.kernel.org/linux-mm/74a75b59-2e13-3985-ee99-d5521f39df2a@google.com/
+>>>
+>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>>> ---
+>>>> mm/huge_memory.c | 3 +++
+>>>> 1 file changed, 3 insertions(+)
+>>>>
+>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>> index 970e077019b7..3cbea344d4a2 100644
+>>>> --- a/mm/huge_memory.c
+>>>> +++ b/mm/huge_memory.c
+>>>> @@ -2423,6 +2423,9 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
+>>>> {
+>>>> 	const bool is_device_private = folio_is_device_private(folio);
+>>>>
+>>>> +	if (is_huge_zero_pmd(pmdval))
+>>>> +		return;
+>>>> +
+>>>
+>>> The huge zero PMD should not be returned by vm_normal_page_pmd() or
+>>> vm_normal_folio_pmd() as a normal folio. If it reaches
+>>> zap_huge_pmd_folio(), we already made the wrong normal-vs-special
+>>> decision ...
+>>>
+>>> So I don't think we should special-case it in zap_huge_pmd_folio(). That
+>>> only avoids this RSS decrement :)
+>>>
+>>> Could you please check whether the fix[2] also fixes your QEMU test?
+>>>
+>>> [2] https://lore.kernel.org/linux-mm/ea1453a6-14c9-4334-ac7e-2758586393b2@kernel.org/
+>> yes, I think it will solve this problem.
 >>
->> I may be missing something, but in pghot_setup_hot_map() and kmigrated_do_work()
->> we seem to iterate over all memory sections. On large memory systems, could this
->> become a bottleneck right?
->>
->> Since hot_map is allocated only for lower-tier memory and the hotness
->> information is primarily used there, would it make sense to skip scanning
->> higher-tier sections?
->>
->> for_each_online_node(nid) {
->>          if (node_is_toptier(nid))
->>              continue;
->>
->>          start_pfn = node_start_pfn(nid);
->>          end_pfn = node_end_pfn(nid);
->>
->>          s_begin = pfn_to_section_nr(start_pfn);
->>          for_each_present_section_nr(s_begin, section_nr) {
->>      }
->> }
->>
->> Would this approach be reasonable, or am I overlooking something?
-> I didn't just yet optimize the walk. Since there is one kmigrated thread per
-> lower tier, this routine already is aware of which node to scan. We can limit
-> the section walk to that node instead. Something like this:
->
-> static void kmigrated_do_work(pg_data_t *pgdat)
-> {
-> 	unsigned long section_nr, s_begin, start_pfn, end_pfn;
-> 	struct mem_section *ms;
-> 	int nid = pgdat->node_id;
->
-> 	start_pfn = SECTION_ALIGN_DOWN(node_start_pfn(nid));
-> 	end_pfn = SECTION_ALIGN_UP(start_pfn + node_end_pfn(nid));
->
-> 	for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
-> 		section_nr = pfn_to_section_nr(pfn);
-> 		
-> 		if (!present_section_nr(section_nr))
-> 			continue;
->
-> 		ms = __nr_to_section(section_nr);
-> 		
-> 		...
->
-> 		kmigrated_walk_zone(pfn, pfn + PAGES_PER_SECTION, nid);
-> 	}
-> }
+>> Only that I think that there should be tlb flush operation after
+>> pmdp_huge_get_and_clear_full() even with huge_zero_pmd page, so
+>> tlb_remove_page_size() should be called. Is that right?
+> 
+> Calling tlb_remove_page_size() is not necessary there :)
+> 
+> zap_huge_pmd() already marks the PMD range for TLB invalidation right
+> after clearing the entry:
+> 
+> 	orig_pmd = pmdp_huge_get_and_clear_full(...);
+> 	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+Yes, it is. I forget the tlb_flush_pmd_range() calling in 
+tlb_remove_pmd_tlb_entry().
 
+So the fix solves this problem. And thanks for your explanation.
 
-Thanks. This looks good to me.
+Regards
+Bibo Mao
+> 
+> The later tlb_remove_page_size() is guarded by "is_present && folio",
+> and is for the normal folio case after normal_or_softleaf_folio_pmd()
+> return one :)
+> 
+> Please correct me if I missed something :D
+> 
+> Cheers, Lance
+> 
 
-
->
->>> +static int pghot_online_sec_hotmap(unsigned long start_pfn,
->>> +                   unsigned long nr_pages)
->>> +{
->>> +    int nid = pfn_to_nid(start_pfn);
->>> +    unsigned long start, end, pfn;
->>> +    struct mem_section *ms;
->>> +    int fail = 0;
->>> +
->>> +    start = SECTION_ALIGN_DOWN(start_pfn);
->>> +    end = SECTION_ALIGN_UP(start_pfn + nr_pages);
->>> +
->>> +    for (pfn = start; !fail && pfn < end; pfn += PAGES_PER_SECTION) {
->>> +        ms = __pfn_to_section(pfn);
->>> +        if (!ms || ms->hot_map)
->>> +            continue;
->>> +
->>> +        fail = pghot_alloc_hot_map(ms, nid);
->> I may be missing something, but after pghot_alloc_hot_map fails, we continue the
->> loop. Would it make sense to break and go to the cleanup logic instead?
-> There is a !fail check in the for-loop due to which we break when alloc fails.
-
-My bad, I missed it.
-
--Donet
-
-> Regards,
-> Bharata.
->
 
