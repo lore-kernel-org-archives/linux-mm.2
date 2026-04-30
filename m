@@ -4,99 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EE1ECCFA13
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:31:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FF1DCCFA13
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:36:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A90AC6B00D8; Thu, 30 Apr 2026 16:31:33 -0400 (EDT)
+	id 800B86B00D2; Thu, 30 Apr 2026 16:36:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A68176B00D9; Thu, 30 Apr 2026 16:31:33 -0400 (EDT)
+	id 78A556B00D7; Thu, 30 Apr 2026 16:36:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97DAE6B00DB; Thu, 30 Apr 2026 16:31:33 -0400 (EDT)
+	id 6515D6B00D9; Thu, 30 Apr 2026 16:36:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 870C06B00D8
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:31:33 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35D4E401C1
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:31:33 +0000 (UTC)
-X-FDA: 84716367666.26.D4D53AC
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 77D8040006
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:31:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=UgGUw6Bj;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777581091; a=rsa-sha256;
-	cv=none;
-	b=kHoZQ+LdpPrPWEmNfQoYAMvuzASIzc/E2CVXuBIf8i9kiPUNG5CjEqa6MCGPnFC9aB4MQl
-	K7ky/6F2D8YLGV847I9ahcW7v+QXN+L2xguCM3l/V+nrcVgTcjcLBPMIO5NxMUBIrDlGfI
-	gPZTdL9tJL8Qe3XCzDNJLALXFGPezsQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=UgGUw6Bj;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 507A46B00D2
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:36:45 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B2F81C000F
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:36:45 +0000 (UTC)
+X-FDA: 84716380770.21.D5C9495
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2C3751C0009
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:36:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eHaa+KAB;
+	spf=pass (imf18.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777581091;
+	s=arc-20220608; t=1777581403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5SkLLRBBEJdim0uzr+W128xpCHYKOeU1xiZdF4Xr45I=;
-	b=EzZpJ2FZbbHhWKzcNUoxgVL6hb99Hnw7pt8ilSATa4m19u8PDm6/V8+oUGVyvrmfToVMbQ
-	JqelTz2SjIqNiz9sogpnvMpvV4gvdlH/6HkBziOHXfk7sf9DrQYnZq/14R9aDDACbstn5X
-	mqFnQW4PGkpTT5zqO5tRnCSkHiGzRLU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=5SkLLRBBEJdim0uzr+W128xpCHYKOeU1xiZdF4Xr45I=; b=UgGUw6BjMFcx0xglkBfz1I+V91
-	/XtQZWF1wBAO9UXo7pCAnme2k9kQp+l2kkzSytN5csrmWTGLbSoXQeVSpEYMzBkf81FjsQ6S90xKg
-	Jutzez280+NHQ0UZExgWYLn37N7K3noPCg2jDoij8BAfgysMHL3WjkOvtkYAcaNSTPb+2KsL4baW4
-	w9SSaHIQyVXyIAddrmymVD8Nf4EOYALLfAFF0LxkPSC78sdmAUrm8SwN4fdza5NRXdKR8991Pflcb
-	EJOAC+KtUinh/CLlgNVszwna8oiG05ZfY0pLyB9jwDkHAxN47eulcUaCwsgjDMjfsqTtMPm6rh4us
-	JeYC0djA==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wIXuD-000000001R0-279a;
-	Thu, 30 Apr 2026 16:22:41 -0400
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com,
-	linux-mm@kvack.org,
-	david@kernel.org,
-	willy@infradead.org,
-	surenb@google.com,
-	hannes@cmpxchg.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	usama.arif@linux.dev,
-	Rik van Riel <riel@meta.com>,
-	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 42/45] mm: page_alloc: cross-MOV borrow within tainted SPBs
-Date: Thu, 30 Apr 2026 16:21:11 -0400
-Message-ID: <20260430202233.111010-43-riel@surriel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260430202233.111010-1-riel@surriel.com>
-References: <20260430202233.111010-1-riel@surriel.com>
+	bh=h7XgKHoPXsQn1bRJuoPg0uZx0GmeDlDmcffd2v4MAfo=;
+	b=SlcbtNrMx8mJn7F06b5HWFFc7ns9ONvlt+RPaz20VG4VO8S9ISjUQSy7lDEVT+fZ3yMosY
+	M/qGOp+eeGZCg0C2ihxK7tfFAm9csapZDPKIU8a9AAQYNFTQupGEoWf5VgLgaFT92wH8OW
+	CwuS4mNFZjNIuO4PfF8LwRVSu2vKJt0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eHaa+KAB;
+	spf=pass (imf18.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777581403; a=rsa-sha256;
+	cv=none;
+	b=MHDK5llW3nSe+OT5zYmPc5eke1j6nrnzt0yvawVKTVubtpU7L+zSbzFhvXhQCjkyxmJ1Sm
+	PCDYXZS7kbilwF8JEgGBJ4Ie3Ihb5yBQxxIIXDoH0eYZF36Uysico/GwZOhNEXfEmhyGfc
+	a/rXXWUPLCKxY1gMFFr9JIbZaEHVcFE=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b941cd869cso8630425ad.1
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:36:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777581402; x=1778186202; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=h7XgKHoPXsQn1bRJuoPg0uZx0GmeDlDmcffd2v4MAfo=;
+        b=eHaa+KAB0uT9DdBvZsruBQ73qJyqlFVwsYBtxIct7F+NL/I+ZFMEelRnVCHClM7COp
+         bxmE3uw1j3C46MQwZ5TXBLyZaTWIXxzhZoG/rIaYntFqTA1AMEmGSoELNpBRyysymwwP
+         xRTAkDGcfpO1JK+rvRhuRMKXOJuLZBk5GipYQU5rhHPOmJ/S+nfFMx8oI2Px4P+Xd84y
+         aVLYy8OrSzvmC8gSSfn8spo2w4BBlAeAGkwgL8AS8IGxfsd94Y+PQrkwr3h6AmxPagEA
+         Q0Gl4Nd8xIMKGFIOV+un6iEF8VVNQWiA1M+a9652vulGCX77xhUpJ9jxZEUyOCSIUziP
+         KBsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777581402; x=1778186202;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=h7XgKHoPXsQn1bRJuoPg0uZx0GmeDlDmcffd2v4MAfo=;
+        b=op9rSzySozTv15pz9y4NaiPPnzyUvgh08yo1uveJq3cYCo043CjnzbBtARx3pgB2E9
+         na6aFmzqYsmkpmOFTxDAgqfR2m9yYa4+xH5RGWrtt1RsH3McLlePN/1snLV9EsgzgEPc
+         eMMWMVVrjEIY7hPiGNszOswHzaYkMty+ETqTmASaeViTYGc5nnXMyVA1SyRImWFmbXJM
+         Nj/9ewd/TNGGuiBdUBYCUPsbPnN9oHzlZrY/rbsxXZhgvVPaHGDl6pyxxtOdfh5j6aUo
+         wDFrWVU0cHYuMobpu6OcwBLUfprAUFwZelq6FRlkqQITVjPw+sSIBewnDxtj6mxDACoK
+         +oUw==
+X-Forwarded-Encrypted: i=1; AFNElJ/tVJRKN+rzv7r1Ne50lsCCpvlgxLOVeG9pyPH5HnxOShseB+g+zLEksTzTzEgrsG8O9aIVUhTgew==@kvack.org
+X-Gm-Message-State: AOJu0Yzh0VgVxdSOjZ4y0eqssXtN51c9RHuhzSYW/JQM1O8hMJOBkJRa
+	/2YuLHmWK7jKhrqNtIDMzzLdeD3azj4BTIvJlzTbAMyzDvJrOudQNtWPNoRuPC9woA==
+X-Gm-Gg: AeBDiev9NaMf6HvTLMitS6hZb4G5eBTa42zuFRNvvE8nyTyyUQuYP/mIZQLkFRKl4Tm
+	9e1A2Nr6IWhrEizBC+9vTz2dFC8OpDGW7NKq2LwQNbsaljrLGpKnHxwEtaPCcYgox+vlhUeg5tz
+	hJXWP7313mSLreotq8MnkE6OeyXrsgSFsSdeXRfDeZcGRZnn187vrhx6Y+20L/8URB/7dXrFQGB
+	LVbTr0I7KPscSDMtsPZ4crT8uK6kIhRJ1SCsTvoyKC0J9+DtSQ7zK3T1QlATHoKiFMoR0Gb4YGe
+	p5s9hYY5vQOKxCXm90vTHJPsYWiGdEScfqKM/+LpdVHtT2EIpJsBRaAwmAHdA2JLgEC5CntduW9
+	1iBcCHEbkmBROKS5hsFNFhoXnX15wpUZm9Jjv8DZcguOIRTmAot11/zMGEPboh9o28niDQ8vpT3
+	3DOBR8+UVpFe+drvQGiQo1eVGqhDwll97R2kBjn8vgCpu0+PIuQkDN1n95HUTAnzuGd93rPlmoc
+	vkuSw==
+X-Received: by 2002:a17:902:bcc4:b0:2b2:490c:410e with SMTP id d9443c01a7336-2b9a23195femr34674875ad.7.1777581401489;
+        Thu, 30 Apr 2026 13:36:41 -0700 (PDT)
+Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9cae4a127sm5909845ad.67.2026.04.30.13.36.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 13:36:40 -0700 (PDT)
+Date: Thu, 30 Apr 2026 20:36:36 +0000
+From: David Matlack <dmatlack@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: iommu@lists.linux.dev, kexec@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Will Deacon <will@kernel.org>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v4 02/11] PCI: liveupdate: Track outgoing preserved PCI
+ devices
+Message-ID: <afO9VOckgyiiokw8@google.com>
+References: <20260423212316.3431746-1-dmatlack@google.com>
+ <20260423212316.3431746-3-dmatlack@google.com>
+ <20260428201231.GA3885809.vipinsh@google.com>
+ <CALzav=dfLtdrPhkBkGwHpDAWUBMHnbGPccwhy1__doziNVZQJQ@mail.gmail.com>
+ <20260430175916.GA13902.vipinsh@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dh1y3oa5xdoz3ww9fjzqrqky1eywj1mg
+In-Reply-To: <20260430175916.GA13902.vipinsh@google.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 77D8040006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777581091-214967
-X-HE-Meta: U2FsdGVkX1/WJ/6ElR9mnsTV27Odu5K5NBszh3Rb+kboSAsRYbq0Ax8Fw4TbbZwwNFMgX3uu4LzSrs0mGdbO66T/QBEg7cWXFf+9/xN9nKT9ADDrB8AVugUFeX53UYmKUs6VVVLOaObHSBiQyYExicuMs9KDurdNxGj4zFpCCY8D2zVuN8w+ciG65DKj1o9v34BP8UK97bv3dklOsmBSx+iyosd89UyAPof4wuxns85Fw1c8AFPgf6i0zL52mfP8MBF0lbRA4MEn4nyN/Fyq7pQpXrN+HbFLNAEsmaYHA8FBswPZHtSrt+ummM4IZ5WIF6A5z0HtQCpHejwxi0+sS4lBQJxy9bYWKgKDIGm1QV6ApREQnQwT/R9YHll8BsHkP/Qw60jD3JjA2hHT0q+K1hEUeeFvSwrXeBVOS6d7Fi6sOGLAOkXWWMR5y3aVIhFzItWby6Y25dcT5I5RpGH/4ml/RFR8jVQYVqGxh9Z0RWe/weBNAJAFrTykZEOGOMPxw1SpTXMv/l3fdGEDSsu2O6Z9UraTxZjCeySmRGyM0htX8P6qQm8YiqqORlkwRcia4UME260yhK5ZGgDdhnqwiGG1wJsXndB6Cs26azhP3KYxT+VknKpmu9mNVwJ+611/V2UeVu6wACJ5Oh+DNm4B/DW1dIcKh/b2Yr2t4qz1UXZ8/g640FItBornNUqLsCJxOj8Icj8kB0BJVqcK6en9bhXvhVTflDV/wYIgIy78tzCX+fjh4FOqYk3k4aIXduoybfIv+/3L2hEXRQKeN/iUl6Wo+LsEPJTwRqhLQuyFhLMKYEDVAEEzzpa1W+WMySMwC04IebqTaLm8P0GPI6e7iiRGM+Lx4+QDRfSME1prC1mSJmVcvOiRYCl9MWc4R8+41nJF+5clpKhfC9YSxvyX/Rnm07ZIk3ABi24EuQFni2dyH7OI2dK0RrCdGclOQ0Wnr4qEnEcnfC2xyC0wcjW
- jcIPDtQ4
- CoTiHl/F99mP6CRRq0wl/eLzwP6wxBwieVNyXbkgNloeda2/UP/XkqD/NQFjlUSdcm9Hzb/qIbYamEYcrURzdd5ONpS+chHetUcx2BuZYAZnck677ro4XhItu0cZwO/KwvUBJg7820Nw3v2eTekHE4tfY/J9b1QszcKJcZyHZTHurDHlYyBEW/OBWT9gDWy8wcPCGl9bad2vihyj8KM3KtiwE2s/4pQfbiGyHkk1uhsWu15pHOlLY9uw18XReFyDqE4/Ousmjec9qDVzHDE/z14uvm052XRbGxz+tnIa2iCI5WjN+KL6+LFcWIuE6lEeZ7alYFGHatxlzaRoA9V6+yOxK9vcJ3HrBKWqOMQq1IgReo6HjdCASViREwLE+JGeaxV+xAuh/E04BTcF/zb8i8a1myxwB5/MJOzWu
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2C3751C0009
+X-Stat-Signature: 1663iupsxsb48cbti94ry8e6tqn1rqfh
+X-HE-Tag: 1777581402-344855
+X-HE-Meta: U2FsdGVkX1/54wW+3emfOWLIC8jdW9oRzqla917aPeIVf3KGkmIWaIjTnvHDnUZVJvz/tukLhPae05jsRFDfd5dnxfQx1GAy5qeKVkSOKJ+QFUlziFNh9aBLVereCxmaoqLxOWV+ICrLDrds0EyhuZyDyTvDf+Y1/DiJuyhxsLcRwIIzHt8JtQIShcqQd8qm6BdAKRxHAZ3jV6iFrtz23EWX5x5jJcdoUvox4ZgKCKe3sLIWxaDN4ra6NuArDAJrhn1A3GIjb5coWNjXyoNpAe+zT4ewORwyJ9Kz4O+5RZnXGcWHRaKmfFT13zJ7joIKR3ij/YrCJFt6oDzFbwTwD4m+qK7VfcysIQLklXnXh8o4HX+iC7oBuEeimc7dk97LO97Vt1F6foeb4IHCIUekzNo2GYxmVhM7XcZOSRlGaohNn8xx4xgtyLkAtaZu5ntNxvaavmQLAb1sgTYOEm1RgVeQyFyYcAyQj2RzXj0ZDjekTyFPx7XWGGCMizKRCSeHIV72UOC13F0v8rGi5i2tRFz24mVNLy0WoJeMA5hCVyS6fnY3kg75nqAH2x1pkDXmxGdYFndofRelFmXasY/BQgqvvd9YbGQZoHeiF8e6ShQ2/7EFgzvvm/ktI6vFKvtpzHgTl8sioDFvy5OYvnL3wPTB9wbdAWqpcGMh1FxTtHu6Gitozhu3jjVTI/Uy7ks3ooUerSsvuKQFUxptFhlL1MlgFS2TGZ3WAZfnfMMGKEKMzkC4Fw2mkeLOfaVNvv51s9H7n9dqTGstc3/37u4khmIJyJ/7pPiHtrYztQS66p4VHCDtKjY6vC7G0c2q8LP5etxrCL7UVvSIxXHyS3mYkpc4sKsGsdbEomfKwM4wJClxxBVvDHJSOIot78n1uUb0TZu17t1kHWSFZbGbpoMM81oDzaUt+xBoCRAGepEKRGhBlMr2xvohd3cDtibv4Kl5uJmJFADGorgkeZzRBDC
+ lecbVXIU
+ E5wqmXcXN+8d+kV/ow1BcxWPjbS0hIJ/9f2P3LKH+zZSsKP2VwcREisBFj55Z0fFtEjjhuzB6VKuwe3CeDs3U62P4+hI453rzIGpOeFv6EILUsdhVywtmXy7FO61ZA8aUq+o2x99fFpp2AtPsRWEwNj79wSQxeKnUcX0T7DAX74nM1JN7woI/rQB28clDsO1ivKt2JwNIkBNI5h9NbTsRSYgjzWavCbvji/yDx5OqX8x84DZsROSS4UquHAAHydb3CpihSmfewn1DtdmsSQYkyQqkA8LQT6/1Ma5gSJcRiP8z9Xkpw7cDdu+gg17FWI18daqLIyWt3elY32J0PvtwfR/bk+XD3sGwfRkmSniKdq0N5B5Gxgb2ONs11A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,136 +145,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Rik van Riel <riel@meta.com>
+On 2026-04-30 11:25 AM, Vipin Sharma wrote:
+> On Tue, Apr 28, 2026 at 02:12:13PM -0700, David Matlack wrote:
+> > On Tue, Apr 28, 2026 at 1:20 PM Vipin Sharma <vipinsh@google.com> wrote:
+> > >
+> > > On Thu, Apr 23, 2026 at 09:23:06PM +0000, David Matlack wrote:
+> > > > +int pci_liveupdate_preserve(struct pci_dev *dev)
+> > > > +{
 
-Pass 2c (cross-non-movable borrow) is restricted to UNMOV<->RECL: it
-borrows individual buddies from the opposite non-movable migratetype's
-free list within a tainted SPB without relabeling the source pageblock.
-Movable free pages within tainted SPBs are deliberately excluded
-because long-lived non-movable content in a MOV-tagged pageblock
-blocks compaction of that pageblock.
+> > > > +     if (ser->nr_devices == ser->max_nr_devices)
+> > > > +             return -ENOSPC;
+> > > > +
+> > > > +     for (i = 0; i < ser->max_nr_devices; i++) {
+> > > > +             /*
+> > > > +              * Start searching at index ser->nr_devices. This should result
+> > > > +              * in a constant time search under expected conditions (devices
+> > > > +              * are not getting unpreserved).
+> > > > +              */
+> > > > +             int index = (ser->nr_devices + i) % ser->max_nr_devices;
+> > > > +             struct pci_dev_ser *dev_ser = &ser->devices[index];
+> > > > +
+> > > > +             if (dev_ser->refcount)
+> > > > +                     continue;
+> > > > +
+> > > > +             pci_info(dev, "Device will be preserved across next Live Update\n");
+> > > > +             ser->nr_devices++;
+> > > > +
+> > > > +             dev_ser->domain = pci_domain_nr(dev->bus);
+> > > > +             dev_ser->bdf = pci_dev_id(dev);
+> > > > +             dev_ser->refcount = 1;
+> > > > +
+> > > > +             dev->liveupdate_outgoing = dev_ser;
+> > > > +             return 0;
+> > > > +     }
+> > > > +
+> > > > +     return -ENOSPC;
+> > >
+> > > Since it is executing under a mutex, and we already failed
+> > > 'if (ser->nr_devices == ser->max_nr_devices) check above, will we ever reach
+> > > here and return -ENOSPC?
+> > 
+> > Yeah I wouldn't expect to ever reach here.
+> 
+> Will you be removing it or want to keep it just in case scenario?
 
-Under workloads that mostly free MOVABLE-tagged content into tainted
-SPBs (page-cache reclaim, anon LRU shrink), the result is a tainted
-SPB with tens to hundreds of thousands of free pages all on the MOV
-free list — invisible to non-movable demand. Pass 1 doesn't see them
-(they're not on the requesting mt's list), Pass 2/2b can't claim a
-whole pageblock when sb->nr_free == 0 (no contiguous free PB to
-relabel), and Pass 2c skips MOV. The non-movable alloc falls through
-to Pass 3 and taints a fresh clean SPB even though the existing
-tainted ones have plenty of unused space.
-
-Add Pass 2d, mirroring Pass 2c semantics but borrowing from the
-MOVABLE free list within already-tainted SPBs. The borrowed page is
-used for the requesting non-movable mt for the lifetime of the
-allocation, then on free returns to the MOVABLE list (no pageblock
-relabel; same "borrow" mechanism as 2c).
-
-Tradeoff: the borrowed UNMOV/RECL content blocks compaction of its
-source pageblock until the alloc is freed. Restricted to SB_TAINTED
-so contamination is bounded to one pageblock inside an already-
-tainted SPB. The alternative — Pass 3 tainting a fresh clean SPB —
-removes a 1 GiB region from the clean pool, which is strictly worse
-for the anti-fragmentation invariant the series is built around.
-
-Skipped for movable allocs (they use Pass 4) and CMA allocs.
-
-Observable as the new SPB_ALLOC_OUTCOME_PASS_2D outcome on the
-spb_alloc_walk tracepoint. Expected effect on the live workload:
-tainted SPB count growth slows substantially; allocations that were
-previously taking the PASS_3 escape now succeed in PASS_2D.
-
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Assisted-by: Claude:claude-opus-4.7 syzkaller
----
- mm/page_alloc.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 73 insertions(+)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2f5d3ba1c0ef..af499f0a1a48 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3280,6 +3280,79 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
- 				}
- 			}
- 		}
-+
-+		/*
-+		 * Pass 2d: cross-MOV borrow within tainted SPBs.
-+		 *
-+		 * If Pass 1/2/2b/2c all failed, the next step is Pass 3
-+		 * which would taint a fresh clean SPB. Before that, try
-+		 * to borrow an individual buddy from a tainted SPB's
-+		 * MIGRATE_MOVABLE free list.
-+		 *
-+		 * Tainted SPBs accumulate large amounts of free space on
-+		 * the MOV free list (e.g. reclaimed page-cache pages
-+		 * whose pageblock tag is MOVABLE). Pass 1 cannot see
-+		 * those for non-movable allocs, Pass 2/2b cannot claim a
-+		 * whole pageblock when sb->nr_free == 0, and Pass 2c is
-+		 * restricted to UNMOV<->RECL. The result is a tainted
-+		 * SPB with tens to hundreds of thousands of free pages
-+		 * all unreachable from non-movable demand.
-+		 *
-+		 * Borrow semantics mirror Pass 2c: take a buddy from the
-+		 * MOVABLE free list without relabeling the source
-+		 * pageblock. The page is used for the requesting non-
-+		 * movable mt for the lifetime of the allocation, then on
-+		 * free returns to the MOVABLE list.
-+		 *
-+		 * Cost: the borrowed UNMOV/RECL content blocks
-+		 * compaction of its source pageblock until freed.
-+		 * Restricted to SB_TAINTED so the contamination is
-+		 * bounded to an already-tainted SPB; the alternative
-+		 * (Pass 3) taints a fresh clean SPB and removes a 1 GiB
-+		 * region from the clean pool, which is strictly worse.
-+		 *
-+		 * Skipped for movable allocs (they have Pass 4) and for
-+		 * CMA allocs.
-+		 */
-+		if (!movable && !is_migrate_cma(migratetype)) {
-+			for (full = SB_FULL; full < __NR_SB_FULLNESS; full++) {
-+				list_for_each_entry(sb,
-+					&zone->spb_lists[SB_TAINTED][full], list) {
-+					int co;
-+
-+					if (!sb->nr_free_pages)
-+						continue;
-+					for (co = min_t(int, pageblock_order - 1,
-+							NR_PAGE_ORDERS - 1);
-+					     co >= (int)order;
-+					     --co) {
-+						current_order = co;
-+						area = &sb->free_area[current_order];
-+						page = get_page_from_free_area(
-+							area, MIGRATE_MOVABLE);
-+						if (!page)
-+							continue;
-+						if (get_pageblock_isolate(page))
-+							continue;
-+						if (is_migrate_cma(
-+						    get_pageblock_migratetype(page)))
-+							continue;
-+						page_del_and_expand(zone, page,
-+							order, current_order,
-+							MIGRATE_MOVABLE);
-+						__spb_set_has_type(page,
-+							migratetype);
-+						if (spb_below_shrink_high_water(sb))
-+							queue_spb_slab_shrink(zone);
-+						trace_mm_page_alloc_zone_locked(
-+							page, order, migratetype,
-+							pcp_allowed_order(order) &&
-+							migratetype < MIGRATE_PCPTYPES);
-+						return page;
-+					}
-+				}
-+			}
-+		}
- 	}
- 
- 	/*
--- 
-2.52.0
-
+I'm not sure how I would remove it. The code doesn't not compile without
+a return.
 
