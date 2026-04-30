@@ -4,134 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B81A3FF886F
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 05:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CEDACD1297
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 05:53:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 166646B0088; Thu, 30 Apr 2026 01:18:52 -0400 (EDT)
+	id 592F26B0088; Thu, 30 Apr 2026 01:53:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 117A26B008A; Thu, 30 Apr 2026 01:18:52 -0400 (EDT)
+	id 543A26B008A; Thu, 30 Apr 2026 01:53:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 005EE6B008C; Thu, 30 Apr 2026 01:18:51 -0400 (EDT)
+	id 431FB6B008C; Thu, 30 Apr 2026 01:53:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E40556B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 01:18:51 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 886DCA044E
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:18:51 +0000 (UTC)
-X-FDA: 84714067662.26.4065AD4
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9F66FA0002
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:18:49 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jevEiTgO;
-	spf=pass (imf15.hostedemail.com: domain of lgs201920130244@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=lgs201920130244@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777526329;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3368B6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 01:53:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8397C1B96D7
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:53:16 +0000 (UTC)
+X-FDA: 84714154392.03.53256E4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BFC921C0006
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:53:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=piHvu1VH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777528394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ai9guCpibXPXFjFZdk1+jpyO2wT0iDbSyZIBVstbTwg=;
-	b=55Bp0f45n6KOhvBy5ifb1DYdzl8EF/18m3j6o4hKEV1NIYEXwJwGa/OBB3iwKhVllhbPTY
-	NWrLBlZIMrFgJ139JOJ2R6swttwuBQ7PeCXe0v/MDHrOhLrd1vRJaRC2XzZoiG+FB0wi27
-	KcRriH3VgJSmgjrtQGy3Q2tfcTQNzLo=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jevEiTgO;
-	spf=pass (imf15.hostedemail.com: domain of lgs201920130244@gmail.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=lgs201920130244@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777526329; a=rsa-sha256;
-	cv=pass;
-	b=eWqcpPq2oHgccIypaQnvG5WQgMs5fHQS/6tKk4Gn4fDtOfOG3dF8LL0y1sXbczkCJ2d2df
-	B7CP49jGUOtNWU4JHqBRfM6yyVQHvQkv9g4VIAkC74bxwtriRwY7RnIPCErZx0q9yU/TnA
-	YDoAtSJVMJ++u+oZe97UToJQfwwzjsg=
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6563f83ae9fso562910d50.1
-        for <linux-mm@kvack.org>; Wed, 29 Apr 2026 22:18:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777526328; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YgqR11xdHWhSDMZXCwQQVMOIk6RmTQ7I6C1N5Gp9dKwgMH4Q4Hejf/Sd4bsKNG6P0R
-         7iyyLQItZJ+9mDwWSE/yt7eImClGX9c9UES8Gvf4g1+L/3vqG8TYm+9stl3Z+m5dq//t
-         zIa+sv4jX7VJrK32Wxwh5SHD3R0but3ejcBKbtGGqpMKokvzewQaScPyRJyVFkWDrtrq
-         cinZUdPgwx1OUtH5AjIYRqe34v0q+xPEa7XgrEnDnnHaCeD96PaD/aiEYVia9aFtAI5c
-         acxiJqcHnDrToJaFA/cmrt+eyTk86qEKiz/Vnjc+TuH8x1+VUw2yz6Yx3BxVjf50yuyr
-         YcNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Ai9guCpibXPXFjFZdk1+jpyO2wT0iDbSyZIBVstbTwg=;
-        fh=gtYaqgy6kiaP6GmMmymIwZQukru4UVdlLkGzhskRzVM=;
-        b=eeaBtc28hx0w+1OX6B50yhHPH7VfltnOfTRc3g3riiQVY7gip6oLSfO+Z1HjVV80vI
-         jAR3zOYxCjK4SuWwkZRhKAjPFBIrnqVp+iXCWZauE/9slzbGK9xO19J+72+Z1XhUAg+4
-         1CB2udA542k7VpRb/cX+fTtaZrGqXCvl/X/7PvK0snL4sqCrh2AhfrFtrh0jGI9o5yGD
-         M+ypK/k0G94juPlj/momUR1nfGdIcy5J19ACKyVyhyk5Xvza6M/qT0R2jcweudFIgcMl
-         vWPTc0K2jJlrRwU0Pks4PuXgPJt3FTCCDxey5zPBrwqoCrc9KIPUfJLd1Q2hgMe4xGaO
-         kjdQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777526328; x=1778131128; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ai9guCpibXPXFjFZdk1+jpyO2wT0iDbSyZIBVstbTwg=;
-        b=jevEiTgO0DfObrc0P3QxzVBR1Q7eH1RGKSnp/dcHRRVaLFocLmtZzQ0Dv4aqbg5u4B
-         TCSq+HLTkKc9yatVrIkl6kYztrQjBcIx/DO/eqjH+hVI8xyXVHGRV8jeytAENoI8iR4m
-         Jvo+W0gebCgy41SPaicLVlj/MjuPd5UHyYYzvo73X0wqS/Uly1Zk5XQaXSv4BsyDWg72
-         jz/nHQXV6p57GVmZ+m2NQyiUVO5XLRXO0QfM3rtw9QcvKS/4amzKiX5ETptIkD72IXsB
-         qP5n4lcP93h8BoEvRr6Ap5hYMZN3XADCKRn6rxtWr8ItkV5BsOVdFzFAYaODJO67vMsG
-         ZX8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777526328; x=1778131128;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ai9guCpibXPXFjFZdk1+jpyO2wT0iDbSyZIBVstbTwg=;
-        b=hzZ0n1yL2KfhLoJnI0K3vwQl/M5PmFFKtJWC8WWNmeUlkPyx0K2U0O/v7gtmQiAaBT
-         NSYwWXHkjE6uyor+Ku1tkZkgRjKETSFQIRW1NHZF+qkTXau2lAxM9yCYpKYV1lD95OE+
-         rodzTFTXe62wAfTK5Iy0S1tLi10nhh6cU/cpxoPQxFOc+eTWASok5qdB/uCbXQUTS8HI
-         wyhjDbSc7ZnFENVoCyaODJXMzuBcmjZJUmyPK+u5hHurDBOto3JktuFcVtfkIFH/yAsr
-         MrAypUqEhi5++iPyIPLqKQhRGsw3hEg/fjU04dMeRF2OCo+dVLGK7Da14j92NJdTq1LR
-         4liw==
-X-Forwarded-Encrypted: i=1; AFNElJ9dqT5GvsJ/IBUf3XQXls+bxTtYLlJLTxK0Ww+jwrKaL9ychpKGy2KbNrOLjRGUedD6Zy+1KnFiMw==@kvack.org
-X-Gm-Message-State: AOJu0YyBfNiYRIJqkvQ4xwNauLrDiyg4Gi3M31zB2mfCBgS96JFQ6P/1
-	4pSwArKHJoyxANhD1KjJbZa3Ecba6Pt1NTZrRFS0wnrAD0W1QhAwr3zECLSHge+nmZBTFq1RhUK
-	phA2HveCN5SfC5WihEcAMwgW0jMUZpJU=
-X-Gm-Gg: AeBDietPqR+u9FXVUQgpLD3ed10aHWwyD5BQ7cjotT46Pa+HfgytZvzhH/55K6YG9yY
-	phSXLWHQK99DJfs/CU1vN9whMC71t9dpHfFdYka+LN0GeqOnLzi+f7X/Tk0kH939I7i7Hpqv2FW
-	dOVE1L9EPyIkX4rL+zLKJH5r889igHQPw3wXmd5HoxQGWTSK8j3gHJM2iVkowSSqIVRAuzplF5w
-	w6t/iLZmuag+5cmbb6xSPAVmADSniJsO4b8dqkej9bxk7u8NWrsnsQ6IwTaMTJu1zSUThVEWoD7
-	/mYub8OI5aGx/7qeLCM=
-X-Received: by 2002:a53:ca02:0:b0:650:2257:e085 with SMTP id
- 956f58d0204a3-65c18ddff59mr682510d50.30.1777526328567; Wed, 29 Apr 2026
- 22:18:48 -0700 (PDT)
+	bh=cEO3O+OLsQzrqvzI/DwdiPlbyqpiLEz1N3J2b+p8B4Q=;
+	b=5PyumzbyXsCuJkS0c7NbUoeaA8fgzeAlZqqU8qONk+BQusULa6PuaMxKOSOLcXxUdOJo9k
+	yNnVAc8FWJ62HOGfuPp0CzwgvP4My64wiOLPaSFcjX/fqT8VGl5iiCND9Kqy35oG3A324c
+	9jHwOu6zqVZz+gZlPtRLkno1SoZFs04=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777528394; a=rsa-sha256;
+	cv=none;
+	b=GjFMVl1VY9GtdsRryR3CSPN5IsSyRHSVAPsaT2mYtoio6vNd/QXBqd4XcbmrDyTQ6tN0dG
+	DQOiuXnH8w9A1BSExUkrOaot8/85rXxfKN2/sasuajSCdcrviPsZOQ+I0rmwmDVQx5WNEi
+	huBCpCGJ+fah0uUMJM1YX3KXlP+SCc4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=piHvu1VH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E814061143;
+	Thu, 30 Apr 2026 05:53:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05892C2BCB8;
+	Thu, 30 Apr 2026 05:53:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777528393;
+	bh=MjWOpBdaGzrb9lnmgplclBG1fnyUbOtnWd/eVcxMw9c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=piHvu1VHshGkqtmKhqphJsf1GgDUzknbuMpIJHH+xMPGtMlSpsgDhzv6pF1HcHLv0
+	 fGz7ASWFMTf24BN6CdZZ8esjt3tvvK58Au0+XqnuxruNRQ58W/8npMPAVsNRRKZhr5
+	 /PauiaQvPVcPcRsY0KygVQQY1hA/hOyrsj0Z5+CS0AeyqV7EU9HTZTPKmNOQ5YgW/k
+	 PBHWhcMBnmpwROguF+qu3xesZFHrqiwnCyBZoVtqNLY8LJ/FoaaK+L3BaY17v6YTcm
+	 t68POF3Cv5fK4iKMguiAgXWmZHR01ts96jnJgzwq290oU+KkndWp5bHFUaPs989lme
+	 J04iujk4t8uwg==
+Message-ID: <4d950326-6944-409b-b108-a4e67256857f@kernel.org>
+Date: Thu, 30 Apr 2026 07:53:05 +0200
 MIME-Version: 1.0
-References: <20260415193455.3869807-1-lgs201920130244@gmail.com> <202604300638.5ysk7jy1-lkp@intel.com>
-In-Reply-To: <202604300638.5ysk7jy1-lkp@intel.com>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Thu, 30 Apr 2026 13:18:39 +0800
-X-Gm-Features: AVHnY4KTWVjqmwRu5uzb2FBcih9ICZ6wwRPGHbQW1XPPHW286ml2iZ9APHrv-3Y
-Message-ID: <CANUHTR90BbRGDwpK398AAW5V_ZqoCcuWbmuwk7P2-HuZE3M5uQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/rtc: fix failed fallback RTC device registration handling
-To: kernel test robot <lkp@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Stas Sergeev <stsp@aknet.ru>, linux-kernel@vger.kernel.org, 
-	oe-kbuild-all@lists.linux.dev, 
-	Linux Memory Management List <linux-mm@kvack.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hotfix] mm: fix pmd_special() fallback to observe
+ huge_zero
+To: Lance Yang <lance.yang@linux.dev>, hughd@google.com
+Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, dev.jain@arm.com, liam.howlett@oracle.com,
+ ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, npache@redhat.com,
+ zhengqi.arch@bytedance.com, ryan.roberts@arm.com, surenb@google.com,
+ ziy@nvidia.com, linux-mm@kvack.org
+References: <e7cbc92b-ce9d-432a-ae5b-c8715dcd922f@kernel.org>
+ <20260429065743.67054-1-lance.yang@linux.dev>
+ <ea1453a6-14c9-4334-ac7e-2758586393b2@kernel.org>
+ <aa3937bb-7f06-4136-ba36-ce4a06acf80a@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aa3937bb-7f06-4136-ba36-ce4a06acf80a@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BFC921C0006
+X-Stat-Signature: 31d51ehmka1dd5roukuraoswjh1ze88y
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9F66FA0002
-X-Stat-Signature: 5oepx889yhix6amhtoqsgi6c8pa39hh9
-X-HE-Tag: 1777526329-343548
-X-HE-Meta: U2FsdGVkX1+2mdsnmRf2syLp28J+GHOgVAui+2rztozUnX6W1G8hwa4NKGavGSbylpJW0klZrFoBn+JUB+x589cIa0zPVMZFoWN0dF7wmvN7LR22LepLy1OMUCS8plLa/wQU6BQ89yTKk04ci+WP6mwvo7sNQVxIFN6Kn3mQmGeWI3+fAwDdZKI4ShdyWZlJRUE3NfDqNbDQvc7eJ/lo92KNNNgk7ibALAKoR7eg+oWaeaWb9ui85HYbwxcEPRxXnpBJnMYhI5D3CRyDOyHRM9cVg8MwPU0HLY1bJSceeErVB58eLJJaFkPWiS3RPJoCSTIOfcfBp/1oBvQ8J7GTwJYtDqxXIWpQiFTP6AtSGXmqO8/TxoA/bSNQy0d06Xfq/204t9TFBVCKEFP3NXEfcCVDOYvDC2kX5U96NmJM1I+vOv9YSpBiyYJavz/kfi1f56mWKdlZYwYt8UrWI6n1PsyUfIWm9SpS95HSQBKKHEbnpsB90A25rnCV+jGzcOUw09B5xCh2Rf2/rc+u7xZqovMgn1vZBdp1jwCSs/JI8czL4fob6Qu5Lc+RdQqvMnnZM+H/lyR3BTWTrgktBGV1j/GIsQ0drSNvJw0TdoKPZBrAS4eoDwQ8AcBksUw/AWpY+Tz4DcZWZZR70aYR/iPuh0tabK9X4rN33x9fL09Z3kVvuiLzxeRmmnKFvcUUmeTpc71k+tvLagkKZOlnLTIaKEXo8vmWMD56vPZUoLaKuoZgWAGCg34EaFZnKGXfjfnN4wM4jTK3nPDTqV30lU0f+ez0GRuhQ/bRKx9KQI+/AbhY32XGLJ7Y9mKEz1aKyuIVH9SpkAve/8KJx/bXGSbyqPtb1BUL+glG8OPpxKTfrmYq4o33vj8AA0mNmufus104zMU9AmS0MK7coFM6lQofw0xUw11UjgfzGS3/e2YU8+dS7YA2eXZK+mToeWTczhPxcC+cNAVEzrpugSZzo1h
- aM7O2uv+
- i/6Eog4aF3H94TEhAJcv0+sHGAwkzRGVSbaMqSsHG3d0lrdFNgLKfaHUZbVpWxj9PvCD8+jzPKthsP89eIDFnIc9fiRaRFi0b6MOUvvs+98M0wajS4YwPgZaPly8pBJ2F70igLbSoXgNrHGv0h4HBJmtP4m6TN+r5gd5KNyeP8h6avL4e3vPz13fdPJt8us00VveEhNFgWFrVTcHeGAbI2yPFdqntNo4gU/Kkf+7v4Off5gdCG4rggyzVnQbRDKEIjI0VSyOuhCyRPnCObF6E9Vz6AxsrE10HX23/yxykpWHmvPN1qqMSZdffuMGZMnkE2Q9mAdaX/k+HPR2Id+cIP+IhNbXUWUKFTTyI3w1cO/Oc3+W1Q/sQhkMYPpyR4yWGSROfFmMtZoT208tVNljecsi4829wY4Aa2rgYgHx5xx1Svj7y2gYnAkciCcXi3q6CgWJlGxkWmMAWqOthOVG1/XJpqvCnRgLIxi9vOZ628JxSHuuQtpSpQXAFxMszUxyhhToj1IQu3bJQF+aeq3hCsJy+Ozjq37C3xtEIEaXj9lR3/Mt4Hz2cdiEVobvjuVLPW6Y6
+X-HE-Tag: 1777528394-450333
+X-HE-Meta: U2FsdGVkX18OBe0vPMVklOBT4dE5aYF09DHtAy/tvzu6ZYFWZisBPzI+lAY6tceTgMlggacQFJrj/o8BAySiYyN6WS2aZ7D1iAPB2KaCGXu/fxKixfFpU92x2AW+SkENUKkOtFrnMoZDiGLUcf70GblhHuXO7ajOi/E7baf982obRHOoLHJTLRMmvd5WEw6VcVDsVJvcpQMyqy41XBMNXFwxjx9ko1T08QyK0MZHK/vynAQ3mg1kUxezyT+neoS9EugdEheh6vRjAO0o+VZl/sAqB1C7K4g2gRtJF9ZFPJySLxlevJwWGbuM5ItUXTnHvUpOfJoCBnK6HsnjUpwkfWu4wgaJljowoC8EUGqZQKJEGFc4M0nZwpgpjy8rq7bOjmoMWyNk0o2K4wxBJp/0+/fdDL6yg2779fQi52Qw7UWmxnqKNDuO4TWNdjyEUCvzRQKWxT+sxjTIEKP/6sgoWzHopzKmnziVOavJkqIqSWVLd1BxPKK0HNsy0HQVW31hXcWv1/IRxzxSst7X2zmdxVCgWv483UeBc8eXnp4XuZw++JKGS8rFNuh5wflZ5ss0j1u5rRZPU8f27NQZxSig9texi5vv2VGaCYbES7KVgrilIExwDoOewxcsQlGd9Av99+DGdFlfDuPVLTET1TSeaXo+5xl4006c1l7tmJ2PNp6l7bNW8o9HwY8sViPFhmYlavmr3VazVCEJ8ZezbHjvrplS09p262ki6fp/UwHnlTBj/xOQl3mjxG7+p9BinGPUTB7zbll0IxUOPd1IpsaC9T5M+uY330buOybCUZ/3FwAKjz484/SzV5x8XjIgBwKQEG1BGnXMLV3Uh7EHlxcB/t/2o0w7cJcatSohcGIvpjf7erry0o4Qg4lhX/6HCZRlDdq/VQYYAjkZAVYx9ur922K6ZSt36kqHbYX90eooZK6GfbO+RfNr2hziMNtwndlqNCMhsKIR/t1cJ9Lh96c
+ P6Ru01Et
+ HSh4Kf28MnYkaiQ3DNeOqC1jBsdBQ/6gseVZGVnFSUdCZf3ANeNF7fsQ6cc1eiW7Mw4pranauhRaFLBuZlGHgcwfGuqoRiVdFNXijJkwJr+bEz/uQouVgZKxPctnJIPZITWa4JNuUT+Gl0l6VWKGty5mpcGV+eQ4LVxphS6I8PcGUV6yJ+uTXJFagRSEWxi/2GPPM0v2nKKm2ThkSNKIhM+WbpzZYHN7yeGlv30RH5NEgR/QtASw1BzUtyTZfxTu/4W+4Oa6M5l6fftWsFnOdfHoXLaN64bNKAypDF5kXTbm4sy4qYXtRfAouN28TummVtvmC4OC8daSwUL4fv3JJsUTypomDnmTA3wBQsdbI2OV5Sq/OSN23NMn8fVyeGCBrbfr6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,74 +144,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 4/29/26 09:33, Lance Yang wrote:
+> 
+> 
+> On 2026/4/29 15:14, David Hildenbrand (Arm) wrote:
+>> On 4/29/26 08:57, Lance Yang wrote:
+>>>
+>>>
+>>> Right.
+>>>
+>>>
+>>> The history seems to be:
+>>>
+>>>     2025-09-13 d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge
+>>> zero folio special")
+>>>     2025-09-13 af38538801c6 ("mm/memory: factor out common code from
+>>> vm_normal_page_*()")
+>>>
+>>> After d82d09e48219, vm_normal_page_pmd() still had the explicit huge
+>>> zero check before returning the page:
+>>>
+>>> --8<---
+>>> struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+>>>                 pmd_t pmd)
+>>> {
+>>>     unsigned long pfn = pmd_pfn(pmd);
+>>>
+>>>     if (unlikely(pmd_special(pmd)))
+>>>         return NULL;
+>>>
+>>>     if (unlikely(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP))) {
+>>>         if (vma->vm_flags & VM_MIXEDMAP) {
+>>>             if (!pfn_valid(pfn))
+>>>                 return NULL;
+>>>             goto out;
+>>>         } else {
+>>>             unsigned long off;
+>>>             off = (addr - vma->vm_start) >> PAGE_SHIFT;
+>>>             if (pfn == vma->vm_pgoff + off)
+>>>                 return NULL;
+>>>             if (!is_cow_mapping(vma->vm_flags))
+>>>                 return NULL;
+>>>         }
+>>>     }
+>>>
+>>>     if (is_huge_zero_pfn(pfn))
+>>>         return NULL;
+>>>     if (unlikely(pfn > highest_memmap_pfn))
+>>>         return NULL;
+>>>
+>>>     /*
+>>>      * NOTE! We still have PageReserved() pages in the page tables.
+>>>      * eg. VDSO mappings can cause them to exist.
+>>>      */
+>>> out:
+>>>     return pfn_to_page(pfn);
+>>> }
+>>> ---
+>>>
+>>> So even if pmd_mkspecial() was a no-op and pmd_special() stayed false,
+>>> we would still return NULL there.
+>>>
+>>> Then af38538801c6 moved the PMD path into __vm_normal_page():
+>>>
+>>> ---8<---
+>>> struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+>>>                 pmd_t pmd)
+>>> {
+>>>     return __vm_normal_page(vma, addr, pmd_pfn(pmd), pmd_special(pmd),
+>>>                 pmd_val(pmd), PGTABLE_LEVEL_PMD);
+>>> }
+>>> ---
+>>>
+>>> For CONFIG_ARCH_HAS_PTE_SPECIAL=y, __vm_normal_page() only returns NULL
+>>> for the huge zero PFN if special == true. On x86 32-bit, pmd_special()
+>>> stays false, so this can now fall through to VM_WARN_ON_ONCE():
+>>>
+>>> ---8<---
+>>>     if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
+>>>         if (unlikely(special)) {
+>>>             if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
+>>>                 return NULL;
+>>> ...
+>>>         }
+>>> ...
+>>>     } else {
+>>> ...
+>>>         if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
+>>>             return NULL;
+>>>     }
+>>>
+>>> ...
+>>>     VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn));
+>>> ...
+>>> ---
+>>>
+>>> So my guess is that the warning above became possible after
+>>> af38538801c6, IIUC.
+>>
+>> Yes, I think you are right about af38538801c6.
+>>
+>> What about the following then as a temporary solution:
+> 
+> Nice, that works for me :)
 
-Please drop this patch.
+Okay, I'd say we do the following:
 
-On Thu, 30 Apr 2026 at 06:41, kernel test robot <lkp@intel.com> wrote:
->
-> Hi Guangshuo,
->
-> kernel test robot noticed the following build errors:
->
-> [auto build test ERROR on tip/master]
-> [also build test ERROR on linus/master v7.1-rc1 next-20260429]
-> [cannot apply to tip/auto-latest tip/x86/core bp/for-next]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Guangshuo-Li/x86-rtc-fix-failed-fallback-RTC-device-registration-handling/20260416-130623
-> base:   tip/master
-> patch link:    https://lore.kernel.org/r/20260415193455.3869807-1-lgs201920130244%40gmail.com
-> patch subject: [PATCH] x86/rtc: fix failed fallback RTC device registration handling
-> config: i386-allnoconfig (https://download.01.org/0day-ci/archive/20260430/202604300638.5ysk7jy1-lkp@intel.com/config)
-> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604300638.5ysk7jy1-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202604300638.5ysk7jy1-lkp@intel.com/
->
-> All errors (new ones prefixed by >>):
->
->    arch/x86/kernel/rtc.c: In function 'add_rtc_cmos':
-> >> arch/x86/kernel/rtc.c:142:9: error: 'ret' undeclared (first use in this function); did you mean 'net'?
->      142 |         ret = platform_device_register(&rtc_device);
->          |         ^~~
->          |         net
->    arch/x86/kernel/rtc.c:142:9: note: each undeclared identifier is reported only once for each function it appears in
->
->
-> vim +142 arch/x86/kernel/rtc.c
->
->    133
->    134  static __init int add_rtc_cmos(void)
->    135  {
->    136          if (cmos_rtc_platform_device_present)
->    137                  return 0;
->    138
->    139          if (!x86_platform.legacy.rtc)
->    140                  return -ENODEV;
->    141
->  > 142          ret = platform_device_register(&rtc_device);
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+From fd9ead548f102f7c257980ccc7b96cce7e42a570 Mon Sep 17 00:00:00 2001
+From: Hugh Dickins <hughd@google.com>
+Date: Thu, 30 Apr 2026 07:35:31 +0200
+Subject: [PATCH] mm: fix pmd_special() fallback to observe huge_zero
 
-After re-checking the code, rtc_device is a static platform_device and it
-does not provide a dev.release callback. Therefore calling
-platform_device_put() on the platform_device_register() failure path is
-not appropriate here and can trigger the missing release callback warning.
+On x86 32-bit with THP enabled, zap_huge_pmd() is seen to generate a
+"WARNING: mm/memory.c:735 at __vm_normal_page+0x6a/0x7d", from the
+VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn)); followed
+by "BUG: Bad rss-counter state"s, then later "BUG: Bad page state"s
+when reclaim gets to call shrink_huge_zero_folio_scan().
 
-The build failure reported by the kernel test robot is only due to the
-missing ret declaration, but the patch itself is not correct because of
-the static platform_device lifetime issue.
+It's as if the _PAGE_SPECIAL bit never got set in the huge_zero pmd:
+and indeed, whereas pte_special() and pte_mkspecial() are subject to a
+dedicated CONFIG_ARCH_HAS_PTE_SPECIAL, pmd_special() and pmd_mkspecial()
+are subject to CONFIG_ARCH_SUPPORTS_PMD_PFNMAP, which is never enabled
+on any 32-bit architecture.
 
-Sorry for the noise.
+While the problem was exposed through d80a9cb1a64a ("mm/huge_memory: add
+and use normal_or_softleaf_folio_pmd()"), it was an oversight in
+af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
+and would result in other problems:
+* huge zero folio accounted in smaps, pagemap (PAGE_IS_FILE) and
+  numamaps as file-backed THP
+* folio_walk_start() returning the folio even without FW_ZEROPAGE set.
+  Callers seem to tolerate that, though.
 
-Thanks,
-Guangshuo
+... and triggering the VM_WARN_ON_ONE(), although never reported so far.
+
+To fix it, teach vm_normal_page_pmd()/vm_normal_page_pud() whether
+pmd_special/pud_special is actually implemented.
+
+Fixes: af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
+Signed-off-by: Hugh Dickins <hughd@google.com>>
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/memory.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 7322a40e73b9..a60bc07b48b2 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -612,6 +612,21 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+ 	dump_stack();
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
+ }
++
++static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
++{
++	switch (level) {
++	case PGTABLE_LEVEL_PTE:
++		return IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL);
++	case PGTABLE_LEVEL_PMD:
++		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP);
++	case PGTABLE_LEVEL_PUD:
++		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP);
++	default:
++		return false;
++	}
++}
++
+ #define print_bad_pte(vma, addr, pte, page) \
+ 	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
+ 
+@@ -684,7 +699,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ 		unsigned long addr, unsigned long pfn, bool special,
+ 		unsigned long long entry, enum pgtable_level level)
+ {
+-	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
++	if (pgtable_level_has_pxx_special(level)) {
+ 		if (unlikely(special)) {
+ #ifdef CONFIG_FIND_NORMAL_PAGE
+ 			if (vma->vm_ops && vma->vm_ops->find_normal_page)
+-- 
+2.43.0
+
+
+
+-- 
+Cheers,
+
+David
 
