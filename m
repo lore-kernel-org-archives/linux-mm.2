@@ -4,101 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B7DCD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 06:37:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64544FF886F
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 06:47:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A3EC6B0088; Thu, 30 Apr 2026 02:37:23 -0400 (EDT)
+	id 6F3F36B0088; Thu, 30 Apr 2026 02:47:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 954F56B008A; Thu, 30 Apr 2026 02:37:23 -0400 (EDT)
+	id 6A4826B008A; Thu, 30 Apr 2026 02:47:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 842F26B008C; Thu, 30 Apr 2026 02:37:23 -0400 (EDT)
+	id 5B9D86B008C; Thu, 30 Apr 2026 02:47:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F0536B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 02:37:23 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1792B4049E
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 06:37:23 +0000 (UTC)
-X-FDA: 84714265566.03.3C243F1
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3474740002
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 06:37:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of maobibo@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=maobibo@loongson.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BD8C6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 02:47:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E7F01140401
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 06:47:26 +0000 (UTC)
+X-FDA: 84714290892.13.03DF4CB
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D14A31C0005
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 06:47:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YEKGo+al;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777531041;
+	s=arc-20220608; t=1777531645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6P4EJXVMSINavezQ4yJUJNQkbaSL8TRjRPQil8x4S+4=;
-	b=rZ+Cp1lxsqYLZQP0RYSKt8ywU+5dPzRagO/hhqRL5W091+BZiV41cvYcMgvfbZr+vaJ80W
-	OxRf3qYoUR8QeH9LzI8KM/LUlxAIcuOWjBNjejhDy6cAG3d3xeqF6aEw0z9ik3Qj5OKBrh
-	G2ElwZuhyFt3GOXBiWINbjxsLhfZYHM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777531041; a=rsa-sha256;
-	cv=none;
-	b=AyNydOU1KA2/O4MeOodtiFNIZgPFmJSYhnPwCb5GFP2BCLljOT7UrvkmSflJZ3AhNURpdw
-	cyi8FsnuMbGNuk3igXN365uzUCRc3zhl1rSX5sBMtgZVLSOarJZ5oFEbE61Onh/s0MGOI2
-	w16BzEtpGHgwayAiJWJgkXMlR39uAUQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fFYELBEUS3uPsTbb7PVX2xjkT/NGP+Q0yACp8mSnVi4=;
+	b=m8l2Q6dlgh7V/bY94dibzS0qanDEhWKCTymCOsD2LsaR670SmMa2gG5KSuNT7d86vk2s5+
+	X52eLOEAQmPWUDaofJJjR5TOV/pDbmmejbTgw2Jd84YJgfg8YRG0v6ZK8CTntbcTtxfEUi
+	8sRyZMpl4Ae+/EhO7rowGBeSFE9Osa4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of maobibo@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=maobibo@loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8DxsOqc+PJpx2cFAA--.18461S3;
-	Thu, 30 Apr 2026 14:37:16 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBx78KZ+PJpue53AA--.32324S3;
-	Thu, 30 Apr 2026 14:37:13 +0800 (CST)
-Subject: Re: [PATCH] mm/huge_memory: skip huge_zero_pmd in
- zap_huge_pmd_folio()
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260430041121.2839350-1-maobibo@loongson.cn>
- <20260430042834.80895-1-lance.yang@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <e3f542dd-f22b-fc8c-b376-72ab5909b6c8@loongson.cn>
-Date: Thu, 30 Apr 2026 14:34:20 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YEKGo+al;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777531645; a=rsa-sha256;
+	cv=none;
+	b=P9eiW0ePsyhfLK8rAcZQ4S+3jS7mfhB04tL+4pOFmUH0Htc/XUQ4om34tUf4RtnK4kSGC5
+	HeDSSGwlijZVeTISC4Vh1tNMybyodugopFPxY1KMCIVuUaJesYbfbZvhsGpzvc9InuDZQi
+	c2tAzGreCRbkfBKTRMeFBdtPXLUdEC0=
+Message-ID: <d6ff6b1f-8247-4265-b998-bd99283685ef@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777531642;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fFYELBEUS3uPsTbb7PVX2xjkT/NGP+Q0yACp8mSnVi4=;
+	b=YEKGo+al8lqEhUvs4ZLCLYudOJIpPmmA2MtEHDom5QlHbCuz+V+rQndEcVgyp83Ec7QalR
+	8UF7fZmmNkL1GSot1qMsUEOgCR+mOpuofjeAi6h4hx695hvmORWsPI9mBR4vveX+Z1xH7/
+	EX12JsfhwO2ADyHDMr1Pmie9B/2xR5g=
+Date: Thu, 30 Apr 2026 14:46:43 +0800
 MIME-Version: 1.0
-In-Reply-To: <20260430042834.80895-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Subject: Re: [PATCH hotfix] mm: fix pmd_special() fallback to observe
+ huge_zero
+To: "David Hildenbrand (Arm)" <david@kernel.org>, hughd@google.com
+Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, dev.jain@arm.com, liam.howlett@oracle.com,
+ ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, npache@redhat.com,
+ zhengqi.arch@bytedance.com, ryan.roberts@arm.com, surenb@google.com,
+ ziy@nvidia.com, linux-mm@kvack.org
+References: <e7cbc92b-ce9d-432a-ae5b-c8715dcd922f@kernel.org>
+ <20260429065743.67054-1-lance.yang@linux.dev>
+ <ea1453a6-14c9-4334-ac7e-2758586393b2@kernel.org>
+ <aa3937bb-7f06-4136-ba36-ce4a06acf80a@linux.dev>
+ <4d950326-6944-409b-b108-a4e67256857f@kernel.org>
 Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <4d950326-6944-409b-b108-a4e67256857f@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBx78KZ+PJpue53AA--.32324S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7uF1xXr43Ar1xAw43GF47ZFc_yoW8uw47pF
-	ykGF1qkw48Kr97G3WxZa1DXa4Fywn2vFyrWryayr40vFn8t34j9rs7GrWjk34Igr4rGF4S
-	vFZFvFWvvasIq3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
-	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
-	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
-	rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8Zw
-	CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
-	67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
-	0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU70Pf
-	DUUUU
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D14A31C0005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3474740002
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 5potx89dx7giayacfsfwnp6hb7x1w376
-X-HE-Tag: 1777531039-258103
-X-HE-Meta: U2FsdGVkX18z5oMEeE0lzdqlsqfeuf/UwqLBmp8Nk5l+kCWjt+fR8ClnZPos/vwHKJ+0GrvGVjQ53cH4jnH88kozHlMm90OssruEBTsWs60ngSqLE+oVqmdfoPMK3uFo9yGeGW5TqRStW6sCu4959FrwnSz/8jpOCvoRNSEOgZEf8nBVdOieVf4HEu27rWb18MDw3r9H7+FLCLO9v7yvmHesFQ+2qVq4z6XcgGdKdntN8qOutT8t0dMGYHCD+Vd3L1FkFMI5TOhEEj8rHAPu7XKFznal1hsYKZNDLXYkukC5qhvHTvxgPgYIDonLvxHV3IGaBYeQttZ45JQu6qunQ6fqn9qcq8/VaGmUXBPGsGvsErC1QRaRATz/F2ToDyVZFJub7sssbHkfNXCyXOND5fLtrLl5UWW7qAtX0P20bM3EuoenuYIxQH99I4gdy1Uho9ROtGJZroie25/TQgG+GCPxxRVmsoogh8mBbltVDNAzBI6ef9PtD62+hYwBV0acK5OaFLw5eS5e8IR5iabrSkYxqPZ1+PHPSXEabddS4yjFq6repkOtp/WS64CKkubfSPMSdKbt2HjtkdiJ9mhiMNCJBHOtVozF9NplYfIitjvTPPh9R3ITEFPkL9bzlXme9PkHGhEyKpqbbtoXemR4jKwu7foY2sKb3mSTuFiRupKDjVFRRx3WXxYNoh4rA34uMfdjY4ZVjoCXSG3oB9ErOsDpxxc++z2s6y9ulWLr6ygYav3fcmAGtWJkjmpMCzDthVXwhHbeRfvdUWauJU7L493EM9bzMXoonLnKtFiTkIXP3V5TEClSwNBMA6N6pezl07YJ2AII3IBZQiYXhiXKwfNEX+Mhzsghktm4kqV2BNesC2heGaL2x8foEcQcNC3giOl0TWuE8mbgpyGNpE1tXAVHkbc/L/0BwEGlBBkQbLMaMhccM+IrzWh7xm+RHuy6BkgsCRLsqBP5lNMMyVb
- FImq1G0u
- KxwY6pl6ywYlzaRryi3IztJrp7yGF18ytgOJ+RWgJCCU8HY2nY3x34ZRiHeogOz/4vQpzWGkffkxe0zMF+Go3jXHdj4txJ4504+DKwfNZQ63jjdjsUkeJ2FKNiX9wmQjFzy7e
+X-Stat-Signature: kqz6tfud8u3e6pbz3ufzbad79yhm6zrr
+X-HE-Tag: 1777531644-547832
+X-HE-Meta: U2FsdGVkX1/22SI7s3x2ZCw6OroOVHuZ4392OFi8lu8EleY/4ttFC39L6QrsvArKSt1hTQ7lmjhUZctTpOrRGX2vF9GjyFlpZA77lIL+TwUKqjYhwRnz8tAoGAKKjTI+wcsXIr4/eWt9zHZo0+rBXR5NlKVKoHG8IFhmtLS75eTZ/SnI5OmJ5PqLTo4t2U4GMHIkY5/UJ1x9Lfj4A2dk36nL0irEbZEZkd++7P2HGlcvzAJJU336qH//IM+rPHMi58L21oyOhsOj9NW6Z4xppXpMwheZnUz+tctaLE62qd5dhHoRnG4ZInhpSrGifrAiUNi8xWRYCJNfdRPhaxjVrkePnZot4pbYvy/kx7MCa2kt+rvnx+e5qKJEsIN5bbVY99ptPrFIVTKqtlcP/+pCZPuFe2oK6m20ON6MLiBTVo29JmIOkpxMiteYFPW24XP3b+2vZ9AYz6wu9ZtlaWg3pQ4iqdbO+B29Zz6ZjwcAPmLj2ay8/aTmlbP4PZkhvCi4obRtW35N40iD0FCezn7s307oxQeppFrqrl0DQCza045hRT7g/1GhNGARsbqYsKWADrLOb00/kA169BTLrtM4dqJcnYCBpRXuTpqUrRWKiscj+B7zSr77e/rNOsJ+v+30UjK8tfePqzLA7uurYwQbMg1WqoCfXpqZsvqqFVmVlXVtmdBKKUWccekyc8q89OX/r9FMlxGb2nLY+HqbgzlSvkkbhzLgNdkHrxLK243zW81tJSoDOFdAJH1+F67Nx05YNNpgHv3kYVtb6Qw5AR9GQzAP/FwAwtC5mn94j0TS8UvHzUXIOhqledrZg4IAaim1OO+4EGI+3/GSygQNYpsnf/IdofYdoDg7BtD+QRQqtuWL8vAzSzmHNNk1lZGrnf5eFLPWGjCJU21KOGPbS/RIxkZjJd6b5CwfRdWtTSalah3lv25R+aO1R0eLuSYv4o7LVjsA0LqptFFl+QsKWVU
+ KVkfs6AW
+ xdq/DOlnSbWzd5cQZNkLvl7bhEL/xA2Dyh0Fx7ED+EL6JBzr4yu7dfEYdbeU0KgQ7SJ/dBE/kDf3yePEtXSUuD1Knz4O8ZMSvM0dWt2yYQGDZ2xuea2yJY/nxrVGfbqqUaL+x/fFGvFthSbR47H52AuhEF5V9pOjkl6c3NdCeJmHCS74WPYhubeKXS//u2aYAbo2EBV5XPYQlCP9IQyt3KKnasmWFwQ4wNfiF+BUeJSnfFIMoR9KQwUIjKIwvDAv7AbFoAAv+jTOEH7aBKXO9YaXeqUPaKFksvyQJrN3GEiea4uDvqoI2R21kOW+h2oU8CZ7VF5b/dToxkOw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,64 +99,193 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/4/30 下午12:28, Lance Yang wrote:
-> 
-> On Thu, Apr 30, 2026 at 12:11:20PM +0800, Bibo Mao wrote:
->> when executing command "make check" with qemu software, there is
->> error report like this:
->> BUG: Bad rss-counter state mm:00000000972846bc type:MM_FILEPAGES val:-4096 Comm:bios-tables-tes Pid:27802
->> BUG: Bad rss-counter state mm:00000000752180c5 type:MM_FILEPAGES val:-2048 Comm:worker Pid:27815
->> BUG: Bad rss-counter state mm:000000009c2f6a61 type:MM_FILEPAGES val:-2048 Comm:qom-test Pid:27825
-> 
-> Good catch!
-> 
->> The problem is that when application exits, rss counter is calculated
->> with huge_zero_pmd huge page, instead it should be skipped.
-> 
-> Looks like the same problem[1] we discussed recently.
-> 
-> [1] https://lore.kernel.org/linux-mm/74a75b59-2e13-3985-ee99-d5521f39df2a@google.com/
-> 
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->> mm/huge_memory.c | 3 +++
->> 1 file changed, 3 insertions(+)
+On 2026/4/30 13:53, David Hildenbrand (Arm) wrote:
+> On 4/29/26 09:33, Lance Yang wrote:
 >>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 970e077019b7..3cbea344d4a2 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -2423,6 +2423,9 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
->> {
->> 	const bool is_device_private = folio_is_device_private(folio);
 >>
->> +	if (is_huge_zero_pmd(pmdval))
->> +		return;
->> +
+>> On 2026/4/29 15:14, David Hildenbrand (Arm) wrote:
+>>> On 4/29/26 08:57, Lance Yang wrote:
+>>>>
+>>>>
+>>>> Right.
+>>>>
+>>>>
+>>>> The history seems to be:
+>>>>
+>>>>      2025-09-13 d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge
+>>>> zero folio special")
+>>>>      2025-09-13 af38538801c6 ("mm/memory: factor out common code from
+>>>> vm_normal_page_*()")
+>>>>
+>>>> After d82d09e48219, vm_normal_page_pmd() still had the explicit huge
+>>>> zero check before returning the page:
+>>>>
+>>>> --8<---
+>>>> struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+>>>>                  pmd_t pmd)
+>>>> {
+>>>>      unsigned long pfn = pmd_pfn(pmd);
+>>>>
+>>>>      if (unlikely(pmd_special(pmd)))
+>>>>          return NULL;
+>>>>
+>>>>      if (unlikely(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP))) {
+>>>>          if (vma->vm_flags & VM_MIXEDMAP) {
+>>>>              if (!pfn_valid(pfn))
+>>>>                  return NULL;
+>>>>              goto out;
+>>>>          } else {
+>>>>              unsigned long off;
+>>>>              off = (addr - vma->vm_start) >> PAGE_SHIFT;
+>>>>              if (pfn == vma->vm_pgoff + off)
+>>>>                  return NULL;
+>>>>              if (!is_cow_mapping(vma->vm_flags))
+>>>>                  return NULL;
+>>>>          }
+>>>>      }
+>>>>
+>>>>      if (is_huge_zero_pfn(pfn))
+>>>>          return NULL;
+>>>>      if (unlikely(pfn > highest_memmap_pfn))
+>>>>          return NULL;
+>>>>
+>>>>      /*
+>>>>       * NOTE! We still have PageReserved() pages in the page tables.
+>>>>       * eg. VDSO mappings can cause them to exist.
+>>>>       */
+>>>> out:
+>>>>      return pfn_to_page(pfn);
+>>>> }
+>>>> ---
+>>>>
+>>>> So even if pmd_mkspecial() was a no-op and pmd_special() stayed false,
+>>>> we would still return NULL there.
+>>>>
+>>>> Then af38538801c6 moved the PMD path into __vm_normal_page():
+>>>>
+>>>> ---8<---
+>>>> struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+>>>>                  pmd_t pmd)
+>>>> {
+>>>>      return __vm_normal_page(vma, addr, pmd_pfn(pmd), pmd_special(pmd),
+>>>>                  pmd_val(pmd), PGTABLE_LEVEL_PMD);
+>>>> }
+>>>> ---
+>>>>
+>>>> For CONFIG_ARCH_HAS_PTE_SPECIAL=y, __vm_normal_page() only returns NULL
+>>>> for the huge zero PFN if special == true. On x86 32-bit, pmd_special()
+>>>> stays false, so this can now fall through to VM_WARN_ON_ONCE():
+>>>>
+>>>> ---8<---
+>>>>      if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
+>>>>          if (unlikely(special)) {
+>>>>              if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
+>>>>                  return NULL;
+>>>> ...
+>>>>          }
+>>>> ...
+>>>>      } else {
+>>>> ...
+>>>>          if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
+>>>>              return NULL;
+>>>>      }
+>>>>
+>>>> ...
+>>>>      VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn));
+>>>> ...
+>>>> ---
+>>>>
+>>>> So my guess is that the warning above became possible after
+>>>> af38538801c6, IIUC.
+>>>
+>>> Yes, I think you are right about af38538801c6.
+>>>
+>>> What about the following then as a temporary solution:
+>>
+>> Nice, that works for me :)
 > 
-> The huge zero PMD should not be returned by vm_normal_page_pmd() or
-> vm_normal_folio_pmd() as a normal folio. If it reaches
-> zap_huge_pmd_folio(), we already made the wrong normal-vs-special
-> decision ...
+> Okay, I'd say we do the following:
 > 
-> So I don't think we should special-case it in zap_huge_pmd_folio(). That
-> only avoids this RSS decrement :)
+>  From fd9ead548f102f7c257980ccc7b96cce7e42a570 Mon Sep 17 00:00:00 2001
+> From: Hugh Dickins <hughd@google.com>
+> Date: Thu, 30 Apr 2026 07:35:31 +0200
+> Subject: [PATCH] mm: fix pmd_special() fallback to observe huge_zero
 > 
-> Could you please check whether the fix[2] also fixes your QEMU test?
+> On x86 32-bit with THP enabled, zap_huge_pmd() is seen to generate a
+> "WARNING: mm/memory.c:735 at __vm_normal_page+0x6a/0x7d", from the
+> VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn)); followed
+> by "BUG: Bad rss-counter state"s, then later "BUG: Bad page state"s
+> when reclaim gets to call shrink_huge_zero_folio_scan().
 > 
-> [2] https://lore.kernel.org/linux-mm/ea1453a6-14c9-4334-ac7e-2758586393b2@kernel.org/
-yes, I think it will solve this problem.
+> It's as if the _PAGE_SPECIAL bit never got set in the huge_zero pmd:
+> and indeed, whereas pte_special() and pte_mkspecial() are subject to a
+> dedicated CONFIG_ARCH_HAS_PTE_SPECIAL, pmd_special() and pmd_mkspecial()
+> are subject to CONFIG_ARCH_SUPPORTS_PMD_PFNMAP, which is never enabled
+> on any 32-bit architecture.
+> 
+> While the problem was exposed through d80a9cb1a64a ("mm/huge_memory: add
+> and use normal_or_softleaf_folio_pmd()"), it was an oversight in
+> af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
+> and would result in other problems:
+> * huge zero folio accounted in smaps, pagemap (PAGE_IS_FILE) and
+>    numamaps as file-backed THP
+> * folio_walk_start() returning the folio even without FW_ZEROPAGE set.
+>    Callers seem to tolerate that, though.
+> 
+> ... and triggering the VM_WARN_ON_ONE(), although never reported so far.
+> 
+> To fix it, teach vm_normal_page_pmd()/vm_normal_page_pud() whether
+> pmd_special/pud_special is actually implemented.
+> 
+> Fixes: af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
+> Signed-off-by: Hugh Dickins <hughd@google.com>>
+> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
 
-Only that I think that there should be tlb flush operation after 
-pmdp_huge_get_and_clear_full() even with huge_zero_pmd page, so 
-tlb_remove_page_size() should be called. Is that right?
+Thanks, LGTM! Feel free to add:
 
-Regards
-Bibo Mao
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
+Cheers, Lance
 
+>   mm/memory.c | 17 ++++++++++++++++-
+>   1 file changed, 16 insertions(+), 1 deletion(-)
 > 
-> Thanks, Lance
-> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 7322a40e73b9..a60bc07b48b2 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -612,6 +612,21 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+>   	dump_stack();
+>   	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
+>   }
+> +
+> +static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
+> +{
+> +	switch (level) {
+> +	case PGTABLE_LEVEL_PTE:
+> +		return IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL);
+> +	case PGTABLE_LEVEL_PMD:
+> +		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP);
+> +	case PGTABLE_LEVEL_PUD:
+> +		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP);
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+>   #define print_bad_pte(vma, addr, pte, page) \
+>   	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
+>   
+> @@ -684,7 +699,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+>   		unsigned long addr, unsigned long pfn, bool special,
+>   		unsigned long long entry, enum pgtable_level level)
+>   {
+> -	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
+> +	if (pgtable_level_has_pxx_special(level)) {
+>   		if (unlikely(special)) {
+>   #ifdef CONFIG_FIND_NORMAL_PAGE
+>   			if (vma->vm_ops && vma->vm_ops->find_normal_page)
 
 
