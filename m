@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F623CD13DA
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:23:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB41CCD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:23:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68BC66B0099; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
+	id A5D7B6B009D; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63ABD6B0096; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
+	id 973316B009F; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D6D36B0096; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
+	id 6657F6B0098; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 221E46B0096
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 397B56B0099
 	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:22:58 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C25821A01BD
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 04CDB1A0142
 	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:22:57 +0000 (UTC)
-X-FDA: 84716345994.06.7A607B7
+X-FDA: 84716346036.25.EE46732
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 21EB218000A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:22:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=P11XhRCO;
-	spf=pass (imf24.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 57AB2140004
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:22:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=S0tTfhhq;
+	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1777580576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oDRktvTM/qypK4RLJHwBR8Udqq/qtl1o5oc/hIDnT74=;
-	b=sP9gfsC5O/z1jJAg1Mv7PRNhUUaA8fO3Vp3GKyG1vEOKQ2sjbKwFg5/ZXSo4EevIZkxkCN
-	dBJLU2wknbJYAZyWwAcJf8xi9Ha5td43/QrzOwEfLgW6eFIDvWIfzWg2iJ6G3F4QyXjw+z
-	8nI53FeFvwADprO2yqnqZeX/Og1NMog=
+	bh=IXh5ZvP6dVP8BqXhtS/Fexk+RZAZUZTT8D7jz6e5LRI=;
+	b=GSGFOYXfeL708/aCo7OAREQLzrbu+jhD6s906vqajzSYTlwYCDBEHUXmVopqAUL14Sd/dC
+	bu9ydsctQXREFX54yLjzGuCH471Mr4bdJMRIEOQ5hgvV7s7DzRdjgonNqivkVkN+RQmySC
+	yMW84mPI7CnP5MajL5LN31bu8Aa9ScM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=P11XhRCO;
-	spf=pass (imf24.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=S0tTfhhq;
+	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777580576; a=rsa-sha256;
 	cv=none;
-	b=qp7fmH66j/1jcUUNpoHLK3e55cYQK4PJsVQBPA69XE2XCwbsCCvDkCWJcnOvAxBgxExoj8
-	ISm6z9oyoTeWoAG24bie8lLIBd1tOQDZ/sH9Tog9VfRj3iOzAaWlmfcwFe8VO/l+n5tCer
-	cvSXohSpWYn5039N/+C0A4t9kArEqz0=
+	b=HOEDC+dGrPiFu2Q2Bw455M4ni+0h3Y+YMNjvWzGEL6qZ8bklHyEnzs3uc43fRC83xALjhj
+	OhSejIY1SLqbGsljCGpe5DR0AaBeaV/Y2tQEtYz+Tf/cwzYoG5g1h7x4vUpdLl9DTfFt6g
+	julBuwWt1PiYI93lBs1fgE5cQRG+UZw=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=oDRktvTM/qypK4RLJHwBR8Udqq/qtl1o5oc/hIDnT74=; b=P11XhRCOE5PnDPaG5xTDFtCSFh
-	DlZx/vQn4T28j3eKgm1TYWaS+Jp28QpC9w7hcFG0m+A5eL7rvwaODim1CcIazRWdHAomkKnBJgpqr
-	WEDsSiRPOd9TuqutVv/tI5zRwe/zK00DsnR0XRzbDg7au8UYJsn9o7t8XUeqxRfMr8NrHgo0p48Mi
-	7locO8kyZjTakSwPWsLJwGjdnEG3Xnype7eW2qHMfPlajrRE5osTrkQXxvEugX4oRndQFrDeLF+zF
-	ZwuYBss6mqIUHRnavvLr3F2h3czrWKUVZWJQnq/A8wnhDy50XrA73snPFT/HOgZz/pvpC8yWXLiJv
-	cxjOGezg==;
+	bh=IXh5ZvP6dVP8BqXhtS/Fexk+RZAZUZTT8D7jz6e5LRI=; b=S0tTfhhqAgCt2WFehsBw07QggW
+	yT8CYNUStmN8Gx/IERPm7MgxUwIrj/F1tyaYPeaei07jAhrfMNkaqMWhklgsZ96kuSbjcsoxWxQY2
+	zWTslGIGGhmHskPnUL+k/6+ICjN8d2hjvnBX4nS3mHrWaBLUzCYCChZ+XrpYaXlIc4WXTZEJ15kwF
+	aZCuJCilPFSSM2XmjOKzYyZoQQ3ATEGKLVCEjK4ZwqIpmBx0MefkBP/MLDeB3FQZIY5qgSzwzXPms
+	/KpMtOGxpgn9ZcCiWQXRYLvJ6a4FotP/miOLUAlcmxGAzjsZNY7viTiY/RIbkb34yNxGFbBrMAHQp
+	I4jyGF7w==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wIXuC-000000001R0-39ZE;
+	id 1wIXuC-000000001R0-2mAC;
 	Thu, 30 Apr 2026 16:22:40 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -80,23 +79,22 @@ Cc: kernel-team@meta.com,
 	usama.arif@linux.dev,
 	Rik van Riel <riel@meta.com>,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 14/45] mm: page_alloc: extract claim_whole_block from try_to_claim_block
-Date: Thu, 30 Apr 2026 16:20:43 -0400
-Message-ID: <20260430202233.111010-15-riel@surriel.com>
+Subject: [RFC PATCH 10/45] mm: page_alloc: support superpageblock resize for memory hotplug
+Date: Thu, 30 Apr 2026 16:20:39 -0400
+Message-ID: <20260430202233.111010-11-riel@surriel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260430202233.111010-1-riel@surriel.com>
 References: <20260430202233.111010-1-riel@surriel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 21EB218000A
-X-Stat-Signature: cbxr4pifz1qphsxp8tukunm73mthwcsn
-X-HE-Tag: 1777580575-164293
-X-HE-Meta: U2FsdGVkX19wQT9ui+IhJXINjOcs5T7KpGg02D7iz1fglM7zk1hjQ0rYOuSDvMzGbyKldN5k8wvWusVC/h3Jc9c01V5f/jr8k2IBRispkTiR3f8/0rlQgVyjZN3HNttht1xSsBzNFBQKQXJb3ILe3sr2OWyaubUvpQC3nQs8cxWwVCJcNNMdMJOSxIP1H0ZRJ4Jld9dT6RqMmWUA/BwFpqkmoiN77Pg7KOB5wmcqU2K5F7DTgfUCBc2zgOjZ2hnzMFljfNy76zVqd9iWCL7uelgFmothsYkHDMuQgp7BM4pfDCNwMzldf4EGB2988lJkDJ/VvEFXpqNT/TRa5rh13niq/Yrju4Etw9rPkWkGkjvcJcB4S9PNpnZYvBwIM1Gb2PNZAPVifmHTnAfM657yiFSfmha8dPtZSC6HUuuYGpZB99/wr9mUOoqIMbCiN8G8vH8VJuiq/pzrLCgvpZrLGG3Uy0LL0jkpEP0d26rTqrYZzD5yETT9GvqDwd2ZnbDsN5ZjuUJ9ZysOcgrmrF7TCzfOWTdQXAeWnuNUqfP/kfGxi0b7j3LnxSqnBK+gst4T7XjKlgFvAqSfR7kcG9PEFzLElBCtoMNUoBis4LHaYTvrL3P4ATUSMYfeJGyAf+RGApulB0mGcnImn0dhPla+siHTleFzTr3yjD9tChYHzxODA7x90oufdiCuefNB6LSYLTjngGgmj7kpWAm2tUMAkAkyfUVFVJYmlnW9ySlaxILsTzw0Hx7wRruRtVYlWWm6BGCOd+EkYoG9tx2V0aaOr0OqjVXCEXxet7NPNmW4jKuHl8J0CP2mB6Ew24Z22Pb8s+Iu31RI/CTxrzz9M5FtMFymG3juSqMD7b9P4btRVX7WSpRnbFML8n3umyu7l2tLCzUSFNikHs9FG9sKGQ4nfQqRQUXTl85E9X6F06t/TSUGnhsV8UreD28CCNkERZ4jFyReALypQu8PiO8m0TE
- h4ueJ+US
- 6nsCzIiJ4pR9oAiH7ATUJNaqzUDT4KSBuvYxMb667nJPK9fXqHpr13vvntApeOJAi/QFQ7QvCxD4GmV5ipX3Bkabv+B8a2Sw0wwBa19sD/zWiilFkCWTBEPMOgIsaUVqgmvn4FwlzS6BGbHJlNhBGSRBipbSkCOBIwC+XK6WCJADx+zXzRi3coWHes0NeOwZ1alswegrM7PJpJdiia00PY2AHbey4p84+UskzEZGZT5a/SPhfe49Uk7mGgl9nMv7ySYUAr/mW+DSkkJvpjmcqetr8Ig6WTHRpGBRFDPtiWYY5EGt6ir6Btheu3A03Kgdxcz53Pa/oPmosS8dRyv0iOX1THg4KuRgNrg2gXU1YU4usalAoTEQXU1Msenvww3W1omgcb5HxD3oVsyQNzCxk9CkDaKwBQw4j37tZ
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 57AB2140004
+X-Stat-Signature: uhuhoubqmzoh5u83fcmgucimynenniem
+X-HE-Tag: 1777580576-524682
+X-HE-Meta: U2FsdGVkX1+hDqYGCujFBeRj5qoc8+6sg8Y+/5OFg0as2qyRGnh/cDAtAWOKh3suy87/0dPTFg5tArEHYCWQJuQjDuModn68SV/czZ0Bk9pz5djAGk9YvLfBqH+HUmPhPKQpbqxn+ndMZiApZiTqu3q7Q2ORLEzfr5YnSxOAOZ3aYJhRQYB2V6kCRYChyeBGjwytQ2xFXsSoeEe0kt7o/pnDYFHH7xTq2JN6n4qVR3YaGtC3sG7NurULupcUpPRJOpSWfe9n35kgvOmMn8B2mgsqPmjW3n8mH/bILM6LwL6Di9W9ZNiP+UYxWjL0jmWut9tR0/Hv3CO4JzP7EvFw7qYrWaalQ0X7QelXka4R7+71TqnTuAPZ48OlEqZCKQz7qhvCDBxHd1HqITiXtyAv6QTO1zdApcWGsbYUScwAvNfQkZ/nDrKVgVX+QRrsfBLYkSIfhcmA0x1Srcj0kcwIL5bOuXu+YQJSWcsT4qDIDKPUqnfDiqnps9MENrQD6wa0fpDkRslmD1OWA+jyQW6NxRc95pJamcViAtHLlPE/8n+knthHYxn/xS4xD/C6HIes9pQsRG7p6Y9H1UpD41h+WA39qjsnuj7h1yg7SbQvKrgFpK1JoX5MS9RqqeBqwIV/bxqzSN/iDqkH3xTrk9HgfR7HDWPcAyXpuw4Q10Yi2xIOPteCqXY/OBDEZD1gDdH0G+PhhUMzKcf2wTrNOYGTyNvkDcD6rW6Fx2B2QS0ZVxk39y6Tv7dZu6XFwCuDE1U7ZI2C50TnmBmxMIXq9sxpYB/9jDSmbsz/38Nm8Zo+XdxFKyEDRQUuQIkQL8t7laU914diqcgv/8rzR4HmBcdVK/24O9kMmeLNyIlu5oZPCzgMxsEoojrOhk7xNWGVgvci0jM8GnlHqHXy7fIirx6/4YIynr7gxJMTJu8r/YW5r1cfBz1FTPFpTqJGkqwkuBHC9XR5tW6JVrG7ullT7i4
+ 4F/qgdXb
+ ZWTZjwh0RQ38vjK+uMrv3x71/z6FIlQPgCh24Tqk+7UQESBbI4gItxlO/Ss6/GY4DxJpYbluZstlp+VNziCTUV8WezIGIduBnXra89BwLysP6Dl2mz0c9Ft0/R60qtHbKcOg0IbtB7jMJXKSWkuuwbx0ftYPDr3laMhThtLpfq/q2P/L/vLhKQqgftcEzZVTHIYscL4HWghhk6yIpC6dt7bI9PFVLGpCWds/sledML7xCdogXLKojOcbv2TfgnvStPKSBb+SyPBbvN6nn3VVMqQ/R6+o79tGtWYhi3qs5SVqL+1ytA1L8q2drwJot46rKG4hyx2tuyJjk407lvHyb/lX/kPY8v4S8q4kgBiW4hEkgGIQNFnWNp8FiFUVyFEwPdriJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,128 +104,223 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Rik van Riel <riel@meta.com>
 
-Extract the whole-pageblock claiming logic from try_to_claim_block()
-into a standalone claim_whole_block() function. This handles the
-PB_all_free → used transition, pageblock migratetype change, and
-block splitting for orders >= pageblock_order.
+setup_superpageblocks() is __init-only and uses memblock_alloc_node(), so
+hotplugged memory that extends a zone's span has no superpageblock
+coverage.  Pages in those regions would bypass superpageblock steering
+entirely.
 
-Pure refactoring, no functional change. Prepares for reuse of this
-logic in the per-superpageblock free lists patch.
+Add resize_zone_superpageblocks() which is called from
+move_pfn_range_to_zone() after the zone span has been updated. It allocates
+a new superpageblock array with kvmalloc_node() covering the full zone
+span, copies existing superpageblocks (fixing up list head pointers), and
+initializes new superpageblocks for the added range.
+
+Use round-up division for partial pageblock counting to match
+init_one_superpageblock().
+
+ZONE_DEVICE is excluded since device pages should not participate in anti-
+fragmentation steering.
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- mm/page_alloc.c | 90 +++++++++++++++++++++++++++++--------------------
- 1 file changed, 54 insertions(+), 36 deletions(-)
+ include/linux/mmzone.h |   1 +
+ mm/internal.h          |   4 ++
+ mm/memory_hotplug.c    |   4 ++
+ mm/mm_init.c           | 138 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 147 insertions(+)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 8b10322d5221..907ce46c060f 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2731,6 +2731,57 @@ int find_suitable_fallback(struct free_area *area, unsigned int order,
- 	return -1;
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index a0e8ce4b7b79..c17ea237fe13 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -960,6 +960,7 @@ struct zone {
+ 	struct superpageblock	*superpageblocks;
+ 	unsigned long		nr_superpageblocks;
+ 	unsigned long		superpageblock_base_pfn; /* 1GB-aligned base */
++	bool			spb_kvmalloced; /* true if from kvmalloc (hotplug) */
+ 
+ 	/* zone_start_pfn == zone_start_paddr >> PAGE_SHIFT */
+ 	unsigned long		zone_start_pfn;
+diff --git a/mm/internal.h b/mm/internal.h
+index bb0e0b8a4495..163ef96fa777 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1025,6 +1025,10 @@ void init_cma_reserved_pageblock(struct page *page);
+ 
+ #endif /* CONFIG_COMPACTION || CONFIG_CMA */
+ 
++#ifdef CONFIG_MEMORY_HOTPLUG
++void resize_zone_superpageblocks(struct zone *zone);
++#endif
++
+ struct cma;
+ 
+ #ifdef CONFIG_CMA
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index bc805029da51..e21fdb4f27db 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -760,6 +760,10 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+ 	resize_zone_range(zone, start_pfn, nr_pages);
+ 	resize_pgdat_range(pgdat, start_pfn, nr_pages);
+ 
++	/* Grow superpageblock array to cover the new zone span */
++	if (!zone_is_zone_device(zone))
++		resize_zone_superpageblocks(zone);
++
+ 	/*
+ 	 * Subsection population requires care in pfn_to_online_page().
+ 	 * Set the taint to enable the slow path detection of
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 1fb62342d1c6..c5cf90de4d62 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1606,6 +1606,144 @@ static void __init setup_superpageblocks(struct zone *zone)
+ 					zone_start, zone_end);
  }
  
-+/*
-+ * claim_whole_block - claim a free block (>= pageblock_order) for a new type
-+ * @zone: zone containing the page
-+ * @page: free page to claim
-+ * @current_order: order of the free page
-+ * @order: requested allocation order
-+ * @new_type: migratetype to assign
-+ * @old_type: current migratetype of the block (for free list removal)
++#ifdef CONFIG_MEMORY_HOTPLUG
++/**
++ * resize_zone_superpageblocks - grow superpageblock array for memory hotplug
++ * @zone: zone whose span has been extended by hotplug
 + *
-+ * Handle the PB_all_free → used transition, change the pageblock
-+ * migratetype, split the block down to @order, and return the page.
++ * Called from move_pfn_range_to_zone() after resize_zone_range() has
++ * updated the zone's span.  Allocates a new superpageblock array covering
++ * the full zone span, copies existing superpageblocks (fixing up list heads),
++ * and initializes new superpageblocks for the added range.
++ *
++ * Must be called under mem_hotplug_lock (write).  No concurrent
++ * allocations can occur since the hotplugged pages are not yet online.
 + */
-+static struct page *
-+claim_whole_block(struct zone *zone, struct page *page,
-+		  int current_order, int order, int new_type, int old_type)
++void __meminit resize_zone_superpageblocks(struct zone *zone)
 +{
-+	struct superpageblock *sb;
-+	unsigned int nr_added;
-+	unsigned long pb_pfn;
++	unsigned long zone_start = zone->zone_start_pfn;
++	unsigned long zone_end = zone_start + zone->spanned_pages;
++	unsigned long new_sb_base, new_nr_sbs;
++	unsigned long old_offset;
++	struct superpageblock *old_sbs;
++	struct superpageblock *new_sbs;
++	bool old_kvmalloced;
++	size_t alloc_size;
++	unsigned long i;
++	int nid = zone_to_nid(zone);
 +
-+	VM_WARN_ON_ONCE(current_order < order);
++	if (!zone->spanned_pages)
++		return;
 +
-+	/*
-+	 * Clear PB_all_free for pageblocks being claimed.
-+	 * This path bypasses page_del_and_expand(), so we
-+	 * must handle the free→used transition here.
-+	 */
-+	for (pb_pfn = page_to_pfn(page);
-+	     pb_pfn < page_to_pfn(page) + (1 << current_order);
-+	     pb_pfn += pageblock_nr_pages) {
-+		struct page *pb_page = pfn_to_page(pb_pfn);
++	new_sb_base = ALIGN_DOWN(zone_start, SUPERPAGEBLOCK_NR_PAGES);
++	new_nr_sbs = (ALIGN(zone_end, SUPERPAGEBLOCK_NR_PAGES) - new_sb_base) >>
++		     SUPERPAGEBLOCK_ORDER;
 +
-+		if (get_pfnblock_bit(pb_page, pb_pfn, PB_all_free)) {
-+			clear_pfnblock_bit(pb_page, pb_pfn, PB_all_free);
-+			superpageblock_pb_now_used(pb_page);
-+		}
-+		__spb_set_has_type(pb_page, new_type);
++	/* Already covered? */
++	if (zone->superpageblocks &&
++	    new_sb_base == zone->superpageblock_base_pfn &&
++	    new_nr_sbs == zone->nr_superpageblocks)
++		return;
++
++	alloc_size = new_nr_sbs * sizeof(struct superpageblock);
++	new_sbs = kvmalloc_node(alloc_size, GFP_KERNEL | __GFP_ZERO, nid);
++	if (!new_sbs) {
++		pr_warn("Failed to allocate %zu bytes for zone %s superpageblocks\n",
++			alloc_size, zone->name);
++		return;
 +	}
 +
-+	del_page_from_free_list(page, zone, current_order, old_type);
-+	change_pageblock_range(page, current_order, new_type);
-+	nr_added = expand(zone, page, order, current_order, new_type);
-+	account_freepages(zone, nr_added, new_type);
++	/*
++	 * Copy existing superpageblocks to their new position.
++	 * The old array covers [old_base, old_base + old_nr * SB_SIZE).
++	 * The new array covers [new_base, new_base + new_nr * SB_SIZE).
++	 * old_base >= new_base always (zone can only grow).
++	 */
++	if (zone->superpageblocks) {
++		old_offset = (zone->superpageblock_base_pfn - new_sb_base) >>
++			     SUPERPAGEBLOCK_ORDER;
++		memcpy(&new_sbs[old_offset], zone->superpageblocks,
++		       zone->nr_superpageblocks * sizeof(struct superpageblock));
 +
-+	/* Single list update after all pageblocks processed */
-+	sb = pfn_to_superpageblock(zone, page_to_pfn(page));
-+	if (sb)
-+		spb_update_list(sb);
-+	return page;
++		/*
++		 * Fix up list_head pointers that were self-referencing
++		 * (empty lists) or pointing into the old array.
++		 */
++		for (i = old_offset; i < old_offset + zone->nr_superpageblocks; i++) {
++			struct superpageblock *sb = &new_sbs[i];
++
++			if (list_empty(&sb->list))
++				INIT_LIST_HEAD(&sb->list);
++			else
++				list_replace(&zone->superpageblocks[i - old_offset].list,
++					     &sb->list);
++		}
++	}
++
++	/* Initialize new superpageblocks (slots not covered by old array) */
++	for (i = 0; i < new_nr_sbs; i++) {
++		struct superpageblock *sb = &new_sbs[i];
++		bool is_old = false;
++
++		if (zone->superpageblocks) {
++			old_offset = (zone->superpageblock_base_pfn - new_sb_base) >>
++				     SUPERPAGEBLOCK_ORDER;
++			if (i >= old_offset &&
++			    i < old_offset + zone->nr_superpageblocks)
++				is_old = true;
++		}
++
++		if (is_old)
++			continue;
++
++		init_one_superpageblock(sb, zone,
++					new_sb_base + (i << SUPERPAGEBLOCK_ORDER),
++					zone_start, zone_end);
++	}
++
++	/*
++	 * Update existing superpageblocks whose nr_reserved may have
++	 * increased due to the zone span growing into them.
++	 */
++	if (zone->superpageblocks) {
++		old_offset = (zone->superpageblock_base_pfn - new_sb_base) >>
++			     SUPERPAGEBLOCK_ORDER;
++		for (i = old_offset; i < old_offset + zone->nr_superpageblocks; i++) {
++			struct superpageblock *sb = &new_sbs[i];
++			unsigned long sb_start = sb->start_pfn;
++			unsigned long sb_end = sb_start + SUPERPAGEBLOCK_NR_PAGES;
++			unsigned long pb_start = max(sb_start, zone_start);
++			unsigned long pb_end = min(sb_end, zone_end);
++			u16 new_pbs = (pb_end > pb_start) ?
++				((pb_end - pb_start + pageblock_nr_pages - 1) >>
++				 pageblock_order) : 0;
++			u16 old_pbs = sb->nr_free + sb->nr_unmovable +
++				sb->nr_reclaimable + sb->nr_movable +
++				sb->nr_reserved;
++
++			if (new_pbs > old_pbs)
++				sb->nr_reserved += new_pbs - old_pbs;
++		}
++	}
++
++	/* Swap in the new array */
++	old_sbs = zone->superpageblocks;
++	old_kvmalloced = zone->spb_kvmalloced;
++	zone->superpageblocks = new_sbs;
++	zone->nr_superpageblocks = new_nr_sbs;
++	zone->superpageblock_base_pfn = new_sb_base;
++	zone->spb_kvmalloced = true;
++
++	/*
++	 * The boot-time array was allocated with memblock_alloc, which
++	 * is not individually freeable after boot.  Only kvfree arrays
++	 * from previous hotplug resizes.
++	 */
++	if (old_sbs && old_kvmalloced)
++		kvfree(old_sbs);
 +}
++#endif /* CONFIG_MEMORY_HOTPLUG */
 +
- /*
-  * This function implements actual block claiming behaviour. If order is large
-  * enough, we can claim the whole pageblock for the requested migratetype. If
-@@ -2754,42 +2805,9 @@ try_to_claim_block(struct zone *zone, struct page *page,
- 		return NULL;
+ #ifdef CONFIG_HUGETLB_PAGE_SIZE_VARIABLE
  
- 	/* Take ownership for orders >= pageblock_order */
--	if (current_order >= pageblock_order) {
--		unsigned int nr_added;
--		unsigned long pb_pfn;
--
--		/*
--		 * Clear PB_all_free for pageblocks being claimed.
--		 * This path bypasses page_del_and_expand(), so we
--		 * must handle the free→used transition here.
--		 * Use block_type (the original migratetype) because
--		 * that's what was decremented when PB_all_free was set.
--		 */
--		for (pb_pfn = page_to_pfn(page);
--		     pb_pfn < page_to_pfn(page) + (1 << current_order);
--		     pb_pfn += pageblock_nr_pages) {
--			struct page *pb_page = pfn_to_page(pb_pfn);
--
--			if (get_pfnblock_bit(pb_page, pb_pfn, PB_all_free)) {
--				clear_pfnblock_bit(pb_page, pb_pfn, PB_all_free);
--				superpageblock_pb_now_used(pb_page);
--			}
--			__spb_set_has_type(pb_page, start_type);
--		}
--		/* Single list update after all pageblocks processed */
--		{
--			struct superpageblock *sb =
--				pfn_to_superpageblock(zone, page_to_pfn(page));
--			if (sb)
--				spb_update_list(sb);
--		}
--
--		del_page_from_free_list(page, zone, current_order, block_type);
--		change_pageblock_range(page, current_order, start_type);
--		nr_added = expand(zone, page, order, current_order, start_type);
--		account_freepages(zone, nr_added, start_type);
--		return page;
--	}
-+	if (current_order >= pageblock_order)
-+		return claim_whole_block(zone, page, current_order, order,
-+					start_type, block_type);
- 
- 	/* moving whole block can fail due to zone boundary conditions */
- 	if (!prep_move_freepages_block(zone, page, &start_pfn, &free_pages,
+ /* Initialise the number of pages represented by NR_PAGEBLOCK_BITS */
 -- 
 2.52.0
 
