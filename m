@@ -4,87 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23016CD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 08:12:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B69FF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 08:12:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AE166B0088; Thu, 30 Apr 2026 04:12:32 -0400 (EDT)
+	id 2E1466B008A; Thu, 30 Apr 2026 04:12:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 885956B008A; Thu, 30 Apr 2026 04:12:32 -0400 (EDT)
+	id 2B8C36B008C; Thu, 30 Apr 2026 04:12:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C2846B008C; Thu, 30 Apr 2026 04:12:32 -0400 (EDT)
+	id 1F6796B0092; Thu, 30 Apr 2026 04:12:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 692ED6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:12:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01E538BD69
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:12:31 +0000 (UTC)
-X-FDA: 84714505344.29.CEA521C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 492421C000F
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:12:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cQ5k6350;
-	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FEFD6B008A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:12:44 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A502C1C09D6
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:12:43 +0000 (UTC)
+X-FDA: 84714505806.17.9D8A33F
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 30729100013
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:12:39 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of maobibo@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=maobibo@loongson.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777536750;
+	s=arc-20220608; t=1777536761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qzSuJUZ4ZZywHQ2pmdLZbzodHrA1GO4bwapeaRwk62E=;
-	b=rP5pElPBTdQqR/19snVAGs7pomK+4STNgfalR0A98ZEZ9cUG74bB35baoI55tK3fQtWM6n
-	D6W6ZUCsS5H7OiACDAqNLAg1Lhscl0ysdsX4LTR2IpDO0E3Gq1wz4bvamc4v9xyzZI7TCp
-	73jGqXo8g9zXLposOMooJJLz6GYALdk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cQ5k6350;
-	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777536750; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EzNY8XoEEipR505reYHawe6VXqEXcgYWaDsnmO6NLmU=;
+	b=g6B9ZXTB/W4bg/ztKguwDcVIlNucG1Ou9WLZj7Q5fP5CRAi05VyHbftpJ3qMj5MUdr39VM
+	T/Xgxyft0I2w7IB5a5Tbt6GEuUghbI8RujkTrpFxT7oiodf64NqvB2xK6XXhwKla10arG5
+	PJYYWJOuV74CDhzBepj92gV1NrF+ERc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777536761; a=rsa-sha256;
 	cv=none;
-	b=s/psR460Goxwc272bAhN1RxKR9TDQyuIsSfuxATRLqqef9D0XvMX8dLQZ9kWwkGr5XU0F6
-	EUchJ7O3GYX8fZ53kdIn7IkevxB5LYQffii7D94enJxmbKvpTilQW0tsmyKtfnYb1ImGvq
-	zcys4we8Dyz+4A/cPVAVEsaY5PHdAVY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 750BD416FD;
-	Thu, 30 Apr 2026 08:12:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EC7C2BCB3;
-	Thu, 30 Apr 2026 08:12:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777536749;
-	bh=3r6FBCLfdTgQTcHvUWCboigdXt/17gWJ3pz4WmvT4F0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cQ5k6350RzMg8kHS1Inf0QbqtrRUZXu1nY9DeE2O1HjdOgku3DiC1kynfGZFCeUcY
-	 2zACY7QRY5slN7PQfFSYfq4iJ5jSA5C0AjU4jTeIlHdv5Zod+7o3/eS+oqJGja4Gm1
-	 oST/OXsQq22r+oE5X1J6bh5Z0dIDF37CXb09Rp7nHm2TiF1dg5+QJ7vuXeE22saKfU
-	 +pasgaJ5qLQo/rmcBuZRhNJoCwC2KII34S/ecr7CZBIjEJo350pKpNi5W7Rj+W+2x5
-	 u5SCShru7JgaHmM5ImsPkW4K/Pvtlj7Ryih04qID2fekYwNtXOQAsycTnLJQdQq+Z/
-	 GZkTTe3c/peww==
-Date: Thu, 30 Apr 2026 17:12:27 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: Shengming Hu <hu.shengming@zte.com.cn>, oe-lkp@lists.linux.dev, 
-	lkp@intel.com, Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	linux-mm@kvack.org
-Subject: Re: [linux-next:master] [mm/slub]  8952728641:
- BUG_kmem_cache:Freepointer_corrupt
-Message-ID: <4sw3gj2ugc4v5ek3jv4h3da2r5lnrsio44kcpqf5cw7ncjeofu@wqyp5tavlq3w>
-References: <202604301428.e2b8d3dd-lkp@intel.com>
+	b=zLb3uZxJcNs30GEyEf2ckxZBHb0+mN32fBUn0iwv3Cmjr2FosuVVneE4eFPbG+wUpDTytS
+	fVaONhE0K2DmVZ7P3LQQLzhz2S13C2dv/cRe9HqY3unpo0irPNaGQRbKrosjws88bY45WY
+	ExdZmoumJ493GoMIxuXG3EQJPiSURqw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of maobibo@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=maobibo@loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxP+rqDvNpV24FAA--.17970S3;
+	Thu, 30 Apr 2026 16:12:26 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCxvsLlDvNprvt3AA--.31479S3;
+	Thu, 30 Apr 2026 16:12:23 +0800 (CST)
+Subject: Re: [PATCH] mm/huge_memory: skip huge_zero_pmd in
+ zap_huge_pmd_folio()
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <e3f542dd-f22b-fc8c-b376-72ab5909b6c8@loongson.cn>
+ <20260430070217.39679-1-lance.yang@linux.dev>
+ <6cdeb3e7-c399-4ead-e809-44e3d4d84bc7@loongson.cn>
+ <37531e17-2a4a-44f5-af61-667331444ca2@linux.dev>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <4807181d-c111-5568-b040-140706e56b4f@loongson.cn>
+Date: Thu, 30 Apr 2026 16:09:28 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202604301428.e2b8d3dd-lkp@intel.com>
-X-Stat-Signature: 55u71mk8hkjrmtqkkmus88yrhkf1gatx
-X-Rspamd-Queue-Id: 492421C000F
+In-Reply-To: <37531e17-2a4a-44f5-af61-667331444ca2@linux.dev>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxvsLlDvNprvt3AA--.31479S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWr17XFW3tFWkCFWDJw15WrX_yoW5KrW7pr
+	y8JF1jkr48Jr95Jr1xtw1jyFyYywn2ya4UW345Jr15ZFn0vr1jgr4UJr1j9ry0qr4rGF4I
+	vFWjvF9avFyYq3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Sb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+	67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
+	67AKxVW8ZVWrXwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
+	8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
+	CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
+	1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBI
+	daVFxhVjvjDU0xZFpf9x07jOF4_UUUUU=
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777536750-960205
-X-HE-Meta: U2FsdGVkX1+g2+3oaqiBvsD6NMemfVrPx0yrzBCttVoodXLgCsrx7d2zLqdHjJjoNhXugQeW2119nJPZP1S9T89aNDMxuxiG6hpT3ldo0LBL4/GZOYH7vQ7tEakQhe/fAZxNhg2bWpytWvRVxgTa7IFjfF2PnPvDNNyYnUt+PYHaBuYtp6ksDgoIrF/RnJPRxY98vz6qgWF/z4x2v+058aZGqu1rNpoAf5+8uuYrrEYheysgpFNoZg0FmS+5tBA5Bkegq8C6S0S+HSrJ+ci5e7iAe7MifOPGODDwQhEAi0ZQANXZOCZvLuWkjUGJMlYMiQijdlCaCIn4rtjFWy4uzB6w8Z5Ky9O7hCJlypuq/JGCcsHzFNSJkf4vSd2OHw1mShuqmWrvtV4Bit8q7To/BZVPDHKYD+MAUapaMa3qSxvFBH1r6qqmPZ9AVMYabCP8SzYlSLu1q33wIEwBtYthrprFdkUCG0kFcSBBkSYHUeCBO2BxWN8l7yXJtl26Pu1VN8xn+Twx1ExZ3bIJtT51P9bJ/n/Fe24gCTRV9MP//HuwVQfNuGjShxspIGLP141L7RJRXeVjAX5n5l8SxGN6kgF8CzVqOQvBG2GnXEOWahHBiT31PzO11CjvQ4HrAoqkwwXetx7S51Ckkw0xe6m+E8Tvx9Uv2tqqcILEcl06Gn2IVTYdSmdiu7oj50N8vLIuOFbuDfmygeWt4nHP0Q7bQ1jPtChLap23SHQxfHDrHlLiNps1znaCW+uXYw59CnSdP86rB5qA/ioJrnYLGcebRSywwAZPeI6kZJqBxEKH5HGaxVWUT3brk8WPkPyOuZDOpbxBt3Cn2P7x7O0pZ3e2ZgFQKNdLFZUhH8CJ18e1Q8sw4xh546TE+AwEO0hIrSOgG+ctQ1MGzQtIVWT5wEJfKM6VNFDRs66yLJo0UZku88grR8GgDXFOjiP9TdfkXEIeXiF957bvl9FDcZaNuB+
- sYJljI9n
- j92wEB3Ld1Y5xaB+nj9I5eW0L+t+2lZBeDg7VQ/kDn5pgAimxxUy4Xsoxz2+LqorFUp9eUrGuROrAU5xhIVAnb1MIPa/xevums0Ozf7dEGuKVDrPJ55Ul9jkclllqqMunObfadYECZNxkYYNJzFWNys0fa2wpVnqFqJEymgTOrz+lrlJdqTIL7k1ii0VlUtoXiaUdIvvr5hXODHHsi1/iUrGuoytc9halrmkimu1T1yJUcTYLfbKShkhdB6uUAogBz5EkDx0cvcniJNleEsOeKFnC/WEgeZswSLHALL2msixp3zHaLvHkBfnN0ZxXDQ/BtTiAxe0ZkiMPAVhBcbfK1P4v4ljshPSggAQf
+X-Rspamd-Queue-Id: 30729100013
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 9oehzajezpk34cxwmhb53zrpxfifwoc3
+X-HE-Tag: 1777536759-18437
+X-HE-Meta: U2FsdGVkX1+clT9ZPmdSDJvzjMDKT37hYHZ1h9jdLN+5/FZavLmE+QvD4eNp7fLi56qppnpb/h5tNDplwb82gc/Qcf/aiFndfc2Y6mWnYvl0Sr4RbDRr38E65bdUWE9YXYIbEVeWYL2nfn8p3nVDjIEbNwWZBcsK2RZXtrJxC6FkPrJ9WIa22B66Uy/mdcDfo7hpOqTC2SNBGL2IhxdBim0FXJOStCO5BvfCV1DZHt4KGd4H2upqHA7B82MotCkflTIdqmofoGwvx0I1VCYO6PbbnzjiU5rj5lfbNfidX4jv+us2XmdfpJwfszpiVswUl465ezwC0Uvy0AQWk3Nq1BVxq/YyT3VQAfHfz8K5MWHjA23FMjNyKqeVsR5gPc9O3sz3mjGdCyLMR1qKRZ0FY2wxj4rOOxP0o/cgN1R5QlDe7ECalGCX18eO4HyC0lDPad7H6Q9CBYlQq31Y+QXhA9WRYySOdeAMd3lC/F2wZJHkOAyaBo3T/NZGkM2jxDIlH+2sYggkPn4M9L+/cgoQRFTJn3jPQJElDsIyRheanO7uXy07o1FxNESh3HBb5TMzLstFwVFXKMCyjXrxfeONSMmCQG+4zvC5B0RxhCyGqkwRVBNzVnaUnDHNH0rVDZm4r+/0CxHJC3LBzyD6o+aXqhTDnHZFsZv9FNrpCSrZva1tuiBeye5AN9wc5DXZ1nBL2wL1o907oEcyvercHhrrhXuMiB6qTgczdMNJxsEc5KSYLy19az0JUhKBNqIBpNeSLKitbU4sUXrsKLUDHuUuegHMXlCUetTmiGozMZ7ETwiJTEKqr0T3FbcuCjpW28HY5u9QymaH0hjg5N/Vn+Wyjx+MWN+6frfwtOdFwjXzBwTxSmWS/2/LVVZ+buyIPJUi4vnYHEQoW+9TO+DbpcJWBl+2MsWeJL+1YfWlEjgXzteba0M8fFz/xyeSbeOyV/+QEZLmoCLzOIEWyo2JAns
+ fW7D8sC2
+ Yzt28lX1oI6NV/uJlVXR1DAD7i2zBwMjVHSGz0xnotdYWwbvnZGao/pi098ky1LITgY7YE8fMhr9QQ0sxIaEjk4BLKPT2rb/xF02SQXDWvspBUUkhvRCUCMqWA/9reaHYytzxC9zqFh/XcTrzQJIK7OhbEFX8y0Cuywnartk0ImiYMMgc1qxKTiItE9CVQpF83PHZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,102 +108,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Taking a quick look...
 
-On Thu, Apr 30, 2026 at 02:16:37PM +0800, kernel test robot wrote:
+
+On 2026/4/30 下午3:16, Lance Yang wrote:
 > 
 > 
-> Hello,
+> On 2026/4/30 15:05, Bibo Mao wrote:
+>>
+>>
+>> On 2026/4/30 下午3:02, Lance Yang wrote:
+>>>
+>>> On Thu, Apr 30, 2026 at 02:34:20PM +0800, Bibo Mao wrote:
+>>>>
+>>>>
+>>>> On 2026/4/30 下午12:28, Lance Yang wrote:
+>>>>>
+>>>>> On Thu, Apr 30, 2026 at 12:11:20PM +0800, Bibo Mao wrote:
+>>>>>> when executing command "make check" with qemu software, there is
+>>>>>> error report like this:
+>>>>>> BUG: Bad rss-counter state mm:00000000972846bc type:MM_FILEPAGES 
+>>>>>> val:-4096 Comm:bios-tables-tes Pid:27802
+>>>>>> BUG: Bad rss-counter state mm:00000000752180c5 type:MM_FILEPAGES 
+>>>>>> val:-2048 Comm:worker Pid:27815
+>>>>>> BUG: Bad rss-counter state mm:000000009c2f6a61 type:MM_FILEPAGES 
+>>>>>> val:-2048 Comm:qom-test Pid:27825
+>>>>>
+>>>>> Good catch!
+>>>>>
+>>>>>> The problem is that when application exits, rss counter is calculated
+>>>>>> with huge_zero_pmd huge page, instead it should be skipped.
+>>>>>
+>>>>> Looks like the same problem[1] we discussed recently.
+>>>>>
+>>>>> [1] https://lore.kernel.org/linux-mm/74a75b59-2e13-3985-ee99- 
+>>>>> d5521f39df2a@google.com/
+>>>>>
+>>>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>>>>> ---
+>>>>>> mm/huge_memory.c | 3 +++
+>>>>>> 1 file changed, 3 insertions(+)
+>>>>>>
+>>>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>>>> index 970e077019b7..3cbea344d4a2 100644
+>>>>>> --- a/mm/huge_memory.c
+>>>>>> +++ b/mm/huge_memory.c
+>>>>>> @@ -2423,6 +2423,9 @@ static void zap_huge_pmd_folio(struct 
+>>>>>> mm_struct *mm, struct vm_area_struct *vma,
+>>>>>> {
+>>>>>>     const bool is_device_private = folio_is_device_private(folio);
+>>>>>>
+>>>>>> +    if (is_huge_zero_pmd(pmdval))
+>>>>>> +        return;
+>>>>>> +
+>>>>>
+>>>>> The huge zero PMD should not be returned by vm_normal_page_pmd() or
+>>>>> vm_normal_folio_pmd() as a normal folio. If it reaches
+>>>>> zap_huge_pmd_folio(), we already made the wrong normal-vs-special
+>>>>> decision ...
+>>>>>
+>>>>> So I don't think we should special-case it in zap_huge_pmd_folio(). 
+>>>>> That
+>>>>> only avoids this RSS decrement :)
+>>>>>
+>>>>> Could you please check whether the fix[2] also fixes your QEMU test?
+>>>>>
+>>>>> [2] https://lore.kernel.org/linux-mm/ea1453a6-14c9-4334- 
+>>>>> ac7e-2758586393b2@kernel.org/
+>>>> yes, I think it will solve this problem.
+>>>>
+>>>> Only that I think that there should be tlb flush operation after
+>>>> pmdp_huge_get_and_clear_full() even with huge_zero_pmd page, so
+>>>> tlb_remove_page_size() should be called. Is that right?
+>>>
+>>> Calling tlb_remove_page_size() is not necessary there :)
+>>>
+>>> zap_huge_pmd() already marks the PMD range for TLB invalidation right
+>>> after clearing the entry:
+>>>
+>>>     orig_pmd = pmdp_huge_get_and_clear_full(...);
+>>>     tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+>> Yes, it is. I forget the tlb_flush_pmd_range() calling in 
+>> tlb_remove_pmd_tlb_entry().
+>>
+>> So the fix solves this problem. And thanks for your explanation.
 > 
-> kernel test robot noticed "BUG_kmem_cache:Freepointer_corrupt" on:
+> If possible, can you test the fix[1] with your QEMU workload and
+> provide a Tested-by? That would be very helpful :D
+yes, this patch solves the problem. I do not subscribe 
+linux-mm@kvack.org mailing list, please feel free to add
+
+Tested-by: Bibo Mao <maobibo@loongson.cn>
+
+Regards
+Bibo Mao
+
 > 
-> commit: 8952728641305ebcd03e80f79b8d31bb41d6d95f ("mm/slub: defer freelist construction until after bulk allocation from a new slab")
-> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+> [1] 
+> https://lore.kernel.org/linux-mm/4d950326-6944-409b-b108-a4e67256857f@kernel.org/ 
 > 
-> [test failed on linux-next/master 9974969c14031a097d6b45bcb7a06bb4aa525c40]
-> 
-> in testcase: boot
-> 
-> config: x86_64-randconfig-001-20251114
-> compiler: gcc-14
-> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 32G
-> 
-> (please refer to attached dmesg/kmsg for entire log/backtrace)
 
-[...]
-
-> [   53.929047][    T0] =============================================================================
-> [   53.931786][    T0] BUG kmem_cache (Tainted: G                T  ): Freepointer corrupt
-> [   53.934858][    T0] -----------------------------------------------------------------------------
-> [   53.934858][    T0] 
-> [   53.934858][    T0] -----------------------------------------------------------------------------
-> [   53.934858][    T0] 
-> [   53.939608][    T0] Slab 0xffffea0004001040 objects=9 used=1 fp=0xffff888100041200 flags=0x4000000000000000(zone=2)
-> [   53.944008][    T0] Object 0xffff888100041040 @offset=64 fp=0x64ae22a70baa83ae
-> [   53.944008][    T0] 
-> [   53.944008][    T0] Object 0xffff888100041040 @offset=64 fp=0x64ae22a70baa83ae
-> [   53.944008][    T0] 
-> [   53.950913][    T0] Redzone  ffff888100041000: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................
-> [   53.954703][    T0] Redzone  ffff888100041010: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................
-> [   53.957662][    T0] Redzone  ffff888100041020: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................
-> [   53.960527][    T0] Redzone  ffff888100041030: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................
-> [   53.963607][    T0] Object   ffff888100041040: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.966785][    T0] Object   ffff888100041050: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.969753][    T0] Object   ffff888100041060: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.972621][    T0] Object   ffff888100041070: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.975559][    T0] Object   ffff888100041080: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.978756][    T0] Object   ffff888100041090: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.981898][    T0] Object   ffff8881000410a0: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.985140][    T0] Object   ffff8881000410b0: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.988289][    T0] Object   ffff8881000410c0: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.991279][    T0] Object   ffff8881000410d0: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.993987][    T0] Object   ffff8881000410e0: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.996539][    T0] Object   ffff8881000410f0: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   53.999493][    T0] Object   ffff888100041100: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-> [   54.002253][    T0] Object   ffff888100041110: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b a5  kkkkkkkkkkkkkkk.
-> [   54.005170][    T0] Redzone  ffff888100041120: bb bb bb bb bb bb bb bb                          ........
-> [   54.007879][    T0] Padding  ffff888100041180: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a  ZZZZZZZZZZZZZZZZ
-> [   54.010661][    T0] Padding  ffff888100041190: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a  ZZZZZZZZZZZZZZZZ
-> [   54.013403][    T0] Padding  ffff8881000411a0: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a  ZZZZZZZZZZZZZZZZ
-> [   54.016151][    T0] Padding  ffff8881000411b0: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a  ZZZZZZZZZZZZZZZZ
-
-the object content has 0x6b (POISON_FREE) and there is no free pointer
-because we skipped it when allocating objects from a new slab.
-
-> [   54.019282][    T0] Disabling lock debugging due to kernel taint
-> [   54.021208][    T0] ------------[ cut here ]------------
-> [   54.022797][    T0] WARNING: mm/slub.c:1231 at object_err+0x6c/0x7f, CPU#0: swapper/0
-> [   54.077963][    T0]  <TASK>
-> [   54.079139][    T0]  check_object.cold+0x4b/0x50
-> [   54.080583][    T0]  alloc_debug_processing+0x9b/0x180
-
-But alloc_debug_processing() always expect a valid free pointer (within
-the slab or NULL.
-
-I think it can be fixed by initializing the free pointer in
-before calling alloc_debug_processing() in alloc_single_from_new_slab().
-(with a comment explaining why)
-
-Could you respin the patch with the issue addressed, Shengming?
-
-> [   54.082495][    T0]  alloc_single_from_new_slab+0x82/0x200
-> [   54.084323][    T0]  ? alloc_slab_obj_exts_early+0x5/0x2c0
-> [   54.086455][    T0]  ? allocate_slab+0x11b/0x380
-> [   54.087892][    T0]  ___slab_alloc+0x1ad/0x340
-> [   54.089129][    T0]  ? bootstrap+0x20/0xb0
-> [   54.090520][    T0]  kmem_cache_alloc_noprof+0x30b/0x540
-> [   54.092010][    T0]  ? bootstrap+0x20/0xb0
-> [   54.093328][    T0]  bootstrap+0x20/0xb0
-> [   54.094484][    T0]  kmem_cache_init+0xbb/0x330
-> [   54.095786][    T0]  ? preallocate_vmalloc_pages+0x1a4/0x2b0
-> [   54.097485][    T0]  mm_core_init+0x12b/0x170
-> [   54.098935][    T0]  start_kernel+0x173/0x370
-> [   54.100291][    T0]  x86_64_start_reservations+0x28/0x30
-> [   54.101912][    T0]  x86_64_start_kernel+0x131/0x140
-> [   54.103325][    T0]  common_startup_64+0xbd/0xc8
-> [   54.131853][    T0] FIX kmem_cache: Marking all objects used
-
--- 
-Cheers,
-Harry / Hyeonggon
 
