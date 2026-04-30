@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 443BDFF8864
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5BB6FF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD0076B00B9; Wed, 29 Apr 2026 23:26:52 -0400 (EDT)
+	id 578FB6B00BB; Wed, 29 Apr 2026 23:26:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA8196B00BB; Wed, 29 Apr 2026 23:26:52 -0400 (EDT)
+	id 4DB496B00BD; Wed, 29 Apr 2026 23:26:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E5036B00BC; Wed, 29 Apr 2026 23:26:52 -0400 (EDT)
+	id 2E0896B00BE; Wed, 29 Apr 2026 23:26:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 89BA16B00B9
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:52 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 493FD140323
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:52 +0000 (UTC)
-X-FDA: 84713785464.26.A3C066C
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FCEA6B00BB
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:54 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD7CDA0294
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:53 +0000 (UTC)
+X-FDA: 84713785506.14.D3BFE51
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AF8CEC000B
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qDZoBJBy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 34899100007
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Uv2UWaUz;
+	spf=pass (imf05.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777519610;
+	s=arc-20220608; t=1777519612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=25dJlTARsIRfkesN5Wf8bLjbZJM6J//LD8/Re6TixVo=;
-	b=bWF038/OLGmPNT8zZnF/VvNWLcEeorx2uagX7BqNyvaj1HYgbDgwU7K62AkSybMS2IQGsY
-	h16FnInxe1NRpg6K77EiI5inO0tt3DbNvgLaAt75Rwshyi333blZsig5LUt5APtttwAyp3
-	Ft8caOSDr+SL2au1L/A8+XwjdiYDNMU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519610; a=rsa-sha256;
-	cv=none;
-	b=gL79JlluWBC3BCtIQnWuaW6Xqv+Pz8DilGoicEutZlvD15sCB1bJWPQM76mGbK9Mq7uI3B
-	jvQ55wscyr0o/B0IGN4wllqmh2tzJ8D3KCqKmPzWFcmNNNE2MpUk3oGa8nldTOQr+o3JCS
-	/aukkD2XwscWODZrq7UPTMrrbXxaPD4=
+	bh=+CPBc08APA4Bjo8uGnoOayzoN0W1iEMf4UGvoJoPqhI=;
+	b=F4n/EaeQJExkDI91rOprw4DsymXImXR1YpysjRDxvjBQlTGfuROspcxwW7SO4gD5ZAn5vo
+	kdnp0VVqghCKatLe3RiYNcM4x10OIoXf72V7VnansfrsRlywA1oT2kUvW4hYNyzoQGO7wW
+	1HcMSbSl6CjLHMpPOVAbjtlOLYFVcNQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qDZoBJBy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Uv2UWaUz;
+	spf=pass (imf05.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519612; a=rsa-sha256;
+	cv=none;
+	b=Yb1q7k0kBWdwTEOh2iO/9XPytUCCpPIQflfT8HQQBeaT7ipKcctM/K/ho25B05OSqgy3mT
+	vaJV8Kee8hslzLmHMywzpADMy8F+TtD8PCzcsNXiiele2gprdbvCu3+9IqZNK5rp/O0hzi
+	UayC1RJHScZDI3f7QylB5iPS1xEvmx8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3975A61420;
-	Thu, 30 Apr 2026 03:26:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F82C2BCB8;
-	Thu, 30 Apr 2026 03:26:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AF4D761336;
+	Thu, 30 Apr 2026 03:26:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B9FC2BCB8;
+	Thu, 30 Apr 2026 03:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777519609;
-	bh=iFqroCI9QhrRjRPr6nqnuqqWoIPtsKBpJSs5D3LwRHU=;
+	s=k20201202; t=1777519611;
+	bh=VshiWipAYtRyMnsD8HAzk//9Evvgk9O0E2BL+Z2O4pk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qDZoBJByuNsp58dPyZrm1NWzEP6bDZxrt4juzc1Ayrev7wPMACk+uUM41eKdHbD5s
-	 i6WA8mJHerklMdFyLbo0sLVn0Wn6JtNrrlu6qNz2XPV+xTwfEr2Ao33Ahz05lpp4G3
-	 NHYs0GmngPzMGLvWDKQZbDWIYnpWyiSQgC7r0FnDEL/o/BYqTsd2fj/qa5a5riwjV/
-	 qHReu8/iWe0Kzrh+UPBK8/K9grFHLk4eTC8pCN6N48Fw1G4diyvsMP/zpg6m8WwzEd
-	 Wuvzr7EgyEvnskXgDxRM78pQgyr7y7kHNbprI6MzT+kmtUllYIlaB8//LC96wQV7Xf
-	 WIQc8djoGzeYQ==
+	b=Uv2UWaUzVbUyIkgswzPmfhdYjkOpDsLPU3O/WJGYuLPii0uH5tUW/52XxirKakoWd
+	 UOuM2PUB7KOW1bgwglcr822uaES5i7LcF+WBOwNRSEheCp/iesotg9S5Mycm4t3zIa
+	 4fGTEdM9Oszy1Jxg1CtvOsaJoKHw4RHWDdT87crP/eIybS4+63vm+Q+Yf5sPhl9mCM
+	 Z1wnh6X3nJ8a4pe5efyJsskj4Qt+XmWPzBgBT+u1lUkn4POaCvOvYYiHycXgoFQrX0
+	 qfjM3O2/8DQFXcpbsAs+5P0iEHUHGEOU+izl980r9KdymeYwT/hPa2KwEk5f9WaTSj
+	 GXa9J+FBhfGjQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FC563809A07;
-	Thu, 30 Apr 2026 03:26:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9DD43809A07;
+	Thu, 30 Apr 2026 03:26:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCHv7 14/18] hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
+Subject: Re: [PATCHv7 09/18] mm/hugetlb: Defer vmemmap population for bootmem
+ hugepages
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177751956479.2274119.8317675820783174184.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 03:26:04 +0000
-References: <20260227193030.272078-14-kas@kernel.org>
-In-Reply-To: <20260227193030.272078-14-kas@kernel.org>
+ <177751956630.2274119.12592851885920371218.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Apr 2026 03:26:06 +0000
+References: <20260227193030.272078-9-kas@kernel.org>
+In-Reply-To: <20260227193030.272078-9-kas@kernel.org>
 To: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  muchun.song@linux.dev, david@redhat.com, willy@infradead.org,
@@ -86,15 +87,15 @@ Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  kernel@xen0n.name, palmer@dabbelt.com, paul.walmsley@sifive.com,
  aou@eecs.berkeley.edu, alex@ghiti.fr, kernel-team@meta.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, david@kernel.org
+ loongarch@lists.linux.dev
+X-Stat-Signature: fujx6yt7sozzdsd8chmy7j76dp1h19a4
+X-Rspamd-Queue-Id: 34899100007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF8CEC000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: ijbfszdx8mngkmqcwxcdgenwiajeaqwn
-X-HE-Tag: 1777519610-455621
-X-HE-Meta: U2FsdGVkX1/ue/qhuBfOIjPu1xkQYNIg1gN9VTgW4BJatfO4ABaq2ma/OaZW4n81mYgZhBqF8J8V3ZzP1oh/THRnKZRzxabZ5uyVtFs63a2Gg3znzQWdUR36fMgrjulbnl5LR0ncdUwmYIHi1szHGY++xDujtk9kh8uqXL6gllBy8aP+OfF50kmZdRJ9kEJ8vSayvH/wkqNO6sxjDQHlQ/2V+yiKEAw31uHuVfI/FbkGwgjVWPyEtbx/NT3GZkG5DZc06ESeZkiGwMHoHJ12NC+/S55TCmD73yEOZdr1Wg3BXjUvb7jcNbK4i0PrjMO+RdTIjkiEUkidZ2Yl7BKCQgAgdgHgXELQ55HR5+DdvdR93iRZzzx8wt/c/nLUEFP9aHkyDu85vXqSK4ebydXxza+v4e+KQGqZfdy/CSPnuVzg3mDbpN4raNV3xTi7oI20ELBYW+EOo5VxrbfKK3vAked/BzVJlrkMUgYbRgS1Oswhl1PGco3kIqSJOXWTeAe6grHgFNMViEKMQerpLpw/w4tMqjexkcdNgYs6IZIjvUsVwMi5UFuZrbNSrqExyg3EVtuBwSR29arelLMwRJsHCWE2Dl6o8EEr88agK6PI1Kmg3wyWChaXCgaxqMpe64eTD5MoGEXNSDtFe8H2RqAfg3Km0pVlJrBYq1VvCT7tZolEheyUXwyrEOv+NUres5mkMn/WDB7a1Kd6bRmwW/Gk/JfoSmNakLx6RBKvpiXirCY8DVPe/EmpIX2kyacF6AKunzhAaPzzPLgSShPM3SajfInZXYmJEYjSWINBxswgG/cQ0OsPsatrBh9gIfMfiI8iAeyeD7YnI+ZB1viPeFnoux5PIxztv8IfdKEBYC7ds0/77QlDT8leyMFHzeSoOcvTelHbphXDxV4/Jh0o4rO9YFTu9YPNLYZxWlBCVx7RXKghmV5/C7dk2Waq1ndM8XHBFc1Kqcy7NWXvXdLIe9g
- 8xTC2/ct
- +Zt0peJmYBrU87651nyO7wl83nTEWZsnHwNHzQS6aNTPnebA9n8HLDxSExQLAPuLo4S6GlBm/RXhpzTEsKSCSmePCk/B8NrVMDdqRz+aYM5ABkD+mki84NWqH9YBwy1lMRMqvWVnpNJMmnEJFRDsie1GUp00TCWd1lZWDhNUiuxOTut4TWzT6S2U3NnLQDkWA+Ke+vUwZiljhUXh+I3/t5h5+nXSCjX1KxDrxAArnUuwCKhLgs+dQbcsNeZgebGSOdkSAUvnzEGlMPpyU7GWTk4ugLVXMsTCnLHmpnRz9d+2GovSFfsYdz2110tZYb7gN7kGZZBmuVCKe2ZdQPPFEfyWDPEyiInn4OitHrG6DVpJrkfm9JtkkvSCLs0hg03b3qwMwxKUtS6cP16zBGtrsrr3iH9si90W0Ysvf5YgHKoRTrr2qfQpKwl87tebxGK32KSc0v5LP+Jt5/qrhJ/H0ZhKlugMtAaSXcqN5
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777519612-813040
+X-HE-Meta: U2FsdGVkX1+kGYrwmHJqlezwgcNHIBUAvylXvxDO3fnxGMtz0Qr6tSTUmdZ4woBxAtVwBlHsoQzjnb+aZhkax8xdCTXuboCMYuM9xKifxuuY8KJ72q30b0qc2lzeJndTyAtBI7OQLvOtUeVLcBvwlm5V0nrgCbi+EtBJ77nFQsdzhKSOyyfP7rVvXdBZYuw3tONnbkdkv50MEZKO2gcZKUBiAVy96iHdE9qZ3NW7wVteBVXhbwY/5gaaAKuJWxw5vTbFv8j91ssKu3u1GTbiM5IGaADH6mpINhGz6+JzQoDi1EUi3NYzQYXgxJEMwgAIDR6H7OLtDhII6H2uizEg2/s0C8B+zamrNubBdflWl3PRkMl6T7wkvqdXfcG7qgq1Nkr3QpOqATakRWEXML0MnECoOuJne2KL+OHyAoEeQAWRy+FDcwxKokE6VT8DYmu4C0Lkz1hSyScpiXN9dM52cXZvKOInc5WpmVEyIZaYlEPja5XH7y/ffErE/5R/m2k0tqwlmB+y8poCrQ9R945jzLP4+roFxh6LyF+bzu41eeBZenHA6BHVfNEaS/s/w6BqxgzYEGVEurJvbb+MBFLlG1KzZtHBzG/HCXsBQnjVJvgvfenRyPMVqgG1DTmT7jlLOGZhd4JiJn9oy/x7nAtmKNka7WNrFpKgulYD8vRAuv2iD/ldVJOutDL+dgUFsjNNVzeiLTh+x8TvInj/T4CwENY6znP7vwDym8zBkGTuv4SZUE/eKuBVaSTJXWWpPjYJgom24KGngn9/XP02UpXjPTiPCY7/i//yPtoiqlj5o+ITU6tJB+f2NJOjMDxW37i4XaUT9MCX7vCpqsrdgwqTf0tGqRvAseCgCBTjtw6r5kKy+pihYJLi6xfZqFrkxwTrk851a0j6ngGOwr+PBexLCHm1dUNwGo4G1ECWpJhnWIYEk5Ekh6Y9/FWKaOF3Hetd25kIizOhCE30c9eDLDj
+ B6pHFilC
+ 5ynubqWqiZwFvNzhHPOn84SQHmMhrCGOCfvUUQhnSRUl/cNQLw6thcy8dOYhlAm4CkMhnXm4iYiWhj7g8P+2TeCYPi+OSiUqEac1whvx04v8D8f6PS7iWsvLf+HwnuBuWE1/Ey0wzEcBaLYJPBQJcN2j6Beg7OKkszx4TVB96+eSYz6GfcE6sMLmmh8J9la8iZBFuTY0zE5x6Yx9v3NX0Ch2NgiPZ+dA4eARj/77mhcA4mAK3PfUotHojbtWvG7kNAqEj/eeRWh6UsxyNTk4hFH3Lx4zuhmRbTOf/lhsUWFpkos350V5pSiROkZt1dvSJieBMmHWIMO7RA6Kiwv3yV1bG/QO3k4uoS3TKY+lFl4hliQE3wpdC+TPw9VukWD5jRq/l3gHka8GB5qGMa9B2O8wpQaobTU3U8C+MJTEk+xON2M7j4HJYNLyQGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,20 +108,22 @@ Hello:
 This patch was applied to riscv/linux.git (fixes)
 by Andrew Morton <akpm@linux-foundation.org>:
 
-On Fri, 27 Feb 2026 19:30:15 +0000 you wrote:
-> From: Kiryl Shutsemau <kas@kernel.org>
+On Fri, 27 Feb 2026 19:30:10 +0000 you wrote:
+> Currently, the vmemmap for bootmem-allocated gigantic pages is populated
+> early in hugetlb_vmemmap_init_early(). However, the zone information is
+> only available after zones are initialized. If it is later discovered
+> that a page spans multiple zones, the HVO mapping must be undone and
+> replaced with a normal mapping using vmemmap_undo_hvo().
 > 
-> The VMEMMAP_SYNCHRONIZE_RCU flag triggered synchronize_rcu() calls to
-> prevent a race between HVO remapping and page_ref_add_unless(). The
-> race could occur when a speculative PFN walker tried to modify the
-> refcount on a struct page that was in the process of being remapped
-> to a fake head.
+> Defer the actual vmemmap population to hugetlb_vmemmap_init_late(). At
+> this stage, zones are already initialized, so it can be checked if the
+> page is valid for HVO before deciding how to populate the vmemmap.
 > 
 > [...]
 
 Here is the summary with links:
-  - [PATCHv7,14/18] hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
-    https://git.kernel.org/riscv/c/01b1d0ffb6f7
+  - [PATCHv7,09/18] mm/hugetlb: Defer vmemmap population for bootmem hugepages
+    https://git.kernel.org/riscv/c/209e6d9eb13a
 
 You are awesome, thank you!
 -- 
