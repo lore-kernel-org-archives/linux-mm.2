@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C8B0CD13D9
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD335FF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7D376B0093; Wed, 29 Apr 2026 23:26:03 -0400 (EDT)
+	id 74D0B6B0096; Wed, 29 Apr 2026 23:26:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDF736B0095; Wed, 29 Apr 2026 23:26:03 -0400 (EDT)
+	id 6FD586B0098; Wed, 29 Apr 2026 23:26:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7F806B0096; Wed, 29 Apr 2026 23:26:03 -0400 (EDT)
+	id 550536B0099; Wed, 29 Apr 2026 23:26:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 900446B0093
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:03 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 350011B968A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:03 +0000 (UTC)
-X-FDA: 84713783406.15.E113AAD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 36A966B0096
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:06 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C41B21A0385
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:05 +0000 (UTC)
+X-FDA: 84713783490.18.4367CEC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6732E4000A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dBlnnBYu;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 217A32000A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:03 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V2/IHGrf";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519564; a=rsa-sha256;
+	cv=none;
+	b=OKIwpdwqi8LKdMd+c9aNryQcdcQxQoBu69UUfhxE89RhPTon5ziuzYJKZDXlKIVQRKSTwf
+	WYXhcSHaC28yNvJSiNSnmoxqwk52zoWVYuSBWzj/0TDOc3QbsqodoM+yqdTff/pBbzNyI6
+	lWru2QRfksPm/rycPnFSVTORXP6KKhw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V2/IHGrf";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777519561;
+	s=arc-20220608; t=1777519564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6i/n2OIWbssFgspqU3XsUAyhEOujOux9IGEgU9tR/9A=;
-	b=VsLDWgipvBNkdNqLnk01uwnIV+zdAr99B6+wUSVrYzsS/xbL2G+4fLTEYrM7urbmgmwx8Y
-	zrcRTKDPuJUSJmCaMLCEFBE9JavoAv/YZxRWgiyug8k3MEa7MUB3U/25tzR8FgxrRDQ1Cf
-	lTYh/WFAkeQ40V5pheXL3gr5zkekhUs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519561; a=rsa-sha256;
-	cv=none;
-	b=WSW4I/Ku6Ahg/UWXo961RuEygxAQC9oaGq+iCBXADMVrUk17o2pXiahnAa4wbsOTI58+yx
-	y3EyxfDvJSeXDkRQQSrDyX1M1+IPZ05OhDBUvAa2YTlKwWQVtkrsqWdCGR+bADOwC0t0hm
-	ZB9BdC2oXNtjZ1IJtmEdM5+CJ9R3oSI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dBlnnBYu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	bh=xtZvvFsn7ntOWmU+f+LKjcOxYAtpK4lZ2ZorwARbkMQ=;
+	b=x1LWNFNW08lMjwSSbAZtLHpZPsPI9wLGmD86slTggtqWf7Gzlq1aOWhNzXeLHjjx7NufxD
+	cpcCX/M8B2X149iJrlijK9jgYZis/TLGxRX3qKfar54h7lIgUMdSX1F84/xju9uXsXsu2I
+	PGuDRrAuTaeswG4rS5BRPT06X/LDkGY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 68490445A1;
-	Thu, 30 Apr 2026 03:26:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EC8C2BCB8;
-	Thu, 30 Apr 2026 03:26:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 40E9243B2D;
+	Thu, 30 Apr 2026 03:26:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2178CC2BCC6;
+	Thu, 30 Apr 2026 03:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777519560;
-	bh=FqQgY6wUDRilF2lGF6AUp3SKA6W84Y4EVzMNWrmj1MA=;
+	s=k20201202; t=1777519563;
+	bh=uKdK5DO8u2N0tp/g6YrMeqTyIWEtsNmEtR2OQZOamME=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=dBlnnBYufwWMR1nExtz6aedB6xaU7P3x/0oqMjOtTdGUGUeJhPpncFc8sQY3bIxea
-	 XS/p9LPRIkyQYR5a1xzoJhZL0FGP3XnLB7ZOHUY+pjLBscTvEbhOx3347ogxt9Bg+O
-	 C2d21DtveABggnbmyzR85YZv8OmWR7FrM7RHm1MgP1DRBG3Ws+XDi1lSb5QcoQRFQy
-	 HggmLnjnOtaQyPsKj5Of94mOctLczazEPyKkSBrZTM0g4YEqgl8wDGz5u4d4xH7e3X
-	 tNGIsp/yArFBiyVYOS04DFlQB67Ot1uXHMbEsSeRTpDG+n3WdwGMNxgjPm1MfRZuFz
-	 N/I5dqZRvaPOw==
+	b=V2/IHGrfyciCnZ68jtYyLcCX+9M7ThJMZaRbPHBvBmKoRk+K76qcgOuTXYyo/kQf/
+	 h5OTplRTliCc4X63Y6FlfrVyvAdg5KYdnsvxSXwm9hkZAf8pdGxkdX/t+wSKmPKykm
+	 3o2z+7QFO6wUIvvg+B0mdIk+nx1z6uoJGIDFvup9VAMO4drdvfxfJ8iFN05E11UcZy
+	 rOwhunXd1D1ig0KRo5uu1vq5DA20gcZZ1Y5ckR+SNFRn+SNJ3mB2LionwukPg6k1ck
+	 b3Kp9ZgtCTOh6fyut2FuoH+jqJa7iiIMSyJ3HPmYm6RuG1wUntuJYtMYTQhd5hUjoS
+	 OIP4lynLo8F1w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF413809A07;
-	Thu, 30 Apr 2026 03:25:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CFE43809A07;
+	Thu, 30 Apr 2026 03:25:19 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 00/15] mm: memory hot(un)plug and SPARSEMEM cleanups
+Subject: Re: [PATCH v2 0/6] change young flag check functions to return bool
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177751951529.2274119.16732782086222000591.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 03:25:15 +0000
-References: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
-In-Reply-To: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
-To: David Hildenbrand (Arm) <david@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, osalvador@suse.de, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, sidhartha.kumar@oracle.com,
- linux-mm@kvack.org, linux-cxl@vger.kernel.org
+ <177751951805.2274119.14382362682727203864.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Apr 2026 03:25:18 +0000
+References: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+X-Stat-Signature: yaoapr67czejnepourdbuy9kittu3ea4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6732E4000A
-X-Rspamd-Server: rspam04
-X-Stat-Signature: fe3uotkyyuqm8qoinxp5ew669e89jgno
-X-HE-Tag: 1777519561-141702
-X-HE-Meta: U2FsdGVkX18QcmS9mYOLWrv9xfVitLSHXSqeYQq/fpdXG77Out6kQ/dO6foT9N8y8h7No5FHREYtw/hlRvumpL6Lwklqwsd2nVblRFbI8d6zxA80KN/okGdzjHJ0HXjcJX4mP6d0KhP2ymnUw2KISB1e86GuOdHRD16kJiTX4MaVJgJPWAUJpuHHcdBiX+Gw3BHyQynZAj03RBGUpZzkp9Ea13iCgTNRr4olIo6IY5jpUDJitFaL7QkbXuf2QcjDTOtnjzfASxdHU/vKwxxIvwg6GHGCz4hAmjxg+dq9fX+AUgiDluibsAWavUVnPMufO40u6BYYB+IsAu3OF5ap8/tXyuNfxwJ4Aww5HciSibUIRyWo268CQ5l+iWek0BKkEJgtFnBjLKY/vdRD+dkmlGT+BxTR89E11IbXhKCTAdo5dy9p1BKbOYEZD7sR1kaQnL1imfPurUqU14e14qD1jV9rQDNeEa+L44+dD3HEowzYCSdiiCagcfvQdxj9C8b0E3Hao5hs1mWM5OJUz2iGRyYm11D3pYkRiYvteTMcTsCuq1l5Yjlot/rK4AssW/7O5Td2RsBfvX8yVLy8qY1FQVXgsGlEh5WunvIbGCQBUh+pJzW4Z4ZZRTa+MP+tIISBMnAAQDLLIT2b0Y/k+nPb1V2T6m6BcmS17w7FZl/V1uPQHGhIdAhYQTW1eXYFLlqd3f4i7BwMjQcko2qiDA2wzOOQd2onKfTqBowVdBqeSVx5liAeMxqEHnksVL3YvjrWr1smVJPMc6bsfBPw5xW17o/pt9l3Rc+EdrnCtY8jq/HtpnWA2q54bYxP3aUMB0+d/gn9Jk9Gc4NyyxPKryiUcAUrCrSaywf06N1aTVQZb2hkGTE+gxN2Vu/yOai1+XPxB9y65EUDCiF8p2+gC/bKrsfnmjv10tf8MJHsfA6lvYljfDlbf9vxgtz0mQduDYSQe0P/1WCqmuwFRJ1aHJ7
- PAbH8kz2
- Oxi4tOr3MEIFCfmgSoEZU+5DdnSE6QCSUJ3KWWY7Ha02a40zdZb7gpPZoT0LvCPkIB3Q/vOX/SBce5Lg349Rq3rRDSIXe812hpjXg9VtQbMj4l+446YWbkAfj+kumIks2Gf4FvPID3A892HrN7LuJAuOST0ywyX9SjstcNHmsVTiNqdqQGXzqemzLo33uRxWg7O192hBfIc7QxFd55d/IVsw1GrSPJVNi4neeVZ5QmwMA3lU+rIGCE8BHtHMeKdQpOJ6Hl31Jf390/t3hlf1gc1LUajRi7qO27pHAEp8wyOt83eHCdGyJ/NgvUDQSFa9dq0wt9Kmbou61Q3HJxBLzHXhaJnXRpbvrnQaGa+L4hEyw+kGrTazT7xI0CLGMOvhkav2l91V7hgBVHfI=
+X-Rspamd-Queue-Id: 217A32000A
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777519563-29391
+X-HE-Meta: U2FsdGVkX1+8+ieONt0nIjnD70M3V2RvZL6g9jvv0Xjb8lrOFLL636yZ6rIIMH3wpMPCYtrWuSAGprgZFSzdEgpF5/zDuitRecSQg17xxxzs3gWbn/5WCi3WnJOflnA4i5g4ycf4VPquZ1Utgjyg5rph0Qm8QHR74wOG0MIbutQuFXTIp+CNVa5DnL0sVbGUA6A4r18X10oYWDj0j4HQdivtiyIWbIaL44uLvFo8ur0IABTDtF9CSc2pSAlZ5F5hLmmeM9oxEpCfSZwMqfWM+yx99PlOgf8hQrk7w/GeFPaKpQQeQX8ihJfqgfkphnXh3+x8zQBzzCa1nzZT92I8+RGmckkR0XSYol5xB8h9Yj5N3a3MJLpwzRCDM8wGkc6fMDdfPgfKwqk8jyivhzQ1rPFFouM8hj6RYHPx54jQWzr+ujQzImk2+79R3yIDUA5ZrhdG7Bjy58SlvKTenVZK42g/sCAEVD2ikWfX0mZxyVPBbxmlMEAQrKG9HNcexHSPkI+LXCug3MZeLmMAAGb/E1aVbWK7aggiCwuBAqNADmktfcLsFiriHDva+9oq+hglp94+hltYF8dp6r5lnk+ijOzVMRLtapz7aVQrJTSMm1nvBtg0SnOMQPlk7tJuq9Dfmrv75alX3W43bM0YAp+CXDJgLeJG6rTvSvYAT+n3TSHkM79xfChkl+imXKUJm9kECPNxvk8h61zUBtYX0zIawz87lpnuuBae8GPfOokvGsrBWLhFO9/sLX94GxEEC1YbhjSsqUkK2EJsYYiZsjFyphdpc9IfdQaHT68+GJd6h7D1iBnO0O0HaPwtKNAw1w3ihvRaO8HV/JbfZ5oDc/0AnDEm+DeIr4w3K6jqCJ0GcVYAtpg+HHyrOmfj3++S0qR0MtA+05OXezoqUD5tw36foC4d3aIweXSw5Svv4/BixIj+6BysBAqWEye04K2pKmj3p+72mVf2Jq0+W3HI7al
+ uuTezcId
+ FzAhSd1G8cQnrPAxd/Ygi6iuGwnIcQhptjh2ysFLGHqoOApA3GIa2qWq4R0VL8MV62N7lXH9MiOTi0CrfcrlbmE79OsvVp9nL7Z6wHuZFrQPiYP2VetqLn2zeiZRXcCG2mP4n/AH17lCwKVnIwVl0+pWZ9FIVtCPLRRMClzXZb4omwXeit2JWPBi1IIy8U9rIZ0f66AAhDkoQSXsgToDJO42Rss8lv3G54kSN4JpeHsVxh0lhCdvNzPBd8j75Q5oQ783epm6MtiE6arZiztxhIG8UkHZPL6Z4w22VrkDowhffZDbkywB+0dbPMyh4bVdDbn4Eb2P+zxxUTCsMyrwH6DV/pgCM0LnhmXaK1d7b9mVC/yT+pNmP6/I4s/KFDX6hxdlxDkVyDBuF80y55eAvsh/2BIUfu78oVSL5kF4Twe0KuvX6zAEnNKQSEQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,48 +105,29 @@ Hello:
 This series was applied to riscv/linux.git (fixes)
 by Andrew Morton <akpm@linux-foundation.org>:
 
-On Fri, 20 Mar 2026 23:13:32 +0100 you wrote:
-> Some cleanups around memory hot(un)plug and SPARSEMEM. In essence,
-> we can limit CONFIG_MEMORY_HOTPLUG to CONFIG_SPARSEMEM_VMEMMAP,
-> remove some dead code, and move all the hotplug bits over to
-> mm/sparse-vmemmap.c.
+On Sat, 21 Mar 2026 14:42:48 +0800 you wrote:
+> This is a cleanup patchset to change all young flag check functions to
+> return bool, as discussed with David in the previous thread[1]. Since
+> callers only care about whether the young flag was set, returning bool
+> makes the intention clearer. No functional changes intended.
 > 
-> Some further/related cleanups around other unnecessary code
-> (memory hole handling and complicated usemap allocation).
+> Ran mm selftests on Arm64 and x86 machines, and no issues were found.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,01/15] mm/memory_hotplug: fix possible race in scan_movable_pages()
-    https://git.kernel.org/riscv/c/89e69c7d187e
-  - [v2,02/15] mm/memory_hotplug: remove for_each_valid_pfn() usage
-    https://git.kernel.org/riscv/c/9d80de66a046
-  - [v2,03/15] mm/sparse: remove WARN_ONs from (online|offline)_mem_sections()
-    https://git.kernel.org/riscv/c/e66383b6746d
-  - [v2,04/15] mm/Kconfig: make CONFIG_MEMORY_HOTPLUG depend on CONFIG_SPARSEMEM_VMEMMAP
-    https://git.kernel.org/riscv/c/fb3c3f5d27ef
-  - [v2,05/15] mm/memory_hotplug: simplify check_pfn_span()
-    https://git.kernel.org/riscv/c/62257a5fb987
-  - [v2,06/15] mm/sparse: remove !CONFIG_SPARSEMEM_VMEMMAP leftovers for CONFIG_MEMORY_HOTPLUG
-    https://git.kernel.org/riscv/c/119c31caa59e
-  - [v2,07/15] mm/bootmem_info: remove handling for !CONFIG_SPARSEMEM_VMEMMAP
-    https://git.kernel.org/riscv/c/41293414433a
-  - [v2,08/15] mm/bootmem_info: avoid using sparse_decode_mem_map()
-    https://git.kernel.org/riscv/c/7f8e592bb327
-  - [v2,09/15] mm/sparse: remove sparse_decode_mem_map()
-    https://git.kernel.org/riscv/c/22688ade3b54
-  - [v2,10/15] mm/sparse: remove CONFIG_MEMORY_HOTPLUG-specific usemap allocation handling
-    https://git.kernel.org/riscv/c/dac89b150bdb
-  - [v2,11/15] mm: prepare to move subsection_map_init() to mm/sparse-vmemmap.c
-    https://git.kernel.org/riscv/c/fead6dcff83b
-  - [v2,12/15] mm/sparse: drop set_section_nid() from sparse_add_section()
-    https://git.kernel.org/riscv/c/b551ed94d959
-  - [v2,13/15] mm/sparse: move sparse_init_one_section() to internal.h
-    (no matching commit)
-  - [v2,14/15] mm/sparse: move __section_mark_present() to internal.h
-    https://git.kernel.org/riscv/c/08e5f77c3720
-  - [v2,15/15] mm/sparse: move memory hotplug bits to sparse-vmemmap.c
-    https://git.kernel.org/riscv/c/738de20c4faf
+  - [v2,1/6] mm: change to return bool for ptep_test_and_clear_young()
+    https://git.kernel.org/riscv/c/a62ca3f40fea
+  - [v2,2/6] mm: change to return bool for ptep_clear_flush_young()/clear_flush_young_ptes()
+    https://git.kernel.org/riscv/c/06c4dfa3ced6
+  - [v2,3/6] mm: change to return bool for pmdp_test_and_clear_young()
+    https://git.kernel.org/riscv/c/42e26354c4ef
+  - [v2,4/6] mm: change to return bool for pmdp_clear_flush_young()
+    https://git.kernel.org/riscv/c/2d46a3974721
+  - [v2,5/6] mm: change to return bool for pudp_test_and_clear_young()
+    https://git.kernel.org/riscv/c/fb87c8827297
+  - [v2,6/6] mm: change to return bool for the MMU notifier's young flag check
+    https://git.kernel.org/riscv/c/1fc7dc675e26
 
 You are awesome, thank you!
 -- 
