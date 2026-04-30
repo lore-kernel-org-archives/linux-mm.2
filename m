@@ -4,128 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D01FF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 12:10:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5064CCFA13
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 12:11:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EF636B0088; Thu, 30 Apr 2026 08:10:01 -0400 (EDT)
+	id 4BC616B008C; Thu, 30 Apr 2026 08:11:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C6006B008A; Thu, 30 Apr 2026 08:10:01 -0400 (EDT)
+	id 493036B0092; Thu, 30 Apr 2026 08:11:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DD136B008C; Thu, 30 Apr 2026 08:10:01 -0400 (EDT)
+	id 3A9796B0093; Thu, 30 Apr 2026 08:11:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B8F26B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:10:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E5FD188631
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:10:00 +0000 (UTC)
-X-FDA: 84715103760.21.26DAC28
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8CC6E140011
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:09:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=YaQNUCCD;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.49 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777550999; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 268626B008C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:11:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE7A2C0666
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:11:05 +0000 (UTC)
+X-FDA: 84715106490.02.61E4548
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C5C2380012
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:11:03 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DH104wOY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777551063; a=rsa-sha256;
 	cv=none;
-	b=JU0mqDQQNFTl4DAhJi7WbUYfDpozKb2jf7V4IgiySaTCkmpbd75aRUYwz0nwyzoh1lCoU4
-	p9CKWX1l0DYdzO78KKjdieyt2aB9RD/kLmWxmh5yT7KLG1ckP8yD4L3L7woJS4IWGPmnT0
-	mEXTbC/V2ihv/IBEiWBuB0VCNNmNb+U=
+	b=ztDhYGhqdJ9w4McDJWAoc2ejAMCPwZTiEwdNAV0CH85COZyMGPcxm4wOmEublY+9ij1zOl
+	nkBY//7JZ33NFtinYX3p4qXcJyUayIOyKfw0xh06aJHlVu+cqEPLatIRug45KKnPin/TJv
+	AIGwiOV0MuUhKnyornf9WrDJ01/utKU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=YaQNUCCD;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.49 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DH104wOY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777550999;
+	s=arc-20220608; t=1777551063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BM5KrwxlYL2yWx54/IrxJMUv0ov8gisDWiwFBM3mToc=;
-	b=P7aeBFgwy/Hm+PSyMwu0i4zW0Kp9SHANcVPJb33vYnTWEuHaur+b8yLhqz67AgXBbtD5Fd
-	3tpPrqsjAHKQ8z+SRUmwR0Y4PrE6eyeB8gfI2DAVR9hC5vxbjBLN7T93NF9qyMs/7c3uf+
-	zbmEom+xjpljFmmUdPZb5afntBUNocA=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4891c00e7aeso7561945e9.2
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:09:58 -0700 (PDT)
+	bh=t1qpxAkuAsOwU5i725XJCGiCdOGB9mh34dV03O6Zark=;
+	b=ym7bSDvPjnKhugsDZTUcyWdtiba0sUf9yGY4jSGPSMsDXeSjHs6LIbA0dzZyYOwKbqZvI4
+	e9AmSaSn/F08s15YBL7XNukisytSbeiVrg/50nEteNswDlDavHuB7X7s9OpbpZeaEBxgrz
+	+NwKWdmdtMOkQ4MYQVhgoOXPTqoqz3E=
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a40b2bc96dso846356e87.3
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:11:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1777550997; x=1778155797; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1777551062; x=1778155862; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BM5KrwxlYL2yWx54/IrxJMUv0ov8gisDWiwFBM3mToc=;
-        b=YaQNUCCDwv6U/J4YHOLJTOV82nhvoUNM0UnGtU4fsgYiVIvPU6tc/rbNXKzDv1VKfy
-         z7URPIa8i/rebHfu0yVgJZ6dZ8bwbnUAhCJ0HrhmQIl/eilQabuPXjJ7gzGE4FfRWpX2
-         ITlplgldIswP45xysnckpXCsgNo3Cs51C6qCYgVArhMy++Is+hrZSroWliSDqcyaPixb
-         AtiUu2eX03ca2YZOXBJTd0u+j6CorzopYTUawbsCi6hfq3+uS/Mn7WY5DCIVnOjJGRZR
-         mDXjvLF55gAjvlIltW9GDps89RaYs9ind2JkCOBS+33CTcc69rLH8tbwI81aemA2xo4p
-         ZMJA==
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=t1qpxAkuAsOwU5i725XJCGiCdOGB9mh34dV03O6Zark=;
+        b=DH104wOYAimHiVX+dUUXnew2p5J51gBxyuvQJJmFUBc/k6YvFA4N2N70KGXU/2O9wH
+         FSAuLb1VqwAJ0cab2RF+dWmAH5hhvwGORN0ZS2zZmSxPFFmCzzno2ygeJmOPaoizW60K
+         jkd3QqRDk4O1tdrO90G+4YTogk73VayUFkJ+bpHB1YIy+JZZGE44zzBYf4moqpnJ+9wr
+         UZ01VZO2Jkd7+XpxjuObF2SiPQpZ05h88sAX5HRdh3LMduPuPZWZr8kYlGnEkQTLmAX1
+         i0zASs7GZ1mpNuHQpkYTTIiHwWyPudn1c7t3HpKKgKYsfTMbIjblZvFKF33m36JeRMgZ
+         yhBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777550997; x=1778155797;
+        d=1e100.net; s=20251104; t=1777551062; x=1778155862;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BM5KrwxlYL2yWx54/IrxJMUv0ov8gisDWiwFBM3mToc=;
-        b=jppdJhIJohvvGjo/clusJmiULCLBRUIQQQhdkItvVl2A/a4WulalpN7xQ9VMXoatiT
-         jFuasga6bciWaeKiOjV2blGJe+nt0RG/181S78ihkeTQC95++abbG61Bu6JcQv1qLElX
-         B5dVJOIjQ0JhJfDanKOLsf0wUxZVzD8KEjXYsnnidm24hyI3Ndolz4cPNBHgpsqqoZ1A
-         AenWgA3oyc1W6H1dmKkwtaD0jShVkE4LgN5RzBZmEyxXH/fikAcwmPoDV7YYnXZ2lhw3
-         oFVKmgjL8y0Pw3atFmmXBXVMRvWLm2i57NGohd1zEuJ5H13ak1tIvjAqZBiGfHpBc1uF
-         4GDQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+EYFDPRt4rBZJi52jZkbqK2rvMOMWuFuXo96qlE92KcOQaqphek53F12RZ+6P+S7NJ0YWK6W8NkQ==@kvack.org
-X-Gm-Message-State: AOJu0YyZo8twSyajrDJ80J2CbIlwcy6afMXnW4BdUqOUO2WheWnato/o
-	itYz+d++RncVmZso5cQIXB4IJxPViqv5/C307Q4xWsy+oNr/7jXdWPogys+QxrF7B4Y=
-X-Gm-Gg: AeBDieuHiPcI+9aMRScxqGnZZyjZWWNYlQ6WN7a3zbaJMxH7c9ihQQDudmTcHnRDqH6
-	lJ/Zo10FBKsZ8tUGHJnbYRQumMa3PfxqixGdeuS1ZRAcXrTw+QL5s6l5rP183KCkCyV0QWcBKZj
-	/cv4hdDvpQgNNQEa3kPAqOeM7hi1gy/sTtbrarZPPwNhdkqihA7/xkzsMxNX080mrSjnIB2nMFH
-	E1KYCeqMGIfoCBU5aWsOcD74TsY3r7MpOjFYvZDkdAGVwCqxiQOUidpCThbbcQHqxi0J60QpHnL
-	UDTPRR+9i/PdL9/l0Ag9RwVsFALA8QAlgjmgjQ9hZ/4IOMs1hw6pSIzEMjCzjJ51x8/26ptqG+R
-	Qjvi1U+i2YkBNP5xqwUHiWSLKa3dX1f+Gwp5HgrVvZ8FKDLruBKRvfuNvf7YhSk8Fvyqk0lMYQf
-	jfOvpq8vyM4StFuZJIMMgKR9dHcQ==
-X-Received: by 2002:a05:600c:5254:b0:486:fbdb:b718 with SMTP id 5b1f17b1804b1-48a8445f451mr47883195e9.25.1777550996490;
-        Thu, 30 Apr 2026 05:09:56 -0700 (PDT)
-Received: from localhost ([2620:10d:c092:600::1:2d86])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a824f9f0dsm58153455e9.15.2026.04.30.05.09.54
+        bh=t1qpxAkuAsOwU5i725XJCGiCdOGB9mh34dV03O6Zark=;
+        b=CGugZkRIh5oxCC+y7fSC7u+jPgjuX99g1wJuK5CweTlIWvNaY42mkDURAMGmVqzI9Z
+         pVQQ3pdOrkQMqlLqnk91ifmrLQRwU0hAuqAwabPhG7FbaBsXwTVZinj7P06m/700dYv1
+         bF8vSbo2IPXq8wZh6ELVgrkufJSogLNX2rBRWPUAxD6Z3+sWDX/p5q2YNoXUUhs4yDlX
+         scvo4ROqHyIOn1eR8/JXs/u44LP2ca741ewduU6owdEWFurV/GCpuP0lF1bc+w0XXNiy
+         lOClJdFt05uQ5bkWfVklmFhbCcKvAW4xq7nhdsT1CVvqw2WEwGdrJXIg1WP7Nk+6AkF7
+         vw/g==
+X-Forwarded-Encrypted: i=1; AFNElJ/ND9/ktZ8nEeFRle1tWTvS5pyHQbN6kFfaXWzzhzuouszYrzxkXLZmp2KlSpyjSXkscEVlUOsDtw==@kvack.org
+X-Gm-Message-State: AOJu0YzPbOJpB0KAU7Xf96aTPoTZR2xEzafDYaqgdpKSdcOIzTPjZYA2
+	IgX1ge5dIOXuzQamL0OaoFV0lUDpkd/EeUe7u7AG0B3xQQslz9wE7uN4
+X-Gm-Gg: AeBDieu0tho56RAqZgq16ydIIP47CMCp9ZSblNfrtlW4/5hFBs20i8c6Y7jMlJEkxfR
+	8/Dc0zD6FTs6yDdeQvNZ7X2jWDkO6x8XMISSUZn6FcfPX3A8Rlb6R79QbMRMnYtNwoGkHUD5EIY
+	bd8avtieE1fP1SO49wcci6fBxTQ/5XZOMVqn3vYCH6561DnEZgpvkx7FvX4tRQpv/22vmS3TtNI
+	Uo07GD5AQPUXzsu7tEi+EMfQ3RZ43Lk6kFAQva7xJUplKiBDFfiFiQDESfVaMq4LFzJVb2nLiJ9
+	a4duUFlL+PmWqn6hMff3WXA0F+ccZ0p7Es4AKPJKgx2Z0tf/d8/YM4IKo95YRBujv/YAAvN3zms
+	HlyaZfU7lNQuHz5/gv9ihAVVNp9JzWnuYtMKeM0ungkDXsb33JyQAWu8La5YGQZfgWMeRMzXPRa
+	1/OdUYVNuF2LOE4IZSzxnEXCROgS4Kfvoyu46FpY0J919piSBX+JRZbkXq
+X-Received: by 2002:a05:6512:1092:b0:5a4:1add:c574 with SMTP id 2adb3069b0e04-5a8522b1d5emr849686e87.5.1777551061318;
+        Thu, 30 Apr 2026 05:11:01 -0700 (PDT)
+Received: from pc636 (host-95-203-5-23.mobileonline.telia.com. [95.203.5.23])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a74a769570sm1386080e87.66.2026.04.30.05.10.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 05:09:55 -0700 (PDT)
-Date: Thu, 30 Apr 2026 08:09:50 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
+        Thu, 30 Apr 2026 05:11:00 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Thu, 30 Apr 2026 14:10:58 +0200
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Muhammad Usama Anjum <usama.anjum@arm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	david.hildenbrand@arm.com
-Subject: Re: [PATCH v6 0/3] mm: Free contiguous order-0 pages efficiently
-Message-ID: <20260430120950.GA1738@cmpxchg.org>
-References: <20260401101634.2868165-1-usama.anjum@arm.com>
- <20260429103326.GA1743@cmpxchg.org>
- <20260429050430.d86f01dbe731edc9fa932add@linux-foundation.org>
- <9834200a-492c-4705-a2b2-e76cc0ba5392@arm.com>
- <4ff3d230-d48d-4a9c-aac8-30a7b80c4775@kernel.org>
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hao Li <hao.li@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 4/8] mm/slab: introduce kfree_rcu_nolock()
+Message-ID: <afNG0jNQNYeZ940g@pc636>
+References: <20260416091022.36823-1-harry@kernel.org>
+ <20260416091022.36823-5-harry@kernel.org>
+ <aejeVK0J_jHSfVhD@milan>
+ <aemevSofweaUSx0n@hyeyoo>
+ <aeoD_Ts6hLsgNc9-@pc636>
+ <3s4jafam3la72a6y3dkfvhtzxk3fsngb2cka3bpfqrirl5m633@pz3vzizefoxb>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4ff3d230-d48d-4a9c-aac8-30a7b80c4775@kernel.org>
-X-Stat-Signature: ci8dqh7tbnx7ggio4jkffosp5jx3qfgk
+In-Reply-To: <3s4jafam3la72a6y3dkfvhtzxk3fsngb2cka3bpfqrirl5m633@pz3vzizefoxb>
+X-Stat-Signature: zqdnodw734mwios45p7gufn3f33er7jz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8CC6E140011
+X-Rspamd-Queue-Id: C5C2380012
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1777550998-988525
-X-HE-Meta: U2FsdGVkX192MgRXKSoQuGhusZ/hQXAvy8Mcfsfqsg1xrSBl9xM55VKwn/HL8CDWHS8iNIKi6HFLnQqXY8MsNKX3Q/hBLKlQUOcMUslXYjJ0Y9fyUHnTUVWK5k2BRAZjD9Md1EGzb8HE4vT4P4Vbma4JsiyWAp+1PV08Ak/m4yIv9pbOdiydULOZfo4+4UaBc/rDGaKfHM2k3OffSFqANFLJ82cHSP49ptPrgUzRyKdPGe2tzuPtbWDq0sFiZGmM0v3GSLAamPLiaXrxQ8kgXZOyuoVOClBHCFWZGjF/nwwDC8L5ej8r25ljH/49m4i4FWEZzc9H9NIRUhDTPAsEm9JT1eeqkP10Asa/k1B4S73S9zz2TGICqHnGlIeLAvcZdLngy6qXBY7mK8ZIxjV1aYOULtQe+oCfp1iFYs2qIT2a5rqpVYqk8ITUJ+YhsiHnUcuidPXKSs+9i4z372WVz3Zw5oyZPX8ikSg1NrZ7YIuCnwml55xh3sTRoIFyRKUdk/80ropNPg0dVcfutL/pgahpf0qnzCoEjsJEK8h1fu/S+sizt/rT9YRSw6ezs6TkE4PC9HkTT6FjRL6Dvb6XN90Nu/b/F/2wHqOL4ZjRJHapSWPtsu7J3tl4GPfRYQ5oP/CH8Qf1YObkVbwYyPBperphaZ0RLhfFwHL6qjqNnz5ZDVnmMeQWFYopk8dxiqwbnRkP57+cUNnC8GEMIRlNkKlnL716mwZyzCz3aHLDViibExboPR75hGhvrE3YGPjt3Z++z5/21n+hN7iyTDKQRVACiFe5VALBtNYjbhOSkQonIGbKvNXcTSA93pxcVpXXIgYZPVSAaWd+qFxEB0+zwPi+MZobGq2ypr2Lolm2tSGLDadziXdrXcWYR+Y4XKTslQmr16K9jbFYsWt1JWlMIO963kSSsySaUgnvy59Zyd64r5BMTZ6SPcqxJ1mM06jtJSMoOrnx/ZmzE7jXGQS
- S9a9ibN2
- dijebEFN7bS6AIlXHXi5rKifRU7YoEBt7d/VD7rJHmJXoxuk7aK3qEYY9z4Cu9gVZgDfnjNS0fgD+PdAnYiwfuB1uChPQYletTaI1OCDyW2WUhDiSueT2aXZ2eHnHebiXOyOVq5hXSJxUd1PjWuNV7U6L6W82Ewq7AFVL5hCrFFY7l55ua81wsIFseiR1lwkTrBJLffUaGX0LyZMPZoebEfjyWvmZL3eHcYhR8h5QfjNDGfWjZc4CXCz5JBMRZ07zYdH4oynX/9PS4YkiP50dt5WCa7/L82aRlY7dQqQ9qyffwBsstxoexBPRGQyBaLEjh+pOUvj9AxfK6el2DqWCOA63UtyHHtePWuGlAmfzqqRUerX4bPeWJ46aWb/zCqCro+JKKyaG1ODwKiWV2p1gAWHZZy6p6nrY1Psu4jDAMQXEFTuBFrrWqOLh8OPRyQCvrLrm4JV6G65qM0S/7DOWvgHs5Mbp1AvTQNevbXp9lOenZHzgVkfMNUbXRSKwtb/Tm/Gi86YW7i6T1X4ivt7VE8mBWmtSGQTQaRgp
+X-HE-Tag: 1777551063-390462
+X-HE-Meta: U2FsdGVkX1/Ld5tNLAKuBpcp+FlmxQdCzypcEbLgcUWOcdKpjscxTtSQoYMmjtSd6wrDc0s6ndTDcm31+xDSXHFjSrV3nJKICyIRq0C041BDh2knnmPEJ2/ZW2SApA6LwcaS6JEeDj8+ppVxPqP5Snolivw61u6iojriM/RP5SbPtNeESBREDxyt8/Hvx7m4wmNWBACLh1LjW6GlnjL2eUm4OBKtltZWJcxdhKLdCcoE5Gp654DyFRnxD6sdLaMu5gk7F9lDmPgBEuFNzhY0G70ypVVORH2SDXyxes8dJmALpZdfim6zfIACkimNnFhJ24kC7aXqMvialLSH61HG2JnnBg49KE3XO/N5d/05eq5yr4+qygKGZXud8QjfocZ15Ej5oeraVDrPVjG57cf4I0/LAIJM7DzQVp/rHxzej2F20cBz4wWxFGIQ1RzsEznSPlTP5BIxt53fjgWcbAx9ZCJ9OrXkcn8STD5eioUKNrGtjGnfyMPiCDBsrSoTjGw4fnAsSAbi+YfHUS4UI1NNFWOYhI/KoeZsR+qzr4nXAHiak/MDRirxqrw74drgG9zIi4YFgnR5HFpZgIsA4EY1OE7h+vrk/ZIXD5NJpy0Ay+gwiiyT/EnkP2fWBlo0859FVrG/SHKMTABPlBGb9a6jDMkNGEm6RmJtN38YbUGeCAR+Nd6aXdC0qkikO1HtPSc5daUPPnRSGiIWbHgyCwkCv/yHuXtfvK7rgDs9z7u1SRUgI7x0LXE/6jRMOwhniXVOlOzNtaIMsQFr1l4hYpsZsUhoXMZESCBOpSX3iAT0ykpNShUOJO+MCYxUR/Ke4R7eycJXtYAvQm5JQXkVbyJnhWea4dJfc3iYdIB1u6KIA7RHHOtvQZDEvP3J2evN9fZ2qBE0ybAiIfeMWH94t8f2MvTt3gB/2aHybXcjaYub3v21clMaVivPpuvvVE9a9GVBxEJrxgrr4PoGNB0Rolp
+ ESUxmXVw
+ LJdTcNqdcRV5q2Ts7fUJ0Lmzi9tN9H/Rs+IZ3wjvInU4c9LWm1tr7hL/j/10UINsLhOju0PJLV+dDn/bpjoPDCRRqQ+++HQsVcXk3qo788r+zxFd7zxy/0jJYe8pjnsdBG62mJh8uMAU7s+ZkXeTcU/dWu9yRphbXpptdh5fbhVlTBmdWolxjGbOmLAFBVF9BlUKFoRorg4qHyLhJEq6d0apvlSaZ1XZfMnRrAeZcp041T1gKH5IfFgm/gH0Dtkvydxm6d1ayHZqdtVahcnyxbYf2ZVkbP/Q5DBCt9Q3upXW46HBchwnjbfV4XduEh93TXvufN39Ifk2WBE6Am+tqoNB2ZNtU85CYLyWb87Vp98MYq/7OSN/OEOWDFnYbI0Tmr9eA1qbiPljmtHhKycpXOTdJSqZpP9Gqmx0IbYwiGfyolwcc333GI/YxtnwzCRD4GTZj6mLH1lRdAM7BDGsaLZlmvx40c8Fe9BLt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,62 +137,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 29, 2026 at 03:04:16PM +0200, David Hildenbrand (Arm) wrote:
-> On 4/29/26 14:31, Ryan Roberts wrote:
-> > On 29/04/2026 13:04, Andrew Morton wrote:
-> >> On Wed, 29 Apr 2026 06:33:26 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
-> >>
-> >>>
-> >>> I think we should revert the original patch.
-> >>>
-> >>> The premise is that we can save some allocator calls by requesting
-> >>> higher orders and splitting them up into singles. This is a frivolous
-> >>> and short-sighted use of a very coveted and expensive resource.
-> > 
-> > I'm not sure it's that simple. First off, vmalloc has preferred to allocate high
-> > order pages for quite a while, it's just that the patch you're referring to
-> > makes it try even harder. So reverting the patch doesn't completely revert the
-> > behaviour, it just reduces it.
-> > 
-> > Performance benefits because those high order pages are mapped appropriately in
-> > the page table - i.e. 1G PUD, 2M PMD, (or 64K CONTPTE on arm64). So it's not
-> > solely about the number of cycles spent in the allocator; the HW is used more
-> > efficiently. vmalloc only splits to order-0 for the benefit of the caller,
-> > because there are some places that assume they can access each returned struct page.
-> > 
-> > And all the order-0 pages of the original high order page are freed at the same
-> > time, so it's not like we are destroying the contiguous resource; it remains
-> > intact for the next user (well, ignoring that some will be freed to the pcpu
-> > list - this series solves that wrinkle). I've heard it argued that this approach
-> > is actually _better_ for conserving contiguous blocks because it's keeping the
-> > lifetime of all the constituent pages bound together and reducing fragmentation.
-> > I've never seen any data though...
+Hello, Harry!
+
+>
+> Hi Ulad. Apologies for the delayed response.
+> I meant to reply sooner but sidetracked by other issues.
 > 
-> Right, that's what Willy has said: allocating+freeing larger blocks, especially
-> for unmovable data, reduces fragmentation as a whole. And that theory makes
-> sense for me in the context here.
+No problem, sometimes i also can lag because of other tasks :)
 
-Do we have data confirming that it works out like that?
+> Your questions are fair, but let me try to clarify
+> the current situation.
+> 
+> And before diving into details, I would like to reiterate that
+> there are potentially two points to discuss here:
+> 
+> Point 1. Can we justify complicating subsystems by passing
+> 	 `allow_spin` parameter all over the place?
+> 
+Yes, we can. But as i noted i see some drawbacks :)
 
-I think the missing piece is that as long as we still *do* have small
-order requests with mixed lifetimes, they will punch holes and cause
-fragmentation. Large requests need to clean them up, which is
-expensive. You can of course make the argument that it's really the
-small requests that are the source of the cost. And I would agree ;)
+- all new incoming patches have to respect that new third argument;
+- the fallback mechanism which uses irq-work is not optimal in my
+  opinion:
+    a) We introduce an extra window between queuing a pointer, mark
+       irq-work to be executed and then reenter the kfree_rcu() with
+       no-sync flag and now we need to wait a GP for them. But the GP
+       might be already passed for such pointers. So we potentially
+       need more time to offload. This is rather minus.
 
-But adding higher order requests right now surfaces that cost. We've
-seen that everytime in real workloads: THP, the large page cache
-requests, and now vmalloc. They all increase compaction rates, cause
-failures in higher-order network atomics etc.
+    b) Since it is for BPF, allow_spin is always false, thus only
+       fallback path is used. Decoupling comes to mind.
 
-I do appreciate it's a chicken and egg problem. But I don't think we
-can justify regressions from now until there are no more small(er),
-fragmenting requests.
+    c) 
 
-So we should still require some form of amortization story when we add
-larger requests. It's not accurate to say that they pay for themselves
-right now.
+Why should we mix those? What it is worth to do, is to prevent mixing
+"unknown path which is for BPF/others" with generic kfree_rcu().
 
-And the small cost reduction in the vmalloc alloc path does not offset
-the externalities of consuming contiguity, not by a long shot.
+It is easier to go that way and more cleaner, IMO. We need less code
+and we fix a specific requirements.
+
+>
+> Point 2. Can we avoid adding this complexity to kvfree_rcu() and
+> 	 let slab handle it instead? (as mentioned in [4])
+> 
+it depends if BPF people want to free a pointer using RCU machinery?
+Do you know if that an intention?
+
+> On Point 1: IMHO it could be justified, but at the same time I hope we
+> end up avoiding more complexity in the long term by working on Point 2.
+> 
+> This reply focuses only on Point 1 and explains why it could be
+> justified.
+> 
+> On Thu, Apr 23, 2026 at 01:35:25PM +0200, Uladzislau Rezki wrote:
+> > On Thu, Apr 23, 2026 at 01:23:25PM +0900, Harry Yoo (Oracle) wrote:
+> > > On Wed, Apr 22, 2026 at 04:42:28PM +0200, Uladzislau Rezki wrote:
+> > > How much performance do we sacrifice compared to
+> > > letting them go through the kvfree_rcu() fastpath?
+> >
+> > Freeing an object over RCU from
+> > NMI context is a corner case. It is __not_ generic.
+> 
+> First, I want to clarify that kfree_rcu_nolock() is not just for NMI
+> context. It is intended to be used when the context is unknown (because
+> it can be called in an arbitrary code locations).
+> 
+When we say "unknown" to me it sounds like a worst case, which is NMI :)
+
+> There are two kinds of problematic situations where BPF programs
+> are attached to:
+> 
+>   - 1) a tracepoint or a function that can be invoked in a critical
+>        section (w/ a lock held), or
+> 
+>   - 2) a function that can be called in an NMI context, which might
+>        preempt an arbitrary context holding a lock.
+> 
+> While 1) and 2) are not (I think) dominant use cases, and although
+> most of users can legally call kvfree_rcu(), BPF can't use kvfree_rcu()
+> and must consider the most restrictive contexts.
+> 
+> > We even do not have(now
+> > in mainline) users because we never support it from NMI,
+> > just like call_rcu().
+> 
+> Unfortunately, we've had this use case (of allocating memory for BPF
+> programs) for a long time in the mainline. There are two current
+> approaches to mitigate the limitation:
+> 
+>   - 1) Pre-allocate all memory. e.g.) allocate all hash table elements
+>        when creating a BPF map, rather than allocating them on demand.
+>        This ensures correctness but sacrifices memory.
+> 
+>   - 2) Use the BPF-specific memory allocator [1] [2] to allocate memory
+>        on demand and avoid preallocation. While this wastes less memory
+>        than 1) and also maintains performance, it is re-inventing yet
+>        another memory allocator.
+> 
+>        Also, the allocator reinvented kfree_rcu batching as well.
+> 
+> Now, we're trying to avoid 1) and 2) as much as possible and use
+> kmalloc_nolock() instead [3].
+> 
+> > If BPF needs
+> > it, then the first question which comes to mind is not about performance.
+> > It is how to support this case in kfree_rcu() without adding noticeable
+> > complexity or overhead or hacks to the generic path without making it harder
+> > to maintain.
+> 
+> Since there will be only few subsystems that needs it, and because
+> they already use it on production systems, I don't see much value in
+> maintaining a simple implementation if that compromises performance
+> (and thus make the transition harder).
+> 
+> > Performance wise you noted, you mean:
+> > 
+> > a) call latency(this is probably the most important for NMI)?
+> > b) memory footprint?
+> > c) pointer-chasing overhead?
+> 
+> I think it's either
+> 
+> - The performance of kfree_rcu_nolock() itself (a), or
+> - Not distrubing workloads running on the machine (b and c)
+> 
+> depending on what people use BPF for.
+> 
+Are you aware of any specific workloads which we can run? To test
+and see what we have when it comes to performance metrics? I mean
+exact uses cases with exact steps who to trigger them?
+
+That would be useful to see on behaviour.
+
+Thank you!
+
+--
+Uladzislau Rezki
 
