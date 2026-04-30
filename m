@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0506EFF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 00:53:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C72BFF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 00:58:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 490286B008A; Wed, 29 Apr 2026 20:53:39 -0400 (EDT)
+	id 051856B0088; Wed, 29 Apr 2026 20:58:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 441166B008C; Wed, 29 Apr 2026 20:53:39 -0400 (EDT)
+	id 028E76B008A; Wed, 29 Apr 2026 20:58:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3570C6B0092; Wed, 29 Apr 2026 20:53:39 -0400 (EDT)
+	id EA83A6B008C; Wed, 29 Apr 2026 20:58:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 26DC46B008A
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 20:53:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8BFD120356
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:53:38 +0000 (UTC)
-X-FDA: 84713399316.22.32F0B65
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 335D014000F
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:53:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qpj3Qm0W;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DD8346B0088
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 20:58:07 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B169FC254F
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:56:56 +0000 (UTC)
+X-FDA: 84713407632.25.92A0D4D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 291C714000E
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:56:54 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T5O0uOFk;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777510417;
+	s=arc-20220608; t=1777510615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lluSXE3vvfV526rFQpqQ7b1j1RKq38N7BBtS5egvuqs=;
-	b=o4pdfYgUO0hNdhScV8CeaXJhv9RqhUAd9gO8o0t/6S9Hez8zz7b/MaVKJaR8ken2pNEWHD
-	piipilJmPPEYAf7UFJyXFiYxNfpXst+L3urzdw15TtPVzbDfGY2QJKyUSY8dtf3eXwiMz2
-	fPrUWsQl171gLKEOSzSBoqa2rS9hEPc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777510417; a=rsa-sha256;
-	cv=none;
-	b=8N7SB0myggf+xy+4HtOYU9/Xm3RT93RJmVdeN83+Ufn03oELDhLAINxbcJ05hpA39L4k+Q
-	wcmFLGmkdzEuvr4PcMwye8jqkKxcR4An0OQ/81UC/MRtjJWAbFdgFaouQnu0SS4m+AvW8M
-	4rjMWavm5RyrlSn8NETdDhoiGyCmoVk=
+	bh=EazxW4e6oGHBwYfUsG1yPydjnWNC/W/b8dI3XNECX8Y=;
+	b=kNhqOMlUA+YIy0TbwH6DX3rfI5LBJnGcsX65pYLhuad/g5tBuJwMnBr3P5QuYGDjT2RdbK
+	XT3KKBLapqnJ9wIY4thhC9gytT+yUPJYnS+PpwHdobEklERD0kZBaAM3z9SZ+DFL6oZ+Lr
+	+2VSmon6w6iYUuxFBS0TnRI4PAhCdoE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qpj3Qm0W;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T5O0uOFk;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777510615; a=rsa-sha256;
+	cv=none;
+	b=KoyYpAExyNY14Y/aMy1vGKQEp9uiT4vGFUBaE/nxM6Amz+V0JnNmfRK1Am3cbncvS+5RdS
+	Xb9WrbQY7GZM6+5pZRBp0c9dQBJ3Hzp8aHwZUwFP0Za/ZIR+ZC7Gk0CRERkYP+esnh+PiU
+	ST0l85X01HjLTIY+tOX3QWULQ/RpTbs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 012614368E;
-	Thu, 30 Apr 2026 00:53:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A759C19425;
-	Thu, 30 Apr 2026 00:53:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 247116024D;
+	Thu, 30 Apr 2026 00:56:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A82FC19425;
+	Thu, 30 Apr 2026 00:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777510415;
-	bh=zjCoBFwYSmjGFkHi/Pxcq/dfA8Mbal7PpAw+Jp2oKko=;
+	s=k20201202; t=1777510613;
+	bh=iKtlWudWf4yk0Lw+o/8AER/401ttw3Z21zzRCj0TtyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpj3Qm0Wzn2hcQstA8JGWaprxISvZUM8AAu14+3bt2qhRgD8n6juV6/vNXPkVkBkk
-	 kZDJ4H+aKjZf+o55CixvCLSMYV6IEDl5kj09gJs/bH/72ASNq6OGI30PRX+sLFVCDg
-	 ohW+ZRr6QBHWRYRRkypg/1GHW1JtUwBvGYtqo0iodkPolOX/ETKSriP6lXSBlTT6mR
-	 bsUqfgwMbL6r0co6X2lmiEiLSQZskYN/ycTKc6YW33cdEnP3iIjkbwC8zD0B8bqVAw
-	 +RFONzK2h50YB0Rq3AaOeIkfl4APevD6ZuVMlPk30pl41TuqQkcFpwYVQwJ7Ke5ISG
-	 L3i9nf6gEmjaQ==
+	b=T5O0uOFkB400nD6lpKCMSJhkVo3JAz+oQGI4I1AYyFmKnID7GhY3MajEdF+gonuiy
+	 kPw3kFuwGCWFPghkeNq74M1zRcFk70/Wo4/o9hspxulsq2lf7V/eTaRMy614D2ciUT
+	 IAteBdqdhamoTivv77BZCpUNVGVefsA3TcbX1UWAub8ExTz1cVkRlHIOyF3JyCtffL
+	 ZZKWYQGCVQcMiekKxKI6t7btxPXWVTxNPREnHs9RlP9iEvuvw4ro4J5bLri11gswva
+	 KopiZLOt598FQCTMPWZoYxukgy/SOJSb0nBoyZxHrk5qFfqRHf3Ihbah1Po8vp5z7O
+	 vxnlv/dNKN6Cg==
 From: SeongJae Park <sj@kernel.org>
 To: Manuel Ebner <manuelebner@mailbox.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	linux-doc@vger.kernel.org,
+	rcu@vger.kernel.org,
 	Kees Cook <kees@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	workflows@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 1/3] Documentation: adopt new coding style of type-aware kmalloc-family
-Date: Wed, 29 Apr 2026 17:53:33 -0700
-Message-ID: <20260430005333.113698-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	"Paul E . McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH v4 2/3] Documentation: RCU: adopt new coding style of type-aware kmalloc-family
+Date: Wed, 29 Apr 2026 17:56:45 -0700
+Message-ID: <20260430005645.113819-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260429071445.309733-2-manuelebner@mailbox.org>
+In-Reply-To: <20260429072320.310817-2-manuelebner@mailbox.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 335D014000F
-X-Stat-Signature: w7fraifn3tikbbbok9xb88q5rtxa4fhx
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 291C714000E
 X-Rspam-User: 
-X-HE-Tag: 1777510416-796784
-X-HE-Meta: U2FsdGVkX1++ZqhTVTohws7iH5HBOE8MJjOjma/6QBKxgTRqT5goccmTfa/HLsWU9LzF+7fXDzR4PKwm6iTZYwL07SMzh3eyclUNoasm2yjdCW9juD1TZBDTug7Na8xpIEXQX0LlsX+dg2RQg3c2g/Tj865gHx4gvj2L9iCj0GCxvTjcVDYxMBAv8g5KNXPgs5gIdH2puLN/US5dydqV6AypxfVmD+bIulvkfU6g42+51/Vx8BVYe9hheArpj1vFkOn2yvfJufqmIet1ljzwzsvThSdRuXfBc/mAOw3A679a22DAdZkgKJd7Yzp0vk/ZF76HAl6ITRT/8YBTCfTldKIc4/jhvVux5t5Q/Do4q7Z49iw9Uu82amfVAPhb4WYGBI3qbadEwoslke1qwU3siQEBQSX2WncDqWqJEpXbkB0dQpH6TwOj4+JBm4LMicRHYWzwYZb/qV/aJgi5RHKbdUOk96uzboORLcB4BINoXNYI/ZcBcs/uWEDLsxezqOIL5QL5PPNUGbiftsLr1RBwRfujtEr0k3iQr4Ef1zFfJzVCvclA2IMFUU3XNLaKjRKMpewgfvLwnoKU/l1ITyBJ96VEt4LWwD5KIgjZH1ZvGIrhdl10s4fvdoCZ7PBpqBvB7wuVkmnhsJ9bwc5IkddSMU0TOd0CzMDR7h/8slCpbaO1/ymlv3pUZl0X9k2XJUzmeYR/N+HOKtRl1WVunkugkW8tqX16msPP0Z5vYJnNHmo8b/AUA2f/fBP8uVJSSdS5f6kSSk28wLYOkvO/wzO2MvqpUzGFoxvZG6ILDrp/HmRlYsukAKZw0FQfdQvp7wGs7JJ6orCYMGRIO/HHLSD4E85v9TbYzVc9AduK/PC7whjUKPsw+0veAvZnstmM/y23G0PP4rhsp+7g6Za3wxpLJU93Rl/mcoWQ9JAw+Sw27KpO1652GD6dsF24Eb38vz9D89tCcjTRTGIeacXniCx
- zMiGcYgF
- emgj8UTbLGPDzuSN/Bx0N+v1vcLv/FIEDhOyj1KCqGZRUyYyQXqAz18oOpbRZV9iu1QKFsFAMo+lqperwGvcGJqxtUupZQ0iCg8MXs7TXg4V6IBmmXbKJEkOWAtgGLBZ0c8p8N9MrrKeGvRicNwUBC7qMGFgzbrYCQacIiV8RABLXKTOCSKcR6JBv6+lyDT8WSarKuHM7RlmSHRklkoQKaRCpS+PRkSb4mvx4pbZhXAUGdF2E7vogRK8xsZY2Eys466vhM5qVWMNAtu4OKfS1FClnAe02ld3trz5l
+X-Stat-Signature: ro8tccy6gej45xrmyi1aaucrr99erki9
+X-HE-Tag: 1777510614-529893
+X-HE-Meta: U2FsdGVkX19mGA8w9kTJCuH7KCTOxHnRtgOV+4WH2hpS/PFaSrUNgUyQT2oPWC4hY/4OmoX9RbAHUrTy1XYdHTuOJH9tDdfZWqoyUE2fsUM/MTJa/nvx1qN7AT92W/Cr+PXIcMFXoD7BAFlOL4m2XFnX8IAcLYZtVGtcWS4+MAx+tibY6QRFDEgVsoXbnwYFUH6F0+j+3iv/iAyA4Lp4Ctt3QTBNT2WneBKBZh4Xji/zE8EtAUjP4IrEVrWKgFYtCawIjiJPmj28VLo3HJ/Z8WaBTxxa5Pk2YpPAKAw8uNv1m0+CrrWeitg+TDFMGh3cOTpJl47j5KdBoSLcW+S4hbZ1wthyoy0CXApsXTRFMd8tFCYEp6uEI5xfeajmya1OoynSuBnXD7VSqewG81/OUMGpr5dexwWUMigrfJ2+LCCrOOvwSIuaGIlfm6D5WSNWub/WexUx+lUeR29QOcmpXp0Mc9QLIWTIuUoaNSI/l+qOfQ+ucXd5xXvO9t1ikzypxy/rB1R+dAvLVNzqrPjSyU2h2EyOZdFtsQstlyWL/8SUPt19dY2mluiZGzrh39Jdgew02cn6838w8SznSlFHV/7FuL+iKAD97gquebQ/O5ytQ+KtA0Di2O5Em0Zc/bcXLYfWjrc4/Ilp9775jyDCvpsSC4Je6tzpGkZVVS52kO8WuD98/cm/13NvzknUsvPtXzvoq11bkXnPjNKbyJs/vyPWJpRoM2u6j+Jn/csf1Uo6IGhPaS9lwdEU5rviql5LwoqHAXjigyO1fc72VqqJaWEZGhKjXV1moRq/CprW6/SsKXHuhNwvler24Q/xWd61soQR6YxdDFOu5tL2koOF6tLd9eso/nRVpdTcKOPhNu1hBnsRb9EpcypOgxe9X7KbLGzVArgR5egryz63nQGybvoGL71McKLzPlXMvzoqQxwoUFfWDtVor41bPh/boOg8JoVVuJAp7rfWJkDByze
+ D11x1oYs
+ tKPgw/9GYE8oqzg1R50kVb7A/lCSFQvUowKM9ZmP9LqBAFmBtBeOLj/gqNy4SC+9hpHHnAFizR4ExlGdlKCTVYwdSVI1epbzmNYrQkpSCfvIdTQ3Sy0gtcSudGUXGsQSJOsLaer5+md4tqfe2w5JQcttEiWTIMGZYk59RcNtncaNXQRjVYA9zdYZ3Ey8SG79Cz+59A0Twv4kr5qdh7Utou3S26BPY463VPswHM0t3EEBGaI9SykYqvx7trdGLCVVW21CbKR8ifL3pWjVok91HwnrKSOa12GXDgbhI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,24 +96,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Apr 2026 09:14:44 +0200 Manuel Ebner <manuelebner@mailbox.org> wrote:
+On Wed, 29 Apr 2026 09:23:21 +0200 Manuel Ebner <manuelebner@mailbox.org> wrote:
 
-> Update the documentation to reflect new type-aware kmalloc-family as
-> suggested in commit 2932ba8d9c99 ("slab: Introduce kmalloc_obj()
+> Update Documentation/RCU/* to reflect new type-aware kmalloc-family
+> as suggested in commit 2932ba8d9c99 ("slab: Introduce kmalloc_obj()
 > and family")
 > 
 > ptr = kmalloc(sizeof(*ptr), gfp);
 >  -> ptr = kmalloc_obj(*ptr);
-> ptr = kmalloc(sizeof(struct some_obj_name), gfp);
->  -> ptr = kmalloc_obj(*ptr);
-> ptr = kzalloc(sizeof(*ptr), gfp);
->  -> ptr = kzalloc_obj(*ptr);
-> ptr = kmalloc_array(count, sizeof(*ptr), gfp);
->  -> ptr = kmalloc_objs(*ptr, count);
-> ptr = kcalloc(count, sizeof(*ptr), gfp);
->  -> ptr = kzalloc_objs(*ptr, count);
+
+Shouldn't 'gfp' parameter be kept?
+
 > 
 > Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
+> Acked-by: Paul E. McKenney <paulmck@kernel.org>
+
+Other than the above,
 
 Acked-by: SeongJae Park <sj@kernel.org>
 
