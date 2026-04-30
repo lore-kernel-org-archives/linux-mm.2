@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 724DCFF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8366FF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8EC06B00B5; Wed, 29 Apr 2026 23:26:44 -0400 (EDT)
+	id 2B9A76B00B7; Wed, 29 Apr 2026 23:26:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D66AA6B00B7; Wed, 29 Apr 2026 23:26:44 -0400 (EDT)
+	id 26AC46B00B9; Wed, 29 Apr 2026 23:26:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7E546B00B8; Wed, 29 Apr 2026 23:26:44 -0400 (EDT)
+	id 1A7E16B00BA; Wed, 29 Apr 2026 23:26:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A3CC16B00B5
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:44 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B52A402B6
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:44 +0000 (UTC)
-X-FDA: 84713785128.14.ACDB323
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 08F166B00B7
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C23F21C0170
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:47 +0000 (UTC)
+X-FDA: 84713785254.15.B8DEFCC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D0046A0002
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EeR+2fmK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 37C9140004
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:46 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NG/keSn0";
+	spf=pass (imf27.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777519602;
+	s=arc-20220608; t=1777519606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nptF5hZgW1FffxgE36jNhmQlvtyzpl/7gCc4KELiWzQ=;
-	b=Cg142QrxneLFz3Tgnm/kWEJJKKKMETzV8/8e/lqInRYvsOut9wQXmRRLZbLs3hytwjtHNp
-	Fqj51TYf8383XFv8kwGA3lpxcfP2fdk9/EDTYo0q/GzQZkpT/gxI482o/DILrkFlhl1E6f
-	xydFKGzFSqs+nP0HSr1TXd+RAP5PpQc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519602; a=rsa-sha256;
-	cv=none;
-	b=RSKMV9+sfNLnuaa9YjJRzVETjCDz2C1aJaGmUWXavCWmhP0gL1lu0j77OB4oO+T9QbhdU3
-	phhEwFInSU++kBNM+HSA9NHAvoAJRyTB+eOr6Zr2NJcbjbDxYSVdN3lyyNyHont4JKwVpi
-	rXGCuGQuxBEJxxotntgHeTIT9EbWS7Q=
+	bh=6v0rUdgnzxiEmQVki0fjHoaNjayirc6nPjzNRAFlLsM=;
+	b=OdqACxFHFbbMAFUJurZiZW733Id1I0/vc4PkSMBxpqS7AaRqD5gQuAOuz1Wxsux96MH+tL
+	sAsLfZeZToAG0lXHtY0txP4IaxyX/nDuT/eBbS0Ze+UtkmnUnndPcoHlA+aNmKSOewD0Uf
+	epGregKEL+hBcpUGeNsHfnFnyl5Ai2M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EeR+2fmK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NG/keSn0";
+	spf=pass (imf27.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519606; a=rsa-sha256;
+	cv=none;
+	b=gM7cX/rosdHUF4CMpyvqlun3JAg+PBEcb9cGyxSYJKDFE58XHozp8x9B1HQ9XdrLI3fefN
+	RnrE3hUwZBV+6J9HoIlKftltJggZaJf5i2fMXoef8CntXDXAM/NjGEyIe6sBH7NckFR2hs
+	0LDoI5W1x+ONSZI8DIyGv52IIiJlA7U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 55CF461331;
-	Thu, 30 Apr 2026 03:26:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0920CC2BCC4;
-	Thu, 30 Apr 2026 03:26:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BECBD6133D;
+	Thu, 30 Apr 2026 03:26:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BC9C2BCC9;
+	Thu, 30 Apr 2026 03:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777519602;
-	bh=jOQ6F/qbqPQvr86AWUfO60sG0ahit7mDPYuhhIPcxY8=;
+	s=k20201202; t=1777519605;
+	bh=fhSNmqrG5HsEC/X36MILLZcbTZ/au30iHuph+y5PVBY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=EeR+2fmKlkkC3zXJwh38hlAoE2ur0kbazDdCl1B0MzT/OzLC7NC+ZFsu3TPGh+796
-	 1/Fwn9HhrPzwpstx5GId8w3mBHNX+inZaFjWNZCcKAt3Hx5c7c9X6uhDHJ7nHFEuTH
-	 Mr3HXQraGn7ohoz860VHeqXMnOfcBHYMb4T4DMOb4BFIN5FcUNgi39M2UCuTGwL7hT
-	 In6FDxyUbEFipwzNGL+OYqMERE9GjsYnTUp2l1+SjCm14W/kgT4XbCAnl39BDschFA
-	 SmzEX01qhFEt2udL9WTiIjiVW38Jch76j0dr7SJpWdZA6RjuNd5fQQuQw3af4SB2gc
-	 gWvic7yeoMu2Q==
+	b=NG/keSn0FdCovg8MaqpF8Evbj/6L9DumthcIlwwxhgqo4krFVNquz8+s6I6cAbdTk
+	 F7gB7AFBovML2uNA08fug18O6ouheKOBf7t2Cnd7nzLWNimtDo+aiOW2df5uW2tRMT
+	 rjTagxlakUXzJK5UOaOgiNsPLEmBzI0SrCWLU0VLJ0JlqZw+7s1UFWYN+UsHMoS2Qd
+	 iECXbmORVBx8yix7TpNhGpQ4YIOkqqw/43+B09zOhAKOAI6t3lqj+2vCV+m4mWAT9q
+	 7VgoHD8YmgUg9LVrLh8uiVHBbs9Yxff6nj7MkquNCz6a+id9IgGedB0JwH8SAImjFL
+	 engiwcFkxaZoQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CD553809A07;
-	Thu, 30 Apr 2026 03:25:57 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E0C3809A07;
+	Thu, 30 Apr 2026 03:26:01 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCHv7 08/18] mm/sparse: Check memmap alignment for
- compound_info_has_mask()
+Subject: Re: [PATCHv7 02/18] mm: Change the interface of prep_compound_tail()
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177751955604.2274119.1021480725497900179.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 03:25:56 +0000
-References: <20260227193030.272078-8-kas@kernel.org>
-In-Reply-To: <20260227193030.272078-8-kas@kernel.org>
+ <177751956029.2274119.5996274092422873804.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Apr 2026 03:26:00 +0000
+References: <20260227193030.272078-2-kas@kernel.org>
+In-Reply-To: <20260227193030.272078-2-kas@kernel.org>
 To: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  muchun.song@linux.dev, david@redhat.com, willy@infradead.org,
@@ -87,15 +86,15 @@ Cc: linux-riscv@lists.infradead.org, akpm@linux-foundation.org,
  kernel@xen0n.name, palmer@dabbelt.com, paul.walmsley@sifive.com,
  aou@eecs.berkeley.edu, alex@ghiti.fr, kernel-team@meta.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev
+ loongarch@lists.linux.dev, david@kernel.org
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 37C9140004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D0046A0002
-X-Rspamd-Server: rspam04
-X-Stat-Signature: iisjg5mkw6uy56w44h9y1cfnsqtnffst
-X-HE-Tag: 1777519602-259309
-X-HE-Meta: U2FsdGVkX1+mNkD1JtJFJSxlSctr6hYC1+5L+0NWh47P7ZzSR+1e7pOxrXPdCBwFROs3+vygtKizIkH4lWD5+em0n/PalPMyLp/QHhGuxfEEcBXi5wb1CfnZlaqSLwAcqRXY5UE7HQfLMdKnl/RUPDrW8n4yIkWn47VgFKBVNJMWEBhESuGBpTFxCLJmk4bmYrChgqQZPvrMNkqC3jcroUmTnJzFNLXtsWYs45ObJpJvzFf3myaSTlDiQvL+p1xAbz23ylD7OVItBwdlHy8hNzUBPItHgAJj1LDATHoN9QAFOA5Z919Tk3Y+yjlAaBm+jPz7owCd+XgW2vRuj0yZZR9RQau7CDlciG/gOGW21mwI2Dkou7B2rrfyzm8HQMi7XbGiLOA0VJLq2usQR0/en1OZUQKGafPGd4W2vSbAn/0z0cda6l2mcy4Y9ajqzCwqSxRJX5T52Lb+ju+os5PuyOeWFx3HVVh+ACyAkBLa9W8EKMnPyMWmimKKTHQAy7/61lB264GDx/QvMc/R9ERkAW9TDyMNyaDzzpVsvS6m+sAbHn+weAhbb00SCgEY9A+wkwfoOkK4WERKk2KSsOxSNQlT/k8GMYku04jLyPJ0oemM0SZpO7oYesOYs8f6xLrMxcypu5R0CbPLktRP5RC5btxrVpAFJsF8jUbGhZH9a0HH76woxp4jGtmsxv4S/w3J7A2IcB7murLCEsHIkzAcdNgMIVD5O4tmiCq2F9x6nhLwD2p/SedbFdDpwZHwQOGHebccGXKJWMY2SAm+XMLRb5G5+wAJv2u9YMbuzLkSlC6WMJs3QQKmmThfmenYQt3rVwQEwi0tTWzdC1fVBMsfiE1mqxaww+KMP10G7ZGTOYfefMrIWm2r7agRN/lvigHyvnO2W9Lnm0WqagZPqtnPscFOtp6Pf9l8duR0K8ERxmVU2P8txqZcfKpvAkUaggYKPvcuZbI90gHKZS5eUsR
- 06bCXNUa
- e8f7QPeUn7YCQPeuseTHMwTJaylgqj6aJbuKK1nwznMGUEj3KqP/ruHi7i9zvKnRuTg5l6TSJaOIwVo8yRO7eR7jx6y/6FfYaZhAfaqiz/RSmGDd0fbGRIhU55Ialv4ZEs3lOaxsUDX+w+YYTMk6tL4pqUOC05GeM/IyLD0il4hhdVbk8xqAx7Hc2PKDXWO6Ji9Nw1AA4rdt7hsj3J9ioB7pv516L3ZR80d+IydrXq3hqkWXKR3UsQTcrsRXeVicn/nTRhl3zgBJ3FEcBh61olUWKfh2YfCwxCUoWDPwPqJFF3/btBcuZ3CyY8iFl9X+fch4H7dpZgXbJjzuWeSxPbiOniEX515riVn1ZC6K27jS0suBhlfBR4tyYhCMDk6nCWsf4rVCEJtsiBGI01cjfLbJDbZ1BEpARoMMOrXrqxU9SmhHBll9LYYjf9rv+YgwuMLEduh2i5wXqRNEOur4fbN/9IuCobFN061s/
+X-Stat-Signature: mnqhwk7bdi5iqwszh8qhaeyi7ej7g8j9
+X-HE-Tag: 1777519606-2839
+X-HE-Meta: U2FsdGVkX18/HJwmq/NIKUbqFB/5toTFro7qboQUBEY31A7GS4kxRdj03bNCIv9sZhjPnivKGmHSTQCh9YNLrfeB3anKQSqdlNQg0vehgJj0gTERE/eAzDXedn+uTmAENmP08GZq2/LdPKodt7hTBL8F/2JISrqmbcjDkn3ZyVEEdPEwes+zp+mjD1baymePN9gJEynsuxlIe2PrpFKtGHcISxo/P4It3kDvsjfP1tg/wMzGyoMpoQnb/Osf1GCbIjeC/L3nkAm7tRLxj68kiNUPTS48PVLvfX4YlzDTGMHplksd0oBUfqXSof8AhPpFrTHvcluHDjY/9GN8aDK7KgMdTgh6mKfsmfBYd/GuII/RBGnxY2e94WkXD9nwlKZJw8+HHAW7v8INoL6ckSPD5TQ31Vk2zRZxYnWPBmV8c2N/1VNQaCDC0lGUe/EHudi7s14geRyczpKJpi5bPqn5npqQebqjTnCg2KOxs2evPWckP9pRQ6UVAx+DSWRiupW8Ipt2p++WOxIz9Fp8jHexRI5KYZ6nqkAJdEzi0q9/A4/Iy/dZue+h5SF0k3dvnl2065urHVNmlxYUxWmO3GLducZaiCwMie/dERljKHsvuOEwsstR1tagYtXfR6YuzBNSuLwtIiun/VIFK/cSOgnvFehpCzKW3JoMnwjv3sS8Ud/VVu5rsikAOVrJgOHr+rJifodwAgEGRnyOrzcTlj0NkaMLurc65us8O7M7urYj2NI8GmjTemImvLiPF+jWMmQyqaEgOw9MIrmNHkubpXSpbPqWiOvmBkqUdWJ0AvAmXkK3RvPigbx28KCJpRbq43BVyeFFKg/+orjGSUTy6W7IqBa3XZr+4tKKXM9Vdeioit2sQbUNxjrUvJj+2xZPuj2rUpCjndUqg0uMVnD39fNsgeeci+wshuxkNPEHIxUP472lDAims6eHRNgyY+Qod6Jpw4a926AAZG1QFytj5V8
+ axQgudg8
+ qLBHABC9/sue3P/ZMnXxluv9dF/CPjOjznuvuypRs896hfdyd5dit+VjbHLs4/TDhJ2K8i3l+xWuHu6Wzvf6Q33enMlxLaojn+BMJF0+zIf+QDA4EAd7doZDXNm0KbAh7EWDpgy3vPTdDzZFu/KzBd/l0OPtH6u8zV8u7X3HRyNq4yVyKgUT/GRjJ/E/tHSRTycJjAg1dD5f3XILyudkKeMEzwBKQ2KlR6tkDcgUnBQ0JK76C/KZbVj+3m9JsAvIWHpZBw8QbV8YrA8A4SkUKneoRyO+RTIWZfmsKNIesH0l3Y3oGCzLyhwdgeghH6fNh8m0aJN5khJeuOyMRE0VYtZXd4aEqRnCzJikHUxMqGnVVusSQibYb+RpOGPWbrpJ/GOoeNzfOcEWR/bA28eTzJyKRkZasG/SaRI3Y2fNCcj5RPZ4uoAFH3c0MHRmakpABtG6Jl7E0Pzog5TLMt9MwqXf1SPmSMKpsfoxJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,19 +107,20 @@ Hello:
 This patch was applied to riscv/linux.git (fixes)
 by Andrew Morton <akpm@linux-foundation.org>:
 
-On Fri, 27 Feb 2026 19:30:09 +0000 you wrote:
+On Fri, 27 Feb 2026 19:30:03 +0000 you wrote:
 > From: Kiryl Shutsemau <kas@kernel.org>
 > 
-> If page->compound_info encodes a mask, it is expected that vmemmap to be
-> naturally aligned to the maximum folio size.
+> Instead of passing down the head page and tail page index, pass the tail
+> and head pages directly, as well as the order of the compound page.
 > 
-> Add a VM_WARN_ON_ONCE() to check the alignment.
+> This is a preparation for changing how the head position is encoded in
+> the tail page.
 > 
 > [...]
 
 Here is the summary with links:
-  - [PATCHv7,08/18] mm/sparse: Check memmap alignment for compound_info_has_mask()
-    https://git.kernel.org/riscv/c/9f94db4c7eaa
+  - [PATCHv7,02/18] mm: Change the interface of prep_compound_tail()
+    https://git.kernel.org/riscv/c/f0369fb13619
 
 You are awesome, thank you!
 -- 
