@@ -4,118 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65150FF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 17:32:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08E40FF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 17:33:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABBC26B0088; Thu, 30 Apr 2026 13:32:20 -0400 (EDT)
+	id 6EEF26B0088; Thu, 30 Apr 2026 13:33:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6DA16B008A; Thu, 30 Apr 2026 13:32:20 -0400 (EDT)
+	id 6C6816B008A; Thu, 30 Apr 2026 13:33:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95BF26B008C; Thu, 30 Apr 2026 13:32:20 -0400 (EDT)
+	id 5DCCC6B008C; Thu, 30 Apr 2026 13:33:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 840616B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:32:20 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1BBB4C1767
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:32:20 +0000 (UTC)
-X-FDA: 84715916040.15.B079D00
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E963E160008
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:32:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="N/UUCVb2";
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777570338; a=rsa-sha256;
-	cv=none;
-	b=m5AHj9HnyirFRY4/601EhGjEIASBPV2MoVtaOhVOjq2oRbJsKc4pge41vggH/dZjCZ+fGz
-	tj2sm17BxEzVorr+57r0Kt8tQKBwV77yFICjZVikWMa2wQIfdA8Fz0M5bGX3IN5JkndLxW
-	CDSKdmqBMbipcSN4gF+i2tqTHJwID7Q=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="N/UUCVb2";
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by kanga.kvack.org (Postfix) with ESMTP id 4FAE86B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:33:46 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1D176A0189
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:33:46 +0000 (UTC)
+X-FDA: 84715919652.27.EA693EB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 99C41140003
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:33:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Mw06pZJU;
+	spf=pass (imf23.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777570338;
+	s=arc-20220608; t=1777570423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EsoSAi6z9KmFSkS32vV+nxgnnZuvTLBZtnjA13t2Cbc=;
-	b=gn0NhY1GBF0jI1ARnDTpEjARhrRmaUnBtzhYvv656C98zKwO77YnCNsdr4aezaBuYCNPL9
-	QHaqzdD0hkHCrTkGg/rKRQPH825/HziztEWyzRr2AuZRRdqmHZuy7F/zVLtgaMam0ZYrQy
-	ondHLdGdkORPmxr9zbqIEAr9b+VwUpU=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488ba840146so10081585e9.1
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 10:32:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1777570336; x=1778175136; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EsoSAi6z9KmFSkS32vV+nxgnnZuvTLBZtnjA13t2Cbc=;
-        b=N/UUCVb2M89RfZmbS2zJMzPUMzArGiRnbQkG1pGA9yOAqAj2kc+NvsHz8HO2j7+F6F
-         yLCT4bQ90+fVJf3zqupzM0i6zZ08zyidREdhEUs1uO8cqb/spgeNxmIH+ZLlgp9SQfM/
-         WEfjSmLKdfiDs/LN09B+as+6NOhoueH8Q7NSgrfP10gnW4l0WtOcUCUA7gaoBUC0H+WB
-         /q39jROp3+WNZ31HzFWNx23+AyJnYwSiLW3+45huWO2XnsBtb+rqvK+w8v13NaR8TM8D
-         9SwX2PwHKyrCm1ZgMAAYMKC7lfmsvD7RLw53LTsm0FIl0g/vaSFaUlof20ThKgtG5hxN
-         T6Aw==
+	bh=nmMXCvWSvShhSGiDPE3bbKH2xIBX1MBTYvUc5Sk23wc=;
+	b=2fAedDsib+p1CovhWX0rCuj8YIUoeBWZXocxXbSRVmJpxXXyda40ZJift+9fQ0PRIIzG9i
+	OaHiWUUlDJ0XNePKHNy2dXkYHNgtc+4UgP8owcpcZXMxDuMIBosSHsbEH5gN4ENEP+liEb
+	vrDreRbF3x+fsqY8YcMQPhiRK6oPrMU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Mw06pZJU;
+	spf=pass (imf23.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777570423; a=rsa-sha256;
+	cv=none;
+	b=4puJJAypMrGJ+YaF3YVfjXSX29SZm9QGZ2bs2ZX16Ihycl2fb15K7fMOF0hehky4qHFaEs
+	0XEpdkQMR0sFKEWYWF5qKK6sW7vgMLcSBew8IY3WJNvRKtpaLX4jzv29leA/1FnjBhFIrE
+	y5gECLEdwQ5V4ZIpOGO7pk+tiXeRQJc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777570422;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nmMXCvWSvShhSGiDPE3bbKH2xIBX1MBTYvUc5Sk23wc=;
+	b=Mw06pZJUddj/w+OmOdYk0bDhVXb8pxnCbpCgPIyt5uJ/E218RxUoBooMj8bdlsZrKg8BaP
+	H7qCDLAE7KKyuFkUS1JGW0mHa+CpOPNi3CgxmVyjf5/gSBhh22hpU1B/2FGgJ+8PyzNinE
+	ESq3+wRBqGw8AHVLrR8h5ppEymlvUaQ=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-299-2Pua1p-IOOWGFD_zLZONkg-1; Thu, 30 Apr 2026 13:33:40 -0400
+X-MC-Unique: 2Pua1p-IOOWGFD_zLZONkg-1
+X-Mimecast-MFC-AGG-ID: 2Pua1p-IOOWGFD_zLZONkg_1777570420
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8eaee67d1afso135676385a.1
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 10:33:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777570336; x=1778175136;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EsoSAi6z9KmFSkS32vV+nxgnnZuvTLBZtnjA13t2Cbc=;
-        b=F4PB7sbZERG4Bfd7hRPcl4D6o7vj2jQ0l8JdUIzMMg9Hws7z2n4LUr432+K5+mfax/
-         dkOJ7fcIH57ovTcAOLY6r0GrZGAotH2q66UF6dezWQ0FTyJ6mKYCZa91r/NsD5YtX5Gm
-         KwBP69MEle9oet5Hv0jTQD68R2M1Zyv9JVjJWo9LVH7xeDOzJ2mgtk6hXk9XkK33Zx9/
-         O9nDr4X1eMNjnwB/Z/PjGxpwh93xfAG7byGmrBehs7Xu05vakYV8eJ0dhzdWF8Why852
-         zqlbWC1qJPXpunyH4i6xKuaUI2M0OYhSM4pD8q6jRRkE+BVq9bLqPbDa5CpgAPcVaL1K
-         MTeg==
-X-Forwarded-Encrypted: i=1; AFNElJ9hnycSSs30BGC8naa7e19aGeDXFwc6i3+BsTzNQudEawhFMh/bpUT+IUX/riGlm0F34Fgvl0HJ3A==@kvack.org
-X-Gm-Message-State: AOJu0Yyr5bfGdc6fYJWR0kWpkLN6jRORYqBJzjJXr2ePokk02CXdYXfy
-	GBekoYhPUdfWecRYZp77JPpwzCP1OBm78ZMBScLqNjplMcm6oMV9FIKHC4bs0H+4YrA=
-X-Gm-Gg: AeBDiessCeNzDOYsfEMlnsQ+h1XqUI9D/8UhP7xpgUtdWqqO5vzWqE9RAE8zRSAbY/O
-	KzYCHxpPt3thOtMwPdoDzHAwsObnU7a3MNwor4eQxT9FYBn0g7h68+en3ig21sgOYA4qnb4MpHh
-	zeanpSyTFvgu/DR7iZVO0aPIv7jdaWUK3HyWPAIr/BrH1MAa57LYNfXQ7u0pwHGQ8uXvGM13c5g
-	pn2Ys9/mEJz9NWZDPmwQzBKNhA/7RAe1oHbiOaB+Vur60kfFZypzvkU58srTCvZpcP0Da6OFUzW
-	4isZF2Y3SijvfFK4kxiXVpYmb0hzuwbzKBxkWDVq9aS2ZCQ1PH1vtqI4WVASyDfdlka+Kb48n+1
-	mxGOoKz4cBR0/TCdIGjPDW1LykmBYy3InUsiY8dsErJ+g80MYY+VOLHIN0KRoYTDmp9PERDESMY
-	INmbvPHNQw2BLhANg9CLI0phECXGO69Pp7NVCJXzRvrA==
-X-Received: by 2002:a05:600c:5254:b0:489:149a:f9e6 with SMTP id 5b1f17b1804b1-48a844640bdmr66440065e9.28.1777570335923;
-        Thu, 30 Apr 2026 10:32:15 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::5:c95f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7c32afb0sm45223615e9.35.2026.04.30.10.32.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 10:32:15 -0700 (PDT)
-Date: Thu, 30 Apr 2026 18:32:13 +0100
-From: Gregory Price <gourry@gourry.net>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	lsf-pc <lsf-pc@lists.linux-foundation.org>,
-	Bharata B Rao <bharata@amd.com>, Donet Tom <donettom@linux.ibm.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Subject: Re: [LSF/MM/BPF BoF Session] Numa-Aware Placement for Page Cache
- Pages
-Message-ID: <afOSHX3U_0F5kKQY@gourry-fedora-PF4VCD3F>
-References: <h5ossmwe.ritesh.list@gmail.com>
+        d=1e100.net; s=20251104; t=1777570420; x=1778175220;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nmMXCvWSvShhSGiDPE3bbKH2xIBX1MBTYvUc5Sk23wc=;
+        b=hBmM56ojc8MSnUuejb51J3yULMSwDtngoo8foZ/dBM4Lt1FyXI88Hcs3u6XraqR4on
+         F9/IaEcyGBJXw07fxR1/8D3YAMAIG0CkVUpT0R4/nU5+9VxaXz6BXxwa16gmUREcfBSe
+         iOG1wgJ+ISaDTd7Tqcp5Y3FWvL/e+UbkI9ysS/RDpks+mvORoH9r9r6GsHN8AgNv8xGf
+         044JiOTNRDLl/gVhr7nvgJntDJsz9mTn2sj+WjOYH94KRH/ha0Xatr1gHhJBPaMU6rIS
+         AfoeRKw4uSpXJwQX9KqClfRHUPY2NrgYx2q3qGwCA8kihq7C+8yRPof9dlWg0OhQaTQl
+         ZZSQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8RRrKDHE4JvOQE+7oc3Q0itZYnOrbLELidJaYQBXn/VaEfdg8pGrlKpuSw3Vs9Gg5Acj1vF3kLGA==@kvack.org
+X-Gm-Message-State: AOJu0Yy6tFDujYB+PtvUNceiBEF0nNMeoYrk2Oxt+d9kSeuZFnQ9zZtg
+	3HtAFocB5Rmdrv46nX/7EEBOHwA3hYnnGzZFipDHGtifTHYrRnXDT++fepahXo7+o97YlTv3Vy/
+	Bwws70XlJ0DrzXKHlnWXstiGU79LEMT7KRZ+HIPyBc3XGSRjJP6hr
+X-Gm-Gg: AeBDieuKmHGN5XHbaz9vIQ/Ri5/9sZ4qbX1ZYRvpyLjUKJowtjOWmDzjC+4wfcKKFm1
+	wkmikDDqD+khPx3ZUpvLStmJ0JesdqRmMhaXAPUKVkjNGICUfAKNqlJtSJlawqGPnkfUsTbQ1K1
+	eWUVswEsT8ZQowsZzSG1AdhUPEak18OWoX58IdcCYVODE1lVk07PVQDSMJjT9ymd9126GUTCCxR
+	0dhbd+++j4GdHUc0XfqVeBn5z6cJ/+BVGfyLovbZRSzP3XF3XRJgWRYpNK0D7D1O/aEu32g5Rcq
+	qKUUdgJaYmDkF3llCHqH0FCkr+iRTA08hU3d9GYWsiczh7M/Yr39Fdnx+o9ej9HAYmwP7Fe6X24
+	t+hr5+pRimB/IgQQU5AiJ7CTdxUwlfTXyKO/EVhqwc4n9WVGEWpDaDlYOYpgDjRUg9yzATpn+nD
+	EwnlxH+TRXaMNzD+e6EbY5Z3Y=
+X-Received: by 2002:ac8:58d2:0:b0:50e:6054:bc with SMTP id d75a77b69052e-5102ab43dc2mr57370541cf.16.1777570420035;
+        Thu, 30 Apr 2026 10:33:40 -0700 (PDT)
+X-Received: by 2002:ac8:58d2:0:b0:50e:6054:bc with SMTP id d75a77b69052e-5102ab43dc2mr57369551cf.16.1777570419456;
+        Thu, 30 Apr 2026 10:33:39 -0700 (PDT)
+Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5103d1c657bsm812311cf.3.2026.04.30.10.33.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Apr 2026 10:33:39 -0700 (PDT)
+Message-ID: <1ad27a46-543b-4799-924a-c13147bf68ca@redhat.com>
+Date: Thu, 30 Apr 2026 13:33:37 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <h5ossmwe.ritesh.list@gmail.com>
-X-Stat-Signature: b78tyj6ade48jh3qzdp8iy5cd8zscjqq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 25/54] selftests/mm: hugepage_settings: add APIs to get
+ and set nr_hugepages
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
+ Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Sarthak Sharma
+ <sarthak.sharma@arm.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+References: <20260428204240.1924129-1-rppt@kernel.org>
+ <20260428204240.1924129-26-rppt@kernel.org>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <20260428204240.1924129-26-rppt@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: JgJzVEsypoZWpbasKFqz-vnCcVQTN-JYYfUAr5BcEIk_1777570420
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 3egj3nsd5sgcpt4it4rxzcwxnqwmot5q
+X-Rspamd-Queue-Id: 99C41140003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E963E160008
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777570337-62127
-X-HE-Meta: U2FsdGVkX1/RA1wYyy4HnxjofX1UbZYviEuEmI1x5Z7wGD3pMXezmGsdZdMTOEnE0bE9Ptjg7GuD26+7QFEGA8qiHw6CMJlCpv7Bu8eFEKRTp5Mo7PA/h4V9C8RyDFobM5nxkuMtIPKE8ww8M4p3iRaqsy/lQ8FCwZ+gAtHavssrxEfUfi+xlq6/OD9cpr2cswqyu2qGxqaF7E2X/QBg2fpvXlT7+hcpqEB5kDMiK+uq+mnEcHgr6UIrATQixR4H2m8lGutuRNYcktcDBKePZ6HGWV6b1y+V1HZFz47azZxc4oV74r4dP6EHnCeFpdIqRXZv3pgmpO5wheKeLI6OqIsjYEFcXiT72Jfp8D0XsQLSndsQbgKAu8TDhOUHjQBJXFvSvcBkHS2y7D5J6QlgtiCEharXrX43b4WMjpqYNUoFPgI1LDsHeS3jBuWKp72vBAjbfA0uN8O5F0B8YdZuEtQxz4mzcVi2s4NRV7v0vvbGNkKTgO+KPwy8bvLjzRjjnPN0G12JFzel5LHqk+yo72L7tyamshhe794gTFsf4fuhl112xqdqRIbbRY+zA8DQ0SA0yxm0Osr3hP6Bb7WGydlu9z2H7Rx8nbV4FYmrMNFc4CUa02OidjN4za+tHhc6CtIV7uVqmcrW5Ypip3F/c0V/FyjoLPrkKoe78Oi8qkwWh286edzqgKYsut8rNp4WmWquI06h32z1XwegnuMxWe6MShTa3qjjv2YwuTKRXunYP8wOg/86ZQqpCo/J7ugXsinE9MLTLR+ZAHvH1C4dvFMHIbvRIiTaZ6z7vAvxskNZyv/mu23BDFfaEPUJkn5qZeusQBx8KgWtMV7CK0PUaXipGcqwJ5O+2e75sod/k3bDLX9YsgSJFnBono9itobZGFiYzgsUblfM9tzFaJ2HlEJNkWNCfwzVp0nuAi4sndGd4IxuA9tjaMUQLkOY02tKUIJAR9Q7H4KN83JPjcK
- 43F5neK+
- 1P7MiOvfF+Fgp5e+ez4lkNOd3213fXaK3OO7/bGVjSKXpV8XMCs+PFovxEBxEgjWl6+j52UhKORdtz/Rm84MD+cCrPQTEcWSe7KlwXRktJTwc2BpSf+Q/h626gPfHOqO/hPc3DfLbsMVHU2Y6N5tQTD0PRVPKqwTnN2Yz95e5NkCMqV+2oEFhc8FeES7aTRs0fKwSEoGTFLjz26cnyh+MwWmcA3AGPCzpV7fVXAlO8zQt4+fV41cjxH17qEFDskelpHOImra6RcQeGg88y+gzfNLyL72iOKjcNANCwALgK/U3+caH+ifk10pHp7WOa9VqYfrn9+SENq/dWqcenOoMcpFAbcL4xTvZU7WeEowLYCh2MTOEe39rIfPGQHgWz2aYEIXufTfIjm26HotkIwwLrE/RzUonzf0tAbF+nS0z26sED0NXptjWmdZfKPCyeHCuPQILCmQvLVB6NF/umtUY4jV6gIbWmFZxP1eF6KZf6Cxfcjs=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777570423-914706
+X-HE-Meta: U2FsdGVkX18yC5lZrRxXuOaB1ll1J9syVXPdTluKNCw1byKALVJ7+OcYJUqVt+qfESDu/rVjQnaobGQL2PyKK9BTMgOhRL/ZGAR0Pgp7RKxB4UC+W3eO4+CaNC1NNejT+iLPKQrYvQQd6xzm268BRhIr9t3yKZuLmgv94MlcBJ34WCj+XU646r5wQi6UTlxyfL74ZiZ6++FgtbpVeQ7yDIsqDrAkuTFYhCrxBbyE5lzx+N07RdVtr474+eepakbfBFmueDqnt2XMknjg/RO5fXngam0bSyCJRxWBp9XF/etKB0TqXaB98iZxRZLhU/rbUiy1KerYDXe4f24em0r39HfDPT7x+1yIfFLXFMj5DPszXBbyPQkmpUL5U2FIjijzVkeApMbceilO8sHtQPRoFTdlAhVVOZj/d1rB7FyYeZIIgGijpl6rY/+G8kxd9k/r8dKg57cySAazefv9G708do9aq08LwoN4Ehub9I3sTbV6a8gkHqvtxMJwy/wAG1fPV8R7axpnRX1ZbDSt3GQWnSg7omdDvu8gy+C3ftUyQEVARLzk5M5mBo1X0Nj6LrUka8/bwOwodIb7XLTvYt1gCqpXxJjvZ6FifBxWQ/DlGpKQJul8aM/Rz5KZHOtH69laPE0gsgmn28jrpUPxeSPqo1ghtG0wT5E4vP0bM6uOXK3ZafakC51Mdx3quruvwIv9IQcNjDueNfQEQVagmAFfLzzylpuXp4BCm9gqwLFhpxDp4XlsVzDjywXLP1zNFFSyYsgSHNQX4V/i8Y/2qwqku/LG5ucIYVjBxyuuPvVzOJesp8DEVDWte+g6mTJEaY8cyihaGHc86Dkn6GSLTCxmIrCr3glR9ZVmx5w5XG7Y0LgIeP83Ms05/g4VGfJmDGucDq9azV5mgPwpCt2lyMoFY33Uw0e7lafgn3b9lnSTad6fhj+a/bTrK5d4e1kYbKGspQkEx8fxlN91wdwuTxZ
+ bwgMrfyd
+ q0A/WiQvCaZ0PkZJBdgpIcSLH+b0SgB70ICrg3CtgAp/5Szvs/+1Sy/88uBRYFNn2Mzig7KTu3wR/4M5+fcuRQe+mvRh98dkXNyKP9XXuNG841YyjhzGcXjIXom9qCfmQYKaBqNmjUDTU5EhNG9Lghj0CdxJx3Z0GzuUnR/ELFQ+3WaUwMmMKD6zU+zdTPR21s4l5x4mYplSX5avTOhdHiFiA0H5XoAAYuy88G/KR9SpsQgjtDRehzRlHNb5fSAIj733FxRxeSXbGa4+LcbG02c8itTErv1sNdbPAv4GhqfW5Nup10TF79p0Qiw+U+W9CJB5eR2+QqDN6lsrQq69zB8pHDB8biAQapLfrBG8P/wxKjVTBEPpSs3jR41uFIr4MGd2heaU9Ax0nK9xeTc4oEcRSriZ+jzvDeYZMgULIep4NCgE0pV7+KXrRBu3u/OvXR3utqGv4F5nQBxzusidgWMqRuPCGEG9yOgpNcXKROR/TDLD6WyUOxNagYtuQZEqNCZtfRhd233BU5hDu4cmka+lL/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,79 +145,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 30, 2026 at 05:03:37PM +0530, Ritesh Harjani (IBM) wrote:
+On 2026-04-28 16:42, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Linux already supports memory tiers
-
-Allegedly. (TM)
-
-In practice, and in working with such support, the support is incredibly
-nascent and in fact causes LRU inversions by design, is missing unmapped
-page cache support (as you note here), and just overall does not work
-well out of the box for any reasonably complicated system.
-
-> and there are ongoing discussions around
-> promotion of unmapped page cache pages, which lets kernel do the right thing
-> for userspace page cache pages on a tiered system.
+> Add APIs that allow reading and writing of
 > 
-
-I like to think of this more accurately as:
-
-"Lets the kernel nudge the trajectory of the distribution in the right
-direction".
-
-There is no objectively "right thing" here, and chasing that is a dead
-end.
-
-> Userspace, sometimes is in a better position than the kernel to know the
-> workload's access pattern and whether it makes sense to drop page cache pages
-> once the I/O is done.
+> /sys/kernel/mm/hugepages/hugepages-NkB/nr_hugepages
 > 
-
-At the expense of an increasingly complex maintenance burden on the kernel.
-
-> So the question is:
-> Do we need a userspace interface for the placement policy of page cache pages on a per file basis?
->
-
-To the extent that you get something like:
-
-MADV/FADV_HOT (promote and read-ahead)
-
-as an extension that mirrors MADV_WILLNEED (read-ahead)
-
-... maybe.
-
-> 1. Is there a need for an interface that allows userspace to do per-fd page
->    placement and maybe per-fd page migration?
-
-Maybe as MADV/FADV hints, but beyond this - no.  I agree with Willy that
-the kernel should simply get placement right.
-
-Building the assumption that userland will do X and *then* the kernel
-will get it right is just a road to building a bunch of random
-interfaces that eventually get deprecated when the kernel does it
-correctly.  We should just do it correctly or not ship it.
-
-> 3. Even if applications may not need this today, should kernel developers start
->    thinking about it now, before users start abusing some not-well-defined
->    existing interface. e.g. the story of echo 1 > /proc/sys/vm/drop_caches,
->    which became a production workload tool despite never being intended as
->    one?
-
-We have a public meeting every 2 weeks on tiering topics
-
-https://lore.kernel.org/all/8a622c4f-0774-96a5-2d2a-2151e0bc2367@google.com/
-
+> to detect and change the amount of HugeTLB pages of different sizes.
 > 
-> Let me know if people think that this discussion qualifies for a BoF discussion at LSFMM?
-> Or do you think it's a bad idea altogether, if that is the case - Then
-> please help me understand, why so?
-> Before starting to jump on the implemention of any of this - I would
-> like to gather feedback on what do others think?
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
+
+> ---
+>   .../testing/selftests/mm/hugepage_settings.c  | 25 +++++++++++++++++++
+>   .../testing/selftests/mm/hugepage_settings.h  | 23 +++++++++++++++++
+>   2 files changed, 48 insertions(+)
 > 
+> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+> index 8f563315b1fc..5961229b9931 100644
+> --- a/tools/testing/selftests/mm/hugepage_settings.c
+> +++ b/tools/testing/selftests/mm/hugepage_settings.c
+> @@ -464,3 +464,28 @@ unsigned long get_free_hugepages(void)
+>   	fclose(f);
+>   	return fhp;
+>   }
+> +
+> +static void hugetlb_sysfs_path(char *buf, size_t buflen,
+> +			       unsigned long size, const char *attr)
+> +{
+> +	snprintf(buf, buflen, "/sys/kernel/mm/hugepages/hugepages-%lukB/%s",
+> +		 size / 1024, attr);
+> +}
+> +
+> +unsigned long hugetlb_nr_pages(unsigned long size)
+> +{
+> +	char path[PATH_MAX];
+> +
+> +	hugetlb_sysfs_path(path, sizeof(path), size, "nr_hugepages");
+> +
+> +	return read_num(path);
+> +}
+> +
+> +void hugetlb_set_nr_pages(unsigned long size, unsigned long nr)
+> +{
+> +	char path[PATH_MAX];
+> +
+> +	hugetlb_sysfs_path(path, sizeof(path), size, "nr_hugepages");
+> +
+> +	write_num(path, nr);
+> +}
+> diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
+> index 9357d07e6c1b..d6f41a45e8ee 100644
+> --- a/tools/testing/selftests/mm/hugepage_settings.h
+> +++ b/tools/testing/selftests/mm/hugepage_settings.h
+> @@ -94,4 +94,27 @@ int detect_hugetlb_page_sizes(unsigned long sizes[], int max);
+>   unsigned long default_huge_page_size(void);
+>   unsigned long get_free_hugepages(void);
+>   
+> +unsigned long hugetlb_nr_pages(unsigned long size);
+> +void hugetlb_set_nr_pages(unsigned long size, unsigned long nr);
+> +
+> +static inline unsigned long hugetlb_nr_default_pages(void)
+> +{
+> +	unsigned long size = default_huge_page_size();
+> +
+> +	if (!size)
+> +		return 0;
+> +
+> +	return hugetlb_nr_pages(size);
+> +}
+> +
+> +static inline void hugetlb_set_nr_default_pages(unsigned long nr)
+> +{
+> +	unsigned long size = default_huge_page_size();
+> +
+> +	if (!size)
+> +		return;
+> +
+> +	hugetlb_set_nr_pages(size, nr);
+> +}
+> +
+>   #endif /* __THP_SETTINGS_H__ */
 
-Always happy to discuss.  Just need to figure out timing.
-
-~Gregory
 
