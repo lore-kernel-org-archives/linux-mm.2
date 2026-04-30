@@ -4,141 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCF9ACCFA13
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 08:54:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED89AFF886F
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 09:07:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 122D06B0088; Thu, 30 Apr 2026 04:54:17 -0400 (EDT)
+	id F40686B0088; Thu, 30 Apr 2026 05:07:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D3956B008A; Thu, 30 Apr 2026 04:54:17 -0400 (EDT)
+	id EF13C6B008A; Thu, 30 Apr 2026 05:07:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDD5C6B008C; Thu, 30 Apr 2026 04:54:16 -0400 (EDT)
+	id E073F6B008C; Thu, 30 Apr 2026 05:07:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D7E756B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:54:16 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98A75140495
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:54:15 +0000 (UTC)
-X-FDA: 84714610470.10.350BD82
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CFDC3140013
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:54:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ca6lUa67;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D1D8C6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:07:45 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67F7F1B9C39
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:07:45 +0000 (UTC)
+X-FDA: 84714644490.05.13CB158
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 85681140003
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:07:41 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BNCuJrao;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777540063; a=rsa-sha256;
+	cv=none;
+	b=aw4kOHZw3m0urZN6BSN/LK48hMPBx8KXRGs4guTszG1dOrrMKxtP5UpP4lUd/9T2dd5lQU
+	JNTKFz9aBrAKKdZtGIU7YnpvJF+dUAbBkGQvnal9H8vjJuM8sPyKEKgN7vVMXJFUhwtrVY
+	JzlsOWelM0xpV2ESicHIX1GsCKGAbmc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BNCuJrao;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777539253;
+	s=arc-20220608; t=1777540063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UfTVnsvX+8nbcKm1Sco/LUHH4f6rQH+LK+qnsavO0Ms=;
-	b=L+PEEaVieN0/jamsT64uz4mlEsU2hr94VDRkSvGY8DkgY8oz3BNfp6Xm16le7XYgGZFdMm
-	oQ/sQQqCHyD7NcfbU0ZvIOQBGWiZAKQyDa48zDvKDiXnBvSQ3wqlf9BywZ5qpflLpeKptj
-	5bavqU4bXMMsOLpvLnh7YsO667ZaCbY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ca6lUa67;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777539253; a=rsa-sha256;
-	cv=none;
-	b=WXnP0PT8qNyvVMvyUIFgIFN33ahnDyUfVS154IWCh5VGvH/pYUL2i4uYJ6JagPC49gnmdq
-	NsZWWOYIy3xzn5vr2bp+vTAnLCt9JxwMy8w2ag/I2bW86Hg29imV7pXu5lAX0IrRfhNMAl
-	ZZI/y4xw7V1aJ6vdx8mtj6TmAmihIzQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1891E6015B;
-	Thu, 30 Apr 2026 08:54:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8BFC2BCB3;
-	Thu, 30 Apr 2026 08:54:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777539252;
-	bh=/wSBpmhqZapSeg9o/Z+i3bMhLelGt9xiGZSqJKvYzEs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ca6lUa67G0BQk/1SldprKmnEN9e5LtFi5bJu2tDyflou/lt86Ktr4AFu0EgBWeW7A
-	 C2mfdpw5lkG/qDNgmRhobXrVtY/4fG8LkiqFfL/rh1+OvEb6+JLR/91a2ttpaUwEwJ
-	 19Zbx2V5R0dyGzey6/na7jYqY9AqIQua5j84t+D/uGiLIF+YSIHuWlSBEW9mMctdcu
-	 GS6tqghZ/WGw9TRgm8u30CIEeU2UTiEFks45dz2xej0s/9ntDGDwmvznT/MHkIUmZS
-	 lVuszu/QMa8pMb8Yxw9H+G3YS1IVBG9sutspYoztA3hxsibVnYnPO1gR4ZyXc3kQ28
-	 IRq8rvnMFK7QQ==
-Message-ID: <9845ff31-acaf-4a04-86a2-b4104446e966@kernel.org>
-Date: Thu, 30 Apr 2026 10:54:06 +0200
+	bh=6sW9yUuiuOqvKVvfAL90obEUno+eOlkGZaMX/8MItf4=;
+	b=eO+iLMDM6bbALheUeBSYwq0qxZrAaY/327tDEljmu3hyXoQvES6zV1VdglTNOiSVYrm3pC
+	9oyyaT4OqfUO1Y0CwJpJtxOPQVbhOgissD52cmDr4a5s5rQMwoa8/rWmZx0+iRxCgkCaed
+	4EPfhMqqL0YkocnyudmEVWOlsDi0mZc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1777540058; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=6sW9yUuiuOqvKVvfAL90obEUno+eOlkGZaMX/8MItf4=;
+	b=BNCuJrao1f3aocvyJg7/ySRHN9toyNrGuPLCqes2iv4PoTt0hI36S/GsuNWa6h+gOfyF8mbISas79wY/JlrF5mKnPsrCDdip2Qn1VGf/Fw0aoIfKCysUETICBVI+a66IsTnZGqVsBC7bmsl+5WShVO4PbtDIJ2W5HiJLOQYNwu0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=46;SR=0;TI=SMTPD_---0X2-fQ.Z_1777540049;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X2-fQ.Z_1777540049 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 30 Apr 2026 17:07:36 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,
+  <kinseyho@google.com>,  <weixugc@google.com>,  <ljs@kernel.org>,
+  <Liam.Howlett@oracle.com>,  <vbabka@kernel.org>,  <willy@infradead.org>,
+  <rppt@kernel.org>,  <surenb@google.com>,  <mhocko@suse.com>,
+  <ziy@nvidia.com>,  <matthew.brost@intel.com>,  <joshua.hahnjy@gmail.com>,
+  <rakie.kim@sk.com>,  <byungchul@sk.com>,  <gourry@gourry.net>,
+  <apopple@nvidia.com>,  <dave@stgolabs.net>,
+  <Jonathan.Cameron@huawei.com>,  <rkodsara@amd.com>,  <vkoul@kernel.org>,
+  <bharata@amd.com>,  <sj@kernel.org>,  <rientjes@google.com>,
+  <xuezhengchu@huawei.com>,  <yiannis@zptcorp.com>,
+  <dave.hansen@intel.com>,  <hannes@cmpxchg.org>,  <jhubbard@nvidia.com>,
+  <peterx@redhat.com>,  <riel@surriel.com>,  <shakeel.butt@linux.dev>,
+  <stalexan@redhat.com>,  <tj@kernel.org>,  <nifan.cxl@gmail.com>,
+  <jic23@kernel.org>,  <aneesh.kumar@kernel.org>,  <nathan.lynch@amd.com>,
+  <Frank.li@nxp.com>,  <djbw@kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-mm@kvack.org>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
+  Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 1/7] mm/migrate: rename PAGE_ migration flags to FOLIO_
+In-Reply-To: <20260428155043.39251-4-shivankg@amd.com> (Shivank Garg's message
+	of "Tue, 28 Apr 2026 15:50:39 +0000")
+References: <20260428155043.39251-2-shivankg@amd.com>
+	<20260428155043.39251-4-shivankg@amd.com>
+Date: Thu, 30 Apr 2026 17:07:28 +0800
+Message-ID: <87v7d8vmsv.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH hotfix] mm: fix pmd_special() fallback to observe
- huge_zero
-To: Hugh Dickins <hughd@google.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
- baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
- liam.howlett@oracle.com, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
- npache@redhat.com, zhengqi.arch@bytedance.com, ryan.roberts@arm.com,
- surenb@google.com, ziy@nvidia.com, linux-mm@kvack.org
-References: <e7cbc92b-ce9d-432a-ae5b-c8715dcd922f@kernel.org>
- <20260429065743.67054-1-lance.yang@linux.dev>
- <ea1453a6-14c9-4334-ac7e-2758586393b2@kernel.org>
- <aa3937bb-7f06-4136-ba36-ce4a06acf80a@linux.dev>
- <4d950326-6944-409b-b108-a4e67256857f@kernel.org>
- <e92e45df-0821-1d67-e026-88c57960814f@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <e92e45df-0821-1d67-e026-88c57960814f@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ascii
+X-Stat-Signature: rxproxkam3acwzj9riyu9fxpobruqwbr
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CFDC3140013
-X-Stat-Signature: ticc517c5sxgjb3d6uzr5jgae9eciwf4
-X-HE-Tag: 1777539253-494128
-X-HE-Meta: U2FsdGVkX19hbA4PKl13lPHt5p1tZ6hgMKnRXxv+aeE+6ODQ+GAPfFZ8y3+XV+6/lB/85P8CxVyZTpjVsyEIJB5diQ3b+jt0SN+5y6h5fsJNVCffFdziVU/D48pp9HCCXICdpzhmBGYZBGZXJ9xvjsSQslkpk/AKpVg/9/nYpQaaSAPcZ6ESuJPLX5mtTGf6WCrehxcIpV/bpP1GDQir9VMtZIGJlAJ2zAHobdUxwT2USksygAFlcN6IqInyS4DKMIdyxBeGA3P6UAHyCt0nvhGcp2N0B7GFADEdyoGaTt1tXsk/xI2Cw6BQkXTeaxgFLLJPjhrKaIubweCIbB4CZKHMX5LEK2nBd1zETqSpXz8yjcNUURfDCsD8kg5No0Oa7NLs3M0TwfZCJRox22ikIWPtB626m0G1FzWclZGx9eI0J7HVHmtdbOOImV2vhvSu0Jqw/6e6enFGsXuQlGbfh3MIbQDXEVD3h0R9dwDFyruv+D1GxgN9k94OUrrLtPFzAxEQ8cdcmuTk7bvwlVIDCXVCvt26Go/KggdzAy8NvbwB3yosV1cYuBXYPOteK0oF6+V3gH7+qJiyfG8YfK75TYxO4a9PfwrN9y7oI/pfqj0NZFUUxJger7/GGkXRnt2TQSXOscyRsx8/NYvkPybH6GI2z9G/iCtycugHqMwOuZbaMBTKH1rbyAKeakXzdWW7YeG2Lm+YMfFhYPc2vIJR2R02XzyW8lrLTi5GGhQp4OggVKbPkq0FVxtqL/s6AfS2alhAj91TxuYCB2P1aJucc39d1O1GKyCachKo90YMmw8lYGTv7XtXPVRFXj8M5vI63zCKYBxDsR1Ld1xaZbq1/1YDAtXLnOon3gwBrCIxUBi7WhKs/NFO/7pxVe+OoIOEG1+APx58d4FUODG64VYRxHKsjMF9ehdq6oX6LFXcOwV8yFFejpUDTC5nQYxoZPA0l3UizWreNJSwkxfshnK
- vWSZq/x1
- hdldEtF0qAOPWNTK/yFPhQ5KAvHr08Nxq15kj2HsbwQ7ekKXPjQeJvHWoM46h5A4plwue/alAQHk/xtPmgsplqm4MupS9AIWNsKsw3+Odgm+85d0fFobBTdu+0E6egt5hiikITHg6G4J6SGRZOhb3wPZvoSgT0wZRikR2bTbzcC+VFsv/O2NaaG/N8FhQ/o1lsH/gOYODuTAYFOlEDQLWgDFVx/kyzahf9XRkzYuqePLxe6BiOfaEGLUl0eKR9zTItRnsWX7xecO4Id0klXNnip4kzeXuPf90YDqpzTggfAvn1D5nn+dk0v/sIMR0IwJT+hXDn6ZGfsSpRGX+cbnEjKHL5XhODS6Mwbrt
+X-Rspamd-Queue-Id: 85681140003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777540061-316089
+X-HE-Meta: U2FsdGVkX1/xlGZvZALsWqy80YeMstjlgNtdcxqN1mddPW+xWUk6wcB2+zQeghNS9QsDsHTI1va1jBxBB/4/snaAVonE4syKniO+ko+ZRXGFvhs9v4Fxdu35hKAJA4ZT3EIBkY01Ec95tNioekhyOv/BJOu7DVCX9FG/E1VlvOBem2xlZAKax9MpoSyseWg36MZZvKYjMdhORP9ydd790gOQodY+GA/kTNbOPak86KCDOOufwacOzDFj5xW2Gmw1Oy8sIZUAOe6YR5ijWMS6d/UgS9cDFHxBRI4mKlL4bdV4eCmI4ChFXIVUJ1jqLPQLgDHLYMiKws+mhOsQMevp5mVrXVxtFVz1R2vQaDZxmlIG3wckBHcd4TBrvuKqWIz5tpyFVgGA5xZln07MyXA6uH8zJDqH1vFnx02Uz5VC/4xWyQp+p3/u4M1ohE7isNlXcx9m+D/Slg0ZWW8Uu8tZyPdKMBRE5rFxpuYVArNgtTzrvY61FAy9qehKX7h03iKpkctg5ni9lLSSJMY6iqmi2dxWbJrIZGt4D0BLvCKwSYCsf8FjJ/uDIt5Hy+k+lo5Wg9Se78SPAuH/ptBpWzIrj7GqJEHPqmde2+LJHbNxI8e0ho6RunTmoUlMaN9+lsz746R45NNA+NuslgYElyAf6dO6ydyNGrQAhQ5krxQtVWpRPXaEtNtedsDP3Zn+8gw2wxh+iCPE8ysiXAibdRy0ZTKw49A00YlfolXK9vnRal0IbDNC+7Ps7RIRivPpEkOjOkJWI8NoSzqAP3CG4RXqSaPyyhChtaBTmCpjya7Ckkfy9FaOFNaLpSe5/BE13eOvRmcs36LNURxdJQSIO90I3eb8jvmxPyTKgR+9XgoMqyfIBl/tsTBnNp2AcoTdvY5wgADUU1rSLTzDtzfoQ4kmorjeQmnKJYGEIRlZQlZnNvBRmHLiZO0dewWPmVfyTe5N+WulUqh/Ekt94ZQLZ81
+ AX/nMSxO
+ OA/Pqe6L9hTD1WJqSlGwvekozt2gk3Az6LUc6lTQkVSqcrSWw7NDtzvTWcrkMA+5iMvsphCAr6t0smdJq88TT3GlPP57OEAdDyA3n6y8wkCOct2FQZanapigeabeFmmEnWhj+b9BiOPp1HRQGsC72XeiwM9RqYKAnjkVD/ezJWN4OKvgQmuocRwEgwy9lytRNhjCKiqHjYRR3TdyEroyuZkkoogB+1TVql7vcrHoT+sWSqPtpqh+cHMgfHHRz7Nu60YfAsD18z+MafNNJ/Wl0XdMmnI0Dqvoo23ZQC/Q4NFlt8S058qEMnfh9kDe0VMXHTlOHe1BKFcgCk4vRHsZbkxwFn0B0zmvrleMxf0wcP91b/bVU/fkaXDSDYqeciQB1OJoL/9KXQ2hLQTXkmO0L0mSGP86Mjx/okUu/iowdv4uH9MhET1B9nZc9+zeTkVxiSDz4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,102 +101,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> ... and triggering the VM_WARN_ON_ONE(), although never reported so far.
->>
->> To fix it, teach vm_normal_page_pmd()/vm_normal_page_pud() whether
->> pmd_special/pud_special is actually implemented.
->>
->> Fixes: af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
-> 
-> Agreed.  My Fixes tag (where my bisection arrived) was correct for the
-> common zap_huge_pmd() symptom I was seeing (Lorenzo's commit removed
-> an independent is_huge_zero_pmd() check from it, so it now relies on
-> vm_normal_folio_pmd() to give the right answer).  But you've chased
-> up other usages, and realized it goes back further.  You could just as
-> well blame the other commit mentioned in this thread, the d82d09e48219
-> ("mm/huge_memory: mark PMD mappings of the huge zero folio special"),
-> because in come configs it is not doing what it expects to be doing.
-> But af38538801c6 is where effects start appearing, so fine to blame
-> it (and both come from the same 6.18 series, do it doesn't matter).
-> 
->> Signed-off-by: Hugh Dickins <hughd@google.com>>
->> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> That's generous, but the patch is not mine at all, and I'll
-> happily let you grab my two paragraphs above.  Please, just
+Shivank Garg <shivankg@amd.com> writes:
 
-Okay, I didn't want to undermine your involvement.
+> These flags only track folio-specific state during migration and are
+> not used for movable_ops pages. Rename the enum values and the
+> old_page_state variable to match.
+>
+> No functional change.
+>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
 
-> Reported-by: Hugh Dickins <hughd@google.com>
+LGTM, Thanks!  Feel free to add my
 
-Then, I'd also add a
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
 
-Debugged-by: Hugh Dickins <hughd@google.com>
+in the future versions.
 
-> 
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>  mm/memory.c | 17 ++++++++++++++++-
->>  1 file changed, 16 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 7322a40e73b9..a60bc07b48b2 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -612,6 +612,21 @@ static void print_bad_page_map(struct vm_area_struct *vma,
->>  	dump_stack();
->>  	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
->>  }
->> +
->> +static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
->> +{
->> +	switch (level) {
->> +	case PGTABLE_LEVEL_PTE:
->> +		return IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL);
->> +	case PGTABLE_LEVEL_PMD:
->> +		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP);
->> +	case PGTABLE_LEVEL_PUD:
->> +		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP);
->> +	default:
->> +		return false;
->> +	}
->> +}
->> +
->>  #define print_bad_pte(vma, addr, pte, page) \
->>  	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
->>  
->> @@ -684,7 +699,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
->>  		unsigned long addr, unsigned long pfn, bool special,
->>  		unsigned long long entry, enum pgtable_level level)
->>  {
->> -	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
->> +	if (pgtable_level_has_pxx_special(level)) {
->>  		if (unlikely(special)) {
->>  #ifdef CONFIG_FIND_NORMAL_PAGE
->>  			if (vma->vm_ops && vma->vm_ops->find_normal_page)
-> 
-> That block ends with a comment on CONFIG_ARCH_HAS_PTE_SPECIAL:
-> perhaps better reworded now - but I don't know what to suggest!
+[snip]
 
-Good point, let me take a loook.
-
-> 
-> This patch seems okay, but TBH I have no enthusiasm for it -
-> it forces me to think too hard, and I prefer my own one-liner
-> (iwhich Lance found odd: odd if you're thinking pmd_special(pmd)
-> means pmd has the _PAGE_SPECIAL bit set, yes, but not odd if you
-> think it means that pmd is of a special folio).
-
-If pmd_mkspecial() is a nop I'd prefer that pmd_special() is similarly a nop.
-
-> 
-> But whatever, you and Lance prefer this one: thanks for the fix!
-
-Thank you Hugh. I'll send out my version officially, and if there are strong
-opinions against it we can just use your variant.
-
--- 
-Cheers,
-
-David
+---
+Best Regards,
+Huang, Ying
 
