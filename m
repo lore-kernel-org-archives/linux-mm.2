@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9329FF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 13:11:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 866DCFF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 13:17:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53BAB6B0088; Thu, 30 Apr 2026 09:11:13 -0400 (EDT)
+	id C4C4D6B008C; Thu, 30 Apr 2026 09:17:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EC7F6B008A; Thu, 30 Apr 2026 09:11:13 -0400 (EDT)
+	id BD3946B0092; Thu, 30 Apr 2026 09:17:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 402216B0096; Thu, 30 Apr 2026 09:11:13 -0400 (EDT)
+	id A9B1A6B0093; Thu, 30 Apr 2026 09:17:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5D66B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:11:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E19AC1C0DC8
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:07:35 +0000 (UTC)
-X-FDA: 84715248870.22.47D9B84
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6706AC000F
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:07:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HNb6jzen;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 93E7C6B008C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:17:39 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FB2C12015A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:15:31 +0000 (UTC)
+X-FDA: 84715268862.27.9C25A56
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2A24540025
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:15:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jGYIK58b;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777554451;
+	s=arc-20220608; t=1777554929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=ro0NmzOWNP0EroojJcZZyIPxxPKcj55A/BCfZadES9k=;
-	b=lsr2C6y/K2+eSaG9Ml+FtIkdemFH32KyR7Q8MNkHKHcz8hx2yDqrRKCA/YGVe2eKQMJ5DE
-	5PjSP5rjQS9m6e5AjRbJsFos6TtlOe9A1cNVdeloKpTrT79w27Zo0g7nM9GFFocDfCDvaV
-	5LhOvMvKC8sUYRcJ2UT6rKsPj8gr4Ds=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HNb6jzen;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777554451; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5OStTXxZ3sXqnVM84IClp2Y9AcAptag/K56TyWWXj3A=;
+	b=iH6zlofEtD1pkUJZM7KLx2HiUc/oYQElY8D75u7JGtaKgYny2431JzBoXSlMWtN347v/X2
+	KBVLCkYzGQF4B6Lh7IJS36O7ov5ZZ3PStrtJyttRr4TN9wYPlQ59d9sXmnFiWXrGd6a5fo
+	3PVoT2aSvHe4bQl2dEsndHf4OvHBySI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777554929; a=rsa-sha256;
 	cv=none;
-	b=j/JtxCHp57vBZOMvZfHsnUjQsqXnGLqc0gHjZ/AaCQw0q/PFHMps1i+EPoMJS+YiibLVAX
-	oue7aiEiuqKy8WJzLdBUTvN4V1BnRqJcQi39l7GP4U3uJYcpDMlyuAqv3AgKuUnibJntpu
-	6SrM/dJZ2zkAoktCQdxKHdVEKoCMhII=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777554451; x=1809090451;
-  h=date:from:to:cc:subject:message-id;
-  bh=Z2cAcabUhgwviq787moawJMLwhFnq7gWY/8G4VRV1+0=;
-  b=HNb6jzenX0MPoKW7taDOyT+qpkc01rEIYaFxIYJ2A/9clu7n0eMc6fBh
-   UBYHKHePvL0WT9JSNUp5EfH2KQ8sQGR5EszFqYUjuMIoBUCdD3/ArjZuH
-   8vF9ngNvEeaEufAvmgTfJlqQ+4QSjCaMrWFR3yAody3LmB6Dyd1fDpQDR
-   IElKHM1ptlvqc8VGXWtZULgYGznGVr0Lr0+NSgDTZDGELwOj46Nl90Gpm
-   UGL+xP+pyHOY7S/W5BB857kCHFthEGWJuBNiICntiq9Z8a7Jjx+LX6d11
-   C4QUuM/hgPyF6S6LM027GFlbkMxvpQmfsPmVhqrCG/lpDuiYbkySUISiT
-   A==;
-X-CSE-ConnectionGUID: i8D5QuxcR9+jF/75jcJQXg==
-X-CSE-MsgGUID: 59+nMyaiSMqMDrFoUKPBMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="89963174"
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="89963174"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 06:07:29 -0700
-X-CSE-ConnectionGUID: mwJh41SQSU2C12Fvxh6Oxw==
-X-CSE-MsgGUID: ne9qaGMaTM2y5y6JEpc5hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="264947044"
-Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 30 Apr 2026 06:07:26 -0700
-Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wIR6x-00000000CPM-2ZIz;
-	Thu, 30 Apr 2026 13:07:23 +0000
-Date: Thu, 30 Apr 2026 21:07:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org, Davidlohr Bueso <dave@stgolabs.net>
-Subject: [akpm-mm:mm-new 115/182] mm/internal.h:847:26: warning:
- implicit conversion from 'unsigned long long' to 'u32' (aka 'unsigned int')
- changes value from 17179869184 to 0
-Message-ID: <202604302039.yKocJk8m-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	b=8q2e2imNbvQ8QQsWMwlWrH0v2eZIpPxDTfSZC1w1M7bTTcnuq2Iu1utcc0+uSHnU96QIvY
+	IYAwIEh2rsXXw7BvO8iONwwBAJQ65xWRH6u0dMc8HCrkZlmDLO3wAH94dqsdAd//6r2qaq
+	kdhrOj0n1uwThPvjQqy7yp6RZGgzNr0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jGYIK58b;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5OStTXxZ3sXqnVM84IClp2Y9AcAptag/K56TyWWXj3A=; b=jGYIK58bhLYx15PGi+dd/fQtRZ
+	SQuzzxWWZqGg233kNQ1XAojs6Jnrkp/3L+TjH6d/BsJEAi8gBxgRI6uAWd3ZP2LFNpwqI4nR4s5ld
+	FVACz28JCThhfr0VsLdZMXielmghJmnuEIeAZd3ClndZrvEr1wzzopyDeNujSSQWletH+loxtdZAK
+	Vh4ue6x9fhO4TjaYxV7HrFKxiV1B3Nj1jYSdPvlA3Rc139u7hQJcw02tj5/CJ5zTBCmyR+/T3rUOh
+	o8+A5YJjuxNEc7GMbVSiTHsH61mCcNwxbqck3ssRvfe4y15ruubnu6tAp5/SJB8KltE3qs7X5TRlI
+	3SfAfiIw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wIREe-00000007GsL-0T9w;
+	Thu, 30 Apr 2026 13:15:20 +0000
+Date: Thu, 30 Apr 2026 14:15:19 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	lsf-pc <lsf-pc@lists.linux-foundation.org>,
+	Gregory Price <gourry@gourry.net>, Bharata B Rao <bharata@amd.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Subject: Re: [LSF/MM/BPF BoF Session] Numa-Aware Placement for Page Cache
+ Pages
+Message-ID: <afNV5wbhsFQJLzxi@casper.infradead.org>
+References: <h5ossmwe.ritesh.list@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <h5ossmwe.ritesh.list@gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2A24540025
+X-Stat-Signature: eb6phdjrisd4y7itq8ix7cc4oa76598c
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6706AC000F
-X-Stat-Signature: djwnamtgoc86453yt455dpi4sstf164j
-X-HE-Tag: 1777554449-997247
-X-HE-Meta: U2FsdGVkX1/bMbJTn825FpWuAd7VCjhled5rYodvr1FzjgWtN3ntoqkjMxRt4NMiqBpS63lyGPgYFup3DBVzG8Z4BaAQiUaBRzFd9LHmAfnxFW2EeQ/Ddyq0m9uBf+Wj2pnqMJMKODoXjJ7LPKmDMflIyA/QeF08plQufufSZXQd75UYOz/PZcwBqQiH6lkewTNz9dQEAFG7fJCLWvvkPD/80OtkQ8t/LA1wdJMUqhrf2oy9VDzucbsoAmirZ3dHdmDnWh2BOvlGWT8O/b3iL1lly7icI+d4kxO4kHvHv88d9tUooXRBpJ2pWWRgInuLnkHGmCvysvlDGXw+Ud5IWTa5FgC+3+EoJRgBBNETWyswevNSTsTDvivisdTqzHyEutdOTw1H87Vp3Zc94M+tWdBWEabpijpF+ZaYjLU1aUgGqT9rT8k4fwU8GjUHps5bOLI2/Mx8vzOPChlRlPQoS/ZELa5l+ylcfgEO8rdxNpi01iFxiHJYFhXv2ZmlaT6esi46IXyHTAuidYpAYx+X7rGifF2I4+ZDVR6GcXLdU/mv95WcI4YqpmdyeGvxs/C/nI27JmD2/og+QvTWn20Pnpnx3MVfQPv33sfNSxvya4bGDf98gryb5+EvMomlOSEkC/5VM6N3nWxkQGr3o1H/eYK3FXW23W+6z8b0Ty2Iib9W8yfcE1Yp3A//wGEwihShtW083sz0vWT80QWcyKt+yrIQa/Od5b6qRBjYZHXzst3VATGInzLn/iLEfp1JGCzBHnaSjIEe1wrMzCnSL7iIrCnK+UslzENULESR4UpcOxaSI0SODzCBaHq7K2dKd+sMAKhnaM6QqdsmkqNLlkY09jlo+lA8dK0EdJSkgUZxqTZpU5TkTFwFHHrRZA6e2z4PcWxAMokoyoew3G2KNWGqabdoBdmaoe6P/qrKZmYUU7vjoq1wDY4h7hXyPS7UuM9qbqbH/JljjZx5GPjDOQe
- JiujaQ9n
- 3XhpYO7v4fIjATAWh6ANcDKkEAOuNDKyxA4/vTCxadzxo7Kzu2KD93xf3PAcTnlJ3La9NhLuUjy0atmhjLFKqqd/7xih1vOlI3HY7vbT1D7woGI9XwpskvOb9ccKkBElW3EClW2Vx4R2pe0ACfeIsUENa1FIr+fRT1wiGvDYOV/HPVNOf9sHqWUrdnwGnyiCHaRFKoJflKBXOt3yOLxqGBfc+ejh3v6Omf7j5QgGAEHSsWIIQcG8K8uNgnGPN2yx8UwoqPG2En/FDwkW7PtZpJNUfGPVe2g0XhEJZfQ2tZg2IYijANEkaZOn+k877o6NgsD6mbQafLdNvMYc=
+X-HE-Tag: 1777554928-386186
+X-HE-Meta: U2FsdGVkX1+jWz9mLMyM0FUCqfzGQzBI/DgHIOIbdoGcSQm4saRBgRFSHIKc6LVEPWFue4AdsrEXl+3dHgH7t+2s74ETDoGZ5jKc7bpRCOa2LHPg9a71z/elPVprM6OHds4oFjvcLY6f/BtPZcuT7PsVhZlgXZZNHpRUSMW/rMTnGPwNnAA2FAe61t7VRSd4wk+KQS+9170Te9MTaNYzwW1IlFYUII0tTdTq4ZEkh+ruEDTm1ESnD0C6Ay18yN2FoWnwokFSsWRv8Vd4OSf3fogth08Q2BsmaOaUZc+nHiZFU90iclRbjtyzVF9wZD4PNHIUl6NajK4+3LLtFdF5ok27t5ErDEfo7mddjFBtyFrdTkBX6MQXigUZq7WFXFReExDqH6jJtwVSEcGqAO0jwR57zrr8Ckz70nw0mFue6UknykXvn8sHpnq2Z8v7gC3CIaSRYuBLGEpZB3v7+4Z6KoYG00yZCBDiumNlzNMM+SrTUazAG9MdevbMBXIOEM5ji3IeT5lVGQTGDT1IvGIBfe8sTostfK7DqweT7j8pAz93+fhBdedtGqcDnF9b89TrOayl3JfSCm1a+hDbB2bLmkvQHRsHNdtMKoOK3ewAAd4G96pGXZndGQFjOW/f5YNDInmhkrboY+bo+MDMiSyusx8+qPNhrCfG/PchVDaqV+hoAS/bzs3tgR14H8RlTDil+ufBc3oC9eGukku11NbSr9XdyUhLSEtZFU2+/s6vIHWSP8yNBPCAPqCOfOPgg0haL1gD+FLOx0+19oTvVFDLF0CpMLFSNIj5jdsPGMSIDW3BzcW5dqf5NsILPyu4fwS45L91KWdxtVxR7rJm8RFHbXOBduoK+N3g4AloNfD4AQR2pv/HKb3UL1WODNTyjrl0esYJnRYCQML2PlXuTH3yTL/8V2BODDSNQyKtbgMagbewanV47xK08n39e3tkENFyj+g6Nu8bu6q2VO8yjC2
+ gcQKU2RA
+ YXJ3xmgLtRlM/endcuvI9fIaKaiiexabn44QWFiK/YzpHyuet2sJdqqIYtvJ35vEXuJ6uMEeQz0ETZbthdX2D5wT2nEsr740GExBoFkPp5tD4OoxZlNCrgxGTHXwicouAelpDNxXGq6HQcik74+j4D52NmylAY4MJpGODOxbz84N5UGkbN24ulePKOH6KOCIt1KxI4bDDf54F0KsYvO7KssGn6hZAKEG7Gj4t2SY5danDBrZzMtoep7Ira0ubDX8a4Wd/4CX3gCft/7vKL3Xj2h+DBq0mLcApKOY1kWvngexGJAgIQbLVRzN66wyOdLiPh730
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,94 +95,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   0587fb0c820d86e5b77a975680d79b5176d09abb
-commit: 78c22ab4ad70900027ae72e857274535c798ccfb [115/182] include/asm-generic/fixmap.h: reimplement nasty macros in C
-config: riscv-allmodconfig (https://download.01.org/0day-ci/archive/20260430/202604302039.yKocJk8m-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604302039.yKocJk8m-lkp@intel.com/reproduce)
+On Thu, Apr 30, 2026 at 05:03:37PM +0530, Ritesh Harjani (IBM) wrote:
+> Linux already supports memory tiers and there are ongoing discussions around
+> promotion of unmapped page cache pages, which lets kernel do the right thing
+> for userspace page cache pages on a tiered system.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604302039.yKocJk8m-lkp@intel.com/
+Well, you know my opinion of that idea ...
 
-All warnings (new ones prefixed by >>):
+> So the question is:
+> Do we need a userspace interface for the placement policy of page cache pages on a per file basis?
 
-   In file included from mm/early_ioremap.c:18:
-   In file included from arch/riscv/include/asm/fixmap.h:64:
-   include/asm-generic/fixmap.h:93:26: error: use of undeclared identifier 'PAGE_KERNEL_NOCACHE'
-      93 |         __set_fixmap(idx, phys, FIXMAP_PAGE_NOCACHE);
-         |                                 ^~~~~~~~~~~~~~~~~~~
-   include/asm-generic/fixmap.h:54:29: note: expanded from macro 'FIXMAP_PAGE_NOCACHE'
-      54 | #define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NOCACHE
-         |                             ^~~~~~~~~~~~~~~~~~~
-   include/asm-generic/fixmap.h:99:33: error: use of undeclared identifier 'PAGE_KERNEL_NOCACHE'
-      99 |         __set_fixmap_offset(idx, phys, FIXMAP_PAGE_NOCACHE);
-         |                                        ^~~~~~~~~~~~~~~~~~~
-   include/asm-generic/fixmap.h:54:29: note: expanded from macro 'FIXMAP_PAGE_NOCACHE'
-      54 | #define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NOCACHE
-         |                             ^~~~~~~~~~~~~~~~~~~
-   In file included from mm/early_ioremap.c:20:
->> mm/internal.h:847:26: warning: implicit conversion from 'unsigned long long' to 'u32' (aka 'unsigned int') changes value from 17179869184 to 0 [-Wconstant-conversion]
-     847 |         VM_WARN_ON_ONCE(order > MAX_FOLIO_ORDER);
-         |                                 ^~~~~~~~~~~~~~~
-   include/linux/mmzone.h:85:33: note: expanded from macro 'MAX_FOLIO_ORDER'
-      85 | #define MAX_FOLIO_ORDER         (ilog2(SZ_16G) - PAGE_SHIFT)
-         |                                  ~~~~~~^~~~~~~
-   include/linux/sizes.h:56:19: note: expanded from macro 'SZ_16G'
-      56 | #define SZ_16G                          _AC(0x400000000, ULL)
-         |                                         ^~~~~~~~~~~~~~~~~~~~~
-   include/uapi/linux/const.h:21:18: note: expanded from macro '_AC'
-      21 | #define _AC(X,Y)        __AC(X,Y)
-         |                         ^~~~~~~~~
-   note: (skipping 2 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/log2.h:162:14: note: expanded from macro 'ilog2'
-     162 |         __ilog2_u32(n) :                \
-         |         ~~~~~~~~~~~ ^
-   include/linux/mmdebug.h:123:50: note: expanded from macro 'VM_WARN_ON_ONCE'
-     123 | #define VM_WARN_ON_ONCE(cond) (void)WARN_ON_ONCE(cond)
-         |                                                  ^~~~
-   include/asm-generic/bug.h:120:25: note: expanded from macro 'WARN_ON_ONCE'
-     120 |         int __ret_warn_on = !!(condition);                              \
-         |                                ^~~~~~~~~
-   1 warning and 2 errors generated.
+What do we do if two tasks both "know" the right NUMA placement for the
+inode's data, and they disagree?
 
+> 1. Is there a need for an interface that allows userspace to do per-fd page
+>    placement and maybe per-fd page migration?
 
-vim +847 mm/internal.h
+Ideally, no, the kernel should observe the task and get it right.
 
-904d58578fce53 Kefeng Wang             2023-05-16  831  
-3c605096d31582 Joonsoo Kim             2014-11-13  832  extern int __isolate_free_page(struct page *page, unsigned int order);
-624f58d8f46396 Alexander Duyck         2020-04-06  833  extern void __putback_isolated_page(struct page *page, unsigned int order,
-624f58d8f46396 Alexander Duyck         2020-04-06  834  				    int mt);
-58e3e5265484a1 Shengming Hu            2025-12-29  835  extern void memblock_free_pages(unsigned long pfn, unsigned int order);
-13c526540b3169 David Hildenbrand       2024-06-07  836  extern void __free_pages_core(struct page *page, unsigned int order,
-13c526540b3169 David Hildenbrand       2024-06-07  837  		enum meminit_context context);
-9420f89db2dd61 Mike Rapoport (IBM      2023-03-21  838) 
-1e3be4856f49d5 Tarun Sahu              2023-06-12  839  /*
-1e3be4856f49d5 Tarun Sahu              2023-06-12  840   * This will have no effect, other than possibly generating a warning, if the
-1e3be4856f49d5 Tarun Sahu              2023-06-12  841   * caller passes in a non-large folio.
-1e3be4856f49d5 Tarun Sahu              2023-06-12  842   */
-1e3be4856f49d5 Tarun Sahu              2023-06-12  843  static inline void folio_set_order(struct folio *folio, unsigned int order)
-1e3be4856f49d5 Tarun Sahu              2023-06-12  844  {
-1e3be4856f49d5 Tarun Sahu              2023-06-12  845  	if (WARN_ON_ONCE(!order || !folio_test_large(folio)))
-1e3be4856f49d5 Tarun Sahu              2023-06-12  846  		return;
-99132d24d76511 David Hildenbrand       2025-09-01 @847  	VM_WARN_ON_ONCE(order > MAX_FOLIO_ORDER);
-1e3be4856f49d5 Tarun Sahu              2023-06-12  848  
-ebc1baf5c9b46c Matthew Wilcox (Oracle  2023-08-16  849) 	folio->_flags_1 = (folio->_flags_1 & ~0xffUL) | order;
-4996fc547f5b49 David Hildenbrand       2025-03-03  850  #ifdef NR_PAGES_IN_LARGE_FOLIO
-4996fc547f5b49 David Hildenbrand       2025-03-03  851  	folio->_nr_pages = 1U << order;
-1e3be4856f49d5 Tarun Sahu              2023-06-12  852  #endif
-1e3be4856f49d5 Tarun Sahu              2023-06-12  853  }
-1e3be4856f49d5 Tarun Sahu              2023-06-12  854  
+By the way, you're familiar with how filemap_alloc_folio_noprof()
+works today, right?  I forget whether cpuset_do_page_mem_spread
+is on or off by default.
 
-:::::: The code at line 847 was first introduced by commit
-:::::: 99132d24d76511f0f6ded2e25448765b632794aa mm: sanity-check maximum folio size in folio_set_order()
+> Let me know if people think that this discussion qualifies for a BoF discussion at LSFMM?
+> Or do you think it's a bad idea altogether, if that is the case - Then
+> please help me understand, why so?
+> Before starting to jump on the implemention of any of this - I would
+> like to gather feedback on what do others think?
 
-:::::: TO: David Hildenbrand <david@redhat.com>
-:::::: CC: Andrew Morton <akpm@linux-foundation.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I'm just concerned about what other session i'll have to miss to attend
+this instead ;-)
 
