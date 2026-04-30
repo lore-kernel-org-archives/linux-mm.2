@@ -4,109 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A254CD13DE
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 18:23:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53ACECD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 18:25:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E65696B0092; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
+	id 911D16B008A; Thu, 30 Apr 2026 14:25:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEF836B0093; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
+	id 8E8236B0096; Thu, 30 Apr 2026 14:25:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D04816B0095; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
+	id 7FF166B0098; Thu, 30 Apr 2026 14:25:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BD0886B0092
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:23:48 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DD3E6B008A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:25:26 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E9C41A014B
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:23:48 +0000 (UTC)
-X-FDA: 84716045736.07.BC46562
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 429B640014
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:23:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Qa8Jn1ep;
-	spf=pass (imf27.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 050901C0063
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:25:25 +0000 (UTC)
+X-FDA: 84716049852.07.A353694
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 26C23C000D
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:25:23 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QSzBFntA;
+	spf=pass (imf28.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=vipinsh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777573426;
+	s=arc-20220608; t=1777573524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S/KWdKlKQczJErk+09cfrV9xYkG30E/YsEokv02NFI0=;
-	b=Frd3Z4jQHmGg+L03PrtY5kq4qB+d8GasIb8D/yQ5G4BDoUhIcDkUK6aUcrjt/X4YHQcSN7
-	kXfN/lZ9F7KuXBnYtlAIrtSG6MxnhMcBj1GkndeOsuO2jhLaTcYAMFb3LQ+6UNFukQy+xb
-	+TRZ122Xzr0q4jWY4gczRmf9rSWGuQs=
+	bh=eSG/yM4Jbprzjr8hlewRTOp1V59hFoclV98ulyGviIc=;
+	b=aXmfX8tbxHQgZ3x5PxvYOmfquUspYxmtz0Wj9mCxRhrKpUOhUoxwwMGwwGcl2BMOB68lnP
+	c3r1KGasywJOiiEHVKDN/cUjSH/V5YpJNDT5Djyg95WL+mmEBbrSe1penBgzppiBn5YgGL
+	/DO9QKx4ayVTT0UjTjkLYZoGLVPQdDU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Qa8Jn1ep;
-	spf=pass (imf27.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777573426; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QSzBFntA;
+	spf=pass (imf28.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=vipinsh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777573524; a=rsa-sha256;
 	cv=none;
-	b=NnQhwCwbHb9HfOj/bZITj6mWHyDc70Jm0ARoKLwBLcpOan0m2y/bINIlGbT0846VQmcF70
-	nQr0m2/l2TRKYDBFZAM8BhcBFhPcf34Px9Oo7LsyAs8JBfFtJvqbDePKTbD1Njg+UcRHHF
-	1fRh5i7PV5e6uG1OCHRb0Hw8BjrS1zQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777573426; x=1809109426;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=GHkxm0wYYb4SrQQJzp26BvqDgj5d1MTHLdsthOQOpLE=;
-  b=Qa8Jn1epO1/ON2poLV4g8yx59p9/ayCw5Xptfwq76ZxWEPGw7Y/tBnm4
-   EUwojfXcurLe7CQ3UeYIAKN9mFKeA5S87VDBQj7KdKyYkA/HCfwVhQJbF
-   xCnd/oPFEFOnhPb+jOT/vSU4J3NXk30NOwKAKk3ny64gRs9EH8yygOmsK
-   yafD0lCGs2mSw7ITW7+3WkLV/d8D1zKx5c85OZ2IQIGGTZvwtgLQbFwDZ
-   oust8UykpoV/o58l8sf9fGcOTl9kPuDwYShgU2/z+TRSduyb12emwOelI
-   6GEDA5iirJ8vcMacnkNI2rHTEM1jUZJ+t6avt9e7THWLwk4Hw/IxG40Qn
-   w==;
-X-CSE-ConnectionGUID: haWwJZIvTUuPh/8HKYu8GA==
-X-CSE-MsgGUID: qqNDtqFPRFGtnSbRdVL86Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="82388995"
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="82388995"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:23:41 -0700
-X-CSE-ConnectionGUID: j8ntlywORQaX6R++juekDw==
-X-CSE-MsgGUID: VDeEfBTvQ664s14Kaz6mMw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="231532218"
-Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:23:41 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/6] mm: Introduce zone_maybe_fragmented_in_shrinker()
-Date: Thu, 30 Apr 2026 11:23:31 -0700
-Message-Id: <20260430182335.2132382-3-matthew.brost@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260430182335.2132382-1-matthew.brost@intel.com>
-References: <20260430182335.2132382-1-matthew.brost@intel.com>
+	b=ksfC8PoZY/CpH5CuKOyeD7ty6g7ghCpjObbRc0hYtzUTpebfIL5qsAKZNY0tak0EMpxoQm
+	UP2KQmO1EZ5kQSEuZErRfY878Id31ZSsmmhMwbJBqqWrx2vqyKzErOg9VMIBSayCXadwbr
+	+vGv0SdHdm4uSzftHXl3BPDMjkHPZ40=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b46da8c48eso18945ad.1
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:25:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777573523; x=1778178323; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=eSG/yM4Jbprzjr8hlewRTOp1V59hFoclV98ulyGviIc=;
+        b=QSzBFntA21XE2feUJZlGEPrMbarlC/fdHlvpV94XhXupofOWjNBLCV9QatZO/uKjb+
+         VobCzh9N40y5/dVpkIwCsa30vdNJlTCWbJVbf10Ve/bJ8iFNU9asMhnYtNHaIe+YjB0v
+         jdr9q5Irx57NvJ2JVQhpkKb9gBQP/FHp1DISmwx8FjnTt6DtcUoDwTtPU9p5K86rZJFR
+         n04SIHGo/ebG1xdjXXe13LGp6E/gjBBGXZ1qbkkggTUxh3Az0J+4QsuSyyNpi7B8o/BN
+         KQnibJrCKIx3JkFBUozcNIFzD01qBij0HDSQQnbZ0MRPoxFyjA+u50pIkZhRqnAcbJf9
+         tCVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777573523; x=1778178323;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eSG/yM4Jbprzjr8hlewRTOp1V59hFoclV98ulyGviIc=;
+        b=UEGZiMm0vajvyK2axsUXrFumA0SpIJfrZ9l2UTguFCRmgAJEe/pFK3vWFbMXnAUL68
+         sE4yRqEd8p7oGbCXYrKP3DPOY/utHDFy+BRjZ6L430ceoActpEbfqUlrdh0TbK4Q9z7C
+         CSlT+UO7vy/6t0YnRAaqIgJ4gLSabIhPZD6Jka8tdaowD7yeQRBSW/10lwEQFsXtKqIs
+         GnEAVhSTKXdjtGS+B08spl20x/ckFm6yG2nVOX6PPdYC58L5dpJJLdN545JceMi6Vgyl
+         CHbFz95sDBXZktr2mxoeM2aRYKrhu+7z8OzuUWu/nty3jCpV0VZb0+/MQ3uItb3R21RN
+         f4mA==
+X-Forwarded-Encrypted: i=1; AFNElJ9P1ThU+dzOk+Dktr4wN8qy0hWa/zhfNLEI6xdLWUC5vgobSLM46bf4jXz2b9o5myqtf9675ylHFw==@kvack.org
+X-Gm-Message-State: AOJu0YyD4BslW1x1G++cmt+vFFdpYcExJ8dnE3w6CRt8LitPglDse4xq
+	kRuKWm1eV1YMl/HlWK/sO+KcZwcsOWACNQ4PeawJo21RYeQ9uqBSj7BTu1jcAaBAxg==
+X-Gm-Gg: AeBDiev/c4By5Z4tkZNuEo4kLphdjgtqxoZFN7kg5nsIFlJIEvalo7n0vBcTmTVzy2T
+	FTeAX0Z5b5NSzvwp6Yp1d3Kw1u6dPAQbXTKjX8VC2F4gKe6jUPCqPBHP3REJ9iAWmolmBe+LgKh
+	LA7SDcgdsFm9RxSNLn6B96vmsfK3wzIk7d6iO9qpkqMDMQqEjOUFnml0LwbYkSsnRuN46U9FDHV
+	8RWwKswfLKKVHmvK5hmMKnveNOnZXWPNbv20PcXdco6CIBceTPxVe527UMG2N7ceQRJxProDCOo
+	dwqr8cpWyIsjZ5RkWIxYI7xuLRMCHR0B4HoBxmNTnZIRyDyhfdI2R7SQfablq5RVDoUB//m+lhM
+	xXUAeQO7rSBk56efbq+GGyr4gRJ52RaMepVoKR0NxepP3mXEqPLmCyfB+TzG4es1PVlkVZQhggJ
+	BXwy0Gk7hM1nFS1bOJL+ND0gEQvdyD8D2XBF4wTJdtMC6RrsqVdNSaVjjGWexXvBY6kZsK2fuU2
+	FvpkkE=
+X-Received: by 2002:a17:903:2a8f:b0:2b4:6153:e541 with SMTP id d9443c01a7336-2b9ce26a5dcmr69445ad.3.1777573521791;
+        Thu, 30 Apr 2026 11:25:21 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7ffbcaa477sm278266a12.31.2026.04.30.11.25.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 11:25:21 -0700 (PDT)
+Date: Thu, 30 Apr 2026 11:25:16 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: iommu@lists.linux.dev, kexec@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
+	Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
+	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Will Deacon <will@kernel.org>, William Tu <witu@nvidia.com>, 
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v4 02/11] PCI: liveupdate: Track outgoing preserved PCI
+ devices
+Message-ID: <20260430175916.GA13902.vipinsh@google.com>
+References: <20260423212316.3431746-1-dmatlack@google.com>
+ <20260423212316.3431746-3-dmatlack@google.com>
+ <20260428201231.GA3885809.vipinsh@google.com>
+ <CALzav=dfLtdrPhkBkGwHpDAWUBMHnbGPccwhy1__doziNVZQJQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1ry79mi3cq7infyjnkyygummhbf1b3rf
-X-Rspamd-Queue-Id: 429B640014
+In-Reply-To: <CALzav=dfLtdrPhkBkGwHpDAWUBMHnbGPccwhy1__doziNVZQJQ@mail.gmail.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 26C23C000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777573426-286681
-X-HE-Meta: U2FsdGVkX1+mrR6gHqhWzZ+sUjFjhec5MJHwoHFd2kggO6IYVdNFrexgma9Pvz8jbcC5TemrTbZe6zVxwwkHW+bGQZ/It4Q4AFVTM3bk22ex7yGjveHrcpey6PY0hQI9noHsD95Uh/L11Svi6DVsnyLEJlkaYwm+YoKL9I0E9EzTF9a1JKsVCqeqIgM6AzkZ7tgHPzsdip3FRt7RjUEceV0UQI+n8p2mHu2rl9eS0zTFILoFGYkVXigJ8M3gG40p46qwAS2+xEG76XnPZ8DUd0jXGOfrrdXhFPJbykTTp9Bb99j5FJx3mQmeAWfb4I/s3zhsESqap5FG/75DoPkZsssUroykrut+HnLMip/Lhl65GqbksA8x4qylJR8eisuzVbfg8BPV8BLEsrcbGQ8hA6l3OOsBMBmW/goSb9E58fUxfSU/uz/yWeFEGMdXn8jOF5tpo4QjGK6gqI4OpeEwoBTiC/9O+7fw2p64MOUikqwdocC8pnuUIdDlxkGigryLLFRXS+GINf5QqRBba4m2dlmPikYMgCi+u6PW22e5Uh6ykCO7zwgTQpFwewKiSfXbB0X+XKO95BWol2rdCKob+ELtfaO4P+mFreyG8H754vwPP7m68VmnSiCdkg073BF0bD06m32DEhJdXJf5Ys64CuAM8tCJskee+DFhuxIzXD2FsE3WJPas0xeV22gTtLDq3/xylvbb61HvDJqCG4paCY56gm9JKWhvU6GJ+Gw5hGNUQF6TVFdKkw3rEAl8bwv0r3sxJUEMWLpTMrJcsROMSu14Qa5XcCVTAusWxPvc0Z28rv3ZZGzWM2ecXdQQBD/sAc4fpsVLRiQT6MERvg4mZVo56kjNqQgrGNR+X3hMc4+cIgodTMMTb1M1kFT8CmJFbsV8CoYl+l35jxhWOPGkvcQozyhQsxII2EQoDDF5x+Ui7Hj7QYNpBvVMEk90dtm6HBfiKWPtNkYXBZ1xvC1
- mMMfc3Ds
- UG27/tGoEFGv6fRAmfGEzBAIrReMef7TulN5Lacs7xiq42T4tNUgze3yunrf9xzrbajMMKHrTgu1e1LC0Ihkwb0wwYHqWrVUkEHQbKFLrWzxA3d3krvLqVGx4kN68M8DqAZuKHU82O2tz1+8leaAhLYcZjMzXXltD/wclTtBECmLOdmuyTd44wZHGgDZ35l4qVt4Sedq68/f5ttf8n+1CQjhfZ1a+hitsmp4m3SVV8LK7ArinXEq4tdNGYkt+3VZCKHYx/YoTJHvK77TtLD/Lsbodlp+FrMOa4wVOTQ0eqFqfKCrxMYcOP4bftCJjk/1o4MmjH0sHMviiPPP8QwVqZaHxL2fe/pjIeV6L/PC6uhoonkvoq0Y7PSdd9Q41DcosizxxHfkyVfn21xOXQRhDuiE1vzeOKxtP94TxQxrEmS5alaqOcFiv2Kv2yrQs3kR7WHSrAEr9Fq1noFHC349h9D46OKZxTboM319DuwGS4bMFnHhsDSWqYFiqrGsQHvLtSDKE
+X-Stat-Signature: j7njz4abo1nj3ig7dsjhb7gqdqoougpb
+X-HE-Tag: 1777573523-455808
+X-HE-Meta: U2FsdGVkX1+Gyppvv+oE5lffB5d4GQ+3iRbvtUIt8CPZDa1UdkzXmtXaFoqgVwbI2DPU/KWS1l2xilBrHaJFFwuqUk8AORKG75gHeZ5e8mCCCj9M9jN+8qxIrZG1YDGCBHRyVDaAGzCorfapSV/u113iR+LQI03DKscGxPE+Mi9pRQcCYJBle0MvKh2/0fLdYTpCZA5f3aUVd7j4meYO3lotmcBjDzG5Wfi0YDl9ZWDjmJUurB+liCEm8KDGbdVZyc3IUc/kaie7XMBMby8khPvvhGmjzpFGRn/NlbB67kWPz0jzRRmoOD0uUPFFmxhWYPO10wsn5nWf+9fndUnwGup3CitesrAPKEA2JSyaPy5JfYSSLAcLv1V7lMCHiBBWAo1BHEp6V4/H9ik5GqBYwOUxZM7MuI+ItMITY+HQ9k3BPz/MHhZtQ6ZDhH+uPd7ij3O2tZY6KDcZ1HO/VCksHECaW6TPIBQhTi/0AXBHcx5uD84g9ENJLUcVs5EOeRJK8gL49c5sxuFuXBnelCDUzfUceS2ZwnRcTNqGXEkK+gHhx3uzyWMDF075pFT4BK5X/4ImEw/J1BYj2IYFcT3UBRj00Ra0+I0o70XvodQ3YMEleszPKb5r3mOBG8tI0GAU6HdaJOBiUtbEqviZgjUr2/9oriOdDdV+9ZMeJadUYBWajSEMlR5Z65kBnIBwBiRhGZZd8TMf0tnd1V/FWu/+IXluZBfIRUjIHUH6oW6UgLsshsifMMibMt2E1aobu0EcDRQbqu/GV5NN4MH5L+ANuqYQF2Xc5Z1giDWcblZC8RlY8R6gaQeuKUMD8+2da+CwZvnQVwQ0tOJws3IHED3Q+3P3ENnSICJWYzRCJttiXJBNy2KhXIr0h9OAaHygiyv3c5Wh8kDnjwe4rPw9ODGJOa5Hrdm/IBYzfZ7V3vzkrqR9xwWWKX9DwvUn6L+oqf2XrwTNxfQE9HNDhtYgpjh
+ 7O+wZHiE
+ foYwWjiGy9pSb+kEoC5rjbuhidCA/GJqYPhNVC+yhzcbuJQZSNwhQrQ/pFVHVL+WHEKZLWnQdP4IKM8pmff59YFaqy5VHWW2bdMSizWWAchGVZF7rOMX6SNZdCc3o2ajxsiTJbv3pgTYIqaTKRlI1gn9yiAa0mo5LoXit2TuNzEstuFFa0oNJtdREIQmd9ZjmVmJIXFmrMrhKfUvi+yZ48lJ12GFTe2I55lLseIQRN9nkbwTpbu9gJTga8GXvoq3wE0KDIWdpztXDuGK/NLaCwL8FzNeA2geEVU0OeDspAddHbT5YctHfZOli0MvXMTqdyA4q6lxT+qnwNd6y0Krzlx/v/Pv61asEhFbkG3oUEhs3xJOzTvCIEfLu5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,68 +136,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce zone_maybe_fragmented_in_shrinker() as a lightweight helper to
-allow subsystems to make coarse decisions about reclaim behavior in the
-presence of likely fragmentation.
+On Tue, Apr 28, 2026 at 02:12:13PM -0700, David Matlack wrote:
+> On Tue, Apr 28, 2026 at 1:20 PM Vipin Sharma <vipinsh@google.com> wrote:
+> >
+> > On Thu, Apr 23, 2026 at 09:23:06PM +0000, David Matlack wrote:
+> > > +int pci_liveupdate_preserve(struct pci_dev *dev)
+> > > +{
+> > > +     struct pci_ser *ser;
+> > > +     int i, ret;
+> > > +
+> > > +     guard(mutex)(&pci_flb_outgoing_lock);
+> > > +
+> > > +     ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **)&ser);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > > +     if (!ser)
+> > > +             return -ENOENT;
+> > > +
+> > > +     if (dev->is_virtfn)
+> > > +             return -EINVAL;
+> > > +
+> > > +     if (dev->liveupdate_outgoing)
+> > > +             return -EBUSY;
+> > > +
+> > > +     if (ser->nr_devices == ser->max_nr_devices)
+> > > +             return -ENOSPC;
+> > > +
+> > > +     for (i = 0; i < ser->max_nr_devices; i++) {
+> > > +             /*
+> > > +              * Start searching at index ser->nr_devices. This should result
+> > > +              * in a constant time search under expected conditions (devices
+> > > +              * are not getting unpreserved).
+> > > +              */
+> > > +             int index = (ser->nr_devices + i) % ser->max_nr_devices;
+> > > +             struct pci_dev_ser *dev_ser = &ser->devices[index];
+> > > +
+> > > +             if (dev_ser->refcount)
+> > > +                     continue;
+> > > +
+> > > +             pci_info(dev, "Device will be preserved across next Live Update\n");
+> > > +             ser->nr_devices++;
+> > > +
+> > > +             dev_ser->domain = pci_domain_nr(dev->bus);
+> > > +             dev_ser->bdf = pci_dev_id(dev);
+> > > +             dev_ser->refcount = 1;
+> > > +
+> > > +             dev->liveupdate_outgoing = dev_ser;
+> > > +             return 0;
+> > > +     }
+> > > +
+> > > +     return -ENOSPC;
+> >
+> > Since it is executing under a mutex, and we already failed
+> > 'if (ser->nr_devices == ser->max_nr_devices) check above, will we ever reach
+> > here and return -ENOSPC?
+> 
+> Yeah I wouldn't expect to ever reach here.
 
-The helper implements a simple heuristic: if the number of free pages
-in a zone exceeds twice the high watermark, the zone is considered to
-have ample free memory and allocation failures are more likely due to
-fragmentation than overall memory pressure.
+Will you be removing it or want to keep it just in case scenario?
 
-This is intentionally imprecise and is not meant to replace the core
-MM compaction or fragmentation accounting logic. Instead, it provides
-a cheap signal for callers (e.g., shrinkers) that wish to avoid
-overly aggressive reclaim when sufficient free memory exists but
-high-order allocations may still fail.
+> 
+> > > diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
+> > > index 5c0e92588c00..5b4c8d9e462c 100644
+> > > --- a/include/linux/kho/abi/pci.h
+> > > +++ b/include/linux/kho/abi/pci.h
+> > > @@ -23,19 +23,20 @@
+> > >   * incrementing the version number in the PCI_LUO_FLB_COMPATIBLE string.
+> > >   */
+> > >
+> > > -#define PCI_LUO_FLB_COMPATIBLE "pci-v1"
+> > > +#define PCI_LUO_FLB_COMPATIBLE "pci-v2"
+> >
+> > Just curious, why did we change the version here?
+> 
+> Because a field in struct pci_dev_ser changed.
+> 
+> > It's not like just
+> > previous patch is working enough to perform a live update. As the config
+> > is experimental, can't we just keep it PCI-v1 for the whole series?
+> 
+> What is the benefit of keeping "pci-v1"?
+>
 
-No functional changes; this is a preparatory helper for future users.
+I don't see any benefit in keeping v1 or changing to v2 as well.
 
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+My reasoning is that before this series is merged, there is no real need
+for versioning here. This is first series which is introducing PCI
+liveupdate. It is not gonna be that someone has merged patch 1 only, run
+its kernel and then kexec to next kernel which has patch 2.
 
----
+> I think it makes sense to follow the rule we set which is to update
+> the compatibility string in any commit that changes the ABI.
 
-v3: s/zone_appear_fragmented/zone_maybe_fragmented_in_shrinker (David
-    Hildenbrand)
----
- include/linux/vmstat.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index 3c9c266cf782..1ad48f70c9d9 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -483,6 +483,18 @@ static inline const char *zone_stat_name(enum zone_stat_item item)
- 	return vmstat_text[item];
- }
- 
-+static inline bool zone_maybe_fragmented_in_shrinker(struct zone *zone)
-+{
-+	/*
-+	 * Simple heuristic: if the number of free pages is more than twice the
-+	 * high watermark, this may suggest that the zone is heavily fragmented.
-+	 * When called from a shrinker, aggressively evicting memory in this case
-+	 * may do more harm to overall system performance than good.
-+	 */
-+	return zone_page_state(zone, NR_FREE_PAGES) >
-+		high_wmark_pages(zone) * 2;
-+}
-+
- #ifdef CONFIG_NUMA
- static inline const char *numa_stat_name(enum numa_stat_item item)
- {
--- 
-2.34.1
+Okay, this is also fine.
 
 
