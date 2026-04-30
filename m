@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C355CD13DA
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:23:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BDFDCD13DA
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:23:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 578F86B00AC; Thu, 30 Apr 2026 16:23:08 -0400 (EDT)
+	id E065F6B00AD; Thu, 30 Apr 2026 16:23:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DDAA6B00AD; Thu, 30 Apr 2026 16:23:08 -0400 (EDT)
+	id D91116B00AF; Thu, 30 Apr 2026 16:23:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 295006B00AF; Thu, 30 Apr 2026 16:23:08 -0400 (EDT)
+	id BE2736B00B0; Thu, 30 Apr 2026 16:23:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 060B26B00B0
+	by kanga.kvack.org (Postfix) with ESMTP id A69366B00AD
 	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:23:08 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C867A1C0559
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:23:07 +0000 (UTC)
-X-FDA: 84716346414.16.226F8FF
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BC5E86BDA
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:23:08 +0000 (UTC)
+X-FDA: 84716346456.11.AB2AE6C
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4757A1C001B
+	by imf27.hostedemail.com (Postfix) with ESMTP id CFD5C40013
 	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:23:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=K2Xu+q0t;
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=LXvo21Oy;
 	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf27.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1777580586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bwbYmQVONNFpRoy+LHkanYVTDHsfJ9bQknKONF3uXUc=;
-	b=vf0H8G0ubUS+zlF/cZoowD9juHnk0P29Gbn7bkhLTYNqD3/1xPx3m0fKF3RW/oyBGhDWkT
-	LazSv6/euh1Pcy39Fe7GLawvbnJuotCqUfBc9o/lC5NxklS6kroPDa0iJdOOp41E4F8HuJ
-	fJr63JJ2aZHCKm41MQBssE1vdPxob6Q=
+	bh=9uzzm6jNqfcLsCYz5+I8rM6GjpDZDUZNvjjUeRJJYRk=;
+	b=b/+AJtcpSjDcdruV88fHdL2NUI9m4yJyL2BwvQyC82Jv/rCAk1rVs+cAfm/gkWZMa2uKT+
+	UTOCzm/TJAvFVJshyfBK5WM7Eotm3ictTjxZ09DnB3JSd3x770DtaySmrbel9cw1CDiWyJ
+	XspuTt/1e5rGZ7E11UDzdWHjqApDFxw=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777580586; a=rsa-sha256;
 	cv=none;
-	b=dkVd90tTR0kld2Pi3d0Th4yG2qE5/BwFmJUsrU4fyD+B9fBQFFvDi5OPv98yDpL6Ay/R+I
-	d9S4vH7v/X6Co9gkbERqEb7F0rK4iVpCcIuyOFadTPJtaGzTBg3NURzydvGVyLOofdLQ2R
-	t1HOaFrnHW0pIPoslgtpomXaiR8CGNY=
+	b=WUJb1fmu7aqDpAshfHQK/m6rxMOurOrPuqUPeAdl5gIz6ZM4I0rekhh/uzuoR7jcYl5MbN
+	CaQYJy41PMp8TLDEaCsuNtQcTuKcad9HIWmELNmbaiEvXOP4q8hjhhvAz3LlIXiWSeBU5U
+	BZ3pdl2q3ZtI3RCu/Ci9sHNzxglm2eI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=K2Xu+q0t;
+	imf27.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=LXvo21Oy;
 	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf27.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=bwbYmQVONNFpRoy+LHkanYVTDHsfJ9bQknKONF3uXUc=; b=K2Xu+q0t/1gTbY57QvJ6yUbQk0
-	uWSz2Wt0MWjd3Xo7TqN6ZNWzFQRibo5tG6vNnRNhcpyFGM/ALsgQK1HP4OH2zxfL1JOFT2ULrWg1+
-	Rvf3o8uGCi/T50BgoClLgdnLkq5I/rAHnrcgk6i84F2hC/W4D4fycnaaWD2uMuLRh8AURRzIOGHbI
-	xb8ooNhZJTi/0eUAkkJcyohq0Oo892yLrRJyPsPBP7L+VrTPckbHbCQoorPafdfd2jMnURjQXPl1F
-	18twvp/TrWKV5BiDSfVcCbPOUcOK/o1r5L4XTT+/DhhWW7Ma2lcYJfPPC8Bgs9qkM3MS5c4bdiA2O
-	72tGySBA==;
+	bh=9uzzm6jNqfcLsCYz5+I8rM6GjpDZDUZNvjjUeRJJYRk=; b=LXvo21Oyrc69gpY40R7UwUItR8
+	XiiuPGCCl8FZN7nMBw/yvpDmo7U2LQM8s40ZF6WPCS67Y8DiqG93nwDxQKvug1Ie9FdfkxFZJNm0W
+	XPtb9vAUNG2HNHP6iUjQk88bCmN+peSyHcjHTu3B/vgHiRn/truUxw4O/sJGd3hLCkdWX9axKFEIx
+	tBvV9wDdJpPi9kvuOSyuyDKqIfCO6YiLOxQqvXvO+7QbqjSa/4582YQ3G5L5cZwEzyM8SwTBDVqZF
+	nUS0qqTsn/LxUR8YRr8WvW+z63rI2KhtLVdmBiIXE3ow6Z+rsGVYpV+aB0cqV8riifzZuTIc3U6yk
+	/ax1ci4Q==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wIXuD-000000001R0-1tn0;
+	id 1wIXuD-000000001R0-0mie;
 	Thu, 30 Apr 2026 16:22:41 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -78,27 +79,24 @@ Cc: kernel-team@meta.com,
 	ziy@nvidia.com,
 	usama.arif@linux.dev,
 	Rik van Riel <riel@meta.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	linux-pm@vger.kernel.org,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 40/45] PM: hibernate: walk per-superpageblock free lists in mark_free_pages
-Date: Thu, 30 Apr 2026 16:21:09 -0400
-Message-ID: <20260430202233.111010-41-riel@surriel.com>
+Subject: [RFC PATCH 28/45] mm: page_alloc: keep PCP refill in tainted SPBs across owned pageblocks
+Date: Thu, 30 Apr 2026 16:20:57 -0400
+Message-ID: <20260430202233.111010-29-riel@surriel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260430202233.111010-1-riel@surriel.com>
 References: <20260430202233.111010-1-riel@surriel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CFD5C40013
+X-Stat-Signature: u6ccpgy9gc87g67mdnou6cydsmmssh9f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4757A1C001B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: pdmfdtwdisd9yn51mubdi8maex67u47t
-X-HE-Tag: 1777580586-196803
-X-HE-Meta: U2FsdGVkX1+fmdFYh7445h1vTLPAgKurklxaiYkHBy0GSnmHw9e79SwYKBd/SvTgxqdzhw6Qbqygp8FMpBxrTgBUxzr+5n2W8fST0V56915yLsE1VDheTAKzhqGwriRyFt45v6CDoZJoTB0J/T0CMfIE2uRaX33KVDlnFdwk4AJjKLHeiMbqYxzADp0HHOJ744hDN32BxIANl3Q5Ptya2iDaqz+hTnor3dMn+kCHQyL8p7ftATxrOw0c91kSDpyoPxj7APQneXTFHhxTDGd22YpPqzgx6v31/BpcX2RkVulfsSxdx6e4FGp73lqJPktI86xXuHu6qpW+fpkXhza7447cGdASrhMGGgX/YcWLb6+qowAZaDT63l68IPop4M/x4sEFzJbDcrj9ladZyMjjEgzKba46kW1n+oVbqN1kZaoDNkPaLAfkduemkprzru89tBpLZkaatypUN7KZ/bvVigi7Gjqjr8sjZYAkb5Ig+G4ZFEf/YJzYlWJvQMHx3HEwOLXVx0BasT1DEk+Wkt+3am+k6d4hElSEQgiFr5f9QNTDA4JuAoDHE4RzsshR7t/ruF85yNrrqnSyO3SaIcB1odgzq+dPViPQXPg0ApCetbWqzhDzevSVKi7hf2zz6JG4cIH745EHVl+43V89pObIqBIWWT1GJ4dSSxfVMVs9G/3jA9VmWmiHF03clNZVdBfsVL8pHxdi2o22dFKMiDLWq1q9eNZHlElx5ZlenlBjB5caELdjwccPQ+NwyTFaMmCn1/bMTueQkUliI5a8r5iCxYCT2KZ6hhTqS/kuY5LxVW06t8peoKGm5wgUncseIq+LXiZvK41YIp799ZRoadcJfKG3QxEP+Zt7xJtKoQkSVJV9mgahvP0sYh0or1dwyhkNalZU7jNc0DCrkvlYDmC9PiTy2xgjZGiy09vRAzee4t1hGwN8TZO/8XjvkRS4jUhDvbDwx0ZiCj/mLst6NFy
- qpIbFpe3
- vknNN2VevbCWmRmRbi9OtVgVXIzxboZ9PNSJ1khv5CHW1EQ5ASXQG3BKIlya1hkUr/NJ0sue0Gy3TF2Idk7PsCw6XyC0movq91q36qlBrlt/8FfoeTbbuDu7Kdvs4hO2BMb+zN0orZqvd7BNCnc5kL1yjEGdL0hP/P0w4Fo9u1/mE5p7TNqNbQy0SIeg+9y2ca7znyEI3GKuRJObokovibl+fwkfCQJOUeesatutb8QjW1CnQVYfrAc1yob124h5fx6okiK/OBfAV+mMKRa74gVQi2PbrFX390bLjSGYqu5HziIjw5ZoX/SBVC48H7wkpif2yzH/THiOIgDyyPZ6EW5hxqCUmuah9iyfNqX2M1QzHbH0O1uqveycRr6HyTU2DPtnztsZWMTMauaopErrJecwzPQ==
+X-HE-Tag: 1777580586-295738
+X-HE-Meta: U2FsdGVkX19wKDWJXXKoUeli6+/N+GflF7zDfHOPeDnMNk/urWcGHAZ4Ce19sAQ6XOcxslBsqlsbVCYcb5f0+bpgLHqIssQjuHF5hLzkfX0WBxeGnM4beaYzNPxm4XOnylswDPVwh+yack6zDYVRqo4sHZ3kq5qWLEoDd3MgrMtb8Vo18b8/iuRms5lmsT4ga3KPDMAONT3/qLwk20kAGAHJmwdC90Aa4gZMJcDCMFb7yNJElnvRo5xG+Mhh7wE4nky9PoQmzc0lKaANkLhb2hSpx05cYp9Ph9rIk1C99z2OuvHmbpGFhWWU6XHmeVsg4XamJbYhFJHkRxW/q4KIN3yURM8K914ei2paCtKb90FcKNO5WPaiGZjU+xtZK0v8hRo08xb6YkfyMczOtepaHmxraBhYT7QXuNnl8GQ934RtWmfdf/4PsDnGlvuAK3OnP8EtWIoHyJjRYPgp5vqkZhd2MX1kVmJZcO8RHS4nG6YrnRRnOqCldItzJNGYesMwUshAUk8BqWS9Sc2ZFtdc/bxezPbWJ2ehInVJIEkZxKLrelpKeMXw7vF/7CxRuwaTTvaaUo5mVrgaVh296/sO05nmh2Umdtxck5/vS2Ek2x2miPPoVuciBSV8Cbmax5Z6CQUUYg0nXnVc/fVw2d1IzAv2Ims30wMtRfquzCG8vVo5tS/b4DEsh4rw330rfL0rNhNv8O1Jh9AMLoKLIhdWoeumy6VRCqbDNpIbtk1NVd4BpbJxKRlJhL0m5Fj3b2lXYuZp0/cH5gwW6vjoeFYHZFUAcmbIYt7U2lUJf6JGsVKjm1zYZ6CR1byNgFlSgDbHTNnRmUshwYvhChvVujco5FizIK0xC5zxuyrmVhx+n4UgT57YbqamaSCcRNVP8L8rrf7mqShIsGQrujuYwKB1wxhtX6MODXuy5b/HvihT4jYRjk2N3WBoe4o2Va6iT4D1x17H2q68PgfsOrM2yaj
+ wUFb3PY/
+ A69ZS14cex9rPqz3bNOXH5tP82/83ie+FmELHn0YGIZ9WNWPkYD/GrLFyjx5+GZom7EALpYXvZdjZglsjOYTK8OZeirlf3vsKmHuDxIzhIqIzpkPtkX5Wp2SCFf2qc1azKBxQxxQgxsa89iwy4Oo+VwOelYdYFWXh6d8dnq8XdxV5Uwn/IbaEMsev1lDv2Q67NEhOu/SZKYxfy/Dc5Tv6bBla6dUys0VSr9aAsv6AOzDnRHU5/pcJykEXdZH69/HLqxL3gX8ouK50VDjX1PefvrSYDblqWVdYGxEskMQpZkoqk7NvL0TMHXaaQdKUwiZ6jlOR1HVmdQUcseb4egkY9x85K/g49RaRzPfKWAt7yqlQkdq/hyv8GBnkBDq09hEq2Y39WGWAsUSFHOVyrCm2ap00U+P8mGvfoejU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,83 +106,120 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Rik van Riel <riel@meta.com>
 
-mark_free_pages() walks the buddy allocator's free lists and calls
-swsusp_set_page_free() on each free page so it is omitted from the
-hibernation image. After the SPB rework, free pages live on per-
-superpageblock free lists rather than the zone-level free list, so
-the existing list_for_each_entry() walk over zone->free_area[order]
-.free_list[t] found nothing. The hibernation snapshot then treated
-every free page as needing to be saved, wasting image space and risking
-OOM during the snapshot.
+rmqueue_bulk Phase 2 walks SB_TAINTED superpageblocks looking for
+sub-pageblock free fragments, so PCP refill can be satisfied without
+tainting a clean SPB. The original Phase 2 abandons a candidate
+pageblock entirely if pbd->cpu != 0 (already owned by some CPU), to
+avoid two CPUs holding PCPBuddy pages from the same pageblock — which
+would let the PCP merge pass corrupt the other CPU's PCP list.
 
-Wrap the existing per-page walk in an SPB iteration loop. When the
-zone has no SPBs (e.g. an unpopulated hotplug zone), fall back to the
-zone-level free list. The whole function still runs under
-spin_lock_irqsave(&zone->lock) without drops, so there are no lock-
-order or hotplug concerns.
+On systems with many CPUs (88+) and many tainted SPBs (~50% on a 16
+GiB devvm under stress), nearly every free fragment in a tainted SPB
+lives in a pageblock already PCPBuddy-owned by some CPU. Phase 2 skips
+through the entire SPB without finding anything usable, the atomic
+alloc falls through to the slowpath, and clean SPBs get tainted.
 
-Note: kernel/power/snapshot.o currently fails to build with
--Werror=return-type due to an unrelated pre-existing warning in
-enough_free_mem(). This patch was reviewed but not build-tested in
-isolation; the change itself is mechanical.
+Take the page anyway when the source pageblock is owned, but skip the
+ownership claim and PCPBuddy marking. Phase 3 / __rmqueue_smallest
+already pull plain non-PCPBuddy pages from owned pageblocks the same
+way; the hazard is specifically about two CPUs holding PCPBuddy pages
+from the same pageblock, not about a plain non-PCPBuddy page coexisting
+with another CPU's PCPBuddy entries. Pass 0 (owned-block recovery) is
+only meaningful when we actually claimed ownership, so register on
+owned_blocks only when !pb_owned.
 
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Pavel Machek <pavel@kernel.org>
-Cc: linux-pm@vger.kernel.org
+Fixes: 266461cd5442 ("mm: page_alloc: adopt partial pageblocks from tainted superpageblocks")
+
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- kernel/power/snapshot.c | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+ mm/page_alloc.c | 50 ++++++++++++++++++++++++++++---------------------
+ 1 file changed, 29 insertions(+), 21 deletions(-)
 
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-index 6e1321837c66..682c3bf2ba8b 100644
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -1270,17 +1270,32 @@ static void mark_free_pages(struct zone *zone)
- 	}
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index f0fdfe8c9a45..a09660a06ed3 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4133,6 +4133,7 @@ static bool rmqueue_bulk(struct zone *zone, unsigned int order,
+ 				&zone->spb_lists[SB_TAINTED][full], list) {
+ 				struct page *page;
+ 				int found_order = -1;
++				bool claim_pb;
  
- 	for_each_migratetype_order(order, t) {
--		list_for_each_entry(page,
--				&zone->free_area[order].free_list[t], buddy_list) {
--			unsigned long i;
--
--			pfn = page_to_pfn(page);
--			for (i = 0; i < (1UL << order); i++) {
--				if (!--page_count) {
--					touch_nmi_watchdog();
--					page_count = WD_PAGE_COUNT;
-+		unsigned long sb_idx;
-+		unsigned long nr_lists = zone->nr_superpageblocks ? : 1;
-+
-+		/*
-+		 * After the SPB rework, free pages live on per-superpageblock
-+		 * free lists. Walk every SPB's list for this (order, mt) cell.
-+		 * If the zone has no SPBs (unpopulated zone), fall back to the
-+		 * zone-level list head so that any pre-SPB pages are still
-+		 * marked.
-+		 */
-+		for (sb_idx = 0; sb_idx < nr_lists; sb_idx++) {
-+			struct list_head *list = zone->nr_superpageblocks ?
-+				&zone->superpageblocks[sb_idx].free_area[order].free_list[t] :
-+				&zone->free_area[order].free_list[t];
-+
-+			list_for_each_entry(page, list, buddy_list) {
-+				unsigned long i;
-+
-+				pfn = page_to_pfn(page);
-+				for (i = 0; i < (1UL << order); i++) {
-+					if (!--page_count) {
-+						touch_nmi_watchdog();
-+						page_count = WD_PAGE_COUNT;
-+					}
-+					swsusp_set_page_free(pfn_to_page(pfn + i));
- 				}
--				swsusp_set_page_free(pfn_to_page(pfn + i));
- 			}
- 		}
- 	}
+ 				if (sb->nr_free_pages < pageblock_nr_pages / 4)
+ 					continue;
+@@ -4156,33 +4157,39 @@ static bool rmqueue_bulk(struct zone *zone, unsigned int order,
+ 					continue;
+ 
+ 				/*
+-				 * Check that this pageblock isn't already
+-				 * owned by another CPU. If it is, two CPUs
+-				 * would have PCPBuddy pages from the same
+-				 * pageblock, and the PCP merge pass could
+-				 * corrupt the other CPU's PCP list.
++				 * Found a free fragment in a tainted SPB. Take
++				 * it from the buddy.
++				 *
++				 * If the source pageblock is unowned, claim it:
++				 * mark our pages PagePCPBuddy and register the
++				 * block on owned_blocks so Pass 0 can recover
++				 * remaining fragments on future refills.
++				 *
++				 * If the source pageblock is already owned by
++				 * some CPU (us or another), take the page as a
++				 * plain non-PCPBuddy fragment — the same way
++				 * Phase 3 / __rmqueue_smallest would. Setting
++				 * PagePCPBuddy here would let two CPUs hold
++				 * PCPBuddy pages from the same pageblock, and
++				 * the PCP merge pass could then corrupt the
++				 * other CPU's PCP list.
++				 *
++				 * Set PB_has_<migratetype> either way (bypasses
++				 * page_del_and_expand which normally does the
++				 * PB_has tracking); idempotent if already set.
+ 				 */
+ 				pbd = pfn_to_pageblock(page,
+ 						       page_to_pfn(page));
+-				if (pbd->cpu != 0)
+-					continue;
++				claim_pb = (pbd->cpu == 0);
+ 
+-				/*
+-				 * Found a free chunk in an unowned pageblock.
+-				 * Take it from buddy, claim ownership, and
+-				 * set PCPBuddy. Pass 0 will grab remaining
+-				 * buddy entries on future refills.
+-				 *
+-				 * Set PB_has_<migratetype> since we bypass
+-				 * page_del_and_expand (which normally does
+-				 * PB_has tracking).
+-				 */
+ 				del_page_from_free_list(page, zone,
+ 							found_order,
+ 							migratetype);
+ 				__spb_set_has_type(page, migratetype);
+-				set_pcpblock_owner(page, cpu);
+-				__SetPagePCPBuddy(page);
++				if (claim_pb) {
++					set_pcpblock_owner(page, cpu);
++					__SetPagePCPBuddy(page);
++				}
+ 				pcp_enqueue_tail(pcp, page, migratetype,
+ 						 found_order);
+ 				refilled += 1 << found_order;
+@@ -4190,9 +4197,10 @@ static bool rmqueue_bulk(struct zone *zone, unsigned int order,
+ 				/*
+ 				 * Register for Phase 0 recovery so future
+ 				 * drains from this pageblock can be swept
+-				 * back efficiently.
++				 * back efficiently. Only meaningful when we
++				 * actually claimed ownership above.
+ 				 */
+-				if (list_empty(&pbd->cpu_node))
++				if (claim_pb && list_empty(&pbd->cpu_node))
+ 					list_add(&pbd->cpu_node,
+ 						 &pcp->owned_blocks);
+ 
 -- 
 2.52.0
 
