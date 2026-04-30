@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3709CD13DF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:24:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EE1ECCFA13
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:31:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15CDD6B00B6; Thu, 30 Apr 2026 16:23:13 -0400 (EDT)
+	id A90AC6B00D8; Thu, 30 Apr 2026 16:31:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 099346B00BC; Thu, 30 Apr 2026 16:23:12 -0400 (EDT)
+	id A68176B00D9; Thu, 30 Apr 2026 16:31:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF43F6B00B6; Thu, 30 Apr 2026 16:23:12 -0400 (EDT)
+	id 97DAE6B00DB; Thu, 30 Apr 2026 16:31:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC2486B00BC
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:23:12 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6BF6FC0309
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:23:09 +0000 (UTC)
-X-FDA: 84716346498.15.502AA80
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 870C06B00D8
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:31:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35D4E401C1
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:31:33 +0000 (UTC)
+X-FDA: 84716367666.26.D4D53AC
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C97C74000C
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:23:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=PxiTcEIi;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by imf17.hostedemail.com (Postfix) with ESMTP id 77D8040006
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:31:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=UgGUw6Bj;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777581091; a=rsa-sha256;
+	cv=none;
+	b=kHoZQ+LdpPrPWEmNfQoYAMvuzASIzc/E2CVXuBIf8i9kiPUNG5CjEqa6MCGPnFC9aB4MQl
+	K7ky/6F2D8YLGV847I9ahcW7v+QXN+L2xguCM3l/V+nrcVgTcjcLBPMIO5NxMUBIrDlGfI
+	gPZTdL9tJL8Qe3XCzDNJLALXFGPezsQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=UgGUw6Bj;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777580587;
+	s=arc-20220608; t=1777581091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iaDHek0ivxTXx9Tc/FlMyuw1qhdH9eLa9J/Mna+BFx8=;
-	b=BeaU8TUCxwt8b4U+0F48OYj66apDBVEQjgq8iAAmLhYcDd+SrGgXOUPlB0RLV+HAozW7tC
-	J8cDQ6NbBBlIS+gqlCHER8s5ExGPoyY52UX6Mi89AXhOcvxG6Uf/z5/5DniADHpGxrhQoX
-	DywzyZARd2V6sJjbwmDPyfF5H0/lDXs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=PxiTcEIi;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777580587; a=rsa-sha256;
-	cv=none;
-	b=2rfWDgNLhLGzicognbxL+Cp3Oo2fdQpmL81JXA10IrrarRurU7uDmNtjk9bDjWdpUS72wF
-	9qdUJ2IAqg0Ked24NK5WDLprPmDgPfT9iRTcfKC61SMSgQMnQbrFBaf8e5FC/Q3YGgYyL0
-	4pqQCvOdcarnEsk8gOIEG3mIN+dKKqQ=
+	bh=5SkLLRBBEJdim0uzr+W128xpCHYKOeU1xiZdF4Xr45I=;
+	b=EzZpJ2FZbbHhWKzcNUoxgVL6hb99Hnw7pt8ilSATa4m19u8PDm6/V8+oUGVyvrmfToVMbQ
+	JqelTz2SjIqNiz9sogpnvMpvV4gvdlH/6HkBziOHXfk7sf9DrQYnZq/14R9aDDACbstn5X
+	mqFnQW4PGkpTT5zqO5tRnCSkHiGzRLU=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=iaDHek0ivxTXx9Tc/FlMyuw1qhdH9eLa9J/Mna+BFx8=; b=PxiTcEIiRpjgsy0mKgg6gyi/VK
-	UvLwm91w3kwZLywU5admQ+6MAb55w4tcDg1obsVwf4rZ8xH/aKoSMcY2XMc6GZwXG8yOHjO9cA6x+
-	lGp9fFbMKF1CU82fIB+H0JtN9su14N76NA6WN3jx+L1UCS7GOv4TT/rjPxHqhv75aw0expC7CLmrV
-	R7TNIUMURgS1rgvSoDqMIjvglASEJkIK0fKZJyzpaVVquE1FmLkYbkXqYAdSA5qz4IVGk2S3rGuxM
-	UeCbRsBmgDcrl6XWpnpfxuY7dlv/mw6cEwlkniVSe3UvGIi84H2X26apGYuejvV8NhMOW+Mk4flEp
-	zQISuTOw==;
+	bh=5SkLLRBBEJdim0uzr+W128xpCHYKOeU1xiZdF4Xr45I=; b=UgGUw6BjMFcx0xglkBfz1I+V91
+	/XtQZWF1wBAO9UXo7pCAnme2k9kQp+l2kkzSytN5csrmWTGLbSoXQeVSpEYMzBkf81FjsQ6S90xKg
+	Jutzez280+NHQ0UZExgWYLn37N7K3noPCg2jDoij8BAfgysMHL3WjkOvtkYAcaNSTPb+2KsL4baW4
+	w9SSaHIQyVXyIAddrmymVD8Nf4EOYALLfAFF0LxkPSC78sdmAUrm8SwN4fdza5NRXdKR8991Pflcb
+	EJOAC+KtUinh/CLlgNVszwna8oiG05ZfY0pLyB9jwDkHAxN47eulcUaCwsgjDMjfsqTtMPm6rh4us
+	JeYC0djA==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wIXuD-000000001R0-1AAw;
+	id 1wIXuD-000000001R0-279a;
 	Thu, 30 Apr 2026 16:22:41 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -80,23 +80,23 @@ Cc: kernel-team@meta.com,
 	usama.arif@linux.dev,
 	Rik van Riel <riel@meta.com>,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 32/45] mm: page_alloc: proactive high-water trigger for SPB slab shrink
-Date: Thu, 30 Apr 2026 16:21:01 -0400
-Message-ID: <20260430202233.111010-33-riel@surriel.com>
+Subject: [RFC PATCH 42/45] mm: page_alloc: cross-MOV borrow within tainted SPBs
+Date: Thu, 30 Apr 2026 16:21:11 -0400
+Message-ID: <20260430202233.111010-43-riel@surriel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260430202233.111010-1-riel@surriel.com>
 References: <20260430202233.111010-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C97C74000C
+X-Stat-Signature: dh1y3oa5xdoz3ww9fjzqrqky1eywj1mg
 X-Rspam-User: 
-X-Stat-Signature: wpi1ip6mtatu3e3e71jcchd9ichisdpr
-X-HE-Tag: 1777580587-948032
-X-HE-Meta: U2FsdGVkX1+joX049ahkJfYpXe0f8dKqJ0BMBLSBoYqOsXPwXsUY1mgc9pV+AM3fUm0JUK02b4ftUljbK95eaJ9utCmuuO0N6OH6abnUO5y2hm2p0eanJmRlR9AzhvgQC/q5DkIfevSJMDMRofLr7V3A3/H8MeCpf9kAeVlzfq7ZsdrIuZ8LGaMMACfptqICsoI9JD21BeLjP+P42O/uzwypEUK8rcsjWfRZpX4qGf23ivtz3N58tpjk32YWu/47Mus1jFVnZz6B8/yGGJoZrt5ZEVnzRcFmNYis+UiUcKQhHFzUaNCPhIiuhTO74jr2+lizIb144ExkU9kVdEwtdNsUcFiWryhuKC9cS5164C9aBbpPC5D3NEeDgkbVdcHS8odG35IhHMaogKLVw3YVwBk9tL4HkKHZea3oTwKWEtw8+iwYW//29dPoPQ49zOixO3nPZtwi1yean8V/s3V28Sxb5i8nEZvzGJLNIAJs02A0tJDfCZIAutuomATeKQMkYW6FhxD8P+QSTxKsnzOq96Iv84UGZb0JhY5nlCS0E4Bf6SoAeuAkARU4aXlzIlj5mglkFo1RusdOBQESKFTmxQGYU6RRrW7t3CN2qPPRrBjdWRGktXMm5bmD0ma6rtpX/GpT7Qv/JpbSDCVMtit2PCfLFyLff1oVFNPfDAQFqRm8SIb8LCRPKENfeYMOS4k6BltHQ8SVSjkhv0gq6xONDb9bN/3yqIoVI7jEq9CkX+60MDlaZFYUxToLuOK1fXQJfoxQyFGNDpSWMLp1M/akMbWq8EF7CeO2CClUxt7CUJ2t22hJ4PAoCy0AxeRDr7iC6pqgaB0ADY9KuYsrI5mKQ9sRFVPPljBv09OWs5txvJjpTIDpv6X9zVSbGIpqzIS4NgRb6L9luZSBwY/lSUz2Mrzs5I25zYHAEbIF1oYEhnVVs19ZyzNQ5vM99k6gPhKiKaBv5/djHuWKRxEtMDO
- 2tsQavGH
- WhgX8LvmPNmlL8efUq6aXwTi+hqdcDdUg8Mva06pZwXbdNPYzrLX+lV/bxa6Phgbn3Fh8YYEwJeKWO7yNO15eS6QaPN90jNCHwWDKLsDgCQlXc31InBsRKOXZIvzy85SUNgzYDaGqDQONRJk7qz20EtVK4naEJLmnLNZhR9yEeyf0oLwTwTpKWpPPiastzF2RlQNnTkC5FhDZ3u7oMwaK2HKZbXu7DCXWLoGq+UUttdjclYZtw+sdmSr7JyUhCCyQ8DuFdHz0JYvZ+I12OMT4qgItWFexnwB9uRoxWEjjEsWBUju+6l4HkeKzU1KDdxZawWEj+Utqbpdek2pf9oDKObfEYMD0I1FSX1VjaVtfk8AUNFa+YGQpi8asYw==
+X-Rspamd-Queue-Id: 77D8040006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777581091-214967
+X-HE-Meta: U2FsdGVkX1/WJ/6ElR9mnsTV27Odu5K5NBszh3Rb+kboSAsRYbq0Ax8Fw4TbbZwwNFMgX3uu4LzSrs0mGdbO66T/QBEg7cWXFf+9/xN9nKT9ADDrB8AVugUFeX53UYmKUs6VVVLOaObHSBiQyYExicuMs9KDurdNxGj4zFpCCY8D2zVuN8w+ciG65DKj1o9v34BP8UK97bv3dklOsmBSx+iyosd89UyAPof4wuxns85Fw1c8AFPgf6i0zL52mfP8MBF0lbRA4MEn4nyN/Fyq7pQpXrN+HbFLNAEsmaYHA8FBswPZHtSrt+ummM4IZ5WIF6A5z0HtQCpHejwxi0+sS4lBQJxy9bYWKgKDIGm1QV6ApREQnQwT/R9YHll8BsHkP/Qw60jD3JjA2hHT0q+K1hEUeeFvSwrXeBVOS6d7Fi6sOGLAOkXWWMR5y3aVIhFzItWby6Y25dcT5I5RpGH/4ml/RFR8jVQYVqGxh9Z0RWe/weBNAJAFrTykZEOGOMPxw1SpTXMv/l3fdGEDSsu2O6Z9UraTxZjCeySmRGyM0htX8P6qQm8YiqqORlkwRcia4UME260yhK5ZGgDdhnqwiGG1wJsXndB6Cs26azhP3KYxT+VknKpmu9mNVwJ+611/V2UeVu6wACJ5Oh+DNm4B/DW1dIcKh/b2Yr2t4qz1UXZ8/g640FItBornNUqLsCJxOj8Icj8kB0BJVqcK6en9bhXvhVTflDV/wYIgIy78tzCX+fjh4FOqYk3k4aIXduoybfIv+/3L2hEXRQKeN/iUl6Wo+LsEPJTwRqhLQuyFhLMKYEDVAEEzzpa1W+WMySMwC04IebqTaLm8P0GPI6e7iiRGM+Lx4+QDRfSME1prC1mSJmVcvOiRYCl9MWc4R8+41nJF+5clpKhfC9YSxvyX/Rnm07ZIk3ABi24EuQFni2dyH7OI2dK0RrCdGclOQ0Wnr4qEnEcnfC2xyC0wcjW
+ jcIPDtQ4
+ CoTiHl/F99mP6CRRq0wl/eLzwP6wxBwieVNyXbkgNloeda2/UP/XkqD/NQFjlUSdcm9Hzb/qIbYamEYcrURzdd5ONpS+chHetUcx2BuZYAZnck677ro4XhItu0cZwO/KwvUBJg7820Nw3v2eTekHE4tfY/J9b1QszcKJcZyHZTHurDHlYyBEW/OBWT9gDWy8wcPCGl9bad2vihyj8KM3KtiwE2s/4pQfbiGyHkk1uhsWu15pHOlLY9uw18XReFyDqE4/Ousmjec9qDVzHDE/z14uvm052XRbGxz+tnIa2iCI5WjN+KL6+LFcWIuE6lEeZ7alYFGHatxlzaRoA9V6+yOxK9vcJ3HrBKWqOMQq1IgReo6HjdCASViREwLE+JGeaxV+xAuh/E04BTcF/zb8i8a1myxwB5/MJOzWu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,194 +106,133 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Rik van Riel <riel@meta.com>
 
-The SPB slab shrinker introduced earlier in the series only fires when
-__rmqueue_smallest falls all the way through to Pass 3 (about to taint
-a clean SPB) or when __rmqueue_claim is about to taint one. Bare-metal
-testing on a 247 GB devvm with btrfs root (rev 398, with Pass 2c) shows
-this is too late: at boot+16min only 15 shrinks had fired in 6 minutes
-while slab grew from 1.7 GB to 11.7 GB and tainted Normal-zone SPBs
-climbed from 4 baseline to 16. The 100ms throttle (max 10 shrinks/sec
-per pgdat) further capped the response rate, and the trigger placement
-meant slab pressure could keep absorbing into already-tainted SPBs
-without ever firing the shrinker until those SPBs were exhausted — at
-which point the only remaining option is to taint a fresh clean SPB.
+Pass 2c (cross-non-movable borrow) is restricted to UNMOV<->RECL: it
+borrows individual buddies from the opposite non-movable migratetype's
+free list within a tainted SPB without relabeling the source pageblock.
+Movable free pages within tainted SPBs are deliberately excluded
+because long-lived non-movable content in a MOV-tagged pageblock
+blocks compaction of that pageblock.
 
-Two changes:
+Under workloads that mostly free MOVABLE-tagged content into tainted
+SPBs (page-cache reclaim, anon LRU shrink), the result is a tainted
+SPB with tens to hundreds of thousands of free pages all on the MOV
+free list — invisible to non-movable demand. Pass 1 doesn't see them
+(they're not on the requesting mt's list), Pass 2/2b can't claim a
+whole pageblock when sb->nr_free == 0 (no contiguous free PB to
+relabel), and Pass 2c skips MOV. The non-movable alloc falls through
+to Pass 3 and taints a fresh clean SPB even though the existing
+tainted ones have plenty of unused space.
 
-1. Add a proactive high-water trigger on the success paths of
-   __rmqueue_smallest's tainted-SPB passes (Pass 1 SB_TAINTED, Pass 2,
-   Pass 2b, Pass 2c). When a non-movable allocation consumes from a
-   tainted SPB whose nr_free_pages has fallen below spb_tainted_reserve
-   worth of pages (reserve_pageblocks * pageblock_nr_pages), queue a
-   slab shrink. The predicate compares total free pages rather than
-   whole free pageblocks (nr_free): sub-pageblock allocations and
-   fragmented free space don't move the pageblock count but do consume
-   the SPB's freeable capacity, and we can't assume slab reclaim will
-   produce whole pageblocks either. This makes the trigger frequency
-   proportional to the rate of non-movable consumption from contended
-   tainted SPBs, instead of firing only at the cliff edge.
+Add Pass 2d, mirroring Pass 2c semantics but borrowing from the
+MOVABLE free list within already-tainted SPBs. The borrowed page is
+used for the requesting non-movable mt for the lifetime of the
+allocation, then on free returns to the MOVABLE list (no pageblock
+relabel; same "borrow" mechanism as 2c).
 
-2. Remove the 100ms time-based throttle from queue_spb_slab_shrink.
-   The throttle was redundant with queue_work()'s built-in single-flight
-   semantics (returns false if the work is already queued/running) and
-   was actively harmful: with the new high-water trigger firing per
-   allocation, the natural rate-limiter is the worker's runtime. The
-   previously-allocated spb_slab_shrink_last field is removed from
-   pglist_data.
+Tradeoff: the borrowed UNMOV/RECL content blocks compaction of its
+source pageblock until the alloc is freed. Restricted to SB_TAINTED
+so contamination is bounded to one pageblock inside an already-
+tainted SPB. The alternative — Pass 3 tainting a fresh clean SPB —
+removes a 1 GiB region from the clean pool, which is strictly worse
+for the anti-fragmentation invariant the series is built around.
 
-queue_work() absorbs the resulting per-alloc burst at near-zero cost
-(test-and-set on WORK_STRUCT_PENDING_BIT) when a pass is already in
-flight, so unconditional firing on every qualifying allocation is
-cheap.
+Skipped for movable allocs (they use Pass 4) and CMA allocs.
 
-Pass 4 (movable falling back to tainted) does not get the trigger:
-movable consumption does not contribute to the slab pressure that taints
-fresh SPBs, and Pass 4 already filters out SBs at or below reserve.
-Clean-SPB success paths in Pass 1 are also untouched (clean SPBs are
-not the source of the pressure).
+Observable as the new SPB_ALLOC_OUTCOME_PASS_2D outcome on the
+spb_alloc_walk tracepoint. Expected effect on the live workload:
+tainted SPB count growth slows substantially; allocations that were
+previously taking the PASS_3 escape now succeed in PASS_2D.
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- include/linux/mmzone.h |  7 +++---
- mm/page_alloc.c        | 48 ++++++++++++++++++++++++++++++++----------
- 2 files changed, 40 insertions(+), 15 deletions(-)
+ mm/page_alloc.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index acaff292140f..68892e40cd4e 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1573,12 +1573,11 @@ typedef struct pglist_data {
- 
- 	/*
- 	 * SPB-driven slab reclaim: single work item per pgdat (shrink_slab
--	 * is node-scoped, so one work in-flight per node is the max), with
--	 * a 100ms throttle. queue_work() gives us single-flight semantics
--	 * for free.
-+	 * is node-scoped, so one work in-flight per node is the max).
-+	 * queue_work() gives us single-flight semantics for free — fresh
-+	 * triggers no-op while a pass is in progress.
- 	 */
- 	struct work_struct spb_slab_shrink_work;
--	unsigned long spb_slab_shrink_last;
- #endif
- 	/*
- 	 * This is a per-node reserve of pages that are not available
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index f2db3dd86a84..ff7755ef2b79 100644
+index 2f5d3ba1c0ef..af499f0a1a48 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -2692,6 +2692,23 @@ static inline u16 spb_tainted_reserve(const struct superpageblock *sb)
- 	return max_t(u16, SPB_TAINTED_RESERVE_MIN, sb->total_pageblocks / 32);
- }
- 
-+/*
-+ * High-water threshold for proactively kicking the slab shrinker. When a
-+ * non-movable allocation consumes from a tainted SPB whose total free
-+ * pages have fallen below spb_tainted_reserve worth of pages, queue a
-+ * shrink so we start freeing slab memory before the SPB is exhausted.
-+ *
-+ * Compared against nr_free_pages rather than nr_free (whole pageblocks):
-+ * sub-pageblock allocations and fragmented free space don't move the
-+ * pageblock count, but they do consume the SPB's freeable capacity, and
-+ * we can't assume slab reclaim will produce whole pageblocks either.
-+ */
-+static inline bool spb_below_shrink_high_water(const struct superpageblock *sb)
-+{
-+	return sb->nr_free_pages <
-+		(unsigned long)spb_tainted_reserve(sb) * pageblock_nr_pages;
-+}
+@@ -3280,6 +3280,79 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
+ 				}
+ 			}
+ 		}
 +
- /*
-  * On systems with many superpageblocks, we can afford to "write off"
-  * tainted superpageblocks by aggressively packing unmovable/reclaimable
-@@ -2877,6 +2894,9 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
- 				page_del_and_expand(zone, page,
- 					order, current_order,
- 					migratetype);
-+				if (cat == SB_TAINTED &&
-+				    spb_below_shrink_high_water(sb))
-+					queue_spb_slab_shrink(zone);
- 				trace_mm_page_alloc_zone_locked(
- 					page, order, migratetype,
- 					pcp_allowed_order(order) &&
-@@ -2896,6 +2916,9 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
- 					page_del_and_expand(zone, page,
- 						order, current_order,
- 						migratetype);
-+					if (cat == SB_TAINTED &&
-+					    spb_below_shrink_high_water(sb))
-+						queue_spb_slab_shrink(zone);
- 					trace_mm_page_alloc_zone_locked(
- 						page, order, migratetype,
- 						pcp_allowed_order(order) &&
-@@ -2941,6 +2964,8 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
- 					page = claim_whole_block(zone, page,
- 						current_order, order,
- 						migratetype, MIGRATE_MOVABLE);
-+					if (spb_below_shrink_high_water(sb))
-+						queue_spb_slab_shrink(zone);
- 					trace_mm_page_alloc_zone_locked(
- 						page, order, migratetype,
- 						pcp_allowed_order(order) &&
-@@ -2978,6 +3003,8 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
- 						0, true);
- 					if (!page)
- 						continue;
-+					if (spb_below_shrink_high_water(sb))
-+						queue_spb_slab_shrink(zone);
- 					trace_mm_page_alloc_zone_locked(
- 						page, order, migratetype,
- 						pcp_allowed_order(order) &&
-@@ -3061,6 +3088,8 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
- 							opposite_mt);
- 						__spb_set_has_type(page,
- 							migratetype);
++		/*
++		 * Pass 2d: cross-MOV borrow within tainted SPBs.
++		 *
++		 * If Pass 1/2/2b/2c all failed, the next step is Pass 3
++		 * which would taint a fresh clean SPB. Before that, try
++		 * to borrow an individual buddy from a tainted SPB's
++		 * MIGRATE_MOVABLE free list.
++		 *
++		 * Tainted SPBs accumulate large amounts of free space on
++		 * the MOV free list (e.g. reclaimed page-cache pages
++		 * whose pageblock tag is MOVABLE). Pass 1 cannot see
++		 * those for non-movable allocs, Pass 2/2b cannot claim a
++		 * whole pageblock when sb->nr_free == 0, and Pass 2c is
++		 * restricted to UNMOV<->RECL. The result is a tainted
++		 * SPB with tens to hundreds of thousands of free pages
++		 * all unreachable from non-movable demand.
++		 *
++		 * Borrow semantics mirror Pass 2c: take a buddy from the
++		 * MOVABLE free list without relabeling the source
++		 * pageblock. The page is used for the requesting non-
++		 * movable mt for the lifetime of the allocation, then on
++		 * free returns to the MOVABLE list.
++		 *
++		 * Cost: the borrowed UNMOV/RECL content blocks
++		 * compaction of its source pageblock until freed.
++		 * Restricted to SB_TAINTED so the contamination is
++		 * bounded to an already-tainted SPB; the alternative
++		 * (Pass 3) taints a fresh clean SPB and removes a 1 GiB
++		 * region from the clean pool, which is strictly worse.
++		 *
++		 * Skipped for movable allocs (they have Pass 4) and for
++		 * CMA allocs.
++		 */
++		if (!movable && !is_migrate_cma(migratetype)) {
++			for (full = SB_FULL; full < __NR_SB_FULLNESS; full++) {
++				list_for_each_entry(sb,
++					&zone->spb_lists[SB_TAINTED][full], list) {
++					int co;
++
++					if (!sb->nr_free_pages)
++						continue;
++					for (co = min_t(int, pageblock_order - 1,
++							NR_PAGE_ORDERS - 1);
++					     co >= (int)order;
++					     --co) {
++						current_order = co;
++						area = &sb->free_area[current_order];
++						page = get_page_from_free_area(
++							area, MIGRATE_MOVABLE);
++						if (!page)
++							continue;
++						if (get_pageblock_isolate(page))
++							continue;
++						if (is_migrate_cma(
++						    get_pageblock_migratetype(page)))
++							continue;
++						page_del_and_expand(zone, page,
++							order, current_order,
++							MIGRATE_MOVABLE);
++						__spb_set_has_type(page,
++							migratetype);
 +						if (spb_below_shrink_high_water(sb))
 +							queue_spb_slab_shrink(zone);
- 						trace_mm_page_alloc_zone_locked(
- 							page, order, migratetype,
- 							pcp_allowed_order(order) &&
-@@ -9126,9 +9155,9 @@ static void queue_spb_evacuate(struct zone *zone, unsigned int order,
-  * tainted SPB is to shrink the slab caches whose pages live there.
-  *
-  * shrink_slab() is node-scoped, so one work item per pgdat is enough:
-- * a single embedded work_struct, gated by a 100ms throttle.
-- * queue_work() returns false if the work is already queued/running, so
-- * we get single-flight for free.
-+ * a single embedded work_struct. queue_work() returns false if the work
-+ * is already queued/running, so we get single-flight for free — fresh
-+ * triggers no-op until the in-flight pass completes.
-  *
-  * shrink_slab() itself is location-agnostic — it walks all registered
-  * shrinkers and frees objects whose backing pages may live in any
-@@ -9189,10 +9218,11 @@ static void spb_slab_shrink_work_fn(struct work_struct *work)
-  * queue_spb_slab_shrink - schedule deferred slab shrink for SPB pressure
-  * @zone: zone whose tainted-SPB pool is running low
-  *
-- * Throttled to one enqueue per 100ms per pgdat. queue_work() handles
-- * single-flight: if the work is already queued or running, it returns
-- * false and the throttle stamp still gets bumped (next call will be
-- * no-op until the throttle elapses).
-+ * Single-flight via queue_work(): if the work is already queued or
-+ * running, it returns false and we no-op. There is no time-based
-+ * throttle — the rate at which fresh shrink runs can fire is bounded
-+ * by how fast the worker completes (one full pass freeing up to
-+ * SPB_SLAB_SHRINK_TARGET_OBJS objects).
-  *
-  * Callable from any context: page allocator paths hold zone->lock,
-  * the SPB evacuate worker does not. queue_work() takes only the
-@@ -9212,10 +9242,6 @@ static void queue_spb_slab_shrink(struct zone *zone)
- 	if (!pgdat->evacuate_wq)
- 		return;
++						trace_mm_page_alloc_zone_locked(
++							page, order, migratetype,
++							pcp_allowed_order(order) &&
++							migratetype < MIGRATE_PCPTYPES);
++						return page;
++					}
++				}
++			}
++		}
+ 	}
  
--	if (time_before(jiffies, pgdat->spb_slab_shrink_last + HZ / 10))
--		return;
--
--	pgdat->spb_slab_shrink_last = jiffies;
- 	if (queue_work(pgdat->evacuate_wq, &pgdat->spb_slab_shrink_work))
- 		count_vm_event(SPB_SLAB_SHRINK_QUEUED);
- }
+ 	/*
 -- 
 2.52.0
 
