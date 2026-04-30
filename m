@@ -4,107 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 246C6FF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 13:09:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9329FF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 13:11:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BFA06B0095; Thu, 30 Apr 2026 09:09:22 -0400 (EDT)
+	id 53BAB6B0088; Thu, 30 Apr 2026 09:11:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 670076B0096; Thu, 30 Apr 2026 09:09:22 -0400 (EDT)
+	id 4EC7F6B008A; Thu, 30 Apr 2026 09:11:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ADDC6B0098; Thu, 30 Apr 2026 09:09:22 -0400 (EDT)
+	id 402216B0096; Thu, 30 Apr 2026 09:11:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 485246B0095
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:09:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2846F40B0E
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:03:50 +0000 (UTC)
-X-FDA: 84715239462.11.E6269CC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 20ACE160009
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:03:47 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="P/GHjLbS";
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E5D66B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:11:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E19AC1C0DC8
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:07:35 +0000 (UTC)
+X-FDA: 84715248870.22.47D9B84
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6706AC000F
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:07:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HNb6jzen;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777554228;
+	s=arc-20220608; t=1777554451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OfQpL6EKM0+8eTVY47jHkc1LHHZCVyDVrjFXUWXnmCA=;
-	b=SLRkUNC9RuY5Rj6hJcJz9sPT82S16SiaORLqak3UhPGkYnVdDDSWPc2lTcP1aPrfhSxZO9
-	CFuUkM+5Yio/6NYGSlEj7R/5V+RcIMMHEfyCnm6nFH4JrQ5faW/1RmIuKyFzMRRzEqiD7w
-	DbfSKLbbbS3Q0PHi/iJ1wZq5xD00vRY=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=ro0NmzOWNP0EroojJcZZyIPxxPKcj55A/BCfZadES9k=;
+	b=lsr2C6y/K2+eSaG9Ml+FtIkdemFH32KyR7Q8MNkHKHcz8hx2yDqrRKCA/YGVe2eKQMJ5DE
+	5PjSP5rjQS9m6e5AjRbJsFos6TtlOe9A1cNVdeloKpTrT79w27Zo0g7nM9GFFocDfCDvaV
+	5LhOvMvKC8sUYRcJ2UT6rKsPj8gr4Ds=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="P/GHjLbS";
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777554228; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HNb6jzen;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777554451; a=rsa-sha256;
 	cv=none;
-	b=cCsEP754VJ9HWsnowq8u8GE6NTWn6pvmyWOtmmdJUcLHvqwosDwI+i7Fh3zrShKvQGbuBC
-	F8VbLRUh1yOXtellWqGt132af6v+Bhf1yP2JcBLd1NBeyH/3ZVSsu1XmWeX+RsIrq5KjTD
-	Oc9dm+3auIkYpPdkNE/J1MzupprHngA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB96640440;
-	Thu, 30 Apr 2026 13:03:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CC1C2BCB3;
-	Thu, 30 Apr 2026 13:03:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777554226;
-	bh=cBQTATODAw7GU5owkTlr0LLrjvqtSjmzxEuiN88xSno=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P/GHjLbSzFjFrlVHylyxgW146QEiVuSbq9zns8CvEtQWM6rfKglawHpEP2u9xPcYD
-	 n3OBk3+Ewlgqev591zz+QCAQgiLG/qP61tXvzAfUfEQLwdQHwTwAU25Aj5LWtq0ssC
-	 Py4+RuG35KzGqQGDwDYrQBdOVZdxd0CJdMkCftbMMRJ+Vn4lj8BMpYe90ygfYSWXhL
-	 QBkmykY+5Edz3mfHgsWFepJ+dgw1c9jtCr9bUrTjjQDuGQo/DV+Ac3KfT2VPxfrHbG
-	 MQEorLNtV9QSlJs1xBmN8laC9jqntUFj6tSOuoQZVm/5hfg77vKNKa3lfHUZSpajL8
-	 F0h9gjQtxZnXA==
-Message-ID: <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
-Date: Thu, 30 Apr 2026 15:03:38 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] slab: support for compiler-assisted type-based
- slab cache partitioning
-Content-Language: en-US
-To: Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>,
- Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Alexander Potapenko <glider@google.com>,
- Dmitry Vyukov <dvyukov@google.com>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com,
- llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>,
- Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>,
- KP Singh <kpsingh@kernel.org>, Matteo Rizzo <matteorizzo@google.com>,
- GONG Ruiqi <gongruiqi1@huawei.com>
-References: <20260424132427.2703076-1-elver@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260424132427.2703076-1-elver@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	b=j/JtxCHp57vBZOMvZfHsnUjQsqXnGLqc0gHjZ/AaCQw0q/PFHMps1i+EPoMJS+YiibLVAX
+	oue7aiEiuqKy8WJzLdBUTvN4V1BnRqJcQi39l7GP4U3uJYcpDMlyuAqv3AgKuUnibJntpu
+	6SrM/dJZ2zkAoktCQdxKHdVEKoCMhII=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777554451; x=1809090451;
+  h=date:from:to:cc:subject:message-id;
+  bh=Z2cAcabUhgwviq787moawJMLwhFnq7gWY/8G4VRV1+0=;
+  b=HNb6jzenX0MPoKW7taDOyT+qpkc01rEIYaFxIYJ2A/9clu7n0eMc6fBh
+   UBYHKHePvL0WT9JSNUp5EfH2KQ8sQGR5EszFqYUjuMIoBUCdD3/ArjZuH
+   8vF9ngNvEeaEufAvmgTfJlqQ+4QSjCaMrWFR3yAody3LmB6Dyd1fDpQDR
+   IElKHM1ptlvqc8VGXWtZULgYGznGVr0Lr0+NSgDTZDGELwOj46Nl90Gpm
+   UGL+xP+pyHOY7S/W5BB857kCHFthEGWJuBNiICntiq9Z8a7Jjx+LX6d11
+   C4QUuM/hgPyF6S6LM027GFlbkMxvpQmfsPmVhqrCG/lpDuiYbkySUISiT
+   A==;
+X-CSE-ConnectionGUID: i8D5QuxcR9+jF/75jcJQXg==
+X-CSE-MsgGUID: 59+nMyaiSMqMDrFoUKPBMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="89963174"
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="89963174"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 06:07:29 -0700
+X-CSE-ConnectionGUID: mwJh41SQSU2C12Fvxh6Oxw==
+X-CSE-MsgGUID: ne9qaGMaTM2y5y6JEpc5hg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="264947044"
+Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 30 Apr 2026 06:07:26 -0700
+Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wIR6x-00000000CPM-2ZIz;
+	Thu, 30 Apr 2026 13:07:23 +0000
+Date: Thu, 30 Apr 2026 21:07:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org, Davidlohr Bueso <dave@stgolabs.net>
+Subject: [akpm-mm:mm-new 115/182] mm/internal.h:847:26: warning:
+ implicit conversion from 'unsigned long long' to 'u32' (aka 'unsigned int')
+ changes value from 17179869184 to 0
+Message-ID: <202604302039.yKocJk8m-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 20ACE160009
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 6nfrwszbjoo5gbmos7x33gpxrdrqg8fa
-X-HE-Tag: 1777554227-298412
-X-HE-Meta: U2FsdGVkX19nAei+IHD9/BfUYYDMZ1buUCjmrUG4wSt67F+hZ0wKLOBb70LFZJ8QqFDfCc1GSvHIoZ0IKyVfxBK//BchS0REWX0FgnaSzaRpD4oh1tsQuBdz6vkEbKZQMTVumA7m6njDLmYACaherhbHfaVBfWCn5uIYJgysdp1K2aJDvhFPXr1of8sYlerdnAPCTZFEAPeQCEyd69CpVXItBqqFqXdqzt6+3TiwlBqtoAHSAjGW5VMxAgwcgihzGBLwGZ2gWvRXVz7twhUoEwDrDX2aLPMGfnJEg8IZpORjPuBquHHErqN6CCvweE/wBFaTkbcNPSr+M6Ey84msMbknOK3mw81ebbE5fGc3RHuDyAuPWpOKuT1xAmec6yLQVR0UmAVIgy8Vws2VgC4oJVlg8aANAosWqi2MR8gfRL3Tm1tnNhFBHQalwdXuk3pMnlTYiMw1ZCvZ2HCrNdtaPTHfgxTtKpXQjIEQkQ2taG5x4UVRvm1DT7WsI756o/zeKP7Ir2S3mzutk9oG34zbdeLVfw5pMfFWzsQXMzo620jI0B9KEov0L1Kqb7qoiM//+2xKkBTrPeGUyt4hqr9LlDoA47PdphPw/lm3P9Q39bIp738VLOpk8AFW8n+LFjZRqlshhnJD09OrveRxxBorD0XrTbcDPrF28qLADlJYOW9eXTR4WMYQEjZXtlX+QoS9McZc+2LY8BU/f120F8zQiJDk4LBjz30dg/94HsgC3auwL4cA95lHFblASN+sBJ8NZtUxfAC5xus8gK6jQDrDLvAuXRPc6VSW/EDH+NjcqEnPZ/PJYvxZQAGfDoml8R2BRMaxRGaMNbgp8qyI7amBZPoYBM3LxadnGCyXRFGnPO3M4txfSdeLlDgJnTmBG5ctDHKndHPk0Kgv9g8zzUwe0ics03WN4DJJ03VrO5GWNeLg+bsVR8Fp8i1mSCb0jSmjOgXhWRUef3dKXkUiFSR
- fXe/0B50
- 2LtrG4Pxsz55MxnkePgXGgFtxZrJBd2Y5dzfuVgtgT8EYA3tVK+riDerX0hSehJplVoVqCTIPe901vsDc4JAI1sFTYxBkrD7mIDvvpSJMJAmYyK32m2EPjTZT5ydWPZ7Y/j5HM+IS2pP4cSPfNXrysqBCIdJKJ0mNbuB0t64E7BEOrY1t7fsKHx1rkmIJBJu0613iOe1i+saT31/Z4kOC4ACQhqnaUr0Ay8o3NCg+7oM1x4Tz+3imki4+DsnSFgb/n4DxnUqAolyigKAQ4svROJr0Ymmad/gbvj8OhpEZLXu2rPfc+kB/8s/psbgMcTCx+jyrq1YziHfUgwM3bgyMpAxzxw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6706AC000F
+X-Stat-Signature: djwnamtgoc86453yt455dpi4sstf164j
+X-HE-Tag: 1777554449-997247
+X-HE-Meta: U2FsdGVkX1/bMbJTn825FpWuAd7VCjhled5rYodvr1FzjgWtN3ntoqkjMxRt4NMiqBpS63lyGPgYFup3DBVzG8Z4BaAQiUaBRzFd9LHmAfnxFW2EeQ/Ddyq0m9uBf+Wj2pnqMJMKODoXjJ7LPKmDMflIyA/QeF08plQufufSZXQd75UYOz/PZcwBqQiH6lkewTNz9dQEAFG7fJCLWvvkPD/80OtkQ8t/LA1wdJMUqhrf2oy9VDzucbsoAmirZ3dHdmDnWh2BOvlGWT8O/b3iL1lly7icI+d4kxO4kHvHv88d9tUooXRBpJ2pWWRgInuLnkHGmCvysvlDGXw+Ud5IWTa5FgC+3+EoJRgBBNETWyswevNSTsTDvivisdTqzHyEutdOTw1H87Vp3Zc94M+tWdBWEabpijpF+ZaYjLU1aUgGqT9rT8k4fwU8GjUHps5bOLI2/Mx8vzOPChlRlPQoS/ZELa5l+ylcfgEO8rdxNpi01iFxiHJYFhXv2ZmlaT6esi46IXyHTAuidYpAYx+X7rGifF2I4+ZDVR6GcXLdU/mv95WcI4YqpmdyeGvxs/C/nI27JmD2/og+QvTWn20Pnpnx3MVfQPv33sfNSxvya4bGDf98gryb5+EvMomlOSEkC/5VM6N3nWxkQGr3o1H/eYK3FXW23W+6z8b0Ty2Iib9W8yfcE1Yp3A//wGEwihShtW083sz0vWT80QWcyKt+yrIQa/Od5b6qRBjYZHXzst3VATGInzLn/iLEfp1JGCzBHnaSjIEe1wrMzCnSL7iIrCnK+UslzENULESR4UpcOxaSI0SODzCBaHq7K2dKd+sMAKhnaM6QqdsmkqNLlkY09jlo+lA8dK0EdJSkgUZxqTZpU5TkTFwFHHrRZA6e2z4PcWxAMokoyoew3G2KNWGqabdoBdmaoe6P/qrKZmYUU7vjoq1wDY4h7hXyPS7UuM9qbqbH/JljjZx5GPjDOQe
+ JiujaQ9n
+ 3XhpYO7v4fIjATAWh6ANcDKkEAOuNDKyxA4/vTCxadzxo7Kzu2KD93xf3PAcTnlJ3La9NhLuUjy0atmhjLFKqqd/7xih1vOlI3HY7vbT1D7woGI9XwpskvOb9ccKkBElW3EClW2Vx4R2pe0ACfeIsUENa1FIr+fRT1wiGvDYOV/HPVNOf9sHqWUrdnwGnyiCHaRFKoJflKBXOt3yOLxqGBfc+ejh3v6Omf7j5QgGAEHSsWIIQcG8K8uNgnGPN2yx8UwoqPG2En/FDwkW7PtZpJNUfGPVe2g0XhEJZfQ2tZg2IYijANEkaZOn+k877o6NgsD6mbQafLdNvMYc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,110 +103,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/24/26 15:24, Marco Elver wrote:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   0587fb0c820d86e5b77a975680d79b5176d09abb
+commit: 78c22ab4ad70900027ae72e857274535c798ccfb [115/182] include/asm-generic/fixmap.h: reimplement nasty macros in C
+config: riscv-allmodconfig (https://download.01.org/0day-ci/archive/20260430/202604302039.yKocJk8m-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604302039.yKocJk8m-lkp@intel.com/reproduce)
 
-> @@ -938,7 +968,7 @@ void *__kmalloc_large_node_noprof(size_t size, gfp_t flags, int node)
->   *	Try really hard to succeed the allocation but fail
->   *	eventually.
->   */
-> -static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t flags)
-> +static __always_inline __alloc_size(1) void *_kmalloc_noprof(size_t size, gfp_t flags, kmalloc_token_t token)
->  {
->  	if (__builtin_constant_p(size) && size) {
->  		unsigned int index;
-> @@ -948,14 +978,16 @@ static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t f
->  
->  		index = kmalloc_index(size);
->  		return __kmalloc_cache_noprof(
-> -				kmalloc_caches[kmalloc_type(flags, _RET_IP_)][index],
-> +				kmalloc_caches[kmalloc_type(flags, token)][index],
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604302039.yKocJk8m-lkp@intel.com/
 
-While reviewing this, it occured to me we might have been using _RET_IP_
-here in a suboptimal way ever since this was introduced. Since this is all
-inlined, shouldn't have we been using _THIS_IP_ to really randomize using
-the kmalloc() callsite, and not its parent?
+All warnings (new ones prefixed by >>):
 
-And after this patch, we get the token passed to _kmalloc_noprof()...
-
->  				flags, size);
->  	}
-> -	return __kmalloc_noprof(size, flags);
-> +	return __kmalloc_noprof(PASS_KMALLOC_PARAMS(size, NULL, token), flags);
-
-... and used also here for the non-constant-size, where previously
-__kmalloc_noprof() (not inline function) would correctly use _RET_IP_ on its
-own ...
-
->  }
-> +#define kmalloc_noprof(...)			_kmalloc_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
-
-... and the token comes from here. With random partitioning that's
-#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
-
-so that AFAIK makes the situation worse as now the cases without constant
-size also start randomizing by the parent callsite and not the kmalloc callsite.
-
-But there are many users of __kmalloc_token() and maybe some are corrent in
-using _RET_IP_, I haven't checked, maybe we'll need two variants, or further
-change things around.
-
->  #define kmalloc(...)				alloc_hooks(kmalloc_noprof(__VA_ARGS__))
->  
-> -void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
-> +void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, int node);
-> +#define kmalloc_nolock_noprof(_s, _f, _n)	_kmalloc_nolock_noprof(PASS_TOKEN_PARAMS(_s, __kmalloc_token(_s)), _f, _n)
->  #define kmalloc_nolock(...)			alloc_hooks(kmalloc_nolock_noprof(__VA_ARGS__))
->  
->  /**
-
-<snip>
-
->  
-> -#ifdef CONFIG_RANDOM_KMALLOC_CACHES
-> -#define __KMALLOC_RANDOM_CONCAT(a, b) a ## b
-> -#define KMALLOC_RANDOM_NAME(N, sz) __KMALLOC_RANDOM_CONCAT(KMA_RAND_, N)(sz)
-> -#define KMA_RAND_1(sz)                  .name[KMALLOC_RANDOM_START +  1] = "kmalloc-rnd-01-" #sz,
-> -#define KMA_RAND_2(sz)  KMA_RAND_1(sz)  .name[KMALLOC_RANDOM_START +  2] = "kmalloc-rnd-02-" #sz,
-> -#define KMA_RAND_3(sz)  KMA_RAND_2(sz)  .name[KMALLOC_RANDOM_START +  3] = "kmalloc-rnd-03-" #sz,
-> -#define KMA_RAND_4(sz)  KMA_RAND_3(sz)  .name[KMALLOC_RANDOM_START +  4] = "kmalloc-rnd-04-" #sz,
-> -#define KMA_RAND_5(sz)  KMA_RAND_4(sz)  .name[KMALLOC_RANDOM_START +  5] = "kmalloc-rnd-05-" #sz,
-> -#define KMA_RAND_6(sz)  KMA_RAND_5(sz)  .name[KMALLOC_RANDOM_START +  6] = "kmalloc-rnd-06-" #sz,
-> -#define KMA_RAND_7(sz)  KMA_RAND_6(sz)  .name[KMALLOC_RANDOM_START +  7] = "kmalloc-rnd-07-" #sz,
-> -#define KMA_RAND_8(sz)  KMA_RAND_7(sz)  .name[KMALLOC_RANDOM_START +  8] = "kmalloc-rnd-08-" #sz,
-> -#define KMA_RAND_9(sz)  KMA_RAND_8(sz)  .name[KMALLOC_RANDOM_START +  9] = "kmalloc-rnd-09-" #sz,
-> -#define KMA_RAND_10(sz) KMA_RAND_9(sz)  .name[KMALLOC_RANDOM_START + 10] = "kmalloc-rnd-10-" #sz,
-> -#define KMA_RAND_11(sz) KMA_RAND_10(sz) .name[KMALLOC_RANDOM_START + 11] = "kmalloc-rnd-11-" #sz,
-> -#define KMA_RAND_12(sz) KMA_RAND_11(sz) .name[KMALLOC_RANDOM_START + 12] = "kmalloc-rnd-12-" #sz,
-> -#define KMA_RAND_13(sz) KMA_RAND_12(sz) .name[KMALLOC_RANDOM_START + 13] = "kmalloc-rnd-13-" #sz,
-> -#define KMA_RAND_14(sz) KMA_RAND_13(sz) .name[KMALLOC_RANDOM_START + 14] = "kmalloc-rnd-14-" #sz,
-> -#define KMA_RAND_15(sz) KMA_RAND_14(sz) .name[KMALLOC_RANDOM_START + 15] = "kmalloc-rnd-15-" #sz,
-> -#else // CONFIG_RANDOM_KMALLOC_CACHES
-> -#define KMALLOC_RANDOM_NAME(N, sz)
-> +#ifdef CONFIG_KMALLOC_PARTITION_CACHES
-> +#define __KMALLOC_PARTITION_CONCAT(a, b) a ## b
-> +#define KMALLOC_PARTITION_NAME(N, sz) __KMALLOC_PARTITION_CONCAT(KMA_PART_, N)(sz)
-> +#define KMA_PART_1(sz)                  .name[KMALLOC_PARTITION_START +  1] = "kmalloc-part-01-" #sz,
-> +#define KMA_PART_2(sz)  KMA_PART_1(sz)  .name[KMALLOC_PARTITION_START +  2] = "kmalloc-part-02-" #sz,
-> +#define KMA_PART_3(sz)  KMA_PART_2(sz)  .name[KMALLOC_PARTITION_START +  3] = "kmalloc-part-03-" #sz,
-> +#define KMA_PART_4(sz)  KMA_PART_3(sz)  .name[KMALLOC_PARTITION_START +  4] = "kmalloc-part-04-" #sz,
-> +#define KMA_PART_5(sz)  KMA_PART_4(sz)  .name[KMALLOC_PARTITION_START +  5] = "kmalloc-part-05-" #sz,
-> +#define KMA_PART_6(sz)  KMA_PART_5(sz)  .name[KMALLOC_PARTITION_START +  6] = "kmalloc-part-06-" #sz,
-> +#define KMA_PART_7(sz)  KMA_PART_6(sz)  .name[KMALLOC_PARTITION_START +  7] = "kmalloc-part-07-" #sz,
-> +#define KMA_PART_8(sz)  KMA_PART_7(sz)  .name[KMALLOC_PARTITION_START +  8] = "kmalloc-part-08-" #sz,
-> +#define KMA_PART_9(sz)  KMA_PART_8(sz)  .name[KMALLOC_PARTITION_START +  9] = "kmalloc-part-09-" #sz,
-> +#define KMA_PART_10(sz) KMA_PART_9(sz)  .name[KMALLOC_PARTITION_START + 10] = "kmalloc-part-10-" #sz,
-> +#define KMA_PART_11(sz) KMA_PART_10(sz) .name[KMALLOC_PARTITION_START + 11] = "kmalloc-part-11-" #sz,
-> +#define KMA_PART_12(sz) KMA_PART_11(sz) .name[KMALLOC_PARTITION_START + 12] = "kmalloc-part-12-" #sz,
-> +#define KMA_PART_13(sz) KMA_PART_12(sz) .name[KMALLOC_PARTITION_START + 13] = "kmalloc-part-13-" #sz,
-> +#define KMA_PART_14(sz) KMA_PART_13(sz) .name[KMALLOC_PARTITION_START + 14] = "kmalloc-part-14-" #sz,
-> +#define KMA_PART_15(sz) KMA_PART_14(sz) .name[KMALLOC_PARTITION_START + 15] = "kmalloc-part-15-" #sz,
-> +#else // CONFIG_KMALLOC_PARTITION_CACHES
-> +#define KMALLOC_PARTITION_NAME(N, sz)
->  #endif
-
-We're renaming the caches visible in /proc/slabinfo. Maybe it's fine as
-people who care will just adapt their tools without complaining. Not the
-first time we've changes something here.
+   In file included from mm/early_ioremap.c:18:
+   In file included from arch/riscv/include/asm/fixmap.h:64:
+   include/asm-generic/fixmap.h:93:26: error: use of undeclared identifier 'PAGE_KERNEL_NOCACHE'
+      93 |         __set_fixmap(idx, phys, FIXMAP_PAGE_NOCACHE);
+         |                                 ^~~~~~~~~~~~~~~~~~~
+   include/asm-generic/fixmap.h:54:29: note: expanded from macro 'FIXMAP_PAGE_NOCACHE'
+      54 | #define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NOCACHE
+         |                             ^~~~~~~~~~~~~~~~~~~
+   include/asm-generic/fixmap.h:99:33: error: use of undeclared identifier 'PAGE_KERNEL_NOCACHE'
+      99 |         __set_fixmap_offset(idx, phys, FIXMAP_PAGE_NOCACHE);
+         |                                        ^~~~~~~~~~~~~~~~~~~
+   include/asm-generic/fixmap.h:54:29: note: expanded from macro 'FIXMAP_PAGE_NOCACHE'
+      54 | #define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NOCACHE
+         |                             ^~~~~~~~~~~~~~~~~~~
+   In file included from mm/early_ioremap.c:20:
+>> mm/internal.h:847:26: warning: implicit conversion from 'unsigned long long' to 'u32' (aka 'unsigned int') changes value from 17179869184 to 0 [-Wconstant-conversion]
+     847 |         VM_WARN_ON_ONCE(order > MAX_FOLIO_ORDER);
+         |                                 ^~~~~~~~~~~~~~~
+   include/linux/mmzone.h:85:33: note: expanded from macro 'MAX_FOLIO_ORDER'
+      85 | #define MAX_FOLIO_ORDER         (ilog2(SZ_16G) - PAGE_SHIFT)
+         |                                  ~~~~~~^~~~~~~
+   include/linux/sizes.h:56:19: note: expanded from macro 'SZ_16G'
+      56 | #define SZ_16G                          _AC(0x400000000, ULL)
+         |                                         ^~~~~~~~~~~~~~~~~~~~~
+   include/uapi/linux/const.h:21:18: note: expanded from macro '_AC'
+      21 | #define _AC(X,Y)        __AC(X,Y)
+         |                         ^~~~~~~~~
+   note: (skipping 2 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   include/linux/log2.h:162:14: note: expanded from macro 'ilog2'
+     162 |         __ilog2_u32(n) :                \
+         |         ~~~~~~~~~~~ ^
+   include/linux/mmdebug.h:123:50: note: expanded from macro 'VM_WARN_ON_ONCE'
+     123 | #define VM_WARN_ON_ONCE(cond) (void)WARN_ON_ONCE(cond)
+         |                                                  ^~~~
+   include/asm-generic/bug.h:120:25: note: expanded from macro 'WARN_ON_ONCE'
+     120 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+   1 warning and 2 errors generated.
 
 
+vim +847 mm/internal.h
+
+904d58578fce53 Kefeng Wang             2023-05-16  831  
+3c605096d31582 Joonsoo Kim             2014-11-13  832  extern int __isolate_free_page(struct page *page, unsigned int order);
+624f58d8f46396 Alexander Duyck         2020-04-06  833  extern void __putback_isolated_page(struct page *page, unsigned int order,
+624f58d8f46396 Alexander Duyck         2020-04-06  834  				    int mt);
+58e3e5265484a1 Shengming Hu            2025-12-29  835  extern void memblock_free_pages(unsigned long pfn, unsigned int order);
+13c526540b3169 David Hildenbrand       2024-06-07  836  extern void __free_pages_core(struct page *page, unsigned int order,
+13c526540b3169 David Hildenbrand       2024-06-07  837  		enum meminit_context context);
+9420f89db2dd61 Mike Rapoport (IBM      2023-03-21  838) 
+1e3be4856f49d5 Tarun Sahu              2023-06-12  839  /*
+1e3be4856f49d5 Tarun Sahu              2023-06-12  840   * This will have no effect, other than possibly generating a warning, if the
+1e3be4856f49d5 Tarun Sahu              2023-06-12  841   * caller passes in a non-large folio.
+1e3be4856f49d5 Tarun Sahu              2023-06-12  842   */
+1e3be4856f49d5 Tarun Sahu              2023-06-12  843  static inline void folio_set_order(struct folio *folio, unsigned int order)
+1e3be4856f49d5 Tarun Sahu              2023-06-12  844  {
+1e3be4856f49d5 Tarun Sahu              2023-06-12  845  	if (WARN_ON_ONCE(!order || !folio_test_large(folio)))
+1e3be4856f49d5 Tarun Sahu              2023-06-12  846  		return;
+99132d24d76511 David Hildenbrand       2025-09-01 @847  	VM_WARN_ON_ONCE(order > MAX_FOLIO_ORDER);
+1e3be4856f49d5 Tarun Sahu              2023-06-12  848  
+ebc1baf5c9b46c Matthew Wilcox (Oracle  2023-08-16  849) 	folio->_flags_1 = (folio->_flags_1 & ~0xffUL) | order;
+4996fc547f5b49 David Hildenbrand       2025-03-03  850  #ifdef NR_PAGES_IN_LARGE_FOLIO
+4996fc547f5b49 David Hildenbrand       2025-03-03  851  	folio->_nr_pages = 1U << order;
+1e3be4856f49d5 Tarun Sahu              2023-06-12  852  #endif
+1e3be4856f49d5 Tarun Sahu              2023-06-12  853  }
+1e3be4856f49d5 Tarun Sahu              2023-06-12  854  
+
+:::::: The code at line 847 was first introduced by commit
+:::::: 99132d24d76511f0f6ded2e25448765b632794aa mm: sanity-check maximum folio size in folio_set_order()
+
+:::::: TO: David Hildenbrand <david@redhat.com>
+:::::: CC: Andrew Morton <akpm@linux-foundation.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
