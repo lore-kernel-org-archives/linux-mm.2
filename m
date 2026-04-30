@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F0ACFF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 15:08:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0534FF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 15:16:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 772EB6B0092; Thu, 30 Apr 2026 11:08:32 -0400 (EDT)
+	id CADF86B0088; Thu, 30 Apr 2026 11:16:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74A8C6B0093; Thu, 30 Apr 2026 11:08:32 -0400 (EDT)
+	id C5E816B008A; Thu, 30 Apr 2026 11:16:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6884D6B0095; Thu, 30 Apr 2026 11:08:32 -0400 (EDT)
+	id B9B8C6B008C; Thu, 30 Apr 2026 11:16:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5803E6B0092
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:08:32 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 13BCF1A0647
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:20:27 +0000 (UTC)
-X-FDA: 84715432494.28.B7F2BEA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 75C6218000B
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:20:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oKqYLUQ/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AA87B6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:16:06 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 395CF105293
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:22:40 +0000 (UTC)
+X-FDA: 84715438080.08.C0F3C79
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2BCF620019
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:22:37 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lwIdnL0V;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777558825;
+	s=arc-20220608; t=1777558958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5bT1Gy2a7WVGqbDRfe+wQUgFZmFMVwYzzwdsirBHXc4=;
-	b=liLO3YnA2ifT4RedEcF3wksItBku7EjCixqoKRYzHhMTJ5XCq2RCUJXKvMyzfqniLqxzBy
-	BThkH6kaCgEOctXRd3+WFwraJPb2BnuXi2jkR06+soscSyuJTgtf68MuTTZ+8HJSzifOCh
-	zC/CQZ+skBQ4fW/j6PnsP0tKXZD40XI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777558825; a=rsa-sha256;
-	cv=none;
-	b=1KSmZ4LEsFYbYqQfni/kqq0StLvpQ8GogDkXKyCACaRUe5L4gWx8acqyghIJBQOk8NaDoN
-	feOEBAgPBDFtZ476Z4rSVoQaiTbaLY+sidGTrupXdGfNQpR+/u5dpkzNOdIqFZ2tZQ26cC
-	5mC3ajxoPDQcmXCPGQ2a0dNbST19ypY=
+	bh=hAF1Kw9w3AlMs/7ik3R3v+TIGUdlxEBdwR69iwai4JY=;
+	b=CjpFnVMVUy84RPm9g9J+WIJSy+OGsvdG80SLOx87IUGIoHX65XCD1w/W5DWDL/MA8W9mXM
+	9+hxiTbxoWD1Yj6pOyKX9LIBgEIj6CykF86Y1jfykQEpz6wqU6iSNyDEh9gF6vwr0ihlv2
+	Uyw1IHPgRT5VXm2mOymm5ctGM69VtpU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oKqYLUQ/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lwIdnL0V;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777558958; a=rsa-sha256;
+	cv=none;
+	b=SDdHlrS17pqcE9Hp1modRt3rDhr4WZL4CBDRQ/PNSqJy9+5kJcGGjJ+qqUVnR1txux9Flt
+	IgkVNaIJ9vW2BAG/NW1oPpr+sRgXAU1JGY51pJtpvupQ2cHN2lkEF5nE7cGqMvdPTj2OYg
+	uKOW5Z9caO38ypgKVNSnlkwPkh3lRTU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7133960180;
-	Thu, 30 Apr 2026 14:20:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D63C2BCB8;
-	Thu, 30 Apr 2026 14:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777558824;
-	bh=Ru1qRcWk4w4e46Ipw1oHgndub0LRIDQasZkRB/XPXiA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oKqYLUQ/2B+XygqyB+m1N2X5McbAhh+Xb9n1h5sVjlovsA6Tq9Eqv411ck53zDMAq
-	 lkOUX3/km1VfYrZPQWd2y7kU0v8bh1CLUNBFaUHxzCmp+u8lTjuzeFK3yWsmNI8Um9
-	 Ah+7q39huMiGgUmZHiMSdXB7d1CsEAiozKM6LhPd6kd+kaQIGMlp+bqHK7kIbK/oVl
-	 puM7lORos6+xfOugj8fmbHkYUZdnO1OaGuCuzFuy098fMu/OsTq+15giAGCcMdQCkM
-	 2K7WKBEwcKQaqh8XYlmy6rFDx2GkLiIAWWv3BkX4aRlMkXvKRBap+yd9yJmeuVQ91M
-	 dAIdSPIOTlY/g==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2.1 1/2] mm/damon/stat: add a parameter for reading kdamond pid
-Date: Thu, 30 Apr 2026 07:20:09 -0700
-Message-ID: <20260430142013.80993-2-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260430142013.80993-1-sj@kernel.org>
-References: <20260430142013.80993-1-sj@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 75C6218000B
-X-Stat-Signature: sn6hganinrm4onyujz6mpdoheaex6yd1
+	by sea.source.kernel.org (Postfix) with ESMTP id 05B1E43BCE;
+	Thu, 30 Apr 2026 14:22:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDDBC2BCB8;
+	Thu, 30 Apr 2026 14:22:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777558956;
+	bh=3UVBOBagPXYOyYlAsvxW9a8qwwwtxiXGL65ZGxXUs0g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lwIdnL0V6B1xgbXh1rsqi180ml/YIQuwwmVrz8pReUB3hO+1SFrjb31YvG3wuQL3U
+	 pMkAfwtAgAxI1epLbRAhdgm49Cf68DKmh9Q551UbXS9SNeTcbyPdYTnSGopt1IB9oc
+	 EjXZUhVZ+wVon7RjnY9n+1msH7KPAxbuFiO9sTzs=
+Date: Thu, 30 Apr 2026 07:22:35 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Vineet Agarwal <agarwal.vineet2006@gmail.com>
+Cc: hannes@cmpxchg.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, david@kernel.org, mhocko@kernel.org, ljs@kernel.org,
+ linuszeng@tencent.com
+Subject: Re: [PATCH] mm/vmscan: fix delayed flusher wakeup in MGLRU
+Message-Id: <20260430072235.006c67550ab3d182d6cdce19@linux-foundation.org>
+In-Reply-To: <20260429185441.486804-1-agarwal.vineet2006@gmail.com>
+References: <20260429185441.486804-1-agarwal.vineet2006@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1777558825-449011
-X-HE-Meta: U2FsdGVkX18TJpcosUHQw9ojEQi9f5H5JbiTx6M9GPYaaXHjuScNleduUz457uxEOrj4nu7H3mUcuqLpmGkSbfnjWHcX4ZVMGPdUjeHQXRoInBk6qPhUmG3/t7wxgSOeHLR/mSemnTEoLWoDNKU7TZLI9t84op98sBkOwYlssxozu5V9VASQr9yZlpO034pFfXDzmG7k4YwOlkt0a8VfqaHn7RgjIryyXG4zv3AHMkX+OSaJ3/hOFMhqLYoM+MF9wYg4ZeCLBsr9n+9BXP1mYruDbt9Zl+LGOFVWSWt/IYikvnC1pIRsc5xq2qc7sy0cAlEXwHjR+s4lEJRaJpnnUrus7x00ZSHFWXBk0BfjuKbprFmUbX0SoNwy8TNy5h1FN08t7dqc19JrGiQw6vm/ba+3/e5j+eJn9OiWVBxi95ta6EcQtmj57NGKHQ5mrjCWQ6EewWEtiejAOJcR4bsTaEoC/ZRonYCcpsE34Cc67YmVbSNFJITlkOzZEv76XjTw/DHDuGLTesfqsE4mBEZrRm+m4jUUKfNjdjhVjpHoK0bsU+jIXp1xhLmqyirmSyqzdQy9u734U7ekFT9mQcAoawR4ILO7Vf7Vp9SZfsQnk4XnZr2lYMbyXJoEawnH7AHbGHL9qS7PRIytgz6IBrN59k1JG7QfkQyDPrGQ0W7cnuUyQ0x2F0fVSKxB2j3xpZUldrYdj0giSZTVKle6oO52PbtKGsmqrH/gBXhoqilMg5TQW9jJQorfIIH73uY4UlJPc/lB1nHSRjUxF3mwFNpm0Hjl5zc7iRYlS5m5I9nfD/mP9x5N7xX+Nh91Cl5Vwfu3Co+C1ph4U1mQPvEzLb0jvxJytoBO+Atud3RaSa5FPWPUmaknCD3x4ILxq9BqFDxIaIbH7kxjTs25t7YSSPoyxHexIikvwg0nobcF4zdZJBo/+dbnIGIk07tRdrQjthrYrE3D9F2zjbWULqScm8Q
- 9OSJFDx9
- XCse2d5OR7qAFEy3zDpmK0DSL8spowYa0I5PXJmNjgFbc5YBFll5opW2mlnhApTvr6DN2gftDfmGeM+SIhBDwZZyAiWHtxZnWMSApx3GTOS6j/vsO+21WgChsl52xNVU4Txj8KC45JLyCLjdN0GMyQXDlYnYy/Wu697FxcRHjuy+6zoU4ur0cc6/LfPabBpZzeNq+lFDjzUF2j/2lGRWAvrz+YVWAadp52QzA0y+dek/O66w=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2BCF620019
+X-Stat-Signature: hcrdi4urbsetyq75ihaaw4skiaiq6ys6
+X-HE-Tag: 1777558957-435780
+X-HE-Meta: U2FsdGVkX19tmm93cEbByvYctSHmBgxLnm8hLVT+6A7ITkv9zne9PgWVAsP11vcjhXIpJdE3vg7FjHv2S2zlxTqaT4NySY8x710L9bM5SM2WLduYfmxgQmwO59h9oHjT0eEzLPiAb+GLSRLkX3CAMHmGaoyqVlCIKq5L5rMubAi2PHHm5//qcGaqmLcj0vtgJP23RaDIJSNXQ0c78pzN1ss0BI9BDwA8+iPsI6HXy8KWMKYdcynkT5ASKBvug9229wrLLWgI3FzgVnOxewB1SnpjvK8Z6QRA/TiMYgBwUoHqJS5KylPWrH1tw9ekYFDoJCTFt7PIeLrCZig4BZz5eWDZNP1t7VDxb1p+iKbonpH88AaQnsCLjeX7w1Zjy2tOXsACK73X89bfhOBRFHFEpFqaMjXZX3lHUlyLPq6F+Hv6B/CyzGoeiPTeosZeQVpAplRQIkjy716wHVrxHM2eWzJH8m1W7v506HqeFu1DWf0wQG+Wxw0LiHyubE/bQrbL6KYCCuslICShuAXAjqimE1mPuD0T1+RtZSuaU2OG5Vv2CcdZUtfzIYZe7GgQ+jHGEIZrExnqgq3GT7svJwp022BV6T2zu7bXfH5xPOJpKY+veWTCGPLwPRkEVpZhAXC8LXMfrTKD/42yC+Ync3QFDxHRFoWHF3X1hm9fwz6z/8rv6YXMbWfmP66QD3PAEZWotTDt0kqiItLEO36jhTsL/JDZ4bh97jgg412lRF7e5eiFypepoM+y5B/4BnHR3gh/OUqXMr0Vr+FjABF4GP8yLGh7fKvYPkwGmfVZOrxrLHr+qnI5olrUh6rP0aXvvJzdpg6jiNcuXQbsFcsN1KDphVvTgw+owwGpRVfinL8RbfcXbAs82KOSfKLuSpEmcwaXvDGcxZR2yhIowv6FtLbl25oLTAoUZ4sRElkZ8sIE+lV2Lw8g4FTvG2j5/rj0Q2DDd6AGElsLyX5oy4U03Df
+ ehKIkiAc
+ turDkADvN3H5mEzYguv2UVhKW0tygWg12Sz70LpCH6IldEiKtAs0Id6kAW+9XEUBMqr3GYE0zyJIxem41SdBktnU8eWx4+2NqvrpCPUBckJ6IIsKMI9qz9kNTtnmX1rLf7DPeyo4ZW/tKAJx9r4JCAsiybKOEAq5osUA9AIjcGPAZHyJA8xC6Nke4o+L0cLp7sz7NNiEbgQQTnRm3rCz8FQXjIf5qiFi4aan3+j0cX5i+wyTQVtdDtjlGS7syVc8VWs8/E7YXuzGLnMXAiwpmOB9RG2V1qSuIF68EmLWmwXSO9MIQfeBtIX5IHtzSnayaY6YqWPgH16loICDRkJrmju3/AbX6i4fFz1vcLYasyBvW0MX13U+9oK7LTA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,69 +92,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Knowing the pid of the kdamonds can help user-space management including
-monitoring of DAMON's system resource consumption.  To make it easier,
-DAMON_SYSFS, DAMON_RECLAIM and DAMON_LRU_SORT provide the pid
-information.  DAMON_STAT is not providing it, though.  Expose the pid of
-DAMON_STAT kdamond via a new read-only module parameter, namely
-kdamond_pid.  This also makes DAMON modules usage more standardized,
-because DAMON_RECLAIM and DAMON_LRU_SORT also provide the information
-via their read-only parameters of the same name.
+On Thu, 30 Apr 2026 00:24:41 +0530 Vineet Agarwal <agarwal.vineet2006@gmail.com> wrote:
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/stat.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+> MGLRU currently decides whether to wake flusher threads in
+> try_to_shrink_lruvec() using cumulative reclaim counters:
+> 
+> ...
+> 
+> Make MGLRU use the same per-batch flusher wakeup behavior as classic
+> reclaim by moving the flusher wakeup into evict_folios(), using
+> batch-local isolation results from scan_folios() instead of the
+> cumulative counters checked later in try_to_shrink_lruvec().
 
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index f4d3203e92639..37964683839d0 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -266,6 +266,44 @@ static int damon_stat_enabled_load(char *buffer, const struct kernel_param *kp)
- 	return sprintf(buffer, "%c\n", damon_stat_enabled() ? 'Y' : 'N');
- }
- 
-+static int damon_stat_kdamond_pid_store(
-+		const char *val, const struct kernel_param *kp)
-+{
-+	/*
-+	 * kdamond_pid is read-only, but kernel command line could write it.
-+	 * Do nothing here.
-+	 */
-+	return 0;
-+}
-+
-+static int damon_stat_kdamond_pid_load(
-+		char *buffer, const struct kernel_param *kp)
-+{
-+	int pid;
-+
-+	if (!damon_stat_context) {
-+		pid = -1;
-+	} else {
-+		pid = damon_kdamond_pid(damon_stat_context);
-+		if (pid < 1)
-+			pid = -1;
-+	}
-+	return sprintf(buffer, "%d\n", pid);
-+}
-+
-+static const struct kernel_param_ops kdamond_pid_param_ops = {
-+	.set = damon_stat_kdamond_pid_store,
-+	.get = damon_stat_kdamond_pid_load,
-+};
-+
-+/*
-+ * PID of the DAMON thread
-+ *
-+ * If DAMON_STAT is enabled, this becomes the PID of the worker thread.
-+ * Else, -1.
-+ */
-+module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
-+
- static int __init damon_stat_init(void)
- {
- 	int err = 0;
--- 
-2.47.3
+Thanks.  AI review asked a couple of questions:
+	https://sashiko.dev/#/patchset/20260429185441.486804-1-agarwal.vineet2006@gmail.com
 
