@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66674FF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 04:05:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A6EDFF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 04:05:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D06B56B00A1; Thu, 30 Apr 2026 00:05:17 -0400 (EDT)
+	id AE3926B00A3; Thu, 30 Apr 2026 00:05:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDDAF6B00A3; Thu, 30 Apr 2026 00:05:17 -0400 (EDT)
+	id ABB396B00A5; Thu, 30 Apr 2026 00:05:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1AC46B00A4; Thu, 30 Apr 2026 00:05:17 -0400 (EDT)
+	id 9F7CC6B00A6; Thu, 30 Apr 2026 00:05:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B19396B00A1
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:05:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66A99A0413
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:05:17 +0000 (UTC)
-X-FDA: 84713882274.30.E2C05DF
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DF3D6B00A3
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 00:05:22 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 55DD61403F1
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:05:22 +0000 (UTC)
+X-FDA: 84713882484.01.1761E4C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ADC1FA0006
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:05:15 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uJyCN/cP";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id B4886140009
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 04:05:20 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ocBfK8O4;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777521915;
+	s=arc-20220608; t=1777521920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AjOwhtb3aLC8dXcF5fdBlXdpp4mSyr4Dq8lBNuOOORA=;
-	b=xjWcImMw2cQHTA+oq80Jg1x1vO2GfQbgrhHuJbP2wImvk5KjTSMc0LAQLEYTeEt1DvzC0+
-	5WrXP5mHlvg36j8oxcpTWTCGhG6b2jELUKQUjvigbiR234UZdO0V/m/auegtrWSA0x/AHd
-	l4zswNrtQpBjXSiQmXuGVQMQkUWuQ2k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777521915; a=rsa-sha256;
+	bh=+yWwHlIWL+l+Dg90SDWHd1+WqElaJbqvcRn9WxFEv1Q=;
+	b=uSvdt0K95igJtGs4Bs4e5JdmPoUwpaBR4sD1IcGDjOskXYluFJLhCebPq+Ig4Ep4pTSeQr
+	3nSELE/W03fYV6NgXxVY53dybmsO15xhpb3YUD8atD0g6Qj8XOITJfsYFk+LxQF6mDcddQ
+	/eqzGqFIHgG+kVhgR5BAKdoIpRNRKxk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777521920; a=rsa-sha256;
 	cv=none;
-	b=3eEtVVo+IwIetD7HG+mEH3IcCgjy/GXrzVEgyeFc5EBVTjf7Cv/xybivtxs32tsvlIbe2G
-	lN56VvvO5CSjmBYQtlK5s9p1xVznNw23T8LKkU0kPiizaAO9DxqfaNwIUuwUD7TZj5ro4W
-	dzy07xO3EhqHrkDUQCl+N/8ZOdXhCfs=
+	b=OWKv1vYJr78STL+DM8UKe3yN+YuyS2DsQ43V+CGO/1mXIOn4zmhRHp9pOahpDVyhfpGQ1A
+	pbW1VWaOcHRTkuJKad983VjueNwap6Rou+QTaaBHVdX+tlve730odz1YhsrqorA22gozJm
+	8Z5NK0yXLD2iLbw3pp+N5F/izKILQ+Q=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uJyCN/cP";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ocBfK8O4;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 953E9417E4;
+	by sea.source.kernel.org (Postfix) with ESMTP id D4925435B9;
+	Thu, 30 Apr 2026 04:05:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6E6C2BCB8;
 	Thu, 30 Apr 2026 04:05:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B00CC2BCC6;
-	Thu, 30 Apr 2026 04:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777521914;
-	bh=6MPYWPf1QbIXw7VCTkYtFV9yBQTJYYcQnuchAn2u66s=;
+	s=k20201202; t=1777521919;
+	bh=pbXcAk16+rZv3mixELQ0Ipha1GpoRaVFtegxsWu8Zqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJyCN/cPD0/zuU5TMG/FWh17eVTVcTCG22wyND+Ln22vdCzvScs+KeOLVG9RmOssZ
-	 jDw1d8PhCAGGbMI/IFgx4Z5EBNcmkVO03z+9/CJtVz3K4wxUxjDLHuhXQrygfZY0vj
-	 Mz9EPYWMtvXMUkv1GvrXcIXqYy7f2Nbz3f61nlophvJmqpD4ikN6UOlFyXJonZi3kU
-	 apK9iwjy49sl7fMM6lNjIBPwaa1bmY1pG/z4xtRWqVUh4kt9XKZhnZLwyhRWE61vDF
-	 fxzmTVdxergJndpikZIoTxLjBRYHAUamicyvLwT/yqUnIVLaZSAeOqCic0yYJ36c4O
-	 EWCGitvEei8LA==
+	b=ocBfK8O4Ywas1DnfVulkPf8JAygFLLLSXfSSIhFab5aPydgPGyQRMZl4VC0fcDxzh
+	 ZSF8ZjBo9bGMKXhwl/M9RckUdNTcuoEDs1sQYC8HxwbacO47214ueIB5PuN5R9qPyl
+	 7/vXQCjK6DhEeLKCFGPA8mBl5pi8Xir7/uhc151Nze4/YpDG2oez+rIhbMYqevbaCB
+	 eLjkznrbZrf9uMIIMqF0/apYtZGMqURcRmb3l4AFBitMcYEDgyMeHrj8n9yVB0vf4O
+	 no7KHvYOh/5gIxhaiyHe3dpMaQbh59rmzxY6J3CuNafpQ/IRafc5BIkfCVPTmXqOYt
+	 bTDK/08BVuABA==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
@@ -94,22 +94,22 @@ Cc: david@kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-s390@vger.kernel.org,
 	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [PATCH v2 4/5] mm: Don't retry page fault if folio is uptodate during swap-in
-Date: Thu, 30 Apr 2026 12:04:26 +0800
-Message-Id: <20260430040427.4672-5-baohua@kernel.org>
+Subject: [PATCH v2 5/5] mm/filemap: Avoid retrying page faults on uptodate folios in filemap faults
+Date: Thu, 30 Apr 2026 12:04:27 +0800
+Message-Id: <20260430040427.4672-6-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260430040427.4672-1-baohua@kernel.org>
 References: <20260430040427.4672-1-baohua@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ADC1FA0006
-X-Stat-Signature: 346ezoreu49nd41h4txuq6yoqzhcqmw7
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B4886140009
+X-Stat-Signature: paed4krdpr8y6gyy8oibtdhz19pbfpd9
 X-Rspam-User: 
-X-HE-Tag: 1777521915-34784
-X-HE-Meta: U2FsdGVkX19h0cRx6UccKVDWG+pQ9vsUOcHRuZiEhv45tqIAe95zudES38TndX2Q366UqJ1BAo36RfD41m0+nbvuArhuEr+uaPs/Fdxg2h8q4TPb0k12ELF8geTS8sZ6YNWPikOuRRFfMHh2MJr0BVDiS1pH//oG2REbq8hBPyG3fpDG7XJi8FmckoXyfnaiVhBvbj9XqXKOe2O3wqIHEMsri2ZcynfVGNuX05Ai9YIuakgPaoCKhtdFhkwJ51yDAaBt9kfClt0GEXqn2IA4EFY9pXBfDCxFwwMpJ+ZcCMV/Q2j4DJ2DP0u+GyALdo4S78Vnog44a4SIYJemXl6EjzLmypTZbN2tw5zSnzOLp9DHp4zm3ytNmcvWIjurY4URB014l4lDF7blpM7NqtoRVKYnwnztDINuUjLSSegoyzVcpdswEnOh/zoC12RE9P+sNncFhrYuf0Z9MwawH+wnNws8paEcTuVX5BkWjUdYucHpUQ4Ca19c97J7GW5WH2sm87XsS7mrPnBjZGxx+i9sTWo0LO6Tul+vPoh8F3k6d4krdnTqK6RGifXlZ42ChUq2HBOeZ9+rima+5RP42G4CJzSBB8Hg1kYuIE62L+4JoGymw0wdYzIihZ/xWIGo6tUfggjJU4OfvhsyOe+hGOIylw03MvOt+9uBk6CAiKL8Jkba5XIKim9lrFRPNJ65tWxsDoui5DmTJgb580NOYUmjvdqJE/Toch0c3viQywKVngGI1/t6qq3rNtZ9461929Y3TY0mxJSpqUqLZ8JHEbWYy2/04O7D4plmVlKzgtw4kdB0+PoBRRg5fz+RHTG/1uyZxcbup/oeJObfwIUVHCsErInJ7wj8v5dynBgY8sFhQHcyD2HQ8w8mxUpOC8xN0Zaoq9Q6Es6VZnSqHci4wzqzCKEVuIavLwxC6C52mtTLKM4UIC5HlcmRXqwJmbBgFGR42R2LLGdxc49GR9Lsi9s
- zLV5uf1m
- JPP/yGlmVi9995+faigTQZI7T7I0vmTMy6xOTsqYXJKZr3/0SU41HBZG1duOxPi6IPmP+OuhsOYG63SB8so0wlh0gSfME0pyaHr/bOVQ10TGPxAuY71rc3kUOsqXlWVDoXUfqvCrn6qAJtiphBL+kr4hHzUbc7Ygca4bgzXUCY8tIB1ef7NFXUESewh2zNwVEv9AxVZFBVSsNSI9VFvxUFwcryqv/XwxZ0efOvc2iNZDZ56bPb2UWUmodvMM+cNYCQDHyyyDT49UvURoTh9Pa380sXI2rUzF0o8d4d/vk6X32Ie7EGpz8RNlMaN2csJIBKwxRT5VvpE1P+XTh+aj3qjuDr+wqfE5abKy1VKLd/txBVtU=
+X-HE-Tag: 1777521920-819053
+X-HE-Meta: U2FsdGVkX1/2g3jNfdrWfP2m3KYqswlOLzcm9AGCXid0H/RelI3F6g3tQwJk4sjRHfiye3eCvDXGZVqixiWupbDQuyM//SouuVorUD9yqQltaALrKtkW/mhDLEBWCkAPV7yUPzijjCD5MzO4YzQtROGwIo4rJJVGtOeVow05VKLS1yQbCY48E8C9D1kV6Ik8fuxjCA2Pls+g1XLHH0F0PeUtLKTWLZiPkdIaeNxaUzUDz8tOfIcM87mSQJb6w+tE6LKrlyfO/xlbZL078fGyK6m3cJgGUr9MfGouPUxMUscWNbPpLqEoJTPJhNgycOFgPIgf51E4mfM28YUAJYbHhzQjLDFwUY4oPnqNF9QjwOBreuxGgel3kPZwBM/wlH7f1bixopUFlMq8+bZdjK3+dMcu7qAiNe+hkmPDwQFUnP5bSfRJy7DJoAIzUzAaA0AVqIW14BQvDBSM6eTXa/GPcem8Kt82NvUwlIgER+P1oy46NbP5ZThiegqZuM1NLrtcBuRV7crQnA0HCXFzE7x0FszknYsmtH3p64wO8pTe7kHcNBL95cWSbqLiA4s0nwBeifXMS4343vd6lu7bFRrKyR/FUMRpjmqiDMrFiXyl7L7jXXEpBpvRi/2rxMsoGnvfAhfedzkt1o8+FVdst9Hw7PnRQ0aANTHfnKJQC1e3zRni/cR6ynlIUiGGJEe1yc+TocUaIhvrRqSLIPEMSo16q5IgjNGIroSg8UprXi3OE2akonmziKO307SYll0qxebkC7g7SQEXTeq4sK2KimmPqTCE11Gj0/FzorCyyVexmXARTrgqhhVV71C/Ygyi4Qh2P8pBVLm4Wxb7NiX0cMf7Kp7/asgFaqsGPZc562Gkhk6nH1sevngi9euqtbNWsDD/4hpHI88BrPJo8tqXc6C5LF037YfmCXmUc8u9Pmrp8utJR2pySI+g1mzWnXsbdRzThxIZj1e/kbBJd+u8Xe7
+ mmKMvzYJ
+ m3Vn5h84QUpatm6qF3LRodG+fb4pgwU2z1azW6mdyK0DxjDNVDlEBJcxB3OrKcIGOg32M9PDlVhAS1W3z17fprXyWxpibf7sguDVYJXSCcHQ8e7rJr+hAyR7U7b1j6NuJZsX0FgjV9aUgLM78UvoNC4134vcrQvuHZTFmE6L3ciSweGc7lT/gV13oCOzejmHtL/DzJJSnPGrQkdwx2ndGUntEYSTzNjlESHdQ16WE3/tzosKA1TOxOv8QHWCpAwixqfnz2tYVgfF9SImP6XKzGCW/9mj3c6tD21CY9W6Qoqq4rQhKned1EhthBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,25 +117,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If we are waiting for long I/O to complete, it makes sense to
-avoid holding locks for too long. However, if the folio is
-uptodate, we are likely only waiting for a concurrent PTE
-update to finish. Retrying the entire page fault seems
-excessive.
+For uptodate folios, we are not waiting on I/O. We should
+be able to acquire the folio lock shortly, so there is no
+need to drop per-vma locks and perform a full PF retry.
 
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 ---
- mm/memory.c | 7 +++++++
+ mm/filemap.c | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 0c740ca363cc..a2e4f2d87ec8 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4949,6 +4949,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index b532d6cbafc8..0d2f6af5d0fe 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3533,6 +3533,13 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
+ 		}
  	}
  
- 	swapcache = folio;
 +	/*
 +	 * If the folio is uptodate, we are likely only waiting for
 +	 * another concurrent PTE mapping to complete, which should
@@ -143,9 +141,9 @@ index 0c740ca363cc..a2e4f2d87ec8 100644
 +	 */
 +	if (folio_test_uptodate(folio))
 +		vmf->flags &= ~FAULT_FLAG_ALLOW_RETRY;
- 	ret |= folio_lock_or_retry(folio, vmf);
- 	if (ret & VM_FAULT_RETRY) {
- 		if (fault_flag_allow_retry_first(vmf->flags) &&
+ 	if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
+ 		goto out_retry;
+ 
 -- 
 2.39.3 (Apple Git-146)
 
