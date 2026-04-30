@@ -4,109 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFDFFFF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 12:12:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEA9DFF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 12:33:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5814C6B0093; Thu, 30 Apr 2026 08:12:35 -0400 (EDT)
+	id 3570A6B0088; Thu, 30 Apr 2026 08:33:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 532356B0095; Thu, 30 Apr 2026 08:12:35 -0400 (EDT)
+	id 307E46B008A; Thu, 30 Apr 2026 08:33:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 421266B0096; Thu, 30 Apr 2026 08:12:35 -0400 (EDT)
+	id 21DFE6B008C; Thu, 30 Apr 2026 08:33:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BC596B0093
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:12:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2170B8980E
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:12:31 +0000 (UTC)
-X-FDA: 84715110102.24.E0DE875
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2A96C1C0015
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:12:27 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RBwqGcS2;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777551149; a=rsa-sha256;
-	cv=none;
-	b=BU431kw4VHKcJv3QT3qZMCpLqYtRNj1s3fxbShceExfrFq5OQPCPsQt3xZ60ML4YAODkgm
-	7op1lc9KX5XCkBrW30wVSBbno5+1fGFEgo+iZwrAJ+6bbf2qs2nnAVHYAwmoPJQ8PgLOn0
-	w4dyDPamzDicEGGb7QdmCWZAzDMqVS4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RBwqGcS2;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 121D26B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:33:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A873E1C01A0
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:33:05 +0000 (UTC)
+X-FDA: 84715161930.29.0A90888
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 629E71C0004
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:33:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=l7HQCUDy;
+	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777551149;
+	s=arc-20220608; t=1777552384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SK7bgVXN584vmXcFdOlyz7SlnNkF9IliRB/aPh+PkM8=;
-	b=S3NrR9yFLhJur40FfA6ofShKhwFPpipwVd+gQXQzbj23zUAOQR48qoDreQ9xzzxB5hybG0
-	P3oyCGTJD/yl7iRjBwMs+W+oYe9Hm/tj9DHs/36ackGEoygp1irVdzspGQhYrvFiJuz3cU
-	RnLHAAgxd5dWtQedesdeLCFnNupymMs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777551148; x=1809087148;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=egPFU7xhA88lBAq519bT9HYe8a4c+pVY/6MihkNd9Ls=;
-  b=RBwqGcS2Np7Z8qrvlrwfBY9vuJWxvpdIfaUQqyzTHNK7nTYO4nbdGyYz
-   ZBwqkQwmgkXwa1NdBIXyVSTi0p1obfTlZbdSOPnd6D4DxiXIeJyPMWpeM
-   FIHlW5pYvRBnYSf1txamIJthlzN5CkWyvla0YTSmDMjkyx60eJF39eX3y
-   cSxerqspYC86WkEIgrJY8+OCAJ5mB8O1/J+7K4XVkgyY0cQDGv6IL4BGt
-   WG/yk1M/k/Dvqmk8l704tVGxfuiXflHJ3TM2XBqb10iEIuZqNapXGcvnc
-   CUX1kCKKzVU0CvolqhbLgda9GAn1cpGa+mwxxwMqa6MbNtZUd4mxQSZvw
-   Q==;
-X-CSE-ConnectionGUID: G4zYzCJoRQGS4vEqxKMAPg==
-X-CSE-MsgGUID: PAdAkE94RnGMoVZ5I703xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="77664026"
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="77664026"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 05:12:27 -0700
-X-CSE-ConnectionGUID: ZxgXd7DlSKCSNgbVzm2Psg==
-X-CSE-MsgGUID: u0hvwTPbSL+4imX9slDRJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="258143800"
-Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 30 Apr 2026 05:12:23 -0700
-Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wIQFg-00000000CNY-3Cyc;
-	Thu, 30 Apr 2026 12:12:20 +0000
-Date: Thu, 30 Apr 2026 20:11:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry
- accessors
-Message-ID: <202604302041.gNPhRRxL-lkp@intel.com>
-References: <20260427052000.196402-1-agordeev@linux.ibm.com>
+	bh=yvT7alaoKdIhI5kLbvRhB8hj+B8HpDJWHuvkd80iS4M=;
+	b=D98mksRu6+rDKuiefQ60BcH466S1uWfWQY+W039uxisayEMrSFHwhtqed+xCB7BfKvCXM1
+	aYXy6mkHJZGdeFwehAzwO0IhsPlicnrBq5xmmeUMCVBE/5skeVMq77DiTe9F7rjzqFLROj
+	fl5+kijhiDwJjLuLk74l8C4GA7WLv6o=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=l7HQCUDy;
+	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777552384; a=rsa-sha256;
+	cv=none;
+	b=ONKGaEGWBMI2qw1UKydkwSp3Ne/q4OXVsN+TXLhFShJOxdrHyYJxtFRncbbUzEHVFRlJ6U
+	5PoCaU+bOJVPjjvi32Tx77frcapWOzzw6qlTEq529kDroGZ03/MH4H4PKCA/q3P4OP+aEv
+	pAXvRPxDtzwZPihUOduEwiVp9dpNq6k=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DE3219F6;
+	Thu, 30 Apr 2026 05:32:56 -0700 (PDT)
+Received: from [10.57.90.96] (unknown [10.57.90.96])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 120723F7B4;
+	Thu, 30 Apr 2026 05:32:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777552382; bh=Kmi7hh+sO6z2S3y8opc1Fyz09zGGdr9v7xC+7nSlt1o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=l7HQCUDyMDl141q50c9CPFNzaRun/uJJSrTG+cDq+t5dHzHX/7fZFsawMzauuUqbo
+	 2hqU40o6oMaJ2JL32aGkaUS3q3l5HHCoP3KLaTYiE5SZ2+XtTqVpUywpHxLT2IqzXL
+	 BFRC6vsF5AFL4+5quCkrbFdsyVLq2RX89OG+XyAM=
+Message-ID: <74bddfeb-0530-4cca-af17-a7920f17bb5b@arm.com>
+Date: Thu, 30 Apr 2026 13:32:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427052000.196402-1-agordeev@linux.ibm.com>
-X-Stat-Signature: iki3yitaf1pjpwqtew5kcmoxdtiojazr
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/3] mm: Free contiguous order-0 pages efficiently
+Content-Language: en-GB
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
+ David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ david.hildenbrand@arm.com
+References: <20260401101634.2868165-1-usama.anjum@arm.com>
+ <20260429103326.GA1743@cmpxchg.org>
+ <20260429050430.d86f01dbe731edc9fa932add@linux-foundation.org>
+ <9834200a-492c-4705-a2b2-e76cc0ba5392@arm.com>
+ <20260429135228.GA1987@cmpxchg.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260429135228.GA1987@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2A96C1C0015
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777551147-278936
-X-HE-Meta: U2FsdGVkX1+QHCUbRqVNAEUBpSBlQohGnDN6ilqT1uaqJC73/gZtTxqZWoE1jysYTep0D7hg1uQtLfdquiF4SJTxMZSaWtFsEGP5ohtsg/CdhMd71t4BXbOMYVZula2YyecIagKLv+7Bu9GnffCIn96Q07HJHqFGOi6jvPEXhygb+dn9MJOOD7OIw3k2NCDi+c+VMm9ZxqeGtgC016oRlELOZSZQm/g66LU0axflfeHx2NmdmaF5A7A9nR78Yj5LQh5SxdvSLTw8QLnSzU8Prw2u9/ZZyUzTvBLrPwkjcD8sPkX5Y0GgE3GBlKMZWJJbyHHnRcUvW9lKBnfNR25V/9iSXFT+Wl+3OzV2bI8aGGUVrDDO6UmjunoxOfscgIwmPfI/mNUPcfycjbFRcl7I2/Tyg113zi+wjP7M8a1c1MXRikDtVT0Ldx7HrH5OZdKOwpm6mVyrT9BQrI7pXWb7SdznPWSxsy5u6iZ0LzIi81DncH3mdo6jYEtLAuuCW7boDiZRWbQMfjuzj4yOCkzDcYvu1tcKlET/qOhvJ3VsLlJlvPXPUKszte73nigVyUk40TxpI//KJhqeVCCn2mHc3YlWXB5/eATD7zZzbiprN8p+aYpD50XqtomvwYP+j+Pa1HV33eK+sBkASAw/IRZDDrwVHtVfsCNKDdEifeI6mBlSxxmiz4OwH1hN5c3mh+cl2p3GreCfAvSVCpOWK4M+H5Kt4rN2MIJ+zgNxDnUNiFgieI97KnNQ1XifCsVI/KOiOw7s7ZEwBb/L1NwKi4o/DKpI2xTtc+g9tns0kfTw1g7PkpBGQlTsfvHCH+KKqSzHybzbLwIElVOHDTwpb+JVBdgjuicJEiWyWwHp+wvnjF0eUOfDkXirSSAjUKKMfkiv0HEcAZ65lTAzZLqcGXcIywSvrj4Yd0HTx2GLG90CZbXOkgbUnIlCFv+1dFxTklnNNPqMG/TGZ8Bi80CVP9L
- l2y+WO04
- FdlxUyMcrq3HPS9IKcVc1++tsBeDc0BdF/U3KYZ/UWikYOkqHRkDXSfg9NFi6dUXWzRJUU+4YhrD0+3VDQ4ONM4z4rxBXyndVfushLNX5G8k7ELG4w+nIr0JXbiuNQxiL/AWP3oA+EjaP2oK3bbA9uetfAIJ0gYWyotbVyuMCokksAMC1Xnw4wDB9HhOQ5CsSpBFX8SuX4E++y1oByJ8UqHmhcY679rPCc8/Op2QDqiKyNP0RFB8erPEqP/1EkIqsqJBwg7vHEZgK4qVIGLSQuHGyk0A4c8lDGTC3HYqIcT+W+1y/4HKLTIZo7EXtuaLYkiEpi8EGHmV95j/siYwTnQMrGpKEBTG6IR/Y4KNnqcB3fke+kIRndy5fmhvqucPdIOeviBRfphr4oSPkwjM4iRVbzA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 629E71C0004
+X-Stat-Signature: ad4ycomobsxufajuknago4y93cjxk7gr
+X-HE-Tag: 1777552383-325961
+X-HE-Meta: U2FsdGVkX18YzuOkJY/GBoStBLBbFG34pi+TuYKGKXFh6CzO7wcfPukO44hx7OwhNjT9tftjHPNmJ0xxVmWAhKoshTjtm46ZogvaarK++Zyin8C36XaVjpmWakzFsk5kQ72erJ1Yn7VYciuv3SmxwLxvmBTZ0g6moDIIOTOYTNyppxTRGQv6zKWEOvUggV7jsRBYYpjqiZ0SDpkMaXE6tpDTUtJfBxxgpHpgO4tWUoqWJ8iQ6lTqLqex7hhuyHY3DQWh3Nn1MseH7e9xlC+XgF/WidPYhJzW1RBxuHGLvCxxL/PZqsjcwTVDbsP03CnK4rLbNRc6Y3s9EWE5sYSf58fWKGHXX8CLy5isdDlzspINDcaTmjdlTUiQTAGPrmVa45VJfqMEFC5Pzh5Y+xVrsNNeThVQNdwNs9JwtcFqji+PNrxrVavX7fp5MfEOw1MPZYcYpLJyUesNgTJdfqMzTws6X1bduqXktMy8kk3R4Q1wWvPaQwRsq9n/pWKwCP0iRZt8LxQcsqP/L+UvQUU61net7TXfzTvrSMDLe3uHSPkXFviyru763vV5L9S2bTgWWt9Boiw3jRfzoZhykv8o/zNXexCEtHcx92YSAemxMCKQNQKxQvZnB/VK3N5n7ST2lnrUow3mupnXp45IKKHfuLG9o3jwW8JeQGhQCvdIA0DwmCbspEgzO0HPLfBQ3yZiSGhzbByrRmFbRQ5++s3C38qrxPQxSvX3ulr30Q7Q3C2+RauDWyrMmaf/e+J1oIyKyrRbE/b/ZWyP8la8biHIztnq89KXKClrXfev6VEbixH7RqmHr17k4fjVQOZuBJWcuhNnBnt+8OQA01oiDJ07IiA/6d2QHYcWLlpFOMnJ7rmsKMxCes1qvoYear4TQdHCWQN7Ec1oMRlF4z/RkOK0u/GGrFUV4Hca7vz4OhmmFON6VbpPkEBi+TDLth9JBufwCkQpmzwrjtDnnXTe+Q7
+ qwjqJX1b
+ iEgouQiD/c/30ykcJzo9/ksOd2yL814wIbYl0yzOPUK1LzXQOi3gOU7nKGkvO/aDIGTNGMyUDoxo42LnsRcvE6/55QpuKvQjn6Gb7e4vsavpOzswKMpSwPwHOh/nvWAR2GfolKx9dXhoa0tyU0b2OGOI5CVcCKguePLeBq6+bxpevvERPz50QYsIGPzeVegJw3mpEwdK9dIE+x6wG5TeCsVEpn/V9yWVOQoVlKvdPWyvzFDgs6dbzqXx/HPVGb/q1PaiKsBpih8QhJxBjXChtQJ+8f7NI8BprdkKXzBCR820J8Hat0ha5re0olL3Dm+czmXYEkT5KZsuBcDiwLE+dJt1tZ/Ei0Ck5LckIZN38u+LlKnE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,292 +103,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Alexander,
+On 29/04/2026 14:52, Johannes Weiner wrote:
+> On Wed, Apr 29, 2026 at 01:31:10PM +0100, Ryan Roberts wrote:
+>> On 29/04/2026 13:04, Andrew Morton wrote:
+>>> On Wed, 29 Apr 2026 06:33:26 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
+>>>
+>>>> On Wed, Apr 01, 2026 at 11:16:18AM +0100, Muhammad Usama Anjum wrote:
+>>>>> Hi All,
+>>>>>
+>>>>> A recent change to vmalloc caused some performance benchmark regressions (see
+>>>>> [1]). I'm attempting to fix that (and at the same time significantly improve
+>>>>> beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
+>>>>
+>>>> I think we should revert the original patch.
+>>>>
+>>>> The premise is that we can save some allocator calls by requesting
+>>>> higher orders and splitting them up into singles. This is a frivolous
+>>>> and short-sighted use of a very coveted and expensive resource.
+>>
+>> I'm not sure it's that simple. First off, vmalloc has preferred to allocate high
+>> order pages for quite a while, it's just that the patch you're referring to
+>> makes it try even harder. So reverting the patch doesn't completely revert the
+>> behaviour, it just reduces it.
+>>
+>> Performance benefits because those high order pages are mapped appropriately in
+>> the page table - i.e. 1G PUD, 2M PMD, (or 64K CONTPTE on arm64). So it's not
+>> solely about the number of cycles spent in the allocator; the HW is used more
+>> efficiently. vmalloc only splits to order-0 for the benefit of the caller,
+>> because there are some places that assume they can access each returned struct page.
+> 
+> Sure, TLB benefits can offset the cost.
+> 
+> PTE mapped higher orders on systems without contpte (still many) are the problem.
 
-kernel test robot noticed the following build errors:
+Perhaps vmalloc should only request the high orders when it knows it can map
+them beneficially then? (which I guess was the case prior to the patch in
+question?).
 
-[auto build test ERROR on akpm-mm/mm-everything]
+> 
+>> And all the order-0 pages of the original high order page are freed at the same
+>> time, so it's not like we are destroying the contiguous resource; it remains
+>> intact for the next user (well, ignoring that some will be freed to the pcpu
+>> list - this series solves that wrinkle). I've heard it argued that this approach
+>> is actually _better_ for conserving contiguous blocks because it's keeping the
+>> lifetime of all the constituent pages bound together and reducing fragmentation.
+> 
+> You're still consuming contiguity and increasing competition over
+> it. That needs to pay off in a closed system, not just in one small
+> part of it.
+> 
+> I'm a bit skeptical of that beneficial effect. Sure, if there aren't
+> any small fragments and most everybody is doing larger allocations,
+> then yes, this could make sense. Although in that case, even calling
+> the buddy allocator repeatedly from vmalloc would give you physically
+> adjacent pages due to the way splitting works (although I'm not sure
+> right now if you'd get the right exact PFN order for contpte).
+> 
+> But as long as there is a mix of allocation sizes with mixed
+> lifetimes, consuming contiguity that you don't need has a high cost
+> over vacuuming up holes and fragments. Because now you're competing
+> with somebody who has no choice but to *painstakingly move live pages
+> around to coalesce the holes*.
+> 
+> That's the whole reason for the __rmqueue_smallest()-first policy in
+> the page allocator. It's fine for somebody to challenge this. But it
+> feels pretty strange to make a unilateral decision in vmalloc that
+> works around and inverts established allocator policy, with very
+> little data to boot.
+> 
+>> I've never seen any data though...
+> 
+> Yes. Considering the possible externalities of this patch, IMO we
+> should have much more data on big picture behavior, under varying
+> pressure situations and workloads etc.
+> 
+> The reason for my email was that we see this hurting in experiments
+> with new code. The vmalloc higher-orders cause a sharp increase in
+> compaction activity, subsequent lock contention in zsmalloc migration
+> callbacks etc. I wasn't just making this up.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Gordeev/mm-page_vma_mapped_walk-add-missing-pgtable-entry-accessors/20260429-030409
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260427052000.196402-1-agordeev%40linux.ibm.com
-patch subject: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry accessors
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20260430/202604302041.gNPhRRxL-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604302041.gNPhRRxL-lkp@intel.com/reproduce)
+Fair enough.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604302041.gNPhRRxL-lkp@intel.com/
+For the avoidence of doubt, are you also suggesting that this series should not
+go in or just that a06157804399 ("mm/vmalloc: request large order pages from
+buddy allocator") should be reverted? If the latter, then perhaps it's best to
+move the discussion to that thread to catch Vishal and Willy's attention?
 
-All errors (new ones prefixed by >>):
-
->> mm/page_vma_mapped.c:222:20: error: use of undeclared identifier 'pgdp'; did you mean 'pgd'?
-     222 |                 if (!pgd_present(pgdp_get(pgd))) {
-         |                                  ^~~~~~~~~~~~~
-   arch/arm/include/asm/pgtable.h:144:36: note: expanded from macro 'pgdp_get'
-     144 | #define pgdp_get(pgpd)          READ_ONCE(*pgdp)
-         |                                            ^~~~
-   mm/page_vma_mapped.c:186:9: note: 'pgd' declared here
-     186 |         pgd_t *pgd;
-         |                ^
->> mm/page_vma_mapped.c:222:20: error: use of undeclared identifier 'pgdp'; did you mean 'pgd'?
-     222 |                 if (!pgd_present(pgdp_get(pgd))) {
-         |                                  ^~~~~~~~~~~~~
-   arch/arm/include/asm/pgtable.h:144:36: note: expanded from macro 'pgdp_get'
-     144 | #define pgdp_get(pgpd)          READ_ONCE(*pgdp)
-         |                                            ^~~~
-   mm/page_vma_mapped.c:186:9: note: 'pgd' declared here
-     186 |         pgd_t *pgd;
-         |                ^
->> mm/page_vma_mapped.c:222:20: error: use of undeclared identifier 'pgdp'; did you mean 'pgd'?
-     222 |                 if (!pgd_present(pgdp_get(pgd))) {
-         |                                  ^~~~~~~~~~~~~
-   arch/arm/include/asm/pgtable.h:144:36: note: expanded from macro 'pgdp_get'
-     144 | #define pgdp_get(pgpd)          READ_ONCE(*pgdp)
-         |                                            ^~~~
-   mm/page_vma_mapped.c:186:9: note: 'pgd' declared here
-     186 |         pgd_t *pgd;
-         |                ^
->> mm/page_vma_mapped.c:222:20: error: use of undeclared identifier 'pgdp'; did you mean 'pgd'?
-     222 |                 if (!pgd_present(pgdp_get(pgd))) {
-         |                                  ^~~~~~~~~~~~~
-   arch/arm/include/asm/pgtable.h:144:36: note: expanded from macro 'pgdp_get'
-     144 | #define pgdp_get(pgpd)          READ_ONCE(*pgdp)
-         |                                            ^~~~
-   mm/page_vma_mapped.c:186:9: note: 'pgd' declared here
-     186 |         pgd_t *pgd;
-         |                ^
->> mm/page_vma_mapped.c:222:20: error: use of undeclared identifier 'pgdp'; did you mean 'pgd'?
-     222 |                 if (!pgd_present(pgdp_get(pgd))) {
-         |                                  ^~~~~~~~~~~~~
-   arch/arm/include/asm/pgtable.h:144:36: note: expanded from macro 'pgdp_get'
-     144 | #define pgdp_get(pgpd)          READ_ONCE(*pgdp)
-         |                                            ^~~~
-   mm/page_vma_mapped.c:186:9: note: 'pgd' declared here
-     186 |         pgd_t *pgd;
-         |                ^
->> mm/page_vma_mapped.c:222:20: error: use of undeclared identifier 'pgdp'; did you mean 'pgd'?
-     222 |                 if (!pgd_present(pgdp_get(pgd))) {
-         |                                  ^~~~~~~~~~~~~
-   arch/arm/include/asm/pgtable.h:144:36: note: expanded from macro 'pgdp_get'
-     144 | #define pgdp_get(pgpd)          READ_ONCE(*pgdp)
-         |                                            ^~~~
-   mm/page_vma_mapped.c:186:9: note: 'pgd' declared here
-     186 |         pgd_t *pgd;
-         |                ^
->> mm/page_vma_mapped.c:222:20: error: use of undeclared identifier 'pgdp'; did you mean 'pgd'?
-     222 |                 if (!pgd_present(pgdp_get(pgd))) {
-         |                                  ^~~~~~~~~~~~~
-   arch/arm/include/asm/pgtable.h:144:36: note: expanded from macro 'pgdp_get'
-     144 | #define pgdp_get(pgpd)          READ_ONCE(*pgdp)
-         |                                            ^~~~
-   mm/page_vma_mapped.c:186:9: note: 'pgd' declared here
-     186 |         pgd_t *pgd;
-         |                ^
->> mm/page_vma_mapped.c:222:20: error: passing 'const volatile pmdval_t *' (aka 'const volatile unsigned int *') to parameter of type 'pmdval_t *' (aka 'unsigned int *') discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
-     222 |                 if (!pgd_present(pgdp_get(pgd))) {
-         |                                  ^~~~~~~~~~~~~
-   arch/arm/include/asm/pgtable.h:144:25: note: expanded from macro 'pgdp_get'
-     144 | #define pgdp_get(pgpd)          READ_ONCE(*pgdp)
-         |                                 ^~~~~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:47:28: note: expanded from macro 'READ_ONCE'
-      47 | #define READ_ONCE(x)                                                    \
-         |                                                                         ^
-      48 | ({                                                                      \
-         | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      49 |         compiletime_assert_rwonce_type(x);                              \
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      50 |         __READ_ONCE(x);                                                 \
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      51 | })
-         | ~~
-   include/asm-generic/pgtable-nop4d.h:23:37: note: passing argument to parameter 'pgd' here
-      23 | static inline int pgd_present(pgd_t pgd)        { return 1; }
-         |                                     ^
-   8 errors generated.
+Thanks,
+Ryan
 
 
-vim +222 mm/page_vma_mapped.c
 
-   155	
-   156	/**
-   157	 * page_vma_mapped_walk - check if @pvmw->pfn is mapped in @pvmw->vma at
-   158	 * @pvmw->address
-   159	 * @pvmw: pointer to struct page_vma_mapped_walk. page, vma, address and flags
-   160	 * must be set. pmd, pte and ptl must be NULL.
-   161	 *
-   162	 * Returns true if the page is mapped in the vma. @pvmw->pmd and @pvmw->pte point
-   163	 * to relevant page table entries. @pvmw->ptl is locked. @pvmw->address is
-   164	 * adjusted if needed (for PTE-mapped THPs).
-   165	 *
-   166	 * If @pvmw->pmd is set but @pvmw->pte is not, you have found PMD-mapped page
-   167	 * (usually THP). For PTE-mapped THP, you should run page_vma_mapped_walk() in
-   168	 * a loop to find all PTEs that map the THP.
-   169	 *
-   170	 * For HugeTLB pages, @pvmw->pte is set to the relevant page table entry
-   171	 * regardless of which page table level the page is mapped at. @pvmw->pmd is
-   172	 * NULL.
-   173	 *
-   174	 * Returns false if there are no more page table entries for the page in
-   175	 * the vma. @pvmw->ptl is unlocked and @pvmw->pte is unmapped.
-   176	 *
-   177	 * If you need to stop the walk before page_vma_mapped_walk() returned false,
-   178	 * use page_vma_mapped_walk_done(). It will do the housekeeping.
-   179	 */
-   180	bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-   181	{
-   182		struct vm_area_struct *vma = pvmw->vma;
-   183		struct mm_struct *mm = vma->vm_mm;
-   184		unsigned long end;
-   185		spinlock_t *ptl;
-   186		pgd_t *pgd;
-   187		p4d_t *p4d;
-   188		pud_t *pud;
-   189		pmd_t pmde;
-   190	
-   191		/* The only possible pmd mapping has been handled on last iteration */
-   192		if (pvmw->pmd && !pvmw->pte)
-   193			return not_found(pvmw);
-   194	
-   195		if (unlikely(is_vm_hugetlb_page(vma))) {
-   196			struct hstate *hstate = hstate_vma(vma);
-   197			unsigned long size = huge_page_size(hstate);
-   198			/* The only possible mapping was handled on last iteration */
-   199			if (pvmw->pte)
-   200				return not_found(pvmw);
-   201			/*
-   202			 * All callers that get here will already hold the
-   203			 * i_mmap_rwsem.  Therefore, no additional locks need to be
-   204			 * taken before calling hugetlb_walk().
-   205			 */
-   206			pvmw->pte = hugetlb_walk(vma, pvmw->address, size);
-   207			if (!pvmw->pte)
-   208				return false;
-   209	
-   210			pvmw->ptl = huge_pte_lock(hstate, mm, pvmw->pte);
-   211			if (!check_pte(pvmw, pages_per_huge_page(hstate)))
-   212				return not_found(pvmw);
-   213			return true;
-   214		}
-   215	
-   216		end = vma_address_end(pvmw);
-   217		if (pvmw->pte)
-   218			goto next_pte;
-   219	restart:
-   220		do {
-   221			pgd = pgd_offset(mm, pvmw->address);
- > 222			if (!pgd_present(pgdp_get(pgd))) {
-   223				step_forward(pvmw, PGDIR_SIZE);
-   224				continue;
-   225			}
-   226			p4d = p4d_offset(pgd, pvmw->address);
-   227			if (!p4d_present(p4dp_get(p4d))) {
-   228				step_forward(pvmw, P4D_SIZE);
-   229				continue;
-   230			}
-   231			pud = pud_offset(p4d, pvmw->address);
-   232			if (!pud_present(pudp_get(pud))) {
-   233				step_forward(pvmw, PUD_SIZE);
-   234				continue;
-   235			}
-   236	
-   237			pvmw->pmd = pmd_offset(pud, pvmw->address);
-   238			/*
-   239			 * Make sure the pmd value isn't cached in a register by the
-   240			 * compiler and used as a stale value after we've observed a
-   241			 * subsequent update.
-   242			 */
-   243			pmde = pmdp_get_lockless(pvmw->pmd);
-   244	
-   245			if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
-   246				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-   247				pmde = pmdp_get(pvmw->pmd);
-   248				if (!pmd_present(pmde)) {
-   249					softleaf_t entry;
-   250	
-   251					if (!thp_migration_supported() ||
-   252					    !(pvmw->flags & PVMW_MIGRATION))
-   253						return not_found(pvmw);
-   254					entry = softleaf_from_pmd(pmde);
-   255	
-   256					if (!softleaf_is_migration(entry) ||
-   257					    !check_pmd(softleaf_to_pfn(entry), pvmw))
-   258						return not_found(pvmw);
-   259					return true;
-   260				}
-   261				if (likely(pmd_trans_huge(pmde))) {
-   262					if (pvmw->flags & PVMW_MIGRATION)
-   263						return not_found(pvmw);
-   264					if (!check_pmd(pmd_pfn(pmde), pvmw))
-   265						return not_found(pvmw);
-   266					return true;
-   267				}
-   268				/* THP pmd was split under us: handle on pte level */
-   269				spin_unlock(pvmw->ptl);
-   270				pvmw->ptl = NULL;
-   271			} else if (!pmd_present(pmde)) {
-   272				const softleaf_t entry = softleaf_from_pmd(pmde);
-   273	
-   274				if (softleaf_is_device_private(entry)) {
-   275					pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-   276					return true;
-   277				}
-   278	
-   279				if ((pvmw->flags & PVMW_SYNC) &&
-   280				    thp_vma_suitable_order(vma, pvmw->address,
-   281							   PMD_ORDER) &&
-   282				    (pvmw->nr_pages >= HPAGE_PMD_NR))
-   283					sync_with_folio_pmd_zap(mm, pvmw->pmd);
-   284	
-   285				step_forward(pvmw, PMD_SIZE);
-   286				continue;
-   287			}
-   288			if (!map_pte(pvmw, &pmde, &ptl)) {
-   289				if (!pvmw->pte)
-   290					goto restart;
-   291				goto next_pte;
-   292			}
-   293	this_pte:
-   294			if (check_pte(pvmw, 1))
-   295				return true;
-   296	next_pte:
-   297			do {
-   298				pvmw->address += PAGE_SIZE;
-   299				if (pvmw->address >= end)
-   300					return not_found(pvmw);
-   301				/* Did we cross page table boundary? */
-   302				if ((pvmw->address & (PMD_SIZE - PAGE_SIZE)) == 0) {
-   303					if (pvmw->ptl) {
-   304						spin_unlock(pvmw->ptl);
-   305						pvmw->ptl = NULL;
-   306					}
-   307					pte_unmap(pvmw->pte);
-   308					pvmw->pte = NULL;
-   309					pvmw->flags |= PVMW_PGTABLE_CROSSED;
-   310					goto restart;
-   311				}
-   312				pvmw->pte++;
-   313			} while (pte_none(ptep_get_lockless(pvmw->pte)));
-   314	
-   315			if (!pvmw->ptl) {
-   316				spin_lock(ptl);
-   317				if (unlikely(!pmd_same(pmde, pmdp_get_lockless(pvmw->pmd)))) {
-   318					pte_unmap_unlock(pvmw->pte, ptl);
-   319					pvmw->pte = NULL;
-   320					goto restart;
-   321				}
-   322				pvmw->ptl = ptl;
-   323			}
-   324			goto this_pte;
-   325		} while (pvmw->address < end);
-   326	
-   327		return false;
-   328	}
-   329	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
