@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 261EECD13D2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:51:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6BAECD13D2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 21:01:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B2696B00CF; Thu, 30 Apr 2026 16:51:33 -0400 (EDT)
+	id D2D7F6B00CB; Thu, 30 Apr 2026 17:01:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88A2B6B00D0; Thu, 30 Apr 2026 16:51:33 -0400 (EDT)
+	id CDF7F6B00CC; Thu, 30 Apr 2026 17:01:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C6BB6B00D1; Thu, 30 Apr 2026 16:51:33 -0400 (EDT)
+	id BCD846B00CD; Thu, 30 Apr 2026 17:01:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B7F26B00CF
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:51:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1EA3FA01E4
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:51:33 +0000 (UTC)
-X-FDA: 84716418066.21.976E557
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A96DF6B00CB
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:01:34 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0881F401DD
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:01:34 +0000 (UTC)
+X-FDA: 84716443308.22.34A6F9C
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 63D9580009
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:51:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=giQtU7hl;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	by imf15.hostedemail.com (Postfix) with ESMTP id CF9D2A000B
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:01:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=UVq5qj5S;
+	spf=pass (imf15.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777582291;
+	s=arc-20220608; t=1777582892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s3PRSg0Ba4XvYhY1BnO4oXxGKXF8eZ/cIx3+tOOwEHU=;
-	b=KuQoWbUYtExdUuXS6a3/AkmJJzMV/niItFrQNzR4UVMGySb4SWB/1ptL+8/3SFFcUeynrQ
-	kS7JWEHC4/8RQBsC7/BjhYRkyll5lGUMOPB6c93SqVhPDmsbeuGShPw+H6BzIqChG2qo5+
-	lrjFMdNM7AOqhgQnn8KuH1+xhQZBBck=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777582291; a=rsa-sha256;
-	cv=none;
-	b=F9Jf3SANAcmqciB79UE0qTGTpt6siiPUTq484crILhjxUSaG/wB7jSC5XBmfbNhCh0AX0q
-	wY91Fw68XvQK1O4h/cMSQOOPIsPoz0ods6oKwWdsehi96t6//sDSo4YxP6UxaEUxszsxNZ
-	fmypTIJE+n7QkkoSKdcvi4XJwZM25/M=
+	bh=3zBhVDNrR5Ch+aCKvy8krLQSQzpzJON2M9dIn3qUdX4=;
+	b=eR08mF1XYJ6DdD7eANMY1XsS4d8zdLeakM6htgCt1lSkjKpoAUpc9tU75Ngn3/bU3hPYuK
+	twv8cY6Z83JlwzUppDhS/ioXVdoU3kVa1LKsDmTEai0JNicWdJs8uwU6rlPbxw0x5q+M17
+	Rw7/mPXrynl5J2tqxJwTYidPUJ2mh8Q=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=giQtU7hl;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=UVq5qj5S;
+	spf=pass (imf15.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777582892; a=rsa-sha256;
+	cv=none;
+	b=FK6YjdkqSLopRxCtqxcfFk2bJ7yHSrtiGvGMzYst7GYt7SKHxk16i4vNQeWaP+oFsbonwX
+	ntoXk9Pxf4S8m7albDrRxbgN2Xv2DcicIt29JYFVwjmPAjTMMw6WAZlIxcy/1dajUPWmll
+	pSmXqMIXuQvr+lOoyapnFImYj2/n+LY=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=s3PRSg0Ba4XvYhY1BnO4oXxGKXF8eZ/cIx3+tOOwEHU=; b=giQtU7hlg6UFDZNwxEC7uf5qR5
-	47A9YcA4MxErkcSLPnpiyJ2sBAQeYKo/Dtl2A9sjg0L6VUOF2Np9U3j0+m11HFGYVmu5tBZHLEFUF
-	pD+a1wUCVMZBJY5Qbi19FNiI8rs+/zh55Wfc1DvB5zGMImTJkE8VDLVixsDZUrSYXlvQkh+JY7KgQ
-	FWTZNFR1e8wUWMIruQto4Sl47i8uFl+Nw9RBPXL5OIsDBi1zhwhdjWnGvc58Hu430ZuG7KvJOqF00
-	Du9tPFphTlIhnOkARY8NxFlhPoBQmXcj77i0vOVSwdrqzk+IhCC2jpgTnB3phOgWetciVaFq9Vf3q
-	mrIkbCaQ==;
+	bh=3zBhVDNrR5Ch+aCKvy8krLQSQzpzJON2M9dIn3qUdX4=; b=UVq5qj5S5w0oGWT+Xd+TVuSt77
+	YshsfpovcFvIEZ+f1Bm1mrdH/Tffcn2NHLm+MLfMOUnFrhDkF6GvyzoXguLcD6KWbX1mrL4V1S6C/
+	sbKwccMtmQjXQyqQJdgHcLKqzcBHwRyFunnvlnyGOU9Z6JYkJEjb8DvCRxPIMSL7azUw6Rn+yUdsc
+	McPEMFKrHJ2k7eZnJasOiAei5PpFw197s7MfPdEuw/DCIp3Bw6HWQx/UAdFyKlpYxNOgnx3osr9An
+	0nqQcOkWUyp1GiTEntlVZVAg/0O0sSs8xtgdVN54rRy/Gk5NsYjK2guPeYwTK34lF2d8az5PNrBPA
+	YaAZTLkA==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wIXuD-000000001R0-2QEu;
-	Thu, 30 Apr 2026 16:22:41 -0400
+	id 1wIXuC-000000001R0-3VYw;
+	Thu, 30 Apr 2026 16:22:40 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel-team@meta.com,
@@ -78,25 +78,25 @@ Cc: kernel-team@meta.com,
 	ljs@kernel.org,
 	ziy@nvidia.com,
 	usama.arif@linux.dev,
-	Rik van Riel <riel@fb.com>,
+	Rik van Riel <riel@meta.com>,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 45/45] mm: page_alloc: enlarge and unify spb_evacuate_for_order
-Date: Thu, 30 Apr 2026 16:21:14 -0400
-Message-ID: <20260430202233.111010-46-riel@surriel.com>
+Subject: [RFC PATCH 17/45] mm: page_alloc: add within-superpageblock compaction for clean superpageblocks
+Date: Thu, 30 Apr 2026 16:20:46 -0400
+Message-ID: <20260430202233.111010-18-riel@surriel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260430202233.111010-1-riel@surriel.com>
 References: <20260430202233.111010-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 63D9580009
-X-Stat-Signature: nsss9jxhbnmpwz5zhbk1y7s97spbwhts
 X-Rspam-User: 
-X-HE-Tag: 1777582291-57063
-X-HE-Meta: U2FsdGVkX19bufKiUBslFdKrvL/Yv1S9V+bJ9WWgMawMNDP5MXQDrNmxfgw1Ux8+ILPoTZavglmPAftWC8z2Yg5x4WctkSN/l5tU4atLw1szeOwpl3fHx0ouqPafWaQvtfJFiliqsD5GI3SKXQhG0ODqGbuI+IvL66hCrBUNAGVlIz6w0aDmQKN+QsAxi6YGxvlUiQq6F0XD9QcMMshqSitrm4q07wcj5sp4oEex942/bTwkzrgz8th3UEhX8xOz45MZrXHT5dDOI8+ZJ5hTICMl2xRRLAukwglKHKST+mrgrIpZKG76UwxxEb7NKG7p8hHv7d/We84v6gPFW1ElYqt+w4LPf+JOfCAybCTH7rpkFjWMhHpJlYEM8Y7Fi9RIHiVXp2nR0wBVi5m+u2SHzT8Rd6wMss0or90Mlu2EJJ+J7pMYM6+69tQFWWvN14t5YGm78K6JmNXgAozvhUsBBLZK0NqujgiIuIyed4LPq/7+xZiLLujFtaysjDm9t0rO+e/2sGopr3QraYZLworFd9Vshc3qYyurzTsKwnxnYVJB0WzhUqs31bpItGAncJzy1HDmUbTsxACmctmpLsd2x0u2ZGNKlKS1+GRjt4ne4RPU5sn3SRj0Fogc2CYFCSgq2EjH64rdO4u7UfsHyDHQWT5MIaLuJFJR4Dyi16pRF6Oyq0I5maaTKMcVFC2yd4Fka36qrWkuhYzmqnoZaqziF+iDNxeO70oHvml/G0/b74b69CU4UyXd14SRALQGyEnt9f6Cx9n6KNTbMfrq/U/M2+eQdasg2LzoF2R3UYI/2Q3yaFD/qKXHWh50apbMMa1LjCxYWCwimRfLVOK9ObaGJnm0erF0lSAneHvMLPCxmH3C/CqmT4ys4deVHgPgTaDZe/SvIqUoeo3JVVBj3QaIzzU8lI0w988g4zU2FdQULd6ksXoc0fMc+rXC+X8LLFr2kN5kN78AWp2QyqXHwiE
- NEhiKP9d
- 2ikuBtXkQctCcs4hNKSBWGoDYsQp/p0NduLz0wWtxhH36q1aGaO6uWqitk3twgEOmDNNlSbqy67+A0xFeUHYmKkWD2n4P+Q04XjzwIoD3Hu/wG4EURvYKUPDQnBJ9CWtLTOofi5BH56XlgnNghV7w73fFzyRQ17ryv+RluoaX8UiHhzjALBxC3Sieq25cADD8WDZWatzubau8648FiosrcHJfAZ/iLwvFtO89Itrwax/nXJF9xozmA9/H9ARVQEGs9Hvap1VJBJAcu29uENst/dpKCcIezCBaeCgiospZtG868L00hcHe3C5mqRHQkaxsZJtTNdt8Bh0wyk6rXjCYIzAy6A==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CF9D2A000B
+X-Stat-Signature: kjsypue5idr5dbpd5cq1ks4n7jntxa5x
+X-HE-Tag: 1777582891-343983
+X-HE-Meta: U2FsdGVkX1/xWKNNRoK+za5z5pIUd4c0ybelmwCQ5DguCc4/qDlyFleJLDSEFr7BdlF2siJzQ1sD3znb/7Q/huWFRL20D62BP7OerY98JrpZi3u+L9bYfeKOwjNnuMw/VlLSaqfTnkESgAkgB8P60ZK9cG9X8JL7zovPF9uAQtSdq6i2dDBUffSyoSrWkjyWa/x7VRfi0FiJZyCK46uhArsbQZcZ9wKvdfm5S3i+3UTjXHyDQbdbfloDD4UxKgU12UQ0sBuIgz3dgeJh7tmJJ0AQnSBEGVFFXUG2c/h3v92igl74XVVcsVTGr1MADvWSCw1hsQS2YCm+zR1PVKS8krwsI96JU01fItcYFGQGvX0gwYclgvKyX28Mjy4oUPXKFxQgbbWXhWPgj7kJLYBxPiVSvMJAO5x2OvV9dL5Wp1vwlb23iMCb+QlfUmFS/ZDw2r3I50PiVbe7G75aXVlrlVvSWgfTDgQqjdgfyzKCmQh/5WhDU017AZ353ewK1b4yUFgS5yfqOn5uMuMC2Mxlzhi3OS21YgQ/M/1ZkfwPvuKnwmzHrsmJvFQWSeMkV+nOLdDbSXogmi94yiVQK3mpPUbH0nk3Yzolqcox8i1DfosRNpPuzMEGg8zU0nfBeysRUlHiKWfrGg2uSAT5gVth7qx/0qbnP3hbGD0HzfInAVUl2+NX9i0weYWdILLYhyqUinYuqSZBgko6RfZF6iRffdyd4ZDWYs7XCqb/q1iaIYH+DuzaA8/0FB03f0AqElqpRgIDmltetAjopQ5bRPuDQFmfogvvxw/JOb4G2emHheYUB8ETaBs3pYC91kyBKQ20yQaU9Lu6fOHhDUMtfga7MIfHoxnKB7KxiapIYEE0obmC5G6GKdMxm5pm1m+qR3ldeflNXcj2F4/2ssP/WthisyfysKqG1bznMSjzfJ3k/r9p+m/j3MWHVvRKdEIkGVPohj3qGdLmXkPfTa/ovg7
+ 6QBkYN3F
+ SM9Z4BzIEDUyEGOMLs6eN5hw4b0PqAh3zN9XcnQntXsXlqiya6bKhUw9P1xyWX0ZKpFAmckDZ3OrkB9jr3RAATAA/iNAc5hnlo0D8UaWJKg/KfN2nqVfMR5Q1Zh0CbqmvFPGfZYeBYw1wOPEOxp4oqF1hqVL/GyWqDsbqxCb/v3Gn8PgdPIwRSB2Pp7lfvh2BiXyGyJG4A6ArwnXsX3D/foJAxFn+GkgIua7MO5kwQgC5Uv0/fq/hR5Z9EViviUxQ8BUWsmFGRZY3sbjRA96W2x0cdzDuyBrH9FSGXGyrIFA5WKGzji6ofajpTN5rWzs4ZYElYnAfUcnRMzfk54Ab4c6YrlA6OS1TFmlJKsHg74ocPxyJPPlb1TQPna6mrufZ6fEl7Rsqj/UR18Uscyz/E4STmHEFuQM9FUme
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,316 +104,824 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Rik van Riel <riel@fb.com>
+From: Rik van Riel <riel@meta.com>
 
-The slowpath in __alloc_pages_slowpath calls spb_evacuate_for_order
-just before dropping ALLOC_NOFRAGMENT. Each successful evacuation
-frees a MOV pageblock inside a tainted SPB so the retry can satisfy
-a non-movable allocation via Pass 2 (claim_whole_block) without
-having to drop NOFRAGMENT and let __rmqueue_claim taint a clean SPB.
+Extend the superpageblock defragmentation framework to handle clean
+superpageblocks in addition to tainted ones. While tainted superpageblock
+defrag evacuates movable pages out to free up pageblocks, clean
+superpageblock compaction migrates pages *within* the same superpageblock
+to consolidate scattered free pages into whole free pageblocks.
 
-Two problems with the existing implementation:
+The key components:
 
-1. Per-call budget too small.
+- spb_needs_defrag() and spb_defrag_done() now handle both categories: both
+  use the same nr_free < 2 and nr_free_pages thresholds, with tainted SBs
+  additionally checking nr_movable.
 
-   SPB_CONTIG_MAX_CANDIDATES = 4   (also used by contig allocation)
-   per-SPB pageblocks         = 3  (hard-coded literal in evac calls)
+- spb_defrag_superpageblock() becomes a dispatcher that calls either
+  spb_defrag_tainted() (existing evacuation logic) or
+  spb_defrag_clean() (new compaction logic).
 
-   → up to 12 pageblocks scanned/migrated per call.
+- spb_defrag_clean() scans pageblocks in the superpageblock,
+  skipping fully-free (PB_all_free) and PCP-owned pageblocks, and calls
+  compact_pageblock_in_spb() on candidates.
 
-   Production traces show 13 of 21 tainted SPBs typically have MOV
-   content (~2500 PB-units = ~5 GiB MOV-having pageblocks across the
-   tainted pool). The 4-candidate cap leaves the bulk of evacuatable
-   capacity untouched per call, so the slowpath frequently gives up
-   and drops NOFRAGMENT even though plenty of MOV content was there
-   to free.
+- compact_pageblock_in_spb() uses the same isolate/migrate loop pattern as
+  evacuate_pageblock(), but with a custom migration target allocator
+  (alloc_spb_compaction_target) that allocates pages exclusively from the
+  superpageblock's own free lists.
 
-2. Source-pageblock migratetype filter creates blind spots.
+Also make the compaction code superpageblock-aware:
 
-   evacuate_pb_range(..., migratetype, ...) skipped any pageblock
-   whose underlying tag did not match the @migratetype argument.
-   Phase 1 used the requesting type; Phase 2 used MIGRATE_MOVABLE.
+- Search per-superpageblock free lists instead of zone free lists for
+  migration targets, since with SPBs enabled all pages live on per-
+  superpageblock free lists.
 
-   But MOV content can live in any tag of pageblock:
-     - PASS_2C / PASS_2D borrows set PB_has_<requesting_mt> on a
-       MOV-tagged PB without changing the tag, then borrowed pages
-       return to the MOV free list when freed.
-     - __spb_set_has_type adds a non-MOV bit on a PB without
-       re-evaluating the PB tag. PBs accumulate has-bits over time.
-
-   Result: MOV stragglers in PBs whose tag does not match either
-   phase's filter are permanently invisible to evacuation.
-
-Fix both:
-
-  * Introduce dedicated SPB_EVACUATE_MAX_CANDIDATES = 16 and
-    SPB_EVACUATE_MAX_PB_PER_SB = 8 so the evacuation budget can be
-    sized independently of the contig-allocation candidate cap.
-    Combined cap: 128 pageblocks (256 MiB) per call.
-
-  * Drop the migratetype tag filter from evacuate_pb_range. Accept
-    any pageblock with PB_has_movable set, skipping only the cases
-    whose semantics forbid touching them here (ISOLATE, CMA,
-    HIGHATOMIC).
-
-  * Collapse the two-phase structure in spb_evacuate_for_order into
-    a single pass. The two phases were doing the same evacuation
-    action with different filters; once the filter is relaxed the
-    distinction collapses naturally:
-      - PBs that are pure MOV become empty -> free MOV pageblock,
-        claimable by Pass 2 / claim_whole_block on the retry.
-      - PBs that are mixed lose their MOV stragglers, so future
-        allocations of the dominant type can use the PB without
-        competing with MOV residue.
-
-  * sb_collect_evacuate_candidates loses its migratetype parameter:
-    after the unified pass, the only candidate filter is nr_movable
-    > 0.
-
-The contig-allocation path (spb_try_alloc_contig) is unchanged;
-SPB_CONTIG_MAX_CANDIDATES remains at 4. 1 GiB allocations have a
-different latency profile and broad evac-style scanning is not
-appropriate there.
-
-The trace_spb_evacuate_for_order_done signature is preserved for ABI
-continuity with existing observers; the merged attempt count is
-reported in phase1_attempts and phase2_attempts is reported as 0.
-
-Stack impact: sb_pfns[] grows from 32 bytes to 128 bytes — trivial
-for an 8K/16K kernel stack.
-
-Per Rik's stated priority hierarchy:
-  P1 protect clean SPBs from being tainted     (highest)
-  P2 protect MOV pageblocks inside tainted SPBs
-  P3 allocation latency                        (lowest)
-trading a few hundred ms of evacuation latency to keep clean SPBs
-clean is the desired direction.
+- Fix PB_has_movable check for zones with non-aligned start PFNs by using
+  zone_start_pfn for pageblock boundary checks.
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
+Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- mm/page_alloc.c | 141 ++++++++++++++++++++++++++++--------------------
- 1 file changed, 84 insertions(+), 57 deletions(-)
+ include/linux/mmzone.h |   1 +
+ mm/compaction.c        | 272 ++++++++++++++++++++++----------
+ mm/page_alloc.c        | 343 +++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 501 insertions(+), 115 deletions(-)
 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 61fe939e7c0f..ba6f08295ff9 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -942,6 +942,7 @@ struct superpageblock {
+ 	struct work_struct	defrag_work;
+ 	struct irq_work		defrag_irq_work;
+ 	bool			defrag_active;
++	unsigned long		defrag_cursor;
+ 	/*
+ 	 * Back-off state after a no-op defrag pass: defer the next attempt
+ 	 * until either nr_free_pages has grown by at least pageblock_nr_pages
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 88ba88340f3b..0e9b4b3ca59b 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -1321,9 +1321,19 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		 * isolated (pinned, writeback, dirty, etc.), leave the
+ 		 * flag set so a future migration attempt can try again.
+ 		 */
+-		if (!nr_isolated && !movable_skipped && valid_page)
+-			superpageblock_clear_has_movable(cc->zone,
+-							valid_page);
++		if (!nr_isolated && !movable_skipped && valid_page) {
++			unsigned long pb_pfn = pageblock_start_pfn(start_pfn);
++
++			/*
++			 * start_pfn may not be pageblock-aligned when the
++			 * zone start is not aligned (e.g. DMA zone at PFN 1).
++			 * Skip the PB_has_movable update if the pageblock
++			 * start falls below the zone.
++			 */
++			if (pb_pfn >= cc->zone->zone_start_pfn)
++				superpageblock_clear_has_movable(cc->zone,
++								valid_page);
++		}
+ 	}
+ 
+ 	trace_mm_compaction_isolate_migratepages(start_pfn, low_pfn,
+@@ -1577,45 +1587,70 @@ static void fast_isolate_freepages(struct compact_control *cc)
+ 	for (order = cc->search_order;
+ 	     !page && order >= 0;
+ 	     order = next_search_order(cc, order)) {
+-		struct free_area *area = &cc->zone->free_area[order];
+-		struct list_head *freelist;
+-		struct page *freepage;
++		struct list_head *freelist = NULL;
++		struct page *freepage = NULL;
+ 		unsigned long flags;
+ 		unsigned int order_scanned = 0;
+ 		unsigned long high_pfn = 0;
+ 
+-		if (!area->nr_free)
++		if (!cc->zone->free_area[order].nr_free)
+ 			continue;
+ 
+ 		spin_lock_irqsave(&cc->zone->lock, flags);
+-		freelist = &area->free_list[MIGRATE_MOVABLE];
+-		list_for_each_entry_reverse(freepage, freelist, buddy_list) {
+-			unsigned long pfn;
+-
+-			order_scanned++;
+-			nr_scanned++;
+-			pfn = page_to_pfn(freepage);
+-
+-			if (pfn >= highest)
+-				highest = max(pageblock_start_pfn(pfn),
+-					      cc->zone->zone_start_pfn);
+-
+-			if (pfn >= low_pfn) {
+-				cc->fast_search_fail = 0;
+-				cc->search_order = order;
+-				page = freepage;
+-				break;
+-			}
+ 
+-			if (pfn >= min_pfn && pfn > high_pfn) {
+-				high_pfn = pfn;
++		/*
++		 * With superpageblocks, free pages live on per-SPB free
++		 * lists rather than zone-level free lists.  Iterate all
++		 * SPBs to find candidate pages.
++		 */
++		{
++			struct zone *zone = cc->zone;
++			unsigned long si, nr_spb = zone->nr_superpageblocks;
++
++			for (si = 0; !page && order_scanned < limit; si++) {
++				struct free_area *area;
++
++				if (nr_spb) {
++					if (si >= nr_spb)
++						break;
++					area = &zone->superpageblocks[si].free_area[order];
++				} else {
++					if (si > 0)
++						break;
++					area = &zone->free_area[order];
++				}
+ 
+-				/* Shorten the scan if a candidate is found */
+-				limit >>= 1;
++				freelist = &area->free_list[MIGRATE_MOVABLE];
++				list_for_each_entry_reverse(freepage,
++							    freelist,
++							    buddy_list) {
++					unsigned long pfn;
++
++					order_scanned++;
++					nr_scanned++;
++					pfn = page_to_pfn(freepage);
++
++					if (pfn >= highest)
++						highest = max(
++						    pageblock_start_pfn(pfn),
++						    zone->zone_start_pfn);
++
++					if (pfn >= low_pfn) {
++						cc->fast_search_fail = 0;
++						cc->search_order = order;
++						page = freepage;
++						break;
++					}
++
++					if (pfn >= min_pfn && pfn > high_pfn) {
++						high_pfn = pfn;
++						limit >>= 1;
++					}
++
++					if (order_scanned >= limit)
++						break;
++				}
+ 			}
+-
+-			if (order_scanned >= limit)
+-				break;
+ 		}
+ 
+ 		/* Use a maximum candidate pfn if a preferred one was not found */
+@@ -1624,10 +1659,24 @@ static void fast_isolate_freepages(struct compact_control *cc)
+ 
+ 			/* Update freepage for the list reorder below */
+ 			freepage = page;
++
++			/*
++			 * high_pfn page may be on a different SPB's list
++			 * than the last one scanned; fix up freelist.
++			 */
++			if (cc->zone->nr_superpageblocks) {
++				struct superpageblock *sb;
++
++				sb = pfn_to_superpageblock(cc->zone,
++							   high_pfn);
++				if (sb)
++					freelist = &sb->free_area[order].free_list[MIGRATE_MOVABLE];
++			}
+ 		}
+ 
+ 		/* Reorder to so a future search skips recent pages */
+-		move_freelist_head(freelist, freepage);
++		if (freelist && freepage)
++			move_freelist_head(freelist, freepage);
+ 
+ 		/* Isolate the page if available */
+ 		if (page) {
+@@ -2021,47 +2070,77 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
+ 	for (order = cc->order - 1;
+ 	     order >= PAGE_ALLOC_COSTLY_ORDER && !found_block && nr_scanned < limit;
+ 	     order--) {
+-		struct free_area *area = &cc->zone->free_area[order];
+-		struct list_head *freelist;
+ 		unsigned long flags;
+ 		struct page *freepage;
+ 
+-		if (!area->nr_free)
++		if (!cc->zone->free_area[order].nr_free)
+ 			continue;
+ 
+ 		spin_lock_irqsave(&cc->zone->lock, flags);
+-		freelist = &area->free_list[MIGRATE_MOVABLE];
+-		list_for_each_entry(freepage, freelist, buddy_list) {
+-			unsigned long free_pfn;
+ 
+-			if (nr_scanned++ >= limit) {
+-				move_freelist_tail(freelist, freepage);
+-				break;
+-			}
++		/*
++		 * With superpageblocks, free pages live on per-SPB free
++		 * lists.  Iterate all SPBs to find candidates.
++		 */
++		{
++			struct zone *zone = cc->zone;
++			unsigned long si, nr_spb = zone->nr_superpageblocks;
++
++			for (si = 0; !found_block && nr_scanned < limit; si++) {
++				struct free_area *area;
++				struct list_head *freelist;
++
++				if (nr_spb) {
++					if (si >= nr_spb)
++						break;
++					area = &zone->superpageblocks[si].free_area[order];
++				} else {
++					if (si > 0)
++						break;
++					area = &zone->free_area[order];
++				}
+ 
+-			free_pfn = page_to_pfn(freepage);
+-			if (free_pfn < high_pfn) {
+-				/*
+-				 * Avoid if skipped recently. Ideally it would
+-				 * move to the tail but even safe iteration of
+-				 * the list assumes an entry is deleted, not
+-				 * reordered.
+-				 */
+-				if (get_pageblock_skip(freepage))
+-					continue;
+-
+-				/* Reorder to so a future search skips recent pages */
+-				move_freelist_tail(freelist, freepage);
+-
+-				update_fast_start_pfn(cc, free_pfn);
+-				pfn = pageblock_start_pfn(free_pfn);
+-				if (pfn < cc->zone->zone_start_pfn)
+-					pfn = cc->zone->zone_start_pfn;
+-				cc->fast_search_fail = 0;
+-				found_block = true;
+-				break;
++				freelist = &area->free_list[MIGRATE_MOVABLE];
++				list_for_each_entry(freepage, freelist,
++						    buddy_list) {
++					unsigned long free_pfn;
++
++					if (nr_scanned++ >= limit) {
++						move_freelist_tail(freelist,
++								   freepage);
++						break;
++					}
++
++					free_pfn = page_to_pfn(freepage);
++					if (free_pfn < high_pfn) {
++						/*
++						 * Avoid if skipped recently.
++						 * Ideally it would move to
++						 * the tail but even safe
++						 * iteration of the list
++						 * assumes an entry is deleted,
++						 * not reordered.
++						 */
++						if (get_pageblock_skip(freepage))
++							continue;
++
++						move_freelist_tail(freelist,
++								   freepage);
++
++						update_fast_start_pfn(cc,
++								      free_pfn);
++						pfn = pageblock_start_pfn(
++								free_pfn);
++						if (pfn < zone->zone_start_pfn)
++							pfn = zone->zone_start_pfn;
++						cc->fast_search_fail = 0;
++						found_block = true;
++						break;
++					}
++				}
+ 			}
+ 		}
++
+ 		spin_unlock_irqrestore(&cc->zone->lock, flags);
+ 	}
+ 
+@@ -2348,32 +2427,57 @@ static enum compact_result __compact_finished(struct compact_control *cc)
+ 	/* Direct compactor: Is a suitable page free? */
+ 	ret = COMPACT_NO_SUITABLE_PAGE;
+ 	for (order = cc->order; order < NR_PAGE_ORDERS; order++) {
+-		struct free_area *area = &cc->zone->free_area[order];
++		struct zone *zone = cc->zone;
++		unsigned long si, nr_spb = zone->nr_superpageblocks;
+ 
+-		/* Job done if page is free of the right migratetype */
+-		if (!free_area_empty(area, migratetype))
+-			return COMPACT_SUCCESS;
++		/* Zone-level nr_free is maintained even with SPBs */
++		if (!zone->free_area[order].nr_free)
++			continue;
+ 
+-#ifdef CONFIG_CMA
+-		/* MIGRATE_MOVABLE can fallback on MIGRATE_CMA */
+-		if (migratetype == MIGRATE_MOVABLE &&
+-			!free_area_empty(area, MIGRATE_CMA))
+-			return COMPACT_SUCCESS;
+-#endif
+ 		/*
+-		 * Job done if allocation would steal freepages from
+-		 * other migratetype buddy lists.
++		 * With superpageblocks, free pages live on per-SPB free
++		 * lists.  Check all SPBs for a suitable page.
+ 		 */
+-		if (find_suitable_fallback(area, order, migratetype, true) >= 0)
++		for (si = 0; ; si++) {
++			struct free_area *area;
++
++			if (nr_spb) {
++				if (si >= nr_spb)
++					break;
++				area = &zone->superpageblocks[si].free_area[order];
++			} else {
++				if (si > 0)
++					break;
++				area = &zone->free_area[order];
++			}
++
++			/* Job done if page is free of the right migratetype */
++			if (!free_area_empty(area, migratetype))
++				return COMPACT_SUCCESS;
++
++#ifdef CONFIG_CMA
++			/* MIGRATE_MOVABLE can fallback on MIGRATE_CMA */
++			if (migratetype == MIGRATE_MOVABLE &&
++				!free_area_empty(area, MIGRATE_CMA))
++				return COMPACT_SUCCESS;
++#endif
+ 			/*
+-			 * Movable pages are OK in any pageblock. If we are
+-			 * stealing for a non-movable allocation, make sure
+-			 * we finish compacting the current pageblock first
+-			 * (which is assured by the above migrate_pfn align
+-			 * check) so it is as free as possible and we won't
+-			 * have to steal another one soon.
++			 * Job done if allocation would steal freepages from
++			 * other migratetype buddy lists.
+ 			 */
+-			return COMPACT_SUCCESS;
++			if (find_suitable_fallback(area, order, migratetype,
++						   true) >= 0)
++				/*
++				 * Movable pages are OK in any pageblock. If we
++				 * are stealing for a non-movable allocation,
++				 * make sure we finish compacting the current
++				 * pageblock first (which is assured by the
++				 * above migrate_pfn align check) so it is as
++				 * free as possible and we won't have to steal
++				 * another one soon.
++				 */
++				return COMPACT_SUCCESS;
++		}
+ 	}
+ 
+ out:
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 815cee325ec0..9cc8b9bbc1fd 100644
+index 07d2926ffb3d..54b9a69bda10 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -10603,6 +10603,27 @@ static bool zone_spans_last_pfn(const struct zone *zone,
+@@ -8199,17 +8199,23 @@ static void evacuate_pageblock(struct zone *zone, unsigned long start_pfn,
+  * - Skip superpageblocks with no movable pages (nothing to evacuate)
   */
- #define SPB_CONTIG_MAX_CANDIDATES 4
  
+-/* Target free space: 3 pageblocks worth of free pages */
+-#define SPB_DEFRAG_FREE_PAGES_TARGET	(3UL * pageblock_nr_pages)
 +/*
-+ * Maximum tainted superpageblock candidates per spb_evacuate_for_order call.
-+ * Collected under zone->lock, then evacuated without it. Larger than the
-+ * contig-allocation candidate cap because evacuation runs from the slowpath
-+ * after reclaim/compaction failed: we need a meaningful chance of freeing a
-+ * non-MOV-claimable pageblock before the slowpath escalates to dropping
-+ * ALLOC_NOFRAGMENT (which lets __rmqueue_claim taint clean SPBs). Sized to
-+ * scan a meaningful fraction of a typical tainted-pool population.
++ * Target free space for clean SPB internal compaction: at least a quarter
++ * of the superpageblock must be free before we attempt to consolidate
++ * scattered free pages into whole free pageblocks. Below this threshold
++ * the work-to-payoff ratio is poor — we walk the whole SPB and migrate
++ * a handful of pages without producing a usable free pageblock.
 + */
-+#define SPB_EVACUATE_MAX_CANDIDATES 16
-+
-+/*
-+ * Maximum pageblocks to evacuate per candidate SPB inside
-+ * spb_evacuate_for_order. Each evacuation triggers page migration which is
-+ * O(pages_per_pageblock) wall-clock cost, so this caps per-call latency.
-+ * Bumped from 3 to 8 to free more capacity per slowpath escalation pass.
-+ * Combined cap: SPB_EVACUATE_MAX_CANDIDATES * SPB_EVACUATE_MAX_PB_PER_SB
-+ * pageblocks per call (16 * 8 = 128 = 256 MiB on x86 max migration budget).
-+ */
-+#define SPB_EVACUATE_MAX_PB_PER_SB 8
-+
- #ifdef CONFIG_COMPACTION
++#define SPB_DEFRAG_FREE_PAGES_TARGET	(SUPERPAGEBLOCK_NR_PAGES / 4)
+ 
  /**
-  * sb_collect_contig_candidates - Find superpageblock ranges for contiguous alloc
-@@ -10778,7 +10799,7 @@ static struct page *spb_try_alloc_contig(struct zone *zone,
+  * spb_needs_defrag - Check if a superpageblock needs defragmentation
+  * @sb: superpageblock to check (may be NULL)
   *
-  * Returns number of candidate superpageblock PFNs found.
+- * Returns false for NULL, non-tainted, or clean superpageblocks.
+- * A tainted superpageblock needs defrag if it has movable pages that can
+- * be evacuated AND free space is running low (1 or fewer free
+- * pageblocks, or less than 2 pageblocks worth of free pages).
++ * For tainted superpageblocks: defrag is needed when there are movable
++ * pageblocks that can be evacuated AND free space is running low.
++ * For clean superpageblocks: compaction is needed when free pages are
++ * scattered (plenty of free pages but few whole free pageblocks).
   */
--static int sb_collect_evacuate_candidates(struct zone *zone, int migratetype,
-+static int sb_collect_evacuate_candidates(struct zone *zone,
- 					  unsigned long *sb_pfns, int max)
- {
- 	struct superpageblock *sb;
-@@ -10792,20 +10813,6 @@ static int sb_collect_evacuate_candidates(struct zone *zone, int migratetype,
- 			if (!sb->nr_movable)
- 				continue;
+ /*
+  * Cooldown between defrag attempts that made no progress, in seconds.
+@@ -8223,9 +8229,6 @@ static bool spb_needs_defrag(struct superpageblock *sb)
+ 	if (!sb)
+ 		return false;
  
--			if (migratetype >= 0) {
--				bool has_matching;
+-	if (spb_get_category(sb) != SB_TAINTED)
+-		return false;
 -
--				if (migratetype == MIGRATE_UNMOVABLE)
--					has_matching = sb->nr_unmovable > 0;
--				else if (migratetype == MIGRATE_RECLAIMABLE)
--					has_matching = sb->nr_reclaimable > 0;
--				else
--					continue;
--
--				if (!has_matching)
--					continue;
--			}
--
- 			sb_pfns[n++] = sb->start_pfn;
- 			if (n >= max)
- 				return n;
-@@ -10815,17 +10822,38 @@ static int sb_collect_evacuate_candidates(struct zone *zone, int migratetype,
+ 	/*
+ 	 * Back off if the previous pass made no progress: do not retry until
+ 	 * either the cooldown elapses or free pages have grown by at least a
+@@ -8246,16 +8249,30 @@ static bool spb_needs_defrag(struct superpageblock *sb)
+ 	 * Maintain the tainted reserve so unmovable claims always
+ 	 * find room in existing tainted superpageblocks.
+ 	 */
+-	return sb->nr_movable > 0 &&
+-	       sb->nr_free < SPB_TAINTED_RESERVE;
++	if (spb_get_category(sb) == SB_TAINTED)
++		return sb->nr_movable > 0 &&
++		       sb->nr_free < SPB_TAINTED_RESERVE;
++
++	/*
++	 * Clean superpageblocks: compact scattered free pages into whole
++	 * free pageblocks.  Needs internal free space as destination.
++	 */
++	if (sb->nr_free >= 2)
++		return false;
++
++	if (sb->nr_free_pages < SPB_DEFRAG_FREE_PAGES_TARGET)
++		return false;
++
++	return true;
  }
  
- /*
-- * Evacuate pageblocks of the given migratetype within a range.
-+ * Evacuate MOV content out of any pageblock in the given range that has it.
-+ *
-+ * The previous version filtered on the source pageblock's migratetype tag,
-+ * which made evacuation blind to MOV stragglers living in PBs whose tag did
-+ * not match the current allocation's requesting type:
-+ *
-+ *   - PASS_2C / PASS_2D borrows set PB_has_<requesting_mt> on a MOV-tagged
-+ *     PB without changing the tag. The borrowed pages return to the MOV
-+ *     free list when freed, so a MOV-tagged PB can host non-MOV PB_has bits
-+ *     and MOV content simultaneously.
-+ *
-+ *   - When __spb_set_has_type adds a non-MOV bit on a PB, the PB tag is not
-+ *     re-evaluated. PBs accumulate has-bits over time without their tag
-+ *     necessarily reflecting current content.
-+ *
-+ * Drop the migratetype tag filter and accept any PB with PB_has_movable set.
-+ * Skip only the cases whose semantics forbid touching them here:
-+ *   - MIGRATE_ISOLATE     under quarantine
-+ *   - CMA                 own allocator
-+ *   - MIGRATE_HIGHATOMIC  reserve, evac would race the reservation logic
-+ *
-  * Returns number of pageblocks evacuated.
+ /**
+- * spb_defrag_done - Check if defrag target has been reached
++ * spb_defrag_done - Check if defrag/compaction should stop
+  * @sb: superpageblock being defragmented
+  *
+- * Stop defragmenting when the superpageblock has enough free space
+- * or there are no more movable pages to evacuate.
++ * Stop when the superpageblock has enough free pageblocks, when free
++ * pages drop too low to be worth continuing, or (for tainted
++ * superpageblocks) when there are no more movable pages to evacuate.
   */
- static int evacuate_pb_range(struct zone *zone, unsigned long start_pfn,
--			     unsigned long end_pfn, int migratetype, int max)
-+			     unsigned long end_pfn, int max)
+ static bool spb_defrag_done(struct superpageblock *sb)
  {
- 	unsigned long pfn;
- 	int nr_evacuated = 0;
+@@ -8264,49 +8281,311 @@ static bool spb_defrag_done(struct superpageblock *sb)
+ 	 * the reserve of free pageblocks is restored, or until there
+ 	 * are no more movable pages to evacuate.
+ 	 */
+-	return !sb->nr_movable ||
+-	       sb->nr_free >= SPB_TAINTED_RESERVE;
++	if (spb_get_category(sb) == SB_TAINTED)
++		return !sb->nr_movable ||
++		       sb->nr_free >= SPB_TAINTED_RESERVE;
++
++	/* Clean superpageblocks: stop when enough free pageblocks exist */
++	if (sb->nr_free >= 2)
++		return true;
++
++	if (sb->nr_free_pages < SPB_DEFRAG_FREE_PAGES_TARGET)
++		return true;
++
++	return false;
++}
++
++static void spb_clear_skip_bits(struct superpageblock *sb)
++{
++	unsigned long pfn, end_pfn;
++	struct zone *zone = sb->zone;
++
++	end_pfn = sb->start_pfn + SUPERPAGEBLOCK_NR_PAGES;
++
++	for (pfn = sb->start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages) {
++		struct page *page;
++
++		if (!pfn_valid(pfn))
++			continue;
++		if (!zone_spans_pfn(zone, pfn))
++			continue;
++
++		page = pfn_to_page(pfn);
++		clear_pageblock_skip(page);
++	}
+ }
  
- 	for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages) {
+ /**
+- * spb_defrag_superpageblock - evacuate movable pages from a tainted superpageblock
++ * spb_defrag_tainted - evacuate movable pages from a tainted superpageblock
+  * @sb: the tainted superpageblock to defragment
+  *
+  * Find any pageblock with movable pages (PB_has_movable) and evacuate
+  * them, leaving only unmovable, reclaimable, and free pages behind.
+  * Stop when the free space target is reached.
+  */
+-static void spb_defrag_superpageblock(struct superpageblock *sb)
++static void spb_defrag_tainted(struct superpageblock *sb)
+ {
+-	unsigned long pfn, end_pfn;
++	unsigned long pfn, end_pfn, start_pfn, cursor;
+ 	struct zone *zone = sb->zone;
++	bool wrapped = false;
+ 
+ 	if (!sb->nr_movable)
+ 		return;
+ 
+-	end_pfn = sb->start_pfn + SUPERPAGEBLOCK_NR_PAGES;
++	start_pfn = sb->start_pfn;
++	end_pfn = start_pfn + SUPERPAGEBLOCK_NR_PAGES;
+ 
+-	for (pfn = sb->start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages) {
++	cursor = sb->defrag_cursor;
++	if (cursor < start_pfn || cursor >= end_pfn) {
++		cursor = start_pfn;
++		spb_clear_skip_bits(sb);
++	}
++
++	pfn = cursor;
++
++	while (pfn < end_pfn) {
  		struct page *page;
-+		int pb_mt;
+ 
+ 		if (spb_defrag_done(sb))
+-			return;
++			goto out;
  
  		if (!pfn_valid(pfn))
- 			continue;
-@@ -10835,10 +10863,13 @@ static int evacuate_pb_range(struct zone *zone, unsigned long start_pfn,
+-			continue;
++			goto next;
++
++		if (!zone_spans_pfn(zone, pfn))
++			goto next;
  
  		page = pfn_to_page(pfn);
  
--		if (get_pfnblock_migratetype(page, pfn) != migratetype)
-+		if (!get_pfnblock_bit(page, pfn, PB_has_movable))
- 			continue;
+-		/* Skip pageblocks without movable pages */
+ 		if (!get_pfnblock_bit(page, pfn, PB_has_movable))
+-			continue;
++			goto next;
  
--		if (!get_pfnblock_bit(page, pfn, PB_has_movable))
-+		pb_mt = get_pfnblock_migratetype(page, pfn);
-+		if (pb_mt == MIGRATE_ISOLATE ||
-+		    is_migrate_cma(pb_mt) ||
-+		    pb_mt == MIGRATE_HIGHATOMIC)
- 			continue;
+-		/* Skip if fully free — nothing to evacuate */
+ 		if (get_pfnblock_bit(page, pfn, PB_all_free))
+-			continue;
++			goto next;
++
++		if (get_pageblock_skip(page))
++			goto next;
  
  		evacuate_pageblock(zone, pfn, true);
-@@ -10870,41 +10901,33 @@ static int evacuate_pb_range(struct zone *zone, unsigned long start_pfn,
- static bool spb_evacuate_for_order(struct zone *zone, unsigned int order,
- 				  int migratetype)
- {
--	unsigned long sb_pfns[SPB_CONTIG_MAX_CANDIDATES];
-+	unsigned long sb_pfns[SPB_EVACUATE_MAX_CANDIDATES];
- 	unsigned long flags;
- 	int nr_sbs, i;
--	unsigned int phase1_attempts = 0, phase2_attempts = 0;
-+	unsigned int attempts = 0;
- 	bool did_evacuate = false;
- 
--	/* Phase 1: coalesce within existing non-movable pageblocks */
--	spin_lock_irqsave(&zone->lock, flags);
--	nr_sbs = sb_collect_evacuate_candidates(zone, migratetype,
--						sb_pfns,
--						SPB_CONTIG_MAX_CANDIDATES);
--	spin_unlock_irqrestore(&zone->lock, flags);
--
--	for (i = 0; i < nr_sbs; i++) {
--		unsigned long end_pfn = sb_pfns[i] + SUPERPAGEBLOCK_NR_PAGES;
--		int n;
--
--		n = evacuate_pb_range(zone, sb_pfns[i], end_pfn,
--				      migratetype, 3);
--		phase1_attempts += n;
--		if (n)
--			did_evacuate = true;
--	}
--
--	if (did_evacuate) {
--		trace_spb_evacuate_for_order_done(zone, order, migratetype,
--				phase1_attempts, phase2_attempts, true);
--		return true;
--	}
--
--	/* Phase 2: evacuate MOVABLE pageblocks to create free whole pageblocks */
-+	/*
-+	 * Single-pass evacuation: collect candidate tainted SPBs (anything
-+	 * with MOV content), then walk each one's pageblocks evacuating MOV
-+	 * content from any non-special PB. evacuate_pb_range filters by
-+	 * PB_has_movable, so this is a no-op on PBs that have no MOV content.
-+	 *
-+	 * Two effects accumulate:
-+	 *   - PBs that are pure MOV become empty -> free MOV pageblock,
-+	 *     claimable by Pass 2 / claim_whole_block on the retry.
-+	 *   - PBs that are mixed (e.g., UNMOV + MOV stragglers) lose the MOV
-+	 *     stragglers, so future allocations of the dominant type can use
-+	 *     the PB without competing with the MOV residue.
-+	 *
-+	 * The previous two-phase design tried to do these separately and
-+	 * filtered evacuation by source PB tag. That left MOV content
-+	 * stranded in PBs whose tag did not match either phase, and gave up
-+	 * after one phase even though the other phase could have helped.
-+	 */
- 	spin_lock_irqsave(&zone->lock, flags);
--	nr_sbs = sb_collect_evacuate_candidates(zone, -1,
--						sb_pfns,
--						SPB_CONTIG_MAX_CANDIDATES);
-+	nr_sbs = sb_collect_evacuate_candidates(zone, sb_pfns,
-+						SPB_EVACUATE_MAX_CANDIDATES);
- 	spin_unlock_irqrestore(&zone->lock, flags);
- 
- 	for (i = 0; i < nr_sbs; i++) {
-@@ -10912,24 +10935,28 @@ static bool spb_evacuate_for_order(struct zone *zone, unsigned int order,
- 		int n;
- 
- 		n = evacuate_pb_range(zone, sb_pfns[i], end_pfn,
--				      MIGRATE_MOVABLE, 3);
--		phase2_attempts += n;
-+				      SPB_EVACUATE_MAX_PB_PER_SB);
-+		attempts += n;
- 		if (n)
- 			did_evacuate = true;
++next:
++		pfn += pageblock_nr_pages;
++		if (pfn >= end_pfn && !wrapped) {
++			spb_clear_skip_bits(sb);
++			pfn = start_pfn;
++			wrapped = true;
++		}
++		if (wrapped && pfn > cursor)
++			break;
++	}
++out:
++	sb->defrag_cursor = pfn;
++}
++
++/*
++ * Within-superpageblock compaction: migrate pages from partially-used
++ * pageblocks into free space within the same superpageblock, consolidating
++ * scattered free pages into whole free pageblocks.
++ */
++
++struct spb_compaction_control {
++	struct superpageblock	*sb;
++	struct zone		*zone;
++};
++
++/*
++ * alloc_spb_compaction_target - allocate a migration target page from
++ * within the same superpageblock's free lists.
++ *
++ * This is a custom migration target allocator that restricts allocations
++ * to the superpageblock being compacted, ensuring pages stay within the SB.
++ */
++static struct folio *alloc_spb_compaction_target(struct folio *src,
++		unsigned long private)
++{
++	struct spb_compaction_control *scc =
++		(struct spb_compaction_control *)private;
++	struct superpageblock *sb = scc->sb;
++	struct zone *zone = scc->zone;
++	int src_order = folio_order(src);
++	int order = src_order;
++	int migratetype = MIGRATE_MOVABLE;
++	struct free_area *area;
++	struct page *target;
++
++	spin_lock_irq(&zone->lock);
++
++	area = &sb->free_area[order];
++	target = get_page_from_free_area(area, migratetype);
++	if (!target) {
++		/* Try to split a higher-order block within this SB */
++		for (order = src_order + 1; order < NR_PAGE_ORDERS; order++) {
++			area = &sb->free_area[order];
++			target = get_page_from_free_area(area, migratetype);
++			if (target)
++				break;
++		}
++	}
++
++	if (target)
++		page_del_and_expand(zone, target, src_order, order, migratetype);
++
++	spin_unlock_irq(&zone->lock);
++
++	if (!target)
++		return NULL;
++
++	prep_new_page(target, src_order, __GFP_MOVABLE | __GFP_COMP, 0);
++	set_page_refcounted(target);
++	return page_rmappable_folio(target);
++}
++
++static void free_spb_compaction_target(struct folio *folio,
++		unsigned long private)
++{
++	folio_put(folio);
++}
++
++/*
++ * compact_pageblock_in_spb - migrate pages from a partially-used pageblock
++ * into free space within the same superpageblock.
++ *
++ * Similar to evacuate_pageblock() but uses the within-SB allocator
++ * so pages stay inside the superpageblock being compacted.
++ */
++static void compact_pageblock_in_spb(struct superpageblock *sb,
++				    struct zone *zone,
++				    unsigned long start_pfn)
++{
++	unsigned long end_pfn = start_pfn + pageblock_nr_pages;
++	unsigned long pfn = start_pfn;
++	int nr_reclaimed;
++	int ret = 0;
++	struct compact_control cc = {
++		.nr_migratepages = 0,
++		.order = -1,
++		.zone = zone,
++		.mode = MIGRATE_SYNC_LIGHT,
++		.gfp_mask = GFP_HIGHUSER_MOVABLE,
++	};
++	struct spb_compaction_control scc = {
++		.sb = sb,
++		.zone = zone,
++	};
++
++	INIT_LIST_HEAD(&cc.migratepages);
++
++	while (pfn < end_pfn || !list_empty(&cc.migratepages)) {
++		if (list_empty(&cc.migratepages)) {
++			cc.nr_migratepages = 0;
++			cc.migrate_pfn = pfn;
++			ret = isolate_migratepages_range(&cc, pfn, end_pfn);
++			if (ret && ret != -EAGAIN)
++				break;
++			pfn = cc.migrate_pfn;
++			if (list_empty(&cc.migratepages))
++				break;
++		}
++
++		nr_reclaimed = reclaim_clean_pages_from_list(zone,
++							&cc.migratepages);
++		cc.nr_migratepages -= nr_reclaimed;
++
++		if (!list_empty(&cc.migratepages)) {
++			ret = migrate_pages(&cc.migratepages,
++					    alloc_spb_compaction_target,
++					    free_spb_compaction_target,
++					    (unsigned long)&scc, cc.mode,
++					    MR_COMPACTION, NULL);
++			if (ret) {
++				putback_movable_pages(&cc.migratepages);
++				break;
++			}
++		}
++
++		cond_resched();
++	}
++
++	if (!list_empty(&cc.migratepages))
++		putback_movable_pages(&cc.migratepages);
++}
++
++/**
++ * spb_defrag_clean - compact a clean superpageblock internally
++ * @sb: the clean superpageblock to compact
++ *
++ * Scan pageblocks in the superpageblock looking for partially-used ones.
++ * Skip fully free pageblocks and pageblocks recently marked unsuitable
++ * by the pageblock_skip bit; PCPBuddy-cached pages within an otherwise
++ * compactable pageblock are skipped per-page by isolate_migratepages_block().
++ * Migrate pages from the best candidate into free space within the same
++ * superpageblock.
++ */
++static void spb_defrag_clean(struct superpageblock *sb)
++{
++	unsigned long pfn, end_pfn, start_pfn, cursor;
++	struct zone *zone = sb->zone;
++	bool wrapped = false;
++
++	start_pfn = sb->start_pfn;
++	end_pfn = start_pfn + SUPERPAGEBLOCK_NR_PAGES;
++
++	cursor = sb->defrag_cursor;
++	if (cursor < start_pfn || cursor >= end_pfn) {
++		cursor = start_pfn;
++		spb_clear_skip_bits(sb);
++	}
++
++	pfn = cursor;
++
++	while (pfn < end_pfn) {
++		struct page *page;
++
++		if (spb_defrag_done(sb))
++			goto out;
++
++		if (!pfn_valid(pfn))
++			goto next;
++
++		if (!zone_spans_pfn(zone, pfn))
++			goto next;
++
++		page = pfn_to_page(pfn);
++
++		if (get_pfnblock_bit(page, pfn, PB_all_free))
++			goto next;
++
++		if (get_pageblock_skip(page))
++			goto next;
++
++		compact_pageblock_in_spb(sb, zone, pfn);
++next:
++		pfn += pageblock_nr_pages;
++		if (pfn >= end_pfn && !wrapped) {
++			spb_clear_skip_bits(sb);
++			pfn = start_pfn;
++			wrapped = true;
++		}
++		if (wrapped && pfn > cursor)
++			break;
  	}
- 
- 	/*
- 	 * Always kick a slab shrink after an evacuation pass — even when
--	 * movable evacuation succeeded. Slab content stranded inside
--	 * tainted SPBs can only be freed by shrinking the cache; doing
--	 * it now keeps headroom available for the next burst, when the
--	 * movable supply may have run out and movable evac alone would
--	 * have nothing to do.
-+	 * MOV evacuation succeeded. Slab content stranded inside tainted
-+	 * SPBs can only be freed by shrinking the cache; doing it now keeps
-+	 * headroom available for the next burst, when the MOV supply may
-+	 * have run out and evac alone would have nothing to do.
- 	 */
- 	queue_spb_slab_shrink(zone);
- 
-+	/*
-+	 * The tracepoint signature retains phase1_attempts / phase2_attempts
-+	 * for ABI continuity with existing observers; report the merged total
-+	 * in phase1_attempts and 0 in phase2_attempts.
-+	 */
- 	trace_spb_evacuate_for_order_done(zone, order, migratetype,
--			phase1_attempts, phase2_attempts, did_evacuate);
-+			attempts, 0, did_evacuate);
- 	return did_evacuate;
++out:
++	sb->defrag_cursor = pfn;
++}
++
++/**
++ * spb_defrag_superpageblock - defragment a superpageblock
++ * @sb: the superpageblock to defragment
++ *
++ * Dispatch to the appropriate defrag strategy based on superpageblock
++ * category: evacuate movable pages from tainted superpageblocks, or
++ * compact scattered free pages within clean superpageblocks.
++ */
++static void spb_defrag_superpageblock(struct superpageblock *sb)
++{
++	if (spb_get_category(sb) == SB_TAINTED)
++		spb_defrag_tainted(sb);
++	else
++		spb_defrag_clean(sb);
  }
- #endif /* CONFIG_COMPACTION */
+ 
+ static void spb_defrag_work_fn(struct work_struct *work)
+@@ -8357,10 +8636,12 @@ static void spb_defrag_irq_work_fn(struct irq_work *work)
+  * @sb: superpageblock whose counters just changed
+  *
+  * Called from counter update paths (under zone->lock). If the
+- * superpageblock is tainted and running low on free space, schedule
+- * irq_work to queue defrag work outside the allocator's lock context.
+- * The irq_work handler is set up by pageblock_evacuate_init();
+- * before that runs, defrag_irq_work.func is NULL and we skip.
++ * superpageblock needs defragmentation — either evacuation of movable
++ * pages from a tainted superpageblock, or internal compaction of a
++ * clean superpageblock — schedule irq_work to queue defrag work outside
++ * the allocator's lock context. The irq_work handler is set up by
++ * pageblock_evacuate_init(); before that runs, defrag_irq_work.func
++ * is NULL and we skip.
+  */
+ static void spb_maybe_start_defrag(struct superpageblock *sb)
+ {
 -- 
 2.52.0
 
