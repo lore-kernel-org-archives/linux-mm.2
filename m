@@ -4,126 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6B37FF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 16:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97ED3CD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 16:54:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D90F36B0095; Thu, 30 Apr 2026 12:54:20 -0400 (EDT)
+	id E2D836B0095; Thu, 30 Apr 2026 12:54:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D67F66B0096; Thu, 30 Apr 2026 12:54:20 -0400 (EDT)
+	id DDE4E6B0096; Thu, 30 Apr 2026 12:54:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7EBC6B0098; Thu, 30 Apr 2026 12:54:20 -0400 (EDT)
+	id CF4986B0098; Thu, 30 Apr 2026 12:54:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B5C926B0095
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:54:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A25C11C079A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:51:30 +0000 (UTC)
-X-FDA: 84715813140.25.79E9F0B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B251340012
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:51:28 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PBPkUyvL;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BDB756B0095
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:54:56 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 474D99CD87
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:33:05 +0000 (UTC)
+X-FDA: 84715766730.22.5EE6ED9
+Received: from mail-m824.xmail.ntesmail.com (mail-m824.xmail.ntesmail.com [156.224.82.4])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D1E9B180010
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:33:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf16.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.4 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777567888;
+	s=arc-20220608; t=1777566783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=579UMGbIG7AqF477ZfG9vyhpp+DUIN0yVnlw4O25dOw=;
-	b=t47WeSJLnL3Ly42pqMG7/MVIhsmJvZiX7jxfY+wJc6Rftszd0ESODuPHaPIRylpaPCuuoO
-	FJKaGoCxrezgcV5p53One12qXMrvHLqL6eIVNsaoqb/qrtEYo+w1Z+IA5Vk9rAByRMi6u/
-	lNu82M2tTF7M1WobZLyqOYibquwGl3s=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MEzbCdGX756P7RboKvO8XJtoxdnO14ut6z0JmIHqDII=;
+	b=IuMXQ6e+vMZev3xCqpg/WX+/FyvyQ05RXQRPghUr9PCZ041/DTUHtNKgQ49lPqE2NoFkBd
+	BPP06LFp+a0Im4uiwItcRHgUlLSufZx6NSSdCzvxdPoWXlRh95eTY2U9xGvMJ2MA+jw3qt
+	Urm9azcjGa8H7rC/+PBWtVXpH9pxdmY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PBPkUyvL;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777567888; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf16.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.4 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777566783; a=rsa-sha256;
 	cv=none;
-	b=XCd3ZiF/YAVHzNCrJjC17qKje8PCMHsFHkbYw0HSJvMXvcAHSgGwfWA42ezd1uN0u4tYNI
-	77BWhlSGJzSRZYzoU8bFBKxVi5DFuElMzdm9KWAqnWQMFgBk65Bz74zSOdI8o+ZEfqDEeN
-	e+M3xH8HZYkDE2I8X0lrilvhNmRfPwQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 122F76014C;
-	Thu, 30 Apr 2026 16:51:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14194C2BCB3;
-	Thu, 30 Apr 2026 16:51:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777567887;
-	bh=/g7iUC9W4a+mffEw3evLoqTN1V514LaQU/s16UD5sPc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PBPkUyvLYR756gEO2WpuJW9zXVKKNA3SRFPhNqgJFaSnVEWbwi3KrDXlwwT0KPh+k
-	 o7tyQSjw2kZ1lVN3NIV+tJF2Sdxtw/F7963iCG+j67W4Eyw3qJrmbnSC4t++6DP6gj
-	 W2xKsZuBKYNKG/hgkhml1CXyHADyNsH0v83vnx/BSFz5BVNwnVgMxnxdawQGjIrIRF
-	 rk4DJU4nQZVoJwn0m7Zq7EsU+PxwY7xnbhSspw0S4DfZtzeen9iUsBuD4HYqPq+trR
-	 IDGtWsH1wN15fhlh4stwU+V8CKqKONrEkogSOtZ16VO27MUk6YCdDfFc2Yif3UjBTp
-	 wJuPBvIcUY3Zg==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3BA3EF4007B;
-	Thu, 30 Apr 2026 12:51:26 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 30 Apr 2026 12:51:26 -0400
-X-ME-Sender: <xms:jojzaU-mFio1b7NAEO1SjmmVALuvKJecJDxtthHhA11m2dS3RcyuZQ>
-    <xme:jojzaaVUmTThplgMRevXK_ENjGL9SWnFSahk8zrA4wjQL4iL7itwy9GLrdXhUK0uh
-    Vs0g8h19xty30eOs7jZEi_wyfbgUlGIiOiqhqsDmPh86tdZlei4DQc>
-X-ME-Received: <xmr:jojzafkN6JwnZ24-eM9ny6rsxX2a9snWBRih4qEUNnAj-SQms3NobFHrrPRdIA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekjeekhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
-    dtvdenucfhrhhomhepmfhirhihlhcuufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgv
-    lhdrohhrgheqnecuggftrfgrthhtvghrnhepgeetuedtjefhkeeuiefgudduvdfgvdeiue
-    eigeehheehudetuedtkeelhfeihedunecuffhomhgrihhnpehsrghshhhikhhordguvghv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepgeeipdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
-    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
-    peiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:jojzaYG8xNEfH5VrYQyYe3VXnfi_k3Q1yVPJ_O6RjrSWzXfBP9xJkA>
-    <xmx:jojzaYR4WNsnfR3Cc5nJwWWchsmrv3qTNGN364ozZeUd4aXQZMoJBQ>
-    <xmx:jojzaXQEaTRs3ODUIa8fiT_z0FgxE82Tol7wHHeOG19Z-Xo9DgweQA>
-    <xmx:jojzaeervxLiCfO1LPq2TicKubhmUq3jHKqkA4Vn1u0T0u-_yt9LHw>
-    <xmx:jojzaeDNWkAfBqpy4DpdvZlSxRtlbwS3CzZwWpzXDDjBiKzXmIgbPV7O>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Apr 2026 12:51:25 -0400 (EDT)
-Date: Thu, 30 Apr 2026 17:51:24 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org
-Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
-	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kvm@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 09/14] mm/userfaultfd: add RWP fault delivery and expose
- UFFDIO_REGISTER_MODE_RWP
-Message-ID: <afOH-MzZVT8Kuk-6@thinkstation>
-References: <20260427114607.4068647-1-kas@kernel.org>
- <20260427114607.4068647-10-kas@kernel.org>
+	b=KdC13bnyX0kxStDOgAXcZHM7ygZWYEM7rOSaS/NwilhCPMDR4mifQsbnHEPyGNc5QtC/kB
+	+fypqJ6Iq1L8QrmvkOlxueAoRhwxKz/r12M4fpSN/CYrESoasI8mBSu8dzBxIDHUfaCuA/
+	UEbThhYwEGeO/woAN3qbeMk5HIe4v3s=
+Received: from localhost.localdomain (unknown [IPV6:2409:8a20:e24:8c24:8810:8f74:8c26:2])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 199a96d4f;
+	Fri, 1 May 2026 00:32:59 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>
+Subject: [PATCH v4 1/3] mm/page_owner: add print_mode filter
+Date: Fri,  1 May 2026 00:32:45 +0800
+Message-Id: <20260430163247.13628-2-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20260430163247.13628-1-zhen.ni@easystack.cn>
+References: <20260430163247.13628-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427114607.4068647-10-kas@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ddf3c86c00229kunm7d32d45d8a83
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDThlMVkwaGR1KGBhKSRpLGVYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJT0tCQUMaSUtBHklPQUMYSU9BQ0NKS0FDHUxPQUMYSU
+	1BSVlXWRYaDxIVHRRZQVlPS0hVSktJT09PSFVKS0tVSkJLS1kG
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B251340012
-X-Stat-Signature: gdb8gxjc9n6gtzaur8hcxx7189o5c4h1
-X-HE-Tag: 1777567888-89687
-X-HE-Meta: U2FsdGVkX1/vPOcjIu7LcnY5cSlN4GKAwavrzGPOQrhojCcm5tg7VyIb+Ai3KUmBFtHvjiTHs+F06m1gthsKpbkcGSGeBjWWMq1r9ZUxCbGuZsyxCetVieB6+/4/JK42SkzlxhyggkQIoWpkho3/KvHI1hwFReuxjtXlAz3q8NcqiBRZsT0rUcugqIetMfQzTn5vrZs6ZdmWggdHelPLpFrc2/maWaFypC7w2YFzgSQ929MpD2W48RYyM34eQ/f/4LzeiwtQ5jtl0w3R4Dqg1uI8VEmWVcO+NDSLTY3S6XWISUVrxaImGInUUrHwYmzP2WT0q7bLCJq5OpX3aofe/3uRu0s8/AIOWJpT2ugBZjFzLyh/5TFz+2xrs0oXRtmLuQW1UdnhXsibr+YGJbZ0npwLuUkqDUwRGZtG5Ng6YToDQJ9GR/HhHe8OT1MtwO8naPv9Lwa/1/1gdagMfjm9YhW8aDm/ngUTJn/gKgMO3BmZ07Cw69nSOgZPqewvZQNyFaf3T9W+iemUzwoVElT07FlU7BAMh/ExslbsDUkbOisT4EtZecUhrI0aeP8UDgf+tgQDMb+x/tobPmUV7Vd2h94ZdTU9v1CskOSvqPv4f18y3yuQCIcODvycD2dJA0wun2WlUpyS+p/OTljt5vuelRHCHhpG0JSdtNopFwv7wiTvKLSnVZ3gv2EAU2eD9oEN/dvHPKUC8fhRqrfCRVuoumo8OUiWnvIJH3Yxk45iV8zD3TE3irXZttP3xguP+sbR7yV4SaqfrjC8OEFyYgaOKrHninVLu5dFzfTBmeQarNWsSbcgd81/n47mJ1HqGDV0GnEJlw17Q8BCGt3GRVrYl8mcSFBxFXrBG0DO2YEJo1jrTi7YXpI1gCoG5bOAMj7QsMrue4SmtXuY2ee5ANxKpOVANjzr9TtDVvNQu6WW17k29W+wVLKX9GuF175TQoopsZ9cKhquKlHc0zupRk2
- 6HKF0nTI
- XYGRaJ6e1D+MMrWRsvS8DajBCD+TVXz6i+7fzeZVBwo2vafmacTrfnMyYFpme/OWbvZr5qqYB6HsFXKRWZ2b++qaxL6Cy3L4+QntV40kb3clu+lrfMzALZ0sEBb+BpapaDfGcEmRpeWa+8Iqb8n0GRwZsb+JaPOztac7Q8TIBFXfr7GCJr1LltvwNAhrFAaXtrs5onfAAfp8Cb9BxLQZxJP1XXtGXNEE7WISFr2Hwa7Fra4vYJmzc/c1PBbrPAioqXK9UpYvB3T80mxC776j3SblfJ0NxWQPx+lZjGxDqqf1KjDhQKDJfSIaiDIHuobGNcjgMP9Db0NzFcpVUDP6zvsw+DPlJYXwWXDjVAwVQ7/3CEhOS42+EJn0qMAllwVRxwE9bFPUf5/25No9HuC3zWnmyFQ==
+X-Rspamd-Queue-Id: D1E9B180010
+X-Stat-Signature: feh7aifye3eezuyoixqj9j4ejyr53g4u
+X-HE-Tag: 1777566782-626094
+X-HE-Meta: U2FsdGVkX19KTU8dcNHhMP3+1Ftceg4aqFEc6HKg7LVB+5Kpu5VEe1axw2xOWmtKa8r3axr2b4gEa7MHfVaGyE5IX106vU0jTqyOBA0JuCaftnk6F9bALmGvkF1f7V2FVXNiCfobOlzZtGUfdmk4H8XhP2OWQbg823Ei/iCAS0PkSyxonRoN7WhFpe/WM4B7SLvJJkW1Vgx+zpPaN0Mgzwdewx9GcBaHZMNRUi+fno1d79akdQlWGsV71lvYNk6mksvYJ0lIuB5WZl+uVA+BdEUGyXzTVh31dPvwNLrwcBddisCi4bduucO/TnJL5+wBsiBIM026jAMIzwJFR/jOBQFab8s9dJ4Fkv79GxtoXb0RNHqbO+3wjOTbKQmyVb9f4D1JIXWxgsDuBGrT8wXeRHyIn9P5qjKm5xIOD7W15y49AdIFTHRI1w2AgCIgBPl7n9VvnSdZgWjndfFRp15qAuxo1gwvK8OIP0q7mQBd658LWr4CLAShX6KobZQumFfdCxrFwby5dm51FaCa+OOzWzTfgRKpL/YtKICQ7mYH4ktb9046G5BQsiYUTSOk75MKBZMM7z11bf9Oap0Xm77cPyJ0AesZ9xgofaFrHHYCE5iXGVj6F5ck/rXTZadPrZPnGZYJJx0N74WlwKkS76JLKjY0Ipvy5djlYwBB7Rpsa1lHGI69gBhiMYgzPPFRD1MXFB8d2PA3x/FlXMaz1CBaWKjH1+hHTC9d2Plze01y6rh8JoFQVg4MSJu1+n908OH+yXMY9+q6Mem7wWsdQZwf0CEhAb0KY6Y4Fj9Q5Q19i+rt9RIgwAcc1Quf8ZrxiwNtUm5GKbX5hOrkizOaCCpiuj9mlC32oSYHWQzV6d0h2yxpZzeDhduVBxF24d6KbmzNV7SbdmIxCscZee1RSFWinqMUtZbZOrS+waQNwumH9EQUI3HIJ5v20i8CLfDq19dAaZJcCVv1P3rVAujWJ77
+ ddSRLJUN
+ IdsSnjl9aMTXEf34n7TBSsYW0rxwZrTKtQprfjHUlQnuXNFwTnY77XJs1lCxMA1ZdT5OiFLrNl/WTXCztzDLE4VbJMYfV8/M0vL/e3s2f14OlnozIRhnCnYc+3o27UHl9RwPpoFjrBARvvyfujiz7Fn54ZlIBkjIsluqP/aboadtbb3c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,33 +91,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sashiko.dev -- https://sashiko.dev/#/patchset/20260427114607.4068647-1-kas@kernel.org -- wrote:
-> Does this code lose the RWP read protection after a page is swapped out
-> and back in?
-> [ ... ]
-> The restored PTE will be PROT_READ with the uffd bit set, instead of
-> PROT_NONE. Will this silently allow subsequent read accesses to succeed
-> without triggering the required RWP userfault?
+Add a print_mode filter to page_owner that allows users to choose between
+printing full stack traces or only stack handles, significantly reducing
+output size for debugging and analysis.
 
-The PROT_NONE restoration on swap-in is performed two commits earlier,
-in patch 6/14 "mm: preserve RWP marker across PTE rewrites", which
-adds to do_swap_page():
+The filter provides a string-based interface under
+/sys/kernel/debug/page_owner_filter/:
+- Reading shows the current mode with [] brackets around active option
+- Writing accepts "full_stack" or "stack_handle" strings
 
-        if (pte_swp_uffd(vmf->orig_pte) && userfaultfd_rwp(vma))
-                pte = pte_modify(pte, PAGE_NONE);
+The default full_stack mode maintains backward compatibility with existing
+usage, displaying complete stack traces for each page allocation.
 
-so a swapped-in RWP page comes back as PAGE_NONE | _PAGE_UFFD, not
-PROT_READ | _PAGE_UFFD. The same patch covers unuse_pte() (the
-swapoff(2) path), restore_exclusive_pte(), and the migration-entry
-resolvers; each gates on userfaultfd_rwp(vma) and the swap-pte uffd
-bit before re-applying PAGE_NONE.
+The stack_handle mode dramatically reduces log size by showing only
+the handle number instead of the full stack trace. The mapping from
+handles to actual stack traces can be obtained via the
+show_stacks_handles interface.
 
-> Can this sequence cause a state collision between RWP and NUMA-hinted
-> UFFD_WP pages?
-> If a VMA has both VM_UFFD_WP and VM_UFFD_RWP enabled, [ ... ]
+Example usage:
+  # echo stack_handle > /sys/kernel/debug/page_owner_filter/print_mode
+  # cat /sys/kernel/debug/page_owner_filter/print_mode
+  full_stack [stack_handle]
+  # cat /sys/kernel/debug/page_owner
+  Page allocated via order 0, migratetype Unmovable, gfp_mask 0x1100ca,
+  pid 1, tgid 1 (systemd), ts 123456789 ns
+  PFN 0x1000 type Unmovable Block 1 type Unmovable
+  Flags 0x3fffe800000084(referenced|lru|active|private|node=0|zone=1)
+  handle: 17432583
+  ...
 
-No. VM_UFFD_WP and VM_UFFD_RWP are mutually exclusive.
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
 
+Changes in v4:
+- Change from numeric (0/1) to string-based interface ("full_stack"/"stack_handle")
+- Merge infrastructure patch into this patch
+
+Changes in v3:
+- No code changes
+
+Changes in v2:
+- Renamed from 'compact mode' to 'print_mode' for better clarity
+- Use enum values (0=full_stack, 1=stack_handle) instead of boolean
+- Update debugfs filename from 'compact' to 'print_mode'
+---
+ mm/page_owner.c | 93 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 91 insertions(+), 2 deletions(-)
+
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index 8178e0be557f..28766c854d02 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/debugfs.h>
++#include <linux/fs.h>
+ #include <linux/mm.h>
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
+@@ -54,6 +55,24 @@ struct stack_print_ctx {
+ 	u8 flags;
+ };
+ 
++enum page_owner_print_mode {
++	PAGE_OWNER_PRINT_FULL_STACK,
++	PAGE_OWNER_PRINT_STACK_HANDLE,
++};
++
++static const char * const page_owner_print_mode_strings[] = {
++	[PAGE_OWNER_PRINT_FULL_STACK]	= "full_stack",
++	[PAGE_OWNER_PRINT_STACK_HANDLE]	= "stack_handle",
++};
++
++struct page_owner_filter {
++	enum page_owner_print_mode print_mode;
++};
++
++static struct page_owner_filter owner_filter = {
++	.print_mode = PAGE_OWNER_PRINT_FULL_STACK,
++};
++
+ static bool page_owner_enabled __initdata;
+ DEFINE_STATIC_KEY_FALSE(page_owner_inited);
+ 
+@@ -575,7 +594,11 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
+ 			migratetype_names[pageblock_mt],
+ 			&page->flags);
+ 
+-	ret += stack_depot_snprint(handle, kbuf + ret, count - ret, 0);
++	if (READ_ONCE(owner_filter.print_mode) == PAGE_OWNER_PRINT_STACK_HANDLE) {
++		ret += scnprintf(kbuf + ret, count - ret,
++				"handle: %d\n", handle);
++	} else
++		ret += stack_depot_snprint(handle, kbuf + ret, count - ret, 0);
+ 	if (ret >= count)
+ 		goto err;
+ 
+@@ -970,10 +993,71 @@ static int page_owner_threshold_set(void *data, u64 val)
+ DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
+ 			&page_owner_threshold_set, "%llu");
+ 
++static ssize_t print_mode_read(struct file *file, char __user *buf,
++				size_t count, loff_t *ppos)
++{
++	const char *output;
++	int mode;
++
++	mode = READ_ONCE(owner_filter.print_mode);
++
++	if (mode == PAGE_OWNER_PRINT_FULL_STACK)
++		output = "[full_stack] stack_handle\n";
++	else
++		output = "full_stack [stack_handle]\n";
++
++	return simple_read_from_buffer(buf, count, ppos, output, strlen(output));
++}
++
++static ssize_t print_mode_write(struct file *file,
++				 const char __user *buf,
++				 size_t count, loff_t *ppos)
++{
++	char *kbuf;
++	int mode;
++	int ret = count;
++
++	/*
++	 * Limit input size. Maximum valid input is "stack_handle" (12 chars)
++	 * plus newline and null terminator. Use 32 bytes as a reasonable limit.
++	 */
++	if (count > 32)
++		return -EINVAL;
++
++	kbuf = kmalloc(count + 1, GFP_KERNEL);
++	if (!kbuf)
++		return -ENOMEM;
++
++	if (strncpy_from_user(kbuf, buf, count) < 0) {
++		ret = -EFAULT;
++		goto out_free;
++	}
++	kbuf[count] = '\0';
++
++	mode = sysfs_match_string(page_owner_print_mode_strings, kbuf);
++	if (mode < 0) {
++		ret = -EINVAL;
++		goto out_free;
++	}
++
++	WRITE_ONCE(owner_filter.print_mode, mode);
++
++out_free:
++	kfree(kbuf);
++	return ret;
++}
++
++static const struct file_operations page_owner_print_mode_fops = {
++	.owner = THIS_MODULE,
++	.read = print_mode_read,
++	.write = print_mode_write,
++	.llseek = default_llseek,
++};
++
+ 
+ static int __init pageowner_init(void)
+ {
+-	struct dentry *dir;
++	struct dentry *dir, *filter_dir;
+ 
+ 	if (!static_branch_unlikely(&page_owner_inited)) {
+ 		pr_info("page_owner is disabled\n");
+@@ -981,6 +1065,11 @@ static int __init pageowner_init(void)
+ 	}
+ 
+ 	debugfs_create_file("page_owner", 0400, NULL, NULL, &page_owner_fops);
++
++	filter_dir = debugfs_create_dir("page_owner_filter", NULL);
++	debugfs_create_file("print_mode", 0600, filter_dir, NULL,
++			    &page_owner_print_mode_fops);
++
+ 	dir = debugfs_create_dir("page_owner_stacks", NULL);
+ 	debugfs_create_file("show_stacks", 0400, dir,
+ 			    (void *)(STACK_PRINT_FLAG_STACK |
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.20.1
+
 
