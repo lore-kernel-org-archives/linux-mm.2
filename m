@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36140CD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 16:30:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA90DCD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 16:32:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C34E6B008A; Thu, 30 Apr 2026 12:30:45 -0400 (EDT)
+	id 4200C6B008A; Thu, 30 Apr 2026 12:32:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94D556B008C; Thu, 30 Apr 2026 12:30:45 -0400 (EDT)
+	id 3D0E36B008C; Thu, 30 Apr 2026 12:32:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 814756B0092; Thu, 30 Apr 2026 12:30:45 -0400 (EDT)
+	id 299E76B0092; Thu, 30 Apr 2026 12:32:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BAAC6B008A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:30:45 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE6701C5763
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 15:27:22 +0000 (UTC)
-X-FDA: 84715601124.09.017CEA7
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BEE8918000F
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 15:27:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="VqMUURJ/";
-	spf=none (imf16.hostedemail.com: domain of BATV+5ec78513b6b6b6d3d471+8285+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+5ec78513b6b6b6d3d471+8285+infradead.org+dwmw2@desiato.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1653C6B008A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:32:08 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54D6CA439C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:23:50 +0000 (UTC)
+X-FDA: 84715743420.07.5F39B7A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5E00A40006
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:23:48 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Cj+Ilerd;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777562840;
+	s=arc-20220608; t=1777566228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lGigii9T1gEAttAYkjY0LCxvxQwQ0NizWdRhtvGGHf0=;
-	b=3Wu5Z6H4xG7428m6ZqxWvYgapBANixaaD7spVAhKn49MTsy1f8SBdPoRg7z6l5UDs1Tb1n
-	AEej2n50OEKd5noUVQ8bKxQsH2JZoSoOGFPA36G0RJAXahZBPdOm3+o1Zx0wcIA4IQmpkF
-	fLQ4PQ8wuW7X0E4icawwXZIEoIaD7/4=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=YiDwcJ00dtQ6mIh9BKiKfaGTwik8aRgvQQC7NcuF9h0=;
+	b=rXQgmSh1Pkiv4v+SDo6dwCle/Z+va5sIPeS9mDxeLwpF22QoTKbmROXLN7boxmK9ICK/VR
+	J9tYXUZh/O5Ki8cb0qPliymV3YdkSz2PRxX8o6f2NfexJcSOs6emoqM7eosTdOEYmAvljJ
+	1DiG1HPBZecerPn1ynHOhKtFri1b1iA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="VqMUURJ/";
-	spf=none (imf16.hostedemail.com: domain of BATV+5ec78513b6b6b6d3d471+8285+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+5ec78513b6b6b6d3d471+8285+infradead.org+dwmw2@desiato.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777562840; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Cj+Ilerd;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777566228; a=rsa-sha256;
 	cv=none;
-	b=XWkTaHR0/wCbxkkayatIjBKJ45BNvY0g8nRFoy6c1vAb1TOCJAEuK0YZSqZmj8ul4hLx7H
-	rJ3s7pkgdaFNgjJGt7DxxTdlNvI690fw0fhNn6uNHQiLQ6xYnwxus5c7JZCP6Ve4iCTnVx
-	GFBlAoJqiN/7o1DmlNGiISSs6JID7Nc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=lGigii9T1gEAttAYkjY0LCxvxQwQ0NizWdRhtvGGHf0=; b=VqMUURJ/3wIXTvDuQIQ4cEFE6c
-	Ax5uHTc8jSj8p2xqqeyjK5in2X07Z2+ApIRnHVug6Tdad3dfm6gCmeZzPB6HSUjKW7r3Kxf7xhvXq
-	YqHUK7r/JIWuEpHHiEcp8VDUrrSzyUbVLfBK9nPFAtWu0et6KSq6kkMEiGqZqwroROnCijz0vGXPY
-	oLiK1VidbETT1wnDezcclvQiqzAYN4kOYlxLEJJgEqoSn1N5lPTHnZGEQ0IPkh3arvUyQtKS/HwQc
-	ZZGn9u0RrdrqdyA/xbZLg6SRHK2vZXJYSv5aZe6yvuHBgZd7cAIYxV6DItpowLQtQtr8mDU5cxb4E
-	KIUu6s7w==;
-Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wITIF-00000007eQC-3sAc;
-	Thu, 30 Apr 2026 15:27:12 +0000
-Message-ID: <c004f333ed4f7dedae1383f22d43b009cd83837e.camel@infradead.org>
-Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
- Live Update
-From: David Woodhouse <dwmw2@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, Pasha Tatashin
-	 <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	kvmarm@lists.linux.dev
-Cc: rppt@kernel.org, graf@amazon.com, pratyush@kernel.org,
- seanjc@google.com,  maz@kernel.org, oupton@kernel.org,
- alex.williamson@redhat.com,  kevin.tian@intel.com, rientjes@google.com,
- Tycho.Andersen@amd.com,  anthony.yznaga@oracle.com,
- baolu.lu@linux.intel.com, david@kernel.org,  dmatlack@google.com,
- mheyne@amazon.de, jgowans@amazon.com, jgg@nvidia.com, 
- pankaj.gupta.linux@gmail.com, kpraveen.lkml@gmail.com, vipinsh@google.com, 
- vannapurve@google.com, corbet@lwn.net, loeser@linux.microsoft.com,
- tglx@kernel.org,  mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org,  hpa@zytor.com,
- roman.gushchin@linux.dev, akpm@linux-foundation.org, pjt@google.com
-Date: Thu, 30 Apr 2026 16:27:11 +0100
-In-Reply-To: <0a71472c-b397-4699-a518-61faffcf4ab2@redhat.com>
-References: <afEwWZksU0Fw61oT@plex>
-	 <0a71472c-b397-4699-a518-61faffcf4ab2@redhat.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-Q5uU99FSerI7+XMdGTFU"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+	b=sprwRvpBJHtxh0Eudngarkt2/Rdzx3eGZXGVe/M8DB/omeSOOiuyx/SYBnAYnSvsUjO0GH
+	ZmUUKW+s/HlQucdpPvVbxvQ5nWvAtcGZhX7o9tms9qWG4WehI/Srf6vChTcoD2oaREpaO5
+	g5ybCgpml7N0ZH+uk/bA94n5E2pVGzg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777566228; x=1809102228;
+  h=date:from:to:cc:subject:message-id;
+  bh=/Envm9+e5kYYnRUqkd87+vgvT88RN/ckGQ6J/wj4tRo=;
+  b=Cj+IlerdZqk6bLQ7XyasblJKNTnUQfbATHgTnNSoZNaRAulcsu1iznP4
+   c2w17FbjUtifSDNY/afRg7l7RT3o+5nK1yknwYGpaiOv/OlLXEohtK3Yr
+   zfm5/XNFwQh3g+SSuUY+R2BcpJX3ig35H5dkxOimNQYfogq+1IDzaCXRH
+   bmeNxdl/MkUpWEtxirXQcarkHB647Q+YfdUzlhh5NBDxb1kRplMWffnBJ
+   KJw6uv2A+gUP4fZUqrkqH8/XO9ZgYQA7BDzxIUifoaQr6HPcmU71hJY5m
+   h1c/UNWIokL9aCL+Q0GC4a3s/xEhvRbfaLMe7lAtT41tKRTSvaMDGOGgZ
+   w==;
+X-CSE-ConnectionGUID: upJSUgIcQ2+EkumKjWMqfw==
+X-CSE-MsgGUID: GI5nY1elR7Cci00XEqtr5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="77689596"
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="77689596"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 09:23:46 -0700
+X-CSE-ConnectionGUID: dMMcd4c6S7KpRS93v5eHmA==
+X-CSE-MsgGUID: 4p6spdw+RD+RpRrR4B53wA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="231501709"
+Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 30 Apr 2026 09:23:45 -0700
+Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wIUAx-00000000CdE-0bBd;
+	Thu, 30 Apr 2026 16:23:43 +0000
+Date: Fri, 01 May 2026 00:23:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Subject: [rppt-memblock:fixes] BUILD SUCCESS
+ afd218bb1dd8b4d2ba99a84cfa71524da6dbab35
+Message-ID: <202605010013.tr00OPkR-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BEE8918000F
+X-Rspamd-Queue-Id: 5E00A40006
 X-Rspamd-Server: rspam06
-X-Stat-Signature: wheykw48tyh8oijpju19rf7oem75bsdn
-X-HE-Tag: 1777562838-665762
-X-HE-Meta: U2FsdGVkX18NhOldoAjv+HHf1Zbm3BlixW07XnVkBoZBAGVLE3btevrI3g9uqFMQso95NLgKPq8ssPj7kM9IEtF7DLa50YnFVrX2mpMTUR1in/azg10sGyC3R9SSx7E/N//L9cy8h6N51umCcfjY2c/6owP3hWMCMZPjRZEhAYqHtNUvZiEbe3PCLQFKhK3AvY9oVioXVDv/mU9YAxGgdlE32pUyBbdEI0O4SGsp2uCbgE+7EHiVfk47HJSDEB/FDIxTVIx4jQ53MpaScQWZuK2Uw94DIIQpNHq4uTRnbt0lLUKTEdDGAwy+5NPey8saWhtjYJwFn0rXWf1r7YyjWiTT7Gs8LPRmUZIVBe1Fj69RBvYK9O5cyft1dAxVZ7XKJNT+wRqMp/0eqnn/DiNmU3OsY9Nrp/GgWvh0JWRjAaeCMpvgQGUAjN8qy4i4d/LzdVRerCLVpJswQho95vj5nUbGX57sjwRH+zIaZNFTeSseWRn8QcLWRF0JpXkPpmZNThmmLQ8fKUM1CYqy96wRB2iU1qvvCsz+sKcNM0+c/sLC2cVzva/ReXDUa9ev7v4Cw4HJcJfu1LGyCcw8cY+SozAQDym1kPbR+nGGnzhly0u1UGMAVC1LK/Ivz4CsaTUUiGgKFvnJBXozbuGuNdDSaP2GoGHFdkTGK4JNVusB3OsLASX5pt1SzcQdjdjaBDYrKjyJ+SDghRRJ3sIuRhz740neEsKDoGLP1c5D24Gi3yMRXmtyQ7lMqpm3tgAFN8SyZWSmKvxp4Stti9bDao0tKVx58mTDWd0/9zXlNZAqD6dPYxk3faKbupT8jgnDb2ax5+Ul1MKuIHBiyJZ5uGMy8wtwk9xZYqWdAuCRxf5A5vZsU3VoHQz6Leols1qWt91VX6NYSSmNU749pXvD2zJ9BeR2F7FNtc0syQ0uDS8eH7D+QxB5LrKqphUoXPKni6UzDXRMyyN5tfGj+v5Rxtx
- /siXUs9r
- DBznkQ/7Cce/I6ipNmNpEf07IFeMUOD384TZdQWJNLtKf2e+a28O4XZlZT3o/g1fjp6Sx7Sig1UDk1esKKCAXTdz1vP8YAvrxUQsHzkCtOUho1nqdHBa7d4pr8UGlQC745kds2s8O4LmZWjJsSq2rsHS+iholM/9YTjAVd3SCh0eYt9fm2OeekZ7unTAAMQuvis45t1m2u0Qg08OJI8To8p9BfyXTmXowH6n/K2qtSUh4yLiseXA0oAoblN88nQBxFcL3FKxYCrsYGjoUuNtxvcE1qql7WGKJNo4iLT0Gr1xMdAEhRtmdQP5y3MwIwSsnb0Mkigvd3TEO9/A91kUHe7ZhSRE1nX+crTdYIStwxXqCctWHZeB57EdWffaneFan+wjO2zgf04VeOLG32qjpGdwD9aItQX+YIrz4dw9lihzGvjHcj+Nkl1wl2Y6ZWAwThlO6kx3RQGtgF2v2cA70UcfACCI28s2MXHkJQu5QYzRpSivKuMfQ49rxFoPNQbnHhBsllbPHDlI9BVDD8QjdmHM+lIqttSVnU8CazRAa7a/dovQnybp2N1OF6b39Rtrt9pYNWH8img75XlbpUDUQh0aWsqP64LEAc/+/pfxZqX/4KaQTcIAwWqv2G4OaIGvLnGoUdu82driZfBoe0ZCKWChjxsCCp0001ELw5yLl1vknvscC/wKbzLpeHXkWy7oESIW2MSKmRPJlyhD2Vqir5KkD5esxZsk48LFoDseIHR2F4JhHOGvg3Tx7TA==
+X-Stat-Signature: ai87ws3fuk7enyinsxd89g43szifioeg
+X-HE-Tag: 1777566228-510587
+X-HE-Meta: U2FsdGVkX1+2G29bJlzcRo05P8CznvbgAwRZ/HS6sF3uVRDpde9YqHn2N5LmzI2xM2y83KKCAL3R46bXZ/CVcZ/+tgHaRDabf22ljetBu7WPVlPIwAej+oqVa/MD9iIbiPJhl9jiYpYGJ5VSXyHvSShHaYMeq05vtItkKs2GYR7BcidTv5nLFIEF0Z3uWEQOOgVZ+ts6ZG33JTJYRhyauQJolR1ImIKEdq9jMLFuZokymmwHKcycFVdyDUpuT7YY+dKr75wolLCTwXWWJOC0asDoryKm+XW1yUAG9TawlG1QhgqJbvSCosTlvXiwId5MYzCuYc3jl2uyHG4uS4T0CgKdZQFxdoTviGKifDR8u/h4CHz/P3EJXQdla1TrCROWJZ783eARfMU4+wc9PVNYsPM9SklpgsCgm88C/8/2NtODV0dRB9igHlWMe6h0wnh4mrzHC+IdH4mHJHgJA1f/QAtwi0ZmBlkpE6xPvK/kFgM9sBaLArANIsBAFoPB2Go3E2qisCMer+gGVPl2tzg+uR6By8d+rqbdztxehuYwIZxyBHHG55p9VOh4nFzk6dKyOp901pgnC+vWSIrsIpV7vU8PhZIXNduADoZgUxb+qyntOdG7M+0jttAnEOeim4knvE4ETAylAkb13Y6VGzUHXfKtj6PasTzPBsOGREVcl+hn6tE6EDDR90SYKOFDB4jD0MZhezX97VB8cXzUtfyvoU7q7WZfIC7cv6Z/TNVMSX/y5GmLJaMmEOfK6iq72x5oFq0aQ0M+cEXD7i2E2jVSn57eohWt8YJPvjBCJwuN6Oz69+53Fe9sCXcVNrePljrdYTbdbwYtvPGLj3HxNaR6Yb9QzLZc35BuffM+nmtGB9aa42Rzv9Q7DksbhXdBUrZjGyLYB0ItUZlx5hToOkMzW6LbPrkIpMUH/DMVa27csCQGA8q1aCCfeae7EL/QaX9Ggi14+KwYubdrhgTkKMt
+ 5QRh8+Ia
+ Uf6B/TUxtCuPWoI96WaXhfpfri4YRDGzAA9IUPD+ocYCuYzbcvt1dB1n/Ehx9MXbetDqC5Yo4FqQXkjCJEgwkrzpSxaWj+dY7FDUmznhR+smSV9pXIwcUB2qkon+xmKrQkeeqIf+OrBYCGl5bzCamrSLd2Cv8sajrfmMX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,139 +100,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
+branch HEAD: afd218bb1dd8b4d2ba99a84cfa71524da6dbab35  mm/fake-numa: fix under-allocation detection in uniform split
 
---=-Q5uU99FSerI7+XMdGTFU
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+elapsed time: 8625m
 
-On Thu, 2026-04-30 at 15:28 +0200, Paolo Bonzini wrote:
-> I even wonder if, for long term simplicity, the interface for=20
-> host->caretaker should be just for the caretaker to swallow the host=20
-> into non-root mode, again as in Arm nVHE.=C2=A0
+configs tested: 162
+configs skipped: 1
 
-There's a lot of merit in that approach.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I talked about wanting to use this 'caretaker' for secret hiding.  But
-why have *voluntary* secret hiding with the kernel hiding things from
-its own address space, when you have have *mandatory* secret hiding
-with something running in EL2, like pKVM. Or the Nitro Isolation Engine
-which adds formal proof of correctness on top and is designed to allow
-for live update of both itself *and* the kernel it hosts.
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    clang-16
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    clang-23
+arc                                 defconfig    gcc-15.2.0
+arc                            randconfig-001    gcc-8.5.0
+arc                   randconfig-001-20260430    gcc-8.5.0
+arc                            randconfig-002    gcc-8.5.0
+arc                   randconfig-002-20260430    gcc-8.5.0
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    clang-16
+arm                                 defconfig    gcc-15.2.0
+arm                            randconfig-001    gcc-8.5.0
+arm                   randconfig-001-20260430    gcc-8.5.0
+arm                            randconfig-002    gcc-8.5.0
+arm                   randconfig-002-20260430    gcc-8.5.0
+arm                            randconfig-003    gcc-8.5.0
+arm                   randconfig-003-20260430    gcc-8.5.0
+arm                            randconfig-004    gcc-8.5.0
+arm                   randconfig-004-20260430    gcc-8.5.0
+arm64                            allmodconfig    clang-23
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260430    clang-23
+arm64                 randconfig-002-20260430    clang-23
+arm64                 randconfig-003-20260430    clang-23
+arm64                 randconfig-004-20260430    clang-23
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260430    clang-23
+csky                  randconfig-002-20260430    clang-23
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260430    gcc-14.3.0
+hexagon               randconfig-002-20260430    gcc-14.3.0
+i386                             allmodconfig    clang-20
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    clang-20
+i386        buildonly-randconfig-001-20260430    gcc-14
+i386        buildonly-randconfig-002-20260430    gcc-14
+i386        buildonly-randconfig-003-20260430    gcc-14
+i386        buildonly-randconfig-004-20260430    gcc-14
+i386        buildonly-randconfig-005-20260430    gcc-14
+i386        buildonly-randconfig-006-20260430    gcc-14
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260430    clang-20
+i386                  randconfig-002-20260430    clang-20
+i386                  randconfig-003-20260430    clang-20
+i386                  randconfig-004-20260430    clang-20
+i386                  randconfig-005-20260430    clang-20
+i386                  randconfig-006-20260430    clang-20
+i386                  randconfig-007-20260430    clang-20
+i386                  randconfig-011-20260430    clang-20
+i386                  randconfig-012-20260430    clang-20
+i386                  randconfig-013-20260430    clang-20
+i386                  randconfig-014-20260430    clang-20
+i386                  randconfig-015-20260430    clang-20
+i386                  randconfig-016-20260430    clang-20
+i386                  randconfig-017-20260430    clang-20
+loongarch                        allmodconfig    clang-23
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260430    gcc-14.3.0
+loongarch             randconfig-002-20260430    gcc-14.3.0
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    clang-16
+m68k                                defconfig    clang-19
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+nios2                            allmodconfig    clang-23
+nios2                             allnoconfig    clang-23
+nios2                               defconfig    clang-19
+nios2                 randconfig-001-20260430    gcc-14.3.0
+nios2                 randconfig-002-20260430    gcc-14.3.0
+openrisc                         allmodconfig    clang-23
+openrisc                          allnoconfig    clang-23
+openrisc                 simple_smp_defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-23
+parisc                           allyesconfig    clang-19
+parisc                randconfig-001-20260430    gcc-13.4.0
+parisc                randconfig-002-20260430    gcc-13.4.0
+parisc64                            defconfig    clang-19
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-23
+powerpc               randconfig-001-20260430    gcc-13.4.0
+powerpc               randconfig-002-20260430    gcc-13.4.0
+powerpc64             randconfig-001-20260430    gcc-13.4.0
+powerpc64             randconfig-002-20260430    gcc-13.4.0
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    clang-23
+riscv                            allyesconfig    clang-16
+riscv                          randconfig-001    clang-23
+riscv                 randconfig-001-20260430    clang-23
+riscv                          randconfig-002    clang-23
+riscv                 randconfig-002-20260430    clang-23
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                           randconfig-001    clang-23
+s390                  randconfig-001-20260430    clang-23
+s390                           randconfig-002    clang-23
+s390                  randconfig-002-20260430    clang-23
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-23
+sh                               allyesconfig    clang-19
+sh                                  defconfig    gcc-14
+sh                             randconfig-001    clang-23
+sh                    randconfig-001-20260430    clang-23
+sh                             randconfig-002    clang-23
+sh                    randconfig-002-20260430    clang-23
+sh                           se7206_defconfig    gcc-15.2.0
+sparc                             allnoconfig    clang-23
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    gcc-14
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-23
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260430    gcc-14
+x86_64      buildonly-randconfig-002-20260430    gcc-14
+x86_64      buildonly-randconfig-003-20260430    gcc-14
+x86_64      buildonly-randconfig-004-20260430    gcc-14
+x86_64      buildonly-randconfig-005-20260430    gcc-14
+x86_64      buildonly-randconfig-006-20260430    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-011-20260430    clang-20
+x86_64                randconfig-012-20260430    clang-20
+x86_64                randconfig-013-20260430    clang-20
+x86_64                randconfig-014-20260430    clang-20
+x86_64                randconfig-015-20260430    clang-20
+x86_64                randconfig-016-20260430    clang-20
+x86_64                randconfig-071-20260430    gcc-14
+x86_64                randconfig-072-20260430    gcc-14
+x86_64                randconfig-073-20260430    gcc-14
+x86_64                randconfig-074-20260430    gcc-14
+x86_64                randconfig-075-20260430    gcc-14
+x86_64                randconfig-076-20260430    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-23
+xtensa                           allyesconfig    clang-23
 
-Honestly, I don't see the *caretaker* being much of an ABI at all,
-except from one kernel to the next.
-
-The *userspace* ABI considerations are all about how you make a vCPU
-that runs asynchronously (should it conceptually just be an async
-KVM_RUN call, which allows the vCPU to run in a kernel thread up to the
-point of kexec? Why is it fundamentally tied to kexec at all?).
-
-I'd love to start without kexec in the picture at all. Just show me the
-KVM API for starting a *confidential* guest (pKVM, SEV-SNP, whatever),
-leaving it running, completely stopping the VMM and then starting a new
-VMM to pick up from where it left off.
-
-Sometimes the vCPUs might all actually still be running. Sometimes they
-might have hit an exit that couldn't be handled.
-
-Doing kexec while the VMM is "hands-off" is then the *next* challenge.
-
-
---=-Q5uU99FSerI7+XMdGTFU
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQzMDE1Mjcx
-MVowLwYJKoZIhvcNAQkEMSIEIAMMTSjDF/YzzlyOr9Cyrq9oj6P33gpYBUz/VXg3563QMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAbGTbtqlU6xYn
-aFU636O7DYd3LvVQ1+UlvFALEQlNg6mKhBXLJwJAq6l8J7LaGBECX2fjcNmna2zeAIHgb9cLz6qx
-+FCt2z/9Pn/zRWC2Ht2k3yePATUD78CYdYT6nORgUzB4Pi5ruFxZXHalnxd+tpROiYbQr5X31GZz
-U+0dHVzdD+HHrC/uxpjQSrI6bfln/Yy3aBfnEyPbbvoVmMJZiGNZzkUmSD3CRx4putCEb7iWsUTc
-wWG+6y7JyyOdUCgAqrtAXuLWIHs0XD2r4RcBHXtQf702JqSDauN+K26THZuga2JMaMuXeU5jjnov
-pyDwQqiCTvUmOpwpT9DMi8+8yAMV3cv1o0VdCMcYMYjewlRInOQhqi1fcLrmCv0dYg2WPvEVdqmT
-E5PIv1XntrVPggPUts3b48K19FUxl+Bma054jEONnSFbHYceZvaFcwk5y5DD9dn1fb/LkizTg/Zb
-j4IPK+gS2uBDJUzn0WRXdxgByQoe2wUVxroejaebPp5RQTTe0K2sEVY2wtU7imcBsvkXEuFotWyf
-LTbvdnzMoytH3KPyzd3x7uWfYbOZYoh3Potm5bLy4IaUp5WTLdBsnLZLVplWW6qh6l9UZlGVpb61
-MthSK1532OEOEWHxFcWGGgASKVKcyJrUNcfzJe1zYWTFcv305E7x9RCjYC4pHDwAAAAAAAA=
-
-
---=-Q5uU99FSerI7+XMdGTFU--
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
