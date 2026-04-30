@@ -4,84 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28598FF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 14:20:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF5BBFF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 14:23:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9273A6B008A; Thu, 30 Apr 2026 10:20:35 -0400 (EDT)
+	id 13A3D6B0092; Thu, 30 Apr 2026 10:23:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FE1E6B0092; Thu, 30 Apr 2026 10:20:35 -0400 (EDT)
+	id 112BE6B0093; Thu, 30 Apr 2026 10:23:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83C1B6B0093; Thu, 30 Apr 2026 10:20:35 -0400 (EDT)
+	id 04F986B0095; Thu, 30 Apr 2026 10:23:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 724BA6B008A
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 10:20:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F11789FE57
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:42:00 +0000 (UTC)
-X-FDA: 84715335642.13.5743CEF
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1383240008
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:41:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf11.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777556519; a=rsa-sha256;
-	cv=none;
-	b=3oUOpyx+Eghx4+1tygDJiP9AyRbiuG6hIuFznNvWYHqg2054/XbRzc10bZstUeqCRzRfnF
-	X56nzHKIQjp8AmAs1mPTaad2++pXkqXbVl3P1giaUT4SNoIhTj9jiiwjuPgFmlEgwkOAEu
-	WAfsRoDvOmUyFbdXxYceIwZHjZjiyXA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf11.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED4896B0092
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 10:23:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2544D1C26AF
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:20:26 +0000 (UTC)
+X-FDA: 84715432452.24.A9C4850
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 966E6A000F
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:20:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LRbEIf6a;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777556519;
+	s=arc-20220608; t=1777558824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=MCknWTYIiyhRvJ4JTyiprDJV+r3LqGM8mIhJ0xNJZEU=;
-	b=IHSGrTAqIt7Jh9zaf+dje+yf2MykKlO6OCZfhCo/Miou6uX9Bo4jklj3bSQ9NzHlUhEUyS
-	qnIz4zKMVPj0MrrP/dYrrrkhb294SKZgFLxz/Dhi3xJgWzXQz6pUyX6wJaJ/BzMlwQmIoH
-	iatOJWDFzq/LvlO2cQ+/q31d4vOJtzg=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g5wLD6h7yzHnGhv;
-	Thu, 30 Apr 2026 21:41:08 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id C484640569;
-	Thu, 30 Apr 2026 21:41:54 +0800 (CST)
-Received: from mscphis01197.huawei.com (10.123.65.218) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 30 Apr 2026 16:41:54 +0300
-From: <gutierrez.asier@huawei-partners.com>
-To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v1 0/4] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Thu, 30 Apr 2026 13:41:35 +0000
-Message-ID: <20260430134139.2446417-1-gutierrez.asier@huawei-partners.com>
-X-Mailer: git-send-email 2.43.0
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sDFbLQ0EMnr18AHEJ6eA9PT67Nuf0F7imZzZ6zokox4=;
+	b=fJs7oAk9/t1YqmTiK7COz4UEZsCNUBxG7IzC679zHlLm1+W7tAJmW8IuAE3IxeeXqnOt7a
+	1FZIkx8KN2NIxwkDIYB7Z78tvWrZUiA5BvAUptwRpzrx0FmXyB9oZiYNqYalioQ0QjAUyg
+	4zCu1FohBbSegVCErebmakoDDni1sbM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LRbEIf6a;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777558824; a=rsa-sha256;
+	cv=none;
+	b=IFFHx4SucmC99/EwmDA4vIjtAOUM8WQc+RvJTwEFnKnPAq9Sv1+6FLq270TWm62kDGF35T
+	JBcLjStAs6lDFRN2chNIpo6uRGDJlk/9Oz2KSSP6zyty6qLBsOXTLBl1qxevgwLLDWxUd+
+	ImjRDKjQjHLn9qcSNxP//F71SJe0Isk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E890C60142;
+	Thu, 30 Apr 2026 14:20:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BA0C2BCB3;
+	Thu, 30 Apr 2026 14:20:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777558823;
+	bh=E5B83sxytNbrJA03BcZbM7JWpgeC4uEKhNZhIPTXLRo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LRbEIf6awF9GrzQHSCeFiaYvy903gtqCV+HgwbkqOFZFGvxD5x08gJMRWOXLpDYRn
+	 +Yz4K8zuyUyChAVgciqoQcZMzmelqRfTaY1f5ihkMCZ25HWjbbnRQ9gzUBiWUJ/pfY
+	 r5ssQwLNjYyDDGtGXPLJyNetUgtKKtBmP5MXb9WFCU6ciJgHJFnlBlz4LkZDPhfiHL
+	 y5hyqeXIGEVl/UKhsca8NuW5PRaJrtPg7AKtlXcxM+7/mrWImKt7+/jjaiRsR0ZW9M
+	 K1w8vIoiNdjvvYqJWF/lnEgbwCQ5Gp4cEP2QdwZR1NCdGlu/LeK+ljBfP0f0DspW1N
+	 jSBEZeNZE4m7w==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2.1 0/2] mm/damon/stat: add kdamond_pid parameter
+Date: Thu, 30 Apr 2026 07:20:08 -0700
+Message-ID: <20260430142013.80993-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.218]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: kqoo8cixzajdk94yhiszxgkee541u15j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1383240008
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777556518-825463
-X-HE-Meta: U2FsdGVkX1+TWYb2mO7enz3eI63JFetvVaWwc8/o+JmEbkl/4hECmx72PiZI3tvpWIs1i8pHtaIlKbaUWoiCyD4wy3Dcj70uofUbO/VdfYsSQjeW2RTfUnRxIdfZ1lA8hhMgQI4AF2oKHHZQ44gloVffCdl1mmqis5yvXMA4YR3oaT40lfktn76Nr1r4TjVfAcpdNJYKjXQKifQcbxpjscvoQE3ZDHs34V2KVYps3N4TrzZxP8q2YnV2fZiW9h3reDVxCyX+KLKl7lCJ2AJxFjyx2cbp/gjin1iKSAmplPjf08BHaVFa2+88Sf0vy+pR5+gk1dgU1BVGqSjdN2cwVQL/RYqT9r2pDbMsgzaexnY/VEzsEuweTOmi1UdES1XWQDSv82oATpY41mQeAKAdZH6rNBEopdeGXivA1FBrWc5RH70G4iPv2E5rcYYNCnxMjw2dm7gIBpLKVQizCF6FjBgktc+jCe5HdzLIybTZH8+MHUczW7/oufelniUJDn+55l32iXNtAGWPPJgOC03+X8jbbg4zLai2bHh9QWpMawNTbPOaziMjjLzBssp+anYj9dE8VdXbNtBuM0hkzlPDgDUnM0BGxzp2DXSXAgsQ2sSLFXcBTaQi+0l8W5miaGd+Pp85MvmC/FQ+u+ElO71pCCqgN64MxW9t9Vc6TP9Pxr4vpyz1TjLvyPlGalDq4szWASw6NaNTKOZUown3OhXXjdS9n6n3LkQf0ASYLiDSR+1zwDHFQOLx0ptk2XzHBwqotBKrjgc0vOU36weI8P4tTOPknf/zsMW9kd8vGYiT9uxk75LRbUljrMkeG4ivmnXb43FUsZhrI6ZlwU01M1/ECkwPeO5Kl8i9HAmxJuAponuniR04zyftqBadJGkt8EqaqPWts7CGBlTJlEpz/g/9R2IXCP96vyMwRJrvlk/qf6CsnopUvoz+1o3CBe/LR1Jv3bWbW4Mr6YmYvXRHYi9
- 6hhgwkeh
- nD3Ls+jn7eWkI2JSxWgJ8XV4N02UBDDk7DJ2h6ZOk/3FTfUimY3GYFT0z0eGKHjI7FLnb2Q0IlUtyVR2+fflAWJ85s9yme+/9LAUQBJaMh8OzXavgQ2rhLKwBF5voz93xlb6GfZUlcB3Zl74ezk4q6ToRRiSaB3vzL78cxwablb7R6wf0yDxWieCX2J6c/pcdSMFNvomc7HSU5yucAa+ZdNo5RpscchG5Yf+wZkAycwL4wrn+xHkIVOixe89+u9PY+9LK
+X-Rspamd-Queue-Id: 966E6A000F
+X-Rspamd-Server: rspam06
+X-Stat-Signature: aaeiocz7euugwixsyg18r4otxfwd94c5
+X-HE-Tag: 1777558824-651803
+X-HE-Meta: U2FsdGVkX18+bkdsmeYtyU9457awEoa6BIGgkoYFGIV+Cp61ai9AHpvoM8qSWQeNrmuv9H1d+twtzMsyxJUeii0u6IDKlS6vUxOliRsCcSyII/mmyceakZElBnb+tOwlvV4tyhSgMy7KIiozcuYA81I7FpVJV3AEpAkDoc/q8rvSCWvfZa1izghfe6H0vpH/C2eHloYoIxG7CcXeK0TQ5Y7qWIqGDYNnTEEIC/mCWwEGKZ82o3vTVRwVMFhjuEigtAXm7Sm+AgsfWjz/PDU2lnr5ov0VMWyJA0K886CyUZbd+eTa23jjTSUnBzP5vNfpuX6ivNSBo7hrTQHRUN7Yyz9yy8GeqlCHOC70qBrtIXt3u8oUXwyv92DwRqXLPsaw3ljz8uhKNPlAxSp8gmnTGqtZhjf1OFmK7gIJn1kReqwHT8mDCB1xbMdfAbcfJ6hW0df/CkqgH0wxDCbUKOU+1ymob/048h3JDh5LevMkURrGhv0hfitR9ECjv0kFwrFEWHsJWcwZ96h+2mkuwJ3e/QVfxIiCKrxKoQkV8Qm5WFI0PKJSHkk2ZOgMYE+92ferRvb+NLZyor19hnW3EPUBq7EPLxRrvDP7UhOT7xducBWsyNy1Qct5norb6QfvDxbeNHGGOqsjpb6n70a5uOo6H28iMkeDA4d+M1jz6GyWjVhAriJBwr8PcsXGnOwBTve3/TzIz3XWGJDB2LS4FT8lP0UENiQwx8uUSv16vLmVdZzOjhT5HnAKnBLGYbRYlt+FOv4RtzH/XtXXnW+K0c3lDe7M0KRBnut7WlAf0elHAtqQJ8fBAGPJij1TKhWajYXqQ0wlQPqYzhP6mCYNwfYUbjz0WZaBRtiACbTrr7GCBfI8gQQEzHPJ1H9+pzD+hIHNtWNNv+cZFjaT/wFoH0fuyaQwH5Du83mirPy2OAX2cX7x6pcNO1Rs4rhlCtl9Raw3rZxHQU/glGIuIBZUY3o
+ JpNheWZW
+ rO8GfKHqyncnKP6Fxqr+JeNHRi/VJ2j24Vv3zhUl6lKV9la6sjg4yVgwrBVxJWLh2KhYI66/CnU2sw7tYN7dqzr1ZhSXGzVSg3tO8xzIe+gTPWcLSxJx5CxqjRzQD1/y0XTZ5A2X1gzrbEi1cZYgYiZXfgk5y09C9UOHvN2TOKDVo6T1lfjsnMzBVUHOgCkS6eoI6Cb7afFZJPrc4rI1Tbq05SrWtnM2Ft4SdJYrLY/cpalPJI37/Soywmnc9lmVi2tEc0BY5WY0U02xllZaTNJQF/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,72 +101,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+DAMON_STAT doesn't provide the pid of its kdamond, unlike DAMON_RECLAIM
+and DAMON_LRU_SORT.  This makes user-space management of DAMON_STAT
+unnecessarily complicated.  Provide the information via a new parameter,
+namely kdamond_pid, and document it.
 
-Overview
-================
+Changes from RFC v2
+- v2: https://lore.kernel.org/20260425203309.108879-1-sj@kernel.org
+- Rebase to latest mm-new.
+Changes from RFC v1.2
+- rfc v1.2: https://lore.kernel.org/20260416002149.87090-1-sj@kernel.org
+- Detect and use fresh kdamond pid.
+Changes from RFC v1.1
+- rfc v1.1: https://lore.kernel.org/20260414235912.98174-1-sj@kernel.org
+- Close the parentheses of error handling block.
+Changes from RFC
+- rfc: https://lore.kernel.org/20260414053742.90296-1-sj@kernel.org
+- Fix damon_kdamond_pid() failure handling.
 
-This patch set introduces a new autotuning which allows to collapse
-hot regions into hugepages.
+SeongJae Park (2):
+  mm/damon/stat: add a parameter for reading kdamond pid
+  Docs/admin-guide/mm/damon/stat: document kdamond_pid parameter
 
-Motivation
-================
+ Documentation/admin-guide/mm/damon/stat.rst |  7 ++++
+ mm/damon/stat.c                             | 38 +++++++++++++++++++++
+ 2 files changed, 45 insertions(+)
 
-Since TLB is a bottleneck for many systems, a way to optimize TLB
-misses (or hits) is to use huge pages. Unfortunately, using "always"
-in THP leads to memory fragmentation and memory waste. For this reason,
-most application guides and system administrators suggest to disable THP.
 
-Solution
-================
-
-A new autotuning quota goal[1], damos_get_used_hugepage_mem_bp, is
-introduced, which checks the huge page consumption to total anonymous
-memory consumption. This new quota mechanism reuses current autotuning
-architecture.
-
-A new module is introduced to demonstrate the use of huge pages
-collapse autotuning. The module launches a kdamond thread for a 
-certain task provided by the user through monitored_pid module argument.
-
-This module also has a user autotuning knob which allows the user to
-adjust the aggressiveness of page collapsing.
-
-Benchmarks
-================
-In progress, will add them in the next RFC series.
-
-TODO
-================
-
-- Since DAMOS_COLLAPSE is not in upstream and this is just a
-  RFC, I have used DAMOS_HUGEPAGE instead. This will change
-  to DAMOS_COLLAPSE in future series.
-
-Patches Sequence
-================
-Patch 1 -> damon_modules_new_vaddr_ctx_target
-Patch 2 -> Introduce DAMOS_QUOTA_HUGEPAGE and autotuning
-Patch 3 -> Module that demonstrates how to use DAMOS_QUOTA_HUGEPAGE
-           and the new VADDR ctx creation
-Patch 4 -> Documentation
-
-[1] https://lore.kernel.org/e67f05ad-dbb9-45e6-ba30-b167a99ac67d@huawei-partners.com
-
- .../admin-guide/mm/damon/hugepage.rst (new)   | 258 +++++++++++++
- Documentation/admin-guide/mm/damon/index.rst  |   1 +
- include/linux/damon.h                         |   1 +
- mm/damon/Kconfig                              |   7 +
- mm/damon/Makefile                             |   1 +
- mm/damon/core.c                               |  15 +
- mm/damon/hugepage.c (new)                     | 341 ++++++++++++++++++
- mm/damon/modules-common.c                     |  33 +-
- mm/damon/modules-common.h                     |   3 +
- 9 files changed, 652 insertions(+), 8 deletions(-)
- create mode 100644 Documentation/admin-guide/mm/damon/hugepage.rst
- create mode 100644 mm/damon/hugepage.c
-
+base-commit: b8e00b62c650b2aa471195f663301118fde889c2
 -- 
-2.43.0
-
+2.47.3
 
