@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FAD4FF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 11:32:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F418ECCFA13
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 11:35:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19B286B0088; Thu, 30 Apr 2026 07:31:59 -0400 (EDT)
+	id 65B016B008A; Thu, 30 Apr 2026 07:35:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1253C6B008A; Thu, 30 Apr 2026 07:31:59 -0400 (EDT)
+	id 60B5E6B008C; Thu, 30 Apr 2026 07:35:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2EA96B008C; Thu, 30 Apr 2026 07:31:58 -0400 (EDT)
+	id 521A06B0092; Thu, 30 Apr 2026 07:35:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DD4776B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:31:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9FF75A0161
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:31:58 +0000 (UTC)
-X-FDA: 84715007916.04.931EA25
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C9CD51C0009
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:31:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PO7A+Z6C;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 430306B008A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:35:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CD52414014E
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:35:22 +0000 (UTC)
+X-FDA: 84715016484.09.C7970D0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 38333140002
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:35:21 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NkK+A24f;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777548716;
+	s=arc-20220608; t=1777548921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7rgaagdvk5X+BPhver7PNTAkTh2XjtdqtERugOJknd4=;
-	b=ZQmVTfWEZVW+98GrlvwzXI819wg+0FSylbKPoYpj2mA3PR2UP3qQbqxSchacQRdfl5o5Xm
-	vMz/XslVG1jB0yX3lg1PiNT/aQH4GL63dfW7MnVBANp+yM7vDmFH/zSSOXoCiyPVQfV3WQ
-	ypXiu6+hJQ2FwrjhXtQ3+Ki8y3DgUR8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0HEra+VbZ2JQ/ogWEgYEJJRhO0Q7NHcVSbMzsx7de90=;
+	b=y/utEM/BMCg6X36ioPITRdJ7N8ptBN91D1v3V0fiIRBHxwfwQQhSeb4KgaZbS9cA+fMmaw
+	xKyzOZjWIUCPKEMUzBXv+eAET+fpH9heufs2jM89vMjzAOS6WGWRD+22BkrsHnRwsJIlAm
+	G9rZvFjtfCHnb4h4lWy5Rj1p9B7HtrY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PO7A+Z6C;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NkK+A24f;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777548716; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777548921; a=rsa-sha256;
 	cv=none;
-	b=WiYGJ38PUcjnIR1f/Igt8M67p6sR5hFA+4NSFgyLzzsQ83YYOajA29AenzATTdqhr+mRvU
-	oegqYs+mD0evPSIVIMc0wvQ90y8A5/5cK+h+aCQPygBQCBSQW+FBiZ8t/5cnXuwfD9faYa
-	CMR9tvA5WFDMTxkgMAKXWGEG0kNNHqs=
+	b=tnJ0aZ+ZieJrJqqQQziT4jCeRzDVwOMNOLSpSsFrjym5A4Z0l+xlri5twBs0hgBxYMuI8f
+	pkKO4UKxjrw2YHc0ztipDT8amwJJgSkuVEO25mRl7S24KChJ4y8ogBAuFS1UiUeFosbfkr
+	dMwIsKgh/8SizCiilGI2uF9oTRUcnfI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C5756057A;
-	Thu, 30 Apr 2026 11:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68341C2BCB3;
-	Thu, 30 Apr 2026 11:31:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 075744017E;
+	Thu, 30 Apr 2026 11:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F0EC2BCB4;
+	Thu, 30 Apr 2026 11:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777548715;
-	bh=GAVeUYrfD81Vgxhl/4MJAOtYKmr0cjXk10/5oQ2nEDM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=PO7A+Z6CSYSyfV7aQwYqp2SRHmj4kkRrsddLZMzbjtkDjEPu33pdvOLXg1x/cq7Ro
-	 tVFeT6roiky4eZBekVtFBAkyN+CpbWOyix2h/s5uO9+He9dYFBy4MhMgso2xGA9nnC
-	 z+2VpX4usUvmrArf3ScDgAmL0hh+fukLQ/dfr0SctDhJoRagc2mPhDok1GVJI5Zvbb
-	 hM96Jg//w7p6me4AW8RaKiO33otuDKipcx8MzGsI44vVitn8C/mdcvK9NFLnH28ADM
-	 QUFx638NESL+SkYYaF4pWrVrk/viM6e2oe6zL9ngteF0RcmTybjp6H0wkODsxZ6Pdj
-	 vQKkm8itzQPLw==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 30 Apr 2026 13:31:22 +0200
-Subject: [PATCH] mm: fix __vm_normal_page() to handle missing support for
- pmd_special()/pud_special()
+	s=k20201202; t=1777548919;
+	bh=ac6leB4j3KoPOdfV83k7rh/ndEAhPLMDO2A+/AjhvOs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NkK+A24fylBLjv4sQwQq0GF/PBiBqw/xH2XlqaUJU2aZovl0O8r2r4WlTqcMPPwry
+	 qcY2Jc4UcV1nseDwgt2dZTByJcRjhhzX///ctLauu4aHbxYz0zKrovM5E8rtrTgB8J
+	 X6C/jNuXkFG8e44mwUFaVHQaF4jQTzTsdLe9OtHGHJgk4eogLBTkpEVnzSoTEp1MOE
+	 CfF/cwt0SUIcHP31C5tkoZ4xLoR0t/XSwjyjergI7FxRptWcEtotltKUffAGuU4iRy
+	 QjKtbHAd2J92BGY4JMENcgyOosKrmy+4a4iVmZ1MAcfZUK63Jq1W8C5tgdLaLJUW2T
+	 4iHgY8ymu5q0Q==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/2] userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
+Date: Thu, 30 Apr 2026 14:35:10 +0300
+Message-ID: <20260430113512.115938-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260430-pmd_special-v1-1-dbcbcfd72c20@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAIk982kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDE2MD3YLclPjigtTkzMQcXTNDg5SklBSLxGTjZCWgjoKi1LTMCrBp0bG
- 1tQDlEi9iXQAAAA==
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>, 
- Lance Yang <lance.yang@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Bibo Mao <maobibo@loongson.cn>, stable@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7ahhhz8nyf1uu619o4814qs8tau63xs7
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 38333140002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C9CD51C0009
-X-Stat-Signature: ymkc89tmayoazzaw8byrunc5as4o6wmy
-X-HE-Tag: 1777548716-260605
-X-HE-Meta: U2FsdGVkX1+uFaWOsnltP8ym2dr0fN3ho7LIOd3QTWuwKQC22rBo/RS2inS8stnABSD2Ade+JYcAg9UjXSypbJ7LFNt+ECndibjxpMwavo6pHdp9/eG+vYcKgJ3/4KWog6AMzMZtaggGayQdLyKVkWxb8QncIVeR+v+OJ17GkOj2dB0IBnBCgC7LNJIG2Fv82/JqBWDT/wOK/n91sWL3UHpisGTH+SdTq+N7uruFOmGTz1pmu7JBXP0Z1ylmgtWGZGkfgFOsPgC9WG1IsMmrH9f8TBCs4C10WDoeqjjpUKeusVvw1DqQ9Hw+9v+qtW1ydoZNhu5/IaH83niE6cId0mqnXg7EhENshsnEUtHpD4NXEfUnclJrvaBKbi/NmVKq/VITvshZPHIjQYrf1WHz5EGTMoWBl0COszGmMUZZKPiRJ0VYnV784uCLiACgqZRuPCInvYuQoI/cGuJustBTg4bTWZYG19qKb6DlDpZEWXpdaaEgo0G3paIcyqtQK+eImuN1cTbd5hlQB9Qc0Vn2vRXnIVGNfJJjBf+qG2jVVaMEf8osucrS3fsZt9xvuyQ6swoRIkqran64LT8Hir1MWfX3raZpA1tY0sNB/fE4+ECWBNZztvd4NmijTagwfNahjD1rMRXr/z/C2YGn/tjwb1BIs9zaGCNA3vh4TTix1ddyTucYgrJxLOBIJcp0yyI9qFoYSzet9WSONKt9JY+QMldAdqiRpojgwWD4CSKBNmFK7FHTBVYDu4OTAlJHJDcEaATtHoD19xYIPziNFh+sI2W/eqpbt2IzjiyTUkoM97d2PqL9SpALrrodq4SYpqlbYPqjulo95WYw/akNaocZS9qbnRJvsNwJHrGec8RAMinLklhGREfGSuflf0wDg9q9UN4o1nbN/VYu2VKQRRK0Wo+DPXwNrE9jCbzF13kNit3mBuxc1yduKoILfv5fPzHkOFUvXFTar1DQ3nY2YVB
- SthUupN2
- CSA+wsEQVa2WRFKXz2/qgfGmttbl/snT8OYqd7rcuBsdClhu5wZzchHDLsBlSifRnIzUrTA28pguCXWb7678LGAxg6g5Ry3Ilb1l7g087qHShVu86HrFKtSf0d7Hfm+gCCeVEwSDH3qi5DfX1xTbhlPqZua9E0feMgDZnYkCxaWh3NxOFjt1N3Z12kTC8Jk0VOib6YkhxDUBO7nDud5AeW7ZWGEAusM9FgLwa3sm+EJsOgw6nErB3w5A3EWOGK8vDthLXVji7tCFE0/5E9fybY1p4BLmweR+FjjN5AwsY4dES9SdmWVafW830DA==
+X-HE-Tag: 1777548921-347829
+X-HE-Meta: U2FsdGVkX1+F+obwceshgZmtkaAPfjEv+OhjZOkeFknDY4PJaKDCKuGK1ZbZkFXVsk47UD2rV5UNPYhrybT8OUmEWBiYcBlo54Kl4VKGo5huXrz2V6nIUOBuSOuEvKPnrarFLl3yk7/mG7ELcJ9zM5jC9xl2PvVypPw2cTNQRybYbIf2X1vCxMTu2vJWF5KRUKWrW1mW4kk7n7eQS5Pc/HamtxilwxtRQDZP0OLAsWVkkKce+PsSR+XrN5zZE4WrzI1PmqAUyZtGCE//QwlO8KF/Lj4MwV5//YKFMHcZ7UkbHzatrFvbQ73yt9JahqhdcbodUbb1N5sNXzVonwy+LaoW9GhpmWyLPCZWnFqlUXKMaMDxA5NggM5/YPyt8ynkCJWFOS421XmrktP7cVc4fER/NNI7qMQ/HyErCjkrKqtCQl0PjiegSOGpXRvjKLb+u9JolsR5xoEs5fA+oU69n3GsKXYKNjgVsynBjG/n79SOlC3zq1fX1irbn1Ao1VtI3tTzX5oV92mPUxCyT5DRbrA5cVliehRTzRtnMQuVtczOhQpp3RYe2IqD22Z9JLIi+RcdpRtngXjbv8oNP7yrQK/uDuqksQMMpzcFfEggZqyz81xNyuVCbr3dXgRT7SuWHj4NCqgE0H6zrE518aWscnszWZHOhF1kLB74joJr6M6okFA2epOYAJfOb2fSCm2r7e6xtMXH7rPQGiJqyZf1YwNaiws8mrmpA2iWuE3izkM0RL/HMdr/SzUSptiiictPlUodcGPJsdsOV+ZIUWaAljMWIsjRN01w0jMaQOIs31XWfqFmA+fHljZGtmoMtsutGvmR3H0uIwfJdQW+z3KqmKlUxsUGTUxrM7JyCwg2nMk+2I+YVf7KPucsRw8SQCBk82FrAqaNJbr9V5yfc0dW7D1xGNodUdKyVg/rwKJj/IZyBseDvSwruSqMyTSlw/IrIJd9aTtJguZviMjTB7C
+ 8pJIODWC
+ ryZ7YTYS+JO7qMiUI8z6PZ658IbT38tTgR4XfCm3WeIljf9kNDlnMY7kqazrTbr5ziDI51V3dtks93ODqSvV+qItRiLiH9uUEwt/sOvO2Sq8AAiDX0wjkaUk/xOCIQ3vyczEr5VhHHxBx1Ak9bFf4EAoO3EbwWHNlz8G0TDdYjRP679KQV3bpJT+WfVuK8k57HZTX2sfSY76lYJH36YGVgfNMu+vWtkBnVzShID54CN3SRCo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,108 +95,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On x86 32-bit with THP enabled, zap_huge_pmd() is seen to generate a
-"WARNING: mm/memory.c:735 at __vm_normal_page+0x6a/0x7d", from the
-VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn)); followed
-by "BUG: Bad rss-counter state"s, then later "BUG: Bad page state"s
-when reclaim gets to call shrink_huge_zero_folio_scan().
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-It's as if the _PAGE_SPECIAL bit never got set in the huge_zero pmd:
-and indeed, whereas pte_special() and pte_mkspecial() are subject to a
-dedicated CONFIG_ARCH_HAS_PTE_SPECIAL, pmd_special() and pmd_mkspecial()
-are subject to CONFIG_ARCH_SUPPORTS_PMD_PFNMAP, which is never enabled
-on any 32-bit architecture.
+Hi,
 
-While the problem was exposed through commit d80a9cb1a64a ("mm/huge_memory:
-add and use normal_or_softleaf_folio_pmd()"), it was an oversight in commit
-af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
-and would result in other problems:
-* huge zero folio accounted in smaps, pagemap (PAGE_IS_FILE) and
-  numamaps as file-backed THP
-* folio_walk_start() returning the folio even without FW_ZEROPAGE set.
-  Callers seem to tolerate that, though.
+These patches merge fs/userfaultfd.c into mm/userfaultfd.c and make
+functions used only inside mm/userfaultfd.c static.
 
-... and triggering the VM_WARN_ON_ONE(), although never reported so far.
+Mike Rapoport (Microsoft) (2):
+  userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
+  userfaultfd: make functions that are not used outside uffd static
 
-To fix it, teach vm_normal_page_pmd()/vm_normal_page_pud() to consider
-whether pmd_special/pud_special is actually implemented.
+ MAINTAINERS                   |    1 -
+ fs/Makefile                   |    1 -
+ fs/userfaultfd.c              | 2231 --------------------------------
+ include/linux/userfaultfd_k.h |   36 -
+ mm/userfaultfd.c              | 2238 ++++++++++++++++++++++++++++++++-
+ 5 files changed, 2226 insertions(+), 2281 deletions(-)
+ delete mode 100644 fs/userfaultfd.c
 
-Fixes: af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
-Reported-by: Hugh Dickins <hughd@google.com>
-Closes: https://lore.kernel.org/r/74a75b59-2e13-3985-ee99-d5521f39df2a@google.com
-Reported-by: Bibo Mao <maobibo@loongson.cn>
-Closes: https://lore.kernel.org/r/20260430041121.2839350-1-maobibo@loongson.cn
-Debugged-by: Hugh Dickins <hughd@google.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Tested-by: Bibo Mao <maobibo@loongson.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-This is an alternative to Hugh's patch, whereby we leave pmd_special()
-be a NOP and instead teach __vm_normal_page() about lack of support for
-pmd_special/pud_special.
----
- mm/memory.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 7322a40e73b9..4d84976fc7f4 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -612,6 +612,21 @@ static void print_bad_page_map(struct vm_area_struct *vma,
- 	dump_stack();
- 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
- }
-+
-+static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
-+{
-+	switch (level) {
-+	case PGTABLE_LEVEL_PTE:
-+		return IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL);
-+	case PGTABLE_LEVEL_PMD:
-+		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP);
-+	case PGTABLE_LEVEL_PUD:
-+		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP);
-+	default:
-+		return false;
-+	}
-+}
-+
- #define print_bad_pte(vma, addr, pte, page) \
- 	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
- 
-@@ -684,7 +699,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long pfn, bool special,
- 		unsigned long long entry, enum pgtable_level level)
- {
--	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
-+	if (pgtable_level_has_pxx_special(level)) {
- 		if (unlikely(special)) {
- #ifdef CONFIG_FIND_NORMAL_PAGE
- 			if (vma->vm_ops && vma->vm_ops->find_normal_page)
-@@ -699,8 +714,9 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- 			return NULL;
- 		}
- 		/*
--		 * With CONFIG_ARCH_HAS_PTE_SPECIAL, any special page table
--		 * mappings (incl. shared zero folios) are marked accordingly.
-+		 * With working pte_special()/pmd_special()..., any special page
-+		 * table mappings (incl. shared zero folios) are marked
-+		 * accordingly.
- 		 */
- 	} else {
- 		if (unlikely(vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))) {
-
----
-
-base-commit: d94322006a51b522dd361128a450bf9e75aad889
-
-change-id: 20260430-pmd_special-610dbdd8ac3c
-
---
-
-Cheers,
-
-David
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+-- 
+2.53.0
 
 
