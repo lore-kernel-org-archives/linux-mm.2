@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E3CCCD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 18:39:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 432E7CD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 18:44:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B0556B0088; Thu, 30 Apr 2026 14:39:28 -0400 (EDT)
+	id A66956B0088; Thu, 30 Apr 2026 14:44:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8611B6B008A; Thu, 30 Apr 2026 14:39:28 -0400 (EDT)
+	id A16936B008A; Thu, 30 Apr 2026 14:44:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 750066B008C; Thu, 30 Apr 2026 14:39:28 -0400 (EDT)
+	id 904DC6B008C; Thu, 30 Apr 2026 14:44:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 642C36B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:39:28 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0FBBA1C01EC
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:39:28 +0000 (UTC)
-X-FDA: 84716085216.17.D31BD2D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 60A7A10000C
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:39:25 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HFTLA2bX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777574365; a=rsa-sha256;
-	cv=none;
-	b=YPunzS67vL7IUWU8XY+FB9PcklbO4EhU39ZJ85njcMUPKbftbvr4xIPmFc+DicWkHmXX4d
-	5OSEYK4IxmnWqst3by1Kn0I7TgYZqw0knjH9BV8ifm5dxz1IMN3E3ObwYX20stFu2/MNSJ
-	HdnyJdplLJck/PD4VHT5WBWb19NxOAQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HFTLA2bX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E8896B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:44:11 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2BA99C17CD
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:44:11 +0000 (UTC)
+X-FDA: 84716097102.28.BECD1F2
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B48C316000C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:44:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iggrJQju;
+	spf=pass (imf08.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777574365;
+	s=arc-20220608; t=1777574648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3TgwCb3E3Be4Ts3/mA76mTKUDmZh1Bg2ryTIzSZytL8=;
-	b=4LxxHXb/2+wWCVP2eQ3cAhX61jCLtqmMVKrgG7DO1m1k32xd0ThgipUF8V2Ad0sXiZ36n6
-	URPe767h7LYxKFY+lGwxKPdRQmiSbVpV/SHV8VrUCaiSKwLBZzyEB1+thfveQcQ7nFmEr1
-	AXNnt6plrsLA8B14NMQcFJPc0j0QWeM=
+	bh=l06I4xelml7EFeSQsTRAgMa6TIfSnLwPvqxz/YZ78Ik=;
+	b=766rLDup9sLWssYYFMFhYLLki0lzMqrDCzknpiSfTal0Bxe5rL36dB6SZZcp7w4+Gke7hH
+	c/plc+dY1QSbu4v9ShSSXYDgq8VFq8f6nNX+3szwUY6OhtQqQCk0F7Au3M27v18EjCxI7f
+	o7Pe4jPh8Q7FeNtI74t8UHxIwEHDTwQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iggrJQju;
+	spf=pass (imf08.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777574648; a=rsa-sha256;
+	cv=none;
+	b=X3MfohUY9NHj2kH+jA/EgEn/IGz5oBF/l/lancO9CSEeO5qwleHtcHuKvRlvQ+3dEqHSVm
+	cWF7RCjWVFqCMqohaard4IiimnFqLgrZlVqqM1ZknWUHBvM82pTniqWmlxb0zzy1hhtnYK
+	JMfBRLKU8Q8iCzqo8OfNTTUHoe2HGk4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777574364;
+	s=mimecast20190719; t=1777574648;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3TgwCb3E3Be4Ts3/mA76mTKUDmZh1Bg2ryTIzSZytL8=;
-	b=HFTLA2bXq3uh7/70FSVdJdBdQ/owPrjQI5TRqV6eB7SJ3Dq71RZd7RZwLgP0n/LFcYtiwQ
-	dm+98fms0XvgBATW2INRsYPcUCINAx0uS10zEghtTzN04VYcFttESisvlVRKcBa9RXT3S6
-	VVlhb9BxDBkRYrDhGBDLc5ZgwNN/De0=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=l06I4xelml7EFeSQsTRAgMa6TIfSnLwPvqxz/YZ78Ik=;
+	b=iggrJQjuanxoRAKiVPjobOtz+H8UVcfHBXeygwzpS0fNt/+7hY4EEfNGEUOQQuTmIfJwMi
+	LQiFEtchwm8HArq7Li0gXrgXouS64QwWQPvTSy8zmfa0mTz4xHeqLYIZuAR6Whig3tKVWL
+	LjHLlnqyGhJs+xYEW9FSzj5MLS7Nk+Y=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-gjXjjeXHO2SRWpZko_4cVA-1; Thu, 30 Apr 2026 14:39:23 -0400
-X-MC-Unique: gjXjjeXHO2SRWpZko_4cVA-1
-X-Mimecast-MFC-AGG-ID: gjXjjeXHO2SRWpZko_4cVA_1777574363
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8acafc224a8so29810456d6.1
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:39:23 -0700 (PDT)
+ us-mta-593-VuVtNf4uOOqhUgLMI9LSBQ-1; Thu, 30 Apr 2026 14:44:04 -0400
+X-MC-Unique: VuVtNf4uOOqhUgLMI9LSBQ-1
+X-Mimecast-MFC-AGG-ID: VuVtNf4uOOqhUgLMI9LSBQ_1777574644
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8ee9a11aa75so282441385a.2
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:44:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777574363; x=1778179163;
+        d=1e100.net; s=20251104; t=1777574644; x=1778179444;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3TgwCb3E3Be4Ts3/mA76mTKUDmZh1Bg2ryTIzSZytL8=;
-        b=W3+mcsr7BePmsWqnsQwd8Exegmphtt8iIwjlvqRz+iNJzT7KSErsAQioT17EV1l8h8
-         18CQhLxOGm+e1GJP5GpsSeURQCBbyrkYvnxJBghrKiNESb52ToEvfXFoNUmjylV+KW6x
-         fiAnt7n+LsONAXhbNZ1KiMEJIDzYoYPP0524sK0ySvmewfDfrQJIFMIYkaX3w8FhQ1ui
-         FTQVPKT3KUfRE8eawuHSmsgL/vVKQkVInE3A0I0FpBXTu7ys/gsDByzJDeCW7nOJg2CB
-         RiUcHvFQ/QNDNAnGxYOcRURLii1HclE5Cb9Cp1nkBIq30TBobta1G0s0U46/lOcxoMeP
-         mXVw==
-X-Forwarded-Encrypted: i=1; AFNElJ+kbfTwCW8oIb5dNKeUrydVzh/dlGk627zpQVuBbu8PTET8Aat2SgbJzyUPsIPyDv6whQq2lH8Muw==@kvack.org
-X-Gm-Message-State: AOJu0Yz7NJC/ZVZjFDvVjLHMqvZbEWkaB8WuCFvmcRu34XtL9Rp8Z2Uy
-	MtynKkfm5F1pmqihhEC0tQ7m9C6DwDh0G7A5yx4qbVESkJG+BNzeAVAeTJYegnFkIGW63iVrUa+
-	o4ztXbBjI09L/TDd9S9aG2CnF63yrJEPBrO8MUO0lh8gYcC0JiEIC
-X-Gm-Gg: AeBDieviLDkZbD5RN3hw7wXN3DjO/vXys84t5JV82vUXXU+0L/o2n/OO9JcYNfY9MZM
-	eclEAPq/wTPp8PrcrN9QCi+d1SMGIDu5tS/Hb35IJYlhUeCux0FrHqcUB7ScexX8N22xlguttoZ
-	DLjWwo6egYYS9l1mAvXD5kb3TyIoehz21H7ut9g3zJBLMSPxnzgce30naVswQkFX/5MH8w6gDGB
-	v8OZftJV3Ikxvm/92/W11JfZWH+ozaYs0gEZm3Cy4Um7eUpvLkaXNDVdpbjMU3bJ0OTFNc0l428
-	OSWtThu4HjzDWFrMcddYQxSaq0K+uYR/TGeDNjgagHVXkvx5LBubeO/heR8t/Fads6XVFisC6Cs
-	2+SHY+oi4cUkSyY4/7PK6RkN9BtYBhguLx7z5YV5Yj3+eAAOni9x2ptHO0GVqTSe0esLo7A/fin
-	36OdD1snoEyxhxgS9oAxuKB3I=
-X-Received: by 2002:ad4:4ee9:0:b0:89e:df5c:19f6 with SMTP id 6a1803df08f44-8b3feefa60fmr58693226d6.42.1777574362187;
-        Thu, 30 Apr 2026 11:39:22 -0700 (PDT)
-X-Received: by 2002:ad4:4ee9:0:b0:89e:df5c:19f6 with SMTP id 6a1803df08f44-8b3feefa60fmr58692596d6.42.1777574361605;
-        Thu, 30 Apr 2026 11:39:21 -0700 (PDT)
+        bh=l06I4xelml7EFeSQsTRAgMa6TIfSnLwPvqxz/YZ78Ik=;
+        b=jfMVdCBCX9Cgyg2bDGHiVAmxXe1/vVI3pp8Dphd+7tlw4dHRbOVAQR5dEguiz6sTYv
+         ulKYONFa5BCaKPEHP+fxrdV8iztAieXtj7pcWjv+BGGfJw12zWLh3QTfjgNC6MkxYcQ3
+         gKtvNE7MP8lcBv22mdWdXk+J0q8UhinzVOsl3mOrGJZ4d27miPU2gHRvFhxjn883aogj
+         Cyxoe8w3RfJDNUEUv4M4YGWFiaBbsBGIANwfagOJKv7N940Rl3p2gnB9I0CDGPGYc1j/
+         QU9ocvvPD0SZbcxgPXROEC98CXClaZQmWvlDUowVugdURSjk5lyYW9xWnEQIOdei+YvJ
+         WfeQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9LCQ4ll+iWE2m+G36z7tdpSOXYzj7T58s5GvT7ytfr+Uy6vKn9l137ah4sk7aut/e6hiPgxPxP1A==@kvack.org
+X-Gm-Message-State: AOJu0Yy9Q5kNrDzp3GzC+fNJu+zUKib0YZBPMq1xX/RGRO5sT1lRszYG
+	EeXdttrZDjoLr+FhRChgsJ+5zFCHznRHPlTpZFakdA9O7xW2G99wFXlmrBe9I/VdS7n5gKCssQr
+	59h+8/R0mMTMZ2iRPeMuQYN4GyizT2i4Bki7YpopcUpcZViTtPlKK
+X-Gm-Gg: AeBDieuAfxTUX842zwF+2nLM0+a7qtVUgUq8ucwWAbNdnsR6Cf08yemK0Y0N20Hggd1
+	x/kxYAf36d6vpEaX/c2F1h9WkvLI8GNgGbRP3F1efser9mxVC1d0mbtinZjsWMZ1OIOjXIBzlya
+	8gTY2z5TZAjHL/UCV8YdrUy54TQv4+QKhPbUJm6K48Rgop6nBEcO5yQsAgc+9KWPF9EDsPa3x6a
+	eGNQfYz5l6mckumdxaybsrrvPL+zQOoa13M86rgs3p/B7XOiZR7ULs0asUbo0E1UQKlAQpzuQ1T
+	GPXsW6HYLMnfZU7fX04qxzegm93N2a9Ny4bSA5WODo0EKNS1hhkmi0ac6XUR0OPBYnWm31WwTfQ
+	/034KeecnOkyRJ1BjVBKyd/BZkfFX85Hie47Yh8TPR2lykCUdtT7low2sLeuv7uQHaWbw/EMAsE
+	ZGCJw4rRz3PiLr2qrYNud2Sg0=
+X-Received: by 2002:a05:620a:c45:b0:8c9:f8e5:9f12 with SMTP id af79cd13be357-8fab223a83emr548576785a.57.1777574643891;
+        Thu, 30 Apr 2026 11:44:03 -0700 (PDT)
+X-Received: by 2002:a05:620a:c45:b0:8c9:f8e5:9f12 with SMTP id af79cd13be357-8fab223a83emr548567185a.57.1777574643249;
+        Thu, 30 Apr 2026 11:44:03 -0700 (PDT)
 Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b3ff471941sm24955596d6.42.2026.04.30.11.39.20
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fbb09fc9e7sm44487985a.1.2026.04.30.11.44.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Apr 2026 11:39:21 -0700 (PDT)
-Message-ID: <616e4945-0622-422a-ad6a-6f8749a840af@redhat.com>
-Date: Thu, 30 Apr 2026 14:39:19 -0400
+        Thu, 30 Apr 2026 11:44:02 -0700 (PDT)
+Message-ID: <e555a8d2-b319-43eb-a4ae-7c9b3ed995e0@redhat.com>
+Date: Thu, 30 Apr 2026 14:44:01 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 39/54] selftests/mm: hugetlb-mmap: add setup of HugeTLB
- pages
+Subject: Re: [PATCH v3 51/54] selftests/mm: va_high_addr_switch: add setup of
+ HugeTLB pages
 To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
  <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -121,23 +121,23 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
  Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org
 References: <20260428204240.1924129-1-rppt@kernel.org>
- <20260428204240.1924129-40-rppt@kernel.org>
+ <20260428204240.1924129-52-rppt@kernel.org>
 From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260428204240.1924129-40-rppt@kernel.org>
+In-Reply-To: <20260428204240.1924129-52-rppt@kernel.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: w6gDYkAx-cP5DuXqoKpSYVgkzGazjBUnZ62eqQdcQeo_1777574363
+X-Mimecast-MFC-PROC-ID: 4oQQFF-ruG8pg906pqKrlXKaCSnd4Yn1Gm8-EgqeerY_1777574644
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US, en-CA
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: iwizh5mtkmx6zgbj4jfnnk1ecdutmqx8
+X-Stat-Signature: 8puqnybfubmhi1534cr4ecgx4p9y4frq
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B48C316000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 60A7A10000C
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777574365-826405
-X-HE-Meta: U2FsdGVkX1/YzQC8h5N1teKMVm9UfAVq2icsHqtOq4tuomPSWoDvXg0Rn2KqqV4qdmBJPxoiSCRoFfhi1BbRa5H0WwbSaFayLAF2soLmQY9O15u2saAQW5Op0hATZx3UlojAcaoXUVqPMTl1WsvaEefIB9WfkuoqWoGXK4dKMyz0PyNhm5nACFsbDLGgU8zoENPQaRecBUxkID9o0n4EL3lVU9vY4e9dThXV46mxXjk2egQ65KTgEQHNohVcFJQl2vfppxezB/OXKBKzc3SOlhnIzhmiyONRSMB8ehhLOU+YJV0+bDHPz0LatsyFvVWvA+aVRMtsjU/eQ7bNzY21M9LQZDa/ZsJyL1SOT1ltcGPbB71wvUDzlETu+aXi5V98PUVGekRmhX0YONQox9VDrXtz05ANZH1wHmbxinrvDQmaxSTPJ+qr0oAn9O6gR+dfEUhxtuA8Yereaz/SPnlWBVW8i2/l+hU/2M/hKsbpKqBV6vQ3B7GuVd9JF/kYnf4MuoV0jIdtM24uEjyzndbDP2PiEJs48I7bxQhJfhdyXIBnrauLsAnGWR6riobWQ/zho2+ngvJiwxSo9PzTDZ9+kruowxTb4+5XDft/Gl1q4uZHvqe0O9pra0CmpbVnOT0688IDNKdROGBLLdp/FAIMDNWa1Hkfv4+JMhM2C0Ne7h5ihMmewQBbPz9TAIo1Rr63vKQXFazENd4hjTIOQIHCF15v1WkVU6LeclBaq6/IG3S/fJ16u7aHjaLprqoa8Qfx9tkl9W/7XUDx07EVMA0H4ZMAGxGereU1W3PUT1OCYj56QxR8R1q5NKARqKcDJVnT8oKIL3+Q5rWGJBJCyNSzoaLLfqfP9CRt1b9N1hVgr53oYpx4x/u9FQbIUVRjQ9mHWP2OXYOG7XI/o/ANtjeHzXxFNdmlirW2AkUqgEWduIBFt/dqWte7XQXCb0PUERZSUcDKA+QGIMzwT+0RRyP
- LOHc/OkC
- 8nSKYO57g3c3Eh4sigcXexWO2K7ZSxFW4n7hiHS0Nm65v71owaMJDAHVItj9cLVy3N3BOItYTaBYYvIgywfTf2Gw8FnjaGYqnaVoTkqOMa09pCQlFxJhvt/dW8pn0+cAO37u08QpEBOnC8ldks0w5AsIh2FtMNS88vmrGmm9rNfVZDsJnZw2PbyiLWzOC0naFO/5vezZ72FSaO0KwQCoojpsx8bYAgM+FhXyWZPyQeDqVo+ZqQsm7Uupi9l1ywtemuivpMDs7UEaO40qhu2pOiwyyHABn75Dvfo7Xr9MCj+1d/rpChpldz6UzRriEj49lN21BBB8kzcbmvz93vgIjqwjhtuLN6h9VWTXj6QwrDVrOMdgtwJUpNIihK0ZCnpKjhxUjrk1glN7Midng6cTXu/8lup6ycreeftSDO6OvGN3CgddQjn9360UJwFLF8OBMuRw89IrE/JVxag3aCUuKN+YOSgSNekM+AIVA
+X-HE-Tag: 1777574648-299768
+X-HE-Meta: U2FsdGVkX1/KgNKLZ1Ofme8xrgygv4UVm1TMsXk9Lz7vXmd+7ZUD2yIVMWO7YZSkx2BHw2ZAk5DHN5o+bVbRbuI0726B7k3ZTzRv/xQ/6tm4uOCGNESO36h6nJqxcHhF89jSeRfreHV0FeHf2t4+aZ6H8ZDi7K0bl+6B7uFpktrHyzwUO8VkP8m8AM+z5eej7qz9sq0HyKHfYhBoeEuskAnws2vkUMdSAhKDsIKy2T3M2OchSBEpYIjGaryve05XSGAlzQKTWyYrV0StcSNEGcNiv+3T8LhWGEwwIZiZsbpWW/ia0B3KTSyFu9fZEOQYI09Rn/4wXvTu06ZMPR/NLVGtfDaMOi9leeS/4/awn7JDoKESy2WpsuJ9HIbrf0K7QGRvoK8M1ZebZSKl5hrqiFsFK9M8SRxz0MUhGGxLd1mcmNvWYDBrMVLdh4MXDqPH2a2nmz3+laYBon4GpniAlHqkCj1MZtHalZHnmDByzA4cvXVP2w1uWby/c+v9a7EKFuKe6eP3i50mGd33/xFLY6xq+6quFExOwYl6ZO0njRTy6MAwbeWtYW2q7H8pCEu4c8+MqO3ryi26SNAQYx+pa7ADQxy1oFCTgAjqnE420N2bt4W6qb+OPeikx94ajQhY+hj5EvDWip2OvFd+MG9924SZKbmKeqEfA8KyHDKDlrBCXB1Hemqe4lwrCFPxvvoSiQzSWVyI7lpLUSu/YGrICDXZ5dICMoLEak+uMsMKVCuaMIRB+Gq/teaRVwzbo6Yu9cbKmLSzUefh0pByByuZkPp/DZ3b85WKRcno14AM505oDM1jTF9NkWjdLRQDS/NqFrAng7u90YStxKg8H4OaYBjaGWGQWlu8KnOiWNbl3GlxJ0eaC1BKJ7/Z6DUyUmM5CNciiYpaLQdDfvDE7azVoQR1ZBHQQZEtXd7uhMH30YtOJbRAKtxjK7t6g/s2zFgyBUSGSlIZnHgBmbIbXJp
+ 03l3wSFL
+ 1uN3AZu/2247EAD145nFuBUy821kbT/HYm92x2qp1/nD4CCQO0Gcq32HlJUlZfp70mgnYbDJQtX9bm+whIf2YSMQEV1k2Vt6tgq/jmKYt5Z9updkmfYpDW+4ysY0uVl/IbOnW2XQbmiAA1qSttOZCxHeYKrr6krVnOGpJdNWTGuj7T0bR+lFa6WayRJEYV94Ep00PwoHjMX5GaYcH0+s3tvIqlnxkzH05I4ZWyBFg7N1o9G+R839rC+3d8yvsIqgvdqa/FcbHJc2e8EgGolCEPMxr+ztMspbwXn8MnVryWTWgHjx0GnVgDIQ3SFRnwA/dOXhEA11zypascZLv108+4Yj6S4Dq9WNSoIuETGB7tTfUcP5vmW2HJ4Av9cfcVLImkpyqOzUpWb2DMjqaj16XsdEdk9RtRMJHA2PaogaRL4T/C9Bp65NQHZbkI55NfPltJ76xomnGixWRn3SobziKCn4fF8xSEzEB2gccsS7Xi3CLiu6shx3joN/+a3qoP/BpwiEHpse4K3z07pe70OOZeTptvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,8 +148,8 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2026-04-28 16:42, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> hugetlb-mmap test fails if there are no free huge pages prepared by a
-> wrapper script.
+> va_high_addr_switch skips HugeTLB tests if there are no free huge pages
+> prepared by a wrapper script.
 > 
 > Add setup of HugeTLB pages to the test and make sure that the original
 > settings are restored on the test exit.
@@ -159,48 +159,21 @@ On 2026-04-28 16:42, Mike Rapoport wrote:
 Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
 
 > ---
->   tools/testing/selftests/mm/hugetlb-mmap.c | 13 +++++++++----
->   1 file changed, 9 insertions(+), 4 deletions(-)
+>   tools/testing/selftests/mm/va_high_addr_switch.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tools/testing/selftests/mm/hugetlb-mmap.c b/tools/testing/selftests/mm/hugetlb-mmap.c
-> index 031085cb7d17..f12fc288ef4f 100644
-> --- a/tools/testing/selftests/mm/hugetlb-mmap.c
-> +++ b/tools/testing/selftests/mm/hugetlb-mmap.c
-> @@ -109,16 +109,16 @@ int main(int argc, char **argv)
->   {
->   	size_t hugepage_size;
->   	size_t length = LENGTH;
-> -	int shift = 0;
-> +	int shift = 0, nr;
+> diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
+> index 0b69bd4b901d..e24d7ba00b44 100644
+> --- a/tools/testing/selftests/mm/va_high_addr_switch.c
+> +++ b/tools/testing/selftests/mm/va_high_addr_switch.c
+> @@ -325,7 +325,7 @@ int main(int argc, char **argv)
+>   	if (!supported_arch())
+>   		ksft_exit_skip("Architecture not supported\n");
 >   
->   	ksft_print_header();
-> -	ksft_set_plan(2);
+> -	if (argc == 2 && !strcmp(argv[1], "--run-hugetlb"))
+> +	if (hugetlb_setup_default(6))
+>   		run_hugetlb = true;
 >   
->   	if (argc > 1)
->   		length = atol(argv[1]) << 20;
->   	if (argc > 2)
->   		shift = atoi(argv[2]);
->   
-> +	hugetlb_save_settings();
->   	if (shift) {
->   		hugepage_size = (1 << shift);
->   		ksft_print_msg("%u kB hugepages\n", 1 << (shift - 10));
-> @@ -128,9 +128,14 @@ int main(int argc, char **argv)
->   	}
->   
->   	/* munmap with fail if the length is not page aligned */
-> -	if (hugepage_size > length)
-> -		length = hugepage_size;
-> +	length = (length + hugepage_size - 1) & ~(hugepage_size - 1);
-> +	nr = length / hugepage_size;
-> +
-> +	hugetlb_set_nr_pages(hugepage_size, nr);
-> +	if (hugetlb_free_pages(hugepage_size) < nr)
-> +		ksft_exit_skip("Not enough %lu Kb pages\n", hugepage_size >> 10);
->   
-> +	ksft_set_plan(2);
->   	ksft_print_msg("Mapping %lu Mbytes\n", (unsigned long)length >> 20);
->   
->   	test_anon_mmap(length, shift);
+>   	testcases_init();
 
 
