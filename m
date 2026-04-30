@@ -4,86 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FCFCCD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 16:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25E90CD13D3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 16:57:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B980D6B0096; Thu, 30 Apr 2026 12:56:17 -0400 (EDT)
+	id 9027C6B0088; Thu, 30 Apr 2026 12:57:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B48736B0098; Thu, 30 Apr 2026 12:56:17 -0400 (EDT)
+	id 8D9736B008A; Thu, 30 Apr 2026 12:57:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A85676B0099; Thu, 30 Apr 2026 12:56:17 -0400 (EDT)
+	id 7C8BF6B0093; Thu, 30 Apr 2026 12:57:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 972226B0096
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:56:17 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4772B121CEC
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:33:07 +0000 (UTC)
-X-FDA: 84715766814.29.60A2A37
-Received: from mail-m825.xmail.ntesmail.com (mail-m825.xmail.ntesmail.com [156.224.82.5])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E488340002
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:33:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf12.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.5 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BDCB6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:57:50 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB75F1C0D3C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:52:06 +0000 (UTC)
+X-FDA: 84715814652.09.3CB151E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5CADD40014
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:52:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LWIRUV1r;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777566785;
+	s=arc-20220608; t=1777567924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4q250BtEv4viv+ANI4nfZNkmuWeV+IpraVi9dMDXEkE=;
-	b=tqJfjul8XPThQhLGJz9s0xvFLcmezgZJAKYMsrQo75LEyYHpNLxy4HNuD4+y4peI+eZk1x
-	7d5ENbDjTTerA6GoPfUNmLjaif/yuxH6luvYr4ojaeMFyCiQxEPSv0UL32v/2YPwoDO7S5
-	YmjHO4Be6XuYzLQmjB+wQgO6aH3vEh0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf12.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.5 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777566785; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/ACxXmJUFaqpJM+rPsMg7ZbkwHWE1746v7RFgiLlxcE=;
+	b=8OMKQsj46sCiyZBJaXA2pkh6ZwiGWXQ0gy1u13yenXJ9GHjOAEvKRHmOswJIBSbQnmaKR7
+	diuFudvZazc/cF67oCuIrCLOsI60LDyvcVnliO7pltC17dIXnMQyhcvJztqfXoAAq6mkOd
+	8rDFFu6EK7wjbHKYv3d4mFP65ZtauNY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777567924; a=rsa-sha256;
 	cv=none;
-	b=b/FGP6v9hIwPjYrpx2STDczsGMY3XOpoyYn6F/w6EWTmWdqnSpZUuqsbnc3fgz4IX7E/dI
-	VRMzfn2gLxHBg0yx2/4FPKUlv/quSVNG390c0BjWFqq1tWPrNXQJDhZNxung1TdD2vMaZt
-	sFRlKhP85DvnGCTiu31UhD5eXrlgZxo=
-Received: from localhost.localdomain (unknown [IPV6:2409:8a20:e24:8c24:8810:8f74:8c26:2])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 199a96d50;
-	Fri, 1 May 2026 00:33:00 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH v4 2/3] mm/page_owner: add NUMA node filter with nodelist support
-Date: Fri,  1 May 2026 00:32:46 +0800
-Message-Id: <20260430163247.13628-3-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260430163247.13628-1-zhen.ni@easystack.cn>
-References: <20260430163247.13628-1-zhen.ni@easystack.cn>
+	b=IA7aaZciGIhNLYcyxUZY8O6+h5MQ/AR465VHSgmSXS/ko1HMolmY1P1mHAdOtmWneOWf9f
+	jPS3i07BQNf3yBciaCRegS4a7x8+IX3eRLK57EOmz94x0cv+3vAHR7NhmhWNt7d1/PRWMS
+	djiICSzUULEa1pNqg8wqY+MZeJEqGSw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LWIRUV1r;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777567925; x=1809103925;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=IxARCr1BqsacoLcWn5yvwiS7Qt+sQBTsSEDWAF9CTBQ=;
+  b=LWIRUV1rjOu2yAdUO7nrCQ25SkkTUEr46+L3OvUGIvdampqYBip863ld
+   hZN1R0R0C3u6kPM66iKQTyvWMNaZesW6y8IePfaITjnSK2t3A1IpINVHx
+   V8lGEn75tjdAjqGOGga5F4uQ+IdSJrbSCdmxZuGydVHksrOlTTXcREvkZ
+   pFksuWDrtoD21MwZhNWrqKqMHu/4yW9X6vqiiO+99vr1+CC7fJy9jHaDk
+   racZdXMinUewSkvprNKo3NbyXFY79ZlxdgO/NZr00mFRI5ZO+IKN4/Nfw
+   3TqbOtkRhQeTltXhrr7HKtBTXfx35Dwlqh+oh/ZPOeHrrAp0sUOStY7ql
+   w==;
+X-CSE-ConnectionGUID: 194smrfZSWuN0g7/1A/Gzw==
+X-CSE-MsgGUID: Fwyd6T/xR9Sd+Q1ufIi4zw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="88840936"
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="88840936"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 09:52:04 -0700
+X-CSE-ConnectionGUID: w73/2rcuTJSC7b5+rC67Cg==
+X-CSE-MsgGUID: dZ3t6KxcS/KxZ3znVMJPcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="258221482"
+Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 09:52:02 -0700
+Message-ID: <c5949ae3-5d35-4251-97f7-3b2e4c1901e0@intel.com>
+Date: Thu, 30 Apr 2026 09:52:03 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ddf3c8d010229kunm7d32d45d8a84
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDThkeVklJH0tMQ0tMSE4YGVYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJT0tCQUMaSUtBHklPQUMYSU9BQ0NKS0FDHUxPQUMYSU
-	1BSVlXWRYaDxIVHRRZQVlPS0hVSktJT09PSFVKS0tVSkJLS1kG
-X-Stat-Signature: dxo4oa8kcn97edq7o1ysiobr7cinwg3t
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E488340002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] mm: Make per-VMA locks available in all builds
+To: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+ Lorenzo Stoakes <ljs@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20260429181954.F50224AE@davehans-spike.ostc.intel.com>
+ <20260430072053.e0be1b431bcff02831f07e9d@linux-foundation.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260430072053.e0be1b431bcff02831f07e9d@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5CADD40014
+X-Stat-Signature: nngmeujs8mfrmczdjuk5e3k3okhmispu
 X-Rspam-User: 
-X-HE-Tag: 1777566784-982256
-X-HE-Meta: U2FsdGVkX18qnenBBetOYTswLiWKbAGI+ytc2UGsHbQj/dOeUGoqMTN6ra8KM8Qm4ezEYCOYCcd8g9EbKXEGf0OUKtwxSmtsut/3MuR+c4dxk9h3P7vXZfS2pUVNj+0jLkOR7pbTDxWesLasPM2kuQSYqyaUuTfYkPe/Zo5Qg9o0cPY/X54nmbTZu0/7JRswST8sDGpzU8rjJIWBNX1c5yfgmP9HMLqAH5CTY9RTQNYnyc6uKOa7Apqt4Kskhgq+ecfKYizLU7yKAd46DdAZhYPvnIQ2+6cFSc0zIgQAPT6uKe5LTTMBvJFOBr+UrjXbd98RwqWLh5w6sbg+/FtJvA03ZSk44nDd/g8bs0Zy5SaNYjXiUb3wXZkStL25avgMCjPTZZuz38kjhn7LKjKKipnf8YAK20i3cYfofjWhqYMsFLq8Zvc+3vYPgVF9SO4w5JXW+WP3LMYvBX5orYN+EiwBkLuBot2rY2+fRFrx5kAHeKemeCCbw8yg65owWY3HyR4syD239cgE/1X55LaNajO34uue2D/Ug9r/0xKT5qXb4hKqIXl/x/NmkPimEQ1RZ0gnAY7CaxxTG8VrAlEAm3wogEK+rM8Q33rMaT19wz1gx+2D/FG/7GfH4+MFFgO1ZIYysjqg0uJawHpJNZioC12hOu5viHayybpVzk7CJn9iejLmFG5dTMsGrwRHUzQft5AC1iDDaQu0JiVNGoUh20/TnrC2CX6X+1izv17jQD+Cg7A6eIFy4kF+hJWrRBgUiSrKcxaA66a3RCpCnkz9M2jEwJHgsvHlSCjddcjZXThb8UZV2LdGjI3jqNioDj/ubxlLFpOk8mSa9LpsM5AVUyCIhJRzF/7mC5c2YwKPmyJXLfEwI2dyiUMUueUM1f6fhmMJF5RwP10jQBngFEjN4eynBt5Z2kJJdiQ59oPuq+2IKTUdLEK1wItilN0DH3RAqqnmrBvZJ2AZFvEB7il
- cePZLUBK
- Mpm0BCpEhCgr3n4qC7yp9XUaW0Z//53+HzkV7nE2amieVp8NAaHbvaV0ES/oXSEc8CC8T/cWOqppQ3ZhajAHvGdd1YrFr4h9TfxUswcp9zrjsiWBXD6L1zRxoexeGkk6MIPPOsZ8uP4FCZA2OFRjsy3RJ7pdBLp+eii1k7ZI3lBLW+p4=
+X-HE-Tag: 1777567924-668058
+X-HE-Meta: U2FsdGVkX1+NUZzEQgWBP5sISONGxdaSuXmDpaRYOUgGC0TYNfHcAYj5C09miKrNB0Qi0gH6r5/uxopc4MKNM7gYZRnGg1aP6XIYXVjFTNntG+1THhbK5c1C1YuLFRupZm2iQkxDFb+5/SsVhwCje7f7+rqETfYGRwvUeJXP8GJ+mO/zOb6tiRg3NkLA4vO7TR9EmdL9V9h/VOhXCYPVo//hkLaSX5KqW4laa4ufGxmdtEXkR5DHngv5qXSmUwrEgc9VBXSkQRRQk0ApfyY2+uM6m4kHzDkNewTgNCbdUgjPcb5peKYliQ5dccXGMs/iNHjGg1KWde8yNeFsufQfSiM27nNu2KxvfJu0DQBn9uK5lSnCqGCdeQvAbmbXnWsUEIRFfG7bFtntUIEJOUSnWohrSK2s2pMO9rjFESZW2y+VQJOaskCNBStEP48AKZsb7TV1OiTG5LSOOVvLM3Rp3981Ol0SxRTCayATEWGOJhZ7DSusT/D4uhlUiftb4rcRdKsPhZ9O47TCpAHJqlF7/duON0jluFsAiduiIAWU3d7Ay2dHnIcWwEB8Zvryv0DQ2wawaBLJLej/7Dx80hHJ3H8JzotP3p7e525J8+AZw3PmrVKsrCW3lPQw15Mbzn10kMp+LrPjxc/kpv9Ushnw68bPVxMuMA7OtsUeJGOyx8jHElivym5MJ3Z4pfubMVOpzJUJWlWz1NOfCNnAXnmTVGb4FGpQinSDByx7UvO8Avl7ittAevDzPkhrTKhG8vy+zmI6/cd03YdMDbD0P+KR2wVFdrWslDwcjwqvxlqciEciLCaPLe52QvitoXPe+Mv/K877luqqL8e+AHvaEdvbs3e+lMK0H/nFI7akRWKVA+qRWs/Sxg8KLlrhspyNcSKh8lyg8YsY39FCPGro9tyqoJ6maU8OnFqZQSVrH6QhzlpvHC/CIccKiOYaYZAXvpbXnhir1OQcTin9g7aqo8U
+ UQOxZglG
+ ys/nKWdzD2f3KJPZJpMI0Qg6FtV2x0Yj6Tsiqe9vDHjFFtavFvgxgR/DLEaYDoHcO9V9ebdMVP6Q9R3B0qNpYK/JuQ5I41BId3+0kCOWCILkIOzuCe8qMvlM/lv3MJCM5ClduNODAbQdn5oXMmoID4ptZRmDwktNR5bCzsHu7Huhe9BL3i44xB0KbCf7pRLSzkJ/HlljA6vkDEiHL8efTqHCm5lWV7KLPKwV0OcKiIyo4OvWC1xd7uqSrOaaGokh0mQquZaGUbMkRjHjlSJFu0GJIfM70VcOMz3uN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,197 +151,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add NUMA node filtering functionality to page_owner to allow filtering
-pages by specific NUMA node(s). This is useful for NUMA-aware memory
-allocation analysis and debugging.
+... adding all the cc's back.
 
-The filter supports flexible nodelist input formats:
-- Single node: echo "0" > nid
-- Multiple nodes: echo "0,2,3" > nid
-- Node range: echo "0-3" > nid
-- Mixed format: echo "0,2-4,7" > nid
-- Clear filter: echo > nid (empty string)
+On 4/30/26 07:20, Andrew Morton wrote:
+> On Wed, 29 Apr 2026 11:19:54 -0700 Dave Hansen <dave.hansen@linux.intel.com> wrote:
+> 
+>> When working on some x86 shadow stack code, it was a real pain to
+>> avoid causing recursive locking problems with mmap_lock. One way
+>> to avoid those was to avoid mmap_lock and use per-VMA locks instead.
+>> They are great, but they are not available in all configs which
+>> makes them unusable in generic code, or if you want to completely
+>> avoid mmap_lock.
+> 
+> Did you see the AI review?
+> 	https://sashiko.dev/#/patchset/20260429181954.F50224AE@davehans-spike.ostc.intel.com
 
-The implementation uses nodemask_t for efficient multi-node filtering
-and nodelist_parse() for flexible input parsing. Empty input clears
-the filter.
+I just went through it. There was some absolutely valid stuff in there
+like a bunch of CONFIG_PER_VMA_LOCK references needing to be cleaned up.
+It also made some good points about the binder shrinker sites that I
+think I cleaned up for v2.
 
-Note: Access to nid_mask uses plain load/store without locking because
-nodemask_t is too large (128 bytes) for READ_ONCE/WRITE_ONCE. This is
-safe for debug use: low-frequency changes and torn reads would only
-cause temporary inconsistency in debug output.
+There are three very valid structural problems that it's concerned about.
 
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
----
+First is that lock_vma_under_rcu_wait() doesn't use
+mmap_read_lock_killable(). It probably needs to, or at least there would
+need to be killable and non-killable variants. That's easy enough to do
+if folks agree that this is overall something that should go forward.
+I'd prefer to hand wave it away for the moment, though.
 
-Changes in v4:
-- Remove "-1" support, use empty string to clear filter
-- Use strncpy_from_user() instead of copy_from_user()
-- Add concurrency safety documentation for nid_mask access
-- Rename fops to page_owner_nid_filter_fops for consistency
+Second, it brings up concerns about lock_vma_under_rcu_wait() deadlocks
+in the face of other per-VMA or mmap_lock holders. This is very valid,
+but it's inherent for users of mmap_lock. I think it's just a
+documentation issue.
 
-Changes in v3:
-- Remove READ_ONCE/WRITE_ONCE for nodemask_t (fixes compilation errors)
-  * nodemask_t is a large structure (128 bytes) that triggers compile-time asserts
-  * Direct assignment is safe for this use case
-- Add comment explaining input length calculation formula
-  * 6 bytes = ",NNNNN" (comma + 5-digit node number)
-- Simplify "-1" check using kstrtoint() instead of dual strcmp()
-- Move nodemask_t mask read outside PFN iteration loop for performance
-  * Avoids 128-byte structure copy on each iteration
+Third, Sashiko is _very_ peeved about the lock_vma_under_rcu_wait() goto
+loop. Broadly, it's concerned about fairness and livelocks in the face
+of userspace being able to compel 'goto retry' to happen forever. It's a
+valid theoretical concern for sure. I'm less convinced that it will be a
+problem in practice, and I should probably hack together a torture test
+to see how many retries actually happen.
 
-Changes in v2:
-- Use nodemask_t instead of int to support multiple nodes
-- Implement nodelist_parse() to support flexible input formats
-  * Single node: "0", "2"
-  * Multiple nodes: "0,2,3"
-  * Ranges: "0-3"
-  * Mixed: "0,2-4,7"
-- Use %*pbl format for output (e.g., "0-2", "0,2-4,7")
-- Use dynamic memory allocation (kmalloc) to handle variable-length input
-- Follow cpuset's max_write_len pattern: (100 + 6 * MAX_NUMNODES)
----
- mm/page_owner.c | 87 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
+The other way to fix it more robustly would be to acquire the vma
+reference under the existing mmap_read_lock(). I _think_ it's just a
+couple extra lines of code, but I haven't done the legwork to flesh out
+how that would look.
 
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index 28766c854d02..68dacf01c822 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -67,10 +67,18 @@ static const char * const page_owner_print_mode_strings[] = {
- 
- struct page_owner_filter {
- 	enum page_owner_print_mode print_mode;
-+	/*
-+	 * Access uses plain load/store without locking.
-+	 * nodemask_t is too large (128 bytes) for READ_ONCE/WRITE_ONCE.
-+	 * Safe for debug use: low-frequency changes, torn reads only cause
-+	 * temporary inconsistency in debug output.
-+	 */
-+	nodemask_t nid_mask;
- };
- 
- static struct page_owner_filter owner_filter = {
- 	.print_mode = PAGE_OWNER_PRINT_FULL_STACK,
-+	.nid_mask = NODE_MASK_NONE,
- };
- 
- static bool page_owner_enabled __initdata;
-@@ -687,6 +695,7 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 	struct page_ext *page_ext;
- 	struct page_owner *page_owner;
- 	depot_stack_handle_t handle;
-+	nodemask_t mask;
- 
- 	if (!static_branch_unlikely(&page_owner_inited))
- 		return -EINVAL;
-@@ -700,6 +709,8 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 	while (!pfn_valid(pfn) && (pfn & (MAX_ORDER_NR_PAGES - 1)) != 0)
- 		pfn++;
- 
-+	mask = owner_filter.nid_mask;
-+
- 	/* Find an allocated page */
- 	for (; pfn < max_pfn; pfn++) {
- 		/*
-@@ -732,6 +743,14 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 		if (unlikely(!page_ext))
- 			continue;
- 
-+		/* NUMA node filter using bitmask */
-+		if (!nodes_empty(mask)) {
-+			int nid = page_to_nid(page);
-+
-+			if (!node_isset(nid, mask))
-+				goto ext_put_continue;
-+		}
-+
- 		/*
- 		 * Some pages could be missed by concurrent allocation or free,
- 		 * because we don't hold the zone lock.
-@@ -1054,6 +1073,72 @@ static const struct file_operations page_owner_print_mode_fops = {
- 	.llseek = default_llseek,
- };
- 
-+static ssize_t nid_filter_write(struct file *file,
-+				 const char __user *buf,
-+				 size_t count, loff_t *ppos)
-+{
-+	char *kbuf;
-+	nodemask_t mask;
-+	int ret;
-+
-+	/*
-+	 * Limit input size to handle worst-case nodelist (all nodes).
-+	 * Worst case per node: ",NNNNN" (comma + 5-digit node number) = 6 bytes.
-+	 * Formula: 100 bytes overhead + 6 * MAX_NUMNODES
-+	 */
-+	if (count > (100 + 6 * MAX_NUMNODES))
-+		return -EINVAL;
-+
-+	kbuf = kmalloc(count + 1, GFP_KERNEL);
-+	if (!kbuf)
-+		return -ENOMEM;
-+
-+	if (strncpy_from_user(kbuf, buf, count) < 0) {
-+		ret = -EFAULT;
-+		goto out_free;
-+	}
-+	kbuf[count] = '\0';
-+
-+	/* Support nodelist format like "0", "0,2", "0-3", or empty to clear */
-+	if (nodelist_parse(kbuf, mask)) {
-+		ret = -EINVAL;
-+		goto out_free;
-+	}
-+
-+	owner_filter.nid_mask = mask;
-+	ret = count;
-+
-+out_free:
-+	kfree(kbuf);
-+	return ret;
-+}
-+
-+static int nid_filter_show(struct seq_file *m, void *v)
-+{
-+	nodemask_t mask = owner_filter.nid_mask;
-+
-+	if (nodes_empty(mask))
-+		seq_puts(m, "\n");
-+	else
-+		seq_printf(m, "%*pbl\n", nodemask_pr_args(&mask));
-+
-+	return 0;
-+}
-+
-+static int nid_filter_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, nid_filter_show, NULL);
-+}
-+
-+static const struct file_operations page_owner_nid_filter_fops = {
-+	.owner		= THIS_MODULE,
-+	.open		= nid_filter_open,
-+	.read		= seq_read,
-+	.llseek		= seq_lseek,
-+	.write		= nid_filter_write,
-+	.release	= single_release,
-+};
-+
- 
- static int __init pageowner_init(void)
- {
-@@ -1069,6 +1154,8 @@ static int __init pageowner_init(void)
- 	filter_dir = debugfs_create_dir("page_owner_filter", NULL);
- 	debugfs_create_file("print_mode", 0600, filter_dir, NULL,
- 			    &page_owner_print_mode_fops);
-+	debugfs_create_file("nid", 0600, filter_dir, NULL,
-+			    &page_owner_nid_filter_fops);
- 
- 	dir = debugfs_create_dir("page_owner_stacks", NULL);
- 	debugfs_create_file("show_stacks", 0400, dir,
--- 
-2.20.1
+But the key questions for this series remain:
+ 1. Should/can per-VMA locking be available in all configs?
+ 2. Is *a* lock_vma_under_rcu_wait() implementation feasible and useful?
+    The implementation in this series is highly imperfect. Is there a
+    chance of a better one or is it just impossible?
+
 
 
