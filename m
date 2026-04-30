@@ -4,106 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C8ECCFA13
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:45:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6539FCCFA13
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 20:46:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3523E6B00A3; Thu, 30 Apr 2026 16:45:07 -0400 (EDT)
+	id CF1886B0095; Thu, 30 Apr 2026 16:46:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 329816B00B1; Thu, 30 Apr 2026 16:45:07 -0400 (EDT)
+	id CC9076B009D; Thu, 30 Apr 2026 16:46:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23F136B00D4; Thu, 30 Apr 2026 16:45:07 -0400 (EDT)
+	id BDE846B009E; Thu, 30 Apr 2026 16:46:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 140ED6B00A3
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:45:07 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AC4B26B0095
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:46:58 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9557401AD
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:45:06 +0000 (UTC)
-X-FDA: 84716401812.20.2E2972A
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DEF084000D
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:45:04 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RFk8g72o;
-	spf=pass (imf07.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5656F86090
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:46:58 +0000 (UTC)
+X-FDA: 84716406516.20.5CFED2B
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 718F6A000A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:46:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BGRCdKiD;
+	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777581904;
+	s=arc-20220608; t=1777582016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JvD+uC7yGlafUSeu2Mn7DdblXz0CDLD8RU3/xZfrtps=;
-	b=mJulevZn10rv4khwjWyJMYnXt1QVY5rcsdIfm/UPyNtJa1PrF8yXMvI7nwQ1VFnmVm9xeD
-	DpzQj6SdH4938gcUIcQbDf9O/DjyofoxOiYYbvCEcDmoorKV5UgJvRaLJYgicA4ZCp4jZ2
-	hSrbvROgX9FK8+GfGXxXHMZ4nreRQzY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RFk8g72o;
-	spf=pass (imf07.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777581905; a=rsa-sha256;
+	bh=jkf0FFUPX2DRAnC583F6L6pCpn6Z3D9oHd6oyEqtOrY=;
+	b=H/vWdub4lh2u7VQZfEaVg65U7Ch6SZuoSF1mnSodKG2cX4g8j7Upfty6FcmfqHookPpLmj
+	+tr7peE8mIxWRnaWSnB6AqLyBEDdFelw6FCuUy9ntuKDe7kF3MGYB7ZEay0RvadlMV1Ooj
+	DWiWOVyZHtrdl5navNdtwg0X5e8DmzM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777582016; a=rsa-sha256;
 	cv=none;
-	b=eeGxN/3QBELujD7x5FrGa4LQ9nnM5brybt/vWywZULhpiE8b+frzEmyxQKpIt9472C/t9Y
-	y0u3/Q0IBcDTbUAcaKueAtwlUl+eCHk8ohw0TFUMzbX6zUTD3xeTd/HGzNZ/kVw/jbRIx/
-	JDOij464408nIbv9EAVIeBzu7dv37Wc=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b2d3a9e149so11190665ad.1
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:45:04 -0700 (PDT)
+	b=no81topqgosgFtT7zcWH3LzGr5cgQLsWNxowfDQsuU3BhMxLR1f3fo6rnBLRWNtV/EPq94
+	grIkx4i/fGGC21JTcPfGyazJxHWdg/NEnp4DKOEFojDGABFDWlkyeZ3biU+aIOeZDl8SMr
+	n4CfW1+/hvAINw0ToQWyQTapjEpDwTI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BGRCdKiD;
+	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82f9fdfc965so645319b3a.1
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:46:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777581904; x=1778186704; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JvD+uC7yGlafUSeu2Mn7DdblXz0CDLD8RU3/xZfrtps=;
-        b=RFk8g72ocykS0KdNTXBwzONUxQ1QOhClxpk3G2XIQO888zyQndySI9lNDb4t2G3nAY
-         8gFWCsIyaMWta809FlGDFqU0Zds+5PMnfa1LESybgZViSUWaEqtIZ/Fpuzx0lIsK3NHR
-         1MXZHXzmRChmvX/UU9e2QVRdsNO6VH1E+yR0Ofl726eM0zxVUJnh3L79yuUDwyCn0aFA
-         FwZZFDsRRo4R0oQ6PwLVOUsDs7hO3J/wiMCbSJmq4a2abXoSW/C6aBAFr8s3Y+Y0eAxe
-         7hqlVVgPPOBGiPDNTLpAGwk72vtPXr9l/qrXixCFKjOveuPwgOoPtnvkknvD4bGg7v25
-         UdQQ==
+        d=google.com; s=20251104; t=1777582015; x=1778186815; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jkf0FFUPX2DRAnC583F6L6pCpn6Z3D9oHd6oyEqtOrY=;
+        b=BGRCdKiD+4BC7WT9gExU36EcUJCRqrWAiuv/1BPuZLIdZcMOm15Ap3/jiMx9ZLXP1X
+         J/tl1aATTO/jxOj+gXJEy6MkTCUC29yaoCWRvZ57OgJFF2OEF+kMMhYDZSeQRbMgTl06
+         KS/sclM+0xqgLHF4GBAfM5kzP+Kk3mcfrUHwrEhoxSBhLhnK+aM2vogLxI+lMtzFkPjY
+         jCv/996fQ/MzYSwO6+1d1LKDIEs0mUxuhhyBPSeKD6+JjCj6ThyhJbrlBkIHWNudcru2
+         JXRu/95PTxo1R58b6jPmCmgfmyMJ43XwyGBE9QrZd9FpjmhBKBjmiSEcUVWww6eeEvFK
+         E1pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777581904; x=1778186704;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JvD+uC7yGlafUSeu2Mn7DdblXz0CDLD8RU3/xZfrtps=;
-        b=ctzUrfyTtWtWBouNrDCDnTm7oeTAAAJ68f7fqrz8xTgkOlzrUP5tYv2UGMdHapaED3
-         /HLmu1RfgbFznUuDEtAwYjjwQDYtEoDGbFGQLuH2m7WSGI9g7VhgxMdtf0mA6qRRrFcy
-         GGDMLp6SJf/8xqtEt/kFbP4mUyQKLpjdTpeOv8OI7lMLV07ev6nFC0h/uIY59OSBrizB
-         ikiSQsAhxEmj+fbBXEbxR613lPIOMFzx6wy+lahE5NysSVUsGAGOitKndGN06kcOwV1q
-         21GmJhAFUbghwFYcGjWY/t7FBMkfoSEGGHlmKK8HXGk5EkVvWLCjrUR2TfDYtsYOt1Ri
-         zqRw==
-X-Forwarded-Encrypted: i=1; AFNElJ8rENuIRPzlj+VMvG62PTR/ta+jyNc1H0gXXgOI6pGXURuD5nanBc8Gjg9xPO5O9xxSxXD0YXFCWw==@kvack.org
-X-Gm-Message-State: AOJu0Yw75hluMPzkN4MktKMLDj04O12hgM4e+R12tbpvqW1XgmKs0kZL
-	eWmW9WpLvoXoMC/p3UERfk/+GzdV3Tb3Narsd8BX11tB8lmLRMjyklmDWbng71xDnQ==
-X-Gm-Gg: AeBDietriDPh2+B/yNfDqz+4WtnGauAOQtyTLu3neFrPLvDcWE2x0W+V80h7MYrGfa4
-	+NNxpvdzkUN5j04MG4cJtjhCdl3jP1720o2/tsubTSDHzXMOtqTxvhP+cwQcbDQZcNtHMMAHgVO
-	asdEYEDrKqkcN7QfINJq4ItSpKiBspuwYEMUCBb7kJdsDY8y1JMSwX0C1ry6JcSLIKUU2AA0ks+
-	fUk02ug9yG9mXT8MjDa6xXXMiThtaH7PsB14z83jtjE5Ce+ToaTXa7kFri5TamaJpjZftijbn79
-	wtDAdh8UrlBgPm7rOjAV7uYoMU0Etfx/OfiEGczDbIAdMeDXpSIhhBC6BZWhrwLHHMYwDKWVm8T
-	xCb0Xvx5a3CW3cZS3kcav4wiszF+aa4H6M5mi+shN0u6q0uTAnkEltMIZ3ilW2rtOyNngwasbbC
-	BwWSgm9VVgtlxtJ58x8TinPDrNEBKoijEreBJdWnPRJnJ0NpaweZwb4+2TxFMeFOw6wh35/wnf1
-	H881Q==
-X-Received: by 2002:a17:903:200a:b0:2b2:6cab:3127 with SMTP id d9443c01a7336-2b9a44c5da2mr25533465ad.20.1777581903207;
-        Thu, 30 Apr 2026 13:45:03 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777582015; x=1778186815;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jkf0FFUPX2DRAnC583F6L6pCpn6Z3D9oHd6oyEqtOrY=;
+        b=jHfmT0WCEZW+JoSqxEcPb+gLuzeGl3OhOZTDuLqIA7b2GiJkkbgtgw3fTcOyr8C1gf
+         q4ZdUkUhhUDwWAka0lv68J1Sodwkx9gXBAUo4xgeUnDPR1A/2gS5BuF45u+8IhTdAMkV
+         1Z2onLqgE5OQ+1HybTpof0XAObakb4XlAQoALTtHjyg34GKKFBHL/qzU+fv7x5QQSddx
+         EDmGgXSayzcRlPV7zqm2DHQEm5vEwg8OpCZY0uf4MgK5qLcFhF/ZGrrrlN5iSKVDq8hR
+         /gu9zH06ikSMaPVGuodQ6viH7u9uYW7Ch5QhelIhvRE2T+I5Fluu1PsljRO4VCofkjnM
+         FT5w==
+X-Forwarded-Encrypted: i=1; AFNElJ+Nv2znXZ/1EpQra85cf6D5JJvE6iFIxq9ELKVH3Dgp1XRSaHFdhfVetyh3KcMGsxB917WXr1pfuQ==@kvack.org
+X-Gm-Message-State: AOJu0YyF1Ao8YRPyvKunq6ZoMuTJL9mdgUXe44c6TjmBfb/e/bUteaQz
+	0uXmyHYbE3M35JC8vPuxMYNJzbDmEz7YMMzg+dIg0wA1KQWieXISzp9Bv3fn6/geNA==
+X-Gm-Gg: AeBDieuMe/OYFodlmR70Saqe+zSfVqRTGGOS5dGy2WkpCk/BXx9Svq7M0N+pDP8lzd0
+	AhnqYoD+h15MYb0DhOs44hi0Kyfs0Ii2Z+USJdKRMRc+a5eeVPoIgVYobgIvgkEDxx8ziDCWwVM
+	7TXbhkmYLv8c4Bt895zXMav5aGIJ3K8AL9X50k0M1RfRu0yWBrBy+ES8rpcLYpxU4X1lpLXkj3E
+	ABx2O0CrXtmbL5MXhQKK4z3rMOZz2o+fqolhB2VqVTARCu19/kyVr3r6SediYbNmTj07S5ZGvtM
+	cGoajEhEcBVrvHFsZM6bdTIGi+z4OHtLPJva5OtPUfqvn6BVCgdEUk3341YFeHdht0W8CrEPPBI
+	XR3v1j69MN8fZNWywJeNn7rooGfWbvSAIY9rk2Dm4wVoB8pMqplFXSZ7ZLTp31ugsmR0g5nRgOD
+	EpQAJGf/1680rnJkd88HyBSAM4y2TXbLxERZm9bbhGY6px4ChZ+Ra0JUf3XM2Q1IcQqMlE1s31Q
+	iMU7g==
+X-Received: by 2002:a05:6a00:2384:b0:834:dfb5:6e73 with SMTP id d2e1a72fcca58-834fe061295mr5131011b3a.5.1777582014798;
+        Thu, 30 Apr 2026 13:46:54 -0700 (PDT)
 Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9cae5cc52sm4845105ad.78.2026.04.30.13.45.02
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515ad8eb6sm491387b3a.37.2026.04.30.13.46.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 13:45:02 -0700 (PDT)
-Date: Thu, 30 Apr 2026 20:44:58 +0000
+        Thu, 30 Apr 2026 13:46:54 -0700 (PDT)
+Date: Thu, 30 Apr 2026 20:46:50 +0000
 From: David Matlack <dmatlack@google.com>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: iommu@lists.linux.dev, kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, iommu@lists.linux.dev,
+	kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
 	Adithya Jayachandran <ajayachandra@nvidia.com>,
 	Alexander Graf <graf@amazon.com>,
 	Alex Williamson <alex@shazbot.org>,
 	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
 	David Rientjes <rientjes@google.com>,
 	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
 	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
 	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -111,30 +114,31 @@ Cc: iommu@lists.linux.dev, kexec@lists.infradead.org,
 	Pratyush Yadav <pratyush@kernel.org>,
 	Robin Murphy <robin.murphy@arm.com>,
 	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Will Deacon <will@kernel.org>, William Tu <witu@nvidia.com>,
 	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v4 01/11] PCI: liveupdate: Set up FLB handler for the PCI
- core
-Message-ID: <afO_StuvUj1Rj-5I@google.com>
+Subject: Re: [PATCH v4 08/11] PCI: liveupdate: Require preserved devices are
+ in immutable singleton IOMMU groups
+Message-ID: <afO_ulcut4GNgEpy@google.com>
 References: <20260423212316.3431746-1-dmatlack@google.com>
- <20260423212316.3431746-2-dmatlack@google.com>
- <20260428185242.GB3825533.vipinsh@google.com>
- <afFICT9mSL1XG0v_@google.com>
- <20260430182532.GB13902.vipinsh@google.com>
+ <20260423212316.3431746-9-dmatlack@google.com>
+ <CALzav=dGpHEnEjyp8qc50iZrGeKJ47vjLvwtvkLCyNzOMJhozw@mail.gmail.com>
+ <20260423225253.GA3444440@nvidia.com>
+ <CALzav=fraXLgGs-XMc-=whMPhMbS99twFskGtV5Eo=UQ9mU5Fg@mail.gmail.com>
+ <aeqpJ7BeBtzoPIx4@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260430182532.GB13902.vipinsh@google.com>
-X-Stat-Signature: xjgrqpamzun56ehjpadpaei6dfmakoie
-X-Rspamd-Queue-Id: DEF084000D
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aeqpJ7BeBtzoPIx4@google.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 718F6A000A
+X-Stat-Signature: rbh35ejgm1s9c43o6qaeahefg9foumir
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777581904-14094
-X-HE-Meta: U2FsdGVkX1/HChAqwiArhhi5dMuQrUxW1sR5iJvg/nxilV6KFDpzFRA39wDqyyOKMA4+tZb9JZZLyO4c2LB2RqYH78x+VmUrHXLLjuwT5KRQcOPCX66OhCwFVV06HbdCDi9nPub+v2gd/lLaRihGXl9EKJ1lKQQuECf1fSPDUb1yTE43dQThWVyS5leyzLMHbdEsnG2XVkkh7O+8IF4z7QdVa8zdFnwY2+lxt2ipKTuz19gV9Djhqr4ss2S5mZ2VN3ZF5qN2TCepCYf3Gv8c22udC7m6oPJMiMrh8uUxzYUohIC961w5ntg3fwM2Tb7F0b6J8Os90Uki5BeCL3893+jQsI0FRglcR4J87xMh0/Yp+E3ek54Fn9zEQFF4AXt3zpXnkhN2Utrpfu7dFSYlgs9a6pGEp8xlRzjAosGpBs1GkD6aQIwDVKhRLDC7CXOLEyTp1wZVfdO68HtdpoTqszwRyn8ZXbE974efZ8Kuodl1jr2qCR8Ys/bTdEPsvJW4Ii/URv+d/3PrD63YkIHyCrQUtUbN6QxUmYhQZsNNduAkw732Gz4qZEhk3zwL+4VKUalm9N3BMm1gRBz8Xi4ZNW4qdZLCffepCsFgvrDMsRpK2WeydV7v6bAHpAOjgGrveZTpTMac2vKeW6v93jRTBCsC4LgVRKjSnArSX5Zm45vFdYlr5TZDbadzQGGDkS/4e22Mbd2evv81pOrxek5vsRdbpqV7DqA/Z2D8JLfC9S0w1D+4AWl2dxUDFDU+HL5Z8662v5HEmlNI7npy4vuRTTXa5Fudnfw7BzGYvH6DOYO4l4y0aioxUwtW2+XhcL3nRi+WY/buOvcvO5DRwS1q/NDHlhOEpHRaWTOADZiYrWkPmbC/mdxKoz1u0/6H7tuspPB95bFNEnFZGUetF73/ulxbCjIBkipPgjIua+uizoGVAjfz56aDxMtwRnmkbos9gUV9YwIEtObvNV+FE1w
- uPBYiRhl
- LFH8Bva0at7gTPpi2JWYy1L+hpTz0BO1gwowO0DMsMJrfl6fcLx9rAgVMv96kWTzDPgF6kmjaXYRLDJN+vCk0TLS8P42MTgK6yjc/RB04UBfcgj9gsLImbFST9KTDQXZ1MPG+/aD+Nq4NYHPSDGeMlaR8oD9TtPcKgqIKLta3+0ipSqbd3aG5gINHvLAWCMa2QVfuQiO/tBUHZGla0NHWA8M87votY6LfN6M0KjgeCo1+OGQg0WLVzQZLbHmX0cOMcoQ8dNh+vnS0ZQgLwHR/VV6+FtIE4rssfV4ZfToe6+yI5v5iUCpB3gGmmreQ7x5PcrbVDMEWvt0E0OeCrvLm2xIE6Eej8SHU0mALGLyhx9BZsIh2FqLBLMT9fzsccuRY+iR+OIypHk4FaSFm7Yj9IAbtp3WTazVpHh58zVlNxhXRe+NQydle/rQJco/QXSpR6HAw
+X-HE-Tag: 1777582016-150109
+X-HE-Meta: U2FsdGVkX19ULLnt8R+Fkr/QtgKbsWFoPEV/M08eULLnkma9rpZFqCBa4UJn3E0glYtlTykdu/bb6Uji3H6wEnKhexqOFiFTZQuLFCxMXVCMwvoy/p4lKerkccZqYiMIXlAqu5P+zajMoKthok1LuhYKCn0/WjLgqfT/XPiqqtpJdbZC5ReGZEFHTa1EuhE/dXj7k3GRdvBHMe+IM/N1bj01RFUDfnG0NrVn8dKZ752u9xExtqrUxbZ95M1roTCkthV9wXHC7Qj+S09jPcq2gvLtr6eJAwVgFmjUeWlJsJduRQPxZfk1OpAEXYDC17kNTPlik8JxJJbQb02EEAiMskqifsZ+U9X01y09gpqRIwn5ju7MAHTeHRfHE53gHWplCIFeufk34BPkQY3vUSoxWzbeBPEQE89K5bUzaexMKxf6NxAfOPSOVnmS34UDKSpTPYsycvfK/Zyxnv1Mmvj1IyF9Ntg3FuSAnyp2FDot5L81BsjuVWwDmnZvu5SHKTHpjsbWwYPlLOhyY6UlcEC/gngB7OPPz2kXYiko54LV4CbrZecr7fmGtM9eh0wL0iTtLGt6pNzU15d7aPvqTze6cgEHfGfEk2N06qc/XjlmAW+ccAXZBUwEsvQXCC5Df/q5QsZaPGGrJ/9OcokdLVDnenkb+98twi8VtfuFmxVlnhbDtAbQjvEPNEkOt198aEbz12bwxaYZW13WLT+NFoZnC2aAEa/XKwP7QAgGFr/+MlHDxMYsjFCbB5OyJEIhdctkZzcws1C5aoWhEJ03uxrXSV6BplD8DFfXc+Ub2QcCQCD04WCA7Yz8qT64fRnyHFvzCRjsz63tSU3ePj2NdEOq8MJtjngmG9XTWsvxT7XoJcNQoXjNG1ezVpO+HJnTT5r9QZmjDaeLQigPwnT4knwbhSXLCqfncUS8Odj86PUioIMDMX9miLKldBK4gCzqD/IcP1qnM1yoQTCZ0OuX5sO
+ /wKvirUS
+ 004qHW9jMxQi/iWiPKkG9jazXIHf/+couOpbLucZ0jM2hUuGa4mOJjogkUwV/nVBYhjl7oloEmQgFE4PZ6W3FKzpSC5nX/dYCSYqiPlRLlgP0Vy6kogtqXijldRzri/GTQvJWyV5VjfiSebZ8SALK48wsmllFIoOs9nnf6J5abd6VP0HwRCF7MS8q6bFTpF2skRTExZKUos7dg7K6eAS0WqSdk+bjgIoMXYv06rB2M4dIslpLOFiucXEjaN0im1jtGMcWlD9eucoh4Lhbf8ybnkD+lCUiuS5lbzxBBVVot8eCpZr4kGuJQtGmz+0PKfAZR/PmQS8a3fIsDPUDBViuo3uLu9isgMGi7xLNoBQzX5eYpGEO/SPKJfMsFZL8TTfl00H1TkebehQn4RljfvbShJFY0tkcGvV1/Ear60FR5CTI8vY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,73 +146,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-30 11:48 AM, Vipin Sharma wrote:
-> On Tue, Apr 28, 2026 at 11:51:37PM +0000, David Matlack wrote:
-> > On 2026-04-28 12:45 PM, Vipin Sharma wrote:
-> > > On Thu, Apr 23, 2026 at 09:23:05PM +0000, David Matlack wrote:
-> > > > +	pr_debug("Preserving struct pci_ser with room for %u devices\n",
-> > > > +		 max_nr_devices);
-> > > > +
-> > > > +	ser = kho_alloc_preserve(size);
-> > > > +	if (IS_ERR(ser))
-> > > > +		return PTR_ERR(ser);
+On 2026-04-23 11:27 PM, Samiullah Khawaja wrote:
+> On Thu, Apr 23, 2026 at 04:09:01PM -0700, David Matlack wrote:
+> > On Thu, Apr 23, 2026 at 3:53 PM Jason Gunthorpe <jgg@nvidia.com> wrote:
 > > > 
-> > > Should there be a similar pr_debug() in case of failure to denote that above
-> > > "Preserving ..." message didn't finish, or, maybe just print one
-> > > pr_debug() after the error check above?
-> > 
-> > Hm... I guess there could always be more pr_debug()s but I don't want to
-> > instrument every error path. I could move it to the success path but I
-> > don't see how that makes it any better.
-> > 
-> 
-> In current way, it is printing that it is preserving pci_ser, but there
-> is no indication did it succeed or not in logs. If we are printing the
-> logs then may be complete picture will be to know what is the action and its
-> result.
-> 
-> I think moving to success path or printing again based on the failure
-> provides assurance of what happened. If this gets printed in happy
-> path, then we will know it succeeded in preserving that struct on
-> kho.  Absence means it didn't. 
-> 
-> We can also remove pr_debug(), if this is of no value.
-
-I think I'll just drop these. BPF can be used to trace this function and
-what it returns when debugging issues.
-
-> 
+> > > On Thu, Apr 23, 2026 at 03:10:55PM -0700, David Matlack wrote:
+> > > > On Thu, Apr 23, 2026 at 2:23 PM David Matlack <dmatlack@google.com> wrote:
+> > > > >
+> > > > > Restrict support for preserving PCI devices across Live Update to
+> > > > > devices in immutable singleton IOMMU groups. A device's group is
+> > > > > considered immutable if all bridges upstream from the device up to the
+> > > > > root port have the required ACS features enabled.
+> > > > >
+> > > > > Since ACS flags are inherited across a Live Update for preserved devices
+> > > > > and all the way up to the root port, the preserved device should be in a
+> > > > > singleton IOMMU group after kexec in the new kernel.
+> > > > >
+> > > > > This change should still permit all the current use-cases for PCI device
+> > > > > preservation across Live Update, since it is intended to be used in
+> > > > > Cloud enviroments which should have the required ACS features enabled
+> > > > > for virtualization purposes.
+> > > > >
+> > > > > If a device is part of a multi-device IOMMU group, preserving it will
+> > > > > now fail with an error. This restriction may be lifted in the future if
+> > > > > support for preserving multi-device groups is desired.
+> > > > >
+> > > > > Signed-off-by: David Matlack <dmatlack@google.com>
+> > > >
+> > > > Jason, do you think requiring singleton iommu groups is still
+> > > > necessary/useful now that this series preserves ACS flags on preserved
+> > > > devices and upstream bridges?
 > > > 
-> > > > +/**
-> > > > + * struct pci_dev_ser - Serialized state about a single PCI device.
-> > > > + *
-> > > > + * @domain: The device's PCI domain number (segment).
-> > > > + * @bdf: The device's PCI bus, device, and function number.
-> > > > + * @reserved: Reserved (to naturally align struct pci_dev_ser).
-> > > > + */
-> > > > +struct pci_dev_ser {
-> > > > +	u32 domain;
-> > > > +	u16 bdf;
-> > > > +	u16 reserved;
-> > > 
-> > > Should this be renamed to 'u8 __padding[2];' instead? This will allow to
-> > > just change the array length based on the need (0, 1, 2, 3).
+> > > I have forgotten why we introduced that? There are alot of funky
+> > > things about iommu groups that might be important upon restoration..
 > > 
-> > Sorry I'm not following what you mean here. What is the reason to rename
-> > this field and change it to an array?
+> > You had originally suggested it in this thread:
 > > 
+> >  https://lore.kernel.org/kvm/20260301192236.GQ5933@nvidia.com/
+> > 
+> > > Like if you preserve one group member but not the other what do you ?
+> > 
+> > Yeah I imagine there could be some tricky cases there...
+> > 
+> > I wonder if PCI core is the right layer to enforce this. Maybe this
+> > fits better into Sami's IOMMU core series since that is where all
+> > those tricky cases will be (I imagine?).
 > 
-> Having a padding explicitly tells there is a requirement of being
-> aligned. Reserved sounds more like don't use this u16.
+> +1
+> 
+> Also I think this should probably be checked by iommufd and invoked
+> through vfio cdev. Basically when vfio cdev calls into iommufd to
+> preserve IOMMU specific aspects of device (PASID table etc), iommufd can
+> check this and return error.
 
-It's documented above, but agree padding is a better name.
-
-> If someone add more field down the line say u8, then to make struct size
-> aligned they will need to add another u8, u16, u32, and name those
-> fields padding or reserved. IMO, having a u8 array named padding makes
-> it easier to just change array length as per the need.
-
-This field does get replaced in the next patch. But I see your point
-that if we need to pad by an amount other than u8, u16, or u32, then we
-would need an array.
+Ok I will drop this patch from v5. The IOMMU core can check for it if it
+makes life simpler, but I can't think of anything in the PCI core that
+cares about this check.
 
