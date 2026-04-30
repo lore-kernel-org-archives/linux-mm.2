@@ -4,92 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7EDFFF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 14:44:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF4A8FF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 14:53:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C56D06B0088; Thu, 30 Apr 2026 10:44:16 -0400 (EDT)
+	id CB2C36B0088; Thu, 30 Apr 2026 10:53:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C07C56B008A; Thu, 30 Apr 2026 10:44:16 -0400 (EDT)
+	id C64966B008A; Thu, 30 Apr 2026 10:53:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1D0C6B008C; Thu, 30 Apr 2026 10:44:16 -0400 (EDT)
+	id B52BF6B008C; Thu, 30 Apr 2026 10:53:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C92A6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 10:44:16 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 27B971064C7
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:05:09 +0000 (UTC)
-X-FDA: 84715393938.15.6CB14BF
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0A20912000B
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:05:04 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf29.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777557906;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A38966B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 10:53:41 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 91D32A253E
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:00:39 +0000 (UTC)
+X-FDA: 84715382598.08.3013977
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3AE44140022
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:00:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ah4y0IF5;
+	spf=pass (imf09.hostedemail.com: domain of elver@google.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777557633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=PGntpEfVZ3Lms++30RiokaDweY6aMfhrR04NRQQD/bU=;
-	b=yBsyd9GyZiRd0FvuOLq1LABY85LgZVHqZb30zvq786nRRAZAsyIbUGvvEhVb+IScBrzyl7
-	+LKg2aJBOjCS+3/Ic7/m+5zFhl9u5DxkyUTmtuh2jh/4n0rTkL77oiuSy6xc9o3FhwCpnk
-	sWYrkK7hXI9H39sVoOK8GbpyKXzylN8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf29.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777557906; a=rsa-sha256;
-	cv=none;
-	b=ZRTlR++o4BmfPOAkw6hmiYvwOOD0bdRz/QyKO3sdP/Qsnm5NGC6y2CYGyZ9d1jytpdg5tv
-	wVq3R7cKVaG7sGQhBwcEGGNsuNGSFN5lFplM7BFuZio0oy/68EEeLrGeUEipPv4dvnG0j0
-	gkw0/MBk8RnLbUBxZSKsgNFT+qsIrfY=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4g5wsl31jGz8Xs6w;
-	Thu, 30 Apr 2026 22:04:59 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl1.zte.com.cn with SMTP id 63UE4bJp053808;
-	Thu, 30 Apr 2026 22:04:37 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Thu, 30 Apr 2026 22:04:41 +0800 (CST)
-X-Zmail-TransId: 2af969f36179f83-4d054
-X-Mailer: Zmail v1.0
-Message-ID: <202604302204413066CxdJnJ3RAGH_7iE4EBIO@zte.com.cn>
-Date: Thu, 30 Apr 2026 22:04:41 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <vbabka@kernel.org>, <harry@kernel.org>, <akpm@linux-foundation.org>
-Cc: <hao.li@linux.dev>, <cl@gentwo.org>, <rientjes@google.com>,
-        <roman.gushchin@linux.dev>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <zhang.run@zte.com.cn>,
-        <yang.tao172@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHY4XSBtbS9zbHViOiBkZWZlciBmcmVlbGlzdCBjb25zdHJ1Y3Rpb24gdW50aWwgYWZ0ZXIgYnVsayBhbGxvY2F0aW9uIGZyb20gYSBuZXcgc2xhYg==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 63UE4bJp053808
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Thu, 30 Apr 2026 22:04:59 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69F3618B.001/4g5wsl31jGz8Xs6w
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FWbWmLupSF1aasSwvHeKUZ8NUkzaQhzFHcG2dLXCb2Y=;
+	b=3p4INXvkvPPa0lNCg4/zmDJWP186SZi2fiP1G+9Jrd81inQnIXqG1wGHEj0qEWOKUT0o5G
+	oABietMpKo3139OiaePhOF+RtS/Ni5stuyWnjW7KTVHcpL6b0Bi7FJb1iY2b571l32aqof
+	cN2YFJx4m+/ry8EofrPt5e8SUUoE9sU=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ah4y0IF5;
+	spf=pass (imf09.hostedemail.com: domain of elver@google.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777557633; a=rsa-sha256;
+	cv=pass;
+	b=TuL26tV6DE6265C4WUT7Uy+ETualr3FF4Pw8cdjfJb/D7GhKQnjX7QDBorZAYRkvXRyc8y
+	hzAgPQyukfVxeDxZOd4vEZgmRPOd6oQf3E8mOmUmCYEC8lBBh5cGRJksP1h1zMmWhvd4sb
+	n8/j9iCI9ZFYTxKw3/E5UDB1vnlfzuQ=
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12c8cc7a77eso1506251c88.1
+        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:00:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777557631; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Jh2uXhf/5qaywSsqVVE+c8BuIbXBLWj782uHl0tGdUniovahRGLcj0DNch0oFNfAat
+         G/RrL70Xi9F4C8yNEMlttEBKhx6RxASBcJf6JBa562axSeMDaiWYbzWckOFr6zuTC+9i
+         IV9R24mBrqLfhpRQS0SNGBkRt5CivhTcKh7mFgE8SZhM1wptJvRMnjUK9X/ReS1L4Cri
+         uy8F3TXekHorodMqwoPzLldK4ucu7xQ7Fer7OTRP46CUcRYLJ/UzRloXIV10dC+QivXS
+         HEzBQZkPYHt6tKn1GsyQvhpgYyOlWaRZrPEeJZFA/+PivWxh8jxug3qAVvZejuBT0bee
+         pzSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=FWbWmLupSF1aasSwvHeKUZ8NUkzaQhzFHcG2dLXCb2Y=;
+        fh=4yztm2V5jx4I7B5uJ9Cg3RQa1uWp7EWNDbAW1d6/BPk=;
+        b=DJPYsgTNpRpvClDxvbpuBEffspj9aQyBbuXHF9O2j+mul8lkbaAsBIYZ0WygGhi56A
+         3iMNwmxj6PQ9+jalrLPwOQZ/7HY7+nU0RNFtT1uQ4KJkXi1eYyA2HQqcfrLwXjyvtcIS
+         asQOgK82pks9uR0KsEyobkCQ32ihKXdfMgunW9ExvmbwMOu0CMw1atzSYfis2OdKz22x
+         zYObotfIhHfuPrJjLvFHMK8oQxZEfXl5r7chKNH8ghtHo8EYAa1ZFh8gisbU4noIxoHG
+         /1uVDcEvFmTktoVJ7uapltwFNaPQ4JuU5ncMTA+/0/YoKKTUZUHFu9baTKrqqrjYZ9K+
+         mTUw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777557631; x=1778162431; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FWbWmLupSF1aasSwvHeKUZ8NUkzaQhzFHcG2dLXCb2Y=;
+        b=Ah4y0IF5WsYIyWXs7lbdmPDu11mQdFr32DwNWm3NZLOZsi7YiI8dOwyAou/r/57oVL
+         Dhsvv95DCa4Yec/3WifzqcMD4xzJhunUPcJPHPRZfW5hfFOUYQaa4gvvr2BD+pEudyZP
+         E6RkPfhWQCP/Bz9K5gEtL8nChq76IDL0vImN7rKnI4Lv+E3lUBOdQM189HGdK1zOG28p
+         IgkY4ZMF30fJG3l7ahRHrGoXpFnxZiYu7zMjE5SWUuC+p1MR+WDds3e/dYIhof0qIYpA
+         m2Ynov5cIWhiO3iyMpOYFtzQAzRxRaJBeDQAya0nZChlleBn4ak3xv87ys20cFjXTEap
+         VHtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777557631; x=1778162431;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FWbWmLupSF1aasSwvHeKUZ8NUkzaQhzFHcG2dLXCb2Y=;
+        b=d91zNWvraYshexBQXfoJFffvawN4Bl0FACmTYUm3vYN+Wx6tuFQDF9FFZau33tVwA2
+         D4jp5CPjyAAsLcGopvnBchsjUFb0afy8TFHl5hDiloNTQxA5so3uiKsIpFqj4HY6Mn8O
+         X/i2iyJPmaQ/YGtl11c5okTv7thogJi0rTsRgoH4zYDJJg0eQuCbIaA/H3vBm6SFTPd4
+         wA3EADIhzqyFI75HZuXxtXbSNjT2+ZNPGnaZlRhRVZi+l4Jte5Fcq/XihxeUdEJ3rBeT
+         jLazRUrlttvh1F51zyvTCgMM2PiqNtkI3f202KUqTgNjLBwoyxwMMCZB83VZLeyf74a5
+         Oevg==
+X-Forwarded-Encrypted: i=1; AFNElJ97aKJLgq4q/bgNh2fd9WOKrd894mBdPrf+3DDgqAvcUuZ4Lk9/C5LQIE2kElppODo6c+W97AWUXQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw8etosOGdOqXMnjNMCqk98zt4XAchpCxFpYFWVr3aKmgSTqc7a
+	we2bx+dFustJk6S9feo8szH1Lmb1FPxi/B0p94hf4sXz4ongoVlDxjeJPeaT3A84PnLSYf8bXD1
+	/6EqAFPGl6Sat/qBb+GLAOYpQpxFrpkLIp+F56mgb
+X-Gm-Gg: AeBDievGFIvcQZP6ugXFAiCcdceG/SZRvip/FaH4zxVP0VKXlrQhR+eDcdhp8R5VwKP
+	1TNchszMyxzepopXW+XzN5cNpY0OeuFaSZDQZiQBup8g/dwrppZZWs/j1Z3QoRzUA7i29YAiQDQ
+	tTaMVoxiWpJAwzegywMTjfH8n3qD5nvzvw/RAVYcsZpAU2X5rWpGfkgHSNw378CueNGMHfWfqe/
+	dPaIb6sB27S09FQUHgoaBGmi2KAOD51J7dKhDwEEJOQfug2algz8snq6fg6UYXDB73zD681Y+TK
+	xOJhSHGrwTOVvYC9djPBNROUQlh18CAD+5oVPoz3hhXYpw4fh1II8lsiQEQ=
+X-Received: by 2002:a05:7022:92c:b0:129:1d25:f1da with SMTP id
+ a92af1059eb24-12dec602250mr1294888c88.3.1777557630763; Thu, 30 Apr 2026
+ 07:00:30 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260424132427.2703076-1-elver@google.com> <20260424132427.2703076-2-elver@google.com>
+ <9c321184-9080-4d5c-bd1a-a16cd0bbaed3@kernel.org>
+In-Reply-To: <9c321184-9080-4d5c-bd1a-a16cd0bbaed3@kernel.org>
+From: Marco Elver <elver@google.com>
+Date: Thu, 30 Apr 2026 15:59:52 +0200
+X-Gm-Features: AVHnY4L3BCY_keL_qhcVurJjgr2ukKogo3SaEXX5idcPkTjREyzfeKAeC-ucDp0
+Message-ID: <CANpmjNN_=g31Eoa+w1NrFALfp1dDBi5oHEZdr_bA_48-tS2M=Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] slab: fix kernel-docs for mm-api
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>, 
+	Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com, 
+	llvm@lists.linux.dev, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3AE44140022
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0A20912000B
-X-Stat-Signature: g74bbpg51w7hjpaao3y1nujiqatpdy5w
-X-HE-Tag: 1777557904-169554
-X-HE-Meta: U2FsdGVkX18u0zBdkdtoyWYEb5QokSS/HEXeVg02wn7z6AZOESWVJ6LXI4SLgNgoCOnvQ7EJ7x4swr3JlFokSH4Ce5TsloLqAx4Bpr2yVVoNvWSfcHHNO6p/xBuVzazaXySaGIAXbw5BoS+z5327Aj9a03o71xkBPBvG5KV7m/GrPFPq9smbJm2KBsvbGReVEI9/x7Upn0+mbqP5psexTvwYq8O0eIWHCkdRJB05tsMEtbB2q6OgbtL1hzNkcMzdf0JBDixFMyK/eAv6Qkc5QaeDfm4HzcuMglQ2Tw8bASYRNx7sQzzIJMojv7vnCeR8+gW/r3rIPxWkuzVXYOyDJDp1ETeCyHXHS1Gqmq9FNv3mjHr0wYD5cUj/pNtmfxDovYhzYge6pV4aT10e8Oipm029ntsaEF01A/uZU1NhXscyBmZWe5SrjkVNF/0uKZGxdcpYLG2zv3yyoVAOLkHqBDG6KiMufP+xWcZ5JnKudFAaKLQjVHGWpvqh8G+1WbhYoL99kU0XHOece7Vpa2p3+QjRcoIOK5j8jscDDD1M7mW0vYf/Zh+GJmmVKaF2Viyip4H9nW5p7KqEax3Q4octuZuAsoBhvuU2XOmEa5/LLWegSoGhp/nfld1m6mIUh+pFu2Hh3Jhh/zXUCn1ml4fsVtM7C0mMTpblA6ppt/wYxW17Yjq6UtMCMEd67NsVvZ+vnVrOgylM/eLmuPD8I+958N9mJVPoK5/Q+E5X9La4wQzyyHzr7I2V0xN03qRLRSvtHe000Ls+0YJ8mE/2j59oPPElxK6KT6/WGjJyvP+VN/1D19MA/+GHRNfQyAcYhatbE8v0wtCpmhvc7vxgqS7qU3l4ARF+NE86tDJRlry1s6GKZuoMnBn0gLd4oyebuiqU2MhZkYibxrOmm4Z0GiPXcdr6jmIwBuMiBGZKO2FgwhQiULKmU61TE/kHCKhNbkKvtBa+flSnnYAWBPV7mE7
- 53Lhe7p5
- oUOpgg8Z56069T3Z4FLNb4cRYqgiyo+RtAC1tSUrI3FPOpmo6tf03Qenr2xG3w6qebIKgC5S98yaJDIaEtyXwwxbTQjV7KgF+DB9SCLMBEMOILrMajV6tHexI0tCIbQ8Iy6V1H3fNW0zn/mkJz+Qea7nsDIeGeDsNXFuBg9kLY8msGUmvSy6rHofc+n7UlRGDQSPI+5OxYVI1aPGqF2sQyeZQENewGTsETiDN/KC0JuulluKfp0DZRtME4ffV0Ec3LG5cTOg1YJkgdCBHuD5o/Com3yUhjbwxDMC6BrVOtICxYmrvV+3GEwtsNLLYeMLfW2C3
+X-Stat-Signature: 148omt5fr963ppybrmyakastfqbet63k
+X-HE-Tag: 1777557632-517450
+X-HE-Meta: U2FsdGVkX1/7XaC7Oet5xvCXW7596dAgkfhx6Bc7A+0+r21gwBvNo7+4FaBKtXVIe734++2PU/kVmyYhUsW9n5acWaDHuALTugNA/kUvV3aVt0AXd4g3nJnisf1yV99sjSbgBeCydPtfGks2emeWQlCn7TshnmVnLIEdo65yEcHvJhaublfrsO+SRy4NfR9oiw9pB3SANu28vxSnPz1+qF7mORPnJyply0Hjvq5h2f7HNbojbMnTNTVaff0DMdIkrSdIWFwG+HEQ9XZtg5L6fMo8OvJgpvpYzLLs4NA/p4GWzkwqpTReTE76Ss5P0yWRKp/eTUTKAwdbnu3mMGtmmOZYAUXLwwPHZcvrTwX0MCDzFizNMLa/CivDviRJhl3PEHbwjKRO77H7yJciSQqIx/KUL6dv5GwdEvI4KsTqtjT6v5IyWFnlblkFPnLhyTOtGa58R5kY0E/q4aIQV+UR5RjygrdIrrlOfOJwt9aWdFxpYQAEGF/7U+jt4ljZlyprHWXj9+H1Zr/kT0DdQRO9Eumjpi48uBsQdChOmbbCIBVCqOMRLItT1aVFGHWBd/03rwK1j2AcrWSKgDXv3DXv3mjr8RCmRM6+UOdNoHMcappzeMjaX4Q9isYzrMZkjGuEFafcgT9DTFp3S5cg1M9lKqkwV4kyYIVUedAjgrYrmTRbBUIZ0PV4l8DnALe1vgtYH6B4RamIXaYrjpCM6ptAizkWzAsofc0slSw31N/ZTfByXA5x1JiRI60/B++I+mMI6NTIEMHpZFKXTX/AuE0I37coi2PoendZHB7f+S1KMZMIECJ00zBaqHONaNTmfAEV+zlKsr0ebBWZEn4ZnJCvfaEM9ADPS1p5+5cZZdHmMJcSPULNOxUiTHzVHn2wT66cB9Hjhf6eccrWSaYt9ZK5UXzvhaUrjEl8OXmrhpk3XPSBexSJi/YdKa3u2X4hODAKHyD109X6B/bpjoAyoUz
+ B58+dLSz
+ 5dUJDCW4grvgXP51hv9SR5zrC88RYstBcTg4shXj22rmmmTpndvmBb1dLS0uu20BJvnNd7zA6H+aRcJtykuGe795V+Ks+EjJAI0uo0bTIhXokU0XqsmN5SHrlOSsm1UCDq3YyaTEIaXg/vCX3qbdUF227Z+CBpqPTX6DOyBl8GTwWhjX2CsoS5eQw8Y2wi9tWFAQzOTQ9014IWXDZzOUYQ0pTt2a9Q6kVw6Uji//8q3VV6ltaupc3zIez6aC2P/9DA+N0rkls9YklMkWq5zMa6PZ47JJ5KU0JVE5kYVdx+z5DdVuS3fQ3LiqQRPDxF3uKA4G8+BincvXU6xNhwn25OU8ZW/Ork75MQdoe/D8zreiV6PIsC8LgXLty+eVoB0MdjS7VoR3b25tffpP19HDJzRQaX7EeAk3rNM7HAnasTEbHiaYteqmWOSf4OPej0dSXd+nrmyhnp2f1wIl2cf6nSnbz84p7kAdDoD8cUMJhVU0/6II=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,624 +148,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Shengming Hu <hu.shengming@zte.com.cn>
+On Thu, 30 Apr 2026 at 15:40, Vlastimil Babka (SUSE) <vbabka@kernel.org> wrote:
+>
+> On 4/24/26 15:24, Marco Elver wrote:
+> > The mm-api kernel-doc comments have been broken for a while, as many
+> > documented symbols shifted from being direct function definitions to
+> > macros wrapping _noprof implementations during the introduction of
+> > allocation tagging (starting with commit 7bd230a26648 "mm/slab: enable
+> > slab allocation tagging for kmalloc and friends").
+> >
+> > When the kernel-doc block remains above the internal implementation
+> > function but uses the public API name, the documentation generator fails
+> > to associate the documented symbol and generates warnings and fails to
+> > emit the documentation.
+> >
+> > Fix this by:
+> >
+> > 1. Moving the kernel-doc comment blocks from slub.c to slab.h, placing
+> >    them directly above the user-facing macros.
+> >
+> > 2. Converting the variadic macros for the documented APIs to use
+> >    explicit arguments.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Marco Elver <elver@google.com>
+>
+> +Cc Jon
+>
+> I thought it was supposed to work because the kernel-doc scripts were at the
+> time taught by commit 51a7bf0238c2 ("scripts/kernel-doc: drop "_noprof" on
+> function prototypes") to handle _noprof. In the current form git grep finds:
+>
+> tools/lib/python/kdoc/kdoc_parser.py:        suffixes = [ '_noprof' ]
+> tools/lib/python/kdoc/xforms_lists.py:        (KernRe("_noprof"), ""),
+>
+> Doesn't it work for you then?
 
-Allocations from a fresh slab can consume all of its objects, and the
-freelist built during slab allocation is discarded immediately as a result.
+Ah, I see. So it doesn't work anymore because we add the '_' prefix, too.
 
-Instead of special-casing the whole-slab bulk refill case, defer freelist
-construction until after objects are emitted from a fresh slab.
-new_slab() now only allocates the slab and initializes its metadata.
-refill_objects() then obtains a fresh slab and lets alloc_from_new_slab()
-emit objects directly, building a freelist only for the objects left
-unallocated; the same change is applied to alloc_single_from_new_slab().
+I guess the question is if we want to proliferate more kdoc parser
+special cases, or just move the docs to the macros. The downside of
+macros is that they lose the types in the displayed function
+signature.
 
-To keep CONFIG_SLAB_FREELIST_RANDOM=y/n on the same path, introduce a
-small iterator abstraction for walking free objects in allocation order.
-The iterator is used both for filling the sheaf and for building the
-freelist of the remaining objects.
-
-Also mark setup_object() inline. After this optimization, the compiler no
-longer consistently inlines this helper in the hot path, which can hurt
-performance. Explicitly marking it inline restores the expected code
-generation.
-
-This reduces per-object overhead when allocating from a fresh slab.
-The most direct benefit is in the paths that allocate objects first and
-only build a freelist for the remainder afterward: bulk allocation from
-a new slab in refill_objects(), single-object allocation from a new slab
-in ___slab_alloc(), and the corresponding early-boot paths that now use
-the same deferred-freelist scheme. Since refill_objects() is also used to
-refill sheaves, the optimization is not limited to the small set of
-kmem_cache_alloc_bulk()/kmem_cache_free_bulk() users; regular allocation
-workloads may benefit as well when they refill from a fresh slab.
-
-In slub_bulk_bench, the time per object drops by about 42% to 70% with
-CONFIG_SLAB_FREELIST_RANDOM=n, and by about 58% to 69% with
-CONFIG_SLAB_FREELIST_RANDOM=y. This benchmark is intended to isolate the
-cost removed by this change: each iteration allocates exactly
-slab->objects from a fresh slab. That makes it a near best-case scenario
-for deferred freelist construction, because the old path still built a
-full freelist even when no objects remained, while the new path avoids
-that work. Realistic workloads may see smaller end-to-end gains depending
-on how often allocations reach this fresh-slab refill path.
-
-Benchmark results (slub_bulk_bench):
-Machine: qemu-system-x86 -m 1024M -smp 8 -enable-kvm -cpu host
-Kernel: Linux 7.1.0-rc1-next-20260429
-Config: x86_64_defconfig
-Cpu: 0
-Rounds: 20
-Total: 256MB
-
-- CONFIG_SLAB_FREELIST_RANDOM=n -
-
-obj_size=16, batch=256:
-before: 5.44 +- 0.07 ns/object
-after: 3.12 +- 0.03 ns/object
-delta: -42.6%
-
-obj_size=32, batch=128:
-before: 7.57 +- 0.32 ns/object
-after: 3.79 +- 0.07 ns/object
-delta: -49.9%
-
-obj_size=64, batch=64:
-before: 11.27 +- 0.09 ns/object
-after: 4.83 +- 0.06 ns/object
-delta: -57.2%
-
-obj_size=128, batch=32:
-before: 19.38 +- 0.13 ns/object
-after: 6.43 +- 0.08 ns/object
-delta: -66.8%
-
-obj_size=256, batch=32:
-before: 23.59 +- 0.18 ns/object
-after: 6.97 +- 0.07 ns/object
-delta: -70.5%
-
-obj_size=512, batch=32:
-before: 21.06 +- 0.14 ns/object
-after: 7.12 +- 0.17 ns/object
-delta: -66.2%
-
-- CONFIG_SLAB_FREELIST_RANDOM=y -
-
-obj_size=16, batch=256:
-before: 9.42 +- 0.11 ns/object
-after: 4.36 +- 0.19 ns/object
-delta: -53.7%
-
-obj_size=32, batch=128:
-before: 12.19 +- 0.62 ns/object
-after: 4.93 +- 0.07 ns/object
-delta: -59.6%
-
-obj_size=64, batch=64:
-before: 17.01 +- 0.73 ns/object
-after: 6.14 +- 0.12 ns/object
-delta: -63.9%
-
-obj_size=128, batch=32:
-before: 23.71 +- 1.10 ns/object
-after: 8.35 +- 0.18 ns/object
-delta: -64.8%
-
-obj_size=256, batch=32:
-before: 29.20 +- 0.35 ns/object
-after: 9.44 +- 1.32 ns/object
-delta: -67.7%
-
-obj_size=512, batch=32:
-before: 29.35 +- 0.79 ns/object
-after: 9.21 +- 0.34 ns/object
-delta: -68.6%
-
-Link: https://github.com/HSM6236/slub_bulk_test.git
-Link: https://lore.kernel.org/oe-lkp/202604301428.e2b8d3dd-lkp@intel.com
-Suggested-by: Harry Yoo (Oracle) <harry@kernel.org>
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-Reviewed-by: Hao Li <hao.li@linux.dev>
-Tested-by: Hao Li <hao.li@linux.dev>
-Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
----
-Changes in v2:
-- Handle CONFIG_SLAB_FREELIST_RANDOM=y and add benchmark results.
-- Update the QEMU benchmark setup to use -enable-kvm -cpu host so benchmark results better reflect native CPU performance.
-- Link to v1: https://lore.kernel.org/all/20260328125538341lvTGRpS62UNdRiAAz2gH3@zte.com.cn/
-
-Changes in v3:
-- refactor fresh-slab allocation to use a shared slab_obj_iter
-- defer freelist construction until after bulk allocation from a new slab
-- build a freelist only for leftover objects when the slab is left partial
-- add build_slab_freelist(), prepare_slab_alloc_flags() and next_slab_obj() helpers
-- remove obsolete freelist construction helpers now replaced by the iterator-based path, including next_freelist_entry() and shuffle_freelist()
-- Link to v2: https://lore.kernel.org/all/202604011257259669oAdDsdnKx6twdafNZsF5@zte.com.cn/
-
-Changes in v4:
-- remove slab_obj_iter::cur
-- drop prepare_slab_alloc_flags() and restore the original flag handling in new_slab()
-- new_slab() no longer builds the freelist. Instead, the freelist is constructed only for the objects left unallocated in
-alloc_single_from_new_slab(), alloc_from_new_slab(), and early_kmem_cache_node_alloc().
-- remove maybe_wipe_obj_freeptr() when allocating objects directly without freelist built
-- Link to v3: https://lore.kernel.org/all/202604062150182836ygUiyPoKcxtHjgF7rWXe@zte.com.cn/
-
-Changes in v5:
-- Call build_slab_freelist() unconditionally, and remove the redundant "slab->freelist = NULL" initialization in allocate_slab().
-- Check the return value of alloc_from_new_slab() to prevent a potential use-after-free bug.
-- Refine the commit message with more precise test coverage descriptions.
-- Link to v4: https://lore.kernel.org/all/2026040823281824773ybHpC3kgUhR9OE1rGTl@zte.com.cn/
-
-Changes in v6:
-- Move inc_slabs_node() back under n->list_lock in alloc_single_from_new_slab()
-to avoid races with slab validation for debug caches.
-- Link to v5: https://lore.kernel.org/all/20260409204352095kKWVYKtZImN59ybO6iRNj@zte.com.cn/
-
-Changes in v7:
-- Move the definition of struct slab_obj_iter to mm/slub.c
-- Reuse the count variable and eliminate target_inuse in alloc_from_new_slab()
-- Declare variable n at its first point of use in alloc_from_new_slab()
-- Link to v6: https://lore.kernel.org/all/20260413230417835rnfiEWduEx44lc3u4uR9_@zte.com.cn/
-
-Changes in v8:
-- Initialize the selected object's freepointer before
-  alloc_debug_processing() in alloc_single_from_new_slab(). Deferred
-  freelist construction skips this object, while debug allocation still
-  expects a valid freepointer.
-- Add a Link to the 0-DAY CI Kernel Test report/discussion thread.
-- Link to v7: https://lore.kernel.org/all/20260415165255601BBSSoil3iPkco33RXFtU2@zte.com.cn/
----
- mm/slub.c | 300 ++++++++++++++++++++++++++++--------------------------
- 1 file changed, 156 insertions(+), 144 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 0baa906f39ab..a7bd929bcb26 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -227,6 +227,17 @@ struct partial_bulk_context {
- 	struct list_head slabs;
- };
-
-+/* Structure used to iterate over objects within a slab */
-+struct slab_obj_iter {
-+	unsigned long pos;
-+	void *start;
-+#ifdef CONFIG_SLAB_FREELIST_RANDOM
-+	unsigned long freelist_count;
-+	unsigned long page_limit;
-+	bool random;
-+#endif
-+};
-+
- static inline bool kmem_cache_debug(struct kmem_cache *s)
- {
- 	return kmem_cache_debug_flags(s, SLAB_DEBUG_FLAGS);
-@@ -2733,7 +2744,7 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
- 	return *head != NULL;
- }
-
--static void *setup_object(struct kmem_cache *s, void *object)
-+static inline void *setup_object(struct kmem_cache *s, void *object)
- {
- 	setup_object_debug(s, object);
- 	object = kasan_init_slab_obj(s, object);
-@@ -3329,87 +3340,14 @@ static void __init init_freelist_randomization(void)
- 	mutex_unlock(&slab_mutex);
- }
-
--/* Get the next entry on the pre-computed freelist randomized */
--static void *next_freelist_entry(struct kmem_cache *s,
--				unsigned long *pos, void *start,
--				unsigned long page_limit,
--				unsigned long freelist_count)
--{
--	unsigned int idx;
--
--	/*
--	 * If the target page allocation failed, the number of objects on the
--	 * page might be smaller than the usual size defined by the cache.
--	 */
--	do {
--		idx = s->random_seq[*pos];
--		*pos += 1;
--		if (*pos >= freelist_count)
--			*pos = 0;
--	} while (unlikely(idx >= page_limit));
--
--	return (char *)start + idx;
--}
--
- static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
-
--/* Shuffle the single linked freelist based on a random pre-computed sequence */
--static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
--			     bool allow_spin)
--{
--	void *start;
--	void *cur;
--	void *next;
--	unsigned long idx, pos, page_limit, freelist_count;
--
--	if (slab->objects < 2 || !s->random_seq)
--		return false;
--
--	freelist_count = oo_objects(s->oo);
--	if (allow_spin) {
--		pos = get_random_u32_below(freelist_count);
--	} else {
--		struct rnd_state *state;
--
--		/*
--		 * An interrupt or NMI handler might interrupt and change
--		 * the state in the middle, but that's safe.
--		 */
--		state = &get_cpu_var(slab_rnd_state);
--		pos = prandom_u32_state(state) % freelist_count;
--		put_cpu_var(slab_rnd_state);
--	}
--
--	page_limit = slab->objects * s->size;
--	start = fixup_red_left(s, slab_address(slab));
--
--	/* First entry is used as the base of the freelist */
--	cur = next_freelist_entry(s, &pos, start, page_limit, freelist_count);
--	cur = setup_object(s, cur);
--	slab->freelist = cur;
--
--	for (idx = 1; idx < slab->objects; idx++) {
--		next = next_freelist_entry(s, &pos, start, page_limit,
--			freelist_count);
--		next = setup_object(s, next);
--		set_freepointer(s, cur, next);
--		cur = next;
--	}
--	set_freepointer(s, cur, NULL);
--
--	return true;
--}
- #else
- static inline int init_cache_random_seq(struct kmem_cache *s)
- {
- 	return 0;
- }
- static inline void init_freelist_randomization(void) { }
--static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
--				    bool allow_spin)
--{
--	return false;
--}
- #endif /* CONFIG_SLAB_FREELIST_RANDOM */
-
- static __always_inline void account_slab(struct slab *slab, int order,
-@@ -3438,15 +3376,14 @@ static __always_inline void unaccount_slab(struct slab *slab, int order,
- 			    -(PAGE_SIZE << order));
- }
-
-+/* Allocate and initialize a slab without building its freelist. */
- static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
- {
- 	bool allow_spin = gfpflags_allow_spinning(flags);
- 	struct slab *slab;
- 	struct kmem_cache_order_objects oo = s->oo;
- 	gfp_t alloc_gfp;
--	void *start, *p, *next;
--	int idx;
--	bool shuffle;
-+	void *start;
-
- 	flags &= gfp_allowed_mask;
-
-@@ -3497,21 +3434,6 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
- 	alloc_slab_obj_exts_early(s, slab);
- 	account_slab(slab, oo_order(oo), s, flags);
-
--	shuffle = shuffle_freelist(s, slab, allow_spin);
--
--	if (!shuffle) {
--		start = fixup_red_left(s, start);
--		start = setup_object(s, start);
--		slab->freelist = start;
--		for (idx = 0, p = start; idx < slab->objects - 1; idx++) {
--			next = p + s->size;
--			next = setup_object(s, next);
--			set_freepointer(s, p, next);
--			p = next;
--		}
--		set_freepointer(s, p, NULL);
--	}
--
- 	return slab;
- }
-
-@@ -3665,30 +3587,112 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
- 	return object;
- }
-
-+/* Return the next free object in allocation order. */
-+static inline void *next_slab_obj(struct kmem_cache *s,
-+				  struct slab_obj_iter *iter)
-+{
-+#ifdef CONFIG_SLAB_FREELIST_RANDOM
-+	if (iter->random) {
-+		unsigned long idx;
-+
-+		/*
-+		 * If the target page allocation failed, the number of objects on the
-+		 * page might be smaller than the usual size defined by the cache.
-+		 */
-+		do {
-+			idx = s->random_seq[iter->pos];
-+			iter->pos++;
-+			if (iter->pos >= iter->freelist_count)
-+				iter->pos = 0;
-+		} while (unlikely(idx >= iter->page_limit));
-+
-+		return setup_object(s, (char *)iter->start + idx);
-+	}
-+#endif
-+	return setup_object(s, (char *)iter->start + iter->pos++ * s->size);
-+}
-+
-+/* Build a freelist from the objects not yet allocated from a fresh slab. */
-+static inline void build_slab_freelist(struct kmem_cache *s, struct slab *slab,
-+				       struct slab_obj_iter *iter)
-+{
-+	unsigned int nr = slab->objects - slab->inuse;
-+	unsigned int i;
-+	void *cur, *next;
-+
-+	if (!nr) {
-+		slab->freelist = NULL;
-+		return;
-+	}
-+
-+	cur = next_slab_obj(s, iter);
-+	slab->freelist = cur;
-+
-+	for (i = 1; i < nr; i++) {
-+		next = next_slab_obj(s, iter);
-+		set_freepointer(s, cur, next);
-+		cur = next;
-+	}
-+
-+	set_freepointer(s, cur, NULL);
-+}
-+
-+/* Initialize an iterator over free objects in allocation order. */
-+static inline void init_slab_obj_iter(struct kmem_cache *s, struct slab *slab,
-+				      struct slab_obj_iter *iter,
-+				      bool allow_spin)
-+{
-+	iter->pos = 0;
-+	iter->start = fixup_red_left(s, slab_address(slab));
-+
-+#ifdef CONFIG_SLAB_FREELIST_RANDOM
-+	iter->random = (slab->objects >= 2 && s->random_seq);
-+	if (!iter->random)
-+		return;
-+
-+	iter->freelist_count = oo_objects(s->oo);
-+	iter->page_limit = slab->objects * s->size;
-+
-+	if (allow_spin) {
-+		iter->pos = get_random_u32_below(iter->freelist_count);
-+	} else {
-+		struct rnd_state *state;
-+
-+		/*
-+		 * An interrupt or NMI handler might interrupt and change
-+		 * the state in the middle, but that's safe.
-+		 */
-+		state = &get_cpu_var(slab_rnd_state);
-+		iter->pos = prandom_u32_state(state) % iter->freelist_count;
-+		put_cpu_var(slab_rnd_state);
-+	}
-+#endif
-+}
-+
- /*
-  * Called only for kmem_cache_debug() caches to allocate from a freshly
-  * allocated slab. Allocate a single object instead of whole freelist
-  * and put the slab to the partial (or full) list.
-  */
- static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
--					int orig_size, gfp_t gfpflags)
-+					int orig_size, bool allow_spin)
- {
--	bool allow_spin = gfpflags_allow_spinning(gfpflags);
--	int nid = slab_nid(slab);
--	struct kmem_cache_node *n = get_node(s, nid);
-+	struct kmem_cache_node *n;
-+	struct slab_obj_iter iter;
-+	bool needs_add_partial;
- 	unsigned long flags;
- 	void *object;
-
--	if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
--		/* Unlucky, discard newly allocated slab. */
--		free_new_slab_nolock(s, slab);
--		return NULL;
--	}
--
--	object = slab->freelist;
--	slab->freelist = get_freepointer(s, object);
-+	init_slab_obj_iter(s, slab, &iter, allow_spin);
-+	object = next_slab_obj(s, &iter);
- 	slab->inuse = 1;
-
-+	needs_add_partial = (slab->objects > 1);
-+	build_slab_freelist(s, slab, &iter);
-+
-+	/* alloc_debug_processing() always expects a valid freepointer */
-+	set_freepointer(s, object, slab->freelist);
-+
- 	if (!alloc_debug_processing(s, slab, object, orig_size)) {
- 		/*
- 		 * It's not really expected that this would fail on a
-@@ -3696,20 +3700,32 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
- 		 * corruption in theory could cause that.
- 		 * Leak memory of allocated slab.
- 		 */
--		if (!allow_spin)
--			spin_unlock_irqrestore(&n->list_lock, flags);
- 		return NULL;
- 	}
-
--	if (allow_spin)
-+	n = get_node(s, slab_nid(slab));
-+	if (allow_spin) {
- 		spin_lock_irqsave(&n->list_lock, flags);
-+	} else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
-+		/*
-+		 * Unlucky, discard newly allocated slab.
-+		 * The slab is not fully free, but it's fine as
-+		 * objects are not allocated to users.
-+		 */
-+		free_new_slab_nolock(s, slab);
-+		return NULL;
-+	}
-
--	if (slab->inuse == slab->objects)
--		add_full(s, n, slab);
--	else
-+	if (needs_add_partial)
- 		add_partial(n, slab, ADD_TO_HEAD);
-+	else
-+		add_full(s, n, slab);
-
--	inc_slabs_node(s, nid, slab->objects);
-+	/*
-+	 * Debug caches require nr_slabs updates under n->list_lock so validation
-+	 * cannot race with slab (de)allocations and observe inconsistent state.
-+	 */
-+	inc_slabs_node(s, slab_nid(slab), slab->objects);
- 	spin_unlock_irqrestore(&n->list_lock, flags);
-
- 	return object;
-@@ -4348,44 +4364,41 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
- 		void **p, unsigned int count, bool allow_spin)
- {
- 	unsigned int allocated = 0;
--	struct kmem_cache_node *n;
--	bool needs_add_partial;
-+	struct slab_obj_iter iter;
-+	bool needs_add_partial = true;
- 	unsigned long flags;
--	void *object;
-
- 	/*
- 	 * Are we going to put the slab on the partial list?
- 	 * Note slab->inuse is 0 on a new slab.
- 	 */
--	needs_add_partial = (slab->objects > count);
--
--	if (!allow_spin && needs_add_partial) {
--
--		n = get_node(s, slab_nid(slab));
--
--		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
--			/* Unlucky, discard newly allocated slab */
--			free_new_slab_nolock(s, slab);
--			return 0;
--		}
-+	if (count >= slab->objects) {
-+		needs_add_partial = false;
-+		count = slab->objects;
- 	}
-
--	object = slab->freelist;
--	while (object && allocated < count) {
--		p[allocated] = object;
--		object = get_freepointer(s, object);
--		maybe_wipe_obj_freeptr(s, p[allocated]);
-+	init_slab_obj_iter(s, slab, &iter, allow_spin);
-
--		slab->inuse++;
-+	while (allocated < count) {
-+		p[allocated] = next_slab_obj(s, &iter);
- 		allocated++;
- 	}
--	slab->freelist = object;
-+	slab->inuse = count;
-+	build_slab_freelist(s, slab, &iter);
-
- 	if (needs_add_partial) {
-+		struct kmem_cache_node *n = get_node(s, slab_nid(slab));
-
- 		if (allow_spin) {
--			n = get_node(s, slab_nid(slab));
- 			spin_lock_irqsave(&n->list_lock, flags);
-+		} else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
-+			/*
-+			 * Unlucky, discard newly allocated slab.
-+			 * The slab is not fully free, but it's fine as
-+			 * objects are not allocated to users.
-+			 */
-+			free_new_slab_nolock(s, slab);
-+			return 0;
- 		}
- 		add_partial(n, slab, ADD_TO_HEAD);
- 		spin_unlock_irqrestore(&n->list_lock, flags);
-@@ -4456,15 +4469,13 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 	stat(s, ALLOC_SLAB);
-
- 	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
--		object = alloc_single_from_new_slab(s, slab, orig_size, gfpflags);
-+		object = alloc_single_from_new_slab(s, slab, orig_size, allow_spin);
-
- 		if (likely(object))
- 			goto success;
- 	} else {
--		alloc_from_new_slab(s, slab, &object, 1, allow_spin);
--
- 		/* we don't need to check SLAB_STORE_USER here */
--		if (likely(object))
-+		if (alloc_from_new_slab(s, slab, &object, 1, allow_spin))
- 			return object;
- 	}
-
-@@ -7258,10 +7269,6 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
-
- 	stat(s, ALLOC_SLAB);
-
--	/*
--	 * TODO: possible optimization - if we know we will consume the whole
--	 * slab we might skip creating the freelist?
--	 */
- 	refilled += alloc_from_new_slab(s, slab, p + refilled, max - refilled,
- 					/* allow_spin = */ true);
-
-@@ -7592,6 +7599,7 @@ static void early_kmem_cache_node_alloc(int node)
- {
- 	struct slab *slab;
- 	struct kmem_cache_node *n;
-+	struct slab_obj_iter iter;
-
- 	BUG_ON(kmem_cache_node->size < sizeof(struct kmem_cache_node));
-
-@@ -7603,14 +7611,18 @@ static void early_kmem_cache_node_alloc(int node)
- 		pr_err("SLUB: Allocating a useless per node structure in order to be able to continue\n");
- 	}
-
--	n = slab->freelist;
-+	init_slab_obj_iter(kmem_cache_node, slab, &iter, true);
-+
-+	n = next_slab_obj(kmem_cache_node, &iter);
- 	BUG_ON(!n);
-+
-+	slab->inuse = 1;
-+	build_slab_freelist(kmem_cache_node, slab, &iter);
-+
- #ifdef CONFIG_SLUB_DEBUG
- 	init_object(kmem_cache_node, n, SLUB_RED_ACTIVE);
- #endif
- 	n = kasan_slab_alloc(kmem_cache_node, n, GFP_KERNEL, false);
--	slab->freelist = get_freepointer(kmem_cache_node, n);
--	slab->inuse = 1;
- 	kmem_cache_node->per_node[node].node = n;
- 	init_kmem_cache_node(n);
- 	inc_slabs_node(kmem_cache_node, node, slab->objects);
--- 
-2.25.1
+Preferences?
 
