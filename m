@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEA9DFF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 12:33:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5674BFF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 12:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3570A6B0088; Thu, 30 Apr 2026 08:33:06 -0400 (EDT)
+	id 8D9476B008A; Thu, 30 Apr 2026 08:35:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 307E46B008A; Thu, 30 Apr 2026 08:33:06 -0400 (EDT)
+	id 889456B008C; Thu, 30 Apr 2026 08:35:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21DFE6B008C; Thu, 30 Apr 2026 08:33:06 -0400 (EDT)
+	id 79EEB6B0092; Thu, 30 Apr 2026 08:35:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 121D26B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:33:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A873E1C01A0
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:33:05 +0000 (UTC)
-X-FDA: 84715161930.29.0A90888
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 629E71C0004
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:33:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=l7HQCUDy;
-	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 695406B008A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 08:35:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1D3AA01D3
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:35:46 +0000 (UTC)
+X-FDA: 84715168692.01.4E1D7BD
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9D04BC000E
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:35:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=iAUflMNT;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777552384;
+	s=arc-20220608; t=1777552545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yvT7alaoKdIhI5kLbvRhB8hj+B8HpDJWHuvkd80iS4M=;
-	b=D98mksRu6+rDKuiefQ60BcH466S1uWfWQY+W039uxisayEMrSFHwhtqed+xCB7BfKvCXM1
-	aYXy6mkHJZGdeFwehAzwO0IhsPlicnrBq5xmmeUMCVBE/5skeVMq77DiTe9F7rjzqFLROj
-	fl5+kijhiDwJjLuLk74l8C4GA7WLv6o=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=l7HQCUDy;
-	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777552384; a=rsa-sha256;
+	bh=Z+Z3DKsnSFmL8ihuU1z6jpmoa/PGowkZGNbOeWbnqGA=;
+	b=yqvU4OoHxdAetl7iCoAfPD7rTICPQIEdT88k2irFKQHdBNVnPnCqHNo0+CMqsqVW/GsVI6
+	DAg/it+5PlnfXpO9KdviA0TJZlRZ4M0siSMaMx9toBk+QnUVx2mPfyAcrdB9ZVD1AyVksI
+	qU+CzXTeLd//sB7nEoNozDRnHGw46kE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777552545; a=rsa-sha256;
 	cv=none;
-	b=ONKGaEGWBMI2qw1UKydkwSp3Ne/q4OXVsN+TXLhFShJOxdrHyYJxtFRncbbUzEHVFRlJ6U
-	5PoCaU+bOJVPjjvi32Tx77frcapWOzzw6qlTEq529kDroGZ03/MH4H4PKCA/q3P4OP+aEv
-	pAXvRPxDtzwZPihUOduEwiVp9dpNq6k=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DE3219F6;
-	Thu, 30 Apr 2026 05:32:56 -0700 (PDT)
-Received: from [10.57.90.96] (unknown [10.57.90.96])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 120723F7B4;
-	Thu, 30 Apr 2026 05:32:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777552382; bh=Kmi7hh+sO6z2S3y8opc1Fyz09zGGdr9v7xC+7nSlt1o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l7HQCUDyMDl141q50c9CPFNzaRun/uJJSrTG+cDq+t5dHzHX/7fZFsawMzauuUqbo
-	 2hqU40o6oMaJ2JL32aGkaUS3q3l5HHCoP3KLaTYiE5SZ2+XtTqVpUywpHxLT2IqzXL
-	 BFRC6vsF5AFL4+5quCkrbFdsyVLq2RX89OG+XyAM=
-Message-ID: <74bddfeb-0530-4cca-af17-a7920f17bb5b@arm.com>
-Date: Thu, 30 Apr 2026 13:32:57 +0100
+	b=hlhPmfnOKz2zbOXTL4bvEbaZZMbW7OFfizMy2dQK7nVkPraevb9j3CTx+4u7tmTW571zJu
+	V6LZ467qFaGmLEKJ9DoJPQZ9xMax5+0jX1d4yhE83qh5PemKUVPl+y0cTRipeBLD9n00Cw
+	XbZ7hFwF2vtqwHkPkoG9oeLm1Z3oD9M=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=iAUflMNT;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Z+Z3DKsnSFmL8ihuU1z6jpmoa/PGowkZGNbOeWbnqGA=; b=iAUflMNTY8s90bOygRPipE/x2+
+	2rqGdbTRLii/gKwyDrwP3nkrR0VatKKYld/V/816iJ1P+tXhX+d+idNR+EHjQMboflVsiybW8W+j8
+	eYWs7JCkiHvjY2IB2zf7TqoA45+x4aQ6qJmQlmCWvqYPr8NfFayhBn2Yo/Fe4ZPpdXhwYsAJOnz9D
+	fjrOixede6cq1gwHChteZEiQiJMRusCYSEQAeQfmUhSpF81serK2xu7B77/VvMp8ZkRnZOjTGarSl
+	f2YwbxhX7fGYNMGzMT5rb3gdo1ooWSq/7jwDHw+A2onKlKlIcG5HcwM0Ymw87xAmNi9iGAAb7Q4sY
+	9LSfVJFQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wIQc7-00000007Dpy-0PSw;
+	Thu, 30 Apr 2026 12:35:31 +0000
+Date: Thu, 30 Apr 2026 13:35:30 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, jack@suse.cz,
+	pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn,
+	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com,
+	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
+	nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] mm: Don't retry page fault if folio is uptodate
+ during swap-in
+Message-ID: <afNMkqwxC00OT134@casper.infradead.org>
+References: <20260430040427.4672-1-baohua@kernel.org>
+ <20260430040427.4672-5-baohua@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/3] mm: Free contiguous order-0 pages efficiently
-Content-Language: en-GB
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muhammad Usama Anjum <usama.anjum@arm.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
- Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
- David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- david.hildenbrand@arm.com
-References: <20260401101634.2868165-1-usama.anjum@arm.com>
- <20260429103326.GA1743@cmpxchg.org>
- <20260429050430.d86f01dbe731edc9fa932add@linux-foundation.org>
- <9834200a-492c-4705-a2b2-e76cc0ba5392@arm.com>
- <20260429135228.GA1987@cmpxchg.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260429135228.GA1987@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260430040427.4672-5-baohua@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9D04BC000E
+X-Stat-Signature: 1yfgyfm6jjfywb8ok7c9p9fq5ccwypy9
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 629E71C0004
-X-Stat-Signature: ad4ycomobsxufajuknago4y93cjxk7gr
-X-HE-Tag: 1777552383-325961
-X-HE-Meta: U2FsdGVkX18YzuOkJY/GBoStBLBbFG34pi+TuYKGKXFh6CzO7wcfPukO44hx7OwhNjT9tftjHPNmJ0xxVmWAhKoshTjtm46ZogvaarK++Zyin8C36XaVjpmWakzFsk5kQ72erJ1Yn7VYciuv3SmxwLxvmBTZ0g6moDIIOTOYTNyppxTRGQv6zKWEOvUggV7jsRBYYpjqiZ0SDpkMaXE6tpDTUtJfBxxgpHpgO4tWUoqWJ8iQ6lTqLqex7hhuyHY3DQWh3Nn1MseH7e9xlC+XgF/WidPYhJzW1RBxuHGLvCxxL/PZqsjcwTVDbsP03CnK4rLbNRc6Y3s9EWE5sYSf58fWKGHXX8CLy5isdDlzspINDcaTmjdlTUiQTAGPrmVa45VJfqMEFC5Pzh5Y+xVrsNNeThVQNdwNs9JwtcFqji+PNrxrVavX7fp5MfEOw1MPZYcYpLJyUesNgTJdfqMzTws6X1bduqXktMy8kk3R4Q1wWvPaQwRsq9n/pWKwCP0iRZt8LxQcsqP/L+UvQUU61net7TXfzTvrSMDLe3uHSPkXFviyru763vV5L9S2bTgWWt9Boiw3jRfzoZhykv8o/zNXexCEtHcx92YSAemxMCKQNQKxQvZnB/VK3N5n7ST2lnrUow3mupnXp45IKKHfuLG9o3jwW8JeQGhQCvdIA0DwmCbspEgzO0HPLfBQ3yZiSGhzbByrRmFbRQ5++s3C38qrxPQxSvX3ulr30Q7Q3C2+RauDWyrMmaf/e+J1oIyKyrRbE/b/ZWyP8la8biHIztnq89KXKClrXfev6VEbixH7RqmHr17k4fjVQOZuBJWcuhNnBnt+8OQA01oiDJ07IiA/6d2QHYcWLlpFOMnJ7rmsKMxCes1qvoYear4TQdHCWQN7Ec1oMRlF4z/RkOK0u/GGrFUV4Hca7vz4OhmmFON6VbpPkEBi+TDLth9JBufwCkQpmzwrjtDnnXTe+Q7
- qwjqJX1b
- iEgouQiD/c/30ykcJzo9/ksOd2yL814wIbYl0yzOPUK1LzXQOi3gOU7nKGkvO/aDIGTNGMyUDoxo42LnsRcvE6/55QpuKvQjn6Gb7e4vsavpOzswKMpSwPwHOh/nvWAR2GfolKx9dXhoa0tyU0b2OGOI5CVcCKguePLeBq6+bxpevvERPz50QYsIGPzeVegJw3mpEwdK9dIE+x6wG5TeCsVEpn/V9yWVOQoVlKvdPWyvzFDgs6dbzqXx/HPVGb/q1PaiKsBpih8QhJxBjXChtQJ+8f7NI8BprdkKXzBCR820J8Hat0ha5re0olL3Dm+czmXYEkT5KZsuBcDiwLE+dJt1tZ/Ei0Ck5LckIZN38u+LlKnE=
+X-HE-Tag: 1777552544-411663
+X-HE-Meta: U2FsdGVkX1+9Zkg9VZRi4Y1mnI9b+3VNVDVCwjx11AJQXCAouGYmtis+4fPG7vmtTfCJZ0qdjnIY3GO80EBMcbNC2quVShle/Z4dKrPFKIh8Cw9U6W0U5qwQ3UkBdald42PObs+Q8q3/fuTSJLguOAz6JeasHv5XVuq6KgDn9Pwg+dRtobfcUVLbCzO/Y2fZDPRlei7x3oNTTf5evfXjqrxeb+nmGgenuJuJgPNM7wdSUmmdebzs+/wBiwaQVl8t7TRRcXuFL0BgUMDf5SWkvJ5PHepQ+F0FVlbCPbfdQQvfOV5mTlgqqTSGnyQ/P/kbYQth8MFdlOTIkcUFr0f0vE0UCjwUHYtPkCpO7cwQqMgGKtzlsoiZfugfFW55M15EUiWQrNM4sZTiGuCa7l6YDtt5Dm9FxoUwBtXKW2PAHZfH3XEYaKwrQQFsNPzuI9VqdgpaPzcRBS22dU6ohNCjKyihQmgNVAXRrYLdVgCFEMmnKnjeZ3sdFO2mJI1cl2n3v80El/RsOK+zSpR+zMyGYiXfz8C2oSYalcylvaOHFWArSLMoWxIqiKmZCdqPkbSwkSYyA6jmdOmFhK87iOtmGxT99TreKJBkmj+lU9Dga57JIHI0PGIZDG91TyUr/vzOPjMmX+MkYRX+1NCPD+ilJOFXIDmgUbeaistSOBRUEbx04LOTjGsb77AV44Zb9JzpjccwvtyFHV//fKw0l8gYAIzGd0/ZKq+VFARk+WjYTUdgBWSVPB7VqQcRj8JDqXpexAtrl/8AlbBoEw5jOdbDkeoLHlMqB/cGuiKKaTYPDaEYAQLCq5AYkVyhe3ZJhL8iXaXB98FvG9cKJldv7dmajXchx6l4cG7PxoFzO4iipVP7JC2X3gz+kQ68IcQVWzwUmYydbz5GMpmyc7WmiD+r5RJ2lf+9oXaYnfCZeluzVTx94stGuUREhIXK4Vweys8y/wjjWmfcDVU0GIEXSYg
+ 00ftp8jE
+ 3Rl/N7pp/vwCw9VSw0aHEL9Gk0yPNNuzUMRoNnv86/PBDWET89CWGdx6/79f9l8IXQXQDa6XBDEae20rjjWv0TE++fw1/+mcbf0qQQq5Y1tbToSdIGmg9kVaikzMJpA7Pd/qJkMnPe/1diBEWPb3liXQRjlQjsZCcpxDF+KNQHxSyYX6MAFWe2xaDKjSufXtUUimES68h5PNbyBO2+ergLiAOI2U0K83MTUw1PYex1pvPX9lGXdoz7pI2VhSAwpbCy1HNi5I1lVrs7bEHMBsLSiyeVa+5avYPVosIxZt+Tb0sNcctyTL7PcoCRGgqan+GaSZgLYHNNoDQKEDmqVCyv0euxhbbstvPvh6G3OI4TmivXMnipRtu6pDYTg/dlsK0AD6v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,95 +98,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/04/2026 14:52, Johannes Weiner wrote:
-> On Wed, Apr 29, 2026 at 01:31:10PM +0100, Ryan Roberts wrote:
->> On 29/04/2026 13:04, Andrew Morton wrote:
->>> On Wed, 29 Apr 2026 06:33:26 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
->>>
->>>> On Wed, Apr 01, 2026 at 11:16:18AM +0100, Muhammad Usama Anjum wrote:
->>>>> Hi All,
->>>>>
->>>>> A recent change to vmalloc caused some performance benchmark regressions (see
->>>>> [1]). I'm attempting to fix that (and at the same time significantly improve
->>>>> beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
->>>>
->>>> I think we should revert the original patch.
->>>>
->>>> The premise is that we can save some allocator calls by requesting
->>>> higher orders and splitting them up into singles. This is a frivolous
->>>> and short-sighted use of a very coveted and expensive resource.
->>
->> I'm not sure it's that simple. First off, vmalloc has preferred to allocate high
->> order pages for quite a while, it's just that the patch you're referring to
->> makes it try even harder. So reverting the patch doesn't completely revert the
->> behaviour, it just reduces it.
->>
->> Performance benefits because those high order pages are mapped appropriately in
->> the page table - i.e. 1G PUD, 2M PMD, (or 64K CONTPTE on arm64). So it's not
->> solely about the number of cycles spent in the allocator; the HW is used more
->> efficiently. vmalloc only splits to order-0 for the benefit of the caller,
->> because there are some places that assume they can access each returned struct page.
-> 
-> Sure, TLB benefits can offset the cost.
-> 
-> PTE mapped higher orders on systems without contpte (still many) are the problem.
+On Thu, Apr 30, 2026 at 12:04:26PM +0800, Barry Song (Xiaomi) wrote:
+> If we are waiting for long I/O to complete, it makes sense to
+> avoid holding locks for too long. However, if the folio is
+> uptodate, we are likely only waiting for a concurrent PTE
+> update to finish. Retrying the entire page fault seems
+> excessive.
 
-Perhaps vmalloc should only request the high orders when it knows it can map
-them beneficially then? (which I guess was the case prior to the patch in
-question?).
+I think the idea is good, but the implementation is misplaced.
+The check for folio_uptodate() should be inside folio_lock_or_retry()
+rather than tampering with FAULT_FLAG_ALLOW_RETRY in its caller.
 
-> 
->> And all the order-0 pages of the original high order page are freed at the same
->> time, so it's not like we are destroying the contiguous resource; it remains
->> intact for the next user (well, ignoring that some will be freed to the pcpu
->> list - this series solves that wrinkle). I've heard it argued that this approach
->> is actually _better_ for conserving contiguous blocks because it's keeping the
->> lifetime of all the constituent pages bound together and reducing fragmentation.
-> 
-> You're still consuming contiguity and increasing competition over
-> it. That needs to pay off in a closed system, not just in one small
-> part of it.
-> 
-> I'm a bit skeptical of that beneficial effect. Sure, if there aren't
-> any small fragments and most everybody is doing larger allocations,
-> then yes, this could make sense. Although in that case, even calling
-> the buddy allocator repeatedly from vmalloc would give you physically
-> adjacent pages due to the way splitting works (although I'm not sure
-> right now if you'd get the right exact PFN order for contpte).
-> 
-> But as long as there is a mix of allocation sizes with mixed
-> lifetimes, consuming contiguity that you don't need has a high cost
-> over vacuuming up holes and fragments. Because now you're competing
-> with somebody who has no choice but to *painstakingly move live pages
-> around to coalesce the holes*.
-> 
-> That's the whole reason for the __rmqueue_smallest()-first policy in
-> the page allocator. It's fine for somebody to challenge this. But it
-> feels pretty strange to make a unilateral decision in vmalloc that
-> works around and inverts established allocator policy, with very
-> little data to boot.
-> 
->> I've never seen any data though...
-> 
-> Yes. Considering the possible externalities of this patch, IMO we
-> should have much more data on big picture behavior, under varying
-> pressure situations and workloads etc.
-> 
-> The reason for my email was that we see this hurting in experiments
-> with new code. The vmalloc higher-orders cause a sharp increase in
-> compaction activity, subsequent lock contention in zsmalloc migration
-> callbacks etc. I wasn't just making this up.
+Similarly for your next patch.
 
-Fair enough.
-
-For the avoidence of doubt, are you also suggesting that this series should not
-go in or just that a06157804399 ("mm/vmalloc: request large order pages from
-buddy allocator") should be reverted? If the latter, then perhaps it's best to
-move the discussion to that thread to catch Vishal and Willy's attention?
-
-Thanks,
-Ryan
-
-
-
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> ---
+>  mm/memory.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 0c740ca363cc..a2e4f2d87ec8 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4949,6 +4949,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  	}
+>  
+>  	swapcache = folio;
+> +	/*
+> +	 * If the folio is uptodate, we are likely only waiting for
+> +	 * another concurrent PTE mapping to complete, which should
+> +	 * be brief. No need to drop the lock and retry the fault.
+> +	 */
+> +	if (folio_test_uptodate(folio))
+> +		vmf->flags &= ~FAULT_FLAG_ALLOW_RETRY;
+>  	ret |= folio_lock_or_retry(folio, vmf);
+>  	if (ret & VM_FAULT_RETRY) {
+>  		if (fault_flag_allow_retry_first(vmf->flags) &&
+> -- 
+> 2.39.3 (Apple Git-146)
+> 
+> 
 
