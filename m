@@ -4,97 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF22ECD13D9
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:26:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E8BAFF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 03:56:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52AEA6B00BE; Wed, 29 Apr 2026 23:26:56 -0400 (EDT)
+	id BE7176B009B; Wed, 29 Apr 2026 23:56:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B65E6B00BF; Wed, 29 Apr 2026 23:26:56 -0400 (EDT)
+	id B70E16B009F; Wed, 29 Apr 2026 23:56:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37C8A6B00C0; Wed, 29 Apr 2026 23:26:56 -0400 (EDT)
+	id A5F6F6B00A0; Wed, 29 Apr 2026 23:56:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 207F66B00BE
-	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:26:56 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E26FBA031D
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:55 +0000 (UTC)
-X-FDA: 84713785590.16.BC0254C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 29B8720009
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:26:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yxx8M2cZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9029B6B009B
+	for <linux-mm@kvack.org>; Wed, 29 Apr 2026 23:56:43 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0CC5E1A0264
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:56:43 +0000 (UTC)
+X-FDA: 84713860686.09.AABA56F
+Received: from mail-m82107.xmail.ntesmail.com (mail-m82107.xmail.ntesmail.com [156.224.82.107])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F046B16000C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 03:56:39 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.107 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777519614;
+	s=arc-20220608; t=1777521401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=icMT7CFKhgxWAkB9/aWQ2VEfcgaI/KuH9G4xtfFNj1k=;
-	b=t8sN4sx09YDlF9aDz3mw7AouhLPyc4InZaB2jN4VgMEKN+lB6E1qZYx0aC2haQDChdlVWy
-	o3mQB7tpqPOYAmzTiHQ6I+owSY7hGvyOuBWXC+EEpcm/ZeKWYbQXseI4DRP96tok7aLhM4
-	KFe4Xp3Tl8EiDN8/zmdtNBSufxawhTw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777519614; a=rsa-sha256;
-	cv=none;
-	b=mLxbBSO40pwKiCs6fVx6ituYRGQZ8+87+XEWBG/hbRxUf44S+QP20FMFHVnU9Mo85uV+rb
-	VUWbn3O54wHdBAmWt369nCXnYLrJyjLhkALWhl6A379FgkKcAEZZGAQe7FzH3EWwOEDnxM
-	91YRI92SfWH9tUuK1YVNMXtHHon1m0g=
+	 in-reply-to:in-reply-to:references:references;
+	bh=WJXK7XpNbUd/Wrh8HKhiDkneq1sHed3THuPes2yapcU=;
+	b=HZx1Tqw3LqDiWBFRcbCiDUeM0fcibGgqkx+hNyOYL41v/ILTmFHvr8Q++djc+onpn2JJzl
+	3RvYdKiY4ckQicgC4dUh34flTlrGWjSCFb0s98tDFLVGkwtPtvm3UKp0Ptuy5/dRuYaxbg
+	PJN3LlgiPfxxi0fHql34bLqu3VsaKeY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yxx8M2cZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B076438E4;
-	Thu, 30 Apr 2026 03:26:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADBFC2BCB8;
-	Thu, 30 Apr 2026 03:26:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777519612;
-	bh=1y/qx12Do8kjGRWa26585Z3zhVAR8s9S7MLftzRNkxc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Yxx8M2cZdErYh+yTRb4JYMX8n1xNToXdqoarYlzvZ+VJICM0/uJ3iKDXLNPcQGnRA
-	 H8JIZj/nbbFvJXlTP9rWLNIO6QshmFfKvvU6zFT0LGw+HDcOhs2jTIA7HlayOm+BjJ
-	 l8dQuieDdBsxH/orRnJnvut7oa8qxmGhcBxqkYKXiYlXBhlzr2TDj3n3VHNazWuaBZ
-	 hEks0+SfUJmmVmm8mQuI5NIPiY9XYGr5RP3vTjFgNfu+nr8cJ5r2000NO381toN5VY
-	 Duo2QjuhrvCx7cz7cRqnzsz5bSojfgxGn1cgcZYUy76sYJ9bjKOeYDGE6A+KGk2zK4
-	 ipDtjb+awhKqw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD4A3809A07;
-	Thu, 30 Apr 2026 03:26:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.107 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777521401; a=rsa-sha256;
+	cv=none;
+	b=P3V6HbUm2LHnuH3dVsjzAPI19n3ltAhAoTZnwDUapIp2dMXQ8QE5bztt8TX1DxPagZ9rDQ
+	Urfxdve9P7sfKbj+48qMz2wGTZS41+1jCNLb6OD5kTm62VZ/UluG1FRMtBZoepu1G4EKcK
+	kD4jtX7dZCIrCeiyzAoEi2trsZm2Pk0=
+Received: from [192.168.0.18] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 19931ff17;
+	Thu, 30 Apr 2026 11:56:33 +0800 (GMT+08:00)
+Message-ID: <f2d8be6b-d19d-402d-ab53-b40639c66146@easystack.cn>
+Date: Thu, 30 Apr 2026 11:56:33 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] mm/page_owner: add NUMA node filter with nodelist
+ support
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260429145645.80675-1-sj@kernel.org>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <20260429145645.80675-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 00/22] riscv: Memory type control for platforms with
- physical memory aliases
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <177751956779.2274119.16366589478749649607.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 03:26:07 +0000
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
-In-Reply-To: <20251113014656.2605447-1-samuel.holland@sifive.com>
-To: Samuel Holland <samuel.holland@sifive.com>
-Cc: linux-riscv@lists.infradead.org, palmer@dabbelt.com, pjw@kernel.org,
- akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
- devicetree@vger.kernel.org, surenb@google.com, linux-kernel@vger.kernel.org,
- rppt@kernel.org, mhocko@suse.com, conor@kernel.org,
- lorenzo.stoakes@oracle.com, krzk+dt@kernel.org, alex@ghiti.fr,
- kernel@esmil.dk, robh+dt@kernel.org, vbabka@suse.cz, Liam.Howlett@oracle.com,
- apw@canonical.com, dwaipayanray1@gmail.com, joe@perches.com,
- Julia.Lawall@inria.fr, lukas.bulwahn@gmail.com, nicolas.palix@imag.fr
+X-HM-Tid: 0a9ddc88001b0229kunm611f0e101ee38e
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaSE5MVkpDT0lKS0wdGEoYTFYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
+	lOS1VKS0tVSkJLQlkG
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F046B16000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 29B8720009
-X-Rspamd-Server: rspam04
-X-Stat-Signature: jzsfdjc91gdi68d7ani13r11s4dpoqxm
-X-HE-Tag: 1777519613-7575
-X-HE-Meta: U2FsdGVkX1+5qo7VGcxavvZ8PZDl1/A8y8Ml7qQc72H85DdzcbQ/5mJepn8Tusp/wha0FiLepmBHOLdmyhkGXDDw8S8KIazGocmRDxHBzLOPVnPU5uY5/crdg3GBV7fFhGWYWABjriWOmDOfRnjuSyt3gt7B+ZPQZpDRNTKL+eFmuuJ/XrjYblrJ9923sWPY3A4uuyzhNFSclMxQcNdMEKnzM2V76VFPl6kG96KNYHhWnQDXxDl7wk+VWUloS59BJxjpv/yG55L89FD85h6gbUb3kIunVGcE7Ntf8KVQKGLXrAmvXAuieUbALOsKDVGuu9W4Et6mUkouUsMIGQlYdhu6dYpu8U75QCjSMxsn2HXG2WqfJai33+naQr7KfLDAcmDzK90+lf8NjIRZ+cb1ibJB1mUrCB69nuyU8vXQ02A+wkiYosYk1THJoSAMvIzFr6LDEednwkuDJejVV5erMbzjSe3uGtNZs+ABpmaeFkgW9/jx27/zrQ7SfwvGSaivoR4U+HGec8tNc4pjjTNNhEoetc3j990YF4lcG4VAbWiXIfLpMKDKf43RgpQJJCuLi7ZE27ak+/Gv7i56sqqh0VCATpLYi95K1FawDWj3WQ73bvPMhqxERhHrg6dix+DFaRTYYOWia/kH+oW3I6PteAlRlxzl8Ay7z7jk1rbHQ2Bgr4b+g/Wv1gXeUKR1hdEmcmrz79RON3VJfwZAjtAg505vpEegNp+7eAZPtfamR8tJXyHxTvggBu1kthG2ghzlfvb06VJJLXeaaDmzYFds4K6Gw+zhK7s9y4I4GeYLRKIjJejIJDK4ey3lkrT4605y6WgFkuKLX8PYw63Mq1O8jH4b8PLTDWalpgZDNnNwZM4etQcLCSlU2XlyUik2FeH+zs7uYd/RaBEiETQC6zKTDmk4LWE0Zfpjl+OoP9PGckrBnAAtXq2nEWA4gTmpHeevrwt2idl3ymciEux2PUA
- uzF54/yv
- 3t0xF3Vi7LUi4wjHxl/V/gZF3ckm0JCoNhBxUOzgcfzI9hzyo1gzBFRr/KmQ9sgepFFeb4vgPosEnKQ6rtBOpXZHPfvSLPVBSfgWra85IAWWWTheT3YTABFyJQHrokVcYEWDd5UP4qF2MyVTy9pocpj5xBWSTJ5SQU5s3gbsSWODxLEUjrXoB0+Zo/WZPd4Wa103IRcd3ODya+aX7WXQr5cqqCv6ZEk5EE6vavndOlnfSfEuvLj+xw9gBj7vwwUV3XRP0bVrgWq7imPJS+T4uzzjXf19UJugqm0b0IKDcT67RdzE1Hv0yQcrWkylNeAFJlgR5C4wkui0MsBe7HaWUMqiY0XAQQGEmoSf/BGEoZ01atAztSW6WcMaZZwZDTQd4KO1yPW7eqVTCMNzTCto9fFQQ8skZhlYeFDk35CjgxDue5agSnlkNEOPzGSkXUZUnZQ+UYaQWCH1vRLyLlfu7mtE6lWOxHb691xWX8tdxGXMRWlFzr4EzZXs+tUg9uKU3yl0X
+X-Stat-Signature: fqzmo6psmt6quf743dpudkjyiwdozbwy
+X-HE-Tag: 1777521399-664702
+X-HE-Meta: U2FsdGVkX1+HS00A6rusDrw35VCvSIjWd/Fahd3ZQAoI/GlqGwQwSUpxd3T2Pg+4VWdtrjHEuELPxY7BP3G2KGz9yzuWNz9nq6RMn+QumHC8pxX9S1eOshWSvOXwiCYdxn1RCKfo+acxYs1Xee+Rh4Z4jKLhSaOMs4ingUZmO+vZWfplfjj/BFC0deAE4IdWnGeTJvoh4/fJkyx+45o7qRDBCkNSdOXFBXdfLeT51iXl7axAtyi5c4kRHuK7K+uhosg3D9Nzku8k+8/P1aRGBRDOM2ge5+FEw5KL6Rs1XMkYWiWQbnZp3FWivgVE05oNn146olrCrkOIitnGF6DCyC+5weMw+6mtL5ib5yEONYTLF6U0U//JJuxnMyn6iLEx1EEeIYYgNHG1ME7FF/L8sVBpjb8OfByMhoGDAXfWIrWnSgvUOkNvExLpmty5i1KGuf91r4LyWYSqb0Mukf3UEgcZFW4qIt24L/BjYRtoRmbjcM7Z6W1dOig+nV0sJz3bLm8iUb71rUVyGODuWBmwJIVNiGLU8Ovmk03cwdITvAizb5Cp1rCxEq4xMcE/3u4pzVj4dYtxVOxxNcPffSdNFr23VfIJjr/b1lmZj1IOclq7AhIRGPoaefjjYdRJB6CAinq266lDhizsoyGCZ+ihpA4Z2jXcH9qaPelBeAF+gqhq39tCJWu6xlhikzKiCpy1OANDd55ZgTf1JCk9FKsjAp5HPz4f+ta93i2RC0YDYEX1YonCBZiKWh7HGQCN0f1QhtIWqXGg127w9zJ/FOSvZ9o2CCyE3HfnTD5O0sofgHJn0K5C620hX7Sbp2yaVUSyhS/ve65bWcv3xSZuB9+ZevzoRRlPrzenvu0WTiw6D6qfxHhTkKWTu8Ci5pZIoJeq3kqpDSC9Lzxcbh/+EJAsiS/kHlLVVpHFQcn/hlEPIl9C3kor3sLLc6tjXmwa1cAuAzccG3Lixawecf//9g7
+ +jHQB/xJ
+ S5Y776r9yy9e6/noYBvrWUteptrPOhB7iVR+YI7hqrg/6y7zaKEo/NdDkanmI1x65OGxtG6gjDxRLyMfCP5/qLNcxEcTzYUokduHCtlp/fHq+fsvzN3MUlownVtv+/teF+E5F160gTOw7aj0175BG7rHSEqCW24jatGe7cl/s+A7m126eM7TH2K7RBPeFyseXl37gVD7P1n5Ql5cApebWuIrKMSDtMSeDnpCj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,72 +88,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
 
-This series was applied to riscv/linux.git (fixes)
-by Peter Zijlstra <peterz@infradead.org>:
 
-On Wed, 12 Nov 2025 17:45:13 -0800 you wrote:
-> On some RISC-V platforms, including StarFive JH7100 and ESWIN EIC7700,
-> DRAM is mapped to multiple physical address ranges, with each alias
-> having a different set of statically-determined Physical Memory
-> Attributes (PMAs), such as cacheability. Software can alter the PMAs for
-> a page by selecting a PFN from the corresponding physical address range.
-> On these platforms, this is the only way to allocate noncached memory
-> for use with noncoherent DMA.
+在 2026/4/29 22:56, SeongJae Park 写道:
+> On Wed, 29 Apr 2026 17:03:56 +0800 "zhen.ni" <zhen.ni@easystack.cn> wrote:
+> 
+>>
+>>
+>> 在 2026/4/29 09:28, SeongJae Park 写道:
+>>> On Tue, 28 Apr 2026 15:11:11 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+> [...]
+>>>> @@ -685,6 +685,7 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+>>>>    	struct page_ext *page_ext;
+>>>>    	struct page_owner *page_owner;
+>>>>    	depot_stack_handle_t handle;
+>>>> +	nodemask_t mask;
+>>>>    
+>>>>    	if (!static_branch_unlikely(&page_owner_inited))
+>>>>    		return -EINVAL;
+>>>> @@ -698,6 +699,8 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+>>>>    	while (!pfn_valid(pfn) && (pfn & (MAX_ORDER_NR_PAGES - 1)) != 0)
+>>>>    		pfn++;
+>>>>    
+>>>> +	mask = owner_filter.nid_mask;
+>>>> +
+>>>
+>>> READ_ONCE() was used for owner_filter.print_mode.  Should nid_mask also read
+>>> using READ_ONCE()?
+>>>
+>> The reason is that `owner_filter.nid_mask` is a nodemask_t, which is a
+>> 128-byte structure. READ_ONCE() only supports types up to 8 bytes and
+>> will trigger a compile-time assertion failure for larger structures.
+>>
+>> This was actually an issue in v2 - the AI review tool (sashiko.dev) and
+>> Andrew both caught the compilation error with READ_ONCE/WRITE_ONCE on
+>> nodemask_t, so v3 removed them.
+> 
+> Thank you for kindly sharing the context.  Now I understand why READ_ONCE()
+> cannot be used.  But, is plain load/store safe enough for nodemask_t?
+> Shouldn't it still be protected against races?
+> 
+Concurrency Safety:
+I considered spinlock and RCU, but decided against them:
+
+- Spinlock: Adds overhead on every read, overkill for a debug facility
+- RCU: Requires dynamic allocation of 128-byte nodemask_t, too complex
+- READ_ONCE/WRITE_ONCE: Not possible, exceeds 8-byte limit
+
+Plain load/store is safe here because:
+1. page_owner is debug code with low-frequency filter changes
+2. Worst case of torn read is temporary inconsistency in debug output
+3. Similar debugfs interfaces use the same approach
+
+The overhead of locking doesn't justify the benefit for this debug use case.
+
+Do you think this is acceptable, or would you prefer I add locking?
+> [...]
+>>>> +static ssize_t nid_filter_write(struct file *file,
+>>>> +				 const char __user *buf,
+>>>> +				 size_t count, loff_t *ppos)
+>>>> +{
+>>>> +	char *kbuf;
+>>>> +	nodemask_t mask;
+>>>> +	int ret;
+>>>> +	int val;
+>>>> +
+>>>> +	/*
+>>>> +	 * Limit input size to handle worst-case nodelist (all nodes).
+>>>> +	 * Worst case per node: ",NNNNN" (comma + 5-digit node number) = 6 bytes.
+>>>> +	 * Formula: 100 bytes overhead + 6 * MAX_NUMNODES
+>>>> +	 */
+>>>> +	if (count > (100 + 6 * MAX_NUMNODES))
+>>>> +		return -EINVAL;
+>>>> +
+>>>> +	kbuf = kmalloc(count + 1, GFP_KERNEL);
+>>>> +	if (!kbuf)
+>>>> +		return -ENOMEM;
+>>>> +
+>>>> +	if (copy_from_user(kbuf, buf, count)) {
+>>>> +		ret = -EFAULT;
+>>>> +		goto out_free;
+>>>> +	}
+>>>> +	kbuf[count] = '\0';
+>>>> +
+>>>> +	/* Support: "-1" to clear, or nodelist format like "0", "0,2", "0-3" */
+>>>> +	if (kstrtoint(kbuf, 10, &val) == 0 && val == -1)
+>>>> +		nodes_clear(mask);
+>>>> +	else if (nodelist_parse(kbuf, mask)) {
+>>>> +		ret = -EINVAL;
+>>>> +		goto out_free;
+>>>> +	}
+>>>
+>>> Doesn't empty string input to nodelist_parse() clears the mask?  Can't it be
+>>> reused?
+>>>
+>> Yes, empty input (echo > nid) works because nodelist_parse() handles it
+>> correctly. However, nodelist_parse() - which is implemented via
+>> bitmap_parselist() - cannot handle "-1" as it's not a valid range format
+>> and would return an error. The explicit "-1" check is necessary to
+>> support `echo "-1" > nid` without returning an error.
+>>
+>> So the "-1" check handles a case that nodelist_parse() cannot handle.
+> 
+> Thank you for kindly explaining the reason.  But, do we really need to support
+> "-1" input?  Couldn't we just redefine the interface?
+> 
+I chose "-1" to clearly differentiate from valid NUMA node IDs (0, 1, 2, 
+3...).Since node IDs are non-negative integers, "-1" naturally means 
+"invalid" or "no filter", which is an intuitive convention in Linux 
+(e.g., pid -1, signal -1).
+
+Do you have a better suggestion for how to represent "clear filter"？
+> [...]
+>>>> +	debugfs_create_file("nid", 0600, filter_dir, NULL,
+>>>> +			    &nid_filter_fops);
+>>>
+>>> Why don't you use 'page_owner_' prefix like other fops, for consistency?
+>>>
+>> For consistency with the other file_operations
+>> in this module (page_owner_fops, page_owner_threshold_fops,
+>> page_owner_print_mode_fops), I'll rename nid_filter_fops to
+>> page_owner_nid_filter_fops.
+>>
+>> I'll incorporate these improvements in the next version.
+> 
+> Thank you for kindly accepting my humble suggestions.
+> 
+>>
+>> Thanks for the detailed review!
+> 
+> Thank you for sharing this nice work, too!
+> 
+> 
+> Thanks,
+> SJ
 > 
 > [...]
-
-Here is the summary with links:
-  - [v3,01/22] mm/ptdump: replace READ_ONCE() with standard page table accessors
-    (no matching commit)
-  - [v3,02/22] mm: replace READ_ONCE() with standard page table accessors
-    (no matching commit)
-  - [v3,03/22] mm/dirty: replace READ_ONCE() with pudp_get()
-    (no matching commit)
-  - [v3,04/22] perf/events: replace READ_ONCE() with standard page table accessors
-    https://git.kernel.org/riscv/c/5a84b600050c
-  - [v3,05/22] mm: Move the fallback definitions of pXXp_get()
-    (no matching commit)
-  - [v3,06/22] mm: Always use page table accessor functions
-    (no matching commit)
-  - [v3,07/22] checkpatch: Warn on page table access without accessors
-    (no matching commit)
-  - [v3,08/22] mm: Allow page table accessors to be non-idempotent
-    (no matching commit)
-  - [v3,09/22] riscv: hibernate: Replace open-coded pXXp_get()
-    (no matching commit)
-  - [v3,10/22] riscv: mm: Always use page table accessor functions
-    (no matching commit)
-  - [v3,11/22] riscv: mm: Simplify set_p4d() and set_pgd()
-    (no matching commit)
-  - [v3,12/22] riscv: mm: Deduplicate _PAGE_CHG_MASK definition
-    (no matching commit)
-  - [v3,13/22] riscv: ptdump: Only show N and MT bits when enabled in the kernel
-    (no matching commit)
-  - [v3,14/22] riscv: mm: Fix up memory types when writing page tables
-    (no matching commit)
-  - [v3,15/22] riscv: mm: Expose all page table bits to assembly code
-    (no matching commit)
-  - [v3,16/22] riscv: alternative: Add an ALTERNATIVE_3 macro
-    (no matching commit)
-  - [v3,17/22] riscv: alternative: Allow calls with alternate link registers
-    (no matching commit)
-  - [v3,18/22] riscv: Fix logic for selecting DMA_DIRECT_REMAP
-    (no matching commit)
-  - [v3,19/22] dt-bindings: riscv: Describe physical memory regions
-    (no matching commit)
-  - [v3,20/22] riscv: mm: Use physical memory aliases to apply PMAs
-    (no matching commit)
-  - [v3,21/22] riscv: dts: starfive: jh7100: Use physical memory ranges for DMA
-    (no matching commit)
-  - [v3,22/22] riscv: dts: eswin: eic7700: Use physical memory ranges for DMA
-    (no matching commit)
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> 
+> 
 
