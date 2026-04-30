@@ -4,140 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 922C5CD13DA
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 18:50:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA6EDCD13DA
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 19:02:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AB926B008C; Thu, 30 Apr 2026 14:50:03 -0400 (EDT)
+	id 046696B0088; Thu, 30 Apr 2026 15:02:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05B816B0092; Thu, 30 Apr 2026 14:50:02 -0400 (EDT)
+	id F39536B008A; Thu, 30 Apr 2026 15:02:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E653D6B0093; Thu, 30 Apr 2026 14:50:02 -0400 (EDT)
+	id E015D6B008C; Thu, 30 Apr 2026 15:02:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4E2E6B008C
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:50:02 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9D2691C0EC8
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:50:02 +0000 (UTC)
-X-FDA: 84716111844.25.8060E8C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 35B22A0004
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:50:00 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RgxsQmm5;
-	spf=pass (imf15.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777575000;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CCB126B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 15:02:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7272F1C002D
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 19:02:25 +0000 (UTC)
+X-FDA: 84716143050.14.03226A9
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11023103.outbound.protection.outlook.com [40.107.201.103])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 60E9D40005
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 19:02:22 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=RGoOAv7a;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
+	spf=pass (imf17.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.201.103 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777575742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hnKl9OZc44JsdkvruemasdPKEjlnDZ5531kZfhlSZpc=;
-	b=tgnSvkv+AuDYMQTRzPTmu6KzE3cA6jOn90QTCHlicILYPibo+xQA9MpPFFjTYrsRF5+0R4
-	MaWrYpYEG89z1D7sUZoDXOLMOKnnBae1n8X5okDIto861mUhv+PvsxTn7j/ys5wBJ8QrF4
-	8ZkUNNVQEjqBNQPssFMp5mXsvICC2fI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RgxsQmm5;
-	spf=pass (imf15.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777575000; a=rsa-sha256;
-	cv=none;
-	b=1e6c2uj/aS3S4JaBOyiKeo8Vn03INknCwbTVpTBYtzZUUQ5AhNTebM1sJ2OwUdrNXNRy96
-	wRMUsTFTHqbN2L3lRkuf/Zdz5SJmPUbUNSsdg/YCt0MhEU3tZNC/kL8Y/uosxMREOy7u8r
-	GFjZt0GKn4nycsfVLaOOQZ+0LJtEEUw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777574999;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hnKl9OZc44JsdkvruemasdPKEjlnDZ5531kZfhlSZpc=;
-	b=RgxsQmm5GV/TePgd+Ryj4uLmgnVn6IyfJAEE0OJ3y4BBqty66zlDNtBZHuUOnvMBYBTbda
-	Tw/dRfZzGEkj2LO13FFOv8PQev0bHGZ4AQq7iy/lMPS4aCqEKE813ATR0qye0/J1pl0d7h
-	9POM108dr5jMarXsjoJsubldLY75/Fg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-160-10hnurBmOdGLB0Uk3YblHg-1; Thu, 30 Apr 2026 14:49:58 -0400
-X-MC-Unique: 10hnurBmOdGLB0Uk3YblHg-1
-X-Mimecast-MFC-AGG-ID: 10hnurBmOdGLB0Uk3YblHg_1777574998
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8eabf08affaso326439485a.1
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 11:49:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777574998; x=1778179798;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hnKl9OZc44JsdkvruemasdPKEjlnDZ5531kZfhlSZpc=;
-        b=d9EufqmGbXycA/f8KZQOWniZC9pv5g43PihXIilCZA7ABtB7iVY7f28zJBqDQWt0Ak
-         +Czh1E6laSseUSHonfPBo2DgpAprBV7V/qCwc9eLWSfWkgadLgV75OO2yR/juaBPBcmx
-         A5zMxWpXnHuY1cNUcDZ7+xvZeqif7xnZFzQN1feKR+/8O1EseoYAW2KDXffZvNznazb3
-         aYYz6/UHLzsg6b5uCmUPkLSKFDH4amqz3i5hI72dqgXpjxdkXnXC9cuuMWZYmGZKMP7R
-         RM762+SCRuzwh6Z0GT46HG9Y2PWROqUOnuTjrE1tHMrKvTJGOvPP9O5+qPDX+XPVPgsN
-         zeQg==
-X-Forwarded-Encrypted: i=1; AFNElJ9q87AnhdYp7eBdIcTXsWoUADX43DVb4xX0ti0WZeGPAqyfRKB3KcY5BfQBSIH1cvkLp6W/hLh/Fg==@kvack.org
-X-Gm-Message-State: AOJu0Yxu8CH4gEvyoKpN3oiXA38XvvNNDOCmOxKoEBlTFBJioaNQgbe5
-	veN4VYcW6KsFzrFsgNxAhMLAHHr02WeSHHdQ8oJ/PD1wFtVdK9LFoBDoDmY1lQ3Cl8RAs8kpRbj
-	/xsyqOVWYWjM5E/XcimBXchIc/KMXSbPQinoz+bOwjBp31c4orjmB
-X-Gm-Gg: AeBDietQ/eVBNgKdNaRrdeb7kcjm+j0L5ZzbPIcIoHnYaHuK6+WXtNcPSnKIy3RE0aI
-	g04uWtxZZ8IuOAeW4Mx/pF15upIt6wfpeywU2jShjTY7ZhK3VwI1G5E/QoqIyCewn1K0oysKfWX
-	QDFZesFnm9WYiU+Zs7Jfs9lvjfEhm7o7vCPTYg5cqDGlropTjAVm6y5HXjZ1BoyW3L50wpoRpJG
-	9kGI/O6UFSzzTiUUVRG1YYhd4EbLRchGExO3tGOcmgbt65BTDs4/FZ3GofoisJvRFCCqQ5epAxI
-	AIHYL9um+AZ8slrfYUXo12+LcMALyZECDk45Jhd7qoJDqaIWks+E4oaly0Dy3bk2z++WmJNIc1E
-	svM7uo0JygK3EFr0nWxUPM4nr/gHdcH3SGIVUHw2Vl34mQODTxuDrcg6YanUd6hNjJJ6RLg5jJc
-	Tjs/9ZOXrgyyycHQReJnb6HrI=
-X-Received: by 2002:a05:620a:4803:b0:8d6:874c:a763 with SMTP id af79cd13be357-8fa8922add1mr662274485a.49.1777574997663;
-        Thu, 30 Apr 2026 11:49:57 -0700 (PDT)
-X-Received: by 2002:a05:620a:4803:b0:8d6:874c:a763 with SMTP id af79cd13be357-8fa8922add1mr662269985a.49.1777574997162;
-        Thu, 30 Apr 2026 11:49:57 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fbb430fed8sm39960585a.41.2026.04.30.11.49.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Apr 2026 11:49:56 -0700 (PDT)
-Message-ID: <4beb6000-7d00-4ee6-a482-daa90c7502c3@redhat.com>
-Date: Thu, 30 Apr 2026 14:49:55 -0400
-MIME-Version: 1.0
+	bh=ISDdxFSVTj+nrwTkpGgqvJcug2hdG/LGDXpZwmhC//4=;
+	b=w8bF3pwwVb+s26IhVMIqgx+JwwTlnXmUmdKPE5QHXwMgcD1cw9s68FXnI8/kd0ZfeNO8N9
+	qkPvxBOTwOc/MJZGq3e1DJ7VvaLWvXc1VzyVB56osOJzqsRWjpSD0J6IJYCXuyrZeMz6nr
+	AaJmeRf46F8S5DPhilnlAuCqp2b7awQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777575742; a=rsa-sha256;
+	cv=pass;
+	b=ArsIoLxsUTBPNVvJEwnzpERDHvjvr+iqL6+8QmKLtVtstfLUYUJlhVzACaheY4kEd/U9X+
+	Em+ID4M66kPNZsv5bmSGmhVhZKEbLAePExO+Pbp62E7KrNqns7Oxg0+jbZzysahhZtZCgM
+	TVvCRBkY/xxU+O/4laN4nnN7jevspWw=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=RGoOAv7a;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
+	spf=pass (imf17.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.201.103 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H1f8P/GKqXhgNtFBhSeSApfZ3f29fiNKbubgys0bSOi2xYSp/4IZKtkelYfUReJvhC9w4TCLOLECjdshOuoQd8Xi77l4VJpLIMraygCPnXX4tXtNac1ZEbz7fwEWhtMDYyUHxHa1dGevhtltlN1kKyA9Uyso6qMo8PAfy3fR0QCV1mcPyOB7xcMFOWrcdC4AljIOmchnojLYKABbnsg3LBwQtbp8l5mpVoZYii/1z0yGbc/dib0drB6ZaviyKoea4bBGpkJCMnYgx3zWSTIUPacALlrT9T579P8CZXuMWZhc0bam+YwhAXPxqVPzD1I6c1cCsiqv41RJm49O2wRRog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ISDdxFSVTj+nrwTkpGgqvJcug2hdG/LGDXpZwmhC//4=;
+ b=ZtZvFy4s0qbPIvMVw3gUoGQDgL21WZjv6YGT/ktUTxdRo0ExxuhFk0UqSOQIHK0/H6WUbQ9G6tj4cKB2U9LRKjJ4ObCiqS3UArM0mYo/PgdrE+GBGDrox3gixDWsbU/ZZScGyznbNfO+2XMCVgoXBKCt6w1/zrbIfcPJtoGnwVh6ifxkVJAgtFMgS7I1iYb8iBaxy6bUsTR/XE44YFqJHKE/2gu0Gle6HjyqOPBHTHyNOpeWHpPoLCqZkdO2HT9s1ecwqdSYuBoJb17baof5AJ0vmjXPYF/8zAdlf0Rhw0EcDLL2VnObJN5bYAt+bF8hZ3482Cj6Zsy/Qw5qB4SV5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ISDdxFSVTj+nrwTkpGgqvJcug2hdG/LGDXpZwmhC//4=;
+ b=RGoOAv7ajhYYj/vL/tj0ZY60W7nN9iNaQerdfK5X237KtBEjx8UabuVFNA+Xy7CzjvEF0cYKGFKhzS1hJxKZ2yZSF87szSOBgJOYAv/kDYFJb+aywqcELHORf7R8LAa1jkM9JzDj8epvuXKsgrbpMIj+pZsPSM+RKysidbcoQWg=
+Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
+ PH0PR01MB6312.prod.exchangelabs.com (2603:10b6:510:a::9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9870.20; Thu, 30 Apr 2026 19:02:16 +0000
+Received: from CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::46eb:64a3:667c:c1a0]) by CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::46eb:64a3:667c:c1a0%4]) with mapi id 15.20.9870.020; Thu, 30 Apr 2026
+ 19:02:16 +0000
+Message-ID: <59860460-5592-42cc-9593-4780fb720e18@os.amperecomputing.com>
+Date: Thu, 30 Apr 2026 12:02:12 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 52/54] selftests/mm: va_high_addr_switch.sh: drop huge
- pages setup
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
- Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Sarthak Sharma
- <sarthak.sharma@arm.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-References: <20260428204240.1924129-1-rppt@kernel.org>
- <20260428204240.1924129-53-rppt@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260428204240.1924129-53-rppt@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: R5Uj8ipEp_SQ9CvtO93IQzpQFHYlbqAFllfY4nb-dpI_1777574998
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
+Subject: Re: [RFC v1 PATCH 0/11] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+To: cl@gentwo.org, dennis@kernel.org, tj@kernel.org, urezki@gmail.com,
+ catalin.marinas@arm.com, will@kernel.org, ryan.roberts@arm.com,
+ david@kernel.org, akpm@linux-foundation.org, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260429170758.3018959-1-yang@os.amperecomputing.com>
+Content-Language: en-US
+From: Yang Shi <yang@os.amperecomputing.com>
+In-Reply-To: <20260429170758.3018959-1-yang@os.amperecomputing.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 35B22A0004
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR03CA0021.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::34) To CH0PR01MB6873.prod.exchangelabs.com
+ (2603:10b6:610:112::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|PH0PR01MB6312:EE_
+X-MS-Office365-Filtering-Correlation-Id: e6afbabe-f6d5-4c64-de72-08dea6eafeca
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|921020|22082099003|18002099003|55112099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	lCsS+uxTtmaChzcnvhSt8kZL1gCcfUO9bK56buIqHru2a/UIBmABzLV5CLhr/KQ1KyF5faI6azAnL6r/VCLWNuhehxyuWY3uYpZ4SWgj+EZQy8AaPz12S4JYwkmOzwxDLl1qFwAQ5MAcpHET03SGH62FD1HFbQWvrEJai0HI4i9rOA4REG4uK27xvPwy7PESAuz675BImX/dSHsuT7zNQpflqu8BOAmYxqWcBnGOwZACaS0/uXrPo5KNs27pjFRq132NDourOCqmtpWf4kg/P4ikXbHRAr1iQZvWCHClXvBMMgot3P33zVUp+V+AIC/O9fh/2RgM3ZgQNDpGTrl3uJKwcJe2lRXhir/NkKsCzzCbiOo51gctdQILeEAFCJLuM+PAwHemSHdHoskl9Bv1rzLfFssNsqv+OS8Hqst3BSLeIx9TOF/vwUN5HSHTvzbFHtVEquoeupQp4d8ioFu/2pehyTdtFCzTT5FuWDYt1U/7kb1ArIGbefKL3yXPo7YpIJh5kE8s0oSLkMfV82FaMzj5AVRNAXA68EIUL00VBS81Ufo69P1sSdU+j9ieO1vlXRWSo/MeLbtuD2oBhkYAXtReCOc0fQYtSarBGTWnHWqtggHsu7E4/D9gqrwdX+cwhYKM4kELZleDLM9SbgB/XpyGf3mIRv7Aov1jSMYtEnJJ7dXEecB2xq1Ayk+i0PU0q71nFQY0NEuK0JnZDzXWfHNBFWCJOrdNrP3GL+dPsgp/WvVWkrPO2s+hrgEiDSgS
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(921020)(22082099003)(18002099003)(55112099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TXNZWW95RyttaTNLWnNaZ080NEY3NWpKckRud0JTZ1oxempRdFk1RTUvbVFP?=
+ =?utf-8?B?d2p1VE5Td2JIYzgyQUZTQmo0c09MdFhaTUI5MkQ5U0w5TWxtdE9vWkNrNnEy?=
+ =?utf-8?B?Q0NyMzl0eXJDckpXTytFKzlrM0dvTEtOMGU4QUpSMjBsSm1yL3cyeHBxUFlm?=
+ =?utf-8?B?MEY0aWhneTVLTUx0WE4vRWk5OGNicHN6SThPWVRNWWxtR2FUREtFdXRiTU9D?=
+ =?utf-8?B?V1I4L1B1ZWVVenRaZU1ncEJvNCs4ZGNjTGxFU2dvejZsZ01sQzBBU2x3WnhL?=
+ =?utf-8?B?UWJHMFcreVFHR1ZGNTVSSVh2YnE0d3g5YWNiZjNoT2NUc1BjYjJyWFc0SFBR?=
+ =?utf-8?B?c0g1N1JPSkJEVy9GOTZQVXFnVkI2V1VETm1WaWViWVVBK3lBOVRlbVQ5Lzl6?=
+ =?utf-8?B?THd3NFRJZDB5ekhRazk3eXQwMWdxYnJ5aitzQVVaUXlJait6RllROThJajB5?=
+ =?utf-8?B?Y2k5YTNOSzUvS0Foam1qTmtZY1JPQUJSdWFSeDZVK01xYW1odE4yVVVtVWZJ?=
+ =?utf-8?B?OGZad1ViRjMxbUhqcXU0b0hYK29DeVpKTERqNmFxWVlCdXZSSm93K3owT1lL?=
+ =?utf-8?B?SDZ2d202Zno4dWpFQ3A1cVErWjFPSE9PaGdMZlYreWJjTkpKeXkwcGRYbTFR?=
+ =?utf-8?B?cXQrcmo1VHNxcE45a3poVUd5T1JaZCsxSjhpaFg3LzRoSXAwbzZJWmh1clFu?=
+ =?utf-8?B?bzJadG1ybkNsMkRuRGthRGozdE9nRG1ZcWZ5SHc4NUpnaFpFSEpVcXpEMzdR?=
+ =?utf-8?B?TkJJTm5vMzhQM3hNd2dmbzhVbjFxUGpKRHFBazM3S0lqdnRzTkkybWhSdVhy?=
+ =?utf-8?B?aHkvTFFadnl0S3ZGU2t1OEhyaHQ0NHpBVFBEc3FrLzBFeTRpdmVpY0l2MDM3?=
+ =?utf-8?B?bGVsREhHVFZaNWpYYkxIOXFwbjBsMUJ3bzlSc1Q3aStPcXNMMXFFaUQ4VkpX?=
+ =?utf-8?B?S2JKQ2Evd28rV3d3QVplZzhHQlM0WlFaZ0drSUVBVnBxOTZRQzlYbEFtcFVP?=
+ =?utf-8?B?YXFCdDF6ekdremowczloL080bE1UY005MURFS01KQXMyanhiSThENlBWV0Nr?=
+ =?utf-8?B?V05aaWhuRURXeGVoSzlKZHVBZE5vUG96aHVlYkZDR0cxY0FQSE00cTZpZFpm?=
+ =?utf-8?B?WjVsWHVmZUJPVGVKcjdMVnRpbWovZEozQXpVMncrODk2Sk01TnkrdzVlVWpr?=
+ =?utf-8?B?K3NiL0laK2EwdDJaN1BidlQ5QWRjTXRYVEVJV09YZzlyMG5USGptQ1NlR1o5?=
+ =?utf-8?B?WkczUExyWGF4RDNiQzV6MVRERGRhdCtxc0JvbUlwRWVqQkk3SGRveHlrSGU0?=
+ =?utf-8?B?dDEwVk9uYVRGNkl1Q2hKck1RSkttNHpkVGNMbzdYNExVYVpkSEdqTkdvSDAx?=
+ =?utf-8?B?eXNiTXRud3c5TkFMMDVrTnNYWU45T0U5L3pYWDIyMTVsbDUvYytOMnVjeEdk?=
+ =?utf-8?B?Sk8xMVNYR1RGUlk0YjhVN2VaODFCZEh3d0NDM3c1VjRuQmhNY1lyUmoveFAx?=
+ =?utf-8?B?a2N2V25lREZFRzM1OUI3a2V6ZmdPVWQ2K1RBYk9hVmt1Y0pyaEsxMzFBaHNI?=
+ =?utf-8?B?UTRmemE0MVUvZDFpclVRK1FBMkY5Q0xRZFROeTJ4MkZDdkxrSGEyM0t1eTdX?=
+ =?utf-8?B?dnhkMmhUWll1SG9HSXBwMndKKzBrci9pbFRTYlBUSnIwaEZkazM2cjY0ZVVW?=
+ =?utf-8?B?a3hDeUJBa0FCTzVldUxMQjA5dVppbVRQS0pPeUwrbjkxWUVGWW1Ea2ZEUHBO?=
+ =?utf-8?B?SjRPZEFGcTVMS1JHQ0pSdkNtS05mY0huOGdacU1CdDFKRmQxNGJhaEVxRUt6?=
+ =?utf-8?B?ZFpkdmZkdExKNkl2Rm9kREhHUmRacWU3WjlnT1hkNUdMT2hqZmdLMVNEU2l2?=
+ =?utf-8?B?S2xTQm5uS1h5SFZzdHhqYWc5QXhVbTlBR29VY3laOFl3akZ2M2hwUDJZRmti?=
+ =?utf-8?B?MHVTUTJZMzlTd1dqNVdXTW9EYjFNWGdkaURHNEE2NXpMUFE2VWZST2VKVFo4?=
+ =?utf-8?B?dnBJcVIySlVvbU5JZHQ0ZXl1Yyt3RHlYUzR5ZWNUTWtENEZMLzF3N29XOUJL?=
+ =?utf-8?B?SzdmTzRRRllTOURYNWVQMHVGaCtMa01tUmtSWEdrVGtEVHJESjYxNzllK0pV?=
+ =?utf-8?B?enJJNFpwaGRBWmgyVE00akdSMkh6dk8wb245T0NhcVJQcWRxaXFKT0l5ekRl?=
+ =?utf-8?B?Y0MxTDVFMXByeTFsU29UNG1iMCtpcnFSa3Z3bzVoaTA4SlBLbzhXS1IyeTho?=
+ =?utf-8?B?dTVDWFV0c0hkWTFKQm5GYW13SlVPVWozd1dtU2ZpYWxidmdLeTd0N1VVYzlS?=
+ =?utf-8?B?RXlwbEtQdzQxbU9KYlRiWDVZbjFhaEwvaS9oOFFEaEpTU3A3QUxzVFJFZDJE?=
+ =?utf-8?Q?G/zxJ2fn+GczicEk=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6afbabe-f6d5-4c64-de72-08dea6eafeca
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 19:02:16.3237
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i7tIIy42+pWPaO1ulrkAcH0yZASibbhtXHd5C7NFhDobUF+jXfMtWMnq+JeyI86Q3GLKyevhSVSTM5O4ygcciTBXNBnSc1Zr/bTtcoqW47k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR01MB6312
 X-Rspam-User: 
-X-Stat-Signature: 1ywx54wcdk6pc6ftr79knho81yqhkhmm
-X-HE-Tag: 1777575000-716640
-X-HE-Meta: U2FsdGVkX19VEUgmqLz+6dJx8ia67tjsat/v8nAWYE/CZ7GG+An/4AqxouHVunqaaPvmNbc+PFlhoWu6Nxl4e8JN9Px7OxrvALsGa4pWyRHPqyA9d3IFEMlx/6/66pIIToqwGkLzEngCs+lkVA9k02okuJX49Jazk0KCgCUyqpVkKcSCvLw2bG0TB135kqhg5pYF1dpHtklrpc7+d7Gu5Yo6X944+Ty3rvQ8rpggtemrBSPcb/MMwYBCz0j2aHOG1f6+ahDevdlnvGh/LgX/vRmNMkRX869peMTuUvtGPthEXiZDk18MTGHn+F6Ddcr1s8cOgPqZCLUZmd8Hazpyj7jAt6vigW5m4/ml/+UcJMXzj9eMtsRVtpOdeLkXS0verhygRwmzcjyV/0xE+Si3LSj6RHLbfSeE5WriASrPBN6eaJ9i/lASrPYnkx8ZAJ55G6QLQiAL8yml1+uRKQzC3o9tnauNEigQRzsxXqBxITx/dbItKEGd2EoW8fbE7r9AvrpBZPCQu7uXq38OoJcC5WQe/RJys953OPR5T4BnKO/iHTcLvNafGw6PsvvpXY98jg1W3wfn86PwcJ4LA+VXcgH3lLV8vNUK/8rI4BGwPHV2EvADunHE0KobJX4Z3sthdE/aFonMzFGd3hNxTuEJHXC7HrIMdUaIaL2tSHd4TtCuFw4xP8Nklt2xOuOpIObBCGX9yf7l6cT061rxBRWxcsh/pq6z995FOPjLYQKqg7SyWjKEbmGanjMCAleonSkbzbUwJG5Qv9oLGMhS8MobR8Hu00msdpJxmtcwXFhhOOEy7iCZGURC6dXxNNnLqufhAIPP+XO5ZYTtzDwoFve2AWg5OmDZDQ8/3HXCWBODttCIIzEgOFqU1x2gD7jUAilfX8ctX/l9SajLHLoKmm2Efd41w68mc3CpaHSw9CntNsxsXW68IOY2un/c4LSGni+cs/X26p6N1WvBYOHcxg8
- ahy8NKVB
- ETDpFhU3blFliMfB4ny6YgjhPxU7YKA1ERiYefTsQJmEISrKBF02NLnv38/AxSKQyOvlGXneguWribHWL7ZEUSfDZirxCpRcgG78KVQt4NI7qe/WkOSfc/3bcBbdFzh+6J+Q8u+Ny1Nqr3bZ4hP/zHOxhcJTFvAk7XiLTT5pNh8lqNlBw86KX53/uvSYxe+Srg/6cfmBz65We2bPuWZJrB6K39tuZoXrcLqx1xFsRj8v+OmsVIi22GykFbFP1lFgzslSOzxZoqerBNWIlIjBALYJrx2iQmez4OM+EL2OdE55Rl+NVp/spk4jqa8LDculeAwpNPBkCKB6Fczb4b2oo2yVt7EahNxqpXmEPRx2DRDpBVP0DD+eOXij7aecNXTrSMPzGi724B2vSnU/SoZ7UzxgSNv0w8ZHjodS3wsbfRi7n93HDJRnYwzOgbZ3bevOFbu36vR4kXLaYCxkZazjL4j/DsxYMIKEAYWZVHaQMTQ+BgVHLlQpiyFrRiwlOjIVO6KWx0POE2/8rBrp0S+efLUjs7w==
+X-Rspamd-Queue-Id: 60E9D40005
+X-Rspamd-Server: rspam04
+X-Stat-Signature: fyzsuo4xn8wuhrogkf9hdmr5hj4mbha1
+X-HE-Tag: 1777575742-204949
+X-HE-Meta: U2FsdGVkX1+hlLdJeGw4C+dMHlG81JHGeYhVzOaSZOHqL/JFpLUYMC3bg0cbFRiANBZqeM8gzFjcbaOxu+SIVH1SVt8XTW/WUR2c4iIOSNXKwU7SS2RQsUOUV1vyvip5zt0KJI23xKhed+BRICRmNprwa0cu+BAz2nkEgHiuGWxC/1f9NLJ4fN5Inx2RHSJffB85GYQHLyqzSyIdJ8c/WcTa7ZNppztV9ukTdlIlYZ9DN8dIKYxQtnRs1JqnP5IqPFnmAMhUj5WujeSawabmkCasypUu53AGerbcz/v8FACEaBL4eFPgUwKmvqR4Q3yi0gpiEcJ1uq11CjvP1Z2QJikyWN2palkKaHut88h4G53wDsqygJolV7cHTkqHIxkjxUil8tOa2kOINpUN6xgl1/ylOWnI81sx7rSSExtbNvjcBv8jUv0IRx+6WNdZpr3d5idbJQVurTZy+MOTyfKJm5hIz6DGHBq7lpOXBDn+E/b/ErD+5JPJBO4x6XtEPZh/UovlvhSx0v3sfAp+HhseNbgVt96tp5C76ANy0yrfIAHFMMExvV5+KJlA2/aJSkdyOD6H+DObOE8oSyIlnw88p89RbjipOXUIfT7Tb0dgoiKT71sAe3wUWG50L1YuaIlbPhxMNS1YI3/J0U6CslvIqzYByEyFtiL36cZoJeaNjrZE8GHuIfyTNGk4kyFt/Uv1uxP8ivJrXoDypxMA9wJwlqivWEopd9+JS4PqKjMhV1/dlu87ok14D5EwjM/lBN/SnRhgvLtL/i9zY2JgpuYOf1TgdCXL3oxsBPuMEcYSVAxi3gX6D80y/hkVsQTbPhyoHC7jWI0UnTPtci5MARvHCSna7zn37xnN/Nk+N4imcpYOl6QHlKJ9aN+FKvGNWkQk0WT1KU3fJVuEcsQSCGTL6OKggQU7UT7KBDB+UoKoz5vKH3TrQ5BzU1p2SpsMttnZnIpcu3QxC2d7LnxHZj6
+ 0rUJHowU
+ 2dc0a7x3ZwFkkaxwzfSz0qJx2vlIxPVfJ0s8QbrgHrPr+Rf3Ml7iir+elii/SReaZ1V++wb1SlAsUeRtTvrpCz9z3zGATodB3hrZGwPLLpMgU4Oqvh51Sv8hrIKbQDoAl424Xx4Hhw/4oiJ9742vy1nw3plndzmaZjX39RP/n3T8DyQ/D4MP3xyCM7qSn4IZTPXqtdUW0uV9ArKCSXyOsGsM+2SX7e9Fr8ETxWBWQOMo0Sf1gYdHGeJS2nW0wTwxUR+tSu6dcG7MQxrVV/7NkPcbdPRUAKeq5txVu/1LRYCpDFSgBtPD9tvfkKys4w5aOQVECOSJLBWF4MdTMa/wVZbnUJ3LCs12HqpNrbSGq26rCR6C7rQRWV7YYVG4kL6O3QulE2lIQfz6fTDTfaq1NA8L8EtIgfslLBPrvHagMgDflvZFyjv7C7seLz+FVEOx+0tiyNLT9LKffhn1Gf4IbFqzDRSasvho5Mt1D2wpK8wMOIjR0TjH/TQ5LBOsoTrdBWspehROzF6ENygu6kfQ5hYS9ZsLEhQGU9RAFtqNnwr5iZ9AE1rqAOK/mo/OC8qvMQQK3eCy/ltxhneIM2W82pQfVKjsXWIm1F6TBOf11R9mz2xg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,76 +176,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-28 16:42, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Since va_high_addr_switch takes care of setting up huge pages, there is
-> no need to set them up in the va_high_addr_switch.sh wrapper script.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
 
-> ---
->   .../selftests/mm/va_high_addr_switch.sh       | 41 +------------------
->   1 file changed, 1 insertion(+), 40 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/va_high_addr_switch.sh b/tools/testing/selftests/mm/va_high_addr_switch.sh
-> index 9492c2d72634..01c15fe3c799 100755
-> --- a/tools/testing/selftests/mm/va_high_addr_switch.sh
-> +++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
-> @@ -9,7 +9,6 @@
+On 4/29/26 10:04 AM, Yang Shi wrote:
+> Introduction
+> ============
+> This patch series implemented the LSFMM 2026 proposal for optimizing
+> this_cpu_*() ops on ARM64. For the details of the proposal, Please refer to:
+> https://lore.kernel.org/linux-mm/CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com/
+> I didn't repeat it in the cover letter because there is no change to the
+> proposal.
+>
+> The series is based on 7.1-rc1. It is basically minimum viable patches.
+> There are still a few hacks in this series and it may break something,
+> for example, KPTI, SMT machines which shared TLB, etc. But it shoule be
+> good enough for now to demonstrate the core idea. The main purpose of the
+> RFC is to gather feedback early, figure out missing parts and risks, and
+> make sure we are on the right track, as well as hopefully it can help the
+> discussion for the upcoming LSFMM.
+>
+> I broke the patches down to arch-dependent and arch-independent parts so that
+> hopefully the interested persons can do experiments on other architectures,
+> for example, S390, easier.
+>
+> A new kernel config is introduced, HAVE_LOCAL_PER_CPU_MAP. The architectures
+> which can support this feature will select it. Allocating and freeing percpu
+> local mapping is protected by this config so that others won't pay the cost.
+>
 >   
->   # Kselftest framework requirement - SKIP code is 4.
->   ksft_skip=4
-> -orig_nr_hugepages=0
+> Known Issues
+> ============
+> 1. KPIT
+> -------
+> We need determine what CPU we are on, then switch to the right page table.
+> Currently arm64 kernel fetches tramp_pg_dir via swapper_pg_dir - fixed_offset,
+> and fetches swapper_pg_dir from ttbr1. But ttbr1 may not hold swapper_pg_dir
+> anymore except CPU #0. So we need to figure out the other way to handle it.
+> Switching to tramp_pg_dir should be easy, but the reverse seems harder because
+> tramp_pg_dir just maps the trampoline vectors.
+> Maybe we can do two steps switch. Switch to swapper_pg_dir at the first step,
+> then switch to per cpu page table (for entry) or tramp page table (for exit).
+> Nobody should call this_cpu_*() at either userspace -> kernel entry stage or
+> kernel -> userspace exit stage.
+>
+> 2. Shared TLB machines
+> ----------------------
+> Some machines may share TLB between CPUs, for example, SMT machines may share
+> TLB between the two hardware threads in one single core.
+> The per cpu page table just can't work with it. Maybe we need a new
+> cpufeature to indicate whether per cpu page table is allowed or not. Then
+> just enable it for not-shared-TLB machines.
+
+Adding more known issues, I forgot to list them.
+
+3. Memory hotplug/unplug
+-----------------------
+The linear mapping and/or vmemmap may be out of sync because 
+__create_pgd_mapping() and __remove_pgd_mapping() are called
+to deal with the page tables for memory hotplug/unplug, which don't have 
+mechanism to sync page tables. But it should not be hard to resolve.
+
+4. 2-level and 3-level page table
+----------------------------
+Need to make page table sync work for them, currently should just work 
+with 4-level page table for now. It is not hard either.
+
+5. Confusing /proc/vmallocinfo
+---------------------------
+The percpu were allocated from vmalloc area before, now they are not. So 
+they should not show up in /proc/vmallocinfo
+anymore,
+
+
+Yang
+
+>
 >   
->   skip()
->   {
-> @@ -77,43 +76,5 @@ check_test_requirements()
->   	esac
->   }
->   
-> -save_nr_hugepages()
-> -{
-> -	orig_nr_hugepages=$(cat /proc/sys/vm/nr_hugepages)
-> -}
-> -
-> -restore_nr_hugepages()
-> -{
-> -	echo "$orig_nr_hugepages" > /proc/sys/vm/nr_hugepages
-> -}
-> -
-> -setup_nr_hugepages()
-> -{
-> -	local needpgs=$1
-> -	while read -r name size unit; do
-> -		if [ "$name" = "HugePages_Free:" ]; then
-> -			freepgs="$size"
-> -			break
-> -		fi
-> -	done < /proc/meminfo
-> -	if [ "$freepgs" -ge "$needpgs" ]; then
-> -		return
-> -	fi
-> -	local hpgs=$((orig_nr_hugepages + needpgs))
-> -	echo $hpgs > /proc/sys/vm/nr_hugepages
-> -
-> -	local nr_hugepgs=$(cat /proc/sys/vm/nr_hugepages)
-> -	if [ "$nr_hugepgs" != "$hpgs" ]; then
-> -		restore_nr_hugepages
-> -		skip "$0: no enough hugepages for testing"
-> -	fi
-> -}
-> -
->   check_test_requirements
-> -save_nr_hugepages
-> -# The HugeTLB tests require 6 pages
-> -setup_nr_hugepages 6
-> -./va_high_addr_switch --run-hugetlb
-> -retcode=$?
-> -restore_nr_hugepages
-> -exit $retcode
-> +./va_high_addr_switch
+> Benchmark
+> =========
+> The benchmarks are done on 160 core AmpereOne machine. The baseline is
+> v7.1-rc1 kernel.
+>
+> 1. Kernel Build
+> ---------------
+> Run kernel build (make -j160) with the default Fedora kernel config in a
+> memcg.
+> 13% - 18% sys time improvment
+> 3% - 7% wall time improvement
+>
+> 2. stress-ng vm ops
+> -------------------
+> stress-ng --vm 160 --vm-bytes 128M --vm-ops 100000000
+> 8.5% improvement
+>
+> 3. stress-ng vm ops + fork
+> ----------------------
+> stress-ng --mmapfork 160 --mmapfork-bytes 128M --mmapfork-ops 500
+> 15% improvement
+>
+>
+> Regression test
+> ===============
+> 1. memcg creation
+> -----------------
+> Create 10K memcgs. Each memcg creation needs to allocate multiple percpu
+> variables, for example, percpu refcnt, rstat and objcg percpu refcnt.
+>
+> Consumed 2112K more virtual memory for percpu “local mapping” and a few
+> more mega bytes consumed by per cpu page tables.
+> No noticeable regression was found for elapsed time.
+>
+> 2. fork test
+> ------------
+> stress-ng --fork 160 --fork-ops 10000000
+> fork() needs to allocate multiple percpu variables, for example, rss
+> counters and mm_cid_cpu.
+>
+> Roughly 1% regression was found. However stress-ng fork test has quites
+> small address space, the real life workloads typically have much larger
+> address space and do more complicated works. The stress-ng mmapfork
+> benchmark saw 15% improvement.
+>
+>
+> Yang Shi (11):
+>        arm64: mm: enable percpu kernel page table
+>        arm64: mm: define percpu virtual space area
+>        arm64: smp: define setup_per_cpu_areas()
+>        mm: percpu: prepare to use dedicated percpu area
+>        arm64: mm: map local percpu first chunk
+>        mm: percpu: set up first chunk and reserve chunk
+>        arm64: mm: introduce __per_cpu_local_off
+>        vmalloc: pass in pgd pointer for vmap{__vunmap}_range_noflush()
+>        mm: percpu: allocate and free local percpu vm area
+>        arm64: kconfig: select HAVE_LOCAL_PER_CPU_MAP
+>        arm64: percpu: use local percpu for this_cpu_*() APIs
+>
+>   arch/arm64/Kconfig                   |   2 +-
+>   arch/arm64/include/asm/mmu.h         |   3 +++
+>   arch/arm64/include/asm/mmu_context.h |   6 +++++-
+>   arch/arm64/include/asm/percpu.h      |  17 ++++++++++-------
+>   arch/arm64/include/asm/pgtable.h     |  24 +++++++++++++++++++++---
+>   arch/arm64/kernel/setup.c            |   3 +++
+>   arch/arm64/kernel/smp.c              |  40 ++++++++++++++++++++++++++++++++++++++++
+>   arch/arm64/mm/mmu.c                  |  75 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   arch/arm64/mm/ptdump.c               |   4 ++++
+>   drivers/base/arch_numa.c             |  51 +--------------------------------------------------
+>   include/linux/percpu.h               |   4 +++-
+>   include/linux/vmalloc.h              |   3 +++
+>   mm/Kconfig                           |   3 +++
+>   mm/internal.h                        |   5 ++++-
+>   mm/kmsan/hooks.c                     |  14 +++++++-------
+>   mm/percpu-internal.h                 |  15 +++++++++++++++
+>   mm/percpu-vm.c                       |  91 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   mm/percpu.c                          |  46 +++++++++++++++++++++++++++++++++++++---------
+>   mm/vmalloc.c                         | 112 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------
+>   19 files changed, 419 insertions(+), 99 deletions(-)
+>
+>
+> Thanks,
+> Yang
+>
 
 
