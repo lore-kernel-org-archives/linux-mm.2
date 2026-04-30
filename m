@@ -4,96 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED89AFF886F
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 09:07:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B4E4FF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 09:11:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F40686B0088; Thu, 30 Apr 2026 05:07:45 -0400 (EDT)
+	id 92B3F6B0088; Thu, 30 Apr 2026 05:11:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF13C6B008A; Thu, 30 Apr 2026 05:07:45 -0400 (EDT)
+	id 8DBDA6B008A; Thu, 30 Apr 2026 05:11:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E073F6B008C; Thu, 30 Apr 2026 05:07:45 -0400 (EDT)
+	id 7CAF96B008C; Thu, 30 Apr 2026 05:11:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D1D8C6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:07:45 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67F7F1B9C39
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:07:45 +0000 (UTC)
-X-FDA: 84714644490.05.13CB158
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 85681140003
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:07:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BNCuJrao;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf23.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777540063; a=rsa-sha256;
-	cv=none;
-	b=aw4kOHZw3m0urZN6BSN/LK48hMPBx8KXRGs4guTszG1dOrrMKxtP5UpP4lUd/9T2dd5lQU
-	JNTKFz9aBrAKKdZtGIU7YnpvJF+dUAbBkGQvnal9H8vjJuM8sPyKEKgN7vVMXJFUhwtrVY
-	JzlsOWelM0xpV2ESicHIX1GsCKGAbmc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BNCuJrao;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf23.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BDA76B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 05:11:08 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 31920A0409
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:11:08 +0000 (UTC)
+X-FDA: 84714653016.08.5291FF4
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2A90C40008
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 09:11:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mOLFoDZN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777540063;
+	s=arc-20220608; t=1777540266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6sW9yUuiuOqvKVvfAL90obEUno+eOlkGZaMX/8MItf4=;
-	b=eO+iLMDM6bbALheUeBSYwq0qxZrAaY/327tDEljmu3hyXoQvES6zV1VdglTNOiSVYrm3pC
-	9oyyaT4OqfUO1Y0CwJpJtxOPQVbhOgissD52cmDr4a5s5rQMwoa8/rWmZx0+iRxCgkCaed
-	4EPfhMqqL0YkocnyudmEVWOlsDi0mZc=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777540058; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=6sW9yUuiuOqvKVvfAL90obEUno+eOlkGZaMX/8MItf4=;
-	b=BNCuJrao1f3aocvyJg7/ySRHN9toyNrGuPLCqes2iv4PoTt0hI36S/GsuNWa6h+gOfyF8mbISas79wY/JlrF5mKnPsrCDdip2Qn1VGf/Fw0aoIfKCysUETICBVI+a66IsTnZGqVsBC7bmsl+5WShVO4PbtDIJ2W5HiJLOQYNwu0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=46;SR=0;TI=SMTPD_---0X2-fQ.Z_1777540049;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X2-fQ.Z_1777540049 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 30 Apr 2026 17:07:36 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,
-  <kinseyho@google.com>,  <weixugc@google.com>,  <ljs@kernel.org>,
-  <Liam.Howlett@oracle.com>,  <vbabka@kernel.org>,  <willy@infradead.org>,
-  <rppt@kernel.org>,  <surenb@google.com>,  <mhocko@suse.com>,
-  <ziy@nvidia.com>,  <matthew.brost@intel.com>,  <joshua.hahnjy@gmail.com>,
-  <rakie.kim@sk.com>,  <byungchul@sk.com>,  <gourry@gourry.net>,
-  <apopple@nvidia.com>,  <dave@stgolabs.net>,
-  <Jonathan.Cameron@huawei.com>,  <rkodsara@amd.com>,  <vkoul@kernel.org>,
-  <bharata@amd.com>,  <sj@kernel.org>,  <rientjes@google.com>,
-  <xuezhengchu@huawei.com>,  <yiannis@zptcorp.com>,
-  <dave.hansen@intel.com>,  <hannes@cmpxchg.org>,  <jhubbard@nvidia.com>,
-  <peterx@redhat.com>,  <riel@surriel.com>,  <shakeel.butt@linux.dev>,
-  <stalexan@redhat.com>,  <tj@kernel.org>,  <nifan.cxl@gmail.com>,
-  <jic23@kernel.org>,  <aneesh.kumar@kernel.org>,  <nathan.lynch@amd.com>,
-  <Frank.li@nxp.com>,  <djbw@kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-mm@kvack.org>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
-  Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH 1/7] mm/migrate: rename PAGE_ migration flags to FOLIO_
-In-Reply-To: <20260428155043.39251-4-shivankg@amd.com> (Shivank Garg's message
-	of "Tue, 28 Apr 2026 15:50:39 +0000")
-References: <20260428155043.39251-2-shivankg@amd.com>
-	<20260428155043.39251-4-shivankg@amd.com>
-Date: Thu, 30 Apr 2026 17:07:28 +0800
-Message-ID: <87v7d8vmsv.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=V8605kaejS4v23sY+MZu3mhg7KjkLUA+GPjpm+rHX5Y=;
+	b=bH2ryp2N+dyo+vKbYegtI6Yi2fAxZaIoBC0Tc81/9TG4wyqptJpNP6bSYKvVRHhtRMI7x8
+	tRR7yOWhZlfRLSzpKm1Yhc0yWnbeSe5Q2+yfPME3bpBNXcmYz2+jysO8H9FvC8e2SUnVRG
+	bsQ8/WPva7FOYMpo2ylY8Bv54o12eBQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777540266; a=rsa-sha256;
+	cv=none;
+	b=APM2pL78S+ZyXbtNZ/EDVsk9fO8FaP+hROwbNd+A4Ep18/OIRRwtS1i5df3HaA4Qo70AHh
+	964ZZcxF2JlQ8BH/B2xEKOpW2LuEn9MGs/2ynDjgs8GKEHgpbH+kwTtKzGyLLfmu8zrZUQ
+	z/V1VF4Htorv/SslSqiZbendb+GkMtg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mOLFoDZN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Message-ID: <7a4c824c-faee-4991-b8c8-703f7f0e19a0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777540263;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V8605kaejS4v23sY+MZu3mhg7KjkLUA+GPjpm+rHX5Y=;
+	b=mOLFoDZN6QhfEuusU3J6R02KBqSVIu9DTxLSznLqat/V+GUovPd7FOrHswgdUrzyU6xgti
+	/dWlIbUnUyJCq2YOgFnVVPeZ/zn58rlHW58hYltxJWmDlmM4Zf+7NYZu/k3a3PENXfIzah
+	Fce+MsCAN0/6UxwkkD45qF+Lx1wOfa0=
+Date: Thu, 30 Apr 2026 17:10:33 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: rxproxkam3acwzj9riyu9fxpobruqwbr
+Subject: Re: [PATCH hotfix] mm: fix pmd_special() fallback to observe
+ huge_zero
+Content-Language: en-US
+To: Hugh Dickins <hughd@google.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, dev.jain@arm.com, liam.howlett@oracle.com,
+ ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, npache@redhat.com,
+ zhengqi.arch@bytedance.com, ryan.roberts@arm.com, surenb@google.com,
+ ziy@nvidia.com, linux-mm@kvack.org
+References: <e7cbc92b-ce9d-432a-ae5b-c8715dcd922f@kernel.org>
+ <20260429065743.67054-1-lance.yang@linux.dev>
+ <ea1453a6-14c9-4334-ac7e-2758586393b2@kernel.org>
+ <aa3937bb-7f06-4136-ba36-ce4a06acf80a@linux.dev>
+ <4d950326-6944-409b-b108-a4e67256857f@kernel.org>
+ <e92e45df-0821-1d67-e026-88c57960814f@google.com>
+ <9845ff31-acaf-4a04-86a2-b4104446e966@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <9845ff31-acaf-4a04-86a2-b4104446e966@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2A90C40008
+X-Stat-Signature: 7a4i4eyq4znzqmuyzo1ytojhu386grfr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 85681140003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777540061-316089
-X-HE-Meta: U2FsdGVkX1/xlGZvZALsWqy80YeMstjlgNtdcxqN1mddPW+xWUk6wcB2+zQeghNS9QsDsHTI1va1jBxBB/4/snaAVonE4syKniO+ko+ZRXGFvhs9v4Fxdu35hKAJA4ZT3EIBkY01Ec95tNioekhyOv/BJOu7DVCX9FG/E1VlvOBem2xlZAKax9MpoSyseWg36MZZvKYjMdhORP9ydd790gOQodY+GA/kTNbOPak86KCDOOufwacOzDFj5xW2Gmw1Oy8sIZUAOe6YR5ijWMS6d/UgS9cDFHxBRI4mKlL4bdV4eCmI4ChFXIVUJ1jqLPQLgDHLYMiKws+mhOsQMevp5mVrXVxtFVz1R2vQaDZxmlIG3wckBHcd4TBrvuKqWIz5tpyFVgGA5xZln07MyXA6uH8zJDqH1vFnx02Uz5VC/4xWyQp+p3/u4M1ohE7isNlXcx9m+D/Slg0ZWW8Uu8tZyPdKMBRE5rFxpuYVArNgtTzrvY61FAy9qehKX7h03iKpkctg5ni9lLSSJMY6iqmi2dxWbJrIZGt4D0BLvCKwSYCsf8FjJ/uDIt5Hy+k+lo5Wg9Se78SPAuH/ptBpWzIrj7GqJEHPqmde2+LJHbNxI8e0ho6RunTmoUlMaN9+lsz746R45NNA+NuslgYElyAf6dO6ydyNGrQAhQ5krxQtVWpRPXaEtNtedsDP3Zn+8gw2wxh+iCPE8ysiXAibdRy0ZTKw49A00YlfolXK9vnRal0IbDNC+7Ps7RIRivPpEkOjOkJWI8NoSzqAP3CG4RXqSaPyyhChtaBTmCpjya7Ckkfy9FaOFNaLpSe5/BE13eOvRmcs36LNURxdJQSIO90I3eb8jvmxPyTKgR+9XgoMqyfIBl/tsTBnNp2AcoTdvY5wgADUU1rSLTzDtzfoQ4kmorjeQmnKJYGEIRlZQlZnNvBRmHLiZO0dewWPmVfyTe5N+WulUqh/Ekt94ZQLZ81
- AX/nMSxO
- OA/Pqe6L9hTD1WJqSlGwvekozt2gk3Az6LUc6lTQkVSqcrSWw7NDtzvTWcrkMA+5iMvsphCAr6t0smdJq88TT3GlPP57OEAdDyA3n6y8wkCOct2FQZanapigeabeFmmEnWhj+b9BiOPp1HRQGsC72XeiwM9RqYKAnjkVD/ezJWN4OKvgQmuocRwEgwy9lytRNhjCKiqHjYRR3TdyEroyuZkkoogB+1TVql7vcrHoT+sWSqPtpqh+cHMgfHHRz7Nu60YfAsD18z+MafNNJ/Wl0XdMmnI0Dqvoo23ZQC/Q4NFlt8S058qEMnfh9kDe0VMXHTlOHe1BKFcgCk4vRHsZbkxwFn0B0zmvrleMxf0wcP91b/bVU/fkaXDSDYqeciQB1OJoL/9KXQ2hLQTXkmO0L0mSGP86Mjx/okUu/iowdv4uH9MhET1B9nZc9+zeTkVxiSDz4
+X-HE-Tag: 1777540265-300690
+X-HE-Meta: U2FsdGVkX19xth7F2nWlki8pDY6Km9fKZwM/AewVJIa72aIEJjd+qwGtg9AXDlfHTnTuv1N9zkS0DXlpNjGfkZiy0fKmXE9Ekb5KZ1WLo1Pq3R5ZEM6Cze1+nxqU0yfHjiZxtFpIct9tN77ANteAUvgdxrjztHh7nGRUboev+p/8oaZQG0tCrS6deoEz3T8RLzSR3gr+pN/cytdlXu1noXVRkYB9WDCfOI6REzm9NF++XKjDNfjkrcSFWj+Yo1u0l+v0LOhfVvEH40hxxXfwTeTLtCtSaEoP75Xt06oCbKj3Z2OkUQj20biiAvrCTPMSsxacfh0aozvN8ljtwD7STo0IQSI4/Jsf4ZVTvN8BarFa9zI3C59jCoowCz5FFof1EssZyOJWHZd0Dg9JlC25t1hqg+vzlECmheO4LLHIH4fMYg6LNaT0SOtudPn6/IkiA3Ce/w/+gb9k/bnWONSODDYmK6yvt5SGg2sSgoyML+cUKJupxn20i1EklOXhxFgY9KgdPnawhhPA2VGmG2BZzoNqfbZgPRBazO/EmUk/hRlNBo8zrxmYsq9tJ3OG5wme+yZnF89jDygzxV4OJSHc/zHJ/tD0JqN3b/4bbGIzCbcnlGQFXW2p5Cz7YvGc2Oao0aClU6Fto98ejNl17EMqU85o6iCS06oU0EIimn5ugR9K+E8tH9kcagpupRoYS/5C5CuM7Sxwteg+pSBPI5mElCfwyH9+FWQbscHScSo5zw4vs7G1w/vGSoo/4AAQyQmiB7sHJkwjQgpaQ9aEbfAj4h46Kozisu+W2zFZR33Qp3X3groA22+9O0pzyAQyZGi4SZ7momNj5EjoneIWn4dwFmxqooDLsb1WbsWAI9mpS6be2vO7FbUbGgGJ5kXiefKw8IialvWNlkwhHB4hiN4ePguawjAypelk8jjGVcAO3d7thjL0Y4Usf3C41reh3UETFcXkiHHs9+581Nbm18M
+ q31TmPQ0
+ go/BoWreqsrOmD+sA6XKSWoFDxCNvhKGA+w1vYNEwchHLJlKwQGshwH6Zx9iVxzKagB0rq2/5uO9VSAXXBkxpiE0lNbU42Pfr8AZfKoQEG8ZOv0En/i2OfzG/Hn5TzfVHamcHFqmdOjNyDnV7FJYTLFUEoBqHKbn9hvGX7AvXPC7LrwYmjKo2fKnEaafi2BW8z+I6XbC1y3TdO5i0H+m1zsdj9HZc1viS8dJc/eullNW/X5fFWUONZu7RhQuXy3++O6EgtxrmbDRlvvQwdwWmLGQkE4M7PGb7GUFIQ/BpgqpBlo8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,30 +100,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shivank Garg <shivankg@amd.com> writes:
 
-> These flags only track folio-specific state during migration and are
-> not used for movable_ops pages. Rename the enum values and the
-> old_page_state variable to match.
->
-> No functional change.
->
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
 
-LGTM, Thanks!  Feel free to add my
+On 2026/4/30 16:54, David Hildenbrand (Arm) wrote:
+>>> ... and triggering the VM_WARN_ON_ONE(), although never reported so far.
+>>>
+>>> To fix it, teach vm_normal_page_pmd()/vm_normal_page_pud() whether
+>>> pmd_special/pud_special is actually implemented.
+>>>
+>>> Fixes: af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
+>>
+>> Agreed.  My Fixes tag (where my bisection arrived) was correct for the
+>> common zap_huge_pmd() symptom I was seeing (Lorenzo's commit removed
+>> an independent is_huge_zero_pmd() check from it, so it now relies on
+>> vm_normal_folio_pmd() to give the right answer).  But you've chased
+>> up other usages, and realized it goes back further.  You could just as
+>> well blame the other commit mentioned in this thread, the d82d09e48219
+>> ("mm/huge_memory: mark PMD mappings of the huge zero folio special"),
+>> because in come configs it is not doing what it expects to be doing.
+>> But af38538801c6 is where effects start appearing, so fine to blame
+>> it (and both come from the same 6.18 series, do it doesn't matter).
+>>
+>>> Signed-off-by: Hugh Dickins <hughd@google.com>>
+>>> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+>>
+>> That's generous, but the patch is not mine at all, and I'll
+>> happily let you grab my two paragraphs above.  Please, just
+> 
+> Okay, I didn't want to undermine your involvement.
+> 
+>> Reported-by: Hugh Dickins <hughd@google.com>
+> 
+> Then, I'd also add a
+> 
+> Debugged-by: Hugh Dickins <hughd@google.com>
 
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+Yeah. Thanks to Hugh for the bisection, debugging and detailed
+analysis!
 
-in the future versions.
-
-[snip]
-
----
-Best Regards,
-Huang, Ying
+Cheers, Lance
 
