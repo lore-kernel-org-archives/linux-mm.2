@@ -4,126 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB7C6FF8873
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 14:36:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7EDFFF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 14:44:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C4286B0093; Thu, 30 Apr 2026 10:36:32 -0400 (EDT)
+	id C56D06B0088; Thu, 30 Apr 2026 10:44:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 174A16B0095; Thu, 30 Apr 2026 10:36:32 -0400 (EDT)
+	id C07C56B008A; Thu, 30 Apr 2026 10:44:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 063AF6B0096; Thu, 30 Apr 2026 10:36:32 -0400 (EDT)
+	id B1D0C6B008C; Thu, 30 Apr 2026 10:44:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E9DF16B0093
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 10:36:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13E1C104B03
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:17:23 +0000 (UTC)
-X-FDA: 84715424766.27.2D37A5C
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C32891C0007
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:17:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VkinYHhK;
-	spf=pass (imf18.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C92A6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 10:44:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 27B971064C7
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:05:09 +0000 (UTC)
+X-FDA: 84715393938.15.6CB14BF
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0A20912000B
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 14:05:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf29.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777558640;
+	s=arc-20220608; t=1777557906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HnGB2EwUnXNoeP6sM/wyCp0a9lWSmlC/c3BKgkuVX08=;
-	b=IAjipfPN/jqZr1j8pVl1EzeQliYuWMfSh+AFx/yytMORKp9il6QWxPXaSAHyZCmmD/Plmg
-	qN/xyRxM5VjOZOjYV6TQ2jLZrb8eNW5Y8sJpUwF9PMyy5eYIsMnNMR4lHmj9URnan/6li1
-	Ma2ECUWRty5dZeL8g86HT8f70jh+X14=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=PGntpEfVZ3Lms++30RiokaDweY6aMfhrR04NRQQD/bU=;
+	b=yBsyd9GyZiRd0FvuOLq1LABY85LgZVHqZb30zvq786nRRAZAsyIbUGvvEhVb+IScBrzyl7
+	+LKg2aJBOjCS+3/Ic7/m+5zFhl9u5DxkyUTmtuh2jh/4n0rTkL77oiuSy6xc9o3FhwCpnk
+	sWYrkK7hXI9H39sVoOK8GbpyKXzylN8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VkinYHhK;
-	spf=pass (imf18.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777558640; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf29.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777557906; a=rsa-sha256;
 	cv=none;
-	b=msh6TXFoMFelAS1grVLiDYBhWMc0XbQJhieTeODs8Bu+Zf+eJCQXc0UiFad6Xn4bRdAI80
-	213GvstVd8ffGfYt2rwZUAlL1Fx40xHNzVx4fo0kNhwgtwGJqJSLTUZRZPTAnaszpfwVBH
-	UQywPhRubayx/30Y0qpibvTK9XTjMT0=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-356337f058aso613595a91.2
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 07:17:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777558639; x=1778163439; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HnGB2EwUnXNoeP6sM/wyCp0a9lWSmlC/c3BKgkuVX08=;
-        b=VkinYHhKlMnnXBLzCsrmvaeXX0UulIs8ORl/NR1PLK6bHFla2RA4kKqQnbK+QYdWH5
-         nS9wkATMKsGf6J8s3C25f9Sdlw2oxTWGSHOt1OdgDnJG6yqu2PnYJ5VE8P2+FtF3HEH9
-         LQ8SDKmyvvi6bcrJ3eFKOwj7XqTDmt7AbY7OwPnFSm7rys2RVZb2WWDwrbzd8flQxQsz
-         NLPrvG0ukSNZzxLkAzC0qjRmoXmybMQ18ChidmoyAOGTdtTtrZx0HC/cr2FkSpb4g29n
-         dL/bLYHSo08Z45LQSesbt+tqLaHfFxAK2Kj4R5y3CrcLMofdHF17WvX3Fc7kmUcY+TOX
-         gSIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777558639; x=1778163439;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HnGB2EwUnXNoeP6sM/wyCp0a9lWSmlC/c3BKgkuVX08=;
-        b=lSkTF7dY118ltTOpEiO/PPwe8lXSMLmMV0WmC44r1D6sapgmQbH/dllhqDOKdfTrrN
-         ze1O+BfmPzNlv63rWHwSc9Y4r+gH8EmdiYcDtt41waw8VMEfADtf5QeV+394ecPWIYcp
-         BMzZdWgTd+FIuAVT38yQTdnnnfQpZ0ufjWlczKcMvmV/DrhhgLcJVP6UHtdWcHNe+yqG
-         WlcJtjlUvpRMhuYtTGfft6Wze5ogbhSiIPc7byUnWlWhRgUC8heEw6fPYi4VIKLNW026
-         TJ794kVfcFvzvUY57igWkEW5DMuMtKwj+yAuvRYVy7JSNAtW1oszwiXAuGC33WFe1JNz
-         6rqg==
-X-Forwarded-Encrypted: i=1; AFNElJ8I29B4gZu1rsleWIrrQnJfuLGanpi+zZckQtuKG+ujTtxXVCYGMdPJ5VZHPq5a3jsZytDrRgZpgA==@kvack.org
-X-Gm-Message-State: AOJu0YwAd2mzONQPx6bqchqVp/wdEVLGwgEECMFnzUbQbqK8JvswjYJt
-	u/npw08qPzzHpT3KF1BdpkKxy2jfzCkOvpHse0wyXN6XLOi+3b8U1Eay
-X-Gm-Gg: AeBDietUBndENbTXTT4pD2baGotSl/fwiCDeHK705wf3solFzXOWOLGet6BV9ScI4GD
-	xZB6mSerc/AZDhnG0qEUECHq2Dv73QcU41p79I5HB8xNYbpm+9H8h/oX65al/LGdu3KbkYm1D0B
-	kV3oIb4nR45orJ+PNmpoWn77dzqpfhNIow+qbO1Q1OwLpgoduuk/tX0WV2nQfRAGuA6NuuF3swI
-	ocr3GsgtmbUhknuhzylJDutNQphZ91Iv76cGG6saPd1zAkxVvuFC1DtmupYuMwUF59CnhfAeH0Y
-	kOd6YximSMO3b40JEEZyKoFRA2Ok3iZRHnyhc1tyGFHwBg4xN7q6GHlNO+I7ly9mJshMQSOoeOh
-	7RoH3zPBzhAk37+ZcAX2pwsigOXvxTdO62sYdOJOiXFeMdHwmyUf2ToeISEv0OUgrulzEyD0y/+
-	DrjRjFTVlXnUNmIBYRzllRR8QnmzhS7plUGUFm2mKq713NOV/wjY8=
-X-Received: by 2002:a17:90b:2804:b0:362:e7e5:a20a with SMTP id 98e67ed59e1d1-364c2f23636mr3137181a91.4.1777558639123;
-        Thu, 30 Apr 2026 07:17:19 -0700 (PDT)
-Received: from acer-nitro-anv15-41.. ([27.4.92.188])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364a1213600sm2316777a91.3.2026.04.30.07.17.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 07:17:18 -0700 (PDT)
-From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Cc: pbonzini@redhat.com,
-	skhan@linuxfoundation.org,
-	me@brighamcampbell.com,
-	"shaikh.kamal" <shaikhkamal2012@gmail.com>,
-	syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
-Subject: [PATCH v2 1/1] mm/mmu_notifier: Add async OOM cleanup via call_srcu()
-Date: Thu, 30 Apr 2026 19:47:01 +0530
-Message-ID: <20260430141701.10859-1-shaikhkamal2012@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CABgObfZQM0Eq1=vzm812D+CAcjOaE1f1QAUqGo5rTzXgLnR9cQ@mail.gmail.com>
-References: <CABgObfZQM0Eq1=vzm812D+CAcjOaE1f1QAUqGo5rTzXgLnR9cQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pc9186541kwn48iicdecjbze594y34fp
-X-Rspamd-Queue-Id: C32891C0007
+	b=ZRTlR++o4BmfPOAkw6hmiYvwOOD0bdRz/QyKO3sdP/Qsnm5NGC6y2CYGyZ9d1jytpdg5tv
+	wVq3R7cKVaG7sGQhBwcEGGNsuNGSFN5lFplM7BFuZio0oy/68EEeLrGeUEipPv4dvnG0j0
+	gkw0/MBk8RnLbUBxZSKsgNFT+qsIrfY=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4g5wsl31jGz8Xs6w;
+	Thu, 30 Apr 2026 22:04:59 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl1.zte.com.cn with SMTP id 63UE4bJp053808;
+	Thu, 30 Apr 2026 22:04:37 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Thu, 30 Apr 2026 22:04:41 +0800 (CST)
+X-Zmail-TransId: 2af969f36179f83-4d054
+X-Mailer: Zmail v1.0
+Message-ID: <202604302204413066CxdJnJ3RAGH_7iE4EBIO@zte.com.cn>
+Date: Thu, 30 Apr 2026 22:04:41 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <vbabka@kernel.org>, <harry@kernel.org>, <akpm@linux-foundation.org>
+Cc: <hao.li@linux.dev>, <cl@gentwo.org>, <rientjes@google.com>,
+        <roman.gushchin@linux.dev>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <zhang.run@zte.com.cn>,
+        <yang.tao172@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHY4XSBtbS9zbHViOiBkZWZlciBmcmVlbGlzdCBjb25zdHJ1Y3Rpb24gdW50aWwgYWZ0ZXIgYnVsayBhbGxvY2F0aW9uIGZyb20gYSBuZXcgc2xhYg==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 63UE4bJp053808
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.132 unknown Thu, 30 Apr 2026 22:04:59 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 69F3618B.001/4g5wsl31jGz8Xs6w
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777558640-520777
-X-HE-Meta: U2FsdGVkX18paebSilYyuEGsDW/Kw1k3S78RkpR2Z4Mdg7FrocW6l1dTuOlkMo6iz0SSfXOV7XXWGLzdlgssF1yU3suYO//+AmAIiwDwPOaYE1gSy6GZ8gbr5WO5XtEC8bDlnEAt6cLH5Cd5YgkGeU8v2q4pk5iGpMssEQ0zjlyprGUV9FNFTqDTJos2/6KpQg5LhdGGh4hw5e+L3iz/OYum3VVU0Lxl23qKHIruWtBVtpzcEqv9ZOWnqKDGvYdSG3Nb50TQUKwsjyoRwZmLHJcCgRW3WmJVZGT/ggbigSdV9dYrO5AtdJ5Fj55Y2SHEUreulgxEWgvB5Xv0YYOP1VCPwY22YUpDGdyGfzqpYyWgEC5KFH2SDa8ovwGOtqSJU0LTGJmmmmxa4R7iU0SG61wP2Sz/BcDbmTeaKMhDrsCWd8H0wIvygbuac1Zi2dnXuLzV+enqa3Dbw9KswuL3EO4mNrEQLs5yCa1gbWcKdiEw8I1viyjnlgF2xuAlSxVKp11QbGHeJZRjYIvNW720JF9UZO3Ic1fuzoOcigfPsF0ttCRGBwI6GmVogwBYQleM2NTl7L3XR9RMr5uuK60ycL5n4P1GmgYcJSb+YnkOCAQaM9OW3M1s/ENDcq+iX16a/gblDT9nNqPFS/Q607/asXNcD/h9Wqrw1kzrsLcJXDpv599r9iG/B7oqgrtWZLcNRdaOB9SCzg/Bx56Dh95E52i1LefSkKKcEjeJ2GjdBxHOFx8zUGjSYacglB/49r4RsDSyvQGkPSPDCV/ODQzJz0ojfRf9yU9s8KdYjdqPumSAp63kjce6GDkeUXAVa23nzuMwr875m9S1r850GT5SZuTGJM8tAk2BMb94P83AJz1juLSMZfgAhEKnwr3f5/G6gDKLwFjTxNY27qm9YdiyFqjvMqmHi/AoNUMOZlG6Qcoey2Je8YcZVl+VPe56/JsFOY7N9oCR0BswKkchsVy
- 131jhZtn
- Ssarib+Kjbsx+QqA5LQ07c3StLisU4UszS1hKn5FFbf1nZybmwQaboyJFJ106qAk45e5biqDZ5mRB7pNKvuVnBkuqO2U2hc3tLchmsMKXjUC46zBamaitkUlinD6dq8uzEDeM80WA+zssf2DjmEt/bLip/f7wu/pzREWx1OMkT6pGoNOMfsF4FceM+nlh0F6avgWngZiPkx8VDQuDgAUH7hOLdhA90idnZxl8xvVn06eIzdArOOLcqzMgukuuScM7d3fJuPHcG1ymza2YgOlrLupQ8+G1+aFyDFpsRh1wWU4dJdWLSuIdD9soKCNj9/PRt62VQ9qXlVivY+gxiJ5TBiUPpYljqH5v+vTxTeG1FzljagMInHXUaddnUdC/NlbglxWBjJ729pmH7bhotx8rTKQTJkyrXxiasIhDFK4eIaa1lBsgV+l7ATiQ2fAH6an7uLB+PcewzDOe0ELKq2dcFyEoDgQz3kbTM1+cseTAGgDTda7v8ENSo6ba7UDpyIxhh89AwiKuvI3VKwnhR1+WfsCqQJTqFWjEHeoXz7eoNS3RoYKVbmWNH3r0/yEjiIVTRK5Z8waoJ3VIcfeBJAZdA4ZQbLV8yibOLie7/mjqRG5pbn3B2xhuBNjsUGQCbNRHxgydoEbxmSndtUiAjLyZT2oABJZL25nBrn4kQ7uPSqZCUnOyKFbYSlhN9Gca7sn7XuJbnrg1AkwDdzyD5KIjJOEIoOSyrBzvqfG23zn8Ne9WIiTf6B+c9uWee6h3xuIphEvE
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0A20912000B
+X-Stat-Signature: g74bbpg51w7hjpaao3y1nujiqatpdy5w
+X-HE-Tag: 1777557904-169554
+X-HE-Meta: U2FsdGVkX18u0zBdkdtoyWYEb5QokSS/HEXeVg02wn7z6AZOESWVJ6LXI4SLgNgoCOnvQ7EJ7x4swr3JlFokSH4Ce5TsloLqAx4Bpr2yVVoNvWSfcHHNO6p/xBuVzazaXySaGIAXbw5BoS+z5327Aj9a03o71xkBPBvG5KV7m/GrPFPq9smbJm2KBsvbGReVEI9/x7Upn0+mbqP5psexTvwYq8O0eIWHCkdRJB05tsMEtbB2q6OgbtL1hzNkcMzdf0JBDixFMyK/eAv6Qkc5QaeDfm4HzcuMglQ2Tw8bASYRNx7sQzzIJMojv7vnCeR8+gW/r3rIPxWkuzVXYOyDJDp1ETeCyHXHS1Gqmq9FNv3mjHr0wYD5cUj/pNtmfxDovYhzYge6pV4aT10e8Oipm029ntsaEF01A/uZU1NhXscyBmZWe5SrjkVNF/0uKZGxdcpYLG2zv3yyoVAOLkHqBDG6KiMufP+xWcZ5JnKudFAaKLQjVHGWpvqh8G+1WbhYoL99kU0XHOece7Vpa2p3+QjRcoIOK5j8jscDDD1M7mW0vYf/Zh+GJmmVKaF2Viyip4H9nW5p7KqEax3Q4octuZuAsoBhvuU2XOmEa5/LLWegSoGhp/nfld1m6mIUh+pFu2Hh3Jhh/zXUCn1ml4fsVtM7C0mMTpblA6ppt/wYxW17Yjq6UtMCMEd67NsVvZ+vnVrOgylM/eLmuPD8I+958N9mJVPoK5/Q+E5X9La4wQzyyHzr7I2V0xN03qRLRSvtHe000Ls+0YJ8mE/2j59oPPElxK6KT6/WGjJyvP+VN/1D19MA/+GHRNfQyAcYhatbE8v0wtCpmhvc7vxgqS7qU3l4ARF+NE86tDJRlry1s6GKZuoMnBn0gLd4oyebuiqU2MhZkYibxrOmm4Z0GiPXcdr6jmIwBuMiBGZKO2FgwhQiULKmU61TE/kHCKhNbkKvtBa+flSnnYAWBPV7mE7
+ 53Lhe7p5
+ oUOpgg8Z56069T3Z4FLNb4cRYqgiyo+RtAC1tSUrI3FPOpmo6tf03Qenr2xG3w6qebIKgC5S98yaJDIaEtyXwwxbTQjV7KgF+DB9SCLMBEMOILrMajV6tHexI0tCIbQ8Iy6V1H3fNW0zn/mkJz+Qea7nsDIeGeDsNXFuBg9kLY8msGUmvSy6rHofc+n7UlRGDQSPI+5OxYVI1aPGqF2sQyeZQENewGTsETiDN/KC0JuulluKfp0DZRtME4ffV0Ec3LG5cTOg1YJkgdCBHuD5o/Com3yUhjbwxDMC6BrVOtICxYmrvV+3GEwtsNLLYeMLfW2C3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,298 +97,624 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When an mm undergoes OOM kill, the OOM reaper unmaps memory while
-holding the mmap_lock. MMU notifier subscribers (notably KVM) need
-to be informed so they can tear down their secondary mappings. The
-current synchronous unregister path can deadlock on PREEMPT_RT
-because synchronize_srcu() is called from contexts that cannot
-safely sleep.
+From: Shengming Hu <hu.shengming@zte.com.cn>
 
-This patch implements the asynchronous cleanup design proposed by
-Paolo Bonzini in v1 review: a new optional after_oom_unregister
-callback in struct mmu_notifier_ops, invoked after the SRCU grace
-period via call_srcu() so that no readers can still reference the
-subscription when cleanup runs.
+Allocations from a fresh slab can consume all of its objects, and the
+freelist built during slab allocation is discarded immediately as a result.
 
-The flow is:
+Instead of special-casing the whole-slab bulk refill case, defer freelist
+construction until after objects are emitted from a fresh slab.
+new_slab() now only allocates the slab and initializes its metadata.
+refill_objects() then obtains a fresh slab and lets alloc_from_new_slab()
+emit objects directly, building a freelist only for the objects left
+unallocated; the same change is applied to alloc_single_from_new_slab().
 
-  1. The OOM reaper calls mmu_notifier_oom_enter() from
-     __oom_reap_task_mm().
-  2. mmu_notifier_oom_enter() walks the subscription list and, for
-     each subscriber that provides after_oom_unregister, detaches
-     the subscription from the active list and schedules a
-     call_srcu() callback.
-  3. The deferred callback invokes after_oom_unregister once the
-     grace period has elapsed and all in-flight readers have
-     finished.
-  4. Subsystems waiting to free structures referenced by the
-     callback can call the new mmu_notifier_barrier() helper, which
-     wraps srcu_barrier() to wait for all outstanding callbacks
-     scheduled this way.
+To keep CONFIG_SLAB_FREELIST_RANDOM=y/n on the same path, introduce a
+small iterator abstraction for walking free objects in allocation order.
+The iterator is used both for filling the sheaf and for building the
+freelist of the remaining objects.
 
-after_oom_unregister is mutually exclusive with alloc_notifier
-because allocated notifiers can have additional outstanding
-references that the OOM path cannot safely drop.
+Also mark setup_object() inline. After this optimization, the compiler no
+longer consistently inlines this helper in the hot path, which can hurt
+performance. Explicitly marking it inline restores the expected code
+generation.
 
-KVM is updated to provide after_oom_unregister, which clears
-mn_active_invalidate_count, and to detect via hlist_unhashed() in
-kvm_destroy_vm() when its subscription was already detached by the
-OOM path; in that case it calls mmu_notifier_barrier() and drops
-the mm reference rather than calling mmu_notifier_unregister().
+This reduces per-object overhead when allocating from a fresh slab.
+The most direct benefit is in the paths that allocate objects first and
+only build a freelist for the remainder afterward: bulk allocation from
+a new slab in refill_objects(), single-object allocation from a new slab
+in ___slab_alloc(), and the corresponding early-boot paths that now use
+the same deferred-freelist scheme. Since refill_objects() is also used to
+refill sheaves, the optimization is not limited to the small set of
+kmem_cache_alloc_bulk()/kmem_cache_free_bulk() users; regular allocation
+workloads may benefit as well when they refill from a fresh slab.
 
-Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/all/20260209161527.31978-1-shaikhkamal2012@gmail.com/
+In slub_bulk_bench, the time per object drops by about 42% to 70% with
+CONFIG_SLAB_FREELIST_RANDOM=n, and by about 58% to 69% with
+CONFIG_SLAB_FREELIST_RANDOM=y. This benchmark is intended to isolate the
+cost removed by this change: each iteration allocates exactly
+slab->objects from a fresh slab. That makes it a near best-case scenario
+for deferred freelist construction, because the old path still built a
+full freelist even when no objects remained, while the new path avoids
+that work. Realistic workloads may see smaller end-to-end gains depending
+on how often allocations reach this fresh-slab refill path.
 
-Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
+Benchmark results (slub_bulk_bench):
+Machine: qemu-system-x86 -m 1024M -smp 8 -enable-kvm -cpu host
+Kernel: Linux 7.1.0-rc1-next-20260429
+Config: x86_64_defconfig
+Cpu: 0
+Rounds: 20
+Total: 256MB
+
+- CONFIG_SLAB_FREELIST_RANDOM=n -
+
+obj_size=16, batch=256:
+before: 5.44 +- 0.07 ns/object
+after: 3.12 +- 0.03 ns/object
+delta: -42.6%
+
+obj_size=32, batch=128:
+before: 7.57 +- 0.32 ns/object
+after: 3.79 +- 0.07 ns/object
+delta: -49.9%
+
+obj_size=64, batch=64:
+before: 11.27 +- 0.09 ns/object
+after: 4.83 +- 0.06 ns/object
+delta: -57.2%
+
+obj_size=128, batch=32:
+before: 19.38 +- 0.13 ns/object
+after: 6.43 +- 0.08 ns/object
+delta: -66.8%
+
+obj_size=256, batch=32:
+before: 23.59 +- 0.18 ns/object
+after: 6.97 +- 0.07 ns/object
+delta: -70.5%
+
+obj_size=512, batch=32:
+before: 21.06 +- 0.14 ns/object
+after: 7.12 +- 0.17 ns/object
+delta: -66.2%
+
+- CONFIG_SLAB_FREELIST_RANDOM=y -
+
+obj_size=16, batch=256:
+before: 9.42 +- 0.11 ns/object
+after: 4.36 +- 0.19 ns/object
+delta: -53.7%
+
+obj_size=32, batch=128:
+before: 12.19 +- 0.62 ns/object
+after: 4.93 +- 0.07 ns/object
+delta: -59.6%
+
+obj_size=64, batch=64:
+before: 17.01 +- 0.73 ns/object
+after: 6.14 +- 0.12 ns/object
+delta: -63.9%
+
+obj_size=128, batch=32:
+before: 23.71 +- 1.10 ns/object
+after: 8.35 +- 0.18 ns/object
+delta: -64.8%
+
+obj_size=256, batch=32:
+before: 29.20 +- 0.35 ns/object
+after: 9.44 +- 1.32 ns/object
+delta: -67.7%
+
+obj_size=512, batch=32:
+before: 29.35 +- 0.79 ns/object
+after: 9.21 +- 0.34 ns/object
+delta: -68.6%
+
+Link: https://github.com/HSM6236/slub_bulk_test.git
+Link: https://lore.kernel.org/oe-lkp/202604301428.e2b8d3dd-lkp@intel.com
+Suggested-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Tested-by: Hao Li <hao.li@linux.dev>
+Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
 ---
- include/linux/mmu_notifier.h |  10 +++
- mm/mmu_notifier.c            | 123 +++++++++++++++++++++++++++++++++++
- mm/oom_kill.c                |   3 +
- virt/kvm/kvm_main.c          |  27 +++++++-
- 4 files changed, 162 insertions(+), 1 deletion(-)
+Changes in v2:
+- Handle CONFIG_SLAB_FREELIST_RANDOM=y and add benchmark results.
+- Update the QEMU benchmark setup to use -enable-kvm -cpu host so benchmark results better reflect native CPU performance.
+- Link to v1: https://lore.kernel.org/all/20260328125538341lvTGRpS62UNdRiAAz2gH3@zte.com.cn/
 
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index 07a2bbaf86e9..0ccd590f55d3 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -88,6 +88,14 @@ struct mmu_notifier_ops {
- 	void (*release)(struct mmu_notifier *subscription,
- 			struct mm_struct *mm);
+Changes in v3:
+- refactor fresh-slab allocation to use a shared slab_obj_iter
+- defer freelist construction until after bulk allocation from a new slab
+- build a freelist only for leftover objects when the slab is left partial
+- add build_slab_freelist(), prepare_slab_alloc_flags() and next_slab_obj() helpers
+- remove obsolete freelist construction helpers now replaced by the iterator-based path, including next_freelist_entry() and shuffle_freelist()
+- Link to v2: https://lore.kernel.org/all/202604011257259669oAdDsdnKx6twdafNZsF5@zte.com.cn/
 
-+	/*
-+	 * Any mmu notifier that defines this is automatically unregistered
-+	 * when its mm is the subject of an OOM kill.  after_oom_unregister()
-+	 * is invoked after all other outstanding callbacks have terminated.
-+	 */
-+	void (*after_oom_unregister)(struct mmu_notifier *subscription,
-+				     struct mm_struct *mm);
-+
- 	/*
- 	 * clear_flush_young is called after the VM is
- 	 * test-and-clearing the young/accessed bitflag in the
-@@ -375,6 +383,8 @@ mmu_interval_check_retry(struct mmu_interval_notifier *interval_sub,
+Changes in v4:
+- remove slab_obj_iter::cur
+- drop prepare_slab_alloc_flags() and restore the original flag handling in new_slab()
+- new_slab() no longer builds the freelist. Instead, the freelist is constructed only for the objects left unallocated in
+alloc_single_from_new_slab(), alloc_from_new_slab(), and early_kmem_cache_node_alloc().
+- remove maybe_wipe_obj_freeptr() when allocating objects directly without freelist built
+- Link to v3: https://lore.kernel.org/all/202604062150182836ygUiyPoKcxtHjgF7rWXe@zte.com.cn/
 
- extern void __mmu_notifier_subscriptions_destroy(struct mm_struct *mm);
- extern void __mmu_notifier_release(struct mm_struct *mm);
-+void mmu_notifier_oom_enter(struct mm_struct *mm);
-+extern void mmu_notifier_barrier(void);
- extern int __mmu_notifier_clear_flush_young(struct mm_struct *mm,
- 					  unsigned long start,
- 					  unsigned long end);
-diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-index a6cdf3674bdc..b8fa58fe6b7d 100644
---- a/mm/mmu_notifier.c
-+++ b/mm/mmu_notifier.c
-@@ -49,6 +49,37 @@ struct mmu_notifier_subscriptions {
- 	struct hlist_head deferred_list;
+Changes in v5:
+- Call build_slab_freelist() unconditionally, and remove the redundant "slab->freelist = NULL" initialization in allocate_slab().
+- Check the return value of alloc_from_new_slab() to prevent a potential use-after-free bug.
+- Refine the commit message with more precise test coverage descriptions.
+- Link to v4: https://lore.kernel.org/all/2026040823281824773ybHpC3kgUhR9OE1rGTl@zte.com.cn/
+
+Changes in v6:
+- Move inc_slabs_node() back under n->list_lock in alloc_single_from_new_slab()
+to avoid races with slab validation for debug caches.
+- Link to v5: https://lore.kernel.org/all/20260409204352095kKWVYKtZImN59ybO6iRNj@zte.com.cn/
+
+Changes in v7:
+- Move the definition of struct slab_obj_iter to mm/slub.c
+- Reuse the count variable and eliminate target_inuse in alloc_from_new_slab()
+- Declare variable n at its first point of use in alloc_from_new_slab()
+- Link to v6: https://lore.kernel.org/all/20260413230417835rnfiEWduEx44lc3u4uR9_@zte.com.cn/
+
+Changes in v8:
+- Initialize the selected object's freepointer before
+  alloc_debug_processing() in alloc_single_from_new_slab(). Deferred
+  freelist construction skips this object, while debug allocation still
+  expects a valid freepointer.
+- Add a Link to the 0-DAY CI Kernel Test report/discussion thread.
+- Link to v7: https://lore.kernel.org/all/20260415165255601BBSSoil3iPkco33RXFtU2@zte.com.cn/
+---
+ mm/slub.c | 300 ++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 156 insertions(+), 144 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 0baa906f39ab..a7bd929bcb26 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -227,6 +227,17 @@ struct partial_bulk_context {
+ 	struct list_head slabs;
  };
 
-+/*
-+ * Callback structure for asynchronous OOM cleanup.
-+ * Used with call_srcu() to defer after_oom_unregister callbacks
-+ * until after SRCU grace period completes.
-+ */
-+struct mmu_notifier_oom_callback {
-+	struct rcu_head rcu;
-+	struct mmu_notifier *subscription;
-+	struct mm_struct *mm;
++/* Structure used to iterate over objects within a slab */
++struct slab_obj_iter {
++	unsigned long pos;
++	void *start;
++#ifdef CONFIG_SLAB_FREELIST_RANDOM
++	unsigned long freelist_count;
++	unsigned long page_limit;
++	bool random;
++#endif
 +};
 +
-+/*
-+ * Callback function invoked after SRCU grace period.
-+ * Safely calls after_oom_unregister once all readers have finished.
-+ */
-+static void mmu_notifier_oom_callback_fn(struct rcu_head *rcu)
-+{
-+	struct mmu_notifier_oom_callback *cb =
-+		container_of(rcu, struct mmu_notifier_oom_callback, rcu);
-+
-+	/* Safe - all SRCU readers have finished */
-+	cb->subscription->ops->after_oom_unregister(cb->subscription, cb->mm);
-+
-+	/* Release mm reference taken when callback was scheduled */
-+	WARN_ON_ONCE(atomic_read(&cb->mm->mm_count) <= 0);
-+	mmdrop(cb->mm);
-+
-+	/* Free callback structure */
-+	kfree(cb);
-+}
-+
- /*
-  * This is a collision-retry read-side/write-side 'lock', a lot like a
-  * seqcount, however this allows multiple write-sides to hold it at
-@@ -359,6 +390,85 @@ void __mmu_notifier_release(struct mm_struct *mm)
- 		mn_hlist_release(subscriptions, mm);
+ static inline bool kmem_cache_debug(struct kmem_cache *s)
+ {
+ 	return kmem_cache_debug_flags(s, SLAB_DEBUG_FLAGS);
+@@ -2733,7 +2744,7 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
+ 	return *head != NULL;
  }
 
-+void mmu_notifier_oom_enter(struct mm_struct *mm)
+-static void *setup_object(struct kmem_cache *s, void *object)
++static inline void *setup_object(struct kmem_cache *s, void *object)
+ {
+ 	setup_object_debug(s, object);
+ 	object = kasan_init_slab_obj(s, object);
+@@ -3329,87 +3340,14 @@ static void __init init_freelist_randomization(void)
+ 	mutex_unlock(&slab_mutex);
+ }
+
+-/* Get the next entry on the pre-computed freelist randomized */
+-static void *next_freelist_entry(struct kmem_cache *s,
+-				unsigned long *pos, void *start,
+-				unsigned long page_limit,
+-				unsigned long freelist_count)
+-{
+-	unsigned int idx;
+-
+-	/*
+-	 * If the target page allocation failed, the number of objects on the
+-	 * page might be smaller than the usual size defined by the cache.
+-	 */
+-	do {
+-		idx = s->random_seq[*pos];
+-		*pos += 1;
+-		if (*pos >= freelist_count)
+-			*pos = 0;
+-	} while (unlikely(idx >= page_limit));
+-
+-	return (char *)start + idx;
+-}
+-
+ static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
+
+-/* Shuffle the single linked freelist based on a random pre-computed sequence */
+-static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
+-			     bool allow_spin)
+-{
+-	void *start;
+-	void *cur;
+-	void *next;
+-	unsigned long idx, pos, page_limit, freelist_count;
+-
+-	if (slab->objects < 2 || !s->random_seq)
+-		return false;
+-
+-	freelist_count = oo_objects(s->oo);
+-	if (allow_spin) {
+-		pos = get_random_u32_below(freelist_count);
+-	} else {
+-		struct rnd_state *state;
+-
+-		/*
+-		 * An interrupt or NMI handler might interrupt and change
+-		 * the state in the middle, but that's safe.
+-		 */
+-		state = &get_cpu_var(slab_rnd_state);
+-		pos = prandom_u32_state(state) % freelist_count;
+-		put_cpu_var(slab_rnd_state);
+-	}
+-
+-	page_limit = slab->objects * s->size;
+-	start = fixup_red_left(s, slab_address(slab));
+-
+-	/* First entry is used as the base of the freelist */
+-	cur = next_freelist_entry(s, &pos, start, page_limit, freelist_count);
+-	cur = setup_object(s, cur);
+-	slab->freelist = cur;
+-
+-	for (idx = 1; idx < slab->objects; idx++) {
+-		next = next_freelist_entry(s, &pos, start, page_limit,
+-			freelist_count);
+-		next = setup_object(s, next);
+-		set_freepointer(s, cur, next);
+-		cur = next;
+-	}
+-	set_freepointer(s, cur, NULL);
+-
+-	return true;
+-}
+ #else
+ static inline int init_cache_random_seq(struct kmem_cache *s)
+ {
+ 	return 0;
+ }
+ static inline void init_freelist_randomization(void) { }
+-static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
+-				    bool allow_spin)
+-{
+-	return false;
+-}
+ #endif /* CONFIG_SLAB_FREELIST_RANDOM */
+
+ static __always_inline void account_slab(struct slab *slab, int order,
+@@ -3438,15 +3376,14 @@ static __always_inline void unaccount_slab(struct slab *slab, int order,
+ 			    -(PAGE_SIZE << order));
+ }
+
++/* Allocate and initialize a slab without building its freelist. */
+ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ {
+ 	bool allow_spin = gfpflags_allow_spinning(flags);
+ 	struct slab *slab;
+ 	struct kmem_cache_order_objects oo = s->oo;
+ 	gfp_t alloc_gfp;
+-	void *start, *p, *next;
+-	int idx;
+-	bool shuffle;
++	void *start;
+
+ 	flags &= gfp_allowed_mask;
+
+@@ -3497,21 +3434,6 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	alloc_slab_obj_exts_early(s, slab);
+ 	account_slab(slab, oo_order(oo), s, flags);
+
+-	shuffle = shuffle_freelist(s, slab, allow_spin);
+-
+-	if (!shuffle) {
+-		start = fixup_red_left(s, start);
+-		start = setup_object(s, start);
+-		slab->freelist = start;
+-		for (idx = 0, p = start; idx < slab->objects - 1; idx++) {
+-			next = p + s->size;
+-			next = setup_object(s, next);
+-			set_freepointer(s, p, next);
+-			p = next;
+-		}
+-		set_freepointer(s, p, NULL);
+-	}
+-
+ 	return slab;
+ }
+
+@@ -3665,30 +3587,112 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
+ 	return object;
+ }
+
++/* Return the next free object in allocation order. */
++static inline void *next_slab_obj(struct kmem_cache *s,
++				  struct slab_obj_iter *iter)
 +{
-+	struct mmu_notifier_subscriptions *subscriptions =
-+						mm->notifier_subscriptions;
-+	struct mmu_notifier *subscription;
-+	struct hlist_node *tmp;
-+	HLIST_HEAD(oom_list);
-+	int id;
++#ifdef CONFIG_SLAB_FREELIST_RANDOM
++	if (iter->random) {
++		unsigned long idx;
 +
-+	if (!subscriptions)
++		/*
++		 * If the target page allocation failed, the number of objects on the
++		 * page might be smaller than the usual size defined by the cache.
++		 */
++		do {
++			idx = s->random_seq[iter->pos];
++			iter->pos++;
++			if (iter->pos >= iter->freelist_count)
++				iter->pos = 0;
++		} while (unlikely(idx >= iter->page_limit));
++
++		return setup_object(s, (char *)iter->start + idx);
++	}
++#endif
++	return setup_object(s, (char *)iter->start + iter->pos++ * s->size);
++}
++
++/* Build a freelist from the objects not yet allocated from a fresh slab. */
++static inline void build_slab_freelist(struct kmem_cache *s, struct slab *slab,
++				       struct slab_obj_iter *iter)
++{
++	unsigned int nr = slab->objects - slab->inuse;
++	unsigned int i;
++	void *cur, *next;
++
++	if (!nr) {
++		slab->freelist = NULL;
++		return;
++	}
++
++	cur = next_slab_obj(s, iter);
++	slab->freelist = cur;
++
++	for (i = 1; i < nr; i++) {
++		next = next_slab_obj(s, iter);
++		set_freepointer(s, cur, next);
++		cur = next;
++	}
++
++	set_freepointer(s, cur, NULL);
++}
++
++/* Initialize an iterator over free objects in allocation order. */
++static inline void init_slab_obj_iter(struct kmem_cache *s, struct slab *slab,
++				      struct slab_obj_iter *iter,
++				      bool allow_spin)
++{
++	iter->pos = 0;
++	iter->start = fixup_red_left(s, slab_address(slab));
++
++#ifdef CONFIG_SLAB_FREELIST_RANDOM
++	iter->random = (slab->objects >= 2 && s->random_seq);
++	if (!iter->random)
 +		return;
 +
-+	id = srcu_read_lock(&srcu);
++	iter->freelist_count = oo_objects(s->oo);
++	iter->page_limit = slab->objects * s->size;
 +
-+	/*
-+	 * Prevent further calls to the MMU notifier, except for
-+	 * release and after_oom_unregister.
-+	 */
-+	spin_lock(&subscriptions->lock);
-+	hlist_for_each_entry_safe(subscription, tmp,
-+				  &subscriptions->list, hlist) {
-+		if (!subscription->ops->after_oom_unregister)
-+			continue;
-+
-+		/*
-+		 * after_oom_unregister and alloc_notifier are incompatible,
-+		 * because there could be other references to allocated
-+		 * notifiers.
-+		 */
-+		if (WARN_ON(subscription->ops->alloc_notifier))
-+			continue;
-+
-+		hlist_del_init_rcu(&subscription->hlist);
-+		hlist_add_head(&subscription->hlist, &oom_list);
-+	}
-+	spin_unlock(&subscriptions->lock);
-+	hlist_for_each_entry(subscription, &oom_list, hlist)
-+		if (subscription->ops->release)
-+			subscription->ops->release(subscription, mm);
-+
-+	srcu_read_unlock(&srcu, id);
-+
-+	if (hlist_empty(&oom_list))
-+		return;
-+
-+	hlist_for_each_entry_safe(subscription, tmp,
-+				  &oom_list, hlist) {
-+		struct mmu_notifier_oom_callback *cb;
-+		/*
-+		 * Remove from stack-based oom_list and reset hlist to unhashed state.
-+		 * This sets subscription->hlist.pprev = NULL, so future callers of
-+		 * mmu_notifier_unregister() (e.g. kvm_destroy_vm) will see
-+		 * hlist_unhashed() == true and take the safe path, avoiding
-+		 * use-after-free on the stack-allocated oom_list head.
-+		 */
-+		hlist_del_init(&subscription->hlist);
-+
-+		/*
-+		 * GFP_ATOMIC failure is exceedingly rare. We cannot sleep
-+		 * here (would reintroduce the deadlock this patch fixes)
-+		 * and cannot call after_oom_unregister synchronously
-+		 * without first waiting for SRCU readers. The subscriber
-+		 * will not receive after_oom_unregister but cleanup will
-+		 * eventually happen via the unregister path.
-+		 */
-+		cb = kmalloc(sizeof(*cb), GFP_ATOMIC);
-+		if (!cb)
-+			continue;
-+
-+		cb->subscription = subscription;
-+		cb->mm = mm;
-+		mmgrab(mm);
-+
-+		/* Schedule callback - returns immediately */
-+		call_srcu(&srcu, &cb->rcu, mmu_notifier_oom_callback_fn);
-+	}
-+
-+}
-+
- /*
-  * If no young bitflag is supported by the hardware, ->clear_flush_young can
-  * unmap the address and return 1 or 0 depending if the mapping previously
-@@ -1096,3 +1206,16 @@ void mmu_notifier_synchronize(void)
- 	synchronize_srcu(&srcu);
- }
- EXPORT_SYMBOL_GPL(mmu_notifier_synchronize);
-+
-+/**
-+ * mmu_notifier_barrier - Wait for all pending MMU notifier callbacks
-+ *
-+ * Waits for all call_srcu() callbacks scheduled by mmu_notifier_oom_enter()
-+ * to complete. Used by subsystems during cleanup to prevent use-after-free
-+ * when destroying structures accessed by the callbacks.
-+ */
-+void mmu_notifier_barrier(void)
-+{
-+	srcu_barrier(&srcu);
-+}
-+EXPORT_SYMBOL_GPL(mmu_notifier_barrier);
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 5c6c95c169ee..029e041afc57 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -519,6 +519,9 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
- 	bool ret = true;
- 	MA_STATE(mas, &mm->mm_mt, ULONG_MAX, ULONG_MAX);
-
-+	/* Notify MMU notifiers about the OOM event */
-+	mmu_notifier_oom_enter(mm);
-+
- 	/*
- 	 * Tell all users of get_user/copy_from_user etc... that the content
- 	 * is no longer stable. No barriers really needed because unmapping
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 1bc1da66b4b0..a2df83d3b413 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -885,6 +885,24 @@ static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
- 	srcu_read_unlock(&kvm->srcu, idx);
- }
-
-+static void kvm_mmu_notifier_after_oom_unregister(struct mmu_notifier *mn,
-+					struct mm_struct *mm)
-+{
-+	struct kvm *kvm;
-+
-+	kvm = mmu_notifier_to_kvm(mn);
-+
-+	/*
-+	 * At this point the unregister has completed and all other callbacks
-+	 * have terminated. Clean up any unbalanced invalidation counts.
-+	 */
-+	WARN_ON(rcuwait_active(&kvm->mn_memslots_update_rcuwait));
-+	if (kvm->mn_active_invalidate_count)
-+		kvm->mn_active_invalidate_count = 0;
-+	else
-+		WARN_ON(kvm->mmu_invalidate_in_progress);
-+}
-+
- static const struct mmu_notifier_ops kvm_mmu_notifier_ops = {
- 	.invalidate_range_start	= kvm_mmu_notifier_invalidate_range_start,
- 	.invalidate_range_end	= kvm_mmu_notifier_invalidate_range_end,
-@@ -892,6 +910,7 @@ static const struct mmu_notifier_ops kvm_mmu_notifier_ops = {
- 	.clear_young		= kvm_mmu_notifier_clear_young,
- 	.test_young		= kvm_mmu_notifier_test_young,
- 	.release		= kvm_mmu_notifier_release,
-+	.after_oom_unregister	= kvm_mmu_notifier_after_oom_unregister,
- };
-
- static int kvm_init_mmu_notifier(struct kvm *kvm)
-@@ -1280,7 +1299,13 @@ static void kvm_destroy_vm(struct kvm *kvm)
- 		kvm->buses[i] = NULL;
- 	}
- 	kvm_coalesced_mmio_free(kvm);
--	mmu_notifier_unregister(&kvm->mmu_notifier, kvm->mm);
-+	if (hlist_unhashed(&kvm->mmu_notifier.hlist)) {
-+		/* Subscription removed by OOM. Wait for async callback. */
-+		mmu_notifier_barrier();
-+		mmdrop(kvm->mm);
++	if (allow_spin) {
++		iter->pos = get_random_u32_below(iter->freelist_count);
 +	} else {
-+		mmu_notifier_unregister(&kvm->mmu_notifier, kvm->mm);
++		struct rnd_state *state;
++
++		/*
++		 * An interrupt or NMI handler might interrupt and change
++		 * the state in the middle, but that's safe.
++		 */
++		state = &get_cpu_var(slab_rnd_state);
++		iter->pos = prandom_u32_state(state) % iter->freelist_count;
++		put_cpu_var(slab_rnd_state);
 +	}
- 	/*
- 	 * At this point, pending calls to invalidate_range_start()
- 	 * have completed but no more MMU notifiers will run, so
---
-2.43.0
++#endif
++}
++
+ /*
+  * Called only for kmem_cache_debug() caches to allocate from a freshly
+  * allocated slab. Allocate a single object instead of whole freelist
+  * and put the slab to the partial (or full) list.
+  */
+ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+-					int orig_size, gfp_t gfpflags)
++					int orig_size, bool allow_spin)
+ {
+-	bool allow_spin = gfpflags_allow_spinning(gfpflags);
+-	int nid = slab_nid(slab);
+-	struct kmem_cache_node *n = get_node(s, nid);
++	struct kmem_cache_node *n;
++	struct slab_obj_iter iter;
++	bool needs_add_partial;
+ 	unsigned long flags;
+ 	void *object;
 
+-	if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
+-		/* Unlucky, discard newly allocated slab. */
+-		free_new_slab_nolock(s, slab);
+-		return NULL;
+-	}
+-
+-	object = slab->freelist;
+-	slab->freelist = get_freepointer(s, object);
++	init_slab_obj_iter(s, slab, &iter, allow_spin);
++	object = next_slab_obj(s, &iter);
+ 	slab->inuse = 1;
+
++	needs_add_partial = (slab->objects > 1);
++	build_slab_freelist(s, slab, &iter);
++
++	/* alloc_debug_processing() always expects a valid freepointer */
++	set_freepointer(s, object, slab->freelist);
++
+ 	if (!alloc_debug_processing(s, slab, object, orig_size)) {
+ 		/*
+ 		 * It's not really expected that this would fail on a
+@@ -3696,20 +3700,32 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+ 		 * corruption in theory could cause that.
+ 		 * Leak memory of allocated slab.
+ 		 */
+-		if (!allow_spin)
+-			spin_unlock_irqrestore(&n->list_lock, flags);
+ 		return NULL;
+ 	}
+
+-	if (allow_spin)
++	n = get_node(s, slab_nid(slab));
++	if (allow_spin) {
+ 		spin_lock_irqsave(&n->list_lock, flags);
++	} else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
++		/*
++		 * Unlucky, discard newly allocated slab.
++		 * The slab is not fully free, but it's fine as
++		 * objects are not allocated to users.
++		 */
++		free_new_slab_nolock(s, slab);
++		return NULL;
++	}
+
+-	if (slab->inuse == slab->objects)
+-		add_full(s, n, slab);
+-	else
++	if (needs_add_partial)
+ 		add_partial(n, slab, ADD_TO_HEAD);
++	else
++		add_full(s, n, slab);
+
+-	inc_slabs_node(s, nid, slab->objects);
++	/*
++	 * Debug caches require nr_slabs updates under n->list_lock so validation
++	 * cannot race with slab (de)allocations and observe inconsistent state.
++	 */
++	inc_slabs_node(s, slab_nid(slab), slab->objects);
+ 	spin_unlock_irqrestore(&n->list_lock, flags);
+
+ 	return object;
+@@ -4348,44 +4364,41 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
+ 		void **p, unsigned int count, bool allow_spin)
+ {
+ 	unsigned int allocated = 0;
+-	struct kmem_cache_node *n;
+-	bool needs_add_partial;
++	struct slab_obj_iter iter;
++	bool needs_add_partial = true;
+ 	unsigned long flags;
+-	void *object;
+
+ 	/*
+ 	 * Are we going to put the slab on the partial list?
+ 	 * Note slab->inuse is 0 on a new slab.
+ 	 */
+-	needs_add_partial = (slab->objects > count);
+-
+-	if (!allow_spin && needs_add_partial) {
+-
+-		n = get_node(s, slab_nid(slab));
+-
+-		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
+-			/* Unlucky, discard newly allocated slab */
+-			free_new_slab_nolock(s, slab);
+-			return 0;
+-		}
++	if (count >= slab->objects) {
++		needs_add_partial = false;
++		count = slab->objects;
+ 	}
+
+-	object = slab->freelist;
+-	while (object && allocated < count) {
+-		p[allocated] = object;
+-		object = get_freepointer(s, object);
+-		maybe_wipe_obj_freeptr(s, p[allocated]);
++	init_slab_obj_iter(s, slab, &iter, allow_spin);
+
+-		slab->inuse++;
++	while (allocated < count) {
++		p[allocated] = next_slab_obj(s, &iter);
+ 		allocated++;
+ 	}
+-	slab->freelist = object;
++	slab->inuse = count;
++	build_slab_freelist(s, slab, &iter);
+
+ 	if (needs_add_partial) {
++		struct kmem_cache_node *n = get_node(s, slab_nid(slab));
+
+ 		if (allow_spin) {
+-			n = get_node(s, slab_nid(slab));
+ 			spin_lock_irqsave(&n->list_lock, flags);
++		} else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
++			/*
++			 * Unlucky, discard newly allocated slab.
++			 * The slab is not fully free, but it's fine as
++			 * objects are not allocated to users.
++			 */
++			free_new_slab_nolock(s, slab);
++			return 0;
+ 		}
+ 		add_partial(n, slab, ADD_TO_HEAD);
+ 		spin_unlock_irqrestore(&n->list_lock, flags);
+@@ -4456,15 +4469,13 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 	stat(s, ALLOC_SLAB);
+
+ 	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
+-		object = alloc_single_from_new_slab(s, slab, orig_size, gfpflags);
++		object = alloc_single_from_new_slab(s, slab, orig_size, allow_spin);
+
+ 		if (likely(object))
+ 			goto success;
+ 	} else {
+-		alloc_from_new_slab(s, slab, &object, 1, allow_spin);
+-
+ 		/* we don't need to check SLAB_STORE_USER here */
+-		if (likely(object))
++		if (alloc_from_new_slab(s, slab, &object, 1, allow_spin))
+ 			return object;
+ 	}
+
+@@ -7258,10 +7269,6 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+
+ 	stat(s, ALLOC_SLAB);
+
+-	/*
+-	 * TODO: possible optimization - if we know we will consume the whole
+-	 * slab we might skip creating the freelist?
+-	 */
+ 	refilled += alloc_from_new_slab(s, slab, p + refilled, max - refilled,
+ 					/* allow_spin = */ true);
+
+@@ -7592,6 +7599,7 @@ static void early_kmem_cache_node_alloc(int node)
+ {
+ 	struct slab *slab;
+ 	struct kmem_cache_node *n;
++	struct slab_obj_iter iter;
+
+ 	BUG_ON(kmem_cache_node->size < sizeof(struct kmem_cache_node));
+
+@@ -7603,14 +7611,18 @@ static void early_kmem_cache_node_alloc(int node)
+ 		pr_err("SLUB: Allocating a useless per node structure in order to be able to continue\n");
+ 	}
+
+-	n = slab->freelist;
++	init_slab_obj_iter(kmem_cache_node, slab, &iter, true);
++
++	n = next_slab_obj(kmem_cache_node, &iter);
+ 	BUG_ON(!n);
++
++	slab->inuse = 1;
++	build_slab_freelist(kmem_cache_node, slab, &iter);
++
+ #ifdef CONFIG_SLUB_DEBUG
+ 	init_object(kmem_cache_node, n, SLUB_RED_ACTIVE);
+ #endif
+ 	n = kasan_slab_alloc(kmem_cache_node, n, GFP_KERNEL, false);
+-	slab->freelist = get_freepointer(kmem_cache_node, n);
+-	slab->inuse = 1;
+ 	kmem_cache_node->per_node[node].node = n;
+ 	init_kmem_cache_node(n);
+ 	inc_slabs_node(kmem_cache_node, node, slab->objects);
+-- 
+2.25.1
 
