@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25E90CD13D3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 16:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB5EFF8873
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Apr 2026 17:04:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9027C6B0088; Thu, 30 Apr 2026 12:57:50 -0400 (EDT)
+	id 450C16B0088; Thu, 30 Apr 2026 13:04:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D9736B008A; Thu, 30 Apr 2026 12:57:50 -0400 (EDT)
+	id 401A26B008A; Thu, 30 Apr 2026 13:04:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C8BF6B0093; Thu, 30 Apr 2026 12:57:50 -0400 (EDT)
+	id 317776B008C; Thu, 30 Apr 2026 13:04:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BDCB6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 12:57:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB75F1C0D3C
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:52:06 +0000 (UTC)
-X-FDA: 84715814652.09.3CB151E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5CADD40014
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:52:04 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LWIRUV1r;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 23DDF6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 13:04:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD3E91A034F
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:59:43 +0000 (UTC)
+X-FDA: 84715833846.05.4CFAFC9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0DB6CA0007
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 16:59:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hpAzXkwx;
+	spf=pass (imf25.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777567924;
+	s=arc-20220608; t=1777568381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/ACxXmJUFaqpJM+rPsMg7ZbkwHWE1746v7RFgiLlxcE=;
-	b=8OMKQsj46sCiyZBJaXA2pkh6ZwiGWXQ0gy1u13yenXJ9GHjOAEvKRHmOswJIBSbQnmaKR7
-	diuFudvZazc/cF67oCuIrCLOsI60LDyvcVnliO7pltC17dIXnMQyhcvJztqfXoAAq6mkOd
-	8rDFFu6EK7wjbHKYv3d4mFP65ZtauNY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777567924; a=rsa-sha256;
+	bh=wCAU7vqnWl7Uv9GCAHpaoq3byGTpicVO/Y19yw9xg38=;
+	b=HZL83MrpBB+WL4Hx8wL2I+/i7SLDnQZ7mFLJDxjUm7V85JtTK5R7hVdleNHtq3bDaYY7q/
+	2W/G17h30UMZCPq+iFtSRhVRwExOK8W4VB/SUS3n00sQrEyR9fb1HFh5nxX3EqSxZvUnbk
+	L3qs9Rv+UO5XR8WyartLymM3a4CSmnA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777568381; a=rsa-sha256;
 	cv=none;
-	b=IA7aaZciGIhNLYcyxUZY8O6+h5MQ/AR465VHSgmSXS/ko1HMolmY1P1mHAdOtmWneOWf9f
-	jPS3i07BQNf3yBciaCRegS4a7x8+IX3eRLK57EOmz94x0cv+3vAHR7NhmhWNt7d1/PRWMS
-	djiICSzUULEa1pNqg8wqY+MZeJEqGSw=
+	b=uPuXqoWGFXw83JdTirqSpJ21txzv43emDwAsbv/X6p8vsDTsQNKyDt9Odq6vF155ldQvz/
+	Zb+elQBMHw/aousCLGSsHuIpQzJfZlLCRTg2qAj7JI6G4NYgNCbwAMBRIJVjZGs9AWj3yq
+	MAR3l9I2RKWfM5mbNFz7RNZ88yzNFWU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LWIRUV1r;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hpAzXkwx;
+	spf=pass (imf25.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777567925; x=1809103925;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=IxARCr1BqsacoLcWn5yvwiS7Qt+sQBTsSEDWAF9CTBQ=;
-  b=LWIRUV1rjOu2yAdUO7nrCQ25SkkTUEr46+L3OvUGIvdampqYBip863ld
-   hZN1R0R0C3u6kPM66iKQTyvWMNaZesW6y8IePfaITjnSK2t3A1IpINVHx
-   V8lGEn75tjdAjqGOGga5F4uQ+IdSJrbSCdmxZuGydVHksrOlTTXcREvkZ
-   pFksuWDrtoD21MwZhNWrqKqMHu/4yW9X6vqiiO+99vr1+CC7fJy9jHaDk
-   racZdXMinUewSkvprNKo3NbyXFY79ZlxdgO/NZr00mFRI5ZO+IKN4/Nfw
-   3TqbOtkRhQeTltXhrr7HKtBTXfx35Dwlqh+oh/ZPOeHrrAp0sUOStY7ql
-   w==;
-X-CSE-ConnectionGUID: 194smrfZSWuN0g7/1A/Gzw==
-X-CSE-MsgGUID: Fwyd6T/xR9Sd+Q1ufIi4zw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="88840936"
+  t=1777568381; x=1809104381;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lal5krxYRhjuJ7DZ35OSP/WlDGBqbT9nvhV433fMfu4=;
+  b=hpAzXkwxdCGuaG38ZSRVNRDtx2ncEtj2tqaoG9A24k4VMFkicMSLnZPh
+   TWAm39yJHGnRiuNAtiHOJJfzebxexkVjdszdMVFrLEWNW65+mYUOVo5WF
+   M5QI2v8HbMVAxS9K8fTX7SxsPu+7/QVWG9n7VXNi6y8HfM9tJgtSmSAFa
+   DEU4dXhnlg37GShfL64z6Ad0DQBvqY4Xy/JXFIhXfvw6rcMSDg4ucRfJU
+   tDmWSurkzM0xk93NF783bfnX9/uilN1v/1IqmGXP9+561ou6+RrgA+qG2
+   +z5d33OwmhfO0JRTBvZ8rQZ4zXFb23AhAoPHNik3pc9F3ZyjUrD+zveNB
+   Q==;
+X-CSE-ConnectionGUID: w8ZsnNHdSROzLXYqJBP/vw==
+X-CSE-MsgGUID: S2DthmmZTmCTIJUxoOrf+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="96095331"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="88840936"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 09:52:04 -0700
-X-CSE-ConnectionGUID: w73/2rcuTJSC7b5+rC67Cg==
-X-CSE-MsgGUID: dZ3t6KxcS/KxZ3znVMJPcA==
+   d="scan'208";a="96095331"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 09:59:39 -0700
+X-CSE-ConnectionGUID: KIoQFjQPTPCjaeQ0Umg92w==
+X-CSE-MsgGUID: Mgd8RrCESZGFaKxPHOOErw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="258221482"
+   d="scan'208";a="238958199"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 09:52:02 -0700
-Message-ID: <c5949ae3-5d35-4251-97f7-3b2e4c1901e0@intel.com>
-Date: Thu, 30 Apr 2026 09:52:03 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 09:59:39 -0700
+Message-ID: <202886a1-a433-4bcf-9d86-41e8ef6396c8@intel.com>
+Date: Thu, 30 Apr 2026 09:59:40 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] mm: Make per-VMA locks available in all builds
-To: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
- Lorenzo Stoakes <ljs@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-References: <20260429181954.F50224AE@davehans-spike.ostc.intel.com>
- <20260430072053.e0be1b431bcff02831f07e9d@linux-foundation.org>
-From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [syzbot ci] Re: mm: Make per-VMA locks available in all builds
+To: syzbot ci <syzbot+ci0a2fe26d19deda39@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, dave.hansen@linux.intel.com,
+ liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ljs@kernel.org, shakeel.butt@linux.dev, surenb@google.com, vbabka@kernel.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <69f30b06.170a0220.3c4978.0018.GAE@google.com>
 Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -133,17 +132,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260430072053.e0be1b431bcff02831f07e9d@linux-foundation.org>
+In-Reply-To: <69f30b06.170a0220.3c4978.0018.GAE@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5CADD40014
-X-Stat-Signature: nngmeujs8mfrmczdjuk5e3k3okhmispu
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0DB6CA0007
+X-Stat-Signature: xw7cz69h3sgzome1dazzxazy8o1a4tug
 X-Rspam-User: 
-X-HE-Tag: 1777567924-668058
-X-HE-Meta: U2FsdGVkX1+NUZzEQgWBP5sISONGxdaSuXmDpaRYOUgGC0TYNfHcAYj5C09miKrNB0Qi0gH6r5/uxopc4MKNM7gYZRnGg1aP6XIYXVjFTNntG+1THhbK5c1C1YuLFRupZm2iQkxDFb+5/SsVhwCje7f7+rqETfYGRwvUeJXP8GJ+mO/zOb6tiRg3NkLA4vO7TR9EmdL9V9h/VOhXCYPVo//hkLaSX5KqW4laa4ufGxmdtEXkR5DHngv5qXSmUwrEgc9VBXSkQRRQk0ApfyY2+uM6m4kHzDkNewTgNCbdUgjPcb5peKYliQ5dccXGMs/iNHjGg1KWde8yNeFsufQfSiM27nNu2KxvfJu0DQBn9uK5lSnCqGCdeQvAbmbXnWsUEIRFfG7bFtntUIEJOUSnWohrSK2s2pMO9rjFESZW2y+VQJOaskCNBStEP48AKZsb7TV1OiTG5LSOOVvLM3Rp3981Ol0SxRTCayATEWGOJhZ7DSusT/D4uhlUiftb4rcRdKsPhZ9O47TCpAHJqlF7/duON0jluFsAiduiIAWU3d7Ay2dHnIcWwEB8Zvryv0DQ2wawaBLJLej/7Dx80hHJ3H8JzotP3p7e525J8+AZw3PmrVKsrCW3lPQw15Mbzn10kMp+LrPjxc/kpv9Ushnw68bPVxMuMA7OtsUeJGOyx8jHElivym5MJ3Z4pfubMVOpzJUJWlWz1NOfCNnAXnmTVGb4FGpQinSDByx7UvO8Avl7ittAevDzPkhrTKhG8vy+zmI6/cd03YdMDbD0P+KR2wVFdrWslDwcjwqvxlqciEciLCaPLe52QvitoXPe+Mv/K877luqqL8e+AHvaEdvbs3e+lMK0H/nFI7akRWKVA+qRWs/Sxg8KLlrhspyNcSKh8lyg8YsY39FCPGro9tyqoJ6maU8OnFqZQSVrH6QhzlpvHC/CIccKiOYaYZAXvpbXnhir1OQcTin9g7aqo8U
- UQOxZglG
- ys/nKWdzD2f3KJPZJpMI0Qg6FtV2x0Yj6Tsiqe9vDHjFFtavFvgxgR/DLEaYDoHcO9V9ebdMVP6Q9R3B0qNpYK/JuQ5I41BId3+0kCOWCILkIOzuCe8qMvlM/lv3MJCM5ClduNODAbQdn5oXMmoID4ptZRmDwktNR5bCzsHu7Huhe9BL3i44xB0KbCf7pRLSzkJ/HlljA6vkDEiHL8efTqHCm5lWV7KLPKwV0OcKiIyo4OvWC1xd7uqSrOaaGokh0mQquZaGUbMkRjHjlSJFu0GJIfM70VcOMz3uN
+X-HE-Tag: 1777568380-355791
+X-HE-Meta: U2FsdGVkX18Z67HjYgaSMJpvvVr2xXLn6KQEZR9LE8bTn+IfEtqunLxnL5OjZkq/fzjGQG5XRH/U08/JG58t3a2ivkGP6EteK113Flr4makSBsjoswm5GFzvezF7jkf7a10NhlF9FHMOo1bHwtlO0dXCzzKl4cWeg1RT8C3xGmxMHh2tVJx9OJqS9iQb0XvoydEWxSmWv4pPEdU6LNWy+C25cvC4+nmuf1CxjIclQ+s67kkt630T4eJkextWU7LNQ/8xnRsGlz2UIbTkP0pMijk+v1dTK6SAxqf9VtfwLmFAMdOFTsxt6nkEJtOOr8SZY+4pixvkadIrGJ3VBsiv9mbQL6tENp3faaBpEu9xNFidBBbvxZ87Nzyv0GzUU9kvMpyiIs3ABy2Wf7WWB1pf/87mVnjT836c9T1XyzJg/WXAru++0n0CK1+7JGlYAfZprXndkKtjLYC5BegPdo8ce3PCuovJy1EV4Cv8JhbE2t1IR1Eq3TptB1Tt+gqavN2bmBKcOtmS8O9hBjqnk9QlVShx+uYr1n8cXDh2s2ObYZrKuBnL7tdkT/zvgGv8U7ZzH9s0WYDe9M/Vmywor/94gtDOGjMQybsIzElgBBoesdLqSlbSaIwE+MZq2SG5rc9/1JLRNHFVceNkSpCgzZWVxBbhpUTDyWM9ULwz9U/1j/wDomJjcQT3fspkRhyVtI/+2DCzzRZkjlXoqVWV0JiwJMZpVsDocs8dzZfx4oiI2MAIfX07++7hhsQkwow07atxmH38hxy53cQRa2du8pZ+NExhUYlL85gIxv5VIFKznrhAvNkAHmAFhlw7FmKFsstia1aV1gXqhY7dcYw3xDOAByqRAeophUzEX2STiuRVAUtYV+2qZOnKe/6QEROb3jdErM0ywPNBvXRsZQKx5yxavDbDmEG8DhnVADgjgmmV590NJEyZ/3y6zGw3nB356FRY6o9dLwnAFpO1XH5LFY2
+ avLwV5KF
+ uzwQjV9rlCm6djC4t3oBwb8rLnykt8KLy2wpjqw2nPTge8PJ2eUtya2JF3tzyF5GJDUJsxdQa986ftaa0Q1GhOR3h8sYAHcgICWod3QW61T/eaH8F2eq4T/qkQFh4Q6Q1s+oPFxGcY3WcaSQNDFKCRUSonX/9TR+t9ZjOxvwGfp8P7UZbgUC58Qf60KyLqeZe6QWWTUQ3TvBZ28NmDLNfwGlwa5EnJtezULEKsSo6bd+FIQz8D+MgbBJdK6L3+LTxu/WIU9IsCGDARfq/96jSBcBQ/7xzhMZAke0lJqXjU4EwYmNsOpIU3Ds3SedFJ01A9Kn/bnz8ghOPJ2iyE4py9/7pUObcp3TJg30/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,56 +150,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-... adding all the cc's back.
-
-On 4/30/26 07:20, Andrew Morton wrote:
-> On Wed, 29 Apr 2026 11:19:54 -0700 Dave Hansen <dave.hansen@linux.intel.com> wrote:
+On 4/30/26 00:55, syzbot ci wrote:
+> and found the following issue:
+> WARNING in mbind_range
 > 
->> When working on some x86 shadow stack code, it was a real pain to
->> avoid causing recursive locking problems with mmap_lock. One way
->> to avoid those was to avoid mmap_lock and use per-VMA locks instead.
->> They are great, but they are not available in all configs which
->> makes them unusable in generic code, or if you want to completely
->> avoid mmap_lock.
+> Full report is available here:
+> https://ci.syzbot.org/series/374f338e-4b3b-4645-871c-78964f944bbd
 > 
-> Did you see the AI review?
-> 	https://sashiko.dev/#/patchset/20260429181954.F50224AE@davehans-spike.ostc.intel.com
+> ***
+> 
+> WARNING in mbind_range
 
-I just went through it. There was some absolutely valid stuff in there
-like a bunch of CONFIG_PER_VMA_LOCK references needing to be cleaned up.
-It also made some good points about the binder shrinker sites that I
-think I cleaned up for v2.
+I left a whole bunch of #ifdef CONFIG_PER_VMA_LOCK cruft around in v1. I
+suspect some of the debugging code ended up in a weird state in a config
+that I didn't test.
 
-There are three very valid structural problems that it's concerned about.
-
-First is that lock_vma_under_rcu_wait() doesn't use
-mmap_read_lock_killable(). It probably needs to, or at least there would
-need to be killable and non-killable variants. That's easy enough to do
-if folks agree that this is overall something that should go forward.
-I'd prefer to hand wave it away for the moment, though.
-
-Second, it brings up concerns about lock_vma_under_rcu_wait() deadlocks
-in the face of other per-VMA or mmap_lock holders. This is very valid,
-but it's inherent for users of mmap_lock. I think it's just a
-documentation issue.
-
-Third, Sashiko is _very_ peeved about the lock_vma_under_rcu_wait() goto
-loop. Broadly, it's concerned about fairness and livelocks in the face
-of userspace being able to compel 'goto retry' to happen forever. It's a
-valid theoretical concern for sure. I'm less convinced that it will be a
-problem in practice, and I should probably hack together a torture test
-to see how many retries actually happen.
-
-The other way to fix it more robustly would be to acquire the vma
-reference under the existing mmap_read_lock(). I _think_ it's just a
-couple extra lines of code, but I haven't done the legwork to flesh out
-how that would look.
-
-But the key questions for this series remain:
- 1. Should/can per-VMA locking be available in all configs?
- 2. Is *a* lock_vma_under_rcu_wait() implementation feasible and useful?
-    The implementation in this series is highly imperfect. Is there a
-    chance of a better one or is it just impossible?
-
-
+I'll try to reproduce this splat, though. It looks straightforward enough.
 
