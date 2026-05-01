@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4145BCD13DE
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 01:19:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E7A3CD13DE
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 01:21:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90AFD6B0088; Thu, 30 Apr 2026 21:19:53 -0400 (EDT)
+	id D526D6B008C; Thu, 30 Apr 2026 21:21:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E1D06B008A; Thu, 30 Apr 2026 21:19:53 -0400 (EDT)
+	id D03796B0092; Thu, 30 Apr 2026 21:21:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81F206B008C; Thu, 30 Apr 2026 21:19:53 -0400 (EDT)
+	id C19076B0093; Thu, 30 Apr 2026 21:21:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7026D6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:19:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 97DB91C0565
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:17:53 +0000 (UTC)
-X-FDA: 84717089226.27.7EBFD85
+	by kanga.kvack.org (Postfix) with ESMTP id AEB136B008C
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:21:40 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DE05614042D
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:17:52 +0000 (UTC)
+X-FDA: 84717089184.17.0D32478
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EC7D34000D
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:17:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MrITKq7l;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 186B2A000B
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:17:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nAB/R2m+";
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777598272;
+	s=arc-20220608; t=1777598271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=joUyppQgdibpHH8nlY55E5Nv1prQF4Qm3z25YXZEpxQ=;
-	b=apLMsd4BZBoLvRtTgjBWjgNtEOS/2mepEzDy7ETzbaoMEiWRu28uU49Zta5+fPfL1r9qif
-	KoOG/E+4yyeTjuxlB8n2yrAsf8eq4blEm3XIJj6gzHy7kGBIpC5Gt6UmekqUTG2T7is3fC
-	HBZMYAi+ZHkJns2WLgHxjTDehl61GUM=
+	 in-reply-to:references:dkim-signature;
+	bh=GN4RfoNPeYa6h0Im9vOXjc/OVabSsqtWgaeDXUT1NCc=;
+	b=QRuyLjBqC35XwSZ3VH9AOY31HSvHHVtWJ6Zimpr+7udiniBkaBTnBvMPYQMqdFVMw9KQhP
+	S6r1avmVxW9b7jKmj5tx7stCjqxmM9MiGps2Ix71Jt7Z2/Tzj4Xs/6PHIZSkP8tLtlLniR
+	aARC9argx11JfMjKA+O+boG3xeYfUjM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MrITKq7l;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nAB/R2m+";
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777598272; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777598271; a=rsa-sha256;
 	cv=none;
-	b=EU8DaZz2H83Hqcmen9evC26FT1dYZ/5nDx3wEluOdTnPPIheCujTNtWPZY+uO7Pn6jiZhe
-	f5Ttaiup/tFYoV4J2VUADVlN0XsnigSMtr0adbV/2PIPbkHzxe/Z78tdPaY/LZNzrlNP5d
-	L+tN+z/Hb2dy/tXX1DOp8MMIJxCNIoE=
+	b=XOieKg0MB/WGcRopef9QlptrhUlFVwyAcqp7XqWk0Gw8wPmJ87IgIH4J6fWXAX5SkO6Sjf
+	s5+t6bepdJJoSvQfCHTQpdIL16riwFQZhKxHsllyEf3lWhAk+lqj0yo9/yU2N8wZIY+DOY
+	L9nYwD5zFVsTWJZjs9J5kmQYB2QgnOg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 202AC444D8;
-	Fri,  1 May 2026 01:17:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680D4C2BCB9;
+	by sea.source.kernel.org (Postfix) with ESMTP id 05278434B3;
 	Fri,  1 May 2026 01:17:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448D9C2BCB8;
+	Fri,  1 May 2026 01:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777598271;
-	bh=FFZsipR5HDi6IaWQyWowYhDwh2V2W3Kfd/0jWX5YUQk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MrITKq7lAL5RkvU47QDpv8ARuoAWk9lqcC9SkwgKOVLGwhQv5j7KVZiqil0SeEocz
-	 PvJhlDWl+kfXmc8WKAhkQNRVRsxn7vHmNQtuL2U4LLtLVG66CYXKOh5bkU7W+cMkS0
-	 ymH+KGHB19vEfr7Ilz1R63PWHC/sScZZnal86WlxpK8UvW+cb1+6S8hwTUIro9TWrK
-	 xQbcQgFumw1G3nkix5nq+R410zB6gO2wpiRmwDzieP/4hFKVQwmkI7gLyyP/+3UFDa
-	 mEg+apQubBgU7rOg8nThCttU+b6I3WTtuVIDkR3ghUpnN6DmFa1uJMvETXXC7zCNNE
-	 QSGjiKCTrqjWA==
+	s=k20201202; t=1777598269;
+	bh=tYUxA/J6ODEDki9sQswRmgCKXcppBQ9ffFdDu47dDsk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nAB/R2m+GcpomPGZxgZ0qGbow3/0nAACzWkLFUpzxNem0w5w0g7k8d6uTwzAzH31U
+	 TUTxRSDTeMCLpEXWm9NteYKgEuzlJCm7qvPNCIZElptyDieDF0xsbpuHC5KOrqnplo
+	 JtXb/ncvb+LFDTI5/PxnIuVLKSzck4ShQ+awAy2fT5PYcWIBTgTPzxxozo00m2a5ss
+	 j/vzuOYHkvaVo4QnoMi5bkNpIKxezRacASGDQj5KTFf4BYNuts3ZiJtmckGrMxhph1
+	 Rp+TXsp8PWgpDQcw+6G2oDJE2UcVenA+dxg7VyTYICtyZb1uQj9nrrylvC1v6UG3J8
+	 lZDYom71HMGjw==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -79,22 +79,20 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 2/2] Docs/admin-guide/mm/damon/reclaim: update for autotune_monitoring_intervals
-Date: Thu, 30 Apr 2026 18:17:39 -0700
-Message-ID: <20260501011740.81988-3-sj@kernel.org>
+Subject: [PATCH 0/2] mm/damon/reclaim: support monitoring intervals auto-tuning
+Date: Thu, 30 Apr 2026 18:17:37 -0700
+Message-ID: <20260501011740.81988-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260501011740.81988-1-sj@kernel.org>
-References: <20260501011740.81988-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 11jfthrwuzmyjw19z8xi8wyhqjwkyg5a
-X-Rspamd-Queue-Id: EC7D34000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777598271-794854
-X-HE-Meta: U2FsdGVkX1+CmAwF5m6bEod5CFG47PMuS5sdjLKZ9IoK8FQAQu1O2I4gFIvkYFSFVBysQgiFeH6j9iTjSHGVLCVitVGBIz453+tvUm017tAohVylQOy7IUQgTlMxxPFWso/BkhGuuKMGCHwQxZRbUml5wMMSfWZHUcN55yPpRnZ+HA/zSApc1IHETqdrBP9kzRv24qUFX9kZ0b01Iv9cVRk2736jvvszH76Mt2hriJ412ZNC2FFpBezQscQOd9JeGkVul9I9FDC49B4yRTfM6tqLl07vkQM8VoUg22cnh2/WH23erMuo/6cr/16YU/vRzv10rgiqRvp2fh2Uieg2SmdbtFUNnE2PkiOLcD/iw2rbsFtZ8WfyfSwqtNYMSThiBdGAe7fDsnu+KvQfbDBl5ajqeIhPOlSk7gRAM5e3Oc5757x9XdyCoGZyuuyHa71eg/c9PtZWWV0GZK9qOat7drIsKkUfyONSL1mpfLS/M/VhHLJHwrr6AwBWysVo21NmvGE0kzbyPthXPlq8S7PXV64ZVlrgOpXaSwT0cdZ/LYC0JQxl0E0SP7ULVO8kl+PZdTMXbtFCmb9NsiKFailgxPSM1JyiCZ/90v2d/RuDSoqs6qqSAVkdSu/xEW7KyQ09/82CAFr1SDuXR8N5NHvtQOVzLRVaI2JjoTGjWk/FIbup0wmlER3e8o6J4f4RsaG4etweF9UTs7K6LKs3l8psWs1EWQ/7D6kqktD6BXvYED+7clhqMELUzOLVgXJHLsCfJRceBP68pdMgt0L+4ladiFhNwf9Xkcl4x3mygQ5KiVFfDuHZrKr4BxcA64orhGN6J0UOE9MZnkHPhTq+6iQO1kUJDXkntNzk5MW3C1EAJQDywlkp4Jv+byj2tTN6Gq446dNAY3eSI9IUjCRwwNFWUG+xcOgpndmGUDZd5KoONOLx2aXyPkHX2Tmq766ToHXy2Yb7k8eVhLMjmFh5TWg
- 7sHympjj
- xGf6WIm3TNWvQxV+vKbyNM9RRiPTRUDbE9FRaYLvGV98ldiH7L9hyeHkt1kzjT9944jy+ET01RU1hYpQfiN7C5vmjzkoRbTW6NkzYyEPWFMCb+/9QwXYcB5066gXLTv8eP2rNIX5iu1N7A+IO4f9jftrwexEOAirSK0jd8xOEnlrMKFMZjmfAeQVtlVBeIQdezDrUpUsw8atMVDY7qPIisKvsqp4sFvM3SAwCejeoqhLdky7MnxqSffSSEFyoHtWQXlV1XtK/R45cXbrAkcIQcP1umlCxgYu0nf4H
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 186B2A000B
+X-Stat-Signature: 61ofeqww73yjzbckwebp6i6ixysz5x93
+X-HE-Tag: 1777598270-680047
+X-HE-Meta: U2FsdGVkX18HFNuH9fVegkx2s8ETBmBiG72BPMY8SABF9biQ6/9nGsoadQnVzpX8LMAcKPl07a8gr/kSIzuu2fOj+vBT7AXiBidBatlmFjuHP1wgvKSwgLSQseJi13hDVpyXCyRXl2WWEbdQ7EOGHwtaqfqzaUL7TFBMoXlgGaZAcYVPYW2IVQH/jWIRT9dBvb8Eyruuaxj0kcbOP79r1BLpL2QgbNLzxe+DxjOqD2kW3Y6P05CfV2xUePLyD98tRcRC+o96Km/kw7XFmeQUCELI/bTi6wY91h/UqnLDeuAkxTkC/NaYHwuz5NZ5LE0WtrKwqfx+DcnxCv7Frq2t6NUo4LNyMU8RC0QbGeIYXjv3Zae+pcBkHkKSkK+3ixRQKyRKPWuX9Squo1sNesPzfF5OkcsFu8t5PTVkOtmgcxiaHpKFRDnKyIhuRuyWlFfo6PWOqz5UL9UXtIpEfJckRotuN/QjjukQimoDEQwewuSiezX+r8iqCboMgZ5zn3Yqnz/jVWG+G7XB5SP3LFe7MdyMwf7nVKPIuTuOnWD20uYh6vYQ0CFLW4Xha033V9vOTe3h+yyZbXtybiYqpFKUP9V7kL5/a166SML0yjdX4gMXEperizngqdoow5t9+41M0P5MZlAxiAa/kMe+MjBEskj6FaWxeNWou8/g16D8iawwcRH52ZZX6dmWMqPjOIMoIWXDAtLCXiEcvu0PpvuxIz1laIXQkFYl+dQ5kdnm56JGHLyx7kqfrJinhuswZ3nPGprbsv7+9TTZUXC9Ozo1k1Cm5zkrn8H+aDRQqr0/tZfN69qXcBcqtAxsJNoPuOYfgA4XcbvNTpa6dg7a6lx2jYkWpjgBzAIGKvQ3EuCsiwriAgsXaKxJ9zuzIe/7Ez3dj5UWMOuYewQmCklmHLH3an5FonPj+EUQ2LDnBmzdoysESIjwt9OXvznNDiEvGoa+y7EvR0eRgghNKXPXA59
+ TwXHondu
+ Xxs/9qlaVUlt7Xl4kIYTIO8wmUNtaVro2JiYPhz2rvVU40q1RT5zzDuwhEmKmZM+ibkF1ptI7LY7AWt2Jmf1DFuGR4kAoFNM7pBH8fvQBFmBA2tgBG4IJpWfsCTKN+WsaAaEWlABUi1NWpGWtXiYoIaQumEVaIPthNETyRuZmXCTr6D6/rbwbBLjZLjobnAIbBWV7nqDVT+BFDaunuYbdhJ6dO6s+SRWwFASMfQYe+2w+3QU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,36 +100,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON_RECLAIM usage document for the newly added monitoring
-intervals auto-tuning enablement parameter.
+The monitoring intervals auto-tuning feature of DAMON has proven to be
+useful in multiple environments.  Add a new DAMON_RECLAIM parameter for
+supporting the feature, and update the document for the new parameter.
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- Documentation/admin-guide/mm/damon/reclaim.rst | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Changes from RFC
+- rfc link: https://lore.kernel.org/20260414052855.90123-1-sj@kernel.org
+- Add notes about behavioral changes that introduced by the auto-tuning.
 
-diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-index 57ab8b1876506..ec7e3e32b4ac6 100644
---- a/Documentation/admin-guide/mm/damon/reclaim.rst
-+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -85,6 +85,17 @@ identifies the region as cold, and reclaims it.
- 
- 120 seconds by default.
- 
-+autotune_monitoring_intervals
-+-----------------------------
-+
-+If this parameter is set as ``Y``, DAMON_RECLAIM automatically tunes DAMON's
-+sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
-+amount of access events in each DAMON-snapshot, while keeping the sampling
-+interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
-+``N`` disables the auto-tuning.
-+
-+Disabled by default.
-+
- quota_ms
- --------
- 
+SeongJae Park (2):
+  mm/damon/reclaim: add autotune_monitoring_intervals parameter
+  Docs/admin-guide/mm/damon/reclaim: update for
+    autotune_monitoring_intervals
+
+ .../admin-guide/mm/damon/reclaim.rst          | 11 +++++++
+ mm/damon/reclaim.c                            | 33 ++++++++++++++++---
+ 2 files changed, 39 insertions(+), 5 deletions(-)
+
+
+base-commit: 061bdca57aa1fc22d0f74a7c7bd35c7576194484
 -- 
 2.47.3
 
