@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0703CD13DE
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 02:21:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0156FF886F
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 02:21:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D37236B0088; Thu, 30 Apr 2026 22:21:19 -0400 (EDT)
+	id 150C56B008A; Thu, 30 Apr 2026 22:21:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE7C76B008A; Thu, 30 Apr 2026 22:21:19 -0400 (EDT)
+	id 12D626B008C; Thu, 30 Apr 2026 22:21:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFE296B008C; Thu, 30 Apr 2026 22:21:19 -0400 (EDT)
+	id 064EB6B0092; Thu, 30 Apr 2026 22:21:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B08736B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:21:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0ECFB12037C
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:21:19 +0000 (UTC)
-X-FDA: 84717249078.07.9733936
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5221780002
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:21:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UZn6lwAU;
-	spf=pass (imf02.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id EB52C6B008A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:21:25 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B450B4014A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:21:25 +0000 (UTC)
+X-FDA: 84717249330.22.BF4D916
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0B401100002
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:21:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pFLCKW17;
+	spf=pass (imf14.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777602077;
+	s=arc-20220608; t=1777602084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3twploam4MV/bq5u/Ty0iH6HK100PxWqx9qv6h7XzQg=;
-	b=oSHx5Q9PbXueb8j5Z15WfbO5vDQJt52nMOcFBsTFBVdztSHmP6lLjBF7j4pm2+0ng6TA4Y
-	BguQUQSHM0V3gDRMFSGl2cHgg7l7VcXaD/xbfY9fyJRfcIhxbjYWO0l0tJuz5CP4Qi6upw
-	FpodZy0Trfug0eDr0DnODu4OI0gL7Ko=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UZn6lwAU;
-	spf=pass (imf02.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777602077; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NBtGLtjRvE4baHy0eRK4mwql+K6PPxqXdGnpl9fPIQ0=;
+	b=JTx2K73vPYnOtzlOcvpaRU3JklOzm59MMQs2s7zsXTCqILl+R58EJNe5e2nwXrU9Eiz/J8
+	e507/1tHLtHSbQ1E6rrPP6r8ATL8Xr5uYSoY27XsmPIgUIywcUj81N0vz7J54s21ycg/NB
+	xq/SaIBO16m+PDWt0dP5Dw+pwN7ovok=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777602084; a=rsa-sha256;
 	cv=none;
-	b=OwPC6GbNujg3J4kioOcZh3fm8rU+hvjpINen9S8pYLMsZdJsPLSUDtfH7Y6vfumzpPu0+l
-	mT3C+/rQPGagklWHGpGD2kBd2LKlmfv72TgmksQo3l8dydyIuaxnGK0zedRDo+9BRz4gCk
-	CS6YA7A/rKdF9n+h2AUvy4TGPwsM+pc=
+	b=d2zsgCp0k9L2tgoo4MsYVjMMnY4v1FVYG6d57OQ6yylH44RlSt0L1IKHkPvA0qlN/6QG1r
+	EqnPVO1M0cQBsyFvFyOft6TMxLivom9gtO00ydCYANp9QTv0AClKQgtyxPwwZhirGSu5Xf
+	Lbu32L4wUoEalRGrae9z/kWTDFZ5340=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pFLCKW17;
+	spf=pass (imf14.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777602075;
+	t=1777602080;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3twploam4MV/bq5u/Ty0iH6HK100PxWqx9qv6h7XzQg=;
-	b=UZn6lwAUya5Xqtq40t+UrkKEXXFY9Z2IHb6Rwly1pbpj3+VOZ9/R474cwB5eDgVQvM3oFz
-	tq4oR7/tjB2jcS5ypfFobRHj/IGmLL5MTnbWaRkWgjFUw47NQ/iWJQPXkmJDYH0Wbgi8lE
-	soqpuUXGjwL2TyvDxA3aI1aUZnDg530=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NBtGLtjRvE4baHy0eRK4mwql+K6PPxqXdGnpl9fPIQ0=;
+	b=pFLCKW176QPS1YiBgSYn6EPexE20q/Nhgy7otY2RejVxCOOgcgct00JRvsqeP7snox6NOo
+	L0jeV/ZbzDieXaq2pKtdp48NdkClEIMNtOl1U0wUHV6rLg5k7Gc6uwrAZwD1WqMD4u2qf8
+	yRgg/5V2jD5mHAAOUVvV1ymCYwLzyc0=
 From: Li Wang <li.wang@linux.dev>
 To: akpm@linux-foundation.org,
 	hannes@cmpxchg.org,
@@ -71,21 +72,27 @@ To: akpm@linux-foundation.org,
 Cc: cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/2] selftests/cgroup: Fix false positive failures in test_percpu_basic
-Date: Fri,  1 May 2026 10:20:56 +0800
-Message-ID: <20260501022058.18024-1-li.wang@linux.dev>
+	linux-kernel@vger.kernel.org,
+	Waiman Long <longman@redhat.com>,
+	Christoph Lameter <cl@linux.com>,
+	Shakeel Butt <shakeelb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH v2 1/2] selftests/cgroup: Fix hardcoded page size in test_percpu_basic
+Date: Fri,  1 May 2026 10:20:57 +0800
+Message-ID: <20260501022058.18024-2-li.wang@linux.dev>
+In-Reply-To: <20260501022058.18024-1-li.wang@linux.dev>
+References: <20260501022058.18024-1-li.wang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: o66yeppu5cz6aea97ik51am1nguzqzkn
-X-Rspamd-Queue-Id: 5221780002
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0B401100002
+X-Stat-Signature: hegz1qf5yayhq6kig35bzb59qwqu1jxf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777602077-645037
-X-HE-Meta: U2FsdGVkX1/yCxwYkPRQL3rEzg4wtAe7iOM2TS766ScSMN4DnboAPdFy3idG7fqzrwihdxo4m6nriNR/6r0Xsxi6qegbR7B8bNYNQMTZXGfHpOOCKHP4/yB5zDbgCRt0/Jo3gA6UzT3dblu0xSfoS65jwp8Q9lqmhSDWiMSDlwa9nVI7ndwxUy5Sfh8DWLYYySHRAI3Edi2Aahjf7LqxzdZvc6YZ3TlD7i1LFUKpZ0NG3iq1rolmmHVBVvPZtuKE519mEpAaw2CnnNcu1nwf8DTHZ5hwIJfSkfDoXfdvXyGTMlGsXbmx8mnriT53XOZAKzRJXkkxwPFlZlQF0E88T9uXeq5K+qiSsHycX7HDNU4E7TCc5c9QyrzjzmOPDxAGSLHEGVu8PpaYc2OuDmFLTWehnlqsdSXmgT/8FnwqnIeFe6mZdZn7j8hRMt7dQGuZA+/uQOlGPCObyLAFYVUSbJDnaxl1h+UMx3FtaOQ4rXcSVyWiWrrWeEuaYe7Jaxv2ga00VDqfGs/zqdxQhsXTRtDbu40vgS77YpIc6F7Zm7H5WBGSeqmvVjUbAk4l/PIPDnlISHJjaBk2+6Qi4a3Bt20nHYbvnfgvi42wZYhPL8oI4h8IYT1SfBFsvWksbjtT7MXAVjbPTdpFtwaT05cm4YHylSd/KlF+Wfruuf0DtjSCXsefK/gbtihNEpDGrGdpTKn7PKmCyrlq83pl8Tug7Kdb45Hu0mqXPKYbyKsFt4NBLEf6+GY250rlU/SDc5mNY3129KU/Yfuo0dst8mXGgE5GDySvz/ek/AgnP+LrCv9/zUgHO0ZZv//dNu4T7DzrBa4qHru9v+chgOFwF2jjApRGmto1D8Ci72wg+mcHDXkJ2S/O7v9jNZgiLjWC698SPC27jiXWuDBRcBNn7GOzmxIiZ8y3sDRKe7AV3Mpipwa9egzHPGCa7tV545NMH9D9P6z+fsWj3VtyI5BTf1D
- eGZw+HDn
- eaYTGQa3RRQyMDHsTFIJt7wtFyPAGx0idjG53dwxJsT2YLt9MTBm5UBrw/geq7mYTMNfDpwlS5foQH9/dxE28irj7mT6oyNf/tkO2hQU+jsLWtqPeGBnUealE22U0JmtxwF5BgZlGw+nqnEplec+JMFlkgYS0TYnaEacXWbPj5k1oaGUk1zXw1zmlfTzHq35q/jfcXIIwFIee8/LRTSlVna+/cZ2NA0fsYyF2pIe93O3jbKz0QJeLptIezTrqFaCnYiVLNNsJH5594Dh+6XyYLvM8HA==
+X-HE-Tag: 1777602083-633471
+X-HE-Meta: U2FsdGVkX1+4Uvb3tFmHPUiJS/FZnPqc58zCK2QlQ50H6i4wK1Cp9VD+u3T6iSVI1FYI9vGIgMOGd5DEf125aLVUrOJrSc2KZ9VI9isAdxFeLVSNjMxaK7EMNicLb1u+VITxeKfrj5iX07BpvFjyNXMHLVFLH0hpx0PBk63oTrMpTp+D06elp9L77dX0wKI2EPPergX0QPFfvIn74aRvyCMQNhilG243sJQaTqzN1XKvhsy59mrusa3zvB7TGNdA8ygDwwTK2k9to/jRwMLz09vmeEx8t1M4BwHhVuAQkg+a+VMWTfLQO028WiRtP2CUOSTRZLEb103e0Fdl9uNHEsSvss0ju6EvlriscocSZgbNTQwnln/AlHBAMuzzqsekdlvmJG+f2GtkvMiAEwvdPkNLnF6BfJ7TfqRYGdaR8bH7Qas4O0mhNIuFcjfvTG4XJrviXuYR92iHRyqAcPL0I4iWSmxPtXZqIJGJm9ujgCRLvFRgoNR8+i1aJi5rIjUelvvu8n3b9quC5QfIr/mkezkc/f0Hei+0gQYn7vWfbZWRazTmo3nYBkMc7q42nucU37yVFVhXDVTxq6YCMjCgMP7BZzjc4MQOjct44VE27r4dRoRNvLS3dXvKquUTw/UGqDt+L8V4p25Lp7TAyR8K/iQubYeyP6F5YabQwE98cGar/tGlz8gh1JcGufqzAM1OnLbr3cI5ntV4D8k2SLKRGtFvUZLHj7Gj7SogURgB9BlrRh2ryofEklyS6ZUdyVnn2XKLBD0DvPrJlEfgxstpoRP8d7SLrlL0kydZ0QTpD1HaU6JJ1kee5gGcdmyNaf6miozjlNzNNo/sQ3R5oh0rMe1e0KnI4LKnkozrF75VHC3D27zP7ns3vViJwa4uxzIIsxnyOhjcz2FRX5H+sHur+2Jpjp3+iAX74dE9NWkJGF9KOfmtc9QIhI8urW3Dl7vhmlqrZn9LQGJj+3Bc/gW
+ lUjtOiKT
+ oc4rZx/9VPbSK0Pmv0c1uhYzLlzPrSmf2y4zPLig4bpVwyY3rOa/WjJaKUpLtOVrDpxxm0RnNFswNSZPTxUXfPYqkdQiDZGAfaoj9lWThkynhf8ZZt3aCVnaJstUu9ecw6EFdBj6g4wyDdnCM3hriszLZtQxQjN5YZq0mxChYH7sND2VI5lMkMUxWOJpFcXpamhtRUZ2/fi0CwKDwR8t8K03uzJIfhddTblqQwufzIcw1w5VT0CRAnUWt09Jbf3GitEivbjD5j/rIjjERLfBagY/Qq9/awm2uU5qKNf29yC8khgU3Z4gYXSIXVthO7TQ4oPmHJ1ZrqDXsbevjDPWxWmpYMlluGtnr7hm3MRKnLw9Gtn5IgA8ZNKODnZ988IkVNUldO4pcLgWj6SDyhLLxPS6W0Hvb5TAizirG+56ooWhdPV4j9Q67ga6z7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,28 +100,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series addresses two separate issues that cause false
-positive failures in the test_percpu_basic test within the cgroup
-kmem selftests.
+MAX_VMSTAT_ERROR uses a hardcoded page size of 4096, which assumes
+4K pages. This causes test_percpu_basic to fail on systems where
+the kernel is configured with a larger page size, such as aarch64
+systems using 16K or 64K pages, where the maximum permissible
+discrepancy between memory.current and percpu charges is
+proportionally larger.
 
-The first issue stems from a hardcoded assumption about the system
-page size, which breaks the test on architectures with larger page
-sizes.
+Replace the hardcoded 4096 with sysconf(_SC_PAGESIZE) to correctly
+derive the page size at runtime regardless of the underlying
+architecture or kernel configuration.
 
-The second issue is an overly strict memory check that fails to
-account for the slab metadata allocated during cgroup creation.
+Signed-off-by: Li Wang <li.wang@linux.dev>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Waiman Long <longman@redhat.com>
+---
+ tools/testing/selftests/cgroup/test_kmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2:
-  * Replace my email with li.wang@linux.dev
-  * Adding Waiman's Reviewed-by tag
-
-Li Wang (2):
-  selftests/cgroup: Fix hardcoded page size in test_percpu_basic
-  selftests/cgroup: include slab in test_percpu_basic memory check
-
- tools/testing/selftests/cgroup/test_kmem.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
+diff --git a/tools/testing/selftests/cgroup/test_kmem.c b/tools/testing/selftests/cgroup/test_kmem.c
+index eeabd34bf08..249d7911306 100644
+--- a/tools/testing/selftests/cgroup/test_kmem.c
++++ b/tools/testing/selftests/cgroup/test_kmem.c
+@@ -24,7 +24,7 @@
+  * the maximum discrepancy between charge and vmstat entries is number
+  * of cpus multiplied by 64 pages.
+  */
+-#define MAX_VMSTAT_ERROR (4096 * 64 * get_nprocs())
++#define MAX_VMSTAT_ERROR (sysconf(_SC_PAGESIZE) * 64 * get_nprocs())
+ 
+ #define KMEM_DEAD_WAIT_RETRIES        80
+ 
 -- 
 2.54.0
 
