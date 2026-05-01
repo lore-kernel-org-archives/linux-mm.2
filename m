@@ -4,116 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47A72CD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 19:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 391D3CCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 19:08:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75B5C6B0005; Fri,  1 May 2026 15:08:33 -0400 (EDT)
+	id 908C46B008A; Fri,  1 May 2026 15:08:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70BB66B008A; Fri,  1 May 2026 15:08:33 -0400 (EDT)
+	id 81CE76B008C; Fri,  1 May 2026 15:08:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D32B6B008C; Fri,  1 May 2026 15:08:33 -0400 (EDT)
+	id 6BDEF6B0092; Fri,  1 May 2026 15:08:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4807E6B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 15:08:33 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB9761401F9
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:08:32 +0000 (UTC)
-X-FDA: 84719787264.07.D31D742
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CC67B120005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:08:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HaouH8e8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777662510; a=rsa-sha256;
-	cv=none;
-	b=Q0M7oCGUGN3OEJgUah+Nj/YCcijKnQckCaYS7cClP+nd3lF/M1rrQQmvA2b99lk6QAL3HQ
-	TkDEhi0OhGf719fN3+3KWFCB3wsAPZRI9XDEIGjKcmEor2JQaaF1WryAJInqLmITrfiCnY
-	33pr3rj1RrMYnQJDvokBaJBj2DmHmNI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HaouH8e8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 52E216B008A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 15:08:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0855B12022D
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:08:35 +0000 (UTC)
+X-FDA: 84719787390.20.0172212
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 49518C0009
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:08:33 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vCFSKxRu;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777662510;
+	s=arc-20220608; t=1777662513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hw/dnUiNx0MfDmN48zYPSTLx5QFCgo4F6clziTzz9Vc=;
-	b=Yd279vDInnn1tFyLSESJcVHWFEcOp/5Ed+rdXdkv4g64HJicFL5vFrXjaVOFi4Fov9qYpi
-	xkCC8ONpYXncsEzN5HKZJ6OII+go/H+KCtYOTLZvxRhB9xiJym3q5MZhaB13mdm/ajP0E6
-	XWKxjdmlOfTqPYKZgowWzaXuMJHZ7EU=
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8ee62a19730so242533385a.3
-        for <linux-mm@kvack.org>; Fri, 01 May 2026 12:08:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1777662510; x=1778267310; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hw/dnUiNx0MfDmN48zYPSTLx5QFCgo4F6clziTzz9Vc=;
-        b=HaouH8e8o/WKFAgJ53rRMj6Oj3vMNvwxqSX/fTKtPudaB0OrIZ5cH1QMLCZtlgDAtk
-         2bxhqq6B8gPaL/PZShUDjepcVZyqtSc7s8XA9Z/yO8vxXU3K0lkff9BeieXFxg9hYaAX
-         J78IiNAr33ITOk4+3NZgtIcbodNT0+zZMfjYC4OhiaScAoRsVG+RNf5oM8mTW3ovv6D1
-         dS8PqsD3S2Q16J7XKgAb9U/Y4XDYheHHaLY6gLcEMADekZItazqep5Xh9hPZ0hqjT9iN
-         LAAUSwp/D9s+Zp3maU2JX2+AR8ClDCrFhsljeuX5chxbPBGgE3c43AE3Zks5FkKakMyP
-         BjRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777662510; x=1778267310;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hw/dnUiNx0MfDmN48zYPSTLx5QFCgo4F6clziTzz9Vc=;
-        b=ASwbnN2lEDtfMJpuv6GXv+Sr12UXjEc5InFIQku8bGH8G5D4TNq9lMyjdzFt/znUaX
-         jn1SDoh9RTXIGuLlv0OkRTmlW4UQeEpK3L3uDs6jEzGk2ezPhQqmRvKkIzPaEWzCqehD
-         9XCB3L5PrZbGkpSZ6T7aTiGCpCaJazvVFkVLx2RxemAlrAGmZYJ9Omr7duq+A7KRcmLt
-         HJ1MZuw5oqEOWmGjaWOdpq6gcb3e5w4u1YFf9NgM6nA1oH+JQDDwh61wTxySCyXFAq3B
-         +eBAoPg2IVpbQhO6/cq5P5l1oabUByuWU4uBdjtpBzBP1qWvduhIuEPaQVAlRrwSHD0s
-         hHeg==
-X-Forwarded-Encrypted: i=1; AFNElJ9RGkj/YVL0Lczc4nvxelYhNp7zAIW9D3SR38RP+0Egzm1TvOhvnYDWEPVdcXDSiScCfd3+2bTIUA==@kvack.org
-X-Gm-Message-State: AOJu0YzBeuyXHvCv9XqqlUd0Y40SU/pcDrkKQ3lfyA6Zf95FEwBa+ING
-	ns71D5pCPDbcdFE1AIWmixjQU/Z1jb3sG7EknjTpfrVhdCdA9Rd5IrS2Pg74LQLpDS/veGHHJ3n
-	xQqy2bWU=
-X-Gm-Gg: AeBDiev5gRqmwSLfXSK7EBJXpPZGCTrDjZBzkp0tBvE6OHrA73/M9lj0QuifsW0wWS7
-	R+UCyD9bRQCiz5aqHqkGQULel6HO10CFGacJ1eBbt980LbY9X+R/fshEsjKGIriOhTtbh1QJjuv
-	KKK7og4cQZ8uKrW60Q6uLQbWRXt4m62urXQ6/TBxcKtLTNbDR6ABv9qxOuZ0XVdihuTuyocssup
-	HEXMzDIGGbxtVrA0lUOH6xRyDiY2YXUWqG0sPchewNYpXE9YAPsLd81/I41FHxmPS/QDGBEH9hx
-	VcvKNMb+h7pXSBey3N/nNINobtxRi6zEMQ8tKLLknzuedM7lYo4IYXfq35m67s5pPmcB5U77a3o
-	2I/St0faRHV9YTE/PX99gXGReJ9VC9ctAh7BKAp4j5reQ1uk8t1RRKTn0SRuHiKP5B8ZLIorixK
-	zAPCSk/tSUXIQnGgnuApfUakiI8w/aLgfJc+WOVtee8i8iQzgxZSWHmjFayn+1EA==
-X-Received: by 2002:a05:620a:4613:b0:8ed:45b8:de90 with SMTP id af79cd13be357-8fd17d497f2mr110554085a.39.1777662509842;
-        Fri, 01 May 2026 12:08:29 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2938e7f8sm242450085a.7.2026.05.01.12.08.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 12:08:29 -0700 (PDT)
-Date: Fri, 1 May 2026 19:08:28 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/6] selftests/liveupdate: add memfd tests
-Message-ID: <afT5FDAXmcIfz-wI@plex>
-References: <20260404102452.4091740-1-pratyush@kernel.org>
- <afEKfQ0GUNVJ76a1@plex>
- <2vxzecjx52eu.fsf@kernel.org>
+	bh=B7cfqrv1nnyfyEJ9gOjhJIUa0rBiId0AlmtPVRjc0aI=;
+	b=a66HQQGX3iyHspLPoKkJAJFxaZIYe2D4J8MeNH4GsOEYBUDi1cUrECldopxbYQEhX+mwVV
+	i7gpsN3mr00gHIPtoXrLFyfibg+O4YTzCmPdDq5JMDVNDrPYHxv60ZGoFil7nlcw9IxAmD
+	/fplTIfuSUCLB42jrxyIZyCJ8BOAd8Y=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vCFSKxRu;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777662513; a=rsa-sha256;
+	cv=none;
+	b=zAop+vn2LYAQquiqtEEMDy0VccftrW7PKoodS/o+itA9AhiwSdlfQTzeX6MOf8mM02KTBT
+	HmYWEgZW7XUMYwkmd37/SWi204pR8E+A4g527AMv86bTMWsadOKZlPWL0lQ3v+YzBAA+e6
+	y4a6C/lcIbMipTnIAC4lFjNKVwXm28U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 863B060120;
+	Fri,  1 May 2026 19:08:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE8FC2BCB4;
+	Fri,  1 May 2026 19:08:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777662512;
+	bh=I6gnZHqYOCIXMIR7WcCKDccSArsK7LaPaWd4F38Mg+c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vCFSKxRu9IyObNQP0Q4c0ohR/O89ev2Mh2lFh4nYXTb4gPMCQcuAv5+UGVP3Y65Rg
+	 /6ev2/LxHXqfn6bUirlOeSO9/Xo/yLp3Z2UiHMJ5Ass9u11i6xUrvOJCdua2ir3Jt5
+	 A3AV7cM8wmADSCLkz0kIabN8IZJuAxix3TOaYJhA7YE4KFVjgRF3CI7HPk5LlvTmDK
+	 a8vnnEAHM0+4aMN/B5ZGSXSQlnnhnLgfj07OuddnglDg6uoj9GvXW0TH3Y5Exnngn3
+	 LpChLJ4cyBtzbfSHRUBvRAvC2n8aiJk/yD9VS7c0/zAp0UMcYbZKtiwJWm5oGcrgpC
+	 Fje7nj6LyeyIg==
+Message-ID: <24ab5ddc-11a9-40ed-90b2-1a6c68010928@kernel.org>
+Date: Fri, 1 May 2026 21:08:25 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzecjx52eu.fsf@kernel.org>
-X-Stat-Signature: dn533b76b3sgontd3sjj84rtrdkji6hq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/migrate_device: fix pgtable leak in
+ migrate_vma_insert_huge_pmd_page
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Sunny Patel <nueralspacetech@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Balbir Singh <balbirs@nvidia.com>
+References: <20260501115122.23288-1-nueralspacetech@gmail.com>
+ <20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: sbccmhnfj5zg8hmhir7pxjymfhdfng58
+X-Rspamd-Queue-Id: 49518C0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CC67B120005
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777662510-820520
-X-HE-Meta: U2FsdGVkX1+NsoHyG4TCK2fK4WsIiIV0uG0mhPr7NrUWF8VFC/XRzEF/jtdakEGaiuQUJY/oNh60GYbz9TUCTknzob0WgX+L96M8MMoPFgw5fdK4/Ed3PDVdTsVWPcmU42lHf5qEqvQV3/l5gMINWss3sUjKbOfCX2IZ97z9Ka9p6A5vgWDeKidqwD69nYENDmW1UE3dLWY0+x6nFSpMMH3Mh0bvRKBew267LQInIySkIzH1hKRnTOalpgJ3wMoVKwLx8E2ocVQJM4yfStuOhzzbg+KHzHH6ZuLINF5pzvTJLrqQ0ZcR/o0IB+JAAW0tJlL/9tzdplxrXSvB6rgam+PTdpkHy0bAzZTYGJbcqW4zEUqFXISmNyKVT9BzMvTW3g0Y+KSfbaagl+XQnt7SMcQ+iKkOpbb+6p7YwYbgSZEjRLQ9ZPo7ZvblcbfMFCyjS+Wx4hfz5W9xVf+MmgikX9TiVaa/aYGOg31c/k6rm/PlGcl+OpC3kDvkFem4oqPmH9KSaDiTH8tZJSHWjqcz4YGT9Tu1F8sXD51RDO+7V7fZnldVzMFxRYNpKb2usD8bapgM3dNqwkqblF7fdKjNMkaUuh4v5UmZWrDBT0L1o3f/YmfPK46+XbfCGGV3LsIq4NANKx1idhZU2WmgqMRy/tedK6OyEGTCJn4wng6Qyago3LHdNK9M1uOGRa+Cf+AYk7tqTVrOW4ZDDvkLFIf+H5KGhdCKeAJxUfmB96Sg2PhwVRbYpROXZKAmDknqstd83NAhw9wMunwejRRxPZ68UDV+4XGdwt3RY0TE7tuAWKOTHH+BYbrDTkFYdXw1/wEdZNl3uwZ0l98pUonLYqcy/B+FAQfaV1BrHjOP0RJaM3VyzOzA3fEH/EKMTZTtQ5DYkIC38YEjCXl292yIs+1JyWzWAXzVWJEOYyPaN+WZiPOrAlv89XZKK2OtZSNnSWLCj8RJZf2sk6fcHhUy6kH
- rMmn1yq5
- weJSCf2CX0QQ7Ehz4bMBGggjagivHn5vtvoI5lSezI12uJrYQJBsL1pG17B3duwg0Ckrd6bFNWtWV/+YxjZbyyLXsXCAoC+p/dyRhHsMwfxpsTXYJKkPBpq7uUCbXIwRnvSb6ZyYrSHPeBzoJKXJHd0bCpEWfZKH2mO5zyaz3gv78iFfwAbb/fbxoHp2oLkyADa31+xEdv+WIzGmGZ2xolNp0dmIPsuDQ/X/sNDCy7yX+pVO/vGdPx76fL5vjJoQdwQ9NM8zjo2kHiVNA307ctXTMV4OBGP3CpexXk8tDSdyjk+aJ/v7buHozQVSkX2gU4ti2zz7E858G8hwJUc7HbK00q9IKil0joK1PxDhA2xGQ8zbO3LIT3eQyXhRYPFsOL79Y9CReLT+AfiPLhkHbKxnJsYmVzg/T+zaHvftq2PmEnmnparPv0Xi4FmX6jBEtvCxK8XY2B2WUVTEHJX1FVWhDE5/VSxzFdbW4
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777662513-256295
+X-HE-Meta: U2FsdGVkX1++8YDJCE1xIcdJjCMBx8s7j+6vlLKT9AVbu16twp3GoRwlkar96A2AUar9SF3Bt3zMR+yn8oiZibp7umQkQSCV+H54MqoTtcfLaIQyhVF9KvsO/Jpxb+/SeOa5fQorur/JN+k8+jgADdJzrbTd8bhPrbN8MCRC2P71UyBzFKxu7gdJvlBwTPITeBGsNM+yOK6wCVlxRRgIjD22P56BXwH8+Pu6xJjNw8Pfx7sgvqVrNn5QMAVDtlh0ZRn1qIWaK2aXXosw61kfQzHSQNoTz1loi0htDeyqe+vm+TISdjbWWIwpzeMb4GtVRlusZP+QyG/iBIBWr1/efU5Q6kx8Z6kp8++kSdrWI+YjxqUNzN/i+aHsfoFTb34SCbIQi9X1D5gPB9eYReVNaN2qusXgaAJAn/vNLGKKwSLdEGnLL9E2LXDclXLrAImWKRcIYzK+ky2U6vvrnxTOYRJMqB0MPAR2r038DpdKNHRcSoZtnYhKD3cYI1e5AS5+XPB4kvS6/e3TSVVAQsO9c7/R9RjV8tRJR3OOoo7m3mZC6K1mjVQ189lxDFDbQ4tUdbWBZynxUyeHDO2n3+m0o+hKZqQiSnygStn2+ppM1ErY+g2qFL1/Z7j/vGRl2SZ7JfTrdZ9Qj7Z+aTBGT8T2hDaCQj5giibltRRPkaMP7qik+NmQPq0jdjsxZl5pWw3KAK2ZQZC4hq8VWC6ZRLVFeVmowqLFJnfZMeM3W1UXF8pKRkiKmZRVHg+h98kwuCJxNs86BzUUW5ysUug6Q3Zr/iWwJFrmRdT0tZvVxPz005djriX9OFNQvnZ/USxVhVLt3Co6+Nvho7lqUEU0Ts6Z/Z/EMTSggcQaY/cHb1FA2gr2njuQUjFQizOvJWlHpNR5aoPvMjqVhpnC3WKYW5AKctzmQrBa6FyZwSZcAPjOAYcT9MvDqb9V+zVBHap1CX3+Ygcbb6nZLwHfyhNE6PB
+ HdLNIKtP
+ FB+H03UBLPZnBQ6bPAMhGj8mQz3CIZsqQY8PpOeJ1p+KUV98sidm5EBX6T5ertXq0fm44tz8ap58Plu87DONIsZAN9NR9prQrcWoIyAjDE6jqtF60Wl7cPh9Ftq9PeBQ2nyEs25Ed+Zk9EtB8MWqtS04aFf2uzKnR7VD/P7Ed/NBzrPHHNVPuesRZzdTXOsCa0mXxLsnWxehzchJZhS6GBdgxDP9/S3+bObV1XYZBtHXalkjccxtOabxWG1H65Kf3C1Lh66qpiqQfMrznOvU3lekQe/bEwv/LlfdVdAikBgzYlZE6EQbVg4Z6scJOD69KzPicCK15KlwOvobUssjBHCVA3FxCK489FWqVEZSwlDMpIxVS5USIftkIcHyZxCCXwIVgKjufVI6kA81iqIoCulI6hg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,146 +144,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-29 15:20, Pratyush Yadav wrote:
-> On Tue, Apr 28 2026, Pasha Tatashin wrote:
+On 5/1/26 14:44, Andrew Morton wrote:
+> On Fri,  1 May 2026 17:21:16 +0530 Sunny Patel <nueralspacetech@gmail.com> wrote:
 > 
-> > On 04-04 10:24, Pratyush Yadav wrote:
-> >> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> >> 
-> >> Hi,
-> >> 
-> >> This series adds some tests for memfd preservation across a live update.
-> >> Currently memfd is only tested indirectly via luo_kexec_simple or
-> >> luo_multi_session. Add a dedicated test suite for it.
-> >> 
-> >> Patches 1 and 2 are preparatory, adding base framework and helpers, and
-> >> the other patches each add a test. Some of the code is taken from the
-> >> libluo patches [0] I sent a while ago.
-> >> 
-> >> [0] https://lore.kernel.org/linux-mm/20250723144649.1696299-33-pasha.tatashin@soleen.com/
-> >
-> > Here are few observations that I noticed when I tried to run your tests:
-> >
-> > 1. The '-h' tells you nothing about --stage argument:
-> >
-> > root@liveupdate-vm:~/liveupdate# ./luo_memfd -h
-> > Usage: ./luo_memfd [-h|-l|-d] [-t|-T|-v|-V|-f|-F|-r name]
-> > 	-h       print help
-> > 	-l       list all tests
-> > 	-d       enable debug prints
-> >
-> > 	-t name  include test
-> > 	-T name  exclude test
-> > 	-v name  include variant
-> > 	-V name  exclude variant
-> > 	-f name  include fixture
-> > 	-F name  exclude fixture
-> > 	-r name  run specified test
-> > 	...
+>> When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
+>> to a PMD check failure, the pgtable allocated earlier via
+>> pte_alloc_one() is never freed, causing a memory leak.
+>>
+>> Added free_abort label to release the pgtable in error path.
+>>
+>> ...
+>>
+>> --- a/mm/migrate_device.c
+>> +++ b/mm/migrate_device.c
+>> @@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>>  	} else {
+>>  		if (folio_is_zone_device(folio) &&
+>>  		    !folio_is_device_coherent(folio)) {
+>> -			goto abort;
+>> +			goto free_abort;
+>>  		}
+>>  		entry = folio_mk_pmd(folio, vma->vm_page_prot);
+>>  		if (vma->vm_flags & VM_WRITE)
+>> @@ -893,6 +893,8 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>>  
+>>  unlock_abort:
+>>  	spin_unlock(ptl);
+>> +free_abort:
+>> +	pte_free(vma->vm_mm, pgtable);
+>>  abort:
+>>  	for (i = 0; i < HPAGE_PMD_NR; i++)
+>>  		src[i] &= ~MIGRATE_PFN_MIGRATE;
 > 
-> Yeah, unfortunately that is a side effect of using test_harness_run(),
-> which does not know anything about the options specific to our test.
+> Yikes, we leak that page on several error paths.
 > 
-> >
-> > 2. '-l' does not work after you run stage1, do you keep /dev/liveupdate 
-> > open? That is not needed, we only need to keep session open.
-> 
-> Oh yeah, I keep forgetting that is no longer needed. The main process
-> closes the FD but the forked daemons hold a reference. I can clean that
-> up via a fixture.
-> 
-> >
-> > root@liveupdate-vm:~/liveupdate# ./luo_memfd -l
-> > 1..0 # SKIP Failed to open /dev/liveupdate (Device or resource busy) device. Is LUO enabled?
-> >
-> > 3. Stage 1 has proper [STAGE 1] prefix, but no [STAGE 2] prefix for 
-> 
-> Because stage 2 has no prints, all the prints are coming from the
-> selftest harness. Those same lines are also not prefixed in stage 1. If
-> you'd like, I can add a print beforehand that shows which stage is
+> Thanks, I'll retain David's ack from the v2 patch.
 
-Yes, please, add a least one [STAGE 2] print.
+Yes. If we want to avoid more labels, we could do something like:
 
-> running. Other than that, I don't see what else we can do. I don't want
-> to modify the selftest harness.
-> 
-> > stage 2:
-> > # Starting 4 tests from 1 test cases.
-> > #  RUN           global.memfd_data ...
-> > # [STAGE 1] Forking persistent child to hold sessions...
-> > # [STAGE 1] Child PID: 245. Resources are pinned.
-> > # [STAGE 1] You may now perform kexec reboot.
-> > #            OK  global.memfd_data
-> > ok 1 global.memfd_data
-> > #  RUN           global.zero_memfd ...
-> > # [STAGE 1] Forking persistent child to hold sessions...
-> > # [STAGE 1] Child PID: 247. Resources are pinned.
-> > # [STAGE 1] You may now perform kexec reboot.
-> > #            OK  global.zero_memfd
-> > ok 2 global.zero_memfd
-> > #  RUN           global.preserved_ops ...
-> > #            OK  global.preserved_ops
-> > ok 3 global.preserved_ops
-> > #  RUN           global.fallocate_memfd ...
-> > # [STAGE 1] Forking persistent child to hold sessions...
-> > # [STAGE 1] Child PID: 250. Resources are pinned.
-> > # [STAGE 1] You may now perform kexec reboot.
-> > #            OK  global.fallocate_memfd
-> > ok 4 global.fallocate_memfd
-> > # PASSED: 4 / 4 tests passed.
-> > # Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
-> >
-> > ./do_kexec
-> >
-> > root@liveupdate-vm:~/liveupdate# ./luo_memfd
-> > TAP version 13
-> > 1..4
-> > # Starting 4 tests from 1 test cases.
-> > #  RUN           global.memfd_data ...
-> > #            OK  global.memfd_data
-> > ok 1 global.memfd_data
-> > #  RUN           global.zero_memfd ...
-> > #            OK  global.zero_memfd
-> > ok 2 global.zero_memfd
-> > #  RUN           global.preserved_ops ...
-> > #      SKIP      test only expected to run on stage 1
-> > #            OK  global.preserved_ops
-> > ok 3 global.preserved_ops # SKIP test only expected to run on stage 1
-> > #  RUN           global.fallocate_memfd ...
-> > #            OK  global.fallocate_memfd
-> > ok 4 global.fallocate_memfd
-> > # PASSED: 4 / 4 tests passed.
-> > # 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
-> > # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:1 error:0
-> >
-> > 4. I also do not like that we now have duplicated stage parsing code in  
-> > luo_test(), perhaps we should add our own  test_harness_run() variant 
-> > that depends on stage, and use it in both current tests, and the new 
-> > memfd tests.
-> 
-> Sounds good in principle, but unfortunately ends up duplicating a lot of
-> logic in test_harness_run() that is not a good idea IMO. We should work
-> with the harness not fork off into our own.
-> 
-> I suppose we can refactor some of the logic there to split into
-> functions that we can then use in our luo_test_harness_run(), but
-> keeping the option parsing logic in sync is going to be difficult.
-> 
-> And for the duplicated logic, I agree. I thought about cleaning it up
-> but was feeling lazy... Well now that you have called it out let me see
-> what I can do.
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index ab49d4dcdb60..babb56c4d47f 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -795,8 +795,8 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+        struct folio *folio = page_folio(page);
+        int ret;
+        vm_fault_t csa_ret;
+-       spinlock_t *ptl;
+-       pgtable_t pgtable;
++       spinlock_t *ptl = NULL;
++       pgtable_t pgtable = NULL;
+        pmd_t entry;
+        bool flush = false;
+        unsigned long i;
+@@ -818,14 +818,14 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+                count_vm_event(THP_FAULT_FALLBACK);
+                count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
+                ret = -ENOMEM;
+-               goto abort;
++               goto error;
+        }
+ 
+        __folio_mark_uptodate(folio);
+ 
+        pgtable = pte_alloc_one(vma->vm_mm);
+        if (unlikely(!pgtable))
+-               goto abort;
++               goto error;
+ 
+        if (folio_is_device_private(folio)) {
+                swp_entry_t swp_entry;
+@@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+        } else {
+                if (folio_is_zone_device(folio) &&
+                    !folio_is_device_coherent(folio)) {
+-                       goto abort;
++                       goto error;
+                }
+                entry = folio_mk_pmd(folio, vma->vm_page_prot);
+                if (vma->vm_flags & VM_WRITE)
+@@ -850,21 +850,21 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+        ptl = pmd_lock(vma->vm_mm, pmdp);
+        csa_ret = check_stable_address_space(vma->vm_mm);
+        if (csa_ret)
+-               goto unlock_abort;
++               goto error;
+ 
+        /*
+         * Check for userfaultfd but do not deliver the fault. Instead,
+         * just back off.
+         */
+        if (userfaultfd_missing(vma))
+-               goto unlock_abort;
++               goto error;
+ 
+        if (!pmd_none(*pmdp)) {
+                if (!is_huge_zero_pmd(*pmdp))
+-                       goto unlock_abort;
++                       goto error;
+                flush = true;
+        } else if (!pmd_none(*pmdp))
+-               goto unlock_abort;
++               goto error;
+ 
+        add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+        folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
+@@ -891,9 +891,11 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 
+        return 0;
+ 
+-unlock_abort:
+-       spin_unlock(ptl);
+-abort:
++error:
++       if (ptl)
++               spin_unlock(ptl);
++       if (pgtable)
++               pte_free(vma->vm_mm, pgtable);
+        for (i = 0; i < HPAGE_PMD_NR; i++)
+                src[i] &= ~MIGRATE_PFN_MIGRATE;
+        return 0;
 
-The main point is that the luo_sessions and luo_memfds tests should use 
-a common framework, whether that's luo_test_harness_run() or the generic 
-test_harness_run(). I don't have a definitive answer for this, so I 
-recommend tinkering with it to see what works best.
 
-Pasha
+-- 
+Cheers,
 
-> 
-> [...]
-> 
-> -- 
-> Regards,
-> Pratyush Yadav
+David
 
