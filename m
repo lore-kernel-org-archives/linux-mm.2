@@ -4,160 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FA75CD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 22:21:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2435CD3427
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 22:28:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7468A6B00A4; Fri,  1 May 2026 18:21:57 -0400 (EDT)
+	id 3CFB86B00A0; Fri,  1 May 2026 18:28:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D0A66B00A7; Fri,  1 May 2026 18:21:57 -0400 (EDT)
+	id 37FF96B00A2; Fri,  1 May 2026 18:28:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5715A6B00A8; Fri,  1 May 2026 18:21:57 -0400 (EDT)
+	id 26E4E6B00A3; Fri,  1 May 2026 18:28:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 438D46B00A4
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:21:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2EC3120254
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 22:21:56 +0000 (UTC)
-X-FDA: 84720274632.15.FDA7AEF
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C24142000C
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 22:21:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Rw3drj9+;
-	spf=pass (imf13.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.181 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777674114;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CF826B00A0
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:28:50 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 818898B135
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 22:28:49 +0000 (UTC)
+X-FDA: 84720291978.07.C0F8D6F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 74AE1140004
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 22:28:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o21UZvV3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of devnull+haghdoost.uber.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+haghdoost.uber.com@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777674527; a=rsa-sha256;
+	cv=none;
+	b=U/B/1hyeT+Z8YRL+ZJuFFDg3iVbU2Swcn71/OwmYK++DMWxRUMIqfjQTwQ/WGSU28gpzXo
+	LF1JVm3z7U77779gfHd9G0UX2OFslKkHXqWgJgLre8ioBXJi3mHlpx8KL2uP8ppfs48nBd
+	sze3AwI/SxV/ggNLDPw07oYHrYb76V0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o21UZvV3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of devnull+haghdoost.uber.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+haghdoost.uber.com@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777674527;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dtXXiVGCKhisCk8aLdkBNg++qq/ezEnbK3PGbPzPAeg=;
-	b=BIAAZ2fLiLnY4RX5UECqRUWymtt7ArdMLk6PtOfo0YClMIB/M8jMET5Qpyyl1oC5OLWPhU
-	LBddXrvpXywTlQtf48rDrR6ftR9nLY1C0hQ3/1SfcZYFzOFCn+pADqziUOaYD6wE3f+CCK
-	iq0+HCvWg+DSueCZ6cuATQSQDfz9wEo=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777674114; a=rsa-sha256;
-	cv=pass;
-	b=cwc80gE4li3Tp6QKuWCMaiqsaFdNCrHVyTwm01f8tfUoQhmkUAitfxNGD+28FXhBAqucXS
-	SCfz8lQi7ye/ywiL9hTkK55v/olG+VXJ2WRjF1R3d4IUklU8xNOswk91sKfV+hESSphDAl
-	5KguS+8ooKoXPZHLK397/bMwG+WPgx0=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Rw3drj9+;
-	spf=pass (imf13.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.181 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-56a9c5cb48bso841858e0c.0
-        for <linux-mm@kvack.org>; Fri, 01 May 2026 15:21:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777674114; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HbOacNfiNyeV+PgP9asMMv5HUm++cm2qWZrAjhcfebNlkw4a+fXQqzhsrSgn8LmVK2
-         wmcm2c1MUMNzRUYBhziYV7J9Jqt3A+Eknxm1rCl1vk0G294wjExOVgF4U8yGFSJEo4UB
-         xG+c12B6IDKR2R8sCFu0yZHHM9LRUhlSJ93c39hn76xhgGvUVq72flVOaSsMmF+hNSxI
-         DQV3VXa7qheiC90W6ilH3QrhUDRGXBzashvvEDfbUaw7hNaMNgfkqMJb9luVTwgWn+4b
-         1kFX1LpwflW3LPkJjMSFgwx3IjV/7n5+vstMCPXnT8vJy/d8nI19uvFyPp2u2BscU9xv
-         h9LQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=dtXXiVGCKhisCk8aLdkBNg++qq/ezEnbK3PGbPzPAeg=;
-        fh=PJM4uiXfh9MpQHvbm/TS4slU+UlrBd1IjjN1tYM+SfI=;
-        b=Qctyrhwu5xrE18t86BXEm0TcLgUnwGo1Ohh7FzlIiLlGYfvGLoA0A0RC+3mPUe9e4i
-         z+JOMRKON47kvtant+kFgN2VpK4i1shsjdM6teaymOm35TGnaGgVR4gQlVgKRPd/+/Sj
-         YZmKTD65KG2Rq8Ll+/g7ycxYQF1MvawuWSpYesxdTBOhUo3romabmjmnMtrkTOJ1h+EW
-         hnZDDzQtRd54ncGvR+Oj6l/MpHygDoIIy3EXceCuIdGD4og5SGeFxHmj9ReLbshvs+G4
-         rl4q9QUpigecXpDG8GBLU/PonqHEbVhud3xTboQLWcOmwmNnbOELoD3jTs3Wm3AJ7jNq
-         gs6w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777674114; x=1778278914; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dtXXiVGCKhisCk8aLdkBNg++qq/ezEnbK3PGbPzPAeg=;
-        b=Rw3drj9+n6/sGEfoCkMlY5abLcTB7Sydt8yhIdDThhTWzPHtZv7nMZ061BXF43HLiP
-         uj3GDIXQXV8T2PZsqSCkJQlRykWx4KZ45k24PTVNBdbP9BoMiEeeh0vs+m72YXOQzGKx
-         Myd3XJ9ODk07RnH8DEUDCIvGLLpUTT4dW4uR63kvUNMPa68ueqSCPb7VfMacFjYxepkP
-         Xuww/gRQ7xQIRm8nNEf3kqw3Ah0JYrRtsHcY6RwNSe8vIkvgWHeySguDRM8nY66EtVuu
-         QZzJY+hbGkNsDozKlHo6G7AzRTMWXkvN0iclyVedxlD2MkiVNCjDI/9G9+9KhJC0ihMX
-         trNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777674114; x=1778278914;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dtXXiVGCKhisCk8aLdkBNg++qq/ezEnbK3PGbPzPAeg=;
-        b=DVdvBqthE4HLuNT9EohG4MuwMe9uOnlPP3m2i4F5+Um+blcyoYWscaOidxRU1hif8P
-         IeyD5z1+lXlUrOe9o2NQM0DRPhFPCm/3hDAoREjVLB3fdA8sIot79Go/PwxYcxiw3Q1B
-         bjmoRNSCw0NkM2Oyuz1BmVN1J/zc7UGSRzx0qqyL+mR3jBotvTPpeHjdoX12bOeYu2sD
-         D2i++wGYM2ZtKwrMDrHLwCWoy95TyO3x9hOh1mipnyAQCrYntIjgF+W/OTcyaVORJunV
-         1pMdpvj2HQ6m9gZVCXijJXo0rwsMRfxzbS/tbv16GX5kt0B38FAhu1nXHTOPnzBPHKl9
-         4DNg==
-X-Forwarded-Encrypted: i=1; AFNElJ+b9CZma5AS0t2XNUeW3layfxz682yPYgNd4ep/1tbWn12ZILKI/DAvWbjewdRNE+XwStuLTqox4Q==@kvack.org
-X-Gm-Message-State: AOJu0Yym3amGHn+IsxmpIWcRXaUNfxhUgOplbAIWTxP7cI/EtFmqFlqb
-	SSrWEh2QKtB/yUggZz38r1ik+8XhA+LqG+LyjbCUZAK/IVFXtNsIxnRW1FG74Hk3TDXpHJUTP+h
-	mERa4JRo567YI/BNtCN+lXJhW9BtcXHS7El7e6dc2
-X-Gm-Gg: AeBDietzLtZhD8AYF8SeXu/m4hLgeQn7sMBcxgSW/dje8R9v9TcufHgcgT+u6cpR8UJ
-	t2iZyF/xIfby/jbUZVDQZPXOPqRw2gX8eU2OikB5DRVjbHc+Mqqo+5JjMjALIH/AJfe+mdMF3S7
-	0ubDhbXJDLNMBOIV32IoGmBKAEJscFC59rsmGvh6d3n6ZzJ/N1w+j8jcGU75utsOKRZV/Rv0/Gk
-	nMqyQWVeqOp2nE0lJwo6uTq6Wtvx7XCnQC2Fo6DV6WvOFACt8oqrGt8ejgZH9N6da1jnZe6phCe
-	GdamZ1EbU1GEM4FGI4Pd5HJWvTTumcy7LDWjf++zB4Os+Y9YzwRXnruCGisDiFtr2+nn2bojrRU
-	cXFb/pTNgLYHx41Q=
-X-Received: by 2002:a05:6122:1789:b0:56f:1c32:bd07 with SMTP id
- 71dfb90a1353d-5750c6b46damr742606e0c.2.1777674113098; Fri, 01 May 2026
- 15:21:53 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 1 May 2026 15:21:52 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 1 May 2026 15:21:52 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CAEvNRgHRpvsEjtr1A_Qz3d4oMEaffTxESavrZ73Jtt6OobCwhA@mail.gmail.com>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
- <x7n77snnvvukofo3slopl74c5tmlb2t2un5qy5fq6eb3d2xt7e@6a6tixg5mdfc> <CAEvNRgHRpvsEjtr1A_Qz3d4oMEaffTxESavrZ73Jtt6OobCwhA@mail.gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jkrA65Qw+4DYSbKMeiEaicLIy1EAXSBkK7tEPB1B4KE=;
+	b=ViJcxFELtdiE1eUDI30rVYXAhjmwcYT2iDZuGpy73FKF3bLo69XuE0sYATFsV5vZDw+NpX
+	HZ+AiU4Eg0yXqMLQfqJbDV2DK7nn/1d3qc7iIw2R4H7oTt6VOvv4ZoWQNpnfsfWwaJ5vo3
+	3arw45zUhSDcIV/7vAXPCFKTgLikPys=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6CEA0600CB;
+	Fri,  1 May 2026 22:28:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1BBA1C2BCC4;
+	Fri,  1 May 2026 22:28:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777674526;
+	bh=j4+V78bLMbPVBSZKV0rg24olWGKsiS3jwJMA70sL61M=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=o21UZvV3Cc4OqLxVwrNamC+c18FXiXSSfulB499rX4BKjdViKE9ZNl7t+SVjE4qox
+	 qntEWtJE9R1f7ElxO8cEwzBs3VsLKvSn/IiBn24hPD+RIuCrblwornWvi37qNcik3p
+	 nuUFvkOci/7Xvg4vA29ochRiDdseFRptXnA8NkSpNqJ5OkbZiILNFKt1qWfGlBOmMn
+	 wLKX4qlVnS2tWtZOMOZl1XXTXOEeiWBgm69cwLanfx3fKAPmKqStxdDcmJV7B1ty9K
+	 5Et3jM+Wq2NXsS4+FkPmTKQ7CvqqOc+idSEz5e4usW9mYNKMunBkWDKIi4j5GU7Inv
+	 4iA5rsEk7qfhA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 113C5CD3427;
+	Fri,  1 May 2026 22:28:46 +0000 (UTC)
+From: Alireza Haghdoost via B4 Relay <devnull+haghdoost.uber.com@kernel.org>
+Date: Fri, 01 May 2026 22:28:38 +0000
+Subject: [PATCH RFC] memcg: add per-cgroup dirty page controls
+ (dirty_ratio, dirty_min)
 MIME-Version: 1.0
-Date: Fri, 1 May 2026 15:21:52 -0700
-X-Gm-Features: AVHnY4I-FL7ow2VQuDyStuaACgF9aoh7fvjduqjprjOyhgxszANTKzDwmZOdoKM
-Message-ID: <CAEvNRgHZJ3RONKBXqWWLu2f4G7FhAvsYY0iMowmHu7v-O+g=kA@mail.gmail.com>
-Subject: Re: [PATCH RFC v5 00/53] guest_memfd: In-place conversion support
-To: Michael Roth <michael.roth@amd.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	Jacob Xu <jacobhxu@google.com>, Darwin Guo <darwinguo@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C24142000C
-X-Stat-Signature: 7qb6kujttombnzjpyktrhybydwnr19q4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260501-rfc-memcg-dirty-v1-v1-1-9a8c80036ec1@uber.com>
+X-B4-Tracking: v=1; b=H4sIABUp9WkC/x2NQQrCMBAAv1L27EJSYxGvgg/wKh62m0270EbZa
+ FFK/27wOAPDrFDEVAqcmhVMFi36yBX8rgEeKQ+CGitD69rOHZxHS4yzzDxgVHt9cfEoMXQh8D7
+ RkaCGPRXB3ijzWNP8nqYqnyZJP//TDa6XM9y37QcBF2GwfgAAAA==
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ Kshitij Doshi <kshitijd@uber.com>, Alireza Haghdoost <haghdoost@uber.com>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=31040;
+ i=haghdoost@uber.com; h=from:subject:message-id;
+ bh=aHeAJtVlOx7boHDbSwdJHQUs1dIL8HSAzhg/WDDcx3c=;
+ b=owEBbQKS/ZANAwAKAVNlBDxl2ALYAcsmYgBp9SkdKgPkFx/1GDZkgOMN/p4+drXPtZX9Bt8o0
+ BkUg8q4jjGJAjMEAAEKAB0WIQS5+sFL3gX/8PrA0S1TZQQ8ZdgC2AUCafUpHQAKCRBTZQQ8ZdgC
+ 2LgJEACDgJa/8x/gpz8iiJU95fiirlJhsIPKGF8sG7etlf3e98H+046+majkJ8oOyIIFeaKKCmS
+ M8uYwOY0bBhu4u7DUwDO9IOLiHiCMUI0/0I3K3rKDHxqGMiqsZTUbfMIr1fZrEQ6nHomaDHl6K+
+ Oi8icq+iAq8apzVH7kXs3vM4y4Y54KrUXBi+LtP8959U72E42pJfj7OD/4Jq8ZwFSw/Il3IzQJy
+ 99qdRMUGIrPk2T6OEq5IcJfU1a7FQTEmAiCooNjUyIXDb+3hC8pREW2U+zMp80dOLJ2n4POM1TX
+ XcsqHxzKbRS29MGOE7vLNPE3rBJ4gTeUFRxN6OtmtFPcsBOXIOLi49lfVN+O5jmk6kufjupGsU3
+ wn+kelOJ8RfEzEzyPMmIyJpYt4cXV4xgnqfB3q4A/omf97VOgrYOQz4l/0kmvTpJR0mufN/HKsx
+ QE6RvpcOXMQzPtPZfSGefFGaEdb1JxWAJG6Ls0e9GSXhHRs8+IFayk5Cz7F8Jj2716ZiW4C98qd
+ nh++hO3/D8plyErfF567jNXh5OoeXlfTGvaG4DnvZMGBZdTb6eOt7ujPI0K44wrC9TbrJHw8xHJ
+ 35sEo95gsmiQjilxGdrdPXl+V9L0hl1bUXaDc0lcx1KSQ68LooSX2aZvbOXDR0UhAWh5+0F3Zwy
+ MRxHe2boIycLgNg==
+X-Developer-Key: i=haghdoost@uber.com; a=openpgp;
+ fpr=B9FAC14BDE05FFF0FAC0D12D5365043C65D802D8
+X-Endpoint-Received: by B4 Relay for haghdoost@uber.com/default with
+ auth_id=764
+X-Original-From: Alireza Haghdoost <haghdoost@uber.com>
+Reply-To: haghdoost@uber.com
+X-Stat-Signature: wgjy9srk9sqdei71fyoa38ybjtgensdt
 X-Rspam-User: 
-X-HE-Tag: 1777674114-997797
-X-HE-Meta: U2FsdGVkX1/z27rJFcrntXyp9XgOKMb3I0AbLEUPylY+XGA4JTSAwNuUUT0LeVAPvzUuJHLSP0cQj+ekSq0Imc8on/hn1/N35J8h3hhUOng9gpgBtjQf/dO8lJwxbfStdfYz5nrjdhzek2DqF5fM/DOU551UVT6h+Jf1oTu6+EejUx775pCn0z51s8K6BW4Dq/+90UGvIS7etVCTt9rAM7mrhb9GCKyVw8BOr+2hXXVzCyYkjdV7MP/VvaAli21xKemc1JQWj9AgRC++baWg+hwxfA+1Hc9AJDzApO3C2n9yb/NWMbk/ggiP8pLpL5xbGMN4N79j5kRbAfa0NTJ5EB2nVeEAc41P7PwKqnwHYnQnkVN/DqSt7XcTJdLhbQbNEpxM/lt7a5a4OP7VhPqfxOg56YIvDIiNdi8sdQ8bxqfBnu05DzyqisXLduu8sBzuUgcqLUYI0DeXFn5XKmJEFuEZndVq3U6Zgces7Ok9cbUaGqZZ1PvUhiKFzz+NGmnC0Kt3f/n4a+qdLsI40H1so7sFCntczv7XtpPRqMEkOAG4eFurnKkDksnLbPnmQm8a6IRUIicxhhnDFgdCZ7WyxhcEogSFvkkq4w3O4v2GwwAJJMUXKS6VsbNK1kgcqOxuRwWP+nyCyIaOAhEGmaQ1aQmWcYUXAyAbA4jdHz/QR7jlyeciytcEBIuAm6F4K4caXbHv4B4oa+3pPMOGJ2+loBnbqzuuHvlS161wU+rQGWbrN/LDb+JEvBAeG8K/QIj9uHkZCxJySI4fMbhOtGl2SrDDi/kowmGHw37DsNCYYbs0zb0LeLLEDwJXdpQevdRfp8GCv52dTEKGCv1ENpYFqDLAZBX4NsA5k1GDYOMfzsajuybVQ37QBXOLl31u3vJgu5emwVh9fjJG9aqA88mxcVVJvmh5fePOX16JFGomkY41MJpcbw5i2D3fD59/YHZmHODk1iHiWHbgL9DlEoU
- KmDvu/yx
- MdNl7vmmoOJFGK6gMLzw38U9LIumOGrgcz56Br+yfALZPWEjLybjv/WQo84cl9hrZa/7STQ7QHFkknZNmaSH9vV0x51lgZ5FXFlScBpAfro3HT9Coox6AB4wYys8rli27aTlpRmv2hAbXDycHC2XIxzVwQ8rvWepX00laPlMnS2ASr9MYjtnJm2e+jHLtnc27E9R81Buw+i9VvEIBzQWGJ+J/owQpEyGCwOREbIO/KYw5DVOKw2qtzZnn3iunnRfOa7tntjRn0VGZRhC2+NYQjt0gqLDKHHcwRAQ+Zx2rD8crl1VkO75imWUJdJ1Q7V25nhZh4bBAgRpn5nNNlL+OzHa3r3d5K3dI/ER1y+hH85vGDUcfmruyjE2TSg==
+X-Rspamd-Queue-Id: 74AE1140004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777674527-679351
+X-HE-Meta: U2FsdGVkX1+9Xq2FF2nou2JnC1KUumlsGiKv/B2zhZh5JdTYrqO75diXy/2oADZyd8L2cwbbzRXbpcZWrmZ/10shMzT9yQwT7B28R9snQGDq+uTRLlmeS1l0NoFzdej3GWaJvlqFe+1LARxRqtx4WnzXVOYZETo7Fzkh6a+QdON9fOO9qoQZIj218rfijTDgldAQz3qSTMA+iwuosmEPaAUr0Vc6NGQKr+zTjl/sjt79Rmj4pCYVCQIOAYS5T0WfCl30xabx5Bwx3sQBVVX7GBCb654MLq8fTSZ9tT02AwMMRCWAp6RqpX90OK3Njvj10RmxACABDmjXkRDzfHu5mNuXlrjwlwZ2r8qCur2wqoBtDBfvgo2PH4KvnKJNcXoLUAPATWWhqYGFHg17ziugEnuM59tpxmmacLB7uRWu3acxPp3p4icA8/5ANzbxPdTL1TKbtRp5hVFHknGoe9gz5g3zFbZhy5qUu2QqrqEV23DyMO8fwl+YLqo5pt5VwMQ5tqJmt+M0326WrvAYESPICKqRAju1jBGwcEhXejAktFylJbWblxV+n8Fs4Qn/OIlBKZgofTce+9GuuCAn2v9Vgra2TItG/JW/b8TOpRy/rRMnfheYhAu9dDbLjJ3HaYi9go9/RbjLR2dhfX6rG8FUn3e8G6E8E7z70Y/G93jud5ix2ZwQmW+6Ei6MtkZOAGh/5y4d2iIYoOhLw6ry3OfXULMT3hGrZ6h3MpXgLCAf9nK9n+iZFvbCMJtsZMrY6c2J/jCRuJ1a/aIqaW2ozWaDq+aeABG8D8fvNTyTOdxrxdaEbATl1Jl/53UOBre2pgNzZAM1W+MTEXl5Eyff8zTvy5RKBrZT6LKTSaH5t2GqiR4FdyEXFxRkw3LP9/U/bss8i1lRfjBNOxBjYvJWUjL+iKmbCAgS+RezZxoLkB5OHXgNwNrgomkVIq7uP8wWihF5zcRhOZ6onJ0IL/bd2CC
+ SMt9qFeR
+ 2QIWeVvMcC/5RicnQHibYHmJFFRCo3rvbBPJWFQLFCu7VJPzdncEaBbDYug7s/svzxayRq94ymc8HAwo0+4XR8sn6QpzgRLEN/v+joND9RaydX7M9TyWUyC68CIMhOmI4RVkpI6rekV97W+dhsOUiMtGygm5Z+bMAgmMhbvLScjKyBhbXFNqZOJNJ/EZeDrbJHlHb3YBWczysvm3c6khEx33bIQ2ioC+HF0ppvwtzHl67GaTgogVeRYH67CRTlpeg2ruKFJOwx3ThyawfvESza0iWNmIUMOFdUXPa5fvSdD4qYjJGRjukYCxJ1JhxlY8nsJAqoqgxP0IXOPJLRzR8qDY4AmGjb3NCYqyMpMj9gMTfb1M7jnm9BqaCB9desq4scEyHafD/2Xlhu7Z4zZIVxhackgSkCuJLbfpuCPTp9QteIkGRd0nGTKvBbt9OsU8cELxCrNHmt20pGHVn8VXoxHlbW5/7sOpJOtXOLBeEj7QySHqKv9Q7pn/WDUgligPbSFF1ydUkk7dVd80=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,57 +122,750 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ackerley Tng <ackerleytng@google.com> writes:
+From: Alireza Haghdoost <haghdoost@uber.com>
 
->
-> [...snip...]
->
->
-> TLDR:
->
-> + PRESERVE == guarantee that the process of setting memory attributes
->   doesn't change memory contents.
->     + implementation == do nothing in most cases, except -EOPNOTSUPP for
->       to-shared on TDX, since unmapping is a required part of setting
->       memory attributes to private, and a TDX side effect of unmapping
->       is zeroing memory,
+Add two cgroup v2 memory-controller knobs that bring
+balance_dirty_pages() throttling into per-cgroup scope so one noisy
+writer cannot stall peers sharing the same host:
 
--EOPNOTSUPP will only be for TDX, not SNP.
+  memory.dirty_ratio  Per-cgroup dirty-page ceiling, 0..100 percent of
+                      the cgroup's dirtyable memory.  0 (default) leaves
+                      the cgroup subject to the global threshold only.
 
-> + ZERO == guarantee that the process of setting memory attributes zeroes
->   memory contents.
->     + implementation == memset(zero) in most cases. For TDX, a future
->       optimization exists, where memset() can be skipped for pages that
->       were mapped in Secure EPTs before conversion
-> + UNSPECIFIED == no guarantees
->     + implementation == guest_memfd does nothing explicitly about memory
->       contents. The implementation is pretty much the same as PRESERVE
->       except guest_memfd won't take into account vendor-specific side
->       effects of the process of conversion. Except for the test vehicle
->       KVM_X86_SW_PROTECTED_VMS, where memory is scrambled.
->
+  memory.dirty_min    Guaranteed dirty-page floor, byte value (default 0).
 
-Found another use case internally for pre-finalize, SNP, to-shared,
-PRESERVE, which works with the above smaller scope.
+The two knobs compose: dirty_ratio bounds how much dirty memory a
+cgroup may accrue, dirty_min guarantees a floor below which it is
+never throttled.
 
-During SNP_LAUNCH_UPDATE, when inserting a CPUID page, the firmware will
-check that the CPUID values would not lead to an insecure guest
-state. SNP_LAUNCH_UPDATE will fail with an error and the page remains
-shared in the RMP table.
+Motivation, design trade-offs, cost analysis, validation data, and
+open questions are in the cover letter.
 
-Here's the proposed flow in the userspace VMM:
+Co-developed-by: Kshitij Doshi <kshitijd@uber.com>
+Signed-off-by: Kshitij Doshi <kshitijd@uber.com>
+Signed-off-by: Alireza Haghdoost <haghdoost@uber.com>
+Assisted-by: Cursor:claude-sonnet-4.5
+---
+Hi all,
 
-1. Load CPUID in shared guest_memfd memory
-2. SET_MEMORY_ATTRIBUTES(PRIVATE, PRESERVE)
-3. SNP_LAUNCH_UPDATE => get error since CPUID was insecure
-4. SET_MEMORY_ATTRIBUTES(SHARED, PRESERVE)
-5. Read shared guest_memfd memory, error if VMM disagrees
-6. SET_MEMORY_ATTRIBUTES(PRIVATE, PRESERVE)
-7. SNP_LAUNCH_UPDATE => successful, since CPUID is now corrected
+This RFC adds two cgroup v2 memory-controller knobs that give operators
+per-cgroup control over dirty-page throttling in balance_dirty_pages():
+memory.dirty_ratio (per-cgroup ceiling) and memory.dirty_min (guaranteed
+floor). A third knob, memory.dirty_weight, is forthcoming in a follow-up
+once we have validated the application site (see "Follow-ups" below).
+We are posting this as an RFC, as a single squashed patch, to get design
+feedback before splitting the prototype into a per-logical-change series.
 
-Does that seem ok?
+Motivation
+==========
 
->>>
->>> [...snip...]
->>>
+balance_dirty_pages() (BDP) is a global throttle. It sleeps writers
+once the host-wide dirty count crosses a single threshold. On a
+container host that threshold is shared across cgroups. A cgroup
+that dirties pages faster than storage can drain them pushes the
+count over the limit. Every writer on the host then parks in
+io_schedule_timeout() -- including cgroups that have not dirtied a
+single page of their own.
+
+cgroup v2 already has per-memcg dirty accounting, but that accounting
+does not translate into per-memcg dirty throttling.
+
+We see this in production: a buffered write-heavy container generates
+multi-second stalls for co-located latency-sensitive workloads.
+Moreover, dirty-page accumulation from a single noisy neighbor is a
+recurring contributor to mount-responsiveness degradation on shared hosts.
+
+Prior work
+==========
+
+Per-memcg dirty-page limits have been proposed before. Andrea Righi
+posted an initial RFC in February 2010 [1]; Greg Thelen continued the
+work through v9 in August 2011 [2]. That series added per-memcg dirty
+counters and hooked them into balance_dirty_pages(), but it bolted
+per-cgroup limits onto the global writeback path without making
+writeback itself cgroup-aware. Without cgroup-aware flusher threads,
+a cgroup exceeding its limit triggered writeback of inodes from any
+cgroup, giving poor isolation. The series was not merged.
+
+Konstantin Khlebnikov posted "[PATCHSET RFC 0/6] memcg: inode-based
+dirty-set controller" in January 2015 [4], which proposed
+memory.dirty_ratio (the same interface name this series uses) via an
+inode-tagged, filtered-writeback approach. Tejun Heo reviewed it
+and rejected it as a "dead end" that duplicated lower-layer policy
+without solving the underlying isolation problem; this rejection
+directly motivated Tejun's native cgwb rework described below.
+
+Tejun Heo's 48-patch cgroup-writeback rework, merged in Linux 4.2
+(commit e4bc13adfd01, "Merge branch 'for-4.2/writeback'"), took the
+different approach of restructuring writeback to be natively
+cgroup-aware: per-memcg wb_domain (commit 841710aa6e4a), per-memcg
+NR_FILE_DIRTY / NR_WRITEBACK accounting, and cgroup-aware flusher
+threads [3]. That work deliberately deferred user-facing policy knobs.
+This series adds the policy surface that consumes Tejun's
+infrastructure. The dirty_min reservation concept is, to our
+knowledge, new.
+
+A November 2023 LKML thread by Chengming Zhou [5] independently
+identified the identical throttling regression on cgroup v2 (a 5 GB
+container constantly throttled because memory.max * dirty_ratio yields
+too small a threshold for bursty workloads). Jan Kara participated and
+endorsed a bytes-based per-memcg dirty limit; no patches followed that
+discussion, confirming the gap this series fills.
+
+[1] https://lwn.net/Articles/408349/
+[2] https://lore.kernel.org/lkml/1313597705-6093-1-git-send-email-gthelen@google.com/
+[3] https://lwn.net/Articles/648292/
+[4] https://lore.kernel.org/all/20150115180242.10450.92.stgit@buzz/
+[5] https://lore.kernel.org/all/109029e0-1772-4102-a2a8-ab9076462454@linux.dev/
+
+Proposed interface
+==================
+
+Two new cgroup v2 files under the memory controller, absent on the root
+cgroup (CFTYPE_NOT_ON_ROOT):
+
+memory.dirty_ratio
+  Integer [0, 100]. Per-cgroup dirty-page ceiling as a percentage of
+  the cgroup's dirtyable memory (mdtc->avail: file cache plus
+  reclaimable slack), the same base the global vm_dirty_ratio scales
+  against. 0 (the default) disables the per-cgroup ceiling and leaves
+  the cgroup subject to the global threshold only. A non-zero value
+  that is stricter than vm_dirty_ratio overrides the global ratio for
+  this cgroup via min(mdtc->thresh, cg_thresh); because both sides
+  scale off the same base, the knob can never widen the cgroup past
+  the global ceiling. A memory.dirty_bytes companion for byte-precise
+  caps (mirroring vm_dirty_bytes) is noted under "Follow-ups" below.
+  The prototype reads the value for the immediate memcg only;
+  hierarchical enforcement (clamping against ancestors, like
+  memory.max) is not implemented yet. We would like guidance on
+  whether this is required for v1 or can follow in a subsequent
+  series.
+
+memory.dirty_min
+  Byte value (K/M/G suffixes accepted), default 0 (no reservation).
+  Guaranteed dirty-page floor: while cgroup_dirty < dirty_min,
+  throttling is bypassed (goto free_running). Lets a latency-sensitive
+  cgroup buffer a small write burst even under global dirty pressure.
+
+  dirty_min is an admission guarantee, so we have to prevent it from
+  breaking the global dirty invariant. Two aspects:
+
+   - Global cap. The sum of dirty_min reservations across all cgroups
+     must not exceed a fraction of the global dirty threshold (our
+     working number is 80%), so the system always retains some shared
+     capacity. The prototype does not enforce this cap yet; we expect
+     to either reject at write() time or clamp on read in a cheap
+     precomputed effective_dirty_min. We would appreciate feedback on
+     which approach the cgroup maintainers prefer.
+
+   - Per-cgroup cap. A cgroup should not be able to reserve more dirty
+     capacity than it can hold. Our tentative rule is
+     effective_dirty_min = min(dirty_min, memory.max - memory.min),
+     evaluated at enforcement time so it tracks live memory.max changes,
+     rather than rejected at write. This is similar to how memory.low
+     composes with memory.max.
+
+  Neither cap is implemented in the prototype; both would land before
+  a non-RFC posting.
+
+The two knobs compose: dirty_ratio bounds how much dirty memory a
+cgroup may accrue, dirty_min guarantees a floor below which it is never
+throttled.
+
+Test setup and results
+======================
+
+To show the problem and the fix, we built a single reproducer that runs
+on an unmodified stock kernel and then on the patched kernel, using the
+same setup for both.
+
+Setup: QEMU guest with a virtio-blk disk throttled to 256 KB/s
+(bps_wr=262144). Two sibling cgroups, no io.weight; both share disk
+bandwidth equally. dirty_bytes=32MB, dirty_background_bytes=16MB
+(freerun = 24 MB). Files pre-allocated with fallocate before dirty
+pressure. Two phases per run: (1) victim alone (baseline), (2) noisy
+fills global dirty to the 32 MB cap, then victim runs contended for
+30 s.
+
+  - noisy:  single fio job, unlimited write rate, fills global dirty pool.
+  - victim: single fio job, rate-limited to 500 KB/s (128 IOPS target),
+            4 KiB sequential write().
+
+The high freerun (24 MB) ensures victim's solo dirty accumulation
+(244 KB/s x 30 s = 7.3 MB) stays below the threshold. BDP does not fire
+during the solo phase on either kernel, giving identical baselines.
+
+Stock kernel results (the problem):
+
+                       solo (no contention)  contended  inflation
+  victim IOPS          125                   5.1        24.5x worse
+  victim p99           0.6 ms                152 ms     253x worse
+
+The contended p99 sits at fio's percentile bucket nearest MAX_PAUSE =
+HZ/5 = 200 ms (mm/page-writeback.c:49), the hard kernel ceiling on BDP
+sleep. The victim has near-zero dirty pages of its own but is forced to
+sleep because balance_dirty_pages() sees gdtc->dirty = NR_FILE_DIRTY +
+NR_WRITEBACK above the freerun threshold. Most of noisy's pages are
+queued in NR_WRITEBACK waiting for the throttled disk.
+memory.events.local on both cgroups shows max 0 throughout the run;
+this is not memory pressure inside either cgroup.
+
+Patched kernel results (the fix), with victim/memory.dirty_min = 16 MB:
+
+                       solo (no contention)  contended  inflation
+  victim IOPS          125                   125        1.0x
+  victim p99           0.9 ms                0.7 ms     1.0x
+
+The patched kernel checks cgroup_dirty < dirty_min (4096 pages) before
+computing any sleep. Because the rate-limited victim's resident dirty
+set stays well below the reservation, the check fires on every write()
+-> goto free_running -> write() returns in ~7 us. The victim is fully
+protected.
+
+The figures above are the per-kernel medians of N=5 iterations and
+reflect a deterministic outcome on every iter: stock had cont_iops in
+4.4..6.1 (retention 0.035..0.049) on all five iters, patched had
+cont_iops = 125.0 (retention = 1.000) on all five iters. The 5/5 stock
+iters all hit BDP's throttled regime; the 5/5 patched iters all
+bypassed it via the dirty_min check.
+
+Implementation
+==============
+
+The patch touches five files:
+
+  - include/linux/memcontrol.h: two new fields on struct mem_cgroup
+    (dirty_ratio, dirty_min).
+  - include/linux/writeback.h: a per-pass cg_dirty_cap field on
+    struct dirty_throttle_control used to publish the memcg clamp to
+    BDP's setpoint and rate-limit math.
+  - include/trace/events/writeback.h: cg_dirty_cap added to the
+    balance_dirty_pages tracepoint so operators can distinguish the
+    memcg clamp from the global dirty_limit at runtime.
+  - mm/memcontrol.c: registers the two cgroup v2 files with input
+    validation.
+  - mm/page-writeback.c: the throttling changes.
+
+The key changes in page-writeback.c:
+
+  - The dirty_ratio clamp lives inside domain_dirty_limits(), keyed
+    on wb->memcg_css (the inode owner's memcg).  Every consumer of
+    the memcg dtc -- writer throttle, flusher kworker,
+    cgwb_calc_thresh -- sees the same clamped thresh and bg_thresh.
+    The clamp uses mult_frac() so a small memcg does not collapse
+    to a zero ceiling.
+
+  - The dirty_min bypass lives in balance_dirty_pages() and is
+    writer-keyed: the writing task's memcg is looked up under RCU,
+    and when its dirty+in-flight backlog is below dirty_min the
+    loop jumps to free_running, bypassing both the global and the
+    per-memcg BDP gates.  dirty_min is an admission guarantee for
+    the writer's own cgroup, not for inode owners.
+
+  - When the clamp engages, mdtc->dirty is replaced with the
+    memcg-wide NR_FILE_DIRTY + NR_WRITEBACK sum so freerun /
+    setpoint / rate-limit smoothing see the real backlog and pages
+    migrating from NR_FILE_DIRTY into NR_WRITEBACK cannot silently
+    widen the cap.
+
+Fast-path cost when neither knob is set: one rcu_read_lock/unlock
+pair plus a READ_ONCE(dirty_min) per balance_dirty_pages()
+iteration, and one READ_ONCE(dirty_ratio) per domain_dirty_limits()
+call.  The memcg counter reads are gated on "knob armed" and do
+not fire on the default path.  We have not measured the added
+cost yet, but we expect it to be in the noise of existing BDP
+bookkeeping.  A tight pwrite() microbenchmark will confirm this
+before a non-RFC posting.
+
+Scope
+=====
+
+This series affects the writer-side throttle (balance_dirty_pages())
+only. It does not partition the flusher-side writeback queue. A
+cgroup's fsync() can still block behind inodes from other cgroups in
+writeback_sb_inodes(). We document this limit explicitly and expect
+writeback-queue partitioning to be a separate, larger effort.
+
+Interaction with block-layer throttles
+======================================
+
+The two knobs are orthogonal to io.max / io.cost. balance_dirty_pages()
+runs before the bio reaches the block layer, so dirty_min simply allows
+a cgroup to keep accepting write() syscalls up to its reservation; the
+actual I/O is still subject to whatever block throttle is in effect. In
+the reproducer above, the disk-level bandwidth limit (256 KB/s) is
+applied at the QEMU virtio-blk layer, and the protected victim dirties
+roughly equal to the rate it can drain, so the block throttle is
+exercised on both kernels. We have not yet tested interaction with
+guest-side io.max settings; this is on the list before a non-RFC
+posting.
+
+Questions for maintainers
+=========================
+
+ 1. Is writer-throttle-only scope (no flusher/writeback-queue work)
+    acceptable for the first series?
+ 2. Does dirty_ratio belong on struct mem_cgroup (as the prototype
+    has it) or on the memcg's wb_domain? Routing it through wb_domain
+    would let us reuse __wb_calc_thresh() and keep all threshold
+    policy in one place; a possible split is dirty_ratio on wb_domain
+    (it is threshold policy), dirty_min on the memcg (throttle
+    bypass). We can go either way.
+ 3. For dirty_min safety caps (per-cgroup and global sum), which
+    approach do you prefer: reject at write time, or clamp on read in
+    an effective_dirty_min?
+ 4. Is hierarchical enforcement of dirty_ratio (clamp against
+    ancestors) required for v1, or can it follow in a subsequent
+    series?
+
+What's missing before a non-RFC posting
+=======================================
+
+  - Split the monolithic prototype into a proper series (one patch per
+    concept + Documentation + selftest).
+  - Documentation/admin-guide/cgroup-v2.rst entries for both knobs.
+  - tools/testing/selftests/cgroup/ test for interface surface and
+    noisy-neighbor protection.
+  - Implement the per-cgroup and global dirty_min safety caps described
+    in the memory.dirty_min bullet.
+  - Fast-path microbenchmark: confirm zero measurable regression for
+    cgroups that have neither knob set.
+  - Larger-N validation on real hardware (the current N=5 data is from
+    a QEMU guest on a throttled virtio-blk).
+
+Follow-ups (out of scope for this series)
+=========================================
+
+  - memory.dirty_weight: a priority weight knob that scales the BDP
+    pause length, planned as a separate series. The prototype validated
+    the interface surface but the application site (post-pause scaling
+    vs. folding into pos_ratio / dirty_ratelimit) needs to be settled
+    before we ship it. Happy to discuss in advance of that posting.
+  - memory.dirty_bytes: a byte-value companion to memory.dirty_ratio,
+    mirroring the global vm_dirty_bytes. For operators who want a
+    byte-predictable per-cgroup dirty cap rather than a ratio of the
+    cgroup's dirtyable memory. We have not prototyped this yet; we
+    are listing it so reviewers know it is on the roadmap, since
+    the ratio-only interface omits that use case.
+  - Writeback-queue partitioning: flusher-side fairness across
+    cgroups, as noted in Scope above.
+
+Looking forward to feedback.
+
+Thanks,
+Alireza Haghdoost <haghdoost@uber.com>
+Kshitij Doshi <kshitijd@uber.com>
+---
+ include/linux/memcontrol.h       |  10 +++
+ include/linux/writeback.h        |   4 +
+ include/trace/events/writeback.h |   5 +-
+ mm/memcontrol.c                  |  62 ++++++++++++++
+ mm/page-writeback.c              | 179 ++++++++++++++++++++++++++++++++++++---
+ 5 files changed, 249 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index dc3fa687759b..45ca949a4c68 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -323,6 +323,16 @@ struct mem_cgroup {
+ 	spinlock_t event_list_lock;
+ #endif /* CONFIG_MEMCG_V1 */
+ 
++	/* Per-memcg dirty-page controls (memory.dirty_ratio, memory.dirty_min) */
++	/*
++	 * dirty_ratio: [0, 100] percent of dirtyable memory (mdtc->avail),
++	 *   matching the global vm_dirty_ratio base; 0 inherits the global
++	 *   threshold.
++	 * dirty_min:   dirty-page reservation, in pages; 0 disables the bypass.
++	 */
++	unsigned int dirty_ratio;
++	unsigned long dirty_min;
++
+ 	struct mem_cgroup_per_node *nodeinfo[];
+ };
+ 
+diff --git a/include/linux/writeback.h b/include/linux/writeback.h
+index 62552a2ce5b9..e37632f728be 100644
+--- a/include/linux/writeback.h
++++ b/include/linux/writeback.h
+@@ -318,6 +318,10 @@ struct dirty_throttle_control {
+ 	unsigned long		thresh;		/* dirty threshold */
+ 	unsigned long		bg_thresh;	/* dirty background threshold */
+ 	unsigned long		limit;		/* hard dirty limit */
++	unsigned long		cg_dirty_cap;	/* per-memcg dirty_ratio clamp for
++						 * this pass, or PAGE_COUNTER_MAX
++						 * when no memcg clamp applies
++						 */
+ 
+ 	unsigned long		wb_dirty;	/* per-wb counterparts */
+ 	unsigned long		wb_thresh;
+diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+index bdac0d685a98..0bf86b3c903c 100644
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -672,6 +672,7 @@ TRACE_EVENT(balance_dirty_pages,
+ 		__array(	 char,	bdi, 32)
+ 		__field(u64,		cgroup_ino)
+ 		__field(unsigned long,	limit)
++		__field(unsigned long,	cg_dirty_cap)
+ 		__field(unsigned long,	setpoint)
+ 		__field(unsigned long,	dirty)
+ 		__field(unsigned long,	wb_setpoint)
+@@ -691,6 +692,7 @@ TRACE_EVENT(balance_dirty_pages,
+ 		strscpy_pad(__entry->bdi, bdi_dev_name(wb->bdi), 32);
+ 
+ 		__entry->limit		= dtc->limit;
++		__entry->cg_dirty_cap	= dtc->cg_dirty_cap;
+ 		__entry->setpoint	= (dtc->limit + freerun) / 2;
+ 		__entry->dirty		= dtc->dirty;
+ 		__entry->wb_setpoint	= __entry->setpoint *
+@@ -710,13 +712,14 @@ TRACE_EVENT(balance_dirty_pages,
+ 
+ 
+ 	TP_printk("bdi %s: "
+-		  "limit=%lu setpoint=%lu dirty=%lu "
++		  "limit=%lu cg_dirty_cap=%lu setpoint=%lu dirty=%lu "
+ 		  "wb_setpoint=%lu wb_dirty=%lu "
+ 		  "dirty_ratelimit=%lu task_ratelimit=%lu "
+ 		  "dirtied=%u dirtied_pause=%u "
+ 		  "paused=%lu pause=%ld period=%lu think=%ld cgroup_ino=%llu",
+ 		  __entry->bdi,
+ 		  __entry->limit,
++		  __entry->cg_dirty_cap,
+ 		  __entry->setpoint,
+ 		  __entry->dirty,
+ 		  __entry->wb_setpoint,
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index c3d98ab41f1f..c43fe4f394eb 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4748,6 +4748,56 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
+ 	return nbytes;
+ }
+ 
++static int memory_dirty_ratio_show(struct seq_file *m, void *v)
++{
++	struct mem_cgroup *memcg = mem_cgroup_from_seq(m);
++
++	seq_printf(m, "%u\n", READ_ONCE(memcg->dirty_ratio));
++	return 0;
++}
++
++static ssize_t memory_dirty_ratio_write(struct kernfs_open_file *of,
++					char *buf, size_t nbytes, loff_t off)
++{
++	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
++	unsigned int ratio;
++	int err;
++
++	err = kstrtouint(strstrip(buf), 0, &ratio);
++	if (err)
++		return err;
++
++	if (ratio > 100)
++		return -EINVAL;
++
++	WRITE_ONCE(memcg->dirty_ratio, ratio);
++	return nbytes;
++}
++
++static int memory_dirty_min_show(struct seq_file *m, void *v)
++{
++	struct mem_cgroup *memcg = mem_cgroup_from_seq(m);
++
++	/* seq_puts_memcg_tunable automatically multiplies by PAGE_SIZE for the user */
++	return seq_puts_memcg_tunable(m, READ_ONCE(memcg->dirty_min));
++}
++
++static ssize_t memory_dirty_min_write(struct kernfs_open_file *of,
++				      char *buf, size_t nbytes, loff_t off)
++{
++	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
++	unsigned long dirty_min;
++	int err;
++
++	/* page_counter_memparse converts strings like "512M" into a page count */
++	err = page_counter_memparse(strstrip(buf), "max", &dirty_min);
++	if (err)
++		return err;
++
++	WRITE_ONCE(memcg->dirty_min, dirty_min);
++	return nbytes;
++}
++
+ /*
+  * Note: don't forget to update the 'samples/cgroup/memcg_event_listener'
+  * if any new events become available.
+@@ -4950,6 +5000,18 @@ static struct cftype memory_files[] = {
+ 		.flags = CFTYPE_NS_DELEGATABLE,
+ 		.write = memory_reclaim,
+ 	},
++	{
++		.name = "dirty_ratio",
++		.flags = CFTYPE_NOT_ON_ROOT,
++		.seq_show = memory_dirty_ratio_show,
++		.write = memory_dirty_ratio_write,
++	},
++	{
++		.name = "dirty_min",
++		.flags = CFTYPE_NOT_ON_ROOT,
++		.seq_show = memory_dirty_min_show,
++		.write = memory_dirty_min_write,
++	},
+ 	{ }	/* terminate */
+ };
+ 
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 88cd53d4ba09..2847b2c1e59a 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -124,14 +124,17 @@ struct wb_domain global_wb_domain;
+ 
+ #define GDTC_INIT(__wb)		.wb = (__wb),				\
+ 				.dom = &global_wb_domain,		\
+-				.wb_completions = &(__wb)->completions
++				.wb_completions = &(__wb)->completions,	\
++				.cg_dirty_cap = PAGE_COUNTER_MAX
+ 
+-#define GDTC_INIT_NO_WB		.dom = &global_wb_domain
++#define GDTC_INIT_NO_WB		.dom = &global_wb_domain,		\
++				.cg_dirty_cap = PAGE_COUNTER_MAX
+ 
+ #define MDTC_INIT(__wb, __gdtc)	.wb = (__wb),				\
+ 				.dom = mem_cgroup_wb_domain(__wb),	\
+ 				.wb_completions = &(__wb)->memcg_completions, \
+-				.gdtc = __gdtc
++				.gdtc = __gdtc,				\
++				.cg_dirty_cap = PAGE_COUNTER_MAX
+ 
+ static bool mdtc_valid(struct dirty_throttle_control *dtc)
+ {
+@@ -183,8 +186,9 @@ static void wb_min_max_ratio(struct bdi_writeback *wb,
+ #else	/* CONFIG_CGROUP_WRITEBACK */
+ 
+ #define GDTC_INIT(__wb)		.wb = (__wb),                           \
+-				.wb_completions = &(__wb)->completions
+-#define GDTC_INIT_NO_WB
++				.wb_completions = &(__wb)->completions,	\
++				.cg_dirty_cap = PAGE_COUNTER_MAX
++#define GDTC_INIT_NO_WB		.cg_dirty_cap = PAGE_COUNTER_MAX
+ #define MDTC_INIT(__wb, __gdtc)
+ 
+ static bool mdtc_valid(struct dirty_throttle_control *dtc)
+@@ -392,6 +396,58 @@ static void domain_dirty_limits(struct dirty_throttle_control *dtc)
+ 		bg_thresh += bg_thresh / 4 + global_wb_domain.dirty_limit / 32;
+ 		thresh += thresh / 4 + global_wb_domain.dirty_limit / 32;
+ 	}
++
++	/*
++	 * Apply the per-memcg dirty_ratio clamp on mdtc (gdtc != NULL
++	 * iff @dtc is a memcg dtc).  dirty_ratio is scaled against
++	 * the memcg's own dirtyable memory (@available_memory), matching
++	 * the semantics of vm_dirty_ratio so the two knobs share a base
++	 * and compose via a plain min() on thresh.  The clamp is keyed
++	 * on wb->memcg_css (the inode-owner's memcg) rather than on
++	 * current's memcg, so balance_dirty_pages(), wb_over_bg_thresh()
++	 * (flusher kworker context), and cgwb_calc_thresh() all see the
++	 * same clamped value.
++	 *
++	 * Published on dtc->cg_dirty_cap as well so hard_dirty_limit()
++	 * callers in balance_dirty_pages() can ignore the slower
++	 * dom->dirty_limit smoothing when deriving setpoint/
++	 * rate-limit from the clamped ceiling.
++	 *
++	 * Clamp is applied after the rt/dl boost: dirty_ratio is a
++	 * strict override, not widened by priority.  bg_thresh is
++	 * scaled by the same factor we apply to thresh so the
++	 * user-configured bg/thresh ratio survives clamping instead
++	 * of snapping to thresh/2 via the bg_thresh >= thresh guard
++	 * below.  mult_frac() preserves precision for small memcgs
++	 * where a plain "(avail / 100) * ratio" would collapse to 0.
++	 */
++	if (gdtc) {
++		struct mem_cgroup *memcg =
++			mem_cgroup_from_css(dtc->wb->memcg_css);
++		unsigned int cg_ratio = memcg ?
++			READ_ONCE(memcg->dirty_ratio) : 0;
++
++		/*
++		 * dtc is reused across balance_dirty_pages() iterations,
++		 * so reset the published clamp every call -- an admin
++		 * clearing memory.dirty_ratio mid-flight must take effect
++		 * on the next pass.
++		 */
++		dtc->cg_dirty_cap = PAGE_COUNTER_MAX;
++
++		if (cg_ratio) {
++			unsigned long cg_thresh = mult_frac(available_memory,
++							    cg_ratio, 100);
++
++			if (cg_thresh < thresh) {
++				bg_thresh = mult_frac(bg_thresh, cg_thresh,
++						      thresh);
++				thresh = cg_thresh;
++				dtc->cg_dirty_cap = cg_thresh;
++			}
++		}
++	}
++
+ 	/*
+ 	 * Dirty throttling logic assumes the limits in page units fit into
+ 	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
+@@ -1065,7 +1121,9 @@ static void wb_position_ratio(struct dirty_throttle_control *dtc)
+ 	struct bdi_writeback *wb = dtc->wb;
+ 	unsigned long write_bw = READ_ONCE(wb->avg_write_bandwidth);
+ 	unsigned long freerun = dirty_freerun_ceiling(dtc->thresh, dtc->bg_thresh);
+-	unsigned long limit = dtc->limit = hard_dirty_limit(dtc_dom(dtc), dtc->thresh);
++	unsigned long limit = dtc->limit = min(hard_dirty_limit(dtc_dom(dtc),
++							       dtc->thresh),
++					       dtc->cg_dirty_cap);
+ 	unsigned long wb_thresh = dtc->wb_thresh;
+ 	unsigned long x_intercept;
+ 	unsigned long setpoint;		/* dirty pages' target balance point */
+@@ -1334,7 +1392,8 @@ static void wb_update_dirty_ratelimit(struct dirty_throttle_control *dtc,
+ 	struct bdi_writeback *wb = dtc->wb;
+ 	unsigned long dirty = dtc->dirty;
+ 	unsigned long freerun = dirty_freerun_ceiling(dtc->thresh, dtc->bg_thresh);
+-	unsigned long limit = hard_dirty_limit(dtc_dom(dtc), dtc->thresh);
++	unsigned long limit = min(hard_dirty_limit(dtc_dom(dtc), dtc->thresh),
++				  dtc->cg_dirty_cap);
+ 	unsigned long setpoint = (freerun + limit) / 2;
+ 	unsigned long write_bw = wb->avg_write_bandwidth;
+ 	unsigned long dirty_ratelimit = wb->dirty_ratelimit;
+@@ -1822,22 +1881,122 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+ 	int ret = 0;
+ 
+ 	for (;;) {
++		unsigned long cg_dirty_min = 0;
++		unsigned long cg_dirty_pages = 0;
+ 		unsigned long now = jiffies;
+ 
+ 		nr_dirty = global_node_page_state(NR_FILE_DIRTY);
+ 
+ 		balance_domain_limits(gdtc, strictlimit);
++
++		/*
++		 * Under RCU, snapshot the current memcg's memory.dirty_min
++		 * reservation.  When it is non-zero, also snapshot the
++		 * memcg-wide dirty backlog.  These feed the per-writer
++		 * dirty_min bypass below; the dirty_ratio clamp itself
++		 * is applied inside domain_dirty_limits() keyed on
++		 * wb->memcg_css so balance_dirty_pages(),
++		 * wb_over_bg_thresh() (flusher kworker context), and
++		 * cgwb_calc_thresh() all see a consistent clamped
++		 * threshold.
++		 *
++		 * rcu_read_lock() is held only for the __rcu dereference
++		 * of current->cgroups; the memcg pointer does not escape
++		 * the critical section.  The counter read matches
++		 * domain_dirty_avail(mdtc, true) so the bypass compares
++		 * the same dirty+in-flight backlog the global path uses.
++		 */
++		rcu_read_lock();
++		{
++			struct mem_cgroup *memcg =
++				mem_cgroup_from_task(current);
++
++			if (memcg) {
++				cg_dirty_min = READ_ONCE(memcg->dirty_min);
++				if (cg_dirty_min)
++					cg_dirty_pages =
++						memcg_page_state(memcg,
++								 NR_FILE_DIRTY) +
++						memcg_page_state(memcg,
++								 NR_WRITEBACK);
++			}
++		}
++		rcu_read_unlock();
++
+ 		if (mdtc) {
+ 			/*
+-			 * If @wb belongs to !root memcg, repeat the same
+-			 * basic calculations for the memcg domain.
++			 * For !root memcg, repeat the same three-step
++			 * sequence as balance_domain_limits(gdtc):
++			 * avail -> limits -> freerun.  We inline it here
++			 * so we can insert the mdtc->dirty override
++			 * between step 2 (domain_dirty_limits, which
++			 * publishes the per-memcg dirty_ratio clamp on
++			 * cg_dirty_cap) and step 3 (domain_dirty_freerun,
++			 * which consumes mdtc->dirty along with
++			 * thresh/bg_thresh).
++			 */
++			domain_dirty_avail(mdtc, true);
++			domain_dirty_limits(mdtc);
++
++			/*
++			 * When the dirty_ratio clamp engaged, replace the
++			 * per-wb dirty count from mem_cgroup_wb_stats()
++			 * with the memcg-wide NR_FILE_DIRTY + NR_WRITEBACK
++			 * sum so freerun, the setpoint, and the rate-limit
++			 * smoothing see the true memcg backlog instead of
++			 * the subset that has migrated to this cgwb (cgwb
++			 * migration is lazy and can lag by many seconds),
++			 * and so a burst of buffered writes cannot silently
++			 * bypass the clamp by shifting pages from
++			 * NR_FILE_DIRTY into NR_WRITEBACK.
++			 *
++			 * Keyed on wb->memcg_css to match the clamp itself.
++			 * The cgwb holds a css reference, so the memcg
++			 * pointer is stable without additional locking.
++			 *
++			 * Caveat: memcg_page_state() aggregates across ALL
++			 * backing devices owned by this memcg, while mdtc
++			 * is scoped to one wb.  A writer to a fast BDI may
++			 * observe backlog accumulated on slow BDIs in the
++			 * same memcg and throttle more than strictly needed.
++			 * Accepted for v1; the alternative (summing per-wb
++			 * dirty across the memcg's cgwbs) walks the cgwb
++			 * list under RCU on a hot path.
+ 			 */
+-			balance_domain_limits(mdtc, strictlimit);
++			if (mdtc->cg_dirty_cap != PAGE_COUNTER_MAX) {
++				struct mem_cgroup *wb_memcg =
++					mem_cgroup_from_css(mdtc->wb->memcg_css);
++
++				if (wb_memcg)
++					mdtc->dirty =
++						memcg_page_state(wb_memcg,
++								 NR_FILE_DIRTY) +
++						memcg_page_state(wb_memcg,
++								 NR_WRITEBACK);
++			}
++
++			domain_dirty_freerun(mdtc, strictlimit);
+ 		}
+ 
+ 		if (nr_dirty > gdtc->bg_thresh && !writeback_in_progress(wb))
+ 			wb_start_background_writeback(wb);
+ 
++		/*
++		 * dirty_min bypass: when the current memcg's dirty+in-flight
++		 * backlog is below its memory.dirty_min reservation, let the
++		 * writer proceed without throttling.  This check must live
++		 * outside the if (mdtc) block because a writer's file may not
++		 * yet have been migrated to a cgwb; without cgwb, mdtc is NULL
++		 * and the per-memcg block above is skipped entirely.
++		 *
++		 * cg_dirty_min and cg_dirty_pages come from the per-iteration
++		 * snapshot taken above under rcu_read_lock; both are stored
++		 * in pages (page_counter_memparse converts bytes -> pages for
++		 * dirty_min), so no unit conversion is needed.
++		 */
++		if (cg_dirty_min && cg_dirty_pages < cg_dirty_min)
++			goto free_running;
++
+ 		/*
+ 		 * If memcg domain is in effect, @dirty should be under
+ 		 * both global and memcg freerun ceilings.
+
+---
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+change-id: 20260501-rfc-memcg-dirty-v1-ed4644c3fa8a
+
+Best regards,
+-- 
+Alireza Haghdoost <haghdoost@uber.com>
+
+
 
