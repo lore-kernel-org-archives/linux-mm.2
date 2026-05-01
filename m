@@ -4,101 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 113CBFF886F
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 00:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ECB9FF886F
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 00:55:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 511886B0088; Thu, 30 Apr 2026 20:53:20 -0400 (EDT)
+	id C406D6B0088; Thu, 30 Apr 2026 20:55:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C2526B008A; Thu, 30 Apr 2026 20:53:20 -0400 (EDT)
+	id BF11A6B008A; Thu, 30 Apr 2026 20:55:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D89A6B008C; Thu, 30 Apr 2026 20:53:20 -0400 (EDT)
+	id B06BA6B008C; Thu, 30 Apr 2026 20:55:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FB206B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:53:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3240E140542
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:53:17 +0000 (UTC)
-X-FDA: 84717027234.01.0A52837
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7D9AA1C000A
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:53:15 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fKJV6/QH";
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A30356B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:55:10 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C4D51601A7
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:55:10 +0000 (UTC)
+X-FDA: 84717031980.17.1858A0C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9614B1A0006
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:55:08 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LXVnd7xl;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777596908; a=rsa-sha256;
+	cv=none;
+	b=RUxvC+HvBjMewuqWRsobpPV6u/efWGZXvAi7jyMnRhWtpBdYsAsqWWitl+yh0NHz/8p2a0
+	TzatDBu7BAAo0ejY8PamaTf3OIfZxJEGyqH+i2HOtxzsWwXpq8EuovawRr2CTPdM5Ao9z6
+	++kd0Z7Epg7rQVWTxXyjpP6K5u44baQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LXVnd7xl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777596795;
+	s=arc-20220608; t=1777596908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J009uALaMNGkc1EoBMX1tkYlbX2OyU5ubo2x3SyVJy4=;
-	b=oh1EhBNxG5vTH/2eVkdOyQdRGA4bTNFtSuFut24MCiKfh1WTLVJlGyzSLc/Pgf9vWI24l5
-	/9m3Svh/oc3lvP0cbWtF4VLAU+iNwAa004Bmq0z43Zq9AFctPYWvg/RnnnHlLzTEnoOYvb
-	A1pS8arrn4mqVEkxUF/X7wB0wabRL8s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777596795; a=rsa-sha256;
-	cv=none;
-	b=Z9qDfvPXdMg0blYpJInOoyU8/04z/Y2MH7pONDYgFKhKzGoxUtS76+bBQk9dfm9uuCEI54
-	bH6f+CWAebJeFd412U0dDEsHqj9uZbL5MajHqlwB+TDRpUv9SF9sYAqk4YR+U1Wjshyp/t
-	04x0jMs/9bHlW8P5d5Xxa8XJi4zrAX0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fKJV6/QH";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	bh=ChZGyaW9/cfUeHWnU4ms7cwxKXSzzBR+lEsoFG4qhas=;
+	b=1HWsp3Kxm4IxRK41YtCasqrxNHr2WjBNzA4Sj9+oiLayJ2MOZlyhgFO717/EsAVSapABOk
+	5nEGzVsx0C7iuNLHfq/VZLv4zRwNk7BzG/fqAhTa4EFIBXVVW58rycYVVEJiptEiYR/FGr
+	bF2TTE3C/bCNJ3h0dAU28CnZ7t+TpzQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6F81444208;
-	Fri,  1 May 2026 00:53:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87313C2BCB3;
-	Fri,  1 May 2026 00:53:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 98AF760142;
+	Fri,  1 May 2026 00:55:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3124C2BCB3;
+	Fri,  1 May 2026 00:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777596794;
-	bh=J009uALaMNGkc1EoBMX1tkYlbX2OyU5ubo2x3SyVJy4=;
+	s=k20201202; t=1777596907;
+	bh=SN2ogcq83g8zSLd1ScLAn6N3IB4C4UcwuiZDm7rQfd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKJV6/QHp5wIkyq9r2SYDCUkNMNoQdp0lsKcg+1qtaa4iTq1f9hcPO3KLv1tGhPkV
-	 7J2B3CoRFsTQw1WlGQZs57me7tCzlJT+BTWtOsXmYU6jisFE3n6RZKmxP57jHwVQFi
-	 hYC9Raa89LvSa+vnYQCJkclbYhe1YTSM3YM6bmUNEymeHtcub52lW9zMVAsC4I1uFZ
-	 HP1j8IUuBJAT7bv4wTdI9pXeK4B4fNWbSA90N6z9p49uLgt/rsoDue4rWbf3lNc9wI
-	 RSFpaKpdW9MYYL0ruOhmp+Y8vdN+EzsQYj+F9ymdpSYjmOiFNZKA0MKHH5ss3XP9bw
-	 q/aChTDWdaHfg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexandra Diupina <adiupina@astralinux.ru>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	b=LXVnd7xl5UVm7hvwTTTinhJuHSd1vhtuM2+x/aIfnnk8VyEZ/XP4QvR1eZ+ryFB46
+	 puVPydCdwDfWPNWMGX0n/cXblC/zk/NThvpB+nZnU0TMziDESWgCgWvCZIqxo0taSo
+	 oFiYK7GULgOF2j4l++4UtC4BVmwS7DyQahpDnZk+OH7IuG4kmoPISoB/eYQonHgki0
+	 FDd27GG3+hqlLVLdd/A7PE7rGP96l4jyfcag+dID5VRxN3KMvpZLOYbat1vaoat0WM
+	 YRypV+BU5FsJ6jxwksin9sLOWpgExJzE99tTYXForFdA67Kx/WPajU/mu5eUfdjxmp
+	 1a88hlYvtMXWA==
+From: SeongJae Park <sj@kernel.org>
+To: gutierrez.asier@huawei-partners.com
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Luis Chamberalin <mcgrof@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Pankaj Raghav <kernel@pankajraghav.com>
-Subject: Re: [PATCH 6.12] mm/memory_hotplug: fix hwpoisoned large folio handling in do_migrate_range()
-Date: Thu, 30 Apr 2026 20:53:11 -0400
-Message-ID: <20260430160000.item005-6.12@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260430113731.1227-1-adiupina@astralinux.ru>
-References: <20260430113731.1227-1-adiupina@astralinux.ru>
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1 3/4] mm/damon: introduce DAMON_HUGEPAGE for hot region hugepage collapsing
+Date: Thu, 30 Apr 2026 17:54:57 -0700
+Message-ID: <20260501005458.79180-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260430134139.2446417-4-gutierrez.asier@huawei-partners.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7D9AA1C000A
-X-Stat-Signature: yfk3i5m378fi6x66uh7s48kkw8t6giuy
+X-Stat-Signature: jg795rcux7d6nypmyijtoy5qgiphde8d
 X-Rspam-User: 
-X-HE-Tag: 1777596795-308531
-X-HE-Meta: U2FsdGVkX1/eE37woX2KCQp76GZMtyCKjTMIOeJyIjDjMTspEgvkL4a1hM8yJnaQu90GYQ9xCIxXe3pIfuBy4J86rYn5W1YEtl3g1tAMFdzUCqVoXQNONcjwtZbEJg8bB3xWiKvFZjNqJtSPjcx4dUqXDXQwxrM/EGc33u8sN3CEQ70vEr1m675cPic6cTDRf2N9lcgacYuw7+OnQ4fkQrtlSbY1v5zDopf759uEgAVjs8csgkKmMzA2QeG/6gWe68JWJVUowXk3CwexnI2bNimP+gxmbhFLU9apvl8ZhrLfaxFMFocSoVpPMN5KP1dGy6Yr6XPZrYqTRjJt2swmVt68V6hJjz6D0JsnFFCSE7GVFMGslsPUd+NIGaw9WjSQ1ugOD76tJoHmiJHd0xBHAqbUMeAnGOjPROFpD2ZvZwVUWGADe2wSt0m0hwOujoOzNVKW6k51SZyZhOPee+2CgI8gcbe0oNCtbnzbMVte/1ORx9rZiIwXuGyQ0renufMOwuhjbADGuXg52A6Yw7tvtfwTfCpxwc65zgQIvgiWAgC+bHrssmGC1lPCBsO1w50CxHUfCr6xUT9PBCzQ5Z5xAME1ISkGoW48z6NdDJ7BAlYUInY6luhtD+j7h776wEsGzVmbCPaAhbgHXXv4vfhTJFql+uNLKV3keLBs49+29Ov41PJfFIqCdEepi/jJvlhU783rsDdPFR6SFiSh+R2wwh7phmg8ePRZAdX0bEztXRG1Xj72d4ZFxlcxPuj/O3rC80Ldr5/AaIJFRybRqGqP8rZtACqDhQ/Ytgm2j6szcUA11QHr18zlk9ArmzqojfK8iqHYV2Hr+Bl4Tj80Y9Rbi/90PQgQ423WypVaCzmnkpUx631ID0Hw5thQih+Ncljm61QYL4j9I4/f39XQw6l/oeBG7Xe8HiQ9OFlM/BjO3KKDMBa3Gvlj9fSpSt8/wqUCboUJGXlwJUqTuOBhwBK
- NZKFdNGC
- HrZm2vLR4TT5t1ceQGRvFpsi/zOZkwQOPfXRuJNl0bxDHlldUBwS66J+o0b5+vqxbYX75kx+abbD66l1fVDRuipMCOjtPc0QYgxLml1d5jvOmkQwjmGUKkH/4Jbm1nTfjfdULipZ9ONHGysatl+jD9Bp3oz/qAI8wxOyzuUkesqtrRb0Pnp4ql5Ceddc0mvv1ruCJ5mavm1F8VQKDosLG46F5mZlDMoA/3sNEeM1Sdo8PtT97qZiYZ9DtD0FjEESejFHkhtH00xEXe/6lXjmrsTYs1iA5Y5Dy+c4qZlMtmsOwNebJb+4gU81JtxwrKSCC7q3ooZdYr7PH71ZZ5rAZwiF8CfoACC81xMsE
+X-Rspamd-Queue-Id: 9614B1A0006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777596908-604736
+X-HE-Meta: U2FsdGVkX19rJ/tgX6nb9K6NL0+pidIEN0Q8rBFbH0anCWlLox4BInxxdk01SYKFzOxozQlbbWtyw/pvJdq+C+Go/M5J6VHrMV1e/SZhr9R3s7SAhiZD+P9J211uvYK1rTM0gBQlX4fKelOVV4fiiOTrjPWRZL6ZdQWL9H/FnFbR3CpDHrNtKmo8GwW6TJsrNFIbxwchUtr0CtJ4Xe6DDu6oakPchL7+58GTnWMro46lnbhrlKVxbqxxZYYJbe7YLfvWgrgeuh/NkLoNimwTyGSUFefGhP1hzKJcUTjuazb14+M2Ez2H6gzJbEUwYtfSBKOHYZmabArHRvvbevAOzSeo63P6fwrynazNpP7w2W1zuuNo4R0sc/KaMLhtRwcp2+bRf+hUOWz7eKYMHXMG+tWCAVqKLo6hpKxPUxGfZx1kyGvG6CnrFC/NIGN/kCkQo7nz1g0IW4oyqLPpPN6+fkuMH7j9SH6SJqf4UCkvEHGPns5RDRb1gN2gEuDgHYDFCv7BgAYAb/WfffA3QPQUu2nuN5rNEyfXmhRkxsabe/+wrWUWXCSuV9X0uJXUmcprbRvEI91vf6cbUkf9HS7z90AFVpMXNY/ngkB3JcBQewechgTj1xM7YCFhTWU5iFwZlu921u0jxjEv9IwAnLeXByH4osaYTXRmg9LGzVMGjPAEmFAdV15ssWxXnAePtcIfjBpIQKDygDLjieIV19vgQj0TDucECrXP3pFdqu39cOMPqtIl2Oe/1E4cpc7rZBV6Ydl24n3v82y8iOYjwSSYK2RZUgZNY/1nyRPWPsXzDdut4vBKJ2ke44HsY5khYdP8IYijPSFbqZwm+KFQ9ZP6WwyyT12xou8/qaGQ2NW8A6ttr7b1kaz1/td9y561FO1pQag8vzE+ZyfzvMzzzJirAFFQozeFa2Dh9SExn9P59cj/6didcdR8xVQMOJ4pc8OCX55BGQCEHDXRcr7bnqb
+ 0aNWpoI7
+ lRfzXPhS5WFXNNeae8+iuTFmW3AGJ+FR22Zl2ZuDpKFGOiXUvw/92IpQLmLZs9NS3PYuXNTcO3neS/gA13GTjdEj+XfzyguO29vGKKZNnnDzdiVN4AIJUr5+PxsCeFvGk32n2SHjJ5drBLRos2r1XI82oyoLywY3Vo0j/TFU1bM0NGemq8QZkB1X2zsl0xjIbXJGobCyaTJiDn37YFcwYJpdb2A2btHTCG+WuWWyGSNKWsuCxNAudast6ck0SmegJf0a+jOTSYhFM5MnrSg6eJ13PaCs3/CUsbw5Lm5f7JkWM/10EXM/8EBwv/NnLjg/g5a8XHlise6XzbIMJsLoisRKgiC4q4BJ7jEKg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,17 +98,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 30, 2026 at 02:37:31PM +0300, Alexandra Diupina wrote:
-> From: Jinjiang Tu <tujinjiang@huawei.com>
->
-> commit 397f6d14f9c370e4910e6885294c340f39dedbf5 upstream.
->
-> In do_migrate_range(), the hwpoisoned folio may be large folio, which
-> can't be handled by unmap_poisoned_folio().
+On Thu, 30 Apr 2026 13:41:38 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 
-Thanks, queued for 6.12.y.
+> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> 
+> This patch introduces a new DAMON module (DAMON_HUGEPAGE)
+> which collapses hot regions into huge pages.
+> 
+> DAMON_HUGEPAGE operates in the virtual memory space, for a
+> specific task.
 
---
+The new quota goal is for global memory, isn't it?  Why use global memory goal
+for virtual address based scheme?
+
+I understand it makes sense to monitor virtual address space for collapsing.
+If we have to do collapsing, should we modify the quota goal to work for only
+given task's virtual address space?
+
+Also, what about split?  Should we also split huge pages into regular pages if
+it is cold?  Maybe that could work on physical address space, and use the
+proposed quota goal as is?
+
+> The user is expected to supply the PID of
+> the task that is going to be monitored through the
+> monitored_pid module variable.
+> 
+> DAMON_HUGEPAGE uses the hugepage auto-tune mechanism to
+> increase or decrease the aggressiveness of page collapsing.
+> User autotuning is also available for additional tuning
+> aggressiveness control.
+> 
+> The module also includes changes to the DAMON compilation,
+> so that the module can be enabled or disabled.
+> 
+> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> ---
+>  mm/damon/Kconfig          |   7 +
+>  mm/damon/Makefile         |   1 +
+>  mm/damon/hugepage.c (new) | 341 ++++++++++++++++++++++++++++++++++++++
+
+The cover letter was saying this module is for demonstrating the usage of the
+new goal type, but this is not a sample module.  Let's make sure what is the
+purpose of this module, and decide where to put it based on that.
+
+I will skip detailed code review until the above high level question is
+answered, as depending on the conclusion the code may be changed a lot.
+
+
 Thanks,
-Sasha
+SJ
+
+[...]
 
