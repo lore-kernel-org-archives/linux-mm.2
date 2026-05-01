@@ -4,141 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1364ACD13DE
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 00:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22472FF886F
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 00:41:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D16C6B0088; Thu, 30 Apr 2026 20:19:21 -0400 (EDT)
+	id 4D93A6B0088; Thu, 30 Apr 2026 20:41:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A95B6B008A; Thu, 30 Apr 2026 20:19:21 -0400 (EDT)
+	id 463456B008A; Thu, 30 Apr 2026 20:41:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0981C6B008C; Thu, 30 Apr 2026 20:19:21 -0400 (EDT)
+	id 32AC76B008C; Thu, 30 Apr 2026 20:41:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F02956B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:19:20 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94757C1792
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:19:20 +0000 (UTC)
-X-FDA: 84716941680.21.5D5C33E
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6CAAC14000A
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:19:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mWX1EvUg;
-	spf=pass (imf09.hostedemail.com: domain of jyescas@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777594758;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FBFC6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:41:55 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A629D1C0DFE
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:41:54 +0000 (UTC)
+X-FDA: 84716998548.22.8716A9C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DABCE80005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:41:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NB3hWGTV;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777596113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mcrMuHQymGKNU24w6OYLAiRKT6CRWMFS1fRqV3obnek=;
-	b=f2p+hURvDr1V7QBAcfnmP2o5MvAHQMq7hGbFVlS7CH9ggCxRZ+rMWik6eB2delXxe92+Xh
-	uskxyh8yKbW+pR/0gpNVcFsBO+oITmF7UD25ZCj5aVUFGaq+VIwn6sZb7T/MxA2HLJ+ALY
-	V8n2+eM24p/Y2O2PdyjsuIy7WQH34TQ=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mWX1EvUg;
-	spf=pass (imf09.hostedemail.com: domain of jyescas@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777594758; a=rsa-sha256;
-	cv=pass;
-	b=KwJcG5QCEqKvmLaglcwkCSfu6T1S5yGo9Y+A/DkxNnzIMQyURxdVvbbP2AUNEaaODa5QT+
-	v5bGDi3zZl0oTYhpfWbAt82X3HTKlaUMsmvB80SvlAa9achPjKr6Yt83g0XVBXL4whmLOT
-	th2SY9MduD/q+Ls+RVVz0jNfmuceafM=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488940ccfa6so27465e9.1
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 17:19:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777594757; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kL8zBZhXJFTcq/WacrqzOXOgrCkIy/w2jxZGOjXLfpcdiSvZrYDMVqSi8p8OLg7aeF
-         Pw3NAxl4mkLfDis/CKQn1IvbXaWpDGBo259x/heyt/Q3rYHnBh4EeXpjXRLjJUQ+RQXP
-         I4Gf2z2Q+XvFj4n6jJL+PGzeqTgq/uOzC4/Tv9W4oQ0A4EsmHttKW7tuJP5QY2dlEmsX
-         cnWj7AG1ZEi+Ll1+U8Ht3To4MoG90h6ujm66KdLsVPwfD8pz7Q9S/nCd+4AhOmKgazSZ
-         57+7IMfthkoAOmuIymALczKSTQNJmXqd+k7jSiak2PwT3hhr3UGmaTy/sv7nnTDnhN2U
-         MCuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mcrMuHQymGKNU24w6OYLAiRKT6CRWMFS1fRqV3obnek=;
-        fh=WMRIoQUHrHvYw1qn1Zs42bt8Qu1J+pPriXPOEGgl458=;
-        b=EGfeJT+qnfISXhr5uRIfrFuMhl0Qk2g34i7BeazAaE8vWqwQACeKiMiv9a76fU66jC
-         QgCD67J1Wkwrm6iuUaDkdmOcuInMPo6JpXKHBrWRIxNx80BnvdNw+itZN4B27H6c8L/v
-         LOLpMMLGiUxhCZwjS4NopLi0IUlWv0mAtS401Wl5NVeYqQ83Q5IJLPCFXFk1JS+p5lm+
-         aDv4hUwKvtL+2Z9hBLxqOUWy29qNneQhzoWjKlStqS0WXJa++d3zzAD+txuYsAFZ0kRi
-         wpT85Ra4SuU4j5ZEeWCRSv8K7VDUg8Dd18H+qBnO5/e69OL0kA7TmzL0p4CL+phO9j+r
-         Hxxg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777594757; x=1778199557; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mcrMuHQymGKNU24w6OYLAiRKT6CRWMFS1fRqV3obnek=;
-        b=mWX1EvUg+9tToXK6/wi7rMgbnnRQkIBxucjZkbDWVOcXw/ouocxDclTHLohjimCtyP
-         beRfUtSVw6HauhCuku2Yd/MxtWpLZ5sKPZYPxwShAzTeoc6vSZhnZz0fc00WeN1r4rIr
-         QGSGMP/qLAOu/aQtHeiORbY+HHxbZsLSnvCSpcD4yQ0GZRPV9Jp3nnJXGKRszIsVUkMq
-         gBBD1pcMZY/f4sU1SdaDs8macWg7Bst4I5BBgj8TBqhOzaRGHeg1LS8djskVWJY7MxRv
-         H9rsZRERkAx7K1KDR0MkDGbjlb7MzmfKy1pEX7hyn5Fm4eKojm96ewiUorDqYbpCCvcG
-         Z/sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777594757; x=1778199557;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mcrMuHQymGKNU24w6OYLAiRKT6CRWMFS1fRqV3obnek=;
-        b=aKA8O0EjzhnVZt6yAOqWLdjTNVL7JI8ispt0CwGzcHE1ONrbAmlW7wNVfwykAkYf5P
-         tD2jKKbTf1+hdY7C9MWkO6AZuYliCvgI2921fVIu7SyTQjuzMcIgTUuTES5H/5cnxTCR
-         83TjuhRj5f9n3n+YMWfLqtL3Hosw+9/4FtyZBf/iH//8kVD2GVAOmVjKHFcW0GpUjB1d
-         e6zOaIq3tmw21/ug+FoJ70loN2b3zNEL6aM/dVv5qjYkCXXI0nsh0LUjqaMUWXyDY4wG
-         swCwP/XliUg0PdEq6hybd/Jy37JG9Zlt1s3O1hC2fQ8NeT1EGs6ih8hNjP/XiaUNjDFu
-         bV8Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/6BDM9GcEItN/cTgzHTr2tQ7qRIyT3UBD6Ag1prPupnsdM3fT9LnDUkdXYfuI07ERnpNIs0py9MA==@kvack.org
-X-Gm-Message-State: AOJu0YzssjOarSlrmmmEvCOtcN3qX+PZa9q66gNYkVPzU+eARORYey9C
-	lsNBP1+HDnYqmJkNev2v5oceb8QMS1zTB5jJP0XlFhIrMx4NATLGv/b8dNC78hwCoeTZczf5FFK
-	epVX8Cll23pVdHe+kbPJ4Y74i0Ogq4qHPYctzdx29
-X-Gm-Gg: AeBDieszzWg4Yx5akrwSUZp7GRVVRdmpicUKz3tK9ITCAYPuUc32WQmGk7o5R0qvDBm
-	ARk/9JSn04w1Y/OVB6ihWwizOqVjPLQOhIVNd9Tm2xDNYX2kpJzFuDLEGcRMOE4a25a1u4pst7p
-	N+Y1eGscA8rE3uyyCX2H8XvqyRSlBAT/l817f6lpvmm9AGHQYvkfJRsJJV/fSf/qSHyc2nBNacD
-	N8O8s0VHWQNDBYTfrtGiwafxHPqvQqpiQSnfdXqvtCMZGxlrl6I1mS4AvNVehQrf5UWmSDAynVI
-	lKerhiodi2rGLZ0WN8brirzo9Fl9tPrZYT+fpCDcafVDsaJw+OpRLAQiGM8=
-X-Received: by 2002:a05:600c:4447:b0:48a:5d55:c194 with SMTP id
- 5b1f17b1804b1-48a8f62d964mr273975e9.7.1777594756531; Thu, 30 Apr 2026
- 17:19:16 -0700 (PDT)
+	bh=SW+3Fb119GHY2oeYdcVjxAiI6gsACUjB5MCjVtE/yYg=;
+	b=gBtCDl4kXpBkyu5nQ63r+awkMoxIEa6UNflh7+E2FZVpqUm+LmKlkprIJ1mESCJp4NU5Xr
+	bd94LfzuaDkqFZp2dITlWHqgcF9YlmtYyM9ySmilZVizQf+Q42d0CUPe3vuGOXPatnw1ah
+	482PN6pbPSB8chUq7+dAihsEb/VH8a8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NB3hWGTV;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777596113; a=rsa-sha256;
+	cv=none;
+	b=1+TmZG5b9RQrafKpW53XfEjk/j935ubA0G5nq7FQGsNDp4TMQWRJYkchvRwMXNz3Zdr654
+	MB+djwNfTHuTo6GcZ3pklcNZY2CaJC/SWL/zyGEV4QIWIOxkibDXdqnOgDARy9KiLxDx3A
+	Nj39nmNFZ/ZedD4EBLkUwCs2jqgE0tQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D70CF440D5;
+	Fri,  1 May 2026 00:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51811C2BCB3;
+	Fri,  1 May 2026 00:41:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777596111;
+	bh=gn0A/IMKl276FIB3LENO7HJggCV5JRxz4pjAVumVjKY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NB3hWGTVp+q+Ls8LF2zgKA0MlM4bGXU7nMaJM6O3ArU64jgTi1jiHz3GZ5E7Jn64D
+	 dkYqhYipn/xBf3qVqdHzaTRs4iAlIqHlAAK775YR+PGqA7RYqknYzQYh13xCYf9XuL
+	 fct6AWzEVT6U/bxWE4v0LkAG9CCQuCYzkl9r0zU0qutKc6MY/zU1QUWUG+wo6h0CTr
+	 tfch0E8+oV5M3zSiFIGAgsrwti6fed0LIz1eAba3TudNKgIVB4PNxajerSZbx5NtLq
+	 LTaI0WV1IfrDqKLTD4PzocZT0x7si2hdcYU0edRP7Cs95m73NnoOlpHE6N8f1RixPB
+	 DGZzGKacK26Sw==
+From: SeongJae Park <sj@kernel.org>
+To: gutierrez.asier@huawei-partners.com
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1 0/4] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
+Date: Thu, 30 Apr 2026 17:41:47 -0700
+Message-ID: <20260501004148.78873-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260430134139.2446417-1-gutierrez.asier@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-References: <CAJDx_rj-fTpKjtsw1jJ0aAaC3a2Rt+zrizqY23ZHvq0Mm56uTA@mail.gmail.com>
- <00ec73d6-11d9-43ab-b1e2-d543425d19c7@kernel.org> <CAJDx_rj4DVG2D8ab9O8RWDEF81a5J-fiwtDedubEnsmL-1q+sQ@mail.gmail.com>
- <5c6e3c1a-bae3-4997-b02e-135374d1d6f8@kernel.org> <CAJDx_rgYXWNC=0_QZDmMpuZU8aZqRU8OeMBqXT1jjzrpK=BWeQ@mail.gmail.com>
- <e63e0ab9-75bd-4a7f-9400-a8f87c80d1f0@kernel.org> <CAJDx_rjk-5pp5Z884bnTBss19Xk0msEayR=GAMG2wWCk+WOZ=A@mail.gmail.com>
- <aa8e148f-252f-4d81-89db-b1702d9b6888@kernel.org> <CAJDx_rjgyi-L-1j2kpi1NeKj+Huynd6ZFqJDmYqN8i8L3KyBfw@mail.gmail.com>
- <60cd723d-82f0-410a-9a7b-c4d75a5c94e4@kernel.org>
-In-Reply-To: <60cd723d-82f0-410a-9a7b-c4d75a5c94e4@kernel.org>
-From: Juan Yescas <jyescas@google.com>
-Date: Thu, 30 Apr 2026 17:19:05 -0700
-X-Gm-Features: AVHnY4KJ6vAN566Tbx2z71soLT9CiuQaEtYT68Xh1xn3IweGCgREJJH1cKZseKA
-Message-ID: <CAJDx_rj-zuesuhrHROrEx0JK=wx+=89DN7Qd-sMWtxUrJ3mdCw@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Discussion: Targeted memory allocation via debugfs
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
-	android-mm <android-mm@google.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, lsf-pc@lists.linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6CAAC14000A
-X-Stat-Signature: t4pys47ik9dub7rd9ief639izzqzbkjr
-X-HE-Tag: 1777594758-37032
-X-HE-Meta: U2FsdGVkX1/9KIhXdomhvGCUlICwU1q7Xc+AZMr29ns/OzxefneC3Ea9ohPbHwhnCa9N9cmDlUqf2J79uECzuTwvxotY+OF5Nane1MBI/wPON575T8uMqma2ldUj4/EFg3oS2zXXn0A1uurbVeJLwagCzZQ2862HvUgzCtNZSZ1iCqfECOSlz+zOzsu+UBeGfSd44Qq3sXDY7zRbiqxc5p8PDrZM9vpoYF97ex4fD9x0v1+iZnUlQv7u9sxcEx2lrvGz+50+SjzaIwHSv44GP/FeIiPponwGLDSS29sni5GOeMjkb8hl+Xs3bzAV3lVC58GVP+1HgG81Jr7vW3kYaqL4u8VKAxhJSU/2UF+lml/oyrjjfN268JdnX8pgPIwJnab1EnyC5WiZPglemPQqcacKO33Su4GxSh7Lc0r9QwhQCK2JEOe/D/kiPpfxqOKOp00RrRqqZwvu/Gv540wR7rpKgNrsKqjr2Xzaz5pG8IklX4shfwkxnW+gmkU1F68yYt/5m6wsgP5MSoTODe1DDlwr49sSt6b73XMSi9NEoWk1BGT85kxJvTm/NHBZUnUu9wvBpWgxbtgsgSRyxNo/9o4euR0Dpk5i1rYXBWpfsh/J+IgzK1sv04C2MVZMynnkBNz3RNdbmPK8ZzPnQQ4H2BnRGOMDREnoIR0G6tMT7KH7nmZLSI3M93nX4bcdr8zwVIDZz9ab1Nhah/jyGyXdmL0qiNj7IK41iovjMHuuSLYfV32TpdjuISdXfn/e/UW7fY7VjBWnqce2I0KceR5OjBPUs8+2c8J/2LD/k24t19Zg3SojwYpTnZhUJha6CMab7fe0BPdfR3SZBS6Zk/IVJ7oPSZh/mMabsyyg57QnowpwXT+hj8gjmkroZDyBhWSe85bdrLse8mvbSWMHWwmFaUbh/3JmkYj7QMRG89AR3GaxW5rLF564R2cs/iLn6ZUgNeR6fdbtZRq765SMYLV
- 8R+X727M
- uiKzJLEffoGCDdUIFkvo+ebj5ryYvn7pg3A6LKY0WKr7jZKPAv0nk+g+e0AcKu9N29shKoOkqpTulWTtywjSNfhURh8qGlmf5kB6xfWXi9R8ewzoZj1YC9xDWXRHWtdBgdYJF1MxO/cOu7Tk/gReh+LJ/G0hazSrNFY7lMQY7bzvqPLP9XYmCWR8/81tYl0cO5iFEjx6MG8bCuN8st4NhJ3xaar+p8P2c3wt9PhohBc6Zn2B+wtOey5epK2XU8BmGZjecewEYzGC++74Rhn06qiUjYmfp52FBteoX/Q5xnwhXiFkendAzw1vCtHiuHmu3POQ4uf1oN7VcwZfjBSNsBFINiSxjsSp5l/Ck
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DABCE80005
+X-Stat-Signature: twfawy46n5t7mhceh9cgtc3rfjpfpjn3
+X-HE-Tag: 1777596112-124986
+X-HE-Meta: U2FsdGVkX18vCW6kvQvZPcoXqoIJX25ZsiT/UG+hSpqnta+ElDsuRFFVzJL0pDvpRHgvjiKruHeoyuU+cbH6MmMx/3z6o64MOT019d2zJdScO3l8nm9/axBvWNthgaJ9Lm3lmi6geBaOu3V5GT+/3TmSdEEhR18oD79aG67qiYCpnPDhR+tskiwgunLiOUciSZxtbgxuZEOKn9ZmalWNwcrdeOyn+V9o5ASo9PPuC4Nen29uQJzKRGUrp/4T5RYkZNMvDKEWge1ZsoTKImscxxCzcq74DR6FJxZUHyIo4wjR/dz3PIrHTlQsUUZ//jpzzMxtmRJEEimf5IYkXy/JM3N/hmiFk3TF5uz5wR4LG++qC7Dww2SWtC2rBBCsGc+bY5Pn+eKi9JjKt4JkVT/CQvus7DPAgtNL5xe1n7lvGBJMFvsdhh75GmfE+n42auKZe6QYbr1Iuz0No4IZBAtzYwxkKTjnTOEMFYNG++3/DRGyD7r7qetiYrgBnMYMbddBBqnE+7D5yQR0eTGYiyGbv8Rl4Ut+yOqgl3shChMleXI/E7Xuk/8nywPqw98lVVtvx63EqpgK+2N9gWTN3kHLwZS79YnSI9TYipG+qPAXCpwYDIKbRfVbjV0+/OsUY+0bIE59sy9T+rBlG34/mWt0ye38mlZDs7tnmu6YnNmQidZ4di290FWLtQzqEoC/Fwfr/nU2rvQ6JSQxnNjfqvWLI6z3VIMA5dydN4zid5978kWiXM4KtjPhHQv58lVrL0XImwkXxU/2iCQmm+UNpnZbRTIZDUZUEvmQ1JPoUsfm0ryKz6WmbAIivYOUW7mIa4k2xeiEeKOSawduPE79WlFmb2ga6O0HFrTbiQSLZ0zP45mA7bVx3pcRK8MrCOgDVxOGNttFEcpUCZXC7cbLmyB3gPYeia/9E51jfQYkIaMvTwKlSBBi7x+qMwueOfnvxxvHuhbWM3p05x6MJiyTx+8
+ FBy54it2
+ TLVk+BwWY8l0GFOX80vPiaRos5zTltddsJqqmRfPPJ/aPvZemUBkRzdaIC9FlA/nEp42U3gWeEC2cddxvqGaI82jk2hBB4dSscTEma3MNhyJHKoePmre2W+Lk+EGGDmjK8xwsA6O37N3ENSVkeVTJ+7HFy0A5aDwSGXq7cCMycQNWwNCBD229w0T/17cVdJ3md/heeDoBiQDs7ba8aPfoxAbmG+cvROUW0RY3gN3MhLxBIEQo7cwTMHoo1GeqJzEBcfyoiLaZdWhWL6cDTFmS63XyMLqEkEdE12yt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,48 +98,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 5:34=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> >> So maybe you really want a debug mechanism to migrate a (movable) user
-> >> space page into a CMA area?
-> >>
-> > One intent of this driver is to debug CMA issues (pinned MOVABLE pages)=
-. This
-> > The driver will allow easy reproduction of the case you just
-> > mentioned. For example,
-> > I will allocate most of the MOVABLE pages and then trigger a CMA
-> > allocation, that might trigger a migration.
-> >
-> > However, the driver's main goal is to put the system into low-memory co=
-nditions.
-> > so we can reproduce OOO, kswad, lmkd issues seeing in the devices.
->
-> (Late reply ...)
->
-Thanks David
+Hello Asier,
 
-> But there are other ways to trigger low-memory conditions, no?
->
-That is right. However, in the user space we can mostly allocate
-MOVABLE memory. If we want
-to allocate CMA, we need a driver that makes that request or uses dmabufs.
+On Thu, 30 Apr 2026 13:41:35 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 
-> So I think the real missing piece you are looking for is getting a movabl=
-e
-> userspace page allocated on CMA memory, to then try allocating from CMA t=
-o see
-> if migration works.
->
-> And you can do a bunch of things to make CMA's life has hard as possible.
-> O_DIRECT the userspace page, trigger low-memory conditions etc.
->
-I'll look into that too and see which one actually works better.
+> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> 
+> Overview
+> ================
 
-Thanks again for your suggestions :)
+Let's align the length of underline with the text.
 
-> --
-> Cheers,
->
-> David
+> 
+> This patch set introduces a new autotuning which allows to collapse
+> hot regions into hugepages.
+> 
+> Motivation
+> ================
+> 
+> Since TLB is a bottleneck for many systems, a way to optimize TLB
+> misses (or hits) is to use huge pages. Unfortunately, using "always"
+> in THP leads to memory fragmentation and memory waste. For this reason,
+> most application guides and system administrators suggest to disable THP.
+
+I think the motivation should further explain why existing DAMOS features
+(access pattern-based targetting and quota auto-tuning with existing quota
+goals) are insufficient.  If that makes the text too long, I think the
+explanation for well-known THP benefit and problems can be reduced or skipped.
+
+> 
+> Solution
+> ================
+> 
+> A new autotuning quota goal[1], damos_get_used_hugepage_mem_bp, is
+> introduced, which checks the huge page consumption to total anonymous
+> memory consumption. This new quota mechanism reuses current autotuning
+> architecture.
+
+The idea makes sense to me.
+
+The name sounds bit redundant, though.  How about DAMOS_QUOTA_HUGEPAGE_BP for
+the enum, and hugeapge_bp for sysfs input?
+
+> 
+> A new module is introduced to demonstrate the use of huge pages
+> collapse autotuning. The module launches a kdamond thread for a 
+> certain task provided by the user through monitored_pid module argument.
+
+If it is only for demonstration, I think it is more fit to be a sample module
+(placed under samples/damon/).
+
+> 
+> This module also has a user autotuning knob which allows the user to
+> adjust the aggressiveness of page collapsing.
+> 
+> Benchmarks
+> ================
+> In progress, will add them in the next RFC series.
+
+Looking forward to!
+
+I may request not that much test results for the quota goal.  If the module is
+not just a sample but for a real world use case, I may hope somewhat reasonable
+test resulsts.
+
+> 
+> TODO
+> ================
+> 
+> - Since DAMOS_COLLAPSE is not in upstream and this is just a
+>   RFC, I have used DAMOS_HUGEPAGE instead. This will change
+>   to DAMOS_COLLAPSE in future series.
+
+It is now in mm-new and it is recommended to use it as a baseline for DAMON
+patches.  So please feel free to use DAMOS_COLLAPSE from the next version,
+unless there is a reason to worry if DAMOS_COLLAPSE will be dropped from
+mm-new.
+
+> 
+> Patches Sequence
+> ================
+> Patch 1 -> damon_modules_new_vaddr_ctx_target
+> Patch 2 -> Introduce DAMOS_QUOTA_HUGEPAGE and autotuning
+> Patch 3 -> Module that demonstrates how to use DAMOS_QUOTA_HUGEPAGE
+>            and the new VADDR ctx creation
+> Patch 4 -> Documentation
+> 
+> [1] https://lore.kernel.org/e67f05ad-dbb9-45e6-ba30-b167a99ac67d@huawei-partners.com
+
+Adding more context about what this link is would be nice.  I can find the link
+marker from the above text, but I was unable to expect what this is without
+opening the link.
+
+
+Thanks,
+SJ
+
+[...]
 
