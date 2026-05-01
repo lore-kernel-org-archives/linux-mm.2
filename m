@@ -4,102 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A398CD13DE
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 01:56:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0703CD13DE
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 02:21:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 792946B0088; Thu, 30 Apr 2026 21:56:12 -0400 (EDT)
+	id D37236B0088; Thu, 30 Apr 2026 22:21:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 743A16B008A; Thu, 30 Apr 2026 21:56:12 -0400 (EDT)
+	id CE7C76B008A; Thu, 30 Apr 2026 22:21:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 632B66B008C; Thu, 30 Apr 2026 21:56:12 -0400 (EDT)
+	id BFE296B008C; Thu, 30 Apr 2026 22:21:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B9EB6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:56:12 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 028421C0476
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:56:11 +0000 (UTC)
-X-FDA: 84717185784.02.90A549A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1779A160009
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:56:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SFjIjmRL;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B08736B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:21:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0ECFB12037C
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:21:19 +0000 (UTC)
+X-FDA: 84717249078.07.9733936
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5221780002
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:21:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UZn6lwAU;
+	spf=pass (imf02.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777600570;
+	s=arc-20220608; t=1777602077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GTr5ixRj0OwS+uiR39MnJGmq9C7ROF550klPwrUqBFo=;
-	b=ciWWuCTjC5URJclw4MhPd9lAc70OS8wcMXZtX0Tj0ExeQeQ0Ejhy2yq3zMNe101pTyLQjo
-	PjxmSR5REYPbtZNjR50Y6UzS+UDQZQMqX53Zvok465k+qURnTheALAcrY3MVLvMjZX15lV
-	FDg7RgnPLsvJ+VrAm/6xg+pu7LAMqJc=
+	 in-reply-to:references:dkim-signature;
+	bh=3twploam4MV/bq5u/Ty0iH6HK100PxWqx9qv6h7XzQg=;
+	b=oSHx5Q9PbXueb8j5Z15WfbO5vDQJt52nMOcFBsTFBVdztSHmP6lLjBF7j4pm2+0ng6TA4Y
+	BguQUQSHM0V3gDRMFSGl2cHgg7l7VcXaD/xbfY9fyJRfcIhxbjYWO0l0tJuz5CP4Qi6upw
+	FpodZy0Trfug0eDr0DnODu4OI0gL7Ko=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SFjIjmRL;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777600570; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UZn6lwAU;
+	spf=pass (imf02.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777602077; a=rsa-sha256;
 	cv=none;
-	b=nPkGj+msZGLc4+DmPiY1eI9hcyi58+MBvMp4ItSrW7gWBlq4WIxJ2fc2WU+e9Q+6S0IG9H
-	dSOmPUOR0+uMd3GsJQCKdzOMAuBaGHsGhhmbIvQWsMzWJ5LUpLpb43YuHHtYhqsJPPoyRs
-	mscB+58d2GpbQN1v4a/swGHZ4bqoOt0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0C541404F9;
-	Fri,  1 May 2026 01:56:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DEBC2BCB3;
-	Fri,  1 May 2026 01:56:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777600568;
-	bh=qzviNm8rnhp1c0NC3tvj7ydyyrxohLehCvxK6danluE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SFjIjmRLHJwtVZaHIAzcwOOFWelAi76TY8UEznldmWeAh+LSB2QMEyWImvw1GhK49
-	 jUnJjSMDGpR8zaZkSNB/YMvABpAj6pJRjUt4uR5T0QdyYaWsBHKSFXpwjDF+OWJdcq
-	 NdEGrMZU9DS0eC7wsE8RwU2R9VLoqqM46MYuMLwrpkt69iKQR0CAXZHBZRirUVery0
-	 P+bjyt07fat5KFz1lQlbYSMzvJg4o8tQgq8U4AQUgDBofrvv3qtykX9LwH1Dt03opA
-	 ndFFQSZvm/9qJTnIdPXQ9+gSLKByzr5tMFxSE5+hjJ0IRLEWT7mixx2gB1ldj0grK6
-	 MhnTEY9TNtcJw==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	b=OwPC6GbNujg3J4kioOcZh3fm8rU+hvjpINen9S8pYLMsZdJsPLSUDtfH7Y6vfumzpPu0+l
+	mT3C+/rQPGagklWHGpGD2kBd2LKlmfv72TgmksQo3l8dydyIuaxnGK0zedRDo+9BRz4gCk
+	CS6YA7A/rKdF9n+h2AUvy4TGPwsM+pc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777602075;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3twploam4MV/bq5u/Ty0iH6HK100PxWqx9qv6h7XzQg=;
+	b=UZn6lwAUya5Xqtq40t+UrkKEXXFY9Z2IHb6Rwly1pbpj3+VOZ9/R474cwB5eDgVQvM3oFz
+	tq4oR7/tjB2jcS5ypfFobRHj/IGmLL5MTnbWaRkWgjFUw47NQ/iWJQPXkmJDYH0Wbgi8lE
+	soqpuUXGjwL2TyvDxA3aI1aUZnDg530=
+From: Li Wang <li.wang@linux.dev>
+To: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	tj@kernel.org,
+	mkoutny@suse.com,
+	shuah@kernel.org
+Cc: cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 00/11] mm/damon: introduce DAMOS failed region quota charge ratio
-Date: Thu, 30 Apr 2026 18:56:04 -0700
-Message-ID: <20260501015604.83041-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260428152424.125760-1-sj@kernel.org>
-References: 
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] selftests/cgroup: Fix false positive failures in test_percpu_basic
+Date: Fri,  1 May 2026 10:20:56 +0800
+Message-ID: <20260501022058.18024-1-li.wang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: o66yeppu5cz6aea97ik51am1nguzqzkn
+X-Rspamd-Queue-Id: 5221780002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1779A160009
-X-Stat-Signature: 6c4nzm84ejaqu1u978wf9o7b8ydwodwa
-X-HE-Tag: 1777600569-385066
-X-HE-Meta: U2FsdGVkX192Am7gZj5i/z/mrzfoA7rv5DlCPCeGPE75DQs2E+TXTuANQijwFkH9rDzho0/3hl2p32OD04ErIvbc+51viz60eY9dC2tsTe6Lw1c5sUZiOKbt0Tv9d4OMb6XLgTN7DhXJZNct2YfYaS/gs4a0NlHPDPi3EZPI3/yV4Nl6WDQlEJUsy+N46Y4g5HiqLQZ2d9xt+2EixyvE5/i7Ju/g2ZfPbwNjD93brPyjaTEn/OJ5Q3mhPZetjOc8OM8ZgOe74dmJ7d5NyxTe3rujwRWtBaeQB8/hJBzZN9JD1GCAJfwNB4tFuR5sG8IGtq9UNCJcDkbBSw3gOLKOhemUiNCOs+vrRriAMRsmRrqdFbRLGm8q5dx5q/GAIkXBQ87I7Sp7Iw5fg2VykjuyswifPG3+tAvTMAw2KVYv8KVPMUwzB5958Y6L8qOdQMOI/ySq2GEv3L+39Y+c6Jc17kj319Fgq6vh3plN0GKPPdn1rpXDXGeCFblTMtOr3XU3Fyxt0FRopRyKqHzv9doLw47x0t/V6JsrQbRKd/5J2awtVs3DCab4CBqky99qpr5hAl+DhHbIpUr5tn/efFFHtmTVKldCiKdWl/wWyR++OQuNvZ2NYATMuQ4hG8L3q2LLgKAdDGWhV5orII8Li9kyqvCknUExRxtuxeuU1fXuncnZL4FKaUr40uge4x4SiAbqR2LtjRf1NxejzHttrQsBNQaY5k0zcCCGeYkN91CWdZzk2ETZRIt3F0oLJIfaxexJWUnaNSKzgcNA7Rku8ekNBDyvTA7qnFRoOtMIlTBJxvIf+7JzQL5mNULUu7Y0aePjmIcm+XTOTAEXsLxyOpMA/9AkDEnVZOHwgK58pTo49uFNXXlK6u6v/l6BKsgOMgI56JtmFltJqh2tatRX9ayKDZUc9aje8H5HPK8IWjJRas8h9DjhCG2RCksBsytKAt44Ze66/7Gn/EvNc0e7u1N
- Ki3LDFCP
- qRWsXAX9xSXfKIm0MEG9VvYJFgHngqGnzEsSmysQ//VxpcPWSgNLnddz7VQiA2EzSalglttYX1N6oZLdMwsJhbc/mVbM5kDOCK4Wczve6nCy1XuMZ8QlPj66SZO+L3gq622VecakV/jgYtwo0mbTn6SjEnV2uCXw1J8oAqdBa7SaCQ1kvrlfdt92f4iTeuXRkrkZHB285nIU5F70xw8cspDfQJD1olQ/9SfIgV65x9feui/gdXWX82O1n8I0V677BR4WC+EVXlS/A2t6ZE8ZiQZuK5zX42FR2ajBnFjKAqknT1KkwsTqPGE/U0o15uEFdimuqQ+WmSZPSmUY5jCULnMG6bmulsQDCS4Rg
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777602077-645037
+X-HE-Meta: U2FsdGVkX1/yCxwYkPRQL3rEzg4wtAe7iOM2TS766ScSMN4DnboAPdFy3idG7fqzrwihdxo4m6nriNR/6r0Xsxi6qegbR7B8bNYNQMTZXGfHpOOCKHP4/yB5zDbgCRt0/Jo3gA6UzT3dblu0xSfoS65jwp8Q9lqmhSDWiMSDlwa9nVI7ndwxUy5Sfh8DWLYYySHRAI3Edi2Aahjf7LqxzdZvc6YZ3TlD7i1LFUKpZ0NG3iq1rolmmHVBVvPZtuKE519mEpAaw2CnnNcu1nwf8DTHZ5hwIJfSkfDoXfdvXyGTMlGsXbmx8mnriT53XOZAKzRJXkkxwPFlZlQF0E88T9uXeq5K+qiSsHycX7HDNU4E7TCc5c9QyrzjzmOPDxAGSLHEGVu8PpaYc2OuDmFLTWehnlqsdSXmgT/8FnwqnIeFe6mZdZn7j8hRMt7dQGuZA+/uQOlGPCObyLAFYVUSbJDnaxl1h+UMx3FtaOQ4rXcSVyWiWrrWeEuaYe7Jaxv2ga00VDqfGs/zqdxQhsXTRtDbu40vgS77YpIc6F7Zm7H5WBGSeqmvVjUbAk4l/PIPDnlISHJjaBk2+6Qi4a3Bt20nHYbvnfgvi42wZYhPL8oI4h8IYT1SfBFsvWksbjtT7MXAVjbPTdpFtwaT05cm4YHylSd/KlF+Wfruuf0DtjSCXsefK/gbtihNEpDGrGdpTKn7PKmCyrlq83pl8Tug7Kdb45Hu0mqXPKYbyKsFt4NBLEf6+GY250rlU/SDc5mNY3129KU/Yfuo0dst8mXGgE5GDySvz/ek/AgnP+LrCv9/zUgHO0ZZv//dNu4T7DzrBa4qHru9v+chgOFwF2jjApRGmto1D8Ci72wg+mcHDXkJ2S/O7v9jNZgiLjWC698SPC27jiXWuDBRcBNn7GOzmxIiZ8y3sDRKe7AV3Mpipwa9egzHPGCa7tV545NMH9D9P6z+fsWj3VtyI5BTf1D
+ eGZw+HDn
+ eaYTGQa3RRQyMDHsTFIJt7wtFyPAGx0idjG53dwxJsT2YLt9MTBm5UBrw/geq7mYTMNfDpwlS5foQH9/dxE28irj7mT6oyNf/tkO2hQU+jsLWtqPeGBnUealE22U0JmtxwF5BgZlGw+nqnEplec+JMFlkgYS0TYnaEacXWbPj5k1oaGUk1zXw1zmlfTzHq35q/jfcXIIwFIee8/LRTSlVna+/cZ2NA0fsYyF2pIe93O3jbKz0QJeLptIezTrqFaCnYiVLNNsJH5594Dh+6XyYLvM8HA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,47 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 28 Apr 2026 08:24:24 -0700 SeongJae Park <sj@kernel.org> wrote:
+This patch series addresses two separate issues that cause false
+positive failures in the test_percpu_basic test within the cgroup
+kmem selftests.
 
-> Hello Andrew,
-> 
-> On Tue, 28 Apr 2026 07:48:37 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-> 
-> > On Mon, 27 Apr 2026 18:33:49 -0700 SeongJae Park <sj@kernel.org> wrote:
-> > 
-> > > TL; DR: Let users set different DAMOS quota charge ratios for DAMOS
-> > > action failed regions, for deterministic and consistent DAMOS action
-> > > progress.
-> > 
-> > Add, thanks.
-> > 
-> > As mentioned provately, Sashiko claims to have found things which it
-> > didn't see in the RFC.
-> > 
-> > 	https://sashiko.dev/#/patchset/20260428013402.115171-1-sj@kernel.org
-> 
-> TL; DR: I find no blocker for this patch series from the Sashiko reviews.
-> 
-> Now sashiko replies its reviews for DAMON patches to authors and
-> damon@lists.linux.dev.  So I replied [1,2,3] my review of the reviews to those
-> on damon@lists.linux.dev mailing list.  As I mentioned on the TL;DR, I find no
-> blocker for this series.
-> 
-> And I think you didn't see those because those are sent to only authors and
-> damon@lists.linux.dev.
-> 
-> I nowadays reply-all to original recipients only if Sashiko found a blocker.  I
-> will also add short notice for non-RFC patches if Sashiko found zero issue.
+The first issue stems from a hardcoded assumption about the system
+page size, which breaks the test on architectures with larger page
+sizes.
 
-... Now I think the short notice is only redundant and silly, as the full
-review is available on damon@ list and the one who primarily interested in
-(Andrew) understands that.  I feel like the short-notice reply-all only
-increase unnecessary traffic and my redundant typing.  I will not do the short
-notice broadcasting, unless someone makes a diffeernt voice.
+The second issue is an overly strict memory check that fails to
+account for the slab metadata allocated during cgroup creation.
 
+v2:
+  * Replace my email with li.wang@linux.dev
+  * Adding Waiman's Reviewed-by tag
 
-Thanks,
-SJ
+Li Wang (2):
+  selftests/cgroup: Fix hardcoded page size in test_percpu_basic
+  selftests/cgroup: include slab in test_percpu_basic memory check
 
-[...]
+ tools/testing/selftests/cgroup/test_kmem.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+-- 
+2.54.0
+
 
