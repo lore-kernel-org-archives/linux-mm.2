@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A967CD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 17:09:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE2D7CD3423
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 17:15:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76DA26B0005; Fri,  1 May 2026 13:09:43 -0400 (EDT)
+	id 1D2226B0005; Fri,  1 May 2026 13:15:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 745816B008A; Fri,  1 May 2026 13:09:43 -0400 (EDT)
+	id 1A9506B008A; Fri,  1 May 2026 13:15:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 681CB6B008C; Fri,  1 May 2026 13:09:43 -0400 (EDT)
+	id 0E6756B008C; Fri,  1 May 2026 13:15:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 54F076B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:09:43 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0037C6B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:15:53 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04B3EA01CD
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:09:42 +0000 (UTC)
-X-FDA: 84719487846.16.EC75F93
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4768420018
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:09:41 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OX2L1x4x;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 955BC1C0035
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:15:53 +0000 (UTC)
+X-FDA: 84719503386.16.C0B714D
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DBF181C0012
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:15:51 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gqO6BQJ9;
+	spf=none (imf21.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777655381;
+	s=arc-20220608; t=1777655752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aCKpiD8Crlk0uEQZs9vyjBCgLqxVn32/cxl6Y0AtRGE=;
-	b=8QV38VnzEm+3myJtvvDGjW+EEAUBdg9GfltxjHYpxHsfYzLjob4ekAEXcnQExbIJ9Rw+NX
-	YlxoWAqSgflBGE+B71QYEY/0kOD/IAD+vA9myFc0MWh1T5ctPph5ybre6ExCG13H8ceiGh
-	a/8lvLcjILDPB0WW+CGV7dy14En8kEU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777655381; a=rsa-sha256;
-	cv=none;
-	b=Vj7Os88UC3MN1c/z8qYolaVmOcNHSaOetje/RqR+IQMGIUDzfRjiGgnth76eRxwL4fqCQJ
-	9n/d7T268IgbKEPQcNcN0HpyrVSYzgtGg7zN6EBLcEFErHKhBna+veY8PM21Lp7KfJPcHy
-	yT3s+nEzuIKz/WSLB/K4Pdds7GmFeHY=
+	bh=lmaggGKXjL+hs9vD7vyc+xo8l4bXJig4rJbrMoWWQLU=;
+	b=yXnWJ7eA6HIkHkD7xNjvM6SHNozRYZEWA6ZU3X3i3FLXqD7mCvViO6GRd3xXrSqCNRdv7g
+	+vINLGRdG/hbeAwS+9vPqJGcDz4xHTWb1uaLGYaCXh12N5oEu32sBQsL400udzvTHACsaQ
+	Yjemzgpdt0vEuCiXD+AAJS2m1Oi8beo=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OX2L1x4x;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DE7D143E9A;
-	Fri,  1 May 2026 17:09:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC2AC2BCB4;
-	Fri,  1 May 2026 17:09:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777655379;
-	bh=aCKpiD8Crlk0uEQZs9vyjBCgLqxVn32/cxl6Y0AtRGE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OX2L1x4xFIxbScfPDUbir6mmS+xdX9NmUYzJR0EJkE7ri86qbaeUTkDb4jWI5oeb+
-	 aN4JbRR+N5UIrCNNa22w2pCZ2JSMSHoSZwNy2T2qFiVEenmDxH9tkupv+ZDyGU2ObI
-	 654hr8gYpcXDtcmeRIPh1KdMIPoWk95vpdUy3GSPXi4IHKF8A7wxn55TDFMfm9T3X7
-	 2RVfuwK5n/jkaekIr44u2S02mSaPb7gcycVdlcOtlmx86ngcN1rcmImzOHzRA44jyl
-	 l2G+a79TnBeaUy0DKnFo0u2dmfaqSvsLz/R2tzsXHpnuJk6XOz3vggn1h43+SNrKA+
-	 0+Ne8WhoVmpcw==
-Date: Fri, 1 May 2026 18:09:30 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, jack@suse.cz, 
-	pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
-	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, kasong@tencent.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-Message-ID: <afTeKp90wGNixIOX@lucifer>
-References: <20260430040427.4672-1-baohua@kernel.org>
- <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <afTKsSj0i-ZkRZN5@lucifer>
- <afTPamwDbtY_tgk_@casper.infradead.org>
+	imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gqO6BQJ9;
+	spf=none (imf21.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777655752; a=rsa-sha256;
+	cv=none;
+	b=JXeNgLMzf5JkdO3L1Yc16Z7AYqZrQ2La7jA1/V05lQk1qczmlT+zQ/mX/JcC/LwOozUotx
+	FviPnf1Tg7Y2D/qDyVq/HfEP2Vl4j8uOirrSf5XVFu4doPbjU0zG7jT/SQXFLW9flc44KP
+	DffOgnC0Doe7UWhmrm1YAFYwUaw+UYw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lmaggGKXjL+hs9vD7vyc+xo8l4bXJig4rJbrMoWWQLU=; b=gqO6BQJ9uH6K1zXtg5ggnRVHvu
+	oiIcgkEcsxv/g4xDbCbSN4qwY3e/FBYUF4i0kAmaYisTW5GM9X0ubuwhLN1Ff8W/I2pr3Uf+ADGgH
+	EpXZ9aG/WQXvDtORp7mVmvLL38EHjp3tIDtmZukdkNe7s9yiLl19WjAzhXABprcPVAIaKHptvaSjq
+	svSin3Oh4H2Ph2++hbuIM8dOo9yVQ4+glNejcwDs/ZxzvPAoaduomrP7L0apMEsuzpfj2Tnc0me7q
+	nmjr3HdAThIJGFw3x4dPmqsuocwe+SEFe4nptQVm+XkX/iifH8pMrADqdfDXhxtNUgpuA/+icz5pK
+	wnJIOIsw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wIrSm-008jKB-2S;
+	Fri, 01 May 2026 17:15:41 +0000
+Date: Fri, 1 May 2026 10:15:35 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 0/2] mm/kmemleak: dedupe verbose scan output
+Message-ID: <afTfg_FOcj3J2kgv@gmail.com>
+References: <20260424-kmemleak_dedup-v2-0-8bea649b2a92@debian.org>
+ <20260424103016.4ad3219ae815e45de62cfaf7@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <afTPamwDbtY_tgk_@casper.infradead.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4768420018
+In-Reply-To: <20260424103016.4ad3219ae815e45de62cfaf7@linux-foundation.org>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DBF181C0012
 X-Rspam-User: 
-X-Stat-Signature: g7s5sxi8kai1rw7rkt5iib9i85ceezt9
-X-HE-Tag: 1777655381-209414
-X-HE-Meta: U2FsdGVkX18S1XyC9XY7XnVF3Rdu8GMrA7OIoke8+gBsrCV2pjxuf8nLAYoQrm0f8GZ3jbr5X69xptWH8InpYmuClJ7n7Tn2xVQ3BPDW90Gt366UOMQYgJ+b8OztiucIw1qU8QN7L7BKh+4CP88WTKi3H16C3NYF5VZpjtyGd3Y68tYdKkgcY+a6xCr5DtaKFgX/lB/rTwdyr5Ih+IimaZxlTYt75YPhgV5RFcW3L4OSKIE7xuQIP3DJQ6aiyVXCtDNmigRqpcyecUeqB3d69bfLj1Uc+tZkDdLx0mhF8jp9GbuU5BL2PWch643ODM2N+8kUzdhzEkJjRJirswdaBZR4flaBM4YHITvkAtnUgbC9gmZlTydEBKje53ezum8O0pkD5Tdbu1za10usqpg5YPZmFB2aAZi39b31YytHLnocEECSsWf3izYSgpzwC6+KieNXQAaG5aZuJVfB+rwf1e8QFscTJJJTg3QMYzqWJw9fGT+I4kjyKBy+ClWAcNhvzYguhEBT+ZLqFTCvxDgBCEKkc8cnIO2Fcwy2nK7PLKbtpCCyid4bZ/Q/oVsojM98zUvCnPaGasWj6LGqawecJu4JQWcXzkuIZb21fgw06zXYuGwdBRm8Dwnr0Fm8XX7dEIUh8qxSNRw/nu/TthmjiPbB92zkYJtLFOE1n20k8/Hd7sb3Ai8BvuXETPMeQzeJn1X+3Dxjy/AWWD7bhtaEaxrsDl5KB6DR8aL4+xNs0yXAiQ4QMvfp6VCJQgADPkGCIrYyzlCaIDnstWvEYKYep9noVps73rcvbH9TeG7LrZ2xvEEUqZRh1kRjpEPE00YYHJ4XsrrMEntw+bCNXnaac4k3joiXVBbntCfbAMqkB8zOvOza3fjtS4fZEQ8fgp32/u8R26E0JroSJvMjXm9VPhljAUOZSUSHdQ0JtI8QDiiVPe1IZClE4RUgHtyhlO1QKzo+gwdhsS/dp0ZD0Gm
- 5/qRih6b
- AWMoDSqPdUpBT5R6q7NMQZuPmS001IGLMQ0xX6L6jJRKsi3AC66VEMlgsywtur3G+U7BpgHY3/8FO2y6CbqG5PN3oq0+1eGtxM8Il1vxt7fV+20Pm/8uaMrOJuWBrNseYbypDFkEE9F+TC8UpGdK5nAGJ9lMay8megXAXNHVe7oZCdqZYzKdoqdz8TLFX3/ubxeb1v4IVHb2IAGSv44q0DF+WOkksSuY1e9Bu+vtw6C3BF/6dz/uQc5BdhxOqc5OnZ8dnv/QIbuocq8Kj6+OU05bO4NN4nNTEMhCehR1S5++jr0w8LUb06zMYoTOrTTb5PvQzmmnTEZrWwXueZMzu6kQdlzqh3yQvIAH6V0k/XuXdaHvDZ1HPffgc6A==
+X-Stat-Signature: trp1hgekkeajpgdeikhrqrb4xpyura9z
+X-HE-Tag: 1777655751-898824
+X-HE-Meta: U2FsdGVkX18JjajN6WO5S1MZ0QbIYwO3KDhM8npred/akVeY7OzzpS/bCMVQ4GegUhb0xZtPpt9Dgs7Qu4DXpTbXaPYXwreBMYFiumMHQn5bOoJOEtSi8nzQldZw0+/xXE2SuA31ddjhCkXqrVMUHi9XFqDqjOim05msvmzq9P+SNZBVo2ScFMCkVCIYKp1oadhOrvG507MDdk70vd98r0i0msuU3yOhnPf8sfXbL5/fX9iTJw+agmp21iRA2lq8XIUflGehsL6hNbDE79xwUifKF4E+qK80MUp+at0JF51u4wDuO4Fcui27TwCrh1wDc7RKQyJ9iWqHUwLB85wa5JR8tPnL8jrAnYFBhnFcgCVKvsBDUrqGieJluhWOMk2iNNDKEyxn88RzBOPgR7YPL8oiW1SdrdIMBD572zY71Lx/Fr0EzQGkSSf/boBVofFKmrEvisX5NWlgGeS14qfzR8KveNdBAFDZ9kKaBRu2aUxpNoXZ17/Gr/Y0FaKUl24kbeKjN46IFJIHD6rLiRAA6dKVnWy+vpFtn1SLBw68WiIuA9K8m83lHZnWdkKXxfHksQ9ijkzMacfQ5ZZOSTTZnBZSUs4rSz8ITHniu0uESgFfc7Pi43pMfh1Z4Yo9RnWTLSOiNHLlPuLc3abETK9oSrY0ej1eMyWLsVtclsok2zkWdM9nsb75SzmTFFPee7lt4v2Hn7sdpYwIqxxqnLjbApgBAeYjXy300Re5BDvE0GOnPt40iidm8AFIb+9hm9o8bxdzDSKTrcE8133YDRDFPafuuiqQ8hBkPPn6DUhEMzU2G4dk6HrJBWiZpEt9lDk/7bQ6fucb27etI9xpE996ooNkf6kN5LtOvFWLkeDY5mufu4HE3x28u3u5cN+YX5H8E9SBckyjTvho/9M3mgmIEuhTfGdW8Ma4ANzByAUy1D4fguWjUSSQd2O9cObAiZ6uee4LqKPXYGpJhNJQ28u
+ l/LH9Z0r
+ w3nyYcBnRZ3P++8/7u0VqjtoGsvGfAMHguF18l+sKkjEIUIvvnJe6FX+XsIEkqqIp43qHoJFg4/8NkuxqlUJBy9cYkM7g0Dh1hxZSVIZuck6Yb6/uTqOsg+wfNCMFKzqLtVFwKNWXF0othKxNjr1enu6ikpeBfD32vS/Ix6LMooZCJ7x23XDLsEJX6boqN1FYhS4B3h2+NuCh1tt/Sc+VCRf3A8AE19J5+slB/wDFch1R2kpZHLzXokUglnj8OnijskKA1taqmBByizVanvyHX/aBq3TxnEH07dLj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,23 +97,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 01, 2026 at 05:06:02PM +0100, Matthew Wilcox wrote:
-> On Fri, May 01, 2026 at 04:52:12PM +0100, Lorenzo Stoakes wrote:
-> > After a brief eyeball I share Matthew's assessment, I really don't like this
-> > series, it's piling on complexity for what seem like niche cases.
+On Fri, Apr 24, 2026 at 10:30:16AM -0700, Andrew Morton wrote:
+> On Fri, 24 Apr 2026 08:03:35 -0700 Breno Leitao <leitao@debian.org> wrote:
 >
-> I don't think they're niche cases ... I think it's a real problem.
-> While our current code performs better for this workload than the
-> pre-vma-lock code did, it doesn't perform as well as it could.
->
-> > We already have enough weirdness in fault code honestly.
-> >
-> > Let's maybe discuss at LSF if you're attending?
->
-> Not only is he attending, there's a topic scheduled (currently 10:30 on
-> Wednesday).
+> AI review likes the kernel patch but worries about the selftest:
+> 	https://sashiko.dev/#/patchset/20260424-kmemleak_dedup-v2-0-8bea649b2a92@debian.org
 
-Well then, let's revisit this in person in Zagreb :)
-
-Cheers, Lorenzo
+Ack! I will address then and respin, thanks for raising it.
+--breno
 
