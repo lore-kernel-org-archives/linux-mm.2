@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC4BCD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:04:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8459DCD3427
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:04:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D111F6B00A5; Fri,  1 May 2026 17:04:19 -0400 (EDT)
+	id E08826B00A2; Fri,  1 May 2026 17:04:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9E396B00A2; Fri,  1 May 2026 17:04:19 -0400 (EDT)
+	id D0F816B00A1; Fri,  1 May 2026 17:04:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98BF76B00A4; Fri,  1 May 2026 17:04:19 -0400 (EDT)
+	id A9DAD6B00A7; Fri,  1 May 2026 17:04:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 75C416B00A3
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D0DF6B00A2
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:04:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3CF55A0276
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F32A1A02AF
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:19 +0000 (UTC)
-X-FDA: 84720079038.26.01DC0FF
+X-FDA: 84720079038.21.F74780F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3CB84180003
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PFBseTCo;
-	spf=pass (imf24.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id F031D100003
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BE+GeB87;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1777669457;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,46 +35,45 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u3dEgAKJbMtYajda3XGexu4ZriQLDaLp5CzsCP1+xwA=;
-	b=LBy6bRgyHxZIaJQPHdZISCA1AzMs20cUiOiXOYjEFXhzbhVYKnNoJkOY35iJXLUmF7cNtT
-	04o4EpHdYfA7ZOV/CzLq7wRdrZP1q5GMcnIyDAzci/PfouYhbDscJ1IWXj6i5Sk7NvL4Ze
-	amstYi8h5tJEnewL4dP4b2wSE5tUCcY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PFBseTCo;
-	spf=pass (imf24.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Rq3k2XTdg6cImabKQKEuI9IyD8Cz5SatAtQ//YItQZs=;
+	b=rrMU4HAtqi2VvoqY4YBvSQyJhF0hO4HEfsCqTJmmP9gi9RWF2gXp+zP+EtjX2uauqlspLj
+	q6I+xXen5L0TcTkVyv3QFlresXB6tjC8A832jBRlNLl09K2ZMqqHc0TL+FJckRKe1iU2wJ
+	9dmCDceMqBOys0AFzIxh1k7Hgs9Dc6U=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777669457; a=rsa-sha256;
 	cv=none;
-	b=W3Hda+P7rQhxfs0lc/BbaYKvqm6CDkylyEB1tOI0PrxTfpMpTbMlibpslAW4RCHhol/ssY
-	YRIQdMebEVEjJ9kprhNJvHE3Zfy+48daMXfSLB20s3qp3ay7Vx3U0yLKb0b87HU7IZ58JF
-	kUJqcl7OUsgX5GDfkAzocnyHSsqU5Ag=
+	b=6JeZ0dd8CehQJ8I7TxHMciDV47R3p54vVw46cJpMC/BVhApyV4s0Pi4Q9LqkvWSZ+drIwn
+	Lldej6hJY8CHC/IpWRCNsTxmhCRbPoJkwE14EQnHVMhE2Ggp5qfeZDsX+dfKQeg9PV6PW+
+	JmFUviq7TawYpcvy8y6PZhtsw7E2oBc=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BE+GeB87;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 198D34470A;
-	Fri,  1 May 2026 21:04:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id ED3BCC2BD00;
+	by sea.source.kernel.org (Postfix) with ESMTP id EFA01446C5;
+	Fri,  1 May 2026 21:04:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CB408C2BCB8;
 	Fri,  1 May 2026 21:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777669453;
-	bh=tEQvyj84bVP6Fstmv7rAnw0q1fJ254JkDNTXkCqnrAs=;
+	s=k20201202; t=1777669452;
+	bh=Fz1qR5iuVNG5vOBxWH0sEBLOHYRtiFoBzzSrTgox+z0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PFBseTCohhWhGfR0FM/Nmk7ev53x9Ud0IzpvJXTUQ3CDHhJDeDoRXsp88mW6xPEUm
-	 y/OiQgDmlbBRmGeAdS4C9yQShd+qM8HSsuBbMm219+FN834qRqZoQJL354OYVQ1Wqc
-	 Ua5Ov5SpZuGZX2jDpZDLUnjKpHDNbFA/rH3c+N60doj1nSRzSh98JfljhU17STbLlh
-	 mQEOfAb0RCI5AhIDpY7Rl90jC381G4qmzrzLVYPNSwUtGpcZIE45K95BRDMR5evUup
-	 5mtYg/VrkuB+/cW4YSsjkbP/M5YX80FK9y1fKg1rpKQu94JJdudcAJphb9AJ4T6MPX
-	 b8a3nqGbymECw==
+	b=BE+GeB87tufb+uHZvkRCAVG8CivOBSoMa+3eAcx34P5M6XspGI3INJkn6PLa/SDHe
+	 swrCgxxleaV3B/fQXrKH0nGbeJ6n9wboggkX7nAShmnNlSXQo+d32mpCirntzpgjcn
+	 uRimT6GAQp6wY0VclAb0dzIa2yeaVY7RjnBOtDv1ZxOiZc8mKr2Q/6nDmqrZDd3XOm
+	 VFoYYFBZt+8y+qcAAJctH8Uv+kzb/YWxOqTR+7ddMzgVQorjLUwMY+zKu9LBILgLQH
+	 nZexJYJE1gl6v9mzA5cUEwoXKxw49QegF/daMfDIOsWRWhBkTnVTWqki//1rFDH2Mg
+	 10rn0Rk1auBJA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E445BCCFA13;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1A32CD3425;
 	Fri,  1 May 2026 21:04:12 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Sat, 02 May 2026 05:03:59 +0800
-Subject: [PATCH RFC 13/32] mm/khugepaged: consider workingset folios as
- referenced
+Date: Sat, 02 May 2026 05:03:57 +0800
+Subject: [PATCH RFC 11/32] mm/smap: report workingset folios as referenced
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260502-mglru-fg-v1-13-913619b014d9@tencent.com>
+Message-Id: <20260502-mglru-fg-v1-11-913619b014d9@tencent.com>
 References: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
 In-Reply-To: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
 To: linux-mm@kvack.org
@@ -100,25 +99,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=1950;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=2528;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=UByiLYjFt2+kqAxm04OpzowbaWLuDjdJ8bJGsAYOXBE=;
- b=rN+ZBnZrzZD6vSDJMUHL0q+E5ZYHa/RaFdPJvCTAyQgAUBzFuz+g/IdZd5U6SrCWwaRFYnHSv
- Iys2yTORjLYCkFTarebaM66SXYa0dlv8YaJMk+cjtcUCldB69BmOlrO
+ bh=bAs41qLSTJXf0JYRd4i0pQir7expLyGkScY1vBkRC/o=;
+ b=P/ANv6ue43Q6QQ4noPOswZ0RUbI8N/S5PXWVt7oIEUIJ76Te+R11GKtYDMIKwrJ7cy95eHrZz
+ xhljUlaTrpYApGqZAapScC6xKAxGJukXEyEYE+cWzQ3vic4cOQSp0Lf
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Stat-Signature: zqhxysgrf1ni5h53ph5gh41xw31uoxxn
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3CB84180003
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F031D100003
+X-Stat-Signature: nqqdcz3yxpfjupy54gz9nrxh5mtd15u1
 X-Rspam-User: 
-X-HE-Tag: 1777669457-392452
-X-HE-Meta: U2FsdGVkX1+uB/E2XQv1tiIwxfLxAIUt7ksZfWQKK1bUe8v+1320ZA3XvGIWLq1zZs63IjqxcV8QLRwpLOKEjf71zbb8vyGs4XRlxNVxQ+Y3hFKQ7HxKOe+0zuPj6urgGia3mjPLhgEA8OLwp3gfgMGsW5dzEQtNqhCKbDljDNN43Fh9KuReCm4dVU7XJ79SFENakzIdMSwpYmPS8mWKHGtqulABKCnGruVvHoUB6jEMceSoxTjXcnFwexLi6noav6lYfVxxH11Usnum42isD9EZCsk1VFL8seruYdMq+3oSXBdYDfWLAhyYqt0An6H5PTCV3KtnHbbH1SU98c0z7DnB6DJSfZSN1i8zBLbDsMiXArUGgUV6Gj1hTs9gRe3+I4fBTr7eqE60ko4NDaAAi7Y9JwTkpzwO6WUKoRndB8kNDiYPU/RovwEzhIfFgw7ETtU7pF7i+JG36CYSexxwlsVVFHXgRD7tzo5o+6pEAAo+WgT7zwWRkbYDAuSIMYmrzEV33oRaMf0xt2KnQoPAisG4d7Yi+OjS1J1NMorrQLi03yDXuANkS3ktqrpDnSxaD+zhwECy66ulWMjN0qMbzhvrcebVho9TY3+ubcQ1Nb8SAjudVNjG37HvfFh7BF3PNRKZAMmj9ShaZ5nPDJcIKP2Fn3KoUvvKZIuMpzxzXMFBxBgqqcTVZJzrrOwNEdNO92C5G5pGqWitB63E3YK5KgUMUSfXUuGWXSwUlewKMt2vnD9lbMJeLtFfILYGhIbnTcMM2LGmYtsc4RdAo4lTrqQTSSPjEk49+vGsBq35rNule9pLNmM1u2Mh7OVWW2zjdMhbQByxCemweXCFUtDYTCzYksCSyWFlFBkiihsZZ3E3ndp01mYxLMnoPbscHHbZacZym0EBvBchFbtNoNEcf8hZtVeHu4tj4n1Efy23kNKy+NANmM6eIiyAlFsA4rxPVs0Qm++3YDpq05KyU5U
- GHMtjddk
- Y+aHkwp9ti188y856iI/rn2sP5zh6ZZHanIN9G4j2okFS7rGhA7xe6BtFw4QFrRY3TbjewO5QIyQNGQ+MWZvFIC/GGWWPmqrAa80K1V8+Y/RHqDjqYvL6saRbaxUOOpmep/C6UShMSXdrlANQyh1oKBLjv83mDRS7sEc3w1O7DvG/e/WXKJwvS811T3RoNQTEpVV/hHyZe6ZzWMMMW+dYgFL2nIizTVCpt+L8m9W73brf/RSToI68Dv+jT4iMmZd628b8boyB+d5iNiO0cNvhZhdVFk5hCffoxBqwgg7geoxYIyanBaKYWqGWcxmZxY6L9pjhiB2jYR1689G50XJviE1DzGMX3vpZDvvb/2vjzsSz9pFr9zG1PIouaqiJpUGqv58O96le5OQjVnp6T9MCqIVHVw==
+X-HE-Tag: 1777669456-243666
+X-HE-Meta: U2FsdGVkX19reqI9X3J1DP8BBN4tQAwiCZd97r7zEthXu6pixRd5mmExH0f4aBbfrUcdLY41Cgm/ZfleziFsRh7oWKcUFTNIyWE3WSEYzfKEwfyczU8F5aYvMyMhoxyjzo7MLegnAZ6oti/00REvu7QBWkjQ6lu7Xfgt+MIs7flIpL9Qe3smQzQV69VOiXoOgia0ri0DvWUxWxeZZKjtu0sUly4bAQI8msdMgUXQN0lOQz4opr/ZxzxFDy/HAnGCGqgFW66Wrc8jLlOdUKIZleKDRev4CGg6/CspUxF7QJNTHvQZlMTSiMRs816mtCVeAIlE+nO0tSevGMV2WFVzHggR78RPXKEClVMYBz2CDXKG24aG6rLkBELoQWlCkApLAPb7zVLn2qI8YzL5069Xn0cUsRSsTri+qC9dOoZ0n3f0FxVEF1XD3bzia1Cx6qyxf46YXnh96oVMLe1KrUDlqJqs3BMFcLQRPGT1HawMzbatHFJZJijkjWBdlUWHguZ+YHyrhDQYvlgRtPSN/PuTwi0Vtmn0O+eTJwxcTW34u8u8o1rWothGXmFOp+lQif1XDEix1qA9Z+NLDvZXvyGO8IVXsFnG0Pf51+babIS0TiUG3/TpckSoO+VvTWAwQp43XhvxyRgtZkqpnuk8gasCdnA8/GXR5pApzpouYq8OnzuAFgFfCvS/im4XIxC1/6n7zZJFePLJWy/rPHy6GWesLEsVXNGclvtT0a8keWJ9fRYgWzBwuZCDbeiBGYwuJxZsw/aZUO0kmSgqIJsJF//IwcQvdL6QZPbtWEHBQkXnrUNrJ1v0KwcHpvAxvF1UYUBc2DS89sd4v7t0DW0A5mKxRSu81JsVF9k6U72ELfgVAV5wjqXs9ySiK8FyYgEyKozI2aASx2jnmRpgbofsmoSwf4n6pKQqhKXKreXt+WzJPNtJ5UKdQ8X1FncgKc+FO/oPonkSFf1F8hMKckxKt9i
+ KpP8ZQja
+ X5oI2LS57T/LBMR3kBL193Db+psl2gSgbKjd0lFl8D0fvl3NZi5gem12hdRVxET4AJi0No7WKwzysBpWfH7hmjQE+kafwA2n/gaJGMJNdNXegzjk4WPwXikgFfC7RIq7VCAUfszwuOvc+aeq5cV9fUlQHhgBc4UBfgKJbElfkRN0ActtOCe9ab7aXS+9nEtFw9ljVYK5G8wFvMhpOQKmUt4XhMZQRNKHRNw7DfeFj+0hRa9XE0um/rFJAvSQT97bh1DSKIpMo1MXXtoG6bED+7RiiiXAkdc6LXzaCdgXGL5Sng1rjgRYk9jiMq5eOqyVrdUxdFgNXWdK8kP4s8HBh9Vr8ERIjwV7CTMy1pQ0qJ7ddE6fLxwI3fm8drw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,55 +127,75 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-The folio_test_referenced check here is clearly trying to test if the
-folio was ever referenced. It was first introduced by commit
-8ee53820edfd ("thp: mmu_notifier_test_young") as an supplement of the
-young bit check.
+For MGLRU, switch smap to use the folio refs count API so smap will
+report all folio with referenced count >= 1 as "Referenced". Current
+smap checking PG_referenced is causing folios to flick between
+referenced and not-reference status, because for both MGLRU and
+active/inactive LRU, PG_referenced may got cleared on second access.
+(Increase of LRU referenced times count for MGLRU, and movig to active
+list active/inactive all clears that bit).
 
-Folios are marked as PG_referenced on first access, but following access
-will clear their PG_referenced on second access. So checking only the referenced
-flag is not accurate enough.
-
-Switch to use the new helper, so we can cover the secondary and following
-access from MGLRU side. For non-MGLRU, this will make it return positve
-for workingset folios too, which should be OK.
+After this, we will have a more reliable and useful reading for MGLRU.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/khugepaged.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/proc/task_mmu.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 7d48d4fbd5f3..af9217e19eac 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -815,7 +815,7 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		 */
- 		if (cc->is_khugepaged &&
- 		    (pte_young(pteval) || folio_test_young(folio) ||
--		     folio_test_referenced(folio) ||
-+		     folio_is_referenced(folio) ||
- 		     mmu_notifier_test_young(vma->vm_mm, addr)))
- 			referenced++;
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 751b9ba160fb..617f457c75bb 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -913,6 +913,22 @@ static void smaps_page_accumulate(struct mem_size_stats *mss,
  	}
-@@ -1743,7 +1743,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 		 */
- 		if (cc->is_khugepaged &&
- 		    (pte_young(pteval) || folio_test_young(folio) ||
--		     folio_test_referenced(folio) ||
-+		     folio_is_referenced(folio) ||
- 		     mmu_notifier_test_young(vma->vm_mm, addr)))
- 			referenced++;
- 	}
-@@ -2729,7 +2729,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
- 		/*
- 		 * We probably should check if the folio is referenced
- 		 * here, but nobody would transfer pte_young() to
--		 * folio_test_referenced() for us.  And rmap walk here
-+		 * folio_is_referenced() for us.  And rmap walk here
- 		 * is just too costly...
- 		 */
+ }
  
++static bool smap_check_folio_referenced(struct folio *folio)
++{
++	if (lru_gen_enabled())
++		return folio_is_referenced(folio);
++	else
++		return folio_is_referenced_by_bit(folio);
++}
++
++static void smap_clear_folio_referenced(struct folio *folio)
++{
++	if (lru_gen_enabled())
++		folio_set_lru_refs(folio, 0);
++	else
++		folio_clear_referenced_by_bit(folio);
++}
++
+ static void smaps_account(struct mem_size_stats *mss, struct page *page,
+ 		bool compound, bool young, bool dirty, bool locked,
+ 		bool present)
+@@ -939,7 +955,7 @@ static void smaps_account(struct mem_size_stats *mss, struct page *page,
+ 
+ 	mss->resident += size;
+ 	/* Accumulate the size in pages that have been accessed. */
+-	if (young || folio_test_young(folio) || folio_test_referenced(folio))
++	if (young || folio_test_young(folio) || smap_check_folio_referenced(folio))
+ 		mss->referenced += size;
+ 
+ 	/*
+@@ -1701,7 +1717,7 @@ static int clear_refs_pte_range(pmd_t *pmd, unsigned long addr,
+ 		/* Clear accessed and referenced bits. */
+ 		pmdp_test_and_clear_young(vma, addr, pmd);
+ 		folio_test_clear_young(folio);
+-		folio_clear_referenced(folio);
++		smap_clear_folio_referenced(folio);
+ out:
+ 		spin_unlock(ptl);
+ 		return 0;
+@@ -1730,7 +1746,7 @@ static int clear_refs_pte_range(pmd_t *pmd, unsigned long addr,
+ 		/* Clear accessed and referenced bits. */
+ 		ptep_test_and_clear_young(vma, addr, pte);
+ 		folio_test_clear_young(folio);
+-		folio_clear_referenced(folio);
++		smap_clear_folio_referenced(folio);
+ 	}
+ 	pte_unmap_unlock(pte - 1, ptl);
+ 	cond_resched();
 
 -- 
 2.54.0
