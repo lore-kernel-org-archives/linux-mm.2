@@ -4,97 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BA6DCD3424
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 10:56:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC04DCD3424
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 11:51:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE5696B0088; Fri,  1 May 2026 06:56:04 -0400 (EDT)
+	id 6582A6B0088; Fri,  1 May 2026 07:51:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6ECB6B008A; Fri,  1 May 2026 06:56:04 -0400 (EDT)
+	id 62E8B6B008A; Fri,  1 May 2026 07:51:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 936B26B008C; Fri,  1 May 2026 06:56:04 -0400 (EDT)
+	id 545276B008C; Fri,  1 May 2026 07:51:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DD2D6B0088
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 06:56:04 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 40FDD6B0088
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 07:51:36 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 149AB1A0101
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 10:56:04 +0000 (UTC)
-X-FDA: 84718546248.10.57A4574
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 547244000A
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 10:56:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HUxzWgEu;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 92D591C0019
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 11:51:35 +0000 (UTC)
+X-FDA: 84718686150.10.AF06F94
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D0C2040011
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 11:51:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kowG5+Nj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777632962;
+	s=arc-20220608; t=1777636293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=vchm9FMZukqnS9ZBdrQ6UrfHIO33TZ+bMfSaxxtCd5w=;
-	b=8iADA7+xxg2UoEQuJFMGst5XKY50shZ2cT7x+DlbAWsXd32o/Iwb1Rp/Lcd/Feeu8nbWgt
-	6sUdqYM5gaDTUrD0/gos22o839srjcyrKhpvJoXPATC4KYV/y3TNplaOBBvQEppsFjM/Ih
-	7efQl8vb43fClAx9T6QZYI3s80oBe2Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777632962; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=5tw+WZA+mqeGQt1Qd8OUfYQgGb3rmHRrC8yOZWNPTlc=;
+	b=5EWIjGD5bwSKNTBJAwfvRLDgEiv8MVsnrcIfE4pDokRhVcZxfbx/IdVDXqQ/TQjGn/BH0l
+	lXsOS80zktair1J58f96acnv4tpgpAwdhlpMV2wH4RG+iNbwy8+jnuqabM3pbqme1rqDoT
+	P469nymXeCPhEbQOnxk47/wOZxTwduY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777636293; a=rsa-sha256;
 	cv=none;
-	b=6WtufZalmJ+nJR3s1ctwLJszCwFNcJKgfatSEIfQND1uufsF4rrO9fRC77ZY4Pgc7G+gcQ
-	eraBlSbxcsd+Kmiv8DHebUAl9ntbgBsvNv6IaqXzAxyi21rlBd1lMrn7qZn6nsnOjLuMEr
-	tyIDj/eO05bh4b9NUd7+fVvXcQBg2+Y=
+	b=XSFePY7pnQW9fe+dELtBqk98RNSqS7igOwbi6TVqLvD3uFRqFzkRTBMt5K6ffG7PFCodMH
+	4ym2egPGTnbmeVZy+uEHXTkSjLYWZVDEsHYdcp5UB7DYWGjjy9iMknUq6AHWQD2GqAUIig
+	UrMx7rHS4hyR9e2przIuqd9zlIn9tHc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HUxzWgEu;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777632962; x=1809168962;
-  h=date:from:to:cc:subject:message-id;
-  bh=B9k2W1qnkspUZ8629bLo3NyhJcXoi3Rhb1p2KXB5fCw=;
-  b=HUxzWgEuz4essnKTNT75jHtb0uGPqBEzx7wz2aXSOSYc2FbRdEvvUWfq
-   V2jCCql0ksdA4e2jN4dbmARRh3bnzmSaNIT7qM4ql91nJGGmgmQf6TUby
-   nCUX2mLXXVmlcfVsfv6SdjSRfToGuw8fUyCZA/plgS26CHOAS3P6S3nEA
-   onDdC2zgVKEgMkQdpNHPUTT/i12nrZOCgmH62I+px9cBamkv8GHXyAowM
-   tc7QTz+wIufzRt2I3dev34D2lF0Oqu2YhoiJtDfM208BEWJFW/K77H/i7
-   4c2qpd+OAAdfZhBMqmBU2GHZRCvC82zsWOaBlHI1NcSgonD85dYNU6aQX
-   A==;
-X-CSE-ConnectionGUID: QODVvMfjRsiuI2p7aq3m2A==
-X-CSE-MsgGUID: tGfv9NDHRXOCFG3QaYowQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="96012001"
-X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="96012001"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2026 03:56:01 -0700
-X-CSE-ConnectionGUID: lZiLYv9GSrO5MuIeNeUxOQ==
-X-CSE-MsgGUID: U44ytumAR3Wv5faYDqEXow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="233794452"
-Received: from lkp-server01.sh.intel.com (HELO 781826d00641) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 01 May 2026 03:55:59 -0700
-Received: from kbuild by 781826d00641 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wIlXH-000000000Tn-1bNi;
-	Fri, 01 May 2026 10:55:55 +0000
-Date: Fri, 01 May 2026 18:55:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Thomas Ballasi <tballasi@linux.microsoft.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: mm/vmscan.c:6585:66: sparse: sparse: Using plain integer as
- NULL pointer
-Message-ID: <202605011838.0NbkvDxs-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kowG5+Nj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8296d553142so1257303b3a.3
+        for <linux-mm@kvack.org>; Fri, 01 May 2026 04:51:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777636293; x=1778241093; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5tw+WZA+mqeGQt1Qd8OUfYQgGb3rmHRrC8yOZWNPTlc=;
+        b=kowG5+NjJ9twC4XZ5novVI3BXvPZxOHcKZmSQQk/p7czZJYAog+M+DocnSG54c353Z
+         /6mfoq5lhgEq/3zqmd9fgrXz8XeeHzKxAUa8HHJdEkHlAnE3wA9cO1Ei9c83sARjxTZd
+         i/NijXBvGODEJtzuvULupATYTP7Qb1BXRxls8Ht4NbwOMB6aIYQE7ckE6Mz+G5A3rqsK
+         xvEdCyExiGcuagYDnz0h/iRIa55JczqA4tdSshN+SiMIY+9tHyDzgwzaVVnJblIiYvNW
+         zh07P9TZ857bUgJBlhNuc+7NferTaI9uZv5N3GvQHADTEtgf/vKwHEzE/XN+hCqrKViQ
+         Zlhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777636293; x=1778241093;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5tw+WZA+mqeGQt1Qd8OUfYQgGb3rmHRrC8yOZWNPTlc=;
+        b=NfdBv5kcug9Oq98ATQcm9N3KABYQA9MBEukRW+g4V0s4PR25L+Fn6WLmyZF7Bmz01E
+         aaEnzQjXUT/Qz/4KyaMVz8MrX6opEEIvq8MHzLx954fjb6a+btY1dECkIkAZrCU2KN3a
+         Gs9GJXFI5xWhru3oTIdeQK3N7+8gt+wFSkr87HemcErm4nMQSwVT3H9XaAlAhdIHBHwM
+         ftjdt6gTU/7IKmtgZ3BiDZQwGRRPmhLCIU8VVkq+Ym/wDdYuh2Ec1wS9OJcOQJhcXo9/
+         IP2ljf+d/ge3IVun2YFHCjwlbTiZciLjlnUO3/1XP4VWrdXNA9QIINN4QvyQOI4VskDT
+         ISVA==
+X-Forwarded-Encrypted: i=1; AFNElJ8OVS4Jw9rfaIJVjj6UvrNt/fl0Dw21HZJv2Y+a5MpDEf9X5qz5U0GdBTZ8rfBVGrOO2iMoBAJhrg==@kvack.org
+X-Gm-Message-State: AOJu0YzxlU3vcpmFxuBhFK+n2OqmrN99ym8ryps3Rqpxihg0Sn3RQ0Rf
+	QAJHAOMki2/MehgbFD3HZcCBouqdd9zexIMjn1kPSdxkbsqWRQg8pBWk
+X-Gm-Gg: AeBDiesZcBxoRW/lS98KgCRHKaiiXHatiZDm/fVimyEnaiiQiuQWDiZiMxJxaRXS4k8
+	vfTYO5tvKGHlhBGwaHTtPy9w3XPan/KmO1RXoOYBvfqsl1Wcxjzec5TAY1EUSuKBv1vi9+Su1kR
+	8j+l29Iq0utDecG8sh9416BxhIHv/z6RUnMiPM03a4QV4JxY1xgXOX/cBaPGItcBde9HS4S6NTg
+	XBSNjYbGi7yz4vdzmlutjA1LN4/+qon91XXPvmqj8TvZYDlMKtd3TqfFvgqzmslZrm7FFYyLDgR
+	C11j+WC1W+N4h3hz0fGgnI3EyVCEEQOleYU8wvni2Oa9906OhK+VHUvEWGS87O8RQ5jj2LJLkOG
+	rJxWcIEoFBIa34nrQfmO6Dbx2BTPAJbjKYLKt3u4tjkWNTIWG6vTZl7bZTINeEeOQNa7xFoHdGm
+	AoH9hdTzMGoLz28XJ7V1FooU6Qwy+8u7kqtdtj4mdtWOFqgh6e+SozuZ0o
+X-Received: by 2002:a05:6a00:4c93:b0:834:df57:9d36 with SMTP id d2e1a72fcca58-834fdc5aac0mr7868686b3a.25.1777636292620;
+        Fri, 01 May 2026 04:51:32 -0700 (PDT)
+Received: from tech-Alienware-m15-R6.. ([122.171.19.217])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515893f14sm2563533b3a.17.2026.05.01.04.51.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 04:51:32 -0700 (PDT)
+From: Sunny Patel <nueralspacetech@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sunny Patel <nueralspacetech@gmail.com>
+Subject: [PATCH v3] mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
+Date: Fri,  1 May 2026 17:21:16 +0530
+Message-ID: <20260501115122.23288-1-nueralspacetech@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D0C2040011
+X-Stat-Signature: dskc8aybatz6j85dfkw9brpy8h76gsrc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 547244000A
-X-Rspamd-Server: rspam04
-X-Stat-Signature: aeafeeh3k3uepuswc498mkrxkzdpih3t
-X-HE-Tag: 1777632961-165931
-X-HE-Meta: U2FsdGVkX1+itk4G6Ugywh1uRaaZvW5tZK6hcs1q6tyPZ+raE1C6DJcmh3fWm7kDaOPFl2v6NpvVsA5NOC7XpWSeRFXVHSPl29tqGsp8bYF1aprX3y5UwRcZXJKNnNxJRSRC9AqW/fvkJr+CtX3XkvL6UmwA8JRWP+0/1DzYqdvHPtGvLZEQ79e+W9y9oiBVmhygOqyWEoNdwCcDprXwzKEOzP6ZgCtcw16zKlbDVQ6AAVOhQvvIrIwZQw8nSacVdo206TZH114piDUP1ofA0UU6DGHJdtsVvb6w4pLbvvFrAIKMolTZEJHyeb/oK3d85dZd2w6SoF6VNW52cHIRlGnoMid6NS6iw4ys26b0r3yhhJ04TG7UNuhDY2SzW1+Eboiqee1gQFiYZinuQBBnKq4CYtuuml5FZ+SEQEzOEjhw4+8bWUHhCv7DvmOgRjmGMVlzbzlg/UXrFfH8dH6mKcAwYX8Bkkl4u6in7WxF5AH0J73U+7WH1U+l/l4n+mkooV8CeR4GRERnC62nLKwXVTJtRGgSWPldwSwVvI49SlwGe+8bz2mxCz1nMlCrvADsxOJGxF1dr/M+TbhUB6Rz8vHMI434lUftlI9juAzJn7gn3tZQb/q86OFmAM8dkTBHbNPiqlTRLBtmM3HMXwQAtkGluqJY/8PZAcI3Z34Lvm00Veiffd8O2YY1Ea7SyNzjzRIH49anzQHjnwa5o/zH9RfaNvPsQDYVNlrWfQAWEJs26qT4FfMLx33Z+Kb0t4V5sTvFstbxFE4qEaOwtlMEVNtzN1VYgcgPu1AAeBG+sIlRyOm+ERneNejlClbli+QMIUJyIAHas/b2fz2Ci2EYIHb4JMjJ6KH62PYC16rVTYFr3xtzQkGFImGg2BYJ7UoR6vWbnrMafc0CBgAFhdw6sYFAiYn/D4/06FHwjW9m/a6CtL3fx9kDfWzpCrD/2eSOoxuBmkfMzRi+KkusO7m
- 6iNUi+jD
- uuRK5ljn04+YRjOVSJZ/7KLM3HkWXT1u2NPLBL5mxc3kTlXWHbHBDkMj3Zjg23S7uwuo2YRqd998S9sMXIbP1uRazkYvvStzrTnyhL4HtzYJn/TM4vMEw7PlwO1ql9SyI68J8y6/fCIZo3lG6s0F7z4hLjH7NI9zDh09u9sue1lC3YPJ/khW1iVo8Xz4cZoAcco4BIBPsRVR1EhAb3gZD7dLwLxEmAWnbdG90ZU+nGe1gEtSO7yUMA4wI5g==
+X-HE-Tag: 1777636293-989751
+X-HE-Meta: U2FsdGVkX1/7zvr6C5D30xWdveVCeD6hXRzGukwSsucaRbQY9NeaBX5BhGcdJe/z7z6gbIqB9oObnvnW2g9dktIGzhO4s2trm3wn3V7aT7JrBa2mxkCZLB1Z6cbixUxWN5rzFiVowASP6Gsc9fens3adnNOiSVTqOxRaKKllRfq+B5edPm/KA08+z0ivDKyvhVdDD2nnfc8zcaBrkTx40S5AK25dNrgVWK1m3HklStZg90lEk5r9jOAvlt2nFBf8ly/4i7p8aEFrmgV3UKBIP0Vsx5omCFGaoT5A3MTVB5MUgrqUsBER/xPNxgibqysIWPOe/P+go2LvHgHCjIvYC2PodB9msYVCJoMO4y9sfqutRcTkJF9QkcbqbzOlJoEcQOU2agXYPl/TlBZxzcpM7RKqFdDdch9eGcJleNccYSc6X+NG5t68GZ+0f12mAFg3lRfCHGz4sJAOCSBG+ze/a3sLHIrI8wqRa07KMe8HSBqRiK+EkGv6s+xojull0gU5lbvG+HTXMIRBCHn8pmyIn4oE9WEgK5CjtrcTyf3h8pquhQ24Y7RXT/As0X1UmiyaFsuikoLxzp4u2WBPSujnHrQ3xKp8AOslYtRMK+y/xS52hGUVLNulGyXqY5+2HH28XeQ1NIg2v9IPZNEb5jiTySNHOtthooA3luKu6LUKIVPlKtHCvfcJ4zzMGdB/vsabKQCFa29dCizv/c9W1L5MCgbn4C4SULoDSY2YVx1V4RC9fxiKbCJLvR7duvibPPmnRSSjfYwqU6QDfliX+WNMeCfVsSofrcA+JQpOWxO6fEAm5v3pBgj/bgkx0E/y4pj+vQWHH9mHk2mjM1ISVAVu9BQp0aSJtWVNYh9TWKodMlH1Q21xpK2OT1hp7mEWgxzs5RrBaFmWqq8jBQSr9G3Qe14EYAGGe9FqfS9ty/o+kMMENz1bp+ySUkmEFQVCQ14KoXah4sA6jLW/2eXrGL3
+ Nl3sYmVR
+ Ex/WW4tUeOjVW3xu8HYRiahrWBV5Pfd2nk/qSBQfpAMSJBY/8bok5GqtwMG0O/XlKeW1km9bnXV3Bjbp9KWn5MlnsMkBDSCnzN1cj0Azz9IRGOFQB20dgyrOSC8SlAMmz+xlDuILO/cfnOgJ5f3iiWymgnQk43AnQ/XpPb8YVVBJNIShna+rFfrVziT/miLLFr3gtSe6BERqPEg4/ib6JrwNqyDw081toPsMN9Jeamc7LTnt2Pn8yhL8S3wYRoWLvRaLD343VHr7AGhA9wKAN7cRJaNEd/v4pfXo0nOus8am7MujqMcbOg2sMMrWzwSIKkehhLajM0Wv+015UCOlSIYaspQ9NKdpO1EZkv7HiLCo1PsuY99lrmvKUQ5mlDUm7dgsOCVBScb29CdJrWTTJBCgZ3g9bu4Wy1/XtzUo/b1LmU3cEmrHJ4C3IBkfkXiY1bOduihF9m+ARdfRx8fMmhBaLBlKpfXXIzal377gwQTQzoEspqHy/FowPDv0twDLgyR026ao2Q074W66xg5jlvus1Lg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,73 +124,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   26fd6bff2c050196005312d1d306889220952a99
-commit: 874a0a566ede40f3d6062cae8fe1022e616edd1a mm: vmscan: add cgroup IDs to vmscan tracepoints
-date:   4 weeks ago
-config: m68k-randconfig-r113-20260501 (https://download.01.org/0day-ci/archive/20260501/202605011838.0NbkvDxs-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 8.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260501/202605011838.0NbkvDxs-lkp@intel.com/reproduce)
+When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
+to a PMD check failure, the pgtable allocated earlier via
+pte_alloc_one() is never freed, causing a memory leak.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Fixes: 874a0a566ede ("mm: vmscan: add cgroup IDs to vmscan tracepoints")
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605011838.0NbkvDxs-lkp@intel.com/
+Added free_abort label to release the pgtable in error path.
 
-sparse warnings: (new ones prefixed by >>)
->> mm/vmscan.c:6585:66: sparse: sparse: Using plain integer as NULL pointer
-   mm/vmscan.c:6589:58: sparse: sparse: Using plain integer as NULL pointer
+Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
+---
 
-vim +6585 mm/vmscan.c
+Changes in v3:
+	- Added free_abort label as suggested to release the pgtable 
+	in error path.
+	- v2 had the pte_free() call in both error paths, this 
+	version has a single goto target for both paths to avoid code duplication.
 
-  6551	
-  6552	unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
-  6553					gfp_t gfp_mask, nodemask_t *nodemask)
-  6554	{
-  6555		unsigned long nr_reclaimed;
-  6556		struct scan_control sc = {
-  6557			.nr_to_reclaim = SWAP_CLUSTER_MAX,
-  6558			.gfp_mask = current_gfp_context(gfp_mask),
-  6559			.reclaim_idx = gfp_zone(gfp_mask),
-  6560			.order = order,
-  6561			.nodemask = nodemask,
-  6562			.priority = DEF_PRIORITY,
-  6563			.may_writepage = 1,
-  6564			.may_unmap = 1,
-  6565			.may_swap = 1,
-  6566		};
-  6567	
-  6568		/*
-  6569		 * scan_control uses s8 fields for order, priority, and reclaim_idx.
-  6570		 * Confirm they are large enough for max values.
-  6571		 */
-  6572		BUILD_BUG_ON(MAX_PAGE_ORDER >= S8_MAX);
-  6573		BUILD_BUG_ON(DEF_PRIORITY > S8_MAX);
-  6574		BUILD_BUG_ON(MAX_NR_ZONES > S8_MAX);
-  6575	
-  6576		/*
-  6577		 * Do not enter reclaim if fatal signal was delivered while throttled.
-  6578		 * 1 is returned so that the page allocator does not OOM kill at this
-  6579		 * point.
-  6580		 */
-  6581		if (throttle_direct_reclaim(sc.gfp_mask, zonelist, nodemask))
-  6582			return 1;
-  6583	
-  6584		set_task_reclaim_state(current, &sc.reclaim_state);
-> 6585		trace_mm_vmscan_direct_reclaim_begin(sc.gfp_mask, order, 0);
-  6586	
-  6587		nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
-  6588	
-  6589		trace_mm_vmscan_direct_reclaim_end(nr_reclaimed, 0);
-  6590		set_task_reclaim_state(current, NULL);
-  6591	
-  6592		return nr_reclaimed;
-  6593	}
-  6594	
+ mm/migrate_device.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index fbfe5715f635..0360b410067b 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 	} else {
+ 		if (folio_is_zone_device(folio) &&
+ 		    !folio_is_device_coherent(folio)) {
+-			goto abort;
++			goto free_abort;
+ 		}
+ 		entry = folio_mk_pmd(folio, vma->vm_page_prot);
+ 		if (vma->vm_flags & VM_WRITE)
+@@ -893,6 +893,8 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 
+ unlock_abort:
+ 	spin_unlock(ptl);
++free_abort:
++	pte_free(vma->vm_mm, pgtable);
+ abort:
+ 	for (i = 0; i < HPAGE_PMD_NR; i++)
+ 		src[i] &= ~MIGRATE_PFN_MIGRATE;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
