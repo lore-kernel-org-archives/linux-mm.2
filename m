@@ -4,110 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25EC4CCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 16:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B958BCCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 16:44:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FD2D6B0005; Fri,  1 May 2026 12:16:53 -0400 (EDT)
+	id C77626B0005; Fri,  1 May 2026 12:44:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AD556B008A; Fri,  1 May 2026 12:16:53 -0400 (EDT)
+	id C27F06B008A; Fri,  1 May 2026 12:44:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39B986B008C; Fri,  1 May 2026 12:16:53 -0400 (EDT)
+	id B3DB76B008C; Fri,  1 May 2026 12:44:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 27E876B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 12:16:53 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CEBCF1C0031
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 16:16:52 +0000 (UTC)
-X-FDA: 84719354664.08.3416482
-Received: from outbound.qs.icloud.com (qs-2001f-snip4-10.eps.apple.com [57.103.87.62])
-	by imf05.hostedemail.com (Postfix) with ESMTP id F281E100011
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 16:16:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=q25XdUV6;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf05.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.87.62 as permitted sender) smtp.mailfrom=lukafocus@icloud.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A72196B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 12:44:17 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3EC31C010B
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 16:44:17 +0000 (UTC)
+X-FDA: 84719423754.29.071482F
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1D7B61A0016
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 16:44:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=dRU1Pqg6;
+	spf=pass (imf19.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.50 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777652211;
+	s=arc-20220608; t=1777653855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UgGxl8M14pUS6KDhLcMRY7wJXbhdvbGGNTkbFAyofIo=;
-	b=REHPUOIFq6Ajue63N0w51kljtLoxMQt9c/ETKfS0J1AHe54zQGKQuVqOeN0qRw+/FsI7Xr
-	EqiiVBzoRqUVu0orUztfRsiXa5eaN97g8dwag+DReQ+jC+bj4rw4Mg8SeDt8bf54B7T49S
-	mi0GfXW7D1FpPspN9rhDyJsTFLUM/fo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777652211; a=rsa-sha256;
+	bh=258tSgDmQvsBwqYiudf3HzA2YcVV3/7qcjtUVSy9L94=;
+	b=67oDEydvV4X/QBOj6G7bvpWnVgHLIHtB5ZqllBrixGfHvXUj/0+ZCJR0ufKPf2nKdGsvFB
+	NrC5pSesrTrjCVKGw5aIGtNIMkTglJYyXq2plRZSn5f4iZmieBXXQRfM1wDlz5GVlAYad7
+	4byMJcI0V8fhc5UGa0GLu/34CwS6f/A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777653855; a=rsa-sha256;
 	cv=none;
-	b=57fk/hJkfTYSDlLVvI1XcQfmJtwtu7WGlKlQoJZ+RHC4RQjxVP8ngZOwvYDNDh+ZdN4fuj
-	RF6LuRBh4Xr3ZiRm+/TH4q2PF9O8sxrgJ8sNda6bm+coaDpjkPrnAOeBOIL/T1msgz3p5M
-	a7iHoSm0lXXKYWYp9FBU+znnZxLYyFk=
+	b=v2fA0S5rTw+5VKsA82AZQSgWpjA1J3bSN5LnTRqPTnuTfGYo6amUj+8GvmnGy+3GOm9L4M
+	KoNB5FEO0neLfF8ojEBwm3W+ofru69qrJp+lmxkCv8KazqV4nPFxpRnQpi2D4PFuBvJcGQ
+	xhBkCSY/7H3N2JMFhButE2D93HCeMmk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=q25XdUV6;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf05.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.87.62 as permitted sender) smtp.mailfrom=lukafocus@icloud.com
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-2 (Postfix) with ESMTPS id 19B19180024D;
-	Fri, 01 May 2026 16:16:45 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhAA0MFWgFeAUEdXwFLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEFEYGVg1dE0wLcwRUB10FXVZQAlpLQBMESgZNXw5eHwQXRhlVBEceXVZCHhkCURxWDVdDVARfUEkMQVBsWgBHF0gdXRlZb1BdHA4EVAddBV1WUAJaS18ZXUUPDFE/YEQBL0sqWSJCCHJAUi17Pnkxezl6QHooA04ZDEodUlZbE1UXRgk=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1777652210; x=1780244210; bh=UgGxl8M14pUS6KDhLcMRY7wJXbhdvbGGNTkbFAyofIo=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=q25XdUV6HHEJiVM5xR4bEA+wlvdJ2WgHrnPEJ9Xzxh57hdT1BT4pHkh3zay9tJcl5JKTYJzWHpNAUIciTBcF5h5VFtR/H28RJSiJ3bOoRfxqyjOsrm5m1i2/faJphio2xZ2KQS0lzeVTBGFYPFYNIeo1BlL3y2z2BktvtjaYiu4odoPPoAm+z5pnEb9rA8G6qjQVYdQZax/ytQfm/9aHgUbo7iVcUNlDvBOv+eoKVcS9VoF927+3oaWb316ZkaSWP7aOT1v4ldTIQGSnZ1Z/etqn0GNyYfrXkRlsfnSWGLJXHbL50a1ntFtc/+8lzTgNHCTatP/pkZ7VvoydsBIDZw==
-Received: from localhost (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-2 (Postfix) with ESMTPSA id BA86E180014B;
-	Fri, 01 May 2026 16:16:39 +0000 (UTC)
-Date: Sat, 2 May 2026 00:16:35 +0800
-From: Luka Bai <lukafocus@icloud.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Kairui Song <kasong@tencent.com>,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, Luka Bai <lukabai@tencent.com>
-Subject: Re: [PATCH 0/5] mm: Support selecting doing direct COW for anonymous
- pmd entry
-Message-ID: <afTR48WxGnIpxK8a@LUKABAI-MC1>
-References: <20260501-thp_cow-v1-0-005377483738@tencent.com>
- <b5379cd3-f7bf-47f9-8a60-c7300b4415a2@kernel.org>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=dRU1Pqg6;
+	spf=pass (imf19.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.50 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7dea20cf21aso2020629a34.1
+        for <linux-mm@kvack.org>; Fri, 01 May 2026 09:44:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1777653854; x=1778258654; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=258tSgDmQvsBwqYiudf3HzA2YcVV3/7qcjtUVSy9L94=;
+        b=dRU1Pqg6MSLOQUuldrRxOvIhd/8ULv7cUPE9xDybV9fQB13V+3NHQYGukWfjVPeU65
+         0WTyzY9FzeSE4N4fjdkWFqWXrUJ701KUSaBI0irShzuJaWwtkGt7DSA3/xb6Hwo8uv8C
+         GF8q0LHp/knVNAbZIn5o8rVVwqRxkQjSqF+nNdwmWGRLrSxys1lh5uZd1sRJTKq+aks5
+         h1soNb7j2XkQjMLGUwk+kzTFUevV6zaZXRMaOlxYoGo730lWt4E3ENxv+qw/51iZJPa4
+         VatVhdYk0LCMgGzbsOeHTCJ3qE9jHXlXjGhE707kczy3TgfUbHkrtUjuAJjSbUTayLBL
+         8m8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777653854; x=1778258654;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=258tSgDmQvsBwqYiudf3HzA2YcVV3/7qcjtUVSy9L94=;
+        b=UOrfGtcIFa4kBM2FQzSZEgRPAN5DJnPfYQ468inJSKGyMDMAf2BcIIgb8rJedtPyb2
+         s6+d7DVu7DH+ofRyY8315wXa2x8U7f4amm/yo/GNJfUaIOIJxjCbwW2CwygC2HLoW1NS
+         wQ04GAlRW6Qo2vNs/4LjnTdnLbKwgL1W3tXgJV5klOmYPn8VbLALfynn4nZ5Vi7iof/1
+         Rxqf8lWhfIYrDxGL8vqHM79rYEcBC9q7m3bXVuHNxkL4tVzMXTkzDzRqFe5/xoMbH82y
+         nXMmN186gxU7C2T6E1UR+9a87OSZEcPqDNyZYLad40CY5jCeecPX1VnPwji6kEv8vptb
+         tUDw==
+X-Forwarded-Encrypted: i=1; AFNElJ+/rHY9UfdLym1h4x7SSvVxxoLrWJRpK7rVG8B06Ke/0SzD7h59TsFxyucxIIU+nd+S9W4/gSN+OQ==@kvack.org
+X-Gm-Message-State: AOJu0YylJm06iwVk5vf8tvWodT71fQjXcChh0yI3TEBDf6Yt3N5jplOm
+	NmCo+3UEoIIPBG5LHXH35CaXp1Iorfz7BTHakDhb+uJyBLws00QgX83YuLXSQlQtngY=
+X-Gm-Gg: AeBDieuMLVG7cJjJbK7x7ekI837/FAmsmv8mbe95KhX/79zAasSaam4w+lUG2oMPlR5
+	3Lphc7AQNL7dNM+51vyIby186Ggf5b/Czm2xII9libvHPvB/JlVdSmTdazwSSIwgPja+G9iAORi
+	NaaHd2VMlEhHZT3JUOjN2filMb7n6l6eOhs0ucMyD8RbSxRIDwbakOF8PW5kvFy5q+k109r15EW
+	1EaNOuPJCRt9+iq3Vjuk6lCASotF7jVyGZRRZwLZNeUNiI39QqClPtgSOOtxNuZfzQq1XboXtcE
+	8vGI9emZ5D4KFFLvlyNzGz1+jFkBmCrU6GvSo7s/cwa7ChrlpQUlF3JYOheTjZlPVSyzFbpBrlN
+	oDFuW//ha9Up1/TZbX0LOH6JmR+7XMgIT9zUdrp7xX53WF2ItAjkzp680vIYkMua+gRXfxSr+FF
+	7Ek8sgqXY5+N4qGaTdQIplmZKp0+Ug+V9ARK15v5qIe9Js3ojjpcemNgFUTK24+/S+KLfch6rXc
+	qBkmHO6+oJsLDBdnyw=
+X-Received: by 2002:a05:6820:a04:b0:694:8c67:5cb6 with SMTP id 006d021491bc7-6967a5dbd54mr3873019eaf.41.1777653853660;
+        Fri, 01 May 2026 09:44:13 -0700 (PDT)
+Received: from [192.168.1.102] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43454d8ed0dsm2836466fac.17.2026.05.01.09.44.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 May 2026 09:44:13 -0700 (PDT)
+Message-ID: <ec07180c-665a-4e78-94a4-1670a8bf8efd@kernel.dk>
+Date: Fri, 1 May 2026 10:44:11 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/4] mm: kick writeback flusher for IOCB_DONTCACHE with
+ targeted dirty tracking
+To: Jeff Layton <jlayton@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Snitzer <snitzer@kernel.org>, Ritesh Harjani <ritesh.list@gmail.com>,
+ Chuck Lever <chuck.lever@oracle.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-mm@kvack.org
+References: <20260501-dontcache-v4-0-5d5e6dc71cb3@kernel.org>
+ <20260501-dontcache-v4-2-5d5e6dc71cb3@kernel.org>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20260501-dontcache-v4-2-5d5e6dc71cb3@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b5379cd3-f7bf-47f9-8a60-c7300b4415a2@kernel.org>
-X-Authority-Info-Out: v=2.4 cv=AfC83nXG c=1 sm=1 tr=0 ts=69f4d1f0
- cx=c_apl:c_pps:t_out a=bsP7O+dXZ5uKcj+dsLqiMw==:117
- a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=x7bEGLp0ZPQA:10 a=UaoJkeuwEpQA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=v3ZZPjhaAAAA:8 a=i0EeH86SAAAA:8 a=Ikd4Dj_1AAAA:8
- a=tr256uPD42VStoVvj3sA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTAxMDE1OSBTYWx0ZWRfX2BK81TZ7hv7f
- 6ZYItCAV/kwwQFqAPl2gXT63PFHdPifaGDNaNMYEEDLdvh9nYb3TyeJPUqP2ZXZWA4jBvQZDV3j
- q8aoq7oQsqfODso2mba4dMWPP3FNenojRlM1TdahB05RiwdNgWmH6EKpnkw0LheKHvMX3qTjYDo
- AKfKt4/xEGZTzkL1FMV7H0DHfSJ9ZbUB/oaN+Gmn/M/ycqLkAO38aCMrgLQzOWpiNrn3czdkmql
- 4MljY1FEOeyeT4HAT+y+h9W5dPq/3NQZN1ZMJv6iRpoej6xsJNbqvqUQ41boBcIeFVRxGkrP9cC
- hd5IOP/VNZU0TUsrzK8EWkfFTb5eoa2PBTk+UbCDeFMRyfPPh+n9p5cxoojAQo=
-X-Proofpoint-ORIG-GUID: BoNt6ECAJfAKmyJrQNW1V_En691lj7za
-X-Proofpoint-GUID: BoNt6ECAJfAKmyJrQNW1V_En691lj7za
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1D7B61A0016
+X-Stat-Signature: oqpmrxzee3ntd1ykkpqifkcz5sgc9zfw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F281E100011
-X-Rspamd-Server: rspam04
-X-Stat-Signature: jjnoaxmiffb5pad9jh8qyay8bxss99p7
-X-HE-Tag: 1777652210-640848
-X-HE-Meta: U2FsdGVkX1/h18A4ym8a70ais/JbCfGuBApOF5Ok8oenc5eua95MLhbQVHcxDILEFO6lOrlvtpESPPG9BVij9Kkjs4S36Zt3yuMkkTANKbow5Q9j9wu9i/8ThntqY0gYQDBmRoFBqIVkdzSep7q8hJoeiHBFcxprTL0XPt/eer0AoQDqw2vjSGTViedH0KyEpIMr+cq2JVAF9LgZ0wZYreKdhCPQQNrfEDcoig/u7ckTvaIZVACguJ7OnjILbNyq5bKxZtyrb59dWzek1BflouWzNalvDiAZTDmUGadnxrFtsr2aeqG51M30Ribgf3u6El8m69cG4UgJrMGk3lcwrep7V9WUuaHIePTcViHS2HdLOjy/ORE5x3OG8z81gJTxYCligxhb/B5pF/l5/qY3nsscg7Ma611dSxm/VOiDXIvq1JXD9LaNGpG2y+ISzhkVZ5sltlf9Vl285AsS8iJDiwnVxAKhgzN38zuV/6lvnVt4uw60uQZf0rsOF9WFTpaK7o8BM4xIFjbGJbt9PQQ0emB817NVIAfeY/ktiswnSsQweROC41yyLJzWWO8Fg7ONbXpiLJ3dBBq7KApkFJeRvwt0wcrKD8Fn6G8vvybG0ULQdG9cX47WQE3SijrcGEIu4foVEoLtCMtDe8wnDoEKWmRI0nnlJd2MiOccEiw5mU+C8C1cqus9KUldqObhtrFtt6lfOhLfeG+LVeXete5MBWXirEonSwHxiKuCmo9wMqup923cxe8zzir6Gdr5kAokI9r16iUPI5i2uNf4zmIedL37NYTNxNaZB5rhETqp4UVDJRLK2AORY+Nvr3F7Z3mEfeImGXPFXCEY5nIuqdQy9na/15bg+mC4uA1CXAsYWAMD8+CF2pay6Mls342xeyjY7vI38DQUZKQm9UwkzvTv/kXrYqvto0WwOtlTq2sFaEpiNWsbWFQd5Nes7QMiKTQW9q7cJiwedZT7N/dE9hh
- WXZURCLH
- cdCQHqqxM35JtZ1LDifPWyIK3/VqHmelGfwWdAyN2mUWcntfR1GWHec78/hoW68hhP4z2QtyrdvobphO9t3OwFybNsi/UvOeJNgiugeaeglP/22B37U4aZ2PHiGRgrSNwgKpKbuNfUFUgSfVr1yZhRT7F0kRwHAe5vjuuSV0dTv6OvBuo7FyZKTl43xbebGdbj38XDLrpZzJzZboqb1/iQKL9Ox8TP3FOFrYdVrECkUHepRt6FpoJTkDjSD5hgeLM+2vLnenocvPxKCMDVdf1O1uDxyWF7izm68E623c24e3zVytKlQqJKWrswP9E44E9L2oCL5raG/QPEQVvvpyIflCQMuMy9j1lVyCHiO0SjesVQm/2M9CwuK3JYwE/1PVi4dwZkqQQGtK44d4pbp+kl5ZpKE2TSbFYGSiEFmelWPkC50QRhw3FwsMoKWKRWz5iAgPZixnH0YtPyQSdTHQ2nci5u6/7fVL7dQ+v/6yy4AUkmU3kr7LbsUG6L+HzlTIMrDJ0
+X-HE-Tag: 1777653854-294738
+X-HE-Meta: U2FsdGVkX18BR1lOPBF8HLdOiRu27rCJWzTX3733eEdiQKnPkLRcplTWPCfItzHpjcTvCI+Tt/9e1dvDXVlvlEAOIhbAttX+Gr5rApFoJcfmqqqn2uVThpsNpjXvNh80Lf4pFLXZHx7nQtlOnK6r84DBsbzNsGI2ki2zkd0dnpgeJ4zQmOBNzywylHG+QvG6fraXnTkJSJbcCuYVkJcI6dORrbt5xOztXw4hCGp6TijV/WaGCGaywXU525DlNqKLT8/Gy0g4elCZXcfsuOEgUYDrnwwC+CTtABXPlcRYqcM0yymyRcxaByHpuIndbBF/4995HvncjJZyweu8bpsFat6wJKwiU/fAjRY1vmoJw0Z9no9gMuXJSoq8rSH2A8xFtmy0aax2QVOEktrIVncAMJ96e0RAoTRHl6KpgJMewehb7V9f0jfoazx6nKyX5zR0ghWSuX8pXttzrrlYCSdUK+1c768S3qT0nN6cbfrEUM3BGljocPVkYkaFAihLOGntwgvHfuA6CuSeCkL8uF1i/WcyJUxJ+ybV7X61SLRZHoTFRuhVPRO7qOxuQwTGIQnZiEa/Z10OOgb8MDcU5L3Sby+/BTAVkTsag543WhKjr2uy+sMD2U+icH3R5DYv/tUVOzDqafubqrpNmVw4bJOBkzjiHVIOy6xYqcuRQ9ajyU3B1O0s8DkOlW4LNyHKT2VL5aVeGBf6k6lPbxvUilxj5i26yq4GxDL0cwOXZnoISkpQfaAwtGsqZC1BeK1VB7pcSnBOYjhvkhI2BNZoO8u1YYcOEg2jAItwexaRwLKfEnXaY1cp/szF5QAaq2srZPIbyKt56I8xkCnWm+crAv23Kql6pB/u6w/rw5MOA2CvyxaGdwl/MO9+mF0RNXLr/UXo9IoTcFLOmLJZwbyCQ/5WLLjj9VHTgXoBIv1qrv5K7Hw4D4khyIgjPgyM8lDek787TPzAI3SV46DgCCzoTg3
+ UjzFkPym
+ mgiWFC5wQ9g5gnimnC2KKrJM5/Tm0hSslG93OAKPjdxTru5IT44PbSTZScyEJa8DZfF1XkXqFlrexpHkpuFl+5FYYKPDvp5uqI2BqdaZh7mECiLtlGNhdZzX1OwiwvOPPsnRp1Hmv/GgAyXavJWIuSHVdLcK2ACbyac+4ZwbrNLAzAS+YQzuYX9qlmPbRkvKHlBKmfPt2sBXDsZBI2NYpyWSVfG/A17GPqjCjO4Xf0lZGP/FK/8GOv+TtWQmiXfn27IV9kCO+nNwdjFs0XzXoInVs+/jKFF0MtJcb/ejl7cQk+DDOnfPfqW0k8YPMmWEH6TvHDMcduq2pTzkNvu/y/5gICOzV6KV7zxlOuxgGZqTxNSOem7D1QOAKr+29+skwlfOeViq9IhgEa5swyTWUWwdyUJz89U7gUx/5TUL9KL3RajwPwpkEvo6lZTC0vmdBTDkwJjvmMgYylbhG+I8/TA1pIcxdOn4PbpFEbxOKtFMxdSdU01KDs0TDLSqLmq5GvedEib1YezKM8XSa89diqOrcCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,159 +133,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 Fri, May 01, 2026 at 09:07:49AM +0200，David Hildenbrand (Arm) 写道：
-
-Hi David,
-
-Thanks for your review and opinion :) I really appreciate it!
-I'm sorry that I'm not that familiar with the mail sending in lore, so my
-earlier reply in
-https://lore.kernel.org/all/8F6F0691-91A1-4645-A218-2219DE6047AD@icloud.com/ 
-may be in a wrong format, if you haven't read it, just ignore it, and read
-this mail instead, I also revised the reply a little in this mail. thanks. :)
-
-> On 5/1/26 07:55, Luka Bai wrote:
+On 5/1/26 3:49 AM, Jeff Layton wrote:
+> The IOCB_DONTCACHE writeback path in generic_write_sync() calls
+> filemap_flush_range() on every write, submitting writeback inline in
+> the writer's context.  Perf lock contention profiling shows the
+> performance problem is not lock contention but the writeback submission
+> work itself — walking the page tree and submitting I/O blocks the writer
+> for milliseconds, inflating p99.9 latency from 23ms (buffered) to 93ms
+> (dontcache).
 > 
-> Hi,
+> Replace the inline filemap_flush_range() call with a flusher kick that
+> drains dirty pages in the background.  This moves writeback submission
+> completely off the writer's hot path.
 > 
-> > Copy on write support for anonymous pmd level THP is simple right now:
-> > firstly we'll check whether the folio can be exclusively used by the
-> > faulting process, if we can (when the ref of the folio is only 1 after
-> > trying to free swapcache or the page flag AnonExclusive is setup) we'll
-> > directly use it with few further handling. If we cannot, then we'll
-> > split the pmd into 512 4K ptes, and do copy on write only for the
-> > specific 4K page that we faulted on.
-> > 
-> > This logic is truly memory efficient since for most workloads we don't
-> > want to allocate 2M new memory simply on a small write. However, it also
-> > makes the original 2M page for the process suddenly splitted on a
-> > write which will generate some performance thrashing. For example, if
-> > process A and process B share an anonymous 2M pmd, if process B chooses
-> > to do a writing, then its page table mapping will be changed from 1
-> > pmd entry into 512 4K pte entries at once, so the tlb benifit will
-> > suddenly just "vanish" for process B, which sometimes may cause a
-> > observable performance degeneration. After that, we can only wait for
-> > khugepaged to do the collapse for this area and merge the pmd back, which
-> > is not easy to happen.
+> To avoid flushing unrelated buffered dirty data, add a dedicated
+> WB_start_dontcache bit and wb_check_start_dontcache() handler that uses
+> the per-wb WB_DONTCACHE_DIRTY counter to determine how many pages to
+> write back.  The flusher writes back that many pages from the oldest dirty
+> inodes (not restricted to dontcache-specific inodes). This helps
+> preserve I/O batching while limiting the scope of expedited writeback.
 > 
-> You probably know that, historically, we did exactly what you describe in this
-> patch set. It was rather bad regarding memory waste and COW latency, so we
-> switched to the current model.
+> Like WB_start_all, the WB_start_dontcache bit coalesces multiple
+> DONTCACHE writes into a single flusher wakeup without per-write
+> allocations.
 > 
-> Note that there was a recent related discussion for executable, which was rejected:
+> Also add WB_REASON_DONTCACHE as a new writeback reason for tracing
+> visibility, and target the correct cgroup writeback domain via
+> unlocked_inode_to_wb_begin().
 > 
-> https://lore.kernel.org/r/20251226100337.4171191-1-zhangqilong3@huawei.com
->
+> dontcache-bench results (same host, T6F_SKL_1920GBF, 251 GiB RAM,
+> xfs on NVMe, fio io_uring):
+> 
+> Buffered and direct I/O paths are unaffected by this patchset. All
+> improvements are confined to the dontcache path:
+> 
+> Single-stream throughput (MB/s):
+>                         Before    After    Change
+>   seq-write/dontcache      298      897    +201%
+>   rand-write/dontcache     131      236     +80%
+> 
+> Tail latency improvements (seq-write/dontcache):
+>   p99:    135,266 us  ->  23,986 us   (-82%)
+>   p99.9: 8,925,479 us ->  28,443 us   (-99.7%)
+> 
+> Multi-writer (4 jobs, sequential write):
+>                                 Before    After    Change
+>   dontcache aggregate (MB/s)     2,529    4,532     +79%
+>   dontcache p99 (us)             8,553    1,002     -88%
+>   dontcache p99.9 (us)         109,314    1,057     -99%
+> 
+>   Dontcache multi-writer throughput now matches buffered (4,532 vs
+>   4,616 MB/s).
+> 
+> 32-file write (Axboe test):
+>                                 Before    After    Change
+>   dontcache aggregate (MB/s)     1,548    3,499    +126%
+>   dontcache p99 (us)            10,170      602     -94%
+>   Peak dirty pages (MB)          1,837      213     -88%
+> 
+>   Dontcache now reaches 81% of buffered throughput (was 35%).
+> 
+> Competing writers (dontcache vs buffered, separate files):
+>                                 Before    After
+>   buffered writer                  868      433 MB/s
+>   dontcache writer                 415      433 MB/s
+>   Aggregate                      1,284      866 MB/s
+> 
+>   Previously the buffered writer starved the dontcache writer 2:1.
+>   With per-bdi_writeback tracking, both writers now receive equal
+>   bandwidth. The aggregate matches the buffered-vs-buffered baseline
+>   (863 MB/s), indicating fair sharing regardless of I/O mode.
+> 
+>   The dontcache writer's p99.9 latency collapsed from 119 ms to
+>   33 ms (-73%), eliminating the severe periodic stalls seen in the
+>   baseline. Both writers now share identical latency profiles,
+>   matching the buffered-vs-buffered pattern.
+> 
+> The per-bdi_writeback dirty tracking dramatically reduces peak dirty
+> pages in dontcache workloads, with the 32-file test dropping from
+> 1.8 GB to 213 MB. Dontcache sequential write throughput triples and
+> multi-writer throughput reaches parity with buffered I/O, with tail
+> latencies collapsing by 1-2 orders of magnitude.
 
-Yes, I know this history, and I know that it will cost some memory or latency,
-That’s why I was wondering maybe I can add a switch to it to make it
-configurable :). But I don’t know the existence of the discussion in 
-https://lore.kernel.org/r/20251226100337.4171191-1-zhangqilong3@huawei.com,
-I’ll check it out, thanks for informing me that :).
- 
-> > 
-> > In addition to the problem above, this logic can also generate some
-> > deficiency for THP itself. Currently THP is just a "best-effort" choice
-> > with no "certainty". THP is easily splitted into multiple small pages
-> > on common calling path like reclaiming, COW. A transparent splitting
-> > can cause throughput fluctuation for some workloads. For these workloads,
-> > we may want to give THP some "certainty" just like hugetlbfs,
-> 
-> There are no such guarantees, though. And We wouldn't want to commit to any such
-> guarantees today. For example, simple page migration can split the folio.
-> Allocation failures will fallback to small pages etc.
-> 
-> If you need guarantees, use hugetlb for now.
-> 
+I like this, this is the better way to kick off the writeback.
 
-The reason why I want to use THP over hugetlb is that I need reclamation for my
-workload :). There are many processes in my workload that need 2M
-aligned folios for better performance, and we want to reclaim them back automatically
-when the process doesn’t need the folios. But hugetlbfs cannot do passive reclamation
-from what I know (except doing active madvise by the processes themselves). And using
-THP can easily split the hugepages. So that’s why I would like to add certainty for THP,
-and use THP for these processes as backend, because THP is very well integrated with
-the swap system and other filesystems. And from what I checked,
-it seems the most common case for splitting a THP is COW and swapping so I am trying
-to handle these two scenarios (But coincidentally, PMD swapping is committed in
-https://lore.kernel.org/all/D3F08F85-76E0-4C5A-ABA1-537C68E038B8@nvidia.com/
-a few days before, which is a great implementation :) ).
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
 
-> > The effect
-> > we want is: after some customized setup, if only the system has usable
-> > folio, and the virtual memory alignment permits (or we setup to), we can
-> > make sure we always use THP for it, the system will never split it except
-> > the user wants to do so.
-> > 
-> > This patchset is about both two things above, firstly we add pmd level
-> > THP COW support by revising the code in do_huge_pmd_wp_page, we added
-> > switch for it because different workloads may need different resources,
-> 
-> The switch is bad, and we won't accept any toggle like that. A system-wide
-> setting does not make sense for such behavior.
->
-
-Oh, the reason why I added a switch globally is also because the scenario I mentioned
-above, I want those processes to always use PMD sized folios as backend to make sure
-performance. COW is truly not that common like swap out/swap in, it just can happen
-sometimes, which I guess the reason may be about image duplication. Setting the system
-globally is more convenient for my situation :). I can go without this global switch
-if it's more reasonable.
-
-> A per-VMA flag? Maybe, but I expect pushback as well, as it is way too specific.
-> So we'd have to find some concept that abstracts these semantics. But I expect
-> pushback as well.
-> 
-> We messed up enough with toggles in THP space, unfortunately.
-> 
-> Also, anything that only works for PMD-sized THPs is a warning sign in 2026 :)
->
-
-And for PMD-sized THPs, actually, I’m also considering adding more support for
-COW to mTHP if the upstream consider it useful. And also for pud sized THPs
-also. But I guess I have to firstly handle stage 1: PMD level COW now :).
-And also, since PMD sized folio is commonly used in my workload, I'm also wondering
-digging into pmd sized KSM in the future, in which I think pmd sized COW may
-be more useful then :).
-
-> You don't really raise any concrete use cases or performance numbers for these
-> use cases. Some details about applications that use fork() and rely on such
-> behavior would be helpful.
-> 
-
-Sorry for that, the concrete workload itself hasn't been finished yet. Now it just
-can happen sometimes in my multi-2M-sized-processes workload test. But the user
-of our 2M sized folio schema is actually not necessarily myself but also can be the
-userspace developers. I cannot guarantee that fork will not be used in the
-performance test of their workload since that is a normal posix call. Maybe a little
-overthinking? :)
-I just think swap and COW are two main scenarios that may transparently split pmd sized
-folios, so maybe we can solve it and make THP both reclaimable and stable. Maybe
-that can make THP more widely used in real deployed environment since the resource
-can become more controllable for the users :). That's why I was thinking maybe
-implementing it with setup switches is a reasonable solution?
-
-> Note that an application that does fork() could use MADV_COLLAPSE after fork()
-> to make sure that it immediately gets THPs back.
-> 
-> There is also the option to just use MADV_DONTFORK to not even share ranges with
-> a child process in the first place, avoiding page copies entirely.
-> 
-
-MADV_DONTFORK and MADV_COLLAPSE are nice and great options :), but the former one seems
-to be a little wasteful :). And the latter one can greatly solve fork situation, but
-we have to recognize all the possible regions that may be accessed in performance
-test and collapse them. And it's also not easy to solve the situation like pmd swap in
-for pmd pages mapped by more than two processes. :)
-
-> -- 
-> Cheers,
-> 
-> David
-
-Look forward to your further opionion, thanks!
-
-Best,
-Luka
+-- 
+Jens Axboe
 
 
