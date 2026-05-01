@@ -4,85 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 938CBCD3424
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 14:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78571CCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 14:54:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF1A86B0092; Fri,  1 May 2026 10:34:12 -0400 (EDT)
+	id 965536B0005; Fri,  1 May 2026 10:54:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC9336B0093; Fri,  1 May 2026 10:34:12 -0400 (EDT)
+	id 9166F6B008A; Fri,  1 May 2026 10:54:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDEC96B0095; Fri,  1 May 2026 10:34:12 -0400 (EDT)
+	id 82CB26B008C; Fri,  1 May 2026 10:54:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AC34A6B0092
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 10:34:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4275F1202AF
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:33:55 +0000 (UTC)
-X-FDA: 84719095230.18.70F2C80
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 856F3A0011
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:33:52 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JlLp3nC5;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 739E96B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 10:54:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 282EC1C012A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:54:42 +0000 (UTC)
+X-FDA: 84719147604.03.86DEFAE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6A4871C0004
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:54:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FQhVAhSv;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777646033;
+	s=arc-20220608; t=1777647280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j8jd2Ibhvngu1lVvyqeiKgt0aWWT1GOPQoZ/zlGkZL8=;
-	b=VkXn5yVz7RFd1fLY0QEVZqkk6mecIbm9E7Kgx5ChTHRcsERiFUbtLUOOzv8QQdVO9+G5Im
-	fP6gMPnuO89UbU3jMCBDP70EHdlg9XttEux9SZh6txw/2+/o6lhjSnlhDLZXvV8W3pZ5Ds
-	JADLESLmU3dOBiSjGEpjtoGJwSflRf8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=j445szeXnKmSX/mpPA7u5W8w8TekkaoBxIQ2BK8wRMM=;
+	b=mqNhz5GuI7c9h5dDwjXKiGUm+gl91E5PWjuaQg08N7Q13y/9gPr5558s+E2s3sYWRC/gIg
+	HsZqfxtWLdbK76D98NuRrZ+SzU4C9Mr3ED7y5WdgEXX7dPxBZT+W3Xl4Dj1BqNqGFnr4kq
+	z+/Ywb8Sj/w4L+WFml09UOYe8IkY0gE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JlLp3nC5;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777646033; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FQhVAhSv;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777647280; a=rsa-sha256;
 	cv=none;
-	b=cAkbor4gG77pq0lxsfJT1amrbtIUsqHdYr1CO+xyakWOWladWcAEATH44T6fPtHSL/OYy8
-	hDHtl3ar7tdZ8/NIX+t2SYgyS+DXNHUwfbWs4hjTQPFtdGaTH8pfh4R9doeVHekZ/tWkSX
-	VyvnyZz3oNYooaMOyjWfGein0EB1EgU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=j8jd2Ibhvngu1lVvyqeiKgt0aWWT1GOPQoZ/zlGkZL8=; b=JlLp3nC5QFGk3BtYNoCroq6B0j
-	W8vgg5A36MBeE73KXsh7wwLma6wYSWPSTTkHLwVBwvjVZjFOW3sgYis6Gct1JQfK163Hh61tV4qMp
-	KMEh+6l5BPnjaI49jE5mhay65vaEoA+TXFSkRoeQUI4e1T2jB/Za29AARfRwBtumwLtBW1Ab37L19
-	+bxEysJ3BHvjlBsh9nAxPA1FnJHLJ1h1GRnAXVUn5g+AxhgXfUXC6qFGQx5bOQA1LnB8y2nO/ajar
-	uwjkKWnejgmtab5TkN7pECXk6Zp8p1VfQeopvoT7wj/ei6uY7GislSmeaNeUw/arZYxbGSTSTxmdD
-	KVP2yyow==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wIow6-00000008v1n-2Dtr;
-	Fri, 01 May 2026 14:33:47 +0000
-Date: Fri, 1 May 2026 15:33:46 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Hannes Reinecke <hare@suse.de>
-Cc: lsf-pc <lsf-pc@lists.linux-foundation.org>,
-	"linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	b=EqjtKOQlGse0OkAeD/PtoYQp31nin24vFAZ4p8TWUl+P1yNYbpFtNL+VY4LNIVhk68KphT
+	JjFAoydZRZoK/cxaUm3QTyjAuCq+l+u0sE8/8hbT9kFiyO1XqEZzLU+zaFPC7j3iFduy12
+	w3iht2jzbuoiwvZJnZPUp6pL2RZx924=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 891C6600AE;
+	Fri,  1 May 2026 14:54:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B866DC2BCB9;
+	Fri,  1 May 2026 14:54:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777647279;
+	bh=q0c91woVsg3J+mEvem4ByLKRY6SAAHiSu7FvlL1Tgt8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FQhVAhSvPoU/8cnjtJ3Tqrr/2ta5/7WaC9QbRWCmfKv1N/HZOOtV/quw21za3lZjM
+	 ja+DGAgn/jpzIF2FPzjiXw9HwLJR03N3re4aNIo9LhAK1tP7F4GR1uuOaatYg3HO4A
+	 02P0cWs/G5yGdbJpmXyt9zove9C4cU/ZEcMFt02Tfz6ClUiL9kcJMnhM4BNNjKEuns
+	 r1XnC2Vo0ObO94uN5hEkmBpwuQSu/vIv7VAjYH9TEkhb8Z+KUY6HaA/LsaapSLBaCL
+	 ZLpNzxaIWVhVpDVRA3Qk6nohjQTh3Ra5g6qY4yVM4qvggGLhPEABu8PyhBoEOcrNWs
+	 xThaAdGKuxoDw==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [LSF/MM/BPF TOPIC] Memory fragmentation with large block sizes
-Message-ID: <afS5yn5QreBFQWLi@casper.infradead.org>
-References: <f22caf98-1375-493a-a275-0500ffac3e81@suse.de>
+Subject: [PATCH v2 0/3] userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
+Date: Fri,  1 May 2026 17:54:30 +0300
+Message-ID: <20260501145433.156211-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f22caf98-1375-493a-a275-0500ffac3e81@suse.de>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 856F3A0011
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: snbd6hode3en8i5igbsnftbmugdcpcdg
+X-Rspamd-Queue-Id: 6A4871C0004
 X-Rspam-User: 
-X-Stat-Signature: znmj747u6i5c74kjdcazribpwiui6ip4
-X-HE-Tag: 1777646032-423721
-X-HE-Meta: U2FsdGVkX1/F3VMmScPodhg5LolT5PgMIjUkIJABDp3nuOz4KixLs4yms0H6iY0JGcvbva1EwqPGq7y952xPOt11ExNNKBX7CYMzfQUeQYwCjY4RmsnzqhBKv0jDH7/UFudHTGFG/prl3SeFPG7WC8WySIRI4irvcugcU4q1rhLrpXYNyc6/A68vCYDHf9CueWWvN2Ui8NlVTM2+oEw2RidQNJJaO+G7MSX7qL6MrXDYqqa30/aMilTxYe/mICAGPm17K82NUG4xdg0AI3JEME09wE5NWVRDIJe0h6WwZb7ehKMcm/9OKax+IFVoSRe/yAOOPhSH4YdmloWBLVQbBAQOPTSAs48MgLMFyEnimy2oWaIUMKSAhHw/pCx2UZWh2BUi7L6rVefE1iUchFA0LBsxW95vVcgtcmDUmIXMf7ElQPxEwpXTLWv9ztWeMaoZq0ul3HZZ3zJRDiJMPwoLkp2CxperZOCsbK6jBcrS/qfck78e99L1JTcD1J6rt4b0i8s/Y0J+vAEjRNQMecFQesmLDdFi66/CGhV7gLwlTIj0GG/IIpK0z/BhatDuzQZPCLC/QeBVq++mrmJ307ncT+OkjXAWiUwo66A8SPaA3fBDJwsAWlvw1DX9edbHD66l84YAWO7RhN1qrMfDkQKdKGwn9seM2uhwbvZ627QhxhoprbasgVFSeu+Zg0PcHiXXeTzNZAFAhC/IoZ87EQ4W6JuNxjbAeWgDP/1XQZlnbjxYqiipWctKh0ttCDhqA62IY42p4PRgNIUn8SPX6vhA7W63pzGYtQDCRbNvdPs7JolBsIbTQzqx7l7wSxuCr2uKMp0Sh9oKlKXsiE4m+aly1HUa2+07CHDYQNTnAUwMJbUvTKYMxeerP8GTjGvRCcwdsoUrsVnO64JvuogTf6d4kEyYieLIGGtzOPvpkB96SiCO/wwMXVyMSNqUckgW2g2vwXCzlSLc2F2iRNbAZ8R
- QiDF5/JU
- dRjli+SXtU+DvbXQU1BUKmrrx5t2ENMZBs1UgfN0ZVIBlNYGLRPHxUtuCksI0TS+l1J/R+VWl6NdYVpqXfLiAoQcSr+xGJN8L2NjnuO26u9D0BUfY7g1Vh2DSoplT7WUJBZq3G6hC3K6XkuTSV3nBh9CdxgQ+X6cEdgiwCbGfPzsxUjH3rb0aeIuvoMCGvwGMrbVDEmlgTAYQsltH/UAyojoE5ZEg7JsCgA8AWpWigl8YKBgdpSYp+DnnuI5zJMbspOKTUut3ZbCX0DOUN6J/PJ4iorCHjZauSnLxfBxZxfYxC8wbBGZP4QUjM6sS6xBQDsuX0W/CKneONNmIDwBiPlzVzHO5iljxi13QbFPCfand0EHB2V8rK570pg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777647280-620116
+X-HE-Meta: U2FsdGVkX1+XeRWny2b07aDQ7tbBxtT106gp4n1FFa1oHo14B7cesle6O2NA4tl8aJrKGYRkB8AExbPNnKZjd2yZX3CQiWgUG3527fbQUXmUGo21kh/obW+j18BXggJYZ/XNVyySc/54M6plA5G6ojEBg4JgQ1ZjPb/Dsf0T1oZUnacdO76gxSUaxiJgTb93rDwdRJcDU0Uy/0nqWJ5oUxOyR5BgaZDWwt6UiBYcG49jAm9uDuNTBOXl2iJLeT+uTuJubf8ljL3TwQl08SyPgS9MZrY2KSyaLGM4K0TOJHngMekhgZZ4ZMI417kPVJCVWaZE2GW+qXWLk26kwyCaYfEyG6EJmriaeg9VUvk45qcr/Z1iS5EWuc8kUNJUAWxn3q1kTuBwPgOPVWl6lD1hjp4YrMxS4ss8G4z0QpFEBywB/de67KqK/K0WkMQYf6BFqzSPhr3ENdGkLLZ5ItXbzowF4wdb9Si9ouZP4R7+6y/qkb8GxT8v23E0q1wvVK2y3qY7CrP1rTeNU31p9UXtbAhtshkjjiPlsb+3v/6/TYLEBn0FlGpKVXMPOO+XD1NyjEIlSxRSYykZAcrsop6L3MX/DQG8SxKaASieoikUJGVl6g0RZ1KzVI8zbfLsMT7AliMjxvlEfbEyUoowEtKP9ZcmgzCliKAVmgTEba2GXdPJEyRUlcJr2fvMyNJ+UzSZ2ftvsZF0ELdiwOClcV7WP1zDWmlh5+19bfkqw+64oo82ZJZV6Hgt4gdrpiKv3sPcKGJpDx7MiswdGCw8YqAImrA7Meb/uL/bqXbC6vfTNeTRL6s0jCAXep8knM9Af47hBkVmS6wBETDB2HhmwB3PhKNziEiVdfIPwCO1kYxKkBty8anGff7FynAwma9MlzllYsQc6vdnKlctroyX2/NPRYjP1v+t0Y/4KTWUsFLNRuUE75aQljsBAYFi0JXB08Qo5jWJxWEak+j4QAoNKwT
+ aTwTEe9r
+ QUfBj/zngmhhdLCNkhDXQzIkN7KpnX1zFAGx14w21U7fhnjlWVIyCFosrvnEUpuPaq6LXabz9ANzilAy3hmKjwzc25/57xNfvsfbDRG+dZDN40fyFgDuHDuP9LYahMlfjePy4AHNFlomXHU9uFDxoG0fHOWHysH4xmyHvI2MmH5IcS+YPXf4Y/fr4TaJsxk4LuQHIiatNDphiw2+fZoAQf56cHE3rZAMP4Kp9Th14uLiDDZY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,42 +95,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 19, 2026 at 10:54:48AM +0100, Hannes Reinecke wrote:
-> I (together with the Czech Technical University) did some experiments trying
-> to measure memory fragmentation with large block sizes.
-> 
-> Doing so raised some challenges:
-> 
-> - How do you _generate_ memory fragmentation? The MM subsystem is
->   precisely geared up to avoid it, so you would need to come up
->   with some idea how to defeat it. With the help from Willy I managed
->   to come up with something, but I really would like to discuss
->   what would be the best option here.
-> - What is acceptable memory fragmentation? Are we good enough if the
->   measured fragmentation does not grow during the test runs?
-> - Do we have better visibility into memory fragmentation other than
->   just reading /proc/buddyinfo?
-> 
-> And, of course, I would like to present (and discuss) the results
-> of the testruns done on 4k, 8k, and 16k blocksizes.
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-I think that Rik's recent work is going to affect discussion of this
-topic (summary: with a "small amount" of work, reliable allocation of
-1GB folios is possible):
+Hi,
 
-https://lore.kernel.org/linux-mm/20260430202233.111010-1-riel@surriel.com/
+These patches merge fs/userfaultfd.c into mm/userfaultfd.c and make
+functions used only inside mm/userfaultfd.c static.
 
-but another aspect to it is the recent performance problem reported by
-Amazon (summary: compaction takes too long):
+v2 changes:
+* add a fix for pre-existing bug found by sashiko as a separate patch
 
-https://lore.kernel.org/linux-mm/20260428150240.3009-1-dipiets@amazon.it/
+v1: https://lore.kernel.org/all/20260430113512.115938-1-rppt@kernel.org
 
-Anyway, I'm putting you on notice that I may hijack this session to talk
-about how GFP flags suck.  I may even have a proposal for a replacement,
-depending how inspired I am over the next few days.
+Mike Rapoport (Microsoft) (3):
+  userfaultfd: ensure mremap_userfaultfd_fail() releases mmap_changing
+  userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
+  userfaultfd: make functions that are not used outside uffd static
 
-I still think this discussion is useful because we wouldn't want an
-attacker to be able to make Linux unreliable.  So it's useful to think
-about how userspace can make memory unreclaimable and if large folios
-make the problem worse in any meaningful way.
+ MAINTAINERS                   |    1 -
+ fs/Makefile                   |    1 -
+ fs/userfaultfd.c              | 2231 --------------------------------
+ include/linux/userfaultfd_k.h |   36 -
+ mm/userfaultfd.c              | 2239 ++++++++++++++++++++++++++++++++-
+ 5 files changed, 2227 insertions(+), 2281 deletions(-)
+ delete mode 100644 fs/userfaultfd.c
+
+
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+-- 
+2.53.0
+
 
