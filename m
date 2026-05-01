@@ -4,119 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 158F7CD3424
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 09:49:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9456BCD3424
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 09:50:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68A196B0096; Fri,  1 May 2026 05:49:51 -0400 (EDT)
+	id F15816B009E; Fri,  1 May 2026 05:50:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 661966B0098; Fri,  1 May 2026 05:49:51 -0400 (EDT)
+	id EC68D6B009F; Fri,  1 May 2026 05:50:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5782E6B0099; Fri,  1 May 2026 05:49:51 -0400 (EDT)
+	id DDD086B00A0; Fri,  1 May 2026 05:50:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46B1E6B0096
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:49:51 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A8531A00FB
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:49:51 +0000 (UTC)
-X-FDA: 84718379382.29.C4ABE1E
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2C44880007
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:49:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RKd3GZhe;
-	spf=pass (imf02.hostedemail.com: domain of crisjacobmaamor@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=crisjacobmaamor@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CC8676B009E
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:50:18 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6DE471401C6
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:50:18 +0000 (UTC)
+X-FDA: 84718380516.18.4ABCF84
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A45BF140005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:50:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AE9kxXYN;
+	spf=pass (imf09.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777628989;
+	s=arc-20220608; t=1777629016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=byHariOe/418DnHhAYKU/dMJ4rRms9bwPBY0UESk+2U=;
-	b=hpb5C0n427lM2B6EDXzbMM/CVGA/JEyEmZ61bemy6vBwPIFXqZ5EDXv8vKzqEXL04rWEly
-	qsVmOZYpSaA4Im9kMaKCjtO1MV9BZb9Mb62fAyInfXnaik+pDEMlzM9xd44rE6PDnaKMW9
-	gJdCVOS4hCgz1d2iDXFaxcNQ/x0fNEQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zGE50/qHyVK7VFBRu/6JHAkqfm7V1SKgvV1mRG24AK8=;
+	b=XXmYEG1VP/0W67CitgGniSTdMD9Q25UXSH8VFgVcU6kHxBzi9EVUoMSheiw5TS/1e75dLP
+	ly4mIT1k6//eRkK1U7OH1yvlMRUYXvkgR4DyJBclzrA6jMsGKjibOkaHR8DGbY7/xaZ6Ak
+	n2mbHPEuBPoEwq3bNatvVtaESKg7oUY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RKd3GZhe;
-	spf=pass (imf02.hostedemail.com: domain of crisjacobmaamor@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=crisjacobmaamor@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777628989; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AE9kxXYN;
+	spf=pass (imf09.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777629016; a=rsa-sha256;
 	cv=none;
-	b=BSWOxBluZ2qAdOm2X3dl3DvmbFWDzxcCzBmllbq9aZneQ/QkdlgJzNJc8HHwOb8lzaO6LA
-	kWgbcq5nKvVd6IP3thq8QsEPCUYFDnkatvMvvsSzjj66umjU6VRaIhtLUNvniF6j3JAggO
-	BO2IlyFyjr6uZqB6Q7sv2bFikQOSPy4=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-824c9da9928so869755b3a.3
-        for <linux-mm@kvack.org>; Fri, 01 May 2026 02:49:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777628988; x=1778233788; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=byHariOe/418DnHhAYKU/dMJ4rRms9bwPBY0UESk+2U=;
-        b=RKd3GZher90Ds5540dfKQwmpsV34HEQwKVeaA+clP1yNJD/Auc1CFQkudKZHORwgeh
-         UYZHgcYScrDWX4h5VA2R4x6iPrrb8eQsqd8IkWrl1sOX9cs6dzt6CofZnP/ukpUtX3Lg
-         8C1rJAqyqOP4i/+UtpCXrafwQVv/Ob9JVY3ky8yzv4bCULI6IRHxE7dfmi5Cz1JiHI8H
-         t88PBKwLnKIkAxza37NEWJY/m1EEIZ97FwFGiG3zQQUjquL0tokiBTaXvekrUXbbKdAT
-         m1AjxDkpC6ZyqHrNb8G3bcxDTVP1iXd1EBTsMgkEAStgppHy1BMUCX8zceT7VcNVxKRb
-         TgAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777628988; x=1778233788;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=byHariOe/418DnHhAYKU/dMJ4rRms9bwPBY0UESk+2U=;
-        b=QaUYiv1wkuQlC0ALp86QZqWgsLhpizR2ZDw9X2mAUm4z0mU61LCv7oO939rUGhC3zs
-         chpAdIIoDh05SvZCmHVAhyVolI39nKpoU5TLHXn04GoOsLS3HWoAd6ouorEjbK+W+SM8
-         /PXtI9V3EtHvz1UQrOEjoGOBILfh6tmQqoT345QOoyP4XdwvMJNX7y0zeRbcD3z4fjfd
-         k2n+FOnXjafEzlLq6ggYxFITFBb98PjfhD+9ie/drV/rQ5ugwg2iFQLDOXti0zp8W62y
-         E/srpwztWb8txBWZsdY7dxPdu2VpyzQY4Rw2JaOW0z3AUCUhLpaWRAXunP8x6QdTa/v9
-         Sq6w==
-X-Forwarded-Encrypted: i=1; AFNElJ+8/oUyR+nsbu1SxKn+CWU0VEa26urqnyRzBMBZcqvDKw9I/2bafbma9LeN5SegBw+7HgHo9wDQ5A==@kvack.org
-X-Gm-Message-State: AOJu0YxxmuOrS7Rf1wKrqNgOUQeDU1S3VcklHHP3+emP/VyNduAraKX3
-	r7RJF5Gey3WAnks/iVQdkvICqwmJkD6Ewh0PSVRdUz2oCg2jgQb1F/MD
-X-Gm-Gg: AeBDieteeM1JdiCiZjpQwdNcUlfjybxdPLmCte7TnL0rsy+wC5KWNkrjgBdLgydmnCm
-	WJfNBvOv7Ix5RpHFM6ULcp1TX363E2cKo38/a0zYM/hNstJHu5y1J7gAoPI4pcnd6o4Bb8SOLNY
-	JU2H0/GTHHiHnzMKq103LzisOF+5/AuShrbEJ+0EfKZI5Fc297i6MSMg7WjHRJilEB/yXVPicC4
-	AVChQv1jIKu/d1CJWqdp/9u9Fca9rku1n44nDlzAjHqMokUKfwEUEO2FTDMN0q3oWUbkjN0CAHd
-	u96HldtN3Q/81HUeWGdy96M6pr/7SLPvxWRLl2fHXF2vBicAyG1DCZ8dGpgqbtIdW7LKmZ/8gv4
-	ocACWyJymHa7AY2c4oV8UlgLkIjOkRCpkLZVW8f44OqbMJIJ4UPLHRknqDooD9xvw6p5pKnPRvv
-	NFgSUtlcvjQmwHgQP9ETrVfaHcI30nukI2/6BS/Q==
-X-Received: by 2002:a05:6a00:3cc5:b0:82c:9c47:fef9 with SMTP id d2e1a72fcca58-834fe05cc9bmr8047701b3a.2.1777628987950;
-        Fri, 01 May 2026 02:49:47 -0700 (PDT)
-Received: from laptop ([2001:4455:8025:be00:eebe:247e:613c:24d7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8351582dd55sm2042729b3a.1.2026.05.01.02.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 02:49:47 -0700 (PDT)
-From: Cris Jacob Maamor <crisjacobmaamor@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RFC 5/5] liveupdate: validate restored LUO FLB metadata
-Date: Fri,  1 May 2026 17:46:37 +0800
-Message-ID: <20260501094637.38650-6-crisjacobmaamor@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260501094637.38650-1-crisjacobmaamor@gmail.com>
-References: <20260501094637.38650-1-crisjacobmaamor@gmail.com>
+	b=EJVjwuxu4X+AfclDQ8ux1SnBRJIZ/1vaJNO+suHU2SiQ45gQ1jW3n52gftMTmAiLaochzE
+	0ZAo6a6HN3+AZ05RRyt4Fq6cPuvILtWm95eeLLwSeISt20PvkBuyLocXH3cdkBuTWOTxKd
+	mdyF/VrAcBBKpcWyPFw9+x1tq/WyQ6g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8232D60126;
+	Fri,  1 May 2026 09:50:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72166C2BCB4;
+	Fri,  1 May 2026 09:50:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777629015;
+	bh=mP+fXN+cyH0QE8nS6Oz/OpXZk5m+VMXyOKE7LaxfOhU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=AE9kxXYN20in1PQFB2FIpDD/FJhdX3b0QIsQhWSW/y+KVKeacFOn77Kb5GLGO4scX
+	 oPEOSW0E6fkR7txGW6BEfT8w1rFqRrIizIjWxqqGfGfYsc6rBwf/xRzCfv5s51lOkg
+	 JeSCM5r/0Cmoz3Xlq/lcu8q5AF6qf3wzeXmpJ0WATmoogcxXvzOeH5VcaSmZfMvncF
+	 QTR+VwLGUQFOTB4mS5Cj9ZIypNANkJUvY4kpxsm5pFTYxvBKuAqzVKADw67m6soE0p
+	 tKDFjSqChmG2h+NhIjYIMhFLmoWvOyh0qK/aEVy5uYTuzpTQMKjqY+eiTe0MkHnUwU
+	 fpnG7OfavuC3A==
+From: Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH v4 0/4] mm: improve write performance with RWF_DONTCACHE
+Date: Fri, 01 May 2026 10:49:34 +0100
+Message-Id: <20260501-dontcache-v4-0-5d5e6dc71cb3@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23MTQ7CIBCG4asY1mKA8tO68h7GBYWhJRow0DSap
+ neXdoXR5TeZ511QhuQho/NhQQlmn30MZfDjAZlRhwGwt2UjRpgknFBsY5iMNiNg0VIKzirQrkH
+ l/5nA+dfeut7KHn2eYnrv6Zlu13+VmWKCqROKS6d7rvTlDinA4xTTgLbMzGra1pQV2vHWgqGgh
+ Ox/aFNRJmvaFKo66BtldSe4+qLrun4AkWURtRkBAAA=
+X-Change-ID: 20260401-dontcache-5811efd7eaf3
+To: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+ Ritesh Harjani <ritesh.list@gmail.com>, 
+ Chuck Lever <chuck.lever@oracle.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
+ Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3840; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=mP+fXN+cyH0QE8nS6Oz/OpXZk5m+VMXyOKE7LaxfOhU=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBp9HdOa0u0OLd8ip7GlOCc1ttZzER5B1Il5CNrT
+ xGtvmsi4EGJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCafR3TgAKCRAADmhBGVaC
+ FRLQEADXbJsWzNf6xlledXUOy4FvUKU8SNZY54YjBCf4Tqyat3f9Aqy3BEgKo6q7+9sMAYmLriK
+ IcCUN8Mxxc1XGR4srl6uTf4vveaNzepzTMonBen210IBhm6zmDL92iiCj8AOKBNgtidBze0Nfg7
+ XMwsdicxH66RXnSM/y3bdrcJRUAHk7M6t6r9LZ12CfgApcCGXPqW6NwzAg/88A962tDl2/oep6B
+ 3AoHavnSpi0gYi/cW5IJIKQ8g/M93LMGBTBR8x+VjawVyAkG2+gb56ByCAdgUXSRSdzHZ3BG2KA
+ bTNHgPx2Y2O/aRQ7wzNg9HxrHVBLqwEG12Iq2cDTwkd0p+KV+05CmEFCcWUQRxCukhf14wzbP/P
+ gGDBiUf33lezTJldqtLhyzYaM/hsP/r9RgwvRMNzxR/pKrqSd1Erras6As2sPPoy2tfcJAEWqe1
+ udk6X9zFA/aZxWdvomoVRtCyjBQ61mMDXGl9EdqiG6Xijms0CxVKS+gjhu4+cLRBMRihWt1Zq7O
+ Ue78ljy0nFc70iCld6I06SO9cMgCMmHKgUPtLOtHeS9xGwmERx5aveG2jYpk7+NnRmijs2I2B9y
+ peFUXvIYZIO5daBqodbpTUSmHwa3QhPF749nVazDzaEO2YXrYC/QAIRNRPZe42Nmc0N/4zfUBvY
+ Fz+6DJkvsj8mJoA==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A45BF140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2C44880007
-X-Stat-Signature: q4rgcyec14xa5kfx4xgifcboxh8py8bx
-X-HE-Tag: 1777628988-225775
-X-HE-Meta: U2FsdGVkX18pZyzsfkd5jWWRw/pU3lnjlv/Z03o1EsUD4gNwAT2Z3jkoKel0eu9tEIzNGdDWFW8E08UUFNW/ixgH/sXe14TKMh9E/jsjUqQFdrKt2EPRl9eiDTkla4EzEbdqeGDq7DZgNLCwKbEzXQKxGEo8Fn3vVGbAVLNjb+L3ki0UDQL4dygE0pUyMHNHMSPcY6AGg7t1dbmaZrrGHmOnjEYkWtmHHQtYRjcF8RrOZYaEMGOs+200yudpMMVzTNejVBYKGoaCNLNs0UEEs+xUfx1EHWjCcAEEqPkr9gjdJOeD4eZMUvV6Pmed47E26IxLrlooJaFEtp7PWha2h5GRLu6hvXIsuyzkXhq8qG3cV7YLdQJF32mQwrHy8SzGSdYqryT2HcIlYlC6OtURO0CzUmoxoTO6VP1B+69BIUGs0aIgJ8SZjkSUipPNKdt5ibaVWqcOk5hAH4bdHK75FWs9v7R5d6XVlnaZMDGBZ/OVWYECJrO9yL12H6TxH5rPik3F06QcjbOKr4HRPfUEuIri+gcIlNHSY27tcPIVWzmru+MXpPcZOgQNm/Hh2po67H+HkjCe8lRobRDYUu+PhiHrSaTI+2QxgH2sJWMSTLI7e9JqZ1FfwgJoUXuM6WKI4alvSa3fq4dFirnv2SD6cD7UkN2Of2kCcuY+wcs20NGsh6sbm5eDZ1C9L2c+Vvodv7hd4HmZX0jSY9XqAqVvxfkr3v/Zi6fBo1YyalNItg4ASKXh1u59ZUSgqfJwuSZBJ0RP6qGiJdfxzmOew1VIgvu1Et+5dLS3bGXe+hX7j5EOeuNhMCSEEsjg7nKhjy+HImiQCM4ELbMvWOqQR0EKSJcqoq04m3YqXx9fvpAArWVDB4U73l7TrPWvSkIE49DhqPID7VpidFd3UqqU85+NXbso+55UECBQE5HW5tCllnpo9ayo6fmIy7kl4NSjT6odfGSPO5YCcMG/OuyeX7K
- MVxXJKxF
- OcOPAzF7PS4isrDwdDVvxll0jKCe5qfJQVkz+uw8kbcyqQZMjawgTPhf4axdcVrxBRguXRDAaLgBibq902PL1uk4kC8DUjOaq4yuxKFjqmebGLUjWdv4DIpCTQfrLfjx94+7TkRwPgIFJw+KmRNTZvZJ5mLHgWW2wvZn8O28BjPkXISwxkBfAgcMwaqzFhibviviD1Yrhw5WpI5k1QIDimFjU/kfWy72kfIQd5q0ncQWPv5xhjsQBNHJQRg643jjg0XVQKZ0eEZrM08koj7vq8kNE+j++my/8y/Fr2r2UFlszFNRQW0ohwCptc/9QNST6tcV4/BsmcNy4fL/HvyxdcEt1yulQrfq21gIWI12Uf/XnPwuSQVjt5Lu+Fuzpulggku6Z7IyJANcufmearFzvGVY8vw84jC8P/jjN
+X-Stat-Signature: crwdptddkoqeqmdrz95cyz6kc4wshcen
+X-HE-Tag: 1777629016-330282
+X-HE-Meta: U2FsdGVkX18eYs+MxMhb/0I6iAgAYMl9+qATUbXspfNiudk9WToVRLY0qwo7RFx+Bgqn8i9IymBARJ+vhOG3lMXhwxrfEOQtq9IVR44isNi0Bqju9PTJjxnjq4eVWBnJSQUZRoLXRRKrB4fzYPWBOp2szcPFR+d4AAthV7whfyQ5kaJ5wnPZ1qQjcbbS3FLdVfxrMB7VjPgRBEOqWDz8t6JzXzz6D2T4zJG/lLtF4kWtSb8oQ8rimNt9yRWPzMOjugMMlRLx/jvwXwPg5D9yeyZbyz6p8PsekQcaEnw8pqjj27bWshVdM9rsea8REbZ6SFFtN3cCLmKunZ3U61RQrSvxgV0VM+pIDrS/gxvSV7cQqalgwzi4D8C7HgWRgISj+Fh1gsvDC6HA/pfdQOrY9K7vVwCIIWwj3ojazAybVBcg1yBSy92j1w/ORR7bbw1zd+ljfvUHqGOO8SHCT6+PYfYZCqBOWu+zvms69SNxDF2NQjdcRoBpTpzQkLcQbmuYvrem4rj4ajn/VbPVgB96lPXAlE7QaeSdna+xcThn9kFw9/HqJB3ysvGtsk+k6gDbInnG4cRMcmyL8x+n88RFnSnhmRHAkjernWVhGXTpe9m8ZSpcYQuuY+bgRKpgqV+GBpYy5EesKVGDkuFRzeZ7bTpbfpG7zWDbz9hZwVzI1zVt0R4mcnVHCD44U24S5tq1T3jVT5TCKx5/oCtrXrRF5iXWuw8iQjM1hrWbHmyNwbCFgBAOUaR7TQBvRmKsAJTe77OoE6kJ6pS+97H2etVXbcbosk9IGzQDoVNA6oNJ+FcJbAuSzUhqiYc7YcgNd1sjTPK+pDWVtWDIDwekSoGMWlwhI7+qPQYOOJCjMOS9nV9hrXJLz/sSLyoBXnjaGVP5mneI2xIGhBh8/yvoZL+cQB08WwEd3MAu3nopX+7Kr4I8jw+6u8cBmbkZapyuqD4N2TL8EuELNGlPiidEiTR
+ C7muhvps
+ Wo1d4i40V6alazRJi2lldR+Z0i119FZVO8aBpTL/IogAzx9Kk3JNwygZoMgr4bpc6vzCXBH7PrOSGU9pGwRrSRKGJ4CH9P01K1aBQGDfjYYLKIm2RIuFyBdJWl0I87gq7aUC9ng+tMZdjBtX9ZoP9NDbE35KXC/IMzBsp1WIEcIPhNvs85l8ZOBftwXTEQte0TTyRnmzk6ckHGtvsjq3pDeFynM5wzFjNI7KOVd5Nvv59hqZhTrvpHU8jIQ7ctGT/qrNZpt39uj0cz7H9/Ec+gyaU/OMEGO0rfHAigqbMoM0yQmo3vYS/087PVuwsg+Iw2vcy6N8cfjYHjQT+CPIzeTUQCfbsD5L2xk/K1HLDTYRCFHM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,61 +121,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Signed-off-by: Cris Jacob Maamor <crisjacobmaamor@gmail.com>
----
- kernel/liveupdate/luo_flb.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+Here's a new version for everyone to contemplate while traveling!
 
-diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-index 00f5494812c4..e80032669cea 100644
---- a/kernel/liveupdate/luo_flb.c
-+++ b/kernel/liveupdate/luo_flb.c
-@@ -162,6 +162,7 @@ static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
- 	struct luo_flb_header *fh = &luo_flb_global.incoming;
- 	struct liveupdate_flb_op_args args = {0};
- 	bool found = false;
-+	u64 count;
- 	int err;
- 
- 	guard(mutex)(&private->incoming.lock);
-@@ -175,7 +176,14 @@ static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
- 	if (!fh->active)
- 		return -ENODATA;
- 
--	for (int i = 0; i < fh->header_ser->count; i++) {
-+	count = fh->header_ser->count;
-+	if (count > LUO_FLB_MAX) {
-+		pr_err("Invalid FLB count: %llu\n",
-+		       (unsigned long long)count);
-+		return -EINVAL;
-+	}
-+
-+	for (u64 i = 0; i < count; i++) {
- 		if (!strcmp(fh->ser[i].name, flb->compatible)) {
- 			private->incoming.data = fh->ser[i].data;
- 			private->incoming.count = fh->ser[i].count;
-@@ -620,7 +628,20 @@ int __init luo_flb_setup_incoming(void *fdt_in)
- 	}
- 
- 	header_ser_pa = get_unaligned((u64 *)ptr);
-+	if (!kho_is_preserved(header_ser_pa, LUO_FLB_PGCNT)) {
-+		pr_err("FLB header is not KHO preserved: %#llx\n",
-+		       (unsigned long long)header_ser_pa);
-+		return -EINVAL;
-+	}
-+
- 	header_ser = phys_to_virt(header_ser_pa);
-+	if (header_ser->pgcnt != LUO_FLB_PGCNT ||
-+	    header_ser->count > LUO_FLB_MAX) {
-+		pr_err("Invalid FLB header: pgcnt %llu count %llu\n",
-+		       (unsigned long long)header_ser->pgcnt,
-+		       (unsigned long long)header_ser->count);
-+		return -EINVAL;
-+	}
- 
- 	luo_flb_global.incoming.header_ser = header_ser;
- 	luo_flb_global.incoming.ser = (void *)(header_ser + 1);
+This patch series attempts to improve write performance with
+RWF_DONTCACHE. The main justification and benchmarks for the series are
+in patch #2.
+
+This version implements a scheme that Jan Kara and Christoph Hellwig
+suggested during review of the earlier series: after a DONTCACHE write,
+kick the flusher thread to do an amount of writeback proportional to the
+amount written, but don't target any particular inode or pages when
+doing writeback.
+
+The second patch in the series has a summary of the benchmark results.
+This seems to markedly improve RWF_DONTCACHE write performance in all
+the benchmarks I tested.
+
+The benchmarks I used are in the last two patches. I'm not sure if we
+want to merge those into the tree as they are (mostly) AI slop. There
+is probably a better tool for this out there.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+Changes in v4:
+- Track DONTCACHE dirty pages per bdi_writeback
+- New benchmark for competing buffered and dontcache writers
+- New benchmark replicating Jens' original 32 concurrent writer test
+- Link to v3: https://lore.kernel.org/r/20260426-dontcache-v3-0-79eb37da9547@kernel.org
+
+Changes in v3:
+- Track dirty DONTCACHE pages in the VM
+- Have flusher write back a proportional number of pages after DONTCACHE write
+- Link to v2: https://lore.kernel.org/r/20260408-dontcache-v2-0-948dec1e756b@kernel.org
+
+Changes in v2:
+- kick flusher thread instead of initiating writeback inline
+- add mechanism to run 'perf lock' around the testcases
+- Link to v1: https://lore.kernel.org/r/20260401-dontcache-v1-0-1f5746fab47a@kernel.org
+
+---
+Jeff Layton (4):
+      mm: track DONTCACHE dirty pages per bdi_writeback
+      mm: kick writeback flusher for IOCB_DONTCACHE with targeted dirty tracking
+      testing: add nfsd-io-bench NFS server benchmark suite
+      testing: add dontcache-bench local filesystem benchmark suite
+
+ fs/fs-writeback.c                                  |  60 ++
+ include/linux/backing-dev-defs.h                   |   3 +
+ include/linux/fs.h                                 |   6 +-
+ include/trace/events/writeback.h                   |   3 +-
+ mm/filemap.c                                       |  13 +-
+ mm/page-writeback.c                                |   6 +
+ .../dontcache-bench/fio-jobs/axboe-write.fio       |  14 +
+ .../dontcache-bench/fio-jobs/lat-reader.fio        |  12 +
+ .../dontcache-bench/fio-jobs/multi-write.fio       |  11 +
+ .../dontcache-bench/fio-jobs/noisy-writer.fio      |  12 +
+ .../testing/dontcache-bench/fio-jobs/rand-read.fio |  13 +
+ .../dontcache-bench/fio-jobs/rand-write.fio        |  13 +
+ .../testing/dontcache-bench/fio-jobs/seq-read.fio  |  13 +
+ .../testing/dontcache-bench/fio-jobs/seq-write.fio |  13 +
+ .../dontcache-bench/scripts/parse-results.sh       | 346 +++++++++++
+ .../dontcache-bench/scripts/run-benchmarks.sh      | 643 +++++++++++++++++++++
+ .../testing/nfsd-io-bench/fio-jobs/lat-reader.fio  |  15 +
+ .../testing/nfsd-io-bench/fio-jobs/multi-write.fio |  14 +
+ .../nfsd-io-bench/fio-jobs/noisy-writer.fio        |  14 +
+ tools/testing/nfsd-io-bench/fio-jobs/rand-read.fio |  15 +
+ .../testing/nfsd-io-bench/fio-jobs/rand-write.fio  |  15 +
+ tools/testing/nfsd-io-bench/fio-jobs/seq-read.fio  |  14 +
+ tools/testing/nfsd-io-bench/fio-jobs/seq-write.fio |  14 +
+ .../testing/nfsd-io-bench/scripts/parse-results.sh | 238 ++++++++
+ .../nfsd-io-bench/scripts/run-benchmarks.sh        | 591 +++++++++++++++++++
+ .../testing/nfsd-io-bench/scripts/setup-server.sh  |  94 +++
+ 26 files changed, 2199 insertions(+), 6 deletions(-)
+---
+base-commit: 26fd6bff2c050196005312d1d306889220952a99
+change-id: 20260401-dontcache-5811efd7eaf3
+
+Best regards,
 -- 
-2.53.0
+Jeff Layton <jlayton@kernel.org>
 
 
