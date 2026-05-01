@@ -4,89 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0895CCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 18:30:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9A9ECD3423
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 18:31:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB3596B0005; Fri,  1 May 2026 14:30:52 -0400 (EDT)
+	id 1CD3B6B0005; Fri,  1 May 2026 14:31:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D63FA6B008A; Fri,  1 May 2026 14:30:52 -0400 (EDT)
+	id 155FC6B008A; Fri,  1 May 2026 14:31:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C53176B008C; Fri,  1 May 2026 14:30:52 -0400 (EDT)
+	id F39806B008C; Fri,  1 May 2026 14:31:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B42986B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:30:52 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4D1AD120222
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:30:52 +0000 (UTC)
-X-FDA: 84719692344.07.E570F05
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E3E406B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:31:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 940B21A0237
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:31:24 +0000 (UTC)
+X-FDA: 84719693688.05.889F23C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8315118000A
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:30:50 +0000 (UTC)
+	by imf24.hostedemail.com (Postfix) with ESMTP id CC67218000C
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:31:22 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hN3HLiBC;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UOXBGZe6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777660250;
+	s=arc-20220608; t=1777660282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pjGGpfMmkLT0fLRNYxylZcbQxAkgKUixFRAvATeNI/o=;
-	b=z8g4WMNVe4DVfbamk0faHmnWQXmpdCs+bTMmk/fw6L4EsFwLmF+S9sGZ0Qdb8wEC1aQOtx
-	KCSoZNVpmhzsriUubrOL1NI1pZ0XA1ogF5pDKNEIRTQttRHHA4hwgqjKv9nZ8Xvrz0koky
-	qcZbLGNXbhmt/cBtUJAOyY+rTSL5Yoo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777660250; a=rsa-sha256;
+	bh=Vcit5VCNr9VXoMcOQyhMxOCECO1DhozwDepgc0vBmFo=;
+	b=svMWNO2o9Xzcnxb7LmWOemkzYzbiCK2+pe/il7TvX2MOKUF92in0CWzhUoVPwDGyR4+fdH
+	0g1EEMq0adl41t35KLr9lX0bq7rdfCYSkef+eTOdjIdgGvfEITfQfBnRZdzQVF5qxhAfeG
+	7BNNOQy6k96FER83hx97SVN3ROziKNg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777660282; a=rsa-sha256;
 	cv=none;
-	b=A6A8KQ0PMfbNqMVzkUcR7MpwRUM+p1+yGQd+tCZ3Ma3GBGt6QtsfK23/mqD+7dIOGIFIJ2
-	oQfWdt7y3A8DVsLQiRH3IFw1Vk8EmVl9Sp35A+ppfJ37YMwoehvIUj6FPG8NWYBdL6DjNq
-	ysg/enJxyH7NUx5iYT+/iFOGl967ueU=
+	b=wbf8nXvaMc8CSPXQFq6WRmtikKlzErdOqXGJUL7f2zTrMy0qZr17jd1WJQYAOs9NRFxXyJ
+	y037WNKb6CEO/Lc4pc7dPsfDbECr7C65cfco+UeR2EqwvznoQ2Js7CvzSNEKMB/Wp7mLbI
+	xGxUSfqbpKqtPFzJX/aUTbNP+fis8/E=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hN3HLiBC;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UOXBGZe6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B3AA26011F;
-	Fri,  1 May 2026 18:30:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71587C2BCB4;
-	Fri,  1 May 2026 18:30:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E931600CB;
+	Fri,  1 May 2026 18:31:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784FAC2BCB4;
+	Fri,  1 May 2026 18:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777660249;
-	bh=MvOC25XMd6Pzmb5m65jh3SGYYAXGbC6/swCh9j1k4nY=;
+	s=k20201202; t=1777660281;
+	bh=pdBhaxoq9o0qOnN+Yknh2CCMcfvnW5ZHZ6zv+m7ScGo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hN3HLiBClFE8t5eZe5W59y6m21vYvdp+0Y6p59AluP72u+jL30K+Q8Q1dakOnSQAa
-	 5aftawxIpxvA9fWQK2NkuiDFKJRrMZbkN/aawxU8DPbnSNuA+a8VVz6lvy0CdhGJU9
-	 xrkFjemiauwDCAgfbMFlvK63NLtBAP5J5+Hz9LS2Mi2/AEF9OXc+Ym/tmLVq3LQyFb
-	 FHcUMiCKkd8DDikLZ5CtKpLmOcjAdWu1+gCwUTaiQF/ZrgLo9p0Ka1T9CHzBbqzK/9
-	 h7pgTV4F9ZoZZiS0QmyHVQfBII5QeXzSFTEc4i6qzZrBNIVXAYg0fOuNSEtTU0Wh62
-	 e2CkwxhtkLGSw==
-Message-ID: <785b6164-aa71-4fc4-a4f3-f4977b7db30e@kernel.org>
-Date: Fri, 1 May 2026 20:30:39 +0200
+	b=UOXBGZe6HXDI+9k+t+hX5vdUraYSAXO+NVzKvsffxxj7bXprDVSL25/ZCs4DdzUvz
+	 X123NOs0cSox1YxiMi4GCXX0Hc17eXiZuocwo5xJY/4BVLGWSUmjWUyVP3U41g/l6O
+	 YQ7BmuBRFuTBayQXI/dV1x0fEqxDPHtIobSL7lrzK+I4/7yHiFiow1vLbhMlJlkzKP
+	 VpO2TdqwBFsNmU22PgI22Q1LbxR842MEDI8Vbygr5/O8U0d9WgCuvFpxSo+tfQHprs
+	 QgT4Squv+NgLZhFY1zEFkTMzn4m28zoCZj7yUCNokI6l3SB5s6MQxyMuiCrBfTnDON
+	 kvBriNzWnbsuw==
+Message-ID: <36e39a90-fd07-4458-b17a-4e7c176dd4dc@kernel.org>
+Date: Fri, 1 May 2026 20:31:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] mm: Support selecting doing direct COW for anonymous
- pmd entry
-To: Luka Bai <lukafocus@icloud.com>
-Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Kairui Song <kasong@tencent.com>, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
- Luka Bai <lukabai@tencent.com>
-References: <20260501-thp_cow-v1-0-005377483738@tencent.com>
- <b5379cd3-f7bf-47f9-8a60-c7300b4415a2@kernel.org>
- <afTR48WxGnIpxK8a@LUKABAI-MC1>
+Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Usama Arif <usama.arif@linux.dev>
+References: <aZcmlIF4bmG0twkp@thinkstation> <afTjKnO66Hl-XmfW@thinkstation>
+ <01ea8acf-69ee-404e-8785-59fb0a527253@kernel.org>
+ <afTstzZz-36KxthJ@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <afTR48WxGnIpxK8a@LUKABAI-MC1>
+In-Reply-To: <afTstzZz-36KxthJ@thinkstation>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8315118000A
-X-Stat-Signature: cuabjjg3m7i9h7k4w1hsrxf4xc46z9ef
+X-Rspamd-Queue-Id: CC67218000C
+X-Stat-Signature: aatbaf6335fsaefcc1jj5r8dy9xretxe
 X-Rspam-User: 
-X-HE-Tag: 1777660250-270447
-X-HE-Meta: U2FsdGVkX1+XY8n8i86R3wEoYVMgPExH8htgY6M0D/MZqwCuoUA19Om/7Ijz/AM93NTDmfcqds1yWWfRCssRzrKoWgcJN4x8z8XgRbi0bBI01g01PODJ5ox0leFYa9cYDxx+j74wm8en1Py2S1/CQf7GVRq0e5AoCrPXdivvJWRBMFmcYMWVCRRO2FIdLs+qV9ORGHLNjYtIbyVxxGND/6PTCVmrMASe95Hwhf3D/umc6fspINFKWv3094o05At5ur+OPD+wr2Vo+/1F7VuwqqSmipNUI47iEoD6vKCYAPwYYjZIG8tZmCMzQS6VkrlwigwyXC+2ZBOuvUjrfsir7IvGTjYc5BhVOtkBF97hS3XEkkjd699MBOh/iBCWBWFauNNab+3ET8GvXlqSY0ikcbazktXHtLtxjPn3SlRUyCLHGzLRj8J7hwjFEijNdFV4eYXXH3P4ac7Fg5kKBVeJwOz0sMvKAcgeLEMzhqvGa97ymqZ3f/HEHc51JaueFjlnqj2Qfo8PSvp3iKTLnmRMAQo83U2VfFkSMRLkFfVl/4wz5/yeyfZbu4FGgBRmlI9eyXi5tmLkGvujlg7+V3aKZNotUesY8q3uM/513sWy9FVoFKIPij8hiAs5X6tW5/exhhAiZqccbAooR5+11pf/ynYJtbb+AdrcFfslET0ilTaS4Oh/nBVwdqqRkFEU8VnFSggjavwoQZK/jUxKaEcdBCZkg5Jb6on8nhOnVVVST0Upwx5jP+8AYmrOJlfGvAcuWIqNcE7oQ+UTvxS1wgWYsjf+W2I3GBJouQ3HgzLGG3aN8jTWgEzKIemjIRx0UasIgE6TNzyluUU9ZDDQOVBr3cHYF/21XJJARBFCz2c+7GC59QS+FYcS154uXM2ZSYjrqAvnSkyilpmJc+oVuJAIACgdFgmDDqfJZqxnO9crTSg3ualQQ3VZjjhYaMoEU9ZlAflKl05dFwZNnd522oj
- 2b97n5EO
- AcptBOjx4OTTz9tNp8RbkXstGE9ozqcCegeS4ZHF2hVFi4HIqSfwtDIevcaOsG8fQBfedUS+DAVx68Bs24z8k4CdyewXy5k7WYc511Q4a6A83byLkkDazv7SYLYRY1+m+LcGjaZ2KWJPb2zzVIKZKEP0DlpFFr9N8jRcQpRkPveM0xH4hi1/eJL2ThbNuL955gi1YHmMovITg96CQzBbYHDMD1b3n1iFfUPWc7enPkiGRGCH90PoPsUmTYI+0WkkwSupdspcCzssYU3OtaR3ZUBMFju7VgM5J70maBJUQBSNUbqpq0xBggWBEAct5vI83vLg+J9rI11+p4pOWvxkzGT2EZPq1NmtU9hzz
+X-HE-Tag: 1777660282-870544
+X-HE-Meta: U2FsdGVkX18gdKITeeSRSZmpcIp5jnH4tc/eSp96RDFvzzA7KGr0WMfT3rPjUZECXU+3vedLaVF/RL3k/8rNNQTtVPUnAQ8PctJaVrq9ho6g8oaLLS4vyffF//6UO/rgSMv/ams7DzIcBGN1OIMnHoinJy1eWOoFoxld9wE6Z2cUtROyXogUUC37VY120xnuJdKMnj4Yf/VDx83IrveMTF6I3H9a396HdRSaay7A1+GEhohtWI4k4hhNYaeVt0f4pyuaH0D9STiXWwaY4LfeGsLZfTUyZI8btxTYlom7yf0xBjdM+s82sDC2lv3zfXUuWeq2w279coA2EtrBkb+fDP//WRZeQ3DiZKKVOCtrHxGyFNfVexkI6orgaFfguNZLITzCE5PsHIYk5tuRUwXtnNvTyVv+zPo+FleDCdP9TlbUOGRWWFFLfcSozzn4TZJASUF1KT2dGIcEBKJnKH5FBm0qjQgqHjTWl5sPrhLqpgFPbFGAbsnMshVkbudKJolmo4LVTRLCKtbUp1E0hbA/tJHOK5FeZtlwwx4XiXzDOSv430HUTuRLsG0MwRI5G6pA/gYYvSzeMtY7/aDCjvTuGPpIjngI6O/alkxhPyb50BfEMWzqSv7xjG6A4pXRPMbA2ReTuOPsF577CPDOsg/GNORGw7C0W95UBicoBoSQ8a7UTgTyf7YZ8artOAndus5shmCg7TozVyYwhgSjYxvRVAWQSiZt0+cFiGS90JIyHlsKih2pD/sz4mP9aOVQiQb0as0jyOb3LEcRTTf93gIppYJHQ29Ae+DXTrXxz6gcaJsAjpLkzvNGKjD3+cF0v2rNb4IemphskuII5hEMGY04MpRfouV/5ameZkm+k7bfV16WgEnT0BaPVaUjcLqpS4Xhz7UO6dVG3mjP7iR71m/EsPBefNIvJ6kcpI+9Qv6EmZYCmsWBHx/I4mwpLk7qUxFQvFftXVKBhWKQN4WudP0
+ bLXGvAEr
+ tVcrT86vx4F5tudwwWhU3pu23b6FnGBVDHe7U3D1QhH+wgVwgyy5OsIuqQDDqBufeAXy+geaWHg6tvADXD+zD4BO9ctkTDBaYQT/Z2S2v8SkEuXaHdbvof//wzHoOS4ZOyonEDsWgTdCT7YGaQXt+mJKvsNZohSm2XOumOR531HXa6ZO5T3WHSIahqqFpIRyy0K7WlemHOISWlrZNU2JG6f1qjGKAQfe5vkNl9VF8mKs+slz0VT/wJHwU2BeLLUiLT7ku6kPU9IwGdiY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,179 +145,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>
->> Note that there was a recent related discussion for executable, which was rejected:
->>
->> https://lore.kernel.org/r/20251226100337.4171191-1-zhangqilong3@huawei.com
->>
-> 
-> Yes, I know this history, and I know that it will cost some memory or latency,
-> That’s why I was wondering maybe I can add a switch to it to make it
-> configurable :).
-
-Switches for something like that is just not a good fit.
-
-For example, for a short-lived child (e.g., fork+exec) it usually makes no sense
-to cow a larger chunk of address space, when you know that it will exit
-immediately either way and free up the memory.
-
+On 5/1/26 20:12, Kiryl Shutsemau wrote:
+> On Fri, May 01, 2026 at 08:02:28PM +0200, David Hildenbrand (Arm) wrote:
+>> On 5/1/26 20:00, Kiryl Shutsemau wrote:
 >>>
->>> In addition to the problem above, this logic can also generate some
->>> deficiency for THP itself. Currently THP is just a "best-effort" choice
->>> with no "certainty". THP is easily splitted into multiple small pages
->>> on common calling path like reclaiming, COW. A transparent splitting
->>> can cause throughput fluctuation for some workloads. For these workloads,
->>> we may want to give THP some "certainty" just like hugetlbfs,
->>
->> There are no such guarantees, though. And We wouldn't want to commit to any such
->> guarantees today. For example, simple page migration can split the folio.
->> Allocation failures will fallback to small pages etc.
->>
->> If you need guarantees, use hugetlb for now.
->>
-> 
-> The reason why I want to use THP over hugetlb is that I need reclamation for my
-> workload :). There are many processes in my workload that need 2M
-> aligned folios for better performance, and we want to reclaim them back automatically
-> when the process doesn’t need the folios. 
-
-Can you share some details how exactly that is supposed to work?
-
-> But hugetlbfs cannot do passive reclamation
-> from what I know (except doing active madvise by the processes themselves). And using
-
-Right, you can only return hugetlb folios by doing MADV_DONTNEED or munmap().
-
-> THP can easily split the hugepages. So that’s why I would like to add certainty for THP,
-
-Repeat after me: there are no guarantees. There is no certainty :)
-
-> and use THP for these processes as backend, because THP is very well integrated with
-> the swap system and other filesystems. And from what I checked,
-> it seems the most common case for splitting a THP is COW and swapping so I am trying
-> to handle these two scenarios (But coincidentally, PMD swapping is committed in
-> https://lore.kernel.org/all/D3F08F85-76E0-4C5A-ABA1-537C68E038B8@nvidia.com/
-> a few days before, which is a great implementation :) ).
-
-Right, but that really only changes how we map large folios, not how we allocate
-them. There are no guarantees.
-
-> 
->>> The effect
->>> we want is: after some customized setup, if only the system has usable
->>> folio, and the virtual memory alignment permits (or we setup to), we can
->>> make sure we always use THP for it, the system will never split it except
->>> the user wants to do so.
+>>> Just a heads up.
 >>>
->>> This patchset is about both two things above, firstly we add pmd level
->>> THP COW support by revising the code in do_huge_pmd_wp_page, we added
->>> switch for it because different workloads may need different resources,
+>>> I've updated the tree. It is on top of v7.0 now.
+>>>
+>>> I can boot my VM fully (not only to shell as before) on all three page
+>>> size 4k, 16k and 64k. And it doesn't crash immediately.
+>>>
+>>> Page fault handler is the most challenging part of the design. I wanted
+>>> to flash it out to RFC quality before the summit, but it is not there
+>>> yet. But it started getting a shape.
+>>>
+>>> Volume of the code changes makes it hard to deal with the patchset:
+>>>
+>>>  1530 files changed, 12675 insertions(+), 8669 deletions(-)
 >>
->> The switch is bad, and we won't accept any toggle like that. A system-wide
->> setting does not make sense for such behavior.
->>
+>> I think you know the answer already :P
 > 
-> Oh, the reason why I added a switch globally is also because the scenario I mentioned
-> above, I want those processes to always use PMD sized folios as backend to make sure
-> performance. 
-
-"Always" is wishful thinking in many scenarios I'm afraid.
-
-> COW is truly not that common like swap out/swap in, it just can happen
-> sometimes, which I guess the reason may be about image duplication. Setting the system
-> globally is more convenient for my situation :). I can go without this global switch
-> if it's more reasonable.
+> :/
 > 
->> A per-VMA flag? Maybe, but I expect pushback as well, as it is way too specific.
->> So we'd have to find some concept that abstracts these semantics. But I expect
->> pushback as well.
->>
->> We messed up enough with toggles in THP space, unfortunately.
->>
->> Also, anything that only works for PMD-sized THPs is a warning sign in 2026 :)
->>
-> 
-> And for PMD-sized THPs, actually, I’m also considering adding more support for
-> COW to mTHP if the upstream consider it useful. And also for pud sized THPs
-> also. But I guess I have to firstly handle stage 1: PMD level COW now :).
-> And also, since PMD sized folio is commonly used in my workload, I'm also wondering
-> digging into pmd sized KSM in the future, in which I think pmd sized COW may
-> be more useful then :).
+> Let me present the case at least. 
 
-I'm afraid I have to stop you right there: there has to be a pretty convincing
-story to add any of that. In particular KSM with large folios (/me shivering).
-
-But I already don't buy the COW story. Just configure khugepaged in a better way
-or use MADV_COLLAPSE and you don't really need to modify the kernel at all in
-99.99% of the case. (khugepaged needs a lot of tuning work, it's currently not
-the smartest implementation)
-
-Maybe, we might give khugepaged better direction of what to try scanning next
-(e.g., where we just COW'ed a THP). Not sure, there are plenty of things to explore.
-
-> 
->> You don't really raise any concrete use cases or performance numbers for these
->> use cases. Some details about applications that use fork() and rely on such
->> behavior would be helpful.
->>
-> 
-> Sorry for that, the concrete workload itself hasn't been finished yet. 
-
-Okay, what I thought after seeing no workloads an no performance numbers :)
-
-If you don't know the workload, how can you claim that the additional latency
-and/or memory consumption is not a problem?
-
-Also: there is no guarantee that you will actually succeed in allocating a PMD
-THP during a COW fault.
-
-
-> Now it just
-> can happen sometimes in my multi-2M-sized-processes workload test. But the user
-> of our 2M sized folio schema is actually not necessarily myself but also can be the
-> userspace developers. I cannot guarantee that fork will not be used in the
-> performance test of their workload since that is a normal posix call. Maybe a little
-> overthinking? :)
-
-If your application cares about performance, you either shouldn't be using
-fork(), or you should be using it very, very wisely (e.g., interaction with
-multi-threading, MADV_DONTFORK, avoid touching memory in parent until child
-completed).
-
-> I just think swap and COW are two main scenarios that may transparently split pmd sized
-> folios, so maybe we can solve it and make THP both reclaimable and stable.
-
-There is page migration, MADV_DONTNEED, munmap/mremap/madvise/mprotect in sub-2M
-blocks, memory failure handling and probably a lot more. THP allocation might
-fail. THP swapout+swapin might fail to allocate THPs.
-
-Tackling COW handling when you don't even know that it's a real problem seems
-premature.
-
-> Maybe
-> that can make THP more widely used in real deployed environment since the resource
-> can become more controllable for the users :). That's why I was thinking maybe
-> implementing it with setup switches is a reasonable solution?
-
-No magical toggles.
-
-> 
->> Note that an application that does fork() could use MADV_COLLAPSE after fork()
->> to make sure that it immediately gets THPs back.
->>
->> There is also the option to just use MADV_DONTFORK to not even share ranges with
->> a child process in the first place, avoiding page copies entirely.
->>
-> 
-> MADV_DONTFORK and MADV_COLLAPSE are nice and great options :), but the former one seems
-> to be a little wasteful :). 
-
-It's actually the right thing to do (tm) if you care about fork() performance
-and know that your child will not actually need certain memory areas.
-
-For example, in QEMU we use it to exclude all guest memory from fork(), heavily
-improving fork() performance. [there are not a lot of fork() use cases left in
-QEMU today, fortunately]
+Oh, absolutely, looking forward to it!
 
 -- 
 Cheers,
