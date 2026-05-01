@@ -4,126 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F89CCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 13:13:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A9A2CCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 13:16:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A05F86B0005; Fri,  1 May 2026 09:13:07 -0400 (EDT)
+	id 96E386B008A; Fri,  1 May 2026 09:16:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B6C56B008A; Fri,  1 May 2026 09:13:07 -0400 (EDT)
+	id 8F8BE6B008C; Fri,  1 May 2026 09:16:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F3DD6B008C; Fri,  1 May 2026 09:13:07 -0400 (EDT)
+	id 7E78F6B0092; Fri,  1 May 2026 09:16:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 82F936B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:13:07 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 11F898C37C
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:12:14 +0000 (UTC)
-X-FDA: 84718889430.25.FEA5C48
+	by kanga.kvack.org (Postfix) with ESMTP id 6A0516B008A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:16:09 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2AFE31A0E23
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:11:51 +0000 (UTC)
+X-FDA: 84718888464.03.446169C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1C5A81C000D
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:12:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XHOZWyfp;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1CDFEA0008
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:11:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Mf7Gn80g;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777641132;
+	s=arc-20220608; t=1777641109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+llHKaWUBr9+74VqmItuG7ITbvjjlCSCFNpqVjn25Ko=;
-	b=0P74/vtN2LIDF5JvMxheJTYqB2xmenMBPHpGBJQiAlt9Sw+zIe4QKUv7VkUrIrCChnx33H
-	ktXXC1iwXHA32w3nd/RgCYdoAgYs84DL2w9ZllCghMm3NgLp1uLdqM4416U4V5Zyi3R7bU
-	Yv0ZuSuOz9GyXXhD+vGiht9TcFLICyc=
+	bh=d9M+0koZGyeMrDWlcqbUSzkQEEcLB0oR5FUlNLZhoII=;
+	b=ErpHhb1xQU/R3b3lp07sDzXOskAiYUziqAKxfJn+JlnSF+MkTZqs7ETJCQ4gUXSTTGZvHx
+	aUDdobIlbc9ubPEmxeqLoEu+f7M5MphvhoIJ7epNkwlhxuQHg+cRRskSm57q8Mw5R1hpfQ
+	cSNFYKf5fpu1hxJORzHZ/TgtA4R+JOE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XHOZWyfp;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777641132; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Mf7Gn80g;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777641109; a=rsa-sha256;
 	cv=none;
-	b=eSQww0kJwW65cENY/976wofJdmc2gQ3dPTZSXh4/ce5voGPoQFeFtw9M9drsB4RrR+MlRE
-	gKUOHrsRnc0GG7pucpjJEhzrQbPhdVolVNpP5rKh1yNtIYZNd6d4ghhLyb+BnlQaKIq5HM
-	Q4CUGIcCK12qrvtyFIASWoWiZsZfraI=
+	b=sauRUWbKtvAZ+vx1w2Ihtun6HNQJ+jbV6uKcNgXI76Vqd0olH++yBeZ9MigWMeADesDwnN
+	/KHSwv3bmcSw82u2TO2+QQ9PF+jej4hvNZeAC4ORiNjX170QW2413Pz3VNfVz1DwzmBbi7
+	sTP/kuFggqkE2Ss4gcozb5m1oIGf44g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 893A660142;
-	Fri,  1 May 2026 13:12:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D574FC4AF09;
-	Fri,  1 May 2026 13:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777641131;
-	bh=rPY6kpU0k2x/r+Y5vurIQbKrBbLh1ktKKLy++xxDRJI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XHOZWyfp/mCR6Px6qXMz9bAhRrRNKNfaUrZLr92WGzjhU5+ZD1HguQ9Y3zf/HM2CF
-	 ING0+AfXfn4kDPc5x2uBTNvI7zCbPfMuKpXbYAAi8OEzsl2QVVIMv+isnIlWUg+HW/
-	 xM6JTb0dcYH2RKUDP49boYGZDv7s2GZFK8LGyFIzn02ETafhtg6uI2N6+M3EIf/xI2
-	 BE6Jzgy/GAbwfChY5kjJoV3STuzVSX0a4+cK7PkhgRPIYcC217OaSRl87qAJLW2e9b
-	 Eo3cgSsQdRWPfvn75RbdCGpts/o6G00Qy1sSFFfhfMVqEEjyvnl4CMhoQ4Darvr1Sb
-	 tELR0d3vPlwEA==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DAB1EF4007E;
-	Fri,  1 May 2026 09:12:09 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 01 May 2026 09:12:09 -0400
-X-ME-Sender: <xms:qab0aZZ4lmLNO5LE8pviXf6YBxnkbKewj-zXCrnavZJbivsPPh6_BA>
-    <xme:qab0aZbhJsDTscqH55SYr_OEFAwzsgNjg7sBPCrdUYW-66rhcJAAMeTZbxEEhGJKj
-    Hmt6Egs2mZe8Q_M1jOAVb0eQiM7QKHFLTfa8h7WPEyyvnetTmzZgl8H>
-X-ME-Received: <xmr:qab0aVrkX4Bbo0Q6l--ODLheZLKc2hOtjBXU1_HfQMhjypegpMpmi1QJbluuUQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeltddvlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
-    dtvdenucfhrhhomhepmfhirhihlhcuufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgv
-    lhdrohhrgheqnecuggftrfgrthhtvghrnhepgeetuedtjefhkeeuiefgudduvdfgvdeiue
-    eigeehheehudetuedtkeelhfeihedunecuffhomhgrihhnpehsrghshhhikhhordguvghv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepgeeipdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
-    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
-    peiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:qab0aellQYNT_R3fN52NGkYyZEn9mCcboTG8efe4UUa4xZvIjmghYQ>
-    <xmx:qab0aXXW-mbF5hvwEoNxPCMKoYDCFHu3nt6c2smZz8Vk1gQK780nrQ>
-    <xmx:qab0aVT8bhREa829ct_FBCqcDdAvlwJ95mcAgBiFkHkE-FJLxXvqbQ>
-    <xmx:qab0aUn6vSQB25ybLkc5R3M2QJMF_5HgjWaudrlMGx7p-UFnWnJSjw>
-    <xmx:qab0aQJhjaQAJXOfWCBO_ZYZ2jbBsI4emal1EOnO7LoIoTINtPTJhE9Z>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 1 May 2026 09:12:09 -0400 (EDT)
-Date: Fri, 1 May 2026 14:12:08 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org
-Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
-	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kvm@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 12/14] userfaultfd: add UFFDIO_SET_MODE for runtime
- sync/async toggle
-Message-ID: <afSmJ4LLuLJWdI4A@thinkstation>
-References: <20260427114607.4068647-1-kas@kernel.org>
- <20260427114607.4068647-13-kas@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427114607.4068647-13-kas@kernel.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A3B360126;
+	Fri,  1 May 2026 13:11:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1694CC2BCB4;
+	Fri,  1 May 2026 13:11:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777641107;
+	bh=8SKkSzZgrAa+ZpppgM8vJNeBTw3pwJOHyXuYiFX1uCg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Mf7Gn80gA7H4Gd455riWj8Pblnwt++fG7P7xV82SSfaPlYei2kIpQsWJyHxW8EgI1
+	 UIsg7idtTxfLCcffyeXo4BjDylh4cwoc9qTcX3Nw8oNujrTUYiG/v6vv071gCfoMdZ
+	 sFjZLS4DEz4disHye+Dd6MK4Nk4vWIQTKbFMDIv0=
+Date: Fri, 1 May 2026 06:11:46 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Frederick Mayle <fmayle@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>, android-mm@google.com,
+ kernel-team@android.com, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/readahead: simplify page_cache_ra_unbounded loop
+ counter reset
+Message-Id: <20260501061146.6e61392d125cf1847d7cc181@linux-foundation.org>
+In-Reply-To: <20260501011908.3630802-1-fmayle@google.com>
+References: <20260501011908.3630802-1-fmayle@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1C5A81C000D
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 6c4cg5xzkwc1fk6e9rg6xsrbd45wnnxu
-X-HE-Tag: 1777641131-421530
-X-HE-Meta: U2FsdGVkX1/9hQBMJOKCQD5Z8Bl3+vAGBTyInDoerua5I642sfN5dokxnAXN10vgZNuA0A+JYW9RHc3tugJ/+p9ROBSiWFKrzTqsH21RZzDnxlt2uIvCS+z8F2K/ULnbTdngxZA3/FnR5gxyIQXhEFSZJzU85LoaDd6yZNfC4yyqkuLCLezF1E1OL2rbXyYcZLaU9uYSPPXD3uZk/9elNov7qwaRELO9QMFrbBkyoXoP99yV6O2TXfh3xKS8RO8PWoIISlUn/U8oEs6Hh6wKhY3XMeBvHKF2wUUrfmi5JdiRq/eovM1rXMz0/ME08tRnT0Qub4r4SNcTP9i7EJKNqsMzjGfZaVGl3d/OpRXRf97Dp81IeMkzHiXTJtFML1Q59scOpKDBYEYb2SlQv/7UoPqdMDsqSolwiSl9XMv0SS+DOduSN5rd8ZCtkF2jX5HOPiBa4yv460l2atVLDXDAbpcjzWApXxzhT8ngsoM8aLe0jxzMmCDzVLEEPCKYt0AddoU5+Z/7U5IxySpb2H7MP1sdVhKg5GjjJn8Xvd1o9DNipv+0xnFD5qfab4XWSsBbz7r1W0773WqiuaGxfuwgpeVSu8eSR5ua9MdOOgjQi3taK3IgomNeSr5XEGb5UhmX1w/lDfN7WoodlWWXhVSmVqJORapnMptJ0NXwa74YhpSlslkcAt8KOzujtnnWj40vWNsPRsf9EN+kAJQze1eT8nWwwRIeOVVH3nBQ/m/ihSlbAdi1bdg7esB7x9xVfTs3MppSFqQdtONfuRk8m5M1OAM4ZRf1P45OU5iUW6A8nVSO4CyhPoEyiGU0IZ7l5XTB1rHGL/w7K+oWKKSHhLWUGraY+gnU8PZDu0YtMb7naapMAsObi98CCQvGpzjbmUUnhr/fhMIYL08vpebhEvd4qZLaFVDQa01IvPb1JR43EOljINqvhMcLGPeiuOgzHWvnwcT4ePLHzRQ+pGFBgzX
- yuBN8TEI
- 4qBUEjqZjRbjcCT+fjz+KEDtVMx9fD6zCSIrQuG3oqwhqMZEBdRkNX5Kq7U+uIezNjIgXv4xpbOTKEbDasmUcpNq2dsPSoe+R/oG/PTgYhnObtLAnwsW98ph0wxYzxV1HCUStAdgojBNp409RAyhCd70EyslMWcHn54huxSWtwVrUfeq2Xj6MaudOUWSiG0dZPM+moBDVFRlKxvIE8VhnXihY7XbkAfb3VZCeP78StmIK8nUbSvPzPveDU4I4ArMisYwyC33Xs/dce5/YxDTb8HaBTdFn/9eAhuL+L5KKOrVyy9qqMf+ulW9/9E9S5Ptbrex2Zhz3BlwsKeVUSPOE1s3/aun0Tjwg1XG4vVCwOqxT5mkCpeIVpF3pqQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1CDFEA0008
+X-Stat-Signature: dxaxsdqmznkzmm6rhpqg7bemfb1bdz99
+X-HE-Tag: 1777641108-721891
+X-HE-Meta: U2FsdGVkX1+Ubam6Bg2b3+h4TJTBr9zFXmAoZl2doYzfhoVpBso84mquAD0j9Ow50hG+B6OscEV5dak3VBhCI/dP02GsuHF6QnjNj/7zWe3sq3b9pe/oR0jD3zXQAmRM3EJ8c8GgJKGUf6+6QfGQ8ne+R1g+aXKQqowOZUZB3R+OFfd5V6jKlO3XJOOlwU8kZRuN4+jaR9pdYh0+uoQ9mvE6FBuST2lOxEdfeHCltwGBXbQL2yF2VC2VmHqu0UQBHBqGCIn1GxaCbZvcjyJx1rDHHss+GUeQfXRU/HlEImCz2NiYvcBvIIr0beWC3de4B6Iz6LBU3WVEGYnp/ktF89QKF9crgAAUX1ZCjuhP90V/V+f37IRIcMnKRP5azBhG8HndbQ5DRCIxiQsl72kC44mKXW7S1ikkCqLlrmh9qpVIF7PiLiDiM/KDRBjAZfO76UZiOVN2p3vZRKJ2ESdxK46Nh4ja1Df/fREYs7ba6rokpYfqw7tVpPGwKgh4sUcfYoNrwKoL2C4iwT4YYRo6C2J0ceSJhLDpD96PbBM77T8jrA4HcOU5NSqVfY/sLar5QDdz9ou72J+LlzfN1oEsxkDrgT+B+/I9IL4/sMGAr8zuXl0KkddrDmJFpQb+zu8c9AQWLZIM1U3INvv+eQDzzlyV0qeMbxCcyXokyWkh/6GADtdLhGeep8bmbMdsp8+FTJrjAj7zcbex2dAFWWtrYFIIgCrWM+EJ5+q4Hnjb4PBpXEPadav0aISjdQ1KKURUJY7dA6+8RBGTn8Bsii6fRzz84Hg83vmstFEDJKmgVR1SCJli6BgrHD/sK1sHr6Dd+IEov0mps3uIK9Mc5THkRFt+DED62txyfjFzPKvo20gsOOIeN5TUPXjr+BW5RePJbAbGDguIKvjPlQ2iDBPteE4o+hc1KrXZhWgQPOEn7kcATJjnFfPWqNXD+/nOD53pwi592PtUEG/7hIj1Y2W
+ vOuXa9Fq
+ isshE7YcJ5WdFnomLyqEJPedacfqohDacmpzQ1v9k/erXANTPjEWYrykwXyDSCzat4GIaWEbWcWx2hMCvMe1VHPumSHgp/OYLcQMUiRDkJTbI032Wiy+h0H916dnNWrdF/rLv3fdcc7kcvI/2YSfURgs5trbPUz2lt7LEeEqv7ittUZOjen9f0whmb7Sj6yJaAJj7QTySZYePeDLMWV2e4LDWdYqBq+0s7D2SCVfx/izdS4QvMJG0ucWEknZleo+EZCFwqFmVKRYyEGPaUVX403SdeJjAkePyx/1pr5dAagFuerPE4RXlEEw4nJyf00mwYyPz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,49 +92,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sashiko.dev -- https://sashiko.dev/#/patchset/20260427114607.4068647-1-kas@kernel.org -- wrote:
-> Since ctx->mm can be an external mm_struct, is it possible for the target
-> process to have encountered an OOM-reap or a failed dup_mmap() and be
-> marked MMF_UNSTABLE?
-> If so, should there be a call to check_stable_address_space(mm) after
-> acquiring the mmap lock to avoid iterating over a maple tree that might
-> contain XA_ZERO_ENTRY markers?
+On Thu, 30 Apr 2026 18:19:07 -0700 Frederick Mayle <fmayle@google.com> wrote:
 
-This is the same pattern as userfaultfd_register() and
-userfaultfd_unregister(), which acquire mmap_write_lock(mm) after a
-successful mmget_not_zero() and walk the VMA tree without
-check_stable_address_space().
+> Minor cleanup, no behavior change intended.
+> 
+> `read_pages` ensures that `ractl->_nr_pages` is zero before it returns,
 
-The OOM reaper takes mmap_read_lock, so it is excluded once we hold the
-write lock; failed dup_mmap() unwinds its partial tree before returning.
+So it seems, but depending upon this might be a bit fragile?
 
-> The commit message notes that fdinfo reads ctx->features with READ_ONCE to
-> avoid seeing a mid-RMW intermediate value. Are there other lockless readers
-> of ctx->features that also need this annotation?
-[ ... ]
-> Could executing UFFDIO_SET_MODE concurrently with these paths cause a data
-> race on ctx->features?
+It would be better to make this a more explicit/formal part of the
+read_pages() contract.  kerneldocifying read_pages() would be a
+suitable way.
 
-Confirmed. userfaultfd_is_initialized() is reached from
-userfaultfd_poll(), userfaultfd_read_iter(), and userfaultfd_ioctl()
-with no mm lock held, so SET_MODE's mmap_write_lock + vma_start_write()
-drain does not exclude them. The INITIALIZED bit is never modified by
-SET_MODE so the value is functionally stable, but READ_ONCE pairing is
-still the right thing for KCSAN.
+> so the `ractl->_nr_pages` term in these expressions contributes nothing.
+> This seems to have been true since the statements were introduced in
+> commit f615bd5c4725f ("mm/readahead: Handle ractl nr_pages being
+> modified").
+> 
+> The new expression has an intuitive explanation. When filesystems
+> perform readahead, they increment `ractl->_index` by the number of pages
+> processed, so, after `read_pages` returns, `ractl->_index` points to the
+> first page after those already processed. `index` points to the first
+> page considered in the loop. So, `ractl->_index - index` is the number
+> of pages processed by the loop so far.
+>
+> ...
+>
+> --- a/mm/readahead.c
+> +++ b/mm/readahead.c
+> @@ -270,7 +270,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+>  			 */
+>  			read_pages(ractl);
+>  			ractl->_index += min_nrpages;
+> -			i = ractl->_index + ractl->_nr_pages - index;
+> +			i = ractl->_index - index;
+>  			continue;
+>  		}
+>  
+> @@ -286,7 +286,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+>  				break;
+>  			read_pages(ractl);
+>  			ractl->_index += min_nrpages;
+> -			i = ractl->_index + ractl->_nr_pages - index;
+> +			i = ractl->_index - index;
+>  			continue;
+>  		}
+>  		if (i == mark)
+> 
 
-Will fold into 12/14 a small helper plus conversions:
-
-        static unsigned int userfaultfd_features(struct userfaultfd_ctx *ctx)
-        {
-                return READ_ONCE(ctx->features);
-        }
-
-with userfaultfd_is_initialized(), userfaultfd_wp_async_ctx(),
-userfaultfd_rwp_async_ctx(), userfaultfd_wp_unpopulated(), and the
-fdinfo printer reading through the helper. Hot-path reads inside
-handle_userfault() and friends stay plain -- they run under the
-per-VMA lock or mmap_read_lock that SET_MODE drains before the RMW.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
 
