@@ -4,98 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E42CD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 17:58:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B21A5CD3424
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 17:59:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C27E6B0005; Fri,  1 May 2026 13:58:07 -0400 (EDT)
+	id 19DD56B008A; Fri,  1 May 2026 13:59:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14C826B008A; Fri,  1 May 2026 13:58:07 -0400 (EDT)
+	id 14EEF6B008C; Fri,  1 May 2026 13:59:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 013F76B008C; Fri,  1 May 2026 13:58:06 -0400 (EDT)
+	id 03FE86B0092; Fri,  1 May 2026 13:59:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E0FF96B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:58:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 366EF1201F2
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:58:06 +0000 (UTC)
-X-FDA: 84719609772.29.EFAD80D
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8512740005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:58:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cS0FYwD2;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777658284; a=rsa-sha256;
-	cv=none;
-	b=URBKF9ulOlZaelxFkEehr1Ukwi4pVljpBPMjndFI9e/hSCw50tkceRmrQNm+KfSLuvKAle
-	ZZW1yj1vLi97NvOfr2uKPmLpa4469JSrgJ7izwGT7WUMLvbItJgtidbyJcs74nRfyeKTFE
-	jxY5rAOW2qNwRYFoKcPIU0VeIPcqXlc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cS0FYwD2;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id E50CE6B008A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:59:28 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA1B01401D0
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:59:28 +0000 (UTC)
+X-FDA: 84719613216.21.228CC5C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D55681A0016
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:59:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JbTv8Nf1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777658284;
+	s=arc-20220608; t=1777658366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u/+O11I2l5uEWQtHiF9iLIDtrtif7F+7W2x9HgtS2Zk=;
-	b=lELcD3KSnCPMMxD20T6HpklMGUJoeyaD1JhT0xXwks6s1TkVGt2CLhYv99v0Bzjn0reSRp
-	eM8QzL1FamEfZK3UUmjsNMKiJ1uO+AyNWvLyzupA6wVI7nz9ab4Wm3Hu1ZB+xwpR7BqCeS
-	yDCcDjHtTmj6e7zUzmfEVD1hEsv8hYI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=u/+O11I2l5uEWQtHiF9iLIDtrtif7F+7W2x9HgtS2Zk=; b=cS0FYwD2XOEYVbuKnpFKh9ZiSM
-	0EwDyUhzf4L/Z7u5RfwH9F/lLM1NhuqZPIwTkUmNl1PS4VMevXWN1PepuvnRy9E8BXEEBe1NqpbST
-	JCuDyJciLjPMlOgK/msGkQ/Etm/ww5vna/xrv//xWjQSuG3YKtTWGFNZVR8+M3tsp34wr0aQKFWkJ
-	uFsTeHHXdKUGothOh1mQqNx0qA+TQ+SY8myKKpSqt0cEDRnA3Sr7IVPyxsjySvvgY2FjAsXzlkA0p
-	PsB/KjAACHCD+NoUMzQlqunyAml2flv3i9OPzaSZZMasw49lDXCUAuGtnBBvR4d+htLsXvVM7+CgM
-	/hohbFOw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wIs7c-000000098SG-2Rmh;
-	Fri, 01 May 2026 17:57:52 +0000
-Date: Fri, 1 May 2026 18:57:52 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, jack@suse.cz,
-	pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn,
-	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com,
-	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
-	nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
+	bh=5+/e7dJt2MU31Z+SqBYGMwjuUbd0OotWBmXxOfFOWyI=;
+	b=F8WeJQf1QtZYcIS3dJySYF1hT+zAMl6FdhAT/1jnoVB7xixsz/smTDgyfQskRMnCt0TIfK
+	Bo87r4fRKQgWf8obJVnY1NX5pQj7PH7nOIbJ3WBsXBk70H9ocr6CUPw1b7P/+WHpPM+nq0
+	uEp11dixObMlYWqhzljIEmarSOBHvoU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777658366; a=rsa-sha256;
+	cv=none;
+	b=4knAGH7o7wiYphGbcDqYm5CGIUhoh0UQiLIo3E/vvcTTDQiIURx1e47GQuEXVKal5fnJ3d
+	n8J25O/RS/Sz7j+wIv3a1GEeVHhblpJbEag/77OHRS/Kuqo5QP7K0DxFg2DzTVZrT3PHNZ
+	yXTLlPYD03tcFPio+8QUSgHZMwYTHFQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JbTv8Nf1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0A6C860126
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:59:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DCEC2BCC4
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:59:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777658365;
+	bh=q/vvVmaTofrvdifxLcOjX8owb4zQpccO2C7Xr55syLA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=JbTv8Nf1y3JWuLvIXZgUs1p4s5+B1GUlld0WRZbXF6rHJnF7FXG1rC3Vd4wOH+FWf
+	 /lu8+oad1AE755FSug1ZcbNt0IQc1USHsGef5ccGfcxzq95KtuLoC1nLMlrSQKzgi+
+	 tTiQMMhrfbld8ymAgyQwEiY7I8BtqZz3pZGkD9sFmJ46nTjfdLk01RnECNuTHbUx0N
+	 /o9MUrK9GRGCK4V7AJo9DxsUNN94FU6bSe/lBLB3HEZbgoDtdPCtJ4BLITTZoIcrFs
+	 HYAyPtyGq9f56cLDbdFj9zzu20514g+BkK1RgtuqirVOywKHAzhsojpDQjUdjBms4R
+	 0K/BQ+D5iTcCQ==
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8acb856a674so27617916d6.0
+        for <linux-mm@kvack.org>; Fri, 01 May 2026 10:59:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8FnRfWEI95RMZLo2okwxI+zGZHwaLhr709EfN5z4u+Hu9EhPa0I1iQdmj9czoUyQFmZB5TKeyHYw==@kvack.org
+X-Gm-Message-State: AOJu0Yzu+FyUia7s57g46SJa9YXeDwcTH8UTtC/VHST/X6GJoRijJhFu
+	XzBM0+ETPyTX+hFhG5xduBNZr+j3+AiEkTJ1JtndBpOdIaLcc6P2yNWjMtQda02UMB0rbmOwpOb
+	FLTuXBy2vq8egikkqQ4aE7KkmStzEm50=
+X-Received: by 2002:a05:6214:3113:b0:89c:7bf8:c564 with SMTP id
+ 6a1803df08f44-8b4000bc68amr106932516d6.27.1777658364833; Fri, 01 May 2026
+ 10:59:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260430040427.4672-1-baohua@kernel.org> <afNM-gIqxpyJ6ro7@casper.infradead.org>
+ <afTKsSj0i-ZkRZN5@lucifer>
+In-Reply-To: <afTKsSj0i-ZkRZN5@lucifer>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 2 May 2026 01:59:13 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4w4jyQTzvPSzGtv1r5G35kARHrf4WgDvEiOAw8k5AAABg@mail.gmail.com>
+X-Gm-Features: AVHnY4IozGRsOfIFCBuTWYpA9lpafQxUB9l3oBl_1mgfquoOdt6gfYLqIWFbDj8
+Message-ID: <CAGsJ_4w4jyQTzvPSzGtv1r5G35kARHrf4WgDvEiOAw8k5AAABg@mail.gmail.com>
 Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
  fault performance
-Message-ID: <afTpoL3FklpQZNMM@casper.infradead.org>
-References: <20260430040427.4672-1-baohua@kernel.org>
- <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org>
- <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
-X-Stat-Signature: wbpd3gng4fuo7yej5ifwtwoux8szawjr
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de, 
+	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
+	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D55681A0016
+X-Stat-Signature: m1dzm46i91oeo5frwfetykp49iny9jxa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8512740005
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777658283-420822
-X-HE-Meta: U2FsdGVkX1/QVBN/zx4f3fUHyomOrwjBs40MBD9DeTTawnc2alMB2lCnV/AZEvo6t1ZOYwMYChyuCQsvl0nw1+PpDfwa/P+NhCnpwPRgG3fGFRYWm12J2lrb+v+CqFoo0w6YD1shtI0PK+TAv+ezeai6YYihmj4iFYWtFEIuqB2mMdDdZnvu0W4vd+/STNgPy0XhTGLvEVrdBmBMbVXMyJWyJHQo0t2ghhiQG3ANLpwaCyRTbBYKAMqNR7deqGxwV1/iXPeFbSULPXYyz2fNrt4iF0VOewGNC1mg+EZ0U75ZI5csuiSnaXum16GWIlgDMwmWRSW5VKFh3sjgAa+GhlRHtFMQYJp+UtVbUeUP3L1T/KyHOKYzL+gggCU/LzcF/zkkb30WYGKEL+zwQuoPALMGlZ8hJ5z+jwzj1g+osOyEaBi6ZJkoWtkDMRUsn5WJIxHu+KYno45+gK+n05mE1D4Jss9QRVVvG11xaUdv0m1xzU6JeZjbCCYgYkqQVpz7O9Gg/OIpSEJmw6xbd0NRuQWvEppeVN4LRodlphd8PfpLv6T4OQ6Wi+VOJYukeuCa7YLPKxkvYGqLXNT+PFDuA4ETovDX51TdOuOt1hb3Mos5625dhk5QjVr1GlUT/SgtgOcf/TPv2oGgJXTIU/GzeO5FeN0CFc5HQss93wiPMetF+v3P5qr2G52+C8hYPC+joACzK4MhyOZgeGCikfuY9ukdrYZPmSngQ8xpXctQHuT1BJcxMVWwMB2pc9Pp60BUtI9KHKCkWMvM0K0eaA3rXmp/51VzBJZfKmAbY8yYmMI6aU5fp2EcOPQW5yFFft0EOM7rWJT/AK+RJW61TGHIi7tAHybaZ9DVkXI2cAqCnamIpzgDRygzUDN37jyPVWoP572bT4BfHE9X40FGSI/UwLt1rWeGTX4y+pj8KigY62uCtxPK7BAC+YNqN2eiJO7t6ywmybSEi/krdMKG8+n
- T7pWKbJB
- JcAeAvJwa3QMfSGZ82eQ6Hv8jX+VtxZDzm+jWKJsCDmTEU7ZFj4ujvb1Rp+ldg4ApfVhXB6b4m9i1pHj5Z74wDM0j/9u66N8NmfhgFp1phf6Vrof07wFaMX4/YoonX+PBDVF89Jn0SOZjIdjUQc7kulau5DOtYFF2WSyuAU5Z3R12tre5gdscgQPxHtCAiv/QzYIZGhuwLApxAL7MhvClsxQ9o5jKQmjDz5wvRwmMlBQsKimr8PSLiqOCZ/r5wILQmPOchpAPJ8sAiIpc1gp540AByiGwM96o3XjRZxjMl1kqZBIyGD7huGd+9KUZZVzkd3n/+/aqoRxucxVrTHPHG/20CcuTqiSzYjiHvBc2W6VkdPlJCifsbd0PTxKQdko8SabmEhD+XvmYkeb6qOGQ+OrJ/dlXTcimlYs9FKn2j3O2jBpHoIwVx/w5vdd+4CcitOqChu0NHtHZ7lo=
+X-HE-Tag: 1777658366-14375
+X-HE-Meta: U2FsdGVkX1/LQWL8r3Ujzr1QjuH5a9LR2wxqX3Cc3twsr44o2cHvPqKFlWJEDVrKpa4byES9po3Xs4QdwD6J/8+vyflxZ+vVlcS/lxOdcZcWRzhqa+eIcz3+qtKY/qR5QTqxdfR0XilxpGRosos1O6ApQ7HBQRw4oWtAu1cFZhKpXig56aeNm+NepEcjTozSHsawXzXxwGCJ3T6adK06j1UGdwt7675xOwmVgtg6dWbrrDig60WgfaBWt/Nb16zOTpzEqH8bmTJnNAXd7ZMSrGjkFkTK5+izIcEdKgWs3ak4Mt3CYCS4ZqZ+r4vVsQSpm7aRmE6WitCAKFdbvwLTMQ/PjQJFw8A2fY0/F1A2RldPGsCRI8kMykYLCCCMyax9qcLF7s3TmmfaxV/8PPOoKiJH7KalAzvDPPEf+JevrkRfdXkoLAMQTCdoCOw4tRQEwacfiYqb6TVBMwxrKNgQAFHwAg95VOZMR6qHYI9zO3QOSqNFEWzRtUZrMVwHoE9IKLcBztsCJGB7k7AJ3bpml+OEL1QpSJwIizYK8tkJr4oqcoRdMdHs1ZbxRC4xaZD4d2t05hNy0iXot3M7fhpDqDU95rLKkbSMHVhoE1a96PKvr/7vxExlnWg4qKFHZdEN28xqD3ZAtMyXY4+yJHLxkorGD9DTviMkue3hb6zSmwcEFUGzZCauUpJZRthfrIGaIUFHWkaMeozt4W0GNz3CdoJ18vS24iUC5nfrGHoqVe7waplZPd7sAJavFpGhFqUrw0SUVcH6CKycRokI9jBlZ9xkIwQvuG9kKIkJJ8bcCkuvRpn0vU3fW5k6Gnxc1I/vVflayVzgMnKNjGuG/Z4csC/NLRqfanko3YWa2SkApOjrek/J9Tg9DExSKd0+XsjfOswu/e1Xdragr+8nkzkpydpeX4kg/Q9QBrCP2JQGowQjGbqMhq2U3U5n+dYT6jYhJ1plCk+j+j4E1cKz5f9
+ CSaD+Xvj
+ /WmJq+6jXpjysQdCSSoIDJaPqBhqs373byErB8efjQNkTkvcRcXJRk86t3Xv9/K8TgRtyNlOMRBRBAxT5zu+TTvKl9Rq0j2riSOjzbNeQMBfNmoDB+Y7acdqyjNAZqBebSanJA0sga+PyJhSf7Z+3rm39IH6k6jQfaVI+xfiJMj9tNZVWqKLd0SLCVY7OqQzGI68GmexUod78KghIN6JZkb/C+p/XW8oSea2aoeBand9wcGZQGYxcVHhIeOMnxefRCkej8WVC0Dq7/IpwYx4aLlvhWDthO7xU+C1/zs75PVqe9+3I+gJq9x9BICNNTvQj/cECAiClxwp1z/bkPdjP7u6/iBTX6L2qpuG0/oX+ap84wfVF/KsRRM4hXctTpV4csN4N+D7TB+dxBYz/X9ZdM01KuZVx59zBFA9P3lKr1XM+qZ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,33 +112,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
-> On Fri, May 1, 2026 at 10:57 PM Matthew Wilcox <willy@infradead.org> wrote:
+On Fri, May 1, 2026 at 11:52=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org> wr=
+ote:
+>
+> On Thu, Apr 30, 2026 at 01:37:14PM +0100, Matthew Wilcox wrote:
+> > On Thu, Apr 30, 2026 at 12:04:22PM +0800, Barry Song (Xiaomi) wrote:
+> > > (1) If we need to wait for I/O completion, we still drop the per-VMA =
+lock, as
+> > > current page fault handling already does. Holding it for too long may=
+ introduce
+> > > various priority inversion issues on mobile devices. After I/O comple=
+tes, we
+> > > retry the page fault with the per-VMA lock, rather than falling back =
+to
+> > > mmap_lock.
 > >
-> > On Fri, May 01, 2026 at 06:49:58AM +0800, Barry Song wrote:
-> > > 1. There is no deterministic latency for I/O completion. It depends on
-> > > both the hardware and the software stack (bio/request queues and the
-> > > block scheduler). Sometimes the latency is short; at other times it can
-> > > be quite long. In such cases, a high-priority thread performing operations
-> > > such as mprotect, unmap, prctl_set_vma, or madvise may be forced to wait
-> > > for an unpredictable amount of time.
-> >
-> > But does that actually happen?  I find it hard to believe that thread A
-> > unmaps a VMA while thread B is in the middle of taking a page fault in
-> > that same VMA.  mprotect() and madvise() are more likely to happen, but
-> > it still seems really unlikely to me.
-> 
-> It doesn’t have to involve unmapping or applying mprotect to
-> the entire VMA—just a portion of it is sufficient.
+> > You're going to have to do better than that.  You know I hate the
+> > additional complexity you're adding.  You need to explain why my idea o=
+f
+> > ripping out all the complexity now that we have per-VMA locks doesn't
+> > work.
+>
+> After a brief eyeball I share Matthew's assessment, I really don't like t=
+his
+> series, it's piling on complexity for what seem like niche cases.
 
-Yes, but that still fails to answer "does this actually happen".  How much
-performance is all this complexity in the page fault handler buying us?
-If you don't answer this question, I'm just going to go in and rip it
-all out.
+I=E2=80=99d really appreciate it if you could point out the specific parts =
+you
+dislike, rather than the whole series=E2=80=94I don=E2=80=99t think that=E2=
+=80=99s a fair
+assessment.
 
-> BTW, the chain can propagate: a page fault occurs, B wants to write this
-> VMA, and C (a higher-priority task) wants to write another VMA. D may need
-> to iterate VMAs under mmap_lock, so B can end up blocking both C and D.
+I=E2=80=99m not sure what you mean by =E2=80=9Cniche cases.=E2=80=9D Do you=
+ mean avoiding taking
+mmap_lock for major page faults, or releasing the per-VMA lock and retrying
+the page fault?
 
-I know.
+Right now, major page faults always fall back to mmap_lock, which is a
+significant source of lock contention. I assume we agree that this fallback
+should be eliminated. Or is there still no agreement on this point either?
+
+Where we may differ is whether to hold the per-VMA lock and
+avoid retrying the page fault, or to rely on retrying the
+fault while using the per-VMA lock (with the current
+mainline approach using mmap_lock instead) ?
+
+>
+> We already have enough weirdness in fault code honestly.
+>
+> Let's maybe discuss at LSF if you're attending?
+
+Sure :-)
+
+>
+> I will try to have a more thorough look through when I get a chance.
+
+Thank you, much appreciated.
+
+Best Regards
+Barry
 
