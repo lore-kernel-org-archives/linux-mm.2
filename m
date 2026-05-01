@@ -4,90 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C43ACD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 19:08:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80D56CCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 19:20:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E605D6B0093; Fri,  1 May 2026 15:08:53 -0400 (EDT)
+	id 87DA16B0005; Fri,  1 May 2026 15:20:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE9DC6B0095; Fri,  1 May 2026 15:08:53 -0400 (EDT)
+	id 8557E6B008A; Fri,  1 May 2026 15:20:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFFD16B0096; Fri,  1 May 2026 15:08:53 -0400 (EDT)
+	id 792FE6B008C; Fri,  1 May 2026 15:20:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BB0856B0093
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 15:08:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C9DDC1029
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:08:53 +0000 (UTC)
-X-FDA: 84719788146.21.1872178
-Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A1D2F80003
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:08:51 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=panix.com header.s=panix header.b=uLrtLc67;
-	spf=pass (imf30.hostedemail.com: domain of kenny@panix.com designates 166.84.1.89 as permitted sender) smtp.mailfrom=kenny@panix.com;
-	dmarc=pass (policy=none) header.from=panix.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 677C46B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 15:20:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 202D98938A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:20:08 +0000 (UTC)
+X-FDA: 84719816496.27.01F20FE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 26C3F1A0015
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:20:05 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=J46kyCBr;
+	spf=pass (imf19.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777662531;
+	s=arc-20220608; t=1777663206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=avU2aeDiJudu6Ve+/fr/MPvICQS1Esrg1FU1yfrAa3A=;
-	b=vlWTTTRYpGvQxKFc7P00cnVdagti0j5Iu8SiclU9TShnjhW6dZkDQJnuHgLNDws6PLav2A
-	TphfnfUIWsvnx+I8OlpwJ/giOJh7j8nmlbG1BUxTaamCRnMnxuGmZzdvAaN6YLbT0tcsIr
-	9EIBkMp5h16MX5LPpeBjEFWb5DoyYXY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cY6LaFmqcqx3jjavRgihKIw3vSF+bJhM7Jxo3NBkAY0=;
+	b=SalCGwnTLmZrRyUnqhQdon4iK+9cAmjqkgOnwjHx2CrDxNA6HZO8fbjp3YeGVnBSgKpwis
+	4ZklmM3N9QDL+eAdOULlhcp9g0Ju7xErKU7fi3q5fmttw8a8ro2MIBkkNedXS/gNObduN5
+	TOZZmvjzgMPCm4uMBEapLYOTK2uvtLA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=panix.com header.s=panix header.b=uLrtLc67;
-	spf=pass (imf30.hostedemail.com: domain of kenny@panix.com designates 166.84.1.89 as permitted sender) smtp.mailfrom=kenny@panix.com;
-	dmarc=pass (policy=none) header.from=panix.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777662531; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=J46kyCBr;
+	spf=pass (imf19.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777663206; a=rsa-sha256;
 	cv=none;
-	b=04aWMvd0nprHQvAysC9eMZhpORpZqfZcAObFWX29Gm6wiGAbxjCbiWXEUJjNgOK39uBUPx
-	J5m0ueoT8dsV0hGFdSRK/buEhxzVuFteTEcjqJ3cZ79pv1jDkyLHEmOKTsLVMKnkVLO1+K
-	nXR5tY/JL+QFBsTbS04AoHxohAVD9Tc=
-Received: from [10.50.4.26] (45-31-46-51.lightspeed.sndgca.sbcglobal.net [45.31.46.51])
-	by mailbackend.panix.com (Postfix) with ESMTPSA id 4g6gYs5wssz40Dc;
-	Fri,  1 May 2026 15:08:49 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
-	t=1777662531; bh=l6JbYucB+9yD0k96T5o6k3yiniTY2VGeKOqZ7PJWN2I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=uLrtLc67iWq4GSqPGwTJ4rzevu63TXdyY+tNy3yIoVxzTdPx+0fPodKpQqxhC4lNc
-	 QCHPB1S0lTSGcF0UU4nPVLMx1ZldiL+6j23fwwJohT2SBeEYi26JMpRWvIueKLSTyb
-	 EzfKFKOXzZUJmOYybDBlTJSczHHL4DxaWkFQioyw=
-Message-ID: <f25f27a1-bf09-44bd-9b37-49f159d82d6a@panix.com>
-Date: Fri, 1 May 2026 12:08:48 -0700
+	b=P9ooFfdauehoRyrIoz07zcSCSBWdhZ7YD/knwHAqP6Sk1LY3G7FlTf09VSGsO+hD4Ss3KL
+	2zgJCxqF0h6RpxvpJ2IyuwIMX+dYkGT9bB+m5KI82WIk2if1G+v7vjk0Ih0GxUnrQJxtww
+	dzOIzvTgnmknOW3sOyE8j/zw7FEFcA8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777663205;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cY6LaFmqcqx3jjavRgihKIw3vSF+bJhM7Jxo3NBkAY0=;
+	b=J46kyCBrOqZPITQ1+c14uB5NmdfJSQqzrblZ2pDENX5rr/TPlNtjzVN5ML1PF2a5c/YG0u
+	Wu9oUi2zhWVCXkqZRBQ4VLh8PHP4hZXnOMNZhSAhWnMdww96bz0Te8YKgusjt7eH+hdWkW
+	lgVzDDvICGee3H9wnF3KVnxgW6y0iAg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-599-gWRvNscCP3GXc_lH56B9Qg-1; Fri,
+ 01 May 2026 15:19:59 -0400
+X-MC-Unique: gWRvNscCP3GXc_lH56B9Qg-1
+X-Mimecast-MFC-AGG-ID: gWRvNscCP3GXc_lH56B9Qg_1777663197
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 164D119560B7;
+	Fri,  1 May 2026 19:19:56 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.22.64.126])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0A64C1801481;
+	Fri,  1 May 2026 19:19:51 +0000 (UTC)
+From: Luiz Capitulino <luizcap@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	david@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	ziy@nvidia.com,
+	lance.yang@linux.dev
+Cc: corbet@lwn.net,
+	tsbogend@alpha.franken.de,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	x86@kernel.org,
+	dave.hansen@linux.intel.com,
+	djbw@kernel.org,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com
+Subject: [PATCH v4 0/9] mm: thp: always enable mTHP support
+Date: Fri,  1 May 2026 15:18:42 -0400
+Message-ID: <cover.1777663129.git.luizcap@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: PATCH v4 0/6] mm, drm/ttm, drm/xe: Avoid reclaim/eviction loops
- under fragmentation
-To: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Kenneth C <kenny@panix.com>
-References: <20260430191809.2142544-1-matthew.brost@intel.com>
- <20260430191809.2142544-3-matthew.brost@intel.com>
-Content-Language: en-US
-From: Kenneth Crudup <kenny@panix.com>
-In-Reply-To: <20260430191809.2142544-3-matthew.brost@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: DYFvueZNCXTI6eQsRSE-FkBNp_Hud0ChYph_QqgXAhU_1777663197
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A1D2F80003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: crpy3m7wadasnkk9tzsb35oixkafwpec
-X-HE-Tag: 1777662531-802392
-X-HE-Meta: U2FsdGVkX1/b5IhUQe6/owEAc+rl3kiUVYA+oLbj9U4IjA6a7Bnw6kiClnOSUkkw1Q2+n6UZx9OKH37mUEjd9JMOAWM2mWiQkpOC5Ww+mSymifKiQpuUWcP6S3KEw+0PTCup3VvWrcafv3IvGAm0A+85+9N5EWOvIOQLfHwuT7NImImheVtr81ODkb4OIrfdM39DATugtvvpChtc7xEF0SRCZZMWqIzaCw6AOmK5AEsjRIycptStPm0gbbk6slFs8Go8n6cVaVGlNakMJ+7vKCVGZWYLj6uO2gHlu8oeq1HvTBp/eaCwU0OtiPwF69llPyvCGa9faGuPIGOrrLN7To7oUFFltQHwogo1Zg9u3Svl71y0wPFek4fbiCH97a9xSmpjoXyjnvwrYNcxArtcGWLUsXAYmtP6yZK16PYw4lWaU92EImiUltWSAR72+9zFLcNEKzXLksb8Iq7gWghazRIEnM0/k0MHRWp5/zmt1mwVL0B3TmCXtISckzgYUqMd3ro/0UixouWJjg6SwvloizZx4PKRIGNftacr8fh95JvmruO0evok1HnmXmi8Y8W9J+kFwUsVvLWjaj+vWZTHbvd35BuCbGqNR3MIpCzdK/UhWWfQ4ucFEosLcHONuRLy65ghXxl4h9741PBECxgeWWlPtJXBWX5J0/qttQD6LvhZmdIC/NQ4ncsMxQXlgZZBh5/w+k3XFzDpt629XtP3uLB/sIj3aMnvT4BQk70tAEjWOnNGisdbsNlbUA9hhuCSh83o618JaBfkFtKokUT1CRl3PWj7LAqhI63YCEC5N9MWtWVCoawuTo3u+oJtArOh4xxh5Ia9j6a5Q+9L6KurnuHx2G3dTJ4WsKErXowY9m2BhTCD6i5M2dsAd5p2oPf2YPcrnSSblL2qhGIDf2Rpkniwd9LuvfocNd788sUCILwE/I3M9ikx67xDpF9nCzQMPVkzI1M+toGvJjSqoOQ
- ZFE/BI67
- 0Hphcu6CnWgZutuDYa5j4yFNL6lodRgV+JFdq+0Ld12dhMUwqFO/9n/KvVmJwzl4Saye/NtCET4Mi8q7jW0EDnLKHio46W6Oy4NmTsd0bPHn7eeTm/dCyJHD3xbOSdC0Z9oSQkrlTTEzQxELI8a/+BlEcYDn4tBFFCl5AIASmvt6u6IbiWhGxTLjZ7gI7d7PrT+tHBs2B+fPiNL9J86KEmgEWwJ/atMF+b3nYHc9P1T0tbUCtBDK0dUzqCQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 26C3F1A0015
+X-Stat-Signature: xzd9xcxsst5axk1jsyk3yctsx1grgibe
+X-HE-Tag: 1777663205-881585
+X-HE-Meta: U2FsdGVkX19WmBIEX8Ior0WPMFi9WZrHFMqHJK5n5B0EHI+QgYvC0unhVPTj7tGAXA8TZ8ahrO23SvXNh6pw1rgrgV893gDKr8CnvgGcvPN5NO7/EQXV9EpckmvzoeB1094JDFbIKHm6jrSOVaceu+EJrQRh/q1UXwPCE5ltj7SCFVSwUU7o+SgXtL82L5g3Kl5Gl3H0xXm20xMtWh7o97UtUPReSE0k6aRJkMsvglNfI+VSmNXta4bTfNBZwn2nOXe3I9omrzTRC3ui+Ge/GN/lTqA9bZjM4AEgJizTR8u3ih+w4/l1Nw7p1X58YCf8KhA5G/77ihViEoO6U/9qu7Ogb4k04wCGPtlA7WUAl5Vr+fu4UV0rFlN7Nm2QriY6WPLRJOfRk/9kdhcTxklHx5nSmh7fjQey7hojN+kSc5MQ+jS+jRYFVc61Ju5jl04QNut2Wkev6Wl47K3YAGIlXdA/M+KphjzQ6omuJxyGj6DlTON1VofMJ9pzthi4ONWr6iHCUifhzElz+OUq4INwqOfkIozgjlEJXj/rLUMF4vHpMDHfRIRdMd0K9C9VSHWwgbxDipeKoy0NKlMI/MFeuuX0aZrP4NooSIft533+0vjrfJSi77vmVz6H7DcfzjLjSF1ED1ugZm1SDXgBz0a/lW5ZoLnt3kxLeVHPa7dIYdLhonzy+tjqrm5V/xLOl3mmk/wDUuhGOk7hSm7uxB7H+oBhKwU28krR60HfZb66o6Icw8Rs3uO5wazx20kITTE41EUijniq4DkmO7aInQYRG1/tnROImhuMqlIL3EHdleh23GRfcX+H2HiFBQFNKtXmiPJJ8ZugCIOJsOJbVZ5u4in7gCJuTjYS5tHhocVAAvwgWQDxxbDyNnPrrdI3HcCnUUbZ0Hfz48LAZ51VMTDCmNSJB9GNZ/454hxlZdrKhcJMq6D/tVHuGDFDGNI6v9vu8I8EsqXuPtUPbyN1U4Q
+ udhaxk+Z
+ H/YYX86VJBEl0ZmCprJGrIZ1Ya1l+6I73Rc8bh5fLS4f0YznVd/2BuaiMvaaMXALS5nP3F9aSdqqZyatvaKHqhNbh2Q5nrJWNl1lwpqmZRphzEpDnBUc5pbxVemLPS4MEhUoV+0HyUwYy/8/WTk0iu9hOKT+pXxAOndOCEwHFq0Gwu3AKVytglmIDJ7hw1dVO+natp26ERExSoVWQQVoslAM5lq3HK6PB0kRY6Pn26HHA9YJmUrfFn2Wl62bmDKEqC3XzIqdNu0HEXvU/CO+7LEajzMRtOAqKcLZ3XqdcOSHymiYEw06ySr+hyAx4ruMdr5fw5Cwc/umdhY1BHnF1BN+GvKP4MZAKTX+i4hDB81cxMrs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,69 +119,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Today, if an architecture implements has_transparent_hugepage() and the CPU
+lacks support for PMD-sized pages, the THP code disables all THP, including
+mTHP. In addition, the kernel lacks a well defined API to check for
+PMD-sized page support. It currently relies on has_transparent_hugepage()
+and thp_disabled_by_hw(), but they are not well defined and are tied to
+THP support.
 
-On 4/30/26 12:18, Matthew Brost wrote:
+This series addresses both issues by introducing a new well defined API
+to query PMD-sized page support: pgtable_has_pmd_leaves(). Using this
+new helper, we ensure that mTHP remains enabled even when the
+architecture or CPU doesn't support PMD-sized pages.
 
-> Introduce zone_maybe_fragmented_in_shrinker() as a lightweight helper to
-> allow subsystems to make coarse decisions about reclaim behavior in the
-> presence of likely fragmentation
+Thanks to David Hildenbrand for suggesting this improvement and for
+providing guidance (all bugs and misconceptions are mine).
 
-I'm running Linus' master on my LunarLake (258v) laptop, and sometimes 
-after compiling a kernel (of all things) I'd see kswapd0 thrash despite 
-having quite a bit of free memory.
+This applies to Linus tree 08d0d3466664 ("Merge tag 'net-7.1-rc2'
+of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
-I finally traced it to the xe driver after seeing the "GPUActive" field 
-in /proc/meminfo suddenly start rising, eventually growing larger than 
-real memory by several times (see below).
+NOTE: I used Claude Code Opus 4.6 to *review* the series before
+posting. It did find one issue where a pgtable_has_pmd_leaves()
+check was missing when assining huge_shmem_orders_inherit in
+shmem_init().
 
-This patchset fixes the issue, and I'm sure there'll be a fix going into 
-Linus' master soon, but what I'M wondering is how could building a 
-kernel (which is just in a KDE Konsole running on Wayland) make the 
-GPActive grow from ~1.6G to > 30G (and continue to rise, RN I'm seeing 
-91839848 kBs and still growing).
+v4
+--
+- Use static key for pgtable_has_pmd_leaves() API (Lance)
+- Moved shmem pgtable_has_pmd_leaves() check to
+  shmem_allowable_huge_orders() (Baolin)
+- Default pgtable_has_pmd_leaves() implementation to
+  IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE) (Zi)
+- Dropped patch “mm: thp: x86: cleanup PSE feature bit usage” (Dave)
 
--Kenny
+v3
+--
+- Rebased on top of latest Linus tree
+- Removed i915 patch as driver dropped has_transparent_hugepage() usage
+- Moved init_arch_has_pmd_leaves() call in start_kernel() to avoid conflict
+  with early_param handlers clearing CPU feature flags
+- Fixed build error with CONFIG_MMU=n (kernel test robot)
+- Fixed huge_anon_orders_inherit default setting when !pgtable_pmd_leaves() (Baolin)
+- Small commit changelog improvements
 
-----
-SwapTotal:      33554428 kB
-MemTotal:       32345672 kB
-GPUActive:        652640 kB
-GPUReclaim:       403988 kB
+v2
+--
+- Added support for always enabling mTHPs for shmem (Baolin)
+- Improved commits changelog & added reviewed-by
 
-SwapTotal:      33554428 kB
-MemTotal:       32345672 kB
-GPUActive:        651180 kB
-GPUReclaim:       406812 kB
+v1
+--
+- Call init_arch_has_pmd_leaves() from start_kernel()
+- Keep pgtable_has_pmd_leaves() calls tied to CONFIG_TRANSPARENT_HUGEPAGE (David)
+- Clear PUD_ORDER when clearing PMD_ORDER (David)
+- Small changelog improvements (David)
+- Rebased on top of latest mm-new
 
-SwapTotal:      33554428 kB
-MemTotal:       32345672 kB
-GPUActive:        659004 kB
-GPUReclaim:       399396 kB
+Luiz Capitulino (9):
+  docs: tmpfs: remove implementation detail reference
+  mm: introduce pgtable_has_pmd_leaves()
+  drivers: dax: use pgtable_has_pmd_leaves()
+  drivers: nvdimm: use pgtable_has_pmd_leaves()
+  mm: debug_vm_pgtable: use pgtable_has_pmd_leaves()
+  mm: shmem: drop has_transparent_hugepage() usage
+  treewide: introduce arch_has_pmd_leaves()
+  mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()
+  mm: thp: always enable mTHP support
 
-SwapTotal:      33554428 kB
-MemTotal:       32345672 kB
-GPUActive:        666996 kB
-GPUReclaim:       392764 kB
-
-<some hours later>
-GPUActive:      91832468 kB
-SwapTotal:      33554428 kB
-MemTotal:       32345672 kB
-GPUReclaim:       488000 kB
-
-GPUActive:      91832332 kB
-SwapTotal:      33554428 kB
-MemTotal:       32345672 kB
-GPUReclaim:       487988 kB
-
-GPUActive:      91869376 kB
-SwapTotal:      33554428 kB
-MemTotal:       32345672 kB
-GPUReclaim:       486504 kB
-----
+ Documentation/filesystems/tmpfs.rst           |  5 ++--
+ arch/mips/include/asm/pgtable.h               |  4 +--
+ arch/mips/mm/tlb-r4k.c                        |  4 +--
+ arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
+ arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h  | 10 ++++----
+ arch/powerpc/include/asm/book3s/64/radix.h    |  2 +-
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |  4 +--
+ arch/s390/include/asm/pgtable.h               |  4 +--
+ arch/x86/include/asm/pgtable.h                |  4 +--
+ drivers/dax/dax-private.h                     |  2 +-
+ drivers/nvdimm/pfn_devs.c                     |  6 +++--
+ include/linux/huge_mm.h                       |  7 ------
+ include/linux/pgtable.h                       | 19 ++++++++++++--
+ init/main.c                                   |  1 +
+ mm/debug_vm_pgtable.c                         | 20 +++++++--------
+ mm/huge_memory.c                              | 25 +++++++++++++------
+ mm/memory.c                                   | 11 +++++++-
+ mm/shmem.c                                    | 21 +++++++++-------
+ 19 files changed, 93 insertions(+), 60 deletions(-)
 
 -- 
-Kenneth R. Crudup / Sr. SW Engineer, Scott County Consulting, Orange 
-County CA
+2.53.0
 
 
