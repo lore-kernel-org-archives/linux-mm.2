@@ -4,95 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 759D0FF886F
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 02:21:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B407FF886F
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 02:43:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFAA96B008C; Thu, 30 Apr 2026 22:21:30 -0400 (EDT)
+	id 6543A6B0088; Thu, 30 Apr 2026 22:43:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1FD6B0092; Thu, 30 Apr 2026 22:21:30 -0400 (EDT)
+	id 5DE496B008A; Thu, 30 Apr 2026 22:43:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0F5A6B0093; Thu, 30 Apr 2026 22:21:30 -0400 (EDT)
+	id 4A5DB6B008C; Thu, 30 Apr 2026 22:43:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C1E826B008C
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:21:30 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4D5F5C18DC
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:21:30 +0000 (UTC)
-X-FDA: 84717249540.05.9ECF1C2
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8E5DC80005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:21:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vzRjGgtu;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=li.wang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 33D6D6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 22:43:56 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A0929C1F61
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:43:55 +0000 (UTC)
+X-FDA: 84717306030.16.E616841
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9C81540006
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 02:43:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VL4OkY1b;
+	spf=pass (imf07.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777602088;
+	s=arc-20220608; t=1777603434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O2N4+x1Sn+wQRdLiVZolUUHuNzDmAcEVcLCFnksgkqM=;
-	b=G1SMbey67TtgV6XU2mB46Lja8ZWq9RX8dIoWoxL0eub2CKOeuiEDMXXJzm/80S3a0+ABkq
-	AHEg45LExtYX2aF6NmojnUjqrWN9ivlV5pnR+COyLaV8bCC5kx7vlawgFufoUnhqU/cI1I
-	YTULGTM+6dQNiTfVzLk4gzGpWgqb5K8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777602088; a=rsa-sha256;
-	cv=none;
-	b=ZlOG2WTftrmAP0GocKKPhSMNs0XESjhGsfcsOGQOnJfx3sMzTegqHdsQawoKRNmFW0Ep2r
-	gPCYMFXalQcT5/eRfJ5QsY4RmJGLV5/QOFDXuXvl/KzZNeW/Irqwhr1qHhcC3jv7Zdbuzd
-	XgQV5o9mZjsEFrdkThIrPYemyjRRza0=
+	bh=XJy1h7yV9AtdKyhdw89DZ/RBhLX6KgnZgEhjyuieIHA=;
+	b=qkfPbagYAAu2v+lqMX8ccoj3ODRqzaIaPmGMipnwGbE8rBqkS7q6d6PYWR1dKsJMXzzb9c
+	BFaq2ZzSeh28LOLTNEs8eMPm/jjPeGI5qlXs498hCDsumhSDxn+Gs+Cn4ThawrqC9gkuKD
+	H8YwHyDUuumIKdOWkl6cIXWyK1ke9Bs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vzRjGgtu;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=li.wang@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VL4OkY1b;
+	spf=pass (imf07.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777603434; a=rsa-sha256;
+	cv=none;
+	b=pExUqSwVkwNZrgNuFjFVCO2xqDAT5RNcUaW7hHp+0vvKB3DkuZwL1Xuy+bGh6/cJyKd2VS
+	a4C5TH8ZA/mwK7zi8MHdsICFUtAh5fkk/w6aCP2q847SoC2cbRk0lrUaGFaOJi9uMabK2U
+	HWGmF9lnWuUmij2S26kaHdFwkGC6lZw=
+Date: Fri, 1 May 2026 10:43:40 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777602086;
+	t=1777603431;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=O2N4+x1Sn+wQRdLiVZolUUHuNzDmAcEVcLCFnksgkqM=;
-	b=vzRjGgtuFJ1JAtGsc21WhF7K4u4Px7oOGVVXWwhcVFAaoFiF4WrwGixClRcwplk3TT/yOA
-	YKlrafWQIZddgGjYIzxPPtgfc9+svL48E8wXWBqVqG+/JNkB9NSt/0BLp+9ktmyYGf4BR0
-	//dM0MNYWNijWA4/VQynOLmUvtjXGQg=
-From: Li Wang <li.wang@linux.dev>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	shuah@kernel.org
-Cc: cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Waiman Long <longman@redhat.com>,
-	Christoph Lameter <cl@linux.com>,
-	Shakeel Butt <shakeelb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH v2 2/2] selftests/cgroup: include slab in test_percpu_basic memory check
-Date: Fri,  1 May 2026 10:20:58 +0800
-Message-ID: <20260501022058.18024-3-li.wang@linux.dev>
-In-Reply-To: <20260501022058.18024-1-li.wang@linux.dev>
-References: <20260501022058.18024-1-li.wang@linux.dev>
+	bh=XJy1h7yV9AtdKyhdw89DZ/RBhLX6KgnZgEhjyuieIHA=;
+	b=VL4OkY1bPG9rf4PHswU1JPzV0TlhVdk7xr0NCUKMZZifRa+6HiE7ZxIjZ7YPrjUXm0wI3T
+	VZS9PcFz40eKE+lYOXg3n4h40HB0Y+hiKIwZR2va9m/XQK2YWyerc8WmFjMHRAW6kFRHdC
+	UQi8B46IbspHdDZryGEiEWuBDpm9q5M=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: kerayhuang <huangzjsmile@gmail.com>
+Cc: bhe@redhat.com, flyingpeng@tencent.com, kasong@tencent.com,
+	kerayhuang@tencent.com, albinwyang@tencent.com, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/swap: Add cond_resched() in
+ swap_reclaim_full_clusters to prevent softlockup
+Message-ID: <afQTXPLbNrB3NOqe@MiWiFi-R3L-srv>
+References: <aeuOuj5rHa6hgLga@MiWiFi-R3L-srv>
+ <20260429124931.452003-1-kerayhuang@tencent.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260429124931.452003-1-kerayhuang@tencent.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8E5DC80005
-X-Stat-Signature: 9ua19kqfcy59tsa6q18izaz4f6e37jo9
+X-Stat-Signature: swfkk6q9s58k8nb4bc1mjgczpuft8gre
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9C81540006
 X-Rspam-User: 
-X-HE-Tag: 1777602088-964866
-X-HE-Meta: U2FsdGVkX19i84azSFNyJH0RdTj45pnLVuEa/xw4fj0HfNYxSFn/RdAzgt97uP2+PbqoRGLc1em6ffhGLMej1Z0VS/tNQ5ZaQaNGOxxbdTQiFIqxI3EXFFmfMl8EwO02nxdDIzLa47u8CSdFNuw3zDuqAeQzi7E4CS6bTfMGx/5UoLmyqYnlkuWSw6SQn+ZBXcMB6hcJ3fjnLf6hk/jzFGYcHWTOuRxmSqfIW6+pGshCmRwnTHokEJicy22LZC5deQk3WcoEt0n84mMZEvrLUXiFMGTycbqLsGhaK/7DdiDW12hgJB5b0fZr0nG2gRxdJUrnReoVKMYoN3K2mkF7xeLk1o504lQRzMxu1g+c2rPMrgdWbayreR6hjYPiRzgJNwkvb1jWucJ4jRtSJ0zXBOCHI5JIliXc8xg/r0lWxQq7Yksh1xTP9sdK2CRFwMuhdONCmbSbzJyhL2jmBLE2psLt2U599erjY7lUKg3v0A6iucMhSoiL2Z0CtcA/sVdkoiC/IKG58NHAvrnFx0z9bwl09zbe6NW+RS/a6Z0vhzknj71KR6zoGLCReCbhZEr1ZkqzKmXv1EZXcsCxD63jvu475n0cs3X2kL7NnkXjnr9kfrsSdb+POryuZUEjUBev3/SN7QM3r6eFo2sPdgqv6+i6p2ri0PIp8HHNraC9P93DJUmJl5TCycLiT6mhEOeGBukaUVHojilRSWXlgk9rCal/b/jBbOlpWxZ60LXOr4VHt5QXntoqA/4Nf+n1vC4rMV4Yo0Y/CO/zo3m/m6E5pDn7U1nLM1NWQJr1aKd5C8YmwtgDszpdPJpR8Kimq2XhoupvGqQb9630srjYPZtDi138rJYRsQwLTbu1J+/M1P1zdd8lBKAm7sONL++TS/y6Cg6BpAsvLN7Rkl0IekIKKUpKh8B4QubFjzFWsuHnpCOGYip18PtDBKv60DBDNwRK+CBZiE0C3AjKivdoPuP
- bVDnA66i
- hLMTk8iDa6oFt5t+StAKEIGrVsx+CMTquTC5cLOcpVCTxLmQL0CWjO1JgJUk094unFGOJd3iiKQ7Hw6E3VqewqDv8eWTkIBsinWm6Jv2jopF0qnsmtCCrghdHejMmkyaIbA7wvfWWyh3PtoyWXyXheDXgEDE//nnTqNCQ1ZiB6AjE/kZLU2RDHQTu8UselIPxEB1ReFdtAiKg3EatO6LaOO2RFpNwAdSMgJSi8bCGsphIVbrGn2j7rDCzl7VGvWNRm7HU6aF7e7WBHRNSMQ8eFfCFwi+OrdanWxgwgU3X0pAhqVDcj8HvesIQiVmZQyUjzVVuaryvyyy8SPmnPdPlCXE+rGrDVm1QXat6OrGaMx4VsCsgtxQn62PYpdYUAkbe1D9sxYAo2+JTU5at2nX8WlD6uCe/jVNEkbmSGcb3zbWVL9B4Ub1rJYE1ig==
+X-HE-Tag: 1777603433-271910
+X-HE-Meta: U2FsdGVkX1+YptlNPyuAk9oLwmo0yk7No9DYk/jpvrxzofCag0JcLwg6GhdY3XCDYDLciBe1MGYnxEyUtLEMxPIs7xhaIuAtRDOuSx4cGvZRV6FEyUS6q8I6A6mXYt88r4quzaicCAQLbM7AxWWooFvDzWuxBu6cHl4EKTMpxKStzoeqfdak8ulRyPRjXkebk0WqfHRIeP+zSEKaEBU8J/uiQ37FbbW9JJp2wYdpNQkpiOzkL13GLC5a8EqD/gTh5sSUQ+p4Tmd9MHX9FY/aLZd+Yns3p2MrMtQ0MmbFTbBTKfXm13EceBVWqCRJGYoQ9Ex+l8VR1ySmhxvK0F04QVF4E/MsZiVQpHWFIg8w7KODGWgu4n/bamJsX9B6hx3biM+Zb6kSZ6ZZrqiqrZbTQKcnjroEZ8wI3ijnxgr5V+b7vB8ACBX034V0DD24FUQJNMdbYLu6eMXWiPNPVpYlwkvJ2y1kFKoicgNy2O6uGhaUjlJWbgJ9VHidoxjKgbU1SVF4hSzoTQVbptLr5hR9Md2EJ49dIgjness7mnTXH75QV476lGm+PdCiix4PWQhFTT7z5pN5nK7n9YRZ8JAcuzUDwjTF1kHacslEjVJmE6FcUVM7caw7GqXOTQ2DCkSAnuzPrAtTzfVw2CEnwWLwu0S5RHlUvviaBk8JGSKWVtZa3Ie3xudFHptvdcWxZdqpJFF12BxSAZnl0PXHg75TC/dAeHJ91n/EsPTddusbNXbzdtdTdDaXKwxi97Jg0f+zKNtEtlFpRXscIK+wD6QL/HL3+Edh1PJO93bvSLEeqojEpOQ8S8ha6QSk4WnCvkMzSrUSCTKoZf2N+agx8qeg4g8UZrrOoHcPIhvHbjhRALZYkfM/QxnimfZluqm6qOjXZtYB+9kxy1DvRHsX/5HNu1B07U8tX4E966JIRRdnUwElXneD5BL8QZ30EuxgWIRG9uuFcAOHIpUUZ4rYYyF
+ r6B5P2Wk
+ mtac7KTZFOwQWuUOUYAljCxnZPOyzzDmGOHFrRBs3uw54Vx2FGxYY/sDkeQGUPJXpTCf8KY8py9K3F9CwTaP43uU1WCZ8RV8ObWvMOz1W/yvTRbCFWINhzzZKH2FPwOCpc0SRx30MIqnm9zGBOIuizXIqlHSeqA14IOsYjzVXuVQhrVF272o2jTxmyTXJpct4FTtPQL/sCt61ssH6jAPCTnEl2Ti5jYJFodoheKM52KBj49yaE8vMinVgJ1ZVJPj5XgAbnyLq9Bxqa11WOnbimmVaVfGHqr1G+c3Q0e/vc5RBrAVQwhxTIe3X/e3mtc8aPrML
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,85 +88,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_percpu_basic() currently compares memory.current against only
-memory.stat:percpu after creating 1000 child cgroups.
+On 04/29/26 at 08:49pm, kerayhuang wrote:
+> Hi Baoquan,
+> Thanks for the review!
+> > Hi Keray,
+> > 
+> > On 04/24/26 at 08:37pm, kerayhuang wrote:
+> > > Add periodic cond_resched() calls during large full_clusters
+> > > reclaim operations to prevent softlockup issues.
+> > > 
+> > > Signed-off-by: kerayhuang <kerayhuang@tencent.com>
+> > > Reviewed-by: Kairui Song <kasong@tencent.com>
+> > > Reviewed-by: Hao Peng <flyingpeng@tencent.com>
+> > > ---
+> > >  mm/swapfile.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > 
+> > Thanks for the patch. The change looks good to me, however there are
+> > still small concerns.
+> > 
+> > For patch log, it might be better to provide more details, e.g did you
+> > observe this issue in a product environment, or just a code exploring?
+> > If observed in a product environment, what does the backtrace look like 
+> > when softlockup happened?
+> 
+> We hit a real softlockup in an internal stress test environment. 
+> The workload was LTP memory/swap stress on a large arm64 machine, 
+> with 320 CPUs, about 1TB memory and an 8.6GB swap device. 
+> The system was under heavy load and the swap device had a large 
+> number of full clusters. The softlockup was triggered during 
+> a stress test after about 3 days.
+> 
+> The backtrace looks like:
+> 
+>   PID: 3817773  TASK: ffff0883bb28b780  CPU: 48   COMMAND: "kworker/48:7"
+>    #0 [ffff800080183d10] __crash_kexec at ffffa4c1361e5de4
+>    #1 [ffff800080183d90] panic at ffffa4c1360d5e9c
+>    #2 [ffff800080183e20] watchdog_timer_fn at ffffa4c136231fa8
+>    ...
+>   #16 [ffff8000c4ad3cb0] swap_cache_del_folio at ffffa4c1363e1614
+>   #17 [ffff8000c4ad3ce0] __try_to_reclaim_swap at ffffa4c1363e4bfc
+>   #18 [ffff8000c4ad3d40] swap_reclaim_full_clusters at ffffa4c1363e5474
+>   #19 [ffff8000c4ad3da0] swap_reclaim_work at ffffa4c1363e550c
+>   #20 [ffff8000c4ad3dc0] process_one_work at ffffa4c136102edc
+>   #21 [ffff8000c4ad3e10] worker_thread at ffffa4c136103398
+>   #22 [ffff8000c4ad3e70] kthread at ffffa4c13610d95c
+> 
+> From the vmcore analysis, swap_reclaim_work() called
+> swap_reclaim_full_clusters() with force=true, which sets to_scan to 1551 clusters.
+> At the time of the softlockup, there were still 1427 full clusters remaining in the
+> full_clusters list.
+> 
+> I will add these details to the commit log in v2.
 
-Observed failure:
-  #./test_kmem
-  ok 1 test_kmem_basic
-  ok 2 test_kmem_memcg_deletion
-  ok 3 test_kmem_proc_kpagecgroup
-  ok 4 test_kmem_kernel_stacks
-  ok 5 test_kmem_dead_cgroups
-  memory.current 11530240
-  percpu 8440000
-  not ok 6 test_percpu_basic
+Sounds like a very great root cause digging. Adding these into patch log
+will be very helpful.
 
-That assumption is too strict: child cgroup creation also allocates
-slab-backed metadata, so memory.current is expected to be larger than
-percpu alone. One visible path is:
+By the way, is it worth a Fixes tag?
 
-  cgroup_mkdir()
-    cgroup_create()
-      cgroup_addrm_file()
-        cgroup_add_file()
-          __kernfs_create_file()
-            __kernfs_new_node()
-              kmem_cache_zalloc()
+> 
+> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > index 9174f1eeffb0..74a1e324449d 100644
+> > > --- a/mm/swapfile.c
+> > > +++ b/mm/swapfile.c
+> > > @@ -1054,6 +1054,7 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+> > >  		swap_cluster_unlock(ci);
+> > >  		if (to_scan <= 0)
+> > >  			break;
+> > > +		cond_resched();
+> > 
+> > Besides, is it a little bit too aggressive to call cond_resched() for
+> > each cluster reclaiming compared with the old code? Do you consider to
+> > make it gentle, e.g calling cond_resched() every several clusters, 8, 16
+> > or other number decided based on your testing performance statistics.
+> 
+> I think calling cond_resched() per cluster is reasonable
+> here because:
+> 
+> 1) Each cluster iteration already involves scanning up to 512 slots,
+>    and each slot reclaim may call __try_to_reclaim_swap() which does
+>    non-trivial work (lock/unlock, folio lookup, swap cache deletion,
+>    and potentially slab freeing). So the work per cluster is already
+>    substantial.
+> 
+> 2) cond_resched() is a lightweight check - it only actually reschedules 
+>    when need_resched() is set, so in the common case it's just a flag
+>    check with negligible overhead. Therefore calling it once per cluster
+>    gives a bounded latency without forcing an actual context switch every 
+>    time. If we call it only every 8 or 16 clusters, the worst-case 
+>    non-preemptible window can still become quite large on machines with 
+>    many full clusters.
+> 
+> 2) This is a workqueue context (swap_reclaim_work), not a hot fast
+>    path, so the slight overhead is acceptable.
 
-These kernfs allocations are charged as slab and show up in
-memory.stat:slab.
+OK, that sounds good. Just when system is under heavy stress, it could
+yield after each cluster reclaiming. Imagine a system with a bigger swap
+disk, it will alwasy need to check if swap is 50% full and if it's in
+workqueue. Anyway, maybe I am overthinking. The overrall looks very
+great to me, good catch, good root cause digging and good fix. Let's see
+if other people have any concern.
 
-Update the check to compare memory.current against (percpu + slab)
-within MAX_VMSTAT_ERROR, and print slab/delta in the failure message to
-improve diagnostics.
-
-Signed-off-by: Li Wang <li.wang@linux.dev>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Shakeel Butt <shakeelb@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Waiman Long <longman@redhat.com>
----
- tools/testing/selftests/cgroup/test_kmem.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/cgroup/test_kmem.c b/tools/testing/selftests/cgroup/test_kmem.c
-index 249d7911306..4b579969889 100644
---- a/tools/testing/selftests/cgroup/test_kmem.c
-+++ b/tools/testing/selftests/cgroup/test_kmem.c
-@@ -353,7 +353,7 @@ static int test_percpu_basic(const char *root)
- {
- 	int ret = KSFT_FAIL;
- 	char *parent, *child;
--	long current, percpu;
-+	long current, percpu, slab;
- 	int i;
- 
- 	parent = cg_name(root, "percpu_basic_test");
-@@ -379,13 +379,14 @@ static int test_percpu_basic(const char *root)
- 
- 	current = cg_read_long(parent, "memory.current");
- 	percpu = cg_read_key_long(parent, "memory.stat", "percpu ");
-+	slab = cg_read_key_long(parent, "memory.stat", "slab ");
- 
--	if (current > 0 && percpu > 0 && labs(current - percpu) <
--	    MAX_VMSTAT_ERROR)
-+	if (current > 0 && percpu > 0 && slab >= 0 &&
-+			labs(current - (percpu + slab)) < MAX_VMSTAT_ERROR)
- 		ret = KSFT_PASS;
- 	else
--		printf("memory.current %ld\npercpu %ld\n",
--		       current, percpu);
-+		printf("memory.current %ld\npercpu %ld\nslab %ld\ndelta %ld\n",
-+			current, percpu, slab, current - (percpu + slab));
- 
- cleanup_children:
- 	for (i = 0; i < 1000; i++) {
--- 
-2.54.0
-
+Thanks
+Baoquan
 
