@@ -4,91 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 344BDCCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 10:41:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EC6ECD3424
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 10:41:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0202A6B0088; Fri,  1 May 2026 06:41:10 -0400 (EDT)
+	id D8F666B008A; Fri,  1 May 2026 06:41:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F12EF6B008A; Fri,  1 May 2026 06:41:09 -0400 (EDT)
+	id D427E6B008C; Fri,  1 May 2026 06:41:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E28FC6B008C; Fri,  1 May 2026 06:41:09 -0400 (EDT)
+	id C2EC86B0092; Fri,  1 May 2026 06:41:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CD5626B0088
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 06:41:09 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68BBC140140
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 10:41:09 +0000 (UTC)
-X-FDA: 84718508658.05.949554E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3D88E40007
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 10:41:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dK8huKGP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777632067; a=rsa-sha256;
-	cv=none;
-	b=cdUy7ufbwZgxEOFofSTjvxFyVgaYteUdKoMERSGI5y5hKbAtcuzUJ/PzGglAZi9CXSbt5/
-	3ER/jQFL0eKBG0Q+9TQqkmHb86uu8XLi5+m0B39wig94sRIavzIYjmh5SNkfhQmP0o/9GQ
-	r1PMAd6hR3NdokqBDxUzXcMDDKbTIp4=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dK8huKGP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B0D546B008A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 06:41:42 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D7D8A0222
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 10:41:42 +0000 (UTC)
+X-FDA: 84718510044.19.F68BE1C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1DA8B140004
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 10:41:39 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fnB+pKBT;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777632067;
+	s=arc-20220608; t=1777632100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x4pfY9DOeEY/yBkrpnmK8GySWUKGYW9ST9zdGoT4uws=;
-	b=Jlh9Rm2EV7JBW/n/kO6F9YqvwYw7gbtXrlC+ld2Ak+ejz7Nt/IQDjDOQO3ezKmmHb9bNbw
-	06xBZXcebTpaHgaPmAGP7XBAdQJToOj+0G+pNOA0nfQ0tN3BWdH+mDP5VPMUcH7fgJkJ8u
-	bkqJrFfGOGCvUaWb3/Ys4LwgG7TrM04=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A06AF176B;
-	Fri,  1 May 2026 03:41:00 -0700 (PDT)
-Received: from [10.164.11.2] (unknown [10.164.11.2])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D86783F7B4;
-	Fri,  1 May 2026 03:41:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777632066; bh=/l5iTo71MJBR+aBi3Ju86nzZYKybU7sUXPkvn6urlYA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dK8huKGPMBqdQfhZpl3EVu3JypzYlWsSoY2FRosjQ+8l2RCK5BbdsqBgJeCNSut6C
-	 oEE00PbrwzvN+wQ/+SdSrGYhVDqJZTnsVgr4rcuZnQ8lrWXA4uvFf+yyShS2sRpCKD
-	 x1VwsJ7WgomrM0Si/wbkHNPW9nFL5C55EomYnZqQ=
-Message-ID: <aed7c1d5-2189-4ee2-b0f3-ce5a3e3c2118@arm.com>
-Date: Fri, 1 May 2026 16:10:58 +0530
+	bh=dG8+plN076bfrFQ3LMDIi2t3iZQqA/V7+ElzA5hhE9o=;
+	b=sREnEW881eHu6xepLNOGVKPjbMg9iuVXBl3mA+tMC/3EvNtGdhvioHQjOfBcXTWU6pvR0U
+	EcadNFJqTet5fDinCLCdtI3F595HHHMRzvEUMnJ+j3L1J8vAOOjssdoc5av4JHb4W8ZOfu
+	7xb2KN5h4+ouCtKnQEOC3SsM/VgaTas=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777632100; a=rsa-sha256;
+	cv=none;
+	b=AF6ae/tPR9ftSQ/yMjsL9XycWPjawESr9Dk95CxUJLj9ALF4/bzkTIjAODPaIpLCR79bsI
+	KoOl6TeJuI95THgcoE0Sru8RXEuGmLaLE8YBqZSV77IFy5aw1QW49vhOBHFMMeXls67d5K
+	t/IRbqOBP6gBt0mPJ3Ss6vdy1fmg3O8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fnB+pKBT;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1BE8243471;
+	Fri,  1 May 2026 10:41:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835CFC4AF0B;
+	Fri,  1 May 2026 10:41:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777632099;
+	bh=zG0cdIpqGrSUk2e0Yn+pCtQM9mDMXSK9RTMePPjgQUY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fnB+pKBTokhVGJuDJN9IgXLZgBgg09jlvv+bsR8hb6uaLf76tr1KzLGxF+/GCSjer
+	 2D29vaBf9nQwROhDNX09xqsVTwnY38mZWOBahE6sDiR1q1InE2UBpe/bJ0qI8QrWUi
+	 41KOmOihS6O8kPOKwaDpPLDgE9fGMbPVIHg6C9MxxkiGD9PsWJEL9Mynz66m10hsli
+	 Da9EFM9UpZt99E+QDYiGt+TI2FDKwEOt+O4By6AqpRzfafAxV3jo16bjoH+4keL715
+	 1R3PEuepwz08c5hRNIkpZ1jo/FALM44qjuIK6cvqKUcfciKbO3xD9zUa9VoWdPcK0O
+	 MgrWMIx1lrlqQ==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7C44BF40068;
+	Fri,  1 May 2026 06:41:37 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Fri, 01 May 2026 06:41:37 -0400
+X-ME-Sender: <xms:YYP0aZN06RmVqMUSnMjk7NRoE7xJNkvoT7DHftyfyVzRQ5vc7zcfVA>
+    <xme:YYP0aZk_XNWfWQrpYD8zDV4kSMkoFuykiICxx3sdSflnWtTyGL9dCF4becjLPW69h
+    g3ot1Z0qmhp8T0w1d4S0G5oxfzqD7ixkSXaFDDmS1Z0tbPSO0ZAdjs>
+X-ME-Received: <xmr:YYP0ad1P7V8V5tSdLF7sI6CDaKilTeyvZidMwGpgYy-DrwFh2zPHB-Ju9b9bdw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekleellecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
+    dtvdenucfhrhhomhepmfhirhihlhcuufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgv
+    lhdrohhrgheqnecuggftrfgrthhtvghrnhepgeetuedtjefhkeeuiefgudduvdfgvdeiue
+    eigeehheehudetuedtkeelhfeihedunecuffhomhgrihhnpehsrghshhhikhhordguvghv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepgeeipdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
+    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
+    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
+    peiiihihsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:YYP0aZWiZApYblD-N6cQEHz6QtqrsEqvEOw2unL5khPHcR3R_53ctQ>
+    <xmx:YYP0aQhnkxK9GE-6qcefPj6VSn2jPsN6XkBEDVzgR1KvO6IY3-Lctw>
+    <xmx:YYP0aagqewTE3OQZ9zFGq1-wp4dXwGODRGx6helK13TyuhnSYzuPew>
+    <xmx:YYP0aQuovEgr2tAjxRgxYFOgURqX6Gnvhm80YLa-0SD51FJpInh4fQ>
+    <xmx:YYP0aTSByjDZzE51VF-0XGGywziZbAzVBNk7pTuSOdNzpDuXYM2Gxc5j>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 1 May 2026 06:41:35 -0400 (EDT)
+Date: Fri, 1 May 2026 11:41:30 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org
+Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 10/14] mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+Message-ID: <afSC1NHWzrtA-vmA@thinkstation>
+References: <20260427114607.4068647-1-kas@kernel.org>
+ <20260427114607.4068647-11-kas@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/khugepaged: clear MMF_VM_HUGEPAGE on mm_slot_alloc()
- failure
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Ye Liu <liuye@kylinos.cn>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260501075708.327217-1-ye.liu@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260501075708.327217-1-ye.liu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: frzb7dmn3jrmpcijpgom8rtrjif8f5sb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427114607.4068647-11-kas@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1DA8B140004
+X-Stat-Signature: bz41939f1nnxi3xt3z1b3pbhxijrkceo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D88E40007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777632067-63462
-X-HE-Meta: U2FsdGVkX1/ixWrcNjCOitq6dy7JlwJXZgAJfsK3GmpyuDYbbi8DKmta9JmbDjNS+K8F4NopI+TH2DifPWwuA20MT+ySQZMgCwXT+mbnSiySa4Lfh6q36uEgFKH3lsHS+RVVHMfe8gnTHfP0y0YSIRFt6psFGTwJSJ+xLYsO46sUt7HF78MKLxxkzg8TaBUour18PGmqSf7E4Jv7bF9VW55wy3HUIenUPGPIep69bZM+7Lr+A/guiHSnVbfFlkLvlKHbxWMRZhdh93faXTTLvnscDnBHIMPSGS4MRceUpVvF3Jf6yRHsiJhs28P8xK9IOERRk4+ewDj+uboqhPSha2TXPddr7A+WQrz/FQiFMpgRiKL/9vYcXP9518VfsPBocV4dV7W1OxUJrTNoJa0RdDg6gSsKTAg8tk3L3R5h9jDxtrk7D87wtUBTHqRRmjKLZj/SVnPG7odZZCbajuhUbK5cW8o5JGyq6G8MlmBfs0x2ryw0GGGNAtx3awASMDV/sOg5iWBoKID+p3mTU30vAaNuuguNZz3+fp2T0lz+zabgalOQi1iNJP7AxW0+N/LKCa5jWVr3IG+yHlP44sUjw00bdKvi2D2HG3Rz7+IBHXy7EBClAuxtwWQFBalT0pemzYsyQTcnAOkanGc6XA+3EIjLouTVipwxM6bbeFQjWL/pMp66DMH6g1Xenprp+tKsvzQEsaHP0kbN0/4OtZ74j9dYwgx5RSMoZsJzkUygShTQZJF3yo8qVfquGPaSe1qMz9Op8CwEUupaf1cZ0/oxFjcsJaijHWbGuiar18Yy44O4nqZJCbnzOhRBuFU2hXBQN1yxs3y8RHAMhO7PdRlWslW2PXm9FKoTj4+NXw+ignInTSTSxuPERpQhXeaItATn0D/hKKxooDGR+MyG7eJsOx7SYuc+G568cJlfNToiwTwnEyZkX0Ut9owt131IlfppdW/piKLm8za3cEQjtP1
- Xs6dtZnP
- 9whLwgiC1QvZbES3JRAkrI6+sIM4ljbqlQZjILHuTZjcszz8dbABGKQ/zrzb8v7Q134iQhnFpAr0ZmHP6eox2PiYq6SqKwx1zxdyW696uwoO1TTNnlRdwYAVhz8ARIagTrbSGTSJrgRHIQjKjGu9SvuSipcu4Tfh86mHfcgqX2ojuENBnDbbbxIX52ZZTAE1qlRFzabnaH2AQQWmO7oucUnWoNr0h7pmhdFU3NePFlzwUJWoOOdLk+63NZXu1CeACF1Iq3SRo7YB2HEAw3/RQaccfi9GOakYRWPzP
+X-HE-Tag: 1777632099-877518
+X-HE-Meta: U2FsdGVkX1+yRBoe8LoHOrJ05gDb4/K+WhnDr22UYu7Rbgx/F9KW1Bz7jGJGqgyCoqUwVnrHCFd8/cHFOpjmG8AaCQPm1y75ZoxLC0XxC3Jg0uPaLnvKyyNeD2KNOhyw2BqbJMMZiJVSzV+CUXd6ebSVuitUnPwf4xatxtoNnNO/c0zzkxiq1gsgG3k1zj+hYzLzrNoalStp80V9snjNksK/HopLbLTDGVTtMvmtjMP0wuUYoLm4a42+6jg/hBScgunEaLCc8wf3Nc0s3Afezf31W+nfJIjF6lCjCKYodF81x9iSeV7UTqnlmFbV8Id7oHwKo7VSpSJPaxWNE8Prs0Yd8mZTUMVPtLJmG26qB7K2EGNnZ0GKFhEg5lHPezAU3E0HBhVGOwrpB13BbhupRktFZu6VXDqDzXg7xIpwEXh+eP1eASI15EonNcYcN33c5NC9oRJeliJtQUhnzwRjREmRjs39cw2SwX6gZmaYxpVEn346A3o9T/1Cm92OKsAl0pukY7QrqiynJXLr42i6FejoV+lVLgPCfOn+hau/mPu9uWBtBk0+SqdghOM7LlVbFdb33Exh+l0PBH5r8QND3Rso7odYsptK3BkILQQsg9z7pzw6KRyICGpEBlfLNVg13Cgue6XYc3YdTNtOC29t07OXUQx5l0CS50xDcvyxjfZ2PxroSqW96CY4OktAaY2p4TkIQEprapo0g3Mfmyc60KfUBqVznXM9gBiOPTaWS0z9LCWtdovE2wA4k8QJa4WIDN9dvzZ7wliabxerU2yDZMehLTs7Qxo6FxvMiITu014+GbILE46satMy4BY04zL42+VajS303ClIMLChxrmZcPJWsQ6C4s4c/ZlWc4rjIzYmmQtMGA2qR2cV7p8ZJYihSl3NF+ARZLH5kmCkClY1ivUVcXSgKSdc+SXPzZrngYJFPUPQEaOAAIb8JeucvZH9BAUjaqRYWSjz9sZrtN5
+ QY0bE8xz
+ 8N3Uz3100kfvaAF31nvmpI1vdd90SbiX+vB7tTQTdyjsA557LtMvvw1jhCZI+om+wtQYJujRLXWCA/jMP+wOMPko7ZIxyveeNuVjKEKGMprGFtWVaQZvsJoaoHguW5pueDnhf+TQprDJssVDpuG7RGInGqf95pK0/kcanZmwAaANrfGbZ65Tf/ngMVyv51tCq7UyhIT6pv4SPvYQ50torb8h6arAUu5zFVs9GK1wJOGZaOdt1d7D+2z2BILO5P0S5oaAQVpbdrqzascwpS+igYQpcN5w3BtYV+gcIBeEabqupne2F9zj84cT7vQnHQJf61bco1+cq1XfBTRdwBBZbZiwX4XnD8YVlxztARr4lxiSuTUD2Eg0WXG8rWhwlUl9+mXcRcVmxeqf79JUTgP15ofVSf76KTZbv9o0M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,49 +130,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+sashiko.dev -- https://sashiko.dev/#/patchset/20260427114607.4068647-1-kas@kernel.org -- wrote:
+> commit 6d6b8f986b2959f8ae0932deccc5afa4ec485813
+> Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Subject: mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+[ ... ]
+> Does this new PAGE_IS_ACCESSED tracking correctly support the atomic
+> read-and-reset workflow (PM_SCAN_WP_MATCHING) for RWP VMAs?
+[ ... ]
+> Since WP and RWP are mutually exclusive per VMA, userfaultfd_wp_async() and
+> userfaultfd_wp_use_markers() will return false for RWP VMAs, causing
+> pagemap_scan_test_walk() to return 1 and skip the VMA.
+[ ... ]
+> Because these loops hardcode a check against PAGE_IS_WRITTEN, and RWP VMAs
+> now populate PAGE_IS_ACCESSED instead, this check will always evaluate to
+> true for RWP. As a result, it looks like make_uffd_wp_pte() and
+> make_uffd_wp_pmd() will be silently skipped, preventing the atomic
+> reset of the tracking bits.
+> Would it make sense to update both the wp_allowed check and the hardcoded
+> PAGE_IS_WRITTEN checks to accommodate PAGE_IS_ACCESSED for RWP VMAs?
 
+PM_SCAN_WP_MATCHING is the atomic read-and-reset flavour and is
+implemented for the WP marker only.
 
-On 01/05/26 1:27 pm, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> __khugepaged_enter() sets MMF_VM_HUGEPAGE before allocating the
-> corresponding mm_slot.  If mm_slot_alloc() fails, the function
-> returns with the flag set but without inserting the mm into the
-> khugepaged tracking structures.
-> 
-> This leaves the mm in an inconsistent state: it is marked as
-> registered (MMF_VM_HUGEPAGE set), but will never be scanned by
-> khugepaged.  Future attempts to register the mm are skipped since
-> khugepaged_enter_vma() checks the flag and returns early.
-> 
-> Fix this by clearing MMF_VM_HUGEPAGE when mm_slot_alloc() fails,
-> restoring the ability to retry registration later.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  mm/khugepaged.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 7d48d4fbd5f3..60ab7c1b61dd 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -559,8 +559,10 @@ void __khugepaged_enter(struct mm_struct *mm)
->  		return;
->  
->  	slot = mm_slot_alloc(mm_slot_cache);
-> -	if (!slot)
-> +	if (!slot) {
-> +		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
->  		return;
-> +	}
+The silent-skip on PM_SCAN_WP_MATCHING + RWP VMA is not intended
+Will fold this fixup
 
-You could just move the test_and_set() after this no?
-So if slot allocation fails then MMF_VM_HUGEPAGE is never set.
+        if (userfaultfd_rwp(vma) && (p->arg.flags & PM_SCAN_WP_MATCHING))
+                return -EINVAL;
 
-Fixes tag is probably required but not sure about Ccing stable.
->  
->  	spin_lock(&khugepaged_mm_lock);
->  	mm_slot_insert(mm_slots_hash, mm, slot);
+We can add similar operation for RWP later if there's a use-case.
 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
