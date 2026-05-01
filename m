@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4175AFF886F
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 00:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 776F4CD13DE
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 01:18:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABDA76B0088; Thu, 30 Apr 2026 20:57:38 -0400 (EDT)
+	id AB5E86B0088; Thu, 30 Apr 2026 21:18:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6EB36B008A; Thu, 30 Apr 2026 20:57:38 -0400 (EDT)
+	id A3F946B008A; Thu, 30 Apr 2026 21:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 984696B008C; Thu, 30 Apr 2026 20:57:38 -0400 (EDT)
+	id 9566C6B008C; Thu, 30 Apr 2026 21:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 893406B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 20:57:38 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C01E51603CE
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:57:37 +0000 (UTC)
-X-FDA: 84717038154.24.C76E1BC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 286FAC0008
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 00:57:35 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L4gjkU8o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777597056; a=rsa-sha256;
-	cv=none;
-	b=vqThRIK8jFAJXjoUH2/FtJ5tYJT5riml+MNgK6m57b2XtOntsBhDQSJxNLHBEfHmd8kVi6
-	xgZGbRs6gR2ENkNlvXrHxY+gaC1FFqMZ65WXfoF7bNRllEj2FOYkWYzp94jhx2SEf/3HXO
-	NleB/3Q9kR5Iytobg75jJO3oZMbRuto=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L4gjkU8o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 816846B0088
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:18:20 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0828A1C1207
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:17:53 +0000 (UTC)
+X-FDA: 84717089226.25.0BA89D1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3DA04160002
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:17:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cbMB9IzA;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777597056;
+	s=arc-20220608; t=1777598271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x8w7VAg5csyWpRDTQY9itJmt00aaoEhWbuqVoa8Vl2s=;
-	b=o7ZRrTB4pOhfpzFb1w3Hu2areOoK3DabLCvx+fn5vZK95sCEZJcw2RdkOae0HCAqGM9jE/
-	nVpfP1e2TbhyLv4v1rGx+OniRem0bESHfMHyQVLqGxbd3GvQz06xLX8IyodtOfpvn+fWfC
-	HXCv8XWD7O3EX7D7yVYMy2RdBvR7fwM=
+	bh=X/lDmM8rBWG4uqpENqamSasLBnCBbp32m9wrJYI/Daw=;
+	b=7YWtr8w+cGbYJ/LOMC9US6ZZc0gFwcutT/lGGOMuWBtpTCdHHOqXNxLg2pi3Hj4Ro4PkqG
+	kvxLliFtFwugnHJS7L6/6zo1RNOcIRUtNEdnYZpwAHZPlEGP4F/ES86NJyTy7nKQJh6a/6
+	mN2cwMV+8Ut5jHohh/qPkSHYS95xwLE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cbMB9IzA;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777598271; a=rsa-sha256;
+	cv=none;
+	b=wHPaSpqDFysPMI0HAJiEEr1kbfQsHUQaAd7Vh2Y42pt7U6dMpai/PJqewFHXO82c+NyXvX
+	2n8VdWodz19G3EVTQKlkPLsyjjW31N/9g+whMnHKw+J1NX8T6/I/JhY0z3Ro2NQCILhivA
+	cTseBIZHxYPIkrRjRCddegoixlMLDgQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8174F60142;
-	Fri,  1 May 2026 00:57:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDAEC2BCB3;
-	Fri,  1 May 2026 00:57:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B8D3444D4;
+	Fri,  1 May 2026 01:17:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0E4C2BCC9;
+	Fri,  1 May 2026 01:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777597055;
-	bh=1IYp1ZgJR/BbgkwxFxDNLAre0KLyvTjycCJgVR8+QvA=;
+	s=k20201202; t=1777598270;
+	bh=IXV4ofHUNMR7uLHKHC1smn2YPflRBM60edKH9TblUOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4gjkU8oqLUPRx3qGLH8490ENePW9y9lwc3yOXNMHN8H/EgFcNsS6lprkjHWgI25t
-	 Ni6TeSbD4U7paeoziYotvpo/8+Jhy6Jlv3xK5ign5rakizymNYvqqj9sEsH7FIOaTC
-	 wCbqJpChFWpRQkkEja0p3kS1HcvwneAZk+rgny2N4KEeRVufiIN2urRteJ5VQqOISY
-	 Y21k1pNuYwjZmpKROvuupMPSOO6IBWMLoicEnE1gh9cUer17jm6Cy28r5qSFnv0bVH
-	 /PHmMwYtDe+1Hd7auk6z2WElzfYlExmypAidPIBL7GDgnyCCCFBCqpYM3WvXzC96sk
-	 wJepV5iaSf6bA==
+	b=cbMB9IzAxL8CGD1ii9D2yRqsbgrM9kjX/48Sp/hSKyIDsMlPVIPaPgMtx/x1wkb1r
+	 USo9ckkVyeUSxsWNwZe+spjqCq7p4QpEIIb72fGShnD6EIRcZgUiC7QMpQzB53mXCF
+	 YM/EMdTyUmgolIqihfckuNdUx9DavJreC5SIQMQrdLXE7dRk1W1JpDs/zqWJ477VBl
+	 BGS4iy9o0ipTNocI4Fym69HFrW4pnBDty0c8zZS9CjbzocJAP475Kml3DzLlavFsz5
+	 Gn0zoZHtDk1qVaW40EpSsXL8n7QawiqyHf4YkrLDlYg2ekMC9/g4UmfdTSwh1Bu31S
+	 jgiB4ykXX6mog==
 From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
 	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v1 4/4] Documentation/admin-guide/mm/damon: add DAMON-based Hugepage Management documentation
-Date: Thu, 30 Apr 2026 17:57:20 -0700
-Message-ID: <20260501005721.79301-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 1/2] mm/damon/reclaim: add autotune_monitoring_intervals parameter
+Date: Thu, 30 Apr 2026 18:17:38 -0700
+Message-ID: <20260501011740.81988-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260430134139.2446417-5-gutierrez.asier@huawei-partners.com>
-References: 
+In-Reply-To: <20260501011740.81988-1-sj@kernel.org>
+References: <20260501011740.81988-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fakzq85ktycpgjn1cgk7f9p1wdwwb4ps
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 286FAC0008
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777597055-942260
-X-HE-Meta: U2FsdGVkX19zrQKbJYE0NSo/vzSCFgSE6MRpqlZJTGcmKfJzurhdnDfkxoRAtzbdLB6agsomJYNFqe//J1m9CkmLzXTWZboKOWxTH6JzG6rXh3S8XwNghxBKBXnikFs5wB2cVwbZTOtuc7oBPeUq5WD+GBccniWaC0a+KWXbMeJpJLq/z1SvAx7KobQ9bK6VJKzcqUW5vyDoecJ1/rBW1h1HB1WmBSKD2iGPX94ajuLumUWnQ5X+PTthxt6iRV19OTQnUNrPFk9Xq9uK+xJADtpXJJ/BuAQ+sRHKTYMQMJC8oqb7HQnrDxWMbyrKkpfBa7wF4eyplG7CCX+bUyS8canQmtcHBUZv6XSG8gOjZ2h3aeAY4te+Y2b5f+69GY3P3GnCNzZQtq+qNYio8E47otUATeLEEl9RKcQLIAIpZKr4sOmPVTHYh8aClEkdnr4ZC6ZWbvdwnZIscSWGivShHf49odH2xHpkNZ/ioRAG6pnsXfKHtvXGzWNmVLndEUee/nXzykCqztiMBHcnwdD51ceo32/EcddznJylah3czrKv9DBeF8bczXONg4gHO+nPYnikV7SwohlRbpApu+L1pvfI6Zin3L7eATVfTA0J+i+RrfJ1hWtvCdvacgvKT7N+IC+fCDO4UHTOrFVlwJxNOfbIgORjXFAkiLaVpLSR6uNCEPFlzC319eL5zMsF5YLv7cxYjsllKNUT+ElpeNVQqQYnbkpxco+ABvUArxoU3+x7tfjhgKGDjbS13MEcnopolgjjRQ3knnONQ9lS3fFgD4PJLYLUcDhGoRmS0zvz6CJ3/15WUs2fsIp3ujjjIhuln5rv/n3IKKrRuHodzviZkj5J9HJGywUkdgBEsv1Hu3Ef1daqgaGVIWnkMtOod8jb6ZTcKeFb68pnjsQ8PQBVLvfPNM3AkT4RgX/ZT4iYowx+23iIYsDxA57cI1f48ebIophS6DKqoAHNsxi/dbV
- t48lD6JG
- pKZkofKj4GYoaHJYX/iBeoCtHjs4T7d8qvJ5ITxvtI6ZnEf5YjH7Jt3PVf9QTXWpf9X/bgDJQf9fHndXDQtCO63qXE3PXbRl5YKFPVBmErrZWg6GrQxJR1iKQa6vMcm00BfOymzOwQdrGJM3HZoEwAVEqeWiiPSzpkzv9ffStI5YrrUqbG/+N/PHe+xZYP4pjzxEnCZ5WYX5ldKkD52a5eypyAxGDbN6pxrrhCc1BLfYfK6bfpLNo1De5KgY/Sm9H2Wi8V2xHXw3sKmboK9eo12JqX7uhQFj/z0+A3zvUFqlQPBbDehPPuNI/sg==
+X-Rspamd-Queue-Id: 3DA04160002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: y6z7jxnebephy68tthphdocdexjmfnob
+X-HE-Tag: 1777598271-184437
+X-HE-Meta: U2FsdGVkX1/od4z2dukEPxH/6glaeIyjS+0S/4VdhY9C5dgqL3DizaO3X/4vRr8OjIck9zLDcCAQmNwyw9ueRQF962KzDrVzNfzNclQKAHqobIzTLTEHl2NuACmRvk0fwPn8vbjrKEA2odvGxbNl9pMGSzCg8KNMm7mouKMXl+WSOKNa1wcjvx0bxGlNwk9CqLhIFIwiYZy4RSAF5KNVKOfAmTWRIio0bdKUClWlNycS+7NAB9IYMQN+eSviO51o3jMc/ubHt5DOrourYmPz6274yK+d1i8zZD+SS9kJ+n/n6/3lARVBNz2OT9CvR7qBLxyxusISGm6hzVzZEAtdszfrUDVTOXKkkPSnDiAcvKrNC1PDaXt5QEO9/BUSBHJLeGLiryKzD9WoDGkfvIubnsxXoQxl3iFgdVWTyhKs4QUA7NgDDli5f3ivbyqXRksznfjjCO/AvqeJVVQizTtG6TL7ozW9PzB+ICQLK/ngceBgECvepk4mVlf/vPqx3pVhhmQ6fJV9ZFTG0l602cNYpfBVnPU7GOkh6nS4+qkdEEvh5Mw53IYppLXlsPkO2KNg7yl2ONC9PtuusYMQhf92Hfqu7+6pSRYvDvxmDajx0E9HiR+2CC23RK6XTz9u1a/adXswWoPTxEnDemB+pu56/S/ZVP55OJw6GS+3hSNAb29KSi+vMP0EGCoMdkDyOUy/2H1fYGnAtsbUupnbCCJik7boTr/g2xqPSQaZNz70n7bER6I3IfR7C/indGCwWO9WKxxXFXfxwURugKLRufPN8CerKSAkpvhosikdwhUMTroLR/UfKYX/ZPtAuzcRTMMOonsXsDS3dtHc1mNJw1x3gLDZH/eg4EAfNcH9x3xSnp8ldpfG/nVP7NiJF2KQ0h85DJ/Y0GOeWtvPyU6F7/9UuocsErlEiIzSrasEptAUkcukFrx1vJ8Lv8VqE0QMcLPT1fYn4u6TwvhHv+OcVYl
+ EWtYsHW8
+ PhYFvLIqesyjeuxzyb6C12zh/UE6Rf5PSE7yK7KZQd6b1x1xyeqkJ+/uTNgWOkXCh7xcJZ7kAJHJDM/JhhgwvTcoFrT2ANLH2Rt1wNfRZCxI1DTZ/0isozVLNe39T3ppIM6whNP85rTnW30kuv1/ZYUVoM3svdsSu8YW1ofzSmk+tqzyOOPSOeLxGnxoAry/dO18hJFpf7wonhNlhKe8CpN8oloTY9GWV/H8ivH6aG/uThBGl6qjl8BTCwBvTNqcRJG7G4JNYkfBtMQ4hslqw181Vcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,27 +92,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Apr 2026 13:41:39 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+DAMON's monitoring intervals auto-tuning feature has proven to be useful
+in multiple environments.  DAMON_RECLAIM is still asking users to do the
+manual tuning of the intervals.  Add a module parameter for utilizing
+the auto-tuning feature with the suggested default setup.
 
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> 
-> Add documentation for the DAMON-based Hugepage Management (DAMON_HUGEPAGE)
-> feature, which automatically manages huge pages by identifying cold memory
-> regions and collapsing them back to regular pages. The documentation covers
-> the module's features, operation, and all available module parameters.
-> 
-> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> ---
->  .../admin-guide/mm/damon/hugepage.rst (new)   | 258 ++++++++++++++++++
->  Documentation/admin-guide/mm/damon/index.rst  |   1 +
+Note that use of the auto-tuning overrides the manually entered
+monitoring intervals.  Also, note that the 'min_age' will dynamically
+changed proportional to auto-tuned intervals.  It is recommended to use
+'min_age' short enough and use 'quota_mem_pressure_us' like coldness
+threshold auto-tuning features together.
 
-I will review this after the discussion about whether it should be a sample
-module or real world usage module is concluded, as this could be changed a lot
-depending on the conclusion.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/reclaim.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
-
-Thanks,
-SJ
-
-[...]
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index a60ee800d63e9..7126d47fb8b2f 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -91,6 +91,20 @@ module_param(quota_mem_pressure_us, ulong, 0600);
+ static unsigned long quota_autotune_feedback __read_mostly;
+ module_param(quota_autotune_feedback, ulong, 0600);
+ 
++/*
++ * Auto-tune monitoring intervals.
++ *
++ * If this parameter is set as ``Y``, DAMON_RECLAIM automatically tunes DAMON's
++ * sampling and aggregation intervals.  The auto-tuning aims to capture
++ * meaningful amount of access events in each DAMON-snapshot, while keeping the
++ * sampling intervals 5 milliseconds in minimum, and 10 seconds in maximum.
++ * Setting this as ``N`` disables the auto-tuning.
++ *
++ * Disabled by default.
++ */
++static bool autotune_monitoring_intervals __read_mostly;
++module_param(autotune_monitoring_intervals, bool, 0600);
++
+ static struct damos_watermarks damon_reclaim_wmarks = {
+ 	.metric = DAMOS_WMARK_FREE_MEM_RATE,
+ 	.interval = 5000000,	/* 5 seconds */
+@@ -152,7 +166,7 @@ DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_reclaim_stat,
+ static struct damon_ctx *ctx;
+ static struct damon_target *target;
+ 
+-static struct damos *damon_reclaim_new_scheme(void)
++static struct damos *damon_reclaim_new_scheme(unsigned long aggr_interval)
+ {
+ 	struct damos_access_pattern pattern = {
+ 		/* Find regions having PAGE_SIZE or larger size */
+@@ -162,8 +176,7 @@ static struct damos *damon_reclaim_new_scheme(void)
+ 		.min_nr_accesses = 0,
+ 		.max_nr_accesses = 0,
+ 		/* for min_age or more micro-seconds */
+-		.min_age_region = min_age /
+-			damon_reclaim_mon_attrs.aggr_interval,
++		.min_age_region = min_age / aggr_interval,
+ 		.max_age_region = UINT_MAX,
+ 	};
+ 
+@@ -184,6 +197,7 @@ static int damon_reclaim_apply_parameters(void)
+ {
+ 	struct damon_ctx *param_ctx;
+ 	struct damon_target *param_target;
++	struct damon_attrs attrs;
+ 	struct damos *scheme;
+ 	struct damos_quota_goal *goal;
+ 	struct damos_filter *filter;
+@@ -201,12 +215,21 @@ static int damon_reclaim_apply_parameters(void)
+ 		goto out;
+ 	}
+ 
+-	err = damon_set_attrs(param_ctx, &damon_reclaim_mon_attrs);
++	attrs = damon_reclaim_mon_attrs;
++	if (autotune_monitoring_intervals) {
++		attrs.sample_interval = 5000;
++		attrs.aggr_interval = 100000;
++		attrs.intervals_goal.access_bp = 40;
++		attrs.intervals_goal.aggrs = 3;
++		attrs.intervals_goal.min_sample_us = 5000;
++		attrs.intervals_goal.max_sample_us = 10 * 1000 * 1000;
++	}
++	err = damon_set_attrs(param_ctx, &attrs);
+ 	if (err)
+ 		goto out;
+ 
+ 	err = -ENOMEM;
+-	scheme = damon_reclaim_new_scheme();
++	scheme = damon_reclaim_new_scheme(attrs.aggr_interval);
+ 	if (!scheme)
+ 		goto out;
+ 	damon_set_schemes(param_ctx, &scheme, 1);
+-- 
+2.47.3
 
