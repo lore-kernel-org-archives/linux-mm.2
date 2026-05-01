@@ -4,89 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34F37FF8864
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 07:58:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C0BFFF8864
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 08:18:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5225B6B0088; Fri,  1 May 2026 03:58:15 -0400 (EDT)
+	id 8C4E16B0088; Fri,  1 May 2026 04:18:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D37B6B008A; Fri,  1 May 2026 03:58:15 -0400 (EDT)
+	id 875596B008A; Fri,  1 May 2026 04:18:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9176B008C; Fri,  1 May 2026 03:58:15 -0400 (EDT)
+	id 764196B008C; Fri,  1 May 2026 04:18:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C7576B0088
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 03:58:15 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CA8E88A6F2
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 07:58:14 +0000 (UTC)
-X-FDA: 84718098108.26.64066F1
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 19A74120002
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 07:58:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lPQlJNof;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 65DC66B0088
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 04:18:30 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 73CF01C0C4A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 08:18:29 +0000 (UTC)
+X-FDA: 84718149138.16.D18DB9F
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 89FFB4000A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 08:18:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uFyo2M8s;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	spf=pass (imf17.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=li.wang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777623507; a=rsa-sha256;
+	cv=none;
+	b=EBMjLKRFZwdsQnYt2jp3GnXxrU1G/HX3a9CSXh16wCLaevX+JhAsDUcrO/lOEwHMmOQCyW
+	rHgFXMKPOMToYLyYi6BnoN0oX2TAIBpSHwy2fe5HlCtQQ13sYuWbbbEjcVJTC4bTVQla54
+	rUx/8MvjhBHKl0mckeNrXMNAuPL9I2I=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uFyo2M8s;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=li.wang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777622293;
+	s=arc-20220608; t=1777623507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kyAk8NA2J8YQgw/gGqBaVOWUHWOA6WWmvSiQgKxkb6M=;
-	b=RXPHbF2Ox3dPNV5jiVQhTBdn3AfylUanKm8+h5358cLnYem7NGr1Vl9KKa5QdXsJtJZfly
-	uHFyziGINT230M/fhzhdRnGyaAdRwLrV097aHPnT6qMp8s0vyVodOyrC5rPsVjXkEU5kYE
-	uqolUb/vuYNUeLdDzghzupeGbk1olSQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777622293; a=rsa-sha256;
-	cv=none;
-	b=pkNwhiyZHlyMbSsgE3I57vrfkIu32MzBF8w8C6DwmD8hav+z4wRKWrmaeLNKLLgqbqKG0F
-	3IchuVIfZWiaUcFoWoxFdQXhjPhMXwlRXBmZHUsNItE8EBbywAmU1Nxb2uqB8vfjSAkj4U
-	zkU9h8pSFct1ku4by2dIv40g0lBbuiM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lPQlJNof;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iVXwRxoZk3ouF0zgeZbTnbTmmQKuuK/h66J4DI491pQ=;
+	b=TtLhB4TzG9Kd7ywSCO1CfktJ+k3ved7WFFhm2S/svN3hzvHHkuuehC29KwsF2zhT+9+dUL
+	6OVaXGSymlyNEQGcqzzoMdx9WZTgsjTFhdN2FXG0m6nS7C7roar8ChxPNohJ86MATTacza
+	lw4jnTea9xtnLPSXq6nl8UqtUnOHbls=
+Date: Fri, 1 May 2026 16:18:15 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777622251;
+	t=1777623505;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kyAk8NA2J8YQgw/gGqBaVOWUHWOA6WWmvSiQgKxkb6M=;
-	b=lPQlJNofp7eLTUX3eNkcXz9TPqr+ahTmftjh5QsREqS0S2al9UrBTHMVb/Z0shGSMIRX40
-	4KGc2Fz54IwH7pt0+UvqdG6n31XxJkVdF27ly2VC0Em2A1d8opzTh/GXu+mT6pOP0EHFat
-	xC7Gxe3IU10Uf5VxmAcoqg21T9MdDQg=
-From: Ye Liu <ye.liu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iVXwRxoZk3ouF0zgeZbTnbTmmQKuuK/h66J4DI491pQ=;
+	b=uFyo2M8s1Sp/f/c5/b5vKsH/6+VI6f7IMDun00qu/QKUPEUanqieSnQytlqG8qGuM/rn0t
+	iUIGLhvIqhDKLL8WCOa7AkXDl0aB0PU7/UHpNRSCWyWVUscuKMjxatCDcZZQmU1DzsxVSV
+	h7XtdLeO2GbPGEJssV5HASwAcXTrI2U=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Li Wang <li.wang@linux.dev>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Ye Liu <liuye@kylinos.cn>,
-	Zi Yan <ziy@nvidia.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Lance Yang <lance.yang@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/khugepaged: clear MMF_VM_HUGEPAGE on mm_slot_alloc() failure
-Date: Fri,  1 May 2026 15:57:07 +0800
-Message-ID: <20260501075708.327217-1-ye.liu@linux.dev>
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Luiz Capitulino <luizcap@redhat.com>,
+	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Sarthak Sharma <sarthak.sharma@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 07/54] selftests/mm: rename hugepage-* tests to
+ hugetlb-*
+Message-ID: <afRhx6-lEe5bxkMD@linux.dev>
+References: <20260428204240.1924129-1-rppt@kernel.org>
+ <20260428204240.1924129-8-rppt@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428204240.1924129-8-rppt@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 19A74120002
-X-Stat-Signature: j1g1i8r4zkscwh8sazat1d3orb5qgnho
+X-Stat-Signature: zib1jk8sswb5cnow5i16m54os8zp4sni
 X-Rspam-User: 
-X-HE-Tag: 1777622292-410768
-X-HE-Meta: U2FsdGVkX19/I2MPQ0axZIEL8Al5w6NusggiUYLLFkp3GibDhKoC97GsrsaXvVB1ooa8Go6JXpzodUp0xnCBGRl5GKDXyqKrr/afd2pAxK07TKLwLdMGWdyOjksi64GxV//SS8B9b+MbwQVWZoFSFQvg+D/tTDgTXV3T3zAgnwyVmjXQ+37TX2pOdTik9/wbGFlzOVldi9pdMthQn28uIHGCmxM/xmOYbjXSYsQyl3kPqhcmUhSWumNmg3Iuw/dEMGuMw3BJV2Jt6inqdORi1zyaRmxfYktmJoC4GDmwOftcTpEFQhOgR7Kjgi6F+jyx5yvjpqhIqI+XAkt+B5/EFMpC2wwsjyfqpHSl05ndUF1mhFmRfb3qjyNwM4RwdcYdluSp2uF8m0lzX5iIATrAaqp4aYCsLF8yAWEzKwvOAkaVJrrOTOPJo7R09wSvEgyQYeY4P/ESYoU/j/3THU5JJtJh/IwyTIWXxKlwPH0TSe5bvu9REAuiGPlGIbqW/maoVTCd3/mQFBVTp9unSY9hrAHpk3JtECbAUei2exfs9erWiVC1CDFaU0+v2mYuE/ySRDwi8vV1j8mvmyyT1ggqbmLrQ7/vLbc6cjKOWUS36eed4RsoVwrxc1s2QDa0L4W0USfQtsDTIfUhcaJe61EeJUwYupfisKz4cdiUxFkvBD/Vwx/SmSJCUWBJ9+dJOIw0UGOrt4X8xMOvaHj3I5qe6PQwJIi6T3Ns+fbtyAIbcA7/MKtqXF9+F8/fVrlycfzxLxeklevE9XNAxARWT4qDE8V2l6o0Ftsy2pEpRKsGvopB6mHRjJQh9wBIUfbY2euEUyurq3Cs79j42AEeV0T31TstZF+ZO3kIktYaU7pdmXoCw84OYMhNlP9zTjtyPMop7BroKKMhGmvd0RKaWLMgzGpgY1pItQRWniha6fECb8qDvkQhdnJdhCtXuPnbznNBDXgClLkTy/zxnNNnKIT
- jW1FpACr
- fGnKs2/wYkH9srQq5gVIpcFLuv/8A/tsIZyencOT8Hmp+rRgF3Yrv8p9atUCQJsSp4vfn41M6ld63vObOOsu6OTxU/naXt5Eit3njcpZ7pByUmahZAgWz9lKlKbj911idAYe2P37eTAuYnNs8PyRn9ZvUWpyq4fqPVDSpcvxth02Wg/cos61d1vsHYtq/qU0HODX3TcnIsNS5ItNE9RsMyIW4wm7kVouARcv5COYnPLM5+gzR+ItmutDEiw==
+X-Rspamd-Queue-Id: 89FFB4000A
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777623507-231264
+X-HE-Meta: U2FsdGVkX19f2X4AmSMh4lE6JXFG44xQV03raKyMyE1QM9OY9C8p89ZrItjsWjCiRoO5vPLGgctcbr8HfsaBRJO6XhD97CldwTmQHwWlHI8s9oiV6HWmwjgLy48Hp1QsYrwlt2PGYkkeSP5hdR1qGBkZpSvleHqQtektILZcv4pmoCz2lRnx6CVbsfGNWxR4Q8bsLiJLJTWUlTcP57XhfHvVw6bh/Loe/1sPUL8aXDlb2CvbxlMi1pZbYOIH/z4l1rsFp9/LOMYOzqIapbIPu60TZfOc9aAz9x/oQ6jVA7VhZLengHkb+oRz2i83KG8gyNfxk5gOIfh7TrhETjbVSoR/1jWJ9z73Z/q2eXFxyQ5AG3EYDulz/zWW3uWBdMMlWATHAC+c01G+UTlR2QvOM8kMMVDh2kbLXW2jHF83aZ0I23W04q7ZGmbq0YuCWMT9rfL6kHizzR4TVg9e9Sjh0mSWDgK78dug/yjTuc49c3jrLHJJajIDqk6EEfQWaW67tWUbfc20FaiZXkGrPUtBx3V4H0VfBAX2G3e2fskf+aoQZc3MyaT0imh1D2f/I0IXxRHTIQZ4EfDLHSkxALlMR7/+KKGVyDwNC6dPAtpUxkNG/kgn0folJWMcJ7cY1DHoOEgw3fk+kRnrGU2eoU+oth2RPBQf/CXfgTwhOf/NIRA9HoRZ5IoybcCK25Ri7Mkd198dAoFl7fAnh2e2z1Qi9Sea8SzWLOMu8wmLW3i6zTr2Yo9YXW2QCVkfw6gCC13+1tKWK/t6oegbGFAykkTDLr7kEMmILps1nmE0H7w9dSW3JlPmAdM9/koPith326cFj8Porf+xROgffIHRIfmv6ZH4blMKFQr0QIh/wywn7gCuYO7H3Ya8I7tj+XM6fW4a+15nWWxl8/oq67Y0IAVSVtZAVq+ZAT6GCsIdLrGqJ+XTjXKl0a0XG26YL4AgKYj6TudK434zcj4qt8nzsRl
+ E3vqC5TI
+ 9BYkncLfepocyYL5E/kGEz5QDRgYIZyJJVdGyRc3iyiuWJhsNAODS7YVTwcoMLTahlVFHygktYp73erIRPnZtVg6oh4yCUuBRj0pP/zG8d6WPLVCeWWAxhUv9SRgEccTqKYEswHhfpRM21HJE98eIwU3NK70LjaH1WEu+55i6mRfvDKxMi/Hlsu1PIYZKs36wK2PBz8bPlOc4RAE9hKtrMHaKLdKM70cQselNpAg02vRXoUtiSlkRdAF+Tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,43 +105,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+Mike Rapoport wrote:
 
-__khugepaged_enter() sets MMF_VM_HUGEPAGE before allocating the
-corresponding mm_slot.  If mm_slot_alloc() fails, the function
-returns with the flag set but without inserting the mm into the
-khugepaged tracking structures.
+> --- a/tools/testing/selftests/mm/.gitignore
+> +++ b/tools/testing/selftests/mm/.gitignore
+> @@ -4,6 +4,10 @@ hugepage-mmap
 
-This leaves the mm in an inconsistent state: it is marked as
-registered (MMF_VM_HUGEPAGE set), but will never be scanned by
-khugepaged.  Future attempts to register the mm are skipped since
-khugepaged_enter_vma() checks the flag and returns early.
+>  hugepage-mremap
+>  hugepage-shm
+>  hugepage-vmemmap
 
-Fix this by clearing MMF_VM_HUGEPAGE when mm_slot_alloc() fails,
-restoring the ability to retry registration later.
+Maybe we'd better remove those old files from .gitignore as well.
+Otherwise, looks good.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- mm/khugepaged.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Reviewed-by: Li Wang <li.wang@linux.dev>
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 7d48d4fbd5f3..60ab7c1b61dd 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -559,8 +559,10 @@ void __khugepaged_enter(struct mm_struct *mm)
- 		return;
- 
- 	slot = mm_slot_alloc(mm_slot_cache);
--	if (!slot)
-+	if (!slot) {
-+		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
- 		return;
-+	}
- 
- 	spin_lock(&khugepaged_mm_lock);
- 	mm_slot_insert(mm_slots_hash, mm, slot);
 -- 
-2.43.0
-
+Regards,
+Li Wang
 
