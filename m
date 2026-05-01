@@ -4,76 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7926ACCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:04:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3324CCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:04:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45D216B0095; Fri,  1 May 2026 17:04:17 -0400 (EDT)
+	id 5BC8C6B0093; Fri,  1 May 2026 17:04:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 434DD6B0093; Fri,  1 May 2026 17:04:17 -0400 (EDT)
+	id 56ED16B009B; Fri,  1 May 2026 17:04:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 324086B009B; Fri,  1 May 2026 17:04:17 -0400 (EDT)
+	id 3BF196B0099; Fri,  1 May 2026 17:04:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 17D706B0093
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 211526B0095
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:04:17 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D3B311402A5
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E1B1F1A02B9
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:16 +0000 (UTC)
-X-FDA: 84720078912.17.AADD6E3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A684B1C0013
+X-FDA: 84720078912.23.2EDBD36
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 050184000E
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lEMAmBpw;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mA6Rfsig;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777669455; a=rsa-sha256;
+	cv=none;
+	b=de+dYiw3G5/SCEXKuqAcldxjS7cxhfkOWEGCWaIgGK/kPnYoFfW4xa8S2L8mTAb1g3bh3+
+	L5uoxdqvenpAVOZHwCXm5yFWI1hdhznhO34b0GBWXZx2T6tS7XAKTmdUmz4yQAoaGW3ZVp
+	Hsxdj6WU148SEQ8OgXgSHbpg7+8yKrc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mA6Rfsig;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777669454;
+	s=arc-20220608; t=1777669455;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pKOE0uKmS9/jPdIJtHxOhrH5CvFIVG2MCRCt7wPf0/A=;
-	b=k7xjma7AHwG3nx/K6lV67nfRDLUK8GGjz1u/D9UTcFfNKEuzmQ5+cnoCTZQFisVTfHOIO1
-	gG+YdCl0wzqAHr/owQDwk60C54XvfhP1ehrQVFpkOK2o6SJF22T1NMYGpAGaxgjhy7vFZk
-	oauaUHuFGIqznoo/FpGdI00QfWAuitk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lEMAmBpw;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777669454; a=rsa-sha256;
-	cv=none;
-	b=zeI2pQwBXiSLiaJGDm+p3XfZKFvDrLAOnDKu8ysldMZ7LqGkP1hmnG4dDkt+wgovEA/5a3
-	OG3ryKOoSs73225MFEjd1uQu6Befbid89Hj4AvDsZRd4I600DkSNBwMWTJYmjt2qPZByBn
-	qN3zDNoHOxavYh0Ee5nq0cTk7bRmoCE=
+	bh=RUmSm0pfDv8drj8IEK4f1znVXSSdQypQLW/Hp/hmUbc=;
+	b=m1CVq8aHTjpMJTPmoWfroNW1IcKqqZ99IJRsOQupV81H1DGx68+v2Ljp3fKah0nUEYbazG
+	PYe8XH4+/Pf4A/qmc4XuqJglsv32DdcjsOW2kiHzpNX0HsKZnDmE9KOdjqn1pbMLDI4g/c
+	J1yRITzpL1lnsV1ZUlSwY2Zy5zkT8m0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9B87944570;
-	Fri,  1 May 2026 21:04:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 585DBC2BD01;
-	Fri,  1 May 2026 21:04:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7891460142;
+	Fri,  1 May 2026 21:04:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2B62DC2BCB4;
+	Fri,  1 May 2026 21:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777669452;
-	bh=jmvg4ef5qUyTqHGcbdIbJiby1sIH8SV8blDyMOM5pJs=;
+	s=k20201202; t=1777669454;
+	bh=EZl06XMXdG5hHyjUR1NFTv/KzrDGXtu69mN8a47gXHc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=lEMAmBpwinUPOn+VOa+VxZQccVjhzOCi2jxDLmzY8AWQSOp7kQ6Gxxowwb9gGocCS
-	 qMM8PA8rtEvRauTjYZoq9i0Ju9MaujRSD/WKLrFTOKLa9E0a1oM6815wFfp4U7OjGc
-	 HBZpdEFB3fA6KX39tbuKhHnxC3mGRqP1ff16oCK8xTCe4EhL5vGLtOh0psv2P3dCXV
-	 BoIAfzDu6aItQaLsk6Zq30+srTO8bBkw3qJ0GxGHKFkyTasPvZczux7GnKbY3kygR8
-	 MHUfdjCvknaL1bqdeYoBu2d3NKdSsZF3law98bIs8Ce0PmCEwgznn3FhlaSy0nCYfR
-	 vhKC1iTda4Qwg==
+	b=mA6Rfsig+XZYNj7U/Zy2ZXvj1j3kRtHYm3zR+THVmyImSOxOlZb3zsOFC5OEh8zM+
+	 Nch/I4+D6ug9K0m5kVNEoG96iNJDyUZG9PjJGWM72F6gLG8848hPP0byDeRYOwpRVb
+	 6azUYxUx1/MqnUg9bIYgOQwLZell8kR0YlR3U1eYDxobAaBnb+PinMofGCObwz2APp
+	 Rt8ppNlxzlh9opLmOtrAaKXfKx3MaT3hP7iSb9LC6hxlXcHS4Bdq9+kaDQmuyaedt+
+	 cMc8WCriDX0N8DVeE98tCUQ2x7xBO4dr0E1G05Tt3pv7ZrAQWI09auVzbFTzXziljx
+	 jsRa3PkYCOC0A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FC53CD3427;
-	Fri,  1 May 2026 21:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2347FCD342C;
+	Fri,  1 May 2026 21:04:14 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Sat, 02 May 2026 05:03:51 +0800
-Subject: [PATCH RFC 05/32] mm/mglru: make generation page counters atomic
+Date: Sat, 02 May 2026 05:04:13 +0800
+Subject: [PATCH RFC 27/32] mm/workingset: move refault distance checking
+ into a helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260502-mglru-fg-v1-5-913619b014d9@tencent.com>
+Message-Id: <20260502-mglru-fg-v1-27-913619b014d9@tencent.com>
 References: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
 In-Reply-To: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
 To: linux-mm@kvack.org
@@ -99,25 +100,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=5037;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=7913;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=ANTm+1uGlwjkYEz3d0r4O5bWVxUXbGeSOOlpFXDQZtE=;
- b=6f8SHaIAMJ2FbcFM8OPiHetkk+iOjEr7ZTqQSex6tvBYvhrw7VFABVnSnuDklt2MY9OcOWzLH
- u8dQtyGdgMGCiVN6bTI+xzsJUmC67F2zwSdZ40u6ye9d4hfp6B7q05g
+ bh=bwYzIJmY3Hqa83k+2m4zOivhjtGZdKIukV17N5RFO4g=;
+ b=406q4TDrkyFVDQ5IMpGCHCP44WNYxwuZQGPzaniAOeZA2dwckbGSgUqvgkWv/KqqeqF9PROsP
+ Cb4l7vx1BkkC9r/wmxg3Sx2QxppoNWXmWgFDYcIRETQ5+fcG45eU5gT
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Stat-Signature: yi1kuf8okq6unbb5di5mtai97tngecfq
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A684B1C0013
-X-Stat-Signature: pnjq1u1p8bjzrh5w9da7jt555kt8spay
-X-HE-Tag: 1777669454-552859
-X-HE-Meta: U2FsdGVkX18+TCVBT43+vt20+ld6TmfvJGyrfQvRJ8t73J0ll8UafCqvmWqE4sy//MgU6Fzu+fABzKmCt7kCLmIjdG7aPMDt99VuUVMfGqzv2hgBwRZ+4kNduxI8GfrCuVTtS8RKRoRjSWYRgCKh9/FOiLuX80A6F41e0ku6kGbpsY4D3x626mb7uw0PVxAT0cVmFGJvLYipTJ+AQveJIQgQ2EZDEh6wW08Mq2h5bpx4bIoMUGB7wCM9ip5ADOg8OPcsEKWeuWhlgmdJZSLWDnxcFh315iyC9POoDiR8Zwc5eTnqkFMK5syd6edivNEvqRj21aBRSO+YMnzjzDJbFkHBPsaGdL7HyX+5kKkQh+4yhiw7WuliLbPfeGhK3z1zAQXhhAOxatmEm5gZEDLleh4Oki4LKIz6OyLrgfJoZQ1TN6tH03FRe8UUzp5Y9BLmCRJtg+2pXmT8amrqQkyCWgoukQTK5L8b0tTmk4KONkgSqr7L3ot7hfPZqNDt6FZZ0VALxpUqlUBmCAQE0yNJNvTSLu8jth6mFSo8Js4wD0bvGmux3G15Z8HDOZcKNAEa3yP+m0WvUXA6809Pwy/+VGJyABF/6oJIFsNZaBS5OWvvgLZZQlFSnkGS026N73K1FmdJQC/2oATO0gsSsMcpGxu1KEtARQpGZuSRxLzSr+KjHrVmLx88ZnLqw7Hyq5K1po1zusdww+9JmRGIRRSITBcz89mNtyKBgU0IOis/D10P1Es2Q0Jx5hYuXgm9ojHtz9x7cxwUUyab+FbVbdkyYbqrcMIDPJxNo1iEc8aJ3oXNI+9a76so2x3B58377S8qhjhBgj/psKhqlHiRV1oX6iDBZt6VpkqoDuC9tIGLbYV8DBizewCY7t7f3QTGjRnSzAWn3jxf/ywa+64S02JUMWDMWjIIM1HcAVg34MYPGEZRF/1q4NuCVUjQ3DKtTx8wg/+11ZGjI2mwRAXe72t
- wOb4YGJs
- XoxZUQ2xHBUXWtYMtuMdJ1AYMHEaVAjOJ61ZATHpifeT2/VzDR0L7GRBTgHkh/Qw9BSoTjtj3CTkLpoiLp+bcDZPvwM63fK6NVn0ZF3CDzGYIJDpwhSDroFwIeYcO1jh9p1cL7RtFK62yJ06aQ6wsB+KMFbmub0xWPKrECK0SIYqH/g2ipG7JLw1TJ/Gprr+KTR3qCr4yg78JXMMLiL/cNQ7zxYzJI1X2M/ZKh6kuAAFsn0C0Sf0iJT+Ef79m0BwGusifX6i+mehPJBF1zs4l6Jl4AAySrzcZOgxD0AIr5K0kiIgIAZWXf/5F2XUbHqiNO7OaZ6ww0EYyXSEB+IJ7hIRBkJBocI9M0+4QKNH52tITeGODIYc82dkuWYiiEbv36Q9OkNbQnW1YvEHAk7U0O6fdQQ==
+X-Rspamd-Queue-Id: 050184000E
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777669454-758482
+X-HE-Meta: U2FsdGVkX1+RiXU0vW6Uuuoe6NtZwqCFJ+C61lJLHIZ3JWXZUW18fIvsgEF51rWRjdn3+rr1xdw269Sh244CA3IUxn9LfYGHpjHm6O3tyLr90n2IU12Jz/bkCubvp3jj37Ob5xaQ97j3tOjkwcj7+VNWPFhR7VRvZQshkRJcBHovxDT/sjvScr6kA6KnzgeCWnnTNULTS8Nvka2Ec4JyABJISQR90h6+khzzn7LejCWZYxms8aZS5LRMJMTXLgEYOmYdm1Bb36R2Khj/AzFHa7UEPEeIXJYegKNNai1xnqH/NWP6GxNOSq4hkOS6l9jS6JYEwK1MPAIElqqLjzgAjaOSdPqr6WgkWsrCZHHX6PffaetIRJgqm2NskDwMJ1nWPjgI5DpJqsBwgwxRgzSnXCo6bk8lks9vMiR0S2yqGQetGwqFUQkOcSkEgXS77udhcHW8g3lugk7eO/TCxXpn4fna6Ol+nd3PV2wdJNK8qVqrZLxZm4EskKeo0q65jVFMpl7X8oRLB7Eci1G0HeYiX81biDt3OXoh9u3wAUWnHvC0hz53H46vFD6O2QXvvxAoxUp+KriAw2LQEak5Ck6ykH/nHxsBMvfRPkzhwE6leBtP7yUsHjjAnvhbAdYAs+CuaHDj981Lge009Hg+8Zs97/SNDB2zgc7F804Klpu9XtO22Iwaff5Y0gwDoQHjWpwWVLo2RB6cgkvHI8XLixR0QZomf0xJSmbaoY9TdEN7bvQ65B4Z09IY17Vcj7AE0Mm4XOfvvuL40mI0UWYGjoNudgeGP0zgM8zRszyniOpzxU4ODwFMQDF49zsRUUH4O7F6Ob3r7A1g0Q1ACqkH8fBdMprSEors6lFplM/eN3Tdgh0Wq5+kcW86AtQwVbIYJmJ4tzwwsThSrhMg2fqZTH6rmAef2DBIJEW3lJ4BMM6GOui6dhwrY23pAhXj0BaAtTUz6TkdHmWtHrgoHXs2R8P
+ SJHBoTb+
+ hayIvYtHgSJH07fI9GLXOAlvcqOmokKD7tKEQaumbtPZuwIVywaBCItEKcOn9yn7zbEg1ZW8ktcBsxd8Psf6Al0DahnqDNIjidT8ySGpgRS+jUlB7sgnYVVpyurKX6SJ012uXsSEFf5Iu5khn0Ba/g4csa9cRJP08TjhL9j5IbdTY0cHzZHNIixc4nKmFC9jBmf3U1KPnsw0I2sm0tnWpBivti0A0yGs2CdXwI8XMYhez4sPyuswqe2kl5zl/z7ivoue8w0JALRyFhDCkc/6fphn4LieVyFcfRSfo2tNBdR9YgOI2wPAeh6kzwYkluchRRho/ZZvVWq2+m8644S+ltJ5dGVZDmMjMi/vrcXT1NJ665tRXDs0Z4eHINw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,113 +128,196 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-No feature change, convert them to atomic so we can update them without
-holding the LRU lock. There is no risk of overflow. The reader always
-compares and uses zero instead if the counter values are negative. It
-follows final consistency.
+There isn't any feature change, just move the refault distance checking
+logic into a standalone helper so it can be reused later.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/mm_inline.h |  6 ++----
- include/linux/mmzone.h    |  2 +-
- mm/vmscan.c               | 18 ++++++++----------
- 3 files changed, 11 insertions(+), 15 deletions(-)
+ mm/workingset.c | 136 ++++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 78 insertions(+), 58 deletions(-)
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index eade9f2d6afc..8a3fb357dc15 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -245,11 +245,9 @@ static inline void lru_gen_update_size(struct lruvec *lruvec, struct folio *foli
- 	VM_WARN_ON_ONCE(old_gen == -1 && new_gen == -1);
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 622e00ac28b6..e756b0cc14b5 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -234,9 +234,6 @@ static unsigned int bucket_order[ANON_AND_FILE] __read_mostly;
+ static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long eviction,
+ 			 bool workingset, bool file)
+ {
+-	BUILD_BUG_ON(LRU_EVICT_BITS_ANON <= SWAP_COUNT_SHIFT);
+-
+-	eviction &= BIT(file ? LRU_EVICT_BITS : LRU_EVICT_BITS_ANON) - 1;
+ 	eviction = (eviction << MEM_CGROUP_ID_SHIFT) | memcgid;
+ 	eviction = (eviction << NODES_SHIFT) | pgdat->node_id;
+ 	eviction = (eviction << WORKINGSET_SHIFT) | workingset;
+@@ -264,6 +261,77 @@ static void unpack_shadow(void *shadow, int *memcgidp, pg_data_t **pgdat,
+ 	*workingsetp = workingset;
+ }
  
- 	if (old_gen >= 0)
--		WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
--			   lrugen->nr_pages[old_gen][type][zone] - delta);
-+		atomic_long_sub(delta, &lrugen->nr_pages[old_gen][type][zone]);
- 	if (new_gen >= 0)
--		WRITE_ONCE(lrugen->nr_pages[new_gen][type][zone],
--			   lrugen->nr_pages[new_gen][type][zone] + delta);
-+		atomic_long_add(delta, &lrugen->nr_pages[new_gen][type][zone]);
++/**
++ * lru_eviction - notifies eviction of an folio on an lruvec
++ * @lruvec: the lruvec the folio belongs to
++ * @nr_pages: size of the folio
++ *
++ * As in-memory folio is evicted, increase the eviction counter on
++ * the LRU and return its current reading.
++ */
++static inline unsigned long lru_eviction(struct lruvec *lruvec, int nr_pages,
++					 int bits, int bucket_order)
++{
++	unsigned long eviction;
++
++	/*
++	 * Reclaiming a cgroup means reclaiming all its children in a
++	 * round-robin fashion. That means that each cgroup has an LRU
++	 * order that is composed of the LRU orders of its child
++	 * cgroups; and every page has an LRU position not just in the
++	 * cgroup that owns it, but in all of that group's ancestors.
++	 *
++	 * So when the physical inactive list of a leaf cgroup ages,
++	 * the virtual inactive lists of all its parents, including
++	 * the root cgroup's, age as well.
++	 */
++	BUILD_BUG_ON(LRU_EVICT_BITS_ANON <= SWAP_COUNT_SHIFT);
++	eviction = atomic_long_fetch_add_relaxed(nr_pages, &lruvec->evictions);
++	while ((lruvec = parent_lruvec(lruvec)))
++		atomic_long_add(nr_pages, &lruvec->evictions);
++
++	/* Truncate the timestamp to fit in limited bits */
++	eviction >>= bucket_order;
++	eviction &= (BIT(bits) - 1);
++	return eviction;
++}
++
++/**
++ * lru_distance - calculate the refault distance of a refaulted folio
++ * @lruvec: the lruvec the folio belongs to before eviction
++ * @eviction: eviction timestamp recorded in the shadow
++ * @bits: number of bits used to encode the timestamp
++ * @bucket_order: bucket order used to truncate the timestamp
++ *
++ * Read the lruvec's current eviction counter and return the refault
++ * distance.
++ */
++static inline unsigned long lru_distance(struct lruvec *lruvec,
++					 unsigned long eviction,
++					 int bits, int bucket_order)
++{
++	unsigned long refault;
++
++	eviction <<= bucket_order;
++	refault = atomic_long_read(&lruvec->evictions);
++
++	/*
++	 * The unsigned subtraction here gives an accurate distance
++	 * across evictions overflows in most cases. There is a
++	 * special case: usually, shadow entries have a short lifetime
++	 * and are either refaulted or reclaimed along with the inode
++	 * before they get too old.  But it is not impossible for the
++	 * evictions to lap a shadow entry in the field, which
++	 * can then result in a false small refault distance, leading
++	 * to a false activation should this old entry actually
++	 * refault again.  However, earlier kernels used to deactivate
++	 * unconditionally with *every* reclaim invocation for the
++	 * longest time, so the occasional inappropriate activation
++	 * leading to pressure on the active list is not a problem.
++	 */
++	return (refault - eviction) & (BIT(bits) - 1);
++}
++
+ #ifdef CONFIG_LRU_GEN
  
- 	/* addition */
- 	if (old_gen < 0) {
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index e4c51961ec27..721d0db8b0f9 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -569,7 +569,7 @@ struct lru_gen_folio {
- 	/* the multi-gen LRU lists, lazily sorted on eviction */
- 	struct list_head folios[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
- 	/* the multi-gen LRU sizes, eventually consistent */
--	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
-+	atomic_long_t nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
- 	/* the exponential moving average of refaulted */
- 	unsigned long avg_refaulted[ANON_AND_FILE][MAX_NR_TIERS];
- 	/* the exponential moving average of evicted+protected */
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 2ca1d6d80259..a5b4750a5028 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3280,8 +3280,7 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
- 			continue;
+ static void *lru_gen_eviction(struct folio *folio)
+@@ -379,37 +447,6 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
  
- 		walk->nr_pages[gen][type][zone] = 0;
--		WRITE_ONCE(lrugen->nr_pages[gen][type][zone],
--			   lrugen->nr_pages[gen][type][zone] + delta);
-+		atomic_long_add(delta, &lrugen->nr_pages[gen][type][zone]);
+ #endif /* CONFIG_LRU_GEN */
  
- 		if (lru_gen_is_active(lruvec, gen))
- 			lru += LRU_ACTIVE;
-@@ -3971,8 +3970,8 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
- 	for (type = 0; type < ANON_AND_FILE; type++) {
- 		for (zone = 0; zone < MAX_NR_ZONES; zone++) {
- 			enum lru_list lru = type * LRU_INACTIVE_FILE;
--			long delta = lrugen->nr_pages[prev][type][zone] -
--				     lrugen->nr_pages[next][type][zone];
-+			long delta = atomic_long_read(&lrugen->nr_pages[prev][type][zone]) -
-+				     atomic_long_read(&lrugen->nr_pages[next][type][zone]);
+-/**
+- * workingset_age_nonresident - age non-resident entries as LRU ages
+- * @lruvec: the lruvec that was aged
+- * @nr_pages: the number of pages to count
+- *
+- * As in-memory pages are aged, non-resident pages need to be aged as
+- * well, in order for the refault distances later on to be comparable
+- * to the in-memory dimensions. This function allows reclaim and LRU
+- * operations to drive the non-resident aging along in parallel.
+- */
+-static long workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages)
+-{
+-	unsigned long eviction;
+-
+-	/*
+-	 * Reclaiming a cgroup means reclaiming all its children in a
+-	 * round-robin fashion. That means that each cgroup has an LRU
+-	 * order that is composed of the LRU orders of its child
+-	 * cgroups; and every page has an LRU position not just in the
+-	 * cgroup that owns it, but in all of that group's ancestors.
+-	 *
+-	 * So when the physical inactive list of a leaf cgroup ages,
+-	 * the virtual inactive lists of all its parents, including
+-	 * the root cgroup's, age as well.
+-	 */
+-	eviction = atomic_long_fetch_add_relaxed(nr_pages, &lruvec->evictions);
+-	while ((lruvec = parent_lruvec(lruvec)))
+-		atomic_long_add(nr_pages, &lruvec->evictions);
+-	return eviction;
+-}
+-
+ /**
+  * workingset_eviction - note the eviction of a folio from memory
+  * @target_memcg: the cgroup that is causing the reclaim
+@@ -437,8 +474,9 @@ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
+ 	lruvec = mem_cgroup_lruvec(target_memcg, pgdat);
+ 	/* XXX: target_memcg can be NULL, go through lruvec */
+ 	memcgid = mem_cgroup_private_id(lruvec_memcg(lruvec));
+-	eviction = workingset_age_nonresident(lruvec, folio_nr_pages(folio));
+-	eviction >>= bucket_order[file];
++	eviction = lru_eviction(lruvec, folio_nr_pages(folio),
++				file ? LRU_EVICT_BITS : LRU_EVICT_BITS_ANON,
++				bucket_order[file]);
+ 	return pack_shadow(memcgid, pgdat, eviction,
+ 			   folio_is_workingset(folio), file);
+ }
+@@ -458,7 +496,7 @@ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
+ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ 				bool flush)
+ {
+-	unsigned long refault, distance, active, inactive;
++	unsigned long distance, active, inactive;
+ 	struct mem_cgroup *eviction_memcg;
+ 	struct lruvec *eviction_lruvec;
+ 	struct pglist_data *pgdat;
+@@ -515,27 +553,9 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ 	if (flush)
+ 		mem_cgroup_flush_stats_ratelimited(eviction_memcg);
  
- 			if (!delta)
- 				continue;
-@@ -4090,7 +4089,7 @@ static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness
- 		for (seq = min_seq[type]; seq <= max_seq; seq++) {
- 			gen = lru_gen_from_seq(seq);
- 			for (zone = 0; zone < MAX_NR_ZONES; zone++)
--				total += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-+				total += max(atomic_long_read(&lrugen->nr_pages[gen][type][zone]), 0L);
- 		}
- 	}
+-	refault = atomic_long_read(&eviction_lruvec->evictions);
+-
+-	/*
+-	 * Calculate the refault distance
+-	 *
+-	 * The unsigned subtraction here gives an accurate distance
+-	 * across evictions overflows in most cases. There is a
+-	 * special case: usually, shadow entries have a short lifetime
+-	 * and are either refaulted or reclaimed along with the inode
+-	 * before they get too old.  But it is not impossible for the
+-	 * evictions to lap a shadow entry in the field, which
+-	 * can then result in a false small refault distance, leading
+-	 * to a false activation should this old entry actually
+-	 * refault again.  However, earlier kernels used to deactivate
+-	 * unconditionally with *every* reclaim invocation for the
+-	 * longest time, so the occasional inappropriate activation
+-	 * leading to pressure on the active list is not a problem.
+-	 */
+-	eviction <<= bucket_order[file];
+-	distance = ((refault - eviction) &
+-		    (BIT(file ? LRU_EVICT_BITS : LRU_EVICT_BITS_ANON) - 1));
++	distance = lru_distance(eviction_lruvec, eviction,
++				file ? LRU_EVICT_BITS : LRU_EVICT_BITS_ANON,
++				bucket_order[file]);
  
-@@ -4525,7 +4524,7 @@ static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec
- 
- 	for (i = 0; i < get_nr_gens(child_lruvec, type); i++) {
- 		int gen = lru_gen_from_seq(child_lrugen->max_seq - i);
--		long nr_pages = child_lrugen->nr_pages[gen][type][zone];
-+		long nr_pages = atomic_long_read(&child_lrugen->nr_pages[gen][type][zone]);
- 		int child_lru_active = lru_gen_is_active(child_lruvec, gen) ? LRU_ACTIVE : 0;
- 		int parent_lru_active = lru_gen_is_active(parent_lruvec, gen) ? LRU_ACTIVE : 0;
- 
-@@ -4533,9 +4532,8 @@ static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec
- 		list_splice_tail_init(&child_lrugen->folios[gen][type][zone],
- 				      &parent_lrugen->folios[gen][type][zone]);
- 
--		WRITE_ONCE(child_lrugen->nr_pages[gen][type][zone], 0);
--		WRITE_ONCE(parent_lrugen->nr_pages[gen][type][zone],
--			   parent_lrugen->nr_pages[gen][type][zone] + nr_pages);
-+		atomic_long_set(&child_lrugen->nr_pages[gen][type][zone], 0);
-+		atomic_long_add(nr_pages, &parent_lrugen->nr_pages[gen][type][zone]);
- 
- 		if (lru_gen_is_active(child_lruvec, gen) != lru_gen_is_active(parent_lruvec, gen)) {
- 			__update_lru_size(child_lruvec, lru + child_lru_active, zone, -nr_pages);
-@@ -5555,7 +5553,7 @@ static int lru_gen_seq_show(struct seq_file *m, void *v)
- 			char mark = full && seq < min_seq[type] ? 'x' : ' ';
- 
- 			for (zone = 0; zone < MAX_NR_ZONES; zone++)
--				size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-+				size += max(atomic_long_read(&lrugen->nr_pages[gen][type][zone]), 0L);
- 
- 			seq_printf(m, " %10lu%c", size, mark);
- 		}
+ 	/*
+ 	 * Compare the distance to the existing workingset size. We
 
 -- 
 2.54.0
