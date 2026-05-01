@@ -4,89 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC4E9CD3424
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 13:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F42ACD3424
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 13:27:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF7466B0005; Fri,  1 May 2026 09:23:24 -0400 (EDT)
+	id A92A66B008C; Fri,  1 May 2026 09:27:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA84C6B008A; Fri,  1 May 2026 09:23:24 -0400 (EDT)
+	id A6AAC6B0092; Fri,  1 May 2026 09:27:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBDED6B008C; Fri,  1 May 2026 09:23:24 -0400 (EDT)
+	id 9A6DC6B0093; Fri,  1 May 2026 09:27:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA03B6B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:23:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8ED7C1C02B7
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:18:20 +0000 (UTC)
-X-FDA: 84718904760.19.CC501F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A5EBB12001C
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:18:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QMPiIR6I;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A7016B008C
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:27:53 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 65E73120798
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:24:54 +0000 (UTC)
+X-FDA: 84718921308.05.A95E6AF
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4E4D720015
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:24:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QUs6hox7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777641498;
+	s=arc-20220608; t=1777641892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IZN5oUnuZIjp13ZYYG8K5hBlUnUOUmy47oFpVDv1c0w=;
-	b=iy1VYu88ABGZrTfq9J80TWzMGIBKHDRoWgXqZBDGQyR35RHP+dFyzYv+kw4Jwg4jC5UcBL
-	/1408SQQKBoFCn+GihKnEwXkVHPbYEBMl8aw3b8lUdX8FqoNxyLDN7uQPOluCP8GO+ffqq
-	+yGTyXddeFlWLAd25++ImbYE1so13uw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777641498; a=rsa-sha256;
+	bh=xRO/682cR26d8aQNXMdR1KpAtOqpz21uS7mp51ZeARY=;
+	b=cu1aGwGTOOitEqfXA7T+ijbM2aF0ypo+UPQmC3u/W2uAdIKvNA/ZasAFraili20SYtBgcn
+	uJHKN14t4yneWuw+e9lEblwcwFoyKv07UGSTI7HaCVoCnuUTKr4GsioDJfLcIedMFNoXRx
+	c5k338fVVKiqz9ULdniwzmt+CQESyKk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777641892; a=rsa-sha256;
 	cv=none;
-	b=ny1RecftTVx0t6WEaehvr7Bani3Gfxzhd6N7HV3WtrcviVtfh/D1sOxxVuIOhpxI85uPN+
-	FZmycJDQSP2hsCOgYTHorfRC/WgJrX7piRZLF3mM32AYGU47qjdCkxjkHAZQ4pZckBrM1b
-	m/ZOkpb8Ku9KmuGUzJxNHcwNgmRb/nA=
+	b=nzjBbpxyuXDnftnHx1S1IMDYovBJpSQREgDEncgNaUaZZFfNx+vgkW2NRiciuMWX8mczs1
+	3fbQpqyLrtzemLKZwP1ygGKdtHckS3+9yUNga+P/Ll3njlHwPJhsw/ODplgEvPHSiVmrhU
+	T15085/nyUNlN7qRp5WfzmqUepQoxyE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QMPiIR6I;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F4DE44531;
-	Fri,  1 May 2026 13:18:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3F6C2BCB9;
-	Fri,  1 May 2026 13:18:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777641497;
-	bh=D6S/B01MEUfCR6VXKLKqzNn9DH6s9mBnNCGUd1tdrAs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QMPiIR6IFYeIFuRnabCqi7hl1SNQJee2T2jwmjPUjUU4qK/D64EGc3sypoEv7NihU
-	 oa+Nq/+z9Jg4/Oi31Joz1tkvVneMyD4HSXvwLq2Nxfv5HwBeTsmufACSQW4a2C8a0y
-	 KoXMS3eChOrGUOVGT5jj1tCi3QQ5vY47LU5+H1ag=
-Date: Fri, 1 May 2026 06:18:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: David Carlier <devnexen@gmail.com>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng
- Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
- <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Youngjun Park
- <youngjun.park@lge.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Pavel
- Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH] mm/swap, PM: hibernate: atomically replace hibernation
- pin
-Message-Id: <20260501061816.5d59d1eefb0a41a3480a3a11@linux-foundation.org>
-In-Reply-To: <20260430195651.287659-1-devnexen@gmail.com>
-References: <20260430195651.287659-1-devnexen@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QUs6hox7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777641889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xRO/682cR26d8aQNXMdR1KpAtOqpz21uS7mp51ZeARY=;
+	b=QUs6hox7I6BFiUrgYrk85Xowcz9YDKt1u/CsA0LqcvGJ6VVBQ3/vyL31ZLPYsiot0Xclix
+	WFxv8I/g158r5+CvFy3oDS1cLHwRFq5sctbgmu6K16EBtUco2fQ4s8A3VGcsAgMLx4uLcX
+	g+UIv2rz2l7mmuT8fr7jkQVc5ghv8lg=
+From: Lance Yang <lance.yang@linux.dev>
+To: dev.jain@arm.com,
+	ye.liu@linux.dev
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liuye@kylinos.cn,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: clear MMF_VM_HUGEPAGE on mm_slot_alloc() failure
+Date: Fri,  1 May 2026 21:24:38 +0800
+Message-Id: <20260501132438.21298-1-lance.yang@linux.dev>
+In-Reply-To: <aed7c1d5-2189-4ee2-b0f3-ce5a3e3c2118@arm.com>
+References: <aed7c1d5-2189-4ee2-b0f3-ce5a3e3c2118@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4E4D720015
+X-Stat-Signature: 6uoumyp4wzx9x7w4ipsf15wyucftqf93
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A5EBB12001C
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 5umef163w43qumuyu5uyex81cqxxk3dq
-X-HE-Tag: 1777641498-384895
-X-HE-Meta: U2FsdGVkX19J7mnK6F8gGxTFKmoGMoWKwGF4xw8QqAfXUTuGPQYMn8tD0Jqjpy6wOrIp3A9VTxao1C0xr+ZTSTkfB1jmgzyeQOOoXrz7ewwyYTkcLP5d2ZHSvDZOOcATL5oQflRXv4/ciVoqf/4sZy1xqGa4FXyNT/XpmenNfC7NXV0HKPXf3+XQA6ehXz3Hx0XgsfVs62XhjrLGO2lWXF443ZuIX+KhU6rn+EBMxF7L1AkkunNt1dGHyrrjb4bAaB1hER0EoFY8AzEnwoZuMGdaXQvoNOt/+ff9gU3NpST8HwOixMjNJrkJBp+MhdVmNNwzj+5hZTSgg5Y+DYy8Swnq1ZzWSe0IB1t8bt8tzZtgsWAvRGbno61n0nMT+oDSKYAmszdJoWPoKZEVgRld2OVseMsQHn/egDMwpCTIDVs61K325DP6v5wZCBiRdGdm1gAqikoRZn/1DWOJoo/AB5dczfqyFSdr6gI7Y/0rAapafinxJBW5InoGCnLvXn83CXkgdFG1p8u4sLnO6Dx3CMRrKPQf2BYx7KDChtE1+3oOjOAXCf6CH/LFQdFVod9gOQZL2sCxqgGHmPUXgKs0rxZgPdDrjbk/AtlpvjZKhPu3YlI513QdsX1pDoDx/rcd5DfxpUJVxnYkBbofxYlUtAaXyELn6vZIHCGn+POlP3/EqAvvJEUpy6Cf9DNUPcWQxYwHnL4i7bayQsF1dFVp4t08phsdIYI2FlFQiZFBL012d8THnvZleQAhXm5FakHCOdBxJsKCNu693PMJCDc/e0GdLo5DssI9df4mp/k0/bnH+9rbKfMClZGMr2oPLcTVtObXGOJvSbFkLCQtzHkw61tIKlAIZQjRqHvXTR0T37HM0z7PYmuNgmX9fu9g3prKarS0E9NKK1kRq1k6o8l2l7kKm04hVVAp3Tah202t96/7aPYG/hihylOjI6seG5sc+ycw/oZaPklg1jUWl99
- 3vDp7mWR
- Uf6gFnBWoYImHRWfpu2FvSLzoH9X8lgfE9bmM81QFYAjxniElLgcnMfmimuqmoQi7R9g56ohJ36nZxYVLaommWCNcXY9AJB/EnBl6J2c7MMmNLJrAv5YsmT0beP64APXqaGkQ2WfrvJ3E3U0jzq+E8KLgwIU7h9pAw8zpwLj0NhFQImAF+GkJiRt+z+qCvWaZzBe8DbyNM3FCJEQudJLqMgdiRFIO1DimnFkyzWK/ExBTb0tJv5HBfyXP/M7kw9O5BnmGSAMz2PW55t7soYTpj58kXQ==
+X-HE-Tag: 1777641891-331932
+X-HE-Meta: U2FsdGVkX19QDtrqvRStMRtoGmB0byVPIs0n73bU5AvZuTtMDcxFZwWaBiWAMjoHByaB0bBFvNZXFY4ymmIRrOIOqgVN6VamayGd10vM2LgeaKtsGeeZmwLjCjbh0p9C/Q2GAPn2CKGLs4MdvEJpTxSE8viAzgbo9ULP+GbHTuDp3ch381U2NVLtufVPdbpaMZGLglDWH6swHi3g3GQ7rjYC73FSsQMFVzaPvEUAtpUmDy5uPBNXFEvCFvPLDBFC50sWINE4mlNXWCSDStmwSAUhtcfLgZM+MVenqF/hAczQJ3nmasZ51eTBiVptSle8RG0yhw3i2jErkG7yeRcC5q4K8trzN4nw5PFtKUhhLYRw/8LBX8XiI3OVz9nBCN4kNsL8kP/qvAnlj8zLN8axHz4lEzFkDMqg6PbWAu3XMt1/OR0/Hr3FE4aJu2V9tLJDJZ1IK5C0eYv4kpSXUNNyWwf/ylbt+YQlR701D72NFjhMBtqov/vP7UVORfqh7EjwOP5Fx9F1NbDiEJcq4bRiLC0//H+qNC0xDCYKng1qPnLqVrwMa9pICxWGue1WLC7LVFKZSHb+yEsd5mWI7kN/qMNa+Uz/V8jCXX0tYYpEF5OOtUS4UUQc3I5bK4qn4K4flCP5hXITbDo8EAy1/o/JS08ume6HFn2SsqUDEqoS7crwyQYL+cHkHPp5crkJQMIzQdPGf0LYDIsxy/NW+c7n7Jq99tcU2dogCMEirz608yvZ1eBxf5YPn/1RPD8cKb1hmO7lS52mP0jfu4GWVMuSHvHgzSFzGcaj/42t1qTbwLihAQj76vC1xK7FDK4bJcZwoq6z6E+cmRheWJY3+xxzZH2oPBY6t5o9NV6gHaHPbk4FV1GzA4UH0i/+YGDtBbpp+D+t6Wemz9N0a5LN2ICkAbCEJMqsusmB6RZXvtamNjTcHmJ/IZRSH6Bc9NTpDAJAp6ufr8RAN99RnZDrlUD
+ +MRsAB/h
+ IZjNas8mHbKZMDR3loXcuWE9aqUOm0xK8GjnISxNpvLcE5pbKVSDx3hu1HWMeETVwlxEOOc7aI3ndeOM7iDLskB7yrqNFRLuUHBlDvBWGsxJ+Eu4dDEcQgxWxyaeyg1OFnJVNoQE3gkzk9t1JgibsZ1D25SUsmD7795FFkpgkN+ywHA4UyJPNcZrS5mMPrSNnzQvhc/H6jTeGJcFVKThga5rrZ4FnvjFLA7imCYhTSTGGAwbBsRZqwEtfhRNFONmvpPio
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +100,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Apr 2026 20:56:51 +0100 David Carlier <devnexen@gmail.com> wrote:
 
-> snapshot_set_swap_area() unpins the previously selected swap device
-> and pins the new one in two separate swap_lock critical sections.
-> In the gap between them, swapoff() observes SWP_HIBERNATION cleared,
-> bypasses the guard, and tears down the device, reopening the race
-> the SWP_HIBERNATION pin was meant to close. The window is reachable
-> on any SNAPSHOT_SET_SWAP_AREA call after the snapshot device is
-> opened for hibernation, and on any retry after the resume path's
-> first selection.
-> 
-> Add repin_hibernation_swap_type(), which looks up the new device,
-> clears the old SWP_HIBERNATION flag and sets the new one under a
-> single swap_lock acquisition. The same-device case is short-
-> circuited so userspace can re-select the same swap area without
-> tripping WARN_ON_ONCE and -EBUSY. Switch snapshot_set_swap_area()
-> to the new helper.
-> 
-> A failed lookup now preserves the previous pin instead of dropping
-> it, so a bad SNAPSHOT_SET_SWAP_AREA leaves the prior selection
-> intact. The open and release paths keep using
-> pin_hibernation_swap_type() and unpin_hibernation_swap_type().
-> 
-> The race was identified during AI-assisted review of the
-> SWP_HIBERNATION pinning series.
+On Fri, May 01, 2026 at 04:10:58PM +0530, Dev Jain wrote:
+>
+>
+>On 01/05/26 1:27 pm, Ye Liu wrote:
+>> From: Ye Liu <liuye@kylinos.cn>
+>> 
+>> __khugepaged_enter() sets MMF_VM_HUGEPAGE before allocating the
+>> corresponding mm_slot.  If mm_slot_alloc() fails, the function
+>> returns with the flag set but without inserting the mm into the
+>> khugepaged tracking structures.
+>> 
+>> This leaves the mm in an inconsistent state: it is marked as
+>> registered (MMF_VM_HUGEPAGE set), but will never be scanned by
+>> khugepaged.  Future attempts to register the mm are skipped since
+>> khugepaged_enter_vma() checks the flag and returns early.
+>> 
+>> Fix this by clearing MMF_VM_HUGEPAGE when mm_slot_alloc() fails,
+>> restoring the ability to retry registration later.
+>> 
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> ---
+>>  mm/khugepaged.c | 4 +++-
+>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 7d48d4fbd5f3..60ab7c1b61dd 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -559,8 +559,10 @@ void __khugepaged_enter(struct mm_struct *mm)
+>>  		return;
+>>  
+>>  	slot = mm_slot_alloc(mm_slot_cache);
+>> -	if (!slot)
+>> +	if (!slot) {
+>> +		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+>>  		return;
+>> +	}
+>
+>You could just move the test_and_set() after this no?
 
-Thanks, I'll queue this for testing.  Can the swap maintainers please
-do a detailed review at some point?
+Yep, that sounds better :)
+
+Just one small thing: if we move the test_and_set(), after
+mm_slot_alloc(), we need to free the slot when test_and_set() says that
+the flag was already set. Otherwise the racing caller that loses would
+leak the slot :)
+
+Something like:
+
+slot = mm_slot_alloc(mm_slot_cache);
+if (!slot)
+	return;
+
+if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm))) {
+	mm_slot_free(mm_slot_cache, slot);
+	return;
+}
+
+>So if slot allocation fails then MMF_VM_HUGEPAGE is never set.
+>
+>Fixes tag is probably required but not sure about Ccing stable.
+
+Yes, Fixes sounds good. khugepaged collapse is best-effort though,
+anyway :)
+
+So I'm also not sure about Ccing stable.
+
+>>  
+>>  	spin_lock(&khugepaged_mm_lock);
+>>  	mm_slot_insert(mm_slots_hash, mm, slot);
+
+Cheers, Lance
 
