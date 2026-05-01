@@ -4,66 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3EC2FF885A
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 05:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05AB4FF8864
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 05:56:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1835F6B0093; Fri,  1 May 2026 01:56:24 -0400 (EDT)
+	id 4908D6B0095; Fri,  1 May 2026 01:56:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15AEF6B0095; Fri,  1 May 2026 01:56:24 -0400 (EDT)
+	id 441296B0096; Fri,  1 May 2026 01:56:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 098126B0096; Fri,  1 May 2026 01:56:24 -0400 (EDT)
+	id 37DFB6B0098; Fri,  1 May 2026 01:56:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F24D66B0093
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:56:23 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 890AA1A06FE
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:56:23 +0000 (UTC)
-X-FDA: 84717791046.08.C7AAD21
-Received: from outbound.ms.icloud.com (p-west3-cluster6-host3-snip4-9.eps.apple.com [57.103.75.12])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5D5ECA0008
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:56:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=uUSHoXHu;
-	spf=pass (imf15.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.75.12 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 2BF156B0095
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:56:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E3FD5160579
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:56:31 +0000 (UTC)
+X-FDA: 84717791382.23.C117B5E
+Received: from outbound.ms.icloud.com (p-west3-cluster6-host6-snip4-4.eps.apple.com [57.103.75.117])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EB4A0100002
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:56:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b="rYMz/l11";
+	spf=pass (imf05.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.75.117 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
 	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777614981;
+	s=arc-20220608; t=1777614990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NTc75O6iqIlRbMB1yKe5C3Mh2lstCHeNt4Mg/bpL3vw=;
-	b=kdPLSjwG1qCXa0gFLsS+4RzMycZx68niGFcMQewP0poOCODHNUpwy5O18YWbT5GiPhs716
-	XDrv6xxCgPXWU8luVSXCohbpjse4xf/CRciivlM5I+HKtlBJvhVqfz13QxEwEyDrn9ESS7
-	jgOsKO2Qj5EDNjKwaaMVuoUvLO6D/j8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777614981; a=rsa-sha256;
-	cv=none;
-	b=KTPlJZLuptPLHws7vHIC9/en49AwwDovv/DsHxRCdJ5xfDoVSgHEFG1JJzk5Ld7FcPy4i1
-	bQQzF7eCs4OQGXY7qfCuEpn7EykjMKgEA682G/eqWYrND5aXLfSMxx7vYR1PeaNOyS0+rf
-	SUaNtpPkBuJ+0l0IuI8KUivteMzoXBM=
+	bh=7N+z8NTKNzTfnk4CNz4j1nHwx7t72Y+uiy3ixa6NunI=;
+	b=kkTQgbl5ETSC69qUTv8UAJbJvHUISl+2sNomq24apCNCgUV9bqPXcmdst9AZSBO3v8gqP7
+	zIpUjYPt9fsN0CApmwUepOh6rEVNVNtcgeCkaY6fJnCqn8Vyk5bwWzgwUe4WXh8inr3q3v
+	H1d2Atxet2+GGSkKcAz/3mPBh6ci1CM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=uUSHoXHu;
-	spf=pass (imf15.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.75.12 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b="rYMz/l11";
+	spf=pass (imf05.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.75.117 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
 	dmarc=pass (policy=quarantine) header.from=icloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777614990; a=rsa-sha256;
+	cv=none;
+	b=xx3Zsx+KJU4RJoFECsbFuRzJwdt2lnn6B+d+HEHl0gW2vqxNLGZ045M0buRyOksfmPhJ8u
+	9U5GjWwBjsxr0Wz9eK/RWNvnt60WUMKR+v7HmElxNigLXGH4MTBwZLZ/fHkPSSjrrkne1f
+	Obxf8woJyqE+ARTTn33AHfNEugAXvqc=
 Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-60-percent-8 (Postfix) with ESMTPS id 25775180013C;
-	Fri, 01 May 2026 05:56:19 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhAA0MFWgFeAUEdXwFLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEFEYGVg1dE0wLcwRUB10FXVZQAlpLQBMESgZNXw5eHwQXRhlVBEceXVZeHhkCURxWDVdDVARfUEkMQVBsWgBHF0gdXRlZb1BdHA4EVAddBV1WUAJaS18ZXUUPXwdZBEAMSAJAQwNCL1oXREBBWh9EFEgDWARcBUQBSwReDytGFVcbVgNDRVEfVEYTGU4bV01QG18CQg8=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1777614980; x=1780206980; bh=NTc75O6iqIlRbMB1yKe5C3Mh2lstCHeNt4Mg/bpL3vw=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=uUSHoXHuJYBtBBLMFZ0mT71iSIQKAlT7OmyDAPpC/9pqXS5wGxAOnZTs5MWruPL/XTsLH88XtoXc4ypeefbWSKFEe9Gm4zQorK851OQ7FIJvKdEyEpuMT3L4hwa3hPpX2HmskD9Y38c43h3g+OVPQPlV55Bdlmil2r8eXpkWiTnQmGZCU0/IEe5U+BEch0IELcyIDlHF++IJfeitK+C0g0SiuI7um4MqcovRuqsZt7kkEU3Oct8fWofpbw+O1D0rnvgD7cm1RGaHk7oQ3CwCZxt7P3/RC+9/piZvQe5WNbP0dti3hYWOOfg5epZ6pQmcJYk68nGsrEcYhNuR55D9Xw==
+	by p00-icloudmta-asmtp-us-west-3a-60-percent-8 (Postfix) with ESMTPS id 2C8B71800400;
+	Fri, 01 May 2026 05:56:25 +0000 (UTC)
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhAA0MFWgFeAUEdXwFLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEFEYGVg1dE0wLcwRUB10FXVZQAlpLQBMESgZNXw5eHwQXRhlVBEceXVZeHhkCURxWDVdDVARfUEkMQVBsWgBHF0gdXRlZb1BdHA4EVAddBV1WUAJaS18ZXUUPXwdZBEAMSAJAQwNCL1oXREBBWh9FFEgDWARcBUQBSwReDytGFVcbVgNDRVEfVEYTGU4bV01QG18CQg8=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1777614989; x=1780206989; bh=7N+z8NTKNzTfnk4CNz4j1nHwx7t72Y+uiy3ixa6NunI=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=rYMz/l11sQIIMMiwoXLPBByVSm5dpjYPWZRJSvWpAIgolZazq6euFxPI+Jy6cZGj3YTX09Yj8Y+tGNUnIv4zGRR/mtHIw1VW5zRqwkKgK8reqJCqQRX1l5UreyKBT1KrekXN/KYn4/xDT4BdwVL43ajxYaqplk61mh+j7z/5JkarfUV+f+Tc+FTArQfIJ6WtMlMgbdJlobgyEz2yCdJaMs0QZBCxyGCWoxWwOk9ivTWwxyQZFMzrRM3bmy1BbW18Kf3C1i4eCdelH6Szz4SHaeSGfv7o2NvahqSexmAj1olEXz/ZPIhQGA5mXoQng5gkwjhB5ZGNpx9x7qwD0I0Cag==
 Received: from [127.0.0.1] (unknown [17.57.154.37])
-	by p00-icloudmta-asmtp-us-west-3a-60-percent-8 (Postfix) with ESMTPSA id 95CF7180013B;
-	Fri, 01 May 2026 05:56:13 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-west-3a-60-percent-8 (Postfix) with ESMTPSA id 576791800401;
+	Fri, 01 May 2026 05:56:19 +0000 (UTC)
 From: Luka Bai <lukafocus@icloud.com>
-Date: Fri, 01 May 2026 13:55:45 +0800
-Subject: [PATCH 4/5] mm: enable map_anon_folio_pmd_nopf to handle unshare
+Date: Fri, 01 May 2026 13:55:46 +0800
+Subject: [PATCH 5/5] mm: support choosing to do THP COW for anonymous pmd
+ entry.
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260501-thp_cow-v1-4-005377483738@tencent.com>
+Message-Id: <20260501-thp_cow-v1-5-005377483738@tencent.com>
 References: <20260501-thp_cow-v1-0-005377483738@tencent.com>
 In-Reply-To: <20260501-thp_cow-v1-0-005377483738@tencent.com>
 To: linux-mm@kvack.org
@@ -82,34 +83,34 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
  linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
  Luka Bai <lukabai@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777614950; l=5934;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777614950; l=7099;
  i=lukabai@tencent.com; s=20260501; h=from:subject:message-id;
- bh=+oyohCA+JyGfxecKQ+uLxgtNgUJn9qwmjDlmDdf3vA4=;
- b=o4S5WSyWmT9V8olRnoso6ocnjd/DjId8IpedIoTth013Ruy23KwTts2OKjnQPnmADSAcGkBiN
- zsQZBJhZ+OYAcm8T7fUoN1R6VaeYZUf1wNhB/0ly3aMkSCogw3ymlIz
+ bh=PFGHhjK+TnZW9Z6ghtvzoKwlLu7cEjIWo9wxf6XDzvc=;
+ b=t+G004ry0cf1bDvr6aUyhg1633TW+1DsSigwn6pJTC2qqMq4foBJlk0IbzzyT6hS4AnxrRphz
+ X3f1dK9FyNIBzqzvDm8d74YSHMcxPBEcSGypXJBywwXXV2qBONCbLTI
 X-Developer-Key: i=lukabai@tencent.com; a=ed25519;
  pk=KeaVteSWd00GIAjFyWZnuFsKAKixjga1ZkLMcI66nPM=
-X-Proofpoint-GUID: rUdIpohAvfkWAFbvPlg88ZZnOitWks7N
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTAxMDA1MyBTYWx0ZWRfX+BMl8P4W0kcJ
- fhPM1yM5aQ9ptg08zmo3MwKy+HVVZj3LguMEemdbGKyevCga4TwGVEAxV3IwOVDlhrjaRja8Ytx
- zTj+TkKlXXJh5J+ulbqMUkXr3cdC0eLCodoqdLxi12JgZK8RhJ1Sbki9Yede/r11K+8fyolz0Jz
- nzzK/+GIFdtXWiVRF+r5KaeSrCKozVIin2hMHYQIquBziWURXPCSDvjXhxtQKeQo2rE5Vmyvnjv
- 8cb9UsCsSHBOiBoiSj5GGpmLD/BMrP//DlimIBhtCg+rgnik7CeY8aNVtH61yM0a3fDNSO8I8C+
- HcHBi1yOQlb9FQsaaOLNyiqBNphHB4Y6ycQO6JhqZm5rARL8gA9A/bcnPNSpN4=
-X-Proofpoint-ORIG-GUID: rUdIpohAvfkWAFbvPlg88ZZnOitWks7N
-X-Authority-Info-Out: v=2.4 cv=aqm/yCZV c=1 sm=1 tr=0 ts=69f44083
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTAxMDA1NCBTYWx0ZWRfX0akgOBOh0fYa
+ Q+E2GaHK68Txx9IL647qqsmdwS/up6JF9dDw2h1c4yqw0OEEwue545bPA67GdZ9svbu0bDB/emT
+ rbXu4+/7p0yCRh/QRYJw26RwRrN9POINQnnACAhfqv6SGeKqavTwQpI5e7UfHhY31Vt9hqZnWqt
+ xzQKwEbSe4JXtnOvH+v4FmHc84tPsSQSSiNmswPSwuddoyPGc//cJUcD77cT8sFl6yYe7rgTz1K
+ Tq/9iJQXV66RLvaeYK12FWDNKL9WNQY1WveOXcsiA8ii9vv1TRMHTANtUU8+jrKPMRIlHYvih5A
+ CB30DllqzbyAkv9dzL3GQukV5w6KCcgQpacjqX0YYY2eRecBbJgkejRJs3/wtI=
+X-Authority-Info-Out: v=2.4 cv=F9Bat6hN c=1 sm=1 tr=0 ts=69f4408b
  cx=c_apl:c_pps:t_out a=qkKslKyYc0ctBTeLUVfTFg==:117 a=IkcTkHD0fZMA:10
  a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10 a=UaoJkeuwEpQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=GvQkQWPkAAAA:8 a=XO4sgXVVO50CB33MxqEA:9
+ a=VkNPw1HP01LnGYTKEx00:22 a=GvQkQWPkAAAA:8 a=bJ5UqtxypIKHvNYtotEA:9
  a=QEXdDO2ut3YA:10
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5D5ECA0008
+X-Proofpoint-ORIG-GUID: KfOtRRhL_HN1WoZjM0WIgLjaKfm-9Rka
+X-Proofpoint-GUID: KfOtRRhL_HN1WoZjM0WIgLjaKfm-9Rka
+X-Stat-Signature: amssg38xfh991supgfgd6w5gqhq3yinf
+X-Rspamd-Queue-Id: EB4A0100002
 X-Rspam-User: 
-X-Stat-Signature: 51m8e4umr681tuaizzty8w6jd4gjmp1z
-X-HE-Tag: 1777614981-226761
-X-HE-Meta: U2FsdGVkX1+Ecpl5GhAnPy6fQxCb6a9Tq4lq7OeF/jSVs7sP2DTVxrBRlBa8tG8zFLVc/5vLYBLuOalPaQbQ1aP/aUoK1O9AtaDesaRVqDWQ12cTmm70SclYHGaGOwz9O8iR90AYzWuwmsZUDGVtTaz/8jDzDSddATT++wcSR0pE2z+6Pj7jswR+OGaVc26tG7Hm1YvQ8zW/P7YX6CZAUHPeflKXUa+KzfS30UtQbBtOKc9qZBD/b7cwdDK/2gdnT+vWj2VCsWc6Na7Z5sbEiUf4e5Z6IJfF6h+Ej4Dsi+GvPyrq6MoOLFs/Pz6KGCTRhyLr8tTUyS7Hv9YY2eKaloWOlI/gklq8l1AvlEIHr1DHI82fMuDAQdZhP2WZMXRO7+E2S8WWroI4YlDfvQr2hVN0x6mngn5RLE49E7fI2z+fQndryhpqHbPfa5xTeLtnvbvZn3jpBIwiMcrD0kP3bwQWzyTWGujrI0J63d+nyHBReQOvt4XyvjCxvLpA+EcjoHqhlLK6BFhblz5FzSXHrnRs1jT96QdCD71wSkidVmqmeRpwieMzB21P/AaoDDObu7RRXqyr3f05Wdf+S34szIpPj9LaBmSHZzeOOYGMJicCsclEXs5rYeFrVQe/AJ+oclJgKJPrdYNjW/lZr1Ff0tYlE7Y98xcij8PbCNhPdWggG2UOEXXmbfkW3eddLt8xV/yR0dD0vITrbBlGeVpWy9vav6mIS6QWRdXsTfdwM1T+27cwAQXh+9ISCsBJE948ZOSKsY/V88/eUi/rMoogHJokgeQXd5acltGZTITYafCrsU0/xjstAuOR13zc0V/FW7xekO06BAYqJDra9jdRoDcRpywQWNW8YoRH6SM81cCZ4uGw7cDfen/Y4vbasOUPH7VuH+eKiFokWoO0sAZDecjGg492+b+XCtqkINeZL1x93KRs5d+veBIMlUBLBn2xb5zP+KtYxGtOJ77abn3
- xHh5LhPK
- gf5+D9rR/osfbSh+VvFsoNl9sxGTUWSxQahC0wyPrCl3GC/UiW4oh7g3BIRTH0gcbOxgXBXATYAHqWEll98f+uvZag6v5IdZ0b+b/FVpC1DXW9oQPQSqYLU8SH2dQrQQsz9wK6yU2tpqwPgrADbDR/JXcqKpsyn595voOHe/qY7lw9NyzUhCJiiYPrva2se1nSiqvd2cOwMLR/Wb1qGMlK/5dYFRJuXbBLIzS5SBUJN8GP1W95mobmjadO0yb8Hk/aoJgxlDP5r6tDXMY8lq0Ul2Id+URW8cBSIjGWrENVnDxGLIo/kPWV6m5YPXNchNgQen15lZXs1oo2jz31d8zY6TicA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777614989-761138
+X-HE-Meta: U2FsdGVkX1++8bJ3Aj/hNQugCFkVZTD7tikZzGmUk+JTv9exnqSjlconnTmoWTyok2TYHP5rhzCbawOqlnB6mCDXzpKstIAD7vHXhDcYX0LbAPypJmGIVwpYRL96N4WpfjdWGjDNHijgyXMMSyfI+7G7k6fcNnECRPoTKVNyr82PRH97ZaG79NHv/KKOgGjq13xOsrJLnC2VT3VrZr46zsvCRnkDFhkg/qyxALgDwjtq5Hf0cJa2pnJDMG6nzNK49gdnMwtsVK/JWW9OF9MYaF268qvhiIfiOtKZB3C7tLukBDjfSt4jr4I+T45J0Rzpa5apBnq+2Prdm2XHyq0xqy+i5o6BJxqFqbRrrm/7jXbTs5oIFRWc5Yu8KtsLEwlsm5MfEo8UnAKuaC/TLDHOkssTiOGZdbHgjmX7fMZzSRWuFvtvF7hWAqp/fyOvp/yCvY5LNKwexAnUerNzn73NSVavfrk327uDfeaQM+mFpfnXAxkBy+Ypyj748p6CIt/0r6rbpWAnQ6mhV2dQWtfg0bzzlgg3kJgV8RVHDLUi+MEIYXzUxsiSmd7p+46qrilvc381C3MUAP7Mb3TOHCAtQqRMzyxJmjEL3BlHYUGc7FsJL8r3S15y6gqSKCoXIONkkUA3HzMN3SCenCGDCt3Ih2cwPyfY2G688ZPrNsw3Vygz/AM/p3iR2pWY4nKX2sRjl5YoeQZWhZlXMfcSHGBxUU7oXNL9Rq/JGa8m9PeCBE8uqj2ixFLu6qGmyHHAGumXIREhYznrnC54AJDqS8y4UUmgsp9TLVtAkwdeUjP80LYvLagnTDMvWpNtDJluwNx6kDFV/fvFNSdmtu8yPYYzbkrYJQ3oZFtC+IcNZXyYAFDgeihJLbQ1T3WHn+Bq9B+wIBfBNLtP1JKrZdL/ZirdlHB9hTukB167so7yvGESpoOrvTxpInuiSLnzJFPLqAT56rpfwlMumv5UyvFNZDp
+ Z2GryH0b
+ 6C/y7Mxz51gR+6XUniulu49T5d8kNmAK1ixQazEpnbmL0TZo2mzCsS7vZXd5HmHufoqulDvLbHljmeR6A3X3Y5hOb9gK5TlgKnzhBG17Sl7oIhCfulWbre7WNmvgHTjXQAdcecz4wt9REjMIcGScslVGWrSd4bI11JAh5Z4okQbHgaP9H4eB/W4wKiuTDcpZR1po7U5s0/dl/0krvLHNfWSHkrGRpexoaDTzGeghAePPwtpoxBGdrfvYM+GcQFZ/clJxBW86bltaP7HfrsdSC2XbPn9evXFkAQfvy8+dIV0PtpC0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,146 +120,218 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Luka Bai <lukabai@tencent.com>
 
-Function map_anon_folio_pmd_nopf was able to map new anonymous pages.
-Like in function do_huge_pmd_anonymous_page, it handles all the mappings
-and statistics correctly in one call. However, it doesn't support
-FAULT_FLAG_UNSHARE.
+For pmd mapped anonymous folios, we currently do not do COW for the
+whole vma region, because we don't want to copy and unshare the full
+PMD range on the first write fault.
 
-Normally, FAULT_FLAG_UNSHARE was set when we just want to separate
-multiple non-exclusive sharing apart, it follows the copy on write
-process, since it also does the checking like whether we need to copy
-memory, or just use the existing one, basically the same work like
-what COW does. But it doesn't happen because of writing on a RO pte/pmd
-which is actually permitted to be written to but simply for "unsharing".
-Hence we need to copy the same permissive and other marker flags into
-the copied new page table entry just like the old one when doing the
-duplication, without making it writable. Now, map_anon_folio_pmd_nopf
-only tries to make the new pmd writable that is not what unsharing wants.
+That proposal holds for the most workloads, however, that also makes
+the pmd entry split into 512 4K ptes in the child process after we
+write on a part of the folio.
 
-We add unsharing support for map_anon_folio_pmd_nopf by passing the
-vm_fault struct as a parameter and get the unsharing hint. If we are in
-the unsharing procedure, then we just copy the soft_dirty and uffd_wp
-flags into the new pmd instead of trying to make the new pmd writable.
+For example, if process A and B share a pmd sized folio, if B does
+writing on a small region, its pmd mapping will be split into 511
+4K ptes which still point to the original pmd sized folio, and 1 4K
+pte pointing to the new 4K page.
+
+This is quite good for memory utilization, but it also make the tlb gain
+caused by pmd entry suddenly "vanish" after a simple write, which
+causes a observable performance decrease in some workloads. And also,
+it adds some "uncertainty" to the THP since it does splitting
+transparently in the COW scenorio which sometimes can cause trouble
+to ones that need stable hugepages.
+
+This patch adds support for pmd sized COW of anonymous page with
+switch controlling. The reason we add switch is that for some scenorio,
+the performance matters more, but for other workloads maybe the memory
+waste is more unbearable. So we can use the THP setup to control this
+configuration, either on the vma level or the global level.
+
+The patch is relatively simple, we add function wp_huge_pmd_page_copy
+to do the hugepage copy on write part, and do the allocation, accouting
+and cache flushing just like in 4K path. We use the newly reconstructed
+map_anon_folio_pmd_pf to do the mapping since it can properly support
+FAULT_FLAG_UNSHARE right now.
+
+We remove the ref checking in do_huge_pmd_wp_page, since we have
+supported copying the pmd folio right now, we'll check the refcount
+in the following folio_ref_count to make sure if the folio can be
+exclusively used. If not, we can always do copy on write for this
+folio just like in do_wp_page when THP COW is enabled.
 
 Signed-off-by: Luka Bai <lukabai@tencent.com>
 ---
- include/linux/huge_mm.h |  5 ++---
- mm/huge_memory.c        | 34 +++++++++++++++++++++++-----------
- mm/khugepaged.c         |  8 +++++++-
- 3 files changed, 32 insertions(+), 15 deletions(-)
+ mm/huge_memory.c | 125 +++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 116 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 3e5c6da3905b..61f0e614ca52 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -610,9 +610,8 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
- 			   pmd_t *pmd, bool freeze);
- bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
- 			   pmd_t *pmdp, struct folio *folio);
--void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
--		struct vm_area_struct *vma, unsigned long haddr);
--
-+void map_anon_folio_pmd_nopf(struct folio *folio, struct vm_fault *vmf,
-+			   bool cow);
- #else /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- static inline bool folio_test_pmd_mappable(struct folio *folio)
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index babca060feca..1e661b411b2e 100644
+index 1e661b411b2e..a05a4456e5a2 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -1423,13 +1423,26 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
- 	return folio;
+@@ -40,6 +40,7 @@
+ #include <linux/pgalloc.h>
+ #include <linux/pgalloc_tag.h>
+ #include <linux/pagewalk.h>
++#include <linux/delayacct.h>
+ 
+ #include <asm/tlb.h>
+ #include "internal.h"
+@@ -2196,6 +2197,94 @@ static vm_fault_t do_huge_zero_wp_pmd(struct vm_fault *vmf)
+ 	return ret;
  }
  
--void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
--		struct vm_area_struct *vma, unsigned long haddr)
-+void map_anon_folio_pmd_nopf(struct folio *folio, struct vm_fault *vmf,
-+		bool cow)
- {
- 	pmd_t entry;
++static vm_fault_t wp_huge_pmd_page_copy(struct vm_fault *vmf, struct folio *old_folio)
++{
 +	struct vm_area_struct *vma = vmf->vma;
-+	pmd_t *pmd = vmf->pmd;
-+	pmd_t orig_pmd = vmf->orig_pmd;
-+	unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
-+	const bool unshare = vmf->flags & FAULT_FLAG_UNSHARE;
- 
- 	entry = folio_mk_pmd(folio, vma->vm_page_prot);
--	entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
-+	if (unlikely(cow && unshare)) {
-+		VM_WARN_ON(pmd_write(orig_pmd));
-+		if (pmd_soft_dirty(orig_pmd))
-+			entry = pmd_mksoft_dirty(entry);
-+		if (pmd_uffd_wp(orig_pmd))
-+			entry = pmd_mkuffd_wp(entry);
-+	} else {
-+		entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
++	struct mm_struct *mm = vma->vm_mm;
++	struct folio *new_folio = NULL;
++	struct page *new_page, *old_page;
++	unsigned long pmd_address = vmf->address & HPAGE_PMD_MASK;
++	struct mmu_notifier_range range;
++	vm_fault_t ret = 0;
++	int i;
++
++	delayacct_wpcopy_start();
++
++	old_page = folio_page(old_folio, 0);
++	ret = vmf_anon_prepare(vmf);
++	if (unlikely(ret)) {
++		if (ret != VM_FAULT_RETRY)
++			ret = VM_FAULT_FALLBACK;
++		goto out;
 +	}
- 	folio_add_new_anon_rmap(folio, vma, haddr, RMAP_EXCLUSIVE);
- 	folio_add_lru_vma(folio, vma);
- 	set_pmd_at(vma->vm_mm, haddr, pmd, entry);
-@@ -1437,19 +1450,18 @@ void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
- 	deferred_split_folio(folio, false);
- }
- 
--static void map_anon_folio_pmd_pf(struct folio *folio, pmd_t *pmd,
--		struct vm_area_struct *vma, unsigned long haddr)
-+static void map_anon_folio_pmd_pf(struct folio *folio, struct vm_fault *vmf,
-+		bool cow)
++
++	new_folio = vma_alloc_anon_folio_pmd(vma, vmf->address);
++	if (unlikely(!new_folio)) {
++		ret = VM_FAULT_FALLBACK;
++		goto out;
++	}
++
++	if (copy_user_large_folio(new_folio, old_folio,
++		pmd_address, vma)) {
++		ret = VM_FAULT_HWPOISON;
++		goto out;
++	}
++
++	new_page = folio_page(new_folio, 0);
++	for (i = 0; i < HPAGE_PMD_NR; i++)
++		kmsan_copy_page_meta(new_page + i, old_page + i);
++
++	__folio_mark_uptodate(new_folio);
++	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
++				pmd_address, pmd_address + HPAGE_PMD_SIZE);
++	mmu_notifier_invalidate_range_start(&range);
++
++	spin_lock(vmf->ptl);
++	if (unlikely(!pmd_same(pmdp_get(vmf->pmd), vmf->orig_pmd))) {
++		update_mmu_cache_pmd(vma, pmd_address, vmf->pmd);
++		ret = 0;
++		goto out_unlock;
++	}
++
++	flush_cache_range(vma, pmd_address, pmd_address + HPAGE_PMD_SIZE);
++	/*
++	 * Clear the pmd entry and flush it first, before updating the
++	 * pmd with the new entry, to keep TLBs on different CPUs in
++	 * sync.
++	 */
++	(void)pmdp_huge_clear_flush(vma, pmd_address, vmf->pmd);
++	/*
++	 * We just temporarily decrement the mm_counter here, and it will be added back in
++	 * map_anon_folio_pmd_pf below.
++	 */
++	add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
++	map_anon_folio_pmd_pf(new_folio, vmf, true);
++	folio_remove_rmap_pmd(old_folio, old_page, vma);
++
++	spin_unlock(vmf->ptl);
++
++	mmu_notifier_invalidate_range_end(&range);
++	/* This put is for the folio_get() in the caller */
++	folio_put(old_folio);
++	free_swap_cache(old_folio);
++
++	/* This put is for decrementing refcount after we switch page table mapping */
++	folio_put(old_folio);
++
++	delayacct_wpcopy_end();
++	return 0;
++out_unlock:
++	spin_unlock(vmf->ptl);
++	mmu_notifier_invalidate_range_end(&range);
++out:
++	folio_put(old_folio);
++	if (new_folio)
++		folio_put(new_folio);
++
++	delayacct_wpcopy_end();
++	return ret;
++}
++
+ vm_fault_t do_huge_pmd_wp_page(struct vm_fault *vmf)
  {
--	map_anon_folio_pmd_nopf(folio, pmd, vma, haddr);
--	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
-+	map_anon_folio_pmd_nopf(folio, vmf, cow);
-+	add_mm_counter(vmf->vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- 	count_vm_event(THP_FAULT_ALLOC);
- 	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
--	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
-+	count_memcg_event_mm(vmf->vma->vm_mm, THP_FAULT_ALLOC);
- }
+ 	const bool unshare = vmf->flags & FAULT_FLAG_UNSHARE;
+@@ -2204,12 +2293,13 @@ vm_fault_t do_huge_pmd_wp_page(struct vm_fault *vmf)
+ 	struct page *page;
+ 	unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
+ 	pmd_t orig_pmd = vmf->orig_pmd;
++	vm_fault_t ret;
  
- static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
- {
--	unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct folio *folio;
- 	pgtable_t pgtable;
-@@ -1483,7 +1495,7 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+ 	vmf->ptl = pmd_lockptr(vma->vm_mm, vmf->pmd);
+ 	VM_BUG_ON_VMA(!vma->anon_vma, vma);
+ 
+ 	if (is_huge_zero_pmd(orig_pmd)) {
+-		vm_fault_t ret = do_huge_zero_wp_pmd(vmf);
++		ret = do_huge_zero_wp_pmd(vmf);
+ 
+ 		if (!(ret & VM_FAULT_FALLBACK))
  			return ret;
- 		}
- 		pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, pgtable);
--		map_anon_folio_pmd_pf(folio, vmf->pmd, vma, haddr);
-+		map_anon_folio_pmd_pf(folio, vmf, false);
- 		mm_inc_nr_ptes(vma->vm_mm);
- 		spin_unlock(vmf->ptl);
+@@ -2253,14 +2343,6 @@ vm_fault_t do_huge_pmd_wp_page(struct vm_fault *vmf)
+ 		goto reuse;
  	}
-@@ -2174,7 +2186,7 @@ static vm_fault_t do_huge_zero_wp_pmd(struct vm_fault *vmf)
- 	if (ret)
- 		goto release;
- 	(void)pmdp_huge_clear_flush(vma, haddr, vmf->pmd);
--	map_anon_folio_pmd_pf(folio, vmf->pmd, vma, haddr);
-+	map_anon_folio_pmd_pf(folio, vmf, true);
- 	goto unlock;
- release:
- 	folio_put(folio);
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 7d48d4fbd5f3..18d309b69d30 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1402,7 +1402,13 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	if (is_pmd_order(order)) { /* PMD collapse */
- 		pgtable = pmd_pgtable(_pmd);
- 		pgtable_trans_huge_deposit(mm, pmd, pgtable);
--		map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
-+		struct vm_fault vmf = {
-+			.vma = vma,
-+			.flags = 0,
-+			.address = pmd_addr,
-+			.orig_pmd = pmdp_get(pmd),
-+		};
-+		map_anon_folio_pmd_nopf(folio, &vmf, false);
- 	} else { /* mTHP collapse */
- 		map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd_wp=*/ false);
- 		smp_wmb(); /* make PTEs visible before PMD. See pmd_install() */
+ 
+-	/*
+-	 * See do_wp_page(): we can only reuse the folio exclusively if
+-	 * there are no additional references. Note that we always drain
+-	 * the LRU cache immediately after adding a THP.
+-	 */
+-	if (folio_ref_count(folio) >
+-			1 + folio_test_swapcache(folio) * folio_nr_pages(folio))
+-		goto unlock_fallback;
+ 	if (folio_test_swapcache(folio))
+ 		folio_free_swap(folio);
+ 	if (folio_ref_count(folio) == 1) {
+@@ -2282,6 +2364,31 @@ vm_fault_t do_huge_pmd_wp_page(struct vm_fault *vmf)
+ 		return 0;
+ 	}
+ 
++	/*
++	 * Only do hugepage copy on write if the parameter setup supports it.
++	 */
++	if (!hugepage_cow_enabled(vma))
++		goto unlock_fallback;
++
++	/*
++	 * For vma without a vm_ops(anonymous vma), there should not be VM_SHARED or
++	 * VM_MAYSHARE types.
++	 */
++	VM_WARN_ON_ONCE_VMA(vma->vm_flags & (VM_SHARED | VM_MAYSHARE), vma);
++
++	folio_unlock(folio);
++	/*
++	 * Copy on write branch here.
++	 * We are about to unlock the ptl here, so we need to get folio before that
++	 * in case the folio gets freed in the meantime.
++	 */
++	folio_get(folio);
++	spin_unlock(vmf->ptl);
++	ret = wp_huge_pmd_page_copy(vmf, folio);
++	if (ret & VM_FAULT_FALLBACK)
++		goto fallback;
++	return ret;
++
+ unlock_fallback:
+ 	folio_unlock(folio);
+ 	spin_unlock(vmf->ptl);
 
 -- 
 2.52.0
