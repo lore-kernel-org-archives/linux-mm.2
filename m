@@ -4,151 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44AB6FF8864
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 03:32:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C5BAFF885A
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 05:56:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D1946B0088; Thu, 30 Apr 2026 23:32:41 -0400 (EDT)
+	id 775AB6B0088; Fri,  1 May 2026 01:56:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0832C6B008A; Thu, 30 Apr 2026 23:32:41 -0400 (EDT)
+	id 726576B008A; Fri,  1 May 2026 01:56:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB30A6B008C; Thu, 30 Apr 2026 23:32:40 -0400 (EDT)
+	id 63D166B008C; Fri,  1 May 2026 01:56:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D918F6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 23:32:40 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 394F916036F
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 03:32:40 +0000 (UTC)
-X-FDA: 84717428880.22.7668A28
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E1B5FA0007
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 03:32:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AjRhNCeV;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 531F16B0088
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:56:03 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D601FC18EE
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:56:02 +0000 (UTC)
+X-FDA: 84717790164.17.0FE840A
+Received: from outbound.ms.icloud.com (ms-2002e-snip4-8.eps.apple.com [57.103.74.51])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B8F5E1C0008
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:56:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b="t5Hy/Ea7";
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf21.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.74.51 as permitted sender) smtp.mailfrom=lukafocus@icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777606358;
+	s=arc-20220608; t=1777614960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AGHQZIIr7JtLFpAcwzlVPtO345HWtqACErkZP29Clnw=;
-	b=HNRX2CgY4VvcR+jbRtGPU4uDFS5vz2VtOxXAXeMp+72LVEbIPvtKsy1hj4XfwVVLhOn64W
-	e9epUuF+0L6T0gHqfNYWInr0BPh59kR6m2ISN+kQOmUZjJ8G8dUnE5E69Zg9u/9l5O6fof
-	SS/V6AKhHawEhqp8rEQUrrjXYnVO+wE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777606358; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=nCs6drGaFkCRJLaExPULFGqJ8DTdS4a2ok3PlUktjtQ=;
+	b=hUtPaAo/xR1dK8Owg2xguvUV04tkY2iryQUutKuLgRI2XAIKD8PsMIhB++bGzUfv0ds4WY
+	9fKv+YALNKx3SLZWKRe1g+cvzHvFaLQmMWdQDRTQTpo+zlOviolnMGhSDiIjY2gaDluQwf
+	T6cFwQ3uaId74Fh+1HIU9Fs1FlBqoV4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777614960; a=rsa-sha256;
 	cv=none;
-	b=0fMTUKTy0gEhWCGTE6hJJ0vaoj0pM1fI2oRMq5nmTGKzv9sT3dt63DvdFRa60agDMDUsqD
-	BhY2qP4GNM/4VDln3uBc/0+9TRRJFiBV7P/B20kJ56VY2MFWvLdSPpueOxgFd/xP/PFj6p
-	T8qKtrWNswfW30nnmIX//7FyOkL/6dQ=
+	b=LVDTwoOnPhGFQ9/gYctnyyZ3m1mMD6Y0CTMWMsAcot9I9qIYEOlU8QK98mj4qSC7wqUjMb
+	i/XMfUk2FOG67zciLusqJ5N9HdsJMPUAouqwVW5KhIhC+hMEakOT1rbf5D8imsFv83PnmQ
+	qLS37+zQPxSH1hlqEexMJ52t5KSsFkw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AjRhNCeV;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777606357;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AGHQZIIr7JtLFpAcwzlVPtO345HWtqACErkZP29Clnw=;
-	b=AjRhNCeVya2hhO3tD9yDwGH52MO5K9TU0y4dsuuug82CTbj8sZsj1cwbHftrLqOmJuoxoh
-	uSS2VDqeFD4zxtsup1Z1bidq7kX6a0WWgbihY4tNv/T583KjkRp/RY8sv2AUScyfkOh4dH
-	1t4R1tnDmEHFmu35pZfOSr7l/QSYjlo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-440-JLdQnSEhO5WXLV2G9iAbOQ-1; Thu,
- 30 Apr 2026 23:32:33 -0400
-X-MC-Unique: JLdQnSEhO5WXLV2G9iAbOQ-1
-X-Mimecast-MFC-AGG-ID: JLdQnSEhO5WXLV2G9iAbOQ_1777606348
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C9CA1800347;
-	Fri,  1 May 2026 03:32:26 +0000 (UTC)
-Received: from [10.44.48.3] (unknown [10.44.48.3])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 06CE71955D84;
-	Fri,  1 May 2026 03:32:13 +0000 (UTC)
-Message-ID: <3ff53353-3842-4a63-80a1-90a60d09fe02@redhat.com>
-Date: Fri, 1 May 2026 05:32:11 +0200
+	imf21.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b="t5Hy/Ea7";
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf21.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.74.51 as permitted sender) smtp.mailfrom=lukafocus@icloud.com
+Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-3a-60-percent-8 (Postfix) with ESMTPS id 9810B1800137;
+	Fri, 01 May 2026 05:55:56 +0000 (UTC)
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhAA0MFWgFeAUEdXwFLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEFEYGVg1dE0wLcwRUB10FXVZQAlpLQBMESgZNXw5eHwQXRhlVBEceXVZeHhkCURxWDVdDVARfUEkMQVBsWgBHF0gdXRlZb1BdHA4EVAddBV1WUAJaS18ZXUUPXwdZBEAMSAJAQwNCL1oXREBBWh9AFEgDWARcBUQBSwReDytGFVcbVgNDRVEfVEYTGU4bV01QG18CQg8=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1777614959; x=1780206959; bh=nCs6drGaFkCRJLaExPULFGqJ8DTdS4a2ok3PlUktjtQ=; h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:x-icloud-hme; b=t5Hy/Ea78rL5bj3jYZoSWFw6K619fKXVpfmODAHUgfMAj8AgYKkFYTOVZ9RBgPEbFXzlTJcme7dtZgkTw4M88T0T94vKuOUekoZKa8hTW1nhJWHAbYzTTGpUl0AyN4xTSQIgiPmaNZumwo0fna4ihm0yHAv2NUFA3Uh0KBdAL7Ec2a6mgqZeT8JzK2BIyFym96mLxk65SXvfQuQVcPodwm7GrmID4n9nzqevpz8oZpjIaskx6b3+dAthkaq+1r+lE9ppIVgzJDvt2Ei7fkn+D3Q7meNObR8IvmRHpWZE+xFjB/8W0t3GbjIVi0SYLr8e9njhGCENlQXjUmblooPBtg==
+Received: from [127.0.0.1] (unknown [17.57.154.37])
+	by p00-icloudmta-asmtp-us-west-3a-60-percent-8 (Postfix) with ESMTPSA id A23CF18000AC;
+	Fri, 01 May 2026 05:55:50 +0000 (UTC)
+From: Luka Bai <lukafocus@icloud.com>
+Subject: [PATCH 0/5] mm: Support selecting doing direct COW for anonymous
+ pmd entry
+Date: Fri, 01 May 2026 13:55:41 +0800
+Message-Id: <20260501-thp_cow-v1-0-005377483738@tencent.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
- Live Update
-To: David Woodhouse <dwmw2@infradead.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, kvm@vger.kernel.org, linux-mm@kvack.org,
- kvmarm@lists.linux.dev
-Cc: rppt@kernel.org, graf@amazon.com, pratyush@kernel.org, seanjc@google.com,
- maz@kernel.org, oupton@kernel.org, alex.williamson@redhat.com,
- kevin.tian@intel.com, rientjes@google.com, Tycho.Andersen@amd.com,
- anthony.yznaga@oracle.com, baolu.lu@linux.intel.com, david@kernel.org,
- dmatlack@google.com, mheyne@amazon.de, jgowans@amazon.com, jgg@nvidia.com,
- pankaj.gupta.linux@gmail.com, kpraveen.lkml@gmail.com, vipinsh@google.com,
- vannapurve@google.com, corbet@lwn.net, loeser@linux.microsoft.com,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- roman.gushchin@linux.dev, akpm@linux-foundation.org, pjt@google.com
-References: <afEwWZksU0Fw61oT@plex>
- <0a71472c-b397-4699-a518-61faffcf4ab2@redhat.com>
- <c004f333ed4f7dedae1383f22d43b009cd83837e.camel@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <c004f333ed4f7dedae1383f22d43b009cd83837e.camel@infradead.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: FAd843xo-Z0GU25yG5XfKGrpWHXphxF70DAfFBKNDPs_1777606348
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDUwND3ZKMgvjk/HJdSxMLc+PUFGMDc0tjJaDqgqLUtMwKsEnRsRB+cWl
+ SVmpyCUi7Um0tAMn0eRprAAAA
+X-Change-ID: 20260501-thp_cow-94873ed30793
+To: linux-mm@kvack.org
+Cc: Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jann Horn <jannh@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Kairui Song <kasong@tencent.com>, linux-kernel@vger.kernel.org, 
+ linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Luka Bai <lukabai@tencent.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777614950; l=4495;
+ i=lukabai@tencent.com; s=20260501; h=from:subject:message-id;
+ bh=8F5OWchx6oWjQdaQhYvrUYZ5NQU/mG7ZNaYkB8ZziY0=;
+ b=Mnq7d1ebKNKd22Mi2Q4QzUgQPN/G4as2TdQObTxVVawo0sRb+In5CDW7lDVCkbmH0A4nKiSy6
+ E4oR+nG1e8JAAKnv2gPZd0rLAGI2vUgMg2P4OePKmeODhjd/LA1OxO5
+X-Developer-Key: i=lukabai@tencent.com; a=ed25519;
+ pk=KeaVteSWd00GIAjFyWZnuFsKAKixjga1ZkLMcI66nPM=
+X-Authority-Info-Out: v=2.4 cv=AfC83nXG c=1 sm=1 tr=0 ts=69f4406f
+ cx=c_apl:c_pps:t_out a=qkKslKyYc0ctBTeLUVfTFg==:117 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10 a=UaoJkeuwEpQA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=GvQkQWPkAAAA:8 a=_OFjXo-hXSw0Td5hZWcA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTAxMDA1NCBTYWx0ZWRfX4ZxyaoctKwi/
+ n75OHVnLyjNtavyhdX71M2ZUJ7kT/GvlaXbZPJ8/2aFNuBNtEdIi9Y22/8Qc4ZRG7FZZQ2el6i0
+ K5rrPW3a5EDXjjXPO4gIO6U0ihiM/6MmO2zZ3fFYj9i6JryTMVx+4k1M1ibrIlLU0SJBaxDM3jq
+ YokJCa/LJEc/PoyGFxrCEHwRe0Q8GwVlPDgaMauiWGVuFzbAM56a34BZWPd91OeeXeUx3nSwvCt
+ Xd+R/elFBbHpdFQ7DQXZs63iFzkzYtFPeiydEpv9DGKdYeXA1gxx9B1vKKhbbzU3/iwIIChL5oX
+ zG+03xnZIreOfNXKt8vJWnIvHwZ3ItDgcYEk0kaAhyj02fna/4nvF1Vbgf9jHM=
+X-Proofpoint-ORIG-GUID: 95NSFYUkqOw5GeELm6bq1q4S-sdjRYZv
+X-Proofpoint-GUID: 95NSFYUkqOw5GeELm6bq1q4S-sdjRYZv
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E1B5FA0007
-X-Stat-Signature: 6f8rjm6qs45jc858w87dt6m8o7bffq7m
+X-Rspamd-Queue-Id: B8F5E1C0008
+X-Stat-Signature: 1h61keapdptw7auy9fioochp6wwwkybz
 X-Rspam-User: 
-X-HE-Tag: 1777606357-613798
-X-HE-Meta: U2FsdGVkX1/JQgcG4gAhFCAGc+2ZsrnEZpWOQ4QLA7TOLAWtZxUmAGwTlCRCmPs9l0ktD6E8KjOYq2ehl7CKVY9OTDE5YQQqUNghBGoM7MXxu7Y6sgZOsV9+fjmRc8cXXr8nBxV/BUsRBpXMXI6FDNKF88uMfD+Ce5vQ1jf+Let2ggvicd7N2xccJYhZNV1KMe3/0Re4jyK539LKYVnJg684KHDklKgpeplI/2bK3w91ZS8wITiUKXhVF8o4qLYJ/swmGJY7iG89j+S2ppufPyb4kuJ1LhZc34jEONfW//cJfBoXXog/8Csn//3QQcKSeJjuAt+KjPFV09AN6UngvV8rDtAYQV4oeoCQJEvFmpbrPi2y4BQyL1OY23urD3WNt8Epttolpo+SpkkMwdaZ00NbrgWFSIhYPndYJR6cjUuGbRhdHZzFwWUmh7M50xecmUBubLjLvJYynAegXqIO9W8ZZK9RWW9lLbPZffjHzcU3AfvY0EvPLGUew3NNlYmPCrrmm4U6wCESK8eRPzMxkoasPbq1JHJvyYck/EXALHJF/KMRPlNmHboa0rvNj8fgR9pzZr4XQELG9lBJlQBky8aVrYNvE3ilbtwioT48HB6u65wCi5iY/Q7eUqNZux9hCIKhTA0sAtp6x7j+t/Hid3wWc9miX05fECkSwhxqIMFFR7Hlr46Uq7f8Rb9YVNyccyLtTbGs4NxfvSwKAuyQCCZJfYr/ccTSrZrCSSyHzLJGQpRosZAGGEOqUGzWCpKqO4uDLOH5+NB45RevcX6G22/VXbaHmxKqLX1FhnfTwwquwzSWJBQsBZTHN03AZDMchcpFGXLsoo8RlXy9HIQ7bQnCpaTmen7aRcM/udBi2a++k5SpVyxmn02oLG0s2ixEBWAKe/Y2yWthPRvXDh9SlDlMTUcKrs1F98IXchke7hHWsTpW7Pl4ILOK1vWZXvn1L040axDBF010jEcTUaR
- zNrvGfvL
- ov6MUU7fUb09qO/8lPsfbX0L9/kozEa1YQtEcEgsGIBLIIsCJg/AClFmtMiAC8YD+atWFZbLLnnN8/cyK0wpcEhy/UM444p48BkPuFHPkDVTHz0rBR+69Yqqnsk2IokRHoeDTclUs5pzcvsdRF9JrXFx86f5ja8sX2YyuKzU55/sT6Q38SRTbsNZqTyPYTE+lw89jyAut2zpw3pT/N3PgCo6raMYohvpthvwknQcpxXH1AltY0CCF9oTqmil3DixHiTKjuU47+X6d0a0EwSo52ARoHYBMmWDCjJLrO3OHi2DxMX0Yy2JtxM/h9hkR3yy51Aps76xgMD8xpOXfSz+dtiyQElkahsOtWQZDhuvfX/1QY7/NHRCjbPXVKRkuTSDqr0svL8+LE7L29drnIJWCVPnA+TADxb4N9uZ9XxfugjktNCE=
+X-HE-Tag: 1777614960-246323
+X-HE-Meta: U2FsdGVkX18Mezp6qLcra2YkieI7BtVN3VgtT9kUGYqcy6p6G0+C/4hVw3GSv/xNFPRAHkJGu40GW7jGFHvkb6dhJwITyXELhn7iccvtwHdUsAnOSd55pknTx/I44or8h7UTzjIFropwjNID+r2/tkUgund4vQUulZsTXTNDYqR5oiq/h97cGaSx3sK4Vb/B9ci8pkgnNdOty6FDCaQN4O+kacFmJqiWZQHFoIlkJW6IlXeKYGfNJz/DEXNirghMAT4/LtRdjs7DVt88VXuelWwE98ETGceEkm+EAksdpbiYNzJLnNK3H1OjIKK+komyle5aPhPOoptnA+V6I657PZCZdrFOaQJOUIlck++HYaoLRe0SSV/020xrZ6eCWczyO4+npfzLzGC0yABPOQQFSbmnfrISbUg/m/mkg+6H2seOVnoxssbkvCaP3GCZIxz5Q+r+N7Dw2yVuzsDZkGgeS/eq9GsSD3wrMH0+slQZyRGUVONqReIyq5OFuwCcfR5/Hx4pLH2mtR8ooY8KHiv5SkzNwtZ5gpGxEu9gnUUcbBMtYgTciO9DCTDwEL4ddGKxcMeYBghRFL1ydgbd6GMUW6qTn2TdiGeGtjky34Mv8D6jSgYcqyFHpzJptsTuCkG4kuA5iCe9sSoTEI31rTbBNXalvnSZKhuNuCIcjA9y9EX8/fy2tHRi7bCtZHEuW5+5rB3Ar3hjq+VYdPvfrqXYiHst1qJ6U2KmbbexymT2pH7lYvNxP1+MjWROFTIGeT5t9ztwI1ZQd237/skU3rUYfjUhzj701W2MdPrZxByDMC7CAhfvXE5w6QSNtic2ARh59aVz6Mzh8KDYWxPm49iAJLq/jWxHbQMIa8VkG5xAFfgAE/joE8JyC4uVW3xhWH26/QAozvBnurzvUOVjHb6IG3dmxa9SlH5kgKqb1zGXYlRz3SIa/fEpRm0+/sNFNXTvrgRbEivTfLSPegK6FEx
+ oYP8ouLj
+ gFsH2xsmwNSzAoCw7GBJ5iOx1xBI6iprldf9uv6Epq7M65kRMDfdDGsEIPsOkpcelSfEKVu8sWYXEgR6Bh04XIlxa2rjNYMUNCF1ef92jMhMf0eRu1jBGnzg49yMatIBw6PPOgnk5PNVGLG7fBF7om6ww58NaPXY8OSS6EfKFdRppcd+YpVCdpCbUaLJ+mYevSWjIZeXGf0SWuK2kuBfiMW41cqasE3WFptFwp+EYJYSPRlrylCsfz05ACEMtQSRF286DrR4jRxxMbCDgUkuyZGJAVLOnHcOa3OxcZMoMg3dsFVk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,60 +119,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/30/26 17:27, David Woodhouse wrote:
-> On Thu, 2026-04-30 at 15:28 +0200, Paolo Bonzini wrote:
->> I even wonder if, for long term simplicity, the interface for
->> host->caretaker should be just for the caretaker to swallow the host
->> into non-root mode, again as in Arm nVHE.
-> 
-> There's a lot of merit in that approach.
-> 
-> I talked about wanting to use this 'caretaker' for secret hiding.  But
-> why have *voluntary* secret hiding with the kernel hiding things from
-> its own address space, when you have have *mandatory* secret hiding
-> with something running in EL2, like pKVM.
+Copy on write support for anonymous pmd level THP is simple right now:
+firstly we'll check whether the folio can be exclusively used by the
+faulting process, if we can (when the ref of the folio is only 1 after
+trying to free swapcache or the page flag AnonExclusive is setup) we'll
+directly use it with few further handling. If we cannot, then we'll
+split the pmd into 512 4K ptes, and do copy on write only for the
+specific 4K page that we faulted on.
 
-Well, other than because it's a lot of work? :)
+This logic is truly memory efficient since for most workloads we don't
+want to allocate 2M new memory simply on a small write. However, it also
+makes the original 2M page for the process suddenly splitted on a
+write which will generate some performance thrashing. For example, if
+process A and process B share an anonymous 2M pmd, if process B chooses
+to do a writing, then its page table mapping will be changed from 1
+pmd entry into 512 4K pte entries at once, so the tlb benifit will
+suddenly just "vanish" for process B, which sometimes may cause a
+observable performance degeneration. After that, we can only wait for
+khugepaged to do the collapse for this area and merge the pmd back, which
+is not easy to happen.
 
-> Honestly, I don't see the *caretaker* being much of an ABI at all,
-> except from one kernel to the next.
+In addition to the problem above, this logic can also generate some
+deficiency for THP itself. Currently THP is just a "best-effort" choice
+with no "certainty". THP is easily splitted into multiple small pages
+on common calling path like reclaiming, COW. A transparent splitting
+can cause throughput fluctuation for some workloads. For these workloads,
+we may want to give THP some "certainty" just like hugetlbfs, The effect
+we want is: after some customized setup, if only the system has usable
+folio, and the virtual memory alignment permits (or we setup to), we can
+make sure we always use THP for it, the system will never split it except
+the user wants to do so.
 
-I agree.
+This patchset is about both two things above, firstly we add pmd level
+THP COW support by revising the code in do_huge_pmd_wp_page, we added
+switch for it because different workloads may need different resources,
+for which memory saving may matter more rather than the 2M tlb gain.
+The switch is very similar to the "enable" and "shmem_enable" in sysfs
+path of transparent_hugepage. THP COW is only enabled when THP itself
+is enabled globally or by madvise. And also, we add basic THP setup
+helpers and branch in madvise path and add the THP COW choice to it for a
+more fine-grained setup. Now the helpers only supports copy on write
+related, but in the future we may be able to add more types of THP
+configurations into it like swapping.
 
-> The *userspace* ABI considerations are all about how you make a vCPU
-> that runs asynchronously (should it conceptually just be an async
-> KVM_RUN call, which allows the vCPU to run in a kernel thread up to the
-> point of kexec? Why is it fundamentally tied to kexec at all?).
+Patch Details:
+========
+* Patch 1 adds the basic THP setup helpers and branch in madvise path.
+  Then we add THP COW parameter into it.
+* Patch 2 adds the THP COW sysfs interface, the logic is very similar
+  to enable and shmem_enable of THP.
+* Patch 3 adds the helpers that will be used in the actual COW path
+  to decide whether we choose to do pmd level THP COW.
+* Patch 4 reconstructs map_anon_folio_pmd_nopf and map_anon_folio_pmd_pf
+  to make it capable of doing mapping for copied new folio when the
+  fault flag has FLAG_FAULT_UNSHARE.
+* Patch 5 adds the actual support for pmd level THP COW, and uses all
+  the switches and helpers in the above 4 patches to do the strategy
+  control.
 
-It's not tied to kexec.  kexec is just forcing a handoff + forcing an 
-update.
+Thanks for reading. Comments and suggestions are very welcome!
 
-The big difference is that:
+Signed-off-by: Luka Bai <lukabai@tencent.com>
+---
+Luka Bai (5):
+      mm: add basic madvise helpers and branch for THP setup
+      mm: add pmd level THP COW parameter in sysfs
+      mm: add pmd level THP COW judgement helpers
+      mm: enable map_anon_folio_pmd_nopf to handle unshare
+      mm: support choosing to do THP COW for anonymous pmd entry.
 
-1) if you don't tie it to kexec, a detached vCPU thread is a struct 
-vhost_task and a blocking vmexit schedules out the thread; while during 
-kexec you have s/kthread/pCPU/ and halting the CPU instead of scheduling 
-it out.
+ .../testing/sysfs-kernel-mm-transparent-hugepage   |   1 +
+ Documentation/admin-guide/mm/transhuge.rst         |  27 +++
+ include/linux/huge_mm.h                            |  45 ++++-
+ include/linux/mm.h                                 |  19 ++
+ include/uapi/asm-generic/mman-common.h             |   9 +
+ mm/huge_memory.c                                   | 198 ++++++++++++++++++---
+ mm/khugepaged.c                                    |   8 +-
+ mm/madvise.c                                       |  25 +++
+ 8 files changed, 308 insertions(+), 24 deletions(-)
+---
+base-commit: 41cd9e3d23b8fd9e6c3c0311e9cb0304442c6141
+change-id: 20260501-thp_cow-94873ed30793
 
-2) if you don't tie it to kexec, address space isolation is the only 
-real reason for the complication of treating the caretaker as a separate 
-bare metal program.  OTOH maybe that's a feature - you could do:
-
-- ioctl(KVM_RUN_ASYNC)
-
-- then vmfd/vcpufd handoff to a new mm on top
-
-- then address space isolation on top
-
-- then kexec (de)serialization on top
-
-> I'd love to start without kexec in the picture at all. Just show me the
-> KVM API for starting a *confidential* guest (pKVM, SEV-SNP, whatever),
-> leaving it running, completely stopping the VMM and then starting a new
-> VMM to pick up from where it left off.
-
-Why confidential?
-
-Paolo
+Best regards,
+--  
+Luka Bai <lukabai@tencent.com>
 
 
