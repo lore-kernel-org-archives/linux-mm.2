@@ -4,95 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F02ECD3424
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 09:20:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85DD6CD3424
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 09:49:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A547A6B0088; Fri,  1 May 2026 05:20:06 -0400 (EDT)
+	id 85EF36B0088; Fri,  1 May 2026 05:49:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A055C6B008A; Fri,  1 May 2026 05:20:06 -0400 (EDT)
+	id 80EEC6B008A; Fri,  1 May 2026 05:49:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91A9F6B008C; Fri,  1 May 2026 05:20:06 -0400 (EDT)
+	id 6FDCD6B008C; Fri,  1 May 2026 05:49:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E8126B0088
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:20:06 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 10BB41C0D76
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:20:06 +0000 (UTC)
-X-FDA: 84718304412.02.92B2015
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B4D142000C
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:20:03 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=fS7D8iO5;
-	spf=pass (imf13.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BF4D6B0088
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:49:29 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF1D61C01BF
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:49:28 +0000 (UTC)
+X-FDA: 84718378416.15.3C67C5F
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F135A20002
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:49:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HihHqxwG;
+	spf=pass (imf03.hostedemail.com: domain of crisjacobmaamor@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=crisjacobmaamor@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777627204;
+	s=arc-20220608; t=1777628967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hEYgiDjAKezNWVxNMvApZjPS0+ufCBOIBbHBQD3nrlg=;
-	b=mpcV8UcfnkJppKPsI7x53uV/5h7YouyoXfj9GUg7Zjy1QzCs6hZIq5HDMk/b1eUKnI9WhT
-	iZOnOeJOa8ASTVsZcF5FxToO1GiKEDyG8S9+HQy5GA7JFq4p20TIPkqZUc7lbG2QdDfNSJ
-	+pdAZ48DsrIaOsnTG3cVh4edKf6gUME=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=fS7D8iO5;
-	spf=pass (imf13.hostedemail.com: domain of manuelebner@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebner@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777627204; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1tin0jspbQdn8mi23t+nODJtrr3QhSqiLRjH754JK3U=;
+	b=F11iuaFQigAlvsj/GfU0JC1VWKRr0ACo7KVGQtoSt/mhzCS/ql2jDBAs9B8TUYgNtQoJim
+	3HdSciVUEm+jcvGY+bV9Fe5mQ0+r+bwjp/wXkzYGVBcm3vOTcn0ccvIRupfN82z7qD4J7/
+	YI1epFAdwYobRKswAdTAFmaUl5FP7Sc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777628967; a=rsa-sha256;
 	cv=none;
-	b=2MhG7hr+8ICHgxxY4+BeEqiiucMv5muqljdlKQXVRs0e8iNJacCtI/4/nU3Z/nV0wgU82e
-	wiVcfomdQ8sqKtNP6zzGcLqKnMz11NXiGFi8SCLsXnLzQyAmHhBuHB3+m3GPFZK2DMAjfz
-	W2SUfxw9+4n5eQskHVNM3C0DLp/laDk=
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4g6QVR5415z9tsd;
-	Fri,  1 May 2026 11:19:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1777627199;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hEYgiDjAKezNWVxNMvApZjPS0+ufCBOIBbHBQD3nrlg=;
-	b=fS7D8iO5YcqQFd0SM0FgJaDRFkgd1xAPVpaf4zb2GvVLxl7C/IRu86pyG2iL1M9iWwM4qy
-	nsalyYEAvE0+zdPm4mW8qd+5UNZe2exR1l5U2YxhLtT3tYuteQvlj/7Q/hTIxVP6r8hXex
-	Qfzcykco1GywiG/yb4TlGa0iGn8WokO67oWjYqRYOrdNCs0pp0BYl1uzsyrjIYlOQ35c0L
-	90fqbb87TrWH95U0+jV4o2eQRgRtlsZqERGFrjfthbuXu2UTYv4+xV2er+7qfK7namG3tY
-	2Ugn2LAHJ63RUo/N04UnLpfOsfdk+7c64+OtOr/F8y7I1RhTGy+VY4uvpR6W1Q==
-Message-ID: <26197926621ca847b7b0337139ec7f90dc8a3703.camel@mailbox.org>
-Subject: Re: [PATCH v4 3/3] Documentation: deprecated.rst: kmalloc-family:
- mark argument as optional
-From: Manuel Ebner <manuelebner@mailbox.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>,  linux-doc@vger.kernel.org, Kees Cook
- <kees@kernel.org>,  linux-kernel@vger.kernel.org,
- workflows@vger.kernel.org, linux-mm@kvack.org,  Geert Uytterhoeven
- <geert@linux-m68k.org>
-Date: Fri, 01 May 2026 11:19:55 +0200
-In-Reply-To: <20260430010332.114100-1-sj@kernel.org>
-References: <20260430010332.114100-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	b=4Toj9NIKlD73wzIb9jzptoav0wTXKv35u+ASw+A/pObXpymxAM2/yVN/b+SvArmMMzmoLs
+	8Jv/OsaIIyAfBR+OxLmJoqIJhLSp7l1Dig4P/oZr25PqMu3E9GD3ZS34KwGWK/TiE+WNDu
+	Oza4+vvuzrOCGhm5FZBsJ9ziiKeRRZk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HihHqxwG;
+	spf=pass (imf03.hostedemail.com: domain of crisjacobmaamor@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=crisjacobmaamor@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-835066ef130so865623b3a.1
+        for <linux-mm@kvack.org>; Fri, 01 May 2026 02:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777628966; x=1778233766; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1tin0jspbQdn8mi23t+nODJtrr3QhSqiLRjH754JK3U=;
+        b=HihHqxwGE+aWkDKuYCVejDGWgFU4PSSehK9ATVhRYAKrwRfEEL+qVerjlHleqd0d1e
+         qJowZBSYAOdkmyhpgTi9ELLR9whSCKTY8uy3qz2EFbVWqk9aqjt0BMkmku4drSjAiUJm
+         cIQTli/jWDFm2vdT5JlWelbx/9L1Ieqe7AmTpAaU0n/LUWDRwFYxtIB5MdIh9hscRVQ0
+         swVkm+NRVbmxiqlA/mN3D/gI3HKgpcy6JlfNkmZbkynwDecuYRrVVFZJgIjunzF704Ci
+         WOOq/RdGd5AgHOmGA8f+LN43Hq+XUUCOp2dn3xYM13NNfvtmuV6bDDsgqxNxuNfhMs7M
+         82Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777628966; x=1778233766;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1tin0jspbQdn8mi23t+nODJtrr3QhSqiLRjH754JK3U=;
+        b=cf88lDkWI3wRWfOZLQCRKFwrJOiPvjTYEBz+R0qsXlz4vFf6GB5gfHN8U/+3JAouqj
+         OAgWfLn+uiBtRFK5JE7C16tVAK0eRxxNdpAC5v6LRS6Fil3HdO7Rxfy51U0t+5LM7Beb
+         hVWtUfdT/amSCMGGOuxgte7HSbtebkEPAyFBI2FMAzyJyI8pxSGST9BfngRC77BtciA3
+         bvfnDic8MMZIoeaQnYALFJB/5aSwF9yCKF/8gGdgyU0DB5g/m97OB3pGdHZbcLsnBcNH
+         kAUuxf+i8VklpcbcREAU4+QOL7JvncSA69JWPnoVI7HFAzIZcdAfqzdxCH604VDfrYE+
+         jouQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/md1Fr7FFx+IK7Ta0qJs3O0sR6EL2lbtlZU6Xs3+hxbHb404Wxcl8AM6LfzLV5bJfUz79+msJyyw==@kvack.org
+X-Gm-Message-State: AOJu0YxTvgvaokyUhJkAoo/MSr2qmoZuYLSGPwX7C1qGbjLxBNoxICYY
+	vOOJu7jf90/98YJ4zy3mk+8oxKkeGFaBKUtLwaP0PRrpTyT/Q3aTYkor
+X-Gm-Gg: AeBDiesMAEVbwtXQEHkWNEpto2POhac1XHImWvmEdlV8/ZwodXWRBzfUSVQ15IMB20a
+	O0ELAE/dSCLwey3xEcLyiBQZF9il59PT8hvy+hyGs5jfeTQo0FpRYSVWVsIVrbWb9YsQw/cFhQ2
+	SwSbvCHDb3gZD4Y7lmQeZeNF0MvQit1KtQP+1YIkr9aiWfw/3XDz+kN/0Rk+e4cxRIauspyNUHM
+	4TikokQ0kacENxbp5D/4a0F1iWwmlxzl/yWfSd6UONuPPxYqxKM5d4VGTPwDRzgkVislevHUtct
+	nPW903v1gPEik2QQOsc0ec6y/SbPmFpMRcsFFSBvxx1/OU7pjd/dDOovQK/i75sSc4y2Lt8ct/G
+	WFtiSZ1x8jhNVrt3G5khNMTUsdm28Hb8gaLt8VKd4zzmxIf425H1PzCUxw7iwwGJ0SH8aggRL5M
+	x86lpzFn1n4c5Oy91fh8ssoHC8uGrd674ZOXQLWg==
+X-Received: by 2002:a05:6a00:8e01:b0:82f:9e98:1356 with SMTP id d2e1a72fcca58-8351a31126emr2478609b3a.20.1777628965625;
+        Fri, 01 May 2026 02:49:25 -0700 (PDT)
+Received: from laptop ([2001:4455:8025:be00:eebe:247e:613c:24d7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8351582dd55sm2042729b3a.1.2026.05.01.02.49.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 02:49:25 -0700 (PDT)
+From: Cris Jacob Maamor <crisjacobmaamor@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RFC 0/5] liveupdate: validate restored LUO metadata
+Date: Fri,  1 May 2026 17:46:32 +0800
+Message-ID: <20260501094637.38650-1-crisjacobmaamor@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-X-MBO-RS-META: fdgbr8urtrrweww5c9sz6cgypuu6d3g5
-X-MBO-RS-ID: 235f6216a464e3d66b8
-X-Stat-Signature: pbz3ysdqxo4ayxouxfixpi3onnjxpr5q
-X-Rspamd-Queue-Id: B4D142000C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F135A20002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777627203-503272
-X-HE-Meta: U2FsdGVkX19D6ujyRJuDc6vpYyGq8TVoU20OTHDj30RGE72oMGUTW/rD1iVfCMR7SKUlaefPCsrQ1lwzjzpGkC5U97LSmknXepi59wtqjomsirUcr+NlPsRH/mmD/6S+z51m7MW6ma6KiFOwIHkGOh3PcACZYrN71dc1zkZpFZiutJDBpIAc7tn4bZATW3qeroKmt5DA6uA4p/RncHJge9H1hBPsbL6iut2EAW/0QikTqFL393qa82HQmIxw9FGAi0EFtmsowX4Rycj76ueasscYpXZipNgN3OqeVfSEJ9zgIaMTxPFuu8LzufDc9EnystMG5n3rtAv0Y8x0aZCPUSAAfCxa1bB0WO8jDiluNYQOpEroV8mlJpE5cCBI1JY3537Vj1uvXZxw5iMiI9zZ+X5ShGWO25IszMKT5Iw3K1LOjb2M7rXNjhY+MTYfxdLF1ACEZTYS3rfP66y538SAcoGqAHyD0hfjMFqAmD6x5jh1Y/MxrE8KkfBb8CeJzkDVkamItRYMRBYr2Jfao/WdXW8yFAkbIEOCyUMrGeG4bmG22EBKNmxRWVcO4Jy+v8OCphDVRC5w4mhpQ/X4aiEfVHFABD7xIR8hR8fG39qPelnaM7niZkXMJ72heGZHv7jHGAP1Rmndpze1+bdJ5E3T/n1yver35D76qcPny/JHPCc9pWD7zRCNae/dx2MMxqFjUA+PO8rAfn+uYA6QTtRHbJejAb+sbBlVvWrLP3AVeLp5gR5AShJboT4Muirjr7beDuQa4AM/IYQRTZXnHas0yt22cNvIq2TEIM5JVg0x29kibmRmep7KIPERNTtgSJXMtr8SojKybxRI3B/pu6qBJ6WqlW9CgG5nt5ZaxoiB1ZI5B29RHjm3gfqe8l403aK1UtvuVQg3V+kk3FAeEyCJNZgyVZu8VohQPLUD6yAKYx+u3gXAEhT8Cc7HGo5/6Pa4zA+Mv+B408mBUD6RU8B
- /BnApIly
- VjCtGmi2Zs/k6zlzvGyS8KA28t9KKu1HGrRIE0rmr3tqDZ5rsEVbsslsBpA0MxmxpKMATizxhQX3Ujf/qE7cTIvTdeV7cNr+X61vxpENMnIdMx4gCZNM9C420KmV08QAslryHnHb65fzsa8qNQC5wjHbBKy0D56RP1PC70eGMzmNB1zJcSlAOct1W7wmEgLev6xcXFCzJoIoVsY/2fujdStNagdLDIOi+J4dZQGpevBqxquO2XaJvylJ5ALpICKJ5qLrG5v6FT/sjmIlcR9IgkRMuiGhBGVzzLHu/jL8IeTjHtxnHuQK1GngnO5TE/GBE9SS5Xg/eP0sNp1ecTBaStmwGBA==
+X-Stat-Signature: ss4ntzm5bs99n3cajg3dwqww5yxisr1p
+X-HE-Tag: 1777628966-693992
+X-HE-Meta: U2FsdGVkX1/6qhkZag9rfZH3b1tjQdniispFgTm3bOQ+TW8jvKsG0F5k1DqJcNzbNYH72DJSukXaS1WdG92k4eS3R6IkhHEXlBKzTsDObPlo7QyEtd8liiUktF/13fYkRzZwWkVMb3I3+oLMnUtH5tvjcUw6d0ngbfK9F4m7XsmFyuuLrtcZfv9yEThvnmty2Gg76yL5lzp/G7XWWQgDdWbxNwSzlx+B/ohpZeW+OW90tk9PDAAsPs27eMsDxhge7hch94Zdwyy2866I192xVct7NmDlY4Ja6wQMzKSOqTNyIHhVIIe98IGxrqo/3rYQDzIjSpSTou8kGYNkxsXhDyAhH+OriqoGsgR+m+8JAdbcC3uXCiS2YVx4ZqA43eZKg22ZeADsmvh00vrEAMUvEgaJaYBH6hHET5Wj2jcCUoYVw5JYAfRgOV7Qrp2dqqRvo0dgOg9u+1neRT0XLHpE61xPWup3AwK5GFtn72QabiACiXZvLYR6NX/au4Lpjn3Pf9ILwWklq6QSUdHbawLj3D6wz4mnrtmY6xnyVWfO+A14q7/+0S/FYg5oq/Y1o1/ySSo5K12wdUFdifaFyrEV3GPppWcU4iSbDtFVIFRig63kMpNqOX7iSmmuPX6NkrOgtSFoL7fOQ7dczM4e4qcH7SgS+sgFR+3bffudJmaJbEA0i3wua+OlOocsEDPaW2odyaK+YgH5VpbRW5c8VlD3DbU3aZeNlDja4ofSwJ2mxGnJzS/Frd60l82Prk7maaLU9B8QrhR3IGYqynLuLatDre7+BVPf7Znw41g9YFXVEaP7/uwQzNnoVAFsr0zJIK2+FJntJ9cH87lP6EvNX63zjXcyRvjIbvF/GqesxAvb6A083fUuCe8vpTpequyLvmusBAG55nGIXHxTufgl8qugeWF0p0vdFu1LXQC/IHMXauxAg3Uym5q1vUb2BPh2f1fmIjokL2Gc/Mwe0/ZE6PQ
+ sB5/aDJw
+ 3oAvNwTNbxMm8oZHkdjlpCveXRaDS/hi7CDXWk5s9GMJLLknc7hmlUZZhBptp7+It2/zeemt1YtsR8qRBgTeChfM/ocmambfcBm6N+nIK66kIHGTFCegm/Wn7rw34w41Wb2clOG5mb69DsBBH71OS8/aH7STmA1vMRXQ0UaoXxxVsezFuGq2g7kDT5diB5JF6BW9Pk1iTsehiUUd+o3647zIC13HIrj4VJFb0tShQ16/j/IMjKj4FDs6Eznrk/Az28GBSQJDGbJN4kfezA+9QcuXG/ARl+DjgZ87XtHa4Hey7CyoV7SSNCt87YAXEvM0vISYP9U45SQo7cti5ChjA58pRau+Ah3227UXo8eygjTZMa7riI8fE7IqSZAgC06GoRh4zqvNJzZnbJjQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,70 +121,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2026-04-29 at 18:03 -0700, SeongJae Park wrote:
-> On Wed, 29 Apr 2026 09:27:04 +0200 Manuel Ebner <manuelebner@mailbox.org>
-> wrote:
->=20
-> > put the optional argument (gfp) in square brackets
-> > add default value =3D GFP_KERNEL
-> >=20
-> > eg. ptr =3D kmalloc_obj(*ptr, gfp);
-> > =C2=A0-> ptr =3D kmalloc_obj(*ptr [, gfp] );
-> >=20
-> > Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
->=20
-> I have a trivial question below, but because it is trivial,
->=20
-> Acked-by: SeongJae Park <sj@kernel.org>
->=20
-> > ---
-> > =C2=A0Documentation/process/deprecated.rst | 15 ++++++++-------
-> > =C2=A01 file changed, 8 insertions(+), 7 deletions(-)
-> >=20
-> > diff --git a/Documentation/process/deprecated.rst
-> > b/Documentation/process/deprecated.rst
-> > index fed56864d036..ac75b7ecac47 100644
-> > --- a/Documentation/process/deprecated.rst
-> > +++ b/Documentation/process/deprecated.rst
-> > @@ -392,13 +392,14 @@ allocations. For example, these open coded
-> > assignments::
-> > =C2=A0
-> > =C2=A0become, respectively::
-> > =C2=A0
-> > -	ptr =3D kmalloc_obj(*ptr, gfp);
-> > -	ptr =3D kzalloc_obj(*ptr, gfp);
-> > -	ptr =3D kmalloc_objs(*ptr, count, gfp);
-> > -	ptr =3D kzalloc_objs(*ptr, count, gfp);
-> > -	ptr =3D kmalloc_flex(*ptr, flex_member, count, gfp);
-> > -	__auto_type ptr =3D kmalloc_obj(struct foo, gfp);
-> > -
-> > +	ptr =3D kmalloc_obj(*ptr [, gfp] );
-> > +	ptr =3D kzalloc_obj(*ptr [, gfp] );
-> > +	ptr =3D kmalloc_objs(*ptr, count [, gfp] );
-> > +	ptr =3D kzalloc_objs(*ptr, count [, gfp] );
-> > +	ptr =3D kmalloc_flex(*ptr, flex_member, count [, gfp] );
-> > +	__auto_type ptr =3D kmalloc_obj(struct foo [, gfp] );
-> > +
-> > +The argument gfp is optional, the default value is GFP_KERNEL.
-> > =C2=A0If `ptr->flex_member` is annotated with __counted_by(), the alloc=
-ation
-> > =C2=A0will automatically fail if `count` is larger than the maximum
-> > =C2=A0representable value that can be stored in the counter member asso=
-ciated
->=20
-> Like 'ptr->flex_member' and 'count', why don't you enclose 'gfp' and
-> 'GFP_KERNEL' with backticks ('`')?
+LUO restores metadata from KHO/FDT during liveupdate. The restored
+metadata contains physical addresses and count fields used to access and
+walk preserved session, file-set, and FLB arrays.
 
-I didn't know what ` is doing, so didn't consider it. It makes sense to
-enclose these two.
-should __counted_by() be enclosed aswell?
+This series adds a non-consuming KHO preserved-range check and uses it
+before phys_to_virt() on restored metadata addresses. It also rejects
+restored counts above LUO_SESSION_MAX, LUO_FILE_MAX, and LUO_FLB_MAX
+before traversal.
 
-> Thanks,
-> SJ
+As far as I can tell, this is root/admin-only; I do not have evidence
+that a normal unprivileged user can trigger it directly.
 
-Thanks
- Manuel
----
-The possibility of getting blamed has to be earned.
+I have not reproduced this in a VM yet, so I may be missing a KHO
+invariant or a preferred restore helper pattern. Feedback on the helper
+semantics is welcome.
+
+Cris Jacob Maamor (5):
+  kexec: handover: add helper to check preserved page ranges
+  liveupdate: validate restored LUO FDT before use
+  liveupdate: validate restored LUO session metadata
+  liveupdate: validate restored LUO file-set metadata
+  liveupdate: validate restored LUO FLB metadata
+
+ include/linux/kexec_handover.h     |  6 +++++
+ kernel/liveupdate/kexec_handover.c | 35 ++++++++++++++++++++++++++++++
+ kernel/liveupdate/luo_core.c       | 10 ++++++++-
+ kernel/liveupdate/luo_file.c       | 14 ++++++++++--
+ kernel/liveupdate/luo_flb.c        | 23 +++++++++++++++++++-
+ kernel/liveupdate/luo_session.c    | 22 +++++++++++++++++--
+ 6 files changed, 104 insertions(+), 6 deletions(-)
+
+-- 
+2.53.0
 
 
