@@ -4,87 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E292AFF8864
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 07:11:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF0BDFF885A
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 07:14:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B4826B0088; Fri,  1 May 2026 03:11:57 -0400 (EDT)
+	id 049B36B0088; Fri,  1 May 2026 03:14:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48B1D6B008A; Fri,  1 May 2026 03:11:57 -0400 (EDT)
+	id 021A36B008A; Fri,  1 May 2026 03:14:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A0EB6B0093; Fri,  1 May 2026 03:11:57 -0400 (EDT)
+	id E7A206B008C; Fri,  1 May 2026 03:14:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 26D3B6B0088
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 03:11:57 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AADDF8C1C6
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 07:11:56 +0000 (UTC)
-X-FDA: 84717981432.22.43505CF
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D4D366B0088
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 03:14:09 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 744AF8C445
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 07:14:09 +0000 (UTC)
+X-FDA: 84717987018.18.D1F930C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C6CB11C0008
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 07:11:54 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=azGSeyiG;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id C1A4F180004
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 07:14:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hRMF90bt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777619647; a=rsa-sha256;
+	cv=none;
+	b=BIms4R8q+LnDcMp0pt40GZ0bS5FzpDHi+KD9boJaFqVSMSjhcNCmhF4pZfA42cm2ovO+JD
+	mQFwUdFR6EEl+PyKb+Mbe/vx2Fhi0+RzqumGjgkdMn10jXoAjp/AvvBtD0OHBNNfxxAh0m
+	+z8r2IGPj7G9kwb3zYMyxOVzcp6V5qM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hRMF90bt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777619514;
+	s=arc-20220608; t=1777619647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+/UA2Tglgx0+M7x4ITW4X2NUfOL11e7KWbjiBYu3A6Y=;
-	b=QVae7U09268ddwhRxp5TfcBM3UEUr8Un+bswJGxzP435NTXPgire+5E+9XY0bVWilILT9Z
-	qY1aaOR4GPWtSrLPAajPGSb2KNvbV5ZfaQWuWcnQtp2mYwln1H2lWl9OwcSBmPNdcfgSTU
-	zEoMuAAFood9tlL3CkAt0LaDHg60cXs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=azGSeyiG;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777619514; a=rsa-sha256;
-	cv=none;
-	b=YyHw8EKDZSyYO2RYYyOz2feNHyQlD+Jo8Wj3m09LHLzMnbpmgIyLEKsR8ypS5kaVyb/ChC
-	c66fTsEdWkojzlwA7A88icDiVlqLuMG02iUaJk1HyFV60R1Otv9Usfd9QxrWT8ouddNeyM
-	db5lSYgA04fGfZS1lomXoyOswir6LSk=
+	bh=3wuiBgrSnuNWFFf3R6F4ASDCg9n9Aja6Tcjd2kviias=;
+	b=2Ny9YAg4T+B7O1s1KVv3KSRRFQMj04561wWr7iDRTXBn2pPMn50/lLqionHsOtKhrYfl0S
+	ut7YxMLUM/5UDNCm1WgA3vnF1koFXTkWF+bNFU10ReG9YX6rB0hQI3oKBOhlWiKrjIdCRv
+	qGx6h90/4rZa6wtPZnvjApOme92m+r0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BDFE60142;
-	Fri,  1 May 2026 07:11:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834D2C2BCB7;
-	Fri,  1 May 2026 07:11:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1AADE6014C;
+	Fri,  1 May 2026 07:14:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5CCC2BCB7;
+	Fri,  1 May 2026 07:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777619514;
-	bh=Mnyka+LmWryEnh2whF2S1osy42xEfJKWwrmFFfejmlU=;
+	s=k20201202; t=1777619646;
+	bh=cQmKPuqMrDemevQCdVHNG3pm0Jgypr9Bvlq0WQ6tW3s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=azGSeyiGR0th/MiL92R1fm4aqYEOeltUOOPcLpzkr12sxUmAhbkfv8XKlCFUXbJ2O
-	 Hb1LzXjDlmK+SbsmoIlYdJRr/jTVucXxvIu+Dj9AVPXWf+zy4OsN8xjx0TeUhuDsqM
-	 GYVTAChod8jlqJJh0oVd3HELRDth88uYNV0QwZbhTrl6xyCCaDN5oPkLboeAtlS28U
-	 /jsb1lnuFPXftBhUTyskUyJt6Zk55Um4OyhEvfwpIaiVN3HMLKV1Ld2e1/76Eb1KZc
-	 3Cu/SAWR9oqYcIc9CdwgkF3bAx9t1orvCKipK5ND7S5eYHoAG2/dL6ONGO4jsfx8px
-	 KrlKa7Px+wlfQ==
-Message-ID: <c580340a-48c3-4cfa-92bd-593a95d0090f@kernel.org>
-Date: Fri, 1 May 2026 09:11:42 +0200
+	b=hRMF90btORbLa2eELV9f7wF9G28pAwviSKeg8kf/SO8uAj0+IIjdK8sKON3mgyFXh
+	 WjzwYIPSLUb773zLJVMRTnk0nTFFvpH0Is6BH1NQSOZnH/17FKYxk912Vg/JUMOVPd
+	 xFiTD+pgaH2SYDDrGGdx9QQfyD1T8BUjrwKp1jSuZHYZaeUFcXDbfv8071teoUgRaT
+	 buiCiOAlgU+lRytCwntfFFqT/jCbX+OaLBNK/EYDIoRY3ui5ENCdlLEMDzGTT1djrS
+	 UgTU6VgOZqrRKwvSbY/KBY0bjVNXqn8a3lV9kphVuF4uXNiZrG1nuUkTqT9X5+FsrE
+	 gXLoE0XyJEjWg==
+Message-ID: <428786cf-6873-4cdf-ae57-cef43b174f8c@kernel.org>
+Date: Fri, 1 May 2026 09:14:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] mm: support choosing to do THP COW for anonymous pmd
- entry.
-To: Luka Bai <lukafocus@icloud.com>, linux-mm@kvack.org
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Kairui Song <kasong@tencent.com>, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
- Luka Bai <lukabai@tencent.com>
-References: <20260501-thp_cow-v1-0-005377483738@tencent.com>
- <20260501-thp_cow-v1-5-005377483738@tencent.com>
+Subject: Re: [00/45 RFC PATCH] 1GB superpageblock memory allocation
+To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org
+Cc: kernel-team@meta.com, linux-mm@kvack.org, willy@infradead.org,
+ surenb@google.com, hannes@cmpxchg.org, ljs@kernel.org, ziy@nvidia.com,
+ usama.arif@linux.dev
+References: <20260430202233.111010-1-riel@surriel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260501-thp_cow-v1-5-005377483738@tencent.com>
+In-Reply-To: <20260430202233.111010-1-riel@surriel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C6CB11C0008
+X-Stat-Signature: z9gaej7ak98yst8staezkgyocwkt3sk7
 X-Rspam-User: 
-X-Stat-Signature: iyxizgp87mhnc6du7ueqzcfruarrtbi4
-X-HE-Tag: 1777619514-509314
-X-HE-Meta: U2FsdGVkX1/GYb5KvhRV68ojfSUdtkAt1L4nK6fHs7cssfI2HZhmSkA2THCLs9YicWyFcVl0OhraKVv60BPi/k3kOsg3eyOO4IqfHvahrwv7KlJm3D6WrqjWW9SDP4yyJ5+eHI+QJigT9/nf8TXdVjR718yTAjiAKrwpwaV88T3ICM1yr6SZQ5gekfbb/JiYC3hBWDR9ijcIYq5XQcC+sJOQaCvLbY+ody9WzpJMaZmJ2jep4SawPCaAbWg6rwM40nUY0eVIS4XOtyKssgkcpCa1cv63amwfX7aSjt1dpn/lNDq59qPMPQn1dN/gDL+NCcFAu534HZt7rr7JEtn2vUgj/kiKGPRGNgtiv6+507cfxrmFMKkMSpr2WVQxz5iMJ7m3QRtAm6S1ZX0rESFgvXkeQnvGN0XGupoifawz4ESB0XqLVGP9bKH6p55nRKkv1niSC0RL3eL77i+jDiKaUD+MmPv/b2DnLAQyulnE3KdlDVBaD0NHbxhDKnKBU2MOLyamQdK2pY1qMEY/hxsF5kGMAWI/C3SJ18bacGbCKCTlkTvRDn9rKSKV2YUNObIPGxVWab2bYMxQwXmxSV/WLUxPK9PVqlsi+RXL3bI3oqsxVuZkAQAUKI8XKEbfVqqDANiNq3CqhOvPuKN6pg9kUCauJyrGW1OnrqGKcYRUJ/x+Bz20h3mebJw3UsDt/nsv/yC72X8R+DPuJFZ8LAhm3UhJ4Ra24e7YNkm1h38/e3bdmKL1EXkuqT1rcRaii1SdBqBNHHML5uSu5wFoQdkj/yBCCbmLGOhFVAC4MhLhnEqtKjARDoNQaGfEXCciebGwQSVHLUoGXM+6D4j9hvSNCQhsxzeJipzvbYwcpkGzFB0vPxMyCI6cl5NkFyzf76hFalraGbHjpaetfopq/hPF+H/Jn3cwFZM5C7TjpOL8QMWYK+wOK/OHIHyDpN0T9BFfkGPAn9sBsCELqjhLoJ1
- SgyWGkia
- 7DRok5X+3lTuNd4M6sSr2MRczXhfj31jYebhuExP7lAYbfrFN6znWfHWZ7ZPs+a+ZkEXfpBQslIm0XCPtpy2HPvhM3JrT2Klgt7pD9+xX1PCc/DzIo8SuprzMfY7e/j17aRN3eF5cPEkExrJg3Y7Na65ak6DynLozVFpx3t1xKPst7tlHs3650l0O0vA3H4oZQy+gJHiL5X385GTAlb7LMZLXftVvQPRnM+qHAOUs2wj1bxIHX0LdhkkUPiS9RvtOEozG
+X-Rspamd-Queue-Id: C1A4F180004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777619647-20131
+X-HE-Meta: U2FsdGVkX18xANPpS8h+XCvL2y2iifIfLSfaR8zUsPD3+OLKJukRktlP/ypijfKu3zJ5zsZ+5eQK2rXC/1Vkf64uPhqG/TPQvUwKzgIkxwYuYAcEPaYhmfm7irXYMD8w46JgZJ/zgxDPqXkuPaGy8mGTqouXW0Ro5UeP872wv/UzHWl0LUwflG+9lBmVDG26Sl5kRfnVGo6FOcFOCLUR0qAfdd5zneN8+sgNajsNLcckomeBHqobKCgJ+vUSu0wmH/kJChUuuMPMA7qFMn5RvELC/lA7hFcnFujG97DbfqUrSCUQrcr6V2KbPwJWBXZp+tAMC1yQVLlpzaDKp51Vv6o/Bc1F/awia6+rvzt/KEYDNZkyinDW8webtWrAgzAf7A+x+FdoFlktlZ+MqC2J7SUNB3yH1nuf6jDdsvBQzGhFfC6lkSgM+kcGHqaFJOjDvOheSS1FkMOUub6jEyMEDT/Uko0tW6ArLAawGsa+QTAm9XUqbZffLulGN+q+UZ5M3CukhIYYeoFk/NP/kZVFLxm7Weah6Atq0B/EQTilL82L39AmhzOzaP4ZsmfbYLbpNTjSBgAWjeLG9XnHd2Mn/m25LFDwWBv+NC0wPxGw3mZ+QMiVK6uuq6XX3Ak3Y7GKX1gXvpMzckvZ6v39IK6GWHXt97ItV8SyOkIdn5Ql4mf/oHcid8GzhoehxE/9GigwGKCT1N0kljajKlgmtJ9QCHkHntkIoJHoImHLWxriFW9Wlj6FFGYsUWfp2JW4KIUhaPmjF28cnqLvLb7X+QTfuJDK/WZ/U2djv0ZRwC5UqycobMLYpRmVVqPa+Ah0zfTBM9t/j4aN9TsIxoetVheq636eVEo5bKum4EZXWF2L8InB7kmG093w2KO/Q0c/Tn90Q+5/FzmPm5cUny8X7TCPDkdxyEcPOaoa4sWdV7+68O2n1Qk27GaFcmNwzmxGBq+SY7K6xomwhbbYR0oLttq
+ za3qMy5B
+ jC+qWcrKwWW866Z9FZcKXxqDkJIMid58KoiauS6KxZl2X2MWVoUvNY4+AJ0TSSmKRFvj5vzDuqTVtyxLub79gdZqkYaXj7Abwvi2ar6VFFWG6i9Kq/NR8DS5W9sAYtRTMsMDs9NRapOlIN5+hMCcEsO3wa3QGMesKoEVF01FUj/pGJwFNln7ii2ej77pj5r4XorW89ZamFhdcOGiTRtsv38+e1FcaadUWmCjWUR0YqQKoZggT2MM5LyXVSNXGGyxXYMqr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,19 +138,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/30/26 22:20, Rik van Riel wrote:
 
-> -	/*
-> -	 * See do_wp_page(): we can only reuse the folio exclusively if
-> -	 * there are no additional references. Note that we always drain
-> -	 * the LRU cache immediately after adding a THP.
-> -	 */
-> -	if (folio_ref_count(folio) >
-> -			1 + folio_test_swapcache(folio) * folio_nr_pages(folio))
-> -		goto unlock_fallback;
->  	if (folio_test_swapcache(folio))
+Is there some text missing here, given that the first paragraph starts with
+"Neither of those" and I am not sure which solutions you have in mind?
 
-I don't see why you would want to remove this check, really. Instead of
-"fallback", you might want to try copying the PMD.
+> Neither of those are great solutions, given that modern servers
+> tend to be large, often run multiple workloads simultaneously,
+> and each workload wants something else.
+> 
+> To address that issue, this patch series divides memory not just
+> into 2MB page blocks, but into PUD sized superpageblocks, and
+> aggressively tries to steer unmovable, reclaimable, and highatomic
+> allocations into those superpageblocks that have already been
+> "tainted" by such allocations.
+
+
 
 -- 
 Cheers,
