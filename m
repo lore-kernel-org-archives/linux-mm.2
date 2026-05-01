@@ -4,120 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DADACCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:05:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 261FACCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:10:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60B8C6B00B4; Fri,  1 May 2026 17:04:24 -0400 (EDT)
+	id 6D75B6B009B; Fri,  1 May 2026 17:10:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E0666B00B5; Fri,  1 May 2026 17:04:24 -0400 (EDT)
+	id 688BA6B00AB; Fri,  1 May 2026 17:10:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E8976B00B6; Fri,  1 May 2026 17:04:24 -0400 (EDT)
+	id 5289C6B00AC; Fri,  1 May 2026 17:10:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F1E16B00B4
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:04:24 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA33C1C01C7
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:23 +0000 (UTC)
-X-FDA: 84720079206.03.36227E3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BD217160002
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JHlM8jrg;
-	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777669461;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EE1D6B009B
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:10:19 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D6FBDA028B
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:10:18 +0000 (UTC)
+X-FDA: 84720094116.17.7113EC6
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AF746180008
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:10:14 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hH3CPGnR;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777669815;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cIctsTM+vet8oZeDf27+dPPD/+17fXmwatLAv9s6Dak=;
-	b=aUY2LmhEW4IDjh2IQHukPQl4wyHYVDR1Zoe1YyNdS9eBsuxq/KbxTKYzfQXlkxmb5TOrcU
-	HQHSA9/sSbUnhSdmR50AGoDGqzTnxGC5ocyzYKRAeAsoyMjZ1Rj7J7irICKS/ut+s4e7L/
-	6N6HmaRxlRhSgVdO4ifwcawskW/HxYg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777669461; a=rsa-sha256;
-	cv=none;
-	b=ivQ5PcEEyxADqe/mzCX/7isdg30LPPHzMyrWvp7XWQVoAz+qN2tAyKCp+NvQ0fPlBbFf8e
-	L/azSGiJLiEEugs+hH5MFL337WAuaYR0LXxdTS01fuK55aDZXJMVGOgAnEw+USu2KTmR6c
-	f+0eag7sRQkBOG3DWSbqL8EPeddpqpk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JHlM8jrg;
-	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB2D044793;
-	Fri,  1 May 2026 21:04:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8C045C2BCC4;
-	Fri,  1 May 2026 21:04:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777669454;
-	bh=doK35nLkz5KNd5wFsipWvD5mR9lAV1HrW1BUxLjjaQQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=JHlM8jrgo4S1gaO3BtXvkmeotdlraqcQjESCI5XIcy8Q6plVV34YcYFNGwHZDvnlU
-	 GBnYJBYfQmlxOFcngT3SqFcRGtv+5HM8c0rlZ8i/BM/C60gYVYd+8RbEoHtcv/i0OD
-	 b+iJ1bl7XQjJNOuo8ZWKQDoaOuSl/zQQQbEumqG5dtdX5up0gSK+Nob3MQhaAEUUnA
-	 jdC1lbAlxQH9kDZIY53Nj2meIc2ib27DRQ6t86hMs+NsITnsh4OsVzBNfgFoj+SLoT
-	 jaXdMAoUR5+aYBV9Pvm2jQemRxkA1sZ/610N8XIHP1tdebyVDGeLm01FCyIFdJOAm1
-	 TuBsvBGgCAXPg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8444CCCFA13;
-	Fri,  1 May 2026 21:04:14 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Sat, 02 May 2026 05:04:18 +0800
-Subject: [PATCH RFC 32/32] mm: remove PG_referenced
+	bh=HKpKmcjR4tPJ4gNESVUTnNA891/eMrTJDh85/+wRndA=;
+	b=ILcRHz1c3dlkap7naNNhMQVveuwmvhuU+AN7wq1UhxgcniyUn17YhOSvxEQk2sZkwswnKt
+	rMeGvhszcwUnvBMj6CEUQnPpyR4G7l7pjKZN9LKZGj9CT5qBuJy5nZz1WrdUcJSaBKquKS
+	cHxX11lTwoj1bTVH+TU6l/cNITNiO08=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777669815; a=rsa-sha256;
+	cv=fail;
+	b=ufsWGxsH5AY+ZRaGTmk1ND+x2olZk7YqIlmHx7q1TZKyXFArdvTwYWQre576/HIU/Y2WfM
+	3l8SE1ldoxQYyAqGMX7v2CsQZdz+ucChWQAB8EMgXfGXqX72CeMob+7tB2fNDlhq0+2ucJ
+	YwyLwORhe06yXGhKQRB7HSNrwhp7ZOQ=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hH3CPGnR;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777669814; x=1809205814;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=gtqpakxv6G07vnkPPNI4dWUIXXXG8vKLe7HorqRzO8E=;
+  b=hH3CPGnREBXAlnhQJvdoZPPQfSzxv6OuBDFQkqzMAFjgKNnlbks9ItMS
+   4+RNtj/bSTHgn+Ztu3c2YH9BvMNKtNjqFGSbJP9ywdwAFyCy5ru0B6hRJ
+   VjYg+GKjkt5pLel4GnumYkHFvFla/sTXNnOlcwOj8xTQe9J6Dfio3wKxv
+   GXJLsoiC7AkBQigtmsApb1rlnL51utx6wwYAWIPYKsh9SFqA2GnnC9it2
+   RASmhF3KNi9a0n2rw/Hgo/oF2forepnC0E8R6CS14HiYzszNPHy0eiq76
+   nEEFnFZjZPTpypuTFsMtuHQN6djwv6pELQt9QxVVS7vnvKZubrhQdssMB
+   g==;
+X-CSE-ConnectionGUID: fYiMUmzuQqepPXRkiXcsug==
+X-CSE-MsgGUID: BBlPYwneTDGK2nAdi9Xe4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11773"; a="89732441"
+X-IronPort-AV: E=Sophos;i="6.23,210,1770624000"; 
+   d="scan'208";a="89732441"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2026 14:10:13 -0700
+X-CSE-ConnectionGUID: yp7XeejmSa+SOGUjaoydFg==
+X-CSE-MsgGUID: 1STZXJFlTeC5esCpghKSUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,210,1770624000"; 
+   d="scan'208";a="258569365"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2026 14:10:13 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 1 May 2026 14:10:12 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 1 May 2026 14:10:12 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.38) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 1 May 2026 14:10:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DC4C9c0IanxkEwgEYZPEEqn6hvoeauoak7AqQn9GsU0xQKMP2byKip3dxqxDFmU8VLKjmUUkao6FacIl61PEbKsEWrxBMvb14m2qJPRfAODeacNep4ktZT8uJMAjTebQ8tGmbGBDqL8ig9hDqaIfbsVqvx0xQbLf9gQ6dkBd3Ph8500SBAcJjrfry3Ge/DJjdNes9BSH8L/oEwKLP7TXpP2Ra8D63NBBrUAjhBFVA0OMwldEUAhXh04MFbNqYbIyOag9pklz895j2xohY7jI8Te9E7qBDgmZIwU2J1eJAk5C22zWUeYJTRtjqfb657YlyKKiv20axbxUGLc9tNvEPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HKpKmcjR4tPJ4gNESVUTnNA891/eMrTJDh85/+wRndA=;
+ b=Hgbkr3znQMfaX5BWHyWDH6I2/y4tceNGMfEF8uJtY8aOC1h7HV479wAdm1Nahizge28Ipw6Ck75NcbyL0geMCHYg0YLxRnXH8kVz2Efp5O0jzEdEPR/2eTa7M/WeBRZPPrc3KoQ06gFmSZ0m2sJD75or9UC8/X/ZCXpWZqPnYjwrQ2776VT+6KUZax3HUhgFmtH4uuId2L7FL/iE0MRGrM0e2BSmoTrX/7xDmjtyfhiaIzG6kBpNWV7MlDZkjqJUtSER32rAJQkXqpj0td+YpSFZpR4/UDYUefALGPe+zg+7QstLU2NrUAAmFeSU/tA/KjFMpNnbUIhi4W5vqBLuSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by CY5PR11MB6511.namprd11.prod.outlook.com (2603:10b6:930:41::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.22; Fri, 1 May
+ 2026 21:10:09 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c%7]) with mapi id 15.20.9870.022; Fri, 1 May 2026
+ 21:10:09 +0000
+Date: Fri, 1 May 2026 14:10:07 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: Kenneth Crudup <kenny@panix.com>
+CC: <airlied@gmail.com>, <intel-xe@lists.freedesktop.org>,
+	<dri-devel@lists.freedesktop.org>, Thomas =?iso-8859-1?Q?Hellstr=F6m?=
+	<thomas.hellstrom@linux.intel.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: PATCH v4 0/6] mm, drm/ttm, drm/xe: Avoid reclaim/eviction loops
+ under fragmentation
+Message-ID: <afUWr74J1OVdcwGZ@gsse-cloud1.jf.intel.com>
+References: <20260430191809.2142544-1-matthew.brost@intel.com>
+ <20260430191809.2142544-3-matthew.brost@intel.com>
+ <f25f27a1-bf09-44bd-9b37-49f159d82d6a@panix.com>
+ <afUGSmS+jNPP8O5v@gsse-cloud1.jf.intel.com>
+ <1bc0b1a7-a01f-4dc2-ad7a-3a05f975331e@panix.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1bc0b1a7-a01f-4dc2-ad7a-3a05f975331e@panix.com>
+X-ClientProxiedBy: BY3PR10CA0018.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::23) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260502-mglru-fg-v1-32-913619b014d9@tencent.com>
-References: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
-In-Reply-To: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
- Baoquan He <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
- Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
- SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, 
- Yu Zhao <yuzhao@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
- Zicheng Wang <wangzicheng@honor.com>, 
- Chen Ridong <chenridong@huaweicloud.com>, Tal Zussman <tz2294@columbia.edu>, 
- Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org, 
- Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=11205;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=g2ZuyybWv1/6mZFk+0JvM1YtPzR/czoYZ6oSGgPM8VM=;
- b=BB/IakPj7gn2GvJbqMjUa/xsbX9CqxXM0JOhr2DmQ3jA/C5RE6ocQAbcrAFp3Jb3uiVnU25Y4
- H8zQijTh9l6Bm18Vt+jYQDKNLoWIROPjzk6QvOFTH1frABIZ0jcRLAx
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BD217160002
-X-Stat-Signature: tuhywwz8eiixsp839h6g6xx49adjasdy
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|CY5PR11MB6511:EE_
+X-MS-Office365-Filtering-Correlation-Id: 78da9797-24e1-48b4-3629-08dea7c606d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info: E9GQcxnU6oFVe6g3o3iuuF5GajeSf2tPUpopGflyT60H9eMEqZoynAZqu+RftqnMn10aKh+VM5/tsQX3kzQPagIuOOVeX8PiHnTQvdI1wzZjkdk8ZmBO9W+ncmw5WSK4MjQeuulDoaWoyFHzPafDFQsyiZrKISIKCIzdkXZCDbI8g2Q1x5LZRyCwfrXwDBzgfKpQbjnnmZsmXMFHp4tbPBI0cJAAwwOjEWr+nm+vP/4tB/SaY1cHvtkVTI71RK95b/CC3sfnDO0rpUZMN7GvXAOZGejKAlRkr4qVe40zwAT0m5NfbviFrw/2jp1Epz4JCR8bvw7jhhDRtyenaHdp6kdKNaF4UsCnrnlbu+gcDmSst3O6jSoiTDhfNeVuuS36bSaHyBSD7TlFReifxfCZ6tN0t21tdxPkftUG6Zn8TfA/W/kh6TT469xI1h+rDnt9H+CleS6KKCFW5O4tXZLwMPGV4zwPQlFC7NIMnktUKDesQWRaax7A5z/j3o8KJ7KiuZ6iln19OZig/22vxHCQrG41zhIMdalvNidtN2fzAB+Tiqr3ktiv9Ch3g1DsD+f3TgS9dE7F+rPAl3w41WX7sYOV89EeW44I1GC5//5dUJLZc0Jtqp5xIYNf5fjdfKCuOxKMNSUh1HmepUtdMAuSEC1i3TPbt3fItI58phrl8TL0TNPrA/g/WrA++DN+HOCq
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zA4wSdRB7RJ6mufqO2SVvawFWJiTBUQzIjp//8BQCAr2xQf3AMMD4GGuNlG7?=
+ =?us-ascii?Q?Z4Iq2yLpTN0vzB1fnEniY+XeZtanq8XBEIHdBw/llQ179Use4bhrVVjvpuZU?=
+ =?us-ascii?Q?TudCtvHE4ZaIarXToZbf2iS5Ooj4VxT6xE6QF2mtneepUNH+/2SDWxVx8GU1?=
+ =?us-ascii?Q?GTpOYwRbYFkxGTyC49Z41i6SIVoZeUsn2gOjs3kzTo+utbEN6TOlS/pw6Rle?=
+ =?us-ascii?Q?H9q9h1S9BY63uc4xCic1cl7UL4922v8+R7krFgEXioeolV+hlKbB826rJJzG?=
+ =?us-ascii?Q?8GEuock7tQn55lRKncveHxnOWvwOQihOscz+gYqpf2n1GPjqqkJDyX530Mhy?=
+ =?us-ascii?Q?qHLU08jDBXBcYbRUbmWuUxmHvgENPHPHG3txUYpHxq1kPBP37hUxRTEaJrhm?=
+ =?us-ascii?Q?Y2YenHnZzRHi5k14CMntbWLoIAW3yUS/9RK+DUNQ1twN8LA/cg/e3Z2fWvd7?=
+ =?us-ascii?Q?NcaZ2KHFIXvZrIngFq9nHUG+QfGmmbxGDAMjJ0i8sanaq2w5kkB3Sz0bkbUC?=
+ =?us-ascii?Q?X2ANKAXzDpYXvhdowYnUeP8jxUmb61alUbE+O6kWzgczqzgH8lxeemH3QLCv?=
+ =?us-ascii?Q?gMUqwfQ0VxNagOcCDbFnpk3AFOB+rOQ5OMLY8OcTDiFF4rmqF+jcNjX95b4/?=
+ =?us-ascii?Q?14KAr8OzzG3/8UW8MZ2Q3kF9DmX1Qrkt8oaOHqB8p0aTSB6zbPfz2M0ySxTL?=
+ =?us-ascii?Q?uHHeaMKhfOic3hzIKZ0i4WHfVOyZqEjW5J6R9Yrmw5gFcRjaPeoOW5AmMfDD?=
+ =?us-ascii?Q?EFmzd9yadm0SsSIP37EBOfhv8JbY8qReGf6v5ZXUzC0FFpH9Y90X6mqIhVpz?=
+ =?us-ascii?Q?Q5XSP0Jg3SHZAKWmaxBMHlL0WSzzOsnHD0zGdgtDuq+qsiza2H7toH5bX515?=
+ =?us-ascii?Q?OowSTnSFLl5zN0BRZuAqgzS/r4htEj5RkyHQB/WIvgeJQWHjSaQ57oswRLtd?=
+ =?us-ascii?Q?IvsrIF8aMYdwEyAsxss+brLzYZFIR7zjjpmhajX+meBW5DbhTJOhdT+N8xcn?=
+ =?us-ascii?Q?1GeH51fw5Iy+znc4f9+I/mQX3utwLZvc6G3NJ/qVEcFGWIRTngH2lXnlDtRH?=
+ =?us-ascii?Q?LNTmlhanN4Wf8YvYZ8A/IYlz9T7L+vEfGp6+pVo8ACfiUoewhEGvJ7eDWTB/?=
+ =?us-ascii?Q?ExIPTiFm1eIi4sClYP9AwrBrv+nOC0no4O2kvfAqatieJsOgtYHDCzHlopaw?=
+ =?us-ascii?Q?AadwmjK2fTvO8Kc+PFDv/mliAVxJ9d/nIIokYdMHvWP4/tu06uwwpsg8Pc29?=
+ =?us-ascii?Q?SdbPqDbtRumSodwNEW/0WpsV/G/Tgf0UizdGJWNdzlqpt4S+9w6ugvXDZJit?=
+ =?us-ascii?Q?FXu3s+qDfOrZ+fl1g3ponkp0TG1oRSJOEt20zVyPhwvjsOGjMwzGbeITRtj6?=
+ =?us-ascii?Q?tOOFnSCBFNRpr5vw7oWZk2Mr/upHs86x9lo3gVOR338t9zOScKHPdBn073CS?=
+ =?us-ascii?Q?J9nKuIBqUQg0Xnc3WW+h5BlwC3V6bRMgOHDjCptJNRQ5WZnsrzd3QIwg+3Nn?=
+ =?us-ascii?Q?sxWyKg2Y9yLdbs7umC3s0Aqmne5kpMavgn7e1rj9/nErF64OaDllyLi3YWOp?=
+ =?us-ascii?Q?9oYmvcjy3tzRMqqCW8wxPw0ZIl5KLc9kLSnuMnQ5WL1VczyZn7GR5K5Tgkrd?=
+ =?us-ascii?Q?Jnze6TAzHZ2MBwZoGllF7VyOT5xtfXSVBtTTFebFmC86B6hw2vieZUmeZ26P?=
+ =?us-ascii?Q?XLUfkK9eszyXX5au5Isu7nhmxgv1nOPX/410BYN4spwcma9Y6gaHdTrjNk0n?=
+ =?us-ascii?Q?k3LXiFeJcBVlnaafzEfrZuWNfSMrbyo=3D?=
+X-Exchange-RoutingPolicyChecked: O6hNqBMgJBG3w1sterp32S1V0xcUHEbtHjj4Rhic9wYWj5ywixiipjTc+wCWzSN3muxOof6Iz0Ez7xn6cUbRSVufTbNWVxxZg5UYQJTw4WI38TjglI4fX3v64CrNMX5pYMA7rMGlVYgSkKdq3DBopoiVqc//BoDgts971/CGlD+Znmk9v4jytRmUG3c3N6a/Rjk9gCmkcjtiNSZv/Uk1KRkRFU29IsjXPqmorDnKwDGRr2H/zU0yZURunYxdRreuzoutXmfVwU0mc7BJ0awAMVxPitBK9JL7J9cITiUY4d2X9YUWcG1sqlPAx+k7SSoR+tA+ZhFWU5DkrihXxAprgA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78da9797-24e1-48b4-3629-08dea7c606d6
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2026 21:10:09.4776
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zCYJzZ2sIGcHskauCD6onlc9aRnMWcAzyyl1G8W0E7AiXI1CYyBz+lR9imkBuLF2kstGbdMdEaUC5fKL5zEE0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6511
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AF746180008
+X-Stat-Signature: dwm4pu8iznsdyybimeijcm4aujafefu5
 X-Rspam-User: 
-X-HE-Tag: 1777669461-629641
-X-HE-Meta: U2FsdGVkX18+/creghAiXswFAs+f3OasYHCbyfUaJ+ozm5Hlopf23S/s9seUY/NYv2ZkgQYbVzi57VtzKSVLnAv3DJXbLk6Z/ZNuAFtOnheiMjjYnAi/vK16JH1rN4dAaZSSL9cF1VaEPuuV/QIxPG48msNe7vz6u/T7PQSeQenLBM+3wXuUZawT/5kipZANBMIg9w/XFrVyN8d4FnsifM5xncVGwRRV4VZxhXUEcXyKDTuSdaajeNcYt0jUD1+URWrwwB2n6saepmK5uxfsplzAHK1N5N50xx6SZHhd4vFkmsriQO/jzjj0CorlYXQDy4dHj73XIm6diTHiN4wwXw3ixUBIWzSXFWBSfjN07H9rzIPBKyGfk8ZAU82TMAgf8o+dYdIp14oM5KvjHktgJlnwqMkuV0bQXiVeflLDhupb1fQuj+bxeiKftspzvhOhjFWutlnbzxLEIyJ9EYKjqhX4IbKeP5g6k0hCRnDJl+SQaWo+nnokAhoML7/LSA810jpYDAiGCoPGImjFTaBH+RN4I+i3Ll0tU8gf20+X22CWS9UUD/j0uXDZrIQ/Xs6KkCwdgxbz12dVMmzsJOptjf1+Tkk8dmgkVwfeGsd+UoAFxxnCFfSNLs4IvVQyqzDrTZKZq/61XPcNwHNh4ny1RBUZFgohEbKUrAgOQaMQeUudQxgNKGP9V99n3PD3M1tRN8Hwg8/N0BrQPZrucLkF+r5ZvpE4Pvz1udrjVwxFi+fXRC0bcdvZjXFnqpCg7KqP/Q0UnZJ/CD48Sa7j+gp4UWeST8tASNJNDMoCHL6KMSCnuk+ig3IGHPgo0Ud0a/lN0/dj8HM7E7VFR7qm/S3VawHbMYAqQbM+No+qREkeWtHBv1jY7CTn714h0xOiP9w1MHwNl+TIafjTbKoHFDbWCHbLpcglCcfEKu69MmlClGbMgNXijn0ogJmpoJY7id9h0mr2iJUqX2DuuxWLJUD
- YecOiuxW
- lytvKmGrwk52TJPTLQrlBeiS9NAVPOCkUvfmQBExDYO2TDxe+6KiDmDLYaX8Zyy+m4JMSvYPPJ/JqCorL9zpLWFRlEKgmGK5spTBfvDiVgGP4zAwVtX9YyrL8pbJwl7Jor1VMaprljHJW93M3+KtKSfWXApVoJWNgVmTl20lgZsiOWvM3mUPLEzDIdV0xyOAyPuuf2hMsYiqxVwzBc7O1XoJD3ZdezQz5oY5UW3SEqUxoYfpR8iVEm+klKiLcmordNQTJ6iRY85Xo0//8SnXx8hiaZlq71YCl55pGCXvjZoqFNeL95Urd8mJj0IOtVJegzBTOppD8E+S7LCUsdOrwn5P9NQwHodQ3KRhjC0nTJl8Rr/l/f8TVuPLlxjhpnmgZwalErWOjxeq6xtfPzVJgCMmmXA2oDJ0kR8DxdNkSTPku6ZJ1Kkoef6Halbzo5R+d2SK3DxZE6uPk8yA=
+X-HE-Tag: 1777669814-781512
+X-HE-Meta: U2FsdGVkX1/7vsE4VQc0CTZq134lmHsttBCU6ycbd0ZD7V93rlmKD5u3IvgHgkbhHPEJLLe8pCKwxpzeqeLNF5pHjJ3O/2Wz2xShWigs0EAETz5l0FUQfs4FBnO8Ax8AfOc+0Gqz/7qe4q4dNHZPd3GVNoyOO/R8bHMQaoNILPVEHwsvmabnN/LSPolw14QoGBhfI0AGCe771m0Fsv+2HggzfQj7/cpPEmVDTEIMZPmXE3bMoY7MLG2R9mX5/hkB7R563qo/xJNSMMtzaRhwhjWRwkcmDXl3H2F5hamYBwM09VdRwfjenQ3BbKEea7kacNZCloXHm8UFZmmA0i1CoGkJnQ0fb/VNQlx+I3bWgjHKJuHqwd+bJQ04h1VcBH9StLkl7NBVCDp4GcQK8BxC3HnxSSeNqgRvOuxWzSrElzY/Za40r7GTng2mnfHLc0xel/S4xoqqk2Bck4bxQBfZ+tTZ0nWxQb3ZSlIkXGUMqe3Qhj37hHh6jw9xTDgMdjA3gN7riTGA0TKav6rHWTYgKG3S3hj21rOgZqu1UBwvmdsnK2d5N5lF/VCYXRmkPk37k1VZJvbFeuo9DujX4rTjlKTHUo2xU2Z3vlrlwRKFva2IHPFMMArDCNr1o/IjjwaL5rOQZrKfxQsTiEXX0YhdKwU6OxBc4qCXYnI7PGbmBmjhC+d3VojjpB+N71AjW5wbCnEVK28ijZ1m40umAf1lsU7ReTnm4jBdk1T7s83yyNS7myZuCmS1vaiYuYbooNx8WoAMfUIBC/tC4x0cNvCT59wH94wbw0z4h+JoZQQPZDtuXoBvY/dAnG9GsHutSfqr09ky3+N8SMEP6zRNaLTMXGy78Tt1DQirh3XS2xx7Dv70y1ANtCMNdnN/NP9o/105TN6913sL/XKkyZhPRTaOHv6G3OUVfifl3QCnrltQes86e829wVvQUoqdPGPDob1iKtVr5oSdkIxrcP5P4gH
+ WD8iTyXi
+ fm8ksKUoD3JzFv8dlJz34UCJvOGjnzpB4R8LRfTGiIkzCKnBPN+Ist8DcvN/cNv34FVyo/S7rN359Hb1+glLVdJ5zGbqqcQmzVAZ2ipl9RnJSkINedOpAnfXp6WLU8Pv0Gf047DZkCLaHqdJOdF4SnD5w8awkdVlLlTInR8iNMoJutFnZde+zM1fnyh2owY9ujm4ZwKLhwQRliaWSnjXiC2f3ZtLyvQzd5X0dxzPdaw/mYFFG71CnZT3+mO1+G2loUqW0SgTJ3WjQY6Pfi/LnRKlULTi4TVCzf11+ZskaIK0eAZy4v0J6WaF8nsIyxqMqI5fjPSxtzedYLDMiemnLrLfA3dZTuHY5itWM0qpQjA0psevFd/Hng7gzwk2CIjH4X/jen/40UHE/2OyzC/l4JeHGR81eF9k+nLP3gITsx2AZImb7+iohsCqqSMQso9u7gXg3FnBJzx4//2RuR2FngbSwn7qnIhCcoUca
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,295 +200,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On Fri, May 01, 2026 at 01:05:57PM -0700, Kenneth Crudup wrote:
+> 
+> On 5/1/26 13:00, Matthew Brost wrote:
+> 
+> > So is this 7.1-rc1? It looks like new feature to 7.1 added by Dave [1] and
+> > something look off here. Thanks for pointing this out.
+> 
+> Yeah. I grab his master branch daily (as of 6fe0be6dc7fa RN).
+> 
+> Is this a "shoot the messenger" thing? IOW, is the reporting off, or is the
 
-Now PG_referenced is used as the lowest bit of folio's access count
-for MGLRU, and for non-MGLRU access to this bit is wrapper by new helpers.
-We can now remove this flag to avoid the ugly dance when setting the
-folio's reference count. Extend the folio's access count field width
-and convert helpers to use the lowest bit directly.
+I don't think I'm firing any shots.
 
-Merge PG_referenced into LRU referenced bits, no feature change.
+> memory usage really that high?
 
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- fs/fuse/dev.c                          |  1 -
- fs/proc/page.c                         |  1 -
- include/linux/mm.h                     |  2 +-
- include/linux/mm_inline.h              | 18 ++++++------------
- include/linux/mmzone.h                 |  9 ++++-----
- include/linux/page-flags.h             |  8 ++------
- include/trace/events/mmflags.h         |  1 -
- include/uapi/linux/kernel-page-flags.h |  1 -
- kernel/bounds.c                        |  2 +-
- mm/huge_memory.c                       |  3 +--
- mm/workingset.c                        |  8 ++++----
- tools/mm/page-types.c                  |  1 -
- 12 files changed, 19 insertions(+), 36 deletions(-)
+I've been able to recreate this. It looks like accounting is correct
+until the Xe shrinker runs - every time it kicks in GPUActive grows and
+will not reduce past some new floor value. It looks like an accounting
+bug in TTM or Xe (?).
 
-diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 12270c5f647c..4fb9d3193ccf 100644
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -963,7 +963,6 @@ static int fuse_check_folio(struct folio *folio)
- 	    folio->mapping != NULL ||
- 	    (folio->flags.f & PAGE_FLAGS_CHECK_AT_PREP &
- 	     ~(1 << PG_locked |
--	       1 << PG_referenced |
- 	       1 << PG_lru |
- 	       1 << PG_active |
- 	       1 << PG_reclaim |
-diff --git a/fs/proc/page.c b/fs/proc/page.c
-index f9b2c2c906cd..018454279f66 100644
---- a/fs/proc/page.c
-+++ b/fs/proc/page.c
-@@ -221,7 +221,6 @@ u64 stable_page_flags(const struct page *page)
- 	u |= kpf_copy_bit(k, KPF_WRITEBACK,	PG_writeback);
- 
- 	u |= kpf_copy_bit(k, KPF_LRU,		PG_lru);
--	u |= kpf_copy_bit(k, KPF_REFERENCED,	PG_referenced);
- 	u |= kpf_copy_bit(k, KPF_ACTIVE,	PG_active);
- 	u |= kpf_copy_bit(k, KPF_RECLAIM,	PG_reclaim);
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1d76da6e0791..008bd9187b9d 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3570,7 +3570,7 @@ static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long a
- #endif /* CONFIG_MMU */
- 
- enum pt_flags {
--	PT_kernel = PG_referenced,
-+	PT_kernel = PG_owner_priv_1,
- 	PT_reserved = PG_reserved,
- 	/* High bits are used for zone/node/section */
- };
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 446597e594e8..7574dd3e244b 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -100,15 +100,11 @@ static __always_inline enum lru_list folio_lru_list(const struct folio *folio)
-  */
- static inline int lru_refs_from_flags(unsigned long flags)
- {
--	int refs;
--
- 	/*
- 	 * Return the total number of accesses. Also see the comment on
- 	 * LRU_REFS_FLAGS.
- 	 */
--	refs = (flags & BIT(PG_referenced)) ? BIT(0) : 0;
--	refs += ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) << 1;
--	return refs;
-+	return (flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF;
- }
- 
- /**
-@@ -121,9 +117,7 @@ static inline void lru_refs_set_flags(unsigned long *flags, unsigned int refs)
- 	VM_WARN_ON_ONCE(refs > LRU_REFS_MAX);
- 
- 	*flags &= ~LRU_REFS_FLAGS;
--	if (refs & BIT(0))
--		*flags |= BIT(PG_referenced);
--	*flags |= (((unsigned long)refs) >> 1) << LRU_REFS_PGOFF;
-+	*flags |= ((unsigned long)refs) << LRU_REFS_PGOFF;
- }
- 
- static inline int folio_lru_refs(const struct folio *folio)
-@@ -199,7 +193,7 @@ static inline void __folio_init_referenced(struct folio *folio)
-  */
- static inline void folio_mark_referenced_by_bit(struct folio *folio)
- {
--	set_mask_bits(folio_flags(folio, 0), BIT(PG_referenced), BIT(PG_referenced));
-+	set_mask_bits(folio_flags(folio, 0), BIT(LRU_REFS_PGOFF), BIT(LRU_REFS_PGOFF));
- }
- 
- /**
-@@ -208,7 +202,7 @@ static inline void folio_mark_referenced_by_bit(struct folio *folio)
-  */
- static inline void folio_clear_referenced_by_bit(struct folio *folio)
- {
--	set_mask_bits(folio_flags(folio, 0), BIT(PG_referenced), 0);
-+	set_mask_bits(folio_flags(folio, 0), BIT(LRU_REFS_PGOFF), 0);
- }
- 
- /**
-@@ -217,7 +211,7 @@ static inline void folio_clear_referenced_by_bit(struct folio *folio)
-  */
- static inline bool folio_test_clear_referenced_bit(struct folio *folio)
- {
--	return test_and_clear_bit(PG_referenced, folio_flags(folio, 0));
-+	return test_and_clear_bit(LRU_REFS_PGOFF, folio_flags(folio, 0));
- }
- 
- /**
-@@ -226,7 +220,7 @@ static inline bool folio_test_clear_referenced_bit(struct folio *folio)
-  */
- static inline bool folio_is_referenced_by_bit(const struct folio *folio)
- {
--	return test_bit(PG_referenced, const_folio_flags(folio, 0));
-+	return test_bit(LRU_REFS_PGOFF, const_folio_flags(folio, 0));
- }
- 
- /**
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index f55d256fd200..575afff010eb 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -522,8 +522,7 @@ enum lruvec_flags {
-  * LRU_REFS_PROTECTED. It still considered workingset but moved to a higher
-  * gen representing a higher hotness and reclaim bias.
-  *
-- * Tiering uses PG_referenced as the lowest bit and LRU_REFS_MASK as the
-- * higher bits.
-+ * Tiering uses LRU_REFS_WIDTH bits in folio->flags, masked by LRU_REFS_MASK.
-  *
-  * A folio's referenced count never goes backwards except upon gen increase
-  * in (7) or a promotion. Passive protect by PID will reset a folio with higher
-@@ -536,7 +535,7 @@ enum lruvec_flags {
-  *
-  * MAX_NR_TIERS is set to 4 so that the multi-gen LRU can support twice the
-  * number of categories of the active/inactive LRU when keeping track of
-- * accesses through file descriptors. This uses MAX_NR_TIERS-2 spare bits in
-+ * accesses through file descriptors. This uses MAX_NR_TIERS-1 bits in
-  * folio->flags, masked by LRU_REFS_MASK.
-  */
- #define MAX_NR_TIERS		4U
-@@ -549,8 +548,8 @@ enum lruvec_flags {
- #define LRU_GEN_MASK		((BIT(LRU_GEN_WIDTH) - 1) << LRU_GEN_PGOFF)
- #define LRU_GEN_MAX		(BIT(LRU_GEN_WIDTH - 1) - 1)
- #define LRU_REFS_MASK		((BIT(LRU_REFS_WIDTH) - 1) << LRU_REFS_PGOFF)
--#define LRU_REFS_FLAGS		(LRU_REFS_MASK | BIT(PG_referenced))
--#define LRU_REFS_MAX		(BIT(LRU_REFS_WIDTH + 1) - 1)
-+#define LRU_REFS_FLAGS		LRU_REFS_MASK
-+#define LRU_REFS_MAX		(BIT(LRU_REFS_WIDTH) - 1)
- 
- struct lruvec;
- struct page_vma_mapped_walk;
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 451e96ca89f7..ba82f5c755f8 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -63,7 +63,7 @@
-  * might lose their PG_swapbacked flag when they simply can be dropped (e.g. as
-  * a result of MADV_FREE).
-  *
-- * PG_referenced, PG_reclaim are used for page reclaim for anonymous and
-+ * PG_reclaim are used for page reclaim for anonymous and
-  * file-backed pagecache (see mm/vmscan.c).
-  *
-  * PG_arch_1 is an architecture specific page state bit.  The generic code
-@@ -93,13 +93,12 @@
- enum pageflags {
- 	PG_locked,		/* Page is locked. Don't touch. */
- 	PG_writeback,		/* Page is under writeback */
--	PG_referenced,
- 	PG_uptodate,
- 	PG_dirty,
- 	PG_lru,
-+	PG_active,
- 	PG_head,		/* Must be in bit 6 */
- 	PG_waiters,		/* Page has waiters, check its waitqueue. Must be bit #7 and in the same byte as "PG_locked" */
--	PG_active,
- 	PG_owner_priv_1,	/* Owner use. If pagecache, fs may use */
- 	PG_owner_2,		/* Owner use. If pagecache, fs may use */
- 	PG_arch_1,
-@@ -543,9 +542,6 @@ static inline int TestClearPage##uname(struct page *page) { return 0; }
- 
- __PAGEFLAG(Locked, locked, PF_NO_TAIL)
- FOLIO_FLAG(waiters, FOLIO_HEAD_PAGE)
--FOLIO_FLAG(referenced, FOLIO_HEAD_PAGE)
--	FOLIO_TEST_CLEAR_FLAG(referenced, FOLIO_HEAD_PAGE)
--	__FOLIO_SET_FLAG(referenced, FOLIO_HEAD_PAGE)
- PAGEFLAG(Dirty, dirty, PF_HEAD) TESTSCFLAG(Dirty, dirty, PF_HEAD)
- 	__CLEARPAGEFLAG(Dirty, dirty, PF_HEAD)
- PAGEFLAG(LRU, lru, PF_HEAD) __CLEARPAGEFLAG(LRU, lru, PF_HEAD)
-diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-index c13575d8c7ee..b411475e82d1 100644
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -142,7 +142,6 @@ TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
- #define __def_pageflag_names						\
- 	DEF_PAGEFLAG_NAME(locked),					\
- 	DEF_PAGEFLAG_NAME(waiters),					\
--	DEF_PAGEFLAG_NAME(referenced),					\
- 	DEF_PAGEFLAG_NAME(uptodate),					\
- 	DEF_PAGEFLAG_NAME(dirty),					\
- 	DEF_PAGEFLAG_NAME(lru),						\
-diff --git a/include/uapi/linux/kernel-page-flags.h b/include/uapi/linux/kernel-page-flags.h
-index ff8032227876..adff709a86f6 100644
---- a/include/uapi/linux/kernel-page-flags.h
-+++ b/include/uapi/linux/kernel-page-flags.h
-@@ -8,7 +8,6 @@
- 
- #define KPF_LOCKED		0
- #define KPF_ERROR		1	/* Now unused */
--#define KPF_REFERENCED		2
- #define KPF_UPTODATE		3
- #define KPF_DIRTY		4
- #define KPF_LRU			5
-diff --git a/kernel/bounds.c b/kernel/bounds.c
-index 02b619eb6106..4171cf03f296 100644
---- a/kernel/bounds.c
-+++ b/kernel/bounds.c
-@@ -25,7 +25,7 @@ int main(void)
- 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
- #ifdef CONFIG_LRU_GEN
- 	DEFINE(LRU_GEN_WIDTH, order_base_2(MAX_NR_GENS + 1));
--	DEFINE(__LRU_REFS_WIDTH, MAX_NR_TIERS - 2);
-+	DEFINE(__LRU_REFS_WIDTH, MAX_NR_TIERS - 1);
- #else
- 	DEFINE(LRU_GEN_WIDTH, 0);
- 	DEFINE(__LRU_REFS_WIDTH, 0);
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index f30445c01f18..02d356d38cea 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3637,8 +3637,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 		 */
- 		new_folio->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
- 		new_folio->flags.f |= (folio->flags.f &
--				((1L << PG_referenced) |
--				 (1L << PG_swapbacked) |
-+				((1L << PG_swapbacked) |
- 				 (1L << PG_swapcache) |
- 				 (1L << PG_mlocked) |
- 				 (1L << PG_uptodate) |
-diff --git a/mm/workingset.c b/mm/workingset.c
-index f9de276a1404..6b0120c3456f 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -215,11 +215,11 @@
- #define LRU_EVICT_BITS_ANON	(LRU_EVICT_BITS - SWAP_COUNT_SHIFT)
- 
- /*
-- * LRU refs uses LRU_REFS_WIDTH + 1 bit in folio->flags, the extra 1 bit
-- * is PG_referenced. But here we record the low bit of refs separately
-- * (to reuse pack_shadow).
-+ * LRU refs uses LRU_REFS_WIDTH bits in folio->flags. Its low bit is stored
-+ * separately as the "workingset" bit in the shadow (to reuse pack_shadow);
-+ * the remaining high bits are packed into the token.
-  */
--#define LRU_REFS_BITS		((LRU_REFS_WIDTH + 1) - 1)
-+#define LRU_REFS_BITS		(LRU_REFS_WIDTH - 1)
- #define LRU_GEN_EVICT_BITS	(LRU_EVICT_BITS - LRU_REFS_BITS)
- #define LRU_GEN_EVICT_BITS_ANON	(LRU_EVICT_BITS_ANON - LRU_REFS_BITS)
- 
-diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
-index d7e5e8902af8..de5c7b6f3135 100644
---- a/tools/mm/page-types.c
-+++ b/tools/mm/page-types.c
-@@ -101,7 +101,6 @@
- static const char * const page_flag_names[] = {
- 	[KPF_LOCKED]		= "L:locked",
- 	[KPF_ERROR]		= "E:error",
--	[KPF_REFERENCED]	= "R:referenced",
- 	[KPF_UPTODATE]		= "U:uptodate",
- 	[KPF_DIRTY]		= "D:dirty",
- 	[KPF_LRU]		= "l:lru",
+Here is my output on a 8G PTL where I have intentionally triggered
+shrinker to evict at least 23875 BOs (most likey quite few more but this
+what I easily see in dmesg) after closing everything on desktop.
 
--- 
-2.54.0
+cat /proc/meminfo | grep GPU; cat /proc/buddyinfo;
+GPUActive:      13100036 kB
+GPUReclaim:          152 kB
+Node 0, zone      DMA      0      1      0      0      0      0      0      0      1      1      3
+Node 0, zone    DMA32   2320   1882   1523   1238    980    740    482    275    114     88    205
+Node 0, zone   Normal   9751   9343   6466   4237   2703   1162    805    420    191    145    289
 
+Let me spend a bit of time here to see if I figure out where the
+accounting goes wrong.
 
+Matt
+
+> 
+> (BTW, those are in 30-second intervals)
+> 
+> > > ----
+> > > SwapTotal:      33554428 kB
+> > > MemTotal:       32345672 kB
+> > > GPUActive:        652640 kB
+> > > GPUReclaim:       403988 kB
+> > > 
+> > > SwapTotal:      33554428 kB
+> > > MemTotal:       32345672 kB
+> > > GPUActive:        651180 kB
+> > > GPUReclaim:       406812 kB
+> > > 
+> > > SwapTotal:      33554428 kB
+> > > MemTotal:       32345672 kB
+> > > GPUActive:        659004 kB
+> > > GPUReclaim:       399396 kB
+> > > 
+> > > SwapTotal:      33554428 kB
+> > > MemTotal:       32345672 kB
+> > > GPUActive:        666996 kB
+> > > GPUReclaim:       392764 kB
+> > > 
+> > > <some hours later>
+> > > GPUActive:      91832468 kB
+> > > SwapTotal:      33554428 kB
+> > > MemTotal:       32345672 kB
+> > > GPUReclaim:       488000 kB
+> > > 
+> > > GPUActive:      91832332 kB
+> > > SwapTotal:      33554428 kB
+> > > MemTotal:       32345672 kB
+> > > GPUReclaim:       487988 kB
+> > > 
+> > > GPUActive:      91869376 kB
+> > > SwapTotal:      33554428 kB
+> > > MemTotal:       32345672 kB
+> > > GPUReclaim:       486504 kB
+> > > ----
+> 
+> -K
+> 
+> -- 
+> Kenneth R. Crudup / Sr. SW Engineer, Scott County Consulting, Orange County
+> CA
+> 
 
