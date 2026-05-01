@@ -4,138 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49614CCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 19:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47A72CD3423
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 19:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D7C96B0005; Fri,  1 May 2026 15:01:17 -0400 (EDT)
+	id 75B5C6B0005; Fri,  1 May 2026 15:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AE806B008A; Fri,  1 May 2026 15:01:17 -0400 (EDT)
+	id 70BB66B008A; Fri,  1 May 2026 15:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CC7A6B008C; Fri,  1 May 2026 15:01:17 -0400 (EDT)
+	id 5D32B6B008C; Fri,  1 May 2026 15:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A9FE6B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 15:01:17 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1CEC51601EB
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:01:17 +0000 (UTC)
-X-FDA: 84719768994.17.BC07623
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 068EA4000A
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:01:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EYMuspBM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4807E6B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 15:08:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB9761401F9
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:08:32 +0000 (UTC)
+X-FDA: 84719787264.07.D31D742
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CC67B120005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:08:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HaouH8e8;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777662510; a=rsa-sha256;
+	cv=none;
+	b=Q0M7oCGUGN3OEJgUah+Nj/YCcijKnQckCaYS7cClP+nd3lF/M1rrQQmvA2b99lk6QAL3HQ
+	TkDEhi0OhGf719fN3+3KWFCB3wsAPZRI9XDEIGjKcmEor2JQaaF1WryAJInqLmITrfiCnY
+	33pr3rj1RrMYnQJDvokBaJBj2DmHmNI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HaouH8e8;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777662075;
+	s=arc-20220608; t=1777662510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R0EiYZOc5NxDVMFxD0PrdG035WShUvP4xnZH2yLiNnw=;
-	b=Zvkx/ECECwIc4y32t+7xIUS+Dolr/lhTOYEHO8Hp4fHBk8uQjAzzTfN/4Zj+q0umk+2YsU
-	5A2n1Qxr4ye2V8vaDkogtSxVBDN50U7JpIaK0W71Vp6qp3I/g153AjYONC0hQDMeqlQ+Kr
-	t3ClTd8BAifDq9l8Emqi160yQhiAjL0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777662075; a=rsa-sha256;
-	cv=none;
-	b=qfZH3qBY/bCUIMwVeTYmIbhAFm/wDb/cA/if84ocLMASADoJZw+NCNSSk7PTPgz+2QqgyX
-	jd8NC9ScFSUoWI1xLm14JgksteKTn/hiSLZ7r6dFmtxz2LHaKLDUZ/f1OA57btUMzAtAq1
-	7X0Fi4MTUZNuuLskXutGCir8ON4X2VU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EYMuspBM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 15543442C2;
-	Fri,  1 May 2026 19:01:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39200C2BCB4;
-	Fri,  1 May 2026 19:01:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777662074;
-	bh=bGN+GuXKLt8BkjsU+fTyN3JEqVQmZxPi1LhFItNPdDc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EYMuspBM5/RFx2O2cUQIAmnFfT8rY+UfcrOAaqxbDyIsmHDOfYzOpSURXYENSWldi
-	 fSXRA8CGtzePoDQJnzHOEhIHRY8llLl17U8+32V5YZz+xyNq3Z4oRn3aifz0Q6VDFq
-	 BziQhEiooZPEGX7WDaZNmduLow6vAD+vYFPwIpgYT+Wdw8qKSi56scx9NIwzS+molL
-	 zrwnRnK+RXlTKOWWGBMU9AmUZI8sXYlq+TvKDjgHXtMuLwEJ1JgzC08ViIlADDBxCC
-	 ZJ6lRJy9fGOsAerc8zYDvbY1FucwCBzv9mI5v9IJKdWPTPkFqPjKkhm4QYZeNUtdBf
-	 ensB43tRLW6Ag==
-Message-ID: <109bc59e-1308-4505-b8c6-3376aed74585@kernel.org>
-Date: Fri, 1 May 2026 21:01:09 +0200
+	bh=Hw/dnUiNx0MfDmN48zYPSTLx5QFCgo4F6clziTzz9Vc=;
+	b=Yd279vDInnn1tFyLSESJcVHWFEcOp/5Ed+rdXdkv4g64HJicFL5vFrXjaVOFi4Fov9qYpi
+	xkCC8ONpYXncsEzN5HKZJ6OII+go/H+KCtYOTLZvxRhB9xiJym3q5MZhaB13mdm/ajP0E6
+	XWKxjdmlOfTqPYKZgowWzaXuMJHZ7EU=
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8ee62a19730so242533385a.3
+        for <linux-mm@kvack.org>; Fri, 01 May 2026 12:08:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1777662510; x=1778267310; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hw/dnUiNx0MfDmN48zYPSTLx5QFCgo4F6clziTzz9Vc=;
+        b=HaouH8e8o/WKFAgJ53rRMj6Oj3vMNvwxqSX/fTKtPudaB0OrIZ5cH1QMLCZtlgDAtk
+         2bxhqq6B8gPaL/PZShUDjepcVZyqtSc7s8XA9Z/yO8vxXU3K0lkff9BeieXFxg9hYaAX
+         J78IiNAr33ITOk4+3NZgtIcbodNT0+zZMfjYC4OhiaScAoRsVG+RNf5oM8mTW3ovv6D1
+         dS8PqsD3S2Q16J7XKgAb9U/Y4XDYheHHaLY6gLcEMADekZItazqep5Xh9hPZ0hqjT9iN
+         LAAUSwp/D9s+Zp3maU2JX2+AR8ClDCrFhsljeuX5chxbPBGgE3c43AE3Zks5FkKakMyP
+         BjRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777662510; x=1778267310;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Hw/dnUiNx0MfDmN48zYPSTLx5QFCgo4F6clziTzz9Vc=;
+        b=ASwbnN2lEDtfMJpuv6GXv+Sr12UXjEc5InFIQku8bGH8G5D4TNq9lMyjdzFt/znUaX
+         jn1SDoh9RTXIGuLlv0OkRTmlW4UQeEpK3L3uDs6jEzGk2ezPhQqmRvKkIzPaEWzCqehD
+         9XCB3L5PrZbGkpSZ6T7aTiGCpCaJazvVFkVLx2RxemAlrAGmZYJ9Omr7duq+A7KRcmLt
+         HJ1MZuw5oqEOWmGjaWOdpq6gcb3e5w4u1YFf9NgM6nA1oH+JQDDwh61wTxySCyXFAq3B
+         +eBAoPg2IVpbQhO6/cq5P5l1oabUByuWU4uBdjtpBzBP1qWvduhIuEPaQVAlRrwSHD0s
+         hHeg==
+X-Forwarded-Encrypted: i=1; AFNElJ9RGkj/YVL0Lczc4nvxelYhNp7zAIW9D3SR38RP+0Egzm1TvOhvnYDWEPVdcXDSiScCfd3+2bTIUA==@kvack.org
+X-Gm-Message-State: AOJu0YzBeuyXHvCv9XqqlUd0Y40SU/pcDrkKQ3lfyA6Zf95FEwBa+ING
+	ns71D5pCPDbcdFE1AIWmixjQU/Z1jb3sG7EknjTpfrVhdCdA9Rd5IrS2Pg74LQLpDS/veGHHJ3n
+	xQqy2bWU=
+X-Gm-Gg: AeBDiev5gRqmwSLfXSK7EBJXpPZGCTrDjZBzkp0tBvE6OHrA73/M9lj0QuifsW0wWS7
+	R+UCyD9bRQCiz5aqHqkGQULel6HO10CFGacJ1eBbt980LbY9X+R/fshEsjKGIriOhTtbh1QJjuv
+	KKK7og4cQZ8uKrW60Q6uLQbWRXt4m62urXQ6/TBxcKtLTNbDR6ABv9qxOuZ0XVdihuTuyocssup
+	HEXMzDIGGbxtVrA0lUOH6xRyDiY2YXUWqG0sPchewNYpXE9YAPsLd81/I41FHxmPS/QDGBEH9hx
+	VcvKNMb+h7pXSBey3N/nNINobtxRi6zEMQ8tKLLknzuedM7lYo4IYXfq35m67s5pPmcB5U77a3o
+	2I/St0faRHV9YTE/PX99gXGReJ9VC9ctAh7BKAp4j5reQ1uk8t1RRKTn0SRuHiKP5B8ZLIorixK
+	zAPCSk/tSUXIQnGgnuApfUakiI8w/aLgfJc+WOVtee8i8iQzgxZSWHmjFayn+1EA==
+X-Received: by 2002:a05:620a:4613:b0:8ed:45b8:de90 with SMTP id af79cd13be357-8fd17d497f2mr110554085a.39.1777662509842;
+        Fri, 01 May 2026 12:08:29 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2938e7f8sm242450085a.7.2026.05.01.12.08.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 12:08:29 -0700 (PDT)
+Date: Fri, 1 May 2026 19:08:28 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Mike Rapoport <rppt@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/6] selftests/liveupdate: add memfd tests
+Message-ID: <afT5FDAXmcIfz-wI@plex>
+References: <20260404102452.4091740-1-pratyush@kernel.org>
+ <afEKfQ0GUNVJ76a1@plex>
+ <2vxzecjx52eu.fsf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_vma_mapped_walk: add missing pgtable entry
- accessors
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-s390@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260427052000.196402-1-agordeev@linux.ibm.com>
- <69c4c12c-7cdc-4a17-9eb7-6fb1a61f9834@kernel.org>
- <f3140daa-9a7d-440e-a448-35aa8797357a-agordeev@linux.ibm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <f3140daa-9a7d-440e-a448-35aa8797357a-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 068EA4000A
-X-Stat-Signature: acfejunddyjwigzhdwcr8ogogaztya15
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxzecjx52eu.fsf@kernel.org>
+X-Stat-Signature: dn533b76b3sgontd3sjj84rtrdkji6hq
 X-Rspam-User: 
-X-HE-Tag: 1777662074-547643
-X-HE-Meta: U2FsdGVkX1/ZdEE0u1U1eVAcKbANywkl993f3F86hsAxpqFyUfQVlk/I31mqIEYY8gG3Eq8F4nEOnAL/eO18xIl9opDf2O9IVrhwecp44n/xEsurzyYKlNexRS1t8h8/T/CJEXSkOvqchAhD5ABCUQLH4AXD795EkOl28CQ1+QegQgCcNFh0Tar2gOqywxC+KmWW9vBq1HTG9/R36fegB01j7Fiy29Bf7mbjGnxP4hxwzWnQd+5991M4tiIgg9Qan1A8RNMKWGeBEGyJAaN+NAkCwQ2USvKXTXxGrGwowx4U5FND31jCX6DtKbicdG82F3PIsqzC0+cLn6NkvsSyaC+Xjp6ujeY9npHxJHVdjjKg8vF9t+poCDxhG+nrcMtp5zVa71e7zkaKai9IhGPfPZZ1f/brhSChvXIGvmjthg+Z+uTQxiJKDg0eUVgMuUUheeRa2l+//LUG5id6l3SCGDHLcVD5lJnZ10ZD+DudJVcijMukySUgcsAqRmFe2A5T4AQmHcEgw24JJnYo7wASP2h099CpfmwhThwdcNqqmLpK059Vtgokl5ejRrvfQfpm0yFp+W/LDp/R/N5k/5/Jqsz6sA3wewIgTgzDZ1egVWxFwPHwVEtd9TpR/TJkGUnPhpyDw91xbTL5FsPumbIqA/LHMdKfCyf2FcI5bvTeGjy5e/Kpcc8Nt2whc7+NX7fZl/aWW3p8cM0Tnrg1a81YCu9Se+OApxKZqd0o0fwOmnYCiOEbVVSWn3uryRlsguoW6P57+BqmTBi/JFYU5zV4j3zhPGLP0dlh4BpQgzfoXdc8ZATBF0CysXIqo5zyPYX3kJcECZcJLm9uy7e9Z//ULDM7uLmu8WiAG4kL3JPQ0W8J5kJch6ZJD3hpd8+zvgIHeh+pt9yJCoaAP21jDtQ7/pgsGdoR9jxohASh9Xc+vvaMjvuEZ/jOlLnTn3u+/eeMdErmo/tYqq19F3XaJfR
- RRv4eEGA
- rjLLRUCZeyIN60mZVZ4klYE5CM8E+KHyMsoV7GUcZDeLAHxo/nn5TnTsuEc/juUC225V/E55Y730r1BL2Zdeo3BnHfrawKE6/nbuVMlQ8l9CxMoZIDkwnMJmC2TPpPQuDTSf9QPAOBLPawAxCFsVQ99sB18pYFwlJe3L7Ksxg8gTNkgn8RGiRzuIsZEGJRW4AHJDPdpLJ+HzbwZFqpqNdPmvZRcoiWqlU23GTjabFc2CrHqUeD8J8cBGqlFWHFyGG2aUmbaDXtE9mR4tK5KTTo4v2ax3ncYS0lpiuCKz2vdhJ3W4X+JIC46agVrVMd2Dtr5DQhYTgxqg94bI=
+X-Rspamd-Queue-Id: CC67B120005
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777662510-820520
+X-HE-Meta: U2FsdGVkX1+NsoHyG4TCK2fK4WsIiIV0uG0mhPr7NrUWF8VFC/XRzEF/jtdakEGaiuQUJY/oNh60GYbz9TUCTknzob0WgX+L96M8MMoPFgw5fdK4/Ed3PDVdTsVWPcmU42lHf5qEqvQV3/l5gMINWss3sUjKbOfCX2IZ97z9Ka9p6A5vgWDeKidqwD69nYENDmW1UE3dLWY0+x6nFSpMMH3Mh0bvRKBew267LQInIySkIzH1hKRnTOalpgJ3wMoVKwLx8E2ocVQJM4yfStuOhzzbg+KHzHH6ZuLINF5pzvTJLrqQ0ZcR/o0IB+JAAW0tJlL/9tzdplxrXSvB6rgam+PTdpkHy0bAzZTYGJbcqW4zEUqFXISmNyKVT9BzMvTW3g0Y+KSfbaagl+XQnt7SMcQ+iKkOpbb+6p7YwYbgSZEjRLQ9ZPo7ZvblcbfMFCyjS+Wx4hfz5W9xVf+MmgikX9TiVaa/aYGOg31c/k6rm/PlGcl+OpC3kDvkFem4oqPmH9KSaDiTH8tZJSHWjqcz4YGT9Tu1F8sXD51RDO+7V7fZnldVzMFxRYNpKb2usD8bapgM3dNqwkqblF7fdKjNMkaUuh4v5UmZWrDBT0L1o3f/YmfPK46+XbfCGGV3LsIq4NANKx1idhZU2WmgqMRy/tedK6OyEGTCJn4wng6Qyago3LHdNK9M1uOGRa+Cf+AYk7tqTVrOW4ZDDvkLFIf+H5KGhdCKeAJxUfmB96Sg2PhwVRbYpROXZKAmDknqstd83NAhw9wMunwejRRxPZ68UDV+4XGdwt3RY0TE7tuAWKOTHH+BYbrDTkFYdXw1/wEdZNl3uwZ0l98pUonLYqcy/B+FAQfaV1BrHjOP0RJaM3VyzOzA3fEH/EKMTZTtQ5DYkIC38YEjCXl292yIs+1JyWzWAXzVWJEOYyPaN+WZiPOrAlv89XZKK2OtZSNnSWLCj8RJZf2sk6fcHhUy6kH
+ rMmn1yq5
+ weJSCf2CX0QQ7Ehz4bMBGggjagivHn5vtvoI5lSezI12uJrYQJBsL1pG17B3duwg0Ckrd6bFNWtWV/+YxjZbyyLXsXCAoC+p/dyRhHsMwfxpsTXYJKkPBpq7uUCbXIwRnvSb6ZyYrSHPeBzoJKXJHd0bCpEWfZKH2mO5zyaz3gv78iFfwAbb/fbxoHp2oLkyADa31+xEdv+WIzGmGZ2xolNp0dmIPsuDQ/X/sNDCy7yX+pVO/vGdPx76fL5vjJoQdwQ9NM8zjo2kHiVNA307ctXTMV4OBGP3CpexXk8tDSdyjk+aJ/v7buHozQVSkX2gU4ti2zz7E858G8hwJUc7HbK00q9IKil0joK1PxDhA2xGQ8zbO3LIT3eQyXhRYPFsOL79Y9CReLT+AfiPLhkHbKxnJsYmVzg/T+zaHvftq2PmEnmnparPv0Xi4FmX6jBEtvCxK8XY2B2WUVTEHJX1FVWhDE5/VSxzFdbW4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,70 +121,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/29/26 15:47, Alexander Gordeev wrote:
-> On Mon, Apr 27, 2026 at 11:02:50AM +0200, David Hildenbrand (Arm) wrote:
->> On 4/27/26 07:20, Alexander Gordeev wrote:
->>> Convert pgtable direct entry dereferences to the corresponding
->>> pXdp_get() accessors. Use ptep_get_lockless() variant for PTE
->>> reads when no lock is taken.
->>>
->>> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
->>> ---
->>>  mm/page_vma_mapped.c | 12 ++++++------
->>>  1 file changed, 6 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>> index b38a1d00c971..a4520bb10d2a 100644
->>> --- a/mm/page_vma_mapped.c
->>> +++ b/mm/page_vma_mapped.c
->>> @@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
->>>  	if (!pvmw->pte)
->>>  		return false;
->>>  
->>> -	ptent = ptep_get(pvmw->pte);
->>> +	ptent = ptep_get_lockless(pvmw->pte);
+On 04-29 15:20, Pratyush Yadav wrote:
+> On Tue, Apr 28 2026, Pasha Tatashin wrote:
 > 
-> (*)
+> > On 04-04 10:24, Pratyush Yadav wrote:
+> >> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> >> 
+> >> Hi,
+> >> 
+> >> This series adds some tests for memfd preservation across a live update.
+> >> Currently memfd is only tested indirectly via luo_kexec_simple or
+> >> luo_multi_session. Add a dedicated test suite for it.
+> >> 
+> >> Patches 1 and 2 are preparatory, adding base framework and helpers, and
+> >> the other patches each add a test. Some of the code is taken from the
+> >> libluo patches [0] I sent a while ago.
+> >> 
+> >> [0] https://lore.kernel.org/linux-mm/20250723144649.1696299-33-pasha.tatashin@soleen.com/
+> >
+> > Here are few observations that I noticed when I tried to run your tests:
+> >
+> > 1. The '-h' tells you nothing about --stage argument:
+> >
+> > root@liveupdate-vm:~/liveupdate# ./luo_memfd -h
+> > Usage: ./luo_memfd [-h|-l|-d] [-t|-T|-v|-V|-f|-F|-r name]
+> > 	-h       print help
+> > 	-l       list all tests
+> > 	-d       enable debug prints
+> >
+> > 	-t name  include test
+> > 	-T name  exclude test
+> > 	-v name  include variant
+> > 	-V name  exclude variant
+> > 	-f name  include fixture
+> > 	-F name  exclude fixture
+> > 	-r name  run specified test
+> > 	...
 > 
->>>  	if (pte_none(ptent)) {
->>>  		return false;
->>> @@ -219,17 +219,17 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>  restart:
->>>  	do {
->>>  		pgd = pgd_offset(mm, pvmw->address);
->>> -		if (!pgd_present(*pgd)) {
->>> +		if (!pgd_present(pgdp_get(pgd))) {
->>>  			step_forward(pvmw, PGDIR_SIZE);
->>>  			continue;
->>>  		}
->>>  		p4d = p4d_offset(pgd, pvmw->address);
->>> -		if (!p4d_present(*p4d)) {
->>> +		if (!p4d_present(p4dp_get(p4d))) {
->>>  			step_forward(pvmw, P4D_SIZE);
->>>  			continue;
->>>  		}
->>>  		pud = pud_offset(p4d, pvmw->address);
->>> -		if (!pud_present(*pud)) {
->>> +		if (!pud_present(pudp_get(pud))) {
->>>  			step_forward(pvmw, PUD_SIZE);
->>>  			continue;
->>
->> Wasn't there a problem with folded page tables, where we would no longer be able
->> to optimize out the folded page table accesses?
+> Yeah, unfortunately that is a side effect of using test_harness_run(),
+> which does not know anything about the options specific to our test.
 > 
-> Ok, that is a different topic. I actually tried to resolve the lockless
-> issue(s) in (*) while the direct dereferences just seemed to be relevant
-> to go along (similarly to the GUP patch).
+> >
+> > 2. '-l' does not work after you run stage1, do you keep /dev/liveupdate 
+> > open? That is not needed, we only need to keep session open.
 > 
-> But I would rather resend ptep_get() => ptep_get_lockless() fixes for
-> this patch.
+> Oh yeah, I keep forgetting that is no longer needed. The main process
+> closes the FD but the forked daemons hold a reference. I can clean that
+> up via a fixture.
 > 
-> Would it work?
+> >
+> > root@liveupdate-vm:~/liveupdate# ./luo_memfd -l
+> > 1..0 # SKIP Failed to open /dev/liveupdate (Device or resource busy) device. Is LUO enabled?
+> >
+> > 3. Stage 1 has proper [STAGE 1] prefix, but no [STAGE 2] prefix for 
+> 
+> Because stage 2 has no prints, all the prints are coming from the
+> selftest harness. Those same lines are also not prefixed in stage 1. If
+> you'd like, I can add a print beforehand that shows which stage is
 
-You mean only sending {*) ?
+Yes, please, add a least one [STAGE 2] print.
 
--- 
-Cheers,
+> running. Other than that, I don't see what else we can do. I don't want
+> to modify the selftest harness.
+> 
+> > stage 2:
+> > # Starting 4 tests from 1 test cases.
+> > #  RUN           global.memfd_data ...
+> > # [STAGE 1] Forking persistent child to hold sessions...
+> > # [STAGE 1] Child PID: 245. Resources are pinned.
+> > # [STAGE 1] You may now perform kexec reboot.
+> > #            OK  global.memfd_data
+> > ok 1 global.memfd_data
+> > #  RUN           global.zero_memfd ...
+> > # [STAGE 1] Forking persistent child to hold sessions...
+> > # [STAGE 1] Child PID: 247. Resources are pinned.
+> > # [STAGE 1] You may now perform kexec reboot.
+> > #            OK  global.zero_memfd
+> > ok 2 global.zero_memfd
+> > #  RUN           global.preserved_ops ...
+> > #            OK  global.preserved_ops
+> > ok 3 global.preserved_ops
+> > #  RUN           global.fallocate_memfd ...
+> > # [STAGE 1] Forking persistent child to hold sessions...
+> > # [STAGE 1] Child PID: 250. Resources are pinned.
+> > # [STAGE 1] You may now perform kexec reboot.
+> > #            OK  global.fallocate_memfd
+> > ok 4 global.fallocate_memfd
+> > # PASSED: 4 / 4 tests passed.
+> > # Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
+> >
+> > ./do_kexec
+> >
+> > root@liveupdate-vm:~/liveupdate# ./luo_memfd
+> > TAP version 13
+> > 1..4
+> > # Starting 4 tests from 1 test cases.
+> > #  RUN           global.memfd_data ...
+> > #            OK  global.memfd_data
+> > ok 1 global.memfd_data
+> > #  RUN           global.zero_memfd ...
+> > #            OK  global.zero_memfd
+> > ok 2 global.zero_memfd
+> > #  RUN           global.preserved_ops ...
+> > #      SKIP      test only expected to run on stage 1
+> > #            OK  global.preserved_ops
+> > ok 3 global.preserved_ops # SKIP test only expected to run on stage 1
+> > #  RUN           global.fallocate_memfd ...
+> > #            OK  global.fallocate_memfd
+> > ok 4 global.fallocate_memfd
+> > # PASSED: 4 / 4 tests passed.
+> > # 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+> > # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:1 error:0
+> >
+> > 4. I also do not like that we now have duplicated stage parsing code in  
+> > luo_test(), perhaps we should add our own  test_harness_run() variant 
+> > that depends on stage, and use it in both current tests, and the new 
+> > memfd tests.
+> 
+> Sounds good in principle, but unfortunately ends up duplicating a lot of
+> logic in test_harness_run() that is not a good idea IMO. We should work
+> with the harness not fork off into our own.
+> 
+> I suppose we can refactor some of the logic there to split into
+> functions that we can then use in our luo_test_harness_run(), but
+> keeping the option parsing logic in sync is going to be difficult.
+> 
+> And for the duplicated logic, I agree. I thought about cleaning it up
+> but was feeling lazy... Well now that you have called it out let me see
+> what I can do.
 
-David
+The main point is that the luo_sessions and luo_memfds tests should use 
+a common framework, whether that's luo_test_harness_run() or the generic 
+test_harness_run(). I don't have a definitive answer for this, so I 
+recommend tinkering with it to see what works best.
+
+Pasha
+
+> 
+> [...]
+> 
+> -- 
+> Regards,
+> Pratyush Yadav
 
