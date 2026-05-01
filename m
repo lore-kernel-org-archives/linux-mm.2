@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 189FFCCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:04:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52677CD3427
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:04:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AF246B0005; Fri,  1 May 2026 17:04:16 -0400 (EDT)
+	id 6321F6B0096; Fri,  1 May 2026 17:04:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2391A6B008A; Fri,  1 May 2026 17:04:16 -0400 (EDT)
+	id 5E39C6B0095; Fri,  1 May 2026 17:04:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1279F6B008C; Fri,  1 May 2026 17:04:16 -0400 (EDT)
+	id 4345B6B0092; Fri,  1 May 2026 17:04:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 01FAC6B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:04:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 768A4A02B7
+	by kanga.kvack.org (Postfix) with ESMTP id 2D2C56B008C
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:04:16 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E49A2401CD
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:15 +0000 (UTC)
-X-FDA: 84720078870.08.EB12F12
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 777BC120010
+X-FDA: 84720078870.28.E5CDC33
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DD9071A0006
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:13 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iyM05ewp;
-	spf=pass (imf29.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekkdZMD5;
+	spf=pass (imf19.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777669453;
+	s=arc-20220608; t=1777669454;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6iIUVO17fFI54Oo6JoVvH3M832pGhQaZ0xlMmkADuc0=;
-	b=QFJA60w33kAey5kVlTC/ESfavW+v2NWQJGTc2n98XgKwpwkfxVrC2jgYRiFPJxhqP2og0D
-	YUVJ9xfhv0SuPYzCLlUFVbbroJwTHSAQQof5GBOfSEp+in0RE0LjSU9alptpkuyX0uQtnG
-	ccS5PY4vTs1aCdTlo2C+ad7ip+zPAOQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iyM05ewp;
-	spf=pass (imf29.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777669453; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=U5KStOUgaP6eR9KiahuE5lw4XeX/zy0bzI0UhB80o+8=;
+	b=0cmC5XNlMBC9mfSpWazcZNIr/tvIW2KvHYaX6vRBrhuGuWA2XBHAzWfLB00qlxwGhvmTL1
+	JuTokPMJuQ804J7tuIWnJw8yjN183dL3Ej+k5E8pIfa7m9g4uWGvz1NanoK6jyNjAnBEiz
+	8CTd7dioyVITNtGMRXg+SlCidGOPCMQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777669454; a=rsa-sha256;
 	cv=none;
-	b=N3/Mh/EoI+krPra0ms7iAMjhEDblItPpajxv7M9gxX5SnsoC7rAT/JeRWT+8lD16E0I/hz
-	5EIcbrD+oG8K4X+DHEVxLURbx68poZei5F47LFpVQR3WmP+gesDb/W2oCQq87sFQK/lLGZ
-	1VqUlhKeW1y3zgXc6Jirwctaf/0PV6c=
+	b=P6OGzKDgNdorffk2AzVPgpqJZkeEwR5xAOxckc+bb9Y212ZFoIlhfrWtVj1oKiSEopbAaC
+	22B/WaacJCN94pq2TnzOOhul1nP2JlD0akCctNdnyl5NnG+hsJo7nRWN9aq3EwJRV8l+M7
+	mjr4OOTxTI/XA9gRc+92+mBXFRcxu7g=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekkdZMD5;
+	spf=pass (imf19.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5157F60123;
+	by sea.source.kernel.org (Postfix) with ESMTP id 76D1444195;
 	Fri,  1 May 2026 21:04:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id ECFB6C2BCB4;
-	Fri,  1 May 2026 21:04:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 16744C2BCC4;
+	Fri,  1 May 2026 21:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777669452;
-	bh=DBOpIru7jqacweorBAeXDkuyacrHQhA4NDUgZl7zFQ0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=iyM05ewp4nZk2SjKWbuezpqzbgUYp6tl9YpgYp0OeLoekJEbOh8pYIGA+D6ijJ9TY
-	 2UzN/kQqBm632dnOOAzpJFx4qEIfDgpgqViBjmBv5NcF5m7nkZ+Oqe5wNySZqVYxq8
-	 Rv37oO5UxswDT4qZTPMk5cVRfQ3h1SdkYRuuyj+3wyAloDLAMS4pOGI3eWm85KU7h0
-	 ljl9SeJ7TOk+eGTxcXQxYthx0UQ6aN44zDwKqxq8boZ4pbwUa+yCpFxQFZoCdTNcH1
-	 CmgpXIN6/oeCFAantZmBhvurRr1GN1CtYIXbSSJRugZRv/y7JsyO1LVA1yLeQo17IG
-	 VLgVypSp9WXlA==
+	bh=A+uGFSOjp4jpmBRuOIkwLTviq/mFB5GM+JaXwoKxQ8Y=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ekkdZMD5eQDMQovCA/dQWkHuNNOANDIJNLlFIJqBvmXXezb8NsS2/sN3GmcCTlF6M
+	 q6q2xt6NZxVcYVNnAbDXWfCtoJGLa+JVEFHhx4djfcwAqO9fDIIL8Fa8BF5iXQr3q3
+	 Sa/ygvFFaaJ2tw2En/+pqzuU0CkpUxCq6Mxbl7wiCgqRp2+1/FMdnKDgkiryEPa9E3
+	 aymwL9S3AZS8TTCKnNDQW8YGJHGWMXkdv4NaBvv/9rZAaEqIdZoRjQ36Bs9hrEmIm5
+	 Ijmm6cPaQK/6dS34WXVW3FkfJoGrkPBLv3FBIJZsBShHfvluW7f1xgftxBustsDLf4
+	 nTmhvOL4byrOw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4B14CD13DF;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF2EBCD3423;
 	Fri,  1 May 2026 21:04:11 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Subject: [PATCH RFC 00/32] mm/mglru: MGLRU-FG and refault distance support
-Date: Sat, 02 May 2026 05:03:46 +0800
-Message-Id: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
+Date: Sat, 02 May 2026 05:03:47 +0800
+Subject: [PATCH RFC 01/32] mm/memcontrol: make lru_zone_size atomic and
+ simplify sanity check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDEyMT3dz0nKJS3bR0XYukJAtTo9Q0CyODNCWg8oKi1LTMCrBR0UpBbs5
- KsRDB4tKkrNTkEpAhSrW1AJ2j1E5xAAAA
-X-Change-ID: 20260424-mglru-fg-8bb852ef820f
+Message-Id: <20260502-mglru-fg-v1-1-913619b014d9@tencent.com>
+References: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
+In-Reply-To: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
 To: linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
@@ -100,25 +100,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=7590;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=4666;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=DBOpIru7jqacweorBAeXDkuyacrHQhA4NDUgZl7zFQ0=;
- b=1KI9TPY28o+QlUdOb0aHnPYcmh5Khm9aqozsCx0JrNb1IBSBovc+nlEFzVo52Jle+W0+f5u8E
- V29tnRKWiYCCgFwOUtd2uQJvr2ZwYxL0wUy1u9+4JQFwQkKJznMKnat
+ bh=IkFEgPrNnMULleiYp1UZ+qFJc4vNB+W+MgG/aidkTiM=;
+ b=6EU6Ld0m0s7fh+UjdoyV2mk70KaMjPaHaHpHNPNMEwb7zV+0OY9j1iIwRJGitS6PnymWdKxNA
+ Fg86q+QfaGpCOJmVc3UGWg+5+l9KKYo0E3RxEGsZjoPuIOrcmx5BO1o
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DD9071A0006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 777BC120010
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pgtcprgan3zue8bn5eq4oo9w6iwbpmas
-X-HE-Tag: 1777669453-746049
-X-HE-Meta: U2FsdGVkX1+u6WkCO/eoIhnmyWcWTsaYnaOm1sKl2B5T5P1W46dNfuvDfocMQd6SHRZNV7xJCKwXRtFm9A0Sjjs6YGZthOoK+FnEdldfU69hdbb+tKfAIUjjbV6p/V7G62AZPpsbuw0L0I9/s0f6fVKKSxIMIfXeMQNkRp7qv+TIgq0123PHcqpbSeNWqrMrmsqJJKlQjSK+aLvQ1eE+DYtKv4cG1iffSaML5cu+eqz2mw2ckkXoFo73jzQ1jDNM59MjxVGW0/W7q6aGRMqyEZBo3XWAuyCuY7iCZx6vk1dfaesFqNC1A3yUj0ZtarLEDRY1dOjI7beePkKnFjloJBVfUv1wI7gRmuzDdrua6Vex+7bg+2b0gJj/ClZFqcTUvcFC0f78UYcpdc31gZTX7cr6YQ8DYK7EJwWgRSl+CzX2fNhHhILpEDpDgvYF496cCB2oXkC49Oici9SpTK/mM2+TAfmzFxFf2L5NmkklNyJzIaQyQ+Cx6vYdtNPd/Vgul8/mgS5ogtvYRy/qR6EJFzJI9s42JxSsBCkapWLLhzK65iSKOG4wx8g94M6xbJkgs+9j3hFH90pT61Td+8JOxbtGpzm+o0ZB46ZxouoJrRkpmw1FbSJGznDWYXvbmWgHW2732nLnuDw6HLfylHUlJS3uhZH7iU05UluUCwidAbRswwFg9VGNGofsOV579IOkbOaL1EffvbszjZHu9+BlejUTcuagBS/u2Z5rCAXCJY1l54P0cetZIjHP2mCZ6puz62Eosg14zVoHyLBro4aQk7grvj/Rt2oEpy8Pph8/CfXKA7XQ8S6JJiFvKyhLAzVIqqR0JWFptUYiphFbg27BmhRfyXGYlYUKMWPG4VwINNK2upQnN6ZVcuccHmv9H9ti1Mn/V2Szm7aX1oNQ6qlVb5JlbCy4LbMJ9KgtAhzRA963TB6+mOj1f4R2cogc80kVW06c9cRZqYFsggY9l+V
- s2Kev6Vd
- J8QGvI7B8e1IFi3eJX5y537SKKWWnySZkFCxLijJ63cOmQmcElHuDl0LNnPMm37j4j6gCPpslndGsDl4tUjgbRuLFn5diV9jSNrEosbfmGHIP0vVHUfdICQBbCk8429mKXzBNkWPuCfSMhtcNU9MpM4EuZT5NFdGQcyhMLi2C2+llytSsFmyJ+DEniq1l4J6sAdlFCIZ6Hu1em0mmNek7tlNedye4Dl/fZBelnjOxjJHMTbL2A1V7wpeVytka0KIxryJfJqdHluvTHezr1m+PwhCSYUX7MY4OJHiYLGBAOfyuvOnzpC987FYWpt1bq1P8sFH6RxnFEp46GDf3oRAJc1GIt8x81W9mgjcQeVbNYaSEr3zDMa/MGocRhUnoU8QXUAFmhZ8Lloo7IkKvFXmpiU1iKCIc/DqN5JQxyjR19hXa0DEOu8JbC3DQF3WYlCrw/tSYx2koUkkZtBQFyjNlUfID6xy8TUf5xZjeW8UTDvyXVeaKRMmGAUIFhQ==
+X-Stat-Signature: 3gy9rtnbeqwh3yequk4zperfzq43kfbk
+X-HE-Tag: 1777669453-846096
+X-HE-Meta: U2FsdGVkX1/EUL0fE07PbdfaAm/rIbelNtIQKievzqs91ml3a6FDogo1z+hxGNIj15i6BjOAx2LJdTSiUtQRKE3j2cLm3s78BE6G/oep9JPdnnJgI+PWWb9WWF4n+MobYdlRRblc8dMz/XLeGGQvu+LGW0jnY4zbEKtBDyy2Cfc/K2IBFTW8d95huGFrOIiQgySGe6/Dl+i8/4TUi0a485I1jpXRLhhKtqlJrbx1uX00AQHYzksAB+un78rbC0jVMSDEnRpR5t76F8JRBrpQJOfhOthhLjtx80wDanHJM3MWiesoEk4IyzdfrHK4pfSrEzWxGE/+0GpiSzdSs/ZICUeR5icLYRNT6v60dIWYMio2zMpK7Fv8NJjLfH0AVbYbHkwCa2m1wQ71ikbZIssSa0wX1HJCE8CUWrmt8DNg3CCX0oiXZbkJrcfXr4WEx20UuNYtE/zIXujeSPjNNqBJ14cPyesAXOaWNe3apdiR/xUI4BiycppqRaXZq447AgmejrI5qQHrkr8ZGXtqmmTM/BP+nZJYVl0gxrXOBK8QOXCSaTmTAcDny+6gOSR/+zYlX/zueb45MIufsACu2w14tvzNJ+aqTkVA7MZlIfd2KD3rrQeF4FYVc6wXSaA117kMpgLfdRjTASpE8JGAFcBG9paBJ11yfbNeVZUuY1evZ61YCdQ7MEudjjYM87YNOa60u2wPpzUcPzoxF6FdDhb7zmM0Uf+6KgqFIgD10iG/XmGl6bzhKt0v6Zfmo2nladgwCx7yu+XW5olMQFXzyKFfZu+qu8g+f94nif4cAcCqBz7i1tb00nUfeofp75tTLCj2IDgUuJdKw00j0md8UatbL5ugUEmCGZIqVASjdy8naIZqL/vnNfgMhZD0FlbIZntGoAIAakAObzosn0z8ePPR20r3+PZT619KwTLRGa8qnnDBqlL8mb8UTzzTNDQEAlWiO62BVEb35T5GkFmkmHE
+ KHmiH33m
+ LPMUl6naaaRXIxqR7QfULBvNSDYvjL9joXhs808gVbnV3gwtJLQIjUVC0M9icUnTpLyytx8HDmait/TjY2IpltCqj/e6xA9dEezsFky8m+IhqMOaKqYVx5uJqFcJnaR4ShPBREuRAfCrKc6kX5xO+/Wvi1nhA3FJHoq9xZtT99dGNj2JvMT6MEh+KxpxzVBww5FnWjbUZiEdrSU9Q0DW7ITEnIWvatphIWKoxte2mDAOZYocqQhuqVxDQ7NBHf1Troou09F6Y+JXuBD4JvdgdxdTPpsZKK8nF2o8unxAEak8i4Rp8nYNJy+Xl3RyiUKOUAq7NlScO69cCq+6PKFydJclkSf8Ljug1cSKd2RTW3Yi0gLQmN2DTj7+/bv/qGAUBu9UyQyzdHk+7GsT9+4a2RIvz99tmw+Rngd4t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,165 +126,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an RFC following the idea proposed as LSFMMBPF topic [1] this
-year for demonstrating the design and improvements, sending it out so it
-can be discussed better before or after the event. It's stable and
-performing well, but obviously, it's too long for review, so I plan to
-send these out step by step if we are OK with the basic ideas here.
-Worth noting that the design is still not finalized yet, the tier and
-refault calculation can still be better adjusted, and with more
-benchmarking and testing. This is rebased on top of the current
-mm-unstable as it is supposed to work on top of another series which is
-currently there [4].
+From: Kairui Song <kasong@tencent.com>
 
-With this series, I'm seeing an obviously performance gain for tests
-like GET/SCAN with LevelDB (which is borrowed from Tal's paper [2])
-and MongoDB with TPCC [3] or YCSB [4]:
+commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
+introduced a sanity check to catch memcg counter underflow, which is
+more like a workaround for another bug: lru_zone_size is unsigned, so
+underflow will wrap it around and return an enormously large number,
+then the memcg shrinker will loop almost forever as the calculated
+number of folios to shrink is huge. That commit also checks if a zero
+value matches the empty LRU list, so we have to hold the LRU lock, and
+do the counter adding differently depending on whether the nr_pages is
+negative.
 
-GET/SCAN LevelDB [2]:
-Classical LRU: throughput_avg: 993.64 Ops/s
-MGLRU before:  throughput_avg: 951.12 Ops/s
-MGLRU after:   throughput_avg: 1344.72 Ops/s (+41% faster)
+But later commit b4536f0c829c ("mm, memcg: fix the active list aging for
+lowmem requests when memcg is enabled") already removed the LRU
+emptiness check, doing the adding differently is meaningless now. And if
+we just turn it into an atomic long, underflow isn't a big issue either,
+and can be checked at the reader side. The reader size is much less
+frequently called than the updater.
 
-MongoDB YCSB workloadb (MGLRU):
-Before: 82127.65 ops/sec
-After:  95933.99 ops/sec (+16.8%)
+So let's turn the counter into an atomic long and check at the
+reader side instead, which has a smaller overhead. Use atomic to avoid
+potential locking issue. The underflow correction is removed, which
+should be fine as if there is a mass leaking of the LRU size counter,
+something else may also have gone very wrong, and one should fix that
+leaking site instead. Besides, doing the sanity check in updater is
+unlikely to catch the leaking site, e.g. a folio was removed minutes ago
+without updating the counter, while there are still other folios on the
+LRU, the WARN won't be triggered until other folios are removed from a
+likely correct callsite.
 
-Build kernel test (MGLRU):
-Before: refault_file: 259681   refault_anon: 3006202  real: 1m49.005s
-After:  refault_file: 201472   refault_anon: 3048107  reaL: 1m49.050s
-
-FIO with zipf:
-Before: 73557.72 MB/s
-After:  74553.44 MB/s
-
-Also, mechanisms like PSI, smap, readahead, will all have better
-accuracy since this series unified the flag usage between classical
-LRU and MGLRU.
-
-This also reduces MGLRU's max flag usage by one, and hopefully provides
-a generic API for other components like DAMON to contribute to MGLRU's
-hotness tracking.
-
-Other tests like the MySQL are looking fine, no regression. Filesearch
-test in [2] also shows some improvement, not comparable to cache_ext, since
-this still need to rely on things like the refault distance to establish a
-pattern before it takes any effect, but more generic.
-
-This series basically composed of three parts:
-
-1) Make the MGLRU be frequency guided and rework MGLRU's flag format
-   to shrink the bit usage. The format rework and MGLRU-FG design is
-   strongly bound togther with 2) below.
-
-   The main patch implementing MGLRU-FG is:
-   mm/mglru: frequency guided workingset promotion (MGLRU-FG)
-
-2) Convert all workingset / referenced flag user to use the new generic
-   LRU refs API introduced by above.
-
-3) Refault distance support for MGLRU.
-
-   Refault distance refactor and support starts with:
-   mm/workingset: simplify and use a more intuitive model
-
-Step 1) and 2) are working well. But the overhead from 3) is still having
-slightly higher than expected overhead (dozens of more atomic operations
-upon refault, and an extra rstat flush, which is just like classical LRU),
-and not a fully optimized work, so I'm still looking into it.
-
-More detailes are in the commit message.
-
-It's recommaneded to test it seperately for these three parts. Sending as
-a long whole series to avoid conflict and provide a complete view of the
-ongoing project.
-
-NOTE for an RFC quality series: several helpers like folio_mark_referenced
-might need further improvement, currently the implementation may lead to
-inaccurate hotness info, only in theory and doesn't seems a new issue, but
-could be improved easily later.
-
-And the page flag removal can be decoupled from the workingset series easily.
-
-Link: https://lore.kernel.org/linux-mm/CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com/ [1]
-Link: https://dl.acm.org/doi/10.1145/3731569.3764820 [2]
-Link: https://lwn.net/Articles/945266/ [3]
-Link: https://lore.kernel.org/linux-mm/20260428-mglru-reclaim-v7-0-02fabb92dc43@tencent.com/ [4]
+For now still keep the LRU lock context, in theory that can be removed
+too since the update is atomic, if we can tolerate a temporary
+inaccurate reading, but currently there is no benefit doing so yet.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
-Kairui Song (32):
-      mm/memcontrol: make lru_zone_size atomic and simplify sanity check
-      mm/memcontrol: allow update of LRU statistic without holding LRU lock
-      mm/mglru: wrap all access to folio flags with accessor
-      mm/mglru: introduce and use helpers for updating lru_gen refs and gen
-      mm/mglru: make generation page counters atomic
-      mm/mglru: frequency guided workingset promotion (MGLRU-FG)
-      mm/mglru: don't reset folios LRU refs count on protection by default
-      mm: make folio lru referenced times count a generic API
-      mm: replace folio_set_workingset with folio_mark_workingset
-      mm: replace folio_test_workingset with folio_is_workingset
-      mm/smap: report workingset folios as referenced
-      mm/huge_memory: mark file folio as accessed more accurately on split
-      mm/khugepaged: consider workingset folios as referenced
-      mm: convert rest folio LRU referenced usages to new helpers
-      mm/gup: use new helpers for marking folios as referenced
-      mm: convert folio referenced flag usages to new bitwise identical helpers
-      mm/shmem: mark folio as referenced use new helper
-      mm/vmscan: convert to new bitwise identical helper
-      mm/madvise: convert to new lru refs API and better support for MGLRU
-      mm/damon: don't clear the lruref for MGLRU
-      mm/swap: convert to new bitwise identical helper
-      mm/workingset: simplify and use a more intuitive model
-      mm/workingset: rename the nonresistence age counter
-      mm/workingset: use a single atomic operation for read and age
-      mm/workingset, lru_gen: simplify lru_gen recent
-      mm/workingset: properly define the format of a folio shadow
-      mm/workingset: move refault distance checking into a helper
-      mm/workingset: split lruvec retrieving and flush into a helper
-      mm/mglru: convert avg_total and avg_refaulted to atomic
-      mm/mglru, workingset: apply refault-distance based re-activation
-      mm: remove PG_workingset
-      mm: remove PG_referenced
+ include/linux/memcontrol.h |  9 +++++++--
+ mm/memcontrol.c            | 18 +-----------------
+ mm/vmscan.c                |  5 -----
+ 3 files changed, 8 insertions(+), 24 deletions(-)
 
- fs/btrfs/compression.c                 |   3 +-
- fs/erofs/zdata.c                       |   3 +-
- fs/fuse/dev.c                          |   2 -
- fs/proc/page.c                         |   1 -
- fs/proc/task_mmu.c                     |  22 +-
- include/linux/memcontrol.h             |   9 +-
- include/linux/mm.h                     |   2 +-
- include/linux/mm_inline.h              | 257 ++++++++++---
- include/linux/mmzone.h                 | 113 ++++--
- include/linux/page-flags.h             |  13 +-
- include/linux/swap.h                   |   2 -
- include/trace/events/mmflags.h         |   2 -
- include/uapi/linux/kernel-page-flags.h |   1 -
- kernel/bounds.c                        |   2 +-
- mm/damon/paddr.c                       |   3 +-
- mm/filemap.c                           |  12 +-
- mm/gup.c                               |   6 +-
- mm/huge_memory.c                       |  12 +-
- mm/khugepaged.c                        |   6 +-
- mm/madvise.c                           |  37 +-
- mm/memcontrol.c                        |  22 +-
- mm/migrate.c                           |   4 -
- mm/page_io.c                           |   3 +-
- mm/readahead.c                         |   8 +-
- mm/shmem.c                             |   2 +-
- mm/slub.c                              |   2 +-
- mm/swap.c                              | 109 ++++--
- mm/vmscan.c                            | 189 +++++-----
- mm/workingset.c                        | 666 ++++++++++++++++++---------------
- tools/mm/page-types.c                  |   1 -
- 30 files changed, 916 insertions(+), 598 deletions(-)
----
-base-commit: 2ed06bf65cef2e7b763ce59a9fc2e4a42ecfa1ce
-change-id: 20260424-mglru-fg-8bb852ef820f
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index dc3fa687759b..345a6ba8a3a7 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -112,7 +112,7 @@ struct mem_cgroup_per_node {
+ 	/* Fields which get updated often at the end. */
+ 	struct lruvec		lruvec;
+ 	CACHELINE_PADDING(_pad2_);
+-	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
++	atomic_long_t		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
+ 	struct mem_cgroup_reclaim_iter	iter;
+ 
+ 	/*
+@@ -884,10 +884,15 @@ static inline
+ unsigned long mem_cgroup_get_zone_lru_size(struct lruvec *lruvec,
+ 		enum lru_list lru, int zone_idx)
+ {
++	long val;
+ 	struct mem_cgroup_per_node *mz;
+ 
+ 	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
++	val = atomic_long_read(&mz->lru_zone_size[zone_idx][lru]);
++	if (WARN_ON_ONCE(val < 0))
++		return 0;
++
++	return val;
+ }
+ 
+ void __mem_cgroup_handle_over_high(gfp_t gfp_mask);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index c03d4787d466..71fad2239973 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1484,28 +1484,12 @@ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
+ 				int zid, long nr_pages)
+ {
+ 	struct mem_cgroup_per_node *mz;
+-	unsigned long *lru_size;
+-	long size;
+ 
+ 	if (mem_cgroup_disabled())
+ 		return;
+ 
+ 	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	lru_size = &mz->lru_zone_size[zid][lru];
+-
+-	if (nr_pages < 0)
+-		*lru_size += nr_pages;
+-
+-	size = *lru_size;
+-	if (WARN_ONCE(size < 0,
+-		"%s(%p, %d, %ld): lru_size %ld\n",
+-		__func__, lruvec, lru, nr_pages, size)) {
+-		VM_BUG_ON(1);
+-		*lru_size = 0;
+-	}
+-
+-	if (nr_pages > 0)
+-		*lru_size += nr_pages;
++	atomic_long_add(nr_pages, &mz->lru_zone_size[zid][lru]);
+ }
+ 
+ /**
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 8df21364ef71..53b43e3f5795 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1641,10 +1641,6 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ 	return nr_reclaimed;
+ }
+ 
+-/*
+- * Update LRU sizes after isolating pages. The LRU size updates must
+- * be complete before mem_cgroup_update_lru_size due to a sanity check.
+- */
+ static __always_inline void update_lru_sizes(struct lruvec *lruvec,
+ 			enum lru_list lru, unsigned long *nr_zone_taken)
+ {
+@@ -1656,7 +1652,6 @@ static __always_inline void update_lru_sizes(struct lruvec *lruvec,
+ 
+ 		update_lru_size(lruvec, lru, zid, -nr_zone_taken[zid]);
+ 	}
+-
+ }
+ 
+ /*
 
-Best regards,
---  
-Kairui Song <kasong@tencent.com>
+-- 
+2.54.0
 
 
 
