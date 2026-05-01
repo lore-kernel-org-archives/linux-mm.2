@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 586CFCD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:05:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2B3FCD3427
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:05:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82C236B00B1; Fri,  1 May 2026 17:04:22 -0400 (EDT)
+	id 91C0F6B00AD; Fri,  1 May 2026 17:04:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71C766B00AE; Fri,  1 May 2026 17:04:22 -0400 (EDT)
+	id 82A666B00AF; Fri,  1 May 2026 17:04:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D1886B00AD; Fri,  1 May 2026 17:04:22 -0400 (EDT)
+	id 6CDD36B00AF; Fri,  1 May 2026 17:04:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 20D426B00B1
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 552A06B00B1
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:04:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D64711602C8
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:21 +0000 (UTC)
-X-FDA: 84720079122.26.A06372C
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F363C1442
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:22 +0000 (UTC)
+X-FDA: 84720079164.22.8ABCCB6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BAF511C000F
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0C567180004
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdonvicz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pZZ+MemW;
+	spf=pass (imf24.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777669459;
+	s=arc-20220608; t=1777669460;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uXP05+r7ztbe7Zd9tvt9Qh+HMDyALlhjY/s4NsHDcP0=;
-	b=26wZX5z4oMl3wpWRuGdY9EQJAZBYtsUNeqPD2iqQdsK14QBZFCLxRB5X6ysWmgeR4ScDeY
-	4R7WYVWPtXKuTmPHPbmAKe6WuL9P7qinuK45k55LA9no3JOING7NMoD8hb/pBHobmN1Atp
-	mcoTkx7WYCQqzZpWv/XNmKQUMdoS1v8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777669459; a=rsa-sha256;
-	cv=none;
-	b=1TYoU7UBNv2jkpkuLVph4XjzWjmnk+j3XVUky72h3r68y3p7wmbtlrTemkOD89/6eJo7fj
-	RmpiEopudKNdYGqtI+epyJ813uKi9Tj7Ndka5CexjzNgfnPtWmmLSQGwhMLQoFQdP35QBX
-	saesufDYYG/du7YaZvwZ95hvsfDzBCg=
+	bh=fB5vu0MAXl7KvWfbWUIkX0psT1jRLtwB6GuDhSUzTVE=;
+	b=M5tAtnVhBRDbjiW8QCujEAIgy5TihbER2WqUUUPWi0ljNJ/3u2YoU5QU/pOKOnATN0HCeF
+	qautkhEqYFOcfsLLu/r0Mbb4CLS3HlDofGdxIIeyrpY5DACOqUDbBtZ++d5+EATXBEOqpS
+	k4HNDqckfemdJi9V4RoyaeD2w/I9DLk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdonvicz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pZZ+MemW;
+	spf=pass (imf24.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777669460; a=rsa-sha256;
+	cv=none;
+	b=mXgatFFC0ltAY2Xk4cCfR218vbaj4jdiX3Pq9dOy3pwGPzRiGD+CLkHzR6sPTAGpMkiI1z
+	j8yoJIuwfdXJh4RMUqKkMhJ2Z2z5L3flqbx5nR2ni/kS5SFgE9O7ks7nYN68Eo1143GylS
+	OD5PB8j2oYbqwb+1ZFdOIAa9fa9erQs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C1EF944756;
-	Fri,  1 May 2026 21:04:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A2966C2BCF4;
-	Fri,  1 May 2026 21:04:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 22F1544480;
+	Fri,  1 May 2026 21:04:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 04843C2BCC6;
+	Fri,  1 May 2026 21:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777669453;
-	bh=/ikrs+4SbaVJg0tvGLo0u4ETHIPCTVBH3OAFRKXnBFM=;
+	s=k20201202; t=1777669454;
+	bh=uio2f/d9kySlX7LZuVl0j2Zqx+2SWezHKqCvlhfuxeg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=qdonviczKU/JHnQExYpvrihI3vLh+h7BdQJWUDXa4SZs4mL+BfY7JtlvgY4zZSdZ0
-	 OjBCTavQqahWGkbsPiQA1QJx1C6SSWfsGD0txaJ3Msdyqb1FrPlFgmkn0Dx2FcLgst
-	 KGqGQBvUdLWB443xpadV5T+T3v1gqPaCqdVJHFeEzHPiPjQ4P8Lljo2W+B8chR1tkD
-	 a2Dqp2jGC7GOUbIskmlwQ2Wpr5W5Oi7PghJX6AyrdeGL7jZoVsciPsfHhK0Jq0t6rN
-	 OeFhyeNyXtbQhBgHcZ8RA1KgJT+TsRzS4mkAA57g7Zx2M8MqX0hHgemvrOobMbGmY0
-	 /86SB+ucaaNQA==
+	b=pZZ+MemWp7rO7SJpDU+K2Imd3EW8rsVfuJEprxVxlr87evIL0C4rbqq/11Z1X1Eem
+	 dr4mmiokiixCklaUe4wYF7mwaQxqmgQTfsJe1kRgOq81x78w7plA48Zx01QeOvyHgm
+	 1WYqq5U91iAJAVqtuMxaloNHJoNH+hvVqvgOqxFNESM6R8QRoPHMbprSUTo69t9w7Z
+	 JDQL/EvPRRF6cHK64crd7zcPJaL6BLlZxv3UeX0uXm3svENW4MF6A06vD/UfQGJtPs
+	 HK26S3wVwWjxMJnyOzvU7txHRRHHjrAkBDopJK6YzzjnlvYNZ3uThxBdU97M41btWX
+	 24mGajt82/uwg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9913CCD3427;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EFB3BCCFA13;
 	Fri,  1 May 2026 21:04:13 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Sat, 02 May 2026 05:04:08 +0800
-Subject: [PATCH RFC 22/32] mm/workingset: simplify and use a more intuitive
- model
+Date: Sat, 02 May 2026 05:04:11 +0800
+Subject: [PATCH RFC 25/32] mm/workingset, lru_gen: simplify lru_gen recent
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260502-mglru-fg-v1-22-913619b014d9@tencent.com>
+Message-Id: <20260502-mglru-fg-v1-25-913619b014d9@tencent.com>
 References: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
 In-Reply-To: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
 To: linux-mm@kvack.org
@@ -100,25 +99,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=20953;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=4396;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=1dTSECn4f3IJgXaVU1EBjh87x63FnKLXmOSYf0cJJvQ=;
- b=rv32xcR6Z5PlYssPrbZDyzFCu3sTTQOO6bRxH6wtLlCZqpLs8DRhxnGd2cUR/nRfzaUxgAgPQ
- 0YzGKc+n1TzAnXOG3oTJn2GdOm5aLK2rymKj8EDupUCULkcF0SNz039
+ bh=KbFTzFXmhJEXcTUabj/0KGmAdVaMVZsImEKHZnTCyNA=;
+ b=RZb8GTAX1xI9h34O7aHTxF8zmM5P2cs1w7khJykb58iQUXdSl8fVGbsw1OfZz9Bg07EHTDjJK
+ Yd9ndllnZ4bBx8uRFgZBRXfjzVFN8DheBQywHs+6Y1ygX8I9k5cFIlo
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Stat-Signature: qkhyioz18nrfqwytkhn6easngm7k5dim
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0C567180004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BAF511C000F
-X-Rspamd-Server: rspam04
-X-Stat-Signature: izw35nuwtpy764f5b6hkuqdptk4b3h8p
-X-HE-Tag: 1777669459-442716
-X-HE-Meta: U2FsdGVkX19k1ykK7FuwRgdodYaIhrcZOORQPOZ+xEUh2cmbwr6uSe7OUKxdAUc7F5C+JuolwUdaAEWQQ/7tXMlIuD701B5uXRbxEz9l1YRgpMXwV0yL4jwIabkRfQHYTM+mhPN6i9k4rEsGv+bp9lvrcCiUiNeLBJoMF6t/wWR1RHIVV4UHdYcVPvMFQRL0ndcJLBxsxWusLmHwAZPjy90UIfFaI9ShEMIQn72DfgTLofAeD8NVbjb2/SXFNhaH4ftMW+R1FfWBw7otr8YXIAecMuAtioR07AJ3VJIQbEXa+4BjCiL4te0G2EarMlvXpEaWnLasxPjHVKD3iK/ctREGK5cND1Br73rXSSpl5jfYyZlLDjVujloxHp2H6CJ7wPSSrMgguK2ZeOALzxYGTM0dQRh/VPMxhkPkYbdl+0stkLWGil9y5swcuooF0zATmHyk1OMyIbQGLUQ618A4a/W0zaDK3iCbOgiOxlhJF4vUv1OVbCZtTiMvja03sBRoqamnoE76Srg4T6uj5LUxtVKXCzpOXZ8voYFr0D9Z/tfxYzT+vDw3tPGpQ/KsDiB5laKTfNBc6BheaNW1mctDBxEC6iovlF0cPJQvpM5jTg95CD4Cqoc4LUwN+u3E8mSIURm1WGtWqRpjsgVgkIC4vzS8RPOJbLeViISOUG19SYSejfxsCgZ/j1lQ06/K5vYQaWhbfSVOTNo7NxD72DO5q+WcYsTkTTaZutiOoJ+Hyl9+xEuBGi21ijso9rmHDA0izZtqYXVFHK3RDNaAdS7SaUoIGQxsdiUTiP1qrRDQ39AJPICRZ4WFCdZpZ3J2Fw26wcwrbtNylEUG45QLPdUI6gQFjBK4cxPQrUq4nza/lFhWaWAabES6+dNEqIvHmQDxqwDY9dT6NN4hUoXSUyNBRHaUbmrMNTtGjWJOWXBqIEq3bRqq9fcNfswzVn2rXWHFB81IdGYVxONOVVVORXi
- di+kRpZk
- kkLht3mj+C/I0D9jKG9GU56i3bB0kKifAQNfzUtoSpeIiT7uzk8z0sR1DKPcs52X0I2eUabvPCrNq+EMTFXtfiFhr/lXBl5dx3zwkX/F+UHagdoYJzB3ZiDONHLO7rSMuGCm0ypXbSmQ+XRdFEdODedSro3a/fr8sUsaKF5B9dpv2Qb79urjXOSR4WpqxEXbT3ZywqaDkRTHfqATsFFVv7g/kkIh0cXxksG18n9BcQqIzVbkGJ4cEXJ3pMRdrdtr2rKukLCUPezpsPXmXbN3XynUr1uNUQfUD2VRBGjcfK94hN2TGxAHpJEoz9kOHtAemRiy1NOzKhh+kUcA8slHMfwixdA7HsCe1RG5QCgzdAh3BX8rRBaRuQWiPFWAtrgwBhVKysQjUe+JnC6543ZLbubadIL5OHnx+o690eHl33t7mbkrPBS10w9jo9zqIT3zfO/81Py7OCe703kE=
+X-HE-Tag: 1777669459-666362
+X-HE-Meta: U2FsdGVkX190Av8KMoA09u7EcE0xmzasJd5owod/KIcs3AGa/UOE7uZofIIScY0nZlpjpRMhQDhY6Z6ow8C9AM0uyoAVBkrH9Wc8MGonZN6mFAOr98SNAu5+qj4xtZE30+ltLzycXRq29x6HTDOQUs5YL9xR+jtsOqx3CotbPcCFQFbSyK4dZ480wZdUrrMKmx4F9KYfvSLPX2JWAFWlQoUA/muGZ2cOc03wgu6AXHbWKFuf9pt7sjkaCt4UgJ9ywHrhavEhFIKHzCFSdBZy4j0lSeUGBrMvp9dzwNSzREf9+lWGYrEBwYB5EooX7jjnpSKr0NNNWOumdDRDQoI9G44nogkrHfqQFRzxcqqoHg0CFrkuM7jykHEOIpGce6sOJQsxQGT47PxB1F3yP8nxgj4N0PhkW3sSch7SzTWfwejILN9LiOObS6Ge5SmL8ncmsmmcmjBpR1O5d9cN+d7162oVLyUbdw52wAjKw6S2Mpuw1ioTX3LupFRLSOAhLkiDcD0qKeMzpYJc0WAlVTWY6cazc1aKPqxvGHqJsirLsnCJOInN1pCNExaLKOi0PztmuV5FMeXxywLCvB3Soa93wEyFeIiO8fKyAJ29jd+Z4RghPP9VeuyEB76Wsb8XvQZBPtd4PV26/j6qNvfZsIhJFamUck4zsLblB6rgzKKVcPLxp2an1URTJNH7d1wLtXmBr+g3XGExRzdu52GDSUQC05C+bTSHmIZ9o27MQYSJPalf3u3dufjbHsAtuYFvjqOvTsyc6RzUAnBMLDCMlz3b+xBdX6TxlWX95zqN2eO9Wr2z1a3hCl1bB26suzVTAO7MzVc6wO+2GAs5ip8rndCSVUmaAzJc8p9CsCl7HRuKB7htwFiRem9liJCVNMJN9dGuvXt3ChsPomMUBSQnRoN2Z520+lGwO48B6AiCfTKdspZtGYV7tRbiqZvrjE9EL7z6+UPyOa5iiB2JfyP97lr
+ vRYBtuHD
+ bBSbbBLoaqAPoDlD8I3ysduP1QUxdflYmwds3/GP9EitC8PfCuJnqptWsaa8Ud9VOF3TfdeDadv1ujO9mQfZi5GS3NhbvgH7DUQt0v8VweByX3zt2OYvPcDGr5Xvo5NWm2ARenXyJtrf3pRm4K2FH9ahZnDjvS03zOMs6zTzxoA1H/CryJuEraogmeHNg0pV7iSXTbc1zyHzGL36UE59D2G8rQFJ6FxVfjL4mKEDeXNzSR3EbG0qAeCtpvV8C54c/mXHRqRlh4yFrO3UAoF3zkWMvPW8G1PZPJqkbaZrssHkZaml4njmh5EkuG9EUPjNaJjlzWoJY4dEqbknHNiyl0jspt6im7OkM8LQ669wjYu4z+fAL56gN5r6jjNepnym+9URGMsZ1LsqKiihHUitDjr8Ij3TzZ3sesQNkMIthXkuEsjU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,500 +127,140 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Remove workingset activation hook, rework the refault distance comparison
-accordingly. The non-resident age counter (NA) is now incremented only
-on eviction.
+Move the commont part in the common caller. Also let it return early if
+the memcg doesn't match.
 
-This is also preparation for adapting refault-distance-based file page
-protection to multi-gen LRU.
-
-Refault-based re-activation on the active/inactive LRU helps identify
-the working set. On refault, it estimates the page's access distance
-and, if small enough, activates the page directly instead of letting
-it re-age through the inactive list.
-
-The existing estimation (see the original comment in mm/workingset.c)
-is built on two assumptions:
-
-1. Activating an inactive page left-shifts all LRU pages by one
-   (treating the LRU head as the right).
-2. Evicting an inactive page left-shifts all LRU pages by one.
-
-Assumption 2 is exact. Assumption 1 is a bit subtle. The old model
-counts events (activations and evictions), which is internally
-consistent, but it means NA advances at the rate of the busiest
-pages, not at the rate of actual eviction pressure. A workload with
-an established active set whose pages cycle inactive -> active ->
-inactive -> active produces many NA increments per eviction. This
-is not an edge case: a folio activated even once contributes two
-NA per eviction, which is the common case. Legitimate working-set
-candidates then get aged out of the refault window faster than real
-eviction pressure would justify.
-
-MGLRU does not fit this model well either. Pages are aged in generations
-and are promoted frequently between them, so tying NA to activations
-is even less meaningful. Note this patch does not change the MGLRU path
-yet, just a preparation.
-
-New model
-=========
-
-Treat evicted pages as if they were still resident, each carrying an
-eviction timestamp (NA at eviction time). These timestamps logically
-form a read-only "Shadow LRU" extending to the left of the real LRU.
-For a refaulting page, define:
-
-  SP = NA@refault - NA@eviction
-
-SP is the page's offset back in the shadow LRU: how far in eviction
-history it sits. Since every evicted page was once at the head of the
-INACTIVE list, its in-memory access distance would have needed to be
-at least:
-
-  SP + NR_INACTIVE
-
-to avoid eviction. So an upper bound on when activating the page could
-keep it resident is:
-
-  SP + NR_INACTIVE <= NR_INACTIVE + NR_ACTIVE
-
-which simplifies to:
-
-  SP <= NR_ACTIVE
-
-(NR_INACTIVE is read at refault time, not eviction time; the two can
-differ but are assumed comparable for workloads stable enough that the
-heuristic is meaningful at all.)
-
-The derivation above is the upper bound on feasibility. The policy
-applied here is stricter: compare SP against the average of NR_ACTIVE
-and NR_INACTIVE rather than NR_ACTIVE alone:
-
-  SP <= (NR_ACTIVE + NR_INACTIVE) / 2
-
-The number 2 here is not a magic number. Two arguments motivate this
-threshold. They stem from different reasoning but converge on the same
-operating point.
-
-1. Empirical self-balancing. Relative to the feasibility bound
-   SP <= NR_ACTIVE:
-
-   - When NR_ACTIVE is short, no working set has been established yet.
-     Moving the threshold above NR_ACTIVE lets more refaulting pages
-     activate, so a working set can form faster.
-   - When NR_ACTIVE is long, a working set is already establishing.
-     Moving the threshold below NR_ACTIVE keeps it stable, so
-     one-time refaults do not easily displace established active
-     pages.
-
-   Because NR_ACTIVE + NR_INACTIVE is roughly M (total cache memory),
-   the threshold is roughly M/2 regardless of how the A/I split
-   moves. The policy self-stabilizes around half of memory.
-
-   Also note for refauting, the re-activation is pure hypothesis based
-   so the lowest bar 1:1 is used.
-
-2. Bounded MRU-like protection against LRU thrashing. On a sequential
-   cyclic scan over a set of size S on memory M, every refault in
-   steady state has SP ~= S - M. With the threshold at M/2, activation
-   happens exactly when S <= 1.5 * M.
-
-   In that regime, the first refaults of the second pass land on the
-   active list and stop being evicted. Roughly M/2 pages get frozen
-   active; the remaining M/2 pages churn through the inactive list.
-   Hit rate on the frozen half is near 100%, compared to pure LRU's
-   classic ~0% on any cyclic scan with S > M. This is a large
-   improvement in the "slightly too large to fit" regime, which is a
-   common workload shape when memory is sized close to but under the
-   working set (analytics passes, batch jobs, cold-start caches).
-
-   Above 1.5 * M the heuristic disengages. Since we don't know if the
-   work load is sequential or random with skew, partial protection of
-   much-larger sets has diminishing returns, and indiscriminate activation
-   of pages with very large SP would pollute the active list with pages
-   unlikely to be re-accessed before eviction.
-
-   For uniform random access with no structure, SP is widely spread
-   around its mean of S - M; activation is essentially neutral
-   because no page is more valuable than another. The policy neither
-   helps nor hurts.
-
-The two arguments are independent but give a similar conclusion, and easy
-to calculation, which is a useful coincidence and gives some confidence
-the constant is well-chosen.
-
-A secondary effect: NA still over-counts pages that are refaulted
-and then re-evicted, because such pages contribute to NA twice over
-their lifetime. This inflates SP for older shadows under heavy
-refault churn. The feasibility bound SP <= NR_ACTIVE would
-over-activate in that regime; tightening to (A+I)/2 dampens this
-without a separate correction.
-
-Performance
-===========
-
-Removing the NA update from folio_mark_accessed() and from
-move_folios_to_lru() avoids a memcg parent walk and an atomic add
-on those hot paths, so the no-pressure case should cost slightly
-less. Under pressure the behavior still seems good. Testing with several
-benchmarks didn't show any regression, and the simplification of code
-leads to a direct gain in many cases. Results can be seen in a previous
-posted version of this patch [1].
-
-Link: https://lwn.net/ml/linux-kernel/20230920190244.16839-2-ryncsn@gmail.com/ [1]
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/swap.h |   2 -
- mm/swap.c            |   1 -
- mm/vmscan.c          |   2 -
- mm/workingset.c      | 225 ++++++++++++++++++++++++---------------------------
- 4 files changed, 107 insertions(+), 123 deletions(-)
+ mm/workingset.c | 55 ++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 26 insertions(+), 29 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 1930f81e6be4..04806dc8b2b1 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -297,10 +297,8 @@ static inline swp_entry_t page_swap_entry(struct page *page)
- /* linux/mm/workingset.c */
- bool workingset_test_recent(void *shadow, bool file, bool *workingset,
- 				bool flush);
--void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages);
- void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg);
- void workingset_refault(struct folio *folio, void *shadow);
--void workingset_activation(struct folio *folio);
- 
- /* linux/mm/page_alloc.c */
- extern unsigned long totalreserve_pages;
-diff --git a/mm/swap.c b/mm/swap.c
-index 043c4ec708d7..97c820b85db1 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -545,7 +545,6 @@ void folio_mark_accessed(struct folio *folio)
- 		else
- 			__lru_cache_activate_folio(folio);
- 		folio_clear_referenced_by_bit(folio);
--		workingset_activation(folio);
- 	}
- 	if (folio_test_idle(folio))
- 		folio_clear_idle(folio);
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index a3200020b9c2..e6631ad03caa 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1923,8 +1923,6 @@ static unsigned int move_folios_to_lru(struct list_head *list)
- 		lruvec_add_folio(lruvec, folio);
- 		nr_pages = folio_nr_pages(folio);
- 		nr_moved += nr_pages;
--		if (folio_test_active(folio))
--			workingset_age_nonresident(lruvec, nr_pages);
- 	}
- 
- 	if (lruvec)
 diff --git a/mm/workingset.c b/mm/workingset.c
-index fa644948c80e..01f6e9a72cdb 100644
+index a77a6c0c3e15..b472ac34943e 100644
 --- a/mm/workingset.c
 +++ b/mm/workingset.c
-@@ -66,74 +66,89 @@
-  * thrashing on the inactive list, after which refaulting pages can be
-  * activated optimistically to compete with the existing active pages.
-  *
-- * Approximating inactive page access frequency - Observations:
-- *
-- * 1. When a page is accessed for the first time, it is added to the
-- *    head of the inactive list, slides every existing inactive page
-- *    towards the tail by one slot, and pushes the current tail page
-- *    out of memory.
-- *
-- * 2. When a page is accessed for the second time, it is promoted to
-- *    the active list, shrinking the inactive list by one slot.  This
-- *    also slides all inactive pages that were faulted into the cache
-- *    more recently than the activated page towards the tail of the
-- *    inactive list.
-- *
-- * Thus:
-- *
-- * 1. The sum of evictions and activations between any two points in
-- *    time indicate the minimum number of inactive pages accessed in
-- *    between.
-- *
-- * 2. Moving one inactive page N page slots towards the tail of the
-- *    list requires at least N inactive page accesses.
-- *
-- * Combining these:
-- *
-- * 1. When a page is finally evicted from memory, the number of
-- *    inactive pages accessed while the page was in cache is at least
-- *    the number of page slots on the inactive list.
-- *
-- * 2. In addition, measuring the sum of evictions and activations (E)
-- *    at the time of a page's eviction, and comparing it to another
-- *    reading (R) at the time the page faults back into memory tells
-- *    the minimum number of accesses while the page was not cached.
-- *    This is called the refault distance.
-- *
-- * Because the first access of the page was the fault and the second
-- * access the refault, we combine the in-cache distance with the
-- * out-of-cache distance to get the complete minimum access distance
-- * of this page:
-- *
-- *      NR_inactive + (R - E)
-- *
-- * And knowing the minimum access distance of a page, we can easily
-- * tell if the page would be able to stay in cache assuming all page
-- * slots in the cache were available:
-- *
-- *   NR_inactive + (R - E) <= NR_inactive + NR_active
-- *
-- * If we have swap we should consider about NR_inactive_anon and
-- * NR_active_anon, so for page cache and anonymous respectively:
-- *
-- *   NR_inactive_file + (R - E) <= NR_inactive_file + NR_active_file
-- *   + NR_inactive_anon + NR_active_anon
-- *
-- *   NR_inactive_anon + (R - E) <= NR_inactive_anon + NR_active_anon
-- *   + NR_inactive_file + NR_active_file
-- *
-- * Which can be further simplified to:
-- *
-- *   (R - E) <= NR_active_file + NR_inactive_anon + NR_active_anon
-- *
-- *   (R - E) <= NR_active_anon + NR_inactive_file + NR_active_file
-- *
-- * Put into words, the refault distance (out-of-cache) can be seen as
-- * a deficit in inactive list space (in-cache).  If the inactive list
-- * had (R - E) more page slots, the page would not have been evicted
-- * in between accesses, but activated instead.  And on a full system,
-- * the only thing eating into inactive list space is active pages.
-- *
-+ * For such approximation, introduce a counter `nonresident_age` (NA)
-+ * per lruvec. NA is incremented once for every evicted page, and each
-+ * evicted page's shadow entry records the NA value at eviction time as
-+ * a timestamp. So when an evicted page is faulted in again, we have:
-+ *
-+ *   Let SP = ((NA's reading @ current) - (NA's reading @ eviction))
-+ *
-+ *                            +-memory available to cache-+
-+ *                            |                           |
-+ *  +-------------------------+===============+===========+
-+ *  |       shadows    *      |   INACTIVE    |   ACTIVE  |
-+ *  +-+------------^----------+===============+===========+
-+ *    |            |
-+ *    +------------+
-+ *    |     SP
-+ *  oldest shadow       * -> The refaulting page's shadow in the
-+ *                           imaginary "Shadow LRU"
-+ *
-+ * SP stands for how far back in eviction history the refaulting page
-+ * is. Since every evicted page was once at the head of the INACTIVE
-+ * list, the minimum in-memory access distance this page would have
-+ * needed to avoid eviction is:
-+ *
-+ *   SP + NR_INACTIVE
-+ *
-+ * So the page is a plausible workingset candidate if:
-+ *
-+ *   SP + NR_INACTIVE <= NR_INACTIVE + NR_ACTIVE
-+ *
-+ * which simplifies to:
-+ *
-+ *   SP <= NR_ACTIVE
-+ *
-+ * Note NR_INACTIVE is read at refault time, not at eviction time; the
-+ * two can differ, but the difference is assumed small for workloads
-+ * stable enough that the refault-distance heuristic is meaningful at
-+ * all.
-+ *
-+ * The derivation above gives the upper bound on when activation could
-+ * keep the page resident. The actual policy used here is stricter:
-+ * the refault distance is compared against the average of NR_ACTIVE
-+ * and NR_INACTIVE rather than NR_ACTIVE alone:
-+ *
-+ *   SP <= (NR_ACTIVE + NR_INACTIVE) / 2
-+ *
-+ * Two arguments motivate this threshold and converge on the same
-+ * operating point:
-+ *
-+ * 1. Self-balancing around the feasibility bound. Relative to
-+ *    SP <= NR_ACTIVE:
-+ *
-+ *    - when NR_ACTIVE is short (no established workingset), the
-+ *      threshold sits above NR_ACTIVE, allowing more activations so
-+ *      a workingset can form faster;
-+ *    - when NR_ACTIVE is long (established workingset), the threshold
-+ *      sits below NR_ACTIVE, so one-time refaults do not easily
-+ *      displace established active pages.
-+ *
-+ *    Because NR_ACTIVE + NR_INACTIVE is roughly M (total cache
-+ *    memory), the threshold is roughly M/2 regardless of how the A/I
-+ *    split moves.
-+ *
-+ * 2. Bounded MRU-like protection. For a sequential cyclic scan over
-+ *    a set of size S on memory M, every refault has SP roughly equal
-+ *    to S - M in steady state. With the threshold at M/2, activation
-+ *    happens exactly when S <= 1.5 * M. In that regime the heuristic
-+ *    freezes roughly M/2 pages onto the active list, yielding a large
-+ *    hit-rate improvement over pure LRU (which has ~0% hits on any
-+ *    cyclic scan with S > M). Above 1.5 * M the heuristic disengages:
-+ *    partial protection has diminishing returns as S/M grows, and
-+ *    indiscriminate activation would pollute the active list with
-+ *    pages unlikely to be re-accessed before eviction. For random
-+ *    access with skew, the SP-based threshold naturally selects
-+ *    hotter pages (shorter inter-access times give smaller SP), so
-+ *    the benefit extends across a broader range of S/M as a smooth
-+ *    transition rather than a cliff.
-+ *
-+ * A secondary effect: NA over-counts pages that are refaulted and
-+ * then re-evicted (they contribute to NA twice over their lifetime),
-+ * which inflates SP for older shadows under heavy refault churn. The
-+ * feasibility bound SP <= NR_ACTIVE would over-activate in that
-+ * regime; tightening to (A+I)/2 dampens this without a separate
-+ * correction.
-  *
-  *		Refaulting inactive pages
-  *
-@@ -142,19 +157,14 @@
-  * time there is actually a good chance that pages on the active list
-  * are no longer in active use.
-  *
-- * So when a refault distance of (R - E) is observed and there are at
-- * least (R - E) pages in the userspace workingset, the refaulting page
-- * is activated optimistically in the hope that (R - E) pages are actually
-- * used less frequently than the refaulting page - or even not used at
-- * all anymore.
-- *
-- * That means if inactive cache is refaulting with a suitable refault
-- * distance, we assume the cache workingset is transitioning and put
-- * pressure on the current workingset.
-+ * So when a refault distance SP satisfies the rule above, the
-+ * refaulting page is activated optimistically in the hope that roughly
-+ * (NR_ACTIVE + NR_INACTIVE) / 2 pages on the active side are used less
-+ * frequently than the refaulting page - or even not used at all anymore.
-  *
-  * If this is wrong and demotion kicks in, the pages which are truly
-  * used more frequently will be reactivated while the less frequently
-- * used once will be evicted from memory.
-+ * used ones will be evicted from memory.
-  *
-  * But if this is right, the stale pages will be pushed out of memory
-  * and the used pages get to stay in cache.
-@@ -170,11 +180,11 @@
-  *
-  *		Implementation
-  *
-- * For each node's LRU lists, a counter for inactive evictions and
-- * activations is maintained (node->nonresident_age).
-+ * For each lruvec, a non-resident age counter (lruvec->nonresident_age)
-+ * is maintained. It is incremented once per evicted page.
-  *
-  * On eviction, a snapshot of this counter (along with some bits to
-- * identify the node) is stored in the now empty page cache
-+ * identify the lruvec) is stored in the now empty page cache
-  * slot of the evicted page.  This is called a shadow entry.
-  *
-  * On cache misses for which there are shadow entries, an eligible
-@@ -366,7 +376,7 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
-  * to the in-memory dimensions. This function allows reclaim and LRU
-  * operations to drive the non-resident aging along in parallel.
-  */
--void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages)
-+static void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages)
- {
- 	/*
- 	 * Reclaiming a cgroup means reclaiming all its children in a
-@@ -433,14 +443,12 @@ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
- bool workingset_test_recent(void *shadow, bool file, bool *workingset,
- 				bool flush)
- {
-+	unsigned long refault, distance, active, inactive;
- 	struct mem_cgroup *eviction_memcg;
- 	struct lruvec *eviction_lruvec;
--	unsigned long refault_distance;
--	unsigned long workingset_size;
--	unsigned long refault;
--	int memcgid;
- 	struct pglist_data *pgdat;
- 	unsigned long eviction;
-+	int memcgid;
+@@ -277,44 +277,41 @@ static void *lru_gen_eviction(struct folio *folio)
  
- 	if (lru_gen_enabled()) {
- 		bool recent;
-@@ -511,8 +519,8 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ /*
+  * Tests if the shadow entry is for a folio that was recently evicted.
+- * Fills in @lruvec, @token, @workingset with the values unpacked from shadow.
+  */
+-static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
+-				unsigned long *token, bool *workingset, bool file)
++static bool lru_gen_test_recent(struct lruvec *lruvec,
++				unsigned long token, bool file)
+ {
+-	int memcg_id;
+ 	unsigned long max_seq;
+-	struct mem_cgroup *memcg;
+-	struct pglist_data *pgdat;
+-
+-	unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset);
+ 
+-	memcg = mem_cgroup_from_private_id(memcg_id);
+-	*lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-
+-	max_seq = READ_ONCE((*lruvec)->lrugen.max_seq);
++	max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
+ 	max_seq &= (file ? EVICTION_MASK : EVICTION_MASK_ANON) >> LRU_REFS_BITS;
+ 
+-	return abs_diff(max_seq, *token >> LRU_REFS_BITS) < MAX_NR_GENS;
++	return abs_diff(max_seq, token >> LRU_REFS_BITS) < MAX_NR_GENS;
+ }
+ 
+ static void lru_gen_refault(struct folio *folio, void *shadow)
+ {
+ 	bool recent;
++	int memcg_id;
+ 	int hist, tier, refs;
+ 	bool workingset;
+ 	unsigned long token;
+ 	struct lruvec *lruvec;
++	struct mem_cgroup *memcg;
++	struct pglist_data *pgdat;
+ 	struct lru_gen_folio *lrugen;
+ 	int type = folio_is_file_lru(folio);
+ 	int delta = folio_nr_pages(folio);
+ 
+-	rcu_read_lock();
++	unpack_shadow(shadow, &memcg_id, &pgdat, &token, &workingset);
+ 
+-	recent = lru_gen_test_recent(shadow, &lruvec, &token, &workingset, type);
++	rcu_read_lock();
++	memcg = mem_cgroup_from_private_id(memcg_id);
++	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+ 	if (lruvec != folio_lruvec(folio))
+ 		goto unlock;
+ 
++	recent = lru_gen_test_recent(lruvec, token, type);
+ 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + type, delta);
+ 
+ 	if (!recent)
+@@ -347,8 +344,8 @@ static void *lru_gen_eviction(struct folio *folio)
+ 	return NULL;
+ }
+ 
+-static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
+-				unsigned long *token, bool *workingset, bool file)
++static bool lru_gen_test_recent(struct lruvec *lruvec,
++				unsigned long token, bool file)
+ {
+ 	return false;
+ }
+@@ -445,19 +442,8 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ 	unsigned long eviction;
+ 	int memcgid;
+ 
+-	if (lru_gen_enabled()) {
+-		bool recent;
+-
+-		rcu_read_lock();
+-		recent = lru_gen_test_recent(shadow, &eviction_lruvec, &eviction,
+-					     workingset, file);
+-		rcu_read_unlock();
+-		return recent;
+-	}
+-
+ 	rcu_read_lock();
+ 	unpack_shadow(shadow, &memcgid, &pgdat, &eviction, workingset);
+-	eviction <<= bucket_order[file];
+ 
+ 	/*
+ 	 * Look up the memcg associated with the stored ID. It might
+@@ -482,6 +468,17 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ 
+ 	if (!mem_cgroup_disabled() && !eviction_memcg)
+ 		return false;
++
++	eviction_lruvec = mem_cgroup_lruvec(eviction_memcg, pgdat);
++
++	if (lru_gen_enabled()) {
++		bool recent;
++
++		recent = lru_gen_test_recent(eviction_lruvec, eviction, file);
++		mem_cgroup_put(eviction_memcg);
++		return recent;
++	}
++
+ 	/*
+ 	 * Flush stats (and potentially sleep) outside the RCU read section.
+ 	 *
+@@ -495,7 +492,6 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ 	if (flush)
+ 		mem_cgroup_flush_stats_ratelimited(eviction_memcg);
+ 
+-	eviction_lruvec = mem_cgroup_lruvec(eviction_memcg, pgdat);
+ 	refault = atomic_long_read(&eviction_lruvec->evictions);
+ 
+ 	/*
+@@ -514,6 +510,7 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
  	 * longest time, so the occasional inappropriate activation
  	 * leading to pressure on the active list is not a problem.
  	 */
--	refault_distance = ((refault - eviction) &
--			    (file ? EVICTION_MASK : EVICTION_MASK_ANON));
-+	distance = ((refault - eviction) &
-+		    (file ? EVICTION_MASK : EVICTION_MASK_ANON));
++	eviction <<= bucket_order[file];
+ 	distance = ((refault - eviction) &
+ 		    (file ? EVICTION_MASK : EVICTION_MASK_ANON));
  
- 	/*
- 	 * Compare the distance to the existing workingset size. We
-@@ -521,22 +529,21 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
- 	 * workingset competition needs to consider anon or not depends
- 	 * on having free swap space.
- 	 */
--	workingset_size = lruvec_page_state(eviction_lruvec, NR_ACTIVE_FILE);
--	if (!file) {
--		workingset_size += lruvec_page_state(eviction_lruvec,
--						     NR_INACTIVE_FILE);
--	}
-+	active = lruvec_page_state(eviction_lruvec, NR_ACTIVE_FILE);
-+	inactive = lruvec_page_state(eviction_lruvec, NR_INACTIVE_FILE);
-+
- 	if (mem_cgroup_get_nr_swap_pages(eviction_memcg) > 0) {
--		workingset_size += lruvec_page_state(eviction_lruvec,
--						     NR_ACTIVE_ANON);
--		if (file) {
--			workingset_size += lruvec_page_state(eviction_lruvec,
--						     NR_INACTIVE_ANON);
--		}
-+		active += lruvec_page_state(eviction_lruvec, NR_ACTIVE_ANON);
-+		inactive += lruvec_page_state(eviction_lruvec, NR_INACTIVE_ANON);
- 	}
- 
- 	mem_cgroup_put(eviction_memcg);
--	return refault_distance <= workingset_size;
-+
-+	/*
-+	 * Be cautious about challenging the existing active working set;
-+	 * sacrificing the inactive part of the opposite type should be safe.
-+	 */
-+	return distance <= (active + inactive) / 2;
- }
- 
- /**
-@@ -581,7 +588,6 @@ void workingset_refault(struct folio *folio, void *shadow)
- 		goto out;
- 
- 	folio_set_active(folio);
--	workingset_age_nonresident(lruvec, nr);
- 	mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + file, nr);
- 
- 	/* Folio was active prior to eviction */
-@@ -598,23 +604,6 @@ void workingset_refault(struct folio *folio, void *shadow)
- 	mem_cgroup_put(memcg);
- }
- 
--/**
-- * workingset_activation - note a page activation
-- * @folio: Folio that is being activated.
-- */
--void workingset_activation(struct folio *folio)
--{
--	/*
--	 * Filter non-memcg pages here, e.g. unmap can call
--	 * mark_page_accessed() on VDSO pages.
--	 */
--	if (mem_cgroup_disabled() || folio_memcg_charged(folio)) {
--		rcu_read_lock();
--		workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
--		rcu_read_unlock();
--	}
--}
--
- /*
-  * Shadow entries reflect the share of the working set that does not
-  * fit into memory, so their number depends on the access pattern of
 
 -- 
 2.54.0
