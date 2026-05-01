@@ -4,123 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44B67CCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41A81CD3423
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 22:00:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47A096B00B8; Fri,  1 May 2026 17:48:18 -0400 (EDT)
+	id 5513C6B00B2; Fri,  1 May 2026 18:00:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42BC26B00BA; Fri,  1 May 2026 17:48:18 -0400 (EDT)
+	id 5022A6B00B3; Fri,  1 May 2026 18:00:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31AD46B00BB; Fri,  1 May 2026 17:48:18 -0400 (EDT)
+	id 4179E6B00B4; Fri,  1 May 2026 18:00:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 19EE96B00B8
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:48:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B2D6F120239
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:48:17 +0000 (UTC)
-X-FDA: 84720189834.17.84E3E02
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C018A140008
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:48:15 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=P5xgpZw0;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 317A46B00B2
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:00:48 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D1A0C12028E
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 22:00:47 +0000 (UTC)
+X-FDA: 84720221334.16.EFD0C69
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5D4794000E
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 22:00:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777672095;
+	s=arc-20220608; t=1777672846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hc5RHLA5VFRb81K4SZGy+0XpIw2C1HBIpUMvPfNhCXc=;
-	b=gTOY+fpVr7UvWfwMnH9KfO8Yjjt4V8HzAl5oA+19CR7iDjcrAjRd+ii5+Y0YeqlyYlTGRx
-	EINEbWGAXni+ECBz8bnjX3AcTLu+5+B7N2qcAC8x2BuxbUTP8LEJkUxOO/EJZfjr4DToFj
-	fnbm9a6qiNABjDCknod4zn0ydqw1Ecw=
+	 in-reply-to:in-reply-to:references:references;
+	bh=Wwwfe0obH20LpWlVotYjqydnyDPqLti6364XPkAjL3U=;
+	b=pwXpl8MbUvdJQS6+bBJqHrIsETgwmY6LsdLuKqf9uF6IshK7Bn5kcHBw2zy8HewrZUYj8B
+	YS1QiOjIjPXW2c1rH6MoYclNZeLYpjVqvZnSsUbjZLMsvxAwcaXs8OCaMEx1Q461CrD/sp
+	FbfWUaZ8H6/C9+5DVXoEVH0xeTsz4CM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=P5xgpZw0;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777672095; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777672846; a=rsa-sha256;
 	cv=none;
-	b=n3JMqfqLIgdDf/f7MCYSJlDEfvoES4yCZH2SiFxb9xtYw19dV4OikAke+rC8aBv2S4KZgc
-	tiDWrAWSdcdScloIgKwuRhxliFO2b80t7MGG6fEIH1znAkEllMYwBpBk0p+0ef1FGQgBAR
-	lyHthJPaaR7pWAMAIu3h+7qCrRM5doo=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8ec37d52c0dso248622885a.0
-        for <linux-mm@kvack.org>; Fri, 01 May 2026 14:48:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1777672095; x=1778276895; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hc5RHLA5VFRb81K4SZGy+0XpIw2C1HBIpUMvPfNhCXc=;
-        b=P5xgpZw0zVpTzGnKDrnqHOKUxWecDVykG2fUaAU7wy7Zp1lpjj7p19ykqfb8/sD4SB
-         qYvHTha0vbPvfSyveGpPmQ5bhLpH4E3uoa8nUEYeQ4eeBO3GCZiCPLRPghXJrYOQblC6
-         WyuUq/1460JQ/CWmmU4AxcnPdPpt9CeYhPR8R6jHnF0/tepEQ/Z9oxU8zfplPQP5ABgO
-         U+u2PXRf/Ly21So6wtCxtAaF0tEoF+syrxejMOgwqpaEld4gwveLXguckVhrpYXLStL/
-         HzK/XGpNbnAzDxiKXhgfMBqli1iBc3i/CHloHnJ2g95Na+g5/1NLV2eP0IgRpHET105L
-         g4Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777672095; x=1778276895;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hc5RHLA5VFRb81K4SZGy+0XpIw2C1HBIpUMvPfNhCXc=;
-        b=Klzm03BboegBN8rbTymlCa9GypBkVJCAd94NZW/9dMTTXpXhjv5Rdhc6dUZxuB2ZCC
-         xwKrYH+9EGb2hbzFVjbyDwrpdvwEAq8fP+H0Grq6J35eDPP6UZqzRNXbvAex7d2Tv4Vf
-         ugfvuzb0gToCMS1UZk/ylV6805/w8BTG3taN1dMhFGbqfeB9R6jQUzfM1pdb8LpDeBB7
-         6KCLqfjOLk6FvanyBybhHmcJe53bDyQcx8ISh7MRLu7bXAOBEu5JDsJGXAg65GApTpLM
-         KaJ4qylSjUxtJp1KWZjhHfI9r1QInfBbIJYlJ4Cyk3BoJmrKkcyDumhrgOmVDM2F3ZpN
-         yl4Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8hko5eOOOq6Zv4zwCrGIV+rtYei7K6FDlYwskuqu6KFEMQ4TBjArRDtBFF+0Wa+uakidblJsl1Sg==@kvack.org
-X-Gm-Message-State: AOJu0YykMpGDXAXUhUV/WcNdj/JToRSeqJLsPw19sqdXNFYdLp6e3bJo
-	p066oIIHSQIJcl9AZ4UUOq6MRYTnQVYZlgwUELeeuVNp2qaUqQKD6/qtWI+Q2Iz6nks=
-X-Gm-Gg: AeBDiesmIaQ0fA3PdoAkwwKAyh176QRGJSl3RSo5D9kGq2DttKniPNQkz87xpaYwNdo
-	dUmUgRy+e7bpchnk0SFUBqBGsflI8w6lJMVldhUA0WTgg3HJ0OXYSe+EMeHeRxSaP9khPWQy8De
-	Lta4G+cg0woHmjRRQ2C1Y9d8INrtEcKo5C2zFHPoKkQ8Y80lF5BmpZ59hjxVUc5femFsQZbB7G1
-	FojSWQ4RzVfknI5UwlTcdB27O2aTMv3OaNI0rlcHmYCC4B05wTmjH19CHsqQVTf/L1SwumsDFkF
-	2EjMhDIaNiSypNYMkyuQQpXjhZSANl8wyQJ3GJi4VS35A2PBSb8bti72WOrOXfI8bLyYL6eSGpC
-	F8c0FfAXZAXRMxdqYegMz1PBP3BqAxnAW/KJRcyAptdF/2ayxf9azJ94x7RDZHnundv356vJYW9
-	u4BL8F5ZfozUYCNEJIxoEHsFyu2hG1aSkDuY+tmz86cUK84pY/oAg5XHFCratxnxSxoseRujKq
-X-Received: by 2002:a05:622a:1a82:b0:50e:a1ab:67eb with SMTP id d75a77b69052e-5104bee8fdemr16187191cf.33.1777672094661;
-        Fri, 01 May 2026 14:48:14 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51040b8174csm28918761cf.25.2026.05.01.14.48.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 14:48:14 -0700 (PDT)
-Date: Fri, 1 May 2026 21:48:12 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, rppt@kernel.org, graf@amazon.com, 
-	pratyush@kernel.org, seanjc@google.com, maz@kernel.org, oupton@kernel.org, 
-	dwmw2@infradead.org, alex.williamson@redhat.com, kevin.tian@intel.com, 
-	rientjes@google.com, Tycho.Andersen@amd.com, anthony.yznaga@oracle.com, 
-	baolu.lu@linux.intel.com, david@kernel.org, dmatlack@google.com, mheyne@amazon.de, 
-	jgowans@amazon.com, jgg@nvidia.com, pankaj.gupta.linux@gmail.com, 
-	kpraveen.lkml@gmail.com, vipinsh@google.com, vannapurve@google.com, corbet@lwn.net, 
-	loeser@linux.microsoft.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, roman.gushchin@linux.dev, 
-	akpm@linux-foundation.org, pjt@google.com
-Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
- Live Update
-Message-ID: <afUNlL_lRDP6olHE@plex>
-References: <afEwWZksU0Fw61oT@plex>
- <0a71472c-b397-4699-a518-61faffcf4ab2@redhat.com>
+	b=eOZwXGvltcu45jghmniQ/srArp+EAkWVqqvvNKBzlJJgRfB3q2eUswVVb8mM1OkzXjMOXr
+	jce6+67CMiM+I6gDsVeXQ9AcHzg089iDcncjgeHuiItD4UChccukDfUoVakQQbt+uVVSkX
+	0MdFMpEG25s+7QZbb610zHinFMBUXe8=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 2 May 2026 07:00:39 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sat, 2 May 2026 07:00:39 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: David Carlier <devnexen@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
+	charsyam@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH] mm/swap, PM: hibernate: atomically replace hibernation
+ pin
+Message-ID: <afUih+XwGTHsR0HY@yjaykim-PowerEdge-T330>
+References: <20260430195651.287659-1-devnexen@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0a71472c-b397-4699-a518-61faffcf4ab2@redhat.com>
-X-Stat-Signature: qhqw7oy5ymzies9sjgfndaryfjit4ea5
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C018A140008
+In-Reply-To: <20260430195651.287659-1-devnexen@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1777672095-306287
-X-HE-Meta: U2FsdGVkX18fCDCXS4kp3U6B8Y0FwQEloPyY4QMaNEQteDMhHljACCwcmojWfdWQMHTwGOORtxhLiB98xgFA9fxJ0ANkDlzbtMqRyR/4PF8+8vh08ih1U7FgbpBWtruDKrGSx57njCPpk0CDseKd0FDZLWRuQUmqbAwb+LBnGE4Ni07/LGOk8DrBrCcOqS3lbVUrS0zYwJ/LLXxR3CJ9VmsCBz6S0bjyf3lC5wvJGF4Su91MLCN5JP2Yg6s/fYWYYnuVOzNzqGrz7tpry8084lEhl/lT5PxnsisOa0qWV6ZxSX86pbQCw1eiV2rLvrLH1oItUylQ+cefASoLiKSLLWFQ+070fnTyh2OBF8BNssbN4V8QuIRSdIWcNqBiHeHDlMbmgc1sGl4rvuVlgesWi6Wn5ui0QNpbZ6y61Vc+oaVL25eNt5t/zs/FuJvDi2JCBMxZQcg7qqYQoQZ6Mn+vwUe7Piz2e1wrbxh8ADJJyh7ZnefAFG/MW4FtGqoODJhzMq5XV1QdOXzZU7eRf0tUjI5+dOkJga98LoMFX/SeL/XR+RSVOTf7DTM7cf3GIH/1yWR4NVw5Hnd4nfY+vHPKJIsMGa61bZr++JI2mClC0c1HetJ6dWtdn4CSOCGTh1flyfTHDCDJfzKJCMU3q66N4LDgh0ZZaQwxr4a1KFCKoqvjFOfUblh96MdcxF7M90UZeJ3xKtWiw1zaH40k9F5vdTxohpEmAuNozbKI8vwddD2CkokuOVx7LbIKLSbFMcDfMWTv+p4xrFYd8vDNet7as6fjGP3qDw+HYqyVK4qF4pwF77F0S9XPz9POaqwI8OogKWtVvDBoNn4sJski1yfgypKqcPhAm93DCbo4JRP7Z/tml5FBRm0VtVbQ7QV53U6A6CfH+mxvASzxgKazqQ3Roq4HM2ylJWubNNcdhILOWc3Q/OUHOAgf52iJW8Wjw/5tv5oiF/b/JxAQm5I/1lZ
- rEmdOS1a
- xqlPhtLs8kqqpN3PE6luvpn61XZoizb5iUQkKAiJ23o/th4AnuzHu87gagR+LW2X3O+h+pwM4DoO1MzH/mSQODE/Ls696170jOrlEsAehu5HPSxxNcjirko56cX9FWgjRoiLL8sKI/qW87CA+ygyjDYRedrx7l5ZGeji4W6qVkfQLe29A5wz54TkOmgUOOqFd70RUWjKsrnEnT9LAClgN43CRjwsUuRR5J/Hwm2M8y9KLxZYo3q4Yu9p0k8qNUaWyZIuAsD3xipfcK4JuRlHAEqwdVkJEHwZ8dg9uJFxOKzKD2YrY6H6TncIsJSIFyA1DOqpds6rKmeRXw4KFq2tJYbtQLp7Y4621XBXsjEUlakMCP/kmcBp9GNe07Kd598IG711c
+X-Rspamd-Queue-Id: 5D4794000E
+X-Rspamd-Server: rspam06
+X-Stat-Signature: pg6zuerh8zru86sz93yhhphdkct1nef3
+X-HE-Tag: 1777672843-525274
+X-HE-Meta: U2FsdGVkX1/6F/Uc15OY16WdGMaBSoaC4N+9bEuNi0bC6E8O2ob0Z2yStDEAqoQ/XbASyqNxXVNr7O9BSyKAMeW/iAIEPi96tB3JQQOwM/X7bu/Gzr8fj5bZtJ5CSzfjrahbie6sGzEeF1cMawMwO9ZRDLxrNQTFTp6GuKm4MqP2OrHesucRFekIg1Ayz1IMgEzLXpccPdW92pO8lJZA8IXUrjs2i7Sg4a+qBEXSOu9UDFnZ+XanY8Wd/Db4fWHPQYRYDfF4tJIzYXIeUhFg/Ar3j9f31qTaK8y5oBYYzvshZrpKlR4ud6F9h3/KFKAMW04a4NRYkn+tJw5EnIXcJydxuUoEbk1VXLO5mOFZbjr7SMX+ijlpDffHW1zLjLWM/060vRsLPuSCwPguW5xMmfNX9UcD5M5/zRR//dnuzoxOiaEqnliC7Xdn9zgFX5GBcqmoHz0kNNe2KRo6ufg6LMtEzhvDjGE/OocsaYJRDBpZvRwSDv4SdrIidKJ7qlq0kpB1utBv5XxLnCii5hFkMw14geu0u5MsgaPiabRRBshHl9p9ifQLimZ1ah/lCo6tX+I6HISNNsKes9/ZvjGkFeZxb6e6CQYA26tkpq07R7iSCahB84dhqYRKzuV4a4Ie2gXxWY4QA/XatLEBt0Jof0p/g1SXmih4YrmtWzNqFrTdhLPySjT1Rb5sB53ajhKCSDqE72HGVGkROEi4f4ULqijSDb3d4R+gB/6psiX5S+wNwqsnLKO9bhXKAAMSJ/lhGNB6zMxBbamLsSwz3b2zGNQbVTY9TfMOwlRJ8rltsWVe/ovbPqiMJA+JCwBs0WH9bCLzPzwN4MHvHSLmi2N0lgxdChuIPXtwvUUY+b5u/FCJ0C9lGFUvY+mj1nUY6wbDUXY11KlUngQEJJ1at01KYIcO/YzOJtU8ZW066iFmjQ686S9reSxF1lWVCom4h7iFUYjJEW61hQuKfHhY857
+ nsMII7f7
+ fwtjI+yc2V5z9Pxnnex6dvE3b04L2xF/KBLk2eH06NKDSmknhSE8saHYdQn+vWNSfyArOhl80Jsyczwb+NpVpp7J+jQGi2LYVU6V4WKxri1vpHaVXZl9U5WPEFjHQpahe7wyEc++OPJ84QJfdKczg32mNP1EdIlan404B0MRoqF1lFnL48qsm24a3/W54h1QS+Zg1Hg0iT9MBzakmy9Gq8WdBLy8ess+bda96GlJAMmtQbp7KOMc2Sn0PX+l1jdB3y14AmLdf7o518gc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,337 +87,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-30 15:28, Paolo Bonzini wrote:
-> I have some very similar observations to Alex and some very similar
-> observations to David.  This has to imply that everyone will agree with me.
-> :)
+On Thu, Apr 30, 2026 at 08:56:51PM +0100, David Carlier wrote:
+> snapshot_set_swap_area() unpins the previously selected swap device
+> and pins the new one in two separate swap_lock critical sections.
+> In the gap between them, swapoff() observes SWP_HIBERNATION cleared,
+> bypasses the guard, and tears down the device, reopening the race
+> the SWP_HIBERNATION pin was meant to close. The window is reachable
+> on any SNAPSHOT_SET_SWAP_AREA call after the snapshot device is
+> opened for hibernation, and on any retry after the resume path's
+> first selection.
 > 
-> Seriously, the main contention point, from reading the thread, is the
-> placement and lifecycle of the caretaker.  More on this later...
+> Add repin_hibernation_swap_type(), which looks up the new device,
+> clears the old SWP_HIBERNATION flag and sets the new one under a
+> single swap_lock acquisition. The same-device case is short-
+> circuited so userspace can re-select the same swap area without
+> tripping WARN_ON_ONCE and -EBUSY. Switch snapshot_set_swap_area()
+> to the new helper.
 > 
-> On 4/29/26 00:29, Pasha Tatashin wrote:
-> > While this proposal focuses on its critical role in minimally disruptive
-> > Live Update, the Caretaker is fundamentally designed as an extensible
-> > primitive. Its architecture allows it to be leveraged for a variety of
-> > other advanced virtualization use cases, such as running custom
-> > lightweight hypervisors or completely offloading virtualization duties
-> > to an accelerator card.
+> A failed lookup now preserves the previous pin instead of dropping
+> it, so a bad SNAPSHOT_SET_SWAP_AREA leaves the prior selection
+> intact. The open and release paths keep using
+> pin_hibernation_swap_type() and unpin_hibernation_swap_type().
 > 
-> One step at a time please---and as an initial step, just place it inside the
-> kernel, a la Arm nVHE.
+> The race was identified during AI-assisted review of the
+> SWP_HIBERNATION pinning series.
 > 
-> Since your design would have anyway the ability to update the caretaker, you
-> can embed that part into the reattachment process, so that the new kernel
-> can use its own caretaker.
-
-This is a good point. If we make the Caretaker built-in and always 
-enabled via a module parameter, the update to new Caretaker can be 
-handled in the new kernel when we adopt the Orphaned VM thread during 
-reattachment.
-
-> This reduces a lot the need to establish a stable-ish ABI.  Only the
-> handover (kexec/LUO) needs to be stable, so that the new kernel can populate
-> its kvm and kvm_vcpu structs.  And for that we mostly have a solution
-> already: a stream of serialized ioctls.
-
-The way I see it, vmfd and vcpufd need to support LUO preservation by 
-implementing the liveupdate_file_ops callbacks (.preserve, .restore).
-
-When userspace preserves the vcpufd, the kernel isolates the assigned 
-pCPU (probably requiring the vCPU to be pinned to the CPU, and the CPU 
-to be in an isolated cpuset), offlines it from the kernel's perspective, 
-and signals to the Caretaker that KVM is detached.
-
-We can start with the simplest form of the Caretaker for a PoC:
-
-* No ASI. It duplicates the kernel page tables and uses its own mappings.
-* It does not handle any VM exits locally. It passes everything down to 
-KVM during normal operation, and treats all exits as blocking events 
-when detached.
-
-The PoC can be demonstrated without kexec: execute vcpufd .preserve() to 
-isolate and offline the pCPU, and later use LUO .retrieve() to online 
-the pCPU and re-adopt the running vCPU thread.
-
-Even for this simplest form, we still need a defined ABI between the 
-host kernel and the Caretaker. The host must send an IPI to 
-synchronously notify the Caretaker of attach and detach transitions. 
-This ABI must also handle Caretaker replacement during the adoption 
-phase: when the new kernel retrieves the vCPU, it requires a protocol to 
-notify the running Caretaker that the pCPU is being onlined. The 
-Caretaker must reach a known, state at that moment so the kernel can 
-seamlessly replace the previous kernel's Caretaker version with the 
-current one. Finally, the Caretaker still relies on the CCB to access 
-KVM routing pointers for forwarding VM exits back to the host during 
-normal operation.
-
-> > During the execution of the KVM_SET_CARETAKER ioctl, instead of
-> > pointing the hardware's return path to standard KVM entry points (e.g.,
-> > vmx_vmexit or svm_vcpu_run), KVM reprograms the host-state return area
-> > of the CPU's hardware virtualization control structures (e.g., Intel
-> > VMCS, AMD VMCB, or ARM equivalent) to point directly into the
-> > bare-metal Caretaker environment.
+> Fixes: 8e6e0d845823 ("mm/swap, PM: hibernate: fix swapoff race in uswsusp by pinning swap device")
+> Assisted-by: Codex (gpt-5-codex)
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> ---
+>  include/linux/swap.h |  2 ++
+>  kernel/power/user.c  | 17 ++++--------
+>  mm/swapfile.c        | 61 ++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 68 insertions(+), 12 deletions(-)
 > 
-> This can be done unconditionally for all VMs based on a module parameter,
-> again as in Arm nVHE.
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 1930f81e6be4..213ecb627a39 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -436,6 +436,8 @@ static inline long get_nr_swap_pages(void)
+>  extern void si_swapinfo(struct sysinfo *);
+>  extern int pin_hibernation_swap_type(dev_t device, sector_t offset);
+>  extern void unpin_hibernation_swap_type(int type);
+> +extern int repin_hibernation_swap_type(int old_type, dev_t device,
+> +                                       sector_t offset);
+>  extern int find_hibernation_swap_type(dev_t device, sector_t offset);
+>  int find_first_swap(dev_t *device);
+>  extern unsigned int count_swap_pages(int, int);
+> diff --git a/kernel/power/user.c b/kernel/power/user.c
+> index d0fcfba7ac23..6e4f40e49319 100644
+> --- a/kernel/power/user.c
+> +++ b/kernel/power/user.c
+> @@ -218,6 +218,7 @@ static int snapshot_set_swap_area(struct snapshot_data *data,
+>  {
+>  	sector_t offset;
+>  	dev_t swdev;
+> +	int new_type;
+>  
+>  	if (swsusp_swap_in_use())
+>  		return -EPERM;
+> @@ -238,19 +239,11 @@ static int snapshot_set_swap_area(struct snapshot_data *data,
+>  		offset = swap_area.offset;
+>  	}
+>  
+> -	/*
+> -	 * Unpin the swap device if a swap area was already
+> -	 * set by SNAPSHOT_SET_SWAP_AREA.
+> -	 */
+> -	unpin_hibernation_swap_type(data->swap);
+> +	new_type = repin_hibernation_swap_type(data->swap, swdev, offset);
+> +	if (new_type < 0)
+> +		return new_type;
+>  
+> -	/*
+> -	 * User space encodes device types as two-byte values,
+> -	 * so we need to recode them
+> -	 */
+> -	data->swap = pin_hibernation_swap_type(swdev, offset);
+> -	if (data->swap < 0)
+> -		return swdev ? -ENODEV : -EINVAL;
+> +	data->swap = new_type;
+>  	data->dev = swdev;
+>  	return 0;
+>  }
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index c7e173b93e11..4840fd40f36f 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -2219,6 +2219,67 @@ int pin_hibernation_swap_type(dev_t device, sector_t offset)
+>  	return type;
+>  }
+>  
+> +/**
+> + * repin_hibernation_swap_type - Atomically replace the hibernation pin
+> + * @old_type: Swap type currently pinned (or < 0 if none).
+> + * @device:   Block device of the new resume image.
+> + * @offset:   Offset identifying the new swap area.
+> + *
+> + * Look up the swap device for @device/@offset and atomically transfer
+> + * the SWP_HIBERNATION pin from @old_type (if valid) to the new device,
+> + * all under a single swap_lock critical section. This closes the
+> + * swapoff() window that exists when callers unpin and re-pin in two
+> + * separate operations.
+> + *
+> + * If the new device cannot be located, the existing pin on @old_type
+> + * is preserved and an error is returned. If @old_type already refers
+> + * to the same swap_info_struct as the new lookup, no flag changes are
+> + * made and @old_type is returned.
+> + *
+> + * Return:
+> + * >= 0 on success (new swap type).
+> + * -EINVAL if @device is invalid.
+> + * -ENODEV if the swap device is not found.
+> + * -EBUSY  if the new device is already pinned by another context.
+> + */
+> +int repin_hibernation_swap_type(int old_type, dev_t device, sector_t offset)
+> +{
+> +	struct swap_info_struct *old_si, *new_si;
+> +	int new_type;
+> +
+> +	spin_lock(&swap_lock);
+> +
+> +	new_type = __find_hibernation_swap_type(device, offset);
+> +	if (new_type < 0) {
+> +		spin_unlock(&swap_lock);
+> +		return new_type;
+> +	}
+> +
+> +	new_si = swap_type_to_info(new_type);
+> +	if (WARN_ON_ONCE(!new_si)) {
+> +		spin_unlock(&swap_lock);
+> +		return -ENODEV;
+> +	}
+> +
+> +	old_si = swap_type_to_info(old_type);
+> +	if (new_si == old_si) {
+> +		spin_unlock(&swap_lock);
+> +		return new_type;
+> +	}
+> +
+> +	if (WARN_ON_ONCE(new_si->flags & SWP_HIBERNATION)) {
+> +		spin_unlock(&swap_lock);
+> +		return -EBUSY;
+> +	}
+> +
+> +	if (old_si)
+> +		old_si->flags &= ~SWP_HIBERNATION;
+> +	new_si->flags |= SWP_HIBERNATION;
+> +
+> +	spin_unlock(&swap_lock);
+> +	return new_type;
+> +}
+> +
+>  /**
+>   * unpin_hibernation_swap_type - Unpin the swap device for hibernation
+>   * @type: Swap type previously returned by pin_hibernation_swap_type()
+> -- 
+> 2.53.0
 
-Makes sense.
+I also caught up on this thread late due to travel.
+Sorry.
 
-> 
-> > Note on Optimization vs. Security: Constantly switching the page table
-> > (CR3) on every VM Exit can be expensive due to TLB flushing. To
-> > optimize performance, the Caretaker can share the host kernel's page
-> > tables while the kernel is still around, and dynamically replace
-> > HOST_CR3 with the dedicated, isolated page tables only when the vCPU is
-> > orphaned (during the detachment phase). On the other hand, maintaining
-> > a permanently isolated CR3 for the Caretaker adds a strong security
-> > boundary, achieving hardware-enforced separation similar to KVM Address
-> > Space Isolation (ASI).
-> 
-> Agreed on this.
-> 
-> > The Caretaker requires a defined ABI to communicate with the host KVM
-> > subsystem. This ABI is implemented via the shared, identity-mapped .ccb
-> > section of the ELF payload, acting as the Caretaker Control Block
-> > (CCB).
-> > 
-> > The CCB acts as the source of truth for the Caretaker's execution loop
-> > and contains three primary elements:
-> > 
-> >    * Attachment State Flag: An atomic variable indicating the current
-> >      relationship with the host KVM subsystem (e.g., KVM_ATTACHED or
-> >      KVM_DETACHED).
-> 
-> This must be done atomically at the time Linux offlines/onlines a pCPU. The
-> interface from Linux to the caretaker must use some kind of IPI so that the
-> new kernel can force a VMEXIT (if needed) in the caretaker, ask it to
-> serialize the vm state, and pass it down to the new kernel's caretaker.
+Hello David Carlier,
 
-Yes, agree.
+It looks like the same issue and approach was raised previously:
+https://lore.kernel.org/all/20260414143200.1267932-1-charsyam@gmail.com/#t
+(+CC DaeMyung)
 
-> 
-> >    * KVM Routing Pointers: The physical function pointers that the
-> >      Caretaker uses to safely jump into the host KVM's standard VM Exit
-> >      handlers when operating in normal mode.
-> >    * Shared Configuration Metadata: A physical pointer to dedicated
-> >      memory pages used by the kernel to share dynamic vCPU configuration
-> >      data with the Caretaker. Because every guest is configured
-> >      differently, KVM populates these pages with the specific parameters
-> >      negotiated during VM initialization (such as CPUID feature masks,
-> >      APIC routing, and timer states). These pages also include a
-> >      pre-allocated Telemetry Buffer for the Caretaker to log VM Exits
-> >      and spin-wait durations. These dedicated pages are explicitly
-> >      preserved across the host reboot via KHO, ensuring the Caretaker
-> >      maintains continuous access to the exact context required to
-> >      accurately emulate trivial exits during the gap.
-> 
-> All this is mostly unnecessary if the caretaker is provided by the kernel.
-> The recently introduced remote ring buffers can be used for tracing too.
+I had suggested improving the fix by reusing the existing APIs
+rather than adding a new one. v2 was posted along those lines:
+https://lore.kernel.org/all/20260414164937.1363887-1-charsyam@gmail.com/
 
-I will need to learn more about how remote ring buffers work, but it 
-would have to be possible to use them even when there is no kernel. So, 
-as I understand it, something like this would happen:
+To restate the points from that earlier review.
 
-The old kernel allocates the remote ring buffer, passes the physical 
-address to the Caretaker, and preserves this memory via KHO.
+1. I think it is acceptable to release the existing pin when the
+   new set operation fails. there is no significant side effect
+   (see the earlier review for details).
 
-During the kexec gap (when the host kernel is completely offline), the 
-Caretaker acts purely as a producer, writing trace events directly to 
-this physical memory block and advancing the ring buffer pointers.
+2. If we still want to fix it, reusing the existing APIs seems
+   preferable to adding a new one.
 
-When the new kernel boots and re-adopts the orphaned vCPU, it retrieves 
-this memory from KHO and attaches it back to the tracing subsystem.
+Chris, Andrew - please take the prior thread into account during review. 
 
-> > The Caretaker first evaluates the VM Exit reason. If the exit belongs to
-> > a category that the Caretaker is programmed to resolve natively, it
-> > handles it internally. For example, profiling of guests has identified
-> > the following exit categories for potential local resolution:
-> > 
-> >    * Guest Idle Exits (e.g., HLT): When the guest OS goes idle, it
-> >      triggers idle exits. The Caretaker intercepts these and halts the
-> >      physical core until the next guest-bound interrupt fires, preserving
-> >      host power.
-> 
-> I don't think HLT can be handled entirely here.  Either you skip the exit
-> completely or you have to go out to the scheduler.  The HLT exit could be
-> skipped unconditionally for an orphaned VM, but while there is a running
-> kernel the caretaker has to run entirely with interrupts off and that limits
-> what you can do.
-> 
-> In fact there is already a blueprint of what can be handled easily in the
-> caretaker, namely vmx_exit_handlers_fastpath()/svm_exit_handlers_fastpath().
-> Stick to what exists already.
-
-I agree regarding HLT: during the gap, the simplest approach is to just 
-skip the exit and return directly to the VM without attempting to handle 
-it.
-
-Also, yes, vmx_exit_handlers_fastpath() and svm_exit_handlers_fastpath() 
-provide a good blueprint for the VM exits that can be handled directly 
-in the Caretaker.
-
-> 
-> >    * Timer and APIC Exits: Even an idle guest frequently writes to
-> >      interrupt controllers and system registers to configure internal
-> >      timers. The Caretaker handles these trivial writes directly,
-> >      acknowledging the timer updates.
-> 
-> This depends heavily on the implementation of the hypervisor, for example it
-> can be done on Intel via the preemption timer but not on AMD where an actual
-> hrtimer is needed.
-
-The Caretaker will have varying degrees of support depending on the 
-architecture.
-
-For the initial PoC, we can start with the most primitive form: treating 
-these as blocking exits across all relevant architectures (Intel, AMD, 
-ARM).
-
-Beyond the PoC, we will expand this functionality independently per 
-platform to reduce the blackout window, berpaps based on fastpath 
-support. If a specific architecture lacks the hardware features to 
-handle a certain exit natively in the Caretaker, it will remain a 
-blocking exit on that platform during the gap.
-
-> 
-> [...]
-> 
-> > When the new VMM process spawns, it retrieves the
-> >     preserved session and issues LIVEUPDATE_SESSION_RETRIEVE_FD using
-> >     its token. LUO invokes KVM's .retrieve() callback to map the
-> >     preserved vcpufd back into the new VMM's file descriptor table. As
-> >     part of this retrieval process, the host formally brings the
-> >     isolated pCPU back online, and the new VMM userspace thread is
-> >     attached back to the active VM thread running on the vCPU. Finally,
-> >     KVM populates the new KVM Routing Pointers in the CCB and
-> >     atomically flips the Host State Flag back to KVM_ATTACHED. This
-> >     breaks the Caretaker's spin-wait loop (if it is in this state),
-> >     allowing standard KVM operation to resume.
-> 
-> This would also include some kind of serialization of the old VM into the
-> new kernel's struct kvm_vcpu.
-
-> 
-> Also some kind of feature negotiation is needed (if that fails, the VMs are
-> terminated unceremoniously) so I believe that the transition into and out of
-> the gap must be synchronous.  For example with INIT/SIPI for the entry, and
-> an IPI for the exit?
-
-Yes, the serialization of the old VM state into the new kernel's struct 
-kvm_vcpu is handled via KHO (Kexec Handover) during the LUO .preserve() 
-and .retrieve() phases.
-
-Regarding feature negotiation, compatibility checks are a fundamental 
-requirement for live update. If the new kernel does not support the 
-features required by the preserved VM, the update should ideally be 
-aborted before the point of no return, or as you said, the VM must be 
-terminated unceremoniously.
-
-I completely agree that the transition into and out of the gap must be 
-synchronous. As discussed above, using an IPI is the right approach. For 
-entry, the host kernel signals the Caretaker via IPI to ensure it 
-reaches a known state before the pCPU is offlined. For exit, the new 
-kernel sends an IPI to the orphaned pCPU to force a VM exit, allowing 
-the new kernel to take control, update the Caretaker environment, 
-and complete the reattachment.
-
-> > Guest-to-Guest IPIs
-> > -------------------
-> > 
-> >    * The Problem: If the guest OS attempts to wake up a sleeping thread,
-> >      one orphaned vCPU will send an Inter-Processor Interrupt (IPI) to
-> >      another orphaned vCPU. In standard virtualization without hardware
-> >      assistance, writing to the APIC ICR (or sending an ARM SGI) causes
-> >      a VM Exit so the host KVM can emulate the message delivery. During
-> >      the gap, KVM is unavailable to route this message.
-> > 
-> >    * Proposed Solution: The architecture may leverage hardware virtualized
-> >      interrupts (Intel APICv, AMD AVIC, or ARM GICv4.1 virtual SGIs).
-> >      This allows the hardware silicon to handle IPI delivery between the
-> >      isolated pCPUs natively, eliminating the VM Exit. Alternatively,
-> >      the Caretaker can be programmed to emulate the IPI delivery. By
-> >      utilizing the shared memory metadata, the Caretaker can determine
-> >      the target vCPU and directly update its pending interrupt state.
-> 
-> Yeah, I think APIC emulation to some extent must be moved into the VMX/SVM
-> fastpaths.  The good news is that this can be done already as a PoC without
-> needing the whole caretaker and LUO infrastructure.
-
-Moving APIC emulation into the VMX/SVM fastpaths makes sense as a 
-standalone effort.
-
-> 
-> >    * The Problem: What happens if a Non-Maskable Interrupt (NMI), a
-> >      hardware timer tick, or a Machine Check Exception / System Error
-> >      (MCE / ARM SError) arrives while the CPU is actively executing
-> >      Caretaker code in KVM_DETACHED mode?
-> > 
-> >    * Proposed Solution: To safely handle these asynchronous events, [...]
-> >      on x86, when transitioning into the gap, KVM explicitly programs
-> >      HOST_IDTR and HOST_GDTR to [the caretaker's] tables.
-> 
-> Agreed and this also shows that the transition must be synchronous.
-> >    * The Problem: As the guest executes, it may attempt to access memory
-> >      that has not yet been mapped by the hypervisor, or it may interact
-> >      with MMIO regions. Normally, this triggers an EPT Violation (Intel)
-> >      or NPT Page Fault (AMD), prompting KVM to allocate host pages and
-> >      update the secondary page tables. How are these updates handled
-> >      when the host KVM subsystem is offline during the gap?
-> > 
-> >    * Proposed Solution: During the "Management Gap," there are absolutely
-> >      no updates made to the NPT/EPT. The existing secondary page tables
-> >      are fully preserved in memory via LUO kvmfd preservation prior to
-> >      detachment, allowing the guest to seamlessly access all previously
-> >      mapped memory. If the guest triggers a new page fault (requiring an
-> >      NPT/EPT update) during the gap, the Caretaker simply categorizes it
-> >      as a Blocking Exit.
-> 
-> Yes, by default everything is a blocking exit.  In particular, unless one
-> day we do x86/pKVM, page tables can be handled entirely by Linux rather than
-> the caretaker with no change to the existing MMU notifier architecture.
-> 
-> As a consequence, the caretaker is absolutely not going to be a TCB---at
-> least not in the beginning.
-
-+1.
-
-> 
-> > Compromised Caretaker
-> > ---------------------
-> > 
-> >    * The Problem: The Caretaker runs in Host Mode. If left unprotected,
-> >      this could allow a lightly privileged userspace process (e.g., QEMU
-> >      or crosvm) to inject arbitrary executable code directly into the
-> >      CPU's most privileged hardware state (VMX Root / Ring 0 / EL2).
-> > 
-> >    * Proposed Solution: To mitigate this risk, the KVM_SET_CARETAKER
-> >      ioctl may adopt the security model used by the kexec_file_load()
-> >      syscall. Rather than trusting userspace to pass physical addresses,
-> >      the kernel must take full ownership of payload validation:
-> 
-> -EOVERENGINEERED.  Just shove it into the kernel.
-
-Ok.
-
-> 
-> > Caretaker Update
-> > ----------------
-> > 
-> >    * The Problem: Given that the Caretaker is permanently installed
-> >      during VM setup, how does it get updated on long-running VMs?
-> 
-> Via kexec. :)  I understand you have bigger plans, but we need to crawl
-> before walk^Wattempting a marathon.
-
-Sure.
-
-> 
-> I even wonder if, for long term simplicity, the interface for
-> host->caretaker should be just for the caretaker to swallow the host into
-> non-root mode, again as in Arm nVHE.  That would make it much harder to
-> implement some kind of live update, but my answer to that *really* is just
-> to use kexec.
-> 
-> Paolo
-> 
+Thanks,
+Youngjun Park
 
