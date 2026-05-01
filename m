@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FD76CD3424
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 09:49:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37F7CD3424
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 09:49:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C07EC6B008A; Fri,  1 May 2026 05:49:33 -0400 (EDT)
+	id 1F57A6B008C; Fri,  1 May 2026 05:49:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDF9B6B008C; Fri,  1 May 2026 05:49:33 -0400 (EDT)
+	id 1A7146B0092; Fri,  1 May 2026 05:49:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACF6B6B0092; Fri,  1 May 2026 05:49:33 -0400 (EDT)
+	id 095386B0093; Fri,  1 May 2026 05:49:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 991B06B008A
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:49:33 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 566AB402F2
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:49:33 +0000 (UTC)
-X-FDA: 84718378626.25.3EA2529
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6DA9140007
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:49:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cCr17hkS;
-	spf=pass (imf12.hostedemail.com: domain of crisjacobmaamor@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=crisjacobmaamor@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EE0A36B008C
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 05:49:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7ED63C1D41
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:49:37 +0000 (UTC)
+X-FDA: 84718378794.06.74B9F9F
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A3A3A18000A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:49:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zq1wXtHc;
+	spf=pass (imf16.hostedemail.com: domain of crisjacobmaamor@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=crisjacobmaamor@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777628971;
+	s=arc-20220608; t=1777628975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D3bCYUylpNTAuWyS15iXLK7eGG+AcPbkT8lStAYKXTI=;
-	b=533RtbufhOa4dcRMzQRTxsLS+Nh2Jg+CEJlhnZCsSh9z5/cK2TpOkpfXqOpQaMmf+aLWHU
-	TwibxVxdSPv8xpjw0G1eL0QvuTONrrbT4Bzw8u4QYq3s/iqT388uZhNbykZbcwtZOgmFo4
-	7yYw11vVESo6pE1ZIdEgAad3Sc3VUHY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cCr17hkS;
-	spf=pass (imf12.hostedemail.com: domain of crisjacobmaamor@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=crisjacobmaamor@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777628971; a=rsa-sha256;
+	bh=cQtRFGksInkULS0m8GB/jr8IDzzr0ObA1EgynOw28RQ=;
+	b=SNJSc5hrDz0PUoutEeuPYRiXmsVAIP/uWv4f93gn0HJSSYCDdTqbl8aMPW0a2Q1yvt4Fpf
+	bZZjrmFAPyMeAn39H/ZWmBccxbtgysxVuVknJBxbK6728ghx4wjr9Ak7jeWrBoDip9h4yK
+	3t8fIeclrZqq5RKcTneTyKVsqKrc9Vc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777628975; a=rsa-sha256;
 	cv=none;
-	b=2+Qn7huLIprt6O9sGycfQi2XGUVkxkNLZ9vb0f8BUjokv4ERj7OU3Ekzr9MksE57VMAL+b
-	cW+eomOO6wZh/r3ZhBeJXhTo3vOLOdiPjyzew1biEdlLB7Zzs2GsjysJCJscLk/L1u1fr+
-	XuibQ/42x08ObXZxO1gVKeQdx8W7dIo=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-82f8893bff3so881438b3a.2
-        for <linux-mm@kvack.org>; Fri, 01 May 2026 02:49:31 -0700 (PDT)
+	b=W15Ld+aDpoVK0JwAjhVdqoQ/LhjHeHaX9aRto6h0iSIjNuk5FDulK0jvoM3yfTbHABNrLs
+	pVpysCddBjsYgi5nbgv3dKj/vRr/50ubDSD7b1Ahko//pQDROxS1i9WZjdseML66slurTO
+	K503RjaUs9NVs9avZx5ljJxR6KWtOwQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zq1wXtHc;
+	spf=pass (imf16.hostedemail.com: domain of crisjacobmaamor@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=crisjacobmaamor@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-82f943870baso830044b3a.1
+        for <linux-mm@kvack.org>; Fri, 01 May 2026 02:49:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777628970; x=1778233770; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1777628974; x=1778233774; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=D3bCYUylpNTAuWyS15iXLK7eGG+AcPbkT8lStAYKXTI=;
-        b=cCr17hkS13uJnhTfmCumJGm6EzT/hu7YOJ7pcOZbbGfvfQN/+xZhlI5aQT1KoKWTiz
-         BbHizNRzma7Mz0zvlFcqrlYLkxLnH9r27+0vEu3oeRDZNLRYd/GRA4fb0RYkWiiaIT/I
-         pJcHLA5+fTPYmgKjkV7l8v1FhPSXjO4cqTh1nCid+F/7PA2Ql0SlVUDf2CEuEqCqtd/c
-         NYbVQaXhS+N5d2P80iB8juSgXju36M7Sz3RudJOARjE3XPcaowIfG6ruah5PrKZpGLDX
-         wbEt93CGuMF1xpxyOohRq8NBR3xk6VbC8+bdMfqVANfH0TlkNEOEbI4IrZWLUbBbmjyg
-         guMA==
+        bh=cQtRFGksInkULS0m8GB/jr8IDzzr0ObA1EgynOw28RQ=;
+        b=Zq1wXtHcvf2/s3Q8Osx7PPUS3xDZLuTrQ2EmFPX0Tm+NKal1Lnw9K9WT26huGRxAzj
+         5kCnfwhsMVo8yVEO3yyckp7QCyONBfaRVusccOVbBiYeO5mcJltwTyILKekFufuxH5k7
+         bzr6vcOHrljWGL0GdFdeB6qDMrmjkeYde2VzB8LAHitA0TwOHKe1oIBPUwRvdvC8z2Q3
+         hKcgHtfcN1wiB8cgGjtdu4Y5qMxcVHP4R+QavHa5frJbqcVzpDnhXIH1oxn5OlLGCoaa
+         bLLjQWI1H0p8HBtQkeenFdXLqReVz2wj4/VjnRwST+u/1L34cJPI/sAqBIjh78P9SUL1
+         pC4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777628970; x=1778233770;
+        d=1e100.net; s=20251104; t=1777628974; x=1778233774;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=D3bCYUylpNTAuWyS15iXLK7eGG+AcPbkT8lStAYKXTI=;
-        b=nFQc0yGvJQx2GBUefs7NxvwyKOCZQwaMM1NTRZf5tCsQLUp3SeCkDFaQ6tl9nCHyWi
-         tqv7N0pWibdYYGhXQiA8oqwFPpc4bTpxWhEqBa25pUUOfhWtj+2EnVVEgwU/HXBh56rC
-         MkFiKHouXCTGh48wSTERZ/SylJ6voebaTzgGW7nIUoRbso3qmVkvu+k6PvmVp4hTTwD0
-         8KQiVf2QI/klIKdt38sPYccRCfSLm/vaDIND7258G7KLqpCehNNTvjms2Ms+ceLk5Jp4
-         XqaNxL6eJn38ESBdETsWdra23AlKhNqTCX7XfRDFtx9o6zWTF42RBOu2U8wj/Ce5Z8n3
-         FqDA==
-X-Forwarded-Encrypted: i=1; AFNElJ8uv8+G5LO+InG5KT0fuwGB0TrX4UjDLaYHYe4IZP1p/jApnQb/DBBzFui7SojrrwQzCQEJQja4CA==@kvack.org
-X-Gm-Message-State: AOJu0YxZwEVlrtAhQ8dh9+yMvOG9c2SLEw/6Ejl8oZmS4feNRaUvC3VW
-	Jv2KXydHcpPEY5LVQ+k/Mj2mCJlnU5r12K1CJPUgkh+im0/Vi/SsD88Z
-X-Gm-Gg: AeBDiet9nZJX8TXgIgdftA195qHDE2bdFQ76csDQKTSOfRWyNU0jXmNN7aycoB3VXYK
-	JtcPNcYub4lne3ImN1QlFY6BK/XTYzEpzX2TWd1SD/2/3kNyusbfHm051NXbTUnIOX0z3gkBwk1
-	9XWkvUWQGF1c46Y20L3hGVf5Rib7j/wMyYg8x2IrGW+z37zjLX8/9ex0NOMXejPUNSKbF37eZCu
-	vqyCVEPagarWtpstgj/mNQWk+umikfd+UW2pl4eBIxhNrpO/jV+XGPHOkxrKV89GEPxoAseI4zi
-	Wkb1xk4hQfBiOISqFTnqp8WO5/1B5PrWSRFQkmnLXNDmZ5/BtbXwUyz6W+QPvCz/1Ub7AD6+0XG
-	s249p0W+iP+Sb2px/mmZYDTqejMUO45vAHJ0WKojMoVS1pSed3ydzu1Pze2zHGT9ilnX+RQ6RBR
-	/gxZtIcv6065dRmdxSyNhO8giSBVpCn6m9mzYUug==
-X-Received: by 2002:aa7:8886:0:b0:82f:9985:d4a1 with SMTP id d2e1a72fcca58-8351a58db50mr2518784b3a.24.1777628970155;
-        Fri, 01 May 2026 02:49:30 -0700 (PDT)
+        bh=cQtRFGksInkULS0m8GB/jr8IDzzr0ObA1EgynOw28RQ=;
+        b=Z5jpL+hur5QgCqfWYl2jBFkyJPDJFq9D5CVf4daDrzoTAUdCROcmY6ZgkxYiB7sWfh
+         upYNie5vO8pYQrI5VO+GJSN4spdhVD6me4l8z1E09XuvWudfRoVEDU6cTWPj9vlF8sem
+         9wj/qktDpz+ljsGj94ZTwN2YXvnUuX2fivS95QtjewMceUmZeBDGs0xzmfiECyiErfWm
+         uWAex6EGknEitWYB7fatdjxtuhYQjqt7VM3Yfb+fRhBgXBa33fW6Q8BEnEQ89IypVZYv
+         X5AhJv/v0zW3PyLu9WcUVGEPFlpbVxGfkLGgT7XjzL71QrYkchyPpHDXdaT1NJThV7Jf
+         Kpbg==
+X-Forwarded-Encrypted: i=1; AFNElJ8O9E95PB8rspjGufWF1i27VVyfsMgvgNiMpKiu/AGYMrk1KO03zG8+kfk138xf1nzvDD7ARI+OEA==@kvack.org
+X-Gm-Message-State: AOJu0YwwkeGvIOYjg+sxeA4iipOOx9t8y281COhlf3ESHYHbFmg6/ZpO
+	tv4472PkJNSXNBRp8qP9lRhWbRhhthRI9Wk4Xo07CKRmpOHxeb3sqBlm
+X-Gm-Gg: AeBDieuVbWy9Qk3P0p60CyfwnJ05EI0GDCutZr2VpI0AW6K58ApwPjGSd/kkQNcdJuQ
+	O5mLZA2Hu5UwnKcYWs30J900r9wH1TrU9M9DZrmkGF7za/dTqm58rujQX1nQ47BQWqPTibxQRRd
+	seUPov6OIRYugikctlsIab1S1YYLOggpbcedi8l+wL1WV6Pues0u9DKTNrzfhGLqCQrv5FmHj41
+	9GltoXDk9xQqEFymg8LUUZ+iaLYc/bW63klyyLDB4tcYGvXqXxrteLtwHYeZnOuOFBkUVQyxJcF
+	NXg0ryUpmz+q78Xkf6s6VwXHfN9YZatq+KoEC2dZKtGIET0xUDxxTT7P+48TfBHYBkFwA30M32A
+	A3b+dyAUd6ONoKRKpgCKH2je6tvcupYJu02dmIjXCLmBFtcwlo6uMQsyDompninX098/RXxOKr0
+	2yPQrrVGEnkho6hXXqDLrbjh8a9rj6sXcGrUJvRQ==
+X-Received: by 2002:a05:6a00:4b54:b0:82f:37e3:ae82 with SMTP id d2e1a72fcca58-8351a63b46emr2481911b3a.44.1777628974533;
+        Fri, 01 May 2026 02:49:34 -0700 (PDT)
 Received: from laptop ([2001:4455:8025:be00:eebe:247e:613c:24d7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8351582dd55sm2042729b3a.1.2026.05.01.02.49.26
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8351582dd55sm2042729b3a.1.2026.05.01.02.49.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 02:49:29 -0700 (PDT)
+        Fri, 01 May 2026 02:49:34 -0700 (PDT)
 From: Cris Jacob Maamor <crisjacobmaamor@gmail.com>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -101,22 +101,22 @@ Cc: Alexander Graf <graf@amazon.com>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH RFC 1/5] kexec: handover: add helper to check preserved page ranges
-Date: Fri,  1 May 2026 17:46:33 +0800
-Message-ID: <20260501094637.38650-2-crisjacobmaamor@gmail.com>
+Subject: [PATCH RFC 2/5] liveupdate: validate restored LUO FDT before use
+Date: Fri,  1 May 2026 17:46:34 +0800
+Message-ID: <20260501094637.38650-3-crisjacobmaamor@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260501094637.38650-1-crisjacobmaamor@gmail.com>
 References: <20260501094637.38650-1-crisjacobmaamor@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fpg41nnkskdgi9xcb315mphirt5btbgk
-X-Rspamd-Queue-Id: 6DA9140007
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A3A3A18000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777628971-123624
-X-HE-Meta: U2FsdGVkX198WIRWE0gwumeB5jsxSJrZdyjCdjtjS3JhjdVCyR3NbzKattEWiznPdRPQPz1H7P1WFO39W7smTKjg7KROioMKWpeq6ed6UFDnG/taYOZupQZ4ZzhJy8UZXQKpCwmX9p5thc832s1G+IQV//106InNn5JeVtNlKYzEldrlIOvmSOuXwmEYclarOilFKMQ+CPxbMclY2D6y5aAs3qicgvR3NkCofb92vSMzYdL+HlCX0w0eUZAmLedMerPUcu3nL2BjlxUvFPY9PVWvP6cqxzXwRmkRhF93FKNWhuATAdV1x56pylcvdvq5tm6uVrEk8dIUiz/HOkyVAcFCPhpWR4DTqYBjXKpR02pnLJtb6kEMmXzaGAcco9eZex/kFfjlXSaT9W6TCpU2l03aLvWS0+erpZ4rGm6dVjA9aBRO1LqwcQZQsHEvde0o6pgqgdHfaYzxMii6sRfMImZeyLNIdIbQcGHUaWBbko8KEcKCKKQzoYrtDtwYhC8KYT3R03qAD+TrbOUg8bFZmBHBcEbUYqNVmndHL6XVEPuxkJ/UX7r5i+MShR7gSx0zl/83ZeMqoXOCg10SOdqULoCI3VpkiRp0w5i1RJlna4d6JSIaE1TLaKGkRMB5865vyuCQd1LvF5cMv2Q32v8N9CFpRlsjq27t5BZ6fPZ9AkQkuQXn9wPc+CuxuGBc8R916tXHBw23QJ2K/7TBuYKZ1uRdUSAmxiBKzDSVCUDht8cq77NyIdPzIQ/n/zxw5y0ijkNYU5lxsuRowdEeoOq164AdiIkaxRStQwacOwML8PP9sGbKEhxy8HEcXmYR8H4ZqiMnNv5i+jzp4bMIC79gIauxdXnK1NlCy2rws7oPQhqLfUbV2hVeEIhGXkfx4bO3hv4FYkgSOg4fHEK9r7RDlcALldF/d8Szk8rjq2DAOt5fezx3YSiOqeAVsjRyANRo8PXXDWA3e54DH15l0Fa
- /nEK6NrH
- 5zhYV/Qovj4GDu2azTUC44y8mJbp1sQy83xy57bMMflM6FUwAr5rOz1HESwY4ASfWu+T2SliZFP317HO5nBizWTlLPzvnfPaA+vWjir2/M0ceuJcIPJrlCKEllXNsMEK2HMejU+Qcawh/77jhcuW7dtPMQsm0CcWOxBMfP/4k53Wxcf+u7HfAOaBKFvXok9T9quobP+yLTGQpXffXXf1tRDG6a3jf8k9XaQwaSWornj05gPSCZTXfIxaST+sbT1hi3qL7geTctbSiMbOcuj7ty4CiLL4eWlVmS8PuzhsstY3HN0BRgb4nhSzBSDHmqG0Wd/tinoXEjMh2w+gt7ZNkkyEw7sWoGBp7OwBXmfTBwGQBs0xKlNFLr0Vr4Q914MSnunB89dH6BHCpje3HsML6j/dwBel6JvDlsc7OBpDwEYx42CFLPNhyoqqWM+MUVU7YbRBOYG3mORcyz5c=
+X-Stat-Signature: bqie95sn6stayqxnhcjh5fc8cu9r74x9
+X-HE-Tag: 1777628975-36751
+X-HE-Meta: U2FsdGVkX1+nUwptOUIF6Ik7m5QfGsn3Sjils+5ijQC8gqfKs8fJGWF838n03vFfR8PqBYpe401EgxCYAM/EofAZI8uP773uGLSUHytmmTKDTgRrLA953lgJy7ajcNSvG/g17HdbyjQnbwQolEvyZOxsD7tAs656QWkLOKnSzbVRg2NcICFYvKYD2QXAUjki4kaF9CGifZh/CQi2z+6ZQV481MZ6jDeOqiriiDORoo0t88fwZd2N2wVjdnusBR0/+hreiAlopYE4ZeT8AMyIKt/dSaZ5Kaxu+Vv3tP7Rey06WeLjN8oMo4G9iYradMX6jT1jT5/SO9EsAfiStfQ9+0fK+zLUNf6xuk3J1peV013vrRRuSZQna/aNbNn7tjCgv7Kle92+RYiqGk8eUIyW6HcAA0ypTnWccprYY6TE8nwduoTmzYWB06HQpyXGW/rakQCG2dChmWsdyfejlzzyCQa2FH4GeKoZGTBxbfDj4HuZqHVeBvi4bI+eqjBROMMfQRK4xy+hRtkKrSZ98XLjwsn22fUf5uJ0EMGAD5PlcDtbp+TqB0lT2KAevXUQ1hXsGYilmefOBpdz8NXzKm9TkXt5b8pYSWu7luVILqD/Qbb0yxgC0CxFQIjE1rPLKONQG0nRtnm/4ex4uezJ+r1apRLKHZxSw+gkcxMIlXruDuMabqiJxYnlZ/yAuVqa6q2t8EBHtHgdN6wogdBNl7kudLgjIVyW6QVxqNpyDHagbGsdqlDDsjOPRxaL3XHv08EqHSTiQ1x0WkWC+8oAXRYb6/nJyaxn29QYfLLV0FZmR7TQItaJ13JMaY3x/lHeSOhSRWFTufgLMRgVTBlcii1qsRQYpyW251KcmUe9gcsgiVyTS8N/9kPrUm/mXgBEVSUw9c1rQJcHK0Xj6BuoS+LRDHpfViKMdFUgVsExgGGt7AvvrLE28k/5+OeWNAGNTU8m2YoX96AeQXpymQ9HNMz
+ JXThvPCp
+ gwEGvw4bAFHoOmYpfAbm+wVnxNYSb4i5QssbVKf5tcPEjWlG+mcHGANlhwrcHneC7AteLte58nL1f96htS7kCeIO784IuNDJBd7C6/I/AbOSgVxSvGokZhGJZdsxhbMLcGeJiq1kiomwPdPzBie+1YPdGAjq/qMx5uM8pk3h5pUjUgLp1gDLYGiW/+6pEWQN8+gQSuYX3V0iIpfUoAuS8kjwCqbQd7i907B06Y1AAX+9YkWA9W9+00j/3BcMgaFGpxcGtZcXPVBxfo7dQMen+cU/q/QVNI3PMiBF6PPTJ0ErgIveH816lWLOLwdS0XlkUs9HFeDgdyqXZb3V34QSvrV62vVocuNhvR2taCNe7xFPmo2McLsECNRVo4SMvt/rU0aRkXbHiEj4V+VUeMCHk49DjvZUsjrrnMERTAXoizmIjHHYO1ue/NFggywvZwLAib5pdJpGT/XpnWjc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,87 +126,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Signed-off-by: Cris Jacob Maamor <crisjacobmaamor@gmail.com>
 ---
- include/linux/kexec_handover.h     |  6 +++++
- kernel/liveupdate/kexec_handover.c | 35 ++++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+)
+ kernel/liveupdate/luo_core.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index 8968c56d2d73..fb09943ab232 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -19,6 +19,7 @@ struct page;
- #ifdef CONFIG_KEXEC_HANDOVER
- bool kho_is_enabled(void);
- bool is_kho_boot(void);
-+bool kho_is_preserved(phys_addr_t phys, unsigned long nr_pages);
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+index 803f51c84275..633a16434164 100644
+--- a/kernel/liveupdate/luo_core.c
++++ b/kernel/liveupdate/luo_core.c
+@@ -82,6 +82,7 @@ early_param("liveupdate", early_liveupdate_param);
  
- int kho_preserve_folio(struct folio *folio);
- void kho_unpreserve_folio(struct folio *folio);
-@@ -51,6 +52,11 @@ static inline bool is_kho_boot(void)
- 	return false;
- }
- 
-+static inline bool kho_is_preserved(phys_addr_t phys, unsigned long nr_pages)
-+{
-+	return false;
-+}
-+
- static inline int kho_preserve_folio(struct folio *folio)
+ static int __init luo_early_startup(void)
  {
- 	return -EOPNOTSUPP;
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 94762de1fe5f..fe9f11190705 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -10,6 +10,7 @@
++	size_t fdt_size;
+ 	phys_addr_t fdt_phys;
+ 	int err, ln_size;
+ 	const void *ptr;
+@@ -94,7 +95,8 @@ static int __init luo_early_startup(void)
+ 	}
  
- #define pr_fmt(fmt) "KHO: " fmt
+ 	/* Retrieve LUO subtree, and verify its format. */
+-	err = kho_retrieve_subtree(LUO_FDT_KHO_ENTRY_NAME, &fdt_phys, NULL);
++	err = kho_retrieve_subtree(LUO_FDT_KHO_ENTRY_NAME, &fdt_phys,
++				   &fdt_size);
+ 	if (err) {
+ 		if (err != -ENOENT) {
+ 			pr_err("failed to retrieve FDT '%s' from KHO: %pe\n",
+@@ -105,6 +107,12 @@ static int __init luo_early_startup(void)
+ 		return 0;
+ 	}
  
-+#include <linux/bits.h>
- #include <linux/cleanup.h>
- #include <linux/cma.h>
- #include <linux/kmemleak.h>
-@@ -429,6 +430,40 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
- 	return page;
- }
- 
-+/**
-+ * kho_is_preserved - Verify that a physical page range belongs to KHO.
-+ * @phys: physical address of the first page in the range.
-+ * @nr_pages: number of pages that the caller expects to access.
-+ *
-+ * Use this before phys_to_virt() when a physical address comes from restored
-+ * metadata. It checks that @phys starts a KHO-preserved allocation large
-+ * enough to cover @nr_pages.
-+ *
-+ * This only checks the KHO marker. It does not restore, free, or take
-+ * ownership of the pages.
-+ *
-+ * Return: true if @phys starts a preserved KHO allocation large enough to cover
-+ * @nr_pages, false otherwise.
-+ */
-+bool kho_is_preserved(phys_addr_t phys, unsigned long nr_pages)
-+{
-+	struct page *page;
-+	union kho_page_info info;
++	if (!fdt_size || fdt_size > LUO_FDT_SIZE ||
++	    !kho_is_preserved(fdt_phys, DIV_ROUND_UP(fdt_size, PAGE_SIZE))) {
++		pr_err("Invalid LUO FDT from KHO\n");
++		return -EINVAL;
++	}
 +
-+	if (!nr_pages || !IS_ALIGNED(phys, PAGE_SIZE))
-+		return false;
-+
-+	page = pfn_to_online_page(PHYS_PFN(phys));
-+	if (!page)
-+		return false;
-+
-+	info.page_private = page->private;
-+	if (info.magic != KHO_PAGE_MAGIC || info.order >= BITS_PER_LONG)
-+		return false;
-+
-+	return nr_pages <= BIT(info.order);
-+}
-+
- /**
-  * kho_restore_folio - recreates the folio from the preserved memory.
-  * @phys: physical address of the folio.
+ 	luo_global.fdt_in = phys_to_virt(fdt_phys);
+ 	err = fdt_node_check_compatible(luo_global.fdt_in, 0,
+ 					LUO_FDT_COMPATIBLE);
 -- 
 2.53.0
 
