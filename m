@@ -4,145 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F157CD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 18:25:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0895CCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 18:30:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5E4E6B008A; Fri,  1 May 2026 14:25:57 -0400 (EDT)
+	id DB3596B0005; Fri,  1 May 2026 14:30:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D35B36B008C; Fri,  1 May 2026 14:25:57 -0400 (EDT)
+	id D63FA6B008A; Fri,  1 May 2026 14:30:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C24D16B0092; Fri,  1 May 2026 14:25:57 -0400 (EDT)
+	id C53176B008C; Fri,  1 May 2026 14:30:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2AE46B008A
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:25:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53145C0A75
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:25:57 +0000 (UTC)
-X-FDA: 84719679954.26.6498394
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 49884180006
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:25:55 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B42986B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:30:52 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4D1AD120222
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:30:52 +0000 (UTC)
+X-FDA: 84719692344.07.E570F05
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8315118000A
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:30:50 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=blUK+VQB;
-	spf=pass (imf24.hostedemail.com: domain of dmatlack@google.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777659955;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hN3HLiBC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777660250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ynp4A/JaH22lvkihT3nPFtsXKnzutYHpfXYULBKQQKo=;
-	b=qS9EcxAInu7DB01R0ghm2DYXqUoam7h5bXa2wcJKhNnxpMqtQCPksJtDnitbfZR0CBHkJY
-	bwMIYNXF9x2y2uvd4p5Xt8p0P6oBuDMvIhco8HIg3/9q+drlNyR7zXz7UfPj0P5cZVEsuV
-	evCdNgWisLeTWZYbrUMR+NOjJBis0BA=
-ARC-Authentication-Results: i=2;
+	bh=pjGGpfMmkLT0fLRNYxylZcbQxAkgKUixFRAvATeNI/o=;
+	b=z8g4WMNVe4DVfbamk0faHmnWQXmpdCs+bTMmk/fw6L4EsFwLmF+S9sGZ0Qdb8wEC1aQOtx
+	KCSoZNVpmhzsriUubrOL1NI1pZ0XA1ogF5pDKNEIRTQttRHHA4hwgqjKv9nZ8Xvrz0koky
+	qcZbLGNXbhmt/cBtUJAOyY+rTSL5Yoo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777660250; a=rsa-sha256;
+	cv=none;
+	b=A6A8KQ0PMfbNqMVzkUcR7MpwRUM+p1+yGQd+tCZ3Ma3GBGt6QtsfK23/mqD+7dIOGIFIJ2
+	oQfWdt7y3A8DVsLQiRH3IFw1Vk8EmVl9Sp35A+ppfJ37YMwoehvIUj6FPG8NWYBdL6DjNq
+	ysg/enJxyH7NUx5iYT+/iFOGl967ueU=
+ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=blUK+VQB;
-	spf=pass (imf24.hostedemail.com: domain of dmatlack@google.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777659955; a=rsa-sha256;
-	cv=pass;
-	b=o5SVwbC7Nrm8Z8tQGeZ3Uq0h4EQu16pfkLTOR8a4vcdiu3qBxY79C5Ch+tW6Sg7ggLqMhD
-	x6ZuwvTtqRA0OrCx5r57a9j47ZNWK1wvAtLd4E4QUJ53LLoz+ry1gPwFK3MIrrgMrDiGFK
-	xkz9hWbqhNi20fFKExz7jCFMluZ6Kxc=
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-12c726ef332so3485906c88.1
-        for <linux-mm@kvack.org>; Fri, 01 May 2026 11:25:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777659954; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EYE0cU9jfeJqejvvpcMw9UKGKubY7ez3o2rMPLF0WlRD3VFd+7ThB6KIVBXsCyibqZ
-         02zPjy+ElpcbIDJC2DoGRZ0uWnBDWIELpNzamMC6zwlA5kU1InK90Ae2U7m/xr8Wn3MZ
-         +T7k7IavlNHd656xNPowVOmfrEjVZKEA09TokGn9TvR6z6Xn+bMbb6bmRoJS6/FC3SvS
-         md2VVS9lugpqBy3ImWoX5JypDwFRsjzNBcn7/6Elsot3d5XTRGEPTeI0Q3phNV4RNOD7
-         +80jxckPWZtS59U9SR8o++b29sRPWtaVYO3gXwwUBLOEwO4Bs745BfnOBi6BWM6C6cb7
-         txdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ynp4A/JaH22lvkihT3nPFtsXKnzutYHpfXYULBKQQKo=;
-        fh=nC7L5qoufhlsiYIDNEqr10tNFRRJgzT0fvYUjiT5Ci4=;
-        b=Qji9D+ZpGKaezUsE/SjJH7r5x+tc05Ya25MBKVmNOEFPGtGNa5fPNxAYfE+6vnWTth
-         8CHVj21g2u2WbiJn3WBOmctSOIlptQ/5g/DIR7pjA0MorefyNJYzZ/tL5x2Z4ZQiFraz
-         bat6JwCaMdYp2HOA0w105W/GOrgiHLeGeQZ4GwX3AHr1cv5h1BYf2Q81qz7llSvad+MD
-         g6vHvGjnw2d7Revkiz6NU77bGMMiCfQIqi4UPiVSgI99IUKaNnAojecEVUqhrHNmgrd3
-         HsfxeMPneL2Ln4b71MYx1nRv1MUfgF+qqJ7MW1s60UnPWx9Q4oMmVpnL8RFRp+Q2mBw4
-         xtcg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777659954; x=1778264754; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ynp4A/JaH22lvkihT3nPFtsXKnzutYHpfXYULBKQQKo=;
-        b=blUK+VQBWxpiLeSaGHmrkMe6TNfe6Cz/V7k+CmntK30+Qn4OLf7I5ZIckBhkimgEiv
-         yUPfhNfzc5iTzsGi1mKQG2coD6QY5LoqX/qFizA7e7YV6f6aoEAzJ2iNhVWImPTMlGdq
-         KVb0ctKi5qfe/THVcwOLP3igpPVRkopNaqoGBlSsw6JKHlU+velKpqJ3i79SZDimditT
-         Zfd8zj06/Mf3cD7MVz+tnEUHu+9RFR/ZOqwVEshFbKZFdhcmNJg/A4THvbmlLv3rNOPg
-         1baya4bUj28oXWkOWICQTBwh8K4hHAerss1Vq3jLjqQ8gt8jqbOwhiaqMPMscHhlMJnE
-         wBCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777659954; x=1778264754;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ynp4A/JaH22lvkihT3nPFtsXKnzutYHpfXYULBKQQKo=;
-        b=Fp7W+BcbhgN0rvKrUimvYe66GfvUIhcHToItTfHTKo/MT7cjRq+59VmV1IduDAtJaz
-         4Usfq9xsXzYfG+hEWXGP7NdFFWY9vGYJcKPjtXf2Bb4v8KpECbTRZBAiHgVa//w3t+JF
-         eCQ9vHJFUhi6XIFeBzjAhzMToaoM/hVni9RqnnC30vK2IHl59VAHqKvDPoWF2XPFniIk
-         6Ga2G+tUXy4y4ULRPesSXkxNeAgnm9R6B9l2UGCP46fWUfNcTqIw3yKqJOn8gknxFob4
-         1Bx8P2YvCc0n6RyDzLEQ69UvTuHsvV4+p95GDg0bFd2aLFBpLYoJEL10rjx1E8BJ4n/O
-         eg2A==
-X-Forwarded-Encrypted: i=1; AFNElJ+vsRTsF8GX/B9rNmqwAI+yt5FDnt6XpDrO7D+v+VcXGmpScROnEaxCT6QXJw+dNuApZBEmptMHEw==@kvack.org
-X-Gm-Message-State: AOJu0YzRhhSpKCY1p0YGV24d2b9MUXbEo4yWELWhpzq/dkNWahztjrNM
-	tvFSfZFRGbD4Gnp/+fJSbbSzuuab4abjPvVfYgFuLw12xfcbrsdm/UhsvZZ9XQ6mSkQAR/jPWrP
-	9N59xSXEeNbBPFvZD9v9lSB3+WAZvSwI1fBV6xRUG
-X-Gm-Gg: AeBDieunEAbKud8KovmVvCv0A9ZyQDNBGU6W8pIN4sEHlKBbDVGqQ4izTwZrMflxCWY
-	rApFVozMofwQ+WnFp/poiAC5+EOLKVkqrLTZylatVo5LpQYLngiiUTbukPzywD0b/20zhZe/P5a
-	OphiUXs+l8jijMSH5EnzrOE6VsAu6HV0IwfIhrCGAiKtzSYehIpNCFidUkECptJteRYfbMLiZl/
-	P51b1nXMDqhGqj+G1nevakaVVUMvj35m3FJtcoGaZ0ZpMvcRRtmsYXp7HdxBj4dMu5S64U1IuJP
-	6ApdFI+C/JuCrdRez1+jTxvCKELsqg==
-X-Received: by 2002:a05:7022:ebcc:b0:12b:ec15:69d3 with SMTP id
- a92af1059eb24-12dfd7d88femr150449c88.19.1777659953185; Fri, 01 May 2026
- 11:25:53 -0700 (PDT)
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hN3HLiBC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B3AA26011F;
+	Fri,  1 May 2026 18:30:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71587C2BCB4;
+	Fri,  1 May 2026 18:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777660249;
+	bh=MvOC25XMd6Pzmb5m65jh3SGYYAXGbC6/swCh9j1k4nY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hN3HLiBClFE8t5eZe5W59y6m21vYvdp+0Y6p59AluP72u+jL30K+Q8Q1dakOnSQAa
+	 5aftawxIpxvA9fWQK2NkuiDFKJRrMZbkN/aawxU8DPbnSNuA+a8VVz6lvy0CdhGJU9
+	 xrkFjemiauwDCAgfbMFlvK63NLtBAP5J5+Hz9LS2Mi2/AEF9OXc+Ym/tmLVq3LQyFb
+	 FHcUMiCKkd8DDikLZ5CtKpLmOcjAdWu1+gCwUTaiQF/ZrgLo9p0Ka1T9CHzBbqzK/9
+	 h7pgTV4F9ZoZZiS0QmyHVQfBII5QeXzSFTEc4i6qzZrBNIVXAYg0fOuNSEtTU0Wh62
+	 e2CkwxhtkLGSw==
+Message-ID: <785b6164-aa71-4fc4-a4f3-f4977b7db30e@kernel.org>
+Date: Fri, 1 May 2026 20:30:39 +0200
 MIME-Version: 1.0
-References: <20260423212316.3431746-1-dmatlack@google.com> <20260423212316.3431746-3-dmatlack@google.com>
- <afDqs6oqWlhoVqMN@google.com> <afPGYp145FbrvURR@google.com> <afTgOXpUNWMapPAS@google.com>
-In-Reply-To: <afTgOXpUNWMapPAS@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 1 May 2026 11:25:26 -0700
-X-Gm-Features: AVHnY4LHOeLRxPaffc9oaSUdxPiYe323BsN3VXy59mO0tVvOtZ5BkXLT2WRxf9Q
-Message-ID: <CALzav=cJLA3-gK=Ljfqf=YCPML60F=hM_teB67M_3PNCZE4T9w@mail.gmail.com>
-Subject: Re: [PATCH v4 02/11] PCI: liveupdate: Track outgoing preserved PCI devices
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: iommu@lists.linux.dev, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Will Deacon <will@kernel.org>, 
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] mm: Support selecting doing direct COW for anonymous
+ pmd entry
+To: Luka Bai <lukafocus@icloud.com>
+Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Arnd Bergmann <arnd@arndb.de>,
+ Kairui Song <kasong@tencent.com>, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+ Luka Bai <lukabai@tencent.com>
+References: <20260501-thp_cow-v1-0-005377483738@tencent.com>
+ <b5379cd3-f7bf-47f9-8a60-c7300b4415a2@kernel.org>
+ <afTR48WxGnIpxK8a@LUKABAI-MC1>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <afTR48WxGnIpxK8a@LUKABAI-MC1>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8315118000A
+X-Stat-Signature: cuabjjg3m7i9h7k4w1hsrxf4xc46z9ef
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 49884180006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5hz647y49ndennujibmobs4jceokkjx8
-X-HE-Tag: 1777659955-159381
-X-HE-Meta: U2FsdGVkX1+Pb+HbRrbUemYoghJYA6eTvx3PlN78zUA0jwkS//DZlJikGe5ZUwmblZ3tvs0CubjzFminXMzGu7zErMwCl0U1eeUXtNP22P/tK4HJQ/HVumrzCifLUS2t6J9fwqxElRiJNm7fHzEaUKyuwVyg2RNqYvXwjv21CaffhS73NPEtf/zjx1VucwMjeWOHPiRGiZi5FAAj89QCXP4bKDl/C3UB/VANjeMdhQc5Di9b/piGU51aX1fB1WFXvbb2FY9e1YvIXbDJxSgGtznZ1qBOAsjx6+QfDrC1LyliguKroxE8buruZuS0MODeek6SrvN5ouKO+7XwhJwUm1BNMRGIq+tY88mmQdfhQMmwJnlt9keC/1l5/uUZijhxTk4gGKsWfyWS/rKCy/wWXlqhjYYjzwH8aiAFpAgfUFnF1ORBLj40jZpidiYVmdJVyYxrSqgvBRXQqq5kSkIB6Hcgea0wsjlYZ+89zu8NjRkJGptKgM1yDU/heyFfisHYRXVnlYWsqFXDVtympxEFWB0vQggDjrzQBFNA0Fv3kAhUqpFnPCD4h/mUVG5jDTWhzc+3nkAoRKsTf8+1zx24sTGAr2WGZZCGFCN/AbhZ0BPVFfOd2lpcO/dgKHAmgQJgdsDoj0MHH/jLs1AehbegNcvEr5YfTfQldG/OZfUDMdNQfGPInYGFUoZa8phjTo1SX4kTidzE0yGKwXYtWJiTdyQHFsk0TdT0GZtKSQU/Ilpf67WT5evW//hAJTyMQcPRTvcYOKO7M7OE7tCryo96yD0YVyRAbWdIi9DearvQZtEkuvvaLi3Mu4rSgmeLC/NtI4yQE1yXRVt/uhUWcHQwwJIIaDGyra9fm06F+ncKywwmQvhZUNaBMs0UAwtEBEIa1GPsnGqruUPaSpNNiI0LVMbR21rFq3jedIqFn6UWGaZuocSy4Br/UOUprRKwfBch0542J8UEiyWDW+eZPY9
- 96uxCYtQ
- k71ll4klED/+hjtGeDHYyjH/nRQf2OA1zzfQo7cOtnhemZHRYTn/si9BRnXYWqE5OJruyUWTMBMsn/60of7pIy7GJxMeVk3j6kqtcFDpIAQ3ATEKy5N+bjvfciRme9BdVwMsSAaDePLyv8Lnz6RqXMw13Rim4fwb/nhBs5mWCXes2dN9OMYQouExycUZ+4PgajRdq2pm/ozV0JQBiGniCSfH3cknXrXQp411KokIhzqaV0Gx2httTmodhgGhwo3dYJYbM
+X-HE-Tag: 1777660250-270447
+X-HE-Meta: U2FsdGVkX1+XY8n8i86R3wEoYVMgPExH8htgY6M0D/MZqwCuoUA19Om/7Ijz/AM93NTDmfcqds1yWWfRCssRzrKoWgcJN4x8z8XgRbi0bBI01g01PODJ5ox0leFYa9cYDxx+j74wm8en1Py2S1/CQf7GVRq0e5AoCrPXdivvJWRBMFmcYMWVCRRO2FIdLs+qV9ORGHLNjYtIbyVxxGND/6PTCVmrMASe95Hwhf3D/umc6fspINFKWv3094o05At5ur+OPD+wr2Vo+/1F7VuwqqSmipNUI47iEoD6vKCYAPwYYjZIG8tZmCMzQS6VkrlwigwyXC+2ZBOuvUjrfsir7IvGTjYc5BhVOtkBF97hS3XEkkjd699MBOh/iBCWBWFauNNab+3ET8GvXlqSY0ikcbazktXHtLtxjPn3SlRUyCLHGzLRj8J7hwjFEijNdFV4eYXXH3P4ac7Fg5kKBVeJwOz0sMvKAcgeLEMzhqvGa97ymqZ3f/HEHc51JaueFjlnqj2Qfo8PSvp3iKTLnmRMAQo83U2VfFkSMRLkFfVl/4wz5/yeyfZbu4FGgBRmlI9eyXi5tmLkGvujlg7+V3aKZNotUesY8q3uM/513sWy9FVoFKIPij8hiAs5X6tW5/exhhAiZqccbAooR5+11pf/ynYJtbb+AdrcFfslET0ilTaS4Oh/nBVwdqqRkFEU8VnFSggjavwoQZK/jUxKaEcdBCZkg5Jb6on8nhOnVVVST0Upwx5jP+8AYmrOJlfGvAcuWIqNcE7oQ+UTvxS1wgWYsjf+W2I3GBJouQ3HgzLGG3aN8jTWgEzKIemjIRx0UasIgE6TNzyluUU9ZDDQOVBr3cHYF/21XJJARBFCz2c+7GC59QS+FYcS154uXM2ZSYjrqAvnSkyilpmJc+oVuJAIACgdFgmDDqfJZqxnO9crTSg3ualQQ3VZjjhYaMoEU9ZlAflKl05dFwZNnd522oj
+ 2b97n5EO
+ AcptBOjx4OTTz9tNp8RbkXstGE9ozqcCegeS4ZHF2hVFi4HIqSfwtDIevcaOsG8fQBfedUS+DAVx68Bs24z8k4CdyewXy5k7WYc511Q4a6A83byLkkDazv7SYLYRY1+m+LcGjaZ2KWJPb2zzVIKZKEP0DlpFFr9N8jRcQpRkPveM0xH4hi1/eJL2ThbNuL955gi1YHmMovITg96CQzBbYHDMD1b3n1iFfUPWc7enPkiGRGCH90PoPsUmTYI+0WkkwSupdspcCzssYU3OtaR3ZUBMFju7VgM5J70maBJUQBSNUbqpq0xBggWBEAct5vI83vLg+J9rI11+p4pOWvxkzGT2EZPq1NmtU9hzz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,59 +151,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 1, 2026 at 11:17=E2=80=AFAM Samiullah Khawaja <skhawaja@google.=
-com> wrote:
->
-> On Thu, Apr 30, 2026 at 09:15:14PM +0000, David Matlack wrote:
-> >On 2026-04-28 05:24 PM, Samiullah Khawaja wrote:
-> >> On Thu, Apr 23, 2026 at 09:23:06PM +0000, David Matlack wrote:
-> >
-> >> > +  for (i =3D 0; i < ser->max_nr_devices; i++) {
-> >> > +          /*
-> >> > +           * Start searching at index ser->nr_devices. This should =
-result
-> >> > +           * in a constant time search under expected conditions (d=
-evices
-> >> > +           * are not getting unpreserved).
-> >> > +           */
-> >> > +          int index =3D (ser->nr_devices + i) % ser->max_nr_devices=
-;
-> >> > +          struct pci_dev_ser *dev_ser =3D &ser->devices[index];
-> >>
-> >> nit: Maybe we can move this logic in a separate function as down the r=
-oad
-> >> when we expand this to add VFs and Hotpluggable devices, this might
-> >> change significantly? It's good if it is self-contained.
-> >
-> >Did you mean to leave this comment on pci_flb_preserve() where it
-> >decides how many devices to allocate room for?
->
-> I was talking about this one, as I think depending on the scheme we take
-> this might change significantly. Just a nit, you can ignore it.
+>>
+>> Note that there was a recent related discussion for executable, which was rejected:
+>>
+>> https://lore.kernel.org/r/20251226100337.4171191-1-zhangqilong3@huawei.com
+>>
+> 
+> Yes, I know this history, and I know that it will cost some memory or latency,
+> That’s why I was wondering maybe I can add a switch to it to make it
+> configurable :).
 
-It would depend on if userspace is doing a lot of unpreserving as
-well... I'll see what I can do in v5.
+Switches for something like that is just not a good fit.
 
-> >
-> >> > +static inline struct pci_dev_ser *pci_liveupdate_outgoing(struct pc=
-i_dev *dev)
-> >> > +{
-> >> > +  return dev->liveupdate_outgoing;
-> >> > +}
-> >>
-> >> Is this expected to be called under the outgoing lock?
-> >
-> >For now this API is only used during shutdown, at which point userspace
-> >should have already been stopped so drivers should not be changing the
-> >preservation status of an outgoing device. So I don't think this needs
-> >to be under the outgoing lock, but it would be nice to have some more
-> >explicit synchronization.
->
-> Ok that makes sense. I have similar cases in my series, but maybe we can
-> add kdoc regarding these stating in which context this is expected to be
-> used?
+For example, for a short-lived child (e.g., fork+exec) it usually makes no sense
+to cow a larger chunk of address space, when you know that it will exit
+immediately either way and free up the memory.
 
-Yes will do. I'll add some documentation and also restrict it to avoid
-misuse (move to internal pci.h, return a bool instead of pointer, and
-use READ_ONCE()).
+>>>
+>>> In addition to the problem above, this logic can also generate some
+>>> deficiency for THP itself. Currently THP is just a "best-effort" choice
+>>> with no "certainty". THP is easily splitted into multiple small pages
+>>> on common calling path like reclaiming, COW. A transparent splitting
+>>> can cause throughput fluctuation for some workloads. For these workloads,
+>>> we may want to give THP some "certainty" just like hugetlbfs,
+>>
+>> There are no such guarantees, though. And We wouldn't want to commit to any such
+>> guarantees today. For example, simple page migration can split the folio.
+>> Allocation failures will fallback to small pages etc.
+>>
+>> If you need guarantees, use hugetlb for now.
+>>
+> 
+> The reason why I want to use THP over hugetlb is that I need reclamation for my
+> workload :). There are many processes in my workload that need 2M
+> aligned folios for better performance, and we want to reclaim them back automatically
+> when the process doesn’t need the folios. 
+
+Can you share some details how exactly that is supposed to work?
+
+> But hugetlbfs cannot do passive reclamation
+> from what I know (except doing active madvise by the processes themselves). And using
+
+Right, you can only return hugetlb folios by doing MADV_DONTNEED or munmap().
+
+> THP can easily split the hugepages. So that’s why I would like to add certainty for THP,
+
+Repeat after me: there are no guarantees. There is no certainty :)
+
+> and use THP for these processes as backend, because THP is very well integrated with
+> the swap system and other filesystems. And from what I checked,
+> it seems the most common case for splitting a THP is COW and swapping so I am trying
+> to handle these two scenarios (But coincidentally, PMD swapping is committed in
+> https://lore.kernel.org/all/D3F08F85-76E0-4C5A-ABA1-537C68E038B8@nvidia.com/
+> a few days before, which is a great implementation :) ).
+
+Right, but that really only changes how we map large folios, not how we allocate
+them. There are no guarantees.
+
+> 
+>>> The effect
+>>> we want is: after some customized setup, if only the system has usable
+>>> folio, and the virtual memory alignment permits (or we setup to), we can
+>>> make sure we always use THP for it, the system will never split it except
+>>> the user wants to do so.
+>>>
+>>> This patchset is about both two things above, firstly we add pmd level
+>>> THP COW support by revising the code in do_huge_pmd_wp_page, we added
+>>> switch for it because different workloads may need different resources,
+>>
+>> The switch is bad, and we won't accept any toggle like that. A system-wide
+>> setting does not make sense for such behavior.
+>>
+> 
+> Oh, the reason why I added a switch globally is also because the scenario I mentioned
+> above, I want those processes to always use PMD sized folios as backend to make sure
+> performance. 
+
+"Always" is wishful thinking in many scenarios I'm afraid.
+
+> COW is truly not that common like swap out/swap in, it just can happen
+> sometimes, which I guess the reason may be about image duplication. Setting the system
+> globally is more convenient for my situation :). I can go without this global switch
+> if it's more reasonable.
+> 
+>> A per-VMA flag? Maybe, but I expect pushback as well, as it is way too specific.
+>> So we'd have to find some concept that abstracts these semantics. But I expect
+>> pushback as well.
+>>
+>> We messed up enough with toggles in THP space, unfortunately.
+>>
+>> Also, anything that only works for PMD-sized THPs is a warning sign in 2026 :)
+>>
+> 
+> And for PMD-sized THPs, actually, I’m also considering adding more support for
+> COW to mTHP if the upstream consider it useful. And also for pud sized THPs
+> also. But I guess I have to firstly handle stage 1: PMD level COW now :).
+> And also, since PMD sized folio is commonly used in my workload, I'm also wondering
+> digging into pmd sized KSM in the future, in which I think pmd sized COW may
+> be more useful then :).
+
+I'm afraid I have to stop you right there: there has to be a pretty convincing
+story to add any of that. In particular KSM with large folios (/me shivering).
+
+But I already don't buy the COW story. Just configure khugepaged in a better way
+or use MADV_COLLAPSE and you don't really need to modify the kernel at all in
+99.99% of the case. (khugepaged needs a lot of tuning work, it's currently not
+the smartest implementation)
+
+Maybe, we might give khugepaged better direction of what to try scanning next
+(e.g., where we just COW'ed a THP). Not sure, there are plenty of things to explore.
+
+> 
+>> You don't really raise any concrete use cases or performance numbers for these
+>> use cases. Some details about applications that use fork() and rely on such
+>> behavior would be helpful.
+>>
+> 
+> Sorry for that, the concrete workload itself hasn't been finished yet. 
+
+Okay, what I thought after seeing no workloads an no performance numbers :)
+
+If you don't know the workload, how can you claim that the additional latency
+and/or memory consumption is not a problem?
+
+Also: there is no guarantee that you will actually succeed in allocating a PMD
+THP during a COW fault.
+
+
+> Now it just
+> can happen sometimes in my multi-2M-sized-processes workload test. But the user
+> of our 2M sized folio schema is actually not necessarily myself but also can be the
+> userspace developers. I cannot guarantee that fork will not be used in the
+> performance test of their workload since that is a normal posix call. Maybe a little
+> overthinking? :)
+
+If your application cares about performance, you either shouldn't be using
+fork(), or you should be using it very, very wisely (e.g., interaction with
+multi-threading, MADV_DONTFORK, avoid touching memory in parent until child
+completed).
+
+> I just think swap and COW are two main scenarios that may transparently split pmd sized
+> folios, so maybe we can solve it and make THP both reclaimable and stable.
+
+There is page migration, MADV_DONTNEED, munmap/mremap/madvise/mprotect in sub-2M
+blocks, memory failure handling and probably a lot more. THP allocation might
+fail. THP swapout+swapin might fail to allocate THPs.
+
+Tackling COW handling when you don't even know that it's a real problem seems
+premature.
+
+> Maybe
+> that can make THP more widely used in real deployed environment since the resource
+> can become more controllable for the users :). That's why I was thinking maybe
+> implementing it with setup switches is a reasonable solution?
+
+No magical toggles.
+
+> 
+>> Note that an application that does fork() could use MADV_COLLAPSE after fork()
+>> to make sure that it immediately gets THPs back.
+>>
+>> There is also the option to just use MADV_DONTFORK to not even share ranges with
+>> a child process in the first place, avoiding page copies entirely.
+>>
+> 
+> MADV_DONTFORK and MADV_COLLAPSE are nice and great options :), but the former one seems
+> to be a little wasteful :). 
+
+It's actually the right thing to do (tm) if you care about fork() performance
+and know that your child will not actually need certain memory areas.
+
+For example, in QEMU we use it to exclude all guest memory from fork(), heavily
+improving fork() performance. [there are not a lot of fork() use cases left in
+QEMU today, fortunately]
+
+-- 
+Cheers,
+
+David
 
