@@ -4,104 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18C73CD3425
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 12:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F89CCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 13:13:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E04216B0005; Fri,  1 May 2026 08:51:48 -0400 (EDT)
+	id A05F86B0005; Fri,  1 May 2026 09:13:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDC2E6B008A; Fri,  1 May 2026 08:51:48 -0400 (EDT)
+	id 9B6C56B008A; Fri,  1 May 2026 09:13:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D18E36B008C; Fri,  1 May 2026 08:51:48 -0400 (EDT)
+	id 8F3DD6B008C; Fri,  1 May 2026 09:13:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C0B2B6B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 08:51:48 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13E76C0976
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 12:51:48 +0000 (UTC)
-X-FDA: 84718837896.14.0F2722B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 51B72100011
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 12:51:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=o8jc6gj8;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777639906; a=rsa-sha256;
-	cv=none;
-	b=hvpY0LBBgvDsbAdkQZM3/FGk3O46S9EWa4u9Mdkkfuv7nz4Ir0yvy8b4Ruqa72l8CRuYkH
-	dhi7aPsyAvqA0J+wgM0bpH5Yc+phOLLW2NSvEH0aAHxAb1Ww7bZoJyZXH8o+lhRV0CUowz
-	i4fpMmpQn/8k7zwrBmMHGvyWXX/qgiY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=o8jc6gj8;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 82F936B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 09:13:07 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 11F898C37C
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:12:14 +0000 (UTC)
+X-FDA: 84718889430.25.FEA5C48
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1C5A81C000D
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 13:12:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XHOZWyfp;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777639906;
+	s=arc-20220608; t=1777641132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xPFFfjhV2CRawGpxlv4seU9cIGmXORviKLLK/lBN3Gg=;
-	b=8jo0SQhvIQXNkpXqHHHd3N7U6u5VLXz1pDs69YffkomXu7RiEiR4jlXfKBaaDftqB8qXNh
-	Xt+UF5eShEn+c5pyTorfCyNWQ5hTq6xpxAeEujr15cO6SFVsjajadc0BWmrO9tMSmlPYpW
-	fKNgmfDhfA15jfA4ns5T9kDsOpdsMVY=
+	bh=+llHKaWUBr9+74VqmItuG7ITbvjjlCSCFNpqVjn25Ko=;
+	b=0P74/vtN2LIDF5JvMxheJTYqB2xmenMBPHpGBJQiAlt9Sw+zIe4QKUv7VkUrIrCChnx33H
+	ktXXC1iwXHA32w3nd/RgCYdoAgYs84DL2w9ZllCghMm3NgLp1uLdqM4416U4V5Zyi3R7bU
+	Yv0ZuSuOz9GyXXhD+vGiht9TcFLICyc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XHOZWyfp;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777641132; a=rsa-sha256;
+	cv=none;
+	b=eSQww0kJwW65cENY/976wofJdmc2gQ3dPTZSXh4/ce5voGPoQFeFtw9M9drsB4RrR+MlRE
+	gKUOHrsRnc0GG7pucpjJEhzrQbPhdVolVNpP5rKh1yNtIYZNd6d4ghhLyb+BnlQaKIq5HM
+	Q4CUGIcCK12qrvtyFIASWoWiZsZfraI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B4604096A;
-	Fri,  1 May 2026 12:51:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAAA7C2BCB4;
-	Fri,  1 May 2026 12:51:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777639904;
-	bh=DOM6sWaD8PUqkldfrKOzv5eRuIlc3YsbPu+i88S/hTY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=o8jc6gj8TcHOoVj0RXYs1etvUnfykl4CYFtwin7s2cBslS2NYaa4QP9VVTTjgUVaF
-	 dw3Pv18etBP/aI4kCTc89CWnqLEcgPWVeblWq5nzm9iwJALFD6nL07J+5Ro0AClTtR
-	 WPyrFW31W9IoDK+T8csAcWeg0sANsoEWXypbFcy4=
-Date: Fri, 1 May 2026 05:51:43 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- "Dave Chinner" <david@fromorbit.com>, Qi Zheng
- <zhengqi.arch@bytedance.com>, "Roman Gushchin" <roman.gushchin@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
- <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song
- <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Tvrtko Ursulin
- <tvrtko.ursulin@igalia.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
- <thomas.hellstrom@linux.intel.com>, Carlos Santa <carlos.santa@intel.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Colascione <dancol@dancol.org>,
- "David Hildenbrand" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 0/6] mm, drm/ttm, drm/xe: Avoid reclaim/eviction
- loops under fragmentation
-Message-Id: <20260501055143.b60c31287051a56295f10205@linux-foundation.org>
-In-Reply-To: <afRH+KUNw9zap4sp@gsse-cloud1.jf.intel.com>
-References: <20260430191809.2142544-1-matthew.brost@intel.com>
-	<20260430160105.a3b74ec3bb316bbfbf8f9808@linux-foundation.org>
-	<afRH+KUNw9zap4sp@gsse-cloud1.jf.intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1mn8zhj81is8os6wju13nd1w1gwbfxdo
+	by tor.source.kernel.org (Postfix) with ESMTP id 893A660142;
+	Fri,  1 May 2026 13:12:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D574FC4AF09;
+	Fri,  1 May 2026 13:12:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777641131;
+	bh=rPY6kpU0k2x/r+Y5vurIQbKrBbLh1ktKKLy++xxDRJI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XHOZWyfp/mCR6Px6qXMz9bAhRrRNKNfaUrZLr92WGzjhU5+ZD1HguQ9Y3zf/HM2CF
+	 ING0+AfXfn4kDPc5x2uBTNvI7zCbPfMuKpXbYAAi8OEzsl2QVVIMv+isnIlWUg+HW/
+	 xM6JTb0dcYH2RKUDP49boYGZDv7s2GZFK8LGyFIzn02ETafhtg6uI2N6+M3EIf/xI2
+	 BE6Jzgy/GAbwfChY5kjJoV3STuzVSX0a4+cK7PkhgRPIYcC217OaSRl87qAJLW2e9b
+	 Eo3cgSsQdRWPfvn75RbdCGpts/o6G00Qy1sSFFfhfMVqEEjyvnl4CMhoQ4Darvr1Sb
+	 tELR0d3vPlwEA==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DAB1EF4007E;
+	Fri,  1 May 2026 09:12:09 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 01 May 2026 09:12:09 -0400
+X-ME-Sender: <xms:qab0aZZ4lmLNO5LE8pviXf6YBxnkbKewj-zXCrnavZJbivsPPh6_BA>
+    <xme:qab0aZbhJsDTscqH55SYr_OEFAwzsgNjg7sBPCrdUYW-66rhcJAAMeTZbxEEhGJKj
+    Hmt6Egs2mZe8Q_M1jOAVb0eQiM7QKHFLTfa8h7WPEyyvnetTmzZgl8H>
+X-ME-Received: <xmr:qab0aVrkX4Bbo0Q6l--ODLheZLKc2hOtjBXU1_HfQMhjypegpMpmi1QJbluuUQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeltddvlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
+    dtvdenucfhrhhomhepmfhirhihlhcuufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgv
+    lhdrohhrgheqnecuggftrfgrthhtvghrnhepgeetuedtjefhkeeuiefgudduvdfgvdeiue
+    eigeehheehudetuedtkeelhfeihedunecuffhomhgrihhnpehsrghshhhikhhordguvghv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepgeeipdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
+    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
+    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
+    peiiihihsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:qab0aellQYNT_R3fN52NGkYyZEn9mCcboTG8efe4UUa4xZvIjmghYQ>
+    <xmx:qab0aXXW-mbF5hvwEoNxPCMKoYDCFHu3nt6c2smZz8Vk1gQK780nrQ>
+    <xmx:qab0aVT8bhREa829ct_FBCqcDdAvlwJ95mcAgBiFkHkE-FJLxXvqbQ>
+    <xmx:qab0aUn6vSQB25ybLkc5R3M2QJMF_5HgjWaudrlMGx7p-UFnWnJSjw>
+    <xmx:qab0aQJhjaQAJXOfWCBO_ZYZ2jbBsI4emal1EOnO7LoIoTINtPTJhE9Z>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 1 May 2026 09:12:09 -0400 (EDT)
+Date: Fri, 1 May 2026 14:12:08 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org
+Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 12/14] userfaultfd: add UFFDIO_SET_MODE for runtime
+ sync/async toggle
+Message-ID: <afSmJ4LLuLJWdI4A@thinkstation>
+References: <20260427114607.4068647-1-kas@kernel.org>
+ <20260427114607.4068647-13-kas@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427114607.4068647-13-kas@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 51B72100011
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777639905-812894
-X-HE-Meta: U2FsdGVkX1/ZoL8bewePlTWjmr40VMaI4Zh/sPEfjpYzLjWM+7tGzlRSjUqXkt97rb4grNMwGLu1bitVeaQB9aZmrwKU8oKGKHsRzacU2wfSvpUU62q8aTJo3PekDDi1sG19rIgYvvZ7iwtp6l+bozKscaHofO66WE5FBtiyNCdmLj1M/s1AKHW0GXrzu/EpQA21sUzyQaNayX1m6/Z48W5u1FeqEvwNYvv1FO5eTG9POL+qnev7RLPNwlgtN6Lcyvysp7cprg34Vfk6ugnh75Zks02JwT+laT80swRHXuRG4m7MSJ5efqABd4cCrXNPsn+GIYgH93bMNcF/w3aCN6PxJiXLDBuCqlnA+gDyFUCH2ZPHzJZXpRE3Q9lm9n6L6otWgFGoc5OV/u5Y+UF+S8npyqVhyNfG4V7BPxsw5uoJ3AJSSVH0pRjrn5LgdWkRGqD4pZ4llsKnZ8LKYuMbC+AJs8ucOn7rYqa2jmd1gEaBLdsgNIR0dieGD9m4votIDFTwHRjmVuxM8e821ACCXpqIZhVadoIKWnewhtqqMHeFucWcVuxpA5cXGE99yIYQ4gAJyESniV7+BP3lYFofGLBnVQ1Asr5yn+MjixCSij4KYNTYVB/1Zh0OlG2HiHpfilSRLIyzZf0z3cywClQU999+EO2FhuZnsOR/EclXQoyJ003NiZFb4q+xOObKqxA+aoCUJ9t4psq0DwO37u7zD/+B/LVBq4I187j6IHubgMLWrWHeA6iTS78n3JEkaL4Ehi/3NoyLn4lK4fJduR86zok129caJX13k3UqapdiAozs5EFUDJm31RXLMR9abnjYhvxdaRPPFMfX0n0lOXOdjmXaM67//ov4k42UA2bTKB72Lrheg32mhHtekBpSqA5hOrx/Z7oA5M14v9Enl/YkoQ7Cf2ETsknb/0X8CKIe5Yg45GQVSPaYX6GOW6lNkkIiQV8ACJOmsljenJmN4gs
- QV3C1Jw+
- DTdl+qo4T8NP1xhMzMiPerUDX8ylqhHdH1lpEskEWoK5r8lqmFPdJw8XtFpySIvxWDVQ8hejVjNj6mS2Jp7/mJyUbMxqMdPvJ0oZt3iPRAc6cPPhEGM/BK1eqiu7kIL7JJzN7B7tcijLIeMSMFPQZJuljfsUcF+ocFqUDhMRlZtQjOAaCVXbIASO9Ngk76UCVP7waGrQOfleX7f1J1eJpNNYvwTq1BBFRU47KUbbV9L5HeiNDYdRDTqSQpWuzt5sV1a83JmYnShi9cNbGwoGiua5lxBpRVli1lptfPn2C7eIu4/4odnvpLfQiHj5YeK1WWdvNcf9OZsLOIKVnatia1PxrTsrtBgYzCPrxbrJ+z8C3jVU=
+X-Rspamd-Queue-Id: 1C5A81C000D
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 6c4cg5xzkwc1fk6e9rg6xsrbd45wnnxu
+X-HE-Tag: 1777641131-421530
+X-HE-Meta: U2FsdGVkX1/9hQBMJOKCQD5Z8Bl3+vAGBTyInDoerua5I642sfN5dokxnAXN10vgZNuA0A+JYW9RHc3tugJ/+p9ROBSiWFKrzTqsH21RZzDnxlt2uIvCS+z8F2K/ULnbTdngxZA3/FnR5gxyIQXhEFSZJzU85LoaDd6yZNfC4yyqkuLCLezF1E1OL2rbXyYcZLaU9uYSPPXD3uZk/9elNov7qwaRELO9QMFrbBkyoXoP99yV6O2TXfh3xKS8RO8PWoIISlUn/U8oEs6Hh6wKhY3XMeBvHKF2wUUrfmi5JdiRq/eovM1rXMz0/ME08tRnT0Qub4r4SNcTP9i7EJKNqsMzjGfZaVGl3d/OpRXRf97Dp81IeMkzHiXTJtFML1Q59scOpKDBYEYb2SlQv/7UoPqdMDsqSolwiSl9XMv0SS+DOduSN5rd8ZCtkF2jX5HOPiBa4yv460l2atVLDXDAbpcjzWApXxzhT8ngsoM8aLe0jxzMmCDzVLEEPCKYt0AddoU5+Z/7U5IxySpb2H7MP1sdVhKg5GjjJn8Xvd1o9DNipv+0xnFD5qfab4XWSsBbz7r1W0773WqiuaGxfuwgpeVSu8eSR5ua9MdOOgjQi3taK3IgomNeSr5XEGb5UhmX1w/lDfN7WoodlWWXhVSmVqJORapnMptJ0NXwa74YhpSlslkcAt8KOzujtnnWj40vWNsPRsf9EN+kAJQze1eT8nWwwRIeOVVH3nBQ/m/ihSlbAdi1bdg7esB7x9xVfTs3MppSFqQdtONfuRk8m5M1OAM4ZRf1P45OU5iUW6A8nVSO4CyhPoEyiGU0IZ7l5XTB1rHGL/w7K+oWKKSHhLWUGraY+gnU8PZDu0YtMb7naapMAsObi98CCQvGpzjbmUUnhr/fhMIYL08vpebhEvd4qZLaFVDQa01IvPb1JR43EOljINqvhMcLGPeiuOgzHWvnwcT4ePLHzRQ+pGFBgzX
+ yuBN8TEI
+ 4qBUEjqZjRbjcCT+fjz+KEDtVMx9fD6zCSIrQuG3oqwhqMZEBdRkNX5Kq7U+uIezNjIgXv4xpbOTKEbDasmUcpNq2dsPSoe+R/oG/PTgYhnObtLAnwsW98ph0wxYzxV1HCUStAdgojBNp409RAyhCd70EyslMWcHn54huxSWtwVrUfeq2Xj6MaudOUWSiG0dZPM+moBDVFRlKxvIE8VhnXihY7XbkAfb3VZCeP78StmIK8nUbSvPzPveDU4I4ArMisYwyC33Xs/dce5/YxDTb8HaBTdFn/9eAhuL+L5KKOrVyy9qqMf+ulW9/9E9S5Ptbrex2Zhz3BlwsKeVUSPOE1s3/aun0Tjwg1XG4vVCwOqxT5mkCpeIVpF3pqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,20 +131,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Apr 2026 23:28:08 -0700 Matthew Brost <matthew.brost@intel.com> wrote:
+sashiko.dev -- https://sashiko.dev/#/patchset/20260427114607.4068647-1-kas@kernel.org -- wrote:
+> Since ctx->mm can be an external mm_struct, is it possible for the target
+> process to have encountered an OOM-reap or a failed dup_mmap() and be
+> marked MMF_UNSTABLE?
+> If so, should there be a call to check_stable_address_space(mm) after
+> acquiring the mmap lock to avoid iterating over a maple tree that might
+> contain XA_ZERO_ENTRY markers?
 
-> > AI review flagged a few possible issues:
-> > 	https://sashiko.dev/#/patchset/20260430191809.2142544-1-matthew.brost@intel.com
-> 
-> Idk, who authors sashiko but what make it really nice if you could reply
-> to it to talk things out.
+This is the same pattern as userfaultfd_register() and
+userfaultfd_unregister(), which acquire mmap_write_lock(mm) after a
+successful mmget_not_zero() and walk the VMA tree without
+check_stable_address_space().
 
-It's a gemini 3 thing, based on prompts developed by Roman
-Gushchin and Chris Mason and others.  Google is making this available
-to kernel developers at a non-trivial expense.
+The OOM reaper takes mmap_read_lock, so it is excluded once we hold the
+write lock; failed dup_mmap() unwinds its partial tree before returning.
 
-And yes, it would be great if Sashiko were able to learn from our
-replies and to fine-tune its checking based on the human corrections. 
-I've asked for this a few times but didn't really understand the reply
-;)
+> The commit message notes that fdinfo reads ctx->features with READ_ONCE to
+> avoid seeing a mid-RMW intermediate value. Are there other lockless readers
+> of ctx->features that also need this annotation?
+[ ... ]
+> Could executing UFFDIO_SET_MODE concurrently with these paths cause a data
+> race on ctx->features?
+
+Confirmed. userfaultfd_is_initialized() is reached from
+userfaultfd_poll(), userfaultfd_read_iter(), and userfaultfd_ioctl()
+with no mm lock held, so SET_MODE's mmap_write_lock + vma_start_write()
+drain does not exclude them. The INITIALIZED bit is never modified by
+SET_MODE so the value is functionally stable, but READ_ONCE pairing is
+still the right thing for KCSAN.
+
+Will fold into 12/14 a small helper plus conversions:
+
+        static unsigned int userfaultfd_features(struct userfaultfd_ctx *ctx)
+        {
+                return READ_ONCE(ctx->features);
+        }
+
+with userfaultfd_is_initialized(), userfaultfd_wp_async_ctx(),
+userfaultfd_rwp_async_ctx(), userfaultfd_wp_unpopulated(), and the
+fdinfo printer reading through the helper. Hot-path reads inside
+handle_userfault() and friends stay plain -- they run under the
+per-VMA lock or mmap_read_lock that SET_MODE drains before the RMW.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
