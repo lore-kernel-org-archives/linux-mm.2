@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFE0DCD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 18:02:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E62CD3423
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 18:06:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EBE56B0092; Fri,  1 May 2026 14:02:39 -0400 (EDT)
+	id 661C26B0005; Fri,  1 May 2026 14:06:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C4696B0093; Fri,  1 May 2026 14:02:39 -0400 (EDT)
+	id 6130C6B0092; Fri,  1 May 2026 14:06:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DA696B0095; Fri,  1 May 2026 14:02:39 -0400 (EDT)
+	id 501AB6B0093; Fri,  1 May 2026 14:06:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C50E6B0092
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:02:39 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4ECE1C0100
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:02:38 +0000 (UTC)
-X-FDA: 84719621196.18.471F66E
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E4936B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 14:06:05 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C018DC0976
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:06:04 +0000 (UTC)
+X-FDA: 84719629848.10.A9A3E45
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BD9271C0016
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:02:36 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uuYupSW5;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 11AFB80003
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 18:06:02 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VKpbfCPo;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777658556;
+	s=arc-20220608; t=1777658763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lKq61IVZIm4Yb02QDgIwH+SIALvyu9Q+/uRuFATbUsI=;
-	b=N0jdJnldxm0AyNEcrs9/X/2DIQlCy8+5BtzT4ti1Fjs56Kx2oj4zoqqVMhO0bVfdKy/Gc5
-	9/WPUD/lIlPcYr8NEDmudWra/hcJvwVYl0bKH12Gn0IFXR/eWQtiJJvKGWYY/LjLCgsiSQ
-	8r2CcPUWPR80D/3IMyqqrRq2uXFjnN8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777658556; a=rsa-sha256;
+	bh=YFJO3kncGTLksH7oA9LcPI2XxoKPymWsz0S2X0yQsCY=;
+	b=cTW64IbRNqmHwKX21RVkIVBtxaLfZJ//qKy3iTnuYezzlLbOWxMxSLAG7SXttdXlmnJLBp
+	B6Swsi+26SYxDQKc/0d4WOT1lZX701wlKWmDPUSddeE6LOoOgRyRI0om/hlE6yoFWYGv/I
+	TtaiK+PAiR2HaZkRDDWsqRzLZ57+7Nc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777658763; a=rsa-sha256;
 	cv=none;
-	b=5LNhOZ6GN6lSfmFPyQDbWYhBJqZZoebpU2tSaUZkgA7FPAwcrkF5HBbyTqGC9SvBPjiYng
-	dUbieElthfnohOm6iv1vYJLxdjl1+1xUQqMofGP0KpPxm3CI2uZY1CdQWhrlzH/jAHGUvx
-	v5b9VOmWI5i6yud51aY3r+s3x7dHrPQ=
+	b=N5bQrdMgKdMSEUigG7TZrnlAAdGz0iH0Ahk0PCZWd2xlqrL0mdhjBE4Kd330hQBxgZnQK+
+	ZSdlH/FJ5HMBDd4NvvmAvHAx/8Z/xPCfV5G4jUGeMSjFmRdZMTDy/iO0d8x3kcJdOg0r2x
+	CUuQsuZ9QHjw5hrARgFzEdFjhEte5ms=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uuYupSW5;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VKpbfCPo;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 069C0600CB;
-	Fri,  1 May 2026 18:02:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41920C2BCB4;
-	Fri,  1 May 2026 18:02:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B8A5600CB;
+	Fri,  1 May 2026 18:06:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED93C2BCB4;
+	Fri,  1 May 2026 18:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777658555;
-	bh=cISpscXftIVW35927MGW1f/hoEuL3QHhaFwXy0DNSo0=;
+	s=k20201202; t=1777658762;
+	bh=fPmJ2/Qb7QpFKxM1j5fPVHDJeKRS6/mwonl0EZ5/tEg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uuYupSW5k2LpfC9iWHYvQnjtXdPplnUCS4zZH0iwWWj2qk6KRSbIdEP64j2gjsR5E
-	 PxTGZOGIG0K6SOQOGUJxZTd+XoNb519TwLS2rXPgryJntDsNBFzVvkdY4Kc6PPlDXp
-	 JSyIzbmPfu8Kkk0QLjDLn0hg9bjkW9LYdr4By3XdsBrTB1mQ2w0koM1pUaAPNLGo2+
-	 4cQ8T4v65CG0S1sSi53Ze4TrNiw2ZkH7LdqQh6CBwtpok6NDcZRMBwH1T8LDxfIKlE
-	 9G1clGJsPsd7PH/6rDTvsKZaZIIvUYuHBMrsXq8zeJV809CyXf61ox18x0jZ2EuVr5
-	 BD5sIVaRbCo9Q==
-Message-ID: <01ea8acf-69ee-404e-8785-59fb0a527253@kernel.org>
-Date: Fri, 1 May 2026 20:02:28 +0200
+	b=VKpbfCPoBuOY0D6cQgJaK30uRMoPNJJ8fXi/i2N+ED9hzWASMbBbgfLQfbkBjQczB
+	 mvadihsrsFi6vquYmNxB7GHpR0aG56bBaPVtgOvRbLZ0Es2OOAh81/hMrmUAhI3cal
+	 PNA/UiUBzoor39onccj2SY7jtXS3CqLLwknXD9JfdEqax6nk0oKRXu2etncA0zFTFg
+	 oaDKApOYtj0q7iC7p9oFXS4NsgnDx7nU3ZZsVu6s36pF943OertFMvMP3fFCwLmbab
+	 A7Y+MQo7wTAjVXmphxN/18Nkt75YxPhsdsh77DXVmfj3ZOxDMxQyOFKNK88lQ30Wen
+	 sgznQQa/BIpwQ==
+Message-ID: <3a599186-6ae5-4175-8de0-1826a045222c@kernel.org>
+Date: Fri, 1 May 2026 20:05:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-To: Kiryl Shutsemau <kas@kernel.org>, lsf-pc@lists.linux-foundation.org,
- linux-mm@kvack.org
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
+To: Matthew Wilcox <willy@infradead.org>, Kiryl Shutsemau <kas@kernel.org>
+Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Usama Arif <usama.arif@linux.dev>
-References: <aZcmlIF4bmG0twkp@thinkstation> <afTjKnO66Hl-XmfW@thinkstation>
+ <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Usama Arif <usama.arif@linux.dev>
+References: <aZcmlIF4bmG0twkp@thinkstation>
+ <afIYFtL6KrBs38rT@casper.infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <afTjKnO66Hl-XmfW@thinkstation>
+In-Reply-To: <afIYFtL6KrBs38rT@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BD9271C0016
-X-Stat-Signature: ie5cyqqt4h7n1w8rbdwdztusd1cxzz4h
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 11AFB80003
+X-Stat-Signature: kw6g6rinumb6j8z8r61fkbiypshm8oc3
 X-Rspam-User: 
-X-HE-Tag: 1777658556-741266
-X-HE-Meta: U2FsdGVkX1+n6GhZqOW0iU7KDUcPyU6sgw55r/XiroaIc0EWeANldWpmF1y6jK+plXbavhClP8Fr21t+/5r/aDrOkEZ1+u0PBA3DX+8esjgOfljpmrNmWGby6HyxsoXFDia1QOkXj5p+aWGg/OQ1kQ55h6yls+zqjX5SCmL1Qv7xSCX/a+20W/Bpxf8/6bfiK5Tq4dKp0XI7qi+yOMb30VP9TtFokrGbLis9Bopu2OVltzZmUYFG0XofZ/0HFaze6GNXYCMDot37h+h/hXX03Mo9k4TqQXlxLFUPkPNIQuh528AumsTyQ4D89UpJ4396Ip7PynVZuSHVOCDBpBuDYQxO1M0GiJBcFikpqjybdRzGHJljpFLXqqNNbgt3TaCdExX+jE3KVnTA9GKoIsdFisKRw27udPrtYOdnbCVouWLUgMK5K/tB71UNowfeqypE+tT26c8bywl4DS7ycpw19SaGIUbKdNrSe1RpRwAsPyG+8PbR4ACNsaZdsSjhq6vu+w7VZt4U1f7vRFXK7FzO4r4XGMlLMTBpnHNxfSltrWqSu6rZ9laNxIGopRtTAqzmiy/C+W5RyP7wxo4GYziZZTIh57WFrAWu+ikllcf+LMoCCKhVQGnd3oZ7icuuugagqAU97vXy+51JnU2td17yeDlqRyZyNX9mMBZMrYJSqm+FWk3kBF4hHA98pYxYCNLd73VzQTt7Jf3Ia9xndV2XaMn9CAxCGECwJz11stRXr3mgBHWBvA2PgldWRFLxKgrtMb/tZZgtm96LfvNiUd1uyan8Tav8++hVVqQuSoI5IP9Bgq44xWkZ7ORuvbxgRgI1Rw8TLEWR1MdxR/9j8X4kTiSTOcP8mt7N8yHmx4jSITDrDfGv2IhfWQhR/OsuJLqiaTHh58wd35tntOxF3bUhAIGazmxV/J/a/Tw4e1+eKx3E7fFejDwIo2haC+R29chqmdZb5bP+hTg56Ei7FRG
- rdsKPNzH
- QHUJEMhgx34ZdrnTgAJmgjxaub/NKWaRmAQ+BW7dtFP2E0kQX57Fp2HazVJVmQQaw+E7VgNMuGwQpoKRnzMB8w+7nYhr4ZE8FyY0DrZffDr7hqkY3tzSWireCo/vExAm9oE+VfVol9POfFSEXb/4eBxn5Cw/fERvkoqWu+vKg2W3kxv01ptRQpDk5oGs0/onway/0HxNEkZzfsUQ4qZHcLgj34kXgr548NheExyxjD44LJRtCAC5T3sltgUUCpLNIWDXnhaP62eYGwT2gnm/mueiPOQ==
+X-HE-Tag: 1777658762-699476
+X-HE-Meta: U2FsdGVkX18JAY2NCaEndB/g6eMAzgnh2mGiaG/rIPXkNzQsEzzhSeOaOtjkLzf7PtMuc6cQzj2RpT5I9NrDq93ZPUAM+C/mwLbL5tKCfvaa1hugUmW6onj1IoMmMnKsZsYnccLsY3tgb38Ig41yr7nEG3/Fmo+u0SVV2pdQc3l2CZccQN3iueON+Gm1lU4kcj6ztAeNkf8Gp3c77PRjU+G1DvM5j1NZFoyyAC79rJ1pJ4BYcdFZ9Yp6jK186w8OcveJp4w+uYX9pE1o2NaHywfCBWkYM0yj7w6JEANSdgvkAG+ARFyZgWHSaZ/NGjor+Ws3RuIxJcOApVN9SFmu2gFmybSbV77qCsRxCEavxN2TooYzlbHiGBzjDFWOHpcHcjHOivyslxDUCgYY29I9W9B1WkxMMTq8hIx1/7pNpgtzbWunok0PbBgiCLs8f3BIxFHf14Q6adJRST8VKAFx4XJVsES8iJbuymL1YRca3YZaQZe7rVslAyx4y1WUviTswcfx0ubPYFNkTQdh4fPsRJh9HCEXu4TSwqWuw6KrRg8x5jdSKL6pvTsgqEtigfB1zKLzjojJbXESHX2a/KNLWbkcRNYSkRPB6la9O6NSE7qopcUlVWyCtO7N7WpiMexue8bjwOS9vU02oKwQPzxpkPZrObW6dDDt7XVoEOCzgB/HT06rxCP47uQC+ee7iD0FIFPqKJ9RCqB2LHKfZgcHNTZhoR6ERXCm1QzW94YeRE69iJTnQ6r6NJTA89cVU+lN6X6ZkzFoYvzXXBwiNazaODdhEqRc7ZWvSyI2diRS0fdGUIfYSaanRGAcTcMZ15rWopnxJtDRWV41RMQ/QXAMhSiLzh6NY60SdevGa9Gg5n2W5YMVejWTPT1D9z9/EtoQGZIQb3WL/NLYdYvx9pF76EimwJDkALqy+EDovup3M6rTfswgvOgAYRSRzAGa5a3yZSKaTh9/80oweq8ijMu
+ uGqwhpMt
+ dKDdSrfB810MCIwF9tmLT3sK8qGXI6Mqh/YQYusL6W2J18WtMy2vOSV+RLFq8H9oDdN0eKTOFArIyMcSovIzOqukdymUFBz4acaAEhPRaM331Um1xgEwZjopipvKMpZIdTTE+AX7wkzqXXsW1DlI9FaU4GPnUUGZnJzp5S2PNgZJHUm8U2PQOP157GzeB1vfzFN+gF1NSClJnTvPf5H14vjSnRin+bRjIM94fk5n9feOd73kBPOSwNC4K/B9Eho1mIoMG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,30 +144,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/1/26 20:00, Kiryl Shutsemau wrote:
-> On Thu, Feb 19, 2026 at 03:08:58PM +0000, Kiryl Shutsemau wrote:
->> == Status ==
->>
->> I have a POC implementation on top of v6.17:
->>
->> git://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git pte_size
+> Fourth, we change the unit of the lookup in the maple tree from being
+> a PFN to being address / 512 (or whatever size we want to use as our
+> minimum).
 > 
-> Just a heads up.
-> 
-> I've updated the tree. It is on top of v7.0 now.
-> 
-> I can boot my VM fully (not only to shell as before) on all three page
-> size 4k, 16k and 64k. And it doesn't crash immediately.
-> 
-> Page fault handler is the most challenging part of the design. I wanted
-> to flash it out to RFC quality before the summit, but it is not there
-> yet. But it started getting a shape.
-> 
-> Volume of the code changes makes it hard to deal with the patchset:
-> 
->  1530 files changed, 12675 insertions(+), 8669 deletions(-)
+> Now we can have memdescs for an arbitrary power of two which means we
+> can ditch all the awful code from ppc/s390 page table handling where
+> they try to share one memdesc between several different page tables.
 
-I think you know the answer already :P
+Having a memdesc describe a smaller piece than a page sounds like the way to
+approach this cleanly. A lot of work, but sounds like the right long-term vision
+also when it comes to having folios that are smaller than a page.
 
 -- 
 Cheers,
