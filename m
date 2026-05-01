@@ -4,113 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8C35FF886F
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 01:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39F9ECD13DE
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 01:42:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFA6E6B0093; Thu, 30 Apr 2026 21:37:46 -0400 (EDT)
+	id 9EF936B008A; Thu, 30 Apr 2026 21:42:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAAFA6B0092; Thu, 30 Apr 2026 21:37:46 -0400 (EDT)
+	id 9A0D56B008C; Thu, 30 Apr 2026 21:42:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 973336B0093; Thu, 30 Apr 2026 21:37:46 -0400 (EDT)
+	id 88F776B0092; Thu, 30 Apr 2026 21:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 833A36B008C
-	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:37:46 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 320741202A0
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:37:46 +0000 (UTC)
-X-FDA: 84717139332.10.3DFD650
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5780AA000A
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:37:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bCUD+SqU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7689F6B008A
+	for <linux-mm@kvack.org>; Thu, 30 Apr 2026 21:42:41 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3BF3212042C
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:42:41 +0000 (UTC)
+X-FDA: 84717151722.02.C641741
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 84BAEC0002
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 01:42:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DeR2BoTw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777599759; a=rsa-sha256;
+	cv=none;
+	b=gJYXoa00itOIBVMac5Z5UrGqbe8UzTTq+9LwRYhHGpN0Om+KtWPyFgSNy15JQ36gYFkZir
+	ShwWvlOotwA7Ojzk1gcj3w99REiA3VgqHAyO+POQO0R9aN0AiFHDmECtj41gbdczP77v2r
+	Ab7zWB0Ab+svNqkBdV27fveOQVPRPsw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DeR2BoTw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777599464;
+	s=arc-20220608; t=1777599759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tXkZizzlIjDaETBBA0ZOQ5z2LGXYcLfPd8nsRMFv+WU=;
-	b=I9qWohWoVo01G8D87V+agN9Hxwh+VxeirkXan3OQ0QSVUQv1b7M+RtFvXSsPB+jxGdb34Q
-	flPLGcmrbUvhQFer3nxEr5rnxa3AXghKgEO+GFrW8gutul6+27tFtmLJwBTC9ESYBHaup1
-	nDFFZT26sjH5RWEabUfntOB4RUnwP0I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777599464; a=rsa-sha256;
-	cv=none;
-	b=QR/l9I+267QkiPoatEC5XYgaMIWN3/i/u641s0hXDAoU5LV/ITa8MneOU0EHH23IroiUL6
-	hYRdDc6sit1ZbaaQriCzsrk8Yokr4k8vU9YMa8lqizqowh0HURxwHLTUoQwYRN4Uf5bDH5
-	RmIhuoCBQxVXH264vNV9gJ3dVaoEN+s=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bCUD+SqU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c70e27e2b74so587762a12.0
-        for <linux-mm@kvack.org>; Thu, 30 Apr 2026 18:37:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777599463; x=1778204263; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tXkZizzlIjDaETBBA0ZOQ5z2LGXYcLfPd8nsRMFv+WU=;
-        b=bCUD+SqUODp63YsWKqvE9SAXlS2izwLIdtkWy/w2awvtbsrO3EmlhaDVfxVPssfzgp
-         JecgNDuqa+USM3MQPfHNIlJPye9eRuh3HJfa/SLhJvXalmZf6DRQJeLqMmQavemWEs+0
-         btJkRxiJ+MEtShCb3jA3YBbbo8/CByk3/RKSAwjVbDCvvrlDM6Bt8FCXp9VO8yEXipbc
-         edp0YrDqM0pHdnGgzyYMRZjVI9ZYsfucC4tXfujwYRNqwoYIBl+1iv0zo9dmfUxiylAn
-         2bntcRmK6uar5IP2Eh/yEoS8c2+aM4tmgpYqq1rLE8JK1TAk6VhmPJ9gDSQ+lE11m1oY
-         s4Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777599463; x=1778204263;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tXkZizzlIjDaETBBA0ZOQ5z2LGXYcLfPd8nsRMFv+WU=;
-        b=Fl19jNQAynhnBZHEBSANam9LeZGJBqqS16QGjMd9ggSLX7XaqUu5is27b/92+2JYPY
-         +QAvjaRIkLczU+f/2B1v9cvUuUp9ma/H73aMlZ6CAOdv77h/uLuazo/MKpjbVqyPBs/1
-         RXFGanwIl6lnZBDKlm0Jvl7qIg8qk8OsTxbAB4OhpWbktwofQzz4Nzo5grkSzib4llNe
-         QYdERlvrzkrMBbIeKCK/+0hVLRfAdgDnog5ncQvapUbLBcJ7h0EKBGvdehrz+LtyKXTX
-         GgMFZEqqAxgXmnmtCwFzX+k2/O1HZpjH4Q0CvM46oL5HUeIszuX4zUNiu0d5jJ5/DOR2
-         9c3g==
-X-Forwarded-Encrypted: i=1; AFNElJ+Pdpov0pNDLNzk6uYaQe7TCyf+fDYqcbs/CdZnT/z4RO+m9dT094yxRp/QQV7hi90h7lRh6IrTIg==@kvack.org
-X-Gm-Message-State: AOJu0Yx6iJsIpDTCgvAGIke1c2ocFTRjdM4I0BHEwGY2DYwtzyGA3yJF
-	lgbXauFKjLbWXKk753gsWKp6oNXBDtLggHcb6ltS9iP3Cq+EQZgPCfp7
-X-Gm-Gg: AeBDietzBwFyJCxx4eQLWhHilwKX5ctymI6asq8DlirFFVQjkWNfKjZ2tiConHJ2U+l
-	Fi6hYe84TfBrWyWU6uSNoPgxANztDldRktd0HjVZwyAhhzhTfbiICigsRmYDdlQGo9OCjbsprrG
-	ArAUWdy7ukZri0ZC6yDwRr33cKSEQiCnkHGkAxZrFkcv7+sCsLtOrhZZuEbTrY6/rBzp2/K8Sqf
-	hQtM6gAGtdy7xUH8a07ytC0bzi7WQDggvShzZwf8xhUVrXco+w+dbZZdKS8/sS5CS0Rlx5V5Sbx
-	Ylq5Ga0jbYmFpnso6/l7wIMtStq4jXRtKlJph7qeSVwsMtvI0PwDWb0QlsHnPopm1a3w00v0Z59
-	/Nqy8IRYbnHzt0PwMiVk0araacq77EaIAseAQk/0RPWXhWDCPYjdvNZLtGTb+UQegtPhobeBnnZ
-	on22g8rfoaWpveD5pb/4sToIu7Hi5IViNLCNNWXhx5YaS6zghPVaEGguEhsR21
-X-Received: by 2002:a05:6a00:330b:b0:82f:6a64:deac with SMTP id d2e1a72fcca58-834fe1bf650mr6747969b3a.28.1777599463184;
-        Thu, 30 Apr 2026 18:37:43 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:8f3:e8d0:1478:fdf:dfb3:daec])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515b02935sm956318b3a.41.2026.04.30.18.37.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 18:37:42 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH v5 2/2] mm/damon/reclaim: validate min_region_size to be power of 2
-Date: Fri,  1 May 2026 09:37:50 +0800
-Message-ID: <20260501013750.71704-3-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260501013750.71704-1-aethernet65535@gmail.com>
-References: <20260501013750.71704-1-aethernet65535@gmail.com>
+	bh=zAVqYTzv6j7ppdSOvzRQKpmE1Wq/uAr1hxm4IPcrdJA=;
+	b=2D4hie9foJOZgpZ3PiBpjfrIGfzRSpqmewwI7VYcCmVIVDSKbgapgsQUG6lBxdsZxUnodC
+	gf7nPX1oAyWxLRsnkavrrC+gKgzrzQiQsYihGNm/WngEK4ltIOYhsoDhzmwqYV/v265168
+	BUXciwvW5wagIX9esaB1t8DEJPsXk/Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AD4DF6015B;
+	Fri,  1 May 2026 01:42:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC5FC2BCB3;
+	Fri,  1 May 2026 01:42:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777599758;
+	bh=s5Avm2OmpzdNLOwnBT2sIFLcF3ONT0lruv1PFQd8FBA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DeR2BoTwVYKieU0M5pjmAwUb/bVDgXlJr4hntEgrSPcBlfF+LITJrVSOc2N9+VRmS
+	 ekYnQf+bCmDnsULRliNU29pq8gypvns0TPs06Vh5mnnkUcrtfzxhA8GcBhJV4pIxIC
+	 bGC/E4sOA9Rmf3sALlgnTRrMM79+cnjJuhiotZxPE53FEvdyHycwOGPwMAW9sHzdKq
+	 88GinW/iJhP6YB6ZFqZQudA6uurILRnAf++59hKcxbNcWrGMQnXTRWbZQQigi4/DAC
+	 vZwW2RSR6Pv/Y/1Ct1hJooxdh69EwpD1d9gzzaEy9r08P8mMJm/Wq6hzhqGDyQIaKt
+	 gQEkmpv574rQw==
+Date: Fri, 1 May 2026 11:42:19 +1000
+From: Dave Chinner <dgc@kernel.org>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	Dave Chinner <david@fromorbit.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Carlos Santa <carlos.santa@intel.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Daniel Colascione <dancol@dancol.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/6] mm, drm/ttm, drm/xe: Avoid reclaim/eviction loops
+ under fragmentation
+Message-ID: <afQE-2JOzfOm8enM@dread>
+References: <20260430191809.2142544-1-matthew.brost@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5780AA000A
-X-Stat-Signature: 8j84ohxoftkk4w1kkudqz4d46ocxqp3e
+In-Reply-To: <20260430191809.2142544-1-matthew.brost@intel.com>
+X-Stat-Signature: 1zr8r1gmn9iybg1jzqcmy9eu4yiqkc5d
 X-Rspam-User: 
-X-HE-Tag: 1777599464-366471
-X-HE-Meta: U2FsdGVkX19tgSVcSaHPp/cvyAvewBLWokpEHjyxOZgVGnq501B2WBLriPWmbqFJyWBDz0gShMFtipnqsdNf6lVNN1x368kAeHKl/L332egVgUG57ziRGb9h7racSXGpn8kCnOMu8rJkyqjKP3j0iqRovjwKThmyhuZcC40ZYEjhrFE02XbKyV0WwnZ7bF0UrXUK5GWnD0ESo1covNXm7vpIndgpSzT1JPZ48yyUxYkjo+wvCg9ceKV4txp0ngIzrzUWz5T2zIy9IX5AXIlJWOnR64Y88HWX5ra+V/QlG27Hj266s7iElPtH/TmjtATh6ttRYoi63dTKgfEhFDhAbk/pXYBkVH53Qm9Hnwv2W+hczyeYUA8EOBpT21cfahKjKL3xbTtSEPW3wJZ4XbwIOTex3PzscxXtT5U6sGEWHXN2mz4TXwPXWCujGDaLz/YYtixF5wq0/j2zBsEhZEaofBSL0nWbYJVbSKvO3CIAWhh15rhkeaKjQy3cyiD09FaGtyYU/cBYHB6mXM4bKmrKckG91sw+RNRQYtyFjgpScev5800pxZpl34/6d7IfMXwQSLXoZVMzvdq5ph1FKm2Aq3HYy3fm3o2I/s3c01aHU8Y4KDrU0TxVdGgI6EBbHkORWRMVC0I8fVGGcXYkfmEdGZ3el4LLC7G7fm1RO7rKRykLUj0e9mhpZkDaFY4MNNpiqirUH6mN6QJmKlnAdbOxySaCwt4hBx9noSlPBmnBxSDJOv024wswpImCObLWGPWLMWWh8MP/N/YHr3CXYtKqoOKdp4dyIaf7Yj+qWTUDAAzgD0Er0Efisq6XqqMQi4MvSI6RljCLNu7g69JZ9WWjf4mOE2hZ6ZlM+hxSULQlYkglLed+qzqKrYi13pF+ucJOxbrIJxlr79Liiazyuxsrwj6bV5JvjwAyycs6LXMeCW3Tv79da8o8VoT7Pm/IY7FmhWfH3wM02Rge8nvVu9x
- 8AZe9WFy
- +eyQYxE892g9zRi38UVgl4VB7A98Sc20/9Z42IhuOEw9LHWVjeYtA2GdvZMLRxE3xYMAIYPB42OaSskhc3XXChjbZg+V6QceAaARBEVsJvSdmzAnkdTYj9H1f5aEzfkO6thJ5TP8NuvFrt/UDg7CmttwHtfiObpjlRRmmn/Dmk7CFA3Js+P5d4C6/slyQ+HTwLHBrNy8Ex4/3ZgkiEl3d5srAxyLDV95AOnwnT0KRETAFQicsIcr+lwt9f202Ioa9RiyY80xBztzGhYYmXq448P9iWYObgF+9TS4bkT4ubaFkILx8ZbMkmfx8ufA6VO1UOm1ONdY0E7rLDPruMmRyvy7z2TZH5vM9LY3CSyN7gVhSighWiQswrE2lFs8d8VZ8HuqAw8rp174/pZ8jEAXhpxwtpGt9ZLR7flCOVZpFp9mUJA8pGpm2tQS2QhhzQ6YEO9cFj/hzsItp0QWmk79rudNptQ==
+X-Rspamd-Queue-Id: 84BAEC0002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777599759-283549
+X-HE-Meta: U2FsdGVkX18r7o39DN7m4XHrTNnXzKjvBSIcN1OiwGSfq4Z1v/nGj8nGlkDT+IwS1PG1z4OH9Ib/l5w2DLXvO3PHJWM1T7ILGlVDc3qgQ2JQMWB1KcPfmkGBz2nNKe7XRpYBcaccvuUb256yAtsQ/HC9Op5B/IsfQ9iV4Vt98Lg7AXp7CRFIZmk3Zn84Mf5P8bZQN1wqDfnRby38r3VNGd7kixiHXcsJl1WW8s+vPC7EUMCBPreqS1WPTtdwUIXEpuGvgEBm64HOVolhBW+LuOeujA1H7ZyzRqVdezoquKNxbBLiJeyfweAQv0PGWAYXds1La52wIm/dZNnBjLz/5IIRraN79WpaBgBjx69yBUm7h5ZWSwHY94iTQSIFtrXtjAVPbdzV9QqQ+y4Z0NGHHJ9Fz0iNqOeRqNkrHoWyB6qKEfM7sgyzSUFDw28b2IbNL+yyrq8t9paSzgHSnhduGjifudxWp7iTnxn8dId0eZ4KHAOqb4rH1jqEwTw73+LsYydDmF0vv6wJveK519otgsH12N73JJRdz7yGnfii3ZqvVxA0YSjq4lZFfqh5mPofMe98Dn1Simqo++LKQDl5WNvwc7XVjMmwlnGRQh4T9Yo1Zzzn5A+51BjELSFpNZZ3XUETMmYmnfn63pNGHm/Ag6sltTO6RMiMF7jcRWQ1kpOuTWor1Sl8C/ojsVOQ4fv1wDusxytdgLMudMi15quLRDZrXRivy4DYirGXwz/t7EqnVUuH00OaxHmfJG0lxCv4Y/8mr0SW7tglYG22orohVlaYamCjuUf/GLQDyWFUqvcqlHJV1w98tnawOVSVJkVAscEzjYdA/F5/Hb9uKv5hZhdlAff6P+A0GxQSbDRWG9JwSN7DzRAd2E4yrql1NLCIF8Xvc8aDk1tpLj2PcNnuAl0UWt7EnrhPW+l9VdO9UKN4R1OuBe2FLPl4V8rOR7mfxqx/ufNeWO1dnCgqznJ
+ rYcDROPq
+ wRDHBnf4VLr7o7z4p/sstS26QONvJXC6uQD8KlBSxus5CERtcNBWrD5rPkIqbxR3Y5+xCWg/jot/IcVii4EptBPlDM+fwpGqe4eCRrI6lSZSpZsNvWoNf30PqVs7fCE8cplcaQ6RmzNsVyenIqZQ7YFjdKS1LoA97n3AGKVj7BK+9wxFddg5XOj5QAlgCfM+4JV/9wN3MKf7kGRLdC+cVGqsNgVTvahTlIAMHXUM1K3Wt1Mzs/hvHV+ajo26U8TMH2Z8+/85snA8CZvyuu1AFe0lgbPhZfcmzEEQ37Hr8i1Unab8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,53 +120,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Problem
-=======
-When a user sets an invalid 'addr_unit' (e.g., 3) via DAMON_RECLAIM,
-'min_region_sz' becomes a non-power-of-2 value. While damon_commit_ctx()
-correctly detects this and returns -EINVAL, it sets the
-'maybe_corrupted' flag during this process.
+On Thu, Apr 30, 2026 at 12:18:03PM -0700, Matthew Brost wrote:
+> TTM allocations at higher orders can drive Xe into a pathological
+> reclaim loop when memory is fragmented:
+> 
+> kswapd → shrinker → eviction → rebind (exec ioctl) → repeat
+> 
+> In this state, reclaim is triggered despite substantial free memory,
+> but fails to produce contiguous higher-order pages. The Xe shrinker then
+> evicts active buffer objects, increasing faulting and rebind activity
+> and further feeding the loop. The result is high CPU overhead and poor
+> GPU forward progress.
+> 
+> This issue was first reported in [1] and independently observed
+> internally and by Google.
+> 
+> A simple reproducer is:
+> 
+> - Boot an iGPU system with mem=8G
+> - Launch 10 Chrome tabs running the WebGL aquarium demo
+> - Configure each tab with ~5k fish
+> 
+> Under this workload, ftrace shows a continuous loop of:
+> 
+> xe_shrinker_scan (kswapd)
+> xe_vma_rebind_exec
+> 
+> Performance degrades significantly, with each tab dropping to ~2 FPS on
+> PTL (Ubuntu 24.04).
+> 
+> At the same time, /proc/buddyinfo shows substantial free memory but no
+> higher-order availability. For example, the Normal zone:
+> 
+> Count: 4063 4595 3455 3400 3139 2762 2293 1655 643 0 0
+> 
+> This corresponds to ~2.8GB free memory, but no order-9 (2MB) blocks,
+> indicating severe fragmentation.
+> 
+> This series addresses the issue in two ways:
+> 
+> TTM: Restrict direct reclaim to beneficial_order. Larger allocations
+> use __GFP_NORETRY to fail quickly rather than triggering reclaim.
 
-This flag causes the running kdamond to terminate. While the termination
-is a safety measure, it is suboptimal in this case because the error is
-just a simple invalid input from the user, which shouldn't neccessitate
-stopping the kdamond.
+NACK.
 
-Reproduction
-============
-1. Enable DAMON_RECLAIM
-2. Set addr_unit=3
-3. Commit inputs via 'commit_inputs'
-4. Observe kdamond termination
+As I have said to the people trying to hack around direct reclaim
+for high order allocations being costly for the page cache, fix the
+problem with direct reclaim. (e.g.
+https://lore.kernel.org/linux-xfs/adLlrSZ5oRAa_Hfd@dread/)
 
-Solution
-========
-Add an early validation in damon_reclaim_apply_parameters() to check
-'min_region_sz' before any state change occurs. If it is non-power-of-2,
-return -EINVAL immediately, preventing 'maybe_corrupted' from being set.
+We should not be hacking around a problem in the mm infrastructure
+by changing allocation context flags every high order allocation 
+call site that needs high order allocations. Understand and fix the
+infrastructure problem once and for all.
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
- mm/damon/reclaim.c | 5 +++++
- 1 file changed, 5 insertions(+)
+> Xe: Introduce a heuristic in the shrinker to avoid eviction when
+> running under kswapd and the system appears memory-rich but
+> fragmented.
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 86da14778658..2747eef5919d 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -204,6 +204,11 @@ static int damon_reclaim_apply_parameters(void)
- 	param_ctx->addr_unit = addr_unit;
- 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
- 
-+	if (!is_power_of_2(param_ctx->min_region_sz)) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (!damon_reclaim_mon_attrs.aggr_interval) {
- 		err = -EINVAL;
- 		goto out;
+NACK on architectural grounds.
+
+Custom heuristics in individual shrinkers to decide whether the
+should do what the mm subsystem has asked them to do has -always-
+been a mistake to allow. The mm subsystem makes the decision on how
+much cache shrinkage needs to occur, the shrinkers just do what they
+are told to do.
+
+If we have a problem where a workload causes excessive shrinker
+reclaim, then we need to address the problem in the infrastructure
+because excessive reclaim affects the performance of -all-
+subsystems with shrinkable caches, not just the TTM subsystem.
+
+As it is, I can't review what you've actually implemented because
+you only cc'd me on a single patch in the series. In future, please
+cc me on the whole patchset because shrinkers need to work as a
+coherent whole, not just in isolation....
+
+-Dave.
 -- 
-2.53.0
-
+Dave Chinner
+dgc@kernel.org
 
