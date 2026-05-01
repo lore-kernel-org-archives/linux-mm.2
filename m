@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC6DCD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:05:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F50FCD3427
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 21:05:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0F956B00AE; Fri,  1 May 2026 17:04:22 -0400 (EDT)
+	id 551B26B00B2; Fri,  1 May 2026 17:04:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEBEF6B00AF; Fri,  1 May 2026 17:04:22 -0400 (EDT)
+	id 51FB56B00B4; Fri,  1 May 2026 17:04:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD56A6B00B2; Fri,  1 May 2026 17:04:22 -0400 (EDT)
+	id 373AF6B00B3; Fri,  1 May 2026 17:04:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A606F6B00AE
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:04:22 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E4701A02CF
+	by kanga.kvack.org (Postfix) with ESMTP id 275246B00AF
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 17:04:23 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D8B698A6B2
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:22 +0000 (UTC)
-X-FDA: 84720079164.27.77473E1
+X-FDA: 84720079164.08.3E08985
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6A2D6100007
+	by imf20.hostedemail.com (Postfix) with ESMTP id C507A1C0018
 	for <linux-mm@kvack.org>; Fri,  1 May 2026 21:04:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sWQhubef;
-	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C03jirgi;
+	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1777669460;
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dgxBTWqOKAh8Tvtnq2FGvyiSxVNHdjijPk4ZHvtJw4A=;
-	b=UYf+lkdfADw0npD47epdlFeAAHPDxhhMT7Td7LLdJRnWtBloR7I3eTL3X7e/gTC2BlFRD4
-	73vG1Qr4rS4sEWNRMae9KKNuMQIwMl4xxiqZDHQw3tBvTxjXSNfIwcwvvNMCgITBxQbMcx
-	6pKqVhfpC0C9nOd/kPZ6ucgTXVkKdc8=
+	bh=q7WZhgmECBR04MyEd8E6c3towWg49ZYQYSwYzRcDZJE=;
+	b=Nm3cJ2d8ot+Tsl8vhdwep3/h236e25I6gWY110A7XR+l+asxjssyVOgY7GY2HLRjC8Xvdo
+	WbqRvqlzlP39YKFRUuZTOa7MGfmxemsgGs2rednDCRndSJ4g050wrtRmHvu71CRWc91ot8
+	JFzQwcjzrNI2etvlNo7nefICZf3Tm+Q=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C03jirgi;
+	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777669460; a=rsa-sha256;
 	cv=none;
-	b=H4H37hCdD5tmevuoFBYjRUSUxDouzsHVdLf2LDz1t3b8IZoE4iGXxdUpndXSa3WAS198zl
-	MF8s0W+H2RjCA7gIkGHZsHKiJRdiRM2E2VM/Kvh7tqhfzrnO4RJp3AOB0YIeE5G2ZElKzX
-	A6tl+8wcUDr+qSbIT74pVJpB9uKxtmQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sWQhubef;
-	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=uKwRBAstalgYtMftlahJy6GX1otlwiH94alKO7QkPaFQa6gqFrC64jml25OAzaE2omm7aP
+	3YLymHUsvMrXSxfdf4TwatzCpSASuuWxVMw6iEy2vfMZO7PMwUkmeDxupXJw9seuOj7BpA
+	sx2Bf/3Z4iA13IHw03oJjXqm0BEmNQ0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 38C2744775;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5F6A14458E;
 	Fri,  1 May 2026 21:04:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 19DE7C2BCB8;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 40056C2BCC4;
 	Fri,  1 May 2026 21:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777669454;
-	bh=tHaw3tfLQDdMlRkLC7d39ZVgj9socWvo29ap6QmaxjM=;
+	bh=iJExWTQRPkiwcYj7KBz1453v6H0elkPygOR5Ae/2kfg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=sWQhubefyPkGM4BWTPRy9Ywc1mFfVZImQgysH0xEuLNngQhjfRu+AiaIBOLsyV7V1
-	 nnKFhSHSZn2qJboqJtZouUN/2TiEGYKfuUnaV8NHxbAJZMOfv3lKHZXY7WZq/cYZ2z
-	 pKOiIwTqiJrM7Yg4lhsWbQLXdV8H9qiHaeNESV9VwRHOIvwG22h11eKXxpRgUWyR/u
-	 bmgyw/643c9wWx4/4qQ9NRCmIXcu1eirs6+hoWeFLMM1eFfwkHUDFUPl3bsPqd0nRy
-	 ArphTz5gDU/w0rF9V6bGrhIUUlT4kSsTHebmWqLz6SRxwgGPJSeOXJ30OWqM9TulNK
-	 WkBUXlkQmXAJg==
+	b=C03jirginn7K28FqB0HDkVVvV1f+S0NqIZLWLYIXy24kD/B1Y+oxUepgM0HeS0uTf
+	 1JA74vEc3bZZeaN2Ajac6Ra9siO9/v+fsxahelnX9SLYyrF2u5eSkD0x2GQqcjcdNV
+	 uQN06rDp98RCK0xgD47RnEvkkmMag7ecp8y04ygwAqGLOfEufyHrh+k1fOjEyUwtnp
+	 OXxeFb1faKjven7+/FmtcAckVSc0noL953cG7Ev2c8wZ8aq6FvAf3aD4F1zRc4noKU
+	 fqa4bGpZ86k75m+llHYDr54XInq1ILZmsEO3jV4vLX7hIfIwp1vO2xkKTI/HO0qMh9
+	 05tkudkewn54Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 103FECD3423;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36DF7CCFA13;
 	Fri,  1 May 2026 21:04:14 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Sat, 02 May 2026 05:04:12 +0800
-Subject: [PATCH RFC 26/32] mm/workingset: properly define the format of a
- folio shadow
+Date: Sat, 02 May 2026 05:04:14 +0800
+Subject: [PATCH RFC 28/32] mm/workingset: split lruvec retrieving and flush
+ into a helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260502-mglru-fg-v1-26-913619b014d9@tencent.com>
+Message-Id: <20260502-mglru-fg-v1-28-913619b014d9@tencent.com>
 References: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
 In-Reply-To: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
 To: linux-mm@kvack.org
@@ -100,25 +100,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=6409;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777669448; l=8304;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=BHsPRvLdIXuKL3/5pLqvcCuBLzJEpjMu3hI5uV7aekI=;
- b=AcTOgAnvvy963ARcizG0u5Uont1pyDQrOxeIwl5U9ZU8DRZnP0MT4tUKr19pgaGqHDFeirdzz
- XLtUak8Rg5sBgd6KvulitmR+E8YDSYWip1TC4e5UormFnuF5hLwTJ2u
+ bh=CannGTZuhdb+chYR/x/lEwpMQkSHEkSpZfE0GVG1Xvg=;
+ b=oXBiImfpMiql1tAMBZqHjNGBH+90Hveu3ZZG7nw1NvBuBrivKpGFuLylAq0UHD0SBKaV/+h7T
+ khWYi0AglAVD1r4EUq/bDzIigkek7M7F7l5+pz4g9OXg6Qjj0Zb0PwG
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6A2D6100007
 X-Rspam-User: 
-X-Stat-Signature: rio7agd5wfy5t3w5grnihmxrmjgxsker
-X-HE-Tag: 1777669460-687003
-X-HE-Meta: U2FsdGVkX1+6MxU8XWl982f5FNXJq//9eEe8q1peBNaxGdEZ3LoArzrFqmB68E4E6MiJ0BOwTVJx4W6UrfONU0UEx9KbxLm8Ys9P5VUcPpLIIuV2YjAKMdFzlR6ySbM6KBQSQ+htDeOTDM1Z3OfeBOdZ0PR7AqOV1CGABR8NWykTdusc2IxsNIupb+UevTqCTYGkBA0DqhexwTQzfqYQpMoPAykOxJhFml/bWU7Bxs4g3K+gkOkW/JujZG3m+CO2vt3oXnFBgDVaFPfhgZAN8TOnxJmkw9Egm3NXJCQixLiObuB1ijShdEukSe0rU5nuO3YsxnRCx2m+8zo9+Ce7KxnJczFPmRgj38o3bdcxscZFwl5ZybQk+8I+Va2Hu3+zp96YuwnoOuxy2IeEh7bWo5LYNZCsE4gYg+tl+iUPVrir5BiBzZTw/u/7sg1ORJPVmRAJT6bUoonPb8pinGhh1OuTMHoNP40eoA8Q4FhuDJqhWj+MozXv2homJEIjbYFIevCm98lsdAwD2liceeAcB4q2qDfI4UKLL56jfdtiIsXvj7bL3YHNrc57pFkDm2KDdd+rgCD7Uaj3RWc2Hk3hrHjlEvXRTqjEAmUfgKUlBkHTuoiEJXkjlOjn0W5A2bVewI32Rsmndct+5NGTKMz4US6WzK0+nwPJ1G+wWeQvMLA5WgMo4sChnOyqHVQWjlZb2VnUVAhiZitWASlEGjTsQlJ+I5JsBH7HB764ZIgfm7S68NNvNKQUAuh//GZalaBKjI9VkLDJ2Bn88jZ+okxT0Vp7yDrTgnMNanyo9mTjSP5okr31/LLBxRDib5dqpUvZc2E/lTuQUqG4YWboRPG+Q++1eMdedbBPF94EahFBeWgsfb7N2/xDM5BKmKVagQ5348itOdor+bXXkU5tPlP1ePgllqV7OpHKWfh9HVuulncwrhoGNXXwhsQPRKmdbfC/PN7rayU/OmJ1nQ2JFCK
- IcVjuMr6
- 9FvibdDb8jjf2F3fgFg+KtD1xSi3h07xYzuYKUSarK6RTKQhR++74rIUSv9rvZVIX2HBj8t5wuc/fKOjh4NT9EjR+PRfW2p2DiuGPSTO8uFI/Z6S+2RK63ZUR/uDy2+KihCxhOIsdNE8OPGogGjjsRAOEaBqxLuXLXpqnTDU4ZAhXfjaXa4JlNm6Muhb9zSL27EVc2UGNwMwtYMzy3y8jJgbVKo4h7Y1tuRV/nonKLur4tTaksomfNScowKh8Cn3GdiaVI+qF44S/gcRQRa+9uqjTBN8r1v/R9Uh+4gghNe6U4g/xZHJMTUyXvkNAtPNc19FhxkMWoCcAGfZSotgyntu9qtrNXsodHccyEgoWb/1Z5nqE5LCnm8FaqQ==
+X-Rspamd-Queue-Id: C507A1C0018
+X-Rspamd-Server: rspam06
+X-Stat-Signature: cgewa161n5dicba3n8kdcx9mscc7gxdb
+X-HE-Tag: 1777669460-82618
+X-HE-Meta: U2FsdGVkX188rcSzAwtJIjACbeJU0BCsyyORDOqYVEaJ8jmqTN3V5+ZfS+Bt6tv7/0xNv5+zlExp9ydyr/HNH1h97PWMN3LBIVwQSv4KuVndUJK3I/hxcFQ1UbW+hmaM5X4pVwG3ziXPYRkJySwN3yR/5E9GjBZ8cUzdut6427t8EeMp888AeumbnzGS1FPlr6gvSmc6XUx3sLS2DRgxda5DeL2TawLmrv4ZYqulnda94Ys+BfLRDaXSlT8sroy2Zf79PN4LbYxI7isN+T4oaWSZrLz7pSXeXa7KoFL/FO3Tr+JTPK7AKLzxomVFQbU1XsmEfzLJHOpRYTHFn4QcxBgnHNpP3iauMJ9ZOG4kqCKEt/3cmQPNxstZ/JDdG7xHHHDo/FkRZkYQPs5HbtIKI4vcXtawkrXSfd4OvlD3G3t+S5kAu1drsaXeev92y7FrbTFnXYusoxjdijoXQ6Isr1FmzE3oX2xjy4rVyZXCBBkIF1FPKdQEO115KidvbQIlsQahtWmgw6FHHEB6hVFR7bobjOMjTTaGhfNowJKug6GlbCt7OoBNVN6rtTPFIwiu/h4BCojloxAGBJ/ftLFCOF/7YDDwDPYbgbqfhSR6w9H8YemMo/H1MiAD8sYwqNsHBmRNdKsJkQNdaqj/SwBAklicOeGI1tllKV4HgMwhxmdiTGKonBL15/Lchs0UcbpVjTuk8yRHmFGWc55NagLzmlZA1gbvxrHE/srjiGowN/chiRLRRbCEkA4uxYCCucIjp1h2CsUviCSKO2tZJczblIdTSAab82BW2W14fXM9sFyd8r98aHQf+Op1FfBDCA2zGWJn4i3ebomOR/sG9zcR7TVxfe2Hilw0SKvaCH68++AhshK3q8nlztn8weipn1CT+INB8pZUFAqVa+rVAvXhN5pW0+62esdbZ3lYa1HIufOwILf04rGLbyE4Fu4i3ee8oVqrfVCNpiRKtaRnARj
+ euuJ4QHv
+ rBOtklrAWwW3f2V8CfkZGA4TLcAEokQ7jxg3iLk+gGrHll1bnf96lXrtBQmV3KxQKszG4i+9ikhkzw4ITIJRzQdowMHoTiUTGPFSJmnp458B5f2YKilrh8vhmyf1klG4JF6VlpbMAX8sPSTtJI5eyiISg7NM/jmL0qCffLonMb2em5bEsSBzD8thcO1PIch7Z1eBmEK0/i19WPKmtZNlBvXN4gilScO/cwxwPVZgVtZLHXTAARkz7wvO5JgveFrFZ4yn4/97u1kOUuPnpFrImay1MD7HpX+kkqRUr9CfJlcKwbsymSnOln2JD11uHZ7t2ZpM3o5p5VSQb4Jy28fpiTVNBqrlyo0i9LmdLuyqyv91vuh1xXxT7m/lygg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,148 +128,255 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-The shadow of an evicted folio can be roughly divided into two parts:
-
-- The common and mandatory pack info: which contains the memcg info,
-  workingset bit, and pgdat.
-- LRU specific eviction info: which is a "timestamp" for Active/Inactive
-  LRU, and generation sequence for MGLRU.
-
-The common pack part is the same for both Active/Inactive and MGLRU, and
-the data stored presents the exact information. Meanwhile, the eviction
-info part could be truncated, which is OK since the eviction info is
-just a hint for LRU to determine what to do with a refaulted folio, and
-in the worst case, only has a limited effect on the system's
-performance.
-
-Add some comments on this, and consolidate the macros for these two
-parts.
+Soon MGLRU will share the common routine for refault distance checking,
+so make a few helpers for that. No feature change.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/workingset.c | 61 +++++++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 40 insertions(+), 21 deletions(-)
+ mm/workingset.c | 189 +++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 98 insertions(+), 91 deletions(-)
 
 diff --git a/mm/workingset.c b/mm/workingset.c
-index b472ac34943e..622e00ac28b6 100644
+index e756b0cc14b5..5c52dd835a92 100644
 --- a/mm/workingset.c
 +++ b/mm/workingset.c
-@@ -184,13 +184,35 @@
-  * refault distance will immediately activate the refaulting page.
-  */
- 
--#define WORKINGSET_SHIFT 1
--#define EVICTION_SHIFT	((BITS_PER_LONG - BITS_PER_XA_VALUE) +	\
--			 WORKINGSET_SHIFT + NODES_SHIFT + \
--			 MEM_CGROUP_ID_SHIFT)
--#define EVICTION_SHIFT_ANON	(EVICTION_SHIFT + SWAP_COUNT_SHIFT)
--#define EVICTION_MASK	(~0UL >> EVICTION_SHIFT)
--#define EVICTION_MASK_ANON	(~0UL >> EVICTION_SHIFT_ANON)
-+/*
-+ * Active/Inactive LRU, MGLRU have different info embedded in the shadow.
-+ * Shadow format:
-+ *                   /     LRU Eviction Info    \ / LRU Pack Info \
-+ *                  +----------------------------+----------------+-+
-+ * non-MGLRU:       |SC|   eviction timestamp    | NID | MCID | W |1|
-+ * MGLRU:           |SC|     seq number   | refs | NID | MCID | W |1|
-+ *                   ^                              ^      ^    ^  ^
-+ *    Swap Count (anon only)  NUMA ID (NODES_SHIFT)-+      |    | XA_VALUE
-+ *          Memory Cgroup ID (MEM_CGROUP_ID_SHIFT) --------+    | mark
-+ *                    Workingset Bit (WORKINGSET_SHIFT) --------+
-+ *
-+ * Shadow is a XA_VALUE, 63 / 31 bits are usable.
-+ *
-+ * The LRU pack info part is used to identify which lruvec a folio was
-+ * evicted from. This part is always accurate so we never lose the
-+ * basic track of faults on each lruvec.
-+ *
-+ * Eviction info is either a snapshot of the `evictions` counter of an
-+ * lruvec when the folio was evicted (lru timestamp, for active/inactive
-+ * LRU), or the min_seq number when the folio was evicted (MGLRU). This
-+ * part may have shrunk, so we may get inaccurate info, which is usually
-+ * fine and could be tolerated.
-+ */
-+#define WORKINGSET_SHIFT	1
-+#define LRU_PACK_BITS		(NODES_SHIFT + MEM_CGROUP_ID_SHIFT + \
-+				 WORKINGSET_SHIFT)
-+#define LRU_EVICT_BITS		(BITS_PER_XA_VALUE - LRU_PACK_BITS)
-+#define LRU_EVICT_BITS_ANON	(LRU_EVICT_BITS - SWAP_COUNT_SHIFT)
- 
- /*
-  * LRU refs uses LRU_REFS_WIDTH + 2 bits, the 2 bits are PG_workingset and
-@@ -212,7 +234,9 @@ static unsigned int bucket_order[ANON_AND_FILE] __read_mostly;
- static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long eviction,
- 			 bool workingset, bool file)
- {
--	eviction &= file ? EVICTION_MASK : EVICTION_MASK_ANON;
-+	BUILD_BUG_ON(LRU_EVICT_BITS_ANON <= SWAP_COUNT_SHIFT);
-+
-+	eviction &= BIT(file ? LRU_EVICT_BITS : LRU_EVICT_BITS_ANON) - 1;
- 	eviction = (eviction << MEM_CGROUP_ID_SHIFT) | memcgid;
- 	eviction = (eviction << NODES_SHIFT) | pgdat->node_id;
- 	eviction = (eviction << WORKINGSET_SHIFT) | workingset;
-@@ -257,8 +281,7 @@ static void *lru_gen_eviction(struct folio *folio)
- 	struct pglist_data *pgdat = folio_pgdat(folio);
- 	unsigned short memcg_id;
- 
--	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_BITS >
--		     BITS_PER_LONG - max(EVICTION_SHIFT, EVICTION_SHIFT_ANON));
-+	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_BITS > LRU_EVICT_BITS_ANON);
- 
- 	rcu_read_lock();
- 	memcg = folio_memcg(folio);
-@@ -284,7 +307,7 @@ static bool lru_gen_test_recent(struct lruvec *lruvec,
- 	unsigned long max_seq;
- 
- 	max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
--	max_seq &= (file ? EVICTION_MASK : EVICTION_MASK_ANON) >> LRU_REFS_BITS;
-+	max_seq &= BIT((file ? LRU_EVICT_BITS : LRU_EVICT_BITS_ANON) - LRU_REFS_BITS) - 1;
- 
- 	return abs_diff(max_seq, token >> LRU_REFS_BITS) < MAX_NR_GENS;
+@@ -261,6 +261,60 @@ static void unpack_shadow(void *shadow, int *memcgidp, pg_data_t **pgdat,
+ 	*workingsetp = workingset;
  }
-@@ -512,7 +535,7 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
- 	 */
- 	eviction <<= bucket_order[file];
- 	distance = ((refault - eviction) &
--		    (file ? EVICTION_MASK : EVICTION_MASK_ANON));
-+		    (BIT(file ? LRU_EVICT_BITS : LRU_EVICT_BITS_ANON) - 1));
  
- 	/*
- 	 * Compare the distance to the existing workingset size. We
-@@ -781,12 +804,10 @@ static struct lock_class_key shadow_nodes_key;
- 
- static int __init workingset_init(void)
++static struct lruvec *try_unpack_get_lruvec(void *shadow,
++					    unsigned long *eviction,
++					    bool *workingset, bool flush)
++{
++	int memcgid;
++	struct mem_cgroup *memcg;
++	struct pglist_data *pgdat;
++
++	unpack_shadow(shadow, &memcgid, &pgdat, eviction, workingset);
++
++	/*
++	 * Look up the memcg associated with the stored ID. It might
++	 * have been deleted since the folio's eviction.
++	 *
++	 * Note that in rare events the ID could have been recycled
++	 * for a new cgroup that refaults a shared folio. This is
++	 * impossible to tell from the available data. However, this
++	 * should be a rare and limited disturbance, and activations
++	 * are always speculative anyway. Ultimately, it's the aging
++	 * algorithm's job to shake out the minimum access frequency
++	 * for the active cache.
++	 *
++	 * XXX: On !CONFIG_MEMCG, this will always return NULL; it
++	 * would be better if the root_mem_cgroup existed in all
++	 * configurations instead.
++	 */
++	rcu_read_lock();
++	memcg = mem_cgroup_from_private_id(memcgid);
++	if (!mem_cgroup_tryget(memcg))
++		memcg = NULL;
++	rcu_read_unlock();
++
++	if (!mem_cgroup_disabled() && !memcg)
++		return NULL;
++
++	/*
++	 * Flush stats (and potentially sleep) outside the RCU read section.
++	 * XXX: With per-memcg flushing and thresholding, is ratelimiting
++	 * still needed here?
++	 */
++	if (memcg && flush)
++		mem_cgroup_flush_stats_ratelimited(memcg);
++
++	return mem_cgroup_lruvec(memcg, pgdat);
++}
++
++static void put_lruvec(struct lruvec *lruvec)
++{
++	if (mem_cgroup_disabled())
++		return;
++
++	mem_cgroup_put(lruvec_memcg(lruvec));
++}
++
+ /**
+  * lru_eviction - notifies eviction of an folio on an lruvec
+  * @lruvec: the lruvec the folio belongs to
+@@ -383,30 +437,25 @@ static bool lru_gen_test_recent(struct lruvec *lruvec,
+ static void lru_gen_refault(struct folio *folio, void *shadow)
  {
--	unsigned int timestamp_bits, timestamp_bits_anon;
- 	struct shrinker *workingset_shadow_shrinker;
- 	unsigned int max_order;
- 	int ret = -ENOMEM;
+ 	bool recent;
+-	int memcg_id;
+ 	int hist, tier, refs;
+ 	bool workingset;
+ 	unsigned long token;
+ 	struct lruvec *lruvec;
+-	struct mem_cgroup *memcg;
+-	struct pglist_data *pgdat;
+ 	struct lru_gen_folio *lrugen;
+ 	int type = folio_is_file_lru(folio);
+ 	int delta = folio_nr_pages(folio);
  
--	BUILD_BUG_ON(BITS_PER_LONG < EVICTION_SHIFT);
- 	/*
- 	 * Calculate the eviction bucket size to cover the longest
- 	 * actionable refault distance, which is currently half of
-@@ -794,15 +815,13 @@ static int __init workingset_init(void)
- 	 * some more pages at runtime, so keep working with up to
- 	 * double the initial memory by using totalram_pages as-is.
- 	 */
--	timestamp_bits = BITS_PER_LONG - EVICTION_SHIFT;
--	timestamp_bits_anon = BITS_PER_LONG - EVICTION_SHIFT_ANON;
- 	max_order = fls_long(totalram_pages() - 1);
--	if (max_order > (BITS_PER_LONG - EVICTION_SHIFT))
--		bucket_order[WORKINGSET_FILE] = max_order - timestamp_bits;
--	if (max_order > timestamp_bits_anon)
--		bucket_order[WORKINGSET_ANON] = max_order - timestamp_bits_anon;
-+	if (max_order > LRU_EVICT_BITS)
-+		bucket_order[WORKINGSET_FILE] = max_order - LRU_EVICT_BITS;
-+	if (max_order > LRU_EVICT_BITS_ANON)
-+		bucket_order[WORKINGSET_ANON] = max_order - LRU_EVICT_BITS_ANON;
- 	pr_info("workingset: timestamp_bits=%d (anon: %d) max_order=%d bucket_order=%u (anon: %d)\n",
--		timestamp_bits, timestamp_bits_anon, max_order,
-+		LRU_EVICT_BITS, LRU_EVICT_BITS_ANON, max_order,
- 		bucket_order[WORKINGSET_FILE], bucket_order[WORKINGSET_ANON]);
+-	unpack_shadow(shadow, &memcg_id, &pgdat, &token, &workingset);
+-
+-	rcu_read_lock();
+-	memcg = mem_cgroup_from_private_id(memcg_id);
+-	lruvec = mem_cgroup_lruvec(memcg, pgdat);
++	lruvec = try_unpack_get_lruvec(shadow, &token, &workingset, false);
++	if (!lruvec)
++		return;
+ 	if (lruvec != folio_lruvec(folio))
+-		goto unlock;
++		goto out_put;
  
- 	workingset_shadow_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
+ 	recent = lru_gen_test_recent(lruvec, token, type);
+ 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + type, delta);
+ 
+ 	if (!recent)
+-		goto unlock;
++		goto out_put;
+ 
+ 	lrugen = &lruvec->lrugen;
+ 
+@@ -424,8 +473,8 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
+ 		folio_set_lru_refs(folio, refs);
+ 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
+ 	}
+-unlock:
+-	rcu_read_unlock();
++out_put:
++	put_lruvec(lruvec);
+ }
+ 
+ #else /* !CONFIG_LRU_GEN */
+@@ -494,91 +543,49 @@ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
+  * Return: true if the shadow is for a recently evicted folio; false otherwise.
+  */
+ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+-				bool flush)
++			    bool flush)
+ {
+-	unsigned long distance, active, inactive;
+-	struct mem_cgroup *eviction_memcg;
+-	struct lruvec *eviction_lruvec;
+-	struct pglist_data *pgdat;
++	struct lruvec *lruvec;
+ 	unsigned long eviction;
+-	int memcgid;
+-
+-	rcu_read_lock();
+-	unpack_shadow(shadow, &memcgid, &pgdat, &eviction, workingset);
+-
+-	/*
+-	 * Look up the memcg associated with the stored ID. It might
+-	 * have been deleted since the folio's eviction.
+-	 *
+-	 * Note that in rare events the ID could have been recycled
+-	 * for a new cgroup that refaults a shared folio. This is
+-	 * impossible to tell from the available data. However, this
+-	 * should be a rare and limited disturbance, and activations
+-	 * are always speculative anyway. Ultimately, it's the aging
+-	 * algorithm's job to shake out the minimum access frequency
+-	 * for the active cache.
+-	 *
+-	 * XXX: On !CONFIG_MEMCG, this will always return NULL; it
+-	 * would be better if the root_mem_cgroup existed in all
+-	 * configurations instead.
+-	 */
+-	eviction_memcg = mem_cgroup_from_private_id(memcgid);
+-	if (!mem_cgroup_tryget(eviction_memcg))
+-		eviction_memcg = NULL;
+-	rcu_read_unlock();
+-
+-	if (!mem_cgroup_disabled() && !eviction_memcg)
+-		return false;
+-
+-	eviction_lruvec = mem_cgroup_lruvec(eviction_memcg, pgdat);
++	unsigned long active, inactive;
++	unsigned long distance;
++	bool recent;
+ 
+ 	if (lru_gen_enabled()) {
+-		bool recent;
+-
+-		recent = lru_gen_test_recent(eviction_lruvec, eviction, file);
+-		mem_cgroup_put(eviction_memcg);
+-		return recent;
+-	}
+-
+-	/*
+-	 * Flush stats (and potentially sleep) outside the RCU read section.
+-	 *
+-	 * Note that workingset_test_recent() itself might be called in RCU read
+-	 * section (for e.g, in cachestat) - these callers need to skip flushing
+-	 * stats (via the flush argument).
+-	 *
+-	 * XXX: With per-memcg flushing and thresholding, is ratelimiting
+-	 * still needed here?
+-	 */
+-	if (flush)
+-		mem_cgroup_flush_stats_ratelimited(eviction_memcg);
+-
+-	distance = lru_distance(eviction_lruvec, eviction,
+-				file ? LRU_EVICT_BITS : LRU_EVICT_BITS_ANON,
+-				bucket_order[file]);
+-
+-	/*
+-	 * Compare the distance to the existing workingset size. We
+-	 * don't activate pages that couldn't stay resident even if
+-	 * all the memory was available to the workingset. Whether
+-	 * workingset competition needs to consider anon or not depends
+-	 * on having free swap space.
+-	 */
+-	active = lruvec_page_state(eviction_lruvec, NR_ACTIVE_FILE);
+-	inactive = lruvec_page_state(eviction_lruvec, NR_INACTIVE_FILE);
+-
+-	if (mem_cgroup_get_nr_swap_pages(eviction_memcg) > 0) {
+-		active += lruvec_page_state(eviction_lruvec, NR_ACTIVE_ANON);
+-		inactive += lruvec_page_state(eviction_lruvec, NR_INACTIVE_ANON);
++		lruvec = try_unpack_get_lruvec(shadow, &eviction, workingset, false);
++		if (!lruvec)
++			return false;
++		recent = lru_gen_test_recent(lruvec, eviction, file);
++	} else {
++		lruvec = try_unpack_get_lruvec(shadow, &eviction, workingset, flush);
++		if (!lruvec)
++			return false;
++		distance = lru_distance(lruvec, eviction,
++					file ? LRU_EVICT_BITS : LRU_EVICT_BITS_ANON,
++					bucket_order[file]);
++		/*
++		 * Compare the distance to the existing workingset size. We
++		 * don't activate pages that couldn't stay resident even if
++		 * all the memory was available to the workingset. Whether
++		 * workingset competition needs to consider anon or not depends
++		 * on having free swap space.
++		 */
++		active = lruvec_page_state(lruvec, NR_ACTIVE_FILE);
++		inactive = lruvec_page_state(lruvec, NR_INACTIVE_FILE);
++		if (mem_cgroup_get_nr_swap_pages(lruvec_memcg(lruvec)) > 0) {
++			active += lruvec_page_state(lruvec, NR_ACTIVE_ANON);
++			inactive += lruvec_page_state(lruvec, NR_INACTIVE_ANON);
++		}
++		/*
++		 * Be cautious about challenging the existing active working
++		 * set; sacrificing the inactive part of the opposite type
++		 * should be safe.
++		 */
++		recent = distance <= (active + inactive) / 2;
+ 	}
+ 
+-	mem_cgroup_put(eviction_memcg);
+-
+-	/*
+-	 * Be cautious about challenging the existing active working set;
+-	 * sacrificing the inactive part of the opposite type should be safe.
+-	 */
+-	return distance <= (active + inactive) / 2;
++	put_lruvec(lruvec);
++	return recent;
+ }
+ 
+ /**
 
 -- 
 2.54.0
