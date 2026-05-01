@@ -4,117 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4F11CCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 11:58:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B3ECD3424
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 12:44:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D66576B0088; Fri,  1 May 2026 07:58:47 -0400 (EDT)
+	id B3A0E6B0005; Fri,  1 May 2026 08:44:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D17BA6B008A; Fri,  1 May 2026 07:58:47 -0400 (EDT)
+	id AEAC66B008A; Fri,  1 May 2026 08:44:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2D136B008C; Fri,  1 May 2026 07:58:47 -0400 (EDT)
+	id A004D6B008C; Fri,  1 May 2026 08:44:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B129C6B0088
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 07:58:47 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3DEAB1C0081
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 11:58:47 +0000 (UTC)
-X-FDA: 84718704294.12.E65DF76
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 73A7940006
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 11:58:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=WV1syePI;
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B2736B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 08:44:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13FC11401A4
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 12:44:21 +0000 (UTC)
+X-FDA: 84718819122.19.F7F58C6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 42317C000E
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 12:44:19 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RjmgYGCa;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777639459; a=rsa-sha256;
+	cv=none;
+	b=uImWm8Fr0KcpGJz9+wvfeSkVPZipqpTx5qo/CvwjEp6m1KISHTtIACRJrLhEk9p7EJq04Y
+	cGQFL/CftUrrAVWxaZqPHas2q8pMFMd2lhz6SBHh1E2S6ukG92R+LKOHhw1+7gv+vmjcEp
+	MLw/ecw2+tRLD/Cz5Kbb+2pHujxp8yk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RjmgYGCa;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777636725;
+	s=arc-20220608; t=1777639459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MOhKLlF1R9uNdLjOTRmAoX1xETWbiu0eXI1TIXZFb0Q=;
-	b=73f6k5tTREEf2tUyqSzm5LjY1FjI0nDUOPjscahGIu5P6glGjb2b03rikcQ5+euwa/no2c
-	m4gP9E9ei3M+D4cCfiWnkJOmSf1+bRrbcIZFlGpjaq0C/0TZPQW4rMqIBYZwvS/L7a7IPy
-	NJvwSfS9HtkT1SCeNlCoYNhkaOAJsy0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=WV1syePI;
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777636725; a=rsa-sha256;
-	cv=none;
-	b=WFrlbAmDseXMF/K30KuoH1Alq464v4HdO8B/whbjrFBA80jiy6j8b7jJDPXNmmkfZIT474
-	plWlvqvDEf6oaOInKiTELW9THEYRxyXPwI4cZVibwKQzv3n7d9Q6OPKEQwUj6HyECdATdV
-	Qj7EpFAZqmA+qT603NX17FKhLWXrXvY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=MOhKLlF1R9uNdLjOTRmAoX1xETWbiu0eXI1TIXZFb0Q=; b=WV1syePIbQFw6I/Q+gY8j2puce
-	YmjU66RBOwKO1VVyutp/WVx9SUyAUbXAx3v8KY9Bm68+iLyBB/o3vv2Nb1XOla2krNEUqE7jcj+sS
-	wtbollJmEyhfXYdoFWZX+MvsrXV9cTbSwGsQ3qn3dRypS+sT+q8QyHPyjSLtKZ5LUbgEmZFetaYL0
-	wKaKEemTWgqOO8HRXoCrESieD8M1PvJAe6e+pcn++h0YAw6POFndWz7wuwfpc4VXVS5FhksPPlQgY
-	EuOPdfml3ivPbJ+3yWgswaG/5fu/F0iPWaeAO+YSD74GQwL6ApgjPwjrSj6hroThZqk4ut1h4uLud
-	mGkdpElw==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wImVn-000000007Dt-3ud2;
-	Fri, 01 May 2026 07:58:27 -0400
-Message-ID: <40661a7095b2b28b2476fbb9656e3d5478914779.camel@surriel.com>
-Subject: Re: [00/45 RFC PATCH] 1GB superpageblock memory allocation
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com, linux-mm@kvack.org, willy@infradead.org, 
-	surenb@google.com, hannes@cmpxchg.org, ljs@kernel.org, ziy@nvidia.com, 
-	usama.arif@linux.dev
-Date: Fri, 01 May 2026 07:58:27 -0400
-In-Reply-To: <428786cf-6873-4cdf-ae57-cef43b174f8c@kernel.org>
-References: <20260430202233.111010-1-riel@surriel.com>
-	 <428786cf-6873-4cdf-ae57-cef43b174f8c@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-MIME-Version: 1.0
+	bh=6WLnk+/b5GTzb5PZ6wW05Xz3J7h34Vd4AYl81xS0iiM=;
+	b=R6aBwmOQefxDWKNn7xH78Cb14xRB5P+rWkwZ4y2m+J2Cfs/jv2VazK95JxBT+Akf3eMs7L
+	vsWF/p7OAnfOKyYZnmPICoDy7yiWUJR3w4bb4FJHW0hFnTTW3eXYYireC0gO541Rk/fBBj
+	EeaZWV9oQIzKfFvdzZrjOPdRdEX01mM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D7CEF43477;
+	Fri,  1 May 2026 12:44:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8ACC2BCB4;
+	Fri,  1 May 2026 12:44:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777639457;
+	bh=xTzYlDIqwIv4dqw3qIFMC64OF2XOl9jQzRn9UnXJSNw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RjmgYGCa7UyCJ7lx7/0EfhK/J16gKr8IRsSrwRPcnbaD0PR32D/q9aPfI79+dW5ZT
+	 ulVSkAUGrvA4wE9sbWn4LJ5en3nhaP9ATzj+xJs2SRYlw/UTo32LN3yLmQjl0J7WzS
+	 RetG4K4helpFwjzenIuCqTsW3wTwnlWRlkBUigi4=
+Date: Fri, 1 May 2026 05:44:16 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sunny Patel <nueralspacetech@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew
+ Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory
+ Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Balbir Singh <balbirs@nvidia.com>
+Subject: Re: [PATCH v3] mm/migrate_device: fix pgtable leak in
+ migrate_vma_insert_huge_pmd_page
+Message-Id: <20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
+In-Reply-To: <20260501115122.23288-1-nueralspacetech@gmail.com>
+References: <20260501115122.23288-1-nueralspacetech@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rmjsryyqu5ntwffni36z7hesrn78wm6i
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 73A7940006
-X-Stat-Signature: mqz1ibuinxa5m85q16rangxzpfc4w8ix
-X-HE-Tag: 1777636725-578787
-X-HE-Meta: U2FsdGVkX1/fKqKqpc+rsNmnqhNRsmR/1qWIaFe5MK4q6beKlsxWB/aFlfd8CtJcFQwSmYvJDqFJHG0QK0s59sNGke3kv6VaMPVYze0ieP0s3m6xKoLQ6UubIq5SAEoOVhvRi91H1ex3eHx7Mz3IN2rB723v5PDS4/qZQUV9sF/3+PWJTO6kEibDYMZFDG6MWs4K1fXPM4IjNjJHbxikpSbrGQW9nZ++HGvDqeIWrA24u/EpQtbp43bskJh/eB282XH/cGZNPS2asnXyuQ8MFZIR4EzKLtkq4TjfIx89MzhcD9XgsRmhMfwkPQ0BsoYDQDqeqVbYinsXDPTsc2SCniUGsiEEg9EJKL9QJBrY8x3tzt0JmeRcyXkUXkNbM3AgLJ4uAj8VKoExy5icb8eBCzXNVTd6el51EQ90tgKTdENZrtFKQNyzxW2jPcPz73NtwEKFFM5daYpxkOurZDMt8okDK5gBdDOeSppIIz1Can6xQowzWAxM5kFHUXuobCDYDRmJrXT5MnHRn/KNpabPuZf4s6KVwDQwoA4ySdtzQA6JDQObcNzBl1XghWAPkTlj8nx2iqODndOE/vdJvlwqYx6gnAZTFn7Tr31PDfxm7BZ3PuXEnK58mIwYV3+0kZglILOXs2OZ4qV3IE1WOjEf2SLEegdJG88+0M0HS4MAu1ZWjGE9yA37s98bLMqxu0xLu8O2AFcQ2UZ/8l2+HvzxdsuSVAn3SDqXLNTzGdeqLKaAFqIV6e33rrW9yxvI7VBYOLwVHX601q8MsnNe4k2sCBwTIYzNMcNarSj+qQMWTq+5AKO/41NQO5kz2AL1PMCnoViTnSN3tl9IuL5xICyjo/dXW0urd9m/2aM42sLtvlv7cZaaiXObAanId+EQcYpKxVxcReu9Mv7C2RZ6F6QGeJ6Ym9w0lsCgc4Rha1hGQ8cJ+ZEpkyh5mEWyIm8YHRGqwnjUD/VVbtkaD5h+fqv
- Pmt4g9d5
- ApL6+aYXrW0VlKAZ0+JfR+a1cGLc9abJwxTxI+Eq6iO4KgYx6UjTggnwabiKPVWm8d3CUVfItnJrNoQGotCZkRjk6LEtzV3qmyno9PRxjsUunmgHhZGmz+kYNM8cjzBb0WqSjLsDzb2hNjNnZn0siBqsJd/uU3cFesl0uKOeK1O9bZ6MDFPgKHvWsUBeMaVQ49BNgnFgzd+4zSO3Z577UIBDPaOgSUxkeGalh
+X-Rspamd-Queue-Id: 42317C000E
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777639459-775240
+X-HE-Meta: U2FsdGVkX18IJ/BVGioKrTykbwnrNyFqLMjRvczRMCyVjck9CkucxY/xIL9kmOJENlsNbx2Ix4PHaN4cy5a3XWFxwpnTUaamyuwss+lEfZB7XiuN9yObZ7Q0XlRV/bF041uHaBy99vwwrsTE99CZKuPl/t2VMPMMG+Sqy+cRXVSdOJI6eXKKZ0AkFVOWIdyBnhxieospK38aD6eorPzFZ4xwHjstYrOeXkZsgq7l/zPIy+VDe46uwXwc7tmbRwf4eiZ4B5Z5B25W1VvS88gTXFDu2tM9yf9L8WaL4/vxds9pAtor5lHEmuJgsAfgM0hYlJ2gcGrRq1WawclrPCQZ4AO1FlqKc9vADeDHk+dtXVRjURgCX2KVLwdZYSgy0XvMuDh9h1MOcMisUPatoBMolrSr/J+/h25IE82tRyoXtwEhuJZJSG995qdpZ1mF5qnuzB18tDl6yOT6Bsk005VXzB0b1st4PPd94ekEaNDp94q752rg0328xS/iVVz6bmrZ6IOS3DEykd8tzBmB+hR6p4P1tInk2g6De/LD/ETwkSdPyh/Ke7TlX8mkUzXXYMrCKVRmzkbUKNN8aqumfkc0mE44KiPPe7T3tAbA7JmK1LXOAM7V1VsoQznDMh3ksHnK6iRAN9YeMqFsxZcXas3eM/xAGcOXFtTAEk7IYnbkJ8mTq8JbXv8OusmHLsD6yJTychT6+/OyQxwy1S2VQsWjZGK57ctKNjYIUtBrt21yjgsqJZgWPOAkQvNMZ4i66H00d/a8TtJaqfp2mY59X041+rbAF/Ramo9WVORE9m66ZIJSYUvPiJvL5RXA2fdxgJbqRzRws4psLG5YOx9CbI4vC3AxBwqr0noJsgNrRq2+Zig6C4aUgqioYuf2JQaDOLt+4lYpTn/K3bg45PV22VlZ+bo4EbSRqi69Ov6HlHO/cCi3g2duUMEYoFBGm2DXrtfTAoLCScGHkvXnakdMjzy
+ rbgk/H67
+ QnfrKF65N2Wm/VQ5dGTJo6lGP2EnURnGwFU9v9891qIFvOxZtQBgQzS90jeKBtdCiQxsr1JYe+HBcbU4TRZjLAAHaV0+57hg4q8xKkwHebhg2MTzH8DQNFKDA+t18wk6dhHCOqVGTofFsUY1a6TVdajMcaA+TWjrHd5Y7YxALJ08Qkcp+atfc5BkDfq7Vc7zHNJvV4KOaPJFgMQasu8zRjApZF3S48Z5wWiQoD7LAPXoMBV3Qly7NvJskhGn2oHjBESz9v2Y9pT82/XsYFN3uYjXE1JPKWfKC8pM/7Gr/nCJYeEv1Vv8Qh9gAAwb0q5o82ardaLNklwL72M3ouUKx98Q0Xj6SYrHgbLB3SpMdWniY0xSpXazBoRE/o5xx9AIyMQGQDK+L0KPLP84=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,49 +94,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2026-05-01 at 09:14 +0200, David Hildenbrand (Arm) wrote:
-> On 4/30/26 22:20, Rik van Riel wrote:
->=20
-> Is there some text missing here, given that the first paragraph
-> starts with
-> "Neither of those" and I am not sure which solutions you have in
-> mind?
+On Fri,  1 May 2026 17:21:16 +0530 Sunny Patel <nueralspacetech@gmail.com> wrote:
 
-Yeah, sorry. I suspect what may have happened is I
-failed to leave a blank line between the email
-headers and the first paragraph when I inserted the
-file into the send-email compose.
+> When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
+> to a PMD check failure, the pgtable allocated earlier via
+> pte_alloc_one() is never freed, causing a memory leak.
+> 
+> Added free_abort label to release the pgtable in error path.
+> 
+> ...
+>
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>  	} else {
+>  		if (folio_is_zone_device(folio) &&
+>  		    !folio_is_device_coherent(folio)) {
+> -			goto abort;
+> +			goto free_abort;
+>  		}
+>  		entry = folio_mk_pmd(folio, vma->vm_page_prot);
+>  		if (vma->vm_flags & VM_WRITE)
+> @@ -893,6 +893,8 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>  
+>  unlock_abort:
+>  	spin_unlock(ptl);
+> +free_abort:
+> +	pte_free(vma->vm_mm, pgtable);
+>  abort:
+>  	for (i = 0; i < HPAGE_PMD_NR; i++)
+>  		src[i] &= ~MIGRATE_PFN_MIGRATE;
 
-Here's the first paragraph:
+Yikes, we leak that page on several error paths.
 
-Some workloads see real performance benefits from using 1GB pages,
-but allocating 1GB pages has often been limited to hugetlb pages
-that were set aside at boot time, or using CMA to keep a fixed
-amount of system memory off limits to the kernel.
+Thanks, I'll retain David's ack from the v2 patch.
 
->=20
-> > Neither of those are great solutions, given that modern servers
-> > tend to be large, often run multiple workloads simultaneously,
-> > and each workload wants something else.
-> >=20
-> > To address that issue, this patch series divides memory not just
-> > into 2MB page blocks, but into PUD sized superpageblocks, and
-> > aggressively tries to steer unmovable, reclaimable, and highatomic
-> > allocations into those superpageblocks that have already been
-> > "tainted" by such allocations.
->=20
->=20
-> Also, I know this series still needs a lot of
-work. I will try to get many of those things out
-of the way over the next few weeks.
-
-Right now this mostly serves as an illustration
-that reliable 1GB page allocation can be done.
-
-Hopefully the next version will be more worthy=C2=A0
-of reviewer time.
-
-
---=20
-All Rights Reversed.
+Balbir, please review?
 
