@@ -4,100 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5152CD3423
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 20:07:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94D2ACD3423
+	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 20:33:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BEAA6B008C; Fri,  1 May 2026 16:07:59 -0400 (EDT)
+	id 7B1006B0005; Fri,  1 May 2026 16:33:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16F916B0092; Fri,  1 May 2026 16:07:59 -0400 (EDT)
+	id 788766B008A; Fri,  1 May 2026 16:33:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0853B6B0093; Fri,  1 May 2026 16:07:59 -0400 (EDT)
+	id 69DE16B008C; Fri,  1 May 2026 16:33:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E52CF6B008C
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 16:07:58 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE4BD1C057B
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 20:07:58 +0000 (UTC)
-X-FDA: 84719937036.02.39AA8BB
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 85EE540005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 20:07:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iNujofAA;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777666076;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 59CB76B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 16:33:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C9A111C00E9
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 20:33:04 +0000 (UTC)
+X-FDA: 84720000288.30.53FAC51
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C6CD4A000B
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 20:33:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OW8Kc4eI;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777667582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=KqjYpcDrOI1CQZ46vlvd3YMEasATIaRGiUQjH7shQfY=;
-	b=miqND6T3vZ1R3twrN5gE2lc2Tq0yV+HoJQ+xAnvF1lx6X6EkVWnTXVYwX/ClXZHSPok0LP
-	68OfmT8ri94PjEw3FGT2cb0x0g/6RCtcjj6rCbpCWxokKk1bDt03cfdKmBhG64QEaM/q0U
-	HooSmxKvnKNrSWw7zhOLeK5+26keUZI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777666076; a=rsa-sha256;
-	cv=none;
-	b=MJp+j71f+AVJE1FJbYYMqULjzCYf0SuvBOurn+vZHqfONH8GCVY9RAJYxw2bwho28PdmGq
-	ZBbs+bRJxgV/UAS1Sovu6K0ov8u36D3SKIwxjn2ZkphlpxaIdZdewHDzBPpr9KS/hOBhKD
-	GdNbPervTGpq6xXTOgMYL9SS6nyPcu0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iNujofAA;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777666076; x=1809202076;
-  h=date:from:to:cc:subject:message-id;
-  bh=Gk7xyiR/tt6TOdkjAQQIwNwfc0psMoecjVwiMJjcg9s=;
-  b=iNujofAAQ86yf04pqSB7/GRRoRP4JQD9cot7UlriZIUYHczQPvZc3tOF
-   SEEsqtZpQtqWSaangJUSZxOLvDL9uJcieta5jtwSEQZMupNNVx1A3L3zg
-   k5v70DKJckw09A7tMQqbIVUlt3I7dtd7vFR4jUaO2NlFPorrba2iGbmSH
-   7HI9xOPFbwy93F2B/zj2aMlyYnoLWZCxlvH576Ql2YqU6hl1FO2EpL5FT
-   grS0oM9Bdqb95dnHD1C2yg9rAjZAk6LWLCM2+FshaPMlBYA+HXVN6YRCU
-   q9Poj6wOc5LVCly3fR3McNozrcwrNKzramn6C3RTTIcm1OSXTe85SZMjJ
-   w==;
-X-CSE-ConnectionGUID: A/sM6iW1S+C6O/Tcv3BK9g==
-X-CSE-MsgGUID: tYEqyHk0TEaY3wbi4bfnyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11773"; a="78332704"
-X-IronPort-AV: E=Sophos;i="6.23,210,1770624000"; 
-   d="scan'208";a="78332704"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2026 13:07:55 -0700
-X-CSE-ConnectionGUID: bmoVEaqYRAOMhZPw4mPEBQ==
-X-CSE-MsgGUID: 2ONuY3OlR1KQzyLo7dcCBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,210,1770624000"; 
-   d="scan'208";a="236735433"
-Received: from lkp-server01.sh.intel.com (HELO 781826d00641) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 01 May 2026 13:07:53 -0700
-Received: from kbuild by 781826d00641 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wIu9O-000000000pN-2pJE;
-	Fri, 01 May 2026 20:07:50 +0000
-Date: Sat, 02 May 2026 04:07:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [linux-next:master 7160/13385]
- arch/powerpc/mm/book3s64/hash_tlb.c:45:42: sparse: sparse: incorrect type in
- initializer (different address spaces)
-Message-ID: <202605020318.D0OoALce-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 85EE540005
-X-Stat-Signature: cqoqu7p9tjc8ach3raazunn4p9ug6mhb
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T/OAl8KInoHXQ6AvflVqniFa5LdHznYgc+Fi8xE6mQY=;
+	b=OMzpfqwxMX0fxQa3Qzyq2JSYqPPly6qF+Air8doYWaTHUSfL71fwBwodAqVRBEO8mJdEFC
+	tRiUfmDIYOGq1SN/y9a4Z1cZ1FhNOKtVMAUnlnQplk9pt4/c865EyxIgUaN3Lkc/JSD+Ar
+	MUZQQf2H9BjyQvLkjZLHIMmwSiy/EbE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777667582; a=rsa-sha256;
+	cv=pass;
+	b=6+Ie151ulmdyv+qX2nlwNr6hovEnvyCKd+Bo7nq/pGMVsJY+HFxICbzdVcQvM2aa6kTXM3
+	zLSNR2joEMZb0knsTTLdtvWBRfuUdxo7ulVlAgrn7MfKUHcym4B34hByPXNC4/JFuvTkeC
+	FR8vxsfTHxSnz2oIc2g/pjhb17lA1AM=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OW8Kc4eI;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-50d836552daso2491cf.0
+        for <linux-mm@kvack.org>; Fri, 01 May 2026 13:33:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777667582; cv=none;
+        d=google.com; s=arc-20240605;
+        b=klnO/NxK/VEFfVqAyH0fZR+pPNZuQvSsP2UofxAFUagIeIvsB6R6UODM/K/GSBFNBt
+         cDUB+NDxt0EK8pEi0cB44xLE3TUNhKWyiqXevMjlc6EJqTRgCzk7GroLi6tWb0C9XNHg
+         gioEvzueqm0lP8TR48ExONVAQ4CD6VMKe5SsLkz4kYI7UGX9OVzKfP1llWDDybE79dZV
+         Rn5ANTt0+RcbQ96ek0RDoANYq7UNpOL4nlIFGNIzBTkmKlluRWKSfL8iC/XDw9RMxteQ
+         53NNUBjPnblK/VBd1ZwlH2aAednzr+Xqdfwtvc6qkLx270u3SuFXPA3xxbiyVylx9Ok0
+         Gb/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=T/OAl8KInoHXQ6AvflVqniFa5LdHznYgc+Fi8xE6mQY=;
+        fh=gU6Zhk6NS5p2DOu2jjdUTVNiySUf1k9g7BWmoBBWBm0=;
+        b=SwqR5jAonSptKdo8qstX0ahXDbRuhUFETi5BWlSsdCqhCnmiSixOj0qPgz7yB7LwFP
+         9wK95W8/BWCusmj8IyJ328SC+hRS7YbZDbAa7lKk4Z79qciwON2ZxkqMlFDfj/wfl9iz
+         l1R963AeLxHCjS/2W78gRrCQRKFO77Pge5/21uALKmRfg3s5HzJdFXzggo1C6bHxor8g
+         qxs9gW9BZkXo/aI5uYFbJXikSIERf5eIjIWCeV6TxWn5Hh+D9PkaTZh/tqr4hs9b3dPB
+         z6lF2hC9En+LFbCsBVGFoZGR1djLsau8AyrranqC6Yr/pe67FW0v6o2qCbwL4/41aawQ
+         eIzg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777667582; x=1778272382; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T/OAl8KInoHXQ6AvflVqniFa5LdHznYgc+Fi8xE6mQY=;
+        b=OW8Kc4eIWaVeMJmrS9OhdB+vV5LS+eN1ch9/qVOej2H7dscfT5K0bMQpxP5/ISkApF
+         W1BbsjKNBMCIY6mA3jhqcB4rJcoUoPj+OCtV2kIJBDKDsDUzeUlsTdwVaioKnwaWtSQT
+         ADUED+H25cv3Nqd6p7hxwuHzs9EXt6PyeOt5nSvpgIOPrydtSkUNBoerMZaICuV9zjyN
+         c8Ck43ypgmDmpIKH1NMwAS88Ur4RqoDcgkP+KtA2ovDL2iktY3y6v3jtZFEa6uVqf3We
+         yLq3Z0Etm6rWDeO2T03B0Ys/QWh2/X+GZYf9H7Z8uE1BJLZa2IMOIwOBKnxHd3zvUPbe
+         5Jcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777667582; x=1778272382;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=T/OAl8KInoHXQ6AvflVqniFa5LdHznYgc+Fi8xE6mQY=;
+        b=QLFi+U5pFQTwSbPwu+RBa8D0W3S0pso/zK4D/BjQknFKxhGF0JLflpXTmcbUFLu6Cg
+         ZxP+cGGpMrZSAEI09LIpzygp2oChKW8sh0S6rpiHZ9xgFjmMXNVM/mQm2COuZAwCedby
+         MNEkqrmJUo//ENIkx60PBbwqQuPBYwAYIw5l7g5g4L+l0TzjHqHhZr9rG2eudPH8Xu2/
+         EXOTju+JIjeYxv/rnerLzWcQQEbE/KbxbkgA+bYewMinf6eI/P0UfUVNOZKMfkzbH4CS
+         hXT+BW8dxG8XQWw0WJOU0M0a/p8rIEEMSFxo6RG8es/iQazSFvkWGzKcEd98omkffzrn
+         AgbA==
+X-Forwarded-Encrypted: i=1; AFNElJ+qAQZ2fK+Q9xLahY7BJi8HCii3UPmgHbswIPlyMipUaDyzQj/sWY/4RcNtsXh4gAaWEckUAKuGtA==@kvack.org
+X-Gm-Message-State: AOJu0Yw3vprc6c9dk3i+wYKXXN7BHkO8kD6+fpK1JIPvrivtT3sX6Hfi
+	eACaQlAvRrptHTfUoUlUy+pizEM+l3zAogyxhSOvgKa65MvPvld0jen2mxIdBAatRUkOpYDrcDa
+	/Ib3mNCoXFzvmAKyYqWfr/kMgi5Zj2VBWOZmQv6OXk+CGMSdx4qme1kn+Ol0=
+X-Gm-Gg: AeBDietQglypy/owaqwPFUZrpnK7raIY6aC6sGxfS2vxFWE51a3tNcsR78iejYuWKoU
+	jpIGYxHgWEIZoWaP00YdVeSX0B87RidK81fkrwYJQOV52D1+6i8RNYMLIkNC/B0XI7clAvn37zh
+	u3icUjgIh02bKPsPPwDAIIEQeKWa06yE3j0ZIgf/x3jitG0ej7WRWkgrQ0z3zsi4jL7teEu6MTi
+	jWCo50GVX57g+/bivpYDbUFJIK1jXRytYiOSSWcJWgd53FvLjf+ELp2FiXKSE6QJ0SPOqxFmfM7
+	lYdFOt+DYqhjE7wrBeagbv73tsFZMHzORcaTXQ==
+X-Received: by 2002:a05:622a:255:b0:501:4eae:dbfc with SMTP id
+ d75a77b69052e-510730d9e07mr604771cf.5.1777667580942; Fri, 01 May 2026
+ 13:33:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260430020226.34116-1-hao.ge@linux.dev>
+In-Reply-To: <20260430020226.34116-1-hao.ge@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 1 May 2026 13:32:48 -0700
+X-Gm-Features: AVHnY4JLImLgQWhmqNG8AyEb21pXwCehtL0cxv5914ZVwEinsgoy_Jv7jPFujkw
+Message-ID: <CAJuCfpHme8UfSft9FbX50UcmuPQNhBVhG4K6=hbDud12z+VbGQ@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/alloc_tag: replace fixed-size early PFN array with
+ dynamic linked list
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C6CD4A000B
+X-Stat-Signature: 6d8y3ndiyabf8emh6k5qkmjppxgiwk53
 X-Rspam-User: 
-X-HE-Tag: 1777666076-200463
-X-HE-Meta: U2FsdGVkX197WiNq98kW+YxlEE5QazuAqHxRcemYDeVjwNvWrTOkaR8hWOwrG1YBnMdYuM4/Zc4+DNtWl69J4cAwemC27EkF3phNUQUK4IyoAH4rrHqPWJTBQ0PX+x1GbY+tHoZYRhrG4fck42HSzsjUCTKQEf+6bGLFmzH+hoJ5VKR9fDJhGJHveXqCO3NfrBOSgh16WIOoZaOYvbjG5T+MQ5/eOZT1cbP8mV5aQQNiKsMmeLFOCPBvHqFX8ZPgfML9ua3Su6+JRljvsi7Qc9NUifcQep1nDHZLjg4XUlOFlYOdlZqVrkH/8GTJZ/QsjQyhgjSMYURirJnQcmhjWuOSH3lTMn7IockQ9Ct0+WUMJYhbjl1NxpmzCPWq++1faaJcoMF6XjlPJ32ohvsz8QkqUTpphVq+7y9GRz6Z9EHpucT6XiJCWRc7ajkFhs3oqNngkBnmsrqK+avxfJEU5po8L2sb9u9hOUsY1Se0/7sRadllsjiM8EY3Yf2capKg2Cwqr+Cu+MHRcV/hpBkFBbHZ/Nq1upUOZoydLolcWFQ/fHW4RDJKvYrdSvx5gmS4cxYRUC8d4CJTu1HELFgrcTpsoQ+My4u1b8RcWcKfih0krhUF9/JoqTHNlCWbRhJQ0sxc3xDsV0zXw6G+du2QiS3A7BWLQmI9Wy3mZ2E0CzRCAP3YqF5Iss5ClD+LpH2PkpjSvKsdBXg2uSO4VoPqs8OuBobCM8xEFjstFKDuMRHfQdhxMYW05JigjhtSycvunHQZtbWhHaYuJDW+ejIKs/VePW+O8FL3IIRS3YVW9XEwdaQjEwLg7lnrTmvz4AeobUpma0MogQaUJBpYDZeN716PT0e4WijpVKBjqMXcnkS06jQetAS8OFDgvK4Qggxu9INJ/iYP7kaUKYkw1mQOE5hgtvDoaf2dVrm8lPMZ5eG+N0DQ5a+luHmk5NOCXFMpbixj0nnQ0X9bMMpsoUV
- jAXO/wje
- DweZfvtPy0/wOlS4/tlxsSYoDcTvWS9rgFVxShefKeotCRiKsb2qdREpjmtF9PJZj63Bi3bzfU1X4YzXuBZSDJ6ew7QbgLAwbAiKUll04lGSmPRwDjDkZW+yN3sQMk88LR6YkgrwC9dZLhQd1oTqSoXEP4dZSW0EOxeFPqZepEKDOUj7hqOEz2qV8gbX+ll2G3ie7XUdFrfZ/s63Op8yVHvn2mDvqxwIEcN1FJDCVYNuTzkJaMMefZT2nzrCT0wFW/6l6RpoanIAO3W8LtG0tZuEy9KULX2HmboH5A/d1Pp8/S80oUCyKzdfnvxknt5itAaGSNxS1hkl7p7yXugMyK+W49DXgtpG1Rme8ORmNF+6GyFdL1exRz+vTbUblvwNjfHesy3e0QsZNssxU/6vgMt5JI0llb6yLA1rY52F8t2h6/jXr1F3b485OMVGEWPH9eO/UJS5cm1ZyVLrqV9UwVXM1gsz6P0C8RKHG
+X-HE-Tag: 1777667582-981241
+X-HE-Meta: U2FsdGVkX19N8Mp6EsL5CmPjbEUzGfLBZHqQFLPBaUg21NFYdZmTP/m/4BAoZlPJF3XqX2awrkZm9EQ3z4YO0Oro0j6mKj8ZQix0zEOFMDfAQa9x6bK9zfu7JLZ6JcTK2B1PWbB1OUcL3jUK2XF6K3+LJgGepKAXvkbuF8RUEkEm8M7bSLJDxTQ2mB7o8gwTY2zz6GDtGfPvOIpqut73AWHYNrgiz05PFPSlxVDXzjNR/D6yqXjD+e8CBQJZVJQlOGhGSGvulTi/W131Vre4gpb+9Wgqbs+M9YPP2zI0m3xeMbeodDvB/nNZvXlWlzoVx0+IE6nfhJWV5msBq7nlpTP/ah55qz9AHPr/MOghrX9zRTpSO1FUgugS87oJ9b977ZCZxHIK8IlHZFcvaZ6rZkZ2OTJqo4OZtVcILYnYzP0nFQnjg12tGyeC50StscgfzP2V9KCH5ILXj939ItZhilesRHStvOJ7rEpNQjHvokozWqTu9yetFR004LVT9q+tUI9QkhjZGXLhG92Gp3GCXzZiRqB5WikMI1u3V2gAhOToXq8KAi5XbgfevhpLhRqwp4Bay2iS2qERKbuLQbt3XMfhO+xc1C8W91QWvaxkfHEkpxpbGRhWfYew5vjZ+oboH10Gu0UEvfY7vbIf0or10gfz6i4InGQ8RGP51eYl35UA1z2ulxSP4R+h/cqXAeuAIzVpX0Zy8CUBg8TNLFT0bAtcTYESGLFY7uZZxnWXi09nC+Vr0oa/qbD1R9LOrF3ctL3JUWMonh2PgncIMWTnCwg0M2t3sSAFUXWjLL25O65UzFlLGsTaqOVjgGibx6gbA4xC4eSAn1Z3SzF0bXnEwlimVa6bN30Owe89olCWz9xGF/7asWU3Kf8s8UeY0QWAUGgBYtyQF0ze14+w/bTQWG+QLqviqddZ235ciVriHOXZIeDWhYPH9Yn53tbKbyZ25O/R4gvhfiRRybE4jjB
+ /paQkO7z
+ Kgn8k5TNrC2B0+tQhPrHZPJRN2d7fu0NaCPbH2pHju4XpEubb7JFV3OOE0PjEWJDWX0d93QM+Kdy/Lf6h7GSulyj3iuMTko5ZCi1DtUEuvQPAkaBfB4YLd/VvntdFABFF1RraMtW01MgXhONujbc0GPLqP5jfWWBBFbvvnlytmLD9cKTgbx8Crq+2ydGVsUEKuDm4YJHVCcTsVsrSm+5slIF2HEs6XJucjX7udW+aMcH5i7LyugYMV49ipIyICfyDBvw3JSYUgq+rk5tqCmdJCkEV13tUqM9nPwH7kqNVILe9kXdA8sxqe8g7cVjWrXjlYZXdfoXMOJbC499Qateuc3okhD9pkd2dBorXCAL6BG6ounRZImdCiTggMUZgunY1bIJeoKANO3P7N50=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,141 +139,385 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   b9303e6bff706758c167af686b5315ad00233bf8
-commit: ee628d9cc8d5b96fdceeb270cf662efc4f85f2b6 [7160/13385] mm: add basic tests for lazy_mmu
-config: powerpc64-randconfig-r111-20260501 (https://download.01.org/0day-ci/archive/20260502/202605020318.D0OoALce-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260502/202605020318.D0OoALce-lkp@intel.com/reproduce)
+On Wed, Apr 29, 2026 at 7:03=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+>
+> Pages allocated before page_ext is available have their codetag left
+> uninitialized. Track these early PFNs and clear their codetag in
+> clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
+> warnings when they are freed later.
+>
+> Currently a fixed-size array of 8192 entries is used, with a warning if
+> the limit is exceeded. However, the number of early allocations depends
+> on the number of CPUs and can be larger than 8192.
+>
+> Replace the fixed-size array with a dynamically allocated linked list
+> of pfn_pool structs. Each node is allocated via alloc_page() and mapped
+> to a pfn_pool containing a next pointer, an atomic slot counter, and a
+> PFN array that fills the remainder of the page.
+>
+> The tracking pages themselves are allocated via alloc_page(), which
+> would trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() and
+> recurse indefinitely. Introduce __GFP_NO_CODETAG (reuses the
+> %__GFP_NO_OBJ_EXT bit) and pass gfp_flags through pgalloc_tag_add()
+> so that the early path can skip recording allocations that carry this
+> flag.
+>
+> Suggested-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605020318.D0OoALce-lkp@intel.com/
+One nit below, otherwise LGTM.
+From Sashiko's findings:
+- I believe page_ext is initialized before slabs, so aliasing
+__GFP_NO_CODETAG to __GFP_NO_OBJ_EXT I think is fine.
+- Masking out GFP_ZONEMASK during the page allocation sounds reasonable to =
+me.
+Thanks!
 
-sparse warnings: (new ones prefixed by >>)
->> arch/powerpc/mm/book3s64/hash_tlb.c:45:42: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct ppc64_tlb_batch * @@
-   arch/powerpc/mm/book3s64/hash_tlb.c:45:42: sparse:     expected void const [noderef] __percpu *__vpp_verify
-   arch/powerpc/mm/book3s64/hash_tlb.c:45:42: sparse:     got struct ppc64_tlb_batch *
-   arch/powerpc/mm/book3s64/hash_tlb.c:162:45: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct ppc64_tlb_batch * @@
-   arch/powerpc/mm/book3s64/hash_tlb.c:162:45: sparse:     expected void const [noderef] __percpu *__vpp_verify
-   arch/powerpc/mm/book3s64/hash_tlb.c:162:45: sparse:     got struct ppc64_tlb_batch *
+> ---
+> v4:
+> - Use struct pfn_pool with named fields (next, atomic_t count, pfns[]) ma=
+pped
+>   onto the page body, replacing the page->lru/page->private approach
+>   (suggested by Suren Baghdasaryan)
+>
+> v3:
+> - Simplify linked list: use page->lru for chaining and page->private as
+>   slot counter, removing the early_pfn_node struct and freelist (suggeste=
+d
+>   by Suren Baghdasaryan)
+> - Pass gfp_flags through alloc_tag_add_early_pfn() but strip
+>   __GFP_DIRECT_RECLAIM instead of selecting GFP_KERNEL/GFP_ATOMIC,
+>   because __alloc_tag_add_early_pfn() is invoked under rcu_read_lock().
+>
+> v2:
+> - Use cmpxchg to atomically update early_pfn_pages, preventing page leak =
+under concurrent allocation
+> - Pass gfp_flags through the full call chain and use gfpflags_allow_block=
+ing()
+>   to select GFP_KERNEL vs GFP_ATOMIC, avoiding unnecessary GFP_ATOMIC in =
+process context
+> ---
+>  include/linux/alloc_tag.h |   4 +-
+>  lib/alloc_tag.c           | 145 ++++++++++++++++++++++++--------------
+>  mm/page_alloc.c           |  12 ++--
+>  3 files changed, 101 insertions(+), 60 deletions(-)
+>
+> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+> index 02de2ede560f..068ba2e77c5d 100644
+> --- a/include/linux/alloc_tag.h
+> +++ b/include/linux/alloc_tag.h
+> @@ -163,11 +163,11 @@ static inline void alloc_tag_sub_check(union codeta=
+g_ref *ref)
+>  {
+>         WARN_ONCE(ref && !ref->ct, "alloc_tag was not set\n");
+>  }
+> -void alloc_tag_add_early_pfn(unsigned long pfn);
+> +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags);
+>  #else
+>  static inline void alloc_tag_add_check(union codetag_ref *ref, struct al=
+loc_tag *tag) {}
+>  static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
+> -static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
+> +static inline void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_=
+flags) {}
+>  #endif
+>
+>  /* Caller should verify both ref and tag to be valid */
+> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> index ed1bdcf1f8ab..117f14e7654b 100644
+> --- a/lib/alloc_tag.c
+> +++ b/lib/alloc_tag.c
+> @@ -767,60 +767,95 @@ static __init bool need_page_alloc_tagging(void)
+>   * their codetag uninitialized. Track these early PFNs so we can clear
+>   * their codetag refs later to avoid warnings when they are freed.
+>   *
+> - * Early allocations include:
+> - *   - Base allocations independent of CPU count
+> - *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
+> - *     such as trace ring buffers, scheduler per-cpu data)
+> - *
+> - * For simplicity, we fix the size to 8192.
+> - * If insufficient, a warning will be triggered to alert the user.
+> + * Each page is cast to a pfn_pool: the first few bytes hold metadata
+> + * (next pointer and slot count), the remainder stores PFNs.
+> + */
+> +struct pfn_pool {
+> +       struct pfn_pool *next;
+> +       atomic_t count;
+> +       unsigned long pfns[];
+> +};
+> +
+> +#define PFN_POOL_SIZE                  ((PAGE_SIZE - offsetof(struct pfn=
+_pool, pfns)) / \
+> +                                        sizeof(unsigned long))
+> +
+> +/*
+> + * Skip early PFN recording for a page allocation.  Reuses the
+> + * %__GFP_NO_OBJ_EXT bit.  Used by __alloc_tag_add_early_pfn() to avoid
+> + * recursion when allocating pages for the early PFN tracking list
+> + * itself.
+>   *
+> - * TODO: Replace fixed-size array with dynamic allocation using
+> - * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
+> + * Codetags of the pages allocated with __GFP_NO_CODETAG should be
+> + * cleared (via clear_page_tag_ref()) before freeing the pages to preven=
+t
+> + * alloc_tag_sub_check() from triggering a warning.
+>   */
+> -#define EARLY_ALLOC_PFN_MAX            8192
+> +#define __GFP_NO_CODETAG               __GFP_NO_OBJ_EXT
+>
+> -static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
+> -static atomic_t early_pfn_count __initdata =3D ATOMIC_INIT(0);
+> +static struct pfn_pool *current_pfn_pool __initdata;
+>
+> -static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
+> +static void __init __alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gf=
+p_flags)
+>  {
+> -       int old_idx, new_idx;
+> +       struct pfn_pool *pool;
+> +       int idx;
+>
+>         do {
+> -               old_idx =3D atomic_read(&early_pfn_count);
+> -               if (old_idx >=3D EARLY_ALLOC_PFN_MAX) {
+> -                       pr_warn_once("Early page allocations before page_=
+ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
+> -                                     EARLY_ALLOC_PFN_MAX);
+> -                       return;
+> +               pool =3D READ_ONCE(current_pfn_pool);
+> +               if (!pool || atomic_read(&pool->count) >=3D PFN_POOL_SIZE=
+) {
+> +                       gfp_t gfp =3D gfp_flags & ~__GFP_DIRECT_RECLAIM;
+> +                       struct page *new_page =3D alloc_page(gfp | __GFP_=
+NO_CODETAG);
+> +                       struct pfn_pool *new;
+> +
+> +                       if (!new_page) {
+> +                               pr_warn_once("early PFN tracking page all=
+ocation failed\n");
+> +                               return;
+> +                       }
+> +                       new =3D page_address(new_page);
+> +                       new->next =3D pool;
+> +                       atomic_set(&new->count, 0);
+> +                       if (cmpxchg(&current_pfn_pool, pool, new) !=3D po=
+ol) {
+> +                               clear_page_tag_ref(new_page);
+> +                               __free_page(new_page);
+> +                               continue;
+> +                       }
+> +                       pool =3D new;
+>                 }
+> -               new_idx =3D old_idx + 1;
+> -       } while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx)=
+);
+> +               idx =3D atomic_read(&pool->count);
+> +               if (idx >=3D PFN_POOL_SIZE)
+> +                       continue;
+> +               if (atomic_cmpxchg(&pool->count, idx, idx + 1) =3D=3D idx=
+)
+> +                       break;
+> +       } while (1);
+>
+> -       early_pfns[old_idx] =3D pfn;
+> +       pool->pfns[idx] =3D pfn;
+>  }
+>
+> -typedef void alloc_tag_add_func(unsigned long pfn);
+> +typedef void alloc_tag_add_func(unsigned long pfn, gfp_t gfp_flags);
+>  static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata =
+=3D
+>         RCU_INITIALIZER(__alloc_tag_add_early_pfn);
+>
+> -void alloc_tag_add_early_pfn(unsigned long pfn)
+> +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
+>  {
+>         alloc_tag_add_func *alloc_tag_add;
+>
+>         if (static_key_enabled(&mem_profiling_compressed))
+>                 return;
+>
+> +       /* Skip allocations for the tracking list itself to avoid recursi=
+on. */
+> +       if (gfp_flags & __GFP_NO_CODETAG)
+> +               return;
+> +
+>         rcu_read_lock();
+>         alloc_tag_add =3D rcu_dereference(alloc_tag_add_early_pfn_ptr);
+>         if (alloc_tag_add)
+> -               alloc_tag_add(pfn);
+> +               alloc_tag_add(pfn, gfp_flags);
+>         rcu_read_unlock();
+>  }
+>
+>  static void __init clear_early_alloc_pfn_tag_refs(void)
+>  {
+> -       unsigned int i;
+> +       struct pfn_pool *pool, *next;
+> +       struct page *page;
+> +       int i;
+>
+>         if (static_key_enabled(&mem_profiling_compressed))
+>                 return;
+> @@ -829,37 +864,43 @@ static void __init clear_early_alloc_pfn_tag_refs(v=
+oid)
+>         /* Make sure we are not racing with __alloc_tag_add_early_pfn() *=
+/
+>         synchronize_rcu();
+>
+> -       for (i =3D 0; i < atomic_read(&early_pfn_count); i++) {
+> -               unsigned long pfn =3D early_pfns[i];
+> -
+> -               if (pfn_valid(pfn)) {
+> -                       struct page *page =3D pfn_to_page(pfn);
+> -                       union pgtag_ref_handle handle;
+> -                       union codetag_ref ref;
+> -
+> -                       if (get_page_tag_ref(page, &ref, &handle)) {
+> -                               /*
+> -                                * An early-allocated page could be freed=
+ and reallocated
+> -                                * after its page_ext is initialized but =
+before we clear it.
+> -                                * In that case, it already has a valid t=
+ag set.
+> -                                * We should not overwrite that valid tag=
+ with CODETAG_EMPTY.
+> -                                *
+> -                                * Note: there is still a small race wind=
+ow between checking
+> -                                * ref.ct and calling set_codetag_empty()=
+. We accept this
+> -                                * race as it's unlikely and the extra co=
+mplexity of atomic
+> -                                * cmpxchg is not worth it for this debug=
+-only code path.
+> -                                */
+> -                               if (ref.ct) {
+> +       for (pool =3D current_pfn_pool; pool; pool =3D next) {
+> +               for (i =3D 0; i < atomic_read(&pool->count); i++) {
 
-vim +45 arch/powerpc/mm/book3s64/hash_tlb.c
+I believe at this point pool->count can't change, so loop does not
+need to re-read its value on each iteration. Better to read it before
+the loop and thet used the cached value.
 
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   34  
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   35  /*
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   36   * A linux PTE was changed and the corresponding hash table entry
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   37   * neesd to be flushed. This function will either perform the flush
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   38   * immediately or will batch it up if the current CPU has an active
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   39   * batch on it.
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   40   */
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   41  void hpte_need_flush(struct mm_struct *mm, unsigned long addr,
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   42  		     pte_t *ptep, unsigned long pte, int huge)
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   43  {
-5524a27d39b687 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2012-09-10   44  	unsigned long vpn;
-f342552b917a18 arch/powerpc/mm/tlb_hash64.c        Peter Zijlstra         2011-02-24  @45  	struct ppc64_tlb_batch *batch = &get_cpu_var(ppc64_tlb_batch);
-5524a27d39b687 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2012-09-10   46  	unsigned long vsid;
-bf72aeba2ffef5 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2006-06-15   47  	unsigned int psize;
-1189be6508d451 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   48  	int ssize;
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   49  	real_pte_t rpte;
-ff31e105464d8c arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   50  	int i, offset;
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   51  
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   52  	i = batch->index;
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   53  
-47d99948eee48a arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   54  	/*
-47d99948eee48a arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   55  	 * Get page size (maybe move back to caller).
-16c2d476232523 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   56  	 *
-16c2d476232523 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   57  	 * NOTE: when using special 64K mappings in 4K environment like
-16c2d476232523 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   58  	 * for SPEs, we obtain the page size from the slice, which thus
-16c2d476232523 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   59  	 * must still exist (and thus the VMA not reused) at the time
-16c2d476232523 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   60  	 * of this call
-16c2d476232523 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   61  	 */
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   62  	if (huge) {
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   63  #ifdef CONFIG_HUGETLB_PAGE
-d258e64ef59579 arch/powerpc/mm/tlb_hash64.c        Joe Perches            2009-06-28   64  		psize = get_slice_psize(mm, addr);
-77058e1adcc439 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   65  		/* Mask the address for the correct page size */
-77058e1adcc439 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   66  		addr &= ~((1UL << mmu_psize_defs[psize].shift) - 1);
-ff31e105464d8c arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   67  		if (unlikely(psize == MMU_PAGE_16G))
-ff31e105464d8c arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   68  			offset = PTRS_PER_PUD;
-ff31e105464d8c arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   69  		else
-ff31e105464d8c arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   70  			offset = PTRS_PER_PMD;
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   71  #else
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   72  		BUG();
-16c2d476232523 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   73  		psize = pte_pagesize_index(mm, addr, pte); /* shutup gcc */
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   74  #endif
-77058e1adcc439 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   75  	} else {
-16c2d476232523 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   76  		psize = pte_pagesize_index(mm, addr, pte);
-47d99948eee48a arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   77  		/*
-47d99948eee48a arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   78  		 * Mask the address for the standard page size.  If we
-77058e1adcc439 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   79  		 * have a 64k page kernel, but the hardware does not
-77058e1adcc439 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   80  		 * support 64k pages, this might be different from the
-47d99948eee48a arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   81  		 * hardware page size encoded in the slice table.
-47d99948eee48a arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   82  		 */
-77058e1adcc439 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   83  		addr &= PAGE_MASK;
-ff31e105464d8c arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   84  		offset = PTRS_PER_PTE;
-77058e1adcc439 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   85  	}
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   86  
-f71dc176aa0635 arch/powerpc/mm/tlb_hash64.c        David Gibson           2009-10-26   87  
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   88  	/* Build full vaddr */
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   89  	if (!is_kernel_addr(addr)) {
-1189be6508d451 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   90  		ssize = user_segment_size(addr);
-f384796c40dc55 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-03-26   91  		vsid = get_user_vsid(&mm->context, addr, ssize);
-1189be6508d451 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   92  	} else {
-1189be6508d451 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   93  		vsid = get_kernel_vsid(addr, mmu_kernel_ssize);
-1189be6508d451 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   94  		ssize = mmu_kernel_ssize;
-1189be6508d451 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   95  	}
-c60ac5693c47df arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2013-03-13   96  	WARN_ON(vsid == 0);
-5524a27d39b687 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2012-09-10   97  	vpn = hpt_vpn(addr, vsid, ssize);
-ff31e105464d8c arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   98  	rpte = __real_pte(__pte(pte), ptep, offset);
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   99  
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  100  	/*
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  101  	 * Check if we have an active batch on this CPU. If not, just
-c5cee6421cd651 arch/powerpc/mm/tlb_hash64.c        Balbir Singh           2017-05-25  102  	 * flush now and return.
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  103  	 */
-313a05a15a1b29 arch/powerpc/mm/book3s64/hash_tlb.c Kevin Brodsky          2025-12-15  104  	if (!is_lazy_mmu_mode_active()) {
-c5cee6421cd651 arch/powerpc/mm/tlb_hash64.c        Balbir Singh           2017-05-25  105  		flush_hash_page(vpn, rpte, psize, ssize, mm_is_thread_local(mm));
-f342552b917a18 arch/powerpc/mm/tlb_hash64.c        Peter Zijlstra         2011-02-24  106  		put_cpu_var(ppc64_tlb_batch);
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  107  		return;
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  108  	}
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  109  
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  110  	/*
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  111  	 * This can happen when we are in the middle of a TLB batch and
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  112  	 * we encounter memory pressure (eg copy_page_range when it tries
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  113  	 * to allocate a new pte). If we have to reclaim memory and end
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  114  	 * up scanning and resetting referenced bits then our batch context
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  115  	 * will change mid stream.
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07  116  	 *
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07  117  	 * We also need to ensure only one page size is present in a given
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07  118  	 * batch
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  119  	 */
-1189be6508d451 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11  120  	if (i != 0 && (mm != batch->mm || batch->psize != psize ||
-1189be6508d451 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11  121  		       batch->ssize != ssize)) {
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  122  		__flush_tlb_pending(batch);
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  123  		i = 0;
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  124  	}
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  125  	if (i == 0) {
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  126  		batch->mm = mm;
-3c726f8dee6f55 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07  127  		batch->psize = psize;
-1189be6508d451 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11  128  		batch->ssize = ssize;
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  129  	}
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  130  	batch->pte[i] = rpte;
-5524a27d39b687 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2012-09-10  131  	batch->vpn[i] = vpn;
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  132  	batch->index = ++i;
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  133  	if (i >= PPC64_TLB_BATCH_NR)
-a741e679695771 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  134  		__flush_tlb_pending(batch);
-f342552b917a18 arch/powerpc/mm/tlb_hash64.c        Peter Zijlstra         2011-02-24  135  	put_cpu_var(ppc64_tlb_batch);
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  136  }
-^1da177e4c3f41 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  137  
-
-:::::: The code at line 45 was first introduced by commit
-:::::: f342552b917a18a7a1fa2c10625df85fac828c36 powerpc/mm: Make hpte_need_flush() safe for preemption
-
-:::::: TO: Peter Zijlstra <a.p.zijlstra@chello.nl>
-:::::: CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +                       unsigned long pfn =3D pool->pfns[i];
+> +
+> +                       if (pfn_valid(pfn)) {
+> +                               union pgtag_ref_handle handle;
+> +                               union codetag_ref ref;
+> +
+> +                               if (get_page_tag_ref(pfn_to_page(pfn), &r=
+ef, &handle)) {
+> +                                       /*
+> +                                        * An early-allocated page could =
+be freed and reallocated
+> +                                        * after its page_ext is initiali=
+zed but before we clear it.
+> +                                        * In that case, it already has a=
+ valid tag set.
+> +                                        * We should not overwrite that v=
+alid tag
+> +                                        * with CODETAG_EMPTY.
+> +                                        *
+> +                                        * Note: there is still a small r=
+ace window between checking
+> +                                        * ref.ct and calling set_codetag=
+_empty(). We accept this
+> +                                        * race as it's unlikely and the =
+extra complexity of atomic
+> +                                        * cmpxchg is not worth it for th=
+is debug-only code path.
+> +                                        */
+> +                                       if (ref.ct) {
+> +                                               put_page_tag_ref(handle);
+> +                                               continue;
+> +                                       }
+> +
+> +                                       set_codetag_empty(&ref);
+> +                                       update_page_tag_ref(handle, &ref)=
+;
+>                                         put_page_tag_ref(handle);
+> -                                       continue;
+>                                 }
+> -
+> -                               set_codetag_empty(&ref);
+> -                               update_page_tag_ref(handle, &ref);
+> -                               put_page_tag_ref(handle);
+>                         }
+>                 }
+>
+> +               next =3D pool->next;
+> +               page =3D virt_to_page(pool);
+> +               clear_page_tag_ref(page);
+> +               __free_page(page);
+>         }
+>  }
+>  #else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 04494bc2e46f..819d44ffd470 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1284,7 +1284,7 @@ void __clear_page_tag_ref(struct page *page)
+>  /* Should be called only if mem_alloc_profiling_enabled() */
+>  static noinline
+>  void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+> -                      unsigned int nr)
+> +                      unsigned int nr, gfp_t gfp_flags)
+>  {
+>         union pgtag_ref_handle handle;
+>         union codetag_ref ref;
+> @@ -1298,17 +1298,17 @@ void __pgalloc_tag_add(struct page *page, struct =
+task_struct *task,
+>                  * page_ext is not available yet, record the pfn so we ca=
+n
+>                  * clear the tag ref later when page_ext is initialized.
+>                  */
+> -               alloc_tag_add_early_pfn(page_to_pfn(page));
+> +               alloc_tag_add_early_pfn(page_to_pfn(page), gfp_flags);
+>                 if (task->alloc_tag)
+>                         alloc_tag_set_inaccurate(task->alloc_tag);
+>         }
+>  }
+>
+>  static inline void pgalloc_tag_add(struct page *page, struct task_struct=
+ *task,
+> -                                  unsigned int nr)
+> +                                  unsigned int nr, gfp_t gfp_flags)
+>  {
+>         if (mem_alloc_profiling_enabled())
+> -               __pgalloc_tag_add(page, task, nr);
+> +               __pgalloc_tag_add(page, task, nr, gfp_flags);
+>  }
+>
+>  /* Should be called only if mem_alloc_profiling_enabled() */
+> @@ -1341,7 +1341,7 @@ static inline void pgalloc_tag_sub_pages(struct all=
+oc_tag *tag, unsigned int nr)
+>  #else /* CONFIG_MEM_ALLOC_PROFILING */
+>
+>  static inline void pgalloc_tag_add(struct page *page, struct task_struct=
+ *task,
+> -                                  unsigned int nr) {}
+> +                                  unsigned int nr, gfp_t gfp_flags) {}
+>  static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {=
+}
+>  static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned=
+ int nr) {}
+>
+> @@ -1896,7 +1896,7 @@ inline void post_alloc_hook(struct page *page, unsi=
+gned int order,
+>
+>         set_page_owner(page, order, gfp_flags);
+>         page_table_check_alloc(page, order);
+> -       pgalloc_tag_add(page, current, 1 << order);
+> +       pgalloc_tag_add(page, current, 1 << order, gfp_flags);
+>  }
+>
+>  static void prep_new_page(struct page *page, unsigned int order, gfp_t g=
+fp_flags,
+> --
+> 2.25.1
+>
 
