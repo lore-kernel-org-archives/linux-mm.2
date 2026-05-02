@@ -4,118 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5634FCD3427
-	for <linux-mm@archiver.kernel.org>; Fri,  1 May 2026 23:39:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7F0CCD3427
+	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 00:48:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4118F6B0005; Fri,  1 May 2026 19:39:42 -0400 (EDT)
+	id B09F86B0005; Fri,  1 May 2026 20:48:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C30D6B008A; Fri,  1 May 2026 19:39:42 -0400 (EDT)
+	id AB99C6B008A; Fri,  1 May 2026 20:48:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B1586B008C; Fri,  1 May 2026 19:39:42 -0400 (EDT)
+	id 981166B008C; Fri,  1 May 2026 20:48:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AB696B0005
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 19:39:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41C021402F7
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 23:39:41 +0000 (UTC)
-X-FDA: 84720470562.20.3713FB0
-Received: from mail-oo1-f98.google.com (mail-oo1-f98.google.com [209.85.161.98])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3940D20003
-	for <linux-mm@kvack.org>; Fri,  1 May 2026 23:39:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=amlalabs-com.20251104.gappssmtp.com header.s=20251104 header.b=G5GD+WrI;
-	spf=pass (imf03.hostedemail.com: domain of souvik@amlalabs.com designates 209.85.161.98 as permitted sender) smtp.mailfrom=souvik@amlalabs.com;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777678779;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8767A6B0005
+	for <linux-mm@kvack.org>; Fri,  1 May 2026 20:48:10 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B4F5014036B
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 00:48:09 +0000 (UTC)
+X-FDA: 84720643098.02.200C548
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011064.outbound.protection.outlook.com [40.93.194.64])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C66321C0008
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 00:48:06 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GPXfRAJ4;
+	spf=pass (imf21.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.194.64 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777682886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=2qFO2NeB0Skobdzpthr8c1Mn9L79Z6O0Ds9iXE6n6s0=;
-	b=g2ulsL9FZ1EiJa3ukL9OvJ7NCYQjZ7k7eUHNfYkDm2sQgwmHCKVgpFYhacOBo9vim+mBvw
-	cjplkuSi8nQhyAFCYsou4CVuUzjy/I8TMbtLmR/YoGwPL26wgd0GwLLXlEtFsAxpFvQIDq
-	OT/ZVVu6OuK3mg3eV+azgBZjuX2zhYc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777678779; a=rsa-sha256;
-	cv=none;
-	b=qMc/kJgHSTf0V/6Bv5vJYppnmbfSg5LgkNofyOExjhQ2RnxXfGSlQGIhpX4aQgyRLj7ca/
-	+DdZgsMKZVYEEsvhd8zwglJOyEFk3/dyn0K2WMGpQX3/XGg+PslIGMoKWR8RIIuwYDDfor
-	FnuHon+GEaf39fMT2XROIl9Atz45eXQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=amlalabs-com.20251104.gappssmtp.com header.s=20251104 header.b=G5GD+WrI;
-	spf=pass (imf03.hostedemail.com: domain of souvik@amlalabs.com designates 209.85.161.98 as permitted sender) smtp.mailfrom=souvik@amlalabs.com;
-	dmarc=none
-Received: by mail-oo1-f98.google.com with SMTP id 006d021491bc7-6966f99716fso1214807eaf.0
-        for <linux-mm@kvack.org>; Fri, 01 May 2026 16:39:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amlalabs-com.20251104.gappssmtp.com; s=20251104; t=1777678778; x=1778283578; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2qFO2NeB0Skobdzpthr8c1Mn9L79Z6O0Ds9iXE6n6s0=;
-        b=G5GD+WrIWpK30AsHHv3sdmJX6SJlJom9Q8/vZZdnVwcfY49qKqUjq/32OUL0x1sAXI
-         g+y3ABw8r1bxZgN0fqws83JTJMDXUnpHnIqSsWRIT+FD5xUWILWH82l3eHdBGJqozrfz
-         I7/tpKvdJbwDU+jKKjw0xt8BiTohYaaXEaCcnX65e0vkk3UTeOrWC0tNR6MZJvW3Tj+m
-         /ySGLkroEJBdyZcHdQ9D7hyTb6tF3r4VorB9ZTXg0TTHpngrSvQSUtdyIJNF5pJAlWrG
-         cK0tFxGIJEBTR5ZSQqDFq2Z9PdtSLsJ0LFVYZTQy7ZEzGffa28IeXwluT+E4XBH6/o55
-         J9cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777678778; x=1778283578;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2qFO2NeB0Skobdzpthr8c1Mn9L79Z6O0Ds9iXE6n6s0=;
-        b=D9OT0tJfc0npyFMeIrL2U4965xR/CHikZZ5Wbe1ACKPBcMjrEPQr6iCqTJPQXuGLAS
-         E/poErQ9ruCu2L2AbaMaOMpvkTvmEjAoEl7RgS2PtETrGFTG5YpRG82v4NLxJ9CURXMn
-         1jvJ6KVOjray4awzHd21oQgzSRUSJDZZ7gFLGIETpQd1Qs8anTeEv7CIqIsFd8gNit1X
-         g8AwSThj7KqwmwbYg9GPNghpqDaxrewLH2kZ+fou4du4KSogNhZ+jTe7kxYhxbOgUA0F
-         c7Xuf3K0pt3hHwN77AGokIgpS/S4Ly0ZvP2wdTmmiFVMNN0jzxNX12h/PiScbA1FI2z8
-         CGrQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8VeS91ncltwj/vFBMEGPNX4hZbZ7WBCIhffWQDrHA5bySKb5pVERa9DXhITeSgcHOZ+mzUgmn3VA==@kvack.org
-X-Gm-Message-State: AOJu0YweV0fdb3wtjIpznJggWVJlLIKC5b0XjXURQxULhg08r6t1Ak+Q
-	z5/Cjnns69SYuZ2b+N8/klc8WxM//7kHVYMnmwDrplWvN7U8RIEunDPz8h7+94+vOdgpk4PB4Ws
-	uLBLN/UbJbZGM/t8kMfrweWcNsFAae6SAFlLz5/Q=
-X-Gm-Gg: AeBDiev5pICEiwuTJlUVUTE9uYXgYQ6LKyhGxShSWAHp/LJ6k00nu/LBfw2ZY8Z/S8U
-	GGjIvshep1bi66gvMs6F32O97vXQgNCZjOd5py7mEHHrTfStRfwgSyTyEIAtWCItkrGjfOOIzMx
-	+Wq47s2Olk9SPmYkpSAM+cLU+uqKVie6AE94Llexb6wYqJcbOOoK5bTjjjfffT2v6Cx55i/f2vU
-	8/Fn8A3x1mPK1Jk7u8ANtIvUPYl2OkLPsidqWq74y3LcOvllqKiaq9nAZkoS0RUZvxq1I8BnGYp
-	J8REa+sFHJfMUrKQP907ivhLCCAnv78EYEfFS0QdFVgL2sWewd1TTzHAxYzs3fkPWnqQ3VlO4zE
-	yqwv+9pSMD79TMVqWbIGqArD26KuvVLl4fCulx3DIzKmcLfavh7GeppVTHMUMcIum7GOb6mlXZV
-	9xfUt+Gn+G
-X-Received: by 2002:a05:6820:61e:b0:67e:160c:36ba with SMTP id 006d021491bc7-69697d6a089mr608506eaf.48.1777678778004;
-        Fri, 01 May 2026 16:39:38 -0700 (PDT)
-Received: from amlalabs.com (104-10-255-95.lightspeed.sntcca.sbcglobal.net. [104.10.255.95])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-434549400e9sm365539fac.5.2026.05.01.16.39.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 16:39:38 -0700 (PDT)
-X-Relaying-Domain: amlalabs.com
-From: Souvik Banerjee <souvik@amlalabs.com>
-To: dan.j.williams@intel.com
-Cc: willy@infradead.org,
-	jack@suse.cz,
-	apopple@nvidia.com,
-	linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Souvik Banerjee <souvik@amlalabs.com>
-Subject: [PATCH] fs/dax: check for empty/zero entries before calling pfn_to_page()
-Date: Fri,  1 May 2026 23:39:33 +0000
-Message-ID: <20260501233933.2614302-1-souvik@amlalabs.com>
-X-Mailer: git-send-email 2.51.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NO698QM8uwDWjaDSyRbR+QXbXnw2wgFZ+NiFNdxRcQw=;
+	b=x1vw4/Cla2fdaVsVr22BJYI3SeXHhZsoxbhTohWj7xQPJDHh367lP1rO07jn1uYhkiTXPz
+	77WlucTd/o+JbE/aY9MJZ4an/8RUYbU2+jAgIEJ+QqeCcaNenWWdfh0BF3TDdIXCswY3th
+	McgTgfk4Z4Lq5cm4Y9RsAmrJIISX67Y=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GPXfRAJ4;
+	spf=pass (imf21.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.194.64 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777682886; a=rsa-sha256;
+	cv=pass;
+	b=j+an6NMDP+DltpPASbJf7o2yJWw2DPg+JSVDSYudrrgtlJ2SGmaE2XCk50nAuqx6UHBxqL
+	xepwoNoyD8kr8gADMU5HVof4qzydMt5XwFkFJlleoU0SLeLmUC6+zjBBMDnTWzfNH5F7IC
+	fFysO2pI8k9RESOD24poPufc3IQ5TXk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kMxD9mXJJqAeEkE/HD/oPkBNu9ynNuuRK9fvDDFiwP+1Gak+7Yx0C2DT2JwQtL8MQNk/nfXPmQPjNo6Z2CA/CJkW82NYloyWr6XZZieuN5XXK0264WpGem22UbGZSaVc62LL6U0DE+6iAFB7YrJuptheY8Ama5I8LLKWupmC2R79kEWc/eKU8uBTrzdwHyh1TG7jqV9T+pIi1pizTqC7eR6lSNqEVVGgforyOmfop9oBbSD6ajYKdSotZfuiY9C10vHyZ4BpEcXssyuaJP47HkMcHNQceCRAseocJGLGA8cFZdhnUMNtmdr8fOFVdOucwIsFSoHG32bTm2yK51W7DA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NO698QM8uwDWjaDSyRbR+QXbXnw2wgFZ+NiFNdxRcQw=;
+ b=VYomCUkKUe3lZke06SXxyStXOCewVRryMfQ1ZeR5mvkaqVMJ/v5wW5+OBEvt4acwGXxTSIuq/JqCdAKyICAY39+kjrXnrG/UH9THxljeSYOyGTpgiKBNM3r1dHdXJUahcbVevm2Kz+ne19FY7f90xuKE6gWBxU1fcXtEBo9ymsDBVmz8PCf3rFqXiAgjrGs0rwJCptDaLSCjDVve6gEbZL1eWgFffTAU8mtjfmbpUcPnhl+K2jjCclTv3ZViItp3Sik0YCxCPr5DQpbH8+pH6dwKaLW53xGoo38SuArpnEz9HI2WPqkrp7xWmaf2BwhMART9lTeC8JaabO2pkGovbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NO698QM8uwDWjaDSyRbR+QXbXnw2wgFZ+NiFNdxRcQw=;
+ b=GPXfRAJ4JK/7jXuQe2G2og/juIZUnauN/y5TvVrrFcPf5/DyIHOFEnqxPNiRu5fOku4KTpoL+dfLu10UwvnR7b4+gzAANXbIRP9DtNDG9gLHNUnQWw3FazTWt5IKn69n2lB3oZ5qSWImgkiSM3SMnAvCqvs9lX5zADnLo1HDfmLtrghpFR2BG/MJRF2r29+BryvCLE6NPBXVHKIKAkZaSeAwo7x7KlfHDrlyWXlz/ph9MuxIrwhkDFB4EsYFulVPSCvz3WmxWy+/kNTHyBvtNxNKlhJl/gccMsNEwR50v1P+96jQtogjWiKdbYN55Y01zk5hJAI2NqFb4hv+vcnBRA==
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
+ by CY8PR12MB7564.namprd12.prod.outlook.com (2603:10b6:930:97::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.23; Sat, 2 May
+ 2026 00:48:02 +0000
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9870.022; Sat, 2 May 2026
+ 00:48:02 +0000
+Message-ID: <5b25ef69-ffd1-49f3-a340-db70dcc96b29@nvidia.com>
+Date: Sat, 2 May 2026 10:47:55 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/migrate_device: fix pgtable leak in
+ migrate_vma_insert_huge_pmd_page
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Sunny Patel <nueralspacetech@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260501115122.23288-1-nueralspacetech@gmail.com>
+ <20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MEVP282CA0057.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:203::18) To PH8PR12MB7277.namprd12.prod.outlook.com
+ (2603:10b6:510:223::13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3940D20003
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|CY8PR12MB7564:EE_
+X-MS-Office365-Filtering-Correlation-Id: 456cca9b-0769-4211-5a4c-08dea7e476fc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|7416014|376014|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	LW3Gxi7N7kRPjHJc4Hf9qdg/fYrJusuKbXDzf6y44d1fixAeSoRy5Zpn1lmHQvyf9wQ6Nzc3dnWCTDv+203xRdHWLef5PfqJX3OMYzgrY65tcqhukDbuRFpzFEttI2aYnieudbmXiRkmytfo7wQZ5IsB3oilU/D6RUUm5n31VEDoyCaEeKfYHrYh+bqIz3HCASrpJq7ykCzNyrgxCO6InZV8drXz3VmowHWMT3lp5vTGkez73k0jch0MWcNls789RUKUAF8GyOpmWHSc8rMD6L+UTU6e5BX02ZqlQYwrR0nGxi13XBJxmO/jrPxtaC1spuwD1WWuvKWuK25Br8EUz5UYvoTvlNVFQx7xOktT3S/BoujazSJ8Pg2VGkCgyziOiGruFkvjljs/r4279wS2/f6LQnJDCSKef0fde0lGZouk1iFB0m0z0vgKKJpJxvW7OV/IlxlGeDOV9BXygqB8hKyhDh0Omo6tuMURE4TQzVLVkIDgFrZcx0U/nGbI/aUQJAbGJTv2i2DctgQWjHeaJ10con+/YQ5RkDq9xfy17QNtreSc7Nt/j8k8f5wJLup0gOK2DDvG36FDQiZlFjetUHGs8JE0kn6j94pqClIdkLE8xwVTiYgnGc6cYWtk8TJu1PAPs5o6frhtguUGWf0222YaQ5JajRKNo6n5p//PiXHQ05gyuGVvqPHST6Sw2g93
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(7416014)(376014)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SFNiclpRQlVKTFhWWldYckpqeEhUeW9lUjVWWFV6Z1FkU0JHZEJZSDFvcGxH?=
+ =?utf-8?B?RGZERHZFelQ1eDZlSHVvSWJOcjdZMUNIWTBYczJRbjBtVTB3NE9yYzJnV09h?=
+ =?utf-8?B?WGdzeHM3YzdYQlEvbEs0V2NUbUwyWlhTZlJNTjQrcnhldUZjZkdTMEh4cGg3?=
+ =?utf-8?B?T1dpRURrOFJzSVJBNXcyUGR5TFFvSzFvaXJjZEZDQkZBa1Z5VW1rUENRVXdT?=
+ =?utf-8?B?eXBaaUlHTFgwVzc1dzF4b2xrKzNKczU3VlpzZmlRbklEbWR2blZGaTJOSktI?=
+ =?utf-8?B?a2RWQ2JaajZ3UVZ4ZDN3TUpJYThDWkpJbEdYUGxnSUd0RGp4OHFjb2RRem9q?=
+ =?utf-8?B?eVNRaXVSYm9PWjY1dXJROXUwbXp1ZXhENFZMUVRjWU5Gc1NuTTRFZUVWUnNN?=
+ =?utf-8?B?ZGYxdmsxQmtleHViM3JpVTJoUXE2blB4WEtIN0NTS1ljY2Z6UGo0ZE9oYmZr?=
+ =?utf-8?B?TW9iTkd5QlI0dHYwRUs1Z1hSaGtKWnJEWkhaNTMxY3B1Q3lXWXZMTjhVZW1p?=
+ =?utf-8?B?amc5dGtaWUVFR2pIT1JXNXIzOTlWVTQzVW1keG1XaTZIRE9vYjZkVytpQ2lT?=
+ =?utf-8?B?TGFxZVdacTR3aXgyOHlxMFpsQS9zaE85U0ZyZk0wcmtiQ0VOSTcwM1RjNGdI?=
+ =?utf-8?B?L3ErOFJMbGd4RzdPOU4wd3ZXWkhJdng2aXoxWkZ2bUtLbHFDRkJwRHRqTXJF?=
+ =?utf-8?B?M0dWOEw2cjBwdGRZUXAxaldaRWpRUWs2RGVMc3JRQUY2N1dGUU1ha2NoUjlt?=
+ =?utf-8?B?c0xxd0pCd3R0dkJ3NUFET29LV1J0cWpXLzZ2YU1WRmwwY3FHL3lCSnh6Wkp6?=
+ =?utf-8?B?czNaUEFldE0zVVkyUG44cDJ1Znh5b0NWUVF3dThvMGQxWlVFbFlwb0duaVBi?=
+ =?utf-8?B?RGV2ZThGdmhlT0JobTdIV0Z2cWNheDR5ZVhBZHB6d2lmdGxYWG0wcFYxN0VU?=
+ =?utf-8?B?LzV0bWRJWndNelQyRi9LT1Uwb3NVWmpJLzlwM0xkTUN3cVdaU0dtbXRKTmQv?=
+ =?utf-8?B?YjRKNGpadkxET1E3Rld3Qnlxc3IxUDVUbWlMUnVQMmxVZWZxb0VvRWZqYis5?=
+ =?utf-8?B?RDNaSDVWdVcyaFZUVEo4R004V2FBbFZDTXd3cVFtdnI4elJLQWE2S3F5Mndz?=
+ =?utf-8?B?aDZqenlLVWt6dXdxK0ZiVWcybjJzdGJIdmFzbjZvYXFxdW41M1EyWFBlZmhD?=
+ =?utf-8?B?TGs1QVJtWkgvZER2RlB0SUZXNUZFQWlUQms5TjYvQTF4WkZCcmhYMnF2YlJk?=
+ =?utf-8?B?SnRWTjdDK25GTG5RekVNaXVLaHRaWTRoaU1GNnUyRUhwY2NRMHBzUmVrZWMz?=
+ =?utf-8?B?NkN0NkhKTFZFbDMzeWcxWnUzeTFpRUtIM2F1eU9uSVNudklrY204NTlYNnMw?=
+ =?utf-8?B?VVdwZThYdHBLdnliT0poUithQStMRUNXenM2MHFVaVU3NDVsc1N3Qm9yWS9y?=
+ =?utf-8?B?MFJGMWZ1NGllWElaUjc2WkZVRkJSbnZDeHdrTERVYnFLOHdkLzZwY2xwbDZS?=
+ =?utf-8?B?N3JNM0Q3M1RQamJJZ1BSRHJlclhuUEtGREJpVGVXeWpORjhGUm9aQkxUR1U3?=
+ =?utf-8?B?RDRXNWZVQlJzUFBQMzFDVmFTNTVDMUZKRzE1R1p6UUg2T0ZhVmRXRmdmTXdI?=
+ =?utf-8?B?Kzl3NUs1L21RMFpKZU1YMXBBMitLNWIwdWJLS21ITklQRVVtZjA3d0NnUk95?=
+ =?utf-8?B?LzhuQ1ZSQTNiRHZQZzFERTRxeXdQS1hCMFU3aEdrSHFibmhyem12VHR6T1Fw?=
+ =?utf-8?B?K0NYUjdDTTFUR2VEOXBaRUZFQ2FiUEtXdm5FZkVrbGMrWFJ2RnA3ZTFIeCs0?=
+ =?utf-8?B?TEIvZ2xuNzlrZzEwNlhuTzF4OUg1ajhxbE9MRmdUQjdPaHByZ1pBajlOcW8r?=
+ =?utf-8?B?M0U3cXJBZ3l5cy9ZMVZQbjh0d0MzUjRGZkJCNHBiRlJNbEZMTGV5NVhHNER3?=
+ =?utf-8?B?VG9BUFUwLzlobnBDVlpFMHd0UG1sSTFQdHpKMVlmVTFwTGJJRmpudEpDdXpi?=
+ =?utf-8?B?Ni9aTG5qSnQzVUMzbTdWRjRjYnF1eFdWVlRJYmxETWdYVUNTZGpjbUppWXdy?=
+ =?utf-8?B?VE8yU3hzUlZsQ3NlcmI3c2czRUhxVEE3anVOWm5vRWRWM2w4SnV3OFZWNjAw?=
+ =?utf-8?B?RDMzbWwvMUxUdmJXTlE1U3BCQXBKcG9Ta1o2UDRzQlRFU1FENG44TlJWUFpt?=
+ =?utf-8?B?L3Jld3cvbVQxUGRQTTA0STNWR0Y3Y1dZZUJlQXA0T1NPZU4yZlFMUklXQmpW?=
+ =?utf-8?B?TU5JbzV3MEYrMTVsTFN2TEc5V3c1djRTSnYwV3JsOUZ6a0FjbCszbUUwaGlu?=
+ =?utf-8?B?cXN4WlNUMTJkYVdRTnZvcDR1MFZsb2s4RnVNbkM0ZjAybUwyOGkzOTJON1ZM?=
+ =?utf-8?Q?dMN+hdU8k3p75oMlxoDFHOkECNvrjEcV7P5AsxaQuqCIH?=
+X-MS-Exchange-AntiSpam-MessageData-1: reeNqnq5d/vsnQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 456cca9b-0769-4211-5a4c-08dea7e476fc
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2026 00:48:02.6746
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aRc1lyZKhpLv8n0XI9tCroX6p67PIjyUveH0vf3SxNf29T5714suEprQn3bFwS5Uf62K52CgMPR017LtOYorYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7564
+X-Stat-Signature: dtz5pdwzbtxaz3jxrdw5e3dh9ii1djzt
+X-Rspamd-Queue-Id: C66321C0008
 X-Rspam-User: 
-X-Stat-Signature: 96tyn41ddwukfxtg3nok4obqsowbera3
-X-HE-Tag: 1777678778-907604
-X-HE-Meta: U2FsdGVkX1/84ROnV00OOsidsHsAtScljGO9oRLGARTYTgk4J8/jCEngeRhHFKFaz7VYBXhzxOE/j29rV6dH1L3itSLhja93niRurlV4G0hMIjrY0P9QCF0TJI1x226oc57pAubWrPl9tdqH2ExIDsdBIfhvswUoRwWVW9GYRjL1igvh/M0g03GAODVty0uy6dIhLhUk6Q5+6UR14u8qdWA2rPyRtrxic1+YyHmkRw10hU+b3zyJla7eu4k7qDf1zeuQmQrPV1P48OlcMC/a0fBRP5x8FKvQGuKraJWJqC9qUB83i4UzgtZS72KGPHkqskqEzm0Ua1quZRWUzArXP0S0w6xvR9yV8ZFSrI6v88ftXojx9a+c62SMu65d6uB1RkZmBWjC5TP6pmEl0La6/5frDXT/89NX7IPt8s6CzFPnCkXZLguS93batssb+uCOtyAEhO+BIoLAnX1WybLBB0SFSxAOiN2h1ycMio9ry//nrG5va7udgvCTeifZ5uhXQf5KrTIzWs7zur8Uu1ls51LfZVmIesbNmn627hacwdvX7ZddBL1BJsb7/jZWnJlNc8btM8XcX96cZh4qu9g+LVvC3UvzIxzxKuFq42vD2dFpPzdhqEAYOx5MGSClImnsEZEgQGJ7r4CWIYdPMpmXsTDLf8LFRJnN0WW9QZBhYNf5ziZpzg07WSXaBLv9zHa20gN4staduwE62IooX6T0RPzRcKaSUFuyQrwAk8NswncrIxQTArk0ua9rpyaL1bFUzc1EI72S54ASg7uppQlvQOJXEC2NJmxDkjKESuIBojGgiIKI3sD/1f3XEJc0KUCDCsRRIc0wpYxPRZBXv/9SkhkiKoIZV3jJpDn2i43MUCCdeXY5hrMSENRZGuTrYium/ucAhOlywZoj0E4+ucY5RgCup+XnqUTttqG5VGxHHxcAJeSn8LAqDLN4isUTapxsJW9IHbgfuIWtOe7uAJu
- L0GgIKR8
- yp6Vu3bJh0ZyC9Mh2Xt80GGt6rbZCUiHliZmKCPlXXxXQr5qYLlLLIQUBrInlT5H/GSuCyU+r/6R4rDZZGrUFbXLONLJCVkimmWK78cizZKpqDW6VTA6JuH2L2bAgUzoratpP1v14Gyzfo9OuPI+32eq3R3g4+OokY2XvJwiyWkFM16F1P/OuNXrEs81c611UEYD+X4XKXUw1oXj/RCs4ftmCHNUvRrQSvH5B5Uhfwm0gaDB2lk4WOGO4Iu1n/QXLx8IPWVDHG1f0vyu+X6iHVW1a3ZdgabO9MZTZUxfW5O2p6YGOtMk1/WSv25QsNawydfKjhgtr/AA/48jKLkP5cznpUUYVct7idbBvnxSs38FwjzcU7Jgt3O8CniGi3s2LE4U2YBllKwx3u+Vu3zIuLynJpdBYFYMC6EI3KwTb7oSoceKFnhhDJSEewZ4ggjhUnoJmtzhJHYIO2WckM6t8frVNVmjqjuQ3fN4gimhHPvCD33pIWIxQEwJdQg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777682886-935926
+X-HE-Meta: U2FsdGVkX1+x+aGGyzBvtSicHCd8LMKsertKULVYukNvKD1dXXNE0PyHwG0XrLM6nvM7bL7NpjD+STDatHS+k/bQU7jm+QyqsfOjbGBRcFDQq+tKdXlSO33RHNmsIl142d7ZTmyjU3hcBcUoKSzhNI3dv4NZscdrBdeNIUr3kO8ZKkRfQcDYuoLHR2UEmcZr0O590e5UGaUzy+eLsW974iP8xmAIF6lz+zBnrsJ3a+SpHme4J/+2r9etZ9rzIoAJpwrwReXjs+66peJ0rcY61+yZf0xb89iFZ+gjWWSaTwMzNbO741T4yRGira8RFk03TRPW5sZhETuSxz+rqPPC44123iQZAbq6D2dr/o84aRCbadWxtAtJAX8Uok0Y8564PtK5NKo4HQio4BsWa3WCeHNCEbkx6pXO4S1hteEzTsP1+7a8nNJJ8m+WiwA1KSiP8iSb7QRB2UGq5/7mYauxiZ4ZvFLMDAeu9JA5Q+Eoo81mc2SJrgO5xa3D+3I5nZ/LmxoKebFkl34VPiM3TSWJacnTLJ62dOjV1Kyj8hYb9elRxSaxhSe+8PmLP2uZQ3TeTVGWBtFkTSgoLMS/5xYlvN2XsMsJiQwa3zrT5usk+4BOxgd0sXfPN4OgeD+BeZ1QHPYHMRUnsJIh4J/RZdkSZ1CT7ufNdjcQv4YIw5bcrK22JzuhLK+N/LokDnNhSuuJxBxvj5Cb0d997aP0h/THN8Kx0w1oB92x/nWawINAO1+z1MsU5TpS+XRC4ZcYwH2978R4P03LvL8qLgx6w7ntCbHlMbUESSvOxkvYpqi1tkFaRs4jpB0Soc+YgyICybuaf3DULqgG5JWHntPXu+yoQrVpH/XMpw0cyillKbW7jA1zQixLtHuUzmAS7NmUD1h15SerFtvxxGtoYcJhZrqPvnkcAJ0qNr97aPovyujMYV1cWWsWy00QL4vTooiOHinbHjD7/mOxxJIGb4blxHc
+ Nds1OJPV
+ ou4l1EEq50mW/ZYXQCjUpZYb/GK9cyiaUao7KzQlHbaMyM3sBu0kOTn0rnbHUU3UWwJOAFgR2eM1i7oPoOZit2bFizFIau+qhZsX5sDlOlrdhnTwAAGRtscXagcZC32+qiiI7enMGVVSMxnEbc9aJd/RlgXSGtYzBt20bNNf+KsnzItZvwAEDTnFf1oNwQ6IMxFBubtErKLWBNSRA1ZIcZSAU/9QXAcPYB7/oZ+G8eVoNJTv21O1qPzdHTISCUrO/69FsoVNqqsTx9GSEaftrzhNAvpM8Z+XGCEgLM/kl/5v2RnVpvWcE9wpV8akVU405TITRZLn9yakmH7nZGTdVBX8GBVGswfzjvTCRvd2YhpzS6jqCZPUElC39S5gZhhflOr2snVrABcPj7N8uZYD73TzMNNGtgO2mSd7FhX9tRIsr91SpA9koW74tljyeZticeK/sj+dBPe4eSqNZXNOWcLjq87PqQPmc6D42+wD2E0LmmIVQ5oShpHvU/bMfs9AR4TDGN1018QG6LKJr7TlF/F+vWgGzMMKEW6pY6jCE96Ot0Eo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,76 +180,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-added zero/empty-entry early returns to dax_associate_entry() and
-dax_disassociate_entry(), but placed them *after* the
-`struct folio *folio = dax_to_folio(entry);` line.  dax_to_folio()
-expands to page_folio(pfn_to_page(dax_to_pfn(entry))), and page_folio()
-performs READ_ONCE(page->compound_head) -- a real dereference of the
-struct page pointer derived from a bogus PFN extracted from the
-empty/zero XA value.
+On 5/1/26 22:44, Andrew Morton wrote:
+> On Fri,  1 May 2026 17:21:16 +0530 Sunny Patel <nueralspacetech@gmail.com> wrote:
+> 
+>> When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
+>> to a PMD check failure, the pgtable allocated earlier via
+>> pte_alloc_one() is never freed, causing a memory leak.
+>>
+>> Added free_abort label to release the pgtable in error path.
+>>
+>> ...
+>>
+>> --- a/mm/migrate_device.c
+>> +++ b/mm/migrate_device.c
+>> @@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>>  	} else {
+>>  		if (folio_is_zone_device(folio) &&
+>>  		    !folio_is_device_coherent(folio)) {
+>> -			goto abort;
+>> +			goto free_abort;
+>>  		}
+>>  		entry = folio_mk_pmd(folio, vma->vm_page_prot);
+>>  		if (vma->vm_flags & VM_WRITE)
+>> @@ -893,6 +893,8 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>>  
+>>  unlock_abort:
+>>  	spin_unlock(ptl);
+>> +free_abort:
+>> +	pte_free(vma->vm_mm, pgtable);
+>>  abort:
+>>  	for (i = 0; i < HPAGE_PMD_NR; i++)
+>>  		src[i] &= ~MIGRATE_PFN_MIGRATE;
+> 
+> Yikes, we leak that page on several error paths.
+> 
+> Thanks, I'll retain David's ack from the v2 patch.
+> 
+> Balbir, please review?
 
-On systems where vmemmap covers all of RAM that dereference reads
-garbage and is harmless: the early return then discards the result.
-On virtio-pmem with altmap (vmemmap stored inside the device), only
-the real device PFN range is mapped, so the dereference triggers a
-kernel paging fault from the truncate / invalidate path and from the
-PMD-downgrade branch of dax_iomap_pte_fault when an entry is being
-freed:
 
-  Unable to handle kernel paging request at
-  virtual address ffff_fdff_bf00_0008 (vmemmap region)
-  Call trace:
-   dax_disassociate_entry.isra.0+0x20/0x50
-   dax_iomap_pte_fault
-   dax_iomap_fault
-   erofs_dax_fault
+The issue can be reached if we try to migrate a non private/coherent folio (I assume DAX/P2PDMA)
+pages. Even migrate_vma_insert_page() has a similar pattern. Creating the pud/pmd/pte structure
+there is unnecessary (but not allocations occur, depends on pmd_none() for example), do we want
+to clean up all of it (need to think through)?
 
-Close the residual gap by moving the dax_to_folio() call after the
-zero/empty guard in dax_disassociate_entry().  Apply the same
-treatment to dax_busy_page(), which has the identical pattern but
-was not touched by the prior fix.
+I'll re-review and send fixes as needed. Looks like David sent some fixes out, will review
+those as well.
 
-Fixes: 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
-Cc: stable@vger.kernel.org # v6.15+
-Cc: Alistair Popple <apopple@nvidia.com>
-Signed-off-by: Souvik Banerjee <souvik@amlalabs.com>
----
- fs/dax.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/fs/dax.c b/fs/dax.c
-index 6d175cd47a99..6878473265bb 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -505,21 +505,23 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
- static void dax_disassociate_entry(void *entry, struct address_space *mapping,
- 				bool trunc)
- {
--	struct folio *folio = dax_to_folio(entry);
-+	struct folio *folio;
- 
- 	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
- 		return;
- 
-+	folio = dax_to_folio(entry);
- 	dax_folio_put(folio);
- }
- 
- static struct page *dax_busy_page(void *entry)
- {
--	struct folio *folio = dax_to_folio(entry);
-+	struct folio *folio;
- 
- 	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
- 		return NULL;
- 
-+	folio = dax_to_folio(entry);
- 	if (folio_ref_count(folio) - folio_mapcount(folio))
- 		return &folio->page;
- 	else
--- 
-2.51.1
-
+Balbir
 
