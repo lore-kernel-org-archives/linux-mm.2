@@ -4,125 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65E09CD3424
-	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 09:39:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15272CD3424
+	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 09:40:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 696726B0005; Sat,  2 May 2026 05:39:49 -0400 (EDT)
+	id 511676B008A; Sat,  2 May 2026 05:40:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6476C6B008A; Sat,  2 May 2026 05:39:49 -0400 (EDT)
+	id 4C1DC6B008C; Sat,  2 May 2026 05:40:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 536F36B008C; Sat,  2 May 2026 05:39:49 -0400 (EDT)
+	id 3D8EB6B0092; Sat,  2 May 2026 05:40:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DCF8B6B0005
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 05:38:51 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 354328BFC6
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 08:20:20 +0000 (UTC)
-X-FDA: 84721782600.20.726CF51
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6006D100006
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 08:20:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oegYXA+A;
-	spf=pass (imf05.hostedemail.com: domain of anindyaandy1904@gmail.com designates 209.85.210.49 as permitted sender) smtp.mailfrom=anindyaandy1904@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777710018;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C6AC6B008A
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 05:40:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B39F3C1DBF
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 09:40:18 +0000 (UTC)
+X-FDA: 84721984116.11.98D4960
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C75D7160002
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 09:40:16 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Twge+6o1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of error27@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=error27@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777714816; a=rsa-sha256;
+	cv=none;
+	b=4T3xEnLBLQxerCUUMD4PP5ERKUYK+2ShnDXxjGnB1jvsfGvFwvdCj7qVuUgDOu6+Ww8RDF
+	GRatSItP/PPzcATtQnrF+LA4jizWKsxkaa/YGE45mw7B1X1RNIo5y/Xe3VgxkkehmA+hab
+	6C3hEJ4phwm7qHFsRpqXm8K6RuIi1gA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Twge+6o1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of error27@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=error27@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777714816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=50dXfXimWHbetqvq7vRItsuMNkkrpdQRd21eS5H1Q5s=;
-	b=nPLLlg+gI39ocK1ELpZK0P2q6yWZCPqBS8A98rZtO+h/teSAgui6hVMmS32Rfl9Irbz5uG
-	KjgvgNrKNCRq/qFSvMAfDo1N6rlHUjqPmANHvaRuak8yiyPxIgwfOpITueRD9RsJM0Tc5U
-	qpVTuIBKi5b2gZPtb4zPVECWRsNG7Bw=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777710018; a=rsa-sha256;
-	cv=pass;
-	b=YvBzM4q0rqrn52mkRpEq2QDR/YlvRrr/nAzLhUL3uhvrS1D1aVGJQaCjGfJ2e0yTI/v0t+
-	IHUt88ggQnnBtvJpLtB/AvDqoYTbspWz7E9GkdfkFGc062yNX5XlbZeDCHyxU71NKHSzpV
-	rtpNYUTT10HciWsdq0m+jW8T/xLP6fY=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oegYXA+A;
-	spf=pass (imf05.hostedemail.com: domain of anindyaandy1904@gmail.com designates 209.85.210.49 as permitted sender) smtp.mailfrom=anindyaandy1904@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7d4c383f2fcso2504846a34.0
-        for <linux-mm@kvack.org>; Sat, 02 May 2026 01:20:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777710017; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gXvPdIbi9nOZiwGGP1dRYB5OBUpmXJcgulemN37CjSFBjvl8Llm/7MVmp7LmZwsXFy
-         w9WJD4wYmRCo2tvS11qcBY0F0JbhWHANxiuNEAEoF5lYM7htrQeKzQ2LjxgGxRINbyGF
-         9yOJyRnn4IX4WkSG8Igj3Z6roWJ2Kb+jR8QG/QZao5nYeDpGgEcMSbbjCrw7/dOngDZS
-         gUAV6kkAbDZh9m2ZVErGi3C+GvYPV+zTVmBEqylM71bfiHz84gDtUxJpFt1w3oozybz+
-         4urJMYNQozOlRNKkHeop6Ya1bhGblPGOs0Oljkg1aIixeRAmdolIVYdu7oXbjuZ128Lu
-         0uWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=50dXfXimWHbetqvq7vRItsuMNkkrpdQRd21eS5H1Q5s=;
-        fh=FkFGEIFpKtMUJ2m/ei7/ct1LYVSuDncVlqUOZs/eEXg=;
-        b=WQPNGGxmgUTPXEqGEuA9DfPC+IzmvfzPDOSkCR0FRmagnIkOwoYsU8YVFpihVF5R9k
-         e+BYyuCsGiLqwzCv2tNBBfRh+EuqX0Muxm2cDreABFPYO2fALmbNz5hTe0RsOasBDRBM
-         K+M9sUb9syNmjVhDtovwMVOAX45iblB6GiXOmYLcejsyDdWIIHC1GfE1IL+Y4+KhvRxK
-         OvAbZ92A7yYQ0k8XXkLtvV7WQXQMcCn3Kbhik/d7ELArLa7j3W/WnpUiiqhF2XkyfLPS
-         GcHwe8cf0WVlqjQ+B/ZW03j2C946QZYvkvldZAanE2CCf7PNkhhil7ajIO2eJmoIc/X7
-         u6Gw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 references:dkim-signature; bh=xWxxzhKBAmtcwBT63aGnVt/i27b3I+bhzf4HGA2Jwck=;
+	b=m50yeAV1vm+pDWXGU/Fe6tOCzZnB6MTSlEfCyq0icOlT9GegrPbtSYMWK2E2EOBn+Ee/gw
+	1FWULUiRsYsNHuYQPPG6SuiidK5zpW6+zsIPJHYAsl90v6jDJRoY7fqq7wTQB9uDSaBRz4
+	8JR7RxpB9+MrQblydU4Xl7MASx6dIqU=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48984d29fe3so38378775e9.0
+        for <linux-mm@kvack.org>; Sat, 02 May 2026 02:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777710017; x=1778314817; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=50dXfXimWHbetqvq7vRItsuMNkkrpdQRd21eS5H1Q5s=;
-        b=oegYXA+Agji2McJPVpj/VkmNB5r7qy2LtY9yq00m/up28BAn2GcIjMBBlSFUd+Pj8D
-         h7l9hlimlqkdfZP9GwqctRhXGdX8UR2e+uYwHL3yjppO7d+/3BaUoO24RGPnoE3imjmA
-         tpXqAoQ7gsK041iy8SI14Ex7hhxjxQkiqpJcuMu8oq986vD1QHGnpSQ3n1rV8KGCmgRn
-         797UPVwwtQxnXLLX3BUU/T5IMJPVAXSbLybdWQEGSIlQZyfwN7DQDE83P5tjeXP4SYgU
-         sAJfGTXf1n043I0Y0yyqGvSUcJhRgaN9fsD4Ccgwps+/qsBW8foSmIrs9S5xkOoNp79c
-         GE0Q==
+        d=gmail.com; s=20251104; t=1777714815; x=1778319615; darn=kvack.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xWxxzhKBAmtcwBT63aGnVt/i27b3I+bhzf4HGA2Jwck=;
+        b=Twge+6o1FHEs5fdc81gLMSAIhfuEcincCgQBrQOMqaCv34DRsAT7pzGLkIrYW1y0I0
+         u/QTzqHXR041rXWvYFqMOFYRaYA396GKA33Um4sxWLqueqFBCjbF6y0GYof68UBq3CDt
+         t6JYqQ7zwEe7q/ufo20ng6MO/mBjcklKMadfXeabyyMml+wcZ4GoPEqgM5YE4vWrnw0M
+         kYZ+vejxFKTlWy5JF75ciRPdTAcqRCHh7dJCmYeaT7DyxkaMw7qxInFsqVYKelh0fB9O
+         YaJvcVDGiob7Sb5RFRXSkVJfC6V4K3ptjghc9r6/DtnazRTgU7DGk45aDH0IdzGsf+Kw
+         ma1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777710017; x=1778314817;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=50dXfXimWHbetqvq7vRItsuMNkkrpdQRd21eS5H1Q5s=;
-        b=Anc2D/zHonoHO8BApWpX23jpCxJxTC91ErpQXxtMq0avyiVPEyvOglOooWuok3ACjF
-         0di9fjn2c92UZXQ2JTlL31CSChKBJqv43d1IjNg5vhhdWA6JQob/I8VCKUUkOFT2AebV
-         S0Ytsg8wngmaBJvtgg0eevzrqsNavd0M9xZtr+AiMo79ZMNLoP1IJChf3waUfL48/vJR
-         lwxoj1hyn2W4iIptkfQPU3FiM67wg15LoUe4DnTM0yHtoQYDVgTj07mwG0wG5qz453CU
-         WJ/ymlg+5ztQ+q6cKVgWoVGqpstadafcvCzPZS9UrvZidKO4xdX9508G4VixnllhKZh3
-         oQ/A==
-X-Forwarded-Encrypted: i=1; AFNElJ9/88cyR9McOnCcQneoRtzFSixrpxkqaFDnMD66huRXEKe84+poMzNEQgMLde+F23Sxi/Eotfrw6Q==@kvack.org
-X-Gm-Message-State: AOJu0YxFWRZw5ci1II0O8ZHg/7MyGMIl/C4zLRKCaGlr3q94se7bHQQw
-	m9y64LN+/2p5rvPD3UoC8eWFbpdfkVvHFGf4vQIMefUwKMipydG3rzCM+pu+aWBOCFi7nXfEDn4
-	ihAIkzEoDW2Vo+XTyB7MGNuOrOtkHwTo=
-X-Gm-Gg: AeBDiesfjowX1nmqRxid6Dnkqvl6Jgjo1wKp2WCizD8urkbXIKtLSAuw7V25P7O8lvj
-	FG3KeJ/bvr34+V79gL0+5TOiD/m1jsiyzia7fd0V31/KQD9x18UG6nq1oQiUZs6ghCwlw6UaU+u
-	ie0JUplLJU3HuiA9jNvT8Z6sK9moZs8Q5MBO+cp0LaDTNW4+SOUsgw8qIRBmf3h8tot5iuJCRKe
-	OlEX4NHfr6Z0deHbHLp4GhphNm+NSkxOG3Gh+PZBs9X7U90pWDGStbRhg7pPrZYB5S6wjOvCuHo
-	2SNClkqVrMRpqkJUWi5z
-X-Received: by 2002:a05:6830:3881:b0:7dc:c926:4f87 with SMTP id
- 46e09a7af769-7dee1395cafmr1496446a34.16.1777710017264; Sat, 02 May 2026
- 01:20:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777714815; x=1778319615;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xWxxzhKBAmtcwBT63aGnVt/i27b3I+bhzf4HGA2Jwck=;
+        b=dGTQfCVnWghZ/OCW8dEPRnpB5oMdFrBV0ii37wNsze/GEIbrYJYtiXwo2aogzL5XyZ
+         a+Y7cE5soBxeqhm5ER0vVg5nut54V4gu9VIpWS1KYvQEkOvFlwl9BXbV9iS7JtUcTlF6
+         pTMKysZPZbRVOF4wzUXJ2xRvXfmG4ufiKmk62IvDvNMa1l1EV2mb3zwPZhiE85qdk5MW
+         BZiZ4DZ0rfD196J3sJ0kR/N1C4qZZ+QIA1yfUGqaYeySsVazqVzIcVlzlEu78VcBRVvg
+         zSJGd43vp7dC4DoQ9ac7TmylX/QZcavNg+81ZGaFAIR3Q96T98qQ6eJ5WpJ0tHysgLHk
+         dWvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8F8X9873Men9sjCD9H5iUVn9CtTzF1dUIy213ckIwfsNl6IUipP+JnMF/LW7GsXGIHSPRUyfLaFA==@kvack.org
+X-Gm-Message-State: AOJu0Yy3IIF7d5GuAl43Np6YMyyU9KvbExZzg56M/xbAQqzF2YMWlM0E
+	yFWP6OP8d7MMyncudUAsH7gFxf9dDTKitvHKuV58CU0biXsCDanXz8Yx
+X-Gm-Gg: AeBDietNhjCvAw6qOCvAq9tKMM8E92GuPNFSrOzbXj/YDlFoCu7XGIsbPLi2p0/GPE2
+	aUKScjleD61YHJSfl0GSKHKkaeZX+H57Di5QghV0zexF686X3cwkBT7J0n1PSOnWUrkwpz4Jf6p
+	BzB10Uq8CqiXzmRp+ac/VnSkz+twHR8axS4zahLifrwuQE5ykPz+XOnUjX3/2x9yYBz7ZQNFXa2
+	QIbJDH7uap6+0cJRP9SGFirkEP/SqZIMFHxj5yv8mvo+QZKdZbwO7BwvMaUseAchGWCb+SHpO2K
+	N2HU9Wn2xnZYftWb0QQh+lmgXb85GRZSECx0asBXsW+t15tzc4m9zD3vZ/6MXM3MW5i+5EXOiBn
+	ydrmyEqU9OjQiVP1x0oCwTMIUTsQh9inTdF4g9SiT7ugU+nHyl/cXnESBPiKiE21FmrBUvgLyQF
+	ac2OYyRTxPPZYfpGcjFwOLBV1ACPQbq8u87gZQP5iI
+X-Received: by 2002:a05:600d:16:b0:48a:563c:c8e2 with SMTP id 5b1f17b1804b1-48a9852d292mr27498815e9.3.1777714815081;
+        Sat, 02 May 2026 02:40:15 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81b99127sm180583055e9.0.2026.05.02.02.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 May 2026 02:40:14 -0700 (PDT)
+Date: Sat, 2 May 2026 12:40:10 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, linux-mm@kvack.org,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	dri-devel@lists.freedesktop.org
+Cc: linaro-mm-sig@lists.linaro.org
+Subject: [bug report] dma-buf: heaps: Rework heap allocation hooks to return
+ struct dma_buf instead of fd
+Message-ID: <afXGeq1AvqFY76MY@stanley.mountain>
 MIME-Version: 1.0
-From: Anindya Roy <anindyaandy1904@gmail.com>
-Date: Sat, 2 May 2026 13:50:02 +0530
-X-Gm-Features: AVHnY4LlGN_3G_972Pmk5Icb_RwHQMiOwSvL8BPoLicdxxyrhBroCjrU177o-nI
-Message-ID: <CAMyZbw_ppC7F98+5huwmGjz03UGv8L8MoU9zL2_YYDU=fA3Qxw@mail.gmail.com>
-Subject: [SECURITY] mm/userfaultfd: cross-inode page cache injection via mfill_copy_folio_retry()
-To: akpm@linux-foundation.org, rppt@kernel.org, david@kernel.org
-Cc: ljs@kernel.org, security@kernel.org, linux-mm@kvack.org, 
-	lokeshgidra@google.com
-Content-Type: multipart/alternative; boundary="00000000000017bf8a0650d15e71"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6006D100006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: xfw8wa6fbq5tkqyxgcsnb5xbp6xkry19
 X-Rspam-User: 
-X-Stat-Signature: 91o3gu1j469rr3wr1z4o4cfubkp8w9nk
-X-HE-Tag: 1777710018-683394
-X-HE-Meta: U2FsdGVkX19sJjhbqPwLF8yZTPLuYW/kxvmpNuusoSW9o7uTsmSm4PpS0S1NHDiEieBXAK0I0K4ZEvpfdkw1Ru6rVosYdu4JHVWkfs8zF7ISgjKEH74KJdQkCt4uawvFEHgEUgKsR2DSWVD51Am/jrwl7RwnWjLRz4Ix50xIKjYmVNNWAS8S48tS5EGO2lbW0DAY1OF9I/07oJpg0wuEqjFD1skl1pQxSnZqGVeLvhFpYWYHnHbHEzvP6eD7jMqi3/VrehHBTFPduMAMKcT/e+PcMjEqTkhZ/NAGOc696v5HRWJa8dfPYEyatBVDCpKpmmQdAcYys6aQkTsEBxn45r/UVUJFQDHredpt/hXJPntuvSq5mrbwZdauT8mT+qh4fIt2PfAthMsfVVUmBH5prJk880ne3QpkatzsHO7zm6mOEcHUg3sB0Jv9kc8MNn3pUw2p+XzvAvs1dVN+WYCi1XibaPV28Vpgge7y8p5IfioMCkqIzwMRlKLJSCYEJO3jHxfQK+Ya9Whb+owJb/1ILQdtw+sDyewm0gTZYjNm+uAhxRjcPHevvSo3tl0ZPNSjmqrdVAb1jhi/big78txTyaZwi/05LbFLjywfmhfDGG+gYN2nxlOFYpknoF+4p+GMdA0GnrecMOf8daCaVUMBsQ343nqUy1xdpSiJY/P3Uhh1rHBSY/2z92U34nymDXjo5PjvHDAVC8Gmuy2FQIqS9gQF0wKN3upCJT3bh1IozbtrV4odnTwDUAhTF9l1J5OO5ikBYMeLxFX7a7BFtL5uyziTCeY9wL3IlG11PZEI3WSl/WRSzJShfkhHc/MOLzp7D710Rn37YeOVSISo5F25yFL8hGNtD2P686Lj/0oYQJoLcNuRsq4nt/tnMF9eyvtGAyKGLpOJsErfytnZZLDiG8Prcz8fw3bTNFyIxLBB2U8RYQK9N419WM4Mv5VKgKzYA3ym4n5ITXIoti7+Rsy
- Ne5OsqCX
- keD/OPPDuIRUCcbx8Ez72ThU8g9DCLdigCvUnK6+qrEArFT9Iyy3frtfLOoQeb8vG3gqr9C2ZuXoMRuaNew2S//2PHPm1MO+ZcbJ9On6SdLCYMt+c5RIB7niKvY7cUza8IVbAs9b7PtkYW8J/3oaKK5GVGrAveE/lIvQATGqPh9Vpkh2RwIYG1Omx7BKtxDGHKosEEiHz7i613shq0MGflyuJmpGXXYg6K8UROAqjisRgri9H29zIUnbwtc/o3ngUh4kjneGLbKojs2n8r5Vbuox3vVYtfWG0InRmPaPg+eSOqMsg95QH2ZYe2Zx/O61fYc7cbz8Xz6LveSuwYClUt2crTHaGBfeJnfTbMT0BLSSmi6JRgxL7+lJ1NXwy/N4cOC2JIMkySOMuGn2vzy9JswtKgoNejL4+suQFgu591zNMISifCk6lpDikeTTj0Wy/fvV/0B67O4dtTwKV5pS3PXpMfymXRRCh/1k+aljy5KWp+U2xSSS5NhKJBkisuQyNkad9vl8jP3UIeG8iQmngWVsIkxJbhjnJ34KXGmTp8BPZx4qvs8kee1TxIBCjujSksA352bCGrzbicHt1AHiL3TBUWdIcJ/0qqwPP
+X-Rspamd-Queue-Id: C75D7160002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777714816-237974
+X-HE-Meta: U2FsdGVkX1/SrtzKxvVS1ucRbK6Z71h/meibqyqxAUZTUEvaQjP9SFuoZJaWc7xTGlYPepXD6iTSDxzMGxl82p722Jwj40WGDIqQuCYzFDXGZ6PyyGTwqMLUOG+nu7Yx+8LeTgQezL5IMy8nvBsz/G0v13M18shNnm4ryxDi7RVlld3mDft+nrQxzdILUc8ilQIrzmt8qJvFjoCLZDhfZff6FnF1AgUuNhfnhAAyVLLK0PKRgl/RKLHoSlNlZHsh5PlsjKEv2UowVptYsRBbcqo5A0dk8J5EckGcxXzYOY9LmqC5XBp7dExYOjpc0SkURQAbuXLINZuCFQX/9GL8+K6j05HYcM93UHbBtKSMRaLJ4cAR0DlbGPFoTBI6AvYHgzY1llQAeKJ0Q3ii61tkSysf5eY7DyggUHfBM4y9dEUFmzw1tpx6pndV4QeMIwB5YbDfeWdDJYPuAhb7b4hahMmQn7NvHFqiL+tqEX7rQBuQ0rgX8wxeP+a6flRuwnKr8sRkW+94msAgNTe5wnpTuXhMwWDWbdJRyYu5OPbuEHQ27fnTQFeT5ijl173D+sSk53lZhWEeyJhd1vpceLUDbq5vtiaAOBifnPY/4XEadf0oICFc4i3k6oB+NyXG+FxJRTxLzUEm6weKESL6jri4KeOLY9yUnWVX9kS7sDZnOpJ+cofrWfcwp6CkGWVGlnr4hDC1stEj/o714Ux2pK0n4mGdD6Ese97xJ01NPdy8SQAwf+P9ppEngmqLDdcaUxy5pMlCHD8WheyW8/u+vZnDerHSMDNuhE4O3khOk4dYGb+q2vVevELlX3FwyamvOt33YYo1v0PBtzM6QIrgQUBsU2htBwauOF3Cei29ADpeHVR7zRHy5d15qdQ1VLsaRJd6cCmDJznNHJJChmMlsUqJVHBhMFszJ6lWJxFS2/ElUpIMOj4F2M9e3XcFlm2ZHT31CFSFumuf8WMAxj7Fw2t
+ clv7Cpmk
+ JuJrA3N4MYvoxXgmFzTyzNsSriyMm8mGCQCVQqokBUjOpSmf7HxTuLik5GrSTi0pyxKpdyzWlRXdcmRJLegZPpFMUWf87QSXWBO/VCGS9Q4wdmc/bN9xpTppLIMLji9EvJ4GeOghQpdT0GmhIfIXeA/2PYNRMvFvIVcjrcPDEDTpcJ4CqtjfXZkdMaJY/hO1DaKJIkgv8exxT1L+vVIDEXHGkw9PQYmWqzC894ZkGQdr2q4AygFakhIFRTdFkU8JXNLfUnB2y9wtsjV3WiWAHiMhDkoKN7N35YWWcaVS1gB69mGKFN4Nz3cobqR4tghJmnKeWkIkXc0nI2N22rbnMFARwsY8DEc3w+zVAy0OmTlzH2Rp9DsaPrP5p8QFNF/RPJzLfR9QkXDmhCkgYu3qHNp563/FP6Sf0QRo8Zs7eF0i6hWrGB6YRbK+sbblb7mOGwClKAaoaDCmUVQ6miBGxjy+RKarVJF750BBhwaTzCEUpWFqTPSaLS7Rd0n3VfHWmPbSfyZXfa7Q/w4yOxDKfWXe280DzZpAZ2XR4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,257 +116,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---00000000000017bf8a0650d15e71
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hello,
-
-I would like to report a vulnerability in the Linux kernel userfaultfd
-implementation that allows cross-inode page cache injection due to VMA
-replacement during the UFFDIO_COPY retry path.
-
-*Summary:*
-
-A local unprivileged attacker can inject controlled data into the page
-cache of a different shmem/memfd/tmpfs inode than originally targeted.
-
-This occurs because mfill_copy_folio_retry() drops all locks, allowing the
-destination VMA to be replaced, but does not verify that the underlying
-file (vm_file) remains the same when execution resumes.
-
-As a result, a folio allocated for one inode can be inserted into another
-inode=E2=80=99s page cache.
-
-*Affected component:*
-
-File: mm/userfaultfd.c
-Function: mfill_copy_folio_retry()
-
-*Affected versions:*
-
-Introduced by: f5f035a72423
-Incomplete fix: 292411fda25b
-Tested on:
-- Ubuntu 6.17.0-23-generic (x86_64)
-- Debian 6.1.159-1
-
-The issue appears present in the current mainline at the time of testing.
-
-*Root cause:*
-
-During UFFDIO_COPY:
-
-   1. A folio is allocated based on the original VMA (inode A)
-   2. mfill_copy_folio_retry() drops all locks
-   3. While locks are dropped, another thread replaces the VMA using
-   mmap(MAP_FIXED) with a different file (inode B)
-   4. After re-acquiring the VMA, no validation ensures that vm_file is
-   unchanged
-   5. The previously allocated folio is inserted into inode B=E2=80=99s pag=
-e cache
-
-The existing fix (292411fda25b) compares vma_uffd_ops(), which is
-insufficient because different shmem mappings share the same ops pointer.
-
-*Impact:*
-
-This provides a deterministic primitive:
-
-   - Arbitrary page cache write into shmem/tmpfs files
-   - Full control over contents (PAGE_SIZE per injection)
-   - No timing race required
-   - Works as an unprivileged user (userfaultfd or via user namespace)
-
-Security implications include:
-
-   - Container escape via shared tmpfs (e.g. /dev/shm) in misconfigured
-   environments
-   - Bypass of memfd seals (F_SEAL_WRITE not enforced in this path)
-   - Corruption of shared memory used by privileged processes
-   - Enabling privilege escalation chains
-
-*Reproduction:*
-
-The issue is deterministic and can be reproduced as follows:
-
-   1. Map a shmem/memfd file (fd_A) and register userfaultfd
-   2. Trigger UFFDIO_COPY with a faulting source buffer
-   3. During retry, replace the destination VMA with a mapping of a
-   different file (fd_B)
-   4. Resume execution and observe injected data in fd_B=E2=80=99s page cac=
-he
-
-*Proposed fix:*
-
-Validate that the VMA still maps the same file after retry:
-
-if (state->vma->vm_file !=3D orig_file)
-return -EAGAIN;
-
-Additionally, shmem_mfill_filemap_add() should enforce memfd seals (e.g.
-reject when F_SEAL_WRITE or F_SEAL_FUTURE_WRITE is set).
-
-*Notes:*
-
-   - The issue is deterministic and reproducible in a single attempt
-   - No timing race is required
-   - It breaks isolation between independent shmem inodes
-
-For demonstration, I can provide a proof-of-concept that shows one possible
-exploitation path: a privileged process reading commands from a /dev/shm
-file can be influenced via injected page cache contents, leading to
-unintended command execution.
-
-This demonstrates exploitability, but is not required to trigger the
-underlying vulnerability.
-
-Please let me know if further details are needed.
-
-Best regards,
-Andy
-https://github.com/theteatoast
-
---00000000000017bf8a0650d15e71
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><p>Hello,</p><p>I would like to report a vulnerability in =
-the Linux kernel userfaultfd implementation that allows cross-inode page ca=
-che injection due to VMA replacement during the UFFDIO_COPY retry path.</p>=
-<p><b>Summary:</b></p><p>A local unprivileged attacker can inject controlle=
-d data into the page cache of a different shmem/memfd/tmpfs inode than orig=
-inally targeted.</p><p>This occurs because mfill_copy_folio_retry() drops a=
-ll locks, allowing the destination VMA to be replaced, but does not verify =
-that the underlying file (vm_file) remains the same when execution resumes.=
-</p><p>As a result, a folio allocated for one inode can be inserted into an=
-other inode=E2=80=99s page cache.</p><p><b>Affected component:</b></p><p>Fi=
-le: mm/userfaultfd.c<br>
-Function: mfill_copy_folio_retry()</p><p><b>Affected versions:</b></p><p>In=
-troduced by: f5f035a72423<br>
-Incomplete fix: 292411fda25b<br>
-Tested on:<br>
-- Ubuntu 6.17.0-23-generic (x86_64)<br>
-- Debian 6.1.159-1</p><p>The issue appears present in the current mainline =
-at the time of testing.</p><p><b>Root cause:</b></p><p>During UFFDIO_COPY:<=
-/p><ol>
-<li>
-A folio is allocated based on the original VMA (inode A)
-</li>
-<li>
-mfill_copy_folio_retry() drops all locks
-</li>
-<li>
-While locks are dropped, another thread replaces the VMA using mmap(MAP_FIX=
-ED) with a different file (inode B)
-</li>
-<li>
-After re-acquiring the VMA, no validation ensures that vm_file is unchanged
-</li>
-<li>
-The previously allocated folio is inserted into inode B=E2=80=99s page cach=
-e
-</li>
-</ol><p>The existing fix (292411fda25b) compares vma_uffd_ops(), which is i=
-nsufficient because different shmem mappings share the same ops pointer.</p=
-><p><b>Impact:</b></p><p>This provides a deterministic primitive:</p><ul>
-<li>
-Arbitrary page cache write into shmem/tmpfs files
-</li>
-<li>
-Full control over contents (PAGE_SIZE per injection)
-</li>
-<li>
-No timing race required
-</li>
-<li>
-Works as an unprivileged user (userfaultfd or via user namespace)
-</li>
-</ul><p>Security implications include:</p><ul>
-<li>
-Container escape via shared tmpfs (e.g. /dev/shm) in misconfigured environm=
-ents
-</li>
-<li>
-Bypass of memfd seals (F_SEAL_WRITE not enforced in this path)
-</li>
-<li>
-Corruption of shared memory used by privileged processes
-</li>
-<li>
-Enabling privilege escalation chains</li></ul><p><b>Reproduction:</b></p><p=
->The issue is deterministic and can be reproduced as follows:</p><ol>
-<li>
-Map a shmem/memfd file (fd_A) and register userfaultfd
-</li>
-<li>
-Trigger UFFDIO_COPY with a faulting source buffer
-</li>
-<li>
-During retry, replace the destination VMA with a mapping of a different fil=
-e (fd_B)
-</li>
-<li>
-Resume execution and observe injected data in fd_B=E2=80=99s page cache</li=
-></ol><p><b>Proposed fix:</b></p><p>Validate that the VMA still maps the sa=
-me file after retry:</p><p>if (state-&gt;vma-&gt;vm_file !=3D orig_file)<br=
->
-return -EAGAIN;</p><p>Additionally, shmem_mfill_filemap_add() should enforc=
-e memfd seals (e.g. reject when F_SEAL_WRITE or F_SEAL_FUTURE_WRITE is set)=
-.<br></p><p><b>Notes:</b></p><ul>
-<li>
-The issue is deterministic and reproducible in a single attempt
-</li>
-<li>
-No timing race is required
-</li>
-<li>
-It breaks isolation between independent shmem inodes<br></li>
-</ul><p>For demonstration, I can provide a proof-of-concept that shows one =
-possible exploitation path: a privileged process reading commands from a /d=
-ev/shm file can be influenced via injected page cache contents, leading to =
-unintended command execution.<br><br>This demonstrates exploitability, but =
-is not required to trigger the underlying vulnerability.<br><br>Please let =
-me know if further details are needed.<br><br></p><p class=3D"gmail-isSelec=
-tedEnd">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</p><p>Best regards,<br>
-Andy<br>
-<a rel=3D"noopener" class=3D"gmail-decorated-link" href=3D"https://github.c=
-om/theteatoast">https://github.com/theteatoast</a></p><img width=3D"0" heig=
-ht=3D"0" class=3D"mailtrack-img" alt=3D"" style=3D"display:flex" src=3D"htt=
-ps://mailtrack.io/trace/mail/e76ee8a013b1b00046a6b00d194ddc228d9003f7.png?u=
-=3D12810248"></div>
-
---00000000000017bf8a0650d15e71--
+I'm not sure exactly who to report this bug too.  Probably the mm
+devs?
+
+	drivers/dma-buf/heaps/system_heap.c:499 system_heap_allocate()
+	warn: passing positive error code 's32min-(-1),1' to 'ERR_PTR'
+
+drivers/dma-buf/heaps/system_heap.c
+    459         if (cc_shared) {
+    460                 for_each_sgtable_sg(table, sg, i) {
+    461                         ret = system_heap_set_page_decrypted(sg_page(sg));
+    462                         if (ret)
+    463                                 goto free_pages;
+
+It kind of looks like system_heap_set_page_decrypted() can return 1.
+
+    464                 }
+    465         }
+    466 
+    467         /* create the dmabuf */
+    468         exp_info.exp_name = dma_heap_get_name(heap);
+    469         exp_info.ops = &system_heap_buf_ops;
+    470         exp_info.size = buffer->len;
+    471         exp_info.flags = fd_flags;
+    472         exp_info.priv = buffer;
+    473         dmabuf = dma_buf_export(&exp_info);
+    474         if (IS_ERR(dmabuf)) {
+    475                 ret = PTR_ERR(dmabuf);
+    476                 goto free_pages;
+    477         }
+    478         return dmabuf;
+    479 
+    480 free_pages:
+    481         for_each_sgtable_sg(table, sg, i) {
+    482                 struct page *p = sg_page(sg);
+    483 
+    484                 /*
+    485                  * Intentionally leak pages that cannot be re-encrypted
+    486                  * to prevent shared memory from being reused.
+    487                  */
+    488                 if (buffer->cc_shared &&
+    489                     system_heap_set_page_encrypted(p))
+    490                         continue;
+    491                 __free_pages(p, compound_order(p));
+    492         }
+    493         sg_free_table(table);
+    494 free_buffer:
+    495         list_for_each_entry_safe(page, tmp_page, &pages, lru)
+    496                 __free_pages(page, compound_order(page));
+    497         kfree(buffer);
+    498 
+--> 499         return ERR_PTR(ret);
+    500 }
+
+The problem is that add_to_pagemap() returns PM_END_OF_BUFFER (1)
+which is used by pagemap_read() and nowhere else.  The call tree
+is:
+
+system_heap_allocate()
+system_heap_set_page_decrypted()
+set_memory_decrypted()
+realm_set_memory_decrypted()
+__set_memory_enc_dec()
+__change_memory_common()
+update_range_prot()
+walk_kernel_page_table_range_lockless()
+walk_pgd_range()
+pagemap_pte_hole()
+add_to_pagemap()
+
+This code seems sort of old and I guess no one has reported the bug
+so maybe it's a false positive, but it feels like it's asking for
+problems to return the PM_END_OF_BUFFER.  There aren't any comments
+on any of those functions above explaining what return values are
+expected.
+
+This email is a free service from the Smatch-CI project [smatch.sf.net].
+
+regards,
+dan carpenter
 
