@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A132FCD342C
-	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 09:40:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3972CCCFA13
+	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 10:09:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 167936B008C; Sat,  2 May 2026 05:40:21 -0400 (EDT)
+	id 5DA236B0005; Sat,  2 May 2026 06:09:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 118B86B0092; Sat,  2 May 2026 05:40:21 -0400 (EDT)
+	id 58A136B008A; Sat,  2 May 2026 06:09:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0078C6B0093; Sat,  2 May 2026 05:40:20 -0400 (EDT)
+	id 4A0436B008C; Sat,  2 May 2026 06:09:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E5AF26B008C
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 05:40:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9D61C1C0E78
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 09:40:20 +0000 (UTC)
-X-FDA: 84721984200.02.0D67130
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C8D47140002
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 09:40:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w6p4l2EO;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 3848A6B0005
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 06:09:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD35EC214C
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 10:09:32 +0000 (UTC)
+X-FDA: 84722057784.11.7ECFB42
+Received: from embla.dev.snart.me (embla.dev.snart.me [54.252.183.203])
+	by imf03.hostedemail.com (Postfix) with ESMTP id CEE9420003
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 10:09:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=reject) header.from=dev.snart.me;
+	spf=pass (imf03.hostedemail.com: domain of dxdt@dev.snart.me designates 54.252.183.203 as permitted sender) smtp.mailfrom=dxdt@dev.snart.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777714819;
+	s=arc-20220608; t=1777716571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SWeHR6TXJDPcoGPqibXbLCDi1G+IQjTVYqkvcytFWlc=;
-	b=BeD6QPy12v1oc5lbHCJ1qJGVF/pRvp1Y7XXWIC7wmvwkkx5Nw9kJY5ogBn1fxktF/JkPTA
-	EqotosqlgvCluupbDyDMmi0rJyAjEn5UYZTvekkaco9qqonLWX5My1H4Z1bI0U7YQCDYxH
-	A5oiYwud2hVg/IGHCZej2skwp1aV2Ug=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777714819; a=rsa-sha256;
-	cv=none;
-	b=xpALLTYaD/rYpGgI3pqrhuehFGj8ezY9ZVkzqvIID/saITyujv7UaBh0KqxSxwafc3t94H
-	RWJe/6aISBQPHPPihlVv5mooAotLiCG559u3Aul7IrIJOC9NpLnQ4lehsPcBE3nHsG/iju
-	74vU2z86mfc1WuEZws6gV6+a52zy71U=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tvhU2FPOdnW18DAKkmSWm6VtPzZONYyLIxcRcchGJ2Y=;
+	b=YQNjpVgIOEVH0Z2u2JsO0KmKQvd8mm5nsf6SKwHC9Cjbc1oJmBsM8uBIxLxNt8zASbyJxu
+	lUddGtfqiGS7nXlxHRrG/t8R2HjVQf2da57BUSESRWXCJFZ6qqsAFEJuo+VMJgeVYpfUAs
+	mQ6DQ2oxwcAbA0Z7eN02bwPE/xyC7s0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w6p4l2EO;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B0A541577;
-	Sat,  2 May 2026 09:40:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE59C19425;
-	Sat,  2 May 2026 09:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777714817;
-	bh=7xfYirXqLDemJ0lxq6Q0jqEoUICU/Y40sa71HyYGu0M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=w6p4l2EOWVEGTKk5N8xYPA1OCp6ynnUGWz/czSAMj7WfaJTmTIZFaSrc3ODjouruq
-	 otQLjxvDZ7aR8mU19J4bd8jm+u5nfAqnQGOW2B0sJ/b48Ddjn1x8CCcvKYEFwyQcAj
-	 m0IMDTBtQqJfyJyiL4lF0TL+hJOP/Gv59YNmL7Uw=
-Date: Sat, 2 May 2026 02:40:12 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Anindya Roy <anindyaandy1904@gmail.com>
-Cc: rppt@kernel.org, david@kernel.org, ljs@kernel.org, security@kernel.org,
- linux-mm@kvack.org, lokeshgidra@google.com
-Subject: Re: [SECURITY] mm/userfaultfd: cross-inode page cache injection via
- mfill_copy_folio_retry()
-Message-Id: <20260502024012.30be89b2549bb18a1a1d0ddc@linux-foundation.org>
-In-Reply-To: <CAMyZbw_ppC7F98+5huwmGjz03UGv8L8MoU9zL2_YYDU=fA3Qxw@mail.gmail.com>
-References: <CAMyZbw_ppC7F98+5huwmGjz03UGv8L8MoU9zL2_YYDU=fA3Qxw@mail.gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C8D47140002
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=reject) header.from=dev.snart.me;
+	spf=pass (imf03.hostedemail.com: domain of dxdt@dev.snart.me designates 54.252.183.203 as permitted sender) smtp.mailfrom=dxdt@dev.snart.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777716571; a=rsa-sha256;
+	cv=none;
+	b=JH+FfthZyH/TDADzaKoVXqiLBt7zo9nLMlhCzWSA1l2FulZB/mBz/WQ/7YRrP4cAcQHuSg
+	BKgHxWEzigLjRmRkYt9Xwhwr3j2zkFrbWHhiwx4F0jBU2qpBGW2oCUJcAr893tWHnCpqn8
+	6w3aG5DdaiKSnPL+6YI6dXFy5oro3bU=
+Received: from embla.dev.snart.me (localhost [IPv6:::1])
+	by embla.dev.snart.me (Postfix) with ESMTP id 114B21D490;
+	Sat,  2 May 2026 10:09:26 +0000 (UTC)
+Received: from [192.168.1.18] ([182.226.25.243])
+	by embla.dev.snart.me with ESMTPSA
+	id RUJcLVbN9WlfTQAA8KYfjw
+	(envelope-from <dxdt@dev.snart.me>); Sat, 02 May 2026 10:09:26 +0000
+Content-Type: multipart/mixed; boundary="------------OqT5KjLsi2Nj00j2V0JIyF7M"
+Message-ID: <41ec0e37-ce27-4daf-972e-580ce0ed445b@dev.snart.me>
+Date: Sat, 2 May 2026 19:09:25 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
+To: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
+References: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
+From: David Timber <dxdt@dev.snart.me>
+Content-Language: en-US, ko
+Cc: linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ syzkaller-bugs@googlegroups.com
+Autocrypt: addr=dxdt@dev.snart.me; keydata=
+ xjMEYmJg1hYJKwYBBAHaRw8BAQdAf5E+ri1XLtjqYbZdHOyc8oS+1/XJ5bSlbx5WHXmVBZzN
+ IERhdmlkIFRpbWJlciA8ZHhkdEBkZXYuc25hcnQubWU+wpQEExYKADwWIQQn/Jn96EMUaIoF
+ X+T/ldyyrZpWaAUCYmJg1gIbAwULCQgHAgMiAgEGFQoJCAsCBBYCAwECHgcCF4AACgkQ/5Xc
+ sq2aVmjJZwD8COjPlUwccrlRvbNQ6f87DWchtYO0o8W2DNRM3RLps0EA/jEhIbRV6AsyC8jr
+ 30Ut3aJ3/mO/6G4sLj7OvkEEBH0MzjgEYmJg1hIKKwYBBAGXVQEFAQEHQFpgtIgaByv9lIEY
+ EmpavMO0pYjtu7TMJynwdnGYkN9LAwEIB8J4BBgWCgAgFiEEJ/yZ/ehDFGiKBV/k/5Xcsq2a
+ VmgFAmJiYNYCGwwACgkQ/5Xcsq2aVmhFCwEA0kM9VyYB4bLCM7+SuXUUH+5Ec99Nj4RXxFad
+ Key9GuwA/2BZK6bNyrLSfEk2JDRoskqf7OIL0wa6JOD5SrBnMe8E
+In-Reply-To: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
+X-Stat-Signature: 1geh5cy6mwf8m9gqx7k4ukajfakh7kdn
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CEE9420003
 X-Rspam-User: 
-X-Stat-Signature: 5oah761ao1jcufqkegyzmksitc953qk9
-X-HE-Tag: 1777714818-375189
-X-HE-Meta: U2FsdGVkX1/O9vIkt4jId8YiR/6e4nFn6Nv8i90G+6fXIFYqIgNAn3ivVflCNwJJan+dY+5sVjXrqbhN8UCjUG6roIwjh4fk37OFZxNv5h0Qxp9RFhZ/3Rvn9FdEHPYiowYjDNQujvAD/9tt8qeyyUNUBKIBH9PgHMojwvg20TvwnRtXQyBDds54jeaSP6n4KQjF6X3gfVXqFVV5aFHW6KVH2j/Ulc6HL1sywOpvXEZ69AHj0e636NW9iTUMbRlWWXNFG5GxrVIbSVAaXEfP9UREQPMu5kWW5f4V6treGxVKfC5rptp8OMn6t2Qy38PydbIpbFTHmIV/0yKzDE0Thb1G9ELDpY5VmcWuIK5uonElVqW6ln+00SDQ0ags4eOvmrhO7t506Ntmv9h4p3RKxN2lDF184AWV++7/KcHLN27ghCkJgnJR2xmhxq4ENiu5ebs8AhLZJO+dqClofSQDJdICue0Hx37DqZwvXv3w8v9rIaHzFy87M/9aoYLjiHNMXr9rEBA2iU6/I/dBoLQzgXpqpDezSgv3KA+4kY1kvDDjfnjcVCXXVEbnCWgeNzP4oin02CCj9ctZ7URsYyBApNbWalEtPx760b0yN7IMUF2l0mRLrYmGgcwcrAhEEPEKWcYeEGuc0pgKxsfljmy9Qfn4hLXsszIBE0iUkljub56EkeebxM5t/G8s+9YVEGXlD7RkuIe7ZtiUfNe7x+zO1d99rfQLItdoTIqUtUnNa9tUZ/O9uoAQ5zW/zkGXXqd/fofDsXZ7ctnIl2QfUtgp/0ulVFPQCgEgSyCOGw4B3RBW4nRoLL9qRKDA1nH9Lwva20a89Qma6icXzwJxiry4Qzv3iJ+gSCLIcEtsNKGLZHM+3vIcJwhkeiFxiAPEYKyptMQjJTh2Ute4wwj/V1YBAFDP9VRLGvZNOElBOuaYsFv+W4yCxA2DcL3ZjgB0793NqECCky+HoK9yCLkNyKV
- o8Lxtvs6
- boiuTw40IefEk/Dfp6CR1zYSh4UFxsvwqnjcf584IAjkc3mzY6BJa9g3ynZ5LbFuzo317EG0emS5hQwKC5Auv8IftyPCuu91RvU66ojvZpbSJSZjC/PVCfm2qUFjJkKCqoTnR1itqJekc6q6xHqGPCLPDGc0eTZPbK/lQG9A0vfGczIKFJXoI57G48rsrBvmKPojNHbQaVKCs1V7E0JyBzfRX3YlHCWCQPhqVIZ4G7LfeqToX3hKXnSPoGPvp2O3GEB98fgQh2W0LjILK6KrSxjhs6Qe/X8TkqEOhBybcrmJlyhv4LdVdlMg48cx8t99jZ0UG8VGnWu8hVupa+sishE4GFx2TFbDMbGw2xEYMiYGUy17YVSo2Y0EcN7s6rm2hfZbmsepd1TnglTsDCwfS9fHYna4ZS4DgSRZzY1QTm6TniWQ=
+X-HE-Tag: 1777716570-206411
+X-HE-Meta: U2FsdGVkX19dm6GO47YrXYUUm1LM1gRfqVeGjJK3z/rt+4r2CTRt+tpHePnsJsgF9BBbR1mjndIk4gsCm4qo0hfvJPe7iiDyao0NYRUYjnKLKCWUpWQLV3EV8X7JPW2Jis6kqcT2v+/fJrR1SQ4y2CuQGI3/WxwQ8DLxPRSOLDzWCUvdEL3Ilg+RY7EpilHrEupZntCc3OplJ2n5Znq8G4dXmszsRyxxPgPoHe7nQIdXFrVva3AIGa/FNZRJ0voiMjTxw8LnvzDRcG6P/xJ+413atQZvD+rRAJy3UL4J4JvhnNPkMYsMF2LImLg207ddSrpwH9eK1NcA4yj0pnflV7LkMPjy5eCnwVb77hw11SafgOQ4AuT6BE8YvSCSzbV3hUQ6DhV1zUNw2zwmxiOa5rIfKXVkZFOV3ilXQH9RMe2rE6kXFt2qKGN1kqzL39xSy2JmEib8r0SKTJ1+NaQiuXypsZrtcawXrC9W2Uh8XX0UGuTqtGJhO3beOciCVXSh7un0cGSU8Rxar9cNpQcazTGCWG8XBM3KOmKTvx10gRzXhyU1Iuu3UYIXNtnTrH5oga0WhAiqrul2wsZfK6s1Q2mugtj0SOgbHoeXREU4KHqqj2MS1QqQnwTqrYyeyJCLZRkzDhZT5N7wcSF+hQN+LeUVUAMSGX8CLxjtAOaI5cqVYjE0ixaIPi3IO/4PsypCKFXtU/VF8cSjfWfqtnwiQdYdBrolPt0VLEW2jmfJbRO+1pUAIb3N2/3e90VHFDFJBG/NVE66ALYBRQEjB9jFvOLqShm3Qq7CRIRjpG4Wt+ofYq6HHXSoXlsMe8BsPcrPSJ7+rSjtrpB3HZ9+BIeEwxlqUFacDq0Rm4ebxqbT/hRX3dmpvXgkMoZDMaBjvD1flSg9B1wq2dGyYhkoWt2wjlWBep0R7p4G4o5wEbls7oaODdVfVArTstXGgoZKvoiEE3+nuxMCC8fmROuEY40
+ sn/+2P6m
+ hcVdNZwx6JUpJ60x72mH9OnOKqrLaG9tIfALRZMuE1x/c4DstDfruNpwowMoNjbKoCE8TeKk/sW3HY+iEzVLuNZAElxXM30LHcQbDlqtFdMaJfoR85staIaUssqOfQEmBiKWyyC/5LKpTIGZ06woocFYQrZNxxulRzr2JvAGlG6RAP6FMqVBI0wfGdcykg2Pq1Dr5qewlIQ9UhyTM+z+BEEANgqHkemLKSZ4Wq+ie2jnIoZQi804NZCD3zF58e06GBKCo1O1b4020rONZL17wseJ84+GFSf0+HNa49hYu8aL2M5dJbEuhB87/GxyQyZm0aGnBRHjtN4QNyGvnZ4wTB6Et9/IZvJTqJdQu74E14SOa+D3SpFh2SZg/DYwot6m0Ew+dKdXeKNw4yANkZmFB26XSlvUofFnmY+qA0mYL4yS6eulDQvw5Yc056X6ZtlWf3kkrjinfLwojuLsURLs9CdG4CipGhVHwE5s00o/7J9bcipiXpjHXpslb2P9hz1TfJG9SUgiLA8FxL8GsMIAZoQ+aKRBCIbii1gpVB8HYSNEv+QXDIQfzfLHbgff9lzbmeGZDPRYvS8PHbx1KDFGL3LtYr9GHhs0jFLBsL0jYQ4TFmiXer/zm8NXgWtg5QRsd+Ly/HvcdkvOMQUSZh4bYy/1TQTNkxQ/xNBHyE2ZIbA/bhQEEo/4vVJjbO0qihxZaswyjWlFKJWxkl1bnj5/UeB1FJZ0Pu7fDV7LWalxmX7R3Eb7m+oRpC2C0TWmsbKSv/i7S+m9ksshJ1nc/YvfV5AMy9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,63 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 2 May 2026 13:50:02 +0530 Anindya Roy <anindyaandy1904@gmail.com> wrote:
+This is a multi-part message in MIME format.
+--------------OqT5KjLsi2Nj00j2V0JIyF7M
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> Hello,
-> 
-> I would like to report a vulnerability in the Linux kernel userfaultfd
-> implementation that allows cross-inode page cache injection due to VMA
-> replacement during the UFFDIO_COPY retry path.
-> 
-> *Summary:*
-> 
-> A local unprivileged attacker can inject controlled data into the page
-> cache of a different shmem/memfd/tmpfs inode than originally targeted.
-> 
-> This occurs because mfill_copy_folio_retry() drops all locks, allowing the
-> destination VMA to be replaced, but does not verify that the underlying
-> file (vm_file) remains the same when execution resumes.
-> 
-> As a result, a folio allocated for one inode can be inserted into another
-> inode’s page cache.
-> 
-> *Affected component:*
-> 
-> File: mm/userfaultfd.c
-> Function: mfill_copy_folio_retry()
+|#syz test|
+--------------OqT5KjLsi2Nj00j2V0JIyF7M
+Content-Type: text/x-patch; charset=UTF-8;
+ name="syz-cae7809e9dc1459e4e63.patch"
+Content-Disposition: attachment; filename="syz-cae7809e9dc1459e4e63.patch"
+Content-Transfer-Encoding: base64
 
-Thanks.
+ZGlmZiAtLWdpdCBhL2ZzL2V4ZmF0L3N1cGVyLmMgYi9mcy9leGZhdC9zdXBlci5jCmluZGV4
+IDk1ZDg3ZTJkNzcxNy4uZGYxMGQ5YTc5YTI5IDEwMDY0NAotLS0gYS9mcy9leGZhdC9zdXBl
+ci5jCisrKyBiL2ZzL2V4ZmF0L3N1cGVyLmMKQEAgLTY1Niw2ICs2NTYsNyBAQCBzdGF0aWMg
+aW50IF9fZXhmYXRfZmlsbF9zdXBlcihzdHJ1Y3Qgc3VwZXJfYmxvY2sgKnNiLAogZnJlZV9h
+bGxvY19iaXRtYXA6CiAJZXhmYXRfZnJlZV9iaXRtYXAoc2JpKTsKIGZyZWVfYmg6CisJZXhm
+YXRfZnJlZV91cGNhc2VfdGFibGUoc2JpKTsKIAlicmVsc2Uoc2JpLT5ib290X2JoKTsKIAly
+ZXR1cm4gcmV0OwogfQpAQCAtNzUyLDYgKzc1Myw3IEBAIHN0YXRpYyBpbnQgZXhmYXRfZ2V0
+X3RyZWUoc3RydWN0IGZzX2NvbnRleHQgKmZjKQogCiBzdGF0aWMgdm9pZCBleGZhdF9mcmVl
+X3NiaShzdHJ1Y3QgZXhmYXRfc2JfaW5mbyAqc2JpKQogeworCWV4ZmF0X2ZyZWVfdXBjYXNl
+X3RhYmxlKHNiaSk7CiAJZXhmYXRfZnJlZV9pb2NoYXJzZXQoc2JpKTsKIAlrZnJlZShzYmkp
+OwogfQo=
 
-> *Affected versions:*
-> 
-> Introduced by: f5f035a72423
-
-Only in 7.1-rc1, fortunately.
-
-May I ask how you found this?
-
-Annoyingly, Sashiko found it:
-
-: If the locks are dropped during the retry, can the anonymous VMA be
-: replaced by a different type of VMA (such as hugetlb or shared shmem)
-: at the same address?
-: 
-: mfill_get_vma() accepts these VMAs and returns 0.  When execution
-: resumes in mfill_atomic_pte_copy(), it proceeds to
-: mfill_atomic_install_pte() using the newly populated state->vma.
-: 
-: For a hugetlb VMA, mfill_establish_pmd() will allocate a standard 4KB
-: PMD into a hugepage page table hierarchy.  For a shared shmem VMA,
-: 
-: folio_add_new_anon_rmap() will be called on a shared file-backed VMA. 
-: Could this sequence cause page table corruption or kernel crashes?
-
-We must have simply failed to look :(
-
-It claims to have found other things:
-	https://sashiko.dev/#/patchset/20260402041156.1377214-6-rppt@kernel.org
-
->
-> ...
->
+--------------OqT5KjLsi2Nj00j2V0JIyF7M--
 
