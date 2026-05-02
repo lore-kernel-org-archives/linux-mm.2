@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB9E9CD13DA
-	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 14:57:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91DD4CD13DA
+	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 15:49:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3AE36B0005; Sat,  2 May 2026 10:57:33 -0400 (EDT)
+	id 866CE6B0005; Sat,  2 May 2026 11:49:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A12766B008A; Sat,  2 May 2026 10:57:33 -0400 (EDT)
+	id 818046B008A; Sat,  2 May 2026 11:49:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94F2F6B008C; Sat,  2 May 2026 10:57:33 -0400 (EDT)
+	id 72D6E6B008C; Sat,  2 May 2026 11:49:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 842736B0005
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 10:57:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C354640636
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 14:57:32 +0000 (UTC)
-X-FDA: 84722783544.08.EFCF694
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CD7D7180002
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 14:57:30 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="tZ/FDRoJ";
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 643B26B0005
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 11:49:58 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0510EA02AB
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 15:49:57 +0000 (UTC)
+X-FDA: 84722915676.24.76304B6
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf12.hostedemail.com (Postfix) with ESMTP id ED47B40002
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 15:49:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="gPyf/dfJ";
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.54 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777733851;
+	s=arc-20220608; t=1777736996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EYA14pq+CY0U9Sxh6f6UsYdGKim8qygJpX+jtNAVFy0=;
-	b=qw6HEy8qbvmAVOYloM0B8mvo7F96XdAveRAfJTPoyAUnE47Ct98ZAV15l7G7V8VDAmoqW7
-	CPTHZjoo++t7h3yW3PtoHBHHLkJimZIfexr5KJCzVjNGhzaKyfN50t+rN0DwJtUeAPKolx
-	nZKuG/0iQGB4sGM/xvKGpqRSF1LYRUI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="tZ/FDRoJ";
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777733851; a=rsa-sha256;
+	bh=SVqOlMyjv782QwH3r0yX+YLQuP1ZcJqdDcRKQWrk33I=;
+	b=pQsYv3QaAX3xPUEeEVPXgUF1rGRmsIASaVzjB/uXj9oK7Wesj85Z5omifgoE2asEBkVoum
+	p69I8EPbMz/6NQzB/XA8RyEQwxttAObaPDne9fAapVhD7aJ2qUqiVgR/RKqN75Ky2vEqe+
+	Kj6cUQDNGv1140unPHStcNfcZ9pDtyM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777736996; a=rsa-sha256;
 	cv=none;
-	b=lx4Wj6+mBuRdpykZOHisb9GFEqXL5ulw3EJcX7vkFTa0zERisc2VfdA5H4443MDdF6nYgR
-	FK2+V8nrrxW/p35wLZLHKGeRUXCXfTGDhi8/1FqcsEezZ10wiVF102YeuIwRkI8Qgjfx5E
-	o5S9naXCHE2ytelpuZNkPKfQ2gWKmoo=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488b8bc6bc9so16526135e9.3
-        for <linux-mm@kvack.org>; Sat, 02 May 2026 07:57:30 -0700 (PDT)
+	b=vWhmGq+jzSAQwehdekb2FEDH0QzBiNSmGjVCqEFZPojdUtvSHUJJikyEDe72Piq2pIxxB6
+	WyGKYHSJZ7Kdfm12ifjeKzGn9YD6j1xxi5OzD1giOxLR8HnC/Ag7gg8+83mjslIRdmE7Hw
+	A4vnnq82U/7A/FeEcUzQyguDgue9kRE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="gPyf/dfJ";
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.54 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48a7fe4f40bso27845055e9.0
+        for <linux-mm@kvack.org>; Sat, 02 May 2026 08:49:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1777733849; x=1778338649; darn=kvack.org;
+        d=gourry.net; s=google; t=1777736994; x=1778341794; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EYA14pq+CY0U9Sxh6f6UsYdGKim8qygJpX+jtNAVFy0=;
-        b=tZ/FDRoJy4izyLa7h/FLc4gT5kTp4HoCRrB5GCjhiBnvQYBcHvGS9pW95npLWJq0+r
-         45HMmyInpww826ctXx4Y+jwTwvH4hray9dGagpv9wHORPxDHPu6QIwkLKfdIg7y0crRR
-         A4t0XAAVpNUAmFfCxvqS1uoGu8ulnEiKlsTWLEIYkgU32PXZs/CIskdMn28tTKpzCdS0
-         /yAzFv/L/bpkxAkF/aND8g4HSSF0teiCX1XlCPZa3GBDSijTyWvGr78lmE8QbfyJA313
-         etcX7wkcoGW2OmwgdVMhR0VppnkOBXlVyt/XBHuhWVnbcMGlG+4NEJpJj2gdwpU3Sdcp
-         Nz4A==
+        bh=SVqOlMyjv782QwH3r0yX+YLQuP1ZcJqdDcRKQWrk33I=;
+        b=gPyf/dfJ62gxEZQExsW++dhrh86Wl8rYiWUfzTkKquUZ5j5D+bT5wq1MIO53w1HtYY
+         H6EpxMnQlOpgSe8t0mmlXzj1TFAy6M3o8VZWZ7cDwENU3bGdN5ztymB42lLurq5pFuDX
+         aGqvoDSse+ceSl0XT5lqkl+myu47FoYv1nSCQqkdrnIZ0o/QbbuJe22DKv/iqGtv2+8K
+         UIjsa3stYj6PFghDYl/Yhtvp9GAPFMVPE1JSUDnx/ChIK8o1lzHQEvVN/RJJ+OJTIAER
+         voRqYbXAfH9dxyxgJbs2kksHj8zDThKlIrplKDBOS/GMcbVgDz9pV6SE6j0sdawpd/VU
+         IJFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777733849; x=1778338649;
+        d=1e100.net; s=20251104; t=1777736994; x=1778341794;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EYA14pq+CY0U9Sxh6f6UsYdGKim8qygJpX+jtNAVFy0=;
-        b=qypQQ3jCsbS3xClgAzoTQLJrre65AVnIkzh/+XdAjUI9S4zoTFoRaYaDxVy48DGXS/
-         p9K9VwtaXaZKT4Oj5vOCYYFLdh6DWX3BRSQKxNZqAu1grfRC2R5nJIRNB7uqmOiUsios
-         RJ9x9A72FCKhZgQdxsDC5QQycHl+GqW86SzkkjKNPalJeQdcLq1Fp03/8mKEAphW+nM6
-         yC7Ilk6EicyjImA8LiPNaVhlsyFg5Rgg6lnnYjRx2rAcugkwHBAFA1b4S/jURb3sc52w
-         VT6RU6u8HtdBZNhr7Xz7U3NzBee3a2kxUGOoIg5dMqROTMcAhuO96FXE7UorGxSwAr/x
-         kgrA==
-X-Forwarded-Encrypted: i=1; AFNElJ/UttKWstH2S9dRfs3a5y/YIAu4gJ+KISFaNcpsW/WIH4eVehdN6PPURrbWCjAwUbOSIG0NudsVHQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyy7hckuhb2cGEb+wlno97kN0vy4GfQWtCaSoyEL0U5hcnHZs6+
-	AEeoXoTjI3IQvHb3/jHRh+yjhuMfSED47JE4klLFmZEBFXEpr1GCqwFSA/tqQgPIqnY=
-X-Gm-Gg: AeBDiev9Yds2oSoPfWwyCX2M+ZcffgOTZlzzIm3zMeIMjsLZ3NwFxbNO/7EUBq0WSkP
-	GIODzAqxNsUpy1SBY/B8X7iYLYc1iIyZJvFhanjHoMi8m6Y9FNG4w9WPPM31dno94xOhK1S2jho
-	vtbqUa/9+ioJ355fKP4AycOuJTark3LS4JSrPhT2iiKM2Y31FpaTGNjrT30Q5VXw58onrjBc7zd
-	rYyiCorliLbKnysUD8XVbuJe0JwPIeedA5ppURuMeXFDRnEM95uzMRiDFDayh5+GhR0nMONpFqb
-	GgDBvnqNO4Jl2km003zA/SYAQHItVWe2EIgI0o58pmrlq+JKEOvNN+6/9blSxWT4NMEk1yUCs9g
-	ZDzAbfMiQYTt/U4qbHA779xpRcpOwe1IJUxEwgwCyUabdfSitiPRCmS72/HxZL5FF1bbVz/6XFk
-	TJuX7TpqocjOzOE2+wV+He5BTECrbhjbxviVe+KsJUkbd/
-X-Received: by 2002:a05:600c:c170:b0:48a:7aad:4425 with SMTP id 5b1f17b1804b1-48a9852e515mr48090795e9.3.1777733849035;
-        Sat, 02 May 2026 07:57:29 -0700 (PDT)
+        bh=SVqOlMyjv782QwH3r0yX+YLQuP1ZcJqdDcRKQWrk33I=;
+        b=ML1I8gl69cXsUOHwifxGj28sYPPioJuyp0s215FKHvEIfxl7fLKa6mfuEzp5w56Vde
+         4usX/b35tHOFrL+ZopBVZPUi8o41qn3pxS92iZzjryHpAqRr7ERMDAYqV6YTYZSvW5pk
+         SEaD39T0zCfjNKSZS0Nog2XS54ug7Zg6zmD8mZCdR3dg1Y1nLj7dKAWiMnupGXZltwhZ
+         PG+GasMrv13EBnNqBh2c3V7FChdNjPpnT6+A92GwvjEe9/aYRK1Xvy7i4JNOMs/6tkFw
+         3ObC2R+jAzIjMLnx4WtaYslEPT685JAsH3DYLEdBNBsMk5dvXfR07Bs+SePpmESgBLNl
+         HWVg==
+X-Forwarded-Encrypted: i=1; AFNElJ/jjf2yhCQXfPuRNwxp5g6Lybt6RC6gPpGkCQuGNLMq4ILkSJLSMvA+rb4BcB/6ZZfXbbCU0IGxhw==@kvack.org
+X-Gm-Message-State: AOJu0YyRgWM0WnSzrKn2iAk3aaB4Hmjc2dETj6zuHg0EdNZgy0ukDn5x
+	+rZ9pWv4csdGwLPndxgHvJ6Smx4vHMVMabXN/VU1cb2oVHmIQ+fnbCzvdbwJo8LkNrY=
+X-Gm-Gg: AeBDieuqlCKma9znFg8EyX+yxdBlVAdUhKd9D/Oh+shIJlPA96a2ysAllVnJwuNvhUv
+	PjoF9be6vk755Y3JQf/2XKBXCkIKouK2tBqs2hrOd+aLwvaxTzXdLR8mHchfEwoI3anl9thDtTt
+	ep4tQbuOATlMftKKqDgI+kYt/XQg80h4CAzS8GagoC7KH+AczaSjt+yRAp0GKllZLAp95g+THbv
+	WxdJRhHxLaFLlIagA5LVszyy3tCisRY8UfcGawURK7FmpdIhbpWlwsy2aFpUxcZ16NRQbefK4RS
+	zle/dF0Lx9siJ6eFflZ8ChHbQOiHk44Lj8LXHiBvRo4h7K+WGev/9IwjSAInMlI0QYYzgzv2BCw
+	7yM4EKkvykQizrvEdnaNV7L20tA2/YIpiz94ln/LSfyOAn8dsrlWGtRIz5MFAwqHC9KW5xdE11p
+	yxWV1zS56wryZRzqWpuqlfWOa7sjt3JQtCHp7XVluQG+0/
+X-Received: by 2002:a05:600c:c0c5:b0:48a:72ab:f88c with SMTP id 5b1f17b1804b1-48a9865f865mr38957905e9.17.1777736994019;
+        Sat, 02 May 2026 08:49:54 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F ([213.122.39.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81ed69fasm222039835e9.3.2026.05.02.07.57.24
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a820c865esm190089655e9.5.2026.05.02.08.49.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2026 07:57:28 -0700 (PDT)
-Date: Sat, 2 May 2026 15:57:19 +0100
+        Sat, 02 May 2026 08:49:53 -0700 (PDT)
+Date: Sat, 2 May 2026 16:49:51 +0100
 From: Gregory Price <gourry@gourry.net>
 To: Matthew Wilcox <willy@infradead.org>
 Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
@@ -102,21 +102,22 @@ Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
 	Ojaswin Mujoo <ojaswin@linux.ibm.com>
 Subject: Re: [LSF/MM/BPF BoF Session] Numa-Aware Placement for Page Cache
  Pages
-Message-ID: <afYQz3YJdWB2R-1q@gourry-fedora-PF4VCD3F>
+Message-ID: <afYdH4Alu9QA18CO@gourry-fedora-PF4VCD3F>
 References: <h5ossmwe.ritesh.list@gmail.com>
  <afNV5wbhsFQJLzxi@casper.infradead.org>
+ <afYQz3YJdWB2R-1q@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <afNV5wbhsFQJLzxi@casper.infradead.org>
-X-Stat-Signature: nj5xda1ofpso5iz8gmwwer3orn44tg65
-X-Rspamd-Queue-Id: CD7D7180002
+In-Reply-To: <afYQz3YJdWB2R-1q@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ED47B40002
+X-Stat-Signature: kur5h55krxk8q5c8iateuo1yj7cijt87
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777733850-562834
-X-HE-Meta: U2FsdGVkX1/yYIFlVUZchQaa/OQiVCeqhmaiUSLwgTjX5tXKqCKTYOluAXziZlr4pOToqHwn7BYW6941NmZ9h+ZEjttMzzlQ07lwFNTnfPngDNNLLtu4fIgRsV3o4MYMrERgbmQXcgmi5+zswITJ+pN+fOa51mr8PRqD7ADSk5qn6JauogZU2Tw40jE/90Lu91X6hxvrRYsGfoIFmyqN5RfBoA7aIicM8UKmvOlBuM22Usm8PPvXs1/ZcW/vxfQBvWdb4vBYPAT3mThN6v+srYHxI7o0f8DkyIS3RJ2lODmccfcyGxEOD+SI6w/uIzV/GnTlcm+9ULe1qmVhjloUEDLzT2kecffjaNjLLUT+0O3ZOjmRnZv7JNfWxPPtQuUDz3+uJbcy8Afk1/ohB6i9ujTFY3jTLN4JTetp/wdkEZoccAWvbQoCY7JwC0JIkiPHiTkd6CGIAXxutIoGX70TDJ9cofMpNKIi3FF2eomt9xhZO3BHcR5XTQEFhUwYZYVILCBPQXVgqbyzThJ7X4lMNIc8sraYub+/FA45N7s5+JAVey2ICAP9RSHffEjJ1pYfWA9sObqKq/kYIPmTs6PCgqA66EAzqb30dztFLkXiDmLbpCqCcWbJl6zUepZukTynoltb0r5EkITv1PLdYfWkDrH0H0KBZ9vTLX/hUdEF4i0OwDbj9/bkbpGLCD7jm+seA+/y+rwpjjgN2gNsYBBm6+ZO+CgTYr6uvyss2qtpEC8In3ud3/+gEP+9NLlAfSs9u9Okgj66TG4pczIa8Mj8nOgw19deaI9Xs3kUTvLkOteyBXdIC2ya6GwT/nImTrnOR7+xS6v1cCzyJRSKYDO5L73BLTTklp76pz5uFm2mnMBnRugm2UXyL2vzGOpMLV7YIp+6WZrWecpo3n0Do4ggOCuHezweAixZoxoO0H9QTwU6ocTVNT8Uw4PPj7TwXdnd3gnV/4mtfbfqYRCVc/C
- d6mBcYYf
- b7+NprrEl2Mi7lwct4MgD4fNKhr8mzRqY6FasL6z0d7MCxFYn6dsojYDRpfQU+AEFX4e4GlGnStqvNiEdz0+tiInFutEa5JfUWoI49aWMmZuhB0DQsg6OdOkfhB67hZxXXKB8ElpFmaOiTlpSZYKXVyaYBmBXl0QqwN/+c31QLnD3y1BwWzcBNEcCdj40YTi44bNrNJb9YkXGZpvxK8hRCH2VttTizKnDvmuj9PbO/xas38LnPYcM386PsW4KUald7XzF4VdVZfs2KsKwZ4d4uSTrX0Jh6bGeCDVpsBp1MQ40pCkf0FGhT9jH+l16CHwYsBTWyYxMdpStFnNcI8uLX0bUhS7rvJw2dOBj/cxnhcx00crV/pGp5qRM9b/kBjzwXMQendbaZrCVUuQPGQ6VGywiBw==
+X-HE-Tag: 1777736995-266774
+X-HE-Meta: U2FsdGVkX19C30ewA+oCbGJtPd3BUxQbhBtPKni33N/re+jY8jQhJ10xgSu/J7mdoNXsPi93whMzV96OynDx0jaKSUO1a2M4WWYREUjR3YTHdNUlf1inW8gPhJLoL33V7xsZ6clF60oZ3zICbM8eQrYVAi918YIyVlMMFyXif6ksiw18Zo628mvq9H31Qff+zWuvz7InAE1aX+g2DZY3UN603PAyav9lEJlbU3gizNXDZmFohPdfJ2VAVbV6ENpI22ufX25kjXw+A42aYuPyNrV+tbieXPP95AN9VL5Wg6tQWQIp7Vb3l6+zPphZtn3ugRqVDtQ2LgZ/hCK4crik7+9cooLNuUhEXCoLSxfS7tPmEL1aJEdYXxL+Zg0qESvt4PGfVMGAsrwkYEGGogCPHNaczVcd/cpT2ww1L7hh21q2rf/kAAbHYyXCbuYQad7nh36JwsinrDsw+dhzFy2kRd9NAa7bKNlamY3P9QWPEj2xXWCASN9bZeFBeaPF772dT09clZD5pg2/rDWSNNfQA83waRknBhy/hoGSvnI9qBiuYRaqRYaiUWZ95YkK/6qQmooOV9vbtEY0VPCFIAXSn8JsK6U8+1VvKHRf9+wzJXikHDIWc1CyQUbUXOdbDRPT1Nb92qCFsTprJmYKKrOCf6usH1nZLA/qbRAD2iDCU5ifeBWnyMJQG3tBhCl6910Bm9/nk30195ONdHmM7pqO9udrpBRNOBTAb5L/PgCx6lNHZrepMKzzr/4RT9VKrgMUA6SBIhWy+avE25e/HWPkGTaJy+8xS6H/n8CRSxbyhgHznxRSiQiUk8sImEdiVFkV8Lw6wiGxKafyL7HQ55T1FHPKrJiJfyeAb3RHfKmYFVsnqE/3au9CQexaQmFY8Vftv2GwNnryloZUk/qzHZT41IaIMZlJkU/DqlpCMrbnlaMR+movVPrAzkOf8Hf1XJezFpq9kPYjy+FT02DMnXH
+ gzXfY6Ff
+ LRKpekbvr9EyaJrDb92zYK7hY9hiVkOfcKfIz7AHfhvuHGhvB6/xS3G9ROSOmepEEDbVYsBnCzcxihbQM5RmWUz22WsFNNO2vo+Ao7yd5N8ryjLP6mtJrxx8lN7VpN7FgHepoEQWlFFbD5hxs+0MKJgjVSKodJxdaYZxgcunFWqvRiLiQYCZSBCYyEGG9l/Et8NLdyzsR8QtOgTbxtOyFNkSsO391xD+aH4QOBoy07tUTiIG9r6J0l4fxOVcJyaNie6fRVxxTqOxj0w3GHwNhbHdc6nNnaNm+ahwXbmYniAICWV6oc7eqmRh6IA75ZpVXBWfGNIZYYZZEHdCF2TDq5pV0lohjAAfHnKy/Auk2W7SXx6fiqCQBlV0qTziJW4zRnuWKSv5OVuz7M0o/w6Jll7yP8223+CmFD/LzWhXN0CZr82yWqnyPGG/81UKiNRuFuW7AeyNP9hH0fRve+my50Jq1KtSxyvUP0S4N6d2cyCvJntY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,46 +125,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 30, 2026 at 02:15:19PM +0100, Matthew Wilcox wrote:
-> On Thu, Apr 30, 2026 at 05:03:37PM +0530, Ritesh Harjani (IBM) wrote:
-> > Linux already supports memory tiers and there are ongoing discussions around
-> > promotion of unmapped page cache pages, which lets kernel do the right thing
-> > for userspace page cache pages on a tiered system.
+On Sat, May 02, 2026 at 03:57:19PM +0100, Gregory Price wrote:
+> On Thu, Apr 30, 2026 at 02:15:19PM +0100, Matthew Wilcox wrote:
 > 
-> Well, you know my opinion of that idea ...
-> 
-> > So the question is:
-> > Do we need a userspace interface for the placement policy of page cache pages on a per file basis?
-> 
-> What do we do if two tasks both "know" the right NUMA placement for the
-> inode's data, and they disagree?
-> 
-> > 1. Is there a need for an interface that allows userspace to do per-fd page
-> >    placement and maybe per-fd page migration?
-> 
-> Ideally, no, the kernel should observe the task and get it right.
-> 
+> fd = open()
+> buf = mmap(fd, ...)
+> mbind(buf, device_node)
+> /* fault file pages directly onto device memory */
+>
 
-Out of curiosity, a use case i've been exploring is something like
+maybe more explicitly, something like this
 
-fd = open()
-buf = mmap(fd, ...)
-mbind(buf, device_node)
-/* fault file pages directly onto device memory */
-
-this obviously breaks if there are concurrent accessors of said file
-with read() (filemap will just fault onto the local node - clear race).
-
-Do you think there's a world where we can hang a mempolicy off the
-address_space via an fctrl() call with CAP_SYS_NICE?
-
-I haven't quite worked through the full lifetime, since there's a
-possibility the mempolicy ends up with stale nodes (hotplug, etc)
-without plumbing for that.   But it did seem like a somewhat clean
-abstraction that isn't specifically a tiering use case.
-
-(not interested in this for anything other than single node placement
-policy or tiering, so no interleave or migration support or anything)
-
-~Gregory
+fcntl(fd, F_SET_FILE_NUMA_NODE, gpu_nid); /* pref node */
+mbind(addr, size, MPOL_BIND, ..., MOVE_ALL); /* move existing */
+madvise(addr, size, MADV_POPULATE_READ); /* fault the rest */
 
