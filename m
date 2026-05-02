@@ -4,134 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA7ECD3423
-	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 15:57:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DC48CD13DA
+	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 17:24:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB5F46B0005; Sat,  2 May 2026 11:57:43 -0400 (EDT)
+	id 3EC716B0005; Sat,  2 May 2026 13:24:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E65C46B008A; Sat,  2 May 2026 11:57:43 -0400 (EDT)
+	id 39D7D6B008A; Sat,  2 May 2026 13:24:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D55276B008C; Sat,  2 May 2026 11:57:43 -0400 (EDT)
+	id 2B3096B008C; Sat,  2 May 2026 13:24:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C2BD66B0005
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 11:57:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 503751C0428
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 15:57:43 +0000 (UTC)
-X-FDA: 84722935206.17.8162841
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8D356120003
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 15:57:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e9pc0bW5;
-	spf=pass (imf29.hostedemail.com: domain of mohamedaymanworkspace@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mohamedaymanworkspace@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 19C8D6B0005
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 13:24:49 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFE8A1C057F
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 17:24:48 +0000 (UTC)
+X-FDA: 84723154656.24.5CD6A21
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 194194000A
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 17:24:46 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=l9t687VF;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777737461;
+	s=arc-20220608; t=1777742687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=RcVZiQ30W1huw4BV8djFk9EqcnFjYr+6xdWEC/QCnS0=;
-	b=bciN4AUeLP++tItMXBpRT/dW8LJVFYeJquizoorjvlLy2EwaHf+Jkg+9xKMqaw+tN82Rpq
-	VTJX9cXo484cagOp0tdEatqjE04spoSRBXg6hZnh8vkvZ5LpahAjDJ3sD7pCY5BSHPoGSR
-	Ggx7XKA6qHbZbiRG6FZBtDaKGzAU7u8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e9pc0bW5;
-	spf=pass (imf29.hostedemail.com: domain of mohamedaymanworkspace@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mohamedaymanworkspace@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777737461; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ilqZMYogT1UuGpTlmqcknMdLxMIwNJy78zxMy1wmMWY=;
+	b=aa55OUEyszzdLQkHYnPWHe9E2p/jls5bTez2DjJLzSmK/BWuIggTVtfc+vrQyJ+ZIKY87A
+	/AJZ5E40Amg1OfeLO8PFIu3mG1rrvoeBngDBn3O5e3J/WvEgdNf/wTQ3bQJ1yS22QhaWwH
+	wU2GZLVIbyRYerHF6hXI1X0b+0EiCpQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777742687; a=rsa-sha256;
 	cv=none;
-	b=NfunxKnKI+ssu/Z+kumf1aOJtJ1yLd96FiuEkrErAEf2aYL+5R0Nl+a0LJ5soe/PY0Na49
-	4u4HeYJ4y/li/C6GG/Hhhpr7UkXkuTdzevDIH8ngF6o6gdPY/z60gQeHu07Pd3aO/yYuUE
-	IeVAX6kZbXp5Yhl1XWl3En8d8zEZ1Cs=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48984d29fe3so40898545e9.0
-        for <linux-mm@kvack.org>; Sat, 02 May 2026 08:57:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777737460; x=1778342260; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RcVZiQ30W1huw4BV8djFk9EqcnFjYr+6xdWEC/QCnS0=;
-        b=e9pc0bW5pX40HPxVxrnXctfZEz4LiEMeON14KNtjqhKScPsyCxQcgAyj8fcm9sXUM/
-         98dUZjWC8UcV98ffBvgQjQBVDkH2dowKwxAMZkv/JusN4Ot2boohjwrUUDIwYT1qYNXV
-         1JUkf2TggeBxR5HyPi/NwJCbatHe7TfwiF3IcC7zAHpPAkqCrmfuxofaeMcDIwt5boGD
-         wnCerrAplHXi920ryDVZmEDuE2RVKJSbBb3haa4dD9kYoLMCg4QzmM5uV96zCcEnA1+H
-         GYYmMix5JQGP41a8STVdJhG3vHaderhJfAxZ2ieR9YZuIIivijYLOfEb+ZYgIeXCDMiL
-         M/XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777737460; x=1778342260;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RcVZiQ30W1huw4BV8djFk9EqcnFjYr+6xdWEC/QCnS0=;
-        b=GuK4cZBua6N1nrm7ULEo3pVQ7gLG1YWfu3j+FO8jloG3Ox+dMTQRRDyM8R75edrBC+
-         w4J2dZqOYZxQ31CaYqouvWkYKrgNPab1BOZG9tPCGw8ETSIzyNcJpQd2zc7vxZpTMY0m
-         VbrXdeWS/00v5IqeMA8tOYrgDYaCA3lQR1Sbk/D0Yp+x7zO/sTEhrsPzLtLb5vmZLien
-         k12nMxGV2UbxDLc2DCdfLxrTPmdCFrh8NNV+qsGOVBJ2cYfmoK2Xw8C7ne8cpje9sEvD
-         IPHwYetoQoDbPSar+mwAWwUxlGBp7ATwvoHl/LV0SGJazlNlmQHUJavL2xWaVudkXVPd
-         UrqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8tT5180eUxGudoqtbDU3zkP3nVLwsRC1GelTuwRLXZY12U5r7v6Z8IDAcnIEa9VGQMYl/o16CpyA==@kvack.org
-X-Gm-Message-State: AOJu0YxCGJf4/f7SP9kd5UV1Z2cz/T/hQoUESav4k4LgMOwf0dxeFUeK
-	EAGJNZmyZ/4B01/Qh10RslgxWnDTxUo9CyR2uoE6j5sUWpvCl8d6zST9
-X-Gm-Gg: AeBDievrIWEp10YUZrAXvZ8p6f4JQ27StqoT97Q6zIHA+KQ1ajhPLxvdCZzKgLjv4aE
-	PlVROBdPO1yhetS+ND/FHFwmeepZwKYHAnz4Eeh3AZLtOB15mAKP+xQy2h6O3zis5+0n6Y7+ODQ
-	HLV2+QFya+21ZM6o3NuDOGMjyG0SuNaVibqACzZ+vMk3EMvxSnqJ+hMKyroGjnVQsZDa276T2A4
-	J6AWzmj3iiUlF5R6meAUpVxHqTHCOEHkz9WTQ6vZrUx5sG1n0c8EPTCJvqo/mAmsBQkaKwDn+WH
-	LQtaijM0tJLZeQnl75nrpxgjyfnhzCUzV+9CBpHIyeX6r9gj8bdcQ8R2TCVKDH2yw3at/1POWcl
-	m/EChiT8p15lP9YZahx2uWqbNRBT1hXMbjZfHklLLzfWLhGlXLgVEP8KT+229aTeVhQbH/3FhyQ
-	TB9GKqGloHq5QYvqRaXXbpg2xKn7p6xSr1j1Vpr8aaHP0zJPuqUxlgnDwvoX7rAr4xnxawhi4r
-X-Received: by 2002:a05:600c:a118:b0:488:ffad:6728 with SMTP id 5b1f17b1804b1-48a9865f342mr36104835e9.19.1777737459692;
-        Sat, 02 May 2026 08:57:39 -0700 (PDT)
-Received: from ST.. ([196.221.137.242])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8eb3427fsm228091245e9.0.2026.05.02.08.57.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2026 08:57:39 -0700 (PDT)
-From: Mohamed Ayman <mohamedaymanworkspace@gmail.com>
-To: Kees Cook <kees@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	linux-mm@kvack.org (open list:EXEC & BINFMT API, ELF),
-	linux-kernel@vger.kernel.org (open list:SCHEDULER)
-Cc: Davidlohr Bueso <dave@stgolabs.net>,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - CORE),
-	linux-kernel@vger.kernel.org (open list:SCHEDULER)
-Subject: [PATCH] futex: Drop CLONE_THREAD requirement for private default hash alloc
-Date: Sat,  2 May 2026 18:57:29 +0300
-Message-Id: <20260502155730.430232-1-mohamedaymanworkspace@gmail.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dj6dbfydy5baqy385on4jzh3ie16xtpi
-X-Rspamd-Queue-Id: 8D356120003
+	b=2k5bQtKgftvFZewQYl4JIlhgR5xXQeOqkzK3tdTzehYjQQ9Pl7Mzhf5FY3OXdWKKcoZgPY
+	+ffcv/NE4thaUXt5/T2gVwxfOmv0MfgDw5HfHDe/+7oA9rqgImYqAhXKcQQ0Y/pJm2vPT2
+	HEdpAugg3mMAvIS9JopCPMr1kdrhGSY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=l9t687VF;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1F8E560120;
+	Sat,  2 May 2026 17:24:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FB3C19425;
+	Sat,  2 May 2026 17:24:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777742685;
+	bh=vmKzDutJWCWUsGIvxQ9ktxQxuZTD2fT0yAdNBt2VkvE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=l9t687VF+510w1MStA0+8d/lbOqZ+cA9LKosEwhCpj44KI/tHY0mKU70II+E4n54S
+	 yLST5xKVcnqWpazdY117VUBx1Gv+fMxyphrOPDi+0eK5uoBxidDznYHrZV9Dl+YcYr
+	 rHVl4oY7tuRr/xSaEK3Czfzbnzc4flta+e5664Cs=
+Date: Sat, 2 May 2026 10:24:36 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mohamed Ayman <mohamedaymanworkspace@gmail.com>
+Cc: Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, Peter
+ Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben
+ Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
+ Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, linux-mm@kvack.org (open list:EXEC & BINFMT API,
+ ELF), linux-kernel@vger.kernel.org (open list:SCHEDULER), Davidlohr Bueso
+ <dave@stgolabs.net>, Yiming Qian <yimingqian591@gmail.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>
+Subject: Re: [PATCH] futex: Drop CLONE_THREAD requirement for private
+ default hash alloc
+Message-Id: <20260502102436.79d5e53038169f38e4075137@linux-foundation.org>
+In-Reply-To: <20260502155730.430232-1-mohamedaymanworkspace@gmail.com>
+References: <20260502155730.430232-1-mohamedaymanworkspace@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 194194000A
+X-Stat-Signature: n5gjoennnj5dt83ku7obe9gtf7jwudjd
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777737461-747434
-X-HE-Meta: U2FsdGVkX18KQgfrW3EnFJszDfdeKs1gTByASMQneqNtcyqhV2OnzBVOLPn2Cg2FtZgE4cIoa1K/nAW3niKZWhdu0Rm9o2DyYFTXiePGK/zt65OLa7KCFwo44txnCTm95ub3LmBLauoEIjqiiYDnFMYYMK+EaOWD2GcLlvRt8jprItQV6Wh+zaL9MyUEWnmz3apC122euocnfRhNcPVtCtQES1WOfAJaweLYuWu9MpeL317FZOBg/HgIZyYXDVUPpd/R1oSklj01z7SUL18S0lWmmAZkHO5+TW79KQWlaxOPhcBD66nYBvoG0yq75Sf2BD8BkDKSNjMLBj6J4A/StUnAdAn3RvmLuQT/iGeBzrCUehM7vvDZbEyymwSMyjUNL/foayaDNA7YpfRZihCiVG9tY8Vtbjyt1LRmIx2lu3mQA9+RAKuF41QdGbPPT8AcRaSpMcal/GvgHGD/1tiE+3c3P8yg1A25lrrX48ueb+BhnlbGocMDVBRAYRNRQLsCt8gL2/2c1tFUSycA9F+Ops0bg7x4fCYTQqZJ16Q0d6fNR21KFAq0hD/ERO+Tkj6rw4MN3DwVm5q3Vg1gtgLyR4GEg+HNHL4aKkvglkiZcSeengQCoDlpmP/zlwLVbgmfvPzXSZzsjsZnkUM5AFatfeRJFl1OrdyOE+2H1Dl8KZgdYCcu1T6o7sWCFIBnA/fD1/zot4x1GMUUIc5nNWViz5muGGcdDJJjdem6LUHtXCBKz+xLlQ3adqq3xZ/q4bSXPDULWalRv1pFhdmcEywhyiK8l1bLdSBKcELaZUulZTdRORsrwzP8KAfoBdQQ/smEZc4MDoMCmnoJymJG3DxJxYfTTUOfUnUZdTdhRxF3M0HkqyahOAtzo02Bni7g8lg4/AZVO7oA6fOKVyfbN3TS7wS1sE2pKXjEdDGIfyOox58723L03n1ntQHUsb7Y9KRpEr6IgGRZKUhTiwunkrW
- cHkLWMCP
- en620JzAkquWUWv/rDqSDO6fj6Iy/LEanURjEwrm6crskIOXCOnCXTaB66kAkxpSIfBSkdm0FgdAwuMX0TAyHwE/yj8FivUn1SLggspoO104KxHkSmcVOqwrGegXuRqXM40a86dejXYqm8iipaOx7jviOfRoU7YHlwp7Vv2DcO1ryisU5HWWEQkO4n97U3fSeedF+vpfNN6ISQ3AG2fGxkC+KY5BFCnLUfguCooUAaxAxJxO/RqK3pIp+sENtIkaf057ZKNRKFSspSHGJ8tKZIOIVdmaI/5IAwXVCNgd2KfRWidEPbe/JRuIKZa6NyFIULbgB4aOBnwiv6kRrU407FD+XJRpoFOzBud7dfymRb6KpC7awePcENjzXCnaoYR4eh2URXHZhYTo5hNFR1D6EnG7eztZDi/n6lTIh7rctrbG+ZOUYTYIe3JvReSstVTAkzR7Ad/HKRflF7cCOCa1OaqPUaN3S5V3WYqNayIII63SEfuYwHQiGgESlYB7xUB8s6dyzz82+4h7E7jMbNcHdIus2V5EXoEfRJCTBT5kNJjpS8Qaksmgdeq7LL8ONcjycCRFC1etR4Wg0wWwucpP/T+mIfr8gUWZNv0/mpcmJ1CRPdMCpbJNMtnn6WPtYw0zwqjgOo8zMiMpfAoWOOgVv80ZXMfZiHLttSKOgcOQwo+fLKio=
+X-HE-Tag: 1777742686-112335
+X-HE-Meta: U2FsdGVkX19tlWCK8fsFr9CQWWKxYvGuFfifa1NPoDoDjtIhxN+n6+xtGS91/l3DcUhWd+g4aoeowquNZfov6ZMnxHbh4PjTghZGsmuFYVpexrjN5FmlyB8ppwVIdnPLAXpgy2eRSqM22yWh8xlZV/gbcf2JbIIjyBN/YiB5+hBxCVMzrnGX3vmdDnQxtRi7PhEBynXVTk5/3FIkOdz8cWQ6neiCIf+mRfWgYD6Bti33oDuvNz23RFbViByllyUCA61XyPtjKGFNIJ2ZgZBBGG0z/BAtKtDkPZhU75va2TIAft3/HxGAUl+Pzq9fHUd8ihPp2gVTC9zFQ4tJ338geLrnJUS+VVPTXijaxiDhGHIx90GoY7McI55iJlAq5yUEX/FqdEMY+NnWy3epIERvDO7sbE2N08vkp06vwc3oFVVIcMfkpW5pLpwPucjpoIkm2HdNbLSa/DP5vYgvsfT98EoxTQAaqV68A1w+SghJxuIEyUado6CvcmnVumPzUxelHnz++dTL3mBXstlMyo01Wf+URv1Bi6w3XyXo5FISCOTriAIYdqHaYh60s+gj0odtcwyTpLF6u2xjmN5qnYijXi4sXJqdKHnJpF1rB4TXs4WNtIUl78FzFdDZxt/rZuLkh5tasukLJsvhuGbyQ/LWOEuszpEZBlg6lXWqqzfngtYh7JbNu8AYQPmXwwtJwDzep3fcr0lRUDqJxlf17a0DWHrOQwnCCTVMwm4bYkfA/dNsGc+H10FBoovo3hRmkEhTkNo855QnEbAR3SYCOCgDRs4esDFjuYQ9pwNSbBySmKF1Mj57Zpc0SefrOm03FEysVeRGuqQ4EtKJyDKziuG//RR6FYjmkdlWBmpoNhVIfOXhqnpF7E/+lW/pnXIYRwPJ++76C8DQNrkREmW2Ae/FmIU2xDFsfhsTgoTxPd/wYoKxl+uAFBPjzEhvp9tB1dUWxb4l0yhFBvyYlrUaqfg
+ 666iO9GH
+ snhoE4+QiOLklZd2GZaFuNhZe2GjTbsmMPBX3E0eMC3k9Fh5bjhGX0SytClcMKA5kSyjP/kSVOMEKcH3IDyUGdNQVazFXZrzJpJNdahb9UQKbCb+Om3pmINqRkcf8YkhOwDF1XmKP4SwXbLi/HgVPyqkZ27ECHngsx7okZxUDF5GimopOyGikpM7lex+ZjpBo7DX5PeBxxmpwIRAN4KuiHpPJnsNcpPjW6txICI2wjszjjuSzYf+k4mQdupGIVvmmLwE57iGXozAaL6W65GqNCoYv94LhR7YKOAhuv4zLkR7b9Lc+n7uwuG1ZzFWzSzhhnStu0iz40TMRovLsT8icznnNp7GfK/fyRSTgblbhfW8Bg4NRGP9D7AcLcKqc5Vy2ZoLlV+G0mcLiMaEShfhMHMDeeSHkjPm7IVF8XrT1SxWJTD0UGJy4QCWtnoc7+hhdaXIEC6OpNK1bjG5Z1ryS0/pKpiaoso/76hl0R+X0zD2xDP0ZRJ1qa2TqyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,64 +104,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+On Sat,  2 May 2026 18:57:29 +0300 Mohamed Ayman <mohamedaymanworkspace@gmail.com> wrote:
 
-Currently need_futex_hash_allocate_default() depends on strict pthread
-semantics, abusing CLONE_THREAD.  This breaks the non-concurrency
-assumptions when doing the mm->futex_ref pcpu allocations, leading to
-bugs[0] when sharing the mm in other ways; ie:
+> From: Davidlohr Bueso <dave@stgolabs.net>
+> 
+> Currently need_futex_hash_allocate_default() depends on strict pthread
+> semantics, abusing CLONE_THREAD.  This breaks the non-concurrency
+> assumptions when doing the mm->futex_ref pcpu allocations, leading to
+> bugs[0] when sharing the mm in other ways; ie:
+> 
+>     BUG: KASAN: slab-use-after-free in futex_hash_put
+> 
+> ... where the +1 bias can end up on a percpu counter that mm->futex_ref
+> no longer points at.
+> 
+> Loosen the check to cover any CLONE_VM clone, except vfork().  Excluding
+> vfork keeps the existing paths untouched (no overhead), and we can't
+> race in the first place: either the parent is suspended and the child
+> runs alone, or mm->futex_ref is already allocated from an earlier
+> CLONE_VM.
+> 
+> Link: https://lore.kernel.org/all/CAL_bE8LsmCQ-FAtYDuwbJhOkt9p2wwYQwAbMh=PifC=VsiBM6A@mail.gmail.com/ [0]
+> Fixes: d9b05321e21e ("futex: Move futex_hash_free() back to __mmput()")
+> Reported-by: Yiming Qian <yimingqian591@gmail.com>
+> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 
-    BUG: KASAN: slab-use-after-free in futex_hash_put
+I hate to get all bureaucratic, but....
 
-... where the +1 bias can end up on a percpu counter that mm->futex_ref
-no longer points at.
+Given what you've sent and from my reading of the security@ and
+linux-kernel@ lists,
 
-Loosen the check to cover any CLONE_VM clone, except vfork().  Excluding
-vfork keeps the existing paths untouched (no overhead), and we can't
-race in the first place: either the parent is suspended and the child
-runs alone, or mm->futex_ref is already allocated from an earlier
-CLONE_VM.
+- I can't find a patch from Davidlohr which looks like this one - I
+  can't figure out where you got that from.
 
-Link: https://lore.kernel.org/all/CAL_bE8LsmCQ-FAtYDuwbJhOkt9p2wwYQwAbMh=PifC=VsiBM6A@mail.gmail.com/ [0]
-Fixes: d9b05321e21e ("futex: Move futex_hash_free() back to __mmput()")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
----
- kernel/fork.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+- I can't find any code from Linus which would lead to the addition of
+  his Signed-off-by:.  I don't know where you got that from either.
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index f1ad69c6dc2d..5f3fdfdb14c7 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1951,9 +1951,11 @@ static void rv_task_fork(struct task_struct *p)
- 
- static bool need_futex_hash_allocate_default(u64 clone_flags)
- {
--	if ((clone_flags & (CLONE_THREAD | CLONE_VM)) != (CLONE_THREAD | CLONE_VM))
--		return false;
--	return true;
-+	/*
-+	 * Allocate a default futex hash for any sibling that will
-+	 * share the parent's mm, except vfork.
-+	 */
-+	return (clone_flags & (CLONE_VM | CLONE_VFORK)) == CLONE_VM;
- }
- 
- /*
-@@ -2380,10 +2382,6 @@ __latent_entropy struct task_struct *copy_process(
- 	if (retval)
- 		goto bad_fork_cancel_cgroup;
- 
--	/*
--	 * Allocate a default futex hash for the user process once the first
--	 * thread spawns.
--	 */
- 	if (need_futex_hash_allocate_default(clone_flags)) {
- 		retval = futex_hash_allocate_default();
- 		if (retval)
--- 
-2.34.1
+- Let's cc the author of the Fixes target, Sebastian?
 
+I'd like to have this metadata tightened up, please - so a reader of
+this patch can understand who did & said what and when and why.
+
+Thanks.
+
+>  kernel/fork.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index f1ad69c6dc2d..5f3fdfdb14c7 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1951,9 +1951,11 @@ static void rv_task_fork(struct task_struct *p)
+>  
+>  static bool need_futex_hash_allocate_default(u64 clone_flags)
+>  {
+> -	if ((clone_flags & (CLONE_THREAD | CLONE_VM)) != (CLONE_THREAD | CLONE_VM))
+> -		return false;
+> -	return true;
+> +	/*
+> +	 * Allocate a default futex hash for any sibling that will
+> +	 * share the parent's mm, except vfork.
+> +	 */
+> +	return (clone_flags & (CLONE_VM | CLONE_VFORK)) == CLONE_VM;
+>  }
+>  
+>  /*
+> @@ -2380,10 +2382,6 @@ __latent_entropy struct task_struct *copy_process(
+>  	if (retval)
+>  		goto bad_fork_cancel_cgroup;
+>  
+> -	/*
+> -	 * Allocate a default futex hash for the user process once the first
+> -	 * thread spawns.
+> -	 */
+>  	if (need_futex_hash_allocate_default(clone_flags)) {
+>  		retval = futex_hash_allocate_default();
+>  		if (retval)
+> -- 
+> 2.34.1
 
