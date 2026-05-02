@@ -4,131 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA776CD13DA
-	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 10:15:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAA8ACD3423
+	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 11:25:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC0516B008C; Sat,  2 May 2026 06:15:48 -0400 (EDT)
+	id 922E16B0005; Sat,  2 May 2026 07:25:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C70306B0092; Sat,  2 May 2026 06:15:48 -0400 (EDT)
+	id 8FB0B6B008A; Sat,  2 May 2026 07:25:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5E7F6B0093; Sat,  2 May 2026 06:15:48 -0400 (EDT)
+	id 837DF6B008C; Sat,  2 May 2026 07:25:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A69686B008C
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 06:15:48 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 417F6160615
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 10:15:48 +0000 (UTC)
-X-FDA: 84722073576.10.BB3ACB7
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 39AC7140006
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 10:15:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CpCsdJD3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of anindyaandy1904@gmail.com designates 209.85.210.52 as permitted sender) smtp.mailfrom=anindyaandy1904@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777716946;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 768F96B0005
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 07:25:36 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B281A1C0533
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 11:25:35 +0000 (UTC)
+X-FDA: 84722249430.30.22DB164
+Received: from mail-ot1-f79.google.com (mail-ot1-f79.google.com [209.85.210.79])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D63A940005
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 11:25:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf12.hostedemail.com: domain of 3LN_1aQkbABkHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.79 as permitted sender) smtp.mailfrom=3LN_1aQkbABkHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777721133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fQXXHYVJIY4LKZoouvJIbB7tnUE2GiZVxM8bW2pK/w0=;
-	b=TXDYdIpBU09fRL9ltrb9DnuRxEgUaW4ZQgfz2Pp+Ub7O76zYaIE/LObFkLd6RlEC5yL4HN
-	yWopqapDF9UhE80iOSWpha2y7jNHSbDW5NICDSO1DO9XhqRUUX9gBZEMssJkCECYRwBLBY
-	Qx5xe2aeECzBkrxpBtt/b52LBnC/+4o=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777716946; a=rsa-sha256;
-	cv=pass;
-	b=c5uavK88CiopS+8n84IZvOMZbLwcrCOwhn9Bl4XvIlPM8qT3CEWtHfyo4MBh1wAeP7rh/U
-	gglogDjbVqCBF1EbGcrTcYPeBjaMgQbtYm4ef1JnBq+TTYzKzUKrFM8KTV60NP+GzZYFA9
-	grtVH2ZaFjNNQN3x9x591qs+3CLvZ+Y=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CpCsdJD3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of anindyaandy1904@gmail.com designates 209.85.210.52 as permitted sender) smtp.mailfrom=anindyaandy1904@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7de4e6c5a30so2325164a34.0
-        for <linux-mm@kvack.org>; Sat, 02 May 2026 03:15:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777716945; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jm21uukrz/lIaObUDON8X7pYYjkGkzkbhV3C6KoQRLWSGwO7UIcEeLKKhbjvVZ/0cX
-         h0Dh8xpjtAmnr1MpCBTkWrNVtpO2Xs+hi3fYOL1o3NjTiYcHNUt1Ou0ZiFT7+t7toRxh
-         DbDwAaYXeqajzV4tssKILIV5h1v1PbFTUYVtlp9hbIFjPR3FI5szEJtdMgGU0de4u4yT
-         nBjcaCbgr4XESzC2UX/r/xZ/vtq2/HKybXMEvOeWZXXkX9wMnfUpPmGMHlysF87pCs3h
-         iZG5WDaxCEmwYWs9sbhgtgiaQhqspkHSXc1UPNyoDKKR4XYM9CVqrcG3v4vLdnSm9HXw
-         vNUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=fQXXHYVJIY4LKZoouvJIbB7tnUE2GiZVxM8bW2pK/w0=;
-        fh=iXukfrs6/ym4hh/e10q/O31MmX2tFLeyyNhr/4IbHJo=;
-        b=jVMe1bILljnFA+R8GEKPKN/r4up4m/HRmJ8lEilRB2eUI6R4bO4wRdBXeeYHOUst+1
-         Vd8Zzw6afQHpWEvi0qWgSf8wCCbdt4Sa8/9eDN22nhRvMuWj7Z0xcXuY0sZzqxFNXb+M
-         zBr+GCrrJhhG6vBdXl2HAEk7Yn3ZD6uFYN3aoBaB3Rjv1H3XIenlQwYxjEyKVtUR0JpF
-         7iES0QI9RJKYWDkhnzjC++3lGX4BMb5rzbFv94ZdfPQ+MhHZe1z1FXDjZnLMvXOokAVg
-         TtwHs4QfPDZA6tWq8GWToBBaPZO4yewt0Sqh0hp8ttTifX9PKRNfVjriG60ZRvcZlZmm
-         7U9Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777716945; x=1778321745; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fQXXHYVJIY4LKZoouvJIbB7tnUE2GiZVxM8bW2pK/w0=;
-        b=CpCsdJD3fElnjGZZItXo3DPbh4Y9HawJI339Pv4E7SRfcscZrNJQhyp9Odk34qR3P7
-         dsSuWUm4T4i/OwU89kqmGy7XwZlZdilhLqx6p/wEfhEdK/2MRTg3gR+PLuqMHWh/qlJG
-         gyhwF3eeNUZYoX7mRLz7SyeJ9WsUmW7La0xvB0owVqbLEt/Dj8i7IhPq44+7hlF/Mi9k
-         37sdPuyRIqWyloK2MQtyYWAw0YZbQ4kun/djifoqP5fGilFDAlZNZ/aBoJgR1kudVet1
-         IR/g3fH6AWY9sNrRQXTjnDDOfBOU0n7xMfxD7/NyeEwUGQRNo+DmoQP0w5PShpCXcICL
-         35VQ==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=HtmaSIHLoot0vOXzcU/27GViHD+QoZG2kMWciMiygUE=;
+	b=B8Fptkx0SE1eqV1NteE0qmojxXFpmLjPS+wW0HtgRrtudFtAEa5jOXjYTzq13ya7m5hs1w
+	m0+5qupUg3X8B5cxhiFwhhbiPUtvTIa8N3g17avsNnhQt/ZQEqpBsFunsBw/s3PZCyjtBv
+	ldax/fPGN7XjyDjsHSh+lA4WdI5DTI8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777721133; a=rsa-sha256;
+	cv=none;
+	b=SqXcDvFdOk882yO7Xy4QWOY2FMj53j78qMRtNuRfOeFEUTnkG/6VgyVWcir3S10lIEELmp
+	SCXofske1Kpb+dX9E0LNcVuvHx/a0RiVUtfqj3mly7eRIcQgnPxLbo3Dd5PRMzxL+pCT7r
+	OxtWdlerTvsezArY+3Ifk8L9zCVProo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf12.hostedemail.com: domain of 3LN_1aQkbABkHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.79 as permitted sender) smtp.mailfrom=3LN_1aQkbABkHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f79.google.com with SMTP id 46e09a7af769-7dbe0e914adso4867119a34.2
+        for <linux-mm@kvack.org>; Sat, 02 May 2026 04:25:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777716945; x=1778321745;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fQXXHYVJIY4LKZoouvJIbB7tnUE2GiZVxM8bW2pK/w0=;
-        b=KZ1iSbK1px6MA3y1+aosTTStZxk+tV56vCyU0Vdg3AAxCTEop3B9Z1xAa5WfKQ4Taz
-         NIDcTplcsaslk173lRzj3tUplH60PJYMx9l4TeRLbsNnqcxVnAaeH3ghJ7duu/08z8pA
-         AwxRfuuTuz7bdlU2TWzQXjE+0ocsxvthi7UMYwmBVgM87azK+DiGZtG5XTo4BmY0uMPT
-         n+2BRGEICQbppENqLFN1VmQnVAsjVmtqUE8j62dPOuV7S1R1WGJAIOGmZjxBpjXfQ2Dp
-         owoWjT8PZu6evJJTd86oPNy58XcHQAE8EEg+apXmF6+fNMnlpV3xT9GsL/s/8cAAZBZp
-         sO5w==
-X-Forwarded-Encrypted: i=1; AFNElJ80xTpSr8oBoAnSwCleajrt1cNNzravfSDvlVVn14QFODuOekM7EA3YsoXFn45zGV/5c6mEx4XaQg==@kvack.org
-X-Gm-Message-State: AOJu0Yx/Cqj3GHQ+NUlVB4m2ne1z6D522DLj34iAWmmg3jdONiyzOQny
-	rG32eXR5ck/VVo/C9pNZ9IGOf6C/Kf/x8qh0QLuPORMMngkMipU0XOqngoFTxuFK18pmwD5pkp6
-	S5Hb7J+6yrI9xCJpoxhltspdqWAU0/P0=
-X-Gm-Gg: AeBDies/zwZEn8LxHUgup5AfpUbHXGrDsKPw9TU5tunCZBShIeBKaBaxQnmRbP3Hmtg
-	t0KU5WyRCpul5+mjr1z8wCFYRcdt7YSeL5coNTAGw6A9++PxKXi9aagFa8c1vIjjgpbR7/K4uBP
-	DDyIVHCduHzQ/tUTwtbwyCLyPPVIGnbpqsAkImSZWGLUxbBX9dzxGnD9guo5S7Woe1n5ovn+vA8
-	YKe3VgfBUpyh95FgF5udFT7Neu7tN5OWLOs9HL905gBnncSxqesH0Ij0cwDzf3bdliR56M91eXH
-	tx2z2buiXiDHtSqjHgkj
-X-Received: by 2002:a05:6830:4422:b0:7d7:eabb:2a5 with SMTP id
- 46e09a7af769-7dee148a3a7mr1654707a34.24.1777716945145; Sat, 02 May 2026
- 03:15:45 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777721133; x=1778325933;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HtmaSIHLoot0vOXzcU/27GViHD+QoZG2kMWciMiygUE=;
+        b=QwuID0O9txEsMTz/K1d7zRKFLksy5Yhn4LZFn04gOB8FyQaPLNShBtzmwqw6cPa4Ah
+         B7J2Df3iarxcTRU620BCHQGc4TM0rJsdFlnmVCNnVzsmgq62EIts4OvhqVPmwGuJ0Po6
+         Wcu4AfYTfZK689WfwDT0pLF7Dy7nsMEts5o684d8ozMN02o8jcB8LC6JyyEuPRd4VA+N
+         ThNW5vRczAPwRzGIBL8jnBmvvAErJH/MqK4xeNMMlF381whmZeMuOVSbPFfkLQUGu/+6
+         S4PY787Qb87AmlvD5mNgNzR5ByQxefDtqQf4q6t2odpii1QOjvGhjkLFG4QFwAOyCv96
+         rwAg==
+X-Forwarded-Encrypted: i=1; AFNElJ8Hfbb5hiXVvytoaUDiE+n45baHi53jUemNkvybEkVhw5br9ZJDTh37CGQowi7UgxOKwSP/lKTpYg==@kvack.org
+X-Gm-Message-State: AOJu0YytzBkxyxYSuivctjiMbeFR4olRYivk8gS0xJuKkEn2ZKozU8tr
+	FoE5hpge+NKGcoD9Hk4PwTrYk9X01WYCicU0ZnF6du3mCfuenOaFzXWlP3j83CGwGWNWIvBM5fq
+	PvhlqhV9+l8v1dNtqNgHKxfgmhGWMJhipDqPoCwMp3AZmCsTyb2+emoYRgMc=
 MIME-Version: 1.0
-References: <CAMyZbw_ppC7F98+5huwmGjz03UGv8L8MoU9zL2_YYDU=fA3Qxw@mail.gmail.com>
- <20260502024012.30be89b2549bb18a1a1d0ddc@linux-foundation.org>
-In-Reply-To: <20260502024012.30be89b2549bb18a1a1d0ddc@linux-foundation.org>
-From: Anindya Roy <anindyaandy1904@gmail.com>
-Date: Sat, 2 May 2026 15:45:31 +0530
-X-Gm-Features: AVHnY4JFedDdm29mHhzw6e61QKtUV9l5vUgkzAXV8q67gE4CyZTcX2NS_wIc_UA
-Message-ID: <CAMyZbw_tH1mOqwzsPqvY2NLW9gk3q-hpjtQPBm7wtj8OZad-7g@mail.gmail.com>
-Subject: Re: [SECURITY] mm/userfaultfd: cross-inode page cache injection via mfill_copy_folio_retry()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: rppt@kernel.org, david@kernel.org, ljs@kernel.org, security@kernel.org, 
-	linux-mm@kvack.org, lokeshgidra@google.com
-Content-Type: multipart/alternative; boundary="00000000000006d2860650d2fb1f"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 39AC7140006
-X-Stat-Signature: 46hhf3q5kn1457x5eex41p5ncrstfoqw
+X-Received: by 2002:a05:6820:3109:b0:696:6440:9e33 with SMTP id
+ 006d021491bc7-69697d89d8cmr1270626eaf.43.1777721132959; Sat, 02 May 2026
+ 04:25:32 -0700 (PDT)
+Date: Sat, 02 May 2026 04:25:32 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69f5df2c.050a0220.3cbe47.0017.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING: bad unlock balance in do_fault
+From: syzbot <syzbot+c4f59f1ba89c777b77d4@syzkaller.appspotmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	shakeel.butt@linux.dev, surenb@google.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D63A940005
+X-Stat-Signature: oqmfqq1fqyahj8fgqkdg8jnud4mwm7w7
 X-Rspam-User: 
-X-HE-Tag: 1777716946-464014
-X-HE-Meta: U2FsdGVkX180ZyYmKaZdVV3Oz/AP7GOmBdj327H4j0E7zq8tTFAMZxtp7ArnPH8G8O2+mcILTTwzgoQnl1NVw4+O1Yr4IEh6pmVvlMu5zjPD9tlfM6bezEm5MnfvUTuh7Agx0Ze7AK1swJSHnbqk1M61iDEzouL87YZ2cYb0iqGCYvpQQVKS7VCifabwdTPhqtatNB0k+dAhatjEImVlCp/ncaG5rTWR6m5JfKKxP6VVDV5fZ32TSB/u2gZfiYgMTdKR2EeovFpy4RvKDQmN3mpIiLAoSVio+Ba9yoB86NYdvJciabs3X3quF1bIXSr3wPZeVHZF+XTYPf3XvRL0FyWuya84yNetfQNh7u2H841pvnffGTK0gC9yxpsxb7/IvkxlLFryn1wfXYxrwoFlaybHIobuYv+e1RNB6jo64TLfh8YVP+lc6uF/xcTgVqQVSBq2h0kzILDQpBtNBFHuVl0vVJtET4TyunEKzTS9/UyH1Zq2Rr5U2Ry/Ght0uYeE07EvhuH3gVf5nEPZGDpgNYS4ekdUEjuNJWtnPRsMDFOJtCyGWWGEePPzzcE95/nofIpC+juky8YROagY9WsMr4qnKZ/tlyvh8OucE9ydxnLmu5rF7sqdOxklS3U8Eizj5s0eQ7GenQcjWSpROmWyM1xahK2FGHymX6oVQQVWgIHBksokheWV/GWgQVLNCfFgTul57ANNwoiWyp8xxmiB5ub5sTbo1tzI+T77Dz1u7iv+GH01nXEbniLqfXc7KL/xZL7jSPPc4LqGF4KTlXBxW/r5cK7v8+QdnOrB8y0QNp72n6i3ER/h0fegsvXAgz8+mbpqI6koZxhtwH2q4MtRBD324cu7DMEQ3bFj4QoCxFodZPJGrtL/SYmBl5xMLhF+fFTQ35pPUq6MMM1gADkkOmmFHNoR9KPCFFufd1SEIdC0773GZ/DCKYfDrvjdgtj0ZbQWBNpyCVfEB5F+zCW
- 2cu0kJit
- yPAnDq/7uZux21ST8zfL/e/uaHJFgkpf5C8HPp3Sg16nGPmJZcQTrqDsm2yi8eMbItREZ92px3WCHJ+c20RmhE8yYCSM74F5f9jjPJcDUp9jfVk5fjjio0VVQSKhIF0lb7oaTZBA2G8SNDeyDSAHXZccDXtdyR9E3vw2WPzXg8nivLmu7+vifJ6qWOcFHeGAp230UWIdC8bFlBRoGcbaLRBCuJPxeoNy5D2WlqslM9SJpwSULyz5KRrZ37myYqLMhQWHZrsOuZSb5QxZ7fbXc/PCVEbx3dFskepUE+c4fT4srgEYFPdqf27yHAdTmQAgFxDAO3gd6y7qlgiNEwnNcxPc3YrwUVboRtfXUqu2DdlS91t5aUeQZ/0gNTm8wVWu2PWq1cYXUUPb8EdQSBrTJiasi3nunfvCadi2slK2S8/FcORIFQAiX3G9QpwPWYcES/KFCY6ZFufgy8FJg//Wb+e7eUaJ33c9FKlXkVNyCt/sXbYV2bafSgnz26TPc1t13LVLJJD97bs8aJzLkx3rFpqRGRnOnDhIvwCMFOYWoo5yPn9dqqJ6LZB5iEe1LI+35Z9ev9ozdmUkUELpR+lKEKAuKxSKMHGZq4Cg5EuVJms2SeWFJaSdO7hg8o543LHC7h8utCTYtxWMi41KmbvJLEzCt+e1b9R3+HRW/q05TSZMxd5dhcQSgtLouxO0FIPrs317xp0FkqX6KF0rNNr8L7cOiXDIEBf28IVOkjlR7NDHElPTwwim6oX/FrHB4EebCTiIqR6LEHq5vRO4=
+X-HE-Tag: 1777721133-664880
+X-HE-Meta: U2FsdGVkX1/Fxzves0KicvoJ1+j9rJSLg82YSKdcYjlJGAR+OY0AZHdE/oEqFG+ObOS5cQISipkvncfYZRROusmZT5bvFjcSpxDpSh3mc8mHorI+yVHrw//OQN5k/EK7KjOEhn+c5bmZ94foom75w2o0MeZ6TJW36WLkGbwMQ2otHpgGY9w3gbSHzdQZkQvWfuJsVI0L6WJluDasSOCuRhL+xvVIGy/z1DQfZzH+93HjA4T0J9qjVEOgYPoqrcX+1w+nsl9rZo2q2fCG4unWDxad7pvk2CHCFynoAYrg+Ntb0jjbTJh4zkW2t0R8zgcr3h1lq2hHVamatqBRNj7RjmAJBEGFM7q8Dhd3Pet7RQsDKAApfXFtoQSQBK7BjQX4fL6VEsO7etks6FI9YbmU6ljh0ULGzObg6fvb41NQUVlvXn71No23Ax10wisluIvS42kc1KV/StWXKgDFHCIbrZuG3cPXy8pKjf77zpru+kU1CAXpGWnD9x5lwMvT8O1QwuzlvDRO8RvOlBBYiENe/Jg5z9NPf/BmWU4XrB38L+FB99K56YY2WOpSdHzEAN8ALq0KSeJ9noaKG83/bwiXBNSOEElIzgDsR7X9kxnVySCmbdw2N9GdD0Ym8GDBkTyWdWKNkNUs8dw3U1wTWaTrxzki9gCAh587PqXCrS5e0ycJ76foKMPdHSJbQKAmFr4imODaz51Nr8M+moHnz5FyqeExoiNZIAxnpQ9YzCdGb6/adQbR+jBc7gGixXbKP3FDqa2xf2iTdhzFODv2M8XEc1L5vGgAh6G5FBqQo7COppQWaUXTWjbFsFEIqWZmzBz/EU79udddYzFaZ+VJd5W9M0wX29W5JunGEoRy1EchXjcHLr+Oco76ZMmS8HWsWoHWbsrqr+DsOMNhs25seO0czy6l6g9+96KMyaAQEQXfPpPG5D5FhH6NcgP3NyMs6eppUubWLgviIE2OFMfuIt+
+ /MYUMhWm
+ qyGNiJFDz2yDVJ1Y44zHQBl00Ux1NNBzSXPHU0GmsulNlHgJu3dy1nxYpt/DszbO69QwXQMDB8Eo5RqD0k7O/c3pELgAKjsFOl1EMvgU73viLV3jIqu+mf49tBrxFFyZieiqrzJES5GT5YpUl9sTJ0VwwWdklPNpyPLKsWSB5eR+BCn+q/keNlYTkvAtY9voxXjTR+H2ck5wV5MJNb5PRonbZbI4tPxW4SOWPlTxBwW7ARECATzUesZ60PBaKrfTDl5z0xc1XbRt6l97fzMiDGYHFk87kvHJU5/7A8uHkjv+LyTZvXD4B61Cdt9FDbcLFsv1vYUtPImF0JMmc37OVafwU7ie7eMez6PlCLiurMJTFKMpk7ywYnakbOiuuP7iNZd7reEzGwoTXTSvoaWEuOGkiuoQiI9399gMliY0NO59VC49ncKcq9FKxxGlbIkD+/+iH881+2qbmw3l7+A5HOC/HacA1EaCMrNqINsI3OTmf2SQgdgFoK1P8u1aoWfT9lVluTlwp3ptI4Lq3HajHPv8f8M+b4opT81KH0alBKmB3tTXhT6XXzQ3JMoJoHS4wi0UTAK3XgMZuCkpy102yKo9vFWoPEU9xzCGTokqpr+lTpCu/tQYxAbazgodZOKcW4/qUaOBdGVK+Ww+/NxSk8DEDsZemcQRkTzyI2AeBpLUqJyDuFp/BOtQYUEJV00cJjBrdlmg9qI0e+3fMYOfklNrm83KrA3DYfITT1nce19pbfE5TduzLiJAfBNfOhQm4dYcNV0CJZzsL3bTq8y6tFyIoU6m+AiENwqb2mUjJg11vKyHJmTLSuBfGL+TgxAQs9YQHKjODRE8aVonuwgJv/1yWtC4QnoA6kIKpdEB/MwPjlVyeWAowONmyvQu12V1prEycWyE6TBa4BH0fGWwADja1nNDKStbvpCSx6PpoIPkzdwYlKpwjuyJyyx/SPRxD1yQsT57869iHsk1c/2eRp3Tyb3EN
+ 83ECdq84
+ AetFyPshcKvRQb7zw5qnMU9Jbjlssn3waIa/H65BxEf6i1a7YR2PVKjQcUQ3E5QbtZ0ieIfOeK5kNkjiHpVrAsuVs2jGa/rRsItgwTEGpZHJuRwPXSkGWEgVShsmxvU2aqAwefncUj3X4RzLY5oFbjDBMYVF6kP9KR15H8w/rEDOEFGoXcIqRQowts0aUiRhsAmi/NIrty8aLz29sewMgE1clLqqKjeh1mww5Wt9ejLk1EGGBjvfDwhHPbzN6mNCXvq46fdyToe1zWiKCxc5e4nAOJqZiIBH3142WTBz4FTtlntkK9wIHRy5IyYgMSgBSIHQQEz+d8J8ukBfENYeN8Ed5lhOta5Ssf4ZdQh2ioS0wS1CHHIkRUDNVCvlJHhGMD8LrKMxCNBpsrjNx3vTNzrJ7uqUkzGATsInvsxEJex3IZHVdgP04AuZ61ioAlI7e9xblPOlh4Xc44+m+eNnju3UnTQp9x24
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,191 +96,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---00000000000006d2860650d2fb1f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
 Hello,
 
-Thanks for the response.
+syzbot found the following issue on:
 
-I used multiple agents to analyze recent changes and explore potential
-attack surfaces in the userfaultfd retry path, and then followed up with
-manual reasoning and validation. This led me to the missing vm_file
-validation after mfill_copy_folio_retry(), which I confirmed in my ubuntu
-VM.
+HEAD commit:    3b3bea6d4b9c Merge tag 'cgroup-for-7.1-rc1-fixes' of git:/..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11dbb326580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d0f0911eedbc130a
+dashboard link: https://syzkaller.appspot.com/bug?extid=c4f59f1ba89c777b77d4
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+userspace arch: i386
 
-I wasn=E2=80=99t aware of the Sashiko report beforehand. From your excerpt,=
- it
-appears to focus on VMA type mismatches, whereas my report demonstrates a
-deterministic cross-inode page cache injection primitive due to folio reuse
-across different vm_file mappings.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Happy to provide a reproducer if helpful.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-3b3bea6d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/90f65aee39f9/vmlinux-3b3bea6d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9c44f0af2bac/bzImage-3b3bea6d.xz
 
-On Sat, 2 May 2026 at 15:10, Andrew Morton <akpm@linux-foundation.org>
-wrote:
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c4f59f1ba89c777b77d4@syzkaller.appspotmail.com
 
-> On Sat, 2 May 2026 13:50:02 +0530 Anindya Roy <anindyaandy1904@gmail.com>
-> wrote:
->
-> > Hello,
-> >
-> > I would like to report a vulnerability in the Linux kernel userfaultfd
-> > implementation that allows cross-inode page cache injection due to VMA
-> > replacement during the UFFDIO_COPY retry path.
-> >
-> > *Summary:*
-> >
-> > A local unprivileged attacker can inject controlled data into the page
-> > cache of a different shmem/memfd/tmpfs inode than originally targeted.
-> >
-> > This occurs because mfill_copy_folio_retry() drops all locks, allowing
-> the
-> > destination VMA to be replaced, but does not verify that the underlying
-> > file (vm_file) remains the same when execution resumes.
-> >
-> > As a result, a folio allocated for one inode can be inserted into anoth=
-er
-> > inode=E2=80=99s page cache.
-> >
-> > *Affected component:*
-> >
-> > File: mm/userfaultfd.c
-> > Function: mfill_copy_folio_retry()
->
-> Thanks.
->
-> > *Affected versions:*
-> >
-> > Introduced by: f5f035a72423
->
-> Only in 7.1-rc1, fortunately.
->
-> May I ask how you found this?
->
-> Annoyingly, Sashiko found it:
->
-> : If the locks are dropped during the retry, can the anonymous VMA be
-> : replaced by a different type of VMA (such as hugetlb or shared shmem)
-> : at the same address?
-> :
-> : mfill_get_vma() accepts these VMAs and returns 0.  When execution
-> : resumes in mfill_atomic_pte_copy(), it proceeds to
-> : mfill_atomic_install_pte() using the newly populated state->vma.
-> :
-> : For a hugetlb VMA, mfill_establish_pmd() will allocate a standard 4KB
-> : PMD into a hugepage page table hierarchy.  For a shared shmem VMA,
-> :
-> : folio_add_new_anon_rmap() will be called on a shared file-backed VMA.
-> : Could this sequence cause page table corruption or kernel crashes?
->
-> We must have simply failed to look :(
->
-> It claims to have found other things:
->
-> https://sashiko.dev/#/patchset/20260402041156.1377214-6-rppt@kernel.org
->
-> >
-> > ...
-> >
->
+=====================================
+WARNING: bad unlock balance detected!
+syzkaller #0 Not tainted
+-------------------------------------
+dhcpcd-run-hook/5691 is trying to release lock (rcu_read_lock) at:
+[<ffffffff8259a4e4>] rcu_lock_release include/linux/rcupdate.h:310 [inline]
+[<ffffffff8259a4e4>] rcu_read_unlock include/linux/rcupdate.h:869 [inline]
+[<ffffffff8259a4e4>] do_fault_around mm/memory.c:5854 [inline]
+[<ffffffff8259a4e4>] do_read_fault mm/memory.c:5884 [inline]
+[<ffffffff8259a4e4>] do_fault+0x9b4/0x1750 mm/memory.c:6027
+but there are no more locks to release!
 
---00000000000006d2860650d2fb1f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+other info that might help us debug this:
+1 lock held by dhcpcd-run-hook/5691:
+ #0: ffff888024e92a88 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0x11d/0x590 mm/mmap_lock.c:310
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hello,<br><br>Thanks for the response.<br=
-><br>I used multiple agents to analyze recent changes and explore potential=
- attack surfaces in the userfaultfd retry path, and then followed up with m=
-anual reasoning and validation. This led me to the missing vm_file validati=
-on after mfill_copy_folio_retry(), which I confirmed in my ubuntu VM.<br><b=
-r>I wasn=E2=80=99t aware of the Sashiko report beforehand. From your excerp=
-t, it appears to focus on VMA type mismatches, whereas my report demonstrat=
-es a deterministic cross-inode page cache injection primitive due to folio =
-reuse across different vm_file mappings.<br><br>Happy to provide a reproduc=
-er if helpful.=C2=A0</div><br><img width=3D"0" height=3D"0" class=3D"mailtr=
-ack-img" alt=3D"" style=3D"display:flex" src=3D"https://mailtrack.io/trace/=
-mail/6989cbc25ae6c2b553a977b8156212ad5302d126.png?u=3D12810248"><div class=
-=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr=
-">On Sat, 2 May 2026 at 15:10, Andrew Morton &lt;<a href=3D"mailto:akpm@lin=
-ux-foundation.org">akpm@linux-foundation.org</a>&gt; wrote:<br></div><block=
-quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
-px solid rgb(204,204,204);padding-left:1ex">On Sat, 2 May 2026 13:50:02 +05=
-30 Anindya Roy &lt;<a href=3D"mailto:anindyaandy1904@gmail.com" target=3D"_=
-blank">anindyaandy1904@gmail.com</a>&gt; wrote:<br>
-<br>
-&gt; Hello,<br>
-&gt; <br>
-&gt; I would like to report a vulnerability in the Linux kernel userfaultfd=
-<br>
-&gt; implementation that allows cross-inode page cache injection due to VMA=
-<br>
-&gt; replacement during the UFFDIO_COPY retry path.<br>
-&gt; <br>
-&gt; *Summary:*<br>
-&gt; <br>
-&gt; A local unprivileged attacker can inject controlled data into the page=
-<br>
-&gt; cache of a different shmem/memfd/tmpfs inode than originally targeted.=
-<br>
-&gt; <br>
-&gt; This occurs because mfill_copy_folio_retry() drops all locks, allowing=
- the<br>
-&gt; destination VMA to be replaced, but does not verify that the underlyin=
-g<br>
-&gt; file (vm_file) remains the same when execution resumes.<br>
-&gt; <br>
-&gt; As a result, a folio allocated for one inode can be inserted into anot=
-her<br>
-&gt; inode=E2=80=99s page cache.<br>
-&gt; <br>
-&gt; *Affected component:*<br>
-&gt; <br>
-&gt; File: mm/userfaultfd.c<br>
-&gt; Function: mfill_copy_folio_retry()<br>
-<br>
-Thanks.<br>
-<br>
-&gt; *Affected versions:*<br>
-&gt; <br>
-&gt; Introduced by: f5f035a72423<br>
-<br>
-Only in 7.1-rc1, fortunately.<br>
-<br>
-May I ask how you found this?<br>
-<br>
-Annoyingly, Sashiko found it:<br>
-<br>
-: If the locks are dropped during the retry, can the anonymous VMA be<br>
-: replaced by a different type of VMA (such as hugetlb or shared shmem)<br>
-: at the same address?<br>
-: <br>
-: mfill_get_vma() accepts these VMAs and returns 0.=C2=A0 When execution<br=
->
-: resumes in mfill_atomic_pte_copy(), it proceeds to<br>
-: mfill_atomic_install_pte() using the newly populated state-&gt;vma.<br>
-: <br>
-: For a hugetlb VMA, mfill_establish_pmd() will allocate a standard 4KB<br>
-: PMD into a hugepage page table hierarchy.=C2=A0 For a shared shmem VMA,<b=
-r>
-: <br>
-: folio_add_new_anon_rmap() will be called on a shared file-backed VMA. <br=
->
-: Could this sequence cause page table corruption or kernel crashes?<br>
-<br>
-We must have simply failed to look :(<br>
-<br>
-It claims to have found other things:<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://sashiko.dev/#/patchset/20260=
-402041156.1377214-6-rppt@kernel.org" rel=3D"noreferrer" target=3D"_blank">h=
-ttps://sashiko.dev/#/patchset/20260402041156.1377214-6-rppt@kernel.org</a><=
-br>
-<br>
-&gt;<br>
-&gt; ...<br>
-&gt;<br>
-</blockquote></div></div>
+stack backtrace:
+CPU: 3 UID: 0 PID: 5691 Comm: dhcpcd-run-hook Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_unlock_imbalance_bug.part.0+0xfb/0x106 kernel/locking/lockdep.c:5298
+ print_unlock_imbalance_bug kernel/locking/lockdep.c:5278 [inline]
+ __lock_release kernel/locking/lockdep.c:5537 [inline]
+ lock_release kernel/locking/lockdep.c:5889 [inline]
+ lock_release+0x28d/0x310 kernel/locking/lockdep.c:5875
+ rcu_lock_release include/linux/rcupdate.h:310 [inline]
+ rcu_read_unlock include/linux/rcupdate.h:869 [inline]
+ do_fault_around mm/memory.c:5854 [inline]
+ do_read_fault mm/memory.c:5884 [inline]
+ do_fault+0x9b9/0x1750 mm/memory.c:6027
+ do_pte_missing mm/memory.c:4550 [inline]
+ handle_pte_fault mm/memory.c:6411 [inline]
+ __handle_mm_fault+0x187d/0x2a00 mm/memory.c:6549
+ handle_mm_fault+0x36d/0xa20 mm/memory.c:6718
+ do_user_addr_fault+0x5a3/0x12f0 arch/x86/mm/fault.c:1334
+ handle_page_fault arch/x86/mm/fault.c:1474 [inline]
+ exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1527
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+RIP: 0033:0x7ff2e82ebfeb
+Code: 08 48 8b 78 08 48 89 13 e8 5e f9 ff ff 97 e8 bb ff ff ff 48 09 e8 40 0f 95 c5 40 0f b6 ed eb 04 48 83 2b 08 48 95 5a 5b 5d c3 <55> 53 89 fb 48 83 ec 18 48 8b 3e 48 89 74 24 08 e8 a9 e7 f9 ff 80
+RSP: 002b:00007fff321b8cc8 EFLAGS: 00010287
+RAX: 00007ff2e8336190 RBX: 0000564f23c56910 RCX: 0000000000000002
+RDX: 0000564f23c56910 RSI: 0000564f23c5f120 RDI: 0000000000000004
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000020
+R10: 0000000000000040 R11: 0000000000000000 R12: 0000564f23c5ee50
+R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000000
+ </TASK>
+------------[ cut here ]------------
+rrln < 0 || rrln > RCU_NEST_PMAX
+WARNING: kernel/rcu/tree_plugin.h:443 at __rcu_read_unlock kernel/rcu/tree_plugin.h:443 [inline], CPU#3: dhcpcd-run-hook/5691
+WARNING: kernel/rcu/tree_plugin.h:443 at __rcu_read_unlock+0x235/0x5e0 kernel/rcu/tree_plugin.h:430, CPU#3: dhcpcd-run-hook/5691
+Modules linked in:
+CPU: 3 UID: 0 PID: 5691 Comm: dhcpcd-run-hook Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__rcu_read_unlock kernel/rcu/tree_plugin.h:443 [inline]
+RIP: 0010:__rcu_read_unlock+0x235/0x5e0 kernel/rcu/tree_plugin.h:430
+Code: 74 11 c7 45 58 01 00 00 00 bf 09 00 00 00 e8 92 a3 da ff e8 fd de 22 00 9c 58 f6 c4 02 0f 85 dd 02 00 00 fb e9 57 fe ff ff 90 <0f> 0b 90 5b 5d 41 5c 41 5d 41 5e 41 5f e9 d9 f0 9c 09 e8 84 60 87
+RSP: 0000:ffffc90003f9fbe8 EFLAGS: 00010286
+RAX: 00000000ffffffff RBX: ffff88802a16a500 RCX: ffffffff81e7203e
+RDX: 0000000000000000 RSI: ffffffff8def466d RDI: ffff88802a16a9c4
+RBP: 0000000000000100 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000000 R11: 0000000000000012 R12: 0000000000000001
+R13: 00000000000000e0 R14: ffffc90003f9fd68 R15: 00000000000000f0
+FS:  00007ff2e7fcfc80(0000) GS:ffff888097480000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff2e82ebfeb CR3: 0000000050d47000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ rcu_read_unlock include/linux/rcupdate.h:871 [inline]
+ do_fault_around mm/memory.c:5854 [inline]
+ do_read_fault mm/memory.c:5884 [inline]
+ do_fault+0x9be/0x1750 mm/memory.c:6027
+ do_pte_missing mm/memory.c:4550 [inline]
+ handle_pte_fault mm/memory.c:6411 [inline]
+ __handle_mm_fault+0x187d/0x2a00 mm/memory.c:6549
+ handle_mm_fault+0x36d/0xa20 mm/memory.c:6718
+ do_user_addr_fault+0x5a3/0x12f0 arch/x86/mm/fault.c:1334
+ handle_page_fault arch/x86/mm/fault.c:1474 [inline]
+ exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1527
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+RIP: 0033:0x7ff2e82ebfeb
+Code: 08 48 8b 78 08 48 89 13 e8 5e f9 ff ff 97 e8 bb ff ff ff 48 09 e8 40 0f 95 c5 40 0f b6 ed eb 04 48 83 2b 08 48 95 5a 5b 5d c3 <55> 53 89 fb 48 83 ec 18 48 8b 3e 48 89 74 24 08 e8 a9 e7 f9 ff 80
+RSP: 002b:00007fff321b8cc8 EFLAGS: 00010287
+RAX: 00007ff2e8336190 RBX: 0000564f23c56910 RCX: 0000000000000002
+RDX: 0000564f23c56910 RSI: 0000564f23c5f120 RDI: 0000000000000004
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000020
+R10: 0000000000000040 R11: 0000000000000000 R12: 0000564f23c5ee50
+R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000000
+ </TASK>
 
---00000000000006d2860650d2fb1f--
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
