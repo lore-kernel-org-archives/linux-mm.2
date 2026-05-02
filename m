@@ -4,106 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9EF1CD13DA
-	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 04:36:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC546CD13DA
+	for <linux-mm@archiver.kernel.org>; Sat,  2 May 2026 04:39:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 891BF6B0005; Sat,  2 May 2026 00:36:55 -0400 (EDT)
+	id 587326B008A; Sat,  2 May 2026 00:39:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 841E66B008A; Sat,  2 May 2026 00:36:55 -0400 (EDT)
+	id 537F86B008C; Sat,  2 May 2026 00:39:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 758186B008C; Sat,  2 May 2026 00:36:55 -0400 (EDT)
+	id 44E986B0092; Sat,  2 May 2026 00:39:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6379E6B0005
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 00:36:55 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF5E940464
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 04:36:54 +0000 (UTC)
-X-FDA: 84721219548.13.ABF3F99
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 365696B008A
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 00:39:02 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC96016047A
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 04:39:01 +0000 (UTC)
+X-FDA: 84721224882.20.9938160
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 63A3C100006
-	for <linux-mm@kvack.org>; Sat,  2 May 2026 04:36:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=khUhouRH;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 48CFE1C0006
+	for <linux-mm@kvack.org>; Sat,  2 May 2026 04:39:00 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CVKJ9QQW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777696613;
+	s=arc-20220608; t=1777696740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8vEqrNM8Ov0C8IDajlqIGYV7f2vnVxAjud2zW0XHTtU=;
-	b=Y2KwkGx2vzXAo06a/YR4KZ9ZMc1uWrwfQR0kj4u+kDcyNSl/PhzUHXKupdNP6N1dcwPjLQ
-	s55Qma9k+g9ZXr5a0DaUMl46mO+IjoUYDThD+3/cBPPgSNyxr0cTccPvDO2W8vcythNm1F
-	LXWgoB6Ur/qg/mD7Gf6FIjt0H6hXFys=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777696613; a=rsa-sha256;
+	bh=nlIDMi7oYiwHx70q4i7PWynXdMclIh/XLXq++AYapz4=;
+	b=obZseMADTG1xh80p6N/3kIS0VtaJ9c+EFfk3qUlP+BK07LM5khB0TXDrPgsd80r6/xxcgd
+	vyO4mJ3tu7N2zRXak6xBikU0QX2FeYbAK/++GRlt9uE6+Mn9IS6DteobcUgc5Wc1aS1Zac
+	o2PC3BwX1vNLwr1aB0zRcsNrcsPAzVw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777696740; a=rsa-sha256;
 	cv=none;
-	b=ijJ5f89L9OYpJSPkb+a40kLFvHwQDfNeSOwhbbrB+qQwLGKxc2xRoEYemUxouDsXNT82IT
-	zb//se3ldMYtjLCTJvjhNS6sBf6zuwugnyfUuO11pZpQtS9k2NtZ5PWsBPUyC8CocWlRP5
-	EGpk7ZoB2g6/gbuyiRs9RnIS0hXNdfc=
+	b=XaDnB4DxzTQ0TZPpMCyoKUQDDO8t5BFi3Z5MVr/IS8Zu4Mt1i6hvUxQ16RGR+wLidLNX5R
+	J2+sXLefhVlXXx4jvTxy8ss/qaWHf6vjop+UwQe42txHbHA1Twi1+nFXeJektBXMa1uD77
+	e5NNWja6XcbpGXvr+oHMbqJ77swkgvw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=khUhouRH;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CVKJ9QQW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9051160120;
-	Sat,  2 May 2026 04:36:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEFFC19425;
-	Sat,  2 May 2026 04:36:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A8B1B60120;
+	Sat,  2 May 2026 04:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8719AC19425;
+	Sat,  2 May 2026 04:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777696612;
-	bh=zolhHJ2pt/HuMbYoWDKt/Qpf9wHLyNZaEq9WM6A8T/g=;
+	s=k20201202; t=1777696739;
+	bh=i3HcnCoFSh5VeBUTX60vz5hhURORR//pulP1rg20n9I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=khUhouRHFXetPZownjlJj4oZgiqqxHq+Ezb6aMBWxNmAbbyg2CSseLu7M8Of9wTIi
-	 8ZPeDIjrC6Cjg9VPAAoQ5Xaa5hTvSsVi6BAkLQAh/umFl8x3zj/K6yEx1v6m/p6yZb
-	 92JpBKWi3CxecuI1V+J6sseusteO1FdkC6PDdfVepJkiXNfT2uTyd3QGQ0Hu+zbAQv
-	 r7/rL9EzUinG9AlODzSgPoPz4YVVk2IoKuDDzABQgRAod8pHNDt7X65Ftbx6Z2RPzI
-	 Nxunz0hzvDIvYkrDauANYBwzAwEztwr+qTC3OoVaJga4y75klCQ/vJd+Dk2P868q6y
-	 kr8q/ZkoNIj3A==
-Date: Sat, 2 May 2026 06:36:40 +0200
+	b=CVKJ9QQWutEfe9rAD+mi+pF45Z+hx9zEJw+1jfpjjALUmVFLVPc+Bnd6N7BEaRh8U
+	 QAmwKGNurLzdjVXegKoUIxh+qlfzEtZV5xDMUKHlaQCVfxd0hPiYW2bYKe/b+HwFck
+	 ZkicFJK+o1uv0fhywnlKzvoV0zJPot+LU4FSCtOC9GdY2e+uwe0VXDEFw9ptR+6g2I
+	 D/I4qE9yKdDvBiX99H6gcwVaUQaei5uAK2OzpiiHEpdz1nepKvVTzynTZpUmvNXYfj
+	 qui4o0Vfj4fJxQV/0KPquo0ZXKStj0WahceE7D2wFsji+x0TnslildM/KwG+n7O+UV
+	 ILn3tO03CuwoA==
+Date: Sat, 2 May 2026 06:38:53 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Luiz Capitulino <luizcap@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Sarthak Sharma <sarthak.sharma@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 27/54] selftests/mm: hugepage_settings: add APIs for
- HugeTLB setup and teardown
-Message-ID: <afV_WAK56lQKn_z1@kernel.org>
-References: <20260428204240.1924129-1-rppt@kernel.org>
- <20260428204240.1924129-28-rppt@kernel.org>
- <2f443474-4448-462e-bc1e-55bc657d70ba@redhat.com>
- <afTF9RCy8eBoWYaj@kernel.org>
- <22b1cadc-4b0d-4e2a-987c-e7a7bc2265eb@redhat.com>
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Peter Xu <peterx@redhat.com>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/2] userfaultfd: merge fs/userfaultfd.c into
+ mm/userfaultfd.c
+Message-ID: <afV_3ZZ69cpeYmpS@kernel.org>
+References: <20260430113512.115938-1-rppt@kernel.org>
+ <d5f17a01-4504-4a7b-b58d-c183cedc37f1@kernel.org>
+ <b31e1b5e-511b-4213-a8f8-d9721959d709@kernel.org>
+ <afNtnXnU4J6syETa@kernel.org>
+ <c2ecd0c6-fbb8-41f4-a7fb-2b1f15d1fa12@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <22b1cadc-4b0d-4e2a-987c-e7a7bc2265eb@redhat.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 63A3C100006
-X-Stat-Signature: zd3gr1wg58yi3fqz64hy5thzekp5mh5m
+In-Reply-To: <c2ecd0c6-fbb8-41f4-a7fb-2b1f15d1fa12@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 48CFE1C0006
+X-Stat-Signature: wakehbthm1ygc9yeybo9eer16y5ijo9c
 X-Rspam-User: 
-X-HE-Tag: 1777696613-496974
-X-HE-Meta: U2FsdGVkX19YNpdjY3VVz/S/zog0zgDvEh8+zwb8kA4tua+35rFqqRuZKpzXaxc3A87IW1aHrt4Y0IsjL6q9g94lm3vPpTMj8K7NcQi5NdOo6IE+BiNzZhLTrk8YpDuMMVNdQZJZHzQUQRANLv00396VpC4usPzQgKsKIIC++YZDaFLv+ekxCRTuofwPYDNuh1Xpy7SnobRFeGlwcjRIfpPLjob+cFar2JOoyj4CTPEY3I3GbIQcstmGdGUb3RH2RsPE7dQhy0gOXxFNBnoHu+YU97CVdB0WpXDLy8vd8OUYxAWyiEvEapKp8cneqrHmxZdXIRWQ/LE3vVUb08HzDK8MvANONKtFiNPXlzLfKwGFq/3cia+LWTOZ9Kx2z9O3PxapvgMoOC83qk2j+XIzYmwwRdJwXvEBL9y+C2Je9rdRdZXBzRyTBLzqc+lEqVtILFlGdeAb+HczYR8cTaoDnVAgmY69rtQyGAXAajlvHmZAFhotwoWm+0XDjwe7G3zwhAOKXriEVrBxwWW3z3nXpE/tEpxwyffxh2yqXVNM7eojMHX3vetEGKQMtB+thgXq4JZvyldXewmVUbRqR4zkGrlBMDC/CCgFPjdSosQtP250E+BYyA5APepGwDGsSWNRcBKT8F0HeEUOvIo0wL2n5Nafihu9TDwID0+J6GZvLBu24RMhSfLOP3mSvmlx+NXwydvNXnCa/tBDZ4pOXmzy9yAlw6AmxhOSkQsxnShNX8sdu7kgVqYxcR3zyn+5rXUYc51TFM9xrJpzaLgfNm9pOqriNEKRUUuJpTWnpgxgpV1Q/NkVIatuBamJFIFOHTnD4F9OmsH4qWRk5kj0+mK8/pwc+DG2qUqzpFmB3Wg6KNooND5iJ58AzJZEwoQoWyhkmL9/McDdkp1fcdr8tMTxLY6XznNq0eLAay0gFunNWBHxQTWIxMZXnHUt6PbodGDm/mN33O+0Llb9Yj/TVVI
- ili/6/2V
- jtoulrnS047bmbcd1KvxkG/L6cmHZK30XszKM7BuvhtRaY9PqvptD7z6gwT+iwrH9M0WSU5aqYp1pHy5VT1qCavYWRccbMkTvKztcO4f+EZWEXbrE9qZvE8z+xtSavWhoPACL4XEDrbnwQ4XkK6+Zuxixch+ZU/bgKgcW053EcOBlY8gMlnd97UIdN3IkJUVCf2LVY+2LTaLKQP1cOYxVkaxG2sTmU+Dc6LGcBYdeKceFl00V52vYjdcGX/gyQwk3hOTBsIXxiCdvVRYpcQyP/8STN7Ris4X/E2L+wFbsTQRYJbA=
+X-HE-Tag: 1777696740-534970
+X-HE-Meta: U2FsdGVkX1/C4E4sm3AM9yIyg/fSZhPy3CefxwWBhkvvp402lg+wyO7F/8OjvC1wbiAU1vpRV8GJ3VLi0id0e/bMkTIgIeZ+hTk/AFWCHg+25MsaX3sqTJGEGmiP0YvsEglCuavmOcuyJgpM2gyZTWQbnNAfEMEMTPY3vwL3dfNmbc/KWHH7NE2AQYNrPfo6bQZVDM8DVIvuDxQQqC1vcBU2oAMqeZH8ynKIca6tH7cJNdxP+m9/OslFkayJLs2lNlwNkqjZIsc0vXHRZek5UUVb9T59NWijTpeLFrNYAj3oh//K5COBLRkB05BpTUpeTYxqPVueeW/jWZOjcR9ynXgHd20a/WTG2NrLdulL4pCspItRtmH0SCyGGeUlzvfRJdMOOQTdwbM4QoPUM85OadOsocQ+FHYWTVlqWims2XQvwUOzc3Oqw3CbMf6yTWFLbfNhZ7JJkd7hArFuM3xtfElLifF+yq3ylLlPd3qqz035+SPVxTHty5aHTEL1WmmV3Xp+A9sEYKRSYqiqgIpQFKtEVhWqSKQVyC8fXz1flqPYyharEm2ZV6iC6rxoyicpiS9BQnKsynCunQ/9OCpFpIKcgoHUZhKRGESh6OEJ9bZOJGDJnoP+mRO2Z6XuTlT6NAv/61iQfEsVN3pnws+HecPOaPjA1/kgxY0eFj7L0XUjP/WfI1I3lyXeuQf3wvJMoTKe7r+Zd6vd/V+l6ygI231eVVep75t/jZyvh/r5BTe5F28xVu8hCPu4s/3PkQ57345Vj6tRKAXBxw7Lwta3t+u9awR+h4wUc++EGSjAOXE8z/D9WQs27oMwoYkMWPW6Wh5S546cE7fi+r8tLlGZhr74QNeYzkhQJodQ9PpYDNXGN+TQG3DM0OkHhqd5GxVHFmXk5P2ka79D1mCfZMmlWY3awwM8BPFW+SBzuzTVjiKlztrWcwpyhgXE+vOM5wLu7oOBog/HfKjN6cY9aH4
+ dqMm0QUc
+ 0vLvYEiA8dtWJMMnBS4QgdQle4/k0/m93xHJBS1f+u8DO5k4gItOy0/2thB/tbqz3VQaRHtjBH2yUd7IFkXXGXb1b8Ef9aIaifSSjlQzj01/nnkMrGNTC1/+7EZ2wU5Cl2rjPiADa75zSeGxjRBb3hVPAApviWX30GZagPF29Yz2ylNGHExKn4OX9FEJq+egrKMTutQepbutZtCsQUTqxSiTJq4rUSDwZ+E41fjd8n/YM34DLO7L0pRvI1KOP717pmykl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,97 +98,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 01, 2026 at 03:30:18PM -0400, Luiz Capitulino wrote:
-> On 2026-05-01 11:25, Mike Rapoport wrote:
-> > > >    	return mode == 1 || mode == 3;
-> > > >    }
-> > > > +#define HUGETLB_MAX_NR_PAGESIZES 10
-> > > > +struct hugetlb_settings {
-> > > > +	unsigned long free_hugepages[HUGETLB_MAX_NR_PAGESIZES];
-> > > 
-> > > It looks like we don't actually use this in the API or maybe I'm missing
-> > > something?
+On Fri, May 01, 2026 at 08:33:04PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/30/26 16:56, Mike Rapoport wrote:
+> > On Thu, Apr 30, 2026 at 04:23:08PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 4/30/26 13:38, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> Yeah, makes sense to me!
+> >>>
+> >>
+> >> Thinking about this, is it reasonable that the kconfig stuff stays in fs/ ?
 > > 
-> > Yes, it's used only in later patches.
+> > But it's in mm already.
 > 
-> I don't see it, the patch below builds fine (again, sorry in advance if
-> I'm missing something obvious):
+> $ grep HUGETLB fs/Kconfig
+> config ARCH_SUPPORTS_HUGETLBFS
+> menuconfig HUGETLBFS
+>         depends on ARCH_SUPPORTS_HUGETLBFS
+> if HUGETLBFS
+> config HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
+>         depends on HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> endif # HUGETLBFS
+> config HUGETLB_PAGE
+>         def_bool HUGETLBFS
+> config HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>         def_bool HUGETLB_PAGE
+>         depends on ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+>         select SPARSEMEM_VMEMMAP_PREINIT if ARCH_WANT_HUGETLB_VMEMMAP_PREINIT
+> config HUGETLB_PMD_PAGE_TABLE_SHARING
+>         def_bool HUGETLB_PAGE
+> 
 
-You are right, I misunderstood you comment and I thought you referred to
-entire API being unused in this patch.
+$ grep -c USERFAULT fs/Kconfig
+0
 
-free_hugepages is not used and it should not be a part of the saved state.
+HugeTLB is another story.
  
-> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
-> index 097ba085f423..a023cfeb69c5 100644
-> --- a/tools/testing/selftests/mm/hugepage_settings.c
-> +++ b/tools/testing/selftests/mm/hugepage_settings.c
-> @@ -341,7 +341,6 @@ bool thp_is_enabled(void)
->  #define HUGETLB_MAX_NR_PAGESIZES 10
->  struct hugetlb_settings {
-> -	unsigned long free_hugepages[HUGETLB_MAX_NR_PAGESIZES];
->  	unsigned long nr_hugepages[HUGETLB_MAX_NR_PAGESIZES];
->  	unsigned long sizes[HUGETLB_MAX_NR_PAGESIZES];
->  	unsigned long default_size;
-> @@ -509,7 +508,6 @@ static void __hugetlb_save_settings(void)
->  		if (!sz)
->  			continue;
-> -		settings->free_hugepages[i] = hugetlb_free_pages(sz);
->  		settings->nr_hugepages[i] = hugetlb_nr_pages(sz);
->  	}
-> 
-> > I felt it would be too churny to add users in this patch.
-> > > Otherwise, the API looks great to me. But if you allow me to bikeshed :)
-> > > 
-> > > I think I'd do:
-> > > 
-> > > struct hugetlb_state {
-> > > 	unsigned long nr_hugepages;
-> > > 	unsigned long size;
-> > > };
-> > > 
-> > > struct hugetlb_settings {
-> > > 	struct hugetlb_state hstate[HUGETLB_MAX_PAGESIZES];
-> > > 	unsigned long default_size;
-> > > 	int nr_sizes;
-> > > };
-> > 
-> > It might be slightly nicer abstraction but ...
-> > > > +static void __hugetlb_save_settings(void)
-> > > > +{
-> > > > +	struct hugetlb_settings *settings = &hugetlb_saved_settings;
-> > > > +	int nr_sizes;
-> > > > +
-> > > > +	settings->default_size = default_huge_page_size();
-> > > > +	if (!settings->default_size)
-> > > > +		return;
-> > > > +
-> > > > +	nr_sizes = detect_hugetlb_page_sizes(settings->sizes,
-> > > > +					     HUGETLB_MAX_NR_PAGESIZES);
-> > 
-> > ... this immediately becomes more complex.
-> > 
-> > > > +	if (!nr_sizes) {
-> > > > +		settings->default_size = 0;
-> > > > +		return;
-> > > > +	}
-> > > > +
-> > > > +	for (int i = 0; i < nr_sizes; i++) {
-> > > > +		unsigned long sz = settings->sizes[i];
-> > > > +
-> > > > +		if (!sz)
-> > > > +			continue;
-> > > > +
-> > > > +		settings->free_hugepages[i] = hugetlb_free_pages(sz);
-> > > > +		settings->nr_hugepages[i] = hugetlb_nr_pages(sz);
-> > 
-> > And this as well.
-> 
-> We'd need a little more code to handle those cases, may or may not be
-> worth it. But enough bikesheding from my side :) the series is great as
-> is.
-> 
-> 
+> -- 
+> Cheers,
+> David
 
 -- 
 Sincerely yours,
