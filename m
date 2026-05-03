@@ -4,86 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E855CD3424
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 12:35:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9E2DCD3424
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 12:35:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5E326B0005; Sun,  3 May 2026 08:35:34 -0400 (EDT)
+	id 508746B008A; Sun,  3 May 2026 08:35:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0F3A6B008A; Sun,  3 May 2026 08:35:34 -0400 (EDT)
+	id 4DF836B008C; Sun,  3 May 2026 08:35:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94BCA6B008C; Sun,  3 May 2026 08:35:34 -0400 (EDT)
+	id 41CC06B0092; Sun,  3 May 2026 08:35:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8796D6B0005
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 08:35:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3739C1C0915
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:35:34 +0000 (UTC)
-X-FDA: 84726054588.23.F4A7898
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5CB4FC0003
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:35:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mnKOyOFU;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 334646B008A
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 08:35:52 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BBEA412095C
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:35:51 +0000 (UTC)
+X-FDA: 84726055302.15.22843A4
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 75F61180002
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:35:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777811732;
+	s=arc-20220608; t=1777811749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=814WAN/LXF+0RpMK87ve3wk+gkrkIJkpXaVoqtCsqF0=;
-	b=Lz4IZ6XjsBQTcuC+2BxyKzT+iFd39IaXacdUJ2MfUENRNF5wxbP3C1JsIuX/VOHbxlXQ9K
-	5GEemoOJmT90Ob8GeGgQa0neBOboG9pkJuP6eKHo4YzP6iRFKb17p3hL8pJvuv+VIawDV0
-	uLSnd8nrHYUJPfASC1wmLqAFIk/Adqg=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=9IsycYRq2sESwgeMkfFiHckUpMm8if12/F8jTCKi5TU=;
+	b=MCWcODV3/BcJvVYd8GwG/73MJnkJGYdvk3RwDWR06TFsV/I8tVOLNvTtTLdrCiIWHnfvQq
+	c2zdtjp1s7QSVNbRzzYAznHNVraVoHWpYfp4kI00k4dBn/aRS4uSktiKH8G2cG25q1ATzI
+	w7MDwrGdfAiCzxCrKjvcDmxgmJRpyB4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mnKOyOFU;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777811732; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777811749; a=rsa-sha256;
 	cv=none;
-	b=EPaMYWDg7GN1SCs6GqcQGl0nj4OaWllA0FohPyA5n6VHDrixVTJCnnRhPpkG0Xiu1U9Q2x
-	TIb8hSQoxu6wyiM/usveiDT+O2/2Zxm7Mu1+cxEaLY2kz/Ql7zEEWNqSrev1NxJDEkF6cr
-	ht6w2kRfcf/evuS64pEWDg3sGVleJJw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=814WAN/LXF+0RpMK87ve3wk+gkrkIJkpXaVoqtCsqF0=; b=mnKOyOFUCVHyehHoI0Hn5txKbB
-	ei1JzNeaP8NMbSLzW0P7kwqrI2D3vcUfVMlqkH4Pc5+3+tX2ADIVqzy7vXCAkq9Rp1TnvWG3LTeoe
-	sztvTzH4VwPuERcrfVHtUOkPMborFiEOB29SxEUfLjeWmYynRlaAInXZjY/Rmw+oBT+TsTUME1ErO
-	kq05I1SpXYwovWCZdy+IpwE7eOW0GlvlzXNHJOdnMiQBq2YtebDbKdiI+CircgDcxPJhOmAKznP/O
-	rKdrdg54mJnWJXhQKZQ+lI/kxx3wA0TpGXsg6P388tSW8Wp1hDaZBa1rJJgA9LOe5y9FJgUu7+ArF
-	HiSIGzwg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJW2b-0000000Gzy1-29vQ;
-	Sun, 03 May 2026 12:35:21 +0000
-Date: Sun, 3 May 2026 13:35:21 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "qiwu.chen" <qiwuchen55@gmail.com>
-Cc: akpm@linux-foundation.org, rostedt@goodmis.org, kasong@tencent.com,
-	mhocko@kernel.org, hannes@cmpxchg.org, david@kernel.org,
-	ljs@kernel.org, baohua@kernel.org, mhiramat@kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	"qiwu.chen" <qiwu.chen@transsion.com>
-Subject: Re: [PATCH] mm: vmscan: rework lru_shrink and write_folio tracepoints
-Message-ID: <afdBCWopkfF2ow-Z@casper.infradead.org>
-References: <20260503085705.3276-1-qiwu.chen@transsion.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260503085705.3276-1-qiwu.chen@transsion.com>
+	b=4ATp+4xx1I5+A+WK0KVbZbF98YPc4wfhAskPx9uTSZDyqYL2BSoZeJxvZbfigFz+X6cynT
+	Fo+DB2fz47csT61eR1QgJs1GRXFhNK9+lfLVKxmNQN3pAqtvOoETWV1+ZJspZ3EU0Y3ZNb
+	6dPoge2kL6l3/vyePvCYtOcH5qELQYw=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4g7klK0C0zz8Xrkn;
+	Sun, 03 May 2026 20:35:41 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl1.zte.com.cn with SMTP id 643CZacO015769;
+	Sun, 3 May 2026 20:35:36 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp04[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Sun, 3 May 2026 20:35:38 +0800 (CST)
+X-Zmail-TransId: 2afb69f7411aa96-4b76c
+X-Mailer: Zmail v1.0
+Message-ID: <20260503203538194jFwVGloy43M1F3sQGaFt7@zte.com.cn>
+Date: Sun, 3 May 2026 20:35:38 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+        <hughd@google.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <michel@lespinasse.org>, <xu.xin16@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHY0IDAvNV0gS1NNOiBPcHRpbWl6YXRpb25zIGZvciBybWFwX3dhbGtfa3Nt?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 643CZacO015769
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.132 unknown Sun, 03 May 2026 20:35:41 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 69F7411D.000/4g7klK0C0zz8Xrkn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5CB4FC0003
+X-Rspamd-Queue-Id: 75F61180002
 X-Rspamd-Server: rspam06
-X-Stat-Signature: mk6t9tc5eb4utih7zr39s54rpxfqpbe9
-X-HE-Tag: 1777811732-76246
-X-HE-Meta: U2FsdGVkX19LiFINtfFhY3mREysrZZhVxyqQjtL3C91LolBtPjfthZl9uD8MRZg+XFf5/LHyjSWkRwOBBcgjpNGpafL+D3b/B+iPz7Kshx6/AigK9VPWKl2Px9IXjfa4FlQy85JoHKvqDTzAtvo0zdgZxq4JJ1wCJe0XeFAU0mrl2xkASzxcuJY/3aj9jr8+XDhjXCxa0XCvyhgwO+6x+bxhdexUGkzOWfb5uJp4NyRkDBgybDymIkg8QhQKxZ2BZm9OXvp2ziwcYHNacqrfGMkYAiywW7LI3lY1W4IoC9V6LxDHFn6iRMBYBeCU5Nk2J1j2N3YYvt/jkBw29KFo6hfcm8k5LCG8h9mG2nejc+H3EBcXM2WPU4kOkk0MkPXT1koPs5OTuSkYmu2VTOQBTLLuD0G1fvLfhopZ8sybnrLApaZok24qSBr136KqKnXD5dWh6L/dBH+oBBVKINl7SFbOHRArkESIWKWof6GbCygCeisUKpk3QEPUEiIAQ8UTG4SBTce0vVoeHCTRPDaLq7acGPGS5PsNT1eLKbX2XLzPVluKVlUiMqtEkrJox3kxCVjvof67Uwy5np3DrAf9A3U3HhCDt+U5tajMPicGgKwLOkpN3uRSLpx7Slxm6NWEGl+OT6QRrtin8qb162GkOhN2sN6/kJLWJoWe265V8LXGMLTaGCmiWEDhMjfD5ozNNNWzmuQn8IMMQ5XjNMKYFegBWDEppViLv1FxfbCC4w8S+5Lidt7qOM+iMA95K/pE/BMXyPLV+9U+gqWynkSWRkjko+P2ox6M1LIQJX01NCMAJzKC0tHtUDHOfimEyMEdPVe2J5xzQiedXR4Veq0uEjxHUHZOTjB9SrcPklt7Sy0goTDFjosYgLaqxZufsPjLdeQrmkXuflwfSHmtEkGgnEWWWu5MO9yYSKoHvcP6/uJJAazXq8sH0/rdIXZxhSg9qHkRPdcWOBZ3MNPu6k1
- EJIrmKrx
- EKbPZZk3Do4/P4qt4CJrm2DU4qczcXlkfYAaW5iwlY3gtNS2PS6ERcXWxtsN31iR+njT9IdFFYUIe2EOixzmvYtbIk3XNykiq0/KJbPiCrC51SIcn9FHkB3WWoQgjy1v1dCuRFZDf9b5qB8HTdq2YoGzHLmeUrNreuLWu8vPcDfiXD2G0N7NfOmVWDh4CqQn8KVVcAMmHhFyevboC8hy88Pe/Ve2O3fT/KIvf6qwRLzSN/qjk+Ej2MLkqSjOdu84HTWipFGQgE8vyDZfc9ucWBFR2UW8kr7eu5LTIjXhTlTbgjp0=
+X-Stat-Signature: 1b77s44k4yyzaqdkmnjc9hcmaz5ajs8i
+X-HE-Tag: 1777811747-693173
+X-HE-Meta: U2FsdGVkX18NbZ0FDRc9Hdlc3I1R/3BGfEpx2CzoosXvKof3o3m0s8uA3gkk+GL7FxqZFjUr87A+mnt03EqbnhbUnWR5J+v3c4pdyV3pWCKZoKZwjQhw/InV4ujQsWh/czkp9Y566wrLI1Ohnx8V4nGbb7EsCP5W9JEwHcBgHTVfl7AX/jeRW51UgIZh4SWZ1iUThkbw9pgxkHd4lxuA+Z7jQNTSLOshkrwuOpecW1Fkt5NS/7V7h6EzOSxCnB8i5zp7cP9SjoVV4hhenuViFwjdArLCEpnc+d3lgo8tUofSO2IplAjgOCZdThUH/j0ODm7IzI7OkiCibQJH/ssoLmSQDX9Ce8ns8pbfAvwRoQKMFKwb5ljscn2ki1ZCoLnKNss9oX3IIgWr7tRMmY4z85eiWos51SgptKlYC633ombeQqOy/KK9qsqNegf5YrtFNF+zGpWA/GdoeG58bf4gAmk/jSzaBPOayoaBVZd2aeVWU0hpRYPHER94Fwzhq4KCCAuAcsJqoE7fk8JDfjj++TCy68xgLmN4aic1fW9MLYZTqFarGARbS/PZqK4VkcC6uV8/GQ40AuCe3jDp8qU+MVsb4mm1h05hdMcs0rpdnxcizi6wGHJMDDO1eIqaSoMiIql7CDx6mW0hrOpkp1N0kZY64GKHEbLbQlJTB596W3o+rXy5Zgs5OHYFFyuySZzper+HR/nJOnOHzljZ4qkhIvvB8Om3F9d7coPOEQera+B+DqUa33KKoBQ6oQL73EEytotplQ3i6zTQaML8y4Gtwu39pe3f7ssG08aTCoOYmJ8x1O5wA+yNzl4jj6d+mYRSryiNmqxIXeiXGdg0x79oOwU8nfZwth0bc1ZRSmjM+uI0Gd/HIR2TEW0Nib/6Gf7wj8JDLzgtBVOsIzlNLfhpC3qic9z5M4tbdMcl2Jyu1QXm/SONTKK0ZuD7cxAebY+XZBDvZNEWmzMgxUHXa/4
+ 4eRfuDyI
+ 2yyY9/sl1Lpl8DhMR2t9gJHV0qM9ESTcZyTtJUa22vstaRKHEFxm7qzA8KipSmNMA5CkCbUI7m13SFgas/kHyN6hFFsFuOQIJ7kHrxoQT9DYEbU7SjiAz1qb+tu6FPNCeCgf/1c0JWEIRHT/3oUEgpFjgbLVM3os4dxS+e9JgcBCS14osExeGheOh+9DFUqlGfEct74sNMZ0mQgxBpsRVIk3rE77nmA5Vv43zeqB3P1ANz86ER1P8FD/+J92os1aPC+lEMruVlGlppvgof3SEdGkOj2uQamhmtqVXWJsFecE6E7Xj8GNmVhGyWDagQEapzI/Gi0cx3agyz74CMu5rO9s0+wW6XVNLD+3t0Vg2gxnu4qxalAliDDK9FoqrQopOZ1Al
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,22 +96,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 03, 2026 at 04:57:05PM +0800, qiwu.chen wrote:
-> Currently, reclaim_flags always contains RECLAIM_WB_ASYNC in lru_shrink
-> tracepoints since commit 41ac1999c3e35 ("mm: vmscan: do not stall on
-> writeback during memory compaction"), which is useless for debugging
-> memory pressure issues. Other RECLAIM_WB_* flags are not used anywhere
-> else, so they can be directly removed.
-> This patch reworks the lru_shrink and write_folio tracepoints for better
-> correlation and analysis:
->  - traces each folio lru type instead of reclaim_flags.
->  - traces each lru_shrink with reason.
+From: xu xin <xu.xin16@zte.com.cn>
 
-You also removed the printing of the folio's PFN.  Was this deliberate?
-If so, it merits a mention in the commit description.
+Deep investigation revealed that rmap_walk_ksm's 99.9% of iterations inside
+the anon_vma_interval_tree_foreach loop are skipped due to the first check
+"if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a large
+number of loop iterations are ineffective. This inefficiency arises because
+the pgoff_start and pgoff_end parameters passed to
+anon_vma_interval_tree_foreach span the entire address space from 0 to
+ULONG_MAX, resulting in very poor loop efficiency.
 
-Also if you are going to do this (and I suspect we should do this!)
-we don't need to do the folio -> pfn -> page conversion.  We can just
-store the folio pointer and print out the folio pointer.
+An initial immature thought was using the "rmap_item->address >> PAGE_SHIFT"
+to be the pgoff passed into anon_vma_interval_tree_foreach(). But this is
+flawed because when a range has been mremap-moved, when its anon folio
+indexes and anon_vma pgoff correspond to the original user address,
+not to the current user address, which was pointed out at:
 
+  https://lore.kernel.org/all/02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com/
+
+According to the implementation of anon_vma_interval_tree_foreach —
+it essentially iterates to find a suitable VMA such that the provided pgoff falls
+within the VMA's range [vm_pgoff, vm_pgoff + vma_pages(v) - 1].
+
+So the solution is to add vm_pgoff field in ksm_rmap_item and use vm_pgoff instead of
+address >> PAGE_SHIFT.
+
+
+Changes in v4:
+ - Add a tracepoint for rmap_walk
+ - Provide a testbench for rmap_walk
+ - Add vm_pgoff field in ksm_rmap_item
+ - use vm_pgoff instead of address >> PAGE_SHIFT (Suggested by David and Lorenzo)
+
+Changes in v3:
+- Fix some typos in commit description
+- Replace "pgoff_start" and 'pgoff_end' by 'pgoff'.
+
+Changes in v2:
+- Use const variable to initialize 'addr'  "pgoff_start" and 'pgoff_end'
+- Let pgoff_end = pgoff_start, since KSM folios are always order-0 (Suggested by David)
+
+xu xin (5):
+  mm/rmap: add tracepoint for rmap_walk
+  tools/testing: add rmap walk latency benchmark for KSM, anonymous and
+    file pages
+  ksm: add vm_pgoff into ksm_rmap_item
+  ksm: Optimize rmap_walk_ksm by passing a suitable address range
+  ksm: add mremap selftests for ksm_rmap_walk
+
+ MAINTAINERS                          |   3 +
+ include/trace/events/rmap.h          |  49 +++
+ mm/ksm.c                             |  48 ++-
+ mm/rmap.c                            |  14 +
+ tools/testing/rmap/Makefile          |  11 +
+ tools/testing/rmap/rmap_benchmark.c  | 488 +++++++++++++++++++++++++++
+ tools/testing/selftests/mm/rmap.c    |  79 +++++
+ tools/testing/selftests/mm/vm_util.c |  38 +++
+ tools/testing/selftests/mm/vm_util.h |   2 +
+ 9 files changed, 724 insertions(+), 8 deletions(-)
+ create mode 100644 include/trace/events/rmap.h
+ create mode 100644 tools/testing/rmap/Makefile
+ create mode 100644 tools/testing/rmap/rmap_benchmark.c
+
+-- 
+2.25.1
 
