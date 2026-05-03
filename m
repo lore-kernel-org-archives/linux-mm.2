@@ -4,110 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 778BAFF886F
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 20:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E603DCD3424
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 20:59:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 874036B0088; Sun,  3 May 2026 16:39:24 -0400 (EDT)
+	id D4E7F6B0088; Sun,  3 May 2026 16:59:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 824BE6B008A; Sun,  3 May 2026 16:39:24 -0400 (EDT)
+	id CFF1A6B008A; Sun,  3 May 2026 16:59:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73B1C6B008C; Sun,  3 May 2026 16:39:24 -0400 (EDT)
+	id BED956B008C; Sun,  3 May 2026 16:59:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 630166B0088
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:39:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6EB1160593
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 20:39:23 +0000 (UTC)
-X-FDA: 84727273806.16.E27E87A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C940D1C000A
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 20:39:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AaGWexQ1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AD2B96B0088
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:59:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFF76C2B98
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 20:59:04 +0000 (UTC)
+X-FDA: 84727323408.03.88D51E2
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CC0134000A
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 20:59:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1Xgup3U+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmUgIm6m;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qKuTWOay;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FMOcnVxS;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777840762;
+	s=arc-20220608; t=1777841943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yy36aEN1ISq3rx8gbkVjtmwzFJPPiPu+6w78nwiNyyA=;
-	b=PNElYxmFLjNn7LQ0YDYCAvCo6oZAToHT3IIvV14XzgKAldwSenGxDsKzGW3sofmN9Q92rg
-	5ZAN/ptP0i+LuDj0McBVphBGLv0SzawmnCjGb6LTdP5mfW8E2OBIP83pNPF50CKr8UABck
-	jm6SWvZJlFQ1y8Zpl6Uia0p1tiEFQrM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777840762; a=rsa-sha256;
-	cv=none;
-	b=nTYEgAIa5FIE0hTeuMc2vvCASGoLYWqhbWy0TZ895yyy7DoznuTU99EhNZR9fRWRJqiTH+
-	BbyCaBZ8/p1B65q3LNNO9YFe/GBBKtNASI/4nZkUOZgyRcyqb+40Vt/gPnnfGdtSNJq+LG
-	AnlSYKh66xnrQOjQ/8yV6OFgDHaVceI=
+	bh=6jUR1uxvaSLZyWIoihP/wMTwTZLYZuSSduV3/xUI8fI=;
+	b=DGXr1VOAc0ksRHMIGMcV3xxLNs2vSe/Aqp3JJeaxvyngkEwuD1HXFjH3VW/xPFIBhQRtZv
+	ANxnYwIYpmt7egpTabO8f99P3nQxYotq/E5QFwEYfkEUfsNVG3dBaMb2dJcWnP6D3yfW9s
+	eGqwe9FeoRULtq9bcrCGbH/V4bD+5h0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AaGWexQ1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7F0B8443BF
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 20:39:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7B4C2BD04
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 20:39:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777840760;
-	bh=OYTEHp7kfu60uKZpC7uNHUoEqcMaDbfVrENwGSgXkAg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AaGWexQ13gf82hQWB+FAl3ibjW4mbkDbS1GJh505f+BGfDPc03XYC3Zss3edMV4ZJ
-	 DUwtWEtXIsczETxuHWOYHx5CxKBx+mb7JBjjW/Q7AXcxa6UIfwRqV/Zn51WKOcBsMp
-	 bFu9MwTUA+HqnMgiioGs52oZhuIjNtt0r82EsdfhdvfpiMubOWOj7+ws6jhlmjB4zW
-	 pSMu6gEYh3bgUQrlhgmDaf5Q4E0kn0ZvLr8PAKjVL0HN224g71jgMtdo9zM7PW1Ozr
-	 GBYpylIGAZ9+VE5Nv0nw7p4q7jui//Obr0a8J+RuTby7Ph7G6YVOsLlPN/bxxYQa3Z
-	 SQoa4rrnaEMrw==
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8b7dccd6fe4so5234706d6.1
-        for <linux-mm@kvack.org>; Sun, 03 May 2026 13:39:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/xSezjmwdxkoRhMBmXKgTPdeTzOcbbpGWoTbjUvreiXVjFunE5bPNQT/qYn2Nz1AAYgFXyWk1fFg==@kvack.org
-X-Gm-Message-State: AOJu0YwI38CCBeaA8qeW3ju4VCtxpYrnX+Td5G840B2bKT9w9OoGxQXF
-	UUpeM+q+yclesfDrKK+6XntkwNbfC752apTGlKuVk4orp2dQWk3vzzXFPU4+T3OEt6ir3dB3ubs
-	CX968Ud6WWxLyeW4ev88jsvsFvZnW3js=
-X-Received: by 2002:ad4:5be8:0:b0:8a7:16f8:442a with SMTP id
- 6a1803df08f44-8b6691f4b71mr126409566d6.39.1777840759244; Sun, 03 May 2026
- 13:39:19 -0700 (PDT)
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1Xgup3U+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmUgIm6m;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qKuTWOay;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FMOcnVxS;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777841943; a=rsa-sha256;
+	cv=none;
+	b=SjTzyck+sVgoxWct43JFLUpO+hEBHuy9PMT6A2Sf2YeRgwnvEdl4UJ+SA4x23aRgMlvWaz
+	axCBxKjEVkB5eHP8uMRhh13VMSQC2tp+B7LA8Uk0Q0vPJoFsvtFODraI6UVzom2O2E9IG7
+	Y+gL4JpinGgHfkMwPhyW5SXH/vW7J6M=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EC2DB6AA93;
+	Sun,  3 May 2026 20:58:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777841941; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6jUR1uxvaSLZyWIoihP/wMTwTZLYZuSSduV3/xUI8fI=;
+	b=1Xgup3U+L3WGHHzjDE44YWjLVEvHFE8HyjQf0n+wQhvavTo5Kxvq9hR1sYdR7Xk6uZYY2A
+	tBVPWEBoIcV8C4BcnFkh2I04dQHZjHXcxq8M9jqS96bNn9uNev3+AVHYgOafhhD4fmLzXN
+	zBdudaxNdPkv81sW57AgbnkobIQTAOo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777841941;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6jUR1uxvaSLZyWIoihP/wMTwTZLYZuSSduV3/xUI8fI=;
+	b=zmUgIm6mGUodhQcP01MGDrQkkjyxZRvXpbwKNXsrrqN1+SVe3peVm1MGOWVzH9eGo60jz/
+	hVeXQAkDWm6u71AQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777841939; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6jUR1uxvaSLZyWIoihP/wMTwTZLYZuSSduV3/xUI8fI=;
+	b=qKuTWOayyNixedJNQn7ODoi/QDBMwDvcrXceC07F19iNCiXEjjrwM0VOpKcM7gFxjwnLbl
+	/VPjNE5TwMeKodjX3LuuGhu3/tZ5Du/9Bi1IeeR0I5cD9Ew79vJwhjaHl9PAPqRHGL3/vm
+	Vunvin1Svkpyxf1LKrd8lKzRG4IXqXs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777841939;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6jUR1uxvaSLZyWIoihP/wMTwTZLYZuSSduV3/xUI8fI=;
+	b=FMOcnVxS9TytqwIJ3XWkpFUqBhpTwC/obhmXtI37EBVjz00gJTuNHETA/KU/mm/GLFmrFa
+	cYuJOLGsvptK2wCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9AC43593A3;
+	Sun,  3 May 2026 20:58:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zbnhHhO392nGKgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Sun, 03 May 2026 20:58:59 +0000
+Date: Sun, 3 May 2026 21:58:57 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mseal: use min/max in mseal_apply
+Message-ID: <afe2k3jhDIXchVeE@pedro-suse>
+References: <20260503115915.18680-3-thorsten.blum@linux.dev>
 MIME-Version: 1.0
-References: <20260430040427.4672-1-baohua@kernel.org> <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org> <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
- <afTpoL3FklpQZNMM@casper.infradead.org> <CAGsJ_4x8sNtgv7Y198Gh9NSY+SE2o_JPFAxG9aWE+xXsB9vwGg@mail.gmail.com>
- <afUBXnPVnt7Jt5hh@casper.infradead.org>
-In-Reply-To: <afUBXnPVnt7Jt5hh@casper.infradead.org>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 4 May 2026 04:39:08 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z3MfP_sx1+qSr00dP5wshOuCAOcbT3RJ_He6Ddz_LnKA@mail.gmail.com>
-X-Gm-Features: AVHnY4J-8SFfwvh8WWDAqxVa-cYngpmLlGJISHly6gCLbGvwUy-qMx6Jb2WhZWc
-Message-ID: <CAGsJ_4z3MfP_sx1+qSr00dP5wshOuCAOcbT3RJ_He6Ddz_LnKA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org, 
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de, 
-	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
-	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C940D1C000A
-X-Stat-Signature: td5nm3rfiuxcjm1d74stwmf5ef1edpsx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260503115915.18680-3-thorsten.blum@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1777840761-83242
-X-HE-Meta: U2FsdGVkX1/nO4tGL9BhncQe1sduR7LxGvAYtP9fFJMdxYO+9eMcYEuMkVjoeMVC6hJeIYok+ZEzUiKr+sVLqwyjFyo5fg1yqQNIjqfb3LOZroVVn7FZ0WuzmM7ueQNLPo0pDp/grM7VDncwD3qsFa0civJP2SE0MyKkUjfW4Vc5G+I0rD/pMy9NlM6NHq3etneYFt1MxzsVdJ1dV1Sr+7siV83wt7IK4yTq7Fz73P58/G8B+7LHAQoHdhwPkCaCap8viEaJ7yKvDDq7Q3U2hI36WheNPhynm7bxstUkFb6q5XItr8WOPN4eClRmFJCqHvwdFN0XZSlvInxQdEgzrmR6Sog2+ojr5RY9RCEwbjYd3K1fBJ82pmqO0n2qHO7DHqOKiGB8PMSfZiahwQaD6rD29oKh4OErup84XRF06IouhlMwVCJKXdm1vfSZKd/DBhEgZ2Dj+RyvMg8Ya5u7ob8zN7l+xN/jXc0SXJ+rlh45EPcGkQpHFBqXLhXtuc72anncOUiBSNp59Wtpv3/V0z+ARvfo5o197jNmdrHVudN2ZjSP2Lofjb9DCRL0rHi6o0DCPwPGyoCaqG1O8HhStQvjY3TsF59VrGtwq2n/ZvEM5B0r9IaGVp67M3UEfVaOYdvQlc7chl4DLybW+TGlpEhVdt+//vDVBVpTesYIzpYnQYqOBYsyFzi6GXxht1RKduHRZh2louNndTGp/nxQiCI4MegBCeucS7b8vH3g5Lo5vX5/G42cQS+/hmbDvTa/YG9XROeQUapS73sj5ELFvDoR/HQI3pJ1KTyLZQ52qMEDmfKICf/1/2MDrJqoqZ3R+jCTDFwe2II//C1c+Hl+w+OBIsmSe0a5T98alSzJz3hv6coISXMrR0fPbFuOdtZoKvi5sOinsCRj2k8cbkdCMWVnUoH0G6dCWyix31juKZoRsqsKeDZ6IGrArTNZLbn+n1d5lppKRJzlhE3SzMN
- +qXDfN9T
- zNrlhBw10senIPQTHpWlTpznIIU/rw2rFQ1tTkGFRQXvm4W9tPGWez2X09pwscH0UAtkeuWbM8O03Nr/fXMWmLZc6K558Rl0/dCgBwCM//PSRlgOHKYa2DQ69EpLZCs6KxHBmVWSvJy+OGrfJrmBNrkt/WxCCQsgl5mnMYpjPQCL74Qn7qwpJfOnbkBTU5DljmY1Ij0pP5ClZBB1wjhDH3JxWzGRv4gqDgvb42dZSbipSWXRMMnqwMV3+SpqWH1N2MYAp2+sueOawbbNFYGFbcRXrJPrukl0Paf5rpSgBP+BlFddnzpJyjafJWZwCUlTprjSGBOmA7Zr+/CH2EK1qhviNS/XfLefBUHgA1GFqUmhh3XBaNoqJJXeXvXA725C0R5WYRBYtuA83m1f98/svA4R6WP+ZTHsBOYaPqC+smTi5iEVd3D8AvxzBus9lj5baI68lpIMOJaM2mBQ=
+X-Rspamd-Queue-Id: CC0134000A
+X-Rspamd-Server: rspam06
+X-Stat-Signature: r3x3bb97rx1bexrjy8y4e9jn6txcngbm
+X-HE-Tag: 1777841942-893302
+X-HE-Meta: U2FsdGVkX18DyT2oBWkfmDAuhnVdol1/EGfuSmmAM96gZ2KkMDuPEwmPiQ/QagXdJln3lvwV8kC74FLn/d8AQYk6hNLIVqUYMVLNTgCEppe1S2pio4cKbOjf1EAC6EKCDiFoleVNZvW7bUiLeJfbAP/ignpOSy/VHrasgZZfJefe9JENJuW7mruqtVqvLk12M5JX/YGcgyURQ4MCVLGYiIJSy/uMa/So3qWgMXM9CPAzqyk7XviqsQC2FiHC4EJmlONMsSohrrwOkZIW2ZYaEGjQ5iVxyr5ClitBKVWkUbPa1ENKrcWqdBSOjGz9635OJEhGDMn/l1dv6Xni/+QBUsXuLpST/95O3/y+l6MLcNHnF+891CvEQ9TZ/13A27oPSC5IDOa2xYCZVUoEginVsrRSwlIMP/BX9vyb1l6xajSONxGlsal63UdSS64SfdTsYvagVThTMuehnkqqq9rO/GExjDlcUdRREkcsq+dQNfVjz9Q01jYC04FA/7TrQWZp/QhvfJO3fK4f8YCreyZ0pDowxiRJd51vJIBjdk6bT11TYn1mshyvSa+XfMPme8vSlkKRUQcl5U3yXW0vp625WO4diyVt+iS6oevodfVTr4rHpnmJ497JTBN256x2ndZYiRvtjK5S+V/PagVsnqE47clF2jwV5QpFeV4iM0JdhEJvIMA/IykCBxwBn49gLPmvRPSy5EBiMuy3gsDyoJN913QBylZtUc1Be9m0s0vzzgZdu2bk2WK2eqcAvqAzXtLwralPQwrS5t3OM5nVvdGK06VcyoVR9Wudb1a6YaoWNUYyEOCixnSIrg6h9UL/VgZjW8zqpy1GzqUAf4btZYAqy/s34866LcEbT1yb4rifwGHj9k/L6c7gSJ6fzAMHQLiJNwrPQST+QG70OmH3HtuG4iU9Q58qQfKAbGTAr5Gup6h5LMLdbP+3YaD0aWOeWJ62OzsXe6AHa1mqYz9SCit
+ 5vYTQocU
+ KHoRD82x6IVwMV8gc8AX9ocdxbuhETlayH+hyhpP6tFYks/V+bqBIXA1PRU6uej4f4l1TwteuzQ+YthZyDrwl2zgDLa0KPnfY8mm7kGQ5rWn0iZaPJ4msq8h6sFSu3w+HqAp1NAvJLFmLpRby6jezfldT6N4MMHPztxwvcDaMi9QGuDIcCGKRRipIDCNBKJNJZSnKJk6RJcc46YTkGLeCowojv2trdA2YNQUvyQAWM/XSzFxQSDDQJgljlDpU2Rqml6bYCELJ3XdcxWhEY+I+re5diWwNWTW+OeEtf/JlAjwXNte/Yr6hF7y3+37HXTDOkYFjYbTG8cHs9pt2Tah/q5LdW0+fBEUhi5uw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,71 +131,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 2, 2026 at 3:39=E2=80=AFAM Matthew Wilcox <willy@infradead.org>=
- wrote:
->
-> On Sat, May 02, 2026 at 02:25:37AM +0800, Barry Song wrote:
-> > On Sat, May 2, 2026 at 1:58=E2=80=AFAM Matthew Wilcox <willy@infradead.=
-org> wrote:
-> > > Yes, but that still fails to answer "does this actually happen".  How=
- much
-> > > performance is all this complexity in the page fault handler buying u=
-s?
-> > > If you don't answer this question, I'm just going to go in and rip it
-> > > all out.
+On Sun, May 03, 2026 at 01:59:16PM +0200, Thorsten Blum wrote:
+> Use the type-checked min()/max() macros instead of MIN()/MAX(), which
+> are supposed to be used "for obvious constants only".
 
-I guess the only way to answer this question is to
-remove all retry code for file VMA and run a real test.
-For defensive programming, I am generally very cautious
-about this approach, but if this is the only way to clarify
-whether we still need PF retry for file, I can give it a try
-and run a complete test on Android phones after lsf/mm/bpf.
+Gotta love these macros... FYI this isn't the only wrong usage in the kernel.
 
-> >
-> > I=E2=80=99m getting quite confused. In patch 4/5, you suggest a more
-> > restrictive condition using
-> > if (folio_test_uptodate(folio) && !folio_test_writeback(folio))
-> > rather than if (folio_test_uptodate(folio)), before we decide to skip
-> > retrying the page fault [1].
-> > That seems to suggest we should be more cautious about when we can skip
-> > retrying the page fault.
-> >
-> > However, in the cover letter, you suggest removing all retry code entir=
-ely.
-> > Does this suggestion apply only to file-backed page faults?
->
-> I'm making sure that if Andrew decides to override me he at least sees
+> 
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 
-No, I don=E2=80=99t want Andrew to override you unless there is a real PI
-issue for file, and only if you still still insist on =E2=80=9Cripping it o=
-ut=E2=80=9D
-after a thorough test with it removed.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-> that there are other problems with this patchset beyond "I don't like
-> the additional complexity".
-
-The other issue you are pointing out is that, for anon, we
-should be more cautious before deciding to skip PF retry,
-which seems to be the opposite direction of what you expect
-for file.
-
->
-> And maybe we decide to do the fallback for anon-mm but not file memory.
-
-I was targeting a unified approach for both file-backed
-and anonymous memory. For example, if anon requires retry
-under the per-VMA lock, we may already have the necessary
-branch in place that file-backed cases can also leverage.
-For anon cases, high-level language GCs can operate on a
-small portion of a large heap requiring VMA writes, which
-is fairly common, as I explained to Jan.
-
-> Or maybe it's just something somebody happens upon when reading the
-> mailing list (or more likely it's just grist for an AI).
-
-Maybe one or two years from now. For now, at least, there are still
-humans working on the kernel :-)
-
-Best Regards
-Barry
+-- 
+Pedro
 
