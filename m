@@ -4,106 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98255FF886F
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 17:59:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44EF2FF886F
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 18:12:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B02BF6B0088; Sun,  3 May 2026 13:59:04 -0400 (EDT)
+	id 4FC766B0088; Sun,  3 May 2026 14:12:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB3C26B008A; Sun,  3 May 2026 13:59:04 -0400 (EDT)
+	id 4ADA06B008A; Sun,  3 May 2026 14:12:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C9846B008C; Sun,  3 May 2026 13:59:04 -0400 (EDT)
+	id 377236B008C; Sun,  3 May 2026 14:12:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87CB86B0088
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:59:04 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E07C21C1412
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:59:03 +0000 (UTC)
-X-FDA: 84726869766.25.A840C9F
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3E5F52000E
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:59:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZNa+l3NU;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 26AE46B0088
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:12:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B2F1B1C14A8
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:12:23 +0000 (UTC)
+X-FDA: 84726903366.01.E1BF7A4
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AA6FC1C0003
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:12:21 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HjUShKpo;
+	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.43 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777831142;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777831941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=pFk0o4JWpcFOrDUzmGXYwzfHWtQM19RfFRUQ7XDLJQ0=;
-	b=7wdRBjf7phHPFW1wrsWiQuw5I3hlgVGSN+/NhTvVlYSogPVPPozvxIJ8gpE/Hcgy1+ucTc
-	IOfHzg027eXzoNd8A5HHBE+rtnNgOQLksRb7Z8NU9A3zKJO0njSbLWFxjSrq3H/ZnRM9sy
-	4gepwI2NSi1YXTb0Za0fY+AVzGBKx+E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777831142; a=rsa-sha256;
-	cv=none;
-	b=uVwcCeBoxse6clYIaMXZcsg7JznIaz8166dWPo3uZ5uIXA+IGiwzQbuAhqbNUDKHgtRax7
-	+zcCrSgHkTroUKEsmAJUT7WuHyq1tm9ZwucKq3lcTszmIxoxWurnzqAitNTvROhv2+3eq9
-	+HuWzKo3ZcusbgpOHDhHPuKWhqZ2mfM=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZNa+l3NU;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TuHk6gntEIJV0GgLUK1hPsy76HnphKiXZnnnJVyWRVI=;
+	b=kEKYcJwHNlerxHaOiiOC1fqnYX6pKS8nv4Yggvw/ko/XguJphInR8GeVmQu0O8y18MaMVf
+	xht//ajB5IBmSicH3Liwo2M+6ao4KxDQVIVP/d2a+QfVz9OY1qKDEgotSi/7trIMEYhka4
+	iAUn6EPLJedEppc2EGO9UYBjmNHXO/U=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HjUShKpo;
+	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.43 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-364e5d895e3so1791970a91.2
-        for <linux-mm@kvack.org>; Sun, 03 May 2026 10:59:01 -0700 (PDT)
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777831941; a=rsa-sha256;
+	cv=pass;
+	b=V4xp4oboF4c7NNhGaA0Qe0z7UlorXpFJeS9qjzB+x5jZA+uEbg/Nt5O6HYXw95FLHi1Wwq
+	JKM3Lya0+NDgj3ZUv3kWfNd2bDeenCuzido0iNDtmcmmuh20ea9ifGEZxa3f+CESj/bOl0
+	58ua3SpYxQGsV0DIobD1NG89CD4ihtc=
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-40f1a1f77a6so2778513fac.2
+        for <linux-mm@kvack.org>; Sun, 03 May 2026 11:12:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777831940; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kfcTvakgagjFou9df2qs7HJbtJvUlTj85kj6II2t4/s5qAbst5wPAUpV+vMQIbNyQN
+         gampFjQagNtM9SM7J3CVyslZmH2ywyKJjKmpO0QqULLDbmo6AeqF3KOlWrHKjvIFASkN
+         B+lYaHGvMr3VslSqV4daIPNAQcxlaAQvqC/kGT8tEWAfM5ZgK6hBi4QF9GpAonW/Hm4C
+         pfafDL1jbrxUMVU7zl8zLMy2d+B7sGRp663Pn6hR9msKMPFWVSwrYaI75tqRMz4v/nj4
+         5T1CkuSo/RktuM47uO15Vh0Xmd8Qhdu+RF5n85coUqhkR84TFl/RiwquzGv2Kqyok5Js
+         /L/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TuHk6gntEIJV0GgLUK1hPsy76HnphKiXZnnnJVyWRVI=;
+        fh=cB3vsCXnDPSnvYSQDnMcUAvlkNKVbmaNcBKNtlRuRdc=;
+        b=NBKIBRvs65iDFmjCuM6FH05n4fZTD0tLodHoL1WaVEZ9xCmnXka7PoJV/7fSqDADT6
+         WzQmaujUmAKKdXMoeWZo+j3QB6//N0qdcauG9QB/h4/iklN3PQsNZf40T5C+Fl8Xe6ql
+         DCb/Pk7nTcNiJjjo9lF+HmjwqYRjACtHjriAKe/Q/+2cv0Fy7eXEUKvHqp0f7Ju1vN0X
+         SgzNQuW/TKYk1L36dqlu0YWadPLdoOSCbapRQteQlWWM98B84/csvhgttW9JrOfEuZN7
+         9gNpSD5Wl8Wk1U2AZmU0m1Mkl0TodQL4orY1uNBwRpyejR4KnVRyRbwNiU8sp0YITW/k
+         lZCQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777831141; x=1778435941; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=pFk0o4JWpcFOrDUzmGXYwzfHWtQM19RfFRUQ7XDLJQ0=;
-        b=ZNa+l3NUDS9g2xC3zJAxtIZoMj9Pfq0aYVHzyHEzmJRH4C/WW570fwYYnPt8Ow90/t
-         AQiSX6i12D+hEsv9HQEqE6JyZ7rIFjRuxbnN5aLWeFjEYYIkpVEB/fBc/oBmmIOtiGNg
-         Rqnm8EZwJnQm/ISDKw+TgKYW8onKNqA8ZSLR9k8sPRcN/xZbmn5WZlwWfTqGsyltEkxh
-         HzjMAF/T1zLoanzC3xtWZYSO8dQGnNgkMaj5AQ7qCQGk+/iH0FvmQLaWQ46IOaUQai4Z
-         l0WXpcQriE/YRBVOi+538K3MMkyCLFzNXJg1sDR5Moy7fkHn3YqSsC4I/sEgegiUrG+0
-         9tcQ==
+        d=gmail.com; s=20251104; t=1777831940; x=1778436740; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TuHk6gntEIJV0GgLUK1hPsy76HnphKiXZnnnJVyWRVI=;
+        b=HjUShKpokf7QGCXbFMOcD8/3loB5GJ17hvchQa/WODa3lnUno5OZvErIl37LEksCO9
+         bmDZbGz0p9Oc4xIxDixwfhJqbpGWufj3p/ksDzDd4edH/j8kV3dPqw5NZccta4zwD2we
+         1qVchRzfqn1/7nHL4aIzBwvSt1iAGoCNKpPhcmbcm5I7YfLZTlh78lnfAqx3J8BtMLDN
+         kFhgcaZ5rOvGneBXb1CXpc2oslHS3mtBUkINZk5eewEVxoLsVcAsUo/ROcp/S+CaGYcn
+         BBeFKcK1bIEiAewRdvpFEdKM/Zb/tgWxryKhMYD+7z2auXukfskQQ6EuVh3tJ7ETLL4/
+         qlKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777831141; x=1778435941;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pFk0o4JWpcFOrDUzmGXYwzfHWtQM19RfFRUQ7XDLJQ0=;
-        b=gd92d4sy8xw8GJJELqpyGwU9gMA9Zgu1KUB2moAnpp9Gr0HomYBv8N/5b99QsSfVGT
-         FdhdYC1/Nbtc6daBhX4XJM1zEEhCqOd52kGLIoKUiudYRFgpKvtY1+4uvvneWPVKRKbf
-         R4Hun0+VHHKoQeBVufr/Ewnja3umvpgR0T9Jh31zNjaiWWPzB6+pFdOdYKYoBul2BOJv
-         xDdHIpFeB9Gj11NlHUpOqKmOw7Ml98bMSi5iD+52dOFK8TtjQ82+WTKxO2GmMVQaPPWS
-         89wkj2jFpw6MrUvs4I4fxDD9MZS4n7ACvCVK1Kk+DryDwm7UqAm3AqnTrZoaMv6Zm7nH
-         S1ng==
-X-Forwarded-Encrypted: i=1; AFNElJ8EIo8diCrXY1OFkrsrKxDEgOZQyGWtY7wmPMPwwXQHc+GmQb1VpRASHCWPDDt3Xd9ruv38J6hBQA==@kvack.org
-X-Gm-Message-State: AOJu0Yz+slyS51phJm/Kttk2FTwHJUoA3lRXrgbop159ROGEiThAJPYH
-	FcCMmg/Z1tRGHNaUyMonNrOzVJDTxpZ/Jfjb0jLQqzWt/SJQ+tYftwkD
-X-Gm-Gg: AeBDiev2VyigNmd0ZkoJ4jMbV1+qjHMFNDzFZ4qzYHZme8wOUceRym059t6XcBhmLWX
-	PhzYqpy2jg14EL10Uq3kgjmsNt++5baXf+1rrrU+lV7cZ5rE5dvE/xd0kqU+NSGQP+LuFNSN4iV
-	cAMIEa8adXVuN4LpJSakXIsNkrg6+CggJj+4rNTsh5lI75hOSlOAqXIFJEITPQ6U8QO633PDBH1
-	clZ4RAEzn9xqdPCTiEBeVA0d0J6hyDlBsHiGXyV1Rv0OoIisYu0NAJIaczIX4+Uve+hHhXvU4LR
-	sIr34lwdaoPXdiDOylSM3PonFat0xWW83O3+Fys+k2bAmLlVUqHdkN/ONi/QxLwH2vuN2+/xfMp
-	XaNHwFabQvIDm1k24of+XTAzStR3zfuvzR8MWAJNYdMJtXJGkLbe9vJ40gb7dNY4ggIsFGVPyTt
-	J/Kj0hHdFVK124+qfPeOlo/S5qjBPtJye6
-X-Received: by 2002:a17:90a:e18c:b0:35d:a4c0:a0ac with SMTP id 98e67ed59e1d1-3650ccefc6cmr7084928a91.3.1777831140990;
-        Sun, 03 May 2026 10:59:00 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364bdf2aa41sm15437701a91.4.2026.05.03.10.58.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 May 2026 10:59:00 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Gregory Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>
-Cc: linux-fsdevel <linux-fsdevel@vger.kernel.org>, Amir Goldstein <amir73il@gmail.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, lsf-pc <lsf-pc@lists.linux-foundation.org>, Bharata B Rao <bharata@amd.com>, Donet Tom <donettom@linux.ibm.com>, Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org, Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Subject: Re: [LSF/MM/BPF BoF Session] Numa-Aware Placement for Page Cache Pages
-In-Reply-To: <afYdH4Alu9QA18CO@gourry-fedora-PF4VCD3F>
-Date: Sun, 03 May 2026 21:48:01 +0530
-Message-ID: <8qa0sc06.ritesh.list@gmail.com>
-References: <h5ossmwe.ritesh.list@gmail.com> <afNV5wbhsFQJLzxi@casper.infradead.org> <afYQz3YJdWB2R-1q@gourry-fedora-PF4VCD3F> <afYdH4Alu9QA18CO@gourry-fedora-PF4VCD3F>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3E5F52000E
-X-Stat-Signature: 4rbcokey9zojja6ozbaerjbdgozray8e
+        d=1e100.net; s=20251104; t=1777831940; x=1778436740;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TuHk6gntEIJV0GgLUK1hPsy76HnphKiXZnnnJVyWRVI=;
+        b=YZAM2jHALC6vCGR4Tr8lAqqG7NiHNu6Xdl9hAg/qAtgud/rRJ9i41Vz5TNKpTTRKRl
+         1kzzvxAawaYL8AeLqrkMrsQc5UxdvRr51fagHV8KB+OcBLXUkekT2TKzivt8sIWkeHWB
+         jxzDf4rf0vMSma/CV8+DETuu1Y5Ztg+B1/StgVE273JHh4MtxJ0cf0318KcY05C1/P8V
+         miI/DAA6g0pXSjF1lJxMbT72BrzKCzBkri8D3gHCvlivrYGNpreitPbN8cCoeqQI/UyY
+         T0hTUOB9tRydC3YaoG/cjAVpqeGAOu1ir6TPDhyZ8sku35hChegYG4m//m2SD7Q0IsuO
+         coWw==
+X-Forwarded-Encrypted: i=1; AFNElJ+VOnFK4rNQDlNAUjJNei5DSsyItg6DudXHtAnYbxfhcmBD0YMdyh2ZwMN4ht78P7TvNRgNeQFE9w==@kvack.org
+X-Gm-Message-State: AOJu0YyffRnaZWVGoUTE+M7xMiENz4CGXXy0kvDyocoANeAWIOzA6v+/
+	zydHY+Hapsn0cR6sUXqciYCpGuYT7t6BEWWKgqqTOB+quZYnr9fikdH2ONyrF4Fiyr36EAtC0PW
+	ChBLDuSc7RaE5f3id0j6fikPzB67C9cE=
+X-Gm-Gg: AeBDieuY7c3YT3dnywqDhZHazGVbvfv/EEL53TvSSsWYMP1WfTBWNfo6np86JUZOW75
+	VrpTw2uYPC2ow37stRZLfXGsGqD+/GlarhGnki8U2WFQ3mGSuSssYPNRXwiBTWaMKrpdIRbeVau
+	+qeOJKFaBz+6sANdjp3DJFy3iiYXawSvkEqpauALQD+8EovOeOZSKYJCsR9Rw1vpogT0Pc3sm94
+	HiuiZQrNVPzP8UvQrMd7pb1l1poN0h4ZWoPPueHMIND05sjKidFMNFf5K+KN8qX2g+bF2zSQmZ/
+	T7PBhrjGmPmF3R7LdeC0CcYVK2xTiYK3ta1+yEtoVZ/jTHA1
+X-Received: by 2002:a05:6870:1b09:b0:42f:b782:104a with SMTP id
+ 586e51a60fabf-4347622a4aemr3405023fac.21.1777831940496; Sun, 03 May 2026
+ 11:12:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260430195651.287659-1-devnexen@gmail.com> <afUih+XwGTHsR0HY@yjaykim-PowerEdge-T330>
+ <CAMrLSE71rs1TyoFwCjChY4bEMX-qz01_QKdkAUQmZOSrMMEzbg@mail.gmail.com>
+In-Reply-To: <CAMrLSE71rs1TyoFwCjChY4bEMX-qz01_QKdkAUQmZOSrMMEzbg@mail.gmail.com>
+From: David CARLIER <devnexen@gmail.com>
+Date: Sun, 3 May 2026 19:12:06 +0100
+X-Gm-Features: AVHnY4Kd5l8lopbbU-EGH9NBZKTL3CyVlD7bO4ZsqqXXa_d7sbYSemBz6lTn6Ns
+Message-ID: <CA+XhMqys0rbcJd8ddAMRmUPi=6byXYA0MD5oahgdvPU4PTSFTA@mail.gmail.com>
+Subject: Re: [PATCH] mm/swap, PM: hibernate: atomically replace hibernation pin
+To: CharSyam <charsyam@gmail.com>
+Cc: YoungJun Park <youngjun.park@lge.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1777831142-548656
-X-HE-Meta: U2FsdGVkX1/OaxI3q89k36636CEOEs9Vfi1oWdzKoyhwNlp8C+1tIXp1TbBqA+DcN1Yv7g2t2UO9WApORM2zv9EXUPHQRrY7iwIfZLIelm3yMdbEXXT1lCoecbtZcycguOByqx9zKGEPkzmnL3nS2aEPIbQl2Mmi35zlLjU9qJPFfHxuY0R75GD+8pVXYwYDi/2oWUWKFVTuZ0Igb7S0siJT9VGBm6rDvYwmI/Atx/cFLlSTrVw/rsGi57KOc/2QDUrBJlc+dFXV2xfalX/EcwCUuUwPbLZ2AjNzjYTUH3ymA/hr6zHOeULnZHwcCVAyCi8q96w4I03//sy3IKtTYCRUojukBb1IDB+DE1yQH6GNeh/7enMi1GUTXn5uaMTxN72Pm9AxGOVOCemy5h5Qp/S07mczu7gCWziS2YSUq7IPxq+j1U386AdHzOYRr8nmt7C/Klj3alhUnqfM1zMTniKRCwbfuNzWbMCzt9BCK4OnlVM2ySpp6p85H3wqpgudIl7hhHSTpkdWbJRAOcmioDN7sEwOy890jh1rOInwy6/Nc9gv3O1hzYndN+ezRiNpLEM4amnyyuVLrXAbUl5uDeGAivlRJEKziZjSQxtuUYqGz0ZBikD16iLs6ygtM/vz28WqJmI3AWtomzGRnxckTraxri/7gEDz8yuud8sqNdMe4346YR1ntzUixtd5lnGD5a4Oobhr9HxHpB5ICuqSd805jittZvOOx3A95lTpjQVzcJBo7n/1sxZNmaLGY7xxxJOyielJqu9ZA7xBUMDbw4xj54ZDGE7Xd6gkUnj5P7dwi8cgpoNxpnHa8FSGutbyUi/rI4deZhLJ18+oXXApHdAG/ZXR2m+ilmjjoj636Y0D8LY6Zt4L4j9tfE3ZVY759xTAHG7ECM7VHwvl+F9w2ty7zn8nTsNpvosJYK2tZmJe5M/mXTX+1Tznrugk/iG+RJu/Zw6bfsQzlpNDAmr
- QjjdjRWa
- UsBr2wBfWvXyk4G6MNiOK+zARSKTdq0y1+4A+TwWtEOi/8tg7X06VBDI7BqJBJIUkv4U2lT8JyiQ+EI1C0LzpdVfrnvlZtmEcGjjIuC9k+NLmhE8bKofj5mC4Dgh4iN3/0gegj0EzcT83RhMwtSKy2wwu+O4/rRjuw+snO5A5qKTikZa2oVsbJFq25QCaFeXFNdIHMNb9T+6e/s6BkOlB+Nj28aN03JXfn71xDSCa5NEFCX0eHtCQMYVL/uayDJLZX65+/mH6CzJkkAh8uFtralv8C5eUSKhrB0OLWohv8kL6zFrVuJ5yjrIul4qVpk83ALyKmsq5vxP0/cWd86ec2GDcVjBacDO1I85qs9jPfcuBt/h4KYDwj3+sAY3qiJIXRDQm5TraoQ/VWquHmsJ71sPmsbIBEQwENyv1YmSq2cqgDhvsyOozHLCsubTbH6IEw0EazGCMkkUYwhbIJ06uOWuIWP4Xsh291BpA
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AA6FC1C0003
+X-Stat-Signature: wg7k58htpgpy5to1stp9k7h67sjjui8n
+X-HE-Tag: 1777831941-643786
+X-HE-Meta: U2FsdGVkX197HwUg4hCSo92oYHXmAtbeaVBtAUJpe3tskNuD3oA/BWgcfWJjyJyDrLth5ntW84Q8WSahjxQb1Z528AirnA+Xu3rCaKXGibxL39qp1fcPGyFvMGTUKIAFEZH0cWKaNiqku/aypmAATrx3SbAPud2uO1ndCWzSAvICNXvbDjUztlNBPCzXpjilTAvfbCBWniSCRR81/V8n2eEaPzZPV8K7Wohp0/HRFuUG8ul6Naqoj/Jrd9730F/QdubHDpBxnSKSaTmPKb81t3QgUq7tafx5V1crvwRmDI1CX4IxBz4ut+sxGfdHgo2sUk8tGR1K4OPyRO6dtawz7wFt2Qyx8gmOiad+mqcwI4F9rdbsG9cIRa2//HkBSNGKuSbT00QHMUGPbTVju7ShZ6Nxl1FGkZdKmvvyFOojzecWinkGW7zEI7j2Y9UpbAV2SHUR5D+/xOGNcWNBDnq+gLiFlm8N2AV9AcapajBwYuMZ/PHAnp/edM3hfbaRdSNnF/JQUuX9Dn9kdu7CjiyTHKDI4Ro+z64LJyCQ4ESMFx7rxf8Hh58tg2JoKLG0qSVN5VBBV5Nko/8Z+BCMDRJj1SkLWEG17F/HLRW+KmJOZXFSM6z2g0s7MIz3OW6/RcZDeVJNLB6Ogn2OoXvhNbRpU7NGRZIjMf815vTJhJn44qNtke21FKk5He6gKfSBfro6jgRxWD83kaQgjxUWWYrxzUgu3nN0DOnzDSAvxhv25/T/4wcnu8PwlNFRzaxAdjN1CT4+p49imNZL2y0QRkdSa1jCfRULMhk7s6hig3/bNiiAp87HpuGUbr06iXDse+zvpaBzhZYL7CCyrEPXjveMW3uFItWyQFm5CDTf0Qo5UMTUwfG6zHb+gu3mwQBhV+81kscVz44fzP4TqBzyNUnuy0Yht62cwuCykfDStlzkjPrKpO4TIehy+FKKd7/S6qNM3zDqginFgLufWBImPVw
+ FZE24xZD
+ mPHSa1xi2qWjeA6TBrhkoQQOj4Xn4cWDHsHSQLTWYuN32WpXUHN4ldlquBy5FwBLW+dUP0b15sbKZA2vBvLiB6fCU57ad2arT+04HAebPdVVF43fOi8S1mZeqs7iVfTUGwrhhTOWEg6KGbTlbMW1+ls6piQUECbF9ziRBRcMjEWRKtUzlEiGYVE0tjf4IevunRiHe1K+0SuiTFwdgM7i2gAvkbA3ddFMp9zklJ7o7Qti9PUHl9fGIFR2rx9CsNeVtPNz9AjK26LLD3PAKdU1cA+adRuO+86uZ0pj1QhvSDSjSIJy42yVWtPK50u6+npTj5/nD7QOeMetfrcTfkl0vKkWRxW+3TiHwvkyzYNS7VZ3+hjYrm7STKseOreGpkdQs+QHhoCqWbLRxMAv6thtUsKypK9CdtQ7koAC+IQRLaGb2sh+SEZPTigfcpuV7PkRQijC6Lu3oiHjls9nfmGGtSNZsDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,69 +143,241 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gregory Price <gourry@gourry.net> writes:
+Hi CharSyam it is literally the same code, I did not look in existing
+propositions when running the AI agent ... Sorry !
 
-> On Sat, May 02, 2026 at 03:57:19PM +0100, Gregory Price wrote:
->> On Thu, Apr 30, 2026 at 02:15:19PM +0100, Matthew Wilcox wrote:
->> 
->> fd = open()
->> buf = mmap(fd, ...)
->> mbind(buf, device_node)
->> /* fault file pages directly onto device memory */
->>
+Kind regards.
+
+On Sun, 3 May 2026 at 18:24, CharSyam <charsyam@gmail.com> wrote:
 >
-> maybe more explicitly, something like this
+> Hi David, Youngjun,
 >
-> fcntl(fd, F_SET_FILE_NUMA_NODE, gpu_nid); /* pref node */
-> mbind(addr, size, MPOL_BIND, ..., MOVE_ALL); /* move existing */
-
-
-One existing problem with this approach of using MPOL_MF_MOVE[_ALL] (not
-specifically about gpu nid usecase here) is that, it only considers
-pages which are mapped into process address space. So, unmapped page
-cache pages are invisible to it.
-
-So, the problem which I am trying to highlight here is - Today there is
-no mechanism for a user to move/migrate the file-cache pages w/o
-incurring extra I/Os. The only way that works today is to first populate
-all the folios belonging to the file into the process address space by
-issuing MADV_POPULATE_READ and then issue mbind(..., MPOL_F_MOVE). But
-there is no primitive to populate the process address space with only
-the folios which are already present in the page cache (which maybe
-residing on a different numa node). Note that MADV_POPULATE_READ will
-read the missing pages from disk too.
-
-So, maybe something like this.. Would this still be useful? i.e.
-
-madvise (addr, size, MADV_POPULATE_READ_NOIO);
-mbind(addr, size, MPOL_BIND, ..., MPOL_MF_MOVE);
-
-MADV_POPULATE_READ_NOIO should ensure that only the cached folios
-belonging to that file are mapped into the process address space w/o
-doing any extra disk I/Os. The subsequent mbind call with MPOL_MF_MOVE,
-will then ensure that all the existing mapped folios are migrated into the
-chosen numa node. And also that any new pages which gets faulted in will
-get allocated onto the chose numa node because of MPOL_BIND policy. 
-
-I believe there might be existing applications which might be facing
-this problem today. This can happen, for instance, when there is a
-workload which can run multiple times and may run across different NUMA
-nodes. Our internal test team once reported a similar performance
-regression with llama-bench on subsequent runs when running it across
-different NUMA nodes. The reason this happened was that the existing
-page cache folios of model weight file (from the previous run on a
-separate NUMA node) were not getting migrated (because they were not
-calling MADV_POPULATE_READ since it can cause a read of a large model
-weight file into the page cache all at once).
-
-With that in mind, do we think having something like
-MADV_POPULATE_READ_NOIO make sense to address such problems? Do we have
-any other usecases of this too?
-Or do we see any problems with this, due to which it never existed?
-
-(Note that I haven't yet given a thought for how it should behave for
-anon memory).
-
--ritesh
-
+> Thanks for the discussion.
+>
+> This is essentially the same direction as my v1, where I introduced a
+> repin-style helper to transfer the SWP_HIBERNATION pin under a single
+> swap_lock critical section.
+>
+> After Youngjun's review, I reworked it in v2 to avoid adding a new
+> single-call-site helper and instead reused the existing
+> find/pin/unpin helpers. The current v2 approach keeps the existing
+> pin on failure and avoids introducing a new API.
+>
+> Given that this is more of a hardening improvement than a strict bug
+> fix, I think the v2 approach is a simpler fit without adding extra API
+> surface.
+>
+> Happy to adjust if there are specific concerns.
+>
+> Thanks,
+> DaeMyung
+>
+>
+> 2026=EB=85=84 5=EC=9B=94 2=EC=9D=BC (=ED=86=A0) =EC=98=A4=EC=A0=84 7:00, =
+YoungJun Park <youngjun.park@lge.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+> >
+> > On Thu, Apr 30, 2026 at 08:56:51PM +0100, David Carlier wrote:
+> > > snapshot_set_swap_area() unpins the previously selected swap device
+> > > and pins the new one in two separate swap_lock critical sections.
+> > > In the gap between them, swapoff() observes SWP_HIBERNATION cleared,
+> > > bypasses the guard, and tears down the device, reopening the race
+> > > the SWP_HIBERNATION pin was meant to close. The window is reachable
+> > > on any SNAPSHOT_SET_SWAP_AREA call after the snapshot device is
+> > > opened for hibernation, and on any retry after the resume path's
+> > > first selection.
+> > >
+> > > Add repin_hibernation_swap_type(), which looks up the new device,
+> > > clears the old SWP_HIBERNATION flag and sets the new one under a
+> > > single swap_lock acquisition. The same-device case is short-
+> > > circuited so userspace can re-select the same swap area without
+> > > tripping WARN_ON_ONCE and -EBUSY. Switch snapshot_set_swap_area()
+> > > to the new helper.
+> > >
+> > > A failed lookup now preserves the previous pin instead of dropping
+> > > it, so a bad SNAPSHOT_SET_SWAP_AREA leaves the prior selection
+> > > intact. The open and release paths keep using
+> > > pin_hibernation_swap_type() and unpin_hibernation_swap_type().
+> > >
+> > > The race was identified during AI-assisted review of the
+> > > SWP_HIBERNATION pinning series.
+> > >
+> > > Fixes: 8e6e0d845823 ("mm/swap, PM: hibernate: fix swapoff race in usw=
+susp by pinning swap device")
+> > > Assisted-by: Codex (gpt-5-codex)
+> > > Signed-off-by: David Carlier <devnexen@gmail.com>
+> > > ---
+> > >  include/linux/swap.h |  2 ++
+> > >  kernel/power/user.c  | 17 ++++--------
+> > >  mm/swapfile.c        | 61 ++++++++++++++++++++++++++++++++++++++++++=
+++
+> > >  3 files changed, 68 insertions(+), 12 deletions(-)
+> > >
+> > > diff --git a/include/linux/swap.h b/include/linux/swap.h
+> > > index 1930f81e6be4..213ecb627a39 100644
+> > > --- a/include/linux/swap.h
+> > > +++ b/include/linux/swap.h
+> > > @@ -436,6 +436,8 @@ static inline long get_nr_swap_pages(void)
+> > >  extern void si_swapinfo(struct sysinfo *);
+> > >  extern int pin_hibernation_swap_type(dev_t device, sector_t offset);
+> > >  extern void unpin_hibernation_swap_type(int type);
+> > > +extern int repin_hibernation_swap_type(int old_type, dev_t device,
+> > > +                                       sector_t offset);
+> > >  extern int find_hibernation_swap_type(dev_t device, sector_t offset)=
+;
+> > >  int find_first_swap(dev_t *device);
+> > >  extern unsigned int count_swap_pages(int, int);
+> > > diff --git a/kernel/power/user.c b/kernel/power/user.c
+> > > index d0fcfba7ac23..6e4f40e49319 100644
+> > > --- a/kernel/power/user.c
+> > > +++ b/kernel/power/user.c
+> > > @@ -218,6 +218,7 @@ static int snapshot_set_swap_area(struct snapshot=
+_data *data,
+> > >  {
+> > >       sector_t offset;
+> > >       dev_t swdev;
+> > > +     int new_type;
+> > >
+> > >       if (swsusp_swap_in_use())
+> > >               return -EPERM;
+> > > @@ -238,19 +239,11 @@ static int snapshot_set_swap_area(struct snapsh=
+ot_data *data,
+> > >               offset =3D swap_area.offset;
+> > >       }
+> > >
+> > > -     /*
+> > > -      * Unpin the swap device if a swap area was already
+> > > -      * set by SNAPSHOT_SET_SWAP_AREA.
+> > > -      */
+> > > -     unpin_hibernation_swap_type(data->swap);
+> > > +     new_type =3D repin_hibernation_swap_type(data->swap, swdev, off=
+set);
+> > > +     if (new_type < 0)
+> > > +             return new_type;
+> > >
+> > > -     /*
+> > > -      * User space encodes device types as two-byte values,
+> > > -      * so we need to recode them
+> > > -      */
+> > > -     data->swap =3D pin_hibernation_swap_type(swdev, offset);
+> > > -     if (data->swap < 0)
+> > > -             return swdev ? -ENODEV : -EINVAL;
+> > > +     data->swap =3D new_type;
+> > >       data->dev =3D swdev;
+> > >       return 0;
+> > >  }
+> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > index c7e173b93e11..4840fd40f36f 100644
+> > > --- a/mm/swapfile.c
+> > > +++ b/mm/swapfile.c
+> > > @@ -2219,6 +2219,67 @@ int pin_hibernation_swap_type(dev_t device, se=
+ctor_t offset)
+> > >       return type;
+> > >  }
+> > >
+> > > +/**
+> > > + * repin_hibernation_swap_type - Atomically replace the hibernation =
+pin
+> > > + * @old_type: Swap type currently pinned (or < 0 if none).
+> > > + * @device:   Block device of the new resume image.
+> > > + * @offset:   Offset identifying the new swap area.
+> > > + *
+> > > + * Look up the swap device for @device/@offset and atomically transf=
+er
+> > > + * the SWP_HIBERNATION pin from @old_type (if valid) to the new devi=
+ce,
+> > > + * all under a single swap_lock critical section. This closes the
+> > > + * swapoff() window that exists when callers unpin and re-pin in two
+> > > + * separate operations.
+> > > + *
+> > > + * If the new device cannot be located, the existing pin on @old_typ=
+e
+> > > + * is preserved and an error is returned. If @old_type already refer=
+s
+> > > + * to the same swap_info_struct as the new lookup, no flag changes a=
+re
+> > > + * made and @old_type is returned.
+> > > + *
+> > > + * Return:
+> > > + * >=3D 0 on success (new swap type).
+> > > + * -EINVAL if @device is invalid.
+> > > + * -ENODEV if the swap device is not found.
+> > > + * -EBUSY  if the new device is already pinned by another context.
+> > > + */
+> > > +int repin_hibernation_swap_type(int old_type, dev_t device, sector_t=
+ offset)
+> > > +{
+> > > +     struct swap_info_struct *old_si, *new_si;
+> > > +     int new_type;
+> > > +
+> > > +     spin_lock(&swap_lock);
+> > > +
+> > > +     new_type =3D __find_hibernation_swap_type(device, offset);
+> > > +     if (new_type < 0) {
+> > > +             spin_unlock(&swap_lock);
+> > > +             return new_type;
+> > > +     }
+> > > +
+> > > +     new_si =3D swap_type_to_info(new_type);
+> > > +     if (WARN_ON_ONCE(!new_si)) {
+> > > +             spin_unlock(&swap_lock);
+> > > +             return -ENODEV;
+> > > +     }
+> > > +
+> > > +     old_si =3D swap_type_to_info(old_type);
+> > > +     if (new_si =3D=3D old_si) {
+> > > +             spin_unlock(&swap_lock);
+> > > +             return new_type;
+> > > +     }
+> > > +
+> > > +     if (WARN_ON_ONCE(new_si->flags & SWP_HIBERNATION)) {
+> > > +             spin_unlock(&swap_lock);
+> > > +             return -EBUSY;
+> > > +     }
+> > > +
+> > > +     if (old_si)
+> > > +             old_si->flags &=3D ~SWP_HIBERNATION;
+> > > +     new_si->flags |=3D SWP_HIBERNATION;
+> > > +
+> > > +     spin_unlock(&swap_lock);
+> > > +     return new_type;
+> > > +}
+> > > +
+> > >  /**
+> > >   * unpin_hibernation_swap_type - Unpin the swap device for hibernati=
+on
+> > >   * @type: Swap type previously returned by pin_hibernation_swap_type=
+()
+> > > --
+> > > 2.53.0
+> >
+> > I also caught up on this thread late due to travel.
+> > Sorry.
+> >
+> > Hello David Carlier,
+> >
+> > It looks like the same issue and approach was raised previously:
+> > https://lore.kernel.org/all/20260414143200.1267932-1-charsyam@gmail.com=
+/#t
+> > (+CC DaeMyung)
+> >
+> > I had suggested improving the fix by reusing the existing APIs
+> > rather than adding a new one. v2 was posted along those lines:
+> > https://lore.kernel.org/all/20260414164937.1363887-1-charsyam@gmail.com=
+/
+> >
+> > To restate the points from that earlier review.
+> >
+> > 1. I think it is acceptable to release the existing pin when the
+> >    new set operation fails. there is no significant side effect
+> >    (see the earlier review for details).
+> >
+> > 2. If we still want to fix it, reusing the existing APIs seems
+> >    preferable to adding a new one.
+> >
+> > Chris, Andrew - please take the prior thread into account during review=
+.
+> >
+> > Thanks,
+> > Youngjun Park
+> >
 
