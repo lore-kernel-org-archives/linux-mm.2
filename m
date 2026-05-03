@@ -4,125 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A0B4FF886F
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 16:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 562C2CD3424
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 16:57:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0140B6B0099; Sun,  3 May 2026 12:51:33 -0400 (EDT)
+	id 9BA546B0005; Sun,  3 May 2026 12:57:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2E056B009B; Sun,  3 May 2026 12:51:32 -0400 (EDT)
+	id 96AA26B009E; Sun,  3 May 2026 12:57:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1DA16B009D; Sun,  3 May 2026 12:51:32 -0400 (EDT)
+	id 859F46B009F; Sun,  3 May 2026 12:57:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CBD4F6B0099
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:51:32 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68ADD1A099F
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:51:32 +0000 (UTC)
-X-FDA: 84726699624.19.DD67B79
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5215D100003
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:51:30 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=edo4UM4i;
-	spf=pass (imf05.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 74A176B0005
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:57:24 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E7A0160814
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:57:24 +0000 (UTC)
+X-FDA: 84726714408.23.87F69DF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E771CC0005
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:57:21 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DgUfCvRV;
+	spf=pass (imf22.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777827090;
+	s=arc-20220608; t=1777827442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kdu5+fSnVWCGaHSDNy5Sqn0Y2MXs1Uyb3JHpXbPoVvc=;
-	b=JPthBtmczsBR2jDp/KrCmmULVKfFKpVKpjmXv1oHZHFQB080FBEzoRmhoZrw0Hmqn7KFmR
-	UmDiL5IK5PYaZyyDp3+i3n2Fqe91Y0Qk1GRHN/8v4v/ho/6VkgYzZN+YzRdUvFSBnV6I9e
-	XG44je+Bm8wJ0lyq6FAnMVHcWeTPV3A=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=edo4UM4i;
-	spf=pass (imf05.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777827090; a=rsa-sha256;
+	bh=wZAX/3Dxul6ab0aa4nY+5/E1aKies+ngH//pLM2CQH8=;
+	b=ymo3E4w2sk5LWl3geOBIvqLc6t/4XojhKIun5GwWIiJ/Tt6TdW4RlJLv19f588qnpqgK0O
+	zSjEDEFZBnXkhXPBWLWG4r34n1mA+OTnejy6PVA6xAi77hnAjBLRl/AiKiDIWkzqo2rdGn
+	Ne3J90wOrmP38+Z7+HYgOObsiL1GhPc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777827442; a=rsa-sha256;
 	cv=none;
-	b=eqWohYSM6B0MI6Yn3Y1KSaURnP53raYddZZwZs5Pz8FLGSr2Fb38HTRsbx4jozhicQUsVW
-	YftE4zNdjbxuYYmHMsBaJ9JuTBlx8nBAzX4Si+QBMha0vHYb3vjDOd4D372UnRywibNIRq
-	OUtRf/FJ9/5Q6h28Em5Aq7qzORxj56Y=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8379e010b01so38184b3a.1
-        for <linux-mm@kvack.org>; Sun, 03 May 2026 09:51:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777827089; x=1778431889; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kdu5+fSnVWCGaHSDNy5Sqn0Y2MXs1Uyb3JHpXbPoVvc=;
-        b=edo4UM4i6boqrJPEHXzbYU4Vsds2cnD6MsllPG6c8/lZGj1quOuH9I1aQNXQP/Zs1+
-         HgnQRdJICXx9O66YsMD/gFtVICDiDmtosgxlwkM2fqxnnksS3enGhHKT9maztaSmO/cO
-         bgF5aRENhl+CMDILgwwYiLKE6upmBY7jtMayg7GM22y4+8d2OZTdhI7+P8S8qrA69tUn
-         OWHE9Uw59XELI3+EWrtm5bs3dQUY9RbcBEgi3Agg+R5cq9MnzvChVZWCyCkm5G/jtwTH
-         AG1SsCblBDWKAvOGbz+UbRQrioibn+SJJGL2wlFHRl1kdKAsbJXO2JptLi1HhTzedVwC
-         luUA==
+	b=o7s08FulRpFMTSMHNBgckjcGLQlLCC/qsfJMpVoBMBgTBWprSSwxh7KqAqfcQ1M4lyj+1K
+	aPwm1cIBC9N6lV5M26SEk8hzB2+5hW+8fp8pqvvQaqB4cUTScuX83tgCBV10EOV/om8tZ6
+	bavtr5OMdn7KO7UJqFpWNl8mrEaz79c=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DgUfCvRV;
+	spf=pass (imf22.hostedemail.com: domain of pbonzini@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pbonzini@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777827441;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZAX/3Dxul6ab0aa4nY+5/E1aKies+ngH//pLM2CQH8=;
+	b=DgUfCvRVnxqbOwpakxKF6tkY2CQCl5LSrOYg3BKffb1zF3rHOxb3n4Rkf7ThWj0/HPoX9x
+	5oWAn93vUTr+GtmbLuhv7/AbAkoRLsFfavsttC28WzGuzfsTA4SwVhv3SZJUVhyOd+qc/6
+	/jPKgfSlW1067y3dyVV6lQw1Pw8E0Bs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-661-70jg2xwsN1eXqfpV9N74MA-1; Sun, 03 May 2026 12:57:20 -0400
+X-MC-Unique: 70jg2xwsN1eXqfpV9N74MA-1
+X-Mimecast-MFC-AGG-ID: 70jg2xwsN1eXqfpV9N74MA_1777827439
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso38442135e9.1
+        for <linux-mm@kvack.org>; Sun, 03 May 2026 09:57:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777827089; x=1778431889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1777827439; x=1778432239;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Kdu5+fSnVWCGaHSDNy5Sqn0Y2MXs1Uyb3JHpXbPoVvc=;
-        b=Jst3GZMsXhLAB2fwTyoqvTklqV1UlAzsw+/5lgO5kaT6YiEWW/1nezpmTP9XcHl1QE
-         NnjDX3nEYY1EN1nXG/9IUhP6vUOkJDnipkQHDZpLu4wNbo/obyx2XN0puHPfXMoqtb5W
-         SSAaXe+Bh5PsFAd8zvUGKhlGXODE05RW/6sUdw2fKClI0t9h52DYG8NZzm0k/Ztna5Qa
-         Oz7Bu95te7ALNuspb+/B334k70oh4V1toWPH3WtEAtTOVNDslZ4UeKT4wAhocFiW1R0n
-         S6SwLNY3QgKEoisYzOg02csTkfQ/2XBY7Nk1u9uqNFAPQXbJgrkojIpwqHCSnUezbWHV
-         sJkA==
-X-Forwarded-Encrypted: i=1; AFNElJ/uB+rwA5YTQ1rzDFrZWo6IgZdB0kqwZhppkn2PYkIXFP/OG7S1pSfzVxGgBqrViEml3jS6NlXzIg==@kvack.org
-X-Gm-Message-State: AOJu0YzSbjVgxaCakwmkylC/t/7kv2RHSFUSXBvVD9G36CR0L8z4g5QU
-	W8HfK1MBwqhR36DM0Rn1SMi4TKvp7fqJ7Q6jSiGRn+zUhCZTgorDAbac
-X-Gm-Gg: AeBDievXxPDSS0vH/zYtLaON1FoVB3KmCC8cj8NeQmlU41xP8s+wQD0hUSAMD7A26ru
-	kx+/gZi59OiFBsYx8erYGJjrbPklM3FIrr0jmKDfxqwWGnViZePGfydmzV5g/SGhi/t+twQaXj0
-	8n8tTxxCVdzuvbu0rzt9jKHk2eZjLJwEYgQ8KRuNcmbKlV3s97yeqhW0ZttlC3ZDA85/RvEfYCD
-	24gfu8qAZzyXoS14tdyWraDUaJyoxBlq95165XXiaYpJif9IdsAf3m70C9/DT4D3T6qrRfdIg9Q
-	9TQqB572h1clxAlR75VQYC4RX/sv80BjoXCLr2Rht2CGVH0Pqbh2I4GRjmRLXvWaEU6fIFXYaO0
-	a0leeZt8fB23PQbfSMVDXQ1e7bGYNm99EeecPKBbRM9VSlsaq+ZjgTF7kVSdLQCSg/i5FVP+Ac7
-	DOwEE/Jp1mZUdMiwa10esrY1ELWQSqG1w7rwVr6oCyYqP0704=
-X-Received: by 2002:a05:6a00:8188:b0:835:351c:f236 with SMTP id d2e1a72fcca58-835351cf525mr3911226b3a.29.1777827089059;
-        Sun, 03 May 2026 09:51:29 -0700 (PDT)
-Received: from localhost.localdomain ([114.231.84.174])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83707fab756sm1494277b3a.44.2026.05.03.09.51.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 May 2026 09:51:28 -0700 (PDT)
-From: Vernon Yang <vernon2gm@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	roman.gushchin@linux.dev,
-	inwardvessel@gmail.com,
-	shakeel.butt@linux.dev,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	surenb@google.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	dev.jain@arm.com,
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: [PATCH 4/4] samples: bpf: add mthp_ext
-Date: Mon,  4 May 2026 00:50:24 +0800
-Message-ID: <20260503165024.1526680-5-vernon2gm@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260503165024.1526680-1-vernon2gm@gmail.com>
-References: <20260503165024.1526680-1-vernon2gm@gmail.com>
+        bh=wZAX/3Dxul6ab0aa4nY+5/E1aKies+ngH//pLM2CQH8=;
+        b=XS/aOy3dHiH8lXLHmSwReIgvtHluu/PAW0ou40A3V35kOiKWXfBSl/KTwXotusMUQP
+         qYQEQNrI0HGjdaXUz4+2dUEmA8jsXBwzkl3FAoj6g/zyGuYqE6U+kcukfZ9RWcJVmySa
+         EwesbAog4lKy2swp5a5HKyFuGSMfa9Kki3yzP1fUh+EUFqN+VvS1WI7RyQoWTt0ZU52t
+         150LuQ68lIcxio1549euXq41BYOYAhd8WTq2BxGFW6Ozw2iy8/L/BPshN7WQeyrekQKG
+         8WC/l1QRO8BJeG6hhlAf5I23RBpUhKfIKpseUiZ4nENaAZEywIoghYCF5eQ/gL8msP18
+         NEug==
+X-Forwarded-Encrypted: i=1; AFNElJ/j2dBaH3glWQwzxwFd7ESTr9glvmiTab4e7Vc7L2or0M0lRye7rYB8t1nNwpezK8KbTs4hm3mYOA==@kvack.org
+X-Gm-Message-State: AOJu0Yyr4g9uy2jyewb/qm9UvvLj7JuX+PkeaD0ZxhHFdOSWMYZv5eF6
+	Ru+4yfyN467yCuLY560p+ZNZ4+6RdtLNDLhDDlnQ7jWPYPgI4ikBfkd1ObXaS4T4PI7py4kFFEr
+	t6TSwaERCMOIoIxvo60muac8kwSb36Rcng3dGfwS5XB9yVGNO808lrPQgymb0ygFQAyRGFZOQW5
+	+GBAt6UMNTmRBGTUxSqes2rRv29R8=
+X-Gm-Gg: AeBDietj5tGlwGNo1MuK9ikn9LgWR/vf4cM+pla7JcFMn/HZFzHi5AgvXIpGkXQpEvQ
+	KR/Y70gVr3QK+vwqdCAWXaBIH1rAmeWySm7A/4bU1EMJYKTTIGCRiBowNVjo2psfiSGPIZ52bXS
+	+b9YxOuNrQCZwwYMPn0RTf9PtEwV1/syQStWGErh1bAo7iRz5eIMyjlDqRA3E3XXuadCsJu0Vry
+	F5dxSrNG1nrMrabxMA6Y29Oub9P8h4kHNrIMi+I3iRuJ0eOTo1RpvtXR2bWm8cazlHV6gHvNgrM
+	VrgwP8xeua/Q1Kw=
+X-Received: by 2002:a05:600c:c0c5:b0:485:30d4:6b9e with SMTP id 5b1f17b1804b1-48a98662e71mr84651585e9.21.1777827438734;
+        Sun, 03 May 2026 09:57:18 -0700 (PDT)
+X-Received: by 2002:a05:600c:c0c5:b0:485:30d4:6b9e with SMTP id
+ 5b1f17b1804b1-48a98662e71mr84651295e9.21.1777827438361; Sun, 03 May 2026
+ 09:57:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5215D100003
+References: <afEwWZksU0Fw61oT@plex> <0a71472c-b397-4699-a518-61faffcf4ab2@redhat.com>
+ <afUNlL_lRDP6olHE@plex>
+In-Reply-To: <afUNlL_lRDP6olHE@plex>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sun, 3 May 2026 18:57:06 +0200
+X-Gm-Features: AVHnY4LZ9SLOVvMSSNVqrWN2ReqSfwRcQuKsaciqQRZIlDN_XSMAX0q55GthIJg
+Message-ID: <CABgObfaqZ8GGaLV_gp8o+nQSe+JfnBbZP0X9cDxdvEpyUZQRnQ@mail.gmail.com>
+Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
+ Live Update
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+	kvm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	rppt@kernel.org, graf@amazon.com, pratyush@kernel.org, seanjc@google.com, 
+	maz@kernel.org, oupton@kernel.org, dwmw2@infradead.org, 
+	alex.williamson@redhat.com, kevin.tian@intel.com, rientjes@google.com, 
+	Tycho.Andersen@amd.com, anthony.yznaga@oracle.com, baolu.lu@linux.intel.com, 
+	david@kernel.org, dmatlack@google.com, mheyne@amazon.de, jgowans@amazon.com, 
+	jgg@nvidia.com, pankaj.gupta.linux@gmail.com, kpraveen.lkml@gmail.com, 
+	vipinsh@google.com, vannapurve@google.com, corbet@lwn.net, 
+	loeser@linux.microsoft.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	roman.gushchin@linux.dev, akpm@linux-foundation.org, pjt@google.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Z1roluRNDQjp7-HiKDC1IX6vnGiUX1Vx4vCokA2pg3A_1777827439
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E771CC0005
+X-Stat-Signature: s83k7ct8zwpz48mh8a8bw3bxz15ub3in
 X-Rspam-User: 
-X-Stat-Signature: y7htu5u5yo65mkjtz77bwnw9pfhhocqb
-X-HE-Tag: 1777827090-346145
-X-HE-Meta: U2FsdGVkX1+sCQtaz1yGBT0e+iF/dDGOlC55pSCfxsv7XlJuuZ6mnyNTZTxiYhMLq+vFfH2RI6hfSca4yocCYCXgxtNkP6j2hqwaen+IyVmElsLoSjnK/u0tlvMsTtCInc8WYEquprnuIZDjs0cHabOcwMTYjPcnj3d+OKmu2jytkC9Nt7MGEtnb+7CeXz6H21xxnr3LBg51Qaiu2piJuqE1/0w7Nhq000nxzNoujOhzki+g+h/dY5AwLkiT5hTDSb+YMJeCRui59CvR7MZQdMD3h2B346/9PAdej6lomAZQal7v7xpP4M72K6WTLZ+adgLWYhYb9V/Lnjvd3jRk0GOTi6+XoDUyMeAWHjAaBxo1vpUBzpCJFeoL3aZcdMb1Cg4GBnagDZ3DstTnpxGIB22akeLUiOdv88vRYHrRyxe1F2VOPrZImbunJ/DrnOYRqCrZqSsB9m+tlUMDWJVaevapQ9kuLVoIUVV/370mzVrOdrsEzVBPoIdrT0OjXF5yoOpRx5I/+ktHqEbBdGTv20mQP6ZoboVTxiLPRMGVlsXNHMaNSzdlU0wbyUuZfR5ke8VnMGt7jgawQYNOLjDcnuq6yGz1QHFpQ3eaK1ALXTl1a9Up1Az39hde6EDrCn0KZJP2gXFKR+JP8nEBbQFC5E3pzjhCOpg9+OjihuPQOz8lysDj8vzd7KbJ5qCyJU96tEeOydJ7Er36QRG0ckF8YjGC6s4RnbzsHvN91ii6B6mG99UCydeOql8bwh4/okajisuH03FcFZKq4Sg+z4TwjJR9c7z9RcVPKC73j/slWL7fsZhtFYg/CS63Zq9t3Na/ErdRbQd0JjVXCCM/DPjOyHwqstFczCjcFpkeersIdxF3yzDv81T4uJWREMkPU/ewotfU2LF8+k5JDHCREgbKnfyvOlMj/tcWpJYJ/81QPf2FauiDfMbBUzsZbLg9eWVgg37Uxe9lRTnMPfmht6y
- D1NPz13C
- NrOWEG6FoDaAYDvVngyyWrmT5YlVU5SqBkLcOV/keFmwdFXhnJ3I7uAnrakroTaS4VE+3Dr7bIeupSyXz2uc0NBY/tsEfbQ1EMzHyDmmqmFYYdLzGCMGORMhIoIoO1Jdlv0lO9qEX7J4FyCxj0VR1DHsDvyLRghelT1eSSM+FlbTvLlNFlxReg5h3Y85HbWPBxr3tGb3wVKZ/MvO0YBnXMa/r6r5R7uZwLsaOyLo8M78EOEZOPM5Hdr3mhtnhk0F96SVDynIzZp50v2Dgq9aB9KzV6+r2W+8TbOFs1si3Y0VyB1Qtr7N0scv7d+k4KfCH1Abs1V4otqdcQ4F0RuWQ47D+2pBKyvXYkXe8L3riWjjhU7VIs4oO33CTjAF23Hs4SOIEExP9uLiPfsN+0gvjp+lxGPiDQQITt+ffyN2D1pIdw9PGtse5MAIV/alFL06baic//IiD0yfFS+AnGU6gCikcMo3Gag/w6nIFb43aC/CwyskKRR2LlIc8kGsWshhH325Dq+I8FY4kk0wbMbUmF46FVw==
+X-HE-Tag: 1777827441-176031
+X-HE-Meta: U2FsdGVkX1+OrzNGfZMf5kFSxq6hq3VrCO2q8XHIqjZOp1DC1XwDnHMkbIByQt0s4OL27T5lr+FKZBETEOUmIoTGhdp5ZIA2Y26W07N+tx+Uq6pxvR9XstzbWq/3kcpAOnDRHY2K4jkkmvs3nBWcONLuL8nqD6LvW5U8fKpENusleKuTe6aZU9MJZJaC5xYHZdydlbzqqRGevvTHTFDUW21/D1I9f/xURYk4LWkHQze7RA8ZYADXPq8EusgPKwHZKFhr8lEiXPzI/ZUIKYCoRT87gzmxRTW/I8BXqVCY+7Atk6KKMdOYJzXpkhNER4g5I0RGtV2us0lHoXfytJHUsanVt7RMUNu8089csbaHtlMhP+L/AYnDRZmsZHwWDvCa2PUTCJEc8VZndb13fcjmEBlXdD/o2iypJs4WPI1m3Iq18mBnN6KuLdPRPYR6FDyPE3ijHD3lbW62vv3Wj3STcerOL4QuzAtmRpPjMlo1vhgroA9tPRV3avnklvwgyOajO4Fm1nO/FvT+Zrsioad5GGB4xfFX6oBV1U+AZCNU4y2An+Ezv6ofwlb/UjKyJEiAjYcnRgcp9fJDbDil0GmYjfBub2jE+BUQ73fY66N+2u7xf3eevjoLwemgDcg8bTe7HMDcv/h9Ag8vcC35yaxwaZFVtQaKOAO4oxHZQfNrhHMe3HEFWJYvL4Awu73JRs2ZfHYwkfhWMYFLgnRiurk6aL9Bi4Iy3DaDGXZfv6pQjp3VxrpqcoHeG77HAlPzl0DX/Oh3QwCyQuDM7KEgjahOAByPy77zX2bw/htmcO8YUzxvqx4S5oSSB+NizRP7ufx943Dwz6y/gRSJp5TWbbX4V+9bl4WmlHIINx3E50Ve52/NX5SW00gOaP3bl4DewThcF+5jvfTr8UlfCYCPLf+3JMn1USTgzzof7MQ5Vojd8MfS1oLViVqUpt1gCWCxukwC2ghb7/TrLRXN3Z6uJN3
+ D9du8okd
+ qCapx4AAijt7APu/BkJmwRZAhtMJbooBPgn0fozIzMYTTMsbwOAXk2SiJ/swjR++Ims7Af0Os64odhEJhZuaTpIkBp9d8n0VA2SquXBxqV8nM7kQAWCkyHxmwvDSIM6vlpedq44Q1vzwdjdiU+Ef3swz3R+E/igQyTzyapcoqZ9zp5C/YLfzKdne7d1YBVJXNoDJZpVQ183P0z0/qb6u0YSq61oTsX4dmoDtpF9ILBrthYKmz/fc9R9NbKvdIUDi5EE3L4nwXc5YK7fM2GfX18OU6z2MdA95gBiJ34ybJoO+uEvm0tlulGqbTTI6tNI7o1CNMdLN1SC25dzshJPar7EjNSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,617 +137,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Vernon Yang <yanglincheng@kylinos.cn>
+On Fri, May 1, 2026 at 11:48=E2=80=AFPM Pasha Tatashin
+<pasha.tatashin@soleen.com> wrote:
+> The way I see it, vmfd and vcpufd need to support LUO preservation by
+> implementing the liveupdate_file_ops callbacks (.preserve, .restore).
+>
+> When userspace preserves the vcpufd, the kernel isolates the assigned
+> pCPU (probably requiring the vCPU to be pinned to the CPU, and the CPU
+> to be in an isolated cpuset),
 
-Design mthp_ext case to address real workload issues.
+Generally speaking vCPUs do not care if they are pinned. Do we need a
+preparatory ioctl for this on the vcpufd side, even just a
+KVM_ENABLE_CAP or a new bit for
+KVM_ENABLE_CAP(KVM_CAP_X86_DISABLE_EXITS)?  If
+LIVEUPDATE_SESSION_PRESERVE_FD suddenly can start offlining pCPUs,
+that would require a capability check.
 
-The main functions of the mthp_ext are as follows:
+> Even for this simplest form, we still need a defined ABI between the
+> host kernel and the Caretaker. The host must send an IPI to
+> synchronously notify the Caretaker of attach and detach transitions.
 
-- When sub-cgroup is under high memory pressure (default, full 100ms 1s),
-  it will automatically fallback to using 4KB.
-- When the anon+shmem memory usage of sub-cgroup falls below the minimum
-  memory (default 16MB), small-memory processes will automatically
-  fallback to using 4KB.
-- Under normal conditions, when there is no memory pressure and the
-  anon+shmem memory usage exceeds the minimum memory, all mTHP sizes
-  shall be utilized by kernel.
-- Monitor the root-cgroup (/sys/fs/cgroup) directory by default, with
-  support for specifying any cgroup directory.
+Yes, but it's unlikely to need stability unlike the KHO serialization.
 
-Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
----
- samples/bpf/.gitignore     |   1 +
- samples/bpf/Makefile       |   7 +-
- samples/bpf/mthp_ext.bpf.c | 142 ++++++++++++++++
- samples/bpf/mthp_ext.c     | 340 +++++++++++++++++++++++++++++++++++++
- samples/bpf/mthp_ext.h     |  30 ++++
- 5 files changed, 519 insertions(+), 1 deletion(-)
- create mode 100644 samples/bpf/mthp_ext.bpf.c
- create mode 100644 samples/bpf/mthp_ext.c
- create mode 100644 samples/bpf/mthp_ext.h
+> This ABI must also handle Caretaker replacement during the adoption
+> phase: when the new kernel retrieves the vCPU, it requires a protocol to
+> notify the running Caretaker that the pCPU is being onlined. The
+> Caretaker must reach a known, state at that moment so the kernel can
+> seamlessly replace the previous kernel's Caretaker version with the
+> current one. Finally, the Caretaker still relies on the CCB to access
+> KVM routing pointers for forwarding VM exits back to the host during
+> normal operation.
 
-diff --git a/samples/bpf/.gitignore b/samples/bpf/.gitignore
-index 0002cd359fb1..2a73581876b4 100644
---- a/samples/bpf/.gitignore
-+++ b/samples/bpf/.gitignore
-@@ -49,3 +49,4 @@ iperf.*
- /vmlinux.h
- /bpftool/
- /libbpf/
-+mthp_ext
-diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-index 95a4fa1f1e44..357c7d1c45ef 100644
---- a/samples/bpf/Makefile
-+++ b/samples/bpf/Makefile
-@@ -37,6 +37,7 @@ tprogs-y += xdp_fwd
- tprogs-y += task_fd_query
- tprogs-y += ibumad
- tprogs-y += hbm
-+tprogs-y += mthp_ext
- 
- # Libbpf dependencies
- LIBBPF_SRC = $(TOOLS_PATH)/lib/bpf
-@@ -122,6 +123,7 @@ always-y += task_fd_query_kern.o
- always-y += ibumad_kern.o
- always-y += hbm_out_kern.o
- always-y += hbm_edt_kern.o
-+always-y += mthp_ext.bpf.o
- 
- COMMON_CFLAGS = $(TPROGS_USER_CFLAGS)
- TPROGS_LDFLAGS = $(TPROGS_USER_LDFLAGS)
-@@ -289,6 +291,8 @@ $(obj)/hbm_out_kern.o: $(src)/hbm.h $(src)/hbm_kern.h
- $(obj)/hbm.o: $(src)/hbm.h
- $(obj)/hbm_edt_kern.o: $(src)/hbm.h $(src)/hbm_kern.h
- 
-+mthp_ext: $(obj)/mthp_ext.skel.h
-+
- # Override includes for xdp_sample_user.o because $(srctree)/usr/include in
- # TPROGS_CFLAGS causes conflicts
- XDP_SAMPLE_CFLAGS += -Wall -O2 \
-@@ -347,10 +351,11 @@ $(obj)/%.bpf.o: $(src)/%.bpf.c $(obj)/vmlinux.h $(src)/xdp_sample.bpf.h $(src)/x
- 		-I$(LIBBPF_INCLUDE) $(CLANG_SYS_INCLUDES) \
- 		-c $(filter %.bpf.c,$^) -o $@
- 
--LINKED_SKELS := xdp_router_ipv4.skel.h
-+LINKED_SKELS := xdp_router_ipv4.skel.h mthp_ext.skel.h
- clean-files += $(LINKED_SKELS)
- 
- xdp_router_ipv4.skel.h-deps := xdp_router_ipv4.bpf.o xdp_sample.bpf.o
-+mthp_ext.skel.h-deps := mthp_ext.bpf.o
- 
- LINKED_BPF_SRCS := $(patsubst %.bpf.o,%.bpf.c,$(foreach skel,$(LINKED_SKELS),$($(skel)-deps)))
- 
-diff --git a/samples/bpf/mthp_ext.bpf.c b/samples/bpf/mthp_ext.bpf.c
-new file mode 100644
-index 000000000000..bbee3e9f679c
---- /dev/null
-+++ b/samples/bpf/mthp_ext.bpf.c
-@@ -0,0 +1,142 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include "mthp_ext.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+#include <bpf/bpf_core_read.h>
-+#include <vdso/bits.h>
-+
-+struct mem_info {
-+	unsigned long stall;
-+	unsigned int  order;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_CGRP_STORAGE);
-+	__uint(map_flags, BPF_F_NO_PREALLOC);
-+	__type(key, int);
-+	__type(value, struct mem_info);
-+} cgrp_storage SEC(".maps");
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_RINGBUF);
-+	__uint(max_entries, 256 * 1024);
-+} events SEC(".maps");
-+
-+struct config_local configs;
-+
-+/*
-+ * mthp_choose_impl: Choose the custom mTHP orders, read order from cgrp_storage,
-+ *		     which is Adjustment by the cgroup_scan().
-+ * @cgrp: control group
-+ * @orders: original orders
-+ *
-+ * Return suited mTHP orders.
-+ */
-+SEC("struct_ops/mthp_choose")
-+unsigned long BPF_PROG(mthp_choose_impl, struct cgroup *cgrp, unsigned long orders)
-+{
-+	struct mem_info *info;
-+	unsigned int order;
-+
-+	if (configs.fixed) {
-+		order = configs.init_order;
-+		goto out;
-+	}
-+
-+	info = bpf_cgrp_storage_get(&cgrp_storage, cgrp, 0, 0);
-+	if (!info)
-+		return orders;
-+
-+	order = info->order;
-+out:
-+	if (!order)
-+		return 0;
-+
-+	orders &= BIT(order + 1) - 1;
-+	return orders;
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_mthp_ops mthp_ops = {
-+	.mthp_choose = (void *)mthp_choose_impl,
-+};
-+
-+/* backport from kernel/cgroup/cgroup.c */
-+static bool cgroup_has_tasks(struct cgroup *cgrp)
-+{
-+	return cgrp->nr_populated_csets;
-+}
-+
-+/*
-+ * cgroup_scan: scan all descendant cgroups under root cgroup.
-+ *
-+ * 1. When the memory usage of the sub-cgroup falls below the <min> threshold,
-+ *    it will automatically fall back to using 4KB size; otherwise, it will
-+ *    use all mTHP sizes.
-+ * 2. When memory.pressure stall time of the sub-cgroup exceeds <threshold>,
-+ *    it will automatically fall back to using 4KB size; otherwise, it will
-+ *    use all mTHP sizes.
-+ *
-+ * Return 1 indicates termination of the iteration loop, and return 0 indicates
-+ * iteration to the next sub-cgroup.
-+ */
-+SEC("iter.s/cgroup")
-+int cgroup_scan(struct bpf_iter__cgroup *ctx)
-+{
-+	struct cgroup *cgrp = ctx->cgroup;
-+	struct mem_cgroup *memcg;
-+	struct mem_info *info;
-+	struct alert_event *e;
-+	unsigned long curr_stall;
-+	unsigned long curr_mem;
-+	unsigned long delta;
-+
-+	if (!cgrp)
-+		return 1;
-+
-+	if (!cgroup_has_tasks(cgrp))
-+		return 0;
-+
-+	info = bpf_cgrp_storage_get(&cgrp_storage, cgrp, 0,
-+				    BPF_LOCAL_STORAGE_GET_F_CREATE);
-+	if (!info)
-+		return 0;
-+
-+	memcg = bpf_get_mem_cgroup(&cgrp->self);
-+	if (!memcg)
-+		return 0;
-+
-+	bpf_cgroup_flush_stats(cgrp);
-+	curr_stall = bpf_cgroup_stall(cgrp, PSI_MEM_FULL);
-+	delta = curr_stall - info->stall;
-+	bpf_mem_cgroup_flush_stats(memcg);
-+	curr_mem = bpf_mem_cgroup_page_state(memcg, NR_ANON_MAPPED) +
-+		   bpf_mem_cgroup_page_state(memcg, NR_SHMEM);
-+	if (curr_mem < FROM_MB(configs.min_mem) || delta >= configs.threshold)
-+		info->order = 0;
-+	else
-+		info->order = PMD_ORDER;
-+
-+	if (configs.debug) {
-+		e = bpf_ringbuf_reserve(&events, sizeof(*e), 0);
-+		if (e) {
-+			e->prev_stall = info->stall;
-+			e->curr_stall = curr_stall;
-+			e->delta = delta;
-+			e->mem = curr_mem;
-+			e->order = info->order;
-+			bpf_probe_read_kernel_str(e->name, sizeof(e->name),
-+						  cgrp->kn->name);
-+			bpf_ringbuf_submit(e, 0);
-+		}
-+	}
-+
-+	info->stall = curr_stall;
-+	bpf_put_mem_cgroup(memcg);
-+
-+	return 0;
-+}
-+
-+char LICENSE[] SEC("license") = "GPL";
-diff --git a/samples/bpf/mthp_ext.c b/samples/bpf/mthp_ext.c
-new file mode 100644
-index 000000000000..0e064bad136f
---- /dev/null
-+++ b/samples/bpf/mthp_ext.c
-@@ -0,0 +1,340 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <stdint.h>
-+#include <string.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <signal.h>
-+#include <time.h>
-+#include <stdbool.h>
-+#include <getopt.h>
-+#include <sys/epoll.h>
-+#include <linux/limits.h>
-+#include <sys/stat.h>
-+#include <linux/bpf.h>
-+#include <bpf/bpf.h>
-+#include <bpf/libbpf.h>
-+#include "mthp_ext.h"
-+#include "mthp_ext.skel.h"
-+
-+#define DEFAULT_ROOT		"/sys/fs/cgroup"
-+#define DEFAULT_THRESHOLD_MS	100UL
-+#define DEFAULT_INTERVAL_MS	1000UL
-+#define DEFAULT_ORDER		PMD_ORDER
-+#define DEFAULT_MIN_MEM		16
-+
-+static bool exiting;
-+
-+static void usage(const char *name)
-+{
-+	fprintf(stderr,
-+		"Usage: %s [OPTIONS]\n\n"
-+		"Monitor specified cgroup, adjust mTHP size via cgroup_bpf.\n\n"
-+		"Currently supports fixed mTHP size and automatic mTHP size adjustment.\n"
-+		"By default, it monitors the entire cgroup and automatically\n"
-+		"adjusts mTHP size within the specified time window <interval>.\n"
-+		"1. When the memory size of the sub-cgroup falls below\n"
-+		"   the <min> threshold, it will automatically fall back to\n"
-+		"   using 4KB size; otherwise, it will use all mTHP sizes.\n"
-+		"2. When memory.pressure stall time of the sub-cgroup exceeds\n"
-+		"   <threshold>, it will automatically fall back to using 4KB\n"
-+		"   size; otherwise, it will use all mTHP sizes.\n\n"
-+		"Options:\n"
-+		"  -r, --root=PATH        Root cgroup path (default: /sys/fs/cgroup)\n"
-+		"  -t, --threshold=MS     threshold in ms (default: %lu)\n"
-+		"  -i, --interval=MS      interval in ms (default: %lu)\n"
-+		"  -o, --order=NR         Initial mthp order (default: %d)\n"
-+		"  -m, --min=MB           Minimum memory size for mTHP (default: %d)\n"
-+		"  -f, --fixed            Use fixed order, disable auto-adjustment\n"
-+		"  -d, --debug            Enable debug output\n"
-+		"  -h, --help             Show this help\n",
-+		name, DEFAULT_THRESHOLD_MS, DEFAULT_INTERVAL_MS, DEFAULT_ORDER,
-+		DEFAULT_MIN_MEM);
-+}
-+
-+static void sig_handler(int sig)
-+{
-+	exiting = true;
-+}
-+
-+static int setup_psi_trigger(const char *cgroup_path, const char *type,
-+			     unsigned long stall_us, unsigned long window_us)
-+{
-+	char path[PATH_MAX];
-+	char trigger[128];
-+	int fd, nr;
-+
-+	snprintf(path, sizeof(path), "%s/memory.pressure", cgroup_path);
-+	fd = open(path, O_RDWR | O_NONBLOCK);
-+	if (fd < 0) {
-+		fprintf(stderr, "ERROR: open PSI file failed\n");
-+		return -errno;
-+	}
-+
-+	nr = snprintf(trigger, sizeof(trigger), "%s %lu %lu",
-+		      type, stall_us, window_us);
-+	if (write(fd, trigger, nr) < 0) {
-+		fprintf(stderr, "ERROR: write PSI trigger failed\n");
-+		close(fd);
-+		return -errno;
-+	}
-+
-+	return fd;
-+}
-+
-+static int trigger_scan(struct bpf_link *iter_link)
-+{
-+	char buf[256];
-+	int fd;
-+
-+	fd = bpf_iter_create(bpf_link__fd(iter_link));
-+	if (fd < 0) {
-+		fprintf(stderr, "ERROR: bpf_iter_create failed: %s\n",
-+			strerror(errno));
-+		return -1;
-+	}
-+
-+	/* Read to trigger the iter program execution */
-+	while (read(fd, buf, sizeof(buf)))
-+		;
-+
-+	close(fd);
-+	return 0;
-+}
-+
-+static void *monitor_thread(int psi_fd, struct config_local *configs,
-+		struct bpf_link *iter_link, struct ring_buffer *rb)
-+{
-+	struct epoll_event e;
-+	int epoll_fd;
-+	int nfds;
-+
-+	epoll_fd = epoll_create1(0);
-+	if (epoll_fd < 0) {
-+		fprintf(stderr, "ERROR: epoll_create1 failed\n");
-+		return NULL;
-+	}
-+
-+	e.events = EPOLLPRI;
-+	e.data.fd = psi_fd;
-+	if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, psi_fd, &e)) {
-+		fprintf(stderr, "ERROR: epoll_ctl failed\n");
-+		goto CLOSE;
-+	}
-+
-+	/* First initialization */
-+	trigger_scan(iter_link);
-+	if (configs->debug)
-+		ring_buffer__poll(rb, 0);
-+
-+	/* Auto adjustment */
-+	while (!exiting) {
-+		nfds = epoll_wait(epoll_fd, &e, 1, configs->interval);
-+		trigger_scan(iter_link);
-+
-+		if (configs->debug) {
-+			printf("PSI: memory pressure %s\n", nfds ? "high" : "low");
-+			ring_buffer__poll(rb, 0);
-+		}
-+	}
-+
-+CLOSE:
-+	close(epoll_fd);
-+	return NULL;
-+}
-+
-+static int handle_event(void *ctx, void *data, size_t len)
-+{
-+	struct alert_event *e = data;
-+
-+	printf("cgroup %s: stall %lu -> %lu (+%lu), mem %luMB, mthp order=%d\n",
-+		e->name[0] ? e->name : "/",
-+		e->prev_stall, e->curr_stall, e->delta, TO_MB(e->mem), e->order);
-+
-+	return 0;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	const char *root_path = DEFAULT_ROOT;
-+	unsigned long threshold = DEFAULT_THRESHOLD_MS;
-+	unsigned long interval = DEFAULT_INTERVAL_MS;
-+	unsigned int init_order = DEFAULT_ORDER;
-+	unsigned int min_mem = DEFAULT_MIN_MEM;
-+	bool fixed = false;
-+	bool debug = false;
-+	struct mthp_ext *skel;
-+	struct bpf_link *iter_link;
-+	struct bpf_link *ops_link;
-+	struct ring_buffer *rb;
-+	int root_fd;
-+	int psi_fd;
-+	int err = 0;
-+	int opt;
-+
-+	static struct option long_options[] = {
-+		{"root",       required_argument, 0, 'r'},
-+		{"threshold",  required_argument, 0, 't'},
-+		{"interval",   required_argument, 0, 'i'},
-+		{"order",      required_argument, 0, 'o'},
-+		{"min",        required_argument, 0, 'm'},
-+		{"fixed",      no_argument,       0, 'f'},
-+		{"debug",      no_argument,       0, 'd'},
-+		{"help",       no_argument,       0, 'h'},
-+		{0, 0, 0, 0}
-+	};
-+
-+	while ((opt = getopt_long(argc, argv, "r:t:i:o:m:fdh",
-+				  long_options, NULL)) != -1) {
-+		switch (opt) {
-+		case 'r':
-+			root_path = optarg;
-+			break;
-+		case 't':
-+			threshold = strtoul(optarg, NULL, 10);
-+			break;
-+		case 'i':
-+			interval = strtoul(optarg, NULL, 10);
-+			break;
-+		case 'o':
-+			init_order = min(strtoul(optarg, NULL, 10), PMD_ORDER);
-+			break;
-+		case 'm':
-+			min_mem = strtoul(optarg, NULL, 10);
-+			break;
-+		case 'f':
-+			fixed = true;
-+			break;
-+		case 'd':
-+			debug = true;
-+			break;
-+		case 'h':
-+			usage(argv[0]);
-+			return 0;
-+		default:
-+			usage(argv[0]);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	if (!threshold || !interval) {
-+		fprintf(stderr, "ERROR: threshold and interval must be > 0\n");
-+		usage(argv[0]);
-+		return -EINVAL;
-+	}
-+
-+	signal(SIGINT, sig_handler);
-+	signal(SIGTERM, sig_handler);
-+
-+	root_fd = open(root_path, O_RDONLY);
-+	if (root_fd < 0) {
-+		fprintf(stderr, "ERROR: open '%s' failed: %s\n",
-+			root_path, strerror(errno));
-+		return -errno;
-+	}
-+
-+	skel = mthp_ext__open();
-+	if (!skel) {
-+		fprintf(stderr, "ERROR: failed to open BPF skeleton\n");
-+		err = -ENOMEM;
-+		goto open_skel_fail;
-+	}
-+
-+	skel->bss->configs.threshold = threshold;
-+	skel->bss->configs.interval = interval;
-+	skel->bss->configs.init_order = init_order;
-+	skel->bss->configs.min_mem = min_mem;
-+	skel->bss->configs.fixed = fixed;
-+	skel->bss->configs.debug = debug;
-+
-+	err = mthp_ext__load(skel);
-+	if (err) {
-+		fprintf(stderr, "ERROR: failed to load BPF program: %d\n", err);
-+		goto load_skel_fail;
-+	}
-+
-+	/* Attach struct_ops to root cgroup for mthp_choose */
-+	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
-+	opts.flags = BPF_F_CGROUP_FD;
-+	opts.target_fd = root_fd;
-+	ops_link = bpf_map__attach_struct_ops_opts(skel->maps.mthp_ops, &opts);
-+	err = libbpf_get_error(ops_link);
-+	if (err) {
-+		fprintf(stderr, "ERROR: attach struct_ops failed: %d\n", err);
-+		ops_link = NULL;
-+		goto attach_opts_fail;
-+	}
-+
-+	printf("Monitoring         : %s\n"
-+	       "threshold          : %lums\n"
-+	       "Interval           : %lums\n"
-+	       "Initial order      : %d%s\n"
-+	       "min memory         : %dMB\n"
-+	       "Debug              : %s\n"
-+	       "Press Ctrl+C to exit.\n\n",
-+	       root_path, threshold, interval, init_order,
-+	       fixed ? " (fixed)" : " (auto)", min_mem,
-+	       debug ? "on" : "off");
-+
-+	if (fixed) {
-+		while (!exiting)
-+			usleep(interval * 1000);
-+		goto exit_fixed;
-+	}
-+
-+	/* Auto adjustment, attach cgroup iter for scanning root + descendants */
-+	DECLARE_LIBBPF_OPTS(bpf_iter_attach_opts, iter_opts);
-+	union bpf_iter_link_info linfo = {
-+		.cgroup.cgroup_fd = root_fd,
-+		.cgroup.order = BPF_CGROUP_ITER_DESCENDANTS_PRE,
-+	};
-+	iter_opts.link_info = &linfo;
-+	iter_opts.link_info_len = sizeof(linfo);
-+	iter_link = bpf_program__attach_iter(skel->progs.cgroup_scan, &iter_opts);
-+	err = libbpf_get_error(iter_link);
-+	if (err) {
-+		fprintf(stderr, "ERROR: attach cgroup iter failed: %d\n", err);
-+		iter_link = NULL;
-+		goto attach_iter_fail;
-+	}
-+
-+	/* Set up ring buffer for receiving alerts */
-+	rb = ring_buffer__new(bpf_map__fd(skel->maps.events),
-+			      handle_event, NULL, NULL);
-+	if (!rb) {
-+		fprintf(stderr, "ERROR: failed to create ring buffer\n");
-+		err = -ENOMEM;
-+		goto rb_fail;
-+	}
-+
-+
-+	psi_fd = setup_psi_trigger(root_path, "some", threshold * 1000,
-+				   interval * 1000);
-+	if (psi_fd < 0) {
-+		fprintf(stderr, "ERROR: PSI trigger setup failed\n");
-+		goto psi_setup_fail;
-+	}
-+
-+	monitor_thread(psi_fd, &skel->bss->configs, iter_link, rb);
-+
-+	close(psi_fd);
-+psi_setup_fail:
-+	ring_buffer__free(rb);
-+rb_fail:
-+	bpf_link__destroy(iter_link);
-+exit_fixed:
-+attach_iter_fail:
-+	bpf_link__destroy(ops_link);
-+attach_opts_fail:
-+load_skel_fail:
-+	mthp_ext__destroy(skel);
-+open_skel_fail:
-+	close(root_fd);
-+
-+	printf("\nExiting...\n");
-+
-+	return err;
-+}
-diff --git a/samples/bpf/mthp_ext.h b/samples/bpf/mthp_ext.h
-new file mode 100644
-index 000000000000..33dc01bcebd3
---- /dev/null
-+++ b/samples/bpf/mthp_ext.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef __MTHP_EXT_H__
-+#define __MTHP_EXT_H__
-+
-+#define CGROUP_NAME_LEN 128
-+#define PMD_ORDER	9
-+#define min(a, b)	((a) < (b) ? a : b)
-+#define FROM_MB(s)	(s * 1024 * 1024)
-+#define TO_MB(s)	(s / 1024 / 1024)
-+
-+struct config_local {
-+	unsigned long threshold;
-+	unsigned long interval;
-+	unsigned int  init_order;
-+	unsigned int  min_mem;
-+	bool fixed;
-+	bool debug;
-+};
-+
-+struct alert_event {
-+	unsigned long prev_stall;
-+	unsigned long curr_stall;
-+	unsigned long delta;
-+	unsigned long mem;
-+	unsigned int  order;
-+	char name[CGROUP_NAME_LEN];
-+};
-+
-+#endif /* __MTHP_EXT_H__ */
--- 
-2.53.0
+I'm not sure if routing pointers are needed, as opposed to just a
+call/ret (ignoring detachment and reattachment which are different
+anyway). In the end, the x86 caretaker is basically the
+non-preemptable part of vcpu_enter_guest(). Even once you add
+attach/detach, the body of code that runs in the caretaker is roughly
+the same and what changes is setting up the address space, the IDT,
+etc.
+
+> > This must be done atomically at the time Linux offlines/onlines a pCPU.=
+ The
+> > interface from Linux to the caretaker must use some kind of IPI so that=
+ the
+> > new kernel can force a VMEXIT (if needed) in the caretaker, ask it to
+> > serialize the vm state, and pass it down to the new kernel's caretaker.
+>
+> Yes, agree.
+
+BTW, the same IPI is needed to force a VMEXIT even before kexec, if
+the old kernel does anything that breaks the running VM such as
+madvise(MADV_FREE).  Should not happen with properly behaving
+userspace, but it must be accounted for.
+
+> During the kexec gap (when the host kernel is completely offline), the
+> Caretaker acts purely as a producer, writing trace events directly to
+> this physical memory block and advancing the ring buffer pointers.
+>
+> When the new kernel boots and re-adopts the orphaned vCPU, it retrieves
+> this memory from KHO and attaches it back to the tracing subsystem.
+
+Yes, this should work with remote trace buffers.
+
+> I agree regarding HLT: during the gap, the simplest approach is to just
+> skip the exit and return directly to the VM without attempting to handle
+> it.
+
+Or even disable intercepts for HLT/PAUSE/MONITOR/MWAIT.
+
+> I completely agree that the transition into and out of the gap must be
+> synchronous. As discussed above, using an IPI is the right approach. For
+> entry, the host kernel signals the Caretaker via IPI to ensure it
+> reaches a known state before the pCPU is offlined.
+
+And then does INIT/SIPI on the offlined pCPU to re-enter the caretaker
+in detached mode.
+
+> For exit, the new
+> kernel sends an IPI to the orphaned pCPU to force a VM exit, allowing
+> the new kernel to take control, update the Caretaker environment,
+> and complete the reattachment.
+
+> > Yeah, I think APIC emulation to some extent must be moved into the VMX/=
+SVM
+> > fastpaths.  The good news is that this can be done already as a PoC wit=
+hout
+> > needing the whole caretaker and LUO infrastructure.
+>
+> Moving APIC emulation into the VMX/SVM fastpaths makes sense as a
+> standalone effort.
+
+Yup, that's nice to have.
+
+Thanks for the detailed reply, I limited mine to where I wanted your
+input as the author of LUO - especially with respect to privilege
+separation.
+
+Paolo
 
 
