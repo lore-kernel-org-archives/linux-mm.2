@@ -4,104 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92807CD3424
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 16:45:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35785FF886F
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 16:50:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C40BE6B0005; Sun,  3 May 2026 12:45:25 -0400 (EDT)
+	id 3E4306B0005; Sun,  3 May 2026 12:50:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCA276B008A; Sun,  3 May 2026 12:45:25 -0400 (EDT)
+	id 395216B008A; Sun,  3 May 2026 12:50:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A92076B008C; Sun,  3 May 2026 12:45:25 -0400 (EDT)
+	id 283486B008C; Sun,  3 May 2026 12:50:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 94D2D6B0005
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:45:25 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A0D31C0476
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:45:25 +0000 (UTC)
-X-FDA: 84726684210.04.60085AE
-Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5F9AF180009
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:45:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=PmI7bhqu;
-	spf=pass (imf24.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 13CC56B0005
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:50:55 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BAEA12071F
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:50:54 +0000 (UTC)
+X-FDA: 84726698028.18.B166BC6
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9FDCB100007
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:50:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Ejhda/27";
+	spf=pass (imf05.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777826723;
+	s=arc-20220608; t=1777827052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D36tRh9iemqArT+eFH9+J44Q/mAst45Ik8m+uTUNgpY=;
-	b=mS5idYE01ANu1QAMtU9zL7zE3VglHggA4K+R7I0e1X33D5Oo7An5vqYlmIg/9Hm1tOhTN7
-	mDY8mOHPYGJr19+zWUGl/S3kIYtey2P0+C0YfVRXAhZ5+GxFZFdRzfaPOn61R0/fJgVmJ4
-	6kmu1xnac7WkCmXxyQRd2P1UQUL55aA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=PmI7bhqu;
-	spf=pass (imf24.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777826723; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=TS2sd/8o5RJAjVUI5sxoWuY3InAZTHu0PH6QjJRWXc8=;
+	b=FXoKtwEhLkej6m6MMOVwC8wNmQTh9rJb6wFhaDp92VUO+08qUP1Si+vaSMY8XUwmlEQfgJ
+	goc3xVt08VnZ9bP6w43Jwv/lJhQvHvXYr9yt7Z4dklitd83TfOZR5s9fOI0ZHeac2upGpI
+	VuVzBheuSrug7faTK2xJ7/6anYShMcM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777827052; a=rsa-sha256;
 	cv=none;
-	b=WVJb3lTHlPGuDcNtk7wKlHBROQEHF/BwM5IWyPhPMe7nZHY72/IwSGzjDaFpv/E52fZvS/
-	OG0wxnoN+C3xxwoJVKLgLMqcBeTMk8ZOTroTIw1WisNo8T6ppdmpT0fkjHkBbVVdXPIBR/
-	byGUanfgsmEYIqjNzDIZeuJDPDXJU+Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1777826719; bh=D36tRh9iemqArT+eFH9+J44Q/mAst45Ik8m+uTUNgpY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PmI7bhquCei5a69Ol0qbYMEDCtnkXNm2zzbqV1KFZqXiOa2StjYS2dXnjaAxtZHDI
-	 TfKIy09u1aaaELXuGn/iV254hLwhrkRFR+zaOQohbGA7BYkmN4Sc+6dLa/JKAYyeq4
-	 0dbOHyuaEwU5NZJEB40uUkR4ox38YVrVnhDm1siQ=
-Received: from [10.46.141.45] ([36.112.3.68])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id B50A3E1A; Mon, 04 May 2026 00:45:16 +0800
-X-QQ-mid: xmsmtpt1777826716txynkf6ek
-Message-ID: <tencent_C18B14AEB4E720C5E2F9500FB9118E1B5607@qq.com>
-X-QQ-XMAILINFO: MB5+LsFw85NofsRQVejUiRbn8kCTvGwuknrYSo2ltbn/JZWF+vrNmYAu51soMa
-	 am82aY6y+I3APCGVZGPKqhJkQ16c8yWT4tGeFIqq8UHtorfGVvbYsfTuB2SaVnwF+FZIJ6NIiR0h
-	 5ylfZyMaPY5a2FwA6ZlbsG+PIgzMOcZ9baRGMoAPcaT6jDdFQGQ2xMw2+WL4A6mMM9n6PKOVQ4X5
-	 GfGnWPKoxjQWdlMP4KWjM+PHq+EMf0YsfuniDUROuMmb8t+bxSual7XYapCqPlS3tir3MXS9vVj6
-	 qlMAth5lifWOqFB9eUbrpf251OeNUaLH5dvm8Vb/aBr34pQ6UqO2P9G10efV8yM+P8IOwj7vqFJP
-	 ZHou/RCa6U0MZv6N1ZHUq8RHSXoyBVz0+ftPOimyjaV9d0GW6P19VdQsPEyPNVQLzmrOjRUsckeE
-	 jw1w1KR9duTB4C4zyzX7vna2Rv7URcvBKTvJ9SmFiRr3QxefzRY0qnbAGTnrelqdKxC1vTXRdEb4
-	 R62KPhHKHbA9kZ7Rhf3fTH1x2OHQlBU7toFX9DV1BRNjIuFrdqfpwR44/fUYLtweieq0BaMIyy3D
-	 FC4X2BBUT6sxWKubTjGKHqnv3M99EDbAF6V0RXX8VKqV66dzW0O3W7Bqq/WQGt0aFlK7OEsf0Lyc
-	 98dvmlaiPTmhKa+s70aDHKk3LY3ymAvhWWReQDEl3+U7jL5qTpyYb9YCaqnUVLCJ8jyrda+Jtk7R
-	 F83+dt6KpeMhxFNMLTQzLqAK7dc4F1U6DNmEJw3jstO1uvWlQZwKCszhd9SRvccLES4fqNnUW/03
-	 LfKcl9B2ZiLSwfz0hLhIz+qUf8xJuEqBwEKMXioMsZmmB837oPpDqDWqjcs6qEUXUbxZzlNE7R3v
-	 rc9HqJ4IFGI4bZL7nxJPFwjQeg6x2zOd+LYz7YISg6K6xUcQ4LNMLA8437+qAcesorGQ2F1AXUqT
-	 3dYtIvLn+pqvU68ou9YTFT5NVGlYu9PRvisd2vrMc9e/Mfpv7LI/ZG3rsDoddLmB5rtZiNfW4I0Q
-	 3ma8uYgwQTG44qqhkPDysTHYs6kqH2RP1uoWBxICJmy5sxjsly3Oc9K6/DZj4JPkqsTtnmxN42jd
-	 oB+A7ZU8VbD03rKmCJMhLzy9KKbA==
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-OQ-MSGID: <4fa0e3d9-56e1-4043-a073-74571f461e51@qq.com>
-Date: Mon, 4 May 2026 00:45:16 +0800
+	b=Q3Y6oR1vy/O4iSkYNRgqVxqk+QvkFS0rao4KDz4FPR0fkRqOGH1bkVPDP/wlrTrgIQXLom
+	/h05yK6cZeUMqSMp9MS3YmFfV9fHhCFx0xlObvwYX4+Xv1KDdyJdPHn67YYfJS2ccB+UZi
+	5TdrPOpLEbpYzDyV5kMP5rbpyOGJKGQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Ejhda/27";
+	spf=pass (imf05.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c795f441ff7so2200885a12.2
+        for <linux-mm@kvack.org>; Sun, 03 May 2026 09:50:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777827051; x=1778431851; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TS2sd/8o5RJAjVUI5sxoWuY3InAZTHu0PH6QjJRWXc8=;
+        b=Ejhda/27t9KHP9CmWkb8UPUaBGCmsENUYR5nC2SvB0MM0+mEfs98mF6ah9eJCGeFxZ
+         tAD4Io9X4RwtZ93eAOCPTsqCcw+w2XOwAFMKBJ6Stxf0HHfUYNsidrsv0Eki9P7AYp67
+         qcPswG4q1eu8F0WyPLd6wDU0AErt6bhlJSM0JSwtK0o5JUmeB31VzinpqEwM7Sqw0tSa
+         kO5PqYgQEv8vg6fsMbA6efyO0NRWowijxo7geIWH8W3dYABjCFO4Mv0ekV1cuqZlcI+4
+         LLGMCaJENUNfQEkTNrH80mati+pQP58TIjO0GtBJBdS/XR3IxkTZ2nJvtlEUC9JKxZ8i
+         PqiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777827051; x=1778431851;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TS2sd/8o5RJAjVUI5sxoWuY3InAZTHu0PH6QjJRWXc8=;
+        b=KfhhsjfnNFCutDrN/QA5BvK22MmKt10oNg41NKiEaE+V9kD7bfoh5x2sEnxNsYzpOD
+         5nLrxpjnqiCY70D2paueOGeRmnqteZbkF7GP4NG9Fx70gy+4MpOTA7Q+m3OCYC7psgrF
+         XMAzzqhLrO7sD6NEzamCx7AoUhLh+aQEHHy2LESl2+mL4qS7zvbfurH31CNFMg7dDckp
+         65zXAgJmYIoLHLIRHCUFl70J2cOFHGbtugG/igRwPsT0Pe7pIZVqdbq8zo31L96aeE6Q
+         bOv0DAfmwy7x6LbkqhEXmOKJfbI5u1NkMCX5Z2MJ3jGgu0Y0AFitXQA9eICxwoIayNrw
+         d/zw==
+X-Forwarded-Encrypted: i=1; AFNElJ8wzhIEvfZCzHWqOLDQrGKF9q2Uh4Zvmncx3OsqV6RTjgDzs1RlrIU2flnS+Qa+Cc7oCmlvS1PgVw==@kvack.org
+X-Gm-Message-State: AOJu0YzQkMwuH5iQzpPP9FahOQI6oxmejHIjp0+TOBK5Y0UxXLoMLAZL
+	3aPrHGjaBVM+eaz9QrqOTpt9qScyppfvJkvxyUfGCs0SaQipzVBQlmxFSqr7Oc/2qSg4nw==
+X-Gm-Gg: AeBDiev6GuTdMstuNTnanLoba0U/+UqJSN0W11mXpCr0g2p24EPCy1o30iob1kMXiWf
+	4RRBBXN3VxsNZ3ZPYl09onRk0WZs8IX6GYwetRcqzkalRAT2Zca/205bkhMv+fOGPy6z9fsSKsE
+	JsOXHWRc7MEs+ocWbOlPTJT+1prOPMC95MNeHDAue0QlYXGGf+4n2s5C5DCBh1aLAgRigWj+w7W
+	393PllqvgochOfr8fpUoJXFX2lEQrqH/YR/ZAOEABxRVHdpxNZO3B7XPf1pMrPwsLPpmMiwRVyg
+	1qbJF+JzGtxkKkyxvPaez4j0O03uYH6oPj8qeu00uu7SyaQmR5ZWqjCEl6zLCR/ZKHhzVaxrnbg
+	bL6Ehpp60MEtw+CNKTFI3rZTo7jHah6hkjOEvxTc8Ms2huMF8bmIphlLaO3Dh/vnlrSlzysYIcf
+	hsYJoG9Gw1GhA1VYq+d7LbjDMi5B3+hR9gipxT+sf9Z5Yuhl4=
+X-Received: by 2002:a05:6a20:7491:b0:3a2:d838:bfdb with SMTP id adf61e73a8af0-3a7f1f1de5amr6999048637.29.1777827051325;
+        Sun, 03 May 2026 09:50:51 -0700 (PDT)
+Received: from localhost.localdomain ([114.231.84.174])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83707fab756sm1494277b3a.44.2026.05.03.09.50.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 May 2026 09:50:50 -0700 (PDT)
+From: Vernon Yang <vernon2gm@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	roman.gushchin@linux.dev,
+	inwardvessel@gmail.com,
+	shakeel.butt@linux.dev,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	surenb@google.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	dev.jain@arm.com,
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: [PATCH 0/4] mm: introduce mthp_ext via cgroup-bpf to make mTHP more transparent
+Date: Mon,  4 May 2026 00:50:20 +0800
+Message-ID: <20260503165024.1526680-1-vernon2gm@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/madvise: reject invalid process_madvise() advice
- for zero-length vectors
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, sj@kernel.org
-References: <tencent_98F3571EF9236437E5165F5C08CF258A9E08@qq.com>
- <tencent_BB588C2CDED859A873093DAF28B2CC1F7B0A@qq.com>
- <afBNyNJiWEAUSf1i@lucifer>
-From: Fujunjie <fujunjie1@qq.com>
-In-Reply-To: <afBNyNJiWEAUSf1i@lucifer>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9FDCB100007
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5F9AF180009
-X-Stat-Signature: duatmjgguufq6y9rebfpkrtba13d33wd
-X-HE-Tag: 1777826721-649416
-X-HE-Meta: U2FsdGVkX195IbedYGz80t7gfaRZXc8jHjsebZDinu6W3zKO37k0WBQXsdcI1t5RUtH7FAMMLoi6+4jntqkJNT6fFtGeTWXdqNgyM7IyNUIm6NGqh03xHoQkKct35sqIlnGSPgx/Sb77jxOBaGuxVn1Jdc+fdXPraJAthL4ZGN9JDqtdFA9fqc4KNMSwqPElOd8+v2ZXvBKI9AZcXIrYIjRBwq3HlGsNqFq8NvHV56sDPmdCc9tEkiDKufsqtQyQnG95g7+bNTLK4j68iM6MO1hFSy3mxLu5IwfusIA+psgo5/VfUNwMBL/ZLEpVh8HVFExPq3bHHK4qdJ3+V3nXSwYODtPxXpHDeHbZtCr+yNATsrwsmaN+3ZzxMvRJK7YSRv9v3BfisX7mSeD7Nu21CtL8vqGQs3Ldu4d96fsp/uj9/uP4Qi4Wtbdm5h5PEalsHSLvgz2dUFJOvYvi8+B+cs2Zu+WCmMB9ycLDWfAs9QodDFmPQeSm6eaUyPs5OF8iKUKzbQxtgeg7opkRd1epYF2exzaotO3nEToDmrPtHn3IK02e3ofwTccT9oY3aLl8sAWIix8x50cD6kv6Czzk4w1Wnuxwogr3W1sATxiGwsUCVO+KKCW82FpEmoxl8n2At1kFp6Rpmv0jOE4wKKOMIOWjoSUGMuGEJ7AKnuZnBkrRPzc8MKRNLb1TNYgg7duMtIHj7YkUppNTmwSXwT5dtX1MwOZSPDrDDdIfu+VUIfLq1wgHaJTOG9XCcvsGfyDDUbQwHjfJK2H80TyhhVFkj5lKXL1uzF+onoT1saYdpNdE5MHvOqI4rUvuSYCtnyu3GmbYt59N5l47p3xfSxaZnQBlF+DPAfLfpD3CLOg299XKGQXh2ZSD6KJYUaXRTFm7IFBoqjZPLXFOwb75W9t/FOsSaIUBmZj5mEITmL2zeW8+faBPVsgbZnZThn68zRNl/uzVDPuoYpaEumjRPsS
- K94B+KQq
- Q29G6egipdPw97ml29RIngocKD8ofNKmRvie9HUz0CckLKhPTYYKmRI0UOAAtAD34nttBXjCHvJaknNtvLDSfunmwJxMDI09zffAbLkwQkqhwZKtvo/9z4RHtssAw4rHy3+5rdsRvCFkwRi2Abf2ZRESyu+8FfOItOL4tiDn1XHcDfBX8DdNuTnLDjIazc7CpUnamZZV0VIrvNAKEblBYVWzxQU5ipngwa2k3sSvvm2Kkqq6RLHu7eNsjNfIWXyI3QKBTJDl/XOQusb0jSeRZYkNS9kXK1lZNXf6aaHAiAmF2J9QYmn3DzRHxV8N6UI/HDhZDmvhQJezzjVPo/4w4Q4fEazPqU7tmo2s7+/NRdTzDPJs8HnnOSlWo5J0UxrJzv+Aeo/ecMRYbZDp1FjBf+y3qPHChwa2aNQfldFNWD/uGS/vMhuu/OE+eOZwYox0epvBMZE5pBGG0yHBm5sIl+urWJVkDcO7IYOs+4U8vb6pjPitl2Uf4M9RMUZ6wMTge8GS3E1n6oQVxGFAEyHBnZZqFOA==
+X-Stat-Signature: upka8ajidkgqtbw3h43tdtib5n5465fb
+X-HE-Tag: 1777827052-369403
+X-HE-Meta: U2FsdGVkX19ZUixVJfH/Zd4pXeZZkD3rWBT46TeBtDvJRHrDKJ2tbqwlmjC4t2CM+I/0XoAoXeSev2l8qlKvo9ecsOp7EHEUaGhu3zPmVmC2NtAxMzhgQ9QUL6IdG71GuQGqDiX4L9qU9Q3Mxda1t9SfBt4jUWnDSy+SwTOQUfznAhbsnAfHkNFxpfYoIPX1HFM/C/qWoblbQQPCZDjgJkTyPh3+2WabGk74QVTNNS8u4f73OqTp9klAfX3sj8R2wxGnC0vmQtkMOSgNogHc2YkxaTn9nPEkT3eOT1cxFDgULijdKNbkW3zeSsmncldYGfxo+AV9Dkm+tFozFTY7dV9RBfHy1Gnq0IAItWbyedMSb9KKUJF08WqZdjoyCcpaBGXTYhSW3suNqeZFfXr5Iul020mV0YCRi5l/4xKJKUGPDnMjykn47Iau4RL8mbt7MbR6caZJdBw+1OmheZT/2u0KTBIL1JRY3zfxtt4+tN6wG5aGWxSvC5VkVjy4MT+6JEysMUUVsIJBIay//Qd5v45nkP2XMLye5ILv29bfTQcJ90eji1+n3RTFcHeuR+GkCWS1D1AsHxWYcCjsCQtdm2WsBo00MIu+z063O3m4ROD11TXmvNZA8MqyBntfDE6VZFTQDC+PhBJ4P0Q3Vv8tXkDRie9ECgvo/p0GAHUiLdDgNcF5iwJ98YaajOMjYrnrM1fI4654AXy0titQFl3P3ZIPST2BNV07OJ3y1ZmtvD3sdHXz+X/ZC0heQIJfkL6iYNo/JcL1EVG2jzS7SFmcribu4rSPN+CJ14NckxsAwodG1fPgWgd8bN34uuXeRs4YzuvElfLxMj36uOSEnEZYQOWqOjXtoFmRpy/VJu59DXjpl5wDhJFR8vOXbaf7/P4v0Q7IYc51RcUD6h4ZLHqi1sl6fzJDac56bt8k2e9ZB7KNx5hcMzmletj+uawg3k/Mgfd454qJOby7EMXsg8g
+ nUemVlWn
+ 6U8ayp5T+fcEVc4ylrIis/iBa3z8ps5EAKcXh6mo7M0OR/0uSa8/lptQJPxaTLjgjjefdayLpsTP+s6hhGYHPBXIlzVqpH7Iii7O5XCQ4G4Lwpl0Sfs4dD3OzRzH94BvFEIPOQzBKI+sq6ee7FVwY311Oht/umRbx1T3j0KUcU51XDZSuYrH9cWesENicxe1w2ERyTNsxn8g38NdAaKVpTxvei4x9vUJC+30kEYkII4762jviyz9deZkOPWPFiEKzWsGaf9TwkFHKJgYgM2V4KWY+oDnWRXbXEcttrVXHnXaBNgVeXN/BZe3VNba52HLSVFmQcg+vKN5O8CPO3DaaiJ9bjA3capu66CbAWlE4zqBHR79sFGDJHV30EJqK9XxdBG44NPenNc3/qkjKjovEAKo7u2oGuT0VoDCRSYa6OAgvJwEfu2uHd4quO1knKygmhN2V//svB+r2Y5HDbfoZfCLLUTnm8LDtgqOtQvyLjYqIDCD2u9FBCTVsTyyRvORRDHhXtYLxiju4GQ9osASI9b2G3yCJbPZBmhZk3Vfb3hk+6VMSJNpJRgI3GRYtr2RMT0gxEByRY6NShkjaG+42QaCL0t1mf5toRmAwaauzbeh0rnr69YohDTd6mCP8ZMb7xxocVhDG1rzaNWhSoq4GLcuAvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,344 +128,239 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Vernon Yang <yanglincheng@kylinos.cn>
 
+Hi all,
 
-On 4/28/2026 3:02 PM, Lorenzo Stoakes wrote:
-> On Mon, Apr 27, 2026 at 09:43:30AM +0000, fujunjie wrote:
->> process_madvise() used to validate the advice while walking each
->> imported iovec. If the vector has zero total length, vector_madvise()
->> does not enter the loop and can return success without checking whether
->> the advice value is valid.
->>
->> For a local mm, such as process_madvise(PIDFD_SELF, ...), the remote-only
->> process_madvise_remote_valid() check is skipped. As a result, an invalid
->> advice can be reported as success when the vector has zero total length.
->> This differs from madvise(), which rejects an invalid advice before
->> returning success for a zero-length range.
-> 
-> Oops! :) Thanks for taking a look at this.
-> 
->>
->> Validate the generic madvise behavior at the syscall-facing entry points
->> before any vector walk. In process_madvise(), do this before the
->> remote-only advice restriction so unsupported advice is rejected with the
->> same priority for local and remote mm. Then keep the per-range helper
->> focused on address/length validation, avoiding repeated behavior checks
->> for every iovec.
-> 
-> The whole thing is a little bit of a mess to be honest I think we could clean
-> this up a bit more, see below (+ attached patch).
-> 
->>
->> Valid zero-length requests remain no-ops and continue to return 0. Add a
-> 
-> NIT: 'no-ops' -> 'a noop'. What is a valid zero-length request? Surely it's
-> never valid?
-> 
->> selftest that covers invalid advice with a zero-length iovec and an empty
->> vector, while also checking that a valid zero-length request still
->> succeeds.
-> 
-> Thanks appreciate you adding a self-test!
-> 
->>
->> Fixes: 021781b01275 ("mm/madvise: unrestrict process_madvise() for current process")
->> Signed-off-by: fujunjie <fujunjie1@qq.com>
->> ---
->> v2:
->> - Validate behavior at the syscall-facing entry points and leave the range
->>   helper for address/length checks, avoiding repeated behavior checks in the
->>   iovec loop.
->> - Put the generic process_madvise() behavior check before
->>   process_madvise_remote_valid(), as suggested by David.
->> - Keep the zero-length selftest coverage from v1.
->>
->> Testing:
->> Built bzImage and tools/testing/selftests/mm/process_madv. In QEMU, the
->> process_madv selftest reports 7/7 passed.
->>
->>  mm/madvise.c                              | 29 ++++++++++++++++-------------
->>  tools/testing/selftests/mm/process_madv.c | 29 +++++++++++++++++++++++++++++
->>  2 files changed, 45 insertions(+), 13 deletions(-)
->>
->> diff --git a/mm/madvise.c b/mm/madvise.c
->> index 69708e953cf56..ce238dd96f158 100644
->> --- a/mm/madvise.c
->> +++ b/mm/madvise.c
->> @@ -1834,13 +1834,10 @@ static void madvise_finish_tlb(struct madvise_behavior *madv_behavior)
->>  		tlb_finish_mmu(madv_behavior->tlb);
->>  }
->>
->> -static bool is_valid_madvise(unsigned long start, size_t len_in, int behavior)
->> +static bool is_valid_madvise_range(unsigned long start, size_t len_in)
->>  {
->>  	size_t len;
->>
->> -	if (!madvise_behavior_valid(behavior))
->> -		return false;
->> -
-> 
-> So taking this out makes sense, but I think we're now in a bit of a confused
-> state where is_valid_madvise_range() checks:
-> 
-> * Whether start is page-aligned.
-> * Whether len_in was (size_t)(small neg) aligned up -> 0
-> * Whether start + len overflows
-> 
-> Returning a boolean
-> 
-> And madvise_should_skip():
-> 
-> * Calls is_valid_madvise_range()
-> * Checks if range is empty
-> 
-> Returning a boolean, setting output variable *err to error if the former
-> failed.
-> 
-> We also hamfistedly check "start + PAGE_ALIGN(len_in) == start" which, unless
-> I'm much mistaken, is equivalent to !len_in, except for the small negative
-> aligning to zero case which we already checked.
-> 
-> And to make it all more fun, both functions return opposite booleans :))
-> 
-> So I think we should put this all into one function while we're here, get rid of
-> the confusing output variable, return an error code, and have the callers
-> manually check for !len_in also (compilers will optimise this into something
-> sensible).
-> 
-> This makes it clear at the call sites we skip empty ranges, cleans stuff up and
-> makes clear what we check the input range for.
-> 
-> I've attached a patch that you can apply on top of yours to make it clear what I
-> mean here (no need for attribution!)
-> 
-> I checked and your test passes! :)
-> 
-> Cheers, Lorenzo
-> 
->>  	if (!PAGE_ALIGNED(start))
->>  		return false;
->>  	len = PAGE_ALIGN(len_in);
->> @@ -1859,17 +1856,15 @@ static bool is_valid_madvise(unsigned long start, size_t len_in, int behavior)
->>   * madvise_should_skip() - Return if the request is invalid or nothing.
->>   * @start:	Start address of madvise-requested address range.
->>   * @len_in:	Length of madvise-requested address range.
->> - * @behavior:	Requested madvise behavior.
->>   * @err:	Pointer to store an error code from the check.
->>   *
->> - * If the specified behaviour is invalid or nothing would occur, we skip the
->> - * operation.  This function returns true in the cases, otherwise false.  In
->> - * the former case we store an error on @err.
->> + * If the specified range is invalid or nothing would occur, we skip the
->> + * operation.  This function returns true in these cases, otherwise false.  In
->> + * the former case we store an error in @err.
-> 
-> OK looks good, thanks for fixing the typo :)
-> 
->>   */
->> -static bool madvise_should_skip(unsigned long start, size_t len_in,
->> -		int behavior, int *err)
->> +static bool madvise_should_skip(unsigned long start, size_t len_in, int *err)
->>  {
->> -	if (!is_valid_madvise(start, len_in, behavior)) {
->> +	if (!is_valid_madvise_range(start, len_in)) {
->>  		*err = -EINVAL;
->>  		return true;
->>  	}
->> @@ -2013,7 +2008,10 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
->>  		.tlb = &tlb,
->>  	};
->>
->> -	if (madvise_should_skip(start, len_in, behavior, &error))
->> +	if (!madvise_behavior_valid(behavior))
->> +		return -EINVAL;
->> +
->> +	if (madvise_should_skip(start, len_in, &error))
->>  		return error;
->>  	error = madvise_lock(&madv_behavior);
->>  	if (error)
->> @@ -2056,7 +2054,7 @@ static ssize_t vector_madvise(struct mm_struct *mm, struct iov_iter *iter,
->>  		size_t len_in = iter_iov_len(iter);
->>  		int error;
->>
->> -		if (madvise_should_skip(start, len_in, behavior, &error))
->> +		if (madvise_should_skip(start, len_in, &error))
->>  			ret = error;
->>  		else
->>  			ret = madvise_do_behavior(start, len_in, &madv_behavior);
->> @@ -2131,6 +2129,11 @@ SYSCALL_DEFINE5(process_madvise, int, pidfd, const struct iovec __user *, vec,
->>  		goto release_task;
->>  	}
->>
->> +	if (!madvise_behavior_valid(behavior)) {
->> +		ret = -EINVAL;
->> +		goto release_mm;
->> +	}
->> +
->>  	/*
->>  	 * We need only perform this check if we are attempting to manipulate a
->>  	 * remote process's address space.
->> diff --git a/tools/testing/selftests/mm/process_madv.c b/tools/testing/selftests/mm/process_madv.c
->> index cd4610baf5d7d..9a7e2788fcc50 100644
->> --- a/tools/testing/selftests/mm/process_madv.c
->> +++ b/tools/testing/selftests/mm/process_madv.c
->> @@ -309,6 +309,35 @@ TEST_F(process_madvise, invalid_vlen)
->>  	ASSERT_EQ(munmap(map, pagesize), 0);
->>  }
->>
->> +/*
->> + * Test that invalid advice is rejected even when the iovec has zero total
->> + * length. A zero-length advice is a no-op for valid advice, but invalid
->> + * advice should still fail with EINVAL.
->> + */
->> +TEST_F(process_madvise, invalid_advice_zero_length)
->> +{
->> +	struct iovec vec = {
->> +		.iov_base = NULL,
->> +		.iov_len = 0,
->> +	};
->> +	int pidfd = self->pidfd;
->> +	ssize_t ret;
->> +
->> +	errno = 0;
->> +	ret = sys_process_madvise(pidfd, &vec, 1, -1, 0);
->> +	ASSERT_EQ(ret, -1);
->> +	ASSERT_EQ(errno, EINVAL);
->> +
->> +	errno = 0;
->> +	ret = sys_process_madvise(pidfd, &vec, 1, MADV_DONTNEED, 0);
->> +	ASSERT_EQ(ret, 0);
->> +
->> +	errno = 0;
->> +	ret = sys_process_madvise(pidfd, NULL, 0, -1, 0);
->> +	ASSERT_EQ(ret, -1);
->> +	ASSERT_EQ(errno, EINVAL);
->> +}
->> +
->>  /*
->>   * Test process_madvise() with an invalid flag value. Currently, only a flag
->>   * value of 0 is supported. This test is reserved for the future, e.g., if
->> base-commit: 1b55f8358e35a67bf3969339ea7b86988af92f66
->> --
->> 2.34.1
->>
-> 
-> ----8<----
-> From 55ea8f619b9772d8c517e2dd15d7bb7558ce5da2 Mon Sep 17 00:00:00 2001
-> From: Lorenzo Stoakes <ljs@kernel.org>
-> Date: Tue, 28 Apr 2026 07:48:30 +0100
-> Subject: [PATCH] fixups
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
->  mm/madvise.c | 55 +++++++++++++++++++++-------------------------------
->  1 file changed, 22 insertions(+), 33 deletions(-)
-> 
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index ce238dd96f15..865fe7fb3d81 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -1834,45 +1834,31 @@ static void madvise_finish_tlb(struct madvise_behavior *madv_behavior)
->  		tlb_finish_mmu(madv_behavior->tlb);
->  }
-> 
-> -static bool is_valid_madvise_range(unsigned long start, size_t len_in)
-> +/**
-> + * check_input_range() - Check if the requested range is valid.
-> + * @start:	Start address of madvise-requested address range.
-> + * @len_in:	Length of madvise-requested address range.
-> + *
-> + * Returns: 0 if the input range is valid, otherwise an error code.
-> + */
-> +static int check_input_range(unsigned long start, size_t len_in)
->  {
->  	size_t len;
-> 
->  	if (!PAGE_ALIGNED(start))
-> -		return false;
-> +		return -EINVAL;
-> +
->  	len = PAGE_ALIGN(len_in);
-> 
->  	/* Check to see whether len was rounded up from small -ve to zero */
->  	if (len_in && !len)
-> -		return false;
-> +		return -EINVAL;
-> 
-> +	/* Overflow? */
->  	if (start + len < start)
-> -		return false;
-> -
-> -	return true;
-> -}
-> +		return -EINVAL;
-> 
-> -/*
-> - * madvise_should_skip() - Return if the request is invalid or nothing.
-> - * @start:	Start address of madvise-requested address range.
-> - * @len_in:	Length of madvise-requested address range.
-> - * @err:	Pointer to store an error code from the check.
-> - *
-> - * If the specified range is invalid or nothing would occur, we skip the
-> - * operation.  This function returns true in these cases, otherwise false.  In
-> - * the former case we store an error in @err.
-> - */
-> -static bool madvise_should_skip(unsigned long start, size_t len_in, int *err)
-> -{
-> -	if (!is_valid_madvise_range(start, len_in)) {
-> -		*err = -EINVAL;
-> -		return true;
-> -	}
-> -	if (start + PAGE_ALIGN(len_in) == start) {
-> -		*err = 0;
-> -		return true;
-> -	}
-> -	return false;
-> +	return 0;
->  }
-> 
->  static bool is_madvise_populate(struct madvise_behavior *madv_behavior)
-> @@ -2010,12 +1996,13 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
-> 
->  	if (!madvise_behavior_valid(behavior))
->  		return -EINVAL;
-> -
-> -	if (madvise_should_skip(start, len_in, &error))
-> +	error = check_input_range(start, len_in);
-> +	if (error || !len_in)
->  		return error;
->  	error = madvise_lock(&madv_behavior);
->  	if (error)
->  		return error;
-> +
->  	madvise_init_tlb(&madv_behavior);
->  	error = madvise_do_behavior(start, len_in, &madv_behavior);
->  	madvise_finish_tlb(&madv_behavior);
-> @@ -2054,10 +2041,12 @@ static ssize_t vector_madvise(struct mm_struct *mm, struct iov_iter *iter,
->  		size_t len_in = iter_iov_len(iter);
->  		int error;
-> 
-> -		if (madvise_should_skip(start, len_in, &error))
-> -			ret = error;
-> -		else
-> +		error = check_input_range(start, len_in);
-> +		if (len_in && !error)
->  			ret = madvise_do_behavior(start, len_in, &madv_behavior);
-> +		else
-> +			ret = error;
-> +
->  		/*
->  		 * An madvise operation is attempting to restart the syscall,
->  		 * but we cannot proceed as it would not be correct to repeat
-> --
-> 2.54.0
+Background
+==========
 
-Thanks, Lorenzo. That looks clearer to me too.
+As is well known, a system can simultaneously run multiple different
+scenarios. However, THP is not beneficial in every scenario — it is only
+most suitable for memory-intensive applications that are not sensitive
+to tail latency. For example, Redis, which is sensitive to tail latency,
+is not suitable for THP. But in practice, due to Redis issues, the
+entire THP functionality is often turned off, preventing other scenarios
+from benefiting from it.
 
-Since this is already in mm-unstable, I'll wait for Andrew's preference.
-If a respin is needed, I'll fold this in together with SJ's comments.
+There are also some embedded scenarios (e.g. Android) that directly use
+2MB THP, where the granularity is too large. Therefore, we introduced
+mTHP in v6.8, which supports multiple-size THP. In practice, however, we
+still globally fix a single mTHP size and are unable to automatically
+select different mTHP sizes based on different scenarios.
 
-Best regards,
-fujunjie
+After testing, it was found that
+
+- When the system has a lot of free memory, it is normal for Redis to
+  use mTHP. performance degradation in Redis only occurs when the system
+  is under high memory pressure.
+- Additionally, when a large number of small-memory processes use mTHP,
+  memory waste is prone to occur, and performance degradation may also
+  happen during fast memory allocation/release.
+
+Previously, "Cgroup-based THP control"[1] was proposed, but it had the
+following issues.
+
+- It breaks the cgroup hierarchy property.
+- Add new THP knobs, making sysadmin's job more complex
+
+Previously, "mm, bpf: BPF-MM, BPF-THP"[2] was proposed, but it had the
+following issues.
+
+- It didn't address the issue on the per-process mode.
+- For global mode, the prctl(PR_SET_THP_DISABLE) has already achieved
+  the same objective, there is no need to add two mechanisms for the
+  same purpose.
+- Attaching st_ops to mm_struct, the same issues that cgroup-bpf once
+  faced are likely to arise again, e.g. lifetime of cgroup vs bpf, dying
+  cgroups, wq deadlock, etc. It is recommended to use cgroup-bpf for
+  implementation.
+- The test cases are too simplistic, lacking eBPF cases similar to real
+  workloads such as sched_ext.
+
+If I miss some thing, please let me know. Thanks!
+
+Solution
+========
+
+This series will solve all the problems mentioned above.
+
+1. Using cgroup-bpf to customize mTHP size for different scenarios
+2. Use a cgroup eBPF program to monitor all sub-cgroups. Sub-cgroups
+   under the same parent-cgroup adopt the same eBPF program. Only multiple
+   sibling-cgroups (where the parent-cgroup has no attached eBPF program)
+   are supported to attach multiple different eBPF programs without
+   breaking the hierarchy property of the cgroup.
+3. Automatically select different mTHP sizes for different cgroups,
+   let's focus on making them truly transparent.
+4. Design mthp_ext case to address real workload issues.
+
+The main functions of the mthp_ext are as follows:
+
+- When sub-cgroup is under high memory pressure (default, full 100ms 1s),
+  it will automatically fallback to using 4KB.
+- When the anon+shmem memory usage of sub-cgroup falls below the minimum
+  memory (default 16MB), small-memory processes will automatically
+  fallback to using 4KB.
+- Under normal conditions, when there is no memory pressure and the
+  anon+shmem memory usage exceeds the minimum memory, all mTHP sizes
+  shall be utilized by kernel.
+- Monitor the root-cgroup (/sys/fs/cgroup) directory by default, with
+  support for specifying any cgroup directory.
+
+Performance
+===========
+
+The below is some performance test results, testing on x86_64 machine
+(AMD Ryzen9 9950X 16C32T, 32G memory, 8G zram).
+
+NOTE: The following always/never labels indicate setting all mTHP sizes
+to always/never. Detailed test script reference[4].
+
+redis results
+~~~~~~~~~~~~~
+
+command: redis-benchmark --csv -r 3000000 -n 3000000 -d 1024 -c 16 -P 32 -t set
+
+When cgroup memory.high=max.
+
+| redis-noBGSAVE | always      | never                | always+mthp_ext      |
+|----------------|-------------|----------------------|----------------------|
+| rps            | 1410824.167 | 1210387.500 (-14.2%) | 1265659.833 (-10.3%) |
+| avg_latency_ms | 0.220       | 0.259       (-17.7%) | 0.247       (-12.3%) |
+| p95_latency_ms | 0.618       | 0.708       (-14.6%) | 0.676       (-9.40%) |
+| p99_latency_ms | 0.687       | 0.818       (-19.1%) | 0.756       (-10.0%) |
+
+| redis-BGSAVE   | always      | never                | always+mthp_ext      |
+|----------------|-------------|----------------------|----------------------|
+| rps            | 1418032.127 | 1212306.873 (-14.5%) | 1261069.373 (-11.1%) |
+| avg_latency_ms | 0.218       | 0.259       (-18.8%) | 0.248       (-13.8%) |
+| p95_latency_ms | 0.620       | 0.714       (-15.2%) | 0.687       (-10.8%) |
+| p99_latency_ms | 0.684       | 0.828       (-21.1%) | 0.756       (-10.5%) |
+
+When cgroup memory.high=2G.
+
+| redis-noBGSAVE | always    | never                 | always+mthp_ext       |
+|----------------|-----------|-----------------------|-----------------------|
+| rps            | 24813.980 | 1049254.583 (4128.5%) | 1063171.270 (4184.6%) |
+| avg_latency_ms | 13.317    | 0.302       (  97.7%) | 0.298       (  97.8%) |
+| p95_latency_ms | 23.220    | 0.754       (  96.8%) | 0.828       (  96.4%) |
+| p99_latency_ms | 369.492   | 1.154       (  99.7%) | 1.615       (  99.6%) |
+
+| redis-BGSAVE   | always    | never                 | always+mthp_ext       |
+|----------------|-----------|-----------------------|-----------------------|
+| rps            | 48373.433 | 1058403.500 (2088.0%) | 1070805.707 (2113.6%) |
+| avg_latency_ms | 6.884     | 0.300       (  95.6%) | 0.296       (  95.7%) |
+| p95_latency_ms | 16.474    | 0.743       (  95.5%) | 0.820       (  95.0%) |
+| p99_latency_ms | 326.058   | 1.170       (  99.6%) | 1.586       (  99.5%) |
+
+When the redis is under no memory pressure, RPS drops by 10.3% (from 1.4M to
+1.2M, Is this within the acceptable range?).
+
+However, under high memory pressure, RPS improve by 4184.6% (from 24K to 1M),
+while significantly reducing the tail latency by 99%.
+
+unixbench results
+~~~~~~~~~~~~~~~~~
+
+command: ./Run -c 1 shell8
+
+| unixbench shell8 | always  |      never      | always+mthp_ext |
+|------------------|---------|-----------------|-----------------|
+| Score            | 23019.4 | 24378.3 (5.90%) | 24314.5 (5.63%) |
+
+mthp_ext improved by 5.63%.
+
+kernbench results
+~~~~~~~~~~~~~~~~~
+
+When cgroup memory.high=max, mthp_ext no regression.
+
+                            always                 never               always+mthp_ext
+Amean     user-32    19666.44 (   0.00%)    18464.56 *   6.11%*    19650.13 *   0.08%*
+Amean     syst-32     1169.16 (   0.00%)     2235.17 * -91.18%*     1169.42 (  -0.02%)
+Amean     elsp-32      702.51 (   0.00%)      699.90 *   0.37%*      702.15 (   0.05%)
+BAmean-95 user-32    19665.93 (   0.00%)    18461.86 (   6.12%)    19647.61 (   0.09%)
+BAmean-95 syst-32     1168.68 (   0.00%)     2234.27 ( -91.18%)     1169.20 (  -0.04%)
+BAmean-95 elsp-32      702.34 (   0.00%)      699.80 (   0.36%)      702.04 (   0.04%)
+BAmean-99 user-32    19665.93 (   0.00%)    18461.86 (   6.12%)    19647.61 (   0.09%)
+BAmean-99 syst-32     1168.68 (   0.00%)     2234.27 ( -91.18%)     1169.20 (  -0.04%)
+BAmean-99 elsp-32      702.34 (   0.00%)      699.80 (   0.36%)      702.04 (   0.04%)
+
+When cgroup memory.high=2G, mthp_ext improved by 20.98%.
+
+                            always                 never               always+mthp_ext
+Amean     user-32    20459.89 (   0.00%)    18517.24 *   9.49%*    19963.73 *   2.43%*
+Amean     syst-32    11890.63 (   0.00%)     6681.95 *  43.80%*     9395.94 *  20.98%*
+Amean     elsp-32     1305.29 (   0.00%)      928.13 *  28.89%*     1109.37 *  15.01%*
+BAmean-95 user-32    20439.38 (   0.00%)    18510.65 (   9.44%)    19957.89 (   2.36%)
+BAmean-95 syst-32    11789.99 (   0.00%)     6679.03 (  43.35%)     9381.77 (  20.43%)
+BAmean-95 elsp-32     1302.18 (   0.00%)      927.89 (  28.74%)     1108.65 (  14.86%)
+BAmean-99 user-32    20439.38 (   0.00%)    18510.65 (   9.44%)    19957.89 (   2.36%)
+BAmean-99 syst-32    11789.99 (   0.00%)     6679.03 (  43.35%)     9381.77 (  20.43%)
+BAmean-99 elsp-32     1302.18 (   0.00%)      927.89 (  28.74%)     1108.65 (  14.86%)
+
+TODO
+====
+
+- Do not destroy the cgroup hierarchy property. If an eBPF program
+  already exists in the sub-cgroup, trigger an error and clear the
+  already set bpf_mthp_ops data.
+- mthp_ext handles different "enum tva_type" values. For example, for
+  small-memory processes, only 4KB is used in TVA_PAGEFAULT, while
+  TVA_KHUGEPAGED/TVA_FORCED_COLLAPSE continues to collapse all mthp
+  size. Under high memory pressure, only 4KB is used for
+  TVA_PAGEFAULT/TVA_KHUGEPAGED, while TVA_FORCED_COLLAPSE continues to
+  collapse all mthp size.
+- selftest
+
+If there are additional scenarios, please let me know as well, so I can
+conduct further prototype verification tests to make mTHP more
+transparent.
+
+If any of the above the strategies can be integrated into the kernel,
+please let me know. I would be delighted to incorporate these strategies
+into the kernel.
+
+This series is based on linux v7.1-rc1 (26fd6bff2c05) + "mm: BPF OOM"[3]
+first four patches.
+
+Thank you very much for your comments and discussions.
+
+[1] https://lore.kernel.org/linux-mm/20241030083311.965933-1-gutierrez.asier@huawei-partners.com
+[2] https://lore.kernel.org/linux-mm/20251026100159.6103-1-laoar.shao@gmail.com
+[3] https://lore.kernel.org/linux-mm/20260127024421.494929-1-roman.gushchin@linux.dev
+[4] https://github.com/vernon2gh/app_and_module/tree/main/mthp_ext
+
+Vernon Yang (4):
+  psi: add psi_group_flush_stats() function
+  bpf: add bpf_cgroup_{flush_stats,stall} function
+  mm: introduce bpf_mthp_ops struct ops
+  samples: bpf: add mthp_ext
+
+ MAINTAINERS                     |   3 +
+ include/linux/bpf_huge_memory.h |  35 ++++
+ include/linux/cgroup-defs.h     |   1 +
+ include/linux/huge_mm.h         |   6 +
+ include/linux/psi.h             |   1 +
+ kernel/bpf/helpers.c            |  29 +++
+ kernel/sched/psi.c              |  34 +++-
+ mm/Kconfig                      |  14 ++
+ mm/Makefile                     |   1 +
+ mm/bpf_huge_memory.c            | 169 ++++++++++++++++
+ samples/bpf/.gitignore          |   1 +
+ samples/bpf/Makefile            |   7 +-
+ samples/bpf/mthp_ext.bpf.c      | 142 +++++++++++++
+ samples/bpf/mthp_ext.c          | 340 ++++++++++++++++++++++++++++++++
+ samples/bpf/mthp_ext.h          |  30 +++
+ 15 files changed, 804 insertions(+), 9 deletions(-)
+ create mode 100644 include/linux/bpf_huge_memory.h
+ create mode 100644 mm/bpf_huge_memory.c
+ create mode 100644 samples/bpf/mthp_ext.bpf.c
+ create mode 100644 samples/bpf/mthp_ext.c
+ create mode 100644 samples/bpf/mthp_ext.h
+
+--
+2.53.0
 
 
