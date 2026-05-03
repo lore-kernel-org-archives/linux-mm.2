@@ -4,83 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9351ECD3424
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 17:35:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98255FF886F
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 17:59:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E60C76B008A; Sun,  3 May 2026 13:35:26 -0400 (EDT)
+	id B02BF6B0088; Sun,  3 May 2026 13:59:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E11CC6B008C; Sun,  3 May 2026 13:35:26 -0400 (EDT)
+	id AB3C26B008A; Sun,  3 May 2026 13:59:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4EE76B0092; Sun,  3 May 2026 13:35:26 -0400 (EDT)
+	id 9C9846B008C; Sun,  3 May 2026 13:59:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C93066B008A
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:35:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6CB128C7AD
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:35:26 +0000 (UTC)
-X-FDA: 84726810252.07.B3A56C7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B3860120007
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:35:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIlgec5Y;
-	spf=pass (imf29.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 87CB86B0088
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:59:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E07C21C1412
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:59:03 +0000 (UTC)
+X-FDA: 84726869766.25.A840C9F
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3E5F52000E
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:59:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZNa+l3NU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777829724;
+	s=arc-20220608; t=1777831142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GN39IVhl46BFR07AUR8szHt2wyzVwSB98dBsnOAUilw=;
-	b=Ih7zQSxXTJ9IMt5fDQ/UsG2sdV5M126VZuh8odrLp7xHZpj1m5EjHSTnESiKtIOpvC4Ptk
-	olvaLxzTV7DiDXOuA6WOKn2rsuYp6gMBOsFsiIlG/yIIdt8XKdJ3LmAYTmzKreqi39HM9w
-	zYwSizqJUA1ulrruyY4E3NM0uGKw83A=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIlgec5Y;
-	spf=pass (imf29.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777829724; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=pFk0o4JWpcFOrDUzmGXYwzfHWtQM19RfFRUQ7XDLJQ0=;
+	b=7wdRBjf7phHPFW1wrsWiQuw5I3hlgVGSN+/NhTvVlYSogPVPPozvxIJ8gpE/Hcgy1+ucTc
+	IOfHzg027eXzoNd8A5HHBE+rtnNgOQLksRb7Z8NU9A3zKJO0njSbLWFxjSrq3H/ZnRM9sy
+	4gepwI2NSi1YXTb0Za0fY+AVzGBKx+E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777831142; a=rsa-sha256;
 	cv=none;
-	b=XCRLZZicp/yk48lkIxLpE14xoccn28wTzth8hWSs+DEI7r9J9PeDqm6pMq3+GURxmnkWYI
-	bPgickDfFPxToDkMyFTK89rHOjpGiZX3Lvdw6BBGcCWAgGJ+IrMi7HTsigr+w7fWpAc9k4
-	jF4ovTgn/wrXTTJzQdkrJ/lvucDWtCY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1CD1060120;
-	Sun,  3 May 2026 17:35:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CCFC2BCC9;
-	Sun,  3 May 2026 17:35:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777829723;
-	bh=Lrbq7R7Bs5eWqu3TEwgo9f4OD7xPcRENrhdU2XXOl0A=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=VIlgec5Yh5iXUJEtyLNGJT5aaPlFySsTzVBmX5hflWEE85zhM5aC5OyUjs3u5ztrE
-	 VI6f/x9ghuq5XVWhylPpM2Z24thZqpb733UVpzxUUJGRwqY86vGCjsSYIrRjS26YXX
-	 ZP6R52r9MoQWLd4JO6AWWK2+LxkV6WAgp2Y2vNflCOjIigPTal74EOztAveZCDA5Hs
-	 fbVYwk5eAxn7DsYWFnp5NfqqVPTPh7lUVz43vzWA8dPSYrBJ4wlE+QWHxzgX+svnx4
-	 9eLjJsAPGmuOcrqmJm0QzyQootQ9/mGvFrtebKInoUIk8cPC3R0XeNF0c+09fdjBfk
-	 iQoiJKDY5ZCLQ==
-Content-Type: multipart/mixed; boundary="===============8100301415052033692=="
-MIME-Version: 1.0
-Message-Id: <c13f99d42c434ec73ec1e8cf1141047146ab359e60e56e78e1c32554d6e01e9b@mail.kernel.org>
-In-Reply-To: <20260503165024.1526680-5-vernon2gm@gmail.com>
-References: <20260503165024.1526680-5-vernon2gm@gmail.com>
-Subject: Re: [PATCH 4/4] samples: bpf: add mthp_ext
-From: bot+bpf-ci@kernel.org
-To: vernon2gm@gmail.com,akpm@linux-foundation.org,david@kernel.org,ljs@kernel.org,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,ast@kernel.org,daniel@iogearbox.net,surenb@google.com
-Cc: linux-kernel@vger.kernel.org,linux-mm@kvack.org,bpf@vger.kernel.org,baohua@kernel.org,lance.yang@linux.dev,dev.jain@arm.com,yanglincheng@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Sun,  3 May 2026 17:35:21 +0000 (UTC)
+	b=uVwcCeBoxse6clYIaMXZcsg7JznIaz8166dWPo3uZ5uIXA+IGiwzQbuAhqbNUDKHgtRax7
+	+zcCrSgHkTroUKEsmAJUT7WuHyq1tm9ZwucKq3lcTszmIxoxWurnzqAitNTvROhv2+3eq9
+	+HuWzKo3ZcusbgpOHDhHPuKWhqZ2mfM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZNa+l3NU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-364e5d895e3so1791970a91.2
+        for <linux-mm@kvack.org>; Sun, 03 May 2026 10:59:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777831141; x=1778435941; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pFk0o4JWpcFOrDUzmGXYwzfHWtQM19RfFRUQ7XDLJQ0=;
+        b=ZNa+l3NUDS9g2xC3zJAxtIZoMj9Pfq0aYVHzyHEzmJRH4C/WW570fwYYnPt8Ow90/t
+         AQiSX6i12D+hEsv9HQEqE6JyZ7rIFjRuxbnN5aLWeFjEYYIkpVEB/fBc/oBmmIOtiGNg
+         Rqnm8EZwJnQm/ISDKw+TgKYW8onKNqA8ZSLR9k8sPRcN/xZbmn5WZlwWfTqGsyltEkxh
+         HzjMAF/T1zLoanzC3xtWZYSO8dQGnNgkMaj5AQ7qCQGk+/iH0FvmQLaWQ46IOaUQai4Z
+         l0WXpcQriE/YRBVOi+538K3MMkyCLFzNXJg1sDR5Moy7fkHn3YqSsC4I/sEgegiUrG+0
+         9tcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777831141; x=1778435941;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pFk0o4JWpcFOrDUzmGXYwzfHWtQM19RfFRUQ7XDLJQ0=;
+        b=gd92d4sy8xw8GJJELqpyGwU9gMA9Zgu1KUB2moAnpp9Gr0HomYBv8N/5b99QsSfVGT
+         FdhdYC1/Nbtc6daBhX4XJM1zEEhCqOd52kGLIoKUiudYRFgpKvtY1+4uvvneWPVKRKbf
+         R4Hun0+VHHKoQeBVufr/Ewnja3umvpgR0T9Jh31zNjaiWWPzB6+pFdOdYKYoBul2BOJv
+         xDdHIpFeB9Gj11NlHUpOqKmOw7Ml98bMSi5iD+52dOFK8TtjQ82+WTKxO2GmMVQaPPWS
+         89wkj2jFpw6MrUvs4I4fxDD9MZS4n7ACvCVK1Kk+DryDwm7UqAm3AqnTrZoaMv6Zm7nH
+         S1ng==
+X-Forwarded-Encrypted: i=1; AFNElJ8EIo8diCrXY1OFkrsrKxDEgOZQyGWtY7wmPMPwwXQHc+GmQb1VpRASHCWPDDt3Xd9ruv38J6hBQA==@kvack.org
+X-Gm-Message-State: AOJu0Yz+slyS51phJm/Kttk2FTwHJUoA3lRXrgbop159ROGEiThAJPYH
+	FcCMmg/Z1tRGHNaUyMonNrOzVJDTxpZ/Jfjb0jLQqzWt/SJQ+tYftwkD
+X-Gm-Gg: AeBDiev2VyigNmd0ZkoJ4jMbV1+qjHMFNDzFZ4qzYHZme8wOUceRym059t6XcBhmLWX
+	PhzYqpy2jg14EL10Uq3kgjmsNt++5baXf+1rrrU+lV7cZ5rE5dvE/xd0kqU+NSGQP+LuFNSN4iV
+	cAMIEa8adXVuN4LpJSakXIsNkrg6+CggJj+4rNTsh5lI75hOSlOAqXIFJEITPQ6U8QO633PDBH1
+	clZ4RAEzn9xqdPCTiEBeVA0d0J6hyDlBsHiGXyV1Rv0OoIisYu0NAJIaczIX4+Uve+hHhXvU4LR
+	sIr34lwdaoPXdiDOylSM3PonFat0xWW83O3+Fys+k2bAmLlVUqHdkN/ONi/QxLwH2vuN2+/xfMp
+	XaNHwFabQvIDm1k24of+XTAzStR3zfuvzR8MWAJNYdMJtXJGkLbe9vJ40gb7dNY4ggIsFGVPyTt
+	J/Kj0hHdFVK124+qfPeOlo/S5qjBPtJye6
+X-Received: by 2002:a17:90a:e18c:b0:35d:a4c0:a0ac with SMTP id 98e67ed59e1d1-3650ccefc6cmr7084928a91.3.1777831140990;
+        Sun, 03 May 2026 10:59:00 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364bdf2aa41sm15437701a91.4.2026.05.03.10.58.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 May 2026 10:59:00 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Gregory Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>
+Cc: linux-fsdevel <linux-fsdevel@vger.kernel.org>, Amir Goldstein <amir73il@gmail.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, lsf-pc <lsf-pc@lists.linux-foundation.org>, Bharata B Rao <bharata@amd.com>, Donet Tom <donettom@linux.ibm.com>, Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org, Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Subject: Re: [LSF/MM/BPF BoF Session] Numa-Aware Placement for Page Cache Pages
+In-Reply-To: <afYdH4Alu9QA18CO@gourry-fedora-PF4VCD3F>
+Date: Sun, 03 May 2026 21:48:01 +0530
+Message-ID: <8qa0sc06.ritesh.list@gmail.com>
+References: <h5ossmwe.ritesh.list@gmail.com> <afNV5wbhsFQJLzxi@casper.infradead.org> <afYQz3YJdWB2R-1q@gourry-fedora-PF4VCD3F> <afYdH4Alu9QA18CO@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3E5F52000E
+X-Stat-Signature: 4rbcokey9zojja6ozbaerjbdgozray8e
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B3860120007
-X-Stat-Signature: n8w3zfm7s4oho1piekf8r6tofupsuei8
-X-HE-Tag: 1777829724-648578
-X-HE-Meta: U2FsdGVkX18wu0OMqxtvgGmLFZcCscMnDnQ6a3dYCTFgnFa0jJAPKWQa2Ae47fEanudSE3S+qQHRei6igZ7//9pRHY0BwZqn57FArevpe0+8vod/tPP9lhbhRuFalfxU9bwdreygGVjCTIFUKN9/oeFs4XC5Mvj+W2NuDgfUcCpEHQk2+avmytY/6oFPRmmQnTlnHvr3TNDwd7gY0lPijtJq8pQlQXqWUUozLq/a9VmiOsoJ0lUx0iA4Bfy6ln5dlaBJuDvpa+iQBj03Xt8HubAU2dwYHMrKmlAwLwaJ1FYyNHQZ2k9lwSGSFO/dNv0z73GDRLd+vakSl9wK6JIDuaU3vnln6rTr/cVAOiPVQgBl0yIy8+iumUyl2EEzzUQ3mrOpqdn/FWCzncimJ7hvoEOK6FZvgAr77BYav4xIWbJbCZyqVJMeeCF+ijeAztxyUbpppFO+i6P4Gs6b3Vyw+MAmLPuFs2ZAOjT+GNDw90edNa7ZDZRxx3j5hkfm4IlpSmy8/dR3xS29PltNQSmYMiTKyLfAnokWdMiic5fmdOusEsxGZ9Pgw3HbapG/HPmrjZOJiLpXKY7lXtuGWIFy1SeMhYlP1HYSB2fl++CLEDe/XS9v7lltvfuK/q1+aCt6wcd/Hmj3Ek4kPZQkWy2eXQBL0WJtlYqk69UIqPm9QG7a56cl48uZFiPudhOgp6rT4BSBUYeijhtrEkPkIF6E+xAtbtnUmMDIJxSZqlNaHHBLYfADM50lqGpqBNPNTj3ak7G2CurbX9NWgbZh7hp8Y1K2F6uda5HqCOT05b6EQ6jf9TLH73w52xZZcvDEcExACYJe/8KxD0ObuHkmlNlj6/6leIzO2uJ78eMGFhFzJR+Jt5HupWXdPJri2g4JwIaRwEKKby25+oCYa5rIQVV7/XYGfr/ri2DWfwRoa6+vqIGA3y5aEriLmFIjn5EddECok3xeJFWD2EJkQ2bSOWN
- 9Ed4iIf0
- ewKzL4FPXM/hImmDxl5roGRO2OWf1Q01dYR88ai9ChTdDMRQONtKZnCiqRccGo9SBmNeFdc4R+9+MUgCghI4/r/IQOAWBCal8Ib2B064+NwCHi/EsUbW7bVSH0VoN81FTAxqEUfFAiUoFXVkA0q2x2IA31LfqHgzFNUKJ8IJZDJR9Ilyq2XGtjiv8y/dsfkTEyzSmKEifwJ3TB/V4ZxowMqZr1Yo7XQkJn8jXXux3Wt0dDyi+Zelb4HbtoBwJ7sxHZL87bxNjmYbVpy3M4hUFRKMdh6Ty7lm3iUnxvfXr8iiWj5y9JbtLX/6HB1hvW5rmawA6UGFrIV9WrsJNX59ybryK/6zfuEPdXxfXJVg30ICxVVgZD0Wxf8ZEmxb9XNneXftbtfMr7hYZcHlG2B6QxlYAVae+KsTyDea6nfRiEhBfo988D0FeGM5jegV2kzFj6MTJdQxNaXiM1rNbJbrij2Kj8g==
+X-HE-Tag: 1777831142-548656
+X-HE-Meta: U2FsdGVkX1/OaxI3q89k36636CEOEs9Vfi1oWdzKoyhwNlp8C+1tIXp1TbBqA+DcN1Yv7g2t2UO9WApORM2zv9EXUPHQRrY7iwIfZLIelm3yMdbEXXT1lCoecbtZcycguOByqx9zKGEPkzmnL3nS2aEPIbQl2Mmi35zlLjU9qJPFfHxuY0R75GD+8pVXYwYDi/2oWUWKFVTuZ0Igb7S0siJT9VGBm6rDvYwmI/Atx/cFLlSTrVw/rsGi57KOc/2QDUrBJlc+dFXV2xfalX/EcwCUuUwPbLZ2AjNzjYTUH3ymA/hr6zHOeULnZHwcCVAyCi8q96w4I03//sy3IKtTYCRUojukBb1IDB+DE1yQH6GNeh/7enMi1GUTXn5uaMTxN72Pm9AxGOVOCemy5h5Qp/S07mczu7gCWziS2YSUq7IPxq+j1U386AdHzOYRr8nmt7C/Klj3alhUnqfM1zMTniKRCwbfuNzWbMCzt9BCK4OnlVM2ySpp6p85H3wqpgudIl7hhHSTpkdWbJRAOcmioDN7sEwOy890jh1rOInwy6/Nc9gv3O1hzYndN+ezRiNpLEM4amnyyuVLrXAbUl5uDeGAivlRJEKziZjSQxtuUYqGz0ZBikD16iLs6ygtM/vz28WqJmI3AWtomzGRnxckTraxri/7gEDz8yuud8sqNdMe4346YR1ntzUixtd5lnGD5a4Oobhr9HxHpB5ICuqSd805jittZvOOx3A95lTpjQVzcJBo7n/1sxZNmaLGY7xxxJOyielJqu9ZA7xBUMDbw4xj54ZDGE7Xd6gkUnj5P7dwi8cgpoNxpnHa8FSGutbyUi/rI4deZhLJ18+oXXApHdAG/ZXR2m+ilmjjoj636Y0D8LY6Zt4L4j9tfE3ZVY759xTAHG7ECM7VHwvl+F9w2ty7zn8nTsNpvosJYK2tZmJe5M/mXTX+1Tznrugk/iG+RJu/Zw6bfsQzlpNDAmr
+ QjjdjRWa
+ UsBr2wBfWvXyk4G6MNiOK+zARSKTdq0y1+4A+TwWtEOi/8tg7X06VBDI7BqJBJIUkv4U2lT8JyiQ+EI1C0LzpdVfrnvlZtmEcGjjIuC9k+NLmhE8bKofj5mC4Dgh4iN3/0gegj0EzcT83RhMwtSKy2wwu+O4/rRjuw+snO5A5qKTikZa2oVsbJFq25QCaFeXFNdIHMNb9T+6e/s6BkOlB+Nj28aN03JXfn71xDSCa5NEFCX0eHtCQMYVL/uayDJLZX65+/mH6CzJkkAh8uFtralv8C5eUSKhrB0OLWohv8kL6zFrVuJ5yjrIul4qVpk83ALyKmsq5vxP0/cWd86ec2GDcVjBacDO1I85qs9jPfcuBt/h4KYDwj3+sAY3qiJIXRDQm5TraoQ/VWquHmsJ71sPmsbIBEQwENyv1YmSq2cqgDhvsyOozHLCsubTbH6IEw0EazGCMkkUYwhbIJ06uOWuIWP4Xsh291BpA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,123 +111,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============8100301415052033692==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Gregory Price <gourry@gourry.net> writes:
 
-> diff --git a/samples/bpf/.gitignore b/samples/bpf/.gitignore
-> index 0002cd359fb1..2a73581876b4 100644
-> --- a/samples/bpf/.gitignore
-> +++ b/samples/bpf/.gitignore
-
-[ ... ]
-
-> diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-> index 95a4fa1f1e44..357c7d1c45ef 100644
-> --- a/samples/bpf/Makefile
-> +++ b/samples/bpf/Makefile
-
-[ ... ]
-
-> diff --git a/samples/bpf/mthp_ext.bpf.c b/samples/bpf/mthp_ext.bpf.c
-> new file mode 100644
-> index 000000000000..bbee3e9f679c
-
-[ ... ]
-
-> diff --git a/samples/bpf/mthp_ext.c b/samples/bpf/mthp_ext.c
-> new file mode 100644
-> index 000000000000..0e064bad136f
-> --- /dev/null
-> +++ b/samples/bpf/mthp_ext.c
-> @@ -0,0 +1,340 @@
-> +// SPDX-License-Identifier: GPL-2.0
-
-[ ... ]
-
-> +int main(int argc, char **argv)
-> +{
-> +	const char *root_path = DEFAULT_ROOT;
-> +	unsigned long threshold = DEFAULT_THRESHOLD_MS;
-> +	unsigned long interval = DEFAULT_INTERVAL_MS;
-> +	unsigned int init_order = DEFAULT_ORDER;
-> +	unsigned int min_mem = DEFAULT_MIN_MEM;
-> +	bool fixed = false;
-> +	bool debug = false;
-> +	struct mthp_ext *skel;
-> +	struct bpf_link *iter_link;
-> +	struct bpf_link *ops_link;
-> +	struct ring_buffer *rb;
-> +	int root_fd;
-> +	int psi_fd;
-> +	int err = 0;
-> +	int opt;
-
-[ ... ]
-
-> +	/* Attach struct_ops to root cgroup for mthp_choose */
-> +	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
-> +	opts.flags = BPF_F_CGROUP_FD;
-> +	opts.target_fd = root_fd;
-> +	ops_link = bpf_map__attach_struct_ops_opts(skel->maps.mthp_ops, &opts);
-                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Will mthp_ext compile with these symbols? A tree-wide grep shows that
-bpf_struct_ops_opts, BPF_F_CGROUP_FD, and bpf_map__attach_struct_ops_opts()
-do not exist anywhere in the kernel source tree:
-
-  $ git grep -n "struct bpf_struct_ops_opts"
-  samples/bpf/mthp_ext.c:260:	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
-
-  $ git grep -n "BPF_F_CGROUP_FD"
-  samples/bpf/mthp_ext.c:261:	opts.flags = BPF_F_CGROUP_FD;
-
-  $ git grep -n "bpf_map__attach_struct_ops_opts"
-  samples/bpf/mthp_ext.c:263:	ops_link = bpf_map__attach_struct_ops_opts(skel->maps.mthp_ops, &opts);
-
-The struct bpf_struct_ops_opts type is not defined in tools/lib/bpf/libbpf.h.
-The BPF_F_CGROUP_FD flag does not appear in include/uapi/linux/bpf.h or any
-other header. The bpf_map__attach_struct_ops_opts() function is not declared
-in libbpf.h or exported in tools/lib/bpf/libbpf.map.
-
-The only existing libbpf API for struct_ops attachment is:
-
-  tools/lib/bpf/libbpf.h:
-    LIBBPF_API struct bpf_link *
-    bpf_map__attach_struct_ops(const struct bpf_map *map);
-
-which takes no opts parameter and cannot attach to a specific cgroup fd.
-
-Samples/bpf/Makefile was modified earlier in this commit to add mthp_ext to
-tprogs-y, meaning the build system will attempt to compile mthp_ext.c during
-make samples/bpf/. That compilation will fail with undefined type, undefined
-identifier, and implicit declaration errors.
-
-This looks like it depends on an out-of-tree libbpf extension that adds a
-per-cgroup struct_ops attachment API. Is that libbpf patch supposed to be
-included earlier in this series, or should the sample use a different attach
-mechanism?
-
-> +	err = libbpf_get_error(ops_link);
-> +	if (err) {
-> +		fprintf(stderr, "ERROR: attach struct_ops failed: %d\n", err);
-> +		ops_link = NULL;
-> +		goto attach_opts_fail;
-> +	}
-
-[ ... ]
-
-> diff --git a/samples/bpf/mthp_ext.h b/samples/bpf/mthp_ext.h
-> new file mode 100644
-> index 000000000000..33dc01bcebd3
-
-[ ... ]
+> On Sat, May 02, 2026 at 03:57:19PM +0100, Gregory Price wrote:
+>> On Thu, Apr 30, 2026 at 02:15:19PM +0100, Matthew Wilcox wrote:
+>> 
+>> fd = open()
+>> buf = mmap(fd, ...)
+>> mbind(buf, device_node)
+>> /* fault file pages directly onto device memory */
+>>
+>
+> maybe more explicitly, something like this
+>
+> fcntl(fd, F_SET_FILE_NUMA_NODE, gpu_nid); /* pref node */
+> mbind(addr, size, MPOL_BIND, ..., MOVE_ALL); /* move existing */
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+One existing problem with this approach of using MPOL_MF_MOVE[_ALL] (not
+specifically about gpu nid usecase here) is that, it only considers
+pages which are mapped into process address space. So, unmapped page
+cache pages are invisible to it.
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/25285279315
---===============8100301415052033692==--
+So, the problem which I am trying to highlight here is - Today there is
+no mechanism for a user to move/migrate the file-cache pages w/o
+incurring extra I/Os. The only way that works today is to first populate
+all the folios belonging to the file into the process address space by
+issuing MADV_POPULATE_READ and then issue mbind(..., MPOL_F_MOVE). But
+there is no primitive to populate the process address space with only
+the folios which are already present in the page cache (which maybe
+residing on a different numa node). Note that MADV_POPULATE_READ will
+read the missing pages from disk too.
+
+So, maybe something like this.. Would this still be useful? i.e.
+
+madvise (addr, size, MADV_POPULATE_READ_NOIO);
+mbind(addr, size, MPOL_BIND, ..., MPOL_MF_MOVE);
+
+MADV_POPULATE_READ_NOIO should ensure that only the cached folios
+belonging to that file are mapped into the process address space w/o
+doing any extra disk I/Os. The subsequent mbind call with MPOL_MF_MOVE,
+will then ensure that all the existing mapped folios are migrated into the
+chosen numa node. And also that any new pages which gets faulted in will
+get allocated onto the chose numa node because of MPOL_BIND policy. 
+
+I believe there might be existing applications which might be facing
+this problem today. This can happen, for instance, when there is a
+workload which can run multiple times and may run across different NUMA
+nodes. Our internal test team once reported a similar performance
+regression with llama-bench on subsequent runs when running it across
+different NUMA nodes. The reason this happened was that the existing
+page cache folios of model weight file (from the previous run on a
+separate NUMA node) were not getting migrated (because they were not
+calling MADV_POPULATE_READ since it can cause a read of a large model
+weight file into the page cache all at once).
+
+With that in mind, do we think having something like
+MADV_POPULATE_READ_NOIO make sense to address such problems? Do we have
+any other usecases of this too?
+Or do we see any problems with this, due to which it never existed?
+
+(Note that I haven't yet given a thought for how it should behave for
+anon memory).
+
+-ritesh
+
 
