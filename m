@@ -4,145 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C26CD3427
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 18:17:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C825FCD3424
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 18:17:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EFDA6B008A; Sun,  3 May 2026 14:17:40 -0400 (EDT)
+	id 309356B008C; Sun,  3 May 2026 14:17:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74D316B0093; Sun,  3 May 2026 14:17:40 -0400 (EDT)
+	id 2E0E56B0092; Sun,  3 May 2026 14:17:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59F8A6B008C; Sun,  3 May 2026 14:17:40 -0400 (EDT)
+	id 1F71C6B0093; Sun,  3 May 2026 14:17:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 44F506B008A
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:17:40 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AFCA5C28D1
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:17:39 +0000 (UTC)
-X-FDA: 84726916638.20.2E54574
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6949818000B
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:17:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OoNHn3y4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q7pHytij;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OoNHn3y4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q7pHytij;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by kanga.kvack.org (Postfix) with ESMTP id 0E3CB6B008C
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:17:46 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C06ED160593
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:17:45 +0000 (UTC)
+X-FDA: 84726916890.10.F6C2016
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7D9614000F
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:17:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JNnOtsfd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Uwx1gS/O";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JNnOtsfd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Uwx1gS/O";
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777832257;
+	s=arc-20220608; t=1777832263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AsKSGKv1gbQ1kxj3oO+fSJmap4EgBc+0PTi6YnXpoZE=;
-	b=OFO4dM25WHWlkJbBlqCWMOwci/4q+8nZN9LN/S89WBxD6MvfdsBifjQU2THMyfvcgW+7oV
-	EI9PywLeGf0IVb2knCBECx/MbYbQieqcu2XhhrDw3RvVhJRdFnV+fvQtmlK7HjCKRjLqNH
-	qL5SUL/G2Uwb4QyJWtarMW6+JWoOaVE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777832257; a=rsa-sha256;
-	cv=none;
-	b=8lPlOE5BV1chcZg2buJEa0wgLbBqNwZrqnj5NNX3WydNWWZ5XxuLIo0Mz4uTedSb0cwkYK
-	0LdAQyJbCrj0fig6485zSy+6Ugwke5OpSqUjc3xKczlMheSQmGUGqXIqzhl+32IICTqG0t
-	3JP45KUJlPxw2ZDneObFy4cJ48CtTTQ=
+	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
+	b=acGTuPbOp+DdicAkNhOgiQTIWNLcb7Owv3Sg+kcm35axFXpTlvaG82ZyxOITd6+Nko8xfI
+	/jQpatgAxhRs0gJkTXWVIXlKoUzHuJmK48gyfwIZRCfJdS2vH2243r7+Oec948p7r0hQ7G
+	XGoxHftqzUb2E3xGl9Fqck2LONTma8o=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OoNHn3y4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q7pHytij;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OoNHn3y4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q7pHytij;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JNnOtsfd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Uwx1gS/O";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JNnOtsfd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Uwx1gS/O";
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777832263; a=rsa-sha256;
+	cv=none;
+	b=17UPxJz2wR+MD5iUdGesGqXNPM8Y+nwwMksBSEkEm7iHRMwmpIiVg+xjhGHQdC4Gl2VQ7V
+	o2YwhNgteq2PY06ZCMDybREN6GD94K3dOOV9gL1UJ3p+paCEqyjw67U4RCpHtNx2ZBJEVL
+	TaE7hnb8Xhfs99CpdWXSBxBhctUASVE=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A9BB95C010;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9AF546AC14;
 	Sun,  3 May 2026 18:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1777832255; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AsKSGKv1gbQ1kxj3oO+fSJmap4EgBc+0PTi6YnXpoZE=;
-	b=OoNHn3y4rN894Hek56TAHXPlCqi/IQ1Uo/ALP1kQg3A/6zShv94jQjNfaUtelYYh+YOGMu
-	YeRcyoqLNAZBC2BP6OBIZWp0DepiBiJDwjmpOTSysVRWSzDWf2mNm6RtcDBCZaXZCcT03y
-	JNuY4E27lqaHD9OEaIdKjcy6iTWHDa0=
+	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
+	b=JNnOtsfdia6KNeiWF/zx6UmGMlyd7MovighKfDpbipWcdICHWOyAWdUdIHnNg26ISosfcE
+	1vhhhQx0enMHLf8gCDJ3U3A1PI1//jmY4yLWHBCi6uzrihaeCN/zDu5G6bMuodmAEBTytD
+	sywVPBV32c+X721DpOigCPrJerl7mWM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1777832255;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AsKSGKv1gbQ1kxj3oO+fSJmap4EgBc+0PTi6YnXpoZE=;
-	b=q7pHytijoJfoB1JUwtZq+JLzu+1pit499ofgLxkX0CU8I3YxZ3scCg1SxCoipgJc/00K6j
-	CBR8iE/NRq1ZfJBQ==
+	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
+	b=Uwx1gS/Og/X2yT7c6rFcHwYxYjc3O5eZU/ab3xJaQ8s0HkzspghdERq4rp30NfBiSRzyTZ
+	mp+GNFSRN3hluyCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1777832255; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AsKSGKv1gbQ1kxj3oO+fSJmap4EgBc+0PTi6YnXpoZE=;
-	b=OoNHn3y4rN894Hek56TAHXPlCqi/IQ1Uo/ALP1kQg3A/6zShv94jQjNfaUtelYYh+YOGMu
-	YeRcyoqLNAZBC2BP6OBIZWp0DepiBiJDwjmpOTSysVRWSzDWf2mNm6RtcDBCZaXZCcT03y
-	JNuY4E27lqaHD9OEaIdKjcy6iTWHDa0=
+	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
+	b=JNnOtsfdia6KNeiWF/zx6UmGMlyd7MovighKfDpbipWcdICHWOyAWdUdIHnNg26ISosfcE
+	1vhhhQx0enMHLf8gCDJ3U3A1PI1//jmY4yLWHBCi6uzrihaeCN/zDu5G6bMuodmAEBTytD
+	sywVPBV32c+X721DpOigCPrJerl7mWM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1777832255;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AsKSGKv1gbQ1kxj3oO+fSJmap4EgBc+0PTi6YnXpoZE=;
-	b=q7pHytijoJfoB1JUwtZq+JLzu+1pit499ofgLxkX0CU8I3YxZ3scCg1SxCoipgJc/00K6j
-	CBR8iE/NRq1ZfJBQ==
+	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
+	b=Uwx1gS/Og/X2yT7c6rFcHwYxYjc3O5eZU/ab3xJaQ8s0HkzspghdERq4rp30NfBiSRzyTZ
+	mp+GNFSRN3hluyCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 93C8F593A8;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8177E593A6;
 	Sun,  3 May 2026 18:17:35 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id a28LJD+R92kuFQAAD6G6ig
+	id X9weHz+R92kjFQAAD6G6ig
 	(envelope-from <jack@suse.cz>); Sun, 03 May 2026 18:17:35 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2B30FA078B; Sun, 03 May 2026 15:13:04 +0200 (CEST)
-Date: Sun, 3 May 2026 15:13:04 +0200
+	id D5645A078F; Sun, 03 May 2026 16:37:03 +0200 (CEST)
+Date: Sun, 3 May 2026 16:37:03 +0200
 From: Jan Kara <jack@suse.cz>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
-	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
-	youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-Message-ID: <yezmezj26xntushmylductlmytfgvwsnbnzlhffkfwugfxkt6m@gleq22spziyk>
-References: <20260430040427.4672-1-baohua@kernel.org>
- <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org>
- <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
- <afTpoL3FklpQZNMM@casper.infradead.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Ritesh Harjani <ritesh.list@gmail.com>, Chuck Lever <chuck.lever@oracle.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 1/4] mm: track DONTCACHE dirty pages per bdi_writeback
+Message-ID: <7awcgzgxkpav4krxe4qtyfzzlhfpziw56ptfchuai5r4txz4ib@hzycmy5syvjo>
+References: <20260501-dontcache-v4-0-5d5e6dc71cb3@kernel.org>
+ <20260501-dontcache-v4-1-5d5e6dc71cb3@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <afTpoL3FklpQZNMM@casper.infradead.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6949818000B
-X-Stat-Signature: 1n5ctbewhwkmnmfqgmzcyap5d4gbbkax
+In-Reply-To: <20260501-dontcache-v4-1-5d5e6dc71cb3@kernel.org>
+X-Rspamd-Action: no action
+X-Stat-Signature: ups99d6mxqcmxez4gbmdt144mg61ahso
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7D9614000F
 X-Rspam-User: 
-X-HE-Tag: 1777832257-906182
-X-HE-Meta: U2FsdGVkX1+HuHls4pNBE3XGNYdlnd7/1X+ADoi5GYB7eSR1WmNajkvEFul9+w3hi58Y69r8rEnhlurVqS6m9HNAHUj8dk9ivb1gwhls2rQgK9vypx7L9FJZfxVEA01cBIBmQbPafzZxvIb5vTDWHWHrQSqCDR7tu8NwJFzv/K6h78gZvqzpX6wE+/Qsp9rq7uQxcBFSmo/LIrpr0SeO8lB1G8SkdwXIM/j/WMqm3K9tBNp1jf6zXzKkvqkbSxIBf/jxY9P3OUXGnqqp6iNPdguY8vSf6/7LNWRMe5teHay8DkM2BFrGynfT9g9BsjUp5DCy7zxZRCSoSu5mQDK5/eO4mwjs1RTvCeVOsgNin+LpYDA2qNkH/zG0jmIu4a4aRzwfuaUjYBElNEGPJEDGwUYsp0xiiHd7X16XzNls90egGoKciyQpZQI2JCyfA2LAYYNazEkmViIGK7yVWXwQzch7ZttpZOVLtkmZzDlSxT/p13KzIBxRZM+VI8PdMlPj/ZhOfFrFPv9oH/cAdSgB6+PCv6afI3nsuZRzbGsWZj3eJIwccXyR9Foe67NvYJJyiYYq09nNz3zdBKq9rXrphVEy2+tZMioDX2kzbPqzABWewP5Irt+ZQVNPh1f63ycpl2k4EPkUm7s8Ehvu8/ErmmqoQ6dTl2IgQVXeY0r7c507Dwo4kJvzuqxkDCWDpGMO4FhDxYXuxtGunquSA/kz3NaDlQ7sMx4dNLabLMldiadluLH8Ihcab/E9yWI9FOcuIV/TW7DkBjI0z4FA5Y8AvyicCErVBNR6Sq5EPMoCuDML560Kq9nfgWDDKNQWNHJsd4m902vLNRx4/rV+edBIBwtUt6tdHXDy0PfBiOPq1sJZQb5fRdQORyujz3xh7XGNe9ShaBG090qXs82erFZtC7ejNBTUX04uLIXtxhCLjUflmuRYq2vAtbge9g1UWOYBiYuDPQAIeYYUIF4GD/J
- b4kdbFJI
- wFpS0Nzs4/pukptKDgpgophXsOe5Yr8DaWZFeXet1XV41RWYtYcU7UO/oTWKcoW7rDJWMxilcjOEjNdjTaC5l6jY3hTVAqL0jXWvSu1SaVX977fCWnQRTIyka3HqfzXIMAa5OjQKGqBybVANQN9uZz78+RIxqqr7JxIvaRscIr5kWRkj+2NN55qTtFNSUK5g89UYqYMLsM8CrlQBMOX+oFuViarijQHeyKLHqRD74N57u2D+VtBg3TG7Vr4z7E/gYZAN9C7jgB03PS9NhkOFdfIIwy+3ttGI6DGAQ4qkz2qULYSWVXjssK8g5cpkzwUb0ks4PnzakeyCEQfj0IO8kROL9fv5LmwH3yTFUy2GBwQw56RIl4p23SLFx/u23BRMMZAGWKUYctEK8aIoOS59abQhjh0vyjSHJdwbfGye+FB0GaIASlHucdKEO0bB4P3tVwj5Ff0wawWMc1GVnhEebwkuvuT6P469Q32vdd0GRecKzh2i+IwWKcxIa529q6goxfNz8hLMWvZ0pFVdFkOQvEpwxkrSeguESDVUv
+X-HE-Tag: 1777832263-899188
+X-HE-Meta: U2FsdGVkX1965kRi1Pe0F5tjnI5YrjVR3V2H/VepA54fsuLTpEO2cKYcLPcx61qRtu2csC8KJLkvvKIyq5FIDreUByP929IfD/iIYPBIXLQxv66uboiaCiXoprgO/rsQTbrzt0Pgk/3Otzm2NuG9P11bT2xY+0dLquBm2rjncOf14GMAJqfpy2E32i6yfR6PYaVopbdTeoH/yNro5FSBldihR3NJMbblkZXjYomEdfmC3uZY5+swGFpA6hWe9NoeB3qu3YaDENcXIjtrn7zuBymUAeNSkW6e8FaDyVtPqgv0YrzedE3W1uo37lKm8rRd/IR6IYjjUIdpMUTR+2Wn0DTB1gsuaYePLXITlD5wHSfSB7Bl3OlOFstN2nTq8dwKOvv0E6k1if5AJYIKQlvCC5xtUWlP5Utc+jwqLXqAC3g/uqrXT0aczK2wXAknUQYqhkUYkr578n6CEvE/Mxh5Ko8LdvMacfnxQse4/grMlhu3vmA5yJ1AvYgnGw7wlAiNN99omlqTUZSeuMQoTjD/CQgvYWc+tizWoocKai5x37nT2umnSkK630jQeY3iJuvKNh4t8wO/+sdXCz5bSKRcCuZvTzWAs8ZrvXKhUDIUldp09JK4BmREGxeV4/pPnqkFEwtIszuwU3VbSrlvNpRHQHBNYGF8RUl+yU1qj2Kldg7HuWmS66f2Y8cyfyPxpTng9firrkw8Z1BAYuKDNfFwiDiFRTwQdqHPjmIUmLZYcnw/ys2kYR7/V1LNeip064vd7E6lhI9LH0zQ4bUtrwvzkKuO7LzS4JFEPtqdyf/NaNW1mgKW/Xlo9EvpwGslFv7QvBc9JaacjancY5ZXQDhMUGKKHEs4l7qedmWvUm+2BZ0CEX/3RvtHC90vumpSnmeXwHJELqDd0qNb4WkV1EvTzTd7UbLJp0ivFEB2wn5A6KxIJZ+cavQvybq+fDt+zi8AgtqF6kkAdyxwvTFwGYl
+ E1Klb5AP
+ 2VDyAgIPuFvdqEddGU+CQUCfdozLqArrfyJBQLaRb368t1mtEEJVg/WsUkPmC9jsuZHwjJUQDsLOBEfAzyQwbLUrsNRo6tfVmsaXRBmlXGBKZym5pDYDygeN3+MHDgiUgpD6LH7JdadkrIKjfDrgAP8dgjhRMTsaWFuVaYE3HtF5hdIdQoxDwlR6LYQbmSukXbn+uAERJ+WFuNR53dPxKKcTYbvQ7J0lzOW4LfiNfzeJ35qg5sfoshr1/qgWgiJ61zpb1iZrY5xq2LEE36Xb+ZOMX3+cAN9M8U05aE5TXBmgi8M2SDNf9TiNHPgH1MQTOwQovc5l5tYDn3WKFDOk+HhDDbgXvEhLLoqMJAA3cdE52rUF07CCZPaNhxCvo4lV60W/tlnPJhUdV7vMpLkijko2cpAmlnLcxnfHHIKp2fa60f3IW5nc93i6PFzJCAPZ/tvymPALRiSZx5vjwmOu6EMLSOFf7iOaTPhmH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,44 +141,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 01-05-26 18:57:52, Matthew Wilcox wrote:
-> On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
-> > On Fri, May 1, 2026 at 10:57 PM Matthew Wilcox <willy@infradead.org> wrote:
-> > >
-> > > On Fri, May 01, 2026 at 06:49:58AM +0800, Barry Song wrote:
-> > > > 1. There is no deterministic latency for I/O completion. It depends on
-> > > > both the hardware and the software stack (bio/request queues and the
-> > > > block scheduler). Sometimes the latency is short; at other times it can
-> > > > be quite long. In such cases, a high-priority thread performing operations
-> > > > such as mprotect, unmap, prctl_set_vma, or madvise may be forced to wait
-> > > > for an unpredictable amount of time.
-> > >
-> > > But does that actually happen?  I find it hard to believe that thread A
-> > > unmaps a VMA while thread B is in the middle of taking a page fault in
-> > > that same VMA.  mprotect() and madvise() are more likely to happen, but
-> > > it still seems really unlikely to me.
-> > 
-> > It doesn’t have to involve unmapping or applying mprotect to
-> > the entire VMA—just a portion of it is sufficient.
+On Fri 01-05-26 10:49:35, Jeff Layton wrote:
+> Add a per-wb WB_DONTCACHE_DIRTY counter that tracks the number of dirty
+> pages with the dropbehind flag set (i.e., pages dirtied via RWF_DONTCACHE
+> writes).
 > 
-> Yes, but that still fails to answer "does this actually happen".  How much
-> performance is all this complexity in the page fault handler buying us?
-> If you don't answer this question, I'm just going to go in and rip it
-> all out.
+> Increment the counter alongside WB_RECLAIMABLE in folio_account_dirtied()
+> when the folio has the dropbehind flag set, and decrement it in
+> folio_clear_dirty_for_io() and folio_account_cleaned(). Also decrement it
+> when a non-DONTCACHE lookup clears the dropbehind flag on a dirty folio in
+> __filemap_get_folio_mpol(), using proper writeback domain locking.
+> 
+> The counter will be used by the writeback flusher to determine how many
+> pages to write back when expediting writeback for IOCB_DONTCACHE writes,
+> without flushing the entire BDI's dirty pages.
+> 
+> Suggested-by: Jan Kara <jack@suse.cz>
+> Assisted-by: Claude:claude-opus-4-6
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-I fully agree with you we should verify whether the retry code still brings
-in real-world advantage today with VMA locks. After all the retry logic has
-been introduced in 2010. That being said if there are realistic loads where
-one thread needs VMA write lock while another thread is faulting the VMA,
-then the latencies can be indeed extreme. For example things like cgroup IO
-throttling happen on the IO path and thus can throttle IO of a low-priority
-thread for a long time.
+Looks good. Feel free to add:
 
-BTW I'm not sure I quite understand Barry's priority inversion problem
-since I'd expect all threads of a task to generally be treated with the
-same priority...
+Reviewed-by: Jan Kara <jack@suse.cz>
 
 								Honza
+
+> ---
+>  include/linux/backing-dev-defs.h |  1 +
+>  mm/filemap.c                     | 13 ++++++++++++-
+>  mm/page-writeback.c              |  6 ++++++
+>  3 files changed, 19 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
+> index a06b93446d10..cb660dd37286 100644
+> --- a/include/linux/backing-dev-defs.h
+> +++ b/include/linux/backing-dev-defs.h
+> @@ -33,6 +33,7 @@ enum wb_stat_item {
+>  	WB_WRITEBACK,
+>  	WB_DIRTIED,
+>  	WB_WRITTEN,
+> +	WB_DONTCACHE_DIRTY,
+>  	NR_WB_STAT_ITEMS
+>  };
+>  
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 4e636647100c..1c9c0d5f495f 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -2052,8 +2052,19 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+>  	if (!folio)
+>  		return ERR_PTR(-ENOENT);
+>  	/* not an uncached lookup, clear uncached if set */
+> -	if (folio_test_dropbehind(folio) && !(fgp_flags & FGP_DONTCACHE))
+> +	if (folio_test_dropbehind(folio) && !(fgp_flags & FGP_DONTCACHE)) {
+> +		if (folio_test_dirty(folio)) {
+> +			struct inode *inode = mapping->host;
+> +			struct bdi_writeback *wb;
+> +			struct wb_lock_cookie cookie = {};
+> +
+> +			wb = unlocked_inode_to_wb_begin(inode, &cookie);
+> +			wb_stat_mod(wb, WB_DONTCACHE_DIRTY,
+> +				    -folio_nr_pages(folio));
+> +			unlocked_inode_to_wb_end(inode, &cookie);
+> +		}
+>  		folio_clear_dropbehind(folio);
+> +	}
+>  	return folio;
+>  }
+>  EXPORT_SYMBOL(__filemap_get_folio_mpol);
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index 88cd53d4ba09..8e520717d1f6 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -2630,6 +2630,8 @@ static void folio_account_dirtied(struct folio *folio,
+>  		wb = inode_to_wb(inode);
+>  
+>  		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
+> +		if (folio_test_dropbehind(folio))
+> +			wb_stat_mod(wb, WB_DONTCACHE_DIRTY, nr);
+>  		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
+>  		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
+>  		wb_stat_mod(wb, WB_RECLAIMABLE, nr);
+> @@ -2651,6 +2653,8 @@ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb)
+>  	long nr = folio_nr_pages(folio);
+>  
+>  	lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
+> +	if (folio_test_dropbehind(folio))
+> +		wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
+>  	zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
+>  	wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
+>  	task_io_account_cancelled_write(nr * PAGE_SIZE);
+> @@ -2920,6 +2924,8 @@ bool folio_clear_dirty_for_io(struct folio *folio)
+>  		if (folio_test_clear_dirty(folio)) {
+>  			long nr = folio_nr_pages(folio);
+>  			lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
+> +			if (folio_test_dropbehind(folio))
+> +				wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
+>  			zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
+>  			wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
+>  			ret = true;
+> 
+> -- 
+> 2.54.0
+> 
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
