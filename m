@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 075BCFF886F
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 07:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83481FF886F
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 07:41:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 300AC6B0005; Sun,  3 May 2026 03:27:04 -0400 (EDT)
+	id 9CFDC6B0005; Sun,  3 May 2026 03:41:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B1A06B008A; Sun,  3 May 2026 03:27:04 -0400 (EDT)
+	id 959B16B008A; Sun,  3 May 2026 03:41:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C7C66B008C; Sun,  3 May 2026 03:27:04 -0400 (EDT)
+	id 848326B008C; Sun,  3 May 2026 03:41:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 07E846B0005
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 03:27:04 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 906F2C2A54
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 07:27:03 +0000 (UTC)
-X-FDA: 84725277126.04.7B94018
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E62AD1A0002
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 07:27:01 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F4FE6B0005
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 03:41:18 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0BC91C08A2
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 07:41:17 +0000 (UTC)
+X-FDA: 84725312994.09.FF02B4F
+Received: from embla.dev.snart.me (embla.dev.snart.me [54.252.183.203])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9E3F8C000E
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 07:41:15 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of 3xfj2aQkbAOgcijUKVVObKZZSN.QYYQVOecObMYXdOXd.MYW@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3xfj2aQkbAOgcijUKVVObKZZSN.QYYQVOecObMYXdOXd.MYW@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	dmarc=pass (policy=reject) header.from=dev.snart.me;
+	spf=pass (imf22.hostedemail.com: domain of dxdt@dev.snart.me designates 54.252.183.203 as permitted sender) smtp.mailfrom=dxdt@dev.snart.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777793222;
+	s=arc-20220608; t=1777794076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=4+osliUaymIVFH6R5/bEjn0M5p7u7//4ClVsL93EMMI=;
-	b=02qG2YPhd6Mf9N3HHItPUuMV1RXiVaaCLVE/uR/7+PKRbCx6IGht8AmzW9XlJlSEWUJjcT
-	qfFjv4H+R/20cmzlTq8LemP7LzrPurB6yY0roSZ+v27hKo5bfPbIkH5eBv23atZ/FQS34W
-	ED/ZdRLYtlEqYTE5nXd7iByWbN7Hb/4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LqhWSDCINRPUJBq0NQp54xI0NhCzqPhP9E4SCq7zTsk=;
+	b=zoMVJv8yk4ee3RRufhYN+zPXOSlzv/dGqvfR33ZZDiPnZ0//FnYhof2EL9dn6TxVw0YhVt
+	QKs09FDkV1g/Pn6xFZDMykBAGYFJkvV2D66sHdIHr33cF84fDh38QdAKgrtYPRMX6a8Jlz
+	o6ZHxQnSN1wA+b40Of2l4T6dfpoToVE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
+	imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of 3xfj2aQkbAOgcijUKVVObKZZSN.QYYQVOecObMYXdOXd.MYW@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3xfj2aQkbAOgcijUKVVObKZZSN.QYYQVOecObMYXdOXd.MYW@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777793222; a=rsa-sha256;
+	dmarc=pass (policy=reject) header.from=dev.snart.me;
+	spf=pass (imf22.hostedemail.com: domain of dxdt@dev.snart.me designates 54.252.183.203 as permitted sender) smtp.mailfrom=dxdt@dev.snart.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777794076; a=rsa-sha256;
 	cv=none;
-	b=Rh4qi8D1gFz2r3pjlYQPCIKMmHsBqiL8xqIZXtNwZ10bt0SJHnhLS2Z0WM4L+Yo/wWRcGu
-	LO1BEkJ/hA2S6kWDX/lgju4rGj/kdbkhz6SYGoL3VhhlQkfNjV6fK79uywipTXZcceFPX6
-	CoIZOIFhzafEPqwkD4G38BMNXpFp4Xk=
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7dce1e67fccso4926688a34.2
-        for <linux-mm@kvack.org>; Sun, 03 May 2026 00:27:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777793221; x=1778398021;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4+osliUaymIVFH6R5/bEjn0M5p7u7//4ClVsL93EMMI=;
-        b=Gv+ofEF6sNuwfLmQTm00XpCDkRmQ9ThriD8BQj8zsMVNmVjVagx6xcbL4F1I2FM8gG
-         FZCAr/mGcjxnB5igShWAqQEPGZjordId0COsK1ryVGfKx/PFt31UfoVkaRRUx5f8Gg3f
-         15RrkpqeZS3SZiwAOzsYVv11QOVaHSGCY5lbata2l3kdEn8iRBRw1gpzRxHe0WssbgSX
-         o1KJzONKPipfqOVXSoFLGbS45ksL8fi+mJfyL17WxJnSlzeeVrhO7vwufysYtmqBh4ON
-         P7kgzdVZImQX1Ws8KcxNI8sKGgvS6AwhxqPCs6tFRX4GebassFWc1x1XpmvaOCos94IC
-         JVrA==
-X-Forwarded-Encrypted: i=1; AFNElJ+f3fFAx780EvFcMDbNZB/8F/NaUnB5HpjTKrDP8nPl2GA13dWnQfB8GHeJSTeUn9vHB433jMztzA==@kvack.org
-X-Gm-Message-State: AOJu0Yw+olAV98tjZvDLNyGAx6XgM92f31YTTENgtTUAXmDyq+pYHnkr
-	U9LDix1SExCNrw5XcqW9eJBiQWtdWQxjiZytdmr/wLxLgzwr//s/7/0hLcgUNJ5EzQVHB0UZT/s
-	TG5/F0JHehi3XtQcMryTZoUtX9mtL6ZqfbHnQOb27pmvec9MUGxkYcS157V8=
+	b=ED+gMokS3YyEA1wTV7uDRA+EYkWmGg0Z+yzwKC5eMzijh+LyDSXJeDkC8bKQmKIy1ADSTg
+	L3NM+h+0s+0vod8Q0WQJZx8pM3XvGlfzDdGQ2dHdxnwlNWEUVatSLyj/jY8n3MHhTJGgUO
+	72XL3ucJtT590LmyVIrVkK4n11Gbayc=
+Received: from embla.dev.snart.me (localhost [IPv6:::1])
+	by embla.dev.snart.me (Postfix) with ESMTP id 26A761D490;
+	Sun,  3 May 2026 07:41:09 +0000 (UTC)
+Received: from [192.168.1.18] ([182.226.25.243])
+	by embla.dev.snart.me with ESMTPSA
+	id rQP5MRX89mnzmQAA8KYfjw
+	(envelope-from <dxdt@dev.snart.me>); Sun, 03 May 2026 07:41:09 +0000
+Message-ID: <b6c3cbf5-d8da-4157-9b75-918633bbef1d@dev.snart.me>
+Date: Sun, 3 May 2026 16:41:08 +0900
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1626:b0:695:94b4:d4e2 with SMTP id
- 006d021491bc7-696979a4e5amr2197059eaf.5.1777793221036; Sun, 03 May 2026
- 00:27:01 -0700 (PDT)
-Date: Sun, 03 May 2026 00:27:01 -0700
-In-Reply-To: <e50ceb6c-4239-4009-9578-51ece89fdc77@dev.snart.me>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69f6f8c5.050a0220.1584b9.0044.GAE@google.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [syzbot] [mm?] [exfat?] [f2fs?] memory leak in __kfree_rcu_sheaf
-From: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
-To: dxdt@dev.snart.me, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: bytdmr1h44x7co3umpkns4h13ut8ze5e
-X-Rspamd-Queue-Id: E62AD1A0002
+References: <69f6f8c5.050a0220.1584b9.0044.GAE@google.com>
+From: David Timber <dxdt@dev.snart.me>
+Content-Language: en-US, ko
+Autocrypt: addr=dxdt@dev.snart.me; keydata=
+ xjMEYmJg1hYJKwYBBAHaRw8BAQdAf5E+ri1XLtjqYbZdHOyc8oS+1/XJ5bSlbx5WHXmVBZzN
+ IERhdmlkIFRpbWJlciA8ZHhkdEBkZXYuc25hcnQubWU+wpQEExYKADwWIQQn/Jn96EMUaIoF
+ X+T/ldyyrZpWaAUCYmJg1gIbAwULCQgHAgMiAgEGFQoJCAsCBBYCAwECHgcCF4AACgkQ/5Xc
+ sq2aVmjJZwD8COjPlUwccrlRvbNQ6f87DWchtYO0o8W2DNRM3RLps0EA/jEhIbRV6AsyC8jr
+ 30Ut3aJ3/mO/6G4sLj7OvkEEBH0MzjgEYmJg1hIKKwYBBAGXVQEFAQEHQFpgtIgaByv9lIEY
+ EmpavMO0pYjtu7TMJynwdnGYkN9LAwEIB8J4BBgWCgAgFiEEJ/yZ/ehDFGiKBV/k/5Xcsq2a
+ VmgFAmJiYNYCGwwACgkQ/5Xcsq2aVmhFCwEA0kM9VyYB4bLCM7+SuXUUH+5Ec99Nj4RXxFad
+ Key9GuwA/2BZK6bNyrLSfEk2JDRoskqf7OIL0wa6JOD5SrBnMe8E
+To: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>,
+ Liam.Howlett@oracle.com, akpm@linux-foundation.org, chao@kernel.org,
+ jaegeuk@kernel.org, jannh@google.com, linkinjeon@kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, pfalcato@suse.de, sj1557.seo@samsung.com,
+ syzkaller-bugs@googlegroups.com, vbabka@suse.cz
+In-Reply-To: <69f6f8c5.050a0220.1584b9.0044.GAE@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 85duhciknmq9kpfeydsdyk9tdkntxuda
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9E3F8C000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777793221-752765
-X-HE-Meta: U2FsdGVkX1+xH+VrVuL2eGkxmy4WyhSW+JPdDtqBtjDMfceaXASFf4pcTkTw1lMBiw/sT8269quPttKRjwpgz3GrnX5xNR/grH9bNA2N9NPNFwAT7Feya0NDFEqoawd4/zcBsXrsazpvGXpKU+WAtga3fKKVjWgCpbxh2NMkbC/k9Z7K3+9fpzlc3aD51mUzCJHqc1FDKOuXgfork7SsiIzFPK0h4JWz8rwqzzNYuvw6sFomVXY8bISB39rzdD8nvI+a0a9XPM5saSqUV4G1/59pRh/27gkdAqHbhM7+vA+A+h9x1G6/ii9MOZP7FPSvFchiYfs9yFB6qqLRN21e8Fm1amKu9j95pHffGjTESFV24mEv4xHDssPv+b+GoeuAkAjoLdvBzcqcbU6HbKN02tJ/9TGIQv6nLS9/ysWty5Y0hj2tQUfZG9FfKL7YAzIyjaPs2EB/hR2jC5YeJ3UXkEBw4LUjZeUx7qTrjKu7t/psWIMPrjlEkr5wSEpUXy1qL1VtgySxoU9bW61HhqtMn5RzTKss17PKzSK3xK7zrIgQnA8YFyC6+lB4RWqq1lVU7UOTLQzIaVri5UIVkag4ji0IS94WP+77uykHo3xqQkhr7TL//XdAuqi3AVlvtyYZC99QihhuJc5asRnmDvxv/PwLwa5QEizzrDOJ8dM417ZViStiOAsUIZ69b6/SI/FLbSPzOQKeVrWQRyI4S+2iKBJN0M2Hj40t7DVcHDgsekya0WC6YffNoBP3f4VybvKYeFrIWmJXuBNwrzntqNXrG3No+97VQQ/sAzqLUq6NuvmbMKiq3Sn3VBox0DWFeBgPxdKmrIIQVhV3o+fxfluh5ssO+rVNLgVuJcBlJoBL1EqpOSoajrrYx8CKheFHveqW0EEuT7k6W583O9/1grgnbFQpD4n9+bmOn36g13FaLdwVzaUbmG9CWI9ThHdehSQ6lzUAVp+BNe/dcV+kAZA
- +tCHpUGu
- PSrBOQe4WKoDcrECXfrTBAro0Ub64mSKvFFUjX0ck55KPWCzIS7RNWI1UjDODejnccX6bM9Erv2110CdPRGk29UmdIHdy/QAZqV6dFH0j4ZSp94jIjditvA1EadaUrGRk3C2WAgISeUDQotJU+bvV9RcW0Niqg+cv2+KsclZN2SkCxjM9aIDAu21PiYTRYqkNxPCBYhV047IIO2W5SGeuCJujKLffy+CTJJVnBu9lPR0X2qXCSGaqqJeuMDD29GXfjoStGxDINkMfJmisgqrASvrPf+sFsaGyn1Pkx8X2MlLUWG2ZGs8UIfVYPHnSEL/PXG8zc17gMdolR2z1AhxqPHjrA8rv/nGGHVNn3JatvZK3DxEz3jpKRgTTCN7a1o8iEpg8JVD1uA6Yo2yNQH1yuuEg8pB+6YvAEJqMUsul467QcGXvsbDlMbNuGBEoT2p6f4NHjOL/xm5JdZKhiDjor6Y4x8zboSpK82as0W7ghCclE5SBTt9YJ5oxzHjF5VNdLBzdwiSKxPwEY8clrrLvTr5jgm15rq+ygTl5sEz5bySdf0I/TBC3YABzr1uDW4U7M0+M6p/8ItnBaNRIi9Ge+OtI9oX2NWzbzLO7MJm/DDXKrHF63RkPV3Vhkjw0jQiZ7q++2bynskGufhXuLgviSf9kIPH53h+/KalAFPtcfry5fXV1ptz2tDPLh9hhRVjS6OKeHz8ZE972CuaLcsrRug3BKXG27z54P73rprWcgMX3etJTzALGLQKx/k01Uud8gvLo8DqzTHg0wKlA0obm4gYWvSJA1K1MZZ6oRHKTbl/MmJj6rSuPGtdT/iIUKfl37A+JiEzGZXdX0NoOumotOEHGpct5snGUhbdBG/Wieu1pmWf88Tmo5AdEUZMeXxjVM5Xbs2BXqxp9ZTO9vhJMYWtZVTqOu/Ur7/Wd/9z/zQy6WKkiZ54NeqYypqICXlxdG8/F/p3+Hik0maH4j9oQQEZmXahC
- XBL5ug1L
- Q8M9kB2CrAXxEJK6rtLcorigtzH+u0DH5pStM9i7F5srTcrwZZGw1G4o2gOfp4uSUnie95iEqvFZ609cSJTa/SO2JwL3Sq2l
+X-HE-Tag: 1777794075-719413
+X-HE-Meta: U2FsdGVkX1/bHvx4syoTM5AGcDQIkOh58hCm3DYASPm//wkh5CuZcHrjtJUWvSf/vzsp59MpxKbvuYqDN6HUdyYXlTrcYT5KRil+6kA9VIg+x0XiOzlShjnnxH+9JIgTy4ZiaFEWQjnbmHv8GwFZE4hDgYMbqsEDZ+cjXP6QU4ibnNttc1sm+W8RR+skFXSDBW9V4aQXr3SlcKuakgrGKtwSLgPCnm+X5vqxWFo0sQyy0LqkWrLbvJfzOO0OJMI6XT43OfIamXZvbf17vmHvrbPW09DdoblBzv75aAqmEgXpP124km/Sx5RLb2hyJmUoDQzXrKhtby4tMIMXnjAJxdpsaSlKDxy4Y+mNWbLC9eYHmYXLZw25t5SB7nOuQKD+NupmMqEBU8wg+gGY3sGwNTDLvSCv4ANI5hr8cp1957CP7VCsSZxg2rEFU6MILAW7PR9kRVaAlT/BeyAqxAmmdNniQ78z4/ezQfQTtmdfwZNdM+fkD20Ql35Uw5tFOc+69XBidE9xOtj0ACMBBPTME4PqlUKfo9E/9Tf+TM5rRkHro3IYgR8l3vZfOqw771QNZ566Wu0Ng/1t0xcddWbzCDMWdTTq37hCJF+3nFafU8TyJaHyiUuMinyMk3QjZTDhW/2Ni4LF2lJvIp4Q9/e5V5/U8dMi1g/n9Fstje2OWDFoheOwWM2pDCpdM4nMxZhZt4ejBz21GnIkW/ugU5qWJ1TdaM2luU7fi3BJl8sI907lNuRXz23JSzl1IvA2o1+sxVGvckmZlN3kqoTylMCUMe9I72Eg0r/yuNU/agvHTr9eaz/QNVP9Pv2wz3Sp+iwsas3eBt1pRk9SoSBumesQjQhHAipSQy5lS0+AWoE2iuW+mCwm/yTv9V+rDZvS8t0hUNAqEsH8kU1jzoIa94H65QDVrjGPq2A2q+UG7l2jkGejL9my4WlSAlsJBrKmfpWLMaXvoG9oDzlOv0xS61G
+ vff65sj0
+ d/iSfc/VOfZ/4qOxp7/Vu2aQ9yaUicr6fH5o+MFN8AdCcqG4d8OaRIrv8tkNDLS1tLMHuh7kL+LRGlC/x8xy/aOswFdjmAWGKj2KEHAnkFfnsmitqac8StdEkBxfv35Sjd0ZXOglGZUAkm9TNMvPNG52lRa+I+054zrRp4IHeIvxNbDrzEGX1Veihy5/YrZChUs44mpn4869blhpQayvFO7aPZZvHW20jwJZ4JVds4XuD2uCLA+tmaf3HEs0GvzUhKsWoIWsNLMrqkH1DnEt4HXLmyjP3fW4kJBzshUqnFldYQlbpZr+7sy2oGBJ/jdiT0F/yaQK9tafHj8oMUSWohhJGYTHXAARxvcQpPm+Ca+6k5AdWDTRb5uCbDr4xCcETx3kFDl6+VT6luh4Z37fXbOtAe3GrEQ4jkdVuPuA+wSKx7hEmjP2t6BTwKFlXwWpUb2v16IMyQICHiIAyTuFnLJxT+PaseBTI0ZVCedpxDU4eVI15rsUOhWpFXuhFBAZbSfAx+rslXyIUPqG8Jn6NmCkKI+kncO8EcFv0Cbp2zKSdgC4T86gqKjiC3NPir652xqcbIGrGwR64vdjO8fFZLwpbDSbWG/ZNZ31QaEm8hGXTg9oRL/Fxti4Bu5sycK/aV7dXrOuQdlOrSP0bv7I1yHlMtMSsaiaq9uHW4/VI+IVfsXtiJs+Du0CphZSEmzzu6VS90K4I8gR0HwbKwKQlWVNtouw7ul+1AyH8zwdeNYpJbVEdrUtcv9u4fWwcEJMMzr8e5KSCe0R4Nb1dm5M+ANg7R9lMOozaEbwP+XH7S2m/mPDUR/EnIlYvlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,22 +98,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On 5/3/26 16:27, syzbot wrote:
+> Hello,
+>
+> syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+>
+> Reported-by: syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com
+> Tested-by: syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com
+>
+> Tested on:
+>
+> commit:         66edb901 Merge tag 'v7.1-p3' of git://git.kernel.org/p..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=11fb7082580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=9645c21cfd1d3e8f
+> dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> patch:          https://syzkaller.appspot.com/x/patch.diff?x=17f2f326580000
+>
+> Note: testing is done by a robot and is best-effort only.
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+The error message might be misleading.
 
-Reported-by: syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com
-Tested-by: syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com
+ 1. the report is done after f2fs attempted to mount the corrupt image,
+    not before
+ 2. f2fs exhibits undefined behaviour, evident from the fs attempting to
+    do I/O out of blockdev bounds
 
-Tested on:
+This might have been cause by f2fs corrupting memory in which case the
+leak report is invalid.
 
-commit:         66edb901 Merge tag 'v7.1-p3' of git://git.kernel.org/p..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11fb7082580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9645c21cfd1d3e8f
-dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=17f2f326580000
+Davo
 
-Note: testing is done by a robot and is best-effort only.
 
