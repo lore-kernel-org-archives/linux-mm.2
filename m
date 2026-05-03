@@ -4,93 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83481FF886F
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 07:41:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31CAFCD3427
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 08:35:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CFDC6B0005; Sun,  3 May 2026 03:41:18 -0400 (EDT)
+	id 214B56B0005; Sun,  3 May 2026 04:35:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 959B16B008A; Sun,  3 May 2026 03:41:18 -0400 (EDT)
+	id 1E9F46B008A; Sun,  3 May 2026 04:35:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 848326B008C; Sun,  3 May 2026 03:41:18 -0400 (EDT)
+	id 128986B008C; Sun,  3 May 2026 04:35:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F4FE6B0005
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 03:41:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0BC91C08A2
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 07:41:17 +0000 (UTC)
-X-FDA: 84725312994.09.FF02B4F
-Received: from embla.dev.snart.me (embla.dev.snart.me [54.252.183.203])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9E3F8C000E
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 07:41:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=reject) header.from=dev.snart.me;
-	spf=pass (imf22.hostedemail.com: domain of dxdt@dev.snart.me designates 54.252.183.203 as permitted sender) smtp.mailfrom=dxdt@dev.snart.me
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 01C1C6B0005
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 04:35:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 802E3160580
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 08:35:54 +0000 (UTC)
+X-FDA: 84725450628.07.102DF64
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C5D7C180002
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 08:35:52 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fvwzkggE;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777794076;
+	s=arc-20220608; t=1777797352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LqhWSDCINRPUJBq0NQp54xI0NhCzqPhP9E4SCq7zTsk=;
-	b=zoMVJv8yk4ee3RRufhYN+zPXOSlzv/dGqvfR33ZZDiPnZ0//FnYhof2EL9dn6TxVw0YhVt
-	QKs09FDkV1g/Pn6xFZDMykBAGYFJkvV2D66sHdIHr33cF84fDh38QdAKgrtYPRMX6a8Jlz
-	o6ZHxQnSN1wA+b40Of2l4T6dfpoToVE=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=10tAPnHW+07Yc2Oq5wgb6DK+ST+oedK6c09LZoEgMPM=;
+	b=FYD+UuVGoLIde4qkp/qi6beAnOb+zu7pMIUefkhud1R7Bti/KRSKBxvbeosMZHLlXQ9a8t
+	9dMiFe9ra2I7zn0S18q5Ep/is54ettuOIFdjm0/d0MniKPxMrq73accr/mTiVh7GTgi+Mf
+	rWMsGUBxElLPBnPMGuZTIF7JJ0DRsj4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=reject) header.from=dev.snart.me;
-	spf=pass (imf22.hostedemail.com: domain of dxdt@dev.snart.me designates 54.252.183.203 as permitted sender) smtp.mailfrom=dxdt@dev.snart.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777794076; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fvwzkggE;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777797352; a=rsa-sha256;
 	cv=none;
-	b=ED+gMokS3YyEA1wTV7uDRA+EYkWmGg0Z+yzwKC5eMzijh+LyDSXJeDkC8bKQmKIy1ADSTg
-	L3NM+h+0s+0vod8Q0WQJZx8pM3XvGlfzDdGQ2dHdxnwlNWEUVatSLyj/jY8n3MHhTJGgUO
-	72XL3ucJtT590LmyVIrVkK4n11Gbayc=
-Received: from embla.dev.snart.me (localhost [IPv6:::1])
-	by embla.dev.snart.me (Postfix) with ESMTP id 26A761D490;
-	Sun,  3 May 2026 07:41:09 +0000 (UTC)
-Received: from [192.168.1.18] ([182.226.25.243])
-	by embla.dev.snart.me with ESMTPSA
-	id rQP5MRX89mnzmQAA8KYfjw
-	(envelope-from <dxdt@dev.snart.me>); Sun, 03 May 2026 07:41:09 +0000
-Message-ID: <b6c3cbf5-d8da-4157-9b75-918633bbef1d@dev.snart.me>
-Date: Sun, 3 May 2026 16:41:08 +0900
+	b=knEkqnU2+JSjxZsI1Q1jOIFnL3wI8goLxI3/kxchIUbr7ESI5T/BnuGAMQvzgzd93Rj0wu
+	+eQ+C1OlOs/ar/XVgr2uSNc7O0q1QX0yEFvzVOLDeVFQ9pZHmb9t7xQBrfIKxcUH3akR45
+	FSEjVWf3aVheKybmCW0SEjsnUbliBtQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 960CD41778;
+	Sun,  3 May 2026 08:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F1EC2BCB4;
+	Sun,  3 May 2026 08:35:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777797351;
+	bh=CQA0q4d/sPX+XpwN6jnCb4MOBbxEEG38vddO7y9raXk=;
+	h=Date:From:Subject:To:Cc:From;
+	b=fvwzkggE90FCeW7mB2IyZ+HT2cf2S+XUV5nHyMnXVrDyiUr8xGRIL4mqDSHkWECu5
+	 PHXsE6C+YIvi46kY8Gqad+lvW3qEHa79rEJ0lo4M1V1qOcmf23v+pnqOlFxKY8rwhe
+	 Tj4YMTUmtCFoUU6Io/xWEaIO3qOXbzU04A6zvUt2rIyoWXUxA95zJfHYTyjoT6VcPp
+	 DeCz37IrH8+GJZCVqh5KG5HslpHyZ0kZIiQhvQ+uqj5Zg+1cse4hkZtm4OSRFXXBBj
+	 t0Z+NZ9/e9nV98nzsRBLoX0Q2JQKDdCAbJWr17LRESWeROJRSv5kD0+0sqBPFm+Tuz
+	 t2uUug+zShWyQ==
+Message-ID: <38238703-4460-4a57-8d00-5e390fd2d4b5@kernel.org>
+Date: Sun, 3 May 2026 10:35:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [mm?] [exfat?] [f2fs?] memory leak in __kfree_rcu_sheaf
-References: <69f6f8c5.050a0220.1584b9.0044.GAE@google.com>
-From: David Timber <dxdt@dev.snart.me>
-Content-Language: en-US, ko
-Autocrypt: addr=dxdt@dev.snart.me; keydata=
- xjMEYmJg1hYJKwYBBAHaRw8BAQdAf5E+ri1XLtjqYbZdHOyc8oS+1/XJ5bSlbx5WHXmVBZzN
- IERhdmlkIFRpbWJlciA8ZHhkdEBkZXYuc25hcnQubWU+wpQEExYKADwWIQQn/Jn96EMUaIoF
- X+T/ldyyrZpWaAUCYmJg1gIbAwULCQgHAgMiAgEGFQoJCAsCBBYCAwECHgcCF4AACgkQ/5Xc
- sq2aVmjJZwD8COjPlUwccrlRvbNQ6f87DWchtYO0o8W2DNRM3RLps0EA/jEhIbRV6AsyC8jr
- 30Ut3aJ3/mO/6G4sLj7OvkEEBH0MzjgEYmJg1hIKKwYBBAGXVQEFAQEHQFpgtIgaByv9lIEY
- EmpavMO0pYjtu7TMJynwdnGYkN9LAwEIB8J4BBgWCgAgFiEEJ/yZ/ehDFGiKBV/k/5Xcsq2a
- VmgFAmJiYNYCGwwACgkQ/5Xcsq2aVmhFCwEA0kM9VyYB4bLCM7+SuXUUH+5Ec99Nj4RXxFad
- Key9GuwA/2BZK6bNyrLSfEk2JDRoskqf7OIL0wa6JOD5SrBnMe8E
-To: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>,
- Liam.Howlett@oracle.com, akpm@linux-foundation.org, chao@kernel.org,
- jaegeuk@kernel.org, jannh@google.com, linkinjeon@kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, pfalcato@suse.de, sj1557.seo@samsung.com,
- syzkaller-bugs@googlegroups.com, vbabka@suse.cz
-In-Reply-To: <69f6f8c5.050a0220.1584b9.0044.GAE@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [GIT PULL] slab fixes for 7.1-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 85duhciknmq9kpfeydsdyk9tdkntxuda
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9E3F8C000E
 X-Rspam-User: 
-X-HE-Tag: 1777794075-719413
-X-HE-Meta: U2FsdGVkX1/bHvx4syoTM5AGcDQIkOh58hCm3DYASPm//wkh5CuZcHrjtJUWvSf/vzsp59MpxKbvuYqDN6HUdyYXlTrcYT5KRil+6kA9VIg+x0XiOzlShjnnxH+9JIgTy4ZiaFEWQjnbmHv8GwFZE4hDgYMbqsEDZ+cjXP6QU4ibnNttc1sm+W8RR+skFXSDBW9V4aQXr3SlcKuakgrGKtwSLgPCnm+X5vqxWFo0sQyy0LqkWrLbvJfzOO0OJMI6XT43OfIamXZvbf17vmHvrbPW09DdoblBzv75aAqmEgXpP124km/Sx5RLb2hyJmUoDQzXrKhtby4tMIMXnjAJxdpsaSlKDxy4Y+mNWbLC9eYHmYXLZw25t5SB7nOuQKD+NupmMqEBU8wg+gGY3sGwNTDLvSCv4ANI5hr8cp1957CP7VCsSZxg2rEFU6MILAW7PR9kRVaAlT/BeyAqxAmmdNniQ78z4/ezQfQTtmdfwZNdM+fkD20Ql35Uw5tFOc+69XBidE9xOtj0ACMBBPTME4PqlUKfo9E/9Tf+TM5rRkHro3IYgR8l3vZfOqw771QNZ566Wu0Ng/1t0xcddWbzCDMWdTTq37hCJF+3nFafU8TyJaHyiUuMinyMk3QjZTDhW/2Ni4LF2lJvIp4Q9/e5V5/U8dMi1g/n9Fstje2OWDFoheOwWM2pDCpdM4nMxZhZt4ejBz21GnIkW/ugU5qWJ1TdaM2luU7fi3BJl8sI907lNuRXz23JSzl1IvA2o1+sxVGvckmZlN3kqoTylMCUMe9I72Eg0r/yuNU/agvHTr9eaz/QNVP9Pv2wz3Sp+iwsas3eBt1pRk9SoSBumesQjQhHAipSQy5lS0+AWoE2iuW+mCwm/yTv9V+rDZvS8t0hUNAqEsH8kU1jzoIa94H65QDVrjGPq2A2q+UG7l2jkGejL9my4WlSAlsJBrKmfpWLMaXvoG9oDzlOv0xS61G
- vff65sj0
- d/iSfc/VOfZ/4qOxp7/Vu2aQ9yaUicr6fH5o+MFN8AdCcqG4d8OaRIrv8tkNDLS1tLMHuh7kL+LRGlC/x8xy/aOswFdjmAWGKj2KEHAnkFfnsmitqac8StdEkBxfv35Sjd0ZXOglGZUAkm9TNMvPNG52lRa+I+054zrRp4IHeIvxNbDrzEGX1Veihy5/YrZChUs44mpn4869blhpQayvFO7aPZZvHW20jwJZ4JVds4XuD2uCLA+tmaf3HEs0GvzUhKsWoIWsNLMrqkH1DnEt4HXLmyjP3fW4kJBzshUqnFldYQlbpZr+7sy2oGBJ/jdiT0F/yaQK9tafHj8oMUSWohhJGYTHXAARxvcQpPm+Ca+6k5AdWDTRb5uCbDr4xCcETx3kFDl6+VT6luh4Z37fXbOtAe3GrEQ4jkdVuPuA+wSKx7hEmjP2t6BTwKFlXwWpUb2v16IMyQICHiIAyTuFnLJxT+PaseBTI0ZVCedpxDU4eVI15rsUOhWpFXuhFBAZbSfAx+rslXyIUPqG8Jn6NmCkKI+kncO8EcFv0Cbp2zKSdgC4T86gqKjiC3NPir652xqcbIGrGwR64vdjO8fFZLwpbDSbWG/ZNZ31QaEm8hGXTg9oRL/Fxti4Bu5sycK/aV7dXrOuQdlOrSP0bv7I1yHlMtMSsaiaq9uHW4/VI+IVfsXtiJs+Du0CphZSEmzzu6VS90K4I8gR0HwbKwKQlWVNtouw7ul+1AyH8zwdeNYpJbVEdrUtcv9u4fWwcEJMMzr8e5KSCe0R4Nb1dm5M+ANg7R9lMOozaEbwP+XH7S2m/mPDUR/EnIlYvlA==
+X-Rspamd-Queue-Id: C5D7C180002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 1mhwhi4dih7546aina13zef115zxqaat
+X-HE-Tag: 1777797352-730037
+X-HE-Meta: U2FsdGVkX18Oq2XsA7a1vdV4n9iSVQHlfAmb9J70AfzeITWGygVMRdmsVBu9/2zcFN0ZPafKsWh8jzWMZJXaHAdPRnkxFsVVykyIfAkRPhw54VV7sNYqhS9rFawya+hTsryNrhHM26IxufwyfTElP/vpbaJWxK9try++W3667CJYsgVTY6XjmzsbYOSvxV18qhdbsOFji3V71wsbviWC6al0+I/vAt9YfFB68dII+H3/ohnc1skhZzt402fBwtQpMu2+r7u5JtTrlxcp/Sjnd/Ohpf+wJn9OhXviqFClAwzaOxTEtQRMiF0vCDukveBZfOcv1VJvGs7aoq/nf5z5BpI7l1uSpArh/Hshzu0jVELh8nK9ViQrP/NvNN80BYATu06PQU/bqHaBqAz7Ie7FVF4zGXP0DHuMo2wKynrlQTY6lsACvkqshF/Nn71qR0cfXegbPetpGRK5Ai9UWAJs3p2+7FxVTQCtKyNbxX8K0HYrnqGR5wUh/KwMK1mPhFzxMAmWHGgPObOaaWc07QWj2jTAuEZrAce147w6sbqRoD9WI6wybP+FZsoLCtzsUEgMq3Vaz/mkBMXwbWaBhbvvzZFeUSAFLtVxgs2NIv44BxjHm0bZcBGq3VVmMHP+OFnm0pNp06mvQ0VotZo/ggS9F8Vo6SeN6LkmI5oy0UDhxB4gIeYbZIOAEDFScaD3vSYyz8LdyBMmQ3NKk26+dw2maRZsPXfOUy2bk9qTDY0xBzIRBXwFbsenhjE/o7TuLGROhBhcDTcx+Y7wplp4LtwKVutJd/CE9SHyy0ZEI5y4DVCwhHMEoiZfkHnQ4mK+SmCse8wPJTClv86V8HhBE5xMpKeWoZsoIRD57Ojy/eVkVh5HFWWvkJrjjn4P6V0Shxp+kK7qG4LcNUAGzdS0XwQcAkZHsIDfUf3v8PfuHUu2++AX6ApiDPHTblVhfH5N77nNBq1QU0ZHlFWeUG4RG+h
+ 3kNgbFzl
+ aFG71K+JsyMyuFOUHm2CYs6XoidXJ7+eToRAm12suMJiM1e+jmHWpW5vlFsHPW/cY6JUiKvjRg9aVGPZactCcQpaS2bG86pbfYgbUXLoPmZJ3YFr0qzD6CxOM863yLSlvmuZxR5BdG+9Uoz8DQKiFaGDGSol8oXMRl3LRRVJOtwEKkdKUrGefkDJh4hcMyyYCqadKwyoYiaQMexi7d5+hzn7bHizkf6dE6KQtScjixo/BQ42ILSQWeNWiPHghFVT24Ea0GY/N+Fhjq/gunn1XgGhaNyo3IourlvANCfPEcMg3LzTgsS8UVZKeTDqrwQ/6Zcy7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,36 +94,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/3/26 16:27, syzbot wrote:
-> Hello,
->
-> syzbot has tested the proposed patch and the reproducer did not trigger any issue:
->
-> Reported-by: syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com
-> Tested-by: syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com
->
-> Tested on:
->
-> commit:         66edb901 Merge tag 'v7.1-p3' of git://git.kernel.org/p..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=11fb7082580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=9645c21cfd1d3e8f
-> dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> patch:          https://syzkaller.appspot.com/x/patch.diff?x=17f2f326580000
->
-> Note: testing is done by a robot and is best-effort only.
+Hi Linus,
 
-The error message might be misleading.
+please pull the latest slab fixes from:
 
- 1. the report is done after f2fs attempted to mount the corrupt image,
-    not before
- 2. f2fs exhibits undefined behaviour, evident from the fs attempting to
-    do I/O out of blockdev bounds
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.1-rc1
 
-This might have been cause by f2fs corrupting memory in which case the
-leak report is invalid.
+Thanks,
+Vlastimil
 
-Davo
+======================================
 
+- Stable fixes for CONFIG_SMP=n where _nolock() allocations in NMI both at
+  kmalloc and page allocator levels are not properly protected by the
+  spin_trylock() semantics on !SMP. (Harry Yoo)
+
+----------------------------------------------------------------
+The following changes since commit 082a6d03a2d685a83a332666b500ad3966349588:
+
+  slub: fix data loss and overflow in krealloc() (2026-04-17 11:07:48 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.1-rc1
+
+for you to fetch changes up to 5b31044e649e3e54c2caef135c09b371c2fbcd08:
+
+  mm/slab: return NULL early from kmalloc_nolock() in NMI on UP (2026-04-27 09:14:36 +0200)
+
+----------------------------------------------------------------
+slab fixes for 7.1-rc1
+
+----------------------------------------------------------------
+Harry Yoo (Oracle) (2):
+      mm/page_alloc: return NULL early from alloc_frozen_pages_nolock() in NMI on UP
+      mm/slab: return NULL early from kmalloc_nolock() in NMI on UP
+
+ mm/page_alloc.c | 5 +++++
+ mm/slub.c       | 4 ++++
+ 2 files changed, 9 insertions(+)
 
