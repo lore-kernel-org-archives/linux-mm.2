@@ -4,128 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D06CFF886F
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 17:17:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72A33FF886F
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 17:23:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98B4A6B008A; Sun,  3 May 2026 13:17:39 -0400 (EDT)
+	id 945956B0005; Sun,  3 May 2026 13:23:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93B466B008C; Sun,  3 May 2026 13:17:39 -0400 (EDT)
+	id 8F6656B008A; Sun,  3 May 2026 13:23:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8797A6B0092; Sun,  3 May 2026 13:17:39 -0400 (EDT)
+	id 80CBB6B008C; Sun,  3 May 2026 13:23:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B09D6B008A
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:17:39 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D46CB8C92D
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:17:38 +0000 (UTC)
-X-FDA: 84726765396.06.0E41971
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A21A4160008
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:17:36 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VfUWqIal;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EIdPwBQw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VfUWqIal;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EIdPwBQw;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CAC96B0005
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:23:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0C6F61406ED
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:23:33 +0000 (UTC)
+X-FDA: 84726780306.15.B2F471B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4B9FD2000F
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:23:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0Va3qU7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777828656;
+	s=arc-20220608; t=1777829011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KDlKlMHbVinipLNw9LrA+knbIJA6L8a+g0vJK+dN85M=;
-	b=nYXdeZAfpUNV8bvpMfdFP2a6ApMW76lmj3/2iWIjVVsHFaYJXPNSADo9u5vm3NJRUGSbMV
-	TQVeltUa9FUX2jZsg8ZpqXOc9Kb3b86RcbG/6Jc+6zyPNjBjJwHlNprv/powUvXsae5bbt
-	TzTm1hQGc/hFa7V+4i0c4a029tG+1C4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777828656; a=rsa-sha256;
+	bh=Ha+3dTcY9XY6fDCPf0Zumb9AyU4+N4AQ3+cS1YPWzhs=;
+	b=q43H3UkKHchoDTbHKoEHF9A/7YQonB3RxHa0LrsAqRV+oHDncCF1gS5mDh0ufkuVP/HW6L
+	LdDavHOBhownWbXU9qnAJ715hnU4dyVqYbycu9j6cTWIasTvsY6+bEyFKNcL5CYjk2JjZP
+	faJmM29Y3/EYNHwjQ+j4DhXqAZ0DV6o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777829011; a=rsa-sha256;
 	cv=none;
-	b=q4ZY6JM3ltfnKJQgwNwX/dA5dL5KLopJtZOpwZk9ixpyPng0e3VoM0PCkKhC0EVuYMdncv
-	48hqQgbmO14mYfSvV6X103/2Xv0K/BL2evClm4lYJ+a3UEBuILCnFmj+9Xw2z+8aHOxaeD
-	aWbeKuiOJtQTDcDK5pPA141slFFK31E=
+	b=qgX+bQ8FfshFpjdhA1YRgObEg2Cwqus6oJi4Nkx0k1SlI7ZMgn+Wd10U6Enjo6qo11j7Je
+	beoqiehnCcVFYoA5ivH8GqkJqROiQWtfRR0EEA7kQEN0ZNUkxCjsyg4wWwoddDO0GybUiA
+	GdSGDoTBjOjk26+YTOaG1r1IbhhxClU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VfUWqIal;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EIdPwBQw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VfUWqIal;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EIdPwBQw;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1C1805BF55;
-	Sun,  3 May 2026 17:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1777828655; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KDlKlMHbVinipLNw9LrA+knbIJA6L8a+g0vJK+dN85M=;
-	b=VfUWqIal8zUZxua+OX+zlAT8qGOtxWgZdFmCWJFangvLdJYL62hKCI7XhV7FZv0uk6ydwp
-	ZcwJW4rKvy9juzaKbjBCG5mUTcjC4u9xmuVR7RgLboZFwk97HFw1oRiNgP7NeruIQJCVlH
-	bC0giDhlkn/KbypGsq3Roay3pH/34po=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1777828655;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KDlKlMHbVinipLNw9LrA+knbIJA6L8a+g0vJK+dN85M=;
-	b=EIdPwBQwsxRtZUGDu6VTg/ER7tZhcSskFKrnHwwAHQwD+uvSGM4Sh3N5dqNBMyDMGa9q7Y
-	oSbGt8aOozQoKsAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1777828655; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KDlKlMHbVinipLNw9LrA+knbIJA6L8a+g0vJK+dN85M=;
-	b=VfUWqIal8zUZxua+OX+zlAT8qGOtxWgZdFmCWJFangvLdJYL62hKCI7XhV7FZv0uk6ydwp
-	ZcwJW4rKvy9juzaKbjBCG5mUTcjC4u9xmuVR7RgLboZFwk97HFw1oRiNgP7NeruIQJCVlH
-	bC0giDhlkn/KbypGsq3Roay3pH/34po=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1777828655;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KDlKlMHbVinipLNw9LrA+knbIJA6L8a+g0vJK+dN85M=;
-	b=EIdPwBQwsxRtZUGDu6VTg/ER7tZhcSskFKrnHwwAHQwD+uvSGM4Sh3N5dqNBMyDMGa9q7Y
-	oSbGt8aOozQoKsAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D9553593A6;
-	Sun,  3 May 2026 17:17:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id stqeNC6D92kPXQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Sun, 03 May 2026 17:17:34 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3CEC3A0799; Sun, 03 May 2026 19:11:42 +0200 (CEST)
-Date: Sun, 3 May 2026 19:11:42 +0200
-From: Jan Kara <jack@suse.cz>
-To: Souvik Banerjee <souvik@amlalabs.com>
-Cc: dan.j.williams@intel.com, willy@infradead.org, jack@suse.cz, 
-	apopple@nvidia.com, linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] fs/dax: check for empty/zero entries before calling
- pfn_to_page()
-Message-ID: <wxna5633rfnyte56h77bezw4duqlbdyxpt6wejywebatfutgh6@w2czfecq5zhr>
-References: <20260501233933.2614302-1-souvik@amlalabs.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0Va3qU7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DB01441C0;
+	Sun,  3 May 2026 17:23:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6890EC2BCB4;
+	Sun,  3 May 2026 17:23:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777829010;
+	bh=MAX1WLXMN+1GNFQMEzikaKWBNYQVg3O6ltYlnFE7FsA=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=a0Va3qU7k0KT2KpuPOfeQKseLEbqBUjzORSfVBhgmDQOObUBkkCdxvDoHLjpd43F1
+	 4h5E8P8OrIs5Z0UILb+AOKF+7NCz7YXpKCyj9Yrm7i/7DQN7Py2Q8AaguvE2ct80tm
+	 d+wSUyyFPwtOAtNKc4KXOoPjSXJ1b/vVLlu8uJT6+MCJS/T6HrPlm14plfWF9Qx3bJ
+	 UevK+enFcqpLdvPcaERjr8HF9MWDcVbVW62RtlPF7gxfDqB37rwvPQq7rdAkhJPipZ
+	 MRt8QpthU5PmyJRppz6aMhFBNwH+8Yz3X+DuoJRCmFErqNvlaQc6z+OiLcpznurp04
+	 E7ix8cgHvBKcA==
+Content-Type: multipart/mixed; boundary="===============1060358541369016392=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260501233933.2614302-1-souvik@amlalabs.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A21A4160008
+Message-Id: <91c02dbb561c7a4d760ff3314c99fed77870e0d7665848b5832f6719d21feb17@mail.kernel.org>
+In-Reply-To: <20260503165024.1526680-3-vernon2gm@gmail.com>
+References: <20260503165024.1526680-3-vernon2gm@gmail.com>
+Subject: Re: [PATCH 2/4] bpf: add bpf_cgroup_{flush_stats,stall} function
+From: bot+bpf-ci@kernel.org
+To: vernon2gm@gmail.com,akpm@linux-foundation.org,david@kernel.org,ljs@kernel.org,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,ast@kernel.org,daniel@iogearbox.net,surenb@google.com
+Cc: linux-kernel@vger.kernel.org,linux-mm@kvack.org,bpf@vger.kernel.org,baohua@kernel.org,lance.yang@linux.dev,dev.jain@arm.com,yanglincheng@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Sun,  3 May 2026 17:23:28 +0000 (UTC)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4B9FD2000F
+X-Stat-Signature: x1856o9krc17m63zxf5nzanqyeey9or8
 X-Rspam-User: 
-X-Stat-Signature: fpqjeu549s53qeyttzce7tr1mi85rni7
-X-HE-Tag: 1777828656-692680
-X-HE-Meta: U2FsdGVkX1/7IhhRrPfkt86Mca/EIZEJQudUpmHkVGtexVQ3GLyTMOIgQVqx4VtEjb8q1TWRumQvVQrwoHJzH43fGwlYwwB+b0iinS+wYlKnOWw9+fiHos1T3TbzYyGAqoHuHVUUsPKgossNghG0mF5ky5MUqm9YNmyRnf3s56m4IDPM75xTzBWHJsx6Dk4nWzFcDfNTpa/XDGim6lRTYbt9s8joUHJv6xS4zPXWJgnMNYLs3yAEMeyXxMoEuBcI13mEcYBtEGd8OHjZOu6ced4tyLpLM+u3/yYWhu4lYsVmI3O2BHU092h+7aKPHxIWAIAFsf2o1CzSlrho+qZXSpB0m/pwdrps+T56GBV0qUFWVeMhCECHfQyLIgI3BfNJd3xMggLr1vPA+LtUwDZ6CAvHPERQBYFMC10mSaALFMQU7aWYaNBVYSUPpNbkMRoszCNTU1FBgIUzIr9YKMvs8dU0VtidOHYJk6+CS5MG8TUtBK9Tepbu2pEZjZQCRDnsOz0rz+GZE3i0z+cjQC0ncX3pZOqweATa7kzVhsynQU7oaDmyLHBjcoXraYd7Qz4aI3TX+cmTf1dXcvexbEc2k1124uP+ru5TWeP3/8tosMrP/w+cF3XybCC90wSZFnEtGTckQINkoHmAV+IXT0cb5rQoC9DN5HRaw3oWorXqlOudND/9dm3U7F6oqLwwvM1iitIBwhAWGgNWaxq7pcvAVoVlQ7yqjLt5GDgF2nFodkvBhjgsAZSMAiIqQTkIKIvrC73kWi7LUqY2+nkxp/uuFUzX85cq7Pm4B0DJkVM1U8bo/SfEs60rbjZGY9tJfcaLtZ0ZSEtncCzdevzFbbm+w0nW037dbUjTnpuA0spIV9/fZDmisnVA+MvSeDcaq0LEbuYNyBBVCVGnBOGKlps5IdblrPCNze+jQmFTKoVWJPVPITE1Nr9CtNk7X7NOdmvQVlq9xNrrrb/WWihTZza
- YM7IQH3U
- Zbe4ckgME6zu6joXalJ8poDoQ/S5yc87wQktKnnyPQSfa15sjwvpfK1h+a6wy2wNbHM+EuxpCbBQDRQD5zu09TfPb85U+N1tm2PEWgcdpasgdYiBHruLc896dPOB7xKFgQ7NmKLj6piYZrQnIOQXh7cgUkJAuUbStb2Vhw8t028pDJKU7eGw2T8qZFm2ySjw/tep8nSDLsJ4pWZAUvTjE5VCEuqdJTfx+UicvkoRmfwH07jmRFBLeM/m0NvHy97GdPwPZWpGS93PbaGdy208kL2yTuiDifomiLOIgEje3PH6KWQ/ocV6L04ZFiRAynH165uzMV8EGHqRmaYybwU+eLhGTvg7x+SnrZB3tOuYZVEf7OWYuxrc0fsa7n5MuS3dswt41KJuVSRNIiTimFN10U+PKynrffc8SWD9O7tQUmTQoOgeDjXczeQC9G6IDFWhCc8lOQbCL4ZjS6zU5f/Ph8w66RXgWykYFaLwQVH/KDtBBiceU+sgUalvC8A==
+X-HE-Tag: 1777829011-350826
+X-HE-Meta: U2FsdGVkX18b82DCXBwWe0an0hcwO30BPYM5QmoGuauCEK99EeKLTgend9MkQiPUcuufta1Jvse2PkJ5Dnx+UX8CQfs7WP8e+uiUn4eD1KymLPS/yeGOIt3zT+vwL3C857xqhGcYj+YV+KdnFwyHcnaqLVcdoag+9BNuI2BtWtNKhwn2bDl905C4geGDJoD5bP2xVPBJ7vpD3+vKP06ljkl28zLOgFIqMXPNYVQFf1VxQKnjJPisJkqd7c6K1//8od1hmtsJdtPV6YqcmqWja0S45re7HYXwtjc6R+WiOp3VRuV5SiBUjyaogloR8Vb2dQjI8lTMcANEuRQ7LnAgWPbv8C5/Aql6LZIhh4wIlfHkNMmju/LvLH8cix0i/+WvoLRKB59R5K91NzLVpUAjaJYvgKXGtWFisqEX3LUbmcC2E1K8zrAZGso3ewFxfIs+eFNXAsCJg7JAIz8blB6rCP65pYHcjFT1EgH7yZ+fEWp1kUCTgzhNnJPJDncFGNBXmEQ67NwsMg++TeQngUsSOFdjVTT4zjGaN36J2B9aTqOuequ19rIAN5mCsA/jkWHwXv1JOWO2gYLvC7IV9zSFCN9XfevYLGMZut/HfKDxEpyX7CyiBUbi/P5BxKNe8AD1A0FoKuOK46mV/6em1G9jRfoJ6zD3N1lrKO77AkFanAapL/S96DjSt+wOkKtPwBOCqmSHhEAT6l01pllyC1enybxmVQeMvWX3klrVdiCvt5gDcnPnQZ2hs7SSyPYY0Y2tawd0B/+37nOmx39VjosdOEZgHMZqw4Y7hFhaM8m6XXPLglZwuo3Cr55SnoISYX3X1LbsJfdo0mjh41ne+yNX3gE9FPZNOFoPE/u6yurE5ep4Augu/vgPl/7Fo81r9dDCcGsDtlzwqrBXUgjc769swq+z0UE8EvS9EDBZ5HadUG7nLzC9rQXoI0WsjNZrunOmf/mCvHb2tFpEbxx7/cs
+ wGPNmkee
+ w07wOa6qhrf6ZMHZIhZfVmqR0OOlcFFKPRsNVjEy/BLVDkeSo3JWfHBKAw+amV0haxBFKdM1OcKgTShaI2uDG3ij8QQIzDCdbNKno7yx212rPHQm8rsqCg2s617nxeRNACXV9enJGcrOyzBDdlhH8o0qeGrWV+NLaCliHIFRakqtkCpExxCgoRMSnYTsgRPm3WTxsSPVoGYjlqDu8gTJjlemBdOrn5LwYiUieOXbGkqdhtRKZyHPfyXFXol/+qjOo6mKdTxy14i6M9jXVYslrKKO0plCO+LjwvzuUIlvuXz7vaO8+lCYJV7LmNJ8IW4QGOVsdagvEAmqZfC+1Pej5iFM7sjeqGhIgPDknh9MsGzT1jK9V6KL636Vx1GrEky8cgoxaNs2CpywQdjBE6ZIpKdwkj3Y+Lhnsda8aCcv+TuuFy1dFf2Fieu2Uew6OoJS1QzfiqnJpgaXDgmu85jdUjho0bQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,87 +88,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 01-05-26 23:39:33, Souvik Banerjee wrote:
-> Commit 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> added zero/empty-entry early returns to dax_associate_entry() and
-> dax_disassociate_entry(), but placed them *after* the
-> `struct folio *folio = dax_to_folio(entry);` line.  dax_to_folio()
-> expands to page_folio(pfn_to_page(dax_to_pfn(entry))), and page_folio()
-> performs READ_ONCE(page->compound_head) -- a real dereference of the
-> struct page pointer derived from a bogus PFN extracted from the
-> empty/zero XA value.
-> 
-> On systems where vmemmap covers all of RAM that dereference reads
-> garbage and is harmless: the early return then discards the result.
-> On virtio-pmem with altmap (vmemmap stored inside the device), only
-> the real device PFN range is mapped, so the dereference triggers a
-> kernel paging fault from the truncate / invalidate path and from the
-> PMD-downgrade branch of dax_iomap_pte_fault when an entry is being
-> freed:
-> 
->   Unable to handle kernel paging request at
->   virtual address ffff_fdff_bf00_0008 (vmemmap region)
->   Call trace:
->    dax_disassociate_entry.isra.0+0x20/0x50
->    dax_iomap_pte_fault
->    dax_iomap_fault
->    erofs_dax_fault
-> 
-> Close the residual gap by moving the dax_to_folio() call after the
-> zero/empty guard in dax_disassociate_entry().  Apply the same
-> treatment to dax_busy_page(), which has the identical pattern but
-> was not touched by the prior fix.
-> 
-> Fixes: 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
-> Cc: stable@vger.kernel.org # v6.15+
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Signed-off-by: Souvik Banerjee <souvik@amlalabs.com>
+--===============1060358541369016392==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Yeah, good catch. Feel free to add:
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> index baa12b24bb64..d7b04f1fc9f1 100644
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+[ ... ]
 
-								Honza
-
-> ---
->  fs/dax.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 6d175cd47a99..6878473265bb 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -505,21 +505,23 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
->  static void dax_disassociate_entry(void *entry, struct address_space *mapping,
->  				bool trunc)
->  {
-> -	struct folio *folio = dax_to_folio(entry);
-> +	struct folio *folio;
->  
->  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->  		return;
->  
-> +	folio = dax_to_folio(entry);
->  	dax_folio_put(folio);
+> @@ -2819,6 +2820,32 @@ __bpf_kfunc struct cgroup *bpf_cgroup_from_id(u64 cgid)
+>  	return cgrp;
 >  }
->  
->  static struct page *dax_busy_page(void *entry)
->  {
-> -	struct folio *folio = dax_to_folio(entry);
-> +	struct folio *folio;
->  
->  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->  		return NULL;
->  
-> +	folio = dax_to_folio(entry);
->  	if (folio_ref_count(folio) - folio_mapcount(folio))
->  		return &folio->page;
->  	else
-> -- 
-> 2.51.1
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>
+> +/**
+> + * bpf_cgroup_stall - acquire the total stall time of cgroup
+> + * @cgrp: cgroup struct
+> + * @states: psi states
+> + *
+> + * Return the total stall time.
+> + */
+> +__bpf_kfunc unsigned long bpf_cgroup_stall(struct cgroup *cgrp,
+> +					   enum psi_states states)
+> +{
+> +	struct psi_group *group = cgroup_psi(cgrp);
+> +
+> +	return div_u64(group->total[PSI_AVGS][states], NSEC_PER_MSEC);
+> +}
+
+Can cgroup_psi() return NULL here? Looking at include/linux/psi.h, cgroup_psi()
+returns cgrp->psi for non-root cgroups, which is allocated in
+psi_cgroup_alloc() only when the psi_cgroups_enabled static branch is true.
+
+When the kernel boots with cgroup_disable=pressure or psi=0, cgrp->psi remains
+NULL for all non-root cgroups. The sysfs *.pressure files are gated by
+cgroup_psi_enabled() so they never hit this case, but these new kfuncs are
+directly callable from BPF programs without such gating.
+
+A BPF program could obtain a valid non-root cgroup (e.g., via
+bpf_cgroup_from_id) and call bpf_cgroup_stall on it. If PSI is disabled for
+cgroups, this would dereference NULL at group->total[...].
+
+Similarly for bpf_cgroup_flush_stats below, passing NULL to
+psi_group_flush_stats would eventually reach __psi_group_flush_stats which
+does mutex_lock(&NULL->avgs_lock).
+
+Should these functions check for NULL after calling cgroup_psi()?
+
+A subsystem pattern also flags this as potentially concerning: the `states`
+parameter is used directly as an array index without bounds checking. The
+backing array is declared as u64 total[NR_PSI_AGGREGATORS][NR_PSI_STATES - 1]
+(see include/linux/psi_types.h, struct psi_group), while enum psi_states has
+the range 0..NR_PSI_STATES-1 (PSI_NONIDLE is the last member).
+
+The BPF verifier only checks that the register is SCALAR_VALUE and does not
+validate enum ranges. Because the parameter is not marked __const, a BPF
+program can pass any scalar, including values derived from map lookups or
+arithmetic.
+
+Passing PSI_NONIDLE (a valid enum value) reads one element past the inner
+array; passing a negative value (legal because enum is signed int in C) reads
+memory before the array. This would leak adjacent memory contents to the BPF
+program.
+
+Existing BPF cgroup-stat kfuncs guard against this pattern:
+
+bpf_mem_cgroup_page_state (mm/bpf_memcontrol.c):
+	if (unlikely(!memcg_stat_item_valid(idx)))
+		return (unsigned long)-1;
+
+bpf_mem_cgroup_memory_events (mm/bpf_memcontrol.c):
+	if (unlikely(event >= MEMCG_NR_MEMORY_EVENTS))
+		return (unsigned long)-1;
+
+Should this function add a similar check, such as:
+	if ((unsigned int)states >= NR_PSI_STATES - 1)
+		return -1;
+
+> +
+> +/**
+> + * bpf_cgroup_flush_stats - Flush cgroup's statistics
+> + * @cgrp: cgroup struct
+> + */
+> +__bpf_kfunc void bpf_cgroup_flush_stats(struct cgroup *cgrp)
+> +{
+> +	struct psi_group *group = cgroup_psi(cgrp);
+> +
+> +	psi_group_flush_stats(group);
+> +}
+
+[ ... ]
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/25285279315
+--===============1060358541369016392==--
 
