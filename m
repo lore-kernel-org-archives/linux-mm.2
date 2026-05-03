@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FC14CD3424
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 14:59:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2983CCD3424
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 15:02:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 369146B0005; Sun,  3 May 2026 10:59:53 -0400 (EDT)
+	id 8C4876B008C; Sun,  3 May 2026 11:02:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F3006B008A; Sun,  3 May 2026 10:59:53 -0400 (EDT)
+	id 875206B0092; Sun,  3 May 2026 11:02:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E23F6B008C; Sun,  3 May 2026 10:59:53 -0400 (EDT)
+	id 78D086B0093; Sun,  3 May 2026 11:02:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 093546B0005
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 10:59:53 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A6814A0920
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:59:52 +0000 (UTC)
-X-FDA: 84726418224.01.81309F8
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 63EB06B008C
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 11:02:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EBB04A0920
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 15:02:45 +0000 (UTC)
+X-FDA: 84726425490.03.0AD31F3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CC0A64000A
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:59:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XBKD6Gfd;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4DE562000D
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 15:02:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KjWgS8Yi;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777820390;
+	s=arc-20220608; t=1777820564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9lOfFl0SriVGKkQJn2K4C2vEkVTlmden7k1vzvPyw6k=;
-	b=R/eGy9Qk9K/FWRH6zS88yo/SXZSLAK2Nn02P4OTDMX+azv4ilgaE3mq58vJTjzPvMcsfm2
-	knCp8NmMLNTzm5bfe/czuWx0dtQemxF9O9+DxAa94KmwvREqaBvUA/tcj4iT+H3gelRJEX
-	SAx5rSJYqbVHBiyGM0H9GQitTrvWq+0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XBKD6Gfd;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777820390; a=rsa-sha256;
+	bh=njDB6FKTepqFQYMn2weI+wCvH+g5DXp35bM/2x9+GAg=;
+	b=xw11x8EQEFbj34X4lB0OPGudr7fRGgv2ITLzgQsHsucs0SN/mEWH3xROkk8DUkHKW8a1ib
+	mWwRrDkcjepYgL1t01ckpyoO1/X2Cj1kZ3PtlYLNY23b7JDt3jnvnVWLW6iCjEx4fwA6gn
+	bp5+53Q+Wsf5G86KzpvIckxzJJRVMZQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777820564; a=rsa-sha256;
 	cv=none;
-	b=eegZaNSCoKmNxdVEFO1UsJGzzDCgzQ9Zw6VZ81QEyH0Xl1WzqA+edheo6ldTJQBy/lblxt
-	NQeWXpXHGi6GE7F6A7r+lqLiLnB2IorRcH6R37vkxEqyTIFPDk0xs1aMplTeIiolcqJPzX
-	Zb1Y/jVTFK6IvLTNvIglaZCbtHTco6U=
+	b=Yt2kdKel5X5WL1AiiTdkRi60ul9LyyJyvr2gQ5fLjPZc4Xnh05Oon0RpVgRMoFyyj0V9cs
+	F9w+QOKRailZhPkeWwok+cz+f4JZv8Rvoxjg6qQgbJ2cSIoDtbSiINzDsgdxWPa5rpU9MH
+	ejX4yB01Bb7xid+YdmPJmMur2rrEeC4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KjWgS8Yi;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0BF8B60120;
-	Sun,  3 May 2026 14:59:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39A7C2BCB4;
-	Sun,  3 May 2026 14:59:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 99A5D60120;
+	Sun,  3 May 2026 15:02:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589CAC2BCB4;
+	Sun,  3 May 2026 15:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777820389;
-	bh=qd+6m4qTwQ++ioMS8gFbxaokMWHNwz5bq5v1CdNG3LE=;
+	s=korg; t=1777820563;
+	bh=LElIeDOTpHsqNMcDsaQLxB7JqdocbC+VJFujQHOSic0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XBKD6Gfd5BTPGg8/bdEfNKvUOJkpXmg9TRc6RFjcCMacqkeMHrkrJrC3wlPDm2uJy
-	 SZMe6dox0ys34wBPeN6gaXqMPzEYYl5JpMCOWQOISRJBi0GUh+dSok7nnz4WKSJbzi
-	 Vm4uWYL5K/qiGniHPJ7j3KdCToV6ksgBKNz1htLY=
-Date: Sun, 3 May 2026 07:59:44 -0700
+	b=KjWgS8Yi09HktsXwEj0X32oeSUm6hFNnKPxjKolb+3/FOZDdFTNBDTcPbjJLfYKD/
+	 jincMbatuAl7HplWQuRJXke29Q+vKGYqaHeYwrOL2RwLPY4owoDj/SuEXK/hVpgUEx
+	 pC/N0XL1ZfEIecHsuSgjre8i5C6HfqAIeXWaklVQ=
+Date: Sun, 3 May 2026 08:02:36 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: <xu.xin16@zte.com.cn>
-Cc: <david@kernel.org>, <ljs@kernel.org>, <hughd@google.com>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <michel@lespinasse.org>
-Subject: Re: [PATCH v4 0/5] KSM: Optimizations for rmap_walk_ksm
-Message-Id: <20260503075944.0c19e048e7e20f6715d9e86e@linux-foundation.org>
-In-Reply-To: <20260503203538194jFwVGloy43M1F3sQGaFt7@zte.com.cn>
-References: <20260503203538194jFwVGloy43M1F3sQGaFt7@zte.com.cn>
+To: Luiz Capitulino <luizcap@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
+ baolin.wang@linux.alibaba.com, ziy@nvidia.com, lance.yang@linux.dev,
+ corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org,
+ dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, lorenzo.stoakes@oracle.com
+Subject: Re: [PATCH v4 0/9] mm: thp: always enable mTHP support
+Message-Id: <20260503080236.4ea7f3fec0e5788d50113599@linux-foundation.org>
+In-Reply-To: <cover.1777663129.git.luizcap@redhat.com>
+References: <cover.1777663129.git.luizcap@redhat.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: oyejcghwqoei1sqi88bgw5nhochqwd58
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CC0A64000A
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4DE562000D
+X-Stat-Signature: h74i5gjz6e5gy339518cxe4tf9t19mtz
 X-Rspam-User: 
-X-HE-Tag: 1777820390-429091
-X-HE-Meta: U2FsdGVkX19XyjEpY8F/eBvCW0ArsrvHo6FiUpzhv8CtCK9WwrxQqHYFEccwF40NSNCZ86mR4Le7iReZ7JNAgEjK7FWKP9X3G90f97KNq0cH44GNsazlOtpHhb8SQ1E/rkg/Hbbbrgjlqv4TZaCddptwjo6p3Z6Hm+LCU5Y3cuv0UgW66yOGfDqy4Wi34WELdGZTzeEjxzp44T44Uu9AHeo4/dEYLYU5u+ITzbUeKcUUpao1/yqgHxcyI8QD0bGPTEzCX2P+oy+MI3FKR/5Q4fEP6sAJZvpGOum2RRjWPh7pBBzkSzOp3Pmzdss+zMrvrR/+luXS2anE/nzpE5H+HFG5plBMyu0z83tvXf0pje82ZVMkvo61CKnjZdW7/36bLLBuDPfDN69FUXEMdqzjIhZvGGoSj9fs/c2Uf50iMH1KnejjcZ3xts5o9wreg+1I4krHW7/3LM1txc8vsyWZ0cpxJGPzV5k0AxQNJGkv+IyORiARskV5BCXQ2qr+HcXYWf1b1flhL1dK9x4K+jcTDjnpLStDmPaXkNPodk191Z5K1gezljx/4vSmQLfnCN0MYr2U9oGIz/WTaDI6N+vVbUx0bRzbwRZGZrDckmlQFe8FDJ6Ozb50/Qe44zi8I0qfPcSkHobqz2PBAuiejnR2OP7i/aQWh/vY09VzpaulQLQUCAvBaFcb3eGBxK0v3jedNYn+6tVk/quUg/XwSvA+8N3F2tbcgOOmAol+DLZEO6zWwJYBZPGdF6/fb0rdeSO3VMytwNcDH9byqtE0q9IZdcdeohyz9BA3b+3o+U81V7DShFTJ2nDHHFou9NCXKOJQMRoTQfkAuUfeWlrnQVRs3dBSuew2h637oTblm/M9E2NocbwBfygPaVhqjtWEE6Ti10ZBKDtfu8dCl0yJChQJlBYBDjf5RiaSlktEG6IOzEz7KjiNI5Bmu+8JEhzqPwYKCVLif2AcqWay5zdzxno
- fC3u+Frc
- g5HjC0Rx+oCXY+JaaExmBCpWfAR9X+sUPNB15rj7M2QHwIEokQStyUIgphmf76Rq2EiIjrEafldc7LPQtYOIPvzoues9swWfPMV8nURgZApDKHhRQPUGn0iSWRIduZ3sYZMFKelqXGYrmbmhpkcgzSn2swhGU7XoGKH6ctWbaSnSm25Gg1QE8Ekmi4iXw/hAIWJPUISrOja3AYO4GQTh+O7EvXK+NVI3bMvgy2Cy3Q7DhCFiE9DvjqbR1MhztfPukoqBaMCUPXCPOnXHunsRV9xhE37tdfpbjQDGa0rKUGrD/++axeXJ7ffdk2lnybQFsvC/GGdqIl8hfkMvsPs632NYGXn5GoDHbACMWRrYgdyoXuryeTJe3bAugQHlYBiymHGlEYQ+M+35lUD+aVQ5NPnlBULOSbCRq47QtQL279xTVpKJUk0iuxbrHPNKwb/+P72UooBjt6VmzEia4MjyDV6EW/IO/330/CqTL+atjxYOTOLI=
+X-HE-Tag: 1777820564-213156
+X-HE-Meta: U2FsdGVkX1/oRI8kGs/G85aeeBOw3d3CoEek7VGT1D8xpepKQtNaPrt6mOTkvu4cPzUqhsUDbRDDtMOLv8MpGf51GlVzAjj5lAO9kRRyAruKyz16FKkbTzfATfGjLa/Hhko5qn9XgDlejMWdPAyGB4FXpJgNb+ZHVvdRZNKF39XF+3L7b4o9CFxRMsuLLOK99mjMWdJm8JqNLCi658I3uYW4Aja4JcD1eCdTOXW1UGYCoeCT/ZhtM7Qtfkg0UJRJ1eMMDvM981aqLc5niGiUAW2+26FUIKdqbDhCkOIEydoku/H7drp762H7fe0pySPL86ibzwodZcrDq51SMopaYW4GzUyX5FevqZ9SzLFQkUk+XVHop/m2SPwSvehMRjlV20Up+HcOiUYAM+4aMUxTznNxkrsrpauCulGSo6o3PpDNj/d3u14fH5ss+lRsPwb3gwoCCeOu2cfl3ri13pTI7bW31vfaWPsR1uu5BJDwH2kSqF57erCmCnW6Jn98B5u4MfGzqVZYLzQTdUDARsMz5HrtHoEW0rgwTfiv1fHf3VM4wBJZU8YZwPG6yo5uHe266+qjoTuhVz7IDHnL0dbACxmG9bjBk2gtFbIRnYZjQ4BQPw+jcrYwFjZfOS/YfVynqXr7YHiOUyNfmnSN5khpkiQ2iEzK7zd1kiHAmw0FCLrYEHfRYOF98yIe6CFp8DGKsL79eRr3YiNgyUisLAc2x+kDGJVFz0aoZtM0ZfD/b36HyeWXXkbSUUHZU4E2+lAy1TMrQ6mtF0NuGem29wIR00NOlhGRz67/DeYypumljdVYgSW0iAsy8Bw+ESr7PVY8u/EovPiOnn8cefpxgVyQm3YfAVRjPyNBvlshY2PmDG/YNYmsHMU+487h1IaNT7sdOFmWiGoks82y8cc5L6leT+eWNVqNObyVGOfo/zcn9eYyJematDEX/TGL/I2gERPC1YGnbVdf7FnnG+SmGlk
+ VoqUxj1p
+ XVUDw09rIXobL4XEE6XGgaxlWhozp1ippQIZeKb+y5n4b62AQ5VE8yrOpzJepxn+5c0F0AZkdDvVPqUklw/5YWlrWM5H0s27KyTMoYgz3XxgjouRixV2Ypj4xwrDfkUMdwBfs6UcoKICs6NsvqBFHOj3JKD1K99oS1GxHOrjay/Ly5Ln3hv29Lt23wuHoJ+FDwgICSMvMEyrVQiwv//4SRCFszaBXrUcQic5fiJdQClnlmYQG+GcJjW9NklwKeDPQFYbdL5ycGSoQwaiEX99UghStMIJ+TsgJpjG19i6RO/zVCu0hjlyl2CRWtjXQDLgkN9oaa5YXlTRzkA/frtgsJ5Xgn/9LDutnmlTF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,43 +94,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 3 May 2026 20:35:38 +0800 (CST) <xu.xin16@zte.com.cn> wrote:
+On Fri,  1 May 2026 15:18:42 -0400 Luiz Capitulino <luizcap@redhat.com> wrote:
 
-> Deep investigation revealed that rmap_walk_ksm's 99.9% of iterations inside
-> the anon_vma_interval_tree_foreach loop are skipped due to the first check
-> "if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a large
-> number of loop iterations are ineffective. This inefficiency arises because
-> the pgoff_start and pgoff_end parameters passed to
-> anon_vma_interval_tree_foreach span the entire address space from 0 to
-> ULONG_MAX, resulting in very poor loop efficiency.
+> Today, if an architecture implements has_transparent_hugepage() and the CPU
+> lacks support for PMD-sized pages, the THP code disables all THP, including
+> mTHP. In addition, the kernel lacks a well defined API to check for
+> PMD-sized page support. It currently relies on has_transparent_hugepage()
+> and thp_disabled_by_hw(), but they are not well defined and are tied to
+> THP support.
 > 
-> An initial immature thought was using the "rmap_item->address >> PAGE_SHIFT"
-> to be the pgoff passed into anon_vma_interval_tree_foreach(). But this is
-> flawed because when a range has been mremap-moved, when its anon folio
-> indexes and anon_vma pgoff correspond to the original user address,
-> not to the current user address, which was pointed out at:
+> This series addresses both issues by introducing a new well defined API
+> to query PMD-sized page support: pgtable_has_pmd_leaves(). Using this
+> new helper, we ensure that mTHP remains enabled even when the
+> architecture or CPU doesn't support PMD-sized pages.
 > 
->   https://lore.kernel.org/all/02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com/
+> Thanks to David Hildenbrand for suggesting this improvement and for
+> providing guidance (all bugs and misconceptions are mine).
 > 
-> According to the implementation of anon_vma_interval_tree_foreach —
-> it essentially iterates to find a suitable VMA such that the provided pgoff falls
-> within the VMA's range [vm_pgoff, vm_pgoff + vma_pages(v) - 1].
+> This applies to Linus tree 08d0d3466664 ("Merge tag 'net-7.1-rc2'
+> of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 > 
-> So the solution is to add vm_pgoff field in ksm_rmap_item and use vm_pgoff instead of
-> address >> PAGE_SHIFT.
+> NOTE: I used Claude Code Opus 4.6 to *review* the series before
+> posting. It did find one issue where a pgtable_has_pmd_leaves()
+> check was missing when assining huge_shmem_orders_inherit in
+> shmem_init().
 
-Thanks for pushing ahead with this.
+Thanks.
 
-Regarding the [4/5] changelog: I don't think I understand how much
-effect this change has upon real-world workloads.  Are you able to
-clarify that?  "How useful is this change to Linux users".
+Sashiko found a few other things to ask about:
+	https://sashiko.dev/#/patchset/cover.1777663129.git.luizcap@redhat.com
 
-AI review had a lot to say:
-	https://sashiko.dev/#/patchset/20260503203538194jFwVGloy43M1F3sQGaFt7@zte.com.cn
-
-Human review was wondering how much overhead [1/5] would add.  I do
-note that it adds overhead even when CONFIG_TRACING=n - the rmap.o text
-segment gets a few hundred bytes larger and there's additional runtime
-overhead.
 
 
