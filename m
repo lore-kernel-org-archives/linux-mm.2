@@ -4,136 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C825FCD3424
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 18:17:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 149CAFF886F
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 18:27:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 309356B008C; Sun,  3 May 2026 14:17:46 -0400 (EDT)
+	id 53A466B0088; Sun,  3 May 2026 14:27:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E0E56B0092; Sun,  3 May 2026 14:17:46 -0400 (EDT)
+	id 4EAE26B008A; Sun,  3 May 2026 14:27:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F71C6B0093; Sun,  3 May 2026 14:17:46 -0400 (EDT)
+	id 400E36B008C; Sun,  3 May 2026 14:27:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E3CB6B008C
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:17:46 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C06ED160593
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:17:45 +0000 (UTC)
-X-FDA: 84726916890.10.F6C2016
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7D9614000F
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:17:43 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 33F526B0088
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:27:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DB245A038E
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:27:05 +0000 (UTC)
+X-FDA: 84726940410.13.BE673FA
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0F5DB4000D
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 18:27:02 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JNnOtsfd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Uwx1gS/O";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JNnOtsfd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Uwx1gS/O";
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777832263;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
-	b=acGTuPbOp+DdicAkNhOgiQTIWNLcb7Owv3Sg+kcm35axFXpTlvaG82ZyxOITd6+Nko8xfI
-	/jQpatgAxhRs0gJkTXWVIXlKoUzHuJmK48gyfwIZRCfJdS2vH2243r7+Oec948p7r0hQ7G
-	XGoxHftqzUb2E3xGl9Fqck2LONTma8o=
+	dkim=pass header.d=surriel.com header.s=mail header.b=jXM8b0e6;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777832824; a=rsa-sha256;
+	cv=none;
+	b=dalQL5Ow5iLpqwhRmFz9LTDvpLq/4NEXk4ABS9nV/B4f0hN471J8f44F7G2xjoLAZxZLLz
+	kxeWmAjDfxfTlnFiJTqaz/Ar/A8lKJZrZxVaR3S3Pb0N+XDy49QXq2pMunDdpxmIy7YokY
+	PR5KSbKKG7gJIuQOT7bat36PKblaef4=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JNnOtsfd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Uwx1gS/O";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JNnOtsfd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Uwx1gS/O";
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777832263; a=rsa-sha256;
-	cv=none;
-	b=17UPxJz2wR+MD5iUdGesGqXNPM8Y+nwwMksBSEkEm7iHRMwmpIiVg+xjhGHQdC4Gl2VQ7V
-	o2YwhNgteq2PY06ZCMDybREN6GD94K3dOOV9gL1UJ3p+paCEqyjw67U4RCpHtNx2ZBJEVL
-	TaE7hnb8Xhfs99CpdWXSBxBhctUASVE=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9AF546AC14;
-	Sun,  3 May 2026 18:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1777832255; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
-	b=JNnOtsfdia6KNeiWF/zx6UmGMlyd7MovighKfDpbipWcdICHWOyAWdUdIHnNg26ISosfcE
-	1vhhhQx0enMHLf8gCDJ3U3A1PI1//jmY4yLWHBCi6uzrihaeCN/zDu5G6bMuodmAEBTytD
-	sywVPBV32c+X721DpOigCPrJerl7mWM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1777832255;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
-	b=Uwx1gS/Og/X2yT7c6rFcHwYxYjc3O5eZU/ab3xJaQ8s0HkzspghdERq4rp30NfBiSRzyTZ
-	mp+GNFSRN3hluyCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1777832255; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
-	b=JNnOtsfdia6KNeiWF/zx6UmGMlyd7MovighKfDpbipWcdICHWOyAWdUdIHnNg26ISosfcE
-	1vhhhQx0enMHLf8gCDJ3U3A1PI1//jmY4yLWHBCi6uzrihaeCN/zDu5G6bMuodmAEBTytD
-	sywVPBV32c+X721DpOigCPrJerl7mWM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1777832255;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vejb/G9cClvZHxy5gifEMwQcvS/7NoCZj9V2DWPTf+Y=;
-	b=Uwx1gS/Og/X2yT7c6rFcHwYxYjc3O5eZU/ab3xJaQ8s0HkzspghdERq4rp30NfBiSRzyTZ
-	mp+GNFSRN3hluyCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8177E593A6;
-	Sun,  3 May 2026 18:17:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id X9weHz+R92kjFQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Sun, 03 May 2026 18:17:35 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id D5645A078F; Sun, 03 May 2026 16:37:03 +0200 (CEST)
-Date: Sun, 3 May 2026 16:37:03 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Ritesh Harjani <ritesh.list@gmail.com>, Chuck Lever <chuck.lever@oracle.com>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 1/4] mm: track DONTCACHE dirty pages per bdi_writeback
-Message-ID: <7awcgzgxkpav4krxe4qtyfzzlhfpziw56ptfchuai5r4txz4ib@hzycmy5syvjo>
-References: <20260501-dontcache-v4-0-5d5e6dc71cb3@kernel.org>
- <20260501-dontcache-v4-1-5d5e6dc71cb3@kernel.org>
+	dkim=pass header.d=surriel.com header.s=mail header.b=jXM8b0e6;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777832824;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wOgUIYC+8hThKxTaqwfrtEOH6XH3rd7KAjSqpzhRbz0=;
+	b=2U6liAsbMnB8xRfAiDfCzhWwzr8pkxdT6+PyjQTc1iOcs8S/GyX6sS8WGMZbHeEC3f6PO+
+	UxKPOvxIyBSJCfZ2csIY8L7G7kbHqQW9xB7TrnMhi0MExy1mo/tpLP/1XvJHtFYtGOlQ8q
+	HvbORsdu+aC8W3ymzTQwGhICvZZ1PYo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=wOgUIYC+8hThKxTaqwfrtEOH6XH3rd7KAjSqpzhRbz0=; b=jXM8b0e6hGCiJRlJtTnHlYMmuB
+	FmoLb65jEvhleudDtlk/ib6gdRBarS8hP5CCGDaXYdLwEDWOn4pTUtAKsTQWrHv7N5Rw3wK7xNsU2
+	TK6AD63JEPezD3KqCdmy2qaKFs5O7XgxYZOR0iHJyMgEiJF9qjWU+c8UJOZ98T5kyU8XN3uSyGJzt
+	Hyhw70bjGfdkHxWREr6lou+ZXuKqIzhkvHUlqazwNLlp5yX49sxv+qsEIR8dGUKdh5UVJl5qbAvd8
+	SHLGZemMenJy+CnnkyX718pzjE673xlhBYXjreWjTY+5tEcsacvNGoEDv9urgIQIWXJH2JqQC8ydR
+	602XZI2Q==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wJbWW-000000002JB-1VTg;
+	Sun, 03 May 2026 14:26:36 -0400
+Message-ID: <8c729d621f281dd0b1a891f4aaccb0ba4956b219.camel@surriel.com>
+Subject: Re: [LSF/MM/BPF TOPIC] The Future of the Anonymous Reverse Mapping
+ [RESEND]
+From: Rik van Riel <riel@surriel.com>
+To: Lorenzo Stoakes <ljs@kernel.org>, lsf-pc@lists.linux-foundation.org
+Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, "Liam R.
+ Howlett"	 <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Ryan Roberts <ryan.roberts@arm.com>,  Harry Yoo <harry.yoo@oracle.com>,
+ Jann Horn <jannh@google.com>, Chris Li <chriscli@google.com>,  Barry Song
+ <baohua@kernel.org>
+Date: Sun, 03 May 2026 14:26:36 -0400
+In-Reply-To: <afWcMyc5M4vViLJd@lucifer>
+References: <aec533b2-37a7-4f44-a279-c4aa604206ac@lucifer.local>
+	 <afWcMyc5M4vViLJd@lucifer>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260501-dontcache-v4-1-5d5e6dc71cb3@kernel.org>
-X-Rspamd-Action: no action
-X-Stat-Signature: ups99d6mxqcmxez4gbmdt144mg61ahso
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7D9614000F
+X-Stat-Signature: qtrqq1etdfrubt86shzdc67zmrw8xmgi
 X-Rspam-User: 
-X-HE-Tag: 1777832263-899188
-X-HE-Meta: U2FsdGVkX1965kRi1Pe0F5tjnI5YrjVR3V2H/VepA54fsuLTpEO2cKYcLPcx61qRtu2csC8KJLkvvKIyq5FIDreUByP929IfD/iIYPBIXLQxv66uboiaCiXoprgO/rsQTbrzt0Pgk/3Otzm2NuG9P11bT2xY+0dLquBm2rjncOf14GMAJqfpy2E32i6yfR6PYaVopbdTeoH/yNro5FSBldihR3NJMbblkZXjYomEdfmC3uZY5+swGFpA6hWe9NoeB3qu3YaDENcXIjtrn7zuBymUAeNSkW6e8FaDyVtPqgv0YrzedE3W1uo37lKm8rRd/IR6IYjjUIdpMUTR+2Wn0DTB1gsuaYePLXITlD5wHSfSB7Bl3OlOFstN2nTq8dwKOvv0E6k1if5AJYIKQlvCC5xtUWlP5Utc+jwqLXqAC3g/uqrXT0aczK2wXAknUQYqhkUYkr578n6CEvE/Mxh5Ko8LdvMacfnxQse4/grMlhu3vmA5yJ1AvYgnGw7wlAiNN99omlqTUZSeuMQoTjD/CQgvYWc+tizWoocKai5x37nT2umnSkK630jQeY3iJuvKNh4t8wO/+sdXCz5bSKRcCuZvTzWAs8ZrvXKhUDIUldp09JK4BmREGxeV4/pPnqkFEwtIszuwU3VbSrlvNpRHQHBNYGF8RUl+yU1qj2Kldg7HuWmS66f2Y8cyfyPxpTng9firrkw8Z1BAYuKDNfFwiDiFRTwQdqHPjmIUmLZYcnw/ys2kYR7/V1LNeip064vd7E6lhI9LH0zQ4bUtrwvzkKuO7LzS4JFEPtqdyf/NaNW1mgKW/Xlo9EvpwGslFv7QvBc9JaacjancY5ZXQDhMUGKKHEs4l7qedmWvUm+2BZ0CEX/3RvtHC90vumpSnmeXwHJELqDd0qNb4WkV1EvTzTd7UbLJp0ivFEB2wn5A6KxIJZ+cavQvybq+fDt+zi8AgtqF6kkAdyxwvTFwGYl
- E1Klb5AP
- 2VDyAgIPuFvdqEddGU+CQUCfdozLqArrfyJBQLaRb368t1mtEEJVg/WsUkPmC9jsuZHwjJUQDsLOBEfAzyQwbLUrsNRo6tfVmsaXRBmlXGBKZym5pDYDygeN3+MHDgiUgpD6LH7JdadkrIKjfDrgAP8dgjhRMTsaWFuVaYE3HtF5hdIdQoxDwlR6LYQbmSukXbn+uAERJ+WFuNR53dPxKKcTYbvQ7J0lzOW4LfiNfzeJ35qg5sfoshr1/qgWgiJ61zpb1iZrY5xq2LEE36Xb+ZOMX3+cAN9M8U05aE5TXBmgi8M2SDNf9TiNHPgH1MQTOwQovc5l5tYDn3WKFDOk+HhDDbgXvEhLLoqMJAA3cdE52rUF07CCZPaNhxCvo4lV60W/tlnPJhUdV7vMpLkijko2cpAmlnLcxnfHHIKp2fa60f3IW5nc93i6PFzJCAPZ/tvymPALRiSZx5vjwmOu6EMLSOFf7iOaTPhmH
+X-Rspamd-Queue-Id: 0F5DB4000D
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777832822-128300
+X-HE-Meta: U2FsdGVkX1+6jhioYhxgL32OvU8IgccHiJXSGNnjE92RatnwgvdBaAJTXYr6JTYyhEQdqbxm6SGWvUUwyLXcZzXsbJkbPcCkRFprwOW5fUGvw7EX29Ri1mlecto39pYdc+39Vdz+AnZDBze2Kbk5zOGwXQh6prdr6x71XtKPYf+zwBPnhoiSkdpDHgXQDNYbGWh4ay47mgBbBoxoevYJGS+K0TQqa9bR89L1zXNIUQUtFV0CgPfPfrbI21f8zRDRxNXeMUx9TRK9UxAufsZp8Vy+8iQ5ADp1vDpuGXFuGIrHL1JvGgSMcjaYPMUBA1R8ohL34n8JZWLWNVTi7PhZlc6v3lXvkzMDkKHU85UhQjlW5XqHnXwEfb/wDVlr2DDOu7kA18uzgYDNakya0U57M/UQU8Fb70WCAAPuHYprV4c3SmuDjv2t9m01RJxrP+vZhPjKLfFihfpPj6HA+89lshwK8NtfJ1UIs8LNPKv8LZuJkx3uEO68FazCZ02gIj1lSNCYRhyMNcyUMtcSrWB3UmlKhWgIoC79c3GU/pLPTBga/eVLOKhpsWerDklovieIoiYS25rNxj/JWdwmICWEEbaYLCxC5kiiOlAP8Tf2bU6dGZgY5xJ/qePVoO/R0o5vr1lNM5WuA0JFIaZJvR1sODYA8X9YsVy0CBMRkV8SbhNjZ9z47HR2Adv2VLcOTmD3Q0vOkVE4Qpg78NIa7XtJ4WrVgG4z5X6rGiOOTq/gbJMLn2Ciu6oBhRutXmB1ncXkhoOz6Ap5GcN5ObeJ5Oz2s1m8DDGVvWhe2y1Vk89gSqQlAK/IycDtt1zov0kpW2FhT+sy5j6cnpEIdi+mJfmJb1SgZq+texk47GglTXD2MYcRGLh/diWDpHJtQko3Ivw425f71HAK5Hb+XIn1rU8nT3eTebB4mieDFmAObaP5A1y+sdRyyiQNgahxmnpMf543RXdf/sGLrbYqDU3iPT1
+ 28pcELNb
+ 5I/KBSqdQGyCMAughmOw4hXrUveLW6qyZOmxo++kBA0+dEGJwDGD1yyEZwIdmn4SQdr3kSbhz1zrT4YrmmYRbxSRH4z2euxXm40UvQMjzEWIUAhOATf0ay5pY5szd8VEInYmOTYojaAXC217+dsf2OF/rhwCYa1Se1Z/sfO2E53xSxj2iHPBHUZIXgh3ES/KHuIiEf3YLgSAh+P15SoJKKtfYJjeQ1x4Hwjbqy7n+G6LwomHeJOT7P83zhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,110 +125,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 01-05-26 10:49:35, Jeff Layton wrote:
-> Add a per-wb WB_DONTCACHE_DIRTY counter that tracks the number of dirty
-> pages with the dropbehind flag set (i.e., pages dirtied via RWF_DONTCACHE
-> writes).
-> 
-> Increment the counter alongside WB_RECLAIMABLE in folio_account_dirtied()
-> when the folio has the dropbehind flag set, and decrement it in
-> folio_clear_dirty_for_io() and folio_account_cleaned(). Also decrement it
-> when a non-DONTCACHE lookup clears the dropbehind flag on a dirty folio in
-> __filemap_get_folio_mpol(), using proper writeback domain locking.
-> 
-> The counter will be used by the writeback flusher to determine how many
-> pages to write back when expediting writeback for IOCB_DONTCACHE writes,
-> without flushing the entire BDI's dirty pages.
-> 
-> Suggested-by: Jan Kara <jack@suse.cz>
-> Assisted-by: Claude:claude-opus-4-6
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+On Sat, 2026-05-02 at 07:53 +0100, Lorenzo Stoakes wrote:
+> As is time-honoured LSF tradition, I am sharing code for my proposal.
+>=20
+> I worked a very long day yesterday and got the _very_ rough PoC code
+> into
+> some kind of vaguely shareable state.
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/ljs/linux.git/log/?h=3Dpr=
+oject/cow-context
+>=20
+> CAVEATS:
+>=20
+> * The code is not great, it's 'experimental, wave your arms, hope for
+> the
+> =C2=A0 best' stuff used for experimentation.
 
-Looks good. Feel free to add:
+First, some refcounting that confuses me.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+The changelog, and the code in dup_cow_context
+shows that only the parent's cow context gets
+an increased refcount.
 
-								Honza
+However, the code in __put_cow_context seems
+to unconditionally decrement refcounts all up
+the hierarchy, instead of bailing out once it
+encounters a parent that still has a non-zero
+refcount.
 
-> ---
->  include/linux/backing-dev-defs.h |  1 +
->  mm/filemap.c                     | 13 ++++++++++++-
->  mm/page-writeback.c              |  6 ++++++
->  3 files changed, 19 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
-> index a06b93446d10..cb660dd37286 100644
-> --- a/include/linux/backing-dev-defs.h
-> +++ b/include/linux/backing-dev-defs.h
-> @@ -33,6 +33,7 @@ enum wb_stat_item {
->  	WB_WRITEBACK,
->  	WB_DIRTIED,
->  	WB_WRITTEN,
-> +	WB_DONTCACHE_DIRTY,
->  	NR_WB_STAT_ITEMS
->  };
->  
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 4e636647100c..1c9c0d5f495f 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -2052,8 +2052,19 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
->  	if (!folio)
->  		return ERR_PTR(-ENOENT);
->  	/* not an uncached lookup, clear uncached if set */
-> -	if (folio_test_dropbehind(folio) && !(fgp_flags & FGP_DONTCACHE))
-> +	if (folio_test_dropbehind(folio) && !(fgp_flags & FGP_DONTCACHE)) {
-> +		if (folio_test_dirty(folio)) {
-> +			struct inode *inode = mapping->host;
-> +			struct bdi_writeback *wb;
-> +			struct wb_lock_cookie cookie = {};
-> +
-> +			wb = unlocked_inode_to_wb_begin(inode, &cookie);
-> +			wb_stat_mod(wb, WB_DONTCACHE_DIRTY,
-> +				    -folio_nr_pages(folio));
-> +			unlocked_inode_to_wb_end(inode, &cookie);
-> +		}
->  		folio_clear_dropbehind(folio);
-> +	}
->  	return folio;
->  }
->  EXPORT_SYMBOL(__filemap_get_folio_mpol);
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index 88cd53d4ba09..8e520717d1f6 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -2630,6 +2630,8 @@ static void folio_account_dirtied(struct folio *folio,
->  		wb = inode_to_wb(inode);
->  
->  		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
-> +		if (folio_test_dropbehind(folio))
-> +			wb_stat_mod(wb, WB_DONTCACHE_DIRTY, nr);
->  		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
->  		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
->  		wb_stat_mod(wb, WB_RECLAIMABLE, nr);
-> @@ -2651,6 +2653,8 @@ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb)
->  	long nr = folio_nr_pages(folio);
->  
->  	lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
-> +	if (folio_test_dropbehind(folio))
-> +		wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
->  	zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
->  	wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
->  	task_io_account_cancelled_write(nr * PAGE_SIZE);
-> @@ -2920,6 +2924,8 @@ bool folio_clear_dirty_for_io(struct folio *folio)
->  		if (folio_test_clear_dirty(folio)) {
->  			long nr = folio_nr_pages(folio);
->  			lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
-> +			if (folio_test_dropbehind(folio))
-> +				wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
->  			zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
->  			wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
->  			ret = true;
-> 
-> -- 
-> 2.54.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+How is that supposed to work?
+
+Now, having the remaps array cloned at fork
+time does make the refcounting on that side
+a lot simpler. I like that.
+
+However, it does raise another question.
+
+Say we have process A, with child process B.
+
+Process A has memory mapped at address X.
+
+Process B munmaps memory at address X, and
+then maps new memory at address X.
+
+If I haven't missed something important,=C2=A0the
+remap table does not need to get used, because=C2=A0
+the offset and the virtual address match.
+
+How does the COW walk handle that situation?
+
+Overall, I like that you are trying to tackle
+the problems associated with anon_vma, but
+have to wonder if this implementation will
+be able to avoid some of the complexity=20
+inherent in the problem space.
+
+--=20
+All Rights Reversed.
 
