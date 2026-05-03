@@ -4,103 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 569BBCD3424
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 13:21:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A84BCD3426
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 13:23:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B79E6B008A; Sun,  3 May 2026 09:21:27 -0400 (EDT)
+	id A7E6E6B0005; Sun,  3 May 2026 09:23:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 968AE6B008C; Sun,  3 May 2026 09:21:27 -0400 (EDT)
+	id A55C06B008A; Sun,  3 May 2026 09:23:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87F1F6B0092; Sun,  3 May 2026 09:21:27 -0400 (EDT)
+	id 992526B008C; Sun,  3 May 2026 09:23:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 76B256B008A
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 09:21:27 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 03CFD140989
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:21:26 +0000 (UTC)
-X-FDA: 84726170214.30.B8FA986
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 886076B0005
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 09:23:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 17AC6A0613
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:23:13 +0000 (UTC)
+X-FDA: 84726174666.11.10AE68C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 50559C000B
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:21:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=d9jLZgsq;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4C3D940005
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:23:11 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="NH30Knx/";
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777814485;
+	s=arc-20220608; t=1777814591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7kwDcXAtkSlyOTZvlmd7z/DMbgn6BGrWKKPHBHUrPyk=;
-	b=by2N79OfFk1FskxbB1XcBxKeul5uuHh24tqcqGbyj7BT6uCIqUN0KaedY63qdbSZ5Ivcz0
-	1aM4UA7JZy8GbsUXkqE4DMH9pIF/K2+VxpIAYO4O0ljn8ZTtAg4aL90zSx56U2yacKfsY/
-	XwNCuEscBAxGRxYuhcHj7tni4aUfAiQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777814485; a=rsa-sha256;
-	cv=none;
-	b=VJ02EV26i/dPG7t2CpcM6HZAalQudfDnQBCwhRaZu26i5Q5eO6WIJWY84ShjsswwBhKABP
-	JCSzpRCCpHewIWoxkD1azbxvE+aCB8Uel27sRkAO/MTjNbDkpHjDi87QWzY8oVnJiV96BQ
-	KrsaYQwciwqKYuccfo25y0g8v03APk4=
+	bh=a0/HQn5xgZoRGT5t7wy3Z7WUfouTd1qBStKctn7j39M=;
+	b=eAs0bx0a7me7m11Q0Lyk0o5Dt14hBBcw/95qqE/W9r8hwW51Y1lUAhckSA9fwBfWq6oEV2
+	HBLNt0MRY9sHLfMndWEiAjw13TkXbt6sF8fme+BZF5Gw7oa5MwJcNezwv30mbntxC44ayH
+	JGd8c0MWiN0gRYjp7D+OorlKsrrTs0k=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=d9jLZgsq;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="NH30Knx/";
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777814591; a=rsa-sha256;
+	cv=none;
+	b=ZRUeEkfRw/MJc4+QSEAelKS/A0C6Y5oIcEkA5mwIW92nrupXsfZ7p9J1pt4AcuGX0BVzPm
+	7bQb1NZiHSZJ/gF7awDPxTMxRw4+Gk9DzJXviSmxe11Y1K4jt1S7cDNYYGoEzUzLevl9NN
+	42HSyS+yDfDMJBcSAmKx3p/pnb9E9gM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92B576013B;
-	Sun,  3 May 2026 13:21:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFD0C2BCB4;
-	Sun,  3 May 2026 13:21:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A991360125;
+	Sun,  3 May 2026 13:23:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E538C2BCB4;
+	Sun,  3 May 2026 13:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777814484;
-	bh=/T3m2Xew3DaNtCYramal21sgWUOUmUr+OLU81uWBVOQ=;
+	s=korg; t=1777814590;
+	bh=mYNWMtlRqxgw8ZzffIHWqmYjfKhkeKsUP+dHj/1loP8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d9jLZgsqz1fKoLEVBryPGvmNQfmTRXTFgOTN2UncH1Nzn2pejMzSoUAMDsRjJwqc2
-	 xA7rh6yY2fzUdpElr4IVzZ0UwALLXvpaGOJLPGb1mY+o+LErCNIat134vtpAZfQkht
-	 vVhO24HbTsJC1Mf0vmI/3EkzS8LEj6keFzy9awOY=
-Date: Sun, 3 May 2026 06:21:09 -0700
+	b=NH30Knx/rQBjY70h33pZJsdDa3qAzY4uq/KYKBhUN8qk1pNAQ6F67C81O9jhHv1gS
+	 qnp2ajP2p1QLUzjqg/3mdi8PtjgsM/f048oy1RotBnwkU/sUWnoOT2/cYYdLrTBrNQ
+	 8QIyy0ATNhSwGdjtqtXXM8b8uu5GioQYP7E3HCHo=
+Date: Sun, 3 May 2026 06:23:04 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
- gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz,
- jackmanb@google.com, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- Liam.Howlett@oracle.com, ljs@kernel.org, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
- rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
- rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
- shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
- thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
- vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
- will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH 7.2 v16 00/13] khugepaged: mTHP support
-Message-Id: <20260503062109.0469201428642a4f7fcfd915@linux-foundation.org>
-In-Reply-To: <CAA1CXcBJFoqDrkQbRE6JnpV-gjfNXe2sUxaCyXPC82h3qk9Jig@mail.gmail.com>
-References: <20260419185750.260784-1-npache@redhat.com>
-	<20260424065828.031775921990de37f83a2468@linux-foundation.org>
-	<CAA1CXcBJFoqDrkQbRE6JnpV-gjfNXe2sUxaCyXPC82h3qk9Jig@mail.gmail.com>
+To: Vineet Agarwal <agarwal.vineet2006@gmail.com>
+Cc: shuah@kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com
+Subject: Re: [PATCH v3] selftests/mm: ksm-functional-tests: fix partial
+ write handling
+Message-Id: <20260503062304.02b166415ef419cf4df6cb87@linux-foundation.org>
+In-Reply-To: <20260503101229.654763-1-agarwal.vineet2006@gmail.com>
+References: <20260503101229.654763-1-agarwal.vineet2006@gmail.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 50559C000B
 X-Rspam-User: 
-X-Stat-Signature: fypfo46xdtf3xacyfu4zo74gpqaswp5b
-X-HE-Tag: 1777814485-139336
-X-HE-Meta: U2FsdGVkX1/HUwKLip0DWPXYN/evnUbETQDjab6SIVEus9O2PYBqWFxUCWsaQEX8vohETDy6sGDXn7lWNNEkCYXCqDdEui9mKsTdU8Bk25ymdjjvkT6y+UbWeKpJpkNOuGY6IGM5+PHyLpBq/YG0Amdxpcbum7EwqgaJQFQNC4avb7VFFip9rwHg+EdofhtmyUU38cZKPtbnDMQwFOtDqK7Ym+dbZtIzCThZd+CWoFfJzAZR1svQE/MUzJBAMViXJfY8Wrj2+HP2Qmu9bIbKpi83q30DLH5WqqAYqiiCBUXvo6njJqWOzsFrU4ujbfPPpZq2kZ6rDUz/+iXIcWW8mRF9MHi49Xvypa+InQLUjTw0g1smNsKf5PNADZVrK2KoIoe9KMuMfSywmpNINpp7+S41Zd0x/x6ZfivLZM/rCnHUp83l28XmN3KAJ5tBIg2Es+11XzVJlM9Q1hH1HL0iqAhXiLNdnGfh/IF9Akj0hEhHYsPqwwPVgnGNqa2XGuGUk7Wwp+ZS+T58l+XZqbj/UCW6DJnUycpTuQbkT0WWfcL4Xqg+e9sKB4cvZColXz8OLtBDtSoT30wl/x+37i1ZpueKrXxlvl4MHvYSbkskQjna0JpVy86TBFAsOph3Tg/z1yeqjNf5B7xXCYPHPFU7TQur52pv+UiTaaLiLWH2bsciPG09aTXnp2kMArpKizBTfI2JMevJr3MHU7IyddXtqoOcnF9g16kWN8FaCivFXud8B+4e7MVUT6R7bQZAos0iUMGWGct+srmZHe4QCmhiPc+iO/JJEDlbcZSBuOMXUC//WyGJU6+D9LBs+D0dRLZhAjxTHsl4IprIa5MqvZAfXTQpMLWp1uLgy3mMymq83GXOg8lCeZ0wcZAcF57M+IhFIM3sTOG+B3Ihc5+Uocj4jwirF95TP/ncaciAGF9nfadty5rRkpKxHD8s6gc2vBbCfSpc1E1BDyaaoxoTrGp
- becuSCZs
- T1zcrPnfXw1YimglZDZKZXfNJhtrlF/IVuNzbJ7bNtGdo/EF3obICv7VjMbSLLAIVDgkPoZgsytOICdQ4hEPgyXo4HVFyFdreQAnXKzqNAu6Qt7+XlMSO3hcOoLJ5RDNP0e0mmCRD8nlPc+UTk5GN585yMxFs+24vHtdGHvZjE339xVDw5e5hRLYT18BvjvQYQuzvZaYIHvLUCisjM9w0eBxxBDAFZFLla1VZEOCdBOxmxnEdooQLIP8gEmECe/YbuPxpra6MSSkuq+sU2ZiRse5ARttIGCqeukz9AGMCGaudQdnyf63aNfKktBhZZeYEXsbu7ow/sZRI2QQz5kNJxB1wpePy9S5lVQBdg+1mclqNGY8=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4C3D940005
+X-Stat-Signature: h35wcye7i1x9w4wwnt9xog364iyzna1c
+X-HE-Tag: 1777814591-41289
+X-HE-Meta: U2FsdGVkX1/6O+NNFpsxSSa8Soh1UUJ8Xz+O/vHqf7MupfTi6i7AsK60nxOrdc6+3BXSAj3ecQrZLPNrJi+HZBsScrYExixkkz4l2Yyi7/X2E58MvZWFS/G3caSh8upm6wMBqcVJ020fzwgxehoUsXIkddjMUZ2uMReuxt6d/QQu5bNYsbFaBVt/8cIWggO6L0HVGEVAYPKfEKpv0FG4HPF14dt/6qPqzZRjh2CY8O7dE8ZtvkkA8WhpQyTNjkDkbLabeiXPx59IWfRcin1y3rmtpGsSslMw6FG/6/456laoIlJiJNb7DXZez/vQvrz4tJpDEy+z2gkqTs2fWRlber1HXbbYAGqiob2/0rB2fUX8ZleCoxf8J7c361gPD6jbmiYWdEnn4sYif23C/HmF99uJL0KPjpf5mebNnz0/iMehBOIzsSe/kKkSGVA51e1/Tee7u8tHtT1tVpI3Nse7IH/U+zBzh5ZGZyif8aTV09cmkkI3X8UxhnmNU8U6WfbagS0NtqVrEE/OC/3xZQCtya+cGaxTJtSu+0VcO1NR3zrL0T+DsmmgKnh96yfSmVuIU+8nXR0npTxlLYK2j/P0ZsltMxetxH5O9lt047wSQh6GYn5SJOyFgvJdcuEJhXwxX2wdRdrPgqrI/d5LgNgeg8NHcLm1VopV9elsratYydXu1+iZ7BkQ2yi17cwPO/QUAC2fTI8b5mK6TR0iMRLw+gqpkwIrnxxI/AV9kHJGKxnxr1MAOpYBdmQmUSLyr9it1ilW3PDRoMVAdEnyBdI0vp5SwG4wzy5U76EWSaclZCj90iK4vvFOLZRW1bGuikWMvv7o4xr0REEpde8KOXVrRUBg4beRsCM2R45ed2ubVvEZBHQrN1aPPfbDOyFBGuOCHSt0DUQfbzHbA6T2h0BbY1OHJIhdi9glcZ2LCJK8LDLG9yApOa+46YmxKSX/8E1bqZY8FyYw87VzEau0jQD
+ lzoDG0t2
+ S9Bea6UOHG+g5DFZ+t3awDGo2nkhMLz8Ardwgofi36yhG5kwaB4LxrPTYZrHEj6x6+ifaumc90VhutirPeLS3CeFgYfXp5F60wSqV8s7jdZvN0dtTgg1j97i2TDXXFSN8flo4TBp8NJm5YKqhKQGp9nS1+0VFMqMFsmHDeKSNFZSAVPTCGmD8z5tHxl0eLmy59M1u+QCuCRKl4H0r+isC94uICmBmThLsP2Z0sjyPKGesajHMnLyEj0T9//ppLfRKsNXNf4FSYcqO2dUFj0NQ/Ugog7ysFnqHdLjkjBGGb5oOFqKPFqkfbJfiQHQTr5QTT4CyePYZjofUp+4ZSRmlW/+OpmE+ztDRPM++0JgLjrSVNY/yYsIAhKFvzxvcD78D3Oce2sEdktiZkwM+qGWlC8uujg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,11 +92,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 3 May 2026 06:23:31 -0600 Nico Pache <npache@redhat.com> wrote:
+On Sun,  3 May 2026 15:38:40 +0530 Vineet Agarwal <agarwal.vineet2006@gmail.com> wrote:
 
->  Can you please pull the changes from the
-> staging branch so I can resend it soon (probably after LSFMM, so no
-> rush)?
+> Update write() checks to properly detect and handle partial writes.
+> 
+> Previously, partial writes (ret > 0 && ret != len) could be treated
+> as success because write() does not set errno in this case and the
+> code returned -errno. This could result in returning 0 and
+> incorrectly signaling success.
+> 
+> Fix this by verifying that write() returns the full expected length
+> and treating any mismatch as failure.
 
-np, I've removed v16 from mm.git.
+Thanks.  AI review asked some questions:
+	https://sashiko.dev/#/patchset/20260503101229.654763-1-agarwal.vineet2006@gmail.com
+
 
