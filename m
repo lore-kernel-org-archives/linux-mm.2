@@ -4,93 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A1DCD3424
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 15:51:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAA0BCD3424
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 16:04:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6BDB6B0005; Sun,  3 May 2026 11:51:26 -0400 (EDT)
+	id 06C286B0005; Sun,  3 May 2026 12:04:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1B866B008A; Sun,  3 May 2026 11:51:26 -0400 (EDT)
+	id 01D616B008A; Sun,  3 May 2026 12:04:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90AB06B008C; Sun,  3 May 2026 11:51:26 -0400 (EDT)
+	id E4DD86B008C; Sun,  3 May 2026 12:04:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F89B6B0005
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 11:51:26 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 438B01C046C
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 15:51:26 +0000 (UTC)
-X-FDA: 84726548172.29.022D235
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9CAA01A0006
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 15:51:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=Q9oPpzEV;
-	spf=pass (imf19.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D22CD6B0005
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:04:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3310C12071B
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:04:48 +0000 (UTC)
+X-FDA: 84726581856.28.14EED76
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E8C754000A
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 16:04:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KmpMOD4K;
+	spf=pass (imf07.hostedemail.com: domain of costa.shul@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=costa.shul@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777823484;
+	s=arc-20220608; t=1777824286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fyRPsaLeyAmCgD7qP12n2O4WOzwaY15FpNC0oBQOyY4=;
-	b=u+nSvOQHOtZFo0ML6OQvvfUbQ9ZHzDe4hftedDXm1G1/nug6CU1x9HdRanxG9Ps1q8/Mrn
-	RCUsYg/t8iQ22jqHWElKLdU/rlpd4Qz9IsdNfrdKEqJoLPAcU321KoR9PZqbbPUi+DdMfd
-	iY7xGKCd5ljvkuMQ/kTmeQ3rvT2V3gc=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=X+mJ3ULyyTKCXVslNnzkq+GlbrFoX1sf8l7wRqCeWDg=;
+	b=6UfthQwJuh26SGogBoYwT4l+CIG6oOQU2YAGI8HNZfN1eJKESFj2Gqpvognpvotc9R7h5j
+	FAEh2KeNtEdRdKDQnf1GZzS9ZgSboImcn25pxrUEjWnIrblWZsEZRd8sDdEqpO4Dk1b436
+	3qIyi4ELaaY2y9Z3lmlNRX+4ND8NCDs=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=Q9oPpzEV;
-	spf=pass (imf19.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777823484; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KmpMOD4K;
+	spf=pass (imf07.hostedemail.com: domain of costa.shul@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=costa.shul@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777824286; a=rsa-sha256;
 	cv=none;
-	b=e17zZKHMrrw/wYlAG0KOcAL5d9FxHKmoqFFjpoGGFe/Z7yrVrgJUJ9molFiVDTchVMIJG0
-	H3txSmDmYgeUkpX5Hog5Rjj68BDsguTQ9Wn1RDvuK34d1+Pr2sw6VA1bZnZrXAE6DaIJyn
-	YYmsyZ/GWkDXwk8+2L30CrCdtpZ4he8=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 759B141084
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1777823483; bh=fyRPsaLeyAmCgD7qP12n2O4WOzwaY15FpNC0oBQOyY4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Q9oPpzEV0FONZtRS5W4Fi9uvnUEQqPxOWkdpHtCbMXHJnDNo8ZYco68Gv+cdnRJQ0
-	 HiYIRvbkdMQRdD4ggSgJrRNTgjJgFHRNO+M7U6FJy7tfxMkPdPeAS6W4PiTAj9oJb5
-	 t7H6o2TmnslANristxpVyAsBCWVaXW0XkjUb2cDVKRFYJJFuFWHSMy6rJF02Y+1aQT
-	 8peZdxLpkMbPuYLpPiF7PkfNRfkFroy/V8EA7zVNcA2ufyQtJ+85OQw3CLcbccPGI8
-	 fG4mvPHY4NDJZqMstnuiRw1B4h08V4n/d1ZOqHJUHL7PpDiyOUchZ0EMzYzJohxyOS
-	 YK8PRgeWb3v/w==
-Received: from localhost (mdns.lwn.net [45.79.72.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 759B141084;
-	Sun,  3 May 2026 15:51:22 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Manuel Ebner <manuelebner@mailbox.org>, Shuah Khan
- <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, Kees Cook
- <kees@kernel.org>
-Cc: linux-kernel@vger.kernel.org, workflows@vger.kernel.org,
- linux-sound@vger.kernel.org, rcu@vger.kernel.org,
- linux-media@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 0/3] Documentation: adopt new coding style of
- type-aware kmalloc-family
-In-Reply-To: <df48beafcb0cc9caff40db78285113f0b1bd9b87.camel@mailbox.org>
-References: <20260429070759.309110-3-manuelebner@mailbox.org>
- <87o6iwczjm.fsf@trenco.lwn.net>
- <df48beafcb0cc9caff40db78285113f0b1bd9b87.camel@mailbox.org>
-Date: Sun, 03 May 2026 09:51:19 -0600
-Message-ID: <87h5oobifc.fsf@trenco.lwn.net>
+	b=fgCtc8KviJH1uM8lsyNiQIoDEwsr54mY1P3ahP6h0YsycDSo+Sj3Ts3gFGvMCMwsApv+fl
+	hrQ6077HPHYPxxjYvpFObuSAPiY4Z5EJPjPQZ3a0HI1FX7PS+AsDTsaPRrzT8wCmjIWvPm
+	pMypaojcZG7QJNhYFCOM3SJjQEBtx+s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777824285;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=X+mJ3ULyyTKCXVslNnzkq+GlbrFoX1sf8l7wRqCeWDg=;
+	b=KmpMOD4KX3sRZri5OSVZliGRxcG11MBIeIDUjcSjrJrjbGZGFFUw4ev+an/epaJCKoB8aQ
+	KP/1iu66EA/yxNkDxvMGRTn77WH55kdyKV4wx8L8xMB8BuzG966USsO9+nIVOWrJHFgB/1
+	bMwayaQoT9rG4p2hiZrkGhkg3eNlQ34=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-445-xhmNT4KDMDCJIWw_5SIsMA-1; Sun, 03 May 2026 12:04:44 -0400
+X-MC-Unique: xhmNT4KDMDCJIWw_5SIsMA-1
+X-Mimecast-MFC-AGG-ID: xhmNT4KDMDCJIWw_5SIsMA_1777824283
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d7b7bacddso1915525f8f.0
+        for <linux-mm@kvack.org>; Sun, 03 May 2026 09:04:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777824282; x=1778429082;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X+mJ3ULyyTKCXVslNnzkq+GlbrFoX1sf8l7wRqCeWDg=;
+        b=EaYvGqjbK4wmxw7WWVKBgZChrXQuVFXxr+exeFlujwtWjl+ntsbvfMxnE7D0oNZD9T
+         1rQG6Tk9LKUjx5Vx53/HnMgkoy4i1uF6R4u9nl4Q7mtbFUJWc+fDKWABYZeIMODA3/P0
+         eOm8oJbeg4Is+jOBQEkLkaectJ4YcW9sH1nJLQRf9ms8tz0nyWye6vWtVsYXA99Rm03X
+         C1pjj5tc41HDSxiUbk6Fu9dIdg1sNG6k9QiK62qwY5DDCkl75a9HJAZyinB7l9Q91rJU
+         GBzH6gNraTECYWakhZaC5rfry2oiocWLdUwG65YtLzqIai7K0HsfFRk2L5/rWRY7h8V/
+         bFmg==
+X-Forwarded-Encrypted: i=1; AFNElJ9KYL27ucMGta79ys0G+kvymWEptd0b3FTtaqnMFQQBxBm4upxu6iJDNquhRDtD6bdjtziZ0jD8Yw==@kvack.org
+X-Gm-Message-State: AOJu0YyjaNPiqT2YVfoWL4QIKpxTs9qLLNYZUH4qlv72ozjo0yYhPUa2
+	oTssElgficYlHjc4RX8g6DY6YtOFjFXUQIFIwzJgb5dpG/V3YzY78o0VOmdfdqt8Ztu/2A+uIJ/
+	wNl4GzTRXnfGzUeREIDKlkwi3c/45kDaSrv4Soe9BWERGeeNGPq55
+X-Gm-Gg: AeBDietfIAOUh4bVeuVWtLbwxVZpHRCDMC1bDPQbyyCo5xDnaPGP9Rf/Mq9tJzXeJZc
+	zMgMLrk+7zhOBKlOMzWEuwMQ10H61H947DsB50Zx4vlSuDXk5mtYjBz+Hb4oO/aL45+W5Lky6GZ
+	sNKn55uGBVqMj9+++VoBUkjhI39h0FiD5xAsWs6sACyX7h/IvaqQWKPLzZYcNkhKJridLZ3rkqd
+	dray89hC+b6y5fcZSyZTnC3gmqfM/G+Txv2c4ObD7d1DVAGslZP3P0tkgeQc8xcwlagKqFLz8S6
+	ri8VOi6oijd/0zOc9CRstm59LW1WhRmeXfkziMqiXiTTWzf7DlMqvTQ2RYyjj1KAn6Rm75wuLea
+	RsLZl0asuwGX6vs+S8G6PxIpXGZBwQB90347778rarivZKAv0
+X-Received: by 2002:a05:6000:613:b0:445:ed7f:ce84 with SMTP id ffacd0b85a97d-44bb34e71e3mr11488053f8f.10.1777824282488;
+        Sun, 03 May 2026 09:04:42 -0700 (PDT)
+X-Received: by 2002:a05:6000:613:b0:445:ed7f:ce84 with SMTP id ffacd0b85a97d-44bb34e71e3mr11488010f8f.10.1777824282049;
+        Sun, 03 May 2026 09:04:42 -0700 (PDT)
+Received: from costa-tp.redhat.com ([2a00:a041:e223:1b00:fe51:8bb:7986:c897])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a981ded99sm19800555f8f.18.2026.05.03.09.04.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 May 2026 09:04:41 -0700 (PDT)
+From: Costa Shulyupin <costa.shul@redhat.com>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Costa Shulyupin <costa.shul@redhat.com>
+Subject: [PATCH v1] docs: locking: Fix stale dquot.c path
+Date: Sun,  3 May 2026 19:02:22 +0300
+Message-ID: <20260503160221.1594319-2-costa.shul@redhat.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4zsyai8ync4ndfuk9uopkfpcg9c11opw
-X-Rspamd-Queue-Id: 9CAA01A0006
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: zcoux8VqWa1vuR53wzuwvch1C4qEy5dhs9DToojYXWk_1777824283
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Stat-Signature: gzxu755nqeqjfx74774wckr5zm73h3uh
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E8C754000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777823484-789308
-X-HE-Meta: U2FsdGVkX1+HueYm41ObwARJSVa/yfQgyXwe+DOTmxhr1RgrMgDxtZ1EvKpfzS+2EQ1h9Ax6Na1khgjneEQSegka1I18D5IVTh2h8QcNf9T0FPaWchtjT1Zi0q6mdyxMPZatOlg0yQDvFlvv9fpKe5V+h0ycGKuDi0k1/AIMEaoPBQpV4RWN2nvO9p13jycASxmgYU08Gy5SrwFMFcN42yVx90RxvSWlOBKgDAc9QoKtWGPfF+TtLfvcH9wnJgz92iH+bYUrFLNBeTlfD4lQjf6BR7CftmF1Jz5zfPS90EdkK49xs/45S9I9dWposHjcNZI1rxhUrIe9z38leIP6gKB9wSwdBHJh11ogNSSKjLdv685OmuizOM1m2tgr04KlVnQQB/UNgXEce7QOSovnQQcUmXUyVuYWHey8HmKkNSRj2F/0F5/F+1gSk5yNAe02xV5CanaCI/wbPLKLY29B6ympAhabbSUxrZWd8Q2WmZHmNCImM2E5iPDLfGXNCL7VCwU32rsxWhYhB24gYpU0lSMEIUoIL5xMMfm413WDBmVJ0cbwhz37XRzcE5aIeaf4exdLxkfg3pDWwO0A84qQTD9y5FXfs5QcgpP9pnSCCyaUtV1o7bvs5P+g4C7v4fIrynoXQazES3TpEVVCuUU0r10OdzfPvHbZDzj7rrGKqoTU6eN3azEWEJ44MeJg3uvzxuHvHF62oQ1MmtwDRGo1o2UgoEKuLlDON+ry+/wFNt/P1+md7Jdg6boILN96vzOZ4Fh7FV6ofj25eROcoTjCqCMo6aNTI59+VLVCg/2m2NJwn0E3sUPvJovfJP+T96QVEpXxtGgma9UgNuXb97sxiZlEpJD9f5p6mxif83ssB2ViVvchR8o/YSn538ziBigFVctCoJrSZbfeMI3GqWxTZqBYVk8NmA0iounkHjonsPSzFIyWCnRPu4bs0fbuHrhq7agqch6DtUvg+ilIhpO
- m3c0iyU/
- 0Q8p1u6+J4dJmZZBoBo5F5gNJvHILkKSk62bo45O3F6DxhVlP2WvMD7vWS4hU4qmWHq3u86+ZkOdPF/0+LzJk86s6jhyEmh1ISjRKobcfPbaqPM90Ia4U8aLXraYiiWzb4JCoPY6qIX8aBxFc6ACN2ASSAtp4M6MUy5RuK87gKV6cJ9EQ5TIxTqUju6O4sKDVgwMCWfCZpv8BiMcTqqU6bJgmL1XJeYcdGcw+hF5YyCQfifjbFLH3JEsxwXcHyoYmWEiKCXDeIPdDZGweiEUcpmQ2oNxSW5Q7THfs54fqMZm3vaxBIvLnqJmdICdCfWjGfWogKRcqicwRM98v2PmbIjNLr+/O0+mN3SPNtGC/10U05bK547+po/dLGw==
+X-HE-Tag: 1777824285-291152
+X-HE-Meta: U2FsdGVkX184PpIulROWFh3OOhvXpNO39L3cbP0X7HlzqG81mPe13pc6uNsny4pb3L4MUjcv9/u72j3OgZBDNIXxD83V0vQ5ZsXM8hmkClgBpzjTQ8gPavtrV2WjRNUlFsckma43Cgcsai0n/mq0ktWWZTRFFWuBI0WVvj6h1P6/NKASImFj9SSz68xtE7bNpTlC9h81LFRwvJjJBgwNCJtItUMPyu7+h854odA0DTC6uIW55Etzs8an4/w/6YVV1RLB1uAKrRJC9EZU0MO7YD81iORnETVBxPQFPlONhKT7Sm+GdMKJrBp0KUH1J8STBEwR32ErqEbfIbaCvjoZVLmxAZlopJ2wlwz+vX5RNc4mCYf7ZJk0bftQUuQZfBx38ZU+wU+e/pOSrw3FYriybAc6eVgpEb2xN3zz6u34dX8VIz9TgxXOIe1MkZHe/McMoTqXqeUmvweokZUvBvd5VqN/sq1Bf+nQ4Jse4gToNUzFhekjRrKrlRQrlT7ZBMu+RKhoGsv3Vve4To+TQNA7vF3PXnIg5tXBxkTwI+0fBnDOTYaH52xCOvrcRTf8iwS0wnWgxw42xIHg6FOlKHUy7ngjPnWzKhUFokTTlw8FxIRpK790cbwvKoICx5II4rP1JL9a76KhXXqY8jo/isDSCyZGc9KVG+3XM7OGe46IOn1TPov4irj6902bRp0JLN4zOzlE7AsvI/mZ4922tEfbqFDsVmAlFVqXaTo6Jhemy7+nmtuP+oUQLfIWrfCeLGDtx35PkrNKvbkmLcHmFM36ZqtbRg5f1xNJTGslHvaHYBKeLRb5vU2l7JMnlty95o0WOh3fqtEkreUY7RbD13f2ZfoAb0QXlk/gyp4FWm1Qxxf+JRzcCm1DXbhI63+1px+UzK7e4eD2KhuT2Qru4FXHI0Yj/5atr/TqZ/Hzo4OWHzpGaKqxI3IxJTaiVYmnY3IaAkomYmkCoX5sZvnybQ2
+ xf0p07mq
+ hthQp+1h8WWzrcyYqKu8kabYun5S8cWatr+iUsXVr2ke/gSaaCWfKN1I24LY2D2Y8BwYZL9KrUWdRUoCcpZHut7iJUey5Ns7+vuhACbF3/h+pXUlQVw8oZZGY3/3uPcaewTkbTJHKoaXtrpJEmpYHAUWRtsyXKoQU2b2ocY4kQ1hOt796uspha6XUEXi3vkGS7O/hNtMr7mr+T7RVkRqDs0g+29LvsBiOnuBduobbPQUP/eT8zC0JnWluftw+5OpyHa05jGlIQRNYX/86vvNZTDCy0HtV14jQuX6vCcMmkdnFm7Lf5XONukxRNIr+LmsRPUVY/65HAhWJYvw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,37 +131,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Manuel Ebner <manuelebner@mailbox.org> writes:
+The quota code was moved from fs/dquot.c to fs/quota/dquot.c
+in commit 884d179dff3a ("quota: Move quota files into separate
+directory"). Update the reference.
 
-> On Sun, 2026-05-03 at 08:56 -0600, Jonathan Corbet wrote:
->> Manuel Ebner <manuelebner@mailbox.org> writes:
->>=20
->> > Update the documentation to reflect new type-aware kmalloc-family as
->> > suggested in commit 2932ba8d9c99 ("slab: Introduce kmalloc_obj()
->> > and family")
->>=20
->> OK, I have applied this series.=C2=A0 While doing so, I restored the "gf=
-p"
->> parameter in the changelog portion where it had been mistakenly removed.
->
-> That's good, thanks.
-> I had two more changes lined up for v5 of this series:
->
-> -	ptr =3D kmalloc(sizeof(struct foo, gfp);
-> +	ptr =3D kmalloc(sizeof(struct foo), gfp);
->
-> and=20
->
-> -The argument gfp is optional, the default value is GFP_KERNEL.
-> +The argument `gfp` is optional, the default value is `GFP_KERNEL`.
->
-> I don't know how to go forward with this.
-> please advice
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
+---
+ Documentation/filesystems/locking.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Make a new patch on top of docs-next with the additional changes you
-want to do.
+diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+index 8421ea21bd35..277e49314d32 100644
+--- a/Documentation/filesystems/locking.rst
++++ b/Documentation/filesystems/locking.rst
+@@ -584,7 +584,7 @@ write_info:	yes		dqonoff_sem
+ FS recursion means calling ->quota_read() and ->quota_write() from superblock
+ operations.
+ 
+-More details about quota locking can be found in fs/dquot.c.
++More details about quota locking can be found in fs/quota/dquot.c.
+ 
+ vm_operations_struct
+ ====================
+-- 
+2.53.0
 
-Thanks,
-
-jon
 
