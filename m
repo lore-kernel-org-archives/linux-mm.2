@@ -4,116 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBB14CD3424
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 14:52:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFBFACD3426
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 14:56:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF70C6B0005; Sun,  3 May 2026 10:52:13 -0400 (EDT)
+	id 3B2056B008A; Sun,  3 May 2026 10:56:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA7A66B008A; Sun,  3 May 2026 10:52:13 -0400 (EDT)
+	id 362B46B008C; Sun,  3 May 2026 10:56:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBD0B6B008C; Sun,  3 May 2026 10:52:13 -0400 (EDT)
+	id 278BE6B0092; Sun,  3 May 2026 10:56:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CC2AC6B0005
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 10:52:13 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 76F91140974
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:52:13 +0000 (UTC)
-X-FDA: 84726398946.26.E0F46A2
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 905EA10000E
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:52:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sTjUo9hB;
-	spf=pass (imf14.hostedemail.com: domain of qiwuchen55@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=qiwuchen55@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 18E466B008A
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 10:56:21 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B740E14097A
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:56:20 +0000 (UTC)
+X-FDA: 84726409320.14.615C9EA
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 077FF40004
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 14:56:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=AZE4All2;
+	spf=pass (imf12.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777819931;
+	s=arc-20220608; t=1777820179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qVkyffb8Q0PGQnTBZ+TvlFrjY0CELMdRqK+yVMGHtn0=;
-	b=fw0YpQsUt9rEMXl8+8rKZOPp8m0KKt9NxzcHd8zjl0JFB024nR8XEt1d23AyHNPk2iUrh7
-	Xct/Tlaoj/e2mwLTNpYXEOuHUgvzHaOMoSQR7QZ9idaLiqLyIY0bQekUFw2qydKKjlbIq1
-	tvu/UR/GQ/+mpFZdnLqSkcq8H1Zp6m4=
+	bh=1AKPIGhRNxK+F55Mad0JawX+0GWunrA5WkX6nSEFGLc=;
+	b=rIbppn1C3O3/6VS5P81SZr8a7UtHMJ0nUKMX7fhC30jhDRa7/050JxLJr1RJ2I3R+fSi9S
+	DLRrAMmtkpja3j4LWUO8PO4oAddPEFvBOW2r/nQGWIvFaANoumh3z3qPWZmEpsb/Xf3eRH
+	XJds066KlzVFi4wcfbuJ9a1cPSxpvpY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sTjUo9hB;
-	spf=pass (imf14.hostedemail.com: domain of qiwuchen55@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=qiwuchen55@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777819931; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=AZE4All2;
+	spf=pass (imf12.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777820179; a=rsa-sha256;
 	cv=none;
-	b=lmQ8Utsvdnoe7318/U6G5noMCce/YfbAnLpNqEJ3K3FQB9nj/7Y7BEcfhIU3F1KzR2p4Y8
-	xiAOLIhTVSw8u0JYvyLYMBRfKLYmIamNEcWq+XVQ1t2vq0AMDNuXfkWcAheEKVk2ox8Pyk
-	rPC4J9Q79e8aAOVV/yX2AiSsDBpcX7Q=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82faf871346so2020649b3a.0
-        for <linux-mm@kvack.org>; Sun, 03 May 2026 07:52:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777819930; x=1778424730; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qVkyffb8Q0PGQnTBZ+TvlFrjY0CELMdRqK+yVMGHtn0=;
-        b=sTjUo9hBs0FpvAMGHqjs2qDzUDbzSnXVJr6phyDFGJ2yioHcTG2L9yLhEmPgZdLYAS
-         jhegCvC2ipMM74Vv/u2fu3Ef/LHiM20pCxZA2VMFW5Z6oKIo7+D/tuXLW5ylTt6CyFDQ
-         kaNg3usxw06eZBNYaaV+21rMC9scVZh/BprVevtUkc0pYim5Z8oec1ru9hGxYXExE4+h
-         nnywoVzIAabP9thpr8PyvTYRuRxBGceU6qdgV9L6tZwLCX+Blznvt2RPyDDcxv9BEUIN
-         WGtaNfTmw2IdHaB0MiGiCm/Q7Sh5wnQLTqpa0eFJylHas6PICKPvoy2aqr/OcmUWwvES
-         RImQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777819930; x=1778424730;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qVkyffb8Q0PGQnTBZ+TvlFrjY0CELMdRqK+yVMGHtn0=;
-        b=Myc1nNoLy8GaFMJ4OSucU8U8XAZrvT7wphw3cfHYcaXb0J8qIfvY9FvRenEI61SOKJ
-         SrEnyvozZA7SWhi5ZYyj8A2USMB8ZDdw4OC/id3T8Bhfgkrv59wor8VvnnIbbg1zazBj
-         lRezirmwiK2ct1KyzDqX+VV/fjoBCZkzBGcHTzGIao33xsmjhPXBP8bZVyjWUPsq+jwF
-         w79RxpKp1fwmnNKMgi0iDsUszDS3W2LRrLwBP1o9+1+sDcdvdSKS4+bZO4zzvSqn2JSx
-         1C06cMcGjahClyw1o2MQ2cmfWZAGHneDb64r+zQOCZiQRlkgW+mDcMSG5zQDkSZN94YM
-         dRzA==
-X-Forwarded-Encrypted: i=1; AFNElJ8KVJw2U58kZeZw8TWEolBHoYlXPKXR7XpWwbMsfcfiLQkjkvr49u8qLvSh1BnvOw3O1a69bJCVfA==@kvack.org
-X-Gm-Message-State: AOJu0YxrOCrDGfrci+aDUekHNh7Cl3Gty88GKsrAmyZ6/y9kBFxACKdc
-	o9L96B+3CpUeKr1AL9eTj6wlMgFZLy93ZPccmtEwVEeXF9BBBD/bKbq+
-X-Gm-Gg: AeBDiev6suUEuTgNb7NkzpjB/GhxvlaIlEHk03bNfNlQy21RnNYTpMYrzKrKKrx2iQY
-	ec38zxa8QY8CC+UbMCTYVE/2NH/+AV1oK74VrEIAbJbueDpGWbXT97ECmn1iLmOqZvhC8ApMNNt
-	et3fk2fdneQ295ZWhjeypjID8VxC3bUFGezReX+xgdWqxOFcz7F7H6EcRzHMY3ifeWsGgjwvDJw
-	7sYWqA10+fMWv75c3802LXFEBj0loNZ2Bj66rtgwbduryUSAv0t9jYQQ4SNSQV9L9BdZF+xo0jp
-	zhye1Hv7y9lAGObTr3F+eEEPk8ee7qL7g6owplWRPptpbM/pJWQakrYdZeK0bwJ6z5t3nmwOZb9
-	b9eVFwFq434AzFCc0XCirO90TM2jIotzG57w+2C2PK01xuTPJF7Gvxvf647j/7QPeY/xj7HUcz4
-	Nypc8OjJEL4rmPuX+O0GlcygN81KdY/2re3Q9ayFgLYZDQ7nka26I8+g==
-X-Received: by 2002:a05:6a00:2d9d:b0:81f:3fa0:8c38 with SMTP id d2e1a72fcca58-8352d17504fmr6815426b3a.20.1777819930328;
-        Sun, 03 May 2026 07:52:10 -0700 (PDT)
-Received: from localhost ([183.227.123.133])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-837aa3e4f30sm121202b3a.1.2026.05.03.07.52.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 May 2026 07:52:09 -0700 (PDT)
-From: chenqiwu <qiwuchen55@gmail.com>
-X-Google-Original-From: chenqiwu <qiwu.chen@transsion.com>
-Date: Sun, 3 May 2026 22:52:05 +0800
-To: Matthew Wilcox <willy@infradead.org>
-Cc: "qiwu.chen" <qiwuchen55@gmail.com>, akpm@linux-foundation.org,
-	rostedt@goodmis.org, kasong@tencent.com, mhocko@kernel.org,
-	hannes@cmpxchg.org, david@kernel.org, ljs@kernel.org,
-	baohua@kernel.org, mhiramat@kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: vmscan: rework lru_shrink and write_folio tracepoints
-Message-ID: <20260503145205.GA3181@rlk>
-References: <20260503085705.3276-1-qiwu.chen@transsion.com>
- <afdBCWopkfF2ow-Z@casper.infradead.org>
+	b=JsAjqvt9LCxfwXaxyYTfmS84y5woFlACMBdaZXok5oqhYNUI/hUdRgRDKw54hI3trXWwf/
+	6OKLgd77SLXvhDZxKtWA7z/jipKQxUFaIZ8R70Ixh3Px2EEaRW3jNSafX6yjxMvfZWmIfB
+	o8w/enUNH43xEwRydurTDFCIDtWqtc4=
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net A43DE41084
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1777820177; bh=1AKPIGhRNxK+F55Mad0JawX+0GWunrA5WkX6nSEFGLc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=AZE4All21O1rxm3+Fs4hD9srnEfVhetFdksjrOjV3VD83csa9mPQsIaE0wida9+9J
+	 N+/xzjN768Ltum5SPW5NP76mL8D77ZLeuY3QwLSSpZWPmw7VTqr6LcLxxFsoyryih3
+	 Cw7BRrH81/AYfcwvJ71axSfFI/4S7mM2rQAHBsZnKVA2mA+9rgikt6qRgqBgHa/ToH
+	 SEOUJ3eoxda3ocAZisstFiiLSLe7COi99q7zzLDnR3vl8PISisuLK1ag43oadhDND3
+	 Q6gvfwOjNy5JPuH747ES0aqGA8aejR+WZLmznez7o0Kb03gnnNKwpOq5obvRrNNsCm
+	 1wUuJoEIqo0BQ==
+Received: from localhost (mdns.lwn.net [45.79.72.68])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id A43DE41084;
+	Sun,  3 May 2026 14:56:16 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Manuel Ebner <manuelebner@mailbox.org>, Shuah Khan
+ <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, Kees Cook
+ <kees@kernel.org>
+Cc: linux-kernel@vger.kernel.org, workflows@vger.kernel.org,
+ linux-sound@vger.kernel.org, rcu@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mm@kvack.org, Manuel Ebner
+ <manuelebner@mailbox.org>
+Subject: Re: [PATCH v4 0/3] Documentation: adopt new coding style of
+ type-aware kmalloc-family
+In-Reply-To: <20260429070759.309110-3-manuelebner@mailbox.org>
+References: <20260429070759.309110-3-manuelebner@mailbox.org>
+Date: Sun, 03 May 2026 08:56:13 -0600
+Message-ID: <87o6iwczjm.fsf@trenco.lwn.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afdBCWopkfF2ow-Z@casper.infradead.org>
+Content-Type: text/plain
+X-Stat-Signature: pdrht6cdcdwg1a6bu63kyija9xxinr5i
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 077FF40004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 905EA10000E
-X-Rspamd-Server: rspam06
-X-Stat-Signature: sdkzzzeih91dhyd3ycp7rzifokbkhx3c
-X-HE-Tag: 1777819931-209061
-X-HE-Meta: U2FsdGVkX1+CAC00O9q4qYIBSoQnuBFdwAmjkhwR5yvvjNyHESyZuvAHhLm4RsMAmoTyXa4tZ0H2rmN4t46INfqFGO6vyGTNFBYWX7/pdlKHrYVECb/mPO54FB254bddidT/AQ44h/Xg6T93ORXoLWmUMisuRVOwl480Y3IQpbE3P5bYZdH00SWSuVzQPTiBu749/+8lDqXuzqB+n+38fiptjxUjBne38tZvVkHMvz8ibrJtzpnjVCssdRbZhAs8AItqXl12/+L6P0RqvfwrIPNEsGP+hPvUgeshaL+y8P574moBRSyccFznIVHdD41UkmpwdFYmRbJuNcspwEAJVDMFkEsptELtCZ5jzD+tYmeKAcPOjEy+ZyVE6RqgCK0w/z1OTOdOLBcfFnf7R0CQIDAnUQA7OSJN7ds7U6nGcLBU5CEklZheI2fIcxsIfo6U/Rx6mCBrcdb+2BTVS4Spt3yBuYKziczB+T2dsGaLAPDg+TDRGhl7RMMs/0zBzk4J72gq6a39fyIrByE0D99CCi18FfmlPt0PD0xiaYu9FeU8eLeqrv12VO0PPUL69YYXzYxwN3RGma1gWRg8GpyzjX15oIui6Iq89sAP0fdahe5RBAaTewVheCB6u8T5JpRWUaWuffX5r39s+vqJLoqzvxO02Q2SbQKOrWB+RUEIX3qzbV71P79C3K0Gn1t7X6nmNfbN4VwUxZB7TNvC3Nw5WHikctMjNEykA217jq+LP58qe4/2nsOyE0n4jH2LDLBTigbupxs8EnNcJ+phF18pXXmUT9neKJ8azbvlXi58iexAkJfuhHIqVgNqxXpQCOgHVGo8WL45jMCISb/TAkNU8rxSB+NEduydQHYRGQZfqVJub0l0eF5rvshNhAh/Dk1OZtNKjsvqBBIBJzUxXwyh+LNWKlwEhh5jga/8USQ3LwQg0cf8uOoLC5zPAF+z7fZO0PsVr7scTz4/4LmXhpV
- U/TOaNWK
- 8TEjUeb/gVplti18GQHzI4wLbN6ZGpzFfLfcKMsWvldNInk2VQ5ZMQ1tk2VLXuGw5dQKyIxGrH1KmsaRLobfW+X49D4eSW7+LnNfVGbSdpBBEblxFwh3XSdFYNIbraYILlwGahTfApSmhjh+nfxO3Gi2PQiILog2cuVpGi0uF/xElA/Zw3PyoMUlA+3YzrbSb46bo2capYythauB1zuenjkhSlv157VewAIGnXMG/OR/tbbNvZ+teOLhGJkt/+1CJlmE/dgPMgZgXswDLuFdYa1Bw0Njmdx8SSKri9guO3/HUfbVinwswD14ltLpgpDoQNGoIZfCuBjRV6JaMWOjZdT/a6Z0SDi8SxthM/52u9ein5EYBTcFca7yZgYa26mqCHYKol4iUWNPgs4fmkPfABeUcGHG84zGMxWi93TYVK6Aa5QJnuZdfBiNrCQ5WqPYvcrA68JLillSzSneVM+tUJPX9utllKLf5bpFJYxYP6XvX0aupaXEfZ/sUsxN0Evik2rXW0Qo6VgRprIW32NcLzpxx95LLKojydk5R952gDd7HXPX1FX9ZLVD/W9aaKbqPYu2FfrRJQBsf1nF4vCt8JyErOcIQdaWiZHMe9JkzAJnJfiI=
+X-HE-Tag: 1777820178-353047
+X-HE-Meta: U2FsdGVkX1/cj6q7I7vRxgJh3UmdkG9xhueXtDWHZoaTR0Maso+wuU1q90W7BMPeufIdPSk6EIvZeIobReRM9BclSnOs6D7Zmzor4J35wtUjKO915v+fZL/ePhYYZig2dYXdEBr2OAY67Z/e6VfBg36FC/VKpb8UoXLypr6rTB+0WLXWYPSB3JJUa1kCtInST+8XEBY1qjejntdkx6IS0uhw3hRAjTLuj/s2UH/0OHSVB6i28vsXnrmuVK5+5ZXR0a89FuHMUd9jsCpL/2Y6R0bmIOZANMbAODuWMNWrK6fEC4AMmXNVPM45jXu5k4JqTqf4jQy3CT95wDITuaxRWdgcTEnVq7TIogk6HgOEvsrE71anmAcwQAB8ZOppTEN01oL1WW4YTqwRcVpHyNoE9hLUtA5F0jcMqqxJn08nOKWILhT3ca/xH0crpejOGYpFASCmvSxDDF1Y+L7lc9LVGeEfaaKlSqmGOec/AvBS5DNcEtAFqqheR7wfB6GBKhjrGcv/6/+VHfJxdnfjQmIV1Y13BdNXfPpR4DkoRz7ply7QUeYwTSav+pD2OSsyL8uZPF3+wyRMyb+17ThRJ1kNFWsFvyZyY4K4yqfMIUSzAxTVqXfpQDaQn9+wnOoJUVB43qbeD+wYVpJkgb/rj5X2GDGVZ9/cg0iMnoxbnjkw/kvi1vfHut7mr9HrmLn3/XkJZdqaHOo2ZzpQkzXpG3YUjsRcQW50/GXcGsr0WlbhWHqCcH/5HR3Q291xQtyC0CrvgwGmDd4K/PIUgllxokzJd6h81vLJh/vgQfYV4fa4e8ONq/fxFXycN7IIOHQRL8OR4++C3MtKVUaBrIbTJcom5IGO5Br2UNXQs3eeJSHYYWrCZLFsTIrzn1m7IOPusuiuvkSpjS3boAC5RWR+Dnmqz0iMo/ZZiHFtNEH2Ih3Gbqa2sW/6DOLx6w6hDnl4zfiIvZ5OINYubZUJFkZIdmz
+ OvxCzqid
+ XgTCOC11Ory6K0JPCJ/Q2Eap1Im/NbWUQx4Qo/QAh7U0ZfjjEyOCHCHdEvbyMf6TDv+pfN/KIXR4/ycsyAJId9b1Lpdz04YiEJL2oS39QZ41cIc3H9iEZ2oik54VuM8NXt6GkKd3G4deIK205Avs9CBqdE/qDXYqfKMbWl98Mqt8YXDbL7c07km1TNEdGU2fD6hQaX8lKB+qiqZ1VU7U3SHcVins7hdnQ0pCm6cCgaZM6P4OCguuJyJBaoZdScrIF06Lx2lXVfnihLShRCL4LBx3a2mzfkWkOhZXspdR1gVdSdm0CiFztD80GWAnIBDyJ2QjC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,16 +95,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 03, 2026 at 01:35:21PM +0100, Matthew Wilcox wrote:
-> 
-> You also removed the printing of the folio's PFN.  Was this deliberate?
-> If so, it merits a mention in the commit description.
-> 
-> Also if you are going to do this (and I suspect we should do this!)
-> we don't need to do the folio -> pfn -> page conversion.  We can just
-> store the folio pointer and print out the folio pointer.
->
-Yes, I think printing out the PFN is indeed unnecessary, but miss to
-merit a mention in commit messsage. I will remove the unnecessary
-conversion and merit a mention in patch v2.
+Manuel Ebner <manuelebner@mailbox.org> writes:
+
+> Update the documentation to reflect new type-aware kmalloc-family as
+> suggested in commit 2932ba8d9c99 ("slab: Introduce kmalloc_obj()
+> and family")
+
+OK, I have applied this series.  While doing so, I restored the "gfp"
+parameter in the changelog portion where it had been mistakenly removed.
+
+Thanks,
+
+jon
 
