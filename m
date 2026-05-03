@@ -4,114 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EECCFF886F
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 17:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 288B9CD3424
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 17:35:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA0196B0088; Sun,  3 May 2026 13:25:35 -0400 (EDT)
+	id 7D1576B0088; Sun,  3 May 2026 13:35:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E50BA6B008C; Sun,  3 May 2026 13:25:35 -0400 (EDT)
+	id 7824B6B008A; Sun,  3 May 2026 13:35:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3FF26B0093; Sun,  3 May 2026 13:25:35 -0400 (EDT)
+	id 6990D6B008C; Sun,  3 May 2026 13:35:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C31456B0088
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:25:35 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60BE314094F
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:25:35 +0000 (UTC)
-X-FDA: 84726785430.29.A52F89C
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7C340120004
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:25:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MPM02kST;
-	spf=pass (imf29.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 56E306B0088
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 13:35:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F21C8140756
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:35:22 +0000 (UTC)
+X-FDA: 84726810084.20.68B7C3B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 514D44000B
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 17:35:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="r/qnPCnN";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777829133;
+	s=arc-20220608; t=1777829721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8o9FalgtmoPunAjSjBWUFK3XFWYc8vHIp7TS6crtgE0=;
-	b=rbl8Wr4Eb3akU39sIzcPILVR1wDEq0fY0QKG8pqZlpX9//0OefoZ7LELumECAoCU9gqRhf
-	r8aAD85oLY8Ony1Ry2L1Oco+gULUzEoz9A+nW2Nm9V+7W3SaEwaa5/ZdpDkd+vkxk6VieF
-	Go4IqFTS/l1irS76HSt5pHTl1/NG3R8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MPM02kST;
-	spf=pass (imf29.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777829133; a=rsa-sha256;
+	bh=s2zwi3JifuXPfD2FZxW9u0hJ7oeddcShUI1/6+9SL0Q=;
+	b=5YDcF89QuPmUYRg+Nfde/E6W9eBQ9486BfGa+O3n0x6PKVfB2uH8DsbgBBGKkWBy/YnS46
+	ec0yNsegXQVPr59tMcPhLX77g2GoEO3GGiqDsMYMwCdgquuT0ZY/PYTdXkiXAwPMQI7gv/
+	edQN82YFEvFNWynxkJqeBAq6n+MpwGc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777829721; a=rsa-sha256;
 	cv=none;
-	b=yqWYhvs1T2SgBbFEkav3QamkAkNXNmjrJYBhHGSvMEjcKnxBKIRH6jFgULtQarCBujfKHU
-	CZznsxWYX+bMu9Z9zKsXFjd+AH73nTLApkv0yCh/WA/vw4s1abuXsHkPvJJJn7brWlyug+
-	JFHjxPMDN1B3DKrWinG2gX8rwoLIxhQ=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-824c9da9928so1428388b3a.3
-        for <linux-mm@kvack.org>; Sun, 03 May 2026 10:25:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777829132; x=1778433932; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8o9FalgtmoPunAjSjBWUFK3XFWYc8vHIp7TS6crtgE0=;
-        b=MPM02kSTqPXAeO4n8kCdDKULEiZIuJsnVpuHec7FZhiIbIJlrt8oL2EAiUfFLTKydB
-         IEPdnmEoCKagAlJB+5yGKRozmbQeiG+U4EU5pdbKh7VEnAf9/wx7LYH8se3c+fJytbTy
-         Rr9dfqNdMS+6ZG+MvOWmYZRkWPfKKM+KUIY+tD5bo/LuJ9LvG24YjzCzeOJdOLkm5NoJ
-         vypUtyLcbXelLBBjgYGmoruJMQOI2aWYoULgf8WXvGtPlw/Iiea7RBO4C53t0EAXTEpZ
-         RLWSOCBrRV11J+9I37LALjpsm68mOehU2s6o66npqTXdW2P7axzOZwtTZ5DpDW4rXfNV
-         0G9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777829132; x=1778433932;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8o9FalgtmoPunAjSjBWUFK3XFWYc8vHIp7TS6crtgE0=;
-        b=pKOwlp8T7I5h6PBD0rIyRN8g11wNgevkheoo/rruUCreOG5sDUC5S+otNWP5/Iegyt
-         wmdib77zO1tmsT5FoZmJpTZR9SY3guW+I0okLEH1q1qNbGXtR5ChILJQzPgxavIHh1SB
-         9gE9PQYohA5AKicNoQG+VfswvDN7sVw7wfvSfKUtjF8a7l+LkFXZ4WKhNvscT+4WarWQ
-         pLVxsiyDanBXWLDCbcnVkdl/0oUsAwJ8N6j1b7D+MfWwbYiM9Rjh26U0v1sdgCqWp59i
-         3SBaH6rpGKcyFs6DYkhTZ6Fl/JWbW52fnHFFR4Elut66akZ6poUS3TZW8sv3FEnhWYRR
-         yjmg==
-X-Forwarded-Encrypted: i=1; AFNElJ/3fFY+nmy5e/tqEMOsNHeGNQn2TXg4jVo3nMFIGxp/YETUjn+Bs8YfkLbgir8vHV1twcfmP45QDw==@kvack.org
-X-Gm-Message-State: AOJu0Yw8BO4B+90te+HTc0t4VLvZcfJkHylHDsyOQGMLei3SgBVwRmjF
-	zLItspeiMIDlFSEWDYFdSaKlmx5IN4eu78pap8T5DiVSXoC1q9laI0ZG3GpQQDu7yhfCOw==
-X-Gm-Gg: AeBDievfZJcOx3O8QN+sfrK2A/C+opD3dhNByczdSKFl4lGwEkdd0DXQzjV6QOf7nGN
-	VWLQRAV+zfRlHfhLEMumYh0Mm4+8xd7cjnnV3i8DEtDKpgv/cpahJcHVKCju5nr+doRxYVLDWGr
-	RNXrv69NqtomFjT3vGymUQuYm3sHLOAhc1p1BWErJswvDRoB2uGUB4aQChDUoTYIyUEemDfex+D
-	JvVnoHqG8YJb2l5XePn6B1spDZbWG1knZ4WTFIiX3Hi0/8gZAccrdXK39ywGR2sfA+bA13Xi42T
-	lbMdjnyzc/XbIGYhLLPgabY32xWrcfscztXqlbSYcG+9E0ogr9VlglWiMyLtkAq3aijTcVQaaae
-	BoakOQ7YZj3FWqWN0h85faztrgFNUw7DJL0Ff1WrjVgTeEr7/uqXclj351fRK/2i62Wz+VNH05t
-	uMEDCFbv2DWCuWGHhzPqjMwQLYj14+MWA015vpOS4Q9DEs1yrz7nXM82Gv2A==
-X-Received: by 2002:a05:6a20:72a7:b0:39b:949d:6078 with SMTP id adf61e73a8af0-3a7f1a1d68cmr7007462637.6.1777829132163;
-        Sun, 03 May 2026 10:25:32 -0700 (PDT)
-Received: from localhost.localdomain ([114.231.84.174])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515b1fe12sm8672423b3a.47.2026.05.03.10.25.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 May 2026 10:25:31 -0700 (PDT)
-Date: Mon, 4 May 2026 01:25:25 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	lsf-pc <lsf-pc@lists.linux-foundation.org>, Daniel Borkmann <daniel@iogearbox.net>
-Subject: Re: [LSF/MM/BPF TOPIC] Using BPF in MM
-Message-ID: <821acd4c-d443-44d0-842d-26ff45e2f54d@gmail.com>
-References: <7ia4o6j4c5y1.fsf@castle.c.googlers.com>
- <014f3c0a-7c6f-4f64-95cd-b7b69d804880@kernel.org>
+	b=D7EtO8pzsGCKrd/b0Fw8G9932Qo5Ps4e0PiJQFwq4sN7EkTMFNGx8wJHE4hRAdKe0qV+MK
+	cLeLKMzJ3MTgQiNrQN7Bsq6G8bBx8JT+XZWTP3ataZ/8dFfxozj9rxCARuPo4T5aV3uhfG
+	hNj8S6dw/OMzI74Lj0J0MnVoHQxiryA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="r/qnPCnN";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 564D343EEE;
+	Sun,  3 May 2026 17:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FABC2BCB4;
+	Sun,  3 May 2026 17:35:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777829720;
+	bh=CdlmhbfZE6Tu9vJOU5Y1P7jHBS+VbmaeGREcszsgiNc=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=r/qnPCnNeJ+NKDnTJ7j57PzGW896Y7T83OKbIbQf6UnyOnTNsW8ZD1RqqmoikZD0+
+	 ZUCzaK8YhhWNN+a+sxtY7K0+9da4zzaKRoMkYf9FN5xX0PYdutbEoznDtDBJBCU36O
+	 A7JCXoo9e3w9f3uVolU20piDR053kkYiXYKrjBEB0GEQwCv71TkHRpknUXboJJq+dJ
+	 MMixH8bkgBGpjJw2mpdMZVJBlIAk65ij0MhISd9Y2pe0Gc5Fd+UJye+AY71g1nsrvt
+	 6dzIzxw+1nrRLcdwu2FKi9yTtjv+WyJFFNegYyzGLfBD+srQFNtorNmQjPhHnitovT
+	 Rfyy1oD5APRTw==
+Content-Type: multipart/mixed; boundary="===============5550520783914532141=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <014f3c0a-7c6f-4f64-95cd-b7b69d804880@kernel.org>
+Message-Id: <a74b6b1d137439121917216ef386bbab9107afcc89819d1fd94e389b8c54b4f1@mail.kernel.org>
+In-Reply-To: <20260503165024.1526680-4-vernon2gm@gmail.com>
+References: <20260503165024.1526680-4-vernon2gm@gmail.com>
+Subject: Re: [PATCH 3/4] mm: introduce bpf_mthp_ops struct ops
+From: bot+bpf-ci@kernel.org
+To: vernon2gm@gmail.com,akpm@linux-foundation.org,david@kernel.org,ljs@kernel.org,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,ast@kernel.org,daniel@iogearbox.net,surenb@google.com
+Cc: linux-kernel@vger.kernel.org,linux-mm@kvack.org,bpf@vger.kernel.org,baohua@kernel.org,lance.yang@linux.dev,dev.jain@arm.com,yanglincheng@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Sun,  3 May 2026 17:35:18 +0000 (UTC)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 514D44000B
+X-Stat-Signature: 871uu7wopg11iqd7ddxwi4ipqxrs998a
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7C340120004
-X-Stat-Signature: 9o5xdahkwea7xps3a5qe6b9f4w96nks6
-X-HE-Tag: 1777829133-698569
-X-HE-Meta: U2FsdGVkX19pB1iiE6fpHwVltPNTyk/DNqr6ogPlgW7r/bHCwZ+d/Dr4MsO8rdC4uSP5afbIAUZX/FYgr9GV29hAYHwrb7S3uwZsjyZlVNOoRAR61bbvnPDZpda9uRSJWnoSypEEVMh+tjX1ijFn7hL2t/3UasFAmdOBvyJQSht+la1Svk1P2uWnhZ7ea1el76HE95sD2U6qGZaCW3SG/ukTaDFTouPzaBVRxhii/gQfsO2zfG9kjz7esO+rV8t/xzpq487K9oAyecPFv8/+2mj+wZGMow4upwnSkq8CWQtFzvU2ZMjOpaR4WnEjJih44wW/5WnyuThO/3hRt16Sbc9f4dikb26d7BzU61bf0G+vdHIiP9m+Qj9PGHQdeSeNEUqNE2rI0eOjet9NdcCufYj289bxe1/+9/zyE3hxVurefuvfsfWafoc9q2NyabauDtNosvOhCdrytxCLJ5HtPd1CKmFRn0dy23LqRZgj2JXZbl0g4EA67VJNla2wMBKpwDJyRrnhJJInZ2TrJl+JNpm0wSN8vBMrlLB68Uk6Mc4f/OHYb5DMYLlSbpeQdLHwgjTMrn3eTS3FesKjs1UwtDnShv4nR3dIdUaZYp9LJkBcEACiio5X78CORKfEuoDkJmUOz62+jTsZHAP4JkLW9aB6NbkMoCpjnKzV9yjw/EXMG71af262Ad8QmluVgpJqaIm+AQ1Yh7E1rRN2TLke2itDGudBzl+pEeIebMim6ZrzElcmJ/04wCFLFYV9WKSlzV/0FMrau0woxQqFKAaIe65jJj/pPxZBWApZomVz4FPj3nTxNLdqfbZXRef1x+a3TB/eR6IbVLcEOxfJrFcuJbFDMaBPM7yY5tqimviHf3Et69F2tZQ6Mmy0EFfq2iNpSjKkzzWdR0chQIZO+h02ZvKH4JfkDuE3Ja51lz2iXjvuOFTsNJYcTnRWBvg+VQ/xZcLbsoMLNVVkB7P0lGl
- 2xTXHOWa
- WBNaZZtpRwS6VDDayqxlRHGETRhBRfeauXhbVFrQk9iik2bBBR2ZFwBdq8VLA1HvsxZyTT2L9bNC+VxUBDTwKsJkWxocB2rpY/3iFssqn1CuoBuSScRvziZvgwir/RHpGgMg1rwV1YXAtXbpgNlTyvK7SKtOMbMbUuCrxakOR+LVsxsJ/AeIWU7FYLFyiM71GnWjqxpd0Zl21PSD9z1Qa1Dy7mJqADXUEPsVUx2BjF465k6ZsROTyUlR+Je+zyxqB2wwD++UcgHJ/Y4eJAZfUpoc8gtlmhxKIijdh3TlN321ab7aK4hmVcIneNY7sikI1UukoVbg2pFDO6IHapSxxrzjFDNtrapvJAOcGEU3hrUycCLWaL8dWC0wnfTM3FMSFly5jWfkjoyPlYfC9sJlLCuu5uA/paaR0ybohhd+pxKzxcVs0MsxaRpr7s8Vyuyvk1sX7fJk9aDAayT3fafsAGC+PqsbcTtbxOqSzyUFiUQn+ghLb3VvsJcp0g/ZdzphgwJ5ViKjnHDsIlY0IAlZ5zsvGRVS6j4WOdCV/tVmd/AQFmSxlKs4558JjPw==
+X-HE-Tag: 1777829721-171877
+X-HE-Meta: U2FsdGVkX1/6iXloOsXSe1HDsA663jjBUdqdd7gbMjvxdunjED6kyXmQrojFlpDpFKRkkFXQkDSAn1omPl+6xBBXJYD6ZYFceXiaFrpJ52W/MI9MTn7SCpeGSKfQsR1jAiBRxl/sklm+7aMrctUZw0BJB145y/Bcxugiceos9OD6L8B62nH12iQgDvinEgELB7D41m4p7hMnzSISRSPYs0VcLvmfBx3jNqMShM5TVFaoERBTmN7gf7m8bneqltsyoGjtn17xhdlTZHQAP4B3boJzaJrZjnVnaEBCKpO3n+ydviJQmon8tHTF+Nw4lrzYvJZD9ElB3JGnrNFuNXsG+F+V4IAhQDJNVkknwF5XaybA5urEvrA8T4/CN00n990oK2OZ6P0K3JKzRnjWDughhuIi5eGf7KRLb3YPM34B5M3KCKmjhzmoX+AsjVksfkJ/TLPnptKBN1itgBctOSSn5uyXPoU8t/zHremfctgohUWXY+EItC0IPOL2a1vp5Y4jxV225wqQEZ3qGuQnrUzuLYZhtpB84zkjWBFHLgIrcMVuoCg58LauleXBwiVxo2CQeQIuwl9dqhFjC1XnevwnlBfg9vpHMYPKkEBxsqaOupHraOA5/ad/HXvZkf9z+GFnYDTBU+5MGaVLdxL9JvQ1tqNWKpVTq4AIeT3R62fKsMMpCuTXGTB2rPe3ehY9LIi9L9jlYopfwbDVJ5TUi6dn8YN7slTOxVv9jcRl0JVrV0G0ZvD+ET0IrfBq0u3g5AbletOcckSWFoi/FJsZRBq6lMQvXDL12FOrQmUFjYUVFB87zP3r7saZbMHy3b+ekAInk7AdTkN0/+Bhp2ojRM7IwHfyS37+XNNM6VyArzJlw/8omBbLBTcEn0YJ+eU3QTH77VY5u5LBtqFDZYgY79gQD+GdbddyiQijOWeN4SZ4RyqJ7RbocD3UpLTY1v5EN2GD1wX3Qyd7CCWFJwupMOZ
+ 1qFHcCeS
+ n02TXqRb7Mub+ppuvY1u/a4xq/xHb+2ZSUGuRJJkHkrIEvFNgoD332VF0e62yc7NdqZRrz4WG13f2jqN+PLblqsnWERSnyhAZVwLUtKdMoDDWf13n24188GnsRT05NDeeGE04N12Zq9JC4qtdV2fn5780M4cZCpUL24coi1PBlDMWMy4v8mlOIO0I+BQl81+3b+SF7twvXzwTaODGQBw7e8ix4PTW0ZZlWepkObP90t0oagC1N8Cox7dxwfp3ol4rjyiXIlv0XIMP+6ftgtvL94CGWoc2nYSuzIGMC+i0a31Td1uVTzkfCgnY9zDEtMWyJnEGEhZ+aLxKII3XjYH1ukMwn4fBMUkkiWeZnKaMao63WvJQNXApchd9sEzt8y3A5EmCrfwHKJyVNE7PSVtg54qFSAqdDHNTog0AJZ5nJFvjPgqjOTJkVwLLT3T85m0mOWarjA80KLqyai02KGbXsM6TUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,74 +88,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 10:12:16AM +0200, David Hildenbrand (Arm) wrote:
-> On 4/28/26 01:57, Roman Gushchin wrote:
-> > [LSF/MM/BPF TOPIC] Using BPF in MM
-> > ----------------------------------
-> >
-> > Over the last decade, BPF successfully penetrated into multiple kernel
-> > subsystems: started as a feature to filter (out) networking packets,
-> > it captured its place in networking, tracing, security, HID drivers,
-> > and scheduling. Memory management is a logical next step, and recently
-> > we saw a growing number of proposals in this area.
-> >
-> > In (approximately) historical order:
-> >   - BPF OOM
-> >   - BPF-based memcg stats access (landed)
-> >   - BPF-based NUMA balancing
-> >   - eBPF-mm
-> >   - cache_ext (BPF Page Cache)
-> >   - memcg_ext
->
-> There was also the BPF THP control.
+--===============5550520783914532141==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Hi David, Roman,
+> diff --git a/include/linux/bpf_huge_memory.h b/include/linux/bpf_huge_memory.h
+> new file mode 100644
+> index 000000000000..1c8a6f7ad8f1
+> --- /dev/null
+> +++ b/include/linux/bpf_huge_memory.h
+> @@ -0,0 +1,35 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +
+> +#ifndef __BPF_HUGE_MEMORY_H
+> +#define __BPF_HUGE_MEMORY_H
+> +
+> +/**
+> + * struct bpf_mthp_ops - BPF callbacks for mTHP operations
+> + * @mthp_choose: Choose the custom mTHP orders
+> + *
+> + * This structure defines the interface for BPF programs to customize
+> + * mTHP behavior through struct_ops programs.
+> + */
+> +struct bpf_mthp_ops {
+> +	unsigned long (*mthp_choose)(struct cgroup *cgrp, unsigned long orders);
+> +};
+> +
+> +#if defined(CONFIG_BPF_TRANSPARENT_HUGEPAGE) && defined(CONFIG_BPF_SYSCALL)
+> +/**
+> + * bpf_mthp_choose: Choose the custom mTHP orders using bpf
+                      ^
+The kernel-doc format for functions uses parentheses followed by a dash, not
+a colon. When scripts/kernel-doc processes this file, will it skip this
+function documentation?
 
-I submit a new series "mm: introduce mthp_ext via cgroup-bpf to make
-mTHP more transparent"[1] to implement BPF-THP, which has excellent
-performance data through stress testing. For details, please refer to
-the patchset cover letter.
+> + * @mm: task mm_struct
+> + * @orders: original orders
+> + *
+> + * Return suited mTHP orders.
+> + */
 
-Although I did not attend the conference in person, I have been online
-throughout. Please feel free to discuss any latest progress with me
-online. Thank you!
+[ ... ]
 
-[1] https://lore.kernel.org/linux-mm/20260503165024.1526680-1-vernon2gm@gmail.com/
+> diff --git a/mm/bpf_huge_memory.c b/mm/bpf_huge_memory.c
+> new file mode 100644
+> index 000000000000..e34e0a35edac
+> --- /dev/null
+> +++ b/mm/bpf_huge_memory.c
+> @@ -0,0 +1,169 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Huge memory related BPF code
+> + *
+> + * Author: Vernon Yang <yanglincheng@kylinos.cn>
+> + */
+> +
+> +#include <linux/bpf.h>
+> +#include <linux/srcu.h>
+> +
+> +/* Protects cgrp->mthp_ops pointer for read and write. */
+> +DEFINE_SRCU(mthp_bpf_srcu);
+> +
+> +unsigned long bpf_mthp_choose(struct mm_struct *mm, unsigned long orders)
+> +{
+> +	struct cgroup *cgrp;
+> +	struct mem_cgroup *memcg;
+> +	struct bpf_mthp_ops *ops;
+> +	int idx;
+> +
+> +	memcg = get_mem_cgroup_from_mm(mm);
+> +	if (!memcg)
+> +		return orders;
+> +
+> +	cgrp = memcg->css.cgroup;
+> +	ops = READ_ONCE(cgrp->mthp_ops);
+                ^^^^^
+> +	if (unlikely(ops)) {
+> +		idx = srcu_read_lock(&mthp_bpf_srcu);
+                      ^^^^^^^^^^^^^^^^^
+Could there be a use-after-free here? The pointer is read BEFORE entering
+the SRCU read-side critical section. If bpf_mthp_ops_unreg runs on another
+CPU between these two lines, synchronize_srcu returns immediately because
+no reader holds the lock yet.
 
---
-Cheers,
-Vernon
+Race sequence:
+(1) Thread A loads ops (non-NULL) above
+(2) Thread A is preempted
+(3) Thread B calls bpf_mthp_ops_unreg, clears the pointer, calls
+    synchronize_srcu which returns immediately
+(4) Thread B frees the backing memory
+(5) Thread A resumes, enters SRCU section, then dereferences ops->mthp_choose
 
-> >
-> > There are some obvious target which haven't been covered yet:
-> >   - BPF-driven readahead control
-> >   - BPF-driven KSM
-> >   - BPF-driven guest memory control
-> >
-> > Despite a large number of suggestions only a relatively small feature
-> > (query memcg statistics from BPF) made it to upstream.
-> >
-> > It looks like using BPF in the MM subsystem comes with a set of somewhat
-> > unique challenges and questions to be answered.
->
-> [...]
->
-> I think you are missing one of the most important points: Unclear ABI stability
-> guarantees.
->
-> One the one hand, we are told that there are no ABI stability guarantees, and
-> that we can change hooks (add/remove/modify) any time we want.
->
-> On the other hand, as soon as there is some ebpf program out there that we
-> break, you can rest assured that there will be trouble.
->
-> In the area of THP, where we don't even know which hooks we will need long term
-> and how they would look like, that was one of the reasons why the BPF THP
-> control was rejected.
->
-> --
-> Cheers,
->
-> David
->
+For SRCU to protect the pointer across its use, the reader must hold
+srcu_read_lock before reading the pointer. Would moving the srcu_read_lock
+before the READ_ONCE prevent this race?
+
+> +		if (ops->mthp_choose)
+> +			orders = ops->mthp_choose(cgrp, orders);
+> +		srcu_read_unlock(&mthp_bpf_srcu, idx);
+> +	}
+> +
+> +	mem_cgroup_put(memcg);
+> +
+> +	return orders;
+> +}
+
+[ ... ]
+
+> +static int bpf_mthp_ops_reg(void *kdata, struct bpf_link *link)
+> +{
+> +	struct bpf_struct_ops_link *st_link = (struct bpf_struct_ops_link *)link;
+> +	struct bpf_mthp_ops *ops = kdata;
+> +	struct cgroup *cgrp = st_link->cgroup;
+                                ^^^^^^^^^^^^
+Can this dereference NULL? When bpf_struct_ops_map_update_elem calls the
+reg callback at kernel/bpf/bpf_struct_ops.c:873, it passes link = NULL for
+maps without BPF_F_LINK. When link is NULL, st_link->cgroup dereferences
+NULL before the check at the next line runs.
+
+> +	struct cgroup_subsys_state *pos;
+> +
+> +	/* The link is not yet fully initialized, but cgroup should be set */
+> +	if (!link)
+> +		return -EOPNOTSUPP;
+
+Does this comment match reality? Looking at bpf_struct_ops_link_create in
+kernel/bpf/bpf_struct_ops.c:1397, the link was fully initialized by
+bpf_link_init and bpf_link_prime before calling reg. Also, struct
+bpf_struct_ops_link does not have a cgroup field in its definition at
+kernel/bpf/bpf_struct_ops.c:58.
+
+Also, does struct bpf_struct_ops_link actually have a cgroup field? Its
+definition shows only { struct bpf_link link; struct bpf_map __rcu *map;
+wait_queue_head_t wait_hup; }. The patch does not add this field to the
+struct. Would this cause a compilation error?
+
+> +
+> +	cgroup_lock();
+> +	css_for_each_descendant_pre(pos, &cgrp->self) {
+> +		struct cgroup *child = pos->cgroup;
+> +
+> +		if (READ_ONCE(child->mthp_ops)) {
+> +			/* TODO
+                    ^^^^^
+This isn't a bug, but per BPF comment style (subsystem/bpf.md), multi-line
+comments should have the opening /* on its own line in BPF-related files.
+
+> +			 * Do not destroy the cgroup hierarchy property.
+> +			 * If an eBPF program already exists in the sub-cgroup,
+> +			 * trigger an error and clear the already set
+> +			 * bpf_mthp_ops data.
+> +			 */
+> +			continue;
+> +		}
+> +		WRITE_ONCE(child->mthp_ops, ops);
+> +	}
+> +	cgroup_unlock();
+> +
+> +	return 0;
+> +}
+> +
+> +static void bpf_mthp_ops_unreg(void *kdata, struct bpf_link *link)
+> +{
+> +	struct bpf_struct_ops_link *st_link = (struct bpf_struct_ops_link *)link;
+> +	struct bpf_mthp_ops *ops = kdata;
+> +	struct cgroup *cgrp = st_link->cgroup;
+                                ^^^^^^^^^^^^
+Can this dereference NULL? Looking at bpf_struct_ops_map_delete_elem in
+kernel/bpf/bpf_struct_ops.c:936, it calls unreg with link = NULL. When
+link is NULL, st_link->cgroup dereferences NULL.
+
+> +	struct cgroup_subsys_state *pos;
+> +
+> +	cgroup_lock();
+> +	css_for_each_descendant_pre(pos, &cgrp->self) {
+> +		struct cgroup *child = pos->cgroup;
+> +
+> +		if (READ_ONCE(child->mthp_ops) == ops)
+> +			WRITE_ONCE(child->mthp_ops, NULL);
+> +	}
+> +	cgroup_unlock();
+> +
+> +	synchronize_srcu(&mthp_bpf_srcu);
+> +}
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/25285279315
+--===============5550520783914532141==--
 
