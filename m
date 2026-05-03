@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 601B2CD3424
-	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 12:42:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1F5BCD3424
+	for <linux-mm@archiver.kernel.org>; Sun,  3 May 2026 12:48:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1A636B0005; Sun,  3 May 2026 08:42:44 -0400 (EDT)
+	id AE70C6B008A; Sun,  3 May 2026 08:48:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CB656B008A; Sun,  3 May 2026 08:42:44 -0400 (EDT)
+	id A98606B008C; Sun,  3 May 2026 08:48:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BA906B0092; Sun,  3 May 2026 08:42:44 -0400 (EDT)
+	id 9B10B6B0092; Sun,  3 May 2026 08:48:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 749C36B0005
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 08:42:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1AB5D1605E8
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:42:44 +0000 (UTC)
-X-FDA: 84726072648.06.F0AF642
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B2336B008A
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 08:48:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20BAB1C1406
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:48:55 +0000 (UTC)
+X-FDA: 84726088230.14.1C0FFDA
 Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 03FCC40002
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:42:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2552E80008
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 12:48:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	spf=pass (imf02.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777812162;
+	s=arc-20220608; t=1777812533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pumy/lFLWMtj1IZZ0yExX8Z/+JX3vX2fk0y6LprUvF8=;
-	b=BLxBik0cnewdbnK31j1NVKjkEuWWKun8RFSCup5PlzY1vWvJsghtdSA8cLfXhZRmm6No7J
-	GSzEYrhoyZBVZ0h5t+jC1xJVQtyfpKEo2MV02YLZgdfCLdblEhdetRSmIDj5widTEdDyW5
-	etGON8Q6wL2dlOrvmNp545ufaSP4knY=
+	bh=+kPmY9kfM7bTACL+RkqQv//16fNk6GPgmyPfFD/YPQw=;
+	b=OYKjdO4PKImLaIAjBr/ky3NpRpAMJMFV/udzYNKxyYLqcvRDOIY3xEFDP78qTR44l0pjjm
+	RJVEHldeAqD9lOGsCHk2Jt9K9gOAQ6W3VFEkfsC+SksdER0UloGP1mDycI/S+hrloB6LB5
+	OOyyTflzwlDC0rrqqzZhwOZ01IaRyOA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
+	imf02.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777812162; a=rsa-sha256;
+	spf=pass (imf02.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777812533; a=rsa-sha256;
 	cv=none;
-	b=KP1jnmQd7WPjaL3a+Mjb7OMwSUgqCDaARMy9vV4M9gICwg4Hfr+7O2jDv7zQmlJE8m+cAf
-	6v5X+tUqCUbB9OovmnfizwbNSiTQ5ZMYP0mxNcrHPZYYxuFPJJcKBr3+doTlN7/kvZ5SKY
-	T2dhU9Z+uqaH//YPO2KjxMFCrWhbZF4=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	b=EE8NEZF0nGToRi4i3LAaJ0QL03kMn7W6A1V5JGUQNAjFTD+oXSYrRBzUeAE0yiRW3iN85s
+	Ggd5SdVO94Mn7chvenKWJrlVZdS5sHQpX8Y0okwCEDDELzcEAJpbzt1wJBUjChjne8M7ij
+	68zAfVq5IYDLH9HTJ4gBvKIBhGd1slk=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4g7kvJ3jwcz7QYRR;
-	Sun, 03 May 2026 20:42:36 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 643CgR3p017591;
-	Sun, 3 May 2026 20:42:27 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4g7l2T2WtSz8Xs5J;
+	Sun, 03 May 2026 20:48:49 +0800 (CST)
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl2.zte.com.cn with SMTP id 643Cmeb4064627;
+	Sun, 3 May 2026 20:48:41 +0800 (+08)
 	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp04[null])
+Received: from mapi (xaxapp02[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Sun, 3 May 2026 20:42:29 +0800 (CST)
-X-Zmail-TransId: 2afb69f742b5f35-4cc0a
+	Sun, 3 May 2026 20:48:43 +0800 (CST)
+X-Zmail-TransId: 2afa69f7442bd62-5aa29
 X-Mailer: Zmail v1.0
-Message-ID: <20260503204229576-jholQsdeuUrbvCpv2PfI@zte.com.cn>
+Message-ID: <20260503204843889ik1YHe8LX_5N0Neyn0ner@zte.com.cn>
 In-Reply-To: <20260503203538194jFwVGloy43M1F3sQGaFt7@zte.com.cn>
 References: 20260503203538194jFwVGloy43M1F3sQGaFt7@zte.com.cn
-Date: Sun, 3 May 2026 20:42:29 +0800 (CST)
+Date: Sun, 3 May 2026 20:48:43 +0800 (CST)
 Mime-Version: 1.0
 From: <xu.xin16@zte.com.cn>
-To: <xu.xin16@zte.com.cn>, <akpm@linux-foundation.org>, <david@kernel.org>,
-        <ljs@kernel.org>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+        <hughd@google.com>
 Cc: <hughd@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <michel@lespinasse.org>
-Subject: =?UTF-8?B?W1BBVENIIHY0IDIvNV0gdG9vbHMvdGVzdGluZzogYWRkIHJtYXAgd2FsayBsYXRlbmN5IGJlbmNobWFyayBmb3LCoEtTTSwgYW5vbnltb3VzIGFuZCBmaWxlIHBhZ2Vz?=
+        <michel@lespinasse.org>, <xu.xin16@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHY0IDMvNV0ga3NtOiBhZGQgdm1fcGdvZmYgaW50byBrc21fcm1hcF9pdGVt?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 643CgR3p017591
+X-MAIL:mse-fl2.zte.com.cn 643Cmeb4064627
 X-TLS: YES
 X-SPF-DOMAIN: zte.com.cn
 X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
 X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Sun, 03 May 2026 20:42:36 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Sun, 03 May 2026 20:48:49 +0800
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69F742BC.000/4g7kvJ3jwcz7QYRR
+X-Fangmail-MID-QID: 69F74431.000/4g7l2T2WtSz8Xs5J
+X-Stat-Signature: cydg371uyss3hcg8ftcw3j1rx8cgjb9b
+X-Rspamd-Queue-Id: 2552E80008
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 03FCC40002
-X-Stat-Signature: n8ibqyofdu1nnoybpzfryaybzxf7td9k
-X-HE-Tag: 1777812160-173386
-X-HE-Meta: U2FsdGVkX18g+tvFE1vIJ7fN3b4LzoCfwpLlRFpFcxDCVRG3KHpCDam6JLPX8BvHMQu6GME9tfnB9Xu1FfE/hk+DkVgh55epoC+UxnCPVui2JJ0KT6vJrUIc2W6fBwv8j9sQuhWBlirofSXVfNsQZjlYqwPV+b9Kgr8PIHI/nMF6cUezo2vDl9PW+iZc/R/j4HID/QsyBK+CKbkbb6Sm3cVW+87vru7/7wUb3sJbeg5H9amuyuopcxzBf/J/mWb78qfhfbC2MgKNNOXqy9qzDQRqxJpHalWeh++jKCRotNn61oegOkRG+QZ11pllo2hWAUdnRF3RtQJjw8iy+6l+uWvh2PfrX4QXK+eAsOLNP4WTocj7TgHsNSNQ5xUNefctgehiloTrPClt4FFLh/yTz5jFk8elY+Tvo39DAed+EYBvdDHgxPmcFRBlnbW5sPl2E4CxYdCx9JTMUy3AY5iih99fKTp2EB6zdYZ0q0JqFXzOu5jM0W5WdYju0VYijYKpHW6QG6g2w9HWqdE3mB4y/hSvGanSCeY0spaIxT6U6jUVGK16HqOuMXdsnCJ49k1CzT15z1/OTxTw171PR0f9eCz+gZ9sReSLZ9LYWfud6RcfvZ8/OKhdHYWdbnDqQvgVR5amlz5tYNG5pIY+xUjF67rhykNW0Yy+kwFtx9lrz2PFP+J5+PTsUvMDdeL5XK0B1KtQWMCwGhYx8Hy6Zg4e28TgyzINTvkeh1d4RaEEnn/R4EYw9Toh/b+BpJUMrOmj73PLc1YwAOSu9KTdo0xIxRWoMftie0qgblOn4u88z+55mKsT33IPZojzl0MWmXLdvOWlm9jE0ab98y5JWrhp5b5J9Teg99eLzMcxRAMTSx/x4BU9Qzu9fBBqn1jJDnAI+D1D81+lYLwqHDIK7PU/OlguKYVOqusHxXac030pq7t/PhFiFM0tA3DxKp5DgCiy4wIJoShQaPtU+ic7r/V
- 9eCPf3Rv
- D7Rdyo95tpxwocJOrUqa80SYlkGL8hu+w12lMOkEAgqq+1IXC0ttTPfFlhNs7acgBZ0ykm0EiThJ4RmOEM4efsGnKxZ9MZIvtZr1TN7sgK5Jj6fk1qeeiWpMXEK06tl9Ho42tijHFmmTlDywKnns02kP3NjfSRrdKxhunyaZW1Ml05doXhahvHxzUCk3ZlpPz3N6lez7lSQ+nHEoosPrKVCnn88nLKKpdbMDMwA/0QR13t4ias/434vmKsXjG+igQtxtbxhf/vN261vuLMKev5bN9iWH/ysWGPfX1uCZnkJPMratuc8ZVgis3IxRo/Tvno6Vx3J6aVqUAMPcLjlPV/dANrQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777812531-302654
+X-HE-Meta: U2FsdGVkX1+Yp1GzR7bzw8T5lnsXrpaKh5d7inFvacl3OhUSjK8yRnq/c/ClnDq5IHcw8NzPAjygYzs6LQoCzN0OpTPe2rFn2wVNAJ+o4gcCHJHB3K157KaSdrbRr8DrYheKPbdPJhmO0fZaTls+aUxOCWRrT/5bf+JYZ7zGhubZFH/u2K9Vu7nqqDhxaPwVjIASk02eSxLdU15mI4p2XxIMRE9ThlbQJvROQ3ymRQBGVKJZ7jRu4AW9XHqbz6SyaDaVC7flogdex4/+HA7+9LeOV8YYkaWjhHcDo/c5/aubQPcqtiXoIbpArbkHKdqx/+hSDF9pIafrrLC15pYUxXnrGrrMs5H4IJ4aijKdn4fJzffmS1+K6nqJIu60kARoH7JTHwSR2VRIa9nir8G5Gy0lqQW27RlvGDcBEtczwdeQJRyTK0bjJmPGJ0kF1RFYr4o/Meq/Y2TA7S457YyZsSHtFhh+VfnPjkFuTe97s3mDN8Tlc199VCTJT9rdmbgyNhIotNeXpWAJGEC4sxS0qaghz0vBsJOFu2tk5kdN4haNHHsfbDuGDGV62eQIhrZcgSV7rPXVtffvH+z7gP0TmegJ17aP15CDtiIosTlz8v7nefCEHgV0cayYS6qyzxmgAJ7gMWIJrvfIvS5Z08Rs8AoemkCTnEQM/g9JepQA95wyTVi5WHDFh8n3GXCbqJXwRZQrcSVlTlBV0gT9JPOs9ozOAb2YJqbOWrF8q5n6eCHZXdMmqThl5Jrk/SzEPbprsgt/WF3n6s42gKx7ys+vfceorZ04hM8cOylXp1UiTDHtp+Ne+C+E2OrHK3aXICm4qlVKHnAk7fPOwmqRSHe1BiUW/J+QT6VUPIqzAPbZyNIw7ARqTdBVU5wIRXMngr687dC4zE2oPxNHS9KR63Ca5BzjiE9HDG1pEHmhi++9ku5VvztD2BMZo2KeMh2d9xVMyR9AWzaU8FzWtMz1Kpi
+ yCUWacNH
+ EcK5kXppctN9F9zpwGFEkQhyHE3zWAE7ry92TvAi3gV+ezp1IJDiQfw0NcrwKWZ9InNGPtqYy1SDe7ee3k37143+Y35gs/MOSA6afMhSs2pNnl6Y6125Rjq5jIVEkbq2NP3nzGQTFpMaMP0lAFAakRoAwTfbvWxIssJk61vg7d3SeAFL/g6PgEPEU9a1DHxZIaxn1qFrbKzMCJDuwjs4+DkYKsz5earzb0wy/wu18qSJaKhliwgsmJ2tIVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,605 +100,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: xu xin <xu.xin16@zte.com.cn>
+The reason for adding vm_pgoff to ksm_rmap_item has been discussed in previous
+mailing list threads [1][2]. The main purpose is to allow the KSM reverse mapping
+to obtain the original VMA's vm_pgoff, so that during anon_vma_tree travering, it
+can conditionally locate the VMAs and avoid scanning the entire address space
+[0, ULONG_MAX].
 
-When a physical page is shared among many VMAs (e.g., KSM merging or
-fork with COW), reverse mapping traversal (rmap_walk) can become a
-performance bottleneck. The cost of walking the stable_node->hlist and
-checking each VMA's page tables increases linearly with the number of
-sharers. KSM pages that are merged across many processes are especially
-vulnerable.
+To minimize the size impact of adding vm_pgoff to ksm_rmap_item as much as
+possible, a trick that David suggested is to use a UNION that groups the members
+related to the unstable tree together with the newly added vm_pgoff. The members
+that valids only when in unstable tree include oldchecksum and age information.
+However, the function should_skip_rmap_item() in the smart scanning needs slight
+modification, since this function still uses the age information even when the
+rmap_item is in a stable state (the page is not KSM), a situation that occurs
+during COW faults. After using union, the size is still 64 byte without increasing.
 
-Add a new benchmark that measures rmap_walk latency under controlled
-conditions. The test creates a large region (20,000 pages by default),
-optionally splits the VMA into many small VMAs by mprotect(PROT_READ)
-on every other page, then triggers rmap_walk via move_pages() (or mbind
-if NUMA is not available). The existing rmap_walk tracepoint
-(events/rmap/rmap_walk) is used to collect duration_ns for events
-with page_type=ksm, page_type=anon, and page_type=file.
+The setting and resetting of rmap_item->vm_pgoff are similar to rmap_item->anon_vma.
 
-Three separate test cases are run:
+[1] https://lore.kernel.org/all/adTPQSb-qSSHviJN@lucifer/
+[2] https://lore.kernel.org/all/202604091806051535BJWZ_FTtdIm3Snk24ei_@zte.com.cn/
 
-KSM pages: allocate an anonymous region, fill with identical data,
-mark MADV_MERGEABLE, wait for KSM to merge all pages (by polling
-/sys/kernel/mm/ksm/full_scans), then trigger migration.
-
-Anonymous pages: similar but without KSM merging.
-
-File pages: mmap a temporary file with shared mapping and fill with
-identical data.
-
-For each test, the program prints the number of captured events and
-the maximum / average latency in milliseconds.
-
-This benchmark helps developers evaluate optimizations in the reverse
-mapping code, such as limiting max_page_sharing or improving tree
-traversal efficiency.
-
-Usage (must be run as root):
-cd tools/testing/rmap/ && make
-sudo ./rmap_bench
-=== Testing KSM pages ===
-Triggering rmap_walk via move_pages...
-KSM rmap_walk latency:
-  Maximum duration: 705.12 ms (705119858 ns)
-  Average duration: 532.04 ms (532041586 ns)
-  Count: 4 events
-
-=== Testing anonymous pages ===
-Triggering rmap_walk via move_pages...
-Anonymous page rmap_walk latency:
-  Maximum duration: 0.07 ms (69329 ns)
-  Average duration: 0.05 ms (48287 ns)
-  Count: 2 events
-
-=== Testing file pages ===
-Triggering rmap_walk via move_pages...
-File page rmap_walk latency:
-  Maximum duration: 0.07 ms (67090 ns)
-  Average duration: 0.03 ms (30082 ns)
-  Count: 4 events
-
-By the way, update the section of REVERSE MAPPING in MAINTAINERS.
-
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: xu xin <xu.xin16@zte.com.cn>
 ---
- MAINTAINERS                         |   3 +
- tools/testing/rmap/Makefile         |  11 +
- tools/testing/rmap/rmap_benchmark.c | 488 ++++++++++++++++++++++++++++
- 3 files changed, 502 insertions(+)
- create mode 100644 tools/testing/rmap/Makefile
- create mode 100644 tools/testing/rmap/rmap_benchmark.c
+ mm/ksm.c | 41 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 34 insertions(+), 7 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8e7268d2f6ec..01cc34cc83a2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17006,11 +17006,14 @@ R:	Liam R. Howlett <liam@infradead.org>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Harry Yoo <harry@kernel.org>
- R:	Jann Horn <jannh@google.com>
-+R:	Xu Xin <xu.xin16@zte.com.cn>
- L:	linux-mm@kvack.org
- S:	Maintained
- F:	include/linux/rmap.h
-+F:	include/trace/events/rmap.h
- F:	mm/page_vma_mapped.c
- F:	mm/rmap.c
-+F:	tools/testing/rmap/rmap_benchmark.c
- F:	tools/testing/selftests/mm/rmap.c
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 7d5b76478f0b..0299a53ba7c9 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -195,22 +195,28 @@ struct ksm_stable_node {
+  * @node: rb node of this rmap_item in the unstable tree
+  * @head: pointer to stable_node heading this list in the stable tree
+  * @hlist: link into hlist of rmap_items hanging off that stable_node
+- * @age: number of scan iterations since creation
+- * @remaining_skips: how many scans to skip
++ * @age: number of scan iterations since creation (unstable node)
++ * @remaining_skips: how many scans to skip (unstable node)
++ * @vm_pgoff: vm_pgoff into the original VMA where the page is mapped (stable node)
+  */
+ struct ksm_rmap_item {
+ 	struct ksm_rmap_item *rmap_list;
+ 	union {
+-		struct anon_vma *anon_vma;	/* when stable */
++		struct anon_vma *anon_vma;	/* for reverse mapping, when stable */
+ #ifdef CONFIG_NUMA
+ 		int nid;		/* when node of unstable tree */
+ #endif
+ 	};
+ 	struct mm_struct *mm;
+ 	unsigned long address;		/* + low bits used for flags below */
+-	unsigned int oldchecksum;	/* when unstable */
+-	rmap_age_t age;
+-	rmap_age_t remaining_skips;
++	union {
++		struct {
++			unsigned int oldchecksum;
++			rmap_age_t age;
++			rmap_age_t remaining_skips;
++		};			/* when unstable */
++		unsigned long vm_pgoff;		/* for reverse mapping, when stable */
++	};
+ 	union {
+ 		struct rb_node node;	/* when node of unstable tree */
+ 		struct {		/* when listed from stable tree */
+@@ -776,6 +782,10 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
+ 	return vma;
+ }
 
- MEMORY MANAGEMENT - SECRETMEM
-diff --git a/tools/testing/rmap/Makefile b/tools/testing/rmap/Makefile
-new file mode 100644
-index 000000000000..200bd364cafb
---- /dev/null
-+++ b/tools/testing/rmap/Makefile
-@@ -0,0 +1,11 @@
-+# SPDX-License-Identifier: GPL-2.0
-+CC := $(CROSS_COMPILE)gcc
-+
-+PROGS := rmap_benchmark
-+
-+all: $(PROGS)
-+
-+rmap_benchmark: LDLIBS = -lnuma
-+
-+clean:
-+	rm -fr $(PROGS)
-diff --git a/tools/testing/rmap/rmap_benchmark.c b/tools/testing/rmap/rmap_benchmark.c
-new file mode 100644
-index 000000000000..5bbeb26fb2b8
---- /dev/null
-+++ b/tools/testing/rmap/rmap_benchmark.c
-@@ -0,0 +1,488 @@
-+// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Reverse mapping latency test for KSM, anonymous and file pages
-+ *
-+ * This program creates a large number of pages (KSM merged, normal anonymous,
-+ * or file mapped), splits the VMA into many small VMAs via mprotect,
-+ * triggers rmap_walk by move_pages(), and collects latency data from the
-+ * tracepoint 'rmap_walk'.
-+ *
-+ * Usage: must be run as root (to access tracefs and KSM sysfs).
-+ *
-+ * Copyright 2026, ZTE Corp.
-+ *
-+ * Author(s): Xu Xin <xu.xin16@zte.com.cn>
++ * break_cow: actively break the write-protect of the VMA. This is calld when
++ * rmap_item has not yet become stable, but page has been merged.
 + */
-+
-+#define _GNU_SOURCE
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <sched.h>
-+#include <sys/mman.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+#include <sys/wait.h>
-+#include <sys/mount.h>
-+#include <numaif.h>
-+#include <numa.h>
-+#include <time.h>
-+#include <ctype.h>
-+
-+/* Page size and test parameters */
-+#define PAGE_SIZE		4096
-+#define NR_PAGES		20000	/* Number of virtual pages */
-+#define TEST_PATTERN		0xaa
-+
-+/* KSM sysfs paths */
-+#define KSM_RUN_PATH		"/sys/kernel/mm/ksm/run"
-+#define KSM_SLEEP_MS_PATH	"/sys/kernel/mm/ksm/sleep_millisecs"
-+#define KSM_PAGES_TO_SCAN	"/sys/kernel/mm/ksm/pages_to_scan"
-+#define KSM_FULL_SCANS_PATH	"/sys/kernel/mm/ksm/full_scans"
-+
-+/* Tracepoint control paths */
-+#define TRACE_ENABLE		"/sys/kernel/tracing/events/rmap/rmap_walk/enable"
-+#define TRACE_FILE		"/sys/kernel/tracing/trace"
-+
-+/*
-+ * Page types for rmap_walk tracepoint filtering
-+ */
-+enum page_type {
-+	PAGE_TYPE_KSM,
-+	PAGE_TYPE_ANON,
-+	PAGE_TYPE_FILE,
-+};
-+
-+static const char *page_type_str(enum page_type type)
-+{
-+	switch (type) {
-+	case PAGE_TYPE_KSM:	return "ksm";
-+	case PAGE_TYPE_ANON:	return "anon";
-+	case PAGE_TYPE_FILE:	return "file";
-+	default:		return "unknown";
-+	}
-+}
-+
-+/*
-+ * Write a string to a sysfs file.
-+ */
-+static int write_sys(const char *path, const char *value)
-+{
-+	int fd;
-+	ssize_t ret;
-+
-+	fd = open(path, O_WRONLY);
-+	if (fd < 0) {
-+		fprintf(stderr, "open %s failed: %s\n", path, strerror(errno));
-+		return -1;
-+	}
-+	ret = write(fd, value, strlen(value));
-+	close(fd);
-+	if (ret != (ssize_t)strlen(value)) {
-+		fprintf(stderr, "write %s failed: %s\n", path, strerror(errno));
-+		return -1;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * Read an integer from a sysfs file.
-+ */
-+static int read_sys_int(const char *path)
-+{
-+	FILE *fp;
-+	int val;
-+
-+	fp = fopen(path, "r");
-+	if (!fp) {
-+		fprintf(stderr, "fopen %s failed: %s\n", path, strerror(errno));
-+		return -1;
-+	}
-+	if (fscanf(fp, "%d", &val) != 1) {
-+		fprintf(stderr, "fscanf %s failed\n", path);
-+		fclose(fp);
-+		return -1;
-+	}
-+	fclose(fp);
-+	return val;
-+}
-+
-+/*
-+ * Get KSM full scan count.
-+ */
-+static int ksm_get_full_scans(void)
-+{
-+	return read_sys_int(KSM_FULL_SCANS_PATH);
-+}
-+
-+/*
-+ * Wait for KSM to complete at least two full scans, which ensures that
-+ * merging has had a chance to happen.
-+ */
-+static void wait_ksm_merge(void)
-+{
-+	int start_scans, end_scans;
-+	int max_wait = 60;
-+	int waited = 0;
-+
-+	start_scans = ksm_get_full_scans();
-+	if (start_scans < 0) {
-+		fprintf(stderr, "Failed to read initial full_scans\n");
-+		return;
-+	}
-+
-+	/* Make sure KSM is running */
-+	if (write_sys(KSM_RUN_PATH, "1") < 0) {
-+		fprintf(stderr, "Failed to start KSM\n");
-+		return;
-+	}
-+
-+	do {
-+		sleep(1);
-+		end_scans = ksm_get_full_scans();
-+		if (end_scans < 0) {
-+			fprintf(stderr, "Failed to read full_scans\n");
-+			return;
-+		}
-+		waited++;
-+		if (waited > max_wait) {
-+			fprintf(stderr, "Warning: KSM full_scans not increased "
-+				"after %d seconds\n", max_wait);
-+			break;
-+		}
-+	} while (end_scans < start_scans + 2);
-+}
-+
-+/*
-+ * Enable the rmap_walk tracepoint and clear the trace buffer.
-+ */
-+static void enable_tracepoint(void)
-+{
-+	int fd;
-+	struct stat st;
-+
-+	/* Check if tracefs is already accessible */
-+	if (stat("/sys/kernel/tracing/trace", &st) != 0) {
-+		/* Try to mount tracefs */
-+		if (mount("tracefs", "/sys/kernel/tracing", "tracefs", 0, NULL) != 0) {
-+			fprintf(stderr, "Warning: Failed to mount tracefs: %s\n",
-+				strerror(errno));
-+			/* Continue anyway, maybe it's already mounted elsewhere */
-+		}
-+	}
-+
-+	if (write_sys(TRACE_ENABLE, "1") < 0)
-+		exit(1);
-+	/* Truncate the trace file to clear old data */
-+	fd = open(TRACE_FILE, O_WRONLY | O_TRUNC);
-+	if (fd < 0) {
-+		perror("open " TRACE_FILE);
-+		exit(1);
-+	}
-+	close(fd);
-+}
-+
-+/*
-+ * Disable the rmap_walk tracepoint.
-+ */
-+static void disable_tracepoint(void)
-+{
-+	write_sys(TRACE_ENABLE, "0");
-+}
-+
-+/*
-+ * Parse the trace file and collect duration statistics for a given page_type.
-+ * Returns 0 on success, -1 if no events found.
-+ */
-+static int parse_trace_and_print(enum page_type type, unsigned long long *max_ns,
-+				 unsigned long long *avg_ns, int *count)
-+{
-+	FILE *fp;
-+	char line[1024];
-+	unsigned long long duration_ns;
-+	unsigned long long max_val = 0;
-+	unsigned long long sum = 0;
-+	int cnt = 0;
-+	const char *type_str = page_type_str(type);
-+	char search_str[64];
-+
-+	snprintf(search_str, sizeof(search_str), "page_type=%s", type_str);
-+
-+	fp = fopen(TRACE_FILE, "r");
-+	if (!fp) {
-+		perror("fopen " TRACE_FILE);
-+		return -1;
-+	}
-+
-+	while (fgets(line, sizeof(line), fp)) {
-+		char *dur = strstr(line, "duration_ns=");
-+		char *type_match = strstr(line, search_str);
-+
-+		if (dur && type_match) {
-+			char *end;
-+
-+			dur += 12;	/* skip "duration_ns=" */
-+			duration_ns = strtoull(dur, &end, 10);
-+			if (end != dur) {
-+				if (duration_ns > max_val)
-+					max_val = duration_ns;
-+				sum += duration_ns;
-+				cnt++;
-+			}
-+		}
-+	}
-+	fclose(fp);
-+
-+	if (cnt == 0) {
-+		printf("No rmap_walk events with page_type=%s found.\n", type_str);
-+		return -1;
-+	}
-+
-+	*max_ns = max_val;
-+	*avg_ns = sum / cnt;
-+	*count = cnt;
-+	return 0;
-+}
-+
-+/*
-+ * Trigger rmap_walk by moving a single page.
-+ * region: pointer to the page (any page in the mapped region).
-+ * The function will try to move that page to a different NUMA node.
-+ */
-+static void trigger_rmap_walk(void *region)
-+{
-+	int ret, status, cur_node, target_node;
-+	void *pages[1];
-+	int nodes[1];
-+
-+	printf("Triggering rmap_walk via move_pages...\n");
-+
-+	ret = move_pages(0, 1, (void **)&region, NULL, &status, MPOL_MF_MOVE_ALL);
-+	if (ret != 0) {
-+		perror("Failed to get original numa");
-+		exit(1);
-+	}
-+	cur_node = status;
-+
-+	for (target_node = 0; target_node <= numa_max_node(); target_node++) {
-+		if (numa_bitmask_isbitset(numa_all_nodes_ptr, target_node) &&
-+		    target_node != cur_node)
-+			break;
-+	}
-+	if (target_node > numa_max_node()) {
-+		printf("Couldn't find available numa node for testing\n");
-+		exit(1);
-+	}
-+
-+	pages[0] = region;
-+	nodes[0] = target_node;
-+
+ static void break_cow(struct ksm_rmap_item *rmap_item)
+ {
+ 	struct mm_struct *mm = rmap_item->mm;
+@@ -787,6 +797,8 @@ static void break_cow(struct ksm_rmap_item *rmap_item)
+ 	 * to undo, we also need to drop a reference to the anon_vma.
+ 	 */
+ 	put_anon_vma(rmap_item->anon_vma);
++	/* Reset pgoff that overlays age-related information. (still unstable) */
++	rmap_item->vm_pgoff = 0;
+
+ 	mmap_read_lock(mm);
+ 	vma = find_mergeable_vma(mm, addr);
+@@ -899,6 +911,8 @@ static void remove_node_from_stable_tree(struct ksm_stable_node *stable_node)
+ 		VM_BUG_ON(stable_node->rmap_hlist_len <= 0);
+ 		stable_node->rmap_hlist_len--;
+ 		put_anon_vma(rmap_item->anon_vma);
++		/* Reset pgoff that overlays age-related information. */
++		rmap_item->vm_pgoff = 0;
+ 		rmap_item->address &= PAGE_MASK;
+ 		cond_resched();
+ 	}
+@@ -1052,6 +1066,8 @@ static void remove_rmap_item_from_tree(struct ksm_rmap_item *rmap_item)
+ 		stable_node->rmap_hlist_len--;
+
+ 		put_anon_vma(rmap_item->anon_vma);
++		/* Reset pgoff that overlays age-related information. */
++		rmap_item->vm_pgoff = 0;
+ 		rmap_item->head = NULL;
+ 		rmap_item->address &= PAGE_MASK;
+
+@@ -1598,8 +1614,15 @@ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
+ 	/* Unstable nid is in union with stable anon_vma: remove first */
+ 	remove_rmap_item_from_tree(rmap_item);
+
+-	/* Must get reference to anon_vma while still holding mmap_lock */
 +	/*
-+	 * Note: We ignore the return value when ret >= 0, since there's probability
-+	 * that ksmd's ksm_get_folio collides with do_move_page(), which cause
-+	 * __migrate_folio failed due to the check "folio_ref_count(src) !=
-+	 * expected_count".
++	 * Must get reference to anon_vma while still holding mmap_lock,
++	 * We set these two members of stable node here instead of
++	 * stable_tree_append(), maybe because we don't want to hold
++	 * mmap_read_lock again? Here mmap_read_lock is already held to
++	 * find_mergeable_vma before merging.
 +	 */
-+	ret = move_pages(0, 1, pages, nodes, &status, MPOL_MF_MOVE_ALL);
-+	if (ret < 0)
-+		perror("move_pages");
-+}
+ 	rmap_item->anon_vma = vma->anon_vma;
++	rmap_item->vm_pgoff = vma->vm_pgoff;
+ 	get_anon_vma(vma->anon_vma);
+ out:
+ 	mmap_read_unlock(mm);
+@@ -2458,6 +2481,10 @@ static bool should_skip_rmap_item(struct folio *folio,
+ 	if (folio_test_ksm(folio))
+ 		return false;
+
++	/* There is no age information in stable-tree nodes. */
++	if (rmap_item->address & STABLE_FLAG)
++		return false;
 +
-+/*
-+ * Split a VMA into many small VMAs by changing protection on every other page.
-+ * This increases the number of anon_vma_chain entries and makes rmap_walk slower.
-+ */
-+static void split_vma_with_mprotect(void *addr, size_t size)
-+{
-+	for (size_t i = 0; i < size / PAGE_SIZE; i++) {
-+		if (i % 2 == 0) {
-+			if (mprotect(addr + i * PAGE_SIZE, PAGE_SIZE, PROT_READ) < 0) {
-+				if (errno != EACCES)
-+					perror("mprotect");
-+			}
-+		}
-+	}
-+}
-+
-+/*
-+ * Test for KSM pages.
-+ */
-+static void test_ksm(void)
-+{
-+	void *region;
-+	size_t size = NR_PAGES * PAGE_SIZE;
-+	unsigned long long max_ns, avg_ns;
-+	int count;
-+
-+	printf("\n=== Testing KSM pages ===\n");
-+
-+	/* Stop KSM and set aggressive scan parameters */
-+	if (write_sys(KSM_RUN_PATH, "2") < 0)
-+		exit(1);
-+	if (write_sys(KSM_SLEEP_MS_PATH, "0") < 0 ||
-+	    write_sys(KSM_PAGES_TO_SCAN, "10000") < 0)
-+		exit(1);
-+
-+	region = mmap(NULL, size, PROT_READ | PROT_WRITE,
-+		      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (region == MAP_FAILED) {
-+		perror("mmap for KSM");
-+		exit(1);
-+	}
-+	memset(region, TEST_PATTERN, size);
-+
-+	if (madvise(region, size, MADV_MERGEABLE) != 0) {
-+		perror("madvise MADV_MERGEABLE");
-+		munmap(region, size);
-+		exit(1);
-+	}
-+
-+	/* Start KSM scanner */
-+	if (write_sys(KSM_RUN_PATH, "1") < 0) {
-+		munmap(region, size);
-+		exit(1);
-+	}
-+
-+	split_vma_with_mprotect(region, size);
-+
-+	/* Wait full merging */
-+	wait_ksm_merge();
-+
-+	enable_tracepoint();
-+	/* Move the page at offset PAGE_SIZE (any page is fine) */
-+	trigger_rmap_walk(region + PAGE_SIZE);
-+	usleep(100000);		/* allow trace to be written */
-+	disable_tracepoint();
-+
-+	if (parse_trace_and_print(PAGE_TYPE_KSM, &max_ns, &avg_ns, &count) == 0) {
-+		printf("KSM rmap_walk latency:\n");
-+		printf("  Maximum duration: %.2f ms (%.0f ns)\n",
-+		       max_ns / 1000000.0, (double)max_ns);
-+		printf("  Average duration: %.2f ms (%.0f ns)\n",
-+		       avg_ns / 1000000.0, (double)avg_ns);
-+		printf("  Count: %d events\n", count);
-+	}
-+
-+	munmap(region, size);
-+	write_sys(KSM_RUN_PATH, "2");	/* stop KSM */
-+}
-+
-+/*
-+ * Test for normal anonymous pages.
-+ */
-+static void test_anon(void)
-+{
-+	void *region;
-+	size_t size = NR_PAGES * PAGE_SIZE;
-+	unsigned long long max_ns, avg_ns;
-+	int count;
-+
-+	printf("\n=== Testing anonymous pages ===\n");
-+
-+	region = mmap(NULL, size, PROT_READ | PROT_WRITE,
-+		      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (region == MAP_FAILED) {
-+		perror("mmap for anonymous");
-+		exit(1);
-+	}
-+	memset(region, TEST_PATTERN, size);
-+
-+	split_vma_with_mprotect(region, size);
-+
-+	enable_tracepoint();
-+	trigger_rmap_walk(region + PAGE_SIZE);
-+	usleep(100000);
-+	disable_tracepoint();
-+
-+	if (parse_trace_and_print(PAGE_TYPE_ANON, &max_ns, &avg_ns, &count) == 0) {
-+		printf("Anonymous page rmap_walk latency:\n");
-+		printf("  Maximum duration: %.2f ms (%.0f ns)\n",
-+		       max_ns / 1000000.0, (double)max_ns);
-+		printf("  Average duration: %.2f ms (%.0f ns)\n",
-+		       avg_ns / 1000000.0, (double)avg_ns);
-+		printf("  Count: %d events\n", count);
-+	}
-+
-+	munmap(region, size);
-+}
-+
-+/*
-+ * Test for file-backed pages (mmap of a temporary file).
-+ */
-+static void test_file(void)
-+{
-+	void *region;
-+	size_t size = NR_PAGES * PAGE_SIZE;
-+	int fd;
-+	char filename[] = "/tmp/rmap_test_file_XXXXXX";
-+
-+	printf("\n=== Testing file pages ===\n");
-+
-+	fd = mkstemp(filename);
-+	if (fd < 0) {
-+		perror("mkstemp");
-+		exit(1);
-+	}
-+	if (ftruncate(fd, size) < 0) {
-+		perror("ftruncate");
-+		unlink(filename);
-+		close(fd);
-+		exit(1);
-+	}
-+
-+	region = mmap(NULL, size, PROT_READ | PROT_WRITE,
-+		      MAP_SHARED, fd, 0);
-+	if (region == MAP_FAILED) {
-+		perror("mmap for file");
-+		unlink(filename);
-+		close(fd);
-+		exit(1);
-+	}
-+	memset(region, TEST_PATTERN, size);
-+
-+	split_vma_with_mprotect(region, size);
-+
-+	enable_tracepoint();
-+	trigger_rmap_walk(region + PAGE_SIZE);
-+	usleep(100000);
-+	disable_tracepoint();
-+
-+	unsigned long long max_ns, avg_ns;
-+	int count;
-+
-+	if (parse_trace_and_print(PAGE_TYPE_FILE, &max_ns, &avg_ns, &count) == 0) {
-+		printf("File page rmap_walk latency:\n");
-+		printf("  Maximum duration: %.2f ms (%.0f ns)\n",
-+		       max_ns / 1000000.0, (double)max_ns);
-+		printf("  Average duration: %.2f ms (%.0f ns)\n",
-+		       avg_ns / 1000000.0, (double)avg_ns);
-+		printf("  Count: %d events\n", count);
-+	}
-+
-+	munmap(region, size);
-+	unlink(filename);
-+	close(fd);
-+}
-+
-+int main(void)
-+{
-+	/* Need root for tracefs and KSM sysfs */
-+	if (geteuid() != 0) {
-+		fprintf(stderr, "This program must be run as root.\n");
-+		exit(1);
-+	}
-+
-+	if (numa_available() < 0)
-+		printf("Warning: NUMA not available, move_pages may not work.\n");
-+
-+	/* Run three tests */
-+	test_ksm();
-+	test_anon();
-+	test_file();
-+
-+	return 0;
-+}
-+
+ 	age = rmap_item->age;
+ 	if (age != U8_MAX)
+ 		rmap_item->age++;
 -- 
 2.25.1
 
