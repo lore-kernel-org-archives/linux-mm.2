@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37407CD3427
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 20:26:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D06CD342F
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 20:32:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D7BC6B0088; Mon,  4 May 2026 16:26:10 -0400 (EDT)
+	id 608F86B0088; Mon,  4 May 2026 16:32:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 588656B008A; Mon,  4 May 2026 16:26:10 -0400 (EDT)
+	id 5B99A6B008A; Mon,  4 May 2026 16:32:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49F566B008C; Mon,  4 May 2026 16:26:10 -0400 (EDT)
+	id 4A8986B008C; Mon,  4 May 2026 16:32:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EC2F6B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:26:10 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB048140208
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:26:09 +0000 (UTC)
-X-FDA: 84730869258.18.2A37DC9
-Received: from embla.dev.snart.me (embla.dev.snart.me [54.252.183.203])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D60B04000C
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:26:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=reject) header.from=dev.snart.me;
-	spf=pass (imf12.hostedemail.com: domain of dxdt@dev.snart.me designates 54.252.183.203 as permitted sender) smtp.mailfrom=dxdt@dev.snart.me
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 352436B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:32:46 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6D281402B3
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:32:45 +0000 (UTC)
+X-FDA: 84730885890.27.154B94D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 219EE80005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:32:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KSvaHFxL;
+	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777926368;
+	s=arc-20220608; t=1777926764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5wLVemXqI5XtogvSMfyxXKUc5BMAPV85CSbBsm7nmCU=;
-	b=5SSLtI14KPqjjddY3dsGwH1U9oA8B9j5AThdCdkTE4fM+27V7twQPPlfZsvmLpKsKH5AFk
-	Fwgaw9yF2PiryJkOv2jSPDjgK7XWuCU5ZewEznaJvTtmMFkGZCHk3TZ+cp9O+7hfR2MrqV
-	JBZOSkDKFMXf5AW3/l+ueOysrQkl6/E=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=V8IJ0XLiNUSdII4ZYGeMeYsOXFzkpTWAB5nfUHMUTJQ=;
+	b=Wu47A6jQHEXePazA/1Vq2OmROJWxXE6EeH5o+OMrZRHngr4wR4g5K1dYu+efSCEFVE2DsG
+	lhc6+JVhCMZpthiikWSqrzKxk+SoeyrIivqxNBwkBxENdJEZN8PNmHe8rSOYh3u6AcUi3m
+	LseqyKZZY63Lqvgk04Sjy/MOSSQIG1s=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=reject) header.from=dev.snart.me;
-	spf=pass (imf12.hostedemail.com: domain of dxdt@dev.snart.me designates 54.252.183.203 as permitted sender) smtp.mailfrom=dxdt@dev.snart.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777926368; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KSvaHFxL;
+	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777926764; a=rsa-sha256;
 	cv=none;
-	b=e0tJ4R7weiEs6QxUwiEiVQJJxT6gnV4usMTWJrscToQLn7LidexLIPNgVuRoMzFZCwJgTO
-	OL6vUVBu2P/G22t1iKPZ6opM5YMUaj9wjmrDDLEftfqQvAwCzUIDw97fO7AllO2XQ9fFgz
-	eQP7I2iCn/ycnpLL8X39+5H+whaHPTg=
-Received: from embla.dev.snart.me (localhost [IPv6:::1])
-	by embla.dev.snart.me (Postfix) with ESMTP id 683EC1D490;
-	Mon,  4 May 2026 20:26:04 +0000 (UTC)
-Received: from [192.168.1.18] ([182.226.25.243])
-	by embla.dev.snart.me with ESMTPSA
-	id lSeiCNwA+WnyJwEA8KYfjw
-	(envelope-from <dxdt@dev.snart.me>); Mon, 04 May 2026 20:26:04 +0000
-Content-Type: multipart/mixed; boundary="------------SgzrhKw02r9lKy3Uyqq9E2Ky"
-Message-ID: <13bb1c13-98b6-4a4a-b03d-ba0f88680f1e@dev.snart.me>
-Date: Tue, 5 May 2026 05:26:03 +0900
+	b=D1kIDZYoeu92wxIBdjs1q/8hOqqAHgGH02/af+aMpbvkkMHzkJJEcZ2RHWIYrcAX6ZjDf/
+	LVT/kYJoavzYYeFRko5FLYdnbUSXJMcria1Pwn9zFHy6OXWJYl6MLzpmOI6dBM2cBfpMB1
+	OhZXlUBghcp3tI7eJ0LqeqWrv1/DGlw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=V8IJ0XLiNUSdII4ZYGeMeYsOXFzkpTWAB5nfUHMUTJQ=; b=KSvaHFxLwR6VTX9keDbXdE2hDJ
+	LcU/HmUI1j+39WRIZKFG8wnm7lYCbZmxzflG8arBNkzQHxVjqaJ8VgIwfIn2g6l4XNjvHjbaLUJSi
+	OySLEt8kXA+JbNl1MrRg8l6MwhlN5+3PUiKgbtNmIV9NiegVg2g2dddWmyKbYVd4LaSpss9pevlU1
+	MugUXUuMYap1Me1DgPuj4KgL/rFPjgTeN3zwtPNAQple3ee3QIU4MmuyTUTdmkXaU2+IJsE3SeJ3/
+	aO39NHoGMkR9bM7niMlhyYbgRb1vX+z9o3NauZ1GRnUDAFOsW6K5yYOa2oA+wdWXGezneRwWUWxlt
+	ixg8n/5w==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wJzy3-00000001TtN-0mDK;
+	Mon, 04 May 2026 20:32:39 +0000
+Date: Mon, 4 May 2026 21:32:38 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Wei-Lin Chang <weilin.chang@arm.com>
+Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH 1/2] Documentation: maple_tree: Point out constraint when
+ using xa_{mk, to}_value
+Message-ID: <afkCZkHcn58S3GLD@casper.infradead.org>
+References: <20260504165746.1422057-1-weilin.chang@arm.com>
+ <20260504165746.1422057-2-weilin.chang@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Timber <dxdt@dev.snart.me>
-Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
-To: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
-Cc: linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- syzkaller-bugs@googlegroups.com
-References: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
-Content-Language: en-US, ko
-Autocrypt: addr=dxdt@dev.snart.me; keydata=
- xjMEYmJg1hYJKwYBBAHaRw8BAQdAf5E+ri1XLtjqYbZdHOyc8oS+1/XJ5bSlbx5WHXmVBZzN
- IERhdmlkIFRpbWJlciA8ZHhkdEBkZXYuc25hcnQubWU+wpQEExYKADwWIQQn/Jn96EMUaIoF
- X+T/ldyyrZpWaAUCYmJg1gIbAwULCQgHAgMiAgEGFQoJCAsCBBYCAwECHgcCF4AACgkQ/5Xc
- sq2aVmjJZwD8COjPlUwccrlRvbNQ6f87DWchtYO0o8W2DNRM3RLps0EA/jEhIbRV6AsyC8jr
- 30Ut3aJ3/mO/6G4sLj7OvkEEBH0MzjgEYmJg1hIKKwYBBAGXVQEFAQEHQFpgtIgaByv9lIEY
- EmpavMO0pYjtu7TMJynwdnGYkN9LAwEIB8J4BBgWCgAgFiEEJ/yZ/ehDFGiKBV/k/5Xcsq2a
- VmgFAmJiYNYCGwwACgkQ/5Xcsq2aVmhFCwEA0kM9VyYB4bLCM7+SuXUUH+5Ec99Nj4RXxFad
- Key9GuwA/2BZK6bNyrLSfEk2JDRoskqf7OIL0wa6JOD5SrBnMe8E
-In-Reply-To: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260504165746.1422057-2-weilin.chang@arm.com>
+X-Stat-Signature: 41jnj53rxfcyzh9d4bgmawarmo9hgw5z
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 219EE80005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D60B04000C
-X-Stat-Signature: rynd9uhz6m9zrjz8p3zto49xmdtoe8pp
-X-HE-Tag: 1777926367-911464
-X-HE-Meta: U2FsdGVkX18Imyfpbwa+bzzTpBZbFuZtzgipn76A952THc55LY02Hlx3Mn6A7vS3xIv5PRQQ1OHdYfWF5LIXuPYGa7NOywy2DDRYkyFCKvmgbEZhzUND5FVyxYXjZRam37BeJgSouAUhh9agrfdVhtymKzUIQgMHd9h0LP0BoE3O0VJvw4MR0Oq9O1JyFXuCQQ2XtVrt/osFuRiM1mi7sd8Zz+gNG67frtp9rn1HAI3fAcb8ZJs5NirONUVTAMWJLNkT5yP8T1BwtZAn2q4J0P8jcLqKOCxxrDcmKdXYEqP6I3Yj8haM/SwuCQdNf0enYstIEo7FjINYVf0C2mkpGw128pxug50Cwjkj4vBK/naahuk+KiFCFEPElk8zmCaHVgpahNlPKyvkQfZAflCvR60wSixUCTUaDnTU5mWTTopUR2pnv73iWw9AfcIeRR4ikZFg19WWu5yc0CwVbYxMQDKcBiUwZaHhgySdA5NGaMxeBs36+2XGbBp//5ii1CfZQTYA/q8J9hSZKVhrzp9HIn+ngOXGC408bdQdFGm3ztYJHO44QtlREHhP564WhoWgbgxx7Kjb4H9ExW1zmOQaDsdIh5QG9EI9V8xeVL/vgK5LJ+UBKaqRoYqpmMofz2aflxvj3dJeq6haIAYUXjSMs9BDrCgZ3EacCko1IuyzZcIdX2sYjzacdlYgF7RquXm3k4V59SE8E6tUbwXEeNg2/tQfbVFmM2z+XA2tnIbfHww77OW/w3cAKtQHQim11A4WZEfsY+4Kc/dSB3ByNq4AswofU1mFc4AL+nNGLSIaML7tGm3fgnn3xS/7VFM3n/AaI7B13hfzIfJx9B7HqXHKCG4GJJ91y4ijotQxTw3lrD6LXGrPQtZebfIyyfVK4maN69ygu1t4qX9EAmPYEXsp1/ziJYbvIxrDQp0PNBEcFSlpbHhx3sVt71KyB+bnXiUaY8+MVuJUQuiPluAhzR0
- wovmQ6jm
- MZxObcdPhc9A2ciqdxuRCy4fV2XcUbfTasLim6k06QOK4d9oMbtUzWw8H1iDsvydIXUdtmmQIEN9pa+4LW33Fbsrx0hjJb20kiL4W2Ko+ru7EpmegfL2tfPaSk10kBSxENMwdjdbdGmc9ZMSEoHjncDvEoJY0fQyKI/gTeEEU3ApXE2/l31S9Nizg0gyHZfwxee2k0yC1SmEvzE2ykx1Fk/PTG49zU+jvC2O/JLwc6z/RXC26nkN47WutWnHp2CCUFrQSczV4EVwVHynw3im6zReUpbH5jwZBoPlJnZOHnHCggmyzSFG9U9lFEWPukclRp5OpBjyJMOWVeonqwqs02LQ7+9UzaKCddblsxR4S6lDnObsZsY8dTUHzWMtT3l498I0Fz/ccmkZPM7fo1Umqvax9k8ZVxlNnk8z1gMrD0KEYhzsGoAk02FaS/zbyfbr0k9kdkCodPSJdUY5+PLVV7skwk1ofXQSRYnNDGFF1e2LwxE+pAT5kT8UTChbcbVsNIyp0waC8ul6/KiuXtCoShPo2793E9DMY7jqT18n67teFEiktzdI2j81k7TnjUCHRqbhY87hz1a0lLuQKUifwb9dtMm5Uj1zsH2nsiYf5lQNYS6vJCCl3G8RtGzHde7goHyuZFA3lAMPiGCH9XffFP3mvqTEzktF43a52bslsVMiRyupD8/+OMVMgA+YdzIzRszWQnpNxt3fIfdICpvfRxabd7XGAaCfRZbxKUdDQMahAXB5qRkQfgb7gMq9NFOZNJQTV+wRpqFPcQrblVr5vz5prL5F7vEObxpruZtumNKpfnmvro7r3oXD2yw==
+X-HE-Tag: 1777926762-237763
+X-HE-Meta: U2FsdGVkX1/JjQKvqDBMZznjSRAXP0nu5pPMqJRbzSAZm8nv4mKP4M1vkTiNF0rsWglQPQ7l67FOVWiBDNQUBwwAolI5KsR/db7Z8rlYxEG0KI8dawTkT0jkrzQ/cjWpIa79EVoB/tH3tRwiM6QGlYj9wVH2BGyiceC8nFBjxojMeG2xGpr+y6IMbrHBKhH5KsfGaO9pGf/KiTjJgiBKkWQNESbS5uZOA1NAxWoVqPpXMxZyQknGCWzcU51IdcGrUpoDDOU3pveUMXWmpRYKgIA7sWrdzM+y4DdS4XvLut0YC0zXdW+HyOR3zKyVk3owERGpH7cfaIS6mTYYRcDQSdVLcZMkR8MwSJZZgunLX+sp6qM0JhKGjm7m68AjPvTyOBETr4THj0BJ9uUGgZlDcoqiO3ZR3XcFrY5H7J5fwiG3twQsR6dNHm0fyH7g/QNIrsTm4GZlTyvHynBh405HCyLDmnHexeIDsGshRklLu6U7yhbImMvBXmIIjjC4UGOr8+R5THU5CGRxh4nmJeUdxEwX23ZxoCZKiMaGsfvIom5/foKX8nzoUEtNtfKjJUx0lowjSZZLtlQvH3Ywg5eejYWR6mZeQvf1rHxK3B5oAjtYK70o6QUIovBKbe1r197jAR9Sy9P1Yq9KL4lJ92Mo1NtgyY3tRjS4i+o75Jb8eCAJoMcFYl/LQqs0J6Gf0RiaLE10bJx2fnWTNY5zK2RG6661o6MKzsX4QNU44rXCMYAsJbG9MyDO/zgB8892UHQnhD4qxUADh27fZZ0I/Dr0EID3tlL9pWPXC10CbbY2srBnsVBPLhaiHcxPeVrobOKwWGrWrfP7wMZU+toekcwmF4mYzLmQXTjHtxETVxnQ/KTZpdqdmDq91zAL8SkTtXwQrQjuDWrPrbMK/X5dOhiI5i4atlDMqyQmTymaIwpcZ7uHg5ASEvnLfGJssW2jtsIsc1cREDYp/kYIHeAQKCd
+ SrCIKv99
+ ZB7IsKRdW0zsh5WvSgExJX7+Mlc4PdklTQI1VfFS1Hs4E5Q3RVxXjezwxaaFdKRjv5x8zvJDXWdPFaBw7ebcxxPJuD3hwoX/ePUO/F58wQulu0+yt3UK/eG9Vczb7cs9ppH6Jc/hnHycobEqbs1Rjsx4PjECCoMfy6Fvvbxs6z9PePlI7gCtcIAwe0P3VR+N7+/wGCATvHIwnOYS0zwLZePlKKfrso/nVSEgB2tFPDC6b0Rs+Z2kyT2fDZyFdfgwV2Bp6DB4BQq+Eaj6KVATtgwvJc645KDL3XBVaIg2fwaw0id0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,36 +95,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format.
---------------SgzrhKw02r9lKy3Uyqq9E2Ky
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+On Mon, May 04, 2026 at 05:57:45PM +0100, Wei-Lin Chang wrote:
+> Using xa_{mk, to}_value when storing values loses the information of
+> the top bit from the left shift, point that out in the doc.
 
-#syz test
---------------SgzrhKw02r9lKy3Uyqq9E2Ky
-Content-Type: text/x-patch; charset=UTF-8;
- name="syz-cae7809e9dc1459e4e63.f2fs-dont-use-after-free.patch"
-Content-Disposition: attachment;
- filename="syz-cae7809e9dc1459e4e63.f2fs-dont-use-after-free.patch"
-Content-Transfer-Encoding: base64
+I don't know if that's necessary ... it's obvious when looking at the
+function:
 
-ZGlmZiAtLWdpdCBhL2ZzL2YyZnMvc3VwZXIuYyBiL2ZzL2YyZnMvc3VwZXIuYwppbmRleCBj
-NGMyMjVlMDlkYzQuLjdhYmE5OWUxZjkzZiAxMDA2NDQKLS0tIGEvZnMvZjJmcy9zdXBlci5j
-CisrKyBiL2ZzL2YyZnMvc3VwZXIuYwpAQCAtNDU5NSw2ICs0NTk1LDEyIEBAIHZvaWQgZjJm
-c19oYW5kbGVfZXJyb3Ioc3RydWN0IGYyZnNfc2JfaW5mbyAqc2JpLCB1bnNpZ25lZCBjaGFy
-IGVycm9yKQogCQlyZXR1cm47CiAJaWYgKCF0ZXN0X2JpdChlcnJvciwgKHVuc2lnbmVkIGxv
-bmcgKilzYmktPmVycm9ycykpCiAJCXJldHVybjsKKworCWlmICh1bmxpa2VseShpc19zYmlf
-ZmxhZ19zZXQoc2JpLCBTQklfSVNfQ0xPU0UpKSkgeworCQlmMmZzX3dhcm4oc2JpLCAiZjJm
-c19oYW5kbGVfZXJyb3IoKSBjYWxsZWQgdXBvbiBzYl9wdXQiKTsKKwkJcmV0dXJuOworCX0K
-KwogCXNjaGVkdWxlX3dvcmsoJnNiaS0+c19lcnJvcl93b3JrKTsKIH0KIApAQCAtNDYyMSw3
-ICs0NjI3LDEwIEBAIHZvaWQgZjJmc19oYW5kbGVfY3JpdGljYWxfZXJyb3Ioc3RydWN0IGYy
-ZnNfc2JfaW5mbyAqc2JpLCB1bnNpZ25lZCBjaGFyIHJlYXNvbikKIAkJICogaW4gb3JkZXIg
-dG8gYXZvaWQgcG90ZW50aWFsIGRlYWRsb2NrIHdoZW4gcnVubmluZyBpbnRvCiAJCSAqIGYy
-ZnNfcmVjb3JkX3N0b3BfcmVhc29uKCkgc3luY2hyb25vdXNseS4KIAkJICovCi0JCXNjaGVk
-dWxlX3dvcmsoJnNiaS0+c19lcnJvcl93b3JrKTsKKwkJaWYgKHVubGlrZWx5KGlzX3NiaV9m
-bGFnX3NldChzYmksIFNCSV9JU19DTE9TRSkpKQorCQkJZjJmc193YXJuKHNiaSwgImYyZnNf
-aGFuZGxlX2NyaXRpY2FsX2Vycm9yKCkgY2FsbGVkIHVwb24gc2JfcHV0Iik7CisJCWVsc2UK
-KwkJCXNjaGVkdWxlX3dvcmsoJnNiaS0+c19lcnJvcl93b3JrKTsKIAl9CiAKIAkvKgo=
+static inline void *xa_mk_value(unsigned long v)
+{
+        WARN_ON((long)v < 0);
+        return (void *)((v << 1) | 1);
+}
 
---------------SgzrhKw02r9lKy3Uyqq9E2Ky--
+and if you ignore it, you'll find out.  But if this needs to be
+documented anywhere, it's in the kernel-doc for xa_mk_value()
+and not in the maple tree docs.
 
