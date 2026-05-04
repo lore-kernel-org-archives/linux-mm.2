@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95A69FF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 08:50:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3E3FFF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 08:52:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 084316B00A1; Mon,  4 May 2026 04:50:28 -0400 (EDT)
+	id E1A1E6B00A0; Mon,  4 May 2026 04:52:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00DB16B00A3; Mon,  4 May 2026 04:50:27 -0400 (EDT)
+	id DF24F6B00A2; Mon,  4 May 2026 04:52:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3DEA6B00A4; Mon,  4 May 2026 04:50:27 -0400 (EDT)
+	id D07AE6B00A4; Mon,  4 May 2026 04:52:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D463C6B00A1
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 04:50:27 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7CD2EC1AED
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:50:27 +0000 (UTC)
-X-FDA: 84729116094.03.9AF77BA
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BBB906B00A0
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 04:52:13 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA31AC1BB0
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:52:12 +0000 (UTC)
+X-FDA: 84729120504.23.0510008
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3C8B3140010
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:50:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vugjd43c;
-	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1120618000A
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:52:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NNK2jSQl;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777884625;
+	s=arc-20220608; t=1777884731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rCGUloykHYiuCuZEtw9fiqIuDOMh4v9mTor+YU1AuXs=;
-	b=AejHM74J5IhNd9hKVtG6Joe4EHhxqilUipeS6veDLTP5j/QfVVfmE6FiH7deXxNfD5GcJP
-	6UcKYVJrRVl4Ce1G1cXwVjBrrVReK+ZkuiWkJwMV/2UAWrxhU4lYESKTdft6HdlpANLWbd
-	tUAAeyJkf+whXfbm/i+1dk2XJimWJSE=
+	bh=mEyeAUfJQW8Kt1Ng6+Xlvp3Ie550ZOIsa7l52iT+Vyg=;
+	b=4fUpnYJ0CM4W9lYND4J5J0OW+BIXufdZH4MepmhkkF4SUBwzSqPnS6zaWb5vX7RF9AsnpT
+	jUwnvuqVgaVgf2uS/mAOfnBv1qoP2+o5VwnSIFyivIuE1PepBRUhyBiH0GyaKiHDnXOHrV
+	pOI5kN4vNv8ED8NZyQYppXQ8XBDvio0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vugjd43c;
-	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NNK2jSQl;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777884625; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777884731; a=rsa-sha256;
 	cv=none;
-	b=Uu5QMfg74hbOgBLGl9m4PCapWl7+ZYqc2pAz2c6/xWDGe+T++0fBkWFBHRLGPVq9BNQ7EU
-	st6j/gUS2H4Per6YWe0cbF8J6jAVC6DibTEXMNTkS0MKhF9D8AcTycV7jyZoTk8IAR6gyz
-	Q3CrZ+Vjlh+8P8yd64jcVXYutevLqeY=
+	b=WPjWic10XYNrbpxGnXJEOT59aEOGGP3oJuOnn3OsT1khiN+PlYwX4CQpGfCAr5C/CY1ui3
+	UDkm09Li9q1K2/zwMNUBwMvhy9voz2v+/sW0m6X96I9Z8GsUvgODTYxHrqA5OCojSRS5bh
+	kI9eqZXjIk5acxlYl3OVoHJxx0NnUWc=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A83531713;
-	Mon,  4 May 2026 01:50:18 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C45251713;
+	Mon,  4 May 2026 01:52:04 -0700 (PDT)
 Received: from [10.57.34.72] (unknown [10.57.34.72])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C6D133F763;
-	Mon,  4 May 2026 01:50:20 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 753B83F763;
+	Mon,  4 May 2026 01:52:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777884624; bh=FCMkZ9hkweao0c59LeiVz688RdDZQ8lSc3hEZVLOErk=;
+	t=1777884730; bh=Bg78KoT8CemEyZViwGh6uhzKeqfwdHIhOCQAX57fvRo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vugjd43cPy1s2or/IKdw/90It0UtXRePbtH549/6cttjMFAgm9Gdw5rlF0k8TrWC0
-	 6z8xwVelspAzl3e+lQ+ekhrPmZ5vMU0D9K2Wl9nCbaJCCexBDwY0/8LBrXBEpFJPOf
-	 gEIFSygQ8vdYubxqMBnzuD3iSgcy8OysDOF8lTgQ=
-Message-ID: <49eb450b-0045-4add-b993-a8b518514c34@arm.com>
-Date: Mon, 4 May 2026 10:50:17 +0200
+	b=NNK2jSQl2B1FVgfn2NY38+h+ww+DbMNckBAn2S5WShSlWOVB0HBAEnYt4Fe7b6x8r
+	 dxSgc0GWneyT0Czpajo6Kg4LAJHpFew1oH5j4LCCUImRsL01mFadAPdBOU2JBaDpev
+	 sv3EtzBHR9deCjHx0SIYcZRxWDBCuRlBTCHUr4bA=
+Message-ID: <4f50dad3-76a6-4117-b5f0-d939c6e551f6@arm.com>
+Date: Mon, 4 May 2026 10:52:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/15] arm64: mm: Map the kernel data/bss read-only in
+Subject: Re: [PATCH v4 13/15] arm64: mm: Unmap kernel data/bss entirely from
  the linear map
 To: Ard Biesheuvel <ardb@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
  linux-arm-kernel@lists.infradead.org
@@ -79,22 +79,22 @@ Cc: linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
  linux-hardening@vger.kernel.org
 References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-29-ardb+git@google.com>
- <a8740f95-e167-48ae-ae65-97c6701d9c94@arm.com>
- <9ff1d19d-f3f8-4106-aeeb-66c4c21742b9@app.fastmail.com>
+ <20260427153416.2103979-30-ardb+git@google.com>
+ <15555e9f-65ab-4811-b20c-8ada90bdc9d0@arm.com>
+ <5279ea66-0e31-4f53-ad76-4fd8ebc012fc@app.fastmail.com>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <9ff1d19d-f3f8-4106-aeeb-66c4c21742b9@app.fastmail.com>
+In-Reply-To: <5279ea66-0e31-4f53-ad76-4fd8ebc012fc@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3C8B3140010
-X-Stat-Signature: m766kqybcnjsjgyqgosot3hopygkpa4y
-X-HE-Tag: 1777884624-464513
-X-HE-Meta: U2FsdGVkX1+qleU1Rcf/s4EliokZf0lpTFooY7cqfXgPFWWWTVVCFN+zUYZI2Fdrv03NaZbyTDwryuEtvAeYUl2/PgSfMfF06pJk4b8KCW4FxKzAIIlb82sxVF25+NPdARtixMr577kZiDEAc0AlvwXmCdvXDdQfSFQfIu1GYe0P8sqicRv7gpbVoqjSjitaWz3I19Dca2vagb14xkg6nzNAvw9pe+FdnFuLgaSCLd9hU7eBcdJ0Us8QuBfzJNljLUs8fe0hLwgAhLk3+b/B/DJ7qMUboXNUjVjg68l4EEoWlvkuFr0IzDHXjPwbYptzA/U2HIbIfAUCQIKrUiJxGMGVI0RKX9tkaoGmaZURmWXY8WfeP/yWFQM3aIlZyUxiV5M0FKSFz2GLUK/RlJ8Ymlw42RV6y39Tcsz0DzBsSnZXoLI4Uahhjc4zM+RHIX1HlDS/eOXJmUPCk9dLnh9D8fySmiw4qjhiXPCZgLCVbD8kScWkq/bSNG+dJbmaiVgTOb6cKKd1zmkX+Fsq5CdFcTResY9B84Fx+W0+0Wm9lMEgt2e+qf2RyIFb5Ky2jm+4ajG/6KZUYF9YzItRIn/5y95Tkcx5M/vxUFbwK0J6a9KZAVP+GFdul26O87al696A7PxOnSfeV83fDoycZfb/wqjPfqx2R4dfS4jB2x69N6JX6/wyGj3RWMbfTwyAXC6Um/tl7QFm59gXDn73MzF8n2/Ir5ra3jZd4k8/CoKIzs5YJZRBjQuMLarCyUfWDwwunBMR8FsA+Fk74VVA6yFLrrgXIJjAehT3L1ysCn8aHnyU2xuVnSCSEsP5CAF6tOPpsi+oQHBdUJuQSdyUijhe2+bG5xAelfGhSHgI++9ZLVDTBaGno5mhfFIGMLSdtwYRw35abnFBXa3htxTsFG33EuKapOMYSK37LTYNIXlH6bqeilW64CfbSATvf4uHhN2h1iDwpEeV9eX8+19Hu3E
- q7NUnts/
- SIV284ZontiQ5i0YZ0GNXegIxm2LjbDxLGZaRWR9RJ3spCTBqUOyZMBiQ9fCKKRTJi3uk9L9YaN17yQ1zQqWi/oM7PQrHSgEdIgHYRvP6nEUzP+qnHjUo7ftQCSB1Y3a0ZbM3AnVCjzh8OPxYJ0ujLY5VC2cOgf0ZlQJrZEfOZVHv3hfIi/JFNYIhHuQyAGBJvID9QCeH2k6kUP9yh6Mp1D8H8gH2/VjJ84YicVGVdjdbrZUJZVtNNe6s/UgTJ3Kg5fxGvU73Ejan+ao6I/lTp4XA/94mxJ/HLk6uF99hoRyio1NGx0Q9Ju7b+Q==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1120618000A
+X-Stat-Signature: nngci5jo4ehxzzz6f7858h78y4naqkrf
+X-HE-Tag: 1777884730-484069
+X-HE-Meta: U2FsdGVkX1+rld95dL4LE5ngLRRskWER6iB/uMj90hmtWYoAdtvSnb1ofWBO9lgvwc4JjyBgYfw7prRtBw9Fxq/0ybZ+EwjxvAr4nK11SeosPjJXf7OiYmMkFz+W+ziql7wNYnGzMNWtWpBjVJKwvamX9OqI052mbmJLTb+d9P/QpwsJ3VWOhVT9cggBEY94p8osy5JYXqh2bqe3XII5oSFZ6p358CBgChEx2HahjSQ7fkbRm2lBiykTitzCgFUzB6G7WkabkxH6G3jCSkErJCYnzxtSNIWsq4xjojGLziWJ2UNg0+7WoxIVkHDGXeu0n98XHIdBZZg/zmbIg8D2JkjbksSODJkb/BXO58wutgzEG9/RdVvaG3VzlS+AKYh2q6bY7kMeBWxDcQtXnAkhGqm/lgWEuYCYS+klZYcxB/9/7htwbn9FsLpozC7mXi/I1YU9xh+EBFzInCScc1oIpN0U+mI5fWqtk/1WfuWAIS+q9Y9qHSv1B7bngJp0AdVvBrkkkhVUDC/3eUjjJEceTVZZsAGiJlozNneTgcT86f+RbKbF6dy4VWSQZ1EP6C1C6jSGk8NJwf6meegkuCmYsg1qc6shg+PFPMoAmjNZKLdAEZuSjiJFt1dGoExRW+5OGB5fDp2YhE2QXWIhAg9p7DUyZ3fnmb63IblM3VI2bvoH6HnxJSjc1o4h+1Tkgp2bzfFjP4YbfQe1qI0X/6XWIM3ftz0TQ+5/0cHzSHwesLhWDFYHkDpMs6UJ4AGuXGUExgkk15ZwEIiUYxks+fS8fos2ncW7LIKFVj81mRtN9ersnJYODmuugbSxjLlX14QQmiEwdWcTzQSxsJyF+hiJUCV3KAIyNe5WNqnuh2zeFgnS5Jp1LIdqcWTw5ej+H9O5cWUU+R/0TfJonWsiOwXD0GrVnk80U3mArUZDEuAW0qL4zYfbW1eCuuoBvWqx+C98cfGMmQ9GtbU+YNGwLXC
+ c5F3Ttgm
+ UhDTfOGybqFPo97KLnZQ02j8KkquO0LG80ptLvxseJ/CIS1TPCx5it3dyN17Z0gBQkD2CfEmFr1S6GL6b4SnN2b++wPYlzR5OgVEfmnSONYrcH10b8dd587K76T3W/JvgM4Xifv8Tw0inv/SvxeNV+joL7iHYSJ0DrJXZL2uw7W5zFE0qYs1ICrWdS95n8DTeadAYMm0RNAPpvSPYqKlaUJMWfL+0W6b4Yh+2Yt/dLyWzkco2tQPr8AKrWLyOmGJguJqXyjU0PXcafl9YeCbe3fiqNbVuI26aItdBA/Gkte49Z46oEBKONMVsHA0oaxdoN+v2HZgj+v8FPCh0qxEqkP6/tke+4hEMKWjB2dslhZy60F6R+j99QYTTQRVF88mNVvjwk1HIKhdXRsk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,29 +102,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/04/2026 16:46, Ard Biesheuvel wrote:
->>> @@ -1155,7 +1157,11 @@ static void __init map_mem(void)
->>>  	 * of the region accessible to subsystems such as hibernate,
->>>  	 * but protects it from inadvertent modification or execution.
->>>  	 */
->>> -	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
->>> +	__map_memblock(kernel_start, init_begin, pgprot_tagged(PAGE_KERNEL),
->>> +		       flags);
->>> +
->>> +	/* Map the kernel data/bss so it can be remapped later */
->>> +	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
->> Maybe I'm missing something obvious, but considering patch 3/4 couldn't
->> we directly map the range RO here?
+On 29/04/2026 19:37, Ard Biesheuvel wrote:
+> On Wed, 29 Apr 2026, at 15:55, Kevin Brodsky wrote:
+>> On 27/04/2026 17:34, Ard Biesheuvel wrote:
+>>> From: Ard Biesheuvel <ardb@kernel.org>
+>>>
+>>> The linear aliases of the kernel text and rodata are mapped read-only in
+>>> the linear map as well. Given that the contents of these regions are
+>>> mostly identical to the version in the loadable image, mapping them
+>>> read-only and leaving their contents visible is a reasonable hardening
+>>> measure.
+>>>
+>>> Data and bss, however, are now also mapped read-only but the contents of
+>>> these regions are more likely to contain data that we'd rather not leak.
+>> That sounds like a good rationale but I wonder, is there anything
+>> stopping us from unmapping text/rodata as well?
 >>
-> After 3/4, __map_memblock() will no longer combine new mappings with existing
-> ones into block mappings or contiguous ranges. However, it will still set the
-> requested type and permission attributes on the entire range, and so the second
-> invocation is needed to restore the read-only bit.
->
-> IOW, we could also map it read-only twice, the result would be the same, but the
-> second call is still needed.
+> There is the zero page now, which may be accessed via
+> 'page_address(ZERO_PAGE(0))'. Also, anything that dereferences page tables
+> (like /sys/kernel/debug/kernel_page_tables) will expect to have read-only
+> access to swapper_pg_dir.
 
-Got it, thanks.
+Isn't swapper_pg_dir always accessed via the kernel mapping? If the zero
+page is the only data that actually needs to be accessed via the linear
+map, maybe we could move it alongside fixmap_pgdir so that we can unmap
+everything else from the linear map?
+
+>>> So let's unmap these entirely in the linear map when the kernel is
+>>> running normally.
+>>>
+>>> When going into hibernation or waking up from it, these regions need to
+>>> be mapped, so map the region initially, and toggle the valid bit so
+>>> map/unmap the region as needed.
+>> Doesn't safe_copy_page() already handle that? I suppose this is an
+>> optimisation to avoid modifying the linear map for every page, but if so
+>> it would be good to spell it out.
+>>
+> Uhm, good question.
+>
+> When hibernate was first implemented for arm64, we had to bring back the
+> linear alias of the kernel image, and when I started working on this, I
+> hadn't realised that we have safe_copy_page() now which should take care
+> of this even if the linear alias is invalid.
+>
+> However, if I remove this handling, things breaks mysteriously, and it
+> is a bit tricky to debug so it may take me some time to answer this
+> question. In any case, I will address this in the next revision, and
+> put you on cc.
+
+Sounds good, thanks!
+
+>>> [...]
+>>>  
+>>>  #ifdef CONFIG_KFENCE
+>>> @@ -1162,7 +1198,7 @@ static void __init map_mem(void)
+>>>  
+>>>  	/* Map the kernel data/bss so it can be remapped later */
+>>>  	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
+>>> -		       flags);
+>>> +		       flags | NO_BLOCK_MAPPINGS);
+>> Might be an obvious question but why do we need this?
+>>
+> set_memory_valid() only works on regions that are mapped down to pages.
+
+AFAIU since [1] this is no longer the case. Even if we don't have
+BBML2-noabort, we should be able to modify a block-mapped region, as
+long as we're not splitting any block (which should not happen here
+since we're always changing permissions on the same range).
 
 - Kevin
+
+[1]
+https://lore.kernel.org/all/20250917190323.3828347-1-yang@os.amperecomputing.com/
+
 
