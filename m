@@ -4,98 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B6FFF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 17:54:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D558CD3427
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 18:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69EBB6B0088; Mon,  4 May 2026 13:54:37 -0400 (EDT)
+	id E606B6B0088; Mon,  4 May 2026 14:15:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64FAC6B008A; Mon,  4 May 2026 13:54:37 -0400 (EDT)
+	id E378F6B008A; Mon,  4 May 2026 14:15:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 518346B008C; Mon,  4 May 2026 13:54:37 -0400 (EDT)
+	id D4E2D6B008C; Mon,  4 May 2026 14:15:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C4766B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:54:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BD2BBA0244
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 17:54:36 +0000 (UTC)
-X-FDA: 84730487352.18.4E4EF6E
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CA2351C0016
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 17:54:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of 3Wd34aQkbAE48EF0q11u7q55yt.w44w1uA8u7s439u39.s42@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3Wd34aQkbAE48EF0q11u7q55yt.w44w1uA8u7s439u39.s42@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	by kanga.kvack.org (Postfix) with ESMTP id C5C956B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 14:15:49 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 650A8120273
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 18:15:49 +0000 (UTC)
+X-FDA: 84730540818.23.63D3BEE
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf22.hostedemail.com (Postfix) with ESMTP id CF488C0012
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 18:15:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=NK209QFv;
+	spf=pass (imf22.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777917274;
+	s=arc-20220608; t=1777918547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=yf1acHnuMkvLtJHbgF3Z56jQ1gcWmSXrdwsWfpDSszg=;
-	b=bO8wi+hO9/7Q0flOxJ3ibqH4xJvOnSkSFULgQtk6jcBjH0y9XwUqz3asGxdVYEvjY4Tovg
-	0Cfsez7Uf3TiM+kNd0I23XZYOWu1gT+QwSYmGuT1tHeQ0dx/bgh2T3r1+w9OTVUfRMHkA7
-	cDwfAyQ2zEpsKltWk8JyoagOJ1KeQJ0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777917274; a=rsa-sha256;
-	cv=none;
-	b=Thhyqgfhc+j/7lFw2lGGfsCFBFl6kE07+78xQkFAz84lpPfhMO6WufZw+765Ic1Ul1t/1D
-	UtTnSLtpo/7C4VaWwGrLoh2yPcEc24b+AOJLtR7e9ocBPRjterVasG10mCiTIGbBAY3wat
-	t5l8j20oHx6S4kH+t+vd3S8zsA1Y7VE=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b7AxjbTHGPsMAyrsBsYDmRyehECKmp5QQoteG0VQ1/8=;
+	b=czV8SHvcIp5cqv9rkrtzIFKSZurRBfoWd5QEMTBWU0zWnFaxlymLfjIJ6jrR3ag49WZf4G
+	Onj9RyXQEjVi04FoeuVucuvrADNw01htogYj1U0fHudk6T70e+gO+Q5NphqhX7pnw3S75I
+	LDuovLAUPCN0+glW7WhFYQXJJavTy9o=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of 3Wd34aQkbAE48EF0q11u7q55yt.w44w1uA8u7s439u39.s42@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3Wd34aQkbAE48EF0q11u7q55yt.w44w1uA8u7s439u39.s42@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-6853c2438b9so8476642eaf.3
-        for <linux-mm@kvack.org>; Mon, 04 May 2026 10:54:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777917274; x=1778522074;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yf1acHnuMkvLtJHbgF3Z56jQ1gcWmSXrdwsWfpDSszg=;
-        b=oiS0jM/k7bvoMVSuhh6ZT2RY9vsBqRUWiBX3E9CQIrznm1K2aV0QJH0qXDfXZrfx/6
-         FIsGC8X156+MUXNeqtIg0CVHpngchMSNZrH5REWfcCY1A4pTo+vvirSt7HGld7NWuzPL
-         Ge/4QGgTAZk12XvkWZjEu5+wGNQQ1Y67yj+u5+4HICvrWh/8/3qvRDoENTgtNXJoa9Oq
-         MNn1XXaX56Vz62q/4kSoRjAgHIFiYfubHBSU7NFbBpQPvQx9rsy4J/xqgaZz1E17qgH/
-         l/d1JCAqekeoc1GYfDKh13QGGqeHlFxYI4wSLKpRmdhV76P7HCnaA9QTXFaoKKDk4BiJ
-         h7RQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/uWdMUfgAOWULHlhYkTxl79VHxQOHtXvfYXg3l/NSrtzB6l8W0seNx0sWVDd+OImpfvMHK9dakew==@kvack.org
-X-Gm-Message-State: AOJu0Yw7p+y+nCI+cbfprNDamzVDDhbssQaM/iFKL+eoVc3ByKh1p7VR
-	fVpWFrIVURREoZ+QLTYasvQdS6wuSq3pynn/YT+4rgekzeQM+IUICfSl6UwLjPmMlAdWsG64599
-	82R2MsNnO/xxLGJfOSRqQ7IjTgPHvpdp0XrWuWrN/3giPL/Eey01ByuCYtr0=
+	imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=NK209QFv;
+	spf=pass (imf22.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777918547; a=rsa-sha256;
+	cv=none;
+	b=xPIc6fFjk1QuRCh2MN04IKRC5KvWu36AMEGqhZOhuKgtB5w+D/7NeNJQDcStSKGq49Zd62
+	XDkieonJHV1hI9IBDHrLzlx1s4WjnsX6gq8QaGx6Gy4Z7ffv4tSOeP+rlPXPvFEpFo9udW
+	IwiIXv1vyxmFwxhyZr4MBxojcIhZsU0=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6448AWoY800514;
+	Mon, 4 May 2026 18:14:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=b7Axjb
+	THGPsMAyrsBsYDmRyehECKmp5QQoteG0VQ1/8=; b=NK209QFvQZWW2zC6lk1vGd
+	meDkkVnEu8o7rLoa8fFu3hUXa0u+bO12CeMYTy9jBfKdzLCm7USkSKA2RsCH+QpB
+	t8bVsdDnhrFpI2zIndL/5WQHetxcuoXjVYQIxbhKANI0rR2Wvrx37fetWa8JEcH6
+	bfW7QgGxwx9LRb/L2YQio8CZi3c40tBO60yF5+N0qI01BVxL49KlWYCj4rPyAZ5b
+	bumLMDpSZwBylGW9oscbegk0nz3ssbJ9SjeXMnf1lfw04JOCWCHo8V25aP3XqZU5
+	qtZ1S2a9WzuZ634BhKL+6quSfMpYEFOVAYeIhfIkOsqfWbd9wSJ6xNtf/EhssuYQ
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9x4gay0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 May 2026 18:14:45 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 644I9fkf010629;
+	Mon, 4 May 2026 18:14:44 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwx9y61u1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 May 2026 18:14:44 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 644IEi2V25953010
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 4 May 2026 18:14:44 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E4FAA58050;
+	Mon,  4 May 2026 18:14:43 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 16FAD58045;
+	Mon,  4 May 2026 18:14:29 +0000 (GMT)
+Received: from [9.124.220.160] (unknown [9.124.220.160])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  4 May 2026 18:14:28 +0000 (GMT)
+Message-ID: <2fd0aca2-4be3-4cab-aee4-b513ba67103e@linux.ibm.com>
+Date: Mon, 4 May 2026 23:44:26 +0530
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:f022:b0:68a:e01a:9b99 with SMTP id
- 006d021491bc7-69697df9a6cmr5304663eaf.50.1777917273794; Mon, 04 May 2026
- 10:54:33 -0700 (PDT)
-Date: Mon, 04 May 2026 10:54:33 -0700
-In-Reply-To: <6936812a.a70a0220.38f243.0090.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69f8dd59.170a0220.bb392.0004.GAE@google.com>
-Subject: Re: [syzbot] [mm?] BUG: sleeping function called from invalid context
- in kvm_mmu_notifier_invalidate_range_start
-From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, dwmw@amazon.co.uk, kvm@vger.kernel.org, 
-	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, lkp@intel.com, llvm@lists.linux.dev, 
-	lorenzo.stoakes@oracle.com, me@brighamcampbell.com, mhocko@suse.com, 
-	oe-kbuild-all@lists.linux.dev, pbonzini@redhat.com, rientjes@google.com, 
-	rppt@kernel.org, seanjc@google.com, shaikhkamal2012@gmail.com, 
-	shakeel.butt@linux.dev, skhan@linuxfoundation.org, surenb@google.com, 
-	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CA2351C0016
-X-Stat-Signature: apca6n7gn4dnoxoab9bjasa4cjdc3jfp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/7] mm: migrate: Add promote_misplaced_memcg_folios()
+To: Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Cc: Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net,
+        mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+        raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
+        sj@kernel.org, weixugc@google.com, willy@infradead.org,
+        ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+        nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+        akpm@linux-foundation.org, david@kernel.org, byungchul@sk.com,
+        kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+        balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
+References: <20260504060924.344313-1-bharata@amd.com>
+ <20260504060924.344313-3-bharata@amd.com>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260504060924.344313-3-bharata@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDE2NSBTYWx0ZWRfX/VgNTDHHBrH0
+ 281rBH6NJxXY4gcaa7Z5sv5OU4g1v0/qMpRlfKyv1+4xoeA5mD2ajN2lXdrP3M7WxOPlraLcSxi
+ G1eJ89nKe703hNy9FU69RinHJAJv/TXNOwsiGlD1jOLd3kI1uxhptVVra5bHQcHRoY4S3P0mmEB
+ 3uB58slE/RLvEXh5Qv92A7XwMPGP4tMCP03xCJOSb7Qc+nB8v9Vq3eht4Chu3v3xL9GIqBzqtAq
+ lRNKKTPX+OiOramFdAcoMcmjeFwaYWSXq1CXdYCESRh85Yfnyj3C/gP2tvVsdIQYfAPbXByWiV5
+ DTp8zeCdImyWeuOsqap5/8yLjiVE98cWT21d+lJ1damI0GChtzyrEvIySj7jXtNOcelBj3mQayG
+ 7udmdV7RImlvgDkBuwgkbzGqB2sdbhzIdo6Be7rZMLBYOoXNFsk1sc7oVnum638+WYre94hbvxi
+ frhGAIKUywo7vN9RTvQ==
+X-Proofpoint-ORIG-GUID: 3yiR4vJUqFV1fOrE47cL3UXTFk9ndbuv
+X-Proofpoint-GUID: 23y5OMO7Gu22B1mOGFOOnu-TpK4dzDFg
+X-Authority-Analysis: v=2.4 cv=W7UIkxWk c=1 sm=1 tr=0 ts=69f8e216 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=Sx_HE5-t1wAX4gnw_kYA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-04_05,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 spamscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605040165
 X-Rspam-User: 
-X-HE-Tag: 1777917274-884216
-X-HE-Meta: U2FsdGVkX19/qtKQDYniBDnUKUV+A5TAzO4U1jLLND/47puVyYtP6RaaOuVlYn6O/XBJcXnEF90BV+yzfuN/S4OdCXf0fipcjy2YTRuLGRUyAD9JjFyxBlmt31FbiION4DE6oEpm7575NYF/M9MFDPb+HrvNmQxuG9SQGsPVD6cwbdcawORXKD2GbBf0uXb5TblcACGP861ZvUCtzQ95t7L+fUzrWi7vZzcWbnCIpy5ulE/1PKaGTawOvwCet/JeaNFU+RozvaLQvhilfRyzVhD9XXuOERSoDnEVlHzvUNMT7bh/FYxB+642Eg07XedVVBLt6BJbbynDOUo3CHJ5/0aNVPHak9lhlpsSnpdBB7DTiy1v4YMv4wcP2X4dp2IKMteH5DnO1+jTi2W3qbJJ0v7H6zhHmnReS8PGxcKSDF8Bj2B39cgHi1xhiFnVEdPGpB5/8QdL4b7GsT+rEGcdqNxZ0MlXNJHgH6/ROIZGZNV/alUW6jZeA+mfui7JiCzJdW4IRPmQA32yGM7kqtd/FGKFWu5rS4cm+j6KsaSo952/xmIU3nqDsQRuXmdZNCS1pJY64AYl4M3VHIN0Rz5KeIePF/zwTYvMsCBFz74OJUdJ6LbWeDocK9nfv8rHBzl28lF8A+ANC/3aW26TiAvvfrFSyvpSaY7TngafkuaLvCYIn5xdX4Kofq5WAgJt/aJ5X1mire/XLN4MUi25aQpHasH2k05dv1WFlQZqLMo8bdz2vzK7ZUwee0KxvJRYm0q94rCSBG1Gv+4Sl596jvcFU3jrm3MeBQ+QfyKA4AfhpYSg6K+wpE2zPLDsektPS9tFBywXA+GTC4QQl3pFWewKMGbDXE3quSWusGuZgMk3k36x/d9d9RujmEnQ/53YJgzPMuDFsS+AIJqQ0tbApV96qw0Xv4YvimfyHK0IrK5IJVTx8doOiKOV1nUloK76k4UUhyJmWFmID7tZ+a/q628
- c6XuazAu
- UBkEQVmOjzREZtY+7l+NfM5R8h9BKJHvmpS9oU/c7PCutNN7B47pubKhacPcodCfA2VPcem2mdr+KNbqvKNxDnccUEKNlz6IK3bmbn/Aix2utoVJZNLGinJvT52ghXtO0PlWLHKlSvT2tG2Fazap0APOIF9+eHrXLFDVTKhnX1yvBrHzI4nv7kXh/jgfGgfd7pa/iinT8eA8KbxWJD8WzSPCsoCx+ozqmX2jR7ddEoq2xSIj8pAkfXVPy+LW8h0lE28muzDHoeq/PsgTgtYxKf2NFCSvIBP2QyzTgF8fF1BSf3aEcTpJyomdrs0Se1EEykY6GRDkkrqKCydeoBqKmZS+faAwTFm6j0N3OkLCA370jvg9G/m7oIBC2kYxz4osWFMyN7OB2IWBUPoHWqe8U+VIuHqzVMc0D9X4khRDqUEmTbw7Gj5lrOeSRx2sCzvf2sO9vCWob70fzcqCz3Y/6V8cMrPbvjPzFkEb5dQ7mInNKuOqw9UlCm7zVEioriD5HOpIYZbyG8hy6YnMX5wAStuEPsa+nnxWTJHvbWPF/fuwQW7Q3Y1PukKbPwLf3E5/QhXzwnlfSYDqskB5QlYRqESRLDVLKuXkyH2rED+TNZXOvh20Xv6aOqH99u3rHSgtdeCw/ZCVjLiHznZGBA9yciUYqEHYqnU3l1S6R0QtIBLW3heyUrHxsh3uWyvMNgHHv1CT8JIFTW3Ao2pnWCb+S3N48816EfgfCbh5ESXufkszfBBH89o8/IyR3ETmtrYMni7hghFRLLA2M1itJsI8LP0dfiqBfYXU+F7sRNYm1UwnHl089IQ6Z1DsXxcmzrdi9Vo5Ye1SP17yll4qQctTkqeUWFDV1QgWwGvQC5W1tmvlo2pLga6X22s2lc5KTxeG0N1gNdSAtWWmJbmbfZQaeFJlIQ8nKsvBPhdUW4MkZtHjW5LBqZrKQx1+s0RUdwLRI7Puse+aWTXOllurLggDJ+U6jN8eh
- 6jkNfV8h
- h3NE9eYKz3MhbzEbZMOFMsjgyDW8oTDiFNJd/7mpaLpOeMavrZoKi5gQZKpbSD4ygvyg1aimagDXVGoMZsMUvHRJF4xUr3Z+lJnS+mRN1IuUDefbExLKV8JknCNP+CuOfnh2TV+bCPRML4iNm3NqrGOJ1Ds5TdXv8JgYY7HtuOh2zdnkuPcNLGGnhmOgSzu9Zwd43xiqJ1qACibA/oguihMsP6Zaq0fkmmihKM8T1LzcHV6XcdDfKBNVMe/3zgX9
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CF488C0012
+X-Stat-Signature: z9cxkicqmwdshnggwwmshxnaw1rjhckf
+X-HE-Tag: 1777918546-659254
+X-HE-Meta: U2FsdGVkX1/Kvr1f6C/KYLKIDWR+3QmywRLWuVwpnPK6paNDDhHSY4zbMkW2LIydUiK/VLNXwOQpPxdYIpj3GP/hONQleOBO6lv9wE1oZAUcO/XxloVT8uqZXkTJAv1P6YftI5Y1TPOHWaCQCSveFnwgyPugmeuS2QJSVoUerNXLW0mNEg6WFcqokeCxIKl248MLJt2MgIgeRRCTHHJMBr+LLNmvA3rV1Qc+JLrbDVqhq5vO1bynLmlOYe5MlwvChS+JOGoN7pICwljwlC4IkeZBv/uFib3J3qQi+W1+OgnqiKuWLJoKLld696cUB9lQJmW8ZEPq9SRdsZmNBk1k1fqyml74tcOiNygGhHGBR/jV126/PSrFga+s3cgVe4DlOmfJnuA9VFDZP6c3L6oBh5q/me/trgjCwCEM67YOnDsLFFrfvBk9t8VO8KEUlh8h3yZSecubUEU2Mw+MYaNj2bgM/Wom/IX4qS43Bf3pUT0go3Ij5Jv4S/6cyVsfbT/qNSXg59VNNW3j/9ma4iyUNaKwVO7Mc3GlEeW638+o9kZxtwtzroB3syWkxE4UnoXMtl+8PaVlJuDAT6RRES049hS5/MoV1Pfu+07s9bIKBQ8jZysIy2eKWszBcggw/TrcxX+wp+oUGeYoKLctbAlNs8rFno11RdRdPE8aPpl8X57h3dUFrRTHfQc/L6mQebw5GoYVy2QPIl51SEtmnGF7zBH4Q2zAxVV6LgGhRIX9OCK3TvNMfHITfhW4BPFogUxXJLp6IR5mvB6jpyCdiTEcYqyDRw1PncMg2GzBbJbTquDQOFdYuej4/Dg6Ff7/fmFhvf/xA+9aVK/E7qJJaNnytFl7uwHp0SAJzMimkfThRcdQCWtW3yaKjLOir3cEYg7Zy9Lz9zAdJ55aJOmvLXXTwp/juG56tZzoW9+vwH6rD1axmJzf5s5Fj2zsy2BvUZz2fQ4YZm5PLO4VSl7UZP+
+ 2fEku9Bt
+ OUQhCT8y9kJ4TtXXxblcr2us0K/+VTUkBxIvU39/bVAQYFq3vc32VhesuJfXfIBT4QVMV+5lvKLnMEc0KV8SQN9xCsFiLGNWjXMF7bYbeYtEwXwdMyhZudppv0CEcyQyb8m/V6KO/vRpbS3QxK4pouAORkxea1nofZo5nFAafoBYeumvoZiZKVYeIlTkfXCYNC3zNYyZ3e9iqvMMtB6JLrHZUvCIrRiDqJakx7/EncMJ9SBkdP3VSw+NqI2hQGH/XopokWWb2fUL10Vo/Jc1SAGC7IGS9MP7qlO/BRRfgJWRPSP6AOym0LPUQFqxWQn7eP8WHHdBIU7FwAKXPHRtC8ZnMSKp0ITI0BIDe5krRV4ktkOPUL838o4M/smEJhTpbMvLm0SAtEvxxb39ss19QWOHHOAdAmIbCqGXcKA507XrCL+JLhXBm0u2RLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,104 +150,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+Hi Bharata
 
-HEAD commit:    b9303e6bff70 Add linux-next specific files for 20260430
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=13745dba580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5474e13c6d20d45c
-dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=125dd748580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/b3a0a2e50f73/disk-b9303e6b.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d3d481b220d4/vmlinux-b9303e6b.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/d6e012913960/bzImage-b9303e6b.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
-
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
-preempt_count: 0, expected: 0
-RCU nest depth: 0, expected: 0
-4 locks held by oom_reaper/40:
- #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
- #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
- #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
- #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
- #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:495 [inline]
- #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: zap_vma_for_reaping+0x193/0x380 mm/memory.c:2119
- #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:187 [inline]
- #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:294 [inline]
- #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: mn_hlist_invalidate_range_start mm/mmu_notifier.c:515 [inline]
- #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_start+0x5a1/0xb60 mm/mmu_notifier.c:580
- #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
- #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
-CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x329/0x480 kernel/sched/core.c:9163
- __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
- rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
- spin_lock include/linux/spinlock_rt.h:45 [inline]
- kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
- mn_hlist_invalidate_range_start mm/mmu_notifier.c:525 [inline]
- __mmu_notifier_invalidate_range_start+0x6e4/0xb60 mm/mmu_notifier.c:580
- mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:498 [inline]
- zap_vma_for_reaping+0x1f7/0x380 mm/memory.c:2119
- __oom_reap_task_mm mm/oom_kill.c:548 [inline]
- oom_reap_task_mm mm/oom_kill.c:585 [inline]
- oom_reap_task mm/oom_kill.c:609 [inline]
- oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
-preempt_count: 0, expected: 0
-RCU nest depth: 0, expected: 0
-4 locks held by oom_reaper/40:
- #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
- #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
- #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
- #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
- #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
- #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
- #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
- #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
-CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Tainted: G        W           syzkaller #0 PREEMPT_{RT,(full)} 
-Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x329/0x480 kernel/sched/core.c:9163
- __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
- rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
- spin_lock include/linux/spinlock_rt.h:45 [inline]
- kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
- mn_hlist_invalidate_end mm/mmu_notifier.c:597 [inline]
- __mmu_notifier_invalidate_range_end+0x23b/0x400 mm/mmu_notifier.c:616
- mmu_notifier_invalidate_range_end include/linux/mmu_notifier.h:511 [inline]
- zap_vma_for_reaping+0x2d9/0x380 mm/memory.c:2124
- __oom_reap_task_mm mm/oom_kill.c:548 [inline]
- oom_reap_task_mm mm/oom_kill.c:585 [inline]
- oom_reap_task mm/oom_kill.c:609 [inline]
- oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-oom_reaper: reaped process 6034 (syz.0.24), now anon-rss:0kB, file-rss:64kB, shmem-rss:0kB
+On 5/4/26 11:39 AM, Bharata B Rao wrote:
+> +int promote_misplaced_memcg_folios(struct list_head *folio_list, int node)
+> +{
+> +	struct mem_cgroup *memcg = NULL;
+> +	unsigned int nr_succeeded = 0;
+> +	struct folio *first;
+> +	int nr_remaining;
+> +
+> +	if (list_empty(folio_list))
+> +		return 0;
+> +
+> +	first = list_first_entry(folio_list, struct folio, lru);
+> +#ifdef CONFIG_DEBUG_VM
+> +	{
+> +		struct folio *f;
+> +		list_for_each_entry(f, folio_list, lru)
+> +		VM_WARN_ON_ONCE(folio_memcg(f) != folio_memcg(first));
 
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+It looks like the indentation might be off here.
+
+
+> +	}
+> +#endif
+> +	memcg = get_mem_cgroup_from_folio(first);
+> +
+> +	nr_remaining = migrate_pages(folio_list, alloc_misplaced_dst_folio,
+> +				     NULL, node, MIGRATE_ASYNC,
+> +				     MR_NUMA_MISPLACED, &nr_succeeded);
+> +	if (nr_remaining)
+> +		putback_movable_pages(folio_list);
+> +
+> +	if (nr_succeeded) {
+> +		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+> +		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
+> +		mod_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(node)),
+> +				 PGPROMOTE_SUCCESS, nr_succeeded);
+> +	}
+> +
+> +	mem_cgroup_put(memcg);
+> +	WARN_ON(!list_empty(folio_list));
+> +	return nr_remaining ? -EAGAIN : 0;
+> +}
+>   #endif /* CONFIG_NUMA_BALANCING */
 
