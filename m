@@ -4,133 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57705FF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 10:32:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F030CD342C
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 10:40:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A95DD6B0005; Mon,  4 May 2026 06:32:52 -0400 (EDT)
+	id BD9A16B0005; Mon,  4 May 2026 06:40:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A46BE6B008A; Mon,  4 May 2026 06:32:52 -0400 (EDT)
+	id B8A1B6B008A; Mon,  4 May 2026 06:40:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9839F6B008C; Mon,  4 May 2026 06:32:52 -0400 (EDT)
+	id A788A6B008C; Mon,  4 May 2026 06:40:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A5E46B0005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 06:32:52 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 94A5E6B0005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 06:40:08 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 358E9C01A5
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 10:32:52 +0000 (UTC)
-X-FDA: 84729374184.17.813CCD7
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E5649140005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 10:32:49 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=DZeblbV8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777890770;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 010F212013B
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 10:40:07 +0000 (UTC)
+X-FDA: 84729392496.17.062ED3E
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5C3371A000D
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 10:40:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b="mjxda/MQ";
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf19.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777891206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k1pBQ3dmpauwMVc7roa8Vteafz4/mkMyRaEsDsPXXbk=;
-	b=PJYv43TB1+oEr81cHw8ULdWzkugmorqMLiFnJN+iAWaQkpH0P+injdOOKZ0j9Z8quJfCS4
-	oyC5r2C/gS7Fxr9kjT2oPt/VatGTP//QLfjW3Twz5SZYKLKGoPfrdCxHhCtNseV4dQYlbV
-	jrxC8H7d1Q14tckHaht5+y/CBSlvVao=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777890770; a=rsa-sha256;
-	cv=pass;
-	b=5q9Gpm6f808LrtMeHuMQDt963NcL6aArPAzCdaOM8CGBXzB/M78Y7dYu5o5JJLzx5q42f7
-	+2RyEEDRsyRZ0iFUGgh2ng7ByFFLclq+GhY5nlK7bzc9NdcyoDU0HO3/9DK3R9w1grCx39
-	gGvWDutF2EmP5/7X88mvB5F8H4+nEP4=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=DZeblbV8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-67c566cb519so2174298a12.3
-        for <linux-mm@kvack.org>; Mon, 04 May 2026 03:32:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777890768; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OweGWD9VQPMX9+ia4os6K6hU/ZFDP8wByn2png5ii7V7GrLPlHOYP9KGV23NeJVPxt
-         cyE79/+oNIU23T7oj/fXaGy4gHQV7CllisuJZVWBMJtpVcdkx9rEFTEQmzuZwJzfXtkY
-         32ab0TufRu1eYFm3wR/xvEITucCU++p1rOWY6yA2zvafDOe3mIARMcu7ai98cgBE9Crx
-         xD62s/MXtrzHHcle/EyoSc/QE/M50/FvE8XX1TdxfzO7uVkgrMdo4tOkgvirokvS8m/P
-         NliillZHnPwStrQVWem8NOMLOUe4hOXDdKGocWcnSUZBxQgcWKm3bfD4xKAGhqV6EI+D
-         6fVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=k1pBQ3dmpauwMVc7roa8Vteafz4/mkMyRaEsDsPXXbk=;
-        fh=G4MEgjyN9AE0GXqgew5KXoRZA92wHZ+PdlA0CARnzhk=;
-        b=jWbKN/n56YPdkm0zhC/8Qqmc+lVHPU+kdWQjnxoOGzFCk3oljDh3G+5J1O3jToDDrP
-         0JL6ZZhfqFWCBNoDQVu9P9cnE6Ytn995KJr/ZSYhh6OHIhMT3G3McaGNKSUjZsN7Ky8o
-         VBmTCDUH8j3WDMkBe6sngdkmx+lP7eqYFllT4xH+26so3UsRkL20CAXph+YGQdjc/PJh
-         kZtlcoN3S8oUfjaQ3OPiR8uqISAx30y/RnGit0yAbJTk5MrERmohErTgjZ76AkXb6+HJ
-         yyWmpQiMVAsvEgBWfSAYDBnUHAqC2vNexup3Hut4aeMsFoWOXuDWF6x1WCGZdzH1MK++
-         ZQkg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1777890768; x=1778495568; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k1pBQ3dmpauwMVc7roa8Vteafz4/mkMyRaEsDsPXXbk=;
-        b=DZeblbV84W3Nf1DVkQ+QFJyG8N0hBK5xpFO1Bdc2kbV5nRvefoUQGIAwmcrYowQtWy
-         W1RVBD4GVAwqeHSWOYGaQxvP/fdecLLSUDt0mUhcCwLuQIOSP2ZPVxV0U43uhBqbdOv5
-         eRfqtq+v9JDiSySjXdvxOKx9TIjr46lrv7y6fCQsUYa3cx/qSaH1Ujo5Y/vrq64piRw9
-         9LAn+5pN8n2aP/32GeMl1EgbYAJysPouVXgNwepeDaVGQS6WNDbSdPt9cTlAsmy4n48n
-         eCz18+IVKzArxcJH1cHdnh2KLh0HhCIQP+jrpYz/BOsds3AaYkX6kARozHaMTHO7e7YQ
-         BSGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777890768; x=1778495568;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=k1pBQ3dmpauwMVc7roa8Vteafz4/mkMyRaEsDsPXXbk=;
-        b=o7YcsD73x2mppI1F3phKc6aTWesVANN/F+G5R4kiCG+UHV9Ck5Y14pTokrIiGo1egB
-         tRYYd8bLB3S3shzHqsXz3nC6IKpOX0bYw3vuK8ltN/ZD+yS5z+2BbnlL78gvVTyJbsuQ
-         2DgVETkp/s1KLGyMfZdA26G5+1+i8PeXuFGPPeHG2kIGjPPZ9PbP7bAKSC2usfySrwWF
-         Ty3b0GYFZhNSkiy6KAS9zbQ87dq12KSiq6fs/mP4hi9vgLXXJf4mxLFy4ylRVq9OA5CW
-         sl5xhdH9leap6UUl2iVqOLgPPC3/+LR1npvpbQT0wgxrFUiA7JEtF07cpGyhVFdRCK2q
-         hQ4g==
-X-Forwarded-Encrypted: i=1; AFNElJ9+Aq2j0ICz6i3PvRwOkXT4DFp62QwOdwZYi84lenZ/AR7PuJqADOHXMUe8acXcYHUSA4/ena8gXw==@kvack.org
-X-Gm-Message-State: AOJu0YxE3B1kDtTG3H0/JmaMd4MqmI2DyKCItBR23km1/sB3lZbpjJV/
-	IHGPUk7kZA3r4ffDK+jrNhzrsHtkJ/hG2krR/tKNoz4IBrizWvZa8MbLuY3eIWMtw6ovJIWvmI9
-	vw6vaZc2pQvbDiVbEfBbc9wUXATVO5XVtaTg6GwGTgA==
-X-Gm-Gg: AeBDietrjEPPV8IsnQAHfDbCtHKdFP/vk4t7dq1NbpdleWvicQ+ckTxvXuoCNVpQfOh
-	SpADdvVuEKwNqj78KVMKK1C+Oxx7MJTsr2tZfQLd77mBSIuqU/wlURT3nozldPkKs750pZuNQeR
-	oAm9ecwZkfL0R+OUQLIUrfDh3xr0RaWFBJvP7IT9CJB4VycccnzdiCw08EBZUMwrce4Jr927tB3
-	0g/Zcu0Gjw8tGTiFY7MZuaBRk9QRNDFKqpFreQecgga582gdaJfjUmuyiL9A1A0YsDaCIAfPylS
-	HxN2OiwIOMHktcNSUTUXp3MWixDbpVrdXWigzblc7EE1dyK0SA==
-X-Received: by 2002:a05:6402:a0c6:b0:67c:1fd5:32c8 with SMTP id
- 4fb4d7f45d1cf-67c1fd535c6mr2725210a12.19.1777890768158; Mon, 04 May 2026
- 03:32:48 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=b2vTPHZkDssdQy0Ud6aa3PxnglQtX5EZhwc+C22TTQs=;
+	b=YAqwBIOJwzYFVcNBbzNdGVj3H0++/d5p3gqu23l5CmmzZmDJFVEbYFASMs3Mi59mRhUyh9
+	sWaTP3z05Al4VTDo3+KnhQJq7ViOaZ32UFrZYTMqtAOFnsGJM6Qizqweotm0dTrnX5jr4b
+	fG103X6HDsk/pkr2FsXNXL+JNRz3URA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777891206; a=rsa-sha256;
+	cv=none;
+	b=tIJqUUMpE8KHvNnbbr/bnSHgilI//LdYrTXToJHaMwmutC3cmtBZt8JaH6XrrKI5oOWqEr
+	v2K5ueiFHIop3V60MW4glUqvIR4EUxfOpOlD1dgddq+80bpJjwpJryv/eip3RmQ5DQBfA2
+	eMCFy4Yhl9zFxB0MsOGYuXpmmz4DyBs=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b="mjxda/MQ";
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf19.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1777891200; bh=b2vTPHZkDssdQy0Ud6aa3PxnglQtX5EZhwc+C22TTQs=;
+	h=From:To:Cc:Subject:Date;
+	b=mjxda/MQBqJx9OUVPC2QKWG1ylzLxSvAbbn0tMsqiZg/+cHkwg0gcWfIzxmASwJ1A
+	 W2BzE/7W2OH8/CFsrjht/qNxuzCrCZaV+dDlpz5Cbf4Ntc3QMxLjUGipVcgcVdxpNc
+	 Z50gT5qVV4unos81DDQlQ359CuZ+z5zfHMX4Nawo=
+Received: from node68.. ([166.111.236.25])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 9F9018A9; Mon, 04 May 2026 18:39:57 +0800
+X-QQ-mid: xmsmtpt1777891197t65lmu5od
+Message-ID: <tencent_C3AEB0E769C5F4F9370F9411B69B7F8B2907@qq.com>
+X-QQ-XMAILINFO: NUYPVyrd/y6PevZ8Dpjp2K92IKJ+O9dw51e/4sHyDu901vM4U9OCewHI4V3wm6
+	 ppJpiK0A+OkEyMvaKp3LrEVZ5XxVMeKHRhQJM9Y3QemX8vJLiZWdq9owIZP0Unf2YezSo6jBUCei
+	 f85Pr+DVOp6024uvHZxhjWJNT4VvQddSeOSXBMYvLS6Go2dv8su7gdgHr0oz/0WYjd8lvFCA80KL
+	 wu9giFrGtEPTCfYbiN48jKtxnEpYFgDwGBHBkWEAsT3ccTFy81rFdTo0PqivCHrzJtwlhZ+llSKw
+	 zKXvdt322XspNg2yQC5codDYne3cvupYJZfsbc7UOYHhZ/tA1I9n8uJZadYGSlkf17dXxI3wDZw8
+	 THwYWWF5+NSRIunnGhx3fitAbbWuRYbuVARPna1sOiiUrM0CwhzNdDFRJPfVOPBtFGTIwFjg27oy
+	 kooSM+R6jqeXq776auF2ZZdAfIPqQOSOmgc/kMN7/UmfyDwU1DInuvHPIRiHXpNOmDue3k85CRUU
+	 npBVD5tMbJNKOgrIKTeVanG03CHS5zBdwRqqzelaKWNw5/R42nfvgrnj0JAetV1gQamMoe/zsaQd
+	 4gANnL0/9Cfe5AmM3CUAwHarcvtmA1bF9mQ3SivVPKWpNw8IpT7aSo8jvtlye1NhpJDlIwPQyENw
+	 ruQ/ACjoVXEC0mNjkj23Pvu9HSnlDmsbci/4xr/dvdpRDE4aF6H90vE3dNN2zw6uzntvxUnQHC+w
+	 MkmrUk5GkkTdMT6opoD4NiM/x4EB8jdLAzNoL3SuE1h7nSMIMXPs3XbATH3AepVpP7W7Hl5YRJPz
+	 /Fa6AD0ycEBWFPvpn4dcmHgcnHOTPtaMr6wkYSQZuIGiA1H3gmfFUVG+O39pWWPAVa61ob1pJIWt
+	 cjVKYUjaWVAgLOPVMDip5R4j4FPa+Qm3UAnZZOa7klwAxKeWWBNaowDqA1YD8TroC8R4aYIzacix
+	 aj7rMkmtOu9sqkY+zQ1ZRZJOvSZsM7oc2eb5KTkBmvoAED/mGkpkcQ0P/sfEU2GvhTBu2zAqXYq6
+	 7SCVqIb/RMKcfT4E/mn0yBQZMH0j0=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: fujunjie <fujunjie1@qq.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	fujunjie <fujunjie1@qq.com>
+Subject: [PATCH v3] mm/madvise: reject invalid process_madvise() advice for zero-length vectors
+Date: Mon,  4 May 2026 10:39:57 +0000
+X-OQ-MSGID: <20260504103957.842255-1-fujunjie1@qq.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20260504102742.3833159-1-pratyush@kernel.org>
-In-Reply-To: <20260504102742.3833159-1-pratyush@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 4 May 2026 06:32:11 -0400
-X-Gm-Features: AVHnY4L7O8G_KVLgdHkNSHNSESCfg5WNMWa7oZ57dDlBl8aWaYRhiLVDiqRj_wk
-Message-ID: <CA+CK2bChn3bAFBnmD-fNw2zh-JrAaA73DNmm416EbjXr=mTakA@mail.gmail.com>
-Subject: Re: [PATCH] memblock tests: define MIGRATE_CMA
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Michal Clapinski <mclapinski@google.com>, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E5649140005
-X-Stat-Signature: x6ybmtuctrk6p7zpskkgytb8ky5srmqo
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5C3371A000D
+X-Stat-Signature: u18w945t9tibgzoyxrsmc7m8bwrryg86
 X-Rspam-User: 
-X-HE-Tag: 1777890769-487928
-X-HE-Meta: U2FsdGVkX19WtsnG69VcoeZi7Jzp+k3LVUxEt+DtzUfloEe6zQJpj/9LUvhvn5sqgzHUXOr+wXTrXLkU4Zx/Vxv4Jf11F3oRua0t1ClmtYaBFIXQ5EZEbB7A6RWf+cBbS6SHmavjMKJx3nmN8NK7ng0pZ7DOrvOF4MyC2He+La5OIvL0CHjpF9ClunbCVNiyJV+M2F5nmuqX9xAuehM8vi4XZdczlm/gAGMZlmLcwTRJpubmIxyV3IDR6yNfFSjfJWmZc7cMLQ2mOzT80sW5lZPRDPTzP7xXDJqptAYFKG0/+vOJ823p+48yMxLD9AwQ7PsNcrKlH/MQbzMSwZtugq3MXdX6ERYFWqFQppZH6jrYfdaCUydGX1xt94ljro+43HOyEbTujdtkDCFVjsevMUl3xn5RG5la1Opbmanyl8gg19Jmm5MtGLSV/EXNSTdz1Kpp1HUY2x14Up7XM5fLlfOEO4P1a0s14jroCPfgD73WGIJ1kI6DyOPVcH3J2Nnq9H8HflDFsSuDJzo4z/GHEr6K3yf5Btw2QHG5bPCudPw4Q5vSi9/S5qBmYUufX718DT9e/UKeSyJXSuIWhAEs22heHPR38tCUX4MZF1QwdBp+qlBGv61CUZfW6WBY5A6sR8L78LMChEnHZi/ZXo+NhEijPL7/xnE0in2UJW+3+OoQ2cEv6nlHWjQsvmUI69Ps6OLlxaNAd6qCmfr7B4WHltu4rpTEUgq2CqGP46O6Lt3vxQ6yqyanK4WaPLLBj6N4cWZssXj5aWwaXy9NjOnmdQRTbvtw/Y8tqsokzT80mJ6VHIp6ge3TPzEB2FGmR1dDdCbO9WPADkQWeefrMjbD3di8Daey2AVvfWsHf1N5CK/+74VN3LrWlB9kIIn+R3Go/eVbwiDTlnn+VVKQJy3mJqL+4NxOQwEcTDC9W6LDstCxQkka2jSrgFaaL/E00C6d+b6bmE9OMbhctxjjY3/
- 6uRJGE96
- Cd/MEvt5/NDatYpMShdAYpaX7gYMWZDr2eRWRUfZTSzNAIICjaHjaImesWLC+E1qSnZAgepl7K8Putt04ipsYudR876UlKMt3gkln2SGUt9dfmXmkQmSM5vhbuVBJbgGsq22I5ee8RLk6JLO4A54vBRv94gG1B3+WBrrg2MBlrH11laojfgjNGfw84McFOdNFPbz/fdm9xoyc3urg9wwd5EPHOvPWJ1Pku4VRE1h0qrVg6JiK7I5wPfeFuiKX4y26z3/Z+vUBDu0rFd3qk+QdNuB4hDP4UeTJtAT/TJoIk7BvWxkTIJ2rTcoOalO+b7aJIG+3SHNx5tWp3CCo5039cSLlZw==
+X-HE-Tag: 1777891204-706300
+X-HE-Meta: U2FsdGVkX1+W2FiSdvrusRDOMOOxZcz7koG0jY/gHG7FN2IO1DZ3u8cKg6lNjpTrccSU75bALQdSFuL+c3PTklGiYwFG0udlQ1oALsKWE7UDNqSCuEcS5wVQfDbqwourq8TkrV8ecnnTz0ykl07/T0G5NPv2E29sc4ZEvHt2jANGX3sdcKM9dxC8JcMDl5nXfwbR/+vBMOID80NPrO027ZwIZ+UFQzjxSNdigyjJsV/bRf3MJBP2WYjs6EGUFu/+3rAwR8hfuVfLtZ0+4T1msU4lCbOClFJDpqexLH+/rRaVZ7hGshNp9K6AvU5h/ifS13TQc5DV7K3MIgx8QjIlO6Xju7KuvmX6SFG3b/PXd+VJ9EJk/gidLY/pLV7tqcgg5FxwZjQIXxJXr860z9p+UOypRo61GTYzh3tHgDDo/3OkSpIPJxiDsWNNhn30VicsdBmSvU6ubHJvvkh7zOi1Pe9x8j4ZJ/dFu6VKh6qcZPMn8MOCvvUOYPVCGu8lmwU6cJZgFnOx/u2gxvbCxnZmX9Y36lz7pKvJI/nVbWkO07B+FGEfGy4uTvMv0XkGjuXF2Vb+gv4mNKKG22xmnZ3BmMZdbF0fbMZRCdy93lsrjE118E1fj6YJvjBzrQ8GiyGxl1Q8FKEJhU6SqqnQ1m0mAXIWJABcSjYcv0Vo3LPnhTxgSat4fERwfjyW9B1BwE2wgyCjigjzRXxvbGmamryW88lcMdxKFchaJn6fvdWAk+zjq0eeoCyTdb/PAYmIqOdbo5KSNUNe7dbUZuOuYeTzngm2v6o4HM7GvqtnYzU5tkb90+Xjs4F2Oiq/U66M3i66sqcfe7NxxK6aO1QjRaFTpg+LsNfEdovJI8fG9CYQaoE1X3XXVIa4vaNq1BsrthXNUTG1jZlikO7bORl+lWWopiZsW8PiwHKDDzY+N4mqzFV1g/kkShqfxBjlQeXXEIxTAmPoZXNMJfgMSpdVXds
+ GHJ0+REh
+ 8TIx5+otMdd2cKBCKQcoEphUrm/6rxE0/kqNp2MFioKlAYGSnrMO9uo5VKaf3jtjAyH9IHiIwIrz52kzS+tZv2Jg5W0V3GF3l2WIP3lL6A1optHE5K6zfefeP7dbMzcW0MTOLIVbydqRooiVprE9WOkP6vDX35jdHnftOnF1LGyVYLxASzw10eUrFjJEdCTUeFaVYwYGzcGTyYCHg2r6bhCYgi32yMDQlPz6sZnTlgj+m3T9Awc3JOjQVjKjIXyFK+KEGU84005SWUq1TmkSqxHNvDPox2DvURCVIYDag4CEGugS2E4emmPUlUjPCW9D1kKgwMcDGlAX9ycs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,61 +110,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 4, 2026 at 6:27=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org>=
- wrote:
->
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->
-> kho_scratch_migratetype(), defined in include/linux/memblock.h uses enum
-> migratetype. This breaks build for memblock tests with:
->
-> ./linux/memblock.h:634:73: error: parameter 2 (=E2=80=98mt=E2=80=99) has =
-incomplete type
->   634 |                                                        enum migra=
-tetype mt)
->
-> Fix it by defining enum migratetype and MIGRATE_CMA. As is the case with
-> the other headers in tools/testing/memblock, do not bring in the whole
-> thing, only what is needed.
->
-> Reported-by: Mike Rapoport <rppt@kernel.org>
-> Closes: https://lore.kernel.org/linux-mm/afcdDm4aAJvNaQqH@kernel.org/
+process_madvise() used to validate the advice while walking each
+imported iovec. If the vector has zero total length, vector_madvise()
+does not enter the loop and can return success without checking whether
+the advice value is valid.
 
-Link does not open for me.
+For a local mm, such as process_madvise(PIDFD_SELF, ...), the remote-only
+process_madvise_remote_valid() check is skipped. As a result, an invalid
+advice can be reported as success when the vector has zero total length.
+This differs from madvise(), which rejects an invalid advice before
+returning success for a zero-length range.
 
-Pasha
+Validate the generic madvise behavior at the syscall-facing entry points
+before any vector walk. In process_madvise(), do this before the
+remote-only advice restriction so unsupported advice is rejected with the
+same priority for local and remote mm.
 
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> ---
->
-> Notes:
->     I didn't add a Fixes here since the commit hash for the deferred seri=
-es
->     isn't stable yet. Anyway, I think we should fold this into "kho: fix
->     deferred initialization of scratch areas". So random bisects don't la=
-nd
->     on a broken test.
->
->  tools/testing/memblock/linux/mmzone.h | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/tools/testing/memblock/linux/mmzone.h b/tools/testing/memblo=
-ck/linux/mmzone.h
-> index bb682659a12d..8d934ff5b080 100644
-> --- a/tools/testing/memblock/linux/mmzone.h
-> +++ b/tools/testing/memblock/linux/mmzone.h
-> @@ -35,4 +35,8 @@ typedef struct pglist_data {
->
->  } pg_data_t;
->
-> +enum migratetype {
-> +       MIGRATE_CMA,
-> +};
-> +
->  #endif
->
-> base-commit: 74d1099bb4edfca3ce6edc61dbacbed96720034c
-> --
-> 2.54.0.545.g6539524ca2-goog
->
+Use an errno-returning helper for address/length validation, and handle
+zero-length ranges explicitly at the call sites. Requests with valid
+advice and zero total length remain a noop and continue to return 0. Add
+a selftest that covers invalid advice with a zero-length iovec and an
+empty vector, while also checking that a request with valid advice and
+zero length still succeeds.
+
+Fixes: 021781b01275 ("mm/madvise: unrestrict process_madvise() for current process")
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: fujunjie <fujunjie1@qq.com>
+---
+v3:
+- Rework range validation into check_input_range() and handle zero-length
+  ranges explicitly at the call sites, per Lorenzo.
+- Drop the unnecessary errno reset in the selftest, per SJ.
+
+Testing: built mm/madvise.o, bzImage and process_madv; process_madv
+passes 7/7 in QEMU.
+
+ mm/madvise.c                              | 60 +++++++++++++------------------
+ tools/testing/selftests/mm/process_madv.c | 28 ++++++++++++++++
+ 2 files changed, 53 insertions(+), 35 deletions(-)
+
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 69708e953cf56..cd9bb077072c 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1834,50 +1834,29 @@ static void madvise_finish_tlb(struct madvise_behavior *madv_behavior)
+ 		tlb_finish_mmu(madv_behavior->tlb);
+ }
+ 
+-static bool is_valid_madvise(unsigned long start, size_t len_in, int behavior)
++/**
++ * check_input_range() - Check if the requested range is valid.
++ * @start:	Start address of madvise-requested address range.
++ * @len_in:	Length of madvise-requested address range.
++ *
++ * Returns: 0 if the input range is valid, otherwise an error code.
++ */
++static int check_input_range(unsigned long start, size_t len_in)
+ {
+ 	size_t len;
+ 
+-	if (!madvise_behavior_valid(behavior))
+-		return false;
+-
+ 	if (!PAGE_ALIGNED(start))
+-		return false;
++		return -EINVAL;
+ 	len = PAGE_ALIGN(len_in);
+ 
+ 	/* Check to see whether len was rounded up from small -ve to zero */
+ 	if (len_in && !len)
+-		return false;
++		return -EINVAL;
+ 
+ 	if (start + len < start)
+-		return false;
+-
+-	return true;
+-}
++		return -EINVAL;
+ 
+-/*
+- * madvise_should_skip() - Return if the request is invalid or nothing.
+- * @start:	Start address of madvise-requested address range.
+- * @len_in:	Length of madvise-requested address range.
+- * @behavior:	Requested madvise behavior.
+- * @err:	Pointer to store an error code from the check.
+- *
+- * If the specified behaviour is invalid or nothing would occur, we skip the
+- * operation.  This function returns true in the cases, otherwise false.  In
+- * the former case we store an error on @err.
+- */
+-static bool madvise_should_skip(unsigned long start, size_t len_in,
+-		int behavior, int *err)
+-{
+-	if (!is_valid_madvise(start, len_in, behavior)) {
+-		*err = -EINVAL;
+-		return true;
+-	}
+-	if (start + PAGE_ALIGN(len_in) == start) {
+-		*err = 0;
+-		return true;
+-	}
+-	return false;
++	return 0;
+ }
+ 
+ static bool is_madvise_populate(struct madvise_behavior *madv_behavior)
+@@ -2013,8 +1992,13 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
+ 		.tlb = &tlb,
+ 	};
+ 
+-	if (madvise_should_skip(start, len_in, behavior, &error))
++	if (!madvise_behavior_valid(behavior))
++		return -EINVAL;
++
++	error = check_input_range(start, len_in);
++	if (error || !len_in)
+ 		return error;
++
+ 	error = madvise_lock(&madv_behavior);
+ 	if (error)
+ 		return error;
+@@ -2056,7 +2040,8 @@ static ssize_t vector_madvise(struct mm_struct *mm, struct iov_iter *iter,
+ 		size_t len_in = iter_iov_len(iter);
+ 		int error;
+ 
+-		if (madvise_should_skip(start, len_in, behavior, &error))
++		error = check_input_range(start, len_in);
++		if (error || !len_in)
+ 			ret = error;
+ 		else
+ 			ret = madvise_do_behavior(start, len_in, &madv_behavior);
+@@ -2131,6 +2116,11 @@ SYSCALL_DEFINE5(process_madvise, int, pidfd, const struct iovec __user *, vec,
+ 		goto release_task;
+ 	}
+ 
++	if (!madvise_behavior_valid(behavior)) {
++		ret = -EINVAL;
++		goto release_mm;
++	}
++
+ 	/*
+ 	 * We need only perform this check if we are attempting to manipulate a
+ 	 * remote process's address space.
+diff --git a/tools/testing/selftests/mm/process_madv.c b/tools/testing/selftests/mm/process_madv.c
+index cd4610baf5d7d..3fffd5f7e6fb4 100644
+--- a/tools/testing/selftests/mm/process_madv.c
++++ b/tools/testing/selftests/mm/process_madv.c
+@@ -309,6 +309,34 @@ TEST_F(process_madvise, invalid_vlen)
+ 	ASSERT_EQ(munmap(map, pagesize), 0);
+ }
+ 
++/*
++ * Test that invalid advice is rejected even when the iovec has zero total
++ * length. A request with valid advice and zero length is a noop, but
++ * invalid advice should still fail with EINVAL.
++ */
++TEST_F(process_madvise, invalid_advice_zero_length)
++{
++	struct iovec vec = {
++		.iov_base = NULL,
++		.iov_len = 0,
++	};
++	int pidfd = self->pidfd;
++	ssize_t ret;
++
++	errno = 0;
++	ret = sys_process_madvise(pidfd, &vec, 1, -1, 0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EINVAL);
++
++	errno = 0;
++	ret = sys_process_madvise(pidfd, &vec, 1, MADV_DONTNEED, 0);
++	ASSERT_EQ(ret, 0);
++
++	ret = sys_process_madvise(pidfd, NULL, 0, -1, 0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EINVAL);
++}
++
+ /*
+  * Test process_madvise() with an invalid flag value. Currently, only a flag
+  * value of 0 is supported. This test is reserved for the future, e.g., if
+base-commit: 1b55f8358e35a67bf3969339ea7b86988af92f66
+-- 
+2.34.1
+
 
