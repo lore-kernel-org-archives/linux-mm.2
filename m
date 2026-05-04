@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18F32FF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 09:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06E60FF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 09:34:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDE9C6B009D; Mon,  4 May 2026 05:33:42 -0400 (EDT)
+	id 9521C6B009E; Mon,  4 May 2026 05:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAAE36B00A0; Mon,  4 May 2026 05:33:42 -0400 (EDT)
+	id 8D99D6B00A1; Mon,  4 May 2026 05:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B23E76B009E; Mon,  4 May 2026 05:33:42 -0400 (EDT)
+	id 77B4C6B00A0; Mon,  4 May 2026 05:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 94AA76B009D
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 05:33:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 568D81A0385
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:33:42 +0000 (UTC)
-X-FDA: 84729225084.11.9B502B8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D4496B009E
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 05:33:43 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2B3DEA02EB
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:33:43 +0000 (UTC)
+X-FDA: 84729225126.18.6B1EDC6
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 74613100006
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:33:40 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=NC+00Yvn;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=YjAiuNtu;
-	spf=pass (imf05.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3E722180005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:33:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=4fiTe258;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=Ya8hyzbQ;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf24.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777887220;
+	s=arc-20220608; t=1777887221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ft5tjVlJemnVxdKrQOWR07GWUrenfDbo6YKiLlRQjYg=;
-	b=4EFW3t8fdEHZYxAkr3CdsPTSWkcWhZdvasgXxIPOLqWC7sG54LZrDiVGEJOV9o0YRo//Vf
-	iGM/0pfeJs9m125sxU4JVxQNYG+llWKx14NNUAj9jNMjcJNJAhihDdSqTJ8Z5xFN50HYIU
-	wBJtrwacS/rv/TVEUsIUHm+mIjoFpBk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=NC+00Yvn;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=YjAiuNtu;
-	spf=pass (imf05.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777887220; a=rsa-sha256;
+	bh=54QuLJcpe0mdHxqir8B4oCgM7uiPnZyrpfVJkv2VNTQ=;
+	b=X+pyTCPFcRL7qlr1RSTd7m5M29QZ2aCJOLOUFMTusgj11cWOT/N0NT3FjBaG3V4BSGP4HC
+	JdU6wny7XTVJ3aiVbtIiI6EyJwpxr9URcCB1COEvXCjAsCuV8FZfeQP0ACbkZKzAF6/noF
+	UVeWroBvMOh0RPNn+VEnEd/D212yECs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777887221; a=rsa-sha256;
 	cv=none;
-	b=GpTqHFkOXM00vyyxoe1Lw4+3og03+9/1zm80jfTGi6mjCKVSK4oipXw6itFxqjakqE/0LS
-	vhXeF5lG9Pyxv9+PeP2u1/7JA+3KZhWHl3ewALl1byyOV1UQiQBBumLkCY4DWxf+0dsIBD
-	tpNtZsrLG3HxqOCNgUp4uRGaNdWxdp0=
+	b=sc4pSp73LPUFh+1s7BC2H7jJF55rXKGAqeS6h9fwee2CeotATbDRO/XiSCjmJuStckIlxI
+	br/+thuTRZHYHR0z5O4ALldX1HjwvvzmZWskP+ol0+iEfMNYD29/8oJDh9PRYrUKk43S7D
+	8hyC2oGrRWZjj44c3A6ZZdyr69/rlEo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=4fiTe258;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=Ya8hyzbQ;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf24.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1777887219;
@@ -58,27 +58,27 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ft5tjVlJemnVxdKrQOWR07GWUrenfDbo6YKiLlRQjYg=;
-	b=NC+00YvnEebssrgHehzlz8bX7d+X1xp33wCP3F4/hOYN8p9eHYVnXdW9p4aP28p0zVsJt9
-	KeKHZP/hTwB7uHL5RRZhma/aQBpVrdIOJh1JTyz/NAxYkUX/wdjJdZYhI8xbOZJHmUdQa6
-	NOimy2qPsefv3aMws9u7uUwsUXTWN0MagCH2NggrHygMmRa+2AdYfvPKVvUA88IDNb1aQy
-	Z4UF9aa9F9JaaLJtPRjudkod2k2pqxoZu9KITzPUWycNwzWDJTGBV70ah0fZbcD1owZru8
-	jzHvynCd/7HagURExUsddqcXdodk2pS0roZJu0rMOXpXX/Qce4KiKQ4KwZvlQA==
+	bh=54QuLJcpe0mdHxqir8B4oCgM7uiPnZyrpfVJkv2VNTQ=;
+	b=4fiTe258PXM0AU2nF7sr5EciL3AdNsNqw81aKrsuxiSBuO4QWf6cAgiMuXLDkBqdvK/XKu
+	Ijh3JsX+2dnvAA7LEJpd3cMm46MSUJw5WXC1RTCOLsH2Yswj6DGbHBNmSLGncTETXbrxTG
+	B7uwGflbsgYNglEpYOTQ+8l/Dv67mXhK16xU+rzb0T0b4WpETfUPPNPuKNBvOeR/Suw2UY
+	96NZZQKjHOOj8/2Fm3c8UNkb70iz1uCEWY6vurHFQLmvXaQucDFopVFYbyPCYPlhA9Tfnj
+	+3g8IyKdCIKcMtfF5sd7lSHjIHCKrH0vup+LBZ6I9zlA1WLT5dKKLzAm0dINiw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1777887219;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ft5tjVlJemnVxdKrQOWR07GWUrenfDbo6YKiLlRQjYg=;
-	b=YjAiuNtuewrsNsYXNQ5rzmlr51bXN+FcRHyyKsBkqi8MmLFxxEc/o7iKpcKU16CH1ILplT
-	wmFhEZ+1YxCEjKCA==
-Date: Mon, 04 May 2026 11:33:25 +0200
-Subject: [PATCH v6 09/11] kunit: uapi: Add example for UAPI tests
+	bh=54QuLJcpe0mdHxqir8B4oCgM7uiPnZyrpfVJkv2VNTQ=;
+	b=Ya8hyzbQcKEwRoNDtlD4uUE03ky+hH7RSJQxS5sQvYcq4X0VjPDSsiV9I/5Dbl6forYmpQ
+	LVR3IRbfPh4yaiBg==
+Date: Mon, 04 May 2026 11:33:26 +0200
+Subject: [PATCH v6 10/11] kunit: uapi: Introduce preinit executable
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260504-kunit-kselftests-v6-9-712d3d526d97@linutronix.de>
+Message-Id: <20260504-kunit-kselftests-v6-10-712d3d526d97@linutronix.de>
 References: <20260504-kunit-kselftests-v6-0-712d3d526d97@linutronix.de>
 In-Reply-To: <20260504-kunit-kselftests-v6-0-712d3d526d97@linutronix.de>
 To: Nathan Chancellor <nathan@kernel.org>, 
@@ -96,21 +96,21 @@ Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
  Christophe Leroy <chleroy@kernel.org>, Nicolas Schier <nsc@kernel.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777887211; l=3560;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777887211; l=4914;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=X2NN2sojneity7IMySlccOZ5k53NgDydZFJmaouxqdA=;
- b=d+F6BfdlzPGVKpRtvndevjxQUwuA2kdiKjOKE+xclSjrFppN4PZlwNeh8L5VMEutjdqDzgLmY
- LaFBlIeV+GPAc2hVsx4yFUiV9oZx8OMoKI//hL7q4tmqR6l1KjH9PQg
+ bh=CX9mDSQHReDHwq7Y7h5slKzIlaWwgoLVwu8rW9SRZP4=;
+ b=rOUneMbzF1f113+9Wt2C9L8BsiwD6Dzs1kpZ+t+eIdHAn5qh6FHYThaZdNzBgRt7wbUS+4RoP
+ isGDCOYJAILCmFNroiCghjSkp5vq1Kt9kPuoxp+L8KlkpBK1EnCvsKx
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 74613100006
-X-Stat-Signature: imr1swud8tst6pohsxz9gjqynhoyn88h
-X-HE-Tag: 1777887220-147275
-X-HE-Meta: U2FsdGVkX1+p3EMhe0QyBlU/12WQLL78vLZg9WdouYvcCH9bMtfBYvqvfqfrcFqddauJhU34KYc03c4ppoIcMt3go0U5YBEoBDSGeoUvnR0fLv9nNQECnfoFOEWGsG/o8dXUR6Xgx1kntyvqOwmg//Be/dh3z8YMSyyeJf2G8wopikl3k+wn6KoIiR9SH2B1l7QcTdLAfJkARbFCOUPcCZrBx6ejJ/hZlKXwbr/683g5u3N2cWwolWNKI6kBCfkQZYpH+qimBowvJR4eMQcMmuRDY6lUmdbxarHysHmYtJEDVYBmLSzQspCMyfqLM75tlWJd3QuL2R+vggfcsp9YKEk61NbuGJEWUuw95eJhyz1vj1yEWu3t589z6LjCz+7pGkVPAVuA5kO6PTrvZUtN7FrGcx5zD1X1RIyZGA1oTwjQ4Lijv6X9L6fDTpOPXVwa+lUPsbj82PMjIdv+hqhr8NCwhLZgwvLgoBT0PiAfwbLC1Lh1234rL4uXGm3dpHHAnb3aRCU0mgXAAKmIm0pkRuPDm0TG5rRa3IXV/Y7GJ1tBJLR4JCkioBIQ9Xq3tEfbP/sXB/doG5artZijuW7AXmgmW4eOzCitg/KJGr4jNILERwVzxEkfNDC7xI7Y5S6BCkpdjqpfTnYOvyrXlXrsDBPJLCtot0oYVTPhNMmLc3Rsk0CXa5yT6pe2L+WIp3YIADz3Tj6IVGsMexLLRSmCPybzhQPbrIqo1vmTwcDSwjpbn/mckZYNwn12CzLhNnI8fYbaOfZeUsM/mC1E3g0USj34OwL7s2+XaDmeVJwS6lHHBkOEyGl/wS2eKIGDbyNOzjKlOW0yFiTV2ZCB648Z+Pt/fzBhK9jZZUO/ISMLcvsvABHxIp9zDJCRLy/raGgH33aFY8Zfw3FD/X4lqBe/HOz4AD2fxwDxWb3USXQ81JqyZVHnY6IrJVrQVXKUZaqwoxNoQB97CqFlX5HiWmf
- kQeKcRVW
- W6Galrb+YxvFyZLXrpCXr+qxWfLjxlnf7IJL1Cd88ZVaNpRrQbagRsaOKNKBC1AVAUzB2whdrwLSVFj1JZeeL7EsRW0VOiXz4F/UOmS0COoltcGNcsDTty5KAqVvzNYmK+13pBJEn8BfNBHPbV2WkJvmjl6S+r9qR5yl1EeVOHl/XGZeIYZqYrG2BfOcZBfbmQ7xg8aQv4Kugk5yxdxJQNXGiC6TXVVosqdepn0W1A0npLQX5ohfICcYeDKEgEFS1SzCyGAo1qkYMeSqKwhyM9pzvKDTknj/bNZNK6P6/O5JaJ0uBLi9E5/wjJ4M9zNQtYAjYBYI8CbvywYzoYqaaaB3Rt1+FCrBS189eBq4IQjdj6ZyMxKd3y7ahBDcimvadFAWEBh3dbpbCrGLuDUfBF0LfSw1VwH+p5+D9msoEjROHv9CceL2ao/1LDtKtDl4IdVXY4mdE+fHka3ze4SPJS3g7XEjZifbK7qEBgQQzO2/UB1FYfb846bNUEQ==
+X-Rspamd-Queue-Id: 3E722180005
+X-Rspamd-Server: rspam04
+X-Stat-Signature: oucyhwmhbw9jan8ggq3nwinwouiujf39
+X-HE-Tag: 1777887221-262916
+X-HE-Meta: U2FsdGVkX18/XEsBNWaTJcsHn9Z7LN4yWSYJ8T5FmzremlHMW7RXjj25YfzeOKkv6pETOE2IkeQ4+mtYVikiQGVuY0SABS+U9z+UT2nsjpfW54ggN9lTuoliE/ySmUXWxkOpNUss93l6WKXeUlMa+MrS54pq4YU7cJKfoCpOhyaEo4nDap0w+ODDRUwn+WIpDESkGkAKahYVxCprwNUNCiTiGQ/R1xVqcf8yrPwlS0HDWLLcoXR/1QklTlIVabvt35cq9p3H96YbMAWql2CjG5WEYKV2fpIHLqh7WF/+cp/w41LSzCaUowxXwxjEMSdfD5fLzHFMDN90ueDC6xCl8erj7wJu/idG6TpPQDO7+kRXqhOWVENZZy56Kodu/tJjpCju0SD8S66HtPZ27IWVBOUHOFAwbShMMLJIZdFnYSI27j4Xay6U9Xj5plTf8C7gzFZU+v9qF60y7TYuepaU3W35MJ6IiwTgsQD4IEcDf/yzyfL85OqDrCtpDKIKOINwNAPwnzM+SjPy2j5MLEFpi5gqrGplLKhPDa/QCEykuiaJ68VwGzkPGw6+SYb9R6W/EJZP+35f2CWZcWVkoJwwerEWfWuRdJSbG0jfyAPjRV6ftWVph+gr3jHHqq+smq44WVcAXtXjv+IQfqHqa01f4c4LAcntvxAVoMff93Ajd9+//kz+ePkxoRhIcGsrrjxkRs+KromgawX3vx9zj5TpMaHkVy3VV4dXTlC5r2K9TkVZKTWMlo9gCE2q06TQ2+tEBqIeTHKC2zvkefsS0V2+eNHtPRbiBevSer1MtbVgP4K2+nklf6Wf5WrHz9mnOJu866v8vgvSHIGSOKtoJwbvN1fwApQscSHf3bVYc7YSclj8BxUw2MoF37erzAUwjCmqmrdtgNS5tKvoezzk2ryCcAWTa5wYw2R4bhEC5Nc3pSE6w4Dd6yBIe5SJyyUraCrpgGvUpeI94nkt49ht+D3
+ JKurDn8V
+ 96OiCoP0+vucdk2g3K4au1Bem8m5dZ32nTbphEpuuqh3fvAEfyTYushWl87D+05gO52MbbnavYRCsDbH6QmkaO1ca1NObW7uHnPUqu7Tt+2IiedcR7J23MgGbjisV7gPs8cr207LZ/tO4z9S7k54/u37Z64V9alWa21SgTQ7MbjKMS/ytoZ7LXj17NT96dV37apxaK2Gk6aFr6OldiKrUJxww50R8TOOnBPmAluUONUgj2O1UeYpaJUCDbMuOMIg9x4ztLbzoJA4t68aSLvh+DpOEcYOTypNObn9SDTOr88jrK1T45HGZruRRm/DUwdiojNfJCRRj5vAIKR3bBherQ4jWHYpdpg9NLyXw3n9SnXZK7aZbFfEaVAHxaogYLNcWtcdsQ/IWnx4oTW79tQ1xmEyc9KXmbpQ7/hHAnuLjskQkvrWGKB65lqeLvDXvVSKe19/pJTB9n2wuuC4JbEOa+cRKWnM/KZk7dcF7oKNrdNFJEmg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,100 +118,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend the example to show how to run a userspace executable.
+UAPI selftests may expect a "normal" userspace environment.
+For example the normal kernel API pseudo-filesystems should be mounted.
+This could be done from kernel code but it is non-idiomatic.
+
+Add a preinit userspace executable which performs these setup steps
+before running the final test executable.
+This preinit executable is only ever run from the kernel.
+Give it access to autoconf.h and kconfig.h to adapt itself to the
+tested kernel.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Reviewed-by: David Gow <davidgow@google.com>
 ---
- MAINTAINERS                    |  1 +
- lib/kunit/Makefile             | 10 ++++++++++
- lib/kunit/kunit-example-test.c | 15 +++++++++++++++
- lib/kunit/kunit-example-uapi.c | 22 ++++++++++++++++++++++
- 4 files changed, 48 insertions(+)
+ MAINTAINERS              |  1 +
+ lib/kunit/Makefile       |  5 ++++
+ lib/kunit/kunit-uapi.c   | 11 +++++---
+ lib/kunit/uapi-preinit.c | 68 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 82 insertions(+), 3 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e29ca56f7334..b7358d89df70 100644
+index b7358d89df70..4e8cf9fa7aa9 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -14399,6 +14399,7 @@ KUNIT UAPI TESTING FRAMEWORK (in addition to KERNEL UNIT TESTING FRAMEWORK)
- M:	Thomas Weißschuh <thomas.weissschuh@linutronix.de>
- S:	Maintained
+@@ -14401,6 +14401,7 @@ S:	Maintained
  F:	include/kunit/uapi.h
-+F:	lib/kunit/kunit-example-uapi.c
+ F:	lib/kunit/kunit-example-uapi.c
  F:	lib/kunit/kunit-uapi.c
++F:	lib/kunit/uapi-preinit.c
  
  KVM PARAVIRT (KVM/paravirt)
+ M:	Paolo Bonzini <pbonzini@redhat.com>
 diff --git a/lib/kunit/Makefile b/lib/kunit/Makefile
-index 6059621a2d32..2434470e9985 100644
+index 2434470e9985..05991d69aa70 100644
 --- a/lib/kunit/Makefile
 +++ b/lib/kunit/Makefile
-@@ -1,3 +1,5 @@
-+include $(srctree)/init/Makefile.nolibc
-+
- obj-$(CONFIG_KUNIT) +=			kunit.o
+@@ -14,8 +14,13 @@ kunit-objs +=				test.o \
+ 					device.o \
+ 					platform.o
  
- kunit-objs +=				test.o \
-@@ -31,3 +33,11 @@ obj-$(CONFIG_KUNIT_TEST) +=		assert_test.o
++userprogs +=				uapi-preinit
++uapi-preinit-userccflags +=		-static $(NOLIBC_USERCFLAGS)
+ obj-$(CONFIG_KUNIT_UAPI) +=		kunit-uapi.o
+ 
++CFLAGS_kunit-uapi.o :=			-Wa,-I$(obj)
++$(obj)/kunit-uapi.o: $(obj)/uapi-preinit
++
+ ifeq ($(CONFIG_KUNIT_DEBUGFS),y)
+ kunit-objs +=				debugfs.o
  endif
- 
- obj-$(CONFIG_KUNIT_EXAMPLE_TEST) +=	kunit-example-test.o
-+
-+userprogs +=				kunit-example-uapi
-+kunit-example-uapi-userccflags :=	-static $(NOLIBC_USERCFLAGS)
-+
-+ifdef CONFIG_KUNIT_UAPI
-+CFLAGS_kunit-example-test.o :=		-Wa,-I$(obj)
-+$(obj)/kunit-example-test.o: $(obj)/kunit-example-uapi
-+endif
-diff --git a/lib/kunit/kunit-example-test.c b/lib/kunit/kunit-example-test.c
-index 0bae7b7ca0b0..febabc995405 100644
---- a/lib/kunit/kunit-example-test.c
-+++ b/lib/kunit/kunit-example-test.c
-@@ -8,6 +8,7 @@
- 
- #include <kunit/test.h>
- #include <kunit/static_stub.h>
-+#include <kunit/uapi.h>
- 
- /*
-  * This is the most fundamental element of KUnit, the test case. A test case
-@@ -489,6 +490,19 @@ static void example_params_test_with_init_dynamic_arr(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, param_val - param_val, 0);
- }
- 
-+/*
-+ * This test shows the usage of UAPI tests.
-+ */
-+static void example_uapi_test(struct kunit *test)
-+{
-+	KUNIT_UAPI_EMBED_BLOB(kunit_example_uapi, "kunit-example-uapi");
-+
-+	if (IS_ENABLED(CONFIG_KUNIT_UAPI))
-+		kunit_uapi_run_kselftest(test, &kunit_example_uapi);
-+	else
-+		kunit_skip(test, "CONFIG_KUNIT_UAPI is not enabled");
-+}
-+
- /*
-  * Here we make a list of all the test cases we want to add to the test suite
-  * below.
-@@ -514,6 +528,7 @@ static struct kunit_case example_test_cases[] = {
- 				   kunit_array_gen_params, example_param_init_dynamic_arr,
- 				   example_param_exit_dynamic_arr),
- 	KUNIT_CASE_SLOW(example_slow_test),
-+	KUNIT_CASE(example_uapi_test),
- 	{}
+diff --git a/lib/kunit/kunit-uapi.c b/lib/kunit/kunit-uapi.c
+index 7f0309a827a5..702d26878ccd 100644
+--- a/lib/kunit/kunit-uapi.c
++++ b/lib/kunit/kunit-uapi.c
+@@ -33,6 +33,8 @@ enum {
+ 	KSFT_SKIP	= 4,
  };
  
-diff --git a/lib/kunit/kunit-example-uapi.c b/lib/kunit/kunit-example-uapi.c
++KUNIT_UAPI_EMBED_BLOB(kunit_uapi_preinit, "uapi-preinit");
++
+ static struct vfsmount *kunit_uapi_mount_fs(const char *name)
+ {
+ 	struct file_system_type *type;
+@@ -158,18 +160,17 @@ static int kunit_uapi_run_executable_in_mount(struct kunit *test,
+ 					      const struct kunit_uapi_blob *executable,
+ 					      struct vfsmount *mnt)
+ {
+-	const char *executable_target = kunit_uapi_executable_target(executable);
+ 	struct kunit_uapi_usermodehelper_ctx ctx = {
+ 		.test	= test,
+ 		.mnt	= mnt,
+ 	};
+ 	struct subprocess_info *info;
+ 	const char *const argv[] = {
+-		executable_target,
++		kunit_uapi_executable_target(executable),
+ 		NULL
+ 	};
+ 
+-	info = call_usermodehelper_setup(AT_FDCWD, executable_target, (char **)argv, NULL,
++	info = call_usermodehelper_setup(AT_FDCWD, kunit_uapi_preinit.path, (char **)argv, NULL,
+ 					 GFP_KERNEL, kunit_uapi_usermodehelper_init, NULL, &ctx);
+ 	if (!info)
+ 		return -ENOMEM;
+@@ -192,6 +193,10 @@ static int kunit_uapi_run_executable(struct kunit *test, const struct kunit_uapi
+ 	if (err)
+ 		return err;
+ 
++	err = kunit_uapi_write_executable(mnt, &kunit_uapi_preinit);
++	if (err)
++		return err;
++
+ 	err = kunit_uapi_run_executable_in_mount(test, executable, mnt);
+ 	if (err)
+ 		return err;
+diff --git a/lib/kunit/uapi-preinit.c b/lib/kunit/uapi-preinit.c
 new file mode 100644
-index 000000000000..5875b0d680d4
+index 000000000000..686737ea3c76
 --- /dev/null
-+++ b/lib/kunit/kunit-example-uapi.c
-@@ -0,0 +1,22 @@
++++ b/lib/kunit/uapi-preinit.c
+@@ -0,0 +1,68 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * KUnit Userspace example test.
++ * KUnit Userspace environment setup.
 + *
 + * Copyright (C) 2026, Linutronix GmbH.
 + * Author: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
@@ -219,17 +228,63 @@ index 000000000000..5875b0d680d4
 + * This is *userspace* code.
 + */
 +
++#include <sys/mount.h>
++#include <sys/stat.h>
++
 +#include "../../tools/testing/selftests/kselftest.h"
 +
-+int main(void)
++#define KUNIT_UAPI_CHDIR_FD 3
++
++static int setup_api_mount(const char *target, const char *fstype)
 +{
++	int ret;
++
++	ret = mkdir(target, 0755);
++	if (ret && errno != EEXIST)
++		return -errno;
++
++	ret = mount("none", target, fstype, 0, NULL);
++	if (ret && errno != EBUSY)
++		return -errno;
++
++	return 0;
++}
++
++static void exit_failure(const char *stage, int err)
++{
++	/* If preinit fails synthesize a failed test report. */
 +	ksft_print_header();
-+	ksft_set_plan(4);
-+	ksft_test_result_pass("userspace test 1\n");
-+	ksft_test_result_pass("userspace test 2\n");
-+	ksft_test_result_skip("userspace test 3: some reason\n");
-+	ksft_test_result_pass("userspace test 4\n");
++	ksft_set_plan(1);
++	ksft_test_result_fail("Failed during test setup: %s: %s\n", stage, strerror(-err));
 +	ksft_finished();
++}
++
++int main(int argc, char **argv, char **envp)
++{
++	int ret;
++
++	ret = fchdir(KUNIT_UAPI_CHDIR_FD);
++	close(KUNIT_UAPI_CHDIR_FD);
++	if (ret)
++		exit_failure("fchdir", ret);
++
++	ret = setup_api_mount("/proc", "proc");
++	if (ret)
++		exit_failure("mount /proc", ret);
++
++	ret = setup_api_mount("/sys", "sysfs");
++	if (ret)
++		exit_failure("mount /sys", ret);
++
++	ret = setup_api_mount("/dev", "devtmpfs");
++	if (ret)
++		exit_failure("mount /dev", ret);
++
++	ret = execve(argv[0], argv, envp);
++	if (ret)
++		exit_failure("execve", ret);
++
++	return 0;
 +}
 
 -- 
