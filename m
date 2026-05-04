@@ -4,130 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47054FF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 09:11:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9277CD3426
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 09:33:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CA876B009D; Mon,  4 May 2026 05:11:28 -0400 (EDT)
+	id E31C06B0005; Mon,  4 May 2026 05:33:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97AE46B009E; Mon,  4 May 2026 05:11:28 -0400 (EDT)
+	id DE3266B008A; Mon,  4 May 2026 05:33:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81D2F6B009F; Mon,  4 May 2026 05:11:28 -0400 (EDT)
+	id CD1AF6B008C; Mon,  4 May 2026 05:33:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6326D6B009D
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 05:11:28 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 31BA68BBBB
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:11:28 +0000 (UTC)
-X-FDA: 84729169056.17.2061DB5
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CBCF21C0004
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:11:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="M7Guab/h";
-	spf=pass (imf21.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id BC3546B0005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 05:33:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6583440302
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:33:37 +0000 (UTC)
+X-FDA: 84729224874.16.542F66D
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6C13D40005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:33:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=CkF4Ur92;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=Ne2XaM9e;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf07.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777887215; a=rsa-sha256;
+	cv=none;
+	b=F1woFGBDekRyrjiu0XhM9KWz3pmTbF+s7IIpwArkUpZFHM3V5RWWHjXiJYLN+2QiNsfy6+
+	Ys/KaMrnsRwDn1Cmgay798/DXsqwVhxPsOv/GJziNCTbLlLcYSVjjs3fGFRv3IMeNu0up7
+	HumkO7H8g8EKWgOdjjby+tQjNbSjXJA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=CkF4Ur92;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=Ne2XaM9e;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf07.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777885886;
+	s=arc-20220608; t=1777887215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jm2w8eq1FHMdDz3aG4TKoSi7OYPVag1/QptiIakzkcQ=;
-	b=5yDflZV1EaYdltZuUggqKXmkgQ9rJtv6eVAuoH66g/IqM3fPpFM5zhme1vgLDOGHhVFQrk
-	Vf+abBibbr0VagsmXhRWOjrnOeZkNJNCPtVGAmnERAm+uBL8U28tEjJ+zgMVkm/MlGLMMw
-	gc18t3kNQwMQ1R21rryELxXF1Oj0IMc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777885886; a=rsa-sha256;
-	cv=none;
-	b=NhCjau0Dc+ycS60CkKssxBYVz/b+kwJ3aPwWQSRxYA3X02LeyRdqaCJ0/s0tvWwZ8OCVD2
-	CbV1kJpoOLClMIkmBnybAPUP1+PoVNFIiRWpI/4j1+KZt6BiWQYp18LkC1xbxxrNd2+66j
-	VMDwu9IsKSMttMAUS3IOO7AWC3a0zxs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="M7Guab/h";
-	spf=pass (imf21.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6442tF7G068020;
-	Mon, 4 May 2026 09:11:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=jm2w8eq1FHMdDz3aG
-	4TKoSi7OYPVag1/QptiIakzkcQ=; b=M7Guab/hF7A18bW90wQmaYLM2oR1SFL80
-	arCpJhW27YtIXqUzxgWAD1g040yZWIpkg5x9HoeluqxcQWPlH1ISxmid6cHc16cb
-	lnHgeGQA80Hih+uslLry7N9XR4TWTDtbekEbAhfcNm+cr3MTWEveDPzWID8Z/G5F
-	rYWxEKKgyc3Gd5OqN4i7K4NnEoVDw1VjNfptrtKU5FrtvNpqcDp4QjEkmd9VYQ7C
-	h6QKLjrvr/E0gtMuoZcMRFl/FL3p1brmdZ9WMDfUo10VcVoU/on/qJAnbNct/GRL
-	jEMZFl6lBAiHyYSAYqCqQKg5x5m6pUseBjHZ8UH5T08CP8Hm0JwOA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y168ru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2026 09:11:21 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64499V0E025969;
-	Mon, 4 May 2026 09:11:20 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwx9y472j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2026 09:11:20 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6449BHLM30605840
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 4 May 2026 09:11:17 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 326012004B;
-	Mon,  4 May 2026 09:11:17 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A058720040;
-	Mon,  4 May 2026 09:11:15 +0000 (GMT)
-Received: from aboo.bl1-in.ibm.com (unknown [9.123.14.187])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  4 May 2026 09:11:15 +0000 (GMT)
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Cc: Sayali Patil <sayalip@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: [PATCH 3/3] selftests/mm: fix exclusive_cow test fork() handling
-Date: Mon,  4 May 2026 14:41:08 +0530
-Message-ID: <f3884dcd77212d9a9f3498f0863f73ce861897cd.1777870179.git.aboorvad@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1777870179.git.aboorvad@linux.ibm.com>
-References: <cover.1777870179.git.aboorvad@linux.ibm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jiw5cliQjVOVd7Hg7M7qqHEcA53QLkykbCEMKUj9V/4=;
+	b=XJD8efNopJGKDdCx85Avc9DA0rJClP9xKCE+haV3RFZ+CVxiTaBGxCd45LP/HpsnbO3kFL
+	Eeo91+2fvrPl1NZ8qRbeKdfr/5CZ03NFE5SDDwB2NUU4VLJ5T4RS4TL1NluznGHAEgrs1I
+	ayQO/dwoUPAqfNXZX71Yp1H+ZvHXaLs=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1777887213;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jiw5cliQjVOVd7Hg7M7qqHEcA53QLkykbCEMKUj9V/4=;
+	b=CkF4Ur92AwTZrXO/sv6QGR6uZ0gVg6WWgj6BnkXL6F5RbU98XwApIIYsadlvw5FwHBbUle
+	KCUF8wrjD1nFAaEC+LP7e3ieNZnEFRlj4rPux9WT4dGihNf7DTiGa4MzTqQ0qBuK90HVtb
+	eTTv5ceRJC+vx74zomg8a1zLuIIoDXNawlOsUXZJsJqVZHcfzOCyfqr7cmFOx0cqf2W1m3
+	9Ke/DHoO6Xun0TBR2CGg5bs3lgbv5gqf//6/upZusSDIqVi3uGPe6WMezvqZvUFMXdTag3
+	SM2WVhET9UGxbAAdANHBdE1hwKfbCD4LbHC9dK3KfulAGRKlA0V/mm/+OBxQzA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1777887213;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jiw5cliQjVOVd7Hg7M7qqHEcA53QLkykbCEMKUj9V/4=;
+	b=Ne2XaM9eh1DjfbRR/wisAzh5vD9LeAq/Wx1SZRdaT2Nkb1bs9RWaUWN2krijC8nFY8z9Cq
+	hsCmlkBXoqVqPyDQ==
+Subject: [PATCH v6 00/11] kunit: Introduce UAPI testing framework
+Date: Mon, 04 May 2026 11:33:16 +0200
+Message-Id: <20260504-kunit-kselftests-v6-0-712d3d526d97@linutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: CLrEPZepVvPWW--8jC581KAg740SAxfb
-X-Proofpoint-GUID: CLrEPZepVvPWW--8jC581KAg740SAxfb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDA5NyBTYWx0ZWRfX7828XjCc7lDp
- W8qiv4I7CvqzBOmj/pcjx0dkovueJ/A9+xgYOCoCwlsC+YoB4oKjwjrKNNrHTiYcJEm0BUUsjlh
- pkIaOOhPEy+t/n8kABgOC3+DftyLjCiwpNUC11c1fJ5CucRN7wUj4X+m4c4CEHlgFbl0hPMEIWg
- dTWx1GZ30G1ZUS+IqWR/96+6imawGwcF32NujWVlWOMht7C/eq5jdJydaOGRsMsef9qreffaGya
- /2fKwqcZZiwQzoE4jJCIKRTPWfHRRCHJQF9Puwx/AbL4GtjP0HvwFHMUKZwgkkFPDxjntAHvn87
- WewUU7C1VN+0NGzl2bZOx4Xia3xIqpho7ptYiZGT5KAOB4yM0w80K+qIQOKhlFsawAxE335+JiW
- XCbTn0h8TOFffsQyM1ACwTuD3qwKLJwakCwuyqS1m+X3zh10v77+aRmHkn4UVIOADN7yIi+OGB9
- Q+sHi9QHCXs5amEwBXQ==
-X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69f862b9 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=YKbGnN07TdQTFoDUIKcA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-04_03,2026-04-30_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605040097
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CBCF21C0004
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XQQWrDMBAF0KsErauiGc1Ypqveo2RhS+NGJDjBc
+ kxK8N0rhYJLqi6/4D8N/66STFGSetvd1SRLTPE85tC87JQ/dOOn6BhyVmiQwADr43WMsz4mOQ2
+ zpDlpbtDZ3pMhQpVrl0mGeHuQH/ucDzHN5+nr8cMC5bVgbBDsX2wBbXTXW2fbwB2DvJ/ieJ2n8
+ xhvr0GK/1N2/5QJe2Ikb3vTPZXLNQtuF5CpIVgQJgASbN0QaojdkAaggtiMMIsNQK3vfVND6Be
+ CTQWhcknrGsOWBhm4hvCGuOomXJA8igPwQfB50P26rt970M1eBQIAAA==
+X-Change-ID: 20241015-kunit-kselftests-56273bc40442
+To: Nathan Chancellor <nathan@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Willy Tarreau <w@1wt.eu>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+ Brendan Higgins <brendan.higgins@linux.dev>, Shuah Khan <shuah@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Nicolas Schier <nicolas.schier@linux.dev>, 
+ Kees Cook <kees@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Christoph Hellwig <hch@lst.de>, Luis Chamberlain <mcgrof@kernel.org>, 
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+ linux-doc@vger.kernel.org, workflows@vger.kernel.org, linux-mm@kvack.org, 
+ linux-fsdevel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ Christophe Leroy <chleroy@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Masahiro Yamada <masahiroy@kernel.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777887211; l=9871;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=jjFMDKdhbjQLZ+fcrbaCzSYxbFlqAxUmrc8TwIq24gA=;
+ b=qOGf/9JYWpejLSdzdJlFIjDSwMfYxKdIYhfx+3gP9+i2EIhD8YSa1FSioTUt/I6UX+Q5JWZRD
+ LmSMw75cIUZA/0vVN9hOfjuYLJ0o3WWN/JB2wWfvSs0qp4L2PmW3rUL
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Stat-Signature: cwc88fbsdrd1tunn5x43xrwy6dpafi37
 X-Rspam-User: 
-X-Stat-Signature: b8n4arx48n8j7t7hk4rjfdwemk6n14sk
-X-HE-Tag: 1777885885-803782
-X-HE-Meta: U2FsdGVkX187ZwwzXFNS5PVq/ubaaYH2AxzrB1g4YI94k4bOfDrPhTwY+WDHc61UsD4J6up0nt02ZYcvHI2d+9l8ZHlU7vXqp+w0ois69cPI0x+HmFmoCSo5U3W9PJdGRB5tm/0NEhijGM4Frjxhvarz/s0wDU5xPFJRrJWi5ylo0uX/QpFYwcL1i26p192Efm7CxSJ/zXHWc08lQXlkjnRQTaeipnW8//tAcAdlNmvopdQmDAKRSztaBrvvKZfAxMJZCA2ODJZf8GSAr17Qw62FPkwVk2/qaWu7NIOagp6ZTkgbjuDN+Zn28FipUu1ghVE1aC3T3C7id88lkx2L3OIuyqidyBT/l127X21p4wzkg7SY2zSW2OKOyqmQuvpwIVWvupUp9hGXQRdpZN6U6lUF1A5+e6byEtEZscVMV4D7v8ZDmA04bhIFSiIOKF2xp/os582UFz7wip9GEd/cG6kQ6qdtIz7kXuXSpNgDYB9Fkja1yF5AUPS/UbUaDBJNKH7i386i6rTmaetY9cx8fthegVRM8mhuQ2syFjziMhaapQogVgUWlqw/ETNE5ipER6eGqix4fwYp+WgbhY3O/8iQWNnSF9WJHfAhNqOzieYcG6P1vbL6gyAxj+8IkCbS+//nSySJfifYwTGOzTxNNJR1nUB6pXGm9zQIJ5ChBXmlg2BfNHC6fF9do6alvEVkG/t5mLavClEJcf1uaCoDJhUZTwqs91+6Ba0DBvg2B98DgD5Nb2bmsOapCu0N92SMah3Gd0A4aHwtUHMEKlkZbLDpLwvtFYZ+v/vRZ6DaHJH5WSRaIdFCNXXnAfe/uG9gmnuOCO7V0VbHUVycJvP+s1LMplDp/t+ocWoxoPf7i2Nze908AJcJBmqpFh7gcrUk3QJ7B5YWaksaZ8h3hrfWLXDcMQz35CcZqu2aPLSmtmGjrflyjNwFVjCyl6YwBGCZv9YiZ4+9xNSBqtIQYfZ
- TqnOkOrN
- 9hlLcA/P3Hw+7UnSKC7huhWFgoj31NszWuBs6XPay5t4SDzvPUHnmx4k8Tkv3qAHYQTE2BAwM/VQ7fC75sam7MWH9IgldAyEUWgvI3O+dLi2Or5qey9bfDztTiPbBchD919VgPxUifTQtMEKd07B2k5X7U9EVZg93AtP3iJW2wWkOcGaPUCZdXTl+Wtk9YjZclhfsTDa3lTJMuPyDg4r8JdPF5gcf30ZSe7/OCYCcN/b5JDedmqmkh2xk7/BUunDP2TAliwv5Cql7+96YWqSFS8giX6Vn1kGhQNsSVUjVaHB/AZcxWerF+HAY7TIHIymL4JpBRcir0ypTYyNH5UB4P1bnww==
+X-Rspamd-Queue-Id: 6C13D40005
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777887215-420057
+X-HE-Meta: U2FsdGVkX18YPIWupz7HriFY/X3CJ0z+5+AWLqDTbOIlAS5ix2rwYrYkAbiUTceEkMKjx4Lt6324dXNxq1jAw6JW1EtEsH61oQkS6eep+aAmdD8Baovhl0a7ngl5cMceGPqNYEnbGd/FRFAUKnAzuVD63Mslso7iP+yCZIOSxRUE2xaJmAKVuEh5DuEEqjRLLrr8pgdyc/zVaS1t1vOSqYjXc8kFyWNfI0qiHJsMrA57UulP0HAWNOaRTbRW7JSJqIKJckgYDn6yGzZUXx366m0ap9/ZVOC5VLo3qLO+d7DjNEE3GJRl6TtSB+CCKUXPyiIo06WjGx3rWdoSVT3yy9/MFgXGSGmYUiUf/PNqcpWZkuWhcBlaEaXfloDwf0i3l0yNNMFPoWjEvaEhe8cr7QFP3HnqQ3UnqPemn9kWsGSv05mtayltp+KOar2o1bfppkn9IQgHZYv/h6E4DmN1aV0iS5fxRdATvMXKIqcz+1Q5Gjq6hdGguPiopjKtkey3phunDm7AdyjFyOmKxEJBy56BFkVw45Qn67Bd/28N5mcB/3FGzERh8xbaWVTN7bRMbvejKIuecknjctzejnDuzpp/8nXc6LIUh7W5Yx81+1r/GcDDIlvVMOePsKoBgszgrn3UVi837QtfGhZY5KKsjq1F5732Gs82sIdeFRyJP5lVbq3Ms+DgHVkrkUPl8JJCFxYaZ2eY8m0Wd/iCR/uB7q9+hW7JLKb4pjHSrKXR+C9zu6Tx1Wy05PLx/jbVSHLy9DRPDSiTA+fJWSRclzeW8x6qGIkINl3DCSFXJjRT7cWkfBc9pmMLpYwI+T58nWpZmk+pKBPiFACF22L0KrOGttjcgyTCaEsrB/0eKSkMay8/pARf3RjZHifEKrWoRwGXnulFgB/nn1lXsgPsNO0zGbqjn1mKWkkgnZY981ft5IPFGLvezneVExRHv3YcyX3wB7IKBVccxC8rBouMeXv
+ andH16uP
+ rl6MLmy6Ej2h2OS57FsAGVbRWjMCNEzV8inq2thNfO5zBhiR5TmkRveUhT1TtSWQolGG+qO5LUBK/sTwPlpxaFOIYtlxf8QxOUf1k9LI6q5u3gs9En+vAyfXRgvpiofBEv0h9t7ccRRQf39eaUa45JkvcZmzOgg6XQnFY+8b0QQDKGvDbsFKAwS/zQUpsG5C0KO3jYPZA/hyKWlnqRtOEkvXfoTyuLAhgllqJ03XLgHzpE4dYmim1tAth7CNC8FaaUPLulfSka8yYM+4vS/OAeg5JrwPfTbOr/bT13ntg97IdlP+vqC1+SzYFrH9R5KDR/R5jCxKpvBoWt95udwb7LU5rlSDgni9uRuP437iKr6YqPp/DXDsrZo9azhHTMf52RS1z2eAhIYG6U88Hi4Pg5kCzUZmjxDqSQ4i9QrfTvVGosVLxCN87Mw/ItxpVZnQ5kD0TI8we1daVGBKmZF1VwfS4noyoChA9EdmBj823LB+FFK6iX9M2f2q7s7wgdlM3zOwMZHhjV+Dahel8B+mtSUJ7DzOicDOZYyY6H4UlGtsykzl+jeNd9gcq4m6LPS30Dkr4OTfwFjQz2vzP+1rOvgEQiKdIJtcJ/lkOtwFNl3UZ2WrpZjWtwFjmbCEF3A7kxaoLr/CQL0PJrfIg8wLVcmSxG18ai3UqnJU2M8RGEKtjEqrBs8VANIxfcPLf/ldPV91LNOSjIxaf+0JQO1sKbg//QafuwSaLGW5/lUedtxIDHQLOh1lwH9f1ZuZQBEi40uV6WteLH2GQFurX20qiZkEATRywfMjtHEkp2kVcUm3rSmGqq/hk4s07q9tmiQiPTrm+4bV+4DDonHgj4JwqgeKAfleqwD1w9JONJIdAtvTdvK+Pbyl7kGstmzsAqb097ePhccXACOFjP+RzkU834Q2Ducf6/tjFMKFapT5Wc8iSOaei0gKTQS5u9mwsOY7KXM2V5LjrqIoJabk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,81 +120,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test ignores the return value of fork(), so both the parent and
-the (newly created) child run the COW verification loops and then
-call hmm_buffer_free() before returning into the kselftest harness,
-which _exit()s each side.  This duplicated teardown sequence has
-been observed to manifest as a SIGSEGV in the test child, e.g.:
+Currently testing of userspace and in-kernel API use two different
+frameworks. kselftests for the userspace ones and Kunit for the
+in-kernel ones. Besides their different scopes, both have different
+strengths and limitations:
 
-  hmm-tests[360141]: segfault (11) at 0 nip 10006964 lr 1000ac3c code 1
-  in hmm-tests[6964,10000000+30000]
+Kunit:
+* Tests are normal kernel code.
+* They use the regular kernel toolchain.
+* They can be packaged and distributed as modules conveniently.
 
-Fix this by adopting the same fork()-then-wait pattern already used
-by the nearby anon_write_child / anon_write_child_shared tests in
-this file: the child performs the COW verification and then _exit(0)s
-so it does not run the test teardown, while the parent independently
-verifies COW, waits for the child, and only then frees the buffer.
+Kselftests:
+* Tests are normal userspace code
+* They need a userspace toolchain.
+  A kernel cross toolchain is likely not enough.
+* A fair amout of userland is required to run the tests,
+  which means a full distro or handcrafted rootfs.
+* There is no way to conveniently package and run kselftests with a
+  given kernel image.
+* The kselftests makefiles are not as powerful as regular kbuild.
+  For example they are missing proper header dependency tracking or more
+  complex compiler option modifications.
 
-Fixes: b659baea75469 ("mm: selftests for exclusive device memory")
-Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Therefore kunit is much easier to run against different kernel
+configurations and architectures.
+This series aims to combine kselftests and kunit, avoiding both their
+limitations. It works by compiling the userspace kselftests as part of
+the regular kernel build, embedding them into the kunit kernel or module
+and executing them from there. If the kernel toolchain is not fit to
+produce userspace because of a missing libc, the kernel's own nolibc can
+be used instead.
+The structured TAP output from the kselftest is integrated into the
+kunit KTAP output transparently, the kunit parser can parse the combined
+logs together.
+
+Further room for improvements:
+* Call each test in its completely dedicated namespace
+* Handle additional test files besides the test executable through
+  archives. CPIO, cramfs, etc.
+* Expose the blobs in debugfs
+* Provide some convience wrappers around compat userprogs
+* Figure out a migration path/coexistence solution for
+  kunit UAPI and tools/testing/selftests/
+
+Output from the kunit example testcase, note the output of
+"example_uapi_tests".
+
+$ ./tools/testing/kunit/kunit.py run --kunitconfig lib/kunit example
+...
+Running tests with:
+$ .kunit/linux kunit.filter_glob=example kunit.enable=1 mem=1G console=tty kunit_shutdown=halt
+[11:53:53] ================== example (10 subtests) ===================
+[11:53:53] [PASSED] example_simple_test
+[11:53:53] [SKIPPED] example_skip_test
+[11:53:53] [SKIPPED] example_mark_skipped_test
+[11:53:53] [PASSED] example_all_expect_macros_test
+[11:53:53] [PASSED] example_static_stub_test
+[11:53:53] [PASSED] example_static_stub_using_fn_ptr_test
+[11:53:53] [PASSED] example_priv_test
+[11:53:53] =================== example_params_test  ===================
+[11:53:53] [SKIPPED] example value 3
+[11:53:53] [PASSED] example value 2
+[11:53:53] [PASSED] example value 1
+[11:53:53] [SKIPPED] example value 0
+[11:53:53] =============== [PASSED] example_params_test ===============
+[11:53:53] [PASSED] example_slow_test
+[11:53:53] ======================= (4 subtests) =======================
+[11:53:53] [PASSED] procfs
+[11:53:53] [PASSED] userspace test 2
+[11:53:53] [SKIPPED] userspace test 3: some reason
+[11:53:53] [PASSED] userspace test 4
+[11:53:53] ================ [PASSED] example_uapi_test ================
+[11:53:53] ===================== [PASSED] example =====================
+[11:53:53] ============================================================
+[11:53:53] Testing complete. Ran 16 tests: passed: 11, skipped: 5
+[11:53:53] Elapsed time: 67.543s total, 1.823s configuring, 65.655s building, 0.058s running
+
 ---
- tools/testing/selftests/mm/hmm-tests.c | 30 +++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+Changes in v6:
+- Use usermode helper framework
+- Trim now unnecessary new module exports
+- Report unhandled output line
+- Add SUPERH to ARCH_HAS_NOLIBC
+- Remove non-integral patches submitted elsewhere
+- Drop CC_CAN_LINK_STATIC support. It is based on CC_CAN_LINK which is
+  currently being reworked.
+- Use more cleanup helpers
+- Split stdout/stderr forwarding into its own patch
+- Link to v5: https://lore.kernel.org/r/20250717-kunit-kselftests-v5-0-442b711cde2e@linutronix.de
 
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index 1e5c1432ef6b..c5000d53b604 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -1866,6 +1866,8 @@ TEST_F(hmm, exclusive_cow)
- 	unsigned long i;
- 	int *ptr;
- 	int ret;
-+	pid_t pid;
-+	int status;
- 
- 	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
- 	ASSERT_NE(npages, 0);
-@@ -1894,14 +1896,36 @@ TEST_F(hmm, exclusive_cow)
- 	ASSERT_EQ(ret, 0);
- 	ASSERT_EQ(buffer->cpages, npages);
- 
--	fork();
-+	pid = fork();
-+	if (pid == -1)
-+		ASSERT_EQ(pid, 0);
- 
--	/* Fault pages back to system memory and check them. */
-+	if (pid == 0) {
-+		/*
-+		 * Child: fault pages back and verify COW, then _exit().
-+		 * On ASSERT failure the harness calls abort(); the parent
-+		 * reports it via the WIFEXITED/WEXITSTATUS checks below.
-+		 */
-+		for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+			ASSERT_EQ(ptr[i]++, i);
-+
-+		for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+			ASSERT_EQ(ptr[i], i + 1);
-+
-+		_exit(0);
-+	}
-+
-+	/* Parent: also increment to verify COW works for both processes. */
- 	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
- 		ASSERT_EQ(ptr[i]++, i);
- 
- 	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
--		ASSERT_EQ(ptr[i], i+1);
-+		ASSERT_EQ(ptr[i], i + 1);
-+
-+	/* Parent: wait for child and then free the buffer. */
-+	ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+	ASSERT_TRUE(WIFEXITED(status));
-+	ASSERT_EQ(WEXITSTATUS(status), 0);
- 
- 	hmm_buffer_free(buffer);
- }
--- 
-2.54.0
+Changes in v5:
+- Initialize output variable of kernel_wait()
+- Fix .incbin with in-tree builds
+- Keep requirement of KTAP tests to have a number which was removed accidentally
+- Only synthesize KTAP subtest failure if the outer one is TestStatus.FAILURE
+- Use -I instead of -isystem in NOLIBC_USERCFLAGS to populate dependency files
+- +To filesystem developers to all patches
+- +To Luis Chamberlain for discussions about usage of usermodehelper
+  (see patches 6 and 12)
+- Link to v4: https://lore.kernel.org/r/20250626-kunit-kselftests-v4-0-48760534fef5@linutronix.de
+
+Changes in v4:
+- Move Kconfig.nolibc from tools/ to init/
+- Drop generic userprogs nolibc integration
+- Drop generic blob framework
+- Pick up review tags from David
+- Extend new kunit TAP parser tests
+- Add MAINTAINERS entry
+- Allow CONFIG_KUNIT_UAPI=m
+- Split /proc validation into dedicated UAPI test
+- Trim recipient list a bit
+- Use KUNIT_FAIL_AND_ABORT() over KUNIT_FAIL()
+- Link to v3: https://lore.kernel.org/r/20250611-kunit-kselftests-v3-0-55e3d148cbc6@linutronix.de
+
+Changes in v3:
+- Reintroduce CONFIG_CC_CAN_LINK_STATIC
+- Enable CONFIG_ARCH_HAS_NOLIBC for m68k and SPARC
+- Properly handle 'clean' target for userprogs
+- Use ramfs over tmpfs to reduce dependencies
+- Inherit userprogs byte order and ABI from kernel
+- Drop now unnecessary "#ifndef NOLIBC"
+- Pick up review tags
+- Drop usage of __private in blob.h,
+  sparse complains and it is not really necessary
+- Fix execution on loongarch when using clang
+- Drop userprogs libgcc handling, it was ugly and is not yet necessary
+- Link to v2: https://lore.kernel.org/r/20250407-kunit-kselftests-v2-0-454114e287fd@linutronix.de
+
+Changes in v2:
+- Rebase onto v6.15-rc1
+- Add documentation and kernel docs
+- Resolve invalid kconfig breakages
+- Drop already applied patch "kbuild: implement CONFIG_HEADERS_INSTALL for Usermode Linux"
+- Drop userprogs CONFIG_WERROR integration, it doesn't need to be part of this series
+- Replace patch prefix "kconfig" with "kbuild"
+- Rename kunit_uapi_run_executable() to kunit_uapi_run_kselftest()
+- Generate private, conflict-free symbols in the blob framework
+- Handle kselftest exit codes
+- Handle SIGABRT
+- Forward output also to kunit debugfs log
+- Install a fd=0 stdin filedescriptor
+- Link to v1: https://lore.kernel.org/r/20250217-kunit-kselftests-v1-0-42b4524c3b0a@linutronix.de
+
+To: Nathan Chancellor <nathan@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+To: Willy Tarreau <w@1wt.eu>
+To: Thomas Weißschuh <linux@weissschuh.net>
+To: Brendan Higgins <brendan.higgins@linux.dev>
+To: David Gow <davidgow@google.com>
+To: Rae Moar <rmoar@google.com>
+To: Shuah Khan <shuah@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+To: Nicolas Schier <nicolas.schier@linux.dev>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-kbuild@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: kunit-dev@googlegroups.com
+Cc: linux-doc@vger.kernel.org
+Cc: workflows@vger.kernel.org
+To: Kees Cook <kees@kernel.org>
+To: Alexander Viro <viro@zeniv.linux.org.uk>
+To: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@lst.de>
+To: Luis Chamberlain <mcgrof@kernel.org>
+Cc: linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: Nicolas Schier <n.schier@avm.de>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+
+---
+Thomas Weißschuh (11):
+      kbuild: doc: add label for userprogs section
+      exec: add dirfd parameter to kernel_execve()
+      umh: add dirfd parameter
+      mount: add support for __free(kern_unmount)
+      init: add nolibc build support
+      kunit: qemu_configs: loongarch: Enable LSX/LSAX
+      kunit: Introduce UAPI testing framework
+      kunit: uapi: Forward test executable output to KUnit log
+      kunit: uapi: Add example for UAPI tests
+      kunit: uapi: Introduce preinit executable
+      kunit: uapi: Validate usability of /proc
+
+ Documentation/dev-tools/kunit/api/index.rst   |   5 +
+ Documentation/dev-tools/kunit/api/uapi.rst    |  14 +
+ Documentation/kbuild/makefiles.rst            |   2 +
+ MAINTAINERS                                   |  11 +
+ fs/coredump.c                                 |   2 +-
+ fs/exec.c                                     |   4 +-
+ include/kunit/uapi.h                          |  77 ++++++
+ include/linux/binfmts.h                       |   2 +-
+ include/linux/mount.h                         |   2 +
+ include/linux/umh.h                           |   3 +-
+ init/Kconfig                                  |   2 +
+ init/Kconfig.nolibc                           |  16 ++
+ init/Makefile.nolibc                          |  13 +
+ init/main.c                                   |   2 +-
+ kernel/module/kmod.c                          |   2 +-
+ kernel/umh.c                                  |   9 +-
+ lib/kobject_uevent.c                          |   2 +-
+ lib/kunit/Kconfig                             |  16 ++
+ lib/kunit/Makefile                            |  26 ++
+ lib/kunit/kunit-example-test.c                |  15 ++
+ lib/kunit/kunit-example-uapi.c                |  22 ++
+ lib/kunit/kunit-test-uapi.c                   |  51 ++++
+ lib/kunit/kunit-test.c                        |  24 +-
+ lib/kunit/kunit-uapi.c                        | 351 ++++++++++++++++++++++++++
+ lib/kunit/uapi-preinit.c                      |  68 +++++
+ security/keys/request_key.c                   |   2 +-
+ tools/testing/kunit/qemu_configs/loongarch.py |   2 +
+ 27 files changed, 732 insertions(+), 13 deletions(-)
+---
+base-commit: 813d26ba48f9e3909d39966857421500faef508a
+change-id: 20241015-kunit-kselftests-56273bc40442
+
+Best regards,
+--  
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
