@@ -4,134 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CBDAFF886F
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:04:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78079FF886F
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:05:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E377F6B0093; Mon,  4 May 2026 09:04:47 -0400 (EDT)
+	id E11696B0095; Mon,  4 May 2026 09:05:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE7F06B0095; Mon,  4 May 2026 09:04:47 -0400 (EDT)
+	id DC2216B0096; Mon,  4 May 2026 09:05:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFF156B0096; Mon,  4 May 2026 09:04:47 -0400 (EDT)
+	id CD8096B0098; Mon,  4 May 2026 09:05:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF58B6B0093
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:04:47 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FE19A01A3
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:04:47 +0000 (UTC)
-X-FDA: 84729757014.18.BF5A26F
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2C700100003
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:04:44 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=GmAQ1Pmx;
-	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BE3346B0095
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:05:07 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8956C1C0242
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:05:07 +0000 (UTC)
+X-FDA: 84729757854.30.63D0A99
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3256440013
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:05:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Uk4MfaOc;
+	spf=pass (imf11.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777899885;
+	s=arc-20220608; t=1777899905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pO3syqtmoh2yTQJQGazJgax2lJ/9P8ITd+L4ibUvkII=;
-	b=1OOK74J+xgj1twzlhX8bgrBk+aR/jS4ubjUuOA88JGoPu95U+CnlhvWqDb2QcXCnBGvFR4
-	kMewWXm4lsodLyuzzL3mbF+DEMOpJdMIH5UscsiEqAROPL6BxnMLjzi8cIS3LFQvNnv9IL
-	Indd0ZnlKIVGYNP0ZpfmObIcuy0Z8QY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777899885; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lCpIucwug7LQBxR+zBCSrNGWbfwlTlZlRpoANQyu5ws=;
+	b=h8u+Y5gE6VW8qaUl0viwEKI/fwqh6HsmynvXLFkEagvQy8qziWvNahvRwS1IzAcTlnf2zR
+	JMPSfWcRUCPl7Fd6RdgsKlGU8VFd1il731g2G8h7+8TA0jgROv20Mkfe0week/Defhi2vI
+	skLqB/8j6lE050sTtOMkcGGa1owtKkU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777899905; a=rsa-sha256;
 	cv=none;
-	b=T/V634CD4HXvhs64DeoZWHTLWyxfzSxiVqcWCrbbIWGsn8d1yCi/pAjnkz19uWJ2GmpJEh
-	C7IOoCq54C1acIz9vcaliMDfFcm8K5iTF1FcD3sJdfm9vu1fZR3SQvb38/mVG0NQzcD6g2
-	hQbeSMWTnzYke03B29m5KVj6RESl+XQ=
+	b=2sz4R3WbJLiQDIDl7ZrvSlHX/Zs43h6MrTwtKt6+cMp0GwR38ESdF9nKAnyJeM0wjH1VyF
+	3AZkC+4P2YIH3/5IwgMaqzhnclrDu9LGjMd+j2q38Zo76ufUlQTf2MVHLAxwgTXuDQs5P0
+	4GZt/yzfEXHpdKNs/vkCGR2yWM8wsvM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=GmAQ1Pmx;
-	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 643MTQ7e3010004;
-	Mon, 4 May 2026 13:04:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=pO3syqtmoh2yTQJQGazJgax2lJ/9P8ITd+L4ibUvk
-	II=; b=GmAQ1PmxHsYC8i2ze1kzDzkIGKgnV6pXDEsTxslAziS6dBxgvj/Js5uxX
-	cri2zHYh8DRnRZlM1r26gG6WDxl7Fhg6y5glBtdUPXlCVKf2lpa+5WCF1bw8oiwU
-	3l6969zRBaqHre27gS7viJZSIMJRzMeS0o6CWMz8fdlILI0VwkmRBoNeQndZzLwZ
-	K7NeiCsFQoE6c11aqr2hcCIsuNT80mZkUM8npQ+asAv/0cZwRHzlnBTNYor4T4Br
-	Vt5Tagujd+S0GWxN7Kzj3eDp3iSWgV/WO16aljwkh9ES0cXqvL+fpDXsHlzHIORj
-	/7vc8jX18ueUa4AC3MJ50Ilfsc+1w==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v772gw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2026 13:04:38 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 644CsNUA030028;
-	Mon, 4 May 2026 13:04:38 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwx9y4xcv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2026 13:04:37 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 644D4YGZ61538808
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 4 May 2026 13:04:34 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 756792004F;
-	Mon,  4 May 2026 13:04:34 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 511592004D;
-	Mon,  4 May 2026 13:04:34 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon,  4 May 2026 13:04:34 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 31603E0BD8; Mon, 04 May 2026 15:04:34 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Oscar Salvador <osalvador@suse.de>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH v2] mm/page_vma_mapped_walk: Use ptep_get_lockless() for lockless access
-Date: Mon,  4 May 2026 15:04:34 +0200
-Message-ID: <20260504130434.2285053-1-agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Uk4MfaOc;
+	spf=pass (imf11.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777899904;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lCpIucwug7LQBxR+zBCSrNGWbfwlTlZlRpoANQyu5ws=;
+	b=Uk4MfaOc6YGOaHUHKnl3JLlKxZIElpEQRjv+wt84fkbcc2KXJDJqFxI/NscXiG8IX3weyj
+	yVWHg6VaGoTwgEiNDLnCU94kYcz+TL7KR5D6ZIza3YDirzPi831KmTfAH4Ipi6R8eCVpba
+	NuZUHNUtH2kIeJSL6MORsLB8ub0+2SA=
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
+ [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-SeLHejR6Nz6xvRdCGBW9vA-1; Mon, 04 May 2026 09:05:03 -0400
+X-MC-Unique: SeLHejR6Nz6xvRdCGBW9vA-1
+X-Mimecast-MFC-AGG-ID: SeLHejR6Nz6xvRdCGBW9vA_1777899903
+Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-423133d22a0so9271232fac.3
+        for <linux-mm@kvack.org>; Mon, 04 May 2026 06:05:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777899902; x=1778504702;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lCpIucwug7LQBxR+zBCSrNGWbfwlTlZlRpoANQyu5ws=;
+        b=MMhP9p1KyfBZRA0ZStWFMSlOY3CF2jUQl5/H9K3UqpI4CO2xt/khonJkhc7psje6Ml
+         IZmDJm0UCIzF4HJcSOfUDgp6dRWG+9PGmNDH9ICJ0BZisGNIJXjUJ+j7znqNq0RIl/VV
+         MFDpkgkDJW+VoHbgfSdaxOqCRvhOH4wDJrDk1lgagPOdviqxc1ZGoaCC7dVowjYaHL1T
+         4s+zzxa2F/0PEfJ42n18rgEPUx/V3RTgNDmtnMdiVZH6E0/ZJSnvJTa5i2C3KpiqZ6nx
+         h7eMtc7rY2HXJKB4tx1XjjLxO5+oe7sXIidU5ER92v5HdR42nDnv4hyV4ZIM/H7fcJIh
+         MWZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+rLqhhgEJ7vFjtHAzIx+9eXFf65hKV4wCEWuVK3sbrwuV7J7ibY+itPLEDiDm0BhHXc+O0Ox77rw==@kvack.org
+X-Gm-Message-State: AOJu0Yz7bajRVUDrJgQE4BPLICDshpzz5eCgPPAkeoLv8Nn43fr59hp/
+	uklLhMtEC7mYuaLFakQYh6pYnliulXcmO+3dLILuY9U5LCqOBGpt0CHOWvjCVGH8ByDJi7Nfh/J
+	AqxPFJa/KbDQ+YVm2JA1e/4quePpzPlkfiP0fDiARK6iU8T5O3N+x
+X-Gm-Gg: AeBDieuN9IV+qYzZoD58KTbHJYojcV0NGlHRHoQAO82N4ZIIthpLYqDR5dn+9BLr5ji
+	jI40M/hnU4ZXab6YS0Z0ixU1lKHKwYRj3GhoCjlwa6NfcEwesHfPqqYpiWKTswyDDUT8j0wTASd
+	4OcVXSZIlKztvJLar5JiHrJqW5JX0XN5rc9ja2MAziBy/cdhwrXi0YBpmTRcEHewhOgV5TYyv0U
+	+c1HL9lOjF7wBt48SnB5gPcMMwjJiRCEhE76zaJ1NhFVAaIxdr8jyGmh/lqqVbAEosTztUxBx4g
+	BHpgcEE3VCi0Lu/5O+TwCGumaE9Li+IE4NkD94h/DKUejxys5L1qT5iK2zUf46PMq5hxT9RCO5u
+	weCSaKsoq9B4usZqldytYLs9o9Wg73CFYZvE=
+X-Received: by 2002:a05:6870:1687:b0:42c:259c:6c8a with SMTP id 586e51a60fabf-43475f95c61mr4835386fac.6.1777899901370;
+        Mon, 04 May 2026 06:05:01 -0700 (PDT)
+X-Received: by 2002:a05:6870:1687:b0:42c:259c:6c8a with SMTP id 586e51a60fabf-43475f95c61mr4835140fac.6.1777899899273;
+        Mon, 04 May 2026 06:04:59 -0700 (PDT)
+Received: from [192.168.2.110] ([70.53.202.134])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51040b5e8b4sm106472551cf.23.2026.05.04.06.04.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 May 2026 06:04:58 -0700 (PDT)
+Message-ID: <a393e215-ea5e-4b84-9066-4afef36489a6@redhat.com>
+Date: Mon, 4 May 2026 09:04:47 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDEzNCBTYWx0ZWRfXxv4MVpWLQ7+4
- opdcsqJrR0GT7NRlU9JzyOPcWPqDpek8+IcJy7P7LDtKJe5m/zVJgjkNfeIRL2p6cgSkXCFd0v0
- OInNujcUlcNhR3J0Jp+6K7NiUXJbI3TjTTFDU5AuYziBDJgQ/buOteS7eG/YXMsqOAZhkifs/E4
- 2CYI+VqWfpYE0poyYtke+/kINrKOkheB60+7Mv5hUjHaZuj0ffjy0AlGzKLQOXF/PC0w/NidVO2
- TYvp9itY/1XppDwgFXk9F8y/eZhJ6PCfjuIyhhLKdgfxW7vMrt41zugrK2tB7aQptxCGAL2K5OT
- Yn/i1a+E4Gxn7gnT+zaxuRzrmkZlwXsf+TPuoEggculwXivOOfQsMBNYJ+MvyHhlnTqGL9UouIX
- AybfzTYttrBJzFPzTE+RsXDy3PkPr1fQN+mFdyTYWPtUBnWoZ5GByM28Td+umc6Fvn+iQ8XB3TR
- g4jTy+3TDbYvMGbZI+g==
-X-Proofpoint-GUID: WeqN-du5uoGuTeZAEmDisiPRQdC4IUAs
-X-Proofpoint-ORIG-GUID: WeqN-du5uoGuTeZAEmDisiPRQdC4IUAs
-X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69f89966 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=8KbNvkZQz-Byi51b31MA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-04_04,2026-04-30_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1011 adultscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605040134
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 27/54] selftests/mm: hugepage_settings: add APIs for
+ HugeTLB setup and teardown
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Donet Tom <donettom@linux.ibm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Sarthak Sharma <sarthak.sharma@arm.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+References: <20260428204240.1924129-1-rppt@kernel.org>
+ <20260428204240.1924129-28-rppt@kernel.org>
+ <2f443474-4448-462e-bc1e-55bc657d70ba@redhat.com>
+ <afTF9RCy8eBoWYaj@kernel.org>
+ <22b1cadc-4b0d-4e2a-987c-e7a7bc2265eb@redhat.com>
+ <afV_WAK56lQKn_z1@kernel.org>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <afV_WAK56lQKn_z1@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 6RiITmpGYBx9PIktGjZ7NOCZGjePdbhve53KFwZhQAA_1777899903
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2C700100003
+X-Rspamd-Queue-Id: 3256440013
 X-Rspam-User: 
-X-Stat-Signature: 5j8dq1nypsrjqg8z1mx7nbtyt1rdszwu
-X-HE-Tag: 1777899884-57176
-X-HE-Meta: U2FsdGVkX1+v9RNre4eUX9NEak6zgCnQ/zkO6V/UE3YvBCIVQ811P5q4MUTbkH+FAVCXCLSBlpF5qxHW8KP+w1AcsJqoqDmUIXOA/rZ7mq5oaqzxmG5QBwC0EFHwQ8XeEXzE/RSHKjDURFMumyQ8VImQ5s48bx+0jUKo0Nnd6GUcBLORuT4rnrLir+PZRyaUQwhVo95j1mD25n4mHhAQXhfgXlrdTbKdlq0ZZwlI71sOwZFcVf+aucENaXAUbb90TijpjV5Q6Y5XQygyZhoHI6i2XmlbOqxdvFcjH6QhvBUPVg0WWdHZMnqk+orQFRER1/0gEgeDhLuDrEo57ADsq7zyGFaIObGFgAlseBvRk5tYhPSDZPYluOQ7bBA+NCGzZtIPfdfHBerAKQq7fN7LBfuIOQgzKxtj5TQ62w3K2irhskteWD4X2Y2i6fn77v087dX+L1jLhHItrAv0qrJk5S1BgueKQop691tSBAM5ucnyxVhuwyV2wuOhMWPZ+HfSTgW10VJhU7RSToLw5sN3PGiA796x9dmAK/EIU82B+yZ71wX5SyH7Pmv1UacVVkLRe1H3iDoR+prhjebeZBxsiFbVa0e523oG1ui9dPCZFs91Q/WEx8wgjs9Ctr4SBt8DViMFVZp0/LW49QtJ7K7o9tmXZcbMffYfdYw2n+5DfuYbfbVCB/QVT86sMXQLyxv73c+QOnh41cw3exiwNJQQO9gIQ/lUtDaxkWF1xM7r2HStHfg/Bw0RHepWRyFhQPK44zqnLWjQieVsJj8UZDeYG+pD5Dcg7q9eFgiSC8taNh/fu+VLxp9FenADsd2Jha76R0kdktNhEgF6Tnwy/FXSkdwEq4XOMJgsZjZS9au7nZcQ+u9c9ESPdmxk9aGw3tq9sv1KliUDs4/KyWtjsyGXLddRiGj7wmQeblUw+GBUlVdV9knJqDga3O/ZyWiGwdjzf+mwqu3CIcQrzn69/Kv
- mc3bivh6
- 5doX0QcNsVD1fefzNkgqWbVQs+xbz+iSnMxBu7HUpSi4mJ0XptImUkN1W2dDKRcqyU4h/XLxiJ1MoJLz9mTb+crGFv0vhNaYpJmYsAP4/Gb5ac19kgJ9UsJgXNqpposHOC/3CLkIVTz2oWkpxPyFoc5dfV1GVLqNtmEU5ZX3XTxJr/elDoqvk3v4trfZlAxVzmlfCXAOxOoShnpWBv3eLppEYts1ReevfSTGre9boSA1N5rqvXK9wQIZiUuRf9xiSB66JgZU7RKDdAuA2hE8evPEUkVmCjwXp98hDn55M+feCnX26wSjQpAGKs3qtaUG4b01HVT+pZhs546zN6Hw/XavEXQ==
+X-Stat-Signature: k46dmwcbthc7jb5xft63dzs1hu458auc
+X-HE-Tag: 1777899905-785815
+X-HE-Meta: U2FsdGVkX1+23dPhZLqgU/wa7imqtlELXesPaUV2+9/ftX9m8b2ICf9LR85H4cZDpKiM+seGr/yIoAGjGdlu3caYjrLD31gTrU/GmM7Vr009SDFq66Z2/TUjUJbYQyRmxhoQT6nd1zB99tUQSIcEGHdnbStA47It+zrml4+sCn9UGOLwU5/GKNy1GZ9P+Ds2gGTL2gOTWsmrrZXUOW+zqCI/yONMduJCbsaS6RS5Kl79NQSEIMhujcp8sujAJEboIOa6ul3W4Iq9nJpmVkZEiwLwuwUYw6uv2x1K6s50NvgNjjb0p4K5ZTiwr20VRjQ29tRmgh5ZwvXfIt8daFXsB95vP5jvu7guVVxe9zX7lqmYX+oxhuqCK041LkkMJuvu4Ee05U+7SD2d7ZC+77DOUQ8IZOh5l7Zm6gGDunP2Ii+H//3siIvnJGu8IUYpheqxO4doC/oRTfzhR2y/Knv+iI8O8n4AMXJ7Kaxcojc781rJsKLdIATqJn+LFN5sI5wtQIwi+i9jK/rRrm+c0U5RUt4WrEAi2z6bCCow3a/5CzIP1TmmFDQSbjDe6vOqVofcl45VcRL4vMPrgw33N8dY9y5fkcFQ5cpDJSXb10iHtBE/QPM+bC9YblRWMX2ugKu/TOiSYn2A/Ws+2xqQII3cb6Re1ieb8BVCzRhJF1ShBIMD8cfvwW5v3luvmELZr14NFuG2UODy3IJqyHG5fjWgguxlrasDrJTGeC04RsA8LINrvShdzTHIfIVo5TYJPq8grUTutHy8uzVxQGfow492I01yYuWCgmJt3DAl86vNchkwfJiHfyIGV+PU4BCZVkD/2HYWe00cgwROleOk4/amux/kbboTgL5+QhVxdDhrDPcQJesAE2upr+u8B7ex7iGJmKWdXIHdHe2Byq1O11MqdlRi/t3VTJX9eIvHx5tCN8daZ7PmCJl7Zn9CTma/VvtoQkMkL06ZcSTgF2wSkfG
+ UA7ZfKWL
+ m9nxnZwraZwJZWRtC4oKY1VqZKzKU39NGbC+Cx0PPQ9Tnbq3YAghHCQgXQkLnWOWnF1qLevHPcdvWOFARD5M9kGUE++ndvidEMeWKfyie7CMC3n9gCyjrihWHhyE/rBLfnxFd3YE3dCNPQmzY+GPorbMCsg5R/RxIsapXT6SyWbA0gcgx3ui6/pVJjO5FN5bDvceIX0ABdRbw/iN4ntzpBCGCg9uBxGmcKiKWG58yg1XqA4mZX8+e2ZnrxT93+JNiWlFThVHT/Zy5579UvUcWfKycGxGd5bzFyOzuU3a+xHP/x72BqPKcFePxHkdXRNIlownKI8v0gC3vB6vJNP0AG3zMQUuhD7amKzdLEhg6g/P3EADU3YlKx6/aG8mUfPKr6zC8M2ijUZnk8L4u45iJ6h9+Kr1r5nFGRg7+iAZjXko6hKAa4DeYHwhpmkm8c0g2bRyPxQ+0GB3nzwAjT+fGMrH1dMfp1P/4s9Iq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,39 +148,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Switch from ptep_get() to ptep_get_lockless() accessor for
-PTE reads when no lock is taken.
+On 2026-05-02 00:36, Mike Rapoport wrote:
+> On Fri, May 01, 2026 at 03:30:18PM -0400, Luiz Capitulino wrote:
+>> On 2026-05-01 11:25, Mike Rapoport wrote:
+>>>>>     	return mode == 1 || mode == 3;
+>>>>>     }
+>>>>> +#define HUGETLB_MAX_NR_PAGESIZES 10
+>>>>> +struct hugetlb_settings {
+>>>>> +	unsigned long free_hugepages[HUGETLB_MAX_NR_PAGESIZES];
+>>>>
+>>>> It looks like we don't actually use this in the API or maybe I'm missing
+>>>> something?
+>>>
+>>> Yes, it's used only in later patches.
+>>
+>> I don't see it, the patch below builds fine (again, sorry in advance if
+>> I'm missing something obvious):
+> 
+> You are right, I misunderstood you comment and I thought you referred to
+> entire API being unused in this patch.
+> 
+> free_hugepages is not used and it should not be a part of the saved state.
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- mm/page_vma_mapped.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks, I'll try to be more specific next time.
 
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index a4d52fdb3056..6559e17f11c2 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, =
-pmd_t *pmdvalp,
- 	if (!pvmw->pte)
- 		return false;
-=20
--	ptent =3D ptep_get(pvmw->pte);
-+	ptent =3D ptep_get_lockless(pvmw->pte);
-=20
- 	if (pte_none(ptent)) {
- 		return false;
-@@ -310,7 +310,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk=
- *pvmw)
- 				goto restart;
- 			}
- 			pvmw->pte++;
--		} while (pte_none(ptep_get(pvmw->pte)));
-+		} while (pte_none(ptep_get_lockless(pvmw->pte)));
-=20
- 		if (!pvmw->ptl) {
- 			spin_lock(ptl);
---=20
-2.51.0
+>   
+>> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+>> index 097ba085f423..a023cfeb69c5 100644
+>> --- a/tools/testing/selftests/mm/hugepage_settings.c
+>> +++ b/tools/testing/selftests/mm/hugepage_settings.c
+>> @@ -341,7 +341,6 @@ bool thp_is_enabled(void)
+>>   #define HUGETLB_MAX_NR_PAGESIZES 10
+>>   struct hugetlb_settings {
+>> -	unsigned long free_hugepages[HUGETLB_MAX_NR_PAGESIZES];
+>>   	unsigned long nr_hugepages[HUGETLB_MAX_NR_PAGESIZES];
+>>   	unsigned long sizes[HUGETLB_MAX_NR_PAGESIZES];
+>>   	unsigned long default_size;
+>> @@ -509,7 +508,6 @@ static void __hugetlb_save_settings(void)
+>>   		if (!sz)
+>>   			continue;
+>> -		settings->free_hugepages[i] = hugetlb_free_pages(sz);
+>>   		settings->nr_hugepages[i] = hugetlb_nr_pages(sz);
+>>   	}
+>>
+>>> I felt it would be too churny to add users in this patch.
+>>>> Otherwise, the API looks great to me. But if you allow me to bikeshed :)
+>>>>
+>>>> I think I'd do:
+>>>>
+>>>> struct hugetlb_state {
+>>>> 	unsigned long nr_hugepages;
+>>>> 	unsigned long size;
+>>>> };
+>>>>
+>>>> struct hugetlb_settings {
+>>>> 	struct hugetlb_state hstate[HUGETLB_MAX_PAGESIZES];
+>>>> 	unsigned long default_size;
+>>>> 	int nr_sizes;
+>>>> };
+>>>
+>>> It might be slightly nicer abstraction but ...
+>>>>> +static void __hugetlb_save_settings(void)
+>>>>> +{
+>>>>> +	struct hugetlb_settings *settings = &hugetlb_saved_settings;
+>>>>> +	int nr_sizes;
+>>>>> +
+>>>>> +	settings->default_size = default_huge_page_size();
+>>>>> +	if (!settings->default_size)
+>>>>> +		return;
+>>>>> +
+>>>>> +	nr_sizes = detect_hugetlb_page_sizes(settings->sizes,
+>>>>> +					     HUGETLB_MAX_NR_PAGESIZES);
+>>>
+>>> ... this immediately becomes more complex.
+>>>
+>>>>> +	if (!nr_sizes) {
+>>>>> +		settings->default_size = 0;
+>>>>> +		return;
+>>>>> +	}
+>>>>> +
+>>>>> +	for (int i = 0; i < nr_sizes; i++) {
+>>>>> +		unsigned long sz = settings->sizes[i];
+>>>>> +
+>>>>> +		if (!sz)
+>>>>> +			continue;
+>>>>> +
+>>>>> +		settings->free_hugepages[i] = hugetlb_free_pages(sz);
+>>>>> +		settings->nr_hugepages[i] = hugetlb_nr_pages(sz);
+>>>
+>>> And this as well.
+>>
+>> We'd need a little more code to handle those cases, may or may not be
+>> worth it. But enough bikesheding from my side :) the series is great as
+>> is.
+>>
+>>
+> 
 
 
