@@ -4,155 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A689FCD3423
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 06:23:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F71ECD3423
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 06:40:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7C4A6B0088; Mon,  4 May 2026 02:23:36 -0400 (EDT)
+	id D53296B0088; Mon,  4 May 2026 02:40:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2C266B008A; Mon,  4 May 2026 02:23:36 -0400 (EDT)
+	id D03BF6B008A; Mon,  4 May 2026 02:40:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91C106B008C; Mon,  4 May 2026 02:23:36 -0400 (EDT)
+	id BF2AF6B008C; Mon,  4 May 2026 02:40:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D94A6B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 02:23:36 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 47FA11C14C9
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 06:23:36 +0000 (UTC)
-X-FDA: 84728746032.26.6A9B79C
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011066.outbound.protection.outlook.com [52.101.62.66])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 17C80A0002
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 06:23:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="pfRp/pmG";
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AE8346B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 02:40:09 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48CB9A09AD
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 06:40:09 +0000 (UTC)
+X-FDA: 84728787738.10.AB833E7
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010065.outbound.protection.outlook.com [40.93.198.65])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1633A40006
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 06:40:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=T8ipwE01;
+	spf=pass (imf01.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 40.93.198.65 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf25.hostedemail.com: domain of bharata@amd.com designates 52.101.62.66 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777875813;
+	s=arc-20220608; t=1777876806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ofz1rWH2X0FMTbHUzBnyypWRWI5tyZqpysqqcykfjHU=;
-	b=2p7mwhNSj70yYoPoa2TK6J1YKpE/xW3x4Coz/PHV1RW6dUHM/HrZbt3tf5ed+RSWLkwLiD
-	KJdfanValNjdlAnt4Usgl+KX7NBFbg7FJT8RrNvLpcR+AAvG4rfZMx91482pDMVJVY+r1y
-	efpiVCP1CjchFF06NX+6T4PcuYEG8Dg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777875813; a=rsa-sha256;
-	cv=pass;
-	b=H9hsIMZIXuVpGJ4x6HMHuiyz+snzCU/0C2gUkcTjv91JSTUxaL/3W49KrxqnZ+2RZ2cKDX
-	u4Qo0IB3xb8382OYecUX7Vori3jAEdtVXilxEvaq1CfdxApxMA3Hora3aXdoUpRtHPEMya
-	rVkihNtsXDxY+nT5uuNHOih1wXzYr9w=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jH+FSza+ewuGHPxqdh0LXkSie5KRkDFmP2qYoR29xbM=;
+	b=vN7LEsgNW/UJoNEyiJYwf9IX8tQlpnW59UJ/ObGpSOXlKmZaKAPXZJytGpJwGSLOkHTipI
+	8f0PXoX2uEP8U0bbPxqGtz6flxi7GqeNw65F71vG1v5kEG+whrN6YBdI0s+awEToR5MuBv
+	I2G5H8qRqcQNsQGN7eA5PjG3VpYVEEc=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="pfRp/pmG";
+	imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=T8ipwE01;
+	spf=pass (imf01.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 40.93.198.65 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf25.hostedemail.com: domain of bharata@amd.com designates 52.101.62.66 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777876806; a=rsa-sha256;
+	cv=pass;
+	b=qlg19LdKPe3f5AsP6ib6hjlApWH1th+exewFmk8X4cOHYdqA3QKc0l5n/AF/ALmCTWpgx5
+	gyHi9oeH8DLMgDxQFriCQV11RzNNqk3xDlyfmISH7EsubYmkcV1U6lTVYLxGVzJ/EBTY9L
+	zEwoVPcIUooK+ICkWasVJ2kt+ei+ZlQ=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bTEMk9sueCUOLL9QsWCvA1fgrLdMtZvv8z2n4QmoXtee76GtoparBz/dAe+rqWUg3CPIzZGbK1m7/bwtatajZ+rocDTz24655g/IZ/VMgidmDvJQjs77AFybfNgr1UiRat843NXCyY8bkGUeXJdOBSrLBWDBjr7psF/BeQzZsjyFnv/2upuxMMg7AjNagZrJkCv2lH4OqxdlkTQgTTyoOw4cSPeDj93gi4W/FLdfbYPtOo9vLIofwLv52HWlx3FpcjKNCyjiOD/MmEXGUn0/HwQzvRxrkIVvSfP7kJtLsUBoDZpaxQmIZnnzzxuJdFKqvnTxvKqIXz0niLxQ5Ecz3w==
+ b=xJTGnYvacfL2ZE+IxDyxhgRKqGfJkFHWADjt1fKEJTBVTcYKti6WMOQYkM6uuVVMQZ12WrUr922i2OUa50UUaUnESwfllX1PwQag8m0/1u74yenkjGrM9Wkj/mxbtDJl716Icx4/w/diTHK8Li8o8ePgVpAJQ4+qU7tgN2nCvM36YKvh2qFZAezxzujKqCsO5LAKww9t5/MKdrbdHpmD3Y1ZvCbEn190iwcYmJmJ3B6Vv7qMJigyD6eAaCzISgpS6QRz2QJtd27OF9B03guMyshQQo+JCzAPH20DWVvbyWg5qQeF0DyQSo5U2O4UP6dbMVZCFzAqn7FrdIFILnBrwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ofz1rWH2X0FMTbHUzBnyypWRWI5tyZqpysqqcykfjHU=;
- b=GIbfBeI3J+QMvwWRtCH0apUdXaeEooKJqfzp8G3RW4FTHkPbzsD+0s69WQmln0BFvpRfhDqnY6Gp6M/d+Pg1ZLXUsMSMWZ4RhbPzrOAfSlrvyqu5gvQRs42978rmBmDX8LBoe7fYyfmW/OAaMwPbVef7WyAaI2FbFnGSEKdKz6QXDTI6ORrkrSu1U2DA+LbrUGHkpcBtAnmIxsCWr8VFmaIx++eXV1ev9oNSTwPkUgWogVX57DIEXnvupIwTSlMI86YmF/6pbudzAmXdTF5Zr4XVObkRV+Uz5OMbyj9TYXoTo+HAfpd+g24igZ5Ih/1NqKeyUSFFLkQY0wlYwTUgTg==
+ bh=jH+FSza+ewuGHPxqdh0LXkSie5KRkDFmP2qYoR29xbM=;
+ b=kT7+eirOfClNHnAg8eqIPR1dzZULMvTt6sHw1QUDZI/SNudLTMWnfHrYZgFfl4KK5fK4btEoW7vykZUMQdlOemrpV7ZV6aDAJeXWB03b9C80nV+ei7BroruGNEuegeopjY1+UAYY4IePWqBsncyvmbOLtfXemPRg4X4W1qlrAo+SEyPBE2qyGSs231+l62iL/UkYo5DZMHdS9vXlQ6lG+SuUMCq9maoArFhk3F15dSdYMDoXpb452EBogjgnb1nD4oh5/zLVXliCRtP8ZTuk2ou46w5H/aAD9TnRcNM2lt2seLbhF/Tsu3MHeG0sakS9D9w8wvv+FvF8xtU8X2R+cA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ofz1rWH2X0FMTbHUzBnyypWRWI5tyZqpysqqcykfjHU=;
- b=pfRp/pmGUoT4ijDWQAK5vyP8piBvwbePsWbUuydzU0HJlWV9tqdgaHnlR/VlpcdenIdGouVPqKam3hW7UDrpPONdPCnVB5/JD0Lj0QoT13FyeYSYksn7hxFBeUPOjqLEmdEZzk2aukADeWpr0OioJI4CmDfKJGMu9Hba3tWHzOY=
-Received: from BL0PR0102CA0008.prod.exchangelabs.com (2603:10b6:207:18::21) by
- LV8PR12MB9181.namprd12.prod.outlook.com (2603:10b6:408:18d::13) with
+ bh=jH+FSza+ewuGHPxqdh0LXkSie5KRkDFmP2qYoR29xbM=;
+ b=T8ipwE01hE+8VeLOin3GPRaEjlhCwj4gfZ90qNhJJBfS2XWAgbFQE+4jj8ocPo2C+eUwReYF9ZJ3ymt6jqGme4/cS9pZZOvgaTXTzYVkmfHPJWGGRk+F+Fpd+kdCFRCdqy+/6MRbzSP3wOLKdAodCkid55uVIHsrwyXTSXJWr4U=
+Received: from CH2PR08CA0027.namprd08.prod.outlook.com (2603:10b6:610:5a::37)
+ by LV8PR12MB9668.namprd12.prod.outlook.com (2603:10b6:408:295::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Mon, 4 May
- 2026 06:23:27 +0000
-Received: from BL6PEPF0001AB4B.namprd04.prod.outlook.com
- (2603:10b6:207:18:cafe::a2) by BL0PR0102CA0008.outlook.office365.com
- (2603:10b6:207:18::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.25 via Frontend Transport; Mon,
- 4 May 2026 06:23:27 +0000
+ 2026 06:40:00 +0000
+Received: from CH2PEPF0000009E.namprd02.prod.outlook.com
+ (2603:10b6:610:5a:cafe::46) by CH2PR08CA0027.outlook.office365.com
+ (2603:10b6:610:5a::37) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.25 via Frontend Transport; Mon,
+ 4 May 2026 06:40:00 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BL6PEPF0001AB4B.mail.protection.outlook.com (10.167.242.69) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH2PEPF0000009E.mail.protection.outlook.com (10.167.244.27) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.9 via Frontend Transport; Mon, 4 May 2026 06:23:27 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9891.9 via Frontend Transport; Mon, 4 May 2026 06:39:59 +0000
+Received: from kenya-2193host.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 4 May
- 2026 01:23:27 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 4 May
- 2026 01:23:26 -0500
-Received: from [10.252.223.214] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Mon, 4 May 2026 01:23:19 -0500
-Message-ID: <18421811-cc5e-4586-9a59-18e6245c678c@amd.com>
-Date: Mon, 4 May 2026 11:53:19 +0530
+ 2026 01:39:55 -0500
+From: Hrushikesh Salunke <hsalunke@amd.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <jackmanb@google.com>,
+	<hannes@cmpxchg.org>, <ziy@nvidia.com>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <rkodsara@amd.com>,
+	<bharata@amd.com>, <ankur.a.arora@oracle.com>, <shivankg@amd.com>,
+	<hsalunke@amd.com>
+Subject: [PATCH v4] mm/page_alloc: replace kernel_init_pages() with batch page clearing
+Date: Mon, 4 May 2026 06:39:19 +0000
+Message-ID: <20260504063942.553438-1-hsalunke@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion infrastructure
-To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
-	<gourry@gourry.net>, <mgorman@techsingularity.net>, <mingo@redhat.com>,
-	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>,
-	<rientjes@google.com>, <sj@kernel.org>, <weixugc@google.com>,
-	<willy@infradead.org>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>,
-	<dave@stgolabs.net>, <nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>,
-	<yiannis@zptcorp.com>, <akpm@linux-foundation.org>, <david@kernel.org>,
-	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
-	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
-	<shivankg@amd.com>, <donettom@linux.ibm.com>
-References: <20260504060924.344313-1-bharata@amd.com>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20260504060924.344313-1-bharata@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4B:EE_|LV8PR12MB9181:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4632f535-0560-455c-7e67-08dea9a5a731
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009E:EE_|LV8PR12MB9668:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa908fbf-ef49-4359-72ec-08dea9a7f6e3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|376014|7416014|56012099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700016|13003099007|921020|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	zs7pTn/49MCrGyJrAaILlx7T0cHViEvHDcjQ5NBxuR/UODsbcmwJnEaQgnWG/u30VieT83BZ6A20kBMhlX0cGqVwexf24gzw/h9r28SBCFPj5OvIn+PCENFIDBS+CEgPoPlnXpvRhgJTsKfR3oClN+xnG7fPBBtuwj7LV1ufyDpc/MgCdeSvqmVSft9cPsjG+WLmQpSiHhl0ZVRXEs/6h81fI4sMZC/okg8nsB9LWMJNGu3G+4HlK4Odv8CW363oDikdz+sqkzv4XsiMt/dRsuQHAxiV4AH0a+W7bQdG0NBEISmrNFnYkhMa6AqZFNLKgOkZ6e8vrUIicPGl+wvhgpEyxEkXrXmrsgmNeAAJiGathAPeITAvCsuygiS2x3ONYr/lNAD0UesdeyoFH+n3sOkECIH6sDJocgjC+jd7NmAOu9BmcqeCnLRGd+5vbxrW1IfdipgddYEYWy3DwcV1H2ztzEN6IqmP9mFd7J8jC76ZHX3Vvbm7B6g6LT8eF57TqmIKGM2KlPoBg1NzjEfIhjnutoFoIqegcEXI6P7sygI6OYA9CCYaQCSkownvMiUPd7iWIF6k61Z01mSiOKoqPZ/akagckNGMTRC62KVWqZSiG9+wo2XgM6gadpBVVoMav/6+4f7nWXfz+AoT0jPI9rkjpFNIp6+TkOacsE2XBnQoEkaVyMssze3XgosVgF+sc3NLzzyHFqPJARQyWP2t/FwCsF5lvMfSwk4lzOlSirE=
+	dCg0N9VEooz9L0WYXP1jvm+fPgnSWoTQGgTJo8i8RjDaLoaxZjEAVCr8ZiPN4ZB1b50wkPFMAoKT6nvdBou/UBnKx5WWXop2dnkLM9yRlbIaqU/LILuWVaQJ5M6Di/qVwp+E2MCATTpmds4TmVF+Exp84FBWQI6TokAQIVD+l7wrhSnM5KIUsoFYe/OSufs8RuQBcsNVZVHh3mIXumaD9A5830vcoqHOA04DrZPxA/Li7PYDWO13WMVUi2FCvzbdCCLrydcP4ioDbvnp9QGI01jkgU25RRrsB85SHt9rWgY+KMkXTRPIajAqlSGLw+zgNSvDsB6P/seEXMLNSXtGgth9/fug3uBp6DFN7yJVOawXDSE5APuqqXKrdQ/scZw8NoimQoAcJ8830eavN7EPY3DPwJSYI2l2eC13kKvixNFO5e1qD0vtSBsAeGNK5Zj1nT+xyAefVNeum+O7bM9UD8t2XQr5Fzik7IxepWWUWq+K95RigGPGizW9V8QFTtgNJmLj7XMYxD9k5qWpjpugzjdR7cKFqgSukRO8VG/p3o24C2wCi6/u4bt2srqQehUvdcldexY42ZUFsI+odWyB21ieassaExbKhD3bWc2vmBfjtQZqwrQ/dKojmG64229TKilcRRHMMopS40EhxS8LY7bARjJZc21NkwZ96U8ZCMDfmLdgNYrSjdNBnO0mxRlfynbbA52weMlMzootkBRqOO4+k4vwJeYtE4HcWRHkGC/qZyOOQ/YttZjGLUcdxQRbkphtNP9VfCSMcTYDxk9aH5BpHLF8R0cxV7UfVhsYLaY=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(376014)(7416014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700016)(13003099007)(921020)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Mx0c/7AmK+Hlvxw8NkhtDwHqdK8tUWZH81dmNsNvIeEubDjC/8gxwZsup0d6UGcqwucJeMp/RzATjpmp8sTcykUg3zuZdFlR+/3Mgpa/UMAtCJJhmO7ww+XNpAmbpwn7+yIXklenmZAxkbfxL7yECLLCqmXcG1fawbMu0GdYVGM+xFG1B12dqhvTW2NP7YdfVcQYiD+uQHdx7Oop+ddXAOMJYJ49LHMeva/C9uRWzCXEcxCw6RXz/3F2HGW+oK5Fni6klYDeqOfGMbSYaXDXvNCbBBLZ+a1QswDtfVTzizyTe8B0S4eIiwr45SVRcrVuzQCUPGpFlpbVgUwouEFq6vou2/UoQuPaHuodSyWgEmJfUMT2ItEgDPsEKbZZBb3xaKIiipSo2siaEGhXTPy9nWcBr2LGM5PoderRklIE7oWuCpZv8rCmU3UNgvKnEwjy
+	sOCXRvZ7Pvf9HAeLWSf6YPyaW50RDF3iN8uSBTLoYAwXxyvNfug+COOH/Aq/eVMpjXlafV5JpYZfD+sw6HitwHn4zDN9IlFLZd2UZl/YQBAA0xCjQXp9pwtdGMVBdtUr7tbARRQ1PGCa22I4WEAVMpYrVnUUuJMXxvYcM7oMmT3y8qPGpqZngXS1F1BRJXAQhPEcM95qWrwTTDWCadYLLZGuFP7rJ+GMJczSP7MES+4nVg5viWNU1Vo436eZ0cR99S9NHZ1uxQFBx+nzjvHV9CUoutUOmFgHOwkaBT6rQVNBwiky/upulb5jsb5httfhqDdf5OFrYLusuJnPi730ADMxdyeFh17rXwQvjrymCOeXJ/LRJwj0ztxbOFbrjOEDC6ar8lTqwLwR5eU7PflxyOrZeV6plBOcZc80hdya8jQ0hiTIXovKUcKESElq7vEM
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2026 06:23:27.2496
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2026 06:39:59.9358
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4632f535-0560-455c-7e67-08dea9a5a731
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa908fbf-ef49-4359-72ec-08dea9a7f6e3
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB4B.namprd04.prod.outlook.com
+	CH2PEPF0000009E.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9181
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9668
+X-Stat-Signature: sc9st1d4m1iwbzbwugbn85uo84bijujt
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1633A40006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 17C80A0002
-X-Rspamd-Server: rspam04
-X-Stat-Signature: syttodxw8rohynk5ahg9sh4ik5mzmkwc
-X-HE-Tag: 1777875812-538557
-X-HE-Meta: U2FsdGVkX1+5voHCHQoAz0M+fHRFIo2YhT2MG+aK1R9moD9bGNwtxvE8dwbgTsPnfsFFf8/lSji6c5yDGB6dlny9zvw3pl/yYAYP8dFblhBu8oY3ULEaf8B0jIpsPCwfYSwSEusO0CDn+c9d4dvC8txSmlYa+eZ9x2RLtwUsXn3UaQr81KOGjqIJUzAavJMQ4lghNRUZOtxayy6xnOH7TF7I+KKweHq3r2cmiXQ6lyS2SnovtmawQGHHHAMSFlnBU4ltskfOn+0fLb82+6ljFZU6cURHfn4oXerH5HhJUqi6UHKyXhoPlXtaK5FwSPR6IGuHA4y4citZKMaRpfgco50ulnSZ+dFV6qROcfX3XTDJCS8+MAE3GFDgT2mUG1m7bmDUzR0rpXVU9edkd8sjhXZbI0w3PbRJNifxLKofBuusZHfx8zz4Z0zWUzN4fQbm1OfjQtTYfi+n2K58Py5qlhwhpqVOsvzCPcqGwhLLuHjz0025pF1S6e0g4+ULYWINb3+qlzuavg7CNuuOLjJPU32gJPl635hQP9OEg7G0dQllbvpbqaAov8Af00XK3EzAmawOR7KndbMEjlajWseBNqy4QTL7D7AyK/BuKCdDBWMpq223ReFsEekYq0AdykFEXAdkF0vAGgob2LdALj/jnxnLDGPkR9/SfBWKD3bimiFKCrvFSQu7H1YUapus5SOBbefwtQODeuOj4lkVzjzFQ8c/9Yjk26/xRIN6RlFVy7K/wdon6Gp4G0tsrsjqNld3KTfO+1/blTGO2d3w/Ptz5lRORcEqxMJdI5Zfu2dsifgmK+IuvHU4s/mzxrHeikTYnyT/gyE6DQmSs5C4L0QmVPeMGFjBabA+3bvqUNlZUINwXYe9LfcD4ZsuD2I4EWHyjxoScBYvG0Q24vlX+WOhH2VCj9r+/cJhuHZ7ckpp6ZgzZNYRRZiVd7oOJ9l33eZN9em/smiUEbBoE/nVc4i
- DiRuLhi7
- qQA1IOsf+ndDfnzdvMCY89b5MSV+IoAkGUtO7g+BpJmqg74gobIDsoWRfij7vmi2i+ZfDC9uGbXu8Lhbb4+LaXjk0pvK4Yf1wnLM6DD9/WW6uWisu4WbzglHRVEQFEH/l7MBZmhQ6XbptB3WQ15ELxfTUuzPiMGHxFqAueR9TMgoxfM8S0ZHu2s+H1S7R9opNRZpUkgD9PSt83O6/xH0QXfR76M1in7nuxok5M5kjOZZb1UlRXrNhleLKY/ix7tBFUS3erEo9fAMagFPemdZfDsSeIVCz6uQ1cy59hbHEr1FeUNHPrfNn0sKt1M/RxMR481dXw1bYjxsa+U0Z0ZaUjq1ZUVRyW+8qhB6cR8hvDPFbptXzhsmuELznx5ore57XSyD8rqlAN7Si35S+qvq7HHKhYvkPITDBj7bk6sGUlW99c3ydmtXd3BKueWlzJE2Lz+0LxH/HpKxQaOcxz9dG4e+e159Srh9QcoC7DxulJrkekhw=
+X-HE-Tag: 1777876805-837063
+X-HE-Meta: U2FsdGVkX1+I/5SGgIWWDfxHt/bSnAfN3JEFe9tr8Iqcxbbmwc2v6OnLGi4zUO2AVFEU7OGbled2yJCMyAuyPMeH0fsMIaYDhrbModhdTX5vivXFoEyErxGcZqDwo33D5LZJ48iAQ06PFEXUcHM5A5ZwOxq3whmHFhPPi/275ytt9DaBcpQAwusvJ0ELB5ww8UnCET0mf/D8rd83cDkDRx+z63swG+48RgUOZdMa42omoX0XZrz1qGdS8iEsjhWNevNujCBBx5Gs+g6YhJ+dKtJSQ/Zwe6DmY6yuygYGCTdqaoN0WWXa0KJ+BXyRGZpe0e9c0wGKGIZ57aqaMIRMIKsug4Ja6b4YHqISHeHjJ+PAuAnms4VgHjpat8enjV27rNqyuYl3XzgQedyfMOXPouDMaPFlJd/qvVUWNkSUsiF8JrFDTcH5JM164+blkRun4HiajKOWb//iMKQxlk10JutN3UakxMg8bkJ6vbluKAO1Hrxy2zkLPr/04YeCNBoDIyC9SJC0KRSPmxvoIEri7EoXJD7xdhvy/rVxWZqWW3NRbp4DxrILXhUQNliOHWufWqo0faLy/uvdQbBlq+62ZCOdWmcrh+6hk58WiPaqHR+LdXgn0XU9QHWJzmC+T5FFF6+6R3MSuIFTkq4t5TAsqChpO+eyfMKQylDAD9aIvpQgrJdRHMz38hWIUJX18veT2wJTwQ6LlmGkNz4lE4BqlcLbDH4gOsW8W/9pZ4/w/WyAfvnzfmDuc3L2AsdrSYGw4OwnEdIfEG0paTlUqmFEoJ1HH20apuOiHBZxM8EOigOUe19QjyRn+/TVTxx70VSelfXuuF0MuWcYhJoqynOVfFa/ytYaTcTELIHrguN2XEdh3aRx5oBTwMIyzFB2/WtvQ1ziog+dJwgkuhPs1dDD0ai8u8PYA03jHV7zfWKhD6I6eesKFBAwA6PKl683R74WD4M8R8AmrKm11YptEVe
+ a+p3fcmf
+ 4rK3cPyTLQbqlRbG/5AUORL1CejJGMYjn+uPdkMGkg6ycmYszka1+XpwM1GJC48Kia7bG5NlkR7laOzrinu3jbXEygzYBSg3zQcqPlRKYx4gV7KWdaaFOY2tH84W+t1hyFsm6rMuOwzC6GA8UA5Q1phinTAXUQa1ZtSExefNUii/GXM/Zy/flptFCVPtIaYHaHTyeZ6aBexk5N+Jfq5rFWsgfaVUzEOZW7wmQzHTHDnisBKnp+D6QcpzvE3DKBhNaJujfig1yuOEii6hNx23EI1/F+x6dBoBKlYBZ0VLHeqT5Y4H6aMkZ88o/I5CGxVPkkLRMwkeyPZBn6NrIaVvYSLqnkZmMt7yiLCIlhmzv/oPVmeAkaUyDnBXPLY5Z5vHLAn45ouSCJ37hUMTKRdPrLliiD7YvKEFkSJMrPbnuPJ2Z37oZpw+iqi8DsBSChRkN4RMxYA5DBTG+uhGtfYf1bxs9s04a+0c1eJimRwo+Y51HhGUV+Mtw6/umVJ87Py0wJu3/oX519SeTFCQ2YrlIoIQjqDV82wapHAluDkSv0TDWNokgJkyJv16GcySEeiw8lO6UkOH8/V51cikT5CO40g0T8EkBs8m790+gAXqTPWrrU1ldt4KOS5KMVK4YCvuFLSYub8KYlZkpWr7nAp2Q72xnDchAWogpjpi5LCCQIf1Jb6Q+BE/nKuJ17w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,75 +148,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-May-26 11:39 AM, Bharata B Rao wrote:
-> 
-> Results
-> =======
-> Posted as replies to this mail thread.
+When init_on_alloc is enabled, kernel_init_pages() clears every page
+one at a time via clear_highpage_kasan_tagged(), which incurs per-page
+kmap_local_page()/kunmap_local() overhead and prevents the architecture
+clearing primitive from operating on contiguous ranges.
 
-Micro-benchmark numbers for IBS Memory Profiler pghot source
+Introduce clear_highpages_kasan_tagged() as a static batch clearing
+helper in page_alloc.c that calls clear_pages() for the full contiguous
+range on !HIGHMEM systems, bypassing the per-page kmap overhead and
+allowing a single invocation of the arch clearing primitive across the
+entire allocation. The HIGHMEM path falls back to per-page clearing
+since those pages require kmap.
 
-Test system details
--------------------
-2 node AMD system with 1 regular NUMA node (0) and a CXL node (1)
+Replace kernel_init_pages() with direct calls to the new helper, as it
+becomes a trivial wrapper.
 
-$ numactl -H
-available: 3 nodes (0-1)
-node 0 cpus: 0-255
-node 0 size: 515563 MB
-node 1 cpus:
-node 1 size: 258034 MB
-node distances:
-node distances:
-node   0   1
-  0:  10  50
-  1:  255  10
+Allocating 8192 x 2MB HugeTLB pages (16GB) with init_on_alloc=1:
 
-Hotness sources
----------------
-NUMAB0 - Without NUMA Balancing in base case and with no source enabled
-         in the patched case. No migrations occur.
-NUMAB2 - Existing hot page promotion for the base case
-HWHINTS - IBS Memory Profiler as source for pghot
+  Before: 0.445s
+  After:  0.166s  (-62.7%, 2.68x faster)
 
-Pghot by default promotes after two accesses but for NUMAB2 source,
-promotion is done after one access to match the base behaviour.
-(/sys/kernel/debug/pghot/freq_threshold=1)
+Kernel time (sys) reduction per workload with init_on_alloc=1:
 
-==============================================================
-Scenario 1 - Enough memory in toptier and hence only promotion
-==============================================================
-Multi-threaded application with 64 threads that access memory(8G) at
-4K granularity repetitively and randomly. The number of accesses per
-thread and the randomness pattern for each thread are fixed beforehand.
-The accesses are divided into stores and loads in the ratio of 50:50.
+  Workload            Before       After       Change
+  Graph500 64C128T    30m 41.8s    15m 14.8s   -50.3%
+  Graph500 16C32T     15m 56.7s     9m 43.7s   -39.0%
+  Pagerank 32T         1m 58.5s     1m 12.8s   -38.5%
+  Pagerank 128T        2m 36.3s     1m 40.4s   -35.7%
 
-Benchmark threads run on Node 0, while memory is initially provisioned on
-CXL node 1 before the accesses start.
+Signed-off-by: Hrushikesh Salunke <hsalunke@amd.com>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Pankaj Gupta <pankaj.gupta@amd.com>
+---
+Hi Andrew,
 
-Repetitive accesses results in lowertier pages becoming hot and kmigrated
-detecting and migrating them. The benchmark score is the time taken to
-finish the accesses in microseconds. The sooner it finishes the better it is.
-All the numbers shown below are average of 3 runs.
+This is v4 of the batch page clearing patch. v3 is already in
+mm-unstable, please replace it with this one.
+The only change is moving clear_highpages_kasan_tagged() from
+include/linux/highmem.h to mm/page_alloc.c as a static function,
+addressing the code size concern you raised on ARM allmodconfig.
 
-Time taken (microseconds, lower is better)
----------------------------------------------------------
-Source          Base            Pghot-default
----------------------------------------------------------
-NUMAB0          181,393,365     184,331,381
-NUMAB2          42,287,528
-HWHINTS         NA              50,422,862
----------------------------------------------------------
+Thanks,
+Hrushikesh
 
-Stats comparision b/n base-NUMAB2 and pghot-default-hwhints
----------------------------------------------------------------------
-                                Base-NUMAB2     Pghot-default-hwhints
----------------------------------------------------------------------
-pgpromote_success               2097152         1961087
-numa_hint_faults                2358069         0
-pghot_recorded_accesses         NA              1962696
-pghot_recorded_hintfaults       NA              0
-pghot_recorded_hwhints          NA              5532979
-hwhint_total_events             NA              5532979
----------------------------------------------------------------------
+base commit: 2bcc13c29c711381d815c1ba5d5b25737400c71a
+
+v3: https://lore.kernel.org/all/20260422102729.166599-1-hsalunke@amd.com/
+v2: https://lore.kernel.org/all/20260421042451.76918-1-hsalunke@amd.com/
+v1: https://lore.kernel.org/all/20260408092441.435133-1-hsalunke@amd.com/
+
+Changes since v3:
+- Moved clear_highpages_kasan_tagged() from include/linux/highmem.h to
+  mm/page_alloc.c as a static function to avoid code size increase. As
+  the function is only used within page_alloc.c.
+
+Changes since v2:
+- Moved kasan_disable_current()/kasan_enable_current() into
+  clear_highpages_kasan_tagged(), per David and Zi Yan's suggestion.
+- Removed kernel_init_pages() and replaced its two call sites with
+  direct calls to the helper.
+
+Changes since v1:
+- Dropped cond_resched() and PROCESS_PAGES_NON_PREEMPT_BATCH as
+  kernel_init_pages() runs inside the page allocator and can be
+  called from atomic context, making cond_resched() unsafe. The
+  original code never had a cond_resched() here, and the
+  performance gain comes from batching, not rescheduling.
+
+- Moved the !HIGHMEM/HIGHMEM branching into a new
+  clear_highpages_kasan_tagged() helper in highmem.h, per David's
+  suggestion.
+
+ mm/page_alloc.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 65e205111553..3a59577f58a5 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1208,14 +1208,18 @@ static inline bool should_skip_kasan_poison(struct page *page)
+ 	return page_kasan_tag(page) == KASAN_TAG_KERNEL;
+ }
+ 
+-static void kernel_init_pages(struct page *page, int numpages)
++static void clear_highpages_kasan_tagged(struct page *page, int numpages)
+ {
+-	int i;
+-
+ 	/* s390's use of memset() could override KASAN redzones. */
+ 	kasan_disable_current();
+-	for (i = 0; i < numpages; i++)
+-		clear_highpage_kasan_tagged(page + i);
++	if (!IS_ENABLED(CONFIG_HIGHMEM)) {
++		clear_pages(kasan_reset_tag(page_address(page)), numpages);
++	} else {
++		int i;
++
++		for (i = 0; i < numpages; i++)
++			clear_highpage_kasan_tagged(page + i);
++	}
+ 	kasan_enable_current();
+ }
+ 
+@@ -1428,7 +1432,7 @@ __always_inline bool __free_pages_prepare(struct page *page,
+ 			init = false;
+ 	}
+ 	if (init)
+-		kernel_init_pages(page, 1 << order);
++		clear_highpages_kasan_tagged(page, 1 << order);
+ 
+ 	/*
+ 	 * arch_free_page() can make the page's contents inaccessible.  s390
+@@ -1853,7 +1857,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 	}
+ 	/* If memory is still not initialized, initialize it now. */
+ 	if (init)
+-		kernel_init_pages(page, 1 << order);
++		clear_highpages_kasan_tagged(page, 1 << order);
+ 
+ 	set_page_owner(page, order, gfp_flags);
+ 	page_table_check_alloc(page, order);
+-- 
+2.43.0
+
 
