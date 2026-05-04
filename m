@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F2ACD3423
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 08:05:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9D2ACD3423
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 08:07:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD7016B0005; Mon,  4 May 2026 04:05:08 -0400 (EDT)
+	id 0DEF86B0005; Mon,  4 May 2026 04:07:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B88196B008A; Mon,  4 May 2026 04:05:08 -0400 (EDT)
+	id 08F716B008A; Mon,  4 May 2026 04:07:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9E056B008C; Mon,  4 May 2026 04:05:08 -0400 (EDT)
+	id EE7836B008C; Mon,  4 May 2026 04:07:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 971766B0005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 04:05:08 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DF97D6B0005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 04:07:42 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 272BA1A03B8
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:05:08 +0000 (UTC)
-X-FDA: 84729001896.23.48971BD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9145C1C0009
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:05:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=clZ63vox;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F88C40456
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:07:42 +0000 (UTC)
+X-FDA: 84729008364.23.F53A40C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B408AC000C
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:07:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="n/EqXrls";
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777881906;
+	s=arc-20220608; t=1777882060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kItUEdgis1R/m8aFKWzayaMFO2dmIIir4doXZRSqyko=;
-	b=NWHxyVL5qDlu+b7u9fZeOwB54X3zjM6l2QXYkxor1GW8TVsSKwcVL7m497rZxNvh0rNBRD
-	2vu3vsk8/AGbP/P59EiDmQNx/73NqDJwgob3vCiaZ06eLGY2ohBIMvKYrBylbIS1w73jsj
-	ILsEF4T51CYkel5GRHo3XbXNqsVVxgY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777881906; a=rsa-sha256;
-	cv=none;
-	b=IMZBzE00Y30qOpWhXwdOVDK5JGmN/FNPNs1WrU8SdVpRtjYzmEgFDgJSZB85D+qgIIUiJM
-	94e9zkgNLqDZxnayc7trZsfsVrNqPHQAlYeGpV1ivg2Y8nGJ8hTyNfM5epvjSGg0Sc6Xut
-	0dKAK/ZjEl+HOVdkbFoRxSFPNsephQk=
+	bh=ynhiaApgl9U1jsZhU+opaqgN0ctQ7akKT2oK2FBIxcU=;
+	b=0VrlgM7poRJ48P8IncX4jQl6jg1LFk+rfjuCuBU2QvghkUJUM83U/R2AbBqZZnZaZzlYU5
+	R9T3F3a376gdx8ZCSIcfXc26sd0352yVoQGMnbcOiV3ZZlFtmhYgDrjpSrbELc8YzYUhn8
+	iGJ7GpkViGxc8/JK8t7Fpc+IB0u9YxY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=clZ63vox;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="n/EqXrls";
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777882060; a=rsa-sha256;
+	cv=none;
+	b=xaK4IxiCqGYYUGY5Uj4FJigPT2fSFGQ0o3dzF6bvkF+RrN2RNb8/IipZZtoPXOZ9d6BI72
+	Fc3EmUSAezcefgkoRW0zFnTCWoEr2qjvEcKUaYYrTaBYYVbxtVLMf9Fe7qy7FOqwDe5cT2
+	r/+/CCIYfpp4l2KVzTU71TzbdDpOSy8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E20FE600C3;
-	Mon,  4 May 2026 08:05:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DABCC2BCB8;
-	Mon,  4 May 2026 08:05:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BA12243E96;
+	Mon,  4 May 2026 08:07:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD58C2BCB8;
+	Mon,  4 May 2026 08:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777881905;
-	bh=sgw7LcPcgijPezjeAjo0c0NIT2NcMK72lK9lat7L4gU=;
+	s=k20201202; t=1777882059;
+	bh=Q1RLdcnfIfl32p3/930osbW/cb2vQXkaq39DADLSUgQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=clZ63voxCVThA2Nayvoz6O+UjlaA9DDU4Mg62Y9ygdASi3msfm1CYKGs+EcrWNGBQ
-	 lHa5GoSoNErp+EGBY2I/bUxz+SXw4R7WTmY/U3Kv63VZr1iQJ7ZGNHOCIbPoC+XSw6
-	 We7p6jpbb+JUT2RJ14DRdJ+bwwvWJJpPf/T5RjMpLPsx+jwXhDbC8ewjXrjh+buNwm
-	 k/BIyAUEXM3fqEHRIvYnohEL8e1IMenHmlyS5jaPCNvBjCGfaK74GtBX3gTFbc+sXn
-	 2r9xtNjKPPzeBlb2gTkAMynxUc9I6hF83hwP0aVQYiP5Jc/UgSiiLgy2kOl9rl3yWy
-	 eBromN4hOqA3g==
+	b=n/EqXrlshOqWVETubhn4PlzNUbkwOYB1zINBE0bwPQ+3dVjj8bcIJLNrO2dQsHgWh
+	 1fQMB58vp3B+EA8NJe5DSL2z7HNmgSNWgAPvwzCHjmDrk2W+te40qZvcvd2NhATvLO
+	 wiz+KQVwnVFMEX6vXtSmdTDpirZTx9eAJHwrFYeGao3p1t9nML8XdIv711xrX4uCSA
+	 IAa0dQ7yl7Se3wDmHSx4Y41FiGPJUHgCOMuaufokGdWty/k9zwMBxYGxDBWV4PF/3N
+	 S+7DDo8I3Yr9vtsTga3G8LCXvDdR2dU3zo39iw9XFvtu5yAJ/uIEmCvZ3K79rxdDl1
+	 mp3+OkIamYmWQ==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: David CARLIER <devnexen@gmail.com>,  akpm@linux-foundation.org,
-  pratyush@kernel.org,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/memfd_luo: reject memfds whose page count
- exceeds UINT_MAX
-In-Reply-To: <afUApNZQumxPQ3wu@plex> (Pasha Tatashin's message of "Fri, 1 May
-	2026 19:38:34 +0000")
+To: David Carlier <devnexen@gmail.com>
+Cc: akpm@linux-foundation.org,  pratyush@kernel.org,
+  pasha.tatashin@soleen.com,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/memfd_luo: document preservation of file seals
+In-Reply-To: <20260423125648.152113-2-devnexen@gmail.com> (David Carlier's
+	message of "Thu, 23 Apr 2026 13:56:48 +0100")
 References: <20260423125648.152113-1-devnexen@gmail.com>
-	<afT3no4OkYxnQ6zJ@plex>
-	<CA+XhMqws+mudAQo4ibaLb9MJv7pKDfLUAH8CcHSAkLNdPtijeA@mail.gmail.com>
-	<afUApNZQumxPQ3wu@plex>
-Date: Mon, 04 May 2026 10:05:03 +0200
-Message-ID: <2vxzo6iv38i8.fsf@kernel.org>
+	<20260423125648.152113-2-devnexen@gmail.com>
+Date: Mon, 04 May 2026 10:07:37 +0200
+Message-ID: <2vxzh5on38dy.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9145C1C0009
-X-Rspamd-Server: rspam04
-X-Stat-Signature: cdtb46t8wxwc7zxjqs16kcgb8f4r8e7x
-X-HE-Tag: 1777881906-109704
-X-HE-Meta: U2FsdGVkX1+WyOzIK4Z51Vgi85dCQXTknXbpV3XORZyXhicUfm0l7ZLyCwWHjqcAY5f+nuv/UZTk2WUDg3XjciZABFC2NG6eks9NI4AYLmGIAm+jh7Ub1t9z+WSWf5nyKz8AHiNxnQ+iecLSkBrDLVf0huo7XRnivHnoDlJpiwv/h2x3cQqOKaN5ErE/Y4r3ZHRXv0SjA5pCaEj6MZSPbn49o+no7eosEZU3JDyZ2PQUvplS2JtbIA82xoMUZD0qqgZixvJsY5ViAp+0AS7kGuizZNcQLbDa73gNGSM9SIWKKY7sBa1aQTLbj4QQkoPLts4B2AMokavUIRJYjXHdOTeE/M3wmi75Tct7Cx/xLILozmOHraDAILvhkstX+upqp9c3bVH+ciQB72m06CH8exeZiGcBDkJliIr3H3MRoDDU/V08510EVJqqdGFaCiiMS5P6JAVptVWAFrhXlEg0S+Ks9AZWDwBy4C/bplsYnT3wGN50uddtb0MIMOCnWNd5w9cq8dSO8ezDLib0kwetFDPJNDY8W0n4kyX4XKeqF2Z6SLyd/jmuGo931WZXiF+XsjCJkCqcqYI2QaslyCAY0xact40DgwLsLz1quHT3TwrlmfqMGnOIFE0sKQAZxD0wl20cA0GhB8FbjKLAZbll7ELK36LlP7dsQzt4/RBvJ63mJ1OBfXIr2wFgvKrrDvhmas3o4jWuoiv1JQTDZU3JN92M6PGNIZNeMkVOkSrJaP0IH5QMWJaD+cZdY703g6cUkuQBOtNw/JKAaCLWiONLLlUEX+RsOxPvO155ACbjdyThbFkhiFE4MhBfNE/MJrddkvr+0xQYv3Npe5AfNYo1x7GA/ypwcWIRzDWc5bAQNwAb8LRGqznu0utoZXTxSHfL83/EzaazUaZybDDA6QK8SidWKx0wj4g1S7W6pI0xvjanOJSJnXGeYfdTetwwshDwKo4dq4ZMabfoDYW+b39
- CeOzI76F
- xw8sEIHQbwZm+yIPU62mHgQZcmnWAc4HqP+hdxv2/300QvQnJ6IFj0gEHBAxp5SkC914q7YUJGu5qEITOqfIQoDa+ZWvZJuqshNjYQxIYkGVUATpN1nfNiI8MiwUaEmEKwrVvrc9Pu4iU8m7KURVkhIPkWdo37TFZ1guZakstmKsbi44goqjsagAkys2/Nbx09PAtHN43LBtl8paHsvXZeGd20/JS+2qrV60/CfD34yowE1ktaa09pjGCoAFZOyNaWQsah2dH8cjxrh4ywp3Osf/q/6kyzbhlsqw1k9I23OYlJJY=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B408AC000C
+X-Stat-Signature: eqkc7zzhakdxowt8h15e1bmcyipgp36k
+X-HE-Tag: 1777882060-171313
+X-HE-Meta: U2FsdGVkX1+PjRuXR9iS/y7m4R5KIIyvQmhjGZcmSQmCPzhTpm0/6lqToZSgl5kjedkRUKjky1XKkmrrCL4qb1QlkvLSxO1bvwOGuo/zFfVxlRk41bQqg7jsrTywuHFqwYX3LWOkdsOrLYHkrpHhbQqfh9WW1WojcbkOzpuooUdnFKX2aj9HRv7iCIlR1tJdDrRNpNsFqAecuVj28LvA17qSReAYHK6HV4HJQrBU3iEgaVsC4QWbLImM2B3rRmVAuYqZMvl6dETXs5rYQFYjBrjNBKpggKJSVgp/4EsoFsAFxgJatTHVZOcivELHk7MKu7NZ9Fa/bd7y2P9gu8KYoSroqCFaAcCh6B7bBb20cQzxig1tkBhT4GEutGTR4z3hAGeoKTC/6ZNOYJffXkDB7bleA3ihaWJuJqbZwRVzHmATxPf7fUs08lHxJm/Ap025yb1cLWJ60t2WsswrVMpkE03Vnmsf6W/nOgRf8L2Hj40zsDSRoWjGgYnMws1I1dDt0Z0z3TuiFMwTE4BNGt8QrZW4NyBakHeUF65DlqzMZ4lx7KrHg6MUlrqojax49B5vAQAAxklJsrtNoFTipmAGbdMXkkutnRNaFDXCb0sKY4VU0tQNmXvvM//kB34D2nBhKRmBAM+0w/CyKd5q04ipO1K05gpXiNLMtuwzagKCWd9iKwChQFRyXzmv449pnhv1va6Mws+EEykX1oPFRrOIB1Cf/z1FpPkLgNFlgEMFysGv9jJqIXUw34rh9vonrTK+mZhz0tP9acugqufQSiulmnO+k2hNItRCXkQAuStw1z+YerRlqHwAf5ZCxWESlDXsV6/Lj8AOOTNotAC6QMZPd8B035FZ+VKMRHWefrf6RU2ifircpMHNtzstJG/SVSUA8f7h4C/PnhEGfy33pbOH0aNH2HmKekylqrd2EZif5JO8JZPDVtDEnxtHgabZ/P8EXb+XAXdPZFQyNvZiIUf
+ D1QsKJ7j
+ c3jNCby6spm8KE9b8lInqg1dnJHGW8IqkJYGP06lL6iRQjuZL45FNCbqPEYVo6z3BhAiMJzYuZ0LzzpCEtcxd4SJ987uc0gO0ZXElx6vVO8rqXDY5rHraowVF8Jn5Mu5SCGUN1t2Y5fy/0XqxjyivBIlqYh5+jAK0S+n5cfTjM7Qi6ykWHQK4gRNy4Qz3xzpjiy1HZ9ttwRfEX7oyCmjBUSnmIViq7JR+jqHqlfQ3QsE+6ZsdyD6WHOAf30NDyk+Yvf/AYBCpDlBIQb4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,40 +93,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 01 2026, Pasha Tatashin wrote:
+On Thu, Apr 23 2026, David Carlier wrote:
 
-> On 05-01 20:26, David CARLIER wrote:
->> On 2026-05-01 18:59, Pasha Tatashin wrote:
->>   > I think, the fix should be first done at memfd_pin_folios() to
->> change
->>   > max_folios to 'long' or 'unsigned long', and then just updated
->>   > memfd_luo.c to match.
->> 
->>   Even with memfd_pin_folios() widened, memfd_luo_preserve_folios()
->> still
->>   kvmalloc_objs()s the folios array up front -- at UINT_MAX entries
->> that's
->>   already ~32 GiB of pointer array, which won't realistically succeed.
->> So
->>   the guard here still makes sense, just on allocation grounds rather than
->>   interface truncation.
->> 
->>   Happy to widen memfd_pin_folios() as a separate patch, but I'd keep
->> the
->>   -EFBIG check regardless. Or did you have a different shape in mind?
+> Commit 8a552d68a86e ("mm: memfd_luo: preserve file seals") started
+> preserving file seals across live update and restoring them via
+> memfd_add_seals() on retrieve, but the DOC header was not updated and
+> still listed seals under "Non-Preserved Properties" as being unsealed
+> on restore.
 >
-> Ah, Good point about kvmalloc_objs(), I am not against this, even though 
-> it is a very theoretical issue.
+> Move the Seals entry to the "Preserved Properties" section and describe
+> the actual behavior, including the MEMFD_LUO_ALL_SEALS restriction that
+> both preserve and retrieve enforce.
+>
+> Fixes: 8a552d68a86e ("mm: memfd_luo: preserve file seals")
+> Signed-off-by: David Carlier <devnexen@gmail.com>
 
-Yeah. I plan to get rid of the pinning anyway and do this via the page
-cache directly (might be easier said than done though), so this should
-be fine for now I think. I suspect we might run into a lot more problems
-if we get a memfd like this anyway.
+Thanks for the fix!
 
 Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
->
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
+[...]
 
 -- 
 Regards,
