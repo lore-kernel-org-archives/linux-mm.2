@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BB31CD3423
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 07:59:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C99FF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 08:01:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDC936B0092; Mon,  4 May 2026 03:59:48 -0400 (EDT)
+	id EDF376B008A; Mon,  4 May 2026 04:01:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8D076B0093; Mon,  4 May 2026 03:59:48 -0400 (EDT)
+	id EB62C6B008C; Mon,  4 May 2026 04:01:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA33D6B0095; Mon,  4 May 2026 03:59:48 -0400 (EDT)
+	id DF3B66B0095; Mon,  4 May 2026 04:01:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C6AD06B0092
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 03:59:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75E29A02DA
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:59:48 +0000 (UTC)
-X-FDA: 84728988456.20.77FBDFA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E636EC0008
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:59:46 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xp0I8n21;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CF6A16B008A
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 04:01:15 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8E0BFA02E5
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:01:15 +0000 (UTC)
+X-FDA: 84728992110.17.7BAAED5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BDF3A8000F
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:01:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxLS0mqE;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777881586;
+	s=arc-20220608; t=1777881673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a48jOUPz7lxJq2XxF0vY9r44Z05P+JTHRHKeKNn1zXw=;
-	b=1cFTEiknF0QwVGjDFgoGpHycOOp0awE7pTj3t+Y8I9jxHmh61eNBGWgAzx/CGQJC4oYEsI
-	WEsr9eVg2Xq0W3Ll+I8GB+m5wnIjam/hNBJVjWPYOvDNAtTOtPEP+wk9Xku7z0n+s7AcSq
-	OLiYk64nXAx9/IyIasi5cXZcq3Qz34M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777881586; a=rsa-sha256;
+	bh=T6391mxTUr1WVmO0k6M3035hZd2l92eA5g1GJUgBhGI=;
+	b=27IFvXkLwX2VM5JotTQE/x0VLwPoGV4LZumdeb1uEXYOjnBVFFPHCeegOFr1Hf8t6ug+C/
+	xyawo4Haef7ZE2LjFd+YhWHMZWS7sC0CtCPxfeJj6UGVlXF9ekwKbeD+IEtFoUWnylvn0P
+	oo4WKxW1M+ODPtMgkOiJqq8PftCldHU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777881673; a=rsa-sha256;
 	cv=none;
-	b=zCMiVaq/Wa/bj96yLvG0vnVtMKGGeW2quATlfi1e1vpBPDJHWeXjtbVcS+Y6sxPp0NNzdR
-	6LUKdVqFkglpGbRTVuig5j3E4Eg+QCqb62MRVb33QJDh9WP7ydE1aUQ5oLaJrAt3oR5iwn
-	oQeEfp3RCtddhBFMF4jN5redOXaMX4I=
+	b=x/RySUigXl9Ci8ZvP5dJKIb5xnqmEVUQJhagP5i360InnQq/0ZKT4bVo85Bu5FUe7iL5Vb
+	Y4NBSznd5RT6jVwFROHUaZsZ1SBLBXmMJkR+E6lG5U9fAKLCO5nf3nUmMmQvD+/8ywcp8t
+	zxnYpvaE9mrGbz+8NGaDqu7Drvh1G1Y=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xp0I8n21;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxLS0mqE;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C1C3600C3;
-	Mon,  4 May 2026 07:59:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5E5C2BCB8;
-	Mon,  4 May 2026 07:59:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B5BAF43CCF;
+	Mon,  4 May 2026 08:01:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB3DC2BCB8;
+	Mon,  4 May 2026 08:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777881586;
-	bh=Z0FyTKWUyHMmgU1F1HDPTlLvaTh3LvI2R4javIhne/g=;
+	s=k20201202; t=1777881672;
+	bh=g8WxYRXB8kS63CKZCS/93KxG1y3PKdaKScohACydG4Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xp0I8n21lr/oh/1fyZjtCkraLJGJfkjbkamlq8icE+MNyykgTJm8mK+cCtsG9Su31
-	 IViW5lB/u491Dwd9UKoLItqOts9bb6WPZiBaU5iYUt9GM/pzIUVM/LKy1qhY0Qk4ql
-	 NjrmnqCF0tcZewXQenlKO9rbPWp/hz0JwbRnvR3Hld4yuKTmzTvLfzbsq6U0//I1KJ
-	 Eh7jhQCsOwYfCsb8rLFpnQu+VHhIHUPz5hVPXpNSXi0VjZLBOKtHBAFVHYKeXdxoPg
-	 dzU7ijHO8/ZH2GCO0gLWnU/O7U+Cu682DdgAbvCSPM+Eb/XUbP5RSLtcc0VnOwr3pE
-	 FgRwhLWt7Kp0w==
-Date: Mon, 4 May 2026 09:59:37 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
-	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
-	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
-	usama.arif@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 03/14] mm: rename uffd-wp PTE accessors to uffd
-Message-ID: <afhR6VvypoFQqDzL@kernel.org>
-References: <20260427114607.4068647-1-kas@kernel.org>
- <20260427114607.4068647-4-kas@kernel.org>
+	b=gxLS0mqExC/0/8egOY8GbrLhQQQjEBQbz2/suB5bEmem1CHvN/rwnUB3ZTFV5Gc8c
+	 xn/okk/WKMfZIdutsPfTVk+0t0sBZ5g1P/WZchX7f/oFLswVrirI/71LSmbMw+PO5O
+	 a+Bkp/7S94mzRg1hWiR9DIiYJtLZQT9NXCxYWDhvMRwdq7a/TcgpIWKsIg1ygWwIcF
+	 PHGqYdJRskyH1m/5c7EHVuVMK9AszRfhAjG+n6ONgcDyvl0ct6k1TsAIr3hxEXc+nz
+	 NhGBWZy/i7mLG51GLWF21FqUe+ki4zRszzyqxb5fsBVYRQp/ClkYbhU9/dQuL5zoeE
+	 Xbd+KmaNFfmXg==
+Date: Mon, 4 May 2026 09:01:07 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Jann Horn <jannh@google.com>, Chris Li <chriscli@google.com>, 
+	Barry Song <baohua@kernel.org>
+Subject: Re: [LSF/MM/BPF TOPIC] The Future of the Anonymous Reverse Mapping
+ [RESEND]
+Message-ID: <afhFEQfC-nISu-rj@lucifer>
+References: <aec533b2-37a7-4f44-a279-c4aa604206ac@lucifer.local>
+ <afWcMyc5M4vViLJd@lucifer>
+ <8c729d621f281dd0b1a891f4aaccb0ba4956b219.camel@surriel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260427114607.4068647-4-kas@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E636EC0008
-X-Stat-Signature: 4a3z6gn1gue6ckm4iayb786rkht9zezk
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8c729d621f281dd0b1a891f4aaccb0ba4956b219.camel@surriel.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BDF3A8000F
+X-Stat-Signature: 8uiszg3bs1xsgxanjjcx3upiby3rc4ju
 X-Rspam-User: 
-X-HE-Tag: 1777881586-267529
-X-HE-Meta: U2FsdGVkX1+nGTNbP59sG+71gVL5pFZaks+SysA5QRGQFO64/HbWnp8b9MmOhX/5z2MEW7HumKiLfoI5p7TItkJ6l6/iVFQjEQ+PR8OeMsBHcjTnHl/4L0YRkk0/CV7bGNaaeGBqXEfQM28hzKFdHvX1oyvLtIVSqWzWtobO2RophxK8HMRKBYy3uhYhjAv1BRfEGnN6rbGpwqiNCjCvyFe2a+uJnlasUKAx0d+G12YIsnZDU7LeQyc2yWakFlQo6p+y68uF+5gbDKHTnoLHPHUXkakndt2WXbMrIbg6w4viqBLzAe+T9IhN3cfFmj4dWb7Dz2w1GG7D7kE+3/Wrp/N4Au5BhmjppFgdVe/2XOo5NM2EXNK0N/gYAJoOTk5gElG4REp7w3L2iwmHxMrQn7+BupKft+B0t+U1Nqeo+SYFScVb9h/OagqivQ4DMMzwp0B6XebZW3W8faYgQwn5rZ1carbvoQ3OLCuEWcLAqOOWW3lr23pH9r+1gotO8NoWySZHnlZ4ROZzvxKMwmscUO0MmL9ZazbSsfKraRRj1aRgMDaFuqc0HUxsn4nVsR8MK+1MjLjKa836zarTxQ7FLSibyrCxlCml+Utv1VtanynLCpMvNOCyB2n7AbZM98sdDcUWoG7IgxHXaymY4PKyYrYTkQ9CIeeZOVD9iyYHfq4Ldc1Q3l7pJvAsnFAFf0/S4fBOQkp3hoflFhlFXB0Cq0+7Wb9Rrw+DZ4V6i0SqEDl3kXrO8g//kCCgGhdLl2iGWvRTjwVLPP1D1w8X918UawCM8qYcxjN0xus9hLvL10EuBeUdKn5TpmKDZ90gElm26RjfHkVhuI6+zHpF84bFIBmt1eL6yJ3faEMTA+k06/nLOE4rq8vPgb5CSFJfVgrI2MeRBbYJIQmJbDzlsMFDu/CQPlWRYlIBGQZLz8NiwsI81gCPxx99uzEeOKc5i6TNoDSr9MiDVFpANaegibt
- RNDdNMHA
- 1pV0AtZq5vQO9iVZdBNsUUKnRN4NF86to3dgjX18QdvlflCW2IhJhxGwMeUuOWNkYeh5leGFuJ7obU6iq+IQlbidT5K7lWHbaL8S9EdQE+8J2Sin6VQkrFvOuFn3vEXkFvgWCs5AaqcQEJvHM1POsejeBx8Huahx+RSZntAXincO/dRpxzkiSFo5pRKQAYcI7ynXRG2bZW6+0XkEginHlwONGPNA31kcfyzYJLNuNRbElOCLkZFWD0paBHsIC7iqIlrGW75lrKPJ/B/oQ2tiVNbQpo1ytH4AOv54pOfrG7wzZXLg=
+X-HE-Tag: 1777881673-166811
+X-HE-Meta: U2FsdGVkX1+S2GcW+09sTRILMGbkbTGQO7rQ9BnYh2kXo2qR5g1zHapf5FGsPXP0nTWMF/rFvtDsPV496r4Bkl/Xp5GT9FSzm/ynXOtkPkbAKOE0EFRPX3TmDrPW8DZzp5C8UiSglNZBN9HQn7h5OsPHSYbkHq28ipjeJkO+HqmlH8iEpEVnh5Rii6HLk6vmRnAj+D8l1gEkyGcHtNMQt7xba/ljijA9+XU1CVz4CYEmtQ11lYTmgDdxCJ5I73n6KAdIeD1gIbXF9fPJYvkHcpI0fY7xPX8cfB9ao4Gh0OQUd74Oi/XGRAMv5kj+wMcAlMp/Ej3DgcRRR/KQja9XiMk7GVvWvF+3E4MgNPSHFiexcTj1It2/DGU/JT7pocsXMIMOOJbUI9yMBuR8OeopZrDwsGDpjeyZpDwdjkoUf6sTtvQKRW53IWnVNP/xMQFdcDPktDYCIMK4MCgUbfzZ+qdNX6byVRCxIPXd3MLFh+SoaHF/qAUqC9BgtbaJAeAKeqsbtncSCCD4flT2l8KuRYN1IscL0DUCBBOvoDis7URHeMGW6c1xKeJmaIi7p1N7ybDAHPepTsKRMJTfj4k89U1go8N8kgGl1kuM66rOf3I4RkQSZO1EXqFh+1qi+sbwoudVdvji7E+m+zu+XRwqmEOZ0MYyWkNgi8HHSf1MuAFBMdcW+9/WQr149fh+k4X/AUK4fIhxY54OzncwMZ/uign73vXpUynBnb9UJYIAAYplta5ddRi52n2mSFXZAHuEVJn2BmFj464jlEk/ovhCPvEYqV1Ivb8uw+lDmFUtL6pDwhsdEz5yHxXjGwLJdavYS5Me69IXdQ01BX6bOWkfpkOCwjoaIkWqM8ZbiDyfaGkhBqgYDXm73tBPJIkuT7rtwpxFtmeQLUR9sxF7/oM7LaWZsGANbAb6eGmTwwzBz/y7fClVhM95gEYT0QrhHLxbTmoeHlOZ61BAVfu2wSq
+ xHXHoM+q
+ gNY7qZmIleUpGWRPircBuntw8kacHoDtlCGpEiiJNFqwYUA+NFXC8/GxMwN1tBRf043WJ8WCTBy1jP/dL8jKVmzobjkwXdASsS3vTEXENV5mUE2AbB8i1tQnA5d0HbrjqqCpyw3PaTJLX+6mkA3eV7hdDZveJWdAN63+dBg4qpHUtmdvAZNqrQ2xmNMH3a1GLv4NSeAX67eEXpNk1YmeKMer+yrDSTVSYn0M/0GsqlE8VFr0tYF6UbtLJ/kxitavgS5pA5DdDQNsKNWivPuorS02onBqxSbzJJcqpAXcKofta5jA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +99,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 12:45:51PM +0100, Kiryl Shutsemau (Meta) wrote:
-> Userfaultfd RWP will reuse the uffd-wp PTE bit to mark access-tracking
-> PTEs, alongside the write-protected ones it already marks. The bit's
-> meaning now depends on the VMA flag (WP or RWP), not on its name.
-> 
-> Rename the kernel-internal names that describe the bit:
-> 
->   - pte/pmd/huge_pte accessors (and swap variants)
->   - pgtable_supports_uffd() capability query
->   - SCAN_PTE_UFFD khugepaged enum
-> 
-> The ftrace string emitted by mm_khugepaged_scan_pmd for this enum is
-> kept as "pte_uffd_wp" so existing trace-based tooling keeps matching.
-> 
-> Pure mechanical rename -- no behavior change.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Assisted-by: Claude:claude-opus-4-6
+On Sun, May 03, 2026 at 02:26:36PM -0400, Rik van Riel wrote:
+> On Sat, 2026-05-02 at 07:53 +0100, Lorenzo Stoakes wrote:
+> > As is time-honoured LSF tradition, I am sharing code for my proposal.
+> >
+> > I worked a very long day yesterday and got the _very_ rough PoC code
+> > into
+> > some kind of vaguely shareable state.
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/ljs/linux.git/log/?h=project/cow-context
+> >
+> > CAVEATS:
+> >
+> > * The code is not great, it's 'experimental, wave your arms, hope for
+> > the
+> >   best' stuff used for experimentation.
+>
+> First, some refcounting that confuses me.
+>
+> The changelog, and the code in dup_cow_context
+> shows that only the parent's cow context gets
+> an increased refcount.
+>
+> However, the code in __put_cow_context seems
+> to unconditionally decrement refcounts all up
+> the hierarchy, instead of bailing out once it
+> encounters a parent that still has a non-zero
+> refcount.
+>
+> How is that supposed to work?
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Ah no it does bail out :)
 
--- 
-Sincerely yours,
-Mike.
+This code is very much PoC so not perhaps ideally clear :)
+
+So __put_cow_context() calls delete_child_from_parent():
+
+void __put_cow_context(struct cow_context *context)
+{
+	...
+	for (curr = context; curr; curr = parent) {
+		...
+		parent = delete_child_from_parent(curr);
+		...
+	}
+}
+
+static struct cow_context *delete_child_from_parent(struct cow_context *context)
+{
+	...
+	struct cow_context *parent = context->parent;
+
+	if (!parent)
+		return NULL;
+	...
+
+	if (!refcount_dec_and_test(&parent->refcnt))
+		return NULL;
+
+And only if the refcount drops to 0 do we propagate (because the parent
+being dropped drops a ref from its parent).
+
+	return parent;
+}
+
+
+>
+> Now, having the remaps array cloned at fork
+> time does make the refcounting on that side
+> a lot simpler. I like that.
+
+Thanks :)
+
+>
+> However, it does raise another question.
+>
+> Say we have process A, with child process B.
+>
+> Process A has memory mapped at address X.
+>
+> Process B munmaps memory at address X, and
+> then maps new memory at address X.
+>
+> If I haven't missed something important, the
+> remap table does not need to get used, because
+> the offset and the virtual address match.
+>
+> How does the COW walk handle that situation?
+
+So in the example given the folio would become AnonExclusive (or rather
+!folio_maybe_mapped_shared(folio)) so would only walk process A.
+
+If you unmapped in the parent, the folio would become AnonExclusive and
+then get moved to processs B's mm's cow context.
+
+So it'd work perfectly fine and be efficient in that case.
+
+But in an example where say process C also forks so the folio remains
+shared, we would end up doing a useless walk into process B, then find
+either that there isn't a folio there or that the folio was unrelated.
+
+In my slides (I will put them somewhere after LSF) I argue that these kinds
+of situations are likely to be the minority, because most memory is
+AnonExclusive and that which isn't largely remains untouched (i.e. all the
+walks would be valid).
+
+There are cases also where anon_vma can do useless walks (anon_vma is at
+the mapping granularity, whereas a folio might or might not still be mapped
+at lower levels, assuming not moved by folio_move_anon_rmap()).
+
+
+>
+> Overall, I like that you are trying to tackle
+> the problems associated with anon_vma, but
+> have to wonder if this implementation will
+> be able to avoid some of the complexity
+> inherent in the problem space.
+
+Thanks :) And yeah I think unavoidably there were be difficult corner
+cases. I also don't suggest that this approach is necessarily going to be
+the one that ultimately works, there's a HUGE TODO left on stabilisataion
+(esp. in the migration case), and I plan to do a lot of testing around
+latency and edge cases to really exercise it.
+
+However, no matter the outcome, this should give us insights into the anon
+rmap (and the testing work will provide a good testbed too) - so either
+way, I am determined to improve the anon rmap even if I need to look to
+another approach.
+
+>
+> --
+> All Rights Reversed.
+
+Cheers, Lorenzo
 
