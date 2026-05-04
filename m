@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D06CD342F
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 20:32:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D729CD3427
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 20:36:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 608F86B0088; Mon,  4 May 2026 16:32:46 -0400 (EDT)
+	id C283F6B0088; Mon,  4 May 2026 16:36:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B99A6B008A; Mon,  4 May 2026 16:32:46 -0400 (EDT)
+	id BD99C6B008A; Mon,  4 May 2026 16:36:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A8986B008C; Mon,  4 May 2026 16:32:46 -0400 (EDT)
+	id AEEC86B008C; Mon,  4 May 2026 16:36:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 352436B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:32:46 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6D281402B3
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:32:45 +0000 (UTC)
-X-FDA: 84730885890.27.154B94D
+	by kanga.kvack.org (Postfix) with ESMTP id 9A0FB6B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:36:17 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A2748B4DC
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:36:17 +0000 (UTC)
+X-FDA: 84730894794.30.B9D769C
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 219EE80005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:32:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KSvaHFxL;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id B7130180002
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:36:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=X2D6qLdU;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777926764;
+	s=arc-20220608; t=1777926975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V8IJ0XLiNUSdII4ZYGeMeYsOXFzkpTWAB5nfUHMUTJQ=;
-	b=Wu47A6jQHEXePazA/1Vq2OmROJWxXE6EeH5o+OMrZRHngr4wR4g5K1dYu+efSCEFVE2DsG
-	lhc6+JVhCMZpthiikWSqrzKxk+SoeyrIivqxNBwkBxENdJEZN8PNmHe8rSOYh3u6AcUi3m
-	LseqyKZZY63Lqvgk04Sjy/MOSSQIG1s=
+	bh=Of8w4s8L/jyna87mZklhNUp7KjKlNJWZIKBAu2u9pd4=;
+	b=xdfx3xuOEren3oj8lwfdANGJ40ZjopyMZ3IToYQPCvITGtB+EiP6+Kl/WB0nZZ19jOXkGT
+	Bc9mwVGARf9B3fuo0dbhU4CZ6WVjUkhsPbP41vKX6iTJ7UPJZNd6sbiXihaSbRncH1VngV
+	uayufXqd1cUSumuhPuum5I0TxHgrdvA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KSvaHFxL;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=X2D6qLdU;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777926764; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777926975; a=rsa-sha256;
 	cv=none;
-	b=D1kIDZYoeu92wxIBdjs1q/8hOqqAHgGH02/af+aMpbvkkMHzkJJEcZ2RHWIYrcAX6ZjDf/
-	LVT/kYJoavzYYeFRko5FLYdnbUSXJMcria1Pwn9zFHy6OXWJYl6MLzpmOI6dBM2cBfpMB1
-	OhZXlUBghcp3tI7eJ0LqeqWrv1/DGlw=
+	b=SZjuYnwwhQSZUlY7paWrhTclEf+YarQVaLu8mu38uMQwLHyBPENKrlD1ksbUGz2Q1kOXLz
+	cnEwPiB92sIQJjmpb/gOubcLhrDP3GCLvVsE1YLh7s4t78oIU6TDth+x8yFYR26FXNFFuG
+	Ulyd22UEaxQReX7eRirFfLe9dwF+Jao=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=V8IJ0XLiNUSdII4ZYGeMeYsOXFzkpTWAB5nfUHMUTJQ=; b=KSvaHFxLwR6VTX9keDbXdE2hDJ
-	LcU/HmUI1j+39WRIZKFG8wnm7lYCbZmxzflG8arBNkzQHxVjqaJ8VgIwfIn2g6l4XNjvHjbaLUJSi
-	OySLEt8kXA+JbNl1MrRg8l6MwhlN5+3PUiKgbtNmIV9NiegVg2g2dddWmyKbYVd4LaSpss9pevlU1
-	MugUXUuMYap1Me1DgPuj4KgL/rFPjgTeN3zwtPNAQple3ee3QIU4MmuyTUTdmkXaU2+IJsE3SeJ3/
-	aO39NHoGMkR9bM7niMlhyYbgRb1vX+z9o3NauZ1GRnUDAFOsW6K5yYOa2oA+wdWXGezneRwWUWxlt
-	ixg8n/5w==;
+	bh=Of8w4s8L/jyna87mZklhNUp7KjKlNJWZIKBAu2u9pd4=; b=X2D6qLdUk4VGEG/rTV/mvN7mpp
+	K9KwbcmU+pIfwIhI033QxM8YKBaw8ZIy4cojUMTQpH0M3ChNyiQpVRGoI0aD9oTTXAMe4b7KPmFJY
+	2qGTK0fubuLoVYXuI8sobD9L0+oXzT8fJucVWa4Q0MdMyywX2cJoM+aECRhdoXtVxuhGhhxRDzHfg
+	M2ImeMVKCspfW7ps1CywqDj2Pav6iMMUdJ5l5jqdU3hJhrl+z1uFBPCDw4sqrnRWYYt518Te8lnh7
+	w28FoVX7vnsbYqtmv4iRHC8GnTy1G6Ntj6KQa+hBGvb3bUI7PBHNMJSnMoQMTpd5PUz9CnXLbqXTc
+	guFWKrPQ==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJzy3-00000001TtN-0mDK;
-	Mon, 04 May 2026 20:32:39 +0000
-Date: Mon, 4 May 2026 21:32:38 +0100
+	id 1wK01O-00000001UBc-0JoP;
+	Mon, 04 May 2026 20:36:06 +0000
+Date: Mon, 4 May 2026 21:36:05 +0100
 From: Matthew Wilcox <willy@infradead.org>
-To: Wei-Lin Chang <weilin.chang@arm.com>
-Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH 1/2] Documentation: maple_tree: Point out constraint when
- using xa_{mk, to}_value
-Message-ID: <afkCZkHcn58S3GLD@casper.infradead.org>
-References: <20260504165746.1422057-1-weilin.chang@arm.com>
- <20260504165746.1422057-2-weilin.chang@arm.com>
+To: Bharata B Rao <bharata@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Jonathan.Cameron@huawei.com, dave.hansen@intel.com,
+	gourry@gourry.net, mgorman@techsingularity.net, mingo@redhat.com,
+	peterz@infradead.org, raghavendra.kt@amd.com, riel@surriel.com,
+	rientjes@google.com, sj@kernel.org, weixugc@google.com,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+	akpm@linux-foundation.org, david@kernel.org, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com,
+	donettom@linux.ibm.com
+Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion infrastructure
+Message-ID: <afkDNR9yVRjire4T@casper.infradead.org>
+References: <20260504060924.344313-1-bharata@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260504165746.1422057-2-weilin.chang@arm.com>
-X-Stat-Signature: 41jnj53rxfcyzh9d4bgmawarmo9hgw5z
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 219EE80005
+In-Reply-To: <20260504060924.344313-1-bharata@amd.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B7130180002
 X-Rspam-User: 
-X-HE-Tag: 1777926762-237763
-X-HE-Meta: U2FsdGVkX1/JjQKvqDBMZznjSRAXP0nu5pPMqJRbzSAZm8nv4mKP4M1vkTiNF0rsWglQPQ7l67FOVWiBDNQUBwwAolI5KsR/db7Z8rlYxEG0KI8dawTkT0jkrzQ/cjWpIa79EVoB/tH3tRwiM6QGlYj9wVH2BGyiceC8nFBjxojMeG2xGpr+y6IMbrHBKhH5KsfGaO9pGf/KiTjJgiBKkWQNESbS5uZOA1NAxWoVqPpXMxZyQknGCWzcU51IdcGrUpoDDOU3pveUMXWmpRYKgIA7sWrdzM+y4DdS4XvLut0YC0zXdW+HyOR3zKyVk3owERGpH7cfaIS6mTYYRcDQSdVLcZMkR8MwSJZZgunLX+sp6qM0JhKGjm7m68AjPvTyOBETr4THj0BJ9uUGgZlDcoqiO3ZR3XcFrY5H7J5fwiG3twQsR6dNHm0fyH7g/QNIrsTm4GZlTyvHynBh405HCyLDmnHexeIDsGshRklLu6U7yhbImMvBXmIIjjC4UGOr8+R5THU5CGRxh4nmJeUdxEwX23ZxoCZKiMaGsfvIom5/foKX8nzoUEtNtfKjJUx0lowjSZZLtlQvH3Ywg5eejYWR6mZeQvf1rHxK3B5oAjtYK70o6QUIovBKbe1r197jAR9Sy9P1Yq9KL4lJ92Mo1NtgyY3tRjS4i+o75Jb8eCAJoMcFYl/LQqs0J6Gf0RiaLE10bJx2fnWTNY5zK2RG6661o6MKzsX4QNU44rXCMYAsJbG9MyDO/zgB8892UHQnhD4qxUADh27fZZ0I/Dr0EID3tlL9pWPXC10CbbY2srBnsVBPLhaiHcxPeVrobOKwWGrWrfP7wMZU+toekcwmF4mYzLmQXTjHtxETVxnQ/KTZpdqdmDq91zAL8SkTtXwQrQjuDWrPrbMK/X5dOhiI5i4atlDMqyQmTymaIwpcZ7uHg5ASEvnLfGJssW2jtsIsc1cREDYp/kYIHeAQKCd
- SrCIKv99
- ZB7IsKRdW0zsh5WvSgExJX7+Mlc4PdklTQI1VfFS1Hs4E5Q3RVxXjezwxaaFdKRjv5x8zvJDXWdPFaBw7ebcxxPJuD3hwoX/ePUO/F58wQulu0+yt3UK/eG9Vczb7cs9ppH6Jc/hnHycobEqbs1Rjsx4PjECCoMfy6Fvvbxs6z9PePlI7gCtcIAwe0P3VR+N7+/wGCATvHIwnOYS0zwLZePlKKfrso/nVSEgB2tFPDC6b0Rs+Z2kyT2fDZyFdfgwV2Bp6DB4BQq+Eaj6KVATtgwvJc645KDL3XBVaIg2fwaw0id0=
+X-Stat-Signature: zsbznmuprp3q5r7j4bqisky8n4fkat9g
+X-HE-Tag: 1777926975-474901
+X-HE-Meta: U2FsdGVkX1/3i1aIanyYZuZMFx5zhBYfX/cRNhi39cbEsWSRMRB455dMf0Vl07pl/uSDMi8iP7T4YnlYoK2MmsrmQes3GtQfm2WW+ghsFeCCHaOWbVf0kGe+ajbrfW7OmNQoOww2kzx3fzKQyrCbdbF0NykiH8RhDZovPYtZcdobyvMb2Q8sCtp1clNw5uFGbqgwuSigUYHOSFVTYhwpCJTV1Pe4LZIoN+g6Dw40W7bJR3GlDd5BiM07UGnfwepO50X5xoV2JInanZozvzoQqPCDEuRKLuDajcsMKvUXNFl5dO79E2pmVVN9E8PYlfXA9l4weMRFcOf8Z3W7tErUuRmOancJqzXDYajD9c3zX3WM/zAdl3+K6xWH0n6I3BzWs2NrBr0gxvfsT3UH8nUePMARCwYsd+7jo5grRjl8mlS91pYeSeSBfk6HW6VBNFp4tolGjFiGKhPN64I14WVhgpPnIkPaB+EVjs/d7aecoKfuccYoeA92auIQR87gXX1OYOZZMZUlUmXJYQGGWoM0GNNPQLeD9xmxqRVZy/Binp+kSbiTK3Kv9kIVYO5AFXEr23BoRYVGcJd+8jjnOgzRov1obuIZc9f08ammVvflkPO38nISqCI8BNptZGodC0NbHYDiZXp5noRROn3Ge4CPzMfq3QmIVfHfhHrEI1P2GOvejcboJYWy58EPBVtcQgqEzOHELyuNe6WZEPgpbVSyJektlSDVRTzZiBycpXAfFVxL7oCaq+IkXCNkTqP1OB70QcP2DA7iiYGGXlfcPFI0voRWzWHC8zIP5lXyK9X4p3GdtK02IpxZNSsBFa//RULa+8972hzLbK9X2Ogg8X7BmochC8/uNxc86hxOo8wz8wZMX9HUKIHDX9iRt3/DXgBFTtcE0yiUhnv4vac3KMmzlSVXPXMQ7+ydF4eN29Jl/g1aupOUH4G7UyAIu1RaSHjcauhbh0DMRTAGW7zhjzn
+ f0UtdFAA
+ 8kt0aiBwKUFz3X9CsfQ2eo0aLK41WYc3xAO7bt5J2ZjYHjdwRwneNz9TbVHGYCKd10BFjZFg8HsnWlS21LZ2Si5pcfK923EdiplvxeFjmEg6AyJ+ZjyKJRNbn/SuLuVifHFXZlORXh7VCl5BqGuEehfbRfxpfPcLryZEk820dCYSyjd5m7np5QfHo/xfmocJCBFog+mu1T1w32RY/C03DItjLytNVRakzK0UsYT083CDSeYzCN/SqRcC8MiWjT+tJbfgAB6+uqO0mZRWcuM0ZKE7EL2ecocO5K55NMugOKzyJjK4Ll3ORuz3aPCdSbxFaiejG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,20 +97,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 04, 2026 at 05:57:45PM +0100, Wei-Lin Chang wrote:
-> Using xa_{mk, to}_value when storing values loses the information of
-> the top bit from the left shift, point that out in the doc.
+On Mon, May 04, 2026 at 11:39:17AM +0530, Bharata B Rao wrote:
+> This is v7 of pghot, a hot-page tracking and promotion subsystem. The
 
-I don't know if that's necessary ... it's obvious when looking at the
-function:
-
-static inline void *xa_mk_value(unsigned long v)
-{
-        WARN_ON((long)v < 0);
-        return (void *)((v << 1) | 1);
-}
-
-and if you ignore it, you'll find out.  But if this needs to be
-documented anywhere, it's in the kernel-doc for xa_mk_value()
-and not in the maple tree docs.
+I continue to think we should not do this.
 
