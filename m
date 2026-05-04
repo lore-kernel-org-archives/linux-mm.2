@@ -4,128 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80B73CD3423
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 09:11:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E98BCD3427
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 09:11:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3F716B0005; Mon,  4 May 2026 05:11:21 -0400 (EDT)
+	id 8443B6B008A; Mon,  4 May 2026 05:11:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EFFE6B008A; Mon,  4 May 2026 05:11:21 -0400 (EDT)
+	id 7F49F6B008C; Mon,  4 May 2026 05:11:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DEE36B008C; Mon,  4 May 2026 05:11:21 -0400 (EDT)
+	id 70B0A6B0092; Mon,  4 May 2026 05:11:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A64D6B0005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 05:11:21 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 31CAC1C00ED
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:11:21 +0000 (UTC)
-X-FDA: 84729168762.25.922D60E
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FC156B008A
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 05:11:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 057141C116F
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:11:23 +0000 (UTC)
+X-FDA: 84729168846.09.FC72982
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0C090140010
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:11:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=AJVpEaBh;
-	spf=pass (imf23.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id C9715180007
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:11:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=hKX1mZwB;
+	spf=pass (imf16.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777885879;
+	s=arc-20220608; t=1777885880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9wiDU/yHrm108gVQhopEZG7BPuvKV+l2/i7eawOnq/U=;
-	b=q6liy9MIY2TDYOQRQoBvT0QC/QmUWe8sdfZrAsmZSd/aLL0cYdxy5sJYFgJ1W3reflt0vw
-	7mnXkGnosXEWy6wpwmZ+jZL1F4LAyIfORkvZ6IWNGmLT2OMTSo3yA3pLmfRh6jSYQNz1aJ
-	2nO5aI9o9sEuaJIYNxoSM01JOjrRrkg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777885879; a=rsa-sha256;
-	cv=none;
-	b=tYkJye9bDCl/ZQnESllwIX8TBwOW4958EhxIl3YEp1GdyWrzEIGfn/KTHunx8VBXb/406b
-	5uCPaM+hh9war/fLajl2FFwRlpcmgN1TQeVRzESAXUtQtWg/2ubji1DoSL3IzzZLAiq83D
-	YjjI0NiFL7Etl3pbcCcgVDdNzNHsvhg=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cIQ8K2HJtwQlSMozFshA6AnsK+LYu4W5byOwdQkFz7o=;
+	b=1rQu5O6XJWGaEXapRyU3viuUL2kQ4f4eJG4SBAcplwR5OqIJr3jtRknvjwo4Xbn9i145bl
+	96G5aOTP6nY+bpIeqK+qm3UB6fa94cq/ifXqKuRD2WZ15/KNI49T0uK7b5TPmvQr37r8UW
+	UrXNwxp1oU7byLD5FsZFiKNYdZzXbVQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=AJVpEaBh;
-	spf=pass (imf23.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=hKX1mZwB;
+	spf=pass (imf16.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64484Ibf1010395;
-	Mon, 4 May 2026 09:11:16 GMT
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777885880; a=rsa-sha256;
+	cv=none;
+	b=oWv8OayjFwKoGJPxOuE4hZfVYE8Z9onhXu3aSVaLpOZ05f9SPuedv/SQgb3tspYbXY+NbL
+	u6lzPDnld0Y6pLnlmNt6YtdVExSZ2E8H05bNvRzkTz3jld/B4k99QZ14LH4LFWCw7MYTsB
+	D3r4s++EWVqLNbsAA2MLJOjd90C2yME=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6441cdh23828299;
+	Mon, 4 May 2026 09:11:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=9wiDU/yHrm108gVQhopEZG7BPuvKV+l2/i7eawOnq
-	/U=; b=AJVpEaBhf/zjq5DjxxcVADM4SD/ze/ibqu89AVSBkknH8S7z9uQJW/DjR
-	Ic49GEV09XsHS8wKlW1ftuY6YbqvAmGDHBUZWDud2a/wuOoQHiAojKRJJAG4119z
-	r+bpPS3bHdlGM8UKJjMGO4h021XMw66fEewzxKjojOsESYh6Mem9ayREutciaE0u
-	Sx4lEem23LM4FqosElVNBhPQcseebWSO9BZc/JzkcocooG2gAKdeV1qSTU7aIjRd
-	YsNmSa/8yyyGkEtKvxgUrztH4FctWUJ/ChorTWw7MN5i5bfiocE8TpzhVoEPAGNZ
-	SE0aeGVVSFBQCLptfmnsjBdtmK1rw==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=cIQ8K2HJtwQlSMozF
+	shA6AnsK+LYu4W5byOwdQkFz7o=; b=hKX1mZwBKEg5A0ExFkDzhwzoSVYdN2UFU
+	664ZtZlz773uh2jNpNdNgXtvVZBQAuj2Ge7o26FLuSTqM302v7fVhRADNyoq3UyR
+	tA2StNtcEo+XM8uEtbZA+smrZ2yAf6U8Bnt13mUdSRG9IM+wve9/WnwD3pM4gndi
+	N/0/FvUMUlJVmeeNlM909U2xh3pRrFbVws72Sn8h5qjRVLMAWe/8XvKnEZxYcyDk
+	1d5pgPvGbvAtEWXcXGT0lHyRWtz2Dhl4ykhbesjUYzQ2Do3lrdXivSASYq2h5kNs
+	/oJfzN3c7+kRC6DJnEFL7jNlKf9Vd2RV9PGrhW8BYhuQGd2Pg/dhA==
 Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y4e2y0-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9xxe20b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2026 09:11:16 +0000 (GMT)
+	Mon, 04 May 2026 09:11:17 +0000 (GMT)
 Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64499Rwp005941;
-	Mon, 4 May 2026 09:11:15 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3gvcq9-1
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64499Sxc005944;
+	Mon, 4 May 2026 09:11:17 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3gvcqc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2026 09:11:15 +0000 (GMT)
+	Mon, 04 May 2026 09:11:17 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6449BBP434931018
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6449BDPE47841598
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 4 May 2026 09:11:11 GMT
+	Mon, 4 May 2026 09:11:13 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5ECB920043;
+	by IMSVA (Postfix) with ESMTP id 3B9EA2004D;
+	Mon,  4 May 2026 09:11:13 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AE09420040;
 	Mon,  4 May 2026 09:11:11 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9BD320040;
-	Mon,  4 May 2026 09:11:09 +0000 (GMT)
 Received: from aboo.bl1-in.ibm.com (unknown [9.123.14.187])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  4 May 2026 09:11:09 +0000 (GMT)
+	Mon,  4 May 2026 09:11:11 +0000 (GMT)
 From: Aboorva Devarajan <aboorvad@linux.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
         linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 Cc: Sayali Patil <sayalip@linux.ibm.com>, linux-kernel@vger.kernel.org,
         Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: [PATCH 0/3] selftests/mm: assorted fixes for hmm-tests
-Date: Mon,  4 May 2026 14:41:05 +0530
-Message-ID: <cover.1777870179.git.aboorvad@linux.ibm.com>
+Subject: [PATCH 1/3] selftests/mm: allow PUD-level entries in compound testcase of hmm tests
+Date: Mon,  4 May 2026 14:41:06 +0530
+Message-ID: <b754427130272dfe0e468cef73a9b92d22ec0ab0.1777870179.git.aboorvad@linux.ibm.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <cover.1777870179.git.aboorvad@linux.ibm.com>
+References: <cover.1777870179.git.aboorvad@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDA5NyBTYWx0ZWRfX+eWJQ6jZGvm/
- ZpdGNbxPlLKY7tYyz3LRHCNBSN0r7Yqp4AFAGX1dKnyjHrXk29V5QqPRvB86unnxd6f2wi2qwKh
- IGPaO6pj0K5KVv1pBvnnSaQn61EyazfFonmUEg+nyvaoSPzBPFYsDP4VRZr7K26BIFEzmVbmQBg
- HsNamw5uq+VJSmHI+ZcJaDL/CSU5Pj7rnblmq9YggRfz1fCn43m8B2TIpA01J7qpoNIDoJW4Cfy
- Z7pwiKp7u1USmJsFJOgiCJDgXKlwK++cFgb8EPAj0LoBabwmr71LpbN7E61Coo8NttvwnHkz6Y2
- aJRCvHLmr4pSNGs2QGOhF3KpLsyX0jZ8Idr+XmKMtAOz9rnHjnVLFJYOcRKWYfc/wHtP7h+vHiW
- vlkTJuBpqNsI0JAOJv7MlO2jHBDj4maJmFbwE+uucnhw2PLhZ6QE1cuNvSCh477ArLFnWP46B+L
- JhKz4kB0Zko0ZKqR98A==
-X-Authority-Analysis: v=2.4 cv=J4GaKgnS c=1 sm=1 tr=0 ts=69f862b4 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDA5NyBTYWx0ZWRfX2OTKEwUdMLi/
+ ntGJYwlcp8C1ZyrhHAxE5H89GTwk7NKGtr0nohDG9mGLpvMJgjB2xJaerwrO5DwPT4MHmR2pf5K
+ Sg9MkFfuoVvEXQdnc9rklJ7mE0GBO+bMcvKIOB54VIaEbcUOKo3FujSQpdBrGuEIaBdPJufFqwV
+ Z/CiWs8s5X7/brmNoeT++Ytc2yn1xvBhKLjK+g4vFutzDlutNL9rMi5txFegCKxUpHkFkWGrxmk
+ ZvM5L4Hf5K3WCs/pojwhhYCJohaDIpJq9+DA97XZTl0wmdwNxBfRplaHXJdYWEYAcl1SyoMa9Us
+ CzsAbyRl5E2IS6iyY4FkKIVn9dJoI4TKiJ3//GSA+oM92wnyCrxjrdx8fA+Ebvem5rzH2kordjg
+ jcN7Mn96Z8qBIFNPthXeIphXMfy61DVfwEX4+5ZI2I8dYLa2NCFQ3mdWt9vArWMbOmCxrDnLq9A
+ th+c+SBH98yol+CAKkQ==
+X-Proofpoint-ORIG-GUID: wcx_EMfXyr1ZDFrb0a5UjKobkgA1YPmS
+X-Proofpoint-GUID: wcx_EMfXyr1ZDFrb0a5UjKobkgA1YPmS
+X-Authority-Analysis: v=2.4 cv=ctWrVV4i c=1 sm=1 tr=0 ts=69f862b5 cx=c_pps
  a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=M2d22ONcT9KgptbevxoA:9
-X-Proofpoint-GUID: uV2WjqPChciwyHDFa1D9KT7BjH_8Hqr0
-X-Proofpoint-ORIG-GUID: uV2WjqPChciwyHDFa1D9KT7BjH_8Hqr0
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=QxgUL920Qp7ezWAymYEA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-04_03,2026-04-30_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011 malwarescore=0 bulkscore=0 suspectscore=0
- priorityscore=1501 spamscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605040097
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0C090140010
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1011
+ suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605040097
 X-Rspam-User: 
-X-Stat-Signature: 7mzgkmiar67kyw981whstxafb3szdrip
-X-HE-Tag: 1777885878-658627
-X-HE-Meta: U2FsdGVkX18xD06XSWh2iqT2X9mb321xpeFIF44xjAwRe4WjbYDVaDctWxBeDw4xOq4zy3YzbJ+IKhmIYBjYWMU2Gb934FIUyhuy8wOeW46BQn14kayU1lP65PRcVh+5Ol6R4MrY3RyBQlUXsY1YmjsLIfbHdhLAJLQP0OF4FjZmpI8NpUNsNz5LTI7rLcBUH3wuFUk+rECFs+flZyYdqJm3RbIvpXXEeMFJGKbkHXZbtK87WRrt5V3NgInIKOnU+nKbgd6LvYFLnhtvVGU6AwsQBsJ9vDl2zCeOa6wO4Q9TVNSd/+1qHOPfXmsa2MURlbxbLFehqtEdwIF/JVJzOCZOtED4f1ED4wcMeC5JqrnYx8GX8z/qn3hYav8qY/edDewYmpcMcOItwR1XBNuDk2EWReq2ekSztFTuJqN5EEjaTy1RlEdC8a9pcq6LFrBLe4wJ/JmvbK+W7W9EZ2qa3prgf9RShNseDQrrXiWluKJycXqDiuqgkLNYUMzuM+JdnTEHlfPXnB1XXmydhCFcdUaH5M/pB/op6UAXd2HrainvaxbkXlkiwv/mV8O5ufzt3A6eQ1c0cQMAaQqyuHhVR4OMFGb1KDQYxULMiyaTcauR5KP23nboegAwAFLAm2+wgUkpDptiFjue0fg/20nsNmya3Cx2yXGzjPEUC5hoG9IlpJ/xza85VaDMo9iWBH1b9FlX51hQ3hWErP4Oaouyx3O01PEi3kQTNbn4w61eNbKi4sBWOrUhKmeHQsTw1TVXbL64i37KEpcbdDrtm589ZquTUcZ6KyyxhzfwtC9SBdj4oCe267V34pFcvGu0W5/+hWNGehee0vvp7LGnLclywN8XY1zfEl9poWpBH+xjIn0FygNhmi66sILFg5ZU3RY064TvOjJ6OclqYNsa02djt6s/E8Rj1ohySnVguFitFk/zVe41GtgFWUNEl2z9X2tr5yKve19mLGzsyKmCORE
- pm8v4irL
- ZQkKK2Yme6mdTPHHHXjPBJETbRCNKzma9x+krcirConmiwpst0iQkNvKHLlKlZIrVE0it/xi7hJHWuSnU5MVRYL9yN6Lv38ItB2s1cPvbrbu/oidZe4bJ0FFOE36mo/tjrGpNOagML1kzWhzyFbICcVLRDCZ5hbKENTmSXEcvKUFvd5U=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C9715180007
+X-Stat-Signature: k7ihaj1skrrerw33jfp1mty6zqw9uqnz
+X-HE-Tag: 1777885880-750764
+X-HE-Meta: U2FsdGVkX19P0rq/qEebC6VZFVAtDnGoH28Q/c28k1UaPviBX2SYhIRhz//LjmJf7O1gVL8qywnKouxK08fDsQPj3mP6FqA67jdpCkvVYPf5N50HoYXHZwXgOPldRAR0ibb3nB6N2LI4aG9qnRKT26qPlo6hfh1DfxBBiHoaoZKqn0drhOgTRnjafBJkhAgFanQCaFgWmE+inSyGdS8twujA+JQUUOEpzM05smAR5wTMfaOEjJjri6mfY6UMiKW4FuZrrySUTnQP982kmhjyT924KkpGZMmRd0SS83ePS9IYpZsxlB6PVDwGWqBMadkJGIG8H+173QNVID4CjA/Fmljc/vhprPXUZnr9y4Yz08KDgFVmQPpsrIUOLgiAkx0/t/V+ENLLQ3UttRTOtPq1s1bgLppfvD+uyfklEEbHGEIA6JLG9H+O9sQ8g+h1zhR1/8MiheKmzqdBoJ1/hu5CXM+mqKI9mgx6AmEWOkrxdfKb5nTiKQtkixJYpazn7X1f94lEXYatGEd7spyLyFbZnrJOIYY3smTRrGMI/eWLssSEpDpD74LA/+kA16BLppYLY3zZeqFO40BtrSkT/eGyR8X8qcI3ELQz6cqvBkb7u5at6JpwqlTZboV4j9f1Q3Xj/9ONal26UVLEu/2obbgNoUqgrjyq8WJcnsE/J+kqd7/VqwUKi5goEdzfaNqsGR/38Xs3cQChrpMeqMmDyBXNj4DBlsZfhJgv35re5CYOIbAHH6sBkejbrciCK4wwMjXCvMpTLnp/uenhmaSjdJub8apIWdqyDdnclDc1RsymYI2oOJUVNHty4Q+7YcpNXIti0MwTfYMSqzfar6FDdr/ByT3j6EryC2cafUl7FqSt4uyaxA3DxyqIuDS9bvsITLrehINAm2Eul+PzK2IEwdMUjcrMdrz6nrTWOhbpvxDQHicd26X19pj+BwqulMNzXlQOc2IGMh0s0kwegw3gIHI
+ zvck0td4
+ TTbj9hQGDGeSsG7adyMJPcg8iC58WEnYsk391VqSH2Koo4VKiBAg291pf6DrH9rMIYXIwUIz38o0RU67mgoVJrbtiQNJdc5+VCrnxrXhWYLW7TWidmLZqsB70/dtNpEPdPzlxr5HgZquMIqy6x6Or1+ipH3Rehrxhwl/+/dLt+DKMYeAx+21QY9HpijxKaUW9clbqBjVOKfGs674=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,33 +136,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+From: Sayali Patil <sayalip@linux.ibm.com>
 
-This series fixes a few issues in hmm-tests that show up when
-page-size and huge-page configuration differ from the hardcoded
-assumptions the tests were written for (PMD/THP sizing, default
-hugepage size, and related cases).
+The HMM compound testcase currently assume only PMD-level
+mappings and fail on systems when default_hugepagesz=1G is set.
+Extend the checks to accept PUD-level protections as well,
+avoiding false failures.
 
-It also includes a minor fix to exclusive_cow: the test ignored the
-return value of fork(), so both parent and child ran the same teardown
-path.
+Fixes: e478425bec93 ("mm/hmm: add tests for hmm_pfn_to_map_order()")
+Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+---
+ tools/testing/selftests/mm/hmm-tests.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Please let us know if you have any comments.
-
-Thanks,
-Aboorva
-
-Aboorva Devarajan (1):
-  selftests/mm: fix exclusive_cow test fork() handling
-
-Sayali Patil (2):
-  selftests/mm: allow PUD-level entries in compound testcase of hmm
-    tests
-  selftests/mm: remove hardcoded THP sizing assumptions in hmm tests
-
- tools/testing/selftests/mm/hmm-tests.c | 86 +++++++++++++++++---------
- 1 file changed, 58 insertions(+), 28 deletions(-)
-
+diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+index 77fb4c5d871b..6dc839866dfe 100644
+--- a/tools/testing/selftests/mm/hmm-tests.c
++++ b/tools/testing/selftests/mm/hmm-tests.c
+@@ -1599,8 +1599,8 @@ TEST_F(hmm2, snapshot)
+ }
+ 
+ /*
+- * Test the hmm_range_fault() HMM_PFN_PMD flag for large pages that
+- * should be mapped by a large page table entry.
++ * Test the hmm_range_fault() handling of large pages (PMD or PUD)
++ * that should be mapped by a large page table entry.
+  */
+ TEST_F(hmm, compound)
+ {
+@@ -1649,8 +1649,8 @@ TEST_F(hmm, compound)
+ 	/* Check what the device saw. */
+ 	m = buffer->mirror;
+ 	for (i = 0; i < npages; ++i)
+-		ASSERT_EQ(m[i], HMM_DMIRROR_PROT_WRITE |
+-				HMM_DMIRROR_PROT_PMD);
++		ASSERT_TRUE((m[i] == (HMM_DMIRROR_PROT_WRITE | HMM_DMIRROR_PROT_PMD)) ||
++			    (m[i] == (HMM_DMIRROR_PROT_WRITE | HMM_DMIRROR_PROT_PUD)));
+ 
+ 	/* Make the region read-only. */
+ 	ret = mprotect(buffer->ptr, size, PROT_READ);
+@@ -1664,8 +1664,8 @@ TEST_F(hmm, compound)
+ 	/* Check what the device saw. */
+ 	m = buffer->mirror;
+ 	for (i = 0; i < npages; ++i)
+-		ASSERT_EQ(m[i], HMM_DMIRROR_PROT_READ |
+-				HMM_DMIRROR_PROT_PMD);
++		ASSERT_TRUE((m[i] == (HMM_DMIRROR_PROT_READ | HMM_DMIRROR_PROT_PMD)) ||
++			    (m[i] == (HMM_DMIRROR_PROT_READ | HMM_DMIRROR_PROT_PUD)));
+ 
+ 	munmap(buffer->ptr, buffer->size);
+ 	buffer->ptr = NULL;
 -- 
 2.54.0
 
