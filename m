@@ -4,92 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A03FF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 20:51:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DB60CD3427
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 21:23:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18F226B0088; Mon,  4 May 2026 16:51:05 -0400 (EDT)
+	id 912586B0088; Mon,  4 May 2026 17:23:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 140236B008A; Mon,  4 May 2026 16:51:05 -0400 (EDT)
+	id 89B676B008A; Mon,  4 May 2026 17:23:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 055DF6B008C; Mon,  4 May 2026 16:51:04 -0400 (EDT)
+	id 73C3B6B008C; Mon,  4 May 2026 17:23:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E452D6B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:51:04 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAFE01602A8
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:51:04 +0000 (UTC)
-X-FDA: 84730932048.14.FFCE6C7
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0CE158000E
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:51:02 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of 3tQb5aQkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.72 as permitted sender) smtp.mailfrom=3tQb5aQkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F5A86B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 17:23:09 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9FBFD1402D8
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 21:23:08 +0000 (UTC)
+X-FDA: 84731012856.24.43036F3
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9C7514000A
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 21:23:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a1Iwoo7F;
+	spf=pass (imf17.hostedemail.com: domain of elver@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777927863;
+	s=arc-20220608; t=1777929786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=bCjj8G05TtBZLOd7zrH44gm7HPyOQ+hR+PG268x3BGk=;
-	b=vs0eLWJ2YCjP2MQRLuLFQVNqmQ+iIWC+VOR5bk6p2kVwZDqcs1NalkraKISKI30rYULyIp
-	aHkQaunJ5i/cPBGT0ztrxJJ6EpIxGw5gHrYihnF+eyDcCCqsF4TlJ54N4nbTmtI93E0uo1
-	pH6zRwlfN62wrctleqLAnW9ACTRrDGg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of 3tQb5aQkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.72 as permitted sender) smtp.mailfrom=3tQb5aQkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777927863; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=igyU2nx2iftItHLeQpILR+qCdofiKDiQQ2B3kQIIdT0=;
+	b=G1ZOzlRSHTJhAv1J79vmN1z/AYR7VnTs83PyzkKfWavOHXj3X1WRTaSKQLEEY39Bjbyonw
+	blYk3GrSRHLiAD9bXFwM85pjdidsWwj8M2Me4yTr9/GsleNSbjn6zz3LEzPo5fvVvHvT1h
+	0M2riGNJVsfR3ublyY5GwEdaJKfEFnc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777929786; a=rsa-sha256;
 	cv=none;
-	b=6ZJjr5zymSaWULI6vSFycXekl4Yryppx+xkufN6Ligms8dnoZaSZkFaFn+rlkOkRt5T4e6
-	nsetoqIXhKRnB6NrCm0OEU60or2CC10+DMYcUS6lO47D36gwduOIzc17aTOoZ44wVoopE9
-	zz/kwa9mVClJh3wcJfIQBRbh9Pl2etk=
-Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-415e1e9aa5dso7196533fac.0
-        for <linux-mm@kvack.org>; Mon, 04 May 2026 13:51:02 -0700 (PDT)
+	b=wbJi8W0zUBOqpFko4EYEn87al8p8IRN/Mn4i3GwjbQZkVWOOl4dzFYGAXnd1Wa4gvoiiej
+	mlRe9UupsLodwGpVf3XLAzfzMDZfA4lt7nEQmMH8/RbZInynFFNrsvZ6yDc9XHjudMoYSt
+	+srgdleY9I9g7i2kX8VHxhPv5wASriw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a1Iwoo7F;
+	spf=pass (imf17.hostedemail.com: domain of elver@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48d146705b4so2827575e9.3
+        for <linux-mm@kvack.org>; Mon, 04 May 2026 14:23:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777929785; x=1778534585; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=igyU2nx2iftItHLeQpILR+qCdofiKDiQQ2B3kQIIdT0=;
+        b=a1Iwoo7Fmg3xWPqaMmwn7YX4375jBQ2BarPTCrSjDJSZBFz8JBNmet/KvbDG/xvdq4
+         JF4jWF4sJv7KFzmC6A33+jVxXpEYORgc19m+927AAACcMjYXt+Sk5NMCG0ERpOOyAWax
+         tC2ttuHw91ceA5kXdEY02Ug4JgjjgNNqv0fPk+HV+Wjl58mDT065mw4lXcfNTxutHguX
+         75TpYzL6KoiSO+wtHDvsM/u2viRvgQ0yOaUaXmQFzF8NicaChV5lWQMGBAHfSkMLdSCh
+         Wo+gTiadtRR0AbfZzljtOV4yHnPhf8yMrkitRW9e3P4PpG4EM3X98Qk9SwGiW0qj6wOh
+         ufeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777927862; x=1778532662;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bCjj8G05TtBZLOd7zrH44gm7HPyOQ+hR+PG268x3BGk=;
-        b=iAZ4dyM2V/AUM3JIfdDmX75diULoUAuVByWZUn6CjLPnlHCyNiDyi1J1l9Bw8PsyjJ
-         oS/oPAArjUyAanJZt5aV7Tp8xJ23d+XON7yrkrvgKM9R7CBQjy2rQpBs4amZRJp3CBHV
-         8/ztXggSuzTxavhCR4x39ykXQ+lpDqAl7HYfheptsxHaSAVpgI6tcWO+AYBEGI/W8I1d
-         qusSnDf1HapNIuocTX8TQHrQZ6GQ2TjkO13WNzxYt5EbS8T7dN2nxkE/vI+HuYg1yD0M
-         hF6OYW+Uo/cgF0wtdmSIbxhgLuLtqYK0qyZ0Rzk7rBFYPKfLb1cGNwcUGLUmVd78zb8n
-         rHOw==
-X-Forwarded-Encrypted: i=1; AFNElJ8m4KLIV6mQLaqohLwSaEq5yZ14EQsPd/UQs65R3j+99RaBKlG+Yyv8F5v2EnqQqmBXeywkTA5D2g==@kvack.org
-X-Gm-Message-State: AOJu0YzXBDksxLQQ96Rtbp9NivKCq5NaBOV9XUL00G9Wi/XSx7XXgWqQ
-	ZnmcEFFfnNNKm+xFzcAYjCLz5RA3m/WB+3gjSh5xp6vZ0sLkWiMKgQT/k4Malaiq6ofz1URStrb
-	uSvR3u6u5eniErDYPUQnRBKGzfnsoGo862h1B2DaWtZ6HepXIVOJJM8RfQmM=
+        d=1e100.net; s=20251104; t=1777929785; x=1778534585;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=igyU2nx2iftItHLeQpILR+qCdofiKDiQQ2B3kQIIdT0=;
+        b=Vnp5TdnaP0BYml2bJNP9ww4/v7sRTsx3bHh9hDMbn8Dq/us3+957G6cLvNLatmzua9
+         tdljXqK5IH+ZbUJXQuoIWetDRt2DIqYj0Xm87DN0zAuK8o3N8q9B6kef84rVpPFZmeEs
+         bZ/Qdh1L4AYjCs9X52oNwC397eWKJBIhMHcF18U0NEnVEaAj+jGOHNnAI8d2cQNexOOk
+         7eimz09gYLEDYE2c32xlkCJCSA5Agf8cUMVCQjd+P6E4BUTgSOeot0kWW879riN4RbJt
+         v5HpSwN0NLpldXzlzzr5jMYnm2rOjr5nWAWBbCJjFSYwSbZp9GUYe6gcJxMYsw1akYGT
+         FETg==
+X-Forwarded-Encrypted: i=1; AFNElJ8OERySA8QMn69yii3yccymrZMCy7TukU8Xo0uVz4G/o38n1ZF3xbyMV4pIpK9h437n4wmoBTPuSg==@kvack.org
+X-Gm-Message-State: AOJu0Yz9wMGbjD3YVukAXs1y1DfAu6DYJjc/E95Let/G2GvsNBX0w8hk
+	E9C9rYtqjk4KZjprIUkOuHXAdjd2CKwbo5/OA+a4pgtNG3QmkvJDygTDMIssPK59UQ==
+X-Gm-Gg: AeBDieveKGPiSfj19CnBEfEPMamOUS/xc27k8MSQsdJJXnhIClHfBKm9/hptb6BCJO5
+	MEJyxw5O8BqzC0MOCm8Mfra7+HKDNI7+476i1l2qyFWujnX+vMq+9Rg0+Goq4hBWKEP6LWOVmdv
+	cmgEJhClJ47BBwv+k/NVMJ0VgUNwGI2W5vbxEpWzC0aaGkjgdJaGcfDAMDQ8vu66rY8NDAr6/H1
+	ODiEwg9gmqE3lSGsW7M4ANZYZE/+kE6Cw8mgVirLj2bjX3MzMikphZamUPSeFJkzQdgX7YwfawC
+	GnSv8+zolZVFyKVgTUtUFm4+bVaHPv4SGe6evwNDfipE9pjmy46q1BZiUFF8ma/Rd+FK0KXZaq0
+	PO720jbp21jRfZVneR3IcV5Ds242j33FMrQ+xBX9JWVOt5cRRmm6r4V3lTOcC577oef/fxWkfT2
+	yH85yj+5OsPiGeDlZBbXb+MZ01zlJFBn8KSUK0jNHt5RRNu9f5A2vJCWICUdzvSyUvPC8wbdTsY
+	lA0DKXqnw==
+X-Received: by 2002:a05:600c:a30a:b0:489:1a3a:9e45 with SMTP id 5b1f17b1804b1-48d18cea8damr2194915e9.26.1777929784562;
+        Mon, 04 May 2026 14:23:04 -0700 (PDT)
+Received: from elver.google.com ([2a00:79e0:2834:9:fba5:1281:871d:3fd6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8eb694fcsm323128615e9.3.2026.05.04.14.23.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 14:23:03 -0700 (PDT)
+Date: Mon, 4 May 2026 23:22:56 +0200
+From: Marco Elver <elver@google.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com,
+	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>,
+	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Matteo Rizzo <matteorizzo@google.com>,
+	GONG Ruiqi <gongruiqi1@huawei.com>
+Subject: Re: [PATCH v3 1/2] slab: support for compiler-assisted type-based
+ slab cache partitioning
+Message-ID: <afkOMIPu1WNFE9MS@elver.google.com>
+References: <20260424132427.2703076-1-elver@google.com>
+ <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:60f:b0:696:8c3f:d7d8 with SMTP id
- 006d021491bc7-6998d225e63mr109559eaf.37.1777927861903; Mon, 04 May 2026
- 13:51:01 -0700 (PDT)
-Date: Mon, 04 May 2026 13:51:01 -0700
-In-Reply-To: <2956b248-c79f-4eae-8bfc-81178b5899af@dev.snart.me>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69f906b5.050a0220.892e9.00d7.GAE@google.com>
-Subject: Re: [syzbot] [mm?] [exfat?] [f2fs?] memory leak in __kfree_rcu_sheaf
-From: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
-To: dxdt@dev.snart.me, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9C7514000A
+X-Stat-Signature: ise1hpotc9yeh3y5kxq7gd8wcmpz9xwg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0CE158000E
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ajwzdwkhu67kjjykihfe5zrhim6uaei1
-X-HE-Tag: 1777927862-662111
-X-HE-Meta: U2FsdGVkX1+vuDa81UTZWrQ28uC7cmRMJD9H3rUeuDL1OnSYnkoQVAu5GqqFeL955/pbrFVgFycqZ6CPyOZ51LlshhRRd0jFO6F2aFTQwFibjG6vSuETLpOUGhS+qNGVteQ/0dHKUnRwvn9XsfdAcXjZtQRKPh4cVmv7ACJG8sdok3bwQdxnepImQ7Pboqp8zoZNqcUZSpbZvB1O2KeafHvYzLiGFiqQEXHkQ+oEVXLfqoNJmWi42HMG84YPuiZ+z6H+QrKQ5CXGX8jVE3U28XqQi+2DG+eOX7b0QajSMuGUiFtzdDM3AbdTgK7C67GfjE+TeTHungEJ/IYS8twqkZ2XTqjFQWZB4iHpSkG+ATlk+q+pmm5AoghFrKJsj1yFSkPs6fDoMFzbJj3oosw7aXWlaNRUDr4h5eWwYG1p3pq+cmNupU6tqV5fNcgET/IIgVUlqHCWLSvzoxF4A05pqZoFN3dnGwrD5w/bBlcnKK4uUAjVBQA0gFyY8M5k0lhOC1NLJ/8z82Ib+cMIxN7w6Zjrpr0OzDPxFePTkZd63EzDAL9PmMvrSoxmnLB4ZKicKIX6HhMTnaJ1u2YHbsTi9AoJlC/3X8H1J4M1SsKdxOyx90vsCHPUyKNE7rLsszq2q/naUxCxHJ8lnxLM/mobZC/K5jQGSmb+KKPN5LJjJFpFaDentzth6hoAfZ7UUwQ6jp+F+abY1poOJ0VjkA60+Hj/t8dcucILBcm6aczZTG+1OvYr966t+ft/yRlSAWcdkkz0mIvqDTS2hT5VPb/UvWQsde8ulUQu16lZpbDaFBdUrB86i+uekINo2RNl9qyLhbr6qOw321EZHVSmW5rGdhBt0URV5UE99A6CtcpWAc9rQBw9KTKPoWq+NnaoqmimBiWXMn1mT6BREOX5VbfNqzIhPRU+mej/XdQtvx6wD7R5pW3GeNjWnXjkP9e5qj3PjUnabyDDKgGLS5WU1Ov
- b9Y1DSNv
- bIvcAoP1le15bFda00DyImUBQuReJODNK+BH880md1DSvHlfq0k3M3sFXcP0I6awxWvYpInJyinHyHN1USVbAXnaF2OHLOQiU/3KmGK+lZsf+6rPzNz27iZkEVx7FqJvytBNWWRXNhQ/CLqAiphd9DcS1Po0NQ27pnjcq87XZdg8L+MovL3kwu0L0k+8IcudY6fKS5CpSkVN1DMa7TdDT59dp9NiLcfOdB1uq/GUCnkpEwvLQNsrREOcq1Ncx/w3GZ2eXYoZ3AEsdjwM5040zzgDp+EWmq5GZBc+G7xi8FDTeJWUTbRJ/HOdfTpP84Qm0/BM5kfUrzLSSGNx9hgH1110PGj0evMCofnUKW+aUnKjwTEOoG+OmqF3lGC+9Y1nf1L2b8MLzvXZ6pzGUq1y3PtfTH/y9KEhqUruDRfjZkoxR4O2CGSbJL6gBlw2Fq3ZMSU6BBzlXugrPib5Wgw6IG63Cp7zlqZ5n0QaGudGgAC1axA6PmB1jsJZUr3CaXR63+K2Qcd4Jg3t51YD5/zwGzWi5LvRewZsOubKAA2ZCHRxa36vC9j/atVpDIH7ZBAdCwJtZmgxQc/y+k0mzjGAxsZ1MvS4Tcedg21U3up/Sn3TPGyhzLPZg7W6y9f36xf5HJ1HW7OKDgU7R5UBztnRJrXmr6m/aij9WDDKDCV/xa8HPEII5xZtUaL7GE8YE8XcyY4zE2zyDHdNQQOyz9QYNJiO4HuWIt9eSBx+vKiXpc3fBU8CxH5c4rVyb9NytQ/4zgsyg65sFrLAb5sADIRrQ/VZqGV1H3ZqJYKTQdvlN92gPSaos1JhmtcaJn4xSXJdIwIwzpz0cldHp03RRoMuTXrhLY24PiK7oyivHVHSDmEwXpHE8EkZdr1cjDH+Y4qYkfCAL6rTyn2+5+o2o/EUKQArM3FezjZANMOhKy+PXtZ8bgFTRl2hALngbwoZrwG/xn1VQ/WPH5uavsHyib3iqN5EPpQq8
- VEO2ziDA
- 66CbFGoRelzb9HyWwXuCWu4z0d75S2vWgTeXmzcwYKJdJ0JOldKPwRh+uUYCJKaR
+X-HE-Tag: 1777929786-550766
+X-HE-Meta: U2FsdGVkX19tqs0xQFYSKnbU/clxhkqOJOdm+gnQzMx1iVhwoHNuPP9RTE0Y5umKn4bkObI//pzE7tv3K+Qj/9eEYP76NbOSYgvlr+zzjXwdF1jx3JLKaEJrML1swUGZdwRlIrDUb4L0SSfizPIhYo9E6jvA48icfQG99rMbEzY25je3i3jSIxlDIYpuJT/KBod1yEeXvlF5apdJcQ+xv/Q/mIRksXfE94faFSmfqLKE2oWgkLwaUd0lOdhDznfpeeDUBrOt+QFgdrjGMmiEWmDStHKNreP3HJHfv53HJS7arJPhxV5uX3VQ7owbU2dmtkVVsgIeqILLotHqODgPTYzTuZhuGMaAnHKa8tPJ7qv+1Qqn8EIVamnd8DJ07+LaryYYARD2NYW7kZqKufw5sMXYQzCJqnO2drIZ1YIAupq1q4Nxvww9KK8Lxra+6qmnPmwcA2wklPUMdWzUzGjBKCYkCiNV0gxW75yDnovJRCF+p02qAIZZd/mFaC/dI3uwhJv3J+N21xOwnGN8jCn8eGO6oy53o/BN16/hYwtlv0Y89Iz+KAJGlIn/2HxbIXmBDEnAapYfn4VKJ6YHVfrCKxGAj6QVPgNLKWU3n0an9uoJI8myoQxvx3+LwO4kj8UIG7rf3cVFQ9/SNCQCLOnCnK0VYPt/uh4rjsIVCNsKUSfIxEaVuUdrD+9wM5nyeCdivDgC+0m4yQULZGwpV7U48iwRjGkQJmJjxpJVmEaEHLoAafUHnf9zJvXvRdMWDyxfQphg3UWnl2B6t0oeRpOsAJKRP4sWzyeF3JIs9wIKAxlTDPPxQbVqpSlIF2AYjJ8Xou+GlJGdkCpPSsCAb446a4aZISSEqz9remLzs0HN7lvx/xGUB33l7z92T2C21au4CBvREVWNkImBdDBrH1X4LD/jyEn37qbLYgvaYP130/M5d/yo1NBhsbeNCUWgd9opPuF5ikG49cS2L0Bu6my
+ rpn8kAa9
+ Lke8PfniDsojaqm6NZojVPwX/rF0+S7BwBXpr1XCQubU6g/OL9S8J/Ey6prLmZDnJUGAU/2YwdQ/KEsYZX3BONhZYWCdsRlAPVB42XDNgJcWFBtKgLmPnZYvmYdot7h7KFnTXZVr11hmAiJkdzevDiPIJed0yX45FJnDJhkvvY9xCvsuAVbwZBzoQzZjMNzRUL3cOaFnzi+VYN+5EkJovpiIA185SV8TXB15L78tiLRe7vvppuhSdgKlvypXTbZS3RngehdC6tYzMZ5zi3JSiZwKSNzMTkQc2cl3ycGNbAbhNVMb3DZjjOqClhDaOupvSzIa26gz6cvW45Mz1TI2/+Pzg8zCfuwfsRCfVTSsvHksCkP9torWWyrlvxh2rBwceqNOxlTxyElM7UOm2NevuvjxWEuyCb8032Qyo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,41 +147,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Thu, Apr 30, 2026 at 03:03PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 4/24/26 15:24, Marco Elver wrote:
+> 
+> > @@ -938,7 +968,7 @@ void *__kmalloc_large_node_noprof(size_t size, gfp_t flags, int node)
+> >   *	Try really hard to succeed the allocation but fail
+> >   *	eventually.
+> >   */
+> > -static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t flags)
+> > +static __always_inline __alloc_size(1) void *_kmalloc_noprof(size_t size, gfp_t flags, kmalloc_token_t token)
+> >  {
+> >  	if (__builtin_constant_p(size) && size) {
+> >  		unsigned int index;
+> > @@ -948,14 +978,16 @@ static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t f
+> >  
+> >  		index = kmalloc_index(size);
+> >  		return __kmalloc_cache_noprof(
+> > -				kmalloc_caches[kmalloc_type(flags, _RET_IP_)][index],
+> > +				kmalloc_caches[kmalloc_type(flags, token)][index],
+> 
+> While reviewing this, it occured to me we might have been using _RET_IP_
+> here in a suboptimal way ever since this was introduced. Since this is all
+> inlined, shouldn't have we been using _THIS_IP_ to really randomize using
+> the kmalloc() callsite, and not its parent?
+> 
+> And after this patch, we get the token passed to _kmalloc_noprof()...
+> 
+> >  				flags, size);
+> >  	}
+> > -	return __kmalloc_noprof(size, flags);
+> > +	return __kmalloc_noprof(PASS_KMALLOC_PARAMS(size, NULL, token), flags);
+> 
+> ... and used also here for the non-constant-size, where previously
+> __kmalloc_noprof() (not inline function) would correctly use _RET_IP_ on its
+> own ...
+> 
+> >  }
+> > +#define kmalloc_noprof(...)			_kmalloc_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
+> 
+> ... and the token comes from here. With random partitioning that's
+> #define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
+> 
+> so that AFAIK makes the situation worse as now the cases without constant
+> size also start randomizing by the parent callsite and not the kmalloc callsite.
+> 
+> But there are many users of __kmalloc_token() and maybe some are corrent in
+> using _RET_IP_, I haven't checked, maybe we'll need two variants, or further
+> change things around.
 
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-kernel panic: !!! sbi at ADDR used after freeing !!!
+Good catch. I don't think we need multiple variants (otherwise the TYPED
+variant would be broken) - we're moving token generation to the callers
+(not even inlined anymore) with all this macro magic.
 
-F2FS-fs (loop1): f2fs_record_error_work()
-Kernel panic - not syncing: !!! sbi at ffff888129322000 used after freeing !!!
-CPU: 1 UID: 0 PID: 6598 Comm: kworker/1:5 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-Workqueue: events f2fs_record_error_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x97/0xe0 lib/dump_stack.c:120
- vpanic+0x383/0x6d0 kernel/panic.c:650
- panic+0x6e/0x70 kernel/panic.c:787
- f2fs_record_error_work.cold+0x14/0x14 fs/f2fs/super.c:4747
- process_one_work+0x277/0x5b0 kernel/workqueue.c:3302
- process_scheduled_works kernel/workqueue.c:3385 [inline]
- worker_thread+0x255/0x4a0 kernel/workqueue.c:3466
- kthread+0x14e/0x1a0 kernel/kthread.c:436
- ret_from_fork+0x219/0x490 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Kernel Offset: disabled
+I think this is all we need:
 
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -503,7 +503,7 @@ int kmem_cache_shrink(struct kmem_cache *s);
+ typedef struct { unsigned long v; } kmalloc_token_t;
+ #ifdef CONFIG_KMALLOC_PARTITION_RANDOM
+ extern unsigned long random_kmalloc_seed;
+-#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
++#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _THIS_IP_ })
+ #elif defined(CONFIG_KMALLOC_PARTITION_TYPED)
+ #define __kmalloc_token(...) ((kmalloc_token_t){ .v = __builtin_infer_alloc_token(__VA_ARGS__) })
+ #endif
 
-Tested on:
-
-commit:         6d35786d Merge tag 'for-linus' of git://git.kernel.org..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17a63a36580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9645c21cfd1d3e8f
-dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=172b8ad2580000
-
+Plus a paragraph in the commit message.  Let me add that.
 
