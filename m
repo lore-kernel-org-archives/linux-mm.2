@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 008E4CD3423
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 07:35:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B671FF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 07:48:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1C2E6B0088; Mon,  4 May 2026 03:35:57 -0400 (EDT)
+	id 493246B0005; Mon,  4 May 2026 03:48:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCCD76B008A; Mon,  4 May 2026 03:35:57 -0400 (EDT)
+	id 443A06B008A; Mon,  4 May 2026 03:48:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE32E6B008C; Mon,  4 May 2026 03:35:57 -0400 (EDT)
+	id 35A546B008C; Mon,  4 May 2026 03:48:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C2EF76B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 03:35:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61A1BC1868
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:35:57 +0000 (UTC)
-X-FDA: 84728928354.27.968CBC0
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 256F06B0005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 03:48:57 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1B4DA02CF
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:48:56 +0000 (UTC)
+X-FDA: 84728961072.14.47335B7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B7E97A0002
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:35:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dwZxMQof;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2C13A40010
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:48:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TdrspOkK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777880155;
+	s=arc-20220608; t=1777880935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NqFpUme6PI0IGpRbtCiQg09CSdqJV/ogi+wzFrrhm7g=;
-	b=xqA1UpmROaGHXUUdp6tg6tzFMpqWOJ5NY2MbVECiJ8l4UMOhK1N8os/b8oj5rZNYGUbAIz
-	Mp+PT/IRlDyOgVZHhjgF/e6V83+stfq0aYwSudKj/LWY9ZjCdeArZ4YUsdmiR66RQk32KT
-	MMcRpviXeeRTOasltdz07Umvf3EgnqM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777880155; a=rsa-sha256;
+	bh=f6cfewTo+i6gmiGJ1mvBZsv3mUjPocnI8DVGUlf3oSM=;
+	b=zFUbDbudLYQDB9neNxBcVweUUDsVb79f7h6Af9PlEIq8EYneEXr6yvQ/yIplNVhLLvAVvY
+	MQ/kO+EDYXR2/Ov4OEHcJh+apzW/RMzRwWWHfLmerUgqp+Jtyv5iU1YfWKdvFolgUgx530
+	3DEPXJrcnWyZx3erDAQMi5AnhbI5jYI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777880935; a=rsa-sha256;
 	cv=none;
-	b=jplQFyLTyEreF/xoume/WNJ+5au2ZrbaOhpU65NyPo0ga3y9hbhCCs9OcLNbqykvryZc+0
-	EDlQ16HQ/z84lWTFkvfuAa9SE05ceOGoHd+NXRH11bRCZW+mOpplLnXCMZtRAYWOdQoQH+
-	tMi1bX1KR7hsqsbkrMNS5zLTRUNvRR8=
+	b=ipHZ74yH/RMbzxfHrhTdlwXgrh1RLG0LsgYQAmwyYcud3Ce/Bxrmxl9JqCP9uvUDzkOA60
+	4+u5m1pnKGD6D1ktPoGxB9wu17ppkbmyLPQ9IctEqIw3xUt7DpiuAYCFBhagHKiiJERztA
+	HVbt1asK0WqHaY86qB7xgzsvJC8ifAY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dwZxMQof;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TdrspOkK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0CB3E60008;
-	Mon,  4 May 2026 07:35:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A297C2BCB8;
-	Mon,  4 May 2026 07:35:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7307660125;
+	Mon,  4 May 2026 07:48:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF6EC2BCB8;
+	Mon,  4 May 2026 07:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777880154;
-	bh=nP0S2q1CAzOGhGSdSCjymgPf8nuBERecQ5nTjVW12qQ=;
+	s=k20201202; t=1777880934;
+	bh=hvT42DeLxt0G1flXefxTAisAOAsIFUCaS+f6nn9KqVg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dwZxMQofx6uIXs7HGoHMgLNnUGRsmZWDDIiSADIemxTxLuZR8dhs4m4Bm9V0M2ioC
-	 z9kh24iWzmu55tMpnz7mCGxGsauMwJA1S+Ng/0/wRxsyZGVh6PJKThcrdJGRAkj9SV
-	 rL3AEJobAm+7b1ZdQRrXC+dhzIyqhYS+3dnPcmt5zlcfylov7Ke5LhFg40bbEK5qO/
-	 zWF7IzrUBYNzg/seZaKvUhvg79C1U7uucNC8j+BrdpDntWlcohZNncxAeK49w4kV1u
-	 P+nW4+1+ARQpeoKBJTlnt8b0tIZVM41k2c94GuXsqiT4GB4xrNQIoURJbez270BpXA
-	 eU5lJh9mEJuMw==
-Date: Mon, 4 May 2026 09:35:47 +0200
+	b=TdrspOkKI/X8T3QdrKzyX8KNipEz9X3bOSmaWdacC5A1e017WryZgJC9Z4MD+4VhD
+	 066QFiGfp6MoC0ZlBy9OeqKoQrG0Zt2vWMiZxQI1zdJSEjCdAx0R1MspDyjrW0iJ78
+	 QE0WmKsnN5Gv6gf0oOns5WDSRRV6LWU+66Yqrv3urH11sjUTLaHBgsTVRX2BU9/Q0J
+	 JFE1z7/h7+/QliIq4ZH23DknBot/9Ou3dFU0R7h/IcbRLjPxwxUhLaNSV2B0cqM4rv
+	 PhN/ADH/AsvT9vrkKyt0Rsrci0onnGkmQL5OsNE3jssqyE2miF+a2VzLugfhB2pJPG
+	 lA/51IkPNVp4Q==
+Date: Mon, 4 May 2026 09:48:41 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-Cc: shuah@kernel.org, akpm@linux-foundation.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com
-Subject: Re: [PATCH v3] selftests/mm: ksm-functional-tests: fix partial write
- handling
-Message-ID: <afhMU8qbUbS-uVa7@kernel.org>
-References: <20260503101229.654763-1-agarwal.vineet2006@gmail.com>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
+	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
+	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
+	usama.arif@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 01/14] mm: decouple protnone helpers from
+ CONFIG_NUMA_BALANCING
+Message-ID: <afhPWW52f2PtrjXj@kernel.org>
+References: <20260427114607.4068647-1-kas@kernel.org>
+ <20260427114607.4068647-2-kas@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260503101229.654763-1-agarwal.vineet2006@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260427114607.4068647-2-kas@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B7E97A0002
+X-Rspamd-Queue-Id: 2C13A40010
 X-Rspamd-Server: rspam04
-X-Stat-Signature: 3drcsgutc5ugm7e8hb5n7fczmyatudgh
-X-HE-Tag: 1777880155-136092
-X-HE-Meta: U2FsdGVkX19nLL4EHyEwcle8oGYbnRv82StWIkEIYU89W20v57b9zoc74eOMNNqki8MLO/cmfgG7Vc9/6YeIOgKqp49wi5b05a5WVOsoVvrHi6g++0gfuKTjbnCnpg1vuNz22jr1UWyTyGCFPTIyyAS12hXt2Nh4VLJucAwr8UprAuAvF1oQQR5LTa4LTVd/uF0cBilyOwhkENuomHzrTxlyKRtMgpEEV43ghFBNI4zksBtzx+mdGbwSfAmJ0Ab0vXSQ0f1+coJVliSYMIvYGrwEDL+5goSzpAGG84c/R6rBpjWwSly5rb4iJpc2oxey5tvAS/IKSa6FOJAvhbxg1V4NOQm9pm++nopPgNYoU9CHAv/6o8M81CE7fU7bIp+MDOYkW1+WbngkbGCxlDg/yAQVuugTv60uPd3OB6qfTEhko1gPJClMf6VuoJQkw4yIuTZ+0OItFT3HtvWW4BlL92ITg58Tw9fDxWE6/HGtL6gbbW7y45ZFJcV0o49nYi8ec6Gb46wdjxDu0eNoj0gep9XWj5cJ3lXCrX+vznAR7n4h639Gn+haJl9HbqjL3C6PoVsuSoeOh1ye4sVRQFN1xLhqtwaBe4YoaWWeIEFMIypT+VmmBquYwU5LP+XZQgKl0t99Uy00wlDb4Kce4qlUHEG7XQmI8/hP5cId06phG+t+Em8Er2d8zMuaiFlu0y1n4GHrTVI/VU2UBQFnKerfnSTqWmKz43Kw7kksYoXpVQfxX+htZyIi4K7trMDjDERBP4Fd6yggHSe7JG/RQqtjtEMKFWlJn2uiO5jt1X27RLozbRmpNxCXVHYz/Gg4Ku2j1w+7xRTyprxNNIGxEYf0S88kXdOiBSP6eeSjlJWaOspbfzarZrg/YeX+GCoEA9nYru5ziYSYYurNXYWSnOZkqk81thaKKgJMlY+4RC1JCdaROYZW/IrXOwaRDAKYUVqY6UJD1ILxhj0e52/lJ8h
- OBp7y9JI
- X1BmX4kzlG/TnZ3UOWV19bUBY0ENpOoMs+JBu05WqYchoxQi267J+YZzHdeKsI3qlria0FhF4XnxyJYohjZOxpOENBOkqlHHiQkQ75/G2D7B2lynJusemnmgDTX/9jqRy6i6E8Eh5dZmHkOGNf5bfhdYFYIup3dmI1yWwdF3GUVytlmhQ5nhppVORjA+htB5iRQ9JlthmBIjSe1YcX2I3gmRQ8wO05vKRHsRkslQbzQwVGSnOB96w41IHCF4U8FZ2NIar1I3SrehAlX0k7TYpqPDNyHS0vI/VFGWEAh8p876t0noXuDrW4siIAT/IcchE+ByUVLgeKDvv0P5YmPxNYq1yCV48G4MQAHJ5
+X-Stat-Signature: qphsxo6ixrt8r9yromsuax9gmeqnzp8z
+X-HE-Tag: 1777880935-105686
+X-HE-Meta: U2FsdGVkX1/lb7M5c3Qk7k/zMJ24M0WSelqy8ntZ6B6s1w4v27IWb0RW3szvz/XcwKc/8jDLYTwI3GU39UyOrIKONOq51R5RgdTd/li2Zyb3YMtnteKSY8SABdIJ4U5VlwJ4zZMmms2SwpwMaIyN21a1uSwJX943s5nE/jdh4q4a6PB9VADGuueUnnlMzWqdi1W+Wc7fDd9oeJxb2MByxcvVCwfdpIoXMt4aFABPk3vDk3oygE8cd8LSonnm9YOapJFalvhism7/6f0Dg0a95ipqkcdYgkV3ryuKHXrld3IDm4uF0ZkTqgUft6u/e3fcpubTupW13C63Za5PxhuT9KogmyV3+yJVGOVyYrqDEEeCFxivxDOqVG/DnWBc0qO/I7wnsw71X/2gcSCtki7wwcw+g40Bv7QUDWSb2Bm3TpehGra/3mayV/zMT/WXa5YX2Yo7LfaXOmnGls3rXyuIQsHNw+HICzWPD6/4pdlVqlwAnaoDDbZ73iqmTSdrqIsxYBZjkQaNqWCUOjatn7vrNFwX1zLpBd/+Q6Yu5C0Tl18Xc0SbEpFHbjjYCqFvW+j6zeqxHHfZOkLnc3X0xYD+UTF9HZnD/eCYGgusQjpto27sRB6rsJmPH8Ux5kr/Oaqr9JC90cvN9meaZBMFqXFYb1MQHN4aLyn/51eRlFyf9I2CcWi82AhB5tE6jJRJkLyQwA+SRvBpV68mvQG/WkK8cI1FJcUN9gY94SwAN0hiEVmC/r7NRciWRo3f/VxYUaSkMNhAN1nIJw63unYzTXcLJ0HJuEPUao13/C/AvqVV247T/NuRJsueYBx3nmpCnzUsdLINcJABqC+7lgmnAUPDraP0YLnVG73AgC2qBmwHJ5prfL7eg7kEopiWYHGdJ+U2/zxdnY7CuPmUEShGl5sMHkLRe4KRzOK+ZHZ/ARnY9K2lM1hRF0JQQt1RXeWtsaDvRARsoCBWpAGdpCzvmLK
+ BXSqVjLA
+ PQHknjWGhiWfEgQto9/lWZ7MIVfQ85j5UMT3vawvGeBgXgTztNfoQ01p71PzFRwmN7RSxXf7Qbo2xAPeSSVXWcoivqJobSM01lXAS7/cn1fXRGqOHOEEq/atQ9JPAGybW7A4T1hvTWSOKc/X7QlcxIrhyY+0A6hK2491oAYDf5uDgpk+/ZgwaKqZ0HweeaLzbRD2fayFuf9u3I2ptcnXx6eXABvyfABhsx+q0SJegMfP+cFf8DR6lF772RDUoYaROJiFQAuy0LZdV+rqHm4mGJ+fERdngIALKLBO9bbp+zLqojDvTgFgitpCjvwdJFzk6OTQ8LuhAOfRlmAQPEFb+OwJtN1qQMAa5/aQG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,64 +101,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Mon, Apr 27, 2026 at 12:45:49PM +0100, Kiryl Shutsemau (Meta) wrote:
+> pte_protnone() and pmd_protnone() detect present-but-inaccessible page
+> table entries. This capability is useful beyond NUMA balancing — for
+> example, userfaultfd working set tracking uses protnone PTEs to track
+> page access without unmapping pages.
+> 
+> Introduce CONFIG_ARCH_HAS_PTE_PROTNONE to decouple the protnone PTE
+> infrastructure from CONFIG_NUMA_BALANCING. The six architectures that
+> support protnone PTEs (x86_64, arm64, powerpc, s390, riscv, loongarch)
+> now select this option, and CONFIG_NUMA_BALANCING depends on it.
+> 
+> No functional change — the same set of architectures continues to have
+> working protnone support, but the infrastructure is now available
+> independently of NUMA balancing.
+> 
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
 
-On Sun, May 03, 2026 at 03:38:40PM +0530, Vineet Agarwal wrote:
-> Update write() checks to properly detect and handle partial writes.
-> 
-> Previously, partial writes (ret > 0 && ret != len) could be treated
-> as success because write() does not set errno in this case and the
-> code returned -errno. This could result in returning 0 and
-> incorrectly signaling success.
-> 
-> Fix this by verifying that write() returns the full expected length
-> and treating any mismatch as failure.
-> 
-> Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-> 
-> Changes in v3:
-> - Simplify error handling as suggested by reviewer
-> - Return -1 when write() does not complete fully
-> - Rebase patch against base tree
+With a small nit below
+
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
 > ---
->  .../selftests/mm/ksm_functional_tests.c       | 27 +++++++++++++------
->  1 file changed, 19 insertions(+), 8 deletions(-)
+>  arch/arm64/Kconfig                           |  1 +
+>  arch/arm64/include/asm/pgtable.h             |  7 ++-----
+>  arch/loongarch/Kconfig                       |  1 +
+>  arch/loongarch/include/asm/pgtable.h         |  4 ++--
+>  arch/powerpc/include/asm/book3s/64/pgtable.h |  8 +++----
+>  arch/powerpc/platforms/Kconfig.cputype       |  1 +
+>  arch/riscv/Kconfig                           |  1 +
+>  arch/riscv/include/asm/pgtable.h             |  7 ++-----
+>  arch/s390/Kconfig                            |  1 +
+>  arch/s390/include/asm/pgtable.h              |  4 ++--
+>  arch/x86/Kconfig                             |  1 +
+>  arch/x86/include/asm/pgtable.h               |  8 ++-----
+>  include/linux/pgtable.h                      | 22 +++++++++-----------
+>  init/Kconfig                                 |  8 +++++++
+>  mm/debug_vm_pgtable.c                        |  4 ++--
+>  15 files changed, 40 insertions(+), 38 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-> index 8d874c4754f3..4abd98be3f59 100644
-> --- a/tools/testing/selftests/mm/ksm_functional_tests.c
-> +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-> @@ -498,6 +498,8 @@ static void test_prctl_fork(void)
->  static int start_ksmd_and_set_frequency(char *pages_to_scan, char *sleep_ms)
+> @@ -2052,18 +2052,12 @@ static inline int pud_trans_unstable(pud_t *pud)
+>  	return 0;
+>  }
+>  
+> -#ifndef CONFIG_NUMA_BALANCING
+> +#ifndef CONFIG_ARCH_HAS_PTE_PROTNONE
+>  /*
+> - * In an inaccessible (PROT_NONE) VMA, pte_protnone() may indicate "yes". It is
+> - * perfectly valid to indicate "no" in that case, which is why our default
+> - * implementation defaults to "always no".
+> - *
+> - * In an accessible VMA, however, pte_protnone() reliably indicates PROT_NONE
+> - * page protection due to NUMA hinting. NUMA hinting faults only apply in
+> - * accessible VMAs.
+> - *
+> - * So, to reliably identify PROT_NONE PTEs that require a NUMA hinting fault,
+> - * looking at the VMA accessibility is sufficient.
+
+I think it's better to rephrase the original comment so that it'll actually
+describe what pte_protnone() means rather than remove it altogether.
+
+> + * Stubs for architectures that do not support present-but-inaccessible
+> + * (PROT_NONE) page table entries. Generic code may still reference
+> + * PAGE_NONE from paths that fold to dead code on these arches; the
+> + * BUILD_BUG() fallback fires only if such a reference is actually live.
+>   */
+>  static inline int pte_protnone(pte_t pte)
 >  {
->  	int ksm_fd;
-> +	ssize_t ret;
-> +	size_t len, sleep_len;
-
-ret and len should be of the same type and one len variable is enough.
-  
->  	ksm_fd = open("/sys/kernel/mm/ksm/run", O_RDWR);
->  	if (ksm_fd < 0)
-> @@ -506,11 +508,17 @@ static int start_ksmd_and_set_frequency(char *pages_to_scan, char *sleep_ms)
->  	if (write(ksm_fd, "1", 1) != 1)
->  		return -errno;
->  
-> -	if (write(pages_to_scan_fd, pages_to_scan, strlen(pages_to_scan)) <= 0)
-> -		return -errno;
-> +	len = strlen(pages_to_scan);
->  
-> -	if (write(sleep_millisecs_fd, sleep_ms, strlen(sleep_ms)) <= 0)
-> -		return -errno;
-> +	ret = write(pages_to_scan_fd, pages_to_scan, len);
-
-	if (write(pages_to_scan_fd, pages_to_scan, len) != len)
-		return -1;
-
-would be enough here and below.
-
-> +	if (ret != len)
-> +		return -1;
+> @@ -2074,7 +2068,11 @@ static inline int pmd_protnone(pmd_t pmd)
+>  {
+>  	return 0;
+>  }
+> -#endif /* CONFIG_NUMA_BALANCING */
 > +
+> +#ifndef PAGE_NONE
+> +#define PAGE_NONE ({ BUILD_BUG(); (pgprot_t){0}; })
+> +#endif
+> +#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
+>  
+>  #endif /* CONFIG_MMU */
 
 -- 
 Sincerely yours,
