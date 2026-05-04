@@ -4,97 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3E3FFF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 08:52:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80B73CD3423
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 09:11:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1A1E6B00A0; Mon,  4 May 2026 04:52:13 -0400 (EDT)
+	id A3F716B0005; Mon,  4 May 2026 05:11:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF24F6B00A2; Mon,  4 May 2026 04:52:13 -0400 (EDT)
+	id 9EFFE6B008A; Mon,  4 May 2026 05:11:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D07AE6B00A4; Mon,  4 May 2026 04:52:13 -0400 (EDT)
+	id 8DEE36B008C; Mon,  4 May 2026 05:11:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BBB906B00A0
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 04:52:13 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA31AC1BB0
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:52:12 +0000 (UTC)
-X-FDA: 84729120504.23.0510008
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1120618000A
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:52:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NNK2jSQl;
-	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A64D6B0005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 05:11:21 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 31CAC1C00ED
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:11:21 +0000 (UTC)
+X-FDA: 84729168762.25.922D60E
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0C090140010
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:11:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=AJVpEaBh;
+	spf=pass (imf23.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777884731;
+	s=arc-20220608; t=1777885879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mEyeAUfJQW8Kt1Ng6+Xlvp3Ie550ZOIsa7l52iT+Vyg=;
-	b=4fUpnYJ0CM4W9lYND4J5J0OW+BIXufdZH4MepmhkkF4SUBwzSqPnS6zaWb5vX7RF9AsnpT
-	jUwnvuqVgaVgf2uS/mAOfnBv1qoP2+o5VwnSIFyivIuE1PepBRUhyBiH0GyaKiHDnXOHrV
-	pOI5kN4vNv8ED8NZyQYppXQ8XBDvio0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NNK2jSQl;
-	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777884731; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=9wiDU/yHrm108gVQhopEZG7BPuvKV+l2/i7eawOnq/U=;
+	b=q6liy9MIY2TDYOQRQoBvT0QC/QmUWe8sdfZrAsmZSd/aLL0cYdxy5sJYFgJ1W3reflt0vw
+	7mnXkGnosXEWy6wpwmZ+jZL1F4LAyIfORkvZ6IWNGmLT2OMTSo3yA3pLmfRh6jSYQNz1aJ
+	2nO5aI9o9sEuaJIYNxoSM01JOjrRrkg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777885879; a=rsa-sha256;
 	cv=none;
-	b=WPjWic10XYNrbpxGnXJEOT59aEOGGP3oJuOnn3OsT1khiN+PlYwX4CQpGfCAr5C/CY1ui3
-	UDkm09Li9q1K2/zwMNUBwMvhy9voz2v+/sW0m6X96I9Z8GsUvgODTYxHrqA5OCojSRS5bh
-	kI9eqZXjIk5acxlYl3OVoHJxx0NnUWc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C45251713;
-	Mon,  4 May 2026 01:52:04 -0700 (PDT)
-Received: from [10.57.34.72] (unknown [10.57.34.72])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 753B83F763;
-	Mon,  4 May 2026 01:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777884730; bh=Bg78KoT8CemEyZViwGh6uhzKeqfwdHIhOCQAX57fvRo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NNK2jSQl2B1FVgfn2NY38+h+ww+DbMNckBAn2S5WShSlWOVB0HBAEnYt4Fe7b6x8r
-	 dxSgc0GWneyT0Czpajo6Kg4LAJHpFew1oH5j4LCCUImRsL01mFadAPdBOU2JBaDpev
-	 sv3EtzBHR9deCjHx0SIYcZRxWDBCuRlBTCHUr4bA=
-Message-ID: <4f50dad3-76a6-4117-b5f0-d939c6e551f6@arm.com>
-Date: Mon, 4 May 2026 10:52:03 +0200
+	b=tYkJye9bDCl/ZQnESllwIX8TBwOW4958EhxIl3YEp1GdyWrzEIGfn/KTHunx8VBXb/406b
+	5uCPaM+hh9war/fLajl2FFwRlpcmgN1TQeVRzESAXUtQtWg/2ubji1DoSL3IzzZLAiq83D
+	YjjI0NiFL7Etl3pbcCcgVDdNzNHsvhg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=AJVpEaBh;
+	spf=pass (imf23.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64484Ibf1010395;
+	Mon, 4 May 2026 09:11:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=9wiDU/yHrm108gVQhopEZG7BPuvKV+l2/i7eawOnq
+	/U=; b=AJVpEaBhf/zjq5DjxxcVADM4SD/ze/ibqu89AVSBkknH8S7z9uQJW/DjR
+	Ic49GEV09XsHS8wKlW1ftuY6YbqvAmGDHBUZWDud2a/wuOoQHiAojKRJJAG4119z
+	r+bpPS3bHdlGM8UKJjMGO4h021XMw66fEewzxKjojOsESYh6Mem9ayREutciaE0u
+	Sx4lEem23LM4FqosElVNBhPQcseebWSO9BZc/JzkcocooG2gAKdeV1qSTU7aIjRd
+	YsNmSa/8yyyGkEtKvxgUrztH4FctWUJ/ChorTWw7MN5i5bfiocE8TpzhVoEPAGNZ
+	SE0aeGVVSFBQCLptfmnsjBdtmK1rw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y4e2y0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 May 2026 09:11:16 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64499Rwp005941;
+	Mon, 4 May 2026 09:11:15 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3gvcq9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 May 2026 09:11:15 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6449BBP434931018
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 4 May 2026 09:11:11 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5ECB920043;
+	Mon,  4 May 2026 09:11:11 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B9BD320040;
+	Mon,  4 May 2026 09:11:09 +0000 (GMT)
+Received: from aboo.bl1-in.ibm.com (unknown [9.123.14.187])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  4 May 2026 09:11:09 +0000 (GMT)
+From: Aboorva Devarajan <aboorvad@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Cc: Sayali Patil <sayalip@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: [PATCH 0/3] selftests/mm: assorted fixes for hmm-tests
+Date: Mon,  4 May 2026 14:41:05 +0530
+Message-ID: <cover.1777870179.git.aboorvad@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 13/15] arm64: mm: Unmap kernel data/bss entirely from
- the linear map
-To: Ard Biesheuvel <ardb@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
- Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-30-ardb+git@google.com>
- <15555e9f-65ab-4811-b20c-8ada90bdc9d0@arm.com>
- <5279ea66-0e31-4f53-ad76-4fd8ebc012fc@app.fastmail.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <5279ea66-0e31-4f53-ad76-4fd8ebc012fc@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDA5NyBTYWx0ZWRfX+eWJQ6jZGvm/
+ ZpdGNbxPlLKY7tYyz3LRHCNBSN0r7Yqp4AFAGX1dKnyjHrXk29V5QqPRvB86unnxd6f2wi2qwKh
+ IGPaO6pj0K5KVv1pBvnnSaQn61EyazfFonmUEg+nyvaoSPzBPFYsDP4VRZr7K26BIFEzmVbmQBg
+ HsNamw5uq+VJSmHI+ZcJaDL/CSU5Pj7rnblmq9YggRfz1fCn43m8B2TIpA01J7qpoNIDoJW4Cfy
+ Z7pwiKp7u1USmJsFJOgiCJDgXKlwK++cFgb8EPAj0LoBabwmr71LpbN7E61Coo8NttvwnHkz6Y2
+ aJRCvHLmr4pSNGs2QGOhF3KpLsyX0jZ8Idr+XmKMtAOz9rnHjnVLFJYOcRKWYfc/wHtP7h+vHiW
+ vlkTJuBpqNsI0JAOJv7MlO2jHBDj4maJmFbwE+uucnhw2PLhZ6QE1cuNvSCh477ArLFnWP46B+L
+ JhKz4kB0Zko0ZKqR98A==
+X-Authority-Analysis: v=2.4 cv=J4GaKgnS c=1 sm=1 tr=0 ts=69f862b4 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=M2d22ONcT9KgptbevxoA:9
+X-Proofpoint-GUID: uV2WjqPChciwyHDFa1D9KT7BjH_8Hqr0
+X-Proofpoint-ORIG-GUID: uV2WjqPChciwyHDFa1D9KT7BjH_8Hqr0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-04_03,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 malwarescore=0 bulkscore=0 suspectscore=0
+ priorityscore=1501 spamscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605040097
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0C090140010
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1120618000A
-X-Stat-Signature: nngci5jo4ehxzzz6f7858h78y4naqkrf
-X-HE-Tag: 1777884730-484069
-X-HE-Meta: U2FsdGVkX1+rld95dL4LE5ngLRRskWER6iB/uMj90hmtWYoAdtvSnb1ofWBO9lgvwc4JjyBgYfw7prRtBw9Fxq/0ybZ+EwjxvAr4nK11SeosPjJXf7OiYmMkFz+W+ziql7wNYnGzMNWtWpBjVJKwvamX9OqI052mbmJLTb+d9P/QpwsJ3VWOhVT9cggBEY94p8osy5JYXqh2bqe3XII5oSFZ6p358CBgChEx2HahjSQ7fkbRm2lBiykTitzCgFUzB6G7WkabkxH6G3jCSkErJCYnzxtSNIWsq4xjojGLziWJ2UNg0+7WoxIVkHDGXeu0n98XHIdBZZg/zmbIg8D2JkjbksSODJkb/BXO58wutgzEG9/RdVvaG3VzlS+AKYh2q6bY7kMeBWxDcQtXnAkhGqm/lgWEuYCYS+klZYcxB/9/7htwbn9FsLpozC7mXi/I1YU9xh+EBFzInCScc1oIpN0U+mI5fWqtk/1WfuWAIS+q9Y9qHSv1B7bngJp0AdVvBrkkkhVUDC/3eUjjJEceTVZZsAGiJlozNneTgcT86f+RbKbF6dy4VWSQZ1EP6C1C6jSGk8NJwf6meegkuCmYsg1qc6shg+PFPMoAmjNZKLdAEZuSjiJFt1dGoExRW+5OGB5fDp2YhE2QXWIhAg9p7DUyZ3fnmb63IblM3VI2bvoH6HnxJSjc1o4h+1Tkgp2bzfFjP4YbfQe1qI0X/6XWIM3ftz0TQ+5/0cHzSHwesLhWDFYHkDpMs6UJ4AGuXGUExgkk15ZwEIiUYxks+fS8fos2ncW7LIKFVj81mRtN9ersnJYODmuugbSxjLlX14QQmiEwdWcTzQSxsJyF+hiJUCV3KAIyNe5WNqnuh2zeFgnS5Jp1LIdqcWTw5ej+H9O5cWUU+R/0TfJonWsiOwXD0GrVnk80U3mArUZDEuAW0qL4zYfbW1eCuuoBvWqx+C98cfGMmQ9GtbU+YNGwLXC
- c5F3Ttgm
- UhDTfOGybqFPo97KLnZQ02j8KkquO0LG80ptLvxseJ/CIS1TPCx5it3dyN17Z0gBQkD2CfEmFr1S6GL6b4SnN2b++wPYlzR5OgVEfmnSONYrcH10b8dd587K76T3W/JvgM4Xifv8Tw0inv/SvxeNV+joL7iHYSJ0DrJXZL2uw7W5zFE0qYs1ICrWdS95n8DTeadAYMm0RNAPpvSPYqKlaUJMWfL+0W6b4Yh+2Yt/dLyWzkco2tQPr8AKrWLyOmGJguJqXyjU0PXcafl9YeCbe3fiqNbVuI26aItdBA/Gkte49Z46oEBKONMVsHA0oaxdoN+v2HZgj+v8FPCh0qxEqkP6/tke+4hEMKWjB2dslhZy60F6R+j99QYTTQRVF88mNVvjwk1HIKhdXRsk=
+X-Stat-Signature: 7mzgkmiar67kyw981whstxafb3szdrip
+X-HE-Tag: 1777885878-658627
+X-HE-Meta: U2FsdGVkX18xD06XSWh2iqT2X9mb321xpeFIF44xjAwRe4WjbYDVaDctWxBeDw4xOq4zy3YzbJ+IKhmIYBjYWMU2Gb934FIUyhuy8wOeW46BQn14kayU1lP65PRcVh+5Ol6R4MrY3RyBQlUXsY1YmjsLIfbHdhLAJLQP0OF4FjZmpI8NpUNsNz5LTI7rLcBUH3wuFUk+rECFs+flZyYdqJm3RbIvpXXEeMFJGKbkHXZbtK87WRrt5V3NgInIKOnU+nKbgd6LvYFLnhtvVGU6AwsQBsJ9vDl2zCeOa6wO4Q9TVNSd/+1qHOPfXmsa2MURlbxbLFehqtEdwIF/JVJzOCZOtED4f1ED4wcMeC5JqrnYx8GX8z/qn3hYav8qY/edDewYmpcMcOItwR1XBNuDk2EWReq2ekSztFTuJqN5EEjaTy1RlEdC8a9pcq6LFrBLe4wJ/JmvbK+W7W9EZ2qa3prgf9RShNseDQrrXiWluKJycXqDiuqgkLNYUMzuM+JdnTEHlfPXnB1XXmydhCFcdUaH5M/pB/op6UAXd2HrainvaxbkXlkiwv/mV8O5ufzt3A6eQ1c0cQMAaQqyuHhVR4OMFGb1KDQYxULMiyaTcauR5KP23nboegAwAFLAm2+wgUkpDptiFjue0fg/20nsNmya3Cx2yXGzjPEUC5hoG9IlpJ/xza85VaDMo9iWBH1b9FlX51hQ3hWErP4Oaouyx3O01PEi3kQTNbn4w61eNbKi4sBWOrUhKmeHQsTw1TVXbL64i37KEpcbdDrtm589ZquTUcZ6KyyxhzfwtC9SBdj4oCe267V34pFcvGu0W5/+hWNGehee0vvp7LGnLclywN8XY1zfEl9poWpBH+xjIn0FygNhmi66sILFg5ZU3RY064TvOjJ6OclqYNsa02djt6s/E8Rj1ohySnVguFitFk/zVe41GtgFWUNEl2z9X2tr5yKve19mLGzsyKmCORE
+ pm8v4irL
+ ZQkKK2Yme6mdTPHHHXjPBJETbRCNKzma9x+krcirConmiwpst0iQkNvKHLlKlZIrVE0it/xi7hJHWuSnU5MVRYL9yN6Lv38ItB2s1cPvbrbu/oidZe4bJ0FFOE36mo/tjrGpNOagML1kzWhzyFbICcVLRDCZ5hbKENTmSXEcvKUFvd5U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,77 +133,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/04/2026 19:37, Ard Biesheuvel wrote:
-> On Wed, 29 Apr 2026, at 15:55, Kevin Brodsky wrote:
->> On 27/04/2026 17:34, Ard Biesheuvel wrote:
->>> From: Ard Biesheuvel <ardb@kernel.org>
->>>
->>> The linear aliases of the kernel text and rodata are mapped read-only in
->>> the linear map as well. Given that the contents of these regions are
->>> mostly identical to the version in the loadable image, mapping them
->>> read-only and leaving their contents visible is a reasonable hardening
->>> measure.
->>>
->>> Data and bss, however, are now also mapped read-only but the contents of
->>> these regions are more likely to contain data that we'd rather not leak.
->> That sounds like a good rationale but I wonder, is there anything
->> stopping us from unmapping text/rodata as well?
->>
-> There is the zero page now, which may be accessed via
-> 'page_address(ZERO_PAGE(0))'. Also, anything that dereferences page tables
-> (like /sys/kernel/debug/kernel_page_tables) will expect to have read-only
-> access to swapper_pg_dir.
+Hi all,
 
-Isn't swapper_pg_dir always accessed via the kernel mapping? If the zero
-page is the only data that actually needs to be accessed via the linear
-map, maybe we could move it alongside fixmap_pgdir so that we can unmap
-everything else from the linear map?
+This series fixes a few issues in hmm-tests that show up when
+page-size and huge-page configuration differ from the hardcoded
+assumptions the tests were written for (PMD/THP sizing, default
+hugepage size, and related cases).
 
->>> So let's unmap these entirely in the linear map when the kernel is
->>> running normally.
->>>
->>> When going into hibernation or waking up from it, these regions need to
->>> be mapped, so map the region initially, and toggle the valid bit so
->>> map/unmap the region as needed.
->> Doesn't safe_copy_page() already handle that? I suppose this is an
->> optimisation to avoid modifying the linear map for every page, but if so
->> it would be good to spell it out.
->>
-> Uhm, good question.
->
-> When hibernate was first implemented for arm64, we had to bring back the
-> linear alias of the kernel image, and when I started working on this, I
-> hadn't realised that we have safe_copy_page() now which should take care
-> of this even if the linear alias is invalid.
->
-> However, if I remove this handling, things breaks mysteriously, and it
-> is a bit tricky to debug so it may take me some time to answer this
-> question. In any case, I will address this in the next revision, and
-> put you on cc.
+It also includes a minor fix to exclusive_cow: the test ignored the
+return value of fork(), so both parent and child ran the same teardown
+path.
 
-Sounds good, thanks!
+Please let us know if you have any comments.
 
->>> [...]
->>>  
->>>  #ifdef CONFIG_KFENCE
->>> @@ -1162,7 +1198,7 @@ static void __init map_mem(void)
->>>  
->>>  	/* Map the kernel data/bss so it can be remapped later */
->>>  	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
->>> -		       flags);
->>> +		       flags | NO_BLOCK_MAPPINGS);
->> Might be an obvious question but why do we need this?
->>
-> set_memory_valid() only works on regions that are mapped down to pages.
+Thanks,
+Aboorva
 
-AFAIU since [1] this is no longer the case. Even if we don't have
-BBML2-noabort, we should be able to modify a block-mapped region, as
-long as we're not splitting any block (which should not happen here
-since we're always changing permissions on the same range).
+Aboorva Devarajan (1):
+  selftests/mm: fix exclusive_cow test fork() handling
 
-- Kevin
+Sayali Patil (2):
+  selftests/mm: allow PUD-level entries in compound testcase of hmm
+    tests
+  selftests/mm: remove hardcoded THP sizing assumptions in hmm tests
 
-[1]
-https://lore.kernel.org/all/20250917190323.3828347-1-yang@os.amperecomputing.com/
+ tools/testing/selftests/mm/hmm-tests.c | 86 +++++++++++++++++---------
+ 1 file changed, 58 insertions(+), 28 deletions(-)
+
+-- 
+2.54.0
 
 
