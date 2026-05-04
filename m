@@ -4,95 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11C2CCD3427
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 16:14:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAB6DFF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 16:42:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E5F46B0088; Mon,  4 May 2026 12:14:49 -0400 (EDT)
+	id E70066B0088; Mon,  4 May 2026 12:42:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BE346B008A; Mon,  4 May 2026 12:14:49 -0400 (EDT)
+	id DF9A16B008A; Mon,  4 May 2026 12:42:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FA6F6B008C; Mon,  4 May 2026 12:14:49 -0400 (EDT)
+	id CC0E46B008C; Mon,  4 May 2026 12:42:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E9096B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:14:49 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0430A01FB
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:14:48 +0000 (UTC)
-X-FDA: 84730235856.03.3125416
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0225B1C0011
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:14:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of gorbunov.ivan@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gorbunov.ivan@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777911286;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B7B316B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:42:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6F091A0217
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:42:51 +0000 (UTC)
+X-FDA: 84730306542.18.538BB20
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 61BD0100007
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:42:49 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CD0RhGi4;
+	spf=pass (imf14.hostedemail.com: domain of avagin@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=avagin@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777912969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u1P9yye2AacZGkFluFiOG/ZeUZGaSHzB0JR5wv/9XrM=;
-	b=iA0cFDvGKD3shwhKbDuFvAKVwOPKQb18GLN/BmaRnfCaa7kIEkd1UuUiCrtaX3H6EZFIY7
-	3o5oYiv+/gkEEl6uY34sPTW54C5DAoEoXa0FzWAkaLe4cHHf6SOE911Lt+1nZCE6Q2dFwW
-	4qpPShwVkUJICpksLdnJMjpSpMwtPg8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of gorbunov.ivan@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gorbunov.ivan@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777911286; a=rsa-sha256;
-	cv=none;
-	b=SzUIJ9bY7eCYTtiSj/GZPtQaCP/THImdkNsZU+cq8kxxV2brlOt5yzZ3wgjNpi8P8pJycT
-	6S08nYfe45JANSMPzEtYQAZuEgaHfGvmowFHW+0mDSfS6F43tFQsp8JnWOv75ZxQWoSPDU
-	annqGDqyAoKAkXfZpxkvj2s4pFgfp9o=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g8RYF5kG5zJ46XM;
-	Tue,  5 May 2026 00:14:25 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id CAA0E40572;
-	Tue,  5 May 2026 00:14:39 +0800 (CST)
-Received: from [10.123.122.186] (10.123.122.186) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 4 May 2026 19:14:39 +0300
-Message-ID: <616a62b0-680f-4a86-8ca9-75bba10684dd@h-partners.com>
-Date: Mon, 4 May 2026 19:14:38 +0300
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jGEZKuzc7QfAPlEmqhUpyNCXzeAPwLtCzNhdHRZFupM=;
+	b=Nh2boSlNuz04EJhvY4TPH/f3LIYitJK6gp/jnuxHt2N1AZng/asS1fPkIoXyWDXohe+rdi
+	e5UCNA8mLiqrJLggw+otIQKOclI20ai/MoI1g7fsz0TQAEKIIcv1ehLmgTT/g0RPAhqn/3
+	MvNyH/Gh7IJX8D00QOM/DZRRlJiAgmY=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CD0RhGi4;
+	spf=pass (imf14.hostedemail.com: domain of avagin@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=avagin@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777912969; a=rsa-sha256;
+	cv=pass;
+	b=U/APDzoBw0+fymYOPw+rq5muPPqCm6GYSiodGKRbxDiG3N1T6pgVBBcEqK7ijaFmlxSATc
+	CwKvxEKa6rdPF41SiKUZgXCLH/7tBYk2cMoTX5jYvErgSthAFe8C6XeXQFZcueGS8BuswW
+	I9sR6sLk60yz6SWN909n5bSVrVYfP+s=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ad617d5b80so25913935ad.1
+        for <linux-mm@kvack.org>; Mon, 04 May 2026 09:42:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777912968; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CxJGDM3HugSIPsnlE6Q02KJsgC7FNKKlY7i3Y7u/WdOeo8GE5PQgLxs88gnZajHOZz
+         AUrDhEFAGdF5g7p+Hvc0JKZybKsJDjsoq9UckesrmxWw4W3HPlOtyHioMTp2t52+1qcU
+         YStOkw/fZoE83DwV+dpHPIyuznGhVozczWaoxYGvcyXtVIkKqJh7S3se54XZhaDCupNY
+         R3eIqtQ/B3xtu8DbAmfQUAjVCpc7tO1zE/bEABDQi3kjYQJdGKPkJXPQidFniqPZpYYm
+         OfzEpo0rR+uD3qWqW7ShyKVJ2aJAcF0uviisIF79unrcfByEwiRnAfgTEdlpPFlDZDl7
+         etIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=jGEZKuzc7QfAPlEmqhUpyNCXzeAPwLtCzNhdHRZFupM=;
+        fh=VFPKGVeZkvsGiWhnT6+ilGOUnwPFpxsW7pAv5+diKJM=;
+        b=e0tyz6G3/fjqpVjk1fuBPVMB6TMi2m64uGB6OgBa//u46dcBZe2rhQoSgj1Ca2Q9s/
+         N7k1B+w/i8X4nxTbP1glTkLHBED4qb8slopj+wPleT8k6PUz5nOp0NDgb6J5+MWvLSHc
+         h/F7TfUfd0rL5sB4rZvBYf2/Le1gSkmGAddGTOWMX8WYYtZQ8amhkXVWQk5t/nfPpc2v
+         PYdAOoHxdxmOP8LGs/Z+w+y3BFHmiePBv0SrFzTIOhSZG6T7kj5utjdVeEAoc2cVnVOe
+         Wuw+d1FCvQAsUFEMrQYyBGnLH/dHtxocvY5ytKAbT+x8CbODwHXLEp60Oyi0pXTsVxQl
+         NNgg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777912968; x=1778517768; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jGEZKuzc7QfAPlEmqhUpyNCXzeAPwLtCzNhdHRZFupM=;
+        b=CD0RhGi4X0nJlyLSLqDK453X7A6PXzyi7aprsJCx0zbER/G206LdaiRVhSXVGGQtf2
+         DfPakv14YnZpVkuTY6djS7dNk5XdjIsrbo92GGLYvHqlaIhAGXjNzjtuxT0EsVvZ2/QH
+         ZkWW5k/+vuN0gRL6eGBn2RJLWq7Wn3knSYDmTu6eNlNYPnXwzn5ryH7W1OvrKUg3kjDh
+         piEDisptquEJJcZIEvMUeYjcLBuY77RyYKYVMyytk2KBTSRnefgpNEKJBdOYOaf0zR4W
+         rbhGm2PVFcy1wlmaIRjSdVgOPz5aipR++mEVAh1RJSxiOqG2kWT1Q5s88Q/l2ru0M2gY
+         eo0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777912968; x=1778517768;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jGEZKuzc7QfAPlEmqhUpyNCXzeAPwLtCzNhdHRZFupM=;
+        b=i82oKZBWkt2XjJaqiPTy6GXWYYVlsCwh0T74MbbS/dibGaeUldUVlgquPjepP29ek2
+         OSS50Ej/WjxUoVcyuWmlEKdyghCAS26m4jCFw7Nk9/tO+fiztNLVZAozIWDOp4b8xYGv
+         qVNQGwqFE8927td2d8yb5S28Wr70W61BxTJ2obwzLsFbJ9AouDV0jPGvpMMfEKGONhW9
+         95Xky3VYKpKw2e19uKKGVv+wlENKs+9cDhKQAgWGi/e5+nzttWb9oAF02XDV9O1IGjlx
+         KMozwLBZwv8hm2jJkUe9WTcq2QcpG+uMobTgTnvFEF59AoZJyptOXtpAuiJ9ClmO4Q+w
+         BnvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+r/F6UC1ARb+lEa9AjeUQiiYfJujhSPC4aTT+bNbCDZGMjup23STKCxAqRq8+pS1x6sQDysWBNLg==@kvack.org
+X-Gm-Message-State: AOJu0Yz75FOfwnOn4xnId9K+FCpHnaV49ajVOH50a/VT4sRmAm2k0UmK
+	Eo54g8kq0RLfWhO1wYsiUAHVIG2Bx/RxQdtXMeNgNInKaaLXYkyRm321NOlNmjX/i36m8ZKHwN3
+	pEEH7C4Dk4dubyEmow6DHXLdg2DzCB88=
+X-Gm-Gg: AeBDieucw+oaginZPhML1VsKybUrLQz+8p39h9ehyV7713AJIG8HqU6TTmPiu2KqoFY
+	qC5uDlPYlRjDg6WlHQwiil5iwzo8EK0424MIbpdaXbKLutHLuy2v9zDwYm8gTOj5Bxlcj8H0bNL
+	kCh8/wi1hnoDn7w+L1PtEAG58GALMAImFbiEAR0KL8mJiXBFbX9va6Em8hHnlZrnB/MqtXXni3/
+	CceOa2I5wfiR/5lw94aT7W2fCg9EgvI344iDwakfdsXUXS7IELwVW+hjlv5x4EiUALldhNHQj4s
+	DbFmASNNa9q2jO5hzw==
+X-Received: by 2002:a17:903:1b23:b0:2ba:4eee:6c2c with SMTP id
+ d9443c01a7336-2ba4eee732amr930675ad.8.1777912967958; Mon, 04 May 2026
+ 09:42:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm: drop page refcount zero state semantics
-Content-Language: en-GB
-To: Zi Yan <ziy@nvidia.com>
-CC: <david@kernel.org>, <Liam.Howlett@oracle.com>,
-	<akpm@linux-foundation.org>, <apopple@nvidia.com>,
-	<baolin.wang@linux.alibaba.com>, <gladyshev.ilya1@h-partners.com>,
-	<harry.yoo@oracle.com>, <kirill@shutemov.name>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<lorenzo.stoakes@oracle.com>, <mhocko@suse.com>, <muchun.song@linux.dev>,
-	<rppt@kernel.org>, <surenb@google.com>, <torvalds@linuxfoundation.org>,
-	<vbabka@suse.cz>, <willy@infradead.org>, <yuzhao@google.com>,
-	<artem.kuzin@huawei.com>
-References: <cover.1776350895.git.gorbunov.ivan@h-partners.com>
- <9fd8ebbc0f4f45be611bae0d03dd25dd994233c0.1776350895.git.gorbunov.ivan@h-partners.com>
- <53FA8505-E7C0-404B-B7F5-3EBE89B64E0C@nvidia.com>
-From: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-In-Reply-To: <53FA8505-E7C0-404B-B7F5-3EBE89B64E0C@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.122.186]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
+References: <CANaxB-y=SD7V7dcBXuAqq8=p2R46SAr1uKZtMACynvk1=Cftqg@mail.gmail.com>
+ <20260424221126.1238744-1-elaidya225@gmail.com>
+In-Reply-To: <20260424221126.1238744-1-elaidya225@gmail.com>
+From: Andrei Vagin <avagin@gmail.com>
+Date: Mon, 4 May 2026 09:42:35 -0700
+X-Gm-Features: AVHnY4LD8cm9XWtC5uHN2XK6wOSOA4_xygzvNm0JPNYcuxtCaJQCmlTzed3-0Z4
+Message-ID: <CANaxB-xFcF7U=wJv8EqKy=j=-P3SN+sLQ9ytH8Ej69h03tqL8Q@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: fix VM_SOFTDIRTY propagation on VMA merge
+To: Ahmed Elaidy <elaidya225@gmail.com>
+Cc: stable@vger.kernel.org, lorenzo.stoakes@oracle.com, linux-mm@kvack.org, 
+	akpm@linux-foundation.org
+Content-Type: multipart/alternative; boundary="000000000000e5945f0651009ec5"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0225B1C0011
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dkubqt11awuiwendnxwopakefgatbg1g
-X-HE-Tag: 1777911285-17252
-X-HE-Meta: U2FsdGVkX1/KUbDD0515Bq8bO9bRrgLB1ILAobTUOwo0mYyKm/ExpRpyzp8pcgkQm7jh1oTEUAVT6uD+axqfxa1Eg1g0RF+qAHeXJd760Akv3pjehPxmyjky0uxNRLtmKYktjCIL78xw8kQ5htIdnq8UcwZRiIv7KPtfc66lWhcN4wjO/cMsKn5k/N8y61Om5faEoxVrWWfsxU+hpvz5Ty9gPb5ijkkIisHI0WsmhGWoSGAjo0bVdU0G/bVMFTn5cYdfVQ2+BrKLubfajVBMedn7VsVzLhJiq63/CEsEBLJdQN1wlxgWSpkuKorSYT8ICyrE3jwZdgE5GjWKo9Hl4IkOwtPmZbhx6KJGjqB42EGAQzx/BQlIqfDsfdXzpZwWSqAhvLpKtuJdc2335P5gaCvO+gA7va+K/SS0LXvYIqT106uehmp3PA6kh8SrL40R0jMXth9hmqFhi1kdj9Inf1EhPU30QGiijfJIE0PPKon7GAHW7dii6jVZQbBhqECR0zexz0J0izRTJKgIl7eKrAIJe1+v3OG9TKTs7QWq2V1lPRDc9+9+m+rW0TlG01CcKuJR5Nh2cY3YJ5IfKKmqx/xXI2y5PAJoNLySXO08QttwncHrJcpD4nir+itqz9/gSiFb0y4r73MpJdZq93z5tvWVIbhQY0er1N1J5bzjmKhIVAGSMbV+DV7GL34q37Tg0z4GAoJXsGZw8WK6iWmbWh5bZzF1kpivoPIaeI8GF4EDlYbhkQelN/FjSP6SuW6mQmvrnXfcVHdbYdYXWX8N6vMTRNZHPqbup37NmtsotEaSGwKzRe84UcaHHOCMy3tQJBUPNjUH//MoRYmCUaqAdsYf+wiLgRSBknskGwdtJTXynMNJdD/xW1ImqFoogQ195y7RdpuHDkKPX/c/ZPjNnZmre863G1E7t5xryD9iEqIGE3+gKTyJp3UqYuIv9Z6FMo81P6pq9Q9fiU9cSHB
- tcYXdiTI
- gVvq9sUr5FsqzE02bQU7NUee3BPCwH2sv2aaMdokbWzcKmaNLLBFhzzO94gTxfv5rc8GG/YSEMoPhuJx8kGrL/q7/dAdPjasUYGqzU6Ojj8Fe3WmRMkpoH1V2fJ0jAubp+wdwJlAv8PQioF6oF5KSM7iA45ECVOSE+1dd0L7pT/WCwlFz0Laq/YOa7AhR3JtrOIps13m7Cx3ptL5UFu2Mg9JAvhm4Nxx1aYor
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 61BD0100007
+X-Stat-Signature: im369nhby31x1u4bred3cj49mugfrnxy
+X-HE-Tag: 1777912969-961933
+X-HE-Meta: U2FsdGVkX1+7vuJRRte96yXKfI2h7fit/XmXUG8okf7UlkBk2UnW82j8wa/HsxLGLAr3L/i2j3KEBLXZWe3thzbLxE3PA4/wfAF0nE1o49kNOJz1SaVSthkgZ2gkTOab7TGe4zXRr9E5bVH/6qTLlqpqaherYAOc0nZ1JXWQ88fZwQi5quy9fHE+aK39qNo4cVWzCaf03P5akOUNWvOHH001+qBubdwcLgskXbYsLK/FG+qM8ZUMUMMTagFvHwQM5/nWJmt2p3cnYnY32C5zT2L5OA3SA3UwGCgyBafuyEfEJbx7dPPfvkHeuqfBgLTwCl0blbxQtw4yFtGrcNzundarGpXQ2wIVLO/zNhw7HH1drohuxKEhlRudlswW9V2os0L/5YD2rcdhQu2LLM8ZrDeVIpRnxkpyw0iR0X5oVtmH+y2ZKMO70JO8KTcEf8bGthseFiDC8l137eheuRFJVqOtIRoCkXsj9eYXzY6UKCmaIrZGqlGgjEvKkT/vNUf67L4ATvpX91YKFpe40fYB71MpoReKg/suKHoqVzP+3kUlQj/JeVY1xcgCD6jh7QCO4n2JLCfN7WO4KAueWz1EUhKISiaZ/ZW5RTDl0042fcyxpK1WI7PVqKr5Lk2DbtlOhOwoVVM1syBQ+nlRnbq25kEsxdGtB3RZN6pcRezFQRWumqZDIc2eHyYUT3YUOtmQhK3iAyEwaChcl35UjHL/iVFXd3ROO319b1ljURy0eaEmcVLTRItr/HyheFVBt1jzDbPK2un0kcvhnwXOh9LbDB2vc78pg47esUB6HVnMFphmLhp+q8blYwdZTjWNNkA7GqfueU2zOwfmm2TC6UoJXAbXHr2pAg75yzo1EW3aBDVj984wLJF1nmNwSMrEBuPBRxRKj4UIO6Mq27aPFZPI16x9fH2NcZHtLPWRRjRubgdG14awFQqbGSWk3c8V+LXEmMvOxsZu9xMXimHSt73
+ e2Cknp9q
+ UEC4/6ug8bACKYbZxHwi5oodZqG2CbQV1cnKQXd0qaXn4D5UWlKUXL8a07iMyTRyYKX0lw5vt4FgbD7foBb6Q34z+ZU92Dfm3oC3czpiRZvNwD4wzGbWb8U6XwCev7XcKurLUxP8JIyh89qwb93m7h1TgwwN4FTI8CD9I1bJHlz0HwzdT0yqvXwA+4kjeEO/eMptsm+HgY3QAGZvhrCYaatzL6fbwKvhzceJ3FDVkBSsKb9DhUUUT0qnzh2kJm5mHJH2VfxzPqBWmStMrGKPXj309aT8CK3d+HFVTlmpIixJwXyyctGYTVWAHc/MzdBII5EMSCwOJtvan7mS3sjDg+zdFQtAri2UBsDrW0l6iE1YGvdE7Bd8IQurFoyvKNZyzBhO97fqI052lzDdZ3T4+KvwqDhMGYAcUtRnC8KZurfoiDBPtngKECEUTSX9QW6/0uQxQIQ1ha1nowJRz3XiCqbJ2aDDLl0wP8vqXdTEgDjodsUQFT+yOGdba+LrSxZ6rFwFXcJ90i9IJecn9q2cXDecRun0aZ65W2U3asiGpmSQX+TJZ3rqqHFLkd5fHK8BWF3+RcoAMjTbtX3ioPth9UPnLSOyWzKEpXFdJGDI6P4jX9GIFuUSmXNjdGh8vztAY9QfZJcugY7yxDWBM0X+UOIT/uN+5R8kft2h1DDkcoTbTMNMmW+g8qJqO/XulMTpvpLJxSDlytBZWh4g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,86 +136,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/2026 10:32 PM, Zi Yan wrote:
-> On 20 Apr 2026, at 4:01, Gorbunov Ivan wrote:
-> 
->> This patch proposes 2 changes
->> 1) Deprecate invariant that the value stored in reference count of frozen page is 0
->> (Getter functions folio_ref_count/page_ref_count must still return 0 for frozen pages)
->> 2) Allow modification operations like page_ref_add to be used only with
->>     pages with owners
-> 
-> Should we also ban calling set_page_count() except init_page_count() and
-> set_page_count_as_frozen()? So that no one can manipulate page refcount
-> randomly. The same applies to folio_set_count().
-> 
-> All set_page_count(..., 0) are converted to set_page_count_as_frozen().
-> All set_page_count(..., 1) are converted to init_page_count().
-> 
-> We might need an init_folio_count() for folio_set_count(..., 1) users
-> and folio_set_count() has no other use.
-> 
-> I see set_page_count(page, PAGE_FRAG_CACHE_MAX_SIZE + 1); from
-> mm/page_frag_cache.c and it could be converted to page_ref_unfreeze(),
-> since above it there is free_frozen_page(), which makes me think the
-> page is frozen.
-> 
+--000000000000e5945f0651009ec5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Overall I agree, but this is out of scope for this patch main change. 
-This could be handled as an independent patch later.
+On Fri, Apr 24, 2026 at 3:11=E2=80=AFPM Ahmed Elaidy <elaidya225@gmail.com>=
+ wrote:
 
->>   static inline int page_ref_dec_return(struct page *page)
->>   {
->>   	int ret = atomic_dec_return(&page->_refcount);
->> +	VM_BUG_ON(__page_count_is_frozen(ret + 1));
->>
->>   	if (page_ref_tracepoint_active(page_ref_mod_and_return))
->>   		__page_ref_mod_and_return(page, -1, ret);
-> 
-> VM_WARN_ON_ONCE() might be better?
-> 
-
-With "locking via dedicated bit" patch modification, any function which 
-drop reference counter to zero changes the behavior of 
-refcount(page_add_unless would succeed and etc.). This could lead to 
-hazardous results. Therefore, we decided to prohibit that completely and 
-make zero value only possible as middle state during dec_and_test.
+> During VMA merging, such as through mprotect(), VM_SOFTDIRTY flags could =
+be
+> lost. This breaks tools relying on soft-dirty tracking, such as CRIU
+> incremental dump/restore.
+>
+> Upstream resolved this using a broader VM_STICKY infrastructure (commit
+> bf14d4a05387 "mm: propagate VM_SOFTDIRTY on merge"). To minimize churn an=
+d
+> risk in the stable 6.18.y tree, this patch skips backporting the entire
+> VM_STICKY series (9 patches). Instead, it introduces a minimal standalone
+> fix.
+>
+> VM_SOFTDIRTY is intentionally excluded from normal flag comparison to all=
+ow
+> merging in mprotect. This patch ensures the resulting merged VMA retains
+> the VM_SOFTDIRTY flag if either of the original VMAs had it.
+>
+> Suggested-by: Andrei Vagin <avagin@gmail.com>
+> Cc: stable@vger.kernel.org
 
 
-> 
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 65e702fade61..27734cf795da 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -1639,14 +1639,14 @@ void __meminit __free_pages_core(struct page *page, unsigned int order,
->>   		for (loop = 0; loop < nr_pages; loop++, p++) {
->>   			VM_WARN_ON_ONCE(PageReserved(p));
->>   			__ClearPageOffline(p);
->> -			set_page_count(p, 0);
->> +			set_page_count_as_frozen(p);
->>   		}
->>
->>   		adjust_managed_page_count(page, nr_pages);
->>   	} else {
->>   		for (loop = 0; loop < nr_pages; loop++, p++) {
->>   			__ClearPageReserved(p);
->> -			set_page_count(p, 0);
->> +			set_page_count_as_frozen(p);
->>   		}
->>
->>   		/* memblock adjusts totalram_pages() manually. */
->> -- 
-> 
-> Not sure about these two, they freeze p and p goes into buddy without
-> unfreeze to refcount==0. But at the beginning, you said there are two
-> states:
-> 1) Unfrozen page which right now has no explicit owner
-> 2) Frozen page
-> 
-> 1) means free pages in buddy. But the above change brings frozen pages
-> into buddy, mixing the two states into one. Is that intended?
+It probably should be: Cc: stable@vger.kernel.org # 6.18.x and
+the prefix in the subject can be [PATCH 6.18.y]..
+
+Please add The Fixes tag to the commit that introduced the issue.
 
 
-Since state 1 only appears during dec_and_test, pages in the buddy 
-allocator are considered frozen. So there is no mixing of states.
+> Cc: lorenzo.stoakes@oracle.com
+> Signed-off-by: Ahmed Khalid Elaidy <elaidya225@gmail.com>
+> ---
+>  mm/vma.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/mm/vma.c b/mm/vma.c
+> index 5815ae9e5770..03728d855684 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -978,6 +978,14 @@ static __must_check struct vm_area_struct
+> *vma_merge_existing_range(
+>         if (err || commit_merge(vmg))
+>                 goto abort;
+>
+> +       /*
+> +        * VM_SOFTDIRTY is excluded from normal flag comparison to allow
+> +        * merging in mprotect, but we have to ensure the result is
+> correctly
+> +        * marked with it if either side had it.
+> +        */
+> +       if ((vmg->target->vm_flags ^ vmg->vm_flags) & VM_SOFTDIRTY)
+> +               vm_flags_set(vmg->target, VM_SOFTDIRTY);
+>
+
+Should we fix vma_merge_new_range too?
+
+How are you testing this patch?
+
+Thanks,
+Andrei
+
+--000000000000e5945f0651009ec5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Apr 24,=
+ 2026 at 3:11=E2=80=AFPM Ahmed Elaidy &lt;<a href=3D"mailto:elaidya225@gmai=
+l.com">elaidya225@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">During VMA merging, such as through mprotect(), =
+VM_SOFTDIRTY flags could be<br>
+lost. This breaks tools relying on soft-dirty tracking, such as CRIU<br>
+incremental dump/restore.<br>
+<br>
+Upstream resolved this using a broader VM_STICKY infrastructure (commit<br>
+bf14d4a05387 &quot;mm: propagate VM_SOFTDIRTY on merge&quot;). To minimize =
+churn and<br>
+risk in the stable 6.18.y tree, this patch skips backporting the entire<br>
+VM_STICKY series (9 patches). Instead, it introduces a minimal standalone f=
+ix.<br>
+<br>
+VM_SOFTDIRTY is intentionally excluded from normal flag comparison to allow=
+<br>
+merging in mprotect. This patch ensures the resulting merged VMA retains<br=
+>
+the VM_SOFTDIRTY flag if either of the original VMAs had it.<br>
+<br>
+Suggested-by: Andrei Vagin &lt;<a href=3D"mailto:avagin@gmail.com" target=
+=3D"_blank">avagin@gmail.com</a>&gt;<br>
+Cc: <a href=3D"mailto:stable@vger.kernel.org" target=3D"_blank">stable@vger=
+.kernel.org</a></blockquote><div><br></div><div>It probably should be: Cc: =
+<a href=3D"mailto:stable@vger.kernel.org">stable@vger.kernel.org</a> # 6.18=
+.x and</div><div>the prefix in the subject=C2=A0can be=C2=A0[PATCH 6.18.y].=
+.</div><div><br></div><div>Please add The Fixes tag to the commit that intr=
+oduced the issue.</div><div><br></div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex"><br>
+Cc: <a href=3D"mailto:lorenzo.stoakes@oracle.com" target=3D"_blank">lorenzo=
+.stoakes@oracle.com</a><br>
+Signed-off-by: Ahmed Khalid Elaidy &lt;<a href=3D"mailto:elaidya225@gmail.c=
+om" target=3D"_blank">elaidya225@gmail.com</a>&gt;<br>
+---<br>
+=C2=A0mm/vma.c | 8 ++++++++<br>
+=C2=A01 file changed, 8 insertions(+)<br>
+<br>
+diff --git a/mm/vma.c b/mm/vma.c<br>
+index 5815ae9e5770..03728d855684 100644<br>
+--- a/mm/vma.c<br>
++++ b/mm/vma.c<br>
+@@ -978,6 +978,14 @@ static __must_check struct vm_area_struct *vma_merge_e=
+xisting_range(<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (err || commit_merge(vmg))<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto abort;<br>
+<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 * VM_SOFTDIRTY is excluded from normal flag co=
+mparison to allow<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 * merging in mprotect, but we have to ensure t=
+he result is correctly<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 * marked with it if either side had it.<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if ((vmg-&gt;target-&gt;vm_flags ^ vmg-&gt;vm_f=
+lags) &amp; VM_SOFTDIRTY)<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0vm_flags_set(vmg-&g=
+t;target, VM_SOFTDIRTY);<br></blockquote><div><br></div><div>Should we fix=
+=C2=A0vma_merge_new_range too?</div><div>=C2=A0</div><div>How are you testi=
+ng this patch?</div><div><br></div><div>Thanks,</div><div>Andrei</div></div=
+></div>
+
+--000000000000e5945f0651009ec5--
 
