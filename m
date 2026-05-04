@@ -4,89 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEF90CD3430
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73848CD3430
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 14:16:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1AF46B0005; Mon,  4 May 2026 09:52:42 -0400 (EDT)
+	id 702196B0005; Mon,  4 May 2026 10:16:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECBD56B008A; Mon,  4 May 2026 09:52:42 -0400 (EDT)
+	id 6B2866B008A; Mon,  4 May 2026 10:16:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE1736B008C; Mon,  4 May 2026 09:52:42 -0400 (EDT)
+	id 5C82B6B008C; Mon,  4 May 2026 10:16:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD0DA6B0005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:52:42 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 782941601BA
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:52:42 +0000 (UTC)
-X-FDA: 84729877764.09.099C7A4
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4B5D520009
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:52:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C6826B0005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 10:16:40 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB34E160122
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 14:16:38 +0000 (UTC)
+X-FDA: 84729938076.25.004934C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BF1C118000F
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 14:16:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EEZJoSA2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777902760;
+	s=arc-20220608; t=1777904196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KyCgYSg2/HvOSBbVVftXfhMBr7YVYXQ5HtBWv//mH/g=;
-	b=vbvsy/+KFibSC7gzmyc1fLDlQqUOp8b6nGUVi/+gYURqfCI1OW1mp2BcyZMFYGoDN5fewZ
-	EoRK7oiWSsy6Os+2+BkWi7KYrc4GA+mMemNCuTR1s6l2qGzU7OxBS9ljVmubYWar9y7Hf7
-	uzXHZ1Q2PwxYgDAbWZecYdDPFGAOWgc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777902760; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kNZRK1xzyieW295ShspfGtTk8+AaEYUV8qNPdWcyUvs=;
+	b=tCcWd/PQaZ+2YbhhsoS97mL7k3LvJwWb8UN3qUi+3V60cR5fxGYBLznLFUScRo+jpCxTJ+
+	C4oQtKGolxVG7NuugeGF8+jnMEDVjdiB0v5CzfP5q/AorHTLeTFx2k4u2PSxEcMXC0eQls
+	eCUJexxt4vG3Af29V+nxPkZm+x6YQL0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777904196; a=rsa-sha256;
 	cv=none;
-	b=oelQ3X+1taNl2XDH5btdaSCMYQ5oRIEbEUdoHEbarlJzKwHILbRJloc65LHYkzfKcb3GEE
-	wNiefAzJpfN8vAGcfLcT31TPsScSJli182gnWoTwi2UGdXoY//1Yi0V0uPO3ZVQjHn6Zxo
-	UyOtUZhbGw7vCVBH4Bwg5h1j3q9yaNE=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g8NNZ2MJyzHnH2l;
-	Mon,  4 May 2026 21:51:42 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 21B2640570;
-	Mon,  4 May 2026 21:52:36 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 4 May 2026 16:52:02 +0300
-Message-ID: <2446b1e8-2b9a-4621-bbb3-ccec0f1aa604@huawei-partners.com>
-Date: Mon, 4 May 2026 16:52:01 +0300
+	b=PNhAAqWZtjJoa0nnbRj/u69VDmqmUSF4bsrs1RFhZSR0wQfUGPzN8gxG5xgfpw3B82jli6
+	xwvD6MMS37WGFNLZAfycuIV4vRY1luO1Ti5Xi6hvcQrXOOje94/mWV+Cd2J2ofNxHeDVEa
+	IN95b6GiOobpsIWYq4edFHYZ5jwRTC0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EEZJoSA2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0FA5760142
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 14:16:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE67AC2BCFD
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 14:16:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777904195;
+	bh=dnulhm1JTuoUEhQzuO1u5rEt0FwJiLQjQxWn1rCEVQ4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=EEZJoSA2+V1bS9N6/kBUrA73Kbqtv4rr5pK0ImtIEOP8hp3g/Pxpx3OB5nfBWsQkk
+	 JTEXv4tAWXlTHtQj1YfWReoHeA2fuK78sq+jKA9LGBnAV9zfafUmGPkGTDF2a+XBKT
+	 +Uj7+VoYbC8HwONiur8ukdewMwXCdtwSsCNlaLtM2b4MGnkCWPqRP3SJjZikftuCaL
+	 Zml9OhkupD9qECWzXBsF54LDbks60MTExeOShwnCEz7JpZgbYDjwAIhw4paXPT+PST
+	 uFaAxYZBh+fDrl8m4NnNjoZ/ehcrAwyzSNeHoJPSGdvmnM+nA216iRM7s/dgE18WlP
+	 U21yQQlu9E1CA==
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-899a5db525cso27283156d6.3
+        for <linux-mm@kvack.org>; Mon, 04 May 2026 07:16:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ95P1TNsedQBuClBuaIAZAQSLrps247vQ7tL0XdqcLlXXB7L8NyianHIumQ1RwDZRqzTqAffovLaQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywlz8R0ZaFZmTyMjF11pJ1Iyfpu41INoimt126LW/kVeu7CGG59
+	M7UQjc62kh7v0ITJvDp4SDi7VcZqpUJRu1+0akOXsrd/252i/JGQk6dUVIVwL5g7CaiQgyjGAAH
+	Biwzr7GCADUKavfx+xCDImMobI/z7LVM=
+X-Received: by 2002:a05:6214:27c3:b0:8a4:db54:b3a4 with SMTP id
+ 6a1803df08f44-8b665d1127bmr158681076d6.7.1777904164104; Mon, 04 May 2026
+ 07:16:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 0/4] mm/damon: Introduce a huge page collapsing
- mechanism using auto tuning
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260501004148.78873-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260501004148.78873-1-sj@kernel.org>
+References: <20260430040427.4672-1-baohua@kernel.org> <afNM-gIqxpyJ6ro7@casper.infradead.org>
+ <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+ <afS_L-5XeWIldTXA@casper.infradead.org> <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org> <yezmezj26xntushmylductlmytfgvwsnbnzlhffkfwugfxkt6m@gleq22spziyk>
+ <CAGsJ_4y8JtCxEy9hVxVd8eaf8D9WC8BcRQp9afUVu=FJA1-awA@mail.gmail.com> <n5vsmp6ingbhfztl6wzcwmrz56gkkfbpzardk43scr7rcgqsw5@evtnov34c5bt>
+In-Reply-To: <n5vsmp6ingbhfztl6wzcwmrz56gkkfbpzardk43scr7rcgqsw5@evtnov34c5bt>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 4 May 2026 22:15:52 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xM8W5NHB4J2c1dVyXhu9SHAK_iiVZPAtH0fMvJoz77ww@mail.gmail.com>
+X-Gm-Features: AVHnY4LS13GrbYqayhsefNP68ODiwhwvddGMrFC2vbCyG8eLOAO_PeI0iks995A
+Message-ID: <CAGsJ_4xM8W5NHB4J2c1dVyXhu9SHAK_iiVZPAtH0fMvJoz77ww@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+To: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de, 
+	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
+	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: f3i7pyj1t7k6wtf8o7cxi5npxcs1f4tx
-X-Rspamd-Queue-Id: 4B5D520009
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BF1C118000F
+X-Stat-Signature: 1itihoiu6a7gpbpm8php73drmfhhbx75
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777902759-69233
-X-HE-Meta: U2FsdGVkX1+B1xYIMbta2qhNbvdsOYQvA/N6Shx9k6AaDhXSxdSz6KGbNLVj1JB1z1ms002i5D24axWQc8lcxDzGgiQvEv+X/q+uhOGGl87Ea6XAjBuAAiw7lXPbsXc28cAiX7W3I8pzd1VIR1+yIK/MYV5qpQMNnRN5gcPARByM/AnuV3GQ2AbjEw8QS4g0H5JhO5pQUbI7KQWjhAxmZ6Hfg8Bew/4GbPt46b/SD8LqVlVR/4rqF56qFYSt8Kxqg+uwMRXGCJ0u74HqWpbHKU2AEV3VJ6K4Zg69ZT6dMOBMUJpvlUKWK6o6iXRD58wtBqGTg7goY/bpb21ln15WDD4U9ENTGJ12vhr7jX5Jh7yQR8FH+0MfI8Bk0ePaI5VGksR13wHPRJq0DMxOZJJgRc4DtMw9rk1AYxn5VHNIzsc72f2Dq8C+DA/ylc6WBzQjREllINuSCEQt57aZNtUu1qNP2WEB1p/dP7cnf3XQEGgJk3woUEX952ctpIM3lzpKWimsNudQMSAExu8M8XXr83mDZ84PPin0Zx36PdomqbZb9XRurPb3pQz6bUasNTTXdt1FZIEBe2npYooA4iEKKSjrAmc3onmVXTc0jQEYhAXxxbb8tSIXpKwCUThqe9NV9NrBUropZOrop2M1egGCGnZOkCeLQyczBOWvifbXk/Xf+2iYeUthrX955azZXDeEg/nzwA6kCzRn8/45J0pWG2QNqcmtzwsMrmOsMJKEbdYbpuDwXOQi7lV9MuNqcb4I7guJv5JDGTUMUwOILINF22/UtNvsrlJ8MFvMx9BL+0UAOv07bI69EN5dkNnNdTecUoWG0CTApVPAhPpOp8ST1cZ23IrSTmAzGHgcvfW/tZ59D9vqqy9KgrHRldcOvTrqYhPE0nlCRl6DLum4zY52v0G73vr8Vsmso9HQfHYiHDINWLR6lvS+cyJEaaY636aGVlmlhqWuK1o+GIv5FOo
- opCSM2RO
- xXAo411ggiDE8NeR6I4xqEEk+cQj9n9yYERQTopRC028VecHS+FzjiJ2ChG5JBSIf1kBoaIiP1NEHHCj3xZET6kRBH/KvnG/d5HvBym25Ls4f0BpGQZu0E0f9SNaBfXDDDKKxzbGcPWfXQsVv0C1xBaO8AIKTcGxddgxedXbu9p6AaPQLRFx/5O5KPrdAl4RvGLAJDTDgHIrpl0EEpuL5rBuUJUA2ZEIy8mX1YezEKM87RmDL+dXLDBASAEgcNoasRtulN4dzvqIYOWxDVuSdw919wTDPGrgt5N8jxRhI+dIrFFO3wf0SnHidsw==
+X-HE-Tag: 1777904196-761818
+X-HE-Meta: U2FsdGVkX1+rf8QmCrAN3/n2T1QbI5FdpPYPtPG76gJvVOQNmP20JEUEo9foP/jWwim0QjOAuYn+1Z+3LP+SPPbm8Q67QiTwoUPFpdxtd05+V9WvukuRAj4uO4NkG5tonC9soiWyKUPPbWADVvdF+JY131mMtDNRYUh4GpH0IgTglxH0GxPpAE6iDxI5b4+qOvhFxy/IZxIub4cSAoqNuZTWH8ctqMehS/kZlkMFH9ys7dDOf85+gUiDLgwHqwXyHndecznbitgp8JPrF9oHpFj8LHuv3KRBHb0reNgm7NDW7xjeRhpDoPiAhTAng3QcZvgOYHOppvRJ+Fs5MNN0lB5t4HmRyKglGnYyK/7LUMHDDFs5qrlLz/lXDZ6Ax9mUYjXgqalFuKVg54wNSyRJpcv3XWhi5a+NoCz8o91KfwQF3eweTKPtqB4i9JtOKbgFNxVEIBT4/p7SJCwLgpS0l1YaBbyzEgUR/bKS7e8YTb4AigOBhsV0hxzFuUzNfgRrzf2UdiOpjSyufH6clNO0qB7yZa/QJtiPPCzXMbNdGiEK+Eb//fZCGnpt+o0JZ3OetQvryhkekuaKzGrrKS6SqLAMy8q5+yVzguLSkiqf2xKWixXkJsSVqnslW5NO1ylWoc6MdUkiJ2TOz2XNpq96/+9AVmGkWOZHHv+xSGtVbahqBMmS/RJz2+YvdKqIED6V0g9wocTPa7j4/HSBvci3A6APYVsB1Q+JnVK5bYQ8ApQTna0H6h+XX7TNroX/m9omsN4KrEwjtCVR13YnsT/2RpIyijiLYset4qd/Y6bNXcKrQaFkdYdLGUapnzoDk0C5Jg2v413fkJUHYa4msuYe2KDu+6vnGwc/xcQI7ewy8CQ6PA+hH8If0SquzRtjeuet3+XYFzvfs/yaXECIy6eQwyWNSZArhnLF9cENlj+80yrVaY8uaVV/7OrtJg8yTNK4/MBOUwO6nUsAaLvJnjq
+ e8YCVDJc
+ OplTiitMrAo8wwMerXJviSS6xeWFb5ciAZtw+0c21Fc9K7gUen5b+ZemeKmvmztwtEmTVJ6+DycvVm+EvVvZUSpyFVGZb6G1L+TgMkhsUQL0hNGob0GRX61IFzZPzx6eS8xDqWT9FcgLoZCvUpqbI7AH4XEzJ1kxIt0H/KkC8muYJE69bOopd189msCH4NK/wt49d9gO9LWvUofGLXPoVGX35QkX3l57r83D0a7oD+XVQkxYshv/fCckrNoeYtYKLHe/3ynTG5PkBjuQCk/tp05fnExN3ZllTDin3gDsqPkBMBxZgfQOIlA03JflwU6lmB7m4qiqiYY3xPK1JLEmTX438QpbXZ22XjRxj9QeuAD0bDUmvjKB74K7yboMv95/v8BcWUGqdJn7jeP5p/ciZCxszSzWQoOybxrtO6/qpYdKdUw7DO7MjKfYawTiWVklZBQdb1lyEnpkDRoI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,113 +115,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/1/2026 3:41 AM, SeongJae Park wrote:
-> Hello Asier,
-Hi, sorry for the delayed answer.
-> 
-> On Thu, 30 Apr 2026 13:41:35 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>
->> Overview
->> ================
-> 
-> Let's align the length of underline with the text.
-> 
->>
->> This patch set introduces a new autotuning which allows to collapse
->> hot regions into hugepages.
->>
->> Motivation
->> ================
->>
->> Since TLB is a bottleneck for many systems, a way to optimize TLB
->> misses (or hits) is to use huge pages. Unfortunately, using "always"
->> in THP leads to memory fragmentation and memory waste. For this reason,
->> most application guides and system administrators suggest to disable THP.
-> 
-> I think the motivation should further explain why existing DAMOS features
-> (access pattern-based targetting and quota auto-tuning with existing quota
-> goals) are insufficient.  If that makes the text too long, I think the
-> explanation for well-known THP benefit and problems can be reduced or skipped.
-OK, I will elaborate it in further series.
-> 
->>
->> Solution
->> ================
->>
->> A new autotuning quota goal[1], damos_get_used_hugepage_mem_bp, is
->> introduced, which checks the huge page consumption to total anonymous
->> memory consumption. This new quota mechanism reuses current autotuning
->> architecture.
-> 
-> The idea makes sense to me.
-> 
-> The name sounds bit redundant, though.  How about DAMOS_QUOTA_HUGEPAGE_BP for
-> the enum, and hugeapge_bp for sysfs input?
-Agree. In fact, DAMOS_QUOTA_HUGEPAGE_BP would make sense to keep it
-consistent with the quota naming.
-> 
->>
->> A new module is introduced to demonstrate the use of huge pages
->> collapse autotuning. The module launches a kdamond thread for a 
->> certain task provided by the user through monitored_pid module argument.
-> 
-> If it is only for demonstration, I think it is more fit to be a sample module
-> (placed under samples/damon/).
-We are testing this in a bare metal MySQL server. Maybe the description
-was not the most accurate.
->>
->> This module also has a user autotuning knob which allows the user to
->> adjust the aggressiveness of page collapsing.
->>
->> Benchmarks
->> ================
->> In progress, will add them in the next RFC series.
-> 
-> Looking forward to!
-> 
-> I may request not that much test results for the quota goal.  If the module is
-> not just a sample but for a real world use case, I may hope somewhat reasonable
-> test resulsts.
-OK, will do it.
->>
->> TODO
->> ================
->>
->> - Since DAMOS_COLLAPSE is not in upstream and this is just a
->>   RFC, I have used DAMOS_HUGEPAGE instead. This will change
->>   to DAMOS_COLLAPSE in future series.
-> 
-> It is now in mm-new and it is recommended to use it as a baseline for DAMON
-> patches.  So please feel free to use DAMOS_COLLAPSE from the next version,
-> unless there is a reason to worry if DAMOS_COLLAPSE will be dropped from
-> mm-new.
-Thanks.
->>
->> Patches Sequence
->> ================
->> Patch 1 -> damon_modules_new_vaddr_ctx_target
->> Patch 2 -> Introduce DAMOS_QUOTA_HUGEPAGE and autotuning
->> Patch 3 -> Module that demonstrates how to use DAMOS_QUOTA_HUGEPAGE
->>            and the new VADDR ctx creation
->> Patch 4 -> Documentation
->>
->> [1] https://lore.kernel.org/e67f05ad-dbb9-45e6-ba30-b167a99ac67d@huawei-partners.com
-> 
-> Adding more context about what this link is would be nice.  I can find the link
-> marker from the above text, but I was unable to expect what this is without
-> opening the link.
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
-> 
+On Mon, May 4, 2026 at 9:04=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+>
+> On Mon 04-05-26 03:55:43, Barry Song wrote:
+> > On Mon, May 4, 2026 at 2:17=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+> > > On Fri 01-05-26 18:57:52, Matthew Wilcox wrote:
+> > > > On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
+> > > > > On Fri, May 1, 2026 at 10:57=E2=80=AFPM Matthew Wilcox <willy@inf=
+radead.org> wrote:
+> > > > > > On Fri, May 01, 2026 at 06:49:58AM +0800, Barry Song wrote:
+> > > > > > > 1. There is no deterministic latency for I/O completion. It d=
+epends on
+> > > > > > > both the hardware and the software stack (bio/request queues =
+and the
+> > > > > > > block scheduler). Sometimes the latency is short; at other ti=
+mes it can
+> > > > > > > be quite long. In such cases, a high-priority thread performi=
+ng operations
+> > > > > > > such as mprotect, unmap, prctl_set_vma, or madvise may be for=
+ced to wait
+> > > > > > > for an unpredictable amount of time.
+> > > > > >
+> > > > > > But does that actually happen?  I find it hard to believe that =
+thread A
+> > > > > > unmaps a VMA while thread B is in the middle of taking a page f=
+ault in
+> > > > > > that same VMA.  mprotect() and madvise() are more likely to hap=
+pen, but
+> > > > > > it still seems really unlikely to me.
+> > > > >
+> > > > > It doesn=E2=80=99t have to involve unmapping or applying mprotect=
+ to
+> > > > > the entire VMA=E2=80=94just a portion of it is sufficient.
+> > > >
+> > > > Yes, but that still fails to answer "does this actually happen".  H=
+ow much
+> > > > performance is all this complexity in the page fault handler buying=
+ us?
+> > > > If you don't answer this question, I'm just going to go in and rip =
+it
+> > > > all out.
+> > >
+> > > I fully agree with you we should verify whether the retry code still =
+brings
+> > > in real-world advantage today with VMA locks. After all the retry log=
+ic has
+> > > been introduced in 2010. That being said if there are realistic loads=
+ where
+> > > one thread needs VMA write lock while another thread is faulting the =
+VMA,
+> > > then the latencies can be indeed extreme. For example things like cgr=
+oup IO
+> > > throttling happen on the IO path and thus can throttle IO of a low-pr=
+iority
+> > > thread for a long time.
+> >
+> > I=E2=80=99m quite sure that swap-in and VMA writes can occur
+> > concurrently, and this is fairly common. For example,
+> > Java GC may use mprotect or userfaultfd on a small
+> > portion of a large Java heap while other portions are
+> > still under do_swap_page().
+>
+> OK, makes sense.
+>
+> > If we start exploring different approaches for anon and
+> > file, I agree I can revisit this on an Android phone if
+> > there is a real, serious case where a file VMA can be
+> > written and a page fault occurs at the same time.
+> >
+> > Please note that, as an Android developer, I am particularly
+> > cautious about priority inversion. A recent issue causing
+> > severe priority inversion is zram attempting to support
+> > preemption[1]. When a task performing compression or
+> > decompression is migrated to another CPU and then preempted
+> > by other tasks, high-priority tasks waiting on the mutex may
+> > be significantly delayed, impacting user experience.
+>
+> Well, container people are concerned about priority inversion as well. Bu=
+t
+> usually this is with coarse lock (such as global filesystem locks) but VM=
+A
+> lock is specific to a task (and a VMA) so there the opportunity for
+> priority inversion looks more limited.  But the example with Java where G=
+C
+> thread can presumably have higher priority than ordinary Java threads is =
+an
+> interesting one.
 
--- 
-Asier Gutierrez
-Huawei
+A major difference in Android apps is that each thread can
+affect user experience differently. And it is not simply a matter
+of whether a VMA writer has higher or lower priority than a
+page-fault (PF) thread performing I/O.
 
+For example, thread A handles a PF; thread B attempts to
+modify the VMA where the PF occurs; thread C tries to modify
+another VMA (requiring mmap_lock in write mode) or iterate
+VMAs (requiring mmap_lock in read mode). Regardless of
+thread B=E2=80=99s priority, it holds mmap_lock in write mode while
+waiting for the VMA lock. The usual pattern for a VMA writer
+is:
+
+mmap_write_lock()
+vma_start_write()
+
+As a result, thread C can be blocked even if it has higher
+priority but operates on a different VMA.
+
+In essence, when a PF and a VMA write occur concurrently,
+high-priority threads may be blocked even if they operate on
+different VMAs, not necessarily the same one.
+
+Thanks
+Barry
 
