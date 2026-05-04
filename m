@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D558CD3427
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 18:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C9B3CD3427
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 18:41:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E606B6B0088; Mon,  4 May 2026 14:15:49 -0400 (EDT)
+	id F261B6B0088; Mon,  4 May 2026 14:41:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E378F6B008A; Mon,  4 May 2026 14:15:49 -0400 (EDT)
+	id ED5FC6B008A; Mon,  4 May 2026 14:41:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4E2D6B008C; Mon,  4 May 2026 14:15:49 -0400 (EDT)
+	id DC45D6B008C; Mon,  4 May 2026 14:41:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C5C956B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 14:15:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 650A8120273
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 18:15:49 +0000 (UTC)
-X-FDA: 84730540818.23.63D3BEE
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CF488C0012
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 18:15:46 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=NK209QFv;
-	spf=pass (imf22.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	by kanga.kvack.org (Postfix) with ESMTP id CD5F26B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 14:41:56 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 75E3A12026E
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 18:41:56 +0000 (UTC)
+X-FDA: 84730606632.19.DDF760A
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 007802000F
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 18:41:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="Isi/X9Dm";
+	spf=pass (imf13.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777918547;
+	s=arc-20220608; t=1777920114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b7AxjbTHGPsMAyrsBsYDmRyehECKmp5QQoteG0VQ1/8=;
-	b=czV8SHvcIp5cqv9rkrtzIFKSZurRBfoWd5QEMTBWU0zWnFaxlymLfjIJ6jrR3ag49WZf4G
-	Onj9RyXQEjVi04FoeuVucuvrADNw01htogYj1U0fHudk6T70e+gO+Q5NphqhX7pnw3S75I
-	LDuovLAUPCN0+glW7WhFYQXJJavTy9o=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=NK209QFv;
-	spf=pass (imf22.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777918547; a=rsa-sha256;
+	bh=yvHcsNFjpKdX5ErIocbgAVaHl/9juTjsjhDQtOgugvw=;
+	b=caQI8WoWaLJtwJgAcTJYBMBeP+tlr5uqenlx3RZhXytWE3xOPcZwZ6KnnYVhoP6Mrnl6sS
+	Ff036Ie4g/H7UL1RpK0KIHx0RX+Vk9Xdm086geofSkQm+w50cGIgFIXCTERq/zVyUvLT6E
+	dAn3pPOi6OOZjfOyTBAnlAAYKgL6Gek=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777920114; a=rsa-sha256;
 	cv=none;
-	b=xPIc6fFjk1QuRCh2MN04IKRC5KvWu36AMEGqhZOhuKgtB5w+D/7NeNJQDcStSKGq49Zd62
-	XDkieonJHV1hI9IBDHrLzlx1s4WjnsX6gq8QaGx6Gy4Z7ffv4tSOeP+rlPXPvFEpFo9udW
-	IwiIXv1vyxmFwxhyZr4MBxojcIhZsU0=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6448AWoY800514;
-	Mon, 4 May 2026 18:14:46 GMT
+	b=1dfmzxQrwZO/NwhpD2H6A+azYbC/oYtO27b4VWQomqDKBBj08RW15JUhBiIDO9abDgRMvP
+	N1tAMGBpjbbyZTFVmSh/UeqmjJ5qeI6rlvnvhP4mWuAyAVddQFaTIi/AvG/CLF5KZ1gpAC
+	Ik7y7+Ody43RS2roGLsuOyv14RfLbtU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="Isi/X9Dm";
+	spf=pass (imf13.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644Ee7K53279333;
+	Mon, 4 May 2026 18:41:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=b7Axjb
-	THGPsMAyrsBsYDmRyehECKmp5QQoteG0VQ1/8=; b=NK209QFvQZWW2zC6lk1vGd
-	meDkkVnEu8o7rLoa8fFu3hUXa0u+bO12CeMYTy9jBfKdzLCm7USkSKA2RsCH+QpB
-	t8bVsdDnhrFpI2zIndL/5WQHetxcuoXjVYQIxbhKANI0rR2Wvrx37fetWa8JEcH6
-	bfW7QgGxwx9LRb/L2YQio8CZi3c40tBO60yF5+N0qI01BVxL49KlWYCj4rPyAZ5b
-	bumLMDpSZwBylGW9oscbegk0nz3ssbJ9SjeXMnf1lfw04JOCWCHo8V25aP3XqZU5
-	qtZ1S2a9WzuZ634BhKL+6quSfMpYEFOVAYeIhfIkOsqfWbd9wSJ6xNtf/EhssuYQ
+	:message-id:mime-version:references:subject:to; s=pp1; bh=yvHcsN
+	FjpKdX5ErIocbgAVaHl/9juTjsjhDQtOgugvw=; b=Isi/X9DmTiz++beZ2hHnz0
+	lnO7FKsu3Q3rdfK+tbMMMBKCWqzQL+RwsLDBek71bzhUiNku1uQkwEosES1aJ7OO
+	VcNDGIjP/DT+fHX/WbbgHTk30PkSxkttmSXPHI5Qvproqy/eLoqfHswSIlVsCn9t
+	NxSBuoyMqqCDIYoKDaaVPk4f8iwD5ERXbuyZ+TbwLE1lVr6yDec/b8FeSQxWW+P/
+	7M6N6TBOSLmchINLDM7BTALXSkhPKQTRNL8LDiarkapodkv7Gk/QjvZGrGQxCZIt
+	F6xY+OJ+aQk5aVhaSn9ZUEN5pSv2YoEmabDmAvBWf3FMtZsaL+pPv+huaATaYP8w
 	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9x4gay0-1
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9xxg6an-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2026 18:14:45 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 644I9fkf010629;
-	Mon, 4 May 2026 18:14:44 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwx9y61u1-1
+	Mon, 04 May 2026 18:41:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 644IdYZq029391;
+	Mon, 4 May 2026 18:41:31 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwukq6hvj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2026 18:14:44 +0000 (GMT)
+	Mon, 04 May 2026 18:41:31 +0000 (GMT)
 Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 644IEi2V25953010
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 644IfUxu31523576
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 4 May 2026 18:14:44 GMT
+	Mon, 4 May 2026 18:41:30 GMT
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E4FAA58050;
-	Mon,  4 May 2026 18:14:43 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 653DD58052;
+	Mon,  4 May 2026 18:41:30 +0000 (GMT)
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 16FAD58045;
-	Mon,  4 May 2026 18:14:29 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 421F858045;
+	Mon,  4 May 2026 18:41:11 +0000 (GMT)
 Received: from [9.124.220.160] (unknown [9.124.220.160])
 	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  4 May 2026 18:14:28 +0000 (GMT)
-Message-ID: <2fd0aca2-4be3-4cab-aee4-b513ba67103e@linux.ibm.com>
-Date: Mon, 4 May 2026 23:44:26 +0530
+	Mon,  4 May 2026 18:41:10 +0000 (GMT)
+Message-ID: <5a01bf62-772c-461d-a7ae-ce4758a3fc5b@linux.ibm.com>
+Date: Tue, 5 May 2026 00:11:09 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/7] mm: migrate: Add promote_misplaced_memcg_folios()
+Subject: Re: [PATCH v7 4/7] mm: pghot: Precision mode for pghot
 To: Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
         linux-mm@kvack.org
 Cc: Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net,
@@ -103,46 +103,46 @@ Cc: Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net,
         kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
         balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
 References: <20260504060924.344313-1-bharata@amd.com>
- <20260504060924.344313-3-bharata@amd.com>
+ <20260504060924.344313-5-bharata@amd.com>
 Content-Language: en-US
 From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260504060924.344313-3-bharata@amd.com>
+In-Reply-To: <20260504060924.344313-5-bharata@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDE2NSBTYWx0ZWRfX/VgNTDHHBrH0
- 281rBH6NJxXY4gcaa7Z5sv5OU4g1v0/qMpRlfKyv1+4xoeA5mD2ajN2lXdrP3M7WxOPlraLcSxi
- G1eJ89nKe703hNy9FU69RinHJAJv/TXNOwsiGlD1jOLd3kI1uxhptVVra5bHQcHRoY4S3P0mmEB
- 3uB58slE/RLvEXh5Qv92A7XwMPGP4tMCP03xCJOSb7Qc+nB8v9Vq3eht4Chu3v3xL9GIqBzqtAq
- lRNKKTPX+OiOramFdAcoMcmjeFwaYWSXq1CXdYCESRh85Yfnyj3C/gP2tvVsdIQYfAPbXByWiV5
- DTp8zeCdImyWeuOsqap5/8yLjiVE98cWT21d+lJ1damI0GChtzyrEvIySj7jXtNOcelBj3mQayG
- 7udmdV7RImlvgDkBuwgkbzGqB2sdbhzIdo6Be7rZMLBYOoXNFsk1sc7oVnum638+WYre94hbvxi
- frhGAIKUywo7vN9RTvQ==
-X-Proofpoint-ORIG-GUID: 3yiR4vJUqFV1fOrE47cL3UXTFk9ndbuv
-X-Proofpoint-GUID: 23y5OMO7Gu22B1mOGFOOnu-TpK4dzDFg
-X-Authority-Analysis: v=2.4 cv=W7UIkxWk c=1 sm=1 tr=0 ts=69f8e216 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDE3MCBTYWx0ZWRfX3eQGrXRcx67y
+ Q+qDSY+an09rUR5bUgGyBsHUpGRRy9Ty3c4Fuekq4vlPqG9Jg3/rliCNYyDdjG276jSRSucXTR1
+ lorAJy5aD1ychZhtQ/0TwzCQl8d5bizJ6zmGL+3buTi+iFF3bU8RWokeJJ+reSdx1bdpS8K/KNT
+ VD8vP6cXKcfsacizEWnbBAgpLBRRwDng6VMleHIYlHj7f4iSHaFK3KrdQ8hK/aBQgIW+V57g5zt
+ sKZOMwfVQ1bC8tpFdysMc+Zag1qwzwGKERa2JJORKUQTxtOH/1yJxHvHLyWq/oA/+8ZrzTbGFTi
+ fnO6qW5fS3AnBl13+ZuFSatcNnwvk/wNuR6DSvoyIMmUOL26DHOfafAlqfYRD4d0nbz3xLwJuw7
+ tS57rPouG27WFmBHX9NcbFwxtkd8aQe+ZW2g2DGoMHb9AKzTNpr2MRiO40sCsyrQ0IeHg4Ed46U
+ akp2RreXGpZbNrlLeVg==
+X-Proofpoint-ORIG-GUID: tnQ7oG-l8PShrukvXVgQiQl63R7FB0zx
+X-Proofpoint-GUID: -h9KWz6Den0bubtBzScitqzim355Tuff
+X-Authority-Analysis: v=2.4 cv=ctWrVV4i c=1 sm=1 tr=0 ts=69f8e85c cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=Sx_HE5-t1wAX4gnw_kYA:9
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=7u06FiZDblvXUniig18A:9
  a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-04_05,2026-04-30_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 spamscore=0 clxscore=1015 phishscore=0 bulkscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605040165
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1015
+ suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605040170
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 007802000F
+X-Stat-Signature: nggsy764a3fqjx861ocaksbssmoe6no8
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CF488C0012
-X-Stat-Signature: z9cxkicqmwdshnggwwmshxnaw1rjhckf
-X-HE-Tag: 1777918546-659254
-X-HE-Meta: U2FsdGVkX1/Kvr1f6C/KYLKIDWR+3QmywRLWuVwpnPK6paNDDhHSY4zbMkW2LIydUiK/VLNXwOQpPxdYIpj3GP/hONQleOBO6lv9wE1oZAUcO/XxloVT8uqZXkTJAv1P6YftI5Y1TPOHWaCQCSveFnwgyPugmeuS2QJSVoUerNXLW0mNEg6WFcqokeCxIKl248MLJt2MgIgeRRCTHHJMBr+LLNmvA3rV1Qc+JLrbDVqhq5vO1bynLmlOYe5MlwvChS+JOGoN7pICwljwlC4IkeZBv/uFib3J3qQi+W1+OgnqiKuWLJoKLld696cUB9lQJmW8ZEPq9SRdsZmNBk1k1fqyml74tcOiNygGhHGBR/jV126/PSrFga+s3cgVe4DlOmfJnuA9VFDZP6c3L6oBh5q/me/trgjCwCEM67YOnDsLFFrfvBk9t8VO8KEUlh8h3yZSecubUEU2Mw+MYaNj2bgM/Wom/IX4qS43Bf3pUT0go3Ij5Jv4S/6cyVsfbT/qNSXg59VNNW3j/9ma4iyUNaKwVO7Mc3GlEeW638+o9kZxtwtzroB3syWkxE4UnoXMtl+8PaVlJuDAT6RRES049hS5/MoV1Pfu+07s9bIKBQ8jZysIy2eKWszBcggw/TrcxX+wp+oUGeYoKLctbAlNs8rFno11RdRdPE8aPpl8X57h3dUFrRTHfQc/L6mQebw5GoYVy2QPIl51SEtmnGF7zBH4Q2zAxVV6LgGhRIX9OCK3TvNMfHITfhW4BPFogUxXJLp6IR5mvB6jpyCdiTEcYqyDRw1PncMg2GzBbJbTquDQOFdYuej4/Dg6Ff7/fmFhvf/xA+9aVK/E7qJJaNnytFl7uwHp0SAJzMimkfThRcdQCWtW3yaKjLOir3cEYg7Zy9Lz9zAdJ55aJOmvLXXTwp/juG56tZzoW9+vwH6rD1axmJzf5s5Fj2zsy2BvUZz2fQ4YZm5PLO4VSl7UZP+
- 2fEku9Bt
- OUQhCT8y9kJ4TtXXxblcr2us0K/+VTUkBxIvU39/bVAQYFq3vc32VhesuJfXfIBT4QVMV+5lvKLnMEc0KV8SQN9xCsFiLGNWjXMF7bYbeYtEwXwdMyhZudppv0CEcyQyb8m/V6KO/vRpbS3QxK4pouAORkxea1nofZo5nFAafoBYeumvoZiZKVYeIlTkfXCYNC3zNYyZ3e9iqvMMtB6JLrHZUvCIrRiDqJakx7/EncMJ9SBkdP3VSw+NqI2hQGH/XopokWWb2fUL10Vo/Jc1SAGC7IGS9MP7qlO/BRRfgJWRPSP6AOym0LPUQFqxWQn7eP8WHHdBIU7FwAKXPHRtC8ZnMSKp0ITI0BIDe5krRV4ktkOPUL838o4M/smEJhTpbMvLm0SAtEvxxb39ss19QWOHHOAdAmIbCqGXcKA507XrCL+JLhXBm0u2RLQ==
+X-HE-Tag: 1777920113-632907
+X-HE-Meta: U2FsdGVkX1+xAs6YLnXdTumVp7WGevSsZqPq5uBii6dQBG793q6bjN8ichLZus/E7vuIOa+21BJYFLNaWp+no/iEk/AoeJI3siGdSgyvC1K0lhaVC+cf1LLazg95fmoi1P2irFBByoQ6UdeHAzra0+xKc/JladeNHtKJL25ilykkTRZAh1oSfDQV6moptZqhPvd+1oetpfoDhCrfcoMGSnVZtLY/d6yBvqGWXSM9RrqmEySrJMh5HiSXcQynNo4op9cDiiR2kPd+Ks9/IfQaHZbeFqcJJqW3kFj4HMX5JcG1l6ngleBHHR/gS3R+RmpTNuimiBSqBEHy1DxUKASYUCDJ7aV++K9xqOHx/6PUkQwxT/FzJTF5XaAlK4XRjnu7RT3LT6UzAl8Z97HOpnPk+8WYqwUtxlkM1jHGfVLmiHeAZKrPg0RHKIFhVxxNd01sGSAEgfOWTL0ml6zPXmwLe3jePsOFWU2Acjxz6f05RaQ6n2xrGivztRf/T8vU3am/BATFmr/vsjwZL1do0hNXbr/6WaY0aYehVqPvgjZMcpdNB5AW2xe1Tzc0V+oNZynnSFWWxCCLI3NzgS5WAMm84FZRAz1Sx6Ak8gFL9Ut3i0h1EMaRDk+Ado/bxuJhtniJmyv0BzDjPyeQy9xGyr/DLsMJYgKNjQB5qqm4ZhBhLCap/nQH5b6jfXyW6i3n7+0vpg1Z0WeOFzKDNEl69Gb0Wku3cyh7V6TiQ4wTKAsPFzbj9SlEuToIN+k3raQBqH4ouuATnPfm0fOss6WBQ/CE/H3I9pVoD24016+DWNJV2ATpMQgdGJBVlj5zSZ0iw7H1e9XgNBTyU1iYYl/swL9KVg1rj3uQDcSKEiq1nwnRlPS13xK7fVit4zkst7RKGjnAt8UXfMlpqqZdYvQHDLKkzQEk5dKzXsmMe6WOH+6XvFf7uScY8dDeWaXTdpQljOkMyFfnut6ZakExQAlx/9E
+ r7gO7gJw
+ sMdC0+6ZYkJcw40dPYK5Gm02fHQYLLHRB9pL1Qm6IRWn1VKWGU0Ux338n8Cz0nihaVE4D9POcZ6I1N55S7F+LYHVJyGpaoLjDsTpARmDrEP+6V7czsfjNgSUQT8LGkEaUl9L/gGqcNxKYJgZU1xcx2VNvjuaucTp6H0M5TEM4KWeBv3K8WgMdnnCaTtkLjJ1PyrgZoR2kN9ckWLcJPAtnn+BOkli+2Eg2nFTuZj0AzEugItUn5+5V5YvfeSQuO9rx13kDOh1gHwAEK+Mo9sgra2zoUTRkY9ipcyrrgCeXB/U8RMsnuUTqoaI+hCzBQ+kh4OXZ9v+E5HloCh6BHLeXhE7DsWYE6WH42ipb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,47 +153,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 Hi Bharata
 
 On 5/4/26 11:39 AM, Bharata B Rao wrote:
-> +int promote_misplaced_memcg_folios(struct list_head *folio_list, int node)
+> +#include <linux/pghot.h>
+> +#include <linux/jiffies.h>
+> +#include <linux/memory-tiers.h>
+> +
+> +bool pghot_nid_valid(int nid)
+
+I might be missing something, but since pghot_nid_valid() exists in both 
+pghot-default.c and pghot-precise.c, would it make sense to move it to a 
+header file as a static inline function?
+
+-Donet
+
+
 > +{
-> +	struct mem_cgroup *memcg = NULL;
-> +	unsigned int nr_succeeded = 0;
-> +	struct folio *first;
-> +	int nr_remaining;
+> +	if (nid != NUMA_NO_NODE &&
+> +	    (!numa_valid_node(nid) || nid > PGHOT_NID_MAX ||
+> +	     !node_online(nid) || !node_is_toptier(nid)))
+> +		return false;
 > +
-> +	if (list_empty(folio_list))
-> +		return 0;
-> +
-> +	first = list_first_entry(folio_list, struct folio, lru);
-> +#ifdef CONFIG_DEBUG_VM
-> +	{
-> +		struct folio *f;
-> +		list_for_each_entry(f, folio_list, lru)
-> +		VM_WARN_ON_ONCE(folio_memcg(f) != folio_memcg(first));
-
-
-It looks like the indentation might be off here.
-
-
-> +	}
-> +#endif
-> +	memcg = get_mem_cgroup_from_folio(first);
-> +
-> +	nr_remaining = migrate_pages(folio_list, alloc_misplaced_dst_folio,
-> +				     NULL, node, MIGRATE_ASYNC,
-> +				     MR_NUMA_MISPLACED, &nr_succeeded);
-> +	if (nr_remaining)
-> +		putback_movable_pages(folio_list);
-> +
-> +	if (nr_succeeded) {
-> +		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
-> +		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
-> +		mod_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(node)),
-> +				 PGPROMOTE_SUCCESS, nr_succeeded);
-> +	}
-> +
-> +	mem_cgroup_put(memcg);
-> +	WARN_ON(!list_empty(folio_list));
-> +	return nr_remaining ? -EAGAIN : 0;
+> +	return true;
 > +}
->   #endif /* CONFIG_NUMA_BALANCING */
+> +
+> +unsigned long pghot_access_latency(unsigned long old_time, unsigned long time)
+> +{
+> +	return jiffies_to_msecs((time - old_time) & PGHOT_TIME_MASK);
+> +}
+> +
+> +bool pghot_update_record(phi_t *phi, int nid, unsigned long now)
+> +{
 
