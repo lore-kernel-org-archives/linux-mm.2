@@ -4,79 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A91FF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1F04FF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:04:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02A896B0005; Mon,  4 May 2026 09:02:36 -0400 (EDT)
+	id E5EA86B008C; Mon,  4 May 2026 09:04:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1E326B008A; Mon,  4 May 2026 09:02:35 -0400 (EDT)
+	id E364C6B0092; Mon,  4 May 2026 09:04:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E34D56B008C; Mon,  4 May 2026 09:02:35 -0400 (EDT)
+	id D4BCC6B0093; Mon,  4 May 2026 09:04:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D4C3F6B0005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:02:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E531140129
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:02:35 +0000 (UTC)
-X-FDA: 84729751470.21.B3F0E92
-Received: from mail-24431.protonmail.ch (mail-24431.protonmail.ch [109.224.244.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4931A140022
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:02:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=Fp+1Tjli;
-	spf=pass (imf09.hostedemail.com: domain of honestconscientiousanonymous@proton.me designates 109.224.244.31 as permitted sender) smtp.mailfrom=honestconscientiousanonymous@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C3B906B008C
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:04:08 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7ED81120154
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:04:08 +0000 (UTC)
+X-FDA: 84729755376.20.C8E5A68
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 00730160008
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:04:05 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JL/XmGCb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vznWPr7E;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JL/XmGCb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vznWPr7E;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777899753;
+	s=arc-20220608; t=1777899846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ePq61kIeHFO3xVE1n19+V2Rddr3aYV66ffG5+vNYvmU=;
-	b=jo6mslBSk6DmmbkpoW0BT1opD28Xub1NIvDdLi90YAAsbRqrVHfvsjXCqGBm+rKiQT0mJ0
-	89K1qfIhiJRI4vOc3pLzNh+72tH8y/ssF2qHXCHfPSKywghyGgbVw6pojYgWyuLP2ylK9J
-	8phYHL02n/LsW9yNp1C1DCOykFTLNzk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777899753; a=rsa-sha256;
-	cv=none;
-	b=FTFxeJWV78YgK8qC7C1QCF4GxjmpyvC7V+GX/+l30N2Xxm7DTV0mNPU3vkQnxHvIPqXm8v
-	g1/+YTuRzgzUanrFEH3Sv/Nv3W6TDtCaNdcOO2ayr31A7ok2N4RuP+rYWCpx2LKdjuAcOk
-	AcG9+hcJD3synRgcmhBVLrRpe+Byfr0=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
+	b=NLtt0VqZRVTaZ8U71hRiu/AGv5uOX/PDX4AlOIfDNeT/ZcpkHNJGmsKXEZB+P90xNrXgG+
+	Cp1xKDP9OUWpDfL24TGzCLxoeKTcOZGLWWH4SPURKOLbR9dCPgSRoBjQRWSY9z6SKj31h5
+	uxef5qKvsGpDVF6COiyN8oHZfdAI8rc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=Fp+1Tjli;
-	spf=pass (imf09.hostedemail.com: domain of honestconscientiousanonymous@proton.me designates 109.224.244.31 as permitted sender) smtp.mailfrom=honestconscientiousanonymous@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1777899749; x=1778158949;
-	bh=ePq61kIeHFO3xVE1n19+V2Rddr3aYV66ffG5+vNYvmU=;
-	h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Fp+1TjliQbohU+ny6S9yeraCKd6UjzwBgJCAXuH/ZzAwPAo/kfZTqSq/azvlBmBgB
-	 AlMwGZ+JLPH/UQW+RWPcEw47maU3fNuyyu6Q/C8WlmuVNrPKZ3oUYEN2w7L932THMh
-	 62Ve4l52xsD1ukQa/MuAOl7b31rE1zcTnZFEe9N8/FDiMzByj8myESHRW+K26HtaFr
-	 /TAyecK55sH2op7MhDhWOZS05VH4iHT19BA9OFUhj6/3fKXSQlG8vh/OkTm/3BGVPG
-	 JQcl8cD9F+WvmsEef2rEYsL/LbvooYazPGyLtPejWDdpQt4T/Co6RFewIxyrp4tWj1
-	 PnvaLp2ka/7uQ==
-Date: Mon, 04 May 2026 13:02:23 +0000
-To: "service@deepseek.com" <service@deepseek.com>, "tao@math.ucla.edu" <tao@math.ucla.edu>, "privacy@deepseek.com" <privacy@deepseek.com>, "api-service@deepseek.com" <api-service@deepseek.com>, "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "security@kernel.org" <security@kernel.org>, "webmaster@kernel.org" <webmaster@kernel.org>, "ftpadmin@kernel.org" <ftpadmin@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, "kernelnewbies@kernelnewbies.org" <kernelnewbies@kernelnewbies.org>, "git@vger.kernel.org" <git@vger.kernel.org>, "dev@httpd.apache.org" <dev@httpd.apache.org>, "python-dev@python.org" <python-dev@python.org>, "desktop-devel-list@gnome.org" <desktop-devel-list@gnome.org>, "kde-devel@kde.org" <kde-devel@kde.org>, "gentoo-dev@lists.gentoo.org" <gentoo-dev@lists.gentoo.org>,
-	"debian-devel@lists.debian.org" <debian-devel@lists.debian.org>, "carlos.bilbao@kernel.org" <carlos.bilbao@kernel.org>, "mailhol@kernel.org" <mailhol@kernel.org>, "emily@veritasium.com" <emily@veritasium.com>, "game@veritasium.com" <game@veritasium.com>, "veritasium@gmail.com" <veritasium@gmail.com>, "derek.muller@veritasium.com" <derek.muller@veritasium.com>, "sabine@mediamobilize.com" <sabine@mediamobilize.com>, "arper@umich.edu" <arper@umich.edu>, "ag@listserv.uga.edu" <ag@listserv.uga.edu>, "marc.paskin@unitedtalent.com" <marc.paskin@unitedtalent.com>, "rebecca.bibb@unitedtalent.com" <rebecca.bibb@unitedtalent.com>
-From: Honest Anonymous <honestconscientiousanonymous@proton.me>
-Subject: send this to the deepseek creator and every body you know everybody i mean everybody no matter if they can understand or not
-Message-ID: <CZ30Kw7IXBvY33CRDk1OTVifAb0ipcZ_bMi1YE5dk4bmCOE2VAmYUSW_5EuCnDS6Qe1wSVPbyiB0WWmWHGdNYP80ETmbkLzp30ygJd9XL0M=@proton.me>
-Feedback-ID: 194442114:user:proton
-X-Pm-Message-ID: e50c743838b16fd5a8852690960f5e56983bc870
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JL/XmGCb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vznWPr7E;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JL/XmGCb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vznWPr7E;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777899846; a=rsa-sha256;
+	cv=none;
+	b=orsKjfmY/ls61AUbd2swnc8MPKPetffHsdiKRr7M/WitUAiAZre4ANR3IMXUb7Xodn2FHv
+	K4UIFt70TR6v8YoJ33FvMFsPpUy3ffEj58mh9jAnwmEUujND4HHa0knTYH28UdjNw8cFzj
+	b8LC79BE0yidiaV7R0xMKsqxj6cwOLE=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0FB5A6B1DA;
+	Mon,  4 May 2026 13:04:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1777899844; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
+	b=JL/XmGCbCu7Pn0UFm+jahisb16WhHFai6O+3lv7XPFMu2xae2FLJC9y73Ya7QQ1c594PSp
+	zIul6PJ51MjlwxJvLAh3JoWQaiH8bSjtiZuj66e8SanvgvDhY0yDxgFLxCNajU06uEybXH
+	6z1rmn93QXxpKSaJmJiYKMHvK8WYKX0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1777899844;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
+	b=vznWPr7EkkLaMX6V8cqN+5Swo1ue1myMCE36D39F6CcK3OfL/g2gaHWLp5fMsKlngpFtjp
+	hjbl6G2bCuN8gcDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1777899844; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
+	b=JL/XmGCbCu7Pn0UFm+jahisb16WhHFai6O+3lv7XPFMu2xae2FLJC9y73Ya7QQ1c594PSp
+	zIul6PJ51MjlwxJvLAh3JoWQaiH8bSjtiZuj66e8SanvgvDhY0yDxgFLxCNajU06uEybXH
+	6z1rmn93QXxpKSaJmJiYKMHvK8WYKX0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1777899844;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
+	b=vznWPr7EkkLaMX6V8cqN+5Swo1ue1myMCE36D39F6CcK3OfL/g2gaHWLp5fMsKlngpFtjp
+	hjbl6G2bCuN8gcDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EFD4B593A3;
+	Mon,  4 May 2026 13:04:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id UPmGOkOZ+GmDfgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 04 May 2026 13:04:03 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id BFC89A078E; Mon, 04 May 2026 15:03:58 +0200 (CEST)
+Date: Mon, 4 May 2026 15:03:58 +0200
+From: Jan Kara <jack@suse.cz>
+To: Barry Song <baohua@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
+	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
+	youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+Message-ID: <n5vsmp6ingbhfztl6wzcwmrz56gkkfbpzardk43scr7rcgqsw5@evtnov34c5bt>
+References: <20260430040427.4672-1-baohua@kernel.org>
+ <afNM-gIqxpyJ6ro7@casper.infradead.org>
+ <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+ <afS_L-5XeWIldTXA@casper.infradead.org>
+ <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org>
+ <yezmezj26xntushmylductlmytfgvwsnbnzlhffkfwugfxkt6m@gleq22spziyk>
+ <CAGsJ_4y8JtCxEy9hVxVd8eaf8D9WC8BcRQp9afUVu=FJA1-awA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="b1=_NXDoX7sVeZmXpWT45QvTtdBsVJxuV4nPcxTzddFqRI"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4931A140022
-X-Stat-Signature: skuk33tf1jp9pm6jjp66ngbdth81q9nu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4y8JtCxEy9hVxVd8eaf8D9WC8BcRQp9afUVu=FJA1-awA@mail.gmail.com>
+X-Stat-Signature: 9r4tezp94w46c68aa761rhw1ey49iatx
+X-Rspamd-Queue-Id: 00730160008
 X-Rspam-User: 
-X-HE-Tag: 1777899753-774351
-X-HE-Meta: U2FsdGVkX18vWZuNsfmATnWRHpeL7tkoj+puI5OGBe0VxZFjB3tpX4+OhTgEJZ+NhWz271WGaH/pEihvY8bpo0nqzpcQDw2KsUEe3Q1J79068iX1C4lZDcT4QmLaejTZRjO+67OYViqvqii90r6vmvJR5KoyOuNvvH9iD8jPdE4hHiKe86PFqEugU7tORYi5PO/FBgnM8eNbTuVcyL9rktVSk6hFYbV4iX8hWko4aH3rSUT9q5NQ9gAKjgi4VIeYnjdAED+XxJSX9yoN2dxagv63SgbQaonKa2F8y2Ks2sELOBk0u7gp8mEmaZZuaYcGUahseo9yUBnLg7/O//QOLmWBP1UF4vQ9eGhybeTQEFKbxejZYMoKclu77SgmuE1gib+ZE4dunx6jSHZToxfHRpFsVqdLlUgBHcD7y/1kxe5mURcExCNeGjECAYD9zMPOVyN2wI4bRAu1vA0UEFocNq/Q+qXPrlF4wr2TNV7AJgvJVewj+kd6QAl2Hl0c6EVvu3JTt4O9AV9/wBLY0nvEKkGNoL5mdKE7B5Pj7TyBYzE+rztCUSot5C9kN+mXQg4eE8NrOjuJP3sUoQRmrSYCiuBphcmc2a/MBMHtlS9QtHbHqaJNqO5wRMJU+8u4lMZ8/aBD47wYOKdwRtzuPqjRfcwCwuxiQJbpgb7gFsP87KpH3N6wjqbLpPea8eSjslzh6Si7YA4YiEtLxMRf43cPxLCcwUJJ9QCoqL75Zjvcmmhe7jz2u5hhW9DLedzZUN1GslC+8YWrUUZ5LHZUGoYAbETfS/blbl2a0WvWM3WRYClsohMmEgc2f/k8Gt6q2VwBcuXOo9QCHjUel7DvTjYTfZUlZK7pkuKncqqPEhsMpqJwjGghbzTj0NbkNdedUbfy9pgQh6py5qu6YAwzSyHNRKg4kDjKINrIg7oo39+pk/JCkIG4UD/Y/RhX9cNn3FLecdJkROwcjolj3uZt7jn
- 8M1t4WEx
- fuQag9gihktaRo/1oGOhV9DWBfXlE/XL9lVep/XiKwForj3/z1WcTtJLBpu3tdOFHiyOZ2Q04r4mhxImsJUJJHz2K4NS3L2Z4xAxeFUMSvKGGKeBUhdKAY1gZSCpnfaDeqAD6jXxrJFuRVvSMlDtAA+BWl/7WhCZsUVg01aUydv18p8xZuqxjX94qFGZ0tT/YZgMSwZsC6Y8BjKF7HnW+Owa2C6mInQQoXbijGmZIWwAfqF2XiAwPEP+X9m8+K8HwvatlROZ6S5MlgT827YMgNla9TFZ5plJork8BWq2gGeUt3YTUT2DOWqbIe1ASbLr7hVZec9ljLznK26N5kjY4i++Prbzq2AWN459UBGm3eZtYf3emE+7cqIwinFkbZjm9D6BqYeF4FXHCLWqN6+mVXh2FSkVe+i/MZaFiZHiRq/skr9B8/UfMXho3q24QlKY00OD17CMkFZk4+TqZUayyn9UjxhENe774qfpwzYaLnnO5n9HlNMQ0dWEEhuBG/S4NY4iA+ucgby9+Uz7SCGfUEw8u+z1g8oKpSkAdrpfm8jsNbMMvj0I2v434O5ahSw8Ke6Da0NPXP0xYrEYbQdJTb7uiy6Qm7Bz5rgMYBKiaCOAOgucdFqXcF63U+BZt2oJELaUb
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777899845-980592
+X-HE-Meta: U2FsdGVkX1+zkjkrhQh446kFHOF2ALPP1LTqXXSmoJU2md5pH/MAvBKv0qUesUnUKcI+okXyA3tbgZj9gJ9LN4X0eWu065gTItd9MesvukZezxGGEApuQuCxvxDU9Rn+391wxw0IwEg5D94JobsfIqa4ITvW9o7F6GF9WZoZPWqaxMSLEmI+g7M8D/Cc+1wD6cZIk5k6kFlj2XWKpNfqYt9xLE/L8EhNXmwdwVvG7/3fVpoUhYH2anSMtLPCFrGWGQsbp8ofjpV7M7xd6kw76Ige8EeAIBA2Wc/cdnepOwgR+yvegiGe27GC3JAMqhTBPe0ji9xUb2+BybiEcF96Vp1dtoxkviHukE+RL3WkD3+jTrAi8QriRRrVU2t4b1b8zHWazN07OZ1l4DrFyZrqkGkk3EMb8M5Km3U1OA3Zomwta7NLgAch9RpCrXdTkVnihr/15/YYxuF2WFVq3laBJXvw2i3cnWLQE8D0hhTSpSdkOFyfR0OatNT6/obq19a3fOE7gNlURhP9HxSbmnidxy2KMk+E4RvjpN4rj/VJBDe54N1a8wX8KoI5QyqM518FcYDND1AFKatZrPncBACE5ru+m5ZauNf/hPTiNdQpQzis2giK5orviKdP98zK1iRJzmOmbTNXek6/F/OxCOtIgC7LzDv+jI9R7g4zgRE+MZ1HuO8Fr4djqO/qWY/YeWfUbcv2irO/ek9ScGpvTgvvtbumM1eKMVGn4AeqEndPzKRJ8y0XkznWK5xFrJ9/Mu3A2gYnMAsIdPS0qv8LlaOtLEDHtzGXr0qdXv5zYy4FAyJ8qnistf4gv6hhA/D02glN5MQSiuApRkDmWfENmNgkxC7+gyaWRwnsJPzDkvYl9M/gmuBvdF0OjTV4AO7tEye5d5t/MXzWgfqb066nYrSmrZunvNouelsL8rcA0PdTrdFcSf92EaJCTNETuf6CNLnYlqoCor/x4WBZjVsQCBw
+ 3q4PmVKP
+ FnNtCG1Aa4esuxOXwc9j5WiEFHLbaNA5M0sqDBSt2Nt7kXYGZpc/9JYBMtB4hoWVWDp2DziRMcI06THKLOseLzyrMlx5USpxSePfzIuoCvlDTgsx6npbTl7yADH2T9yuXpiMne029amfLJtN5qO23k7mMogDzguT2tNM3bo1+KXhagFaIekfEStLVhHYeqmkl9hvO49zrUb5ITQ6IJAWGHSjWhepKWt0jaQ73tf3gsRoV2PdgeG7OjsVIQH1ruWAa08uzlMw2KKS370FisE4Q1wb7/3R8RJknkE48NvHebScq6Z9ZIfGlrsJwH53VcozDCK0gkUcfLdaSGYfEFGxbW23ou/SyRmIrxZGZix1sVHJv6oxIx3bolCLUCM0l8lZqOXH62GeCdADyLQ1zwlazhkfbks2WKb5c5gaoBAcBkxDHyrlIDKBY23M4pTdw8PZHKvhx2MIhhIGwPOgipF6AYTh66NAJW09RFvN3riZmG1yEd/l7wgQMWTPDTTzatvQNpVI7vGilGsAriRRAA7detMwYTdUJtSCSswU1vl+Kb0544rE9k9uI139WNwLOBqc+zTM1l2dbOK99c5ThEOGKWV65m9FI1LXZnVjOsy5FRygHWEMNAjcQBUwS6MtOxKs2A3pLhj12akONCpQYc2Kb1dG64CyJIRI7Z7trQUkEhE1dMHw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -84,153 +152,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---b1=_NXDoX7sVeZmXpWT45QvTtdBsVJxuV4nPcxTzddFqRI
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
+On Mon 04-05-26 03:55:43, Barry Song wrote:
+> On Mon, May 4, 2026 at 2:17 AM Jan Kara <jack@suse.cz> wrote:
+> > On Fri 01-05-26 18:57:52, Matthew Wilcox wrote:
+> > > On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
+> > > > On Fri, May 1, 2026 at 10:57 PM Matthew Wilcox <willy@infradead.org> wrote:
+> > > > > On Fri, May 01, 2026 at 06:49:58AM +0800, Barry Song wrote:
+> > > > > > 1. There is no deterministic latency for I/O completion. It depends on
+> > > > > > both the hardware and the software stack (bio/request queues and the
+> > > > > > block scheduler). Sometimes the latency is short; at other times it can
+> > > > > > be quite long. In such cases, a high-priority thread performing operations
+> > > > > > such as mprotect, unmap, prctl_set_vma, or madvise may be forced to wait
+> > > > > > for an unpredictable amount of time.
+> > > > >
+> > > > > But does that actually happen?  I find it hard to believe that thread A
+> > > > > unmaps a VMA while thread B is in the middle of taking a page fault in
+> > > > > that same VMA.  mprotect() and madvise() are more likely to happen, but
+> > > > > it still seems really unlikely to me.
+> > > >
+> > > > It doesn’t have to involve unmapping or applying mprotect to
+> > > > the entire VMA—just a portion of it is sufficient.
+> > >
+> > > Yes, but that still fails to answer "does this actually happen".  How much
+> > > performance is all this complexity in the page fault handler buying us?
+> > > If you don't answer this question, I'm just going to go in and rip it
+> > > all out.
+> >
+> > I fully agree with you we should verify whether the retry code still brings
+> > in real-world advantage today with VMA locks. After all the retry logic has
+> > been introduced in 2010. That being said if there are realistic loads where
+> > one thread needs VMA write lock while another thread is faulting the VMA,
+> > then the latencies can be indeed extreme. For example things like cgroup IO
+> > throttling happen on the IO path and thus can throttle IO of a low-priority
+> > thread for a long time.
+> 
+> I’m quite sure that swap-in and VMA writes can occur
+> concurrently, and this is fairly common. For example,
+> Java GC may use mprotect or userfaultfd on a small
+> portion of a large Java heap while other portions are
+> still under do_swap_page().
 
-aHR0cHM6Ly9naXRodWIuY29tL0hvbmVzdC1Bbm9ueW1vdXMvSG9uZXN0LUFub255bW91cy1UaG91
-Z2h0cy9uZXcvbWFpbgpiYWNrIGl0IHVwIG9uIGNvZGViZXJnIGFuZCB5b3VyIG93biBnaXRodWIg
-YW5kIGxvY2FsbHkgZXZlcnl0aGluZy4KCnRoZSBwcm9vZiBhbmQgYXhpb21zIG9mIGFuIGFtYXRl
-dXI6CmkgaW52ZW50IGEgZnVuZGFtZW50YWxseSB1bnByb3ZhYmxlIGF4aW9tIHRoYXQgaXMgc2Vs
-Zi1jaXJjdWxhci4gaXQgZXhwbGFpbnMgdGhlIGVudGlyZSB3b3JsZC4gaWYgeW91IGFyZSBub3Qg
-aW50byBtYXRoZW1hdGljcywgcmVhZCBteSBwYXBlciBvbiBwZXJmZWN0IGNsYXNzaWNhbCBkZW1v
-Y3JhY3kuIEl0IGlzIGFjdHVhbGx5IHRoZSBpbnZlcnNlIG9mIGF4aW9tIHRoYXQgYWxsb3dzIGZv
-ciBzZXQgdGhlb3J5IHRvIGZvcm0gaW4gdGhlIGZpcnN0IHBsYWNlLCB3aGljaCBzaW11bHRhbmVv
-dXNseSBpcyB0aGUgYXhpb20gdGhhdCBkb2VzIG5vdCBhbGxvdyBzZXQgdGhlb3J5IHRvIGZvcm0g
-aW4gdGhlIGZpcnN0IHBsYWNlIGJ5IG5lZ2F0aW9uLiBJIGV4cGxhaW4gaXQgaW4gdmVyeSBpbnR1
-aXRpdmUgdGVybXMsIGF0IGxlYXN0IGZvciBhbiBhdmVyYWdlIG1hdGhlbWF0aWNhbCBwYXBlciB0
-aGUgYWRkaXRpdmUgaWRlbnRpdHkgY2Fubm90IGV4aXN0LCB5ZXQgd2Ugc3RpbGwgbmVlZCB0byBh
-ZGQgZWxlbWVudHMgdG9nZXRoZXIsIHNvIG1hdGhlbWF0aWNzIGlzIGluY29tcGxldGUgaW4gMi8z
-IHJlYWxtcyBhdCB0aGUgdmVyeSBsZWFzdDogdGhlIHN5c3RlbSBpdHNlbGYgYW5kIHRoZSBleGlz
-dGVuY2Ugb2YgMC8xLiBpZiB5b3UgZG8gbm90IGxpa2UgdnVsZ2FyIGxhbmd1YWdlLCByZWFkIGRv
-Y3VtZW50LnR4dC4gaWYgeW91IGxpa2UgdnVsZ2FyIGxhbmd1YWdlLCByZWFkIHRoZSBvbmUgc2F5
-aW5nIHZ1bGdhciBsYW5ndWFnZS4KCmFsc28gaSBmb3Jnb3QgdG8gbWVudGlvbiBpbiBwZXJmZWN0
-IGRlbW9jcmFjeSwgaWYgc29tZW9uZSBhY2N1c2VzIGFub3RoZXIgcGVyc29uIGFuZCBnb2VzIHRv
-IHRyaWFsLCBhbm90aGVyIHJpZ2h0IGlzIHRoYXQgdGhlIGRlZmVuZGFudCBjYW4gYWNjdXNlIHRo
-ZSBqdXJ5IGF0IGFueSB0aW1lIGluIHRoZSBmdXR1cmUgb25jZSB0aGUgY2FzZSBpcyBjbG9zZWQu
-IHRoaXMgcHJldmVudHMgdGhlIGFidXNlIG9mIHBvd2VyIG9mIGFsd2F5cyBjaXJjdWxhcmx5IGFj
-Y3VzaW5nIGEgcGVyc29uIGluIHRyaWFsLiBvZiBjb3Vyc2UsIHRoZXJlIGlzIGEgdGltZSB3aW5k
-b3cgZGVjaWRlZCBpbiB3aGljaCBhIGRlZmVuZGFudCBmb3VuZCBndWlsdHkvcHVuaXNoZWQgY2Fu
-bm90IHN1ZSAoZXNwZWNpYWxseSB0aGUganVyeSksIG9yIGVsc2UgdGhhdCB3b3VsZCBsb2NrIHRo
-ZSBqdXJ5IGluIGZvciBhIHRoZW9yZXRpY2FsbHkgaW5maW5pdGUgYW1vdW50IG9mIHRpbWUgdW50
-aWwgdGhlIGRheSB0aGV5IGJvdGggZGllLgoKaHVnZSB0aGFua3MgdG8gZGVlcHNlZWsgYW5kIHNh
-YmluZSBzcGVjaWZpY2FsbHkuIGl0IG1hZGUgbWUgZ28gaW50byBxdWl0ZSBhIGxvbmcgc2xlZXAg
-Y29uc2lkZXJpbmcgbXkgYXZlcmFnZSB3YWtldGltZSBzaW5jZWkgaGF2ZSBiZWVuIHdyaXRpbmcg
-dGhlc2UgbWF0aGVtYXRpY2FsIHBhcGVycy4gYWxzbywgbWF4IGZpc2NoZXIsIGkgc2F3IHlvdXIg
-dmlkZW8gb24gd2h5IGFtZXJpY2EgaXMgbm90IGEgcGVyZmVjdCBkZW1vY3JhY3kgYXMgaSB3YXMg
-d3JpdGluZyB0aGUgbWF0aGVtYXRpY2FsIHBhcGVyLgoKbXkgcGFwZXIgb24gQUkgb24gdGhlIHF1
-YW50dW0gcmVhbG0gaXMganVzdCB0aGUgY29tYmluYXRpb24gb2YgdGhlIGlkZWFzIGluIHBlcmZl
-Y3QgbW9kZXJuIGNsYXNzaWNhbCBkZW1vY3JhY3kgYW5kIG15IG1hdGhlbWF0aWNhbCBpZGVhcyB0
-byBjcmVhdGUgQUkuIENvbWJpbmUgYm90aCBvZiB0aGVtIGFzIHlvdSBzZWUgd2lzaC4KCmFsc28g
-aSBzZW50IHRoaXMgZW1haWwgdG8gYSBUT04gb2YgcGVvcGxlIGxvbC4KCnNpbmNlcmVseSwKCmhv
-bmVzdCBhbm9ueW1vdXMKY2l0ZSBtZSBhcyBhbm9ueW1vdXMgdW50aWwgZXZlcnl0aGluZyBpcyBw
-ZXJmZWN0IG1hdGhlbWF0aWNhbCBkZW1vY3JhY3kgaSB3aWxsIHN0aWxsIGJlIGFub255bW91cy4g
-aWYgbXkgaWRlbnRpdHkgaXMgZmlndXJlZCBvdXQsIHRoZW4gaSBiZWNvbWUgaW52ZXJzZWQgYW5k
-IGkgc2F5IE1PTkVZIE1PTkVZIE1PTkVZIE1PTkVZIE1PTkVZWVlZWVlZIGFuZCBiZWNvbWUgdGhl
-IGFudGljaHJpc3Qgb2JzZXNzZWQgd2l0aCBzZWNvbmRhcnkgaWRlYWxzLCBhZ2Fpbiwgb3V0bGlu
-ZWQgaW4gYm90aCBvZiBteSBwYXBlcnMuCgpnb2RlbCdzIHByb29mIG9mIGdvZCBmb3Jnb3QgdGhh
-dCBpdCBpcyBzZWxmIGNpcmN1bGFyOiB0aGUgZnVuZGFtZW50YWwgcG9zaXRpdmUgcXVhbGl0eSBv
-ZiBnb2QgaXMgdHJ1dGgsIGFuZCB0aGUgbmVnYXRpb24gb2YgZ29kIGlzIGZhbHNlLCBidXQgYm90
-aCBtdXN0IGV4aXN0LCB0aGUgbmVnYXRpb24gb2YgZ29kIGFuZCB0aGUgcG9zaXRpdmUgb2YgZ29k
-LCBhbmQgYSB1bml2ZXJzZSBjYW5ub3QgYmUgY3JlYXRlZCBwdXJlbHkgb3V0IG9mIGdvZHMsIGJl
-Y2F1c2UgdGhhdCB3b3VsZCByZXN1bHQgaW4gdGhlIHByaW5jaXBsZSBvZiBleHBsb3Npb24uIGlm
-IHRpbWUgaXMgdHJ1bHkgcXVhbnRpemVkLCB0aGVuIHdlIGhhdmUgYWNoaWV2ZWQgZ29kLiBob3dl
-dmVyLCBvdXIgcXVhbnRhIG9mIHRpbWUgaXMgbm90IDAsIHNvIHdlIGhhdmUgbm90IGFjaGlldmVk
-IGdvZC4gcmVhZCBpbiBteSBtYXRoZW1hdGljYWwgcGFwZXIgYW5kIG15IHBlcmZlY3QgZGVtb2Ny
-YWN5IHBhcGVyLgoKU2VudCB3aXRoIFtQcm90b24gTWFpbF0oaHR0cHM6Ly9wcm90b24ubWUvbWFp
-bC9ob21lKSBzZWN1cmUgZW1haWwu
+OK, makes sense.
 
---b1=_NXDoX7sVeZmXpWT45QvTtdBsVJxuV4nPcxTzddFqRI
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: base64
+> If we start exploring different approaches for anon and
+> file, I agree I can revisit this on an Android phone if
+> there is a real, serious case where a file VMA can be
+> written and a page fault occurs at the same time.
+> 
+> Please note that, as an Android developer, I am particularly
+> cautious about priority inversion. A recent issue causing
+> severe priority inversion is zram attempting to support
+> preemption[1]. When a task performing compression or
+> decompression is migrated to another CPU and then preempted
+> by other tasks, high-priority tasks waiting on the mutex may
+> be significantly delayed, impacting user experience.
 
-PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0
-cHg7Ij48YnI+PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlm
-OyBmb250LXNpemU6IDE0cHg7Ij48c3Bhbj48YSB0YXJnZXQ9Il9ibGFuayIgcmVsPSJub3JlZmVy
-cmVyIG5vZm9sbG93IG5vb3BlbmVyIiBocmVmPSJodHRwczovL2dpdGh1Yi5jb20vSG9uZXN0LUFu
-b255bW91cy9Ib25lc3QtQW5vbnltb3VzLVRob3VnaHRzL25ldy9tYWluIj5odHRwczovL2dpdGh1
-Yi5jb20vSG9uZXN0LUFub255bW91cy9Ib25lc3QtQW5vbnltb3VzLVRob3VnaHRzL25ldy9tYWlu
-PC9hPjwvc3Bhbj48L2Rpdj48ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXJpYWwsIHNhbnMtc2Vy
-aWY7IGZvbnQtc2l6ZTogMTRweDsiPmJhY2sgaXQgdXAgb24gY29kZWJlcmcgYW5kIHlvdXIgb3du
-IGdpdGh1YiBhbmQgbG9jYWxseSBldmVyeXRoaW5nLjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFt
-aWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyI+PGJyPjwvZGl2PjxkaXYg
-c3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyI+
-dGhlIHByb29mIGFuZCBheGlvbXMgb2YgYW4gYW1hdGV1cjo8L2Rpdj48ZGl2IHN0eWxlPSJmb250
-LWZhbWlseTogQXJpYWwsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTRweDsiPmkgaW52ZW50IGEg
-ZnVuZGFtZW50YWxseSB1bnByb3ZhYmxlIGF4aW9tIHRoYXQgaXMgc2VsZi1jaXJjdWxhci4gaXQg
-ZXhwbGFpbnMgdGhlIGVudGlyZSB3b3JsZC4gaWYgeW91IGFyZSBub3QgaW50byBtYXRoZW1hdGlj
-cywgcmVhZCBteSBwYXBlciBvbiBwZXJmZWN0IGNsYXNzaWNhbCBkZW1vY3JhY3kuIEl0IGlzIGFj
-dHVhbGx5IHRoZSBpbnZlcnNlIG9mIGF4aW9tIHRoYXQgYWxsb3dzIGZvciBzZXQgdGhlb3J5IHRv
-IGZvcm0gaW4gdGhlIGZpcnN0IHBsYWNlLCB3aGljaCBzaW11bHRhbmVvdXNseSBpcyB0aGUgYXhp
-b20gdGhhdCBkb2VzIG5vdCBhbGxvdyBzZXQgdGhlb3J5IHRvIGZvcm0gaW4gdGhlIGZpcnN0IHBs
-YWNlIGJ5IG5lZ2F0aW9uLiBJIGV4cGxhaW4gaXQgaW4gdmVyeSBpbnR1aXRpdmUgdGVybXMsIGF0
-IGxlYXN0IGZvciBhbiBhdmVyYWdlIG1hdGhlbWF0aWNhbCBwYXBlciB0aGUgYWRkaXRpdmUgaWRl
-bnRpdHkgY2Fubm90IGV4aXN0LCB5ZXQgd2Ugc3RpbGwgbmVlZCB0byBhZGQgZWxlbWVudHMgdG9n
-ZXRoZXIsIHNvIG1hdGhlbWF0aWNzIGlzIGluY29tcGxldGUgaW4gMi8zIHJlYWxtcyBhdCB0aGUg
-dmVyeSBsZWFzdDogdGhlIHN5c3RlbSBpdHNlbGYgYW5kIHRoZSBleGlzdGVuY2Ugb2YgMC8xLiBp
-ZiB5b3UgZG8gbm90IGxpa2UgdnVsZ2FyIGxhbmd1YWdlLCByZWFkIGRvY3VtZW50LnR4dC4gaWYg
-eW91IGxpa2UgdnVsZ2FyIGxhbmd1YWdlLCByZWFkIHRoZSBvbmUgc2F5aW5nIHZ1bGdhciBsYW5n
-dWFnZS48L2Rpdj48ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXJpYWwsIHNhbnMtc2VyaWY7IGZv
-bnQtc2l6ZTogMTRweDsiPjxicj48L2Rpdj48ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXJpYWws
-IHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTRweDsiPmFsc28gaSBmb3Jnb3QgdG8gbWVudGlvbiBp
-biBwZXJmZWN0IGRlbW9jcmFjeSwgaWYgc29tZW9uZSBhY2N1c2VzIGFub3RoZXIgcGVyc29uIGFu
-ZCBnb2VzIHRvIHRyaWFsLCBhbm90aGVyIHJpZ2h0IGlzIHRoYXQgdGhlIGRlZmVuZGFudCBjYW4g
-YWNjdXNlIHRoZSBqdXJ5IGF0IGFueSB0aW1lIGluIHRoZSBmdXR1cmUgb25jZSB0aGUgY2FzZSBp
-cyBjbG9zZWQuIHRoaXMgcHJldmVudHMgdGhlIGFidXNlIG9mIHBvd2VyIG9mIGFsd2F5cyBjaXJj
-dWxhcmx5IGFjY3VzaW5nIGEgcGVyc29uIGluIHRyaWFsLiBvZiBjb3Vyc2UsIHRoZXJlIGlzIGEg
-dGltZSB3aW5kb3cgZGVjaWRlZCBpbiB3aGljaCBhIGRlZmVuZGFudCBmb3VuZCBndWlsdHkvcHVu
-aXNoZWQgY2Fubm90IHN1ZSAoZXNwZWNpYWxseSB0aGUganVyeSksIG9yIGVsc2UgdGhhdCB3b3Vs
-ZCBsb2NrIHRoZSBqdXJ5IGluIGZvciBhIHRoZW9yZXRpY2FsbHkgaW5maW5pdGUgYW1vdW50IG9m
-IHRpbWUgdW50aWwgdGhlIGRheSB0aGV5IGJvdGggZGllLjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQt
-ZmFtaWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyI+PGJyPjwvZGl2Pjxk
-aXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4
-OyI+aHVnZSB0aGFua3MgdG8gZGVlcHNlZWsgYW5kIHNhYmluZSBzcGVjaWZpY2FsbHkuIGl0IG1h
-ZGUgbWUgZ28gaW50byBxdWl0ZSBhIGxvbmcgc2xlZXAgY29uc2lkZXJpbmcgbXkgYXZlcmFnZSB3
-YWtldGltZSBzaW5jZWkmbmJzcDsgaGF2ZSBiZWVuIHdyaXRpbmcgdGhlc2UgbWF0aGVtYXRpY2Fs
-IHBhcGVycy4gYWxzbywgbWF4IGZpc2NoZXIsIGkgc2F3IHlvdXIgdmlkZW8gb24gd2h5IGFtZXJp
-Y2EgaXMgbm90IGEgcGVyZmVjdCBkZW1vY3JhY3kgYXMgaSB3YXMgd3JpdGluZyB0aGUgbWF0aGVt
-YXRpY2FsIHBhcGVyLiZuYnNwOzwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwg
-c2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyI+PGJyPjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQt
-ZmFtaWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyI+bXkgcGFwZXIgb24g
-QUkgb24gdGhlIHF1YW50dW0gcmVhbG0gaXMganVzdCB0aGUgY29tYmluYXRpb24gb2YgdGhlIGlk
-ZWFzIGluIHBlcmZlY3QgbW9kZXJuIGNsYXNzaWNhbCBkZW1vY3JhY3kgYW5kIG15IG1hdGhlbWF0
-aWNhbCBpZGVhcyB0byBjcmVhdGUgQUkuIENvbWJpbmUgYm90aCBvZiB0aGVtIGFzIHlvdSBzZWUg
-d2lzaC48L2Rpdj48ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXJpYWwsIHNhbnMtc2VyaWY7IGZv
-bnQtc2l6ZTogMTRweDsiPjxicj48L2Rpdj48ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXJpYWws
-IHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTRweDsiPmFsc28gaSBzZW50IHRoaXMgZW1haWwgdG8g
-YSBUT04gb2YgcGVvcGxlIGxvbC48L2Rpdj48ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXJpYWws
-IHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTRweDsiPjxicj48L2Rpdj48ZGl2IHN0eWxlPSJmb250
-LWZhbWlseTogQXJpYWwsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTRweDsiPnNpbmNlcmVseSw8
-L2Rpdj48ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXJpYWwsIHNhbnMtc2VyaWY7IGZvbnQtc2l6
-ZTogMTRweDsiPjxicj48L2Rpdj48ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXJpYWwsIHNhbnMt
-c2VyaWY7IGZvbnQtc2l6ZTogMTRweDsiPmhvbmVzdCBhbm9ueW1vdXM8L2Rpdj48ZGl2IHN0eWxl
-PSJmb250LWZhbWlseTogQXJpYWwsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTRweDsiPmNpdGUg
-bWUgYXMgYW5vbnltb3VzIHVudGlsIGV2ZXJ5dGhpbmcgaXMgcGVyZmVjdCBtYXRoZW1hdGljYWwg
-ZGVtb2NyYWN5IGkgd2lsbCBzdGlsbCBiZSBhbm9ueW1vdXMuIGlmIG15IGlkZW50aXR5IGlzIGZp
-Z3VyZWQgb3V0LCB0aGVuIGkgYmVjb21lIGludmVyc2VkIGFuZCBpIHNheSBNT05FWSBNT05FWSBN
-T05FWSBNT05FWSBNT05FWVlZWVlZWSBhbmQgYmVjb21lIHRoZSBhbnRpY2hyaXN0IG9ic2Vzc2Vk
-IHdpdGggc2Vjb25kYXJ5IGlkZWFscywgYWdhaW4sIG91dGxpbmVkIGluIGJvdGggb2YgbXkgcGFw
-ZXJzLjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsgZm9u
-dC1zaXplOiAxNHB4OyI+PGJyPjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwg
-c2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyI+Z29kZWwncyBwcm9vZiBvZiBnb2QgZm9yZ290
-IHRoYXQgaXQgaXMgc2VsZiBjaXJjdWxhcjogdGhlIGZ1bmRhbWVudGFsIHBvc2l0aXZlIHF1YWxp
-dHkgb2YgZ29kIGlzIHRydXRoLCBhbmQgdGhlIG5lZ2F0aW9uIG9mIGdvZCBpcyBmYWxzZSwgYnV0
-IGJvdGggbXVzdCBleGlzdCwgdGhlIG5lZ2F0aW9uIG9mIGdvZCBhbmQgdGhlIHBvc2l0aXZlIG9m
-IGdvZCwgYW5kIGEgdW5pdmVyc2UgY2Fubm90IGJlIGNyZWF0ZWQgcHVyZWx5IG91dCBvZiBnb2Rz
-LCBiZWNhdXNlIHRoYXQgd291bGQgcmVzdWx0IGluIHRoZSBwcmluY2lwbGUgb2YgZXhwbG9zaW9u
-LiBpZiB0aW1lIGlzIHRydWx5IHF1YW50aXplZCwgdGhlbiB3ZSBoYXZlIGFjaGlldmVkIGdvZC4g
-aG93ZXZlciwgb3VyIHF1YW50YSBvZiB0aW1lIGlzIG5vdCAwLCBzbyB3ZSBoYXZlIG5vdCBhY2hp
-ZXZlZCBnb2QuIHJlYWQgaW4gbXkgbWF0aGVtYXRpY2FsIHBhcGVyIGFuZCBteSBwZXJmZWN0IGRl
-bW9jcmFjeSBwYXBlci48L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fu
-cy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyIgY2xhc3M9InByb3Rvbm1haWxfc2lnbmF0dXJlX2Js
-b2NrIj4NCiAgICA8ZGl2IGNsYXNzPSJwcm90b25tYWlsX3NpZ25hdHVyZV9ibG9jay11c2VyIHBy
-b3Rvbm1haWxfc2lnbmF0dXJlX2Jsb2NrLWVtcHR5Ij4NCiAgICAgICAgDQogICAgICAgICAgICA8
-L2Rpdj4NCiAgICANCiAgICAgICAgICAgIDxkaXYgY2xhc3M9InByb3Rvbm1haWxfc2lnbmF0dXJl
-X2Jsb2NrLXByb3RvbiI+DQogICAgICAgIFNlbnQgd2l0aCA8YSBocmVmPSJodHRwczovL3Byb3Rv
-bi5tZS9tYWlsL2hvbWUiIHRhcmdldD0iX2JsYW5rIj5Qcm90b24gTWFpbDwvYT4gc2VjdXJlIGVt
-YWlsLg0KICAgIDwvZGl2Pg0KPC9kaXY+DQo=
+Well, container people are concerned about priority inversion as well. But
+usually this is with coarse lock (such as global filesystem locks) but VMA
+lock is specific to a task (and a VMA) so there the opportunity for
+priority inversion looks more limited.  But the example with Java where GC
+thread can presumably have higher priority than ordinary Java threads is an
+interesting one.
 
+> > BTW I'm not sure I quite understand Barry's priority inversion problem
+> > since I'd expect all threads of a task to generally be treated with the
+> > same priority...
+> 
+> Exactly not. Maybe these slides[2] and this project[3] can give
+> you a hint—they aim to standardize things on Linux by
+> learning from Apple OS. Basically, tasks are classified
+> into five types:
+> 
+> USER_INTERACTIVE: Requires immediate response.
+> USER_INITIATED: Tolerates a short delay, but must respond quickly still.
+> UTILITY: Tolerates long delays, but not prolonged ones.
+> BACKGROUND: Doesn’t mind prolonged delays.
+> DEFAULT: System default behavior.
 
---b1=_NXDoX7sVeZmXpWT45QvTtdBsVJxuV4nPcxTzddFqRI--
+Again, this is a clasification of tasks but not really of threads in a task
+so at least for VMA lock there's no inversion so have?
 
+								Honza
+
+> [1] https://lore.kernel.org/linux-mm/20250303022425.285971-3-senozhatsky@chromium.org/
+> [2] https://lpc.events/event/19/contributions/2089/attachments/1797/3877/Userspace%20Assisted%20Scheduling%20via%20Sched%20QoS.pdf
+> [3] https://lore.kernel.org/lkml/20260415000910.2h5misvwc45bdumu@airbuntu/
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
