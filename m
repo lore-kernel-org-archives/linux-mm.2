@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F599CD3427
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 16:49:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38DD0FF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 16:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D19776B0088; Mon,  4 May 2026 12:49:32 -0400 (EDT)
+	id 670666B0088; Mon,  4 May 2026 12:58:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCB046B008A; Mon,  4 May 2026 12:49:32 -0400 (EDT)
+	id 620DA6B008A; Mon,  4 May 2026 12:58:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE1DC6B008C; Mon,  4 May 2026 12:49:32 -0400 (EDT)
+	id 55E226B008C; Mon,  4 May 2026 12:58:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ACF566B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:49:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 58A278992B
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:49:32 +0000 (UTC)
-X-FDA: 84730323384.15.461028D
-Received: from mx.fmap.me (fmap.me [51.75.121.85])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 75C852000E
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:49:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=fmap.me header.s=mail header.b=J0GuFscf;
-	spf=pass (imf03.hostedemail.com: domain of ab@fmap.me designates 51.75.121.85 as permitted sender) smtp.mailfrom=ab@fmap.me;
-	dmarc=pass (policy=reject) header.from=fmap.me
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 493C46B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:58:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87B33A0227
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:58:18 +0000 (UTC)
+X-FDA: 84730345476.07.A842920
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9BAE5120007
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:58:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DQBcbQWk;
+	spf=pass (imf29.hostedemail.com: domain of weilin.chang@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=weilin.chang@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777913370;
+	s=arc-20220608; t=1777913897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=stYj82WGH8bA5rmt9vqvvbBBjdMNd6riTWEwiJA6O3M=;
-	b=LCLg/JfNS1DsxwlgMBgeH9CAZALBbZxeNID7Q4qzsPT5kMT5JMXbzK9e9ywyPrGSWWVII/
-	qd1t5tRwV2Yu4lAXJqd0psoHmwWjrIALsxQB8X9Pnaxtj++1eZLb0nNRHqoJ5lotBlTQfL
-	c8e9/wF+ZjUBZ01qVfcpmbg+EwILoNI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ph51h16mN5ALauWwsMxUN6Ajhuz1KsdblGQVgMgn1aE=;
+	b=mKmrAJYchv8iVcqd/FwC2eHH/pB18X6ETBLR4+XnE3tXaoXAT6e5ak8dPPkKMmUNi7do3n
+	UYRRs5nk5aG1leq8Gsxc7bwHIJQGxOocXAoSxXRrzyIbIhs6NY4cs4Acvh2ryMkqQh08Y/
+	NO4hzWtD8yNXLdBM0Y4NAtY0+9N3yfM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=fmap.me header.s=mail header.b=J0GuFscf;
-	spf=pass (imf03.hostedemail.com: domain of ab@fmap.me designates 51.75.121.85 as permitted sender) smtp.mailfrom=ab@fmap.me;
-	dmarc=pass (policy=reject) header.from=fmap.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777913370; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DQBcbQWk;
+	spf=pass (imf29.hostedemail.com: domain of weilin.chang@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=weilin.chang@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777913897; a=rsa-sha256;
 	cv=none;
-	b=LmjdkPFw81n0Tve8CmxTy8o4t7HWmWh/wdI3M0EuH/SKvVanTdlX6OTY7iKf5a0d6O67Bd
-	xQEH9keJY+8BSgw49F0vIqG8vxzCV/YdnzXT+TU0xMPp2w1HARdmwcDaRVC/G+n8W4ddyQ
-	zBUSP9QOrWVmizItiYRNJFPgNTV+0Tg=
-Message-ID: <9fe5ff50-4c1c-49ee-a8c2-4cacc3c6781d@fmap.me>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fmap.me; s=mail;
-	t=1777913368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=stYj82WGH8bA5rmt9vqvvbBBjdMNd6riTWEwiJA6O3M=;
-	b=J0GuFscfOWbUw9bnmsn0vb0yp46l/jaXBHbfblwsfGETOx9KsUAS+9dVuNSPPwfic4gTy8
-	NUss1G0pMNHHXtFe5ObhaUBF1zsTNKPlmAyil/sQaNWpjy5J+4Pvkr+K1Wmmpcr3ElRXEx
-	r6FXlweKKruMbGkoTh2BELs1/bOkXJs=
-Date: Mon, 4 May 2026 23:49:22 +0700
+	b=3YiW4esIbrzTQBUXCKKhKBzZN1o/V/ZXQDEK8Srhq9hXZLU+nkmUge4EePT3sAg+WKQ77M
+	I3mDocAvp/rmsURJrWDF2ZWDFl16M4muqcLucIzU8ehJ2PlTYDov4sTiUE0M+Z1cMio/Ol
+	UAAhie0zl8t6J+IJ/w5tE1abtrQognA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C1EB2169E;
+	Mon,  4 May 2026 09:58:09 -0700 (PDT)
+Received: from workstation-e142269.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E2DEE3F763;
+	Mon,  4 May 2026 09:58:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777913895; bh=XhgXUyGfG2nyaluK0MeJ9Ts+z2JPQ05UrF+BAsOzOis=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DQBcbQWkRpXner/WSIx9wZbSYOCYk7i4K3TCNHhWuUYE9J/zJqLADFOWjV6TEnTay
+	 nQhe1uzmCQViGe41wg6qd2MkJaCHzvCvKQ9x1IvKfPulWqwEJlLVu9maIWONgP/rO1
+	 tPWsnNUP8wdcw7JKbQv3dC1skMS0zTEoQ5WPSUlE=
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: maple-tree@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Wei-Lin Chang <weilin.chang@arm.com>
+Subject: [PATCH 0/2] Documentation: maple_tree: Improve statements on reserved values
+Date: Mon,  4 May 2026 17:57:44 +0100
+Message-ID: <20260504165746.1422057-1-weilin.chang@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: Re: [fuse-devel] Debugging a stale kernel cache during file growth
-To: Miklos Szeredi <miklos@szeredi.hu>, Matthew Wilcox <willy@infradead.org>
-Cc: fuse-devel@lists.sourceforge.net,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Amir Goldstein <amir73il@gmail.com>, fuse-devel@lists.linux.dev,
- linux-mm <linux-mm@kvack.org>
-References: <898a4e10-6193-4671-b3b1-7c7bc562a671@fmap.me>
- <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
- <CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com>
- <59ab54f6-680e-456e-91f4-0a26889844ef@fmap.me>
- <aeFuarTL7xBbut0F@casper.infradead.org>
- <CAJfpegtAeyMRENdneJkJrMKu8Uwnyk9LYBThjvTrFjHmPr6O_g@mail.gmail.com>
-Content-Language: en-US
-From: Nikolay Amiantov <ab@fmap.me>
-In-Reply-To: <CAJfpegtAeyMRENdneJkJrMKu8Uwnyk9LYBThjvTrFjHmPr6O_g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 87iu7yzboktxfykuu35o1m4hnuwb1jw8
-X-Rspamd-Queue-Id: 75C852000E
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: j7xxb7xrrbw55j9zyfjimu336tc7kbqt
+X-Rspamd-Queue-Id: 9BAE5120007
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1777913370-586866
-X-HE-Meta: U2FsdGVkX1/ANmq7c8r8cnWPrOJCJCfC7XObh9IQerqMUlYSu0/Lth5zFtFtmR0TPnxZ+uPuKI+M8PEpUqp7CLQvIpsidrJFkOxwEMszdz77dwZdmDN2cZ8GtSDU6hiZdwF6aGsf+Ukn9zrHL3u9q2Ppkt5nPqhbIuSJDDXR4wkLEIgsKhYNtv83wRNqxsAtxhdg2VQ+fn77LeZZ/8zZ/FBsd0Pc4xO1+leiA3CZFFe2vgQIwQ2UPIvTyrHvsTsTX3ZUEP68PwkyJ6n5SLCb2gYXxQ+Hljs9YZRTJVwpmxalcIOf0lRkSLnYrRrFWHQg/923cLggVMUGQsG6n1kcymNOimdgm15Hdhi2GOQ9ZmbWdbo9P9HoVHp0E2gW8ApXNVMXW5wI4lj3jUogWdoOshWNRMJpiziT2ONWkEe2EMZceS5WJNRQ2MZ7HzLj2f4ICP/YVQ5jDhC+A65EhybBmH/Lh46XIJH8Zc1meYIUgB2IqVZiwOePtRhxX6iol9o4suDdM6qqokhxIDFzyjrim+Ej0yEuVhJTjvzdSi/lqXYMNfZtTV5lGPUr+56m4sz02+Zu9zixyfQBa20cSPozfcpCv2fg+u45vnrXs68We4m1Go6iWEAwvM7INDPUqZw6LKCGQCKJbnsaVF01PiTldEuaHig3aoY3vz2BetfgAYaHf7OmkTT3BesrYpzwwYBiEay1O+LhF4lv60BJgPO9ZH53NKcfn0l0wewqf55NA1KUOpKSce2mzQYWEj2/pzufywkiz0vdfHFTofSUHVn0ENzSeM++25UHjNXqS1LafWQrjmgNGTwLU1H965In2wcwsB+DMFUz5f2L/PVUCI9TvA0XFbG+vABibQTh2uxmCr6kn966DOJ2pLxLRY9G4oqvjaDRnfSEMGF5xMF0poLoz+H1Pbh2z954/mChmDxv9hxz14Vumnc6O52GO/hzdw/5JT020nnDUvqza9zX5Nw
- H+YbtAs3
- Y+20dZ96M4zY105XKKORFPCCtYTEKGsPapu4vr4fIxTwh5PTJaZA53BrPZglAf/2kiixBYxINwlLRrfS0nhTGd6PV56gf5AJFjJkyBSmpMDvHaRgF9eBpxQVNFj9wV3T5DaCV4mIF44eVO4pNz1tBJbLrZd7lB36pznvhvtcYz5Fg1nA2UdXMQos7fr5cO5oAs8vKC4ZXRNczZso4/hLLxNL/7IXkjFfYA/bk/Le6Hw0dmh8pesKVdFGBRuLR3fgtSYM5IV72bG1DpY4=
+X-HE-Tag: 1777913896-576447
+X-HE-Meta: U2FsdGVkX19NwAtb/Iy9KrP/fc832Zrz0AEGAlUma3YNQRsBu93ZeOIclG+OIMAwYm5P9b/DDpUS76wCEBSUy2a5uc7Cs8ARi9x4ImleyFLEvV6DorX34op8SXuPSGZ+/Ix3ugHU8+mJIBgxkkglUCo0lA6umiEmHO8v4AMiIq3eIQQZGESbfw5qd1FkNIv984T0oUPaxIKNHoK92dtMBkb8XxEBJ4hJKhk1h7ODaZkbg/r0Fb2R5GXNqtDpPCEkXXYGckgkxPbpr5C8EHv/uBSL7Yn6ng2rRUQZw88k1ye4j1EeTq5Syt/cS5MI3JWUzFif8b6FTnwE1zyM0Z3uojDnH+cpFjIxFu00NJE8HkXI0PMD7UQbnH8vh0Gdl4ARYccRqpXxN4PXYW1bXWUSIFXv7VVzP+0634wYPNanhlVuVqVom+9kbMmm/9Qvw+k/iBdO0zGQeTDFguRPk8A/3s+Jdz3/SSFQf1Dkg2czWoOE8LsL8RFhEeFvKP8ObamGHlVhCaX4c1YBOiRKJjJ6DF/oIK5mwtUFmz4KqkP2Wxek3YPyLD3Hrp3jj7mT8ajqWysSyJGenHnZHvwHm+g1V2BEaEtY1OB5DYQn4q8+yyws3+XPZI7RisUkWkxRBnp2lXZ+ZRYujyST4rML1qb3qlhXglFq9dxgKj5SB3pengEaUOV38/5brM1GAr1l34girv4KWWUj3eRobBwmuNUXAPYAc32+lnZErwMu9jcuUEREzCb+bgiqhBHgGWJTcN2RPMu5XdO240FHbbO2/zUN0pwvkTM+Jwfoo/oq8Cf4/eBYioD0+L4vEKoKPmhYLxhU9vczddWVPhHJIxwe0G0/MmXU3iaat7viO/o2uqN6Ax80yjoAfhAHwUTTqpytVlH4fj4aoxQU/2lnPr5izUOnaGCoFaumDQwBVXquhvFliXCk8vZrE/3QTvkBxbmeE9GKz6sgWTaC/NN/oYKGIxA
+ j1YQ6zp1
+ IndYHxdm63EtHupjZuMAXquoUQiWWff/vrjUkfnfovQyv+BdfjDI2q52fJ9eGTXY3VklSrk69Q4wAk/baFsKZzp4TgvdConuZj/ZUmzlTCA7Ng/RBjkYqA+hsrOnAyubIdOKhO7xNioGVNbpWxBKz2qId8KTV2H759m07mvc53BdZXPOwC+fZZQe9I4DHfYvrFIA8Xo82lckGydkfKcGNRg5sNTCgIINtaMbDGtCLnjYYPWVyzmkHVFMuN1DG65aqvlmbjgvA1V4PALny5v99Fpr+BpSJUsIk86/f8C0SBKtQxY1NmaQIGU2Wyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,19 +92,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kindly bringing this discussion up.
+Hi,
 
-On 4/17/26 20:48, Miklos Szeredi wrote:
-> Should that code check for a truncated page and retry?
+This is another version of [1], where I improved wording.
 
-If I understand you correctly, this can be accomplished with a new page 
-flag because there's no other way to find out the truncation happened; 
-would you say this is the right way forward?
+While using the maple tree and reading its documentation, I found a few
+bits confusing, mainly about the reserved values. So here are some
+changes hoping to make things clearer.
 
-Sadly I didn't have time to try and make a PoC fix yet, but I want to 
-try tackle it this weekend; meanwhile, any guidance is appreciated!
+I am not familiar with the implementation, so if I got something wrong
+please let me know.
 
-Thanks,
-Nikolay.
+While looking at the code I also found that although the doc claims the
+normal API blocks reserved value stores, the code checks this using
+xa_is_advanced(), which only blocks values up to 1026, not up to the max
+maple tree reserved value 4094. For this part I am not sure whether the
+code needs to be changed or we can also improve the doc.
+
+Any feedback is appreciated, thanks!
+
+[1]: https://lore.kernel.org/linux-mm/20260418204754.120405-1-weilin.chang@arm.com/
+
+Wei-Lin Chang (2):
+  Documentation: maple_tree: Point out constraint when using xa_{mk,
+    to}_value
+  Documentation: maple_tree: Clarify behavior when using reserved values
+
+ Documentation/core-api/maple_tree.rst | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+-- 
+2.43.0
 
 
