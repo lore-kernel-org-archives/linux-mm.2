@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D729CD3427
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 20:36:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A03FF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 20:51:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C283F6B0088; Mon,  4 May 2026 16:36:17 -0400 (EDT)
+	id 18F226B0088; Mon,  4 May 2026 16:51:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD99C6B008A; Mon,  4 May 2026 16:36:17 -0400 (EDT)
+	id 140236B008A; Mon,  4 May 2026 16:51:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEEC86B008C; Mon,  4 May 2026 16:36:17 -0400 (EDT)
+	id 055DF6B008C; Mon,  4 May 2026 16:51:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A0FB6B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:36:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A2748B4DC
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:36:17 +0000 (UTC)
-X-FDA: 84730894794.30.B9D769C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B7130180002
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:36:15 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=X2D6qLdU;
-	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E452D6B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:51:04 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAFE01602A8
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:51:04 +0000 (UTC)
+X-FDA: 84730932048.14.FFCE6C7
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0CE158000E
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 20:51:02 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of 3tQb5aQkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.72 as permitted sender) smtp.mailfrom=3tQb5aQkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777926975;
+	s=arc-20220608; t=1777927863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Of8w4s8L/jyna87mZklhNUp7KjKlNJWZIKBAu2u9pd4=;
-	b=xdfx3xuOEren3oj8lwfdANGJ40ZjopyMZ3IToYQPCvITGtB+EiP6+Kl/WB0nZZ19jOXkGT
-	Bc9mwVGARf9B3fuo0dbhU4CZ6WVjUkhsPbP41vKX6iTJ7UPJZNd6sbiXihaSbRncH1VngV
-	uayufXqd1cUSumuhPuum5I0TxHgrdvA=
+	 in-reply-to:in-reply-to:references;
+	bh=bCjj8G05TtBZLOd7zrH44gm7HPyOQ+hR+PG268x3BGk=;
+	b=vs0eLWJ2YCjP2MQRLuLFQVNqmQ+iIWC+VOR5bk6p2kVwZDqcs1NalkraKISKI30rYULyIp
+	aHkQaunJ5i/cPBGT0ztrxJJ6EpIxGw5gHrYihnF+eyDcCCqsF4TlJ54N4nbTmtI93E0uo1
+	pH6zRwlfN62wrctleqLAnW9ACTRrDGg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=X2D6qLdU;
-	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777926975; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of 3tQb5aQkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.72 as permitted sender) smtp.mailfrom=3tQb5aQkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777927863; a=rsa-sha256;
 	cv=none;
-	b=SZjuYnwwhQSZUlY7paWrhTclEf+YarQVaLu8mu38uMQwLHyBPENKrlD1ksbUGz2Q1kOXLz
-	cnEwPiB92sIQJjmpb/gOubcLhrDP3GCLvVsE1YLh7s4t78oIU6TDth+x8yFYR26FXNFFuG
-	Ulyd22UEaxQReX7eRirFfLe9dwF+Jao=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Of8w4s8L/jyna87mZklhNUp7KjKlNJWZIKBAu2u9pd4=; b=X2D6qLdUk4VGEG/rTV/mvN7mpp
-	K9KwbcmU+pIfwIhI033QxM8YKBaw8ZIy4cojUMTQpH0M3ChNyiQpVRGoI0aD9oTTXAMe4b7KPmFJY
-	2qGTK0fubuLoVYXuI8sobD9L0+oXzT8fJucVWa4Q0MdMyywX2cJoM+aECRhdoXtVxuhGhhxRDzHfg
-	M2ImeMVKCspfW7ps1CywqDj2Pav6iMMUdJ5l5jqdU3hJhrl+z1uFBPCDw4sqrnRWYYt518Te8lnh7
-	w28FoVX7vnsbYqtmv4iRHC8GnTy1G6Ntj6KQa+hBGvb3bUI7PBHNMJSnMoQMTpd5PUz9CnXLbqXTc
-	guFWKrPQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wK01O-00000001UBc-0JoP;
-	Mon, 04 May 2026 20:36:06 +0000
-Date: Mon, 4 May 2026 21:36:05 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Bharata B Rao <bharata@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Jonathan.Cameron@huawei.com, dave.hansen@intel.com,
-	gourry@gourry.net, mgorman@techsingularity.net, mingo@redhat.com,
-	peterz@infradead.org, raghavendra.kt@amd.com, riel@surriel.com,
-	rientjes@google.com, sj@kernel.org, weixugc@google.com,
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
-	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
-	akpm@linux-foundation.org, david@kernel.org, byungchul@sk.com,
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com,
-	donettom@linux.ibm.com
-Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion infrastructure
-Message-ID: <afkDNR9yVRjire4T@casper.infradead.org>
-References: <20260504060924.344313-1-bharata@amd.com>
+	b=6ZJjr5zymSaWULI6vSFycXekl4Yryppx+xkufN6Ligms8dnoZaSZkFaFn+rlkOkRt5T4e6
+	nsetoqIXhKRnB6NrCm0OEU60or2CC10+DMYcUS6lO47D36gwduOIzc17aTOoZ44wVoopE9
+	zz/kwa9mVClJh3wcJfIQBRbh9Pl2etk=
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-415e1e9aa5dso7196533fac.0
+        for <linux-mm@kvack.org>; Mon, 04 May 2026 13:51:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777927862; x=1778532662;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bCjj8G05TtBZLOd7zrH44gm7HPyOQ+hR+PG268x3BGk=;
+        b=iAZ4dyM2V/AUM3JIfdDmX75diULoUAuVByWZUn6CjLPnlHCyNiDyi1J1l9Bw8PsyjJ
+         oS/oPAArjUyAanJZt5aV7Tp8xJ23d+XON7yrkrvgKM9R7CBQjy2rQpBs4amZRJp3CBHV
+         8/ztXggSuzTxavhCR4x39ykXQ+lpDqAl7HYfheptsxHaSAVpgI6tcWO+AYBEGI/W8I1d
+         qusSnDf1HapNIuocTX8TQHrQZ6GQ2TjkO13WNzxYt5EbS8T7dN2nxkE/vI+HuYg1yD0M
+         hF6OYW+Uo/cgF0wtdmSIbxhgLuLtqYK0qyZ0Rzk7rBFYPKfLb1cGNwcUGLUmVd78zb8n
+         rHOw==
+X-Forwarded-Encrypted: i=1; AFNElJ8m4KLIV6mQLaqohLwSaEq5yZ14EQsPd/UQs65R3j+99RaBKlG+Yyv8F5v2EnqQqmBXeywkTA5D2g==@kvack.org
+X-Gm-Message-State: AOJu0YzXBDksxLQQ96Rtbp9NivKCq5NaBOV9XUL00G9Wi/XSx7XXgWqQ
+	ZnmcEFFfnNNKm+xFzcAYjCLz5RA3m/WB+3gjSh5xp6vZ0sLkWiMKgQT/k4Malaiq6ofz1URStrb
+	uSvR3u6u5eniErDYPUQnRBKGzfnsoGo862h1B2DaWtZ6HepXIVOJJM8RfQmM=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260504060924.344313-1-bharata@amd.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B7130180002
+X-Received: by 2002:a05:6820:60f:b0:696:8c3f:d7d8 with SMTP id
+ 006d021491bc7-6998d225e63mr109559eaf.37.1777927861903; Mon, 04 May 2026
+ 13:51:01 -0700 (PDT)
+Date: Mon, 04 May 2026 13:51:01 -0700
+In-Reply-To: <2956b248-c79f-4eae-8bfc-81178b5899af@dev.snart.me>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69f906b5.050a0220.892e9.00d7.GAE@google.com>
+Subject: Re: [syzbot] [mm?] [exfat?] [f2fs?] memory leak in __kfree_rcu_sheaf
+From: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
+To: dxdt@dev.snart.me, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: zsbznmuprp3q5r7j4bqisky8n4fkat9g
-X-HE-Tag: 1777926975-474901
-X-HE-Meta: U2FsdGVkX1/3i1aIanyYZuZMFx5zhBYfX/cRNhi39cbEsWSRMRB455dMf0Vl07pl/uSDMi8iP7T4YnlYoK2MmsrmQes3GtQfm2WW+ghsFeCCHaOWbVf0kGe+ajbrfW7OmNQoOww2kzx3fzKQyrCbdbF0NykiH8RhDZovPYtZcdobyvMb2Q8sCtp1clNw5uFGbqgwuSigUYHOSFVTYhwpCJTV1Pe4LZIoN+g6Dw40W7bJR3GlDd5BiM07UGnfwepO50X5xoV2JInanZozvzoQqPCDEuRKLuDajcsMKvUXNFl5dO79E2pmVVN9E8PYlfXA9l4weMRFcOf8Z3W7tErUuRmOancJqzXDYajD9c3zX3WM/zAdl3+K6xWH0n6I3BzWs2NrBr0gxvfsT3UH8nUePMARCwYsd+7jo5grRjl8mlS91pYeSeSBfk6HW6VBNFp4tolGjFiGKhPN64I14WVhgpPnIkPaB+EVjs/d7aecoKfuccYoeA92auIQR87gXX1OYOZZMZUlUmXJYQGGWoM0GNNPQLeD9xmxqRVZy/Binp+kSbiTK3Kv9kIVYO5AFXEr23BoRYVGcJd+8jjnOgzRov1obuIZc9f08ammVvflkPO38nISqCI8BNptZGodC0NbHYDiZXp5noRROn3Ge4CPzMfq3QmIVfHfhHrEI1P2GOvejcboJYWy58EPBVtcQgqEzOHELyuNe6WZEPgpbVSyJektlSDVRTzZiBycpXAfFVxL7oCaq+IkXCNkTqP1OB70QcP2DA7iiYGGXlfcPFI0voRWzWHC8zIP5lXyK9X4p3GdtK02IpxZNSsBFa//RULa+8972hzLbK9X2Ogg8X7BmochC8/uNxc86hxOo8wz8wZMX9HUKIHDX9iRt3/DXgBFTtcE0yiUhnv4vac3KMmzlSVXPXMQ7+ydF4eN29Jl/g1aupOUH4G7UyAIu1RaSHjcauhbh0DMRTAGW7zhjzn
- f0UtdFAA
- 8kt0aiBwKUFz3X9CsfQ2eo0aLK41WYc3xAO7bt5J2ZjYHjdwRwneNz9TbVHGYCKd10BFjZFg8HsnWlS21LZ2Si5pcfK923EdiplvxeFjmEg6AyJ+ZjyKJRNbn/SuLuVifHFXZlORXh7VCl5BqGuEehfbRfxpfPcLryZEk820dCYSyjd5m7np5QfHo/xfmocJCBFog+mu1T1w32RY/C03DItjLytNVRakzK0UsYT083CDSeYzCN/SqRcC8MiWjT+tJbfgAB6+uqO0mZRWcuM0ZKE7EL2ecocO5K55NMugOKzyJjK4Ll3ORuz3aPCdSbxFaiejG
+X-Rspamd-Queue-Id: 0CE158000E
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ajwzdwkhu67kjjykihfe5zrhim6uaei1
+X-HE-Tag: 1777927862-662111
+X-HE-Meta: U2FsdGVkX1+vuDa81UTZWrQ28uC7cmRMJD9H3rUeuDL1OnSYnkoQVAu5GqqFeL955/pbrFVgFycqZ6CPyOZ51LlshhRRd0jFO6F2aFTQwFibjG6vSuETLpOUGhS+qNGVteQ/0dHKUnRwvn9XsfdAcXjZtQRKPh4cVmv7ACJG8sdok3bwQdxnepImQ7Pboqp8zoZNqcUZSpbZvB1O2KeafHvYzLiGFiqQEXHkQ+oEVXLfqoNJmWi42HMG84YPuiZ+z6H+QrKQ5CXGX8jVE3U28XqQi+2DG+eOX7b0QajSMuGUiFtzdDM3AbdTgK7C67GfjE+TeTHungEJ/IYS8twqkZ2XTqjFQWZB4iHpSkG+ATlk+q+pmm5AoghFrKJsj1yFSkPs6fDoMFzbJj3oosw7aXWlaNRUDr4h5eWwYG1p3pq+cmNupU6tqV5fNcgET/IIgVUlqHCWLSvzoxF4A05pqZoFN3dnGwrD5w/bBlcnKK4uUAjVBQA0gFyY8M5k0lhOC1NLJ/8z82Ib+cMIxN7w6Zjrpr0OzDPxFePTkZd63EzDAL9PmMvrSoxmnLB4ZKicKIX6HhMTnaJ1u2YHbsTi9AoJlC/3X8H1J4M1SsKdxOyx90vsCHPUyKNE7rLsszq2q/naUxCxHJ8lnxLM/mobZC/K5jQGSmb+KKPN5LJjJFpFaDentzth6hoAfZ7UUwQ6jp+F+abY1poOJ0VjkA60+Hj/t8dcucILBcm6aczZTG+1OvYr966t+ft/yRlSAWcdkkz0mIvqDTS2hT5VPb/UvWQsde8ulUQu16lZpbDaFBdUrB86i+uekINo2RNl9qyLhbr6qOw321EZHVSmW5rGdhBt0URV5UE99A6CtcpWAc9rQBw9KTKPoWq+NnaoqmimBiWXMn1mT6BREOX5VbfNqzIhPRU+mej/XdQtvx6wD7R5pW3GeNjWnXjkP9e5qj3PjUnabyDDKgGLS5WU1Ov
+ b9Y1DSNv
+ bIvcAoP1le15bFda00DyImUBQuReJODNK+BH880md1DSvHlfq0k3M3sFXcP0I6awxWvYpInJyinHyHN1USVbAXnaF2OHLOQiU/3KmGK+lZsf+6rPzNz27iZkEVx7FqJvytBNWWRXNhQ/CLqAiphd9DcS1Po0NQ27pnjcq87XZdg8L+MovL3kwu0L0k+8IcudY6fKS5CpSkVN1DMa7TdDT59dp9NiLcfOdB1uq/GUCnkpEwvLQNsrREOcq1Ncx/w3GZ2eXYoZ3AEsdjwM5040zzgDp+EWmq5GZBc+G7xi8FDTeJWUTbRJ/HOdfTpP84Qm0/BM5kfUrzLSSGNx9hgH1110PGj0evMCofnUKW+aUnKjwTEOoG+OmqF3lGC+9Y1nf1L2b8MLzvXZ6pzGUq1y3PtfTH/y9KEhqUruDRfjZkoxR4O2CGSbJL6gBlw2Fq3ZMSU6BBzlXugrPib5Wgw6IG63Cp7zlqZ5n0QaGudGgAC1axA6PmB1jsJZUr3CaXR63+K2Qcd4Jg3t51YD5/zwGzWi5LvRewZsOubKAA2ZCHRxa36vC9j/atVpDIH7ZBAdCwJtZmgxQc/y+k0mzjGAxsZ1MvS4Tcedg21U3up/Sn3TPGyhzLPZg7W6y9f36xf5HJ1HW7OKDgU7R5UBztnRJrXmr6m/aij9WDDKDCV/xa8HPEII5xZtUaL7GE8YE8XcyY4zE2zyDHdNQQOyz9QYNJiO4HuWIt9eSBx+vKiXpc3fBU8CxH5c4rVyb9NytQ/4zgsyg65sFrLAb5sADIRrQ/VZqGV1H3ZqJYKTQdvlN92gPSaos1JhmtcaJn4xSXJdIwIwzpz0cldHp03RRoMuTXrhLY24PiK7oyivHVHSDmEwXpHE8EkZdr1cjDH+Y4qYkfCAL6rTyn2+5+o2o/EUKQArM3FezjZANMOhKy+PXtZ8bgFTRl2hALngbwoZrwG/xn1VQ/WPH5uavsHyib3iqN5EPpQq8
+ VEO2ziDA
+ 66CbFGoRelzb9HyWwXuCWu4z0d75S2vWgTeXmzcwYKJdJ0JOldKPwRh+uUYCJKaR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,8 +97,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 04, 2026 at 11:39:17AM +0530, Bharata B Rao wrote:
-> This is v7 of pghot, a hot-page tracking and promotion subsystem. The
+Hello,
 
-I continue to think we should not do this.
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+kernel panic: !!! sbi at ADDR used after freeing !!!
+
+F2FS-fs (loop1): f2fs_record_error_work()
+Kernel panic - not syncing: !!! sbi at ffff888129322000 used after freeing !!!
+CPU: 1 UID: 0 PID: 6598 Comm: kworker/1:5 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Workqueue: events f2fs_record_error_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x97/0xe0 lib/dump_stack.c:120
+ vpanic+0x383/0x6d0 kernel/panic.c:650
+ panic+0x6e/0x70 kernel/panic.c:787
+ f2fs_record_error_work.cold+0x14/0x14 fs/f2fs/super.c:4747
+ process_one_work+0x277/0x5b0 kernel/workqueue.c:3302
+ process_scheduled_works kernel/workqueue.c:3385 [inline]
+ worker_thread+0x255/0x4a0 kernel/workqueue.c:3466
+ kthread+0x14e/0x1a0 kernel/kthread.c:436
+ ret_from_fork+0x219/0x490 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Kernel Offset: disabled
+
+
+Tested on:
+
+commit:         6d35786d Merge tag 'for-linus' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17a63a36580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9645c21cfd1d3e8f
+dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=172b8ad2580000
+
 
