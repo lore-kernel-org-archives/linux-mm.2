@@ -4,135 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F472CD3430
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:38:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBFF7CD3430
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:43:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE6CF6B0005; Mon,  4 May 2026 09:38:09 -0400 (EDT)
+	id D86EC6B008C; Mon,  4 May 2026 09:43:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A97AD6B008A; Mon,  4 May 2026 09:38:09 -0400 (EDT)
+	id D3CCF6B0092; Mon,  4 May 2026 09:43:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 986846B008C; Mon,  4 May 2026 09:38:09 -0400 (EDT)
+	id C4D836B0093; Mon,  4 May 2026 09:43:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 859DF6B0005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:38:09 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2EE7E1C00AC
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:38:09 +0000 (UTC)
-X-FDA: 84729841098.04.E6F9ABF
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C20EE40006
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:38:05 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=nmZ8O9mw;
-	spf=pass (imf11.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B42206B008C
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:43:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D3BDC0976
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:43:16 +0000 (UTC)
+X-FDA: 84729853992.07.A50E90D
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8BEE410000E
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:43:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FVCff5+i;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777901887;
+	s=arc-20220608; t=1777902194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K5X6546rG8Q7CDMgHYe0dMLLoA8JVhsjJIJ+l/s2c4Y=;
-	b=76i+F3M29H03ivMcZn3D4NrwSxiUdC+Sz3mFgdJm+WC/bXkXwJXnBTwCWCJEIS38L2hnse
-	vfkDadOtbVHBBUhoF1i2pU0pRCLKurhyF4K3Npm379P7IW+woFe6GWn+vCr2ziQg9y48iJ
-	PHqfH860K2Zph+sEyjVLPsFI9gBcUvA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777901887; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=B4l/eNliO1yvd0WyzYwX4CToZW3nCfq8DMpsBhFelHc=;
+	b=jYLDAvVyka/F+C99PML1mq4SgLMfUuQ3+1mPVb5K0Iu24N5gjXVo65Udcbn6dl1FVfFFEs
+	qWG4rueQA2Xap0M0BfAxx/doo0mXV/TR8P3AV/YRCzR+VzuNsFDt9WloBZtHPI5Q5M+mwh
+	lYZrPUuMu17vDBHZ41vDDeRlpQ0xaSs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777902194; a=rsa-sha256;
 	cv=none;
-	b=20ve3KJ+LQE7sLF9xwGg//VkXa/wMcknB+RLe9lFUNFf5OnlJO0mY+z6NR3BQULbaD+Nfs
-	I1I3OCb7eSngjiNZvTlBAa5dqZtQfnPsth6A+JDWOLcwBusnvRhQG4/uSBbvJDGBTDAaJw
-	AzoUOjj3xdrLWL/injxIZyX5QTV8b5g=
+	b=7IEPcOXgO2OADRh3BjIkUkMY2FYj5a9IcFyoICpsp5N2rajUbZ6VEQv2mP25YugxZEZgeH
+	NLZGQ8NHB4S++y64Zfg039ivwJrDqOy4fQg5TInqFCsAvBh8l6IwcrTXhozD5bzX+YL2p6
+	xuDc2ihSzXl2+jVjjx2f1lVtBooofQc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=nmZ8O9mw;
-	spf=pass (imf11.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20260504133802epoutp02b4fe67eaaad6b60cdae9efe8d85f925e~sYFeNTetM0577405774epoutp02e;
-	Mon,  4 May 2026 13:38:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20260504133802epoutp02b4fe67eaaad6b60cdae9efe8d85f925e~sYFeNTetM0577405774epoutp02e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1777901882;
-	bh=K5X6546rG8Q7CDMgHYe0dMLLoA8JVhsjJIJ+l/s2c4Y=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=nmZ8O9mwkiw6Qc3oNT26vkjmnNlI2wukd5FwCDzd9H7xY8AuXai7IIgT3MUN5KTvU
-	 zuWhH4yfS4vIWtH7ZZm3cCd5duET+79RK+Yll2CLppi9ZAF+JaB3VR+AtIpQLJzfYp
-	 kuHf8nA1xhwKYRz7MOqFl4cYZJ66wHOLsJP//U40=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
-	20260504133801epcas5p2868c041e3779e42e6e5fde3d36dba3a3~sYFd4KT8O2899328993epcas5p29;
-	Mon,  4 May 2026 13:38:01 +0000 (GMT)
-Received: from epcpadp2new (unknown [182.195.40.142]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4g8N4n4bV1z2SSKX; Mon,  4 May
-	2026 13:38:01 +0000 (GMT)
-Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260504130907epcas5p29c41fc288662c37cd8ad7241772a53f8~sXsPFsdos2990329903epcas5p2Z;
-	Mon,  4 May 2026 13:09:07 +0000 (GMT)
-Received: from [107.122.10.65] (unknown [107.122.10.65]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260504130855epsmtip2f74fac9944e13b661bd91b5d97d7c8d2~sXsD4QdS72669726697epsmtip2P;
-	Mon,  4 May 2026 13:08:55 +0000 (GMT)
-Message-ID: <1891546521.01777901881625.JavaMail.epsvc@epcpadp2new>
-Date: Mon, 4 May 2026 18:38:54 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-To: Gregory Price <gourry@gourry.net>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
-	kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
-	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, longman@redhat.com, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
-	jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
-	pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
-	riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
-	roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
-	zhengqi.arch@bytedance.com, terry.bowman@amd.com, gost.dev@samsung.com,
-	arungeorge05@gmail.com, cpgs@samsung.com
-Content-Language: en-US
-From: Arun George/Arun George <arun.george@samsung.com>
-In-Reply-To: <afIKxG5mJZE6QgpR@gourry-fedora-PF4VCD3F>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260504130907epcas5p29c41fc288662c37cd8ad7241772a53f8
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-X-CPGSPASS: Y
-X-Hop-Count: 3
-X-CMS-RootMailID: 20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0
-References: <20260222084842.1824063-1-gourry@gourry.net>
-	<CGME20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0@epcas5p1.samsung.com>
-	<1983025922.01777297382206.JavaMail.epsvc@epcpadp2new>
-	<ae_i9IlIndumJWN3@gourry-fedora-PF4VCD3F>
-	<1891546521.01777455002601.JavaMail.epsvc@epcpadp1new>
-	<afIKxG5mJZE6QgpR@gourry-fedora-PF4VCD3F>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C20EE40006
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FVCff5+i;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777902193; x=1809438193;
+  h=date:from:to:cc:subject:message-id;
+  bh=lXUFBMKtKHMcP4YG/D/l3S4QZNbwuhzVGbFID+Lb5BE=;
+  b=FVCff5+i+650zXV+Bo8TQ8KzNcMLoIfXQ4jXzHjwOG4qyRBmywIHlEKK
+   JAmfVcTztxw62OfTNJLCw2TwaYe7r7QMdtwGlLok2lCg0gwzgzv3TwW+/
+   RLx51w/shiUA/5djeRZMtlYpnPslhbo2FnYZd20in0iVRq1YIJWtLpZka
+   DOZajpIzHQ8XH19WoE643ZDELTrXBRP5FJUvqGDynSkHNCf+dEniNj8VD
+   fIKWq8JP3X0IEnIPJmQkvIpWRprHColP9NjBlURqxjEYMle6r0PxBSNUI
+   QWSKKlfXhn0eJ14IFJ3thg9e2o1aXQroASX3BVXmEzRpEJ2tYDve7Un/V
+   w==;
+X-CSE-ConnectionGUID: pU0L2QOWQli2ypnIhwOXTA==
+X-CSE-MsgGUID: bDB90lFpStmiXPh+12C9Pw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="78620002"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="78620002"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 06:43:12 -0700
+X-CSE-ConnectionGUID: Nr4KljfoSr2ErPoOoYf4ng==
+X-CSE-MsgGUID: a+Qp9JQJT+W3IVXkmgsVWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="258868695"
+Received: from lkp-server01.sh.intel.com (HELO 781826d00641) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 04 May 2026 06:43:10 -0700
+Received: from kbuild by 781826d00641 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wJtZa-000000003m5-49kP;
+	Mon, 04 May 2026 13:43:03 +0000
+Date: Mon, 04 May 2026 21:42:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD SUCCESS
+ 7480614ff12ced7ceb0d80be8ada5218a575d62a
+Message-ID: <202605042102.lNTjHz0k-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Stat-Signature: u89of1z5z33ps9exp3j98fq9quhy6y8o
-X-HE-Tag: 1777901885-182587
-X-HE-Meta: U2FsdGVkX19uwIE8ukZA3Hj9XppvshYFCjYST5x3vK3BkGAD5wk0TulFfh99T7+FRVZKzUjrkKxDf5FT5dglWG4ADxhkw/DEXKPD2LTam2mcq5b2FT34tuBSlJLeRugv1IhkV9U+4labUhus4v+cSt66sNlMwANO9z339oeHpU+7v3ky+MhjoRk4sZOSbTCxaS5G1dB7i0IRVt+cSw0q5Yk2dPEuBCFMBjCZBGGXtp5N8jOFXy7VSSnOJrsIiAj8NjiPh/iPfGIcvdwUWpBRTSoGQZUZggZxgPppavchgNzQNApp9mKaoRb52dlNRH/9LANl9+Po33pu4X3oRfmiLP5qd67QeLlplqKJGkLsX+QN3vPY53CUCwkzjGdGnF9yj2bc+zTIfb1bni80Q5IcgmYV5R/cgkUbbmQCNks5nQQJzZbGJgqp09XksPGSsEoJsH4LQuwLWlieLnwEBSGdCkHBqJTiLcRdg5vMoXA3B+qhW17AVPiQySAxtwx46Qk75eEcjbXz39rLB/+p7ylyCcAAIhd9ZbK5GzjRGfvfGSh6PeD31I0H/adBiZsxEyYK9PZyik1VD5HsOZB19aj+HoXrCM3VwSQFyM8PLfrW/nGNNIWzV5L1dTnMytJRs6jhzToBQw93KnWuO5cijv672HM2SQFIWKYZhvM28rs52/KxJ1N4VoLkFZXE3GwcWTE3YyyPgcUaCcHsRrzkixxcsCdY/RaYbVVU8eieCTo6px7enncpiKtg5brlI/Qt6iljwG44d5u6h7t4mfxXjpRGB6kPOysGt8WUePjtz0mj+97skKxQ2og3+QNvpvSGXziI7Fpn1hYcKvDMIAR0H7Et8hsi5KA7bIQ8EYMDlWDzecY/MmYJJ/gCLka9zyIg0jGkBiDrDTyUnaw/VXdtZbsrsSUanlBCMaM/lmdF5kJ2IEVlIf+ZuncywcHMB3kKmKxqbkbRGLPTBR/dsG3V/AM
- ataahgM7
- vV7nPjndj7jkFZ45tbeD1j4waAHnaigHZzEsVtH8qDtYuV1dkwPQHbEvXpgkC9JzZhrRpNHbh9O4Ar0RPknngVu7KXhkixM0c8ElYYF/pAfyr7XZPxiEaYGGtFIcJd905vWF6FJg+/b44+ZS89EIB4shsQefW489tw5m53bwHKnpDfl/DKVFcTeTMo7hGsyRIGv9M
+X-Rspamd-Queue-Id: 8BEE410000E
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ipjc177qnqee8m6itzato4ty7dxc7a5q
+X-HE-Tag: 1777902193-598421
+X-HE-Meta: U2FsdGVkX18Zt6VYKD/ums2Fvv0KZVAHO/uyYQJ9oQEo2VL8L3Bd2r1eWDZ26I8z9Rl/tCsMb9VuE2AmgJ1bNNx5xKz9zlCfLdnwE8GH0FshlW5RphZvcjqgYudMoHT/O1wsz5mD+2bP1NZd+KM+p72xLzWi6I3Ibi0TEMoPf/N7pGcP9fkemQYJzM7scGHIxNfE9dIjt8WGfllBxOB1zg2j6WW2ZzBKimu5FARdzjd3+uUhAzPLhIQg0aGmq+VSpnFkbSqGSA8PGMPRp1wpLOH6h/kysg8bHdGnXOSmdrDzEzUf5/kLFIDSFZ8Sn/j1KphgkLcfBAVnOHhG3Pme7dEda80QyOfywARKjLbr9Xs3U+gRqFreT26iArn+S0ATmAd9Ma0sbhhl4HLGYNTfz+fRGuNHNNWQBwI6EuEZXPS2bMFlG5BgoJ6uhkhyFT89nbLcIgXXpCddltBZ5nOGoC5JzbpphuOhuHX0VKPIwSiio8o8Jy6oej/d2AfZa2GPlFJp9cKU987XcPa0ZUUJ0x4601dKwTNSPs2FXP1W6BWdjTa741FE382QnkP8w5uVw5XkpSqAQJfvMBrvpKEJVewPQwS2/b4c3MgE6LQV7GvD66j0E1vPuLuhV9UkvaaMSrLyhf4d2y6t3WKYQo7XSbaHKVKkp5mjXnOL9JmmZ3CGyhiAcdzjamABAya1vh4rG+RcjcQkY551kM7BGzN0G9qK8ndcTxudUk+Vkd9Vz8iRZBby5fPphmM4O7HPI+DpTZcwTtGxhTZjD3NzLcBzIBqhsC+EQR1vzbgJSNRetfiSFS/vYqNYCio2lVuJV6UoU/whPVhLFewWU2xQUFRBNWaZ7UbywcMHuuEhBNMe+jxvt2Jkyls7KkunTSEtMECIZFZZmGdb7/Lnc42BYOZVkuaMxu7fCMPyZjpEDM7fCS3MgpcXLXeIUyxk9n3Q9nUqIWyKfDqzgHvLLvmzwu9
+ 5tDjh69P
+ 6SjqWLyR76Clrz4HNgeI1keXUpUIp3iXZ9dHieAzkhSZH0o/7LyLQk3QQE/wb8S2kJQmfJHQOQrbbkHhid6g9qPPVzKbvBcG3X0bHTC+AdItODvmdC5po5jkunAKayejmsFVgNCYEmPqcYNaTjFIPq/iw5f0XpW87lFkg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,76 +102,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29-04-2026 07:12 pm, Gregory Price wrote:
->>
->> Great! I believe "writable budget" could be an interesting idea which
->> can solve the 'bus error' sort of scenarios due to device not capable of
->> taking any more writes. The write budget could be replenished using the
->> control path and writes will not go ahead without the budget available,
->> right?>
->>
-> 
-> Write budget is simple
-> 
-> budget=1  (up to 1 page can be writable
->     1) swap 1 page ->  cram alloc 1 page, put VSWAP_CRAM in PTE
->     2) read-fault  ->  cram upgrades VSWAP_CRAM to R/O PTE
->     3) write-fault ->
->        a) if (writable_cnt < budget) { budget++; mkwrite(pte); }
->        b) else:  normal swap semantic -> promote to normal memory
-> 
-> Meanwhile - use ballooning and a simple shrinker to dynamically size the
-> region to respond to real compression ratio.
-> 
-> 
-> All said an done - you get something close to zswap but with R/O
-> mappings for all entries, and optional R/W-mappings for administrators
-> who know something about their workload and can afford to take the risk
-> of some amount of capacity being written to uncontended in exchange for
-> performance.
-> 
-> The writable-budget is a risk-dial:  How much do you trust your workload
-> to now spew un/poorly-compressible memory?  The write-budget is a direct
-> measure of that. (so take P99.99999 compression ratios, and you can make
-> a good chunk of that writable).
-> 
-> ~Gregory
-> 
-> 
-I believe we are converging. Agree to most points you mentioned.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: 7480614ff12ced7ceb0d80be8ada5218a575d62a  Docs/admin-guide/mm/damon/stat: document kdamond_pid parameter
 
-I see this problem statement can be solved by 'write-control + write 
-budget' approach similar to what you have described, whether we take 
-swap path or not.
+elapsed time: 786m
 
-But I see this 'write budget' (budget in terms of number of write 
-operations that can be handled by the device, not capacity) to be 
-provided by the device in control plane; not by the workloads in the host.
+configs tested: 155
+configs skipped: 6
 
-The budget can be communicated by the device in the device control plane 
-periodically (to be handled in the specific cram back-end driver; may be 
-interpreting the device back-pressure indications into a write budget 
-value). Even if the control plane breaks down, the host does not run 
-into issues except that it will not write further.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I assume you see this value coming from the workloads. This might be a 
-place where I have a different opinion.
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                   randconfig-001-20260504    gcc-12.5.0
+arc                   randconfig-002-20260504    gcc-13.4.0
+arm                               allnoconfig    clang-23
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    clang-23
+arm                   randconfig-001-20260504    clang-20
+arm                   randconfig-002-20260504    clang-23
+arm                   randconfig-003-20260504    gcc-13.4.0
+arm                   randconfig-004-20260504    clang-23
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260504    gcc-8.5.0
+arm64                 randconfig-002-20260504    gcc-8.5.0
+arm64                 randconfig-003-20260504    clang-23
+arm64                 randconfig-004-20260504    clang-23
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260504    gcc-15.2.0
+csky                  randconfig-002-20260504    gcc-15.2.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-23
+hexagon                             defconfig    clang-23
+hexagon               randconfig-001-20260504    clang-23
+hexagon               randconfig-002-20260504    clang-23
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260504    gcc-14
+i386        buildonly-randconfig-002-20260504    gcc-14
+i386        buildonly-randconfig-003-20260504    gcc-12
+i386        buildonly-randconfig-004-20260504    gcc-14
+i386        buildonly-randconfig-005-20260504    gcc-14
+i386        buildonly-randconfig-006-20260504    gcc-14
+i386                                defconfig    clang-20
+i386                  randconfig-001-20260504    clang-20
+i386                  randconfig-002-20260504    gcc-14
+i386                  randconfig-003-20260504    gcc-14
+i386                  randconfig-004-20260504    gcc-14
+i386                  randconfig-005-20260504    gcc-14
+i386                  randconfig-006-20260504    clang-20
+i386                  randconfig-007-20260504    clang-20
+i386                  randconfig-011-20260504    clang-20
+i386                  randconfig-012-20260504    clang-20
+i386                  randconfig-013-20260504    clang-20
+i386                  randconfig-014-20260504    clang-20
+i386                  randconfig-015-20260504    clang-20
+i386                  randconfig-016-20260504    gcc-13
+i386                  randconfig-017-20260504    gcc-14
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-23
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260504    clang-18
+loongarch             randconfig-002-20260504    clang-23
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                           ip22_defconfig    gcc-15.2.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260504    gcc-11.5.0
+nios2                 randconfig-002-20260504    gcc-11.5.0
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                         randconfig-001    gcc-13.4.0
+parisc                randconfig-001-20260504    gcc-13.4.0
+parisc                         randconfig-002    gcc-8.5.0
+parisc                randconfig-002-20260504    gcc-8.5.0
+parisc64                            defconfig    gcc-15.2.0
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                        randconfig-001    gcc-13.4.0
+powerpc               randconfig-001-20260504    gcc-12.5.0
+powerpc                        randconfig-002    gcc-10.5.0
+powerpc               randconfig-002-20260504    clang-23
+powerpc64                      randconfig-001    clang-17
+powerpc64             randconfig-001-20260504    gcc-10.5.0
+powerpc64                      randconfig-002    clang-23
+powerpc64             randconfig-002-20260504    clang-23
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-23
+riscv                 randconfig-001-20260504    gcc-8.5.0
+riscv                 randconfig-002-20260504    gcc-8.5.0
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-23
+s390                  randconfig-001-20260504    clang-23
+s390                  randconfig-002-20260504    gcc-13.4.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-15.2.0
+sh                    randconfig-001-20260504    gcc-10.5.0
+sh                    randconfig-002-20260504    gcc-15.2.0
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    clang-20
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-23
+um                             i386_defconfig    gcc-14
+um                           x86_64_defconfig    clang-23
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260504    gcc-12
+x86_64      buildonly-randconfig-002-20260504    clang-20
+x86_64      buildonly-randconfig-003-20260504    clang-20
+x86_64      buildonly-randconfig-004-20260504    gcc-14
+x86_64      buildonly-randconfig-005-20260504    clang-20
+x86_64      buildonly-randconfig-006-20260504    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                randconfig-001-20260504    clang-20
+x86_64                randconfig-002-20260504    clang-20
+x86_64                randconfig-003-20260504    gcc-14
+x86_64                randconfig-004-20260504    clang-20
+x86_64                randconfig-005-20260504    clang-20
+x86_64                randconfig-006-20260504    clang-20
+x86_64                randconfig-011-20260504    gcc-14
+x86_64                randconfig-012-20260504    gcc-14
+x86_64                randconfig-013-20260504    gcc-14
+x86_64                randconfig-014-20260504    gcc-14
+x86_64                randconfig-015-20260504    clang-20
+x86_64                randconfig-016-20260504    clang-20
+x86_64                randconfig-071-20260504    clang-20
+x86_64                randconfig-072-20260504    gcc-14
+x86_64                randconfig-073-20260504    clang-20
+x86_64                randconfig-074-20260504    clang-20
+x86_64                randconfig-075-20260504    gcc-14
+x86_64                randconfig-076-20260504    clang-20
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.2.0
 
-There are multiple advantages of this value coming from the device:
-
-  1) We can modulate the write budget depending on the actual 
-compressibility in the device (and so workloads data). We don't have to 
-do estimation based on the workloads.
-
-  2) We don't have to do the capacity modulation - as in ballooning or 
-shrinker.
-
-  3) Even if the control path is broken, host can write only till the 
-available 'write budget'; so it won't get into 'bus error' situations.
-
-~Arun George
-
-
-
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
