@@ -4,91 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B74BDFF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 12:55:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D1C1FF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 12:59:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26B346B008A; Mon,  4 May 2026 08:55:47 -0400 (EDT)
+	id 7C6906B0005; Mon,  4 May 2026 08:59:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F4216B008C; Mon,  4 May 2026 08:55:47 -0400 (EDT)
+	id 7776B6B008C; Mon,  4 May 2026 08:59:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E41B6B0092; Mon,  4 May 2026 08:55:47 -0400 (EDT)
+	id 666A86B0092; Mon,  4 May 2026 08:59:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EC7AD6B008A
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:55:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 81572897C2
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:55:46 +0000 (UTC)
-X-FDA: 84729734292.20.807E5AF
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 88AA6A0008
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:55:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JpNjXDzz;
-	spf=pass (imf15.hostedemail.com: domain of jose.fernandez@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=jose.fernandez@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 51EFC6B0005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 08:59:02 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E53D81C018A
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:59:01 +0000 (UTC)
+X-FDA: 84729742482.17.AE062E1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0F8FD4000B
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:58:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k+pnsy4f;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777899345;
+	s=arc-20220608; t=1777899540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xkSPJSdtSlIYcN/7W3fB90ZDg2RbpoO3LlLAO8rSbLw=;
-	b=4STovwFOpOhPABv04Tg3eQUwd4W0xH78+SsGPDio34YqO+CKendL3gpnppl6YwnBz8FWgr
-	cTGluFimMnLmAExQoXbrg1CSedZv5z/rzTkODumdfhE3VwQw4vrF+xRFvs9/NbUc9LAIQE
-	2Tsmk1W+waNXaHGOsRhpuEHC3/gGgEk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4rd+k3jiDvPrta9HqIiGVaCUrnheJLxVOfkWrDhyJjA=;
+	b=k5Iie+BHzdtADwNapIhHDOYi2TmMppwmuh55/zzCPjtRjBRyMrgS6/awfWA41Jik1aUQd6
+	EF16DkfT4mIXQTzuTU1ca90KdYuEaxVRTADndt8GT4/aCA+Y4OWXo+Z7aAI+GFlcqg8E6/
+	NqMAT01o0bVF58iGkam6EsEIN4ejAqQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JpNjXDzz;
-	spf=pass (imf15.hostedemail.com: domain of jose.fernandez@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=jose.fernandez@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777899345; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k+pnsy4f;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777899540; a=rsa-sha256;
 	cv=none;
-	b=3gn00FLBWENLjEVqopAEUBrv/MzIDO34AhbM9+/tDc5mWAd0IrCz2NhlI0i3qw7xDK0OU4
-	bAVv920U2bWUfTQQL5fhcIUkwl0PRyxaEd1PrVKtmLAT/AUAbWYFDrDCdeQkEEFjYGRT2H
-	A8t5ZHhuN4LgwLr4z/vmdblqI/R/igc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777899342;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xkSPJSdtSlIYcN/7W3fB90ZDg2RbpoO3LlLAO8rSbLw=;
-	b=JpNjXDzzxXd0csPoMAtWz2LjLcw/qa/YsWVq2sPGYE3pYjuCFWfpWtTxkAaZ5Au38h6yZQ
-	Reye66yAvGCgHQJpUKc+V8vWFj+w0syusJLF2nojx6sZaYIJkLrDMNFy6w1djEq4WDFdcf
-	jnM9u/Mc4D3AD1lMfR9xRAJFdzDqtjU=
-From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Date: Mon, 04 May 2026 12:55:17 +0000
-Subject: [PATCH] mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id
- on swapless host
+	b=NgtwKsxgDZDHKF2hNZeVq0I9o8DU3VRu3Z8tipolzNI5twqBakRlqwQ6h7XMB5RMADaC7C
+	Or/tozIx5JKr64ZAcOFhNQJO3TLa6/cFWMoX1Jv4bU63GvzYVkyRJrEK5KSwcAIrstvbLu
+	lhm9Bz+Ax/g6bvS95qvsnXsZniBRjyw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 223B642DAB;
+	Mon,  4 May 2026 12:58:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179F1C2BCB8;
+	Mon,  4 May 2026 12:58:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777899539;
+	bh=dTNnqcGn0PR/T/HRUi9r3/g0/tDxUH4NaHjL6r0XTbk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=k+pnsy4fWPkXwfVMksDv+bMO+YyWftFmJ0jKoxspeeKx3X88cZjWmGCV5KY4k1Hf2
+	 s/W/gJv9Am5Sp2k27ywUsBH/kLCQSar6mWpoWJocfSZRO/lPdlvCv8z5fVSi9R7Ww9
+	 cWkmFEGgxC3IN3iT5gbpAxLnuK1wBjdX04WntgzGm2+5V4KK2OBklCc7yZJzxgIrIJ
+	 muSGIOXoEeZJNpJLVIelzuqciPM0Gh/9y+F5kDE4wD6NAc1k/K4h0JMnglGjUqA+xq
+	 qwxsorPjrCido/ndEjugddMooAR4PLQ0HqDQ1UJgG5GK4FYrKD/rNn6l3dz7Qqznb/
+	 Vl1FDlafmDQzw==
+Message-ID: <e33d2060-1636-4291-90d9-d715a622f462@kernel.org>
+Date: Mon, 4 May 2026 14:58:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] selftests/mm: ksm-functional-tests: fix partial write
+ handling
+To: Vineet Agarwal <agarwal.vineet2006@gmail.com>, shuah@kernel.org,
+ akpm@linux-foundation.org
+Cc: linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+References: <20260504081638.683223-1-agarwal.vineet2006@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260504081638.683223-1-agarwal.vineet2006@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260504-swap-cgroup-fix-7-0-v1-1-f53ff41ee553@linux.dev>
-X-B4-Tracking: v=1; b=H4sIADSX+GkC/yWMSQ7CMAxFr1J5jUVaRnGVikWSuqmRSCK7BaSqd
- yeB5fvDW0FJmBRuzQpCL1ZOsUC7a8BPNgZCHgpDZ7qzOZkj6ttm9EHSknHkD17QIA1m9IO7jq0
- 5QHlmoVL9rP39z7q4B/m5qurCWSV0YqOfapSEA8f90+pMAtv2Bctw2NyXAAAA
-X-Change-ID: 20260504-swap-cgroup-fix-7-0-ed0fcdb8f103
-To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
- David Hildenbrand <david@kernel.org>, Barry Song <baohua@kernel.org>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>, 
- stable@vger.kernel.org, 
- syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com, 
- "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 88AA6A0008
 X-Rspam-User: 
-X-Stat-Signature: ii5o5mchezpu68trp9d5gkxwjp6z6ar1
-X-HE-Tag: 1777899344-979997
-X-HE-Meta: U2FsdGVkX1+PjUNKNNDntv06rW/emQ8qL/Ooy6ZBEvkI67jQOhaRu0JdCQ1pLr19k8CeckdFNmHfcYmp3Lk0UeGtVyDVCw6dK8FCmeksfXt+4ZcwCsputBJcE4ba+UuInAvciV+shT3qzoxrUv+mA4atkhLVdTmVDvwXDHpfEyc6W7yCPEm9z8oVRSvWpS4BBnQJm6YiThZj5IOO5B5tqC4JBvl5fS4/CSoWMiuehYJvJWfaozkXuDzgmoShYbm1WWsDhGjXtpHQkoUaZTV6F1M99dVUYR0NNWvEqPHMuFS5Q+iVQ2a4LCRB8heVs7rbhFDT4nvW67f6RDMt9HUTkuJoCr1E60M6zIzfAutgwChjh4R8rxtM4O+jH7DTZD0MczHcx2CThpkrgRrJuKhVpMgJ89yg9LQsZOJa9AfMsBny3IM3lBJXSRpq8t5DJaT9cuWKsETpovC4ZEzFsxp6HmwanVCKnZQ+xP8kmswbCKZe5pjm3NVNUV03g2bRxkZk8Ae00nuHLgiqTB8a3NYH+5eWOH8+4Qjd6hevAhrzLv+ncDaJGO+x0cqPJyJsCX67dwmhgoFo0WGw+yN8NTw3tirYOe3nYwrXMg/YK/ku7IosT4rPjOsiJla+OV2UENXVa8SbAAOk8A0w3fKrMnfwPVv2vPTyrs7rNyVO/D4JzK2BPuZ7YIzYuSAYvMFGErzPh0MSysqKdcJL5CLwIsyl/1cPfeZBnc2WizmbjvAhqxvkh2FeCONwQp63pevw4ad4TXTo99z7GIOzsMmJSLdFAg5Ag3NOaoo7LO1jRzmUupjRCxHCvlBqgQxONcY5peeKhHNX8m/DKvzfp4FClXYOM07QIOcxgnK9r4tzEZz2pEKHK/kXjcYG8biuSuPFrEm8SDbCdljYu3eeDzTUtnis1u82JUKRfuQBvQWNAxTQTUErpwL4eGZ9EUbNNPOSVvCQC7SwIT8dXB5Ocr5ZYeO
- qm4xvJX9
- BJblfGszrVf37Lh06xHdDCx5wYNRXXx9ZifOr9HM/Qc7+qef3TJg1VUHZxdR9/NFXC2Ms25L9dzm3j/DYVNfgeZl2rM2Y6M3Vj8Alu0prkWGoQL2CemrOe0z2HZpH8RnR5lRR/Nj6SiFfNUsgfHThWWEjQiX04gCWjXq6c+H2qkrF/9z7/o9KPtH9+PHXqe+2wC4rIr8eBovWfsozfx05HLXAOo8SGdzTZEH5OHu06v0BSl4IaoZ/0vn9l8ocRqtdav8uwVPBz0ux2PbzeElaUjLqHJ0hnAiqj7Sjp3fz6GjzrrRdq6J+sjm/DEUx3cc92X/pIGn9dwxi2PIiu9zOOF4WeeW4QOso69hxiz+nuOQUrjDrJ6fp1Uc4n7JakKjNicO4UzCHE89G45aHe20A7bX7b+wz/+uv1GEwwsEI7XihHO5lkz5jhSHpBMuNsjdSVd0cvsbpw0rjlIk=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0F8FD4000B
+X-Stat-Signature: 69cbu5wb6dm6sh37cxjo5oc8bnnb7j3z
+X-HE-Tag: 1777899539-442403
+X-HE-Meta: U2FsdGVkX1+6c1GCzP8Bq26h6JLrcK4YOjAcjOUBrtZFbTcDOAS6TCkHLr/MLTXN/2CV2SeMo7hHYaaaP/n8xQy4UWeGg5k990Wr8kh8W6/8Qw5zzPhpBrTQliCq01pC5Mff9DJqTkK2NwoncATJYXz2bYi5vtAGC1lpUIS7HAtQw10MrVHIob0kffQcF2BypVgw94ZuMvlmnfYmhQctg/ycjet6pLXKhseAWDBU/l4VOGjP2gYI2dCfN6Z0vrJyGkAu6VhNP2uCu7iE6HTgWP2Xb8btX8L4CFpC2j70+WlpcgLXqVOp3mzXhjErD5G7NIFtah8LVhMgchDh7yOQmu1HjRqtI22xdQkU7JufHAUiYR6kg7sNNo7SPdGTubjHhGteVys6nKOohU+NYli+sY1AbwahBdBqzpVu9Ln+uY7nTbW4ruiLNHenBliPzIFS91Hu3R2M/1c3z0ipBly6QJ2ITxiqHzlulKrSmDSAPQ6bVn91/hK1aNDjgg0UhKImhgF8QIMJORj0n+9VzbMbYHfhw+VdahyrFTxoQrM37+1XSdWOnWXNP/UbiFIW2P6KVw4s70kLD3BRJfvx6mDsox/uyfJbOpEWgF6yR4MYgXdkR9qFxOWliB4R2Tb0EQuU/y3Hxz2rOJjrZFY6iOkcjp/qWlyXhBVC1URpYHmOwd3pW1K4qK2USQnBk7RBwPzvgs7yC57TQyviSFy+Z09kIP/i2FqKnDTJ2XfRRE7y33Pqz2fP7+DCPsC6kZ5jjcuboyhxKKQGw3qI9prJx350tsrGDmyM8EReODV0zBge4CxKLw/YLs0PyayTeq8dJxy9b6YjuJ+YCB6pue9qDZvh/SClcoiDceh72NrOBbF6Wgu63NaXT9o3uarxEc6VxuwtQpottLU14u7Z98cg2G2E/00OU+zgpFsJ987QlcAlPZr+fhISQP3OqBALJLuW7ritvW6skv/x29EyUUOUva5
+ yL31GVTB
+ nF7rxfJ//SPsaA9P/JIdcpXgF22Se3AthyFYmi3d/kyBLUywrqAs3IbOaOyZTIqXeKwukOtkqbV5BctF5PtJEU3XqXzuBYnHYtBFAfc0IXt3F8AWqxGHqF05Med//aVukgGWLrNKA1jbi2mzvPRXjrOJHtRn5bsWkRPYp0cazOf6oRz8G38xFBCwQ0cW6WYxdwipPXsMBl0Kg6smHjc8MnFxPx6QikFrRg4KcMzSCePpAxGauUU2WJNBsLmn9BTD3/Ts9L8rmCf3o9RGexrqNoMb3gVlM6FkjGBfYCPGybf1nM+jZI7uxMEjkq3aRWEPTnuBWEcwZiKeBN9ttDHnE67BHpKz3qVSUJrQfJTkkVdgncouvCZyp5x943Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,70 +140,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-lookup_swap_cgroup_id() passes swap_cgroup_ctrl[type].map to
-__swap_cgroup_id_lookup() without checking that the type was ever
-registered via swap_cgroup_swapon(). On a swapless host every
-ctrl->map is NULL, so __swap_cgroup_id_lookup() dereferences
-NULL + a scaled swp_offset().
+On 5/4/26 10:13, Vineet Agarwal wrote:
+> Update write() checks to properly detect and handle partial writes.
+> 
+> Previously, the write() calls used <= 0 to detect failure. This
+> condition is never true for partial writes (ret > 0 but ret < len),
+> so partial writes were silently treated as success.
+> 
+> Fix this by verifying that write() returns the full expected length
+> and treating any mismatch as failure.
+> 
+> Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
+> 
 
-Since commit bea67dcc5eea ("mm: attempt to batch free swap entries
-for zap_pte_range()"), zap_pte_range() -> swap_pte_batch() calls
-lookup_swap_cgroup_id() on any non-present, non-none PTE that
-decodes as a real swap entry, without first validating it against
-swap_info[]. A single PTE corrupted into a type-0 swap entry takes
-the host down at process exit.
+Thanks!
 
-We hit this in production on a swapless 6.12.58 host: ~1s of
-"get_swap_device: Bad swap file entry 3f800204222bb" (do_swap_page()
-being correctly defensive about the same entry) followed by
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-  BUG: unable to handle page fault for address: 000003f800204220
-  RIP: 0010:lookup_swap_cgroup_id+0x2b/0x60
-  Call Trace:
-   swap_pte_batch+0xbf/0x230
-   zap_pte_range+0x4c8/0x780
-   unmap_page_range+0x190/0x3e0
-   exit_mmap+0xd9/0x3c0
-   do_exit+0x20c/0x4b0
+-- 
+Cheers,
 
-syzbot has reported the identical stack.
-
-The source of the PTE corruption is a separate bug; this change
-makes the teardown path as robust as the fault path already is.
-Every other caller of lookup_swap_cgroup_id() is downstream of a
-get_swap_device() that has already validated the entry, so the new
-branch is cold.
-
-Fixes: bea67dcc5eea ("mm: attempt to batch free swap entries for zap_pte_range()")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/69859728.050a0220.3b3015.0033.GAE@google.com
-Assisted-by: Claude:unspecified
-Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
----
- mm/swap_cgroup.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/swap_cgroup.c b/mm/swap_cgroup.c
-index de779fed8c210..95c38e54dd587 100644
---- a/mm/swap_cgroup.c
-+++ b/mm/swap_cgroup.c
-@@ -124,6 +124,8 @@ unsigned short lookup_swap_cgroup_id(swp_entry_t ent)
- 		return 0;
- 
- 	ctrl = &swap_cgroup_ctrl[swp_type(ent)];
-+	if (unlikely(!ctrl->map))
-+		return 0;
- 	return __swap_cgroup_id_lookup(ctrl->map, swp_offset(ent));
- }
- 
-
----
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-change-id: 20260504-swap-cgroup-fix-7-0-ed0fcdb8f103
-
-Best regards,
---  
-Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
-
+David
 
