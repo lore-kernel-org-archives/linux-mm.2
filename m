@@ -4,105 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF25FFF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 03:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD5CFF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 03:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85C196B0088; Sun,  3 May 2026 23:48:15 -0400 (EDT)
+	id 3A87A6B0088; Sun,  3 May 2026 23:53:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 833196B008A; Sun,  3 May 2026 23:48:15 -0400 (EDT)
+	id 3590F6B008A; Sun,  3 May 2026 23:53:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7494A6B008C; Sun,  3 May 2026 23:48:15 -0400 (EDT)
+	id 2476C6B008C; Sun,  3 May 2026 23:53:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6650D6B0088
-	for <linux-mm@kvack.org>; Sun,  3 May 2026 23:48:15 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B97F81A09DC
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 03:48:14 +0000 (UTC)
-X-FDA: 84728354508.10.E6FE1D2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 111A36B0088
+	for <linux-mm@kvack.org>; Sun,  3 May 2026 23:53:32 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F9EBA0937
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 03:53:31 +0000 (UTC)
+X-FDA: 84728367822.12.B793FE5
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5ECFF40002
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 03:48:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OZggEc9d;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777866492; a=rsa-sha256;
-	cv=none;
-	b=ldLQJNdpIfgXO2qkj6szPUDW+l1BCTtWQXWSjI9pK0kiqFKVya0tD1e+L7UxcMQ/1Is5Ge
-	lMTshF2U/H0Nq/cDj6Duwu2fzxFxSLeMTfgH3qYCvY/lYnVaP1b0DFOKRtLlHauT2LQIJ6
-	kttyfH5X8F5YvOIJd1zJKndanTHgsks=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OZggEc9d;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+	by imf29.hostedemail.com (Postfix) with ESMTP id 376D8120003
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 03:53:29 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DggAExdJ;
+	spf=pass (imf29.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777866492;
+	s=arc-20220608; t=1777866809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0d34gXFxHlvZ/8OcBwFmPS8KNdBuUnK/1QEoQcHntzY=;
-	b=e+Z2/egzSoZniFqBbqaNPFe6gIfzx4sDcptOIufvw8ZDU5GpDSBq9PJATnpy2XbY6vuFEs
-	fb3eiWqCl+RQdwr6pJWfpRo4REK2M3t1xI3kfGoqtBySxZEdeE9Rbd2xTImWbcxq/oIsKH
-	zfSb4QjVo6ImcVQUIClGBDphs+4x4QY=
+	bh=nuwaC1QCoVaWPCWlh6YJVeUyAviJpTjgkGZ69+fjPic=;
+	b=uhMluoPtvmFj12iexc8//hVS0qzrBaQGDA8RZlhPgI4fzonAO4E8VI+L0ckQW5MnjJnPUh
+	XPIZyFU2FH4fV3RZlqAPAP4mSpbVAQ01vztwKj4JdK2dlocRwEwcvyh04DkbXkq9bgLDUM
+	8YT4l6beWRZnX9F4elHVUGu8eiWWKUo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DggAExdJ;
+	spf=pass (imf29.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777866809; a=rsa-sha256;
+	cv=none;
+	b=Y9hTe4VlCRyxhAFxuvJOUGMdLBgHQlwGfKHh7KGVxVlrJNES1YofmqmZGDEo+udYaXTO0U
+	m3r1mVIXUuoBrXq+Vx6PvEBApZQRQmEtOyxWl9sAaA690hPuZCiChsZ2iNLXNA2vbUPZL1
+	dniuV1dIVkGuLyJnNwXjKmnTLIiHEGw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777866491;
+	s=mimecast20190719; t=1777866808;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0d34gXFxHlvZ/8OcBwFmPS8KNdBuUnK/1QEoQcHntzY=;
-	b=OZggEc9doR79XCcBLnTnSnAFsvaprK4Unx28P+hE5wSjG41VjpoBUy00eWzk9DIM8DQ0nA
-	gWCmQxKe9wENxtbhxbF2OBB/tNM1JzTMbHpjVpMXZhDhJo9UiKqgzKb8Sj3fr6CfsYa83E
-	Pfq7G4If6EQemi7FV+5bSKxdXd11lMA=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nuwaC1QCoVaWPCWlh6YJVeUyAviJpTjgkGZ69+fjPic=;
+	b=DggAExdJ9t/QzWWM4gwTcQqK9557AFouNO/DfqYftcycfZ4Dp6gVThzaghN1hK+YAVPRD0
+	unu/NQAO80gPQi9wTUBhzaH9nuhL5Tx/dQ5jMk/EqfR2n47uZEvyagTJPo+vCxzO8tmX+J
+	pAo1YZBQ714pb1pXxTg5S+H6Ah5fJek=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-403-rrojGCpOMGa9SNP14_RRqQ-1; Sun, 03 May 2026 23:48:10 -0400
-X-MC-Unique: rrojGCpOMGa9SNP14_RRqQ-1
-X-Mimecast-MFC-AGG-ID: rrojGCpOMGa9SNP14_RRqQ_1777866489
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7bd5c9e1826so12993347b3.1
-        for <linux-mm@kvack.org>; Sun, 03 May 2026 20:48:10 -0700 (PDT)
+ us-mta-83-BU2D3sUJNeyaE5RNNLmrJg-1; Sun, 03 May 2026 23:53:27 -0400
+X-MC-Unique: BU2D3sUJNeyaE5RNNLmrJg-1
+X-Mimecast-MFC-AGG-ID: BU2D3sUJNeyaE5RNNLmrJg_1777866807
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-6583252c117so5922540d50.2
+        for <linux-mm@kvack.org>; Sun, 03 May 2026 20:53:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777866489; x=1778471289;
+        d=1e100.net; s=20251104; t=1777866807; x=1778471607;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0d34gXFxHlvZ/8OcBwFmPS8KNdBuUnK/1QEoQcHntzY=;
-        b=koxKZP5cWexULrWxMc+u4GC8HF+6gzvbsQ+9u2nLst3/MxojYXxa2RxDE51cru+dC3
-         apzhDGg1q7QOUTeafnIBFB8jFWxdrqQDu1VukQ+9Dmok9GeBPh3nkqBuIDfxPB/fy6BT
-         NSOjNXrFNINMJ+Xj1Vtpby40VdpkaLVRS51dQ+DiX//wCDY691cU3VUpy4EUcn0k+Sjb
-         eB8OtFa5qcY6Z44ntfdyQRsDAEvkjFyiheT6OYblM7tBcS2FcX5Lz8KMJAkSf2Zlq2hQ
-         ctlfbs78iGic1r+TapLg8Xk83Yu6/rk/y01FnoD+zwYDMP5xAGtB3Qhfg1YmEeH+XHPI
-         /bNg==
-X-Forwarded-Encrypted: i=1; AFNElJ9kWDoc9vCRgJYclUY6DoN0+6LouwZ9JuJPwErC93JX6TBjPT6qP7z+WZzRowxAhHvRZm2rfEhygg==@kvack.org
-X-Gm-Message-State: AOJu0Yx8TQQ8XhaclbBpmn1L/iNXiJoskTEpAvZAMXhsSFqNCmbl2dm1
-	HNt7AMB7Nw8pmFjZ9GIYnQZtThPgLtrKtI5+C/N7OyzzXLT3rQubarVbFMSvkplaNuaJIJFmY+g
-	vcmHPrT90H4VRjMMq4YgGSFVmbA3bcFkM10W0E7CPHc84E84EOQY3
-X-Gm-Gg: AeBDies8r0uTTkijGBhjBMEu6quRqC54Qu3tJA09nw80VNqTLf/IJpOwDKtWHV2dImI
-	tEUWBSSyxDxcQZ1TFFa5uTC8fmMQachJ4hjORy1CI7wqxpCbQLqfqtFi+dfWjJenOPWXDl8R07f
-	rObVOhNX/hjwKDaKMF07FaLM7ohFOl9Jo1YbltoARLEFk/DCs1Z/G25TJ6J2AON60AwvOA11XIt
-	wQZyxwr88yxwHSca+r3sxqQ4jYLmA7TST3W09bivrqRpnVB7Ggp3VaASy1KMKk6qG7lTkbOZnZR
-	WcIyxRAVRM6mWDfOvW+4IgGr8iSbQiY1engd6zGKQpDZLDHme53e4NJQt+Fpgqnj3kJbsaZ1p14
-	SC7Htis6/P5w6o1M+Ps3vzKS9Hu5KbOTvs1CtHaIg3vHleaDW5ZoHtqAgG2/5/ILmH9U=
-X-Received: by 2002:a05:690c:d85:b0:7b6:783f:2122 with SMTP id 00721157ae682-7bd768ef380mr66369047b3.9.1777866489506;
-        Sun, 03 May 2026 20:48:09 -0700 (PDT)
-X-Received: by 2002:a05:690c:d85:b0:7b6:783f:2122 with SMTP id 00721157ae682-7bd768ef380mr66368697b3.9.1777866489040;
-        Sun, 03 May 2026 20:48:09 -0700 (PDT)
+        bh=nuwaC1QCoVaWPCWlh6YJVeUyAviJpTjgkGZ69+fjPic=;
+        b=iMaJL459yDtS3iwXmry12rk+NeCrLeszLJ82KnItBZRmQzYXe43FJOxy1Ht+cJB+7v
+         8w4cM6TnGgsS8yP2KI/7lmCwwHotgYsc9Xw0u7r/49NH36pvUiojLSWEvv2VhHe/jYMS
+         yOacLX+SiP5awSLKvOGYVR2MVWrVoFNW9BcNS+A7B1dnsYjoHD+y0gUiqCAcJ7cxpu+I
+         8D7cuA1XHG/yTQ4Pb1o+Q5/s3P0J1h3EN5SpuS0x1r1I+/wp8UsbIV1mdPO9GQnbBzLR
+         G8v2SaLJfIoWB/1SAFB3YKQuzMv5O2xnKIQFMR7DuMeB4kLiHd5JvPEGTp5tMkK1/4n3
+         tB2Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/TdfaTiE6MGkLd0B/BU4LxEUX29wj+ozGAkwRE5ClaX0dGKNq4CxWg8sHCXTjynY+qlXf/0ZzuKQ==@kvack.org
+X-Gm-Message-State: AOJu0YzQqG/GZNk2q9TZihi0VH4rX8Gp0vOdBqPicWE3qc04LBcvXExN
+	+l6vUW8CQTAss4amcwuXmePMKNnNcag60fiOrLADHGgWBoFXHBeP2p22Lz/gLrnM6tK6nSe1HJ2
+	dLFbvp4oC7WbfFwlEAi67Co0latE3JRDGK7k6RMcZaLs/ydf0sZhv
+X-Gm-Gg: AeBDievOcDQzCJoaO4ZkkeOwj0U9ClWu6zkeWZK6iCuhrJ/rM+bqKFiUah14SLabeha
+	ESV3S8ONQWOoRT2BtlcUNB3XZZD8atV91EEDdylxspC7RoGsevLlQvU/zqRr8/H300Msg/KQ+Yf
+	MUd8hRRpoWoP3hVnQ4VEk+bz3xiGbcHgTWwy9LaDTqUNuxWmnGQfqa3IIDS+VQAQELXCP9dNEVj
+	UoC9qOrnTHMc3LpElC1NMC7sn2quLDOsBniG9AUhAovuYzPTHLbduZmANppFymCXFJtKGJhsZK+
+	rH1lMZcYXzOJL3zrigsY0jaASXdKYpMdBJBXcJSRi1F0xDV13U4zSzBI1eRW51XZllzTgOswPLt
+	wBbApIRtVRRAsPuQyq0YAARwctaLsCLY+U+lK7glXbqZvS27w0sH4TnrkyaJEnZi33m4=
+X-Received: by 2002:a05:690e:13cb:b0:651:be50:af09 with SMTP id 956f58d0204a3-65c3d96ca98mr7541963d50.3.1777866806610;
+        Sun, 03 May 2026 20:53:26 -0700 (PDT)
+X-Received: by 2002:a05:690e:13cb:b0:651:be50:af09 with SMTP id 956f58d0204a3-65c3d96ca98mr7541955d50.3.1777866806149;
+        Sun, 03 May 2026 20:53:26 -0700 (PDT)
 Received: from [192.168.178.105] (78-0-206-107.adsl.net.t-com.hr. [78.0.206.107])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd66839f63sm44701847b3.31.2026.05.03.20.48.04
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65c2e8b2e55sm4980740d50.20.2026.05.03.20.53.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 03 May 2026 20:48:08 -0700 (PDT)
-Message-ID: <aa778cfc-b7f8-4100-89bb-d2b2ef8e1138@redhat.com>
-Date: Sun, 3 May 2026 21:48:40 -0600
+        Sun, 03 May 2026 20:53:25 -0700 (PDT)
+Message-ID: <b3b5cfc6-e61f-4904-ad2a-dc1f53f04838@redhat.com>
+Date: Sun, 3 May 2026 21:53:57 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/14] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Subject: Re: [PATCH v5 02/14] mm/khugepaged: add folio dirty check after
+ try_to_unmap()
 To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
@@ -121,23 +122,23 @@ Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org
 References: <20260429152924.727124-1-ziy@nvidia.com>
- <20260429152924.727124-2-ziy@nvidia.com>
+ <20260429152924.727124-3-ziy@nvidia.com>
 From: Nico Pache <npache@redhat.com>
-In-Reply-To: <20260429152924.727124-2-ziy@nvidia.com>
+In-Reply-To: <20260429152924.727124-3-ziy@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: J8Dp5lX2-pbINriTHc41xG5427-5fNQFUDVjhE0yeqg_1777866489
+X-Mimecast-MFC-PROC-ID: HcPj7DcVLX9YhdTcVKl4o37mVtn0P2xH5LmFJMhQoVs_1777866807
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: r5tukypem5doow4yg9iqg63s9bnn3pmb
+X-Stat-Signature: d6ha8djhfexa3daq8jkoki1fw6jj6gww
+X-Rspamd-Queue-Id: 376D8120003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5ECFF40002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777866492-448192
-X-HE-Meta: U2FsdGVkX1+coEwLSPCtcd1lRreaP3wBwY8Q6o4wekET+DSi2u44A5cCArLGbPjiewu1h7xwKS2X8Dp6hYB4hpRJDawu1TodD1XJiKOMGXlYnHvwPsxZw7zT7Ho13a/WMiHM0VzqipnZ2sArpqiJqasZCsVPwVeyWzpIuAArE//eG4QOQH6I5SZrwkl5LvWCdWIi4b96aA99NxTulkMhCTetv4TV0xDrx12sQsF7/aPuVLpL9E4JxY4xTcUE1VkxLHNS8sDGv+oBJkoxVq3SLiECYEe75vPptxNhEGQZJOKVs3nzRWy7wI5zD96Bf/tfG4iujcO1ogltDUZx9STD+Bik6t4JanHwnAe9Z/rH6YeSmnAaipY8M9Q6VDkMEAs5edQxAh3tWmQLcH0RDZYw3YaSTotCJhPrl9Gv47ptRbBXUBGvvenaCypj8pqwe98RafNe9LUjflhE/AxouUW/ZMnYWkRtm5CsmJSFIeqVYElE+3kRHR1xbTPfYXASovmMaqVeKie9F8t6DdkEWxk3OOqeD/Qu3GKkz6pa0w2dT0yurgxU3wscP0+ZtDVuFnyh2qcP4AkVeAOP1S5bsgYymh4FHeV+RLME8GG3kcfx0YnrzuN22C59ZWyclCdASLgHMYdQ8h8cKpE9y8ZMfKTQ+zh4ZUgxfSR9UvTjnEt5jlq2uHbmaXJt3hFqOTkRbwBij4zVUl0lwgkuTzxrmJ2ahvCB6w8o/HcWy7MNPx5Rtdz+VHrb9QNYAOY/k4CWOVpjqGJdhX/ujoaoUU6LMs3mssypwIfoyTs06B/9LEC4knoF07UTnac36kS4Kt3c4lAi7RTLV6K7Se8AnC28Ddrmpr+SZ/MPFfjGLoz1xSjGLiZX4e9x/H3P8B3869PorV2msK+Rd6VnOBN1cwA2T7dxmMcTQ8/ic280W+HisxsU8AldnCfF+mu41SKzlpiBoPTZBfREfEblbKy4T+DPlAx
- OSahUPj8
- STJGdXQiW1OX81t+2C6k/AurKVggu802ALx2KXBiYS4xe8SWxGpt8PJ4EhoELNAhRLHHBmfKpH4ReAI93fODNAP7e6KWcD5aijnwbQCcRJjBubu4ZDZsbgpI6mWs0QT5eSh2gpOXZxNc3cYRdy7/uEWsSYR+B+5nJuDcLXUFibipnsPRec9YQsLuuGVKxz4UPRpBzTHriUPKPfnZlSszxBddqbbggjTQVYOOvW57DzACBFU6Mc4jueDnHZC4KnlOBLpuWI6qljIjHuKwz75iIFn6SS/EoZfD6boJIclQNUXtAz1oyN76HSCf1WQiTMCJ0dSh7xDLMAXR7GcVcXK853T1x/RBWHpXjA0n064h4Ij7ohaIdiNVQbmNG52Vdte89UaIa6H1f4j+qwuYARc+lYY0Z6B3xQBP2I7O70Vi/XzcHUZXJ5kecUM5bxdvHqoyBJog4vRuXbZBCYAtWkokdsb2FwABy9Xirmy/aguHWNOY/dMPKRkngMsJeY0wnH8SarMVGd+ZBKUf77MEjYm0EBv5AA/UT6ZkOKrUjCkpf1dqL3KM=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777866809-782313
+X-HE-Meta: U2FsdGVkX1+eaFHXmUGKs8D4RAycYiBhNV6nmgb4lbtBVcDSaH6OMy77LHRdlInjGNX33cNc/FbyojeaamFsHsk3NySH6ZIDyyrK2+cD6ZUR8UENfVuPAjQl8Js8FfgMYws2xHUxql3IYBhgwWDWrytKn8PPwjo5vJcOO7+2Bv4HuKXOJ88Cq4HKfeVai5BVjNi2bCGhVbUtFZtEb5/tyOX3qGawKbBHyZLtNKQJnbIJTyfYhjOggCGXwsEc+dtO26R9NqW9zipYiTM7JxwMNR0t0NCQpl+yE2rxbi7lcBTLhwiJYDb55MPT3uDVf9iCCTc3yP+sjQvFT9o/wwBiVinyPE/poMzdUEk5Rp4/S96SRCFWJ7SJ6cntAp9fKdK+fzb4pSD3Zx2ak0VQKOHnQsOqusNi1MnvUQFBgNHBxk9kTbam5/RHfYBl8XFJpZ/cNkuPh9xX8h9V/AVHlSbIbx9c2H4b3iuUzdi+S/d3m0U5i+dtAh3JHkYGzqXlBmnDAodUZxSwcrZoIBjnVYzS3eCPRgucNT7jFrm77h5ASSC846tKnSRL5t4xn7YS9JHHgb51eefIyF8unVNQ9RJauTSIVrgElNGVeQ+uTEg6l9ZmzXuFTZofXW+Cw2WyqZsb0sNPqM/Zv2i7rbRNQn81amrNQz7PLQR5rNPfadrAmDmYL5XafTkqJaS+cTmcG6uaDP7EF9kITOTToDL3+TnkpEmYeNyVIaE8FT/8QTyVFvsY/w5ITErZNjGpe7HwjHwdpyp1QryNL4mKtUj+85ndhVc1nSgP4nlhA9JB53+TuFF8Y041hsDZlTS+gCw161guowcf5QxmhDFnJV07borLYEGt2mYM7V3Q6HcFVCU878j3N7AjNhTh3diJkrcxGzO2uf0//nyBD9x40fBIveX6qb5FMCCuic3aJgbWCPixyEAjEVFNBdCjh/edcUGFYsKoRsgMSvwMqhAsBBCejZk
+ +ztvIEyq
+ voraFH5+01oMhe/+ok+48gWsk8K2IzU3Owu80mONbmqwYvze6YNgA0tVdrM24Lfv43l4NLQKtEGJFeJwc2M1CJSQllI7/80vCUYi4m03W4EwO5kRjDDsNzpvCFgHNC/uMS4YCh6WrGhHPmPj4BXVO6sn7xdweTjas2t4QxpgkNq+lpOveZICyDn8C483egdOhppkIDEVxZZ/p5DgSew4PxVu/pFJt1kdpH2ulfiVCdMVUDKVfhTRZGcvwN8hB0KW7SXTgGOf23/cJSMH6V5hShMVzuiaUH8mpBARW8T/d+LmuHXEV/n4chkcLCnlp5NhcKcemWNmaG+rvbpyqoMnrMQVENs2hsSsyDhWv4xbqZmGCwHShsJirk/Z4Ipc96+cwIameqY3PIC1h5oVtJpVdzQ79VOSTAzlH0c0u6AWDjyQ9D7PaR4ACO/gtleZu/j7cYxOAt1qs1GbN/UaNSas1/Z6+WuEfW5L/AKNX6D3Q9EkBFW4WoVuKDAHeUsL85Z7TzM6R6pMlx0AyjGmD3rWKsiAgVtqkuDbtgwKK5BBXUfgkIRqFSNVy+xngMqNffauNOmdb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,92 +149,84 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 4/29/26 9:29 AM, Zi Yan wrote:
-> collapse_file() requires FSes supporting large folio with at least
-> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
-> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
+> This check ensures the correctness of read-only PMD folio collapse
+> after it is enabled for all FSes supporting PMD pagecache folios and
+> replaces READ_ONLY_THP_FOR_FS.
 > 
-> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
-> 
-> Add a helper function mapping_pmd_folio_support() for FSes supporting large
-> folio with at least PMD_ORDER.
+> READ_ONLY_THP_FOR_FS only supports read-only fd and uses mapping->nr_thps
+> and inode->i_writecount to prevent any write to read-only to-be-collapsed
+> folios. In upcoming commits, READ_ONLY_THP_FOR_FS will be removed and the
+> aforementioned mechanism will go away too. To ensure khugepaged functions
+> as expected after the changes, skip if any folio is dirty after
+> try_to_unmap(), since a dirty folio at that point means this read-only
+> folio can get writes between try_to_unmap() and try_to_unmap_flush() via
+> cached TLB entries and khugepaged does not support writable pagecache folio
+> collapse yet.
 > 
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->   include/linux/pagemap.h | 26 ++++++++++++++++++++++++++
->   mm/khugepaged.c         | 10 ++++++++--
->   2 files changed, 34 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 1f50991b43e3b..1fed3414fe9b8 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -513,6 +513,32 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
->   	return mapping_max_folio_order(mapping) > 0;
->   }
->   
-> +/**
-> + * mapping_pmd_folio_support() - Check if a mapping support PMD-sized folio
-> + * @mapping: The address_space
-> + *
-> + * Some file supports large folio but does not support as large as PMD order.
-> + * If a PMD-sized pagecache folio is attempted to be created on a filesystem,
-> + * this check needs to be performed first.
-> + *
-> + * Return: true - PMD-sized folio is supported, false - PMD-sized folio is not
-> + * supported.
-> + */
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
-> +{
-> +	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
-> +	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
-> +
-> +	return mapping_max_folio_order(mapping) >= PMD_ORDER;
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Probably a stupid question, but I dont know FS thats well.
-
-Here we are checking that the max allowed folio order is greater than 
-(or eq) to the PMD_ORDER. Yet the function asks if PMD specifically is 
-supported. In the future could we have some FS that does not support PMD 
-orders, but does support larger orders (eg. PUD)?
-
-Other than that. LGTM
+LGTM
 
 Reviewed-by: Nico Pache <npache@redhat.com>
 
-> +}
-> +#else
-> +static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->   /* Return the maximum folio size for this pagecache mapping, in bytes. */
->   static inline size_t mapping_max_folio_size(const struct address_space *mapping)
->   {
+> ---
+>   mm/khugepaged.c | 28 ++++++++++++++++++++++++----
+>   1 file changed, 24 insertions(+), 4 deletions(-)
+> 
 > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index e112525c4aa9c..6808f2b48d864 100644
+> index 6808f2b48d864..71209a72195ab 100644
 > --- a/mm/khugepaged.c
 > +++ b/mm/khugepaged.c
-> @@ -2235,8 +2235,14 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->   	int nr_none = 0;
->   	bool is_shmem = shmem_file(file);
+> @@ -2327,8 +2327,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>   				}
+>   			} else if (folio_test_dirty(folio)) {
+>   				/*
+> -				 * khugepaged only works on read-only fd,
+> -				 * so this page is dirty because it hasn't
+> +				 * This page is dirty because it hasn't
+>   				 * been flushed since first write. There
+>   				 * won't be new dirty pages.
+>   				 *
+> @@ -2386,8 +2385,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>   		if (!is_shmem && (folio_test_dirty(folio) ||
+>   				  folio_test_writeback(folio))) {
+>   			/*
+> -			 * khugepaged only works on read-only fd, so this
+> -			 * folio is dirty because it hasn't been flushed
+> +			 * khugepaged only works on clean file-backed folios,
+> +			 * so this folio is dirty because it hasn't been flushed
+>   			 * since first write.
+>   			 */
+>   			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+> @@ -2431,6 +2430,27 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>   			goto out_unlock;
+>   		}
 >   
-> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
-> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
-> +	/*
-> +	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
-> +	 *
-> +	 * TODO: once shmem always calls mapping_set_large_folios() on its
-> +	 * mapping, the shmem check can be removed.
-> +	 */
-> +	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_folio_support(mapping));
-> +	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
->   
->   	result = alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
->   	if (result != SCAN_SUCCEED)
+> +		/*
+> +		 * At this point, the folio is locked and unmapped. If the PTE
+> +		 * was dirty, try_to_unmap() has transferred the dirty bit to
+> +		 * the folio and we must not collapse it into a clean
+> +		 * file-backed folio.
+> +		 *
+> +		 * If the folio is clean here, no one can write it until we
+> +		 * drop the folio lock. A write through a stale TLB entry came
+> +		 * from a clean PTE and must fault because the PTE has been
+> +		 * cleared; the fault path has to take the folio lock before
+> +		 * installing a writable mapping. Buffered write paths also
+> +		 * have to take the folio lock before modifying file contents
+> +		 * without a mapping, typically via write_begin_get_folio().
+> +		 */
+> +		if (!is_shmem && folio_test_dirty(folio)) {
+> +			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+> +			xas_unlock_irq(&xas);
+> +			folio_putback_lru(folio);
+> +			goto out_unlock;
+> +		}
+> +
+>   		/*
+>   		 * Accumulate the folios that are being collapsed.
+>   		 */
 
 
