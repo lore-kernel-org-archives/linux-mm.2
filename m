@@ -4,147 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1F04FF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:04:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CBDAFF886F
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:04:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5EA86B008C; Mon,  4 May 2026 09:04:08 -0400 (EDT)
+	id E377F6B0093; Mon,  4 May 2026 09:04:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E364C6B0092; Mon,  4 May 2026 09:04:08 -0400 (EDT)
+	id DE7F06B0095; Mon,  4 May 2026 09:04:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4BCC6B0093; Mon,  4 May 2026 09:04:08 -0400 (EDT)
+	id CFF156B0096; Mon,  4 May 2026 09:04:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C3B906B008C
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:04:08 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7ED81120154
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:04:08 +0000 (UTC)
-X-FDA: 84729755376.20.C8E5A68
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 00730160008
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:04:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JL/XmGCb";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vznWPr7E;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JL/XmGCb";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vznWPr7E;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF58B6B0093
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:04:47 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FE19A01A3
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:04:47 +0000 (UTC)
+X-FDA: 84729757014.18.BF5A26F
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2C700100003
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:04:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=GmAQ1Pmx;
+	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777899846;
+	s=arc-20220608; t=1777899885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
-	b=NLtt0VqZRVTaZ8U71hRiu/AGv5uOX/PDX4AlOIfDNeT/ZcpkHNJGmsKXEZB+P90xNrXgG+
-	Cp1xKDP9OUWpDfL24TGzCLxoeKTcOZGLWWH4SPURKOLbR9dCPgSRoBjQRWSY9z6SKj31h5
-	uxef5qKvsGpDVF6COiyN8oHZfdAI8rc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JL/XmGCb";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vznWPr7E;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JL/XmGCb";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vznWPr7E;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777899846; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=pO3syqtmoh2yTQJQGazJgax2lJ/9P8ITd+L4ibUvkII=;
+	b=1OOK74J+xgj1twzlhX8bgrBk+aR/jS4ubjUuOA88JGoPu95U+CnlhvWqDb2QcXCnBGvFR4
+	kMewWXm4lsodLyuzzL3mbF+DEMOpJdMIH5UscsiEqAROPL6BxnMLjzi8cIS3LFQvNnv9IL
+	Indd0ZnlKIVGYNP0ZpfmObIcuy0Z8QY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777899885; a=rsa-sha256;
 	cv=none;
-	b=orsKjfmY/ls61AUbd2swnc8MPKPetffHsdiKRr7M/WitUAiAZre4ANR3IMXUb7Xodn2FHv
-	K4UIFt70TR6v8YoJ33FvMFsPpUy3ffEj58mh9jAnwmEUujND4HHa0knTYH28UdjNw8cFzj
-	b8LC79BE0yidiaV7R0xMKsqxj6cwOLE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0FB5A6B1DA;
-	Mon,  4 May 2026 13:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1777899844; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
-	b=JL/XmGCbCu7Pn0UFm+jahisb16WhHFai6O+3lv7XPFMu2xae2FLJC9y73Ya7QQ1c594PSp
-	zIul6PJ51MjlwxJvLAh3JoWQaiH8bSjtiZuj66e8SanvgvDhY0yDxgFLxCNajU06uEybXH
-	6z1rmn93QXxpKSaJmJiYKMHvK8WYKX0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1777899844;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
-	b=vznWPr7EkkLaMX6V8cqN+5Swo1ue1myMCE36D39F6CcK3OfL/g2gaHWLp5fMsKlngpFtjp
-	hjbl6G2bCuN8gcDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1777899844; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
-	b=JL/XmGCbCu7Pn0UFm+jahisb16WhHFai6O+3lv7XPFMu2xae2FLJC9y73Ya7QQ1c594PSp
-	zIul6PJ51MjlwxJvLAh3JoWQaiH8bSjtiZuj66e8SanvgvDhY0yDxgFLxCNajU06uEybXH
-	6z1rmn93QXxpKSaJmJiYKMHvK8WYKX0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1777899844;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lBtiQAQr6P3N+MHRplixCzeobIB5oib2P5/9uPnbyH4=;
-	b=vznWPr7EkkLaMX6V8cqN+5Swo1ue1myMCE36D39F6CcK3OfL/g2gaHWLp5fMsKlngpFtjp
-	hjbl6G2bCuN8gcDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EFD4B593A3;
-	Mon,  4 May 2026 13:04:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id UPmGOkOZ+GmDfgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 04 May 2026 13:04:03 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id BFC89A078E; Mon, 04 May 2026 15:03:58 +0200 (CEST)
-Date: Mon, 4 May 2026 15:03:58 +0200
-From: Jan Kara <jack@suse.cz>
-To: Barry Song <baohua@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
-	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
-	youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-Message-ID: <n5vsmp6ingbhfztl6wzcwmrz56gkkfbpzardk43scr7rcgqsw5@evtnov34c5bt>
-References: <20260430040427.4672-1-baohua@kernel.org>
- <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org>
- <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
- <afTpoL3FklpQZNMM@casper.infradead.org>
- <yezmezj26xntushmylductlmytfgvwsnbnzlhffkfwugfxkt6m@gleq22spziyk>
- <CAGsJ_4y8JtCxEy9hVxVd8eaf8D9WC8BcRQp9afUVu=FJA1-awA@mail.gmail.com>
+	b=T/V634CD4HXvhs64DeoZWHTLWyxfzSxiVqcWCrbbIWGsn8d1yCi/pAjnkz19uWJ2GmpJEh
+	C7IOoCq54C1acIz9vcaliMDfFcm8K5iTF1FcD3sJdfm9vu1fZR3SQvb38/mVG0NQzcD6g2
+	hQbeSMWTnzYke03B29m5KVj6RESl+XQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=GmAQ1Pmx;
+	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 643MTQ7e3010004;
+	Mon, 4 May 2026 13:04:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=pO3syqtmoh2yTQJQGazJgax2lJ/9P8ITd+L4ibUvk
+	II=; b=GmAQ1PmxHsYC8i2ze1kzDzkIGKgnV6pXDEsTxslAziS6dBxgvj/Js5uxX
+	cri2zHYh8DRnRZlM1r26gG6WDxl7Fhg6y5glBtdUPXlCVKf2lpa+5WCF1bw8oiwU
+	3l6969zRBaqHre27gS7viJZSIMJRzMeS0o6CWMz8fdlILI0VwkmRBoNeQndZzLwZ
+	K7NeiCsFQoE6c11aqr2hcCIsuNT80mZkUM8npQ+asAv/0cZwRHzlnBTNYor4T4Br
+	Vt5Tagujd+S0GWxN7Kzj3eDp3iSWgV/WO16aljwkh9ES0cXqvL+fpDXsHlzHIORj
+	/7vc8jX18ueUa4AC3MJ50Ilfsc+1w==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v772gw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 May 2026 13:04:38 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 644CsNUA030028;
+	Mon, 4 May 2026 13:04:38 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwx9y4xcv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 May 2026 13:04:37 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 644D4YGZ61538808
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 4 May 2026 13:04:34 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 756792004F;
+	Mon,  4 May 2026 13:04:34 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 511592004D;
+	Mon,  4 May 2026 13:04:34 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon,  4 May 2026 13:04:34 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 31603E0BD8; Mon, 04 May 2026 15:04:34 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Oscar Salvador <osalvador@suse.de>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH v2] mm/page_vma_mapped_walk: Use ptep_get_lockless() for lockless access
+Date: Mon,  4 May 2026 15:04:34 +0200
+Message-ID: <20260504130434.2285053-1-agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4y8JtCxEy9hVxVd8eaf8D9WC8BcRQp9afUVu=FJA1-awA@mail.gmail.com>
-X-Stat-Signature: 9r4tezp94w46c68aa761rhw1ey49iatx
-X-Rspamd-Queue-Id: 00730160008
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDEzNCBTYWx0ZWRfXxv4MVpWLQ7+4
+ opdcsqJrR0GT7NRlU9JzyOPcWPqDpek8+IcJy7P7LDtKJe5m/zVJgjkNfeIRL2p6cgSkXCFd0v0
+ OInNujcUlcNhR3J0Jp+6K7NiUXJbI3TjTTFDU5AuYziBDJgQ/buOteS7eG/YXMsqOAZhkifs/E4
+ 2CYI+VqWfpYE0poyYtke+/kINrKOkheB60+7Mv5hUjHaZuj0ffjy0AlGzKLQOXF/PC0w/NidVO2
+ TYvp9itY/1XppDwgFXk9F8y/eZhJ6PCfjuIyhhLKdgfxW7vMrt41zugrK2tB7aQptxCGAL2K5OT
+ Yn/i1a+E4Gxn7gnT+zaxuRzrmkZlwXsf+TPuoEggculwXivOOfQsMBNYJ+MvyHhlnTqGL9UouIX
+ AybfzTYttrBJzFPzTE+RsXDy3PkPr1fQN+mFdyTYWPtUBnWoZ5GByM28Td+umc6Fvn+iQ8XB3TR
+ g4jTy+3TDbYvMGbZI+g==
+X-Proofpoint-GUID: WeqN-du5uoGuTeZAEmDisiPRQdC4IUAs
+X-Proofpoint-ORIG-GUID: WeqN-du5uoGuTeZAEmDisiPRQdC4IUAs
+X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69f89966 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=8KbNvkZQz-Byi51b31MA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-04_04,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1011 adultscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605040134
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2C700100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777899845-980592
-X-HE-Meta: U2FsdGVkX1+zkjkrhQh446kFHOF2ALPP1LTqXXSmoJU2md5pH/MAvBKv0qUesUnUKcI+okXyA3tbgZj9gJ9LN4X0eWu065gTItd9MesvukZezxGGEApuQuCxvxDU9Rn+391wxw0IwEg5D94JobsfIqa4ITvW9o7F6GF9WZoZPWqaxMSLEmI+g7M8D/Cc+1wD6cZIk5k6kFlj2XWKpNfqYt9xLE/L8EhNXmwdwVvG7/3fVpoUhYH2anSMtLPCFrGWGQsbp8ofjpV7M7xd6kw76Ige8EeAIBA2Wc/cdnepOwgR+yvegiGe27GC3JAMqhTBPe0ji9xUb2+BybiEcF96Vp1dtoxkviHukE+RL3WkD3+jTrAi8QriRRrVU2t4b1b8zHWazN07OZ1l4DrFyZrqkGkk3EMb8M5Km3U1OA3Zomwta7NLgAch9RpCrXdTkVnihr/15/YYxuF2WFVq3laBJXvw2i3cnWLQE8D0hhTSpSdkOFyfR0OatNT6/obq19a3fOE7gNlURhP9HxSbmnidxy2KMk+E4RvjpN4rj/VJBDe54N1a8wX8KoI5QyqM518FcYDND1AFKatZrPncBACE5ru+m5ZauNf/hPTiNdQpQzis2giK5orviKdP98zK1iRJzmOmbTNXek6/F/OxCOtIgC7LzDv+jI9R7g4zgRE+MZ1HuO8Fr4djqO/qWY/YeWfUbcv2irO/ek9ScGpvTgvvtbumM1eKMVGn4AeqEndPzKRJ8y0XkznWK5xFrJ9/Mu3A2gYnMAsIdPS0qv8LlaOtLEDHtzGXr0qdXv5zYy4FAyJ8qnistf4gv6hhA/D02glN5MQSiuApRkDmWfENmNgkxC7+gyaWRwnsJPzDkvYl9M/gmuBvdF0OjTV4AO7tEye5d5t/MXzWgfqb066nYrSmrZunvNouelsL8rcA0PdTrdFcSf92EaJCTNETuf6CNLnYlqoCor/x4WBZjVsQCBw
- 3q4PmVKP
- FnNtCG1Aa4esuxOXwc9j5WiEFHLbaNA5M0sqDBSt2Nt7kXYGZpc/9JYBMtB4hoWVWDp2DziRMcI06THKLOseLzyrMlx5USpxSePfzIuoCvlDTgsx6npbTl7yADH2T9yuXpiMne029amfLJtN5qO23k7mMogDzguT2tNM3bo1+KXhagFaIekfEStLVhHYeqmkl9hvO49zrUb5ITQ6IJAWGHSjWhepKWt0jaQ73tf3gsRoV2PdgeG7OjsVIQH1ruWAa08uzlMw2KKS370FisE4Q1wb7/3R8RJknkE48NvHebScq6Z9ZIfGlrsJwH53VcozDCK0gkUcfLdaSGYfEFGxbW23ou/SyRmIrxZGZix1sVHJv6oxIx3bolCLUCM0l8lZqOXH62GeCdADyLQ1zwlazhkfbks2WKb5c5gaoBAcBkxDHyrlIDKBY23M4pTdw8PZHKvhx2MIhhIGwPOgipF6AYTh66NAJW09RFvN3riZmG1yEd/l7wgQMWTPDTTzatvQNpVI7vGilGsAriRRAA7detMwYTdUJtSCSswU1vl+Kb0544rE9k9uI139WNwLOBqc+zTM1l2dbOK99c5ThEOGKWV65m9FI1LXZnVjOsy5FRygHWEMNAjcQBUwS6MtOxKs2A3pLhj12akONCpQYc2Kb1dG64CyJIRI7Z7trQUkEhE1dMHw=
+X-Stat-Signature: 5j8dq1nypsrjqg8z1mx7nbtyt1rdszwu
+X-HE-Tag: 1777899884-57176
+X-HE-Meta: U2FsdGVkX1+v9RNre4eUX9NEak6zgCnQ/zkO6V/UE3YvBCIVQ811P5q4MUTbkH+FAVCXCLSBlpF5qxHW8KP+w1AcsJqoqDmUIXOA/rZ7mq5oaqzxmG5QBwC0EFHwQ8XeEXzE/RSHKjDURFMumyQ8VImQ5s48bx+0jUKo0Nnd6GUcBLORuT4rnrLir+PZRyaUQwhVo95j1mD25n4mHhAQXhfgXlrdTbKdlq0ZZwlI71sOwZFcVf+aucENaXAUbb90TijpjV5Q6Y5XQygyZhoHI6i2XmlbOqxdvFcjH6QhvBUPVg0WWdHZMnqk+orQFRER1/0gEgeDhLuDrEo57ADsq7zyGFaIObGFgAlseBvRk5tYhPSDZPYluOQ7bBA+NCGzZtIPfdfHBerAKQq7fN7LBfuIOQgzKxtj5TQ62w3K2irhskteWD4X2Y2i6fn77v087dX+L1jLhHItrAv0qrJk5S1BgueKQop691tSBAM5ucnyxVhuwyV2wuOhMWPZ+HfSTgW10VJhU7RSToLw5sN3PGiA796x9dmAK/EIU82B+yZ71wX5SyH7Pmv1UacVVkLRe1H3iDoR+prhjebeZBxsiFbVa0e523oG1ui9dPCZFs91Q/WEx8wgjs9Ctr4SBt8DViMFVZp0/LW49QtJ7K7o9tmXZcbMffYfdYw2n+5DfuYbfbVCB/QVT86sMXQLyxv73c+QOnh41cw3exiwNJQQO9gIQ/lUtDaxkWF1xM7r2HStHfg/Bw0RHepWRyFhQPK44zqnLWjQieVsJj8UZDeYG+pD5Dcg7q9eFgiSC8taNh/fu+VLxp9FenADsd2Jha76R0kdktNhEgF6Tnwy/FXSkdwEq4XOMJgsZjZS9au7nZcQ+u9c9ESPdmxk9aGw3tq9sv1KliUDs4/KyWtjsyGXLddRiGj7wmQeblUw+GBUlVdV9knJqDga3O/ZyWiGwdjzf+mwqu3CIcQrzn69/Kv
+ mc3bivh6
+ 5doX0QcNsVD1fefzNkgqWbVQs+xbz+iSnMxBu7HUpSi4mJ0XptImUkN1W2dDKRcqyU4h/XLxiJ1MoJLz9mTb+crGFv0vhNaYpJmYsAP4/Gb5ac19kgJ9UsJgXNqpposHOC/3CLkIVTz2oWkpxPyFoc5dfV1GVLqNtmEU5ZX3XTxJr/elDoqvk3v4trfZlAxVzmlfCXAOxOoShnpWBv3eLppEYts1ReevfSTGre9boSA1N5rqvXK9wQIZiUuRf9xiSB66JgZU7RKDdAuA2hE8evPEUkVmCjwXp98hDn55M+feCnX26wSjQpAGKs3qtaUG4b01HVT+pZhs546zN6Hw/XavEXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,92 +139,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 04-05-26 03:55:43, Barry Song wrote:
-> On Mon, May 4, 2026 at 2:17 AM Jan Kara <jack@suse.cz> wrote:
-> > On Fri 01-05-26 18:57:52, Matthew Wilcox wrote:
-> > > On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
-> > > > On Fri, May 1, 2026 at 10:57 PM Matthew Wilcox <willy@infradead.org> wrote:
-> > > > > On Fri, May 01, 2026 at 06:49:58AM +0800, Barry Song wrote:
-> > > > > > 1. There is no deterministic latency for I/O completion. It depends on
-> > > > > > both the hardware and the software stack (bio/request queues and the
-> > > > > > block scheduler). Sometimes the latency is short; at other times it can
-> > > > > > be quite long. In such cases, a high-priority thread performing operations
-> > > > > > such as mprotect, unmap, prctl_set_vma, or madvise may be forced to wait
-> > > > > > for an unpredictable amount of time.
-> > > > >
-> > > > > But does that actually happen?  I find it hard to believe that thread A
-> > > > > unmaps a VMA while thread B is in the middle of taking a page fault in
-> > > > > that same VMA.  mprotect() and madvise() are more likely to happen, but
-> > > > > it still seems really unlikely to me.
-> > > >
-> > > > It doesn’t have to involve unmapping or applying mprotect to
-> > > > the entire VMA—just a portion of it is sufficient.
-> > >
-> > > Yes, but that still fails to answer "does this actually happen".  How much
-> > > performance is all this complexity in the page fault handler buying us?
-> > > If you don't answer this question, I'm just going to go in and rip it
-> > > all out.
-> >
-> > I fully agree with you we should verify whether the retry code still brings
-> > in real-world advantage today with VMA locks. After all the retry logic has
-> > been introduced in 2010. That being said if there are realistic loads where
-> > one thread needs VMA write lock while another thread is faulting the VMA,
-> > then the latencies can be indeed extreme. For example things like cgroup IO
-> > throttling happen on the IO path and thus can throttle IO of a low-priority
-> > thread for a long time.
-> 
-> I’m quite sure that swap-in and VMA writes can occur
-> concurrently, and this is fairly common. For example,
-> Java GC may use mprotect or userfaultfd on a small
-> portion of a large Java heap while other portions are
-> still under do_swap_page().
+Switch from ptep_get() to ptep_get_lockless() accessor for
+PTE reads when no lock is taken.
 
-OK, makes sense.
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+---
+ mm/page_vma_mapped.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> If we start exploring different approaches for anon and
-> file, I agree I can revisit this on an Android phone if
-> there is a real, serious case where a file VMA can be
-> written and a page fault occurs at the same time.
-> 
-> Please note that, as an Android developer, I am particularly
-> cautious about priority inversion. A recent issue causing
-> severe priority inversion is zram attempting to support
-> preemption[1]. When a task performing compression or
-> decompression is migrated to another CPU and then preempted
-> by other tasks, high-priority tasks waiting on the mutex may
-> be significantly delayed, impacting user experience.
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index a4d52fdb3056..6559e17f11c2 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, =
+pmd_t *pmdvalp,
+ 	if (!pvmw->pte)
+ 		return false;
+=20
+-	ptent =3D ptep_get(pvmw->pte);
++	ptent =3D ptep_get_lockless(pvmw->pte);
+=20
+ 	if (pte_none(ptent)) {
+ 		return false;
+@@ -310,7 +310,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk=
+ *pvmw)
+ 				goto restart;
+ 			}
+ 			pvmw->pte++;
+-		} while (pte_none(ptep_get(pvmw->pte)));
++		} while (pte_none(ptep_get_lockless(pvmw->pte)));
+=20
+ 		if (!pvmw->ptl) {
+ 			spin_lock(ptl);
+--=20
+2.51.0
 
-Well, container people are concerned about priority inversion as well. But
-usually this is with coarse lock (such as global filesystem locks) but VMA
-lock is specific to a task (and a VMA) so there the opportunity for
-priority inversion looks more limited.  But the example with Java where GC
-thread can presumably have higher priority than ordinary Java threads is an
-interesting one.
-
-> > BTW I'm not sure I quite understand Barry's priority inversion problem
-> > since I'd expect all threads of a task to generally be treated with the
-> > same priority...
-> 
-> Exactly not. Maybe these slides[2] and this project[3] can give
-> you a hint—they aim to standardize things on Linux by
-> learning from Apple OS. Basically, tasks are classified
-> into five types:
-> 
-> USER_INTERACTIVE: Requires immediate response.
-> USER_INITIATED: Tolerates a short delay, but must respond quickly still.
-> UTILITY: Tolerates long delays, but not prolonged ones.
-> BACKGROUND: Doesn’t mind prolonged delays.
-> DEFAULT: System default behavior.
-
-Again, this is a clasification of tasks but not really of threads in a task
-so at least for VMA lock there's no inversion so have?
-
-								Honza
-
-> [1] https://lore.kernel.org/linux-mm/20250303022425.285971-3-senozhatsky@chromium.org/
-> [2] https://lpc.events/event/19/contributions/2089/attachments/1797/3877/Userspace%20Assisted%20Scheduling%20via%20Sched%20QoS.pdf
-> [3] https://lore.kernel.org/lkml/20260415000910.2h5misvwc45bdumu@airbuntu/
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
 
