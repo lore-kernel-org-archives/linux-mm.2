@@ -4,110 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7F02FF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F472CD3430
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 13:38:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16F1D6B0005; Mon,  4 May 2026 09:35:55 -0400 (EDT)
+	id AE6CF6B0005; Mon,  4 May 2026 09:38:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 146986B008A; Mon,  4 May 2026 09:35:55 -0400 (EDT)
+	id A97AD6B008A; Mon,  4 May 2026 09:38:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05CA66B008C; Mon,  4 May 2026 09:35:55 -0400 (EDT)
+	id 986846B008C; Mon,  4 May 2026 09:38:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E9C406B0005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:35:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 993801A01BD
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:35:54 +0000 (UTC)
-X-FDA: 84729835428.26.38E02FE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B9422A0002
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:35:52 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lm8czak3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 859DF6B0005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 09:38:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2EE7E1C00AC
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:38:09 +0000 (UTC)
+X-FDA: 84729841098.04.E6F9ABF
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C20EE40006
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:38:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=nmZ8O9mw;
+	spf=pass (imf11.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777901752;
+	s=arc-20220608; t=1777901887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=anAXTn2WVNJfQBijdvlVjx89L+KjLxZQUrMBMBAvn58=;
-	b=GOd5dcgyKUHoYutG131IYin1YwFWj3XDkfkUOl5Bgyvw/uRRksskyN8FsRas9sUNBlgRty
-	iZg9HwYi7B3CUhVGDfhh9K+MNSRKCE/MA1h3fWO8+2pW8dTC1Q0LG1epemb2w3kFJXCbux
-	R4eYBW8H29sLlR8WSQ6cIeuXX7SPKkg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777901752; a=rsa-sha256;
+	bh=K5X6546rG8Q7CDMgHYe0dMLLoA8JVhsjJIJ+l/s2c4Y=;
+	b=76i+F3M29H03ivMcZn3D4NrwSxiUdC+Sz3mFgdJm+WC/bXkXwJXnBTwCWCJEIS38L2hnse
+	vfkDadOtbVHBBUhoF1i2pU0pRCLKurhyF4K3Npm379P7IW+woFe6GWn+vCr2ziQg9y48iJ
+	PHqfH860K2Zph+sEyjVLPsFI9gBcUvA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777901887; a=rsa-sha256;
 	cv=none;
-	b=XJyWtEMenTBPLRQTxYQd/v/SfG0Esq6pSWcFYkZnMXh3kWDUlGWVRR3Zi2v6HrHo0+ugXk
-	LvW7XZs1OGQSAzT33nXuNgngz/wI83v3a4dTDAyRCI7txv/SbC8Qhl0ePo6nw8lCiW4RCv
-	AgoR8bur3hTn8O6Cxaesa9jPCxo15sI=
+	b=20ve3KJ+LQE7sLF9xwGg//VkXa/wMcknB+RLe9lFUNFf5OnlJO0mY+z6NR3BQULbaD+Nfs
+	I1I3OCb7eSngjiNZvTlBAa5dqZtQfnPsth6A+JDWOLcwBusnvRhQG4/uSBbvJDGBTDAaJw
+	AzoUOjj3xdrLWL/injxIZyX5QTV8b5g=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lm8czak3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2256360125
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF87C2BCB8
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:35:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777901751;
-	bh=anAXTn2WVNJfQBijdvlVjx89L+KjLxZQUrMBMBAvn58=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lm8czak3ojKL/iSeFyCXKqI7NTDydVsOyB2+Hmt8nIK2EusB+d4Z4frGvii94dCYM
-	 jWu0DSEVVN+bGYmtnqjUZ613RrBl279QTX5Q4GXGY/7uhrANxd69oXqVhg4v9RhlDr
-	 j0Bf6ACKU0YROCTpFS5awmkcjdKqVuM+Cdbkq4OknL3HDQb1DpvjyXBC7KufyhvzqD
-	 7zI8a4XUxzPdXMbnVIlJrXSGL14ML23Gg2KG7zpTnsaZSKWHibluTUhcKe4kIIwY+6
-	 YESTlho5Ct6TbII6iOg1nmDm+rg+TnF6JT9MWtZidEiRLMooEyQHzB5HaaV3YK9SH9
-	 zy3fy169eVGyw==
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8b8e98fd885so8862506d6.0
-        for <linux-mm@kvack.org>; Mon, 04 May 2026 06:35:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8jdWkp4CUi44PXNHspIZ6anXVBwY1cQl60B7GXhsA+qbi1qFoptjwMFOkRNm+tvTwCeW7XrAm2PQ==@kvack.org
-X-Gm-Message-State: AOJu0YzHtjEh7J+Jqkkt1/huc8mipQI3yNY0semBrL7DeHaV6TsVjgVh
-	/MGfebeiyJRBdhioxcbuZW8r4F371q0J+iZ9QzfhzTZ5h390USEDj9xFh2OElIfibkyvaKzN1nR
-	KHpgNF3S0HSqtENZkkY8UiX0qfjsyEFM=
-X-Received: by 2002:a05:6214:260a:b0:8ac:4fd1:2d4a with SMTP id
- 6a1803df08f44-8b668a259e6mr167277966d6.33.1777901750649; Mon, 04 May 2026
- 06:35:50 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=nmZ8O9mw;
+	spf=pass (imf11.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20260504133802epoutp02b4fe67eaaad6b60cdae9efe8d85f925e~sYFeNTetM0577405774epoutp02e;
+	Mon,  4 May 2026 13:38:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20260504133802epoutp02b4fe67eaaad6b60cdae9efe8d85f925e~sYFeNTetM0577405774epoutp02e
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1777901882;
+	bh=K5X6546rG8Q7CDMgHYe0dMLLoA8JVhsjJIJ+l/s2c4Y=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=nmZ8O9mwkiw6Qc3oNT26vkjmnNlI2wukd5FwCDzd9H7xY8AuXai7IIgT3MUN5KTvU
+	 zuWhH4yfS4vIWtH7ZZm3cCd5duET+79RK+Yll2CLppi9ZAF+JaB3VR+AtIpQLJzfYp
+	 kuHf8nA1xhwKYRz7MOqFl4cYZJ66wHOLsJP//U40=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
+	20260504133801epcas5p2868c041e3779e42e6e5fde3d36dba3a3~sYFd4KT8O2899328993epcas5p29;
+	Mon,  4 May 2026 13:38:01 +0000 (GMT)
+Received: from epcpadp2new (unknown [182.195.40.142]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4g8N4n4bV1z2SSKX; Mon,  4 May
+	2026 13:38:01 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260504130907epcas5p29c41fc288662c37cd8ad7241772a53f8~sXsPFsdos2990329903epcas5p2Z;
+	Mon,  4 May 2026 13:09:07 +0000 (GMT)
+Received: from [107.122.10.65] (unknown [107.122.10.65]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260504130855epsmtip2f74fac9944e13b661bd91b5d97d7c8d2~sXsD4QdS72669726697epsmtip2P;
+	Mon,  4 May 2026 13:08:55 +0000 (GMT)
+Message-ID: <1891546521.01777901881625.JavaMail.epsvc@epcpadp2new>
+Date: Mon, 4 May 2026 18:38:54 +0530
 MIME-Version: 1.0
-References: <20260430040427.4672-1-baohua@kernel.org> <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org> <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
- <afTpoL3FklpQZNMM@casper.infradead.org> <yezmezj26xntushmylductlmytfgvwsnbnzlhffkfwugfxkt6m@gleq22spziyk>
- <CAGsJ_4y8JtCxEy9hVxVd8eaf8D9WC8BcRQp9afUVu=FJA1-awA@mail.gmail.com> <n5vsmp6ingbhfztl6wzcwmrz56gkkfbpzardk43scr7rcgqsw5@evtnov34c5bt>
-In-Reply-To: <n5vsmp6ingbhfztl6wzcwmrz56gkkfbpzardk43scr7rcgqsw5@evtnov34c5bt>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 4 May 2026 21:35:38 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zBiRTttf1nR0Ni9BRT3Cv5XFZhyYP8oipFodpS7saGwQ@mail.gmail.com>
-X-Gm-Features: AVHnY4I0u-Qbkg0vrggpRHSUVs_cQpUa3gydJwrEbvTBOzz3MxeuFlaWucVZXHg
-Message-ID: <CAGsJ_4zBiRTttf1nR0Ni9BRT3Cv5XFZhyYP8oipFodpS7saGwQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-To: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de, 
-	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
-	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B9422A0002
-X-Stat-Signature: y476dn8hg5moi774dugnqh8tuur5k9kq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+To: Gregory Price <gourry@gourry.net>
+Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
+	kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, longman@redhat.com, akpm@linux-foundation.org,
+	david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+	muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+	jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+	pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
+	riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
+	roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	zhengqi.arch@bytedance.com, terry.bowman@amd.com, gost.dev@samsung.com,
+	arungeorge05@gmail.com, cpgs@samsung.com
+Content-Language: en-US
+From: Arun George/Arun George <arun.george@samsung.com>
+In-Reply-To: <afIKxG5mJZE6QgpR@gourry-fedora-PF4VCD3F>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260504130907epcas5p29c41fc288662c37cd8ad7241772a53f8
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0
+References: <20260222084842.1824063-1-gourry@gourry.net>
+	<CGME20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0@epcas5p1.samsung.com>
+	<1983025922.01777297382206.JavaMail.epsvc@epcpadp2new>
+	<ae_i9IlIndumJWN3@gourry-fedora-PF4VCD3F>
+	<1891546521.01777455002601.JavaMail.epsvc@epcpadp1new>
+	<afIKxG5mJZE6QgpR@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C20EE40006
 X-Rspam-User: 
-X-HE-Tag: 1777901752-218759
-X-HE-Meta: U2FsdGVkX19Ey7OUrKkSMJtqrwkqGMU8fqGnblxDotdGQ1TPx2WwT/WN/MmFvT5f88OOc4Chj3I6fE39l/8zhyKJE4eJC2R2Wd8BPrg5PRuhOm0YdleTteXJ3wdhAaUqTuAUKt3S8c1K9wsxMOD8wCB9/tUHNdghkbGbUgADg/RaXckBEk0ekdtcQfs9QDqKOvRWa1JjnVseq6wrTdIUvkqbRpQREKj44prE6xVSLSLGkkQWh5VlE4olz6wLrwHUzZnBYdjhgsOt2lih25KD0iTFJ6BXGi/P3iendfglhxtQ3JXRJbLQAjMWIA6ouIor8EhZTGiOoT4imTW0e/FDX/JJmCGg0hACdvAbWJnXWyO211vjI5tnZgoPcAIeg/THQ+LqpY+ivu+7ntqkMCqPZ9nI6CoKQmoWqaY4hSXWLQkk9FfFEfshRONui/zfc6JF6EnQNsRly38eHV/YuXmoO6OgSBU1PsbeNTb3PPbMWCoQLd1hs+kDLuM1h7lysdAnWeZLwxsVRF30Y9GyQwwWULAfvY2uOKlGRsUOrIOVTW2/XpRB4147cJ0EmMO0AF2KomLQA4AGhqoAZzKB4EDFT2rmKbqOpQc/hFypovbcXUKRB6OftDPV0gTCiU1GPZ66dsS+WInmE90Ey5znx+zVbl6Kt2WBCB0Z1RzjAS5pf4DS2+DjdKs+doda7dUoKS4sTFd1PPTfbtollIt8XOsi7WjMnC04F/a+JRrMGlgVymVpTo7AzZd3INmoPstSQh/QZKanu8A6SNC1qJInDyijD62NB+9vG8u371/NbEK4nFT2zNHYdZZ7POXOVDDdOB+mMsrI3BKooSH5PAZaZxxYt42sdanBNEBdXfaD+9cGrLCZj+BGmQL9thGsm25UZBR3QWbblAU3N58sFgriYN4c3yk0UxwtdG7Skz1Lolun4UaKOzTH/1fE3w0j4gjZbWtk9EveEo6GrWgtG7YpP3C
- zUdnb1M0
- auy6j2QY42sDAfvrCxJKimaLPsbH4FpNXx1RRyoOBqPuH1eNz7xMjJjbNFCeXifiaLOUUhYCnECvkOhBlpHhgILBddxgpmeylrQ38B1a+8ZLMMdI9Lgzqo0bV/lQxClnJY4TfKwavd09xk2tyBrqzgCLfx+ZwRGsjNgI4O75QXE5I6EbDRxpcUTcsMwshfDVXWFlqAOBwuSFjuvPeZugezcVy3jNkRst/0Ou9zX+ll+VLtw9eN2pya/xQhDOXdtXI5ljSkBuqWo3RS+i2Tem8hgFjShVsorLAaIha8P3vFg7CK5sN34YK71fZZW/LcG+Srp0tvZcxmWETk3oqcfvZagMEOlc3md1loN5v9vK/MdOzq74EAqBhmetGMlc5QI6zI0lA/t0j4INpEAxTyES0gKCk3w==
+X-Stat-Signature: u89of1z5z33ps9exp3j98fq9quhy6y8o
+X-HE-Tag: 1777901885-182587
+X-HE-Meta: U2FsdGVkX19uwIE8ukZA3Hj9XppvshYFCjYST5x3vK3BkGAD5wk0TulFfh99T7+FRVZKzUjrkKxDf5FT5dglWG4ADxhkw/DEXKPD2LTam2mcq5b2FT34tuBSlJLeRugv1IhkV9U+4labUhus4v+cSt66sNlMwANO9z339oeHpU+7v3ky+MhjoRk4sZOSbTCxaS5G1dB7i0IRVt+cSw0q5Yk2dPEuBCFMBjCZBGGXtp5N8jOFXy7VSSnOJrsIiAj8NjiPh/iPfGIcvdwUWpBRTSoGQZUZggZxgPppavchgNzQNApp9mKaoRb52dlNRH/9LANl9+Po33pu4X3oRfmiLP5qd67QeLlplqKJGkLsX+QN3vPY53CUCwkzjGdGnF9yj2bc+zTIfb1bni80Q5IcgmYV5R/cgkUbbmQCNks5nQQJzZbGJgqp09XksPGSsEoJsH4LQuwLWlieLnwEBSGdCkHBqJTiLcRdg5vMoXA3B+qhW17AVPiQySAxtwx46Qk75eEcjbXz39rLB/+p7ylyCcAAIhd9ZbK5GzjRGfvfGSh6PeD31I0H/adBiZsxEyYK9PZyik1VD5HsOZB19aj+HoXrCM3VwSQFyM8PLfrW/nGNNIWzV5L1dTnMytJRs6jhzToBQw93KnWuO5cijv672HM2SQFIWKYZhvM28rs52/KxJ1N4VoLkFZXE3GwcWTE3YyyPgcUaCcHsRrzkixxcsCdY/RaYbVVU8eieCTo6px7enncpiKtg5brlI/Qt6iljwG44d5u6h7t4mfxXjpRGB6kPOysGt8WUePjtz0mj+97skKxQ2og3+QNvpvSGXziI7Fpn1hYcKvDMIAR0H7Et8hsi5KA7bIQ8EYMDlWDzecY/MmYJJ/gCLka9zyIg0jGkBiDrDTyUnaw/VXdtZbsrsSUanlBCMaM/lmdF5kJ2IEVlIf+ZuncywcHMB3kKmKxqbkbRGLPTBR/dsG3V/AM
+ ataahgM7
+ vV7nPjndj7jkFZ45tbeD1j4waAHnaigHZzEsVtH8qDtYuV1dkwPQHbEvXpgkC9JzZhrRpNHbh9O4Ar0RPknngVu7KXhkixM0c8ElYYF/pAfyr7XZPxiEaYGGtFIcJd905vWF6FJg+/b44+ZS89EIB4shsQefW489tw5m53bwHKnpDfl/DKVFcTeTMo7hGsyRIGv9M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,45 +140,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 4, 2026 at 9:04=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
-[...]
->
-> > > BTW I'm not sure I quite understand Barry's priority inversion proble=
-m
-> > > since I'd expect all threads of a task to generally be treated with t=
-he
-> > > same priority...
-> >
-> > Exactly not. Maybe these slides[2] and this project[3] can give
-> > you a hint=E2=80=94they aim to standardize things on Linux by
-> > learning from Apple OS. Basically, tasks are classified
-> > into five types:
-> >
-> > USER_INTERACTIVE: Requires immediate response.
-> > USER_INITIATED: Tolerates a short delay, but must respond quickly still=
-.
-> > UTILITY: Tolerates long delays, but not prolonged ones.
-> > BACKGROUND: Doesn=E2=80=99t mind prolonged delays.
-> > DEFAULT: System default behavior.
->
-> Again, this is a clasification of tasks but not really of threads in a ta=
-sk
-> so at least for VMA lock there's no inversion so have?
+On 29-04-2026 07:12 pm, Gregory Price wrote:
+>>
+>> Great! I believe "writable budget" could be an interesting idea which
+>> can solve the 'bus error' sort of scenarios due to device not capable of
+>> taking any more writes. The write budget could be replenished using the
+>> control path and writes will not go ahead without the budget available,
+>> right?>
+>>
+> 
+> Write budget is simple
+> 
+> budget=1  (up to 1 page can be writable
+>     1) swap 1 page ->  cram alloc 1 page, put VSWAP_CRAM in PTE
+>     2) read-fault  ->  cram upgrades VSWAP_CRAM to R/O PTE
+>     3) write-fault ->
+>        a) if (writable_cnt < budget) { budget++; mkwrite(pte); }
+>        b) else:  normal swap semantic -> promote to normal memory
+> 
+> Meanwhile - use ballooning and a simple shrinker to dynamically size the
+> region to respond to real compression ratio.
+> 
+> 
+> All said an done - you get something close to zswap but with R/O
+> mappings for all entries, and optional R/W-mappings for administrators
+> who know something about their workload and can afford to take the risk
+> of some amount of capacity being written to uncontended in exchange for
+> performance.
+> 
+> The writable-budget is a risk-dial:  How much do you trust your workload
+> to now spew un/poorly-compressible memory?  The write-budget is a direct
+> measure of that. (so take P99.99999 compression ratios, and you can make
+> a good chunk of that writable).
+> 
+> ~Gregory
+> 
+> 
+I believe we are converging. Agree to most points you mentioned.
 
-I=E2=80=99m specifically referring to a task (i.e., a thread) when
-discussing scheduler context. It may be clearer to use the
-terms process and thread explicitly.
+I see this problem statement can be solved by 'write-control + write 
+budget' approach similar to what you have described, whether we take 
+swap path or not.
 
-In a typical process sharing an mm_struct, each thread can
-have a different priority.
+But I see this 'write budget' (budget in terms of number of write 
+operations that can be handled by the device, not capacity) to be 
+provided by the device in control plane; not by the workloads in the host.
 
-In an Android app, some threads handle the UI and require
-higher priority, such as the main thread and RenderThread;
-otherwise, frame drops may occur.
+The budget can be communicated by the device in the device control plane 
+periodically (to be handled in the specific cram back-end driver; may be 
+interpreting the device back-pressure indications into a write budget 
+value). Even if the control plane breaks down, the host does not run 
+into issues except that it will not write further.
 
-The Linux scheduler can control scheduling policy and
-priority for each thread.
+I assume you see this value coming from the workloads. This might be a 
+place where I have a different opinion.
 
-Thanks
-Barry
+There are multiple advantages of this value coming from the device:
+
+  1) We can modulate the write budget depending on the actual 
+compressibility in the device (and so workloads data). We don't have to 
+do estimation based on the workloads.
+
+  2) We don't have to do the capacity modulation - as in ballooning or 
+shrinker.
+
+  3) Even if the control path is broken, host can write only till the 
+available 'write budget'; so it won't get into 'bus error' situations.
+
+~Arun George
+
+
+
+
 
