@@ -4,145 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A7A1CD3427
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 17:24:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B6FFF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 17:54:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F00F6B0088; Mon,  4 May 2026 13:24:19 -0400 (EDT)
+	id 69EBB6B0088; Mon,  4 May 2026 13:54:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C77C6B008A; Mon,  4 May 2026 13:24:19 -0400 (EDT)
+	id 64FAC6B008A; Mon,  4 May 2026 13:54:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DE186B008C; Mon,  4 May 2026 13:24:19 -0400 (EDT)
+	id 518346B008C; Mon,  4 May 2026 13:54:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D4F26B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:24:19 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 91CD61A023F
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 17:24:18 +0000 (UTC)
-X-FDA: 84730410996.20.4D40744
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8E4321A0014
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 17:24:16 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=j28htmlz;
-	spf=pass (imf19.hostedemail.com: domain of dmatlack@google.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777915456;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C4766B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 13:54:37 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BD2BBA0244
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 17:54:36 +0000 (UTC)
+X-FDA: 84730487352.18.4E4EF6E
+Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CA2351C0016
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 17:54:34 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of 3Wd34aQkbAE48EF0q11u7q55yt.w44w1uA8u7s439u39.s42@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3Wd34aQkbAE48EF0q11u7q55yt.w44w1uA8u7s439u39.s42@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777917274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8DRIGBANyTxbRVKczgT9uBMklmvWRVuW0duqUNmLE+k=;
-	b=J2CCGtyyqRAgzYxZYbukm+h3E4V01GkoMHchev1WyH4wWo6Detz03rz7YZEcbqMKvBn17j
-	ue0fbylNQ5E2uVBc1D1qTOLjHKl/dM2f+c/UtU0IQ+HIgNPTqvm97evx34vKYgMsMRlnfa
-	e0NskgiTp2vsOH8zC098JzF6uPU795k=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=j28htmlz;
-	spf=pass (imf19.hostedemail.com: domain of dmatlack@google.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777915456; a=rsa-sha256;
-	cv=pass;
-	b=L7PoCBHuLhaaPmqe7dFx0/rpPDmtXcf1ypyYT7T/+HdtC5R/Ru7y9RnkbBQVJpc5TDAXm0
-	1V12v3a8ri7XYMSSiyDXf2SAKs2N+C7Bz70V1VOIm/jAjCob+l/m7HtSm+j4poLzFZk0S2
-	79Yrh44w525NIl9YFAAqx8PhMMe1Huk=
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12713e56abdso3028566c88.1
-        for <linux-mm@kvack.org>; Mon, 04 May 2026 10:24:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777915455; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gEMWBnY5ri7Xn9COxAl6M6Ao2s4b9qtYbeP0aam3ZK9AFiFuwsNHTQq6cNX517P8N7
-         HtduBQgOj5Akl/VzTtRJSE+kLNurjLm5XXQ2dwm11hNdN9bR+pK+sNdbaEIyBQevlHij
-         q5soMP28eRI4Z4MRSed2z3yizQzZ3qb5AC4CrZBlu2oky7sr3wTjf1jDmnoMmOO8E6C9
-         j8SNpdzgfqo4i/7jrJmqXK4XfuIbUDTHXWZdcLX2DRiLLzmJAlMf0JYox85WZm9l9gU4
-         0eTVrJ25+o4+3PgPc73d2lni25G1XF2pA1N39XMiq8eYgguNGbN6DI2WPDxNvSO4fbIs
-         Tt/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8DRIGBANyTxbRVKczgT9uBMklmvWRVuW0duqUNmLE+k=;
-        fh=SmzqJJw4z1iNrcjd7PJ9BvF9K+3Z//24/gb+oR6XJR4=;
-        b=W14utQNIOTM5uuVwdR50/C27mC6D69MNOvSJ7+0Q5r6ZN++laSPFyZsH5pPUgSqq6j
-         m66Oo0hgK61Yx2a5EVKmhc02Eh9Q5L/abNb3Q2bdZcFhilorJ+Y6QyIdx2WvzJO9GAQW
-         37rMToD6A3jp5Ob1uYMzXya4aNvBq2NFmrEZ+lAwtDzGLFM/1E0WFkloWiolATEqUrke
-         kPhFI3o3yjfMt9gG8ubjFsTeYpuDvcFfjyKwZzL9ViOxN50U0IqEQYQtaPUVSb1bwSwp
-         0ycXl/6ybHOAJhq4p3pirgmw0QVbKXPt9B8t/J2aFAs1nFvjHJR1qgkBcrzgj87knF4V
-         r3Gw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777915455; x=1778520255; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8DRIGBANyTxbRVKczgT9uBMklmvWRVuW0duqUNmLE+k=;
-        b=j28htmlzCkN2CP1r7Dwo77tqjStS5tvsOTdRLV9f7UboO101iBvLORZQZI4Qg1Nh8l
-         KCh1TGegukbUfQTMe0OyR7Ez/8IdSW/DQKF9qhTcN9Laox9klKxljPZM4LQk+Bf1NlIL
-         W6pTGk8DHiknMe/cgHxAjI7CKlgQF8lq0FSvxHB7n5EmRDcZpK0bL6gw3Hul8Tr7+V+X
-         J5u+WxbzL4mv+WZ5fOJGJUIsp0NclpCNwUJKFB7Kk+bRkqnUxRBAQpYJwDrF3sycoxZV
-         zZqOq/orjqedn5iorfjdQtkIkmcfC4cTWkayl4L79tg5BKSnZXny0m5u8gKd07kq2bU1
-         zzaA==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=yf1acHnuMkvLtJHbgF3Z56jQ1gcWmSXrdwsWfpDSszg=;
+	b=bO8wi+hO9/7Q0flOxJ3ibqH4xJvOnSkSFULgQtk6jcBjH0y9XwUqz3asGxdVYEvjY4Tovg
+	0Cfsez7Uf3TiM+kNd0I23XZYOWu1gT+QwSYmGuT1tHeQ0dx/bgh2T3r1+w9OTVUfRMHkA7
+	cDwfAyQ2zEpsKltWk8JyoagOJ1KeQJ0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777917274; a=rsa-sha256;
+	cv=none;
+	b=Thhyqgfhc+j/7lFw2lGGfsCFBFl6kE07+78xQkFAz84lpPfhMO6WufZw+765Ic1Ul1t/1D
+	UtTnSLtpo/7C4VaWwGrLoh2yPcEc24b+AOJLtR7e9ocBPRjterVasG10mCiTIGbBAY3wat
+	t5l8j20oHx6S4kH+t+vd3S8zsA1Y7VE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of 3Wd34aQkbAE48EF0q11u7q55yt.w44w1uA8u7s439u39.s42@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3Wd34aQkbAE48EF0q11u7q55yt.w44w1uA8u7s439u39.s42@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-6853c2438b9so8476642eaf.3
+        for <linux-mm@kvack.org>; Mon, 04 May 2026 10:54:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777915455; x=1778520255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8DRIGBANyTxbRVKczgT9uBMklmvWRVuW0duqUNmLE+k=;
-        b=TBnC6su95bUg3NNH3Hb1FH030Z42We3iUQk8dNoH6/OSezb0gsEr4dCOxZFPMnZMr0
-         185RFi20BMMq5akDyPfSWan1jv1Sn9EcKRfZvjty1fqFhsRDsaO3PYfoBE+OsXHmBmtT
-         dwed4+U90QYN97wlwC96n6xFcmvJJlfWvOOIxZzYYwfCYZik6w0YiltmmslyhLL7U2I6
-         W5o3TVYR8Q1OFFeyMzqnqZkKn46rlYMhayIIb0kkeo4qpPsnHHm4QKrF9dGTeMpx7soG
-         IluxVCVr1oiT4NzsU03uIARHGdUbIPToJu99u4AOK4yc2EnfR93I4nLfxAl/6+ONcO/x
-         RvgQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/pXkc3djM758g+Xdki3aSGA0mKpQdbaABh2wwMuUhRfR0mxybB6Fdy+Qi407j8YOoFjxDvNcnK8A==@kvack.org
-X-Gm-Message-State: AOJu0YwPY+CnYHDi1WoxwYtJbH/TCgNExzvzOvuRT2QW8+QNOGHMTiuA
-	aDx4wbU6h8QqpssnfNjhiuXV/t5wd+SbKtX02v3k5j9jFLS3lW85SEhKws8Ba5nnPyRD9JBhxyp
-	sLWYVcopXAnuUQY8TX2Xa9nuU9cxBQdE6tI/XhVoR
-X-Gm-Gg: AeBDieuucJK+4lneV6ucG9bpDDHMXclYR0mDTWjJnkQ//EoU02w96noq6xaZmKNnRVM
-	FZjFmRiyf512rpOa0XqRvbMNGO9kKPuyGzlwI62X2lQF0UqVZMa3bir7KbTRZfCU4pr9eCXoAEc
-	l63BvOASeTDwHTe967b6sNRwGO2Sy7JobZz5mw5bWJJPY1RKr2rJQIu2or187kLmyxUY5ksMj/f
-	CnC63j6ge5N0ORi5qtsF4c83d3p8ikeuNgcAxRSmsokVnaCjWVHOhuOVbDoMSmiNjZ091twL1Re
-	vcumRRDRqxj/jhjUNFm8aasv5EeR3A==
-X-Received: by 2002:a05:7022:497:b0:12d:de3e:86af with SMTP id
- a92af1059eb24-130a9fec67emr177647c88.18.1777915454575; Mon, 04 May 2026
- 10:24:14 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777917274; x=1778522074;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yf1acHnuMkvLtJHbgF3Z56jQ1gcWmSXrdwsWfpDSszg=;
+        b=oiS0jM/k7bvoMVSuhh6ZT2RY9vsBqRUWiBX3E9CQIrznm1K2aV0QJH0qXDfXZrfx/6
+         FIsGC8X156+MUXNeqtIg0CVHpngchMSNZrH5REWfcCY1A4pTo+vvirSt7HGld7NWuzPL
+         Ge/4QGgTAZk12XvkWZjEu5+wGNQQ1Y67yj+u5+4HICvrWh/8/3qvRDoENTgtNXJoa9Oq
+         MNn1XXaX56Vz62q/4kSoRjAgHIFiYfubHBSU7NFbBpQPvQx9rsy4J/xqgaZz1E17qgH/
+         l/d1JCAqekeoc1GYfDKh13QGGqeHlFxYI4wSLKpRmdhV76P7HCnaA9QTXFaoKKDk4BiJ
+         h7RQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/uWdMUfgAOWULHlhYkTxl79VHxQOHtXvfYXg3l/NSrtzB6l8W0seNx0sWVDd+OImpfvMHK9dakew==@kvack.org
+X-Gm-Message-State: AOJu0Yw7p+y+nCI+cbfprNDamzVDDhbssQaM/iFKL+eoVc3ByKh1p7VR
+	fVpWFrIVURREoZ+QLTYasvQdS6wuSq3pynn/YT+4rgekzeQM+IUICfSl6UwLjPmMlAdWsG64599
+	82R2MsNnO/xxLGJfOSRqQ7IjTgPHvpdp0XrWuWrN/3giPL/Eey01ByuCYtr0=
 MIME-Version: 1.0
-References: <20260423212316.3431746-1-dmatlack@google.com> <20260423212316.3431746-8-dmatlack@google.com>
-In-Reply-To: <20260423212316.3431746-8-dmatlack@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Mon, 4 May 2026 10:23:48 -0700
-X-Gm-Features: AVHnY4KOWy2Xw7Jao5yCErgbS2iXWpg2-ZhNYfKSnvLQBaJlNVGZseag5k_UOKw
-Message-ID: <CALzav=cmZzNetCqWjQaG=VO+Fs=TTL3izU01vDUFd-=mRnDAuw@mail.gmail.com>
-Subject: Re: [PATCH v4 07/11] PCI: liveupdate: Inherit ACS flags in incoming
- preserved devices
-To: iommu@lists.linux.dev, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Will Deacon <will@kernel.org>, 
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+X-Received: by 2002:a05:6820:f022:b0:68a:e01a:9b99 with SMTP id
+ 006d021491bc7-69697df9a6cmr5304663eaf.50.1777917273794; Mon, 04 May 2026
+ 10:54:33 -0700 (PDT)
+Date: Mon, 04 May 2026 10:54:33 -0700
+In-Reply-To: <6936812a.a70a0220.38f243.0090.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69f8dd59.170a0220.bb392.0004.GAE@google.com>
+Subject: Re: [syzbot] [mm?] BUG: sleeping function called from invalid context
+ in kvm_mmu_notifier_invalidate_range_start
+From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, dwmw@amazon.co.uk, kvm@vger.kernel.org, 
+	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-rt-devel@lists.linux.dev, lkp@intel.com, llvm@lists.linux.dev, 
+	lorenzo.stoakes@oracle.com, me@brighamcampbell.com, mhocko@suse.com, 
+	oe-kbuild-all@lists.linux.dev, pbonzini@redhat.com, rientjes@google.com, 
+	rppt@kernel.org, seanjc@google.com, shaikhkamal2012@gmail.com, 
+	shakeel.butt@linux.dev, skhan@linuxfoundation.org, surenb@google.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: b1qs3344cs4fbkwq5s3qeuaxbszqbp5r
-X-Rspamd-Queue-Id: 8E4321A0014
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CA2351C0016
+X-Stat-Signature: apca6n7gn4dnoxoab9bjasa4cjdc3jfp
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777915456-852719
-X-HE-Meta: U2FsdGVkX1+UOB9FcgDsyIupn/Yw54x8Cwm8lbcbcS/Fkizh8D8BiTVwuRYq5YpxkYWKltYKjAbVoyAsHS0PZweOtafzcmu1vGAnBnVyfCQZYals4wUaS7WQ9LpJAS3fCMhMxthWoEOp2pmUbOGIdldFs5f9lt9kiDnzuuPTSc3AB2xzj0WEFRbtrCf51n0OGxIW8AKAl5LHGc6zEywskx9AwzpcUvuxK99uTq6XxkO0lo9cN+lrKY7eOpVeEszk9Oio4TD9n415K0rh/66wC630unZ5QnT/HbOKpDRZEGSoRzXG9CoRMJqhij9mY2iaqSJDnKPObvEhCIoKn05fr487NFX9TAc2PHUp/v7G4LYA1F7bgU6OBpkHAavgvxpIGZbA9AH8+Cm/3rWLEQ9UJD49eA0UN3MuXjlTA6iJEPH1tDqpfRVU1jvlX09Pn+kypavijQowjuA6B3cNPuQD/qZxt20UYbMh4xJpi5mOiHg2UVQiuK0WPcOL+kRjm14uxCXc+jGRfYNCwNo3BYyVIwzYIGHtAO/xl31fod1BWu6Op6U9VylVYlk4V+QWisYweKCXyRTPkiIo/HG+PBjzgL3nuoG/7BD1DqXoHCQzGWuCygWT9BSSA1eizsEwVUO6PiYipJwh0imdBsMAurYuqqG1FVQy+sVwP9eXfwBSoX1QgmvMFmRYBA1S85hEVhnFKpP6o1TRHeQk9NFYSKeGKWGq1FOXlGEGWh7gDm3HrB+fZfypvpZaoOFEwagOadwf31KZUUtHzaZXlmFycHXATV0eQH1OFgOvawsXUlADfsFgmcYPYaqDk/IEWaq845bK5ZpSPSocVVnqsJUuexrP5xNeUwWTqaXuHDQJpsaoHkhhdDttmqBOMv5mmmbns9TEPsvjrNqdnVgGqzNa3NNG1lm3sqx1IVpy4gDEKrdoJpVT2iIyOSdpt1Zrp1eb6aJ3OGDIzXVSATpx+yOMgwx
- qdPvscli
- n2OUH3+8GvvWxsWUO4uOxiQsgytcRkl5pnexKrzgs+qeNSEhWE+WmD4JyxCs4nxnHdQa6YSvTwcffvCzPD5zUl6QzubeSEshUO24JFITpBCaHxjqATF/tqZYMxJ5znqUB25MmEXr8Ty0yW+wiHdhFsZ8/9UW1k36zRD2z7TKhEp3aNBYVE03cfFEPD5re1r85GY5iNQCNrQf8cE/hTeK8ZejASMn9OwN+xJEtod3tayprOxxFQjsKSxV4VByntzYU64xv
+X-HE-Tag: 1777917274-884216
+X-HE-Meta: U2FsdGVkX19/qtKQDYniBDnUKUV+A5TAzO4U1jLLND/47puVyYtP6RaaOuVlYn6O/XBJcXnEF90BV+yzfuN/S4OdCXf0fipcjy2YTRuLGRUyAD9JjFyxBlmt31FbiION4DE6oEpm7575NYF/M9MFDPb+HrvNmQxuG9SQGsPVD6cwbdcawORXKD2GbBf0uXb5TblcACGP861ZvUCtzQ95t7L+fUzrWi7vZzcWbnCIpy5ulE/1PKaGTawOvwCet/JeaNFU+RozvaLQvhilfRyzVhD9XXuOERSoDnEVlHzvUNMT7bh/FYxB+642Eg07XedVVBLt6BJbbynDOUo3CHJ5/0aNVPHak9lhlpsSnpdBB7DTiy1v4YMv4wcP2X4dp2IKMteH5DnO1+jTi2W3qbJJ0v7H6zhHmnReS8PGxcKSDF8Bj2B39cgHi1xhiFnVEdPGpB5/8QdL4b7GsT+rEGcdqNxZ0MlXNJHgH6/ROIZGZNV/alUW6jZeA+mfui7JiCzJdW4IRPmQA32yGM7kqtd/FGKFWu5rS4cm+j6KsaSo952/xmIU3nqDsQRuXmdZNCS1pJY64AYl4M3VHIN0Rz5KeIePF/zwTYvMsCBFz74OJUdJ6LbWeDocK9nfv8rHBzl28lF8A+ANC/3aW26TiAvvfrFSyvpSaY7TngafkuaLvCYIn5xdX4Kofq5WAgJt/aJ5X1mire/XLN4MUi25aQpHasH2k05dv1WFlQZqLMo8bdz2vzK7ZUwee0KxvJRYm0q94rCSBG1Gv+4Sl596jvcFU3jrm3MeBQ+QfyKA4AfhpYSg6K+wpE2zPLDsektPS9tFBywXA+GTC4QQl3pFWewKMGbDXE3quSWusGuZgMk3k36x/d9d9RujmEnQ/53YJgzPMuDFsS+AIJqQ0tbApV96qw0Xv4YvimfyHK0IrK5IJVTx8doOiKOV1nUloK76k4UUhyJmWFmID7tZ+a/q628
+ c6XuazAu
+ UBkEQVmOjzREZtY+7l+NfM5R8h9BKJHvmpS9oU/c7PCutNN7B47pubKhacPcodCfA2VPcem2mdr+KNbqvKNxDnccUEKNlz6IK3bmbn/Aix2utoVJZNLGinJvT52ghXtO0PlWLHKlSvT2tG2Fazap0APOIF9+eHrXLFDVTKhnX1yvBrHzI4nv7kXh/jgfGgfd7pa/iinT8eA8KbxWJD8WzSPCsoCx+ozqmX2jR7ddEoq2xSIj8pAkfXVPy+LW8h0lE28muzDHoeq/PsgTgtYxKf2NFCSvIBP2QyzTgF8fF1BSf3aEcTpJyomdrs0Se1EEykY6GRDkkrqKCydeoBqKmZS+faAwTFm6j0N3OkLCA370jvg9G/m7oIBC2kYxz4osWFMyN7OB2IWBUPoHWqe8U+VIuHqzVMc0D9X4khRDqUEmTbw7Gj5lrOeSRx2sCzvf2sO9vCWob70fzcqCz3Y/6V8cMrPbvjPzFkEb5dQ7mInNKuOqw9UlCm7zVEioriD5HOpIYZbyG8hy6YnMX5wAStuEPsa+nnxWTJHvbWPF/fuwQW7Q3Y1PukKbPwLf3E5/QhXzwnlfSYDqskB5QlYRqESRLDVLKuXkyH2rED+TNZXOvh20Xv6aOqH99u3rHSgtdeCw/ZCVjLiHznZGBA9yciUYqEHYqnU3l1S6R0QtIBLW3heyUrHxsh3uWyvMNgHHv1CT8JIFTW3Ao2pnWCb+S3N48816EfgfCbh5ESXufkszfBBH89o8/IyR3ETmtrYMni7hghFRLLA2M1itJsI8LP0dfiqBfYXU+F7sRNYm1UwnHl089IQ6Z1DsXxcmzrdi9Vo5Ye1SP17yll4qQctTkqeUWFDV1QgWwGvQC5W1tmvlo2pLga6X22s2lc5KTxeG0N1gNdSAtWWmJbmbfZQaeFJlIQ8nKsvBPhdUW4MkZtHjW5LBqZrKQx1+s0RUdwLRI7Puse+aWTXOllurLggDJ+U6jN8eh
+ 6jkNfV8h
+ h3NE9eYKz3MhbzEbZMOFMsjgyDW8oTDiFNJd/7mpaLpOeMavrZoKi5gQZKpbSD4ygvyg1aimagDXVGoMZsMUvHRJF4xUr3Z+lJnS+mRN1IuUDefbExLKV8JknCNP+CuOfnh2TV+bCPRML4iNm3NqrGOJ1Ds5TdXv8JgYY7HtuOh2zdnkuPcNLGGnhmOgSzu9Zwd43xiqJ1qACibA/oguihMsP6Zaq0fkmmihKM8T1LzcHV6XcdDfKBNVMe/3zgX9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,36 +103,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 2:23=E2=80=AFPM David Matlack <dmatlack@google.com>=
- wrote:
->
-> Inherit Access Control Services (ACS) flags on all incoming preserved
-> devices (endpoints and upstream bridges) during a Live Update.
->
-> Inheriting ACS flags avoids changing routing rules while memory
-> transactions are in flight from preserved devices. This is also strictly
-> necessary to ensure that IOMMU group assignments do not change across
-> a Live Update for preserved devices, as changing ACS configurations can
-> split or merge IOMMU groups.
->
-> Signed-off-by: David Matlack <dmatlack@google.com>
+syzbot has found a reproducer for the following issue on:
 
-> @@ -1017,6 +1017,15 @@ void pci_enable_acs(struct pci_dev *dev)
->         bool enable_acs =3D false;
->         int pos;
->
-> +       /*
-> +        * ACS flags must be inherited from the previous kernel during a =
-Live
-> +        * Update for preserved devices (which includes endpoints and any
-> +        * upstream bridges) to avoid changing routing while memory trans=
-actions
-> +        * are in flight.
-> +        */
-> +       if (pci_liveupdate_incoming(dev))
-> +               return;
+HEAD commit:    b9303e6bff70 Add linux-next specific files for 20260430
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=13745dba580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5474e13c6d20d45c
+dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=125dd748580000
 
-Sashiko caught that pci_enable_acs() is also called from
-pci_restore_state() so this patch needs a fix to ensure that ACS flags
-do not change or get lost after a save+reset+restore.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/b3a0a2e50f73/disk-b9303e6b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d3d481b220d4/vmlinux-b9303e6b.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/d6e012913960/bzImage-b9303e6b.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
+
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
+preempt_count: 0, expected: 0
+RCU nest depth: 0, expected: 0
+4 locks held by oom_reaper/40:
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
+ #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:495 [inline]
+ #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: zap_vma_for_reaping+0x193/0x380 mm/memory.c:2119
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:187 [inline]
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:294 [inline]
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: mn_hlist_invalidate_range_start mm/mmu_notifier.c:515 [inline]
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_start+0x5a1/0xb60 mm/mmu_notifier.c:580
+ #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
+ #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
+CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ __might_resched+0x329/0x480 kernel/sched/core.c:9163
+ __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+ rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
+ spin_lock include/linux/spinlock_rt.h:45 [inline]
+ kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
+ mn_hlist_invalidate_range_start mm/mmu_notifier.c:525 [inline]
+ __mmu_notifier_invalidate_range_start+0x6e4/0xb60 mm/mmu_notifier.c:580
+ mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:498 [inline]
+ zap_vma_for_reaping+0x1f7/0x380 mm/memory.c:2119
+ __oom_reap_task_mm mm/oom_kill.c:548 [inline]
+ oom_reap_task_mm mm/oom_kill.c:585 [inline]
+ oom_reap_task mm/oom_kill.c:609 [inline]
+ oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
+preempt_count: 0, expected: 0
+RCU nest depth: 0, expected: 0
+4 locks held by oom_reaper/40:
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
+ #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
+ #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
+ #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
+CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Tainted: G        W           syzkaller #0 PREEMPT_{RT,(full)} 
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ __might_resched+0x329/0x480 kernel/sched/core.c:9163
+ __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+ rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
+ spin_lock include/linux/spinlock_rt.h:45 [inline]
+ kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
+ mn_hlist_invalidate_end mm/mmu_notifier.c:597 [inline]
+ __mmu_notifier_invalidate_range_end+0x23b/0x400 mm/mmu_notifier.c:616
+ mmu_notifier_invalidate_range_end include/linux/mmu_notifier.h:511 [inline]
+ zap_vma_for_reaping+0x2d9/0x380 mm/memory.c:2124
+ __oom_reap_task_mm mm/oom_kill.c:548 [inline]
+ oom_reap_task_mm mm/oom_kill.c:585 [inline]
+ oom_reap_task mm/oom_kill.c:609 [inline]
+ oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+oom_reaper: reaped process 6034 (syz.0.24), now anon-rss:0kB, file-rss:64kB, shmem-rss:0kB
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
