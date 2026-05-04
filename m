@@ -4,102 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19E1CFF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 16:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11C2CCD3427
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 16:14:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D52896B0088; Mon,  4 May 2026 12:08:21 -0400 (EDT)
+	id 3E5F46B0088; Mon,  4 May 2026 12:14:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDD246B008A; Mon,  4 May 2026 12:08:21 -0400 (EDT)
+	id 3BE346B008A; Mon,  4 May 2026 12:14:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA54B6B008C; Mon,  4 May 2026 12:08:21 -0400 (EDT)
+	id 2FA6F6B008C; Mon,  4 May 2026 12:14:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A9A736B0088
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:08:21 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 48AE71C003E
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:08:21 +0000 (UTC)
-X-FDA: 84730219602.04.948F9FE
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 54FAA20011
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:08:18 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LEcWDUBU;
-	spf=pass (imf03.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E9096B0088
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 12:14:49 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0430A01FB
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:14:48 +0000 (UTC)
+X-FDA: 84730235856.03.3125416
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0225B1C0011
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 16:14:45 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of gorbunov.ivan@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gorbunov.ivan@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777910899;
+	s=arc-20220608; t=1777911286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tQPMjTUHkP2UwGPYhszIF+AnxbBwLtPXM0Jz4vPxZjw=;
-	b=xkzH368lmCUu8nvMsi7XsybhLVFgdEtTB3lIs/ONuiqyjvP7FQXZB9UuA5lDaXM4i66d27
-	cBBvkmskx0WPk8wjBSPivyKA0DMKj//URSWhDMZ0Dq7hKBDvU9KclaR/Tp0aSA80l3suui
-	v6zRgDizfK72edUA6wzUQiy0LT7QvKk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777910899; a=rsa-sha256;
-	cv=none;
-	b=i1k4/ItVz/L2Eu2zRP9sttl5l76ODtWl76bWiC8KhvTngF6zjvrafo+mtZ2P8UPdnFJzwV
-	bpwzYXYKwEaY/+E5j4SGEaZaAP7BXjqZIfrYimcXAJF08VxWbwxERsrxVPb4ePMJMUiTqo
-	d6TGErfQ534u1ulkRjmvKSmkbAR0ny0=
+	 in-reply-to:in-reply-to:references:references;
+	bh=u1P9yye2AacZGkFluFiOG/ZeUZGaSHzB0JR5wv/9XrM=;
+	b=iA0cFDvGKD3shwhKbDuFvAKVwOPKQb18GLN/BmaRnfCaa7kIEkd1UuUiCrtaX3H6EZFIY7
+	3o5oYiv+/gkEEl6uY34sPTW54C5DAoEoXa0FzWAkaLe4cHHf6SOE911Lt+1nZCE6Q2dFwW
+	4qpPShwVkUJICpksLdnJMjpSpMwtPg8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LEcWDUBU;
-	spf=pass (imf03.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777910898; x=1809446898;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=4lCsaFuu2B5R467I+7rpTNdF6BZtih2LJJ2lk/PHSPw=;
-  b=LEcWDUBUlTb6NptpEql7vedUMPjyxZxLpy82Cy6m3QjClCESz2krUHDb
-   rr0u+0duV+EyCjdqrEAelTrrxuP9HacP+DekGVRiYNjDhnbccPBj8J04H
-   UHKkkZ8wCiL3niBKPAiF8HUB002MPggYo3Xnr8nyr8LRwCk9CYDYwFawR
-   4dfmFPQDVRzF6QiYNSpA7yCatmtyFtJqgTXyQshNHqZFPfhNzVibIq+21
-   nSCK8ulgGIq2DguKGxJSRmmlU1vJptT0TTGMiDSZN8lOxCDbcgkwd8d56
-   mScfQwJZ2/3KdNmiAL55wYHg8l0tSXmK3VZ1rpoIDsVWciPP0ZCAj4U7D
-   w==;
-X-CSE-ConnectionGUID: k4yKcpvdRISAck1isr7HtA==
-X-CSE-MsgGUID: gt+4YqyLTSaYRE7Xd0bx3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="77789300"
-X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
-   d="scan'208";a="77789300"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 09:08:15 -0700
-X-CSE-ConnectionGUID: keFM9U6aQ4urZpzFRDdezg==
-X-CSE-MsgGUID: pg+QsgYJTZGFA3RcNf/zHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
-   d="scan'208";a="259211309"
-Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.110.19]) ([10.125.110.19])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 09:08:14 -0700
-Message-ID: <1eb01a65-d21a-40a8-948e-0b1a3f088a20@intel.com>
-Date: Mon, 4 May 2026 09:08:13 -0700
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of gorbunov.ivan@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gorbunov.ivan@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777911286; a=rsa-sha256;
+	cv=none;
+	b=SzUIJ9bY7eCYTtiSj/GZPtQaCP/THImdkNsZU+cq8kxxV2brlOt5yzZ3wgjNpi8P8pJycT
+	6S08nYfe45JANSMPzEtYQAZuEgaHfGvmowFHW+0mDSfS6F43tFQsp8JnWOv75ZxQWoSPDU
+	annqGDqyAoKAkXfZpxkvj2s4pFgfp9o=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4g8RYF5kG5zJ46XM;
+	Tue,  5 May 2026 00:14:25 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id CAA0E40572;
+	Tue,  5 May 2026 00:14:39 +0800 (CST)
+Received: from [10.123.122.186] (10.123.122.186) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 4 May 2026 19:14:39 +0300
+Message-ID: <616a62b0-680f-4a86-8ca9-75bba10684dd@h-partners.com>
+Date: Mon, 4 May 2026 19:14:38 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/dax: check for empty/zero entries before calling
- pfn_to_page()
-To: Souvik Banerjee <souvik@amlalabs.com>, dan.j.williams@intel.com
-Cc: willy@infradead.org, jack@suse.cz, apopple@nvidia.com,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260501233933.2614302-1-souvik@amlalabs.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260501233933.2614302-1-souvik@amlalabs.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v2 1/2] mm: drop page refcount zero state semantics
+Content-Language: en-GB
+To: Zi Yan <ziy@nvidia.com>
+CC: <david@kernel.org>, <Liam.Howlett@oracle.com>,
+	<akpm@linux-foundation.org>, <apopple@nvidia.com>,
+	<baolin.wang@linux.alibaba.com>, <gladyshev.ilya1@h-partners.com>,
+	<harry.yoo@oracle.com>, <kirill@shutemov.name>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<lorenzo.stoakes@oracle.com>, <mhocko@suse.com>, <muchun.song@linux.dev>,
+	<rppt@kernel.org>, <surenb@google.com>, <torvalds@linuxfoundation.org>,
+	<vbabka@suse.cz>, <willy@infradead.org>, <yuzhao@google.com>,
+	<artem.kuzin@huawei.com>
+References: <cover.1776350895.git.gorbunov.ivan@h-partners.com>
+ <9fd8ebbc0f4f45be611bae0d03dd25dd994233c0.1776350895.git.gorbunov.ivan@h-partners.com>
+ <53FA8505-E7C0-404B-B7F5-3EBE89B64E0C@nvidia.com>
+From: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+In-Reply-To: <53FA8505-E7C0-404B-B7F5-3EBE89B64E0C@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 54FAA20011
-X-Stat-Signature: zhb87569iz3q1idoq8eudstc6t8cm85n
+X-Originating-IP: [10.123.122.186]
+X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-HE-Tag: 1777910898-73125
-X-HE-Meta: U2FsdGVkX1/etKS3fPtHNbVRN3YZb1YV6SwAKuwqmJANi6CeaZBzPvKPnZo3LtZw1vTJVpRhQaJNHDpRuGfqlTvuJdiwnncfcz6yyhqdMwuVsx5hB0L15ZPvigX4225+T8EQcSu55LiF0IucxR54ok8p1SLjlOEDA/7iXFDgZnE319SO7cs9IupFeGFLHl6uvVDHJOL3OkMJoleAESweBGcoeGURfs7llrvKOqSLCWEEh2oEiPQFZdyxjGb2NMUIm9UNvkgINREjFMARkd3dpm0OKbN9Vu5eL20ixjCBVdSTMfjeGfi/PEsOhyIZVxn9K84mJiQzn4KOi5xi96nX9QCHgYOJZ2UGKzRRbvjL5rPQvJDsS5K0kER54WWGsguP6g46WXV5xS0xRlwJkqES+2tUB0SIQKaWDZ37CphGup2N6fAUKAt+fqMOhfu8CcreWl/4ztT43XCaRfeq09SK9wiGdv+aS3ErCmc6mg39lCm6RhOOikV0RMYdd8l3p8KDFRou31Jkl5Q+tO3BkwQDVl8PvcjrsOkR4ZYyTg6bh80zQpKsvBAur6YRStOxxhfiA7YAwpFo2sJA5OgejtNNOU7ChjbbAGBesgzf2tC5fnNExG6X/jt34ca1YfDQ72EQc9S0Pht1a07h+npCDrBZ4WkPqARMczO1H3cNn312iLvy25jEIwW1YaF4l/qOeBa9KJLOsx8+NTc1M6etqWC2k3d1DpZe9TTZeiwFHCedt0D6BzUikI6LmBy7LE7ZIl7PK7aDsE7gLbG3FUkMs+fRg59jhnKQeqMDWizgDk15slOm3WNVXxEcokIlHPuYn4n1K6rMkbm+VxEwWj4/kD36OFlQTDbN8yLzkzCsFzt1CrSfuBxXcsGXtVeoKd7UEKWnV7d5+VfiXGo71J7ERc6gWyC72jPx693x43HRxiitTTa7whW7jHBTpx5Db7QRo2WSNX3zWcYcCR21CM9/UlW
- cmlKnxgc
- EZH0WbR226mLcCvrmF/9jvqk9g7PU5ENHWaTP5wWKQvB6DsRW4pjLpzuDtLZg6A8mkHBqSYykKc+cK+VVZANOCeZLp7vc30KQJX9QdePUf4kkRqBNGQ/T3fcvApug+8khMWBfRFtbPLBYni5pKNm4oKrB82strO6JXgT6ai79PALcAHa46I+sTeS85+pDT6DXWK78d7RFnA2T9wHTQO8D+G3DPCjjkPpO0j1L6MEkWEvKrEfisxFnZZlbinZXK3e0JULRm3+B+KolY7N0e8NyCvZWJY5eeS3HxMksVRFX9z8khIWz7aqcSQhJV+7xBmBzGVVe/w8zwL8ZGxV995X8wusH52KbYJqsq4tAykuh14jRLO2b3pWNMpsqpaLc84Jz6Ry8
+X-Rspamd-Queue-Id: 0225B1C0011
+X-Rspamd-Server: rspam06
+X-Stat-Signature: dkubqt11awuiwendnxwopakefgatbg1g
+X-HE-Tag: 1777911285-17252
+X-HE-Meta: U2FsdGVkX1/KUbDD0515Bq8bO9bRrgLB1ILAobTUOwo0mYyKm/ExpRpyzp8pcgkQm7jh1oTEUAVT6uD+axqfxa1Eg1g0RF+qAHeXJd760Akv3pjehPxmyjky0uxNRLtmKYktjCIL78xw8kQ5htIdnq8UcwZRiIv7KPtfc66lWhcN4wjO/cMsKn5k/N8y61Om5faEoxVrWWfsxU+hpvz5Ty9gPb5ijkkIisHI0WsmhGWoSGAjo0bVdU0G/bVMFTn5cYdfVQ2+BrKLubfajVBMedn7VsVzLhJiq63/CEsEBLJdQN1wlxgWSpkuKorSYT8ICyrE3jwZdgE5GjWKo9Hl4IkOwtPmZbhx6KJGjqB42EGAQzx/BQlIqfDsfdXzpZwWSqAhvLpKtuJdc2335P5gaCvO+gA7va+K/SS0LXvYIqT106uehmp3PA6kh8SrL40R0jMXth9hmqFhi1kdj9Inf1EhPU30QGiijfJIE0PPKon7GAHW7dii6jVZQbBhqECR0zexz0J0izRTJKgIl7eKrAIJe1+v3OG9TKTs7QWq2V1lPRDc9+9+m+rW0TlG01CcKuJR5Nh2cY3YJ5IfKKmqx/xXI2y5PAJoNLySXO08QttwncHrJcpD4nir+itqz9/gSiFb0y4r73MpJdZq93z5tvWVIbhQY0er1N1J5bzjmKhIVAGSMbV+DV7GL34q37Tg0z4GAoJXsGZw8WK6iWmbWh5bZzF1kpivoPIaeI8GF4EDlYbhkQelN/FjSP6SuW6mQmvrnXfcVHdbYdYXWX8N6vMTRNZHPqbup37NmtsotEaSGwKzRe84UcaHHOCMy3tQJBUPNjUH//MoRYmCUaqAdsYf+wiLgRSBknskGwdtJTXynMNJdD/xW1ImqFoogQ195y7RdpuHDkKPX/c/ZPjNnZmre863G1E7t5xryD9iEqIGE3+gKTyJp3UqYuIv9Z6FMo81P6pq9Q9fiU9cSHB
+ tcYXdiTI
+ gVvq9sUr5FsqzE02bQU7NUee3BPCwH2sv2aaMdokbWzcKmaNLLBFhzzO94gTxfv5rc8GG/YSEMoPhuJx8kGrL/q7/dAdPjasUYGqzU6Ojj8Fe3WmRMkpoH1V2fJ0jAubp+wdwJlAv8PQioF6oF5KSM7iA45ECVOSE+1dd0L7pT/WCwlFz0Laq/YOa7AhR3JtrOIps13m7Cx3ptL5UFu2Mg9JAvhm4Nxx1aYor
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,80 +100,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/23/2026 10:32 PM, Zi Yan wrote:
+> On 20 Apr 2026, at 4:01, Gorbunov Ivan wrote:
+> 
+>> This patch proposes 2 changes
+>> 1) Deprecate invariant that the value stored in reference count of frozen page is 0
+>> (Getter functions folio_ref_count/page_ref_count must still return 0 for frozen pages)
+>> 2) Allow modification operations like page_ref_add to be used only with
+>>     pages with owners
+> 
+> Should we also ban calling set_page_count() except init_page_count() and
+> set_page_count_as_frozen()? So that no one can manipulate page refcount
+> randomly. The same applies to folio_set_count().
+> 
+> All set_page_count(..., 0) are converted to set_page_count_as_frozen().
+> All set_page_count(..., 1) are converted to init_page_count().
+> 
+> We might need an init_folio_count() for folio_set_count(..., 1) users
+> and folio_set_count() has no other use.
+> 
+> I see set_page_count(page, PAGE_FRAG_CACHE_MAX_SIZE + 1); from
+> mm/page_frag_cache.c and it could be converted to page_ref_unfreeze(),
+> since above it there is free_frozen_page(), which makes me think the
+> page is frozen.
+> 
+
+Overall I agree, but this is out of scope for this patch main change. 
+This could be handled as an independent patch later.
+
+>>   static inline int page_ref_dec_return(struct page *page)
+>>   {
+>>   	int ret = atomic_dec_return(&page->_refcount);
+>> +	VM_BUG_ON(__page_count_is_frozen(ret + 1));
+>>
+>>   	if (page_ref_tracepoint_active(page_ref_mod_and_return))
+>>   		__page_ref_mod_and_return(page, -1, ret);
+> 
+> VM_WARN_ON_ONCE() might be better?
+> 
+
+With "locking via dedicated bit" patch modification, any function which 
+drop reference counter to zero changes the behavior of 
+refcount(page_add_unless would succeed and etc.). This could lead to 
+hazardous results. Therefore, we decided to prohibit that completely and 
+make zero value only possible as middle state during dec_and_test.
 
 
-On 5/1/26 4:39 PM, Souvik Banerjee wrote:
-> Commit 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> added zero/empty-entry early returns to dax_associate_entry() and
-> dax_disassociate_entry(), but placed them *after* the
-> `struct folio *folio = dax_to_folio(entry);` line.  dax_to_folio()
-> expands to page_folio(pfn_to_page(dax_to_pfn(entry))), and page_folio()
-> performs READ_ONCE(page->compound_head) -- a real dereference of the
-> struct page pointer derived from a bogus PFN extracted from the
-> empty/zero XA value.
 > 
-> On systems where vmemmap covers all of RAM that dereference reads
-> garbage and is harmless: the early return then discards the result.
-> On virtio-pmem with altmap (vmemmap stored inside the device), only
-> the real device PFN range is mapped, so the dereference triggers a
-> kernel paging fault from the truncate / invalidate path and from the
-> PMD-downgrade branch of dax_iomap_pte_fault when an entry is being
-> freed:
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 65e702fade61..27734cf795da 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -1639,14 +1639,14 @@ void __meminit __free_pages_core(struct page *page, unsigned int order,
+>>   		for (loop = 0; loop < nr_pages; loop++, p++) {
+>>   			VM_WARN_ON_ONCE(PageReserved(p));
+>>   			__ClearPageOffline(p);
+>> -			set_page_count(p, 0);
+>> +			set_page_count_as_frozen(p);
+>>   		}
+>>
+>>   		adjust_managed_page_count(page, nr_pages);
+>>   	} else {
+>>   		for (loop = 0; loop < nr_pages; loop++, p++) {
+>>   			__ClearPageReserved(p);
+>> -			set_page_count(p, 0);
+>> +			set_page_count_as_frozen(p);
+>>   		}
+>>
+>>   		/* memblock adjusts totalram_pages() manually. */
+>> -- 
 > 
->   Unable to handle kernel paging request at
->   virtual address ffff_fdff_bf00_0008 (vmemmap region)
->   Call trace:
->    dax_disassociate_entry.isra.0+0x20/0x50
->    dax_iomap_pte_fault
->    dax_iomap_fault
->    erofs_dax_fault
+> Not sure about these two, they freeze p and p goes into buddy without
+> unfreeze to refcount==0. But at the beginning, you said there are two
+> states:
+> 1) Unfrozen page which right now has no explicit owner
+> 2) Frozen page
 > 
-> Close the residual gap by moving the dax_to_folio() call after the
-> zero/empty guard in dax_disassociate_entry().  Apply the same
-> treatment to dax_busy_page(), which has the identical pattern but
-> was not touched by the prior fix.
-> 
-> Fixes: 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
-> Cc: stable@vger.kernel.org # v6.15+
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Signed-off-by: Souvik Banerjee <souvik@amlalabs.com>
+> 1) means free pages in buddy. But the above change brings frozen pages
+> into buddy, mixing the two states into one. Is that intended?
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-> ---
->  fs/dax.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 6d175cd47a99..6878473265bb 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -505,21 +505,23 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
->  static void dax_disassociate_entry(void *entry, struct address_space *mapping,
->  				bool trunc)
->  {
-> -	struct folio *folio = dax_to_folio(entry);
-> +	struct folio *folio;
->  
->  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->  		return;
->  
-> +	folio = dax_to_folio(entry);
->  	dax_folio_put(folio);
->  }
->  
->  static struct page *dax_busy_page(void *entry)
->  {
-> -	struct folio *folio = dax_to_folio(entry);
-> +	struct folio *folio;
->  
->  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->  		return NULL;
->  
-> +	folio = dax_to_folio(entry);
->  	if (folio_ref_count(folio) - folio_mapcount(folio))
->  		return &folio->page;
->  	else
-
+Since state 1 only appears during dec_and_test, pages in the buddy 
+allocator are considered frozen. So there is no mixing of states.
 
