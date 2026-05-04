@@ -4,96 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B671FF885A
-	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 07:48:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F1CDFF885A
+	for <linux-mm@archiver.kernel.org>; Mon,  4 May 2026 07:51:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 493246B0005; Mon,  4 May 2026 03:48:57 -0400 (EDT)
+	id 5F6A26B0005; Mon,  4 May 2026 03:51:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 443A06B008A; Mon,  4 May 2026 03:48:57 -0400 (EDT)
+	id 5D3696B008A; Mon,  4 May 2026 03:51:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35A546B008C; Mon,  4 May 2026 03:48:57 -0400 (EDT)
+	id 4E4426B008C; Mon,  4 May 2026 03:51:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 256F06B0005
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 03:48:57 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1B4DA02CF
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:48:56 +0000 (UTC)
-X-FDA: 84728961072.14.47335B7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2C13A40010
-	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:48:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TdrspOkK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3E5A26B0005
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 03:51:41 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF12A4036B
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:51:40 +0000 (UTC)
+X-FDA: 84728967960.16.7F4DC07
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0C5908000F
+	for <linux-mm@kvack.org>; Mon,  4 May 2026 07:51:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=BwFUlcLo;
+	spf=pass (imf02.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777880935;
+	s=arc-20220608; t=1777881099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f6cfewTo+i6gmiGJ1mvBZsv3mUjPocnI8DVGUlf3oSM=;
-	b=zFUbDbudLYQDB9neNxBcVweUUDsVb79f7h6Af9PlEIq8EYneEXr6yvQ/yIplNVhLLvAVvY
-	MQ/kO+EDYXR2/Ov4OEHcJh+apzW/RMzRwWWHfLmerUgqp+Jtyv5iU1YfWKdvFolgUgx530
-	3DEPXJrcnWyZx3erDAQMi5AnhbI5jYI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777880935; a=rsa-sha256;
-	cv=none;
-	b=ipHZ74yH/RMbzxfHrhTdlwXgrh1RLG0LsgYQAmwyYcud3Ce/Bxrmxl9JqCP9uvUDzkOA60
-	4+u5m1pnKGD6D1ktPoGxB9wu17ppkbmyLPQ9IctEqIw3xUt7DpiuAYCFBhagHKiiJERztA
-	HVbt1asK0WqHaY86qB7xgzsvJC8ifAY=
+	bh=Bm3fGVRDJmvzKcGf6LzNIYgcMVEhDfTh7xuJQzaCqRs=;
+	b=0GDZ/PSAeDVc5yXI9iWm9WOwZtlPSOvDakMrX6n272s2yNzNtu2umcM5iij6q2QgGuloCB
+	1qfl/CwcQ7/LpiAkhauIuMYwenJ2OtRhXUvWBX+ZGW+40XmC11rXN4SCeyWdJbd44Nb9g5
+	0At6reW209OzCpolhIj0tWcP8Za1jfY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TdrspOkK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7307660125;
-	Mon,  4 May 2026 07:48:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF6EC2BCB8;
-	Mon,  4 May 2026 07:48:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777880934;
-	bh=hvT42DeLxt0G1flXefxTAisAOAsIFUCaS+f6nn9KqVg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TdrspOkKI/X8T3QdrKzyX8KNipEz9X3bOSmaWdacC5A1e017WryZgJC9Z4MD+4VhD
-	 066QFiGfp6MoC0ZlBy9OeqKoQrG0Zt2vWMiZxQI1zdJSEjCdAx0R1MspDyjrW0iJ78
-	 QE0WmKsnN5Gv6gf0oOns5WDSRRV6LWU+66Yqrv3urH11sjUTLaHBgsTVRX2BU9/Q0J
-	 JFE1z7/h7+/QliIq4ZH23DknBot/9Ou3dFU0R7h/IcbRLjPxwxUhLaNSV2B0cqM4rv
-	 PhN/ADH/AsvT9vrkKyt0Rsrci0onnGkmQL5OsNE3jssqyE2miF+a2VzLugfhB2pJPG
-	 lA/51IkPNVp4Q==
-Date: Mon, 4 May 2026 09:48:41 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
-	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
-	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
-	usama.arif@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 01/14] mm: decouple protnone helpers from
- CONFIG_NUMA_BALANCING
-Message-ID: <afhPWW52f2PtrjXj@kernel.org>
-References: <20260427114607.4068647-1-kas@kernel.org>
- <20260427114607.4068647-2-kas@kernel.org>
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=BwFUlcLo;
+	spf=pass (imf02.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777881099; a=rsa-sha256;
+	cv=none;
+	b=X0/v71nGqew/YyWf9sFTSIfM9DBX8TlHRgcBh6DLhs9UH89OraCefMzALqGNRtaSurHm0l
+	HyvAStgLd6MbTm5KLzLmypLJfAvl8aZnD6etvA+UmBRZb5pEBDLy6qPoyoFQcQTC+QxmwD
+	SGaynZL5rsj8IHmIg5wcFkD6CCtEu1Q=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso26568335e9.0
+        for <linux-mm@kvack.org>; Mon, 04 May 2026 00:51:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1777881097; x=1778485897; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bm3fGVRDJmvzKcGf6LzNIYgcMVEhDfTh7xuJQzaCqRs=;
+        b=BwFUlcLoC+oQbf5Sdsth0zkyZw4jXyMUwdPuKR5DdHNSuv4Hl3sYZPMEBJudI8yOO4
+         AVhuWOHs8Osinbm6es5R4WIjjC0QsQ4rdUb7Zt/z9fCta6/xIl7YlpMWz9Da7fNdsAYb
+         F53IEHMEXO4iE+tAGRA6mzWncfl1xK3Kzyus8EznUdZE8jM8umeFqpw5cVQBvBW9pEmr
+         69jP9/3hCiHbLXo5aj7TLY06XUoYRo3j/nrgeja207MaCK4rPWTMM+2387Fg2L7iwZ4X
+         7CebonAaPzWoYiWTRGnyQVnQfZarYpYGzaHJ5kInHwynD0OAlSHZLG7cuI36Im8Xrnpc
+         8Hkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777881097; x=1778485897;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bm3fGVRDJmvzKcGf6LzNIYgcMVEhDfTh7xuJQzaCqRs=;
+        b=eGwkv9HP4y5RlJZKwjXVLcZhXVUbjjaLR5IoKpJ/lZJiLSdlQlE1xL+m3xpvdS9uqr
+         UNNlV6Fd0Ic8zCtlVuIlORjsbF6sVEuFK6dcjnFjBscbF6zBQj511s8oCX9ae04mgRA/
+         8YYKoq8SijSPeRzQPw6G+0fzvHAHeJUw8xvN90ruFT6CIqXGJ0T1zY1hc0O0PlwDmIkq
+         7/2jShyqiul3oB6DdxydPL+4e/ATPbY2hrGkabOjvkZTqomFlrkXiQeqPz67sojyprIb
+         xm1OWepx/yJ0tncihEnQ9kJhDI5eOkwrU6SD6VuAs9YZd+4IaHWUAoKvPbxc7BCd1ubw
+         vVow==
+X-Forwarded-Encrypted: i=1; AFNElJ/H0qI9ppcuavUPT7D+sG8SvifgX6b3CaYOE0N6BVK6mVaNEdJsrhzkAz2kzf5Kf6pSgAoa0gE05A==@kvack.org
+X-Gm-Message-State: AOJu0YwclmzO22kNj7IcUrhsasUjVrF9Y0MOjtRQidOyEC6c5uSw69in
+	Utyyng0Y6nruAkjHpB7HN3Zu6iRM7BlwchYNGiDA55obo3HpgIvHeHp1Z/JMQskPuss=
+X-Gm-Gg: AeBDievSpA1h06JQoCsySpXHREiE88Vo9ezo66IBTCHimQUPJt08z+v6boeMxdnSRNi
+	uIPf8ZaER4M4WY+cBQDGcqwZStFLAcNChQlHXZGkobYXA2fZbu1yj3ZzDy+lr8U/tzB7bNvljBH
+	+scyOE3AmJbhi+9ICvBTt9jc94kh3BwwaEiU44zYxRhG2c/AfVh4p+WAhGzs3AZ8nPKH265uXwG
+	21+T25aGsyfW9AMP1FoFTVeipvW+nzJB/5xWoIW8qrx1osqiVfQx5s6xNIyMN+mZsohh6RGSeWD
+	I4kbTl3pwcWuq7UZUp+ZzprTJ5x0tYfhP3eB1CfL9obZaDiNCRhQjDHVgsyoLcwt16aNOG7ITAd
+	/rlzYOi4Ed7TR9+JBeYyRkkq3ZqszxjsNKsV1kFSG1/6nDbPSHlPKYLfP93hkmrRV+1QLFYcWzf
+	GXtOXhyKgLQ9mFhs4wARrY+h2xwnA65s1nQvqfcwaf879oItc=
+X-Received: by 2002:a05:600c:a302:b0:48a:568f:ae8a with SMTP id 5b1f17b1804b1-48a98638a65mr96686225e9.8.1777881097362;
+        Mon, 04 May 2026 00:51:37 -0700 (PDT)
+Received: from localhost (109-81-23-170.rct.o2.cz. [109.81.23.170])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8eb694fcsm271098285e9.3.2026.05.04.00.51.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 00:51:36 -0700 (PDT)
+Date: Mon, 4 May 2026 09:51:35 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Minchan Kim <minchan@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>, akpm@linux-foundation.org,
+	hca@linux.ibm.com, linux-s390@vger.kernel.org, david@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
+	timmurray@google.com
+Subject: Re: [PATCH v2] mm: process_mrelease: introduce
+ PROCESS_MRELEASE_REAP_KILL flag
+Message-ID: <afhQB0CWEcflXpOi@tiehlicka>
+References: <20260429211359.3829683-1-minchan@kernel.org>
+ <afMnKrYT0xG_a-b3@tiehlicka>
+ <afUYfpwWsUQoB9hz@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260427114607.4068647-2-kas@kernel.org>
+In-Reply-To: <afUYfpwWsUQoB9hz@google.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2C13A40010
-X-Rspamd-Server: rspam04
-X-Stat-Signature: qphsxo6ixrt8r9yromsuax9gmeqnzp8z
-X-HE-Tag: 1777880935-105686
-X-HE-Meta: U2FsdGVkX1/lb7M5c3Qk7k/zMJ24M0WSelqy8ntZ6B6s1w4v27IWb0RW3szvz/XcwKc/8jDLYTwI3GU39UyOrIKONOq51R5RgdTd/li2Zyb3YMtnteKSY8SABdIJ4U5VlwJ4zZMmms2SwpwMaIyN21a1uSwJX943s5nE/jdh4q4a6PB9VADGuueUnnlMzWqdi1W+Wc7fDd9oeJxb2MByxcvVCwfdpIoXMt4aFABPk3vDk3oygE8cd8LSonnm9YOapJFalvhism7/6f0Dg0a95ipqkcdYgkV3ryuKHXrld3IDm4uF0ZkTqgUft6u/e3fcpubTupW13C63Za5PxhuT9KogmyV3+yJVGOVyYrqDEEeCFxivxDOqVG/DnWBc0qO/I7wnsw71X/2gcSCtki7wwcw+g40Bv7QUDWSb2Bm3TpehGra/3mayV/zMT/WXa5YX2Yo7LfaXOmnGls3rXyuIQsHNw+HICzWPD6/4pdlVqlwAnaoDDbZ73iqmTSdrqIsxYBZjkQaNqWCUOjatn7vrNFwX1zLpBd/+Q6Yu5C0Tl18Xc0SbEpFHbjjYCqFvW+j6zeqxHHfZOkLnc3X0xYD+UTF9HZnD/eCYGgusQjpto27sRB6rsJmPH8Ux5kr/Oaqr9JC90cvN9meaZBMFqXFYb1MQHN4aLyn/51eRlFyf9I2CcWi82AhB5tE6jJRJkLyQwA+SRvBpV68mvQG/WkK8cI1FJcUN9gY94SwAN0hiEVmC/r7NRciWRo3f/VxYUaSkMNhAN1nIJw63unYzTXcLJ0HJuEPUao13/C/AvqVV247T/NuRJsueYBx3nmpCnzUsdLINcJABqC+7lgmnAUPDraP0YLnVG73AgC2qBmwHJ5prfL7eg7kEopiWYHGdJ+U2/zxdnY7CuPmUEShGl5sMHkLRe4KRzOK+ZHZ/ARnY9K2lM1hRF0JQQt1RXeWtsaDvRARsoCBWpAGdpCzvmLK
- BXSqVjLA
- PQHknjWGhiWfEgQto9/lWZ7MIVfQ85j5UMT3vawvGeBgXgTztNfoQ01p71PzFRwmN7RSxXf7Qbo2xAPeSSVXWcoivqJobSM01lXAS7/cn1fXRGqOHOEEq/atQ9JPAGybW7A4T1hvTWSOKc/X7QlcxIrhyY+0A6hK2491oAYDf5uDgpk+/ZgwaKqZ0HweeaLzbRD2fayFuf9u3I2ptcnXx6eXABvyfABhsx+q0SJegMfP+cFf8DR6lF772RDUoYaROJiFQAuy0LZdV+rqHm4mGJ+fERdngIALKLBO9bbp+zLqojDvTgFgitpCjvwdJFzk6OTQ8LuhAOfRlmAQPEFb+OwJtN1qQMAa5/aQG
+X-Rspamd-Queue-Id: 0C5908000F
+X-Rspamd-Server: rspam06
+X-Stat-Signature: f4s16jmnip3j1r6ojebmdywmytakzhgt
+X-HE-Tag: 1777881098-268137
+X-HE-Meta: U2FsdGVkX1/Zj8dE8K3F2cKhLXtRzENCRxLyCkhjY/aYFVfu3qlKEtE7TQIL511OGbtZPpudmiY/LItScQDzvgxmKmyevmfJ6FBQF6rsuMuVsgVsVLZrhG5Robq7wXjlHgKeoXzjqZTCaN89wI+wc3L/l0ZGyDxivm9l7Kqd5OykeBV5EEMbpnI2LIzvU35wLChy/b6LbAV48+HOii/Wk9CNlhiCdgWhbwMHbQv3GAB3adb21xjoogJdUwP5ums0/w4YswjM8MNh3s49iCNhDmfUTF1RVWc0nszUYIE06S6LTpqADBmiY7gsY13G8KcZQMCNNio1M1iQ3D19CKfjY10xXGmRjMBFfGnro3hGqBfXnJexJWW0V3T8UfQM7ZmQtGmVm8hiMq55OWXyCXGZKCEDhkgHcawB8CAh9R6tbx+xzgs842SCjbir6jImeezHAQgq3iSKK/tnGhgrr/r6zMAf9RDL/OUnSVhW6k83aBsUKJ5vZ6fjUxoxoOqrMrg6MaMyw3zJRyNzDU7HbZ7ylSJdLqmzVPkQcl56vYeqST0abEj6RYNi3zrTx2udaGGfNRSG0UD5wn6cLQa5rlgYz+A9fvxe8w5RZ2IbUMTNSGnx/4+eu3k6JxWsrQ1VoMNu+ochPg4bQGkLWPmzUylpyaaVNg3wGr2ka1XxTkd+B8itTrfnyvX1GOAaaWm1wiuLgAySxrHzuqvbFPcYrLFt02eS8SQaIucwuoCDUv1bdD69F6m2JZisyO25PwpoCoCWH0oXRvUleTnPFGFYgXt1Yhs8E6OdE1YBbW+HuJ7oTOjSVd1EV7lSifY737ZxwDglYGpsVm0QURv1z0TTSTeqcIcvnN33hn/gX5EyExDd493OLbfU/RF3TQUoabMFwjyX0eQxQE2GaTwUoj+cVkwCRL3ZgVMqXmpFYW2TjF9jEPGK/1NNC4buMxqR78eKduLnCo62SWBeXuCKNjK5hKG
+ CxsbT6oq
+ HPyUrlBFIFmWHjEczwuSeV8syjVqwxTNPsOIjx9NiW8K++DNecCq0CQCO76BRuACYfpMO81u15YavUnp5TghgMtfeyvJDXWgbYh7klfL8+uNggU+yv8kl93KVsUKUlncE0MJOdsPxARBob1V8+Rdig9omE7by++qrMPa0ycM0Rul43Q4kO6bnLgDindzug+H0whwpgzisFjzOYqU8MPsQPsvbWUIIlhWxKfi+57S+8w//VBS5yhQo7V3yT7ObiHW3shsTIUaSdwTlwK2E+yCFs9opReP8o/tOyH7vw7oJcfVSF/blHRn6pCdulGiuvCuWDkUs8UqSdA16AwcIQNDYflJyucA7L2sWYFxDfJIk68DG9bZOJZKI0EEp+tVgUZDTMLLh23tul0neqMpCzmHV1eEF63YhjQphXDH7zKtdi9ZPrbo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,88 +121,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 27, 2026 at 12:45:49PM +0100, Kiryl Shutsemau (Meta) wrote:
-> pte_protnone() and pmd_protnone() detect present-but-inaccessible page
-> table entries. This capability is useful beyond NUMA balancing — for
-> example, userfaultfd working set tracking uses protnone PTEs to track
-> page access without unmapping pages.
+On Fri 01-05-26 14:17:50, Minchan Kim wrote:
+> On Thu, Apr 30, 2026 at 11:55:54AM +0200, Michal Hocko wrote:
+> > On Wed 29-04-26 14:13:59, Minchan Kim wrote:
+> > > This policy differs from the global OOM killer, which kills all processes
+> > > sharing the same mm to guarantee memory reclamation at all costs (preventing
+> > > system hangs).
+> > 
+> > Incorrect, we do the same for memcg OOM killer as well. This is not
+> > about preventing system hands. But rather to 
+> > 
+> > > However, process_mrelease() is invoked by userspace policy.
+> > > If it fails due to sharing, userspace can simply adapt and select another
+> > > victim process (such as another background app in Android case) to release
+> > > memory. We do not need to force success or affect processes that were not
+> > > targeted.
+> > 
+> > This is a wrong justification for the proposed semantic. You seem to be
+> > assuming this is just fine rather than this would be problematic for
+> > reasons a), b) and c). If there are no strong reasons _against_
+> > following the global policy then we should stick with it. There are very
+> > good reasons why we are doing that on the global level.
+> > 
+> > If for no other reasons then the proposed semantic severly criples the
+> > shared MM case. You are left with a racy kill and call process_mrelease
+> > approach. You certainly do not want to allow a simple way for tasks to
+> > evade your LMK, do you? So just choose something else is a very bad
+> > approach.
+> > 
+> > So unless you are aware of a specific reason(s) where collective kill is a
+> > clearly an incorrect behavior then I believe the proper way is to kill
+> > all processes sharing the mm (unless you are crossing any security
+> > boundary when doing that).
 > 
-> Introduce CONFIG_ARCH_HAS_PTE_PROTNONE to decouple the protnone PTE
-> infrastructure from CONFIG_NUMA_BALANCING. The six architectures that
-> support protnone PTEs (x86_64, arm64, powerpc, s390, riscv, loongarch)
-> now select this option, and CONFIG_NUMA_BALANCING depends on it.
-> 
-> No functional change — the same set of architectures continues to have
-> working protnone support, but the infrastructure is now available
-> independently of NUMA balancing.
-> 
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Assisted-by: Claude:claude-opus-4-6
+> I agree that in the case of a global or memcg OOM, the kernel deals with an
+> emergency, system-wide crisis where killing all sibling processes sharing
+> the same mm is an absolute necessity for system survival, bypassing
+> user-space privilege screening.
 
-With a small nit below
+You are misinterpreting or missing my point. I am not suggesting to
+cross privilege boundaries. The syscall should fail if the mm is shared
+with tasks the caller cannot kill (same as it does now).
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> However, process_mrelease() is an explicit user-space initiated system call,
+> and I am still hesitant to place that same raw, destructive policy blindly
+> at the UAPI syscall level even though I don't know of any known security
+> issues right now.
 
-> ---
->  arch/arm64/Kconfig                           |  1 +
->  arch/arm64/include/asm/pgtable.h             |  7 ++-----
->  arch/loongarch/Kconfig                       |  1 +
->  arch/loongarch/include/asm/pgtable.h         |  4 ++--
->  arch/powerpc/include/asm/book3s/64/pgtable.h |  8 +++----
->  arch/powerpc/platforms/Kconfig.cputype       |  1 +
->  arch/riscv/Kconfig                           |  1 +
->  arch/riscv/include/asm/pgtable.h             |  7 ++-----
->  arch/s390/Kconfig                            |  1 +
->  arch/s390/include/asm/pgtable.h              |  4 ++--
->  arch/x86/Kconfig                             |  1 +
->  arch/x86/include/asm/pgtable.h               |  8 ++-----
->  include/linux/pgtable.h                      | 22 +++++++++-----------
->  init/Kconfig                                 |  8 +++++++
->  mm/debug_vm_pgtable.c                        |  4 ++--
->  15 files changed, 40 insertions(+), 38 deletions(-)
-> 
-> @@ -2052,18 +2052,12 @@ static inline int pud_trans_unstable(pud_t *pud)
->  	return 0;
->  }
->  
-> -#ifndef CONFIG_NUMA_BALANCING
-> +#ifndef CONFIG_ARCH_HAS_PTE_PROTNONE
->  /*
-> - * In an inaccessible (PROT_NONE) VMA, pte_protnone() may indicate "yes". It is
-> - * perfectly valid to indicate "no" in that case, which is why our default
-> - * implementation defaults to "always no".
-> - *
-> - * In an accessible VMA, however, pte_protnone() reliably indicates PROT_NONE
-> - * page protection due to NUMA hinting. NUMA hinting faults only apply in
-> - * accessible VMAs.
-> - *
-> - * So, to reliably identify PROT_NONE PTEs that require a NUMA hinting fault,
-> - * looking at the VMA accessibility is sufficient.
+This is very wrong argument to introduce a potentially crippled syscall
+semantic.
+ 
+> If we really want to go that way for the collective kill, at least, we should
+> evaluate signal authorization (kill permission) against *every single*
+> sibling process beforehand instead of only the target task of
+> process_mrelease. Do you agree?
 
-I think it's better to rephrase the original comment so that it'll actually
-describe what pte_protnone() means rather than remove it altogether.
+This is what I've proposed already.
 
-> + * Stubs for architectures that do not support present-but-inaccessible
-> + * (PROT_NONE) page table entries. Generic code may still reference
-> + * PAGE_NONE from paths that fold to dead code on these arches; the
-> + * BUILD_BUG() fallback fires only if such a reference is actually live.
->   */
->  static inline int pte_protnone(pte_t pte)
->  {
-> @@ -2074,7 +2068,11 @@ static inline int pmd_protnone(pmd_t pmd)
->  {
->  	return 0;
->  }
-> -#endif /* CONFIG_NUMA_BALANCING */
-> +
-> +#ifndef PAGE_NONE
-> +#define PAGE_NONE ({ BUILD_BUG(); (pgprot_t){0}; })
-> +#endif
-> +#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
->  
->  #endif /* CONFIG_MMU */
+> Also, I wonder what the signal/process maintainer thinks about this approach.
+> Christian Brauner <brauner@kernel.org>?
 
+Yes, this makes sense. There might be a very good reason why we might
+not want to introduce a way to kill cross thread groups when they share
+mm from userspace. I do not see any as long as you keep the proper
+permissions for all affected tasks. Maybe we cannot do that sanely now.
+But these reasons have to be properly documented. You whole argument
+that this is different from in-kernel oom killing is just not valid.
 -- 
-Sincerely yours,
-Mike.
+Michal Hocko
+SUSE Labs
 
