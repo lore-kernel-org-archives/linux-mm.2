@@ -4,142 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4217DFF885A
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 08:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 697F8CD3430
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 08:54:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85B406B0092; Tue,  5 May 2026 04:29:53 -0400 (EDT)
+	id 54D056B0005; Tue,  5 May 2026 04:54:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80BCB6B0099; Tue,  5 May 2026 04:29:53 -0400 (EDT)
+	id 4FDBF6B008A; Tue,  5 May 2026 04:54:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FAA86B009D; Tue,  5 May 2026 04:29:53 -0400 (EDT)
+	id 3EC7C6B008C; Tue,  5 May 2026 04:54:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A6586B0092
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 04:29:53 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 215FA160379
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:29:53 +0000 (UTC)
-X-FDA: 84732693066.05.8D7634F
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 076E040006
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:29:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=GMZ+zsyv;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="B 7HPcpA";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.144 as permitted sender) smtp.mailfrom=arnd@arndb.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777969791;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C8CD6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 04:54:49 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C22F940469
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:54:48 +0000 (UTC)
+X-FDA: 84732755856.23.40C28F3
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C66F940004
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:54:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MLFd9E57;
+	spf=pass (imf12.hostedemail.com: domain of rosenp@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=rosenp@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777971286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qUBPJ0urDcUnlsX6r89qO1KciLnxPJvMDkann39OrDs=;
-	b=xv0XnNg8SsS7JBBFfCP0X1C3Z0/RVF6s4Yd1oRSCsIp6gKJFPcKXF4xonZzA4WemQ1v12D
-	JTJkqCd8qGIbd2jxCJHjZlDTc/u3HoaNJIMO3sQ9EhkFwdnambw5rzKbs3C078Em69mpm1
-	STHTs6gJY/xlHCQ6b+4gX6t2A66uxdE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777969791; a=rsa-sha256;
-	cv=none;
-	b=xmhUSTBsLHGr4io1jJJaCUGC55Ar+cBXFCOZf0M5GrNVVsgda8N6m3sAILFF+SFCeRqQvC
-	aTljePaBpS4JwlaQopWzGEZGNpUyuR9cujnu0rRnBFUQ9Je3EEGXECmS3VrEa0P/piH3JS
-	hb7A9s8kzd+nMUmhXm4ypER4OifnDNU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=GMZ+zsyv;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="B 7HPcpA";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.144 as permitted sender) smtp.mailfrom=arnd@arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 87E411D0009F;
-	Tue,  5 May 2026 04:29:49 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Tue, 05 May 2026 04:29:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1777969789;
-	 x=1778056189; bh=qUBPJ0urDcUnlsX6r89qO1KciLnxPJvMDkann39OrDs=; b=
-	GMZ+zsyvzU9xA3J7cWCCRaI0gDhZR2Tw1FSueTgTNcYtSToYtVDEnwgFUOxoSYI8
-	VgnqpBjE5I7N7uPLs3sHE/Q1TqXUgjGZyDH9NWruIkJW+oyoy72NQAamAYvp3A4H
-	+Iaz8tXuLE1pz+xIZ8c+5eUGYRA852/pNgF+LsuXpGyFbR1G1OJ+5ZVfco5KSVBl
-	hnxLxJIVIW2eiTtD5NVQmPc3Spc5I+lUJheCcwAEDWuukIhC0GQCqUqA+spnk+qh
-	lQjL4t0K/2GrzX+YsgGly4LlGwJxjzaF2eq8Yg+kZtTQA2daTkGwTc1F2dKG4VYC
-	lfL3nM4sTbeX5XV3/8Tqrw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1777969789; x=
-	1778056189; bh=qUBPJ0urDcUnlsX6r89qO1KciLnxPJvMDkann39OrDs=; b=B
-	7HPcpA5DZ1msZO5GgfSa1at8VYqhtBAlxqewaEmHYcw2IPRPHTD3uqRItnkxALvw
-	zb+ewQO0NWd+28GkMdJ4L2BHqEC8LXY7wrWAqbzCZQTj4tCEEcfvxn/wQUevQkVv
-	VM/e1uLnFtygVRwilIYPHgTttdCVpBqqkOfqkfh1Q1Kc6zIJMVEUmI8vu7fBHYYb
-	Z6DSOuqDw91Gkiogk0HC4pvx3NAPeoPoJX1vR+ZjbTZuo3le1nJd/c2SBIyOJXkS
-	NylZfCWF0TaETepRsyj/hzV23wHN4RIclcSku00R0BNcD1utBKbpab8RLXiWV41o
-	LxezAENaHGFO/LdmEinMA==
-X-ME-Sender: <xms:fKr5aSR4i0LKn96Ts2wPMZBTJicmUDEQza8pPEi2fg2evgvyipuaEw>
-    <xme:fKr5aSlTEXhSgiErd_l1ElbwMj6nu-asqtWTVcT3rgNNyz15IdJe74J3X11EQksH7
-    lIaqz4pt-oYJHY__8---roprV299HC094O4H97cCedCavkzU3nVRQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdduvdefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdegjedvfeehtdeggeevheefleej
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehnihgtkhdruggvshgruhhlnhhivghrshdolhhkmhhlsehgmhgrih
-    hlrdgtohhmpdhrtghpthhtoheprhhoshgvnhhpsehgmhgrihhlrdgtohhmpdhrtghpthht
-    ohepjhhushhtihhnshhtihhtthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepmhhorh
-    gsohesghhoohhglhgvrdgtohhmpdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdr
-    tghomhdprhgtphhtthhopehlihgrmhesihhnfhhrrgguvggrugdrohhrghdprhgtphhtth
-    hopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:fKr5aUb5ovd7P5XcuHC_V93o9oyEYJYoKMgqeUniGX-9CCJw2JyvYQ>
-    <xmx:fKr5aQWFGZnJ-8-rTb5kQaoIGU9PKbKYcmylRlmMNuQjBuLdKF-ubw>
-    <xmx:fKr5afQmqfKgv2NwBcpG8eghLVORqTLSgW0HIIrK0G6mflCtuAngnA>
-    <xmx:fKr5adGXdnlQse6xej0imfVIhZXbm6SGI1WU3lD5ndL1sF4UoHs43w>
-    <xmx:far5aeohjOqLMDmlUwjRvw9CSi6hVi_AL7kfCiYRD2b4US0XU5j6usdn>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 8337B700065; Tue,  5 May 2026 04:29:48 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=9wdfdluDfOc56C0VjHJT7ZZqNz7mrj9b9II6s2fvnHA=;
+	b=o/IAxqDdnHgdgkdah1tcknoZ4DDo2jO7k7OFwUoAVTtzjlA8ZFdV5u2RNdjyxX7FZDTcjD
+	PllocxM7DImg/Up/dvaRcrR0CYLd0OXcAyH+IUGGGbjRUJUpS2JOmUxCVTm4TaCfziUASQ
+	cg+t7u67kpRR6BtPHUSMocDUD27Tb34=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MLFd9E57;
+	spf=pass (imf12.hostedemail.com: domain of rosenp@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=rosenp@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777971286; a=rsa-sha256;
+	cv=pass;
+	b=RnJb04wfbcKr0RzHY35HM2AL9eyWEuWa3lwCp5FgBuNkzEYbbpP56i38TaICt0S/12D735
+	t9/pOvByClBqns6Gbt6HlWLOU6RWWVof5x5DzG8W1x1/fqr+PDRYv7ZNLY6TnN6yx1WH8g
+	eqt9pohGAHCmSzOe6chRTi7gK5CM39M=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-678a16429c6so6200411a12.1
+        for <linux-mm@kvack.org>; Tue, 05 May 2026 01:54:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777971285; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T3caeb5c9eV+MGnvqebqd3XKYd5mIZSTEEQ122nfNBLpp0KVCJtLhtClnvPO179nhg
+         0IBU4QDR4xQ5rjDvm5B6UXzlII21pqVU1cjFJNIsyHpP50yNWW6XbV7mzlx9KW4iZgLU
+         J5zohdRhdYPwj6gElIbRij1VrLb4ISlR7s9F9KbP6X5BwAPu1fOaIrdyU/uRBperd6pm
+         ONpSH6Hx+AP2rNktoCtIS8VenSzsf/t0PUjLI156l+B2z19R48U1doOT5kKzJYjabvGS
+         xQy4zUz7gc67+xO3CGah0RHXpJj+qYoCAx0QqjBYeJmGbrOQE47rDD4eTfY9vcENgjoD
+         ymig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9wdfdluDfOc56C0VjHJT7ZZqNz7mrj9b9II6s2fvnHA=;
+        fh=+7l5ZePh2uEOQeb0jUJlb70iGG82g54gV+LCEjmmdBU=;
+        b=A7lr+OjtpldLdWF8Fzt2o3Jf6CcKMqy252fgfvkhI+rMJvKccHaYaDINhHIG0S6nQQ
+         YW0Hla3srUyL4BlDmioY01zNKiDZD9naT7EQP7L5Zb/H1aWKfJSRLFACUY8tMjGu+0+l
+         S0J2TRMyaM7Z2VbB5ibFx7JbNHdmCDYbE9bnWOoIRlljU+3IAez2I4gB7xKeq+PXqGRj
+         Q0WWthOimClq760jz1Gfm5u2xyxAf8DzCrOMaZ86rVlERAb3/4+ICDzXC3yg0ob8Sh4E
+         xnGmE4b5kL3zpd1KCV2LFHwm9ekzJbEsLvFNWbCzeGMhPlL42kY25fQsgtQBrggYP8TH
+         adhw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777971285; x=1778576085; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9wdfdluDfOc56C0VjHJT7ZZqNz7mrj9b9II6s2fvnHA=;
+        b=MLFd9E57o3/VID/Fc3xn/DLnfDusHTxs1rFOL4giGcPA0oKs72Xf9YU51z+1TC7iT0
+         Mhju4eSrjuD5A1+5IM1qr34b6Ipcq/i2S6dWe0bCSz4tri1i1rpVyM5jrHgy+FxsLEhn
+         IH8Tr+QrxNdlEj/zfC8Dx2W1Cf0Jpp0HRP2XvRUjH2ct4BKhfHkIG1CKNUMbSPljRcU5
+         z3Ec2OgqWbu9hMjm77oJALMb9qKpCMrpwhu+acH60CQMKxqfoypdxoZAGqh0DsuRcXBJ
+         5VDV+6U807kPsNpXdamBbICV6WH74vRuGcX/olwC5IROYTIs/3HDjCGfUhmyPZHFQkOP
+         Y+fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777971285; x=1778576085;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9wdfdluDfOc56C0VjHJT7ZZqNz7mrj9b9II6s2fvnHA=;
+        b=ZbjDTmFr6z8GcPO5wursvtEhshlTEoAR01Z4mHCx/f3E2QJTWt0f4VqYsWhSQlojjl
+         lJpaL2NLM4wEASvg7bSHtV4BRW4fbtZ0xC1IQAbTVtes3lsWKWFouS5TguS7WtLi51tB
+         xbImkIedvbj1TGHLnqQ4vzBhd8gO3bywpb3C+UczO6Wh3eqUq+qXNZ16ajuPkRnoYS+a
+         C1gqTPsqdRwnOj4QF5SENv4PqjNbdlzUNsG5bsNindPeINxPw3lxnPbdyyxBHfOkeJgA
+         pdA5/ujzZP2fR4sQ4yLZxdERIXP5tLhqX9TNRnD2mkKWDlADeOARiqp9aC9uBvc0A+9t
+         d/8w==
+X-Gm-Message-State: AOJu0YyWsGX82p7Ex1NZkZ2nt6Wc0e3efxExCWvfejW8fWZIEJYkpiNU
+	bGa8Hu2586afHofD0A6ar5Hr0NxjiCINoD1/8wq7Rnak2Btnu/iqEG/f7Cg7xkBf5FV1xj/d1nR
+	6WMnt2DxfgZkHkdpJ8eQXTPN9VDULNzA=
+X-Gm-Gg: AeBDiev2V0dcWJm+aVEYhtJMc4HX6m/8ySxmOQsNGKebXgABSUVu9LNY2w+lOKU//6b
+	KSYr/ZqIi2xUfRHW5fSad9sG+Y7syhsBzbbBUhz6OuUWALYJMXywY6uHm24UHRsnIP2FcMTxxiW
+	xt/gMOicPlqVX0cQjfOvCd7vLI9wiDEGa4JEId62TqJzwR9Rydp8FaGTIbP3s7N8SeB5yjbCIDN
+	dorUsQESCqtNq3S2E3i5jJJgT2CRLThxywVOQT2/lBRuFlhcvuBXncl1lnY2NwCadJgdPEr727F
+	xwthaQHSHx+I+620GZUQ+2f7XuCJc7cE0mTTkIGt/L5QYXYMbYcxc8SPGOhYFtmmDUtxoKrIIE5
+	MxKrpAtNSbHSVm60lmCnjz5DZi1oCb4lY7xoNhTFpqgQ8Vt2eafk0tw1xKR7aulWnHCOC
+X-Received: by 2002:aa7:d549:0:b0:67c:89f2:ae27 with SMTP id
+ 4fb4d7f45d1cf-67cc392dd47mr866648a12.9.1777971284861; Tue, 05 May 2026
+ 01:54:44 -0700 (PDT)
 MIME-Version: 1.0
-X-ThreadId: A79HWrF7w_-Z
-Date: Tue, 05 May 2026 10:29:28 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Rosen Penev" <rosenp@gmail.com>
-Cc: linux-mm@kvack.org, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Bill Wendling" <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
- "open list" <linux-kernel@vger.kernel.org>,
- "open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
-Message-Id: <df3e889d-ac8c-4d11-a5fe-8ed2769953f0@app.fastmail.com>
-In-Reply-To: 
- <CAKxU2N92s06-L0+e=KZ7EbtU50tCpaCk2MYJD2xTFEHEsAhXUg@mail.gmail.com>
-References: <20260505010112.645361-1-rosenp@gmail.com>
- <0f11390f-e8bd-4f8d-aea8-59ef545b2c32@app.fastmail.com>
- <CAKxU2N92s06-L0+e=KZ7EbtU50tCpaCk2MYJD2xTFEHEsAhXUg@mail.gmail.com>
+References: <20260505010112.645361-1-rosenp@gmail.com> <0f11390f-e8bd-4f8d-aea8-59ef545b2c32@app.fastmail.com>
+ <CAKxU2N92s06-L0+e=KZ7EbtU50tCpaCk2MYJD2xTFEHEsAhXUg@mail.gmail.com> <df3e889d-ac8c-4d11-a5fe-8ed2769953f0@app.fastmail.com>
+In-Reply-To: <df3e889d-ac8c-4d11-a5fe-8ed2769953f0@app.fastmail.com>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Tue, 5 May 2026 01:54:33 -0700
+X-Gm-Features: AVHnY4KjRxcRwGciP2xMVdMfFUTVoMobX-8vJo-rhK4YVGeNq03NoVrlCgH7a04
+Message-ID: <CAKxU2N_moR8bs=NLUcW054a=oHB--4i+M5XKCBNF9LskYcjAhA@mail.gmail.com>
 Subject: Re: [PATCH] mm: move phys_mem_access_prot_allowed to header
-Content-Type: text/plain; charset=utf-8
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Red Hat)" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 076E040006
-X-Stat-Signature: dh4er5ty57yz1aia3q4dmnxm9uryq1ht
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C66F940004
 X-Rspam-User: 
-X-HE-Tag: 1777969790-856118
-X-HE-Meta: U2FsdGVkX18Hs/FTEztqHtoqNpnWQjxYIbtkPayEnRMRZiN7b89CEiSB3NWBpOgfopKyWnbcUhgFkkmtcON26UBEC2n2NeCAuvr8ZOBV7pfHnb8sOpg1RqpTCgrBjpaE2eqcuMpQt1xrkxx+VZYXxV9mFvsXZoB6zs0xsxmzIOg0O6gbI+zTNoXh4rltczgUmBkrx9vajICXpWBoGxwpLsKppve/naZj79Z5ChqzGpfpRogxmFfONUuWDkG7VgCxVfKDfapGMFZiliX5ygo0AVuMSi0uVU42J5xd0lMHycJBVt18TgFFOvoWMjonX1vZFdFXP5q3bzUSgesJ7jLVEhksiazJdUvrCkqJipL0WbnhV7b5uw/1sY60BPkvkCKtZfZWjCD5GmRtuK52buvZzVZhMY4CfVfYmq1/W0hOnn86xnFV2apTdhGakvSvH71gkuLQvEYQc4sSvUsja6Gdxskq3He20Q3mEvKgsk7j1Nmen9NHFw9WZ8/Vi7gOIpurBxe6T7kETivWGaMapVcGFMEsqEzCqzbLe8LLlv+wGTIO90jhrU+BYjW8eYD7/1wJVOuzILctNa2bge675WOwurhaxcZVip3+B6QpXUUsgIKA8fvzGqjn4MNvJKGzoupXMBllDZxCoCOUdj88VfB1hwBFZ9Snrkzuy1f0P73yEy69cyo21JhF/Y8OJ6fJ/D+FwrJlQZEUgXI0BjL6XBOnzi3NP6VWTnAfiDrlp7FdzFsVZpYy1Mm3nKVXrJ0LUjHhRf0FgYgsAP/BstBjvGri9hPveDntmeWyFF0blIRUZ7q0kJrzmkpc/QOh3hKW5phjLBLz0J3Xx0t2vdrmkNlEBgd43rl4BCRjcW03X4O6pz4rs/T7b33arKqSpfoDehTw4lQOc+taoXseElkr8+JG0RIj9uLKPevaGL4AHMzgyygqIZUntMz9a3D6GENMQ/TsuR+Ur5OgcWHhF+tbVES
- p1fDYo4B
- 1nM/gSSLnWOTePCy42fEaB2T4k3ujHRk34mFIimxL8i2lVO2sCMdikeUAbCKCP1LsB3Df3wMV/4fzxaQn2O7EPX4sF2rWObsVtrWhdUVAHTJEK23JcLgBB4/kk4zaLRqJw2Orgk7ll+4ryxZtbGrZGVL/jZEN/ual2QCCe7IdGzB6a/1Qcw2Zo7RpL6AKYsq2PtFxN7R2bfUIQbSnbPgYKUfCeY5lHIDv8ylqIw8vXQYn5cjRXzfTCBkfXLGVpK7Fw+C5Un7fFXdI2B4T9YpVP3OCZaJbtKXV3ISYmPUtfLV6lUoktTHqGJzlTWvEtNQco7GDBRPJzt77acP0jn6vjMV8vXK4yFlN7f984McgxF5pyPUSfYSfL9F6LlSst+zQfxGNUt7BPCm1ppngxPnokaq0VLMnnYKYyy//gPP220pi47w=
+X-Stat-Signature: oityon61j57ydec9q8h3nw9p16syay8x
+X-HE-Tag: 1777971286-97539
+X-HE-Meta: U2FsdGVkX19fqKlYnuauuLxNg8RiN6/NdM9KePTwDkh76oGgAnOK7v/6+KxGkk1w9zrPbj0horL19PXfGuWXgu+O+YlZxCAsQOuD/pNyN9Khh++J15r664zmh/mr4m24JD1/7HEEcLIp0XMMbkNA/NS0iva4wvhQX4uHEUfdbi8tHGrA2oZBG8NRJHtTVnlg5rcSS+wxu8sfDwLkY7O2owH9I9QI+G0xjg+ub9kxYrLJMvWcr5LKfQO7nuG/UTdP07l7DUvxhQUAuNACg6JWwlkEzLmPz1UOmv02zhcyg6q1hPoZ9nhJ/mZyvIybyOqyrDhMSMw0kvAPrZLgMkHPzFL6SOzDwBYKWnvki/GYIBrK3D6zujNfNNZRliSulvR6L4epqFl5tC35hLwWEVKlsRPPO/BB4cM2eHtCkQAoHGYK7z56fCB+oz402HsWTyRfd8OyRj3pyP3m959qmCbpMkDbCCRGCx9705r4Apk4wbuDuu1RaY5EED/6B7v27GlUuvob2Xyh/Zkt0LcqLkjFAepoFqEuRb8PjWI9Ao+N1nGjm5THAYQ8KszayxUSpl1cY6ZvSLyBtXKR4R37B5qd4ItBQ43thENFmk/Ej1j3ZSY7eqrrk3z48iiT0L4L7ebQ0jmkI641LicdiS5gVJvJu6aL2vHZs+KrqyCkufOWWs2gF+QBvpORmsyNIRdrdwKMlGI/dX1fIxJzm1DgtI1qbi4KwzbzzP3meh1UZzuVhiHQy34qfykyYukWIfdILyewLCuoPoFv0Bo6lTVGA7vPshMws2/PvJFUyNvWY7t5TihmQXVZI44fWFeoSH2b7dpkuLlFEUJelD+q48mtVSalDua2sO9P4DjtNCyJRo/uT8EBV8je1eN02lD4pIeTIeWyen0ReeZVrgROz4rsNwsfUBNfQGW0chjjVl8HF3/M/FJUbxArBMPAo9T8cj+S9spAAd0LiPV9k4oiKD9qffC
+ nDIXT51W
+ 9Avm0cYQ09WYEf4j9Ce6l3LF7AH6fed4gKmJVQXtfXDhUaiR3i/owDag3FTZFVZ/TP6KfsUwQ7cYIl4wgxBwY8AFzg5mnZ9tTvWqsTHlbt8ErQCbevK+9IN2eRB/UoE3ui8Crbay9pF4HqVfLptiS5HvsMG7JE3SypHItcTJ2dQEUI5+JdU4sNAmPpdsjR6POQqlcEhie7qha22RdMX3KNsqAdjiPEldBAVLwtHkpwLakh0Bh+CYTszpNPkN+lEBuJ8zUvccnxSwUOGEVugoXlLmA+qiXeWpu/Jpm5hFKXXrfW6PnPn0sZS3vWx9cDmmYe9+j8QnlAPZ1GfySNMv0rd633N7Wi6SSNzkdPCcjR5OyAxgZx2hdUTULpmZa+OZ+RwFSWDMPQgB/AUbCM8QnZnV4Di5T6WWFs/R1itJl2ZGyO3Ryd5E9a/q7iZIG8eNpGGef3pbZf1XxNmjtPjEAoK6MVB0n8d/RqaLSJxesc9dqi1z3Eoa7Z80wPvqKzqrUsnO+bos57N2Go5U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,30 +146,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 5, 2026, at 09:47, Rosen Penev wrote:
-> On Mon, May 4, 2026 at 10:54=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> =
-wrote:
->>
->> On Tue, May 5, 2026, at 03:01, Rosen Penev wrote:
->> > phys_mem_access_prot_allowed is only implemented for X86. For other=
-s, it
->> > returns 1. Move it to header to avoid using __weak.
->> >
->> > Fixes compilation with make LLVM=3D1 ARCH=3Dmips
->>
->> Can you describe what exactly goes wrong here on mips?
-> Cannot find symbol for section 4: .text.phys_mem_access_prot_allowed.
-> drivers/char/mem.o: failed
+On Tue, May 5, 2026 at 1:29=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> It's full of similar errors in drivers/pci/ as well. clang on MIPS
-> doesn't seem to like __weak.
+> On Tue, May 5, 2026, at 09:47, Rosen Penev wrote:
+> > On Mon, May 4, 2026 at 10:54=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> w=
+rote:
+> >>
+> >> On Tue, May 5, 2026, at 03:01, Rosen Penev wrote:
+> >> > phys_mem_access_prot_allowed is only implemented for X86. For others=
+, it
+> >> > returns 1. Move it to header to avoid using __weak.
+> >> >
+> >> > Fixes compilation with make LLVM=3D1 ARCH=3Dmips
+> >>
+> >> Can you describe what exactly goes wrong here on mips?
+> > Cannot find symbol for section 4: .text.phys_mem_access_prot_allowed.
+> > drivers/char/mem.o: failed
+> >
+> > It's full of similar errors in drivers/pci/ as well. clang on MIPS
+> > doesn't seem to like __weak.
+>
+> This certainly feels like a toolchain bug. I would not mind having
+> the PCI code converted away from the __weak functions, but it should
+> not just fail with a linker error like this.
+FWIW I just tested
 
-This certainly feels like a toolchain bug. I would not mind having
-the PCI code converted away from the __weak functions, but it should
-not just fail with a linker error like this.
+make LLVM=3D1 ARCH=3Dpowerpc -j 31
 
-Does this happen with both ld.bfd and ld.lld? Which version of clang
-and lld are you using?=20
+which results in no such errors. So probably.
+>
+> Does this happen with both ld.bfd and ld.lld? Which version of clang
+> and lld are you using?
+clang version 22.1.3
+Target: x86_64-pc-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
 
-      Arnd
+lld the same.
+
+I don't specify lld explicitly. I assume LLVM=3D1 does that.
+>
+>       Arnd
 
