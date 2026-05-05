@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C966EFF8855
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 16:07:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E856CFF8855
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 16:07:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D1D66B00B1; Tue,  5 May 2026 12:07:26 -0400 (EDT)
+	id 62C116B00B5; Tue,  5 May 2026 12:07:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25AAE6B00B3; Tue,  5 May 2026 12:07:26 -0400 (EDT)
+	id 5B5DA6B00B7; Tue,  5 May 2026 12:07:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 122986B00B4; Tue,  5 May 2026 12:07:26 -0400 (EDT)
+	id 4A4D76B00B8; Tue,  5 May 2026 12:07:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EEF556B00B1
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:07:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B576E12055B
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 16:07:25 +0000 (UTC)
-X-FDA: 84733846050.27.521C902
+	by kanga.kvack.org (Postfix) with ESMTP id 33A686B00B5
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:07:30 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 010931C02FD
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 16:07:29 +0000 (UTC)
+X-FDA: 84733846260.07.6F60FD0
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B32A540014
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 16:07:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=fPUSUhFG;
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1E3581A0007
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 16:07:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=d2gpOI5g;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777997243;
+	s=arc-20220608; t=1777997248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u1xfeI5UbcpARDbBD8TDLZovNjPqioAZ09pYeuPOgdA=;
-	b=DUyMEh/HAkgbWMV3iiV4o7FVVAFmotRCIpXP89s3rhqF4Ph/LdwcZ1axIoLwK2jI58L4lb
-	pKN6roBOItRPkPKRxcstThuyFRzwrpTRWDUCA1e0ta7HBVy4OfaLdsrMTvB+qWj/xVvELw
-	4rpH4sxTYjg0OV8s8dQ4zIDtPwY466s=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=fPUSUhFG;
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777997243; a=rsa-sha256;
+	bh=1wXOKxD5sGL6mfcCXWS3lqXU5doM7M6+nrpyXTdgpAo=;
+	b=s7Pz5WkPQb+hAGkGkRFuL1t86C8SspL2Mxv84SZJV3E+Adyvjz1fW5DlUKr2VjJyYFLpqS
+	e2aR9ODgRojm1yrG11D6Rk7xLuYBLcDjPYngO4/JQJVAMk3L3J2IyhuzM/gTZGoy/K+P1e
+	QONUzZvRDft/Uj7FtfkiZ9qJSPuuVUY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777997248; a=rsa-sha256;
 	cv=none;
-	b=hbIH9Iznaz0T3qZktE41H0UiR4x/NctIV6usEntXYlVo1TTES91ALgna5a+uFTNtIhENbc
-	/2M6SFZUdc7KvukImU7eTTi+fa6HNx2/5jfZKu7vplJNdnPdCnowk8UclilPuyku1kb84+
-	j7O7Hqywb63T8rAVYyy81w5B6dM7lf8=
+	b=v8yDFP4jD2ixcqUQvmrAl9yS59GWdR8DX+i5gTNco1+3UQbfC+HLIj8MkOX2Yq4LGiklf5
+	hJ2pkwohEFyamgKpyEC68NVP/p3Mx9ylGa2A57r965ctf+pjHXixAYFfpM7I2ycKD9y6LX
+	w3EsySo/860+Mhxf+Dtwbl3DK6uancE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=d2gpOI5g;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C3C71A9A;
-	Tue,  5 May 2026 09:07:17 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF37514BF;
+	Tue,  5 May 2026 09:07:21 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A79873F763;
-	Tue,  5 May 2026 09:07:18 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 21CC83F763;
+	Tue,  5 May 2026 09:07:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777997242; bh=UwGP8FTfDtcj8k/6otcjhFkm2uk3iMrLq2Ub63GdAmQ=;
+	t=1777997247; bh=6h53wIhICiTdohxtZ773SNUpArSJEO1cKJs65JAmPCY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fPUSUhFG9xMoZNvTzxCiKap9c369Fj03UMwYjUAwZadKlqvzHztRcbdEf5retEkJ+
-	 G4MLTGHCNZIQGscu6VlrxumG4LdRNa+lwwQoHE3PAodK41Txy2XVyhX1xBvWyUKpOT
-	 HV2Agmo5HTrW+zlMTxY7kY5ds0e1HgKBRjMuiXHU=
+	b=d2gpOI5gY7qiZ6klE1noMUGXimHfRGXXfFw+/eM4tO7XW+EALiXnHmq1wjynsIv+G
+	 KggwbbLDH3ULPGGYBhxAF57HxF7iuKb7O+JN4F44w7LnIGL5e2z5c1jXFkxZrybi0O
+	 ZFh8CEGhMPWhgXvF9lkm0kTEcgXMpk4ij4xg1hsI=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 05 May 2026 17:05:53 +0100
-Subject: [PATCH RFC v7 04/24] arm64: Introduce por_elx_set_pkey_perms()
- helper
+Date: Tue, 05 May 2026 17:05:54 +0100
+Subject: [PATCH RFC v7 05/24] arm64: Implement asm/kpkeys.h using POE
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260505-kpkeys-v7-4-20c0bdd97197@arm.com>
+Message-Id: <20260505-kpkeys-v7-5-20c0bdd97197@arm.com>
 References: <20260505-kpkeys-v7-0-20c0bdd97197@arm.com>
 In-Reply-To: <20260505-kpkeys-v7-0-20c0bdd97197@arm.com>
 To: linux-hardening@vger.kernel.org
@@ -94,21 +93,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
  Vlastimil Babka <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777997220; l=2402;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777997220; l=2665;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=UwGP8FTfDtcj8k/6otcjhFkm2uk3iMrLq2Ub63GdAmQ=;
- b=qrLCWuhFGAMdVVdM+nsjEEPr+OkOl5O7n85109CRGnj6WWFdPkNSMGwXOial/zTZI8G1kqXnr
- dFVzJaKzKeKDKKY2A7n5g8spoGW06Jg4suAbywI6wQ1f3+RazBfkkwQ
+ bh=6h53wIhICiTdohxtZ773SNUpArSJEO1cKJs65JAmPCY=;
+ b=kMmOZAzlr5JiNYZ8sm1nG7q9J8yJ+5iLF5bQYnzwypt2/PnQ0z9eV0aNwTIPyYfR+nQ0ESKVw
+ Fi7x6wj+1aNCumcVAwAGrapKsxO92BmroPdMDLaQgffctO55Vf5ZLh3
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B32A540014
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1E3581A0007
+X-Stat-Signature: 4jfpg6acmoucmcjhy61cuqg6w5mbffu7
 X-Rspam-User: 
-X-Stat-Signature: es8md5ej3y4t9aq7ggp6tuc4xbzoqygb
-X-HE-Tag: 1777997243-709574
-X-HE-Meta: U2FsdGVkX1/9Lx5OsUstJXi1aWcfAHs6elsUjOO2bgLjYpIK8Ydq14zhEhovueI99SuSYgbGbJnOgSmbjdRO9JKWCo2Gfgp9xGB/e6eOBDev6nZyLHQZXqDps9Sr0GqAEFK/bAar7cpG8Z29RBECTNcwayOzLADTk7MuwXGCZJkziT7Co8eldQrAy7A5FAV4Sg4urk9nC6lK3ma0YJlLMIqje70tpO0xgq6f1K2sAVneivTfvLaZMqOvlIRiWtUPD82WOu4csnSZP718MMaoPaj6pNzUubSNHBi2bVkSbSNdU2itdPs8xlFwVA0IIbZ+PdExkPs5ftb6zbIPP68zo2ynD2n31qK6hQ7ermRicqQWUKCzz8d6Ed75V1k75wNDko5KsGJM/vep80dFopKFDs+h4HT7bnKCF9DxIBI/EabY4KbGKMNw0Y7tIZim0ob/MC22l7iNGUUfT+GsjvEpRxtgpjU3v0sTrLOmwyyM1jQ5J8YC/U3cg4Zn9EaidvFGYxhAYa6ygYsdGZIRHpMVP2h0ydosy9Z0RdfjLi943NddzFMT2Vly9urWvY7ksm7ejICa8yNUDyvaRWSHeyLgZ3p2fu+QaOCov4pDuKNwlBI80kn8udgOBxsH4+7Q3QZdTgIm9qJ5feS05YlOqmFQdVgYscPSrF/aXEw8My+VQKmjUhl0V65gmoVxDgdJTZJ860sjwm3UNS5xkuD1ydwyUSMzZ6tYIaIYD98XeFMRCnFnbNQ3+sMnK2wnUCT+plttKSMCCWgubcWNGnf/QZWi1Jma0XefPB6mQKCWnxXtCuYAI36pvGo2RT1Sc/VADA+SSY44NDVg3+MWn10sfmm+muT1Pvy4Nfy9Sns12idDiGPFhaA5h2RiP7bvy+fP5JYEeR9eDE9UwLo1fdtHQBhobQhBrdcQ9YXumMebUkJzrS7FW+0HiRPpRIYneW8G72vPiznul9hLlE7oEp9Ey3R
- lkzvx9vC
- bpTTj31gGMGvuEDwNq82Ru+PYE4RLN192dawFLQedWdxidl5dPH7MsE4+cQV2klKELtAX/9fritee10rKOjKdVpEhxJdNcsXlsaWPJl2qC0xZdOFZS0WU8nMdLnZEVcIzjltXv7urCgZNg+8YNMnpMsA3YNHkFwPa8gz/OI1Y3BZ6DxgfAxZwGsWOKS3H0MifbrcCMIdDYZYIZBIB2ix0ncPKBFgMm4GS6N3N63v1NCEtUeLrFcJ9+HqQ9cPjZDl0Noy5RYJVZKeHQgS+FW+Y9WkhkZzGOMVNBkalN+JGtZVpCj+oSLX/HyyTvTGoe6sTwHCj7Ozt+ZvXr2c=
+X-HE-Tag: 1777997247-678919
+X-HE-Meta: U2FsdGVkX1+5eQ+q8MSjN2oLyp+T9Ev5TZcG7a8rl4QM6qJauh0DzaSzaTcQKOHUckZacbacicdsH9ULDU3qFitKuCed1bRCSD/PqJclc/ahLONZg887zW+EVgdGvOA+smHMI3LaPBSS73t3BPRrQtNK2Uh+HqvixAijIhSrjz+RmItZbxM2SG4hqFOJu0T08Jzk8hPMI68KR4jnAmShNqsHHvvqnA3Nm33BzdJLQ/TawNP6BOhUQKbrbpX1YQDwWLTzx6Mh+KycpqHI0msdiudcYjgPkd7jSRG6QaYsv64KDrDjbzwric79X9vl8ZZyproheE6FLL6lMpC+4IW3aRfZEHwq6AHL/9ESmA9zn25RbhxWaczu1JbB+CEwNvwqdRnYPd5oTTDyYkyAvDBgD2mbUgmzlY+84f6ErLWSROIi9Sng7yQD5+LmkWlvEZeU436OrD5oH/Y07+SonvkzHnRgrlP98kYujWwiztwcirEj+CdDZdH7gfNEY9U66Cu2FvH7+icGf+fw1mEXLxSkZTlq/aQENvU6coA296p/UeKLWDKh77JHjVS9DF6MRDYGpg09jkAXV6FN2X5F3/hh0tyqqbW6jK0E0lWENqSqxr/qzy2L8pmsV6ueL8ohkBgo3ITS7LLnzCeZghx1eG1QraL9VHq9v138IlF5cm4AS3qPp4rpzdqz0VFHFtLKbRoJ+3lq9KDYM82QIgG/6mqk1XDbNs/PVBVIxYVEcKwBhx8MsgHdu+/v1Tdw82iWakYb+ZNkpWqKOvAhBgXVuy6oB+A/AF/2FRLSRQYSAt0nMyPIKFkAvFFcycyKdyUyNTyp4XGa1dgCl0lIZjPbPQo5won5/j3p9iGRN2XJcACqDQNMQonpHS1cqoi4jRkh8HEBa+XfLQye4F9/QfMY/puJEqkCVvAJEk5QPF4h4aRNL9lfVdUvrnElyxNQlKRFqMe0hy3tDkBalLmb/DCtJoj
+ Y9XklDcd
+ nb0lyKeYjFUaHG7YpMS/atsyAin74I3D4mFy8UxAbpIBGIQro/9IQXIkJntdxu5po+PhIF0K3kQs8AghNElkf/SEechZXWV9r4ihYyr6MiWniXUWQ1urco3y8nV8Pib7ELEfL4IlNiheIoyiRj2SE2proi5TxYX2iz0HwhZLVA5hmAHkyywFAK0VHcQjBMy0UAdCY2AeruRv/38k9TF6J/CLHHewhDnsJ26QN+eTZD5S/v2R7O86hvasUJYZ1ZX6NTy6Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,81 +115,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a helper that sets the permissions of a given pkey
-(POIndex) in the POR_ELx format, and make use of it in
-arch_set_user_pkey_access().
+Implement the kpkeys interface if CONFIG_ARM64_POE is enabled.
+The permissions for KPKEYS_PKEY_DEFAULT (pkey 0) are set to RWX as
+this pkey is also used for code mappings.
+
+To allow <asm/kpkeys.h> to be included from assembly, also add
+appropriate #ifdef's to <asm/por.h>.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/include/asm/por.h |  7 +++++++
- arch/arm64/mm/mmu.c          | 26 ++++++++++----------------
- 2 files changed, 17 insertions(+), 16 deletions(-)
+ arch/arm64/include/asm/kpkeys.h | 59 +++++++++++++++++++++++++++++++++++++++++
+ arch/arm64/include/asm/por.h    |  4 +++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/arch/arm64/include/asm/por.h b/arch/arm64/include/asm/por.h
-index d913d5b529e4..bffb4d2b1246 100644
---- a/arch/arm64/include/asm/por.h
-+++ b/arch/arm64/include/asm/por.h
-@@ -31,4 +31,11 @@ static inline bool por_elx_allows_exec(u64 por, u8 pkey)
- 	return perm & POE_X;
- }
- 
-+static inline u64 por_elx_set_pkey_perms(u64 por, u8 pkey, u64 perms)
-+{
-+	u64 shift = POR_ELx_PERM_SHIFT(pkey);
+diff --git a/arch/arm64/include/asm/kpkeys.h b/arch/arm64/include/asm/kpkeys.h
+new file mode 100644
+index 000000000000..7dad3532cacf
+--- /dev/null
++++ b/arch/arm64/include/asm/kpkeys.h
+@@ -0,0 +1,59 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __ASM_KPKEYS_H
++#define __ASM_KPKEYS_H
 +
-+	return (por & ~(POE_MASK << shift)) | (perms << shift);
++#include <asm/barrier.h>
++#include <asm/cpufeature.h>
++#include <asm/por.h>
++
++#include <asm-generic/kpkeys.h>
++
++/*
++ * Equivalent to por_set_kpkeys_context(0, KPKEYS_CTX_DEFAULT), but can also be
++ * used in assembly.
++ */
++#define POR_EL1_INIT	POR_ELx_PERM_PREP(KPKEYS_PKEY_DEFAULT, POE_RWX)
++
++#ifndef __ASSEMBLY__
++
++static inline bool arch_supports_kpkeys(void)
++{
++	return system_supports_poe();
 +}
 +
- #endif /* _ASM_ARM64_POR_H */
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index dd85e093ffdb..493310cf0486 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -2339,8 +2339,8 @@ void __cpu_replace_ttbr1(pgd_t *pgdp, bool cnp)
- #ifdef CONFIG_ARCH_HAS_PKEYS
- int arch_set_user_pkey_access(int pkey, unsigned long init_val)
++#ifdef CONFIG_ARM64_POE
++
++static inline u64 por_set_kpkeys_context(u64 por, int ctx)
++{
++	por = por_elx_set_pkey_perms(por, KPKEYS_PKEY_DEFAULT, POE_RWX);
++
++	return por;
++}
++
++static __always_inline void __kpkeys_set_pkey_reg_nosync(u64 pkey_reg)
++{
++	write_sysreg_s(pkey_reg, SYS_POR_EL1);
++}
++
++static __always_inline int arch_kpkeys_set_context(int ctx)
++{
++	u64 prev_por = read_sysreg_s(SYS_POR_EL1);
++	u64 new_por = por_set_kpkeys_context(prev_por, ctx);
++
++	__kpkeys_set_pkey_reg_nosync(new_por);
++	isb();
++
++	return prev_por;
++}
++
++static __always_inline void arch_kpkeys_restore_pkey_reg(u64 pkey_reg)
++{
++	__kpkeys_set_pkey_reg_nosync(pkey_reg);
++	isb();
++}
++
++#endif /* CONFIG_ARM64_POE */
++
++#endif	/* __ASSEMBLY__ */
++
++#endif	/* __ASM_KPKEYS_H */
+diff --git a/arch/arm64/include/asm/por.h b/arch/arm64/include/asm/por.h
+index bffb4d2b1246..58dce4b8021b 100644
+--- a/arch/arm64/include/asm/por.h
++++ b/arch/arm64/include/asm/por.h
+@@ -10,6 +10,8 @@
+ 
+ #define POR_EL0_INIT	POR_ELx_PERM_PREP(0, POE_RWX)
+ 
++#ifndef __ASSEMBLY__
++
+ static inline bool por_elx_allows_read(u64 por, u8 pkey)
  {
--	u64 new_por;
--	u64 old_por;
-+	u64 new_perms;
-+	u64 por;
- 
- 	if (!system_supports_poe())
- 		return -ENOSPC;
-@@ -2354,25 +2354,19 @@ int arch_set_user_pkey_access(int pkey, unsigned long init_val)
- 		return -EINVAL;
- 
- 	/* Set the bits we need in POR:  */
--	new_por = POE_RWX;
-+	new_perms = POE_RWX;
- 	if (init_val & PKEY_DISABLE_WRITE)
--		new_por &= ~POE_W;
-+		new_perms &= ~POE_W;
- 	if (init_val & PKEY_DISABLE_ACCESS)
--		new_por &= ~POE_RW;
-+		new_perms &= ~POE_RW;
- 	if (init_val & PKEY_DISABLE_READ)
--		new_por &= ~POE_R;
-+		new_perms &= ~POE_R;
- 	if (init_val & PKEY_DISABLE_EXECUTE)
--		new_por &= ~POE_X;
-+		new_perms &= ~POE_X;
- 
--	/* Shift the bits in to the correct place in POR for pkey: */
--	new_por = POR_ELx_PERM_PREP(pkey, new_por);
--
--	/* Get old POR and mask off any old bits in place: */
--	old_por = read_sysreg_s(SYS_POR_EL0);
--	old_por &= ~(POE_MASK << POR_ELx_PERM_SHIFT(pkey));
--
--	/* Write old part along with new part: */
--	write_sysreg_s(old_por | new_por, SYS_POR_EL0);
-+	por = read_sysreg_s(SYS_POR_EL0);
-+	por = por_elx_set_pkey_perms(por, pkey, new_perms);
-+	write_sysreg_s(por, SYS_POR_EL0);
- 
- 	return 0;
+ 	u8 perm = POR_ELx_PERM_GET(pkey, por);
+@@ -38,4 +40,6 @@ static inline u64 por_elx_set_pkey_perms(u64 por, u8 pkey, u64 perms)
+ 	return (por & ~(POE_MASK << shift)) | (perms << shift);
  }
+ 
++#endif	/* __ASSEMBLY__ */
++
+ #endif /* _ASM_ARM64_POR_H */
 
 -- 
 2.51.2
