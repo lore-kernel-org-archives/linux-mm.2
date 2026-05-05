@@ -4,102 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 396CFCD3427
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 15:43:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9250FFF8855
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 15:52:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A52ED6B00D7; Tue,  5 May 2026 11:43:03 -0400 (EDT)
+	id E7DB06B0092; Tue,  5 May 2026 11:52:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2AC46B00D8; Tue,  5 May 2026 11:43:03 -0400 (EDT)
+	id E2E396B0093; Tue,  5 May 2026 11:52:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 967C76B00D9; Tue,  5 May 2026 11:43:03 -0400 (EDT)
+	id D44816B00A3; Tue,  5 May 2026 11:52:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 83CD56B00D7
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 11:43:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 507EF1A0552
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 15:43:03 +0000 (UTC)
-X-FDA: 84733784646.30.5E20A09
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 30C6F180014
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 15:43:00 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NIzKZt4z;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C14516B0092
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 11:52:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6FC0940532
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 15:52:09 +0000 (UTC)
+X-FDA: 84733807578.04.26DFEC2
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B79941C0004
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 15:52:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AfLDTa79;
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777995781;
+	s=arc-20220608; t=1777996327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iwRizo0xbie4Bg9vziU8v0kBZl92TvvHtH36INlm6CU=;
-	b=QeU9wqELJpob17cfcfJZag8xDyOz25iTOkXtOI9PkEdDMfIBQ5qRr1i7Rg39JbmO48pgZH
-	UN1LO9F6QHYA/OiL9PWxbsWLTAQFRkByrtMEgWkzlJz7SSjkjKR2EO0MaTljR38VuC5AhT
-	N50l34UfoClHjwxRXYkRmLf8NAJCol4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777995781; a=rsa-sha256;
-	cv=none;
-	b=KTUp05AVJHwcVhlgc5Og4+pVqNR+Xg6cLpqzIfhuCYtnH9+i/gGdIOiBQMy6DjIwtz277e
-	JNdVW0f9+7fLK5OmcoQShD1RrtLL8dGFMwPUmOyh9n0mZLfhE+nQ9RhxZ5vBjGCS5JMwEC
-	TDbhASJgJ6IERD0j8ZXYIBnEW2fpqF8=
+	bh=wLO+oFX+VEmAp0NkxBY3iUrTp6rCqh1ePNe0pTi1JJ0=;
+	b=PtV6etjt/aQCZ8RArxFKZIzLBSJloIu4WDR9i1EJs5i+US6VcEVFvWQnw3baVNribr4GXS
+	WZknGHA47tTgvEUJFIPBbQECqv7R55IV/6fW5Mv67OhBKh1vawvgEwFBabf+vLCvW+lsv5
+	LxCPjW2wuzTa/q9A3gf4hQgznUTb9Oc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NIzKZt4z;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 94CC62681;
-	Tue,  5 May 2026 08:42:54 -0700 (PDT)
-Received: from [10.57.63.19] (unknown [10.57.63.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 671EA3F836;
-	Tue,  5 May 2026 08:42:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777995779; bh=iwRizo0xbie4Bg9vziU8v0kBZl92TvvHtH36INlm6CU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NIzKZt4zcu2MezSQ2f7BjKQlPFd+wq1ZltfcIoa9TM3i2hI+52kbb3+4atY93eiFs
-	 GPD5KrLf+3TMDyEghwcdBGRZOoJDVIiZrYJwt+ylbKLlnjDOVA4Z5BDp91vCe8QRk4
-	 nAdNA6T0mfR2WrMTda/OBu9+TSxv47XOgZUwCrDg=
-Message-ID: <7dc9485d-a822-494d-9384-4a973c782c11@arm.com>
-Date: Tue, 5 May 2026 17:42:50 +0200
+	imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AfLDTa79;
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777996327; a=rsa-sha256;
+	cv=none;
+	b=ZCnD615Nmdwr0Vc/SAQnEk8/RH93CmMNG/ZpnLaxfZW4Ck+Z3cqU4L7ue56l90Buq32mAc
+	hxXgbqysARLRcT/WuRDFfD5sgqGMDh/evOGUrdqoN4qpip4mucSQOsgPIRjSxcFThTpTG/
+	ZOtiQQssmv0xp8Z8og95sILDW7DG/wI=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8eb5ad01402so581203285a.2
+        for <linux-mm@kvack.org>; Tue, 05 May 2026 08:52:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1777996327; x=1778601127; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wLO+oFX+VEmAp0NkxBY3iUrTp6rCqh1ePNe0pTi1JJ0=;
+        b=AfLDTa798P4DYUIh9frycseCJXYdySkAZK677TL8uZ49rDeWY+yNefq4UO1Q1K0Fiz
+         0cOdJsturHUkI+Mt9jA4gtwnZfcJVxOkzY+aJtzP467EmZOnj2EzQnM6xIV/W7qjLRaB
+         byEzaCVlwHMtcvZteBqTML/K/WfbpxAqToMWWBDyyKA8QbgYLtT9kQ+JMWJoE1W7/yLC
+         4vEYcp2sL+e33wZQ0vhuqfFinS87JtFbEdohe02ga3u4G5QKY0CX3A0rvb5DuW54oA9z
+         WQhpe5hgyrQJmvXshtoR5Lc3RE3lxADojU2paljuFmdK+iiQyRVC6m4zWejSLEwj2mrD
+         HN1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777996327; x=1778601127;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wLO+oFX+VEmAp0NkxBY3iUrTp6rCqh1ePNe0pTi1JJ0=;
+        b=T9ZPKcNzuLNJ8+xdUhrWQVdytntyPFyovYWLUY7TMUU7FBQcpeb2onYZvl8R+iK8xU
+         FZncdwBVtry44K/Fi10YgsBqaGpa/0s00mjQfGzG1E93hxouc+OhK2/WtMdMwjEqRtqF
+         GChCXiJcAtweVeQqI/8fh8bUDzEaumHaPTmSPZ4ok8DbUmEfP/gAblQ6RZXd835AImdi
+         honWJeO3yc7vmqwGELR4AZqVppXzO1HQ8nge4ziE7C9S99QIABhon1Vkzx0jUePjkY5i
+         lUmBv0XRawlXrsC+73D96N+m/CVgx8aYynKCfAkHqS+p2wS9IImO33H6k7PTf8yw9Ek8
+         DKgg==
+X-Gm-Message-State: AOJu0YwF/iHfIk1Tn9Ws9FFiYlfTzjlh9i/FoTJ0H88ildK+oDLuEjzO
+	hlcNiHhLdCyLv927a8MeYx00V9Kxl140puDEhpGH91pX3r1hdi+izUiKrQK2MuWqD5k=
+X-Gm-Gg: AeBDieslJzrytSylS9iIAlW0rVinaHDPCYpBTqbJ2TdWKU4Nx6+auIm6mfWEZ0ZVnCk
+	vf2zTAXjiRjblhqjaCEFyP6e1AfKTtdndQy5jhtRxB3upkqxYKXy8z1WtbkkOVSP65yINOowY69
+	tWiPGnI9Ci1QjQ/NaHy0Y5ZqEewynt8pT+uqlDfZ0aN5hhEa5nq1ejxZGzYq9GDadciuzdZfbO8
+	XywFlJTm9dN8DckxrQh1QLqjLrNobrB3GRF3ABR8fKHpXvWZhz+SfDozhys6VU9CzTHNaxgU5Lm
+	WPFzUekyydTd8kCbgGPwB7mfZeZo356Q9km4wiu5UxvopUV49O/GfKmSCHmqxh9Xmtd7VeZgFhj
+	ucJfTb9RQsPtrV9NY5anlwSVLmEGbtV4Lv3QvX8U7jp2OovWD2+NOVs9yvxy42i3GhURbDx6m6E
+	WwuSFGO4+pp26KWbAmDKLF9KKsHKHC4BO+eurZvmcYtGzSEvaMfnuM+8y+S6RlTPnpYUSHtapv
+X-Received: by 2002:a05:620a:1981:b0:8f8:5905:8291 with SMTP id af79cd13be357-902e4cbc8c7mr616480185a.47.1777996326739;
+        Tue, 05 May 2026 08:52:06 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2c91fb3bsm1353612585a.41.2026.05.05.08.52.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 08:52:06 -0700 (PDT)
+Date: Tue, 5 May 2026 15:52:05 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jeff Xu <jeffxu@google.com>, Kees Cook <kees@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Brendan Jackman <jackmanb@google.com>, Greg Thelen <gthelen@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] memfd: deny writeable mappings when implying SEAL_WRITE
+Message-ID: <afoSC5KUhNwfyWBT@plex>
+References: <20260505133922.797635-1-pratyush@kernel.org>
+ <177799542165.635180.17809433268620237886.b4-ty@soleen.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 07/30] arm64: Reset POR_EL1 on exception entry
-To: linux-hardening@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, Ira Weiny <ira.weiny@intel.com>,
- Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
- Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
-References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
- <20260227175518.3728055-8-kevin.brodsky@arm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260227175518.3728055-8-kevin.brodsky@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <177799542165.635180.17809433268620237886.b4-ty@soleen.com>
+X-Stat-Signature: abnow7pmdqiqpb4ihcfay75h8amjnhmb
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B79941C0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 30C6F180014
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 4kefx9bnyi514mrqwny7j6fhk383t7fe
-X-HE-Tag: 1777995780-119155
-X-HE-Meta: U2FsdGVkX1+BLEkz57kqHAZZBA3G7UrfA3EDARbbRZjHmJ5WRjI9AGpJTMoOb+l0IjuNnx1k3Y1Zf81c0c+v0F2FM06EoExxoHtPoBeCXjTJaxfWR2bSVIjTIYF0B/iS8AovjFobUbls/hzbz1Y/SCBcNdhGueQUJ2X4fma5foUlIStuCRk0myIO6vfqxXynn/M/JsMKlwXr0rvP8Xadjnja1sN9Q/gRJvbesewLTbrMx3BR93sJ4efET6f6UPDwdXwnUf4pFo54cFEX9M0DFOmCi9FGYKZLzSBjChDNY7aLeVSsU5oYvRBwSo23K8ZFvKGX6bHkywip0OOdwuF7e+Qo1vhEVZTlxG3XRNEIyqDAnRe0aFwT7VOvuKcbqk6QBaDcXze1krbWVOzyBEu9F8AA6GOTT+225wrJ/SPwP0k724A2bg8rLgGZp3idWctALK9cqYKcJTPyBwIdCeDemb4sRD/MIfChMqKiBXys6oA+zVdTlUIFy+ghl8Cc+4bRdcS0M4fUmYLz0/xDy5BN5idu9VDl6U+fQVlFMwhvd1oUKb88fCVjMPvH9eB4ok2mZnMS43tmoRWwX2rlRoRZyFnLlUD4SDjWDuxrXj7Oo+YjoE17yPXzYP0IwTEbM9uO8yYnUSOZOhmVznTH8F1bVzAqyR3tqOs1ary/rHQeBIu4IA08JUEsltqMokxGp5kpsRxUBRDLIjLc439L7TqRXdcWy/SRTGWvLoBpHtYlX4XV8q7XqQE3R4sSpaHSyXHO8YzQudpVivTGnkaG58vOAFWYgrnwMEo3M5L7AA5ND90LgawxfRFQqb7JR5GMfDlJNWf+NI39CfnMsMkE7MQIgrdxo4We9kR2XLTHNEMMNUT43rlFWOJpPw4hKtbYcOjOUy2EH47T+KSi63yC1o+JsCdHSzgTEznuibfnn0f5wf8dz7Zxxg2iQUTDL1qw2WpYHhOduL6IiwCh9ps0Lzr
- QXKZlyrV
- oVQqSH3RAg8dQYUqMa8aSF7j9D/+jc8tzV611pOihGoYwdqWUFm79V4IkqqyqLbCyEVr0y/MhznkhMk/gd0qOxY5H66fSwrtlGBy8/stPY9IDOgUk/aLvwf/j/pFu5mtbWFrln0bWwEzh+49re+v0RRQdUjPTpayDW4dZTx/oifbdVjiCXl80ZVM5kri7llWjaobDU6jWlTMKXLxWbLJf0fZELvcT7Ke2UR/cWP2aO1ksRaWnrI8McADLo+005QG3AawUhSl1dwonofgBNenJkqRXyIkFnsrboarwOm9SF8sk4UScpzBGyFTcpA==
+X-HE-Tag: 1777996327-395513
+X-HE-Meta: U2FsdGVkX18cq2rxPrvda1Y4dKLdwKH3Ot8KncjjdNyslXKiCyIbPgCMH9Sfk8vilTfC+SiLLToGuDvz1b9zGXtUeL+BG3CBRWLjJtHx/0HeNpXwg49E9B4DA2tg7Z41vwFt5cfn+Q4DioIN2T682A1t+XpgZLQpqhh+DmuYzmwe7Xd+xv1o6JSe5KrRPhzk76nsKpCAs/4N2y5QrYa4HRKhiB8gFUhubEg5ey4gaqGk58UG1AC07WXeDEAvGaSlqUZDkSt/fUOFMk1DHJTpZBkFRrFhVHLvT1cKCZM188dtdA3dPrKQn21IIwl6bdJsC9i7awsjvumSHUjEuNqAGtjM2g2B47oYonN6jjbFqwERJwlmeTHV7OTCReyZhGm4d22WRWLxDSkG1oiGwmwxg5PhCXMkhTBuGpWhoWrupdetTxA6yHSt9ziXvEiu/cwyknrWIgF/scP+wBp00ZGR2aED/MCK1XfG78TK+blhxPY5q4Oif9OKWKbM2L5MCA6oja+OOZUA0+sBh+9V17Dvi8GN6Z3oHlY7y5zvBPkKpXtbw1jDauakzbWhfT/kaDKlpnlaqR63NE9LYG+3cVUATImdYnptvQEwLgWoCdBfVTN5OeO0uxAG6jYu8+x/m62/oYRCfW/WaPEv0wPg/z3FUH3drPwSIcCpXZLDEOm1GNp4j56BC7Mq8ZlIaJxhoNa1h9JyVcI9HESuJj2+zny6mbUzrtc4/Lpdga08TaQUA6OVZPEsweLLcA6qDS5Nhsog7iBSqNLzTSSw59cAhrWmwHL2MY6uMzsU6CkM6DLPZ6vPe5h5qQtcW0P8UkKzB6jVNWn3bs4/RDyrg1+BsJ/FeD1yQ7zFP6klB77XmiMH9o818+zenLSfDIx1vW6kHwwCZZ/MWC+vHH0auqnVsJCUpoGAPFZBruFK5+h/gmkvBkuiwNLIO5sGXBbYRyKK6mxtLXt0upR67Zla/Akcly2
+ 5kTXRfIM
+ R9yali1b0Bd61f5OABnhAMksEoNCWq8BczJRxpg+G00TMQeh8gzbArk9fo/tInz/vn4RMVxMf+p5gpjGgpONCEcBH+5/OADSb28jw6ZRnskV9kZur/CGDZ4x5Bvt0LZRUUCJBwk3ykWb08e1Qk8ubOHdZ9y0dxhVETmr2IGiYUof6vEweg0l2bPINKd83bYnBbCtxKCoeB79BJveCsN9qkAJCeozWSye/a7LbMizmu9oXsBOaDwtEBr0N4uhAD5zQgeTrxYqkxPRm5SFgtVJIv4Cw3gTvq6cJQZaWM0+kNzIGY/2ft+J2hiYkJ1eCDgieBe2/nDPIXu0ugk/Po2daMBPOAI5bFdLpoVlRmd1JqvyCTK9tyoYAaPMBI4PJpl76MOT3ecbvJBRkJqoXYYQrpVRx9AMvHXEwyNxXsjw21rEBjp6qGF2IFrBqg4+04aj2AYZ8uTUa0QBG4431do0DWaCwF5FGaUS9wiqnbhjMmIZfAhQZWZWeJMCvOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,125 +119,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27/02/2026 18:54, Kevin Brodsky wrote:
-> POR_EL1 will be modified, through the kpkeys framework, in order to
-> grant temporary RW access to certain keys. If an exception occurs
-> in the middle of a "critical section" where POR_EL1 is set to a
-> privileged value, it is preferable to reset it to its default value
-> upon taking the exception to minimise the amount of code running at
-> higher kpkeys level.
+On 05-05 15:37, Pasha Tatashin wrote:
+> 
+> On Tue, 05 May 2026 15:39:20 +0200, Pratyush Yadav wrote:
+> > When SEAL_EXEC is added, SEAL_WRITE is implied to make W^X. But the
+> > implied seal is set after the check that makes sure the memfd can not
+> > have any writable mappings. This means one can use SEAL_EXEC to apply
+> > SEAL_WRITE while having writeable mappings.
+> > 
+> > This breaks the contract that SEAL_WRITE provides and can be used by an
+> > attacker to pass a memfd that appears to be write sealed but can still
+> > be modified arbitrarily.
+> > 
+> > [...]
+> 
+> Applied, thanks!
+> 
+> [1/1] memfd: deny writeable mappings when implying SEAL_WRITE
+>       commit: 73f496662a9848021e75742a69a3239ea850c3ee
 
-It turns out there is a corner case where this doesn't play well with
-patch 28 (batching using lazy MMU mode). I got the following splat:
+^^^
+Please ignore, this should be Applied to MM tree.
 
-    [   33.603892] Unable to handle kernel write to read-only memory at
-virtual address ffff00087fbbbd78
-    [   33.603969] Mem abort info:
-    [   33.604028]   ESR = 0x000000409600004f
-    [   33.604058]   EC = 0x25: DABT (current EL), IL = 32 bits
-    [   33.604101]   SET = 0, FnV = 0
-    [   33.604133]   EA = 0, S1PT
-    ** replaying previous printk message **
-    [   33.604133]   EA = 0, S1PTW = 0
-    [   33.604165]   FSC = 0x0f: level 3 permission fault
-    [   33.604200] Data abort info:
-    [   33.604222]   ISV = 0, ISS = 0x0000004f, ISS2 = 0x00000040
-    [   33.604259]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-    [   33.604303]   GCS = 0, Overlay = 1, DirtyBit = 0, Xs = 0
-    [   33.604345] swapper pgtable: 4k pages, 48-bit VAs,
-pgdp=00000000eec2a000
-    [   33.604397] [ffff00087fbbbd78] pgd=0000000000000000,
-p4d=18000008fffff403, pud=18000008ffa2d403, pmd=18000008ff82f403,
-pte=10e80008ffbbb707
-    [   33.605031] Internal error: Oops: 000000409600004f [#1]  SMP
-    [   33.605596] Modules linked in:
-    [   33.605690] CPU: 0 UID: 0 PID: 1 Comm: systemd Tainted: G       
-         N  7.1.0-rc2-00028-g497c3a31207b #371 PREEMPT
-    [   33.605864] Tainted: [N]=TEST
-    [   33.605933] Hardware name: FVP Base RevC (DT)
-    [   33.606012] pstate: 141402009 (nZcv daif +PAN -UAO -TCO +DIT
--SSBS BTYPE=--)
-    [   33.606140] pc : pageattr_pte_entry+0x18/0x118
-    [   33.606272] lr : walk_pte_range_inner+0x1d8/0x480
-    [   33.606393] sp : ffff80008005b5a0
-    [   33.606467] x29: ffff80008005b5d0 x28: ffffa991675fd6b0 x27:
-ffff00080e5b0000
-    [   33.606662] x26: ffff00080e7af000 x25: 0010000000000001 x24:
-0040000000000001
-    [   33.606855] x23: 0040000000000041 x22: ffff00080e5b0000 x21:
-ffff80008005b740
-    [   33.607052] x20: ffff00087fbbbd78 x19: ffff00080e5af000 x18:
-0000000000000000
-    [   33.607245] x17: ffff0008001d2240 x16: 0000000000000004 x15:
-0000000000000000
-    [   33.607434] x14: ffff00080a80b810 x13: 000000000000b706 x12:
-0000000000000001
-    [   33.607622] x11: 0000000000000000 x10: 0000000000000000 x9 :
-0000000000000020
-    [   33.607809] x8 : ffffa991686a7130 x7 : ffff00880e5af000 x6 :
-0000000000000072
-    [   33.608000] x5 : 0000000000000003 x4 : ffffa9916625e028 x3 :
-0000000000000002
-    [   33.608187] x2 : 0000000000000000 x1 : 00e800088e5af707 x0 :
-ffff00087fbbbd78
-    [   33.608378] Call trace:
-    [   33.608441]  pageattr_pte_entry+0x18/0x118 (P)
-    [   33.608587]  walk_pgd_range+0x648/0x94c
-    [   33.608716]  walk_kernel_page_table_range_lockless+0x5c/0x98
-    [   33.608864]  update_range_prot+0x8c/0x1a4
-    [   33.609007]  set_memory_pkey+0x48/0x80
-    [   33.609149]  kpkeys_pgtable_free+0x40/0x9c
-    [   33.609305]  pgd_free+0xd8/0x120
-    [   33.609429]  __mmdrop+0x54/0x1d0
-    [   33.609552]  finish_task_switch.isra.0+0x234/0x2c4
-    [   33.609714]  __schedule+0x3ac/0xf00
-    [   33.609860]  preempt_schedule_irq+0x3c/0x7c
-    [   33.610013]  raw_irqentry_exit_cond_resched+0x2c/0x54
-    [   33.610154]  arm64_exit_to_kernel_mode+0x40/0x5c
-    [   33.610290]  el1_interrupt+0x48/0x60
-    [   33.610416]  el1h_64_irq_handler+0x18/0x24
-    [   33.610553]  el1h_64_irq+0x8c/0x90
-    [   33.610672]  __vunmap_range_noflush+0x310/0x540 (P)
-    [   33.610829]  remove_vm_area+0x50/0xa4
-    [   33.610977]  vfree+0x38/0x274
-    [   33.611118]  n_tty_close+0x40/0xa8
-    [   33.611234]  tty_ldisc_close+0x4c/0xb0
-    [   33.611360]  tty_ldisc_kill+0x30/0x64
-    [   33.611485]  tty_ldisc_release+0xd0/0x1b0
-    [   33.611615]  tty_release_struct+0x20/0x88
-    [   33.611766]  tty_release+0x384/0x480
-    [   33.611912]  __fput+0xd0/0x300
-    [   33.612041]  fput_close_sync+0x38/0x108
-    [   33.612180]  __arm64_sys_close+0x38/0x7c
-    [   33.612308]  invoke_syscall.constprop.0+0x40/0x108
-    [   33.612447]  el0_svc_common.constprop.0+0x38/0xd8
-    [   33.612589]  do_el0_svc+0x1c/0x28
-    [   33.612720]  el0_svc+0x38/0x148
-    [   33.612846]  el0t_64_sync_handler+0xa0/0xe4
-    [   33.612984]  el0t_64_sync+0x198/0x19c
-    [   33.613137] Code: a9400c42 8a230021 aa020021 1400000a (f9000001)
-    [   33.613230] ---[ end trace 0000000000000000 ]---
-    [   33.974524] Kernel panic - not syncing: Oops: Fatal exception
+Pasha
 
-What happened is that a thread entered lazy MMU mode in
-vunmap_pte_range() (inlined) and then an IRQ fired. On the exit path of
-the IRQ, another thread got scheduled. Later, the original thread was
-scheduled again, and it so happened that finish_task_switch() had some
-mm to drop (mmdrop_lazy_tlb_sched(mm)) and we got the last reference on
-that mm. We then proceed to free the PGD and eventually write to a
-linear map page table to reset the pkey.
-
-Because this patch resets POR_EL1 on exception entry, anything running
-before exception return uses the default POR_EL1 value, which does not
-grant write access to page tables. This is indeed the intention, but as
-this crash shows, it comes with an implicit assumption that the
-context-switching machinery does not itself write to page tables (at
-least not on the irqexit path).
-
-This patch isn't functionally required for page table protection so it
-will be dropped in RFC v7. Maybe lazy MMU mode could be paused for the
-duration of finish_task_switch() instead, but I'm not sure whether this
-is a generic enough solution.
-
-- Kevin
+> 
+> Best regards,
+> -- 
+> Pasha Tatashin <pasha.tatashin@soleen.com>
+> 
 
