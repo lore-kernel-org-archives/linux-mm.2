@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BD4EFF8855
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 15:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6506CD3427
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 15:26:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FF736B0005; Tue,  5 May 2026 11:22:47 -0400 (EDT)
+	id EF8BF6B0005; Tue,  5 May 2026 11:26:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D6546B0088; Tue,  5 May 2026 11:22:47 -0400 (EDT)
+	id ED0946B0088; Tue,  5 May 2026 11:26:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8135A6B008A; Tue,  5 May 2026 11:22:47 -0400 (EDT)
+	id E0CAE6B008A; Tue,  5 May 2026 11:26:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 72B8E6B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 11:22:47 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B3D340427
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 15:22:47 +0000 (UTC)
-X-FDA: 84733733574.23.A22C542
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5DB02180010
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 15:22:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BofG57Q8;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3Qwv6aQcKCJgHJ2LE2D8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--pratmal.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3Qwv6aQcKCJgHJ2LE2D8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--pratmal.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D3EC06B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 11:26:56 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 45C268C8AF
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 15:26:56 +0000 (UTC)
+X-FDA: 84733744032.04.1C0D154
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 86E3812000B
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 15:26:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jkh0r5F2;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777994565;
+	s=arc-20220608; t=1777994814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=UOjyVgTc9j8m+n6ADmeYm9LZ9JNWTd7uheWYAzKXHUM=;
-	b=ckM2n+iQO4copv8ElIi1+M5tCysfR4XjQppeo0MAvQtJe11eAAg1IEQCwX6nn8o4w6L4CT
-	7KKcDMoCu+fdjj7u+n5tIc5Bkxr64hSqbhez1feSu7Svz5Ppy8Mryz0M9Oi1CYox06OMvH
-	ClUhb/4H0A+WJQfSgoBbxJZUvYdswNY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777994565; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RZbNiDRinKz9RcUmXFzS5y6Ymf8Nx9aGXEWFFtozfyQ=;
+	b=om70s0aFGglqBL7bVAtbvSrEHjCFM9KJPVSYBkC5Nteiny+IpfGOZ9j/xpT5jLXPQAU0rO
+	FD9LCEXd0Socdyuc0TalvnW0zfT7l/rXVBOhVCIDcJ2lIfQTPrYDsSNJtJHoZpXwl+OKiI
+	vzHANC+CT9M1ub7gRXYm6HlQY7Jc4CA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777994814; a=rsa-sha256;
 	cv=none;
-	b=uIYsRG4YKHXYOxZpNKbVqe8/hsSks7vTRG8+fvtgvFZ0WI6fuypYQDGSr21CzgBo788lQd
-	N4sAX7tVQDsk8ldy6kpqoakVLmRThteWyPD2Mvj2pkdQ6STwNS7tM3dX0QNE0C2o6cUeqT
-	ONA/KPKtcPvjumi6eVwagXYzb3Kd03Y=
+	b=ZokUjrt8LKILv1g795//iVc/ghaazeDzbOadrPbxYns+vNwduK+u4upoDugVAUATP3+CEU
+	nMjnDjL7MH5CdNIxpFOqKX3agwImbuQacCFFoI2fdXGYPXkntp0JolTbanqAJ6bvQg5nSd
+	2jmglJGbnHe2M9oZJocTBgKC3h1ELvQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BofG57Q8;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3Qwv6aQcKCJgHJ2LE2D8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--pratmal.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3Qwv6aQcKCJgHJ2LE2D8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--pratmal.bounces.google.com
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2ee1da7a13fso5269254eec.1
-        for <linux-mm@kvack.org>; Tue, 05 May 2026 08:22:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777994564; x=1778599364; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UOjyVgTc9j8m+n6ADmeYm9LZ9JNWTd7uheWYAzKXHUM=;
-        b=BofG57Q8wUXHXSdLmHwdC7hhJg/d2eAMb1Bobzz6hnjwFLvoFJ2P8wPYr06UzrsAYj
-         hQvSgyhE1h/nMWwZrEQsz0xc7HQCO9rwXCgajcGkY0xvmACM7YGivzBdA1c0GXD3+olH
-         AxAS68Q3ntbrOifwuZnkryG0xWrnzQ/DPeHQ85xjSRIlbL7S583LMsmEmzMXe4w2+YYm
-         Q4Pw5XsaOVqPXHjG+bMO9VYz82dmTpafChV29nS5QpTkkzpbLKiyX5/zGmxrRJlT+KVi
-         wm/QMQB465ttkKwwMl602iYwUPj1106GzuGJP5ARgcsm3wUXOXgxYVYAkSp8iYf9Tlzz
-         m4xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777994564; x=1778599364;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UOjyVgTc9j8m+n6ADmeYm9LZ9JNWTd7uheWYAzKXHUM=;
-        b=XKpW+kdTysUuwnoUURlGqIZmst+UgPqMcRDGTg88aa7CKUURhFj0NA8aYT3PVuE6VO
-         YgrdY4RE9cLD32l83vjt/5SB8R8HY24f6NQoIIu+d8RIIDlP6rUus2pTgXj1wTRWzYiI
-         iFJ/Ba+cjmh3c+lhCZCzf8HlR52H18XEFEg0qoMLedcdRbUlUPjyyp/ktJzYguyzNkDy
-         HfJBiC1byksIldwym3eteZ5We94+yBP0TiAdRKrWhl9J/C1lDfGwa42mFMDTcQt4BnMC
-         VSKd/3aY7uy4blf4uTlsKMS/aQQ007nuPRb3QKGMsZpj/daL1rpIsDUOMtWg19jawZ2s
-         tqWA==
-X-Forwarded-Encrypted: i=1; AFNElJ/oslgZ8vnOT8bgarfUbDHYr5Y7vZm6084XhsJTSKO2iEf9tKue+Quy4QG1YO/coEoFkhC3ZN2RLg==@kvack.org
-X-Gm-Message-State: AOJu0YyY6vlsVStVWzbU5/oHwUiex4tt7K1lL3GzVcCK1eMqqVbUl+P7
-	JAlZIq0CErN2Dr4fICmwq8T4Bog0TYf/r1tsL2JCxRkkPYpJNeOe0rnpxCnAvCWPGWVUUqT3ZQ0
-	zKKgm5ZbE1w==
-X-Received: from dycaq14.prod.google.com ([2002:a05:7301:7e0e:b0:2f0:4bf1:a4a2])
- (user=pratmal job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7301:1609:b0:2f2:b544:2fca
- with SMTP id 5a478bee46e88-2f2b54431f7mr2282471eec.33.1777994563675; Tue, 05
- May 2026 08:22:43 -0700 (PDT)
-Date: Tue,  5 May 2026 15:22:28 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260505152228.124065-1-pratmal@google.com>
-Subject: [PATCH v2] selftests/mm: use pattern matching in .gitignore
-From: pratmal@google.com
-To: akpm@linux-foundation.org, shuah@kernel.org
-Cc: yosryahmed@google.com, david@kernel.org, ljs@kernel.org, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Pratyush Mallick <pratmal@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5DB02180010
-X-Stat-Signature: nsqtuz8r3gihutijpmimubxhupzfj4qz
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jkh0r5F2;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5261140751;
+	Tue,  5 May 2026 15:26:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A823DC2BCB4;
+	Tue,  5 May 2026 15:26:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777994813;
+	bh=qhIk7DdTjawjgIvIgyqyVn4S1RsP4sp7HyNeTVlVPKQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Jkh0r5F2rWtljYw5n8/UDDSlSrtF9vbMiarOekkNQMD+w1RRkTpB9HNJjAztp6K+M
+	 U10268ztkioMbO43MiA/VqGfvg15JWhvHQ7JVcflsIFVe/gWeDOYYwjJd1eNhQCFRR
+	 Ujg/CC3ah4KdEuIVt535EZr9TyLy+FWhyQONsQxhLHTriQcMp1OLci7ZD5v7d5aXcQ
+	 JTI2fSBT1z/Bh62obiPPSxwptX0A5AjWBPPzp6uOyUD/RYDVP8k3SF7z5YVLnpPVm9
+	 moOqNtqGhAZLwycx8TuVROJwAt+42XsgEktxeQ5ogfVJ1snLEZF4UP1ZTMPxFFmQZa
+	 yeCqiUMx6lGSQ==
+Date: Tue, 5 May 2026 17:26:44 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Luiz Capitulino <luizcap@redhat.com>,
+	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 30/54] selftests/mm: compaction_test: use HugeTLB
+ helpers ...
+Message-ID: <afoMNE60ZSLSCQ6g@kernel.org>
+References: <20260428204240.1924129-1-rppt@kernel.org>
+ <20260428204240.1924129-31-rppt@kernel.org>
+ <daa3e21f-0c48-456e-a4a8-198a8c907b9d@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <daa3e21f-0c48-456e-a4a8-198a8c907b9d@arm.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 86E3812000B
 X-Rspam-User: 
-X-HE-Tag: 1777994565-439371
-X-HE-Meta: U2FsdGVkX1+yTgApt93L8h2dKju9SB9s7d16tTSBR38KAVz8HNCiwlZjRxJZTzlz/ETT9ujScraYTLLbSm/G+9C9+uS2R31PGgIgiVgIymk1n5PbGV6EADOQjYS85mWQDdyBVJON9QueqfEXkUYhWIzMXtjWllZz0zSj5Biuj84AH+cDD3/qXMsQpA0jT25nZGFBkXOYKvtS1mTzBgfrdlphotAVI8h4B291PeRZLYjI2p1hqiqNS+XF5UkvmG7oxYVr+3ohZI6z5nF4U0g/8oqlNab4cLSc0cY34RPq36GAM0Nc+yqCnL/eMG13X1Cx+Ka7l+y6RqIrktEDlFI9uE8kCxSLKsoXhpx53QVNl1DlokJaMxQKRJqYW/CfOQV2zCl2lwAWPTYk+vagrnmG6KvegXYpnTVWCZkNRwXEA2oBBzSQ1s8qW7lMdQNoVmJp5gfgffXXqROL7qjvWVoTd5BH/WAZ5VN9aJNQ0WB9VU9kot0TULPue2u+z4t50b5JoFjqz8OoJsQyCeNkX8L68atihVNEfACUPc/cVvfIJTBnpSqP2argWo3ad5zclwef2aQj/yUB3kGNcbAnCRtssuQus18WanpxfR5EdrOPUchFbqYFnan1DXIM6r1BsIQYSCCsp3bp4YmPWNWs16b8ZRYAuKIRh7+SuE/ycQu/3hE3pq3VdyliIDvNE3Kcv3leFoqgHgp8pROKKrrMgPJ/b7JpwDlz4ui5FRjevBQRZ+QVq1Ctidhiydf0qtmk7NER2JiksndBBQa74fehDmJS/8XGUWE9u9e7iGeNaT52zzN9eksxd2NZ9poAsJPWvzPprCgys4AoTJZ9gpQoMGbcc8shhenv+wbLomaAZ/vxaW7MqkEK3lpkTrn6U3l3CcAKTktKUPK3l98RXEKMUOkHgOZLeK6uv8VP8iYkL81uqbVjWkPvk4kyAVdmceBl9ThgDAAnTJhWyyStw0uVOC7
- j+NdIpT9
- FVGKril3O0qWlgjlK0ViK9TwEBHZXt/ANwTRu04W9U/dIzMt7VZt7VCLQmPJjhrDwlCt4feRsankP8w6O5kqu1tE8oPJq1/KtHv/nq0HX8KuMoFllYbnCLulI+gQqlAscRQ/qNvknAn6wxmpAgtc30nxrHy8GVh5ChevovLZF1gCsgYH6Gc9YIZ8KmgiPaARPRA8MDUk/Q7uRDZFGuuWyzfjvh6KHepiizFBZYPTi5sHvXgwVLTqJ0gDqnaYaH+4lO4tqStDYLojhas63qjpnkuu87MrpKf77W6ryPhvqKNoh16SmntDNRDhtTzV90xAqxbU1EN5Uzcfy/01+cQUz4rlWZRb5+vRToKs8JpgDgAHBb9IhDvx6apDwaDImdhnQKmSPIisx191bxqjVyqPyZqH8PuSLsttPzh5IGgZBISWJ4oZbnC6Zw/OZb7ywcnvAZF2OI8g0gY1Qf5Kf3kGQU8FSVfdeovRGp4ai2hAPH9AzhcyfFG14bB2EzjWujn4EfxMv6YXaQBecJ6A2Jk6As/VEVSuSGhlnu3D+PUYUyZrn0Lu0DSBPV8aqKHeZI+FQq7K+xUypwdgTuqhoKeg0YYBQyzTAOP+8jXJmGcXH7lmBLMNKMklWSz/wufqI0hO3SIiIPJ1GoFYDfoKDsIB6Y1h2kA==
+X-Stat-Signature: jk8mn3zk3dk733ojr867nkyue7jhumwo
+X-HE-Tag: 1777994814-262241
+X-HE-Meta: U2FsdGVkX1+eRRkxWyFVB91oxwkgzYROEZ4tB/uPmhXqSwNv7/EHitvlDrPmnzcwsbhAcjO+AZCv3xBzKPmV6vcsTtNp0IienXmMX0CElVlIP9mpvNWGISNPQBPuypyPm3jBLNG/NG25+4TC8d3beGTH0zgbQCDo9LUWF5u20gkOwNJMQx2pexu0Od6HaQvvBaB77ET1if4OVl/k/UxUSY62tjfnMgf+qTgbnMa8T8eOCGLBCMJ+tX9BGqrdSpxGl4+nyMFdPnVy6ZgR9KP1tJ54z1r/Ose1hUVl3RmgLOpsVJfYV0XhNTwu+HgzaZb4JY+6igr+J9JXhDGPh4KPlunp+L+lHy0eUYp2UA2IDsu2um46SmZgrvmuOSh4O2qty+XWWXamsrwkFmbtTqfk3XgzpKlXDcl7BqrXHOoq6v5K9n34MMo6e4zbKVmpfW/2CrrJUyAYpR2MPZpHbt67QiHXoqkW65VVfwxtfDZXbJtmb2ut9dLqG3sT6839oYSRkvUlT/sCQ+xmXTX9KOzyAdNWlPHy5ZLHObFLtSjVnZ17UxurcQlRztWGn7HHVMNfft9EBaJV79GjnFKTT0KY9wzI9gzkjomwFkoQl0kfmnBjL/YdqtfoYNimkvhYX0PNUM4yhOoCZ0Njx1sEkF2ZTEQ0+Ip8g5gFjukSxuhKPEkNDHxLqCqk/prCgMENayaetxGyUybxp4DyxZl02Xn7grfsOwu5GTHEoR60cRwPniFIdvtggETq0/wkqKQp2aYoZPV163M7yGm6mCL6NO5cNt6ZDLX1CJqQhw4m8ErZz/Rq3fUh1A7Ty04Lgqv0pu8YdaG1BTi8JJCom7wBBJ1O0Td+aTpRokMBonCL5J+gbISXzdlNKEIIr49tUFc1gRfvokvwNZxdacnynNDVht1gePglVARkI+ITlUFrjt/cxq1hn17zDQIp1PFSdOkJZAsZTVikPFi8ck6IHq9gXRC
+ sYN93v2H
+ 9tmjSf6y9py4Mz0n1igo+o2eZ2/oIdxcbCQVrlFskVfVvIG1jpnGatZlTz8UAJ7efJ7MXoFiBRHMVOe0L7pZHQD2DRuyJuln5IktfHE0vIjlqIOSfIKg9cKmkzrIU5RaivbbvjEWSNuI8DvbWGSONiqthrJb7jrfhWO1gcZEAqBjZ/Mn0Xsrfqqea73b2jYyDUvaj31FuUYjPLJMaHtbLfPceCMChNXb9rvzmhEl5ButMpp8nYYjut4ejY3UFvdB1XlQBXCYLmKYsVUx73FfeL7r429ZZforWJjkUlujC3x5s9qRUO5O4leqD+gxXB87x3F1D6kfsN37HTAY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,178 +108,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pratyush Mallick <pratmal@google.com>
+On Mon, May 04, 2026 at 03:37:31PM +0530, Sarthak Sharma wrote:
+> Hi Mike!
+> 
+> On 4/29/26 2:12 AM, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > ... instead of open coded access of HugeTLB parameters via /proc.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  tools/testing/selftests/mm/compaction_test.c | 113 +++----------------
+> >  1 file changed, 17 insertions(+), 96 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
+> > index 30209c40b697..962a50c3d66f 100644
+> > --- a/tools/testing/selftests/mm/compaction_test.c
+> > +++ b/tools/testing/selftests/mm/compaction_test.c
+> > @@ -17,6 +17,7 @@
+> >  #include <string.h>
+> >  
+> > @@ -161,48 +120,10 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size,
+> >  	ret = 0;
+> >  
+> >   close_fd:
+> 
+> A small nit, should we rename close_fd: to out: now? After this change
+> the label no longer closes an fd and is the common exit path, so
+> close_fd feels a bit misleading.
 
-The current .gitignore hardcodes each generated test binary by name,
-requiring updates every time a new test is added.
+Thanks, will fix.
+ 
+> > -	close(fd);
+> > - out:
+> >  	ksft_test_result(ret == 0, "check_compaction\n");
+> >  	return ret;
+> >  }
+> >  
 
-Switch to the patten-matching approach similar to KVM:selftests.
-Ignore everything by default and then allow source extensions (.c, .h, .sh)
-and tracked non-source files.
-
-To avoid un-ignoring the generated headers, rename local_config.h to
-local_config.h_gen.
-
-Acked-by: Lorenzo Stoakes <ljs@kernel.org>
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-Reviewed-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Pratyush Mallick <pratmal@google.com>
----
-Changelog since v1 (RFC):
-- Renamed local_config.h to local_config.h_gen to avoid conflict with !*.h.
-- Updated Makefile, check_config.sh, and affected .c files for the rename.
-- Removed *.mod.c as it was unnecessary.
-
- tools/testing/selftests/mm/.gitignore      | 71 +++-------------------
- tools/testing/selftests/mm/Makefile        |  6 +-
- tools/testing/selftests/mm/check_config.sh |  2 +-
- tools/testing/selftests/mm/cow.c           |  2 +-
- tools/testing/selftests/mm/gup_longterm.c  |  2 +-
- 5 files changed, 15 insertions(+), 68 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-index 83ad9454dd9d..fcd892ed21e3 100644
---- a/tools/testing/selftests/mm/.gitignore
-+++ b/tools/testing/selftests/mm/.gitignore
-@@ -1,63 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0-only
--cow
--hugepage-mmap
--hugepage-mremap
--hugepage-shm
--hugepage-vmemmap
--hugetlb-madvise
--hugetlb-read-hwpoison
--hugetlb-soft-offline
--khugepaged
--map_hugetlb
--map_populate
--thuge-gen
--compaction_test
--memory-failure
--migration
--mlock2-tests
--mrelease_test
--mremap_dontunmap
--mremap_test
--on-fault-limit
--transhuge-stress
--pagemap_ioctl
--pfnmap
--process_madv
--*.tmp*
--protection_keys
--protection_keys_32
--protection_keys_64
--madv_populate
--uffd-stress
--uffd-unit-tests
--uffd-wp-mremap
--mlock-intersect-test
--mlock-random-test
--virtual_address_range
--gup_test
--va_128TBswitch
--map_fixed_noreplace
--write_to_hugetlbfs
--hmm-tests
--memfd_secret
--soft-dirty
--split_huge_page_test
--ksm_tests
--local_config.h
--local_config.mk
--ksm_functional_tests
--mdwe_test
--gup_longterm
--mkdirty
--va_high_addr_switch
--hugetlb_fault_after_madv
--hugetlb_madv_vs_map
--mseal_test
--droppable
--hugetlb_dio
--pkey_sighandler_tests_32
--pkey_sighandler_tests_64
--guard-regions
--merge
--prctl_thp_disable
--rmap
-+*
-+!/**/
-+!*.c
-+!*.h
-+!*.sh
-+!.gitignore
-+!Makefile
-+!config
-+!settings
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 7a5de4e9bf52..32f4b016b74f 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -5,7 +5,7 @@
- # script so kunit knows to run it, and add it to the list below.
- # If you do not YOUR TESTS WILL NOT RUN IN THE CI.
- 
--LOCAL_HDRS += $(selfdir)/mm/local_config.h $(top_srcdir)/mm/gup_test.h
-+LOCAL_HDRS += $(selfdir)/mm/local_config.h_gen $(top_srcdir)/mm/gup_test.h
- LOCAL_HDRS += $(selfdir)/mm/mseal_helpers.h
- 
- include local_config.mk
-@@ -259,10 +259,10 @@ $(OUTPUT)/migration: LDLIBS += -lnuma
- 
- $(OUTPUT)/rmap: LDLIBS += -lnuma
- 
--local_config.mk local_config.h: check_config.sh
-+local_config.mk local_config.h_gen: check_config.sh
- 	CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
- 
--EXTRA_CLEAN += local_config.mk local_config.h
-+EXTRA_CLEAN += local_config.mk local_config.h_gen
- 
- ifeq ($(IOURING_EXTRA_LIBS),)
- all: warn_missing_liburing
-diff --git a/tools/testing/selftests/mm/check_config.sh b/tools/testing/selftests/mm/check_config.sh
-index b84c82bbf875..b46bf2d2e7f8 100755
---- a/tools/testing/selftests/mm/check_config.sh
-+++ b/tools/testing/selftests/mm/check_config.sh
-@@ -4,7 +4,7 @@
- # Probe for libraries and create header files to record the results. Both C
- # header files and Makefile include fragments are created.
- 
--OUTPUT_H_FILE=local_config.h
-+OUTPUT_H_FILE=local_config.h_gen
- OUTPUT_MKFILE=local_config.mk
- 
- tmpname=$(mktemp)
-diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
-index d9c69c04b67d..87710c5a2d3c 100644
---- a/tools/testing/selftests/mm/cow.c
-+++ b/tools/testing/selftests/mm/cow.c
-@@ -21,7 +21,7 @@
- #include <sys/wait.h>
- #include <linux/memfd.h>
- 
--#include "local_config.h"
-+#include "local_config.h_gen"
- #ifdef LOCAL_CONFIG_HAVE_LIBURING
- #include <liburing.h>
- #endif /* LOCAL_CONFIG_HAVE_LIBURING */
-diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
-index f61150d28eb2..00ea0dd2f655 100644
---- a/tools/testing/selftests/mm/gup_longterm.c
-+++ b/tools/testing/selftests/mm/gup_longterm.c
-@@ -21,7 +21,7 @@
- #include <linux/magic.h>
- #include <linux/memfd.h>
- 
--#include "local_config.h"
-+#include "local_config.h_gen"
- #ifdef LOCAL_CONFIG_HAVE_LIBURING
- #include <liburing.h>
- #endif /* LOCAL_CONFIG_HAVE_LIBURING */
 -- 
-2.54.0.545.g6539524ca2-goog
-
+Sincerely yours,
+Mike.
 
