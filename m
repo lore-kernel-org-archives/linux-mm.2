@@ -4,91 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBB5FCD13DA
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 06:23:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84A1DCD3430
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 06:34:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30B6B6B0093; Tue,  5 May 2026 02:23:03 -0400 (EDT)
+	id A966D6B0005; Tue,  5 May 2026 02:34:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BC0A6B0098; Tue,  5 May 2026 02:23:03 -0400 (EDT)
+	id A6E226B008A; Tue,  5 May 2026 02:34:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F8E66B0099; Tue,  5 May 2026 02:23:03 -0400 (EDT)
+	id 9841B6B008C; Tue,  5 May 2026 02:34:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E40F6B0093
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 02:23:03 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CFB898C571
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:23:02 +0000 (UTC)
-X-FDA: 84732373404.07.6FBE3E0
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C671140005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:23:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gHZ4hTtg;
-	spf=pass (imf27.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8710C6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 02:34:08 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2C035403AA
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:34:08 +0000 (UTC)
+X-FDA: 84732401376.21.C72CC90
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 39E628000C
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:34:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=u1R7aGqI;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=ajkXX1nP;
+	spf=pass (imf30.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777962181;
+	s=arc-20220608; t=1777962846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BHh0dwiXu65m+8y90ieqU7weX8HBYalvVIIsyXP1y9Y=;
-	b=cDx61iN6nYr7YrrkCd2N+fPDPKmiR1c7DafpUIszdNRTpMogrTyfD/46oBZhSDVb58Kznb
-	XRl/6h6/MvT3QeeKZv1n4qr/50sEbW0DGyFHWrlScq3UKpf/9L6Hv8BnilxV+hf8jPcFpL
-	QSwe7a3kz8XSjI7fioDvvTEr/8ld1s8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777962181; a=rsa-sha256;
-	cv=none;
-	b=p7sju2EmkWUuXtzEstzpXb/APZHakhwEs9Q20rWcQeC5fFL6tDzYXKFJUGe+dKdIVHKPWc
-	JbuQuqNxBx+2MoDB79f4J+pyO94dwgT9Alk+wto5G3wspTZJJnzfQslf5iTwFtvHNAMtKX
-	R2+pNJeWNarvEdfXYiHBJ1mLg4AL2co=
+	bh=mSzVT7Fb6Q1GJvMmXV4hAtUQgAfzR7myXYKHCqT7Zp4=;
+	b=dyHefc+lbu2V+11n3PCDSV1uOIanwwj2MyPSFeFy6X1+pRlawuCrLym+mTFNGsatwtx35j
+	LzcUzLPibfNrnbEXV4MRBEZYrJCo9CA1qVibDJptlDUQQFrKc5JKF29DoHUkEEf8Vi+WGz
+	JyxXuqP+ghSRLKZprcdrHDJDlj6teE0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gHZ4hTtg;
-	spf=pass (imf27.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <8b0cf967-9d90-4494-8264-a28bbc498ca7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777962178;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BHh0dwiXu65m+8y90ieqU7weX8HBYalvVIIsyXP1y9Y=;
-	b=gHZ4hTtg8y6jfG5zo14HNGRjME5frrhxf+J2bjKL6A3di7fGL9eOHZ2jH/owC2D0IdEjUC
-	opZqo47CLqZ6EP7dxnfmmsrDaqJ0wtuil3R6HlxHF7hoGxs5I/BJwnhZtxnWn/DzIYCqhj
-	LZbJJRN8/wfcJzQbvIuiaY5WZEcYAoU=
-Date: Mon, 4 May 2026 23:22:40 -0700
+	imf30.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=u1R7aGqI;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=ajkXX1nP;
+	spf=pass (imf30.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777962846; a=rsa-sha256;
+	cv=none;
+	b=FWCcusyNfRPFJBXoELEiOj/QaJ3cqEjmhTk6gFiyGkz+m0e0v5gBQ96mfPoQii9Tx2H6yv
+	03OKX0vF8SWZb3+o4sTJXUlyleEv9wgNB1rRBMYB0L/LE00dCy8/V0YL1S15/SMviVdt8I
+	JoB5SRUuciZ7ZmIdmVgxf2yMsfYLdCU=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id B09DF130028C;
+	Tue,  5 May 2026 02:34:03 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Tue, 05 May 2026 02:34:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:content-transfer-encoding:content-type:content-type:date:date
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1777962843;
+	 x=1777970043; bh=mSzVT7Fb6Q1GJvMmXV4hAtUQgAfzR7myXYKHCqT7Zp4=; b=
+	u1R7aGqIUCFHM+/QbYGpsFVEKiZeLoCsSxD6etpr4TI1UhmqIl6UT+oFHi8hc05w
+	0Kh9aq4ttEtsryomzEJEv9kPB8Fftb1JtIP+uWtc9es/UdFJvjtmfZByxSRQdISj
+	hKwz24Zmre1KLPUOkI0Hn/wASeAoPUQh12qShGm7UZNKBBQ4FfTdc/jHMpYZui62
+	mzIdz6iBI/24IO3jpBXC55Edd6Px2sYtlBrDGRQblJjdavx2QnZCA9BgMQkeBB7u
+	l5yQ4GsAKfjqk0an+lys1CTVV83c9xbtX2TyR/r17pep5BV10h9nr1XzvPWxNOEw
+	sTQbBCVBg+MY6GIg4QycmQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:content-transfer-encoding:content-type
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm3; t=1777962843; x=1777970043; bh=m
+	SzVT7Fb6Q1GJvMmXV4hAtUQgAfzR7myXYKHCqT7Zp4=; b=ajkXX1nP6snZdVKF3
+	j0gwvAj5S9cREUzuND2pMdCFhf3YMYp37T1kxU4Gsk48v/h7/ose5qJRMEIzdGgs
+	fe8yA5TFh4XHKm4b76NQUwZ48xElDEi9fmTKyKk4KYtJrSRjs+Vmc8yOGCPcY317
+	4ju7HH81ucPovlqXA79zHL+ulbK8niU69ZTg0Yxq1QCqk48a7+hgSkv7Inl2WBi9
+	vCclUolYb4Cc7GXKp7lbbXxwCu0c8xFvQl+TPgiEqPmp5bQAU+kLKBTvSvtXZMhF
+	bIz6HbPn4psmb/MbWw7iG7uOE5/SBBx/d19Wbh7PwW3mWspWrXXtMKqj2yg+Fwpa
+	roBXw==
+X-ME-Sender: <xms:WY_5aTmdaM4OKhG8xWdJ49xyodp-nrw4qj7CQ51RPQU42f9CPTX39A>
+    <xme:WY_5aRr75hktxD3-avGWlXJ-Zw0-igJgXhKy1Xing9OPwcM_Omr4mn_bAo1ux33Fz
+    SSGlHbI-bwj8TbyQ53wq3ZCUlq1_DIpB8GW-6iicUhEU7YsOm-mOKc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutddutdduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvffkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhkeeltdfffefhgffhteetheeuhffgteeghfdtueefudeuleetgfehtdejieffhfen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegjedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheptghuihihuhhnhhhuihessgihthgvuggrnhgtvgdrtghomhdprhgtph
+    htthhopegsvghnrdguohhokhhssegtohguvghthhhinhhkrdgtohdruhhkpdhrtghpthht
+    ohepphgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtoheprghouhesvggvtg
+    hsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopegtlhesghgvnhhtfihordhorhhg
+    pdhrtghpthhtoheprghlvgigsehghhhithhirdhfrhdprhgtphhtthhopegrnhguhigsnh
+    grtgesghhmrghilhdrtghomhdprhgtphhtthhopegvugguhiiikeejsehgmhgrihhlrdgt
+    ohhmpdhrtghpthhtohepmhgvmhigohhrsehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:WY_5aRP-G1AZF66xxJHwKdzzA4REx0aM98VL9jtjTc-7cNqSRC2JrQ>
+    <xmx:WY_5afupNhAomgYOUp9eRs5fIzdUV3vo78FkWK8Y5wILvs0fjAzaHQ>
+    <xmx:WY_5aY1hkGHq06h0lw9neBCLRVCRbvSxiX7tdKxyRk5szccY56SvQA>
+    <xmx:WY_5ae1sqHKpt2devCX1YzTH1h8JSb6XlF2sb-7RTsitxUPltD_8BA>
+    <xmx:W4_5aafHexNRNA4nUj3kE13hAfhlWJDQLkDJihm9sNYAgzDk-Kj8TeiD>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 10624700065; Tue,  5 May 2026 02:34:01 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Subject: Re: [PATCH v4] mm/mempolicy: track user-defined mempolicy allocations
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, vbabka@kernel.org, mhocko@suse.com,
- ying.huang@linux.alibaba.com, hannes@cmpxchg.org, shakeel.butt@linux.dev,
- gourry@gourry.net, kasong@tencent.com, qi.zheng@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, david@kernel.org, ljs@kernel.org, liam@infradead.org,
- rppt@kernel.org, surenb@google.com, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- apopple@nvidia.com, linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260427151520.137341-1-jp.kobryn@linux.dev>
- <20260427141123.734c66450100c0f900e02947@linux-foundation.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-In-Reply-To: <20260427141123.734c66450100c0f900e02947@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ThreadId: A7c2EfDQgAZJ
+Date: Tue, 05 May 2026 08:33:04 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Yunhui Cui" <cuiyunhui@bytedance.com>, "Paul Walmsley" <pjw@kernel.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>,
+ "Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>,
+ "Dennis Zhou" <dennis@kernel.org>, "Tejun Heo" <tj@kernel.org>,
+ "Christoph Lameter (Ampere)" <cl@gentwo.org>,
+ "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Andrii Nakryiko" <andrii@kernel.org>,
+ "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Eduard Zingerman" <eddyz87@gmail.com>,
+ "Kumar Kartikeya Dwivedi" <memxor@gmail.com>,
+ "Song Liu" <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>,
+ "Jiri Olsa" <jolsa@kernel.org>,
+ =?UTF-8?Q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, pulehui@huawei.com,
+ puranjay@kernel.org, "Thomas Huth" <thuth@redhat.com>,
+ "Andrew Jones" <ajones@ventanamicro.com>,
+ "Ben Dooks" <ben.dooks@codethink.co.uk>,
+ =?UTF-8?Q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>,
+ "Samuel Holland" <samuel.holland@sifive.com>,
+ "Zong Li" <zong.li@sifive.com>,
+ "Conor.Dooley" <conor.dooley@microchip.com>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Deepak Gupta" <debug@rivosinc.com>,
+ seanwascoding@gmail.com, "Andy Chiu" <andybnac@gmail.com>,
+ menglong8.dong@gmail.com, cyrilbur@tenstorrent.com,
+ wangruikang@iscas.ac.cn, "Atish Patra" <atishp@rivosinc.com>,
+ "Anup Patel" <apatel@ventanamicro.com>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org,
+ "Nathan Chancellor" <nathan@kernel.org>,
+ "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
+ "Bill Wendling" <morbo@google.com>,
+ "Justin Stitt" <justinstitt@google.com>, qingfang.deng@siflower.com.cn,
+ Linux-Arch <linux-arch@vger.kernel.org>, llvm@lists.linux.dev
+Message-Id: <3720c3a4-cc0d-4ba8-97ae-35def0189e2e@app.fastmail.com>
+In-Reply-To: <20260505062026.91724-2-cuiyunhui@bytedance.com>
+References: <20260505062026.91724-1-cuiyunhui@bytedance.com>
+ <20260505062026.91724-2-cuiyunhui@bytedance.com>
+Subject: Re: [PATCH v4 1/3] riscv: io: avoid null-pointer arithmetic in PIO helpers
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C671140005
 X-Rspam-User: 
-X-Stat-Signature: g3u1zm8o8dnzfzgm856ybnr8zfq16wi3
-X-HE-Tag: 1777962180-696379
-X-HE-Meta: U2FsdGVkX1/DytGAi0qCs3SPXtGt3tLJq27zfFsRfpUvlmpCEQP8BRBTgcJlcgtsVsINZ0NSerrHJKlTQXiGMIXitrHSDJaAlFycbFCH2f5lalUd2MKw4G7WZeSGfKY6OlgGLkXL7avEMwn2n6rPPg7OXFCCU53RArDfz+nmiiOIj8TtzwCnLYjJ17CEP8tF2kDLrBf+BibjrsS3UtKnj78NVH04U5JjHITtKZ0z34ilhiWsJKkmBknFbJ5oUnA5pX6/jv2f2L5YhcH93nBv4A2pIB8j7B5IRO4pc42DVu40dJL0JRvw0yNRWg5fc9paTpMG5xemXhPaQMLcWBWIgl8zDD5lZb318bcI0UJLRT5JWhGmRuWVsVcAZjhRhZsX48f9eVPBkfuXTKvLrymmSOaO9TfN1dBdZpNXWD3A12GlLz1Z9BGvl63pq7koDYSURd8hM631IQTFFHyxfGzaj7RGHXBHCAwhAT0tXOSEh51XblPAaF1dexmkWrIY33LH13yMTPnvpXuFZjyGG0fFZmafkElzhRa0kqiLB9OIksveMetxMKFT27gONBHs7jhUtjITfV3Dz6nl823eUPZzsxdPl7Xp+M4t5GP1+P1JOxW2qbx5bnvJ8mark5rlUkpwJ6W0d8+XtzzGEuUUf+sw+4qpr9S8h4O/mLDN6aOa3zPZQ033jcDBw/Oyb024+iVcHBZ+fRFR0dfbYhvzS/7ckLiDVPHvC3WQvncizt5J0HuQt1vclKT3dbQt88l60Y/WlSt6DuHW+Uxrn409b/TDDIOad/XqsqD/wehSbf3nW3UcrndmgKVdyEhUrTIN18KcrrtPtysaE5zouDfdvpaxnreyFUtJTfW5bKYnEeBz1hpaB1ELmxaXF6yJ08w5CAK/JsIX5B3EdXLR8gY0LaLgyD3EiuVoP5hngjmjwY4nfvgznIVyRpNvp/w6qe6pyUvuJrPIdsQiBQs0B+QXyy5
- ummDfxfX
- +nOGrHbnGVjcIpU0WuPp370fWk+oiSfLjrzet579CRppKy/v++w41aDJSYZKyuNH8Uvtqdv7zjB94riGNy/BTUHM/bw8j1fFmZA4Qy44969IEO9PvC6XfqQtIcBtL1vDLJWV/BICUcrxmCn8BGfONcCMQHtjWMJMDnIgSKokgWLOjjtskQ3ziwpELvP6afZ0Cd8AF0+n1d67a+0Ku/1cUla3pWyQk96GmidMZoZA38/bsuL2sOmkmPqnLUsq/qsEhIq0n7sIY7t/F6c7c7ZWMMhwC4RwZdysQqri/2pLGQXNLqg5F6VjAlXWAGQPUQc0uo3f9ayxnHmclfsObJZrjhLbrvA==
+X-Rspamd-Queue-Id: 39E628000C
+X-Rspamd-Server: rspam06
+X-Stat-Signature: auhcw4nacya7picwiix3gsdyrfy4j6ns
+X-HE-Tag: 1777962846-207218
+X-HE-Meta: U2FsdGVkX18C1+qpPpvazNBZdScIQkP0X8Rkj+EUFo/bjCcudVyvriGXQwfjpsCXHPtVrwxl3R6r6U/uh1H0Y5x6k4V41pKh8+FUt3CznHiWJwKh63bNqsOcmwWBfIzgBernjJKnUBx44jJVdn96ExdFvOrg65oxnR6C2VaENnF+t5wdP38/f11XbzxyykeW4fCtLyL/AM5TK8Oiz3AM+L89zTdoqC9MiC2cpvTSHSp448zFL6THcC1/nihuDYGD5k0TUgv4T2kUgQ8dmjraUcoNMFCrlBk38cWR7oLNfGbA/5xUsH9QE3og7npJZ+D6Rk+5TuPAPs9+6o7Ya+2BRrdhPsM6arUqw419XSNjEtv2WVbuEi1le9V4y7bRt2qs585xyJugg/vY2EsONQKjtQAQQYrrBT28j9bTMjfMT5ig7wvkTOnsf9wQTMCelq1AaP4Eenh4WqoG+DE5aOLcl6s9Pz+Bx11IUkA7m5m1/zMHx7/s7Mfs5QVtobVSkbLG2RAN6vdq0kwk/l4E8c63iLkcyGoqlhJtG/E7jEEWlOx7V+X+jWRKVAMnUhmRlQs0kCgDE8dLNw+R33xMVAB1fqqeOeXn9Erfo8QhK01zX4HfNuTJw0eDTrdgkFIX8kL27nnXJF3YMb3tcOkg3qbx6yVMd50VQc1F2tENvBi1/9ahoumpSWn/lqbozqb2RmscM6V0J0ZPbfAwBW7MING8/IT55JsrFSuB7bmZUnvsPCcF+UVDK2MvMjZP/err4+ExygaCZ/L8zHfXBg5o2QOYHTHkoDy+k1qgqFz+XZJ7W0/5t8FWqsM0w2M1LggmeOk+vQd30lAmJR3ucpY2DDSpeERoblQN9a3MBgyKmdSjOWo1+p4FWjai+fJ6y+HOS3E/voa1ZqHpFt6RUON0b6UuLNPY+cDFZDMFJQWe1QObX4+V88YwVkjaE+n9ZCZGQwUJjUnFQceRh6z+VShw1uv
+ ZW+LKOmh
+ I52s3yqoEVQT9lxpCV3P2Vst/txON4Tx5w0kxl4wsfPyY3YHOSi1akI4dYovATjXc9DTeu4rG9pN746owuNXPn2xgCISICUdZhFJtB0OBKMvrhizUWv1pOkNjrZzjhb/DiOja3na5W8qGnuYAjMt/pVmH/54yIqW37gDzad1ze7wob/YwJA+B0XhSfKI/wjhnfxQsEgK4V1/D7eodEc9zTRovpdP1Mjsdd/uoMPwpVTXkF0Sxin5V0kbls5xnUVgVfTZW+MPidpLKgUnUoh75vSUgl2RbFO1kMJfDQeraw9DFJtI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,84 +165,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/27/26 2:11 PM, Andrew Morton wrote:
-> On Mon, 27 Apr 2026 08:15:20 -0700 "JP Kobryn (Meta)" <jp.kobryn@linux.dev> wrote:
+On Tue, May 5, 2026, at 08:20, Yunhui Cui wrote:
+> The RISC-V PIO helpers derive I/O addresses from PCI_IOBASE in ins*(),
+> outs*(), and ioport_map().
+>
+> Under configurations where I/O port support is not available, these
+> expressions can still be formed during compilation and trigger
+> -Wnull-pointer-arithmetic warnings from clang.
+
+If a driver attempts to use ISA port operations in a configuration
+without CONFIG_HAS_IOPORT, there is a NULL pointer warning because
+this is actually a NULL pointer access that will crash the
+kernel if the driver is ever loaded. You should not attempt
+to shut up the useful warning here but instead make sure every
+such code has a proper 'depends on HAS_IOPORT' dependency.
+
 > 
->> When investigating pressure on a NUMA node, there is no straightforward way
->> to determine which user-defined policies are driving allocations to it.
->>
->> Add NUMA mempolicy allocation counters as new node stat items. These
->> counters track allocations to nodes and also whether the allocations were
->> intentional or fallbacks.
-> 
-> AI review:
-> 	https://sashiko.dev/#/patchset/20260427151520.137341-1-jp.kobryn@linux.dev
+> +#ifdef CONFIG_HAS_IOPORT
+>  __io_reads_ins(ins,  u8, b, __io_pbr(), __io_par(addr))
+>  __io_reads_ins(ins, u16, w, __io_pbr(), __io_par(addr))
+>  __io_reads_ins(ins, u32, l, __io_pbr(), __io_par(addr))
+> -#define insb(addr, buffer, count) __insb(PCI_IOBASE + (addr), buffer, count)
+> -#define insw(addr, buffer, count) __insw(PCI_IOBASE + (addr), buffer, count)
+> -#define insl(addr, buffer, count) __insl(PCI_IOBASE + (addr), buffer, count)
+> +#define insb(addr, buffer, count) __insb(PCI_IO_ADDR(addr), buffer, count)
+> +#define insw(addr, buffer, count) __insw(PCI_IO_ADDR(addr), buffer, count)
+> +#define insl(addr, buffer, count) __insl(PCI_IO_ADDR(addr), buffer, count)
+> +#endif
 
-This was helpful. I quoted the review points and answered them inline.
+Can you try to remove the custom accessors altogether and
+use the ones from asm-generic instead? These should already
+have the correct behavior all the time, in particular they
+already come with the correct #ifdef check that is apparently
+missing in the riscv version.
 
-: For MPOL_PREFERRED_MANY and MPOL_BIND policies, policy_nodemask() does
-: not modify the nid parameter unless home_node is set, so intended_nid
-: defaults to the caller's local node.
+> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> index ca5a1ce6f0f89..d799e5ccc9437 100644
+> --- a/include/asm-generic/io.h
+> +++ b/include/asm-generic/io.h
+> @@ -1205,8 +1205,12 @@ static inline void __iomem 
+> *ioremap_np(phys_addr_t offset, size_t size)
+>  #define ioport_map ioport_map
+>  static inline void __iomem *ioport_map(unsigned long port, unsigned 
+> int nr)
+>  {
+> +#ifdef CONFIG_HAS_IOPORT
+>  	port &= IO_SPACE_LIMIT;
+>  	return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
+> +#else
+> +	return NULL;
+> +#endif
+>  }
 
-Yes, this patch is not intended to change that behavior.
+The function definition here is guarded by the #ifdef CONFIG_HAS_IOPORT_MAP
+check, which should already prevent it from being visible when
+CONFIG_HAS_IOPORT is disabled.
 
-: If an allocation falls back outside the preferred nodemask, will the
-: FOREIGN stat incorrectly penalize the local node, which was never the
-: intended target?
-
-The allocation can land in the mask and count as a hit but if outside
-the mask, the intended node is incremented with foreign. Assuming home
-node is not set, the local node dictates the search path for the
-fallback path. So in that regard foreign can apply. The alternative
-would be to increment foreign for all nodes in the mask after a miss but
-that would imbalance miss/foreign and skew the data. Foreign may not
-make sense for mask-based policies.
-
-: Furthermore, if the fallback allocation lands on the local node, will
-: it simultaneously count as both a 'miss' and a 'foreign' on the exact
-: same node?
-
-Yes, more support that foreign does not map well to a mask-based policy.
-Having data on just hit and miss would be sufficient for the
-investigative purpose of this patch.
-
-: mod_node_page_state() unconditionally executes local_irq_save() and
-: local_irq_restore().
-: Since mpol_count_numa_alloc() is invoked on every
-: successful page allocation governed by a user-defined mempolicy, does
-: this introduce severe IRQ-disabling overhead into the highly optimized
-: page allocation fast path?
-: Established NUMA counters (like NUMA_HIT) avoid this lock contention
-: by using lockless per-cpu operations via __count_numa_event() and
-: raw_cpu_add().
-
-For reasons explained more below, I plan on changing from counters to
-tracepoints.
-
-: The patch tracks user-defined mempolicy allocations by instrumenting
-: alloc_pages_mpol().
-: Bulk memory allocations under a mempolicy are routed through
-: alloc_pages_bulk_mempolicy_noprof(), which dispatches to specialized
-: bulk allocators and bypasses alloc_pages_mpol() entirely. Will this
-: lead to silent undercounting of mempolicy allocations for workloads
-: utilizing bulk allocation?
-: Similarly, Hugetlbfs allocations resolve their mempolicies
-: independently via huge_node() and allocate pages through
-: alloc_buddy_hugetlb_folio_with_mpol(), which directly invokes the
-: buddy allocator. Will Hugetlbfs allocations also be completely
-: excluded from the new NUMA_MPOL_* counters?
-
-It seems the existing NUMA_INTERLEAVE_HIT misses this as well (only
-counted in alloc_pages_mpol()). But closing this gap with the new stats
-looks like it will become messy since every individual allocation of the
-bulk request would have to be accounted for. I think using tracepoints
-would be cleaner for not only solving this bulk issue, but the other
-concerns as well.
-
-I know some other reviewers favored tracepoints over adding new stats
-altogether. Originally I saw this as a convenience trade off because
-of the instrumentation needed from a userspace consumer. But given the
-challenges with the foreign mapping, irq concern, and bulk counting
-complexity, I'll go this direction in v5 and hopefully get more
-consensus.
+     Arnd
 
