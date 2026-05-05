@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DD43CD3430
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 12:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26355FF885A
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 12:18:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BD686B00A0; Tue,  5 May 2026 08:18:17 -0400 (EDT)
+	id 59BD76B00A1; Tue,  5 May 2026 08:18:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 744756B00A1; Tue,  5 May 2026 08:18:17 -0400 (EDT)
+	id 4D7106B00A2; Tue,  5 May 2026 08:18:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59A236B00A2; Tue,  5 May 2026 08:18:17 -0400 (EDT)
+	id 303A26B00A3; Tue,  5 May 2026 08:18:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 391F46B00A0
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:18:17 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E208F8C6FB
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:16 +0000 (UTC)
-X-FDA: 84733268592.28.0824421
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A1C02C000E
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=bqBZ8OEx;
-	spf=pass (imf10.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A3C86B00A1
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:18:18 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CB46C1A04B4
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:17 +0000 (UTC)
+X-FDA: 84733268634.10.65143CE
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4A51140007
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=XYpw+7Ah;
+	spf=pass (imf27.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777983494;
+	s=arc-20220608; t=1777983495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ZtWqnN1RczyOwe8eD0TIQbNux3o+p4OofXFSliSMD4=;
-	b=Z6+GAYe8HTOEM5PbkQm5jkdkpXHhun3zeAEgi23V0Dx957jIUIUmV3F+oRORNyyvgzMv2E
-	CNJ0M9HPpPIKrfZ3wkNQ1QfpPszLJX35E9bH3qwy21hIYbOsao5V6KHPPEacNg7wKvApA0
-	anUnB/GWca+dSurW92KePyAFGIG6jCg=
+	bh=BsJFflFxi0TyekZiMZ22S7kAUExaFPaOXKgOlpUzzOo=;
+	b=jBPKstSYbf2Gy13VDF4B4/m5bN1xw0DaPgFX0mp4skeQqCj9U/1jrVNSrC/zwSBOr3Cx60
+	rKmptb6OCBA2J/BcEUCshK2MT58+jZC/+3P3R1nzyDTCVS6Ti3j+xCHlMKOKCYWVhf/fpS
+	T/mO2jSKZ0hmLwoTX3RP2vnl8PbUaKs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=bqBZ8OEx;
-	spf=pass (imf10.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=XYpw+7Ah;
+	spf=pass (imf27.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777983494; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777983495; a=rsa-sha256;
 	cv=none;
-	b=6dM+TLquANVRU5522Sg8ucWaB3BxOmCFPSd9wWFUTx1IyiB55965eeDnwbpl+nBBF+g0mJ
-	iZDohhhGNDrJ56XdWj3FmgoqYFfiuoqdZF6XYM/SRKyEvaloVlloJ/EO7jfu43eKchGjyC
-	/d9YdO2kvhTHVcFVEdM5Czx4HThu6XQ=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64575KMZ3279333;
-	Tue, 5 May 2026 12:17:29 GMT
+	b=kOaPJSrp0q4Fcr+3E/TP5rkgH/7apJpjptA+I/ecZNKRPbdWmdcEtLegdQysg+w4Lp5DcC
+	8oRkxxgqI0l/7vdR4hsnSYqW1PBMZx76HjqDgFOUJ6BLIwHQCpYE7xT+rlHT4l+zRf1tA4
+	PhMIRreL7hXsacmfmSaBj3F1dzpPfbo=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644Nx5wk1446669;
+	Tue, 5 May 2026 12:17:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=4ZtWqnN1RczyOwe8e
-	D0TIQbNux3o+p4OofXFSliSMD4=; b=bqBZ8OEx0KCHo03oZEMqu1gLNKNqaLsDd
-	ePolS8Zi1gfm4aCUNRmlYVDUBlJ68gQDXF3pxknSqVEzabRXaOAN1gy/BS/oSnLr
-	gSp5/BBXCg3TOi8TutnxtQOvJUH9YQqUrfyj6Uj08inxUc1bnAr37NavEwNmHuf4
-	HPRJ+wzRVDpstP0Sue1OlGs+t0JjuH7b7TdYzxls10IUig+ZT5QRAgIFSnhXtNsg
-	PYSG4LG2G5L4VDgEvXGaZVZCZRlGDbgzC+Gp3X938xZnYsXW1Mg8tqACDfNeCS6W
-	UsYJ7LKzGokw1YLaPkeGBrJcw8zuMejKZRXQhQE/D3hprNPpOBQnA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9xxk5d7-1
+	:mime-version:references:subject:to; s=pp1; bh=BsJFflFxi0TyekZiM
+	Z22S7kAUExaFPaOXKgOlpUzzOo=; b=XYpw+7AhXLgr4Rr7B6pyHK6/CB4mzWjzV
+	TnadZL2o0mfdNYk2AQT0QQhiKf96Rmz5d+hNzPLJQ7cd8JANdwrAGh1Vkz9oSGcp
+	Mr/xhH8r7vdp01/JrzPw5jaRVxAAJC7v5ElmZYayR1Kv4Qq9urwyyhThryV4hW/S
+	n2fcXDS9bJFBD9DPvIVgEwvhM6fdhtdJ25IPflssKQZKqsrfjtHcBJpOWN3mNI9U
+	pDslnhLw4/MVVi7ULDeZfWc7kyjdOxt4qYZwMB0cD2uCYZ7dx/0JQ/qrO41TFAuh
+	oy/P1fq95PIJTARtIXD1FIjB44EqkmA2FFsAG8CUPG3ttjjgyg7bQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7bja1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 12:17:28 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9cgQ024347;
-	Tue, 5 May 2026 12:17:27 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3h1eq7-1
+	Tue, 05 May 2026 12:17:33 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9fVW030232;
+	Tue, 5 May 2026 12:17:32 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwukq9nmv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 12:17:27 +0000 (GMT)
+	Tue, 05 May 2026 12:17:32 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHNXB15925674
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHS0610027286
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 May 2026 12:17:23 GMT
+	Tue, 5 May 2026 12:17:28 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 84A392004E;
-	Tue,  5 May 2026 12:17:23 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 95C382004B;
+	Tue,  5 May 2026 12:17:28 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 108732004D;
-	Tue,  5 May 2026 12:17:23 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 313FA2004D;
+	Tue,  5 May 2026 12:17:28 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  5 May 2026 12:17:23 +0000 (GMT)
+	Tue,  5 May 2026 12:17:28 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
@@ -112,11 +112,10 @@ Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
         Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
         Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
         Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v14 05/19] unwind_user/sframe: Add support for reading .sframe contents
-Date: Tue,  5 May 2026 14:17:04 +0200
-Message-ID: <20260505121718.3572346-6-jremus@linux.ibm.com>
+        Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v14 17/19] unwind_user/sframe: Separate reading of FRE from reading of FRE data words
+Date: Tue,  5 May 2026 14:17:16 +0200
+Message-ID: <20260505121718.3572346-18-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260505121718.3572346-1-jremus@linux.ibm.com>
 References: <20260505121718.3572346-1-jremus@linux.ibm.com>
@@ -124,39 +123,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfX6XRcCVPfexRX
- aTxIghH1703yLbfFVYTB7LN78hCTIq0I0rKK8kVqpSK90MmaBlPR+KEDxaP3ni5cMW/hw7ZMr8K
- 2qSJuC3/n8b+eX5WiC9MPRZMCRT1rPVtRjREQi7w2yaciBdoteymAmvFh9zC2onCOXMsy6m1Pjk
- bvosyyol9h0X6aKM69UjPIZzmbok67q6QDeZglJJVy1fDk5wj45FcsptBn/QPZk5hR1InbaKEMt
- aj7YVkCPtMAlleGGuyrMnc2+kmJD8dQFPeu3+j1eGkzVSEoocdiQi0/HBtL1zgQnt4kvXqVO58O
- lcYM353sz+H5bLKFsCWngXjU5ufmspL5sEmk6aiY1+mJ3/XvisZ/YgDE0ru6s4WpcrmEi9rUq0P
- Tml2OMrzLwfvVWit4wHLYthRKNUMhtn4jt63DbxU610/n2GSASRcpOUoaGap58RZ9VitkRvFciZ
- ICXAGpKDcuk1O3VrVGQ==
-X-Proofpoint-ORIG-GUID: Vj8o6NPkwVYMEHIgFfh8OFeJyFbrRIvW
-X-Proofpoint-GUID: IVLj-N6IF1qXucqDldL-uJTnEQzfebWD
-X-Authority-Analysis: v=2.4 cv=ctWrVV4i c=1 sm=1 tr=0 ts=69f9dfd9 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfXzk8oGrimpxjw
+ LBbsRfMUas3OGl13Gyy6y51GgI8gtf+Fke5e9wGSjaVWpBYGQDzSaQuD84p6+sk8c4a1XfMntep
+ WdiWlgyzFrrODDWHPyJbVUDz6M7q+BZ74ovGGPV+KS8iuwvhZCdrhEiNRu4eX3/ckJurh92iOVx
+ qIM0ooh1FOwqZewoVqGJQkAw0csJTyFZfweBMSrYA6Ns53UY9bWhnXNSzpcS0tYAqodT635N4Th
+ z3s2rwRtebuAIbyt8+eor47oUcgot1f0yKCIAK5XArKsQm9cD3qIZk6LAeepazLcXRBljbm9BmP
+ /MLHA1tevVdRNXQyhQvbBdHWIu3puSwbAJbIn8HEu3bDTE0M/5dj8H0W8unC9d3RYaVIwqyS7fl
+ 0X/9KdZljzmW4Kfs4rbJJfHPNmUxBvmKHJL3VPRmnzBNpHvBu3HbJxZECs5DpCNitcNdVEaFsTD
+ b6DvdamqFHD04kSti9w==
+X-Proofpoint-GUID: TQbmsIJlRq3L3ufjnmpXUJYzstWtmNml
+X-Proofpoint-ORIG-GUID: 5CxLYMeQdm8PctbsYmOZMYbX2qSPMeyW
+X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69f9dfde cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=meVymXHHAAAA:8
- a=pGLkceISAAAA:8 a=YuDcBBqGAAAA:8 a=-28QZkuTYErVj2SHl8MA:9
- a=2JgSa4NbpEOStq-L5dxp:22 a=V9_jqlfyBUA7Gw2gN5zN:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=RXKZOtKmAAAA:8
+ a=S_iktsTmVn5NcIvqSDAA:9 a=UFF3uGjEBZWolfm0k6KQ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1015
- suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0 phishscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605050114
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A1C02C000E
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050114
+X-Stat-Signature: b91kint4dtr63j7nbjzkumrn81yeyry5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4A51140007
 X-Rspam-User: 
-X-Stat-Signature: b43zhgfc4ksmuz6yxuw3xxkdgqqe1fqk
-X-HE-Tag: 1777983494-627900
-X-HE-Meta: U2FsdGVkX19v9jVTouJ5JCFHJvs2xEYwnd3Z+1ibeIzCE75ckEoB53XVpi6ZYQaJXdeo1Tx2hw++D6MXX2635XetDX2RCWm9LBqq6F9Yc0wWarn2nPeb8JzcqY0dP3djXdwE/XCXyO62otjX+MuSifKwq9vPK9+p21QIxujmVFn/DpVI0sAj2nlxMk4I9MrLJVJYLiBv7P2unLlLLcgQtPBM2RlF3YkAKuPNq+7sQPbKnl6mA33y5uNQwLxA56vIpmZmXygXhx1eizwmHvYMkj3e+VIKrhFl/VUrOtkNhiEb6NPd2SmRYOPYdBNzV742PxWRYYFTPOTwbmR344N0cZMkhBgF4vkKUix6WiFK6DEj91JH3/+evfjG2UlsRBjDbsRTanNim/dnxHlTSb4pTXm6uD1PxNlGER19/PlQaBd9g+3QIPDg+HzepT2SV0jwth1LzKsZTUwXRguAEImWfNez4KGVyX7GYEvW9QdZcClJgZYhj1Zg2rX1u3l2g3ewEDBn+KEeVTA85w8qkxUfgwcKh1D43JDitZtjG45YbtcB4OGsn1kwTwJ3iqajpGO02QyWN4GHq+odGWWPGlnDlWE6r+3JEM8QXpNZDt72VvTMFvSQw2lut557Bk7jXb/pJQydXVNlMWJxcoMEfHGut/7KH+mfvBd30zuxfll0mD+hYhvJtzYp9z3V1JVsVq6Yl0YOt5XvV/Jp0E8lrDjQGoSS3ynejcYVZ64pVuUAdylzqDnkSIKI261T8f5jsdATo2xF0HNE4fsIE9v8UDENXQvm0a0nJxDtTuZGmY8gBjJTUL16eRSVUF68n/7XR53ecYQ7sB6xxFDb6MotWMvsmjVYBQhEJr/5OTfjJb394HfaCZ0F5T6IUAO4yYTc0ksHyMzb7C0YTWVGJEFtSK1Ovn3jx28g7KqTqUdUWm8De/DLvTkqmYCaT6DdtAJ8Hjqlca7GIoodi9MdIzM6sD4
- n6iEauYr
- icKowt+9je35KPiyB+IxqnmkSt4lkgKuUyTAK+68rEkEMtYQD8efshPngjsIHiWgntF6vELVjYI5BH0lYr7laFlo3VTa3NNEOz/Lo6hZWwhZNoFtlRx0tE6Zn/xXvxEgeBEeTsnfzohBRdy3A30hU+JS08HIcL8IsKtSVeAhaYaMmbnCxye2ZW3ejKCxiT76zC5R2XQp33ySgoi11erSAtsCPm3eoz/mL8D+IeBHBH2JbQzZ8cWzEoqyzLCExKwZ3HwhcqFnq8lGtGecAtNPfawNs7dfniMH6AzfgtMY6Wt+ymPil9TWIWAZdXQETMYoLSOuFUdj/URpk9P4dDG4yRanNk0TooQukSyGrUZGjQfCYn2iEIMtieCHJVKQuQqZWD7s+LBCPCcruqgJdIFrCx1nohmu79rP7cKDH
+X-HE-Tag: 1777983495-315697
+X-HE-Meta: U2FsdGVkX19yHeG4GgOxRM4ZnyaXhsQgD021m1F7VtpIC+K37durpwZ8YwVj0EsbT5ZTMif8mm5+C3o2Bw1wYDEZm9QPs3xlt2yE4R4OjX5LxT2WtIZcj7ytkGUMCC2zTrz8IF+cNU6By06aRDVkwCvbi0MEy6+3Qgz9ppS2tkD4Ql+OMEOPya+XTbUGUFriCwz7MbtKK/CDXsbx+nyYdvVKStl06dsLhk3x2EyJ7kLHsy2LbSp1Z9hofBiEohjxmFtZtvGZtOBVDihHea/sG++3z+k4rxgORIQCK83uC79bHFU2+TYFy1x10In61DIZ9Sal8UKjB3vERz9zifsjx3cOWrOWuQ/tyYJfL5LsiJDXo+M0Hlc6OUXOqSscI58Xw+67VjHLhxJ+FQnrink5xMeTvo2FMRO3ZJuhEI3J9LbHcqcr/GUvWX9tC3O7A7KqlKUtYrSC2IGEYrw8q8vv/zBWRVj9jPPUYEHPdCzCYm1znpIswH7dPG+tFILMgbXIZRZcVJpVgC7xGwCf0aMaNcMkQO1jHC8+FbfhRxHzC+wMdPrV0wMEMuoSNTu/Yphjkf/hCNrzUVBlhJVY0JECyigx7b+BC2qlUAdLBXUBeCcHlmJSxD9V5jZ6UIXixDRKuQ8ruyfSyHgfrIM/1ga9R6AKSdeuOpVv10mY+l30z98mOxvMge7z9/3CJf8TmKk53YUwNKngEYV0qqpRsi3+wMR6lJNW+IKIAUX5qUadSMqO8z4eENqUdmu0l5C3p/AvQiEQdJ4WhH3twbkd2/lRcpWG9MOkNCQAZwCoFp46ui3aa7o3bhXYm1tsqCsI3FHrvA+bPR6Zol1YZRSMEGUxAOlC5OrkwDeO0/n+ONUlMgQ3dDPzJJ+908k46ciwGStvP0Awlkhx6YYmEAM78WYYQ62cOI+GN0/Hz8yeD+QRYC9SeaOFXSlc6I06bPkkX96AOjdhygGVFH38Owhudhi
+ oOBuYn0W
+ mSnoYhZxC6F1sT+yv7ux0ISxPqDGOce55yGU7zDKDXr8DfT8nn1cgMRqmqvrxDaqg8fzSkc3NNUi+ONkILqNyQzUETqbdY3VzJJkl4iJheWEuk6pwdBF3szpjurlDnMOTh/SjlJzYDsaWGFSGmZQrgqHG5rT8T/aG6JmSUVrUC76fUSfodSWSQKoBbIz7sw1WG44WUrDb27vQPDfMN0S2xTZ03liiQjlZtkUDGLblSAUqeHE+PTvpk1n+/nYhOOw8ot8ZdLPcnzMv7y+Z3K8ac4Bzfo/vB/cGZaGHMcO/sKBLZvWToZpLd8N5/gCaM0kihLj6JPsMFGtfNqxgCzqAbtqrqBVx4nmay9Yrp/HGftrLLo8Zmu1NtuDuCl4Jk/EHsRRXPItwGMmLDvRF6ADZQixQcenorViBwrMLEtjEdX31FqE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,518 +161,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+__find_fre() performs linear search for a matching SFrame FRE for a
+given IP.  For that purpose it uses __read_fre(), which reads the whole
+FRE.  That is the variable-size FRE structure as well as the trailing
+variable-length array of variable-size data words.  For the search logic
+to skip over the FRE it would be sufficient to read the variable-size
+FRE structure only, which includes the count and size of data words.
 
-In preparation for using sframe to unwind user space stacks, add an
-sframe_find() interface for finding the sframe information associated
-with a given text address.
+Add fields to struct sframe_fre_internal to store the FRE data word's
+address, count, and size.  Change __read_fre() to read the variable-
+size FRE structure only and populate those new fields.  Change
+__read_fre_datawords() to use those new fields.  Change __find_fre()
+to use __read_fre_datawords() to read the FRE data words only after a
+matching FRE has been found.  Introduce safe_read_fre_datawords() and
+use it in sframe_validate_section() to validate that the FRE data words.
 
-For performance, use user_read_access_begin() and the corresponding
-unsafe_*() accessors.  Note that use of pr_debug() in uaccess-enabled
-regions would break noinstr validation, so there aren't any debug
-messages yet.  That will be added in a subsequent commit.
-
-Link: https://lore.kernel.org/all/77c0d1ec143bf2a53d66c4ecb190e7e0a576fbfd.1737511963.git.jpoimboe@kernel.org/
-Link: https://lore.kernel.org/all/b35ca3a3-8de5-4d32-8d30-d4e562f6b0de@linux.ibm.com/
-
-[ Jens Remus: Add initial support for SFrame V3 (limited to regular
-FDEs).  Add support for PC-relative FDE function start offset.  Simplify
-logic by using an internal FDE representation.  Rename struct sframe_fre
-to sframe_fre_internal to align with struct sframe_fde_internal.
-Cleanup includes.  Fix checkpatch errors "spaces required around that
-':'". ]
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
 Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 ---
 
 Notes (jremus):
     Changes in v14:
-    - Fix FDE function start address check in __read_fde().
-    - Adjust to rename of SFRAME_FDE_TYPE_*.
-    
-    Changes in v13:
-    - Update to SFrame V3:
-      - Adjust to SFRAME_V3_*() macros and macro/define renames.
-      - Adjust to struct sframe_fde_v3 rename.
-      - Adjust to s64 FDE function start offset.
-      - Rename local variables fde_type to fde_pctype.
-      - Add and maintain struct sframe_fde_internal field u8 info2.
-      - Adjust to FDE split into function descriptor entry
-        (struct sframe_fde_v3) and attributes (struct sframe_fde_v3).
-      - Rename offset_count/offset_size to dataword_count/dataword_count.
-      - Limit __read_fre() to SFrame V3 regular FDEs (FDE_TYPE_REGULAR).  A
-        subsequent patch will add support for flexible FDEs (FDE_TYPE_FLEX).
-    - Rename struct sframe_fde_internal field func_start_addr to func_addr.
-    - Add support u64/s64 in UNSAFE_GET_USER_INC() for s64 FDE function
-      start offset.
-    - Reduce indentation of assignments to fre.
-    - Reword commit message (my changes).
+    - Adjust to rename of SFRAME_FDE_TYPE_* and
+      __read_default_fre_datawords().
+    - Update function name in debug message.
 
- include/linux/sframe.h       |   6 +
- kernel/unwind/sframe.c       | 346 ++++++++++++++++++++++++++++++++++-
- kernel/unwind/sframe_debug.h |  35 ++++
- 3 files changed, 383 insertions(+), 4 deletions(-)
- create mode 100644 kernel/unwind/sframe_debug.h
+ kernel/unwind/sframe.c | 91 +++++++++++++++++++++++++++---------------
+ 1 file changed, 58 insertions(+), 33 deletions(-)
 
-diff --git a/include/linux/sframe.h b/include/linux/sframe.h
-index 7ea6a97ed8af..9a72209696f9 100644
---- a/include/linux/sframe.h
-+++ b/include/linux/sframe.h
-@@ -3,10 +3,14 @@
- #define _LINUX_SFRAME_H
- 
- #include <linux/mm_types.h>
-+#include <linux/srcu.h>
-+#include <linux/unwind_user_types.h>
- 
- #ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
- 
- struct sframe_section {
-+	struct rcu_head	rcu;
-+
- 	unsigned long	sframe_start;
- 	unsigned long	sframe_end;
- 	unsigned long	text_start;
-@@ -27,6 +31,7 @@ extern void sframe_free_mm(struct mm_struct *mm);
- extern int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 			      unsigned long text_start, unsigned long text_end);
- extern int sframe_remove_section(unsigned long sframe_addr);
-+extern int sframe_find(unsigned long ip, struct unwind_user_frame *frame);
- 
- static inline bool current_has_sframe(void)
- {
-@@ -45,6 +50,7 @@ static inline int sframe_add_section(unsigned long sframe_start, unsigned long s
- 	return -ENOSYS;
- }
- static inline int sframe_remove_section(unsigned long sframe_addr) { return -ENOSYS; }
-+static inline int sframe_find(unsigned long ip, struct unwind_user_frame *frame) { return -ENOSYS; }
- static inline bool current_has_sframe(void) { return false; }
- 
- #endif /* CONFIG_HAVE_UNWIND_USER_SFRAME */
 diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
-index fdb2a4908563..c60aa527984a 100644
+index 2ba2c8b385f9..98346412078b 100644
 --- a/kernel/unwind/sframe.c
 +++ b/kernel/unwind/sframe.c
-@@ -15,9 +15,338 @@
- #include <linux/unwind_user_types.h>
+@@ -39,6 +39,9 @@ struct sframe_fre_internal {
+ 	u32		fp_ctl;
+ 	s32		fp_off;
+ 	u8		info;
++	unsigned long	dw_addr;
++	unsigned char	dw_count;
++	unsigned char	dw_size;
+ };
  
- #include "sframe.h"
-+#include "sframe_debug.h"
+ DEFINE_STATIC_SRCU(sframe_srcu);
+@@ -196,11 +199,11 @@ static __always_inline int __find_fde(struct sframe_section *sec,
+ static __always_inline int
+ __read_default_fre_datawords(struct sframe_section *sec,
+ 			     struct sframe_fde_internal *fde,
+-			     unsigned long cur,
+-			     unsigned char dataword_count,
+-			     unsigned char dataword_size,
+ 			     struct sframe_fre_internal *fre)
+ {
++	unsigned char dataword_count = fre->dw_count;
++	unsigned char dataword_size = fre->dw_size;
++	unsigned long cur = fre->dw_addr;
+ 	s32 cfa_off, ra_off, fp_off;
+ 	unsigned int cfa_regnum;
+ 
+@@ -242,11 +245,11 @@ __read_default_fre_datawords(struct sframe_section *sec,
+ static __always_inline int
+ __read_flex_fde_fre_datawords(struct sframe_section *sec,
+ 			      struct sframe_fde_internal *fde,
+-			      unsigned long cur,
+-			      unsigned char dataword_count,
+-			      unsigned char dataword_size,
+ 			      struct sframe_fre_internal *fre)
+ {
++	unsigned char dataword_count = fre->dw_count;
++	unsigned char dataword_size = fre->dw_size;
++	unsigned long cur = fre->dw_addr;
+ 	u32 cfa_ctl, ra_ctl, fp_ctl;
+ 	s32 cfa_off, ra_off, fp_off;
+ 
+@@ -303,24 +306,28 @@ __read_flex_fde_fre_datawords(struct sframe_section *sec,
+ static __always_inline int
+ __read_fre_datawords(struct sframe_section *sec,
+ 		     struct sframe_fde_internal *fde,
+-		     unsigned long cur,
+-		     unsigned char dataword_count,
+-		     unsigned char dataword_size,
+ 		     struct sframe_fre_internal *fre)
+ {
+ 	unsigned char fde_type = SFRAME_V3_FDE_TYPE(fde->info2);
++	unsigned char dataword_count = fre->dw_count;
 +
-+struct sframe_fde_internal {
-+	unsigned long	func_addr;
-+	u32		func_size;
-+	u32		fda_off;
-+	u32		fres_off;
-+	u32		fres_num;
-+	u8		info;
-+	u8		info2;
-+	u8		rep_size;
-+};
++	if (!dataword_count) {
++		/* A FRE without data words indicates an outermost frame. */
++		fre->cfa_ctl	= 0;
++		fre->cfa_off	= 0;
++		fre->ra_ctl	= 0;
++		fre->ra_off	= 0;
++		fre->fp_ctl	= 0;
++		fre->fp_off	= 0;
 +
-+struct sframe_fre_internal {
-+	unsigned int	size;
-+	u32		ip_off;
-+	s32		cfa_off;
-+	s32		ra_off;
-+	s32		fp_off;
-+	u8		info;
-+};
-+
-+DEFINE_STATIC_SRCU(sframe_srcu);
-+
-+static __always_inline unsigned char fre_type_to_size(unsigned char fre_type)
-+{
-+	if (fre_type > 2)
 +		return 0;
-+	return 1 << fre_type;
-+}
-+
-+static __always_inline unsigned char dataword_size_enum_to_size(unsigned char dataword_size)
-+{
-+	if (dataword_size > 2)
-+		return 0;
-+	return 1 << dataword_size;
-+}
-+
-+static __always_inline int __read_fde(struct sframe_section *sec,
-+				      unsigned int fde_num,
-+				      struct sframe_fde_internal *fde)
-+{
-+	unsigned long fde_addr, fda_addr, func_addr;
-+	struct sframe_fde_v3 _fde;
-+	struct sframe_fda_v3 _fda;
-+
-+	fde_addr = sec->fdes_start + (fde_num * sizeof(struct sframe_fde_v3));
-+	unsafe_copy_from_user(&_fde, (void __user *)fde_addr,
-+			      sizeof(struct sframe_fde_v3), Efault);
-+
-+	func_addr = fde_addr + _fde.func_start_off;
-+	if (func_addr < sec->text_start || func_addr >= sec->text_end)
-+		return -EINVAL;
-+
-+	fda_addr = sec->fres_start + _fde.fres_off;
-+	if (fda_addr + sizeof(struct sframe_fda_v3) > sec->fres_end)
-+		return -EINVAL;
-+	unsafe_copy_from_user(&_fda, (void __user *)fda_addr,
-+			      sizeof(struct sframe_fda_v3), Efault);
-+
-+	fde->func_addr	= func_addr;
-+	fde->func_size	= _fde.func_size;
-+	fde->fda_off	= _fde.fres_off;
-+	fde->fres_off	= _fde.fres_off + sizeof(struct sframe_fda_v3);
-+	fde->fres_num	= _fda.fres_num;
-+	fde->info	= _fda.info;
-+	fde->info2	= _fda.info2;
-+	fde->rep_size	= _fda.rep_size;
-+
-+	return 0;
-+
-+Efault:
-+	return -EFAULT;
-+}
-+
-+static __always_inline int __find_fde(struct sframe_section *sec,
-+				      unsigned long ip,
-+				      struct sframe_fde_internal *fde)
-+{
-+	unsigned long func_addr_low = 0, func_addr_high = ULONG_MAX;
-+	struct sframe_fde_v3 __user *first, *low, *high, *found = NULL;
-+	int ret;
-+
-+	first = (void __user *)sec->fdes_start;
-+	low = first;
-+	high = first + sec->num_fdes - 1;
-+
-+	while (low <= high) {
-+		struct sframe_fde_v3 __user *mid;
-+		s64 func_off;
-+		unsigned long func_addr;
-+
-+		mid = low + ((high - low) / 2);
-+
-+		unsafe_get_user(func_off, (s64 __user *)mid, Efault);
-+		func_addr = (unsigned long)mid + func_off;
-+
-+		if (ip >= func_addr) {
-+			if (func_addr < func_addr_low)
-+				return -EFAULT;
-+
-+			func_addr_low = func_addr;
-+
-+			found = mid;
-+			low = mid + 1;
-+		} else {
-+			if (func_addr > func_addr_high)
-+				return -EFAULT;
-+
-+			func_addr_high = func_addr;
-+
-+			high = mid - 1;
-+		}
 +	}
-+
-+	if (!found)
-+		return -EINVAL;
-+
-+	ret = __read_fde(sec, found - first, fde);
+ 
+ 	switch (fde_type) {
+ 	case SFRAME_FDE_TYPE_DEFAULT:
+-		return __read_default_fre_datawords(sec, fde, cur,
+-						    dataword_count,
+-						    dataword_size,
+-						    fre);
++		return __read_default_fre_datawords(sec, fde, fre);
+ 	case SFRAME_FDE_TYPE_FLEX:
+-		return __read_flex_fde_fre_datawords(sec, fde, cur,
+-						     dataword_count,
+-						     dataword_size,
+-						     fre);
++		return __read_flex_fde_fre_datawords(sec, fde, fre);
+ 	default:
+ 		return -EFAULT;
+ 	}
+@@ -362,23 +369,11 @@ static __always_inline int __read_fre(struct sframe_section *sec,
+ 	fre->size	= addr_size + 1 + (dataword_count * dataword_size);
+ 	fre->ip_off	= ip_off;
+ 	fre->info	= info;
++	fre->dw_addr	= cur;
++	fre->dw_count	= dataword_count;
++	fre->dw_size	= dataword_size;
+ 
+-	if (!dataword_count) {
+-		/*
+-		 * A FRE without data words indicates RA undefined /
+-		 * outermost frame.
+-		 */
+-		fre->cfa_ctl	= 0;
+-		fre->cfa_off	= 0;
+-		fre->ra_ctl	= 0;
+-		fre->ra_off	= 0;
+-		fre->fp_ctl	= 0;
+-		fre->fp_off	= 0;
+-
+-		return 0;
+-	}
+-
+-	return __read_fre_datawords(sec, fde, cur, dataword_count, dataword_size, fre);
++	return 0;
+ 
+ Efault:
+ 	return -EFAULT;
+@@ -455,6 +450,7 @@ static __always_inline int __find_fre(struct sframe_section *sec,
+ 	bool which = false;
+ 	unsigned int i;
+ 	u32 ip_off;
++	int ret;
+ 
+ 	ip_off = ip - fde->func_addr;
+ 
+@@ -492,6 +488,10 @@ static __always_inline int __find_fre(struct sframe_section *sec,
+ 		return -EINVAL;
+ 	fre = prev_fre;
+ 
++	ret = __read_fre_datawords(sec, fde, fre);
 +	if (ret)
 +		return ret;
 +
-+	/* make sure it's not in a gap */
-+	if (ip < fde->func_addr || ip >= fde->func_addr + fde->func_size)
-+		return -EINVAL;
-+
-+	return 0;
-+
-+Efault:
-+	return -EFAULT;
-+}
-+
-+#define ____UNSAFE_GET_USER_INC(to, from, type, label)			\
-+({									\
-+	type __to;							\
-+	unsafe_get_user(__to, (type __user *)from, label);		\
-+	from += sizeof(__to);						\
-+	to = __to;							\
-+})
-+
-+#define __UNSAFE_GET_USER_INC(to, from, size, label, u_or_s)		\
-+({									\
-+	switch (size) {							\
-+	case 1:								\
-+		____UNSAFE_GET_USER_INC(to, from, u_or_s##8, label);	\
-+		break;							\
-+	case 2:								\
-+		____UNSAFE_GET_USER_INC(to, from, u_or_s##16, label);	\
-+		break;							\
-+	case 4:								\
-+		____UNSAFE_GET_USER_INC(to, from, u_or_s##32, label);	\
-+		break;							\
-+	default:							\
-+		return -EFAULT;						\
-+	}								\
-+})
-+
-+#define UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label)		\
-+	__UNSAFE_GET_USER_INC(to, from, size, label, u)
-+
-+#define UNSAFE_GET_USER_SIGNED_INC(to, from, size, label)		\
-+	__UNSAFE_GET_USER_INC(to, from, size, label, s)
-+
-+#define UNSAFE_GET_USER_INC(to, from, size, label)				\
-+	_Generic(to,								\
-+		 u8 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
-+		 u16 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
-+		 u32 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
-+		 u64 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
-+		 s8 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
-+		 s16 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
-+		 s32 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
-+		 s64 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label))
-+
-+static __always_inline int __read_fre(struct sframe_section *sec,
-+				      struct sframe_fde_internal *fde,
-+				      unsigned long fre_addr,
-+				      struct sframe_fre_internal *fre)
+ 	if (sframe_init_cfa_rule_data(&frame->cfa, fre->cfa_ctl, fre->cfa_off))
+ 		return -EINVAL;
+ 	sframe_init_rule_data(&frame->ra, fre->ra_ctl, fre->ra_off);
+@@ -567,6 +567,20 @@ static int safe_read_fre(struct sframe_section *sec,
+ 	return ret;
+ }
+ 
++static int safe_read_fre_datawords(struct sframe_section *sec,
++				   struct sframe_fde_internal *fde,
++				   struct sframe_fre_internal *fre)
 +{
-+	unsigned char fde_type = SFRAME_V3_FDE_TYPE(fde->info2);
-+	unsigned char fde_pctype = SFRAME_V3_FDE_PCTYPE(fde->info);
-+	unsigned char fre_type = SFRAME_V3_FDE_FRE_TYPE(fde->info);
-+	unsigned char dataword_count, dataword_size;
-+	s32 cfa_off, ra_off, fp_off;
-+	unsigned long cur = fre_addr;
-+	unsigned char addr_size;
-+	u32 ip_off;
-+	u8 info;
-+
-+	addr_size = fre_type_to_size(fre_type);
-+	if (!addr_size)
-+		return -EFAULT;
-+
-+	if (fre_addr + addr_size + 1 > sec->fres_end)
-+		return -EFAULT;
-+
-+	UNSAFE_GET_USER_INC(ip_off, cur, addr_size, Efault);
-+	if (fde_pctype == SFRAME_FDE_PCTYPE_INC && ip_off > fde->func_size)
-+		return -EFAULT;
-+
-+	UNSAFE_GET_USER_INC(info, cur, 1, Efault);
-+	dataword_count = SFRAME_V3_FRE_DATAWORD_COUNT(info);
-+	dataword_size  = dataword_size_enum_to_size(SFRAME_V3_FRE_DATAWORD_SIZE(info));
-+	if (!dataword_count || !dataword_size)
-+		return -EFAULT;
-+
-+	if (cur + (dataword_count * dataword_size) > sec->fres_end)
-+		return -EFAULT;
-+
-+	/* TODO: Support for flexible FDEs not implemented yet. */
-+	if (fde_type != SFRAME_FDE_TYPE_DEFAULT)
-+		return -EFAULT;
-+
-+	UNSAFE_GET_USER_INC(cfa_off, cur, dataword_size, Efault);
-+	dataword_count--;
-+
-+	ra_off = sec->ra_off;
-+	if (!ra_off) {
-+		if (!dataword_count--)
-+			return -EFAULT;
-+
-+		UNSAFE_GET_USER_INC(ra_off, cur, dataword_size, Efault);
-+	}
-+
-+	fp_off = sec->fp_off;
-+	if (!fp_off && dataword_count) {
-+		dataword_count--;
-+		UNSAFE_GET_USER_INC(fp_off, cur, dataword_size, Efault);
-+	}
-+
-+	if (dataword_count)
-+		return -EFAULT;
-+
-+	fre->size	= addr_size + 1 + (dataword_count * dataword_size);
-+	fre->ip_off	= ip_off;
-+	fre->cfa_off	= cfa_off;
-+	fre->ra_off	= ra_off;
-+	fre->fp_off	= fp_off;
-+	fre->info	= info;
-+
-+	return 0;
-+
-+Efault:
-+	return -EFAULT;
-+}
-+
-+static __always_inline int __find_fre(struct sframe_section *sec,
-+				      struct sframe_fde_internal *fde,
-+				      unsigned long ip,
-+				      struct unwind_user_frame *frame)
-+{
-+	unsigned char fde_pctype = SFRAME_V3_FDE_PCTYPE(fde->info);
-+	struct sframe_fre_internal *fre, *prev_fre = NULL;
-+	struct sframe_fre_internal fres[2];
-+	unsigned long fre_addr;
-+	bool which = false;
-+	unsigned int i;
-+	u32 ip_off;
-+
-+	ip_off = ip - fde->func_addr;
-+
-+	if (fde_pctype == SFRAME_FDE_PCTYPE_MASK)
-+		ip_off %= fde->rep_size;
-+
-+	fre_addr = sec->fres_start + fde->fres_off;
-+
-+	for (i = 0; i < fde->fres_num; i++) {
-+		int ret;
-+
-+		/*
-+		 * Alternate between the two fre_addr[] entries for 'fre' and
-+		 * 'prev_fre'.
-+		 */
-+		fre = which ? fres : fres + 1;
-+		which = !which;
-+
-+		ret = __read_fre(sec, fde, fre_addr, fre);
-+		if (ret)
-+			return ret;
-+
-+		fre_addr += fre->size;
-+
-+		if (prev_fre && fre->ip_off <= prev_fre->ip_off)
-+			return -EFAULT;
-+
-+		if (fre->ip_off > ip_off)
-+			break;
-+
-+		prev_fre = fre;
-+	}
-+
-+	if (!prev_fre)
-+		return -EINVAL;
-+	fre = prev_fre;
-+
-+	frame->cfa_off = fre->cfa_off;
-+	frame->ra_off  = fre->ra_off;
-+	frame->fp_off  = fre->fp_off;
-+	frame->use_fp  = SFRAME_V3_FRE_CFA_BASE_REG_ID(fre->info) == SFRAME_BASE_REG_FP;
-+
-+	return 0;
-+}
-+
-+int sframe_find(unsigned long ip, struct unwind_user_frame *frame)
-+{
-+	struct mm_struct *mm = current->mm;
-+	struct sframe_section *sec;
-+	struct sframe_fde_internal fde;
 +	int ret;
-+
-+	if (!mm)
-+		return -EINVAL;
-+
-+	guard(srcu)(&sframe_srcu);
-+
-+	sec = mtree_load(&mm->sframe_mt, ip);
-+	if (!sec)
-+		return -EINVAL;
 +
 +	if (!user_read_access_begin((void __user *)sec->sframe_start,
 +				    sec->sframe_end - sec->sframe_start))
 +		return -EFAULT;
- 
--#define dbg(fmt, ...)							\
--	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
-+	ret = __find_fde(sec, ip, &fde);
-+	if (ret)
-+		goto end;
-+
-+	ret = __find_fre(sec, &fde, ip, frame);
-+end:
++	ret = __read_fre_datawords(sec, fde, fre);
 +	user_read_access_end();
 +	return ret;
 +}
- 
- static void free_section(struct sframe_section *sec)
++
+ static int sframe_validate_section(struct sframe_section *sec)
  {
-@@ -120,8 +449,10 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 	sec->text_end		= text_end;
+ 	unsigned long prev_ip = 0;
+@@ -612,6 +626,17 @@ static int sframe_validate_section(struct sframe_section *sec)
+ 					fde.rep_size);
+ 				return ret;
+ 			}
++			ret = safe_read_fre_datawords(sec, &fde, fre);
++			if (ret) {
++				dbg_sec("FDE %u: safe_read_fre_datawords(%u) failed\n", i, j);
++				dbg_sec("FDE: func_addr:%#lx func_size:%#x fda_off:%#x fres_off:%#x fres_num:%d info:%u info2:%u rep_size:%u\n",
++					fde.func_addr, fde.func_size,
++					fde.fda_off,
++					fde.fres_off, fde.fres_num,
++					fde.info, fde.info2,
++					fde.rep_size);
++				return ret;
++			}
  
- 	ret = sframe_read_header(sec);
--	if (ret)
-+	if (ret) {
-+		dbg_print_header(sec);
- 		goto err_free;
-+	}
+ 			fre_addr += fre->size;
  
- 	ret = mtree_insert_range(sframe_mt, sec->text_start, sec->text_end, sec, GFP_KERNEL);
- 	if (ret) {
-@@ -137,6 +468,13 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 	return ret;
- }
- 
-+static void sframe_free_srcu(struct rcu_head *rcu)
-+{
-+	struct sframe_section *sec = container_of(rcu, struct sframe_section, rcu);
-+
-+	free_section(sec);
-+}
-+
- static int __sframe_remove_section(struct mm_struct *mm,
- 				   struct sframe_section *sec)
- {
-@@ -145,7 +483,7 @@ static int __sframe_remove_section(struct mm_struct *mm,
- 		return -EINVAL;
- 	}
- 
--	free_section(sec);
-+	call_srcu(&sframe_srcu, &sec->rcu, sframe_free_srcu);
- 
- 	return 0;
- }
-diff --git a/kernel/unwind/sframe_debug.h b/kernel/unwind/sframe_debug.h
-new file mode 100644
-index 000000000000..36352124cde8
---- /dev/null
-+++ b/kernel/unwind/sframe_debug.h
-@@ -0,0 +1,35 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _SFRAME_DEBUG_H
-+#define _SFRAME_DEBUG_H
-+
-+#include <linux/sframe.h>
-+#include "sframe.h"
-+
-+#ifdef CONFIG_DYNAMIC_DEBUG
-+
-+#define dbg(fmt, ...)							\
-+	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
-+
-+static __always_inline void dbg_print_header(struct sframe_section *sec)
-+{
-+	unsigned long fdes_end;
-+
-+	fdes_end = sec->fdes_start + (sec->num_fdes * sizeof(struct sframe_fde_v3));
-+
-+	dbg("SEC: sframe:0x%lx-0x%lx text:0x%lx-0x%lx "
-+	    "fdes:0x%lx-0x%lx fres:0x%lx-0x%lx "
-+	    "ra_off:%d fp_off:%d\n",
-+	    sec->sframe_start, sec->sframe_end, sec->text_start, sec->text_end,
-+	    sec->fdes_start, fdes_end, sec->fres_start, sec->fres_end,
-+	    sec->ra_off, sec->fp_off);
-+}
-+
-+#else /* !CONFIG_DYNAMIC_DEBUG */
-+
-+#define dbg(args...)			no_printk(args)
-+
-+static inline void dbg_print_header(struct sframe_section *sec) {}
-+
-+#endif /* !CONFIG_DYNAMIC_DEBUG */
-+
-+#endif /* _SFRAME_DEBUG_H */
 -- 
 2.51.0
 
