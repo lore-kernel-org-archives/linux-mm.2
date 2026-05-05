@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 911AEFF885A
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 08:25:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE37BCD3430
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 08:25:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 017096B008C; Tue,  5 May 2026 04:25:03 -0400 (EDT)
+	id 14F7B6B0093; Tue,  5 May 2026 04:25:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F30686B0092; Tue,  5 May 2026 04:25:02 -0400 (EDT)
+	id 127216B0095; Tue,  5 May 2026 04:25:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E20056B0093; Tue,  5 May 2026 04:25:02 -0400 (EDT)
+	id 03D036B0096; Tue,  5 May 2026 04:25:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D0C936B008C
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 04:25:02 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 60482403E3
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:25:02 +0000 (UTC)
-X-FDA: 84732680844.13.915CCFF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 86AFCA000C
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:25:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i3Fwa80w;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E477D6B0093
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 04:25:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F41E4044B
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:25:23 +0000 (UTC)
+X-FDA: 84732681726.01.8BEEFA3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8FFCA1C0010
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:25:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fpy1Pldd;
+	spf=pass (imf21.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777969500;
+	s=arc-20220608; t=1777969521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oV7L+izVodYiBzv8dGwnxNQ6PDPcO3SMEUEFBz2q0H8=;
-	b=hVi83IMhvVUJu1UpJHpZzzS5NRxTrN5cPzxdyg2dDAFJ760G0u7GC1ngvTG9OL8JU1fQCd
-	UOQ3kJYg7MQ0qo3LkI/6htHW8bduqva/hwuwzgKYD87jQtDozkWEqsULpfrr3RzuZI23tW
-	gpcJR7Ss/M0ZLxVxdZ8HpVO2OBqr9U0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777969500; a=rsa-sha256;
-	cv=none;
-	b=FGqxU8NMb91QJh6WASa1c6FQNvKzPqzi3P/QzHeji/xusWGJMm6rBV8feVhgRXfxrrzGN6
-	ZmZdd2Ysg4vosLPHdfX/guWx3DFk7QWFebvAo68PNOo33TyoLt2LunswFnC6NGbWXwVM4U
-	Tkfu3fNFVVCbFzj6waZeON2CcUjMSeg=
+	bh=xwhdbOwE+91R3Hj2QTyKFPwCfTWDsOnb8m9xGhBSCCA=;
+	b=JNM5aOEcFKfcoojmMy+WXkpSmt3illUul9uNUoQ0BK8g8ISzEnUcC9+wo6Y8m0xOnqta7R
+	5caJsJtd1Mbv9TEXvSb7MgsLAjt8/dKEde7lUUGRmWz5rjXeSh1EylS7+P1qGgaKSAEh21
+	Ey92+gb2soEPKj97uc6WCuWfXbJQkUc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i3Fwa80w;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fpy1Pldd;
+	spf=pass (imf21.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777969521; a=rsa-sha256;
+	cv=none;
+	b=MrQa7GEf6cOzh1Yxie4vZPTeq9GsAtWkEssoQ5EAgZ2Ga9izDtZqlHLW4DaE+W2pb0YTI2
+	8xB4fQHEwA2nWeOOkWoMUb2dz6Nx32u01B87Vw4+kbJbkA00+TaA99743oIzuyrDdf3zaG
+	aNMkO2ww2Z5ud1KW/jBHFUAZ31S0M3s=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777969499;
+	s=mimecast20190719; t=1777969521;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oV7L+izVodYiBzv8dGwnxNQ6PDPcO3SMEUEFBz2q0H8=;
-	b=i3Fwa80wXFFWMSUThYU1e8ruj/GrlWtYqpbzMeaYFOdTCv0BsBWtJxkbvpTGlwCfdDfetV
-	3v5QZKfnJqGphSMdR6mXMXckyTsmofEMDiToFoDUZaLdDOEuShtCjlXHPWrmL5gOz2fifE
-	r8sGYoW07bn/Xe2TQxJB6Y4GT7vj+ko=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=xwhdbOwE+91R3Hj2QTyKFPwCfTWDsOnb8m9xGhBSCCA=;
+	b=fpy1Pldd9yDUUWfFUTm3CxT1S/7Zz5+YQQRHpFm5YEH3FycRY7ZXU4qIF85Jv4qJW0MG5G
+	ZN9gx2j9XhZmRsPlRya7KE6PGl6U2ObVjzTksrcze4LpHVsqHw8jMzXvKRpqGrDnH86Gnj
+	+T+soF2k335PlAiCeiGITN1ophnwzh8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-kKsPuwyhOQydUu77qEDU3w-1; Tue,
- 05 May 2026 04:24:55 -0400
-X-MC-Unique: kKsPuwyhOQydUu77qEDU3w-1
-X-Mimecast-MFC-AGG-ID: kKsPuwyhOQydUu77qEDU3w_1777969491
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-09GMVAQTMx6sebByWKXjIA-1; Tue,
+ 05 May 2026 04:25:16 -0400
+X-MC-Unique: 09GMVAQTMx6sebByWKXjIA-1
+X-Mimecast-MFC-AGG-ID: 09GMVAQTMx6sebByWKXjIA_1777969512
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BDBDD1800367;
-	Tue,  5 May 2026 08:24:49 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 19FC31956046;
+	Tue,  5 May 2026 08:25:11 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.44.48.109])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AFF4C30001A1;
-	Tue,  5 May 2026 08:24:32 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C577330001BE;
+	Tue,  5 May 2026 08:24:50 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -119,25 +119,25 @@ Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
 	Daniel Wagner <dwagner@suse.de>,
 	Petr Tesarik <ptesarik@suse.com>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: [PATCH v9 01/10] objtool: Make validate_call() recognize indirect calls to pv_ops[]
-Date: Tue,  5 May 2026 10:23:46 +0200
-Message-ID: <20260505082355.1982003-2-vschneid@redhat.com>
+Subject: [PATCH v9 02/10] objtool: Flesh out warning related to pv_ops[] calls
+Date: Tue,  5 May 2026 10:23:47 +0200
+Message-ID: <20260505082355.1982003-3-vschneid@redhat.com>
 In-Reply-To: <20260505082355.1982003-1-vschneid@redhat.com>
 References: <20260505082355.1982003-1-vschneid@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: fB5HiG4MYRATsKNqqWC_mWpT227Q8xh4ppzxwS0pcNs_1777969491
+X-Mimecast-MFC-PROC-ID: XnnQcfTE69YXsXne5PdxjLPSSUKjlf_I5piuR47NSLc_1777969512
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Stat-Signature: 9xugnhbp3dsrhcy5ehxfwap5yzdxc4gx
+X-Rspamd-Queue-Id: 8FFCA1C0010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 86AFCA000C
-X-Rspamd-Server: rspam04
-X-Stat-Signature: oew4aw8qq6rebuuc6n7uzomg6p38fy1m
-X-HE-Tag: 1777969500-508197
-X-HE-Meta: U2FsdGVkX19Xm2I5C8DQNvnK9i9y72dR+Jgtx0Eu7IFZF4eVDTXgfpipFfwa3mP9/2d9xGtbJXL9IV9PSBSf0Fu9oHR+VsoccVPC61QvMwZ/FfZoLNNRGglu0nhUzNIwtO/N7dPU6URkVgYrCpMSTitGtps2wXRqHyHDX+JHE13+6kRfoFBMF4V7G/CiFnrUHVf8bfafvZFfWug2IDEe9H+T8d5sp7vswCGHzWvMHRwm50yhAKSPORVsIFgWj7dJ9TIHfc7+i2fOP4P7Myspuco9AnAkN/t6gub+dbduu194ZwTIEYXULQNFfBE0OBdnckF7hDwrkZN0XTCW6hMIuXebHTw8u5uD9ijaphpHf5MUo/VRh/AWE+HrUtGg5/UlHcPltlBbcIp3Y5nt5lJ0JQSlNPjhWE87oF+yEvpGqSlTbwJ8KofrV1GLV84YGrin8kX48PP5i7YTb39P/CQz27mId+mU8rwvus4XSF5iK1ya5mz1JAwQsjtYZJYAOIzVqPpwgcWOk8pc/ERLNpXvF8evNMYUA1vVjtcuAQ5yTBtLpea2dtuHf89RnpJ3NYs1R4MUdnuaGtmhj/jxQM/sLeUbAWA8G303jp6wYMXJqNNo9C/pidKF97p2chQdyKuWRWAGFltMmAGy2xaAM3sK/B3Ey9+9kkUqJgH6NXyUfWk6KwCPSKzT1TtVTSiv58ORgyD83rgo9bD54pECxun4raQYNRxfpS2zmMVclBOJia/eXjTK/xzbFC8Q5p72wnDkcdrNBD8kwj6FcT41fQJ4iTarAc8LVde1/PJ3VCWPX3pxyuyuhlzJ2lDWAo01nhclKKgLl3HE6nmUJW5s73jJp0ipLTa8Bkb1NvfYi5SUM6TSD9teVwNwXqPlJ//9S57O5yxPVkhVSO7N/f0aRUHrbpqspOsAT/zs0u7xUXwZzQsN15wyUR59ZJLn/f3UBozr/nNT3/L2am0LzDMmq0M
- 0uYm0k4a
- Jt0TJChNAF3QWPHeYIJ1hT5Ep80hm93DrVdd0V8t8GWky5STwSsPIaPnI0wfaRxzNkYxHQP4mB3rAelVsJUHEXuX83Nps3fHwW0LqyORp+7kRuA8wm6UYWtjPwJDl7vrBI+im79SXA+eDUdbe4sKEO8w7xnNLI0bx8vOMl/BLeJQYjC5eDmm4aPm54MhhHjpjkJMViPNP7xjswnDOF7Avd5+zZzbalqy8vwaE+/0ils0i/0Pq7zc0kAWJ9rEmcy4tfshya/MGZ75sczEsYeB7lHeab9in1s22SYnDLrLG20icz0V+wqZHPi4qgpyTBX6yuTfc+5Eni8K7qHgMzRYehTRdTXav4VUPNVrDqr1uhB85JMYKbcuuDDWtJSEmFp5u41tYLeGJZQ3C8z21TO6QP6fipHtKcURCiw9dBe49iFw2/xYT4jURAeUxacjX2zz6KHjZLQhygmHzuHCK0L72lLjnYE86wicZ2WrPjCPYtUgm8tuD3WvQ4JtGDmZqJRRODMW0
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777969521-306449
+X-HE-Meta: U2FsdGVkX1/+V70xOE1vqIH3L+Cqw2l5bKzZcelpNWYgmlDuxfGJBaiPqaBuxkX8adWVW7bqZI2rPBglvOVbjQJdfvFaelUdxK96/wXeLNEJZ369IvO+v+p54aH0Kekew0X++qEizX94JtQdveszddVjupc7iE0AUCVlFQ/oIkSzl3yUD8LZrQgQqVQsh1nbEBcV5cyVSzL7G/reBMfcduUoekDfrb0S9RSQ6zgeswDECFkyBjCKSv5F+pr/dIHWpCK0zuy22ouKm9rcd4FHZozYEVPOfvy54gU/X3M6QcQwlfDvrG7RRM8MzvAu7/7ATVpx46ZKZoxDEbLMZHKCD305S/dAR+B/y0H2eOSvhXFupfeHqIvynGxO20ZSjS2iXK41iZyS0MF2uhMk7ITLP9EzwVxrQ4wTiXhHnqbwUUQ+SEhqF6aJm+gcUj5PdUawn5TcET7PIQQfSgpJOWY7QWwjoI1KbVz6lwsHLyPtPX38XXDtUKeX3iixxRVLP+UGQVZzVjCmWhdMZRyYiMY9ihmw9T3TfLwBpEoyCVMT0gmv+UUwr8CAE+tQ97K3zec4BGHHC+qv9YTdnXDkjdS8uH6cCw0GPFXhQMX7pzppka5te5GMsYpqv5m3snn29g55fsD5Gc8HyPh28lluqL148Zr8UgQqdWn2dpQt8sAuMFzg5MaaI0j0Vb+SXz3pxN4u82ZRCF6UciKT6RTLsQkFkZRVojSyttWmTGzRrMIZsdyo+MZd7rAL0unS8jDQeQucsbdg2LAeZ+Cy6gIAC0aYcwKiLNDsiVHwmaJ5k0M90Xhv26bnyGgeNrYPTbKR/Ft8yB8IWyGtxx3ynSxtSsRND0J6u9W0v8Gx9LfiYdh/1jrl1lQJOBZVgP91V6SYdUfPJL9xqzzeNJKTf7jSHgdrPhbNVJ7L+f46DMKa6I6LqaO6YPlaBGRz1bB9ChwCiLDEBxAVY7h+3U+rab/oKbc
+ Qh1IB/6x
+ 7R6ZL8YcCHdwtZ5cy9Iu7RdLwTQfcspWdHgda8ilrOfiDB3TNv9WzBUQ/aGpvOiJf9jQMd+c5chkCsL6Wtleu5/ojX9Q03Tqo0Hr3kwY/Fs064gsTzxPaDCKteam2Nz9jaxt4C+yyJebT6Idsj1OGFQxVn4EIdbT81JpU2kU/5Bhtwdg7zcZsGJM6erQJPIjw2GVnxELnzy/SQT8BxkhdCePfnIMnqip6aPfq1vglaI7GcsjTG+onA5KvvUFfMczXLJ7rrBhCzAQ2PZfafPGS/K6euNpQcSzbb8cl5sU5bFE562PlQpe8vXSyg1Z4gK5lrDmjor2ydmTuxlWz9ETT+gHAl8WMLMuHhNTThellLnrO7Gc2aNm61Ut1cpfUs71EKZdNP8d07jybztKJVQESFGylCjGAf2jiilM6ZkocRHTtuSvBSd7D0MOYpex7UV3S0MMdiodZfJI1lwn6EhoBkMGvWSgAig6m5iBfeDsJhX9fEn5pFhw2aSoVTfF/DvUB9HwU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,75 +145,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-call_dest_name() does not get passed the file pointer of validate_call(),
-which means its invocation of insn_reloc() will always return NULL. Make it
-take a file pointer.
-
-While at it, make sure call_dest_name() uses arch_dest_reloc_offset(),
-otherwise it gets the pv_ops[] offset wrong.
-
-Fabricating an intentional warning shows the change; previously:
-
-  vmlinux.o: warning: objtool: __flush_tlb_all_noinstr+0x4: call to {dynamic}() leaves .noinstr.text section
-
-now:
-
-  vmlinux.o: warning: objtool: __flush_tlb_all_noinstr+0x4: call to pv_ops[1]() leaves .noinstr.text section
+I had to look into objtool itself to understand what this warning was
+about; make it more explicit.
 
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- tools/objtool/check.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ tools/objtool/check.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 9b11cf3193b9c..dcc386e17c70a 100644
+index dcc386e17c70a..ba943bbbc51db 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -3442,7 +3442,7 @@ static inline bool func_uaccess_safe(struct symbol *func)
- 	return false;
- }
+@@ -3480,7 +3480,7 @@ static bool pv_call_dest(struct objtool_file *file, struct instruction *insn)
  
--static inline const char *call_dest_name(struct instruction *insn)
-+static inline const char *call_dest_name(struct objtool_file *file, struct instruction *insn)
- {
- 	static char pvname[19];
- 	struct reloc *reloc;
-@@ -3451,9 +3451,9 @@ static inline const char *call_dest_name(struct instruction *insn)
- 	if (insn_call_dest(insn))
- 		return insn_call_dest(insn)->name;
- 
--	reloc = insn_reloc(NULL, insn);
-+	reloc = insn_reloc(file, insn);
- 	if (reloc && !strcmp(reloc->sym->name, "pv_ops")) {
--		idx = (reloc_addend(reloc) / sizeof(void *));
-+		idx = arch_insn_adjusted_addend(insn, reloc) / sizeof(void *);
- 		snprintf(pvname, sizeof(pvname), "pv_ops[%d]", idx);
- 		return pvname;
+ 	list_for_each_entry(target, &file->pv_ops[idx].targets, pv_target) {
+ 		if (!target->sec->noinstr) {
+-			WARN("pv_ops[%d]: %s", idx, target->name);
++			WARN("pv_ops[%d]: indirect call to %s() leaves .noinstr.text section", idx, target->name);
+ 			file->pv_ops[idx].clean = false;
+ 		}
  	}
-@@ -3532,17 +3532,19 @@ static int validate_call(struct objtool_file *file,
- {
- 	if (state->noinstr && state->instr <= 0 &&
- 	    !noinstr_call_dest(file, insn, insn_call_dest(insn))) {
--		WARN_INSN(insn, "call to %s() leaves .noinstr.text section", call_dest_name(insn));
-+		WARN_INSN(insn, "call to %s() leaves .noinstr.text section", call_dest_name(file, insn));
- 		return 1;
- 	}
- 
- 	if (state->uaccess && !func_uaccess_safe(insn_call_dest(insn))) {
--		WARN_INSN(insn, "call to %s() with UACCESS enabled", call_dest_name(insn));
-+		WARN_INSN(insn, "call to %s() with UACCESS enabled",
-+			  call_dest_name(file, insn));
- 		return 1;
- 	}
- 
- 	if (state->df) {
--		WARN_INSN(insn, "call to %s() with DF set", call_dest_name(insn));
-+		WARN_INSN(insn, "call to %s() with DF set",
-+			  call_dest_name(file, insn));
- 		return 1;
- 	}
- 
 -- 
 2.52.0
 
