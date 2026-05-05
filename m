@@ -4,140 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CD63CD13DA
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 05:54:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF2BFF885A
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 06:20:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 664F86B0005; Tue,  5 May 2026 01:54:27 -0400 (EDT)
+	id 2928B6B0005; Tue,  5 May 2026 02:20:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 615316B008A; Tue,  5 May 2026 01:54:27 -0400 (EDT)
+	id 243486B008A; Tue,  5 May 2026 02:20:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DD566B008C; Tue,  5 May 2026 01:54:27 -0400 (EDT)
+	id 132A66B008C; Tue,  5 May 2026 02:20:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 376426B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 01:54:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CBB491C0121
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 05:54:26 +0000 (UTC)
-X-FDA: 84732301332.10.8143CEC
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BD0DC180002
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 05:54:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=u5y7ZoA9;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="c vfkQ8L";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf06.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.159 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 022AB6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 02:20:57 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 651091C02CE
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:20:57 +0000 (UTC)
+X-FDA: 84732368154.26.759BB40
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2CF6C2000D
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:20:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=azLMkmaR;
+	spf=pass (imf13.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777960464;
+	s=arc-20220608; t=1777962055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JmfJF9VZOdx6cRELR7IxehWhdMlZxoCBVCSMgdOhjE4=;
-	b=XaKCAvfCpBQjiB3OWclHd7ONNNKieVAmjFVJpBVEp9c7ww+p1RQMTdrcw0U5U6r2CAUTPy
-	HFcUw5IPhd3aFUHHA70Jmg1h9KLadsrQKnaZ0JSwD+AhNN1CO2ZvuT9BVDwhN44lXdhyIB
-	QncAIw4d4Duw6yF6Y78jceO3mVNFxjQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777960464; a=rsa-sha256;
-	cv=none;
-	b=zijc+/fRQBpWT2eZf6EnBl1yXZh4XpJbjDWFg0soNxVxPJSvY7JHTWmW39zoT7X0tC1B66
-	OxaaBQEq7BRssUlGBcC37PXe5Ml1KnKmkW59MRd4kpdvyRoaScmQ0dkAfb2ylEBQ00cK2c
-	1EDBLUTHZrAGxinNTZ/b9dTHb2idv+E=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=IABxPdOKi9qQ0ncIcorYGTDUXVbyRSpLw0RRqytGSAg=;
+	b=noi398bmNhOxGbqZqZBMQsTxKIYM9dAlaeZnQdbys0bvsJhD6Q52/elbnJhxI4Gb0PmGfR
+	4m826VQWfg+M7HxAmpRdw13Tj2DxwZl8NELxIjGlUl+GJac/jqnM7Gh37xSrsWfd0nJGE4
+	HhuYrBxl1oRN0A5HVqtEH93ddlW54XY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=u5y7ZoA9;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="c vfkQ8L";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf06.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.159 as permitted sender) smtp.mailfrom=arnd@arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 5C2CB7A0101;
-	Tue,  5 May 2026 01:54:23 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Tue, 05 May 2026 01:54:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1777960463;
-	 x=1778046863; bh=JmfJF9VZOdx6cRELR7IxehWhdMlZxoCBVCSMgdOhjE4=; b=
-	u5y7ZoA9eMuhoBDaFkyut2LXUpEqlffigmhHhnF64AUhHR7cnoryMMaxmEiJ5x6U
-	Bjj9bhf3wxfvrTtTq+JafgfiTZnScp2Gu1QbaLd1QYqadEU38XrlCszrf+f40Jk7
-	MV6zhqVBzbkQkk2MiVMYRiFDRSU/Ga27V388Yos0mNXEvLYPMAhAhohugp8cLiu4
-	uqVNzqKvXCLdtc4ZyvneysGr0B6l+OrwDUTWpOiaKMbtUS9q5W7Te+yFhh34xmsa
-	bF5dtkdpPdExcTwOq6C1CxWRrMvqHchHNQCsOU/VuAbSecTd6Km3ah9WHCpKu3kl
-	g8Up5VgKyxp+83DcMvtLMQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1777960463; x=
-	1778046863; bh=JmfJF9VZOdx6cRELR7IxehWhdMlZxoCBVCSMgdOhjE4=; b=c
-	vfkQ8LErF1rWwYsXdqTOd1lvL7JBRtVY3PbG6sI8WbtF72dYEyGEOoryf/PTyglS
-	3mjevzN4vzc5bP8Di7/ii6qRH4Vo1+icVm8XL7wS+aUnOKsu6QZhk6P8TQP3iWS3
-	J7zSawtaivti0vx7TwA1kUcJYcMHc6f8vLJy/MqVuRXNNwagRAoWeUFFkzYooY36
-	stgZ7Dz9xeSFESrh0G++rHO/b/POPv2Bn4SIV/GImq9rjNq6vViPuN17j12YSxgu
-	wbqw5vPZuXjwwK8ENcQAnWqnZQbh5Vv6AyZPyomYIm4K6E5E6Mn6W+Pp1VMM7JRf
-	VpnXd7Mca2etHTMspOwcg==
-X-ME-Sender: <xms:Dob5admH6Uv6729At1Wuwyl2GIRgJuRRweEAeyrSXSapSZrUWXtbHg>
-    <xme:Dob5aTqhFmhPNScrpV1lE8Rvj5XVBDx5iDZUxWwbonQdgYNdE6YD-m1Rlde8799_r
-    hR5z1jPEjRUQpN3hQPIlPN7GtbpgAS0wx7TUtCus38GPBMIxZEbmQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutddtleefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhepfefhheetffduvdfgieeghfejtedvkeetkeejfeekkeelffejteevvdeghffhiefh
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgt
-    phhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhhitghkrdguvg
-    hsrghulhhnihgvrhhsodhlkhhmlhesghhmrghilhdrtghomhdprhgtphhtthhopehrohhs
-    vghnphesghhmrghilhdrtghomhdprhgtphhtthhopehjuhhsthhinhhsthhithhtsehgoh
-    hoghhlvgdrtghomhdprhgtphhtthhopehmohhrsghosehgohhoghhlvgdrtghomhdprhgt
-    phhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhirghmse
-    hinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgrth
-    hhrghnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:Dob5aWvudqQklw5FkPvca27pngxBqaXdFjB0UEmBZSsFKI9Vq7cghw>
-    <xmx:Dob5acYjtLE4zyJnH8SKg7oyP4UeJuqxnX-KvRlErKVc2OxkjorIWA>
-    <xmx:Dob5aSElDA-x-F3oI5bm0Z2vz4B9cS_BuW7lUnoyga17KJOr9jHLkg>
-    <xmx:Dob5afo-ddfADE42I5tBWOnDtv8JNK9WojrkzHnDgJPBvNylAZNWwA>
-    <xmx:D4b5aVbKQycBvvy3SX40wM6fWUfzTw41oOlAo7uI4zgMeIj2iY9VIpq2>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 17BDC700065; Tue,  5 May 2026 01:54:22 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=azLMkmaR;
+	spf=pass (imf13.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777962055; a=rsa-sha256;
+	cv=none;
+	b=FU+cip17S1XOxAWGeyUXBMBSFGBcPxBgKbxI38PcRnlWooURHXiX/Esf/iNHEkTQdpCZUE
+	Hk5/nBjCmrMWxOlQWZgsZp860Rwi2wYvjeKb4n8qDudEn44T7nENmADf8v+nraXffaEv/A
+	zBzmqk7bLz3Qkzqy3OzSIW/+AhSthPI=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-835399c11e0so978138b3a.0
+        for <linux-mm@kvack.org>; Mon, 04 May 2026 23:20:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1777962053; x=1778566853; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IABxPdOKi9qQ0ncIcorYGTDUXVbyRSpLw0RRqytGSAg=;
+        b=azLMkmaRxQcQyUhtut68+BMbKPEbsBTT3nJ0CLi+X3DYjK+pmmqgalNzdP887ACTyp
+         NORWgcPRJESTE3J3oCvtULlrZaFTP5KI5+5Px3RrbyZyy5KL3jM1DmYRYjwaL08Cx5xV
+         ZpDOG/qmbPzQqWLiY3QemIfYxGdtWE98Vij37UBd25PgghP2dwcTWYDFNRy2SgOOyj+R
+         I+MRE0yHuGyhKbtCsdFThFhavOk2rHvfBG+faZ1WHwSKekKMy9cZG1q2VjIOmYdOruwz
+         4C5jSBin2xLihsmAOe8pA3UFuEhVFSiSAujlcFyeogBDztOhMl9ITp7RungzeTu0S+Ow
+         kqvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777962053; x=1778566853;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IABxPdOKi9qQ0ncIcorYGTDUXVbyRSpLw0RRqytGSAg=;
+        b=aZT3wa5vSwm2CdYOLhTHsrPfPYwL+ddVuyVECX4zn/YgBJXOHKR+eNyqObQLPuLRWY
+         boshtgo2F1a/ALuCDy8z544/2aXeM9lpyeIoGxXxesjVPgAz7hoLOIAcgQeO2P42/F8h
+         aLHpiQOFO8sYRH2gxVqFlHEKD2NQfDeDv5hN0Q2+ikQBGVYDtqq+MN9D08iQ9Y9rpgkx
+         YwqPW7ny849SbdDi90PRTefXlsaake9sDmraxSiIwwb0GvE/WDcDnl+ITZfqKD354oGn
+         F38pZPUcNWrmdOSeWqiDRsE7hpcck8DgroYU4uZT9vY+DI+GYsUY1sOcC1K+9grMJeUK
+         N8mw==
+X-Forwarded-Encrypted: i=1; AFNElJ9aWhYmF15M7YGI/76FS1nU32+J4XglK5Quyuo8YTAvLqxLUwsR+ScZw8Lrzabq2luTWr2jQVY02Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx/TUYeJJh97ELgcwtFeIchdApMuRMepn8VPG/81rsb66d5iJrO
+	gqJZ4pdUPpfB15i5NvQ2LAdTp05XuHo63SxWV7rERY6N7dnmFnTuu+Jpjb+werUkSFc=
+X-Gm-Gg: AeBDiesYAYuUDSeMTxd3E5jI7OMnrYP2G8OZFy1hdftLcA64nXBeuOnY9KIByrTNWB6
+	fIMJj1ueQElowQt0UEph9H20Fv1K+MSx2qqiB9yG2AgrOy2091QTq7TZ8PvCdLW2d0zcZUz6Xse
+	buYJYYfd2caDk856l2EXDbDCJx99yiif5lO+zCGPd7CRy5ywjkcEPWgoYiQPb0w7XIdNi+A+wPt
+	G+84nND18I8DJnBF+cpwnujzspbNNkhDnQjM5b7sY6IUd53wU4D+DU7c0U2pyNHFgIW4g9FB9Da
+	P1HLJOD1otaLYeOMac+S0wbxyvSD3oIfw9QDwOR2Eu9WeDp/ZRgkdIpUj9vtgZ+dv3RmZNYP8bs
+	2drwD9OBlXm9/QJHon4+zEqgE4cZcvtf0LYl+miyM/0MywgbOTj6W4TSg9PiwzoF2xLVmwscEJ/
+	xebla9LiwPb3vMUBQqw5IaaxmbJTA6YgIhoxhS/+zUSttQbkFDftJtqlp46lDPhJlJ
+X-Received: by 2002:a05:6a00:c8c:b0:838:3f54:a0ee with SMTP id d2e1a72fcca58-8383f54a1aamr5208071b3a.7.1777962052522;
+        Mon, 04 May 2026 23:20:52 -0700 (PDT)
+Received: from L6YN4KR4K9.bytedance.net ([61.213.176.12])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839679c8c10sm880738b3a.37.2026.05.04.23.20.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 04 May 2026 23:20:52 -0700 (PDT)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	dennis@kernel.org,
+	tj@kernel.org,
+	cl@gentwo.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	bjorn@kernel.org,
+	pulehui@huawei.com,
+	puranjay@kernel.org,
+	thuth@redhat.com,
+	ajones@ventanamicro.com,
+	ben.dooks@codethink.co.uk,
+	rkrcmar@ventanamicro.com,
+	cuiyunhui@bytedance.com,
+	samuel.holland@sifive.com,
+	zong.li@sifive.com,
+	conor.dooley@microchip.com,
+	tglx@kernel.org,
+	debug@rivosinc.com,
+	seanwascoding@gmail.com,
+	andybnac@gmail.com,
+	menglong8.dong@gmail.com,
+	cyrilbur@tenstorrent.com,
+	wangruikang@iscas.ac.cn,
+	atishp@rivosinc.com,
+	apatel@ventanamicro.com,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	arnd@arndb.de,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com,
+	qingfang.deng@siflower.com.cn,
+	linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v4 0/3] riscv: improve percpu helpers and PIO mapping
+Date: Tue,  5 May 2026 14:20:23 +0800
+Message-Id: <20260505062026.91724-1-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-X-ThreadId: A79HWrF7w_-Z
-Date: Tue, 05 May 2026 07:54:01 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Rosen Penev" <rosenp@gmail.com>, linux-mm@kvack.org
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Bill Wendling" <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
- "open list" <linux-kernel@vger.kernel.org>,
- "open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
-Message-Id: <0f11390f-e8bd-4f8d-aea8-59ef545b2c32@app.fastmail.com>
-In-Reply-To: <20260505010112.645361-1-rosenp@gmail.com>
-References: <20260505010112.645361-1-rosenp@gmail.com>
-Subject: Re: [PATCH] mm: move phys_mem_access_prot_allowed to header
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BD0DC180002
-X-Stat-Signature: 41rciuxxuoumi6ouwuygckrhnpsg979c
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2CF6C2000D
 X-Rspam-User: 
-X-HE-Tag: 1777960464-95296
-X-HE-Meta: U2FsdGVkX19Qqgpts++Y2zVAjdUn/2YA4dMQKoVCJ5flO0X4QtcjAtYGhdyM9uqnJhU8LcBnSS2H7EMquuH1vAfymslM3SGtbVBddeZJWTv5bDbJmql3WdZrQMC6vDgc2JyGicFS+WsM724gtsb8YIiKT5V11Yg5MGdsrOO+J9+qeIZ23wa3QKrkZkUEW39jvUCwFrOg9Ey/s8WXZD/AVxRK9FX0KNpXip4qyyxym2ZFZW3/RJ+ejbBpptucFQEKjxAEyWM+1znwcD3klc4b1WLcM08d+u4YfsLzZ3dOw54xxO/RWIns35P+H05pm7NESq/xBDJbVePlprNYb5G30jtengWRNA1QkSIiu7wBOt+/9mNp5X/HFviEjXc0Xyf2NnQk4REXWDkpTGRN7Zpzc5yXbTMebyhQ6p2ce+6qIdpwcgeNiVekpzWj6X0UpL66RpOTAshbOtL9En9W0KWHFXPbs7JjEF6XkbHdRt5jri88z1RAhVEp8s953rPv5XAaeGqm+aaalXP8gKGGn/WhfbXCY3lR/J8GvhBOdRwg02bh+Hjz6UtCo083uiohr5pt3qC6ocCBO2mC2CKxM3mQ3N+0GS0DvEXgbjK/2KcbLLp0mUjM/LAbcMoeFPZKwH6suwvYwm6tM9ratBSEURBxFv3AlMYOV7ZEzfelR3avYhAbDHroQVoSjds7C0+EdI9c+WHa8o1FQPZ665Vmksc26AZY8EEtYKPPSKGRShISGwqMOd8NVKMHs0IS4M1g5JpsURj4XbrDZcS1eWyesP2Cyh9qxVsYJ1Tm5B4gMznowAmobpka5UtvJ/arg+mpC9RLbiP3f3gDhgmt/Ofi4ePYRyNudPlKQhM2zwnDO0LohwIQjjD7xwyv7AlFtP0+nZEo2hwAYgES70AYIOgFUY23aPo379OmBzLLw1/pbG3PBzd7qPlpn07hZgkW/OrCHQBMDf2lJi7iFrmNlNdl2jd
- SNV/bQaS
- pBCCSYEZkYuBOeGtDn2QE5nPMIDyOFoLDrztEiq33gv7FygMySXBxwDM/Mp5875m3GNJ/OIjUmQYzdJntCQBiStUdXCHYcxKsYER1xNrCUXBzQ5xPQ7YlYXPjeMWtEK4Dz4se4FYQ5AJ4X7oWCbvjM46j7DjXkUvU4SoDrHz8kQFGH3hvXN+rAymTuwh6G2AAHy9DGt+gmpQTR1Dg77Ur9m2Riw///kNnFQygIMqs6pr1cUtafK2DsIrE/g3n88VFkrxh8hO4Azut6GTiURyMR7GKxP12pCBCRdCkPICe1NInwvD/ZLWOGder1ZA/3N9O2ZqxXZomWEFR3VaWa7wjetKfakLDosqIOC1VhuneaD9uzZ6ksJV8aa18t4ru1BOps8Of4l6ZPwbefvs=
+X-Stat-Signature: 47quefkdgqpepd4scf4snyaxbyrzhi1w
+X-HE-Tag: 1777962053-288593
+X-HE-Meta: U2FsdGVkX18Am69yh95B4s0apE1IKG1+j1LvYuPj/kHSDB+Ci4FkM9VHGhkWynGkuvOmd4q8IFwKfXBP0U4IOG14C0R3703/4g3IVP2fVjWos2KbBK87N682e/ca75aLqjLO7fFI51RA9BAD/zS9GpSrbJm+WbKeYFyXXh0JU5loepnEACJhLtNutibpCHiXGAn9DVb0bR4HSM0S88wuMUBnqYnVvWb022Zs/QLBJXMMv+iaNkafjxmah34OGXIOubIDRP/c6w1cgWbdzuhvSzNumxdKxQzXjmTU7Gudrdx+s6llhAyDyP0F/hUV+PMRNjjwETsqENSCoVToYribWBUS3W6bAOTsxSiSIdwh2VuSC9NzGEkolX2Uz393dUKpAP5b3lH5Y1wuz9HebDLDDSh4RKUVhba/bkwOf1ToIWfuqenU4q3k6BF4SjrDzsoViEp6np39YAfccqxR2t6SIHxWFUdmo96ZYzjEa1y8a0AI02ix5+Kpd5L/VlyCtXj652xORqLcWGsHC07dk/qqaWSWiSLhWlWnH5absbEujuzoq8pltRAuMvcspCGmJN3kIe7STcbQmj+priSOHlZu07akpr1X8z5ovX2YamZRO0hbghxEIzhThmMGlo67hn8Orjz8h8+wcbv0L+xl6Od1S8GKNJPgdbBvEruToZJsfrTuekJX88ZyBD1Tg15MROEMyuXhB8CeM5Oe+UOYevyxY6PyM7LnKHbFgPl6doSe6dzxT2cFIuo48kiLnefqxaESzCQts0q1hplYvbSA2eOkuFhEnYSkY2fcUvWXU0BiBDpjWXSf6J3kReWCNMVEMoYe6JQX1iVreQioR2hJ4CRqtt6QGiiUQjPwoyD3mGDjjFXdncuAoUYoqf/hj9+QQoFbWI28rgVfYerogEqzMPUzQWE+3JWrTDibNln3DtpIOgj58P/bZmeuFQVrSZ3fs15QDhNOmiHo/RrigSPUItB
+ zpbqFJao
+ 8HoE21WJbH/YirHYYBJMHQJAxQusBUAtekC1DmugARrzM5T5BFCqvCS4sWSBxp99EwIixTzooRHuWKra2hM/Ap3nLw1sswJcAJc/Cim5ydcFkHOpl+16PqzUKd6n3zAFgzC9G5u8So/Gly3ClGtPSI6w3ZBgYEftXVj4JQuvlUVaxqPOhWru3E71e4A4y0vR8nxqX8HAMa3Csp8bgd7sp/b5MoWExnKrsxpeMx3VnBIlY1btKUlNLkQN5h/lfWlqs87kbk0+cFVF7pOSHJbLslNQgTapqm6K/pp28k7LDcwKAUeElYxIFyjoQq93RY7bDt0zuPVfXOB4BYPxYfjAXDyzkWuE/H/jd67nc9ALBx26k6iJL72k/21lmqHFaOHEdKF+fsau/xnt1tg9+ygtdVFCNJ4WCh7v7aXPa3B4ovhdoWEhNfwW/PkCUTqXB7iwjhPmf/DOwKRHt+nStdxpyq4/0vPCkq+hitBgHKVPgc84BDjlGliWJxACg/l50WjeRr2v9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,30 +160,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 5, 2026, at 03:01, Rosen Penev wrote:
-> phys_mem_access_prot_allowed is only implemented for X86. For others, it
-> returns 1. Move it to header to avoid using __weak.
->
-> Fixes compilation with make LLVM=1 ARCH=mips
+This series makes three small RISC-V cleanups and fixes around percpu access
+and PIO helper handling.
 
-Can you describe what exactly goes wrong here on mips?
+This work is motivated in part by build reports from lkp and by follow-up
+review/discussion around the percpu access rework:
 
-> @@ -239,12 +239,6 @@ static ssize_t write_mem(struct file *file, const 
-> char __user *buf,
->  	return written;
->  }
-> 
-> -int __weak phys_mem_access_prot_allowed(struct file *file,
-> -	unsigned long pfn, unsigned long size, pgprot_t *vma_prot)
-> -{
-> -	return 1;
-> -}
-> -
+https://lore.kernel.org/all/202512202218.FI6bB5kV-lkp@intel.com/
+https://lore.kernel.org/all/202512210052.w0bpUAAO-lkp@intel.com/
 
-Removing __weak functions is usually an improvement, but I think
-we can go further here, see the discussion from last year at
+1. Avoid forming invalid PIO address expressions when I/O port support is not
+enabled, while keeping the generic pci_iounmap() behavior intact.
 
-https://lore.kernel.org/all/20250520152030.1499670-1-arnd@kernel.org/#t
+2. Introduce arch/riscv/include/asm/percpu.h with RISC-V-specific percpu
+helpers, including the fix for the 8/16-bit add_return LR/SC fallback.
 
-     Arnd
+3. Cache the percpu offset in thread_info so percpu accesses can use it
+directly across the relevant RISC-V paths.
+
+Yunhui Cui (3):
+  riscv: io: avoid null-pointer arithmetic in PIO helpers
+  riscv: introduce percpu.h into include/asm
+  riscv: store percpu offset into thread_info
+
+ arch/riscv/include/asm/asm.h         |   6 +-
+ arch/riscv/include/asm/io.h          |  26 ++-
+ arch/riscv/include/asm/percpu.h      | 284 +++++++++++++++++++++++++++
+ arch/riscv/include/asm/switch_to.h   |   8 +
+ arch/riscv/include/asm/thread_info.h |   3 +-
+ arch/riscv/kernel/asm-offsets.c      |   1 +
+ arch/riscv/kernel/smpboot.c          |   7 +
+ arch/riscv/net/bpf_jit_comp64.c      |   9 +-
+ include/asm-generic/io.h             |   4 +
+ 9 files changed, 326 insertions(+), 22 deletions(-)
+ create mode 100644 arch/riscv/include/asm/percpu.h
+
+-- 
+2.39.5
+
 
