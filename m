@@ -4,115 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86392CD3427
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 19:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6030ECD3427
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 22:18:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D778C6B0095; Tue,  5 May 2026 15:00:23 -0400 (EDT)
+	id 3A3F56B0005; Tue,  5 May 2026 18:18:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4E556B0096; Tue,  5 May 2026 15:00:23 -0400 (EDT)
+	id 354586B0088; Tue,  5 May 2026 18:18:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C649A6B0098; Tue,  5 May 2026 15:00:23 -0400 (EDT)
+	id 21C736B008A; Tue,  5 May 2026 18:18:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B7A1D6B0095
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 15:00:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A3A81606B5
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 19:00:23 +0000 (UTC)
-X-FDA: 84734281926.10.FE6097F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6CFD5C000E
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 19:00:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Pw/HlPtL";
-	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778007621;
+	by kanga.kvack.org (Postfix) with ESMTP id 09DDA6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 18:18:05 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 915151605C4
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 22:18:04 +0000 (UTC)
+X-FDA: 84734780088.11.AABA6F0
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010023.outbound.protection.outlook.com [52.101.46.23])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9801E14000A
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 22:18:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sbdvXjkj;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.46.23 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778019481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GXSFt34BXVtQv08D4r1/emCpF2CBjJSMvw9LbX0rS2U=;
-	b=upuMIdKEf78pjkZEnFZ9iSIjUebSz0UnSuzpg5vu/KbPnpsRb9uWy8ddDm+4dUH+NN0NjK
-	N5emc6lq3K4DGMRhjDcJnXlWapxOsFZX/cA1ET6+QaHsy5VueP4gXCnGeamtnQLEX50hYq
-	oB5fcgf3G2t9fxLg/1cKyfbNfHVRU7s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778007621; a=rsa-sha256;
-	cv=none;
-	b=NMNSaL6eYyaQtno3R8BHVYnFQMJnAVfoL1ikqoRm1ttPfKz2B9+dcRluHvL9jARVupdt2v
-	VmdMLOGaRz1zd9VDGYWnWVsA0Tfg/ljx8Fg2iuRC3CAVZgX4TzL6sVCOqC9GFZQbuhYbVK
-	YHY5kijVkxcamRRk+WqtInmcLyQaLSo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Pw/HlPtL";
-	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 86ECF60181;
-	Tue,  5 May 2026 19:00:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E64C2BCB4;
-	Tue,  5 May 2026 19:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778007620;
-	bh=/OcYNCE/fDC5kwoNxmn93OOTbnEEIB7Un/u2ZoKZZmM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Pw/HlPtLi9QZuSy0R/GnGVx/M088vN+is++AsVyK+HkM65BpmXKrjG1+FtVEufNbF
-	 1JTwPCDtTtFASeItu0D/qS/p7Hrmo5kPk8V12o7x+VtPlFlstl0AoU1oma0wToRPKE
-	 qvaLSBSW7sZQltZopaacSX5nIxkIsQBYz1vltvTlMljHo4qJzJZK5ps13ccTFCnyWu
-	 voQfWk/C0S4JQJRq0Vn56aWoQxcFPCikGxFRGRzIJojN3iKBreYa0PeZRgr3y9nngK
-	 3YZcffK8BS+CHZ/ln1P9+7SFkSpmhTQdnT7HP6WwLXTuPzVlsPl8sbwh8BqXTmk2Mo
-	 wYkZ3nLfCV/lw==
-From: Jeff Layton <jlayton@kernel.org>
-Date: Tue, 05 May 2026 20:59:49 +0200
-Subject: [PATCH v6 2/2] mm: kick writeback flusher for IOCB_DONTCACHE with
- targeted dirty tracking
+	bh=J9qidEbwcbxNUjG8hAqqT74iHNrRyPHrxDICICDW3Q8=;
+	b=wvC0eEK8rj+4XgbGPENYpG74Mv8VEGRjszxbxsqeKmhQG1JlAiwWLuk4oWiUdSOGTSPxtm
+	7i/9xdWj+4QTKiX0ibJqwkD3U+XzFslscqW0xGcy15p6gSlPP3eqTmCLPwFHxRVj1QBQXb
+	0Br36iBefVMVReRldzQtguRQUt4XVlU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778019481; a=rsa-sha256;
+	cv=pass;
+	b=bpCoO6a6klF39Ue0Cwbhy1meJ7XlgtLyzjC0SMTUH2mw3oyjjbCUb0r82Upl97U9a0W8DQ
+	WPtPvtqYj8eAm/tW0U2kUFVw/TVUt4z0RWT/mQB1DqIkuPqDC0TspMjL9AV13Dl0Nd8tr8
+	O5EixOMbNOmdINHKdzGDwMS/YjgBUR8=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sbdvXjkj;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.46.23 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tXsO1MczazzuuJdOhgEV2JYSYmCZCaeub+XsJJ2DoRNUosBpMOW9+7FR/brG4yR9UcPSA7zYHmmsboPisEOZNyfYsR5VI1FU7afuPfMid5WC2MMEcVFj87598AhCyL3fF31OyI7GbfY22P3LF0khD0fdpXsrllgq2VD3Gq9/8IWqd/2un6OJNkYlAeGgbaPCOGwey0ns71Ygcpjv0udL68LBjAjzjcGcCiNqV2vOGWdPyDbbVJEPjufjtE5uBwbZMwnjZ3mrLWGC+oM8GiIXirYFEhhNZ+dcOYwUsBMX5a++1TIWCW7sqtsgnZpYzojfX/QQd97vboG63a30J1Qdlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J9qidEbwcbxNUjG8hAqqT74iHNrRyPHrxDICICDW3Q8=;
+ b=Z670YcCJH1OXLwydZmM13va/5sU3Mx481wuIpt1cDf5YIokyqF+IywxZUCN6LDinVPZE41gYygYdwAK3vxuECRnQSqaClRMuxFdQpemd93H8NYuWoLh/Kuv6oJQxiRamwFskhhp57q32AhtNZsagKg0H4TZc8h/i2pzvIpNYbfD28HXP4itFgDzrntgIIwfrZ+TYygvxi6SVgfUoQB1kk0JHUracZb9JIv+Off8ERg2h/O4gyW+8N97AjMHF9H67tCzHot3wzmrg8hlajxZiOkTB1Ymrgpt1vkz5Cm82Dq1m8xCJvQ9sJrN8StRcanxl7PFZLRNcg+MkmfhbkHeckw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J9qidEbwcbxNUjG8hAqqT74iHNrRyPHrxDICICDW3Q8=;
+ b=sbdvXjkjYAhbZagf9CmKaT3DWGRbyHeY8yR64Vc/2wXu5klRSgew7kbgp8AceXSw67OdsmNGkQ1SPmr8Q5Tgno5m6Gkgz9b1ebu6kwh4P8HC7qlqhXSlq1/jR5uZv/wg9U3a3dpEWSMJccNKlJB0pL3TbKflFxbiZaquZjZTSbUGDxdzpC76S9RLoE+bQo1fXiaFxyoZYq9ikTtguZiaI9fSqBSSsIP4psM8o/lECCfrvxuyKF5pVkO/XIFNYcwEVbx1GgLta+RHDPd1zQfbV6I1idDEtouiVPylDLGSKn6L3S5mXaWL4IyBvUCBMQWINEMgbsFiMTKHWPWad7X4jg==
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
+ by DS0PR12MB8070.namprd12.prod.outlook.com (2603:10b6:8:dc::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
+ 2026 22:17:52 +0000
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9870.023; Tue, 5 May 2026
+ 22:17:52 +0000
+Message-ID: <e5246723-b910-418c-bed8-5222d63d90da@nvidia.com>
+Date: Wed, 6 May 2026 08:17:42 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion infrastructure
+To: Matthew Wilcox <willy@infradead.org>, Bharata B Rao <bharata@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net,
+ mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+ raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
+ sj@kernel.org, weixugc@google.com, ying.huang@linux.alibaba.com,
+ ziy@nvidia.com, dave@stgolabs.net, nifan.cxl@gmail.com,
+ xuezhengchu@huawei.com, yiannis@zptcorp.com, akpm@linux-foundation.org,
+ david@kernel.org, byungchul@sk.com, kinseyho@google.com,
+ joshua.hahnjy@gmail.com, yuanchu@google.com, alok.rathore@samsung.com,
+ shivankg@amd.com, donettom@linux.ibm.com
+References: <20260504060924.344313-1-bharata@amd.com>
+ <afkDNR9yVRjire4T@casper.infradead.org>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <afkDNR9yVRjire4T@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MEWP282CA0194.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:1d6::13) To PH8PR12MB7277.namprd12.prod.outlook.com
+ (2603:10b6:510:223::13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260505-dontcache-v6-2-66463805dd6a@kernel.org>
-References: <20260505-dontcache-v6-0-66463805dd6a@kernel.org>
-In-Reply-To: <20260505-dontcache-v6-0-66463805dd6a@kernel.org>
-To: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
- Ritesh Harjani <ritesh.list@gmail.com>, 
- Chuck Lever <chuck.lever@oracle.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
- Jeff Layton <jlayton@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9615; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=/OcYNCE/fDC5kwoNxmn93OOTbnEEIB7Un/u2ZoKZZmM=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBp+j4zmzZ7nDbB+fjQU1X+H+KbEaew/Rb2QF6q/
- oHNf3dZOuWJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCafo+MwAKCRAADmhBGVaC
- FaZgEACq12/XKwbO+w71Vhf3mCc0WqNQSjceQThHmpkBQv9ZlF8uO/C7lf/v7idibv62hAJPRCC
- H3Uj4IauQdId4XWPj9SxBYQQASNuK+0qILP0XkR0YChV4RZvLPDPuT0ty4BKyyd3G76icATGdZB
- nKc0pdzr/YNo8RK5OI1iOpnlxM+l2jiiI182RtkmnatMQZZ5gfPqNwMSwayO16kMambplXFRMEp
- We13egbqmz7ayZO+RAnbdcpGbqU4doJq9GLZQCK8QNulUwxdmGsjgnB/TRwRA19/XBN1g3L4mSu
- ektu96BSyIIIJ1eWDHCfvNjO83FIlQ3Pal9oPTzrCm8aAUe3cLxiwlVX+YtIJE0smP5JO8x+auv
- iPd8j59q1eton3j/vUG/kuICFmTVHdYguxpBJ7BkbPwOMWPS9RQvj42+TzxwiJCQXqNPloimRKl
- JHWttx/Y0OjA4pypoGH5K8+n7MaFckzIv+S7T8rJXs85UMHci/TnuI6soZn4B7q7ypnxV164bXv
- ZEwwmjaXSgFoR3L/KZ9d/dQXbjr8weRraFl55IX+qcmQ4Anw1DuJqRSaYS8I57lor9WkA+u8yth
- TkogGYAY87faDji9bazKU3HLXprV5pSq9Agpn5Rtw5N+u/oQCY2cN9eM3X26fsP116+XoTxAF0x
- 79lm31kEMtSuNcQ==
-X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
- fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6CFD5C000E
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|DS0PR12MB8070:EE_
+X-MS-Office365-Filtering-Correlation-Id: 432d997d-6abf-44db-5486-08deaaf4262d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7416014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	0q0Hv582SED0rjR2Mf8smQJcr0fhk768AaWuclZuYlCeitb4/FEiyPRYdordf98fR0wbm2HkhPYlAmLmlCjKd7wbs4di0hnkixQDyKR6HMkv54rl85nphYkg+cKki6Np6H6ViA0sMcxQlS6F9lYnX2LiE83F3acH6lj7yGu+L741yMaMuTpo8Y3pO9moOuGezVx88rIn3oZxFKOM1oOCQj52yrf93vsmf2nJ8A3adtX5vg93jQ8OAchqpH+XtV3oWcNsHmbgeqlatHFDBhaNAt5IXYknroVELFN8IVStuBx7k8Ud5eAzOdL0jWT3o+XHQIs1GWtvVn/Bx6j/Thpuxemi0Uk7CDajdPZLrf+a3gGW9wlMkrt0HnJjydcQp23WI2q2MQgcgH7q1UjW1Jvt6uuFV+z6KFKJAxrq+rlVp7h76OfC/OZ/OlDX6295swauM/6pKrFNEG4jBdfPYmI08QyEcOXPVMiLn7f7IHDEEGKFTe/3IrriepaJTW24I2khUtCylRCF1Lc+Rk/lTn/6V/TjGmiGp8pos7KCOFbJASQcdDKTLLPPX8g1uQ7RanhGoiqc/8Jl+92tA305eBBaBsdyriDEmAQsk858hKcYE0ffCYvGEibE1r9z2MiLelndWNQwVP5RBnosJzG6jBNHSqyflOo7dpiV06T8zCSrKb14Jy5+hKQ0hsBM/NxTxnBx
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YngzZHY2YWxXWktrb1BQNUFCWHBWSGZNK3FUZHkwRmRYeUFIcWtQVkxzbnBl?=
+ =?utf-8?B?Y0ZLNndCMVQyQk5aQkpFSVJ3ZDFlVHowcVliM20yMEZzbW5lbjNLVC9KYnFv?=
+ =?utf-8?B?SUY3VkRvRzBZdGdoUDB4NXhtWkJ6dEhwR3RMaDQwM0lRNE1xVkp2SGxjWG1G?=
+ =?utf-8?B?VG0zSUdMM3NGaEpIL0JrT3FNMi8rQ0J6ZjFER0VFZEVoN29LTW9zdm5hOWI0?=
+ =?utf-8?B?MVRsK0tmTjVVKzY4V1ZOYmxocW9WTFhTY3pJVjZpcHdOU1dRVlo0SDB2ZmRV?=
+ =?utf-8?B?NWVxbSt4WjhuaElMdlMzbm5mUTBNaXlWTGg0VTNQeUVhZGljY3dLaFdNYWZ2?=
+ =?utf-8?B?YUIyaE5CNGZWekdYU0Q4Q1QyaTUvcWFkekRUTWhTcTJ3NXFiYnhqVEhpcThz?=
+ =?utf-8?B?N3NHc29PY3J5ZnVQQWg3WU91RTdKMkxaMEVUTDVVQnZBeHJCRmpZUnpuazJv?=
+ =?utf-8?B?NHdrRlZSOVRLdml5Q3BmaElMeU90TEJGUkNPWFNkTDNwUFNnNC8rWFdRYlh3?=
+ =?utf-8?B?UXVuNU5aSVNid09GeE5uVFNORWdjS1phWWl6ZjI3RkszSzl3QWVENnhCV21t?=
+ =?utf-8?B?YkRqNG9XcFVtaUdSVXJKcEhqV3NKd1pQMmloR041M3RKeWhqVzIwa2dPRTRq?=
+ =?utf-8?B?c012WFN0cHZ5SWRUbythU044SStlWkFqeXNVVEJOb09VRXFWZndjcW5NNUxz?=
+ =?utf-8?B?MTAwZDE5WEtDSUkvQ0xDdFhiV0VQU2JHVUZUVDBoWm5BU0h5dUxmbmlhZDRI?=
+ =?utf-8?B?SWFLa2ExczhNRzdialRaYVBHcElLOWdUVlN6dmxjQjVLazQrcUJZeU9zbnFL?=
+ =?utf-8?B?d0loL2x3aUxzYmV4TlphL2svdkJQcW9MaVVmY3djanRQcGJEbHF2aTc4R0lP?=
+ =?utf-8?B?YmJ0VytrTEJXYUxzQzYzWll1TWRhVEZkS2FFK2xTaEJZQlppWWkxU01aOUhR?=
+ =?utf-8?B?c21RWHdWcXE1WTA5Ujd6N1BjaEYwTzB2SUN5bDNPUEZFU0JoR0d4Wk9oMm1V?=
+ =?utf-8?B?NUFFRjltMUtuVkZIQjFOM3BDSnk3NGlQeVl5emJjT3NpTlNoVmE0bVhRdmtz?=
+ =?utf-8?B?c1RzTFlWbnprSE9USHdzeldCTmpjQWFxK0MwVm9TdGZLYWFXZ1Y2ZEgveXdt?=
+ =?utf-8?B?TEdUeElyMjJEeDVnUHVBMmhVeEJBMUQrZzJhRVRLQWI1MzZoWloybWxGcGJU?=
+ =?utf-8?B?bW85Z0l6akwyc0dVaExvTHdyT1NQMFNGZkJwSnpCeFY3dEV4bzROZjE2dUJw?=
+ =?utf-8?B?b3JYd3E5bXJscVE0L2JSWDVjMWFycWx2N1dvMElqL1pPbWpmdzRQSUR2YVdk?=
+ =?utf-8?B?UEdPcW4wY0NxZ1RBbURHZkQ3WFVKR2U3d0NhTy8xa3ZFVVlvcVRiRnlUdmgw?=
+ =?utf-8?B?UnBTdmhDNDIzV1hxMkZPUmJZdng1bktsWHp6Tm93Ykx3dkFlNmpSNUwrU3JT?=
+ =?utf-8?B?MlBMOFIydVJvenZZTG10aVJRT2RYUCtibFFoRE5DcXBEZXBJZHNmeS9RYjA2?=
+ =?utf-8?B?aDBrTjVPdUF1cXBxdTVnQ0dTeTJhMzBaelJHbVVXVk96UUZXbGtRTldmNktP?=
+ =?utf-8?B?ZXVrcmlZeitxOVJteXRQY040NVlUd2MrdnNkSko0U0hkSDdFWmQyallyaFFj?=
+ =?utf-8?B?L3NObkdUUTgzSzRsZGVGbXBiNmxvdXQ2OTBjUlQydmt2aUtScDgrNHZrTXR4?=
+ =?utf-8?B?SVpBb3B0ZGVOaXFwVlpob1pWNzNFaUd4N1h2Vk1VdSt0UWlqdkttRzJGeVRW?=
+ =?utf-8?B?cHJOaDZjdXNZMDA5R3NjZE5ySVRlVDNvaGR6dktEbVhUSmJuUWppeDFGdGJN?=
+ =?utf-8?B?U1RmNEtiakdjM0V4OUNKcEJGa1k1UXVVSU5ZTG54VVV3dmlaQUhnRForTWJM?=
+ =?utf-8?B?eTB6VlJ3MEpoMFBadnpvYTJIcjQyMWppSm5WQjVEWnRwTC9oR0tyT1JVbWsx?=
+ =?utf-8?B?MEd5L0Uvc2hRa3Vma2t2UGVqbkVmd0dSK21KcFVHNHZQcU1BM0ZvMHEwWFlr?=
+ =?utf-8?B?WmhSQnpIL0lienNNY1IwaDVrQWtyTGR6SktYeUVtV0ZTSm41d241eUZCVXRO?=
+ =?utf-8?B?QWhYR0JGUW5WY2RBWW9RMnNyUTRxRW1Fd3pRbzVXQUhOSXFMNDVxeXBMRkR6?=
+ =?utf-8?B?RmRreVo2c1VLcUNJU3dia21NcnhWRE1jbnc0d3lPeTdWa0xmYXp3TWF3ZmE4?=
+ =?utf-8?B?bHJpd1YzcnUyZ0puTWJGQ0IySkFZQmc1MEFJSlc4aG5ONWRXcUtObEplWnAx?=
+ =?utf-8?B?ZEZFMUpZT084eklLck1wU0xJbkQvWFZRZ3pocklENEZaNjlCTjVBaUJzSEFK?=
+ =?utf-8?B?WTZpWC81KzJYQ2NkTFFNbmFLYTB2QUF2bVBOODN1NzNNVkhtUEhxSG03RDd0?=
+ =?utf-8?Q?RCC0SfnYFoqE28FL2RcEC6/2eLDrWCWlHNF1RoGFNc2PN?=
+X-MS-Exchange-AntiSpam-MessageData-1: lgcvKnFtSbcAOQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 432d997d-6abf-44db-5486-08deaaf4262d
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 22:17:52.5361
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: e2zTDZhVMfx/S54VR7REC/5BqvrkmHvKRwsW8wj4qTVtQ6GA4KNjnCkMGxMtaSDAqdIND9ozgWDkrgYEukXWKQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8070
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9801E14000A
+X-Stat-Signature: ua65b67um9o41yuyd7jhbzesqtqsfa9g
 X-Rspam-User: 
-X-Stat-Signature: btjuy9cktt4necobry5xqeih16n1rig8
-X-HE-Tag: 1778007621-941410
-X-HE-Meta: U2FsdGVkX18yNe81OcOJJlYvcaTio4Q3kkmSk1g8840Y4MF39lAxQig3KWWx6BsOFHsahU5vF12ng+VhadB5eFJIdwkCLqeS90XWxVb7BnKqPYZIDMstc5PZFtj9+34EElb6KTYLfJOUW4biIFWqmtOLO2L6qdAr4w9NiZzWsCDJerQLnsir3KfMqRomm3viA+goigLhzl5wDbFF4kr9qvsDyxb3MM9qYBTrBIXyXdm7I5/dybuecPwR8P6cZehnQUwP3CYDHhsLPlqP4pAfuQvuHrPjnoAbjVmLocWbD2xUKCYxbBHVFqxAleCRRH67/0xRNyYgJDCNTfHW47IwclmdVCNpJQUfNZ2HPdY01Qekdh+KdwrIG4Qy9ScaqHyGTNSzt4Kqzk4txNQv5KznGNWXI+o0jp66H5C0Y90bDAb4Ugac2mzLsbFXV3j6/lRcIfKDc8yPWnC0nMPzBPdHM6s950NsZoIQF6HljtWZDSL0y1Fu3NGLJS7ukD4ZkMe2GB6GnLFc3E4qaTrVxmefO6VBquj4dwWs0quO+Ka+XG8hiDPkqtb21gGE8ewuAaMEDsdI2GV+hJoa+YVfwosSLbjK8eNu/LSsvSf4wr38KLupqq4vwymzYLYouT1ntlTFSo0FQRHt+QXQvRi52R5E11UDnPYiyxL/ahzBWdbkCD9Esv6RxVW6l7XZx4eycs+M8yOiqGRX2g5uVfG9irmrkskJ3wffgwqTxqRutiGiyqkkDDIgHk9i2QNSqIkokW0PGAdskNaGEF/YJTq2td8Qw/Ji0Nt9x5+p4lLWoBSrZFuZq/V/0ziTaaBOxjsjQOx11pr6dFy4vlTaOlxxEMJYTkAKQZFy33Vy3qpxPMTOSaWfxa8BM/MBf2us4SLpYlBhkrzYzqUpyFInRHKN+cqSCGAMMCwqQReJ4kIKLxWV4MRCUU1lKh2zK5YXMAvtZw2fUBJEheNE1TFppeuFRtY
- kReAi93R
- vbXOctNXXxPyfK0LJSCWzKUaZOEdJBe4+KSajVc+L85OZq6TxuLHzA8HKwbnT+16Vd5SbPDr6kC8kP2vMvpxkU05DhCKro9lTYiwZhycYXKQZu1XuglvSsJbltqQMcPIlKHx+uq/gUiez0WsBMCmHYpryTIkmsfgHEwy9UGAzsvmNOQazUM/mADKt2At0+5iI672iid/M2m+D3F1oR54XaQ5toLI+2/Qzk2SV0fRay5Gs1ATTH8UqtVw2Mq4FXT6TBKK+m60b1R3tQvAr0RZ40NZEUfZaG9Mi30Nd6KqRX58j8KDc+uPf306sfgEweZOyv+Rgd8opI+46XsWuSyJhzgqpk5VWSyWR4coq5wyQHNkm3rHKEV1QDeeDk8kIgYStNTEB
+X-HE-Tag: 1778019481-392089
+X-HE-Meta: U2FsdGVkX19dXycBG56vQhDDB50l5/CKXGtBzDFRmaXsUsZosP+uyu1VxpCOZ+PDN9JsTDmWzLh3S81XxikqFMFvqQ6btDbzMtcqWYvfGrYbryJAtSrMtoQ47Q60R+w4iHAEpOw3UnCkLwL8g+ceb5+yiFCj9X/mlOPKGmpxH8COq9gzI5jx7sZ2e9CNx6Er1wJmbuh3P5Gr+ijaEF5NxTYLx76cFrHbE58jMzKom6ne1CcYTq5hFR7RrZrhDgHdoXeXVgdKsoLSxBbdjEuqO/NxcUAi7TicIPLAMBGgzS09azo0p7mMCTDel8zssuiFycTTz877o/ooUqZLkF+ZU9Ldb2SuL0aMisdlWELTJzku6fAsqX+oC4OUsUMEi/C3QVRE2mmRcfRcR5f2wXy+NHkJisxN6XiLz1HojF89NaTfM70tbaOImpFz+T60tLzYLP3+1LULDx6Qjs+eLEeFBswHPVWX3B3baS27KmQ4xoHO/8C4RJR2wH8kHRYis4+/xfC+WoOJSrVxvvvN7y4Cyptq0Cflj3cFA0EulNnb8fSpzjXLU+YIfnN4IVj7X7NoehALTw/gBbzt5m1CSdXjkRp0mTwyydjvFqL6RCbuKVaKNE9Kxs6fVN+HgZvQYeuEhlk/ta73E4h3WWZSY2+cwipbPUtWSdOybmIXj0S8lmfnoK1Oxrp0mCgt/Jc6mEt3AtgStJiG2gsWr00QirHHs6ah7Huae3dIStYwxrYXbec7KcviT/4p2iXF9zK53OnJKJELCQQqePx+kHhDN6vNV793UyqYpM7ruQdMUkoReedHhhVpX+i8p9Udcd8MyZLx3qvSUHBVjUAn4+sOIBBeW8mVWU1EJu5fo2k0YbBdW6EIcWWV1zVNzj48b4mRutCngL4BA/xMVYNYBQOMIQqkiuVifw0nKRB9P2vyioe2SJ3LFA/QXbOeQekJOQaxsQzu4/sDpl5bTujhi9RIlkU
+ YJFkNarw
+ 3RtF0MukxioCPbVGWS0SN4ygzIFVkP40BL0BnJBnTXISVb7mz7PvXVWYEZfByv6AnEfflgS+oPEPuHgt4ggEPSXLG8c8kJRbO7ZunRbIPWtlKKnCL+tNil3j3+/7kd8JY0OMn40ah8PMoMq8/6uNpxBVy+Kasue6miEP+bE/hq/6gaCu0m0CU5p68SOvF8JkCeMPsCps1Jymf7pgE8qOJnLbV1WopTzVLhYzmI7G1AyBV5LDib2UEDB9yvZUnICnPOgUdyN0qv6kJo4UcN3oIq0IPONplF3PXxmQ/OqeYCxXi0QYdgwkpldPK9kXThqf3zTpg0wfhe+bZv1Y3W5UtbVT+g5yq4+D1Qxvd3R5PB6mO6zMkcpZxK420BhnuYQPdAN278yPXvoAPghz9nVfhq2VFN/CJt5WWslIzjgkfPOT6EwiM60aXPUAiqod/V34XjDSSCbTcGoBvPG2GJNsw+H00wQOK0ko9tPZB3vR9n+X36QE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,253 +181,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The IOCB_DONTCACHE writeback path in generic_write_sync() calls
-filemap_flush_range() on every write, submitting writeback inline in
-the writer's context.  Perf lock contention profiling shows the
-performance problem is not lock contention but the writeback submission
-work itself — walking the page tree and submitting I/O blocks the writer
-for milliseconds, inflating p99.9 latency from 23ms (buffered) to 93ms
-(dontcache).
+On 5/5/26 06:36, Matthew Wilcox wrote:
+> On Mon, May 04, 2026 at 11:39:17AM +0530, Bharata B Rao wrote:
+>> This is v7 of pghot, a hot-page tracking and promotion subsystem. The
+> 
+> I continue to think we should not do this.
+> 
 
-Replace the inline filemap_flush_range() call with a flusher kick that
-drains dirty pages in the background.  This moves writeback submission
-completely off the writer's hot path.
+I am unclear about the benefits of the patchset, I have not tested
+it or reviewed the latest revision. My big concern was that top-tier
+might not always be suitable.
 
-To avoid flushing unrelated buffered dirty data, add a dedicated
-WB_start_dontcache bit and wb_check_start_dontcache() handler that uses
-the per-wb WB_DONTCACHE_DIRTY counter to determine how many pages to
-write back.  The flusher writes back that many pages from the oldest dirty
-inodes (not restricted to dontcache-specific inodes). This helps
-preserve I/O batching while limiting the scope of expedited writeback.
+I see that there are some numbers posted, but I find this weird
+"After the graph creation, the processes are stopped and data is migrated
+to CXL node 2 before continuing so that BFS phase starts accessing lower
+tier memory." Why not allocate everything on CXL node 2?
 
-Like WB_start_all, the WB_start_dontcache bit coalesces multiple
-DONTCACHE writes into a single flusher wakeup without per-write
-allocations.  Use test_and_clear_bit to atomically consume the kick
-request before reading the dirty counter and starting writeback, so that
-concurrent DONTCACHE writes during writeback can re-set the bit and
-schedule a follow-up flusher run.
+Balbir
 
-Read the dirty counter with wb_stat_sum() (aggregating per-CPU batches)
-rather than wb_stat() (which reads only the global counter) to ensure
-small writes below the percpu batch threshold are visible to the flusher.
-
-In filemap_dontcache_kick_writeback(), set the WB_start_dontcache bit
-inside the unlocked_inode_to_wb_begin/end section for correct cgroup
-writeback domain targeting, but defer the wb_wakeup() call until after
-the section ends, since wb_wakeup() uses spin_unlock_irq() which would
-unconditionally re-enable interrupts while the i_pages xa_lock may still
-be held under irqsave during a cgroup writeback switch.
-
-Also add WB_REASON_DONTCACHE as a new writeback reason for tracing
-visibility.
-
-dontcache-bench results (same host, T6F_SKL_1920GBF, 251 GiB RAM,
-xfs on NVMe, fio io_uring):
-
-Buffered and direct I/O paths are unaffected by this patchset. All
-improvements are confined to the dontcache path:
-
-Single-stream throughput (MB/s):
-                        Before    After    Change
-  seq-write/dontcache      298      897    +201%
-  rand-write/dontcache     131      236     +80%
-
-Tail latency improvements (seq-write/dontcache):
-  p99:    135,266 us  ->  23,986 us   (-82%)
-  p99.9: 8,925,479 us ->  28,443 us   (-99.7%)
-
-Multi-writer (4 jobs, sequential write):
-                                Before    After    Change
-  dontcache aggregate (MB/s)     2,529    4,532     +79%
-  dontcache p99 (us)             8,553    1,002     -88%
-  dontcache p99.9 (us)         109,314    1,057     -99%
-
-  Dontcache multi-writer throughput now matches buffered (4,532 vs
-  4,616 MB/s).
-
-32-file write (Axboe test):
-                                Before    After    Change
-  dontcache aggregate (MB/s)     1,548    3,499    +126%
-  dontcache p99 (us)            10,170      602     -94%
-  Peak dirty pages (MB)          1,837      213     -88%
-
-  Dontcache now reaches 81% of buffered throughput (was 35%).
-
-Competing writers (dontcache vs buffered, separate files):
-                                Before    After
-  buffered writer                  868      433 MB/s
-  dontcache writer                 415      433 MB/s
-  Aggregate                      1,284      866 MB/s
-
-  Previously the buffered writer starved the dontcache writer 2:1.
-  With per-bdi_writeback tracking, both writers now receive equal
-  bandwidth. The aggregate matches the buffered-vs-buffered baseline
-  (863 MB/s), indicating fair sharing regardless of I/O mode.
-
-  The dontcache writer's p99.9 latency collapsed from 119 ms to
-  33 ms (-73%), eliminating the severe periodic stalls seen in the
-  baseline. Both writers now share identical latency profiles,
-  matching the buffered-vs-buffered pattern.
-
-The per-bdi_writeback dirty tracking dramatically reduces peak dirty
-pages in dontcache workloads, with the 32-file test dropping from
-1.8 GB to 213 MB. Dontcache sequential write throughput triples and
-multi-writer throughput reaches parity with buffered I/O, with tail
-latencies collapsing by 1-2 orders of magnitude.
-
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
----
- fs/fs-writeback.c                | 59 ++++++++++++++++++++++++++++++++++++++++
- include/linux/backing-dev-defs.h |  2 ++
- include/linux/fs.h               |  6 ++--
- include/trace/events/writeback.h |  3 +-
- 4 files changed, 65 insertions(+), 5 deletions(-)
-
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index a65694cbfe68..faf15cf84c68 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2373,6 +2373,27 @@ static long wb_check_start_all(struct bdi_writeback *wb)
- 	return nr_pages;
- }
- 
-+static long wb_check_start_dontcache(struct bdi_writeback *wb)
-+{
-+	long nr_pages;
-+
-+	if (!test_and_clear_bit(WB_start_dontcache, &wb->state))
-+		return 0;
-+
-+	nr_pages = wb_stat_sum(wb, WB_DONTCACHE_DIRTY);
-+	if (nr_pages) {
-+		struct wb_writeback_work work = {
-+			.nr_pages	= nr_pages,
-+			.sync_mode	= WB_SYNC_NONE,
-+			.range_cyclic	= 1,
-+			.reason		= WB_REASON_DONTCACHE,
-+		};
-+
-+		nr_pages = wb_writeback(wb, &work);
-+	}
-+
-+	return nr_pages;
-+}
- 
- /*
-  * Retrieve work items and do the writeback they describe
-@@ -2394,6 +2415,11 @@ static long wb_do_writeback(struct bdi_writeback *wb)
- 	 */
- 	wrote += wb_check_start_all(wb);
- 
-+	/*
-+	 * Check for dontcache writeback request
-+	 */
-+	wrote += wb_check_start_dontcache(wb);
-+
- 	/*
- 	 * Check for periodic writeback, kupdated() style
- 	 */
-@@ -2468,6 +2494,39 @@ void wakeup_flusher_threads_bdi(struct backing_dev_info *bdi,
- 	rcu_read_unlock();
- }
- 
-+/**
-+ * filemap_dontcache_kick_writeback - kick flusher for IOCB_DONTCACHE writes
-+ * @mapping:	address_space that was just written to
-+ *
-+ * Kick the writeback flusher thread to expedite writeback of dontcache dirty
-+ * pages. Queue writeback for the inode's wb for as many pages as there are
-+ * dontcache pages, but don't restrict writeback to dontcache pages only.
-+ *
-+ * This significantly improves performance over either writing all wb's pages
-+ * or writing only dontcache pages.  Although it doesn't guarantee quick
-+ * writeback and reclaim of dontcache pages, it keeps the amount of dirty pages
-+ * in check. Over longer term dontcache pages get written and reclaimed by
-+ * background writeback even with this rough heuristic.
-+ */
-+void filemap_dontcache_kick_writeback(struct address_space *mapping)
-+{
-+	struct inode *inode = mapping->host;
-+	struct bdi_writeback *wb;
-+	struct wb_lock_cookie cookie = {};
-+	bool need_wakeup = false;
-+
-+	wb = unlocked_inode_to_wb_begin(inode, &cookie);
-+	if (wb_has_dirty_io(wb) &&
-+	    !test_bit(WB_start_dontcache, &wb->state) &&
-+	    !test_and_set_bit(WB_start_dontcache, &wb->state))
-+		need_wakeup = true;
-+	unlocked_inode_to_wb_end(inode, &cookie);
-+
-+	if (need_wakeup)
-+		wb_wakeup(wb);
-+}
-+EXPORT_SYMBOL_GPL(filemap_dontcache_kick_writeback);
-+
- /*
-  * Wakeup the flusher threads to start writeback of all currently dirty pages
-  */
-diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
-index cb660dd37286..4f1084937315 100644
---- a/include/linux/backing-dev-defs.h
-+++ b/include/linux/backing-dev-defs.h
-@@ -26,6 +26,7 @@ enum wb_state {
- 	WB_writeback_running,	/* Writeback is in progress */
- 	WB_has_dirty_io,	/* Dirty inodes on ->b_{dirty|io|more_io} */
- 	WB_start_all,		/* nr_pages == 0 (all) work pending */
-+	WB_start_dontcache,	/* dontcache writeback pending */
- };
- 
- enum wb_stat_item {
-@@ -56,6 +57,7 @@ enum wb_reason {
- 	 */
- 	WB_REASON_FORKER_THREAD,
- 	WB_REASON_FOREIGN_FLUSH,
-+	WB_REASON_DONTCACHE,
- 
- 	WB_REASON_MAX,
- };
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 11559c513dfb..df72b42a9e9b 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2624,6 +2624,7 @@ extern int __must_check file_write_and_wait_range(struct file *file,
- 						loff_t start, loff_t end);
- int filemap_flush_range(struct address_space *mapping, loff_t start,
- 		loff_t end);
-+void filemap_dontcache_kick_writeback(struct address_space *mapping);
- 
- static inline int file_write_and_wait(struct file *file)
- {
-@@ -2657,10 +2658,7 @@ static inline ssize_t generic_write_sync(struct kiocb *iocb, ssize_t count)
- 		if (ret)
- 			return ret;
- 	} else if (iocb->ki_flags & IOCB_DONTCACHE) {
--		struct address_space *mapping = iocb->ki_filp->f_mapping;
--
--		filemap_flush_range(mapping, iocb->ki_pos - count,
--				iocb->ki_pos - 1);
-+		filemap_dontcache_kick_writeback(iocb->ki_filp->f_mapping);
- 	}
- 
- 	return count;
-diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
-index bdac0d685a98..13ee076ccd16 100644
---- a/include/trace/events/writeback.h
-+++ b/include/trace/events/writeback.h
-@@ -44,7 +44,8 @@
- 	EM( WB_REASON_PERIODIC,			"periodic")		\
- 	EM( WB_REASON_FS_FREE_SPACE,		"fs_free_space")	\
- 	EM( WB_REASON_FORKER_THREAD,		"forker_thread")	\
--	EMe(WB_REASON_FOREIGN_FLUSH,		"foreign_flush")
-+	EM( WB_REASON_FOREIGN_FLUSH,		"foreign_flush")	\
-+	EMe(WB_REASON_DONTCACHE,		"dontcache")
- 
- WB_WORK_REASON
- 
-
--- 
-2.54.0
 
 
