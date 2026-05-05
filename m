@@ -4,189 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24EC0FF8855
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 22:21:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6314CD3427
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 22:36:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52F876B008A; Tue,  5 May 2026 18:21:41 -0400 (EDT)
+	id D5CF46B0005; Tue,  5 May 2026 18:36:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 507C36B0092; Tue,  5 May 2026 18:21:41 -0400 (EDT)
+	id D0DF26B0088; Tue,  5 May 2026 18:36:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F67B6B0093; Tue,  5 May 2026 18:21:41 -0400 (EDT)
+	id BFB796B008A; Tue,  5 May 2026 18:36:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E4476B008A
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 18:21:41 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D26281A0607
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 22:21:40 +0000 (UTC)
-X-FDA: 84734789160.24.9633CF8
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BA570A0008
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 22:21:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oqcEUXIw;
-	spf=pass (imf15.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778019698;
+	by kanga.kvack.org (Postfix) with ESMTP id ABBE26B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 18:36:30 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D089BC20B8
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 22:36:29 +0000 (UTC)
+X-FDA: 84734826498.19.E79440A
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D142340005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 22:36:27 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BZ3Lrm1v;
+	spf=pass (imf27.hostedemail.com: domain of rosenp@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=rosenp@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778020588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e+bTaNE0dwTN+qN6h1nZ07Pw7t4BRJtO96DbmMB+uZo=;
-	b=wbEbmmvI9oLbT/zRUyyOJBgPc3KUcoUkeRz8nwN8ee/busP03ZHiZ7yFE9jvdU5Fh91Oea
-	8/Py7f8YNUibo1iVVOrm5uLzROX7kHGpVq7WLc7NrVOnzGKxIxbTcv+OIoHCwbcAA7YiG0
-	2CqQN/BmtVex4FWOWMt5B6e3tsUqT6Q=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oqcEUXIw;
-	spf=pass (imf15.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778019698; a=rsa-sha256;
-	cv=none;
-	b=PQUTWI2fn6FQKBgvHKiXvShMrfXd2qNYlsG+WHcazxZe+1A91cTL453hH9yKgQdw3hOC/G
-	xOsbER+k0bpAk4pRXi8V3XkBmHL1UlLG2f58fYIAsc5u6DLTu1y4GzccmFHXZ8VXjwhYWK
-	z4KsQGs8a6xaRYRcsry+FRjf3MqXks0=
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3870778358aso40555981fa.1
-        for <linux-mm@kvack.org>; Tue, 05 May 2026 15:21:38 -0700 (PDT)
+	bh=Rzqbw/nypFqS+4DSh/aG9WhAbZfgykDJtFsgi1ul23I=;
+	b=C/m3/k16LsnbvRTKsVkqRqT1MTErkQ2HD2yJOdmp4v8zgGxDFgAZ8vVpBn/WuWopfiIQWJ
+	K6bfGi3Jci0atmDMmco3v30MKKQeqMTM1haZR8d0wi6ZRFwNuxY4DbneXYf5UDynpfXX6X
+	2dnTSiaygHDKSkmZkvHZSWhc2EChW30=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BZ3Lrm1v;
+	spf=pass (imf27.hostedemail.com: domain of rosenp@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=rosenp@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778020588; a=rsa-sha256;
+	cv=pass;
+	b=sUtwDwvVCiL9L2Os49HqYQozlaEzD6sJW2JtmI1fZvXa9lTPQB+SDhpwckdFN+T+XmSZOs
+	V8bcwsan375r3xsZNe80NC3ewmT9WG6cvLC6n8AKfcdgisMmRgWNpg8Tz+ig6YEWKhG689
+	DXEwU4g8BAScUpq10cTEo/QSuVqlGeE=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a887ebb416so145369e87.2
+        for <linux-mm@kvack.org>; Tue, 05 May 2026 15:36:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778020586; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NKwrEnnKGBh2M3Xvq2wMnKpY717bmo6nCtwYllfmbviWHjv2rNvCelbs9S3UYCWt3E
+         KLh+f0lhDQELfkKlWEqmkLI0jbOtIhvoofWKwhTiaPo8sznZPQ14SZKUshoeel2fshRm
+         c9iYs/dtZSM8Bu4jWQaSzE0qZR9K3y15ruoQVz3eBvpbupT+YjHr7Wc8CvjlNwhHE94r
+         Y+BZgo8MuTHTCuerYDjcwm9U/9cB9I8wrFWVGCNOh+u3cFPOP0i0oiLDHB+eRpFIymmw
+         tGa45y1okDCSa+O3MBqPq3FPQyJ19wFk+5lz1/azup9xoYnZWiVepdzwk2KqvifuNALN
+         qKcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Rzqbw/nypFqS+4DSh/aG9WhAbZfgykDJtFsgi1ul23I=;
+        fh=+7l5ZePh2uEOQeb0jUJlb70iGG82g54gV+LCEjmmdBU=;
+        b=A/JJ9C8JJE3Z4l47nRu01AMkzPSgX8Xq4AnNeaWiq1nMw5Jau4db78aBLHNdKk6VPE
+         IOHqKBX+Bg1vbVPXITD5Bb/+LPUYj9yHBMa9W48zFOSPHs6qKu+DplmO4hd40rNYkMUK
+         QHtn4bNzXnwwrO+wp+mY8r7NuEZgexlqS5XmclpCnTs5PZOuIjEaCWUTC/bOaP5EFtD+
+         cBv4O7c4lphVpG/fkzKNdcXD9BBTauDwyBSx7YhVE7HoPnH0s4UuSM7vhPw9w7d/Wv2j
+         XdcTDAFQs2Uh8FYcUEElDUDPSTRRHkYgf1j0n/Hz74/TmV30jWdJcHahRtBjovtk+NB0
+         X5+g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778019697; x=1778624497; darn=kvack.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778020586; x=1778625386; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e+bTaNE0dwTN+qN6h1nZ07Pw7t4BRJtO96DbmMB+uZo=;
-        b=oqcEUXIwompzsYIY6Lb88fszztMH0CQ3NogrK5PRKe01rtA0qrF+tN9PFwjeJomIeF
-         GisM+kpfQXdZ2qYPkKyt0ThOdx3ejAEs82R129uH4ruKX8nNvVCuMrn2ZqYdhRy9uLX7
-         uN3GxBoCpnalkEI0Nd+8tslyPgXYp62HY9vXBY9sN1aNY+jqXaKphl0Ch/mVez6IrxWD
-         Rpoxt0/wZIwKyVkoPKxTz/tu1vPcvSSRw/eC3p+0hCvfDTq/1eY7zJqxDTNEtC5UWJaT
-         Z7ILmcWwbwWVu9vpBmdZreuJSPS6tJNpwTSz6errxzogTTYmJA2HRyFQv0K6twc7qQ/g
-         AEnw==
+        bh=Rzqbw/nypFqS+4DSh/aG9WhAbZfgykDJtFsgi1ul23I=;
+        b=BZ3Lrm1vYSP86KgrGoS3jfBGVYaiTCW3rpUL/IeyatatiGkE7ZYCX9FLYhHmLv8LNe
+         P7ZdecdUY60+3l5XXXNyZIEU4azQWR6dIHenKMQzMA/mRZFqk0NCAi78xNv7W9/ZgyqJ
+         jkj9anaGV2bImgLK0bvqZ+TFIZII/RLHzg0OKwR1rFogGOegxMg4jGS6DhyGVWSY1Cym
+         mEEHkX1Xk8LHXAl7AZiknG1ahHroDhQQvappjnOS/K4Nh8RtXuhXN/SzHYdOhaVXL6PH
+         vznu/YmllqRz8jTp52BPijh5md41PV/KV9rFj0RD4LG+1oqPQk9p7PpL9GQuXDAlR2g7
+         E01g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778019697; x=1778624497;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e+bTaNE0dwTN+qN6h1nZ07Pw7t4BRJtO96DbmMB+uZo=;
-        b=El15dwODcQQh/XGewcNiG6H6w3Gbc0OaXQqyPXMEYCCf1x7u4s36prLgVXnWZzk+Pw
-         hJvA7knASPwyRu+bkBZyVDYC33Cgj7RHHn6l6rByWGl1UwjigrjGj3ngVXqdBYRrMLKg
-         PyTWh6LUVM0LGwgdaGBiJMQlRnmh1hukFVUqZf6WRBsGj5O4p/N6zVNqYKp0+bF7E4xV
-         6nRfj/F5OTSSv6bB+edNR0Se253TpnkhL9d4kQ1wO81nlEer4jFtnA71WgJZy96F6IFr
-         1JhuMPMz9WwCYfajvoY0tOFmSBoyNXQWtSLn4mCw6U+KLpfxEtyEiEzxSpNeMmqgKAnr
-         kzKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9mCLOaqrkmeHrWP3/ARk0WoNrI180MV0VHhfxVk50M2I28t/VDO7D2i0y1aaz2+UiiBOLJG0VLtg==@kvack.org
-X-Gm-Message-State: AOJu0YyaK1yF4mL62kpDBRSuspjCxMZoUqEQFD8MDmVTULLyp3wSFRRd
-	Nahq9p27azwMWucnQ912kMFhzMPnWI9gXNHNSC2j8lJjCnFTL6ZRs30h
-X-Gm-Gg: AeBDietX+93/1CRHqgFlwd77BrhSqafApZ2PR074QBOAFD0FM+zyPQKk5M0QGOwKBDz
-	fZLjGCR3verN9Bx2TdoaHri+K8+Y88+PFePHPVqoRf59ZB0D4MrTEarLPiU6/Hwl3vpWvGGj2zM
-	llRwJZs4VPpSja1HDSIQkqnOk6Hguj5CbgoNiY+IUlQjy+ExUi+np3roHnk0xPPB85DljQt7H66
-	BC7VtJT1Fyf1Y9x1CKG4kGmKIydSqTuuElFfHSeCb9M9fspKLaQOfDpr+ciW0gk/sJ6TjNBngnH
-	DxaNBUxCZonMROQgVieL0gdyBQpr61TOUIJVfCTezCQVfHsqvOeKm1iqD5witrj6RJuO/XKBnf8
-	kZQTQG/G8DiLW2bjBrNLuE2vpSYO1bkkc3qra50XllAM5KMY8YCkj9aLFpYaA8/qvNsqCvjz7yv
-	Nt/zjeNnkQ3eb46ayhGHAcKXJlS/jNUlXX85bvDTKcUHeyPjLjaxWdeFMkDx1JJSnwMDCQ6p9fZ
-	mvTJLaG5G6QCPQCYW4hpj+lbKSpc10pMLsV5oys
-X-Received: by 2002:a05:651c:4210:b0:393:8b23:a194 with SMTP id 38308e7fff4ca-393c41cedeemr3503181fa.19.1778019696437;
-        Tue, 05 May 2026 15:21:36 -0700 (PDT)
-Received: from smtpclient.apple (h-155-4-132-115.NA.cust.bahnhof.se. [155.4.132.115])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3936108fb80sm46308161fa.6.2026.05.05.15.21.33
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 05 May 2026 15:21:35 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-From: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-In-Reply-To: <20260222084842.1824063-1-gourry@gourry.net>
-Date: Wed, 6 May 2026 00:21:23 +0200
-Cc: lsf-pc@lists.linux-foundation.org,
- linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org,
- cgroups@vger.kernel.org,
- linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org,
- damon@lists.linux.dev,
- kernel-team@meta.com,
- gregkh@linuxfoundation.org,
- rafael@kernel.org,
- dakr@kernel.org,
- dave@stgolabs.net,
- jonathan.cameron@huawei.com,
- dave.jiang@intel.com,
- alison.schofield@intel.com,
- vishal.l.verma@intel.com,
- Ira Weiny <ira.weiny@intel.com>,
- dan.j.williams@intel.com,
- longman@redhat.com,
- akpm@linux-foundation.org,
- david@kernel.org,
- lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com,
- vbabka@suse.cz,
- rppt@kernel.org,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- osalvador@suse.de,
- ziy@nvidia.com,
- matthew.brost@intel.com,
- joshua.hahnjy@gmail.com,
- rakie.kim@sk.com,
- byungchul@sk.com,
- ying.huang@linux.alibaba.com,
- apopple@nvidia.com,
- axelrasmussen@google.com,
- yuanchu@google.com,
- weixugc@google.com,
- yury.norov@gmail.com,
- linux@rasmusvillemoes.dk,
- mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com,
- tj@kernel.org,
- hannes@cmpxchg.org,
- mkoutny@suse.com,
- jackmanb@google.com,
- sj@kernel.org,
- baolin.wang@linux.alibaba.com,
- npache@redhat.com,
- ryan.roberts@arm.com,
- dev.jain@arm.com,
- baohua@kernel.org,
- lance.yang@linux.dev,
- muchun.song@linux.dev,
- xu.xin16@zte.com.cn,
- chengming.zhou@linux.dev,
- jannh@google.com,
- linmiaohe@huawei.com,
- nao.horiguchi@gmail.com,
- pfalcato@suse.de,
- David Rientjes <rientjes@google.com>,
- shakeel.butt@linux.dev,
- riel@surriel.com,
- harry.yoo@oracle.com,
- cl@gentwo.org,
- roman.gushchin@linux.dev,
- chrisl@kernel.org,
- kasong@tencent.com,
- shikemeng@huaweicloud.com,
- nphamcs@gmail.com,
- bhe@redhat.com,
- zhengqi.arch@bytedance.com,
- terry.bowman@amd.com,
- Yiannis Nikolakopoulos <Yiannis@zptcorp.com>
+        d=1e100.net; s=20251104; t=1778020586; x=1778625386;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Rzqbw/nypFqS+4DSh/aG9WhAbZfgykDJtFsgi1ul23I=;
+        b=m+TE/T3mbl7CVX+6WbFQjWZF/0JZq0O01/tsGciktyAYOjW3PXcdTPZxqakQAHhWTq
+         P5Khp3/z1XL7QQKqNd8gAHENr0n9mlpftCtTMHJ1b+CwME/1an1/Sm4EyGe7DVQhDJUP
+         gqLfBtNx6ZN9roxgSHiio6yOXKtIOTTd2docfAkJojsjxRxJ02zQsmEjbjuxHvv55gxJ
+         siKnLFZ502l9kvUbDL4ccCabo8bBNrrVAHNXopqlQObDsT17v7UqczuyzxN4rWEdBDjm
+         kMpYK8XAjSgowq7j+NAQi4gtfUgHCLNwyG7BC6KcOBzE9phEXtpFd6n0SDMTYqdKmsT1
+         3Wmg==
+X-Gm-Message-State: AOJu0Yy8PWXsZz27NCcygKlPtwNUoqbWj06ZskSN/vIzs04lba7dmO/2
+	zpDOgPkgzMXYtrLwGuRf/PP6GbjGsoh0dOIHNvirz5sPygwIhxzG0lBCHePVN7l/VOjRlKX4Kkb
+	rkFQpZ6yFZ/ruxiWLyWiTIy4lAoV7U4M=
+X-Gm-Gg: AeBDieuh7bXkWCQObU4EAxE4+HZB5Cg9I7DdXqtaxFnvFElupQZZlEnb5hdLxHE1p11
+	lhsmgWfu+xQ0VxpChkFlXo0pEHfHCdC5t7cq3If8X2Eq/6LlncbIX9k7oeBqJYGrPFxdYpTKC3k
+	xOzxkW1sZfD8cXQD17R/U8aGWi20aBNM9AsEvYTy+pNaYxf+P4ogzsFspDvQuHY8eKOsG059fWx
+	2wuyW4uZhikwuzOwuoNxcHo4AZ70GFhACeTRVXfWLTtN/ryaeaoGNLpMSWDYVQd2h+TfM6V/1iC
+	7MGNlRtEK1lBJhUDp/OlXARNywq7Cd2WX0D3zrbVAj3JfH4jjQ9g4FSChn4CFtD2FSO0GoWy9fW
+	Wbk7XnvKbyRtaGXPgnIeTDO2mWHvkugUMDezJeIHjnwVNHz74tbtzAHKgRYkhyb4j5XOr
+X-Received: by 2002:a05:6512:3195:b0:5a2:c4f1:2635 with SMTP id
+ 2adb3069b0e04-5a887cec51cmr208911e87.41.1778020585718; Tue, 05 May 2026
+ 15:36:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260505010112.645361-1-rosenp@gmail.com> <0f11390f-e8bd-4f8d-aea8-59ef545b2c32@app.fastmail.com>
+ <CAKxU2N92s06-L0+e=KZ7EbtU50tCpaCk2MYJD2xTFEHEsAhXUg@mail.gmail.com>
+ <df3e889d-ac8c-4d11-a5fe-8ed2769953f0@app.fastmail.com> <CAKxU2N_moR8bs=NLUcW054a=oHB--4i+M5XKCBNF9LskYcjAhA@mail.gmail.com>
+ <add152a5-09bb-4c6b-a17f-da3d817b93e9@app.fastmail.com>
+In-Reply-To: <add152a5-09bb-4c6b-a17f-da3d817b93e9@app.fastmail.com>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Tue, 5 May 2026 15:36:13 -0700
+X-Gm-Features: AVHnY4KmhUVE_Ek1NBAQLUwefKU2Vsdr5nkeVFvJ1HuHAbomEgHQB-nmVguGnIg
+Message-ID: <CAKxU2N8E=s3==64xYGHGGCV80cw-c88vjRHk0ery6LzBhuit4Q@mail.gmail.com>
+Subject: Re: [PATCH] mm: move phys_mem_access_prot_allowed to header
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Red Hat)" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <21B8D62E-38AB-4FA5-8942-DA4417A7E7E9@gmail.com>
-References: <20260222084842.1824063-1-gourry@gourry.net>
-To: Gregory Price <gourry@gourry.net>
-X-Mailer: Apple Mail (2.3864.400.21)
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BA570A0008
-X-Stat-Signature: m9595bemi5tupr3wnzdcmt3pdh9k9mi9
-X-HE-Tag: 1778019698-644468
-X-HE-Meta: U2FsdGVkX182UnWlys/q7d52bxTV8CDnf5SHwfzJFUFUvWBqiod5oLlxgj2IPEcFWhWkMcLAxi61d31o7paw4SxEtR8ouuDFiaM374bNy/QNinsCb2GMOm+MK6EczgU80Op5TOY04lhQ3Eo1JCl6oMgse7wRLVNx7xseA+MRtsFgB1csxeVqA3elrxZ2dZiUr4CdCdGrDZam26PD791LBrcsAK0mUPXdqVQ71cqSUM3Ct6sw2xGPGM8heOy8kvcEl4R0JWZ4j5cKXboT3GVegDm/gy2V/EeOz8dC4+F3d3thQBaVz+V4+B9T3+LkoU0PKwYBthZ1isthKUyGxfXExNuO/iU7dLX5jeKjeQdZRrgBMHbOszgxz704cn/YL2F340MvutdI+PcI4yRG5yCu4J01zWH+BMkAnmVAadFXYwrX1b6eYOVWAhb31fTn1Otq1t08Cazxk3NEuRQF+Fu0R//4cctRiwAz0aNfn1kS2lPO000Op6LlOD2RnhlhrfdxaeZ+ZMPdanH2nBnUDwWkd3OQZBTCMNsJ77iqQ7u6BWOjnyYCTrmuknWllba4sfqZbJdn4EKyb/9x9LgmwXhLyk4F157nGVXAakeNO8n7BliaaRFzXYqs0MaRiZDK3q/b4wSvgXCzmUcJ53NSzDX0Zn195JpnOj0RS9bQz9VchMevzLdgJfDPb2qJ1G4BKkE8CL8beIeqGQcZ63u7nhuD9xsmYCLz22YFHQf4oXy1gyAhmoDt9gOlzdh3Aqk6X+UE22ZlxIVBOmeSjCN+uNb468biuvLdLQCTCKQ3SDWOZsX8l350LMC6InXXeBMtwcsj7p7BqPvyIoft0ywkvvriJ7UxjRkE1BzoQYECW3Rp1JRPExUv4gBO9AFEJHgXeEE0L74eZ4kh0Brmvg7nxw5BsUcUSHg4pMFYRnPpTm8V4wkqL6/JHqoDTt6WkGUKfd/aDbRJLx5HSJmBEaLCzTG
- Jw/UD9ZC
- ROjdSUhLwYYaKVTu7dKhhz4OSsCWaCbjfeaxcgNeiDX/REMO3Ltnqm2Pz1nc7sKH4kIfiiWiuUhYzbzuSWUgbWfIUKPnk+yF5j7VdEs3H5A++HKuVF3LICBt56qX0sat0pAwrhIX6anx0n4mSVSGWopmFv7KCbyqofAz5sJkzRpd6hHkQ+HSg6xJnqGys/tXVgZ9PDSnhUcz37zC/JtV54hZOOGz6WpWw+2tYlvZaQulUT6zqGDUjX+eCadVe9pvgSf6MFkvBn9uddZGUgcPWo/7PEjJOGMzZu+SJQD/tDPejBx55zFWOe1wSOipO+wbSn17jFGQFIbL5P2BdkitGYNQDtaUSg9esik+ahmMU8kjR9XzdCMZFZXpvr25Vy3gOY5AgRUJkCXhoJNm5mkVBCa3gHqqH3S53RH4WABL21Ch5sc4eZ0RwAeL1czibxeNSulUrsEZJlxEtQnklUbfudgzeKiRw65Vt0RwHCRz4Lr0iOlqGnuFufEMHH6ixQ2PGqvGgxXNj58WcrUuVo/TXTEidm/sSv/H6GsmCSdmGqpvmL1JTTWrRSt74Rzsh4qNOAeZ0jIuByJhnULCjVRV/nSX+dA==
+X-Rspamd-Queue-Id: D142340005
+X-Stat-Signature: 9kita1widtqb18m6zq3r4px4sfsbh47o
+X-HE-Tag: 1778020587-935216
+X-HE-Meta: U2FsdGVkX1/vHemSiVOM71uqdbonYnwQWaf+7+xvylCY0NC0oVJSDT+DRSigXKi4EZ4dSI+c4oSArJDUPoyC1UUBdBjm67eEaRl+xo9SUxa2eGBaRDuyDy9X1OL0L93VU4jUKDv5CZguIWaMDe6cKgsxb8ek7GDZRT808u3+NxG728q4CBHDdp3TXt/O49gxvJXFRDYaYFmlOwRfMUiZw+a3+dsfhXM4RzLrMPy3kcFLImpQ6eivjZ81eowehKeQBpFlcDWMSW+kCzExo+Dw/s+e1f3uUUgsKx/wVpdTog2CJ5UQHKjqVLhsEYVKWYBaI111O/emgW4/PogIlHYrow+0Mye7adVj6MfZNLs/xSt2l31NbNjO0XueKLpzqRZFdXB5jaCHtHU4in6NCmiL9rhDVdbu0+C/n0ed28VBAq1hPcxMzqxLXKgl8Wm0FyOojV7iPJknQL8xRlIm9YwT+UaQABpQUXDkRpiuew+HqUdD8cXFD2lupw1gYOkPp79zytBuwP7YsQpSvKHMzKAirVB38jg9AvFMn2tSWGwwTGptL3z2h0RprZ5DlVUvF/6OLgT8Bt9WP8jSBnsvPvMOEw8VhcfQmWy3PWos7oIUDXEuKQAIKEY+Bi5YYViBY5yvjjhZWxl/pdsdOrnu/Xq8wK1qnBUnK13kbdRRA5tbcVKZ0fpW10stJB+dY6Sd8W3gz6+EhJX4u2Hg5UD+bOGe0JbqQ7fua3m1XlAsHkiWrnYRZns8HzNs8+VturY6OW9pRk7pWs4fjJXTMAIj5EADiazm1JV94T1E37WgVcLVcU2lm5WUsQCJH3W1ET28y/95oxBXvLgBR4mYD1kGx98b8UZ7N7mzH/byNE+ns6IZ7nY28f9MEpZ621H+zuy2+PFR8AIbjo1zXE6aSRm+GXvdE5gDYCFJ999sZ4qDNwE672ZJxfopa/vSukEEPCWaqVbg25ixSK4ouiVkn8TxFt7
+ 0i+KJ2kY
+ V458xy/FcJWrZXbdVSWY/h3/hJfmEslV0sn6QZuhNki+rATG4cglL5Z3pWRsivrywwbv3+EWVBaxH2az4a25loTpeTqpdPkn7uK2uWgSO95Z7f8VGirIc8vNbVQMxcQ10N1Y7vbRy8Zi3WbQNOXuP9cmyAcK3owNUSXjWLxCAlWN6dA1INv0XY62dnDeSnBE13RVrfAaQhCBpClAX2781R9CFbYLn/UO/DsKXJIH1ewm7XsJSv9cdqjU+X0XjfpPSL4ifBMXU7xtwVAFxnImmwd88VkxAqUmzOOXWsAUQpuI5lzz0QwbEpxC53JgMU2nZBiwk1hNM3IibzbaQBStlliBKfAt/R0DCokPln3hyLlMTsThcUd2b2JV9MP7sbN1FDUcyXo68w3cbDjG6kfF03aW54PaH27+l0zqnn5JUFyvdbSmH7fsG7coSxKZuWyIk/aFhP1JT17bZKXWCV9/tSYXWikzgIeZZ8xzcLJX9jMOLIuWyRrwUZ6GwnLlj/fc+ME07gml8NRSVmIHisZDZVlsXiuacQpdcxoym21Opz92a9Rg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -194,146 +148,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-> On 22 Feb 2026, at 09:48, Gregory Price <gourry@gourry.net> wrote:
->=20
-> Topic type: MM
->=20
-> Presenter: Gregory Price <gourry@gourry.net>
->=20
-> This series introduces N_MEMORY_PRIVATE, a NUMA node state for memory
-> managed by the buddy allocator but excluded from normal allocations.
->=20
-> I present it with an end-to-end Compressed RAM service (mm/cram.c)
-> that would otherwise not be possible (or would be considerably more
-> difficult, be device-specific, and add to the ZONE_DEVICE boondoggle).
->=20
->=20
-> TL;DR
-> =3D=3D=3D
->=20
-> N_MEMORY_PRIVATE is all about isolating NUMA nodes and then punching
-> explicit holes in that isolation to do useful things we couldn't do
-> before without re-implementing entire portions of mm/ in a driver.
->=20
->=20
-> /* This is my memory. There are many like it, but this one is mine. */
-> rc =3D add_private_memory_driver_managed(nid, start, size, name, =
-flags,
->                                       online_type, private_context);
->=20
-> page =3D alloc_pages_node(nid, __GFP_PRIVATE, 0);
->=20
-> /* Ok but I want to do something useful with it */
-> static const struct node_private_ops ops =3D {
->        .migrate_to     =3D my_migrate_to,
->        .folio_migrate  =3D my_folio_migrate,
->        .flags =3D NP_OPS_MIGRATION | NP_OPS_MEMPOLICY,
-> };
-> node_private_set_ops(nid, &ops);
->=20
-> /* And now I can use mempolicy with my memory */
-> buf =3D mmap(...);
-> mbind(buf, len, mode, private_node, ...);
-> buf[0] =3D 0xdeadbeef;  /* Faults onto private node */
->=20
-> /* And to be clear, no one else gets my memory */
-> buf2 =3D malloc(4096);  /* Standard allocation */
-> buf2[0] =3D 0xdeadbeef; /* Can never land on private node */
->=20
-> /* But i can choose to migrate it to the private node */
-> move_pages(0, 1, &buf, &private_node, NULL, ...);
->=20
-> /* And more fun things like this */
->=20
->=20
-> Patchwork
-> =3D=3D=3D
-> A fully working branch based on cxl/next can be found here:
-> https://github.com/gourryinverse/linux/tree/private_compression
->=20
-> A QEMU device which can inject high/low interrupts can be found here:
-> https://github.com/gourryinverse/qemu/tree/compressed_cxl_clean
->=20
-> The additional patches on these branches are CXL and DAX driver
-> housecleaning only tangentially relevant to this RFC, so i've
-> omitted them for the sake of trying to keep it somewhat clean
-> here.  Those patches should (hopefully) be going upstream anyway.
->=20
-> Patches 1-22: Core Private Node Infrastructure
->=20
->  Patch  1:      Introduce N_MEMORY_PRIVATE scaffolding
->  Patch  2:      Introduce __GFP_PRIVATE
->  Patch  3:      Apply allocation isolation mechanisms
->  Patch  4:      Add N_MEMORY nodes to private fallback lists
->  Patches 5-9:   Filter operations not yet supported
->  Patch 10:      free_folio callback
->  Patch 11:      split_folio callback
->  Patches 12-20: mm/ service opt-ins:
->                   Migration, Mempolicy, Demotion, Write Protect,
->                   Reclaim, OOM, NUMA Balancing, Compaction,
->                   LongTerm Pinning
->  Patch 21:      memory_failure callback
->  Patch 22:      Memory hotplug plumbing for private nodes
->=20
-> Patch 23: mm/cram -- Compressed RAM Management
->=20
-> Patches 24-27: CXL Driver examples
->  Sysram Regions with Private node support
->  Basic Driver Example: (MIGRATION | MEMPOLICY)
->  Compression Driver Example (Generic)
->=20
-Hi,
-
-As I think this is about to be discussed in the conference, I thought
-to share some high level comments.
-
-I have tested this for some time on a device with compression (after =
-some
-necessary fixes for CXL RCD to work, that Greg helped me with).
-
-Overall, the isolation property that this provides is something I deem =
-necessary
-for this technology. Others are better placed to judge the MM plumbing
-itself, but I wanted to say that this functionality is an important =
-piece of the puzzle
-from the device/use-case side.
-
-For cram itself, as it is in this RFC, I think there is still =
-performance and
-value left on the table (as noted in the description), but I fully =
-understand Gregory=E2=80=99s=20
-premise in approaching it this way.
-
-<snip>
->=20
-> Future CRAM : Loosening the read-only constraint
-> =3D=3D=3D
->=20
-> The read-only model is safe but conservative.  For workloads where
-> compressed pages are occasionally written, the promotion fault adds
-> latency.  A future optimization could allow a tunable fraction of
-> compressed pages to be mapped writable, accepting some risk of
-> write-driven decompression in exchange for lower overhead.
->=20
-> The private node ops make this straightforward:
->=20
->  - Adjust fixup_migration_pte to selectively skip
->    write-protection.
->  - Use the backpressure system to either revoke writable mappings,
->    deny additional demotions, or evict when device pressure rises.
-I have some quick hacks playing with these ideas but I haven=E2=80=99t =
-had the time
-to test it thoroughly and get to something robust yet. I saw in another =
-thread
-that there is a follow up cooking which looks interesting.
-
-Thanks Greg for pushing this, and I=E2=80=99m happy to test more on HW =
-in our lab.
-
-Best,
-/Yiannis
-
-
-
+On Tue, May 5, 2026 at 2:23=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Tue, May 5, 2026, at 10:54, Rosen Penev wrote:
+> > On Tue, May 5, 2026 at 1:29=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wr=
+ote:
+> >>
+> >> Does this happen with both ld.bfd and ld.lld? Which version of clang
+> >> and lld are you using?
+> > clang version 22.1.3
+> > Target: x86_64-pc-linux-gnu
+> > Thread model: posix
+> > InstalledDir: /usr/bin
+> >
+> > lld the same.
+>
+> Ok. I've tried to reproduce this with Nathan's llvm-22.1.3 build
+> from https://mirrors.edge.kernel.org/pub/tools/llvm/, but don't
+> see this problem on mips defconfig. Are you using a particular
+> configuration, or do you see this on every build?
+I use allmodconfig. And yes, every build. I'm using a fully updated Arch Li=
+nux.
+>
+> > I don't specify lld explicitly. I assume LLVM=3D1 does that.
+>
+> Yes, by default it will use ld.lld. For cross-checking, you
+> can try passing LD=3Dmips-linux-ld.bfd (or whereever you have
+> installed your cross or multiarch binutils), which should
+> still work just fine.
+Arch seems to not provide such a thing.
+>
+>        Arnd
 
