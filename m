@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3F0BCD3427
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 17:10:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B964FF8855
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 17:10:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D68CE6B00B9; Tue,  5 May 2026 13:09:58 -0400 (EDT)
+	id DE0876B00BD; Tue,  5 May 2026 13:09:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D19CB6B00BA; Tue,  5 May 2026 13:09:58 -0400 (EDT)
+	id CD27F6B00BE; Tue,  5 May 2026 13:09:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C08856B00BC; Tue,  5 May 2026 13:09:58 -0400 (EDT)
+	id BE0986B00BE; Tue,  5 May 2026 13:09:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A23E46B00B9
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:09:58 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6296EA0575
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 17:09:58 +0000 (UTC)
-X-FDA: 84734003676.18.7490FA2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AAC7E6B00BA
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:09:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71A4314057D
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 17:09:59 +0000 (UTC)
+X-FDA: 84734003718.05.6A8BE61
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 84A634000D
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 17:09:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=NddL6V50;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf07.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id A1DB21C000B
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 17:09:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=OSHLOw1z;
+	spf=pass (imf18.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778000996;
+	s=arc-20220608; t=1778000997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0iNiXafam+/e0hkdJzF6nIr0O4d4HoUoH1x5V8VkIAs=;
-	b=SjVRyOHpqrU5FTI3ozSwnoiAKaRFnp7/8AmqUAv+sfcr80Wbd3Ev1pFVhshea1KiqxD/t0
-	JgXRviR8rDcqMP4L2/4LIRKkK1PPyisAoPrb5ka6NakZeOJQ3fOxWge7dcujiEoq3Bn2b8
-	9wgGyer8fx7Bu/aCGr4bNiJ1IE0+3Fs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778000996; a=rsa-sha256;
-	cv=none;
-	b=W2O+YU5CidR14LIsvu34Zj/Rf5ww0Pc7qMkmYVUC1fP3uEufNIs2HzTEoBPbjE9IvGQKzn
-	veMDHcsV546MAU6NB877Ob9HPo9uxIGp5gSecNghtw1XIsQhVGMe/gcd0xyfcq+I3iQ4QR
-	fvhm15mv3Jp2gpxQOLsA98HThMCkANU=
+	bh=INT5iVx0BJhEgv/8g1hlou4GKubElqnqSOStPxLCWSY=;
+	b=BemHAO93SZ/nM6w8yJjBZ35uuj3PRVVpsIFxNN7skPKKJfOdscV5/veOn9VfPC1ktB1zHR
+	8l51fiyi2O+gVSVbkvhgqxFt/Kq4Z8CecefJOPIyaqkHIeJU0NXdKWzbDXWSzyDq9PG5S1
+	VX8jz1UL0EzLQKWeb0kl/KiEZc6F+xc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=NddL6V50;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf07.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=OSHLOw1z;
+	spf=pass (imf18.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778000997; a=rsa-sha256;
+	cv=none;
+	b=BZDpQYgn4ofD7ugG2ZSk4z3GtlXPEYxvVc+EDewWQO9USICOf2POkDX1BwiT3MVMTL5cGX
+	6poblRhA9J9YEWwymLpLxibmF1qGMVG3//WF+tn8pja+5dDdbSHS+cDxWGHnWudOaNDpqr
+	FLs0K0E9Tcgrz3nxi7/Zh0exgvKcseA=
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 5D462CFFFB;
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id C1410D0000;
 	Tue, 05 May 2026 17:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1778000994;
-	bh=0iNiXafam+/e0hkdJzF6nIr0O4d4HoUoH1x5V8VkIAs=;
+	s=mail; t=1778000995;
+	bh=INT5iVx0BJhEgv/8g1hlou4GKubElqnqSOStPxLCWSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NddL6V50gn9QHy1qO45QfNnsCGY22x/FGJ9pE4goYDRaBNmo5J1FEz/pCZ86C3hfQ
-	 bXOIi3qyfbj1qjkBuNbWqzN7Yja6FSueSZPaV5S5oU1HXvzY9z7SUhaiQWQKfOUvLe
-	 QG3eIABqUNEWkkCnlSPfPahP+NN2+iFMyyJjTW5U=
+	b=OSHLOw1zDhJR+x0r5tP3lBldueD1O2a5vME5r5oHVcjUs5p8dH/1Yr2pO1Qw54Nr+
+	 0YBFA6hi2CbPKnKzw+a/zlZteQUiGT6Leq4Udz8CuKYMktDxrfqYeYBrNnmfOv1Hrp
+	 u4pXd3jpKmhYH2W/lXI6NxVpRBNQJybvo3y89KTY=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -91,22 +91,22 @@ Cc: linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	Dmitry Ilvokhin <d@ilvokhin.com>,
 	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: [PATCH v6 4/7] locking: Factor out queued_spin_release()
-Date: Tue,  5 May 2026 17:09:33 +0000
-Message-ID: <64c202b8a76a7d98515cf10cc1f99ecb0a9a7ccf.1777999826.git.d@ilvokhin.com>
+Subject: [PATCH v6 5/7] locking: Add contended_release tracepoint to qspinlock
+Date: Tue,  5 May 2026 17:09:34 +0000
+Message-ID: <5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1777999826.git.d@ilvokhin.com>
 References: <cover.1777999826.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 84A634000D
-X-Stat-Signature: yc6f7e8dp5mbg77ufm51wg1x8hsqu1f6
 X-Rspam-User: 
-X-HE-Tag: 1778000996-137037
-X-HE-Meta: U2FsdGVkX1+WP6JYP5G8XodalRFvqtH7GWKUjkrQKh1EqHhXw2BmXPwHa0xsOhBPDW2ztr8JB6EqFW5DnZ9TxJp9NALcO4iN3w79UCVX/CDJiv+hTYgtP9pZK5lxzgA7ioSMWNuGXZeVmvGUq2bPrX1qFmku0Ig/G4m7+eQcQeZ4OD/xO1S6WGGrtYy3q4P4fVKPRxZyrpAVl3gW2+264NIyHzlHYOj1IEyJckwwsbcJSNw6jsVQnkt48kTdBuFXf+xO3p1hLwKlpeizy59AEAdLjk6dZH7LlGCJNkRYlC/FA+zMidwEwiarZAi2c67n5a3i86QSwvefbno+MaMGg7SGVEtqMrYeZqWwWejQIB6du1jLUWepaIKF7jPZgSoqqNn1IM+Zn3A+jd5P96ZbAfNnUKIaDyAcYHiayRaV78oQKc2FWHtGDI+Nqxtl6v4j/OueGgsJ3Q1DlEX66tWFCrEbuQEfgyeCxiZ9h0ed2hM5+VhDxZE9E39wMosrF4bSXpZu+iGPqjtfksHUaG4UHzAO6wCYcZWSCcpJWQZzPkkjXp/l664CpZ9UOpjjfchJkYul5w1Q0LD6HMAGDOBz/gIaSN08d9B+MEX0+0X/eQbWiaHffTSR/FRdUxbIAUQdBp4E7mAXVML4Q6UOs1WmQOMjJn0xjC9RvwS8qDi3XVOkN/DWrIalqamy3uTy/2rNNWoNP5HSiH1GmFjqbVqruOiSzWjhEKa6UqHEx9c3Bz149WP6SSnDNOFy4ZJ78OfqD0tDrnuRsfaW1VEEKjk3pjmpRu/xRmIOb1K3aREzMQMCXsG66Bl9Tn6I/HKuzpBbMjUBbdCoyC6Ma1I0l7QktvT2zj52PdENxQIKASFe0+d/4Pv+78zXdWrz99mtpYIMf4Wb3hBgbJGaRVU+UIM84akVLf1EBVOrxDbTnEdzbG7BUP0d/rQCuAIXKmCI0GMU+pdjbEtNO87gNQjFjgp
- JWyn3tx1
- ldcGF56QOgZFd3cgTPHaPhQXRqmgNAterl+GB08AI0KEXLon3VVfzYu65islLV6Y8j/5aQOJAwD59c4Ct3FtBxoadYlSmaw99w2QkvflqAD2f4Zcf/3i9UfVreFa5HPUZeciDe3TQHDrlAMee+Z515C3ERwO2JWLXiY8geR29AxnMz3mA0gC63dfgKaFVN0xj5L3ApVBTubNTA8EUxn15mQIse/D8qCTY1EWZtbMYUkHaOUHHtgDmMFACB3XgM97wzczp70PM6+RfJeTwj44lqEFAqcW/6fU0by/cUnug6T/lJFK+ExJD8Pw69/7dNEM084Q9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A1DB21C000B
+X-Stat-Signature: 1fz87hznefxa1gh7xsr6cumtxcj9nyju
+X-HE-Tag: 1778000997-215494
+X-HE-Meta: U2FsdGVkX19OwX8KOIgRr2sFk0GnRcX/KnVfJ+PaSjkczMxN/05v/do0qK2Z6xnqzBm9ML/Dcr2kcPwijQneujS10r71Ek4kj9nBGBHapFt2P4/aCyEoVwdaQlFd0LQQbfuTCgz3/Q40r3s1QzeNsjFEXIfLfzRu8zqbJT2x1RxPxN68IQd9RumoktOSq/A9FIEpHIW6l3Je8NyKsRZsbt9z/WRMpB8kJqkO2fBmVu48UkYZIXHbTL+J/BPBImwoMP8KvIA1zmI5spdfjMoicCkyx05uiKwpcbSaIeF38i063buBFcf6yH1V8Evt6+6X8yGxVDQCy4Uh7trEG57AqRaOKOEqvdnleC7N71l3J9rfa2eK/0VO4ZjsV97dBW0gN1zrueF/Rs/LAtULjbIjKeVrUs2kBNUzmondKPWhWwA5FBfCj0urBIdM/tibI6dnnH6pZp+XLS72oXytBPxGAaMO/V+5ZU9QDC4UgC9zQ8hCLUsQdqwjR1dltNU+5HAckbzfFu2AyOBnksPclfkXDBSsk8YSYWLnBwZytUkAWGCTzuQzluGaHrobdlX5ck+bwTcMVoz4Q0IQGeNelkiiPzjmrLa03Iv6mWEK9QHyZPbZcSDwE3+kSxSUMwWph8JscdWb1piihMW4YPhOMoMyv8G0om3HjLrex5lNjQxy2P/mt9gI858LLoTNLNVnK1ejkeD7ZHew/o6R/RJE6XVLXRyDNBHeBkk17wSWuNGL16QZX+kFwx+x5QIO73/1jUOMFX6k2myq34LqYkWAa7Tdac1L//HuYRKD/NnUhZHVpUuZ9k/JQ6C5VTkKnS/4GG3AW0wSYiuAb9bjEKrydjTTSfBJSn0/1t51YPmsJoj8e6ZCoyfRBZEU5BjtoDmn/He0R6Jxb32r5K4w7OaClephBWqpSM8Cfa0XhdWdN2bbSm5BPkrSn8GQoLsc735JJWpUXtYfLkV93lIqDkeTEgK
+ QQnzEBoN
+ 5WsitI34UEZMpl5x31t0PlHWB8Qnmzxl7e8jp5bxk4IqgfXQiaeTSZjDqp2wKPBmo8VBpZ0vNehJyUG/blJLOA6XhhxJ8d05YI/ZPLBjVVpLa2yE+i8ug9fwU00ck9eICUIgIvOCgGdf7miwFJk25Ek9iUnzn2xLw7cqoo54Ee+LevBs/HRUe8UpwSDlwkWuJFtYltqSWWoFbz08B9+azFlrnnpn8ROiA80vdNRs6HNJzrNsGqRoyZ8MBKqH1ga3Qq2RjqE9I5qbDM7jrdtjofkrcQStO0GXS/UER+op/ZHxEPQCi3npHuXh/PQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,106 +114,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce queued_spin_release() as an arch-overridable unlock primitive,
-and make queued_spin_unlock() a generic wrapper around it.
+Use the arch-overridable queued_spin_release(), introduced in the
+previous commit, to ensure the tracepoint works correctly across all
+architectures, including those with custom unlock implementations (e.g.
+x86 paravirt).
 
-This is a preparatory refactoring for the next commit, which adds
-contended_release tracepoint instrumentation to queued_spin_unlock().
+When the tracepoint is disabled, the only addition to the hot path is a
+single NOP instruction (the static branch). When enabled, the contention
+check, trace call, and unlock are combined in an out-of-line function to
+minimize hot path impact, avoiding the compiler needing to preserve the
+lock pointer in a callee-saved register across the trace call.
 
-Rename the existing arch-specific queued_spin_unlock() overrides on
-x86 (paravirt) and MIPS to queued_spin_release().
+Binary size impact (x86_64, defconfig):
+  uninlined unlock (common case): +680 bytes  (+0.00%)
+  inlined unlock (worst case):    +83659 bytes (+0.21%)
 
-No functional change.
+The inlined unlock case could not be achieved through Kconfig options on
+x86_64 as PREEMPT_BUILD unconditionally selects UNINLINE_SPIN_UNLOCK on
+x86_64. The UNINLINE_SPIN_UNLOCK guards were manually inverted to force
+inline the unlock path and estimate the worst case binary size increase.
+
+In practice, configurations with UNINLINE_SPIN_UNLOCK=n have already
+opted against binary size optimization, so the inlined worst case is
+unlikely to be a concern.
+
+Architectures with fully custom qspinlock implementations (e.g.
+PowerPC) are not covered by this change.
 
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- arch/mips/include/asm/spinlock.h         |  6 +++---
- arch/x86/include/asm/paravirt-spinlock.h |  6 +++---
- include/asm-generic/qspinlock.h          | 15 ++++++++++++---
- 3 files changed, 18 insertions(+), 9 deletions(-)
+ include/asm-generic/qspinlock.h | 18 ++++++++++++++++++
+ kernel/locking/qspinlock.c      |  8 ++++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/arch/mips/include/asm/spinlock.h b/arch/mips/include/asm/spinlock.h
-index 6ce2117e49f6..c349162f15eb 100644
---- a/arch/mips/include/asm/spinlock.h
-+++ b/arch/mips/include/asm/spinlock.h
-@@ -13,12 +13,12 @@
- 
- #include <asm-generic/qspinlock_types.h>
- 
--#define	queued_spin_unlock queued_spin_unlock
-+#define	queued_spin_release queued_spin_release
- /**
-- * queued_spin_unlock - release a queued spinlock
-+ * queued_spin_release - release a queued spinlock
-  * @lock : Pointer to queued spinlock structure
-  */
--static inline void queued_spin_unlock(struct qspinlock *lock)
-+static inline void queued_spin_release(struct qspinlock *lock)
- {
- 	/* This could be optimised with ARCH_HAS_MMIOWB */
- 	mmiowb();
-diff --git a/arch/x86/include/asm/paravirt-spinlock.h b/arch/x86/include/asm/paravirt-spinlock.h
-index 7beffcb08ed6..ac75e0736198 100644
---- a/arch/x86/include/asm/paravirt-spinlock.h
-+++ b/arch/x86/include/asm/paravirt-spinlock.h
-@@ -49,9 +49,9 @@ static __always_inline bool pv_vcpu_is_preempted(long cpu)
- 				ALT_NOT(X86_FEATURE_VCPUPREEMPT));
- }
- 
--#define queued_spin_unlock queued_spin_unlock
-+#define queued_spin_release queued_spin_release
- /**
-- * queued_spin_unlock - release a queued spinlock
-+ * queued_spin_release - release a queued spinlock
-  * @lock : Pointer to queued spinlock structure
-  *
-  * A smp_store_release() on the least-significant byte.
-@@ -66,7 +66,7 @@ static inline void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
- 	pv_queued_spin_lock_slowpath(lock, val);
- }
- 
--static inline void queued_spin_unlock(struct qspinlock *lock)
-+static inline void queued_spin_release(struct qspinlock *lock)
- {
- 	kcsan_release();
- 	pv_queued_spin_unlock(lock);
 diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
-index bf47cca2c375..df76f34645a0 100644
+index df76f34645a0..915a4c2777f6 100644
 --- a/include/asm-generic/qspinlock.h
 +++ b/include/asm-generic/qspinlock.h
-@@ -115,12 +115,12 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
- }
- #endif
+@@ -41,6 +41,7 @@
  
--#ifndef queued_spin_unlock
-+#ifndef queued_spin_release
+ #include <asm-generic/qspinlock_types.h>
+ #include <linux/atomic.h>
++#include <linux/tracepoint-defs.h>
+ 
+ #ifndef queued_spin_is_locked
  /**
-- * queued_spin_unlock - release a queued spinlock
-+ * queued_spin_release - release a queued spinlock
-  * @lock : Pointer to queued spinlock structure
-  */
--static __always_inline void queued_spin_unlock(struct qspinlock *lock)
-+static __always_inline void queued_spin_release(struct qspinlock *lock)
- {
- 	/*
- 	 * unlock() needs release semantics:
-@@ -129,6 +129,15 @@ static __always_inline void queued_spin_unlock(struct qspinlock *lock)
+@@ -129,12 +130,29 @@ static __always_inline void queued_spin_release(struct qspinlock *lock)
  }
  #endif
  
-+/**
-+ * queued_spin_unlock - unlock a queued spinlock
-+ * @lock : Pointer to queued spinlock structure
-+ */
-+static __always_inline void queued_spin_unlock(struct qspinlock *lock)
++DECLARE_TRACEPOINT(contended_release);
++
++extern void queued_spin_release_traced(struct qspinlock *lock);
++
+ /**
+  * queued_spin_unlock - unlock a queued spinlock
+  * @lock : Pointer to queued spinlock structure
++ *
++ * Generic tracing wrapper around the arch-overridable
++ * queued_spin_release().
+  */
+ static __always_inline void queued_spin_unlock(struct qspinlock *lock)
+ {
++	/*
++	 * Trace and release are combined in queued_spin_release_traced() so
++	 * the compiler does not need to preserve the lock pointer across the
++	 * function call, avoiding callee-saved register save/restore on the
++	 * hot path.
++	 */
++	if (tracepoint_enabled(contended_release)) {
++		queued_spin_release_traced(lock);
++		return;
++	}
+ 	queued_spin_release(lock);
+ }
+ 
+diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
+index af8d122bb649..649fdca69288 100644
+--- a/kernel/locking/qspinlock.c
++++ b/kernel/locking/qspinlock.c
+@@ -104,6 +104,14 @@ static __always_inline u32  __pv_wait_head_or_lock(struct qspinlock *lock,
+ #define queued_spin_lock_slowpath	native_queued_spin_lock_slowpath
+ #endif
+ 
++void __lockfunc queued_spin_release_traced(struct qspinlock *lock)
 +{
++	if (queued_spin_is_contended(lock))
++		trace_call__contended_release(lock);
 +	queued_spin_release(lock);
 +}
++EXPORT_SYMBOL(queued_spin_release_traced);
 +
- #ifndef virt_spin_lock
- static __always_inline bool virt_spin_lock(struct qspinlock *lock)
- {
+ #endif /* _GEN_PV_LOCK_SLOWPATH */
+ 
+ /**
 -- 
 2.52.0
 
