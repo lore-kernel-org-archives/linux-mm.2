@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C63FCD3439
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 16:07:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13AD3CD3427
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 16:07:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 123736B00B8; Tue,  5 May 2026 12:07:35 -0400 (EDT)
+	id 800F86B00BB; Tue,  5 May 2026 12:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0868A6B00BA; Tue,  5 May 2026 12:07:35 -0400 (EDT)
+	id 78AE86B00BC; Tue,  5 May 2026 12:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB71B6B00BB; Tue,  5 May 2026 12:07:34 -0400 (EDT)
+	id 6535F6B00BD; Tue,  5 May 2026 12:07:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D7BFC6B00B8
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:07:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B3C9160519
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 16:07:34 +0000 (UTC)
-X-FDA: 84733846428.25.E95632E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DFE56B00BB
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:07:39 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB8221204D9
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 16:07:38 +0000 (UTC)
+X-FDA: 84733846596.04.DD7BB49
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A18AF40005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 16:07:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=QrACWux+;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1012918000B
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 16:07:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="QBjPJi1/";
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777997257; a=rsa-sha256;
+	cv=none;
+	b=Jz5EM0M0NUWlvcmHQ1j6cj31w9hCDlg0QZqr87Y6N7dnGyeGLzMG0efc8uchrHS4LFerSM
+	dVb67HYP27HCc63eI/fooQjhhMD2eJ7GTG/hpaAnRo26MxT3VWYgHBVf/k2gSZsVkaeFwC
+	s5cFh1T/ymQjf2BI0D70bepdxmP3RYY=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="QBjPJi1/";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777997252;
+	s=arc-20220608; t=1777997257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JyLQGMkLmMn06vm/kkUNE0GYCDkx/TFdUtarmzqVG64=;
-	b=B+GP2Ruy0p88icFE8ozxH7DtC88fId5u6F5h8Ead4oOa4wOjoRBousqRPyd3P1+UBFYFxX
-	gKKe31e004100ApRBzVx/oai8rzfYAzIMuEnYa4kJr4hMrC76IV4QasriRq5Ha+58+dQun
-	JMbroTHuSOCMrrQdqahj6fMc/ewwExg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777997252; a=rsa-sha256;
-	cv=none;
-	b=4NpZEBrHzKZCKCpDShqj8u09MAK4TdmySK0T7U3wIm9FH25yO5xEp6wwRS89m/LenzUHpx
-	PpBLjo5N1RVIhY9Tl5pJ0qE/yS9E6pX1T8A3MtupG5EHGweGW+gYATvT7S6TUT4KZN3u7f
-	g7IGhcK40p1KqmWK337mEiAOhwrfXQ4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=QrACWux+;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	bh=+eFixALF8IfZDLn5dYxAZaBxp0Au+o7lxcNtP4hjAyA=;
+	b=fv/tiXsekIqJcWQdq08PBNPPr4vajMpS10VIFiWA0aHRBMsyvtkeoXle5aFbHTiMA98Uu8
+	gZZ0PEzmmfbGUa2FMw56ShP/XJ1k/JN/wTArkQ6XUngTBSIzMgVKC2ZMXqoEapEozra6Jy
+	IuwfLQKwIqzKfz+D6lVGENGJXrHGISI=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5573714BF;
-	Tue,  5 May 2026 09:07:26 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C3F7F2681;
+	Tue,  5 May 2026 09:07:30 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9011F3F763;
-	Tue,  5 May 2026 09:07:27 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 095793F763;
+	Tue,  5 May 2026 09:07:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777997251; bh=MOxM3vj0X//2zRrReh8Xv1luWs/InsWdBVDg3Ey3JTw=;
+	t=1777997256; bh=vsdMinjHcw7GB4qy8/zKnMf5FynOii1ipwLVdyRi5mc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=QrACWux+Y0e2K3EB4dQ7OfahSAZWS7apJujrQYH3+VtcK6VrCu25MCrxGajhZThFz
-	 0zFMzv4GrRq/SYIfiVdgptbZCsUw49e8E6TojIYQO5ZpcAxCyreRiHjrzF/EJIBxu1
-	 LFv2lWwSNlblRRrPZ5ria2ajVmU2dqe/7l+nn6bc=
+	b=QBjPJi1/0E6z+g6gZwqAfQI1WFbSt7qKOfeB6GB7Sy4KN1Vsg5eydjZPUYNhQIRfb
+	 Wj8+LjWxcg0xWmlygab+4pg/br0GqkucMOpztsOW2iTVEzcGFCHmWIKduD4W502UdX
+	 QTfoui8eRm+3OK7vvJ7Xuk40egUaUpB0IAOdjR4s=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 05 May 2026 17:05:55 +0100
-Subject: [PATCH RFC v7 06/24] arm64: set_memory: Implement
- set_memory_pkey()
+Date: Tue, 05 May 2026 17:05:56 +0100
+Subject: [PATCH RFC v7 07/24] arm64: Context-switch POR_EL1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260505-kpkeys-v7-6-20c0bdd97197@arm.com>
+Message-Id: <20260505-kpkeys-v7-7-20c0bdd97197@arm.com>
 References: <20260505-kpkeys-v7-0-20c0bdd97197@arm.com>
 In-Reply-To: <20260505-kpkeys-v7-0-20c0bdd97197@arm.com>
 To: linux-hardening@vger.kernel.org
@@ -94,21 +93,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
  Vlastimil Babka <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777997220; l=2082;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777997220; l=1853;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=MOxM3vj0X//2zRrReh8Xv1luWs/InsWdBVDg3Ey3JTw=;
- b=LKWr4GHr99s7/QBCdOuZ6gEkPmdJUkk1OU+MXQ3fEB9VccuWTmIyKlZcu/hln9mzCyXSHDTAF
- aQ6uKrhEOvzD3qpExIHCeggVVyPxK3SEFqBjkQ07Zt5WEDMBfaKIb+7
+ bh=vsdMinjHcw7GB4qy8/zKnMf5FynOii1ipwLVdyRi5mc=;
+ b=YBDAiLc0c0CP2NKo/JSszSKF7du2V36TkWN1C4UOrXRjhGYQiUyPZQC71YJJSGHiWLLjGV37Q
+ OI7SIwdrXcUDMdx+2/bPXExdgKENQYI1XV3lJ8zGfvLKCiGBmcFMvsq
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A18AF40005
-X-Stat-Signature: hbx56yym5e8wnqdzaxtd5n8bdn4idpqx
+X-Stat-Signature: yeng8x337hd1s9ngiyptkpzm3ofbsorn
 X-Rspam-User: 
-X-HE-Tag: 1777997252-927926
-X-HE-Meta: U2FsdGVkX19Xcexepd/rz1RWL+CDdZFClutk9JDo8oUc4e+9HtNlhMiz0X5O7peDj+bY2bWzgG7UAalPQxS+Ro7wMihmfnJn18v2uF8rXi+mrrVmsN2zvw7kR/QFhgn+82Lb3bEGnvd8Hq0JZ7yBLDY9EfoxoBGigTnnNjiSeE8GH6XhkVHcozYOSSo0WnHucVHcY1aoQCceb2q0OR/jVCFpV15vDz7zRVBwN3fAFDLc9O8VaoaTvtQbKjFZ9ce0WBzYoLaz9XcEmgYBa3p4xIEfxwHR0RCYeZVSGyG9Y2FjVku6mUj6Sf5DYs2QTIc0CIl67D4To1YI8J/mpuZsfMZsbtmyxrNJqw8cwt6O9vsArheIa5TXeAM7Vkiyuu2ed37zmE4QndgSqvWaBr1Cw/preo6cHZVu+ijwKVI1iMlAua4j6KNf7+dP5FABqHoiSu/ucfejaMatO6tV/Udw0haMeCpI0rgxVPQB0AmbC/GmJtbRzpLSGnqT6quVDkj33lDbQ2UB1GVqYSQ+kVLr5XtJLYvKSdqefgJp5XXzEf62+fjNi9dMGjUoNI9OiwWNX6MQPkqT9BaHs3Eo8ZQXrtWvaL+TLKuwu1AgrjJtMnQmbr205fD4arIvvk9bVVWnkKDzyeMgRtzhFoOuelyP3ACaoyuYDoCi4nwaRT5QJIzWSycbAeg4xabC8IptWn8aVu/cJGbWFuZ0sWZ9lGaTTskIrRA3nuQrUCWjFeMOYLO7ZTqlO9veDBmFFsUt9rqJxT2wzEbRalHLFSIp5qRALuZ0yHtOtXhYz6fc/r4u2BvMgOhOt4oTIfOQ3WAKi1VZAmyTNOdhJdnEyVt/At3H2c3M+SpMG4uifWll/X92vm9Aa1+/NolIIhh69cnam3jQd8SnaZBD571bDlC4Bsu1empNT7jmOeEKjKoms2AFAuWmT/cAqlZcNI9uJpT/4jT2uhrtTXyjjKP/O407KJ/
- K2xl/1Y9
- tbWKpfjRTQ5qismmuiHS7H7OsAtBYwxsUvCbb9dWmSc5VnGXTGIP2UsZwcjDwd3dEsLGjjqa5GAioLLYGCUuWj7Q5QWWVTxLwnPn2Y/VrocHek1KRzqyeYBeGjzYXO/0N9t19dHxp/A6p0EOfIO63sV504ICE9YXEAVQbOpS0qwUWsvaptQGmcTLdg1onDeQa89XG8I5uMGpaxjNDeSEv2Uo0L981VkdfnVe5m1vc8qL8+OrLJajm/K8iBSJjbCJvWZfHU+eodBh9pgJVokcHV6/TgqTxhjS58MW3hPCKEYrkea8ahvbbY/Tv/+5u19H14gAs4K8yrKUizYMk4DTmzZ0/yQ==
+X-Rspamd-Queue-Id: 1012918000B
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777997256-16360
+X-HE-Meta: U2FsdGVkX19/Ogg5vNL+4KGTnn0I7pBwZqCrgsH/FNLkSi1osAfWQ6bkMMqq6MS5l+2WJtuMzbUlOl5K7qOm6TUOzdljcq6UrZrsSc2J1mtp4DsN8bv7DtQzPV18q9OZWH9flNQBHUdlX+asXK6kPHgJiDVx6yth95BbJ2t6qA6xNHu+fiyX5tuQAle2LwxQlFTYew9UNDGLHVE2FumJV0K/XFD6K+pVVlsLOH2VVuUSqnnwjgCon9fgY8pUC2gbiAluijH53RX3EahyYBNApc752FNJ0210bedU8Vy1OMKLGCaFO0d5mT+WM8FlBy4nVNOvW3k20TihkQkelJGwArOTkqr1031bXPUkZm9WTAu/a0v8DB6S+wODTwufz2vJkjCrlgiQHrhWxSeh2rdXgN61ACAWmcHUrjqj51yVTUd0FsaZ+i3YBjMUa/O1f2bdVpNFsj5gf3KNeiSm4ooOtwTEc0SfSmmT1zB3qRyAGpH/Y/ThRW0IFxHFrC3x7+xm1+2WcKs3p1GboV14wxiiNG4qTdj0QyfGQxD9Sclmg7sT7rRcEVno6VglHD9jVqxu1kSdfyS9MSBAZ+YpdlsR0uCK3IyQ83lrrLqL8Rf2LViZ0kgxdxEHjnzuF/MHnRaHINfp73VtnWIUPDLEpV2eikeDW7zJw/EyhEFu9NJKWtIK9Livg/m4mXppQu8LHU1VsriPU4Aq4sRzatrb/iiX0m5nIQybLr48oEHcX9/GvuZK2k30K8M0PJ9gN3YcbeIGtFjw5/H3Jx7QoJ1r4+OAdhwRj6RJ9jBZ/TM0u4Z/YJO+gkNTD8F4bVZYDBYYO0VwDfgvH3GJqI1PxyOmqANsVPAohegUm2G2gmEWhHDm4YIJFDX65nDCxAYzuf8ZUUk1pP9DTUttY/tuvmXq5xN16KYs+1Xgrhezd9K9kt7XDGJCecyfElLsHZM4MtWZTc3KfE5GPLh3vVAJWoBr/bE
+ lq0/bXy0
+ 3MFU+0EHe28RUa/ax1/Piwppn3ZLcDH5N+adkdUsihzFAVNgvBjjWhUO5dGFntwD+Llt2ae+5q5wj1N3z7jdTph6JIbZraXPFjhYyTckNkWTV65CWOP474c751erLf9/3cIq2J1ymIIZ+vw0ZbHesr9SIQC0MXCOf0qVeMGkL1aE9l18KPcr6G1w3HVsd6+dBsPfzuf0TK8EYXYfhFEvq1er6qCXTCpsP2NejOKU/NpWfHF5F072svP5cqyAtvP+DQv/6x95R8G6tm4lrQzLO4xhnvTOHhPnUbCJLb/yl+fzsR/Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,71 +115,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement set_memory_pkey() using POE.
+POR_EL1 is about to be used by the kpkeys framework, modifying it
+for (typically small) sections of code. If an exception occurs
+during that window and scheduling occurs, we must ensure that
+POR_EL1 is context-switched as needed (saving the old value and
+restoring the new one). An ISB is needed to ensure the write takes
+effect, so we skip it if the new value is the same as the old, like
+for POR_EL0.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/include/asm/set_memory.h |  4 ++++
- arch/arm64/mm/pageattr.c            | 26 ++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ arch/arm64/include/asm/processor.h | 1 +
+ arch/arm64/kernel/process.c        | 9 +++++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
-index 90f61b17275e..b6cd6de34abf 100644
---- a/arch/arm64/include/asm/set_memory.h
-+++ b/arch/arm64/include/asm/set_memory.h
-@@ -19,4 +19,8 @@ bool kernel_page_present(struct page *page);
- int set_memory_encrypted(unsigned long addr, int numpages);
- int set_memory_decrypted(unsigned long addr, int numpages);
+diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
+index e30c4c8e3a7a..6095322343fc 100644
+--- a/arch/arm64/include/asm/processor.h
++++ b/arch/arm64/include/asm/processor.h
+@@ -192,6 +192,7 @@ struct thread_struct {
+ 	u64			svcr;
+ 	u64			tpidr2_el0;
+ 	u64			por_el0;
++	u64			por_el1;
+ #ifdef CONFIG_ARM64_GCS
+ 	unsigned int		gcs_el0_mode;
+ 	unsigned int		gcs_el0_locked;
+diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+index 033643cd4e5e..3ec387076588 100644
+--- a/arch/arm64/kernel/process.c
++++ b/arch/arm64/kernel/process.c
+@@ -466,6 +466,9 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
  
-+#ifdef CONFIG_ARCH_HAS_KPKEYS
-+int set_memory_pkey(unsigned long addr, int numpages, int pkey);
-+#endif
+ 	ptrauth_thread_init_kernel(p);
+ 
++	if (system_supports_poe())
++		p->thread.por_el1 = read_sysreg_s(SYS_POR_EL1);
 +
- #endif /* _ASM_ARM64_SET_MEMORY_H */
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index ce035e1b4eaf..ecdfaa9701e1 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -9,6 +9,8 @@
- #include <linux/sched.h>
- #include <linux/vmalloc.h>
- #include <linux/pagewalk.h>
-+#include <linux/pkeys.h>
-+#include <linux/kpkeys.h>
- 
- #include <asm/cacheflush.h>
- #include <asm/pgtable-prot.h>
-@@ -365,6 +367,30 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
- 	return set_memory_valid(addr, nr, valid);
+ 	if (likely(!args->fn)) {
+ 		*childregs = *current_pt_regs();
+ 		childregs->regs[0] = 0;
+@@ -716,6 +719,12 @@ static void permission_overlay_switch(struct task_struct *next)
+ 		 * of POR_EL0.
+ 		 */
+ 	}
++
++	current->thread.por_el1 = read_sysreg_s(SYS_POR_EL1);
++	if (current->thread.por_el1 != next->thread.por_el1) {
++		write_sysreg_s(next->thread.por_el1, SYS_POR_EL1);
++		isb();
++	}
  }
  
-+#ifdef CONFIG_ARCH_HAS_KPKEYS
-+int set_memory_pkey(unsigned long addr, int numpages, int pkey)
-+{
-+	unsigned long set_prot = 0;
-+
-+	if (!kpkeys_enabled())
-+		return 0;
-+
-+	if (!__is_lm_address(kasan_reset_tag((void *)addr)))
-+		return -EINVAL;
-+
-+	if (pkey >= arch_max_pkey())
-+		return -EINVAL;
-+
-+	set_prot |= pkey & BIT(0) ? PTE_PO_IDX_0 : 0;
-+	set_prot |= pkey & BIT(1) ? PTE_PO_IDX_1 : 0;
-+	set_prot |= pkey & BIT(2) ? PTE_PO_IDX_2 : 0;
-+
-+	return __change_memory_common(addr, PAGE_SIZE * numpages,
-+				      __pgprot(set_prot),
-+				      __pgprot(PTE_PO_IDX_MASK));
-+}
-+#endif
-+
- #ifdef CONFIG_DEBUG_PAGEALLOC
  /*
-  * This is - apart from the return value - doing the same
 
 -- 
 2.51.2
