@@ -4,144 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6338CD342F
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 07:45:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DEB2CD3430
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 07:47:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B5EC6B0005; Tue,  5 May 2026 03:45:56 -0400 (EDT)
+	id 8B84E6B008C; Tue,  5 May 2026 03:47:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8668B6B008A; Tue,  5 May 2026 03:45:56 -0400 (EDT)
+	id 8692D6B0092; Tue,  5 May 2026 03:47:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 755616B008C; Tue,  5 May 2026 03:45:56 -0400 (EDT)
+	id 758226B0093; Tue,  5 May 2026 03:47:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6463D6B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 03:45:56 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2CD6616034C
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:45:56 +0000 (UTC)
-X-FDA: 84732582312.09.A60DB4A
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 43F11100011
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:45:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fO5aEbzd;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.221.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777967154;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 638636B008C
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 03:47:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C729C403AD
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:47:56 +0000 (UTC)
+X-FDA: 84732587352.05.F6E7E91
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C5CFD1C0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:47:54 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J3WUI6GP;
+	spf=pass (imf21.hostedemail.com: domain of rosenp@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=rosenp@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777967274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pZn9gNDq1rFBKVWAUdRINblw7hBlw9EDaJdQ6N5Sg9E=;
-	b=LkYz0A3Z1FF1vSoFGtLb68zmktDlos9mY1b6P2g18g3IA2hqbVQMMURJ+lNdOX+pOoA2Pw
-	ntWBiyR8pXhanrfmss41fjYUMMQ7aAagY01PjVsaQpNqEvgb1vVfJad5XFSosx1XFcC8QG
-	6lZXZXL9OYOcYhAAm2dcQEOPmqzZSGE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fO5aEbzd;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.221.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777967154; a=rsa-sha256;
-	cv=none;
-	b=50UEM8dLRvoweWfojWQ/YSR/YzKH4Q85YK1osrewDG1ZshiJ1xEYUY1ZF/CXSOgb/GpnsP
-	3AQXVNs5iFf0/PgujYQUCaKpTSEeiWSSBnv9R7QFYEbu5wg4/hyUcFynAgU+t/zLemP+ZK
-	w4IosDQM0I50nOVoQ5ffkO7QTECAwv4=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43d77f6092eso2989308f8f.2
-        for <linux-mm@kvack.org>; Tue, 05 May 2026 00:45:53 -0700 (PDT)
+	bh=LrEQHam8DGEcHyD+7jduqW+Fi+mFl53/8fjm+HcTlGY=;
+	b=UcAKLHCbElGrUUcAoBaKLQ1Yzo78XwYDon5UnxK0de3biTCfJO/CAAk9b/7BPNV5r9lUm5
+	SVqAFz+BGI1/5ridUolc5TlVdTYPJEjGkMfNBIEyz6P9LlWacfyFI3fnMiQiR68Ing9ZvB
+	ut5JS/PRhw9hLru0LxPP6ffMrnfHKTU=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J3WUI6GP;
+	spf=pass (imf21.hostedemail.com: domain of rosenp@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=rosenp@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777967274; a=rsa-sha256;
+	cv=pass;
+	b=3F+mG1mtW1S4sxLc+y3k2GBt/1ENMhWVAbBFbj1sVrykKNdgFUYxQYp3+3l+K9g4h8Q3J0
+	5Y2ByPM2gg5tcNL7HHNqBkfgP5vIInqvFT60yN0trd/SUBVRgmA/LpCzXvw6YOqA+SiOVt
+	+R99ttd1gFfNzY4z8+Z/tSkMV655FsI=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-67bc6098640so5078705a12.0
+        for <linux-mm@kvack.org>; Tue, 05 May 2026 00:47:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777967273; cv=none;
+        d=google.com; s=arc-20240605;
+        b=beJjbrTJgNl82NkxQ3Bv91YhhvxWtb9r/QPGUrYDXPJxbsho5QzVN/JiEesGG1UxBg
+         2M+ka9eu/2F19C+Wgl+hjBkZ7/ubFRuCN+Ffn5C5o5jB1UOAdfD/lxCu4XnEOoKqgxxU
+         MsOuUBmBQYg7bpVSAzH8lVcNgZMl2vEGiVT4OwR7Cj4qItf9FuqiqHDSxF4MyRQYCmel
+         VjvesBm4cKiXsbsXIYtaf8MqsSn2rhI/Mg/gb04pK0//8ftkYupgHqA7SYHdKDxXEjK1
+         eNiOsmg+VPhDqUZQPsdoB1KkZS7AahrCHdxwuclk3egh1hM9mOE+W6Q7XgbY4qkvTaTD
+         W7Ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LrEQHam8DGEcHyD+7jduqW+Fi+mFl53/8fjm+HcTlGY=;
+        fh=+7l5ZePh2uEOQeb0jUJlb70iGG82g54gV+LCEjmmdBU=;
+        b=Bxh46D6zjt29GhMGHb2awC5nRZqZk60x5tkLMqweSemjvfscSS4vGF1L5+BDRC7OTl
+         mM7fHqzjGIFB2hXQ3uAWrLDh827bfDbONbY0635JV7lHSb7AfdnDSOnrdKaEtVCUEX4z
+         cIqCwdWp0hjHs+P26DJdEGzkspZ7ae6xgco/+iSVAzgA/ynu1MsRPTCVb0/nA02ndbT/
+         /wtFC84jUhmP7abZClK6QtNkjEUw7Icj3KCc5naHudQ2J6qv5M66uafwzEuAsoGggYl1
+         Eo9JFCtlEjwvdlq3eVzm13QbFKd0W04qE82dPud+2uKXql2KWWucE2Mq4n/vfb4ZoqWV
+         BGvA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1777967152; x=1778571952; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pZn9gNDq1rFBKVWAUdRINblw7hBlw9EDaJdQ6N5Sg9E=;
-        b=fO5aEbzdLbSbtSJnkQFV9aB0EN8I+ueKURV57HHJkEy1rIjY4jgOJS9pRCHlT39d7R
-         btf+Kk0/W69c9FJNAqsKKoncfCbgTJpF0MsG2xrKScFpqsy+Kyw8CpOUn/OzYaGnYMog
-         WWDqnT0gkqb2Vg+MW08MN/M7EJBobTdaeJHrn821kSAg8MwCw45+PjB40Sq1c91KbvuY
-         ur7WxFvJklKANP5ZAfXl+f2kuz10mn/U9mnWP0hKtjlXrM0iGAcCaRlyN7xiwJ1DJ/HC
-         Wv5oNYAlRBoh74IPEP3TyO3uvfULcU6LP4i6sjb958jvSXikONLTTmbCaA1a1dMLALT2
-         pMpg==
+        d=gmail.com; s=20251104; t=1777967273; x=1778572073; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LrEQHam8DGEcHyD+7jduqW+Fi+mFl53/8fjm+HcTlGY=;
+        b=J3WUI6GPvk7jWron+VFnp/CCtBVzKkoYAjnrIUnSwwNYVAKwqOTp5hcTJ8hyPpldoX
+         FwWWLlbP40rKbPWcrMts1o/HyliLeuiVN6npBn7AcqXD/0SSV2Mq7Xvwtw8LWKmYihRy
+         HnrSCwGpr0skMODNA+y2OH+oq4CL+xrqR9/BPjjUDXG1VEjdETgRm8aH19C37g822NlW
+         78zT94Sas4sc9HUqTpk/f1ctqChPMusXaDMeijCwmbzShzH+whnuBw7d1/kjixIJSAkP
+         Z9xjlJ7KbPbsVhpRfY6yJi7BybjZF4WZE9bSOJmWnCmU9gh7OUMdNTaDcvPJMmpTVheO
+         4rzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777967152; x=1778571952;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pZn9gNDq1rFBKVWAUdRINblw7hBlw9EDaJdQ6N5Sg9E=;
-        b=ejeO3b6aDZeovU7un6xAxemVtNg9qPpseEZt13aTW8wN/iyiYC1JzmukIB8+BXSBda
-         C6WFj4nZYLZAzCjJ7TSqEnNOLNROmhD8IXbr8SXSvhPkofGliHZCbNLVrandLJ5CTZhZ
-         Cb/7RqZg0UclGkvH7Bta9YtAOQymzL/ldidiZgEOV6SKPtkJ1E75g8B1uVjjKvn6wtlm
-         1GGEjMIa1Gu1UbBNrhiTKbT1dsrQqUdKJESBgP8v3clXUanxlTX63vU4f59egww3al5B
-         jJjjEauQkiBeFBZYkkIj6cZHKhVThp57aEX9JCrd5eKF/u2VWRM3RsUeK12MTIMSfqbu
-         t51g==
-X-Forwarded-Encrypted: i=1; AFNElJ9phq+SDKbAqUkkhAjGvb0q9eEmrG+EeoNbmDNkFYXx3yDX29yU8IVrbezHnaYzZ5h1+pXbbG4xsw==@kvack.org
-X-Gm-Message-State: AOJu0YyiF2cOLmbW3wMkVBrXJwtAdm6fS8hXjK2QO8NnMfTpLxQQ5l+y
-	hPftPoqR+kA83MrgQKiUjmyCFqsriAEO3PFvDFQB53Nyp2AttT9O9/YJLbGRTjLp/gM=
-X-Gm-Gg: AeBDieuGrxiGWjX/rgN2eZDJW7+vABxLAwS0oeIdrq1Tn2JBZwC/NihTVic/2YaEK71
-	lrs/hQRofHk/dpfv8DXcqZ3hrJqZ1x8B6UoGk8WVZWmoYWB+fE9rOBZdQ/GeOS2OXt3cqAu4Jzm
-	H0E649WJdOu6nGWBhb+Ad9y4epLe1+IK0f+601kjYLnUPCwPaIDXvxu+g1UKHR06riv2+goJ6WM
-	zveKkaqQxPdqMB8oLckcfPeZhZKsXQPkGtKJ2ylxX86DF/C63DLUYYOlr/7qK888AYLA4k2BuTo
-	1LeoW4pdp8IqdvwA3i3hxHtR6KZe6xGhJGbxm5GMcRObxejeI2KsUBaHq8si9CQTKAZs46K34fG
-	H3cOr3MPWdB1ZONEpNYrHEDHBxKLUY481I73iSPPDjG9Pq+zQ1+DATD8/Fvp298MnPjz0KKXdi6
-	4VC1ZY9GtbQsTJmSBrC67E4WkFYYbRhqC4DMukzV2Q/Km3
-X-Received: by 2002:a5d:5d87:0:b0:44a:2f78:e873 with SMTP id ffacd0b85a97d-450041b08d5mr3594275f8f.17.1777967152279;
-        Tue, 05 May 2026 00:45:52 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([213.147.98.98])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055d36dacsm2455028f8f.32.2026.05.05.00.45.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 00:45:51 -0700 (PDT)
-Date: Tue, 5 May 2026 08:45:41 +0100
-From: Gregory Price <gourry@gourry.net>
-To: Arun George/Arun George <arun.george@samsung.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	damon@lists.linux.dev, kernel-team@meta.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
-	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
-	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com,
-	gost.dev@samsung.com, arungeorge05@gmail.com, cpgs@samsung.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <afmgJcFUjQLYxkb5@gourry-fedora-PF4VCD3F>
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <CGME20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0@epcas5p1.samsung.com>
- <1983025922.01777297382206.JavaMail.epsvc@epcpadp2new>
- <ae_i9IlIndumJWN3@gourry-fedora-PF4VCD3F>
- <1891546521.01777455002601.JavaMail.epsvc@epcpadp1new>
- <afIKxG5mJZE6QgpR@gourry-fedora-PF4VCD3F>
- <1891546521.01777901881625.JavaMail.epsvc@epcpadp2new>
+        d=1e100.net; s=20251104; t=1777967273; x=1778572073;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LrEQHam8DGEcHyD+7jduqW+Fi+mFl53/8fjm+HcTlGY=;
+        b=WNM3PMA5c/qTSnZUXAp82od43iKXUalyyXurJpjbkERF40OVdgUbZ14Jldl1QHg2tS
+         +HsCDCzL2nCh0wnLg4/IAQcB3kGSaLX5b41KQXSTIs6ZFof2GbIpo/5pIwX93mAIK1fj
+         8D7LWLAg5notmtX7vaIUyN7nZibWJDSjzJhkVWWMikAWwi6oE/S0U00JTikFmr9lvM0h
+         lRUsHNElMIcSVgkok7lbX8e1vlQY4qfeXc9Uy03Vviz3tHs1mYgMyqSA3aDbS1pitJTF
+         /IEt5YIw3G9iQTZGFGeCdYqXTouqxiG1NNs7oyFNiFtvp85Qzp3kXJVkyENfnzrCx5Ly
+         vJbw==
+X-Gm-Message-State: AOJu0YysHuo8XR+qo0X394xSRbjbq6XiF4gdg8QWJFJ/pSt/yCg4npti
+	tof9Ru4kC4RVXF/xqD9j1n+eDorIUfUPjWhKEQibeah/X8KMZk0Cs3ahN6wox+YzRAJ2FQkokUg
+	3IFNj4LdH0G97Wde3KqCzfVKP3ToFS6o=
+X-Gm-Gg: AeBDietg/cLKYVrtheAqk3XYw1iUMH4648xXH6xaOY2Y2VznDntb3FiUBQp+XfHvXVO
+	cp6kbEVFiKXZOxwvdof5Zi1BPRnSPM6wo4qTLRMcjCiS7CZ3ySRQKFMOXrSAOOh59qdwN/DP1CP
+	n6QdZz3Z+hQcAW8LxzxVFcl7R0e2GofRLEc/WIEt+1Ft0GOdhO8/ZEdjpOMw7A/lJjco5OogO2Q
+	SLmwFRV9CArxtSjfyjuVR/PO9eQ10M57SSHIJlWiC0gROVyGv6UWFA7q3azBq6msV2Iu2119IMv
+	cC/z68KcQCtlsssmx1ejgeHaHumckny7ge42AkYeMZDsXjHrWZTsKDHK2Kf/dv+lWjN6nCsBGkm
+	x8dhioHdnbj96c6TU6TQbPzUq1kn+UrWP5ddtKtt13JcFfUjdXg25FhFhtlh9uOWwfdDx4w/IJB
+	dphNA=
+X-Received: by 2002:a50:fc03:0:b0:66b:f527:c69d with SMTP id
+ 4fb4d7f45d1cf-67ccab1cc90mr656287a12.8.1777967273017; Tue, 05 May 2026
+ 00:47:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1891546521.01777901881625.JavaMail.epsvc@epcpadp2new>
+References: <20260505010112.645361-1-rosenp@gmail.com> <0f11390f-e8bd-4f8d-aea8-59ef545b2c32@app.fastmail.com>
+In-Reply-To: <0f11390f-e8bd-4f8d-aea8-59ef545b2c32@app.fastmail.com>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Tue, 5 May 2026 00:47:41 -0700
+X-Gm-Features: AVHnY4Ktv2gBjkmdWbGk1dG2dc4G9oZ10kiw93sWZlLBrxmklnYBHgXj4r1U3So
+Message-ID: <CAKxU2N92s06-L0+e=KZ7EbtU50tCpaCk2MYJD2xTFEHEsAhXUg@mail.gmail.com>
+Subject: Re: [PATCH] mm: move phys_mem_access_prot_allowed to header
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Red Hat)" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 43F11100011
+X-Rspamd-Queue-Id: C5CFD1C0005
 X-Rspamd-Server: rspam06
-X-Stat-Signature: te7dyxijbnytuhgcpxaq16kjbydgg17u
-X-HE-Tag: 1777967154-271988
-X-HE-Meta: U2FsdGVkX191CmSF0n+MQvDjsmD7+rmuHoGZ5v7+R4tUrSwQe/NC9B9aClAgwV852FkP5ZDBSLpfadaLvxpFMpFUrsEBKT0zwZF+I39eKvdyZjxXTH83G64l0nyvP2vwKtQoojugGC3pZ7z+UyCD3oEx/0pHyRykICAX2nqX3Scy6ZDARyogXMXUCayANBvah/CV0Y31P2dNqXBpG2PBx67aTCukgiAOYXxDVAGKJZ3QRyJxgycAbREJ/44yg/79x1Y4i9/OLyKWS7dIFmLoZTVK/mGtgkcVF3ffuvzPiAjEz2Iuj9ejzz6xIB4bKkBrKhKh4pjyV/Ca52SbPTzh3jYAKGCU+MdA7Z4ovV9IOSc3aPmM4dJsDbSIXvKK1Bu/uc/sZCTtJ0Xc+S8yOWGM8ygEzFfqgsoephJt77Co9ASy6mtnEVczm7kI1EW/h2eLdGSofNMJgbB0qb964yNVlfHwwmfp/IWjtBdMJLp+7MPayL/pvHlmx0N0Qd1Tkr0a+NzgvTGqupVZLU/s+x0gXMeD+hzfZfUhahNE4U4fToZAr7YYRLyfjbcDRociJBbb9S+/WVirR2bX8Q4PumKs9W6EwBRNph+dZjd7uOctMddEpiFoq/ZOrXatNvUCM5AjOZFx4Ul+dw2MLM+YhC/wCh8ciYwk+rHHsvCpWfckbmpHkgggoz1qBQFxPxN0doGlBFwkVz9HpV19Hju6nJ0UXajLHehOCTafTttFHIj7Bj5I4EkrDu3UwDXvMqfiXBHltDG7QfreZlQijIAaKHZPtOEwgioC/5p1UPSBQmqJgwHWlqODPeGSPF3cpGJIGI3A2+9qFX8L+Dmiq7vxyYjElvGSc/rJ8CUIZn9eAvjrpdcuNpZDdmDizBVIA2fh/iNNOeGFdbuS2JHg9cZwFic9Ygcjmsv68+xyjxy0TtQTVpFRzQ/qaWUBomSD2p1ETfpC3Eur4YjtesoPR66VXvn
- MaprkJZC
- OKSPchTq/LhsGJQ+lVIlk+s3Gk7d/X3XSjtYfK7uhvtXxCBI7hmuhYX4DU6+vDiNNu3J4LXTuaIbT4Qe9kvtV4vGZk9EzZDkzc10PNy4MFrcWyrQ2ykrZHXTgZ8YMzGcFqwqgWxR7Ot3CYFkQPPBAW6ZlPgKz7hkhwX2nXqxCKlvOCw7zKZVqos76ERVhuaJb/Tqwzs2MpF8zy8ZrnR/as2R0ttnX5iwo0RpQA7VxpPwFYHQusQNMUc1N1elizaS5wR1xvMMvb+mV+RefR4hmZtp10rLl5zLcMGXZjGoyLXUL9nwEx53thq0IehrKpcNACZd0NLhxaP2JrveRHiRVt20gnSURx53bk7YaRC8cR2aZ4qc5lwTLmZrJjCzVvvbuvUUV0ZDTxjHgTKxc6vpoYFYyIA==
+X-Stat-Signature: 6u7sf3ifwjmmy7wpgwq8rmuo8cdkke49
+X-HE-Tag: 1777967274-978337
+X-HE-Meta: U2FsdGVkX1/IcWNXMgM/xIdg3VN6suKaJBzja+T8b215R1zJQ3aq09qJZLcz9InYZBkvjS16+G+JBJEjKqdYpvc+cvvDaAAjBl5y7/8wrnIXVTrEWQwNjPz5VwIYYvn5rxNsNDeuIEBzRNfLuASaMGzTug2IHNGf0M6L4Vt774ZVg7EEm5kfwC2VApu5zH59WYTsrgtok6iFMeATR2F7eEiKY1eK2GfXzS7dvFdbhuWT5fILfGP9L6TDWW8FmLwehuieg26JoXdZzxZgMd0bSnKzZF6Vz1EYw2HeFaJZ1zCZj3cQEhmITxIWfJ3UMrNhWlzi//XsaLcy6p9hs/+PcYc5uOPuTsufhE89v9J3fE7WpkL3Wdtkj5fsH24rUo0XCR6msHnyVkz4MkcsIECR8o3sQDIFbWIvihUU0MP3V6bOOHZDwZZ7YYlq3llDvZklinKTYc3W4Y9gax1EChbX6fSZnKSQN0FVWr9kEiJoobrRcn4Q6fuxTb7DAc0Sjsr4MP8ubO23OYcCeNjjsPoVx2DWZnsw0+rNDcsY8RRMDH+tPH7p13JJaX8GsYMTTkbuDRORl7k9+Q9zhdfbDR0YxTUkJ0XaRz2prFtRZTi+GJGQVlb8lWakRnvrdiqLko9cItTR6dF9Wen3WfG1sg/E/KW41tNI7Y0uilhXf9rYDKlZbL2OsDiglefN3JY6x6R/lyP0uBhfVo/uyWuZiCoon2Tl7Lb6MARe+sTrXdIrdwxpapZ8ExLk5aiVy5HHrKBvxkbLwDH7pmoNWw0YKijQTjmU735UBTFUc5pVMK2JBJJ+SY7hCiE0gfW0xgcsKUcB0ILvGvncA5Kwm0O5Ktd8k9065BfnNeb8Iv3hierw9Segtgzu/hUgmgdvs6M2U7qCuybpnZJAixOpMAgwZ5GFTmsoMU9ibs4fv2sDxqUdmcUWhlG/fBe+jVHx+KWITsf+fUnMZD9Svg2M9w6k+Ni
+ rXEJKjJJ
+ wvTTWScw+5u8iA8aiR4nOL4bTW8wf5i/S26QtZpEOspreI3gTA2Uy3ylJ+CjfrFvBceE0NIvtaENvv0BFNFXbhASvZsZ5emaQXG1zTN1xzM4rGt4P/n4mUY1dyfV0pxaZbwWekXRL6LBvelUfokVNWn3Ih7aPme5OP3nXKBUggfLIVAlYhK95iLO8hNlgoDGHrH7+2PM1J8tiDuLxQS4z+PWeLTGUlkRd1hyp0fXKvFPMoyVHaKj+kYMRRNhXsiICMG2BRQcnmGc5Pleccblc4Ty5XhwkALVYuEVxiPLgDE+7JMWkGjakqCdFEXi5cuCWudsp+Ybwmj9jrzVBElBfzWXrIbaaGFoVn0OBSkYaTmaJ3ne6mlSVRyWquGJXMzGFdehHmIJWFLBlNfaXFPcrXQBX38u9KpnRBLZTm3yXDR0n1TzAO44tgh+noRBS+LDjwSNbrIYDOzmePMRISgeiYTZ5ppplIyw5gTL39Vi3jPAHdQvvZI+a0TzTebiDvwdbqm8evI/Vryur/P6LMcRFH64T9ji8x26f4Cq3z6EW4NpDJ+c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,38 +146,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 04, 2026 at 06:38:54PM +0530, Arun George/Arun George wrote:
-> On 29-04-2026 07:12 pm, Gregory Price wrote:
-> 
-> But I see this 'write budget' (budget in terms of number of write 
-> operations that can be handled by the device, not capacity) to be 
-> provided by the device in control plane; not by the workloads in the host.
-> 
-
-In the scenario i'm talking about, a "write budget" is defined as a
-number of pages that are allows to be mapped writable in the page
-tables at any given time.
-
->   1) We can modulate the write budget depending on the actual 
-> compressibility in the device (and so workloads data). We don't have to 
-> do estimation based on the workloads.
+On Mon, May 4, 2026 at 10:54=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
+:
 >
-
-Barring the device causing backpressure to increase latency and slow
-down writes, modulating a write budget doesn't actually do anything
-useful.   Once a page is mapped writable - the CPU is free to write to
-that page uncontended.
-
-I think a write budget is "doable" but maybe a bit optimistic for an
-MVP.  There are many corner cases to handle, and I would prefer to see
-that as an experimental optimization.
-
->   2) We don't have to do the capacity modulation - as in ballooning or 
-> shrinker.
+> On Tue, May 5, 2026, at 03:01, Rosen Penev wrote:
+> > phys_mem_access_prot_allowed is only implemented for X86. For others, i=
+t
+> > returns 1. Move it to header to avoid using __weak.
+> >
+> > Fixes compilation with make LLVM=3D1 ARCH=3Dmips
 >
+> Can you describe what exactly goes wrong here on mips?
+Cannot find symbol for section 4: .text.phys_mem_access_prot_allowed.
+drivers/char/mem.o: failed
 
-You still need capacity modulation in some way to respond to drops in
-compression ratio.
-
-~Gregory
+It's full of similar errors in drivers/pci/ as well. clang on MIPS
+doesn't seem to like __weak.
+>
+> > @@ -239,12 +239,6 @@ static ssize_t write_mem(struct file *file, const
+> > char __user *buf,
+> >       return written;
+> >  }
+> >
+> > -int __weak phys_mem_access_prot_allowed(struct file *file,
+> > -     unsigned long pfn, unsigned long size, pgprot_t *vma_prot)
+> > -{
+> > -     return 1;
+> > -}
+> > -
+>
+> Removing __weak functions is usually an improvement, but I think
+> we can go further here, see the discussion from last year at
+>
+> https://lore.kernel.org/all/20250520152030.1499670-1-arnd@kernel.org/#t
+I hold no opinion on that.
+>
+>      Arnd
 
