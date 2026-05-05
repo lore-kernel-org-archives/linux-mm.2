@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78CE5CD342F
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 12:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D2ECD342F
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 12:18:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF8B26B009E; Tue,  5 May 2026 08:18:16 -0400 (EDT)
+	id C51796B009D; Tue,  5 May 2026 08:18:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A53D86B009B; Tue,  5 May 2026 08:18:16 -0400 (EDT)
+	id BDA966B00A3; Tue,  5 May 2026 08:18:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 858EF6B009F; Tue,  5 May 2026 08:18:16 -0400 (EDT)
+	id 942596B00A0; Tue,  5 May 2026 08:18:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 63F8C6B009D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7738E6B009E
 	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:18:16 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FBEE1204C8
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14F51140494
 	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:16 +0000 (UTC)
-X-FDA: 84733268592.24.976B735
+X-FDA: 84733268592.05.D3A2333
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C66604000D
+	by imf28.hostedemail.com (Postfix) with ESMTP id A6E48C0002
 	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=iKjdzuXb;
-	spf=pass (imf01.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=e1wY+P2W;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf28.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777983494;
+	s=arc-20220608; t=1777983493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9jk0sPM0F49+3xsbmn4sxo0rBP2j0R4q+y+vLeY7bZ8=;
-	b=UD5nvvwoqWa/J7rKMRoBbtmvdAxlPMBnd7fizkAxViUZNGG0UVS1N/lMsHfQYX2X3YwnS9
-	MJXh5Oj7u1inavtKM2Oh6BVUK9s1xIhn+UDr+knS3tqtr6+2qp3ms0t8Sxz1Is6TXd0S6o
-	d14eg/v8fICEcK7U2HJjUOgnAYFld1w=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=iKjdzuXb;
-	spf=pass (imf01.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777983494; a=rsa-sha256;
+	bh=k5ofOJ1moPTodwUkbfHb65qSUnojL/Rp9HGldnq8Qw8=;
+	b=7yF8BKmOwIO4WsGB2OLncbXXvxDVuEqOHqfT1kIf8WvP6GbQzPyDgRoD6zFdOvJB7hj3/3
+	MnFY1urf2Eix89D29i3uDUCqVTaO0EA/gajdi80cNUcBgGhxqnMkDuUcOaDUeh56BKf6Cu
+	hxC4SMEJlZXx/uP5IRbBd0HE2eIBN9Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777983493; a=rsa-sha256;
 	cv=none;
-	b=qpPXLzaDUVihcVYRolgfam1I25mFsEN8v0PG0HbZG0hwacjyVek19YBPP0Ko8N5C44MHT/
-	BPOoN9JfI7YB44Oo9yZg0iG2MbBIabCGs9FMN7ugaImCDnI4OmJyAvwie//4Eaz7Ft5rTa
-	APO1m13uxLUDXDSOa06IHvrkfpGOfJU=
+	b=DoAS7epfS+G+IzokFioVz9moS7PcT5joi3JMfosuj3P/CkuI0zSGLAJvwLGaGhAEG1kW9x
+	nR+fIzziQj6/0obYdycynlt8X5v0v71xsBpwuK7unim3sr54ufSZrCkPSZpbvWahIdjtj6
+	NyFY5TbWiIxPygFgv0daa3DV25ZncZ8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=e1wY+P2W;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf28.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
 Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644JlCCH1181000;
-	Tue, 5 May 2026 12:17:29 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6456dK0w2830434;
+	Tue, 5 May 2026 12:17:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=9jk0sPM0F49+3xsbm
-	n4sxo0rBP2j0R4q+y+vLeY7bZ8=; b=iKjdzuXbrhhlc+2Znc7c8kyL0c4RZpLnp
-	BsPiUnGfd5H1BpjtK7Ii1Hnbi2kO41H15cRcsI9xc9BSx+VqMV5WwkliFfvqo0zu
-	9pxpEBBfiriW0rrufpMrfJGziKG9HvVY09+A22EmBthGCtFTwWGBlkarsllS3+A4
-	50dRIK7E0oJk6E/WmfYq1gxXJ5zrZI/UFOVDqLzLv59lIzNKIaktsp3HFd1sg2jA
-	fuCOBiY6tfQ3lJ0cwz7l7IUSEZVUBRt8D+3pegzfXMiFx4lSFSr9/vOVQ7umGgVy
-	LclKif646wOdKpC4dgdxFuGAx8voNl8WQUASUzOk9R4NY61Ro0tew==
+	:mime-version:references:subject:to; s=pp1; bh=k5ofOJ1moPTodwUkb
+	fHb65qSUnojL/Rp9HGldnq8Qw8=; b=e1wY+P2WZuQUQXbFnRer74oVxovh+XLrd
+	+yp5CK6KX5mfum1cLjx1aoOH3iaY4ROEOJfEZMYPj4c4284r6/JbR7uIm/tgPTkp
+	Fdk2ILbq2mQhqpE6fxUpl6dwEvggLzTpOJ1tcWeDjdI97vadltUeGqiXp9rxlu7H
+	i03iZHF7zS8wuF8GwlpnnZMyA9sdGOcBT1zu7laZYiTyzSC/AXJ/kDynqWKAjn1m
+	8HAiFxFSgdmpX1BXQpKx1ZNYvSLBGta6geodvqr4elOxBL2OV9aIvdCEEf8u/KMb
+	hyGTgXhkHmJX3wU1qw7YD3ZWUn7B3sKCsjWlV97LI5UyJbqlUPyCw==
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7bj95-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7bj9c-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 12:17:28 +0000 (GMT)
+	Tue, 05 May 2026 12:17:29 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9okw028585;
-	Tue, 5 May 2026 12:17:27 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwuyw1m34-1
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9cg9028517;
+	Tue, 5 May 2026 12:17:28 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwuyw1m36-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 12:17:26 +0000 (GMT)
+	Tue, 05 May 2026 12:17:27 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHN1828836326
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHO0U47120820
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 May 2026 12:17:23 GMT
+	Tue, 5 May 2026 12:17:24 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0AD4D20049;
+	by IMSVA (Postfix) with ESMTP id ECB012005A;
 	Tue,  5 May 2026 12:17:23 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A16172004E;
-	Tue,  5 May 2026 12:17:22 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8BDAB2004F;
+	Tue,  5 May 2026 12:17:23 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  5 May 2026 12:17:22 +0000 (GMT)
+	Tue,  5 May 2026 12:17:23 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
@@ -114,9 +114,9 @@ Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
         Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
         Ilya Leoshkevich <iii@linux.ibm.com>,
         "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v14 04/19] x86/uaccess: Add unsafe_copy_from_user() implementation
-Date: Tue,  5 May 2026 14:17:03 +0200
-Message-ID: <20260505121718.3572346-5-jremus@linux.ibm.com>
+Subject: [PATCH v14 06/19] unwind_user/sframe: Detect .sframe sections in executables
+Date: Tue,  5 May 2026 14:17:05 +0200
+Message-ID: <20260505121718.3572346-7-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260505121718.3572346-1-jremus@linux.ibm.com>
 References: <20260505121718.3572346-1-jremus@linux.ibm.com>
@@ -124,21 +124,21 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfX0ihancRXGt18
- IJyGZUNmBcdxherEL9XDBqFi4UN2bl8lc7rvenJ4XR1yTQCEpuIGpBsBKpuLuN2FabrdAXx9j5N
- XM9G6pf5t5G/J+Yv6LavDjt/Y58BfuZQKUTMv2L89oFYLmGxMfSVMX5l7tU2gCGYGuCwIxjBdy/
- KNERiGkGifCQQs/YfrAQMXlvAfN2nMR8U4ADMEjRyqdA71NztLqpbFvJZkIxC7XBId/jUlZkHWx
- xQXUUc7aaOeyWYS1xhq+hv1hkZW2PbvvPzHd81xbcyNI8DtZz9x7rCTTddjnQ3fKG47ko33hk60
- VjuMCZJzdMWzyYtpFK4c/ImOgvHMZs4L7FFzquAwSX+GbWyqX//6heV+0KI14c374rhIWnAfXD/
- QPT2HNS6MiE02BAJy4h8bVOLLQPogUAYMOumG6h4CYOB3uOACP11bSOBqeYeHE0ohXCtMr9z9M+
- 8wW08tLZ1GXf69M7LHw==
-X-Proofpoint-GUID: 3xPfsk7dxks5BRMKUV_Iwiir8jU8tnjU
-X-Proofpoint-ORIG-GUID: hJbz80oBTd2cuT1HmERswDPItq9JtWhh
-X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69f9dfd8 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfX32jibKdZJZCs
+ ZePO5pCYnL9OPPWGB+AZwqGlPiDnBByysOkOSBVZvn8MiB3mja0YLF8/Ruf+NpxcjzsyqtRNzB+
+ gsfKQ2gwcFfF0IyoZqZAInphG1u+bRB865bCSXLOmW2y7Cg8leSRCSrPZB/sNT3YbGGNeWQIcWA
+ 09rflUMWCqfEDyGcK+2HK9GAQ1YxRS4u44QTN5yBBVIEeSxuaAAWjZJI/+FBKr5I97M93zRpsyF
+ cbJrdE9tBFzMujYhBpbYAytSKGl89pE/gR3QUUUenfmWMizQqJd+9HtrP57M2PWZ1If1CkXCXyU
+ 5vRtZKMsuWgN0Maon0OkBzppepywSd/Vme2iXJ4y2ZMzb3CZQps5NXfXqg/ekT7Bq5DpTEL3Fkq
+ y/Ku3HOQoJp/N+p9tNKW15ckxVVNXqOb0MToCl3Nr1xYZgZ2ELQ26OvOo5z+IW0nsv8MZUY5Rdp
+ lTlxGy0TmBroDdkqSeQ==
+X-Proofpoint-GUID: fzj9uFsf6c7HKjWKSDnaPdn2Yfv-VtP_
+X-Proofpoint-ORIG-GUID: PWKs1mmxDnri6Rb3HU6o6VZrxoTM0UrX
+X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69f9dfd9 cx=c_pps
  a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
  a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=pGLkceISAAAA:8
- a=VnNF1IyMAAAA:8 a=-G4kms3_kQfBhqX38bYA:9 a=2JgSa4NbpEOStq-L5dxp:22
+ a=VnNF1IyMAAAA:8 a=eNuN5pRUQDBy6NUwPKcA:9 a=2JgSa4NbpEOStq-L5dxp:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
@@ -147,14 +147,14 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050114
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A6E48C0002
+X-Stat-Signature: xankqf8jukdwd5u9nng9fshgc8xnugm1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C66604000D
-X-Stat-Signature: yrgtt3rf53tajyoc8r4q1ebkaxfuhcww
-X-HE-Tag: 1777983493-441966
-X-HE-Meta: U2FsdGVkX18o2iC3id4KYp9kMYE7knnSRINSnG7A2fagkwv/9WhMwrKlibANcBSGZxe3YydBrSBCHiwwTlbrz6dgEZzjQbbG/rYm5GBqywSpMn9yOm6iD2ZP9RgC7Ieik+b8LXUJm8F3Trg/ZGu3b5dhNvBBNcUgDjlhaFHpfI9aQn+5zPdLJ7RrqXfX7LHUCvhW9Sh60OjNg6IfnxanQrnecPwi9HrJEutrVX4QXSSP7K1tZxA6Pz7c/WKlAu7tUnsMKMtmDnYcjAqLm/rMdKqFJ/qlnav1s0j+8wbDvLSe/4z5t1QXEBmcJraoEj6P0TM+xvXMfi3jHmlPmE7MLlNjhkLFsgS1E3ZJ9hD8D+D1Bkrl3SzhYjd/p2YAClEzTHa/wqrh+M9iqI4/uVEyKTvh/x9YL7U/rC8x3zBAEgTbPlwjF4mFKf3OBoiLhYzXninBJzpYa8Iw+qwPF+jmD8hG1JofmkpgRgcHE8khBO4oYFNC+7quMr94DsdtwtJkbNuL83K9gLotvn+0B/btIpk++3pDWVxU50PHECzra5Msi5EtlAOXJ5dwdMURQ9ILpD90+2EKiCXVuCtzmvn+ixwF3svuOSds2VtMFK0PVc1H7zqrakKjg0tOr0xsdMKSuKhcYEtuSm095mprPbcFGxA7evnvlb4FllfBwRKgUNCZ7k1O+tUskp5Nk83iKNT0UDSax6leOLYGaVJRSrO3/U5lVptcXIs71a1eo5fMI4IP2Hluifkk1FuPy8ABQHdP+iSjaxEbgtqHbcVTYEq0bsAbnVA6EXTC5Gswk7yDR47OeobW8hJfJx2n+Tm7oeP0cuukXy5NI9dfahD0KlaEucNoSwfze7qKhR93ILLGTJhG1l+ITWUSnz5YUv4yDO9pbXXpAZi+eEgNyFp1T6UG4D4zupQlw9L9RMXNcOL1MRvXXDE3DG60NO6Jj5fG3cAtp9bwxvrTa/K3yy1wyEU
- U4Pvj50s
- 7TXGMAF0CLbcJ1/T02stXC+8c/mxPfWc+rOt6NlZjhj93ozkhpGeE4X+MyBD72lKAjbBk5J/tcSyMMK8x1xrMiGo3AqFWXS5yiXfK0zU6rvO2ZtxO6rOJJkoh/qAAPuURXeNyOhPAtKwwotTZqtnTwhj09htip9XIQssm3OOhUd8ywN39AX4ihqXp5HFSlvYobPZTHT+4UAjGUocarN+nuklSVRXJTEHDc808o/ed1LLJORt37DJqEfkG5CGV3Yyue+UO8CRLE2ja7rT+cxV5UqEX+FutHMYtvhCkNgWCz6w1UUICIVH2w+v/lHgMA0ow8t62c9o57d37RsN7DzTlyug2hcXF9rVpHtcS
+X-HE-Tag: 1777983493-162159
+X-HE-Meta: U2FsdGVkX19EDaFAwCwhJ0wzANOtZ7TsyDr+lVdK62q+8GD6Dc5RgQ5/dyJ8cltY2Gxl1hXeu7IoBVAiAoS7G5IY3e3/eN6G4AIsaeG9dr0q3Xii5hull87b48+bhGnaQA2J2R98S/DFedqQIb0D2z4uXi+Mz2Fs31tVHvGM2BzRy+IOpjo6H2Z55rdjqG45DpZKLzoz4PLl6WnGmWvQZHH8vSH1unmK6fanCnxvD4Sp0fzEuUl6tpnMzMhbJGBPrjydf7kPaD8NRrjWX0Jr/1fwau4BMTLmmRVhJFPtcLKHr2l3iCEf5Z1wSPOspMCC1KFORDNCNEa1LCXrnDHMYnraMIQ8mQSE7OYgS7DiS38DFVDwNdlRcLRPsWbcnUq4F0DIfMK1YkdcstCjbHDbluo6gMXqJ/Ylhi4xCNAlNdlN0g/9StKgkYjDtksM9zHlKPOKVlRsbASjH8Hea2NNIKj2EoRFISeCE3w/Mja5h0ZHjf2CekGZFLkQryuHqqBYF7p8ZEb0d2rbh1aGkAngQAnML9hhzGmfuRybz6m5ZDvpzuVgQDlSxcNeLlisspHynVEqZbH0ANpmJIpLFb6Ke4W1hxr2Hv0zlFYeRBYc4wPMbOwMCsZfG+8jDJinAS38u5VP/hlhFtJXb/fex28HXB8WAjpHSm5PnkvCz7nCjtzzJP0lv5hJcVgLeL9cflZoFu4s6VXPkbso0SKq094JTvbdBVL2qGlBdqfRM2xHbGFMUVbRrdVQpe5xX+WrUiOyjULOcUyooEvMVNIR764+aWo8+WMs08VkSMRxA5jmDV7WEDLey8bDD2s3EHVVTBXye99CZ54+flF8jqXMngtiCuZRLaMoxXbIDpAKsaeB3sBBSpmjxFFk3CnOIh1DrFf+NF4JmdsXnU7wFSh15OVFFUVhvljBaar0lCEOAyWGtX+QtteYJzjyji53YCZQMmIgy8hzznK1M03U2k5e4CT
+ I91beMvW
+ agwtHbFjOqHh27am6ZB+k4P49nG6hHvALhvpx9x2CE8WpgW/hlMsY5uGcG1xvwcZ9gkU7MXzxhh3Qn3+Ao64MYJK5fAVZ5Byf7HEUPbzMhSi31uPlwvj6o2mMVy8PUwtHPFZoWTa2oMXyT75VUMcpyjHFWuQuqf1eG2ZtIIM986fsUbTNZ3p0e42/Ag35R2372SxWnp9/59gr1zrMF0FXsMsrCfGgjCoTUTQifnKKfURVKQi7+U90m07jDhv+WOew9fBVfd7QOmJTIYjBKHZXj54DlP0qfMEPhQRTdihYZ38S6G32MkhVnudGooCGgJP+ZsPhZ/8Gq7M/m8g1+ymQI0wCMoj3u5B35t+w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,74 +164,141 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-Add an x86 implementation of unsafe_copy_from_user() similar to the
-existing unsafe_copy_to_user().
+When loading an ELF executable, automatically detect an .sframe section
+and associate it with the mm_struct.
+
+[ Jens Remus: Fix checkpatch warning "braces {} are not necessary for
+single statement blocks". ]
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
 Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 ---
- arch/x86/include/asm/uaccess.h | 39 +++++++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 10 deletions(-)
+ fs/binfmt_elf.c          | 48 +++++++++++++++++++++++++++++++++++++---
+ include/uapi/linux/elf.h |  1 +
+ 2 files changed, 46 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 3a0dd3c2b233..79679779f1ea 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -598,7 +598,7 @@ _label:									\
-  * We want the unsafe accessors to always be inlined and use
-  * the error labels - thus the macro games.
-  */
--#define unsafe_copy_loop(dst, src, len, type, label)				\
-+#define unsafe_copy_to_user_loop(dst, src, len, type, label)			\
- 	while (len >= sizeof(type)) {						\
- 		unsafe_put_user(*(type *)(src),(type __user *)(dst),label);	\
- 		dst += sizeof(type);						\
-@@ -606,15 +606,34 @@ _label:									\
- 		len -= sizeof(type);						\
- 	}
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 16a56b6b3f6c..55047659a3cf 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -48,6 +48,7 @@
+ #include <linux/uaccess.h>
+ #include <uapi/linux/rseq.h>
+ #include <linux/rseq.h>
++#include <linux/sframe.h>
+ #include <asm/param.h>
+ #include <asm/page.h>
  
--#define unsafe_copy_to_user(_dst,_src,_len,label)			\
--do {									\
--	char __user *__ucu_dst = (_dst);				\
--	const char *__ucu_src = (_src);					\
--	size_t __ucu_len = (_len);					\
--	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
--	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
--	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
--	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
-+#define unsafe_copy_to_user(_dst, _src, _len, label)				\
-+do {										\
-+	void __user *__dst = (_dst);						\
-+	const void *__src = (_src);						\
-+	size_t __len = (_len);							\
-+	unsafe_copy_to_user_loop(__dst, __src, __len, u64, label);		\
-+	unsafe_copy_to_user_loop(__dst, __src, __len, u32, label);		\
-+	unsafe_copy_to_user_loop(__dst, __src, __len, u16, label);		\
-+	unsafe_copy_to_user_loop(__dst, __src, __len, u8,  label);		\
-+} while (0)
+@@ -637,6 +638,21 @@ static inline int make_prot(u32 p_flags, struct arch_elf_state *arch_state,
+ 	return arch_elf_adjust_prot(prot, arch_state, has_interp, is_interp);
+ }
+ 
++static void elf_add_sframe(struct elf_phdr *text, struct elf_phdr *sframe,
++			   unsigned long base_addr)
++{
++	unsigned long sframe_start, sframe_end, text_start, text_end;
 +
-+#define unsafe_copy_from_user_loop(dst, src, len, type, label)			\
-+	while (len >= sizeof(type)) {						\
-+		unsafe_get_user(*(type *)(dst), (type __user *)(src), label);	\
-+		dst += sizeof(type);						\
-+		src += sizeof(type);						\
-+		len -= sizeof(type);						\
++	sframe_start = base_addr + sframe->p_vaddr;
++	sframe_end   = sframe_start + sframe->p_memsz;
++
++	text_start   = base_addr + text->p_vaddr;
++	text_end     = text_start + text->p_memsz;
++
++	/* Ignore return value, sframe section isn't critical */
++	sframe_add_section(sframe_start, sframe_end, text_start, text_end);
++}
++
+ /* This is much more generalized than the library routine read function,
+    so we keep this separate.  Technically the library read function
+    is only provided so that we can read a.out libraries that have
+@@ -647,7 +663,7 @@ static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
+ 		unsigned long no_base, struct elf_phdr *interp_elf_phdata,
+ 		struct arch_elf_state *arch_state)
+ {
+-	struct elf_phdr *eppnt;
++	struct elf_phdr *eppnt, *sframe_phdr = NULL;
+ 	unsigned long load_addr = 0;
+ 	int load_addr_set = 0;
+ 	unsigned long error = ~0UL;
+@@ -673,7 +689,8 @@ static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
+ 
+ 	eppnt = interp_elf_phdata;
+ 	for (i = 0; i < interp_elf_ex->e_phnum; i++, eppnt++) {
+-		if (eppnt->p_type == PT_LOAD) {
++		switch (eppnt->p_type) {
++		case PT_LOAD: {
+ 			int elf_type = MAP_PRIVATE;
+ 			int elf_prot = make_prot(eppnt->p_flags, arch_state,
+ 						 true, true);
+@@ -712,6 +729,19 @@ static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
+ 				error = -ENOMEM;
+ 				goto out;
+ 			}
++			break;
++		}
++		case PT_GNU_SFRAME:
++			sframe_phdr = eppnt;
++			break;
++		}
 +	}
 +
-+#define unsafe_copy_from_user(_dst, _src, _len, label)				\
-+do {										\
-+	void *__dst = (_dst);							\
-+	void __user *__src = (_src);						\
-+	size_t __len = (_len);							\
-+	unsafe_copy_from_user_loop(__dst, __src, __len, u64, label);		\
-+	unsafe_copy_from_user_loop(__dst, __src, __len, u32, label);		\
-+	unsafe_copy_from_user_loop(__dst, __src, __len, u16, label);		\
-+	unsafe_copy_from_user_loop(__dst, __src, __len, u8,  label);		\
- } while (0)
++	if (sframe_phdr) {
++		eppnt = interp_elf_phdata;
++		for (i = 0; i < interp_elf_ex->e_phnum; i++, eppnt++) {
++			if (eppnt->p_flags & PF_X)
++				elf_add_sframe(eppnt, sframe_phdr, load_addr);
+ 		}
+ 	}
  
- #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+@@ -836,7 +866,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	int first_pt_load = 1;
+ 	unsigned long error;
+ 	struct elf_phdr *elf_ppnt, *elf_phdata, *interp_elf_phdata = NULL;
+-	struct elf_phdr *elf_property_phdata = NULL;
++	struct elf_phdr *elf_property_phdata = NULL, *sframe_phdr = NULL;
+ 	unsigned long elf_brk;
+ 	bool brk_moved = false;
+ 	int retval, i;
+@@ -945,6 +975,10 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 				executable_stack = EXSTACK_DISABLE_X;
+ 			break;
+ 
++		case PT_GNU_SFRAME:
++			sframe_phdr = elf_ppnt;
++			break;
++
+ 		case PT_LOPROC ... PT_HIPROC:
+ 			retval = arch_elf_pt_proc(elf_ex, elf_ppnt,
+ 						  bprm->file, false,
+@@ -1242,6 +1276,14 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 			elf_brk = k;
+ 	}
+ 
++	if (sframe_phdr) {
++		for (i = 0, elf_ppnt = elf_phdata;
++		     i < elf_ex->e_phnum; i++, elf_ppnt++) {
++			if ((elf_ppnt->p_flags & PF_X))
++				elf_add_sframe(elf_ppnt, sframe_phdr, load_bias);
++		}
++	}
++
+ 	e_entry = elf_ex->e_entry + load_bias;
+ 	phdr_addr += load_bias;
+ 	elf_brk += load_bias;
+diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
+index ee30dcd80901..e2a7dbed2e80 100644
+--- a/include/uapi/linux/elf.h
++++ b/include/uapi/linux/elf.h
+@@ -41,6 +41,7 @@ typedef __u16	Elf64_Versym;
+ #define PT_GNU_STACK	(PT_LOOS + 0x474e551)
+ #define PT_GNU_RELRO	(PT_LOOS + 0x474e552)
+ #define PT_GNU_PROPERTY	(PT_LOOS + 0x474e553)
++#define PT_GNU_SFRAME	(PT_LOOS + 0x474e554)
+ 
+ 
+ /* ARM MTE memory tag segment type */
 -- 
 2.51.0
 
