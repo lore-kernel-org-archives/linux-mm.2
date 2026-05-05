@@ -4,102 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B98E3CD13DA
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 07:06:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D09BDFF885A
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 07:10:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC5756B0005; Tue,  5 May 2026 03:06:04 -0400 (EDT)
+	id 3ED1E6B008A; Tue,  5 May 2026 03:10:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A766E6B008A; Tue,  5 May 2026 03:06:04 -0400 (EDT)
+	id 39E216B008C; Tue,  5 May 2026 03:10:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 965DB6B008C; Tue,  5 May 2026 03:06:04 -0400 (EDT)
+	id 266786B0092; Tue,  5 May 2026 03:10:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 833926B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 03:06:04 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B4851A02A6
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:06:04 +0000 (UTC)
-X-FDA: 84732481848.10.6E49F41
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 95F621C000D
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:06:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=E2MCGGEI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777964762;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 11F866B008A
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 03:10:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B3F2D8C35E
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:09:59 +0000 (UTC)
+X-FDA: 84732491718.03.9DFBF29
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010030.outbound.protection.outlook.com [52.101.85.30])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B0ECF4000F
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:09:56 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=Nvidia.com header.s=selector2 header.b=n2o6n2GC;
+	spf=pass (imf11.hostedemail.com: domain of apopple@nvidia.com designates 52.101.85.30 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777964997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EoOnajH3k3ipR16wiV1QeGQhhkad3qHmN10Jioi2yvM=;
-	b=QpenUgFNIX3YQ5lF4/6F3/smBr77R/XkvQT18N7hwpFvUCULqRK1GZFQqvx/3dyfyC0Fhy
-	tlCBleeNdsxTO2L4s2ieaIchHCZbcMlgD0HjnMxTTM+mtkAB8IXJFfnp0vT0g1RixXxmdm
-	QYIrs+wJNDCE6zR61hTz8aOhPSvJUMY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777964762; a=rsa-sha256;
-	cv=none;
-	b=K4++2O0cNJGgNil7wwoX3c6AEs71qYc/1Ib8Fi6hP8peqPYXvv3FY1/qo+lx1O2fjambeu
-	bxpCTSiskYKrwkBxdAmEh7drBEwUcqiMND38UnMlujvJE/V2Aa5iNRV5ejHtrmsnvQYzqk
-	yxNUxyM28WofPj7dHp+azj29RctSjBs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=E2MCGGEI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E53CB60128;
-	Tue,  5 May 2026 07:06:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DA5C2BCB4;
-	Tue,  5 May 2026 07:05:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777964761;
-	bh=EoOnajH3k3ipR16wiV1QeGQhhkad3qHmN10Jioi2yvM=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=E2MCGGEIDFooOgv05S3lPLcaurSM3pb0vwcE3gUnTHf09r8LC2oYE73Lijx+2fImm
-	 qCma23zXoLjPLmj1OZq8+iyvHq1+rEGEKH1kVpCXmzvoPsD+D4ywpyonZC2FiWoOfX
-	 t4pTkRls+/cXwYQzbJSXJjNlipDwn9LPWZy1oarhrKEscVSjRL6+wTh2AgRpkZsmWI
-	 vt/AU8VEnqfPpgFKDYxz0tfEOaJtmiKf0RIadXS3+gyc0Gg5E7I7gOTgcvWZRPdsdg
-	 wayysJ5JXN3gJLnFaMvQw65ObRwOCR8ffDoGrEj4wimMQeQzgR2YdvF5rle8TuUyN7
-	 Ef3DLRumfFjlg==
-Content-Type: multipart/mixed; boundary="===============2029874583554774468=="
+	bh=foFn4n5DYSDa3+cksO7RQGeiYpcCKhUIc02sNM3zWrs=;
+	b=iYnMeGSo0F336n4zYbVZUncxeMOvBqmkdxCAa5E3cSsL0d2IqIqRG6lLypfN90QY2I/w/V
+	DUWjRq0PeCrHo+Hbj2/n9tdtZQai6cDfigTMZac7ot+9s0JnqTlKKIJO5VZ3C0727FQV/J
+	DLoeN+kWBuzcB4w+3IroLjKykKZURgA=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=Nvidia.com header.s=selector2 header.b=n2o6n2GC;
+	spf=pass (imf11.hostedemail.com: domain of apopple@nvidia.com designates 52.101.85.30 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777964997; a=rsa-sha256;
+	cv=fail;
+	b=m9zYZWuTdjj3RA1B5NeVlnmGl5B24TmiljCwUevBoCgL5ZNxaBfy7PKMoKg5DUof30MUs0
+	5NX2YMjc2B/LWcGI2DsaZJMIHPDGducqc8yI7v+KMLfC1FxrfFY0KyRegXZvon6PIPQ2aS
+	blvOoDK73zQNKcSv0eyKTvdyjUfMYD0=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LpOhF88UA5Afw/WjYxk1wJvlGLqAuR/+JXXXTzmrc76x11h0ycztPtUH5Ssrk0wWUTbVKC47LAdzCwAEAlQtjNUJeIgvJHFVZF8ZXhzqDUUBj9arvOTFF/ytCJzAxVqS7bcSYZUNFOnHDqlS8hzhhCWu41SJtbZqHvvu/DaIuWau4rcJOOuJgsKR6ZL6GeiPVP5fnXrbdvQZQLdE5GtI/JxH6KJJcvIjtJX1H3Dj3xgpi8ALUir66SFGxRDmMN+EN+3etp8wG3zuDj3NilkE1szv4V8J4BEUzDoeZD0SyzQrTlJY9mWna0ucVKcgXvJHSH+wFP9IwSkOBrVjXJr8YQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=D6Fzw+i5PdLV0jCGLaR/tQ1b+6imTQfTWQzWx8o+0yE=;
+ b=YqRfY0A7DVvBkYzzWfRsshnC9wleMcWd8HvgbhAm4youQdJimW5+q/Fdkc+fcn7XMAZ2YVoR0FiMeKuPqrw0sd83KPk0ZIoh6yvTMLEOJVvHnR+J7oeO1MCMoVb8DcXB0Z/Wbic//XmQ7IgApsp08Z4UTnTZhLAYoksoNCOBZhRS+b/7rMkcmys0easSA8bnLRkszbXJ31YwGJKgJPfc9knEcUznbYg8nRV1M38v4eqgeqvy88GJkxnAlFgOMP1Z5rNKDxrlKAG9N2POABF3qcaP2+FQbVEOYoG15wKGzeFs9b9Wbp4Ac21QyOkFb+WddEnfk+gyIKd1Q4/R7z6rEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D6Fzw+i5PdLV0jCGLaR/tQ1b+6imTQfTWQzWx8o+0yE=;
+ b=n2o6n2GCUHcIWkrhaeHebUhs+orxG0Jlw4PuuHaY0M5SjaJYY/avo8ODt467iPPsqkZR1f/LBzfFMUP2TjVVreIxWKPBI5WV0vwjbcitSshBjbNrFiuZO0UWINaEqNl+GurpON5tdmI9jJfiXsbv2wldLt3QA12RP5otJTcaf3DrOC5sNEHh/19L42QJM7fWg3SOBDbXiyLbkbc9bQL6OnghY0XTg71nIdKMOxqPYhbOb+p/wP3RHkN9DHtYU+GE+cIfM1ysShU0ihh7Z6G4yTwwUFvSjLHgvqKTESGvUZPZHj1PorKlq6yPpcFLq3emXjWExz3LfZPMJNDpwpHV+Q==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ MW9PR12MB999207.namprd12.prod.outlook.com (2603:10b6:303:301::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
+ 2026 07:09:47 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.20.9870.023; Tue, 5 May 2026
+ 07:09:46 +0000
+Date: Tue, 5 May 2026 17:09:35 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: mpenttil@redhat.com
+Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v9 0/5] Migrate on fault for device pages
+Message-ID: <afmXIq8VY_vs1GPo@nvdebian.thelocal>
+References: <20260505051658.2219537-1-mpenttil@redhat.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260505051658.2219537-1-mpenttil@redhat.com>
+X-ClientProxiedBy: SY5P282CA0168.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:24a::16) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 MIME-Version: 1.0
-Message-Id: <fd8cec766d7d282c6e45872dce0a5ed47d8e7889c86f60bd0bc0895ae368ab61@mail.kernel.org>
-In-Reply-To: <20260505062026.91724-3-cuiyunhui@bytedance.com>
-References: <20260505062026.91724-3-cuiyunhui@bytedance.com>
-Subject: Re: [PATCH v4 2/3] riscv: introduce percpu.h into include/asm
-From: bot+bpf-ci@kernel.org
-To: cuiyunhui@bytedance.com, pjw@kernel.org, palmer@dabbelt.com,
-	aou@eecs.berkeley.edu, alex@ghiti.fr, dennis@kernel.org,
-	tj@kernel.org, cl@gentwo.org, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
-	memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev,
-	jolsa@kernel.org, bjorn@kernel.org, pulehui@huawei.com,
-	puranjay@kernel.org, thuth@redhat.com, ajones@ventanamicro.com,
-	ben.dooks@codethink.co.uk, rkrcmar@ventanamicro.com,
-	cuiyunhui@bytedance.com, samuel.holland@sifive.com,
-	zong.li@sifive.com, conor.dooley@microchip.com, tglx@kernel.org,
-	debug@rivosinc.com, seanwascoding@gmail.com, andybnac@gmail.com,
-	menglong8.dong@gmail.com, cyrilbur@tenstorrent.com,
-	wangruikang@iscas.ac.cn, atishp@rivosinc.com,
-	apatel@ventanamicro.com, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	bpf@vger.kernel.org, arnd@arndb.de, nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com, morbo@google.com,
-	justinstitt@google.com, qingfang.deng@siflower.com.cn,
-	linux-arch@vg.kvack.org, er.kernel.org@kvack.org,
-	llvm@lists.linux.dev
-Cc: ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue,  5 May 2026 07:05:57 +0000 (UTC)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MW9PR12MB999207:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae1c1930-e905-42f7-7948-08deaa7549c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	iHsEgscFTB2R22meCylDwQ3g/T8T4vFrwrNu8cX8ElweejNPhqZQ3of2/gbGf47XAqi9WcItWQWoxRN3TTZj8RdyKnXlKHaKEoB4jEfxN517Nhn/EPnSnI/uK5s19eq+jVG5bquvJqFei3hpC8Mr/ksBKLMBoFTYn+9hQB3i9BwENQl1x2JpH2BuWbKqqChGCFu+SUim5ipnUeFCjj20riggo+rAufGhauCCdbtLmEXJR3VPLqvZXSdumDg4gd3ziEIDcNxFFM/NyHbMUM58zkBt3k6v2xCeYqsRemeDHGL4xYxooe9CIIeFAbgWarmhozxxuiJ52O1rtj1sp5SueXhDjD9n4UoZSbc2zJd2lBQS5HgNTAcyM58YEU1QZXbvm6bnEwUJm5y6IyP4purIaxxuCu08Q3Cfuh61ariWdjvI9RdL8guQVqYbK0qMlD6dlv+1mNyh0f0ft1o+tLphU06y7upD0rm8YjbP/t0lFP4FT/n8Vkppc6t3ajihf/Qn8hgQyNfuLnUD7eUZhJl4Lf9+lbU1GNoxpo0TMyZQQ0/WRk6ENrtQm9t8WkqNtbeuw5ZLBR79GRe6hu5dzDNNoJySxDnKs1ftKa+FtgT+0Vo2Zl7tqVS0GGb1h8tDQwcBLSeE3eHuEu/zXxNIvijCWuMu/jYHTGVnsfn5auQlHKITUlO1sowv9SFv1ymbPIeKG6m/90OVVgtewZ6+kQ3QTA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?L6R+V2nuKwb+x6CwXCtifeOqWRYd7e0PZeJDM5xXCZ1MNmiOhGhpfi/knP?=
+ =?iso-8859-1?Q?ykKQoMTK3OZODtdspJCp1srRa3R/mh9jpX9SU261wf6lrrK0bxXefoIJLV?=
+ =?iso-8859-1?Q?zPA7jwvfI1LpchyoLNPqNa9euilwvxjMSHCJt0nzyzlrmCCw4kQ7a+Uw0S?=
+ =?iso-8859-1?Q?VVywUXCF7kxwLW8Dw7XkmJnK3zAifZaT+4FcJKCNtYxQhGplmW/Bv0YJxu?=
+ =?iso-8859-1?Q?jU3CqIxdOnmlBU/sMlkt+I4c1WQQ5pYGx7Ka5aN7ixg4/y0aVHNr0EIDZt?=
+ =?iso-8859-1?Q?17FpxM6xeYwhGs2CW4ASaddXkbBN69EwjYSwBfQTS3+n/QRldcefPkcckt?=
+ =?iso-8859-1?Q?zCYYWYnpDaeKa2L6X3QexcbCOGucBUbXnOphiCfrjTLXDoDM49Koto0Nc3?=
+ =?iso-8859-1?Q?NKReod4C9JKYab1g916emfKzG9aN1YlycQJGpUNx920BjmsJOnUCsX7QHQ?=
+ =?iso-8859-1?Q?QiDjv9BHUdUofrqlf+NAjVCcjp61LnpWf/Etzw1f5gMetlzdMFuA2cZcgP?=
+ =?iso-8859-1?Q?6nrUX147Gg/IcXiI8I5itUDqhqwcj7KeKPZShs3287+KkJZYdMm3p4Jj4d?=
+ =?iso-8859-1?Q?kqDFsAyIhzJyVu5nh1mMPqQEB9poLNxk2CaRHx3QODMRTu1WHW//ikLw/8?=
+ =?iso-8859-1?Q?JTcKtVoHSQgG3rRYoQyFqeswDa7GFa4aYDAKDOzrPPMfhwbuXy4qNUi1XC?=
+ =?iso-8859-1?Q?LD3m1SubtZCMjmtXr/6VYO/RbSIOYEU3Wv3Rs590U/RKff4doOIFZhyPxz?=
+ =?iso-8859-1?Q?rXaNAFBGXAsW1TdN9MEUZF5KwDJtQpwe7mp2gAjhJvPbq1OBzjKZsBgy3t?=
+ =?iso-8859-1?Q?AxSQDkigQNFOhPe101luVV8iZ4EJguI+BzcqXw6RmJtXyVQKcwOBXh5Mzn?=
+ =?iso-8859-1?Q?9PHemg28cFitGkskRDxdlk11Ht3VwkGfIG1jTEFIkhBodeY/IiIAvKcLkz?=
+ =?iso-8859-1?Q?RpNphpvDCmAUXoVmYanLzlMsWlOhVJsyAq8187LNMnJa2y9nv4ooDwsgY3?=
+ =?iso-8859-1?Q?m5H4aDCwmloPOkcUigDiS9C9if933x1tQTK8k/2NdmhA77XtMSfteypEED?=
+ =?iso-8859-1?Q?9jiacBqzii1eAMnezTZVkdb6vOj3o+TH57CKSiAzBEhCxVWGzfMUroeAIj?=
+ =?iso-8859-1?Q?HGE6Ihqq6x3LasWVCCa7DLFUKH9fkywDPgoKM2TBRin0hCZY1pCRSFUop0?=
+ =?iso-8859-1?Q?Hk7gUZ54e8j3hxdMlokWssh70Ci1MuN1q1A/OgimJ2MqcQ6a2sykyDWXVA?=
+ =?iso-8859-1?Q?hbDvxajNiYZWLIN2U5gJsaJIcEqGWAUIfCxrMo09v/NrE5tVxMOVmNiRS2?=
+ =?iso-8859-1?Q?rEAc5LFgMF+2E0k9nKiMufj8n7l+IVjm9dS0ymxwNuhu3oXeW3igR7j5Rw?=
+ =?iso-8859-1?Q?RPX/r3fMKMCE7EWlVy5ZBtF849/E+mwWCXjlxB7i+EErTsgaKVaopoMLoq?=
+ =?iso-8859-1?Q?7bjOkMevbgfkqERdFm1s3EfPt91c8XB20DtQBMbV0sIiaoGw6xYC/BWcx6?=
+ =?iso-8859-1?Q?ikOi23Tg21c9bPAoja5VKnKTqh/0RSgQy3VdMcPwMunJuAMi04kYQVWM1T?=
+ =?iso-8859-1?Q?sq4bYpE5Ueof4MnDv9bwXInzikKX8aI1l00H+FPFsE65tD2wB+9Hw01oZT?=
+ =?iso-8859-1?Q?7ULuC6fvCKWQHNjXKvcLOxDGaoFKszbC7c89oNS1KQd3RGqtJhgFotRc0K?=
+ =?iso-8859-1?Q?lJaf0eKPu3w6XWPjb8D2qe4VEYSmjqutFWNhGsJ4lyTKmz/KOU5aDsBCQq?=
+ =?iso-8859-1?Q?IiWkZZu9EoZu4FfTp1kzP28OxCQaGRvg6qjr7gBuFa3OCv9cCW/3z3haTI?=
+ =?iso-8859-1?Q?NVdt+2T6dw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae1c1930-e905-42f7-7948-08deaa7549c6
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 07:09:46.5061
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eAAaK/FhXHDk1d7vdrvWrnG2RzSEFtFTGUUhn93Ysp76/j3/BDmRzAVA/kBf9dy9qNwbfMg9dOWNYLx61p3XOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW9PR12MB999207
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 95F621C000D
-X-Rspamd-Server: rspam04
-X-Stat-Signature: xy73ph7qnyzff58n86xh7oynczkigrhb
-X-HE-Tag: 1777964762-269765
-X-HE-Meta: U2FsdGVkX18D1FCmrQ4Hlm5DzukFKpP7o8FXVo45ZCAisufc9OAnnk30DtiBI5casYJuULoKwQj+MsGm6PoV2C4e2aJVPYn0P3q76g8VX5tkB+g0k72ZuePF2mP7EDwOAIsFCMr+KGY7I+7M6hS7kXW/A4iEZB6TXHxir5+8qv1W9f6S0jWCOVmPg7QRisKqu5+FtDirkclv9T2EYOOBi7GobYitaTFRUtOVfFZ32S2hIum8WhZ2OfCl/vvc3VNu3zpv9562gynG2VGTrCKtpdDjv0jaeCwYt17N3KXWN9lfPqeUQTEL8InMOpieaVlvIQyUFGKGEvU/+r9qeplK12LlRwmEL3LEHnKIDE1NGCsXcCbaoeQkuunOZIuhDPPT9FuCtndJeZf7xkLzAJmUS4APJ6zJ2y/gAwlqJ7I7EtD/muSQ+iw5IGmNuoUA2v0CvtfxBupVyMByC6/dNvUSmWd6AcPdxPXnXTwmYzzFvixjufx9mhlcrAsD7BVfqZUJNPWevPcHIMcU+Pivv8JQnwDqaKDHQXnCIRtGhdb0qEZKna3mAnXFZZWiWjcITCgMppIlk5BLN5dbEK4sF2pww+PP3Hdbr3PXDCf8qBnU2K6dm7G0W6232o8xBurHxFmLJOs3NfIh5WE8o5bDG0svDJXntnCL2XF/j6gJDKQDv4emeH3siVPT8iBCYWD331bJvs4T0CLaBM0Wxtiq56BwdJAFuJ4wL0STAC36RuSCe7VoSXufqSewswr+vLWIBEwlZFX/bMzy3Tnsd0DsIvx9UejxS0IJtiikq/OHfMv5P5BYrpCaIJSg3mDxxqS1pflzZLWJz3tR5KplU+UkwSAefsYh5ufnarsNg0LYBwwMAXWx9SwgJiRnbuX0ElLg5ijXeyzZhEtime/c24aEOXyG/K1Rw5KnKiyXkeec53AD83qYzOIKwhRzr5Xz4VzO1t59lGwj18FBFAj+K1OdIej
- wsF7VhL7
- QCjoTcXna8OCrAeZOb1d+UuAPWOUIe2jarjOLvr0RnVdIu2Nb+7/6qBQSYg3MjRPKNnt1JYpl6YpyaGC/Vy/XieOw1rkf8if/3QjQDMvZotSKzbs+CahtcswfaA7HC+Buw1IffqF9xiFcEkWRHVTB1VchdCoFPa84IyLjZyhVHDpAXreiHIGs5E0C1fwqKaLWS1frAmtku+47jD2Se84LKoxYjEJ+jo6rQv7Sh9cCehwWwDGSrcwGbju/OjAc1H9RkMY4ipPtGB8EjZMWaOf61wAZPTtUwCIYkHJq1nbCeEsoc55CvxqUqxLt7Hskkf8EuJMRfh2Sc/BEezYMWV8IueHYPRFeYLllq90XvDeAYFcoALA2OSidLCCOiPImkwUVuyljeObx7WcF9uxWuDem3vWY733VC/sWpcNco3s1vBOGQJMPhaiY+zSuDbwc8UEnJ79HDL485JPmfaVY6pGaJ98IXaPItOqdKrcJ8WpIdtjBX5QoRYLJRT6y12ui7ZnjFVnj1nuH6c9r92khdnuH9LJUBWBZxAUuMe6O0D3+MK8tXE5ocM7xA7rJUpH3UzimLqDFzvQF4xCOv4GQDuxr6ATUNw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B0ECF4000F
+X-Stat-Signature: 4uatpp3suhuabj8hin9psae1mrpcf4cu
+X-HE-Tag: 1777964996-891782
+X-HE-Meta: U2FsdGVkX18D1sXT9qUqvyiHcITmg26tf8I3jcY4ISJAD/jHO777p+Kuxi/CN3xudnfPjd7mcSTSGZlLkFAceSh+6odtzowg7pYx9l4PPSkVRb11x87s0tf6XOnIemXIsWlnKr2aLx8AdAhqO2rLmPhC9nWQVU3qN1sMGHYglyVVPBg2xma6aKhqka80KczJ4ax6MRbkBiEc4nuaHaNOnxFEo68qjXt9EUt663SNw91UtlomXCRh+9ydnM6t9wWrD6KfFupF1m2z41ph/RYMlM/rdivOqUpa8BCBtwAbMgEVw6extbFHqJk/e3JjnVAUT8Z4T7DVHBCPEvrnK1HS11rjh1rkp/N43XdyI7KtFbAkplNCCjG0FUjSCytDQyFYLPpfaBTmSLYLBazD+xZQTPoWpg5moaG0Ac9QuxH2YnUtprikqF6X1dEbeLwPzBJEXPcj9HQVLHnuV7ZuP2by2RLR0iPu7+y0KCZL5g0+gQD5gaoumtLWz8iVOvVxsaY15pxaVYyAmeB5k1eOO6xYdfBFmmMjzARbQCef22WW9dQIgloB7PHg/Zzh9MZ/IAveFang6YWZcmnQaruSLxazyWTK2uPrw6Aik4K7BFBpHeoB481Q2F5zj930aNw7NNB17g41InD3cHRqgAyGzhLARItUcBzIYR6bbo2SVhyKEnWt09qDpTCk9zK9ZROUsqHTsfd08cSq/vPhXvocaHG+oc1HI6Ungdyz30pTpopN1RLPEhED22nOqKP8A9Tu1sF84wWh/51ZJIQ3jIMnS5fDT/KhfsPmoxmihn0apXI9bdsjxBwWtwxsayf+70abVpinwECVi7z7uAeSiICjtyQYclEr9KZBnIVsGXOuyQyzleH+jN+gUdr2k1gyq2YzWqpS1TBgh4vxNSGbDDgOEPtOVQJV3/EBzbt5J1apC5S3bPk8gOsHKrOJ5QxHX9Vte4taHGZJxV78HT9eGD4h+sw
+ x+5WE6Lo
+ 3t75rrkTUAjJd1v49Jyyf/MnTWr27ZET3rsG1d9Jx54p0drDNHuEcKNcCYVlyRBOnozsqOrVVbVZjlKvRJD+1fgCsqKx7XTLQwpobyfVWdtq2eXi1dOj4jLasJNy3rfMUzujTHJ9Rbo0B60Csqt6o3VWawkRBaNYLgaQFU8I55T93yFsbwNXzFHDIJPkNg4Resiz8r+6BPp0+xMaKP1Bt3kVkuUGwE2PUQwy14paanFIWIKyU9gvL+zOUfNXdq3uBjXcA0pmXcyD9GIfOkihnVNjNfFscEA8cabbWuH4yfw2q0MHd2qW36yKcm6Wa0dCTrWvWuxIWL5WWnKsrh8NFqIMsopIVnhYZVqig6t4zII4HrAaVuagoCiWNf4q+qBVqs22NamxivvaUB3AqLoUAIvlJyOyTMFxbOQE3cpZFz/UCVXWJVxME/umQFj7Wd6EHa5FLEaciFms7NDscMFsGnNqVX6uWAvPCGyTGZxHmKH8cCToi+T/qYC6mAFiJ+z3WH/YVmtWyrtwCpD9Ivh7zOpNN9+HC2igTRbJtoC9BlBBXjtcbGvg06gayYYh4R3y0ovMyD0PQWsQaeDkxpLp8VOPUxOmubcYcBs5sKJey/tzeje7bObjgYtJ96id85bU+VYq3JXYXRw78cRwqDUdYy6DnZYiY76aNluWIRzyiMM00KSuVDdZfot42K4sA6ihiFEkjHKmR+D57BYGau4V5749tGaraC0LTD2TrDHK4A8FoJc72MBZwLuaB+ypyj5R+I3/BZExlHNHmHCd78RcXL9b8AOUfbCc/1O2DnuY5h/LPR8k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,150 +167,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============2029874583554774468==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
+Thanks for doing this work Mika. I've been meaning to take a look at this series
+for a while. I'm currently at LSFMM but will try and take a look this week or
+next as it sounds quite useful.
 
-PiBkaWZmIC0tZ2l0IGEvYXJjaC9yaXNjdi9pbmNsdWRlL2FzbS9wZXJjcHUuaCBiL2FyY2gvcmlz
-Y3YvaW5jbHVkZS9hc20vcGVyY3B1LmgKPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAw
-MDAwMDAwMDAwMC4uM2IyNmZlNDVlNzBmCj4gLS0tIC9kZXYvbnVsbAo+ICsrKyBiL2FyY2gvcmlz
-Y3YvaW5jbHVkZS9hc20vcGVyY3B1LmgKClsgLi4uIF0KCj4gQEAgLTAsMCArMSwyODAgQEAKClsg
-Li4uIF0KCj4gKyNpZmRlZiBDT05GSUdfNjRCSVQKPiArI2RlZmluZSBQRVJDUFVfT1AobmFtZSwg
-YW1vX2luc24pCQkJCQlcCj4gKwlfX1BFUkNQVV9BTU9fT1BfQ0FTRSgudywgbmFtZSwgMzIsIGFt
-b19pbnNuKQkJCVwKPiArCV9fUEVSQ1BVX0FNT19PUF9DQVNFKC5kLCBuYW1lLCA2NCwgYW1vX2lu
-c24pCj4gKyNlbHNlCj4gKyNkZWZpbmUgUEVSQ1BVX09QKG5hbWUsIGFtb19pbnNuKQkJCQkJXAo+
-ICsJX19QRVJDUFVfQU1PX09QX0NBU0UoLncsIG5hbWUsIDMyLCBhbW9faW5zbikKPiArI2VuZGlm
-Cj4gKwo+ICtQRVJDUFVfT1AoYWRkLCBhZGQpCj4gK1BFUkNQVV9PUChhbmRub3QsIGFuZCkKPiAr
-UEVSQ1BVX09QKG9yLCBvcikKClsgLi4uIF0KCj4gKyNkZWZpbmUgUEVSQ1BVXzhfMTZfT1AobmFt
-ZSwgYW1vX2luc24sIHN6LCBzZngsIHZhbF90eXBlLCBuZXdfdmFsX2V4cHIsIGFzbV9vcCkJCQlc
-Cj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBfX3BlcmNwdV8jI25hbWUjI19hbW9fY2FzZV8jI3N6KHZv
-aWQgKnB0ciwgdW5zaWduZWQgbG9uZyB2YWwpCQlcCj4gK3sJCQkJCQkJCQkJCQlcCj4gKwlpZiAo
-SVNfRU5BQkxFRChDT05GSUdfUklTQ1ZfSVNBX1pBQkhBKSAmJgkJCQkJCVwKPiArCQlyaXNjdl9o
-YXNfZXh0ZW5zaW9uX3VubGlrZWx5KFJJU0NWX0lTQV9FWFRfWkFCSEEpKSB7CQkJCVwKPiArCQlh
-c20gdm9sYXRpbGUgKCJhbW8iICNhbW9faW5zbiAjc2Z4ICIgemVybywgJVt2YWxdLCAlW3B0cl0i
-CQkJXAo+ICsJCQk6IFtwdHJdICIrQSIoKih2YWxfdHlwZSAqKXB0cikJCQkJCQlcCj4gKwkJCTog
-W3ZhbF0gInIiKCh2YWxfdHlwZSkoKG5ld192YWxfZXhwcikgJiBQRVJDUFVfOF8xNl9HRVRfTUFT
-SyhzeikpKQlcCj4gKwkJCTogIm1lbW9yeSIpOwkJCQkJCQkJXAo+ICsJfSBlbHNlIHsJCQkJCQkJ
-CQkJXAo+ICsJCXUzMiAqcHRyMzIgPSBQRVJDUFVfOF8xNl9HRVRfUFRSMzIocHRyKTsJCQkJCVwK
-PiArCQljb25zdCB1bnNpZ25lZCBsb25nIHNoaWZ0ID0gUEVSQ1BVXzhfMTZfR0VUX1NISUZUKHB0
-cik7CQkJCVwKPiArCQljb25zdCB1MzIgbWFzayA9IFBFUkNQVV84XzE2X0dFVF9NQVNLKHN6KSA8
-PCBzaGlmdDsJCQkJXAo+ICsJCWNvbnN0IHZhbF90eXBlIHZhbF90cnVuYyA9ICh2YWxfdHlwZSko
-KG5ld192YWxfZXhwcikJCQkJXAo+ICsJCQkJCSAgICYgUEVSQ1BVXzhfMTZfR0VUX01BU0soc3op
-KTsJCQkJXAo+ICsJCXUzMiByZXR4LCByYzsJCQkJCQkJCQlcCj4gKwkJdmFsX3R5cGUgbmV3X3Zh
-bF90eXBlOwkJCQkJCQkJXAo+ICsJCQkJCQkJCQkJCQlcCj4gKwkJYXNtIHZvbGF0aWxlICgJCQkJ
-CQkJCQlcCj4gKwkJCSIwOiBsci53ICUwLCAlMlxuIgkJCQkJCQlcCj4gKwkJCSJhbmQgJTMsICUw
-LCAlNFxuIgkJCQkJCQlcCj4gKwkJCSJzcmwgJTMsICUzLCAlNVxuIgkJCQkJCQlcCj4gKwkJCSNh
-c21fb3AgIiAlMywgJTMsICU2XG4iCQkJCQkJCVwKPiArCQkJInNsbCAlMywgJTMsICU1XG4iCQkJ
-CQkJCVwKPiArCQkJImFuZCAlMSwgJTAsICU3XG4iCQkJCQkJCVwKPiArCQkJIm9yICUxLCAlMSwg
-JTNcbiIJCQkJCQkJXAo+ICsJCQkic2MudyAlMSwgJTEsICUyXG4iCQkJCQkJCVwKPiArCQkJImJu
-ZXogJTEsIDBiXG4iCQkJCQkJCQlcCj4gKwkJCTogIj0mciIocmV0eCksICI9JnIiKHJjKSwgIitB
-IigqcHRyMzIpLCAiPSZyIihuZXdfdmFsX3R5cGUpCQlcCj4gKwkJCTogInIiKG1hc2spLCAiciIo
-c2hpZnQpLCAiciIodmFsX3RydW5jKSwgInIiKH5tYXNrKQkJCVwKPiArCQkJOiAibWVtb3J5Iik7
-CQkJCQkJCQlcCj4gKwkJfQkJCQkJCQkJCQlcCj4gK30KCkNhbiB0aGUgOC8xNi1iaXQgTFIvU0Mg
-ZmFsbGJhY2sgZm9yIGFkZCBvcGVyYXRpb25zIGNvcnJ1cHQgYWRqYWNlbnQKcGVyY3B1IGRhdGE/
-CgpJbiB0aGUgbm9uLVpBQkhBIHBhdGggYWJvdmUsIGFmdGVyIGV4dHJhY3RpbmcgYW5kIHNoaWZ0
-aW5nIHRoZSBzdWJ3b3JkCihsaW5lcyAzLTQpLCB0aGUgY29kZSBwZXJmb3JtcyB0aGUgb3BlcmF0
-aW9uIChsaW5lIDUpIGFuZCBpbW1lZGlhdGVseQpzaGlmdHMgYmFjayAobGluZSA2KS4gRm9yIHRo
-ZSBhZGQgaW5zdGFudGlhdGlvbjoKCiAgICBzcmwgJTMsICUzLCAlNSAgICAgOyBuZXdfdmFsID4+
-PSBzaGlmdAogICAgYWRkICUzLCAlMywgJTYgICAgIDsgbmV3X3ZhbCArPSB2YWxfdHJ1bmMgKG1h
-eSBvdmVyZmxvdyA4LzE2IGJpdHMpCiAgICBzbGwgJTMsICUzLCAlNSAgICAgOyBuZXdfdmFsIDw8
-PSBzaGlmdAoKVGhlcmUncyBubyBtYXNraW5nIGJldHdlZW4gYWRkIGFuZCBzbGwsIHNvIGEgY2Fy
-cnktb3V0IGZyb20gdTggKGJpdCA4KQpvciB1MTYgKGJpdCAxNikgc3Vydml2ZXMgdGhlIHNoaWZ0
-LiBUaGUgcmVzdWx0IGlzIHRoZW4gT1JlZCBpbnRvIHRoZQpyZWFkLW1vZGlmeS13cml0ZSB3b3Jk
-OgoKICAgIGFuZCAlMSwgJTAsICU3ICAgICA7IHJjID0gcmV0eCAmIH5tYXNrICAoY2xlYXJzIHRh
-cmdldCBzdWJ3b3JkIG9ubHkpCiAgICBvciAgJTEsICUxLCAlMyAgICAgOyByYyB8PSBuZXdfdmFs
-ICAgICAob3ZlcmZsb3cgYml0IGVudGVycyBhZGphY2VudCBieXRlKQoKRXhhbXBsZTogYSB1OCBw
-ZXJjcHUgYXQgb2Zmc2V0IDAgaG9sZHMgMHg4MDsgY2FsbGluZyB0aGlzX2NwdV9hZGQoKQp3aXRo
-IDB4ODAgd3JhcHMgdGhlIHU4IHRvIDAgKGNvcnJlY3QpLCBidXQgdGhlIGNhcnJ5IGJpdCA4IGNv
-cnJ1cHRzIHRoZQphZGphY2VudCBieXRlIGF0IG9mZnNldCAxIGluIHRoZSBzYW1lIHUzMi4KClRo
-ZSBzaWJsaW5nIGFkZF9yZXR1cm4gaGVscGVyIChQRVJDUFVfOF8xNl9SRVRfT1ApIGluY2x1ZGVz
-IHRoZSBtaXNzaW5nCnRydW5jYXRpb24gd2l0aCAiYW5kICUxLCAlMSwgJTciIHVzaW5nIFBFUkNQ
-VV84XzE2X0dFVF9NQVNLKHN6KSBiZWZvcmUKdGhlIHNoaWZ0LWJhY2suIFdoeSBkb2Vzbid0IFBF
-UkNQVV84XzE2X09QIGRvIHRoZSBzYW1lPwoKPiArCj4gKyNkZWZpbmUgUEVSQ1BVX09QXzhfMTYo
-b3BfbmFtZSwgb3AsIGV4cHIsIGZpbmFsX29wKQkJCVwKPiArCVBFUkNQVV84XzE2X09QKG9wX25h
-bWUsIG9wLCA4LCAuYiwgdTgsIGV4cHIsIGZpbmFsX29wKTsJCVwKPiArCVBFUkNQVV84XzE2X09Q
-KG9wX25hbWUsIG9wLCAxNiwgLmgsIHUxNiwgZXhwciwgZmluYWxfb3ApCj4gKwo+ICtQRVJDUFVf
-T1BfOF8xNihhZGQsIGFkZCwgdmFsLCBhZGQpCj4gK1BFUkNQVV9PUF84XzE2KGFuZG5vdCwgYW5k
-LCB+KHZhbCksIGFuZCkKPiArUEVSQ1BVX09QXzhfMTYob3IsIG9yLCB2YWwsIG9yKQoKWyAuLi4g
-XQoKPiArI2RlZmluZSBQRVJDUFVfOF8xNl9SRVRfT1AobmFtZSwgYW1vX2luc24sIHN6LCBzZngs
-IHZhbF90eXBlLCBuZXdfdmFsX2V4cHIpCQkJXAo+ICtzdGF0aWMgaW5saW5lIHZhbF90eXBlIF9f
-cGVyY3B1XyMjbmFtZSMjX3JldHVybl9hbW9fY2FzZV8jI3N6KHZvaWQgKnB0ciwgdW5zaWduZWQg
-bG9uZyB2YWwpCVwKPiArewkJCQkJCQkJCQkJCVwKPiArCWlmIChJU19FTkFCTEVEKENPTkZJR19S
-SVNDVl9JU0FfWkFCSEEpICYmCQkJCQkJXAo+ICsJCXJpc2N2X2hhc19leHRlbnNpb25fdW5saWtl
-bHkoUklTQ1ZfSVNBX0VYVF9aQUJIQSkpIHsJCQkJXAo+ICsJCXJlZ2lzdGVyIHZhbF90eXBlIHJl
-dDsJCQkJCQkJCVwKPiArCQlhc20gdm9sYXRpbGUgKCJhbW8iICNhbW9faW5zbiAjc2Z4ICIgJVty
-ZXRdLCAlW3ZhbF0sICVbcHRyXSIJCQlcCj4gKwkJCTogW3B0cl0gIitBIigqKHZhbF90eXBlICop
-cHRyKSwgW3JldF0gIj1yIihyZXQpCQkJCVwKPiArCQkJOiBbdmFsXSAiciIoKHZhbF90eXBlKSgo
-bmV3X3ZhbF9leHByKSAmIFBFUkNQVV84XzE2X0dFVF9NQVNLKHN6KSkpCVwKPiArCQkJOiAibWVt
-b3J5Iik7CQkJCQkJCQlcCj4gKwkJcmV0dXJuIHJldCArICh2YWxfdHlwZSkoKG5ld192YWxfZXhw
-cikgJiBQRVJDUFVfOF8xNl9HRVRfTUFTSyhzeikpOwkJXAo+ICsJfSBlbHNlIHsJCQkJCQkJCQkJ
-XAo+ICsJCXUzMiAqcHRyMzIgPSBQRVJDUFVfOF8xNl9HRVRfUFRSMzIocHRyKTsJCQkJCVwKPiAr
-CQljb25zdCB1bnNpZ25lZCBsb25nIHNoaWZ0ID0gUEVSQ1BVXzhfMTZfR0VUX1NISUZUKHB0cik7
-CQkJCVwKPiArCQljb25zdCB1MzIgbWFzayA9IChQRVJDUFVfOF8xNl9HRVRfTUFTSyhzeikgPDwg
-c2hpZnQpOwkJCQlcCj4gKwkJY29uc3QgdTMyIGludl9tYXNrID0gfm1hc2s7CQkJCQkJCVwKPiAr
-CQljb25zdCB2YWxfdHlwZSB2YWxfdHJ1bmMgPSAodmFsX3R5cGUpKChuZXdfdmFsX2V4cHIpCQkJ
-CVwKPiArCQkJCQkgICAmIFBFUkNQVV84XzE2X0dFVF9NQVNLKHN6KSk7CQkJCVwKPiArCQl1MzIg
-b2xkLCBuZXcsIHRtcDsJCQkJCQkJCVwKPiArCQkJCQkJCQkJCQkJXAo+ICsJCWFzbSB2b2xhdGls
-ZSAoCQkJCQkJCQkJXAo+ICsJCQkiMDogbHIudyAlMCwgJTNcbiIJCQkJCQkJXAo+ICsJCQkiYW5k
-ICUxLCAlMCwgJTRcbiIJCQkJCQkJXAo+ICsJCQkic3JsICUxLCAlMSwgJTVcbiIJCQkJCQkJXAo+
-ICsJCQkiYWRkICUxLCAlMSwgJTZcbiIJCQkJCQkJXAo+ICsJCQkiYW5kICUxLCAlMSwgJTdcbiIJ
-CQkJCQkJXAo+ICsJCQkic2xsICUxLCAlMSwgJTVcbiIJCQkJCQkJXAo+ICsJCQkiYW5kICUyLCAl
-MCwgJThcbiIJCQkJCQkJXAo+ICsJCQkib3IgJTIsICUyLCAlMVxuIgkJCQkJCQlcCj4gKwkJCSJz
-Yy53ICUyLCAlMiwgJTNcbiIJCQkJCQkJXAo+ICsJCQkiYm5leiAlMiwgMGJcbiIJCQkJCQkJCVwK
-PiArCQkJOiAiPXIiKG9sZCksICI9ciIodG1wKSwgIj0mciIobmV3KSwgIitBIigqcHRyMzIpCQkJ
-XAo+ICsJCQk6ICJyIihtYXNrKSwgInIiKHNoaWZ0KSwgInIiKHZhbF90cnVuYyksICJyIihQRVJD
-UFVfOF8xNl9HRVRfTUFTSyhzeikpLCBcCj4gKwkJCSJyIihpbnZfbWFzaykJCQkJCQkJCVwKPiAr
-CQkJOiAibWVtb3J5Iik7CQkJCQkJCQlcCj4gKwkJcmV0dXJuICh2YWxfdHlwZSkodG1wID4+IHNo
-aWZ0KTsJCQkJCQlcCj4gKwl9CQkJCQkJCQkJCQlcCj4gK30KCkRvZXMgdGhlIExSL1NDIGZhbGxi
-YWNrIG5lZWQgZWFybHktY2xvYmJlciBxdWFsaWZpZXJzIG9uIHRoZSBvdXRwdXQKcmVnaXN0ZXJz
-PwoKVGhlIGlubGluZSBhc20gd3JpdGVzICJvbGQiIGFuZCAidG1wIiAodmlhIGxyLncgYW5kIGFu
-ZCkgYmVmb3JlIHJlYWRpbmcKYWxsIGlucHV0IHJlZ2lzdGVycyAoJTQuLiU4OiBtYXNrLCBzaGlm
-dCwgdmFsX3RydW5jLCBNQVNLKHN6KSwKaW52X21hc2spLiBUaGUgR0NDIGlubGluZS1hc20gY29u
-dHJhY3QgcmVxdWlyZXMgIj0mciIgKGVhcmx5LWNsb2JiZXIpCndoZW4gYW4gb3V0cHV0IGlzIHdy
-aXR0ZW4gYmVmb3JlIGFsbCBpbnB1dHMgYXJlIGNvbnN1bWVkLiBXaXRob3V0IGl0LAp0aGUgY29t
-cGlsZXIgbWF5IGFsbG9jYXRlIHRoZSBzYW1lIHBoeXNpY2FsIHJlZ2lzdGVyIGZvciAib2xkIiBv
-ciAidG1wIgphbmQgb25lIG9mIHRoZSBpbnB1dHMsIGNsb2JiZXJpbmcgdGhhdCBpbnB1dC4KClRo
-ZSBzaWJsaW5nIFBFUkNQVV84XzE2X09QIHVzZXMgIj0mciIocmV0eCksICI9JnIiKHJjKSwKIj0m
-ciIobmV3X3ZhbF90eXBlKS4gVGhlIGVxdWl2YWxlbnQgX19hcmNoX3hjaGdfbWFza2VkIGhlbHBl
-ciBpbgphcmNoL3Jpc2N2L2luY2x1ZGUvYXNtL2NtcHhjaGcuaCBhbHNvIHVzZXMgIj0mciIgZm9y
-IG91dHB1dHMgd3JpdHRlbgplYXJseS4KClNob3VsZCAib2xkIiBhbmQgInRtcCIgYmUgZGVjbGFy
-ZWQgIj0mciIgaW5zdGVhZCBvZiAiPXIiPwoKPiArCj4gK1BFUkNQVV84XzE2X1JFVF9PUChhZGQs
-IGFkZCwgOCwgLmIsIHU4LCB2YWwpCj4gK1BFUkNQVV84XzE2X1JFVF9PUChhZGQsIGFkZCwgMTYs
-IC5oLCB1MTYsIHZhbCkKClsgLi4uIF0KCj4gKyNkZWZpbmUgdGhpc19jcHVfYW5kXzEocGNwLCB2
-YWwpCV9wY3BfcHJvdGVjdChfX3BlcmNwdV9hbmRub3RfYW1vX2Nhc2VfOCwgcGNwLCB+KHZhbCkp
-Cj4gKyNkZWZpbmUgdGhpc19jcHVfYW5kXzIocGNwLCB2YWwpCV9wY3BfcHJvdGVjdChfX3BlcmNw
-dV9hbmRub3RfYW1vX2Nhc2VfMTYsIHBjcCwgfih2YWwpKQo+ICsjZGVmaW5lIHRoaXNfY3B1X2Fu
-ZF80KHBjcCwgdmFsKQlfcGNwX3Byb3RlY3QoX19wZXJjcHVfYW5kbm90X2Ftb19jYXNlXzMyLCBw
-Y3AsIH4odmFsKSkKPiArCj4gKyNpZmRlZiBDT05GSUdfNjRCSVQKPiArI2RlZmluZSB0aGlzX2Nw
-dV9hbmRfOChwY3AsIHZhbCkJX3BjcF9wcm90ZWN0KF9fcGVyY3B1X2FuZG5vdF9hbW9fY2FzZV82
-NCwgcGNwLCB+KHZhbCkpCj4gKyNlbmRpZgoKRG8gdGhpc19jcHVfYW5kXzQoKSBhbmQgdGhpc19j
-cHVfYW5kXzgoKSBjb21wdXRlIHRoZSB3cm9uZyByZXN1bHQ/CgpUaGUgbWFjcm9zIHBhc3Mgfih2
-YWwpIHRvIF9fcGVyY3B1X2FuZG5vdF9hbW9fY2FzZV8zMi82NCwgd2hpY2gKYXJlIGdlbmVyYXRl
-ZCBieSBQRVJDUFVfT1AoYW5kbm90LCBhbmQpLiBUaGF0IGV4cGFuZHMgdG8KX19QRVJDUFVfQU1P
-X09QX0NBU0UoLncvLmQsIGFuZG5vdCwgMzIvNjQsIGFuZCkg4oCUIHRoZSBhc20gYm9keSBpcwoi
-YW1vYW5kLncvZCB6ZXJvLCAlW3ZhbF0sICVbcHRyXSIsIHdoaWNoIHBlcmZvcm1zICpwdHIgJj0g
-dmFsIChwbGFpbgpBTkQpLgoKV2l0aCB0aGUgY2FsbGVyIHBhc3NpbmcgfnZhbCwgdGhlIGZpbmFs
-IG9wZXJhdGlvbiBiZWNvbWVzICpwdHIgJiB+dmFsLAp3aGljaCBpcyB0aGUgb3Bwb3NpdGUgb2Yg
-dGhlIGV4cGVjdGVkICpwdHIgJiB2YWwuIExvb2tpbmcgYXQgdGhlIGFybTY0CnBhdHRlcm4gKGFy
-Y2gvYXJtNjQvaW5jbHVkZS9hc20vcGVyY3B1LmgpLCBQRVJDUFVfT1AoYW5kbm90LCBiaWMsIGxk
-Y2xyKQp1c2VzIHRoZSBCSUMgaW5zdHJ1Y3Rpb24gdGhhdCBwcm92aWRlcyB0aGUgaW52ZXJzaW9u
-OiBiaWMgcGVyZm9ybXMKKnB0ciAmIH52YWwsIHNvIGNhbGxpbmcgd2l0aCB+dmFsIHlpZWxkcyAq
-cHRyICYgfih+dmFsKSA9ICpwdHIgJiB2YWwuClJJU0MtVidzIGFtb2FuZCBoYXMgbm8gZXF1aXZh
-bGVudCBpbnZlcnNpb24uCgpFeGFtcGxlOiBhIHUzMiBwZXJjcHUgaW5pdGlhbGl6ZWQgdG8gMHhG
-RkZGRkZGRiB3aXRoCnRoaXNfY3B1X2FuZCh2YXIsIDB4MSkgc2hvdWxkIHByb2R1Y2UgMHgxIGJ1
-dCB5aWVsZHMgMHhGRkZGRkZGRSBpbnN0ZWFkLgoKVGhlIDgvMTYtYml0IGhlbHBlcnMgaGFwcGVu
-IHRvIGJlIGNvcnJlY3QgYmVjYXVzZSBQRVJDUFVfT1BfOF8xNihhbmRub3QsCmFuZCwgfih2YWwp
-LCBhbmQpIGZlZWRzIG5ld192YWxfZXhwciA9IH4odmFsKSwgcHJvZHVjaW5nIGEgc2Vjb25kCmlu
-dmVyc2lvbiBpbiB0aGUgbWFjcm8gYm9keSB0aGF0IGNhbmNlbHMgb3V0LiBPbmx5IHRoZSAzMi82
-NC1iaXQgcGF0aHMKYXJlIGJyb2tlbi4KClNob3VsZCBQRVJDUFVfT1AoYW5kbm90LCBhbmQpIGJl
-IHJlcGxhY2VkIHdpdGggYSBnZW5lcmF0b3IgdGhhdCBkb2VzCmV4cGxpY2l0IGludmVyc2lvbiwg
-b3Igc2hvdWxkIHRoZSB0aGlzX2NwdV9hbmRfNC84IGNhbGxlcnMgcGFzcyB2YWwKd2l0aG91dCBu
-ZWdhdGlvbj8KClsgLi4uIF0KCgotLS0KQUkgcmV2aWV3ZWQgeW91ciBwYXRjaC4gUGxlYXNlIGZp
-eCB0aGUgYnVnIG9yIGVtYWlsIHJlcGx5IHdoeSBpdCdzIG5vdCBhIGJ1Zy4KU2VlOiBodHRwczov
-L2dpdGh1Yi5jb20va2VybmVsLXBhdGNoZXMvdm10ZXN0L2Jsb2IvbWFzdGVyL2NpL2NsYXVkZS9S
-RUFETUUubWQKCkNJIHJ1biBzdW1tYXJ5OiBodHRwczovL2dpdGh1Yi5jb20va2VybmVsLXBhdGNo
-ZXMvYnBmL2FjdGlvbnMvcnVucy8yNTM2MTc5MjUwNA==
+ - Alistair
 
---===============2029874583554774468==--
+On 2026-05-05 at 15:16 +1000, mpenttil@redhat.com wrote...
+> From: Mika Penttilä <mpenttil@redhat.com>
+> 
+> Currently, the way device page faulting and migration works
+> is not optimal, if you want to do both fault handling and
+> migration at once.
+> 
+> Being able to migrate not present pages (or pages mapped with incorrect
+> permissions, eg. COW) to the GPU requires doing either of the
+> following sequences:
+> 
+> 1. hmm_range_fault() - fault in non-present pages with correct permissions, etc.
+> 2. migrate_vma_*() - migrate the pages
+> 
+> Or:
+> 
+> 1. migrate_vma_*() - migrate present pages
+> 2. If non-present pages detected by migrate_vma_*():
+>    a) call hmm_range_fault() to fault pages in
+>    b) call migrate_vma_*() again to migrate now present pages
+> 
+> The problem with the first sequence is that you always have to do two
+> page walks even when most of the time the pages are present or zero page
+> mappings so the common case takes a performance hit.
+> 
+> The second sequence is better for the common case, but far worse if
+> pages aren't present because now you have to walk the page tables three
+> times (once to find the page is not present, once so hmm_range_fault()
+> can find a non-present page to fault in and once again to setup the
+> migration). It is also tricky to code correctly. One page table walk
+> could costs over 1000 cpu cycles on X86-64, which is a significant hit.
+> 
+> We should be able to walk the page table once, faulting
+> pages in as required and replacing them with migration entries if
+> requested.
+> 
+> Add a new flag to HMM APIs, HMM_PFN_REQ_MIGRATE,
+> which tells to prepare for migration also during fault handling.
+> Also, for the migrate_vma_setup() call paths, a flag, MIGRATE_VMA_FAULT,
+> is added to tell to add fault handling to migrate.
+> 
+> One extra benefit of migrating with hmm_range_fault() path
+> is the migrate_vma.vma gets populated, so no need to
+> retrieve that separataly.
+> 
+> Tested in X86-64 VM with HMM test device, passing the selftests.
+> For performance, the migrate throughput tests from the selftests
+> show similar numbers (within error margin) as unmodified kernel.
+> Tested also rebased on the
+> "Remove device private pages from physical address space" series:
+> https://lore.kernel.org/linux-mm/20260130111050.53670-1-jniethe@nvidia.com/
+> plus a small patch to adjust with no problems.
+> 
+> Changes v8-v9
+>   - rebase on drm-tip
+>   - fixed uaf around  migrate_vma_split_folio() usage
+>   - added missing pmd unlock
+> 
+> Changes v7-v8
+>   - rebase on 7.0
+>   - fixed subject in two patches
+>   - enhanced commit messages
+>   - squashed patch 6 into patch 4 to fix kernel test robot warning
+>   - readded dropped Cc block from cover letter
+>   - fixed white space
+> 
+> Changes v6-v7
+>   - rebase on 7.0.0-rc6
+>   - added documentation and comments
+>   - denote to be migrated zero page as HMM_PFN_MIGRATE alone
+>   - got rid of HMM_PFN_INOUT_FLAGS movement in patch 2
+>   - picked up Acked-By from David for patch 1
+>   
+> Changes v5-v6
+>   - rebase on 7.0.0-rc4
+>   - use range based TLB flushing while unmapping ptes
+>   - gate migration behind HMM_PFN_REQ_MIGRATE for fault and
+>     migrate paths
+>   - always infer migration flags from migrate->flags only
+> 
+> Changes v4-v5
+>   - rebase on 6.19
+>   - fixed David's email address
+>   - fixed link issue without CONFIG_TRANSPARENT_HUGEPAGE
+>   - refactored into smaller commits
+>   - added more comments to code
+> 
+> Changes v3-v4:
+>   - rebase on 6.19-rc8
+>   - fixed issues found by kernel test robot with random configs
+>   - fixed typos
+> 
+> Changes v2-v3:
+>   - rebase on 6.19-rc7
+>   - fixed issues found by kernel test robot
+>   - fixed smatch issues reported by Dan Carpenter <dan.carpenter@linaro.org>
+>   - fixes to lock handling (pmd/pte) on errors
+>   - added assertions for pmd/pte lock states
+>   - other issues discovered by Matthew, thanks!
+> 
+> Changes v1-v2:
+>   - rebase on 6.19-rc6
+>   - fixed issues found by kernel test robot
+>   - fixed locking (pmd/ptl) to cover handle_ and prepare_ regions
+>     parts if migrating
+>   - other issues discovered by Matthew, thanks!
+> 
+> Changes RFC-v1:
+>   - rebase on 6.19-rc5
+>   - adjust for the device THP
+>   - changes from feedback
+> 
+> Revisions:
+>   - RFC https://lore.kernel.org/linux-mm/20250814072045.3637192-1-mpenttil@redhat.com/
+>   - v1: https://lore.kernel.org/all/20260114091923.3950465-1-mpenttil@redhat.com/
+>   - v2: https://lore.kernel.org/all/20260119112502.645059-1-mpenttil@redhat.com/
+>   - v3: https://lore.kernel.org/all/20260126111939.1332983-2-mpenttil@redhat.com/
+>   - v4: https://lore.kernel.org/all/20260202112622.2104213-1-mpenttil@redhat.com/
+>   - v5: https://lore.kernel.org/linux-mm/20260211081301.2940672-1-mpenttil@redhat.com/
+>   - v6: https://lore.kernel.org/linux-mm/20260316062407.3354636-1-mpenttil@redhat.com/
+>   - v7: https://lore.kernel.org/linux-mm/20260330115611.347988-1-mpenttil@redhat.com/
+>   - v8: https://lore.kernel.org/linux-mm/20260414041226.1539439-1-mpenttil@redhat.com/
+> 
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Jason Gunthorpe <jgg@nvidia.com>
+> Cc: Leon Romanovsky <leonro@nvidia.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Balbir Singh <balbirs@nvidia.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> 
+> Mika Penttilä (5):
+>   mm/Kconfig: changes for migrate on fault for device pages
+>   mm: Add helper to convert HMM pfn to migrate pfn
+>   mm/hmm: do the plumbing for HMM to participate in migration
+>   mm: setup device page migration in HMM pagewalk
+>   lib/test_hmm:: add a new testcase for the migrate on fault
+> 
+>  include/linux/hmm.h                    |  19 +-
+>  include/linux/migrate.h                |  26 +-
+>  lib/test_hmm.c                         | 101 ++-
+>  lib/test_hmm_uapi.h                    |  19 +-
+>  mm/Kconfig                             |   2 +
+>  mm/hmm.c                               | 835 +++++++++++++++++++++++--
+>  mm/migrate_device.c                    | 583 +++--------------
+>  tools/testing/selftests/mm/hmm-tests.c |  54 ++
+>  8 files changed, 1066 insertions(+), 573 deletions(-)
+> 
+> drm-tip
+> base-commit: 94d56a898a2db27f841b17f6966a81ba502fe63c
+> -- 
+> 2.50.0
+> 
 
