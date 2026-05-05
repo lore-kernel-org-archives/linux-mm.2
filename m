@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D10DCD342F
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 12:18:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8EECCD3430
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 12:18:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 684856B0005; Tue,  5 May 2026 08:18:11 -0400 (EDT)
+	id B1E1A6B0092; Tue,  5 May 2026 08:18:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60E3C6B0088; Tue,  5 May 2026 08:18:11 -0400 (EDT)
+	id AA3C36B0095; Tue,  5 May 2026 08:18:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AF856B008A; Tue,  5 May 2026 08:18:11 -0400 (EDT)
+	id 96AF46B0093; Tue,  5 May 2026 08:18:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 35C9D6B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:18:11 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D289D403F2
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:10 +0000 (UTC)
-X-FDA: 84733268340.24.D171705
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7F61E4000A
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=M700GsI6;
-	spf=pass (imf17.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 799596B0088
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:18:12 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 329B48C6F0
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:12 +0000 (UTC)
+X-FDA: 84733268424.10.7D5DB89
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AB06B180006
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=kNLQOMGT;
+	spf=pass (imf24.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777983488;
+	s=arc-20220608; t=1777983489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D7noqCPYCazcZYmegzK8gDeD27rc6gFSdojocdj+bIE=;
-	b=ugkr1ifkPTtOzLNfPW45AuzmAfRIubDkF3OLWWp3wXm7wJW2deF2f4EjyDN40TZt5tbCI5
-	W7XqBxPmg8UNkh//6c7gIk6uioGNuZXNMxVWgDofi5AsR2x04g7Jy9yfLlH/a7tSp7KOQJ
-	UwFg3Li1KyA265pcQJzarGwJNIz4cI4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=M700GsI6;
-	spf=pass (imf17.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777983488; a=rsa-sha256;
+	bh=iNs3Y5ZU0LMKYw7ivfoZwS9abNt5pBN18h3+cHfz8vo=;
+	b=LG6vhgS09/MUMYXjakHoaRxBznBWvldmVLeiIoIHYdqxn/jPgg6bjinFAqTb+7YKt6ifqQ
+	RIUIjmpbqEplO3JqgPv82UwUSk3KkGVYVFQkCr87OEAwQcm9f7lruDFT8MWwEqweTqHYZo
+	oRy82w/lgwDhSRjjzkf//Pgx2ii97uk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777983489; a=rsa-sha256;
 	cv=none;
-	b=mBk8OFpddAcflTLj8hppfo2/6Tmg4xQJqen7jvv+HzSWKImKxy7GwnUNqOOrjWPBgn7vNJ
-	Q06HZGkemge4a1Q+tUFSuyIbJlvHfUajLq1zqd4g4D2fR2nteJq1S2TOJ49P/gb5C5/fS5
-	JLjbkUNgGzwWiaHMncHvSra4nXhTElU=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64557vch2799040;
-	Tue, 5 May 2026 12:17:33 GMT
+	b=M+anxSaYbSSGuxrYZZyYCc1rhdjiSxnm12d6KdZahmD8FU3B2FPO1xDvA2yq8ipH0azrHL
+	xUp9delDbEPwnQeY5hLT+NazXtKpnYsPUKsf4PATPL5KD9Mcs0AfTrLxA6PvZ4v6WqPcgt
+	BFn4OsuBs126FFNs7HjbIwRkU+oTHT4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=kNLQOMGT;
+	spf=pass (imf24.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6457t57h3129134;
+	Tue, 5 May 2026 12:17:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=D7noqCPYCazcZYmeg
-	zK8gDeD27rc6gFSdojocdj+bIE=; b=M700GsI6fpLxZY39qIuGfs8gU26ppyxzt
-	sTplffnoicHjs9+1ukSb26TbYpOQlLySg2kQUv0cDeGIVvD4CDpuvhL45B3t7FqD
-	LwKvPFKxfuzxx2zFnaWUJnShUivIqxtVIDim4w8i6YPEs32rMD1b6LfLEAIKX2sr
-	COeA467Lpo6rlqBv+VDLDKACNFUKAra3J2s1ji+DBqKJe0AFlYNk4FyRA4OJqq0w
-	fZM5YTddQNuUcMqcOUrOw3YUVUQrHN79ZUAGqntPHVXpN6AKpwl5gaXoE72TChbK
-	N/txdF4hoddSlcYVw09BZf1ITgzLf7WtSDh0dCN7VuNbdF4JG5IwQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9w6b778-1
+	:mime-version:references:subject:to; s=pp1; bh=iNs3Y5ZU0LMKYw7iv
+	foZwS9abNt5pBN18h3+cHfz8vo=; b=kNLQOMGT45sNJUKfCx5DazoFMR5iaKEya
+	f7AJC1kHFgwx24Cq8Qr+5bGh30z1hgRXDyzzivPb3M9A1XgPQNOTQ5CyH/jTdGJc
+	fkniqWMHy22GoDb8MPSGBsyXPlDMRcFTm0Jceyy/TEh5Evl+/81CeU7Iu/tH+W2A
+	wSCNZy6VtG31DEqNaz0SoFzF8EOy9bwo7BvEB9mAjvYLMcoSgRtNdPbmgCWuOkbr
+	DJt3r7dCNmyLrT2X/g8UOVGoT1zwyT6R4apya69zVxsSmt83ksJl2wNstv/gwHTl
+	ZkD008BkZ/l/3SUq4GPNaPsib1Ze7CMdZ+nCUnSdWJHXEPFqGKskQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9x4kg68-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 12:17:32 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9jXE024681;
-	Tue, 5 May 2026 12:17:31 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3h1eqe-1
+	Tue, 05 May 2026 12:17:30 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9cRH029301;
+	Tue, 5 May 2026 12:17:29 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtg9bmc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 12:17:31 +0000 (GMT)
+	Tue, 05 May 2026 12:17:29 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHRWj53412098
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHPJ362718426
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 May 2026 12:17:27 GMT
+	Tue, 5 May 2026 12:17:25 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B4C862004D;
-	Tue,  5 May 2026 12:17:27 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 9877E2004B;
+	Tue,  5 May 2026 12:17:25 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 574E42004E;
-	Tue,  5 May 2026 12:17:27 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 375382004F;
+	Tue,  5 May 2026 12:17:25 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  5 May 2026 12:17:27 +0000 (GMT)
+	Tue,  5 May 2026 12:17:25 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
@@ -112,10 +112,11 @@ Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
         Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
         Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
         Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v14 15/19] unwind_user: Flexible CFA recovery rules
-Date: Tue,  5 May 2026 14:17:14 +0200
-Message-ID: <20260505121718.3572346-16-jremus@linux.ibm.com>
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH v14 10/19] unwind_user/sframe: Remove .sframe section on detected corruption
+Date: Tue,  5 May 2026 14:17:09 +0200
+Message-ID: <20260505121718.3572346-11-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260505121718.3572346-1-jremus@linux.ibm.com>
 References: <20260505121718.3572346-1-jremus@linux.ibm.com>
@@ -123,37 +124,39 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=XPQAjwhE c=1 sm=1 tr=0 ts=69f9dfdc cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfX6xUgbgTo4ceS
+ ogZQAdgcIJIxxAM+lzBqmWsNXHd2tIdvRpsDN+Y31Ido5wd68n1WDlJruNNeSZUOEHqYFhMl5Hj
+ sjPQllmx0M8dL11QbRovN10WbQwsUTHPyHGk/7FfBEHQ5YF3UITY8M87rG3sPebNJVuAQ/B+TRZ
+ Tc5mjq1sUTICz70+2sYaZ0tFOdnXF6W4iET8DVRqXQbOkIXNFKr5QqxWivNbQf1pRxtljjubtjA
+ H3P9bzHgjYBZ9MClRH2HN2JzEnKK5fVcttL7M/hhO5+d8b6zuOB8hwCB57SuC1e5d+ad/W0pVcq
+ JFruxSg1dI6fmh1Tm6K3mQHuO/h097JMzGri0AiBn477WdIpmnBgJ0DoEukZdwMmiTib1yjqrBI
+ fAHn80dtnB5hcsdAOilefvyqg1apcVRz3SVrQJKC2F0bpj5SOT5DC/GGHE+9nV8ti4iHa+lsWao
+ lbIE2SxdCiWn9G0h4QA==
+X-Proofpoint-ORIG-GUID: ESkL7T1J9FVU0MH5Wd6VBq7slO6ISNoe
+X-Proofpoint-GUID: EITj1tVrY_lYmK7h90v0ZPscXET4p3YI
+X-Authority-Analysis: v=2.4 cv=W7UIkxWk c=1 sm=1 tr=0 ts=69f9dfda cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
- a=3ITeoxp6sJ8ea140DuYA:9
-X-Proofpoint-ORIG-GUID: kbRZY4IQNb44J3QDwjWTe3rrmKPEvSrT
-X-Proofpoint-GUID: IKG3yKTeIFE_ZvRr4_l1EAD91bUT7u7_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfXxw+wtvybTk5m
- UqUmubf+XGIa50ShpnhdjdKR1mte9y4sEK1qLuS9ZV8b1CEzY8RiGsm65HWuU7vB3vAlpZv9t0q
- lSekdtoA4Ekrkv69qxCRBHfJzW3xI9R4HA65x51hotseMjTtFL9bkbNl0MbQoGD90upqC64XF1X
- jcy13mu5SBssMZC414Xlb/3DSrPnBqN/SZYE0NcP16MVD9qc0mQjb07qZnag5Kel1N2zvyN2F66
- ENlzb2BGRDJOr1lkHLxG6SuXiYlb32lhMQRrbgg2fiFDL8TTW6YZHDlH/zvW8icecZc5iwvqnLS
- R5niyvNfawCpuQMm1jE9WO9C7yCVkw6tORgog2ulun0BE+4PmqAbnk07p1AktjeHO4E52rkMCAk
- YJrufw3+Rq1I6WQbldYZd71huomWhxFfAU2wJqbGArKwpqQC81f4HU1sQ0xEGq08osD6ea+wgEX
- Nop9U7RssFhhKcvX0vA==
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=pGLkceISAAAA:8
+ a=VnNF1IyMAAAA:8 a=QUyUFLFTtUP4SZQqb90A:9 a=zZCYzV9kfG8A:10
+ a=2JgSa4NbpEOStq-L5dxp:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050114
-X-Stat-Signature: wcigbcix43rg69axr4p5h5b5hg3zogpz
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7F61E4000A
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 spamscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605050114
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AB06B180006
+X-Stat-Signature: 46fq4utrmixubfjsqmfowpt19iihoby4
 X-Rspam-User: 
-X-HE-Tag: 1777983488-601674
-X-HE-Meta: U2FsdGVkX1/udZ1Lswh5dM3vlzESeLOZ6kPieOgJozvGEQUsYF9hNHJAdqWVIseJsri5KrqeGk5/v/AH0ym1s6OOPKT1YLcBCb6O5PjuB4MD+JX/uxs9BiX/U5fypTAKlyF0qh14MvBN1kzJeX2P61JLN0PNPxcdIpT8/9gZdgtd96iRjxDD0pxEvaBtzPeYsM7qYCcHKkPJ5InGF05cmw4ijEIYFWEBy1goYrsxB81bYO3DjaUkbQW4xA0R7M/wOWeELNFuA1/xkVyDc9viLtWDWwflWk8PI0psFLusMrzLSDnf8hIgEwTCPz4Iol5q8vsd6kGuxqZBQ/asr9MsShR7vcozqJ2jE+JUP7VmsfsE0ha3pUn7VW9wSu8rQLjWqTxNpehLb2q0ytp7BeqvWhQf8hVkwVuHGwHH3bXfb/zs1OLcTOM6JC12A65s/nMmiQf7/TCtg1titTHX5zSHYsUeYA1HtAfpKW/bBXUYSk/j8+HgxT04HMiDXkZFexebb3f6eEaxDXLnAwEcHzeDNllgLJcGUMRhrajkfqIHFTbhvmJsQ5Q1X+a/+4fH2G8Zz9veBEjtC6xgmt1pev17qXi2mM/rKILXcch5IxYCqPOjMcUwKLdpmWmlndaryyfISvbRXpJNANEE0/TXGRbWVgRvSluim7/0KuBIgKLJs2gqqIJ+8Gd5aTy0WQCtpPLfQ5kb6Azt5GhSxcjLWmVWD9oZTmqi4oDl3sAvLt68SeYODGex3oaZEHMywlIUmn/fq+I3pU9UiOQMflDMvVBDTvJQOWhRwjpuhe0nqyYKGfnQUVVHmu4vI8jrLWZBDwsXZrt6DMxCgmi7vjVnqgsyH1EbSWzR3RsVoHdVHRxNStuiOSMYRB4kiktsDNgwzcB/iyMnqjZXEAdGM1vb0JDNUe78bp42Ao1vOLsMaNNmWtytKgescmvcbn3MfkzyF65vm5fY+Z/QaPkJ9SJQha/
- 32LaBBhL
- VrYteHM4qiLrOjJ6F1craZrZQURkMwueQjNqw9lNo05MOmwRWuVhIp7C9kWlEBQCq8OmWCjx0P1UNQ5/aErXu3X9j/Ir3oZc3bUNLog+so7hz/buCSPijSsoRUAt0AU44WVkAdK8Vo5aQGmbkZzX9Tcl17dKi/jW3/kqneYPuyf6gHPIiyiKN2Ro3bFJ5m3pFAlE2gV/8wk5baE/yaIvr0HjAXE74rTmBFW+C8yqgESqlK208A9uua2RC3x36S9AvVj1YuVJdV1zeoXs=
+X-HE-Tag: 1777983489-207876
+X-HE-Meta: U2FsdGVkX197hsKtP61RpgTb+3uGAnWiTqF/rmxEJOJHYrEDiDWk6sEvmEU3Hk0m50gtaBokMiO1QnXw5HxEYQCXY3BkhMhKJopHtdTMmNm+semviE4sX3COj7nUoOuRqCvO3Z2fqg/GVd1s/afFoJ0wO5DUWQA5nIeoG8JelvBILNCOqDgGpWKfS1W8eDPNgx6FFjs/Csom+m04IWC5cHy1VagAtLVFCnFunFm6UcyMlMDd7dQCWIJdWawub9CX/oeWGz1QHdP1RcF/Wjbm/c+0LtHA1ApH7vIJjSxC8D5eVPftesw5rE4C5fbTPOww8CQ0fvcf+8cURSj2ftYkJwx70YvNOIoIFy2ZOUXcXhKw7vkWDxVT3PQxwLXGNg6r2GKPXRYd1BDN0BceONkpQ0yxEIj/9rDCMU5yU7hNHaH516UnfcVISsk040CGuztkMG380d2nnAvmsxfUgROdHgVjuxYYiacmKM981UZ38gN+MmVDDqhP+v5Vl3TabOJ50yPE4Z6GBk97Zt/70/TVpd/g/J2l1dvVmYMfZnjjNDzwGJO/KCw1duZPXWzUOJp6j32KlOGRxvTH2pu4LvpLZtOaqkcY/tdAM+wA5LO1t8TTDhb9+wKCl7bY2vYYOBOjP7c/pNbx2DayIJQ7xW1GRU6v3Te7KftPFpG+E/OW9JUV9VSZrtjz+bSJqQ8GxM0ZSdt3sSVedVN59UwsLJFKjkcFnCqRjeDCSJlBhujmGg5LjE5piXDJNP0mn+Wl3OYB8uM8/b+bWhPUx2LyGvZoLG+SuLqaaZVk73svoc5oBc3xa2ypC4nnCWhwXr2RayMW5912VeB7rAG5SAkJSy0YE9Zn20tOGaK8eX+TYXSrrFokqqkDLRhnSKRj81UduGfyeEoKWC+jT2lOyM8iPSqeHcwa0r2WrA4GSK2L1CWK7F9/f9dS+7a6wWM5s7hPXyFNdTRUC9uArhRAGhdU9Xk
+ tXn7TlOX
+ q5LjVqoVw7DZ0bfN0Lw2oQsAkx/6lg8hrA08c2HpsJrgGRUuw/w3HiNvPXKzZ6gfV4Q66CMU4Y/idL0hMltLvz08nAXPcoLbs53y2QhTvY8WoqlIuRvr+AxwMWFbiL240+1e1fQv89m3Ozee/jeLeJRJuRMrRKZVotvvysm7zm5G0ETXbzMiPUYZdbaMse8Dpsfn+egVgPZvDwz+crC0f0Sly3+FyqRpyoEKGANfFwW7gyXCOzSlPIG0UYrgK1saGPsy8cUM809PrNewtSp0CDER8nGP/TRJ7JHDG9xMXfRTOGDmkKnCYq5iNxJMxea3/p7hHt/FX6/59yp0UV4U8Kx6dNSRs5krebbP9L1GzcuVktZSnb6HYfeM6nDUNCJRMHdriLdXQ4B42W4x7C6KIZY634G0CrLcWnEVYt1alTkljziuJ2vujirvIG2CY8A1RTTLJzif3DZljNgpMpPZZOiVIKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,178 +164,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To enable support for SFrame V3 flexible FDEs with a subsequent patch,
-add support for the following flexible Canonical Frame Address (CFA)
-recovery rules:
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-  CFA = SP + offset
-  CFA = FP + offset
-  CFA = register + offset
-  CFA = *(register + offset)
+To avoid continued attempted use of a bad .sframe section, remove it
+on demand when the first sign of corruption is detected.
 
-Note that CFA recovery rules that use arbitrary register contents are
-only valid when in the topmost frame, as their contents are otherwise
-unknown.
-
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
 Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 ---
- arch/x86/include/asm/unwind_user.h | 12 ++++++++----
- include/linux/unwind_user_types.h  | 18 ++++++++++++++++--
- kernel/unwind/sframe.c             | 15 +++++++++++++--
- kernel/unwind/user.c               | 22 ++++++++++++++++++----
- 4 files changed, 55 insertions(+), 12 deletions(-)
+ kernel/unwind/sframe.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/include/asm/unwind_user.h b/arch/x86/include/asm/unwind_user.h
-index 9c3417be4283..f38f7c5ff1de 100644
---- a/arch/x86/include/asm/unwind_user.h
-+++ b/arch/x86/include/asm/unwind_user.h
-@@ -20,7 +20,10 @@ static inline int unwind_user_word_size(struct pt_regs *regs)
- #ifdef CONFIG_HAVE_UNWIND_USER_FP
- 
- #define ARCH_INIT_USER_FP_FRAME(ws)			\
--	.cfa_off	=  2*(ws),			\
-+	.cfa		= {				\
-+		.rule		= UNWIND_USER_CFA_RULE_FP_OFFSET,\
-+		.offset		=  2*(ws),		\
-+			},				\
- 	.ra		= {				\
- 		.rule		= UNWIND_USER_RULE_CFA_OFFSET_DEREF,\
- 		.offset		= -1*(ws),		\
-@@ -29,11 +32,13 @@ static inline int unwind_user_word_size(struct pt_regs *regs)
- 		.rule		= UNWIND_USER_RULE_CFA_OFFSET_DEREF,\
- 		.offset		= -2*(ws),		\
- 			},				\
--	.use_fp		= true,				\
- 	.outermost	= false,
- 
- #define ARCH_INIT_USER_FP_ENTRY_FRAME(ws)		\
--	.cfa_off	=  1*(ws),			\
-+	.cfa		= {				\
-+		.rule		= UNWIND_USER_CFA_RULE_SP_OFFSET,\
-+		.offset		=  1*(ws),		\
-+			},				\
- 	.ra		= {				\
- 		.rule		= UNWIND_USER_RULE_CFA_OFFSET_DEREF,\
- 		.offset		= -1*(ws),		\
-@@ -41,7 +46,6 @@ static inline int unwind_user_word_size(struct pt_regs *regs)
- 	.fp		= {				\
- 		.rule		= UNWIND_USER_RULE_RETAIN,\
- 			},				\
--	.use_fp		= false,			\
- 	.outermost	= false,
- 
- static inline bool unwind_user_at_function_start(struct pt_regs *regs)
-diff --git a/include/linux/unwind_user_types.h b/include/linux/unwind_user_types.h
-index 0d02714a1b5d..059e5c76f2f3 100644
---- a/include/linux/unwind_user_types.h
-+++ b/include/linux/unwind_user_types.h
-@@ -29,6 +29,21 @@ struct unwind_stacktrace {
- 
- #define UNWIND_USER_RULE_DEREF			BIT(31)
- 
-+enum unwind_user_cfa_rule {
-+	UNWIND_USER_CFA_RULE_SP_OFFSET,		/* CFA = SP + offset */
-+	UNWIND_USER_CFA_RULE_FP_OFFSET,		/* CFA = FP + offset */
-+	UNWIND_USER_CFA_RULE_REG_OFFSET,	/* CFA = reg + offset */
-+	/* DEREF variants */
-+	UNWIND_USER_CFA_RULE_REG_OFFSET_DEREF =	/* CFA = *(reg + offset) */
-+		UNWIND_USER_CFA_RULE_REG_OFFSET | UNWIND_USER_RULE_DEREF,
-+};
-+
-+struct unwind_user_cfa_rule_data {
-+	enum unwind_user_cfa_rule rule;
-+	s32 offset;
-+	unsigned int regnum;
-+};
-+
- enum unwind_user_rule {
- 	UNWIND_USER_RULE_RETAIN,		/* entity = entity */
- 	UNWIND_USER_RULE_CFA_OFFSET,		/* entity = CFA + offset */
-@@ -47,10 +62,9 @@ struct unwind_user_rule_data {
- };
- 
- struct unwind_user_frame {
--	s32 cfa_off;
-+	struct unwind_user_cfa_rule_data cfa;
- 	struct unwind_user_rule_data ra;
- 	struct unwind_user_rule_data fp;
--	bool use_fp;
- 	bool outermost;
- };
- 
 diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
-index cc57804aa3b1..2721f4af53fd 100644
+index 9c755965ab83..8eed6a7d9625 100644
 --- a/kernel/unwind/sframe.c
 +++ b/kernel/unwind/sframe.c
-@@ -271,6 +271,18 @@ static __always_inline int __read_fre(struct sframe_section *sec,
- 	return -EFAULT;
+@@ -358,6 +358,10 @@ int sframe_find(unsigned long ip, struct unwind_user_frame *frame)
+ 	ret = __find_fre(sec, &fde, ip, frame);
+ end:
+ 	user_read_access_end();
++
++	if (ret == -EFAULT)
++		WARN_ON_ONCE(sframe_remove_section(sec->sframe_start));
++
+ 	return ret;
  }
  
-+static __always_inline void
-+sframe_init_cfa_rule_data(struct unwind_user_cfa_rule_data *cfa_rule_data,
-+			  unsigned char fre_info,
-+			  s32 offset)
-+{
-+	if (SFRAME_V3_FRE_CFA_BASE_REG_ID(fre_info) == SFRAME_BASE_REG_FP)
-+		cfa_rule_data->rule = UNWIND_USER_CFA_RULE_FP_OFFSET;
-+	else
-+		cfa_rule_data->rule = UNWIND_USER_CFA_RULE_SP_OFFSET;
-+	cfa_rule_data->offset = offset;
-+}
-+
- static __always_inline void
- sframe_init_rule_data(struct unwind_user_rule_data *rule_data,
- 		      s32 offset)
-@@ -332,10 +344,9 @@ static __always_inline int __find_fre(struct sframe_section *sec,
- 		return -EINVAL;
- 	fre = prev_fre;
- 
--	frame->cfa_off = fre->cfa_off;
-+	sframe_init_cfa_rule_data(&frame->cfa, fre->info, fre->cfa_off);
- 	sframe_init_rule_data(&frame->ra, fre->ra_off);
- 	sframe_init_rule_data(&frame->fp, fre->fp_off);
--	frame->use_fp  = SFRAME_V3_FRE_CFA_BASE_REG_ID(fre->info) == SFRAME_BASE_REG_FP;
- 	frame->outermost = SFRAME_V3_FRE_RA_UNDEFINED_P(fre->info);
- 
- 	return 0;
-diff --git a/kernel/unwind/user.c b/kernel/unwind/user.c
-index 89aecfbe3e84..3d596da588d0 100644
---- a/kernel/unwind/user.c
-+++ b/kernel/unwind/user.c
-@@ -39,14 +39,28 @@ static int unwind_user_next_common(struct unwind_user_state *state,
- 	}
- 
- 	/* Get the Canonical Frame Address (CFA) */
--	if (frame->use_fp) {
-+	switch (frame->cfa.rule) {
-+	case UNWIND_USER_CFA_RULE_SP_OFFSET:
-+		cfa = state->sp;
-+		break;
-+	case UNWIND_USER_CFA_RULE_FP_OFFSET:
- 		if (state->fp < state->sp)
- 			return -EINVAL;
- 		cfa = state->fp;
--	} else {
--		cfa = state->sp;
-+		break;
-+	case UNWIND_USER_CFA_RULE_REG_OFFSET:
-+	case UNWIND_USER_CFA_RULE_REG_OFFSET_DEREF:
-+		if (!state->topmost || unwind_user_get_reg(&cfa, frame->cfa.regnum))
-+			return -EINVAL;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return -EINVAL;
- 	}
--	cfa += frame->cfa_off;
-+	cfa += frame->cfa.offset;
-+	if (frame->cfa.rule & UNWIND_USER_RULE_DEREF &&
-+	    get_user_word(&cfa, cfa, 0, state->ws))
-+		return -EINVAL;
- 
- 	/*
- 	 * Make sure that stack is not going in wrong direction.  Allow SP
 -- 
 2.51.0
 
