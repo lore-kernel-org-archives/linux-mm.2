@@ -4,149 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57574FF885A
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 10:31:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C3B5CD3436
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 10:42:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5982C6B0005; Tue,  5 May 2026 06:31:39 -0400 (EDT)
+	id 4E4046B0005; Tue,  5 May 2026 06:42:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 521916B008A; Tue,  5 May 2026 06:31:39 -0400 (EDT)
+	id 494CC6B008A; Tue,  5 May 2026 06:42:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9C06B008C; Tue,  5 May 2026 06:31:39 -0400 (EDT)
+	id 383E16B008C; Tue,  5 May 2026 06:42:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 302856B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:31:39 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 89C5F1C0E72
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:31:38 +0000 (UTC)
-X-FDA: 84732999876.05.72E0971
-Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1602B4000D
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:31:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=2")
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777977096;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=blQS1iqzURWmhiiO5W3lXAnfU+2MWh4lwNEPM5x5frQ=;
-	b=C/C8vbutxrWkWNtk/RtRAwkuJxqVBJrgqCsN1QWxUcrSkzFr55SUooIZIxoC/BmWfRSfG3
-	RUr9+9NonkOxBafT9AGGGV3MFAXWO7fBuTEP+qhVRq1hdC+1v+KStyjaCP7R+fkxM/wAnK
-	fGvL2ZY+l4rbQN6DNqetqcAUXDdGFnU=
-ARC-Authentication-Results: i=3;
-	imf01.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=2")
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1777977096; a=rsa-sha256;
-	cv=pass;
-	b=1B3xrgzMSyk4j+CA3MFczC3CgvwrHY3xe6mDXPQv+Ju825BaFhX5lIsJ+v38Dkp2VPkwLo
-	T/am0rkiKzaJqAJNDh3ZsTFdQqK3fJKm900Du6wjfoR7vdzvQxSjFzJO/bKQ9/tOuIpbuc
-	0uCJ0R057BvOVlwI8kkXtLw4xpXllww=
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 856388C301
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:31:35 +0000 (UTC)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 529AA40478
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:31:35 +0000 (UTC)
-X-FDA: 84732999750.11.30C1044
-Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 577E014000D
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:31:33 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 235BC6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:42:02 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C289FA03A6
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:42:01 +0000 (UTC)
+X-FDA: 84733026042.07.40AD622
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012008.outbound.protection.outlook.com [52.101.48.8])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9FC33180005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:41:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=wzhP3WNN;
+	spf=pass (imf24.hostedemail.com: domain of bharata@amd.com designates 52.101.48.8 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777977093;
+	s=arc-20220608; t=1777977718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=blQS1iqzURWmhiiO5W3lXAnfU+2MWh4lwNEPM5x5frQ=;
-	b=RPTC06j2CN7GqW/IgArgtBXGI3rzGQoSQo8Nu0F4mQkq24PwdEu4vLdbZV2jhqUwK58ctF
-	QIkS3sHD+7bQggPtp9qeud0pnsuzbb/8JAei8tVU4CP1H1unIV2PZEejjzujkXxTzoGjIC
-	4BW00wbvfXxl4y7JQaOIxBMSTyDfBJQ=
+	bh=Dgke4l99fRaNQoXHoXTyK0hl8BDR3mDCA0ljzm4voRs=;
+	b=iTV/a2I+S3OQt0zdC1MSe4NTas8T62gaZmNVl496PBd8x0PIG/ipH7FRX+Po0dj/CfXx0l
+	2O5OjdJfc/WkgdLSPpPfFy6wA/BS8B76WU8H7TmkkltqfoG77rL+VF82dKSEHKo8oEXDzO
+	Y1wU+nKtMIz1cH437xkdgNe+Wq3wEgY=
 ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777977093; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=wzhP3WNN;
+	spf=pass (imf24.hostedemail.com: domain of bharata@amd.com designates 52.101.48.8 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777977718; a=rsa-sha256;
 	cv=pass;
-	b=zkKhngtxSTPsj2FkQ1qZA54ESs53mhjNBE5EQL2V9nACvaD7E8VgoWf2xVGrwga2GcKsZF
-	HbuJqJTEbyeuDh9Bvx6+VYRpj4Thbtw6ct0ovfCfGT3LRuLXdBcoWYOICRx+yUEbTNB6zt
-	tDXsuwyq16XT1lcvQPLoAn7b9WsnqAM=
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CB00FA0456
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:31:32 +0000 (UTC)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9E9D81C0E68
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:31:32 +0000 (UTC)
-X-FDA: 84732999624.18.5F49FFE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 04BEEC000B
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:31:30 +0000 (UTC)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777977091;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=blQS1iqzURWmhiiO5W3lXAnfU+2MWh4lwNEPM5x5frQ=;
-	b=PVOoJWEpy+Qhc4tfbDAzDoUw3oIaxmq1xy8bINZcymzDi/T8vVTjB9ofXdpRvgRJKxqF/n
-	SUbsMaEW9WC6qkgQBop3CtjgvUVt+/jQsOK4beELp7otL7mncDFgyrbrpzInfejijaXWdH
-	CGba53zJ3+9HaPROPYkr/wXWNSPKZ0s=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tG1KSajG;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777977091; a=rsa-sha256;
-	cv=none;
-	b=pJfuGwWcgWyrOZLGuPuij70V8CFNtovhFJVhLUKu2mx+SmafnTjDQhdGV5RMYymgVngRY+
-	rleeQz2ZtT1jbzy96swT+JqefkPfYi5CINk7ZG37ZMzATmRTxfBDL2l8q16wLaUYWa8hVx
-	oGDMrgoGPoFcSZ1P/nByMNNwi60MwA8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C13660125;
-	Tue,  5 May 2026 10:31:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A04C2BCB4;
-	Tue,  5 May 2026 10:31:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777977090;
-	bh=6mQeMAklyZvmMXcq40qNy3C5krqUWvUCfCqbcMJnxRw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tG1KSajG01OkjGtG++XsDL+rekKw3rHS2oC9URVkbuiquwBc/8luxj0K4TXrRmaDW
-	 cNpIWi2rYfJrmdI5llAhI2u2Red5C7GiYwatKayO0wzQEGeJoyK4Q93yCtkiL8z3BM
-	 gHCggL+oEjzBerjndwBQArwm9GlV+efBSAmOFxn1Vg+y1ygLgjFHk8GmYvd9DG9xCG
-	 AqNqfZZTG5ArJZIsihLzrZZ+YSX+7UedBXmIVW/W9iVQfGMEsMyd8FcRZNM3mlUckD
-	 f3Q10L7/deBeJSNQVa9hYxrNJ+6T0TsIO0/ITLctEcMCOxnHDUxmFJAEJ6+A9L0JCd
-	 61ugf2YY0YKQg==
-Date: Tue, 5 May 2026 11:31:26 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mseal: use min/max in mseal_apply
-Message-ID: <afnG21LZfHtaCG-D@lucifer>
-References: <20260503115915.18680-3-thorsten.blum@linux.dev>
+	b=IPMuF+DUX/OOJb5VRGkqdAEvOFfBhUgIfQSH9XhPss8dliUNEAgJLH/0MxVzkMrM028g7b
+	SfdD3MsWL8foGc2uIAkR0Wggp/WWSaXb9bDOidnXPkjgtqWdD0Ip0AL5lJgmKcPdnnbJm6
+	GcymTVjYGwQAA1sbOiRHFFh1LAKiixs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZlH26Rv1uEI5TQFY94h5z5Ug7DO3/dCzIGODa6ZnnoaQxdL9y+R8wPIKFBTr5B3V4z+3TZIoY7mh35Zx88OwkZa4p7RLdKH14kX/Sp652g4lowlO+Dth6nYjJYCuYgEYb6oE1nFgWao2+ugRMHjlSMKI3JvVQ3RCD3XCxELiZ0MZX9Q8xUARrczMEoITbtgjJEdz3weR76j44Ks2aNjJvTqf1Bf0ip/rrOCXi294H21skXqDxrsNEAAa5gKeajefRWSjw3GqMQWgAT9UbPhvOC7ntGTYRNSKv4lh+/udZrs7ccE7iPvbO34YLEhKm4rYti9tHKjBAbwn/4LeKQe7Pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dgke4l99fRaNQoXHoXTyK0hl8BDR3mDCA0ljzm4voRs=;
+ b=bl0/ZxPS6c5B/5eat/ADhN0cwGzSWJVj06Mz3TO9KKGPc0AqHVq6xklPVcqHdxIxFqnIXe6ciJJDnIJtXq0vqhfb15F0VriURUWlNq02gP/rE0EGo81keGnVNzmUub8NkmOXE4t8rv+yJkdBqx53JbzsXUt8jAlkW6G8hEtm3XnH67gGonbUjivUI6x+r7KX2t0cA3BCmZyMiCKlyd8L/Xf20YGqO3WP3goRGEEMqfUHQWQCV91EYnvhNZ0lI3SM2ExaU3nwE98jqKQhvZ0DP64h1P+wewbTPR5AzOQfng1yPFSWpTO5qCp3bUb53xU5SRZC2nNpeUWg8QdyMR9ayA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dgke4l99fRaNQoXHoXTyK0hl8BDR3mDCA0ljzm4voRs=;
+ b=wzhP3WNNjErLDkkJPEfqHaN6k4rWiQRaDqAf4DlV9P+z4j9lZQVyrSWfSOhGK6mWJ4ls8kiJKmWl7La1KvS2APQMNs5ANLEnS8zjq2a+Lvwv9s4rMrOEq4vEVEbOAIOjQTlxEB5qxpBc6h9labxhyg7G08tDl0OB1pSqvq66lOY=
+Received: from BN9PR03CA0463.namprd03.prod.outlook.com (2603:10b6:408:139::18)
+ by SJ5PPF4C71815F9.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::992) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
+ 2026 10:41:52 +0000
+Received: from BN2PEPF000044A6.namprd04.prod.outlook.com
+ (2603:10b6:408:139:cafe::d9) by BN9PR03CA0463.outlook.office365.com
+ (2603:10b6:408:139::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.25 via Frontend Transport; Tue,
+ 5 May 2026 10:41:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF000044A6.mail.protection.outlook.com (10.167.243.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.9 via Frontend Transport; Tue, 5 May 2026 10:41:51 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 5 May
+ 2026 05:41:51 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 5 May
+ 2026 05:41:51 -0500
+Received: from [10.252.223.214] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Tue, 5 May 2026 05:41:44 -0500
+Message-ID: <5110e313-8c1e-4f73-b77f-68d20c2046c8@amd.com>
+Date: Tue, 5 May 2026 16:11:43 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260503115915.18680-3-thorsten.blum@linux.dev>
-X-HE-Meta: U2FsdGVkX18F4GBVIr+GQcnMu2q+YFRbxNZL1+OOhG9BbzZ7ro/rty4oh9y6OZp0hoFLrcJ0+L/m4Wu3NNJeKp6Wf1CJMEuBGRFozGluLiow1IalVlWbOQu2q0mAP93vNBckO/bWeLmovT8pDvHPwaNlwEsPfF3LmvN0Jp3Xlx1E7tw4uNcFobuOiwsONveDlYMNZmm+OgxkYS+/ZJw4egAE8ngL7gjl0qv9WMnESfsxFIIK78gFxc/5OLH7Vqbcw95V6zQYbfeDARE4+vSSdY/PRuLHttLfDHxepSCatq/JqMfb/w2hQTakFthP23SzgEz7lUZtyFqecbhfs7/a9L0UIitFryvwO7//woPWlBb48tKKjxo9ldGlhmEbPrmCos45+HybImSNhcnMvtyaY29gVHeueEQqKzoeGdJJuSJ9hbOUDaAevxcuuon4xb1IQx4xtDo/igdSy1MoJPWmTiG/qrMjLdbweQoCKCaW/qxqo4TYMpcnv+Nh5ckQWIfuYcKo1Sx5e29eFPK/Vo0ROxDXHH1Ls+BuCx0yiz8bJn9n7X7xZhA/sk5msMjp1/OTiB0u7tgh5fz9UP3G6xUF4N7Cj8kcYDhhOUCE+El4f3YFKaI+lF1J+MEMGHg59c5JArIckdnQPmt8lakvyjgumAldfFaga44ANYcwre/KYQ8XRzZDYwpC6KGT5vu5JyJmiTqhpLzqD7kXKcNBqlrXG83Un2PqfLtZBX0bcgGzmsOhfQJudA44M7rvo7VHC8faH8H0ZGSWGY0cOiBohC5PncPtvCyYhqppvRUsgGJ1Xd1+LK93DLRpGKR1w7VT0FxURpyzggQgHYqWZAYxFH1HJ+9tWn2K7IKxQ9ce61f3ypjLRn5UmYoszUTJoiZUsCgekar1Bz3vDkB1AYjdMef/BlmpynIzq6XJjt8VvMoIUJNFvpY6YVuJU+Lk/uSq7DlQTM/Jwwgyt5RuFeljl5i
- w3pGaI2l
- haV2A+cIGCimNDMQPZqageLs5N2HSRZNFItNslnmJ4xMW49Pa7cQZogitx/IIczs/hMaCwulrfkXEIEZFIoOF1yW+P5KQdZ2TCDNym80kLMKjFOBIEAjFlvGERuOopskdxH0pnEIlR+FNTwHwT+zObidUxCPZS6D9qho3DuJ+KeYQAxgUFpj6kpqNOAKkiD9tM2/Fviw9kTA74e2WPRgLhn62WUBd9SlezRRxIjYQDHij8MlIbTCh0iCKToC1uy/hlJV6Z0inHCzkMontZWxrspPC/JOp93bufEo/O/w/Quvio7oMigNnzgvv4xNnFBa5YwjLSOK5HuV+biCkpoRjawOCCD5Kv5cXXNSH8nle62h1aWozHkHtycdA26CgMyJnShid
-X-HE-Tag-Orig: 1777977090-706438
-X-HE-Meta: U2FsdGVkX1+s2DIFN/RLFkc8j9CXOzHA280f5pYAUy1hS6dxMhf8k62+j6NrBZ2VRDFWDQZPrScYpC5bTNsMH4WVJ2cNcUZ3kYueSdoWMgoGo1qQqZzzFSQcU4OKGS5CBh67Lo1/gLkHaLFdppk9fvfLLNdn13dRNjf1kM1f9W99LexpwvzDCz0BjA6qwGx75PafhaJ31zumSkP2lRVWFLDK30QF7YSwndBlV+jnLTs4tfBWFrGkPeQ9pQJPoBKAb2WHUo3gcSN3RE67WGFjo9+SqfSN90xG8k5BWzz0Z+5mQaYRQCNApfrE5BBkkVgZZoHeByMldskuWszp+RKyO2VBli0CSNnS9DDC7AnlHTjbYcdcmDCi4SS+ltfktp87HVy5oeXaTBq39CpJkhOYyyV9JdJoPVwW+kb3j2/OgjRF6TPdgFobOjpUuFaL4chdgJzLihcsShsgcwKVVl9q6nVCzQOZfvkm818qd5msOIcmkyKkL2jf8YnZUBBST0thB6aFiq/5mZYA4lgqi3YpC1wGln92bYr1HaBMAbtPwBw8x9zaQoTeLwv6zfWKgyhCnC8VGMqFSZ4YFhdgQKwGsbtz7mLeelgMuNIPjPnFubc81sH5hIVG1TFHujocMjXNm/Osn0kLzC0wpgR4Gyf2DZFW9gsnzpfRiCTTmB8Fhrp1r8fGX7SU7577ui65jydd4dN0QSItAsV0kjIhIC1qkGzLlvTamFZcE1uY16Rk/GbyHNo8kT1fqfz2cdfWC15tKAdhX89JRfYUMjXclfkW6YGKgtnkFYRR67Eqx9W/kpfekOC3QDx+Qo0B1cTSILd4fj05iTQLAIF84LaAnsFsJ7LZ65YYJ3Kx2W0gcrDbR+RDQPRVDDSSlbSt4ucehXj8TnogB+zzx6pNXip7971fARZT3IsNqPbpnBdJ22zHbtRoHuTYvSqk89Ggsid/EcOCPv0CzdK52J81Hj0r611
- c9KpY4lP
- SoTSFWwlVrvjvrjr31xfFdeoV9WmhBp8QRbxvl+LNNaq9bX8zLS4NyZB+Xn6Gx40wd/zY2OqLZqhGKXCaIqgpQkQ4KdaRuKdRjxP/h3/Kcev3nWe9mkFodssT/QnWx5Q+Uemp9Ak/9bVBDHtpnNpx9AwHs2BUFCkZI/W0UOOXHldbUqa1oXgU3n2AUikCnM/Q+sVmjxGF9hjFM0HIoTEVqGA1W7ncVlZRSr4VABwPRJahQE5EqRsczBqV3jfmH0lLJiHvwYJtkq1U+8oSIaXR1fqKNHxsTaa4Ji/Ai6nDxdLFUq77TYspLmaopUb77+0Yz5OeCxd7A9lRV4k=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion infrastructure
+To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
+	<gourry@gourry.net>, <mgorman@techsingularity.net>, <mingo@redhat.com>,
+	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>,
+	<rientjes@google.com>, <sj@kernel.org>, <weixugc@google.com>,
+	<willy@infradead.org>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>,
+	<dave@stgolabs.net>, <nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>,
+	<yiannis@zptcorp.com>, <akpm@linux-foundation.org>, <david@kernel.org>,
+	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
+	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
+	<shivankg@amd.com>, <donettom@linux.ibm.com>
+References: <20260504060924.344313-1-bharata@amd.com>
+Content-Language: en-US
+From: Bharata B Rao <bharata@amd.com>
+In-Reply-To: <20260504060924.344313-1-bharata@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A6:EE_|SJ5PPF4C71815F9:EE_
+X-MS-Office365-Filtering-Correlation-Id: b971cbc0-4903-4da2-b9b2-08deaa92eb16
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700016|7416014|82310400026|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	WA5jmHy+QvlLcj5sh2H2vgqBB8ufyz4yZefHYUdHODlFVcIxhIEKsLC5B0a/N/NaLDaZYLNEDSBptP/SyENvQD0rROYbuFmk5vOtu+4uCTnrEr02/ec5IWf3c/d2HufQrPvywI3qA5DDWpLr9MuI9fe+y06F266X7Wk/VVEmHAd5iLflDERS6RwNLPRdtXNBRRdR6Tos7n7+oK74KVqZEMGnrti8DISCjkI9qSBmLJXngt7pRAaXjl1vWIk86JqbOkSSKyG921o8t23S4PaHTvcA8F/C+egonX+GVgfUR3mxyLJwN4AidbrCPcI9EVXs9gW3q2bX+V0hNfC+EwvWh9hfvfsFs+Vz9V7Kbzy6tpbNr423/NRP99PzsYwdHz7Ud7jyaZYsZ8AJxX+QclucIV5U0qm+av5amiSralB1uvXMlZ10S27wulcFzkkelXMo4pPZMI+e4BMA22mX+HC8aZFgX6C+MptZkClyDBu06XRyRnktB8GM9EhvYMYQBXdFW9PC1o/ZCopNBl4cdChBl8dElGJjF9sj8X6VFM7muKvZ4ag+jJJcBqTES2Bu2c0rhgs3TNLpOLkWmkMcVvpcAp43Noxvvf+ne1mc5hlmztWiTA1lggXfIUE1EFo8R4EUreQlVZ+tZZpyV1X1hoSvtgRVCV7msbbl0PZJGrGqIf4EK67ur53EDMs78jUzVGFCUGrLesa/kCg1SReWW3ieWDTUWs42jLAqydDOW/rzOys=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(7416014)(82310400026)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	SlaD83D4qUqGKBtd+XvmzrtRLMYIRxeJI6o5FUd4syrb89chgWY0n8Hjvn4VjV4MM/IT3jid/dJwjr5yqQ2A9kAag37l1AdSvskFqyl1V3OvEJppIqH/0bzAwo119XfTdiMY8zzOdCg4qc7fBB8ddUDkxKmZU5B07k5GGqh0zY/txVFLDs0/I/rh09O05Goo2p9Ibf1LnYOHhIxSSofQmKzq8Ti/h6BYL5ikcVqb1PE98138CqJ6OhUOeAClSs8KpS2K+L79+vt8YSMvaW5qSsTgtZ7XqDAGKun9SR+poDVXTFhzMdzjBz9ILTaorZyveR8idLP4oEkVXAjRpC4nhv26hTqUxFtPg9aLAxX2fHrXtcHV+Akht1VibZeDt0kk0e4Q9NN8NfLG3pghRitAHLkHECGLYYt3G1ALdhqkE5hU2yYaTPeNMbYPeLs4ZLO4
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 10:41:51.8842
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b971cbc0-4903-4da2-b9b2-08deaa92eb16
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A6.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF4C71815F9
+X-Stat-Signature: omp9ei645b5yf6ynj5i4ro7d5c8mwyrp
+X-Rspamd-Queue-Id: 9FC33180005
 X-Rspam-User: 
-X-Stat-Signature: d9wedy983ea7g4zzc66459cr1rzbxp5m
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1602B4000D
-X-HE-Tag-Orig: 1777977093-942040
-X-HE-Tag: 1777977095-713468
-X-HE-Meta: U2FsdGVkX1/YO2ko8QbP8sRutMhzs+qYdCGZ9ARQi7sLLOBtrClmgO1XTOQmxh0JfXI8liH/DRqUHPvLAiLZ9TGVPSm5Q4Y6vhBBmHGs32mKGy3kLFd4Qj5BIGUNSKwzWI/QeMe88aqyuljPyNSvz6qmda4gCqljkZ2zccfHIbsjD5WjJ29X/a+fZKDdPidCRjB2oQvwLnSagK7/r7K2Hs0/h4ufdXTPjZj7X7IWtr32ibat6jbmsybQ8ChBpZaGu1O2qtUs+F+j7LrNQEUcqdhhZ8DuwBCI00WfQdWiYytR/JwrOHRs5IJaRr+mfugS0VStNprLfi3W59dkgiB2jAauUps8xAmuTTuQjQ7E9hml1NSQgJqy1qwzACoaLMuu8xUp6r1yNY28kja6IjnFxih4sZmdy6AKuDM7EEx5QXw/xFHyJgQncv4CHXKJdg6cbkUjPNVzW+JZeeTeOwQklGllZlrc9bahxhj3Xi8gJfK01Xd6rDXVybuqX10Xut6VcZ5NikIbg7dD0q0cHDYPhMmH/jOLRqS6aO/JToPTVc/VGBiJ0DLCNGQoUVX7KsojCsBm4pD77VMyTCqZ17AfoFcL1r45QOjs4LRn+5qWFKUdQ7JCikCkioMBFYiTkihTRuCMflRCZTU7qSVlyj7+N7bm53KJQz+O6IFCfZvWUkjrvaE6F8q9kVYk9/8QXk1Co/VcYoIxRKDwmsWpOyjzSo2bNAFjh/wqeDVdjKtgT6ME3fWyNc1g1rLl93tMyo6vqKR8d3TiW6kamKsRzfcjFCpiXPxWrLRadiMLWaCR3E5WKIuD7Cq7LJ0dhArfXPWXILh2deHc+cACLYIp29UXEm4KVRIkA8uyMCHOyR/1tYshOqCYIn4ZMO1isOipedBQinpRpB3fKOyMZSdusnb2kdbFPsMmqdaP54OS0tblovzweQn1vjswxO83OC1iq7SJiHB0ccMab5TGZRQ9/Kr
- l2kBNeKm
- PGThtFDqA/glq8HgNH0FcJ5poI3q7E+nm0CmCC/Ck2pqGTzKWOUgj9SG5+PJ6TS0PNIhK8LVDE/X+rV253N5nbWVYPXjeDlRHONcZPynjLcCUsmebJLVe8gCBMrjtF8/2I5WfvKcr4MYfwPxlj9h4eKgpPawR280CIhy2kkRJBYnqgNvGrRi28JYcGrXbKUNZn+pWOEMju4X+dFJ1WLP24EsQPx6v4UgHw/TuIyDltN9BQhQ28rea10TRExjP5TtrcwweiCnszsM7gzMdWLSxiUcWV/soiphfo/MNdKFnPYRO7id8hFFZyTEFpGcqK6JVz6NCKbT0Ly98mdI=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1777977718-582589
+X-HE-Meta: U2FsdGVkX1/0O5XsHj2Ahs99nD/ik49k4e30fiKrnhnD2pP6rmvZhnvECX+7Mi34kEGgzpuJM1T9SJ++WhtICoLIlCsmvJqoP4XGi2IIzyUXGQc3oIsO7fw3wx/WgnBmS9+rhN6bJHESl9Hiu4OwiPrnjSD/UAXKbnLNLNLzMCrhFk9fSPUNl9Kw4yni9fEP4vF0qOh5DpvowQRynDW1DvClZ0swNjUnnv3TXaFnHH26WyzexA8nM6TbHfPAyr19Vqs3KLGC1L1XGwUJXPeUyhYYT7Z15VXIdk6ckGAUywnHZVIk6cZzlazyK7xCSqM0l2olasyZ7j4s5oeTW+AYUEvHvgRiCPiXuzP/+i6v0A9LlmM6G75h8vu6OSRQ3BCkqlNL0rZFzxR2s00mW5k9h86vXx0muizjBOjh9pOYDKTgrCdszjKKKv5Pswgg30inA33FQec80RIJXOBlzf1BZdYc/FxV21tMpKOMf/+1j1/0nDz0dMb0CuSofNJrfScExtxzLOx1hPAadNiYbZA0xzIkXqB8//9P8wcHD/V1sd84MNPoXXYY5EO0DDvrtiqcwI3gSuZhjf09AZxmskqdsMMyolP8Z3UfkjmdBgZqwPA5i7qFTNot6mxwtIkZWE6aSLYdQut4jfoD0ABXfbsxmypEPvbn6lN510zSyTsEDQomHO/6Gy7RjSwWfy1NWYtQ7ApYFd2oXDthjly0eKuRQFJy8WhyIg8n9aiBC0/TWoA6n1fyNwrZwV0y34gn8r2PlRS10Rr72r7HI2FVgJKLYWqskXBZZMYZ8Wln8Lns1/u/O2rhnhQ4po5eDWMRD6EByWVI6OttfknCUwwkLfBeIcyBmyQ4XvXcA5HaYF4VdfLdg9EuB5aVwtatiGTgzr54ngUJoAP2AgBOdLOn+ABj+KvLa0qtPAZFKhxx2Yl9lxJmjYweTbwybHBQDYpaRydvWQ43RWrcn8NimR2y0di
+ ycQV+K2N
+ z+3M102tDRo4icWbVoeETmVJxJO2l/jLv3yE8vbEbSKWxCHIdXhxnfkhvfegVt4MxMmDAqYUJgqpvMYCzlJgowC87UeO9L0m7BhpluV/m5n2c8fJXUp3rlUxmK4kVHwvmC/2dClvIB9ufVI3XiuM0rl1+vnj5asnYb2xFXCC5PtLfhuSLyUjAE6XEUqYYuElnrliPQXxMUxkIKTz+29X9/T1xyGeFg+0/Z+Lwuq7pX6gjmUGeoSPYRWDoUXGN3uj7ZIexWV9wuj28VJnFIP2e0hF2XQoTpOyPcPm7GnoaFBxy3yOtXm2dwr4qnKYZj6MRmlSP/aUXon4TIJlc8ZrStgyJpR19GUqyV1ATWDtK/0LfB0cG/lmiOwAVTsD6YghPs6WGCJyAr++F6rOIocu/xlz5nn550cHEKtHErGFWuA8MubXgPb4+CaLw6V2Re/eflAS2Mi22ZJV7uoh8QqhzNKZGgQ0+II9mZwKjbcPXrdJ2IeI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,45 +160,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 03, 2026 at 01:59:16PM +0200, Thorsten Blum wrote:
-> Use the type-checked min()/max() macros instead of MIN()/MAX(), which
-> are supposed to be used "for obvious constants only".
->
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+On 04-May-26 11:39 AM, Bharata B Rao wrote:
+> Results
+> =======
+> Posted as replies to this mail thread.
 
-Oops my bad :)
+Graph500 benchmark results:
 
-LGTM, so:
+Test system details
+-------------------
+3 node AMD Zen5 system with 2 regular NUMA nodes (0, 1) and a CXL node (2)
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+$ numactl -H
+available: 3 nodes (0-2)
+node 0 cpus: 0-95,192-287
+node 0 size: 128460 MB
+node 1 cpus: 96-191,288-383
+node 1 size: 128893 MB
+node 2 cpus:
+node 2 size: 257993 MB
+node distances:
+node   0   1   2
+  0:  10  32  50
+  1:  32  10  60
+  2:  255  255  10
 
-> ---
->  mm/mseal.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/mseal.c b/mm/mseal.c
-> index e2093ae3d25c..9781647483d1 100644
-> --- a/mm/mseal.c
-> +++ b/mm/mseal.c
-> @@ -8,6 +8,7 @@
->   */
->
->  #include <linux/mempolicy.h>
-> +#include <linux/minmax.h>
->  #include <linux/mman.h>
->  #include <linux/mm.h>
->  #include <linux/mm_inline.h>
-> @@ -65,8 +66,8 @@ static int mseal_apply(struct mm_struct *mm,
->  		prev = vma;
->
->  	for_each_vma_range(vmi, vma, end) {
-> -		const unsigned long curr_start = MAX(vma->vm_start, start);
-> -		const unsigned long curr_end = MIN(vma->vm_end, end);
-> +		const unsigned long curr_start = max(vma->vm_start, start);
-> +		const unsigned long curr_end = min(vma->vm_end, end);
->
->  		if (!vma_test(vma, VMA_SEALED_BIT)) {
->  			vma_flags_t vma_flags = vma->flags;
+Hotness sources
+---------------
+NUMAB0 - Without NUMA Balancing in base case and with no source enabled
+         in the pghot case. No migrations occur.
+NUMAB2 - Existing hot page promotion for the base case and
+         use of hint faults as source in the pghot case.
+NUMAB3 - Enabled both regular and tiering mode of NUMA Balancing
+         (kernel.numa_balancing=3)
 
+Pghot by default promotes after two accesses but for NUMAB2 source,
+promotion is done after one access to match the base behaviour.
+(/sys/kernel/debug/pghot/freq_threshold=1)
+
+Graph500 details
+----------------
+Command: mpirun -n 128 --bind-to core --map-by core
+graph500/src/graph500_reference_bfs 28 16
+
+After the graph creation, the processes are stopped and data is migrated
+to CXL node 2 before continuing so that BFS phase starts accessing lower
+tier memory.
+
+Total memory usage is slightly over 100GB and will fit within Node 0 and 1.
+Hence there is no memory pressure to induce demotions.
+
+harmonic_mean_TEPS - Higher is better
+=====================================================================================
+                        Base            Base            pghot-default
+pghot-precise
+                        NUMAB0          NUMAB2          NUMAB2          NUMAB2
+=====================================================================================
+harmonic_mean_TEPS      5.08026e+08     7.48633e+08     5.46257e+08     7.45101e+08
+mean_time               8.45413         5.73702         7.86245         5.76421
+median_TEPS             5.09236e+08     7.25058e+08     5.40525e+08     7.63752e+08
+max_TEPS                5.15244e+08     1.03391e+09     8.51317e+08     9.7552e+08
+
+pgpromote_success       0               13809474        13763582        13763155
+numa_pte_updates        0               26746117        39502157        36368086
+numa_hint_faults        0               13811769        24248272        21172314
+=====================================================================================
+                                                        pghot-default
+                                                        NUMAB3
+=====================================================================================
+harmonic_mean_TEPS                                      7.00515e+08
+mean_time                                               6.13109
+median_TEPS                                             7.06813e+08
+max_TEPS                                                7.63164e+08
+
+pgpromote_success                                       13762087
+numa_pte_updates                                        93632490
+numa_hint_faults                                        70566306
+=====================================================================================
+- The base case shows a good improvement with NUMAB2 in harmonic_mean_TEPS.
+- The same improvement gets maintained with pghot-precise too.
+- pghot-default mode doesn't show benefit even when achieving similar page promotion
+  numbers. This mode doesn't track accessing NID and by default promotes to NID=0
+  which probably isn't all that beneficial as processes are running on both Node 0
+  and Node 1.
+- pghot-default recovers the performance when balancing between toptier nodes
+  0 and 1 is enabled in addition to hot page promotion.
 
 
