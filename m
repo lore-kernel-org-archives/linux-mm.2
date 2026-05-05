@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6E0DCD3439
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 17:10:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E70EACD3427
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 17:15:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E4E26B00BA; Tue,  5 May 2026 13:10:00 -0400 (EDT)
+	id 1FFBD6B00AA; Tue,  5 May 2026 13:15:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 048DA6B00BE; Tue,  5 May 2026 13:09:59 -0400 (EDT)
+	id 1B0636B00AB; Tue,  5 May 2026 13:15:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA0F66B00C0; Tue,  5 May 2026 13:09:59 -0400 (EDT)
+	id 09FE16B00AE; Tue,  5 May 2026 13:15:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C977F6B00BA
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:09:59 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 861CBA0565
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 17:09:59 +0000 (UTC)
-X-FDA: 84734003718.14.64EA124
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EE72B6B00AA
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:15:37 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AF6A140572
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 17:15:37 +0000 (UTC)
+X-FDA: 84734017914.11.B062B34
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A591F100005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 17:09:57 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=lt719uei;
+	by imf24.hostedemail.com (Postfix) with ESMTP id C5A67180005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 17:15:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=1OW0Qc3m;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf14.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	spf=pass (imf24.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778001336; a=rsa-sha256;
+	cv=none;
+	b=j9OHxskGAMhoMFv7t82FpcTD525V0zlM7342G/OheFpyu8WaKGnLSueFOn9wn+bvz6AzFV
+	/rExkR/JlI1o3wDU4LT94qb3p/OdD/XL4ZrIy80hj9lWBkMstLmo8eS9EC4GDRQWO7XdVj
+	TAkEisUuPx1JCNxLL+enyFtSlDIMlPM=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=1OW0Qc3m;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf24.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778000997;
+	s=arc-20220608; t=1778001336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HNQRtWDHTSdHuulO3xaZF7TbUmQJOtiaHzb+LTQXOgk=;
-	b=ynOe7GyV+avwMOlLx6L6hkE/G1TTnXeLg2dWn6E6kvWeTXwSG8xCbeMkqMpiVBcuDKA9/G
-	gmPt2o8RDnj7p8pva0JaDSWk3vmabWjt/YNoWSd3u7hg/LzCHkAwG4+2zkBSiijy6cjQDO
-	YBGD5W5slXNvOVT1owSEw1QqbFVbbeI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778000997; a=rsa-sha256;
-	cv=none;
-	b=bmbHCltFAosuCv/Y/Li7W3xgvLJ5T8Fyv2XLkDX5VcIpLh0TryyJX/tPBo0San8i++Bc/x
-	X46TLDkCwCTstR1g/x9ahpN8iXYU/RPm2dMCKxhzXi2Z7FieVyo+1Cq16Kp//LDFV26vW7
-	8+OwRk6DGMBGybgN8gpffOlTAib8dXI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=lt719uei;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf14.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	bh=5x6FaQ8RAPWiFTMehIyIvGpXzwgZYwE2l4ogWqmfm5I=;
+	b=vwWY7cff3t9mXkSbm7fm8uZZEcy3Q69gq2wWxQETcqUQs2F4wbAw7OxkqznG9O7h7EsgI7
+	dTbi0qwaVj6alxbRXKuTK/zP+5YzjFejaBQUZO3vRa/3x4CpdROC1nFgYQ+Hx4b6kOXcuy
+	DcIiVNRVcr0kRllX95Pxm40qQhrRypA=
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 388DFD0005;
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id A1FB9D000F;
 	Tue, 05 May 2026 17:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
 	s=mail; t=1778000995;
-	bh=HNQRtWDHTSdHuulO3xaZF7TbUmQJOtiaHzb+LTQXOgk=;
+	bh=5x6FaQ8RAPWiFTMehIyIvGpXzwgZYwE2l4ogWqmfm5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lt719ueizrhf62Y1Z7/DZbnmjEx0GJ0GjDpQhigoaaIbE/RpBOAJkHGdfOMuYyBjk
-	 4l56I3tj+XiqaPZPebIxNQMWRr+l90s8NGj8CwP7j64JI9O3RyLiI7Cd4dIRMRt2Pg
-	 WnkSFzXSeAx6cbAJJHStQMGcmpN8eYCWX+ayIshY=
+	b=1OW0Qc3mLC4qVMBQ1Uc315DJ5RE3HdXkq8W9njLbvKRJQ08noQiB1vYfPi+KCYhwr
+	 31pqiATb64htMJIHCUdBhkjmLNs49yVSXJkrXzmdhsqj62zVihyRvPPrrMxT3pARkb
+	 4Mpf91HRD+GSXIZ31isxB5rn4U4bOLuKGOKx+XtE=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -89,24 +89,23 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-trace-kernel@vger.kernel.org,
 	kernel-team@meta.com,
-	Dmitry Ilvokhin <d@ilvokhin.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: [PATCH v6 6/7] locking: Factor out __queued_read_unlock()/__queued_write_unlock()
-Date: Tue,  5 May 2026 17:09:35 +0000
-Message-ID: <8e88613c73f0603c4440ba3a62eb604a5dddc57b.1777999826.git.d@ilvokhin.com>
+	Dmitry Ilvokhin <d@ilvokhin.com>
+Subject: [PATCH v6 7/7] locking: Add contended_release tracepoint to qrwlock
+Date: Tue,  5 May 2026 17:09:36 +0000
+Message-ID: <b67fda8e847fff72da05eff7f799019f8d17ce21.1777999826.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1777999826.git.d@ilvokhin.com>
 References: <cover.1777999826.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A591F100005
-X-Stat-Signature: zdjb7s3rj8p4mthoyg5zdxqdhw7gokso
+X-Stat-Signature: fpabtsabqkjdp1pnpmcpzbcettnai6cg
 X-Rspam-User: 
-X-HE-Tag: 1778000997-596597
-X-HE-Meta: U2FsdGVkX1/8e3WEl4ykHy03IGTJhQxY6u8pVbMpPSk7IR5vG9lTexlb8uYHi+5B6W7Gq+LWnxnQyOZbaQ4LVNAad9ZWvYmCv12UzjVnh1NgRLl06FvMtmjh+lJgUhSiO9Xsw+KmK6zFuA9MbXfNiuJaW07Zt4+WXD2+wORKDNlzGvt224xYmXIgWnN0c/FkDFD+YsWT9R8ht56w0PNPr1yCXWH4YvHrvN0CuMiGgnyOqcgf7ohGtXEvgf1lTFCTxrHZG9+/tvjrou/QrUUPxqlxjYC4RUGWwz3yoTW+5Y6sY04mzjijQx9JPloJZVj2yrCrs/QHWcGGf5J4GzbsM/jLRuO47k0zyxp7RoMpBhEknt9q4YuRtcB6BwToI6Udzev0j/nho+n/BHS0fQJlL7WAE+yoxmBS+YaAJp+82AwznYrSOG4zR/eSMIQlg4ka9bN7Fl+RnUp6JPUMx8K/QRxMh79bLMxvU4PsriSOb7JpbABBHvZQvf9E0RPo3ANqHH947bPyNeRVAenE249DE4hDm7uNuPfbEZxLBFcNaSRYkgwhAOHksU+G+EhcbKo5kRbp2DHKeLWogKk5mMJVwZFlaN7ga5g2yr6dt+IDfMd6IJLlZg6mokIHVsS9P17xEJP3bSJ3DR5wXhDW6w/SbtZWtdfA3d03yQyeK1bPTAGGHxzgIv7xKyXyaNWDi0PBb930DC16RavYR0S2edrPrzy0ZLDRLZ97urHO2XZklPVzFNDCl/mDVEw/BA7bvo0RzhBZLbdGlNnEN/FA7JGGNHKckLNFkRCpj1vpfuzzThynxhwHpo/UJLqaDSEWAzIeXTJ8fMAqmYmRVTdeQn7BBRB0IfV9QGb+Pds6DGa3y7qSm0FRjQp2LV3YtR4+ATJrhzpjAQGmux7Ew30NRUwqm4YYvHB+C2iYH+4ci5DQ2rhpDTC83QS5a1EqWS460SkVnoZ5qqNVQ7viaO/T9Md
- hTFKLQff
- yS05AnwiWL23cbZBkcurQvvfST3K+SbQvVuXsvpcsYV4fpCk0B3l94BaPMUDfw4KuMbKu8G1wSQtGeBvLsifFtEniHwHm+jZfeBGzqMCGjOw6XF6Iiu/UsAk7woSgrthFBYZEM1QonBL/6SkzyQOjOlnkyqfyQ1fUhu/SuZzMJVcb8tm/mA8aQT0RD3e5qvkTlCNqJ1cFzI4Oa5k0py4yRLsTgCvtUzdVxY898m0WwRRSj0aii0lcS7LnQ45O9yHOW6GG3GCil6y0qS1nxOrDRsr+Po8lSDnSP8eOxuXZT/Y0KO/IqAFLduT6ZA==
+X-Rspamd-Queue-Id: C5A67180005
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778001335-604278
+X-HE-Meta: U2FsdGVkX1/OMr2XqojMlAKo1BtJB45slqNLuDyj1eL60g9ajTpwtRC/Lw0kaDT3+FaU7wO03kLBnsaxUo20OnSu2c/mLMv8BCR4NR3icHT5pYw7qZ27i8W6eSRo0+QOUejL6BVE0tX6zMiguA23es/ciKpESk87HZyU98BnOiMXhtje/Y4Ts9ao+0Fi88k3wbhskF5rvM9au3xuLv9p9v5DZErYKgr2fEZkX1x0ImPhGf6HK/gEDtHX3Al6DKoc/K1GJ1f4UuuD7Rgc9BoWfxYokTGN0kSa4sG/gpB7qDJHpjUO1hXXCBM6n6KuTgLHLruZ19IT813uJmb0M3OY39dOK+YahCOSGi9JwlXvPpBJCDwNuHPwSonVFg5wSzkSZoyKGoSEc7Rjo3eYZXzWgYFlXCY7sBuHQD8i0WIuz73F6pKxJy8fg2mpUkIFitdXECtiQ8PNpvhLQn7rUonlHtEqNGT3FH3RirpqKSWKzjNh9JFObv5DhbaTSkscNaUh62kWn8AUKO6VNThBROyukjicKo7sIvrDVapTyKdgVUQaQw7OSU8+siwqTO0dvqeDhnrmJrfl428yfOaZTiEupDjqrhzU3fGYj8nul/18HIO3c5co1AY5/od3gEBaBddUOyaWQjK0FaEbUCYaLoabw6++K+646KIRl5XjGu4ye9QVJv4b+/VcmXGyQavSH8fKjJufMyVUs/hyARHDLFQEKlroERrE9zhMwmCNhLBa/5FECHhi1bA5uf1KwFjhnnfkHkaA6wx56InywnwP32Vg1Uq0d9reO7tKSe991MoxxDmABYb5jL1Mbdg/Tdy94m6hJSZmkmEjcxknibJWJbPv/a895ybhGAFQukzb/o5rGG34TmcakAuUO9ydvQhctkJCx1XB7lsKIcVPhDFa5mT7oI+wWwvDaOg46jJbZKipzNLTaYfFZVqnmk+Q7vxxI7TH8xvJAqxD/QjgK2yCMrm
+ KSSU2d6R
+ 73IILGkRtmxGfZgBnXv8e0076M+oScM664fWt15pnXyVPp9xvMH5E8xozGHswzBTRkz2mYGR832IcqVE6K/4Lpb01vcsIfWVhm9T6HvJC3kxs+AJ3X/52mNy3xONjRR0JuoMLQ9HpNlO/8WV7eAW1JO171BdtuG+yqmfPRQzmoD5iFnHwsIJVUkw6RPwyI9jfAFp+WCjp9owB8xA9NTXoDRNb3bR47/gEKI9pEP0xaG6popF/qTiMFBO5WqbPTKrvL5xCP7I3ppSgVe/K+UvRhMX+EVD5yvF/dXk3UlmmeNJDmg3gR7zIljK185kCicRDJJKgpE1NGN83nStwZ/yFpc9ytL+MmyauShrbAWvdHeOPEjs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,62 +113,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a preparatory refactoring for the next commit, which adds
-contended_release tracepoint instrumentation and needs to call the
-unlock from both traced and non-traced paths.
-
-No functional change.
+Extend the contended_release tracepoint to queued rwlocks, using the
+same out-of-line traced unlock approach as queued spinlocks.
 
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/asm-generic/qrwlock.h | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ include/asm-generic/qrwlock.h | 22 ++++++++++++++++++++++
+ kernel/locking/qrwlock.c      | 16 ++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
 diff --git a/include/asm-generic/qrwlock.h b/include/asm-generic/qrwlock.h
-index 75b8f4601b28..4b627bafba8b 100644
+index 4b627bafba8b..274c19006125 100644
 --- a/include/asm-generic/qrwlock.h
 +++ b/include/asm-generic/qrwlock.h
-@@ -101,16 +101,26 @@ static inline void queued_write_lock(struct qrwlock *lock)
- 	queued_write_lock_slowpath(lock);
- }
+@@ -14,6 +14,7 @@
+ #define __ASM_GENERIC_QRWLOCK_H
  
-+static __always_inline void __queued_read_unlock(struct qrwlock *lock)
-+{
-+	/*
-+	 * Atomically decrement the reader count
-+	 */
-+	(void)atomic_sub_return_release(_QR_BIAS, &lock->cnts);
-+}
+ #include <linux/atomic.h>
++#include <linux/tracepoint-defs.h>
+ #include <asm/barrier.h>
+ #include <asm/processor.h>
+ 
+@@ -35,6 +36,10 @@
+  */
+ extern void queued_read_lock_slowpath(struct qrwlock *lock);
+ extern void queued_write_lock_slowpath(struct qrwlock *lock);
++extern void queued_read_unlock_traced(struct qrwlock *lock);
++extern void queued_write_unlock_traced(struct qrwlock *lock);
 +
++DECLARE_TRACEPOINT(contended_release);
+ 
  /**
-  * queued_read_unlock - release read lock of a queued rwlock
-  * @lock : Pointer to queued rwlock structure
+  * queued_read_trylock - try to acquire read lock of a queued rwlock
+@@ -115,6 +120,17 @@ static __always_inline void __queued_read_unlock(struct qrwlock *lock)
   */
  static inline void queued_read_unlock(struct qrwlock *lock)
  {
--	/*
--	 * Atomically decrement the reader count
--	 */
--	(void)atomic_sub_return_release(_QR_BIAS, &lock->cnts);
-+	__queued_read_unlock(lock);
-+}
++	/*
++	 * Trace and unlock are combined in the traced unlock variant so
++	 * the compiler does not need to preserve the lock pointer across
++	 * the function call, avoiding callee-saved register save/restore
++	 * on the hot path.
++	 */
++	if (tracepoint_enabled(contended_release)) {
++		queued_read_unlock_traced(lock);
++		return;
++	}
 +
-+static __always_inline void __queued_write_unlock(struct qrwlock *lock)
-+{
-+	smp_store_release(&lock->wlocked, 0);
+ 	__queued_read_unlock(lock);
  }
  
- /**
-@@ -119,7 +129,7 @@ static inline void queued_read_unlock(struct qrwlock *lock)
+@@ -129,6 +145,12 @@ static __always_inline void __queued_write_unlock(struct qrwlock *lock)
   */
  static inline void queued_write_unlock(struct qrwlock *lock)
  {
--	smp_store_release(&lock->wlocked, 0);
-+	__queued_write_unlock(lock);
++	/* See comment in queued_read_unlock(). */
++	if (tracepoint_enabled(contended_release)) {
++		queued_write_unlock_traced(lock);
++		return;
++	}
++
+ 	__queued_write_unlock(lock);
  }
  
- /**
+diff --git a/kernel/locking/qrwlock.c b/kernel/locking/qrwlock.c
+index d2ef312a8611..5ae4b0372719 100644
+--- a/kernel/locking/qrwlock.c
++++ b/kernel/locking/qrwlock.c
+@@ -90,3 +90,19 @@ void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock)
+ 	trace_contention_end(lock, 0);
+ }
+ EXPORT_SYMBOL(queued_write_lock_slowpath);
++
++void __lockfunc queued_read_unlock_traced(struct qrwlock *lock)
++{
++	if (queued_rwlock_is_contended(lock))
++		trace_call__contended_release(lock);
++	__queued_read_unlock(lock);
++}
++EXPORT_SYMBOL(queued_read_unlock_traced);
++
++void __lockfunc queued_write_unlock_traced(struct qrwlock *lock)
++{
++	if (queued_rwlock_is_contended(lock))
++		trace_call__contended_release(lock);
++	__queued_write_unlock(lock);
++}
++EXPORT_SYMBOL(queued_write_unlock_traced);
 -- 
 2.52.0
 
