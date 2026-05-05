@@ -4,198 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1828DCD13DA
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 06:53:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B98E3CD13DA
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 07:06:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 311406B0005; Tue,  5 May 2026 02:53:06 -0400 (EDT)
+	id AC5756B0005; Tue,  5 May 2026 03:06:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C1CB6B008A; Tue,  5 May 2026 02:53:06 -0400 (EDT)
+	id A766E6B008A; Tue,  5 May 2026 03:06:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 189E76B008C; Tue,  5 May 2026 02:53:06 -0400 (EDT)
+	id 965DB6B008C; Tue,  5 May 2026 03:06:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 081C06B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 02:53:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 88B831C0F14
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:53:05 +0000 (UTC)
-X-FDA: 84732449130.29.19CC200
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010056.outbound.protection.outlook.com [52.101.69.56])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 94D592000E
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:53:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=IgLBCb6n;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=IgLBCb6n;
-	spf=pass (imf13.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.69.56 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777963982;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 833926B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 03:06:04 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B4851A02A6
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:06:04 +0000 (UTC)
+X-FDA: 84732481848.10.6E49F41
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 95F621C000D
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:06:02 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=E2MCGGEI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777964762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Mv881blE/vKyygMPoAWPyhF647UEZmUqgmdMskrdp0=;
-	b=xQVhZiW5+6KkuMAYqEqaNaVQ8gYn8+Qx8njZAGkk98l4Sp3Dg/+XD81Mt8fs14lqrqsznb
-	xKNAJd5D0gGPrnELaCxR9gYMf9tkaE0MXhXT6M6I8N0v6t9r+Rlb8Ssx/+ys9aThkNbukr
-	9TgVLV9ZN78e9e963hzWnILzVuV8tlU=
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1777963982; a=rsa-sha256;
-	cv=pass;
-	b=ZUoaMptlxx7mnx1f+dKKg/1or38xUSvgkK2qyYFLvBP8GPk3z4PJ7YkySXhIv8AXM74kBT
-	mLc7cQdqo+wzQDZnoBARyLxEdTfbgkIz46lM4LTWtAQQ0fXonhHUX68INLMhgGBE2x3dDK
-	3YV8p3cMRn31zT4HaKkt/xEaEg4me9s=
-ARC-Authentication-Results: i=3;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=IgLBCb6n;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=IgLBCb6n;
-	spf=pass (imf13.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.69.56 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=Qe3b8qcTlqetlj2TNOMa9z4UZ8KVUxxc42X+uSmulYyO4pa0NEfQfg/3Tji3e5V2Hh5Ym1TRg71U/QUuCbuCNPUQO/5txHmVdR5x+bGnpkh17Kk1VBu3+ZN6SKZOk3OWjER/Wf4a4KZiNTGxdhjYZfS8ei3SsAOwWwGIAzLUOdlR5aoUAgYLcdvy3F2iHsYI9gSfyJqA057yR0altgY0gC1ldveCsNPmE7FYZCzlpyJz9SCS6VYZutowoHYhtz3aOwUHudHUqhaw9lsHSby7HwL5PMeJ4/gfYtrJejU/dKkl6JZ2pY4T4RPO1L3R1e5yox7dcIZCGYh9hv66ef6uUg==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2Mv881blE/vKyygMPoAWPyhF647UEZmUqgmdMskrdp0=;
- b=GejkD7Z2UnAlSSYJRqDZ/6eN7GQnA14x+qe7GoJExFkyxFUarOKRbxAtqWmB3r6h3GPTbpl4VvjG4tp9N+T54WAYLMMsQul0TNoVa+Kye8DwMWDZ9ZgltiF+vzUvJySjR214mLGoPnh5xLNDS+vRqhCa4QFy2t94fMBevzbL+23iq2kFI1zaDqPF3WFpbS1GJbcOwz+AFkRMJkoxuVCkNo7fozQgpCHfcNqa0H4rvI8n+2oD8StKvF7gohF9YVOPdxc3dJTmqJdVRIUA5HEWvoamA8V/4H8Yze+CPJcTeJBx8d0zXMzzMfGqUryGdbBUB2dZdX0XawycasQanwG/iA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2Mv881blE/vKyygMPoAWPyhF647UEZmUqgmdMskrdp0=;
- b=IgLBCb6nOVxIad8yleRXbtyNA9FCoNBVx4oeDopmvshDK8cQvI2MJme9dVEw4aTVABvHqC8PjHeTvyeMqS/MZROeZnQ9C8ObBfkGjqmCzwev77JiEmW23SDVG9zfsqIiF/kuhrnhWuZ4L8TfTC4/R1may/yBcFrD1k7LXsfpaBw=
-Received: from CWLP123CA0057.GBRP123.PROD.OUTLOOK.COM (2603:10a6:401:59::21)
- by DU2PR08MB10132.eurprd08.prod.outlook.com (2603:10a6:10:49a::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
- 2026 06:52:55 +0000
-Received: from AMS0EPF000001B7.eurprd05.prod.outlook.com
- (2603:10a6:401:59:cafe::68) by CWLP123CA0057.outlook.office365.com
- (2603:10a6:401:59::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.25 via Frontend Transport; Tue,
- 5 May 2026 06:52:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AMS0EPF000001B7.mail.protection.outlook.com (10.167.16.171) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.9
- via Frontend Transport; Tue, 5 May 2026 06:52:54 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B71sl6JO5dam4kHAGrZYLpzuo3Vf7lip9GVPjk1oHSkGN1+AxDNs2/9dek6L1wfJ8y7DgONm6eq7xb8Gef2RvcASjYh8Ub/RgAktcQ1FMw/eJK5kz+iZ+7vdBN7ZFmhRFD/49UXOI9uGQkyBqPtRP3wD5+jNEoKDgXzBsUlK8kBhMHoiEjGGo61XVDYgvHw1plqX0PjvmjEUJR4EZkgGott4ZpejIVaQRkXTuUCY/ehbnKgztjwiayj6XxYwRoeguq5RoXijdytkduX312VlBbufJ6lbEslxaXeb7lVWivWnzuh/qrtQFyrPzQmSEk3B+sdzUbiC75IP5BMRoqlK8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2Mv881blE/vKyygMPoAWPyhF647UEZmUqgmdMskrdp0=;
- b=F3fS+XB4Qkgsa+0I/hUvhp2yd1ry9/5fEdwRxujhlzWP09q5sbCGQkRc3if6JG6QOzfMYSPqqZqUwTBx70YO6hzCVW/lIxYwGgL0abQ7ViibRa5QFIFdr7ofdkRXYcihqpVPexBxzVlEMZC9cUkNfNxxGei67+ZB+L/gAPza5iSytM2pnpjX8XlsGr0tVkdzASOnUCeRogkGzd+YNuSN7N9mE1zwMxb/Mspe3c8siwcapvaG/YeB8ucG9OyUkFgQQrEKzID5qiSI++laYtR9efnYSkmKzfCpjysMzGolWdvLublpsC9tmOu0hoWNFuRNMVk22+THTcNCQcJVJ5aGmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2Mv881blE/vKyygMPoAWPyhF647UEZmUqgmdMskrdp0=;
- b=IgLBCb6nOVxIad8yleRXbtyNA9FCoNBVx4oeDopmvshDK8cQvI2MJme9dVEw4aTVABvHqC8PjHeTvyeMqS/MZROeZnQ9C8ObBfkGjqmCzwev77JiEmW23SDVG9zfsqIiF/kuhrnhWuZ4L8TfTC4/R1may/yBcFrD1k7LXsfpaBw=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
- by AM9PR08MB6273.eurprd08.prod.outlook.com (2603:10a6:20b:2d7::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.27; Tue, 5 May
- 2026 06:51:50 +0000
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9870.023; Tue, 5 May 2026
- 06:51:49 +0000
-Message-ID: <062c6e5f-2920-4bb3-b853-5d6fd7696c26@arm.com>
-Date: Tue, 5 May 2026 12:21:40 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 40/54] selftests/mm: hugetlb-mremap: add setup of
- HugeTLB pages
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
- Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Luiz Capitulino <luizcap@redhat.com>, Mark Brown <broonie@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
- Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260428204240.1924129-1-rppt@kernel.org>
- <20260428204240.1924129-41-rppt@kernel.org>
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-Content-Language: en-US
-In-Reply-To: <20260428204240.1924129-41-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0149.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b9::14) To DU0PR08MB9203.eurprd08.prod.outlook.com
- (2603:10a6:10:417::12)
+	bh=EoOnajH3k3ipR16wiV1QeGQhhkad3qHmN10Jioi2yvM=;
+	b=QpenUgFNIX3YQ5lF4/6F3/smBr77R/XkvQT18N7hwpFvUCULqRK1GZFQqvx/3dyfyC0Fhy
+	tlCBleeNdsxTO2L4s2ieaIchHCZbcMlgD0HjnMxTTM+mtkAB8IXJFfnp0vT0g1RixXxmdm
+	QYIrs+wJNDCE6zR61hTz8aOhPSvJUMY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777964762; a=rsa-sha256;
+	cv=none;
+	b=K4++2O0cNJGgNil7wwoX3c6AEs71qYc/1Ib8Fi6hP8peqPYXvv3FY1/qo+lx1O2fjambeu
+	bxpCTSiskYKrwkBxdAmEh7drBEwUcqiMND38UnMlujvJE/V2Aa5iNRV5ejHtrmsnvQYzqk
+	yxNUxyM28WofPj7dHp+azj29RctSjBs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=E2MCGGEI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E53CB60128;
+	Tue,  5 May 2026 07:06:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DA5C2BCB4;
+	Tue,  5 May 2026 07:05:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777964761;
+	bh=EoOnajH3k3ipR16wiV1QeGQhhkad3qHmN10Jioi2yvM=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=E2MCGGEIDFooOgv05S3lPLcaurSM3pb0vwcE3gUnTHf09r8LC2oYE73Lijx+2fImm
+	 qCma23zXoLjPLmj1OZq8+iyvHq1+rEGEKH1kVpCXmzvoPsD+D4ywpyonZC2FiWoOfX
+	 t4pTkRls+/cXwYQzbJSXJjNlipDwn9LPWZy1oarhrKEscVSjRL6+wTh2AgRpkZsmWI
+	 vt/AU8VEnqfPpgFKDYxz0tfEOaJtmiKf0RIadXS3+gyc0Gg5E7I7gOTgcvWZRPdsdg
+	 wayysJ5JXN3gJLnFaMvQw65ObRwOCR8ffDoGrEj4wimMQeQzgR2YdvF5rle8TuUyN7
+	 Ef3DLRumfFjlg==
+Content-Type: multipart/mixed; boundary="===============2029874583554774468=="
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	DU0PR08MB9203:EE_|AM9PR08MB6273:EE_|AMS0EPF000001B7:EE_|DU2PR08MB10132:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2dc52957-755e-4ac4-0e36-08deaa72eef9
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info-Original:
- B6sdA1CNvbBkYRDWl0dpwlt1nN31iHVKdAyYZ4tDphpC5NtqVNLoY5rUW1633Pxi3txJDPewRpsor57gRY58P5s9bhFaOBBqY0BtE7EpBeRqri8nLd0a7DM7cYxxuieKUgXRguTRpdB/VBoJUporpomkVMYjjLeEK9XP7tTESaAcOWbWjwxBFUM5OuEzcxjG9q5M95Q6H3xSVp4d6s1WmyaZKkgmS3BDqr8e29InTZQnVjt1ewAbfFz8kcmdnC5p3EBsxP45Ti851G/9T1hnicVPXrfMeeY1dR5tTp77H42fWNhzbx9+c+vtqk27tCwpua04lSC6o5j5I7LAp2QH5atJA7ndBD7tM+Lp2KmlSjnSUmk/2ut5/yeNZGOHDdod6RJLyz1OCxgh0cRUZJfYfoMzOM0EVfufZGoKy7YbU6WlxaaW6P700/Gv5TNau5NL6uNxS73ZVC0vRjAEU3VSXsEVY01FKPe6dPfeM1SBqFZ9NSjd9zmJSaOWKGJ5no+EmLMb5k9x5ZZhGwbfLpDD8QxjRY1AnVXyjb6cxb0orU8OXsqdhknq0PXGeqsJ1JCsdPLlhyxMK2DdZGt+rygh4Qtl09SgLO117LGxTRcSlVlmeR1aski1Xn/KjTgNB61JshsLSFUowwuZnBboZ1DYZ67l0M+gn4B40htRx1zUxOaYVGDXjq9Py65jN2ABlWxF
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- Qx38EGFR3cIrHid6btCo8jOQZjGoaC1s8jS2CGC3SjqlWlpg8b7YfmQ+0p73Jaxcj+pGxcFkWYAawM5Nnb9S84U+dZISojeviGHoKns9uI2KyvGJO8RJr3QAxA4/Y54TniNV1MaB9eB0nuZOWUIIllt2kpH/u8h5/WcRUMT11fsmn4g2yAxgvkzzjBeT3StaRwsFtfbNx5IrCLOpPe8LTFw0jowXUGiPkJGoZWVuOXouK/jnD4Ws+FUcfkkXY33n2JLrvuiUa1w/rfqNzKC1QCA6VSsJ3jlrQzujp8ojvmCl/bLYJFs/eXLjBUMSZOV/o2MTisNROt6C8ZDNwYoB3Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR08MB6273
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS0EPF000001B7.eurprd05.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	ed2f7f91-eb88-4e3b-fa53-08deaa72c7ca
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|14060799003|1800799024|376014|7416014|35042699022|36860700016|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Y+Di3RlMiY87BooClk9VgMMfIlA9fdfhz2czUJjq4cVEL9Y2j9TI0hLY3aiYVNQ4c8O0WODQPeuL77L0Ixa+oHi1ofQQ+8vLG4eHSC+kphKT+N3Ayfu9SPuhkUF59t54BKvCXlOOc43Ae8NcgzdyfJ5/YkR84A5Oy6npIvNfv5GRksuRYesC5rFT2dEBR9HGUbXu/X6j3oh+wBQWeueXZmmSQcLbgvvYrNMoRPgd8p3fN3dF/iMzhuwxLYIk6acXzjirGBecQ1J5sKHB2FziT0wZ2yQzYIKE/aWKw6mGCMAAPDhkdgL/CL4RS3lSo4IAEjTEaLkDycfP2wZc/HwtNwWrMBV3GJSgDEf+U224ni7bC9kCqrC9lqrhYV3ySA0k3mQD1OhkAUf/drFYigLEcl0XqDqwIqtQ39SZsEijZZDMP0GK6oqoRz9b1yRKveC5N8j5lqAMLHx8Ae7dezhDdfyNs07KA4Qq+fgKi4gkO8gA1i1pT7+vYE9NHBdgYJOdlli9XIMdQLt+f0e19Q7hxcIlqL4c4RsN4tp7QMKZOR9KSEU3PV49yuk9zRwOW+shis+nC6m4sY0KvURA4dc+QeJfoiur7I/mAFlOvX2cqFDzatMmRnt8GRlST6flK0tiU3Z9zQl7jvx76t6J+SdRayJrdy2W453VyZzR2OBUEbGxT6aDYy8MsKmjgmsoCVdxuh7OkS5cL0OuV8DwCXqAfuqcHQYYpUC+v/HkjIR90qk=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(14060799003)(1800799024)(376014)(7416014)(35042699022)(36860700016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	tgL9Y3Pi9TonNvLW91lW1mWgyVLjwHZWmL9sh8kYhzykUUk9u3ck6RgByZQd4ND1R63nnXD5hwq4iOARIf1e9fcuGQYsjUgiSwj4uZr5PwBqc4BYf1uraunlbVy5S4OPcRyKPAUIbQEg9TOhtba83VNPgKsFisW0W9GC3aN8q9RuZf42MSFWKEknyJhLj4vizumt53z62k0e2EsSAsVKY4fBoTNbQBKFW3cI/+agyb4lepXjab8NVQwS126GK/qJJDxS46UYt92wWNBlIU6Cd3+LCcDs6FRQ++p/w/11XSI45/0fgS36kD59r+XKRwVL13dO0LIxb/vQok9dC4KzZ5H9oYrd8vSzbUS5b3310BYd25WFOmmpOhbQvWaY5Q3UaTbd8cZejlfF5ysKoEt8UBu32CH/rzFotNXuBbTeY0yJdilTXyYrDLJD9E/4yf3g
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 06:52:54.4520
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2dc52957-755e-4ac4-0e36-08deaa72eef9
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS0EPF000001B7.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR08MB10132
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 94D592000E
+Message-Id: <fd8cec766d7d282c6e45872dce0a5ed47d8e7889c86f60bd0bc0895ae368ab61@mail.kernel.org>
+In-Reply-To: <20260505062026.91724-3-cuiyunhui@bytedance.com>
+References: <20260505062026.91724-3-cuiyunhui@bytedance.com>
+Subject: Re: [PATCH v4 2/3] riscv: introduce percpu.h into include/asm
+From: bot+bpf-ci@kernel.org
+To: cuiyunhui@bytedance.com, pjw@kernel.org, palmer@dabbelt.com,
+	aou@eecs.berkeley.edu, alex@ghiti.fr, dennis@kernel.org,
+	tj@kernel.org, cl@gentwo.org, ast@kernel.org, daniel@iogearbox.net,
+	andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
+	memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	jolsa@kernel.org, bjorn@kernel.org, pulehui@huawei.com,
+	puranjay@kernel.org, thuth@redhat.com, ajones@ventanamicro.com,
+	ben.dooks@codethink.co.uk, rkrcmar@ventanamicro.com,
+	cuiyunhui@bytedance.com, samuel.holland@sifive.com,
+	zong.li@sifive.com, conor.dooley@microchip.com, tglx@kernel.org,
+	debug@rivosinc.com, seanwascoding@gmail.com, andybnac@gmail.com,
+	menglong8.dong@gmail.com, cyrilbur@tenstorrent.com,
+	wangruikang@iscas.ac.cn, atishp@rivosinc.com,
+	apatel@ventanamicro.com, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	bpf@vger.kernel.org, arnd@arndb.de, nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com, morbo@google.com,
+	justinstitt@google.com, qingfang.deng@siflower.com.cn,
+	linux-arch@vg.kvack.org, er.kernel.org@kvack.org,
+	llvm@lists.linux.dev
+Cc: ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue,  5 May 2026 07:05:57 +0000 (UTC)
 X-Rspam-User: 
-X-Stat-Signature: fjfk1riknajouz34azn6kyygiusg4zps
-X-HE-Tag: 1777963981-975364
-X-HE-Meta: U2FsdGVkX1/Mn0vjyMgCh4BiSeq5o6szFLokgUgzK/qmMB/UbenRlBCT8eCRxBveYRVd6IImjyr0ZFiUJGpQX/b1feSImzFgYONWitLIUoQycUX1EndfoLkj+qmiPtlWfMQJHbkapN5BBh+/5uhNZPn20k3kVDGjpe1W/+Lg0pXL+A4Ye1IubPENzSLuyHLKb961shuq7/uwJS/999s2RMwyu4dRY8TrQ73NQr2i0Hkgt40MZCdyc2Wcryv0c6U9D42xKMO+ErI9zGxuBiA/2K1MBiDCKbGNNnOvDTPS00EfzdepTvpUdSnIK4SFuD57A6EH2BDeM0JCOinI1JTgLvHHfUKsDXIi5Rx1+tbAUtHgzolxalT/eFa+HSmA4XYiUR0vgCtvfBAiDxXEXAUwrvUNOIxFbSGRfCG5kov+ivEiLm47Hq2i7fyDGeZHbGJmcdg9ds2kQZu8Y0zTWvktJVMK71MKRq5ns4bKentAn+/cBM5CrBlr60xiBrs++JYqC2KAxM857ltN/CVK0CMHUHUiUHirnKO1xRg1jmcmM2T0fLqCkBx8r1ELOcir6sh49BL6G9X3v+H0L9EW/uxHtP0vx4JDKZheiikgUAzL9FXTfJt9ukTLBD+7MzusXrDBd7oiBHbSTivCxXQtzeF+4W8dSUhCcOO6sY7A7lMIi/0CoMO/QPN36q889DhwBKOZhrdGWJqpwD7iEnHBsO1gPqqxAOXBvwbS4jbcjMN1gumH8HaqRIHUZFE31UlHjaK5SIy4IlhTCSnFAgcM9osIOcLSBEbftwj0+ri87ajKn+986DdKl/tN7q4szxX3W0fQQn9E2xuzK1Q/BDdMhiBN7kAvmnPD1WFWmzlU7SwFRW+/vIcWTxUr0GLGWdifS8+L6QQ/hK4blPYjNsOORu0Mk+Dxty0YN1Kdbz2r62QDGf3N1k4Pd1cofHe6HXHOI7g9gpjvrw0/WRIDApnTfqo
- T6qHF6OT
- aduzWEGCKyqdYdjVDphDizxYqEl79TTHZsfxpvolfs3MUWZJmNMCwXHNeXYSvBbPaWgBnTGXsyOuEcULIy5dmto/N1CHz13HL7Dvgujtwlk4GzpY4BGXSGO1NRyFNjJFhMhFlW4YNB6utyTQp40ELQN/i2STmn06LLCrjzKxuFTmhBS5uhQNv5biQF9JM4Mya4Zz7jtsJMU4wizq6KcGy1LI0GNnoEx97lLPGq5qybO9/3qeH/Xvexm1q7Nw1ts3I1SFr0dEjinDZWnkPgKGQUtR4BWhQf76YuFiO0DRdVcYuZkBJ2iwaY+uPZayVzw/u+mu10l74xxPUfXZ5/+aUIEoP6dIx9EbkqSxNYD5oJAb51QK5fEGJif8dSrViTjKQQjxbV1oopZ4oVl3f5qmWYqvz9SXQhsBabjSXJ/n1nzxg1sDsF0TeYohWiKJuON4VwscdnzW5Qp98I+J5ciomJ0WYndeN16Gx4PXRyq8kffKJVfe7CQ7UwcXwJw==
+X-Rspamd-Queue-Id: 95F621C000D
+X-Rspamd-Server: rspam04
+X-Stat-Signature: xy73ph7qnyzff58n86xh7oynczkigrhb
+X-HE-Tag: 1777964762-269765
+X-HE-Meta: U2FsdGVkX18D1FCmrQ4Hlm5DzukFKpP7o8FXVo45ZCAisufc9OAnnk30DtiBI5casYJuULoKwQj+MsGm6PoV2C4e2aJVPYn0P3q76g8VX5tkB+g0k72ZuePF2mP7EDwOAIsFCMr+KGY7I+7M6hS7kXW/A4iEZB6TXHxir5+8qv1W9f6S0jWCOVmPg7QRisKqu5+FtDirkclv9T2EYOOBi7GobYitaTFRUtOVfFZ32S2hIum8WhZ2OfCl/vvc3VNu3zpv9562gynG2VGTrCKtpdDjv0jaeCwYt17N3KXWN9lfPqeUQTEL8InMOpieaVlvIQyUFGKGEvU/+r9qeplK12LlRwmEL3LEHnKIDE1NGCsXcCbaoeQkuunOZIuhDPPT9FuCtndJeZf7xkLzAJmUS4APJ6zJ2y/gAwlqJ7I7EtD/muSQ+iw5IGmNuoUA2v0CvtfxBupVyMByC6/dNvUSmWd6AcPdxPXnXTwmYzzFvixjufx9mhlcrAsD7BVfqZUJNPWevPcHIMcU+Pivv8JQnwDqaKDHQXnCIRtGhdb0qEZKna3mAnXFZZWiWjcITCgMppIlk5BLN5dbEK4sF2pww+PP3Hdbr3PXDCf8qBnU2K6dm7G0W6232o8xBurHxFmLJOs3NfIh5WE8o5bDG0svDJXntnCL2XF/j6gJDKQDv4emeH3siVPT8iBCYWD331bJvs4T0CLaBM0Wxtiq56BwdJAFuJ4wL0STAC36RuSCe7VoSXufqSewswr+vLWIBEwlZFX/bMzy3Tnsd0DsIvx9UejxS0IJtiikq/OHfMv5P5BYrpCaIJSg3mDxxqS1pflzZLWJz3tR5KplU+UkwSAefsYh5ufnarsNg0LYBwwMAXWx9SwgJiRnbuX0ElLg5ijXeyzZhEtime/c24aEOXyG/K1Rw5KnKiyXkeec53AD83qYzOIKwhRzr5Xz4VzO1t59lGwj18FBFAj+K1OdIej
+ wsF7VhL7
+ QCjoTcXna8OCrAeZOb1d+UuAPWOUIe2jarjOLvr0RnVdIu2Nb+7/6qBQSYg3MjRPKNnt1JYpl6YpyaGC/Vy/XieOw1rkf8if/3QjQDMvZotSKzbs+CahtcswfaA7HC+Buw1IffqF9xiFcEkWRHVTB1VchdCoFPa84IyLjZyhVHDpAXreiHIGs5E0C1fwqKaLWS1frAmtku+47jD2Se84LKoxYjEJ+jo6rQv7Sh9cCehwWwDGSrcwGbju/OjAc1H9RkMY4ipPtGB8EjZMWaOf61wAZPTtUwCIYkHJq1nbCeEsoc55CvxqUqxLt7Hskkf8EuJMRfh2Sc/BEezYMWV8IueHYPRFeYLllq90XvDeAYFcoALA2OSidLCCOiPImkwUVuyljeObx7WcF9uxWuDem3vWY733VC/sWpcNco3s1vBOGQJMPhaiY+zSuDbwc8UEnJ79HDL485JPmfaVY6pGaJ98IXaPItOqdKrcJ8WpIdtjBX5QoRYLJRT6y12ui7ZnjFVnj1nuH6c9r92khdnuH9LJUBWBZxAUuMe6O0D3+MK8tXE5ocM7xA7rJUpH3UzimLqDFzvQF4xCOv4GQDuxr6ATUNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -203,68 +107,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike!
+--===============2029874583554774468==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
 
-On 4/29/26 2:12 AM, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> hugetlb-mremap test fails if there are no free huge pages prepared by a
-> wrapper script.
-> 
-> Add setup of HugeTLB pages to the test and make sure that the original
-> settings are restored on the test exit.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  tools/testing/selftests/mm/hugetlb-mremap.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hugetlb-mremap.c b/tools/testing/selftests/mm/hugetlb-mremap.c
-> index 1c87c39780c5..09241a279ec2 100644
-> --- a/tools/testing/selftests/mm/hugetlb-mremap.c
-> +++ b/tools/testing/selftests/mm/hugetlb-mremap.c
-> @@ -26,6 +26,7 @@
->  #include <stdbool.h>
->  #include "kselftest.h"
->  #include "vm_util.h"
-> +#include "hugepage_settings.h"
->  
->  #define DEFAULT_LENGTH_MB 10UL
->  #define MB_TO_BYTES(x) (x * 1024 * 1024)
-> @@ -108,8 +109,9 @@ static void register_region_with_uffd(char *addr, size_t len)
->  
->  int main(int argc, char *argv[])
->  {
-> +	unsigned long hugepage_size;
-> +	int ret = 0, fd, nr;
->  	size_t length = 0;
-> -	int ret = 0, fd;
->  
->  	ksft_print_header();
->  	ksft_set_plan(1);
-> @@ -125,7 +127,14 @@ int main(int argc, char *argv[])
->  	else
->  		length = DEFAULT_LENGTH_MB;
->  
-> +	hugepage_size = default_huge_page_size();
->  	length = MB_TO_BYTES(length);
-> +	length = (length + hugepage_size) & ~(hugepage_size - 1);
+PiBkaWZmIC0tZ2l0IGEvYXJjaC9yaXNjdi9pbmNsdWRlL2FzbS9wZXJjcHUuaCBiL2FyY2gvcmlz
+Y3YvaW5jbHVkZS9hc20vcGVyY3B1LmgKPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAw
+MDAwMDAwMDAwMC4uM2IyNmZlNDVlNzBmCj4gLS0tIC9kZXYvbnVsbAo+ICsrKyBiL2FyY2gvcmlz
+Y3YvaW5jbHVkZS9hc20vcGVyY3B1LmgKClsgLi4uIF0KCj4gQEAgLTAsMCArMSwyODAgQEAKClsg
+Li4uIF0KCj4gKyNpZmRlZiBDT05GSUdfNjRCSVQKPiArI2RlZmluZSBQRVJDUFVfT1AobmFtZSwg
+YW1vX2luc24pCQkJCQlcCj4gKwlfX1BFUkNQVV9BTU9fT1BfQ0FTRSgudywgbmFtZSwgMzIsIGFt
+b19pbnNuKQkJCVwKPiArCV9fUEVSQ1BVX0FNT19PUF9DQVNFKC5kLCBuYW1lLCA2NCwgYW1vX2lu
+c24pCj4gKyNlbHNlCj4gKyNkZWZpbmUgUEVSQ1BVX09QKG5hbWUsIGFtb19pbnNuKQkJCQkJXAo+
+ICsJX19QRVJDUFVfQU1PX09QX0NBU0UoLncsIG5hbWUsIDMyLCBhbW9faW5zbikKPiArI2VuZGlm
+Cj4gKwo+ICtQRVJDUFVfT1AoYWRkLCBhZGQpCj4gK1BFUkNQVV9PUChhbmRub3QsIGFuZCkKPiAr
+UEVSQ1BVX09QKG9yLCBvcikKClsgLi4uIF0KCj4gKyNkZWZpbmUgUEVSQ1BVXzhfMTZfT1AobmFt
+ZSwgYW1vX2luc24sIHN6LCBzZngsIHZhbF90eXBlLCBuZXdfdmFsX2V4cHIsIGFzbV9vcCkJCQlc
+Cj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBfX3BlcmNwdV8jI25hbWUjI19hbW9fY2FzZV8jI3N6KHZv
+aWQgKnB0ciwgdW5zaWduZWQgbG9uZyB2YWwpCQlcCj4gK3sJCQkJCQkJCQkJCQlcCj4gKwlpZiAo
+SVNfRU5BQkxFRChDT05GSUdfUklTQ1ZfSVNBX1pBQkhBKSAmJgkJCQkJCVwKPiArCQlyaXNjdl9o
+YXNfZXh0ZW5zaW9uX3VubGlrZWx5KFJJU0NWX0lTQV9FWFRfWkFCSEEpKSB7CQkJCVwKPiArCQlh
+c20gdm9sYXRpbGUgKCJhbW8iICNhbW9faW5zbiAjc2Z4ICIgemVybywgJVt2YWxdLCAlW3B0cl0i
+CQkJXAo+ICsJCQk6IFtwdHJdICIrQSIoKih2YWxfdHlwZSAqKXB0cikJCQkJCQlcCj4gKwkJCTog
+W3ZhbF0gInIiKCh2YWxfdHlwZSkoKG5ld192YWxfZXhwcikgJiBQRVJDUFVfOF8xNl9HRVRfTUFT
+SyhzeikpKQlcCj4gKwkJCTogIm1lbW9yeSIpOwkJCQkJCQkJXAo+ICsJfSBlbHNlIHsJCQkJCQkJ
+CQkJXAo+ICsJCXUzMiAqcHRyMzIgPSBQRVJDUFVfOF8xNl9HRVRfUFRSMzIocHRyKTsJCQkJCVwK
+PiArCQljb25zdCB1bnNpZ25lZCBsb25nIHNoaWZ0ID0gUEVSQ1BVXzhfMTZfR0VUX1NISUZUKHB0
+cik7CQkJCVwKPiArCQljb25zdCB1MzIgbWFzayA9IFBFUkNQVV84XzE2X0dFVF9NQVNLKHN6KSA8
+PCBzaGlmdDsJCQkJXAo+ICsJCWNvbnN0IHZhbF90eXBlIHZhbF90cnVuYyA9ICh2YWxfdHlwZSko
+KG5ld192YWxfZXhwcikJCQkJXAo+ICsJCQkJCSAgICYgUEVSQ1BVXzhfMTZfR0VUX01BU0soc3op
+KTsJCQkJXAo+ICsJCXUzMiByZXR4LCByYzsJCQkJCQkJCQlcCj4gKwkJdmFsX3R5cGUgbmV3X3Zh
+bF90eXBlOwkJCQkJCQkJXAo+ICsJCQkJCQkJCQkJCQlcCj4gKwkJYXNtIHZvbGF0aWxlICgJCQkJ
+CQkJCQlcCj4gKwkJCSIwOiBsci53ICUwLCAlMlxuIgkJCQkJCQlcCj4gKwkJCSJhbmQgJTMsICUw
+LCAlNFxuIgkJCQkJCQlcCj4gKwkJCSJzcmwgJTMsICUzLCAlNVxuIgkJCQkJCQlcCj4gKwkJCSNh
+c21fb3AgIiAlMywgJTMsICU2XG4iCQkJCQkJCVwKPiArCQkJInNsbCAlMywgJTMsICU1XG4iCQkJ
+CQkJCVwKPiArCQkJImFuZCAlMSwgJTAsICU3XG4iCQkJCQkJCVwKPiArCQkJIm9yICUxLCAlMSwg
+JTNcbiIJCQkJCQkJXAo+ICsJCQkic2MudyAlMSwgJTEsICUyXG4iCQkJCQkJCVwKPiArCQkJImJu
+ZXogJTEsIDBiXG4iCQkJCQkJCQlcCj4gKwkJCTogIj0mciIocmV0eCksICI9JnIiKHJjKSwgIitB
+IigqcHRyMzIpLCAiPSZyIihuZXdfdmFsX3R5cGUpCQlcCj4gKwkJCTogInIiKG1hc2spLCAiciIo
+c2hpZnQpLCAiciIodmFsX3RydW5jKSwgInIiKH5tYXNrKQkJCVwKPiArCQkJOiAibWVtb3J5Iik7
+CQkJCQkJCQlcCj4gKwkJfQkJCQkJCQkJCQlcCj4gK30KCkNhbiB0aGUgOC8xNi1iaXQgTFIvU0Mg
+ZmFsbGJhY2sgZm9yIGFkZCBvcGVyYXRpb25zIGNvcnJ1cHQgYWRqYWNlbnQKcGVyY3B1IGRhdGE/
+CgpJbiB0aGUgbm9uLVpBQkhBIHBhdGggYWJvdmUsIGFmdGVyIGV4dHJhY3RpbmcgYW5kIHNoaWZ0
+aW5nIHRoZSBzdWJ3b3JkCihsaW5lcyAzLTQpLCB0aGUgY29kZSBwZXJmb3JtcyB0aGUgb3BlcmF0
+aW9uIChsaW5lIDUpIGFuZCBpbW1lZGlhdGVseQpzaGlmdHMgYmFjayAobGluZSA2KS4gRm9yIHRo
+ZSBhZGQgaW5zdGFudGlhdGlvbjoKCiAgICBzcmwgJTMsICUzLCAlNSAgICAgOyBuZXdfdmFsID4+
+PSBzaGlmdAogICAgYWRkICUzLCAlMywgJTYgICAgIDsgbmV3X3ZhbCArPSB2YWxfdHJ1bmMgKG1h
+eSBvdmVyZmxvdyA4LzE2IGJpdHMpCiAgICBzbGwgJTMsICUzLCAlNSAgICAgOyBuZXdfdmFsIDw8
+PSBzaGlmdAoKVGhlcmUncyBubyBtYXNraW5nIGJldHdlZW4gYWRkIGFuZCBzbGwsIHNvIGEgY2Fy
+cnktb3V0IGZyb20gdTggKGJpdCA4KQpvciB1MTYgKGJpdCAxNikgc3Vydml2ZXMgdGhlIHNoaWZ0
+LiBUaGUgcmVzdWx0IGlzIHRoZW4gT1JlZCBpbnRvIHRoZQpyZWFkLW1vZGlmeS13cml0ZSB3b3Jk
+OgoKICAgIGFuZCAlMSwgJTAsICU3ICAgICA7IHJjID0gcmV0eCAmIH5tYXNrICAoY2xlYXJzIHRh
+cmdldCBzdWJ3b3JkIG9ubHkpCiAgICBvciAgJTEsICUxLCAlMyAgICAgOyByYyB8PSBuZXdfdmFs
+ICAgICAob3ZlcmZsb3cgYml0IGVudGVycyBhZGphY2VudCBieXRlKQoKRXhhbXBsZTogYSB1OCBw
+ZXJjcHUgYXQgb2Zmc2V0IDAgaG9sZHMgMHg4MDsgY2FsbGluZyB0aGlzX2NwdV9hZGQoKQp3aXRo
+IDB4ODAgd3JhcHMgdGhlIHU4IHRvIDAgKGNvcnJlY3QpLCBidXQgdGhlIGNhcnJ5IGJpdCA4IGNv
+cnJ1cHRzIHRoZQphZGphY2VudCBieXRlIGF0IG9mZnNldCAxIGluIHRoZSBzYW1lIHUzMi4KClRo
+ZSBzaWJsaW5nIGFkZF9yZXR1cm4gaGVscGVyIChQRVJDUFVfOF8xNl9SRVRfT1ApIGluY2x1ZGVz
+IHRoZSBtaXNzaW5nCnRydW5jYXRpb24gd2l0aCAiYW5kICUxLCAlMSwgJTciIHVzaW5nIFBFUkNQ
+VV84XzE2X0dFVF9NQVNLKHN6KSBiZWZvcmUKdGhlIHNoaWZ0LWJhY2suIFdoeSBkb2Vzbid0IFBF
+UkNQVV84XzE2X09QIGRvIHRoZSBzYW1lPwoKPiArCj4gKyNkZWZpbmUgUEVSQ1BVX09QXzhfMTYo
+b3BfbmFtZSwgb3AsIGV4cHIsIGZpbmFsX29wKQkJCVwKPiArCVBFUkNQVV84XzE2X09QKG9wX25h
+bWUsIG9wLCA4LCAuYiwgdTgsIGV4cHIsIGZpbmFsX29wKTsJCVwKPiArCVBFUkNQVV84XzE2X09Q
+KG9wX25hbWUsIG9wLCAxNiwgLmgsIHUxNiwgZXhwciwgZmluYWxfb3ApCj4gKwo+ICtQRVJDUFVf
+T1BfOF8xNihhZGQsIGFkZCwgdmFsLCBhZGQpCj4gK1BFUkNQVV9PUF84XzE2KGFuZG5vdCwgYW5k
+LCB+KHZhbCksIGFuZCkKPiArUEVSQ1BVX09QXzhfMTYob3IsIG9yLCB2YWwsIG9yKQoKWyAuLi4g
+XQoKPiArI2RlZmluZSBQRVJDUFVfOF8xNl9SRVRfT1AobmFtZSwgYW1vX2luc24sIHN6LCBzZngs
+IHZhbF90eXBlLCBuZXdfdmFsX2V4cHIpCQkJXAo+ICtzdGF0aWMgaW5saW5lIHZhbF90eXBlIF9f
+cGVyY3B1XyMjbmFtZSMjX3JldHVybl9hbW9fY2FzZV8jI3N6KHZvaWQgKnB0ciwgdW5zaWduZWQg
+bG9uZyB2YWwpCVwKPiArewkJCQkJCQkJCQkJCVwKPiArCWlmIChJU19FTkFCTEVEKENPTkZJR19S
+SVNDVl9JU0FfWkFCSEEpICYmCQkJCQkJXAo+ICsJCXJpc2N2X2hhc19leHRlbnNpb25fdW5saWtl
+bHkoUklTQ1ZfSVNBX0VYVF9aQUJIQSkpIHsJCQkJXAo+ICsJCXJlZ2lzdGVyIHZhbF90eXBlIHJl
+dDsJCQkJCQkJCVwKPiArCQlhc20gdm9sYXRpbGUgKCJhbW8iICNhbW9faW5zbiAjc2Z4ICIgJVty
+ZXRdLCAlW3ZhbF0sICVbcHRyXSIJCQlcCj4gKwkJCTogW3B0cl0gIitBIigqKHZhbF90eXBlICop
+cHRyKSwgW3JldF0gIj1yIihyZXQpCQkJCVwKPiArCQkJOiBbdmFsXSAiciIoKHZhbF90eXBlKSgo
+bmV3X3ZhbF9leHByKSAmIFBFUkNQVV84XzE2X0dFVF9NQVNLKHN6KSkpCVwKPiArCQkJOiAibWVt
+b3J5Iik7CQkJCQkJCQlcCj4gKwkJcmV0dXJuIHJldCArICh2YWxfdHlwZSkoKG5ld192YWxfZXhw
+cikgJiBQRVJDUFVfOF8xNl9HRVRfTUFTSyhzeikpOwkJXAo+ICsJfSBlbHNlIHsJCQkJCQkJCQkJ
+XAo+ICsJCXUzMiAqcHRyMzIgPSBQRVJDUFVfOF8xNl9HRVRfUFRSMzIocHRyKTsJCQkJCVwKPiAr
+CQljb25zdCB1bnNpZ25lZCBsb25nIHNoaWZ0ID0gUEVSQ1BVXzhfMTZfR0VUX1NISUZUKHB0cik7
+CQkJCVwKPiArCQljb25zdCB1MzIgbWFzayA9IChQRVJDUFVfOF8xNl9HRVRfTUFTSyhzeikgPDwg
+c2hpZnQpOwkJCQlcCj4gKwkJY29uc3QgdTMyIGludl9tYXNrID0gfm1hc2s7CQkJCQkJCVwKPiAr
+CQljb25zdCB2YWxfdHlwZSB2YWxfdHJ1bmMgPSAodmFsX3R5cGUpKChuZXdfdmFsX2V4cHIpCQkJ
+CVwKPiArCQkJCQkgICAmIFBFUkNQVV84XzE2X0dFVF9NQVNLKHN6KSk7CQkJCVwKPiArCQl1MzIg
+b2xkLCBuZXcsIHRtcDsJCQkJCQkJCVwKPiArCQkJCQkJCQkJCQkJXAo+ICsJCWFzbSB2b2xhdGls
+ZSAoCQkJCQkJCQkJXAo+ICsJCQkiMDogbHIudyAlMCwgJTNcbiIJCQkJCQkJXAo+ICsJCQkiYW5k
+ICUxLCAlMCwgJTRcbiIJCQkJCQkJXAo+ICsJCQkic3JsICUxLCAlMSwgJTVcbiIJCQkJCQkJXAo+
+ICsJCQkiYWRkICUxLCAlMSwgJTZcbiIJCQkJCQkJXAo+ICsJCQkiYW5kICUxLCAlMSwgJTdcbiIJ
+CQkJCQkJXAo+ICsJCQkic2xsICUxLCAlMSwgJTVcbiIJCQkJCQkJXAo+ICsJCQkiYW5kICUyLCAl
+MCwgJThcbiIJCQkJCQkJXAo+ICsJCQkib3IgJTIsICUyLCAlMVxuIgkJCQkJCQlcCj4gKwkJCSJz
+Yy53ICUyLCAlMiwgJTNcbiIJCQkJCQkJXAo+ICsJCQkiYm5leiAlMiwgMGJcbiIJCQkJCQkJCVwK
+PiArCQkJOiAiPXIiKG9sZCksICI9ciIodG1wKSwgIj0mciIobmV3KSwgIitBIigqcHRyMzIpCQkJ
+XAo+ICsJCQk6ICJyIihtYXNrKSwgInIiKHNoaWZ0KSwgInIiKHZhbF90cnVuYyksICJyIihQRVJD
+UFVfOF8xNl9HRVRfTUFTSyhzeikpLCBcCj4gKwkJCSJyIihpbnZfbWFzaykJCQkJCQkJCVwKPiAr
+CQkJOiAibWVtb3J5Iik7CQkJCQkJCQlcCj4gKwkJcmV0dXJuICh2YWxfdHlwZSkodG1wID4+IHNo
+aWZ0KTsJCQkJCQlcCj4gKwl9CQkJCQkJCQkJCQlcCj4gK30KCkRvZXMgdGhlIExSL1NDIGZhbGxi
+YWNrIG5lZWQgZWFybHktY2xvYmJlciBxdWFsaWZpZXJzIG9uIHRoZSBvdXRwdXQKcmVnaXN0ZXJz
+PwoKVGhlIGlubGluZSBhc20gd3JpdGVzICJvbGQiIGFuZCAidG1wIiAodmlhIGxyLncgYW5kIGFu
+ZCkgYmVmb3JlIHJlYWRpbmcKYWxsIGlucHV0IHJlZ2lzdGVycyAoJTQuLiU4OiBtYXNrLCBzaGlm
+dCwgdmFsX3RydW5jLCBNQVNLKHN6KSwKaW52X21hc2spLiBUaGUgR0NDIGlubGluZS1hc20gY29u
+dHJhY3QgcmVxdWlyZXMgIj0mciIgKGVhcmx5LWNsb2JiZXIpCndoZW4gYW4gb3V0cHV0IGlzIHdy
+aXR0ZW4gYmVmb3JlIGFsbCBpbnB1dHMgYXJlIGNvbnN1bWVkLiBXaXRob3V0IGl0LAp0aGUgY29t
+cGlsZXIgbWF5IGFsbG9jYXRlIHRoZSBzYW1lIHBoeXNpY2FsIHJlZ2lzdGVyIGZvciAib2xkIiBv
+ciAidG1wIgphbmQgb25lIG9mIHRoZSBpbnB1dHMsIGNsb2JiZXJpbmcgdGhhdCBpbnB1dC4KClRo
+ZSBzaWJsaW5nIFBFUkNQVV84XzE2X09QIHVzZXMgIj0mciIocmV0eCksICI9JnIiKHJjKSwKIj0m
+ciIobmV3X3ZhbF90eXBlKS4gVGhlIGVxdWl2YWxlbnQgX19hcmNoX3hjaGdfbWFza2VkIGhlbHBl
+ciBpbgphcmNoL3Jpc2N2L2luY2x1ZGUvYXNtL2NtcHhjaGcuaCBhbHNvIHVzZXMgIj0mciIgZm9y
+IG91dHB1dHMgd3JpdHRlbgplYXJseS4KClNob3VsZCAib2xkIiBhbmQgInRtcCIgYmUgZGVjbGFy
+ZWQgIj0mciIgaW5zdGVhZCBvZiAiPXIiPwoKPiArCj4gK1BFUkNQVV84XzE2X1JFVF9PUChhZGQs
+IGFkZCwgOCwgLmIsIHU4LCB2YWwpCj4gK1BFUkNQVV84XzE2X1JFVF9PUChhZGQsIGFkZCwgMTYs
+IC5oLCB1MTYsIHZhbCkKClsgLi4uIF0KCj4gKyNkZWZpbmUgdGhpc19jcHVfYW5kXzEocGNwLCB2
+YWwpCV9wY3BfcHJvdGVjdChfX3BlcmNwdV9hbmRub3RfYW1vX2Nhc2VfOCwgcGNwLCB+KHZhbCkp
+Cj4gKyNkZWZpbmUgdGhpc19jcHVfYW5kXzIocGNwLCB2YWwpCV9wY3BfcHJvdGVjdChfX3BlcmNw
+dV9hbmRub3RfYW1vX2Nhc2VfMTYsIHBjcCwgfih2YWwpKQo+ICsjZGVmaW5lIHRoaXNfY3B1X2Fu
+ZF80KHBjcCwgdmFsKQlfcGNwX3Byb3RlY3QoX19wZXJjcHVfYW5kbm90X2Ftb19jYXNlXzMyLCBw
+Y3AsIH4odmFsKSkKPiArCj4gKyNpZmRlZiBDT05GSUdfNjRCSVQKPiArI2RlZmluZSB0aGlzX2Nw
+dV9hbmRfOChwY3AsIHZhbCkJX3BjcF9wcm90ZWN0KF9fcGVyY3B1X2FuZG5vdF9hbW9fY2FzZV82
+NCwgcGNwLCB+KHZhbCkpCj4gKyNlbmRpZgoKRG8gdGhpc19jcHVfYW5kXzQoKSBhbmQgdGhpc19j
+cHVfYW5kXzgoKSBjb21wdXRlIHRoZSB3cm9uZyByZXN1bHQ/CgpUaGUgbWFjcm9zIHBhc3Mgfih2
+YWwpIHRvIF9fcGVyY3B1X2FuZG5vdF9hbW9fY2FzZV8zMi82NCwgd2hpY2gKYXJlIGdlbmVyYXRl
+ZCBieSBQRVJDUFVfT1AoYW5kbm90LCBhbmQpLiBUaGF0IGV4cGFuZHMgdG8KX19QRVJDUFVfQU1P
+X09QX0NBU0UoLncvLmQsIGFuZG5vdCwgMzIvNjQsIGFuZCkg4oCUIHRoZSBhc20gYm9keSBpcwoi
+YW1vYW5kLncvZCB6ZXJvLCAlW3ZhbF0sICVbcHRyXSIsIHdoaWNoIHBlcmZvcm1zICpwdHIgJj0g
+dmFsIChwbGFpbgpBTkQpLgoKV2l0aCB0aGUgY2FsbGVyIHBhc3NpbmcgfnZhbCwgdGhlIGZpbmFs
+IG9wZXJhdGlvbiBiZWNvbWVzICpwdHIgJiB+dmFsLAp3aGljaCBpcyB0aGUgb3Bwb3NpdGUgb2Yg
+dGhlIGV4cGVjdGVkICpwdHIgJiB2YWwuIExvb2tpbmcgYXQgdGhlIGFybTY0CnBhdHRlcm4gKGFy
+Y2gvYXJtNjQvaW5jbHVkZS9hc20vcGVyY3B1LmgpLCBQRVJDUFVfT1AoYW5kbm90LCBiaWMsIGxk
+Y2xyKQp1c2VzIHRoZSBCSUMgaW5zdHJ1Y3Rpb24gdGhhdCBwcm92aWRlcyB0aGUgaW52ZXJzaW9u
+OiBiaWMgcGVyZm9ybXMKKnB0ciAmIH52YWwsIHNvIGNhbGxpbmcgd2l0aCB+dmFsIHlpZWxkcyAq
+cHRyICYgfih+dmFsKSA9ICpwdHIgJiB2YWwuClJJU0MtVidzIGFtb2FuZCBoYXMgbm8gZXF1aXZh
+bGVudCBpbnZlcnNpb24uCgpFeGFtcGxlOiBhIHUzMiBwZXJjcHUgaW5pdGlhbGl6ZWQgdG8gMHhG
+RkZGRkZGRiB3aXRoCnRoaXNfY3B1X2FuZCh2YXIsIDB4MSkgc2hvdWxkIHByb2R1Y2UgMHgxIGJ1
+dCB5aWVsZHMgMHhGRkZGRkZGRSBpbnN0ZWFkLgoKVGhlIDgvMTYtYml0IGhlbHBlcnMgaGFwcGVu
+IHRvIGJlIGNvcnJlY3QgYmVjYXVzZSBQRVJDUFVfT1BfOF8xNihhbmRub3QsCmFuZCwgfih2YWwp
+LCBhbmQpIGZlZWRzIG5ld192YWxfZXhwciA9IH4odmFsKSwgcHJvZHVjaW5nIGEgc2Vjb25kCmlu
+dmVyc2lvbiBpbiB0aGUgbWFjcm8gYm9keSB0aGF0IGNhbmNlbHMgb3V0LiBPbmx5IHRoZSAzMi82
+NC1iaXQgcGF0aHMKYXJlIGJyb2tlbi4KClNob3VsZCBQRVJDUFVfT1AoYW5kbm90LCBhbmQpIGJl
+IHJlcGxhY2VkIHdpdGggYSBnZW5lcmF0b3IgdGhhdCBkb2VzCmV4cGxpY2l0IGludmVyc2lvbiwg
+b3Igc2hvdWxkIHRoZSB0aGlzX2NwdV9hbmRfNC84IGNhbGxlcnMgcGFzcyB2YWwKd2l0aG91dCBu
+ZWdhdGlvbj8KClsgLi4uIF0KCgotLS0KQUkgcmV2aWV3ZWQgeW91ciBwYXRjaC4gUGxlYXNlIGZp
+eCB0aGUgYnVnIG9yIGVtYWlsIHJlcGx5IHdoeSBpdCdzIG5vdCBhIGJ1Zy4KU2VlOiBodHRwczov
+L2dpdGh1Yi5jb20va2VybmVsLXBhdGNoZXMvdm10ZXN0L2Jsb2IvbWFzdGVyL2NpL2NsYXVkZS9S
+RUFETUUubWQKCkNJIHJ1biBzdW1tYXJ5OiBodHRwczovL2dpdGh1Yi5jb20va2VybmVsLXBhdGNo
+ZXMvYnBmL2FjdGlvbnMvcnVucy8yNTM2MTc5MjUwNA==
 
-I might be missing something, but if we're trying to align length to the
-hugepage size, should this be:
-
-length = (length + hugepage_size - 1) & ~(hugepage_size - 1);
-
-like in hugetlb-mmap.c? Because the current code will add an extra
-hugepage if the length is already aligned.
-
-> +	nr = length / hugepage_size;
-> +
-> +	if (!hugetlb_setup_default(nr))
-> +		ksft_exit_skip("Not enough huge pages\n");
-> +
->  	fd = memfd_create(argv[0], MFD_HUGETLB);
->  	if (fd < 0)
->  		ksft_exit_fail_msg("Open failed: %s\n", strerror(errno));
-
+--===============2029874583554774468==--
 
