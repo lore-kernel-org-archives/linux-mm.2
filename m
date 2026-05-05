@@ -4,156 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31E0ACD3427
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 13:43:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A505FF8855
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 14:25:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F16A6B0005; Tue,  5 May 2026 09:43:17 -0400 (EDT)
+	id 940536B0005; Tue,  5 May 2026 10:25:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A1EA6B0088; Tue,  5 May 2026 09:43:17 -0400 (EDT)
+	id 8F1456B0088; Tue,  5 May 2026 10:25:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 690D86B008A; Tue,  5 May 2026 09:43:17 -0400 (EDT)
+	id 7B8B36B008A; Tue,  5 May 2026 10:25:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A90D6B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 09:43:17 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E3B96404CD
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:43:16 +0000 (UTC)
-X-FDA: 84733482792.16.FD182C9
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011031.outbound.protection.outlook.com [40.93.194.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AE4B580006
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:43:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=uWx965MP;
-	spf=pass (imf30.hostedemail.com: domain of bharata@amd.com designates 40.93.194.31 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777988593;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 68D3F6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:25:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F0A911A0523
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 14:25:55 +0000 (UTC)
+X-FDA: 84733590270.02.ED6DD7D
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6D17D180002
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 14:25:53 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=kCK8AOLU;
+	spf=pass (imf16.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777991153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HJs8AntTLNRUF/Yy5aYC8skrpY+AyCXnidGxKMam91s=;
-	b=Ktb/a8Iujctbf6b/haOGmwkMRcEjHnb6mgCaZPDjcLQAkY6O5OiB5D07vECAwdcJpYVnB4
-	j7+XrFOOl25Rr0Y8aDhSehvRo+YuhxKbCKTIDtfS4lH31bgl3ai9Z0TQdZ2MeTjCN6G1JC
-	j07BmVgsTOfT34qcNjOOBEPTWUGOFoE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777988593; a=rsa-sha256;
-	cv=pass;
-	b=NLhRxVbqv0wjdmPzZa5RkPMAUfW3+dz7lcAIYOxavVbPGT9uajHdm4j1iqBZjAI/W7US9I
-	mcxF/4Js5btBgWiwdQzFMfbJhzCIKyQ4vb/w3aHzLg10aAecFnQ+aTPkH4G/tuvu64T5/e
-	ej6ciFX5uL1bnqFp0gNqAfi0Uaq1sy8=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=uWx965MP;
-	spf=pass (imf30.hostedemail.com: domain of bharata@amd.com designates 40.93.194.31 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=otq5UXcc+Up46O1jliqYXN5Fol6NfExa14cIZnfP0hSvQ756jTpfSaoo2o3KIi93Y21gs0alopnN41WpDYTh1rBM62j1pDzReSfnFVyQ+OxgKR2bruI9lBb5hcin9F+mUZ6FuRCRLjTKRnwJFGsYWxrxoV6S/PIS32pxKO0qWsRj+oVKIeyehTn9n/rD0iZsTCKGHhY+Qj6Le7RD7pz9acsOhvLlpyEeh0I1NMJ+Bd40fl0ZNWbVm1B05hCnrmX1QE0UglkXeqt9/ecSH6ju+dX0k2wS9Jv2esGE5X9u/OZCwDJpkKMYCeTenyFx0m90mxACmLQQYQj1OinPvggLPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HJs8AntTLNRUF/Yy5aYC8skrpY+AyCXnidGxKMam91s=;
- b=i63aljApx6cFvssyq2Qx4QrNxNJcTZWV1T+wA0+JgsRfioRmvGz2TBYEk1hgaNnFxAZ82kxvqt0Ly/hXJWHG6Mjhvv0C3gFv+TsCXGk11cZlixouXUCJ1id4E11Sx483N/WwjaDZ5suD938nq0Bp8d/kZeisP0K3gZ3s3pyVVWZJrvq1vcnH6z5Ct63PNkThz6qaYIDrvEkCMKADAYCntFLfvTgAvD6LzXDWtk7o4QEGB3O+M7VlNplUHvnIoMgZ55qhC2v89Uf/0J5MjEBn7sj+ga8NFpTLvO488W7PLdI2buxZYL5eEnSLCdeIPGZlVelCWuDMIA5R+1rM+tJUJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HJs8AntTLNRUF/Yy5aYC8skrpY+AyCXnidGxKMam91s=;
- b=uWx965MPEgjy0Js4bWTHhwOXEWkeTppXMM9uBiT7blgulqEBootl+cWaZ5aDiT57sJmLkq4oMOLM/eikCEdI6khDjogtNNXr6yQyhyTm4u7kkLXU/aqBwRilz410wKFPJts7OYPZz+nI2WiwXvn554ZMDlufxN1wZvLm9YbuhSg=
-Received: from MW4P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:303:80::7) by
- MN2PR12MB4125.namprd12.prod.outlook.com (2603:10b6:208:1d9::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9870.27; Tue, 5 May 2026 13:43:06 +0000
-Received: from CO1PEPF000066E6.namprd05.prod.outlook.com
- (2603:10b6:303:80:cafe::50) by MW4P223CA0002.outlook.office365.com
- (2603:10b6:303:80::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.25 via Frontend Transport; Tue,
- 5 May 2026 13:43:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CO1PEPF000066E6.mail.protection.outlook.com (10.167.249.4) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.9 via Frontend Transport; Tue, 5 May 2026 13:43:05 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Tue, 5 May
- 2026 08:43:05 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 5 May
- 2026 08:43:04 -0500
-Received: from [10.252.223.214] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Tue, 5 May 2026 08:42:58 -0500
-Message-ID: <c1c19860-83bb-44f4-83e6-cb1f7377bb0e@amd.com>
-Date: Tue, 5 May 2026 19:12:57 +0530
+	bh=OcbaiPrXeZHYc5M9HkIsXuvWd1b75GWDcR6c1FbMbYw=;
+	b=P5Rf0HM8zDv7tPhziiPAmpRpfsmJ2Ik190j8GH7H0Rq7ZGupw09NPJrOAM1zbA4n43mqVJ
+	weD8Mzdo+GE1tmLU2uKqcODughDi5V35JKh5WvseqEfSeF67ljDcWvP3hPCkMPQWNQU3x4
+	PIgK0mh7wgYsP58Lqdk0ofMh1mTa3UY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=kCK8AOLU;
+	spf=pass (imf16.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777991153; a=rsa-sha256;
+	cv=none;
+	b=Ydl4hXZT9DQ6IT125AtzyFPBhqXfptie8M4fRRy1TyBhNNDqTzC1tz/yPeNgxmPnGEVt76
+	T29tYBtunFRbFbQIQrfJP7yfeXLgP2m/9/qF6jzWne3yKRS7/xl6QCaPwzLBPC9oUZdzoG
+	5o4xudguMNESsMPfPCy7xjSZK2ne1wo=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6458GFvT3351555;
+	Tue, 5 May 2026 14:25:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=OcbaiP
+	rXeZHYc5M9HkIsXuvWd1b75GWDcR6c1FbMbYw=; b=kCK8AOLUroh6Op3oeyQ3tA
+	kzVZqVy8brV9VXXxeWMe1xe0uegxlWAP7GlX8ovDne5GCGOJ6mN9A3M0+tQFZE20
+	UTAuXEd/hKZHIZs8OG43OgomII2KZKukRUZem/GJs0sfy9YuMQpVUokP8VRGp6vL
+	JYE+nxrBRCmpjDntN+grlI7ctrouR/3JLVJDZB5W5tbJlHV+UI8bCPaHaeHLc8UF
+	TydQHg1610Pfo5WZB90/4C/nUKCa8SmXcog7SJZ71loAJvqR88Kk6S/w+8lgjgWF
+	u2G30tRfEWu8a/MYl7AjhmB16dpF+9ri5gKb0s98DPHx1vLFSdz/DlD+IgM1lFng
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9w6bs5k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 14:25:06 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645EOgrs014230;
+	Tue, 5 May 2026 14:25:05 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwukqa509-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 14:25:05 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645EP1Rl29229442
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 May 2026 14:25:01 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A2A3F20043;
+	Tue,  5 May 2026 14:25:01 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0C4A020040;
+	Tue,  5 May 2026 14:25:01 +0000 (GMT)
+Received: from [9.52.200.195] (unknown [9.52.200.195])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 May 2026 14:25:00 +0000 (GMT)
+Message-ID: <d272218d-214d-4a13-8f45-dacd3e94f5dd@linux.ibm.com>
+Date: Tue, 5 May 2026 16:25:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion infrastructure
-To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
-	<gourry@gourry.net>, <mgorman@techsingularity.net>, <mingo@redhat.com>,
-	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>,
-	<rientjes@google.com>, <sj@kernel.org>, <weixugc@google.com>,
-	<willy@infradead.org>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>,
-	<dave@stgolabs.net>, <nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>,
-	<yiannis@zptcorp.com>, <akpm@linux-foundation.org>, <david@kernel.org>,
-	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
-	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
-	<shivankg@amd.com>, <donettom@linux.ibm.com>
-References: <20260504060924.344313-1-bharata@amd.com>
+Subject: Re: [PATCH v9 0/6] x86/vdso: VDSO updates and fixes for sframes
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Indu Bhagat <ibhagatgnu@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dylan Hatch <dylanbhatch@google.com>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>,
+        Andy Lutomirski <luto@kernel.org>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org,
+        Namhyung Kim <namhyung@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Florian Weimer <fweimer@redhat.com>,
+        "Carlos O'Donell" <codonell@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>
+References: <20260505123340.3770025-1-jremus@linux.ibm.com>
 Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20260504060924.344313-1-bharata@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB04.amd.com: bharata@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066E6:EE_|MN2PR12MB4125:EE_
-X-MS-Office365-Filtering-Correlation-Id: 82050296-754b-46f8-24cd-08deaaac3c8a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|7416014|1800799024|82310400026|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	83v9uF2WHvx/MZO55SA2uM6nvY2cut6Hc5HZb5AVh5e/T4BneCVk3u5elXIsdZptCok5rpUBEG8so4q5Ou15KJZhfnWqlirDv36sVv7cfGQAFKmgvjy+if+Au/sWDZCBIGARFSWkXytnAuqMbUEVBrTfxvmIQHdwLoVrkC0WIdcHpeDZiSpzGvAy1uO6Ai7/0xD+D8Dj53QXmBiGKUiV26PtApfUlDH4MZmT597L14qMwNoIUMTuMmICWjaDk0e5O8Gmky6EV+zjCZ9qGU9kj9+/YXpILvc9lu1QYyNB0KrVYtbhv4wdBirjhqkLepIQmYYQWsDN7D4RIMKdzTJAaLSQCwRpdWp9zF34OuMtwhXVCxCaRPKiuhgzfjMWOwMsWsjfmTyRKVYFbN0LOfsghLwUhKF67W1DuOdQz/WR/UYIcyIV9WrfHsJ2Y+hczGBZFUrX59M4LxXWvSVD8+669EJ6DWCUKG4s8edpSi8/HWGw0TvoXjWQyd3Cz9lNAUkwAK61SjTTi8RUlylbw46as4LaJ2fHh7BVbiSJoARTuFg7mUwikWtRY6yNJqEJCJwaUdzzG6UhxOpGqb/54+50VChTOFxi2miF3B3aqceP2HrkeWEZmjVCPsO5OJgN39YLIcPd3HZtPh0UR9kuIPEVFwKXyAg3y7+2JF6n/eK+vMj0+8ehh2/E2HR/tbVK5UVKsZzrvBgB4rM3XhzENhH2Vx3QsFaeQcrxvDUHHqK0JwM=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(1800799024)(82310400026)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	y1Ld0mSNQoTgLEUg3zIzKiXlzTGcYyp7yYhpdWAKylXoiEE6Uw2WTJU9lulMpaZJFfZE2Jbxh2MSEqCf+RtdRvQJRy8y+9d09tlLcyrbLzHEkg09SdEaqYehYiJJX6wKCCiYFVM2qUhX7ZApiNzetSkaBOjlNh8NCqGYoXXk4pD1fyxh1YSLkoyuFVRD5KbHMPRi1KCai2bD2CXQ2C6wNAK8/88pbPu1r7ng3MOtyr8ES7nTMm/7eyYJ3t77ZSlFPpVkWNuDrsr83fhYwbyJnpugYExW2BxmHtUdL1mPaDTBwNDIM3R7yPJ99Z0kd70E287mLd7Wtadhy/6RU8jmj939WAL4c2cxLI6wTRx16OeCAbWVHypgb/8jTKi+3e07STCerc6UHVEgEoqcscKtORKzrTxGdHDXPEuVaxPIr07NPzs1s0sZRnE5LDVvXGZe
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 13:43:05.8638
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82050296-754b-46f8-24cd-08deaaac3c8a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066E6.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4125
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AE4B580006
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <20260505123340.3770025-1-jremus@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=XPQAjwhE c=1 sm=1 tr=0 ts=69f9fdc2 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=meVymXHHAAAA:8 a=VnNF1IyMAAAA:8 a=0MvmVg10__VCTnNSAJcA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=2JgSa4NbpEOStq-L5dxp:22
+X-Proofpoint-ORIG-GUID: OcluZmLD_x4gMqANWuezmnnGoe4w0tND
+X-Proofpoint-GUID: li-2q0iBa1957f3jFzff7LHFnhy2TzmZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDEzNSBTYWx0ZWRfX6Qsc9D8QpNTK
+ eVoHxsAXC1MYjkQwzPmUOAQB7ApXGRsFCVGUrUanv9+LtbWXKa8Xs78P+2QBoI1CTlDqq09Gjiz
+ oZqcKyVJKtik+oZty+qxqmlj+kMooiyKvLBq+InO1eejVaKGNq7kmyFxN9lSCSsQFrc4dF6RmJM
+ ZLddMM8FdmtlaVClPXWPZuFaMqChGvOV0aqCZrB3eWqdvV5q2SYrpm8lyfm+5j0TDhgpvk3sbNX
+ W+Zddmf5VVe4Er1Znp8kaceVNpCH5C7lv68OsKF5h8pavFM3mfEi/7YBtcAQ5KrdgqDI5bKQGI/
+ RdeauxQ6L2iNSOEYrMkYy6yNVNn4IJ0vz31CtwDVxm+EgcCNB/XWFsrg/UBVQjH9UYxM5/6ryUe
+ 7QymP34wcEkCc59eKn2qNka3xSO9ODNF2Ucp6Oi5iOXR0b5fDcoAFRink0RblFi82cdTiW7a9Ys
+ no2tKJkXF/og3584JYA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050135
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6D17D180002
 X-Rspam-User: 
-X-Stat-Signature: zigaigez5ssdpk14qwb3f91twfiqjtpp
-X-HE-Tag: 1777988593-508908
-X-HE-Meta: U2FsdGVkX19X4oRrv9PWEEfkq51TsVo1Ob4NN637KHsxxj0x7op5OklJ4AD26MF2B7fQMKN6BUZ5HVVFuglErjyLhGBmDa8Oo6yeaQh95mfk9rqF3kxa4wYh4PPZrTl9BBz4VlO7ukuEwH0l0hv35D5ZiW6JQAmPeivxpZjHp8Lk6rGdLn2qqaxlCKJNEvKa+9xkIu+tmAdDcElNBcrkJgzZCoKT8ahZdjZf+mMbYJsJ66aLyvk/J2hd/RdWCISg0JGthAqCBtrF1VaB4FwMPS+ZopNTuq9Hjm2JI2YVdY01DB3cA3rhBu2cYYsMpK0GP+Y3CCOPrPpvze03Yln/QBIsPuogll3CPUzMEwYMLLYkSCV+5o+WypFFk2HZoutC/+rUvvpFcoCeU5AvKpS7VAE9qjroSokbi1ELXpKijTddzgpQ54ncW8Eve0jWNW1HhX4208p87CHOeh+IwNwrT2Uduu9b5Y6IaUs6pTC8i6veBmlqiISKWUSyjsM6V8TKLjtKc//xtyKSGogbihx6qXfwm3KUZGcP0+jENYQy9Hs2Wacv7vn4e1RmeAolg7tzBCzXktwbCdFHWRl6wYbIeY14DlCjeBTYs+nDrsBTJmW2enl6iI1MjJH77EHyQso0NUSC32W7RdV17NTlRQvs9yS36XcGKAjhq9mYfRQ1pjCMcOy6Amrj02zrl0s2giZmRiqnQwW4lCC7Ny7Uon3dKzv7YU5uV2ygZFmxucP4knOXrRmUVny6O2nR10kAUKwONJALCkX5qVYPxXw7Eqc8WNavNC/fz66ohBNpo9tpWG/Im5N8OB4kRb8JeWwyxeEJ1CzXb2Z90FxbnvmxT/OIFUxyl3orR5rg2ReCuvuKObB1XJNSntF9loaZS2Z0CuUo6CpGISvKlW4DX4pkYd8aa8+8ll8QzH5V321ORfIuCABUQKC+24ABPKd7kE1dRYWpiyyLGRoCScP4hEBvISs
- 8N+vzT8e
- wx5WhJzyLFOjzsfHIrc98+BlNoI2EioOAnvfF5uRXO0s2Y7qmyZ/uYPKMM7Yg9dyIgBxUDqUNGt8cM7/a1OouUApHpDqgNG3xdXOLIUDT1oqC5CZsoXghHb3YB2iAkumeOqI7OH6asmQytTcrVvxTIRnSNAEh1s0OEtPf3d6JqmGbMKK/P8OCqW1HtrTCeIU3q2CN+4L6KeG0Qd6KZ4qWSfTewIe6gUR/HMi2t1/t/81F73Mx/TSau/kbVeLtHMSi6qCnDIGMjltqDwlNlm+vyxuCIDZS5JKcGgUwicCKzZYW9BKyXPBDpxl7UbIJQOr3q6eV59NqXJCiInIkYT5vf8F8TP9VnHUMU1+A8HxMCJr0CAAMJvzI2qvEKKN+lwH2MuWCMAqwq+fDt30Kq0pq72TIF01uUY0TZM+1NVPsC20wZfyYO7LXUJLqoP0LQfu8mAsHL0Owr/OpPqjR22/r9vV9jd4swpZdkXQVgdMRMhLOXkQ=
+X-Stat-Signature: y197dtnfn3u6mw15635qead7c7mdfq14
+X-HE-Tag: 1777991153-238854
+X-HE-Meta: U2FsdGVkX1/5cndohF7lU5llXysaLQFaXR4fvSVN+zL+Ir9T1ZOK5nVnaEx5rV0ThqFX7z7hhoi0AifgzYTeyxjCZN41559x0VVNp+biYj4JAbWE/Oo10ZvRdDaw+7e4aP8eacP3OP1szTOcjZZG9eYdVcBuJWDy+GB36FStFyu4l7A2J7ePLlMmd4cxxRKzEZbnnMU63Kx4iNCbOqhDlDedv6xotYgywfwl5UMeH14abmZHzQt2t2F7FudpcPsdgwVD52QMTYIMg4hkkCtVRdFebnTGedqthMfQZipO8uTONkhSqNRHpCxa4DSSqSw7ll0DqKNb2q+Z6u1hwCcR6CK24C8jUwMgXqxzE4oVYwcKlmEhfzdmfI/s64XRtH07ie7UhCGM5IIxModDrdYv/2exnB4WWTap4UMfb+ZgTN7TvE5W0zviIZBa83w/z0BDVRodhj4GwSNGvCpfstumZdMd2AVMH01qCX+8IRJWPFSyo4/k7z7CH+3XV2BxemK/SfIFxrHKtriYUEydE++0OznG/+x4IxWzHNv395h6Y98ZKJ6zZVt2u9Vh/CVXmVLGt2OTMl+xG8pVJwqg8OROhCTOn24d9MWQ/aWeN6e/HAsy0aKJIeFojQBuYfTJKyh/KouV8cjLE7pQkdc1SzWPvk1pid339+TJTTP0+CZygtai7BZgwiaROmQm4dtRWrjNIM86nkKfW/R3iNppxQ4uWTtxW7K5zUtc/Q6gJlSoDjszBidTbmq+PjvtfduCC7j1Jw8hb9hkW0J1qAInS1LMsi8U84mAPRqAu+9or03a7GiCidd0gPG/Va+aHzUL9Uj/+8lwS/DLJAZaTW/ej8WaYzch/j/S2nsfHWbQs8ku0w/wzvh9PD1vRStHJm0IfHRxtzoYZ0mfb39VQZ4yLOXmF/ABxPd1O2M0C10GF5CIZtBGcKM4ifgyYQmLj5VAvlmtlPy71PVG4HpIaU0+A5S
+ SpJN/0ws
+ sfc0t2+5ylucFSAsi6oy+pSAgroxHI7+IVpt3CKCNMSW7sd17jeaHbfCu2Mbgy4PSyGxYYfFZRkF2fy846MpiQ56hIL028OuJaO7GPJQvwyFM7gfvOhPvmZkETne1zM00d8emF76IbL3Jyqc6THzceyCvwVhcHqbC1/iFBtvbc1ozffy8L0jR6/i7dvdmxIPdLKkMSqxDp4gf+5n5Kyf9pPiLcI640bLh2A+ArkvPRIq0kS0TEvbl1XwXNF4z6+ukzoMuVCKY0ziEbAKgkljcJCJYAN85t/8X32OOl54G/W+gcsl95tOB7iP7SNAot249l61qMLPxf/HNg69z3UgXNMvtkSwSaS0T2G20w8xxy1slt+IcqctmBef8Ld1dcaH2D5lTVZPHEghseFb08NBqdp4E45l9T1qclx/0TfgBN2AAub5DczP31iK8ldbVHhrUCWG50HpaWHFgF+iyS1F5smqqvUoOxkuuH4XOAV8Rqi7EUR0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,91 +168,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-May-26 11:39 AM, Bharata B Rao wrote:
-> Results
-> =======
-> Posted as replies to this mail thread.
+On 5/5/2026 2:33 PM, Jens Remus wrote:
+> This enables generation of SFrame V3 stack trace information for VDSO on
+> x86-64.  It's a continuation of Josh's and Steve's work:
+> 
+>    https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
+>    https://lore.kernel.org/all/20250425023750.669174660@goodmis.org/
+> 
+> This series focuses only on the VDSO code. They are helpful fixes
+> and updates that doesn't rely on sframes (although the last patch
+> is sframe related).
+> 
+> This series applies on top of tip:master (a375022d6383):
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  master
+> 
+> Like the unwind user sframe series [1] it depends on the binutils 2.46
+> release to be used to build the VDSO with SFrame V3 stack trace
+> information (using the assembler option --gsframe-3).
+> 
+> [1]: [PATCH v14 00/19] unwind_deferred: Implement sframe handling,
+>     https://lore.kernel.org/all/20260505121718.3572346-1-jremus@linux.ibm.com/
+> 
+> Changes in v10:
+> - Rebased on tip:master (a375022d6383).
+Apologies for the incorrect series version in the cover letter.
 
-Initial Graph500 benchmark numbers for IBS Memory Profiler source:
+Regards,
+Jens
+-- 
+Jens Remus
+Linux on Z Development (D3303)
+jremus@de.ibm.com / jremus@linux.ibm.com
 
-Test system details
--------------------
-3 node AMD system with 2 regular NUMA nodes (0, 1) in NPS2 mode and a CXL node (2)
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
 
-$ numactl -H
-available: 3 nodes (0-2)
-node distances:
-node 0 cpus: 0-63,128-191
-node 0 size: 257715 MB
-node 1 cpus: 64-127,192-255
-node 1 size: 257845 MB
-node 2 cpus:
-node 2 size: 258032 MB
-node distances:
-node   0   1   2
-  0:  10  12  50
-  1:  12  10  50
-  2:  255  255  10
-
-Hotness sources
----------------
-NUMAB0 - Without NUMA Balancing in base case and with no source enabled
-         in the pghot case. No migrations occur.
-NUMAB2 - Existing hot page promotion for the base case and
-         use of hint faults as source in the pghot case.
-HWHINTS - IBS Memory Profiler as source for pghot
-
-Pghot by default promotes after two accesses but for NUMAB2 and HWHINTS
-sources, promotion is done after one access to match the base behaviour.
-(/sys/kernel/debug/pghot/freq_threshold=1)
-
-Graph500 details
-----------------
-Command: mpirun -n 128 --bind-to core --map-by core
-graph500/src/graph500_reference_bfs 28 16
-
-After the graph creation, the processes are stopped and data is migrated
-to CXL node 2 before continuing so that BFS phase starts accessing lower
-tier memory.
-
-Total memory usage is slightly over 100GB and will fit within Node 0 and 1.
-Hence there is no memory pressure to induce demotions.
-
-harmonic_mean_TEPS - Higher is better
-=============================================================================
-                                Base            Base            pghot-default
-                                NUMAB0          NUMAB2          NUMAB2
-=============================================================================
-harmonic_mean_TEPS              4.09614e+08     1.28401e+09     1.47926e+09
-mean_time                       10.4853         3.34492         2.90342
-median_TEPS                     4.10086e+08     1.44584e+09     1.85957e+09
-max_TEPS                        4.1661e+08      1.79773e+09     1.99242e+09
-
-pgpromote_success               0               13746029        13412213
-numa_hint_faults                0               13753808        26669823
-
-pghot_recorded_accesses         NA              NA              26669551
-pghot_recorded_hintfaults       NA              NA              26669823
-pghot_recorded_hwhints          NA              NA              0
-hwhint_total_events             NA              NA              0
-=============================================================================
-                                                                pghot-default
-                                                                HWHINTS
-=============================================================================
-harmonic_mean_TEPS                                              1.52334e+09
-mean_time                                                       2.81941
-median_TEPS                                                     1.57446e+09
-max_TEPS                                                        1.72014e+09
-
-pgpromote_success                                               3415599
-numa_hint_faults                                                0
-
-pghot_recorded_accesses                                         3440912
-pghot_recorded_hintfaults                                       0
-pghot_recorded_hwhints                                          24475210
-hwhint_total_events                                             24475244
-=============================================================================
-While no migration (NUMAB0) at all hurts Graph500, HWHINTS with pghot is able
-to provide similar benchmark numbers even when not migrating as aggressively
-as base NUMAB2.
 
