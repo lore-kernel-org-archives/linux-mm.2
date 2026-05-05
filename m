@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 216ADCD342F
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 12:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DD43CD3430
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 12:18:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17D816B009F; Tue,  5 May 2026 08:18:17 -0400 (EDT)
+	id 7BD686B00A0; Tue,  5 May 2026 08:18:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1055B6B00A2; Tue,  5 May 2026 08:18:16 -0400 (EDT)
+	id 744756B00A1; Tue,  5 May 2026 08:18:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D63986B00A0; Tue,  5 May 2026 08:18:16 -0400 (EDT)
+	id 59A236B00A2; Tue,  5 May 2026 08:18:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B0A636B00A1
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:18:16 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 77565140489
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 391F46B00A0
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:18:17 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E208F8C6FB
 	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:16 +0000 (UTC)
-X-FDA: 84733268592.12.05D116E
+X-FDA: 84733268592.28.0824421
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 35C5720011
+	by imf10.hostedemail.com (Postfix) with ESMTP id A1C02C000E
 	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rDomqQ2a;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=bqBZ8OEx;
+	spf=pass (imf10.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1777983494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ap4R3Nrb3HGP7jBBkw2h44aTj83fiw6YNumkdQ+8Wn4=;
-	b=ygXq/ie1AcD3IyJENYZ4Dueul90s6MYF02N1BQeAcRz8kwkOBBPY1TW4VXlLucz6uH+1TM
-	jnCFD4Dl5iuqOB3at/2TlVoG4eKAKjEr5hJMt021Q4u5Vle8qPqVUjvD3QjA9oHXnzN3Dl
-	Yk9oyXwm9lwIAE9//saGR9WZPa7RKpA=
+	bh=4ZtWqnN1RczyOwe8eD0TIQbNux3o+p4OofXFSliSMD4=;
+	b=Z6+GAYe8HTOEM5PbkQm5jkdkpXHhun3zeAEgi23V0Dx957jIUIUmV3F+oRORNyyvgzMv2E
+	CNJ0M9HPpPIKrfZ3wkNQ1QfpPszLJX35E9bH3qwy21hIYbOsao5V6KHPPEacNg7wKvApA0
+	anUnB/GWca+dSurW92KePyAFGIG6jCg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=bqBZ8OEx;
+	spf=pass (imf10.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777983494; a=rsa-sha256;
 	cv=none;
-	b=S3lkQI4CH2XYUDBx33Hr6dlxsm98e5GSnOi8G2w96e5/NrNtGx/MCiuXJ1YmKnktdTONcA
-	Ud0+yHC8KkPyHMBW1UcEVvhN/HQOq/JTDIYrMfHVAGd8ciy4Hl3iNw/yTJFiQKvvPKwee5
-	pE2+2mE6fJhCSdIg8lB2zq4z0cTEprc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rDomqQ2a;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6457qr752577247;
-	Tue, 5 May 2026 12:17:31 GMT
+	b=6dM+TLquANVRU5522Sg8ucWaB3BxOmCFPSd9wWFUTx1IyiB55965eeDnwbpl+nBBF+g0mJ
+	iZDohhhGNDrJ56XdWj3FmgoqYFfiuoqdZF6XYM/SRKyEvaloVlloJ/EO7jfu43eKchGjyC
+	/d9YdO2kvhTHVcFVEdM5Czx4HThu6XQ=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64575KMZ3279333;
+	Tue, 5 May 2026 12:17:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Ap4R3Nrb3HGP7jBBk
-	w2h44aTj83fiw6YNumkdQ+8Wn4=; b=rDomqQ2aW2F5/pROfhBY74OdDg1ktM3rz
-	KS4z2oqf6KkQxZVErlc84gn6cUQJyf35J6VEM+hYgFLk/IK+scUnhhmS30OUueUy
-	qeGw4B4JdIyQh2xhq3H3qX1UuybhTzqzfzYu0N4fULTWGISvB0jsOjI/3LX1TMcU
-	vZm99rr0tWTgWPjSUIV6ZgQOLuR4zDlmjd2Pq9PWotsZbKBiyAZSvzQsjp6El775
-	H4fYi+tRgJ1qd7az7i3jnxFcItSNG1bVcTBJCVQAdOfJEpNC1s0Tq5GFbgzo4eL7
-	Gq+2fpNt+qc2BSU6wQ/DBm+MriHc42SIh+6pfu/9Q/y9yex1M22ig==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y4k7da-1
+	:mime-version:references:subject:to; s=pp1; bh=4ZtWqnN1RczyOwe8e
+	D0TIQbNux3o+p4OofXFSliSMD4=; b=bqBZ8OEx0KCHo03oZEMqu1gLNKNqaLsDd
+	ePolS8Zi1gfm4aCUNRmlYVDUBlJ68gQDXF3pxknSqVEzabRXaOAN1gy/BS/oSnLr
+	gSp5/BBXCg3TOi8TutnxtQOvJUH9YQqUrfyj6Uj08inxUc1bnAr37NavEwNmHuf4
+	HPRJ+wzRVDpstP0Sue1OlGs+t0JjuH7b7TdYzxls10IUig+ZT5QRAgIFSnhXtNsg
+	PYSG4LG2G5L4VDgEvXGaZVZCZRlGDbgzC+Gp3X938xZnYsXW1Mg8tqACDfNeCS6W
+	UsYJ7LKzGokw1YLaPkeGBrJcw8zuMejKZRXQhQE/D3hprNPpOBQnA==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9xxk5d7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 12:17:30 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9exV028527;
-	Tue, 5 May 2026 12:17:30 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwuyw1m3h-1
+	Tue, 05 May 2026 12:17:28 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9cgQ024347;
+	Tue, 5 May 2026 12:17:27 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3h1eq7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 12:17:29 +0000 (GMT)
+	Tue, 05 May 2026 12:17:27 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHQ4c38338910
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHNXB15925674
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 May 2026 12:17:26 GMT
+	Tue, 5 May 2026 12:17:23 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 136512004B;
-	Tue,  5 May 2026 12:17:26 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 84A392004E;
+	Tue,  5 May 2026 12:17:23 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9DA022004D;
-	Tue,  5 May 2026 12:17:25 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 108732004D;
+	Tue,  5 May 2026 12:17:23 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  5 May 2026 12:17:25 +0000 (GMT)
+	Tue,  5 May 2026 12:17:23 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
@@ -114,9 +114,9 @@ Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
         Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
         Ilya Leoshkevich <iii@linux.ibm.com>,
         "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v14 11/19] unwind_user/sframe: Show file name in debug output
-Date: Tue,  5 May 2026 14:17:10 +0200
-Message-ID: <20260505121718.3572346-12-jremus@linux.ibm.com>
+Subject: [PATCH v14 05/19] unwind_user/sframe: Add support for reading .sframe contents
+Date: Tue,  5 May 2026 14:17:04 +0200
+Message-ID: <20260505121718.3572346-6-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260505121718.3572346-1-jremus@linux.ibm.com>
 References: <20260505121718.3572346-1-jremus@linux.ibm.com>
@@ -124,37 +124,39 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfX4GgQhG5eHyFU
- lPmBYNeOIzla9WMhZ9EHgLETmoIU1cOal0VdLRAKDFe8lW1N5EqqeUT80toSh0XUF1YwOdx8xD9
- q/yF9nK1Gqw9hAhimX9Ru5UpMhXLU7B+Jk0htDh4n5VBbYC2PRKyvkP+jGXaL0J1dz09+JwgwvN
- nmflUx0RxoEv2GfEASg1OanAGGcxAakNmDVzlxqLjP8HDBQP4DPnv4djoaDxxs0InG3lak7enIf
- SobeJGGaWn1kWbL+w0sjAMYhxMTyl+GKFZg+v8PmMhz4blZGhRYt3SwtV158Sw+2bqJY3nbrMwW
- 4TSV6WEJG+w9YtrRYJS9KVNyHJvNIe8D7PJ7NmAbUMr85jn1z9zAj5ZCsN4jDtDsVeY5ThFLAqt
- obJjVu02oEBG79RuMOyuHcBefiNPMmNU5IiikOPA8jPnuYQiAzfjue7nxje5KU85/tjFcnstQVt
- uHunGn6PZZSlg4/T7Hg==
-X-Authority-Analysis: v=2.4 cv=J4GaKgnS c=1 sm=1 tr=0 ts=69f9dfdb cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfX6XRcCVPfexRX
+ aTxIghH1703yLbfFVYTB7LN78hCTIq0I0rKK8kVqpSK90MmaBlPR+KEDxaP3ni5cMW/hw7ZMr8K
+ 2qSJuC3/n8b+eX5WiC9MPRZMCRT1rPVtRjREQi7w2yaciBdoteymAmvFh9zC2onCOXMsy6m1Pjk
+ bvosyyol9h0X6aKM69UjPIZzmbok67q6QDeZglJJVy1fDk5wj45FcsptBn/QPZk5hR1InbaKEMt
+ aj7YVkCPtMAlleGGuyrMnc2+kmJD8dQFPeu3+j1eGkzVSEoocdiQi0/HBtL1zgQnt4kvXqVO58O
+ lcYM353sz+H5bLKFsCWngXjU5ufmspL5sEmk6aiY1+mJ3/XvisZ/YgDE0ru6s4WpcrmEi9rUq0P
+ Tml2OMrzLwfvVWit4wHLYthRKNUMhtn4jt63DbxU610/n2GSASRcpOUoaGap58RZ9VitkRvFciZ
+ ICXAGpKDcuk1O3VrVGQ==
+X-Proofpoint-ORIG-GUID: Vj8o6NPkwVYMEHIgFfh8OFeJyFbrRIvW
+X-Proofpoint-GUID: IVLj-N6IF1qXucqDldL-uJTnEQzfebWD
+X-Authority-Analysis: v=2.4 cv=ctWrVV4i c=1 sm=1 tr=0 ts=69f9dfd9 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=pGLkceISAAAA:8
- a=VnNF1IyMAAAA:8 a=zNP608caSEEB7r2JvF0A:9 a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-GUID: 9v8pnJzrnbMWWnYp9-7dXnWNVOkpzn-s
-X-Proofpoint-ORIG-GUID: pL154LcnXQ1O3B4PHlmZYcrV1mui3esL
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=meVymXHHAAAA:8
+ a=pGLkceISAAAA:8 a=YuDcBBqGAAAA:8 a=-28QZkuTYErVj2SHl8MA:9
+ a=2JgSa4NbpEOStq-L5dxp:22 a=V9_jqlfyBUA7Gw2gN5zN:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 malwarescore=0 bulkscore=0 suspectscore=0
- priorityscore=1501 spamscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050114
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 35C5720011
-X-Stat-Signature: bdiqzij81jker1yebznfqwpc7q9gr17s
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1015
+ suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605050114
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A1C02C000E
 X-Rspam-User: 
-X-HE-Tag: 1777983494-726750
-X-HE-Meta: U2FsdGVkX19wuZ9t2Z+4dWycwkxHXOC7mFoa1St3JyUvcB3ZKfBESWA3n2MldPpAWMIIH058TRI+WO9Y1xkO7300LGGxnHZuT9pzG06G7NF4MccrGNgQLrvksHG1zF68yiB5WDB/Y38afO3azJLJPqQxlittyiiJgQj7E8DP7b34RJ8P7jzd3SLBWg/bmImIc+0H8W1WRy1XQ+bhmF3qeBz+lxyP8yoU/NT4SGYeuJOsvAZkGgTsw5TYR7dwFp9rkeN6Hk8FePxO+aEIIouT4zS86qlIppZtc0k4AYyzPDnvUDLmq3QxQXsdI94C5RVAz4MvGZbVG1yns8Jaa749p8HHNHDBqoWZPgbe7aJ8Jbue97iWlNCQ/gvaNXdl5qJRpaNK3sb1BLh17+jPqf5NSlwCBp9+VzlICz/1Ycahj5LIn0dXPlIAmtQXQVVvTo8x5uYee3UC0aiktfOVLJfC32EI8hV3t14hwN9ekt0E632YBa8CTQ3ZnO78qjrLAONURsD+zze031m7PyTMVdsuEDhOgxvlclCLyh2P0ci5MLU2jDdtuUmI3B3ky0cV1wc85u2muTr7yjfU59XbtaZnWxVIPavlSLMnElQbsQdU0s8jHRxSneOyM6Q8s+4gkIrjvTs9wfSiR37zazVFEEB99J4m5VwYiJbZ3rKWrTrS7zfZ5zx6PvbObkxpHa8oMCb7A9xZKo5SeWa8KknDtZDuLMXNyI58wDdIrTI3gTHl31XaajSTyRcXS53PL+o+Y5WO9PZ2EICvPaiwPf2+FMKMRoXVUtq610A5IE3wIvCl3bJr1fCJeajV4SYuva64Z6MhHt0ZdJL9iNLFKS92wBBDGm8FWL6Jj1fWpVcI0rUWQSsqBDPeF2TRZCRpKwFegBOFkkmW1gjG9c9eP5hPqFffujfP0SGvfH2zNk9zzJATtqHExKyQsX9mRREXFdNOBsYVtLZIS0gAscx2PkY0zy7
- wwzRhke8
- VqgQSyBMM2G9u/bpHtsfw+ihyaeUm7sIIIe6Sez//z46Zl+N2Nx2Da6thWIjC/437CxbJEye2DHp+eMpNztKzDHsZOy77ANnoACZ9R2SXpv87kpP8Pegiqp3/pUGUabZbKn1VYbObjRsEZYrLYiH5AxqyI/t90dgrWZ6gXye+yFydec3DVCNXOg3du9NoKRSGnnWz6nqXy78e0SDahJfoqd4DTtmCGrxnTFybe1fZtwQs4nQ5e50FF3ShbzzacpeUKTN8vyL7GcvWj6gGAOodNhKWI7ImVWh7H4tsvYc40Cxu8KLJB8FMStdjtDOph87NJruwmXNe0KXUY3aGQoEIKu27bLzubDE+deye5w8xdYlZOTyvh0WGmTNkCvpf93HYZfY6+jlEiIFzlKg=
+X-Stat-Signature: b43zhgfc4ksmuz6yxuw3xxkdgqqe1fqk
+X-HE-Tag: 1777983494-627900
+X-HE-Meta: U2FsdGVkX19v9jVTouJ5JCFHJvs2xEYwnd3Z+1ibeIzCE75ckEoB53XVpi6ZYQaJXdeo1Tx2hw++D6MXX2635XetDX2RCWm9LBqq6F9Yc0wWarn2nPeb8JzcqY0dP3djXdwE/XCXyO62otjX+MuSifKwq9vPK9+p21QIxujmVFn/DpVI0sAj2nlxMk4I9MrLJVJYLiBv7P2unLlLLcgQtPBM2RlF3YkAKuPNq+7sQPbKnl6mA33y5uNQwLxA56vIpmZmXygXhx1eizwmHvYMkj3e+VIKrhFl/VUrOtkNhiEb6NPd2SmRYOPYdBNzV742PxWRYYFTPOTwbmR344N0cZMkhBgF4vkKUix6WiFK6DEj91JH3/+evfjG2UlsRBjDbsRTanNim/dnxHlTSb4pTXm6uD1PxNlGER19/PlQaBd9g+3QIPDg+HzepT2SV0jwth1LzKsZTUwXRguAEImWfNez4KGVyX7GYEvW9QdZcClJgZYhj1Zg2rX1u3l2g3ewEDBn+KEeVTA85w8qkxUfgwcKh1D43JDitZtjG45YbtcB4OGsn1kwTwJ3iqajpGO02QyWN4GHq+odGWWPGlnDlWE6r+3JEM8QXpNZDt72VvTMFvSQw2lut557Bk7jXb/pJQydXVNlMWJxcoMEfHGut/7KH+mfvBd30zuxfll0mD+hYhvJtzYp9z3V1JVsVq6Yl0YOt5XvV/Jp0E8lrDjQGoSS3ynejcYVZ64pVuUAdylzqDnkSIKI261T8f5jsdATo2xF0HNE4fsIE9v8UDENXQvm0a0nJxDtTuZGmY8gBjJTUL16eRSVUF68n/7XR53ecYQ7sB6xxFDb6MotWMvsmjVYBQhEJr/5OTfjJb394HfaCZ0F5T6IUAO4yYTc0ksHyMzb7C0YTWVGJEFtSK1Ovn3jx28g7KqTqUdUWm8De/DLvTkqmYCaT6DdtAJ8Hjqlca7GIoodi9MdIzM6sD4
+ n6iEauYr
+ icKowt+9je35KPiyB+IxqnmkSt4lkgKuUyTAK+68rEkEMtYQD8efshPngjsIHiWgntF6vELVjYI5BH0lYr7laFlo3VTa3NNEOz/Lo6hZWwhZNoFtlRx0tE6Zn/xXvxEgeBEeTsnfzohBRdy3A30hU+JS08HIcL8IsKtSVeAhaYaMmbnCxye2ZW3ejKCxiT76zC5R2XQp33ySgoi11erSAtsCPm3eoz/mL8D+IeBHBH2JbQzZ8cWzEoqyzLCExKwZ3HwhcqFnq8lGtGecAtNPfawNs7dfniMH6AzfgtMY6Wt+ymPil9TWIWAZdXQETMYoLSOuFUdj/URpk9P4dDG4yRanNk0TooQukSyGrUZGjQfCYn2iEIMtieCHJVKQuQqZWD7s+LBCPCcruqgJdIFrCx1nohmu79rP7cKDH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,12 +166,24 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-When debugging sframe issues, the error messages aren't all that helpful
-without knowing what file a corresponding .sframe section belongs to.
-Prefix debug output strings with the file name.
+In preparation for using sframe to unwind user space stacks, add an
+sframe_find() interface for finding the sframe information associated
+with a given text address.
 
-[ Jens Remus: Fix checkpatch error "space prohibited before that close
-parenthesis ')'". ]
+For performance, use user_read_access_begin() and the corresponding
+unsafe_*() accessors.  Note that use of pr_debug() in uaccess-enabled
+regions would break noinstr validation, so there aren't any debug
+messages yet.  That will be added in a subsequent commit.
+
+Link: https://lore.kernel.org/all/77c0d1ec143bf2a53d66c4ecb190e7e0a576fbfd.1737511963.git.jpoimboe@kernel.org/
+Link: https://lore.kernel.org/all/b35ca3a3-8de5-4d32-8d30-d4e562f6b0de@linux.ibm.com/
+
+[ Jens Remus: Add initial support for SFrame V3 (limited to regular
+FDEs).  Add support for PC-relative FDE function start offset.  Simplify
+logic by using an internal FDE representation.  Rename struct sframe_fre
+to sframe_fre_internal to align with struct sframe_fde_internal.
+Cleanup includes.  Fix checkpatch errors "spaces required around that
+':'". ]
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
@@ -179,190 +193,489 @@ Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 
 Notes (jremus):
     Changes in v14:
-    - Uppercase terms FDE and FRE in debug messages.
+    - Fix FDE function start address check in __read_fde().
+    - Adjust to rename of SFRAME_FDE_TYPE_*.
+    
+    Changes in v13:
+    - Update to SFrame V3:
+      - Adjust to SFRAME_V3_*() macros and macro/define renames.
+      - Adjust to struct sframe_fde_v3 rename.
+      - Adjust to s64 FDE function start offset.
+      - Rename local variables fde_type to fde_pctype.
+      - Add and maintain struct sframe_fde_internal field u8 info2.
+      - Adjust to FDE split into function descriptor entry
+        (struct sframe_fde_v3) and attributes (struct sframe_fde_v3).
+      - Rename offset_count/offset_size to dataword_count/dataword_count.
+      - Limit __read_fre() to SFrame V3 regular FDEs (FDE_TYPE_REGULAR).  A
+        subsequent patch will add support for flexible FDEs (FDE_TYPE_FLEX).
+    - Rename struct sframe_fde_internal field func_start_addr to func_addr.
+    - Add support u64/s64 in UNSAFE_GET_USER_INC() for s64 FDE function
+      start offset.
+    - Reduce indentation of assignments to fre.
+    - Reword commit message (my changes).
 
- include/linux/sframe.h       |  4 +++-
- kernel/unwind/sframe.c       | 23 ++++++++++--------
- kernel/unwind/sframe_debug.h | 45 +++++++++++++++++++++++++++++++-----
- 3 files changed, 56 insertions(+), 16 deletions(-)
+ include/linux/sframe.h       |   6 +
+ kernel/unwind/sframe.c       | 346 ++++++++++++++++++++++++++++++++++-
+ kernel/unwind/sframe_debug.h |  35 ++++
+ 3 files changed, 383 insertions(+), 4 deletions(-)
+ create mode 100644 kernel/unwind/sframe_debug.h
 
 diff --git a/include/linux/sframe.h b/include/linux/sframe.h
-index 9a72209696f9..b79c5ec09229 100644
+index 7ea6a97ed8af..9a72209696f9 100644
 --- a/include/linux/sframe.h
 +++ b/include/linux/sframe.h
-@@ -10,7 +10,9 @@
+@@ -3,10 +3,14 @@
+ #define _LINUX_SFRAME_H
+ 
+ #include <linux/mm_types.h>
++#include <linux/srcu.h>
++#include <linux/unwind_user_types.h>
+ 
+ #ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
  
  struct sframe_section {
- 	struct rcu_head	rcu;
--
-+#ifdef CONFIG_DYNAMIC_DEBUG
-+	const char	*filename;
-+#endif
++	struct rcu_head	rcu;
++
  	unsigned long	sframe_start;
  	unsigned long	sframe_end;
  	unsigned long	text_start;
+@@ -27,6 +31,7 @@ extern void sframe_free_mm(struct mm_struct *mm);
+ extern int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 			      unsigned long text_start, unsigned long text_end);
+ extern int sframe_remove_section(unsigned long sframe_addr);
++extern int sframe_find(unsigned long ip, struct unwind_user_frame *frame);
+ 
+ static inline bool current_has_sframe(void)
+ {
+@@ -45,6 +50,7 @@ static inline int sframe_add_section(unsigned long sframe_start, unsigned long s
+ 	return -ENOSYS;
+ }
+ static inline int sframe_remove_section(unsigned long sframe_addr) { return -ENOSYS; }
++static inline int sframe_find(unsigned long ip, struct unwind_user_frame *frame) { return -ENOSYS; }
+ static inline bool current_has_sframe(void) { return false; }
+ 
+ #endif /* CONFIG_HAVE_UNWIND_USER_SFRAME */
 diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
-index 8eed6a7d9625..4419626f0173 100644
+index fdb2a4908563..c60aa527984a 100644
 --- a/kernel/unwind/sframe.c
 +++ b/kernel/unwind/sframe.c
-@@ -359,14 +359,17 @@ int sframe_find(unsigned long ip, struct unwind_user_frame *frame)
- end:
- 	user_read_access_end();
+@@ -15,9 +15,338 @@
+ #include <linux/unwind_user_types.h>
  
--	if (ret == -EFAULT)
-+	if (ret == -EFAULT) {
-+		dbg_sec("removing bad .sframe section\n");
- 		WARN_ON_ONCE(sframe_remove_section(sec->sframe_start));
+ #include "sframe.h"
++#include "sframe_debug.h"
++
++struct sframe_fde_internal {
++	unsigned long	func_addr;
++	u32		func_size;
++	u32		fda_off;
++	u32		fres_off;
++	u32		fres_num;
++	u8		info;
++	u8		info2;
++	u8		rep_size;
++};
++
++struct sframe_fre_internal {
++	unsigned int	size;
++	u32		ip_off;
++	s32		cfa_off;
++	s32		ra_off;
++	s32		fp_off;
++	u8		info;
++};
++
++DEFINE_STATIC_SRCU(sframe_srcu);
++
++static __always_inline unsigned char fre_type_to_size(unsigned char fre_type)
++{
++	if (fre_type > 2)
++		return 0;
++	return 1 << fre_type;
++}
++
++static __always_inline unsigned char dataword_size_enum_to_size(unsigned char dataword_size)
++{
++	if (dataword_size > 2)
++		return 0;
++	return 1 << dataword_size;
++}
++
++static __always_inline int __read_fde(struct sframe_section *sec,
++				      unsigned int fde_num,
++				      struct sframe_fde_internal *fde)
++{
++	unsigned long fde_addr, fda_addr, func_addr;
++	struct sframe_fde_v3 _fde;
++	struct sframe_fda_v3 _fda;
++
++	fde_addr = sec->fdes_start + (fde_num * sizeof(struct sframe_fde_v3));
++	unsafe_copy_from_user(&_fde, (void __user *)fde_addr,
++			      sizeof(struct sframe_fde_v3), Efault);
++
++	func_addr = fde_addr + _fde.func_start_off;
++	if (func_addr < sec->text_start || func_addr >= sec->text_end)
++		return -EINVAL;
++
++	fda_addr = sec->fres_start + _fde.fres_off;
++	if (fda_addr + sizeof(struct sframe_fda_v3) > sec->fres_end)
++		return -EINVAL;
++	unsafe_copy_from_user(&_fda, (void __user *)fda_addr,
++			      sizeof(struct sframe_fda_v3), Efault);
++
++	fde->func_addr	= func_addr;
++	fde->func_size	= _fde.func_size;
++	fde->fda_off	= _fde.fres_off;
++	fde->fres_off	= _fde.fres_off + sizeof(struct sframe_fda_v3);
++	fde->fres_num	= _fda.fres_num;
++	fde->info	= _fda.info;
++	fde->info2	= _fda.info2;
++	fde->rep_size	= _fda.rep_size;
++
++	return 0;
++
++Efault:
++	return -EFAULT;
++}
++
++static __always_inline int __find_fde(struct sframe_section *sec,
++				      unsigned long ip,
++				      struct sframe_fde_internal *fde)
++{
++	unsigned long func_addr_low = 0, func_addr_high = ULONG_MAX;
++	struct sframe_fde_v3 __user *first, *low, *high, *found = NULL;
++	int ret;
++
++	first = (void __user *)sec->fdes_start;
++	low = first;
++	high = first + sec->num_fdes - 1;
++
++	while (low <= high) {
++		struct sframe_fde_v3 __user *mid;
++		s64 func_off;
++		unsigned long func_addr;
++
++		mid = low + ((high - low) / 2);
++
++		unsafe_get_user(func_off, (s64 __user *)mid, Efault);
++		func_addr = (unsigned long)mid + func_off;
++
++		if (ip >= func_addr) {
++			if (func_addr < func_addr_low)
++				return -EFAULT;
++
++			func_addr_low = func_addr;
++
++			found = mid;
++			low = mid + 1;
++		} else {
++			if (func_addr > func_addr_high)
++				return -EFAULT;
++
++			func_addr_high = func_addr;
++
++			high = mid - 1;
++		}
 +	}
++
++	if (!found)
++		return -EINVAL;
++
++	ret = __read_fde(sec, found - first, fde);
++	if (ret)
++		return ret;
++
++	/* make sure it's not in a gap */
++	if (ip < fde->func_addr || ip >= fde->func_addr + fde->func_size)
++		return -EINVAL;
++
++	return 0;
++
++Efault:
++	return -EFAULT;
++}
++
++#define ____UNSAFE_GET_USER_INC(to, from, type, label)			\
++({									\
++	type __to;							\
++	unsafe_get_user(__to, (type __user *)from, label);		\
++	from += sizeof(__to);						\
++	to = __to;							\
++})
++
++#define __UNSAFE_GET_USER_INC(to, from, size, label, u_or_s)		\
++({									\
++	switch (size) {							\
++	case 1:								\
++		____UNSAFE_GET_USER_INC(to, from, u_or_s##8, label);	\
++		break;							\
++	case 2:								\
++		____UNSAFE_GET_USER_INC(to, from, u_or_s##16, label);	\
++		break;							\
++	case 4:								\
++		____UNSAFE_GET_USER_INC(to, from, u_or_s##32, label);	\
++		break;							\
++	default:							\
++		return -EFAULT;						\
++	}								\
++})
++
++#define UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label)		\
++	__UNSAFE_GET_USER_INC(to, from, size, label, u)
++
++#define UNSAFE_GET_USER_SIGNED_INC(to, from, size, label)		\
++	__UNSAFE_GET_USER_INC(to, from, size, label, s)
++
++#define UNSAFE_GET_USER_INC(to, from, size, label)				\
++	_Generic(to,								\
++		 u8 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
++		 u16 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
++		 u32 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
++		 u64 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
++		 s8 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
++		 s16 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
++		 s32 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
++		 s64 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label))
++
++static __always_inline int __read_fre(struct sframe_section *sec,
++				      struct sframe_fde_internal *fde,
++				      unsigned long fre_addr,
++				      struct sframe_fre_internal *fre)
++{
++	unsigned char fde_type = SFRAME_V3_FDE_TYPE(fde->info2);
++	unsigned char fde_pctype = SFRAME_V3_FDE_PCTYPE(fde->info);
++	unsigned char fre_type = SFRAME_V3_FDE_FRE_TYPE(fde->info);
++	unsigned char dataword_count, dataword_size;
++	s32 cfa_off, ra_off, fp_off;
++	unsigned long cur = fre_addr;
++	unsigned char addr_size;
++	u32 ip_off;
++	u8 info;
++
++	addr_size = fre_type_to_size(fre_type);
++	if (!addr_size)
++		return -EFAULT;
++
++	if (fre_addr + addr_size + 1 > sec->fres_end)
++		return -EFAULT;
++
++	UNSAFE_GET_USER_INC(ip_off, cur, addr_size, Efault);
++	if (fde_pctype == SFRAME_FDE_PCTYPE_INC && ip_off > fde->func_size)
++		return -EFAULT;
++
++	UNSAFE_GET_USER_INC(info, cur, 1, Efault);
++	dataword_count = SFRAME_V3_FRE_DATAWORD_COUNT(info);
++	dataword_size  = dataword_size_enum_to_size(SFRAME_V3_FRE_DATAWORD_SIZE(info));
++	if (!dataword_count || !dataword_size)
++		return -EFAULT;
++
++	if (cur + (dataword_count * dataword_size) > sec->fres_end)
++		return -EFAULT;
++
++	/* TODO: Support for flexible FDEs not implemented yet. */
++	if (fde_type != SFRAME_FDE_TYPE_DEFAULT)
++		return -EFAULT;
++
++	UNSAFE_GET_USER_INC(cfa_off, cur, dataword_size, Efault);
++	dataword_count--;
++
++	ra_off = sec->ra_off;
++	if (!ra_off) {
++		if (!dataword_count--)
++			return -EFAULT;
++
++		UNSAFE_GET_USER_INC(ra_off, cur, dataword_size, Efault);
++	}
++
++	fp_off = sec->fp_off;
++	if (!fp_off && dataword_count) {
++		dataword_count--;
++		UNSAFE_GET_USER_INC(fp_off, cur, dataword_size, Efault);
++	}
++
++	if (dataword_count)
++		return -EFAULT;
++
++	fre->size	= addr_size + 1 + (dataword_count * dataword_size);
++	fre->ip_off	= ip_off;
++	fre->cfa_off	= cfa_off;
++	fre->ra_off	= ra_off;
++	fre->fp_off	= fp_off;
++	fre->info	= info;
++
++	return 0;
++
++Efault:
++	return -EFAULT;
++}
++
++static __always_inline int __find_fre(struct sframe_section *sec,
++				      struct sframe_fde_internal *fde,
++				      unsigned long ip,
++				      struct unwind_user_frame *frame)
++{
++	unsigned char fde_pctype = SFRAME_V3_FDE_PCTYPE(fde->info);
++	struct sframe_fre_internal *fre, *prev_fre = NULL;
++	struct sframe_fre_internal fres[2];
++	unsigned long fre_addr;
++	bool which = false;
++	unsigned int i;
++	u32 ip_off;
++
++	ip_off = ip - fde->func_addr;
++
++	if (fde_pctype == SFRAME_FDE_PCTYPE_MASK)
++		ip_off %= fde->rep_size;
++
++	fre_addr = sec->fres_start + fde->fres_off;
++
++	for (i = 0; i < fde->fres_num; i++) {
++		int ret;
++
++		/*
++		 * Alternate between the two fre_addr[] entries for 'fre' and
++		 * 'prev_fre'.
++		 */
++		fre = which ? fres : fres + 1;
++		which = !which;
++
++		ret = __read_fre(sec, fde, fre_addr, fre);
++		if (ret)
++			return ret;
++
++		fre_addr += fre->size;
++
++		if (prev_fre && fre->ip_off <= prev_fre->ip_off)
++			return -EFAULT;
++
++		if (fre->ip_off > ip_off)
++			break;
++
++		prev_fre = fre;
++	}
++
++	if (!prev_fre)
++		return -EINVAL;
++	fre = prev_fre;
++
++	frame->cfa_off = fre->cfa_off;
++	frame->ra_off  = fre->ra_off;
++	frame->fp_off  = fre->fp_off;
++	frame->use_fp  = SFRAME_V3_FRE_CFA_BASE_REG_ID(fre->info) == SFRAME_BASE_REG_FP;
++
++	return 0;
++}
++
++int sframe_find(unsigned long ip, struct unwind_user_frame *frame)
++{
++	struct mm_struct *mm = current->mm;
++	struct sframe_section *sec;
++	struct sframe_fde_internal fde;
++	int ret;
++
++	if (!mm)
++		return -EINVAL;
++
++	guard(srcu)(&sframe_srcu);
++
++	sec = mtree_load(&mm->sframe_mt, ip);
++	if (!sec)
++		return -EINVAL;
++
++	if (!user_read_access_begin((void __user *)sec->sframe_start,
++				    sec->sframe_end - sec->sframe_start))
++		return -EFAULT;
  
- 	return ret;
- }
+-#define dbg(fmt, ...)							\
+-	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
++	ret = __find_fde(sec, ip, &fde);
++	if (ret)
++		goto end;
++
++	ret = __find_fre(sec, &fde, ip, frame);
++end:
++	user_read_access_end();
++	return ret;
++}
  
  static void free_section(struct sframe_section *sec)
  {
-+	dbg_free(sec);
- 	kfree(sec);
- }
- 
-@@ -377,7 +380,7 @@ static int sframe_read_header(struct sframe_section *sec)
- 	unsigned int num_fdes;
- 
- 	if (copy_from_user(&shdr, (void __user *)sec->sframe_start, sizeof(shdr))) {
--		dbg("header usercopy failed\n");
-+		dbg_sec("header usercopy failed\n");
- 		return -EFAULT;
- 	}
- 
-@@ -386,18 +389,18 @@ static int sframe_read_header(struct sframe_section *sec)
- 	    !(shdr.preamble.flags & SFRAME_F_FDE_SORTED) ||
- 	    !(shdr.preamble.flags & SFRAME_F_FDE_FUNC_START_PCREL) ||
- 	    shdr.auxhdr_len) {
--		dbg("bad/unsupported sframe header\n");
-+		dbg_sec("bad/unsupported sframe header\n");
- 		return -EINVAL;
- 	}
- 
- 	if (!shdr.num_fdes || !shdr.num_fres) {
--		dbg("no fde/fre entries\n");
-+		dbg_sec("no FDE/FRE entries\n");
- 		return -EINVAL;
- 	}
- 
- 	header_end = sec->sframe_start + SFRAME_HEADER_SIZE(shdr);
- 	if (header_end >= sec->sframe_end) {
--		dbg("header doesn't fit in section\n");
-+		dbg_sec("header doesn't fit in section\n");
- 		return -EINVAL;
- 	}
- 
-@@ -409,7 +412,7 @@ static int sframe_read_header(struct sframe_section *sec)
- 	fres_end   = fres_start + shdr.fre_len;
- 
- 	if (fres_start < fdes_end || fres_end > sec->sframe_end) {
--		dbg("inconsistent fde/fre offsets\n");
-+		dbg_sec("inconsistent FDE/FRE offsets\n");
- 		return -EINVAL;
- 	}
- 
-@@ -465,6 +468,8 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 	sec->text_start		= text_start;
+@@ -120,8 +449,10 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
  	sec->text_end		= text_end;
  
-+	dbg_init(sec);
-+
  	ret = sframe_read_header(sec);
- 	if (ret) {
- 		dbg_print_header(sec);
-@@ -473,8 +478,8 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+-	if (ret)
++	if (ret) {
++		dbg_print_header(sec);
+ 		goto err_free;
++	}
  
  	ret = mtree_insert_range(sframe_mt, sec->text_start, sec->text_end, sec, GFP_KERNEL);
  	if (ret) {
--		dbg("mtree_insert_range failed: text=%lx-%lx\n",
--		    sec->text_start, sec->text_end);
-+		dbg_sec("mtree_insert_range failed: text=%lx-%lx\n",
-+			sec->text_start, sec->text_end);
- 		goto err_free;
- 	}
+@@ -137,6 +468,13 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 	return ret;
+ }
  
-@@ -496,7 +501,7 @@ static int __sframe_remove_section(struct mm_struct *mm,
++static void sframe_free_srcu(struct rcu_head *rcu)
++{
++	struct sframe_section *sec = container_of(rcu, struct sframe_section, rcu);
++
++	free_section(sec);
++}
++
+ static int __sframe_remove_section(struct mm_struct *mm,
  				   struct sframe_section *sec)
  {
- 	if (!mtree_erase(&mm->sframe_mt, sec->text_start)) {
--		dbg("mtree_erase failed: text=%lx\n", sec->text_start);
-+		dbg_sec("mtree_erase failed: text=%lx\n", sec->text_start);
+@@ -145,7 +483,7 @@ static int __sframe_remove_section(struct mm_struct *mm,
  		return -EINVAL;
  	}
  
-diff --git a/kernel/unwind/sframe_debug.h b/kernel/unwind/sframe_debug.h
-index 36352124cde8..e568be4172b1 100644
---- a/kernel/unwind/sframe_debug.h
-+++ b/kernel/unwind/sframe_debug.h
-@@ -10,26 +10,59 @@
- #define dbg(fmt, ...)							\
- 	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
+-	free_section(sec);
++	call_srcu(&sframe_srcu, &sec->rcu, sframe_free_srcu);
  
-+#define dbg_sec(fmt, ...)						\
-+	dbg("%s: " fmt, sec->filename, ##__VA_ARGS__)
-+
- static __always_inline void dbg_print_header(struct sframe_section *sec)
- {
- 	unsigned long fdes_end;
- 
- 	fdes_end = sec->fdes_start + (sec->num_fdes * sizeof(struct sframe_fde_v3));
- 
--	dbg("SEC: sframe:0x%lx-0x%lx text:0x%lx-0x%lx "
--	    "fdes:0x%lx-0x%lx fres:0x%lx-0x%lx "
--	    "ra_off:%d fp_off:%d\n",
--	    sec->sframe_start, sec->sframe_end, sec->text_start, sec->text_end,
--	    sec->fdes_start, fdes_end, sec->fres_start, sec->fres_end,
--	    sec->ra_off, sec->fp_off);
-+	dbg_sec("SEC: sframe:0x%lx-0x%lx text:0x%lx-0x%lx "
-+		"fdes:0x%lx-0x%lx fres:0x%lx-0x%lx "
-+		"ra_off:%d fp_off:%d\n",
-+		sec->sframe_start, sec->sframe_end, sec->text_start, sec->text_end,
-+		sec->fdes_start, fdes_end, sec->fres_start, sec->fres_end,
-+		sec->ra_off, sec->fp_off);
-+}
-+
-+static inline void dbg_init(struct sframe_section *sec)
-+{
-+	struct mm_struct *mm = current->mm;
-+	struct vm_area_struct *vma;
-+
-+	guard(mmap_read_lock)(mm);
-+	vma = vma_lookup(mm, sec->sframe_start);
-+	if (!vma)
-+		sec->filename = kstrdup("(vma gone???)", GFP_KERNEL);
-+	else if (vma->vm_file)
-+		sec->filename = kstrdup_quotable_file(vma->vm_file, GFP_KERNEL);
-+	else if (vma->vm_ops && vma->vm_ops->name)
-+		sec->filename = kstrdup(vma->vm_ops->name(vma), GFP_KERNEL);
-+	else if (arch_vma_name(vma))
-+		sec->filename = kstrdup(arch_vma_name(vma), GFP_KERNEL);
-+	else if (!vma->vm_mm)
-+		sec->filename = kstrdup("(vdso)", GFP_KERNEL);
-+	else
-+		sec->filename = kstrdup("(anonymous)", GFP_KERNEL);
-+}
-+
-+static inline void dbg_free(struct sframe_section *sec)
-+{
-+	kfree(sec->filename);
+ 	return 0;
  }
- 
- #else /* !CONFIG_DYNAMIC_DEBUG */
- 
- #define dbg(args...)			no_printk(args)
-+#define dbg_sec(args...)		no_printk(args)
- 
- static inline void dbg_print_header(struct sframe_section *sec) {}
- 
-+static inline void dbg_init(struct sframe_section *sec) {}
-+static inline void dbg_free(struct sframe_section *sec) {}
+diff --git a/kernel/unwind/sframe_debug.h b/kernel/unwind/sframe_debug.h
+new file mode 100644
+index 000000000000..36352124cde8
+--- /dev/null
++++ b/kernel/unwind/sframe_debug.h
+@@ -0,0 +1,35 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _SFRAME_DEBUG_H
++#define _SFRAME_DEBUG_H
 +
- #endif /* !CONFIG_DYNAMIC_DEBUG */
- 
- #endif /* _SFRAME_DEBUG_H */
++#include <linux/sframe.h>
++#include "sframe.h"
++
++#ifdef CONFIG_DYNAMIC_DEBUG
++
++#define dbg(fmt, ...)							\
++	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
++
++static __always_inline void dbg_print_header(struct sframe_section *sec)
++{
++	unsigned long fdes_end;
++
++	fdes_end = sec->fdes_start + (sec->num_fdes * sizeof(struct sframe_fde_v3));
++
++	dbg("SEC: sframe:0x%lx-0x%lx text:0x%lx-0x%lx "
++	    "fdes:0x%lx-0x%lx fres:0x%lx-0x%lx "
++	    "ra_off:%d fp_off:%d\n",
++	    sec->sframe_start, sec->sframe_end, sec->text_start, sec->text_end,
++	    sec->fdes_start, fdes_end, sec->fres_start, sec->fres_end,
++	    sec->ra_off, sec->fp_off);
++}
++
++#else /* !CONFIG_DYNAMIC_DEBUG */
++
++#define dbg(args...)			no_printk(args)
++
++static inline void dbg_print_header(struct sframe_section *sec) {}
++
++#endif /* !CONFIG_DYNAMIC_DEBUG */
++
++#endif /* _SFRAME_DEBUG_H */
 -- 
 2.51.0
 
