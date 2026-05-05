@@ -4,102 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3977ACD13DA
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 07:20:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6338CD342F
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 07:45:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A163C6B0095; Tue,  5 May 2026 03:20:14 -0400 (EDT)
+	id 8B5EC6B0005; Tue,  5 May 2026 03:45:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99FDD6B0096; Tue,  5 May 2026 03:20:14 -0400 (EDT)
+	id 8668B6B008A; Tue,  5 May 2026 03:45:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88F276B0098; Tue,  5 May 2026 03:20:14 -0400 (EDT)
+	id 755616B008C; Tue,  5 May 2026 03:45:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 76B5D6B0095
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 03:20:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 370618C5B6
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:20:14 +0000 (UTC)
-X-FDA: 84732517548.13.37727AE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B508E4000D
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:20:12 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=AZxWbBvY;
-	spf=pass (imf07.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6463D6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 03:45:56 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2CD6616034C
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:45:56 +0000 (UTC)
+X-FDA: 84732582312.09.A60DB4A
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 43F11100011
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:45:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=fO5aEbzd;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.221.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777965612;
+	s=arc-20220608; t=1777967154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uKEcwDRmE/Dw3PjePODviG+2OyaPs0Fr4s87SnOlBNg=;
-	b=WOgQ2ZT0VPZEA8Y2eXBvi5B/LiQO08v76vLTHqbGJ4JL/bZTwi5rSmj51WvwCBoc1xHqGO
-	P63jaPcHiEJqm7TJ1eQx0FdjUTlTpYNlOxwDBs1Q1G33yQQ+gv1oaxDynFFwP4C4qwlkRM
-	QWB2geu4mMbRbYZZxIdOw8qMauXavtM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777965612; a=rsa-sha256;
-	cv=none;
-	b=r2Th8RXpPkYPm8Gnu0GVBgnc19Lk1Q3/93oNRx3gWiUKuRRxL4ZIxgCSTXtFh9eQmG8UiC
-	8Q2xTWrZICJT9s5KmygMU9CdQFm3oLe6CGjm0JTjMmeBh8fGZurCSLflEzYZHqWuvWs7nH
-	h+YE9xh6FJDUYV9xc3J/2advBNB8mnE=
+	bh=pZn9gNDq1rFBKVWAUdRINblw7hBlw9EDaJdQ6N5Sg9E=;
+	b=LkYz0A3Z1FF1vSoFGtLb68zmktDlos9mY1b6P2g18g3IA2hqbVQMMURJ+lNdOX+pOoA2Pw
+	ntWBiyR8pXhanrfmss41fjYUMMQ7aAagY01PjVsaQpNqEvgb1vVfJad5XFSosx1XFcC8QG
+	6lZXZXL9OYOcYhAAm2dcQEOPmqzZSGE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=AZxWbBvY;
-	spf=pass (imf07.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 49DA96014B;
-	Tue,  5 May 2026 07:20:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E591EC2BCF6;
-	Tue,  5 May 2026 07:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777965612;
-	bh=Z0FXQFs0XgCitklm42p+eFCRXoSwhNl8YaZgF5P9pKc=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=AZxWbBvYjHzMwBGYAn0U/L+Y4nNRwAOnQ7QKBncZ5DofsMttNhg1rsqFqCAox2z4/
-	 VLC8c51H6eGo4up2Oc9WzaBpVdjqlowLNCCdtrbnljiGBQOVebgMS8cmbhe4lEoUOR
-	 YOUd4azIaiomeZtl+96K3UoRYPsTZCtUEYVtgzTDr47ziJI9XzLSYAno5EeSCiFszF
-	 I0bFBlGGW91/979neAvZamO6efbThBqQq+v1advRIdvH24/vBNcixvmB4Ru5RePWTW
-	 fTQkhHnQa+GFAtYyExdmfSAVa6wcAcfYaOQxhKk7LvgTC5vEJdzwI0EBfhAIJcGSDy
-	 iIAYNNRsm+sqA==
-Content-Type: multipart/mixed; boundary="===============8001377551619871004=="
+	imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=fO5aEbzd;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.221.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777967154; a=rsa-sha256;
+	cv=none;
+	b=50UEM8dLRvoweWfojWQ/YSR/YzKH4Q85YK1osrewDG1ZshiJ1xEYUY1ZF/CXSOgb/GpnsP
+	3AQXVNs5iFf0/PgujYQUCaKpTSEeiWSSBnv9R7QFYEbu5wg4/hyUcFynAgU+t/zLemP+ZK
+	w4IosDQM0I50nOVoQ5ffkO7QTECAwv4=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43d77f6092eso2989308f8f.2
+        for <linux-mm@kvack.org>; Tue, 05 May 2026 00:45:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1777967152; x=1778571952; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pZn9gNDq1rFBKVWAUdRINblw7hBlw9EDaJdQ6N5Sg9E=;
+        b=fO5aEbzdLbSbtSJnkQFV9aB0EN8I+ueKURV57HHJkEy1rIjY4jgOJS9pRCHlT39d7R
+         btf+Kk0/W69c9FJNAqsKKoncfCbgTJpF0MsG2xrKScFpqsy+Kyw8CpOUn/OzYaGnYMog
+         WWDqnT0gkqb2Vg+MW08MN/M7EJBobTdaeJHrn821kSAg8MwCw45+PjB40Sq1c91KbvuY
+         ur7WxFvJklKANP5ZAfXl+f2kuz10mn/U9mnWP0hKtjlXrM0iGAcCaRlyN7xiwJ1DJ/HC
+         Wv5oNYAlRBoh74IPEP3TyO3uvfULcU6LP4i6sjb958jvSXikONLTTmbCaA1a1dMLALT2
+         pMpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777967152; x=1778571952;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pZn9gNDq1rFBKVWAUdRINblw7hBlw9EDaJdQ6N5Sg9E=;
+        b=ejeO3b6aDZeovU7un6xAxemVtNg9qPpseEZt13aTW8wN/iyiYC1JzmukIB8+BXSBda
+         C6WFj4nZYLZAzCjJ7TSqEnNOLNROmhD8IXbr8SXSvhPkofGliHZCbNLVrandLJ5CTZhZ
+         Cb/7RqZg0UclGkvH7Bta9YtAOQymzL/ldidiZgEOV6SKPtkJ1E75g8B1uVjjKvn6wtlm
+         1GGEjMIa1Gu1UbBNrhiTKbT1dsrQqUdKJESBgP8v3clXUanxlTX63vU4f59egww3al5B
+         jJjjEauQkiBeFBZYkkIj6cZHKhVThp57aEX9JCrd5eKF/u2VWRM3RsUeK12MTIMSfqbu
+         t51g==
+X-Forwarded-Encrypted: i=1; AFNElJ9phq+SDKbAqUkkhAjGvb0q9eEmrG+EeoNbmDNkFYXx3yDX29yU8IVrbezHnaYzZ5h1+pXbbG4xsw==@kvack.org
+X-Gm-Message-State: AOJu0YyiF2cOLmbW3wMkVBrXJwtAdm6fS8hXjK2QO8NnMfTpLxQQ5l+y
+	hPftPoqR+kA83MrgQKiUjmyCFqsriAEO3PFvDFQB53Nyp2AttT9O9/YJLbGRTjLp/gM=
+X-Gm-Gg: AeBDieuGrxiGWjX/rgN2eZDJW7+vABxLAwS0oeIdrq1Tn2JBZwC/NihTVic/2YaEK71
+	lrs/hQRofHk/dpfv8DXcqZ3hrJqZ1x8B6UoGk8WVZWmoYWB+fE9rOBZdQ/GeOS2OXt3cqAu4Jzm
+	H0E649WJdOu6nGWBhb+Ad9y4epLe1+IK0f+601kjYLnUPCwPaIDXvxu+g1UKHR06riv2+goJ6WM
+	zveKkaqQxPdqMB8oLckcfPeZhZKsXQPkGtKJ2ylxX86DF/C63DLUYYOlr/7qK888AYLA4k2BuTo
+	1LeoW4pdp8IqdvwA3i3hxHtR6KZe6xGhJGbxm5GMcRObxejeI2KsUBaHq8si9CQTKAZs46K34fG
+	H3cOr3MPWdB1ZONEpNYrHEDHBxKLUY481I73iSPPDjG9Pq+zQ1+DATD8/Fvp298MnPjz0KKXdi6
+	4VC1ZY9GtbQsTJmSBrC67E4WkFYYbRhqC4DMukzV2Q/Km3
+X-Received: by 2002:a5d:5d87:0:b0:44a:2f78:e873 with SMTP id ffacd0b85a97d-450041b08d5mr3594275f8f.17.1777967152279;
+        Tue, 05 May 2026 00:45:52 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F ([213.147.98.98])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055d36dacsm2455028f8f.32.2026.05.05.00.45.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 00:45:51 -0700 (PDT)
+Date: Tue, 5 May 2026 08:45:41 +0100
+From: Gregory Price <gourry@gourry.net>
+To: Arun George/Arun George <arun.george@samsung.com>
+Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	damon@lists.linux.dev, kernel-team@meta.com,
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+	dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, longman@redhat.com,
+	akpm@linux-foundation.org, david@kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
+	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
+	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com,
+	gost.dev@samsung.com, arungeorge05@gmail.com, cpgs@samsung.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <afmgJcFUjQLYxkb5@gourry-fedora-PF4VCD3F>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <CGME20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0@epcas5p1.samsung.com>
+ <1983025922.01777297382206.JavaMail.epsvc@epcpadp2new>
+ <ae_i9IlIndumJWN3@gourry-fedora-PF4VCD3F>
+ <1891546521.01777455002601.JavaMail.epsvc@epcpadp1new>
+ <afIKxG5mJZE6QgpR@gourry-fedora-PF4VCD3F>
+ <1891546521.01777901881625.JavaMail.epsvc@epcpadp2new>
 MIME-Version: 1.0
-Message-Id: <2b13d3da553b3d2b09d94c046e80281f972d997b3e9037a0b215d6663135711a@mail.kernel.org>
-In-Reply-To: <20260505062026.91724-2-cuiyunhui@bytedance.com>
-References: <20260505062026.91724-2-cuiyunhui@bytedance.com>
-Subject: Re: [PATCH v4 1/3] riscv: io: avoid null-pointer arithmetic in PIO helpers
-From: bot+bpf-ci@kernel.org
-To: cuiyunhui@bytedance.com, pjw@kernel.org, palmer@dabbelt.com,
-	aou@eecs.berkeley.edu, alex@ghiti.fr, dennis@kernel.org,
-	tj@kernel.org, cl@gentwo.org, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
-	memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev,
-	jolsa@kernel.org, bjorn@kernel.org, pulehui@huawei.com,
-	puranjay@kernel.org, thuth@redhat.com, ajones@ventanamicro.com,
-	ben.dooks@codethink.co.uk, rkrcmar@ventanamicro.com,
-	cuiyunhui@bytedance.com, samuel.holland@sifive.com,
-	zong.li@sifive.com, conor.dooley@microchip.com, tglx@kernel.org,
-	debug@rivosinc.com, seanwascoding@gmail.com, andybnac@gmail.com,
-	menglong8.dong@gmail.com, cyrilbur@tenstorrent.com,
-	wangruikang@iscas.ac.cn, atishp@rivosinc.com,
-	apatel@ventanamicro.com, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	bpf@vger.kernel.org, arnd@arndb.de, nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com, morbo@google.com,
-	justinstitt@google.com, qingfang.deng@siflower.com.cn,
-	linux-arch@vg.kvack.org, er.kernel.org@kvack.org,
-	llvm@lists.linux.dev
-Cc: ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue,  5 May 2026 07:20:07 +0000 (UTC)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B508E4000D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1891546521.01777901881625.JavaMail.epsvc@epcpadp2new>
 X-Rspam-User: 
-X-Stat-Signature: iqz64m877agwx4xkw3s8nr9fsbwyed6b
-X-HE-Tag: 1777965612-230650
-X-HE-Meta: U2FsdGVkX1/ntpUrkM4rhgnWD35EsXM7KhUMtg3db9MlGRwO6ID1HXFJMobgcXM7oiA7tpNUqu2eNjYwESxuuOI5m50lLCNZ2VBxVjcUz6yPN+KoNgV6bC2uHcin3xRoeuIdTaXO+4yhP1F5HV7O8J5DGMvFB5TKWPwsMlFng1ROaeLdIP7oM9yNl3TqNRlg4sDeZ1heW+ehjczWLIqs34z6mXe3ROBkpTvU4LJC7my88/GBwDbYUbfP9/4kvG1g94lzlNITAMZ0Wn95MOdehKc5gzDYBvYtXyfb4I7CiW0qyfAdmwyXxwsss9OASXzyXei1RfksvxnPlmCCkhY0nm68HnoEXK6DqlEII2CWYSOpnkdfC8IOpaZs8y7QTKKjK3YT2kT9raTZJrf4zn4VXDXsMjyZjwuMxTHoDGyl09Tid2QqLMsJwJkTBUkfO6rS9ElFgBBS3BuQTL+Ojk/WtSAFvHm+Xv+fgkoV1HOt6GLWZbY7D+oSZnHRy16JEVEiK7VRRhy9kBmKlBOi8k7f80bIakm94DdiVownvj1F6Q4HENNFdswEC3+klxrqckww57HdxBsVE8MCNmqTtJnCaklW23zICdahw06femYV2ni0hfgH+NhM6L3+oDwcZdVHvo4jmB8LO+duB9IdQEava3PSF8AcquWEhuxOBYQVCvRpXov0XlschFBEOduQu8zFmCLliozv+ZLooJ6ZUOuSnt2sBBIdHmuSTbFB++Sr51ZJYq5pWneuuOOXA7VFS+skisYXvZRR9Ga40EJFAuCPi2hmPfZczTbgGWOltvltF+mmtx2nvWCW8KXRR1ePiSiw6931ixnA9JCNtYE+ilfoxQNWqEzKNAvEL9u5MKIw4a3gK5uoGpPsrlkSYiuqq9rViCn1bfKdQZBUA/qI+5HVohgRnqVPuQWbq68pgJVIqVA8ZIwkscWFG85MQeMKgXq17+SNYds1+0MLDHJPl3b
- pLj1okBi
- SnrjMGBesEODVIL2W8rxkbTCcb1fJUDaEj1eJ8hpnLTYT3TlDAMeyNIbkC4I33J5dQkwECiKhnfRDnLCcSA4PrgU7537f52VOcSkIwrQeK+U0JRRRRhH8MWzYTO9AbvCdKYv8WiLQZJCys1stKYNJ2FyFuow+e9l1uCTuDm9/h/MTQdkYsR2kkugKp1mMJlhjhXg+c5veIVT/ERJ+u3yg7d+pIMSiBRK6dQox47QtHpPr4SgcNz38+S4X+Sn8Ifzkva/pESwDpv6eQNSfOhjur79Bvl8noTTVvMHtiYxu5xN5u9hzN3QAl3DkcwsCJnORIn3GLmorR0zRIebokEe9w5rs3IC5xZafZ/bNECL7UVjuJtQTgrY8Hd00Rp1H+RAWooGPeDx5UK+6kqCZZGOUVBNivdQxVL2FVXERebdCMe1XTv1OnAJygpnmb7UF0qt7qq8BYkM3zql//Ec0e+4eLH0i7EC+0UDhRDJsucETXuLY1ZenrhDWjF2u75M/ZbfJkqwgu12u22IuI1aljtz4gwqTr03IusfLokg73eS4eVYOu6v+G6GF5Wen7kA2rfsviMuHdMI1PTLALGIlBM8YHl4HG0gcgEY25WUPzLltKNutZAyUDyGrFduJNnWkPxtfGkfo
+X-Rspamd-Queue-Id: 43F11100011
+X-Rspamd-Server: rspam06
+X-Stat-Signature: te7dyxijbnytuhgcpxaq16kjbydgg17u
+X-HE-Tag: 1777967154-271988
+X-HE-Meta: U2FsdGVkX191CmSF0n+MQvDjsmD7+rmuHoGZ5v7+R4tUrSwQe/NC9B9aClAgwV852FkP5ZDBSLpfadaLvxpFMpFUrsEBKT0zwZF+I39eKvdyZjxXTH83G64l0nyvP2vwKtQoojugGC3pZ7z+UyCD3oEx/0pHyRykICAX2nqX3Scy6ZDARyogXMXUCayANBvah/CV0Y31P2dNqXBpG2PBx67aTCukgiAOYXxDVAGKJZ3QRyJxgycAbREJ/44yg/79x1Y4i9/OLyKWS7dIFmLoZTVK/mGtgkcVF3ffuvzPiAjEz2Iuj9ejzz6xIB4bKkBrKhKh4pjyV/Ca52SbPTzh3jYAKGCU+MdA7Z4ovV9IOSc3aPmM4dJsDbSIXvKK1Bu/uc/sZCTtJ0Xc+S8yOWGM8ygEzFfqgsoephJt77Co9ASy6mtnEVczm7kI1EW/h2eLdGSofNMJgbB0qb964yNVlfHwwmfp/IWjtBdMJLp+7MPayL/pvHlmx0N0Qd1Tkr0a+NzgvTGqupVZLU/s+x0gXMeD+hzfZfUhahNE4U4fToZAr7YYRLyfjbcDRociJBbb9S+/WVirR2bX8Q4PumKs9W6EwBRNph+dZjd7uOctMddEpiFoq/ZOrXatNvUCM5AjOZFx4Ul+dw2MLM+YhC/wCh8ciYwk+rHHsvCpWfckbmpHkgggoz1qBQFxPxN0doGlBFwkVz9HpV19Hju6nJ0UXajLHehOCTafTttFHIj7Bj5I4EkrDu3UwDXvMqfiXBHltDG7QfreZlQijIAaKHZPtOEwgioC/5p1UPSBQmqJgwHWlqODPeGSPF3cpGJIGI3A2+9qFX8L+Dmiq7vxyYjElvGSc/rJ8CUIZn9eAvjrpdcuNpZDdmDizBVIA2fh/iNNOeGFdbuS2JHg9cZwFic9Ygcjmsv68+xyjxy0TtQTVpFRzQ/qaWUBomSD2p1ETfpC3Eur4YjtesoPR66VXvn
+ MaprkJZC
+ OKSPchTq/LhsGJQ+lVIlk+s3Gk7d/X3XSjtYfK7uhvtXxCBI7hmuhYX4DU6+vDiNNu3J4LXTuaIbT4Qe9kvtV4vGZk9EzZDkzc10PNy4MFrcWyrQ2ykrZHXTgZ8YMzGcFqwqgWxR7Ot3CYFkQPPBAW6ZlPgKz7hkhwX2nXqxCKlvOCw7zKZVqos76ERVhuaJb/Tqwzs2MpF8zy8ZrnR/as2R0ttnX5iwo0RpQA7VxpPwFYHQusQNMUc1N1elizaS5wR1xvMMvb+mV+RefR4hmZtp10rLl5zLcMGXZjGoyLXUL9nwEx53thq0IehrKpcNACZd0NLhxaP2JrveRHiRVt20gnSURx53bk7YaRC8cR2aZ4qc5lwTLmZrJjCzVvvbuvUUV0ZDTxjHgTKxc6vpoYFYyIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,67 +149,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============8001377551619871004==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, May 04, 2026 at 06:38:54PM +0530, Arun George/Arun George wrote:
+> On 29-04-2026 07:12 pm, Gregory Price wrote:
+> 
+> But I see this 'write budget' (budget in terms of number of write 
+> operations that can be handled by the device, not capacity) to be 
+> provided by the device in control plane; not by the workloads in the host.
+> 
 
-> diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
-> index 09bb5f57a9d3..6f5d70313c83 100644
-> --- a/arch/riscv/include/asm/io.h
-> +++ b/arch/riscv/include/asm/io.h
-> @@ -56,6 +56,8 @@
->  #define __io_pbw()	RISCV_FENCE(iow, o)
->  #define __io_paw()	RISCV_FENCE(o, io)
+In the scenario i'm talking about, a "write budget" is defined as a
+number of pages that are allows to be mapped writable in the page
+tables at any given time.
+
+>   1) We can modulate the write budget depending on the actual 
+> compressibility in the device (and so workloads data). We don't have to 
+> do estimation based on the workloads.
 >
-> +#define PCI_IO_ADDR(addr)	((void __iomem *)((unsigned long)PCI_IOBASE + (addr)))
-> +
->  /*
->   * Accesses from a single hart to a single I/O address must be ordered.  This
->   * allows us to use the raw read macros, but we still need to fence before and
 
-Arnd Bergmann raised concerns about this approach in his review of v4
-(https://lore.kernel.org/all/3720c3a4-cc0d-4ba8-97ae-35def0189e2e@app.fastmail.com/).
+Barring the device causing backpressure to increase latency and slow
+down writes, modulating a write budget doesn't actually do anything
+useful.   Once a page is mapped writable - the CPU is free to write to
+that page uncontended.
 
-He points out that the NULL pointer arithmetic warnings are actually
-useful because they indicate real bugs - NULL pointer dereferences that
-will crash the kernel if the driver is ever loaded. The proper fix is to
-ensure drivers have 'depends on HAS_IOPORT' in their Kconfig entries.
+I think a write budget is "doable" but maybe a bit optimistic for an
+MVP.  There are many corner cases to handle, and I would prefer to see
+that as an experimental optimization.
 
-He suggests removing the custom RISC-V PIO accessors (ins*/outs*)
-entirely and using the asm-generic versions instead, which already have
-the correct #ifdef checks. This would be a cleaner approach than adding
-guards to suppress warnings.
+>   2) We don't have to do the capacity modulation - as in ballooning or 
+> shrinker.
+>
 
-[ ... ]
+You still need capacity modulation in some way to respond to drops in
+compression ratio.
 
-> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-> index ca5a1ce6f0f8..d799e5ccc943 100644
-> --- a/include/asm-generic/io.h
-> +++ b/include/asm-generic/io.h
-> @@ -1205,8 +1205,12 @@ static inline void __iomem *ioremap_np(phys_addr_t offset, size_t size)
->  #define ioport_map ioport_map
->  static inline void __iomem *ioport_map(unsigned long port, unsigned int nr)
->  {
-> +#ifdef CONFIG_HAS_IOPORT
->  	port &= IO_SPACE_LIMIT;
->  	return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
-> +#else
-> +	return NULL;
-> +#endif
->  }
->  #define ARCH_HAS_GENERIC_IOPORT_MAP
->  #endif
-
-Is this change necessary? The function definition here is already
-guarded by the #ifdef CONFIG_HAS_IOPORT_MAP check, which should prevent
-it from being visible when CONFIG_HAS_IOPORT is disabled.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/25361792504
---===============8001377551619871004==--
+~Gregory
 
