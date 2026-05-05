@@ -4,198 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08C4ACD342F
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 11:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D10DCD342F
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 12:18:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FC586B0005; Tue,  5 May 2026 07:50:09 -0400 (EDT)
+	id 684856B0005; Tue,  5 May 2026 08:18:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AC896B0088; Tue,  5 May 2026 07:50:09 -0400 (EDT)
+	id 60E3C6B0088; Tue,  5 May 2026 08:18:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 174CE6B008A; Tue,  5 May 2026 07:50:09 -0400 (EDT)
+	id 4AF856B008A; Tue,  5 May 2026 08:18:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 032366B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 07:50:09 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A30E11A03C1
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 11:50:08 +0000 (UTC)
-X-FDA: 84733197696.08.D3B1450
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012045.outbound.protection.outlook.com [52.101.66.45])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C782A4000A
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 11:50:04 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=Hx+08OnH;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=Hx+08OnH;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.66.45 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777981805;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35C9D6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:18:11 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D289D403F2
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:10 +0000 (UTC)
+X-FDA: 84733268340.24.D171705
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7F61E4000A
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 12:18:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=M700GsI6;
+	spf=pass (imf17.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777983488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aDqG7H6R5+qpJzJH8Ug1hlKwqToOJAIWrf1Fyu5iRW0=;
-	b=xTho8/2MceipfcWP/xhzZC4e5KgtDTaa7NKZhynOLabJ9k8oiYqfReG9NlwRD7zXaq1HFX
-	VCdQZpwWKDJOjrQTwygDb9Mw/5TNHbrQW2Gr4oU3NyoCIi6WsG07NqTSy+lazw8T0kbhJ3
-	fG5Qghmu8wXJgo3ga3x1CFLfCdo2YAY=
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1777981805; a=rsa-sha256;
-	cv=pass;
-	b=FXD84Y8bhfsdItxcZdfGXIBkfJButrEEmk7zn48NIiMP8YytSQITTCgmalDIUtNtKlbU0p
-	cV70lwK564AjNZtO3jWOkHE2AUHGbsgeSFX+OAWDzp90xaywgAC166+BrWyskycmqkeoWr
-	vBRip35neeseJB1HeAHan3obZaB86YQ=
-ARC-Authentication-Results: i=3;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=Hx+08OnH;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=Hx+08OnH;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.66.45 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=w9nW74fktSEUgTZ0AvBUPk0FmFWnYWGcHNduWe6v5eplMyqBmSrbov+cn4zJxJVPnt+TsUd/wJvry3WaGcHeZ1+FnYODB48TAyA0OPomvD9cwEA8CpIiM9wC4xETEe1ZoWCsrciCjOX5yNr/IznIu97WCa6PutWf73ZnU/jRBlf87i6k8t+vCJuxIxaNtDHsCjMVPC1F7F3ivMwXZ5dIADgIHkF+k1jgrLaiLXv9NS8GbYDXpnUlMqde3zoaytPnVS4msfqvoj/0Au77AYiTUtHN/obnpI6hI6XxG/YV49jaHve4d76nqBKyyrC3/HVqRY7DINrk66afZ5/DCzPVxQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aDqG7H6R5+qpJzJH8Ug1hlKwqToOJAIWrf1Fyu5iRW0=;
- b=xXxuDJ40dsPJdXRDmpAjzPEUYg/ZmURXpa+1cP4zUn3jGqe3RmNmBHRR/McrpEZEVT9ecpF4xZk3wA6C7K8QCo5nOVATx9WCCXhUwpNiVz5g+WYjmiFxB7O+lWVTfEQBPUo7GzXOEjzGGBmydFIfRxg+9CrZBq0ydyB4HeCrMvieECN9U9r79JC1ACVD/TWnEyTe9mxY2x97/Srre4BTxalymy3bOLuhe46zuPQpjvO++ZLrb+IxEM/xdG0BWLzUEeZxB8+x+tQST9ok/3IcHRNYL0IeeV/zuO/aDUKefdGodZF0oCrnMHwgbpfODUt1Vumrw+MGE/pI25r1n9BZVA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aDqG7H6R5+qpJzJH8Ug1hlKwqToOJAIWrf1Fyu5iRW0=;
- b=Hx+08OnHBE/OLoe2DsLuh1uv+oTKJecHcsvjH/u1LBLRvAN6KJy8dr48BM7fVnshrAE0ofu4aBrODKK6Cx3hUKt3D1V0FmtqekrHaT4/hfLy5WZ4aPaogolJtlMaXN/rdJ+tdbr8IW3zxrJVDjor+MOTVHAioAEbthAkBWb7bu0=
-Received: from DUZPR01CA0052.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:469::8) by AM0PR08MB5298.eurprd08.prod.outlook.com
- (2603:10a6:208:188::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.27; Tue, 5 May
- 2026 11:49:58 +0000
-Received: from DB1PEPF000509E6.eurprd03.prod.outlook.com
- (2603:10a6:10:469:cafe::60) by DUZPR01CA0052.outlook.office365.com
- (2603:10a6:10:469::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.25 via Frontend Transport; Tue,
- 5 May 2026 11:49:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB1PEPF000509E6.mail.protection.outlook.com (10.167.242.56) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.22
- via Frontend Transport; Tue, 5 May 2026 11:49:58 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l1runsJNuOhjGSyW81RspAFWwxyAHYRuS9jayZszykEbZDOQHtqS6Kd6acF6BaTQUdftnvIVH8TNhiLbWe69ekaHpOCWbgxbrFDX56nZpO8gUuBjAVt/T3jax/3ybExk27oy+oY6r4sdlcxH4vcE5ZDVvviC05VMW1HMaR7F0sb9FZxE0IZI5koGF3FTUaiI2y622hTj/0JarXOpX8GDqRK708thfs1b4fpqSZkuJOXV5V07KrK8Q7CVsZzzD0HbmOkBMSTxaOJVOxeKBAKwJce+/wT27XC8dgb3au3DnedBg/FkNOzHI+6ctwtHPNLwsqb0uLTsoBkTc9LMfD7eFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aDqG7H6R5+qpJzJH8Ug1hlKwqToOJAIWrf1Fyu5iRW0=;
- b=qzt6QNKeEwA1QVz0EJbinGVyQiYVEGZKPqsC/6u9FdTDZSALovb0DJ5/Lk3YoNhjdFA8qhva+s16zAhiT2ivGjKOwBivJDQcBZ1sKNI1c4fIOiY/nCwURQ7sTroFro+0cBH6gEKebd6uN2jzb7h0v1XVJ+NEgSAStK1pl1HbxkoEuLQkuqApBUx9MJWpb4h2gqJjL78xZN5ghS82rz9m1+aKN30cqAMHB7SYMwOsXx5PvYmp1ac5D4OZ43OfiNb11hyybk2eqtAp2TCrfGNLXrbT5rOPdsUaLl11pVg1jtZ2pG+MVNQZxtdPyvqgycOjaRi2F/vy6h9PvUAy/WHfqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aDqG7H6R5+qpJzJH8Ug1hlKwqToOJAIWrf1Fyu5iRW0=;
- b=Hx+08OnHBE/OLoe2DsLuh1uv+oTKJecHcsvjH/u1LBLRvAN6KJy8dr48BM7fVnshrAE0ofu4aBrODKK6Cx3hUKt3D1V0FmtqekrHaT4/hfLy5WZ4aPaogolJtlMaXN/rdJ+tdbr8IW3zxrJVDjor+MOTVHAioAEbthAkBWb7bu0=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
- by DB4PR08MB10343.eurprd08.prod.outlook.com (2603:10a6:10:3fd::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
- 2026 11:48:48 +0000
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9870.023; Tue, 5 May 2026
- 11:48:46 +0000
-Message-ID: <2d31eca4-9ecc-4a7f-9359-2c605858ce11@arm.com>
-Date: Tue, 5 May 2026 17:18:38 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 49/54] selftests/mm: uffd-unit-tests: add setup of
- HugeTLB pages
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
- Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Luiz Capitulino <luizcap@redhat.com>, Mark Brown <broonie@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
- Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260428204240.1924129-1-rppt@kernel.org>
- <20260428204240.1924129-50-rppt@kernel.org>
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-Content-Language: en-US
-In-Reply-To: <20260428204240.1924129-50-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0095.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:af::6) To DU0PR08MB9203.eurprd08.prod.outlook.com
- (2603:10a6:10:417::12)
+	bh=D7noqCPYCazcZYmegzK8gDeD27rc6gFSdojocdj+bIE=;
+	b=ugkr1ifkPTtOzLNfPW45AuzmAfRIubDkF3OLWWp3wXm7wJW2deF2f4EjyDN40TZt5tbCI5
+	W7XqBxPmg8UNkh//6c7gIk6uioGNuZXNMxVWgDofi5AsR2x04g7Jy9yfLlH/a7tSp7KOQJ
+	UwFg3Li1KyA265pcQJzarGwJNIz4cI4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=M700GsI6;
+	spf=pass (imf17.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777983488; a=rsa-sha256;
+	cv=none;
+	b=mBk8OFpddAcflTLj8hppfo2/6Tmg4xQJqen7jvv+HzSWKImKxy7GwnUNqOOrjWPBgn7vNJ
+	Q06HZGkemge4a1Q+tUFSuyIbJlvHfUajLq1zqd4g4D2fR2nteJq1S2TOJ49P/gb5C5/fS5
+	JLjbkUNgGzwWiaHMncHvSra4nXhTElU=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64557vch2799040;
+	Tue, 5 May 2026 12:17:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=D7noqCPYCazcZYmeg
+	zK8gDeD27rc6gFSdojocdj+bIE=; b=M700GsI6fpLxZY39qIuGfs8gU26ppyxzt
+	sTplffnoicHjs9+1ukSb26TbYpOQlLySg2kQUv0cDeGIVvD4CDpuvhL45B3t7FqD
+	LwKvPFKxfuzxx2zFnaWUJnShUivIqxtVIDim4w8i6YPEs32rMD1b6LfLEAIKX2sr
+	COeA467Lpo6rlqBv+VDLDKACNFUKAra3J2s1ji+DBqKJe0AFlYNk4FyRA4OJqq0w
+	fZM5YTddQNuUcMqcOUrOw3YUVUQrHN79ZUAGqntPHVXpN6AKpwl5gaXoE72TChbK
+	N/txdF4hoddSlcYVw09BZf1ITgzLf7WtSDh0dCN7VuNbdF4JG5IwQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9w6b778-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 12:17:32 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9jXE024681;
+	Tue, 5 May 2026 12:17:31 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3h1eqe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 12:17:31 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHRWj53412098
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 May 2026 12:17:27 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B4C862004D;
+	Tue,  5 May 2026 12:17:27 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 574E42004E;
+	Tue,  5 May 2026 12:17:27 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 May 2026 12:17:27 +0000 (GMT)
+From: Jens Remus <jremus@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Indu Bhagat <ibhagatgnu@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dylan Hatch <dylanbhatch@google.com>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>
+Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
+        Namhyung Kim <namhyung@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Florian Weimer <fweimer@redhat.com>,
+        "Carlos O'Donell" <codonell@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v14 15/19] unwind_user: Flexible CFA recovery rules
+Date: Tue,  5 May 2026 14:17:14 +0200
+Message-ID: <20260505121718.3572346-16-jremus@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260505121718.3572346-1-jremus@linux.ibm.com>
+References: <20260505121718.3572346-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	DU0PR08MB9203:EE_|DB4PR08MB10343:EE_|DB1PEPF000509E6:EE_|AM0PR08MB5298:EE_
-X-MS-Office365-Filtering-Correlation-Id: 675d6bd4-c68d-447d-1733-08deaa9c6eb1
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info-Original:
- T/kBj6sM6szzf8B6kQRgKkua3dmdL7PW92Tcj/S8e3B/AvIgPZ7bCAsFUaziFZND1KfG5yF/lNukvU0HjLpsBFCFXEvzHJICz77rPcvwTPckJ9kgkSb/o3qp9FEgGA8kfrg9WEiU4IOwrwCfv0ujnGGxbZzhZRY4jB+O9h7Et8jeSXHlkk6m2dQBuD8+qpLRTtGdodzffAlK2e7KEcyVE6LrnSWw/ocPw2wTPkY6Bhh0WTsYkEEljjNwvFFZmrK+RNbBRLyiSimJngb4mlFWdvlGuuDq9ja9K8uzEu41VorVizsL4jqCl7Av/KTR8FPNnL7LTad6zfdwvK0ck1f/M/2Z9ExRA2giGjQ3PtOPGiUUJHuh3rJVuztKDjyADM2LmJ0dpFYpJZgWLOVb6w1UHrK7ac61tXGlaudBN5W0Qo0FYiVl4YJ4ALhsQRBovwqrx0+pdVMJX6qdJ8s3IJFBD88Dl+pZKHKfxOVAf6vA7QtLPVQNXxAqzfOgB7t3DDOcydCS+akwkYdODkWNYYTeF4LCi0xV4kSH5Z9Z5R5w18UJdCzXOsTXHEQinAJQ9dcXTz0obCgYoQgG3Yx35Bh2nVdWjzTeo3P8zfmxfpk6J1U3tmpEB0HiAXPMSCdYkXXLMvkyTGDcMwiOV1CeyWBKsspqPq+hvjKByPVi8Ap6Dxhudn0gv1AIz4xO6mRM/G3b
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- E6a3xUQCxhVfDbqCRL1+Y2aos1Zx/VHNHjv5Zkh6AEyf3G86Y5M64Lkn1dyIV+f7IgWmQpBQmerp8hUbzePUQV4JyWHERqIqFOcJUdt2doUqGi2MslPHhbGz7UZMFwcmGksYtttEyqDQY8ZdJfj+HMCRE2cThYs+ebjl8ErFzfEaXCYkba+28GugRb6lGrxiaFDC/PasAvP1q4tsToIKzsRuQ4lNDd7DhTfIjHxD/I3g1/hzkmrCTyLKgTeverytwG2fofwmPneQObPET7YL10Oxc3WOD4x4B1L1NtLVOM2rwIiwYetcBqjRWZg2LrlEVhLMwCUEeTN5/DMBuJDR1g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB4PR08MB10343
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB1PEPF000509E6.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	97f10e66-c758-400c-e063-08deaa9c43ed
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|14060799003|82310400026|7416014|376014|1800799024|35042699022|36860700016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	q7HoFTni4PCHVhwJT79RYRrloYtPz5RtP0z2R4LZR+M0aPWoMBZE6WPmB7GNfoB8UXFCS9R24euaMLZBwFWjaMffJvYa+PUso5g8rkBDiZtaQZo3bCG5ozMqrUtriM4JHr6967kwYLv4jjb3I5Gytzzv9d4BwEJU9wh0MkbfOT+f5u7uyStfSPaIDysZ26MC5/5leYMOxo+xSrWASDxljPzDjF5jUpWmH/HdU0AUP449JQ50EFggtUcMxsfONIX263X6F0GMIGe0fBH5Cn8+aWpiPjFkSqUtMuizYJzvr4uUbwbh/zanjp5T6qzTh6UEWEilD2TYqiYdSiVEP+Q1ykBt+hf3IjIlcRtw/igccTHiMakeeYy0tIStFHijAKlmHdnDviOSZJOuPIsmDdiektVo/01tiVnjjKTpGCQCtclVcVfGI9nonVblKWEbzcEaY+0stgtrFWAn06VH4qvd6wgsAmJVp1qWxTRmNTvcXy0lUUFywWEFloCv5NU9VTZYatbzhAKnATVYyTJzm9+CfxhjkRh/mW9aC7ixfTN4kstfNkkTDha15zgYvn6fE4yLOSpaPC4eESYKtH862hlUdvtLIk9vRWqTTXTR3UpnIHgfFo9BxOmg72XGQSQIridXR51rrgH3ZkT0fbXJ0M5pzffMoh65Abm50fX7621wx2r/jwlVg65Rc7Zo68ah1wUxlW9MbqgMpMGf3Nym9gy8qopOSok/lfkbUiJyNcMbojs=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(82310400026)(7416014)(376014)(1800799024)(35042699022)(36860700016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Abw+yNuzd/+BnztPjfGehlagwpmR0Pon/5/c333LI+VDw1CBWSQ9Gp4OP6v/52j7vj/LkbojT4bWFjKVTRlkK4yR5TGqX3xeDQE62CNxGcXBg4TctXLiXgFDfre39H72kOX9UQ07DyyZYFY0q8glSfHbgo3P4LCHO3O/13bSFsHYZWHc8XTZuTmO6elkrvNWA6AWQiwUnisNM04cikggl+fLnguzCCGcQxYbrCMQdvcMUgLWlwcbeIMONVhGueDUBqDH7rWuJHuGaTe4FFQuw/KJqyQsQ/ewnTgrnvVWXVSDHy2r/y0mbzrRchHd7J9jTeLDtSqIp7KZlPv/MNBrWq8piHZSFVhb/+DlT4AlSsQJJgdG5Fl2HNFuikCTzo83Izfql0vc94CRfHXET4L0vxN4u/OS+LX6LSR2HfTOHzTQp/p5UyEltfkY8ckPklWg
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 11:49:58.0894
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 675d6bd4-c68d-447d-1733-08deaa9c6eb1
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509E6.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR08MB5298
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C782A4000A
-X-Stat-Signature: t45fabrrfadj7hjnmg1gbrocnersg4co
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=XPQAjwhE c=1 sm=1 tr=0 ts=69f9dfdc cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
+ a=3ITeoxp6sJ8ea140DuYA:9
+X-Proofpoint-ORIG-GUID: kbRZY4IQNb44J3QDwjWTe3rrmKPEvSrT
+X-Proofpoint-GUID: IKG3yKTeIFE_ZvRr4_l1EAD91bUT7u7_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfXxw+wtvybTk5m
+ UqUmubf+XGIa50ShpnhdjdKR1mte9y4sEK1qLuS9ZV8b1CEzY8RiGsm65HWuU7vB3vAlpZv9t0q
+ lSekdtoA4Ekrkv69qxCRBHfJzW3xI9R4HA65x51hotseMjTtFL9bkbNl0MbQoGD90upqC64XF1X
+ jcy13mu5SBssMZC414Xlb/3DSrPnBqN/SZYE0NcP16MVD9qc0mQjb07qZnag5Kel1N2zvyN2F66
+ ENlzb2BGRDJOr1lkHLxG6SuXiYlb32lhMQRrbgg2fiFDL8TTW6YZHDlH/zvW8icecZc5iwvqnLS
+ R5niyvNfawCpuQMm1jE9WO9C7yCVkw6tORgog2ulun0BE+4PmqAbnk07p1AktjeHO4E52rkMCAk
+ YJrufw3+Rq1I6WQbldYZd71huomWhxFfAU2wJqbGArKwpqQC81f4HU1sQ0xEGq08osD6ea+wgEX
+ Nop9U7RssFhhKcvX0vA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050114
+X-Stat-Signature: wcigbcix43rg69axr4p5h5b5hg3zogpz
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7F61E4000A
 X-Rspam-User: 
-X-HE-Tag: 1777981804-269866
-X-HE-Meta: U2FsdGVkX1+BXV/DfpgkW0NBlJuerL+wCSsI8UQ/EybzYGVEAGC5irt5a7jGAhhCcvvHjXoA4pfAmBEDgEszPrZzjX8wMLPAJuco3pJHesNDV0j7+AtubJx7ACAzvq7wZqv+HUEcv4dE/DPr56vmOdj0+ffY0CwJRZD863autlKmQm2JlmM+3P2oypIQ/bvLU7WXpxfV1QsmM/ORo6EO/SKlWMwZ9wDPmT26ksR+T0RJDcUsC/I3JsWbc5eH9+uDoKgLMtyMIKpISNuy3GGipaduYI4WIdOHledO/0tI3lWzWeJR5MMjR8ZrjuScLqDZvK9obiN+f/d10X2qH1GF6ZXnUdBRFCZQaIR8FFw+Hvcue6zY7LNg97kmErCk9AiKnD/LZbm5cY+UD3ZE9/a7jpbYO25BwiKIovANQm7R/V0BPj3q1RUzkwU17EYw/XnA9UKtXpc09RfJroE7AD6FJ/upcFNpdgmuwJfkfRin49g3fSmx/oHVs7ZfDLG7U3wz+Prm+kRV4VbDooyCEb52GR/xzloj2crhTLJtcM+90PEI3+F7w7W4pKkXh0MWtO9avvU4JPJyX4U62Ew9zuGRWyN0KFb8d0UJgh0zA6JxOTpQVQtICaCIwsdQbkM7TlAVcFF37mvGboDLc2OGQmPihkLIK1ggc29XDjxNu6EeIqeXbO0ed1tLOB21k9lxoXhMggGE6tDk1fuKvswIFSdzrwMK6UhV1g3ahzvW4/+hhWL8RKS1PiXjdNeatuYLteXS4e5srhRGtsitXAiG1X7UHdYrIQKF71+NHo6IE2DTzafWcMDSzYgSjt/M5yqyD2kMfZAS/ljPDdHQkQrAfLZl03lvMw/Gf1JDYi9T38chT4unCZEnbK8yezlOv0u1KHLCuUfHKN+KEM+5U/hml2ALOkCe0+BM3iz+fO4AHvnK8HQlryR+nLhlsEYxrFUxCZihRO0WGha6Wi/2M6xWO4K
- ibvUq65E
- M1+eo98ALAKF5mdMd/KAErvPEw3/1CuOg4e45c+YKUG2XGuhVmUry1VfkBnBgfNcHzM055KnSF1fQTlu+XdBteCALJkmll0YKh/yIONFUtmHOF96t6AWF9LBfAtrDyxwMm6YVFvN4oKWg+suLCIN2m4OrixZ6ioETHq0heTIgX99pL2X7ZW3ztUyDQROklodZ+zukIvd/Jmq8WEvCc3pceQg1/dzv4iTREtT5PSfKMkdIf0K0MIUwnHk19BRkGcHEDquC3ySVbur4rsj9m767jEecnj0wYkS4eQ1QEZGRpJhtCFjak1ruaF09R8lpHPkqQTSKhGJ4s/sI1eNt+22OADnPEtg3TgdAkRvM3FBkJ7el+0n85/5ecIgwVUx3ykBzZYRFQEazwDyaVvo8PX8XFt2ivhpwmtr1yHEivZDL0HTd3AvxJF2btcOpoe478kRemmA+hC6XIlDk/PQ2scHfVnVAAmJlOjSknDS9P0Tcg/LDQIatF5Jd43WpYPpXgq5Nwq1NOxHdX6+Ds4eQvAl8gRCf/lQ9dF7dzeR0
+X-HE-Tag: 1777983488-601674
+X-HE-Meta: U2FsdGVkX1/udZ1Lswh5dM3vlzESeLOZ6kPieOgJozvGEQUsYF9hNHJAdqWVIseJsri5KrqeGk5/v/AH0ym1s6OOPKT1YLcBCb6O5PjuB4MD+JX/uxs9BiX/U5fypTAKlyF0qh14MvBN1kzJeX2P61JLN0PNPxcdIpT8/9gZdgtd96iRjxDD0pxEvaBtzPeYsM7qYCcHKkPJ5InGF05cmw4ijEIYFWEBy1goYrsxB81bYO3DjaUkbQW4xA0R7M/wOWeELNFuA1/xkVyDc9viLtWDWwflWk8PI0psFLusMrzLSDnf8hIgEwTCPz4Iol5q8vsd6kGuxqZBQ/asr9MsShR7vcozqJ2jE+JUP7VmsfsE0ha3pUn7VW9wSu8rQLjWqTxNpehLb2q0ytp7BeqvWhQf8hVkwVuHGwHH3bXfb/zs1OLcTOM6JC12A65s/nMmiQf7/TCtg1titTHX5zSHYsUeYA1HtAfpKW/bBXUYSk/j8+HgxT04HMiDXkZFexebb3f6eEaxDXLnAwEcHzeDNllgLJcGUMRhrajkfqIHFTbhvmJsQ5Q1X+a/+4fH2G8Zz9veBEjtC6xgmt1pev17qXi2mM/rKILXcch5IxYCqPOjMcUwKLdpmWmlndaryyfISvbRXpJNANEE0/TXGRbWVgRvSluim7/0KuBIgKLJs2gqqIJ+8Gd5aTy0WQCtpPLfQ5kb6Azt5GhSxcjLWmVWD9oZTmqi4oDl3sAvLt68SeYODGex3oaZEHMywlIUmn/fq+I3pU9UiOQMflDMvVBDTvJQOWhRwjpuhe0nqyYKGfnQUVVHmu4vI8jrLWZBDwsXZrt6DMxCgmi7vjVnqgsyH1EbSWzR3RsVoHdVHRxNStuiOSMYRB4kiktsDNgwzcB/iyMnqjZXEAdGM1vb0JDNUe78bp42Ao1vOLsMaNNmWtytKgescmvcbn3MfkzyF65vm5fY+Z/QaPkJ9SJQha/
+ 32LaBBhL
+ VrYteHM4qiLrOjJ6F1craZrZQURkMwueQjNqw9lNo05MOmwRWuVhIp7C9kWlEBQCq8OmWCjx0P1UNQ5/aErXu3X9j/Ir3oZc3bUNLog+so7hz/buCSPijSsoRUAt0AU44WVkAdK8Vo5aQGmbkZzX9Tcl17dKi/jW3/kqneYPuyf6gHPIiyiKN2Ro3bFJ5m3pFAlE2gV/8wk5baE/yaIvr0HjAXE74rTmBFW+C8yqgESqlK208A9uua2RC3x36S9AvVj1YuVJdV1zeoXs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -203,116 +161,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike!
+To enable support for SFrame V3 flexible FDEs with a subsequent patch,
+add support for the following flexible Canonical Frame Address (CFA)
+recovery rules:
 
-On 4/29/26 2:12 AM, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> uffd-unit-tests skips HugeTLB tests if there are no free huge pages
-> prepared by a wrapper script.
-> 
-> Add setup of HugeTLB pages to the test and make sure that the original
-> settings are restored on the test exit.
-> 
-> Replace exit() calls with _exit() to avoid restoring HugeTLB settings in
-> the middle of test.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  tools/testing/selftests/mm/uffd-unit-tests.c | 31 +++++++++++++++++---
->  1 file changed, 27 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-> index 1a33db281f8a..20e1829db91f 100644
-> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
-> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-> @@ -305,7 +305,7 @@ static int pagemap_test_fork(uffd_global_test_opts_t *gopts, bool with_event, bo
->  		if (test_pin)
->  			unpin_pages(&args);
->  		/* Succeed */
-> -		exit(0);
-> +		_exit(0);
->  	}
->  	waitpid(child, &result, 0);
->  
-> @@ -773,7 +773,7 @@ static void uffd_sigbus_test_common(uffd_global_test_opts_t *gopts, bool wp)
->  		err("fork");
->  
->  	if (!pid)
-> -		exit(faulting_process(gopts, 2, wp));
-> +		_exit(faulting_process(gopts, 2, wp));
->  
->  	waitpid(pid, &err, 0);
->  	if (err)
-> @@ -827,7 +827,7 @@ static void uffd_events_test_common(uffd_global_test_opts_t *gopts, bool wp)
->  		err("fork");
->  
->  	if (!pid)
-> -		exit(faulting_process(gopts, 0, wp));
-> +		_exit(faulting_process(gopts, 0, wp));
->  
->  	waitpid(pid, &err, 0);
->  	if (err)
-> @@ -1706,11 +1706,32 @@ static int uffd_count_tests(int n_tests, int n_mems, const char *test_filter)
->  	return count;
->  }
->  
-> +static unsigned long uffd_setup_hugetlb(void)
-> +{
-> +	unsigned long nr_hugepages, hp_size;
-> +
-> +	hugetlb_save_settings();
-> +	hp_size = default_huge_page_size();
-> +
-> +	if (!hp_size)
-> +		return 0;
-> +
-> +	/* need twice UFFD_TEST_MEM_SIZE, one for src area and one for dst */
-> +	nr_hugepages = 2 * MAX(UFFD_TEST_MEM_SIZE, hp_size * 2) / hp_size;
-> +	hugetlb_set_nr_default_pages(nr_hugepages);
-> +
-> +	if (hugetlb_free_default_pages() < nr_hugepages)
-> +		return 0;
-> +
-> +	return hp_size;
-> +}
-> +
->  int main(int argc, char *argv[])
->  {
->  	int n_tests = sizeof(uffd_tests) / sizeof(uffd_test_case_t);
->  	int n_mems = sizeof(mem_types) / sizeof(mem_type_t);
->  	const char *test_filter = NULL;
-> +	unsigned long hugepage_size;
->  	bool list_only = false;
->  	uffd_test_case_t *test;
->  	mem_type_t *mem_type;
-> @@ -1745,6 +1766,8 @@ int main(int argc, char *argv[])
->  		return KSFT_PASS;
->  	}
->  
-> +	hugepage_size = uffd_setup_hugetlb();
-> +
->  	ksft_print_header();
->  	ksft_set_plan(uffd_count_tests(n_tests, n_mems, test_filter));
->  
-> @@ -1771,7 +1794,7 @@ int main(int argc, char *argv[])
->  			uffd_test_case_ops = test->test_case_ops;
->  
->  			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB)) {
-> -				gopts.page_size = default_huge_page_size();
-> +				gopts.page_size = hugepage_size;
->  				if (gopts.page_size == 0) {
->  					uffd_test_skip("huge page size is 0, feature missing?");
+  CFA = SP + offset
+  CFA = FP + offset
+  CFA = register + offset
+  CFA = *(register + offset)
 
-A small nit, after this patch, uffd_setup_hugetlb() can return 0 in 2 cases:
+Note that CFA recovery rules that use arbitrary register contents are
+only valid when in the topmost frame, as their contents are otherwise
+unknown.
 
-a) default_huge_page_size() == 0
-b) hugetlb_free_default_pages() < nr_hugepages
+Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+---
+ arch/x86/include/asm/unwind_user.h | 12 ++++++++----
+ include/linux/unwind_user_types.h  | 18 ++++++++++++++++--
+ kernel/unwind/sframe.c             | 15 +++++++++++++--
+ kernel/unwind/user.c               | 22 ++++++++++++++++++----
+ 4 files changed, 55 insertions(+), 12 deletions(-)
 
-The skip message only covers the first case and would be misleading for
-the second case. Should we differentiate both these using different skip
-messages?
-
->  					continue;
+diff --git a/arch/x86/include/asm/unwind_user.h b/arch/x86/include/asm/unwind_user.h
+index 9c3417be4283..f38f7c5ff1de 100644
+--- a/arch/x86/include/asm/unwind_user.h
++++ b/arch/x86/include/asm/unwind_user.h
+@@ -20,7 +20,10 @@ static inline int unwind_user_word_size(struct pt_regs *regs)
+ #ifdef CONFIG_HAVE_UNWIND_USER_FP
+ 
+ #define ARCH_INIT_USER_FP_FRAME(ws)			\
+-	.cfa_off	=  2*(ws),			\
++	.cfa		= {				\
++		.rule		= UNWIND_USER_CFA_RULE_FP_OFFSET,\
++		.offset		=  2*(ws),		\
++			},				\
+ 	.ra		= {				\
+ 		.rule		= UNWIND_USER_RULE_CFA_OFFSET_DEREF,\
+ 		.offset		= -1*(ws),		\
+@@ -29,11 +32,13 @@ static inline int unwind_user_word_size(struct pt_regs *regs)
+ 		.rule		= UNWIND_USER_RULE_CFA_OFFSET_DEREF,\
+ 		.offset		= -2*(ws),		\
+ 			},				\
+-	.use_fp		= true,				\
+ 	.outermost	= false,
+ 
+ #define ARCH_INIT_USER_FP_ENTRY_FRAME(ws)		\
+-	.cfa_off	=  1*(ws),			\
++	.cfa		= {				\
++		.rule		= UNWIND_USER_CFA_RULE_SP_OFFSET,\
++		.offset		=  1*(ws),		\
++			},				\
+ 	.ra		= {				\
+ 		.rule		= UNWIND_USER_RULE_CFA_OFFSET_DEREF,\
+ 		.offset		= -1*(ws),		\
+@@ -41,7 +46,6 @@ static inline int unwind_user_word_size(struct pt_regs *regs)
+ 	.fp		= {				\
+ 		.rule		= UNWIND_USER_RULE_RETAIN,\
+ 			},				\
+-	.use_fp		= false,			\
+ 	.outermost	= false,
+ 
+ static inline bool unwind_user_at_function_start(struct pt_regs *regs)
+diff --git a/include/linux/unwind_user_types.h b/include/linux/unwind_user_types.h
+index 0d02714a1b5d..059e5c76f2f3 100644
+--- a/include/linux/unwind_user_types.h
++++ b/include/linux/unwind_user_types.h
+@@ -29,6 +29,21 @@ struct unwind_stacktrace {
+ 
+ #define UNWIND_USER_RULE_DEREF			BIT(31)
+ 
++enum unwind_user_cfa_rule {
++	UNWIND_USER_CFA_RULE_SP_OFFSET,		/* CFA = SP + offset */
++	UNWIND_USER_CFA_RULE_FP_OFFSET,		/* CFA = FP + offset */
++	UNWIND_USER_CFA_RULE_REG_OFFSET,	/* CFA = reg + offset */
++	/* DEREF variants */
++	UNWIND_USER_CFA_RULE_REG_OFFSET_DEREF =	/* CFA = *(reg + offset) */
++		UNWIND_USER_CFA_RULE_REG_OFFSET | UNWIND_USER_RULE_DEREF,
++};
++
++struct unwind_user_cfa_rule_data {
++	enum unwind_user_cfa_rule rule;
++	s32 offset;
++	unsigned int regnum;
++};
++
+ enum unwind_user_rule {
+ 	UNWIND_USER_RULE_RETAIN,		/* entity = entity */
+ 	UNWIND_USER_RULE_CFA_OFFSET,		/* entity = CFA + offset */
+@@ -47,10 +62,9 @@ struct unwind_user_rule_data {
+ };
+ 
+ struct unwind_user_frame {
+-	s32 cfa_off;
++	struct unwind_user_cfa_rule_data cfa;
+ 	struct unwind_user_rule_data ra;
+ 	struct unwind_user_rule_data fp;
+-	bool use_fp;
+ 	bool outermost;
+ };
+ 
+diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
+index cc57804aa3b1..2721f4af53fd 100644
+--- a/kernel/unwind/sframe.c
++++ b/kernel/unwind/sframe.c
+@@ -271,6 +271,18 @@ static __always_inline int __read_fre(struct sframe_section *sec,
+ 	return -EFAULT;
+ }
+ 
++static __always_inline void
++sframe_init_cfa_rule_data(struct unwind_user_cfa_rule_data *cfa_rule_data,
++			  unsigned char fre_info,
++			  s32 offset)
++{
++	if (SFRAME_V3_FRE_CFA_BASE_REG_ID(fre_info) == SFRAME_BASE_REG_FP)
++		cfa_rule_data->rule = UNWIND_USER_CFA_RULE_FP_OFFSET;
++	else
++		cfa_rule_data->rule = UNWIND_USER_CFA_RULE_SP_OFFSET;
++	cfa_rule_data->offset = offset;
++}
++
+ static __always_inline void
+ sframe_init_rule_data(struct unwind_user_rule_data *rule_data,
+ 		      s32 offset)
+@@ -332,10 +344,9 @@ static __always_inline int __find_fre(struct sframe_section *sec,
+ 		return -EINVAL;
+ 	fre = prev_fre;
+ 
+-	frame->cfa_off = fre->cfa_off;
++	sframe_init_cfa_rule_data(&frame->cfa, fre->info, fre->cfa_off);
+ 	sframe_init_rule_data(&frame->ra, fre->ra_off);
+ 	sframe_init_rule_data(&frame->fp, fre->fp_off);
+-	frame->use_fp  = SFRAME_V3_FRE_CFA_BASE_REG_ID(fre->info) == SFRAME_BASE_REG_FP;
+ 	frame->outermost = SFRAME_V3_FRE_RA_UNDEFINED_P(fre->info);
+ 
+ 	return 0;
+diff --git a/kernel/unwind/user.c b/kernel/unwind/user.c
+index 89aecfbe3e84..3d596da588d0 100644
+--- a/kernel/unwind/user.c
++++ b/kernel/unwind/user.c
+@@ -39,14 +39,28 @@ static int unwind_user_next_common(struct unwind_user_state *state,
+ 	}
+ 
+ 	/* Get the Canonical Frame Address (CFA) */
+-	if (frame->use_fp) {
++	switch (frame->cfa.rule) {
++	case UNWIND_USER_CFA_RULE_SP_OFFSET:
++		cfa = state->sp;
++		break;
++	case UNWIND_USER_CFA_RULE_FP_OFFSET:
+ 		if (state->fp < state->sp)
+ 			return -EINVAL;
+ 		cfa = state->fp;
+-	} else {
+-		cfa = state->sp;
++		break;
++	case UNWIND_USER_CFA_RULE_REG_OFFSET:
++	case UNWIND_USER_CFA_RULE_REG_OFFSET_DEREF:
++		if (!state->topmost || unwind_user_get_reg(&cfa, frame->cfa.regnum))
++			return -EINVAL;
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		return -EINVAL;
+ 	}
+-	cfa += frame->cfa_off;
++	cfa += frame->cfa.offset;
++	if (frame->cfa.rule & UNWIND_USER_RULE_DEREF &&
++	    get_user_word(&cfa, cfa, 0, state->ws))
++		return -EINVAL;
+ 
+ 	/*
+ 	 * Make sure that stack is not going in wrong direction.  Allow SP
+-- 
+2.51.0
 
 
