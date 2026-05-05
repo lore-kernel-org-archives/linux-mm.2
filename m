@@ -4,140 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A540FF885A
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 05:18:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CD63CD13DA
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 05:54:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60E036B0096; Tue,  5 May 2026 01:18:14 -0400 (EDT)
+	id 664F86B0005; Tue,  5 May 2026 01:54:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5981F6B0098; Tue,  5 May 2026 01:18:14 -0400 (EDT)
+	id 615316B008A; Tue,  5 May 2026 01:54:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 411C76B0099; Tue,  5 May 2026 01:18:14 -0400 (EDT)
+	id 4DD566B008C; Tue,  5 May 2026 01:54:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FDCC6B0096
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 01:18:14 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E63BF16038B
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 05:18:13 +0000 (UTC)
-X-FDA: 84732210066.24.E8016F1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C413540006
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 05:18:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jWPmU14r;
-	spf=pass (imf27.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 376426B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 01:54:27 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CBB491C0121
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 05:54:26 +0000 (UTC)
+X-FDA: 84732301332.10.8143CEC
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BD0DC180002
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 05:54:24 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=u5y7ZoA9;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="c vfkQ8L";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf06.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.159 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777958291;
+	s=arc-20220608; t=1777960464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vLjY4/J5JL85E68r0ps9b0tREEnQO9bxlLysLhOu6aU=;
-	b=6uufIlBnKCY7uCxnIinQcaqNHJy5KD92OssEpXJ/J8UkmYMmElxg8GfznHgj/Lr5YKWAwK
-	Iz9/3QXRtZSa3VoF7tF9AJoI3yOb7+a/9v3UnIw2S3v+ZZ01EYe+Pf8nNIcT3Y4vkmP/M3
-	oYCwsSLF1KnoSKpE/jhF6REjQn+9o3k=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jWPmU14r;
-	spf=pass (imf27.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777958291; a=rsa-sha256;
+	bh=JmfJF9VZOdx6cRELR7IxehWhdMlZxoCBVCSMgdOhjE4=;
+	b=XaKCAvfCpBQjiB3OWclHd7ONNNKieVAmjFVJpBVEp9c7ww+p1RQMTdrcw0U5U6r2CAUTPy
+	HFcUw5IPhd3aFUHHA70Jmg1h9KLadsrQKnaZ0JSwD+AhNN1CO2ZvuT9BVDwhN44lXdhyIB
+	QncAIw4d4Duw6yF6Y78jceO3mVNFxjQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777960464; a=rsa-sha256;
 	cv=none;
-	b=2FJvCuqZjFR2pNfw+eorATyC3LVXQU5+TuUcKvwiruJbyDTThMO+H3KIiiKWgntViWBLvF
-	iWamCYpT1flO0LHm/Ezl2bicIPU3bndlPHxMywrgPogzq29KYiNssoafgArx8MbkV03MfH
-	e/q/l/+4fQL76A6xZQ0Xyr5Lct9mJns=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777958291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vLjY4/J5JL85E68r0ps9b0tREEnQO9bxlLysLhOu6aU=;
-	b=jWPmU14r3cBcPkQjCddLn7JWTgK257OC7nH3U8WhWtmnMamZo9pa9xnXj9mLTUGystnGsD
-	bkAWLUI/k3QvxQSd0IQfX26JkUrr0qZcpsicm5Jtf8Juh8azKNAKGFm2iTupHCFhr8OC6Y
-	gftf6pIHD6oxbzZ3l9np738MNxUKQf0=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-673-j1GXq1_oNmG67VUYIRWnLQ-1; Tue, 05 May 2026 01:18:10 -0400
-X-MC-Unique: j1GXq1_oNmG67VUYIRWnLQ-1
-X-Mimecast-MFC-AGG-ID: j1GXq1_oNmG67VUYIRWnLQ_1777958288
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5a86f53a2b7so1452363e87.3
-        for <linux-mm@kvack.org>; Mon, 04 May 2026 22:18:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777958287; x=1778563087;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vLjY4/J5JL85E68r0ps9b0tREEnQO9bxlLysLhOu6aU=;
-        b=V4BZGkYmJZPTR7NHQSy0xie36FgiNX5AXNXvYZNJAYVdmZd8JALhWCHWFstIKaU9U2
-         I+pzIJf/ugiV/tCbjcuXOu0iVXyUCffpQRNQBU5+wWLfGTkW/jyT/SC1I0WjtvFy/7Sv
-         S14Jf5iD7XEiDeHK0x1d52Cz7ansVHTCI39DHilGlXxoDNgJi8V2TameiWyfG+mW/Szq
-         qpEQqW+LE8/VH5oXQPZ3zaBRKc6zdDKhckUHzicMUhb5qUNpIupeFGkbmX00ver2+vNg
-         qgjcWzNyDtKp8dGvhBvxYAYTsd7089jtfWpZIq/iKeX5It+mf+RmqoIyXteQwKk6ZRQi
-         kH1w==
-X-Gm-Message-State: AOJu0YxAr6V8yRp3sTIVoSOpShen8LcufprFm9GsrYoNJ4SfKS8uFYLe
-	jXMrbFL6uDsAFpKLmKTj9w89yzGMeYwaztwAoYXux/lw0NJDVpxTquKnNRgdFHCu/exdtGE+e2x
-	k/jVA0PyYdsvAfoNki2OuNzp0IZX1QvIcywUtIORLtUIqQcNeJsQVS3zkP8MtyjGDhfngEwbCZ3
-	4vfO9rp/t+vpkz/ti8oo0Ovm+xp98ejKLiuDYVEg==
-X-Gm-Gg: AeBDieupPPDHdrshN733Nj3gvF8hrH0QfaK5wrEr9WujF7phO6IZ0inleW6dlXh4SIt
-	rxHPnbIRo8tNFxj/kMziRoKk2tkjlrVIIuz1vM05z36cDKD29hyjTPqGoS5YRiWbI8BBzKG2y/O
-	DyHK9gUcj4ooMRNCcTp58rnLMxlZkVxPKTzbBdSeCGyW8UZ3DEfmLgv1m5F6+wxAxdPKrMNLHLG
-	dS5zT8WSBwPVhwRa0vc8W1f05/yfGZZ71ddpn+7uj0pHS+GiKu2rBspHT+4vFzyAEe3LSq6rqj4
-	67rbfzDqEdZdO1LjhHzn/zbmm+78v5wMDyng5ETPQJHJ9y/Yt4deoK3HTe7+qrWLuzzbU+b18Vm
-	DaYS6xujtOvYPPpgtUuIyjQxjNSCoVhPheZlDR07J3ex6zOc=
-X-Received: by 2002:a05:6512:3b24:b0:5a8:6d06:fe1e with SMTP id 2adb3069b0e04-5a86d06ff7bmr2884926e87.11.1777958287321;
-        Mon, 04 May 2026 22:18:07 -0700 (PDT)
-X-Received: by 2002:a05:6512:3b24:b0:5a8:6d06:fe1e with SMTP id 2adb3069b0e04-5a86d06ff7bmr2884898e87.11.1777958286760;
-        Mon, 04 May 2026 22:18:06 -0700 (PDT)
-Received: from fedora (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3936138935fsm37206141fa.41.2026.05.04.22.18.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 22:18:06 -0700 (PDT)
-From: mpenttil@redhat.com
-To: linux-mm@kvack.org
-Cc: dri-devel@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Marco Pagani <marpagan@redhat.com>
-Subject: [PATCH v9 5/5] lib/test_hmm:: add a new testcase for the migrate on fault
-Date: Tue,  5 May 2026 08:16:58 +0300
-Message-ID: <20260505051658.2219537-6-mpenttil@redhat.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20260505051658.2219537-1-mpenttil@redhat.com>
-References: <20260505051658.2219537-1-mpenttil@redhat.com>
+	b=zijc+/fRQBpWT2eZf6EnBl1yXZh4XpJbjDWFg0soNxVxPJSvY7JHTWmW39zoT7X0tC1B66
+	OxaaBQEq7BRssUlGBcC37PXe5Ml1KnKmkW59MRd4kpdvyRoaScmQ0dkAfb2ylEBQ00cK2c
+	1EDBLUTHZrAGxinNTZ/b9dTHb2idv+E=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=u5y7ZoA9;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="c vfkQ8L";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf06.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.159 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 5C2CB7A0101;
+	Tue,  5 May 2026 01:54:23 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Tue, 05 May 2026 01:54:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1777960463;
+	 x=1778046863; bh=JmfJF9VZOdx6cRELR7IxehWhdMlZxoCBVCSMgdOhjE4=; b=
+	u5y7ZoA9eMuhoBDaFkyut2LXUpEqlffigmhHhnF64AUhHR7cnoryMMaxmEiJ5x6U
+	Bjj9bhf3wxfvrTtTq+JafgfiTZnScp2Gu1QbaLd1QYqadEU38XrlCszrf+f40Jk7
+	MV6zhqVBzbkQkk2MiVMYRiFDRSU/Ga27V388Yos0mNXEvLYPMAhAhohugp8cLiu4
+	uqVNzqKvXCLdtc4ZyvneysGr0B6l+OrwDUTWpOiaKMbtUS9q5W7Te+yFhh34xmsa
+	bF5dtkdpPdExcTwOq6C1CxWRrMvqHchHNQCsOU/VuAbSecTd6Km3ah9WHCpKu3kl
+	g8Up5VgKyxp+83DcMvtLMQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1777960463; x=
+	1778046863; bh=JmfJF9VZOdx6cRELR7IxehWhdMlZxoCBVCSMgdOhjE4=; b=c
+	vfkQ8LErF1rWwYsXdqTOd1lvL7JBRtVY3PbG6sI8WbtF72dYEyGEOoryf/PTyglS
+	3mjevzN4vzc5bP8Di7/ii6qRH4Vo1+icVm8XL7wS+aUnOKsu6QZhk6P8TQP3iWS3
+	J7zSawtaivti0vx7TwA1kUcJYcMHc6f8vLJy/MqVuRXNNwagRAoWeUFFkzYooY36
+	stgZ7Dz9xeSFESrh0G++rHO/b/POPv2Bn4SIV/GImq9rjNq6vViPuN17j12YSxgu
+	wbqw5vPZuXjwwK8ENcQAnWqnZQbh5Vv6AyZPyomYIm4K6E5E6Mn6W+Pp1VMM7JRf
+	VpnXd7Mca2etHTMspOwcg==
+X-ME-Sender: <xms:Dob5admH6Uv6729At1Wuwyl2GIRgJuRRweEAeyrSXSapSZrUWXtbHg>
+    <xme:Dob5aTqhFmhPNScrpV1lE8Rvj5XVBDx5iDZUxWwbonQdgYNdE6YD-m1Rlde8799_r
+    hR5z1jPEjRUQpN3hQPIlPN7GtbpgAS0wx7TUtCus38GPBMIxZEbmQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutddtleefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhepfefhheetffduvdfgieeghfejtedvkeetkeejfeekkeelffejteevvdeghffhiefh
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgt
+    phhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhhitghkrdguvg
+    hsrghulhhnihgvrhhsodhlkhhmlhesghhmrghilhdrtghomhdprhgtphhtthhopehrohhs
+    vghnphesghhmrghilhdrtghomhdprhgtphhtthhopehjuhhsthhinhhsthhithhtsehgoh
+    hoghhlvgdrtghomhdprhgtphhtthhopehmohhrsghosehgohhoghhlvgdrtghomhdprhgt
+    phhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhirghmse
+    hinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgrth
+    hhrghnsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:Dob5aWvudqQklw5FkPvca27pngxBqaXdFjB0UEmBZSsFKI9Vq7cghw>
+    <xmx:Dob5acYjtLE4zyJnH8SKg7oyP4UeJuqxnX-KvRlErKVc2OxkjorIWA>
+    <xmx:Dob5aSElDA-x-F3oI5bm0Z2vz4B9cS_BuW7lUnoyga17KJOr9jHLkg>
+    <xmx:Dob5afo-ddfADE42I5tBWOnDtv8JNK9WojrkzHnDgJPBvNylAZNWwA>
+    <xmx:D4b5aVbKQycBvvy3SX40wM6fWUfzTw41oOlAo7uI4zgMeIj2iY9VIpq2>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 17BDC700065; Tue,  5 May 2026 01:54:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -oMixZVmK1-srdDgHvoI6XK0rojUuetqupNUozNAXa4_1777958288
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-ThreadId: A79HWrF7w_-Z
+Date: Tue, 05 May 2026 07:54:01 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Rosen Penev" <rosenp@gmail.com>, linux-mm@kvack.org
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
+ "Bill Wendling" <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
+ "open list" <linux-kernel@vger.kernel.org>,
+ "open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
+Message-Id: <0f11390f-e8bd-4f8d-aea8-59ef545b2c32@app.fastmail.com>
+In-Reply-To: <20260505010112.645361-1-rosenp@gmail.com>
+References: <20260505010112.645361-1-rosenp@gmail.com>
+Subject: Re: [PATCH] mm: move phys_mem_access_prot_allowed to header
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BD0DC180002
+X-Stat-Signature: 41rciuxxuoumi6ouwuygckrhnpsg979c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C413540006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 67xtzg45fxwbwzhaz9cdexem3phqdsgt
-X-HE-Tag: 1777958291-876205
-X-HE-Meta: U2FsdGVkX1/eRDV1lIqQxxvcAbn+28KbuDFsslx7CbPYV9RTvjKU8I5fkeXoxULoSaNyy2bfMBmWfdRE1O415C8Fg+lpBiLwoZd2uQGKDemlfe39VMbqtuYdkLhfCbaW8KLcuBc8hpUqI9nIFMfjo2eZPZk62Vc1Az5I+iD4/21FOCtoua7rAc3g1ezjCa7NrOXlPG9u/V3OAZwLYGB72fXxTWCLaZ1PfVlsIxp6VXY0jHubaZJPUafehqaxA2snPXmSUAmOG6ipdZg1fXYm3+yz+atUCoLOteczZ5fiDsjrmJe9DRPkJ2nS1jlcnzoImnakxAdWHzNc1lTMpbjo9NuUhJJEZktGTysG/DbevTwTHl7b8RpBHkXikxF/naU/6mZDjXC6HYQv4L+nLDZmSYQ9sxVnIMDtwrIwthnyUKS6LhVnTJdTmRsV3EXx/wUCfpPET00EQ1I83J4Va79d3csfyO9xB+Pex8yvCsrtIggWTR8eUcFWRBTROvVQYjLZb9ivb1aPl3VTQH7BaeBXonygwCRWZ3jwKhsnVqkY+1ovNPbm3mQN1bYWyXc4zHEAxJdutCvBttav2QQtv8Zg0jim4UciTG17/C2bXzd+5zZzlM9cZuzlHGJnjm1pmZaNRUiX4/fEK+VJzAdCC9FaMBDXy2UJikRZxkd0a+XII8e+ACD+cO2VcsRgUh8Wujf82OeQTyS6hUqFBQ8YW1tZLqLjVwfInkfL/KiYlAhqfLFn0fxqt5JVxFiH3k/VKXQTctH/K5TWw+uYYCltZyMQ+DRVU3LJrn3MI70WXa8Yyf1EAOabgh1mBM51C7NQqBBY6+aMmE06R/QnB+YqV9Y+2cu41lsUVwSALW0DYgOIdyEW15zN3J4LeyKije3WznBrCe4z5GXTiAKfFNr7nnuQMi1tcRMBxTPa2PW2HnD2MkeezvNq1UeH5aZGbx4re/fhHCDjtluIn14NMZv0WZ3
- 80JkcaX8
- Uitq6kI/oqguHNjaLxjOnKQWthlWBpL4jNwlwJwizwdxl1LAKlzE04fr68dT/lyVRuKI9czg+Vn9TO6qG7XqWDNZrV/UBGS5M9vZYIvavF7spfyp+vFmNJj6SNGIKmNPxpQxcbXxXDuHYrMRGYMHolMxD3ym8hh2+nyl7MIVFzIjF2Y01vznjYP7ukKKdetB5dwCAO8/Kf4RkR2L8qNzPANfLj6Swh9ZqdoljVq3gUCIoQhgLA/G7Xy7qAA4JOQU4Qw9/4LwGA/94cYw9aIsNEA4BjH45mW0TTXjYrlPYYltuSMa/oYi3dVn3Jsf7KMAfMdaV/wByo6T8j9Pid8kXHp7jymwlvud8TU+aNxG2W3bHqSAfUuN5WPRIHbrDtxP8JoTP/BoQ4b53k23X8PvQGCsSUAucJ5mwkXLQw7ikTJTBP5sO87r2cDskTjZPESXxRW9x/mhhGYziHSm6YB0tLTVjzQ==
+X-HE-Tag: 1777960464-95296
+X-HE-Meta: U2FsdGVkX19Qqgpts++Y2zVAjdUn/2YA4dMQKoVCJ5flO0X4QtcjAtYGhdyM9uqnJhU8LcBnSS2H7EMquuH1vAfymslM3SGtbVBddeZJWTv5bDbJmql3WdZrQMC6vDgc2JyGicFS+WsM724gtsb8YIiKT5V11Yg5MGdsrOO+J9+qeIZ23wa3QKrkZkUEW39jvUCwFrOg9Ey/s8WXZD/AVxRK9FX0KNpXip4qyyxym2ZFZW3/RJ+ejbBpptucFQEKjxAEyWM+1znwcD3klc4b1WLcM08d+u4YfsLzZ3dOw54xxO/RWIns35P+H05pm7NESq/xBDJbVePlprNYb5G30jtengWRNA1QkSIiu7wBOt+/9mNp5X/HFviEjXc0Xyf2NnQk4REXWDkpTGRN7Zpzc5yXbTMebyhQ6p2ce+6qIdpwcgeNiVekpzWj6X0UpL66RpOTAshbOtL9En9W0KWHFXPbs7JjEF6XkbHdRt5jri88z1RAhVEp8s953rPv5XAaeGqm+aaalXP8gKGGn/WhfbXCY3lR/J8GvhBOdRwg02bh+Hjz6UtCo083uiohr5pt3qC6ocCBO2mC2CKxM3mQ3N+0GS0DvEXgbjK/2KcbLLp0mUjM/LAbcMoeFPZKwH6suwvYwm6tM9ratBSEURBxFv3AlMYOV7ZEzfelR3avYhAbDHroQVoSjds7C0+EdI9c+WHa8o1FQPZ665Vmksc26AZY8EEtYKPPSKGRShISGwqMOd8NVKMHs0IS4M1g5JpsURj4XbrDZcS1eWyesP2Cyh9qxVsYJ1Tm5B4gMznowAmobpka5UtvJ/arg+mpC9RLbiP3f3gDhgmt/Ofi4ePYRyNudPlKQhM2zwnDO0LohwIQjjD7xwyv7AlFtP0+nZEo2hwAYgES70AYIOgFUY23aPo379OmBzLLw1/pbG3PBzd7qPlpn07hZgkW/OrCHQBMDf2lJi7iFrmNlNdl2jd
+ SNV/bQaS
+ pBCCSYEZkYuBOeGtDn2QE5nPMIDyOFoLDrztEiq33gv7FygMySXBxwDM/Mp5875m3GNJ/OIjUmQYzdJntCQBiStUdXCHYcxKsYER1xNrCUXBzQ5xPQ7YlYXPjeMWtEK4Dz4se4FYQ5AJ4X7oWCbvjM46j7DjXkUvU4SoDrHz8kQFGH3hvXN+rAymTuwh6G2AAHy9DGt+gmpQTR1Dg77Ur9m2Riw///kNnFQygIMqs6pr1cUtafK2DsIrE/g3n88VFkrxh8hO4Azut6GTiURyMR7GKxP12pCBCRdCkPICe1NInwvD/ZLWOGder1ZA/3N9O2ZqxXZomWEFR3VaWa7wjetKfakLDosqIOC1VhuneaD9uzZ6ksJV8aa18t4ru1BOps8Of4l6ZPwbefvs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,252 +145,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Mika Penttilä <mpenttil@redhat.com>
+On Tue, May 5, 2026, at 03:01, Rosen Penev wrote:
+> phys_mem_access_prot_allowed is only implemented for X86. For others, it
+> returns 1. Move it to header to avoid using __weak.
+>
+> Fixes compilation with make LLVM=1 ARCH=mips
 
-Enhance the hmm test driver (lib/test_hmm) with migrate on fault case.
+Can you describe what exactly goes wrong here on mips?
 
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Marco Pagani <marpagan@redhat.com>
-Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
----
- lib/test_hmm.c                         | 99 ++++++++++++++++++++++++++
- lib/test_hmm_uapi.h                    | 19 ++---
- tools/testing/selftests/mm/hmm-tests.c | 54 ++++++++++++++
- 3 files changed, 163 insertions(+), 9 deletions(-)
+> @@ -239,12 +239,6 @@ static ssize_t write_mem(struct file *file, const 
+> char __user *buf,
+>  	return written;
+>  }
+> 
+> -int __weak phys_mem_access_prot_allowed(struct file *file,
+> -	unsigned long pfn, unsigned long size, pgprot_t *vma_prot)
+> -{
+> -	return 1;
+> -}
+> -
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 1a3e21325cf2..645a0ff49069 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -36,6 +36,7 @@
- #define DMIRROR_RANGE_FAULT_TIMEOUT	1000
- #define DEVMEM_CHUNK_SIZE		(256 * 1024 * 1024U)
- #define DEVMEM_CHUNKS_RESERVE		16
-+#define PFNS_ARRAY_SIZE			64
- 
- /*
-  * For device_private pages, dpage is just a dummy struct page
-@@ -1258,6 +1259,100 @@ static int dmirror_migrate_to_device(struct dmirror *dmirror,
- 	return ret;
- }
- 
-+static int do_fault_and_migrate(struct dmirror *dmirror, struct hmm_range *range)
-+{
-+	struct migrate_vma *migrate = range->migrate;
-+	int ret;
-+
-+	mmap_read_lock(dmirror->notifier.mm);
-+
-+	/* Fault-in pages for migration and update device page table */
-+	ret = dmirror_range_fault(dmirror, range);
-+
-+	pr_debug("Migrating from sys mem to device mem\n");
-+	migrate_hmm_range_setup(range);
-+
-+	dmirror_migrate_alloc_and_copy(migrate, dmirror);
-+	migrate_vma_pages(migrate);
-+	dmirror_migrate_finalize_and_map(migrate, dmirror);
-+	migrate_vma_finalize(migrate);
-+
-+	mmap_read_unlock(dmirror->notifier.mm);
-+	return ret;
-+}
-+
-+static int dmirror_fault_and_migrate_to_device(struct dmirror *dmirror,
-+					       struct hmm_dmirror_cmd *cmd)
-+{
-+	unsigned long start, size, end, next;
-+	unsigned long src_pfns[PFNS_ARRAY_SIZE] = { 0 };
-+	unsigned long dst_pfns[PFNS_ARRAY_SIZE] = { 0 };
-+	struct migrate_vma migrate = { 0 };
-+	struct hmm_range range = { 0 };
-+	struct dmirror_bounce bounce;
-+	int ret = 0;
-+
-+	/* Whole range */
-+	start = cmd->addr;
-+	size = cmd->npages << PAGE_SHIFT;
-+	end = start + size;
-+
-+	if (!mmget_not_zero(dmirror->notifier.mm)) {
-+		ret = -EFAULT;
-+		goto out;
-+	}
-+
-+	migrate.pgmap_owner = dmirror->mdevice;
-+	migrate.src = src_pfns;
-+	migrate.dst = dst_pfns;
-+	migrate.flags = MIGRATE_VMA_SELECT_SYSTEM;
-+
-+	range.migrate = &migrate;
-+	range.hmm_pfns = src_pfns;
-+	range.pfn_flags_mask = 0;
-+	range.default_flags = HMM_PFN_REQ_FAULT | HMM_PFN_REQ_MIGRATE;
-+	range.dev_private_owner = dmirror->mdevice;
-+	range.notifier = &dmirror->notifier;
-+
-+	for (next = start; next < end; next = range.end) {
-+		range.start = next;
-+		range.end = min(end, next + (PFNS_ARRAY_SIZE << PAGE_SHIFT));
-+
-+		pr_debug("Fault and migrate range start:%#lx end:%#lx\n",
-+			 range.start, range.end);
-+
-+		ret = do_fault_and_migrate(dmirror, &range);
-+		if (ret)
-+			goto out_mmput;
-+	}
-+
-+	/*
-+	 * Return the migrated data for verification.
-+	 * Only for pages in device zone
-+	 */
-+	ret = dmirror_bounce_init(&bounce, start, size);
-+	if (ret)
-+		goto out_mmput;
-+
-+	mutex_lock(&dmirror->mutex);
-+	ret = dmirror_do_read(dmirror, start, end, &bounce);
-+	mutex_unlock(&dmirror->mutex);
-+	if (ret == 0) {
-+		ret = copy_to_user(u64_to_user_ptr(cmd->ptr), bounce.ptr, bounce.size);
-+		if (ret)
-+			ret = -EFAULT;
-+	}
-+
-+	cmd->cpages = bounce.cpages;
-+	dmirror_bounce_fini(&bounce);
-+
-+
-+out_mmput:
-+	mmput(dmirror->notifier.mm);
-+out:
-+	return ret;
-+}
-+
- static void dmirror_mkentry(struct dmirror *dmirror, struct hmm_range *range,
- 			    unsigned char *perm, unsigned long entry)
- {
-@@ -1524,6 +1619,10 @@ static long dmirror_fops_unlocked_ioctl(struct file *filp,
- 		ret = dmirror_migrate_to_device(dmirror, &cmd);
- 		break;
- 
-+	case HMM_DMIRROR_MIGRATE_ON_FAULT_TO_DEV:
-+		ret = dmirror_fault_and_migrate_to_device(dmirror, &cmd);
-+		break;
-+
- 	case HMM_DMIRROR_MIGRATE_TO_SYS:
- 		ret = dmirror_migrate_to_system(dmirror, &cmd);
- 		break;
-diff --git a/lib/test_hmm_uapi.h b/lib/test_hmm_uapi.h
-index f94c6d457338..0b6e7a419e36 100644
---- a/lib/test_hmm_uapi.h
-+++ b/lib/test_hmm_uapi.h
-@@ -29,15 +29,16 @@ struct hmm_dmirror_cmd {
- };
- 
- /* Expose the address space of the calling process through hmm device file */
--#define HMM_DMIRROR_READ		_IOWR('H', 0x00, struct hmm_dmirror_cmd)
--#define HMM_DMIRROR_WRITE		_IOWR('H', 0x01, struct hmm_dmirror_cmd)
--#define HMM_DMIRROR_MIGRATE_TO_DEV	_IOWR('H', 0x02, struct hmm_dmirror_cmd)
--#define HMM_DMIRROR_MIGRATE_TO_SYS	_IOWR('H', 0x03, struct hmm_dmirror_cmd)
--#define HMM_DMIRROR_SNAPSHOT		_IOWR('H', 0x04, struct hmm_dmirror_cmd)
--#define HMM_DMIRROR_EXCLUSIVE		_IOWR('H', 0x05, struct hmm_dmirror_cmd)
--#define HMM_DMIRROR_CHECK_EXCLUSIVE	_IOWR('H', 0x06, struct hmm_dmirror_cmd)
--#define HMM_DMIRROR_RELEASE		_IOWR('H', 0x07, struct hmm_dmirror_cmd)
--#define HMM_DMIRROR_FLAGS		_IOWR('H', 0x08, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_READ			_IOWR('H', 0x00, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_WRITE			_IOWR('H', 0x01, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_MIGRATE_TO_DEV		_IOWR('H', 0x02, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_MIGRATE_ON_FAULT_TO_DEV	_IOWR('H', 0x03, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_MIGRATE_TO_SYS		_IOWR('H', 0x04, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_SNAPSHOT			_IOWR('H', 0x05, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_EXCLUSIVE			_IOWR('H', 0x06, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_CHECK_EXCLUSIVE		_IOWR('H', 0x07, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_RELEASE			_IOWR('H', 0x08, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_FLAGS			_IOWR('H', 0x09, struct hmm_dmirror_cmd)
- 
- #define HMM_DMIRROR_FLAG_FAIL_ALLOC	(1ULL << 0)
- 
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index 788689497e92..6a6b1069fb5e 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -278,6 +278,13 @@ static int hmm_migrate_sys_to_dev(int fd,
- 	return hmm_dmirror_cmd(fd, HMM_DMIRROR_MIGRATE_TO_DEV, buffer, npages);
- }
- 
-+static int hmm_migrate_on_fault_sys_to_dev(int fd,
-+					   struct hmm_buffer *buffer,
-+					   unsigned long npages)
-+{
-+	return hmm_dmirror_cmd(fd, HMM_DMIRROR_MIGRATE_ON_FAULT_TO_DEV, buffer, npages);
-+}
-+
- static int hmm_migrate_dev_to_sys(int fd,
- 				   struct hmm_buffer *buffer,
- 				   unsigned long npages)
-@@ -985,6 +992,53 @@ TEST_F(hmm, migrate)
- 	hmm_buffer_free(buffer);
- }
- 
-+
-+/*
-+ * Fault and migrate anonymous memory to device private memory.
-+ */
-+TEST_F(hmm, migrate_on_fault)
-+{
-+	struct hmm_buffer *buffer;
-+	unsigned long npages;
-+	unsigned long size;
-+	unsigned long i;
-+	int *ptr;
-+	int ret;
-+
-+	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
-+	ASSERT_NE(npages, 0);
-+	size = npages << self->page_shift;
-+
-+	buffer = malloc(sizeof(*buffer));
-+	ASSERT_NE(buffer, NULL);
-+
-+	buffer->fd = -1;
-+	buffer->size = size;
-+	buffer->mirror = malloc(size);
-+	ASSERT_NE(buffer->mirror, NULL);
-+
-+	buffer->ptr = mmap(NULL, size,
-+			   PROT_READ | PROT_WRITE,
-+			   MAP_PRIVATE | MAP_ANONYMOUS,
-+			   buffer->fd, 0);
-+	ASSERT_NE(buffer->ptr, MAP_FAILED);
-+
-+	/* Initialize buffer in system memory. */
-+	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+		ptr[i] = i;
-+
-+	/* Fault and migrate memory to device. */
-+	ret = hmm_migrate_on_fault_sys_to_dev(self->fd, buffer, npages);
-+	ASSERT_EQ(ret, 0);
-+	ASSERT_EQ(buffer->cpages, npages);
-+
-+	/* Check what the device read. */
-+	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
-+		ASSERT_EQ(ptr[i], i);
-+
-+	hmm_buffer_free(buffer);
-+}
-+
- /*
-  * Migrate anonymous memory to device private memory and fault some of it back
-  * to system memory, then try migrating the resulting mix of system and device
--- 
-2.50.0
+Removing __weak functions is usually an improvement, but I think
+we can go further here, see the discussion from last year at
 
+https://lore.kernel.org/all/20250520152030.1499670-1-arnd@kernel.org/#t
+
+     Arnd
 
