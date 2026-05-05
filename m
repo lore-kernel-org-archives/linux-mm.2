@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D43ACD342F
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 10:53:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E8A2FF885A
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 10:56:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6537A6B0005; Tue,  5 May 2026 06:53:48 -0400 (EDT)
+	id C23516B008A; Tue,  5 May 2026 06:56:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 604016B0088; Tue,  5 May 2026 06:53:48 -0400 (EDT)
+	id BD4136B0092; Tue,  5 May 2026 06:56:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51A2B6B008A; Tue,  5 May 2026 06:53:48 -0400 (EDT)
+	id B11376B0093; Tue,  5 May 2026 06:56:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D6FE6B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:53:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C84C41C0C12
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:53:47 +0000 (UTC)
-X-FDA: 84733055694.01.BE41EFA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 47850C0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:53:46 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pVkmqhUb;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A09C06B008A
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 06:56:07 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A8F61C02F3
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:56:07 +0000 (UTC)
+X-FDA: 84733061574.24.8353E88
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8384D40004
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 10:56:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UfqBiB5L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777978426;
+	s=arc-20220608; t=1777978565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0AJBFQC2H0kv4rSYMZwgyeybk1hcM5rMG5o5MQaRut8=;
-	b=zbOPQW7qPW+IdEyJX/jQP1yJrzSLL/1EnFydA8kAL3aZLFjdJjCA2FgWjL9yjA3PQXOMn0
-	2Hxa5MM+p4DAmac3IJjHeklKkYipMmFq/2i3pYvx/4eEdEZRN07fmPslUUFEPBqv405CXs
-	UBx46eMu9ZF3eOSozLWF0HE2YLEU+bo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pVkmqhUb;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777978426; a=rsa-sha256;
+	bh=u1OddjJBAXRXU7+BPsNN2Tu2s2DE12gQ7FWskjGftbQ=;
+	b=BiySgx+ov9Nl3gaTAu07xddbgVyjIvvCKn8W/Uq32kefD4EyvnTZf7GdkXXDNJfhmty7Dk
+	byuGN3DfyetsVPXFDCslYZNSHL+6tKkykjbiyDRYuZayQoK2HATzBKMBZjh0LhvQLKYgW2
+	5IsqW4ti00JTqwj+ACj3ti+J9sgJ6b4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777978565; a=rsa-sha256;
 	cv=none;
-	b=F/WaoJb4k2yHqG7XrMlJRtbRlDkBYANBRgE9xlRP7bQJVCj8WCxULAkbfomTU6t5U6nSY4
-	UPljJpgeIgWSStniELmiKaoSig7xqlJbnA5I1VzzNIaNMKGjjwCsqJ2jm18hhFyXfL5yNp
-	BizVK6ngrkv8hOKEDRm6BeDKSBQINlI=
+	b=xFAoHg9oIxPZnqxRaxyubHqjxrv1IOin+MA7JTzn4JVKz+yreTq0M3DmjHFCgyV3CATlfl
+	lAAfPCLp9SDAuVp5Qnm2i3PVwi1sCf/DsLdqRuJcEju5g0wG7mkoyZhEwo2ORCKzfpQmnv
+	LhUytnKBZRL/kQSgsJj3h5v/zE2SkEg=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UfqBiB5L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AD30E60142;
-	Tue,  5 May 2026 10:53:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0F8C2BCC9;
-	Tue,  5 May 2026 10:53:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 82DC644146;
+	Tue,  5 May 2026 10:56:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0AEC2BCC9;
+	Tue,  5 May 2026 10:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777978425;
-	bh=vJDvDo0M4pNgzGnLn1Lls5KK9p0fm7SJYJkfYATAMsg=;
+	s=k20201202; t=1777978564;
+	bh=G5Z7C/0UebdmXXcgO3B3zWB2JQ5mQrNcwE5DxEYbTIg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pVkmqhUbdwd/0yjZI8oW6cR2A4rOXGkrmmA8fvRe4PacCQQiXlBTV/lnzjq0n3vCm
-	 4KYvH+vu2iV2s7QLRk4JtY4MJ9BX145fCaFO+NzKfnuhjBkIns9k7deEIv679EciYW
-	 2x8VzgMa/6m0Qyn6NMbvHw9/SCDgg9mN0IJOatA96F/cxw2Tx3940r6TM86j9lUgji
-	 48WRp87KUAHL4OTJ5RGYnkg0rw4sdrAUY+T143Asrl58mSLe0CbJ2qpqHQVO6DJAvl
-	 6sfUkbJcQv2amhvg/bWdfV1ZIoNzYdmacuxb/BgG+Ohn4mmklcsWHHpr+EKGLOonS/
-	 HNXZBQK5WeBwg==
-Date: Tue, 5 May 2026 11:53:40 +0100
+	b=UfqBiB5LvvHkUzuox+lmYN2WbX+v80Lgqg0evNco/LAKeWqHc1Ek2eIyBO9sTyPYv
+	 mHfE7DkPAB0UuvHm6mgWJ4P3+BMq/u+GSYajU7BIHiHg+leIYVCp3PxlmCbrRc0Grw
+	 azC2sMo/mmlwfsg3iVbwpuOBOLP44gWmFnfT1qLeUj2+gmL7uIGNrjf6RWMQFOt9VF
+	 k5D5XNAx3TxhxgdxxvI2NWhHrvvif3or7khY8rSEUIXYs7MeCGSGgXcuP5jhTUT7Un
+	 Om6n2GTKAcVIGVzTLdD0OCnsA0xYCHuPqjQnQ6uC+58ISUTTZelS3k2ne/nraNixrb
+	 ABGlLOnWYNSZw==
+Date: Tue, 5 May 2026 11:56:00 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: pratmal@google.com
-Cc: akpm@linux-foundation.org, shuah@kernel.org, yosryahmed@google.com, 
-	david@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] selftests/mm: use pattern matching in .gitignore
-Message-ID: <afnMAaz1jY94db2n@lucifer>
-References: <20260421183000.1541546-1-pratmal@google.com>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH] MAINTAINERS: fix regex pattern in CORE MM category
+Message-ID: <afnMoCtnLA4CTqR2@lucifer>
+References: <20260422123726.517220-1-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260421183000.1541546-1-pratmal@google.com>
+In-Reply-To: <20260422123726.517220-1-pfalcato@suse.de>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8384D40004
+X-Stat-Signature: p8mfgkphzjsx7dsfrzdd4ym53g44hb5o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 47850C0005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pc5oj9hyucaktpfz1cu1jyhpawte6i9u
-X-HE-Tag: 1777978426-130300
-X-HE-Meta: U2FsdGVkX19sz7F9SH1b10AYtkfnzJsCGrbNHPpKZ3yH/LkgcvvMljhHoEcbK/0EtCwjezPGNhgtPekk4Kz5GG/0uR4kfWCc2QuueLZNEuph3LNsP1VzxMvOl3KPis2471TQU5dushgZCtNb+YweTRN1UnZOdyBTMGNQt/HtcHzs5hNKx6Hind+vYkDNlB6RlYsooSorgmfPXrBcgQj0kI30h2H9IR0C1dAYiSDhKaJimKmVp6wMxfzbWrUWEiFNKtSOOBTV08ebmickZXaRy8TBslJUa1BYyzc97jCIQg0+SKy34XOXWhTtkEPxJcw5SO/Kabgbm9X587ldEd0SmOd7wsWBB5WnC0BFJVVsm3HAu+C0rvx3u5z3RReEW8q7YgY9J4HF02eF9zCj8WwJQiud5gre5SM+hdRzoXu10P2fKWrx90CKUG/7TH3PX61Jkl+GImt68onoOzFXFP1UG6BwL/UkkVN+eB8vtw3C0tzCAwk18nADPovvAwn+0lBW4zwlek9FGIj2QA3XdDX7J6yX7EMLxXU2p/q+MvKXH3rQETwwyT9yGSo6Kz6fyjK17xxMjKBRH6b84VarVRdbLnCNU4AZ1FYo8BsVJtTLhsxv5qbgU1kszKLkltv97f1ORUQgMBIufB59UjX516CjZHeOrpqiuR8caktbbmkXONmtMZT2r121+b2syGDvXeUnjYJlhSid88JLlp9HCXCbV51rcQjZ4I/bj0KSxDPuucBVa7kBJQZzRi6UGLdv8tWSfFQZuJIxLaxWEDeHKF3Dloq8om8sTGUc1V/zu+T2TnXguCX9Ll/l5wF76IelgaJgxlModEpyqun5HrYR6rBwIyNaFnQ4fLOrImbZblUldcg69D8Pk6qJdbFj2Z4hJtM+BULKlFHkBFOONcQWuqFcLMM1ctO1VAcojX3cwvMSpRZezIW7cJ/I6LxBViBwp/n+H7r3M9j9PNx9R6vVnqk
- 5CiuaJgN
- eHS8EaqxZCRMEgxU2ywfdx8lvoQy+uovzBSYwnB6CPAWZY4kFcjjqbX3cWkKGMYT6tT5wQCiIEULB4/gvarNEkhhAjgIrNWXNWhiKss2OEdyoPD85OlKZrLiJyyTj1PSES6FIAawMmuJrUkfRPfzMrRASy/evamU7Qm5FlFSb56A5utlNRBaAn/SEhYkzIwGlJLNKj+OG2RGvT1zByzK7KjoZw0iJD/pzJGaPKpILMnb6mxIrwKuFr4RpPTx/LyCKAvG9abfho9qfxsBbs0t9WIPLwUTYq0W73Hxn/+2Crq1bD5I=
+X-HE-Tag: 1777978565-817509
+X-HE-Meta: U2FsdGVkX19lW8JAQVy0iwqd2n0fgcUOfCPTcp9hdxr2I2Q//+rY8swqSHOj8cafx/J3CgAbbeFxfy6M45KD5YMqWcGbWCx9Mi2rW5pGyCxHOf0Y9en7Zt90j27KM+/XA9azsIys84Vq/+2YWI81b1vQ4LKwvkMNectBDc6oPPXDBVTUwnluah6Qk3OAteVJBV+BHiv3rER9um6xIp2/i0YRcYwH+Yz0ZTwTmmRhjCMLPHuCH90Yg8n1l1Pvj2+1vPQJDu48q31AfopGsGthnp+W33hj9tnXE17WdmkHLLyAoJ/24yso3sDWJkjSs/ahLMPL03l7C4UoNP4LXypXLzAjesChd2FooAcp+C4mACxqQO8wSC1VHvCUnpHatD6QTk4MTV0We9Ogt35vF8CqHfhknuYkD9uw/c1Gnh2/CKqnnfyFbz1kuPrvomq45MpdBuAu5eZBqlTFrVh1c/Ir4gDlr9PvOsYC5K0qgJH/YpZoVQCiNDocEbazAkv84zjx8ZwZNA9/cs7sgCsTrSjIybCLmF67FyQA9rOHtVI1o1ESoGa/dZNQzGPNHTLOK8HRWuqBOyyIuH8lE4tUEfOqbhWKG1aiCsgSsZ4moNC8+cTfCKsTrVYZHqBr1HXBd4ksIl6aqg1gmX3tHnBlFt3NRCA0tMAkaLdht2IsW8+2VJkxXKpt14DFwetbVKiKlYJx1qVSz93vvEg18X5mpNf2RngWMp9bnE4PS8G/rMAajPrkWHDL8dSDe6DIXFB4gxGnRt0ipkjmfCBocU56gKAi6y8Cb7pjglNZtfEmQxOBVRqeUKMBsMaqzhO70N6nKNC/IZpCijMkHhPK0R2O4a/MOC86chjOccYJjD8ODQnNdqBSve0F6o4cMreJdW+zDW/EBRXKK9A9kQ27OaVtu65vEAN1DyeQ8S1W3QiHcNT4n3jGRfdumkxws22RoYYc+fYJB/gwZeoBPNr7OBclhpe
+ LCx+Oz7h
+ us3p0nJRT7wOF1reHw+QP7VwAk/jbz0j2vbI1flisDB2WkSIOXtUSXMzcp/7NwY2s5eP2QDZvcMZZV50elZPrGSpb83wBLDzWOlIxgMXdAN8LsV8kuuRVJ21qq5gz9JgPS1trhsEXsvL7vYJWH2qUkEl4wPG3sKFC5HX10Kr8F69sP677Voc8bzIfuwT7Fu4xiPxLqNWYTuu6bcB2oIlz3VmL1wBLR38A0Mdq27+qOFnXIcIZHJrlS05oeH8pGR/ttAik7R+m+NN21cRsSgR38CgGIAPHKqofwNpvvG+2BV2tkwCgRM1XQDlUOOc5URj+MIZOMURLjQIQgyztdSFOrsImXerZNX4vSJMtszRGRBiuNag=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,109 +92,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 06:30:00PM +0000, pratmal@google.com wrote:
-> From: Pratyush Mallick <pratmal@google.com>
+On Wed, Apr 22, 2026 at 01:37:26PM +0100, Pedro Falcato wrote:
+> The pattern "include/linux/page[-_]*" matches every file that starts with
+> "page", because it's a regex and not a glob (so it has the meaning of
+> include/linux/page + match [-_] 0+ times).
 >
-> The current .gitignore hardcodes each generated test binary by name,
-> requiring updates every time a new test is added.
+> Fix it up into a more regex-correct expression. Doing so reduces CC's
+> drastically in patches that touch pagemap.h (which is maintained as part of
+> PAGE CACHE).
 >
-> Switch to the patten-matching approach similar to KVM:selftests.
-> Ignore everything by default and then allow source extensions (.c, .h, .sh)
-> and tracked non-source files.
+> As a side-effect, move linux/pageblock-flags.h explicitly under PAGE
+> ALLOCATOR.
 >
-> Signed-off-by: Pratyush Mallick <pratmal@google.com>
+> Link: https://lore.kernel.org/linux-mm/20260422005608.342028-1-fmayle@google.com/
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-Niceee :) a lot of red, love it.
-
-Assuming you have confirmed this is all working correctly, please un-RFC and
-feel free to add:
+If I didn't already say,
 
 Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
+:)
+
+Cheers, Lorenzo
+
 > ---
->  tools/testing/selftests/mm/.gitignore | 72 ++++-----------------------
->  1 file changed, 11 insertions(+), 61 deletions(-)
+>  MAINTAINERS | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-> index 83ad9454dd9d..92f9205d3996 100644
-> --- a/tools/testing/selftests/mm/.gitignore
-> +++ b/tools/testing/selftests/mm/.gitignore
-> @@ -1,63 +1,13 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> -cow
-> -hugepage-mmap
-> -hugepage-mremap
-> -hugepage-shm
-> -hugepage-vmemmap
-> -hugetlb-madvise
-> -hugetlb-read-hwpoison
-> -hugetlb-soft-offline
-> -khugepaged
-> -map_hugetlb
-> -map_populate
-> -thuge-gen
-> -compaction_test
-> -memory-failure
-> -migration
-> -mlock2-tests
-> -mrelease_test
-> -mremap_dontunmap
-> -mremap_test
-> -on-fault-limit
-> -transhuge-stress
-> -pagemap_ioctl
-> -pfnmap
-> -process_madv
-> -*.tmp*
-> -protection_keys
-> -protection_keys_32
-> -protection_keys_64
-> -madv_populate
-> -uffd-stress
-> -uffd-unit-tests
-> -uffd-wp-mremap
-> -mlock-intersect-test
-> -mlock-random-test
-> -virtual_address_range
-> -gup_test
-> -va_128TBswitch
-> -map_fixed_noreplace
-> -write_to_hugetlbfs
-> -hmm-tests
-> -memfd_secret
-> -soft-dirty
-> -split_huge_page_test
-> -ksm_tests
-> +*
-> +!/**/
-> +!*.c
-> +!*.h
-> +!*.sh
-> +!.gitignore
-> +!Makefile
-> +!config
-> +!settings
-> +#Re-ignore generated files
->  local_config.h
-> -local_config.mk
-> -ksm_functional_tests
-> -mdwe_test
-> -gup_longterm
-> -mkdirty
-> -va_high_addr_switch
-> -hugetlb_fault_after_madv
-> -hugetlb_madv_vs_map
-> -mseal_test
-> -droppable
-> -hugetlb_dio
-> -pkey_sighandler_tests_32
-> -pkey_sighandler_tests_64
-> -guard-regions
-> -merge
-> -prctl_thp_disable
-> -rmap
-> +*.mod.c
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d25342ca8aa1..224c15299acc 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16804,7 +16804,7 @@ F:	mm/sparse.c
+>  F:	mm/util.c
+>  F:	mm/vmpressure.c
+>  F:	mm/vmstat.c
+> -N:	include/linux/page[-_]*
+> +N:	include\/linux\/page[-_][a-zA-Z]*
+>
+>  MEMORY MANAGEMENT - EXECMEM
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+> @@ -16961,6 +16961,7 @@ S:	Maintained
+>  F:	include/linux/compaction.h
+>  F:	include/linux/gfp.h
+>  F:	include/linux/page-isolation.h
+> +F:	include/linux/pageblock-flags.h
+>  F:	mm/compaction.c
+>  F:	mm/debug_page_alloc.c
+>  F:	mm/debug_page_ref.c
 > --
-> 2.54.0.rc1.555.g9c883467ad-goog
+> 2.53.0
 >
 
