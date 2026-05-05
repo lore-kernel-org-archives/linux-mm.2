@@ -4,145 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F28DCD13DA
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 04:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C66FF885A
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 05:05:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0D4B6B0005; Tue,  5 May 2026 00:45:46 -0400 (EDT)
+	id 33AA06B0005; Tue,  5 May 2026 01:05:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABE7F6B008A; Tue,  5 May 2026 00:45:46 -0400 (EDT)
+	id 2EBC86B008A; Tue,  5 May 2026 01:05:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ACFF6B008C; Tue,  5 May 2026 00:45:46 -0400 (EDT)
+	id 201636B008C; Tue,  5 May 2026 01:05:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 85CDE6B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 00:45:46 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 277E4C1B9B
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 04:45:46 +0000 (UTC)
-X-FDA: 84732128292.01.F278F22
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BF0051C0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 04:45:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=SEEzu8A2;
-	spf=pass (imf21.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D5B96B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 01:05:05 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 926A7C01D4
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 05:05:04 +0000 (UTC)
+X-FDA: 84732176928.12.33E465F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B98D1A0002
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 05:05:02 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YQdIe8ip;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777957503; a=rsa-sha256;
+	cv=none;
+	b=X9T2Un5J/SJ/nNNfOWrMwqvMsC9QlaS85Kk2lbryB9Fvb+wg/lIHClZTRlWwipJP9IL8DQ
+	gm5DBtAhx7b3SQIUk7UnW1XqXu6atD6G2I1x2i3KmwUcRY3hn/INrg0W540+Y2vAzjIADK
+	Sc3Se/uTdiZaq1w21zEl//6W5HHVg7A=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YQdIe8ip;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777956343;
+	s=arc-20220608; t=1777957503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9+qnMc5mAtsrIcRWZAT9EuxFUu4xRfpER1I2wbz9va8=;
-	b=JF9eH+LL4ZQoxFh+h8TO0wA1qaQcv8NBVQO2kYksz51ZhqRtS5R3t/ohJ+5aDKqwWomsOh
-	BYEyoFt+AsmAtVfzgcs9ujMWIHGtxkYKlDZBALeo0sAEsoFx7dJcEEQgryShXboe/IK+ol
-	9ydJjT8i1KQkDT0htz9pgdqevPhXuTM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=SEEzu8A2;
-	spf=pass (imf21.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777956343; a=rsa-sha256;
-	cv=none;
-	b=fFWoR3AQmm/ld0qw69LEv2HoGiJAaDLO+1Ta75EQ7OLn8F50q/bvQC2IfrdVU3MEL4J86F
-	0/gdV99PhmuieXD1gkicSTmisWe2zJb0PJPBcNPr+mo1GrpD+BWrhjZPuk9uFS6AV2GUNw
-	TyvspbA1HdeLWizGEYuQ1zobZwOGJYA=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644DtB732799040;
-	Tue, 5 May 2026 04:45:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=9+qnMc
-	5mAtsrIcRWZAT9EuxFUu4xRfpER1I2wbz9va8=; b=SEEzu8A2TVA0Gq3KjIwE3k
-	qjLkw65d74A+8AdkwIWe3UKl0u7WhBCpkGjxdMKdlOuvsmBPF/73Li5T/jh91STK
-	ycLlchssw5Dit6/9N4IVavEdy5v/aIyuqBffOVNdL4uORz6nMa6ua6a5B5j+Ta51
-	E8Sxa37G7HQfDBaC2nThE2B9MPH8nc5sQuT1jamld1ozRVgecEHQQcIbboYXuJeL
-	JazRskImDhq3dLk+I700dkFBFADFMR78GQ3VU1vuJJzWXJ1Kuyu3JeensuaWvtP3
-	++7lxo8K6Hs/qKg+hdSieO/ss8Z8RrxG9ECSQlnLq6ae4GtawDDSLNTS2uRA2hbA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9w69q2s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 04:45:11 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6454dOvZ027093;
-	Tue, 5 May 2026 04:45:10 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwx9y7t5d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 04:45:10 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6454jAYG30474918
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 May 2026 04:45:10 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1373A58059;
-	Tue,  5 May 2026 04:45:10 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DED745805E;
-	Tue,  5 May 2026 04:45:00 +0000 (GMT)
-Received: from [9.123.6.34] (unknown [9.123.6.34])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  5 May 2026 04:45:00 +0000 (GMT)
-Message-ID: <4b532a01-674a-4d81-8ccf-312688368c50@linux.ibm.com>
-Date: Tue, 5 May 2026 10:14:59 +0530
+	bh=leYUW52eUVmjA3/N1Q3p/hGukPOapRF/Sg4LgJrU73k=;
+	b=h2j6o2Q9KQ52QsrA2JlKpQKOdKmqRhxHzG9LpR9+GKOFvDbfsJDO1BzdYwdrdTyFOUDpBY
+	s2PYKNil7GBrPG+w+381ZAAs9pHpR+M55XTRx+df5VSd91omFnMCWKlrROYHtNiQsW9MHA
+	WpO44/1MCpR8/gHXmJ4l+CJYLQyxBn8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 73F724327A;
+	Tue,  5 May 2026 05:05:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED059C2BCB4;
+	Tue,  5 May 2026 05:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777957501;
+	bh=ulYwfhIrZiiyOA+ej0SzTrh2d/+ULM4vkEf6B8JaKfw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YQdIe8ipp3zoPQt/M1IT100RhJkC1LW7HKyjFJV5+jOWmbpwh82QuzbAQDo5jHwcH
+	 zXZ1pTxLQu3i0metigYKkT9eK/TSWmxLHxaSnrXUlvjZVlh5yHVJAHUfUHsYJArZjg
+	 qnzp/NMRdY+bXEj0RqUZJ1/sGsTnM3Wxbu0y/KABvw/LSoGO2CC26cYIjJssFtu0eZ
+	 gJMgVE/nHI9ss534NzOBzovG17IXtAPTv9e9xXKHvg6kuAFYAZWYmuVQsDFPz+PFo7
+	 h1b+OOmlAr9lI5p8WhktdQhvYSz+abjWJ8Aj896wtbG2xwjbvpoJKzTUfzeo6f+8Ep
+	 3I4JbmUkM80Yg==
+Date: Mon, 4 May 2026 22:04:59 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Christian Brauner <brauner@kernel.org>, akpm@linux-foundation.org,
+	hca@linux.ibm.com, linux-s390@vger.kernel.org, david@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
+	timmurray@google.com
+Subject: Re: [PATCH v2] mm: process_mrelease: introduce
+ PROCESS_MRELEASE_REAP_KILL flag
+Message-ID: <afl6e__ljPCkVX6j@google.com>
+References: <20260429211359.3829683-1-minchan@kernel.org>
+ <afMnKrYT0xG_a-b3@tiehlicka>
+ <afUYfpwWsUQoB9hz@google.com>
+ <afhQB0CWEcflXpOi@tiehlicka>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 5/7] mm: sched: move NUMA balancing tiering promotion
- to pghot
-To: Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-Cc: Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net,
-        mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
-        raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
-        sj@kernel.org, weixugc@google.com, willy@infradead.org,
-        ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
-        nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
-        akpm@linux-foundation.org, david@kernel.org, byungchul@sk.com,
-        kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-        balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
-References: <20260504060924.344313-1-bharata@amd.com>
- <20260504060924.344313-6-bharata@amd.com>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260504060924.344313-6-bharata@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=XPQAjwhE c=1 sm=1 tr=0 ts=69f975d8 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=n0nZGg35PxI7s4gaVK8A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: I-J5-uQzEW2sBUONg2GSFGowJlKVxUNU
-X-Proofpoint-GUID: ob5hThByJfZ7lgkTM2AEFnLqAEZNf73W
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDAzOSBTYWx0ZWRfX+gGOIO3D9CjX
- I01dLA5ia8LWBhLC08yNnfJ5cGlEILzyTLqw1+LGxhMBXrbDHJBqMPiXVWLBeyst2W3lAdmWH9m
- /BhLtRVdu+uTChcFSPuRl/ePpN+3ZBtjJ2hlOTvO9Wco45PkqXJV47Ga6wtMd9UisCHZRXAEo4P
- 44xWdS3HBLN8OS1cnfxbjZ8lRgD6BmI1qrDl6DcMHB/KpKrBdYj2CODMkuU523a9XXn+gLoT0pb
- vEztEjeQn6vJwSPfPA6Xk4vPduULVqVJKKNCG+YD6N0QPGV3TA5jDsSVFSBCVs0kZcOMdYeqY5I
- N07s5gOv65mYKUadBmPTZLTAVGLLsCM1aeaybUPFWcftqHzUHWu3LD9FHYDJJKu1kgUypfsEtAd
- rH8xnqE9S+CZJBhLCfZTZVlP2W5krmej0IYo/pliQo1w/32YoTHhkwIN8vydt+BXcqOaEzWadVv
- iGgcupI+SuRtEoLBxkw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-05_01,2026-04-30_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050039
-X-Stat-Signature: xb973ziopjbh7yh1en149zgb6mkcae36
-X-Rspamd-Queue-Id: BF0051C0005
+In-Reply-To: <afhQB0CWEcflXpOi@tiehlicka>
+X-Stat-Signature: 6i33zmx1izuxzckejoi6hs6p7iub7y6k
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1777956343-296901
-X-HE-Meta: U2FsdGVkX18N5Pvy9WYB8oCvDJSAh62/jkiigbS3JyDLpmDzdEzSXmdXW6ojYm0x3GYHPSR1t8vSHNCKObduTfr0Cnf5csGIuJA+6JK3Ulcrtp24xOUQQGp8FpyiFxcE5VsJdu6RbnP3VK8++RgE1RZPc+bCopY8ErsMFlGB/QRcQM1o1Pty/mPX43RO9CV9XRkaTVywAIreaKG/qt9YBqjMZFVvn9WSZEfhrbK4JbSWoUpdWZd0m9JXEOPIrranuPU5J9EVu2SfUj55GZx/tTh8CVzqfvKmCkmjLl9wAMwo0WPQd8B4KPbo79Tia0QmGR9+lddADfIdvikko/dWG86PMN0xbLG6Gew1GoVKmMV1YqCzbA/c/AVcyguZNvsAJTtVLIuQ9GAw+ADSqyOzLLF7dQ8OnRQEU6cVuu8RetO7DizEja8Lcbmt4n0/D3o32+ks0zsZHCdVsFXnfBx1lfOVxmb9uBtWUyjvkt2f2XoquDoHEzcdrhlosj7sQiuWbt4n9M25hyFJ7ppmRPJv+k1zwo4Q6wxvrK/oQ7P0ofJlOiYcImkH6Cd86InQMTx0gyPQ+HZzWwzLYGCuOHT7/SzPpFDb1dv5gz24Zl2ElV30QnQMKxwP4vkAkyGWWOU755RRv49spoIa1UhwOjdskcv8UMWz9Mkemi6nMj95/TibGklmqSA1976gNBr8GDN/+cYmngQVcIX2vRnw1f//AhC8xVjMJLVfzLGtCk+3XEBeC7VBeksMAGoyCQcmbvVhnK4P9mRKvagS5kiqod94CBpJfdaQGTcbGOwNGG4Ay8bEPMeh48s25qEZm0pQh0WxPNS7+/wyF4w5WvBlmJDmLY/rOM+fZ5HmFxsoafFq07AYGpA1YCyWfuAz+h3eKA4h0ZJAnFUq+4+g8YCjp/zYox/vwI7JPbWoaa79SDsrByrUun0zdQJozmBULKsl5J2GRrkMeXdlnboAQWQG/Wi
- m+xb8rWy
- Z3DF3SlVZ+w7rtUsnynLmbt6Llb4bh7ZwRfk+jqc1CqE+kJN4IqClvOd8GiLVLGXbhf/Lg0wD5UhxokigYNEBM538JfvMNc1izuAWqutjaKxSx1ba0oT80cFStt8ye2N4feI0ieFSFwemNy1HsykHrTK3+bghbYChVwwuRd6Uunstt+BwUSHHXV1OYjze5M5oCorYV7GS+chq0APLXOZ4FI851HeMr5a+fSY3aD5K2LtgTiArLb1rs2b+Eg4R5P8ilsbWPB/3bfFBHWEKk95I9anu5O//csxnmNMB4dDmTbGTJqgf3JgNSHFdK8ORoiK9NJ5piuSCM8ExwsyGvvGiJDUOBkZ8Q+k0E8Y7l+riM9eTV2UrVCJpPmGVlCz4nfgfJrpptwgphOnmnz3uS6Lj/xgb0MyLaMoJXAFW
+X-Rspamd-Queue-Id: B98D1A0002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1777957502-884272
+X-HE-Meta: U2FsdGVkX1/nbd1yrtMghHpQt/hqs9NczwJGTTVROSvt8yd2hth2Q1cN/AY0zKJWCBT67LWU8eQN4bSB0yKLNGv6qhlydPk7MBUSQRsy+aHe9EtO0hqjiuxxQzAi4uu5hkB29v/6XKnHPaGF1Cd16GOAE9Mg5HFksX5C2RKmBeElTumhFweH7iKbTFexTlNEgnRrzJNRLmhla6XGW09jzeKeQkzFSVfpHyJBHRyIvTWJK3rG9IHipGFvUyYX8sgfGcJBK1ciH+7Al5CI/JIOtf5z+gMEOyWKlze6LHUyvg4Pq/IbhswbNyHi8OOhRDDObDvWOJyLg4r6lrnczI+kf96NGZYUEzZXCOwS0RZRjypCkmD1xb6nMVgAKUfkCf05BZFBzOPNjt6/mPtMnCKnYWNyCBSg9Fh5O0YgnyfPW3/Pd8/gT6pkhi4Qhu/tOuHIkKaPiH1NdCYAHGPXFWQ6ew/kRc3X8akXnX0zKyz3EoK8dOeBs6w0H1QUiAf0DhIm0Rdv+jJdRIjy5gvKDUGEIc/AHnXj0pJ7nx6iVs02iPdSoZZ/6QqQ8HwbISw6aBA7YmVxNnTOgFuL7vyMKtmBdWIwZ0ihdl36nwzCjUeJeBsfe5UXEkWdm48++fRWtSJ7jfz3tu5H5vcj2mwt/wVHT1eKt5LEy3xg2VOtOdF5ek+LwSVHOR5a8Wyb/cNol9fRwtyaH5dp8Cr/idFdNqlcFdrM6Rc/54x2baJlceEWXDio2698G7UCt/oAZJfAosdMwlvqgl21i+UxQV03ibRcZtZUehRaupHQygpCpNu+MQXarUiQI23nUaWbuCStoKZYoqm1CjGeJgmBX+85YWyC5tnSfia+HXwmL2s33Y+TqElmYiOcJ/4cyhNu1RIdkaon+igURP29HYj/tPQUAfL0rvOf1xh4s9Nn/ATcLlsHlaOjC5N7s7tk9nOa+th7HJ/GnRJdioTD0Bja2pSW7l3
+ m+Z44chY
+ lt15ApkUCpqV10VypiKZYNBDKp06jNTCafOUzCYozVGaVCEJsebcv5lNWHp5JD5eW2LEPPsMqAqbq3M/6teSWeVUbFViX9vsifPkhdoW3XcvBM+LqjCFumMkNxBaHgZDEVGzoG8KunQU5X4xZqJXNx/MP+LP1TooRYd5omdnPXlmjjmd+gM4Af7dLL5h1CgPHvTDlr2G4U3enP6oG4kGKdSx+ILhnoaVfo4Zw7lGiEJk+TdoF7KhtCGdW6DHM+cBLieS8WItOMHB2/hYCsPlQUd0B6H4Hbs74buVjveCovyK8LLFKHWTrNRv37Uc6UyZqB/R3x2RzRZXJL8NiAOI7ZoNPQFm9p32aVNcX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,28 +98,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bharata
+On Mon, May 04, 2026 at 09:51:35AM +0200, Michal Hocko wrote:
+> On Fri 01-05-26 14:17:50, Minchan Kim wrote:
+> > On Thu, Apr 30, 2026 at 11:55:54AM +0200, Michal Hocko wrote:
+> > > On Wed 29-04-26 14:13:59, Minchan Kim wrote:
+> > > > This policy differs from the global OOM killer, which kills all processes
+> > > > sharing the same mm to guarantee memory reclamation at all costs (preventing
+> > > > system hangs).
+> > > 
+> > > Incorrect, we do the same for memcg OOM killer as well. This is not
+> > > about preventing system hands. But rather to 
+> > > 
+> > > > However, process_mrelease() is invoked by userspace policy.
+> > > > If it fails due to sharing, userspace can simply adapt and select another
+> > > > victim process (such as another background app in Android case) to release
+> > > > memory. We do not need to force success or affect processes that were not
+> > > > targeted.
+> > > 
+> > > This is a wrong justification for the proposed semantic. You seem to be
+> > > assuming this is just fine rather than this would be problematic for
+> > > reasons a), b) and c). If there are no strong reasons _against_
+> > > following the global policy then we should stick with it. There are very
+> > > good reasons why we are doing that on the global level.
+> > > 
+> > > If for no other reasons then the proposed semantic severly criples the
+> > > shared MM case. You are left with a racy kill and call process_mrelease
+> > > approach. You certainly do not want to allow a simple way for tasks to
+> > > evade your LMK, do you? So just choose something else is a very bad
+> > > approach.
+> > > 
+> > > So unless you are aware of a specific reason(s) where collective kill is a
+> > > clearly an incorrect behavior then I believe the proper way is to kill
+> > > all processes sharing the mm (unless you are crossing any security
+> > > boundary when doing that).
+> > 
+> > I agree that in the case of a global or memcg OOM, the kernel deals with an
+> > emergency, system-wide crisis where killing all sibling processes sharing
+> > the same mm is an absolute necessity for system survival, bypassing
+> > user-space privilege screening.
+> 
+> You are misinterpreting or missing my point. I am not suggesting to
+> cross privilege boundaries. The syscall should fail if the mm is shared
+> with tasks the caller cannot kill (same as it does now).
+> 
+> > However, process_mrelease() is an explicit user-space initiated system call,
+> > and I am still hesitant to place that same raw, destructive policy blindly
+> > at the UAPI syscall level even though I don't know of any known security
+> > issues right now.
+> 
+> This is very wrong argument to introduce a potentially crippled syscall
+> semantic.
+>  
+> > If we really want to go that way for the collective kill, at least, we should
+> > evaluate signal authorization (kill permission) against *every single*
+> > sibling process beforehand instead of only the target task of
+> > process_mrelease. Do you agree?
+> 
+> This is what I've proposed already.
 
-On 5/4/26 11:39 AM, Bharata B Rao wrote:
->   
-> +/*
-> + * For memory tiering mode, if there are enough free pages (more than
-> + * enough watermark defined here) in fast memory node, to take full
-> + * advantage of fast memory capacity, all recently accessed slow
-> + * memory pages will be migrated to fast memory node without
-> + * considering hot threshold.
-> + */
-> +static bool pgdat_free_space_enough(struct pglist_data *pgdat)
-> +{
-> +	int z;
-> +	unsigned long enough_wmark;
-> +
-> +	enough_wmark = max(1UL * 1024 * 1024 * 1024 >> PAGE_SHIFT,
+Sounds good.
 
-Just a thought—would it be better to use #define for these hardcoded values?
+One thing to note is that this approach is still not perfect, as some sibling
+processes sharing the mm might not be killed due to different UID or SELinux
+policies while others are. In such cases, the actual memory reaping via
+process_mrelease() will still fail anyway.
 
--Donet
+If we are okay with this limitation - meaning it acts as a best-effort
+approach where we might end up killing some processes without successfully
+releasing the memory — then I can proceed with this design.
 
-> +			   pgdat->node_present_pages >> 4);
-> +	for (z = pgdat->nr_zones - 1; z >= 0; z--) {
+> 
+> > Also, I wonder what the signal/process maintainer thinks about this approach.
+> > Christian Brauner <brauner@kernel.org>?
+> 
+> Yes, this makes sense. There might be a very good reason why we might
+> not want to introduce a way to kill cross thread groups when they share
+> mm from userspace. I do not see any as long as you keep the proper
+> permissions for all affected tasks. Maybe we cannot do that sanely now.
+> But these reasons have to be properly documented. You whole argument
+> that this is different from in-kernel oom killing is just not valid.
+
+Okay, let's wait for any valid reasons or concerns they might raise.
+
+Thanks.
 
