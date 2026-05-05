@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52043FF885A
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 08:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3D97FF885A
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 08:27:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8B1E6B00A4; Tue,  5 May 2026 04:26:57 -0400 (EDT)
+	id 264026B009F; Tue,  5 May 2026 04:27:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B62D86B00A6; Tue,  5 May 2026 04:26:57 -0400 (EDT)
+	id 23AF56B00A6; Tue,  5 May 2026 04:27:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A78CE6B00A7; Tue,  5 May 2026 04:26:57 -0400 (EDT)
+	id 151C96B00A8; Tue,  5 May 2026 04:27:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 97AB76B00A4
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 04:26:57 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3D099160360
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:26:57 +0000 (UTC)
-X-FDA: 84732685674.22.B050F3A
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 052816B009F
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 04:27:08 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC0CA16037B
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:27:07 +0000 (UTC)
+X-FDA: 84732686094.21.ABAFDB3
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3DEEFC0006
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:26:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Urlpuxq2;
-	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by imf16.hostedemail.com (Postfix) with ESMTP id E2E9318000A
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 08:27:05 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Vso5axNB;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777969615;
+	s=arc-20220608; t=1777969625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c3MM+Rrr4gllCDOAXA/Nf1PZQdNA+vK+kEYbUU2YmTg=;
-	b=Or9yZGdRz4aj3t9/RYeR10GvDhjJDw+eBBMGw1jE2i86Oc/l1B8i0lPtncpBi17SJCa5pO
-	TrMDsfUbJdUgi7DkPpaedI3dGyBWROndZdF/FEqU87oLDkQ6F+zExCFLZWs1XXIS3fIFIG
-	GVPTSB/pIkhKErIddSgvv56oopKAIX8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Urlpuxq2;
-	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777969615; a=rsa-sha256;
+	bh=0wlFQn4mCAZ4JDf9m+1oTd5OJECuerm+FwCyUKdfn60=;
+	b=NuUr1UViAa6jXrlXpukVYKAL2htr9xjtrgO7/TpVPvmcACUht5isbYrOPW1r3fTpn2lM7U
+	LBQ87GNq2m3IXHgWNs0u6JAG/84IYQG7rT3siKBgiGvkIyEDVcuFw/6viiSxEK/Kx4VjRI
+	bj5W/iJ2d30uN23sSth72mcvr20ji6g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777969625; a=rsa-sha256;
 	cv=none;
-	b=V+RdEdhqotNnGOoCwh0PysJj+OC+fsfeAaJqRnGPAu1dPXB8brqCP/CIgNVROfiwT0q4GF
-	5xZpbzonFJc11YLxNAGVkytru+NsLOWeZ5W32MfVc/gk/dWv3rex7vx9CdX6aZik5tx5zj
-	QBXl/ysjWYPdw7FQB1THQq0xYN5Mc14=
+	b=kiT9zje01Iu4/4jIeUgoBuNQdD3DLtIF4gKeiqwhvjRnXavk7JGF4IFxiwdwVUFUXKM5ZR
+	rAnaUXiMTIpEd/4w/ljGH3LTM20wjIbX+R6qW3WzzqlrImLQ5pN7+v4d1KkNVe9/aAVsB7
+	yIOfbSpBDLn3bbWw+kwGaaCGbHFd910=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Vso5axNB;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777969614;
+	s=mimecast20190719; t=1777969625;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c3MM+Rrr4gllCDOAXA/Nf1PZQdNA+vK+kEYbUU2YmTg=;
-	b=Urlpuxq2nE9wAnoOcqagFgDzexLbe0jN7oNgAbLkrVYic2JkSTsDnAjfM0L90KDpUv8Uzq
-	DtiX45JQ+w1W5iEDI67QEfNLowoYSybS7w6nGoWxCOTugxC+lNB8Vcl6RFp1p0bQzqaiDz
-	kE1/vmBZA7xLM0KXm1rxLw2ykhgjs7w=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=0wlFQn4mCAZ4JDf9m+1oTd5OJECuerm+FwCyUKdfn60=;
+	b=Vso5axNB+D4rux7oxnvo5j1tQWC6m5l/6s1tzhlgvk/0XmDExLBh1w6xveCe4TJRMfy9Jc
+	Ihb2v69GeKq3X7pA9ox31h3pdz3JfgOFQZT+6vt2bE7tQyOSKp/zvMt+HPOS07BBv8JUBk
+	Bvbc6g9EQT2c4h8Ux/QS2IP8nGHxQGU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-hB-RglEGNquoXBpJTHj0OA-1; Tue,
- 05 May 2026 04:26:49 -0400
-X-MC-Unique: hB-RglEGNquoXBpJTHj0OA-1
-X-Mimecast-MFC-AGG-ID: hB-RglEGNquoXBpJTHj0OA_1777969605
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-350-GLXbQYrIOOmglOfO4CCSaw-1; Tue,
+ 05 May 2026 04:27:01 -0400
+X-MC-Unique: GLXbQYrIOOmglOfO4CCSaw-1
+X-Mimecast-MFC-AGG-ID: GLXbQYrIOOmglOfO4CCSaw_1777969618
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 44EFF19560A6;
-	Tue,  5 May 2026 08:26:45 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 045AA1956059;
+	Tue,  5 May 2026 08:26:58 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.44.48.109])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1519F30001A1;
-	Tue,  5 May 2026 08:26:31 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BC19C30001BE;
+	Tue,  5 May 2026 08:26:45 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Nicolas Saenz Julienne <nsaenzju@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@kernel.org>,
 	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -120,25 +119,25 @@ Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Daniel Wagner <dwagner@suse.de>,
 	Petr Tesarik <ptesarik@suse.com>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: [PATCH v9 09/10] context_tracking,x86: Defer kernel text patching IPIs when tracking CR3 switches
-Date: Tue,  5 May 2026 10:23:54 +0200
-Message-ID: <20260505082355.1982003-10-vschneid@redhat.com>
+Subject: [PATCH v9 10/10] x86/mm, mm/vmalloc: Defer kernel TLB flush IPIs when tracking CR3 switches
+Date: Tue,  5 May 2026 10:23:55 +0200
+Message-ID: <20260505082355.1982003-11-vschneid@redhat.com>
 In-Reply-To: <20260505082355.1982003-1-vschneid@redhat.com>
 References: <20260505082355.1982003-1-vschneid@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: Ic8oYfWsELBuKWgP8vQ0olkbXCYK3LEqIrXlX50n2jQ_1777969605
+X-Mimecast-MFC-PROC-ID: p46ERc19HXomJ8wZ0qh5v6nxPHExsUh1kG3GKHOKqQ0_1777969618
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E2E9318000A
+X-Stat-Signature: xrodsrkanizf4k8kxbwbp6y4zy4rr5ui
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3DEEFC0006
-X-Stat-Signature: zrd4mrnc15bd3sxc78pf8ygysajih4u6
-X-HE-Tag: 1777969615-860673
-X-HE-Meta: U2FsdGVkX1+qYa3uUVKg5ziBfk/i0hRiflQe9+OqtweDZ0Rx6Ik0a2+TDgX8Od9vHs5+85ZtXI7oVDCy1cfAr6RuJDF6bPOd89eEdWqop1i5AhJMLfadk7anAFsWqu9Dyg6CcRgZGVEkd0ZoXPGUQ5IL7U2XxURRJ85ybI/94pR6KnwYNrGc/dt2zYFPIs+R48eWkY4GmDkhexskkr/Gu1PlJo+iAYK2nElZ9N4x42UVNJvKEJrEhTGroB0ZFTVPNL8e0dtYYIzPydsx2EgdN9PI3KIwSICHA6Jq1cwtTzSJKWx9TNeK/2znNlMU3ko5hWktaKnd3Cq3Qyx061Xla3Tl748CiJ1oruleDZw5wD8ZJ+h74FODo7hslN9nylsW9NEr/5HhrfI1sCnQ/ErW5RdUK9ZADnlAlboJywKKmfUQsXnzl3kvn/Qcw48ilw53dWDMs3n/xyfhLq44VNRgWAPPOQ98QiodACfN3VP8gFYog/ji9fm05WfQHSQ0iWwt9aRnpcM7oHbcNXGcH3CkoQVtIIII26Ik9N9hgjZLNt9RU/8Clt4UmJ9KADKXbh1MawpSW1XO1gR9kyAFaG8CwaXTpPJt2vAqbvPslQM/mukJilhH4FWpxgEgIjOCg3/FtKhfL9pX/3QFPueC1G99I2SI2Wy4BKjg6ubT7NX1aQboUXXvd9WYpGPnWdXACj9uDogF6vx2VrcpFeb03Hyat2Hr3QbSUd4Rg3yB1T3m+8jrrLJxg4ZBSOoBF7IoErxwMbg1exVkX43kEmHRx8WaUHde5mvy+vgEYX7GUP+vHdH66jOHnRmOk6JwrxFXyOVneTn9fM20i85Qnvgz19P8bmy3vvB80sx1BK2Wuh4ZjdKfqnPj46EhKboAfhehJ12e2QM//VQ8vwGJp9gHC8U3FO7bCOcCeh3T10AZSaQ9mBHtW1WWSvq28hMPx8nJKrCBEvWvs5A7Dr7n9Kvm5r/
- Qb+Nppyz
- QV/7a7yfyIEzNB+WWYj7BIVFa6efUzTNYQWrktnHu0hNkQm3BkJTrRf28xHffCqaNiGPes7290m6bom/pNDjr9IRpbx1GjTEKl6tXRcX8xipxYR0kzcaCWYW+vAATw2KA7N8MptsVjCh6hP934n6c4yKWLFLJWgQbtbte+fIy2LwvC7PtNEK5WIS7XQBiQ1LR+klAIGWsG0CdaBazM+jAgwa40KllVOBbNVSdiCKDmRsCFMvDmB6YfI228kUlixaWm5Py2K/J8GbOGdpJbwXYGcuWH3oKjJJFUoe25vZZgTCyN+gNo4OfZI69b15jjgEzVP9p1P7Oo9EgrE6yurqUJUUdFkWjAnPZXkoEgD6xtxwIa4EgMep11tK+xpYRlQ+wuubRHYHDWrlJyPHjv1EvWN1oInpvod4zZGO7JuwWkrePo77UKjc9hiFIn7/GZ/WJNZ7ZXKtIhZbomuHI4hDzj8kyQMq1JIzEYfi9GAfBUb/lO51p61MJzuLI0nLspzImcUiEa6JSHawoEqewIdgd9WDyr8PPNSHKEfKo
+X-HE-Tag: 1777969625-479217
+X-HE-Meta: U2FsdGVkX18HMFdPzw2uoPcFv4jIJ7qGv2uedF55h02bzIyrEDuRpiuLOUc6BE6MmQmzoPdISPojkq5Wb8uxQvcZrC2v3FuatE6dKYVHmhm+rKPR3egUz/6yqNJ4vhVVHtqUjVQKslhtq0MPEFLDjcRlqP7oyP7AuLby5IN4SHOXuUlH+c1yFzhVCr43FFURUaNHe5QcxYllrjz4psvCAnhhJxjXXbbqivRJ8qgfnJOH2W8l9xFdSiUzYoGtb0nHJ+knGaqE1UQj6Lu4Gw0ysBYDBnoWvSjMVE+fgeQnymMw3tLcGsLbhiEfyYOoSU3V5TsEsB1IK/BBL1KNAKeaazJDbTicNG/AAJFSuCF28aLfhvllcPE4Cv+bfsVY/VIGqBKcck1vwcHEFCOm6JhSEPEukUZcWHg8xL64ngYHnaTbfLEyuYvc2Kesot84Udx9F3YZMBhj0qQ8YSWBtQG/a5AaDBTh+x1iJSgz9fR+3MX1s6XPTjFLgnYPq5CLXFmwxon5XqQ0LXUpF6NrIBz+2weeRt1fFjS04I7/VO4ZaTqQmUGsk9a9JYHgZMNK8PJUnm1915um0+c+NpV9Vv/JIJnsYXijn5zxiGxyUPH3c+4SZMnIvFO+xkwYxj6a1IcPCLPOs/+kAWaH0NxR66BwIb3oLk6N9AdnuydcExJ9y7uX+3KCWMvX5Dc31HCdW84MZFbRTWBNj728LbR/lA1heBB4+Ests3m1zaRtH84/tIlcbtWqtZrU+JHlTAFn/e6OCCWlXltHxyCQA8pQMOL6X5+JBnRJUD8uyWfaekRncUkcSVsQ/BidhEpx1NVbRDCM0zKS6gOxpU1NH0Y2k8IppL9oQAMgHiWfNNhi7O4o2mOkxBaxgcEqSOJeHJpSpqCm/oFEsUgbFENMFXRDL0DCAUiaGFBS/cYhbhDLSyjOGmnLixLYqYEGfEt1Rsr1borTcpFX6ut8xCv3weqbfN9
+ Y2wFwY9h
+ 9XUYzAUxJfQbOmngZVU8LO4wUb/7iFr9Ev4lfB+xN47mvq022yhCX6Fb4a6yMpxjKnu9WGLZDSOIRFZ+sU6k/85thrUoqajtDzexvAbu85KjnYfBsZaLOfsMbfiS6aNeP9Mwh07m1KNNKTf+d5bR6synCRlnswOKYfQalzFikxG4EK7KfSaQyGj+x71TLYzx+2U6VUkQsdzS4gXp0NDWjEl7nCr2wI4qNJ6RfOlMzq1CaQ9mkvBlfyjJtFC9hARw21M7KhBPy9s7qDpQi/dPwtWVfPc/sUmogcaWnRzjTOkgkr4gQ6R3+Yg8CkmFKDyEPVtxJiiUIObUE0FHMH2FSeOY8Pa/2HWoZdBh8rQ12TrtRF2kQWAQPqbqBnYjSUvOFaQJ/Hok/+wcofSGnidXALnez7KCncwuXizDC6cCb6a7MGeEF7WPjx6e2hQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,111 +145,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-text_poke_bp_batch() sends IPIs to all online CPUs to synchronize
-them vs the newly patched instruction. CPUs that are executing in userspace
-do not need this synchronization to happen immediately, and this is
-actually harmful interference for NOHZ_FULL CPUs.
+Previous commits have added a software signal that tracks which CR3 (kernel
+or user) is in use for any given CPU.
 
-As the synchronization IPIs are sent using a blocking call, returning from
-text_poke_bp_batch() implies all CPUs will observe the patched
-instruction(s), and this should be preserved even if the IPI is deferred.
-In other words, to safely defer this synchronization, any kernel
-instruction leading to the execution of the deferred instruction
-sync must *not* be mutable (patchable) at runtime.
+Combined with:
+  o the CR3 switch itself being a flush for non-global mappings
+  o global mappings under kPTI being limited to the CEA and entry text
+we now have a way to safely defer (kernel) TLB flush IPIs targeting
+NOHZ_FULL CPUs executing in userspace (i.e. with the user CR3 loaded).
 
-This means we must pay attention to mutable instructions in the early entry
-code:
-- alternatives
-- static keys
-- static calls
-- all sorts of probes (kprobes/ftrace/bpf/???)
+When sending a kernel TLB flush IPI to a NOHZ_FULL CPU, check whether it is
+using the user CR3, and if it is, do not interrupt it and instead rely on
+the CR3 write that happens when switching to the kernel CR3.
 
-The early entry code is noinstr, which gets rid of the probes.
-
-Alternatives are safe, because it's boot-time patching (before SMP is
-even brought up) which is before any IPI deferral can happen.
-
-This leaves us with static keys and static calls. Any static key used in
-early entry code should be only forever-enabled at boot time, IOW
-__ro_after_init (pretty much like alternatives). Exceptions to that will
-now be caught by objtool.
-
-The deferred instruction sync is the CR3 RMW done as part of
-kPTI when switching to the kernel page table:
-
-  SDM vol2 chapter 4.3 - Move to/from control registers:
-  ```
-  MOV CR* instructions, except for MOV CR8, are serializing instructions.
-  ```
-
-Leverage the new kernel_cr3_loaded signal and the kPTI CR3 RMW to defer
-sync_core() IPIs targeting NOHZ_FULL CPUs.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Nicolas Saenz Julienne <nsaenzju@redhat.com>
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
- arch/x86/include/asm/text-patching.h |  5 +++
- arch/x86/kernel/alternative.c        | 57 +++++++++++++++++++++++++---
- arch/x86/kernel/kprobes/core.c       |  4 +-
- arch/x86/kernel/kprobes/opt.c        |  4 +-
- arch/x86/kernel/module.c             |  2 +-
- include/asm-generic/sections.h       | 14 +++++++
- 6 files changed, 75 insertions(+), 11 deletions(-)
+ arch/x86/include/asm/tlbflush.h |  1 +
+ arch/x86/mm/tlb.c               | 49 ++++++++++++++++++++++++++++-----
+ mm/vmalloc.c                    | 30 ++++++++++++++++----
+ 3 files changed, 68 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
-index f2d142a0a862e..628e80f8318cd 100644
---- a/arch/x86/include/asm/text-patching.h
-+++ b/arch/x86/include/asm/text-patching.h
-@@ -33,6 +33,11 @@ extern void text_poke_apply_relocation(u8 *buf, const u8 * const instr, size_t i
-  */
- extern void *text_poke(void *addr, const void *opcode, size_t len);
- extern void smp_text_poke_sync_each_cpu(void);
-+#ifdef CONFIG_TRACK_CR3
-+extern void smp_text_poke_sync_each_cpu_deferrable(void);
-+#else
-+#define smp_text_poke_sync_each_cpu_deferrable smp_text_poke_sync_each_cpu
-+#endif
- extern void *text_poke_kgdb(void *addr, const void *opcode, size_t len);
- extern void *text_poke_copy(void *addr, const void *opcode, size_t len);
- #define text_poke_copy text_poke_copy
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 62936a3bde19b..e2d185e6cb7ca 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -6,6 +6,7 @@
- #include <linux/vmalloc.h>
- #include <linux/memory.h>
- #include <linux/execmem.h>
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 0ec669eb0b4e7..824304c08cd95 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -22,6 +22,7 @@ DECLARE_PER_CPU_PAGE_ALIGNED(bool, kernel_cr3_loaded);
+ #endif
+ 
+ void __flush_tlb_all(void);
++void flush_tlb_kernel_range_deferrable(unsigned long start, unsigned long end);
+ 
+ #define TLB_FLUSH_ALL	-1UL
+ #define TLB_GENERATION_INVALID	0
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index af43d177087e7..68bcccace0659 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -13,6 +13,7 @@
+ #include <linux/mmu_notifier.h>
+ #include <linux/mmu_context.h>
+ #include <linux/kvm_types.h>
 +#include <linux/sched/isolation.h>
  
- #include <asm/text-patching.h>
- #include <asm/insn.h>
-@@ -13,6 +14,7 @@
- #include <asm/ibt.h>
- #include <asm/set_memory.h>
- #include <asm/nmi.h>
-+#include <asm/tlbflush.h>
- 
- int __read_mostly alternatives_patched;
- 
-@@ -2768,10 +2770,43 @@ static void do_sync_core(void *info)
- 	sync_core();
+ #include <asm/tlbflush.h>
+ #include <asm/mmu_context.h>
+@@ -1509,23 +1510,24 @@ static void do_kernel_range_flush(void *info)
+ 		flush_tlb_one_kernel(addr);
  }
  
-+static void __smp_text_poke_sync_each_cpu(smp_cond_func_t cond_func)
-+{
-+	on_each_cpu_cond(cond_func, do_sync_core, NULL, 1);
-+}
-+
- void smp_text_poke_sync_each_cpu(void)
+-static void kernel_tlb_flush_all(struct flush_tlb_info *info)
++static void kernel_tlb_flush_all(smp_cond_func_t cond, struct flush_tlb_info *info)
  {
--	on_each_cpu(do_sync_core, NULL, 1);
-+	__smp_text_poke_sync_each_cpu(NULL);
+ 	if (cpu_feature_enabled(X86_FEATURE_INVLPGB))
+ 		invlpgb_flush_all();
+ 	else
+-		on_each_cpu(do_flush_tlb_all, NULL, 1);
++		on_each_cpu_cond(cond, do_flush_tlb_all, NULL, 1);
+ }
+ 
+-static void kernel_tlb_flush_range(struct flush_tlb_info *info)
++static void kernel_tlb_flush_range(smp_cond_func_t cond, struct flush_tlb_info *info)
+ {
+ 	if (cpu_feature_enabled(X86_FEATURE_INVLPGB))
+ 		invlpgb_kernel_range_flush(info);
+ 	else
+-		on_each_cpu(do_kernel_range_flush, info, 1);
++		on_each_cpu_cond(cond, do_kernel_range_flush, info, 1);
+ }
+ 
+-void flush_tlb_kernel_range(unsigned long start, unsigned long end)
++static inline void
++__flush_tlb_kernel_range(smp_cond_func_t cond, unsigned long start, unsigned long end)
+ {
+ 	struct flush_tlb_info *info;
+ 
+@@ -1535,13 +1537,46 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ 				  TLB_GENERATION_INVALID);
+ 
+ 	if (info->end == TLB_FLUSH_ALL)
+-		kernel_tlb_flush_all(info);
++		kernel_tlb_flush_all(cond, info);
+ 	else
+-		kernel_tlb_flush_range(info);
++		kernel_tlb_flush_range(cond, info);
+ 
+ 	put_flush_tlb_info();
+ }
+ 
++void flush_tlb_kernel_range(unsigned long start, unsigned long end)
++{
++	__flush_tlb_kernel_range(NULL, start, end);
 +}
 +
 +#ifdef CONFIG_TRACK_CR3
-+static bool do_sync_core_defer_cond(int cpu, void *info)
++static bool flush_tlb_kernel_cond(int cpu, void *info)
 +{
 +	/*
 +	 * Send the IPI if the target CPU is a housekeeping one, or if it is
@@ -271,142 +259,91 @@ index 62936a3bde19b..e2d185e6cb7ca 100644
 +	return ret;
 +}
 +
-+void smp_text_poke_sync_each_cpu_deferrable(void)
++void flush_tlb_kernel_range_deferrable(unsigned long start, unsigned long end)
 +{
-+	__smp_text_poke_sync_each_cpu(do_sync_core_defer_cond);
- }
++	__flush_tlb_kernel_range(flush_tlb_kernel_cond, start, end);
++}
 +#endif
- 
++
  /*
-  * NOTE: crazy scheme to allow patching Jcc.d32 but not increase the size of
-@@ -2940,6 +2975,7 @@ noinstr int smp_text_poke_int3_handler(struct pt_regs *regs)
-  */
- void smp_text_poke_batch_finish(void)
- {
-+	void (*sync_fn)(void) = smp_text_poke_sync_each_cpu_deferrable;
- 	unsigned char int3 = INT3_INSN_OPCODE;
- 	unsigned int i;
- 	int do_sync;
-@@ -2976,11 +3012,20 @@ void smp_text_poke_batch_finish(void)
- 	 * First step: add a INT3 trap to the address that will be patched.
- 	 */
- 	for (i = 0; i < text_poke_array.nr_entries; i++) {
--		text_poke_array.vec[i].old = *(u8 *)text_poke_addr(&text_poke_array.vec[i]);
--		text_poke(text_poke_addr(&text_poke_array.vec[i]), &int3, INT3_INSN_SIZE);
-+		void *addr = text_poke_addr(&text_poke_array.vec[i]);
-+
-+		/*
-+		 * There's no safe way to defer IPIs for patching text in
-+		 * entry, record whether there is at least one such poke.
-+		 */
-+		if (is_kernel_entrytext((unsigned long)addr))
-+			sync_fn = smp_text_poke_sync_each_cpu;
-+
-+		text_poke_array.vec[i].old = *((u8 *)addr);
-+		text_poke(addr, &int3, INT3_INSN_SIZE);
- 	}
- 
--	smp_text_poke_sync_each_cpu();
-+	sync_fn();
- 
- 	/*
- 	 * Second step: update all but the first byte of the patched range.
-@@ -3042,7 +3087,7 @@ void smp_text_poke_batch_finish(void)
- 		 * not necessary and we'd be safe even without it. But
- 		 * better safe than sorry (plus there's not only Intel).
- 		 */
--		smp_text_poke_sync_each_cpu();
-+		sync_fn();
- 	}
- 
- 	/*
-@@ -3063,7 +3108,7 @@ void smp_text_poke_batch_finish(void)
- 	}
- 
- 	if (do_sync)
--		smp_text_poke_sync_each_cpu();
-+		sync_fn();
- 
- 	/*
- 	 * Remove and wait for refs to be zero.
-diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
-index c1fac3a9fecc2..61a93ba30f255 100644
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -789,7 +789,7 @@ void arch_arm_kprobe(struct kprobe *p)
- 	u8 int3 = INT3_INSN_OPCODE;
- 
- 	text_poke(p->addr, &int3, 1);
--	smp_text_poke_sync_each_cpu();
-+	smp_text_poke_sync_each_cpu_deferrable();
- 	perf_event_text_poke(p->addr, &p->opcode, 1, &int3, 1);
+  * This can be used from process context to figure out what the value of
+  * CR3 is without needing to do a (slow) __read_cr3().
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index aa08651ec0df6..6276c8cb2be0d 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -506,6 +506,26 @@ void vunmap_range_noflush(unsigned long start, unsigned long end)
+ 	__vunmap_range_noflush(start, end);
  }
  
-@@ -799,7 +799,7 @@ void arch_disarm_kprobe(struct kprobe *p)
- 
- 	perf_event_text_poke(p->addr, &int3, 1, &p->opcode, 1);
- 	text_poke(p->addr, &p->opcode, 1);
--	smp_text_poke_sync_each_cpu();
-+	smp_text_poke_sync_each_cpu_deferrable();
- }
- 
- void arch_remove_kprobe(struct kprobe *p)
-diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
-index 6f826a00eca29..3b3be66da320c 100644
---- a/arch/x86/kernel/kprobes/opt.c
-+++ b/arch/x86/kernel/kprobes/opt.c
-@@ -509,11 +509,11 @@ void arch_unoptimize_kprobe(struct optimized_kprobe *op)
- 	       JMP32_INSN_SIZE - INT3_INSN_SIZE);
- 
- 	text_poke(addr, new, INT3_INSN_SIZE);
--	smp_text_poke_sync_each_cpu();
-+	smp_text_poke_sync_each_cpu_deferrable();
- 	text_poke(addr + INT3_INSN_SIZE,
- 		  new + INT3_INSN_SIZE,
- 		  JMP32_INSN_SIZE - INT3_INSN_SIZE);
--	smp_text_poke_sync_each_cpu();
-+	smp_text_poke_sync_each_cpu_deferrable();
- 
- 	perf_event_text_poke(op->kp.addr, old, JMP32_INSN_SIZE, new, JMP32_INSN_SIZE);
- }
-diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
-index 11c45ce42694c..0894b1f38de77 100644
---- a/arch/x86/kernel/module.c
-+++ b/arch/x86/kernel/module.c
-@@ -209,7 +209,7 @@ static int write_relocate_add(Elf64_Shdr *sechdrs,
- 				   write, apply);
- 
- 	if (!early) {
--		smp_text_poke_sync_each_cpu();
-+		smp_text_poke_sync_each_cpu_deferrable();
- 		mutex_unlock(&text_mutex);
- 	}
- 
-diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-index 0755bc39b0d80..7496d26a85a4c 100644
---- a/include/asm-generic/sections.h
-+++ b/include/asm-generic/sections.h
-@@ -199,6 +199,20 @@ static inline bool is_kernel_inittext(unsigned long addr)
- 	       addr < (unsigned long)_einittext;
- }
- 
-+/**
-+ * is_kernel_entrytext - checks if the pointer address is located in the
-+ *                      .entry.text section
++/*
++ * !!! BIG FAT WARNING !!!
 + *
-+ * @addr: address to check
++ * The CPU is free to cache any part of the paging hierarchy it wants at any
++ * time. It's also free to set accessed and dirty bits at any time, even for
++ * instructions that may never execute architecturally.
 + *
-+ * Returns: true if the address is located in .entry.text, false otherwise.
++ * This means that deferring a TLB flush affecting freed page-table-pages (IOW,
++ * keeping them in a CPU's paging hierarchy cache) is a recipe for disaster.
++ *
++ * This isn't a problem for deferral of TLB flushes in vmalloc, because
++ * page-table-pages used for vmap() mappings are never freed - see how
++ * __vunmap_range_noflush() walks the whole mapping but only clears the leaf PTEs.
++ * If this ever changes, TLB flush deferral will cause misery.
 + */
-+static inline bool is_kernel_entrytext(unsigned long addr)
++void __weak flush_tlb_kernel_range_deferrable(unsigned long start, unsigned long end)
 +{
-+	return addr >= (unsigned long)__entry_text_start &&
-+	       addr < (unsigned long)__entry_text_end;
++	flush_tlb_kernel_range(start, end);
 +}
 +
  /**
-  * __is_kernel_text - checks if the pointer address is located in the
-  *                    .text section
+  * vunmap_range - unmap kernel virtual addresses
+  * @addr: start of the VM area to unmap
+@@ -519,7 +539,7 @@ void vunmap_range(unsigned long addr, unsigned long end)
+ {
+ 	flush_cache_vunmap(addr, end);
+ 	vunmap_range_noflush(addr, end);
+-	flush_tlb_kernel_range(addr, end);
++	flush_tlb_kernel_range_deferrable(addr, end);
+ }
+ 
+ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+@@ -2373,7 +2393,7 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 
+ 	nr_purge_nodes = cpumask_weight(&purge_nodes);
+ 	if (nr_purge_nodes > 0) {
+-		flush_tlb_kernel_range(start, end);
++		flush_tlb_kernel_range_deferrable(start, end);
+ 
+ 		/* One extra worker is per a lazy_max_pages() full set minus one. */
+ 		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
+@@ -2476,7 +2496,7 @@ static void free_unmap_vmap_area(struct vmap_area *va)
+ 	flush_cache_vunmap(va->va_start, va->va_end);
+ 	vunmap_range_noflush(va->va_start, va->va_end);
+ 	if (debug_pagealloc_enabled_static())
+-		flush_tlb_kernel_range(va->va_start, va->va_end);
++		flush_tlb_kernel_range_deferrable(va->va_start, va->va_end);
+ 
+ 	free_vmap_area_noflush(va);
+ }
+@@ -2923,7 +2943,7 @@ static void vb_free(unsigned long addr, unsigned long size)
+ 	vunmap_range_noflush(addr, addr + size);
+ 
+ 	if (debug_pagealloc_enabled_static())
+-		flush_tlb_kernel_range(addr, addr + size);
++		flush_tlb_kernel_range_deferrable(addr, addr + size);
+ 
+ 	spin_lock(&vb->lock);
+ 
+@@ -2988,7 +3008,7 @@ static void _vm_unmap_aliases(unsigned long start, unsigned long end, int flush)
+ 	free_purged_blocks(&purge_list);
+ 
+ 	if (!__purge_vmap_area_lazy(start, end, false) && flush)
+-		flush_tlb_kernel_range(start, end);
++		flush_tlb_kernel_range_deferrable(start, end);
+ 	mutex_unlock(&vmap_purge_lock);
+ }
+ 
 -- 
 2.52.0
 
