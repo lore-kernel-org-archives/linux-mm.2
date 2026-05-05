@@ -4,136 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A409ACD3427
-	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 13:12:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52BABCD3427
+	for <linux-mm@archiver.kernel.org>; Tue,  5 May 2026 13:27:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C09456B0005; Tue,  5 May 2026 09:12:51 -0400 (EDT)
+	id 4A3B56B0005; Tue,  5 May 2026 09:27:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBA4B6B0088; Tue,  5 May 2026 09:12:51 -0400 (EDT)
+	id 455096B0088; Tue,  5 May 2026 09:27:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA8326B008A; Tue,  5 May 2026 09:12:51 -0400 (EDT)
+	id 343186B008A; Tue,  5 May 2026 09:27:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 966446B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 09:12:51 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2E3D01404CB
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:12:51 +0000 (UTC)
-X-FDA: 84733406142.16.29F549A
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1E4FC40014
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:12:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=M3880p72;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777986769; a=rsa-sha256;
-	cv=pass;
-	b=L/PPBLETg8E2YPtiW4HDHJ6rqcEdPJQmIlKS0GaRMMxa9SWi0PqmDh9ZtfoxAXLZU3k1P/
-	6n9RVTu/cIaM/krakrwymsTBUnMF80RCLPgk8YRpINof9EeYF7FD1USPqkB+pT19l0Eb3C
-	y646tVYkQej0Ggf5a7isZbpvA1uGWso=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=M3880p72;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777986769;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2325E6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 09:27:08 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C56D0C1AFE
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:27:07 +0000 (UTC)
+X-FDA: 84733442094.20.58FEAFE
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2D0061A0007
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 13:27:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=e+mqXl5U;
+	spf=pass (imf19.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777987625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LltibOIvw4fGDLQWh4s92lhSPkVlgVdJTrd+4ZlmbBQ=;
-	b=kCPLjoHbgexT4BPHMU6fwhbwnl64gjN/iJkWodHi40qbiPLCB9NDVn1qANqBft0FgBECDG
-	miZC4oA/LKNiaAVLVw6Xcw1eSPQptmr3M5T15wKHTc5RDgzWZc0x+Yze2w1WgpXU/1ZqK7
-	uP/d93gAQQcWV2UnZHWeqRyDhKs/UwA=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-67b7c71c165so6248861a12.0
-        for <linux-mm@kvack.org>; Tue, 05 May 2026 06:12:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777986767; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AUHCpQWTc5fZVz7LEyfKdwQ027CjH6iTFeAY/dYgQrGaiBUIgkOsEgtSFfbCDJqwqR
-         1k7NyvLHuqv60yWCLwC4p/ZtDdujrGbNT4ttK2GHUJv84srZQeI7g1Aod5HzvszztccQ
-         pX+EiSl6HOUQG8reJ+wE+9KxtOcZP4taleYNYtNV8z824oFaAySdAXob8oNctPTvkK2+
-         t7QqscVAW7d6w8J5sElWbyB+NlSxhID7CUemS8xLTL1SwdsDiQZxJVdJ+kdcwlqu74Bs
-         RiPfOhnnvj2Jtll2TvrgLiZ4R5W8le5hfc3pVgNGkWDr+0RPme9B5JWxGkmHHJLS1yM7
-         20fQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=LltibOIvw4fGDLQWh4s92lhSPkVlgVdJTrd+4ZlmbBQ=;
-        fh=6S96x6wCpF7D5OKNJKT8cKvEHI+uxViuVl6IpmtQVNc=;
-        b=UI3yKcq/vVnSnsupJPabq0/6IOlCji7aUB8pGTzvu59dR5cPwQIRZcH4Jl/Z8OhD2L
-         owBYstsxLS10QBKWBBpEGVMpyBvJ4omZ1iIQY9PcUsVcrDKX0RTy72Xlki2HVvS7k3Si
-         +W3R9/ky0E8rl3HoYleHBowDfDdBAzkyCgKMN3zt2QxMhMYc8w9Qss2BV3LH9SgMn7+7
-         cRku0jzTiEP1mNel0zPJyBXZsbTvHI7dA8N6z99IKOXuQvjFh0M2LCnjNCycFCg1H67P
-         nPtQi/bxWBO5EotOLQXp1zYYWVvm8koffgxfLWiEZIl9NMKPtseUwoo6Fleh8Y+q6SYO
-         RqLA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1777986767; x=1778591567; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LltibOIvw4fGDLQWh4s92lhSPkVlgVdJTrd+4ZlmbBQ=;
-        b=M3880p72U66HMw62xvVQ+7Bifffbz7557DffEr+15c9EdRM1xiH1Otv/ulRGkpC3LU
-         y2GicjEArh1me9SkKwuIF2vexZmkw0xVTsw5L9G6BPPQQpV0oOSA6XuCRqe36RQA/jEe
-         xHNFcBOjXAwe6gCo7ggIt5Bi09Lc3LImFpNheuEUhzwMNGohp+e1h32ZzKHcip4F3Bqe
-         7CZfVd5R+STj3owDzUY0iyLx6WoATLha3sAYy5Dwzdx/zPD/1yuUB5O79azE9mkbISWD
-         J8j0BdwcbakjnVzuukZRSuJf0xkKUXm/J/QbQpSITPtHMvwySaqAtUwU0lzPxxOBv2NH
-         qK/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777986767; x=1778591567;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LltibOIvw4fGDLQWh4s92lhSPkVlgVdJTrd+4ZlmbBQ=;
-        b=lPh+sz2jF/T+34DzxlZQKb5Y4PmY/Eyl3vSO8BCa+7agxhUVNolBQSaYsSPmCcIrDv
-         fkZM46rBadHDqCjO/3XzMJWf+Gb/mUUA5hssARGraxQKveRTfxrGN7hApnBNYvKC0ong
-         lBB08riKKl70l04B+2BkJVblCP5hztUNXI6Tdu3PlcLbFaVi+96ZGwr5+MVSKpST7dOm
-         VgJIzhyRwgACpzcVs+N3W1yAFJFg9GOGW/XfcbGmqbINpV4ObZpmTkvu88akrRUr7Kmf
-         R4h2+PBN02RDX9fIf/H540rYLJjOYPAHeDEe2y9aoM8JSrhRrKLByerU4dyx9vK3EwQ2
-         C0Sw==
-X-Forwarded-Encrypted: i=1; AFNElJ+xH1LqkXIwa5tFVk8W+IxxiegX9FaeZSR2JucaTGWEShBYPbpUHRP38h6iz6wqjzgQfkM3+RY7XQ==@kvack.org
-X-Gm-Message-State: AOJu0YyguXp4ImNcGDcGL70aYvNrJXhT5W1fxFZSDTUek4V2rAKp4P7k
-	bYD/0mjlzPTUiOXp6JL5PAN6/itlY6E0e/T2UPwH+Yl5T6caeGw1ulnvOI0E5pNeZE734nz2J5I
-	NePc87brBxILMywr2b2JiEOQV1wnNy2iC/ywGOaeltw==
-X-Gm-Gg: AeBDieuSqYde/zDtKqTgVuz4Ls7wEklwjCH+mToVQnphuWRbxE6DJOjHyd0CUswi1yn
-	Oydf5JWG5wf7ZFlhOiqlpwG4Von5PouLy4CpCBg3iqmlV8LjBS1nmMQSm5HBNI2VJXwFHK9OlBr
-	TR+E99AgNiVBox62vvlaFlIuWgEB3EsUBouivKqq76vvAO/OLxVKxV1MvHTNp+0SiRSJ2KdtEgZ
-	kpEAFX8Cl8t8tayqlTHk8SE88mB2ir1FpREhSmMXjicqMiwAitBIZHLYq+WZAMhyqFQpqTGtINA
-	jwzJxYz5rUwX0rEKwYnd11qBKP8WwuDvLGimE9lZ/ZKxLxyKIf/xm+cMSvRXEs2NFkBaCAtZ7w3
-	UllqiKYU=
-X-Received: by 2002:aa7:d64b:0:b0:66a:8002:fe17 with SMTP id
- 4fb4d7f45d1cf-67c19ffe781mr5209182a12.13.1777986766770; Tue, 05 May 2026
- 06:12:46 -0700 (PDT)
+	bh=cb5axZ1MQCM3SbM5hhLaaNLvtr3xxZVwg+3Rh4fgKoo=;
+	b=XW+lC0r7b7dZsOpsEl4O0ubHvg8inwX9S1tbAOypcnnHY3lha4Tt0pepUsxvljTow2bnnI
+	N2Cgk3JFxysLb7/pkW1HGXIZea+HrKarN0rzEAaATUGMwMCXvgo8204Txrx5Y51+QKBccx
+	eLIf2JjchggSoO0EXK4fW2ZLTIchKHk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=e+mqXl5U;
+	spf=pass (imf19.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777987625; a=rsa-sha256;
+	cv=none;
+	b=sJZSjF2Uxi3EbbAuHj7HkNFhspaD4eV85DY/fwEl1FtZ64YvSi5lbU1IYl1gDv3A+CMr7p
+	Sa7xyY+iGwPu2Wh85Ahtki7OO61RMmCPjYXTNmzYltj7MHnWKFExbZSS99k48vkuwGvelq
+	IjpQ6UFkvVLi/gBNdCuHhUbDn4eQHPo=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6457kJCh2503246;
+	Tue, 5 May 2026 12:17:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=cb5axZ1MQCM3SbM5h
+	hLaaNLvtr3xxZVwg+3Rh4fgKoo=; b=e+mqXl5U0a/yvCq1+M9FnBsh867BtsgZY
+	WVfw1nSlF9easYv6gF1eo2ffMZQz1pQSdUtys8hNMiVWg36p1C3xwWsoIlwi7jfO
+	5gZvX4dtYpPn0tIO1vX9ARq0vv93JNTI2FjVgHibb/gGe5Wfx+6QrHiThI8quhjI
+	N5npRausirQm83MTfyX4ro6d3pAW3LXn21YSQxANa/Nv7mzXmr+8sZoYU3c+a9EJ
+	PiscM/WNQ3MlVImIkYm8ZmdKCUczw69xLVeniCtyncqIeC7zzP07imKR22Cso26V
+	UktMQ5IQDfcSotZTLf0lcvSGbcMiexiI9jb4ZWr5mtEz+jVUPSi/g==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1bh2y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 12:17:27 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645C9e7N032528;
+	Tue, 5 May 2026 12:17:26 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwvkjsfvm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 12:17:26 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645CHMnb49742098
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 May 2026 12:17:22 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2C87020049;
+	Tue,  5 May 2026 12:17:22 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B63642004D;
+	Tue,  5 May 2026 12:17:21 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 May 2026 12:17:21 +0000 (GMT)
+From: Jens Remus <jremus@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Indu Bhagat <ibhagatgnu@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dylan Hatch <dylanbhatch@google.com>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>
+Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
+        Namhyung Kim <namhyung@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Florian Weimer <fweimer@redhat.com>,
+        "Carlos O'Donell" <codonell@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH v14 02/19] unwind_user/sframe: Add support for reading .sframe headers
+Date: Tue,  5 May 2026 14:17:01 +0200
+Message-ID: <20260505121718.3572346-3-jremus@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260505121718.3572346-1-jremus@linux.ibm.com>
+References: <20260505121718.3572346-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
-References: <20260429133928.850721-1-pratyush@kernel.org> <20260429133928.850721-2-pratyush@kernel.org>
- <331da42-b255-326b-cd5-28d07a7e2cb2@linux.microsoft.com> <2vxztssm10fv.fsf@kernel.org>
-In-Reply-To: <2vxztssm10fv.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 5 May 2026 06:12:36 -0700
-X-Gm-Features: AVHnY4KHtQUMAMfPdqf16NPl8gMvZWF2eDOKcz6Y0y4sDW-HbOmB-k1RVpzoleQ
-Message-ID: <CA+CK2bABpL_QhFtEE4f5a2Wmkv3dKBkeYe68HoOjP7EBz7vXUg@mail.gmail.com>
-Subject: Re: [PATCH 01/12] kho: generalize radix tree APIs
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Jork Loeser <jloeser@linux.microsoft.com>, Mike Rapoport <rppt@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jason Miu <jasonmiu@google.com>, 
-	kexec mailing list <kexec@lists.infradead.org>, linux-mm <linux-mm@kvack.org>, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: multipart/alternative; boundary="000000000000a63201065111cd7f"
-X-Stat-Signature: e9qu6uzmyninhbny7iawqff8k81na41d
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: o86DKg4RSXle3wlAaRdZrzbpXh9uAxf7
+X-Proofpoint-GUID: nDENWNPxMv8ZOgfRYBSsDaBYTnt17Di7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNCBTYWx0ZWRfX0MjL72Df9714
+ SHdZQck2MZuHfe4LPI6ncugXgnD6tTE4GQuyagpWPsHGU/n9BpR3InT5FBZNLDUJBhdHeQgAjuG
+ ySMOSOFRAwFqpo+SGk5ZtD+USHZojDLqXrGmiW+PCVA1Wat49CzESCh0JLp10k+AYUT3KD6qqoV
+ ZBkVMdvkQOwC6+irLsZQFkNDMvyseAZOf9Wu0sJnyV11W4CKRUXYIvNRSAmY4cSW1bsX3ddvm7Q
+ uGSkiXt2Tb+cweGUteOB97h8EzTpeDRl0cw0hztsFJrB094B6dkEZo+GCXN66MPEyrdyp83FFSj
+ H6+g5suRzjwtqt8HC6VAwhs0QcMqUdt4YHFY9LL2ifSCPr3T6EfdT+KzmuAp4Qdv6D3KhavRjbs
+ P1tSHljzmDm1h4TuHnyAf46Tl04gybfaKs/OoOe+qs0RjUXxST0Dhr8lBERepB0Rd5lKDUdCRR6
+ r3gKb7LH8eN87lP9Khw==
+X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69f9dfd8 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=CCpqsmhAAAAA:8 a=meVymXHHAAAA:8
+ a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=n2P1YqxNjAFD8MGDs80A:9
+ a=ul9cdbp4aOFLsgKbc677:22 a=2JgSa4NbpEOStq-L5dxp:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050114
+X-Stat-Signature: s3hirz85giqjckz1xabisqdmr35n6xji
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2D0061A0007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1E4FC40014
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1777986768-806056
-X-HE-Meta: U2FsdGVkX1+GO3pWawZO4oA/4P3vlBSuuwRXyoZKynPuCiifXNULB8ccJLZQZkqxyunoyRx3yaJWzcFSUeEJ8ZWsUBT8/2WcK74TyW89OCuj4roKsR7QU0Id4cbjRdHxkSlzC7FCviRvpQULOSnPcDKTp4kOta/kryuJy4WwNZ/7hVMaP6kFBBUvHH2CuzbImI+xlCZnl4i8/9DMznwyyNbGfW+40txICDxRN52yLq4FRjPh6fHkUoEbkwiKCMXfqW2jn2UL776b17VsReulTRvJ2ea23NsZ84SlsRHLAKiVphVvMe0tZxSYcdYlIBtqP0in0v9WbxM2UERzEAk6LnDieZkUo1Xbpa4+BMIpT0fzNVw5lIZDrW0kndUMeeogzFO8u3Y71/xiueHZcWnXwqIBgVELMH0CiaWeoBJV0d3lR7o7dzxdxbWQ3iHxsWM6ajUgwOqvVgNbMgZJNaNubnJz+tbdXfZ/1yRkTufsDKLtRlvPwAxT1pZxGFPHLllj0Fbq5BqGBKpNzOvXp2KJ2biW3LKLlc6qgAl4T93mD+J4xf29jUIMAjzE2lCtKRNHRCTak1FKuazxOW/fqsbA5on04eElKpJqKUx4eIQg9ynVN4w5VPpjE95tqOsfweoOE7uZh27/SBTltkhH9GZkzFbZzOG6jAJ74JSzWNja6o1EmD+4V+oZr9XWzWgBW62cNMnZCNazvT5YlMupXPOBes9h6pq83nsDlnq7ucVon5I+01SoIDPND4Q3Wuf7BkDmSY4sX/ngPflyhXdwSYWegaDMKmuvVU/bS49UrhrZsCIPghooafH1Cv6FqoKBT/Hy7o1kT0GwZm762vDhxz6daPswhTAb29cThzFHzkTe2MlwO24FhutvF1wt09ymkc/X6wZaiCzTtvo2QBSQfO47U42/rcywk9SpYs6Ef6Dx2Fd6DS+k/qKVuXYtor6B8gYiumXhJYqNLsCh4L95dDr
- PIWq06jr
- 9PbjatZqDSH8+awHi09VzkZZDqWhzpPwxxQ9NF16vC1d+BPoiT2XKEIavGq3SeLdfHuxVmenAn/S0nSfDsU7HCcM9LVkreyUS9SR0TW3biIej5pXUupoXv59Q9qgywot6j62LDQXw6M52rC7yxzjOetNMlQwyryWeO4sSwaBiIjMluqzhbRDiuU4XBDuxYxzbSPBbWqTV3H7GJ9INcqKD6/OGDlqrilAYb0/UNycQj2bl2mL4TxrpYLGSIzNMLH9Ne2n5qWBf7hwwzxTdE2octFT6KeiyHxdjUKnR6QOPd56csiDRoUtJgtrMhMERxQ8hHLZCC8Mrv5mK+R9vB/p4xpEPai8TJ/ArcFGy5Li/kKRLI98=
+X-HE-Tag: 1777987624-959119
+X-HE-Meta: U2FsdGVkX18m06ahwltOH66PRfqXgQGYA2XxCPE0/rLM9NAY7650jvrfLokBqn0ZHF4Ts2jQU2CgqcqnbLH1447qmLD16bz7fV5EqINWSgErx4L5aHNx4HywsC2WK14DSO83cjaRRsrpKTS3ldXRzaEjoppzKYMnIP/FN5Ron6jt69igPEH4xjMMqFSuHqqEwJ2BRSUygiDSagIUwz1ThA/PF/e1dqkNCpQq3H2YPGg0D3ngPi7zmjTTp5j23YKm+nxZVUO2ZaGaRaRFMxczlzmRMAAHKX+4BHkdIeXiLqVRVLRBKGZRAZgsAQY/fsp7hjP/EMASLAaAy/JOPNReL+agxaJZo0pD2v9c3Uvgyhv+Yz3Ov2FXEMqiW0vGk2nVybCgZz4J0ZTUoiZARqzmHaF913B0bV70ENgiIk+I+bTQPBO7ppzcBBn5n8hIGIe36HyzO9r3mS/myUjge+V0qxS5nJ6auXNCNYtl6fP0F+ogmm0E21be3HruD4Xj+nKxnI25apEl8ziasxcIN9Tiiv/OwkSTxxOz23I3X67dfVV4Wq4mrE1GsxKCr+fUPBIBbw+BlRaAkw7RUx/02m7OXKSnwKrid97L6JMf+6GRhPYHjFPIA+z793DOncfDKfh0CUcQnEyVzgudu7ITpvXyrP5FWFqgGc6/WAnJ6P+mS7axWAgAUUbE+xYWYxT+U7r9/2oKQKWiepLGoKS9NIyK5T+OusmdjkURoqM5kBZgdsZ7uKqVM6kifGUGpDkd0oAOxX6p6IzYrwwXUUhkEzdrw5FJqj3wCYuzy7KWbztWmDalPGMNbELgrqTQhT2uuOUK2maSiryd8/fY89MCsJ2L6m8J70jF7lbK4+BfsJvjbn0ZpBN9nXD+EpvZ6E94aEjQ6Lra/90Z/XtxK3qbsczVaKBsZXxkbYhfIkyzhDgkb1zIIy1hj2wBc/D2ezKFFfVQKyDML0QiTm2bmL/pfio
+ O2YClI95
+ kPUJsqVN9JUKzCDmdW3GoZyG44mLbb72+Lecl9lLO8YVg/SDghyYA+cNd1o4Gn5Hl78/CAZCBYkBiRqvls1o7+T1OW1UVBtCT+YctZPyGy7RKFxYuW1EtFDrpuNzgdkDN6EfSQNjhiRAJFArQ3soxBqcbV2uIXXjgzPl4p7IakmoO/edd0tKOjylSwDwYsyP1iDciCeSsZdlMLHfdxuLUF+A1//rumG0gCHzsRL1+QBcKWPeILZEkDWmeYBNZql5z/XtkSvMO2y0aHnQ844lnd3OqdSdi3UlDfZ07lF5oVJHid0pS3Fko+6noeqVvpdlTrLuR0aBiH2BypEWI/UQojPRMnTlmdVYvWWCK1FVLgqwEEZFoZ6LKI1VNLh+V24YhNu2frn5nJYuNvF7woQhgJsjnxVwnS1Q895m7TFoB6pf+kuIga7OX8r00fxBBYlftAzXUr4M2J5TJClYy6SZ26LdoEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,122 +163,374 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000a63201065111cd7f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-On Tue, May 5, 2026, 5:54=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org> w=
-rote:
+In preparation for unwinding user space stacks with sframe, add basic
+sframe compile infrastructure and support for reading the .sframe
+section header.
 
-> On Tue, May 05 2026, Jork Loeser wrote:
->
-> > On Wed, 29 Apr 2026, Pratyush Yadav wrote:
-> >
-> >> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> >>
-> >> The KHO radix tree is a data structure that can track the presence or
-> >> absence of an arbitrary key, with nothing inherently tied to KHO memor=
-y
-> >> preservation tracking. This was one of the design goals of the radix
-> >> tree. This was done to enable it to be re-used by other users of KHO.
-> >
-> > "Arbitrary key": Not quite the complete 64-bits, rather 64 - PAGE_SIZE,
-> correct?
->
-> Right, 64 - PAGE_SHIFT.
->
-> >
-> >> + * kho_radix_add_key - Add a key to the radix tree.
-> >>  * @tree: The KHO radix tree.
-> >> + * @key: The key to add.
-> >>  *
-> >> + * This function traverses the radix tree based on the key provided.
-> It sets the
-> >> + * corresponding bit in the leaf bitmap to mark the key as present. I=
-f
-> >> + * intermediate nodes do not exist along the path, they are allocated
-> and added
-> >> + * to the tree.
-> >
-> > Consider adding a note on the key-width limitation.
->
+sframe_add_section() reads the header and unconditionally returns an
+error, so it's not very useful yet.  A subsequent patch will improve
+that.
 
-As a side effect, it should make sashiko happy.
+Link: https://lore.kernel.org/all/f27e8463783febfa0dabb0432a3dd6be8ad98412.1737511963.git.jpoimboe@kernel.org/
 
+[ Jens Remus: Add support for SFrame V3.  Add support for PC-relative
+FDE function start offset.  Cleanup includes and indentation. ]
 
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+---
 
-> I think adding a runtime check would also be a good idea here.
->
+Notes (jremus):
+    Changes in v14:
+    - Rename SFRAME_FDE_TYPE_REGULAR to SFRAME_FDE_TYPE_DEFAULT to match
+      SFrame V3 specification. (Indu)
+    - Correct SFRAME_V3_FDE_TYPE_MASK value.
+    
+    Changes in v13:
+    - Update to SFrame V3:
+      - Add and use SFRAME_VERSION_3 definition.
+      - Add helper macros to access SFrame V3 FDE type.
+      - Rename SFRAME_FUNC_*() macros to SFRAME_FDE_*().
+      - Rename SFRAME_FDE_TYPE_PC* defines to SFRAME_FDE_PCTYPE_* and
+        SFRAME_FUNC_FDE_TYPE() macro to SFRAME_V3_FDE_PCTYPE().
+      - Reword OFFSET to DATAWORD in SFRAME_FRE_OFFSET_{COUNT|SIZE}()
+        macros.
+      - Rename version-specific SFRAME_*() macros to SFRAME_V3_*().
+      - Update struct sframe_fde and rename to sframe_fde_v3:
+        - Change field start_addr from s32 to s64 and rename to
+          func_start_off.
+        - Change field fres_num from u32 to u16.
+        - New field u8 info2.
+        - Remove u16 padding field.
+      - Split FDE into function descriptor entry (struct sframe_fde_v3) and
+        attributes (struct sframe_fde_v3).
+      - Rename macro parameter "data" to "info" to hint at fde/fre info
+        word and wrap it in parenthesis.
+    - Group SFRAME_* definitions so that related ones are together.
+    - Reword commit message (my changes).
 
-+1
+ MAINTAINERS            |   1 +
+ arch/Kconfig           |   3 +
+ include/linux/sframe.h |  37 +++++++++++
+ kernel/unwind/Makefile |   3 +-
+ kernel/unwind/sframe.c | 136 +++++++++++++++++++++++++++++++++++++++++
+ kernel/unwind/sframe.h |  81 ++++++++++++++++++++++++
+ 6 files changed, 260 insertions(+), 1 deletion(-)
+ create mode 100644 include/linux/sframe.h
+ create mode 100644 kernel/unwind/sframe.c
+ create mode 100644 kernel/unwind/sframe.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8e71c6e7a68a..24d1fe93ff4a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -27864,6 +27864,7 @@ M:	Steven Rostedt <rostedt@goodmis.org>
+ S:	Maintained
+ F:	arch/*/include/asm/unwind_user.h
+ F:	include/asm-generic/unwind_user.h
++F:	include/linux/sframe.h
+ F:	include/linux/unwind*.h
+ F:	kernel/unwind/
+ 
+diff --git a/arch/Kconfig b/arch/Kconfig
+index e86880045158..94b2d5e8e529 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -486,6 +486,9 @@ config HAVE_UNWIND_USER_FP
+ 	bool
+ 	select UNWIND_USER
+ 
++config HAVE_UNWIND_USER_SFRAME
++	bool
++
+ config HAVE_PERF_REGS
+ 	bool
+ 	help
+diff --git a/include/linux/sframe.h b/include/linux/sframe.h
+new file mode 100644
+index 000000000000..0642595534f9
+--- /dev/null
++++ b/include/linux/sframe.h
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_SFRAME_H
++#define _LINUX_SFRAME_H
++
++#ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
++
++struct sframe_section {
++	unsigned long	sframe_start;
++	unsigned long	sframe_end;
++	unsigned long	text_start;
++	unsigned long	text_end;
++
++	unsigned long	fdes_start;
++	unsigned long	fres_start;
++	unsigned long	fres_end;
++	unsigned int	num_fdes;
++
++	signed char	ra_off;
++	signed char	fp_off;
++};
++
++extern int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
++			      unsigned long text_start, unsigned long text_end);
++extern int sframe_remove_section(unsigned long sframe_addr);
++
++#else /* !CONFIG_HAVE_UNWIND_USER_SFRAME */
++
++static inline int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
++				     unsigned long text_start, unsigned long text_end)
++{
++	return -ENOSYS;
++}
++static inline int sframe_remove_section(unsigned long sframe_addr) { return -ENOSYS; }
++
++#endif /* CONFIG_HAVE_UNWIND_USER_SFRAME */
++
++#endif /* _LINUX_SFRAME_H */
+diff --git a/kernel/unwind/Makefile b/kernel/unwind/Makefile
+index eae37bea54fd..146038165865 100644
+--- a/kernel/unwind/Makefile
++++ b/kernel/unwind/Makefile
+@@ -1 +1,2 @@
+- obj-$(CONFIG_UNWIND_USER)	+= user.o deferred.o
++ obj-$(CONFIG_UNWIND_USER)		+= user.o deferred.o
++ obj-$(CONFIG_HAVE_UNWIND_USER_SFRAME)	+= sframe.o
+diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
+new file mode 100644
+index 000000000000..c128c1eeaca2
+--- /dev/null
++++ b/kernel/unwind/sframe.c
+@@ -0,0 +1,136 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Userspace sframe access functions
++ */
++
++#define pr_fmt(fmt)	"sframe: " fmt
++
++#include <linux/sched.h>
++#include <linux/slab.h>
++#include <linux/srcu.h>
++#include <linux/uaccess.h>
++#include <linux/mm.h>
++#include <linux/string_helpers.h>
++#include <linux/sframe.h>
++#include <linux/unwind_user_types.h>
++
++#include "sframe.h"
++
++#define dbg(fmt, ...)							\
++	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
++
++static void free_section(struct sframe_section *sec)
++{
++	kfree(sec);
++}
++
++static int sframe_read_header(struct sframe_section *sec)
++{
++	unsigned long header_end, fdes_start, fdes_end, fres_start, fres_end;
++	struct sframe_header shdr;
++	unsigned int num_fdes;
++
++	if (copy_from_user(&shdr, (void __user *)sec->sframe_start, sizeof(shdr))) {
++		dbg("header usercopy failed\n");
++		return -EFAULT;
++	}
++
++	if (shdr.preamble.magic != SFRAME_MAGIC ||
++	    shdr.preamble.version != SFRAME_VERSION_3 ||
++	    !(shdr.preamble.flags & SFRAME_F_FDE_SORTED) ||
++	    !(shdr.preamble.flags & SFRAME_F_FDE_FUNC_START_PCREL) ||
++	    shdr.auxhdr_len) {
++		dbg("bad/unsupported sframe header\n");
++		return -EINVAL;
++	}
++
++	if (!shdr.num_fdes || !shdr.num_fres) {
++		dbg("no fde/fre entries\n");
++		return -EINVAL;
++	}
++
++	header_end = sec->sframe_start + SFRAME_HEADER_SIZE(shdr);
++	if (header_end >= sec->sframe_end) {
++		dbg("header doesn't fit in section\n");
++		return -EINVAL;
++	}
++
++	num_fdes   = shdr.num_fdes;
++	fdes_start = header_end + shdr.fdes_off;
++	fdes_end   = fdes_start + (num_fdes * sizeof(struct sframe_fde_v3));
++
++	fres_start = header_end + shdr.fres_off;
++	fres_end   = fres_start + shdr.fre_len;
++
++	if (fres_start < fdes_end || fres_end > sec->sframe_end) {
++		dbg("inconsistent fde/fre offsets\n");
++		return -EINVAL;
++	}
++
++	sec->num_fdes		= num_fdes;
++	sec->fdes_start		= fdes_start;
++	sec->fres_start		= fres_start;
++	sec->fres_end		= fres_end;
++
++	sec->ra_off		= shdr.cfa_fixed_ra_offset;
++	sec->fp_off		= shdr.cfa_fixed_fp_offset;
++
++	return 0;
++}
++
++int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
++		       unsigned long text_start, unsigned long text_end)
++{
++	struct vm_area_struct *sframe_vma, *text_vma;
++	struct mm_struct *mm = current->mm;
++	struct sframe_section *sec;
++	int ret;
++
++	if (!sframe_start || !sframe_end || !text_start || !text_end) {
++		dbg("zero-length sframe/text address\n");
++		return -EINVAL;
++	}
++
++	scoped_guard(mmap_read_lock, mm) {
++		sframe_vma = vma_lookup(mm, sframe_start);
++		if (!sframe_vma || sframe_end > sframe_vma->vm_end) {
++			dbg("bad sframe address (0x%lx - 0x%lx)\n",
++			    sframe_start, sframe_end);
++			return -EINVAL;
++		}
++
++		text_vma = vma_lookup(mm, text_start);
++		if (!text_vma ||
++		    !(text_vma->vm_flags & VM_EXEC) ||
++		    text_end > text_vma->vm_end) {
++			dbg("bad text address (0x%lx - 0x%lx)\n",
++			    text_start, text_end);
++			return -EINVAL;
++		}
++	}
++
++	sec = kzalloc(sizeof(*sec), GFP_KERNEL);
++	if (!sec)
++		return -ENOMEM;
++
++	sec->sframe_start	= sframe_start;
++	sec->sframe_end		= sframe_end;
++	sec->text_start		= text_start;
++	sec->text_end		= text_end;
++
++	ret = sframe_read_header(sec);
++	if (ret)
++		goto err_free;
++
++	/* TODO nowhere to store it yet - just free it and return an error */
++	ret = -ENOSYS;
++
++err_free:
++	free_section(sec);
++	return ret;
++}
++
++int sframe_remove_section(unsigned long sframe_start)
++{
++	return -ENOSYS;
++}
+diff --git a/kernel/unwind/sframe.h b/kernel/unwind/sframe.h
+new file mode 100644
+index 000000000000..fc2908e92c7b
+--- /dev/null
++++ b/kernel/unwind/sframe.h
+@@ -0,0 +1,81 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * From https://www.sourceware.org/binutils/docs/sframe-spec.html
++ */
++#ifndef _SFRAME_H
++#define _SFRAME_H
++
++#include <linux/types.h>
++
++#define SFRAME_VERSION_1			1
++#define SFRAME_VERSION_2			2
++#define SFRAME_VERSION_3			3
++#define SFRAME_MAGIC				0xdee2
++
++#define SFRAME_F_FDE_SORTED			0x1
++#define SFRAME_F_FRAME_POINTER			0x2
++#define SFRAME_F_FDE_FUNC_START_PCREL		0x4
++
++#define SFRAME_ABI_AARCH64_ENDIAN_BIG		1
++#define SFRAME_ABI_AARCH64_ENDIAN_LITTLE	2
++#define SFRAME_ABI_AMD64_ENDIAN_LITTLE		3
++
++struct sframe_preamble {
++	u16	magic;
++	u8	version;
++	u8	flags;
++} __packed;
++
++struct sframe_header {
++	struct sframe_preamble preamble;
++	u8	abi_arch;
++	s8	cfa_fixed_fp_offset;
++	s8	cfa_fixed_ra_offset;
++	u8	auxhdr_len;
++	u32	num_fdes;
++	u32	num_fres;
++	u32	fre_len;
++	u32	fdes_off;
++	u32	fres_off;
++} __packed;
++
++#define SFRAME_HEADER_SIZE(header) \
++	((sizeof(struct sframe_header) + (header).auxhdr_len))
++
++struct sframe_fde_v3 {
++	s64	func_start_off;
++	u32	func_size;
++	u32	fres_off;
++} __packed;
++
++struct sframe_fda_v3 {
++	u16	fres_num;
++	u8	info;
++	u8	info2;
++	u8	rep_size;
++} __packed;
++
++#define SFRAME_FDE_PCTYPE_INC			0
++#define SFRAME_FDE_PCTYPE_MASK			1
++
++#define SFRAME_AARCH64_PAUTH_KEY_A		0
++#define SFRAME_AARCH64_PAUTH_KEY_B		1
++
++#define SFRAME_V3_FDE_FRE_TYPE(info)		((info) & 0xf)
++#define SFRAME_V3_FDE_PCTYPE(info)		(((info) >> 4) & 0x1)
++#define SFRAME_V3_AARCH64_FDE_PAUTH_KEY(info)	(((info) >> 5) & 0x1)
++
++#define SFRAME_FDE_TYPE_DEFAULT			0
++
++#define SFRAME_V3_FDE_TYPE_MASK			0x1f
++#define SFRAME_V3_FDE_TYPE(info2)		((info2) & SFRAME_V3_FDE_TYPE_MASK)
++
++#define SFRAME_BASE_REG_FP			0
++#define SFRAME_BASE_REG_SP			1
++
++#define SFRAME_V3_FRE_CFA_BASE_REG_ID(info)		((info) & 0x1)
++#define SFRAME_V3_FRE_DATAWORD_COUNT(info)		(((info) >> 1) & 0xf)
++#define SFRAME_V3_FRE_DATAWORD_SIZE(info)		(((info) >> 5) & 0x3)
++#define SFRAME_V3_AARCH64_FRE_MANGLED_RA_P(info)	(((info) >> 7) & 0x1)
++
++#endif /* _SFRAME_H */
+-- 
+2.51.0
 
-> --
-> Regards,
-> Pratyush Yadav
->
-
---000000000000a63201065111cd7f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, May 5, 2026, 5:54=E2=80=
-=AFAM Pratyush Yadav &lt;<a href=3D"mailto:pratyush@kernel.org">pratyush@ke=
-rnel.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
-"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On Tue, May=
- 05 2026, Jork Loeser wrote:<br>
-<br>
-&gt; On Wed, 29 Apr 2026, Pratyush Yadav wrote:<br>
-&gt;<br>
-&gt;&gt; From: &quot;Pratyush Yadav (Google)&quot; &lt;<a href=3D"mailto:pr=
-atyush@kernel.org" target=3D"_blank" rel=3D"noreferrer">pratyush@kernel.org=
-</a>&gt;<br>
-&gt;&gt;<br>
-&gt;&gt; The KHO radix tree is a data structure that can track the presence=
- or<br>
-&gt;&gt; absence of an arbitrary key, with nothing inherently tied to KHO m=
-emory<br>
-&gt;&gt; preservation tracking. This was one of the design goals of the rad=
-ix<br>
-&gt;&gt; tree. This was done to enable it to be re-used by other users of K=
-HO.<br>
-&gt;<br>
-&gt; &quot;Arbitrary key&quot;: Not quite the complete 64-bits, rather 64 -=
- PAGE_SIZE, correct?<br>
-<br>
-Right, 64 - PAGE_SHIFT.<br>
-<br>
-&gt;<br>
-&gt;&gt; + * kho_radix_add_key - Add a key to the radix tree.<br>
-&gt;&gt;=C2=A0 * @tree: The KHO radix tree.<br>
-&gt;&gt; + * @key: The key to add.<br>
-&gt;&gt;=C2=A0 *<br>
-&gt;&gt; + * This function traverses the radix tree based on the key provid=
-ed. It sets the<br>
-&gt;&gt; + * corresponding bit in the leaf bitmap to mark the key as presen=
-t. If<br>
-&gt;&gt; + * intermediate nodes do not exist along the path, they are alloc=
-ated and added<br>
-&gt;&gt; + * to the tree.<br>
-&gt;<br>
-&gt; Consider adding a note on the key-width limitation.<br></blockquote></=
-div></div><div dir=3D"auto"><br></div><div dir=3D"auto">As a side effect, i=
-t should make sashiko happy.</div><div dir=3D"auto"><br></div><div dir=3D"a=
-uto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_cont=
-ainer"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-=
-left:1px #ccc solid;padding-left:1ex">
-<br>
-I think adding a runtime check would also be a good idea here.<br></blockqu=
-ote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">+1</div><div =
-dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_qu=
-ote_container"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex=
-;border-left:1px #ccc solid;padding-left:1ex">
-<br>
--- <br>
-Regards,<br>
-Pratyush Yadav<br>
-</blockquote></div></div></div>
-
---000000000000a63201065111cd7f--
 
