@@ -4,110 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39AFFCD343B
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 15:55:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C400CD342C
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 16:15:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB11B6B0093; Wed,  6 May 2026 11:54:53 -0400 (EDT)
+	id 72E206B0005; Wed,  6 May 2026 12:15:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E89F76B0095; Wed,  6 May 2026 11:54:53 -0400 (EDT)
+	id 6DF186B0088; Wed,  6 May 2026 12:15:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D507C6B0099; Wed,  6 May 2026 11:54:53 -0400 (EDT)
+	id 5F4586B008C; Wed,  6 May 2026 12:15:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BF8596B0093
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 11:54:53 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8D8348B59F
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:54:53 +0000 (UTC)
-X-FDA: 84737443266.01.976377B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5C7A9140005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:54:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EZ5tb2rB;
-	spf=pass (imf26.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BB066B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 12:15:10 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 46AA24024C
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:15:09 +0000 (UTC)
+X-FDA: 84737494338.06.2162102
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 679AB180011
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:15:07 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XLSYvey9;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778082891;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1778084107;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Q/IhHIcKIusj7XMf1pelqqwMeW2oHa4kJu1zjh7YcI=;
-	b=z3Uj/gVc4DKrGNy8l/wGg5N/r8BxxGJygtkVIPdkB6xRlGuDKZhUTD8S04iB8iMJjHx05T
-	4xhVRm7AegTVtiGXO4w8mGqj89haRZHPrqfLCQhzyJT5Dsiw2ItcTwfFNv2u4o7q2hXw6j
-	XSeiFOF1J9T3QCNRZyzspVqvBS9mWDI=
+	bh=m4+1/o+xgo43F+2pBLdcVc3ZSu95uTHefiaNtMBxq4s=;
+	b=ZcsrSYjW38QOFVkI7NShejmlDo9CRYTjh3AMomWXvpk3ea5U/JxjaH5P4OJ+etLyiQ4uGa
+	s0GzIII9ZbQuFu/qDgt0ONHvM11d4I8AyUOEpf9Wy1SrR/VUOHWFzQV+5yoDh3+ky7R7lC
+	He5Xt+lew1sEbAynqGCAR2DLX5Ygemg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EZ5tb2rB;
-	spf=pass (imf26.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XLSYvey9;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778082891; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778084107; a=rsa-sha256;
 	cv=none;
-	b=EpbjruQSesD2BdfoV9W9k5VsUyYXvGsSAm3D6HPKS7FOX5PN7STfD5fAOAwM4WFadmZlQT
-	YB2wvdM4CwYd9+D5xJyrPmkW9zgiZWK0WZLIQuKy1+nkddH7aCr/Olr/RLPu/xL1yPNKst
-	9jaT3+Z4svv8rkMpH2GfZWGCxRaGxEE=
+	b=AXiawal+mN1gg2CqWXvuu20olG78SLJBYCDIOE8bSS4w5YV7m9BWaCUiGL/FtwzfVeO+0X
+	xRmy0F6opw7CSSkDZMPD0qi4zUQAHUmb6DxeuN7wvJY/GEV0yA4EXwmEsmWDDxz5Rrmico
+	JVyyQS/Yk2jLg6gF5c2zmXG4SxqOnhs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D36AE44302;
-	Wed,  6 May 2026 15:54:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B3ED3C2BCF4;
-	Wed,  6 May 2026 15:54:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C34C66013B;
+	Wed,  6 May 2026 16:15:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD015C2BCB0;
+	Wed,  6 May 2026 16:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778082887;
-	bh=+7G4RM081CTfKDu8eUBQS6YQNemzuMtvLb/fbGmv+eY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EZ5tb2rB4uixhV43NTPrXveOV9p7u1rAJCDGdMp8WBd6b99CYZkP+/c8nGn1rwHqG
-	 pmhTSckT+IHNBnLddE9G8ena2PrPX4ZUnKdCfNW8l1GB7mmAZE7/8jCNXntule71l8
-	 F/IcaW/teRkSvxo3o6iQ2NKmAMZElu+/D+XUkM21i9Rip/UEoVoJQ55O4+u/H0k7Jr
-	 oYHoUiWoe/Z2KV7+QapyARywE7IAco8FBjduNInabw5FGLSXQIaxKtJTGZprxP5rGY
-	 1s7MiRshd3TBRczF+tIDbFNqhUXK3U4uPLobNISyyeI7mwNiYl6uZWXDMymocpuWyq
-	 jEvhQnJjPtZEQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A92DCCD3442;
-	Wed,  6 May 2026 15:54:47 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Wed, 06 May 2026 08:54:42 -0700
-Subject: [PATCH v2 6/6] mm: hugetlb: Refactor out hugetlb_alloc_folio()
+	s=k20201202; t=1778084106;
+	bh=B3REzEcQHj5vktVYOp4io+MCxNEzgbT4NgOlD9ZnWao=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=XLSYvey9WPz2hBbTkwmzbkAclbXbGSfpdwIDc+Qakic8vcMii2sl4fpp8de9POwem
+	 YDOu5cwi+KZiAVLsrm3mGdBMpyoD0+pjJiiUDIBRGK2Z75SgVUfKbZKQ3EbuHgGXLI
+	 umXWjbt31/C/Y8k0UnXp6lWiuPUktxeicjqW/50yMWOCcOrnTpC/Nxflc50vgRWCqi
+	 UcxINZSro7yvGoiAgEI3exnmpg8W94PXXNH2EipqC9haLLDaXDQFAJur/55u8sYC7O
+	 PLORoNONKCwOlt/9tTopJlV/852N1qWWPEPw+iG14eRg2okK+Qswc5t0dTI/K5z37E
+	 awlvD2RGakkjA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Cris Jacob Maamor
+ <crisjacobmaamor@gmail.com>,  Mike Rapoport <rppt@kernel.org>,  Alexander
+ Graf <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/5] liveupdate: validate restored LUO metadata
+In-Reply-To: <aftVd5RnpnAi2jdc@google.com> (Pasha Tatashin's message of "Wed,
+	6 May 2026 11:05:32 -0400")
+References: <20260501094637.38650-1-crisjacobmaamor@gmail.com>
+	<20260501173053.73116-1-crisjacobmaamor@gmail.com> <afT_xHDuFwAUSR0X@plex>
+	<2vxzse84zzag.fsf@kernel.org> <aftVd5RnpnAi2jdc@google.com>
+Date: Wed, 06 May 2026 18:15:03 +0200
+Message-ID: <2vxzfr44zf94.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260506-hugetlb-open-up-v2-6-826a0c5f28fc@google.com>
-References: <20260506-hugetlb-open-up-v2-0-826a0c5f28fc@google.com>
-In-Reply-To: <20260506-hugetlb-open-up-v2-0-826a0c5f28fc@google.com>
-To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- David Hildenbrand <david@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, fvdl@google.com, 
- jiaqiyan@google.com, joshua.hahnjy@gmail.com, jthoughton@google.com, 
- mhocko@kernel.org, michael.roth@amd.com, pasha.tatashin@soleen.com, 
- pbonzini@redhat.com, peterx@redhat.com, pratyush@kernel.org, 
- rick.p.edgecombe@intel.com, rientjes@google.com, roman.gushchin@linux.dev, 
- seanjc@google.com, shakeel.butt@linux.dev, shivankg@amd.com, 
- vannapurve@google.com, yan.y.zhao@intel.com, Dan Williams <djbw@kernel.org>, 
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778082886; l=9112;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=zPlFgYkmuWlbZ0fv93XRQ9dNZUEoV1wVV83bZAcmM2o=;
- b=HPPWp6DtX5ckKKL2Y2JyaJF+iyeM5p2mthrOWGId5tZ2kGaFEKAjjUeJk0x1ijjrxS2mgxyZD
- 757hPSkEcAiA6KNYC/D+jwmDVhIhVulPQxc2ibS0qLSwfEUrGctzgr5
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5C7A9140005
-X-Stat-Signature: zuohr67xs15fcsw3pdcby5b58hgk33ac
-X-HE-Tag: 1778082891-353463
-X-HE-Meta: U2FsdGVkX18dnOilV2iQK1zb7TqNcunYhS4nDU5p4BK9b+Bpmy6qVv6J7kdFoSCWyALZzf10Zo83UV8FuV8oS8NqzibLQjXIRcxoiFe7dzRcxbBV9eqvvG7SITR8tNOdnU5Yj4/kcUyRDUJR0ccLmEVe68QsCweenw/W2NKoLP2YIo3NQfMfgXibqNxLcIsxVK9rhuVqhJND9nnYnQLvuouN/Et6wLa/RhAqo8u/WDJr0y+PezdQhIgGVWtok7pHY9S0XWqJKVZ2sSruC108To13ftYAvsFJRtSgjvYSxwTZuDZQygh/lZOs2KIgmBIYZtXOTS+vidfxtrOfNXdyLb5teSk3YIcLnEBTCWf9e5jJ28ZvK3+Oz7ufNwx9epdWDlVqEx5EPGFg+2uCZnkgs5PlfjJCICNH7YspwZzumvzJefD7mfi6SB88nNgKdaTa36YbM/PirPuPspe0JkBXMy8SUfNEpLlmu+tsdI3m0aRG6OkhybW1VjCBi6aKJMQCib71cLfwQlZxkK+i37RNh3XELIHVrFYZe/6RH0UICJKlWElwLY3HP3ZFQvtE4RCntOTyXE/RK+fbtawXNVvc5lUAwepV1YRZ9r6jqP79rhHBohPzuzTA7b1NRsWqqESBRwxYs54lILBjKzi6IhUmLdk/8XY5Ch7G1SR+4sW6MuPmzRQVTbdc8T6vPoFq2QHJ4hvwvyKOp04Ma8ihEumj4VOUiwsnXIh5s4LHfpewxEwTvd1yyxcdKHQRaUNGz83jPkmvAI00MdjRAt9K/b27wpIXiZg+3milVm624Bfg7FHquIii3mA6DLTQou48/jGPc5RVy6EHupc7zkJaG9JHaGIX89am0m00bcNtsvcjY3tJAEoC0lejZdRs3KUR3rXWbBtZJcXZgAX+VJvyUi1pbP5e2ot9x1l0CdwYLRDaAj2Q4D9ZD72/gFmBrhDOQ63BwY7CnX9V3oiPicDlkZk
- me7Kp1He
- EKjlWHHxmVg0cSDJioqQPqNSUqSnsZ3aETnR8UEb0972UjKlokuGfrK64wzqH8PQEr8oerDOhwv1SoSti/LC9YjhxDUegGIQJyxvU8LqjZi1h/H3IHe06v9YFCe6EGjebTlf8IbepZ2qC3ry47OfC1Dsp1o57Ke/yifTFzHri+nBHCJ449ke+vwQ9DgjC4OZ505IK8WnmPmH/d8ftsDv1nIjOm+y3Q6EW5Bk2lkJCudUYepR7S2nWzpDK2/AI9IM9KMd2BAycSwbOhxfSuZO/y/lZZocsrHVNtB1xEbeRIeN6QcjGpen2k6emc7t7OFTdzKX4VPVOf2iOXlhAf3XCsIaG5xKzDRR6R1q8zg73y6/8GVmDJG4zqY8YDN2J8iJNtYyO84kA6iNLaf7USxEpZJabsNZqz9xbI0MUxq20IxyYeK9cjMpmaB2+xVYhd7edIYXBBXgwnp7K0NDljK0EjbJm/qKHZ24iPh2fl65ZyHXcFu7EhqnkRrEBCrX8BnC0jJOngmkvGyhHvFqGXMvgk2+NgA==
+X-Rspamd-Queue-Id: 679AB180011
+X-Rspamd-Server: rspam06
+X-Stat-Signature: s4x1codt38hwqq64c94xeshmft7xypm6
+X-HE-Tag: 1778084107-943370
+X-HE-Meta: U2FsdGVkX1/JDT7VRY+lEgerzdfu9YozpqU86xCHQ/nnqGoHkb/+mZHw3G9+KVwmVWzN2ekOXLT0xArwFE2B1R2gy05ghJAS1bJKFmGuVFjQgu8Wna0mBkvctDK+nkfPXf+02ZbctL/h/SN4r27AKh2mxbHfEW069bYqYdZKrlZfSPK7nYUaNLrkTNRsFSpMZiXcf1aAjx6C4DihAZ98HbcNf2iMQV19jXi2lwzIZPBlUX63hHxCrwH2NgTjtAHg77T6FO+ywGdH3okPwe+MeelButXyv9XhDeRrpY6bo4/IJCWYOrgEs8ToK23k043D3QYUih/KkWMgm/1ONdyMCgYWAlL3UP++2BE5VM1p0Ci8DdqiBrAXQ9nJdPFE/sc8anKvn5qMz1/SI3mPikaRYOjvH37r9jmaT7TBNggS7Rqv5qsQqaOynF7U0GubZj6RgSnIwQ5TaY09v7SdLrQwL9imUKPmAF0kF/Mubz7MzJbnh9N65tusNPbJFi0WsNKl65q9A9bjRlXTZ0yjib73WN0TASsnN5nH1tT5VydhNbHKjk2nh2O+t4zdwaSEpTowoj2NzCRpf0x82pFxvPYMwHs4rS8kjWYvUjQT5zJutksyQALrvlAg7IVKVDr0ybpx9A7Cj6VhihEA5GGsrwGVrKnosnkym/vw8U36ymZrOsvN6YHcfVHyFlkHyRAqqCsMcfADEAGGvOsj2HRC7WSkvgZNANSBm52pLFtJKhqSNvVlDgtR8YEK/vSt1yCDJF8qyW3MBEF2KP6oRmjJ7xMU0M59ed3Qtvyt/dQoRdhlGjYcSIy3G3vGspEvtluUP/vyMV40LX6VYeV8yVMVIoUR7a3fV5M8XD0i0qFwEbuRyT9+Rxoq7aYEU/bhrkrahlYWfhOOCsEHxcBzFm50dxhMS6BZBufr2rCwx4nN0gDQD6tDM3xnuzdidq0PRSJqcGDmaafabLhgkFVpCsWvMrU
+ +dyY5GFL
+ VPDZJ2qlAyWJRd0c7zfo2ANueQTIg3RGCEIWObHOYMcUrewIY75BTPHDPw8U7HpGOQSJtO3XUx9SpZmzstQXsYLRW38w2eVY7ZqO9A/T5FNIryOEQ9/qymNWLGa7X/AzW+FNE/mYDP0ucgNfkV3VEUlJVhms/vWECcaid3/PrhniIfBo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,287 +96,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ackerley Tng <ackerleytng@google.com>
+On Wed, May 06 2026, Pasha Tatashin wrote:
 
-Refactor out hugetlb_alloc_folio() from alloc_hugetlb_folio(), which
-handles allocation of a folio and memory and HugeTLB charging to cgroups.
+> On 05-06 11:02, Pratyush Yadav wrote:
+>> Hi Pasha,
+>> 
+>> On Fri, May 01 2026, Pasha Tatashin wrote:
+>> 
+>> > On 05-02 01:30, Cris Jacob Maamor wrote:
+>> >> LUO restores metadata from KHO/FDT during liveupdate. The restored
+>> >> metadata contains physical addresses and count fields used to access and
+>> >> walk preserved session, file set, and FLB arrays.
+>> >> 
+>> >> This series adds a non-consuming KHO preserved-range check and uses it
+>> >> before phys_to_virt() on restored metadata addresses. It also rejects
+>> >> restored counts above LUO_SESSION_MAX, LUO_FILE_MAX, and LUO_FLB_MAX
+>> >> before traversal.
+>> >> 
+>> >> As far as I can tell, this is root/admin-only; I do not have evidence
+>> >> that a normal unprivileged user can trigger it directly.
+>> >> 
+>> >> Changes since v1:
+>> >> - Dropped RFC marking.
+>> >> - Added changelog text to each patch.
+>> >> - No code changes.
+>> >> 
+>> >> Cris Jacob Maamor (5):
+>> >>   kexec: handover: add helper to check preserved page ranges
+>> >>   liveupdate: validate LUO FDT physical address before mapping
+>> >>   liveupdate: validate restored LUO session metadata
+>> >>   liveupdate: validate restored LUO file set metadata
+>> >>   liveupdate: validate restored LUO FLB metadata
+>> >
+>> > I have replied separately in the security report to clarify that this is 
+>> > not a bug. The behavior follows the ABI specification exactly: we use 
+>> > the PA addresses and ranges provided by the KHO FDT tree.
+>> >
+>> > NAK
+>> 
+>> I really do think we should do a restore-only variant for the
+>> kho_alloc_preserve() family of allocators and use it everywhere. It
+>
+> That is unrelated to the provided patch series. The author of this 
+> series reported this as a security issue to the Linux security ML, and 
+> submitted this series at their request.
 
-This refactoring decouples the HugeTLB page allocation from VMAs,
-specifically:
+Oh yes, sure. I am not arguing for taking this series. I just figured
+this would be a good point to have this discussion.
 
-1. Reservations (as in resv_map) are stored in the vma
-2. mpol is stored at vma->vm_policy
-3. A vma must be used for allocation even if the pages are not meant to be
-   used by host process.
+>
+> This is not a security issue, and in fact, it is not an issue at all. A 
+> restore-only variant can be added, but I do not see a reason for LUO to 
+> use it.
+>
+>> would prevent problems in the future. Not because the previous kernel is
+>> malicious, but because we might have bugs and the KHO page magic sanity
+>> check acts as a defense in depth.
+>> 
+>> For example, I am currently looking at a LUO bug where LUO does not
+>> track if a session is outgoing or incoming. So you can do a retrieve()
+>> or finish() on an outgoing session. A lot of nastiness is saved because
+>> of the page magic check. Things like kho_restore_vmalloc() or
+>> kho_restore_folio() fail early and loudly.
+>
+> I am not sure what bug you are looking at (please share the details!), 
 
-Without this coupling, VMAs are no longer a requirement for
-allocation. This opens up the allocation routine for usage without VMAs,
-which will allow guest_memfd to use HugeTLB as a more generic allocator of
-huge pages, since guest_memfd memory may not have any associated VMAs by
-design. In addition, direct allocations from HugeTLB could possibly be
-refactored to avoid the use of a pseudo-VMA.
+I was looking at LUO code and realized that we do not separate outgoing
+and incoming sessions when dealing with preserve/retrieve/finish ioctls.
+So you can create a session, preserve a FD, and then immediately call
+finish or retrieve without doing a kexec. Of course, LUO file handlers
+aren't able to cope with it.
 
-Also, this decouples HugeTLB page allocation from HugeTLBfs, where the
-subpool is stored at the fs mount. This is also a requirement for
-guest_memfd, where the plan is to have a subpool created per-fd and stored
-on the inode.
+So for example, you can preserve a memfd and then immediately call
+finish. This will call memfd_luo_finish(), where it will try to
+kho_restore_vmalloc(). That fails with a bit WARN splat. And then later
+it calls kho_restore_free() which also fails in a similar fashion.
 
-No functional change intended.
+You can do the same thing with retrieve(), but that also fails early and
+loudly and does not cause any problems.
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- include/linux/hugetlb.h |   3 +
- mm/hugetlb.c            | 179 ++++++++++++++++++++++++++----------------------
- 2 files changed, 100 insertions(+), 82 deletions(-)
+I am working on a fix for it. Should have something out shortly.
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 93418625d3c5f..ec205d8580885 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -705,6 +705,9 @@ bool hugetlb_bootmem_page_zones_valid(int nid, struct huge_bootmem_page *m);
- int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list);
- int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
- void wait_for_freed_hugetlb_folios(void);
-+struct folio *hugetlb_alloc_folio(struct hstate *h, struct hugepage_subpool *spool,
-+		struct mempolicy *mpol, int nid, nodemask_t *nodemask,
-+		bool charge_hugetlb_cgroup_rsvd, bool use_global_reservation);
- struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 				unsigned long addr, bool cow_from_owner);
- struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4159b3565a9be..a1c5b94e52e0a 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2821,6 +2821,88 @@ void wait_for_freed_hugetlb_folios(void)
- 	flush_work(&free_hpage_work);
- }
- 
-+struct folio *hugetlb_alloc_folio(struct hstate *h, struct hugepage_subpool *spool,
-+		struct mempolicy *mpol, int nid, nodemask_t *nodemask,
-+		bool charge_hugetlb_cgroup_rsvd, bool use_global_reservation)
-+{
-+	size_t nr_pages = pages_per_huge_page(h);
-+	struct hugetlb_cgroup *h_cg = NULL;
-+	gfp_t gfp = htlb_alloc_mask(h);
-+	int idx = hstate_index(h);
-+	struct folio *folio;
-+	int ret;
-+
-+	if (charge_hugetlb_cgroup_rsvd &&
-+	    hugetlb_cgroup_charge_cgroup_rsvd(idx, nr_pages, &h_cg))
-+		return ERR_PTR(-ENOSPC);
-+
-+	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, &h_cg)) {
-+		ret = -ENOSPC;
-+		goto err_uncharge_hugetlb_cgroup_rsvd;
-+	}
-+
-+	spin_lock_irq(&hugetlb_lock);
-+
-+	folio = NULL;
-+	if (use_global_reservation || available_huge_pages(h))
-+		folio = dequeue_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
-+
-+	if (!folio) {
-+		spin_unlock_irq(&hugetlb_lock);
-+		folio = alloc_buddy_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
-+		if (!folio) {
-+			ret = -ENOSPC;
-+			goto err_uncharge_hugetlb_cgroup;
-+		}
-+		spin_lock_irq(&hugetlb_lock);
-+		list_add(&folio->lru, &h->hugepage_activelist);
-+		folio_ref_unfreeze(folio, 1);
-+		/* Fall through */
-+	}
-+
-+	if (use_global_reservation) {
-+		folio_set_hugetlb_restore_reserve(folio);
-+		h->resv_huge_pages--;
-+	}
-+
-+	hugetlb_cgroup_commit_charge(idx, pages_per_huge_page(h), h_cg, folio);
-+
-+	if (charge_hugetlb_cgroup_rsvd) {
-+		hugetlb_cgroup_commit_charge_rsvd(idx, pages_per_huge_page(h),
-+						  h_cg, folio);
-+	}
-+
-+	spin_unlock_irq(&hugetlb_lock);
-+
-+	ret = mem_cgroup_charge_hugetlb(folio, gfp | __GFP_RETRY_MAYFAIL);
-+	/*
-+	 * Unconditionally increment NR_HUGETLB here because if
-+	 * mem_cgroup_charge_hugetlb failed, freeing the page will
-+	 * decrement NR_HUGETLB.
-+	 */
-+	lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
-+
-+	if (ret == -ENOMEM) {
-+		free_huge_folio(folio);
-+		/*
-+		 * Skip uncharging hugetlb_cgroup since the charges
-+		 * were committed to the folio and freeing the folio
-+		 * would have cleared those up.
-+		 */
-+		return ERR_PTR(ret);
-+	}
-+
-+	return folio;
-+
-+ err_uncharge_hugetlb_cgroup:
-+	hugetlb_cgroup_uncharge_cgroup(idx, nr_pages, h_cg);
-+ err_uncharge_hugetlb_cgroup_rsvd:
-+	if (charge_hugetlb_cgroup_rsvd)
-+		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, nr_pages, h_cg);
-+
-+	return ERR_PTR(ret);
-+}
-+
- typedef enum {
- 	/*
- 	 * For either 0/1: we checked the per-vma resv map, and one resv
-@@ -2856,11 +2938,12 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	long retval, gbl_chg, gbl_reserve;
- 	map_chg_state map_chg;
- 	int ret, idx;
--	struct hugetlb_cgroup *h_cg = NULL;
- 	gfp_t gfp = htlb_alloc_mask(h);
- 	struct mempolicy *mpol;
- 	nodemask_t *nodemask;
- 	int nid;
-+	bool charge_hugetlb_cgroup_rsvd;
-+	bool global_reservation_exists;
- 
- 	idx = hstate_index(h);
- 
-@@ -2907,89 +2990,28 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	}
- 
- 	/*
--	 * If this allocation is not consuming a per-vma reservation,
--	 * charge the hugetlb cgroup now.
-+	 * If allocation doesn't reuse a reservation in the resv_map,
-+	 * charge for the reservation.
- 	 */
--	if (map_chg) {
--		ret = hugetlb_cgroup_charge_cgroup_rsvd(
--			idx, pages_per_huge_page(h), &h_cg);
--		if (ret) {
--			ret = -ENOSPC;
--			goto out_subpool_put;
--		}
--	}
-+	charge_hugetlb_cgroup_rsvd = map_chg != MAP_CHG_REUSE;
- 
--	ret = hugetlb_cgroup_charge_cgroup(idx, pages_per_huge_page(h), &h_cg);
--	if (ret) {
--		ret = -ENOSPC;
--		goto out_uncharge_cgroup_reservation;
--	}
--
--	spin_lock_irq(&hugetlb_lock);
-+	/*
-+	 * gbl_chg == 0 indicates a reservation exists for this
-+	 * allocation, so try to use it.
-+	 */
-+	global_reservation_exists = gbl_chg == 0;
- 
- 	/* Takes reference on mpol. */
- 	nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
- 
--	/*
--	 * gbl_chg == 0 indicates a reservation exists for the allocation - so
--	 * try dequeuing a page. If there are available_huge_pages(), try using
--	 * them!
--	 */
--	folio = NULL;
--	if (!gbl_chg || available_huge_pages(h))
--		folio = dequeue_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
--
--	if (!folio) {
--		spin_unlock_irq(&hugetlb_lock);
--		folio = alloc_buddy_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
--		if (!folio) {
--			mpol_cond_put(mpol);
--			ret = -ENOSPC;
--			goto out_uncharge_cgroup;
--		}
--		spin_lock_irq(&hugetlb_lock);
--		list_add(&folio->lru, &h->hugepage_activelist);
--		folio_ref_unfreeze(folio, 1);
--		/* Fall through */
--	}
-+	folio = hugetlb_alloc_folio(h, spool, mpol, nid, nodemask,
-+				    charge_hugetlb_cgroup_rsvd,
-+				    global_reservation_exists);
- 
- 	mpol_cond_put(mpol);
- 
--	/*
--	 * Either dequeued or buddy-allocated folio needs to add special
--	 * mark to the folio when it consumes a global reservation.
--	 */
--	if (!gbl_chg) {
--		folio_set_hugetlb_restore_reserve(folio);
--		h->resv_huge_pages--;
--	}
--
--	hugetlb_cgroup_commit_charge(idx, pages_per_huge_page(h), h_cg, folio);
--	/* If allocation is not consuming a reservation, also store the
--	 * hugetlb_cgroup pointer on the page.
--	 */
--	if (map_chg) {
--		hugetlb_cgroup_commit_charge_rsvd(idx, pages_per_huge_page(h),
--						  h_cg, folio);
--	}
--
--	spin_unlock_irq(&hugetlb_lock);
--
--	ret = mem_cgroup_charge_hugetlb(folio, gfp | __GFP_RETRY_MAYFAIL);
--	/*
--	 * Unconditionally increment NR_HUGETLB here. If it turns out that
--	 * mem_cgroup_charge_hugetlb failed, then immediately free the page and
--	 * decrement NR_HUGETLB.
--	 */
--	lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
--
--	if (ret == -ENOMEM) {
--		free_huge_folio(folio);
--		/*
--		 * Skip uncharging hugetlb_cgroup since the charges
--		 * were committed to the folio and freeing the folio
--		 * would have cleared those up.
--		 */
-+	if (IS_ERR(folio)) {
-+		ret = PTR_ERR(folio);
- 		goto out_subpool_put;
- 	}
- 
-@@ -3022,12 +3044,6 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 
- 	return folio;
- 
--out_uncharge_cgroup:
--	hugetlb_cgroup_uncharge_cgroup(idx, pages_per_huge_page(h), h_cg);
--out_uncharge_cgroup_reservation:
--	if (map_chg)
--		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
--						    h_cg);
- out_subpool_put:
- 	/*
- 	 * put page to subpool iff the quota of subpool's rsv_hpages is used
-@@ -3038,7 +3054,6 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 		hugetlb_acct_memory(h, -gbl_reserve);
- 	}
- 
--
- out_end_reservation:
- 	if (map_chg != MAP_CHG_ENFORCED)
- 		vma_end_reservation(h, vma, addr);
+> but the fix absolutely should be to use outgoing/incoming sessions 
+> properly, and if we mixed them up somewhere, THAT should be fixed. Using 
+> KHO restore is not going to help much; however, I agree it can add 
+> some extra scrutiny (i.e., similar to an ASSERT), but it is not really 
+> something that would help improve correctness in any meaningful way. The 
+> correctness should lie in the LUO logic using incoming as incoming, and 
+> outgoing as outgoing.
+
+I am not arguing that we shouldn't fix the logic bugs. Of course we
+should.
+
+My point is that this sanity check acts as another layer of defence.
+Bugs happen, but the earlier we catch them the better and this sanity
+check helps us do exactly that.
+
+For example, if we did not have these sanity checks, the loud errors I
+described above would be replaced by silent use-after-free, double-free,
+struct page corruption, or other problems.
+
+So I would like to understand why you _don't_ want to have this line of
+defence. What's the problem? If you are worried about performance, we
+can go and measure it. If the overhead is too high this can be behind a
+debug config.
+
+>
+>> 
+>> If we want to squeeze out more performance later down the line we can
+>> move it behind a debug config, but having this usage pattern of always
+>> restoring before using is going to be a lot more sane than just using
+>> physical addresses willy nilly.
+>> 
+>> The approach this series takes with kho_is_preserved() is the wrong
+>> design. But a kho_restore() or something similar (maybe we can find a
+>> better name?) is really where we should be going.
+>> 
+>> -- 
+>> Regards,
+>> Pratyush Yadav
 
 -- 
-2.54.0.545.g6539524ca2-goog
-
-
+Regards,
+Pratyush Yadav
 
