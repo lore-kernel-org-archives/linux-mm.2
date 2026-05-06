@@ -4,102 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48AA9CD3424
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 08:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12D46CD3439
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 08:58:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF9CA6B008A; Wed,  6 May 2026 04:48:09 -0400 (EDT)
+	id 5D8656B0005; Wed,  6 May 2026 04:58:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD0AA6B0092; Wed,  6 May 2026 04:48:09 -0400 (EDT)
+	id 588D46B0088; Wed,  6 May 2026 04:58:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E6CD6B0093; Wed,  6 May 2026 04:48:09 -0400 (EDT)
+	id 49EBF6B008A; Wed,  6 May 2026 04:58:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 888736B008A
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 04:48:09 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A642A0624
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 08:48:09 +0000 (UTC)
-X-FDA: 84736367898.22.DEC14F6
-Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C3749120004
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 08:48:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=wdc.com header.s=dkim.wdc.com header.b=RlAu3AWO;
-	spf=pass (imf29.hostedemail.com: domain of "prvs=579771007=hans.holmberg@wdc.com" designates 216.71.154.45 as permitted sender) smtp.mailfrom="prvs=579771007=hans.holmberg@wdc.com";
-	dmarc=pass (policy=quarantine) header.from=wdc.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B6C16B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 04:58:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D5B28120760
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 08:58:31 +0000 (UTC)
+X-FDA: 84736394022.04.B603A08
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 23FF24000D
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 08:58:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KGV7L4nj;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778057287;
+	s=arc-20220608; t=1778057910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IzG1QcduLYPx5YIGM/BfY47cz+ZD2G5MO0VoLyhKKfU=;
-	b=RxuVVLV+t228QgoGIo7DBJlxNMPbr9TTJ7Vb0btpJioBg4ZMzCCha8Qd4LvvasDWm9VmEI
-	yONS+afhzZHFTzNWeLY63FmcgJSix45EOTIid7Sk0idmbHR5RUIiarJjJmjNcLczmXAA9L
-	OLMpbPQxjPONtkNcXGEfjG2UYv1GOh0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778057287; a=rsa-sha256;
-	cv=none;
-	b=SmCeQqAlRSFB5UeXtlRQpCsm9tydUQHQpz/sCzuYhcQm3xJBX+XP/eBTqlyyrzxUHDmUkn
-	TxVklF6RNwxZONNE3kSzdgXcPOwFWkCzvbiGtJZMYvtDN09sklXkQ1nHEDKA4FlBJ79vGB
-	POPj3wGWjXvFWFrKvrikwJVjrFCvPKo=
+	bh=4AiSvNvcTpa2TKyw35vaQTKtLcmTvDROixEkAC62Qps=;
+	b=Dos+yRXA+4oeZnDvt4UqczlI+/yVmMVjw7a/kjFGebZQ4TQx19kaGtsbDE0zvRMlZYgxFO
+	3BdvQDoxcMzkKMpso3+hbeXrVf6DnyAFuCBbEd0GSqT15Sra2UVE6SQwfrdChSenieJPOb
+	HMArUfmIrLSRwjpeomB6cwY+zqyU5t0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=wdc.com header.s=dkim.wdc.com header.b=RlAu3AWO;
-	spf=pass (imf29.hostedemail.com: domain of "prvs=579771007=hans.holmberg@wdc.com" designates 216.71.154.45 as permitted sender) smtp.mailfrom="prvs=579771007=hans.holmberg@wdc.com";
-	dmarc=pass (policy=quarantine) header.from=wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1778057286; x=1809593286;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qsBm1M6FmB0XbuZrcOGLDEAaSmoHvdrJLvIG5bXwZLM=;
-  b=RlAu3AWOTLp4kCK7o/4wdTmvvWKjAAIzOVtJQVdDsFt2NCrX+9qgFuhR
-   MRo/MyPOguxtL5Dido170HmNNdv9RTMIuDpObNm7QgURmvj2KaoHPWsmq
-   EUWTcrfb6BHxstsuA2XMHnk+3HpWH1fKR9YmHdrrc5s7FPEPsKU30AzJ3
-   jLhFAjjCvcaaeM+kc052BG82HCJgmIIBaH0whCFRwZHmyIOu0hdP1UF/X
-   IesSZBxl/+dBpVWXvWlXvyqtEsCxiiiVjS5oBJskL9q2UTRzfxQWo7Pwb
-   +mH1n+uP6pd7MPG4JzA2hhFZmYvLKD6SnJaQx1jx3/w2uX6/wOq9Zvq4q
-   w==;
-X-CSE-ConnectionGUID: 0b9auKheSPeCiAkXoS7K+A==
-X-CSE-MsgGUID: FL2sWazBR7mjpvIttvZgJQ==
-X-IronPort-AV: E=Sophos;i="6.23,219,1770566400"; 
-   d="scan'208";a="144862048"
-Received: from unknown (HELO uls-op-esad1-o.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 06 May 2026 16:48:04 +0800
-X-CSE-ConnectionGUID: eI4/O+xOTq2tLmIII0/D+A==
-X-CSE-MsgGUID: Rvq+HWvvRven8pI/FnqxyQ==
-IronPort-SDR: 69fb0031_MUdC6BWuV1puYMCO7bskfX6GKGT2Y6tAY782136AyDJ+oET
- rlop8WW21jeHtoiAwVGd2KVWkX1CjvX3NAhfL+A==
-Received: from uls-op-esai1-o.wdc.com ([10.248.3.45])
-  by uls-op-esad1-o.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 May 2026 01:47:44 -0700
-X-CSE-ConnectionGUID: 0L+uBArmQx6WoI2fXu2yXw==
-X-CSE-MsgGUID: 7/GmHKBNTfex5oqEb8E+6A==
-WDCIronportException: Internal
-Received: from wdap-ev3kzn5lk3.ad.shared (HELO gcv.wdc.com) ([10.224.16.14])
-  by uls-op-esai1-o.wdc.com with ESMTP; 06 May 2026 01:47:43 -0700
-From: Hans Holmberg <hans.holmberg@wdc.com>
-To: youngjun.park@lge.com
-Cc: chrisl@kernel.org,
-	linux-mm@kvack.org,
-	hans@owltronix.com,
-	lsf-pc@lists.linux-foundation.org
-Subject: follow up after discussion at LSF
-Date: Wed,  6 May 2026 10:47:41 +0200
-Message-ID: <20260506084741.14228-1-hans.holmberg@wdc.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330>
-References: <aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330>
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KGV7L4nj;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778057910; a=rsa-sha256;
+	cv=none;
+	b=A6/qJcURGIho/5EtYnm1pr9F2bIoKAIPtU7rBVCMSLUGXy0E2zVp0cXpltYKSctdGVmhgg
+	eEyWJJRPQJaKzSjTjdQa7xDB6ON/WuDJK1ylLRHo/j0mYWXMzBP1TxU0jv5JsOUZNdKImc
+	jCXJMxJGsl/EBwtBiVVX7pTUUdbVgJA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778057903; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=4AiSvNvcTpa2TKyw35vaQTKtLcmTvDROixEkAC62Qps=;
+	b=KGV7L4nj1uEAGxgRlYZZCMkXl+iAuiWbnsnTLOGV3UpWQHWJpZi4GAcbqalUvI5CvwpOXpbQe5Zh4pg2RhTFQ/0NxEjAs7yfENHsuBJMssln9TcVoAOQ7KbtWWqFrmtjgAwR2dKI78OKXKoLR4lsRgByqesLF+oMAa61RyQuqnI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R831e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X2NxPMH_1778057900;
+Received: from 30.221.149.158(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X2NxPMH_1778057900 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 06 May 2026 16:58:21 +0800
+Message-ID: <b496c241-006f-41ea-a398-0e0b7c7e8472@linux.alibaba.com>
+Date: Wed, 6 May 2026 16:58:20 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C3749120004
-X-Stat-Signature: h1pge3786uj9s4n3k6stmom5pk6xh453
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "tmpfs: don't enable large folios if not
+ supported"
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, hughd@google.com, willy@infradead.org,
+ ziy@nvidia.com, david@kernel.org, lance.yang@linux.dev,
+ wangkefeng.wang@huawei.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <b2c7deee259a94b0d00a7c320d8d24d2c421f761.1776908112.git.baolin.wang@linux.alibaba.com>
+ <afnKLEIaUd5A22ls@lucifer> <afnKpTo4cwh9LtPU@lucifer>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <afnKpTo4cwh9LtPU@lucifer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1778057286-57467
-X-HE-Meta: U2FsdGVkX1/A//WiB7GXx/dlzKGJ3KczKIKbFIJ4u/eteJ1aWmHzpWIxGM5/NCGojld0I2sm8KeKLV8UGyp/82K1cheYMaFRjUqp6FRYEo65kwfCgvCHDvVHJY9purzA0JQ31gNmAP4kJqG+JMwO8am+MbQUUienA83NM+C4t7K8nGORp0jsqh8qW5/x+zOp7e1ZE8lK6x+G+atOfFpWOForVsm5P7JqOWK87As+cIg4ZBtx35+p2uJyiA9pXtEcxqaMiMY8/FqJHpHecVaYNR+6v1qNdBKl+vZ3ZfogZq8Jx9R9jbmF6l2zNYCxtA3eH7hET0RohIhS2PJ5aKD+BgGOqWQU7L23HlbAsJJ4E7jnuraknhm5l5n62H24V4MCREi9N3vOVdFu+RbG9AoYqX9nZT0YgeB947iZO7iNF43GRIfptzlIIw9QbzmFzTzxEycURQhg6kcMIy463Fr6P9F56l/mHNwL6XDY/ynyybBUx1Mol9PAwxFVr284NY0qdSFZRsK7G5UVxuqGDbmJfrL54IYTYDU/zTZ7gxf0btzZfGmIUfdr0eHHhJUKWoEByyVPRLmy2P6OCdbGqPBc59My/fmH1z6Efs5EiJzd41/Kq1q2xNn9l6mUV9EFlXhkzG0nuo171zPGF+8ARIwjmZBP3yqq+6EvGrJtlNSxq8hGrdtCY5Qmv82Vn1J1YO1cPNDfMO5/u8+s9o9oXSniS6NgWAlAACMRZnj6D2YyHz/AtxhyL5QZYASGKylx2RZfT3LRzzbg3hREb1fRVEw41SiHq4xtvmG0JFIwhuytm6OWVvWd0tCL7MmeFvWsiTpI+0QgrLckB+GilHYwHpxhbWQyrwEzEyMggGsLOhf9IBAJY9LwN5IFS1amc7MbpbOu2BSMdpW9Co8weZZZjZe4PWuCClLaJCJo2GAZMvPVCsov5VKI0M75KXwcnWXacNQx75VM9vmjwuwxN+ubOUg
- SyeKiNrQ
- gCmnfYaOIjI6Pc+XReuyGacO/DRAy2RRX+XCOGZ/PT4URTjgUVOXlCfjz/X5DPDr9hA1WXcuO/bLlM64XQ0/EHg7BNxEr7kgKBw6uIGkucK7dQO0keUh+ssybWfmcaPhn3BQ75OYxzIfpt+gcaMCtp1pAafeOMBwqAAWynWfNPh4fPv4sWOFNkrqBIBSUKyZyeLl45pXIj0EzAtf5rH3xDzSgh3OurHRPQqIvu1mRDfG6R+FCO8VIyXCtUhJw7Tr2/VZbsiMM8B9qieo5VE5kUG7+hULWKL034VtBPZDNZxyvT7RV5zkPCAQ/XcRoC05Ec+VNh32rPFd0zSqNQ6UXtOfOTGXXeeTWchbY8QpD711kY4RvwstIuIqecx1G1SaJVWynL1yZ4TUhy90RCpSYr00H4BROM/IkklXVCkX7D0aKKrs=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 23FF24000D
+X-Stat-Signature: iqn86kxsq8foqz4xz6ufjtkieugpxqew
+X-HE-Tag: 1778057907-373492
+X-HE-Meta: U2FsdGVkX183NBaELhL/YlvMU5pmTu/YVTbkxfr8uzXi3zzJIk4pUVgmN3vtdKgryW7Map2RutI13RLk+6YUAE94Tq8DjEjEA+75HeDO8NeQHadkffFrn2JjeQBasaSB7dzMNGoVW/hLVtSjD4HJ2Y64q1d6GxmepNkL5aCnoHOWhRRipF5Quv4gEkavvc/BlwL0D2vjKR4SQkKjeaf0WXvMK/reRAcUgg2r1oSOq0fhWZ9vJygwYKTdIru+Z56dkIg1TsUPTiRsvzT5CGTOzBbWegy264LsbXHH7wZoFVptdx5668L+xERcvDKwTRbVY6hLat/mUSj/o/uwUx2HriTyVbEyS8kKk2QabTOVK16FMPGO/ccQ9jHnKqJ4Amxop0bvBf67ybk3HjnYuHe1xaH0yhhSR5kO5GTCNoVtf6sUL2au/9tMUF5/q5BgFE9a7RTLxOwRYzhRUjAb51JC+LP941PrsBgrY4Ri84zXXa4me0RA0JlaV1hOvl843l+C3UjYHH+5gd9hkHwrjH07MziPlfIWyzgA8akXZOkYWby+aaUxg/gP+oOwYyzwGiU+iNhtMl8A3+vv+uF4yyQdxCUZOI7JHKAJGF86neXWBCF2Ag3Cc7LWSTeUa/UhcfAYHOPrTweu5zM/8aFJxgZpMhmFKcFISrmHWt7lGRwTZnM9i2gye7S1QsGPhXkOtjw/FOzkR2X7G9SGbrAh+4ddOkufexqHVpdzpzad2YLUbOy/ACBsLTVz3UmuUCEjQoQ3CX0OorJc7BFLskb5TxE6cMpKF5yikhHNypLZcHI7pK6Sy0VaEFYtJSgLNV0vaJANsUZu/Yv8iKYAYT6sMTD1pVDdjPNkkHGSk7Q5WeTot9Ra5FY7NtVRETbH5oTTSPlm7n3raJUIOFTSV/mBBjIPDsfMVZDmVlQABwZ1DjWwExjTUfpitoAXJBxgmpkeIitRR/pQZ0Isvm/lWDNWxhv
+ EfCGdbEQ
+ hmAnLEKW7b/w4Cl5ktSc5PzCPZdnExxiiZyX2ZO+rKfjph4LjGS+QpgGJlcBxogcR4wp/Yma+L2qNM7tu/Ojw7q0bnasCCB6EXi6NJ0h8PStxG1pbCAOLbsKj89E/lBi0MRCOci1p8QV6p3NClNCb+hmnvTqFCC5phfoZRktAKGCIRO0p023DO1gYI3KeN/2gHKic0AWjHkvQbyV+FKLsrUpJ9sHdO4VkUd9N3EVywd81d2wvCCzBXDieR1dR9avjfOtqYaHjgbOdIfPJ4JThYMaxsMW/QGWkeJtcrZnitExn2t5WEqGonNvQeKsK38HSR9rdzI7s3d2tWvb7BxyGOoy6sQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,11 +89,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I'd just like to point out a paper by Shai Bergman:
 
-"ZNSwap: un-Block your Swap"
-https://www.usenix.org/conference/atc22/presentation/bergman
 
-It targets ZNS SSDs but it has a lot of relevant good stuff. 
+On 5/5/26 6:47 PM, Lorenzo Stoakes wrote:
+> On Tue, May 05, 2026 at 11:46:11AM +0100, Lorenzo Stoakes wrote:
+>> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+>>
+>> As David asked, should we have a Fixes tag? What about cc: stable?
 
+Sure. But this fix tag depends on the commit 665575cff098b, so the fixes 
+tag should be:
+
+Fixes: 5a90c155defa ("tmpfs: don't enable large folios if not supported")
+Depends-on: 665575cff098b ("filemap: move prefaulting out of hot write 
+path").
+
+I don't think we need to cc stable, as it doesn't appear to cause any 
+serious issues currently.
 
