@@ -4,118 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC4E6CD343B
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 15:05:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DCF0CD3440
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 15:09:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 517FF6B0005; Wed,  6 May 2026 11:05:38 -0400 (EDT)
+	id CBF026B0088; Wed,  6 May 2026 11:09:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EFA06B0088; Wed,  6 May 2026 11:05:38 -0400 (EDT)
+	id C6FC16B008C; Wed,  6 May 2026 11:09:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42C996B008C; Wed,  6 May 2026 11:05:38 -0400 (EDT)
+	id B85546B0092; Wed,  6 May 2026 11:09:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3217C6B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 11:05:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D30161A0122
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:05:37 +0000 (UTC)
-X-FDA: 84737319114.03.634E12F
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A2C5B14001C
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:05:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=AT2nosJh;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778079935; a=rsa-sha256;
-	cv=none;
-	b=JP0EGWFOpasi09q5Bv4olB5Vklv6YpylR1DOafXdehH0Mj03oOLeDOonT7jJLXnYUECblm
-	c6jpUOyjsC+7hnMu7iNgEsh4mNHr/YcFGIVflyYMHXjYKfSW+tjAAka2aAV5SOUwDGwG3L
-	rpxMLwtlV8GwUHIVIXPqcWTg0QGdR4c=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=AT2nosJh;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AB04A6B0088
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 11:09:31 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 47515401F7
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:09:31 +0000 (UTC)
+X-FDA: 84737328942.22.060DDB7
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 467524000C
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:09:29 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Twc+0qCy;
+	spf=pass (imf11.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778079935;
+	s=arc-20220608; t=1778080169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pGancg+Hm6RuQ5CrvC9iAES266oQrizaBXy/zKyB4a8=;
-	b=7LvLiNYsuZTzeZProjTU/U9hLUyMHJ64E9UuWQzmHMj9MrFP8jt7dLwqeNzaHbDKVMgzaK
-	buBFDLp5lE6kP0g4p6eLv0czpyL+PZaYP0/WD5x3pBvEII6ZAa5+6o75dfzmHKpASIoDnb
-	YCEqZYF+fDVpiCQs6NzbNuAYKWv9aRA=
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-651c7ddf514so6801851d50.1
-        for <linux-mm@kvack.org>; Wed, 06 May 2026 08:05:35 -0700 (PDT)
+	bh=PtBGz2x9WQ+HNP+qaMuedUIcyx8fnxzRJan7d8nhIVw=;
+	b=jQqmo9GKKNOBYNwL4zVbiSFC0V/1+/VorlwWzo06y7ixqBODHb6oGijH/b5PP0w61K/cRG
+	RxgMs158gJWbiq+6UC1FHs1hjygsFd3NbuKcCQpCOiHysf7rv4mxpEb+8320zkG2NOJLoc
+	syE1BATRtCQwQDsH8akjqVwy2n753zo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Twc+0qCy;
+	spf=pass (imf11.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778080169; a=rsa-sha256;
+	cv=none;
+	b=f6RXaF75jw2fgMTQdlgjyqqaFFHBC2fgjb/4jvhrZw7SoGMbjxC9NmPSOlrDXSYKthNE4Y
+	TWBQ6IIbXmSYvhcwhfW+cc1+8xmNXAOJ0mDhDNL929q/Nxi9ktk5fRiWUPMTySuknQppT+
+	YsN9ke52XdtMadBYbXzp6eQLIfBxJMI=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488e1a8ac40so64618965e9.2
+        for <linux-mm@kvack.org>; Wed, 06 May 2026 08:09:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1778079934; x=1778684734; darn=kvack.org;
+        d=suse.com; s=google; t=1778080167; x=1778684967; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pGancg+Hm6RuQ5CrvC9iAES266oQrizaBXy/zKyB4a8=;
-        b=AT2nosJh5fds8Pi1+Sn++PnuSvX9f3q0r4cYqDPCo4JUEspp9kjGR17Qn1Epe+roGr
-         5RnM8OA/zgES/SiXSpd7U/pGtl6kckI3ufb4c/WTdPl/y4c4PLNFCiDXnRjARFDsZ/8+
-         dlBWyXqxpDe1NpRY0dYeln+KXAkFpQSvcTA9uTKa3dxY3iiYnXH0MqUw2/5iqCMOy9oS
-         KZIz9Hj5YyWnJzyQsbyz/sAMSj/Enn7fCNkSW7LZ+NBPAQtswwPyCLk0xtS5Omph/OQ3
-         IHXfGnvctzkABDnPOeQ31eQ8JTAMkETaa7/21wrXBEkkruzIEEDY2Ge0eiY1bPIr6xfy
-         aB2g==
+        bh=PtBGz2x9WQ+HNP+qaMuedUIcyx8fnxzRJan7d8nhIVw=;
+        b=Twc+0qCyKTcEuJ99DaajfVEFQf8Z1xVPlYN5bhGJAUZSJT18KLMKba9JB7S9aN62Gz
+         0SmjGAMiJ63IquugOh6LCd/RVaNcgEubBXBse0Rca2s4ybzihcgyO3VsUoL7/xtoaEpH
+         MW9XGd9Iwlu6Ft4OcZrzjIkw2YAe6Is2uWiM+oDZGCGhe0COo87FyOgpHhA50P8DAdZZ
+         9BBy6E3sNfFUxunkSC87q3nIwJq3IlQY2kFNPrrV3CqOkXcuMjJ/4DBk/Y45/geL/ME+
+         kar39gHI5ncUP8BVe4KW/T/VSETwLgSYe1kNgjROYiyFgY6ZpcVAX4RSZ0NoGasyQuZs
+         21Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778079934; x=1778684734;
+        d=1e100.net; s=20251104; t=1778080167; x=1778684967;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pGancg+Hm6RuQ5CrvC9iAES266oQrizaBXy/zKyB4a8=;
-        b=NEn3v/jo14UdHX4/0A6eWFFQwCVHLxWjo+vQQAnF3/a+nOGIYSOzSEKcEK34e3Khx+
-         0v56elGxlOQMnCOwiVk01K68hk6YbszQZcRzP+utsvgtDFVtSn1+AuuVpnh5WT8oPoOh
-         aAQF5UPOYG8umit49k2oWwDboYYaKhEy8ohiaEAlbHaONcKt8Tl6txlTyKgw/+fF2wND
-         bd4EpsRNz9p0s/bkUSueHS8+lR1S870hLHS9dpMUK0GUSpZYIJaLnVibR0+yLN/gKzbQ
-         gaOuHIWEmLJ8s9T6R6JzRLDkPOE37jwW+XTbLJI3RGk1jl5gB3suijShbHWBgTn1/mDo
-         qrOg==
-X-Forwarded-Encrypted: i=1; AFNElJ9rro/t0v/X2Ar+lTbJ/a4VrjVlGFn3iAGdgk96UOZdSdCm2OazBobKEeaGYxa71QoF9BjB1QSO+A==@kvack.org
-X-Gm-Message-State: AOJu0YwfS1udNiB2TVZHtDGexP3rEg4nK8RGfx3a3ppmEsf6B0ZWplqy
-	CDxX1/8Hl02GnZjoL7D05gR8tlP5fAXlHAVsOBcZFuzOIomxSkXZe+OkgBnDwHtE0dA=
-X-Gm-Gg: AeBDiev6ccv8GUBGQ96CQgmADGuMW1dbicaUyJ5D1N8nvv+Ut4iE0M9zEbcQqLn4SwI
-	MFV76sFoVdUxq4kyPhwRGPK5aI8cLfbg2ITYxhpIGIMF1CM2f30eocQs1l9TJTf0PbGCoL1kT3V
-	9nndSn8TrbDjYO2y0eMclngSoOh04v8aKgEEJfqpm3MHLBoANe2/JoXZpZx0i8Y4v1BJ8q0Vmhw
-	Ztcn564ytDrRfU5qCaVkSFTyHDGY3IntfekaJhEOhD413MGgXEA0/x1VK+OkwS3L8jHrT7677JW
-	1J8gGBJ0ZIPV5GykIXi91qblY0iLS37vetNo9DaAE5whGF4zipVhI7u5Ca0/AGwdO/B6m8hzJ65
-	vENqV63rYii1ItELYb3/yf6Y5zbcLbKwjoKNo8B1/NfRMfAglKUJichMBIFyB1dUW6xvXtOGBbf
-	tmK0FYdNLUH13KB6wUFnsn3HIL4GgKzm6tNFNUHmvigB8xkjRj6nrkUPLXn+AIMlADKwqZHLGqg
-	xOJUv6XL0pXMSx+93dsdlUDigdvt7ycKOuomaf4
-X-Received: by 2002:a05:690c:f13:b0:7bd:4792:66f0 with SMTP id 00721157ae682-7bdf5f24c83mr42505907b3.46.1778079934356;
-        Wed, 06 May 2026 08:05:34 -0700 (PDT)
-Received: from google.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd665694b8sm79860377b3.21.2026.05.06.08.05.33
+        bh=PtBGz2x9WQ+HNP+qaMuedUIcyx8fnxzRJan7d8nhIVw=;
+        b=OGva0xuBcYFDkmoUuPwlpAW437Cej5wtbCAcA6HjQmaKKbPIcVSVOf5jowLv1xrwg5
+         vX2kPfy2qJqXBzE2TpeBMnioMDHBlXegN+k1DqGBNXPYIVk+tSxbfLXhdPmLWY4y0gId
+         B5H+FznfSluK757BUjzOv/TiL7jsM9/pjt5FsaNT5luNEb0tUbqdCM194M5Pq0F05+uU
+         00PYgPdrUF6CXf0B/XTSAfqjRNPOmQgSiWDv3AbbNNipcwgZXZRpy+TbRhRIAVYys5R5
+         zzTlUoIyBDmdEFkY/otuTqo9Q8e3dCZRVUq3SlfmC88rwH2vyZNcWmuycbUfgTB5+RfU
+         4TfQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+d82Md6q5UBsjeQ5Ymj4/AAT5BKvW1kjGl5nXqD+JKelcq0miu6FPRvfIknm4NhL1OIn7lBY1f0A==@kvack.org
+X-Gm-Message-State: AOJu0Yy8ri9Je4EIxeIgK/gQe1s/u7Fi7ozX4LOnDna1ofPryEILdoQx
+	WbDngDbJE+6rWOLPmceF99IE4fBSBmVzYZUaPjX0HYjlidA2cycm32DsnaXscbb+Fso=
+X-Gm-Gg: AeBDieuiZV8r20NpeGsXaEmZM66BH1V2+xXKnMJP9gn7A+vtylEGj9UFl95U7pH7Crh
+	Wf+zIkdgKKBokCw5Pyd96wh20ys26HPGGe1VVvUnOrEitK/jPjCDz9U8/v+7aVuDzb2uSNsDNrn
+	gjEujLpJveOTowQNcK/xw3+Z2UzmI7LnSpyg5ermSuHbBoth/SUm94M33EIVhp7yn606HohAlU8
+	P/fyyfIpTqOc0B6xdkX0ULzoKeF+hLEusYPG9WEaK9MVAvQStrOwz59tbJGkmiVuWloyL0mDrWS
+	ua+virmbOhovm8XurUTQq1tEnZ4a62apISbjtjAOkV6l5Tm7+SWO05PoutPDnzb+pGP+PnVAcAd
+	0tIyZuYrXujpasMPdMzGB8Gro2k98WytOf/rRHcevqynS+8olY5xlr56rPp/rOiQBLdO+8CeuTW
+	N7aWw7+Bbi1qPpmlCi9puAKrPI95HOFWS32m+xd9sVyyeOCKE9lCICL/KGlkI=
+X-Received: by 2002:a05:600c:8906:b0:488:ffad:6728 with SMTP id 5b1f17b1804b1-48e51f46d7bmr49899505e9.19.1778080167469;
+        Wed, 06 May 2026 08:09:27 -0700 (PDT)
+Received: from localhost.localdomain (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e5312df8dsm18475835e9.18.2026.05.06.08.09.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 08:05:33 -0700 (PDT)
-Date: Wed, 6 May 2026 11:05:32 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Cris Jacob Maamor <crisjacobmaamor@gmail.com>, Mike Rapoport <rppt@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] liveupdate: validate restored LUO metadata
-Message-ID: <aftVd5RnpnAi2jdc@google.com>
-References: <20260501094637.38650-1-crisjacobmaamor@gmail.com>
- <20260501173053.73116-1-crisjacobmaamor@gmail.com>
- <afT_xHDuFwAUSR0X@plex>
- <2vxzse84zzag.fsf@kernel.org>
+        Wed, 06 May 2026 08:09:27 -0700 (PDT)
+Date: Wed, 6 May 2026 17:09:24 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Maarten Lankhorst <dev@lankhorst.se>, 
+	Maxime Ripard <mripard@kernel.org>, Natalie Vock <natalie.vock@gmx.de>, 
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	kernel-dev@igalia.com
+Subject: Re: [PATCH 0/2] cgroup/dmem: introduce a peak file
+Message-ID: <aftQijvIHNZo_UyS@localhost.localdomain>
+References: <20260506-dmem_peak-v1-0-8d803eb3449c@igalia.com>
+ <aftB-cc5EhDXxCGA@localhost.localdomain>
+ <aftNsqrv2sGPOPHX@quatroqueijos.cascardo.eti.br>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pjfnm2wcpgmp3gca"
 Content-Disposition: inline
-In-Reply-To: <2vxzse84zzag.fsf@kernel.org>
-X-Stat-Signature: pc46mdpcrc3s6pjkhaq4sjtg1i6r7e8q
+In-Reply-To: <aftNsqrv2sGPOPHX@quatroqueijos.cascardo.eti.br>
+X-Stat-Signature: 7i8c5tkyb95mfq35a7x8j3ic3x1s93rq
+X-Rspamd-Queue-Id: 467524000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A2C5B14001C
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778079935-255714
-X-HE-Meta: U2FsdGVkX19X4S7butQRhy8rrwdLYmR+ybJ6hZXbsYi4UlDUhV+azXxUFod2vdZZrZDDqCH7FAA8IFiT8A4ZYqVcOsVgNb0XLS1vp+1JAQi4qaDqRnKjTHZsQ6bgaHiFwTRmQo4nXMJt5nTn142ueBEeZtkniAjDcJPS6ACd6xpHAkhni6MkVtR4Vv7Va12w4VpSV7lsrl7IPXnKZpGXx7nUUVlPE/Dj6bMYvOBQhIP4Xc9sffH9OKrfzpAJO5jhfmIt8JYhOTedGQHdkh64rxTJ8PVyQVgO/kGXMgsaOW2clvO52Wdkb7HqdiD2yf/mrfDy4W+vzl0Umsw/dJFx3Y8oOPl8cmfUtjhpKbpnV272EZg23pcoNBnA/Jt6B5/UUDW8rJJJQvrQ2Zhudf676UbZ6r8ictnkKNRd4QaQlXBlmekVHSx45F29Lv5HqB1fz7Lnji9Mu8ZuAU86VWInJw1dyPD4CBI3JQjFYuRKUAkACy8RXYCYV0b5DM9TtVOaE3ou9fZHMpMp1pqK6x5Q/WA8S8saCp0GwU4x+TvoydrAdOqPpDwP3mYhRMkfoMFok/ZpP6pagQcb2LGyCVkSSIk407LJ16O26xxmNr123DGxOhoqq0r6fFwj1TOK27a2SiKOj8basdPhf+vyULQrqnJaXrQ2YvBOzHMCHhI72jOtmxwY0EzOaz88trICl+Lc0sfXZNSxmhQ5F28x5mUL+kEo5AuCqqK6XtIOHJQ2Tl7MXLCGLmEOWvBx7QTkWtMJLJmTXP6nO/1cjzE6FBJ9Ic/aRckP89JTEpK0xGBQeYSZaXMd9rPbwhO96afHcTF5v4WjxI7IKfj6fsSq7o/Rl5iogF1rFijhCe6sKynjtFiWbc1W2sOlarXFEpr0EjhOse3YyeAu/zpHnAIybixCtDBbzAnyq7eNZoXnJKFCnrqJ3fbwfsjCOoZ6jDdDjoyvwQtzz1un+DwBtUqo4BX
- cz+Y5TGT
- N7PB8es6gnPE9pv+F8/r0La8Ca+vTiT0K3KeYKTkj6fqsTAmp/AAIBqCtAG3yIkidDuWOzWl8HgFgkGlD2XlbLzRBVu0qYLM8Lh9MubPx+hE4dz+0YeT3In11+uaOWUmxjq7/Cr5HeIsPI40HbMqr07L9svsuwRaWaYxIv4+kBAUe1X+lISJnN9TGYno4NrVJg5AKNoRtimYe9YxGk+z6tGbg0QoSsSisuC3zB0kY8tC4U8LI823uVOqZoWE5jclXpDci7KVwTvu3OLh92vQ7/xuGJ1VBId4vNaJB8ulRAEc+aKKTvKcl9gwz2A==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778080169-495206
+X-HE-Meta: U2FsdGVkX19sZAxwjRF4VKcdkjQCYFIal9jR7ZYmwd0s0jedkyh3Gru7AfcPEz5Ihkr4M5rABqOh8zHUS3/U1QL+TyBO/cJRE6lYsNPz+DNKeOpszq/x9RBkNrI5g/d6xeEt95+CGxi8VXeB54ZkWrDVUv0509evktt30Sk/VJo+FulTr8t7pfdcOs0Jjmo4UJ7bR7Lhh2Rz+vkXO4/8lopph1kEq7239WAykqtLj83Ul3xXBSFIpJZiNxDk4edVl53m2eYwm771BxYsx4Ubyo7PW69rob9PKSwxL22xkCWMA2ZvGvaTvleDR22e/4vWgnRfMESl2Uz/yyAC0hAND0REKGRZGxC/eNz2ardNaOeE1xj4MqShk6XBMQpzrmEHRZNjPEXesPj0XzLOHDC/zjwTNX9KNLkMc0EUn02RW4nC7ZkUcqRvxsAzgioqQvUIoDFl7Ic3ZggKPrMk/lb5s1iQkTtj7a1sRacU78/nGlRJb1Fp7Ox8L9gbLI367zK9XWuvkWnqEfhJ646E84Y6GUkdR2hM5uarq9l7W3W+6ZpWTvE8KNfUNNg4Ad3ZbFEVLMn9FTvJSutq+dR72yCanpf8bt90xYbKCX74e+ZrZ4nlw85c7z5g1Kst8TFlOFSfcVQHLtY5w7dnpuUlTrjb9Gx4yjpFvKf0CTuE42Czr5cVfsP2NnQCsuBNFm6VMfatxsAVN+t7g8jIF04DPgRMSbKgnyhxZ1EelPz8xbqhf30wVdRXRvmbbDobGK4dAcCk7Sx7Y/a/6cXVUD1hxOIXG6iczZUtqmUWeP8fYVvMoWNWSswsyYTlFOZ23P2Fl/20RObBz0Qbsy8GZdbWcclvUJCSTo6TDJUfEkkcBoVT2W/Dp2WyhFFz934gchDEWcpgHg+UXozu+6UciSIkJ8iXey8x53sUGb6+/ij8FEEJVYTPow71QfeuXykIDbv4UfKNQHLWVaj02uQVxVASF1P
+ 3gC/r7o3
+ VugEVwJkPlgyWX2u9kF2s/SSh80obXtPUyEhyUDg252trhkNxAGuBLclD7ZcjgE3aSHkW8TqCBTCc7zvPeVMyZx1LODUh9N7aKCUSH+mz2yTlQzKQIFO1U4D/qxey+NnMq+WBtYlwv0Y/1Xx41QGpGMFR0ugMMk5pwKIbSkiwqDtO8Gdc5HMjl2Y2ezytv9OR5PB/CAirYbg1Wk4xuaG3M2wHj9Z+AwzFly/Xa4ZLoy1kcPdapRaIUgaqmIpe2CF2K4oAj+91Df8U9DLlPPOBqhvMoSJ8G6gn9E9Ib4m3MfkIWUQwPnVw5fGp5WDYQxeYcVCsEydOD1X8Uo3EJB58NzeDysuG3KEQpGa0ooBDntPBfHPF6v8Pw1Nsocydc0R46kTH4xjbA1315SvIyTaVSNNwQ5f49/0wGaJitRhK8xOILyAYRafdtD36h01mdR2IHM4N8zMbUPjMkwA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,83 +126,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05-06 11:02, Pratyush Yadav wrote:
-> Hi Pasha,
-> 
-> On Fri, May 01 2026, Pasha Tatashin wrote:
-> 
-> > On 05-02 01:30, Cris Jacob Maamor wrote:
-> >> LUO restores metadata from KHO/FDT during liveupdate. The restored
-> >> metadata contains physical addresses and count fields used to access and
-> >> walk preserved session, file set, and FLB arrays.
-> >> 
-> >> This series adds a non-consuming KHO preserved-range check and uses it
-> >> before phys_to_virt() on restored metadata addresses. It also rejects
-> >> restored counts above LUO_SESSION_MAX, LUO_FILE_MAX, and LUO_FLB_MAX
-> >> before traversal.
-> >> 
-> >> As far as I can tell, this is root/admin-only; I do not have evidence
-> >> that a normal unprivileged user can trigger it directly.
-> >> 
-> >> Changes since v1:
-> >> - Dropped RFC marking.
-> >> - Added changelog text to each patch.
-> >> - No code changes.
-> >> 
-> >> Cris Jacob Maamor (5):
-> >>   kexec: handover: add helper to check preserved page ranges
-> >>   liveupdate: validate LUO FDT physical address before mapping
-> >>   liveupdate: validate restored LUO session metadata
-> >>   liveupdate: validate restored LUO file set metadata
-> >>   liveupdate: validate restored LUO FLB metadata
-> >
-> > I have replied separately in the security report to clarify that this is 
-> > not a bug. The behavior follows the ABI specification exactly: we use 
-> > the PA addresses and ranges provided by the KHO FDT tree.
-> >
-> > NAK
-> 
-> I really do think we should do a restore-only variant for the
-> kho_alloc_preserve() family of allocators and use it everywhere. It
 
-That is unrelated to the provided patch series. The author of this 
-series reported this as a security issue to the Linux security ML, and 
-submitted this series at their request.
+--pjfnm2wcpgmp3gca
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 0/2] cgroup/dmem: introduce a peak file
+MIME-Version: 1.0
 
-This is not a security issue, and in fact, it is not an issue at all. A 
-restore-only variant can be added, but I do not see a reason for LUO to 
-use it.
+On Wed, May 06, 2026 at 11:18:26AM -0300, Thadeu Lima de Souza Cascardo <ca=
+scardo@igalia.com> wrote:
+> I used void *, at first, but as the only current use is for the pool and =
+as
+> mixing different uses may lead to misuse, I thought it would be safer to
+> use the type directly. This has been pointed out before for other members
+> of cgroup_file_ctx. See [1].
 
-> would prevent problems in the future. Not because the previous kernel is
-> malicious, but because we might have bugs and the KHO page magic sanity
-> check acts as a defense in depth.
-> 
-> For example, I am currently looking at a LUO bug where LUO does not
-> track if a session is outgoing or incoming. So you can do a retrieve()
-> or finish() on an outgoing session. A lot of nastiness is saved because
-> of the page magic check. Things like kho_restore_vmalloc() or
-> kho_restore_folio() fail early and loudly.
+That mail reacts to union overlaps and pointer vs embedded struct
+allocations. Correct me if I missed your part.
 
-I am not sure what bug you are looking at (please share the details!), 
-but the fix absolutely should be to use outgoing/incoming sessions 
-properly, and if we mixed them up somewhere, THAT should be fixed. Using 
-KHO restore is not going to help much; however, I agree it can add 
-some extra scrutiny (i.e., similar to an ASSERT), but it is not really 
-something that would help improve correctness in any meaningful way. The 
-correctness should lie in the LUO logic using incoming as incoming, and 
-outgoing as outgoing.
+I agree that having properly typed pointer is safer.
+cgroup_file_ctx sub-structs are for generic cgroup files. But here
+somehow a specific controller needs propagated to the generic member.
 
-> 
-> If we want to squeeze out more performance later down the line we can
-> move it behind a debug config, but having this usage pattern of always
-> restoring before using is going to be a lot more sane than just using
-> physical addresses willy nilly.
-> 
-> The approach this series takes with kho_is_preserved() is the wrong
-> design. But a kho_restore() or something similar (maybe we can find a
-> better name?) is really where we should be going.
-> 
-> -- 
-> Regards,
-> Pratyush Yadav
+What about storing also the `list_head *watchers` inside `struct
+cgroup_of_peak` and each subsys would manage it as needed?
+(ofp->watchers =3D=3D NULL could also substitute ofp->value =3D=3D
+OFP_PEAK_UNSET)
+
+
+> I started with a non-resettable peak file, but as memory.peak can be rese=
+t,
+> I added that feature too.=20
+
+At the same time pids.peak has survived without reset option till today.
+
+> If we want to merge a non-resettable support ealier and need to take
+> longer to discuss how to work on the resettable support given the
+> above, I can resubmit. But I guess we can see if we can reach an
+> agreement sonner rather than later.
+
+What kind of users do you envision (i.e. would they need resets at all)?
+Anyway, the behavior should be explained in cgroup-v2.rst since that's
+where they'll look for it.
+
+HTH,
+Michal
+
+--pjfnm2wcpgmp3gca
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaftZoBsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Agf3gEAnS3SQwtU72d+vybPMvLs
+abYBuiDKjsiW+4zy1RFNTAwA/36oWRqQ1pjGEuPTFgTxHnl4+5Ls3E65Byjp41wO
+W6cN
+=obKI
+-----END PGP SIGNATURE-----
+
+--pjfnm2wcpgmp3gca--
 
