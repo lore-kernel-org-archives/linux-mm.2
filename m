@@ -4,102 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C15BCD343B
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 15:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCFD9CD342C
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 15:38:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 404246B0005; Wed,  6 May 2026 11:29:47 -0400 (EDT)
+	id 104606B0005; Wed,  6 May 2026 11:38:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38D796B0088; Wed,  6 May 2026 11:29:47 -0400 (EDT)
+	id 0DC4D6B0088; Wed,  6 May 2026 11:38:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22E106B008C; Wed,  6 May 2026 11:29:47 -0400 (EDT)
+	id 018D36B008C; Wed,  6 May 2026 11:38:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DF3E6B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 11:29:47 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AEAA9A0164
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:29:46 +0000 (UTC)
-X-FDA: 84737379972.22.B2E0B97
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7B7A918000B
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:29:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=uFirFSB7;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778081385; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E19D86B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 11:38:46 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 909C24022B
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:38:46 +0000 (UTC)
+X-FDA: 84737402652.12.30D3FC0
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C5D56C0010
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:38:44 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=qjjIyhLA;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778081925; a=rsa-sha256;
 	cv=none;
-	b=cY9A0Mvb5MEMuIZf3mqmYioRfKB3vEJ9HqsEfP7PlBzibu6Obf11sTGGlHMI1R9z3x0cRu
-	0T5Ng/XIFoCQ7oqr6iGFkmqK0WO8Wue5FXrNrWSu2WdwCMsCZNDjnOPAif97kSyydtRINU
-	f/z+Mp7+S3f8rlI2Ffq6y+DP+DFRgAQ=
+	b=wh4ECY1YXrBzkjDjMnVqncAMQ1L4rMKTUo8BsHV/RzyO0ZgJ0WDAmA+pq9I38NHY0IGhMY
+	hfR59iYc1A6OuPBiqjxq0HNqzS+J4qLVvCP4tmj8ZFhEhZ2srej44J+4GZ4nb4BTGEhzrx
+	wFwsvl5B9VXnf2bkvOrD69JJJllIxcE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=uFirFSB7;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=qjjIyhLA;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778081385;
+	s=arc-20220608; t=1778081925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tPed1cEalE8p9ynIcjerRfBMest/+qZpKOCHipzUr1A=;
-	b=fLWqQ2p+MCzerG6SUq0s5iodkq70MdU4vLd5TsSb35fEkvA2AersA8U3/Nr8e30/ybiIPC
-	juLaSLV/UzQPeuJgHni+fgmfsHjn0/d4klxxePE2l1l1BmlF9SL1EkddmtWo3eMrHSZWpy
-	vut9ma1aREN5Ixpgcf/v7HkDliyZykU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CB5FC1A00;
-	Wed,  6 May 2026 08:29:37 -0700 (PDT)
-Received: from [10.57.35.178] (unknown [10.57.35.178])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0ECE23F7B4;
-	Wed,  6 May 2026 08:29:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778081383; bh=ip9HLEiG0rLbNmSPtdtn1g8pMwO4gElNKtnSHYmseRU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uFirFSB72AiOef9KIv+LoT9vVvtJCtTeQjSPmbbHWBwooyjT8eiFl6hli9r8u2BPS
-	 gHyC5cl7Wkl3o2/jxclgGiXD3j4kM3UhGaulOOhnlK8I+2AmysP0zN+JdbUzX+Vc9a
-	 hoBjF8BQMLMCsZkysXmV9xqpxgEHR0MXfBg+hjU8=
-Message-ID: <77d63e89-04be-4b76-b360-dc45badd1a78@arm.com>
-Date: Wed, 6 May 2026 17:29:30 +0200
+	bh=HBfSkJ+ZAj0IKZzbsOscWzm5w5IqhoP97yR5c6JXd3k=;
+	b=2aiOEZ5JQSIBxw0uEdM6hx5MgMSTkk8OxH6DoN/1O0dXIOkj5kCqBRDJkIVwVSNve/FcNg
+	HIJzb/fHyZ0qbK6l1akEAnsTpEXzVfgsIVok+BFLxPcqyriO0blchfQdtzmoDh0Zugd9U6
+	qdJ+euq1/zUuw9Oro+Wf8sQziqBTNFE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HBfSkJ+ZAj0IKZzbsOscWzm5w5IqhoP97yR5c6JXd3k=; b=qjjIyhLAYnp6+fzWGNQYHTDfMM
+	dcIQug2wJEoUes3iojqwilgyNfsTZZsNzrml2u7hAOlBUPV0mOaX18+f+P7JfyKKGQkap35JtApTr
+	GGMWo3Xeu1KhmejaIkkUaEHNyTRQFTpchGsurCCHxS/W3A4q7GtjSQyRzJdIMykPhyoWB2bgEwAZD
+	m0/7Y2fFAL27EFjrhAWkplpJLJIfpj/o/rPphT1s1BC/ybLVL4N3JUjn27m2jUVvlV+km7EtU3wC/
+	cp8mO5EBcC1Fn9qKDps0TKo3abv9aNbX/P+QdjiTrVIoKxEy6ZEtW/v159/j/NKqqzC8qbh7psgKR
+	7A+SG5KA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wKeKL-003glf-12;
+	Wed, 06 May 2026 15:38:21 +0000
+Date: Wed, 6 May 2026 08:38:15 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v5 3/4] Documentation: document
+ panic_on_unrecoverable_memory_failure sysctl
+Message-ID: <aftfTpgyLRhXPSLm@gmail.com>
+References: <20260424-ecc_panic-v5-0-a35f4b50425c@debian.org>
+ <20260424-ecc_panic-v5-3-a35f4b50425c@debian.org>
+ <20260424054840.a63d80ed01b968caf9d9ef64@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v7 00/24] pkeys-based page table hardening
-To: linux-hardening@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Ira Weiny
- <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>
-References: <20260505-kpkeys-v7-0-20c0bdd97197@arm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260505-kpkeys-v7-0-20c0bdd97197@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: gnbkyxm1ccaq6fytsao1dcaysxeta3sx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260424054840.a63d80ed01b968caf9d9ef64@linux-foundation.org>
+X-Debian-User: leitao
+X-Stat-Signature: qq78oynp9s7eeed5jjnndys3cnso6hjg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7B7A918000B
+X-Rspamd-Queue-Id: C5D56C0010
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1778081384-647870
-X-HE-Meta: U2FsdGVkX1/W22F/9USTNd5WM6ian8SAdFOBnpoYP0ox+nXH9oViHye+8umFDCQeep40tFzThglLi91vbJpjh5KLKtOMMAXkWoBXOIt1VxmCL78se/onnVd9dMY5UvhbMxLwR32FeF41qWyvp/EZl73jsj5vzBblHiiiQ9YzFmtwsLgUBWMOfYc1RTdE/ZRg+lInPDgokOTQad+27rM66eMERdpDBenkED8fbepCPwF3PNkso7SdTPB1w8i2P4ENseuuo5j/4Xx89iPYVGTyS7r+VfloScNCf9GtB6ivW2R1FUMo7WDec8xP/1YcPkjEEgluhsgK323F1gIU6suNWDJTa6GMAfKbvVQwtgeEhgc3ifhptQ6WI8XqJh/gSo/KKlUhy2b4ZRyiXwKF2uKJBi6Yh1qnJwHAob90in/Ih0FWn15RYzLq5QeT1pTwC8vTgBN/rlYajBbzNRIWe4FdWSYGyYdgONFgIyaA20a/NtSnvJvP/eR87+eMXp8maFRQOWYyctbrcE1CSWjZlKL+rjACUTR1wQozeDRQu4UEp+SWhc6WgjUdPTS1gVHxC3jYUrT6dfqex2+0n1Q0rk4kMEsqSoJHIkTuoVVSNgwNTC/znrk3LuPEbM0SSEX0mqD6PcmGY5DS6JL/JIG+MgMBUid22ixl638OrgF1LD43ausStjSLQHAm9hxinAN7L2sF0guVmjKz/fWfqftJ7ndl6INKcBLc9kCFzzLCufeaXGMuFkI36/d4Txh+EEUArYQAq1jziNe3VPi+9ADJi7bzw3vICG4318Xo+5RLgM82ieApGLq2JnuaEvtMvwf1m6+VsH+UjkiK0LumAzLe8xWL4QrZ1M562S983jgWJteZpSYL1kG3GhHpvBkp0mBMr4BSbRImSzoygU7y1FnqxZNw1glHcKjb1gRwCv+c7jTdAX/y/phvBg2iUweYA6Ci8zm2Wv8ByTJHt8gzuWBo7OM
- TaDH8pAI
- cWflDEN9U0ZfJSgxHOXsNs71JSfAlMSM4Rsi+ya0l73I05jXulAmFJCzVz993q3VWibAoRs8/fRl7TRURENlxd1R87lK8X3UgQ/Lwv1lFG4dl5OAHoOFjRaqZXCUwsdEHjAep9gpDMu1Wt9yJ/07qu5LCPI5vov7jjw2div/gjUi2GttYvNlUlqUKXIs50ALs7Q0PpSTwctppGpc/ROXHYmu/LQGItLAZx8GIPv1jXIcPyhc=
+X-HE-Tag: 1778081924-473607
+X-HE-Meta: U2FsdGVkX1/oe8akMY/gC+feT7HxiXumGbb2Mmys0EHncWu0ATAizr8MIxTkRllvR6Vli+NrEk251KWtV42BdfQjUtBz05dyJrTvNcKGsC8m328cwvIZLgl7sdOH00xC4gGUzxMu+YinP98F7QQqcnTOzL41+21Y5q/C4G9B6OWrindkZRuIYtDyBT08ixv8lFdUXv8obD46rAwFoIhgLKoOicucC5gnxZt3XpHZ3rx+irmIOMk5Z8IvFXi/B+UJZqSvKH/BzY9w5ApA6YqCdBTLDGqWpuEaE70ahR2VelD+B0evm/eUOxshuom4MrkKOMB9qfDN+lQP5I6Z0qpt3PXWwppZGPkalB8AcQpA7xXWui4E2DFLimoveZFqx9fr6xsLK9WvH54ExsxtwLTb5hzMywnEakZ8/qN90TY7mjMx/sfrV61h+k6CLlRKIChSiC2ofrcbIyxobMKi6ZU7GhgCDmZBf4zIJtIcx1FZFTMIs2ay4aCV/jAJ6W16bXzlItqk+FTs7+IU6HqXeZpT5RRnFsyUX0JbpJGi3X5ioJ99GVlQGkO0sou7XUoF1R07nZg7XVae6Mt64Rc+FWXkNMcMqzUYJuG64JVe3ZZqaUMMiI2br241+lnkAy6/usANkU5M7Iq1ECvFLKzSwtv87vlVkk8tJeu3GqIBBbGNpkCbsikXeA3vm+Jye4hW5YuAmD6Z0Z405cHO93ZcMinH1FeeIYsuZSnmq1Q+K71AnKKyU3aD4scYreISVYoTRaww05IH1HhtAU9A4jzPEx8DvFMlLSNbf+/RUjB4Q4o1oJXSNRZuf3znJJV9lSdzVDM3v9xHU3/FziLuHQN3IwZX6KLVUP8uWRqPZt1SwJ87w3U6zzc5W00gtCm8/Q197FCm/VzctCJmUftJw/bWKnGN0U0+sLSCAWISG8QZ9j3u3JwGZnEorayShuraDblM+vhu6lCpTCRECM8VxOYPOkM
+ BNMb4xzR
+ uYImlhxxYv/cCq1e1EoydYRhzgS9xZOwswAi5QoY3jt5AlIhc2c7pLWwR623AI0mRqkNrOn7LLpQe/naPAJ9RRF2gN/DLFnkLDv4k4N++dV92J6jR6PhcB0nMzSoKLhGPvAgBB2UWUVUvwdSuaymRkp4FIAA1mrBMhXgsP53KIdOVJ6ooXSTgjyp/zO0NGJb7MnVVNxkz38O9A0t0rxkoa37c5dLzyqSLtq6T31aSSQEdwkM/bxXCdokopZuOqhXwuNgc2+scrgD5+hUycoszPvj7kjkTKs/1t9utRVBBEb3+fGti5Qda9rxaDt7ALHxJJF7s808siiqZWh4TxapIIAFbkHdJp5gPu4KB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,67 +101,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/05/2026 18:05, Kevin Brodsky wrote:
-> Kevin Brodsky (23):
->       mm: Introduce kpkeys
->       set_memory: Introduce set_memory_pkey() stub
->       arm64: mm: Enable overlays for all EL1 indirect permissions
->       arm64: Introduce por_elx_set_pkey_perms() helper
->       arm64: Implement asm/kpkeys.h using POE
->       arm64: set_memory: Implement set_memory_pkey()
->       arm64: Context-switch POR_EL1
->       arm64: Enable kpkeys
->       memblock: Move INIT_MEMBLOCK_* macros to header
->       mm: kpkeys: Introduce kpkeys_hardened_pgtables feature
->       mm: kpkeys: Protect regular page tables
->       mm: kpkeys: Introduce early page table allocator
->       mm: kpkeys: Protect vmemmap page tables
->       mm: kpkeys: Introduce hook for protecting static page tables
->       arm64: kpkeys: Implement arch_supports_kpkeys_early()
->       arm64: kpkeys: Support KPKEYS_CTX_PGTABLES
->       arm64: kpkeys: Ensure the linear map can be modified
->       arm64: kpkeys: Protect early page tables
->       arm64: kpkeys: Protect init_pg_dir
->       arm64: kpkeys: Guard page table writes
->       arm64: kpkeys: Batch KPKEYS_CTX_PGTABLES switches
->       arm64: kpkeys: Enable kpkeys_hardened_pgtables support
->       mm: Add basic tests for kpkeys_hardened_pgtables
->
-> Yeoreum Yun (1):
->       arm64: Initialize POR_EL1 register on cpu_resume()
->
->  arch/arm64/Kconfig                        |   2 +
->  arch/arm64/include/asm/cpufeature.h       |  12 ++
->  arch/arm64/include/asm/kpkeys.h           |  76 ++++++++++++
->  arch/arm64/include/asm/pgtable-prot.h     |  16 +--
->  arch/arm64/include/asm/pgtable.h          |  66 +++++++++-
->  arch/arm64/include/asm/por.h              |  11 ++
->  arch/arm64/include/asm/processor.h        |   2 +
->  arch/arm64/include/asm/set_memory.h       |   4 +
->  arch/arm64/kernel/cpufeature.c            |   5 +-
->  arch/arm64/kernel/process.c               |   9 ++
->  arch/arm64/kernel/sleep.S                 |  12 ++
->  arch/arm64/mm/fault.c                     |   2 +
->  arch/arm64/mm/init.c                      |   1 +
->  arch/arm64/mm/mmu.c                       |  48 +++++---
->  arch/arm64/mm/pageattr.c                  |  29 ++++-
->  include/asm-generic/kpkeys.h              |  21 ++++
->  include/linux/kpkeys.h                    | 177 ++++++++++++++++++++++++++
->  include/linux/memblock.h                  |  11 ++
->  include/linux/mm.h                        |  14 ++-
->  include/linux/set_memory.h                |   7 ++
->  mm/Kconfig                                |   5 +
->  mm/Makefile                               |   2 +
->  mm/kpkeys_hardened_pgtables.c             | 180 +++++++++++++++++++++++++++
->  mm/memblock.c                             |  11 --
->  mm/sparse-vmemmap.c                       |  29 +++--
->  mm/tests/kpkeys_hardened_pgtables_kunit.c | 198 ++++++++++++++++++++++++++++++
->  security/Kconfig.hardening                |  24 ++++
->  27 files changed, 923 insertions(+), 51 deletions(-)
+On Fri, Apr 24, 2026 at 05:48:40AM -0700, Andrew Morton wrote:
+> On Fri, 24 Apr 2026 05:24:01 -0700 Breno Leitao <leitao@debian.org> wrote:
+> 
+> > Add documentation for the new vm.panic_on_unrecoverable_memory_failure
+> > sysctl, describing the three categories of failures that trigger a
+> > panic and noting which kernel page types are not yet covered.
+> > 
+> >
+> > ...
+> >
+> > +When enabled, this sysctl triggers a panic on three categories of
+> > +unrecoverable failures: reserved kernel pages, non-buddy kernel pages
+> > +with zero refcount (e.g. tail pages of high-order allocations), and
+> > +pages whose state cannot be classified as recoverable.
+> 
+> Before someone asks, I wonder if we should make this a bitfield thing,
+> so people can select which of the above three should get the panic
+> treatment.
 
-Sashiko has found quite a few issues, some of which are potentially
-concerning. I'll address them in RFC v8 - no need to point me to them
-until then.
+That's an interesting idea, though I think the necessary infrastructure
+doesn't exist yet. As discussed in this thread, even distinguishing
+non-userspace pages from userspace pages presents non-trivial challenges.
 
-- Kevin
+Implementing a bitfield-based approach would require significant
+groundwork. If we want to pursue that direction, it might make sense to
+defer this patchset and focus on building that infrastructure first.
+
+My preference would be to start with the coarse-grained approach
+(current approach) and refine it incrementally based on actual needs.
 
