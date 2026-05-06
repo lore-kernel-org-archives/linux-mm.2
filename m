@@ -4,106 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EFAECD342C
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 14:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15113CD343B
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 14:52:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFBFA6B0005; Wed,  6 May 2026 10:46:31 -0400 (EDT)
+	id 419416B0088; Wed,  6 May 2026 10:52:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DACBD6B008C; Wed,  6 May 2026 10:46:31 -0400 (EDT)
+	id 3CA016B0092; Wed,  6 May 2026 10:52:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC2326B0092; Wed,  6 May 2026 10:46:31 -0400 (EDT)
+	id 3073E6B0093; Wed,  6 May 2026 10:52:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4236B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 10:46:31 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68C3A1A01E5
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 14:46:31 +0000 (UTC)
-X-FDA: 84737270982.22.C1CC887
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7D8D7C0006
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 14:46:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VNnFQ8SF;
-	spf=pass (imf28.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 22ACA6B0088
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 10:52:27 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0CD7A01FA
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 14:52:26 +0000 (UTC)
+X-FDA: 84737285892.18.A54F083
+Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F096840006
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 14:52:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778078789;
+	s=arc-20220608; t=1778079145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FhRqdYrHyU3h6y1BoEgh7cPXGcT5005JLxeV37oLfJU=;
-	b=NsJZmYjFCg3cZW8uK3Dp2r4/q4bRnKZa8zlHUnjpxdp4SYixcYDmyRcdnpT4LlXaTo1zgj
-	zgSB5sj1OX0K5KXs0+OHYpKgb+3VACbZqDzQrIPwzMnWxC991nb3ojH9z4lv7ar/W4isxe
-	Uib9U1UxMClkvGKVwxWp6H81YeAcJFg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=gm3r6XvAzplY+rEalmoj8Yu71pABThvhETrnbJpSVE0=;
+	b=eHUAz1ZQzj4R95D1oTJAxA46N3IPzVfUReCAzP/CgwBVW65NDZjvKL3aeIwcU1hJ/LkVMd
+	VbcDyityuUFLnohb0XRwfRTEUO8AJAHrJ+qwfiQ4suLklzfssRdYmuHCQ0/m9GhqbEiDbp
+	Ej4U11D8hbtHXld/OpFYApKIhr0jk3U=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VNnFQ8SF;
-	spf=pass (imf28.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778078789; a=rsa-sha256;
+	imf07.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778079145; a=rsa-sha256;
 	cv=none;
-	b=zGgi6Qf3tVSyQqyFFix+ZgPumlLD22zzInDtav7gymudWB7feyzEJNOZCXtYEdztADq90b
-	eZYAT2I45k0psgzGROmIzOH0uyYHt7Uc8w0nVUpRJhA2sQy4cT0YTSxEXqSq5nEmkpz+dO
-	asz/86ZN4/2REpU2jkJXybPWjQKz2oI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 50FF0440CC
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 14:46:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EE3C2BD01
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 14:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778078788;
-	bh=FhRqdYrHyU3h6y1BoEgh7cPXGcT5005JLxeV37oLfJU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VNnFQ8SF2RKFgvFfbQMoFmw0ZHA1pLUTJkO1RKmHx92RZOxiobguj0YDco8BiF+9E
-	 jTe4W7G5UQZ5N2mZOzkVllMqF+uZZRdVjf7wJ5mrMP7LrZfkZZcvOOH3AhEtR7cTHZ
-	 nsmM5BDgABNPn7a/3Q07SZhA1/nRHu73qIGDvdfLDHtd+6QJgsaeR8jC0S7Sxktzgd
-	 ApRL+H0TF5NLa5Q9Nj3OGhneG30WXgEhMaFhcdah86a2qqtjVWetGFAq/9f+w9KuGA
-	 CcY1US604TuZmhWQfr8/Hhvff/psTGzVtRiHZCMsF12+8AcGYSnz2QOLM7LUPjrUQb
-	 QhtPHxHtI9XPg==
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-651b4d09141so1247187d50.1
-        for <linux-mm@kvack.org>; Wed, 06 May 2026 07:46:28 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyAFcvPcnrFwzTi2QYv3zcsXN3GuvRHXjn9yC5bRyPzvTymRdlL
-	MV6fnN4t+uX9nWIzwihLBb7BivGhyZGRMUwgjBHUF3p0NNrgvrb1NkmhLoVkKMuXwJKIsON7TF8
-	rOV+qbUTEPzYEM0Ol0207WmEDdD6Bdh0r4maRKYrG7w==
-X-Received: by 2002:a05:690e:13c4:b0:65c:71ae:cb0f with SMTP id
- 956f58d0204a3-65c7a4130d0mr2891480d50.22.1778078787418; Wed, 06 May 2026
- 07:46:27 -0700 (PDT)
+	b=xz/OPsqvOkCrqO+wshdzdwKhnVCRMwaMksu6jaXYCFIH852nhg/MDrRdNeEFfeCziKDYoa
+	zCbg0JZ6buNcHfA2pGK4t/F0FCztlc4Hr5mx/1Z9i5bGw+FDOQ3H3w/VMSgRJR7qIcmXF9
+	518Gf7//BYEvLgQPjYaqILY9u19hRe4=
+Received: from omf10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB98C1201A0;
+	Wed,  6 May 2026 14:52:23 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id 1006632;
+	Wed,  6 May 2026 14:52:20 +0000 (UTC)
+Date: Wed, 6 May 2026 10:52:18 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, Alice Ryhl
+ <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>,
+ maple-tree@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH] maple_tree: document that "last" in mtree_insert_range() is
+ inclusive
+Message-ID: <20260506105218.2d027cc0@fedora>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com> <20260421-swap-table-p4-v3-3-2f23759a76bc@tencent.com>
-In-Reply-To: <20260421-swap-table-p4-v3-3-2f23759a76bc@tencent.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 6 May 2026 16:46:15 +0200
-X-Gmail-Original-Message-ID: <CACePvbXf-xUbOqBFh0kjLxj-dq2K0XwvnH-ToX2fUVwiYLgFZw@mail.gmail.com>
-X-Gm-Features: AVHnY4L1sm0VDd9qmvk3L0ISgntS0820Z1TRtzcsAJF_-RRUUvvfkseUIvU6Nns
-Message-ID: <CACePvbXf-xUbOqBFh0kjLxj-dq2K0XwvnH-ToX2fUVwiYLgFZw@mail.gmail.com>
-Subject: Re: [PATCH v3 03/12] mm/huge_memory: move THP gfp limit helper into header
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+kj9YBeXscDLq874zLU7zgLj+l26bmBXA=
+X-HE-Meta: U2FsdGVkX1/cgatkWo0EqaahDtKU5HPgw4gZTQ81Jbc7hM1/Geamd84zEdzF4AarhJyAm3mXQ3yqp5ltGn3PXHhfD8NieJ5oteyfMkoXHDjiAd1NvGu7Moz8SjjRfuaT91qXlvUjjXFiMHzELM/XZJ+rWSmwGgF+4ZBzKGN0Ta5n+KYhfQwGB8tKNR1OD0djayL0umKSJ9K4P1B7pfZfG6PGJRYe8AEuHFzQe9ULCyyKlcbeKgmMeFPD0Ta7IOMdc4mz6XiM0greIEBTpnIDX0+CdmWese6GKnGqkevdD1saAkTwHPy056V4+CTA097VPMu+aW6F7iGXhsF7zRNsHZKqd71c3Ym1OeYfd9D4OF+ADLj3YgDE84T7i6qzCS+h
+X-Stat-Signature: y4yubf5yuioqdrb6guydznm8pwoa8p4m
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F096840006
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7D8D7C0006
-X-Stat-Signature: yegiaazgt76betmgr3jhjbo88c6yyiqs
-X-HE-Tag: 1778078789-320671
-X-HE-Meta: U2FsdGVkX1+pf1IuvNcm+N0q9Dnbm+Nu19/GEXpgyDsy1uf9G4+tXmoi5Q6wGvSEmN3mFCbh6tIAPOusKcmapfrNqxyYLigu76mxh2F7jbzqVV19Ygiv/s+sjyc072lzSiQ12NZgdujBH2xD/hiHPvLVHF8bt+AfOCVghtgxEPd76JEOT2v9RxCYchFW1m1lXM7YGONPtfvgH8ygE3pNiRI7K5VuBeiU40mBtQAJkfC18uN20vYhdTTMFVGkkJ+SMstei7J0LG41qlG/PmNq+bnWhukLLSkKOyksAzNLuz2pifaShsmu7JKUO+2NxHKv8kNSwk8ghbPinY5zu4goJmBXG5UmMngaWpAjO3j7cBD0BeU4iEK8ZwXuVI+/7EqfmVH4PVwNiXzV83SYooyH4cn0YZI4T3KdGHOkIqrRUoOpD5kb88p06RbFT03b13gMjEa9+sLrTQVKbU2bRqsTDMZ38hgjZCY0GYQO0OeLYEMZdnD02Q75NG8YKkdEvxah18Bxvc2mfKT8DtoTDDNEuPYkGNXvk3EVIK6Khd3ois7brjSMBaUwyrjw7i9e1k5wCHI2zKckl/9oQkPTcAiPHFWFgyjSoCjSUkiPcdlkSF3YE+SzJOd34d/LVy0Yr/ygauqrtoVY5G2MnhlUlWiHckUk78dVRzhAsMGUlGPTF5U+Ca5ammJDWC4XHKcsXBM9LXcIHnz2SD13G+Ail3aG1RW8RsllstKr6enGb8ZXt7q4uaroLFCwJ9gYfBJFxKDMlFv80iE+inYOq2inRNW5xaR1G1wqG51Qrt+PxwszXxUEuHBHhbOuGY7fgoypcKdeQveV+pQa3o+KUXevZpnRzSNuNpNpUenWzBVekGUr1K2c0eUN4Hn8Ef9i+WYXTa8e+RFZp1NIvacjYvznSkPtTH/YhTCZ7Q82cAVYWKknP4tHpl6X1qTRaSE+yRUQXNKgx1GORG+xfWP4rwzPMfP
- RBTJuRjS
- OHNtpiaBtMzEXtNinj4nUiekcjPy5gC9y9BubjqDdEkXPxlZiiyDB3LX15AZHyf29Gqr5E4M2YZy4FV/p/pIiGe3xrarymjUDivxkiqtEluZkhMfSJH8wMlKKddHrbo2gdt7LTU3DRjYpq/09TBv4AxaG0bF38Z5mhGcS4L4ehvN1LvRVr+8ZhJanb5tkiYAwj/cyzfeJ+v4wmQppvKgl2Eon9TKEEpWK4ZYl+T26Jn/61bKLcrhSEPteynY1BDh0VETGDrAWj29+U5flTUdz9XgNG5QWMEkl3nXP0KY48Nya7bphhmUfit6FAFik8GalIUAJfk7Udq0dS/Wm911wCShDx361GF06HgFlU5kt/tn0RFIKc9wAg2uyUw==
+X-HE-Tag-Orig: 1778079140-721101
+X-HE-Tag: 1778079144-962627
+X-HE-Meta: U2FsdGVkX19p41UIvEsTFjHw8lEQGTOBpfyqaMCwcRvxBOoJqcunCutznUc6W9B742JsjIcHt5MNmWWp+6Hwbmmd6b93+KqJdQBy7BA3siH/W09Zlp50nTBMp7/N+zfZ6/16919rZ6pnmHX1koMZg1ESDtQBBtg85wDhTTQARcjjnL78EjJ1DmzXj18hg6CrR7FpcdVu6lJZR3b9WnLuPM8bQDFGkGEUMw1kGJWbbpN+iZ27pRCLM8QJTt3uAMu9fW++uw8p3aVtrK8IB5WSEd8X/AZ+HYMXjjWI/CcNFCmFajOY4XLnfOMcfVBo50fSOLk+eWnyoL1owauIwRkCy+uMQ8m6xq2JauDGVPtd0XO4n6H/dZXpyaVLehxMcTWcDPkya8kWmZ/3UYlvemQTtAE/LvcD3UczRyRuRrkUJkFXXCxnvhh20CUreXm4UGsNbvrwe6MUY2Ozo8SHg0NiQvJ1IlWn3Q7LxPs0ODS77a1Xd09PiI0Yp1teUe5ComKyr7wSEMbnNt2sBC+as+NN6eOAHcGa53hcTiuEuBBDfLu+0wbIBwPaY9JOhOcNvgETE8cbtUcHYn7cns7Kp/Q5lh2g8/JoaoP2Cve8iRm5oHncoPjC4WJmurS/5ogtYmoPXdvtyW+wugnP8Q/7PVRuh/Lleyxg5RBEb1ClpD9glsNC/UmaBbFBw57YSfLpiE958s8hdJ8reRP8nUgnykwMnNtf7SPKhYvBzoDv53irYsq0hkZUV7YGAUuUulvEtdecFMWBYJ4Blv9b7Izyv3kpAIwEpNBQH0+NFpFis7I8PMAJYozALEkQClP49xVu7wqAf9jgFdZFoBcJ/iYVFIsF+cdr/Kvcfq/GFYP9FVDzwYifmMEibrwHuxSPionHz8kQoa7zPv7I9Z2OtWTNys3RWAC8CxF1H7+2HMclkxbs+6T4zFZYVZfnD1hkFMp5VR3G8xG1R9buSqSZQAL1crz
+ 66xklhsf
+ 71FfEf9iM44RCrz8SKMoqp5Y0S+H71kjwV6WV0u91/JyF0jP4Z3U8NrCMGFqUk6SFckkBH04KKfXme6U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,25 +82,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 8:16=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Shmem has some special requirements for THP GFP and has to limit it in
-> certain zones or provide a more lenient fallback.
->
-> We'll use this helper for generic swap THP allocation, which needs to
-> support shmem. For a typical GFP_HIGHUSER_MOVABLE swap-in, this helper
-> is basically a no-op. But it's necessary for certain shmem users, mostly
-> drivers.
->
-> No feature change.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
+The kernel doc of mtree_insert_range() does not state if the address
+represented by the "last" parameter is inclusive or exclusive. This can
+lead to bugs by code that assumes it is exclusive. Explicitly state that
+the parameter is inclusive, and add '[' and ']' around the word "end" to
+also stress this point.
 
-Acked-by: Chris Li <chrisl@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+---
+ lib/maple_tree.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Chris
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index 60ae5e6fc1ee..dc9591218446 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -5730,10 +5730,12 @@ EXPORT_SYMBOL(mtree_store);
+  * mtree_insert_range() - Insert an entry at a given range if there is no value.
+  * @mt: The maple tree
+  * @first: The start of the range
+- * @last: The end of the range
++ * @last: The [end] of the range
+  * @entry: The entry to store
+  * @gfp: The GFP_FLAGS to use for allocations.
+  *
++ * Note that @last is inclusive. That is, @last = @first + length - 1;
++ *
+  * Return: 0 on success, -EEXISTS if the range is occupied, -EINVAL on invalid
+  * request, -ENOMEM if memory could not be allocated.
+  */
+-- 
+2.53.0
+
 
