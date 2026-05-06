@@ -4,142 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A72ACD342C
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:55:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30072CD342C
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:57:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C29D26B0092; Wed,  6 May 2026 09:55:28 -0400 (EDT)
+	id 63A5E6B0005; Wed,  6 May 2026 09:57:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDA2D6B0093; Wed,  6 May 2026 09:55:28 -0400 (EDT)
+	id 612036B0088; Wed,  6 May 2026 09:57:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF00F6B0095; Wed,  6 May 2026 09:55:28 -0400 (EDT)
+	id 54F526B0092; Wed,  6 May 2026 09:57:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A9756B0092
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:55:28 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49B628B463
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:55:28 +0000 (UTC)
-X-FDA: 84737142336.29.EC55C97
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4967B40011
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:55:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mo8z5cA1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778075726;
+	by kanga.kvack.org (Postfix) with ESMTP id 471536B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:57:45 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0AB871C017D
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:57:45 +0000 (UTC)
+X-FDA: 84737148090.23.8C831C0
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3ACCF1C0011
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:57:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=VPmMD5bK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 31Uj7aQYKCKocOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=31Uj7aQYKCKocOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778075863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aNRy0S6L3YSzMl7VPrdeXJU725FCyYdB61hcQ1UpLhI=;
-	b=28oD8M9ptG98EwpWG5Hd/nfOdvO7m/1DO/4YsMkxz+InmOm0LhNNrYSXrdLiZ/DCc3YKgC
-	mfnSvgVIe0QyTZVujHnonqL0XTb5RMMBGDiRnbs9EMXNldWLJFbH9dmOZy8VHo4LzKux71
-	+nCUe2tbVkMI3qinrhRVqjfN/dLyE2w=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778075726; a=rsa-sha256;
-	cv=pass;
-	b=pPSFQ2oQZ5THuKV3lKZq36hsxjEKv/y8+5vXuOFGqtPyIMjJygqrmd5B+0atgfKndPO/Wi
-	y3RlfR7X+CqIr2zmIxPhkwS3kYcyLh2PCB88TYJEp0sJ+JxisfAUCPoyCLBxkBYKBnW2QF
-	jJuiIZzPXUHlzULi8uyh/PAlcAm0sp4=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mo8z5cA1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-79a7109f568so71977817b3.1
-        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:55:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778075725; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Xwe2fbf8aBGu29QsjFXH3nzd/4msBPMfZvQx67kDy1LeVaUtYJFvnxih7Z2q6yg9kB
-         5AA7IKwI1hhaI9bZXDzvL6pxdE27UTYSYjhjhTGrNSKLQEuPfuBoMMAbdNynNo+fYzoK
-         7VmIVNs54y+/xNkaX6/B1tbaZZDmeqGrO+4i7dWkkgJy40LwyO0pyFT8hkc0enfKy/5j
-         5q93C+vC4mf63L5+1HnxHJCX/lP8YOfl5CYVFrtESeuMyz3angYYiXYTFMp2Fk99pDUz
-         W+M/sLNfy5FlYL398E7jB4RCtq5IatmCM0hMx07MeCFC67/xO42mhiBdt8SheIDXrBmh
-         mPkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aNRy0S6L3YSzMl7VPrdeXJU725FCyYdB61hcQ1UpLhI=;
-        fh=82rOkKhBlbxOgaSdnpDirtgseAkKfZbocehHyWrezfk=;
-        b=e+mZ9FxE0PVQacBE6+RyLyN/d9YQ03xyoM4XGVQEzJb90fdZT8Plbu+etuIxyDL7Eq
-         SFupnMIj8eixDOWaIuYS0XRgFYLiq0QczBnK2nBOqR2wllMkW9fXcvWTkcZdRuPmjyL7
-         Ib2q/Hap79JbjEInQ6WAxVics69RlQuILoxtstrBRj30Lfm9AuIUAGpqFbIAUR3Qr6S/
-         9f57bpUX+JtZe81bQOpXVG7Dhi2WQvgkxrXS9NdwjT7mtnJgll0BAWNWu1znK8sVeFMy
-         77Pl4sH/EH7ADPRX2WGiTJgnhFLD541+LAiCnPBe5M6gjS0sHCkNkWiq0IUlRuVyCJ8K
-         99eA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=bte2ikXfMH1X30UWHnUNHKf52jg/NvhErm9OVWL82Ks=;
+	b=SY3NqLxCDvTCg/a93y8lqJbmDuqEwqThrkqDHJqo/Px4UGL5NV7VqwWOJdoMyeXBvir1VN
+	RfYgeRdG7AGS4bWgKnoshwmcFJwjH5vykhWBm8ytv+EExzS0Hd9ahYxLPvZFNOAssce17e
+	6PVBqqA8+q70jnUqp/x+lyHqgYnyIwI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778075863; a=rsa-sha256;
+	cv=none;
+	b=OizldVzhV+dst9EORlaxYGVECKjtHHmpnaUgN5QSJvtgBPOq5T82TfeauVelTekB5zK/oH
+	AAxbBzJGEfHsVzQZ+ZTw7fGJIED0uPTglhEE5555B8jW4KcqtxxBjo7ndgf/azX/aTJA9a
+	HgwahKYhh+RxQv0JonzVjNaHMiUaxtQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=VPmMD5bK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 31Uj7aQYKCKocOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=31Uj7aQYKCKocOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3651991d0bcso7801918a91.0
+        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:57:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778075725; x=1778680525; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aNRy0S6L3YSzMl7VPrdeXJU725FCyYdB61hcQ1UpLhI=;
-        b=mo8z5cA16zzwI6fzA2D4Afty250JI5J+Dgpade8W2GzN0tyLL912zTFNfUisPsc+77
-         SVRwxDXPvCaiwuZo6iVlnRJtj4BM4tRUSWP7apkYL7vIYfb8JDWpFW9fQqIAYW44C+Xf
-         xhjqgDUOD/q0/3ote0PFct0sreeDBzyvb4PcPK2RctIUrhHLUBJ34j2Hlnu+LMMLBOxj
-         wA5atKGkWGHC+RYxfVe3sxxrhhyv4Ei6Mw5OO0Wlp7CB0TxY87CSS4+S3kJvgsDNXL8j
-         kGz0gogwN6t6on4KN83UHbHzlUXZl6t7VJ1d32VoHrfGJvuQLPZ3/G0K+SabYKMlWphI
-         iJUQ==
+        d=google.com; s=20251104; t=1778075862; x=1778680662; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bte2ikXfMH1X30UWHnUNHKf52jg/NvhErm9OVWL82Ks=;
+        b=VPmMD5bKrc77je+FgoIIsHMnDCcMZ+WIVM1SiRfLTfdBmSakr3rROSZw9GYMiPf8fG
+         fYY8HhvZRebOLurgQ3OMBHKHbQ6JIEdlImyJI6nPHdknd/B+PFdBZoAzqnc1jIMDYTSX
+         2g/FbvHfTeNL+BA88wBVMiS5WTW5bYKu1HULeDzajJurGZCw/VMmoPEsTzHr8vA5kzRT
+         bC0Zmt9N5Jo1EGugcrD1iphIz58pyJqmxKZyL+Z5Asd15dvJOF8WJG3EzCfTGJRmH6dZ
+         MryMwdXlWL48I2P5/E7803cboHrtq6YEbp4y6Xmtx4gRNpgZInT0vsXSRhM8XQR33qH1
+         LclQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778075725; x=1778680525;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aNRy0S6L3YSzMl7VPrdeXJU725FCyYdB61hcQ1UpLhI=;
-        b=cZbDTFbgEqr4nCCGIHKK+KuMIHZdtx3HCTOaH1uT/FOxxsSy30g6/ohwwPSsMgKsEK
-         +1DAuXAxit/kXrlreLp/AoyXagoJCV9R76HWb+Mr8+zqcO/6e4Aj+HfwgOFcXNg/9oX3
-         zEhWW1gFd89FmwYqanKG4s73BsN+qHRNdaKW4/rgex7H04gCIJveSeMN9wCt4N6LHymA
-         i+C7nKeJMaViaDrg20NzI4PM7iKXiJJYxyyDu4LHHf+T/sQ33/9DE9EvUOXQyFwxgdmA
-         /W5dm9LRj62u3MB8t+LFmsV7GPTBXsQsOcpqU9bg3GL8oKD1phZvQUZKnKBNVMYb3VVI
-         bxgA==
-X-Forwarded-Encrypted: i=1; AFNElJ87b6g7lepsTCuOJF3wzJXLIxt6F3AaT2Cn15ft+YUQdEaVYRjoxhYrlISD4dt7jL5+WKV19TGXZw==@kvack.org
-X-Gm-Message-State: AOJu0YyCN3jK2hozUiDQv09oaMZl1clvpg9nX++PcTKCrco952DLFqZD
-	rl3s+bjv894slo4AyNO23EFO5csSNWeqRh6OzY84v+supKu0CAYu5TabAqJ3XOrCsnwoP0qtXlD
-	kt2QsRWT/1cWNzb0OT/mG7o5yC2l3SxQ=
-X-Gm-Gg: AeBDiev0aioFhYSCwTySF1L9YO2IBE2NbGPrTZ2ZACxM4oI+9KGxb+Z+g8xwt1Zzs9+
-	9JIKlPZxzDrqxiAs+GGHH1VJ4IivoPWQDX0AJBvDEKn/lHpMWtRLUSY6YhPoH18zj6MsK3v7hpW
-	nRdlvGzneOTkSOYA99PP+okMvUNP6i0qMKkAjlI2wYY0jdJtzbsyGFsSPZsY+Tkm26WA/+UM/eT
-	EjCW+f7yZGGmfx5Ye4RzWxBNz7tbEWNCSrlhs3qF1KMReOg46Nf+8ECJXvLCP3HnUShTfhhg7Ju
-	ysYpNNhVR8x3+Q71P2u4BK/vCHmdgg==
-X-Received: by 2002:a05:690c:f06:b0:7bd:9ce7:164c with SMTP id
- 00721157ae682-7bdf5ef293amr42572997b3.43.1778075725139; Wed, 06 May 2026
- 06:55:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260421121616.3298845-1-haowenchao@xiaomi.com>
- <CAOptpSPs-1UrEa8AHg19e590=SiV6bpnex7gCbif8=aY7BtpuA@mail.gmail.com>
- <CAO9r8zOjugCwWqHP3zxXPmjp8TwpoROCjCqTZ_uxOBQwVqCWqA@mail.gmail.com>
- <CAOptpSMQyyb+q-VJdJ0RzNkjaer1CTePM5WkwEj_7cAO4aUToQ@mail.gmail.com> <CAKEwX=PrfrNys4ao7-d11J7r4pv5VmE8gTU_7iUHaHAKNaFuBQ@mail.gmail.com>
-In-Reply-To: <CAKEwX=PrfrNys4ao7-d11J7r4pv5VmE8gTU_7iUHaHAKNaFuBQ@mail.gmail.com>
-From: Wenchao Hao <haowenchao22@gmail.com>
-Date: Wed, 6 May 2026 21:55:14 +0800
-X-Gm-Features: AVHnY4LF3aWQo3HGLZrYMNvLGHmAQYHlyMw97GRdhJ_YEuxrndl8XeHVPrQ1D64
-Message-ID: <CAOptpSOnRCHo35KK5x3S0f5y9+7+dxfznpjNRH072jZvhYHwww@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap
- release path
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jens Axboe <axboe@kernel.dk>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Barry Song <baohua@kernel.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
-	Wenchao Hao <haowenchao@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4967B40011
-X-Stat-Signature: 6jofrho33sr76szp78hhkcw6e5m84ier
+        d=1e100.net; s=20251104; t=1778075862; x=1778680662;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bte2ikXfMH1X30UWHnUNHKf52jg/NvhErm9OVWL82Ks=;
+        b=R1ZYZX0MHIe/lezvjJkiCgXb6c2BzrQu3wgJcMkpNltli1yOEVY8Ccvl7zSzSqCBL/
+         OjuVQII09eJqDi7m10mZFz5Zq17OfHZBzHDxOchwEFwQz9Ll1jIgJfZc6MlJncxMYK7k
+         aLJ0//poJMM287xmNmDqjr18Znn6z3t+giV/m02Ej+qGm2Bw33lPmIa3VsnqrMUnu3G3
+         fq0w8RM5J3z4T517AfnnOVlUP9uelgDPVyNhh3x018EOGy2XDeIQBydbsxPbR9AMYOwK
+         LI/4Qe8jdBiaxLaeWg0x6A+G8geGfHD10A78Aro/PdJlWeBMtm5vMHgPYpOjfFZ4sGxq
+         7tNg==
+X-Forwarded-Encrypted: i=1; AFNElJ84IQTicvCjCIRIJN6IWF+Vq5g/qBvaXHspB1S+WHRjF64wdIlYxWPVXA3vl0Pi4jkfX5lqnUvcxg==@kvack.org
+X-Gm-Message-State: AOJu0YzKBh6nCOAj68uvS/FsQvF1K37Vut5c97Bfqabel0sc0QhIheOq
+	7fOGTU3QJe+FNDEff1R7l/fh0lnKrAXEqU4jwXT8KTan5zeE3gMKU476v63l7AJPLMJq6UvklEz
+	XqjTF4A==
+X-Received: from pgbcr4.prod.google.com ([2002:a05:6a02:4104:b0:c80:2817:3a23])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4314:b0:3a2:dbaa:82ec
+ with SMTP id adf61e73a8af0-3aa5aae7ab0mr3951938637.32.1778075861517; Wed, 06
+ May 2026 06:57:41 -0700 (PDT)
+Date: Wed, 6 May 2026 06:57:40 -0700
+In-Reply-To: <69f8dd59.170a0220.bb392.0004.GAE@google.com>
+Mime-Version: 1.0
+References: <6936812a.a70a0220.38f243.0090.GAE@google.com> <69f8dd59.170a0220.bb392.0004.GAE@google.com>
+Message-ID: <aftI1Nt2PTptaUs2@google.com>
+Subject: Re: [syzbot] [mm?] BUG: sleeping function called from invalid context
+ in kvm_mmu_notifier_invalidate_range_start
+From: Sean Christopherson <seanjc@google.com>
+To: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, dwmw@amazon.co.uk, kvm@vger.kernel.org, 
+	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-rt-devel@lists.linux.dev, lkp@intel.com, llvm@lists.linux.dev, 
+	lorenzo.stoakes@oracle.com, me@brighamcampbell.com, mhocko@suse.com, 
+	oe-kbuild-all@lists.linux.dev, pbonzini@redhat.com, rientjes@google.com, 
+	rppt@kernel.org, shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, 
+	skhan@linuxfoundation.org, surenb@google.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-HE-Tag: 1778075726-835737
-X-HE-Meta: U2FsdGVkX19hhd3ZSZMEvWqRw8elFCCsV4njGPQSP+0Z1JgEHLu08e/pC/YjrYA2c7ufzLKlTQhqAMYFf0NIbWDExzNkVkFGatdgEq9oLr5gcxkr+Cl8ekKEIqbPjz3IvUtnyITQ31R20P1y8mDnlGLZ1E3Q95RkCHNsjdLiYj9Fi7TxSXwz+rue7dciz0I2mhC7vKg7ebEVq4LOSgO87dpBRVy/+PyGknoZKPGfuj4sHKhyyeiWL85OYP43pnUe5jYsytmnRc5uwtuxGe0CxfuAdyp5KP8lxGDIa/zfZvjg0yOmEvGj614TZywB9Pqm0fCMIaV/J4k5rzeWffy9IcC4RhxTAvmaLwcO/gCE0YicBM21WnDYV7l82lDEZS3yPYm21i12NcFTyLzmuWZs4HD+gyLhEXbjUUjYAUkl/cJmTYr8E7KzcfU25kbJfncO3oaQuAqV57qmvNVxzisx6L9kJ/+0VV/wKvx/dja7iF82E/xHLeVCiSNj5xk48oTGYvOZo/ssHVD5Lrf02ZNd0cBGhys2krWGoL/XzHjWvG0qftw9BerWcGcTSB7Vc7EjIgwHQZznMyvhr6EpIWMw6Uq5JJ+wXcvMEIjFEOBWHRrKufiZVvpB/e5IV5HAPwD8pTiqyQDQ+5myhe1LAWHbl4BGSvkIky6G1EtNXuKGrPbEmtEvLIg5n9yaPiK2zI0ImYYEgUDt2ipW87MKIQ20ihE/qM87I6juVauLCVaaKNggAQWCFXoLoc0wZtxrs3DqrzeFKoMPAEPDcyXxfOUiubvlfgbWqA0uUroiJMHydl3IPlfjKyTR1KJcuw1SLoyIfpvNAjAtCiQelf4c1g2PFx5nXK9VYlvyptl9r3soZasMw8ExWtzRgTf9iQfmbs4ab6cfdBVs1J/teu7WTZvPnLf62ri44y7vifHFiBGtSS1NLXAfhlw/6GBdLz6VWkPqvGeLW02sDjMStqFanZi
- oSqecz8u
- grSxeQYGMDLvdHDG8CONeeCCHJIm+7d3MzSm0wQgpeQ1iAQMXIqu2ov+I81chfczaQeqH8L3Fmq9udPjNPHmCgeoPIS74qdL6uRFNFL530os/lAQRCGA0set/T7yr6bLtgtKXx2UtmQrpIh8CLpD5hfIGwA+/n0U+sSUnp5yP1L3wv7tG9PRp44QL9vufawpvaOOS7dcpZgOuZ8Kr5IuO/Cmw3jbZO5PvRO9cKk82flFZuxhlFvrgTji85R/cDVuRpIf9FvwVQ9Mvf5cbwNKE17wzEHf1J85+z6PZjeGAGvf/AVZFueztyGv/QnNcBXN7tdItLFfHL5CveR1eZ9fcxFPd+a1VBii7uNxSDrExhw/m+TC+yEo04Ejnbxi/syiwRIRkvpP59nj8//5AgTiF1UHSYW3tZfOOiZexK4ZxauReuE8CyXl8nC/FYh09FmHFeFoL1aD0zZPo+grEipfPmlCH1/fkdxBFhox80uzk3X/LaXGnwG3npqJ6gYcf2/AOVsrxsxLwetxz5cgG0LDNfcSjww==
+X-Rspamd-Queue-Id: 3ACCF1C0011
+X-Rspamd-Server: rspam04
+X-Stat-Signature: s95q3ywp585pppt6kgwyuqdbyer795of
+X-HE-Tag: 1778075863-373732
+X-HE-Meta: U2FsdGVkX1/ycslO5A/7FWNMrx1gJZ93ljjgB2eGhkNy8FCkL0YDrqOeiMsjtljWovu1Xa/6556QO70RCuEWjNdDi7olYKYyFSp4m8O7VuFqyIWN3PfnBGzB5bSMQB4uDTbQFY4D7lMAAJvkH4cYpEqu/kaejaoxEkjNmnb4mTrsI+VvrhGrLIGbGT6CMcknnHfpIjsCWR/KzTA9rAE9bel8JXdoJ9TFwfW6+wIKRMHdfgs1/t32dcf3iR9IxvD4iCP/pJwp0vUufjNlqxF7/TxexvTU6/q98LTH9sct5XDIAicCDmlLRctYJxBRg7d9gAl0Wrf6d+NpZbeKD+HC27o+Vso+ELxtPvI457rXx72TYRRXomb8lzleXxCpzZQiM8DeSUPmomI0c0sjkaoQ0VAh/YAsEoNFIdFnP7+yFQFka/GdupDe7m9rpv3yQZDmVQiVyj716nkkk4ZpbJvdkuEjB2B6xXvtIlBqu0dJO62JWGoM2ZhcFd/gOERoIKuOBbP48PBiAXnoLW9l0E/HcBsnyCEsOSbi6tuWNYv4V5bNllWKIxFpdJcT+TRtk3QzHK3DMRznZrlYw513bD87Fz4sAI7v5tyfGJwkzRm2YSqJHsHMlczvBd6XmyXNPGPCEdbuhqdxXqmzMqcHzfEOl5ETVF0VJe/HKPu9mOf289AyppndEieG2E97LDMumBRP1ba6+fvr97psHLMJyWSibsqvWoVlStJWvGqsur+zAWeks1vNORdtTuwJWlsHHnDVw96vXRp9B68QQwRzpTBDc+fPgkIi7WwgCXFysw7qT1m2SWX3v8xvluFt31HBDvg+2JTf3CsYPTtSVGR6/tfj6rIsVlt59H3vtSDYIyU4YmzWvBsR2nn2GpqY/VVMwrOg6QoOSKYkkcvINKQk1qJ5mCNIoEWY4l2IqkbxM8LG4vjY8mG4UgDLJxBmTk+1ao8X9C0fsFWk0BKXOlLrxcV
+ pIy61Rhy
+ 94+SOpkaRd0y8ftUnPzKLvs+1p4BJzu13VI6FxCo8T62OYdKOxYiJ2zUg2uEraR7Wxq5dJD+PUPAxplD5Uczfl6mwU7yp5VW4irAn/fgksNEkuk170TT+YCYYVwX/7n2e8z2HfFUD2Nn3s/KbR06ZOfCpLAdOeZLtOkyJV3gTKrV1Ucjufi3ZZRyGCiT7OHWXHK3fFpv+6smSRurjlyNYhOPlLXBkJgTHm61m86hlsyODVumx+tGsqSMFkeLnn2TBg3xgM/X7hmw+piy6rja1odY3J0e7+wWsOot9TToU/VtUkTM7kAywf4Pf6m0hfNoLP1khSv592jHiizDHCXqbQhQcdTQ+6dWZ8zzSLMblfIR5zwITWj7LCi5CBGwc5NOo4U0P8Tv5cS0pLu1dN8GRaRc84yidLuAQ4aUU/esMKs0hB6bYyapSQZLvfvg6zIZ09abOX0a5YzF4pz2cTjT+ymJxRdM/tIXtgd7GBx2E72RQllfJ7eqhaUfb2EfhGZ263w7EA3/oSbHlVXbqG05d+im9D5mX2jzqTXCpcWhX/RB2d2PAp+x9meNj1ICNA25i+GmYbht/4j2FQgyo+2r3OBUF+4NJ+a4iCkqsKmWLIItNBOTnxCs+WQsE74SOFpZEGzty53sr9wU/PIeMN8SJqAEpc0hsUDKbzF5S0LK2pcsgZUGGQHiR8HZvZOa9q5S6XwWpdSbTXKP1x/74yN7nV9Gc5fiSPuY6nAXv9yxtn+rbx7utc34l1T48Dn/bGJFkag8W8aZw9jlgUIDSAcKUUfWtWgMI76DnS4bVjOZm5CjcvwmQFW12xdjG3gbKDPwohppR/Qx6mka8+lOwZDwOIiAx3LksG5klvN9HkthY8JbxUMH7Scs65053eWa2SANH9DhXYoCKC15NKlt9BJ65l4clih+NPaHfGs4C8gbVyzOQi+Uruu/QYEeVios4PG0PAVLolZI89gKo8OpU1hg0358NSbMx
+ p5+bnIsP
+ qRF8BgvuJ53IuVNkSz9ZSbU2nW2HW3qi/4UGrfKNHBJLn/Fg6LlHw79OJsQLTq7hLtbYJGAM+emfhRMUMP6nnfzPci+HRJzWv7THHA4HYdCMbT1HT1yCO5uNo0WuJQV6plVOGzDxehREH0GKx1Jls8Eatze6sxEgh5gVozKTP0Pl9gL4Dk6r0zcp34a/atrZbp1e66T3+AVq2b011QOCFusAdZHj1AHW6LW/KZ+vUMy9xQNWEzKetLl7EmQ2XP7xddLC1Zkc/8Cpb3s5c01t1NT6nZ/iNqRO2SWXEo6xGHKmIX0Ykjrh9ythwyn4/xhSRv51Y2QiaT9iI5muN8ZfARMPkE/Zrhe10sSUHGoJpLCiYb+3A7r7Qs8HPM2yor5hCFnk7siLhlr3AfiiYrMGaQ9uj0k1eX+lUp+248zSRS4lMx7OncJQZP2sJF+x4ejI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,114 +115,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 2, 2026 at 3:21=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
->
-> > With only the class_idx-in-obj encoding (eliminating pool->lock from
-> > zs_free, no deferred freeing), we measured on two platforms.
-> >
-> > Test: each process independently mmap 256MB, write data, madvise
-> > MADV_PAGEOUT to swap out via zram (lzo-rle), then concurrent munmap.
-> >
-> > Raspberry Pi 4B (4-core ARM64 Cortex-A72):
-> >
-> >   mode        Base       ClassIdx-only   Speedup
-> >   single      59.0ms     56.0ms          1.05x
-> >   multi 2p    94.6ms     66.7ms          1.42x
-> >   multi 4p    202.9ms    110.6ms         1.83x
-> >
-> > x86 physical machine (4-core Intel i7-12700, 2 rounds averaged):
-> >
-> >   mode        Base       ClassIdx-only   Speedup
-> >   single      11.7ms     9.8ms           1.19x
-> >   multi 2p    24.1ms     17.2ms          1.40x
-> >   multi 4p    63.0ms     45.3ms          1.39x
->
-> Oh man, you are eliminating pool lock here right? This would help my
-> other patch series a lot too :)
->
-> https://lore.kernel.org/all/CAKEwX=3DM5YpR0cQrryX_y4pm_BuxyUWZ_8MbhWodwbf=
-1Fe=3Dgzew@mail.gmail.com/
-> https://lore.kernel.org/all/CAKEwX=3DPkFiP+u+ThrzjTKBi+usQf2uuhTZcfB2BNNA=
-8RboOFDQ@mail.gmail.com/
->
+On Mon, May 04, 2026, syzbot wrote:
+> syzbot has found a reproducer for the following issue on:
+> 
+> HEAD commit:    b9303e6bff70 Add linux-next specific files for 20260430
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=13745dba580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=5474e13c6d20d45c
+> dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=125dd748580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/b3a0a2e50f73/disk-b9303e6b.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/d3d481b220d4/vmlinux-b9303e6b.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/d6e012913960/bzImage-b9303e6b.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
+> 
+> BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
 
-Yes, exactly. With class_idx encoded in the obj value,
-zs_free() can determine the correct size_class without
-any pool-level lock. The lockless read gives a valid
-class_idx because it's invariant across migration (only
-PFN changes), and we re-read obj under class->lock to
-get a stable PFN.
+This is a known issue:
 
-> Well, the deferred freeing would completely move that contention out
-> of the way lol. But this would benefit all users, regardless of
-> whether we're deferring the free step or not (for instance, this will
-> reduce contention between page fault and compaction, IIUC?) I feel
-> like you'll get some good numbers testing in a system with compaction
-> and THP enabled, with lots of swap activities. Which is... a lot of
-> server setup :)
->
-> If the deferred freeing is too controversial, this smells like
-> something that should be upstreamed independently.
->
+https://lore.kernel.org/all/20260429222502.25414-1-shaikhkamal2012@gmail.com
 
-Agreed. We're planning to split the series so that the
-class_idx encoding + pool->lock elimination can be
-reviewed and merged independently of the deferred free
-framework. It's a pure win with no behavioral change
-=E2=80=94 just less lock contention.
-
-> >
-> > Single-process shows modest improvement. With multiple processes,
-> > each read_lock/read_unlock atomically modifies the shared rwlock
-> > reader count, and the cost of these atomic operations increases
-> > with more CPUs accessing the same cacheline concurrently.
-> > Eliminating pool->lock removes this overhead entirely.
-> >
-> > This only works on 64-bit systems where OBJ_INDEX_BITS has enough
-> > spare bits to fit class_idx. 32-bit systems don't have the room.
-> > I'm still working on the compile-time gating to properly enable
-> > this based on architecture and page size configuration.
->
-> /*
-> * The pool->lock protects the race with zpage's migration
-> * so it's safe to get the page from handle.
-> */
-> read_lock(&pool->lock);
-> obj =3D handle_to_obj(handle);
-> obj_to_zpdesc(obj, &f_zpdesc);
-> zspage =3D get_zspage(f_zpdesc);
-> class =3D zspage_class(pool, zspage);
-> spin_lock(&class->lock);
-> read_unlock(&pool->lock);
->
-> It's basically just this blob right?
->
-
-Yes, that's the blob being replaced. On the
-ZS_OBJ_CLASS_IDX path (64-bit systems), it becomes:
-
-    obj =3D handle_to_obj(handle);
-    class =3D pool->size_class[obj_to_class_idx(obj)];
-    spin_lock(&class->lock);
-    obj =3D handle_to_obj(handle); /* re-read for stable PFN */
-
-No pool->lock at all. We've also added compile-time
-gating (#if BITS_PER_LONG >=3D 64) since 32-bit systems
-lack the spare bits in OBJ_INDEX to fit class_idx. On
-32-bit, it falls back to the original pool->lock path.
-
-> >
-> > > As others have pointed out, I don't want to just defer expensive work
-> > > without understanding why it's expensive and running into limitations
-> > > about why it cannot be improved without deferring.
-> >
-> > For the deferred freeing part: the class_idx-in-obj optimization
-> > addresses the multi-process scenario where concurrent atomic
-> > operations on pool->lock become expensive, but does not help
-> > single-process munmap. Deferred freeing moves the entire zs_free
-> > cost (including class->lock and zspage freeing) off the munmap
-> > hot path, which benefits even single-process workloads. The two
-> > optimizations are complementary.
->
-> +1 :)
+> in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
+> preempt_count: 0, expected: 0
+> RCU nest depth: 0, expected: 0
+> 4 locks held by oom_reaper/40:
+>  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
+>  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
+>  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
+>  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
+>  #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:495 [inline]
+>  #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: zap_vma_for_reaping+0x193/0x380 mm/memory.c:2119
+>  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:187 [inline]
+>  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:294 [inline]
+>  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: mn_hlist_invalidate_range_start mm/mmu_notifier.c:515 [inline]
+>  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_start+0x5a1/0xb60 mm/mmu_notifier.c:580
+>  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
+>  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
+> CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+>  __might_resched+0x329/0x480 kernel/sched/core.c:9163
+>  __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+>  rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
+>  spin_lock include/linux/spinlock_rt.h:45 [inline]
+>  kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
+>  mn_hlist_invalidate_range_start mm/mmu_notifier.c:525 [inline]
+>  __mmu_notifier_invalidate_range_start+0x6e4/0xb60 mm/mmu_notifier.c:580
+>  mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:498 [inline]
+>  zap_vma_for_reaping+0x1f7/0x380 mm/memory.c:2119
+>  __oom_reap_task_mm mm/oom_kill.c:548 [inline]
+>  oom_reap_task_mm mm/oom_kill.c:585 [inline]
+>  oom_reap_task mm/oom_kill.c:609 [inline]
+>  oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
+>  kthread+0x388/0x470 kernel/kthread.c:436
+>  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  </TASK>
+> BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+> in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
+> preempt_count: 0, expected: 0
+> RCU nest depth: 0, expected: 0
+> 4 locks held by oom_reaper/40:
+>  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
+>  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
+>  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
+>  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
+>  #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
+>  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
+>  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
+>  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
+> CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Tainted: G        W           syzkaller #0 PREEMPT_{RT,(full)} 
+> Tainted: [W]=WARN
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+>  __might_resched+0x329/0x480 kernel/sched/core.c:9163
+>  __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+>  rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
+>  spin_lock include/linux/spinlock_rt.h:45 [inline]
+>  kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
+>  mn_hlist_invalidate_end mm/mmu_notifier.c:597 [inline]
+>  __mmu_notifier_invalidate_range_end+0x23b/0x400 mm/mmu_notifier.c:616
+>  mmu_notifier_invalidate_range_end include/linux/mmu_notifier.h:511 [inline]
+>  zap_vma_for_reaping+0x2d9/0x380 mm/memory.c:2124
+>  __oom_reap_task_mm mm/oom_kill.c:548 [inline]
+>  oom_reap_task_mm mm/oom_kill.c:585 [inline]
+>  oom_reap_task mm/oom_kill.c:609 [inline]
+>  oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
+>  kthread+0x388/0x470 kernel/kthread.c:436
+>  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  </TASK>
+> oom_reaper: reaped process 6034 (syz.0.24), now anon-rss:0kB, file-rss:64kB, shmem-rss:0kB
+> 
+> 
+> ---
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
 
