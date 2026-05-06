@@ -4,146 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36A50CD342C
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:04:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 171A1FF8855
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:06:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59AE56B0005; Wed,  6 May 2026 09:04:08 -0400 (EDT)
+	id 7C0DF6B0088; Wed,  6 May 2026 09:06:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54B846B0088; Wed,  6 May 2026 09:04:08 -0400 (EDT)
+	id 7720F6B0096; Wed,  6 May 2026 09:06:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43A0F6B0096; Wed,  6 May 2026 09:04:08 -0400 (EDT)
+	id 661246B0098; Wed,  6 May 2026 09:06:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 326F86B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:04:08 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DCA9AA01FE
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:04:07 +0000 (UTC)
-X-FDA: 84737012934.22.999AE01
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CBAFF100018
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:04:05 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HL16z1og;
-	spf=pass (imf05.hostedemail.com: domain of elver@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 566B56B0088
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:06:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E03C21C05C1
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:06:38 +0000 (UTC)
+X-FDA: 84737019276.11.31B1ADD
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C0D4C40006
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:06:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rCM6h3Iw;
+	spf=pass (imf01.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778072645;
+	s=arc-20220608; t=1778072796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VyxSzMGcG4YBihOth/kzEfCuby+TU4nCMC26Shuc0DM=;
-	b=7w6noZZKqFDCLQSvjFEvizDp5CLCsDIjWJ+nyGF63CfnHpYDnkdYethLL7briJz1L+U/6M
-	RUBdj4d+iAJHQ4uK6iGqu6k7B2gLNIoLE8WfB/28H62JNsYJOkuHmD7HppeR7r+JwgTOwy
-	0I5b9ZRxnWb/67ys81VYRneYoX2y/XE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778072645; a=rsa-sha256;
-	cv=pass;
-	b=V5xksnsCKfNKcPuea9ddDuulPC1Gpe/YwTvjlyo21fycvu7cuEU5PlB01J+1FmH1pB7Pou
-	LX8R+ufF05+ExsrKb5gtNv3voK3766MsuUi35cRkTL5wAMbDDxUwW42x239aBkBA0e2xhR
-	yTahl3PTBSac1bfsfbwFSH+KxcScAs0=
+	bh=qIha8O8IglA0EGFTspNtQXsJyVziplf6EjUrxckyjaw=;
+	b=G0bkZ+IpAZBvfmWKyg0LW/xtFzGmgiv0pc0d4pxx/2EMx3hrRFxjpHH6xayye5xtuzQBod
+	S4fl0TOrAt0SwGC0Y1HxOJO7lI++qiX04K7XpDhvrMiIyeI24BRaTxL9sPd9hgvrgZLN3L
+	uF2eTEw4RioZmaoDiLkBISXYibeyn2o=
 ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HL16z1og;
-	spf=pass (imf05.hostedemail.com: domain of elver@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rCM6h3Iw;
+	spf=pass (imf01.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1305908ae11so5498079c88.1
-        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:04:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778072644; cv=none;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778072796; a=rsa-sha256;
+	cv=pass;
+	b=svKBd8T8jQ4fSqUT+yD5zeoLOTlw09WfR513dXGySpaDYRHRIXO7sD9DfGMkGdxMqmqKW3
+	UTYFvQeAqMKf/o75a7uTMNwXfJ+5kxF13U5Y/NPjNxzgpE9DOYj1gadVtBKfliaT7Mfgu4
+	0pne6bnPGRrNjd9ehNPT+zTxe7tzl7s=
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-38e97e73234so61815891fa.1
+        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:06:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778072795; cv=none;
         d=google.com; s=arc-20240605;
-        b=JZm1LM5bNXUZcn+FfCD/pOEFYUJkFi7OuB129I0HoBribBZfwnDe4CIrYuyIpvmMf/
-         c5VJWWyxmH+jvhhIrhmyVFhwaK3ZxvWAJE+LDWCHq/wuslq7dPI+qruBqS9fzCKBBO+r
-         wJylKFEt2XbIIk9jYRIf8IHk6+ong46WCvJtb1HCOZsSr6nz9fLmws/vVQwkmq5uZDtp
-         HlMxaVBRae82U17Y9kpPgdJk4tn6pMhNYLU4SEsGKIReUWNorBE7+U14TyVFdUWLkUfP
-         FIukzp4rm30Mv61d0VaOffTnMyJfw9IHXr9uAaxLPVzA5cnqNWJWFNHXWndcBVt/HS6+
-         SuLQ==
+        b=Ziv1ATGdX5mXZlnZ1+BQQVtIeKc8Wt/HPdTofLsUzbmxC/4mXOk20Tgx4lzBDf7xvK
+         1askqQ20Bcin9+9qA04/oYbyzkdDuQ/jnF1CRliiWOj6NxEN6dF4LmmyroNQVAUI84gq
+         Agb+GNWo5ivyPLEUfxoBRAN9sPgdOoi9CYN04Oq3KLg3W0XU/xBDTKe1JCBtLK9vMhaL
+         u55/UtKq9kgx8OQnoFpm0K5Fo46hbCStxaXPDa3WAloz208D+OyV+47N9GaLcF/RIc5a
+         XGnQxkxKtFdAaA9icZUiY6v5i9URFYbZZGOSm0hkdFnW4M62tDSEz+0p/Li0Bybdcnvg
+         dTrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=VyxSzMGcG4YBihOth/kzEfCuby+TU4nCMC26Shuc0DM=;
-        fh=7E1YdjsKdQ2Tg00d44wNQrW6XrOywB2pzvKsoETZisI=;
-        b=EayvoC4dOjp+mHm4chs5rlRKpRMCL+fmNvC9Rffiz3Q9MmgQJFjpBBXEL+NKZ/1EGT
-         Kz4j+gxZTBaYvhpNxUdMaS1Bh7B/ciG6uDY4nYN0+nx28sgzwJizwFWHQjDvVvaRSmyj
-         u0BoEeBdCYTDZJUQo7PHBS0nPGQsdRAFCch8ow5N3rZiYSzYK+m8dgS7Jg8pqa6RSCGc
-         fWb7T8SjufuT/8BIYp8LzVN62W6oidSn6UWPan6o2W0bTIEmtetjMrk3Z+IXduzRr5me
-         QKuXsFTRSS0QeoIdy4WDi4y3G+fS9dUf4w+smEBO/QmKNx87vNUrCVx4koX/uKCukRWd
-         KwRA==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qIha8O8IglA0EGFTspNtQXsJyVziplf6EjUrxckyjaw=;
+        fh=z3Fwobmdit0YNEomcs+AYtTHNp6Fp+n7uaRZuWc0flU=;
+        b=RXbO+xr+7BlabHVdcaSPizsKwo4lrwYHWbTTkz+8sMpHiDVaqyVFF1jrhfpLO6veuJ
+         Ew1kRzvZqCbrsKPeYy6D3Ka80nzuBJp7Iukg3grh+UUzZKqZfPNSS0eqLAy1Qc4le52S
+         b0D+kpOfEpMLLC3aX0oCpeA1We3q+2Nh5RTCGVomNZh70dZvurBN3+ZOTRsLhQUh+qqT
+         BQd+ksBDMvEK706BPaMlHc0U9fAMphov+hhMMgVo7HkgugkNYjKLQf8W74IuBfwYtGXE
+         augPo/5hKu1YMnXxoLawZOaUtDvbf1U4qYRoEkdreE9pb9+wtvwkptpxo5NexFEdTwnf
+         ZNGA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778072644; x=1778677444; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VyxSzMGcG4YBihOth/kzEfCuby+TU4nCMC26Shuc0DM=;
-        b=HL16z1ogYP8ypLMchtwEuBg7PCsAuC7ofMLs+wFJqDsYFQSAtMufwelh91LqoVDYmI
-         FqwurvHKR1uMEKc3J7Q2ZywawaaPDrBlb64LIGWyfGBk3MdVNOArMWq3fpqUVDSK4bfY
-         twq7RNPwy6wztDULfXo+Fjk5Kuz8g9TNO6LR/cuxuMhimft0X/qcey0urNe1mPadKuni
-         g8k3TGh8TwqiXm5w5t1d6SySpet7JoGlieuX2C6OAdinbdWCmoVwcLV8yCwSGp0zgF8t
-         e99g1O+0FctTuoODQFwOknAGvKysfgP4rADA4gcgqdqQDNXkGq499drgKkVZoUgbyHK1
-         KzEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778072644; x=1778677444;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778072795; x=1778677595; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VyxSzMGcG4YBihOth/kzEfCuby+TU4nCMC26Shuc0DM=;
-        b=QOdlNHZmxzMjwEXfA3otb6+RgVHI2be1F5RdbAPop5aOoIm1dGrf7gksmCbmTWqO9U
-         E2LTProBtu9z06/02NLRAlRGWitrWJaa9f4a/c+sipywQAz3MhEXjLopOT7VQyKU4Bi5
-         6lHEGKZ0SgPNh7GhdWpiJv+IZwJwhzjgyA4roBCeU+2EYLtKRGz40Dny8NBO3jOlH1Rl
-         W4XqZEKBwyfwQRZ/V1YzUJB03b+/yzV688ssVSDNvF1KFl1LysR+SXsuXiqPiUU7ZfDO
-         vh4lu5JhswysKDlclaXnpHycLylgM6cOUiqjtt7yqUyDXPOTOvPXKa4/oAhGfsoGZu0O
-         uB/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9mdThSg5d4I1BnUt6T3WRVKxNImGXxvyD/29EhkFtxsFUnb5NqA3AXDEKzr26yy/Vb0UugG0qlKg==@kvack.org
-X-Gm-Message-State: AOJu0YyUwpgrgtjA8AO5pAu8gQASLLHNo4bhpeLGY5zHk/QNyXZWJaGq
-	k67ORvhRFpcOdfv7w76ATWAb49fxw/XXr3ZLlSSC6WjSJYAijDqmOz1oi4SDCnfREwBD9G23UWi
-	172BhxIzYn2CkHFmkCqNb/KzMc/AUOkJo9Ngn+3wV
-X-Gm-Gg: AeBDiev65IEw5oieagul77GIMAxN0lH/uAUrxjDNbc/1vv3L76lIRYXNmyzLkk1hx1h
-	Sj4mP2Siz1vH10/PZnU3Ad35M9nHKUpNxh8914ce22MzX5+aE6uh/tehqAyviwrYfJ4J2Ewp+4l
-	Mu2xe5LEzvjwhUou9hK0QD7YHHmoLpJ+FABsTXMxD62ExcMkTIG21uyIS+T17eFmjIccE7l0j0q
-	OJIfPors4ah3vgJoiIe6K3OI5TXpw3p2DZZrQfQVK5KoeD6hXqlvnt1aYrN18zm+s39mpLazmpV
-	JfTFkFKNN3A0V40Yg2BCUdpjQVMFJa/B9oIq1E5bCI8nDx/6MaCXfCU2pxuTW1Mubb8cNFA=
-X-Received: by 2002:a05:7022:ec0b:b0:12d:f7a6:e641 with SMTP id
- a92af1059eb24-1318e9178d9mr1882135c88.25.1778072643669; Wed, 06 May 2026
- 06:04:03 -0700 (PDT)
+        bh=qIha8O8IglA0EGFTspNtQXsJyVziplf6EjUrxckyjaw=;
+        b=rCM6h3IwDP7Qtj3IDU0gwh6lY3rd6gY4hnKLeYH5KjYGyNS671uB8WSGu92tE3Ormk
+         HkL/CqvjyaRukCyJPTBJdCHu/QE9rGkatqQG4NgB+wDYKc0f1ZTUK01GNuHSEXVuvByX
+         HwNNdKzFdBag/K468Ku7VSCHvfdsJnEYDmSmj3ISPMZpyA4TLDVc4aVQBIRU78aFhmTL
+         yWTX5VvbsRGb9M/AmH467ivhL4eiWFZEZ8BpM/FCdTe+W6INxGRihiRJdAdLdrwUl7e2
+         tDljw55zSOnF9ddKiW9Zc9xfsIH9D4VW17qnr38NC+JpGuM1LG0oBKnuG06COMjIdHQo
+         oUfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778072795; x=1778677595;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qIha8O8IglA0EGFTspNtQXsJyVziplf6EjUrxckyjaw=;
+        b=CLDKDGVLSQKWwkEHRlXEKB+wW4iMJhKmzz+Tj+g8CuIvfTsqDil8WQawPQpp45amwY
+         BE+9h99VM6GWzhoXP6xs0u2EWdUhvRiqHz0BY+XMO+/r5sL2SfodQOqQaalEVQIMA5qP
+         oW6grXfRldLvrJup9cL8DquYGP8/LQwvLb4Pw7nLgIZHKXJQN0gozpCH89dbMrfPfSpM
+         dSWbPGhzrTGP1RGI79gNFpNZgsYo5vRE44nvlp2cYZwpGPas0hPAcNbOatV76hmB+hdX
+         52fF2tYHPgyg4/O9jpaOrhGnGxwZaTeWEj6bIoekRXze+xoLtwg69omcabxYt0OyuICf
+         ifEA==
+X-Forwarded-Encrypted: i=1; AFNElJ/CNm0/Oy4euPxscfboAF0OSmNFMXUnmaYK9nzVl7StrvTOrQd8Zj6F3RlRii1r13RB8mPZEn2sNw==@kvack.org
+X-Gm-Message-State: AOJu0YxiYGV1vrsVn9l7Z2unYTCrYZRxvtLgihKTRS/pHMC7xcyGNRYc
+	M/xLfItK6sar85Xazq7PVrctRCNqAAXmioWfwA8v+zmuGPA4WoDQPnsfn7VU8yq7+VqWBf9tLiw
+	D9Vx4v61v3kGGmoyoT04Mhliktsnt3Jw=
+X-Gm-Gg: AeBDieugr+9dwGh9rUbzXHhL9fqYWA9AFIG8mw5X18kJbMS/IW5qZX+hhuOHsaMoohG
+	pbEE13RLFRWrJPEu+DsQHb7qBksQrvy0uxeh/S8o/8JFcI4h7kLLp4Kh06TBJEp8X97hkyzJU4U
+	Dg/jiMKkhggou+EBOJ3q/xe6U9oG+VFwdJDxDm6/gv3PfFL5DvhirxxYz8YYBPoqRhfd4ttwB0q
+	Ugv7XzYYsh8E8qVr5Ib8sju2/TmITWiQ0ED0MMDBjLRFGadlGzB8RjXJJyEXjWMj1kMbzM6r85r
+	/UHV8v2C+1PPJwPTpeoMmjrfPmE=
+X-Received: by 2002:a2e:be85:0:b0:38c:c36b:8221 with SMTP id
+ 38308e7fff4ca-393c3f0d59fmr14338631fa.0.1778072794477; Wed, 06 May 2026
+ 06:06:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260424132427.2703076-1-elver@google.com> <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
- <afkOMIPu1WNFE9MS@elver.google.com>
-In-Reply-To: <afkOMIPu1WNFE9MS@elver.google.com>
-From: Marco Elver <elver@google.com>
-Date: Wed, 6 May 2026 15:03:27 +0200
-X-Gm-Features: AVHnY4I_sIIXoZtb7Dp2LdZncViXZn8dSOWAzjV1MMogggcywyvPBFhYkIJG5fI
-Message-ID: <CANpmjNM261J5qefMvmUXWZGBVz-KBs7GkbpdNMfTOvNJ-=LiZQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] slab: support for compiler-assisted type-based
- slab cache partitioning
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com, 
-	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>, KP Singh <kpsingh@kernel.org>, 
-	Matteo Rizzo <matteorizzo@google.com>, GONG Ruiqi <gongruiqi1@huawei.com>
+References: <20260503165024.1526680-4-vernon2gm@gmail.com> <a74b6b1d137439121917216ef386bbab9107afcc89819d1fd94e389b8c54b4f1@mail.kernel.org>
+In-Reply-To: <a74b6b1d137439121917216ef386bbab9107afcc89819d1fd94e389b8c54b4f1@mail.kernel.org>
+From: Vernon Yang <vernon2gm@gmail.com>
+Date: Wed, 6 May 2026 21:06:23 +0800
+X-Gm-Features: AVHnY4JugtOdbG81NqtvS8OnnXg2CeaCnqaekvuLdZtxK-4PsvAJWtwh-SV06ig
+Message-ID: <CACZaFFM-o+oFKbnpnHKL9tk01-i=h7Uc2uh_KH1BO9x5NapQUw@mail.gmail.com>
+Subject: Re: [PATCH 3/4] mm: introduce bpf_mthp_ops struct ops
+To: bot+bpf-ci@kernel.org
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	roman.gushchin@linux.dev, inwardvessel@gmail.com, shakeel.butt@linux.dev, 
+	ast@kernel.org, daniel@iogearbox.net, surenb@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	baohua@kernel.org, lance.yang@linux.dev, dev.jain@arm.com, 
+	yanglincheng@kylinos.cn, andrii@kernel.org, martin.lau@kernel.org, 
+	eddyz87@gmail.com, yonghong.song@linux.dev, clm@meta.com, 
+	ihor.solodrai@linux.dev
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CBAFF100018
-X-Stat-Signature: fnyix7nbsbusi8jw7hn9bdkd94e91zu1
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C0D4C40006
 X-Rspam-User: 
-X-HE-Tag: 1778072645-357547
-X-HE-Meta: U2FsdGVkX1+37C8wjYoNq1swuvTCjOrVP/mW2j7GeHEyM7PoJXN6LMTyH1PYTU2NkXwcX/QsxvhnbM7XJRtvIqNhqxcg2lN5kWT0HkIZkBRi7JTil7AqnEUC5B4Ry5Cks7bCqb+3KBnT8B04L4igLw0rW14K3ii4D0uVVBOuMncz49RlYtmVkJsHmX/WiM6sbMrDvIFfzM3VrNkYbsycX2l7t7Tq7XvzOaXqrVIZ27CJDRYs5V3QjwzocKkOlTGCsjjUOYgYFmeWy4X2H2/SKLZ7dUTBKYtPwDriklhA+t2Afom3krxggewCLqkWdJlChtsbWIHIUJf9o2roAaaqv05kTVN4RE/fQdh5sUxrMnzNGfgprfbp9vfxy2PBiNo3kB6lmt9Ewh3sduf7wKBnKX2HQTxWE2kPWrsWYxjp+49qHG25zrXNZe6OVawihdGaaswY4Y5q8zvWDQWlOHDjazbJVJaJ37NfvgKin2ws8EUzXjEW7ELWf96SECJxIS3Stod3BOYSrONhYnD6ZdRFDuYG+Y4aRD+9sMpCG+jQStEjY2b45L+TLIAERFoAbiZFMFeA9mVX9dkfzW7oWEkjJ1tiQxWgPiC8lvXvFLEhsioKlFNdmtIb6JXEnIi3QB7AlsJeT4m7T4OvSsKVXPUW+or9QJsBLycSSQS6mkOjcBmrUy3a55RZDOdLdPSNmYHUGlLVL7Xi1BuN3BIIvAWiH8qWoPA5OPyKpuQgKUQ2FW9uJhlB5lf/q2uJVl1YfQM4zl9UoU/4/vvrip8GZ7bDluOT6943vQGymb9h1DzaDM5MktcCLoiDInuetslna1t2IBP7xtYeQO33C0nC5ybjhiTOfVMCGY79LKFbgoH/Mu5gbLvvdysaNUHtul/QhK65vUlQC3Jc8IiHXhosJCKdhQ4xT+aV5ckfHg2cGqw5EC6eAUrllXgBAdkucr/tmVrUftrrfsq4LntXIBGfLrQ
- CY9FGwgj
- s1qdIlpYlV3lW3tDyfAHlutDd4VGA4UQtBMID50HFPT+X8OYOXdgy4QimXg1hma8AhNU4ZJzxwQzqo8OwDiAclEZhkJf38uBH8Ooy160KJ3pH5BcIrYbqm50LGU9I/QI25KWqJ1f8ki+5AMtJcF9PV5esy0h+vjTTbmeLtgErQA+REWE802arbu0nwIabbEgxqMgl9yKbkxAXr+SCIPLyPKS5aRfNZG3Xqv5ywNlaO5KrCXkKAlPiPXa+7KDbCGuJQPtZ78Gdo0kE3Hq5X4dw5XQaPV9NpItfc3mZb9mQ0/+FozkJfWp2gfe9qijb9hW99FbyJpk/iupA6cFqxNhNxkNhz/ji4HB9nGhF201WLxC1JpoOE9QaDT3im7j2SMOAIf5k3TjKEwaqpOGyZ9F4M2D9n3b9eMw/nM+Jx00oi2teE5E=
+X-Stat-Signature: h7b4tkrfabdccnskshhryecgmke3iisz
+X-HE-Tag: 1778072796-33952
+X-HE-Meta: U2FsdGVkX1+ilnmFRqAEyogFbWeFgUaNhAcs2FxIrRgmD5sGKu0c2rOqONvEuSpBYUtL9rXXguUOCljVW3+YZEWhbieOU1qZepYgA8KQleNYnDHRKVyWfxsr4Mqwkj99AHXGqGBkR/M7QJQ1OEwqhLCe6VHdl6Cog1DMA9XpExNza3Es4EdQNrY+z9orD2eahBNs3KNSBWqank+sv9Mqj1a/Bp/59Y+C0SxW77xBVkbG7hU9kwe642gk7s+A4ipi2OBQe68jt4ixxzmaIp2jPm/B9ttfu4LxnyVoS1DbOgwUzxb/RtixQfNgsCjfT9r7E816Poq9gb4xte9jjZDFjs5proQdmpicuGbsqEIqKyQ6e5AJWnD5SUTv40h91dobzkGLwtSk/3DAy4I9S1RD5QZSI067cRdSNt2utcHpk2nPYSegEa5ukY0T1/sz6lW0u9J6VQZpedyxPRA9pkUaosRO0zJJMNywMyV1ER6NvXyjC7WJOGrpMPjZ6kvW/AlAd9zCjRzGTtVRknETvDkji9h9q8xBc1lJxXG04y+kdXKqO8Pw+VTw3gxCQ1vUbH8QLqk83RCEZz0WaTPrPOpN8elBDN8ae9R6nCRxHHdEQTwDee7tdGy+G3qyyIytw5Rxf2WJM+DrISrdc2gUS53+X/EOJmyCdad79To7+ZztB02P8R4kOzry3QSy6RvYAMCihn6Ga/zLRb2f4PdZQDk1p1qEzrwvoPt1+9q35GFl7b3u9/wgiemGrGfwtwcRzjt7a3gPCqkMPlSeufQoXwvHtT+vI91bkNbOcUQHtnnINSSofjPKKLshwJZktO3V3W9jERdNAhisxgkMwtDXlFNrpVdJEHb0YTs0GHnu2oZ/ceHZglGVuptyu0dwSSJdrmJyypXRHFFRLLi7pzKdx6sDcVvscpxxg8OQgFXAziDSNoWEE7NWc8WLffyub7gSbhN8ug8VdHoT7YNsf/pnJNB
+ 8D6NWiUN
+ 0WS9e7lnZ+0s9bmcddV8bFZRdhN84wc+2QSbH5xM3T+Vzk76XPUt1ksSEyMis5td55zKUX3DBMXXyEjGChbfZPYI7qqCP0u88eWd8u9ggSICZBbCvDW04mpuJtheh1DmDdl4uyaZzWxX2w3tHdk41BS/NT1NZ5E/M5QqliHCoEfm8EaMS5vOz67ij5fWDw+D4pwoYGSgpHZIFsPjjH9bzBOFTiJ5h6eK+QIx5k0n1/tGf4plubhooGEQyzEoZr91NQ+IYiaj3hQue23iAYUJNjYY9DL19l6/mh1poQCDAbF0aVS4KzlKKVrfnChF1xppJnRGnEPNNC3ZrxFc5QtWssx4uBkSI+SAk7yfIup3qYxC9t+KsdDUpVq3gKcle+L1OppS6orq5JMH/3WFQBjhRYKMz0nQZ0KbgQfxkelO1CAwz1jruzchKK4P8NpIvJLTeX75rx172a3NT29XEvw3gB29t7RqZa+nBElQuEziL3A3BCIQ8gic7YwKdE+tjb/36IqTCZc6gZyx1SCo4wh+d55svoIt69CTJY8ukTeawV8YedgNfV+4yBzeNW/sctWMVHzAx21/cNjcdcFCQF5rsQOsx54zUOvzfstDAlHXdUAGsW3KtzvMlQQJF1C2DFiYcDAW4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,123 +144,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 4 May 2026 at 23:23, Marco Elver <elver@google.com> wrote:
+On Mon, May 4, 2026 at 1:35=E2=80=AFAM <bot+bpf-ci@kernel.org> wrote:
 >
-> On Thu, Apr 30, 2026 at 03:03PM +0200, Vlastimil Babka (SUSE) wrote:
-> > On 4/24/26 15:24, Marco Elver wrote:
-> >
-> > > @@ -938,7 +968,7 @@ void *__kmalloc_large_node_noprof(size_t size, gfp_t flags, int node)
-> > >   * Try really hard to succeed the allocation but fail
-> > >   * eventually.
-> > >   */
-> > > -static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t flags)
-> > > +static __always_inline __alloc_size(1) void *_kmalloc_noprof(size_t size, gfp_t flags, kmalloc_token_t token)
-> > >  {
-> > >     if (__builtin_constant_p(size) && size) {
-> > >             unsigned int index;
-> > > @@ -948,14 +978,16 @@ static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t f
-> > >
-> > >             index = kmalloc_index(size);
-> > >             return __kmalloc_cache_noprof(
-> > > -                           kmalloc_caches[kmalloc_type(flags, _RET_IP_)][index],
-> > > +                           kmalloc_caches[kmalloc_type(flags, token)][index],
-> >
-> > While reviewing this, it occured to me we might have been using _RET_IP_
-> > here in a suboptimal way ever since this was introduced. Since this is all
-> > inlined, shouldn't have we been using _THIS_IP_ to really randomize using
-> > the kmalloc() callsite, and not its parent?
-> >
-> > And after this patch, we get the token passed to _kmalloc_noprof()...
-> >
-> > >                             flags, size);
-> > >     }
-> > > -   return __kmalloc_noprof(size, flags);
-> > > +   return __kmalloc_noprof(PASS_KMALLOC_PARAMS(size, NULL, token), flags);
-> >
-> > ... and used also here for the non-constant-size, where previously
-> > __kmalloc_noprof() (not inline function) would correctly use _RET_IP_ on its
-> > own ...
-> >
-> > >  }
-> > > +#define kmalloc_noprof(...)                        _kmalloc_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
-> >
-> > ... and the token comes from here. With random partitioning that's
-> > #define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
-> >
-> > so that AFAIK makes the situation worse as now the cases without constant
-> > size also start randomizing by the parent callsite and not the kmalloc callsite.
-> >
-> > But there are many users of __kmalloc_token() and maybe some are corrent in
-> > using _RET_IP_, I haven't checked, maybe we'll need two variants, or further
-> > change things around.
+> > diff --git a/include/linux/bpf_huge_memory.h b/include/linux/bpf_huge_m=
+emory.h
+> > new file mode 100644
+> > index 000000000000..1c8a6f7ad8f1
+> > --- /dev/null
+> > +++ b/include/linux/bpf_huge_memory.h
+> > @@ -0,0 +1,35 @@
+> > +/* SPDX-License-Identifier: GPL-2.0+ */
+> > +
+> > +#ifndef __BPF_HUGE_MEMORY_H
+> > +#define __BPF_HUGE_MEMORY_H
+> > +
+> > +/**
+> > + * struct bpf_mthp_ops - BPF callbacks for mTHP operations
+> > + * @mthp_choose: Choose the custom mTHP orders
+> > + *
+> > + * This structure defines the interface for BPF programs to customize
+> > + * mTHP behavior through struct_ops programs.
+> > + */
+> > +struct bpf_mthp_ops {
+> > +     unsigned long (*mthp_choose)(struct cgroup *cgrp, unsigned long o=
+rders);
+> > +};
+> > +
+> > +#if defined(CONFIG_BPF_TRANSPARENT_HUGEPAGE) && defined(CONFIG_BPF_SYS=
+CALL)
+> > +/**
+> > + * bpf_mthp_choose: Choose the custom mTHP orders using bpf
+>                       ^
+> The kernel-doc format for functions uses parentheses followed by a dash, =
+not
+> a colon. When scripts/kernel-doc processes this file, will it skip this
+> function documentation?
+
+I will fix that in the next version. Thanks!
+
+> > + * @mm: task mm_struct
+> > + * @orders: original orders
+> > + *
+> > + * Return suited mTHP orders.
+> > + */
 >
-> Good catch. I don't think we need multiple variants (otherwise the TYPED
-> variant would be broken) - we're moving token generation to the callers
-> (not even inlined anymore) with all this macro magic.
+> [ ... ]
 >
-> I think this is all we need:
+> > diff --git a/mm/bpf_huge_memory.c b/mm/bpf_huge_memory.c
+> > new file mode 100644
+> > index 000000000000..e34e0a35edac
+> > --- /dev/null
+> > +++ b/mm/bpf_huge_memory.c
+> > @@ -0,0 +1,169 @@
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +/*
+> > + * Huge memory related BPF code
+> > + *
+> > + * Author: Vernon Yang <yanglincheng@kylinos.cn>
+> > + */
+> > +
+> > +#include <linux/bpf.h>
+> > +#include <linux/srcu.h>
+> > +
+> > +/* Protects cgrp->mthp_ops pointer for read and write. */
+> > +DEFINE_SRCU(mthp_bpf_srcu);
+> > +
+> > +unsigned long bpf_mthp_choose(struct mm_struct *mm, unsigned long orde=
+rs)
+> > +{
+> > +     struct cgroup *cgrp;
+> > +     struct mem_cgroup *memcg;
+> > +     struct bpf_mthp_ops *ops;
+> > +     int idx;
+> > +
+> > +     memcg =3D get_mem_cgroup_from_mm(mm);
+> > +     if (!memcg)
+> > +             return orders;
+> > +
+> > +     cgrp =3D memcg->css.cgroup;
+> > +     ops =3D READ_ONCE(cgrp->mthp_ops);
+>                 ^^^^^
+> > +     if (unlikely(ops)) {
+> > +             idx =3D srcu_read_lock(&mthp_bpf_srcu);
+>                       ^^^^^^^^^^^^^^^^^
+> Could there be a use-after-free here? The pointer is read BEFORE entering
+> the SRCU read-side critical section. If bpf_mthp_ops_unreg runs on anothe=
+r
+> CPU between these two lines, synchronize_srcu returns immediately because
+> no reader holds the lock yet.
 >
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -503,7 +503,7 @@ int kmem_cache_shrink(struct kmem_cache *s);
->  typedef struct { unsigned long v; } kmalloc_token_t;
->  #ifdef CONFIG_KMALLOC_PARTITION_RANDOM
->  extern unsigned long random_kmalloc_seed;
-> -#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
-> +#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _THIS_IP_ })
->  #elif defined(CONFIG_KMALLOC_PARTITION_TYPED)
->  #define __kmalloc_token(...) ((kmalloc_token_t){ .v = __builtin_infer_alloc_token(__VA_ARGS__) })
->  #endif
+> Race sequence:
+> (1) Thread A loads ops (non-NULL) above
+> (2) Thread A is preempted
+> (3) Thread B calls bpf_mthp_ops_unreg, clears the pointer, calls
+>     synchronize_srcu which returns immediately
+> (4) Thread B frees the backing memory
+> (5) Thread A resumes, enters SRCU section, then dereferences ops->mthp_ch=
+oose
 >
-> Plus a paragraph in the commit message.  Let me add that.
+> For SRCU to protect the pointer across its use, the reader must hold
+> srcu_read_lock before reading the pointer. Would moving the srcu_read_loc=
+k
+> before the READ_ONCE prevent this race?
 
-Bah, this is why it doesn't work:
+Good catch, I will fix that in the next version. Thanks!
 
->> drivers/gpu/drm/msm/msm_gpu.c:272:4: error: cannot jump from this indirect goto statement to one of its possible targets
-     272 |                         drm_exec_retry_on_contention(&exec);
-         |                         ^
-   include/drm/drm_exec.h:123:4: note: expanded from macro
-'drm_exec_retry_on_contention'
-     123 |                         goto *__drm_exec_retry_ptr;             \
-         |                         ^
-   drivers/gpu/drm/msm/msm_gpu.c:304:16: note: possible target of
-indirect goto statement
-     304 |                 state->bos = kcalloc(submit->nr_bos,
-         |                              ^
-   include/linux/slab.h:1173:34: note: expanded from macro 'kcalloc'
-    1173 | #define kcalloc(n, size, flags)         kmalloc_array(n,
-size, (flags) | __GFP_ZERO)
-         |                                         ^
-   include/linux/slab.h:1133:42: note: expanded from macro 'kmalloc_array'
-    1133 | #define kmalloc_array(...)
-alloc_hooks(kmalloc_array_noprof(__VA_ARGS__))
-         |                                                             ^
-   include/linux/slab.h:1132:71: note: expanded from macro
-'kmalloc_array_noprof'
-    1132 | #define kmalloc_array_noprof(...)
-_kmalloc_array_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
-         |
-                       ^
-   include/linux/slab.h:506:55: note: expanded from macro '__kmalloc_token'
-     506 | #define __kmalloc_token(...) ((kmalloc_token_t){ .v = _THIS_IP_ })
-         |                                                       ^
-   include/linux/instruction_pointer.h:10:41: note: expanded from
-macro '_THIS_IP_'
-      10 | #define _THIS_IP_  ({ __label__ __here; __here: (unsigned
-long)&&__here; })
-         |                                         ^
-   drivers/gpu/drm/msm/msm_gpu.c:304:16: note: jump enters a statement
-expression
+> > +             if (ops->mthp_choose)
+> > +                     orders =3D ops->mthp_choose(cgrp, orders);
+> > +             srcu_read_unlock(&mthp_bpf_srcu, idx);
+> > +     }
+> > +
+> > +     mem_cgroup_put(memcg);
+> > +
+> > +     return orders;
+> > +}
+>
+> [ ... ]
+>
+> > +static int bpf_mthp_ops_reg(void *kdata, struct bpf_link *link)
+> > +{
+> > +     struct bpf_struct_ops_link *st_link =3D (struct bpf_struct_ops_li=
+nk *)link;
+> > +     struct bpf_mthp_ops *ops =3D kdata;
+> > +     struct cgroup *cgrp =3D st_link->cgroup;
+>                                 ^^^^^^^^^^^^
+> Can this dereference NULL? When bpf_struct_ops_map_update_elem calls the
+> reg callback at kernel/bpf/bpf_struct_ops.c:873, it passes link =3D NULL =
+for
+> maps without BPF_F_LINK. When link is NULL, st_link->cgroup dereferences
+> NULL before the check at the next line runs.
 
+Yeah, I will fix that in the next version. Thanks!
 
-Apparently using _THIS_IP_ creates a possible indirect jump target,
-but because it's in a statement expression, it's invalid, so the
-compiler complains. This is obviously nonsense, because the actual
-indirect jump in this gpu driver code would never jump to the
-_THIS_IP_ __here label, but that's what it is.
+> > +     struct cgroup_subsys_state *pos;
+> > +
+> > +     /* The link is not yet fully initialized, but cgroup should be se=
+t */
+> > +     if (!link)
+> > +             return -EOPNOTSUPP;
+>
+> Does this comment match reality? Looking at bpf_struct_ops_link_create in
+> kernel/bpf/bpf_struct_ops.c:1397, the link was fully initialized by
+> bpf_link_init and bpf_link_prime before calling reg. Also, struct
+> bpf_struct_ops_link does not have a cgroup field in its definition at
+> kernel/bpf/bpf_struct_ops.c:58.
+>
+> Also, does struct bpf_struct_ops_link actually have a cgroup field? Its
+> definition shows only { struct bpf_link link; struct bpf_map __rcu *map;
+> wait_queue_head_t wait_hup; }. The patch does not add this field to the
+> struct. Would this cause a compilation error?
 
-Given this pre-existing issue, we probably need to continue using
-_RET_IP_, as before. I tried to fix _THIS_IP_, but it's incredibly
-brittle (e.g. __always_inline function returning address of label
-doesn't work on Clang, but would on GCC).
+This series is based on linux v7.1-rc1 (26fd6bff2c05) + "mm: BPF OOM"[3]
+first four patches.
+
+All of the above definitions are in  "mm: BPF OOM" PATCH#2.
+
+https://lore.kernel.org/linux-mm/20260127024421.494929-3-roman.gushchin@lin=
+ux.dev/
+
+> > +
+> > +     cgroup_lock();
+> > +     css_for_each_descendant_pre(pos, &cgrp->self) {
+> > +             struct cgroup *child =3D pos->cgroup;
+> > +
+> > +             if (READ_ONCE(child->mthp_ops)) {
+> > +                     /* TODO
+>                     ^^^^^
+> This isn't a bug, but per BPF comment style (subsystem/bpf.md), multi-lin=
+e
+> comments should have the opening /* on its own line in BPF-related files.
+>
+> > +                      * Do not destroy the cgroup hierarchy property.
+> > +                      * If an eBPF program already exists in the sub-c=
+group,
+> > +                      * trigger an error and clear the already set
+> > +                      * bpf_mthp_ops data.
+> > +                      */
+> > +                     continue;
+> > +             }
+> > +             WRITE_ONCE(child->mthp_ops, ops);
+> > +     }
+> > +     cgroup_unlock();
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static void bpf_mthp_ops_unreg(void *kdata, struct bpf_link *link)
+> > +{
+> > +     struct bpf_struct_ops_link *st_link =3D (struct bpf_struct_ops_li=
+nk *)link;
+> > +     struct bpf_mthp_ops *ops =3D kdata;
+> > +     struct cgroup *cgrp =3D st_link->cgroup;
+>                                 ^^^^^^^^^^^^
+> Can this dereference NULL? Looking at bpf_struct_ops_map_delete_elem in
+> kernel/bpf/bpf_struct_ops.c:936, it calls unreg with link =3D NULL. When
+> link is NULL, st_link->cgroup dereferences NULL.
+
+Yeah, I will fix that in the next version. Thanks!
+
+> > +     struct cgroup_subsys_state *pos;
+> > +
+> > +     cgroup_lock();
+> > +     css_for_each_descendant_pre(pos, &cgrp->self) {
+> > +             struct cgroup *child =3D pos->cgroup;
+> > +
+> > +             if (READ_ONCE(child->mthp_ops) =3D=3D ops)
+> > +                     WRITE_ONCE(child->mthp_ops, NULL);
+> > +     }
+> > +     cgroup_unlock();
+> > +
+> > +     synchronize_srcu(&mthp_bpf_srcu);
+> > +}
+>
+>
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a =
+bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
+E.md
+>
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/252852=
+79315
 
