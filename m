@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 263A3CD3439
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 17:07:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A940BCD3439
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 17:08:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2733B6B0005; Wed,  6 May 2026 13:07:58 -0400 (EDT)
+	id BC35A6B0005; Wed,  6 May 2026 13:08:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2243F6B0088; Wed,  6 May 2026 13:07:58 -0400 (EDT)
+	id B9AD36B0088; Wed,  6 May 2026 13:08:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13CE16B008C; Wed,  6 May 2026 13:07:58 -0400 (EDT)
+	id AD7ED6B008C; Wed,  6 May 2026 13:08:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 030646B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:07:57 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 34B148B9D9
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 17:07:57 +0000 (UTC)
-X-FDA: 84737627394.10.AD3D9C1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DDE16B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:08:48 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FD25402AC
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 17:08:48 +0000 (UTC)
+X-FDA: 84737629536.17.609A3A4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6C8D14000D
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 17:07:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FAQouR/L";
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9D91B180005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 17:08:46 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lt7vj2IA;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778087275;
+	s=arc-20220608; t=1778087326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+0LrTCM1q5pRPs233Br9+vpmc8ij03vv4TyteHj0Org=;
-	b=05Y5450OpoQI9SSPNU7IF+G33KeC46OCthXpvz2w1tKptq6EMDgeKNR7S8yR1ff6n8jNpv
-	HwWnDfN+GzQLGe0JdlGTOaXR13hfQHjQ9kJn6AcxbXtFmY7LoXjyue7x6rIEm+P34KuFfj
-	dbVg9M9X4aizAaGOFIYIvQApFTt9nQE=
+	bh=OinfjCEBW9A/zEcVntYLmeTMVufnD9W2gbv4xH5bO3E=;
+	b=O7FvnwYMpv5n+BcyMvAs++Ar2AaQBB+L/K1ScTRf2Eu6ZPWesQSrNSigGK0TckKszESTZr
+	gPQzMT4GmVhdWjXl35ZZB7MMXmYu7aJzgdLftbpNR9+YpjOmHcw/zPg4q1ux+yA2PrlZeg
+	z+Hx14DqDSxh5w+1R8zGXu3Q7wwfLvA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FAQouR/L";
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lt7vj2IA;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778087275; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778087326; a=rsa-sha256;
 	cv=none;
-	b=Ff3EQ4ryWduPa40znURuQ/Fv3V/5ynNxK+Sl9plBv78QoH8r637dNlT/5bQfHhOGj+FQbl
-	sq9byICZb1kbbzU5MnjeeJhexmoGwvYBupV/JspKrnL/yxUjYz748T47BqJ7g51m1L2kJu
-	ov2gkL8uxe/yrMg08nz2WuFR8juF9kE=
+	b=Tuw4J0+Jtq7W8XNHq/EtNMaA8y0LAxjCZuOYC88OyOjsjlekbYNIvN8C1ke8+La3ZEwQ+D
+	9KeG51eSAnTos1CFz23mIygFY2n9MXDxh+nVx94WQxWADXmN92nyt1QDXKNUnL7YkjGJOa
+	2Ms7zWlewgEuftabergV9HUbzpn6Q18=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D62FF6024D;
-	Wed,  6 May 2026 17:07:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E615CC2BCB8;
-	Wed,  6 May 2026 17:07:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1111360252;
+	Wed,  6 May 2026 17:08:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6C4C2BCB0;
+	Wed,  6 May 2026 17:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778087274;
-	bh=+0LrTCM1q5pRPs233Br9+vpmc8ij03vv4TyteHj0Org=;
+	s=k20201202; t=1778087325;
+	bh=OinfjCEBW9A/zEcVntYLmeTMVufnD9W2gbv4xH5bO3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FAQouR/LQsRBkeo+uk40wP1EPH2xlzx8AmIfyExgkguDNfpZN651Tl70YXHVUaoMe
-	 OO9rehcTElIhWOZEgPz1MCk0sfL45tg8witfe4ouy0Qf4dvKB3fF4fQ5TrDAk6lesY
-	 OBZvi0WEdF8Jqpv0FOGeFfry0tQB+hXNDbebpEV7f0R4XNHhD11WcoNpP5IRHLjVeI
-	 /X+pKt3/v87TZTVkblyr5rH0gz7KhbceI6YmC0JNLSFhPVn3gkRKtdwpwkYyojj5nH
-	 mp/LCZ1T+SXqrZwKTt604htee0Et+qoHnvOWp+3PwnK58RrDDfBI/3SmwB2EzYtkjv
-	 MVtc9cLw35t7Q==
+	b=Lt7vj2IA+WpEvC0ZhjqIJ0A2V6gsUo8oquR3lYInImLJcrPRK1aO5F5mdSnprtNOv
+	 8j2AsQjUDQvwXnWaXp/ecedUh+kX0Xq3o35LRkV1n+3On6q4OiSkFi3Vs8pULtOFjo
+	 vENrnUy3lfVM223S+y/W5HdHgEd7GOzIcGmCaB1BaLuEkBsAbsuq/X122JqmkVtcC4
+	 jWk+zmZqRPKEP3kLNfldshCkLMEh0ar4AxnJFduRatzgHc7DJMNIiCppTsFe51ICjM
+	 2cPHpqA/Gifc6iFTZxDc1q8HgNyeFoqmGidxrtn1NI/SSSMctMspP0PHXN7MzuCzFC
+	 3jCY/58CkB/Yw==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
-Cc: linux-mm@kvack.org,
-	Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
+Cc: lsf-pc@lists.linux-foundation.org,
+	linux-mm@kvack.org,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	lsf-pc@lists.linux-foundation.org
-Subject: Re: [LSF/MM/BPF TOPIC] Data Access-aware Transparent Hugepages
-Date: Wed,  6 May 2026 10:07:49 -0700
-Message-ID: <20260506170750.10764-1-sj@kernel.org>
+	Mel Gorman <mgorman@suse.de>,
+	Huang Ying <ying.huang@linux.alibaba.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	Andrew Paniakin <apanyaki@amazon.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Allowing NUMA hinting faults or alternatives to DAMON
+Date: Wed,  6 May 2026 10:08:39 -0700
+Message-ID: <20260506170840.10882-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260211050729.69719-1-sj@kernel.org>
+In-Reply-To: <20260218054320.4570-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6C8D14000D
-X-Stat-Signature: kannpz5eh3g5amcqgmoi9fxcngfmm6yd
-X-HE-Tag: 1778087275-696856
-X-HE-Meta: U2FsdGVkX1/jll6lbxRfJJvHxNeGt2BgWZ/qbSxK6/e3kGnNcVGZVG5uE+hrmokH5rhRvTDZYWLQqA61MkJHhMLb3uivlIr/V9pOSwmdCw+fdmnd6m06Fn9KrBElAiW1/l2M8RRErWvQWxqVCVe23zybJRlpOpUfK0q2riSusMGspDQ0k/V9P+zoihcuicvtx7+hKQCjg/EjQTttPgG/pldttD6WZ6WIMywzagGR/fPVjs2NwitzTcBgqNszWaMsRgLDz/N/tix7RYgaLJe+6camFiBtqNTpEEw0lEjw8Ew+RM1tqoCTh2wi2YeEcgel8fsedI9rcvslyyCt8fjT3MPjw39NuDR8GjfpvQJiT3Dacx00lmNVdgXcYJhYJwYyYRvGJkGGRO/XgpekRnveOYx1EV23enYceqGqWsGphalYrLHcYg/tYFUyyZCf9QnKIa6LVdAbG1K0Jq2lHDy6WpKuR+fU7sLFoClSnHNrJmMh7GmYWfpM1PtP2iQeyx3KAn4XVZwQsN6NCVPpEtkdZkaLbW5qrQADJx5ftzGuMy+zpfLsZkdxPeCIEzlmiXML2CcoC6HAbnjg9Ut9N4wxV9ZHG8AaRHg1K6uEh2BMZvaSrHdWYoNIl4QYEZb9yTVRrMguGmwWKPKFqjiLfVoLZ2e1oHNhugNW7y+TdVZ37SW2Cw1z7hjl7ouGn5clk8n4TlYQKFUVjWO76hAQMARfvd0ehWt6E2+kzZb2yEm6rs0aVTmFOqn4/miLQHJVqhNuMjskm8BuINUUWcIj60dDkaW5SjRxPoDaqd1ZZ87zGYocPmOCE07EmfokFXNCq0BQIFA57Ci1gGx0Stp1bcvkHESro1nXkoiTPtQqYsoT0fHDXVQ7tZ0updiIUTzm3eH9JUUkdjFwkwzIS5XwPOGPFtWb9sfr9G+LoFjBAlopVpfGuu81StV+zi3sdX/tAwxwTzwsjpAYFpFj2rkEQZl
- rSxPZN3J
- sBQaxh7PpliHY63OO20MOuWLP+mcYZGgfn4k5vy9YRH4s6JltTMhQJZZ/s+ab7131MiHJA1SaVoyCGc7BWyMT3MHilIv/mvq4aPbMpQPawxKEXJRRpQG0GgRCqIi5qzYKQLAGyZB7bM1o1TQJjbDHKPdYiqMqG73g+YYO/ZUmaNKL8numZjbJyE9l3KA76U3Jx3QU9ZcNgNa5/orePlYj1rVIh7svgFa76BpFVHgro8Qa1s3DrlVCyp1d+dhU5KuSRGDQ
+X-Rspamd-Queue-Id: 9D91B180005
+X-Stat-Signature: jp8aesro558oruh7c3ayybhu6ok1gpmq
+X-HE-Tag: 1778087326-689778
+X-HE-Meta: U2FsdGVkX1+BaVpmEPdgYCZUSvVuRgN2NKbdafUS7ePgHmnPD8tzSytywKTxpPaHVxisXARR+zh+8r9pDoa7N1S3W0r/qJQ++D0wemkRs/nyQLKiHwSmUAqp7Ixcc5ecSFxYKd6j9yskKEy7HJGFOI1MXB9maX0iGhWwWOL6elPJ+sxbSiap05VTjGZMqUuCL4XQqySxTMZN0mN0mU8k7Wx1/TViSnXz8hXk1LAgquDf44dxeF9NFV8tSqs6sTQiFDge+AmWMpTreCtsXn6AvP7Kxqw4smpjJdWP/txxhkXmMf9NSFopnom3kB32CcksKjZCg5/eDETMkn8cShoTaLIT+uG6wC3uSYdM5J+f+xyiSErWJGUZMqlKk22zQd3tdP+KH2BFItMp9WL/vR7duD1aH17w7/MY23brq72TCVGc8IQBNWnclDTAHwOHucLKej2iwkhRNEhc6lk8BoL3b78Mn5ZhI425mSA1/CgkWJuYOK0ZsS2VxmxB8eDtwjICrNeI+pbl3vuWssRn/DdeLAeg4x7GIaOaWDGQVjYA3HOUiiVpjmhoiKUXSNx05SmsYg/SKQMcacpIG5F6qKV0KQdZ/gl+67TefYcPmjaJADcADdq0AWxTdVOBbKCft0oI3+C4oS+Xbtlkx2+UPmrkkt0y8RwmcBYn5+17BSbbVSJmvDzbZ/0GI1TTkoWI5b6pEa40xHIl9WJM9++qzewNlnGeDSQamGa1x1KCxzbLej9Xxbf+H5UV/JEEd6tRQ1Znp41ZqQZ0Ym+5RQqYsPgT96UINfMVNGSeyP/24J+Y5DYvDXO6Jj/NgBzZFN5HhL9SG8v5YZcXePALA36cMuZ3AYVpS3kOXo3xvFMDnSECPmXOH1DB3XE6wB3rUxPN8htwEdxYwZjYWTJQVnTgrzxYe+k27lE4eLdFbDYKv8R6ItLbUMi6ryXY5jdAHKXLqOuHj8rtctL4JfHnLMGLCG9
+ He0T/Ar3
+ H5Z7eMtxrPL60mJd0iy2MF0U6skM/OgdV+4yRSHSsi3iYefLOEKjZpWLQ0VzSrn0nLlmaYvqfJ2PHiaWH15ID+4Vd+Re3k2n4NReOLwz/k45YFqwJe/jP1g3XnV9P6gAcQUWZmHHU79+v+XdLn21mkRZY+6Jj02i/ivRiV9Sm0jM3sx+A5EZISMr/xMME94xAm5pfjrdxg/eF+fu1OmFjRHDItcADBuQGfi6moWvY2gcmFLsElMRN1sMiL8ukYyL23y3fmcmcOUevYXk24Pkc3RRbW0pwAzvrEVPS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,7 +101,7 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 Hello,
 
 
-The slides for this topic is available at [1].
+Slides for this topic is available at [1].
 
 [1] https://lore.kernel.org/linux-mm/20260504070208.7106-1-sj@kernel.org/
 
