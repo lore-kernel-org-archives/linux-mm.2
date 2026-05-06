@@ -4,110 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30072CD342C
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9457ACD343B
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 14:10:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63A5E6B0005; Wed,  6 May 2026 09:57:45 -0400 (EDT)
+	id 8BD8A6B0005; Wed,  6 May 2026 10:10:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 612036B0088; Wed,  6 May 2026 09:57:45 -0400 (EDT)
+	id 86E596B0088; Wed,  6 May 2026 10:10:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54F526B0092; Wed,  6 May 2026 09:57:45 -0400 (EDT)
+	id 75CC26B008C; Wed,  6 May 2026 10:10:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 471536B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:57:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0AB871C017D
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:57:45 +0000 (UTC)
-X-FDA: 84737148090.23.8C831C0
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3ACCF1C0011
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:57:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VPmMD5bK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 31Uj7aQYKCKocOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=31Uj7aQYKCKocOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 657406B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 10:10:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27AC0140277
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 14:10:19 +0000 (UTC)
+X-FDA: 84737179758.25.701219E
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8626A1C001C
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 14:10:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=A4PcQv80;
+	spf=pass (imf21.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778075863;
+	s=arc-20220608; t=1778076616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bte2ikXfMH1X30UWHnUNHKf52jg/NvhErm9OVWL82Ks=;
-	b=SY3NqLxCDvTCg/a93y8lqJbmDuqEwqThrkqDHJqo/Px4UGL5NV7VqwWOJdoMyeXBvir1VN
-	RfYgeRdG7AGS4bWgKnoshwmcFJwjH5vykhWBm8ytv+EExzS0Hd9ahYxLPvZFNOAssce17e
-	6PVBqqA8+q70jnUqp/x+lyHqgYnyIwI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778075863; a=rsa-sha256;
+	bh=JF0B3PexmDAtg/xwB4TCMJRjL/G29AeOJJCuvLBN0CA=;
+	b=Lomb8h3FZFawT2TjIwptL3WNdoV25LArWBriElDWEI+U5jzYbLEgsmlsQiraw/a1O/RycO
+	zCcIVexlGPvAQGlDPcsmnT1S72dii9Twnb05nA0I3stnYww8Wup3xxuzAn9fcW39BFxAfU
+	CsUW9DMLN1LO0ZTEf6YJlPcsilqt2lc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778076616; a=rsa-sha256;
 	cv=none;
-	b=OizldVzhV+dst9EORlaxYGVECKjtHHmpnaUgN5QSJvtgBPOq5T82TfeauVelTekB5zK/oH
-	AAxbBzJGEfHsVzQZ+ZTw7fGJIED0uPTglhEE5555B8jW4KcqtxxBjo7ndgf/azX/aTJA9a
-	HgwahKYhh+RxQv0JonzVjNaHMiUaxtQ=
+	b=Wgrvb3ALOuJyH3lqy74Y+yHya2EamXGfnahKmXn3dnfA3R8pPP8eUn7rua4RcH8nov1S9V
+	5KXRj3D5bGTOvih9JQzoVQ8HDd9e7nj+hLMov17vBLDW+eOjmLIKQhT00H0cu5WlkJ3zoN
+	qFAtlxGP4ITvNKPHF4IvL5YH4v3Goqs=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VPmMD5bK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 31Uj7aQYKCKocOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=31Uj7aQYKCKocOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3651991d0bcso7801918a91.0
-        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:57:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778075862; x=1778680662; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bte2ikXfMH1X30UWHnUNHKf52jg/NvhErm9OVWL82Ks=;
-        b=VPmMD5bKrc77je+FgoIIsHMnDCcMZ+WIVM1SiRfLTfdBmSakr3rROSZw9GYMiPf8fG
-         fYY8HhvZRebOLurgQ3OMBHKHbQ6JIEdlImyJI6nPHdknd/B+PFdBZoAzqnc1jIMDYTSX
-         2g/FbvHfTeNL+BA88wBVMiS5WTW5bYKu1HULeDzajJurGZCw/VMmoPEsTzHr8vA5kzRT
-         bC0Zmt9N5Jo1EGugcrD1iphIz58pyJqmxKZyL+Z5Asd15dvJOF8WJG3EzCfTGJRmH6dZ
-         MryMwdXlWL48I2P5/E7803cboHrtq6YEbp4y6Xmtx4gRNpgZInT0vsXSRhM8XQR33qH1
-         LclQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778075862; x=1778680662;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bte2ikXfMH1X30UWHnUNHKf52jg/NvhErm9OVWL82Ks=;
-        b=R1ZYZX0MHIe/lezvjJkiCgXb6c2BzrQu3wgJcMkpNltli1yOEVY8Ccvl7zSzSqCBL/
-         OjuVQII09eJqDi7m10mZFz5Zq17OfHZBzHDxOchwEFwQz9Ll1jIgJfZc6MlJncxMYK7k
-         aLJ0//poJMM287xmNmDqjr18Znn6z3t+giV/m02Ej+qGm2Bw33lPmIa3VsnqrMUnu3G3
-         fq0w8RM5J3z4T517AfnnOVlUP9uelgDPVyNhh3x018EOGy2XDeIQBydbsxPbR9AMYOwK
-         LI/4Qe8jdBiaxLaeWg0x6A+G8geGfHD10A78Aro/PdJlWeBMtm5vMHgPYpOjfFZ4sGxq
-         7tNg==
-X-Forwarded-Encrypted: i=1; AFNElJ84IQTicvCjCIRIJN6IWF+Vq5g/qBvaXHspB1S+WHRjF64wdIlYxWPVXA3vl0Pi4jkfX5lqnUvcxg==@kvack.org
-X-Gm-Message-State: AOJu0YzKBh6nCOAj68uvS/FsQvF1K37Vut5c97Bfqabel0sc0QhIheOq
-	7fOGTU3QJe+FNDEff1R7l/fh0lnKrAXEqU4jwXT8KTan5zeE3gMKU476v63l7AJPLMJq6UvklEz
-	XqjTF4A==
-X-Received: from pgbcr4.prod.google.com ([2002:a05:6a02:4104:b0:c80:2817:3a23])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4314:b0:3a2:dbaa:82ec
- with SMTP id adf61e73a8af0-3aa5aae7ab0mr3951938637.32.1778075861517; Wed, 06
- May 2026 06:57:41 -0700 (PDT)
-Date: Wed, 6 May 2026 06:57:40 -0700
-In-Reply-To: <69f8dd59.170a0220.bb392.0004.GAE@google.com>
-Mime-Version: 1.0
-References: <6936812a.a70a0220.38f243.0090.GAE@google.com> <69f8dd59.170a0220.bb392.0004.GAE@google.com>
-Message-ID: <aftI1Nt2PTptaUs2@google.com>
-Subject: Re: [syzbot] [mm?] BUG: sleeping function called from invalid context
- in kvm_mmu_notifier_invalidate_range_start
-From: Sean Christopherson <seanjc@google.com>
-To: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, dwmw@amazon.co.uk, kvm@vger.kernel.org, 
-	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, lkp@intel.com, llvm@lists.linux.dev, 
-	lorenzo.stoakes@oracle.com, me@brighamcampbell.com, mhocko@suse.com, 
-	oe-kbuild-all@lists.linux.dev, pbonzini@redhat.com, rientjes@google.com, 
-	rppt@kernel.org, shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, 
-	skhan@linuxfoundation.org, surenb@google.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+	imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=A4PcQv80;
+	spf=pass (imf21.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64603Hqv067384;
+	Wed, 6 May 2026 14:09:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=JF0B3P
+	exmDAtg/xwB4TCMJRjL/G29AeOJJCuvLBN0CA=; b=A4PcQv80Y6uXsYnj/xcjKv
+	lhPmppnvmjqg8UNaKnJiZAooW6REJg5TTT94G0vCbZlKc4xAh+l9H3u5WbDjM0WL
+	H6H/Pa6zPcZexVH2AKwgsNzNntr5PsLvEfFmju16Y5BeGUVwTJYw4rTgvcmOvWvA
+	z3B+zvl2B/UrUc0cCNDr2Em5mHkZdvzC0EVcozoADoyrm7P0FefaTHHZmf36eYEw
+	thCXbUuf/nosZPcgg045QagkC25xNqShMXBbF50hcQa92S19k1epTrzVW9D87mW/
+	yVmob9GOeXEh1dDf4w4KydfYZH91KqkychHBoem45zF7ZYAmHPXD2XXx+B5dLL2g
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1h24p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 May 2026 14:09:22 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 646DsPQL022750;
+	Wed, 6 May 2026 14:09:21 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtgebp1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 May 2026 14:09:21 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 646E9HGe45416810
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 6 May 2026 14:09:17 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C63B42004B;
+	Wed,  6 May 2026 14:09:17 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1546820040;
+	Wed,  6 May 2026 14:09:17 +0000 (GMT)
+Received: from [9.52.200.195] (unknown [9.52.200.195])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  6 May 2026 14:09:17 +0000 (GMT)
+Message-ID: <9f85f092-c376-4350-9a12-479d7b70399a@linux.ibm.com>
+Date: Wed, 6 May 2026 16:09:16 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 04/19] x86/uaccess: Add unsafe_copy_from_user()
+ implementation
+To: Steven Rostedt <rostedt@kernel.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        x86@kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
+        Namhyung Kim <namhyung@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Florian Weimer <fweimer@redhat.com>,
+        "Carlos O'Donell" <codonell@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Indu Bhagat <ibhagatgnu@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dylan Hatch <dylanbhatch@google.com>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>
+References: <20260505121718.3572346-1-jremus@linux.ibm.com>
+ <20260505121718.3572346-5-jremus@linux.ibm.com>
+Content-Language: en-US
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <20260505121718.3572346-5-jremus@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 2IiCT--Vp-RQVdUGSeMKj3NgFgjYnGxT
+X-Proofpoint-GUID: KIizt9F92xnbY-nhRloRCta2VU3AXvFV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDEzOSBTYWx0ZWRfX9/D4gt9JjNe3
+ 1dGTBSo20Nns4lWNkY2R57YNEBhiw6CjJFOYeKzOR9Auu8huq6ARaFbnF47vfs0iqzUPW0gQX3g
+ Gk41rjmpwgzcz249VYsMTvez/E8WZQYBZY1oH3thtWHPZ97uWr18xWwOD8FHwgsCOPM6ysBPTlX
+ cpL1ZL3m6lxsNe3O1IZ5qRcKdZwj7plK/csqi8Re91a4zGvn10HTOd8S71AZu/ipZjT4xPjqkWu
+ f2AxY/01ggJqg/drUjJZxHCVfM1csDHt9KekdvSqv+xhOh/mtOzkF4P0S5XjhnXyQ9XbjHSUZcv
+ 7+ZHoSzHJED1lCNCurZ2wA2Yt4ZNRuqVCSxa1uWf/PhP3uLF2I9/QuRIUYLkTNgp9ddF4o9rNcp
+ cpkEn9w4R6MMVSZWxLaMfCySy3maOK7BsokLWqbFVmrxKkBmW+om+0qSPpiN+JA1ilkuA2lomMF
+ 1KA7rirk8Kz+7jNbuJA==
+X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fb4b93 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=LFt20mCCc4CE-LtB3JUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-05_03,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605060139
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8626A1C001C
+X-Stat-Signature: 8m1penx5y6sdo9zkfoi47ro9qnbd39hu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3ACCF1C0011
-X-Rspamd-Server: rspam04
-X-Stat-Signature: s95q3ywp585pppt6kgwyuqdbyer795of
-X-HE-Tag: 1778075863-373732
-X-HE-Meta: U2FsdGVkX1/ycslO5A/7FWNMrx1gJZ93ljjgB2eGhkNy8FCkL0YDrqOeiMsjtljWovu1Xa/6556QO70RCuEWjNdDi7olYKYyFSp4m8O7VuFqyIWN3PfnBGzB5bSMQB4uDTbQFY4D7lMAAJvkH4cYpEqu/kaejaoxEkjNmnb4mTrsI+VvrhGrLIGbGT6CMcknnHfpIjsCWR/KzTA9rAE9bel8JXdoJ9TFwfW6+wIKRMHdfgs1/t32dcf3iR9IxvD4iCP/pJwp0vUufjNlqxF7/TxexvTU6/q98LTH9sct5XDIAicCDmlLRctYJxBRg7d9gAl0Wrf6d+NpZbeKD+HC27o+Vso+ELxtPvI457rXx72TYRRXomb8lzleXxCpzZQiM8DeSUPmomI0c0sjkaoQ0VAh/YAsEoNFIdFnP7+yFQFka/GdupDe7m9rpv3yQZDmVQiVyj716nkkk4ZpbJvdkuEjB2B6xXvtIlBqu0dJO62JWGoM2ZhcFd/gOERoIKuOBbP48PBiAXnoLW9l0E/HcBsnyCEsOSbi6tuWNYv4V5bNllWKIxFpdJcT+TRtk3QzHK3DMRznZrlYw513bD87Fz4sAI7v5tyfGJwkzRm2YSqJHsHMlczvBd6XmyXNPGPCEdbuhqdxXqmzMqcHzfEOl5ETVF0VJe/HKPu9mOf289AyppndEieG2E97LDMumBRP1ba6+fvr97psHLMJyWSibsqvWoVlStJWvGqsur+zAWeks1vNORdtTuwJWlsHHnDVw96vXRp9B68QQwRzpTBDc+fPgkIi7WwgCXFysw7qT1m2SWX3v8xvluFt31HBDvg+2JTf3CsYPTtSVGR6/tfj6rIsVlt59H3vtSDYIyU4YmzWvBsR2nn2GpqY/VVMwrOg6QoOSKYkkcvINKQk1qJ5mCNIoEWY4l2IqkbxM8LG4vjY8mG4UgDLJxBmTk+1ao8X9C0fsFWk0BKXOlLrxcV
- pIy61Rhy
- 94+SOpkaRd0y8ftUnPzKLvs+1p4BJzu13VI6FxCo8T62OYdKOxYiJ2zUg2uEraR7Wxq5dJD+PUPAxplD5Uczfl6mwU7yp5VW4irAn/fgksNEkuk170TT+YCYYVwX/7n2e8z2HfFUD2Nn3s/KbR06ZOfCpLAdOeZLtOkyJV3gTKrV1Ucjufi3ZZRyGCiT7OHWXHK3fFpv+6smSRurjlyNYhOPlLXBkJgTHm61m86hlsyODVumx+tGsqSMFkeLnn2TBg3xgM/X7hmw+piy6rja1odY3J0e7+wWsOot9TToU/VtUkTM7kAywf4Pf6m0hfNoLP1khSv592jHiizDHCXqbQhQcdTQ+6dWZ8zzSLMblfIR5zwITWj7LCi5CBGwc5NOo4U0P8Tv5cS0pLu1dN8GRaRc84yidLuAQ4aUU/esMKs0hB6bYyapSQZLvfvg6zIZ09abOX0a5YzF4pz2cTjT+ymJxRdM/tIXtgd7GBx2E72RQllfJ7eqhaUfb2EfhGZ263w7EA3/oSbHlVXbqG05d+im9D5mX2jzqTXCpcWhX/RB2d2PAp+x9meNj1ICNA25i+GmYbht/4j2FQgyo+2r3OBUF+4NJ+a4iCkqsKmWLIItNBOTnxCs+WQsE74SOFpZEGzty53sr9wU/PIeMN8SJqAEpc0hsUDKbzF5S0LK2pcsgZUGGQHiR8HZvZOa9q5S6XwWpdSbTXKP1x/74yN7nV9Gc5fiSPuY6nAXv9yxtn+rbx7utc34l1T48Dn/bGJFkag8W8aZw9jlgUIDSAcKUUfWtWgMI76DnS4bVjOZm5CjcvwmQFW12xdjG3gbKDPwohppR/Qx6mka8+lOwZDwOIiAx3LksG5klvN9HkthY8JbxUMH7Scs65053eWa2SANH9DhXYoCKC15NKlt9BJ65l4clih+NPaHfGs4C8gbVyzOQi+Uruu/QYEeVios4PG0PAVLolZI89gKo8OpU1hg0358NSbMx
- p5+bnIsP
- qRF8BgvuJ53IuVNkSz9ZSbU2nW2HW3qi/4UGrfKNHBJLn/Fg6LlHw79OJsQLTq7hLtbYJGAM+emfhRMUMP6nnfzPci+HRJzWv7THHA4HYdCMbT1HT1yCO5uNo0WuJQV6plVOGzDxehREH0GKx1Jls8Eatze6sxEgh5gVozKTP0Pl9gL4Dk6r0zcp34a/atrZbp1e66T3+AVq2b011QOCFusAdZHj1AHW6LW/KZ+vUMy9xQNWEzKetLl7EmQ2XP7xddLC1Zkc/8Cpb3s5c01t1NT6nZ/iNqRO2SWXEo6xGHKmIX0Ykjrh9ythwyn4/xhSRv51Y2QiaT9iI5muN8ZfARMPkE/Zrhe10sSUHGoJpLCiYb+3A7r7Qs8HPM2yor5hCFnk7siLhlr3AfiiYrMGaQ9uj0k1eX+lUp+248zSRS4lMx7OncJQZP2sJF+x4ejI
+X-HE-Tag: 1778076616-503234
+X-HE-Meta: U2FsdGVkX18oYbbvjDAEmJ9391dPeuHLun/EZVzVNifxsDnYbYPINX2wAjoo7PKbmYciQxQ0auRsUbMqwwVfqZeyO9dZMpHFOTbCJhQdnJGp+PN5AN7yoSXB5bJSSBroOnk+Mwi4tvARwNDa1FkWnx3HVI9FUwpSe9E1YQUmqhZC7665LH9FdD9y0eNt8wNi+bIf5rN2A9bmgfuLxdRp5Ub0YpLHpepU95PSWFmFXNhcG0L8sCnrGot7VSTLmlrVb5xGSUWX1ztkAV128dcr7FfA/OMZw7GcDEOptID+FigwLfs2M3W7o6wDjYBc64mXRMFjxU02SH+dY87+KM6jLSxUrQIY78E4yo4RjxvZ/szDcQTj3jasy1V9VbY+furPGBc7OQ1mRO7T2o8LicvmbjBbptwYAkkC3kcBCGI4EiHowb/PGVzKOEvpCGG8Fy3gFoyeMeDnPVA+BHSfU2GR0MfrCTLPrhQpVhDbs3+mgOjI11temChNsslPrlW1Wl8Abq+ujZOOd7XNSxkwdWiFCQJjXWp77pGBN2fqA4BlceMfuk4Ydc+5kJypUavc/GzB0uDsNFo/bid1A9mGqai39cHWhCUC32GF3b5NQ/QfpQVPYt6KTCNj1Xf/QcoXDafxwGbmlxJRQn9MjXoiwTlk2u4E0Mtkm6bQsiQG2rb/IY3wiZB3pUixr4iqKQ+qjwatrci6H7O9ZJKiIf8YLZh3xcBCD8ydauqFEI/mPeBNvKt3YfMhhtrqwZP08zWwgHuUPq2fXIP0ZUj5OTpuvH0qL5IQM1ea6n+iUf3Ocjpfq4E/Q6YVNOdfSTw55hE0NRDXeLJYVqjrtWACnzMOsJjrf0jnyjB5VIR/FPBPifC3qrGxLNsjJALcsk+40QMOEXZ6eMUChJadySLANSkMiAN3Z7rflYIwyy2mDb04BCo9t74zgaIi8lvCb29yBTdpMz0Sj3oIl2XbwnVLyuwNsC6
+ ZM3DuP3l
+ QGMXSRjsxz65HGOTRhT2NHaBnh2f5liuCFQlVDRteFSlmBS1thmZl/ydAg1RDEM+9yY+5ZW8nykCWRTFsxa2vquaEARXmklvwrMsNjRxk2TEEOYyIySnVIFX6gnye6uXAFe254Uli5VSUsTmMnQv7dmhHk/KOFxhmc+IQyZ8XWuZJ/Le1jZheYZHCYHcDF3EvfdVFW21/In8Tvd50qdUEs8mCk1OHJBfNCKr3FSXqs5LI+plfMmcbJ86mTIBWrY9WZyJghIqOp21eMtLY429ngF0+sBR9baSsU9WRSVnT8A+Joc/TIocELnIBrOQTFmBxp1/2fd5vO4ejci1Ul0sPLklxX+GNImz1ZA0WAg3OQHdlfUWNeyLs5TPSwO1pEln61RmBf/LZfW9H0CyQBLt4FmVfqP7/ebobuVhrZe+T7vVYwo5bZ4lnQBKIDVEMPpNXA5pkES3U+MNnWvUudYs/KkXylcw2HmvmJtJT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,110 +169,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 04, 2026, syzbot wrote:
-> syzbot has found a reproducer for the following issue on:
+On 5/5/2026 2:17 PM, Jens Remus wrote:
+> From: Josh Poimboeuf <jpoimboe@kernel.org>
 > 
-> HEAD commit:    b9303e6bff70 Add linux-next specific files for 20260430
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=13745dba580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=5474e13c6d20d45c
-> dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=125dd748580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/b3a0a2e50f73/disk-b9303e6b.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/d3d481b220d4/vmlinux-b9303e6b.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/d6e012913960/bzImage-b9303e6b.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
-> 
-> BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+> Add an x86 implementation of unsafe_copy_from_user() similar to the
+> existing unsafe_copy_to_user().
 
-This is a known issue:
+> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
 
-https://lore.kernel.org/all/20260429222502.25414-1-shaikhkamal2012@gmail.com
+> -#define unsafe_copy_to_user(_dst,_src,_len,label)			\
+> -do {									\
+> -	char __user *__ucu_dst = (_dst);				\
+> -	const char *__ucu_src = (_src);					\
+> -	size_t __ucu_len = (_len);					\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+> +#define unsafe_copy_to_user(_dst, _src, _len, label)				\
+> +do {										\
+> +	void __user *__dst = (_dst);						\
+> +	const void *__src = (_src);						\
+> +	size_t __len = (_len);							\
+> +	unsafe_copy_to_user_loop(__dst, __src, __len, u64, label);		\
+> +	unsafe_copy_to_user_loop(__dst, __src, __len, u32, label);		\
+> +	unsafe_copy_to_user_loop(__dst, __src, __len, u16, label);		\
+> +	unsafe_copy_to_user_loop(__dst, __src, __len, u8,  label);		\
+> +} while (0)
+> +
+> +#define unsafe_copy_from_user_loop(dst, src, len, type, label)			\
+> +	while (len >= sizeof(type)) {						\
+> +		unsafe_get_user(*(type *)(dst), (type __user *)(src), label);	\
+> +		dst += sizeof(type);						\
+> +		src += sizeof(type);						\
+> +		len -= sizeof(type);						\
+> +	}
+> +
+> +#define unsafe_copy_from_user(_dst, _src, _len, label)				\
+> +do {										\
+> +	void *__dst = (_dst);							\
+> +	void __user *__src = (_src);						\
 
-> in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
-> preempt_count: 0, expected: 0
-> RCU nest depth: 0, expected: 0
-> 4 locks held by oom_reaper/40:
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
->  #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:495 [inline]
->  #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: zap_vma_for_reaping+0x193/0x380 mm/memory.c:2119
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:187 [inline]
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:294 [inline]
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: mn_hlist_invalidate_range_start mm/mmu_notifier.c:515 [inline]
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_start+0x5a1/0xb60 mm/mmu_notifier.c:580
->  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
->  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
-> CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
->  __might_resched+0x329/0x480 kernel/sched/core.c:9163
->  __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
->  rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
->  spin_lock include/linux/spinlock_rt.h:45 [inline]
->  kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
->  mn_hlist_invalidate_range_start mm/mmu_notifier.c:525 [inline]
->  __mmu_notifier_invalidate_range_start+0x6e4/0xb60 mm/mmu_notifier.c:580
->  mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:498 [inline]
->  zap_vma_for_reaping+0x1f7/0x380 mm/memory.c:2119
->  __oom_reap_task_mm mm/oom_kill.c:548 [inline]
->  oom_reap_task_mm mm/oom_kill.c:585 [inline]
->  oom_reap_task mm/oom_kill.c:609 [inline]
->  oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
->  kthread+0x388/0x470 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-> in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
-> preempt_count: 0, expected: 0
-> RCU nest depth: 0, expected: 0
-> 4 locks held by oom_reaper/40:
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
->  #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
->  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
->  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
-> CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Tainted: G        W           syzkaller #0 PREEMPT_{RT,(full)} 
-> Tainted: [W]=WARN
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
->  __might_resched+0x329/0x480 kernel/sched/core.c:9163
->  __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
->  rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
->  spin_lock include/linux/spinlock_rt.h:45 [inline]
->  kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
->  mn_hlist_invalidate_end mm/mmu_notifier.c:597 [inline]
->  __mmu_notifier_invalidate_range_end+0x23b/0x400 mm/mmu_notifier.c:616
->  mmu_notifier_invalidate_range_end include/linux/mmu_notifier.h:511 [inline]
->  zap_vma_for_reaping+0x2d9/0x380 mm/memory.c:2124
->  __oom_reap_task_mm mm/oom_kill.c:548 [inline]
->  oom_reap_task_mm mm/oom_kill.c:585 [inline]
->  oom_reap_task mm/oom_kill.c:609 [inline]
->  oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
->  kthread+0x388/0x470 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> oom_reaper: reaped process 6034 (syz.0.24), now anon-rss:0kB, file-rss:64kB, shmem-rss:0kB
-> 
-> 
-> ---
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
+	const void __user *__src = (_src);					\
+
+This was suggested by Sashiko AI review.  Any objections?
+
+> +	size_t __len = (_len);							\
+> +	unsafe_copy_from_user_loop(__dst, __src, __len, u64, label);		\
+> +	unsafe_copy_from_user_loop(__dst, __src, __len, u32, label);		\
+> +	unsafe_copy_from_user_loop(__dst, __src, __len, u16, label);		\
+> +	unsafe_copy_from_user_loop(__dst, __src, __len, u8,  label);		\
+>  } while (0)
+>  
+>  #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+
+Thanks and regards,
+Jens
+-- 
+Jens Remus
+Linux on Z Development (D3303)
+jremus@de.ibm.com / jremus@linux.ibm.com
+
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
+
 
