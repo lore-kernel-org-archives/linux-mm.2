@@ -4,172 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D40CCCD342C
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:15:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0489CD342C
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:27:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 203846B0095; Wed,  6 May 2026 09:15:47 -0400 (EDT)
+	id DAD626B0005; Wed,  6 May 2026 09:27:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B4626B0096; Wed,  6 May 2026 09:15:47 -0400 (EDT)
+	id D5DFB6B0088; Wed,  6 May 2026 09:27:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07D546B0098; Wed,  6 May 2026 09:15:47 -0400 (EDT)
+	id C28A96B008C; Wed,  6 May 2026 09:27:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E8C566B0095
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:15:46 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F60A14022B
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:15:46 +0000 (UTC)
-X-FDA: 84737042292.16.AAD1A36
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010028.outbound.protection.outlook.com [52.101.61.28])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C2E1C4001C
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:15:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=R3lKYbAo;
-	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id ACB276B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:27:16 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A65EA0140
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:27:16 +0000 (UTC)
+X-FDA: 84737071272.01.C421370
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3613A4000D
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:27:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BJU7LqIk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf17.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778073343;
+	s=arc-20220608; t=1778074034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tKm+I75MqLH5FFybicnKVsUpbZee1tWk0U07zyqmmS0=;
-	b=PMn6jAJexopn5wOsIFXpzICQMR7RknmN/wjVk3wTm6mC/xsk/U8ep2xJuphTokk0IfWRvd
-	7GEuOdtGUskgy7KWUkuLEgDCgR4YP5Kcy8QTsitj4MW+xi5Hm6Ia7w7GAYuIEU1MCHO/0l
-	iQ7Hty4CZ5dQ8AC4hGdaAByketMV7CE=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=R3lKYbAo;
-	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778073343; a=rsa-sha256;
+	bh=G8+O6WlrTVqaZn8/F7q6B9USYK4FirbixL2u42VdTFQ=;
+	b=THilYFOskbK7bWp7XPLkbs5Nswlj3LMFKIi+hYQ1VGbo/G/5Y3AlKjJ52JKEWZjlGy1n1m
+	r8OH3+Dh0MlXt0pkN1bBk8tXcPzyThULEHEsBeCCvURvtqXXT/ztJWx7+Omd4I9Xb2G9gT
+	KspuND/9vumvHQJzlM/Mtd0fNAQewDE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778074034; a=rsa-sha256;
 	cv=pass;
-	b=PfPm3606DAPOjYOBaD8GO9plsNa8pedmqHdaBKWTo3EO8bIpAXQM6/+IKkbHXEa+JxGLsH
-	2b6ODZ4oKupGcYlIrJgqgmwTzL5vid4p4DRepxqFE6SisIxNSYoMimuP+f2y8HEviVJ/J8
-	oIG+72XawUSYf+K7k+B2my+DL1sKafA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PEQ5+GpVwesSGKECG0iYwppvm72cu+KdWcaGXiaUaRmanr2dRxQuWKYfK3me9JD7xGEOsu0rmaAD/oaDCDjQbgR5vgMfSgZEVPujfrqCZNtm5KJj16uZO4/1cifhfCIB3lJ/jEBzuGVe6wBtDXlcG1LpyQK2kMKw1ITZSoBDNvXSID7hsepnTdB+2FugzC7qJVfEtppwwStHgFljfFM/va9aOi3BG3mL9ej/TyvHjXjOGpGsIDq8zpaFgBmjIDfP7lIpAPiGaNe3AbtvyKPTWkKrT6WNfQqjmd9SriuBbUPDgUNlUXoHSw9sY4uywTwW/neW5i3VorrWZctKf2erhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tKm+I75MqLH5FFybicnKVsUpbZee1tWk0U07zyqmmS0=;
- b=r73wRiAofZrvZoifx1D9wA9z6lUoAkh8pDmNN4dBBFSG/5CU/w5LVvSIDNrQFzS2n5GaLgG5TxWQVGfpCFAHiXbTQsee073+QIDy+cxDbQpOxPXKraaAqh7DedJRdJ2ypun1cCEzvVJPncTb0KrHgEoNTAnj/HtUc0NWDx4bFIof2Ys3CuwkMHbOI55AtIgkg/XMuTnoBzp+7K9vqvkT76XQAI/NzdDp3f8ig3YcLJdneuC0u8J5dJO0xznf21E3p754oaqqhErPOv379v5dT/z9h78Rr9ziKUk0dVG4whv4PNhFn/mwjQ5r14ixbjTn0+zdB0A/vz2OksGbsgLO5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tKm+I75MqLH5FFybicnKVsUpbZee1tWk0U07zyqmmS0=;
- b=R3lKYbAoevIWf5Zb2pXKox7i1dvQUBFVu/A0M2kqlzlITvs93DlQod3jOQqocDEpOtvuo4pp0UHTTpaZbAy8bAqpSNuKaKYX//9fgesPKqD68kyOngYCSD4G1FsHypKDTkmlPkujhB7DZQ7JkWkkKZ5yrrpMVbshNM7aNLWTEi3CNfJ6pwjVjliXts5564whVWkZm6iIq4kpIQCFJqzEx6g75aXps7urxc0UTiUK79iTbAH3XQrmxx8+XsoAlgnIb358p+Cx4zxTWSA9JgC3O5ZaUfHwPLeAuppe1iwjZuOPhKaAK0HoWuDEVKYtRp+FsNsOa4zCe+TOxxEojLSAsg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- PH0PR12MB8152.namprd12.prod.outlook.com (2603:10b6:510:292::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Wed, 6 May
- 2026 13:15:39 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9870.023; Wed, 6 May 2026
- 13:15:39 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Nico Pache <npache@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 11/14] selftests/mm: remove READ_ONLY_THP_FOR_FS in
- khugepaged
-Date: Wed, 06 May 2026 21:15:22 +0800
-X-Mailer: MailMate (2.0r6292)
-Message-ID: <61FB928B-03FD-4852-BED5-4E453ABB706A@nvidia.com>
-In-Reply-To: <7e42faea-9f55-4722-a426-94be7fc3a49b@redhat.com>
-References: <20260429152924.727124-1-ziy@nvidia.com>
- <20260429153538.727855-7-ziy@nvidia.com>
- <7e42faea-9f55-4722-a426-94be7fc3a49b@redhat.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: YQBPR0101CA0311.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:6c::14) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	b=4rtUovZ4nGEDqKOHDaW+DWiYfBAZnvY1GF1AFjSekuSgYrhHBJiS26jh2lyOn6mrE60uQx
+	XeM9Gqrsja+OVK9KllFYei8iTGTETpOrHlXucyiQwO1YOcIzH5yN+04nvnQjcb4pjditxd
+	USk91lk50ltzZP3aW7YYQnQSEH4E4ms=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BJU7LqIk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf17.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38e84ed22bdso65889151fa.2
+        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:27:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778074032; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jNMK8vU5v0oD0w9oMNsq6TT4hinnk1ZVgxyvfn7JJ8Plpcex5JP9/KNL5PCuaAZBof
+         GcAHsM2ZfY+dvLzOfRTa2yxXQGsjFF4ZNQ4wVhEcPNV1dzdk3MuPqnuWW5OTUg2u/uDX
+         7Mp+RGKEYLd4JXS6fu8HP7oECf9uMfnCacVhUPvgU9CoWyTWRD5a36tGeGGPXahkuoWQ
+         oilzbsdJwr+N6aCaIKkKrMSpDvajC/oYb4B5CYwlIXgMFsTLRMgp+FjHUFHpCJL/jVAj
+         dntdZWDMOxFJ199XRrKNvI3rkw0wO59VkYiEbL6PZQ3VwJ1kZE/N2cY5yGqZWVBbqnd/
+         ZGLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=G8+O6WlrTVqaZn8/F7q6B9USYK4FirbixL2u42VdTFQ=;
+        fh=DbWKjCJizi1Wv29TnyevbFe7Bd75VszSOQkD8nzT74M=;
+        b=kSejV9+LZtetSXbiByg0WX0ooKrehBylCxAyKmLrR8kQjGDNyD+AAkMlfYQ7ieXMha
+         VTVenFAk0+zAp1kAgeFwCNZvHeV8eL9Jd6CCxnLlkq90WZdP/e4Pc6nOWH6cWE0Hch1G
+         2RNGUQ7PNA0rSLu0CxqzIpJuWfk/5R5Z1r5ovKtChaJRvmahrazkjRpRE1lBizF+2lEB
+         Q8LHulg7w4P1UmASgUwh1sJ2tDrN0RY787U0QyymG96qmVxN78345QNdy7IBXF0AS5Af
+         nyQQHejCL5k85Eq8Lxu93vSL8/kXIoEpY7x1mc0HUOsGv4O5ryyyauovGIQUMwP3Dkby
+         OXng==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778074032; x=1778678832; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G8+O6WlrTVqaZn8/F7q6B9USYK4FirbixL2u42VdTFQ=;
+        b=BJU7LqIkrMjQaEUl5gnEBjlNgd4679Lw4Cs9iOMk+z43ApKMmr+ByfkJOwNV05K3vA
+         Ublwpqynds/j3gM6gBi9uiNi+Ft8hX95ehKaki12jxIwOT+EcmTGnmOccCM9ZgmOVN6y
+         /WXQJxFSC3bzw2l6W6U/t2yY4Oie8Ojq/HTsSUBZ4q7TwB64nRWUR2zvT6shZcGIpdby
+         MmCv28k62hzpeId2RjJbo487Nd/SsYM5oes4KX0v/fPoJh+HdlN3KzH8bq0DzwE9yerI
+         SHQa71W3JuXGzP9u2oXEVBHBqJCyvfYlQ5bfZUIeaWRXSkUFqfk5epdpTfjcqJ7K7v5b
+         mEqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778074032; x=1778678832;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=G8+O6WlrTVqaZn8/F7q6B9USYK4FirbixL2u42VdTFQ=;
+        b=AEb6T65yvmbOGbraJS+Uq+eEd2BaTe0Qt7gnS5R1roUYO+bHTPcsWXo7xylWH8cRkj
+         HgWUda7g9Ub+1gkqx3ypxH0ahtISfQnPbkFsEOUzFb3V5kbchbzeWoulmA01T7T7Qowy
+         0p39bmgkRkmJ7OPAt4Q2iku68QB1K/j8COpwut83Vtf8YC8X5i+6ZRdk2a6llrDylt9b
+         2M84FzktiBTYFQz650VJdb7ClwlW69ot8Sw98dULk+rrwAmUDPv1vVvOfNmZeNUrjYl5
+         8sQz4nCjV4CN3h+oxUI/G93c4wbxGD+a8Q0WF6Hux4JGrpwhP6eu/va+jDmq/um3XhYV
+         mTxw==
+X-Forwarded-Encrypted: i=1; AFNElJ+ykH8ptVceT/6bxYbN3AX3RaaA5DxVO50O5attlrB1drYFqz+Q4QBPxXp3l2m0A6LemQLb09zlcg==@kvack.org
+X-Gm-Message-State: AOJu0YypTF2lMk/VOuqa7OoSYInQtmvLdU6pw4gFYhjICh2yZk7HHXdS
+	Y4GqXf+8xRSHoZHTBOGHk6t3ZnIMODLK74+cOSHgc+G9tFf9U5dolC1Wm+oxDWl5k04zemXZg8o
+	x+UDKHgqbfgk0qeScOYnq5XYiG9DFQcA=
+X-Gm-Gg: AeBDietZAGJ0EDsI4xDhk1pizVr2N9OOU2Tju0TLU2GZnO7QGU7V/HIfgjF/Yoya5Pn
+	PBMedaKsTj2f4SBNltU77ZGQIb2ABXWv1c3PS3mKGCcPebPq3wEblt0sl5SW61g6OLwV5kTeEcZ
+	15bIwgzQD3u5aXMy0rXTXVvVk6vzCG4B4IdRKWrhgjheQa22zHSJc7M6Q2iaqyF8h5TlRLCh46G
+	IBLRwmOV+YLYVw2p6NLue8LIdKTR1tVhC9annICQqTEDeAXiEtxNJjJFKikZCmb/VLkc4sxsdbc
+	tmh8/6pznrvwaWYC
+X-Received: by 2002:a2e:8952:0:b0:38e:98b0:3a7e with SMTP id
+ 38308e7fff4ca-393c4211654mr10682631fa.22.1778074032033; Wed, 06 May 2026
+ 06:27:12 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH0PR12MB8152:EE_
-X-MS-Office365-Filtering-Correlation-Id: a5ecec89-78ce-4ec9-682b-08deab719137
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|366016|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	keEp3pXRmMO2A6imwdN7WXiyvKurWZVaNGv70G0/M09hVKXWGjlc2RIx1OApWoNy+q16vRLddCYEAD7vxPhL5NcgM3CuF9K5SgnmaX3xI7lRmcxDSIF5U7ybIK1Vr9Ta06uNCNAIep0FSLI7h+3s1mY6ewOjDux4+Cis4y8+aIa+yLM4y2iT9FcLwM/wUFTX4J1HUh3ASkMBtfHah0XR1XmjT+7uavvB5EwIRSUB1iajJrKm79JOnml+eC7mHxD6pfHdAsRSSo7VqAUL7oVI6TKn6HJzeGWRNs9U4PhA7nfsgcJ98zTPXF6M+CmjApvtkaf1JMDkfpcGoEyWh/RZljkgROwS6iiCg+Q02OBH8wczu//GI9YA5PvqisenJbg0YNibEdU0fCxXODF6nSD6eTfJDMatD0uk/lAgkzcQ0IDgYE7PqLGbabPPOh1/l+w4lQmTJR+VX9ic/tTzHni0WiZqSHLAU47vzsvVqV10KsBf/UhFm/2AtcYzvXan1X1kohYzwT2p7KzD2enndt1IrwqFbhH8lBWr324K8els/Iij+Noj0hVSUDabVzJthz0/RlhjR1pnQiu6bCPlAca/rw8aa0qOOrO7M4IwwYfqc7yQJwnl6bGjxVmhTJ7pDDHjhRtVYCv8r+5q/x043kkcNcT0uW63gCgEsHWQI8f1jj4LMpcyuJ9KHxxwDsafu7g8
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xPq8830KIRgTBxsfJ+PtNVrXXma37FQwtLaCVvJ97ffalrz7Lptb0sSzGb4U?=
- =?us-ascii?Q?hl949MA5qnCP1kxsFwNr2ug1PLeUYXzfxdSfgjCeS/phIwu/Od7h+0EuKTbV?=
- =?us-ascii?Q?TVxBhGmp0UhuqOhV05IgtxIGQX/sO+kDa0QkJ1hk1gH4ZbU3Uok+FakBw8o6?=
- =?us-ascii?Q?i4Q/1PaIYgxFI+7l5t5IcIl0LL5Pr/hYca7aIA2SO/SGE+nrqcifDRnl4Gab?=
- =?us-ascii?Q?xmPRKhYM5v+9hQm66FYqyTtq4lZWxJONHAir/ydfO4c6XrkyG3glC2yGt7+j?=
- =?us-ascii?Q?S0rundVAB3j3AdIgFwYk47l2vGPUn3WAy/ZRfla4bYqeJo7s4skFk9SEcmQg?=
- =?us-ascii?Q?If6hUHH9LZQNgVbhgZJ52Snb5lz11UyMnrKa9AJMu2f/z17mVcamvagAXnY3?=
- =?us-ascii?Q?CO4I88ZElbmyTFvZqfV3J3Mw7QOUCq72iv5zbxS0xBhOmrVcQnRpRvEws6RN?=
- =?us-ascii?Q?rQkd7CHVgMIgyLy0cTZVCNnR8wTNuj2y1V5KlzsAmVRqwEvle93tCLJuMaCH?=
- =?us-ascii?Q?7CrdHNBE42IP+IGmGGvo4tBk2mAn+54PBezXuyKLNY2zE/1p7zb16iB5OKJt?=
- =?us-ascii?Q?eWJW/hFxORMR0QLFu8SdnPv8X56yRsb31Ay/nIvBiupk1QvkpEb9/cPLWwL/?=
- =?us-ascii?Q?vB3tvrpLOfz6OqJV85V/xiNnuvayn70qbW4MVgAuWcDxiq6G8PWXXNtJ68vb?=
- =?us-ascii?Q?RgKiTBgzL3GKVUXuGTzqYuOZNNSlSxcFFeh0bBZHNIGX6oU3RiT8bOM5HrKb?=
- =?us-ascii?Q?gh0KL6C9Dey5+pz1uagKpqhDl93ris2gFQ+Ny/dca6Osb3Tp6YYXxzBnph6A?=
- =?us-ascii?Q?5M0+qUGeQAVhToeFh6pPCvmNeN+Al7OBiqwxNpstPL9Hlh6cmm5vCkatxGUK?=
- =?us-ascii?Q?Yg/yeTzG7Fg60+ZI6x2EdJfLgYuvgKBXMkKfTQy4Wnd5Qx60qpYhCTpFn/5T?=
- =?us-ascii?Q?1eWlqvi+yhyKzeNgqbWjPU9iS6EZmOV+UVxokr09ppKe+J+8KMHYP6toGOhc?=
- =?us-ascii?Q?SbW1YsRieNBh0RUN4aczrgbyM8WzWHfVMBEo4/ngZqZVOTU439Y393EqPE7j?=
- =?us-ascii?Q?bsGhVSmj8bgeQdwj5B8PuBIpH3Yb0uIJYXQcKx7cpdE/aGnu36yeG8oD8Xnl?=
- =?us-ascii?Q?nFGqthMZDr7/wMM4xTut6Drh3Ua2yOkrS5ugrNd5OKBYxPMqJprohpn2W0PH?=
- =?us-ascii?Q?J5RYJRVTTB9+L1l7s5GzKgNKTlsWWS3iNuVuHk4A/50XYQY/FmXiwFfb/Tl5?=
- =?us-ascii?Q?EmIiByt1juSkH3SmUF76oQcv/HQ2lsJg3N7d3g/j7E60GRbhvvrp9JlcSV92?=
- =?us-ascii?Q?ntfLGCkl08sokngU8nAvF4Q7pjEJFJhMbM5vF/DEE2PSL1VONOOhInIZCBVt?=
- =?us-ascii?Q?Tjvwh3BFzPYi9Dv52pJAaJOh5tmKgZT7KuTttA6wBWl5ROto+/9V1TPDEGky?=
- =?us-ascii?Q?Fvc9vh13C1+W/oJImE41sEMloi7NshhbuOqNDHTWGJZj9olXFmYqgB/3ybV+?=
- =?us-ascii?Q?oUPsMFqR7liHIHegss+UHRNM6TF6F9q6oHvqymJdIz49sJKROcYVJAaoFs5J?=
- =?us-ascii?Q?uyeujNvNxTwhpsmEdQlxcQqprHgMqzdS/4WZp59NfiSamkjgTvp7LwBCn/RG?=
- =?us-ascii?Q?dSd32Uqb+Dx3fe3rox58kWJZDvxOSeeX3DG3TpFEWVmT+Wb58YGXpUzO/PMF?=
- =?us-ascii?Q?ZMi5gs+690tPbg0Hh3k+CYPr1tew57qSiOel1BUMnMtMr5heuuczU+Q/JuHD?=
- =?us-ascii?Q?xxHx6bOajhnP5LcMhOgpL80HqoNDiGqw2fDmPonnvFnlVsogalg/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5ecec89-78ce-4ec9-682b-08deab719137
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 13:15:39.0410
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tYV/j14PttpOj/WVfhvJ0Rb9T5Gjx3CDKGj2vc80dX369dWC+Ca7EHpNhRzKtMr8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8152
-X-Stat-Signature: nxuku4rn47zhmiq1qba56dmyyfhaegq5
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C2E1C4001C
+References: <20260503165024.1526680-4-vernon2gm@gmail.com> <20260503174125.2C949C2BCB4@smtp.kernel.org>
+In-Reply-To: <20260503174125.2C949C2BCB4@smtp.kernel.org>
+From: Vernon Yang <vernon2gm@gmail.com>
+Date: Wed, 6 May 2026 21:26:57 +0800
+X-Gm-Features: AVHnY4Ljul8CUzS_G-va6ruKGX3ZCJiSzHij9r9KLJr3ECHCCjVxfY92mQxB2T4
+Message-ID: <CACZaFFO9-xe-LewtzcUn9XHaJOUiMv60==M6TVOPVJHFafAefQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] mm: introduce bpf_mthp_ops struct ops
+To: sashiko@lists.linux.dev
+Cc: bpf@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Red Hat)" <david@kernel.org>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, inwardvessel@gmail.com, 
+	Shakeel Butt <shakeel.butt@linux.dev>, ast@kernel.org, 
+	Daniel Borkmann <daniel@iogearbox.net>, surenb@google.com, linux-kernel@vger.kernel.org, 
+	linux-mm <linux-mm@kvack.org>, baohua@kernel.org, Lance Yang <lance.yang@linux.dev>, 
+	Dev Jain <dev.jain@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3613A4000D
+X-Stat-Signature: 3pw3653xusnpanndquuyhzuwnfia4o14
 X-Rspam-User: 
-X-HE-Tag: 1778073343-269639
-X-HE-Meta: U2FsdGVkX18pcTwhKaADbdP4ilemTecfbCn3hMtS22y+hf1MmYHGiQZiOW6fQB5p3AMg4cbX03vdq9P5GB6qiOrUFl1fifPkCl4CRXjCDzx0UM0GmwBPx+pXuz2Y5WWpcivZS6zpogBWzh79w6PLRq4VytZ/7RD3hfdVc3n4UVwbIHWu+pQTEoIqH0tMSfajylzh9xA7BQMu4RduM9zznqt0v5MUXAqFC/A1IqXm6Wu3XD/iigX9k3+Dg50l6d1CYMaMIf1hKYiVQe4MSCsUgMMAKDQhKqlB18fb5hSGU08Gvynd29HaY0+tYkC7/DltWT14qNSy1m2OK8wJ9IjNw0OIS73jjTrk7LwMp5O4Pe5Ju++zrMKkBwVERqH59ano80QRPROvXwRZ2/iy3NGE745VwPTcOKohxJ/xY1FdazBL7UYAAGywySwEGNBh7tuM6R4RAUbNe+fabv7lyx6fjuc/9AnUBTumlDBNWGMlm3Girh3OuOikksS0mra9FT6dllxcOjP5D0GWjiNh1wslSlLSYwkMF6nhpHtWV5li7THCKuGnV33vb9qWJyxvAn9zJKvWJarY33GNmrnDbt9v6rXgDyCl9vk1DLzTS4y8wA3GuCu2WgUV4PJHLzsiFVn7QzTzwfgC0o7p+w1vHnVrD13bp1Bg0COjnVDrHqbU/r/23kPGNVdCgsppEoUaWIojWX587QpLEFm8gzylLpHXyWNKuWxHrHF9mPqD5QHikzw2MkydUsgLBLnIpNlhrYyFDnf6SiM8LjEuSto7n+jYHYzV5BbaJe7isCBKeGJxGUdaH8IlLZXajg24vXJ7BaU70XZ/5SMtS0Y0VAcspCbYxycT+nG7MdADFsBfFH6UJL1gN9bIFE+X83T+sWa1MSuOdkUASp3yWmv64R1GGF35IU7uMl9fimyosRLf8QyZk6o9jEYfNxx+h6pVWRkBRPaFE+lSciXYte7uiAA7F+i
- 881Q+67H
- 8xR7G7eijZtCfgSl97Cfc334RRgtr3HXieyb0Mmr1q6OEoNw09BSLRCX10S2bg4v5wiuEhygQPPzqC6C9gOgk2SzzSVm9nVe+zIQrC7IwZYivSCJ6mqudODfRTTM4sRZnGyI89rNyHtdVMV2Y6u+avuNBKYKEEPs/0xkhx0Fub/bCGBap/txJpRLazbVeSqYzyeyxf3DDkIpyAsOoruLjdF44xZAO8XJXyvwPKwydXgG7bnMLDf4mPUS775HrYdYgcM7ECcYkl4kr4Zd8N2GmVMvUARYk0+cN95J/tN7YWJsNduwcmb8k940liznr4c39nDJJuyD2vJcxxM8ZkpjyCAz8o+qkRAb++N9wsJ2jVxFSsgAcADq55Yx/QHXXvrDkSJc56RbY3edbthhAw69/dC+d7AjrjLQ1PMsKMx069SVXiujQx43xpMsoIg==
+X-HE-Tag: 1778074033-423597
+X-HE-Meta: U2FsdGVkX18tKp4Lqlb7BF0NA7YlB9mEwFL+qd5kJQIBxFXKlcOjHLMFb0q5kCTnqSBVrOztae8ASDdrPRlrtm5grqZdsE86E5agXfqDwZrGxw/IfDW6zQP6MjoF09Wliug9qefcOCQdCZdKUFl08wZ9xl52+Bl8MfGkuDamy02UqrA009IAX/0lzsTzS/POsgyfU53Xkt5/g2012h59aK3PfGfVjsivqqx1OcbrAizUXUkuQqCRd6GRNyK1B00qx+lF8PlAS3JpTdL1wNwLxufp6oScWrHsvHE8XR0olvv/K4WrdOShB1cLEXpuK6tpZi8eQAiS4Cvu1ZFbMmVa33tJv6jmlC9wqijeTWneDLr/uZF69JQ3oRNhwTV/8J86Y5LlkYZAHxRZy7X92WXDDWYCXUu4q5ZsOoZ9LyLybDc8QW/7kpoBvG4MKVOI7tOavUV2FrR0Sb58KeqexHsepiFPCppT2A/mEOUupCBOwjTJ3pVC+472mFDd/FZftEj0jQrt2rjDjPXXJT/f9z3ePF6kwySYBn2mf/XzFgFN6cxs/erFGdcIqRDhWynyKQwajuIgUtRpwkCJdiaBA/1BU78V3Q7CrSpA7s/5tDb0XuG9KUuXcFJW6XGFgI4Dq2gn12Ztt+5SFR+ZiF4OQ2rnBFNKeCx1a1U4NEBs6DllRL74n4HY4loMvHHArQAXttDdu4qq++spgr9NfrE/3253789ZsbZer0MP3QOkVR3iDbeKrW93XktCqjArP1MkkY9xsPmmcWgwtsAM8t0ouzz2oZbsFt3vlC8qebKmIRwXNgikjNSxyAEQVjn5STlya0LW/m/T1GgxzJsJUoZvwciewvRar9hyfXKHME2XWNzo1Si+5XRykD0I9Nf+JctaABzJrNTE9IHlKd0TbmPdyQuuGpqvT3G8+LnZ8X8fVilqt/ZeY4ZXbU8klzn8cUh3JtkI0c6TbEitIIi0u0/rH8y
+ 0icL43wm
+ M646gWvWuNOFQ5Be9DvOUw4COtpwKsjxGP7D7XZSrnb91fpdrWgYc6XPKmlcec+DXcWIQ6QiFWsKz/mlAmlMdLjzbKmtLaH9P26B3YOEz0mZzWQoORaGQLhAwpbf6qEa+hXxdT0DmUaM9fLpj+wQbXwIRcKFal3WN4+bDvmBjzsonbZEJLsBBNkAF0KF3Ofj+9vuBD/tPmKz1OjrMOpMkF72xLFepRZPTLNYXzdl/T1Hk/WNivreOgtNs2zrlk0ADcz1fKeI2Jwq2aPzh0lg5bqdnKeqIZ73uR9zCO9QIXYlY7O6IztQLKFhIuwaD2IiEKB1o8gRnMTWQzsVEogDnCDYNcGiIhWm7Tocqfyw14ec0Hc+E3Lunqb+9k7gjK6QNuUg2+xVG2e+BFIr4IJsVm8a1PyICSedQsqmq6xzIDqRFUJAWoypp5zwrf/jl//1hXesXo2cB17pLXMiTb77s+RlgKU1D78r9G5QNiegG3nI3/YGcQ6wSPFiWWzuzsH1JSINCNJ7WYUASjpk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,74 +143,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4 May 2026, at 18:11, Nico Pache wrote:
+Forwarding sashiko review
 
-> On 4/29/26 9:35 AM, Zi Yan wrote:
->> Change the requirement to a file system with large folio support and t=
-he
->> supported order needs to include PMD_ORDER.
->>
->> Also add tests of opening a file with read write permission and popula=
-ting
->> folios with writes. Reuse the XFS image from split_huge_page_test.
->>
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> ---
->>   tools/testing/selftests/mm/khugepaged.c   | 131 +++++++++++++++-----=
---
->>   tools/testing/selftests/mm/run_vmtests.sh |  12 +-
->>   2 files changed, 102 insertions(+), 41 deletions(-)
->>
+On Mon, May 4, 2026 at 1:41=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 6 potential issu=
+e(s) to consider:
+> - [Critical] Use-After-Free vulnerability in `bpf_mthp_choose()` due to i=
+mproper SRCU locking.
+> - [High] NULL pointer dereference of `link` before validation in `bpf_mth=
+p_ops_reg()` and `bpf_mthp_ops_unreg()`.
+> - [High] Newly created cgroups silently bypass the hierarchical BPF mTHP =
+policy.
+> - [High] Silent registration failure leaves the cgroup hierarchy in an in=
+consistent state.
+> - [Medium] The BPF program can only restrict allowable THP orders, not ex=
+pand or select new ones.
+> - [Low] Compilation failure due to dereferencing an incomplete type and a=
+ non-existent struct member.
+> --
+>
+> commit e5c9c74b11f76b4de7ba4ef8ff94c10bae978e16
+> Author: Vernon Yang <yanglincheng@kylinos.cn>
+>
+> mm: introduce bpf_mthp_ops struct ops
+>
+> Introducing bpf_mthp_ops enables eBPF programs to register the
+> mthp_choose callback function via cgroup-ebpf.
+>
+> > diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> > index 2949e5acff35..80ec622213df 100644
+> > --- a/include/linux/huge_mm.h
+> > +++ b/include/linux/huge_mm.h
+> [ ... ]
+> > @@ -291,6 +292,11 @@ unsigned long thp_vma_allowable_orders(struct vm_a=
+rea_struct *vma,
+> >                                      enum tva_type type,
+> >                                      unsigned long orders)
+> >  {
+> > +     /* The eBPF-specified orders overrides which order is selected. *=
+/
+> > +     orders &=3D bpf_mthp_choose(vma->vm_mm, orders);
+>
+> Does this inadvertently prevent the BPF program from enabling or selectin=
+g new
+> orders? Since the return value is applied using a bitwise AND, it appears
+> restricted to only disabling existing orders rather than customizing them=
+ as
+> described in the commit message.
 
-<snip>
+Yes, It is restricted to only disabling existing orders.
 
->> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing=
-/selftests/mm/run_vmtests.sh
->> index 3b61677fe9840..854c5c3e3a6ae 100755
->> --- a/tools/testing/selftests/mm/run_vmtests.sh
->> +++ b/tools/testing/selftests/mm/run_vmtests.sh
->> @@ -490,8 +490,6 @@ CATEGORY=3D"thp" run_test ./khugepaged all:shmem
->>    CATEGORY=3D"thp" run_test ./khugepaged -s 4 all:shmem
->>  -CATEGORY=3D"thp" run_test ./transhuge-stress -d 20
->> -
->>   # Try to create XFS if not provided
->>   if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
->>       if [ "${HAVE_HUGEPAGES}" =3D "1" ]; then
->> @@ -508,6 +506,14 @@ if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; the=
+> > +     if (!orders)
+> > +             return 0;
+> > +
+> >       /*
+> >        * Optimization to check if required orders are enabled early. On=
+ly
+> >        * forced collapse ignores sysfs configs.
+> > diff --git a/mm/bpf_huge_memory.c b/mm/bpf_huge_memory.c
+> > new file mode 100644
+> > index 000000000000..e34e0a35edac
+> > --- /dev/null
+> > +++ b/mm/bpf_huge_memory.c
+> [ ... ]
+> > +unsigned long bpf_mthp_choose(struct mm_struct *mm, unsigned long orde=
+rs)
+> > +{
+> > +     struct cgroup *cgrp;
+> > +     struct mem_cgroup *memcg;
+> > +     struct bpf_mthp_ops *ops;
+> > +     int idx;
+> > +
+> > +     memcg =3D get_mem_cgroup_from_mm(mm);
+> > +     if (!memcg)
+> > +             return orders;
+> > +
+> > +     cgrp =3D memcg->css.cgroup;
+> > +     ops =3D READ_ONCE(cgrp->mthp_ops);
+> > +     if (unlikely(ops)) {
+> > +             idx =3D srcu_read_lock(&mthp_bpf_srcu);
+> > +             if (ops->mthp_choose)
+> > +                     orders =3D ops->mthp_choose(cgrp, orders);
+> > +             srcu_read_unlock(&mthp_bpf_srcu, idx);
+> > +     }
+>
+> Could reading cgrp->mthp_ops outside the SRCU critical section lead to a
+> use-after-free regression?
+>
+> If a thread is preempted immediately after ops is read:
+>
+>     ops =3D READ_ONCE(cgrp->mthp_ops);
+>     <preempted>
+>
+> Another thread could execute bpf_mthp_ops_unreg(), set the pointer to NUL=
+L,
+> and complete synchronize_srcu(). The original thread would then resume,
+> acquire the lock, and dereference the freed ops pointer.
+
+(Report is identical to bot+bpf-ci) Good catch, I will fix that in the
+next version. Thanks!
+
+> > +
+> > +     mem_cgroup_put(memcg);
+> > +
+> > +     return orders;
+> > +}
+> [ ... ]
+> > +static int bpf_mthp_ops_reg(void *kdata, struct bpf_link *link)
+> > +{
+> > +     struct bpf_struct_ops_link *st_link =3D (struct bpf_struct_ops_li=
+nk *)link;
+> > +     struct bpf_mthp_ops *ops =3D kdata;
+> > +     struct cgroup *cgrp =3D st_link->cgroup;
+>
+> Can this cause a regression if link is passed as NULL? st_link is cast fr=
+om
+> link, and st_link->cgroup implicitly dereferences it before the validatio=
 n
->>       fi
->>   fi
->>  +if [ -n "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
->> +CATEGORY=3D"thp" run_test ./khugepaged all:file ${SPLIT_HUGE_PAGE_TES=
-T_XFS_PATH}
->> +else
->> +	count_total=3D$(( count_total + 1 ))
->> +	count_skip=3D$(( count_skip + 1 ))
->> +	echo "[SKIP] ./khugepaged all:file" | tap_prefix
+> check below.
+
+(Report is identical to bot+bpf-ci) I will fix that in the next version. Th=
+anks!
+
+> Additionally, struct bpf_struct_ops_link is defined privately in
+> kernel/bpf/bpf_struct_ops.c and does not contain a cgroup field. Will thi=
+s
+> cause a compilation failure due to dereferencing an incomplete type and a
+> non-existent struct member?
+
+(Report is identical to bot+bpf-ci)
+
+This series is based on linux v7.1-rc1 (26fd6bff2c05) + "mm: BPF OOM"[3]
+first four patches.
+
+All of the above definitions are in  "mm: BPF OOM" PATCH#2.
+
+https://lore.kernel.org/linux-mm/20260127024421.494929-3-roman.gushchin@lin=
+ux.dev/
+
+> > +     struct cgroup_subsys_state *pos;
+> > +
+> > +     /* The link is not yet fully initialized, but cgroup should be se=
+t */
+> > +     if (!link)
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     cgroup_lock();
+> > +     css_for_each_descendant_pre(pos, &cgrp->self) {
+> > +             struct cgroup *child =3D pos->cgroup;
+> > +
+> > +             if (READ_ONCE(child->mthp_ops)) {
+> > +                     /* TODO
+> > +                      * Do not destroy the cgroup hierarchy property.
+> > +                      * If an eBPF program already exists in the sub-c=
+group,
+> > +                      * trigger an error and clear the already set
+> > +                      * bpf_mthp_ops data.
+> > +                      */
+> > +                     continue;
 >
-> This leads selftest runs to always litter the output with SKIP when run=
-ning this with the wrapper
+> Is it intentional to return 0 at the end of this function when we skip ov=
+er
+> descendants that already have mthp_ops configured? This appears to leave =
+the
+> hierarchy in an inconsistent state while userspace assumes the registrati=
+on
+> was fully successful.
+
+Yes, that is exactly what I will do next.
+
+> Furthermore, is there a missing hook in the cgroup creation path? Since t=
+his
+> loop only applies to existing descendants, any newly created cgroups will
+> have their mthp_ops field initialized to NULL, allowing tasks moved there=
+ to
+> silently bypass the BPF program attached to their ancestors.
+
+Good catch, I will set WRITE_ONCE(child->mthp_ops, parent->mthp_ops)
+during cgroup_create(). Thanks!
+
+> > +             }
+> > +             WRITE_ONCE(child->mthp_ops, ops);
+> > +     }
+> > +     cgroup_unlock();
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static void bpf_mthp_ops_unreg(void *kdata, struct bpf_link *link)
+> > +{
+> > +     struct bpf_struct_ops_link *st_link =3D (struct bpf_struct_ops_li=
+nk *)link;
+> > +     struct bpf_mthp_ops *ops =3D kdata;
+> > +     struct cgroup *cgrp =3D st_link->cgroup;
 >
-> make -C tools/testing/selftests TARGETS=3Dmm run_tests
-
-Yes, this is intended to let people know one case is not tested and skipp=
-ed if XFS cannot be created.
-
+> Does this code similarly dereference link before it can be validated?
 >
->> +fi
->> +
->>   CATEGORY=3D"thp" run_test ./split_huge_page_test ${SPLIT_HUGE_PAGE_T=
-EST_XFS_PATH}
->>    if [ -n "${MOUNTED_XFS}" ]; then
->> @@ -516,6 +522,8 @@ if [ -n "${MOUNTED_XFS}" ]; then
->>       rm -f ${XFS_IMG}
->>   fi
->>  +CATEGORY=3D"thp" run_test ./transhuge-stress -d 20
->> +
->>   CATEGORY=3D"thp" run_test ./folio_split_race_test
->>    CATEGORY=3D"migration" run_test ./migration
-
-
-Best Regards,
-Yan, Zi
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260503165024.15=
+26680-1-vernon2gm@gmail.com?part=3D3
 
