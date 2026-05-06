@@ -4,84 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2E63CD342F
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 03:16:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1A14CD342F
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 03:22:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D990E6B0005; Tue,  5 May 2026 23:16:14 -0400 (EDT)
+	id DC98C6B0005; Tue,  5 May 2026 23:22:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D49D76B0088; Tue,  5 May 2026 23:16:14 -0400 (EDT)
+	id D79C66B0088; Tue,  5 May 2026 23:22:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5F0F6B008A; Tue,  5 May 2026 23:16:14 -0400 (EDT)
+	id C8F806B008A; Tue,  5 May 2026 23:22:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B0E076B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 23:16:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 475411206D0
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:16:14 +0000 (UTC)
-X-FDA: 84735531468.19.8E34EBB
-Received: from mail-m829.xmail.ntesmail.com (mail-m829.xmail.ntesmail.com [156.224.82.9])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 758DA180008
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:16:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.9 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B86FA6B0005
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 23:22:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4DD0D406C2
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:22:28 +0000 (UTC)
+X-FDA: 84735547176.06.0A0DD72
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 626DF16000B
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:22:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pao0HPMz;
+	spf=pass (imf08.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778037372;
+	s=arc-20220608; t=1778037746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MQOL3riKKKsduCR+g8DIe2jT+mKOpCFV961eyNkzwko=;
-	b=rbxFe6WBnOIVcjXdr7ZW+2/qSfaFSKk5F3U7MNRS1eABgbfT5ipjOB3XKJLZb1xpr9dqxW
-	NXaFq8vIIpN00EmuEDpNSONXNsR0PTrdblnjKsDKRZhRausW5G2UA14Li9dPNWO76+cMlg
-	bt9IJbKF3TVTlIdbUEjvY4BFv3mFzeo=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.9 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778037372; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=itj8eIG8sThAhvpCSo1Y/AOcXMvz1Dcruyd9jNf32kM=;
+	b=FDx5XT/8WzDBCB8XwlNar6xOVD5Rj2/7rFTEDtnUx9Vfd8+zqEsoJHtKWqSRui2e7o5+Nf
+	Cw1tZtd3F0WKigxHBfn+Pa1mFdHHsCLgkeJhU78TqWokx1XviWQMCkzzh40mBwG0O11JnA
+	WEEqLIlbu2INwVDfCCL716Gv3ns01ww=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778037746; a=rsa-sha256;
 	cv=none;
-	b=db4Nu1mCoKNUHLF5yzDtFVUI3oKzXBpP9Yb9P9NMw9q2SVR9S4OBlJp4DAwWSCRhqFDEpa
-	vjNJAfLEoEuJtBN8m+eqQ52QDm0qFQ1u1/8wsNp6rXF2/pi7vERfPmzKidVrPNMAmOemlE
-	nF4b8nn4UMYBi+ynp2+bYkbyO+qCtJs=
-Received: from [192.168.0.59] (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 19bdc5e48;
-	Wed, 6 May 2026 11:16:05 +0800 (GMT+08:00)
-Message-ID: <0f0d9a2d-47a9-4150-ac97-83a92ce8c048@easystack.cn>
-Date: Wed, 6 May 2026 11:16:04 +0800
+	b=QME0cdvI4VgOQ08BPnWtyeHflhYexq6kOS96OzDC/MaUGq8clJ6jHsuYoSB4E/eMJtArD+
+	r3vqUVP76B+nBKwYRGXLLNxbun+wFRPaFzRzN6FGf12gBt+DKRZVnD2GOzCeY02gR0h0OL
+	Zb3BmNubCWnl9W9t84B6+XfdB6XEiGg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pao0HPMz;
+	spf=pass (imf08.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <997b99a7-7ad6-4ac8-802d-f663c8037315@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778037741;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=itj8eIG8sThAhvpCSo1Y/AOcXMvz1Dcruyd9jNf32kM=;
+	b=pao0HPMzzDd0zlSVOOaBLwXBycBTmCV1UuL+VpfpU7Gz5wIqVbmmBfI0CxbieVgKIqqn6N
+	P2MWBqG0J2lyxGSJRGL7OlULEbkXcvAlD4XM74Uw3mNjEAaiwYTN6Z1BQoPUceheYc0mNS
+	tGqeIKmcrMHmuR2dUVngnyIkRKkwrJg=
+Date: Wed, 6 May 2026 11:22:07 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] mm/page_owner: add filter infrastructure for
- print_mode and NUMA filtering
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260430163247.13628-1-zhen.ni@easystack.cn>
- <20260430112245.be3189f09bd6a71970a74746@linux-foundation.org>
-From: "zhen.ni" <zhen.ni@easystack.cn>
-In-Reply-To: <20260430112245.be3189f09bd6a71970a74746@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH 1/2] mm/memory_failure: use bool for hugetlb indicator in
+ try_memory_failure_hugetlb
+To: Miaohe Lin <linmiaohe@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260407020715.2269255-1-ye.liu@linux.dev>
+ <20260407020715.2269255-2-ye.liu@linux.dev>
+ <0eb4a198-e80b-127d-e729-3af6f63f6d5b@huawei.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <0eb4a198-e80b-127d-e729-3af6f63f6d5b@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9dfb4919cd0229kunm77ae86b41592a8
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSUJCVhkdSRhOHk1MHUwdGlYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
-	lPT09IVUpLS1VKQktLWQY+
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 626DF16000B
+X-Stat-Signature: spapmye8noxwnubbqxando6h9xncy6h7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 758DA180008
-X-Rspamd-Server: rspam06
-X-Stat-Signature: zr66f1j578mrwwe15jbmxiwbmb6qm4dw
-X-HE-Tag: 1778037371-270816
-X-HE-Meta: U2FsdGVkX1/aOsgJXHI06J/dwU3yssZ1TP2ysjAYrjqlbR61Bas/DLUjpKY/NP4V3Lk7BPUjSCkIbOEM73AE3l+Pze1rHEWT4H8ZB/N7ITZZhDWK5aN0XkuvTFGg5GWRihzVRuOlTdBq0huXjfXeqkWLt9VML8qPhhTTvhAi8iFyIcBJ9aRJ/Kjsuqur/WceqFEIdIbD6LwxlE1lOEDUpe1y9cyF2uijxMkAhUiL8KnBXt54qkXtfDRzYJSQOxpQf8GIubK9xRI8MOmleC6MQ0dMkl/0k0P9Tf7x9EFX4Wqfi4DKjHYhWwS0Wsv2Tbb115H7X1Vo4/5WWp3QI21VwJ+tfrRg1qoIkVaFLWOYclWlO3a4cl/Lvh1v/rpZuNyeTDStciKolEYqvUHnXMdfy7V+ewHCwpbo56FIo/mYpQR7DNyxg3y3PvJ2wdKm+6rhzWf8O7olAMXR3nkgCWDmEbCvft3Get9KbAzNCvTeQ4hJ1p3vFOrFpTJa7+FnxwSJDSZFAQ7cDYOJjVaTLBpHI3mcKpc0xzHkqrp4EPlTIRkN+zJgpuLRq8k3iqIV0TOYucjBpKiX2l5gBl5DY2xDwKiWVQBcsUPFHYdbTGunuOJgAY5pkAqQHTSIGXSxtpQUrBa28wwRfpUvSQJwmNheIySkSx/sCW6RwHk/lB+TvRKd1Q5a4pH3g3CO2kIE8g4+MQQGmAQonL2qo5BgQtIsLFBj4TbTAXCMJJj/baHlY7fesVOh7nDzGQfgXu4vyn/3CbBN0/8zNgsYiq3o/5mg8NzBs+XvSpmqfPnrJ+O3VCUXXfTbdnBITda/TtT0E3FGOIhfnTZRgCWHQna/1hHtHPf0sPyCunyZjUCypuIJS0yOdUDp/ZrErdU7jBUycQk8hxpCKXRQp5/1j8vzoNZZ2WNgVIM+R5lNmghvDRAgOo05YzxoSGT8LnHZG3l2C4nkEm2AdXQP4ZcNJrZ7xdb
- tL/kEynf
- I+FQDeAg3u+DBfzhScLyBCXJTYS9xf1q3qW8liCeCGA6Jxv90KeU9TZGqVNLXIATnx+zZ5dI/iq3efHuS7MDg0ob32mS9TA+qh4WJ4viCnedU/FSVtqyVQeaYyqjrgK9nTZyYSXmr00v4QBMkdVnuOvkdwMBjFfZ+OI2viRqrvT+3+GC0rrEoz03l2moYufpbrX1Uke0FSopJCVi/2EumdiBLeY+AwPHkx88ATVKE2YdMlhnzsw88MJYk2Vr7k1LDseZ5mUCI8ZSPAzGDG7XgNRA40fce/6Ng7KTQyhzDG/XaiMc=
+X-HE-Tag: 1778037746-183391
+X-HE-Meta: U2FsdGVkX1+W8zCYVUtICrhc6KnawIwM/1atLUEHXISQjPQoRnnDZfO22OtADoNy0kEwVfVYAl+ErM1k6Rsjz1blgcvNcqc2UdU8HwmyNc64u6JtwJOKE7G+s1IVktQoVDkZaWsSt5uVXpfnY6u8p8q5gPRdWsgtkHfoSxeFqWXu/DjXmGNcNdlrX31vidxOUZbUmYQZwSIBmuajjz4jkslYqmlK814uEpkVzP2+hSJXCJSZ3qZgqPRnj6umMVWN6tSQCjxRbSXHuq7/JyExuoGF7iwjBMie/4zlRzOhrKyrV4ifRW1SwnZ7iTZ3LXg/9r1EzsAm8rSgIQpazrjfxuG16/Wc/B8k+tVZXzHbTbCgxe8Ue8jY+r8O+rq4aYthdqR1o1vY2lM/XxAmxoYJI0i7pUzurANqQiJriR90YTUW8ocqZhEFLE/XLEtk0IOmxs3sHmar86K0En/5Ys42s/DZrVSBIixSMWy6lGhRxsOIVqSsrJT7T2rtD7XIEyvXlTHUeNvXW13BngRJ+/oJ9APxxRP37ZDMZsMYNbAgvk3Q6DYMT48Mwjr+SSFlpXqs1pGwv1gjQJk/e6F2tjMhrFF4aqYapLXxmwla7lcVlrZFqagw+aTdBUrSNlSvuFGSw40lrAtqyFZr0vGKchDWQRztPjZVvKZRirf/1tNSEJPSxUMGUJhKF3CSdg5KfeSNjj4mp9tIRgMjNgsFebYF6ibW1fogdK2tpdqRCjFr/dqR/TXUXhWzhQ44C1wHKRQgMVdmkqoxSWOtt084DgdgqOxvhEweI/wwZSJVQ+BDRoh5td2EXHtjPZH+CeC0nNwS4uaGDsuEgP9c8Tg/cdJpo8WX8j65YkClVOSa/R3eGAZwn0hJDb2+ZeyMVqFpfwbXWols6FhNDls1kzhuvgSAjKYrVwxg6hRZgwBen9rMqZ9tjY06CyVwLbmow07YsmI7BUJqPNG6lr5cQQHZIIN
+ m5EcbG8J
+ 6iWVhkW3KHSSw01TPbeNdtbPJ4DPUlxR4FMC08rytXeemRoYuyAArnqSQb9dC5WjimiBTeT6G6LhGW9qp2vH1MZJ1ssM7rrW1OcgYjwgYTrJFF39jDueSWGTrF6NmJmqCMSGY9ex0zy8Mh4K92cT7X/D5FL2oFaeGUZKA5GjV9EjWKFb9/eaiBWJjeGmWK6i33PkA9JIb4lv82PD97FitlcLWStG2GSpXRJZZtkMxP1rzdgIFvyOQjMmBgZDZFEc37p4CEf34uaHIa5HemdkUczy7qsG9qNOLkW7gP5H6ST7HqHhhfOhIfHpZHkSviib4RFjTSJOL/BOsHiiayw0RYDeurhO2exKsp/KmUoGHgO5reMyV4wVJ3hzqdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,40 +94,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+Friendly ping.
 
-在 2026/5/1 02:22, Andrew Morton 写道:
-> On Fri,  1 May 2026 00:32:44 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+在 2026/4/10 14:38, Miaohe Lin 写道:
+> On 2026/4/7 10:07, Ye Liu wrote:
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> The hugetlb indicator in try_memory_failure_hugetlb is a Boolean
+>> flag, but was declared and assigned as int/0/1. Convert to `bool`
+>> and `true`/`false` for clarity and type safety.
+>>
+>> - try_memory_failure_hugetlb(unsigned long pfn, int flags, bool *hugetlb)
+>> - testcase path in memory_failure(): bool hugetlb = false
+>> - clear semantic conversion in MF_HUGETLB_NON_HUGEPAGE
+>> - preserve behavior (no functional change)
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 > 
->> This patch series introduces filtering capabilities to the page_owner
->> feature to address storage and performance challenges in production
->> environments.
+> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 > 
-> AI review asks a couple of reasonable-sounding questions:
-> 	https://sashiko.dev/#/patchset/20260430163247.13628-1-zhen.ni@easystack.cn
-> 
-> 
+> Thanks.
+> .
 
-Will this cause KCSAN splats?
+-- 
+Thanks,
+Ye Liu
 
-While the practical impact is minimal (debugfs interface, infrequent
-writes, torn reads only cause temporary debug output inconsistency),
-we should properly handle this to avoid KCSAN warnings.
-
-I'm wondering if using the __data_racy qualifier would be appropriate
-here? Something like:
-
-
-struct page_owner_filter {
-     ...
-     nodemask_t __data_racy nid_mask;
-};
-
-
-Is it necessary to evaluate nodes_empty(mask) inside this loop?
-
-I'll fix this by moving the check outside the loop.
-
-
-Best regards,
-Zhen
 
