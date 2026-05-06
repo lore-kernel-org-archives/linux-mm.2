@@ -4,96 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCFD9CD342C
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 15:38:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94FAACD342C
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 15:42:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 104606B0005; Wed,  6 May 2026 11:38:47 -0400 (EDT)
+	id B440E6B008C; Wed,  6 May 2026 11:42:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DC4D6B0088; Wed,  6 May 2026 11:38:47 -0400 (EDT)
+	id B1C0A6B0092; Wed,  6 May 2026 11:42:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 018D36B008C; Wed,  6 May 2026 11:38:46 -0400 (EDT)
+	id A580D6B0093; Wed,  6 May 2026 11:42:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E19D86B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 11:38:46 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 909C24022B
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:38:46 +0000 (UTC)
-X-FDA: 84737402652.12.30D3FC0
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C5D56C0010
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:38:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=qjjIyhLA;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778081925; a=rsa-sha256;
-	cv=none;
-	b=wh4ECY1YXrBzkjDjMnVqncAMQ1L4rMKTUo8BsHV/RzyO0ZgJ0WDAmA+pq9I38NHY0IGhMY
-	hfR59iYc1A6OuPBiqjxq0HNqzS+J4qLVvCP4tmj8ZFhEhZ2srej44J+4GZ4nb4BTGEhzrx
-	wFwsvl5B9VXnf2bkvOrD69JJJllIxcE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=qjjIyhLA;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9941B6B008C
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 11:42:54 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38744A021B
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:42:54 +0000 (UTC)
+X-FDA: 84737413068.28.72BC6BF
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4F6F312000A
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:42:52 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kSh8dIPP;
+	spf=pass (imf29.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778081925;
+	s=arc-20220608; t=1778082172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HBfSkJ+ZAj0IKZzbsOscWzm5w5IqhoP97yR5c6JXd3k=;
-	b=2aiOEZ5JQSIBxw0uEdM6hx5MgMSTkk8OxH6DoN/1O0dXIOkj5kCqBRDJkIVwVSNve/FcNg
-	HIJzb/fHyZ0qbK6l1akEAnsTpEXzVfgsIVok+BFLxPcqyriO0blchfQdtzmoDh0Zugd9U6
-	qdJ+euq1/zUuw9Oro+Wf8sQziqBTNFE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HBfSkJ+ZAj0IKZzbsOscWzm5w5IqhoP97yR5c6JXd3k=; b=qjjIyhLAYnp6+fzWGNQYHTDfMM
-	dcIQug2wJEoUes3iojqwilgyNfsTZZsNzrml2u7hAOlBUPV0mOaX18+f+P7JfyKKGQkap35JtApTr
-	GGMWo3Xeu1KhmejaIkkUaEHNyTRQFTpchGsurCCHxS/W3A4q7GtjSQyRzJdIMykPhyoWB2bgEwAZD
-	m0/7Y2fFAL27EFjrhAWkplpJLJIfpj/o/rPphT1s1BC/ybLVL4N3JUjn27m2jUVvlV+km7EtU3wC/
-	cp8mO5EBcC1Fn9qKDps0TKo3abv9aNbX/P+QdjiTrVIoKxEy6ZEtW/v159/j/NKqqzC8qbh7psgKR
-	7A+SG5KA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wKeKL-003glf-12;
-	Wed, 06 May 2026 15:38:21 +0000
-Date: Wed, 6 May 2026 08:38:15 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v5 3/4] Documentation: document
- panic_on_unrecoverable_memory_failure sysctl
-Message-ID: <aftfTpgyLRhXPSLm@gmail.com>
-References: <20260424-ecc_panic-v5-0-a35f4b50425c@debian.org>
- <20260424-ecc_panic-v5-3-a35f4b50425c@debian.org>
- <20260424054840.a63d80ed01b968caf9d9ef64@linux-foundation.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+8u7ZeVl4jM3ubfIv7a6q2qcz+9XFAVFIgJhK8Wcji4=;
+	b=KoZuSTcfPzRNgbk5V4GMvtDy1cZJOXUqcbHDLB/FwccYIxRldCpuUUWGyrIrBKq2waE5GQ
+	j35OLioecBD+VhciHDGpJlGdwupSkdPq0ytXFT9Y8B5mMWg0zS845oclELnU3TbZpAbKe4
+	77+DVjSr58pvbbo7owY69W0YsqkD2tA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kSh8dIPP;
+	spf=pass (imf29.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778082172; a=rsa-sha256;
+	cv=none;
+	b=NqJBdKOKygG7Q6lX7kCvdfH9h00erQ7R0zcQlqYAp4xuNAqCMsI/XUFtfk3YP8A6UGjEvk
+	2BUOUbxvW8v5odSF8xv4K9A6/xzx7SYUyLH6NL9Pt4TnmJ01JXD96oAAdg/sGpo/2OPb7E
+	d1BSWUs/NCsPQkNOIZ3etXGzo942atc=
+Message-ID: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778082169;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+8u7ZeVl4jM3ubfIv7a6q2qcz+9XFAVFIgJhK8Wcji4=;
+	b=kSh8dIPPuOZFcTjB5Rm5KJfMnwa+1I18AUuqRdsZcu7LQIaBnGw+8ZMr04P+PGmmJ2EWQZ
+	z6EK+PiL4kk/n9jcTd+Bp0GCbnIjW8/BPeuIljqVQ3DaB5fSL/1fLPaettRyuYsP+yD5n2
+	EJBM5jlM4hErxw4my6YJIeh5bKPl0c4=
+Date: Wed, 6 May 2026 23:42:40 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424054840.a63d80ed01b968caf9d9ef64@linux-foundation.org>
-X-Debian-User: leitao
-X-Stat-Signature: qq78oynp9s7eeed5jjnndys3cnso6hjg
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zenghui Yu <zenghui.yu@linux.dev>
+Content-Language: en-US
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: jgg@ziepe.ca, leon@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com
+Subject: "alloc_tag was not set" when running mm/ksft_hmm.sh
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 4y9oi7iyo3sb6w41wszacg3a3fkew1fu
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4F6F312000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5D56C0010
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778081924-473607
-X-HE-Meta: U2FsdGVkX1/oe8akMY/gC+feT7HxiXumGbb2Mmys0EHncWu0ATAizr8MIxTkRllvR6Vli+NrEk251KWtV42BdfQjUtBz05dyJrTvNcKGsC8m328cwvIZLgl7sdOH00xC4gGUzxMu+YinP98F7QQqcnTOzL41+21Y5q/C4G9B6OWrindkZRuIYtDyBT08ixv8lFdUXv8obD46rAwFoIhgLKoOicucC5gnxZt3XpHZ3rx+irmIOMk5Z8IvFXi/B+UJZqSvKH/BzY9w5ApA6YqCdBTLDGqWpuEaE70ahR2VelD+B0evm/eUOxshuom4MrkKOMB9qfDN+lQP5I6Z0qpt3PXWwppZGPkalB8AcQpA7xXWui4E2DFLimoveZFqx9fr6xsLK9WvH54ExsxtwLTb5hzMywnEakZ8/qN90TY7mjMx/sfrV61h+k6CLlRKIChSiC2ofrcbIyxobMKi6ZU7GhgCDmZBf4zIJtIcx1FZFTMIs2ay4aCV/jAJ6W16bXzlItqk+FTs7+IU6HqXeZpT5RRnFsyUX0JbpJGi3X5ioJ99GVlQGkO0sou7XUoF1R07nZg7XVae6Mt64Rc+FWXkNMcMqzUYJuG64JVe3ZZqaUMMiI2br241+lnkAy6/usANkU5M7Iq1ECvFLKzSwtv87vlVkk8tJeu3GqIBBbGNpkCbsikXeA3vm+Jye4hW5YuAmD6Z0Z405cHO93ZcMinH1FeeIYsuZSnmq1Q+K71AnKKyU3aD4scYreISVYoTRaww05IH1HhtAU9A4jzPEx8DvFMlLSNbf+/RUjB4Q4o1oJXSNRZuf3znJJV9lSdzVDM3v9xHU3/FziLuHQN3IwZX6KLVUP8uWRqPZt1SwJ87w3U6zzc5W00gtCm8/Q197FCm/VzctCJmUftJw/bWKnGN0U0+sLSCAWISG8QZ9j3u3JwGZnEorayShuraDblM+vhu6lCpTCRECM8VxOYPOkM
- BNMb4xzR
- uYImlhxxYv/cCq1e1EoydYRhzgS9xZOwswAi5QoY3jt5AlIhc2c7pLWwR623AI0mRqkNrOn7LLpQe/naPAJ9RRF2gN/DLFnkLDv4k4N++dV92J6jR6PhcB0nMzSoKLhGPvAgBB2UWUVUvwdSuaymRkp4FIAA1mrBMhXgsP53KIdOVJ6ooXSTgjyp/zO0NGJb7MnVVNxkz38O9A0t0rxkoa37c5dLzyqSLtq6T31aSSQEdwkM/bxXCdokopZuOqhXwuNgc2+scrgD5+hUycoszPvj7kjkTKs/1t9utRVBBEb3+fGti5Qda9rxaDt7ALHxJJF7s808siiqZWh4TxapIIAFbkHdJp5gPu4KB
+X-HE-Tag: 1778082172-496691
+X-HE-Meta: U2FsdGVkX19kXmedUPdJYhVj2gstTC9tbGAF2gzQvgdRSWR4LTyzuGpLvUd4E0WkN6V8p0++hUOMnOYuvzrVPMPHR4tUozMZNS9+Fe5SWJHR1265a9bV2Y2QZ4qLQpkKrcmC5ag7dsaZ1HHfOezGl9dX+JEo24/6lYk45ZWHL9ugC9E+/nNd9QRkimzvmMhNJQteeOh09AtuaJIUqWxkBVk7os36PLjWHADB73mYG9zPkFaBd/hAwTl5HXERWFEjF2oJ2AnkUaIl8CmGyXoC+WBsubdlfLuPqpVHUyzKV4E7EfdTWRqBH8hXtagRg0AwXqIMqp2NoSBdPBhFzXFF+YxtCO2tpEH2bM+JAgz2KIHZLsGU8F8JGUgNOvJjRiG9ggTVBbjhKp1JVkBSFXW8e8fqgSYtSqM0U4p61lFJTAsjUtMeqZnGbJqziFzljRYXA8ltdllEN3SORK0zUrvbpSScRYUY6q4abNhl2i8+yKP2qk7YPtWWqqU+1fIHJx7irb/YElhB41ffBn9YLdZr/HCPw6QzHHlrXi8kxP+RC+EykWINzOblQ5W7lT29OrHmMsOBMoHkIPy7hVCyhmCU0Ee2qhKfKqdVkz/OimlSW3ddseWU6LmO6i6Y4o5qTgux6VsIx+zB6BPKD+TrHS85JddJ8k2aVeBO1zAZVNjIQFjbYqIxWPbxBWxlsINUQllK+JkgF4eD2ZAmu4Yi+4UkmGPobhjEZPajMSgJUqmkwFcUfNc6VYbSFcaLjCX1z/Off0QNjWUls478QuTIrqy+Mi32AtB/r5vW4mQOStbGRRdV8UDF5I78xt0T6PuVZKE/nKb9BPfheMHhOz1PA//ViqnovkDiZW/YdzWAXEwsRg33zH0sYoPRbf+2IVCYxHsh+siqLtCJpnlhQTSp5o021GCI9RE72+wwQw41AQ+GYi3mYerr1Ot+5uVZrvGypz6HO3Qj2GPwJ8KZoVcj5N9
+ EJW1cB8w
+ SZCYzjNKf0ZQ110OGDv6QJYjHp6NDTHMTHVy8z/nceynN2CKcTpijHfFIet9qBcuCDePVnlztDw50tZOJalgq9hYxtruojrlKoTLBv4WWwhNteN0khgCkJiF8TtbRasZz438gh4VNHOyJOa8YvN2hTo3alymWft767+lunBq80MQJlgAwlmtyx5AFLpH/ySnl07URj7nQJ5Aq1pcroun+flo0ka610ZNrn2WcsSbcZFoo0FjhJ3ljzbhReZjxRhOo2GDakYWYi9knTFfpMgL2GYVtQu0fLfodAhIviAL0vOZ5QhRW3OTvOVtlNjyBqmEodQKH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,33 +86,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 05:48:40AM -0700, Andrew Morton wrote:
-> On Fri, 24 Apr 2026 05:24:01 -0700 Breno Leitao <leitao@debian.org> wrote:
-> 
-> > Add documentation for the new vm.panic_on_unrecoverable_memory_failure
-> > sysctl, describing the three categories of failures that trigger a
-> > panic and noting which kernel page types are not yet covered.
-> > 
-> >
-> > ...
-> >
-> > +When enabled, this sysctl triggers a panic on three categories of
-> > +unrecoverable failures: reserved kernel pages, non-buddy kernel pages
-> > +with zero refcount (e.g. tail pages of high-order allocations), and
-> > +pages whose state cannot be classified as recoverable.
-> 
-> Before someone asks, I wonder if we should make this a bitfield thing,
-> so people can select which of the above three should get the panic
-> treatment.
+Hi all,
 
-That's an interesting idea, though I think the necessary infrastructure
-doesn't exist yet. As discussed in this thread, even distinguishing
-non-userspace pages from userspace pages presents non-trivial challenges.
+Running mm/ksft_hmm.sh triggers the following splat:
 
-Implementing a bitfield-based approach would require significant
-groundwork. If we want to pursue that direction, it might make sense to
-defer this patchset and focus on building that infrastructure first.
+ ------------[ cut here ]------------
+ alloc_tag was not set
+ WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0,
+CPU#5: hmm-tests/2020
+ Modules linked in: test_hmm rfkill drm backlight fuse
+ CPU: 5 UID: 0 PID: 2020 Comm: hmm-tests Kdump: loaded Not tainted
+7.1.0-rc2-00099-gadc1e5c6203c-dirty #285 PREEMPT
+ Hardware name: QEMU QEMU Virtual Machine, BIOS
+edk2-stable202408-prebuilt.qemu.org 08/13/2024
+ pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+ pc : ___free_pages+0x2a0/0x2d0
+ lr : ___free_pages+0x2a0/0x2d0
+ sp : ffff80008345b530
+ x29: ffff80008345b530 x28: ffff80008345b700 x27: ffffffffbfff8040
+ x26: ffff0000c41cb360 x25: ffff0000c0c64008 x24: ffff800081aae400
+ x23: 05ffff0000000200 x22: 0000000000000000 x21: 0000000000000000
+ x20: fffffdffc5f20040 x19: 0000000000000000 x18: fffffffffffe7c78
+ x17: 0000000000000000 x16: 0000000000000000 x15: fffffffffffe7c98
+ x14: 00000000000001d1 x13: ffff8000818f3d58 x12: 0000000000000573
+ x11: fffffffffffe7c98 x10: ffff80008194bd58 x9 : 3ffffffffffff000
+ x8 : ffff8000818f3d58 x7 : ffff80008194bd58 x6 : 0000000000000000
+ x5 : ffff0001fedb1088 x4 : 0000000000000001 x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c7f58000
+ Call trace:
+  ___free_pages+0x2a0/0x2d0 (P)
+  __free_pages+0x14/0x20
+  dmirror_devmem_free+0x13c/0x158 [test_hmm]
+  free_zone_device_folio+0x144/0x1e4
+  __folio_put+0x124/0x130
+  free_folio_and_swap_cache+0xa8/0xcc
+  __folio_split+0x664/0x7fc
+  split_folio_to_list+0x50/0x5c
+  migrate_vma_split_folio+0x13c/0x25c
+  migrate_vma_collect_pmd+0xed4/0xf68
+  walk_pgd_range+0x598/0x9a0
+  __walk_page_range+0x90/0x1a0
+  walk_page_range_mm_unsafe+0x194/0x20c
+  walk_page_range+0x20/0x2c
+  migrate_vma_setup+0x18c/0x224
+  dmirror_devmem_fault+0x188/0x2b8 [test_hmm]
+  do_swap_page+0x1458/0x185c
+  __handle_mm_fault+0x85c/0x1ba0
+  handle_mm_fault+0xb0/0x290
+  do_page_fault+0x1f8/0x6f8
+  do_translation_fault+0x60/0x6c
+  do_mem_abort+0x44/0x94
+  el0_da+0x30/0xdc
+  el0t_64_sync_handler+0xd0/0xe4
+  el0t_64_sync+0x198/0x19c
+ ---[ end trace 0000000000000000 ]---
+ lib/test_hmm.c:705 module test_hmm func:dmirror_devmem_alloc_page has
+16744448 allocated at module unload
 
-My preference would be to start with the coarse-grained approach
-(current approach) and refine it incrementally based on actual needs.
+
+It was tested on kernel built with arm64's virt.config and
+
++CONFIG_ZONE_DEVICE=y
++CONFIG_DEVICE_PRIVATE=y
++CONFIG_TEST_HMM=m
++CONFIG_MEM_ALLOC_PROFILING=y
++CONFIG_MEM_ALLOC_PROFILING_DEBUG=y
+
+Thanks,
+Zenghui
 
