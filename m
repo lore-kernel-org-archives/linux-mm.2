@@ -4,139 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFF28FF8855
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:30:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16C71FF8855
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:50:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 107E46B008C; Wed,  6 May 2026 09:30:36 -0400 (EDT)
+	id 2FA8E6B0005; Wed,  6 May 2026 09:50:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B8F76B0092; Wed,  6 May 2026 09:30:36 -0400 (EDT)
+	id 2D2596B0088; Wed,  6 May 2026 09:50:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F11086B0093; Wed,  6 May 2026 09:30:35 -0400 (EDT)
+	id 1C1416B008C; Wed,  6 May 2026 09:50:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E257F6B008C
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:30:35 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F8CE1C0152
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:30:35 +0000 (UTC)
-X-FDA: 84737079630.01.EC71EF1
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7054420011
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:30:33 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mqT3wDkW;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 09DE86B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:50:28 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8EC02C106B
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:50:27 +0000 (UTC)
+X-FDA: 84737129694.21.AC6201F
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 71D1418000C
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:50:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=exOq+4sv;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf13.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+	spf=pass (imf16.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778074233;
+	s=arc-20220608; t=1778075425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xriIljB3f3HwbzgR4DqwJHEbsPSrXHAu4RDpo4RPiXo=;
-	b=7TqHFIbi9YnaD3Gy2xaqX112arYLmYqrRpplVCkG9en0wuT0rekYoMxIQiIlOPFGPWJ4Lv
-	3n7kRwKhsbDfC0geUr6z02RkgMf0+o4jV9RMw92nVfRjiNvNn63o/KjNdjCoOxGtnefS3o
-	xOvJRfXGoTk1+k8lofjd1p+XPOYLCj4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778074233; a=rsa-sha256;
+	bh=6uvRH5NWwaeNa0HniCOROnjhGHZN7wgOdieTGzloLRI=;
+	b=wWqjSk1cUL+oat/lS8d6gsp/dOaHoa48j6pbVd0OdhlxKtVGX2HKYV5YUSeth7cNr9AaY6
+	QecvOVb3rDGYCcpdVJqiTWHbyZSDY2TSrpil001ObY0FcTU4ZKIL1CZ5DHoDkLltWkWFpH
+	nNlBWhT7YY2escuqZL9MFeuguhlXLoY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778075425; a=rsa-sha256;
 	cv=pass;
-	b=2U6PCJdKGX2+3HbDxOusQDvAObQfqFKGwNh9sBtDdkoB/t6NOOg1wKr0zNH5cQypigl4yS
-	hDSLQTeoUGgjUZIW2ssicSqZ8q7BInQavcxWRhsE9YFkimX2C1beG5o79j564gDRiCZCzC
-	Y02tv1kRyA3YQ1MmzBnGu2RmCjeuHEY=
+	b=lzTWYZ9alVs4otRMwmPVfwSyzmTIPW3ne48HzMdNnARZuzxfUskdHKDEyF8ccRSo8/GKa+
+	HE83REfdx0nDR/oGesinoKf3jqRuCufKJapLWte5rWhnGzI2V+Wks3iQ/URBRu83qDhLMR
+	CXx9rak3bpHp2H/HnvVpaloax1PwyBk=
 ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mqT3wDkW;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=exOq+4sv;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf13.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3870778358aso44905621fa.1
-        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:30:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778074232; cv=none;
+	spf=pass (imf16.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3937014be0cso44124551fa.0
+        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:50:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778075424; cv=none;
         d=google.com; s=arc-20240605;
-        b=PnVvxUvWqNRzzXHb/J92BXiNinjqhBFLNLymABA2RGQIwsuzYdBgBfWJT5JRJVEAdn
-         o8HLramHJpTOJ83F1Y0y37q6vyZU9OcHGbxDdhEJfo9BYVwG6OPL2Fv9dAZX39Dkr4nX
-         73gEpcQ2vYvirWfZQ3HTFHg98sv3SDlaC8ymjPkLjw8mE0/VHccNkpMsNr5xTEPXFhjY
-         bYUWSXMCNwxh9LEf5z9D1CNv55JP0+kvVhzFqqA0Dc9ICZpPbAucP5EdgOUTVW8aq/om
-         MVElKzygPHOdwjqLxXMa8Gdq0W7xbBnL5h1rsqvREk3n5AAroAqTv5OpiUxzVVj4poHq
-         EpYg==
+        b=Z6dcD/Pdw0ZfzskWFrqJPblnVmARPI8gzmbYNwGBR3o/b/0kxcZ20nvQo/iJcKIslk
+         6Jz51C3WM9H33p0dLY94EeM+O1CekSjeEFp5Cws01jg2pZyRDyRPr3eAGu+27BfUKpGb
+         +Xo/R0gOIJIQg6g6GKiFI+MlD0iPT+xNWHUO8gOQIM4GZofI0j6sbowluHtaIPQsJGBl
+         /qcbR7nde7G9mfrQZNDja8dszUb/6vwNFWFbNqnFoUWrLtkuRMW4/qmO9bTq2Ajg6mf9
+         V95enhj43VktsC51pVqCOEVn8yWclHXO09Dzq5kUPOvF6qiYI59fsvbWE7fWeg8Y0aNU
+         CLrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=xriIljB3f3HwbzgR4DqwJHEbsPSrXHAu4RDpo4RPiXo=;
-        fh=8zpb/bx4o4QMrvIa0z7hVKqqFDbsNHAvMLZBgSrm+90=;
-        b=GPFmd3LatwQcfELQVRn7Z1GvWqzbjHKPiS1SN7vnyMPERUVucvAbexKt1hRaSc6AVZ
-         xonDhkY+081yGnfkKmYk+gJWOQLnWgFE62wtOI7/LfXpTPiFbsQOYtAlLxSteHy8/KwE
-         VNIy7G0we8BI2XRRfH4o9sJycqcH7ScapOliJzlJsEvsc+o9WBl5LjQ4BRNWIo9ssqYj
-         ejhFwnjnfL8ykz0O/dwFoZe/FOlDZlXn6BeXWS5H+SKGPRa+FHiGK6Zap368rmSNWsBZ
-         Tsk/NA3ExzbAIzTHMXgz6WwXYEl9b2BvcqbBEQHhEp6QiXrwGuJh6gvVXtEZPk76kb82
-         ve8Q==;
+        bh=6uvRH5NWwaeNa0HniCOROnjhGHZN7wgOdieTGzloLRI=;
+        fh=4edmkQAaXHOw83Reloa5Z5WwOYfb1DgSLS80S+C3q34=;
+        b=UQQtzcVIy0xoRrApH0OJL5cNuS+7JPzHyNG7OwNhekjtYSwwuuEKsSkDD4SIlL8R1g
+         vlINWUFLNj27H6ZBQ1uIol+XisA+YXLa+cBumN4LJEy1jLvNeBf6TRJhUVSP67I05VP5
+         uUcj8DkG3UxyEpNZtCae/KmfSTJGKlp3v1oJFF7GMc5O3XocVZF8JSdfeiQRTjyzg8e4
+         KPMDU8tm/g84zFcoiqvMT9ASGaVesE+/b3fFsRsYwLEEvW6jGS2yC1Q6odU6EKS4mGo3
+         PXL6n9HsZ1BYt/GZvEWqBOhjnolBwU37Zp3pbqDPoSmLSsQLxyLJgikRiws2chz63Bl7
+         QK+Q==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778074232; x=1778679032; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1778075424; x=1778680224; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xriIljB3f3HwbzgR4DqwJHEbsPSrXHAu4RDpo4RPiXo=;
-        b=mqT3wDkWHC/K4KEcHOp6F3ccUoi+XP8jYjEeKjcdd9uDWS6mHhPOVmlcjOvO7o2zdU
-         EMh02sxwGnyHCC3oeUBD0goNCWBE2NNB9h+9HHQANfhVKnEyu5FwgufExeyIClnm/S+X
-         dfV8auRVVFgUV9H+aorMI1Rgz33o7pzqsN2cR0ZRgy44pQH04PM8Xuc2T7wvaI+mM19c
-         AJ7Pw365cmU2cRiJ3mv+yAPJvWOi/dd6Z68FTvPWq3Q8VOjgUpYSoIab9ZKPieb2KI3Z
-         sRamW4lNt44156hcCg5mbtP4/5Vgk1Ptcg9CFJhOTDnj6K+q2UWigeYaDIBCPQIVkRF2
-         PRMg==
+        bh=6uvRH5NWwaeNa0HniCOROnjhGHZN7wgOdieTGzloLRI=;
+        b=exOq+4svoPbyuRzRKKBXXLsz7gDB2QdU49npzqm1I3QIighzgzyAUi2Rb++NcRBmrJ
+         8rAhthVYk1atdIMr1SuxJrCrfoRO9XaipOrHUKf1vARKgA2feDXlN8wK/RjPLf/8ME6s
+         QPqvoTWexTvlmP0tjV5Hb9K0T/f4o1CAcEjnXK9WcnEUJpWZdYLF1N3ZOHK2Gp0D83zD
+         pc4jN2HoTpP7wb9Q2hX3TL573Ear2N7dVEZDg1wJveuK70EKGr8XebPvdx7WAK5UmyfA
+         4TB+uPe2PRrcwBe4nX5rHHhWtIfihs+k9rtKrCVWxEYKH8Ds3UJW2QmdhJSPW3/HFfhJ
+         zzuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778074232; x=1778679032;
+        d=1e100.net; s=20251104; t=1778075424; x=1778680224;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=xriIljB3f3HwbzgR4DqwJHEbsPSrXHAu4RDpo4RPiXo=;
-        b=INTy/oeTWm04Gk58SwVgEQIhJfOp9TCMpx4fDaMq8ydm+9G9pU8qa672U8KWYDr9e6
-         tSD/fAWwzF6icR1EGvXdpfJzX5sltdN7ESn9azTINFb5aeycF3wuRa9zTvRZ1P6ZVr1k
-         x6TgbEowVb3/YqF9RGivaTGICRAaWi1+Sbf1F/zOCan9KdHu+epWv4z+Z7gRppG1VShc
-         Yr9bqk+1jg9Izud8lTT6mFGYgeBLXo1hITsj/jmM6RdNsUES9DQslE2HxNycxYt1TAcO
-         SK6QXxN/Oz3JzAG1NhA3qkmzjyYjy+2s/K6ZAk+wMDSPW7ZutMQGomdJc+RHKXk/Ofu9
-         qspQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+xCPMivrRrTIOMHmBleg5P7U3rRXutvi7cMXktM3Qi4qz7c4flsGyUMfT7vnmd3YQPqpMpcBHrYQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy2tBBroGDgK3SR4mykfeKWduvIFko+3VXumPZCUMLXmNLeSVx1
-	SXrTJxiSkKF58McKBM2jQNvIcACbgWujbCBF7j9bySDVEoU1ZziYCWvoLdgRj4EVSEKYmodGV3H
-	by0oRUIVvFKqTsrN/G2mySP+RCeyCAPA=
-X-Gm-Gg: AeBDietM84tjCa1hb53TVFJJ+Lr00lTgGf9+XB/TC06A2lI9UaiKQAv1w9+Ljf7RslY
-	CSbZDYaBDRnBXpX5aaVYWZmE7rAIncr8qRX8dUlqmA7Gt7lrW1I5WQDBfB740yBDVIbrpRtsDZk
-	VBE632vFXIlETHvb9ksceHuxN+cJs0U71WEMjdsju+jMletbxCk88dRHwbIouFc2YcAfzKm4dht
-	sp0j6A5Ju+51PH3sxju5x7fF3WWwN2ndObmt818bTxvS++0XKV49ej+HQpA3ovKisFZhQsc3f5v
-	wOdmakKkt97hpyQ4
-X-Received: by 2002:a05:651c:32e:b0:38e:a8ef:b61 with SMTP id
- 38308e7fff4ca-393c4329231mr10333541fa.29.1778074231469; Wed, 06 May 2026
- 06:30:31 -0700 (PDT)
+        bh=6uvRH5NWwaeNa0HniCOROnjhGHZN7wgOdieTGzloLRI=;
+        b=FnUOYYXv5KaU0MWl1K+h0ZgVCDH56mOaSfVUVBhcZW/jUICbVzBjbSJDTcK0Gn1fah
+         6z+RNhBWwG/Ru2GOKdcvV0PdE92pLVUkR1cQcVUUkaLOKiqJS0k5N2QrrB6P3XxTUVIj
+         OTktylEx5PDuHBe5MPc44ViW2v8nv4Rwf325FhwaXztiMP1Ihamo+196x9LENIYYN6n9
+         R72qqCYCn2LIyt7oFHhq2pI+RcZy8eEN4oJ618xGrOmSE3BZcKqsPGcr6InlpGSFJwl9
+         JioAT4WZWiDnSqH6UXWQpsNFKq+BSPDDUb8DuGlOpzPGsdMoEXrJFXVkHlwriKCMiel/
+         C9Mw==
+X-Forwarded-Encrypted: i=1; AFNElJ+CcXSC5orWdf97Hqvj4vsFlQHeSqmy/2ZVRCaAcTtnfDBLFcvwmdZGWScRO97OXYN5bGQeSTRflA==@kvack.org
+X-Gm-Message-State: AOJu0YwyeTnydB7A6j8b8l5ka4ASu2uOFSV4BaZl5e41JWSeWAPRYefa
+	Q1mP3DRXIBEbP6gOiBpkX2mI8/8blLX+dEzlpBaeu+KmliLLhqO1MwuNeFGc9oybw0uhq3uuLlr
+	Gbyc0aEne5LMzKlatSPZYErx/RGPLC9Q=
+X-Gm-Gg: AeBDieuI1w8ch+LX6At9seu7+aSoNykbKMnTWtQWncD1su/A3AEpI9ivbArEWRuXwap
+	YcdFlYJlnma0ZVia0NirpouiTcw8Gj2uFqTc8yGrmByFnbaJG3RhW+gyHlzpwvXMnyuWDte3E2q
+	r+ySlIWg2TbLU58H5ZhgRf3KN+P1nXHUbhsGM8XPjyRBwauaoKHF7PZE3yQeiXchim+d3wfyOpZ
+	g9GyQTBXASbP2jwM3ragr13JKr8usUqTIgyG3lDtSbMB27TCD6PGVhsHAFG+Xmb3USr6lkchzI0
+	9SGcJm5DnyuV1jN980x5
+X-Received: by 2002:a05:651c:984:b0:38c:594e:ffd4 with SMTP id
+ 38308e7fff4ca-393c421098fmr14049071fa.25.1778075423200; Wed, 06 May 2026
+ 06:50:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260503165024.1526680-5-vernon2gm@gmail.com> <c13f99d42c434ec73ec1e8cf1141047146ab359e60e56e78e1c32554d6e01e9b@mail.kernel.org>
-In-Reply-To: <c13f99d42c434ec73ec1e8cf1141047146ab359e60e56e78e1c32554d6e01e9b@mail.kernel.org>
+References: <20260503165024.1526680-5-vernon2gm@gmail.com> <20260503175737.6190AC2BCB4@smtp.kernel.org>
+In-Reply-To: <20260503175737.6190AC2BCB4@smtp.kernel.org>
 From: Vernon Yang <vernon2gm@gmail.com>
-Date: Wed, 6 May 2026 21:30:18 +0800
-X-Gm-Features: AVHnY4J-CoTLNdm_hcCx9sRfTfkhudhff53vbP0Y0iHDb1_fw8_5BpxVx-dB9-s
-Message-ID: <CACZaFFPr+=2zJSMEkfSiYQ8NvEtc3tr4VWBoi5u0BST66E6E_w@mail.gmail.com>
+Date: Wed, 6 May 2026 21:50:08 +0800
+X-Gm-Features: AVHnY4L5VjeFMFFAf0OJw7QnVXEiQ4TczmASiolBkquu7suKzugMa7qGCYoWr-g
+Message-ID: <CACZaFFPb+W7VzRXGKvhMOwLm+T62dytC+zYUKa3-TopLOVO=9w@mail.gmail.com>
 Subject: Re: [PATCH 4/4] samples: bpf: add mthp_ext
-To: bot+bpf-ci@kernel.org
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	roman.gushchin@linux.dev, inwardvessel@gmail.com, shakeel.butt@linux.dev, 
-	ast@kernel.org, daniel@iogearbox.net, surenb@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	baohua@kernel.org, lance.yang@linux.dev, dev.jain@arm.com, 
-	yanglincheng@kylinos.cn, andrii@kernel.org, martin.lau@kernel.org, 
-	eddyz87@gmail.com, yonghong.song@linux.dev, clm@meta.com, 
-	ihor.solodrai@linux.dev
+To: sashiko@lists.linux.dev
+Cc: bpf@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Red Hat)" <david@kernel.org>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, inwardvessel@gmail.com, 
+	Shakeel Butt <shakeel.butt@linux.dev>, ast@kernel.org, 
+	Daniel Borkmann <daniel@iogearbox.net>, surenb@google.com, linux-kernel@vger.kernel.org, 
+	linux-mm <linux-mm@kvack.org>, baohua@kernel.org, Lance Yang <lance.yang@linux.dev>, 
+	Dev Jain <dev.jain@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7054420011
-X-Stat-Signature: 7kcuda7wqrd96piu8winmgccdms7d83k
 X-Rspam-User: 
-X-HE-Tag: 1778074233-843630
-X-HE-Meta: U2FsdGVkX1+UizQroJiHkvUsGnIKdA5jZXfTnRgtTtLhwCb5tRlYELvgfdkC4wSqb+Bt73HYvowoDLVe7k7yy3Z4vf1TSLp3oszVyVGCEahkzicyDuQ/zrKVrLGGYa895qh+uYTKvB+W/CGMsMudquFM6RoiRpscBOKxNk4W+dQFxk/n48tyCbnypgS+H+xD3WBTPFo9ZgnK5C2Zd0mB6WxeT0HAGvkM14xLTIw1y9mN0GWPOG3pNI2hcpHwT8uYsQRYlO9RhHJZodVnJr8mo0mCn4Yxi3Jahl/utvRtIM6aPYl3A+9+L87jR7j5s0krVVndwhfkhmSQJPl9ggOoymMldbJIIfEH+/x0qKYmQDvYUAPZIm645mdFTvYP7f0Y1ZkwDYfeF1LuJEzBz2uaPvK2I0hjGzw45aYLe0IkfdR5ECsR8/1GXAhP87J6MhYInQE253/tyscLUdtKIgSj2JdBmIXITxwetA9Mx6gMTPsB1ICx8PolZ4fn5lCPPYSsqwEDnE0oUrLopo1BGGZtoLIVC1BgxKypO9brnjr0m3WyOyR0Wz3gKIaWHIy4tuyxhNUBCkLk1oxyg6OlnGrsWhSwTokFi4C7+y28Qba0SNm4CmdHsS0irAHWR58Dir7xsqFYR0J834Pa//Pi4Xk2oc8CV6X8mo1l2k6ScVUBy1qFessMUZLz5MF5FxUfikZgeqAF76nRlGrGNerVpCV0Y0KolkDF9qBeX68xHRpLVH4g6JhTFYGYAwCmhEPO5XDylhTTco8OnWUvvwWqq5fc72KlscrdNBj7lpZQeFmDNDcRlAxUvJlTaSBo3kcfwSuox1/B9QksIUiVrimMNGmAZ99+jwR+osb1WjpYWT6/rR5D0VkqlOpSiQ/fkh8YJzKHRuftm50WYrxeiyhSofxmIPaFVcCEfDAAwDTk/ZuEdM0DfbbvaUDgIZQ7YpwjFJBF2dhgZTkZxy78kzIO/9s
- gmSloZQC
- BMMsC8QjaPB6beFmIzioMrZOTWjsIWXeh7PuAS8wzEehuZQi1Zr/g2iFFbH4Cl+rkjMCVS6xa/R49hOgQ7xz3TylI8kq3rXjhQjVoKV/oeCuZX6095iJBAEkDS+yUQr4iq8QyJvRqxYy/UTxZccKyDoiWBaeAFFx4QIF75DDM0bj3pC/2klg8tWe03cIwnwUrov//kvsogvejlyOQiO2fM1p3MxncXbpKR1mCiVOZYV/2TSY1J0z9YhK5y3qCFXfFSgEIRvHlXW95MeBkPGhnjW7pg3gmHJA8qWT5vrNe46ufHyxp+dAwzg1cACH+ttJuWlt6pey3LftujhLAtR8VJ1+GAsOC1+EKsxdK6SlVG0jI1AGdGD4QlhWcCJNieYj7k185SF7Uc5IK9EAtCCGuLaPhZ9FEr0h8KIIQt5FOBNvNe5p9MUDsR412Tqg5/EVukpmY7etmCIn0w3CQH2OI3LoKAdhJk+Wr5/qaenBmZ8TUgX8KkBNWU0bT/3+1zYKXBgcY4xE69UisVB4R02AhIs/+BaPdcMrFBRXBEd/apxu6fOc1Vki0R87jSwXHUSI4rbLR0ZsRSrZPI4dTrFSOxbKDdtHqSgDih1yk/GI1ucmQwuSyFuNOWKC4Ap95G4tNa0jk
+X-Rspamd-Queue-Id: 71D1418000C
+X-Rspamd-Server: rspam04
+X-Stat-Signature: o8dfoktih3awmhc5xbfei945ggrbcmjj
+X-HE-Tag: 1778075425-618625
+X-HE-Meta: U2FsdGVkX18sEwRaiO2OyghPQmS7ukrJ5AIuXRwSlCXuhHhz3Ngr9DXhVBDeWZRjkm3TT3PValHzVcBDeSjLcI1KUgaSq8Pp9JNpY0QpqC12sQ6Fn3XHS4qCWE97mQYKfe7EYK+fpJY0bJhAfJoiDUCKq0LOtbOyDRmxfCiRGZulL1iIKm1dGrPXHTm6/+ugLtP1LsrYgXob+oOlauKqbGUIq6riDX1OPVxrLLPFK1S7eXUs6YA3rCdQ9KnDeWKbY1U1S/HuW8Ahcy2exiKOkbXhXNRJ0IxQGJzqhHj+X0KlXzqtyeKLTBdnGr7OGkoqji9uFzZ34qr7eFXiG/GRVK7oVNuDGa5uni+KdHcht0ceNrO7/nYSYDlwgNMui5fcd6MWcCXljie2vein74NaWE6uIKJRHvOyyw1teGqSgurphmgX6hZ3CsaSixotGWfCf59z7WNGMMgTPkihcimg5UN4Jf3u4ubuJLT3qZ+TO/AQelAjhnzFccKI6ylKjItzBWYzRm1PAc2B0wFMR/YmYt+106GhK4gF+NFlzwq/7E0qeIiYDh03cmPS1Vx7UH0C8Yg6W1gI1YFHMiqeyTSc8f1HQg4ioRMSE0PG27HHCy2WTdHQTfiDz9kKnjU3LD/mBqZeeTLez89ZWijTVnl8xiNRD8LXA4NXcg88NRCT3e8qBRkC8i+sYgzl3YwEMU4KKTWVMTazzhjUowIeiMiUeBOQ4LEW2chn9j5D5ULXRKO0jWQlycqSSDUmG6qgtaeDU7hE29TcOYqJPdILAYuix0F5v04+gdHXWpOl82jCZvpdzspIbmykCig0W4o4DvumTDRHNs2T6fxhmuEot+LNKEyzRYTZIbJRx5uWXOk7oTy5091vIMzl8BdoDJU5cxLqX9HlgPXHbC3epCnAILMAbJBS0TKQw5WG+GQqIJEjhyPogyk48ZoujwpB1nyI2PVnG7DQbnkkZUKJIMKF2FN
+ DpLoAONC
+ pnmorUk8lLyfDSSux2dL1Hxqk6AesJlIXvJh5WeX09gWhqup5lQzvPlHVwUudELKD9rAxYoy5G9ntjiPP6Qb6FD95Wh7oWupwUh1I4kMVGuK6vEoCelkEAYkCEoarecOWcU9VVVf/o7s4oGJNMX6MYxl14WqczVwIGpobfFG6iAVnAMLjNX3KKGvyWIoXvUxFabpO4DO7ryab2fGvX0Le1/ggSLPFpIedPIc/ILf3LYvgz0TyXllWWrunhMFTGyXVzey3QrkSpJNEVCDT6h3mzEFrocuXQrvc5vqsaEgLGphMQOICT/QECKGezGd9cchXV8R8rb7JZleF11YMHGx+M2Zy0NlPFdJfgprzvs8CKZfMC8Y1TsqbnQdvEklHsgYUDEjyIygyZeY3Yws92thdGq3IlWnQQg0EfTkZUQwgOweL4vzekvOVCnXbZvjlkR7x0bwSr1M0lK4qhZo2Dofevw3HgK8JBjKHq/SUzMG2JFbFeAfnnD+OlOKBPZm0e2/pNH/oYjAWTNr5Py25C15hgKTaCYUV42xDHZvtPCZO7/Fr5mc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,143 +143,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 4, 2026 at 1:35=E2=80=AFAM <bot+bpf-ci@kernel.org> wrote:
+Forwarding sashiko review
+
+On Mon, May 4, 2026 at 1:57=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
 >
-> > diff --git a/samples/bpf/.gitignore b/samples/bpf/.gitignore
-> > index 0002cd359fb1..2a73581876b4 100644
-> > --- a/samples/bpf/.gitignore
-> > +++ b/samples/bpf/.gitignore
+> Thank you for your contribution! Sashiko AI review found 4 potential issu=
+e(s) to consider:
+> - [High] Infinite loop in `trigger_scan()` when `read()` returns an error
+> - [Medium] Integer overflow in `FROM_MB()` macro disables fallback logic =
+for values >=3D 4096
+> - [Medium] Spurious mTHP fallback during initial cgroup scan due to zero-=
+initialized baseline
+> - [Medium] Failure in `setup_psi_trigger()` masks the error code and exit=
+s successfully
+> --
 >
+> commit d30597e7a4d6ca7d5532535074e0c66c2c92f486
+> Author: Vernon Yang <yanglincheng@kylinos.cn>
+>
+> samples: bpf: add mthp_ext
+>
+> This commit adds a new BPF sample program, mthp_ext, to adjust mTHP sizes
+> based on cgroup memory pressure and usage. It monitors the cgroup directo=
+ry
+> and automatically falls back to 4KB sizes during high memory pressure or
+> low usage.
+>
+> > diff --git a/samples/bpf/mthp_ext.h b/samples/bpf/mthp_ext.h
+> > new file mode 100644
+> > index 000000000000..33dc01bcebd3
+> > --- /dev/null
+> > +++ b/samples/bpf/mthp_ext.h
+> > @@ -0,0 +1,30 @@
 > [ ... ]
+> > +#define min(a, b)    ((a) < (b) ? a : b)
+> > +#define FROM_MB(s)   (s * 1024 * 1024)
 >
-> > diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-> > index 95a4fa1f1e44..357c7d1c45ef 100644
-> > --- a/samples/bpf/Makefile
-> > +++ b/samples/bpf/Makefile
+> Does this macro suffer from a 32-bit integer overflow if s is 4096 or
+> larger?
 >
+> If s is an unsigned int like configs.min_mem, 4096 * 1048576 would wrap t=
+o 0,
+> which could silently disable the fallback logic.
+
+Good catch, I will fix that in the next version. Thanks!
+
+> > +#define TO_MB(s)     (s / 1024 / 1024)
+> > +
+> > +struct config_local {
+> > +     unsigned long threshold;
+> > +     unsigned long interval;
+> > +     unsigned int  init_order;
+> > +     unsigned int  min_mem;
 > [ ... ]
->
 > > diff --git a/samples/bpf/mthp_ext.bpf.c b/samples/bpf/mthp_ext.bpf.c
 > > new file mode 100644
 > > index 000000000000..bbee3e9f679c
->
+> > --- /dev/null
+> > +++ b/samples/bpf/mthp_ext.bpf.c
 > [ ... ]
+> > +SEC("iter.s/cgroup")
+> > +int cgroup_scan(struct bpf_iter__cgroup *ctx)
+> > +{
+> > +     struct cgroup *cgrp =3D ctx->cgroup;
+> > +     struct mem_cgroup *memcg;
+> > +     struct mem_info *info;
+> > +     struct alert_event *e;
+> > +     unsigned long curr_stall;
+> > +     unsigned long curr_mem;
+> > +     unsigned long delta;
+> > +
+> > +     if (!cgrp)
+> > +             return 1;
+> > +
+> > +     if (!cgroup_has_tasks(cgrp))
+> > +             return 0;
+> > +
+> > +     info =3D bpf_cgrp_storage_get(&cgrp_storage, cgrp, 0,
+> > +                                 BPF_LOCAL_STORAGE_GET_F_CREATE);
+> > +     if (!info)
+> > +             return 0;
+> > +
+> > +     memcg =3D bpf_get_mem_cgroup(&cgrp->self);
+> > +     if (!memcg)
+> > +             return 0;
+> > +
+> > +     bpf_cgroup_flush_stats(cgrp);
+> > +     curr_stall =3D bpf_cgroup_stall(cgrp, PSI_MEM_FULL);
+> > +     delta =3D curr_stall - info->stall;
 >
+> During the initial scan of a cgroup, info->stall will be zero-initialized=
+.
+> Since curr_stall represents cumulative stall time, won't delta be a very
+> large number?
+>
+> This seems like it could incorrectly trigger the 4KB fallback during the
+> first interval regardless of current memory pressure.
+
+Good catch, This is a Bug exactly. I will fix that in the next version. Tha=
+nks!
+
+> Copy from cover-letter:
+> When the redis is under no memory pressure, RPS drops by 10.3%
+> (from 1.4M to 1.2M, compared to always).
+
+After fixed, when there is no memory pressure on Redis, RPS equal to
+1.4M, which means mthp_ext is a positive optimization in all
+scenarios.
+
+> > +     bpf_mem_cgroup_flush_stats(memcg);
+> > +     curr_mem =3D bpf_mem_cgroup_page_state(memcg, NR_ANON_MAPPED) +
+> > +                bpf_mem_cgroup_page_state(memcg, NR_SHMEM);
+> > +     if (curr_mem < FROM_MB(configs.min_mem) || delta >=3D configs.thr=
+eshold)
+> > +             info->order =3D 0;
+> > +     else
+> > +             info->order =3D PMD_ORDER;
+> [ ... ]
 > > diff --git a/samples/bpf/mthp_ext.c b/samples/bpf/mthp_ext.c
 > > new file mode 100644
 > > index 000000000000..0e064bad136f
 > > --- /dev/null
 > > +++ b/samples/bpf/mthp_ext.c
-> > @@ -0,0 +1,340 @@
-> > +// SPDX-License-Identifier: GPL-2.0
->
 > [ ... ]
+> > +static int trigger_scan(struct bpf_link *iter_link)
+> > +{
+> > +     char buf[256];
+> > +     int fd;
+> > +
+> > +     fd =3D bpf_iter_create(bpf_link__fd(iter_link));
+> > +     if (fd < 0) {
+> > +             fprintf(stderr, "ERROR: bpf_iter_create failed: %s\n",
+> > +                     strerror(errno));
+> > +             return -1;
+> > +     }
+> > +
+> > +     /* Read to trigger the iter program execution */
+> > +     while (read(fd, buf, sizeof(buf)))
+> > +             ;
 >
+> If read() returns an error (like -1 for EINTR), will this result in an in=
+finite
+> busy-wait loop since -1 evaluates to true in C?
+>
+> Could this be updated to check for > 0 instead?
+
+Yes, I will fix that in the next version. Thanks!
+
+> > +
+> > +     close(fd);
+> > +     return 0;
+> > +}
+> [ ... ]
 > > +int main(int argc, char **argv)
 > > +{
-> > +     const char *root_path =3D DEFAULT_ROOT;
-> > +     unsigned long threshold =3D DEFAULT_THRESHOLD_MS;
-> > +     unsigned long interval =3D DEFAULT_INTERVAL_MS;
-> > +     unsigned int init_order =3D DEFAULT_ORDER;
-> > +     unsigned int min_mem =3D DEFAULT_MIN_MEM;
-> > +     bool fixed =3D false;
-> > +     bool debug =3D false;
-> > +     struct mthp_ext *skel;
-> > +     struct bpf_link *iter_link;
-> > +     struct bpf_link *ops_link;
-> > +     struct ring_buffer *rb;
-> > +     int root_fd;
-> > +     int psi_fd;
-> > +     int err =3D 0;
-> > +     int opt;
->
 > [ ... ]
->
-> > +     /* Attach struct_ops to root cgroup for mthp_choose */
-> > +     DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
-> > +     opts.flags =3D BPF_F_CGROUP_FD;
-> > +     opts.target_fd =3D root_fd;
-> > +     ops_link =3D bpf_map__attach_struct_ops_opts(skel->maps.mthp_ops,=
- &opts);
->                                                    ^^^^^^^^^^^^^^^^^^^^^^=
-^^^^
-> Will mthp_ext compile with these symbols? A tree-wide grep shows that
-> bpf_struct_ops_opts, BPF_F_CGROUP_FD, and bpf_map__attach_struct_ops_opts=
-()
-> do not exist anywhere in the kernel source tree:
->
->   $ git grep -n "struct bpf_struct_ops_opts"
->   samples/bpf/mthp_ext.c:260:   DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, =
-opts);
->
->   $ git grep -n "BPF_F_CGROUP_FD"
->   samples/bpf/mthp_ext.c:261:   opts.flags =3D BPF_F_CGROUP_FD;
->
->   $ git grep -n "bpf_map__attach_struct_ops_opts"
->   samples/bpf/mthp_ext.c:263:   ops_link =3D bpf_map__attach_struct_ops_o=
-pts(skel->maps.mthp_ops, &opts);
->
-> The struct bpf_struct_ops_opts type is not defined in tools/lib/bpf/libbp=
-f.h.
-> The BPF_F_CGROUP_FD flag does not appear in include/uapi/linux/bpf.h or a=
-ny
-> other header. The bpf_map__attach_struct_ops_opts() function is not decla=
-red
-> in libbpf.h or exported in tools/lib/bpf/libbpf.map.
->
-> The only existing libbpf API for struct_ops attachment is:
->
->   tools/lib/bpf/libbpf.h:
->     LIBBPF_API struct bpf_link *
->     bpf_map__attach_struct_ops(const struct bpf_map *map);
->
-> which takes no opts parameter and cannot attach to a specific cgroup fd.
->
-> Samples/bpf/Makefile was modified earlier in this commit to add mthp_ext =
-to
-> tprogs-y, meaning the build system will attempt to compile mthp_ext.c dur=
-ing
-> make samples/bpf/. That compilation will fail with undefined type, undefi=
-ned
-> identifier, and implicit declaration errors.
->
-> This looks like it depends on an out-of-tree libbpf extension that adds a
-> per-cgroup struct_ops attachment API. Is that libbpf patch supposed to be
-> included earlier in this series, or should the sample use a different att=
-ach
-> mechanism?
-
-This series is based on linux v7.1-rc1 (26fd6bff2c05) + "mm: BPF OOM"[3]
-first four patches.
-
-All of the above definitions are in  "mm: BPF OOM" PATCH#2.
-
-https://lore.kernel.org/linux-mm/20260127024421.494929-3-roman.gushchin@lin=
-ux.dev/
-
-> > +     err =3D libbpf_get_error(ops_link);
-> > +     if (err) {
-> > +             fprintf(stderr, "ERROR: attach struct_ops failed: %d\n", =
-err);
-> > +             ops_link =3D NULL;
-> > +             goto attach_opts_fail;
+> > +     psi_fd =3D setup_psi_trigger(root_path, "some", threshold * 1000,
+> > +                                interval * 1000);
+> > +     if (psi_fd < 0) {
+> > +             fprintf(stderr, "ERROR: PSI trigger setup failed\n");
+> > +             goto psi_setup_fail;
 > > +     }
+> > +
+> > +     monitor_thread(psi_fd, &skel->bss->configs, iter_link, rb);
+> > +
+> > +     close(psi_fd);
+> > +psi_setup_fail:
+> > +     ring_buffer__free(rb);
+> > +rb_fail:
+> > +     bpf_link__destroy(iter_link);
+> > +exit_fixed:
+> > +attach_iter_fail:
+> > +     bpf_link__destroy(ops_link);
+> > +attach_opts_fail:
+> > +load_skel_fail:
+> > +     mthp_ext__destroy(skel);
+> > +open_skel_fail:
+> > +     close(root_fd);
+> > +
+> > +     printf("\nExiting...\n");
+> > +
+> > +     return err;
+> > +}
 >
-> [ ... ]
+> If setup_psi_trigger() fails, the code jumps to psi_setup_fail. However, =
+err
+> was previously set to 0 from a successful BPF operation.
 >
-> > diff --git a/samples/bpf/mthp_ext.h b/samples/bpf/mthp_ext.h
-> > new file mode 100644
-> > index 000000000000..33dc01bcebd3
->
-> [ ... ]
->
->
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a =
-bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
-E.md
->
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/252852=
-79315
+> Does this cause the program to log an error but exit with a success statu=
+s
+> code?
+
+Yes, I will fix that in the next version. Thanks!
+
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260503165024.15=
+26680-1-vernon2gm@gmail.com?part=3D4
 
