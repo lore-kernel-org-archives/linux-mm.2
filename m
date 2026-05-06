@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6F82CD343B
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 03:33:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED2B8CD3440
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 03:33:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 836366B0088; Tue,  5 May 2026 23:33:12 -0400 (EDT)
+	id CA1DC6B0092; Tue,  5 May 2026 23:33:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BF486B0093; Tue,  5 May 2026 23:33:12 -0400 (EDT)
+	id C032E6B0093; Tue,  5 May 2026 23:33:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60FEC6B008A; Tue,  5 May 2026 23:33:12 -0400 (EDT)
+	id 96B9A6B0096; Tue,  5 May 2026 23:33:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 404DE6B0005
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 23:33:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D04D08C73B
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:33:11 +0000 (UTC)
-X-FDA: 84735574182.21.C2DA93E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 775D46B0092
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 23:33:14 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1D0608B8EA
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:33:14 +0000 (UTC)
+X-FDA: 84735574308.15.ADAA9E5
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 998BE4000B
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:33:09 +0000 (UTC)
+	by imf01.hostedemail.com (Postfix) with ESMTP id EF9584000B
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:33:11 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WSBvd4uc;
+	dkim=pass header.d=intel.com header.s=Intel header.b=RfDzPNpm;
 	spf=pass (imf01.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778038389;
+	s=arc-20220608; t=1778038392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2UzznrXp3z6TFMSaQRcuSFcUYqd6gHoZMRunjrnQ/OE=;
-	b=jNokemauqSqJlPrFPYYGR4sY7WY10sQeXsA/jiOmlcOY7s48NNTQExgBoBDVqtVXP4cvm/
-	gKPy83J5VwLooCA/oQXSYYpHWnk3ZhBZLLoSKRfXXeCsTNRRTtKLrW0yysddFHV/+KmSY2
-	4ppL3Z1v6qI/+i3PmeOXocdjy92PsXM=
+	bh=uz8bIqEAYJBqCTXIHLE2rdWcmgrujJovnHVjJFamBB4=;
+	b=ExzHSzsWlS7Ms1dV1YAzP/SKx1vcjdCfnN2dZ+5/9lfqfl2Se0BRSXmi6tAQbn+/lRxgis
+	lH5ID7rWCvPZFSgr+zA2i1WvdL5tpYAuRruY9a/YrGuLMOQrXUqoUWkyfi9r7ztQawhwbF
+	V1LQNItl6U068hEL8Hbs25oyTVeQ8u0=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WSBvd4uc;
+	dkim=pass header.d=intel.com header.s=Intel header.b=RfDzPNpm;
 	spf=pass (imf01.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778038389; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778038392; a=rsa-sha256;
 	cv=none;
-	b=vKadNA8xZTf03Hn7ZJ/90llR0j7nfgBaqAEE93YzH5tGgTANAT+EqSJAF74h+iu7BGZ0o/
-	l0miofG39ggeZWd4ryJ2b+j9MrR6EDVTi2kMaLCnPJx+5FHqAF9cOulc64b0kZAnHyeIBo
-	/GJWcPTnR2sPvQfDcy+WBPJgjA62gPY=
+	b=SGkjMO83OAADon3CXQTBtfcr7DZ0Uv1nnI4quLszMgIemPxHcXJhCoVkh0yoIZ0rGvnmjx
+	MI5FLD2OxkngAbLvXShM2UH/ya7dUXXADXq5me1w71sgJ3UTZUty79spb74EpOafJ8+6+J
+	ITE0Z0+4N7CpXPj0+vje4GmGU+BBdU4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778038390; x=1809574390;
+  t=1778038393; x=1809574393;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=81vapQm0G2+s7Q9rjkTUxp8N8diOM+t3xvAi5oamm8g=;
-  b=WSBvd4ucHsrbOE6rR1FGI8IgliFyotuYGJSPlPU6XmcIGOY43WFKsvne
-   4SSkRSPaPP78Pl1DKN8HL3rKwVSby/LGMCq+8PbJEXClehoukoZpUsR+0
-   PhGWLnNAWJVa2Jo93/vT7qcyZLo/faJYaNDNaFb368Ye4SnSqeUHIolf0
-   OLqG6+4H/jl65REn08YcbWpKypgAW3InEUmRwSksdj3iB2STvzGIxOyfG
-   AnIMCJJUdp6mL0vDBQG+fIixAQPPPSsLK1u7EPJKXQTZDQgsMKdL5HO53
-   GxmQuEbfAQAPxVoGxBDUwOjhRMjb+gkQwnMr3CkgIR8Ljw97x+ufvmcvr
-   A==;
-X-CSE-ConnectionGUID: qQ7s3Cg6Qu27bXXSSIOp0A==
-X-CSE-MsgGUID: B3Qf2nE9RW6iGdTZgoJCtw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="78829023"
+  bh=fhvCwpOOerNDSxVfaQALugyDzdK6DreUrRK4L1ox3PU=;
+  b=RfDzPNpmaWQN7tkgv8ZKFYlpw5t0wYE08TCLRA1+jlLFR/+3p9AhZ7Ir
+   o6FGpy7G3n3KAT+6ZBkuURDSNMvUAcXl1PjClSM/cukG4Z9RsVrmfCO/e
+   wtY/p3IRO9E0ppkokAgcXRBI3QOsNhEqKOc6TTtDDFj/bu3gzLahQGYPW
+   otbLEfNUZ2GDuctvQ4v17nXGzah2hpd4MkIm1UxUZkHFc5dkLc0kamUo8
+   oA6OdGO+vQZ5RA5TI6V4i5xVCa12NS+yJbjjUATgSFl+2uhx1XRY8xf1a
+   QOzFnD/goD3yTrYwYGTpO+0AxW1XlYPwS4HoEc9CSl/mIDr0xEByafTYR
+   w==;
+X-CSE-ConnectionGUID: bh6IZH9zTsKtKWNUgBQ19A==
+X-CSE-MsgGUID: hIeUjIh3Q32JLIVYN5GVQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="78829055"
 X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; 
-   d="scan'208";a="78829023"
+   d="scan'208";a="78829055"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
   by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 20:33:07 -0700
-X-CSE-ConnectionGUID: nIPvi29BS/e4PKxK3VvyMQ==
-X-CSE-MsgGUID: 7ksHOWx2SLuT43UQAcKJtw==
+X-CSE-ConnectionGUID: lHxy+04KTjG2WxqjseVy6w==
+X-CSE-MsgGUID: ukmuUaJjRm62am4oFugUjA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; 
-   d="scan'208";a="266342146"
+   d="scan'208";a="266342150"
 Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 20:33:06 -0700
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 20:33:07 -0700
 From: Matthew Brost <matthew.brost@intel.com>
 To: intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
@@ -100,24 +100,36 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Wei Xu <weixugc@google.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH v5 1/5] mm: Wire up order in shrink_control
-Date: Tue,  5 May 2026 20:32:56 -0700
-Message-Id: <20260506033300.3534883-2-matthew.brost@intel.com>
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Carlos Santa <carlos.santa@intel.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Colascione <dancol@dancol.org>,
+	Andi Shyti <andi.shyti@linux.intel.com>
+Subject: [PATCH v5 3/5] drm/ttm: Issue direct reclaim at beneficial_order
+Date: Tue,  5 May 2026 20:32:58 -0700
+Message-Id: <20260506033300.3534883-4-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260506033300.3534883-1-matthew.brost@intel.com>
 References: <20260506033300.3534883-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: amb5azwefk6ga8c1szo5t4ce1bprtr3c
-X-Rspamd-Queue-Id: 998BE4000B
+X-Stat-Signature: 6t3n75ka3h6gx9fhapktn76y5yjhcqkc
+X-Rspamd-Queue-Id: EF9584000B
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1778038389-435153
-X-HE-Meta: U2FsdGVkX1/nGE40ZvOrocEolpPed+IceRzLskL90l0spRGRBgeYyEAgeGRS6VYYQePzUxXMW51r9GzxVixTHA09h3JwTTySLmP2NMMCeRDRtYSF1X7SUG+9QcYBpI12I1cuRLVigwIG+I5J7MNOfvkxCJC4j9DpViZry0XIZJT9mCYTVEyVL56RQn1t8IF2OE6yRbrrkwQwb46rY8OjCx/+zfrMEkHf814EA9FE8lXLE3E5Sy9m21q13mIr+0xih0NkuJH+rsjT29ShKiAIxfFS2729+yzs41p3KPimy6k2dg5ARt0tROK4MwODAQzoeuRrt6xGSi2tUdvp+oeQuc5USriz9lZhnbp3Vpxy2uL2/35hQ75jCaWGuc5vFC/DoFt6DqhBJHstkDXsu6e51Dcz8p7RdRdR5a/jZvzCXtXj+Ozjxsu2VQ4BX2rvTaeKdygNetvsc59tOjVIHvsnTNlUOXFRE2MHzc6YhdzHfOOuFjvliuhqC1K7PZyGPnCPmb5HrfkEybKSaA9ABcxLSMn0i8B+ufykBHz7OJUu+iMDGUT6pMQ7jATiHst7NsdIhOM4BvW6K9ym3XNkyIoJON+b1S0F4x4ZP5qoMUs23O8EKD/N2OJmks36q3ky7laWcYB5l2aDK2IlSOaP45OsFkjv9G054Zpu5LuxiHOfXQax6jHjZY0uwEjWVPaZ8r0aouRcP5DCsmTBlUDhFu/8Cq5lX3/kkcJZumDMLIAjXXVQCy/LRQAxXdjL1eBmehi7eGpebz36FHEB4YbtSE2YfZDAsn1UfZZ5wUzDrdFiDHHV/H5kkYZniaZ4TuNZcu0VWt9bJ9oRflCnXPZ2KAMDnSSsgryPzPHy6osvHxMq3/hehiWZbIqDebMgRTaygL7bRwqUMvJwRlW4f+hPpiM55tpp5ncT10Fu49FlzYhk8AO7s26UFSXBspkeRuyjfb2AVa1AvvrOK6apnPa7Uwu
- J/VLg+tW
- ndWJET6q2VgZmDSnm/C5QqYVie2QLcAbMWwiNazHukOzpZ+huIK/acYj9Fd3fCq/1I03pSSVb1rHKDOAtRbSLCtfucIjveDaqpnY05rIYMttRNvvvAoOAa2iiHTFiH1KtSpaDi4E5ERR8KsJjoniSU1zT9ZMvlTMppFG1xWMia81tuCN+17hoWF0S1O+zN1frgzawO3Re8cKMZ9aXV+o164n+AaUcKH4HWrw6eq840EWGXx7GVboKmY9OHCrhr33BA4mKWv//tk91M7pE7kM1ognZJnmKd1j4z8MR3RzyI9xZzad9jT3eGTPn8RuahxaDmFrCqK1bgtaKyUz38FKfU2/fgawik7QdugTlsut/dXUVlaH4eUeqScc1LGWK7IGqiQAwkbNN/lHQ5E4mymcLnkjBhKxrmRXYh+/IN1L1lmun1msCRQKtZOOcJJQ9lo7s4ylEYNgLU59U1PQNqQPCYJnzrt5viB5fdZJppdcp52NKaC35J1f38sa+j86rFgiHqGlJGwfTIyHpKNSamPjaJKCk0IBLS+cvRUgdTuQ3SwekHdYitsiGmd8H7O4tqEY2To1Nyf5TnqhFeweIe3Y7B+pkMhGKqgDIhqkdje6ylFdW5xhrKCTE7RCyrf+c0eDtX5GE/BGLuf7sHxtiE3AiNLKESTlmlshW2vsK
+X-HE-Tag: 1778038391-245082
+X-HE-Meta: U2FsdGVkX1+31q98QGuqoRvBURI+eN6bg5w0bBV76vRogJSZlu7q9UMC6Mc11p5QfYmv6OUyoRa/3ZVuZXoxNTBnvOyywwoQZfARjqMigl4FBkZnPi4pt8GUB3/l6+tji0oUqCgU4NY3mRIjea4hN7HFx1G2i4Au/A+owoJvv2rZwbOkTwfpEtccuMpBpoeh2IjAtkXPsbHw8SWn6GIY6xxMx2jL6MstuQXPV+J7ptZoMpQyDS8uq/kPR5tXWtvyt9eRU1LonEeIse1h/qwXhxs1ie9d79QVN4apaJrp3BfYPH04PcQt8AAi/bIWUnJhncolq0doV5Tzw9y7/GFg/IrcEBqIQMb9gEL88xxv59HLBaVGp6v8fzwZ1eIVriNNWVvqtZv4FTxL+R1AE71ccNDS9r/AuOwJ6TQVBz3ukc1jdaYO9LZHTk8oR4lubmC6CBYNnSeOZluHqYNz8lIHav2kLI6Df1BsyoR4zlyWAC5FdrqJn32t5ObB5PGdGfR55TF6D2/lI9TAk+xC9VxXIZguxx33+ZEmesLWm1feEM8QiyIHbt7UZvVGfxsxPUpoJ13fOVt/aNNSxG9l3umHbOXChcuLx7pufcgLfpOo6aE6WW9qac6p1zx9FpeekFnjQLZWIM2NtEruxrjrbGQVs+i1UdWFXycrMUrJ8qUE/3vTvl7DpzmuNHug/aBuRFvy3rO+4RjYrXXn3SpECHjuKVOj9RQBi7h4jy8V6plUQg8+6cnC8Qp0/6fgQlY3XrKbw+FBd6Fzaq6pXVvI7RtwShFb/xjv7kFcEW2YtwTH4qQu7l5avwf3AAtJioFC+H4x1ctYDx0moQFuUK0Od/DbU8uz5EQJuelQ8jcwOOK2Q6fImDNYhAr+kIFWP6se/w5KURu8fOduy4SUSZHpXp6mhfZWcTaNHS9qFF/JBVJ2EsqPhkKX7glphQl0C9sdWrohWsaKJwQ0QLtYAJ5nkpO
+ CscVVbWh
+ s+DoprrsNWtIrt+qzxp4YrCA1Ii8xIEk0LVq9eqb39mDEtROSW3m5FYnc8lFuYQ9pSlw313bU944ZWMMYFf1E44Nhq6sZXDRLVu0nhHjGzTLcuP66icvqQDdvIf/EoTtI8a/JyL5UqYZqRACmCORixSt6Mpl+vScGsdxKGkVxOyxpgOqPWt6125h5cRTXCYRByc5GvFPyp+oXBihssXUnhyJ8ca3Aw5EzVs+JPOcF8JSSlSjH/Ds3CaaEU8Imkqq98bjz9AcODDaefLlNt5+8nKvbCMsisp7CftWYXNRszz1WVOMfcmO263cyXam6vUDMhnLnU7mQSWTBBwN4tHbZwxWa40Htc7wbfnVwzL8WwDr9RLmuuRkyjrh7ZNfCkmwqQJ/HDBVPJIyTVv2+OQ8sB69mMzE50U9fCET7bBrbyrljn9nr4OSOXMXbf3lpaolEXehgN1woSQoQAekw++rt1IatrCLMFkLQf40QgKTxcG8GQ7shtc5Myz6bJNkwCfxKlhNHBPev9/YYuk9QYk1xTB2Kpm2QnFSLgsgnOv6Ab9LBhjTASVWIkcZFDVvPrz8xiNUiQcKkFIE/k61qol23HPmCT+5JLfVuWCVjmwygY6PwOWpDxJpdE2wiUly6eXV25vWCv+lTQ8h1vp1QPZnqjflVwZCfOJFS+MnPjsRMAiYCjEngOtxIGy00uUSLWG+k/2nA3+OOoQEL6JgSWpYIsckqCzWZD7kZxOLRMsvh0Ot/TfXmT5U+HjxKRK4+CyH5WXSmEbHOwtk+IkzPvJPYTistgQEu5AdcmYoCyDZ1H/m27HJuda+g71z/cytJjRkoHaJ8Z9J6hbOP5M8gdTuUmCaawzvTb3BTJGLocUu5/Jlai8mSoO/9+pldTMz/4HYfIiH0/Qei8jyh1aI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,12 +137,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pass the allocation order through shrink_control so shrinkers have
-visibility into the order that triggered reclaim.
+Triggering kswap at an order higher than beneficial_order makes little
+sense, as the driver has already indicated the optimal order at which
+reclaim is effective. Similarly, issuing direct reclaim or triggering
+kswap at a lower order than beneficial_order is ineffective, since the
+driver does not benefit from reclaiming lower-order pages.
 
-This allows shrinkers to implement better heuristics, such as detecting
-high-order allocation pressure or fragmentation and avoiding eviction
-of working sets when reclaim is invoked from kswapd.
+As a result, direct reclaim should only be issued with __GFP_NORETRY at
+exactly beneficial_order, or as a fallback, direct reclaim without
+__GFP_NORETRY at order 0 when failure is not an option.
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Dave Chinner <david@fromorbit.com>
@@ -153,142 +168,42 @@ Cc: Yuanchu Xie <yuanchu@google.com>
 Cc: Wei Xu <weixugc@google.com>
 Cc: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org
-Suggested-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Carlos Santa <carlos.santa@intel.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+CC: dri-devel@lists.freedesktop.org
+Cc: Daniel Colascione <dancol@dancol.org>
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Christian Koenig <christian.koenig@amd.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 ---
- include/linux/shrinker.h |  3 +++
- mm/internal.h            |  4 ++--
- mm/shrinker.c            | 13 ++++++++-----
- mm/vmscan.c              |  7 ++++---
- 4 files changed, 17 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/ttm/ttm_pool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
-index 1a00be90d93a..7072f693b9be 100644
---- a/include/linux/shrinker.h
-+++ b/include/linux/shrinker.h
-@@ -37,6 +37,9 @@ struct shrink_control {
- 	/* current node being shrunk (for NUMA aware shrinkers) */
- 	int nid;
- 
-+	/* Allocation order we are currently trying to fulfil. */
-+	s8 order;
-+
- 	/*
- 	 * How many objects scan_objects should scan and try to reclaim.
- 	 * This is reset before every call, so it is safe for callees
-diff --git a/mm/internal.h b/mm/internal.h
-index 5a2ddcf68e0b..ff8671dccf7b 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1759,8 +1759,8 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
- void __meminit __init_page_from_nid(unsigned long pfn, int nid);
- 
- /* shrinker related functions */
--unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
--			  int priority);
-+unsigned long shrink_slab(gfp_t gfp_mask, int nid, s8 order,
-+			  struct mem_cgroup *memcg, int priority);
- 
- int shmem_add_to_page_cache(struct folio *folio,
- 			    struct address_space *mapping,
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 76b3f750cf65..c83f3b3daa08 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -466,7 +466,7 @@ static unsigned long do_shrink_slab(struct shrink_control *shrinkctl,
- }
- 
- #ifdef CONFIG_MEMCG
--static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
-+static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid, s8 order,
- 			struct mem_cgroup *memcg, int priority)
- {
- 	struct shrinker_info *info;
-@@ -528,6 +528,7 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 			struct shrink_control sc = {
- 				.gfp_mask = gfp_mask,
- 				.nid = nid,
-+				.order = order,
- 				.memcg = memcg,
- 			};
- 			struct shrinker *shrinker;
-@@ -587,7 +588,7 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 	return freed;
- }
- #else /* !CONFIG_MEMCG */
--static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
-+static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid, s8 order,
- 			struct mem_cgroup *memcg, int priority)
- {
- 	return 0;
-@@ -598,6 +599,7 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
-  * shrink_slab - shrink slab caches
-  * @gfp_mask: allocation context
-  * @nid: node whose slab caches to target
-+ * @order: order of allocation
-  * @memcg: memory cgroup whose slab caches to target
-  * @priority: the reclaim priority
-  *
-@@ -614,8 +616,8 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
-  *
-  * Returns the number of reclaimed slab objects.
-  */
--unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
--			  int priority)
-+unsigned long shrink_slab(gfp_t gfp_mask, int nid, s8 order,
-+			  struct mem_cgroup *memcg, int priority)
- {
- 	unsigned long ret, freed = 0;
- 	struct shrinker *shrinker;
-@@ -628,7 +630,7 @@ unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
- 	 * oom.
+diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
+index 278bbe7a11ad..e76c3a5c67bd 100644
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -165,8 +165,8 @@ static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
+ 	 * Do not add latency to the allocation path for allocations orders
+ 	 * device tolds us do not bring them additional performance gains.
  	 */
- 	if (!mem_cgroup_disabled() && !mem_cgroup_is_root(memcg))
--		return shrink_slab_memcg(gfp_mask, nid, memcg, priority);
-+		return shrink_slab_memcg(gfp_mask, nid, order, memcg, priority);
+-	if (beneficial_order && order > beneficial_order)
+-		gfp_flags &= ~__GFP_DIRECT_RECLAIM;
++	if (order && beneficial_order && order != beneficial_order)
++		gfp_flags &= ~__GFP_RECLAIM;
  
- 	/*
- 	 * lockless algorithm of global shrink.
-@@ -656,6 +658,7 @@ unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
- 		struct shrink_control sc = {
- 			.gfp_mask = gfp_mask,
- 			.nid = nid,
-+			.order = order,
- 			.memcg = memcg,
- 		};
- 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bd1b1aa12581..a54d14ecad25 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -412,7 +412,7 @@ static unsigned long drop_slab_node(int nid)
- 
- 	memcg = mem_cgroup_iter(NULL, NULL, NULL);
- 	do {
--		freed += shrink_slab(GFP_KERNEL, nid, memcg, 0);
-+		freed += shrink_slab(GFP_KERNEL, nid, 0, memcg, 0);
- 	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
- 
- 	return freed;
-@@ -5068,7 +5068,8 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 
- 	success = try_to_shrink_lruvec(lruvec, sc);
- 
--	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
-+	shrink_slab(sc->gfp_mask, pgdat->node_id, sc->order, memcg,
-+		    sc->priority);
- 
- 	if (!sc->proactive)
- 		vmpressure(sc->gfp_mask, memcg, false, sc->nr_scanned - scanned,
-@@ -6170,7 +6171,7 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 
- 		shrink_lruvec(lruvec, sc);
- 
--		shrink_slab(sc->gfp_mask, pgdat->node_id, memcg,
-+		shrink_slab(sc->gfp_mask, pgdat->node_id, sc->order, memcg,
- 			    sc->priority);
- 
- 		/* Record the group's reclaim efficiency */
+ 	if (!ttm_pool_uses_dma_alloc(pool)) {
+ 		p = alloc_pages_node(pool->nid, gfp_flags, order);
 -- 
 2.34.1
 
