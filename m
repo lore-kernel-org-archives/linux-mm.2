@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52982CD3439
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 16:37:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D56CD342C
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 16:41:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B952C6B0088; Wed,  6 May 2026 12:37:09 -0400 (EDT)
+	id 88D9E6B0005; Wed,  6 May 2026 12:41:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6D746B008C; Wed,  6 May 2026 12:37:09 -0400 (EDT)
+	id 817EF6B008C; Wed,  6 May 2026 12:41:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA9E36B0092; Wed,  6 May 2026 12:37:09 -0400 (EDT)
+	id 6DEEC6B0092; Wed,  6 May 2026 12:41:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F7606B0088
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 12:37:09 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 592766B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 12:41:11 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4AF66A0172
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:37:09 +0000 (UTC)
-X-FDA: 84737549778.23.5BAEC51
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B469160282
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:41:11 +0000 (UTC)
+X-FDA: 84737559942.23.1C45257
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 69953A0003
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:37:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kHTrrfeT;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5B5481C0017
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:41:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hrtaON3l;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778085427;
+	s=arc-20220608; t=1778085669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R3yGWy/0yrJcGrBuLeNd6K2W41yF3Jblr6VvjWeHFjk=;
-	b=FfdvlJP/Xaq63OOPBwFmB0d4SwsQ/W4d/TBtxFLlihJpirYxQJhJzzbuWs7ACOA0S758Xg
-	vxTHbVERspVYZavj7KqQWW9PleUYkW+KYmd3M+FeeG91k76Q3StbbqeXcqqHjoq/sYOPi9
-	c7FR8z4BaoVBjlJrQe08gZ6o9nsacgQ=
+	bh=2oRHuVmKCiZSPXy2nDXmz4s/lC995odQgxWms3/5OAo=;
+	b=oQJn10F34zCBIUXHB8fDxK6SE7qjUfsik2/UdeoUgVqIM9CK2eX2KGvE/KH5pcwBLm84O8
+	OyBt/4l6ZIF0pJc05KY2taVwoy7lpIgW0Q2sFk+w+F5WSPztNG4sN5M1erWLz/Rldsb1qo
+	66h1QGGrAmky6eayjwIkuim+c0YPui8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kHTrrfeT;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hrtaON3l;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778085427; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778085669; a=rsa-sha256;
 	cv=none;
-	b=iloG0VZT7wYvZLZhJabo6zSXnatdURe0vsprsBxfJewr/EAXF9LydOmQhV+ndQj8NeN6uG
-	RNGB0rTTT4jNEZAKL109cHbjCVAInWAy0BO34Iy4uK//ml/PDA+rkG5b+VI087UGepPP9V
-	mnwLm16vXjWcZHU6/ggsYtYWf3mmnbo=
+	b=5KJ5tFUVjelWo0J00ttLeOkNEiQovIIDj73oUP9jOnjirx1J1HbnRlAFqHCK1e2cz7QgiJ
+	20mD0tXZ54SED+b9q7q1wVygYEcVlD7KXQFpPPk1zgfw22nCt0uHw7sDMSezHumtD4Xi9k
+	Q6Y1FuuWi8nehk0xT3bB1oOzj8LndhA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6A6F444268;
-	Wed,  6 May 2026 16:37:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC35C2BCC7;
-	Wed,  6 May 2026 16:37:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5EADD4401B;
+	Wed,  6 May 2026 16:41:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A988AC2BCB0;
+	Wed,  6 May 2026 16:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778085426;
-	bh=VwuzcDo/M8l3F+D0/joF1sxuSTpVoiJuVAJ5yOeJ4b8=;
+	s=k20201202; t=1778085668;
+	bh=sjh30b3c1z/W1cQGXVs6VKN8mBptz52vyltQa8qkOPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHTrrfeT4OL3IQ8X06TgzDQcRFY0o9S3WHVBH8jNnazDoRUbJxNYXmck8XiAZMLBF
-	 TwwxAY23Z2ralePvItMXUIGRGwIhJkYOqloSzQqIWdS/M2fkUxPWSgNLT7SFQtko2g
-	 3EdiYfsyZD2+HVEcBbp290jWKoHWWtpHTyoOnkweThjPhXINXsiObVPu62vgtXLw2I
-	 O9RpunDiNdM7eRncL9W5RtOhLCq394Ci2x9wtnZ/oie/6srXrCMEK0XVgoNfqyGehn
-	 qI8tTEHhgyklddRfCXV7USaMQsUd6jnTCpiviwdiGkOceisj7OowmcKkpJkq1iQLF1
-	 U5jfy4DjWdtcQ==
+	b=hrtaON3lluhILxsDmGjMLJkWvBV5Pu5iVtIu4aBxZytPYMAh9RGWmzbVgNiWfy/Zt
+	 iGK/dQndwuyOK/t+Q+02gAAz0xZ5YjKQAc1DfgXgmQ8ChJfTyU1hZtb3Ef3hdRevu3
+	 VRYunv4LniTGy/fhxZQ3E0cYulJdSy3ZDl9pnyKbPI6AdOYt4tJ4LyWPcah7TR2o/v
+	 dDlGj1pEv5koHErR8j4+kTxYkbcheIKRhjJyjAiXDhqJaJrVw9Wbc39ardBx+UM+eF
+	 Zv84n87GLrdrenCQrns5nhNZe+f1MYuQlQoNENosx1gm002LxIJvCvkpVN6L91V7rC
+	 fg0gjX7Y/ttXA==
 From: SeongJae Park <sj@kernel.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
 Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
 	damon@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shu Anzai <shu17az@gmail.com>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
+	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon: replace damon_rand() with a per-ctx lockless PRNG
-Date: Wed,  6 May 2026 09:37:00 -0700
-Message-ID: <20260506163701.6288-1-sj@kernel.org>
+Subject: Re: [RFC PATCH v1 0/4] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
+Date: Wed,  6 May 2026 09:41:02 -0700
+Message-ID: <20260506164103.6414-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260505145212.108644-1-jiayuan.chen@linux.dev>
+In-Reply-To: <2446b1e8-2b9a-4621-bbb3-ccec0f1aa604@huawei-partners.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dh848apyesiwekxfag9o39hq3t7dsz9w
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 69953A0003
+X-Stat-Signature: kdopckfztmkufc1a1dw4g9575i4hy6ky
+X-Rspamd-Queue-Id: 5B5481C0017
 X-Rspam-User: 
-X-HE-Tag: 1778085427-866516
-X-HE-Meta: U2FsdGVkX1+fD6d8rMPCjaiKnETgyrTw9/y7klhZqHyXGg1YXgdA12qpIm6DHnw6643k37221bNpjJCUOQ7shNK0dtzA+9RW7bqoj0QQYGPPh57poexJB4hOc9i2CYm3YH7e37TyRosaKfx7gYPS/VS8YX3v48HDqZa/mOI4E/sMe5SuLx625a+RoX1mE4Yp+/2zm9sHEwzkoKH/JgLehZkYzALOsilXQ034bSKK20Ruvqw/fBo+2qCYTYoa0DJQmE7Kf98IvVKjtZGn3iuY4Wv7pFPN1/IxWWqnH3ZsQkkvWRmBQA60ibN4eKLwjj28eP9PKZ31v9S1BiI4kU2fDSG7Hkv+EiaRgxqIZjpY3m6iQN8mEcYnOSjc9InlKYhIcifUv9cK14S6WjNIX+NYGefnVSL2WsxlTJr1DKoJKYPtWH8qvz6GcQ2yq/YWYs2G9sR1uskZwJv5cFBD3two0ui0UFXPmlaBF9dHZ55CQybMwBbMgFUfUmtGlBA3fvoM+cLroBp+OIFZz62gzbZtWTLdIzuUO3mnZbGhIVBQF0vcjTgoCZkwy8axsGfm4fR/pidx45Ur/zTA3XqY/6gLalVxYuEZA4Um5fV9LzKtqVwlANbFp2kzu6zZLFjV/h/ItFVW9N//vOY6vOPzsInyXhOb27rYcWOfHa5DJDG2EzkxY0lT+Y9VEm4dzC3iFi83BlWBrD7Ofas/H3ldj3MmIMD6ecakIlO0zKn+sRElhrmX7CBqE9a9TS1XjVo5k+0v/aSMvWl+DcLvlsTcFNdG1JSx5R1GktfrmiTfVfr2Zk7iAl55Om6/X2rJLiWXJpP4OOpJigV1KepQDHLsZPBFWWzG7LGvjfiffDMYUUyGQN9Pj74rx8pNmKGY/ylKIKJG1EvNpwSP70nHG0tQ2OD7V6vOHr0k0y5I1pL0SaS3AOsfZbeU+CNqqidCMx6Ii26w6hHfOHUgPKjS3LvhVkj
- JWotNaP1
- wQUSgweBFVoZKMmArMyL80LAo6ljyiqKPFIN0S8vjMeK1jm7fCGqMclFkhSd0APZvFyADx6Mm68m8ukUHWSMN38+QMuwgv7IO3jb3ljGzhj/gzTbFeu/QLrBmyXlktctPsnM+lFUWibWJ05FkEt5BWCbkE4hWcO5xr7IjU8k2LLFnPkf8omtVgGwz63Pb0AEp5MZFkGBN05wRQUHK16ZibV9DgXmI15QEUWeNiah9ZtNhvGpts8ssuPQvSFsRpr6D6X8e7K7iSd6uOH+7oumjkYbInlQ5iqV+5yiBwr0UaDL6+IUSfMS30xBKPM6s0BmHybpsf7hSxaxGszSQqyGVVm/fbj3+p2xB2+G2EFHqppYdLV1CkxZJJRwimhRkjnNnySVs
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778085669-150302
+X-HE-Meta: U2FsdGVkX19AGdLUK1hwEF4+CQRTWBesOEc60H4weML0s2RKU5XCUN9XWHZDxboGyuLoGirIqYwtn4Vl8wcSDkyG8oYscH++YSfYK5fTF3DIFGnopCqQFy5vvc4DSuTvNe3pmrrpjt725MMTDbL6MX9kOduB4EKbfOVlLJ8bP+hm7d1X3IX3EZC13Z/oMzKcEhukvL8/vK87JtUl9h7Y7BJU149G5EXRmK+jEDvsf/qht/0vJGvHzw1S+9mMIZveok4d+zg30voNCxxIS+ERpRcGiGZXi61Js2CbPobzqLyzak/f9ABbM/cOfr3sypECSPS/33LOr52OVLcQIvpV4khf06SKGXkRw02RplasnJi5g503VPsHzSObvdK0C0kL/ZQmPJMDSWPhqd00RePg2E1lGJEIn9GsqSmUT0ekZf7itw/sL+iRY33UG+Qcdg+4u652VEpLMWpKh05NkLaDavTmwEVgNY0QnX2kEpjKNIpo4Lcd/qvmY2PDxwWDVIJCPupm+20n4sCttvlAeR1U7RhpwQbCM2uniew7RYmBXBmCP8G9TKFYIavVk74BWA7Tpkz4FoxgY8Qb+11pbhSGy1nQk72woxAY8zWXvtujPj8EclGc4dxZnGc0GT6l0TAqSNu+43PmF/Dk1Mb4XH3Zp9TD1xhim/xOHTLaoQuux4YBHGby+5ghk+/tnhwvCF/WYwDWdTGGIGe260h9usaGB8FCtT0yCRZNBd0WxaQ0BuiLOfup5KTcGes4DsTNhI9owEAKk+gdkCN8STI+PSo++b0ITQuIRo4SuRhrXeYM5Qffn40SNUSVyU2wSYaLgs4rxcarCY30FcP+/OF6BdMKNtQUF65Co9qhgJHuL75exVD2zQMRO/eXIBtvW7O2m4k3p4rAchhcljiVpHZIwlrO/LqHn38VJ0puYZZGaHdtIteqCs7+d+xuToE6bz8bAoBIgzAydzHex9UhWCipezd
+ uLsUMM/4
+ 97b3a0yx5DK4/FQIr+4G/kxiBzul1p99sscklT4KdGlYSQ640YOSd9lwAnTBBhfqQNTjswJb3YyRmAb3eUsv39uSxntQRctP2eL8orAyCsFDlyU14AQ4slf2QkmObhtRgW/0g39wyqo1cRsnUH5xsE4Gh0XUz5V/n8whh4/r0Qhv/IEkTf41GNNNIjPawAJpuSVP1AaLF6NtcoAFeEJF4BBXziYXoR87g8TK045LOX3wkoFAsr63jRTH82BoUln6xBgL8TVKrOapu6PHDkKnSJWarPQSD6ivEPTvLTgze6DbdQV46F54nqKBt+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,170 +98,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Jiayuan,
+On Mon, 4 May 2026 16:52:01 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
+> On 5/1/2026 3:41 AM, SeongJae Park wrote:
+> > Hello Asier,
+> Hi, sorry for the delayed answer.
 
-Thank you for posting this second version!
+No worry, no rush.  Take your time :)
 
-On Tue,  5 May 2026 22:52:06 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-
-> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> 
-> damon_rand() on the sampling_addr hot path called
-> get_random_u32_below(), which takes a local_lock_irqsave() around a
-> per-CPU batched entropy pool and periodically refills it with
-> ChaCha20.  At elevated nr_regions counts (20k+), the lock_acquire /
-> local_lock pair plus __get_random_u32_below() dominate kdamond perf
-> profiles.
-> 
-> Replace the helper with a lockless lfsr113 generator (struct rnd_state)
-> held per damon_ctx and seeded from get_random_u64() in damon_new_ctx().
-> kdamond is the single consumer of a given ctx, so no synchronization
-> is required.  Range mapping uses Lemire's (u64)rnd * span >> 32 on the
-> fast path;
-
-Could we add some links to the algorithm?  I found a blog [1] from Google and
-guessing that is what you're saying, but I'm not really sure since I failed at
-finding time to thoroughtly read it.
-
-> for spans larger than U32_MAX (only reachable on 64-bit) the
-> slow path combines two u32 outputs and uses mul_u64_u64_shr() at 64-bit
-> width.  On 32-bit the slow path is dead code and gets eliminated by
-> the compiler.
-> 
-> The new helper takes a ctx parameter; damon_split_regions_of() and
-> the kunit tests that call it directly are updated accordingly.
-> 
-> lfsr113 is a linear PRNG and MUST NOT be used for anything
-> security-sensitive.  DAMON's sampling_addr is not exposed to userspace
-> and is only consumed as a probe point for PTE accessed-bit sampling,
-> so a non-cryptographic PRNG is appropriate here.
-> 
-> Tested with paddr monitoring and max_nr_regions=20000: kdamond CPU
-> usage reduced from ~72% to ~50% of one core.
-> 
-> Link: https://lore.kernel.org/damon/20260426173346.86238-1-sj@kernel.org/T/#m4f1fd74112728f83a41511e394e8c3fef703039c
-
-Why are you adding the above link?  It would be good to add description of the
-link on the commit message.
-
-Other than that, commit message looks good to me.
-
-> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-> ---
->  include/linux/damon.h       | 27 +++++++++++++++++++++------
->  mm/damon/core.c             | 12 ++++++++----
->  mm/damon/paddr.c            |  8 ++++----
->  mm/damon/tests/core-kunit.h | 28 ++++++++++++++++++++++------
->  mm/damon/vaddr.c            |  7 ++++---
->  5 files changed, 59 insertions(+), 23 deletions(-)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index f2cdb7c3f5e6..e16012a7f41a 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -8,8 +8,10 @@
->  #ifndef _DAMON_H_
->  #define _DAMON_H_
->  
-> +#include <linux/math64.h>
->  #include <linux/memcontrol.h>
->  #include <linux/mutex.h>
-> +#include <linux/prandom.h>
->  #include <linux/time64.h>
->  #include <linux/types.h>
->  #include <linux/random.h>
-
-Maybe we can remove random.h?
-
-> @@ -19,12 +21,6 @@
->  /* Max priority score for DAMON-based operation schemes */
->  #define DAMOS_MAX_SCORE		(99)
->  
-> -/* Get a random number in [l, r) */
-> -static inline unsigned long damon_rand(unsigned long l, unsigned long r)
-> -{
-> -	return l + get_random_u32_below(r - l);
-> -}
-> -
->  /**
->   * struct damon_addr_range - Represents an address region of [@start, @end).
->   * @start:	Start address of the region (inclusive).
-> @@ -843,8 +839,27 @@ struct damon_ctx {
->  
->  	struct list_head adaptive_targets;
->  	struct list_head schemes;
-> +
-> +	/* Per-ctx PRNG state for damon_rand(); kdamond is the sole consumer. */
-> +	struct rnd_state rnd_state;
->  };
->  
-> +/* Get a random number in [@l, @r) using @ctx's lockless PRNG. */
-> +static inline unsigned long damon_rand(struct damon_ctx *ctx,
-> +				       unsigned long l, unsigned long r)
-> +{
-> +	unsigned long span = r - l;
-> +	u64 rnd;
-> +
-> +	if (span <= U32_MAX) {
-> +		rnd = prandom_u32_state(&ctx->rnd_state);
-> +		return l + (unsigned long)((rnd * span) >> 32);
-> +	}
-> +	rnd = ((u64)prandom_u32_state(&ctx->rnd_state) << 32) |
-> +	      prandom_u32_state(&ctx->rnd_state);
-> +	return l + mul_u64_u64_shr(rnd, span, 64);
-> +}
-> +
-
-I was unable to find time to thoroughly read the link I found, or understand
-the algorithm with only the code, so tested by myself like below.
-
-'''
-$ cat ./foo.c
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdint.h>
-
-int main(int argc, char *argv[])
-{
-        unsigned long span;
-        int i;
-
-        if (argc != 2) {
-                printf("Usge: %s <span>\n", argv[0]);
-                return -1;
-        }
-        span = atoi(argv[1]);
-
-        for (i = 0; i < 1000; i++) {
-                uint64_t rnd = rand();
-
-                printf("%lu\n", (uint64_t)((rnd * span) >> 32));
-        }
-        return 0;
-}
-$ gcc ./foo.c
-$ ./a.out 10 | sort -n | uniq --count
-    195 0
-    194 1
-    188 2
-    223 3
-    200 4
-'''
-
-So I expected the program to generate number 0-9 randomly with similar
-proportions.  But it is generating only numbers 0-4.  I confirmed doubling
-'span' value makes it work in my expected way.  Should we do that here, too?
-
+> > 
+> > On Thu, 30 Apr 2026 13:41:35 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 [...]
+> >> A new module is introduced to demonstrate the use of huge pages
+> >> collapse autotuning. The module launches a kdamond thread for a 
+> >> certain task provided by the user through monitored_pid module argument.
+> > 
+> > If it is only for demonstration, I think it is more fit to be a sample module
+> > (placed under samples/damon/).
+> We are testing this in a bare metal MySQL server. Maybe the description
+> was not the most accurate.
 
-Other than above, code changes look good to me.
+Do you mean it is not only for demonstration but a real world use case and
+therefore better not to be a sample module?
 
-[1] https://lemire.me/blog/2024/08/17/faster-random-integer-generation-with-batching/
+> >>
+> >> This module also has a user autotuning knob which allows the user to
+> >> adjust the aggressiveness of page collapsing.
+> >>
+> >> Benchmarks
+> >> ================
+> >> In progress, will add them in the next RFC series.
+> > 
+> > Looking forward to!
+> > 
+> > I may request not that much test results for the quota goal.  If the module is
+> > not just a sample but for a real world use case, I may hope somewhat reasonable
+> > test resulsts.
+> OK, will do it.
+
+Thank you for kindly and flexibly accepting my humble suggestions :)
 
 
 Thanks,
 SJ
+
+[...]
 
