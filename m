@@ -4,117 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57CF2CD342F
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 03:33:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D275CCD342F
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 03:37:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 352036B009B; Tue,  5 May 2026 23:33:17 -0400 (EDT)
+	id 134DB6B008A; Tue,  5 May 2026 23:37:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32AF66B009D; Tue,  5 May 2026 23:33:17 -0400 (EDT)
+	id 10D996B0095; Tue,  5 May 2026 23:37:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CA976B009E; Tue,  5 May 2026 23:33:17 -0400 (EDT)
+	id F3DE66B0098; Tue,  5 May 2026 23:37:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0596D6B009B
-	for <linux-mm@kvack.org>; Tue,  5 May 2026 23:33:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CB56C1606D9
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:33:16 +0000 (UTC)
-X-FDA: 84735574392.30.97F6683
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 37DDB40005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:33:14 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RHPQJ3QF;
-	spf=pass (imf01.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778038394;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pqsz09tE9Mxjelv17fDu2gNfI5JnmEJJW30xv5h92XA=;
-	b=SHOO7Ar+PjlhonTNCDNk5/wtiajUVH1XSXQDtGY9UgRDefSXXzhBVYo/Goa0VWZC2LERoz
-	x5UCVNqIhhz6DqaDnU2JvU2MaDeaI5/SiuUpEi7tndFvMIWfQfkLNRuv/RGMbcnvmFJyGS
-	TbE8gXwwLgWGd1MiVnDjMq1ssbMo68c=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RHPQJ3QF;
-	spf=pass (imf01.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778038394; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E31096B008A
+	for <linux-mm@kvack.org>; Tue,  5 May 2026 23:37:09 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE9FD406C2
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:37:09 +0000 (UTC)
+X-FDA: 84735584178.14.297C8C8
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BDE38A0008
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 03:37:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YRqIJstE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778038627; a=rsa-sha256;
 	cv=none;
-	b=K0VJE2AQUnwo1j7Te9J9ravNyze7vszx3ZZWHhX7m+MSoqoupvEXmefJyE+4yMpI1mOdvR
-	no0mJQMzbSJ01meWdOxAwVPXBrVJ9ErbkJq3klAXTvUGPo2n7B3n3XgQUisif4u0sjwqez
-	+w9sUcXG/PGs18JOuwSlgUeqNgxAsmQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778038395; x=1809574395;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=hKs2r/SZ8fBLPzoHgcugkqcKmbZtBIMZ80SyreZA8i4=;
-  b=RHPQJ3QF4zENWw2HIb5nRngk84yX9izhhf3jfgYe8+wlT/9YpA+zLR+h
-   pylvb+0C9hbgSMyCuVzacF1tt2LTEoqS6VhJByG/OL0yf2Bhj2ykoIx6D
-   YJKJgPZCDi5iHk6Eie3hDGoOtzhbXzRs3bhI5eBPAPfMlfmPizI1pu9UO
-   BBBdRY3OZaPJExG4aYgtsRgNwEZeoY4brj4p3DeVVovKr0p+bPIYjRXpl
-   lplfIRkFA3vDwmz5rC3ofpwATdOWDi3heKzEJsobDIUIbP9o77hcgZokZ
-   /JPtokrAxluWBlMGPcuF8d+DLSCw9cmJxAqaGegnE7jnyJR3xVU3c+5yw
-   w==;
-X-CSE-ConnectionGUID: X0/CRDorRWuQZFBqoscNZw==
-X-CSE-MsgGUID: y6PfEqkHQ2eAf5NV0d9u5g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="78829093"
-X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; 
-   d="scan'208";a="78829093"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 20:33:07 -0700
-X-CSE-ConnectionGUID: 7i4b2G9rRAKaRcC7Cv6/qw==
-X-CSE-MsgGUID: El8a7KdFSaqIsFbWl9ZtuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; 
-   d="scan'208";a="266342154"
-Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 20:33:07 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 5/5] drm/xe: Make use of shrink_control::opportunistic_compaction hint
-Date: Tue,  5 May 2026 20:33:00 -0700
-Message-Id: <20260506033300.3534883-6-matthew.brost@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260506033300.3534883-1-matthew.brost@intel.com>
-References: <20260506033300.3534883-1-matthew.brost@intel.com>
+	b=twiLY6tPuT5FHaz1U6Q8CBTP0PO4N/mU1M88pBS8wgMFdwcQsr+yQzI/AJpDnBsFtBFvnp
+	j5NENt2Zjv6JaOiKdw+BWiAXetAhUAaG8p6K3DvHk4OXE6Wp8EDZmMmsrOMghtVnGgfVbe
+	3/+514/WOD6rG7cV7oyR7QFo0nSMOF8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YRqIJstE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778038627;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fCDCxjBslsLzg12I6kYRv855qs8zfp4TUfhArChtOWM=;
+	b=Rk1k8QJHO8UXp5csCqqvM9VFWQ7j4I+S4n+uG4euqOUDu4LKXVmkjwSj6j5c1xtivy2Os4
+	3127VFhgFRW/kYpw3xh1QNif3nEDNOsb83hPCOAN+isMUquqOoz9xL5KZTJ32DeudvChE5
+	FHLovuYDtu0WHsoWLUpRub37ZLh9u+s=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48984d29fe3so84663325e9.0
+        for <linux-mm@kvack.org>; Tue, 05 May 2026 20:37:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778038626; x=1778643426; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fCDCxjBslsLzg12I6kYRv855qs8zfp4TUfhArChtOWM=;
+        b=YRqIJstEMGTY7fV44uRxmNcNgNLDG3Wf3tJVjNMP2sjfmFRNrEnPBz5Dmd3+ACDTab
+         B7fbo6YqPDXGu4Fy8bA5JKA6KCOYZXYdz6YgIWKzclsXLbYZdHOvuwbaTPuT0ZbuSmz/
+         GFwuJ4GSQ7EngE7FNSFnB+7iPOwuxbNnQ3mpsErRlpCgeYyyzp9Kk6NSlDsl20p6d+N0
+         4KRPLM5xQOzD3KLwppZb6vwsx7qL9xeb7C4Lpj6R1CG4vLR1cdvOTF3Jb+RCy+QDaRuc
+         v690DXyzf6oqSe5QBhUhBgyZB/vBLupDe/jVj3/tR0We4H41vNrJjS1PFzqQ1T6sch3O
+         LPQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778038626; x=1778643426;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fCDCxjBslsLzg12I6kYRv855qs8zfp4TUfhArChtOWM=;
+        b=ov+RA5Wc+vWfUY2BcviQJpg5q/JOZjmxheIVI6C6Nu0ndJCz1AmsL0y/hW4TOBAhI2
+         BMzrF7Spm3Va1K75fIRy2mkutCInxE1RwTbSIeCeP/ypd3EGuLcorG0CepyEq2b5IacP
+         7yF6CNq7CtF/1+FsdBSDZ93seQT90oyWc4gi3Vx+eRwcBDfZlAJF1ZqMvu/rC1aNNgpz
+         OpWwtVNH/FHLLFnkLHhiiFS5jLFGGnD5ikIthDl0wwjb2fzd4MMydQA388LNrlHti1M+
+         dZp1hJD/dFbaD+6CvFMNpmqCMraNYDj6wXOc5bqjiirQCVFNpWMDMzfD4pwav/06d2v/
+         4wQA==
+X-Forwarded-Encrypted: i=1; AFNElJ+VBMaU/D1zRTnUwllqLLZSZ4IGMRp91cFmJqEByFPmG85yPl/GZ7V7alefzt5qAlcKEDqBDlKpTw==@kvack.org
+X-Gm-Message-State: AOJu0Yym/fFZ2+/kK1VYSMwe2cC8PsXYJIgLgk+X0ToL4FDHz/gN9mPk
+	zvLqQGUT/d21TzsRX8dVezYl2uSN00ZatEVY7z8BedGL/8Y8Be/p89/x
+X-Gm-Gg: AeBDieu7WaHcC/PPk7i4bzWSeIMRuxx3HpsXDWxEpDsqz4fPqB+H+NWGUNVOgmUZ2XU
+	07jQVDe/DxoKxt3wcSXWses7IKMa3z4nlyGFSovX0C6+609Iemg8w7URABwfwRE41soMUVvsT/D
+	jHgtohfC44Q28k1BU7ALH4sYVNs02P6ZsO4DgNph/1hVa/d9XVqp2UCKOZEQ5MgHHRSL9gUrWYk
+	VtGjBGMfgg6ZqO1j3MC+D+1PQlACOyjOrRVrm/A/W+/6OOBJZr5MHlN4BjByYMQ0WeBbwGY4183
+	deKE0nHFgdZWgcVJ9ZUXe+gEzTUKEhMUJJi9BM5DJN2ycsHPHnugI6e7DWWR289M6MDz2Toy7PB
+	WUGPcswkmbLmplcXsX5NeVNkBzm8zpoYXFUBGqi4izuT/88CSirOBSxB4tJy0fmLx0j/m+3Q5Fr
+	tJNPk8+7hR/B+Q1OL/qrW5msCv8kdmdbVA
+X-Received: by 2002:a05:600c:3e05:b0:488:9ed3:1492 with SMTP id 5b1f17b1804b1-48e51f2a997mr29947945e9.10.1778038625870;
+        Tue, 05 May 2026 20:37:05 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e530b19besm7463115e9.7.2026.05.05.20.37.05
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 05 May 2026 20:37:05 -0700 (PDT)
+Date: Wed, 6 May 2026 03:37:04 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Maxwell Doose <m32285159@gmail.com>
+Cc: rppt@kernel.org, richard.weiyang@gmail.com, linux-gpio@vger.kernel.org,
+	open list <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+	Lucas Poupeau <lucasp.linux@gmail.com>
+Subject: Re: [RFC] Precarious macro in tools/include/linux/string.h
+Message-ID: <20260506033704.bpqcp2ydhoc45yda@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <CAKqfh0HqJoFRPrgvQG84iFt-0-vQd0fz3x6EPhzTgikss+XiWg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: thg94d1g9auh3zk4kcg3m7ehciprc8xz
-X-Rspamd-Queue-Id: 37DDB40005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKqfh0HqJoFRPrgvQG84iFt-0-vQd0fz3x6EPhzTgikss+XiWg@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: 8rnyrt5sxbhkwuw8x4b7sj4ngxiaouta
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778038394-11926
-X-HE-Meta: U2FsdGVkX1+hrajhA9u2BKDENNVNAw6B+ubGgpT5IkevpFs9Sc77X4f1B/YaW6mLX5kYVnAM71LvT6ng0U+jCA11ZacTOQTGgvYQafNhGkCk6i0CcIa8f4kI6ftqAyPkaWUhurGakG9A7xTD9h1ELpi3Gm2Oq15yFiIturYfXkEqds1UMrIDovjiwZCSFD3wpA1S86w0G4iKn3Im1Wz6jFpgSmU6bWwxA4Eg8PLrtaoE3fViJRTAO4cp0B0BdQFaCztrJzD0Z6L1y1NbGcIOyoxgnmWkydRiPOvE/BPpeGUNQqtByI/88JQICNLVR/DhSye4qypjQv+xcWEuIq6At6cKkgStsXriCiWpmC8o7P1PRoYvO7dSzg412kVwUPrwzNrFfGeuPkj0RZTGWxloxGchrQ5t6yScMaT5R+3CDQ6IC6/a7vkTIse0FmLclMLCjq4mf7f8O3GUjPYm1w2bMsW5Wn/9odXz2yQiWBURC0l5KLjaVDiXlZ4iJJiyD6uyiTotfoP3nDNitIKLQhi22xX8apXTqgsoBAFCK+j4nPDz+s78I28Qg18ZgY3OszgrLTxT+8qhz1iUgCNSHKZKn1DhOpV93b4z1MrFjNqNdu5Bc2u9SFcUjEZBqyH0x7FOjWF0zBP6PBgwPkDHYXIiN2zzOqw7vRyC93vlcJCHEcMdiw+/d/a92zVt39KD36JpIdZ6rlMG0hRd90DhEER+NNAgj1R0qNVj2MbvU9RYOJuJAakKe57LhPGXAe+XpPPd1SJ2nuTern1LgMBclo2He4fGErUQnkNdVQXEQccPg0ZqOnIHueATNaQG0nWTlp6vZ1n7W6m15sCaOJhqKnLXNIYSqsNYB2qByE2IjeQ8f38TGcUkHJNhxJuZn5AXnGMfS9IeXvheOcc3k2LO0RJnz7D3ZnxvPv3KiwAOUYnHdW8uKYyeKSbcBJSqrstYDfc8GXtgL6Nn1HlCNk5fupf
- Hn3tOcVX
- 9OfwcDwcopjukGWcFTyZqFR8Q887q+5pDJ9bUbQCLbejD1sVNY0bvtFphA5/467f6UXwW/OugdL1tjdKTh6/DK/NrvQBT4/y+Z81e+adYFHFhIQulF2TnRsXLNICBGLhLOCgCm1wHsQ3EfJx5xVLH4I/WtCacMKr5WWurtE7aS2mzfdy1tq97fijxzyZ0H0ultNsO3M9iazbUNdxUQFcC4A7e1XMQsspnVD8a6ChDb3EIL0vxOXm9Ne9nRp8AxwJ+Zu+uE5rM62WYLXy6VIHFg28Zzri3KBAhHKToJV14GR/3Vwlf+wvQmWVKi9tyfZsSesZEBO/ONQL0m6pG2b26ZnbJWGup4qb5ySi1LuiRCEXesYryb1m11qBpkaFoiBhw5h+6/Vr+lHHjdvIvMiR76KgwsD6+UKBgskEYmC6eLj2zLEJykD0fJ/fPrgfrcWch+EqzXFbpOBDWlK5afVQQY0dWnKlAx/yJyI595d3yY/Jg8r0m1KaYKiCk/dps2eBMnglKmMqF9ZtweVmQgqQKsFbpEOqlFR+P/ac2jgcKACPG1Ms1pVNb7Zyfe1mq00hgdSJNOco9BeZWtY6PVL/8KG2uN9tcd4qxPiLO7HB6Yy9l4zx91YEW5lcHebhYXcataPMb
+X-Rspamd-Queue-Id: BDE38A0008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778038627-257153
+X-HE-Meta: U2FsdGVkX19MUAu/rSbV9++3Dcq/+ryyTfsZ44YkyxYvU7LsE7GqC7znysCITDiQUPHhXb5XfkrcOuSRoLI2smYv1fTuLcCF61NxdDo/nBGuB+mY4/3l5fxkyg9qtGWjRUdMqBUjwBqz5GTqM1bAPheDZjp/TBclc1K8qe+OMwiOBK6OeLgCxjsMxg/4CgKjpctbEjXuShXzW/K+Vnc2Hf2nIFh71JfFQqFol5xre5sByiZbAgLx7Yr+Q09p9ZEIzLFUJMBXYH1Hf/monKa9s9NygeZnWN8okxF0nrPUlZ89F0hxh15yBviCEyjRL3E6UhzUBsAh2U6rboszrcgN2UMovw/FRo9taFaGtBTucCSBtN/GvCc/YRJVcLk6S9tmb557dU0MV+xvtkjcy7dYbPH+6rXrU0wrbwmUKbTkTDeiIm96fyCgf5skdh4bdzH6SSEf3iXRify2IxEMTH3++pLgVNaZtRext3S1Sf9AfvM9DpDi6BhOdckKbPUjMVhFNTef4B0zjO7nrZYtqNjv01uIDsAHBEeSwhuET6laEVf/1t7p005LSp4KvEBTlXqvaWvYcez9emuPi/Z67S1Xv0vx3p8Z924tHbxdJfg9ofw1u75BA5b0Bl9YBDQCTENPe64+lmQjxxhdDvrC6+BXQ0ak+1308pkCPiGLkOIX2Csxtn0VNU1FFzpIjXJkAIqikkJuJgIvgVlB/SvHUB090zzgnnq9kx2f9MUcxPHsAO4WSX+cZxM2IqoUBF3CwHAp/auAeWweWJDya/6EiYoJFZkV0Bma+leZ24qLLHQl34XQM2y9EJRjqVESJDW/LLqWxsDS7svAwvpfpFSJQIBLDZv5xEWSZ8XN0umq9BnsafymdTiGwos4lPeVwqAG2m0u8n55cxhp6S4PQg3I8lPDmRWHVXYzH5RzOyYl8cNWttY4x8GgyrC+akufbg1aTsogjBVk+YYiuHdbIW0f3v0
+ KosSQQSN
+ x6RH47TLDTq6yY2ow5R1usaj38hOVpW6X80JWsXfV8vgUB0VoxG+IRAVq2eLwECBvDoLmY0OMr3d/TVyup8tt22+oY3/1vkUKgVRACCtKI8BXgx7KJ82QNeUCFjxazPu/0EazepO1ONFdMRJzyz+prIzvP4eAb6A8ISspP22ai07X4v7FZVUn7Kt2uAyWEkvsHioDlBl8vS8BoF2JiuVNfZ9ANLNX0w+E2c5WIgdgDBrnss5g8iMt96xT9Q5iGJYH7rDc+5ZuGngXZFUlw2LtX2BDr2wsRtXTn6Lz7oFi7ufg+FyZgfa7G0fjH02BaQUwFvsimrx/1NLPN5n727zOHBE/iF6pC2CZ6F2stzoyCwIoSGpvnO2Co+vwfHirhTnHRpVsFp5dIzxAM+RDtiTdDeEDXm4cEKlsfNagyQNLI55vaDCDAQBynXZdxRwWoPeIojJ5WIMVMvnGHXmZWZ8+JvNy2s1ykBk/+3HYCgo9tNq2JzfY6/es1HlQ9/aKEyrZYBJ5iBDkgktCRfakH17GSPbJEA1fsNzuZ7fr4t0Prl6htYNl6AX2gYTxmcXqpDrbTuCuJvCjnkQALVGMWmiKREs0gr7vh2NYXrqG/FsA3hbQgjbC98i8UniFqo1hXgNzyIg/ou90NY3bTiHNFYVlIpb3wFbY4lW6iWAE4bDwVnEdICTpep8+irRQH53AmSI4IwI1z3WpsCJacxQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,92 +120,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Xe/TTM backup reclaim can be extremely expensive under fragmentation
-pressure as reclaim may migrate or destroy actively used GPU working
-sets despite the system still having substantial free memory available.
+On Mon, May 04, 2026 at 11:21:35PM -0500, Maxwell Doose wrote:
+>Hello Wei and Mike,
+>
+>I was recently helping a new contributor with their patch replacing
+>strcpy() with strscpy() in tools/gpio. After some research I put a
+>hold on that and realized that strscpy was defined as strcpy, which is
+>extremely precarious and goes against the ideas the kernel has been
+>fighting for for years, and I traced that change back to commit
+>9e3d665 authored by Wei and merged by Mike. I'm currently working with
+>said contributor to get this alias removed and the proper function
+>definition added, just wanted to give you a heads up.
 
-Under high-order opportunistic reclaim, repeatedly backing up GPU
-memory can lead to reclaim/rebind ping-pong behavior where active GPU
-working sets are continuously torn down and reconstructed without
-materially improving allocation success.
+Thanks for the effort.
 
-Use the new shrink_control::opportunistic_compaction hint to avoid Xe
-backup reclaim during fragmentation-driven high-order reclaim attempts.
-In this mode the shrinker skips advertising backup-backed reclaimable
-memory and avoids initiating backup operations entirely.
+>
+>Are there any tools or dependencies that rely on strscpy() being
+>aliased to strcpy() before we replace it with the real definition?
+>
 
-Order-0 and non-opportunistic reclaim behavior remain unchanged, so
-Xe backup reclaim still participates normally during genuine memory
-pressure.
+The alias is introduced to fix the test case in tools/testing/memblock, since
+reserved_mem_add() use strscpy() but there is no definition in tools/.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Assisted-by: Claude:claude-opus-4.6
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- drivers/gpu/drm/xe/xe_shrinker.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+So replace the alias with proper function definition looks good to me.
 
-diff --git a/drivers/gpu/drm/xe/xe_shrinker.c b/drivers/gpu/drm/xe/xe_shrinker.c
-index 83374cd57660..4646b0f5b82b 100644
---- a/drivers/gpu/drm/xe/xe_shrinker.c
-+++ b/drivers/gpu/drm/xe/xe_shrinker.c
-@@ -139,10 +139,17 @@ static unsigned long
- xe_shrinker_count(struct shrinker *shrink, struct shrink_control *sc)
- {
- 	struct xe_shrinker *shrinker = to_xe_shrinker(shrink);
--	unsigned long num_pages;
-+	unsigned long num_pages = 0;
- 	bool can_backup = !!(sc->gfp_mask & __GFP_FS);
- 
--	num_pages = ttm_backup_bytes_avail() >> PAGE_SHIFT;
-+	/*
-+	 * Skip accounting backup-able pages when this is an opportunistic
-+	 * high-order pass: TTM backup work shrinks at native page granularity
-+	 * and is unlikely to produce the contiguous block the caller wants,
-+	 * so don't advertise it as reclaimable for this hint.
-+	 */
-+	if (!sc->order || !sc->opportunistic_compaction)
-+		num_pages = ttm_backup_bytes_avail() >> PAGE_SHIFT;
- 	read_lock(&shrinker->lock);
- 
- 	if (can_backup)
-@@ -233,7 +240,14 @@ static unsigned long xe_shrinker_scan(struct shrinker *shrink, struct shrink_con
- 	}
- 
- 	sc->nr_scanned = nr_scanned;
--	if (nr_scanned >= nr_to_scan || !can_backup)
-+	/*
-+	 * Stop after the purge pass for opportunistic high-order reclaim:
-+	 * the subsequent backup/writeback pass works at native page order
-+	 * and is unlikely to free a contiguous high-order block, so doing
-+	 * it here would just churn working sets for no compaction benefit.
-+	 */
-+	if (nr_scanned >= nr_to_scan || !can_backup ||
-+	    (sc->order && sc->opportunistic_compaction))
- 		goto out;
- 
- 	/* If we didn't wake before, try to do it now if needed. */
+>best regards,
+>max
+
 -- 
-2.34.1
-
+Wei Yang
+Help you, Help me
 
